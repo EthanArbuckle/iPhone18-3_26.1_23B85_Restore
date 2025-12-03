@@ -1,31 +1,31 @@
 @interface CDMCATIChildService
-- (BOOL)checkFBBloomFilter:(id)a3 contains:(id)a4;
-- (BOOL)getBloomFilterAt:(id)a3;
-- (BOOL)getFlatbuffersBFAt:(id)a3;
-- (BOOL)shouldSuppressCATIInvocationDueTo:(id)a3;
-- (CDMCATIChildService)initWithAssetBundle:(id)a3;
+- (BOOL)checkFBBloomFilter:(id)filter contains:(id)contains;
+- (BOOL)getBloomFilterAt:(id)at;
+- (BOOL)getFlatbuffersBFAt:(id)at;
+- (BOOL)shouldSuppressCATIInvocationDueTo:(id)to;
+- (CDMCATIChildService)initWithAssetBundle:(id)bundle;
 - (id).cxx_construct;
-- (id)buildCrisisSupportUserParse:(id)a3 confidenceScore:(float)a4;
-- (id)buildLegacyBloomFilterAndExactMatchDictForInvocation:(id)a3;
-- (id)buildSocialConversationUserParse:(id)a3 confidenceScore:(float)a4;
-- (id)buildUserParse:(id)a3 confidenceScore:(float)a4;
-- (id)checkExactMatch:(id)a3;
-- (id)checkExactMatchForUtterances:(id)a3;
-- (id)checkExactMatchFromPossibleGuids:(id)a3 forUtterance:(id)a4 modelType:(unint64_t)a5;
-- (id)createUserParse:(float)a3;
+- (id)buildCrisisSupportUserParse:(id)parse confidenceScore:(float)score;
+- (id)buildLegacyBloomFilterAndExactMatchDictForInvocation:(id)invocation;
+- (id)buildSocialConversationUserParse:(id)parse confidenceScore:(float)score;
+- (id)buildUserParse:(id)parse confidenceScore:(float)score;
+- (id)checkExactMatch:(id)match;
+- (id)checkExactMatchForUtterances:(id)utterances;
+- (id)checkExactMatchFromPossibleGuids:(id)guids forUtterance:(id)utterance modelType:(unint64_t)type;
+- (id)createUserParse:(float)parse;
 - (id)getIntentLookup;
 - (id)getInvocationInferenceResults:()vector<float;
-- (id)getManifestFromPath:(id)a3;
+- (id)getManifestFromPath:(id)path;
 - (id)getMultiturnInferenceResults:()vector<float;
-- (id)getMultiturnIntentsFromSystemGaveOptions:(id)a3;
-- (id)getMultiturnIntentsFromSystemInformed:(id)a3;
+- (id)getMultiturnIntentsFromSystemGaveOptions:(id)options;
+- (id)getMultiturnIntentsFromSystemInformed:(id)informed;
 - (id)getProductAreaName;
-- (id)handle:(id)a3 assetVersion:(int64_t)a4;
-- (id)runCATIModelInferenceWithWeights:(id)a3;
-- (id)setup:(id)a3 assetVersion:(int64_t)a4;
+- (id)handle:(id)handle assetVersion:(int64_t)version;
+- (id)runCATIModelInferenceWithWeights:(id)weights;
+- (id)setup:(id)setup assetVersion:(int64_t)version;
 - (vector<float,)getCATIEmbeddingTensor:(CDMCATIChildService *)self;
-- (void)buildMultiturnFeatures:(id)a3;
-- (void)constructWeightMatrixForInference:(id)a3 numModels:(unint64_t)a4 guids:(id)a5 modelType:(unint64_t)a6;
+- (void)buildMultiturnFeatures:(id)features;
+- (void)constructWeightMatrixForInference:(id)inference numModels:(unint64_t)models guids:(id)guids modelType:(unint64_t)type;
 @end
 
 @implementation CDMCATIChildService
@@ -54,45 +54,45 @@
 
 - (id)getIntentLookup
 {
-  v2 = [(CDMCATIChildService *)self getManifest];
-  v3 = [v2 intentLookup];
+  getManifest = [(CDMCATIChildService *)self getManifest];
+  intentLookup = [getManifest intentLookup];
 
-  return v3;
+  return intentLookup;
 }
 
-- (id)getManifestFromPath:(id)a3
+- (id)getManifestFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [[CDMCATIManifest alloc] initWithPath:v3];
+  pathCopy = path;
+  v4 = [[CDMCATIManifest alloc] initWithPath:pathCopy];
 
   return v4;
 }
 
-- (BOOL)shouldSuppressCATIInvocationDueTo:(id)a3
+- (BOOL)shouldSuppressCATIInvocationDueTo:(id)to
 {
-  v3 = a3;
-  if (![v3 hasTurnContext])
+  toCopy = to;
+  if (![toCopy hasTurnContext])
   {
     goto LABEL_7;
   }
 
-  v4 = [v3 turnContext];
-  v5 = [v4 hasLegacyNlContext];
+  turnContext = [toCopy turnContext];
+  hasLegacyNlContext = [turnContext hasLegacyNlContext];
 
-  if (!v5)
+  if (!hasLegacyNlContext)
   {
     goto LABEL_7;
   }
 
-  v6 = [v3 turnContext];
-  v7 = [v6 legacyNlContext];
-  if (![v7 dictationPrompt])
+  turnContext2 = [toCopy turnContext];
+  legacyNlContext = [turnContext2 legacyNlContext];
+  if (![legacyNlContext dictationPrompt])
   {
-    v8 = [v3 turnContext];
-    v9 = [v8 legacyNlContext];
-    v10 = [v9 strictPrompt];
+    turnContext3 = [toCopy turnContext];
+    legacyNlContext2 = [turnContext3 legacyNlContext];
+    strictPrompt = [legacyNlContext2 strictPrompt];
 
-    if (v10)
+    if (strictPrompt)
     {
       goto LABEL_6;
     }
@@ -109,7 +109,7 @@ LABEL_8:
   return v11;
 }
 
-- (id)createUserParse:(float)a3
+- (id)createUserParse:(float)parse
 {
   v5 = objc_alloc_init(MEMORY[0x1E69D1240]);
   v6 = MEMORY[0x1E69D13F8];
@@ -117,7 +117,7 @@ LABEL_8:
   v8 = [v6 convertFromUUID:v7];
   [v5 setIdA:v8];
 
-  [v5 setProbability:a3];
+  [v5 setProbability:parse];
   [v5 setParserId:@"com.apple.siri.cati"];
   v9 = objc_alloc_init(MEMORY[0x1E69D11A8]);
   [v9 setAlgorithm:self->_algoType];
@@ -127,24 +127,24 @@ LABEL_8:
   return v5;
 }
 
-- (id)buildCrisisSupportUserParse:(id)a3 confidenceScore:(float)a4
+- (id)buildCrisisSupportUserParse:(id)parse confidenceScore:(float)score
 {
-  v6 = a3;
-  v7 = [(CDMCATIChildService *)self getIntentLookup];
-  v8 = [v7 objectForKey:v6];
+  parseCopy = parse;
+  getIntentLookup = [(CDMCATIChildService *)self getIntentLookup];
+  v8 = [getIntentLookup objectForKey:parseCopy];
 
   if (v8)
   {
-    v9 = [v8 intentName];
-    v10 = [v8 ensemble];
-    v11 = +[CDMCATIUSOParseHelpers buildCrisisSupportParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:](_TtC13CDMFoundation22CDMCATIUSOParseHelpers, "buildCrisisSupportParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:", @"com.apple.siri.cati", v6, v9, v10, +[CDMFeatureFlags isUsoEntitySpanEnabled]);
+    intentName = [v8 intentName];
+    ensemble = [v8 ensemble];
+    v11 = +[CDMCATIUSOParseHelpers buildCrisisSupportParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:](_TtC13CDMFoundation22CDMCATIUSOParseHelpers, "buildCrisisSupportParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:", @"com.apple.siri.cati", parseCopy, intentName, ensemble, +[CDMFeatureFlags isUsoEntitySpanEnabled]);
 
     v12 = objc_alloc_init(MEMORY[0x1E69D1248]);
     [v12 setTask:v11];
     v13 = objc_alloc_init(MEMORY[0x1E69D1238]);
     [v13 setUserStatedTask:v12];
     v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v13, 0}];
-    *&v15 = a4;
+    *&v15 = score;
     v16 = [(CDMCATIChildService *)self createUserParse:v15];
     [v16 setUserDialogActs:v14];
   }
@@ -157,24 +157,24 @@ LABEL_8:
   return v16;
 }
 
-- (id)buildSocialConversationUserParse:(id)a3 confidenceScore:(float)a4
+- (id)buildSocialConversationUserParse:(id)parse confidenceScore:(float)score
 {
-  v6 = a3;
-  v7 = [(CDMCATIChildService *)self getIntentLookup];
-  v8 = [v7 objectForKey:v6];
+  parseCopy = parse;
+  getIntentLookup = [(CDMCATIChildService *)self getIntentLookup];
+  v8 = [getIntentLookup objectForKey:parseCopy];
 
   if (v8)
   {
-    v9 = [v8 intentName];
-    v10 = [v8 ensemble];
-    v11 = +[CDMCATIUSOParseHelpers buildSocialConversationParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:](_TtC13CDMFoundation22CDMCATIUSOParseHelpers, "buildSocialConversationParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:", @"com.apple.siri.cati", v6, v9, v10, +[CDMFeatureFlags isUsoEntitySpanEnabled]);
+    intentName = [v8 intentName];
+    ensemble = [v8 ensemble];
+    v11 = +[CDMCATIUSOParseHelpers buildSocialConversationParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:](_TtC13CDMFoundation22CDMCATIUSOParseHelpers, "buildSocialConversationParseWithAppBundleId:guid:intentName:ensembleType:addEntitySpans:", @"com.apple.siri.cati", parseCopy, intentName, ensemble, +[CDMFeatureFlags isUsoEntitySpanEnabled]);
 
     v12 = objc_alloc_init(MEMORY[0x1E69D1248]);
     [v12 setTask:v11];
     v13 = objc_alloc_init(MEMORY[0x1E69D1238]);
     [v13 setUserStatedTask:v12];
     v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v13, 0}];
-    *&v15 = a4;
+    *&v15 = score;
     v16 = [(CDMCATIChildService *)self createUserParse:v15];
     [v16 setUserDialogActs:v14];
   }
@@ -187,10 +187,10 @@ LABEL_8:
   return v16;
 }
 
-- (id)buildUserParse:(id)a3 confidenceScore:(float)a4
+- (id)buildUserParse:(id)parse confidenceScore:(float)score
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  parseCopy = parse;
   usoEntity = self->_usoEntity;
   if (usoEntity && [(NSString *)usoEntity length])
   {
@@ -242,19 +242,19 @@ LABEL_8:
           siri::ontology::oname::graph::ontology_init::Argument_target(EntityNode);
           siri::ontology::UsoGraphNode::setSuccessor();
           memset(&v48, 0, sizeof(v48));
-          v16 = [(CDMCATIChildService *)self getIntentLookup];
-          v17 = [v16 objectForKey:v6];
+          getIntentLookup = [(CDMCATIChildService *)self getIntentLookup];
+          v17 = [getIntentLookup objectForKey:parseCopy];
 
           if (v17)
           {
-            v18 = [v17 intentName];
-            v19 = v18 == 0;
+            intentName = [v17 intentName];
+            v19 = intentName == 0;
 
             if (!v19)
             {
-              v20 = [v17 intentName];
-              v21 = v20;
-              MEMORY[0x1E12979B0](&v48, [v20 UTF8String]);
+              intentName2 = [v17 intentName];
+              v21 = intentName2;
+              MEMORY[0x1E12979B0](&v48, [intentName2 UTF8String]);
 
               if (SHIBYTE(v48.__r_.__value_.__r.__words[2]) < 0)
               {
@@ -287,10 +287,10 @@ LABEL_8:
           }
 
           siri::ontology::UsoGraphNode::setSuccessor();
-          v25 = [(CDMCATIChildService *)self getManifest];
-          v26 = [v25 isPreGuidVersion];
+          getManifest = [(CDMCATIChildService *)self getManifest];
+          isPreGuidVersion = [getManifest isPreGuidVersion];
 
-          if (v26)
+          if (isPreGuidVersion)
           {
             v27 = CDMOSLoggerForCategory(0);
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -303,8 +303,8 @@ LABEL_8:
 
           else
           {
-            v29 = v6;
-            std::string::basic_string[abi:ne200100]<0>(v44, [v6 UTF8String]);
+            v29 = parseCopy;
+            std::string::basic_string[abi:ne200100]<0>(v44, [parseCopy UTF8String]);
             std::string::basic_string[abi:ne200100]<0>(&v41, [@"com.apple.siri.cati" UTF8String]);
             std::string::basic_string[abi:ne200100]<0>(&buf, [*MEMORY[0x1E69D2468] UTF8String]);
             v57 = 1;
@@ -329,14 +329,14 @@ LABEL_8:
 
           if (v17)
           {
-            v30 = [v17 intentName];
-            v31 = v30 == 0;
+            intentName3 = [v17 intentName];
+            v31 = intentName3 == 0;
 
             if (!v31)
             {
-              v32 = [v17 intentName];
-              v33 = v32;
-              MEMORY[0x1E12979B0](&v48, [v32 UTF8String]);
+              intentName4 = [v17 intentName];
+              v33 = intentName4;
+              MEMORY[0x1E12979B0](&v48, [intentName4 UTF8String]);
 
               std::string::basic_string[abi:ne200100]<0>(v44, [@"com.apple.siri.cati" UTF8String]);
               std::string::basic_string[abi:ne200100]<0>(&buf, [*MEMORY[0x1E69D2480] UTF8String]);
@@ -360,14 +360,14 @@ LABEL_8:
               }
             }
 
-            v34 = [v17 ensemble];
-            v35 = v34 == 0;
+            ensemble = [v17 ensemble];
+            v35 = ensemble == 0;
 
             if (!v35)
             {
-              v36 = [v17 ensemble];
-              v37 = v36;
-              std::string::basic_string[abi:ne200100]<0>(v44, [v36 UTF8String]);
+              ensemble2 = [v17 ensemble];
+              v37 = ensemble2;
+              std::string::basic_string[abi:ne200100]<0>(v44, [ensemble2 UTF8String]);
               std::string::basic_string[abi:ne200100]<0>(&v41, [@"com.apple.siri.cati" UTF8String]);
               std::string::basic_string[abi:ne200100]<0>(&buf, [*MEMORY[0x1E69D2460] UTF8String]);
               v57 = 1;
@@ -396,11 +396,11 @@ LABEL_8:
             }
           }
 
-          *&v28 = a4;
+          *&v28 = score;
           v38 = [MEMORY[0x1E696AD98] numberWithFloat:v28];
-          v39 = [v38 stringValue];
-          v40 = v39;
-          std::string::basic_string[abi:ne200100]<0>(v44, [v39 UTF8String]);
+          stringValue = [v38 stringValue];
+          v40 = stringValue;
+          std::string::basic_string[abi:ne200100]<0>(v44, [stringValue UTF8String]);
 
           std::string::basic_string[abi:ne200100]<0>(&v41, [@"com.apple.siri.cati" UTF8String]);
           buf.__r_.__value_.__s.__data_[0] = 0;
@@ -515,13 +515,13 @@ LABEL_8:
 
   if ([v6 hasNumToken])
   {
-    v8 = [v6 numToken];
+    numToken = [v6 numToken];
     v9 = self->_embeddingDimensionCATI;
     if (v9 >= 1)
     {
-      v10 = v8;
+      v10 = numToken;
       v11 = 0;
-      v12 = v8;
+      v12 = numToken;
       var0 = retstr->var0;
       do
       {
@@ -531,9 +531,9 @@ LABEL_8:
           v15 = 0.0;
           do
           {
-            v16 = [v6 values];
+            values = [v6 values];
             v9 = self->_embeddingDimensionCATI;
-            v15 = v15 + *(v16 + 4 * v9 * v14++ + 4 * v11);
+            v15 = v15 + *(values + 4 * v9 * v14++ + 4 * v11);
           }
 
           while (v10 != v14);
@@ -566,10 +566,10 @@ LABEL_8:
   return result;
 }
 
-- (id)runCATIModelInferenceWithWeights:(id)a3
+- (id)runCATIModelInferenceWithWeights:(id)weights
 {
   v95 = *MEMORY[0x1E69E9840];
-  [(CDMCATIChildService *)self getCATIEmbeddingTensor:a3];
+  [(CDMCATIChildService *)self getCATIEmbeddingTensor:weights];
   if (!self->_multiturnEnabled || !self->_multiturnWeightsEnabled)
   {
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -596,16 +596,16 @@ LABEL_8:
       {
         *&v20 = v18;
         v21 = [MEMORY[0x1E696AD98] numberWithFloat:v20];
-        v22 = [v21 stringValue];
+        stringValue = [v21 stringValue];
         *&v23 = self->_confidenceThreshold;
         v24 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
-        v25 = [v24 stringValue];
+        stringValue2 = [v24 stringValue];
         *buf = 136315650;
         v86 = "[CDMCATIChildService runCATIModelInferenceWithWeights:]";
         v87 = 2112;
-        v88 = v22;
+        v88 = stringValue;
         v89 = 2112;
-        v90 = v25;
+        v90 = stringValue2;
         _os_log_impl(&dword_1DC287000, v19, OS_LOG_TYPE_INFO, "%s Invocation inference score is over the threshold: %@ > %@.", buf, 0x20u);
       }
 
@@ -617,16 +617,16 @@ LABEL_8:
     {
       *&v28 = v18;
       v29 = [MEMORY[0x1E696AD98] numberWithFloat:v28];
-      v30 = [v29 stringValue];
+      stringValue3 = [v29 stringValue];
       *&v31 = self->_confidenceThreshold;
       v32 = [MEMORY[0x1E696AD98] numberWithFloat:v31];
-      v33 = [v32 stringValue];
+      stringValue4 = [v32 stringValue];
       *buf = 136315650;
       v86 = "[CDMCATIChildService runCATIModelInferenceWithWeights:]";
       v87 = 2112;
-      v88 = v30;
+      v88 = stringValue3;
       v89 = 2112;
-      v90 = v33;
+      v90 = stringValue4;
       _os_log_impl(&dword_1DC287000, v27, OS_LOG_TYPE_INFO, "%s Invocation inference score is under the threshold: %@ < %@.", buf, 0x20u);
     }
 
@@ -655,16 +655,16 @@ LABEL_8:
     {
       *&v9 = v7;
       v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
-      v11 = [v10 stringValue];
+      stringValue5 = [v10 stringValue];
       *&v12 = self->_multiturnConfidenceThreshold;
       v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
-      v14 = [v13 stringValue];
+      stringValue6 = [v13 stringValue];
       *buf = 136315650;
       v86 = "[CDMCATIChildService runCATIModelInferenceWithWeights:]";
       v87 = 2112;
-      v88 = v11;
+      v88 = stringValue5;
       v89 = 2112;
-      v90 = v14;
+      v90 = stringValue6;
       _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s Multiturn inference score is over the threshold: %@ > %@.", buf, 0x20u);
     }
 
@@ -681,16 +681,16 @@ LABEL_15:
     {
       *&v53 = v7;
       v54 = [MEMORY[0x1E696AD98] numberWithFloat:v53];
-      v55 = [v54 stringValue];
+      stringValue7 = [v54 stringValue];
       *&v56 = self->_multiturnConfidenceThreshold;
       v57 = [MEMORY[0x1E696AD98] numberWithFloat:v56];
-      v58 = [v57 stringValue];
+      stringValue8 = [v57 stringValue];
       *buf = 136315650;
       v86 = "[CDMCATIChildService runCATIModelInferenceWithWeights:]";
       v87 = 2112;
-      v88 = v55;
+      v88 = stringValue7;
       v89 = 2112;
-      v90 = v58;
+      v90 = stringValue8;
       _os_log_impl(&dword_1DC287000, v52, OS_LOG_TYPE_INFO, "%s CATI multiturn inference score is under the threshold: %@ < %@. Inference for invocation is not enabled.", buf, 0x20u);
     }
 
@@ -723,26 +723,26 @@ LABEL_19:
     {
       *&v60 = v7;
       v71 = [MEMORY[0x1E696AD98] numberWithFloat:v60];
-      v73 = [v71 stringValue];
+      stringValue9 = [v71 stringValue];
       *&v61 = self->_multiturnConfidenceThreshold;
       v62 = [MEMORY[0x1E696AD98] numberWithFloat:v61];
-      v63 = [v62 stringValue];
+      stringValue10 = [v62 stringValue];
       *&v64 = v40;
       v65 = [MEMORY[0x1E696AD98] numberWithFloat:v64];
-      v66 = [v65 stringValue];
+      stringValue11 = [v65 stringValue];
       *&v67 = self->_confidenceThreshold;
       v68 = [MEMORY[0x1E696AD98] numberWithFloat:v67];
-      v69 = [v68 stringValue];
+      stringValue12 = [v68 stringValue];
       *buf = 136316162;
       v86 = "[CDMCATIChildService runCATIModelInferenceWithWeights:]";
       v87 = 2112;
-      v88 = v73;
+      v88 = stringValue9;
       v89 = 2112;
-      v90 = v63;
+      v90 = stringValue10;
       v91 = 2112;
-      v92 = v66;
+      v92 = stringValue11;
       v93 = 2112;
-      v94 = v69;
+      v94 = stringValue12;
       _os_log_impl(&dword_1DC287000, v59, OS_LOG_TYPE_INFO, "%s Multiturn inference score is under the threshold: %@ < %@. CATI invocation inference score is also under the threshold: %@ < %@.", buf, 0x34u);
     }
 
@@ -756,26 +756,26 @@ LABEL_19:
     {
       *&v42 = v7;
       v70 = [MEMORY[0x1E696AD98] numberWithFloat:v42];
-      v72 = [v70 stringValue];
+      stringValue13 = [v70 stringValue];
       *&v43 = self->_multiturnConfidenceThreshold;
       v44 = [MEMORY[0x1E696AD98] numberWithFloat:v43];
-      v45 = [v44 stringValue];
+      stringValue14 = [v44 stringValue];
       *&v46 = v40;
       v47 = [MEMORY[0x1E696AD98] numberWithFloat:v46];
-      v48 = [v47 stringValue];
+      stringValue15 = [v47 stringValue];
       *&v49 = self->_confidenceThreshold;
       v50 = [MEMORY[0x1E696AD98] numberWithFloat:v49];
-      v51 = [v50 stringValue];
+      stringValue16 = [v50 stringValue];
       *buf = 136316162;
       v86 = "[CDMCATIChildService runCATIModelInferenceWithWeights:]";
       v87 = 2112;
-      v88 = v72;
+      v88 = stringValue13;
       v89 = 2112;
-      v90 = v45;
+      v90 = stringValue14;
       v91 = 2112;
-      v92 = v48;
+      v92 = stringValue15;
       v93 = 2112;
-      v94 = v51;
+      v94 = stringValue16;
       _os_log_impl(&dword_1DC287000, v41, OS_LOG_TYPE_INFO, "%s Multiturn inference score is under the threshold: %@ < %@. CATI invocation inference score is over the threshold: %@ > %@.", buf, 0x34u);
     }
 
@@ -794,32 +794,32 @@ LABEL_20:
   return v26;
 }
 
-- (id)checkExactMatchFromPossibleGuids:(id)a3 forUtterance:(id)a4 modelType:(unint64_t)a5
+- (id)checkExactMatchFromPossibleGuids:(id)guids forUtterance:(id)utterance modelType:(unint64_t)type
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v27 = a4;
-  if (![v7 count])
+  guidsCopy = guids;
+  utteranceCopy = utterance;
+  if (![guidsCopy count])
   {
     v26 = 0;
     goto LABEL_22;
   }
 
-  v8 = [(CDMCATIChildService *)self getManifest];
-  v9 = [v8 getPositiveOverrideGuidsForModelType:a5];
+  getManifest = [(CDMCATIChildService *)self getManifest];
+  v9 = [getManifest getPositiveOverrideGuidsForModelType:type];
 
   v10 = 0;
   *&v11 = 136315650;
   v25 = v11;
   while (1)
   {
-    if ([v7 count] <= v10)
+    if ([guidsCopy count] <= v10)
     {
       v26 = 0;
       goto LABEL_21;
     }
 
-    v12 = [v7 objectAtIndexedSubscript:v10];
+    v12 = [guidsCopy objectAtIndexedSubscript:v10];
     if ([v9 containsObject:v12])
     {
       break;
@@ -831,8 +831,8 @@ LABEL_17:
   }
 
   v13 = [v12 stringByAppendingString:@".json"];
-  v14 = [(CDMCATIChildService *)self getPosOverridesDirectoryPath];
-  v15 = [v14 stringByAppendingPathComponent:v13];
+  getPosOverridesDirectoryPath = [(CDMCATIChildService *)self getPosOverridesDirectoryPath];
+  v15 = [getPosOverridesDirectoryPath stringByAppendingPathComponent:v13];
 
   v30 = 0;
   v16 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v15 options:0 error:&v30];
@@ -860,10 +860,10 @@ LABEL_17:
     v18 = v29;
     if (v19)
     {
-      v20 = [v19 valueForKey:v27];
+      v20 = [v19 valueForKey:utteranceCopy];
       if (v20)
       {
-        v26 = [v19 valueForKey:v27];
+        v26 = [v19 valueForKey:utteranceCopy];
 
         v21 = 0;
         goto LABEL_16;
@@ -902,16 +902,16 @@ LABEL_22:
   return v26;
 }
 
-- (id)checkExactMatch:(id)a3
+- (id)checkExactMatch:(id)match
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 dataUsingEncoding:4];
-  if (!self->_multiturnEnabled || ([(CDMCATIChildService *)self checkExactMatchFromPossibleGuids:self->_multiturnEnabledExactMatchIntents forUtterance:v4 modelType:1], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  matchCopy = match;
+  v5 = [matchCopy dataUsingEncoding:4];
+  if (!self->_multiturnEnabled || ([(CDMCATIChildService *)self checkExactMatchFromPossibleGuids:self->_multiturnEnabledExactMatchIntents forUtterance:matchCopy modelType:1], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (self->_isLegacyCATIOverrideSystem && [(CATIBloomFilter *)self->_positiveOverridesInvocationBloomFilterLegacy contains:v5])
     {
-      v6 = [(NSDictionary *)self->_positiveOverridesDictionary valueForKey:v4];
+      v6 = [(NSDictionary *)self->_positiveOverridesDictionary valueForKey:matchCopy];
       goto LABEL_34;
     }
 
@@ -926,8 +926,8 @@ LABEL_22:
         _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s Using Flatbuffers BF override system", buf, 0xCu);
       }
 
-      v9 = [(FLTCDMCATIBloomFilters *)self->_fbBloomFilters general_bf];
-      v10 = [(CDMCATIChildService *)self checkFBBloomFilter:v9 contains:v5];
+      general_bf = [(FLTCDMCATIBloomFilters *)self->_fbBloomFilters general_bf];
+      v10 = [(CDMCATIChildService *)self checkFBBloomFilter:general_bf contains:v5];
 
       if (!v10)
       {
@@ -955,8 +955,8 @@ LABEL_22:
             v15 = *(*(&v29 + 1) + 8 * i);
             if ([(CDMCATIChildService *)self checkFBBloomFilter:v15 contains:v5])
             {
-              v16 = [v15 name];
-              [v7 addObject:v16];
+              name = [v15 name];
+              [v7 addObject:name];
             }
           }
 
@@ -1003,8 +1003,8 @@ LABEL_22:
             v21 = *(*(&v25 + 1) + 8 * j);
             if ([v21 containsWithData:{v5, v25}])
             {
-              v22 = [v21 name];
-              [v7 addObject:v22];
+              name2 = [v21 name];
+              [v7 addObject:name2];
             }
           }
 
@@ -1016,7 +1016,7 @@ LABEL_22:
     }
 
 LABEL_33:
-    v6 = [(CDMCATIChildService *)self checkExactMatchFromPossibleGuids:v7 forUtterance:v4 modelType:0, v25];
+    v6 = [(CDMCATIChildService *)self checkExactMatchFromPossibleGuids:v7 forUtterance:matchCopy modelType:0, v25];
   }
 
 LABEL_34:
@@ -1026,31 +1026,31 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)checkFBBloomFilter:(id)a3 contains:(id)a4
+- (BOOL)checkFBBloomFilter:(id)filter contains:(id)contains
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = +[MurmurHash3 hash128WithKey:length:seed:](MurmurHash3, "hash128WithKey:length:seed:", [v6 bytes], objc_msgSend(v6, "length"), objc_msgSend(v5, "seed"));
+  filterCopy = filter;
+  containsCopy = contains;
+  v7 = +[MurmurHash3 hash128WithKey:length:seed:](MurmurHash3, "hash128WithKey:length:seed:", [containsCopy bytes], objc_msgSend(containsCopy, "length"), objc_msgSend(filterCopy, "seed"));
   v9 = v8;
-  v15 = v6;
+  v15 = containsCopy;
   v10 = 0;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
-  while ([v5 number:v15 of:?hashes] > v10)
+  while ([filterCopy number:v15 of:?hashes] > v10)
   {
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
-    v20[3] = (v7 + v9 * v10) % [v5 number_of_bits];
-    v11 = [v5 bit_vector];
+    v20[3] = (v7 + v9 * v10) % [filterCopy number_of_bits];
+    bit_vector = [filterCopy bit_vector];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke;
     v16[3] = &unk_1E862EC88;
     v18 = v20;
-    v12 = v11;
+    v12 = bit_vector;
     v17 = v12;
     v19 = &v21;
     [v12 data:v16];
@@ -1079,38 +1079,38 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
   return result;
 }
 
-- (id)checkExactMatchForUtterances:(id)a3
+- (id)checkExactMatchForUtterances:(id)utterances
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  utterancesCopy = utterances;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v4 normalisedUtterance];
+    normalisedUtterance = [utterancesCopy normalisedUtterance];
     v18 = 136315394;
     v19 = "[CDMCATIChildService checkExactMatchForUtterances:]";
     v20 = 2112;
-    v21 = v16;
+    v21 = normalisedUtterance;
     _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s CATI normalized utterance: %@", &v18, 0x16u);
   }
 
   v6 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v4 originalUtterance];
+    originalUtterance = [utterancesCopy originalUtterance];
     v18 = 136315394;
     v19 = "[CDMCATIChildService checkExactMatchForUtterances:]";
     v20 = 2112;
-    v21 = v17;
+    v21 = originalUtterance;
     _os_log_debug_impl(&dword_1DC287000, v6, OS_LOG_TYPE_DEBUG, "%s CATI original utterance: %@", &v18, 0x16u);
   }
 
-  if ([v4 hasOriginalUtterance])
+  if ([utterancesCopy hasOriginalUtterance])
   {
-    v7 = [v4 originalUtterance];
-    v8 = [v7 lowercaseString];
+    originalUtterance2 = [utterancesCopy originalUtterance];
+    lowercaseString = [originalUtterance2 lowercaseString];
 
-    v9 = [(CDMCATIChildService *)self checkExactMatch:v8];
+    v9 = [(CDMCATIChildService *)self checkExactMatch:lowercaseString];
   }
 
   else
@@ -1118,7 +1118,7 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
     v9 = 0;
   }
 
-  v10 = [v4 hasNormalisedUtterance];
+  hasNormalisedUtterance = [utterancesCopy hasNormalisedUtterance];
   if (v9)
   {
     v11 = 0;
@@ -1126,15 +1126,15 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
 
   else
   {
-    v11 = v10;
+    v11 = hasNormalisedUtterance;
   }
 
   if (v11 == 1)
   {
-    v12 = [v4 normalisedUtterance];
-    v13 = [v12 lowercaseString];
+    normalisedUtterance2 = [utterancesCopy normalisedUtterance];
+    lowercaseString2 = [normalisedUtterance2 lowercaseString];
 
-    v9 = [(CDMCATIChildService *)self checkExactMatch:v13];
+    v9 = [(CDMCATIChildService *)self checkExactMatch:lowercaseString2];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1142,10 +1142,10 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
   return v9;
 }
 
-- (id)handle:(id)a3 assetVersion:(int64_t)a4
+- (id)handle:(id)handle assetVersion:(int64_t)version
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  handleCopy = handle;
   v7 = os_signpost_id_generate(CDMLogContext);
   v8 = CDMLogContext;
   v9 = v8;
@@ -1153,9 +1153,9 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
   v10 = v7 - 1;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
-    v11 = [(CDMCATIChildService *)self getProductAreaName];
+    getProductAreaName = [(CDMCATIChildService *)self getProductAreaName];
     *buf = 138412290;
-    v59 = v11;
+    v59 = getProductAreaName;
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "CATI", "invokeHandle (%@)", buf, 0xCu);
   }
 
@@ -1166,15 +1166,15 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
     v14 = v13;
     if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
-      v15 = [(CDMCATIChildService *)self getProductAreaName];
+      getProductAreaName2 = [(CDMCATIChildService *)self getProductAreaName];
       *buf = 138412290;
-      v59 = v15;
+      v59 = getProductAreaName2;
       _os_signpost_emit_with_name_impl(&dword_1DC287000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "CATI", "buildMultiTurnFeatures (%@)", buf, 0xCu);
     }
 
-    v16 = [v6 request];
-    v17 = [v16 turnInput];
-    [(CDMCATIChildService *)self buildMultiturnFeatures:v17];
+    request = [handleCopy request];
+    turnInput = [request turnInput];
+    [(CDMCATIChildService *)self buildMultiturnFeatures:turnInput];
 
     v18 = CDMLogContext;
     v19 = v18;
@@ -1203,22 +1203,22 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
     self->_multiturnEnabled = 0;
   }
 
-  v21 = [v6 request];
-  v22 = [v21 turnInput];
-  v23 = [(CDMCATIChildService *)self shouldSuppressCATIInvocationDueTo:v22];
+  request2 = [handleCopy request];
+  turnInput2 = [request2 turnInput];
+  v23 = [(CDMCATIChildService *)self shouldSuppressCATIInvocationDueTo:turnInput2];
 
   if (v23)
   {
     v24 = CDMLogContext;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v53 = [(CDMCATIChildService *)self getProductAreaName];
+      getProductAreaName3 = [(CDMCATIChildService *)self getProductAreaName];
       *buf = 136315650;
       v59 = "[CDMCATIChildService handle:assetVersion:]";
       v60 = 2112;
       v61 = @"cati";
       v62 = 2112;
-      v63 = v53;
+      v63 = getProductAreaName3;
       _os_log_debug_impl(&dword_1DC287000, v24, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\n%@: CATI suppressed due to previous non-CATI turn info, return empty hypothesis", buf, 0x20u);
     }
 
@@ -1235,8 +1235,8 @@ unint64_t __51__CDMCATIChildService_checkFBBloomFilter_contains___block_invoke(u
 
 LABEL_23:
   v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v27 = [v6 request];
-  v28 = [(CDMCATIChildService *)self checkExactMatchForUtterances:v27];
+  request3 = [handleCopy request];
+  v28 = [(CDMCATIChildService *)self checkExactMatchForUtterances:request3];
 
   if (!v28)
   {
@@ -1245,11 +1245,11 @@ LABEL_23:
       v48 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
       {
-        v56 = [(CDMCATIChildService *)self getProductAreaName];
+        getProductAreaName4 = [(CDMCATIChildService *)self getProductAreaName];
         *buf = 136315394;
         v59 = "[CDMCATIChildService handle:assetVersion:]";
         v60 = 2112;
-        v61 = v56;
+        v61 = getProductAreaName4;
         _os_log_debug_impl(&dword_1DC287000, v48, OS_LOG_TYPE_DEBUG, "%s %@: There were no override matches and no weights to run inference on so we are returning an empty response.", buf, 0x16u);
       }
 
@@ -1264,9 +1264,9 @@ LABEL_23:
       goto LABEL_57;
     }
 
-    v32 = [v6 request];
-    v33 = [v32 embeddings];
-    v34 = [(CDMCATIChildService *)self runCATIModelInferenceWithWeights:v33];
+    request4 = [handleCopy request];
+    embeddings = [request4 embeddings];
+    v34 = [(CDMCATIChildService *)self runCATIModelInferenceWithWeights:embeddings];
 
     if (v34)
     {
@@ -1283,11 +1283,11 @@ LABEL_23:
     v46 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
     {
-      v55 = [(CDMCATIChildService *)self getProductAreaName];
+      getProductAreaName5 = [(CDMCATIChildService *)self getProductAreaName];
       *buf = 136315394;
       v59 = "[CDMCATIChildService handle:assetVersion:]";
       v60 = 2112;
-      v61 = v55;
+      v61 = getProductAreaName5;
       _os_log_debug_impl(&dword_1DC287000, v46, OS_LOG_TYPE_DEBUG, "%s %@: There were no override matches and the inference results were below the threshold, so we are returning an empty response.", buf, 0x16u);
     }
 
@@ -1310,10 +1310,10 @@ LABEL_22:
   v31 = 1;
 LABEL_29:
   self->_algoType = v31;
-  if (a4 > 3199)
+  if (version > 3199)
   {
-    v38 = [(CDMCATIManifest *)self->_catiManifest usoElementId];
-    if (v38 == 2550)
+    usoElementId = [(CDMCATIManifest *)self->_catiManifest usoElementId];
+    if (usoElementId == 2550)
     {
       *&v39 = v30;
       v37 = [(CDMCATIChildService *)self buildSocialConversationUserParse:v28 confidenceScore:v39];
@@ -1322,7 +1322,7 @@ LABEL_29:
     else
     {
       *&v39 = v30;
-      if (v38 == 2612)
+      if (usoElementId == 2612)
       {
         [(CDMCATIChildService *)self buildCrisisSupportUserParse:v28 confidenceScore:v39];
       }
@@ -1348,13 +1348,13 @@ LABEL_29:
   {
     if (v42)
     {
-      v43 = [(CDMCATIChildService *)self getProductAreaName];
+      getProductAreaName6 = [(CDMCATIChildService *)self getProductAreaName];
       *buf = 136315906;
       v59 = "[CDMCATIChildService handle:assetVersion:]";
       v60 = 2112;
       v61 = @"cati";
       v62 = 2112;
-      v63 = v43;
+      v63 = getProductAreaName6;
       v64 = 2112;
       v65 = v40;
       _os_log_debug_impl(&dword_1DC287000, v41, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\n%@ CATI hypothesis: %@", buf, 0x2Au);
@@ -1363,13 +1363,13 @@ LABEL_29:
 
   else if (v42)
   {
-    v54 = [(CDMCATIChildService *)self getProductAreaName];
+    getProductAreaName7 = [(CDMCATIChildService *)self getProductAreaName];
     *buf = 136315650;
     v59 = "[CDMCATIChildService handle:assetVersion:]";
     v60 = 2112;
     v61 = @"cati";
     v62 = 2112;
-    v63 = v54;
+    v63 = getProductAreaName7;
     _os_log_debug_impl(&dword_1DC287000, v41, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\n%@: no CATI hypothesis", buf, 0x20u);
   }
 
@@ -1387,36 +1387,36 @@ LABEL_58:
   return v40;
 }
 
-- (id)getMultiturnIntentsFromSystemInformed:(id)a3
+- (id)getMultiturnIntentsFromSystemInformed:(id)informed
 {
   v53 = *MEMORY[0x1E69E9840];
-  v32 = a3;
+  informedCopy = informed;
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v34 = [v32 entities];
-  if (v34 && [v34 count])
+  entities = [informedCopy entities];
+  if (entities && [entities count])
   {
-    for (i = 0; [v34 count] > i; ++i)
+    for (i = 0; [entities count] > i; ++i)
     {
-      v33 = [v34 objectAtIndex:?];
-      v39 = [v33 nodes];
-      if (!v39 || ![v39 count])
+      v33 = [entities objectAtIndex:?];
+      nodes = [v33 nodes];
+      if (!nodes || ![nodes count])
       {
         goto LABEL_42;
       }
 
       v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      for (j = 0; [v39 count] > j; ++j)
+      for (j = 0; [nodes count] > j; ++j)
       {
-        v5 = [v39 objectAtIndex:j];
+        v5 = [nodes objectAtIndex:j];
         if ([v5 usoElementId] == self->_usoElementId)
         {
           goto LABEL_11;
         }
 
-        v6 = [v5 entityLabel];
-        v7 = [(CDMCATIChildService *)self getManifest];
-        v8 = [v7 usoEntity];
-        v9 = [v6 isEqualToString:v8];
+        entityLabel = [v5 entityLabel];
+        getManifest = [(CDMCATIChildService *)self getManifest];
+        usoEntity = [getManifest usoEntity];
+        v9 = [entityLabel isEqualToString:usoEntity];
 
         if (v9)
         {
@@ -1426,22 +1426,22 @@ LABEL_11:
         }
       }
 
-      v37 = [v33 identifiers];
-      for (k = 0; [v37 count] > k; ++k)
+      identifiers = [v33 identifiers];
+      for (k = 0; [identifiers count] > k; ++k)
       {
-        v12 = [v37 objectAtIndex:k];
-        v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "nodeIndex")}];
-        if ([v42 containsObject:v13])
+        v12 = [identifiers objectAtIndex:k];
+        value = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "nodeIndex")}];
+        if ([v42 containsObject:value])
         {
-          v14 = [v12 hasValue];
+          hasValue = [v12 hasValue];
 
-          if (!v14)
+          if (!hasValue)
           {
             goto LABEL_19;
           }
 
-          v13 = [v12 value];
-          [v3 addObject:v13];
+          value = [v12 value];
+          [v3 addObject:value];
         }
 
 LABEL_19:
@@ -1478,8 +1478,8 @@ LABEL_19:
                 v46 = 0u;
                 v43 = 0u;
                 v44 = 0u;
-                v20 = [v17 properties];
-                v21 = [v20 countByEnumeratingWithState:&v43 objects:v51 count:16];
+                properties = [v17 properties];
+                v21 = [properties countByEnumeratingWithState:&v43 objects:v51 count:16];
                 if (v21)
                 {
                   v22 = *v44;
@@ -1489,26 +1489,26 @@ LABEL_19:
                     {
                       if (*v44 != v22)
                       {
-                        objc_enumerationMutation(v20);
+                        objc_enumerationMutation(properties);
                       }
 
                       v24 = *(*(&v43 + 1) + 8 * n);
                       if ([v24 hasValueString])
                       {
-                        v25 = [v24 valueString];
-                        v26 = [v25 value];
-                        v27 = [v3 containsObject:v26];
+                        valueString = [v24 valueString];
+                        value2 = [valueString value];
+                        v27 = [v3 containsObject:value2];
 
                         if ((v27 & 1) == 0)
                         {
-                          v28 = [v24 valueString];
-                          v29 = [v28 value];
-                          [v3 addObject:v29];
+                          valueString2 = [v24 valueString];
+                          value3 = [valueString2 value];
+                          [v3 addObject:value3];
                         }
                       }
                     }
 
-                    v21 = [v20 countByEnumeratingWithState:&v43 objects:v51 count:16];
+                    v21 = [properties countByEnumeratingWithState:&v43 objects:v51 count:16];
                   }
 
                   while (v21);
@@ -1532,35 +1532,35 @@ LABEL_42:
   return v3;
 }
 
-- (id)getMultiturnIntentsFromSystemGaveOptions:(id)a3
+- (id)getMultiturnIntentsFromSystemGaveOptions:(id)options
 {
   v53 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  optionsCopy = options;
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v34 = [v31 choices];
-  if (v34 && [v34 count])
+  choices = [optionsCopy choices];
+  if (choices && [choices count])
   {
-    for (i = 0; [v34 count] > i; ++i)
+    for (i = 0; [choices count] > i; ++i)
     {
-      v33 = [v34 objectAtIndex:?];
+      v33 = [choices objectAtIndex:?];
       if (![v33 hasUserStatedTask])
       {
         goto LABEL_44;
       }
 
-      v4 = [v33 userStatedTask];
-      v32 = [v4 task];
+      userStatedTask = [v33 userStatedTask];
+      task = [userStatedTask task];
 
-      v39 = [v32 nodes];
-      if (!v39 || ![v39 count])
+      nodes = [task nodes];
+      if (!nodes || ![nodes count])
       {
         goto LABEL_43;
       }
 
       v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      for (j = 0; [v39 count] > j; ++j)
+      for (j = 0; [nodes count] > j; ++j)
       {
-        v6 = [v39 objectAtIndex:j];
+        v6 = [nodes objectAtIndex:j];
         if ([v6 usoElementId] == self->_usoElementId || (objc_msgSend(v6, "entityLabel"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", self->_usoEntity), v7, v8))
         {
           v9 = [MEMORY[0x1E696AD98] numberWithInt:j];
@@ -1568,22 +1568,22 @@ LABEL_42:
         }
       }
 
-      v37 = [v32 identifiers];
-      for (k = 0; [v37 count] > k; ++k)
+      identifiers = [task identifiers];
+      for (k = 0; [identifiers count] > k; ++k)
       {
-        v11 = [v37 objectAtIndex:k];
-        v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v11, "nodeIndex")}];
-        if ([v42 containsObject:v12])
+        v11 = [identifiers objectAtIndex:k];
+        value = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v11, "nodeIndex")}];
+        if ([v42 containsObject:value])
         {
-          v13 = [v11 hasValue];
+          hasValue = [v11 hasValue];
 
-          if (!v13)
+          if (!hasValue)
           {
             goto LABEL_20;
           }
 
-          v12 = [v11 value];
-          [v3 addObject:v12];
+          value = [v11 value];
+          [v3 addObject:value];
         }
 
 LABEL_20:
@@ -1595,7 +1595,7 @@ LABEL_20:
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        obj = [v32 spans];
+        obj = [task spans];
         v14 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
         if (v14)
         {
@@ -1620,8 +1620,8 @@ LABEL_20:
                 v46 = 0u;
                 v43 = 0u;
                 v44 = 0u;
-                v19 = [v16 properties];
-                v20 = [v19 countByEnumeratingWithState:&v43 objects:v51 count:16];
+                properties = [v16 properties];
+                v20 = [properties countByEnumeratingWithState:&v43 objects:v51 count:16];
                 if (v20)
                 {
                   v21 = *v44;
@@ -1631,26 +1631,26 @@ LABEL_20:
                     {
                       if (*v44 != v21)
                       {
-                        objc_enumerationMutation(v19);
+                        objc_enumerationMutation(properties);
                       }
 
                       v23 = *(*(&v43 + 1) + 8 * n);
                       if ([v23 hasValueString])
                       {
-                        v24 = [v23 valueString];
-                        v25 = [v24 value];
-                        v26 = [v3 containsObject:v25];
+                        valueString = [v23 valueString];
+                        value2 = [valueString value];
+                        v26 = [v3 containsObject:value2];
 
                         if ((v26 & 1) == 0)
                         {
-                          v27 = [v23 valueString];
-                          v28 = [v27 value];
-                          [v3 addObject:v28];
+                          valueString2 = [v23 valueString];
+                          value3 = [valueString2 value];
+                          [v3 addObject:value3];
                         }
                       }
                     }
 
-                    v20 = [v19 countByEnumeratingWithState:&v43 objects:v51 count:16];
+                    v20 = [properties countByEnumeratingWithState:&v43 objects:v51 count:16];
                   }
 
                   while (v20);
@@ -1675,31 +1675,31 @@ LABEL_44:
   return v3;
 }
 
-- (void)buildMultiturnFeatures:(id)a3
+- (void)buildMultiturnFeatures:(id)features
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   self->_multiturnEnabled = 0;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [v4 turnContext];
-  v7 = [v6 hasNlContext];
+  turnContext = [featuresCopy turnContext];
+  hasNlContext = [turnContext hasNlContext];
 
-  if (v7)
+  if (hasNlContext)
   {
-    v8 = [v4 turnContext];
-    v9 = [v8 nlContext];
-    v10 = [v9 systemDialogActs];
+    turnContext2 = [featuresCopy turnContext];
+    nlContext = [turnContext2 nlContext];
+    systemDialogActs = [nlContext systemDialogActs];
 
-    if (v10 && [v10 count])
+    if (systemDialogActs && [systemDialogActs count])
     {
-      for (i = 0; [v10 count] > i; ++i)
+      for (i = 0; [systemDialogActs count] > i; ++i)
       {
-        v12 = [v10 objectAtIndex:i];
+        v12 = [systemDialogActs objectAtIndex:i];
         if ([v12 hasGaveOptions])
         {
           v13 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v14 = [v12 gaveOptions];
-          v15 = [(CDMCATIChildService *)self getMultiturnIntentsFromSystemGaveOptions:v14];
+          gaveOptions = [v12 gaveOptions];
+          v15 = [(CDMCATIChildService *)self getMultiturnIntentsFromSystemGaveOptions:gaveOptions];
           v16 = [v13 initWithSet:v15];
         }
 
@@ -1711,8 +1711,8 @@ LABEL_44:
           }
 
           v17 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v14 = [v12 informed];
-          v15 = [(CDMCATIChildService *)self getMultiturnIntentsFromSystemInformed:v14];
+          gaveOptions = [v12 informed];
+          v15 = [(CDMCATIChildService *)self getMultiturnIntentsFromSystemInformed:gaveOptions];
           v16 = [v17 initWithSet:v15];
         }
 
@@ -1723,23 +1723,23 @@ LABEL_11:
       }
     }
 
-    v19 = [(CDMCATIChildService *)self getManifest];
-    v20 = [v19 getPositiveOverrideGuidsForModelType:1];
+    getManifest = [(CDMCATIChildService *)self getManifest];
+    v20 = [getManifest getPositiveOverrideGuidsForModelType:1];
     [v5 intersectSet:v20];
   }
 
   if ([v5 count])
   {
     self->_multiturnEnabled = 1;
-    v21 = [v5 allObjects];
+    allObjects = [v5 allObjects];
     multiturnEnabledExactMatchIntents = self->_multiturnEnabledExactMatchIntents;
-    self->_multiturnEnabledExactMatchIntents = v21;
+    self->_multiturnEnabledExactMatchIntents = allObjects;
 
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
-    v37 = [v23 contentsOfDirectoryAtPath:self->_weightsDirectoryPath error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v37 = [defaultManager contentsOfDirectoryAtPath:self->_weightsDirectoryPath error:0];
 
-    v24 = [(CDMCATIChildService *)self getManifest];
-    v36 = [v24 getWeightGuidsForModelType:1];
+    getManifest2 = [(CDMCATIChildService *)self getManifest];
+    v36 = [getManifest2 getWeightGuidsForModelType:1];
 
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v26 = os_signpost_id_generate(CDMLogContext);
@@ -1747,9 +1747,9 @@ LABEL_11:
     v28 = v27;
     if (v26 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
     {
-      v29 = [(CDMCATIChildService *)self getProductAreaName];
+      getProductAreaName = [(CDMCATIChildService *)self getProductAreaName];
       *buf = 138412290;
-      v45 = v29;
+      v45 = getProductAreaName;
       _os_signpost_emit_with_name_impl(&dword_1DC287000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v26, "CATI", "processMultiTurnWeightFiles (%@)", buf, 0xCu);
     }
 
@@ -1806,12 +1806,12 @@ void __46__CDMCATIChildService_buildMultiturnFeatures___block_invoke_2(uint64_t 
   }
 }
 
-- (id)buildLegacyBloomFilterAndExactMatchDictForInvocation:(id)a3
+- (id)buildLegacyBloomFilterAndExactMatchDictForInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   expectedPositiveUtterances = self->_expectedPositiveUtterances;
-  v6 = [(CDMCATIChildService *)self getManifest];
-  v7 = [v6 getPositiveOverrideGuidsForModelType:0];
+  getManifest = [(CDMCATIChildService *)self getManifest];
+  v7 = [getManifest getPositiveOverrideGuidsForModelType:0];
 
   if (expectedPositiveUtterances == -1)
   {
@@ -1834,9 +1834,9 @@ void __46__CDMCATIChildService_buildMultiturnFeatures___block_invoke_2(uint64_t 
   v13[1] = 3221225472;
   v13[2] = __76__CDMCATIChildService_buildLegacyBloomFilterAndExactMatchDictForInvocation___block_invoke;
   v13[3] = &unk_1E862EC38;
-  v8 = v4;
+  v8 = invocationCopy;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v9 = v7;
   v16 = v9;
   v17 = &v25;
@@ -1955,11 +1955,11 @@ void __76__CDMCATIChildService_buildLegacyBloomFilterAndExactMatchDictForInvocat
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getBloomFilterAt:(id)a3
+- (BOOL)getBloomFilterAt:(id)at
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 stringByAppendingPathComponent:@"general.bf"];
+  atCopy = at;
+  v5 = [atCopy stringByAppendingPathComponent:@"general.bf"];
   v22 = 0;
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v5 options:0 error:&v22];
   v7 = v22;
@@ -1986,7 +1986,7 @@ void __76__CDMCATIChildService_buildLegacyBloomFilterAndExactMatchDictForInvocat
     v9 = [(BloomFilterObjectiveCHelper *)v11 getDecodedBFWithData:v6 error:&v21];
     v8 = v21;
 
-    [v4 stringByAppendingPathComponent:@"array.bf"];
+    [atCopy stringByAppendingPathComponent:@"array.bf"];
     v18 = v20 = 0;
     v12 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v18 options:0 error:&v20];
     v13 = v20;
@@ -2027,10 +2027,10 @@ void __76__CDMCATIChildService_buildLegacyBloomFilterAndExactMatchDictForInvocat
   return v10;
 }
 
-- (BOOL)getFlatbuffersBFAt:(id)a3
+- (BOOL)getFlatbuffersBFAt:(id)at
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingString:@"/FBBF.bin"];
+  atCopy = at;
+  v5 = [atCopy stringByAppendingString:@"/FBBF.bin"];
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
   v10 = 0;
   v7 = [MEMORY[0x1E69D1108] getCATIBloomFiltersFromFileURL:v6 error:&v10];
@@ -2045,10 +2045,10 @@ void __76__CDMCATIChildService_buildLegacyBloomFilterAndExactMatchDictForInvocat
   return v7 != 0;
 }
 
-- (void)constructWeightMatrixForInference:(id)a3 numModels:(unint64_t)a4 guids:(id)a5 modelType:(unint64_t)a6
+- (void)constructWeightMatrixForInference:(id)inference numModels:(unint64_t)models guids:(id)guids modelType:(unint64_t)type
 {
-  v10 = a3;
-  for (i = a5; a4; --a4)
+  inferenceCopy = inference;
+  for (i = guids; models; --models)
   {
     [i addObject:@"0"];
   }
@@ -2057,12 +2057,12 @@ void __76__CDMCATIChildService_buildLegacyBloomFilterAndExactMatchDictForInvocat
   v14[1] = 3221225472;
   v14[2] = __83__CDMCATIChildService_constructWeightMatrixForInference_numModels_guids_modelType___block_invoke;
   v14[3] = &unk_1E862EC10;
-  v12 = v10;
+  v12 = inferenceCopy;
   v15 = v12;
-  v16 = self;
+  selfCopy = self;
   v13 = i;
   v17 = v13;
-  v18 = a6;
+  typeCopy = type;
   [v12 enumerateTaskParallelly:v14 blockCompleteAllTask:&__block_literal_global_421];
 }
 
@@ -2162,23 +2162,23 @@ LABEL_17:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)setup:(id)a3 assetVersion:(int64_t)a4
+- (id)setup:(id)setup assetVersion:(int64_t)version
 {
   v78 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  setupCopy = setup;
   v6 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(NSBundle *)self->_catiAssetBundle resourcePath];
+    resourcePath = [(NSBundle *)self->_catiAssetBundle resourcePath];
     *buf = 136315394;
     v75 = "[CDMCATIChildService setup:assetVersion:]";
     v76 = 2112;
-    v77 = v7;
+    v77 = resourcePath;
     _os_log_impl(&dword_1DC287000, v6, OS_LOG_TYPE_INFO, "%s Setting up child service at this path:%@", buf, 0x16u);
   }
 
-  v8 = [(NSBundle *)self->_catiAssetBundle resourcePath];
-  v9 = [v8 stringByAppendingPathComponent:@"cati_manifest.json"];
+  resourcePath2 = [(NSBundle *)self->_catiAssetBundle resourcePath];
+  v9 = [resourcePath2 stringByAppendingPathComponent:@"cati_manifest.json"];
   manifestPath = self->_manifestPath;
   self->_manifestPath = v9;
 
@@ -2192,52 +2192,52 @@ LABEL_17:
   v16 = v13 - 1;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v17 = [(CDMCATIChildService *)self getProductAreaName];
+    getProductAreaName = [(CDMCATIChildService *)self getProductAreaName];
     *buf = 138412290;
-    v75 = v17;
+    v75 = getProductAreaName;
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "CATI", "setupChildService (%@)", buf, 0xCu);
   }
 
   v18 = self->_catiManifest;
   if (v18 && [(CDMCATIManifest *)v18 manifestValid])
   {
-    v19 = [v5 dynamicConfig];
-    v66 = [v19 embeddingConfigs];
+    dynamicConfig = [setupCopy dynamicConfig];
+    embeddingConfigs = [dynamicConfig embeddingConfigs];
 
-    v65 = [v66 getEmbeddingConfigForFactor:@"com.apple.siri.nl.cati"];
-    v20 = [v65 embeddingModelDimension];
-    self->_embeddingDimensionCATI = [v20 integerValue];
+    v65 = [embeddingConfigs getEmbeddingConfigForFactor:@"com.apple.siri.nl.cati"];
+    embeddingModelDimension = [v65 embeddingModelDimension];
+    self->_embeddingDimensionCATI = [embeddingModelDimension integerValue];
 
     self->_embeddingDimensionCATIPlusOne = self->_embeddingDimensionCATI + 1;
-    v21 = [(NSBundle *)self->_catiAssetBundle resourcePath];
-    v22 = [v21 stringByAppendingPathComponent:@"positive_overrides"];
+    resourcePath3 = [(NSBundle *)self->_catiAssetBundle resourcePath];
+    v22 = [resourcePath3 stringByAppendingPathComponent:@"positive_overrides"];
     posOverridesDirectoryPath = self->_posOverridesDirectoryPath;
     self->_posOverridesDirectoryPath = v22;
 
-    v24 = [(NSBundle *)self->_catiAssetBundle resourcePath];
-    v25 = [v24 stringByAppendingPathComponent:@"weights"];
+    resourcePath4 = [(NSBundle *)self->_catiAssetBundle resourcePath];
+    v25 = [resourcePath4 stringByAppendingPathComponent:@"weights"];
     weightsDirectoryPath = self->_weightsDirectoryPath;
     self->_weightsDirectoryPath = v25;
 
-    v27 = [MEMORY[0x1E696AC08] defaultManager];
-    v68 = [v27 contentsOfDirectoryAtPath:self->_weightsDirectoryPath error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v68 = [defaultManager contentsOfDirectoryAtPath:self->_weightsDirectoryPath error:0];
 
-    v28 = [MEMORY[0x1E696AC08] defaultManager];
-    v29 = [(CDMCATIChildService *)self getPosOverridesDirectoryPath];
-    v67 = [v28 contentsOfDirectoryAtPath:v29 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    getPosOverridesDirectoryPath = [(CDMCATIChildService *)self getPosOverridesDirectoryPath];
+    v67 = [defaultManager2 contentsOfDirectoryAtPath:getPosOverridesDirectoryPath error:0];
 
-    v30 = [(CDMCATIManifest *)self->_catiManifest usoEntity];
+    usoEntity = [(CDMCATIManifest *)self->_catiManifest usoEntity];
     usoEntity = self->_usoEntity;
-    self->_usoEntity = v30;
+    self->_usoEntity = usoEntity;
 
     self->_usoElementId = [(CDMCATIManifest *)self->_catiManifest usoElementId];
-    v32 = [(CDMCATIManifest *)self->_catiManifest usoVerb];
+    usoVerb = [(CDMCATIManifest *)self->_catiManifest usoVerb];
     usoVerb = self->_usoVerb;
-    self->_usoVerb = v32;
+    self->_usoVerb = usoVerb;
 
-    v34 = [(CDMCATIManifest *)self->_catiManifest usoEdge];
+    usoEdge = [(CDMCATIManifest *)self->_catiManifest usoEdge];
     usoEdge = self->_usoEdge;
-    self->_usoEdge = v34;
+    self->_usoEdge = usoEdge;
 
     [(CDMCATIManifest *)self->_catiManifest confidenceScoreThreshold];
     self->_confidenceThreshold = v36;
@@ -2246,8 +2246,8 @@ LABEL_17:
     self->_expectedPositiveUtterances = [(CDMCATIManifest *)self->_catiManifest expectedPositiveUtterances];
     if ([v68 count])
     {
-      v38 = [(CDMCATIChildService *)self getManifest];
-      v64 = [v38 getWeightGuidsForModelType:0];
+      getManifest = [(CDMCATIChildService *)self getManifest];
+      v64 = [getManifest getWeightGuidsForModelType:0];
 
       v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v70[0] = MEMORY[0x1E69E9820];
@@ -2268,30 +2268,30 @@ LABEL_17:
     v46 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
     {
-      v63 = [(CDMCATIChildService *)self getProductAreaName];
+      getProductAreaName2 = [(CDMCATIChildService *)self getProductAreaName];
       *buf = 136315394;
       v75 = "[CDMCATIChildService setup:assetVersion:]";
       v76 = 2112;
-      v77 = v63;
+      v77 = getProductAreaName2;
       _os_log_debug_impl(&dword_1DC287000, v46, OS_LOG_TYPE_DEBUG, "%s %@: There are no weight files for this product area. CATI will run only on overrides, if available", buf, 0x16u);
     }
 
     self->_invocationOverridesEnabled = 0;
     if ([v67 count])
     {
-      v47 = [(NSBundle *)self->_catiAssetBundle resourcePath];
-      v48 = [v47 stringByAppendingPathComponent:@"bf_files"];
+      resourcePath5 = [(NSBundle *)self->_catiAssetBundle resourcePath];
+      v48 = [resourcePath5 stringByAppendingPathComponent:@"bf_files"];
 
-      v49 = [MEMORY[0x1E696AC08] defaultManager];
-      v50 = [v49 contentsOfDirectoryAtPath:v48 error:0];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      v50 = [defaultManager3 contentsOfDirectoryAtPath:v48 error:0];
 
       v51 = [v50 count];
-      if (a4 >= 3104 && v51)
+      if (version >= 3104 && v51)
       {
         if (![(CDMCATIChildService *)self getFlatbuffersBFAt:v48]&& ![(CDMCATIChildService *)self getBloomFilterAt:v48])
         {
-          v52 = [(CDMCATIChildService *)self getProductAreaName];
-          v43 = [v52 stringByAppendingString:{@": Bloom filter setup failed, service is disabled. Check logs for error message"}];
+          getProductAreaName3 = [(CDMCATIChildService *)self getProductAreaName];
+          v43 = [getProductAreaName3 stringByAppendingString:{@": Bloom filter setup failed, service is disabled. Check logs for error message"}];
 
           v53 = CDMLogContext;
           v54 = v53;
@@ -2302,7 +2302,7 @@ LABEL_17:
           }
 
 LABEL_36:
-          v45 = v66;
+          v45 = embeddingConfigs;
           goto LABEL_37;
         }
       }
@@ -2320,11 +2320,11 @@ LABEL_36:
       v48 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
       {
-        v55 = [(CDMCATIChildService *)self getPosOverridesDirectoryPath];
+        getPosOverridesDirectoryPath2 = [(CDMCATIChildService *)self getPosOverridesDirectoryPath];
         *buf = 136315394;
         v75 = "[CDMCATIChildService setup:assetVersion:]";
         v76 = 2112;
-        v77 = v55;
+        v77 = getPosOverridesDirectoryPath2;
         _os_log_impl(&dword_1DC287000, v48, OS_LOG_TYPE_INFO, "%s [WARN]: Not able to find any CATI positive overrides in %@", buf, 0x16u);
       }
     }
@@ -2344,8 +2344,8 @@ LABEL_36:
 
     else
     {
-      v59 = [(CDMCATIChildService *)self getProductAreaName];
-      v43 = [v59 stringByAppendingString:{@": No CATI positive overrides are available, service is disabled."}];
+      getProductAreaName4 = [(CDMCATIChildService *)self getProductAreaName];
+      v43 = [getProductAreaName4 stringByAppendingString:{@": No CATI positive overrides are available, service is disabled."}];
 
       v60 = CDMLogContext;
       v48 = v60;
@@ -2386,14 +2386,14 @@ void __42__CDMCATIChildService_setup_assetVersion___block_invoke(id *a1)
   }
 }
 
-- (CDMCATIChildService)initWithAssetBundle:(id)a3
+- (CDMCATIChildService)initWithAssetBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v8.receiver = self;
   v8.super_class = CDMCATIChildService;
   v5 = [(CDMCATIChildService *)&v8 init];
   catiAssetBundle = v5->_catiAssetBundle;
-  v5->_catiAssetBundle = v4;
+  v5->_catiAssetBundle = bundleCopy;
 
   return v5;
 }

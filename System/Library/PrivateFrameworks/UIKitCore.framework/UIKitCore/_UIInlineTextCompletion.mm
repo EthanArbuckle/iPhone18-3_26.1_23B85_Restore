@@ -1,35 +1,35 @@
 @interface _UIInlineTextCompletion
-+ (id)inlineTextCompletion:(id)a3 source:(id)a4;
++ (id)inlineTextCompletion:(id)completion source:(id)source;
 - (NSString)candidate;
 - (NSString)input;
-- (_UIInlineTextCompletion)initWithCompletion:(id)a3 source:(id)a4;
+- (_UIInlineTextCompletion)initWithCompletion:(id)completion source:(id)source;
 @end
 
 @implementation _UIInlineTextCompletion
 
-+ (id)inlineTextCompletion:(id)a3 source:(id)a4
++ (id)inlineTextCompletion:(id)completion source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithCompletion:v6 source:v5];
+  sourceCopy = source;
+  completionCopy = completion;
+  v7 = [objc_alloc(objc_opt_class()) initWithCompletion:completionCopy source:sourceCopy];
 
   return v7;
 }
 
-- (_UIInlineTextCompletion)initWithCompletion:(id)a3 source:(id)a4
+- (_UIInlineTextCompletion)initWithCompletion:(id)completion source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = _UIInlineTextCompletion;
   v8 = [(_UIInlineTextCompletion *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [completionCopy copy];
     completion = v8->_completion;
     v8->_completion = v9;
 
-    v11 = [v7 copy];
+    v11 = [sourceCopy copy];
     source = v8->_source;
     v8->_source = v11;
   }
@@ -39,18 +39,18 @@
 
 - (NSString)candidate
 {
-  v2 = [(_UIInlineTextCompletion *)self completion];
-  v3 = [v2 candidate];
+  completion = [(_UIInlineTextCompletion *)self completion];
+  candidate = [completion candidate];
 
-  return v3;
+  return candidate;
 }
 
 - (NSString)input
 {
-  v2 = [(_UIInlineTextCompletion *)self completion];
-  v3 = [v2 input];
+  completion = [(_UIInlineTextCompletion *)self completion];
+  input = [completion input];
 
-  return v3;
+  return input;
 }
 
 @end

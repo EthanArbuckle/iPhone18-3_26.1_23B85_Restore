@@ -1,14 +1,14 @@
 @interface IDSAccountController
-- (BOOL)_gkIsReadyForService:(id)a3;
+- (BOOL)_gkIsReadyForService:(id)service;
 @end
 
 @implementation IDSAccountController
 
-- (BOOL)_gkIsReadyForService:(id)a3
+- (BOOL)_gkIsReadyForService:(id)service
 {
-  v4 = a3;
-  v5 = [(IDSAccountController *)self accounts];
-  v6 = [v5 copy];
+  serviceCopy = service;
+  accounts = [(IDSAccountController *)self accounts];
+  v6 = [accounts copy];
 
   v16 = 0u;
   v17 = 0u;
@@ -28,8 +28,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) serviceName];
-        v12 = [v11 isEqualToString:v4];
+        serviceName = [*(*(&v14 + 1) + 8 * i) serviceName];
+        v12 = [serviceName isEqualToString:serviceCopy];
 
         if (v12)
         {

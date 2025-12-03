@@ -1,32 +1,32 @@
 @interface NFCTKPollConfig
-+ (id)pollConfigWithAppletIdentifiers:(id)a3;
++ (id)pollConfigWithAppletIdentifiers:(id)identifiers;
 - (BOOL)_validate;
-- (NFCTKPollConfig)initWithAppletIdentifiers:(id)a3;
-- (NFCTKPollConfig)initWithCoder:(id)a3;
+- (NFCTKPollConfig)initWithAppletIdentifiers:(id)identifiers;
+- (NFCTKPollConfig)initWithCoder:(id)coder;
 - (id)asDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFCTKPollConfig
 
-+ (id)pollConfigWithAppletIdentifiers:(id)a3
++ (id)pollConfigWithAppletIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = [NFCTKPollConfig alloc];
-  v6 = objc_msgSend_initWithAppletIdentifiers_(v4, v5, v3);
+  v6 = objc_msgSend_initWithAppletIdentifiers_(v4, v5, identifiersCopy);
 
   return v6;
 }
 
-- (NFCTKPollConfig)initWithAppletIdentifiers:(id)a3
+- (NFCTKPollConfig)initWithAppletIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v17.receiver = self;
   v17.super_class = NFCTKPollConfig;
   v7 = [(NFReaderSessionPollConfig *)&v17 initWithType:2];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(identifiersCopy, v5, v6);
     appletIdentifiers = v7->_appletIdentifiers;
     v7->_appletIdentifiers = v8;
 
@@ -106,8 +106,8 @@ LABEL_15:
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
   v12.receiver = self;
   v12.super_class = NFCTKPollConfig;
-  v4 = [(NFReaderSessionPollConfig *)&v12 asDictionary];
-  v6 = objc_msgSend_initWithDictionary_(v3, v5, v4);
+  asDictionary = [(NFReaderSessionPollConfig *)&v12 asDictionary];
+  v6 = objc_msgSend_initWithDictionary_(v3, v5, asDictionary);
 
   v9 = objc_msgSend_appletIdentifiers(self, v7, v8);
   objc_msgSend_setObject_forKeyedSubscript_(v6, v10, v9, @"aids");
@@ -115,25 +115,25 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NFCTKPollConfig;
-  v4 = a3;
-  [(NFReaderSessionPollConfig *)&v6 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_appletIdentifiers, @"aids", v6.receiver, v6.super_class);
+  coderCopy = coder;
+  [(NFReaderSessionPollConfig *)&v6 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_appletIdentifiers, @"aids", v6.receiver, v6.super_class);
 }
 
-- (NFCTKPollConfig)initWithCoder:(id)a3
+- (NFCTKPollConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NFCTKPollConfig;
-  v5 = [(NFReaderSessionPollConfig *)&v12 initWithCoder:v4];
+  v5 = [(NFReaderSessionPollConfig *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_coder_decodeArrayOfClass_forKey_(NFNSCheckedDecoder, v7, v4, v6, @"aids");
+    v8 = objc_msgSend_coder_decodeArrayOfClass_forKey_(NFNSCheckedDecoder, v7, coderCopy, v6, @"aids");
     appletIdentifiers = v5->_appletIdentifiers;
     v5->_appletIdentifiers = v8;
 

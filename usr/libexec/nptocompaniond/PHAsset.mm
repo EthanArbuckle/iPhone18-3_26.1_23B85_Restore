@@ -1,32 +1,32 @@
 @interface PHAsset
-+ (void)_npto_archiveLivePhotoAssetResourceFiles:(id)a3 completionHandler:(id)a4;
-- (double)_npto_maxPixelSizeForDevice:(id)a3;
-- (id)_npto_findInterestingAssetResourcesFrom:(id)a3;
-- (void)_npto_processAssetResourceFiles:(id)a3 isLegacyDevice:(BOOL)a4 maxPixelSize:(double)a5 completionHandler:(id)a6;
-- (void)_npto_processPairedVideoAssetResource:(id)a3 maxPixelSize:(double)a4 completionHandler:(id)a5;
-- (void)_npto_processPhotoAssetResource:(id)a3 isLegacyDevice:(BOOL)a4 maxPixelSize:(double)a5 completionHandler:(id)a6;
-- (void)_npto_requestLivePhotoAssetResourceFilesWithMaxPixelSize:(double)a3 isLegacyDevice:(BOOL)a4 isUserInitiated:(BOOL)a5 completionHandler:(id)a6;
-- (void)_npto_requestPhotoAssetResourceFilesWithMaxPixelSize:(double)a3 isLegacyDevice:(BOOL)a4 isUserInitiated:(BOOL)a5 completionHandler:(id)a6;
-- (void)npto_exportForDevice:(id)a3 isUserInitiated:(BOOL)a4 completionHandler:(id)a5;
++ (void)_npto_archiveLivePhotoAssetResourceFiles:(id)files completionHandler:(id)handler;
+- (double)_npto_maxPixelSizeForDevice:(id)device;
+- (id)_npto_findInterestingAssetResourcesFrom:(id)from;
+- (void)_npto_processAssetResourceFiles:(id)files isLegacyDevice:(BOOL)device maxPixelSize:(double)size completionHandler:(id)handler;
+- (void)_npto_processPairedVideoAssetResource:(id)resource maxPixelSize:(double)size completionHandler:(id)handler;
+- (void)_npto_processPhotoAssetResource:(id)resource isLegacyDevice:(BOOL)device maxPixelSize:(double)size completionHandler:(id)handler;
+- (void)_npto_requestLivePhotoAssetResourceFilesWithMaxPixelSize:(double)size isLegacyDevice:(BOOL)device isUserInitiated:(BOOL)initiated completionHandler:(id)handler;
+- (void)_npto_requestPhotoAssetResourceFilesWithMaxPixelSize:(double)size isLegacyDevice:(BOOL)device isUserInitiated:(BOOL)initiated completionHandler:(id)handler;
+- (void)npto_exportForDevice:(id)device isUserInitiated:(BOOL)initiated completionHandler:(id)handler;
 @end
 
 @implementation PHAsset
 
-- (void)npto_exportForDevice:(id)a3 isUserInitiated:(BOOL)a4 completionHandler:(id)a5
+- (void)npto_exportForDevice:(id)device isUserInitiated:(BOOL)initiated completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  initiatedCopy = initiated;
+  handlerCopy = handler;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_10004B87C;
   v31[3] = &unk_10008B238;
   v31[4] = self;
-  v9 = a3;
+  deviceCopy = device;
   v10 = objc_retainBlock(v31);
-  [(PHAsset *)self _npto_maxPixelSizeForDevice:v9];
+  [(PHAsset *)self _npto_maxPixelSizeForDevice:deviceCopy];
   v12 = v11;
   v13 = [[NSUUID alloc] initWithUUIDString:@"EF9E8C3A-6B59-47E0-BA2F-212213F1A30D"];
-  v14 = [v9 supportsCapability:v13];
+  v14 = [deviceCopy supportsCapability:v13];
 
   if ([(PHAsset *)self mediaType]== 1)
   {
@@ -40,10 +40,10 @@
       v25[4] = self;
       v28 = v12;
       v29 = v15;
-      v30 = v5;
-      v26 = v8;
+      v30 = initiatedCopy;
+      v26 = handlerCopy;
       v27 = v10;
-      [(PHAsset *)self _npto_requestLivePhotoAssetResourceFilesWithMaxPixelSize:v15 isLegacyDevice:v5 isUserInitiated:v25 completionHandler:v12];
+      [(PHAsset *)self _npto_requestLivePhotoAssetResourceFilesWithMaxPixelSize:v15 isLegacyDevice:initiatedCopy isUserInitiated:v25 completionHandler:v12];
 
       v16 = v26;
     }
@@ -55,9 +55,9 @@
       v22[2] = sub_10004C2E4;
       v22[3] = &unk_10008B260;
       v22[4] = self;
-      v23 = v8;
+      v23 = handlerCopy;
       v24 = v10;
-      [(PHAsset *)self _npto_requestPhotoAssetResourceFilesWithMaxPixelSize:v15 isLegacyDevice:v5 isUserInitiated:v22 completionHandler:v12];
+      [(PHAsset *)self _npto_requestPhotoAssetResourceFilesWithMaxPixelSize:v15 isLegacyDevice:initiatedCopy isUserInitiated:v22 completionHandler:v12];
 
       v16 = v23;
     }
@@ -74,34 +74,34 @@
     v20 = sub_10000268C();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v19 localizedDescription];
+      localizedDescription = [v19 localizedDescription];
       *buf = 138412290;
-      v33 = v21;
+      v33 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 0, 0, v19);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v19);
     }
   }
 }
 
-- (void)_npto_requestPhotoAssetResourceFilesWithMaxPixelSize:(double)a3 isLegacyDevice:(BOOL)a4 isUserInitiated:(BOOL)a5 completionHandler:(id)a6
+- (void)_npto_requestPhotoAssetResourceFilesWithMaxPixelSize:(double)size isLegacyDevice:(BOOL)device isUserInitiated:(BOOL)initiated completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(PHAsset *)self localIdentifier];
+  handlerCopy = handler;
+  localIdentifier = [(PHAsset *)self localIdentifier];
   v12 = sub_10000268C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v11;
+    v28 = localIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will request image for asset %@", buf, 0xCu);
   }
 
   v13 = objc_alloc_init(PHImageRequestOptions);
   v14 = v13;
-  if (!a5)
+  if (!initiated)
   {
     [v13 setDownloadIntent:7];
   }
@@ -118,7 +118,7 @@
   v25[1] = 3221225472;
   v25[2] = sub_10004C6B0;
   v25[3] = &unk_10008B2D8;
-  v15 = v11;
+  v15 = localIdentifier;
   v26 = v15;
   [v14 setProgressHandler:v25];
   v16 = +[PHImageManager defaultManager];
@@ -126,20 +126,20 @@
   v19[1] = 3221225472;
   v19[2] = sub_10004C800;
   v19[3] = &unk_10008B300;
-  v21 = self;
-  v22 = v10;
+  selfCopy = self;
+  v22 = handlerCopy;
   v20 = v15;
-  v24 = a4;
-  v23 = a3;
-  v17 = v10;
+  deviceCopy = device;
+  sizeCopy = size;
+  v17 = handlerCopy;
   v18 = v15;
-  [v16 requestImageForAsset:self targetSize:0 contentMode:v14 options:v19 resultHandler:{a3, a3}];
+  [v16 requestImageForAsset:self targetSize:0 contentMode:v14 options:v19 resultHandler:{size, size}];
 }
 
-- (void)_npto_requestLivePhotoAssetResourceFilesWithMaxPixelSize:(double)a3 isLegacyDevice:(BOOL)a4 isUserInitiated:(BOOL)a5 completionHandler:(id)a6
+- (void)_npto_requestLivePhotoAssetResourceFilesWithMaxPixelSize:(double)size isLegacyDevice:(BOOL)device isUserInitiated:(BOOL)initiated completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = [(PHAsset *)self localIdentifier];
+  handlerCopy = handler;
+  localIdentifier = [(PHAsset *)self localIdentifier];
   v11 = [PHAssetResource assetResourcesForAsset:self];
   v12 = [(PHAsset *)self _npto_findInterestingAssetResourcesFrom:v11];
 
@@ -149,7 +149,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v77 = v10;
+      v77 = localIdentifier;
       v78 = 2112;
       v79 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Done requesting live photo resources for asset %@, resources: %@", buf, 0x16u);
@@ -162,26 +162,26 @@
     v66[2] = sub_10004D44C;
     v45 = v66[3] = &unk_10008B328;
     v67 = v45;
-    v48 = v9;
-    v71 = v9;
+    v48 = handlerCopy;
+    v71 = handlerCopy;
     v46 = v14;
     v47 = v12;
     v68 = v46;
     v15 = v12;
     v69 = v15;
-    v70 = self;
-    v73 = a4;
-    v72 = a3;
+    selfCopy = self;
+    deviceCopy = device;
+    sizeCopy = size;
     v52 = objc_retainBlock(v66);
     v16 = sub_10000268C();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v77 = v10;
+      v77 = localIdentifier;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Will request asset resources for live photo %@", buf, 0xCu);
     }
 
-    v53 = v10;
+    v53 = localIdentifier;
 
     v64 = 0u;
     v65 = 0u;
@@ -203,24 +203,24 @@
           }
 
           v20 = *(*(&v62 + 1) + 8 * i);
-          v21 = [v20 type];
+          type = [v20 type];
           v22 = sub_10000268C();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v77 = v53;
             v78 = 2048;
-            v79 = v21;
+            v79 = type;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Will request live photo for asset %@ resource type %ld", buf, 0x16u);
           }
 
-          v23 = [v20 originalFilename];
-          v24 = [v23 pathExtension];
+          originalFilename = [v20 originalFilename];
+          pathExtension = [originalFilename pathExtension];
 
-          if (!v24)
+          if (!pathExtension)
           {
-            v25 = [v20 uniformTypeIdentifier];
-            v26 = [PFUniformTypeUtilities typeWithIdentifier:v25];
+            uniformTypeIdentifier = [v20 uniformTypeIdentifier];
+            v26 = [PFUniformTypeUtilities typeWithIdentifier:uniformTypeIdentifier];
 
             v27 = sub_10000268C();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -228,7 +228,7 @@
               *buf = 138412802;
               v77 = v53;
               v78 = 2048;
-              v79 = v21;
+              v79 = type;
               v80 = 2112;
               v81 = v26;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "No originalFilename for asset %@ resource type %ld, trying to get extension from type %@", buf, 0x20u);
@@ -243,26 +243,26 @@
                 *buf = 138412546;
                 v77 = v53;
                 v78 = 2048;
-                v79 = v21;
+                v79 = type;
                 _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "Failed to get file extension for asset %@ resource type %ld", buf, 0x16u);
               }
 
               v74 = NSLocalizedDescriptionKey;
-              v42 = [NSString stringWithFormat:@"No valid file extension for asset %@ resource type %ld", v53, v21, v45];
+              v42 = [NSString stringWithFormat:@"No valid file extension for asset %@ resource type %ld", v53, type, v45];
               v75 = v42;
               v43 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
               v44 = [NSError errorWithDomain:@"NanoPhotosErrorDomain" code:6 userInfo:v43];
 
-              (v52[2])(v52, v21, 0, v44);
+              (v52[2])(v52, type, 0, v44);
               goto LABEL_30;
             }
 
-            v24 = v28;
+            pathExtension = v28;
           }
 
           v29 = objc_alloc_init(PHAssetResourceRequestOptions);
           v30 = v29;
-          if (!a5)
+          if (!initiated)
           {
             [v29 setDownloadIntent:7];
           }
@@ -274,9 +274,9 @@
           v59[3] = &unk_10008B350;
           v31 = v53;
           v60 = v31;
-          v61 = v21;
+          v61 = type;
           [v30 setProgressHandler:v59];
-          v32 = [[NPTOTemporaryFile alloc] initWithPathExtension:v24];
+          v32 = [[NPTOTemporaryFile alloc] initWithPathExtension:pathExtension];
           v33 = +[PHAssetResourceManager defaultManager];
           v34 = [(NPTOTemporaryFile *)v32 URL];
           v54[0] = _NSConcreteStackBlock;
@@ -284,7 +284,7 @@
           v54[2] = sub_10004D684;
           v54[3] = &unk_10008B378;
           v55 = v31;
-          v58 = v21;
+          v58 = type;
           v35 = v52;
           v56 = v32;
           v57 = v35;
@@ -305,15 +305,15 @@
 LABEL_30:
 
     v12 = v47;
-    v9 = v48;
-    v10 = v53;
+    handlerCopy = v48;
+    localIdentifier = v53;
     v39 = v46;
   }
 
   else
   {
     v83 = NSLocalizedDescriptionKey;
-    v37 = [NSString stringWithFormat:@"No asset resources returned for asset %@", v10];
+    v37 = [NSString stringWithFormat:@"No asset resources returned for asset %@", localIdentifier];
     v84 = v37;
     v38 = [NSDictionary dictionaryWithObjects:&v84 forKeys:&v83 count:1];
     v39 = [NSError errorWithDomain:@"NanoPhotosErrorDomain" code:2 userInfo:v38];
@@ -322,54 +322,54 @@ LABEL_30:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v77 = v10;
+      v77 = localIdentifier;
       v78 = 2112;
       v79 = v39;
       _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Failed to request live photo resources for asset %@, error %@", buf, 0x16u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, v39);
+      (*(handlerCopy + 2))(handlerCopy, 0, v39);
     }
   }
 }
 
-- (void)_npto_processAssetResourceFiles:(id)a3 isLegacyDevice:(BOOL)a4 maxPixelSize:(double)a5 completionHandler:(id)a6
+- (void)_npto_processAssetResourceFiles:(id)files isLegacyDevice:(BOOL)device maxPixelSize:(double)size completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v10 count]);
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  filesCopy = files;
+  handlerCopy = handler;
+  v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [filesCopy count]);
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [filesCopy count]);
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10004D9C0;
   v23 = v22[3] = &unk_10008B3A0;
   v24 = v12;
-  v25 = v10;
-  v26 = v11;
-  v13 = v10;
+  v25 = filesCopy;
+  v26 = handlerCopy;
+  v13 = filesCopy;
   v14 = v12;
-  v15 = v11;
+  v15 = handlerCopy;
   v16 = v23;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10004DB28;
   v18[3] = &unk_10008B3F0;
-  v21 = a4;
-  v20 = a5;
+  deviceCopy = device;
+  sizeCopy = size;
   v18[4] = self;
   v19 = objc_retainBlock(v22);
   v17 = v19;
   [v13 enumerateKeysAndObjectsUsingBlock:v18];
 }
 
-- (void)_npto_processPhotoAssetResource:(id)a3 isLegacyDevice:(BOOL)a4 maxPixelSize:(double)a5 completionHandler:(id)a6
+- (void)_npto_processPhotoAssetResource:(id)resource isLegacyDevice:(BOOL)device maxPixelSize:(double)size completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = v10;
+  deviceCopy = device;
+  resourceCopy = resource;
+  handlerCopy = handler;
+  v12 = resourceCopy;
   v13 = [v12 URL];
   v14 = CGImageSourceCreateWithURL(v13, 0);
 
@@ -394,7 +394,7 @@ LABEL_30:
             *buf = 138413314;
             *&buf[4] = CGImageSourceGetType(v14);
             *&buf[12] = 2048;
-            *&buf[14] = a5;
+            *&buf[14] = size;
             *&buf[22] = 2048;
             v165 = Width;
             *v166 = 2048;
@@ -409,13 +409,13 @@ LABEL_30:
           *&buf[16] = sub_10004FBB0;
           v165 = &unk_10008B460;
           *v166 = Width;
-          *&v166[8] = a5;
+          *&v166[8] = size;
           *&v166[16] = Height;
           v21 = objc_retainBlock(buf);
           v22 = [NPTOTemporaryFile alloc];
           v23 = v22;
-          v143 = v11;
-          if (v8)
+          v143 = handlerCopy;
+          if (deviceCopy)
           {
             v154 = [(NPTOTemporaryFile *)v22 initWithPathExtension:@"jpg"];
           }
@@ -423,8 +423,8 @@ LABEL_30:
           else
           {
             v25 = [v12 URL];
-            v26 = [v25 pathExtension];
-            v154 = [(NPTOTemporaryFile *)v23 initWithPathExtension:v26];
+            pathExtension = [v25 pathExtension];
+            v154 = [(NPTOTemporaryFile *)v23 initWithPathExtension:pathExtension];
           }
 
           v27 = sub_10000268C();
@@ -438,14 +438,14 @@ LABEL_30:
 
           v141 = v12;
           v29 = [v12 URL];
-          v30 = [v29 pathExtension];
-          v31 = [PFUniformTypeUtilities typeWithFilenameExtension:v30];
+          pathExtension2 = [v29 pathExtension];
+          v31 = [PFUniformTypeUtilities typeWithFilenameExtension:pathExtension2];
 
           v32 = CGImageDestinationCopyTypeIdentifiers();
           v156 = v31;
-          v33 = [(UTType *)v31 identifier];
+          identifier = [(UTType *)v31 identifier];
           v152 = v32;
-          v34 = [(__CFArray *)v32 containsObject:v33];
+          v34 = [(__CFArray *)v32 containsObject:identifier];
 
           v35 = sub_10000268C();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -457,7 +457,7 @@ LABEL_30:
 
           v36 = v154;
           v37 = [(NPTOTemporaryFile *)v154 URL];
-          if (v8 || (v34 & 1) == 0)
+          if (deviceCopy || (v34 & 1) == 0)
           {
             v38 = UTTypeJPEG;
           }
@@ -467,8 +467,8 @@ LABEL_30:
             v38 = v156;
           }
 
-          v39 = [(UTType *)v38 identifier];
-          v40 = CGImageDestinationCreateWithURL(v37, v39, Count, 0);
+          identifier2 = [(UTType *)v38 identifier];
+          v40 = CGImageDestinationCreateWithURL(v37, identifier2, Count, 0);
 
           if (v40)
           {
@@ -519,7 +519,7 @@ LABEL_30:
           }
 
           v12 = v141;
-          v11 = v143;
+          handlerCopy = v143;
         }
       }
     }
@@ -540,17 +540,17 @@ LABEL_30:
   }
 
   v48 = v16;
-  v146 = self;
+  selfCopy = self;
   if (v48)
   {
-    if ([(PHAsset *)v146 playbackStyle]== 2)
+    if ([(PHAsset *)selfCopy playbackStyle]== 2)
     {
       v49 = sub_10000268C();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [(PHAsset *)v146 localIdentifier];
+        localIdentifier = [(PHAsset *)selfCopy localIdentifier];
         *buf = 138412290;
-        *&buf[4] = v50;
+        *&buf[4] = localIdentifier;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%@ processedFileWithFaceMetadata: the asset is an animated image; do nothing", buf, 0xCu);
       }
 
@@ -558,7 +558,7 @@ LABEL_30:
       goto LABEL_119;
     }
 
-    v53 = [PHFace fetchFacesInAsset:v146 options:0];
+    v53 = [PHFace fetchFacesInAsset:selfCopy options:0];
     if ([v53 count])
     {
       v54 = [(CGImage *)v48 URL];
@@ -570,9 +570,9 @@ LABEL_30:
       {
         if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
         {
-          v58 = [(PHAsset *)v146 localIdentifier];
+          localIdentifier2 = [(PHAsset *)selfCopy localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v58;
+          *&buf[4] = localIdentifier2;
           _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%@ processedFileWithFaceMetadata: adding face region metadata from PHFaces", buf, 0xCu);
         }
 
@@ -614,7 +614,7 @@ LABEL_30:
           *buf = 1;
           v69 = CGImageSourceCopyPropertiesAtIndex(isrc, 0, 0);
           v142 = v12;
-          v144 = v11;
+          v144 = handlerCopy;
           if (!v69)
           {
             b = 0.0;
@@ -727,14 +727,14 @@ LABEL_90:
                   v110 = sub_10000268C();
                   if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
                   {
-                    v111 = [(PHAsset *)v146 localIdentifier];
+                    localIdentifier3 = [(PHAsset *)selfCopy localIdentifier];
                     v176.origin.x = v106;
                     v176.origin.y = v107;
                     v176.size.width = v108;
                     v176.size.height = v109;
                     v112 = NSStringFromRect(v176);
                     LODWORD(v163.a) = 138412546;
-                    *(&v163.a + 4) = v111;
+                    *(&v163.a + 4) = localIdentifier3;
                     WORD2(v163.b) = 2112;
                     *(&v163.b + 6) = v112;
                     _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_DEFAULT, "%@ processedFileWithFaceMetadata: face rect %@", &v163, 0x16u);
@@ -779,8 +779,8 @@ LABEL_90:
             v118 = [NSDictionary dictionaryWithObjects:&v162 forKeys:v161 count:2];
             v119 = [NPTOTemporaryFile alloc];
             v120 = [(CGImage *)v48 URL];
-            v121 = [v120 pathExtension];
-            v122 = [(NPTOTemporaryFile *)v119 initWithPathExtension:v121];
+            pathExtension3 = [v120 pathExtension];
+            v122 = [(NPTOTemporaryFile *)v119 initWithPathExtension:pathExtension3];
 
             v123 = [(NPTOTemporaryFile *)v122 URL];
             Type = CGImageSourceGetType(isrc);
@@ -795,15 +795,15 @@ LABEL_90:
               CFRelease(isrc);
               v127 = v122;
               v12 = v142;
-              v11 = v144;
+              handlerCopy = v144;
               if (!v126)
               {
                 v128 = sub_10000268C();
                 if (os_log_type_enabled(v128, OS_LOG_TYPE_ERROR))
                 {
-                  v138 = [(PHAsset *)v146 localIdentifier];
+                  localIdentifier4 = [(PHAsset *)selfCopy localIdentifier];
                   LODWORD(v163.a) = 138412546;
-                  *(&v163.a + 4) = v138;
+                  *(&v163.a + 4) = localIdentifier4;
                   WORD2(v163.b) = 2112;
                   *(&v163.b + 6) = err;
                   _os_log_error_impl(&_mh_execute_header, v128, OS_LOG_TYPE_ERROR, "%@ processedFileWithFaceMetadata: Error in CGImageDestinationCopyImageSource: %@; do nothing", &v163, 0x16u);
@@ -819,12 +819,12 @@ LABEL_90:
             {
               v130 = sub_10000268C();
               v12 = v142;
-              v11 = v144;
+              handlerCopy = v144;
               if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
               {
-                v137 = [(PHAsset *)v146 localIdentifier];
+                localIdentifier5 = [(PHAsset *)selfCopy localIdentifier];
                 LODWORD(v163.a) = 138412290;
-                *(&v163.a + 4) = v137;
+                *(&v163.a + 4) = localIdentifier5;
                 _os_log_error_impl(&_mh_execute_header, v130, OS_LOG_TYPE_ERROR, "%@ processedFileWithFaceMetadata: could not create imageDestination; do nothing", &v163, 0xCu);
               }
 
@@ -960,9 +960,9 @@ LABEL_81:
         v74 = sub_10000268C();
         if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
         {
-          v136 = [(PHAsset *)v146 localIdentifier];
+          localIdentifier6 = [(PHAsset *)selfCopy localIdentifier];
           *buf = 138412290;
-          *&buf[4] = v136;
+          *&buf[4] = localIdentifier6;
           _os_log_error_impl(&_mh_execute_header, v74, OS_LOG_TYPE_ERROR, "%@ processedFileWithFaceMetadata: could not create new metadata; do nothing", buf, 0xCu);
         }
 
@@ -981,9 +981,9 @@ LABEL_54:
         goto LABEL_55;
       }
 
-      v63 = [(PHAsset *)v146 localIdentifier];
+      localIdentifier7 = [(PHAsset *)selfCopy localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v63;
+      *&buf[4] = localIdentifier7;
       _os_log_error_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "%@ processedFileWithFaceMetadata: could not create image source; do nothing", buf, 0xCu);
     }
 
@@ -995,9 +995,9 @@ LABEL_54:
         goto LABEL_54;
       }
 
-      v63 = [(PHAsset *)v146 localIdentifier];
+      localIdentifier7 = [(PHAsset *)selfCopy localIdentifier];
       *buf = 138412290;
-      *&buf[4] = v63;
+      *&buf[4] = localIdentifier7;
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%@ processedFileWithFaceMetadata: no extra face data in the asset; do nothing", buf, 0xCu);
     }
 
@@ -1007,28 +1007,28 @@ LABEL_54:
   v52 = sub_10000268C();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
   {
-    v75 = [(PHAsset *)v146 localIdentifier];
+    localIdentifier8 = [(PHAsset *)selfCopy localIdentifier];
     *buf = 138412290;
-    *&buf[4] = v75;
+    *&buf[4] = localIdentifier8;
     _os_log_error_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "%@ processedFileWithFaceMetadata: input asset data is nil", buf, 0xCu);
   }
 
   v51 = 0;
 LABEL_119:
 
-  if (v11)
+  if (handlerCopy)
   {
     if (v51)
     {
-      v11[2](v11, v51, 0);
+      handlerCopy[2](handlerCopy, v51, 0);
     }
 
     else
     {
-      v131 = [(PHAsset *)v146 localIdentifier];
+      localIdentifier9 = [(PHAsset *)selfCopy localIdentifier];
       v159 = NSLocalizedDescriptionKey;
-      v132 = [NSString stringWithFormat:@"Failed to add face metadata for asset %@", v131];
-      v160 = v132;
+      v131 = [NSString stringWithFormat:@"Failed to add face metadata for asset %@", localIdentifier9];
+      v160 = v131;
       v133 = [NSDictionary dictionaryWithObjects:&v160 forKeys:&v159 count:1];
       v134 = [NSError errorWithDomain:@"NanoPhotosErrorDomain" code:1 userInfo:v133];
 
@@ -1036,27 +1036,27 @@ LABEL_119:
       if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *&buf[4] = v131;
+        *&buf[4] = localIdentifier9;
         *&buf[12] = 2112;
         *&buf[14] = v134;
         _os_log_error_impl(&_mh_execute_header, v135, OS_LOG_TYPE_ERROR, "Failed to add face metadata for asset %@, error %@", buf, 0x16u);
       }
 
-      (v11)[2](v11, 0, v134);
+      (handlerCopy)[2](handlerCopy, 0, v134);
     }
   }
 }
 
-- (void)_npto_processPairedVideoAssetResource:(id)a3 maxPixelSize:(double)a4 completionHandler:(id)a5
+- (void)_npto_processPairedVideoAssetResource:(id)resource maxPixelSize:(double)size completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v9 = [NPTOTemporaryFile alloc];
-  v10 = [v7 URL];
-  v11 = [v10 pathExtension];
-  v12 = [(NPTOTemporaryFile *)v9 initWithPathExtension:v11];
+  v10 = [resourceCopy URL];
+  pathExtension = [v10 pathExtension];
+  v12 = [(NPTOTemporaryFile *)v9 initWithPathExtension:pathExtension];
 
-  v13 = [v7 URL];
+  v13 = [resourceCopy URL];
   v14 = [AVURLAsset URLAssetWithURL:v13 options:0];
   v15 = [AVAssetExportSession exportSessionWithAsset:v14 presetName:AVAssetExportPresetAuxSmall];
 
@@ -1066,31 +1066,31 @@ LABEL_119:
   v17 = sub_10000268C();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v15 supportedFileTypes];
+    supportedFileTypes = [v15 supportedFileTypes];
     *buf = 138412290;
-    v34 = v18;
+    v34 = supportedFileTypes;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Valid file types are %@", buf, 0xCu);
   }
 
-  v19 = [v15 supportedFileTypes];
-  if ([v19 containsObject:AVFileTypeMPEG4])
+  supportedFileTypes2 = [v15 supportedFileTypes];
+  if ([supportedFileTypes2 containsObject:AVFileTypeMPEG4])
   {
     [v15 setOutputFileType:AVFileTypeMPEG4];
   }
 
   else
   {
-    v20 = [v15 supportedFileTypes];
-    if ([v20 containsObject:AVFileTypeQuickTimeMovie])
+    supportedFileTypes3 = [v15 supportedFileTypes];
+    if ([supportedFileTypes3 containsObject:AVFileTypeQuickTimeMovie])
     {
       [v15 setOutputFileType:AVFileTypeQuickTimeMovie];
     }
 
     else
     {
-      v21 = [v15 supportedFileTypes];
-      v22 = [v21 firstObject];
-      [v15 setOutputFileType:v22];
+      supportedFileTypes4 = [v15 supportedFileTypes];
+      firstObject = [supportedFileTypes4 firstObject];
+      [v15 setOutputFileType:firstObject];
     }
   }
 
@@ -1099,28 +1099,28 @@ LABEL_119:
   v27[2] = sub_10004F458;
   v27[3] = &unk_10008B418;
   v28 = v15;
-  v29 = self;
-  v31 = v7;
-  v32 = v8;
+  selfCopy = self;
+  v31 = resourceCopy;
+  v32 = handlerCopy;
   v30 = v12;
-  v23 = v7;
+  v23 = resourceCopy;
   v24 = v12;
-  v25 = v8;
+  v25 = handlerCopy;
   v26 = v15;
   [v26 exportAsynchronouslyWithCompletionHandler:v27];
 }
 
-+ (void)_npto_archiveLivePhotoAssetResourceFiles:(id)a3 completionHandler:(id)a4
++ (void)_npto_archiveLivePhotoAssetResourceFiles:(id)files completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  filesCopy = files;
   +[NSMutableDictionary dictionary];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10004F8AC;
   v7 = v20[3] = &unk_10008B440;
   v21 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v20];
+  [filesCopy enumerateKeysAndObjectsUsingBlock:v20];
 
   v8 = [[NPTOTemporaryFile alloc] initWithPathExtension:@"nlp"];
   v19 = 0;
@@ -1139,9 +1139,9 @@ LABEL_119:
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to archive live photo to URL %@: %@", buf, 0x16u);
     }
 
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5, 0, v10);
+      handlerCopy[2](handlerCopy, 0, v10);
     }
   }
 
@@ -1154,9 +1154,9 @@ LABEL_119:
 
     if (v13)
     {
-      if (v5)
+      if (handlerCopy)
       {
-        (v5)[2](v5, v8, 0);
+        (handlerCopy)[2](handlerCopy, v8, 0);
       }
     }
 
@@ -1173,24 +1173,24 @@ LABEL_119:
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to write archived live photo to URL %@: %@", buf, 0x16u);
       }
 
-      if (v5)
+      if (handlerCopy)
       {
-        v5[2](v5, 0, v14);
+        handlerCopy[2](handlerCopy, 0, v14);
       }
     }
   }
 }
 
-- (double)_npto_maxPixelSizeForDevice:(id)a3
+- (double)_npto_maxPixelSizeForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:NRDevicePropertyMainScreenClass];
-  v6 = [v5 intValue];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:NRDevicePropertyMainScreenClass];
+  intValue = [v5 intValue];
 
   v7 = 384.0;
-  if (v4 && (v6 & 0xFFFFFFFE) != 0xC)
+  if (deviceCopy && (intValue & 0xFFFFFFFE) != 0xC)
   {
-    v8 = [v4 valueForProperty:NRDevicePropertyMainScreenHeight];
+    v8 = [deviceCopy valueForProperty:NRDevicePropertyMainScreenHeight];
     [v8 floatValue];
     v7 = v9;
   }
@@ -1208,16 +1208,16 @@ LABEL_119:
   return v7;
 }
 
-- (id)_npto_findInterestingAssetResourcesFrom:(id)a3
+- (id)_npto_findInterestingAssetResourcesFrom:(id)from
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  fromCopy = from;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [fromCopy count]);
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [fromCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = fromCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v7)
   {
@@ -1236,13 +1236,13 @@ LABEL_119:
       }
 
       v11 = *(*(&v17 + 1) + 8 * i);
-      v12 = [v11 type];
+      type = [v11 type];
       v13 = v4;
-      if (v12 > 8)
+      if (type > 8)
       {
-        if (v12 != 9)
+        if (type != 9)
         {
-          if (v12 != 10)
+          if (type != 10)
           {
             continue;
           }
@@ -1256,12 +1256,12 @@ LABEL_13:
         continue;
       }
 
-      if (v12 == 1)
+      if (type == 1)
       {
         goto LABEL_13;
       }
 
-      if (v12 == 5)
+      if (type == 5)
       {
         goto LABEL_12;
       }

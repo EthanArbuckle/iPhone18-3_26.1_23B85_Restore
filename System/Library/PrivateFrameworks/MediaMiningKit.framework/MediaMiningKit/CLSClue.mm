@@ -1,15 +1,15 @@
 @interface CLSClue
-+ (id)_clueWithValue:(id)a3 forKey:(id)a4;
-+ (id)_clueWithValue:(id)a3 forKey:(id)a4 confidence:(double)a5 relevance:(double)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)_clueWithValue:(id)value forKey:(id)key;
++ (id)_clueWithValue:(id)value forKey:(id)key confidence:(double)confidence relevance:(double)relevance;
+- (BOOL)isEqual:(id)equal;
 - (CLSClue)init;
 - (NSString)informantIdentifier;
 - (NSString)profileIdentifier;
 - (double)doubleValue;
 - (id)description;
 - (id)stringValue;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareScore:(id)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareScore:(id)score;
 - (int64_t)integerValue;
 - (unint64_t)enumValue;
 - (unint64_t)hash;
@@ -19,12 +19,12 @@
 
 @implementation CLSClue
 
-- (int64_t)compareScore:(id)a3
+- (int64_t)compareScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   [(CLSClue *)self score];
   v6 = v5;
-  [v4 score];
+  [scoreCopy score];
   v8 = v7;
 
   if (v6 > v8)
@@ -38,22 +38,22 @@
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   key = self->_key;
   if (!key || !self->_value)
   {
     __assert_rtn("[CLSClue compare:]", "CLSClue.m", 246, "(_key != nil) && (_value != nil)");
   }
 
-  v6 = [(NSString *)key compare:v4[2]];
+  v6 = [(NSString *)key compare:compareCopy[2]];
   if (!v6)
   {
-    v6 = [self->_value compare:v4[3]];
+    v6 = [self->_value compare:compareCopy[3]];
     if (!v6)
     {
-      v6 = [(CLSClue *)self compareScore:v4];
+      v6 = [(CLSClue *)self compareScore:compareCopy];
     }
   }
 
@@ -62,16 +62,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
-    v8 = [(CLSClue *)self value];
-    v9 = [v7 value];
-    if ([v8 isEqual:v9])
+    v7 = equalCopy;
+    value = [(CLSClue *)self value];
+    value2 = [v7 value];
+    if ([value isEqual:value2])
     {
       v10 = [(CLSClue *)self key];
       v11 = [v7 key];
@@ -94,8 +94,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CLSClue *)self value];
-  v4 = [v3 hash];
+  value = [(CLSClue *)self value];
+  v4 = [value hash];
   v5 = [(CLSClue *)self key];
   v6 = [v5 hash];
 
@@ -110,9 +110,9 @@
     profileIdentifier = self->_profile;
     if (profileIdentifier)
     {
-      v4 = [objc_opt_class() identifier];
+      identifier = [objc_opt_class() identifier];
       v5 = self->_profileIdentifier;
-      self->_profileIdentifier = v4;
+      self->_profileIdentifier = identifier;
 
       profileIdentifier = self->_profileIdentifier;
     }
@@ -129,9 +129,9 @@
     informantIdentifier = self->_informant;
     if (informantIdentifier)
     {
-      v4 = [objc_opt_class() identifier];
+      identifier = [objc_opt_class() identifier];
       v5 = self->_informantIdentifier;
-      self->_informantIdentifier = v4;
+      self->_informantIdentifier = identifier;
 
       informantIdentifier = self->_informantIdentifier;
     }
@@ -150,8 +150,8 @@
 
 - (double)doubleValue
 {
-  v2 = [(CLSClue *)self value];
-  [v2 doubleValue];
+  value = [(CLSClue *)self value];
+  [value doubleValue];
   v4 = v3;
 
   return v4;
@@ -159,24 +159,24 @@
 
 - (int64_t)integerValue
 {
-  v2 = [(CLSClue *)self value];
-  v3 = [v2 integerValue];
+  value = [(CLSClue *)self value];
+  integerValue = [value integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)stringValue
 {
-  v3 = [(CLSClue *)self value];
+  value = [(CLSClue *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = [(CLSClue *)self value];
-  v6 = v5;
+  value2 = [(CLSClue *)self value];
+  v6 = value2;
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [v5 stringValue];
+    stringValue = [value2 stringValue];
 
-    v6 = v7;
+    v6 = stringValue;
   }
 
   return v6;
@@ -184,35 +184,35 @@
 
 - (unint64_t)enumValue
 {
-  v2 = [(CLSClue *)self value];
-  v3 = [v2 unsignedIntegerValue];
+  value = [(CLSClue *)self value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)valueHash
 {
-  v2 = [(CLSClue *)self value];
-  v3 = [v2 hash];
+  value = [(CLSClue *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v4 = [(CLSClue *)self value];
+  value = [(CLSClue *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [(CLSClue *)self value];
-  v7 = v6;
+  value2 = [(CLSClue *)self value];
+  v7 = value2;
   if (isKindOfClass)
   {
-    [v6 flattenWithSeparator:{@", "}];
+    [value2 flattenWithSeparator:{@", "}];
   }
 
   else
   {
-    [v6 description];
+    [value2 description];
   }
   v8 = ;
 
@@ -228,24 +228,24 @@
   v17 = v16;
   [(CLSClue *)self score];
   v19 = v18;
-  v20 = [(CLSClue *)self informant];
-  if (v20)
+  informant = [(CLSClue *)self informant];
+  if (informant)
   {
-    v21 = [(CLSClue *)self informant];
+    informant2 = [(CLSClue *)self informant];
     v22 = objc_opt_class();
-    v23 = NSStringFromClass(v22);
+    informantIdentifier = NSStringFromClass(v22);
   }
 
   else
   {
-    v23 = [(CLSClue *)self informantIdentifier];
-    v21 = v23;
+    informantIdentifier = [(CLSClue *)self informantIdentifier];
+    informant2 = informantIdentifier;
   }
 
-  v24 = [(CLSClue *)self profile];
-  if (v24)
+  profile = [(CLSClue *)self profile];
+  if (profile)
   {
-    v2 = [(CLSClue *)self profile];
+    profile2 = [(CLSClue *)self profile];
     v25 = objc_opt_class();
     NSStringFromClass(v25);
   }
@@ -255,14 +255,14 @@
     [(CLSClue *)self profileIdentifier];
   }
   v26 = ;
-  [v13 appendFormat:@"\n\tconfidence:[%.2f] relevance:[%.2f] score:[%.2f] informant:[%@] profile:[%@] version:[%ld]", v15, v17, v19, v23, v26, -[CLSClue versionCount](self, "versionCount")];
-  if (v24)
+  [v13 appendFormat:@"\n\tconfidence:[%.2f] relevance:[%.2f] score:[%.2f] informant:[%@] profile:[%@] version:[%ld]", v15, v17, v19, informantIdentifier, v26, -[CLSClue versionCount](self, "versionCount")];
+  if (profile)
   {
 
-    v26 = v2;
+    v26 = profile2;
   }
 
-  if (v20)
+  if (informant)
   {
   }
 
@@ -305,23 +305,23 @@
   return v3;
 }
 
-+ (id)_clueWithValue:(id)a3 forKey:(id)a4 confidence:(double)a5 relevance:(double)a6
++ (id)_clueWithValue:(id)value forKey:(id)key confidence:(double)confidence relevance:(double)relevance
 {
-  v8 = [a1 _clueWithValue:a3 forKey:a4];
-  [v8 setConfidence:a5];
-  [v8 setRelevance:a6];
+  v8 = [self _clueWithValue:value forKey:key];
+  [v8 setConfidence:confidence];
+  [v8 setRelevance:relevance];
 
   return v8;
 }
 
-+ (id)_clueWithValue:(id)a3 forKey:(id)a4
++ (id)_clueWithValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = objc_alloc_init(self);
+  [v8 setKey:keyCopy];
 
-  [v8 setValue:v7];
+  [v8 setValue:valueCopy];
 
   return v8;
 }

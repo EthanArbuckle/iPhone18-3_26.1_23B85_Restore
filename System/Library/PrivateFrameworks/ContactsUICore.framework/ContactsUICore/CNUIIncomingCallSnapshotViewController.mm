@@ -1,31 +1,31 @@
 @interface CNUIIncomingCallSnapshotViewController
-+ (CGRect)horizontalNameLabelBoundingRectForName:(id)a3 window:(id)a4;
-+ (CGRect)verticalNameLabelBoundingRectForName:(id)a3 window:(id)a4;
-+ (id)posterDisplayNameComponentsForContact:(id)a3;
-+ (int64_t)styleIncludingCallButtons:(BOOL)a3 canShowPoster:(BOOL)a4;
-+ (void)incomingCallAvatarSnapshotForAvatarImageData:(id)a3 contact:(id)a4 windowScene:(id)a5 completionBlock:(id)a6;
-+ (void)incomingCallPlaceholderSnapshotForContact:(id)a3 windowScene:(id)a4 completionBlock:(id)a5;
-+ (void)incomingCallSnapshotForConfiguration:(id)a3 contact:(id)a4 includingCallButtons:(BOOL)a5 windowScene:(id)a6 completionBlock:(id)a7;
-+ (void)incomingCallSnapshotForConfiguration:(id)a3 nameString:(id)a4 includingCallButtons:(BOOL)a5 windowScene:(id)a6 completionBlock:(id)a7;
-+ (void)incomingCallSnapshotForConfiguration:(id)a3 style:(int64_t)a4 contact:(id)a5 nameString:(id)a6 avatarImage:(id)a7 windowScene:(id)a8 completionBlock:(id)a9;
-+ (void)incomingCallSnapshotForPosterArchiveData:(id)a3 contact:(id)a4 includingCallButtons:(BOOL)a5 windowScene:(id)a6 completionBlock:(id)a7;
++ (CGRect)horizontalNameLabelBoundingRectForName:(id)name window:(id)window;
++ (CGRect)verticalNameLabelBoundingRectForName:(id)name window:(id)window;
++ (id)posterDisplayNameComponentsForContact:(id)contact;
++ (int64_t)styleIncludingCallButtons:(BOOL)buttons canShowPoster:(BOOL)poster;
++ (void)incomingCallAvatarSnapshotForAvatarImageData:(id)data contact:(id)contact windowScene:(id)scene completionBlock:(id)block;
++ (void)incomingCallPlaceholderSnapshotForContact:(id)contact windowScene:(id)scene completionBlock:(id)block;
++ (void)incomingCallSnapshotForConfiguration:(id)configuration contact:(id)contact includingCallButtons:(BOOL)buttons windowScene:(id)scene completionBlock:(id)block;
++ (void)incomingCallSnapshotForConfiguration:(id)configuration nameString:(id)string includingCallButtons:(BOOL)buttons windowScene:(id)scene completionBlock:(id)block;
++ (void)incomingCallSnapshotForConfiguration:(id)configuration style:(int64_t)style contact:(id)contact nameString:(id)string avatarImage:(id)image windowScene:(id)scene completionBlock:(id)block;
++ (void)incomingCallSnapshotForPosterArchiveData:(id)data contact:(id)contact includingCallButtons:(BOOL)buttons windowScene:(id)scene completionBlock:(id)block;
 @end
 
 @implementation CNUIIncomingCallSnapshotViewController
 
-+ (id)posterDisplayNameComponentsForContact:(id)a3
++ (id)posterDisplayNameComponentsForContact:(id)contact
 {
-  v3 = a3;
-  v4 = [getTPInComingCallUISnapshotViewControllerClass() posterDisplayNameComponentsForContact:v3];
+  contactCopy = contact;
+  v4 = [getTPInComingCallUISnapshotViewControllerClass() posterDisplayNameComponentsForContact:contactCopy];
 
   return v4;
 }
 
-+ (CGRect)verticalNameLabelBoundingRectForName:(id)a3 window:(id)a4
++ (CGRect)verticalNameLabelBoundingRectForName:(id)name window:(id)window
 {
-  v5 = a4;
-  v6 = a3;
-  [getTPInComingCallUISnapshotViewControllerClass() verticalNameLabelBoundingRectForName:v6 window:v5];
+  windowCopy = window;
+  nameCopy = name;
+  [getTPInComingCallUISnapshotViewControllerClass() verticalNameLabelBoundingRectForName:nameCopy window:windowCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -42,11 +42,11 @@
   return result;
 }
 
-+ (CGRect)horizontalNameLabelBoundingRectForName:(id)a3 window:(id)a4
++ (CGRect)horizontalNameLabelBoundingRectForName:(id)name window:(id)window
 {
-  v5 = a4;
-  v6 = a3;
-  [getTPInComingCallUISnapshotViewControllerClass() horizontalNameLabelBoundingRectForName:v6 window:v5];
+  windowCopy = window;
+  nameCopy = name;
+  [getTPInComingCallUISnapshotViewControllerClass() horizontalNameLabelBoundingRectForName:nameCopy window:windowCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -63,24 +63,24 @@
   return result;
 }
 
-+ (void)incomingCallPlaceholderSnapshotForContact:(id)a3 windowScene:(id)a4 completionBlock:(id)a5
++ (void)incomingCallPlaceholderSnapshotForContact:(id)contact windowScene:(id)scene completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [objc_opt_class() incomingCallSnapshotForConfiguration:0 style:5 contact:v9 nameString:0 avatarImage:0 windowScene:v8 completionBlock:v7];
+  blockCopy = block;
+  sceneCopy = scene;
+  contactCopy = contact;
+  [objc_opt_class() incomingCallSnapshotForConfiguration:0 style:5 contact:contactCopy nameString:0 avatarImage:0 windowScene:sceneCopy completionBlock:blockCopy];
 }
 
-+ (void)incomingCallAvatarSnapshotForAvatarImageData:(id)a3 contact:(id)a4 windowScene:(id)a5 completionBlock:(id)a6
++ (void)incomingCallAvatarSnapshotForAvatarImageData:(id)data contact:(id)contact windowScene:(id)scene completionBlock:(id)block
 {
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v15 = [v9 imageWithData:a3];
-  LODWORD(a3) = [getTPInComingCallUISnapshotViewControllerClass() instancesRespondToSelector:sel_initWithConfiguration_style_nameString_avatarImage_];
+  blockCopy = block;
+  sceneCopy = scene;
+  contactCopy = contact;
+  v15 = [v9 imageWithData:data];
+  LODWORD(data) = [getTPInComingCallUISnapshotViewControllerClass() instancesRespondToSelector:sel_initWithConfiguration_style_nameString_avatarImage_];
   v13 = objc_opt_class();
-  if (a3)
+  if (data)
   {
     v14 = 6;
   }
@@ -90,97 +90,97 @@
     v14 = 5;
   }
 
-  [v13 incomingCallSnapshotForConfiguration:0 style:v14 contact:v12 nameString:0 avatarImage:v15 windowScene:v11 completionBlock:v10];
+  [v13 incomingCallSnapshotForConfiguration:0 style:v14 contact:contactCopy nameString:0 avatarImage:v15 windowScene:sceneCopy completionBlock:blockCopy];
 }
 
-+ (void)incomingCallSnapshotForPosterArchiveData:(id)a3 contact:(id)a4 includingCallButtons:(BOOL)a5 windowScene:(id)a6 completionBlock:(id)a7
++ (void)incomingCallSnapshotForPosterArchiveData:(id)data contact:(id)contact includingCallButtons:(BOOL)buttons windowScene:(id)scene completionBlock:(id)block
 {
-  v8 = a5;
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = [CNUIPRSPosterArchiver unarchiveCNConfigurationFromData:a3 error:0];
-  [objc_opt_class() incomingCallSnapshotForConfiguration:v14 contact:v13 includingCallButtons:v8 windowScene:v12 completionBlock:v11];
+  buttonsCopy = buttons;
+  blockCopy = block;
+  sceneCopy = scene;
+  contactCopy = contact;
+  v14 = [CNUIPRSPosterArchiver unarchiveCNConfigurationFromData:data error:0];
+  [objc_opt_class() incomingCallSnapshotForConfiguration:v14 contact:contactCopy includingCallButtons:buttonsCopy windowScene:sceneCopy completionBlock:blockCopy];
 }
 
-+ (void)incomingCallSnapshotForConfiguration:(id)a3 nameString:(id)a4 includingCallButtons:(BOOL)a5 windowScene:(id)a6 completionBlock:(id)a7
++ (void)incomingCallSnapshotForConfiguration:(id)configuration nameString:(id)string includingCallButtons:(BOOL)buttons windowScene:(id)scene completionBlock:(id)block
 {
-  v8 = a5;
-  v11 = a3 != 0;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v16 = a3;
-  v15 = [objc_opt_class() styleIncludingCallButtons:v8 canShowPoster:v11];
-  [objc_opt_class() incomingCallSnapshotForConfiguration:v16 style:v15 contact:0 nameString:v14 avatarImage:0 windowScene:v13 completionBlock:v12];
+  buttonsCopy = buttons;
+  v11 = configuration != 0;
+  blockCopy = block;
+  sceneCopy = scene;
+  stringCopy = string;
+  configurationCopy = configuration;
+  v15 = [objc_opt_class() styleIncludingCallButtons:buttonsCopy canShowPoster:v11];
+  [objc_opt_class() incomingCallSnapshotForConfiguration:configurationCopy style:v15 contact:0 nameString:stringCopy avatarImage:0 windowScene:sceneCopy completionBlock:blockCopy];
 }
 
-+ (void)incomingCallSnapshotForConfiguration:(id)a3 contact:(id)a4 includingCallButtons:(BOOL)a5 windowScene:(id)a6 completionBlock:(id)a7
++ (void)incomingCallSnapshotForConfiguration:(id)configuration contact:(id)contact includingCallButtons:(BOOL)buttons windowScene:(id)scene completionBlock:(id)block
 {
-  v8 = a5;
-  v11 = a3 != 0;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v16 = a3;
-  v15 = [objc_opt_class() styleIncludingCallButtons:v8 canShowPoster:v11];
-  [objc_opt_class() incomingCallSnapshotForConfiguration:v16 style:v15 contact:v14 nameString:0 avatarImage:0 windowScene:v13 completionBlock:v12];
+  buttonsCopy = buttons;
+  v11 = configuration != 0;
+  blockCopy = block;
+  sceneCopy = scene;
+  contactCopy = contact;
+  configurationCopy = configuration;
+  v15 = [objc_opt_class() styleIncludingCallButtons:buttonsCopy canShowPoster:v11];
+  [objc_opt_class() incomingCallSnapshotForConfiguration:configurationCopy style:v15 contact:contactCopy nameString:0 avatarImage:0 windowScene:sceneCopy completionBlock:blockCopy];
 }
 
-+ (void)incomingCallSnapshotForConfiguration:(id)a3 style:(int64_t)a4 contact:(id)a5 nameString:(id)a6 avatarImage:(id)a7 windowScene:(id)a8 completionBlock:(id)a9
++ (void)incomingCallSnapshotForConfiguration:(id)configuration style:(int64_t)style contact:(id)contact nameString:(id)string avatarImage:(id)image windowScene:(id)scene completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  configurationCopy = configuration;
+  contactCopy = contact;
+  stringCopy = string;
+  imageCopy = image;
+  sceneCopy = scene;
+  blockCopy = block;
   if ([getTPInComingCallUISnapshotViewControllerClass() instancesRespondToSelector:sel_initWithConfiguration_style_nameString_avatarImage_])
   {
     v20 = objc_alloc(getTPInComingCallUISnapshotViewControllerClass());
-    v21 = [v14 wrappedPosterConfiguration];
-    if (v15)
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
+    if (contactCopy)
     {
-      v22 = [v20 initWithConfiguration:v21 style:a4 contact:v15 avatarImage:v17];
+      v22 = [v20 initWithConfiguration:wrappedPosterConfiguration style:style contact:contactCopy avatarImage:imageCopy];
     }
 
     else
     {
-      v22 = [v20 initWithConfiguration:v21 style:a4 nameString:v16 avatarImage:v17];
+      v22 = [v20 initWithConfiguration:wrappedPosterConfiguration style:style nameString:stringCopy avatarImage:imageCopy];
     }
   }
 
   else
   {
     v23 = objc_alloc(getTPInComingCallUISnapshotViewControllerClass());
-    v21 = [v14 wrappedPosterConfiguration];
-    v22 = [v23 initWithConfiguration:v21 style:a4 contact:v15 fallbackText:&stru_1F162C170];
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
+    v22 = [v23 initWithConfiguration:wrappedPosterConfiguration style:style contact:contactCopy fallbackText:&stru_1F162C170];
   }
 
   v24 = v22;
 
-  v25 = [MEMORY[0x1E6996818] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __144__CNUIIncomingCallSnapshotViewController_incomingCallSnapshotForConfiguration_style_contact_nameString_avatarImage_windowScene_completionBlock___block_invoke;
   v37[3] = &unk_1E76E7D10;
   v26 = v24;
   v38 = v26;
-  [v25 performBlock:v37];
+  [mainThreadScheduler performBlock:v37];
 
-  v27 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v28 = [v27 schedulerProvider];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
 
-  v29 = [v28 newSerialSchedulerWithName:@"com.apple.ContactsUI.CNIncomingCallSnapshotViewController.snapshottingQueue"];
+  v29 = [schedulerProvider newSerialSchedulerWithName:@"com.apple.ContactsUI.CNIncomingCallSnapshotViewController.snapshottingQueue"];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __144__CNUIIncomingCallSnapshotViewController_incomingCallSnapshotForConfiguration_style_contact_nameString_avatarImage_windowScene_completionBlock___block_invoke_2;
   v33[3] = &unk_1E76E8C68;
   v34 = v26;
-  v35 = v18;
-  v36 = v19;
-  v30 = v19;
-  v31 = v18;
+  v35 = sceneCopy;
+  v36 = blockCopy;
+  v30 = blockCopy;
+  v31 = sceneCopy;
   v32 = v26;
   [v29 performBlock:v33];
 }
@@ -221,17 +221,17 @@ void __144__CNUIIncomingCallSnapshotViewController_incomingCallSnapshotForConfig
   [v7 performBlock:v11];
 }
 
-+ (int64_t)styleIncludingCallButtons:(BOOL)a3 canShowPoster:(BOOL)a4
++ (int64_t)styleIncludingCallButtons:(BOOL)buttons canShowPoster:(BOOL)poster
 {
-  v4 = !a4;
-  if (a3 && !v4)
+  v4 = !poster;
+  if (buttons && !v4)
   {
     return 3;
   }
 
-  v6 = v4 || a3;
+  v6 = v4 || buttons;
   v7 = 4;
-  if (a3 && !a4)
+  if (buttons && !poster)
   {
     v7 = 5;
   }

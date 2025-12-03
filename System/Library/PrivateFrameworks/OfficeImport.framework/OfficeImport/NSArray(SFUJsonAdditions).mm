@@ -7,14 +7,14 @@
 - (uint64_t)sfu_appendJsonStringToString:()SFUJsonAdditions
 {
   [a3 appendString:@"["];
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     do
     {
-      [objc_msgSend(a1 objectAtIndex:{v7++), "sfu_appendJsonStringToString:", a3}];
+      [objc_msgSend(self objectAtIndex:{v7++), "sfu_appendJsonStringToString:", a3}];
       if (v7 < v6)
       {
         [a3 appendString:{@", "}];

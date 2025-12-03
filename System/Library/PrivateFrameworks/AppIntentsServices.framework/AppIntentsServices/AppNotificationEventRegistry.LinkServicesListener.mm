@@ -1,17 +1,17 @@
 @interface AppNotificationEventRegistry.LinkServicesListener
-- (void)sendAppNotificationEvents:(NSArray *)a3 reply:(id)a4;
+- (void)sendAppNotificationEvents:(NSArray *)events reply:(id)reply;
 @end
 
 @implementation AppNotificationEventRegistry.LinkServicesListener
 
-- (void)sendAppNotificationEvents:(NSArray *)a3 reply:(id)a4
+- (void)sendAppNotificationEvents:(NSArray *)events reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = events;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
+  eventsCopy = events;
 
   sub_221A65FB8(&unk_221BD6780, v7);
 }

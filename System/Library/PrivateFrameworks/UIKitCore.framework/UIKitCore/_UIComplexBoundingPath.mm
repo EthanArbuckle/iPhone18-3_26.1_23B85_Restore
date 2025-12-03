@@ -1,127 +1,127 @@
 @interface _UIComplexBoundingPath
-- (BOOL)_validateBitmap:(id)a3 withOrientation:(int64_t)a4 scale:(double)a5 forCoordinateSpace:(id)a6;
+- (BOOL)_validateBitmap:(id)bitmap withOrientation:(int64_t)orientation scale:(double)scale forCoordinateSpace:(id)space;
 - (BOOL)validateForCoordinateSpace;
-- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)a3 byInsettingRect:(CGRect)a4 onEdges:(unint64_t)a5 withOptions:(unint64_t)a6;
-- (CGRect)_largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect:(CGRect)a3 portraitAspectRatio:(double)a4;
-- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5;
-- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)a3 againstPortraitEdge:(unint64_t)a4 fromPortraitPixelRect:(CGRect)a5 withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)a6;
-- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)a3 inPortaitCorner:(unint64_t)a4 fromPortraitPixelRect:(CGRect)a5 withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)a6;
-- (CGRect)_rectTuckedAgainstEdge:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(double)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7;
-- (CGRect)_rectTuckedInCorner:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(CGSize)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7;
-- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)a3;
-- (_UIComplexBoundingPath)initWithCoder:(id)a3;
-- (_UIComplexBoundingPath)initWithCoordinateSpace:(id)a3 orientation:(int64_t)a4 scale:(double)a5 boundingPathBitmap:(id)a6;
-- (_UIComplexBoundingPath)initWithRectangularCoordinateSpace:(id)a3 orientation:(int64_t)a4 scale:(double)a5;
-- (_UIIntegralRect)_rectByHorizontallyInsettingPortraitPixelRect:(SEL)a3 onPortraitEdges:(_UIIntegralRect *)a4 performCompleteTest:(unint64_t)a5;
-- (_UIIntegralRect)_rectByVerticallyInsettingPortraitPixelRect:(SEL)a3 onPortraitEdges:(_UIIntegralRect *)a4 performCompleteTest:(unint64_t)a5;
+- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)rect byInsettingRect:(CGRect)insettingRect onEdges:(unint64_t)edges withOptions:(unint64_t)options;
+- (CGRect)_largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect:(CGRect)rect portraitAspectRatio:(double)ratio;
+- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)rect withCenter:(CGPoint)center aspectRatio:(double)ratio;
+- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)path againstPortraitEdge:(unint64_t)edge fromPortraitPixelRect:(CGRect)rect withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)radii;
+- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)path inPortaitCorner:(unint64_t)corner fromPortraitPixelRect:(CGRect)rect withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)radii;
+- (CGRect)_rectTuckedAgainstEdge:(unint64_t)edge ofBoundingPathAndRect:(CGRect)rect withSize:(double)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding;
+- (CGRect)_rectTuckedInCorner:(unint64_t)corner ofBoundingPathAndRect:(CGRect)rect withSize:(CGSize)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding;
+- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)rect;
+- (_UIComplexBoundingPath)initWithCoder:(id)coder;
+- (_UIComplexBoundingPath)initWithCoordinateSpace:(id)space orientation:(int64_t)orientation scale:(double)scale boundingPathBitmap:(id)bitmap;
+- (_UIComplexBoundingPath)initWithRectangularCoordinateSpace:(id)space orientation:(int64_t)orientation scale:(double)scale;
+- (_UIIntegralRect)_rectByHorizontallyInsettingPortraitPixelRect:(SEL)rect onPortraitEdges:(_UIIntegralRect *)edges performCompleteTest:(unint64_t)test;
+- (_UIIntegralRect)_rectByVerticallyInsettingPortraitPixelRect:(SEL)rect onPortraitEdges:(_UIIntegralRect *)edges performCompleteTest:(unint64_t)test;
 - (id)_imageRepresentation;
-- (id)boundingPathForCoordinateSpace:(id)a3 withCornerRadii:(UIRectCornerRadii)a4 orientation:(int64_t)a5 scale:(double)a6;
+- (id)boundingPathForCoordinateSpace:(id)space withCornerRadii:(UIRectCornerRadii)radii orientation:(int64_t)orientation scale:(double)scale;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCoordinateSpace:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCoordinateSpace:(id)space;
 @end
 
 @implementation _UIComplexBoundingPath
 
 - (BOOL)validateForCoordinateSpace
 {
-  v2 = self;
+  selfCopy = self;
   bitmap = self->_bitmap;
   orientation = self->_orientation;
   scale = self->_scale;
-  v6 = [(_UIBoundingPath *)self coordinateSpace];
-  LOBYTE(v2) = [(_UIComplexBoundingPath *)v2 _validateBitmap:bitmap withOrientation:orientation scale:v6 forCoordinateSpace:scale];
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
+  LOBYTE(selfCopy) = [(_UIComplexBoundingPath *)selfCopy _validateBitmap:bitmap withOrientation:orientation scale:coordinateSpace forCoordinateSpace:scale];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIComplexBoundingPath;
-  v4 = a3;
-  [(_UIBoundingPath *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"scale" forKey:{self->_scale, v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_orientation forKey:@"orientation"];
-  [v4 encodeObject:self->_bitmap forKey:@"bitmap"];
+  coderCopy = coder;
+  [(_UIBoundingPath *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"scale" forKey:{self->_scale, v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_orientation forKey:@"orientation"];
+  [coderCopy encodeObject:self->_bitmap forKey:@"bitmap"];
 }
 
-- (_UIComplexBoundingPath)initWithCoder:(id)a3
+- (_UIComplexBoundingPath)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _UIComplexBoundingPath;
-  v6 = [(_UIBoundingPath *)&v15 initWithCoder:v5];
+  v6 = [(_UIBoundingPath *)&v15 initWithCoder:coderCopy];
   if (v6)
   {
-    [v5 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     v6->_scale = v7;
     if (v7 <= 0.0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v6 file:@"_UIComplexBoundingPath.m" lineNumber:49 description:{@"Invalid scale decoded: %f", *&v6->_scale}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"_UIComplexBoundingPath.m" lineNumber:49 description:{@"Invalid scale decoded: %f", *&v6->_scale}];
     }
 
-    v8 = [v5 decodeIntegerForKey:@"orientation"];
+    v8 = [coderCopy decodeIntegerForKey:@"orientation"];
     v6->_orientation = v8;
     if (!v8)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:v6 file:@"_UIComplexBoundingPath.m" lineNumber:51 description:@"Orientation cannot be unknown"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v6 file:@"_UIComplexBoundingPath.m" lineNumber:51 description:@"Orientation cannot be unknown"];
     }
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"bitmap"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bitmap"];
     bitmap = v6->_bitmap;
     v6->_bitmap = v9;
 
     if (!v6->_bitmap)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:v6 file:@"_UIComplexBoundingPath.m" lineNumber:53 description:@"Failed to decode bitmap"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v6 file:@"_UIComplexBoundingPath.m" lineNumber:53 description:@"Failed to decode bitmap"];
     }
   }
 
   return v6;
 }
 
-- (_UIComplexBoundingPath)initWithCoordinateSpace:(id)a3 orientation:(int64_t)a4 scale:(double)a5 boundingPathBitmap:(id)a6
+- (_UIComplexBoundingPath)initWithCoordinateSpace:(id)space orientation:(int64_t)orientation scale:(double)scale boundingPathBitmap:(id)bitmap
 {
-  v11 = a3;
-  v12 = a6;
+  spaceCopy = space;
+  bitmapCopy = bitmap;
   v18.receiver = self;
   v18.super_class = _UIComplexBoundingPath;
-  v13 = [(_UIBoundingPath *)&v18 initWithCoordinateSpace:v11];
+  v13 = [(_UIBoundingPath *)&v18 initWithCoordinateSpace:spaceCopy];
   if (v13)
   {
-    if (!a4)
+    if (!orientation)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v13 file:@"_UIComplexBoundingPath.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"orientation != UIInterfaceOrientationUnknown"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"_UIComplexBoundingPath.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"orientation != UIInterfaceOrientationUnknown"}];
     }
 
-    if (a5 <= 0.0)
+    if (scale <= 0.0)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v13 file:@"_UIComplexBoundingPath.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"scale > 0"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"_UIComplexBoundingPath.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"scale > 0"}];
 
-      if (v12)
+      if (bitmapCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (v12)
+    else if (bitmapCopy)
     {
 LABEL_6:
-      [(_UIComplexBoundingPath *)v13 _validateBitmap:v12 withOrientation:a4 scale:v11 forCoordinateSpace:a5];
-      v13->_scale = a5;
-      v13->_orientation = a4;
-      objc_storeStrong(&v13->_bitmap, a6);
+      [(_UIComplexBoundingPath *)v13 _validateBitmap:bitmapCopy withOrientation:orientation scale:spaceCopy forCoordinateSpace:scale];
+      v13->_scale = scale;
+      v13->_orientation = orientation;
+      objc_storeStrong(&v13->_bitmap, bitmap);
       goto LABEL_7;
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:v13 file:@"_UIComplexBoundingPath.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"bitmap != nil"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:v13 file:@"_UIComplexBoundingPath.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"bitmap != nil"}];
 
     goto LABEL_6;
   }
@@ -131,14 +131,14 @@ LABEL_7:
   return v13;
 }
 
-- (_UIComplexBoundingPath)initWithRectangularCoordinateSpace:(id)a3 orientation:(int64_t)a4 scale:(double)a5
+- (_UIComplexBoundingPath)initWithRectangularCoordinateSpace:(id)space orientation:(int64_t)orientation scale:(double)scale
 {
-  v8 = a3;
-  [v8 bounds];
-  v10 = vcvtpd_u64_f64(v9 * a5);
-  [v8 bounds];
-  v12 = vcvtpd_u64_f64(v11 * a5);
-  if ((a4 - 3) >= 2)
+  spaceCopy = space;
+  [spaceCopy bounds];
+  v10 = vcvtpd_u64_f64(v9 * scale);
+  [spaceCopy bounds];
+  v12 = vcvtpd_u64_f64(v11 * scale);
+  if ((orientation - 3) >= 2)
   {
     v13 = v12;
   }
@@ -148,7 +148,7 @@ LABEL_7:
     v13 = v10;
   }
 
-  if ((a4 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     v10 = v12;
   }
@@ -159,35 +159,35 @@ LABEL_7:
   v17[2] = 0;
   v17[3] = v13;
   v14 = [[_UIBoundingPathBitmap alloc] initWithBitmapData:v17];
-  v15 = [[_UIComplexBoundingPath alloc] initWithCoordinateSpace:v8 orientation:a4 scale:v14 boundingPathBitmap:a5];
+  v15 = [[_UIComplexBoundingPath alloc] initWithCoordinateSpace:spaceCopy orientation:orientation scale:v14 boundingPathBitmap:scale];
 
   return v15;
 }
 
-- (id)boundingPathForCoordinateSpace:(id)a3 withCornerRadii:(UIRectCornerRadii)a4 orientation:(int64_t)a5 scale:(double)a6
+- (id)boundingPathForCoordinateSpace:(id)space withCornerRadii:(UIRectCornerRadii)radii orientation:(int64_t)orientation scale:(double)scale
 {
-  v10 = a3;
-  if (!v10)
+  spaceCopy = space;
+  if (!spaceCopy)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace != nil"}];
   }
 
-  v51 = a6;
-  v11 = [(_UIBoundingPath *)self coordinateSpace];
-  if (!v11)
+  scaleCopy = scale;
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
+  if (!coordinateSpace)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:93 description:@"The bounding path's coordinate space cannot be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:93 description:@"The bounding path's coordinate space cannot be nil"];
   }
 
-  [v10 bounds];
-  [v11 convertRect:v10 fromCoordinateSpace:?];
+  [spaceCopy bounds];
+  [coordinateSpace convertRect:spaceCopy fromCoordinateSpace:?];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v11 bounds];
+  [coordinateSpace bounds];
   v78.origin.x = v20;
   v78.origin.y = v21;
   v78.size.width = v22;
@@ -208,7 +208,7 @@ LABEL_7:
   if (CGRectIsNull(v72) || (v73.origin.x = x, v73.origin.y = y, v73.size.width = width, v73.size.height = height, CGRectIsEmpty(v73)))
   {
     v32 = [_UIRectangularBoundingPath alloc];
-    v33 = [(_UIRectangularBoundingPath *)v32 initWithCoordinateSpace:v10 boundingRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    v33 = [(_UIRectangularBoundingPath *)v32 initWithCoordinateSpace:spaceCopy boundingRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     goto LABEL_22;
   }
 
@@ -218,7 +218,7 @@ LABEL_7:
     [(_UIBoundingPathBitmap *)bitmap bitmapData];
     v35 = self->_bitmap;
     v36 = v66;
-    v37 = v51;
+    v37 = scaleCopy;
     if (v35)
     {
       [(_UIBoundingPathBitmap *)v35 bitmapData];
@@ -234,7 +234,7 @@ LABEL_7:
     v68 = 0u;
     v66 = 0u;
     v36 = 0.0;
-    v37 = v51;
+    v37 = scaleCopy;
   }
 
   v65 = 0;
@@ -249,33 +249,33 @@ LABEL_13:
   v74.size.width = v26;
   v74.size.height = v27;
   v75 = CGRectApplyAffineTransform(v74, &v59);
-  v76.origin.x = _UIWindowConvertRectFromOrientationToOrientation(a5, 1, v75.origin.x, v75.origin.y, v75.size.width, v75.size.height, v36, v38);
+  v76.origin.x = _UIWindowConvertRectFromOrientationToOrientation(orientation, 1, v75.origin.x, v75.origin.y, v75.size.width, v75.size.height, v36, v38);
   v77 = CGRectIntegral(v76);
-  v39 = (a4.topLeft * v37);
-  v40 = (a4.bottomLeft * v37);
-  v41 = (a4.bottomRight * v37);
-  v42 = (a4.topRight * v37);
-  if (a5 == 2)
+  v39 = (radii.topLeft * v37);
+  v40 = (radii.bottomLeft * v37);
+  v41 = (radii.bottomRight * v37);
+  v42 = (radii.topRight * v37);
+  if (orientation == 2)
   {
-    v43 = (a4.topLeft * v37);
-    v44 = (a4.topRight * v37);
-    v42 = (a4.bottomRight * v37);
-    v41 = (a4.bottomLeft * v37);
+    v43 = (radii.topLeft * v37);
+    v44 = (radii.topRight * v37);
+    v42 = (radii.bottomRight * v37);
+    v41 = (radii.bottomLeft * v37);
   }
 
-  else if (a5 == 3)
+  else if (orientation == 3)
   {
-    v43 = (a4.topRight * v37);
-    v44 = (a4.bottomRight * v37);
-    v42 = (a4.bottomLeft * v37);
-    v41 = (a4.topLeft * v37);
+    v43 = (radii.topRight * v37);
+    v44 = (radii.bottomRight * v37);
+    v42 = (radii.bottomLeft * v37);
+    v41 = (radii.topLeft * v37);
   }
 
   else
   {
-    v43 = (a4.bottomLeft * v37);
-    v44 = (a4.topLeft * v37);
-    if (a5 != 4)
+    v43 = (radii.bottomLeft * v37);
+    v44 = (radii.topLeft * v37);
+    if (orientation != 4)
     {
       goto LABEL_20;
     }
@@ -313,8 +313,8 @@ LABEL_20:
     v52[1] = 3221225472;
     v52[2] = __91___UIComplexBoundingPath_boundingPathForCoordinateSpace_withCornerRadii_orientation_scale___block_invoke;
     v52[3] = &unk_1E710C3C0;
-    v53 = v11;
-    v54 = v10;
+    v53 = coordinateSpace;
+    v54 = spaceCopy;
     v55 = v24;
     v56 = v25;
     v57 = v26;
@@ -322,25 +322,25 @@ LABEL_20:
     _UIBoundingPathBitmapDataAssertValid(&v59, v52);
   }
 
-  v33 = [[_UIComplexBoundingPath alloc] initWithCoordinateSpace:v10 orientation:a5 scale:v46 boundingPathBitmap:v37];
+  v33 = [[_UIComplexBoundingPath alloc] initWithCoordinateSpace:spaceCopy orientation:orientation scale:v46 boundingPathBitmap:v37];
 
 LABEL_22:
 
   return v33;
 }
 
-- (BOOL)_validateBitmap:(id)a3 withOrientation:(int64_t)a4 scale:(double)a5 forCoordinateSpace:(id)a6
+- (BOOL)_validateBitmap:(id)bitmap withOrientation:(int64_t)orientation scale:(double)scale forCoordinateSpace:(id)space
 {
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if ((a4 - 3) > 1)
+  bitmapCopy = bitmap;
+  spaceCopy = space;
+  if ((orientation - 3) > 1)
   {
-    if (v11)
+    if (bitmapCopy)
     {
-      [v11 bitmapData];
+      [bitmapCopy bitmapData];
       v13 = v34;
-      [v11 bitmapData];
+      [bitmapCopy bitmapData];
       v14 = v32;
     }
 
@@ -351,11 +351,11 @@ LABEL_22:
     }
   }
 
-  else if (v11)
+  else if (bitmapCopy)
   {
-    [v11 bitmapData];
+    [bitmapCopy bitmapData];
     v13 = v35;
-    [v11 bitmapData];
+    [bitmapCopy bitmapData];
     v14 = v33;
   }
 
@@ -365,10 +365,10 @@ LABEL_22:
     v14 = 0;
   }
 
-  [v12 bounds];
+  [spaceCopy bounds];
   v16 = v15;
   v18 = v17;
-  CGAffineTransformMakeScale(v36, a5, a5);
+  CGAffineTransformMakeScale(v36, scale, scale);
   v19 = v16 * *v36 + v18 * *&v36[16];
   v20 = v16 * *&v36[8] + v18 * *&v36[24];
   v21 = v19 <= v13;
@@ -381,9 +381,9 @@ LABEL_22:
   {
     if (!v21)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      v31 = [UIApplication stringForInterfaceOrientation:a4];
-      [v22 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:140 description:@"Bounding path likely out of sync with its coordinate space: The bitmap cannot be smaller than the coordinate space's bounds (in pixels), adjusted for orientation. Bitmap orientation-adjusted size: {width=%lu, height=%lu}; Orientation: %@; Scale: %.1f; Coordinate space: %@", v13, v14, v31, *&a5, v12];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v31 = [UIApplication stringForInterfaceOrientation:orientation];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:140 description:@"Bounding path likely out of sync with its coordinate space: The bitmap cannot be smaller than the coordinate space's bounds (in pixels), adjusted for orientation. Bitmap orientation-adjusted size: {width=%lu, height=%lu}; Orientation: %@; Scale: %.1f; Coordinate space: %@", v13, v14, v31, *&scale, spaceCopy];
 LABEL_13:
 
 LABEL_16:
@@ -405,8 +405,8 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v22 = v27;
-    v31 = [UIApplication stringForInterfaceOrientation:a4];
+    currentHandler = v27;
+    v31 = [UIApplication stringForInterfaceOrientation:orientation];
     *v36 = 134219010;
     *&v36[4] = v13;
     *&v36[12] = 2048;
@@ -414,26 +414,26 @@ LABEL_16:
     *&v36[22] = 2112;
     *&v36[24] = v31;
     *&v36[32] = 2048;
-    *&v36[34] = a5;
+    *&v36[34] = scale;
     *&v36[42] = 2112;
-    *&v36[44] = v12;
-    _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "Bounding path likely out of sync with its coordinate space: The bitmap cannot be smaller than the coordinate space's bounds (in pixels), adjusted for orientation. Bitmap orientation-adjusted size: {width=%lu, height=%lu}; Orientation: %@; Scale: %.1f; Coordinate space: %@", v36, 0x34u);
+    *&v36[44] = spaceCopy;
+    _os_log_impl(&dword_188A29000, currentHandler, OS_LOG_TYPE_ERROR, "Bounding path likely out of sync with its coordinate space: The bitmap cannot be smaller than the coordinate space's bounds (in pixels), adjusted for orientation. Bitmap orientation-adjusted size: {width=%lu, height=%lu}; Orientation: %@; Scale: %.1f; Coordinate space: %@", v36, 0x34u);
     goto LABEL_13;
   }
 
-  if (v19 + a5 < v13)
+  if (v19 + scale < v13)
   {
     goto LABEL_16;
   }
 
-  v23 = v20 + a5 >= v14;
+  v23 = v20 + scale >= v14;
 LABEL_18:
   if (_UIBoundingPathValidationAssertsEnabled == 1)
   {
     if (!v23)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      v25 = [UIApplication stringForInterfaceOrientation:a4];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      v25 = [UIApplication stringForInterfaceOrientation:orientation];
     }
   }
 
@@ -445,7 +445,7 @@ LABEL_18:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = v28;
-        v30 = [UIApplication stringForInterfaceOrientation:a4];
+        v30 = [UIApplication stringForInterfaceOrientation:orientation];
         *v36 = 134219010;
         *&v36[4] = v13;
         *&v36[12] = 2048;
@@ -453,9 +453,9 @@ LABEL_18:
         *&v36[22] = 2112;
         *&v36[24] = v30;
         *&v36[32] = 2048;
-        *&v36[34] = a5;
+        *&v36[34] = scale;
         *&v36[42] = 2112;
-        *&v36[44] = v12;
+        *&v36[44] = spaceCopy;
       }
     }
   }
@@ -463,23 +463,23 @@ LABEL_18:
   return v23;
 }
 
-- (void)setCoordinateSpace:(id)a3
+- (void)setCoordinateSpace:(id)space
 {
   bitmap = self->_bitmap;
   orientation = self->_orientation;
   scale = self->_scale;
-  v7 = a3;
-  [(_UIComplexBoundingPath *)self _validateBitmap:bitmap withOrientation:orientation scale:v7 forCoordinateSpace:scale];
+  spaceCopy = space;
+  [(_UIComplexBoundingPath *)self _validateBitmap:bitmap withOrientation:orientation scale:spaceCopy forCoordinateSpace:scale];
   v8.receiver = self;
   v8.super_class = _UIComplexBoundingPath;
-  [(_UIBoundingPath *)&v8 setCoordinateSpace:v7];
+  [(_UIBoundingPath *)&v8 setCoordinateSpace:spaceCopy];
 }
 
-- (_UIIntegralRect)_rectByHorizontallyInsettingPortraitPixelRect:(SEL)a3 onPortraitEdges:(_UIIntegralRect *)a4 performCompleteTest:(unint64_t)a5
+- (_UIIntegralRect)_rectByHorizontallyInsettingPortraitPixelRect:(SEL)rect onPortraitEdges:(_UIIntegralRect *)edges performCompleteTest:(unint64_t)test
 {
   v35 = a6;
-  var1 = a4->var1;
-  retstr->var0 = a4->var0;
+  var1 = edges->var1;
+  retstr->var0 = edges->var0;
   retstr->var1 = var1;
   result = self->_bitmap;
   if (result)
@@ -488,13 +488,13 @@ LABEL_18:
   }
 
   var0 = retstr->var0.var0;
-  if ((a5 & 0xA) != 0xA)
+  if ((test & 0xA) != 0xA)
   {
     v13 = retstr->var0.var1;
     v12 = retstr->var1.var0;
 LABEL_19:
     v33 = retstr;
-    if ((a5 & 0xA) == 0)
+    if ((test & 0xA) == 0)
     {
       v28 = var0;
 LABEL_53:
@@ -503,8 +503,8 @@ LABEL_53:
       return result;
     }
 
-    v23 = (a5 >> 1) & 1;
-    v24 = (a5 >> 3) & 1;
+    v23 = (test >> 1) & 1;
+    v24 = (test >> 3) & 1;
     v25 = v12 + var0;
     v26 = v13 + 1;
     v34 = retstr->var1.var1 + v13;
@@ -663,11 +663,11 @@ LABEL_49:
   return result;
 }
 
-- (_UIIntegralRect)_rectByVerticallyInsettingPortraitPixelRect:(SEL)a3 onPortraitEdges:(_UIIntegralRect *)a4 performCompleteTest:(unint64_t)a5
+- (_UIIntegralRect)_rectByVerticallyInsettingPortraitPixelRect:(SEL)rect onPortraitEdges:(_UIIntegralRect *)edges performCompleteTest:(unint64_t)test
 {
   v34 = a6;
-  var1 = a4->var1;
-  retstr->var0 = a4->var0;
+  var1 = edges->var1;
+  retstr->var0 = edges->var0;
   retstr->var1 = var1;
   result = self->_bitmap;
   if (result)
@@ -676,13 +676,13 @@ LABEL_49:
   }
 
   var0 = retstr->var0.var0;
-  if ((a5 & 4) == 0 || (a5 & 1) == 0)
+  if ((test & 4) == 0 || (test & 1) == 0)
   {
     v13 = retstr->var0.var1;
     v12 = retstr->var1.var1;
 LABEL_14:
     v32 = retstr;
-    if ((((a5 & 4) == 0) & (a5 ^ 1)) != 0)
+    if ((((test & 4) == 0) & (test ^ 1)) != 0)
     {
       v26 = v13;
 LABEL_46:
@@ -691,7 +691,7 @@ LABEL_46:
       return result;
     }
 
-    v22 = (a5 >> 2) & 1;
+    v22 = (test >> 2) & 1;
     v23 = v12 + v13;
     v24 = var0 + 1;
     v33 = retstr->var1.var0 + var0;
@@ -705,7 +705,7 @@ LABEL_46:
         goto LABEL_46;
       }
 
-      if (a5)
+      if (test)
       {
         v35 = 0u;
         v36 = 0u;
@@ -714,7 +714,7 @@ LABEL_46:
         result = _UIBoundingPathBitmapDataRowHitTest(&v35, v25, v13);
         if (result)
         {
-          LODWORD(a5) = (v30 + v25) <= v33 || v34;
+          LODWORD(test) = (v30 + v25) <= v33 || v34;
           if ((v30 + v25) <= v33)
           {
             v25 += v30;
@@ -741,7 +741,7 @@ LABEL_46:
             goto LABEL_46;
           }
 
-          LODWORD(a5) = 1;
+          LODWORD(test) = 1;
           ++v13;
           v25 = var0;
           if ((v22 & 1) == 0)
@@ -755,7 +755,7 @@ LABEL_39:
 
       else
       {
-        LODWORD(a5) = 0;
+        LODWORD(test) = 0;
         if ((v22 & 1) == 0)
         {
           goto LABEL_39;
@@ -785,7 +785,7 @@ LABEL_41:
 
       LODWORD(v22) = 1;
 LABEL_42:
-      if (((a5 | v22) & 1) == 0)
+      if (((test | v22) & 1) == 0)
       {
         goto LABEL_46;
       }
@@ -851,25 +851,25 @@ LABEL_42:
   return result;
 }
 
-- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)a3 byInsettingRect:(CGRect)a4 onEdges:(unint64_t)a5 withOptions:(unint64_t)a6
+- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)rect byInsettingRect:(CGRect)insettingRect onEdges:(unint64_t)edges withOptions:(unint64_t)options
 {
-  v6 = a6;
-  y = a4.origin.y;
-  height = a4.size.height;
-  x = a4.origin.x;
-  width = a4.size.width;
-  r1 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v13 = [(_UIBoundingPath *)self coordinateSpace];
-  if (!v13)
+  optionsCopy = options;
+  y = insettingRect.origin.y;
+  height = insettingRect.size.height;
+  x = insettingRect.origin.x;
+  width = insettingRect.size.width;
+  r1 = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
+  if (!coordinateSpace)
   {
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:424 description:@"The bounding path's coordinate space cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:424 description:@"The bounding path's coordinate space cannot be nil"];
   }
 
-  [v13 bounds];
+  [coordinateSpace bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -915,12 +915,12 @@ LABEL_8:
   v87.size.width = v19;
   v87.size.height = v21;
   v77 = CGRectIntersection(v76, v87);
-  [(_UIBoundingPath *)self _inscribedRectInBoundingRect:a5 byInsettingRect:v77.origin.x onEdges:v77.origin.y, v77.size.width, v77.size.height, x, y, width, height];
+  [(_UIBoundingPath *)self _inscribedRectInBoundingRect:edges byInsettingRect:v77.origin.x onEdges:v77.origin.y, v77.size.width, v77.size.height, x, y, width, height];
   v27 = v78.origin.x;
   v28 = v78.origin.y;
   v29 = v78.size.width;
   v30 = v78.size.height;
-  if (CGRectIsNull(v78) || v29 <= 0.0 || v30 <= 0.0 || ((v31 = v26 / v57, v32 = _UIWindowConvertRectFromOrientationToOrientation(orientation, 1, v27, v28, v29, v30, v58, v31), v34 = v33, v36 = v35, v38 = v37, v39 = _UIRectEdgeConvertedFromOrientationToPortrait(a5, orientation), CGAffineTransformMakeScale(&v67, v57, v57), v79.origin.x = v32, v79.origin.y = v34, v79.size.width = v36, v79.size.height = v38, v80 = CGRectApplyAffineTransform(v79, &v67), v81 = CGRectIntegral(v80), v81.size.width >= 1) ? (v40 = v81.size.height <= 0) : (v40 = 1), v40 || (*&v64 = v81.origin.x, *(&v64 + 1) = v81.origin.y, *&c = v81.size.width, *&d = v81.size.height, [(_UIComplexBoundingPath *)self _rectByHorizontallyInsettingPortraitPixelRect:&v64 onPortraitEdges:v39 performCompleteTest:(v6 & 1) == 0, v81.origin.x, v81.origin.y], *&v67.c < 1 || *&v67.d <= 0 || (v64 = *&v67.a, c = v67.c, d = v67.d, [(_UIComplexBoundingPath *)self _rectByVerticallyInsettingPortraitPixelRect:&v64 onPortraitEdges:v39 performCompleteTest:(v6 & 1) == 0], *&v67.c < 1) || *&v67.d <= 0)))
+  if (CGRectIsNull(v78) || v29 <= 0.0 || v30 <= 0.0 || ((v31 = v26 / v57, v32 = _UIWindowConvertRectFromOrientationToOrientation(orientation, 1, v27, v28, v29, v30, v58, v31), v34 = v33, v36 = v35, v38 = v37, v39 = _UIRectEdgeConvertedFromOrientationToPortrait(edges, orientation), CGAffineTransformMakeScale(&v67, v57, v57), v79.origin.x = v32, v79.origin.y = v34, v79.size.width = v36, v79.size.height = v38, v80 = CGRectApplyAffineTransform(v79, &v67), v81 = CGRectIntegral(v80), v81.size.width >= 1) ? (v40 = v81.size.height <= 0) : (v40 = 1), v40 || (*&v64 = v81.origin.x, *(&v64 + 1) = v81.origin.y, *&c = v81.size.width, *&d = v81.size.height, [(_UIComplexBoundingPath *)self _rectByHorizontallyInsettingPortraitPixelRect:&v64 onPortraitEdges:v39 performCompleteTest:(optionsCopy & 1) == 0, v81.origin.x, v81.origin.y], *&v67.c < 1 || *&v67.d <= 0 || (v64 = *&v67.a, c = v67.c, d = v67.d, [(_UIComplexBoundingPath *)self _rectByVerticallyInsettingPortraitPixelRect:&v64 onPortraitEdges:v39 performCompleteTest:(optionsCopy & 1) == 0], *&v67.c < 1) || *&v67.d <= 0)))
   {
     v41 = *MEMORY[0x1E695F050];
     v42 = *(MEMORY[0x1E695F050] + 8);
@@ -966,12 +966,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect:(CGRect)a3 portraitAspectRatio:(double)a4
+- (CGRect)_largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect:(CGRect)rect portraitAspectRatio:(double)ratio
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v68 = 0;
   v66 = 0u;
   v67 = 0u;
@@ -982,10 +982,10 @@ LABEL_8:
     [(_UIBoundingPathBitmap *)bitmap bitmapData];
   }
 
-  if (a4 <= 0.0)
+  if (ratio <= 0.0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:538 description:@"Invalid aspect ratio."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:538 description:@"Invalid aspect ratio."];
   }
 
   v57 = 0;
@@ -1012,9 +1012,9 @@ LABEL_8:
   *&v56 = v70.size.width;
   *(&v56 + 1) = v70.size.height;
   v47[0] = MEMORY[0x1E69E9820];
-  if (a4 >= 1.0)
+  if (ratio >= 1.0)
   {
-    v12 = 1.0 / a4;
+    v12 = 1.0 / ratio;
   }
 
   else
@@ -1025,7 +1025,7 @@ LABEL_8:
   v47[1] = 3221225472;
   v48 = __116___UIComplexBoundingPath__largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect_portraitAspectRatio___block_invoke;
   v49 = &unk_1E710C3E8;
-  v52 = fmin(a4, 1.0);
+  v52 = fmin(ratio, 1.0);
   v53 = v12;
   v50 = &v57;
   v51 = v54;
@@ -1096,20 +1096,20 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5
+- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)rect withCenter:(CGPoint)center aspectRatio:(double)ratio
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(_UIBoundingPath *)self coordinateSpace];
-  if (!v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
+  if (!coordinateSpace)
   {
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:586 description:@"The bounding path's coordinate space cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:586 description:@"The bounding path's coordinate space cannot be nil"];
   }
 
-  [v9 bounds];
+  [coordinateSpace bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1153,12 +1153,12 @@ LABEL_8:
   v79.size.width = v15;
   v79.size.height = v17;
   v72 = CGRectIntersection(v71, v79);
-  [(_UIBoundingPath *)self _largestInscribedRectInBoundingRect:v72.origin.x withCenter:v72.origin.y aspectRatio:v72.size.width, v72.size.height, a4.x, a4.y, a5];
+  [(_UIBoundingPath *)self _largestInscribedRectInBoundingRect:v72.origin.x withCenter:v72.origin.y aspectRatio:v72.size.width, v72.size.height, center.x, center.y, ratio];
   v23 = v73.origin.x;
   v24 = v73.origin.y;
   v25 = v73.size.width;
   v26 = v73.size.height;
-  if (CGRectIsNull(v73) || v25 <= 0.0 || v26 <= 0.0 || (v27 = v22 / scale, v28 = _UIWindowConvertRectFromOrientationToOrientation(orientation, 1, v23, v24, v25, v26, v57, v22 / scale), v30 = v29, v32 = v31, v34 = v33, _UIAspectRatioConvertedFromOrientationToPortrait(a5), v36 = v35, CGAffineTransformMakeScale(&v62, scale, scale), v74.origin.x = v28, v74.origin.y = v30, v74.size.width = v32, v74.size.height = v34, v75 = CGRectApplyAffineTransform(v74, &v62), [(_UIComplexBoundingPath *)self _largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect:v75.origin.x portraitAspectRatio:v75.origin.y, v75.size.width, v75.size.height, v36], v39 <= 0.0) || (v41 = v40, v40 <= 0.0))
+  if (CGRectIsNull(v73) || v25 <= 0.0 || v26 <= 0.0 || (v27 = v22 / scale, v28 = _UIWindowConvertRectFromOrientationToOrientation(orientation, 1, v23, v24, v25, v26, v57, v22 / scale), v30 = v29, v32 = v31, v34 = v33, _UIAspectRatioConvertedFromOrientationToPortrait(ratio), v36 = v35, CGAffineTransformMakeScale(&v62, scale, scale), v74.origin.x = v28, v74.origin.y = v30, v74.size.width = v32, v74.size.height = v34, v75 = CGRectApplyAffineTransform(v74, &v62), [(_UIComplexBoundingPath *)self _largestInscribedPortraitPixelRectInBoundingPathWithPortraitPixelRect:v75.origin.x portraitAspectRatio:v75.origin.y, v75.size.width, v75.size.height, v36], v39 <= 0.0) || (v41 = v40, v40 <= 0.0))
   {
     v45 = *MEMORY[0x1E695F050];
     v47 = *(MEMORY[0x1E695F050] + 8);
@@ -1194,12 +1194,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)a3 inPortaitCorner:(unint64_t)a4 fromPortraitPixelRect:(CGRect)a5 withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)a6
+- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)path inPortaitCorner:(unint64_t)corner fromPortraitPixelRect:(CGRect)rect withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)radii
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v83 = 0;
   v81 = 0u;
   v82 = 0u;
@@ -1210,7 +1210,7 @@ LABEL_8:
     [(_UIBoundingPathBitmap *)bitmap bitmapData];
   }
 
-  v13 = _UIDirectionVectorForCorner(a4);
+  v13 = _UIDirectionVectorForCorner(corner);
   v15 = v14;
   v71 = y;
   v16 = x;
@@ -1220,10 +1220,10 @@ LABEL_8:
     v77 = v81;
     v78 = v82;
     v79 = v83;
-    v17 = *&a6->var2;
-    v74 = *&a6->var0;
+    v17 = *&radii->var2;
+    v74 = *&radii->var0;
     v75 = v17;
-    if (isRectInBoundingPathCornerWithMinimumPadding(&v76, &v74, a4, v16, y, width, height, a3))
+    if (isRectInBoundingPathCornerWithMinimumPadding(&v76, &v74, corner, v16, y, width, height, path))
     {
       break;
     }
@@ -1251,24 +1251,24 @@ LABEL_8:
   }
 
   v18 = v16;
-  v19 = a4 - 1;
-  if (a4 - 1 < 8 && ((0x8Bu >> v19) & 1) != 0)
+  v19 = corner - 1;
+  if (corner - 1 < 8 && ((0x8Bu >> v19) & 1) != 0)
   {
     v20 = dbl_18A67CD50[v19];
   }
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CGFloat cornerAngleForCorner(UIRectCorner)"];
-    [v21 handleFailureInFunction:v22 file:@"_UIComplexBoundingPath.m" lineNumber:825 description:{@"Invalid UIRectCorner value (%ld)", a4}];
+    [currentHandler handleFailureInFunction:v22 file:@"_UIComplexBoundingPath.m" lineNumber:825 description:{@"Invalid UIRectCorner value (%ld)", corner}];
 
     v20 = 0.0;
   }
 
-  v23 = pointOnRectClosestToCorner(a4, x, v71, width, height);
+  v23 = pointOnRectClosestToCorner(corner, x, v71, width, height);
   v25 = v24;
-  v26 = pointOnRectClosestToCorner(a4, v18, y, width, height);
+  v26 = pointOnRectClosestToCorner(corner, v18, y, width, height);
   v70 = v25;
   v72 = v23;
   v28 = sqrt((v26 - v23) * (v26 - v23) + (v27 - v25) * (v27 - v25));
@@ -1329,9 +1329,9 @@ LABEL_8:
         v40 = __sincos_stret(v20);
         v41 = llround(v72 + v32 * v40.__cosval);
         v42 = llround(v70 + v32 * v40.__sinval);
-        if (a4 > 3)
+        if (corner > 3)
         {
-          if (a4 == 4)
+          if (corner == 4)
           {
             v18 = v41;
             v44 = v69;
@@ -1339,12 +1339,12 @@ LABEL_8:
             goto LABEL_36;
           }
 
-          if (a4 != 8)
+          if (corner != 8)
           {
 LABEL_32:
-            v45 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGRect testRectForPointOnArcInCorner(CGRect, _UIIntegralPoint, UIRectCorner)"}];
-            [v45 handleFailureInFunction:v46 file:@"_UIComplexBoundingPath.m" lineNumber:865 description:{@"Invalid UIRectCorner value (%ld)", a4}];
+            [currentHandler2 handleFailureInFunction:v46 file:@"_UIComplexBoundingPath.m" lineNumber:865 description:{@"Invalid UIRectCorner value (%ld)", corner}];
 
             goto LABEL_34;
           }
@@ -1357,7 +1357,7 @@ LABEL_32:
 
         else
         {
-          if (a4 == 1)
+          if (corner == 1)
           {
             v18 = v41;
             v39 = v42;
@@ -1368,7 +1368,7 @@ LABEL_36:
             goto LABEL_37;
           }
 
-          if (a4 != 2)
+          if (corner != 2)
           {
             goto LABEL_32;
           }
@@ -1384,10 +1384,10 @@ LABEL_37:
         v77 = v81;
         v78 = v82;
         v79 = v83;
-        v47 = *&a6->var2;
-        v74 = *&a6->var0;
+        v47 = *&radii->var2;
+        v74 = *&radii->var0;
         v75 = v47;
-        if (isRectInBoundingPathCornerWithMinimumPadding(&v76, &v74, a4, v18, v39, v43, v44, a3))
+        if (isRectInBoundingPathCornerWithMinimumPadding(&v76, &v74, corner, v18, v39, v43, v44, path))
         {
           goto LABEL_61;
         }
@@ -1415,9 +1415,9 @@ LABEL_54:
       v48 = __sincos_stret(v36);
       v49 = llround(v72 + v32 * v48.__cosval);
       v50 = llround(v70 + v32 * v48.__sinval);
-      if (a4 > 3)
+      if (corner > 3)
       {
-        if (a4 == 4)
+        if (corner == 4)
         {
           v18 = v49;
           v52 = v69;
@@ -1425,7 +1425,7 @@ LABEL_54:
           goto LABEL_51;
         }
 
-        if (a4 != 8)
+        if (corner != 8)
         {
           goto LABEL_47;
         }
@@ -1438,7 +1438,7 @@ LABEL_54:
 
       else
       {
-        if (a4 == 1)
+        if (corner == 1)
         {
           v18 = v49;
           v39 = v50;
@@ -1446,7 +1446,7 @@ LABEL_54:
 
         else
         {
-          if (a4 == 2)
+          if (corner == 2)
           {
             v51 = v68;
             v52 = v69;
@@ -1456,9 +1456,9 @@ LABEL_54:
           }
 
 LABEL_47:
-          v53 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
           v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGRect testRectForPointOnArcInCorner(CGRect, _UIIntegralPoint, UIRectCorner)"}];
-          [v53 handleFailureInFunction:v54 file:@"_UIComplexBoundingPath.m" lineNumber:865 description:{@"Invalid UIRectCorner value (%ld)", a4}];
+          [currentHandler3 handleFailureInFunction:v54 file:@"_UIComplexBoundingPath.m" lineNumber:865 description:{@"Invalid UIRectCorner value (%ld)", corner}];
         }
 
         v52 = v69;
@@ -1471,10 +1471,10 @@ LABEL_52:
       v77 = v81;
       v78 = v82;
       v79 = v83;
-      v55 = *&a6->var2;
-      v74 = *&a6->var0;
+      v55 = *&radii->var2;
+      v74 = *&radii->var0;
       v75 = v55;
-      if ((isRectInBoundingPathCornerWithMinimumPadding(&v76, &v74, a4, v18, v39, v51, v52, a3) & 1) == 0)
+      if ((isRectInBoundingPathCornerWithMinimumPadding(&v76, &v74, corner, v18, v39, v51, v52, path) & 1) == 0)
       {
         v36 = v33 + v36;
         goto LABEL_54;
@@ -1510,20 +1510,20 @@ LABEL_68:
   return result;
 }
 
-- (CGRect)_rectTuckedInCorner:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(CGSize)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7
+- (CGRect)_rectTuckedInCorner:(unint64_t)corner ofBoundingPathAndRect:(CGRect)rect withSize:(CGSize)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding
 {
-  width = a4.size.width;
-  r1 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = [(_UIBoundingPath *)self coordinateSpace];
-  if (!v11)
+  width = rect.size.width;
+  r1 = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
+  if (!coordinateSpace)
   {
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:959 description:@"The bounding path's coordinate space cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:959 description:@"The bounding path's coordinate space cannot be nil"];
   }
 
-  [v11 bounds];
+  [coordinateSpace bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1568,7 +1568,7 @@ LABEL_8:
   v84.size.width = v17;
   v84.size.height = v19;
   v76 = CGRectIntersection(v75, v84);
-  [(_UIBoundingPath *)self _rectTuckedInCorner:a3 ofBoundingRect:v76.origin.x withSize:v76.origin.y minimumPadding:v76.size.width, v76.size.height, a5.width, a5.height, a7];
+  [(_UIBoundingPath *)self _rectTuckedInCorner:corner ofBoundingRect:v76.origin.x withSize:v76.origin.y minimumPadding:v76.size.width, v76.size.height, size.width, size.height, padding];
   v25 = v77.origin.x;
   v26 = v77.origin.y;
   v27 = v77.size.width;
@@ -1583,37 +1583,37 @@ LABEL_8:
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = _UIRectCornerConvertedFromOrientationToPortrait(a3, orientation);
+  v37 = _UIRectCornerConvertedFromOrientationToPortrait(corner, orientation);
   CGAffineTransformMakeScale(&v66, scale, scale);
   v78.origin.x = v30;
   v78.origin.y = v32;
   v78.size.width = v34;
   v78.size.height = v36;
   v79 = CGRectApplyAffineTransform(v78, &v66);
-  *&v38 = (a6.topLeft * scale);
-  *&v39 = (a6.bottomLeft * scale);
-  v40 = (a6.bottomRight * scale);
-  v41 = (a6.topRight * scale);
+  *&v38 = (radii.topLeft * scale);
+  *&v39 = (radii.bottomLeft * scale);
+  v40 = (radii.bottomRight * scale);
+  v41 = (radii.topRight * scale);
   if (orientation == 2)
   {
-    v42 = (a6.topLeft * scale);
-    v43 = (a6.topRight * scale);
-    v41 = (a6.bottomRight * scale);
-    v40 = (a6.bottomLeft * scale);
+    v42 = (radii.topLeft * scale);
+    v43 = (radii.topRight * scale);
+    v41 = (radii.bottomRight * scale);
+    v40 = (radii.bottomLeft * scale);
     goto LABEL_15;
   }
 
   if (orientation == 3)
   {
-    v42 = (a6.topRight * scale);
-    v43 = (a6.bottomRight * scale);
-    v41 = (a6.bottomLeft * scale);
-    v40 = (a6.topLeft * scale);
+    v42 = (radii.topRight * scale);
+    v43 = (radii.bottomRight * scale);
+    v41 = (radii.bottomLeft * scale);
+    v40 = (radii.topLeft * scale);
     goto LABEL_15;
   }
 
-  v42 = (a6.bottomLeft * scale);
-  v43 = (a6.topLeft * scale);
+  v42 = (radii.bottomLeft * scale);
+  v43 = (radii.topLeft * scale);
   if (orientation == 4)
   {
 LABEL_15:
@@ -1627,7 +1627,7 @@ LABEL_15:
   v66.b = v39;
   *&v66.c = v40;
   *&v66.d = v41;
-  [(_UIComplexBoundingPath *)self _portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:v37 inPortaitCorner:&v66 fromPortraitPixelRect:scale * a7 withPortraitPixelCornerRadii:v79.origin.x, v79.origin.y, v79.size.width, v79.size.height, *&v60];
+  [(_UIComplexBoundingPath *)self _portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:v37 inPortaitCorner:&v66 fromPortraitPixelRect:scale * padding withPortraitPixelCornerRadii:v79.origin.x, v79.origin.y, v79.size.width, v79.size.height, *&v60];
   v44 = v80.origin.x;
   v45 = v80.origin.y;
   v46 = v80.size.width;
@@ -1665,19 +1665,19 @@ LABEL_19:
   return result;
 }
 
-- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)a3 againstPortraitEdge:(unint64_t)a4 fromPortraitPixelRect:(CGRect)a5 withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)a6
+- (CGRect)_portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:(double)path againstPortraitEdge:(unint64_t)edge fromPortraitPixelRect:(CGRect)rect withPortraitPixelCornerRadii:(_UIIntegralCornerRadii *)radii
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   bitmap = self->_bitmap;
   if (bitmap)
   {
     [(_UIBoundingPathBitmap *)bitmap bitmapData];
   }
 
-  if (a4 == 8 || a4 == 2)
+  if (edge == 8 || edge == 2)
   {
     v142.origin.x = x;
     v142.origin.y = y;
@@ -1704,10 +1704,10 @@ LABEL_19:
         break;
       }
 
-      v21 = (v15 + v17) + a3;
-      if (a4 == 2)
+      v21 = (v15 + v17) + path;
+      if (edge == 2)
       {
-        v21 = x - a3;
+        v21 = x - path;
       }
 
       v22 = v21;
@@ -1720,7 +1720,7 @@ LABEL_19:
         ++v20;
       }
 
-      else if (a4 == 2)
+      else if (edge == 2)
       {
         v138 = 0u;
         v139 = 0u;
@@ -1741,7 +1741,7 @@ LABEL_19:
       v141 = 0;
       v24 = _UIBoundingPathBitmapDataRowHitTest(&v138, v22, v19);
       v26 = (v15 + -1.0);
-      if (a4 == 2)
+      if (edge == 2)
       {
         v26 = v25 + v15;
       }
@@ -1790,10 +1790,10 @@ LABEL_19:
         break;
       }
 
-      v34 = (v29 + v30) + a3;
-      if (a4 == 1)
+      v34 = (v29 + v30) + path;
+      if (edge == 1)
       {
-        v34 = y - a3;
+        v34 = y - path;
       }
 
       v35 = v34;
@@ -1806,7 +1806,7 @@ LABEL_19:
         v32 += v36;
       }
 
-      else if (a4 == 1)
+      else if (edge == 1)
       {
         v138 = 0u;
         v139 = 0u;
@@ -1827,7 +1827,7 @@ LABEL_19:
       v141 = 0;
       v37 = _UIBoundingPathBitmapDataRowHitTest(&v138, v33, v35);
       v38 = (v29 + -1.0);
-      if (a4 == 1)
+      if (edge == 1)
       {
         v38 = v29 + 1;
       }
@@ -1850,7 +1850,7 @@ LABEL_19:
   }
 
   v39 = 1.0;
-  v40 = fmin(a3 * 0.2 + 1.0, 5.0);
+  v40 = fmin(path * 0.2 + 1.0, 5.0);
   v41 = v40 + v40;
   v42 = y - v40;
   v43 = v40 + y;
@@ -1890,13 +1890,13 @@ LABEL_19:
     v46 = v47;
   }
 
-  if (a4 != 8)
+  if (edge != 8)
   {
     v49 = width;
     v46 = x;
   }
 
-  if (a4 == 4)
+  if (edge == 4)
   {
     v49 = width;
   }
@@ -1906,7 +1906,7 @@ LABEL_19:
     v45 = height;
   }
 
-  if (a4 == 4)
+  if (edge == 4)
   {
     v46 = x;
   }
@@ -1926,7 +1926,7 @@ LABEL_19:
     v48 = width;
   }
 
-  if (a4 != 2)
+  if (edge != 2)
   {
     v48 = width;
     v47 = x;
@@ -1934,7 +1934,7 @@ LABEL_19:
 
   v118 = height;
   v119 = width;
-  if (a4 == 1)
+  if (edge == 1)
   {
     v48 = width;
   }
@@ -1944,7 +1944,7 @@ LABEL_19:
     v44 = height;
   }
 
-  if (a4 == 1)
+  if (edge == 1)
   {
     v47 = x;
   }
@@ -1954,7 +1954,7 @@ LABEL_19:
     v43 = y;
   }
 
-  if (a4 <= 3)
+  if (edge <= 3)
   {
     v50 = v44;
   }
@@ -1964,7 +1964,7 @@ LABEL_19:
     v50 = v45;
   }
 
-  if (a4 <= 3)
+  if (edge <= 3)
   {
     v51 = v48;
   }
@@ -1974,7 +1974,7 @@ LABEL_19:
     v51 = v49;
   }
 
-  if (a4 <= 3)
+  if (edge <= 3)
   {
     v52 = v43;
   }
@@ -1984,28 +1984,28 @@ LABEL_19:
     v52 = v42;
   }
 
-  if (a4 <= 3)
+  if (edge <= 3)
   {
     v46 = v47;
   }
 
-  var0 = a6->var0;
-  v53 = var0 + a3;
-  var1 = a6->var1;
-  v54 = var1 + a3;
-  var2 = a6->var2;
-  v55 = var2 + a3;
-  v56 = (var0 + a3) * 1.57079633 + (var1 + a3) * 1.57079633 + (var2 + a3) * 1.57079633;
-  v122 = a3;
-  var3 = a6->var3;
-  v57 = var3 + a3;
+  var0 = radii->var0;
+  v53 = var0 + path;
+  var1 = radii->var1;
+  v54 = var1 + path;
+  var2 = radii->var2;
+  v55 = var2 + path;
+  v56 = (var0 + path) * 1.57079633 + (var1 + path) * 1.57079633 + (var2 + path) * 1.57079633;
+  pathCopy = path;
+  var3 = radii->var3;
+  v57 = var3 + path;
   v58 = ceil((v56 + v57 * 1.57079633) * 0.5);
   if (v58 < 8.0)
   {
     v58 = 8.0;
   }
 
-  v59 = a4 == 8 || a4 == 2;
+  v59 = edge == 8 || edge == 2;
   v60 = vcvtd_n_f64_u64(v58, 3uLL);
   v61 = vcvtpd_u64_f64(v60);
   if (v59)
@@ -2018,7 +2018,7 @@ LABEL_19:
     v62 = 0.0;
   }
 
-  if (a4 != 4 && a4 != 1)
+  if (edge != 4 && edge != 1)
   {
     v39 = 0.0;
   }
@@ -2205,7 +2205,7 @@ LABEL_120:
   }
 
 LABEL_133:
-  if (a4 == 8 || a4 == 2)
+  if (edge == 8 || edge == 2)
   {
     v84 = v81;
     v85 = v51;
@@ -2231,9 +2231,9 @@ LABEL_137:
 
       else
       {
-        v91 = llround(v86 + a6->var0);
-        v92 = llround(v90 - v122);
-        v93 = llround(v87 - a6->var3);
+        v91 = llround(v86 + radii->var0);
+        v92 = llround(v90 - pathCopy);
+        v93 = llround(v87 - radii->var3);
         while (v91 <= v93)
         {
           v138 = 0u;
@@ -2272,9 +2272,9 @@ LABEL_152:
 
     else
     {
-      v97 = llround(v86 + a6->var1);
-      v98 = llround(v90 + v96 + v122);
-      v99 = llround(v87 - a6->var2);
+      v97 = llround(v86 + radii->var1);
+      v98 = llround(v90 + v96 + pathCopy);
+      v99 = llround(v87 - radii->var2);
       while (v97 <= v99)
       {
         v138 = 0u;
@@ -2323,9 +2323,9 @@ LABEL_156:
 
       else
       {
-        v106 = llround(v86 - v122);
-        v107 = llround(v90 + a6->var0);
-        v108 = llround(v103 - a6->var1);
+        v106 = llround(v86 - pathCopy);
+        v107 = llround(v90 + radii->var0);
+        v108 = llround(v103 - radii->var1);
         while (v107 <= v108)
         {
           v138 = 0u;
@@ -2363,9 +2363,9 @@ LABEL_171:
 
     else
     {
-      v110 = llround(v86 + v102 + v122);
-      v111 = llround(v90 + a6->var3);
-      v112 = llround(v103 - a6->var2);
+      v110 = llround(v86 + v102 + pathCopy);
+      v111 = llround(v90 + radii->var3);
+      v112 = llround(v103 - radii->var2);
       while (v111 <= v112)
       {
         v138 = 0u;
@@ -2387,9 +2387,9 @@ LABEL_171:
     }
   }
 
-  if (a4 > 3)
+  if (edge > 3)
   {
-    if (a4 == 4)
+    if (edge == 4)
     {
       if (v118 <= v120)
       {
@@ -2403,7 +2403,7 @@ LABEL_171:
       }
     }
 
-    else if (a4 == 8)
+    else if (edge == 8)
     {
       if (v119 <= v120)
       {
@@ -2418,7 +2418,7 @@ LABEL_171:
     }
   }
 
-  else if (a4 == 1)
+  else if (edge == 1)
   {
     v90 = v90 - v121;
     if (v118 > v120)
@@ -2427,7 +2427,7 @@ LABEL_171:
     }
   }
 
-  else if (a4 == 2)
+  else if (edge == 2)
   {
     v86 = v86 - v121;
     if (v119 > v120)
@@ -2456,20 +2456,20 @@ LABEL_189:
   return result;
 }
 
-- (CGRect)_rectTuckedAgainstEdge:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(double)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7
+- (CGRect)_rectTuckedAgainstEdge:(unint64_t)edge ofBoundingPathAndRect:(CGRect)rect withSize:(double)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding
 {
-  r1 = a4.size.height;
-  y = a4.origin.y;
-  width = a4.size.width;
-  x = a4.origin.x;
-  v11 = [(_UIBoundingPath *)self coordinateSpace];
-  if (!v11)
+  r1 = rect.size.height;
+  y = rect.origin.y;
+  width = rect.size.width;
+  x = rect.origin.x;
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
+  if (!coordinateSpace)
   {
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:1331 description:@"The bounding path's coordinate space cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIComplexBoundingPath.m" lineNumber:1331 description:@"The bounding path's coordinate space cannot be nil"];
   }
 
-  [v11 bounds];
+  [coordinateSpace bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -2514,7 +2514,7 @@ LABEL_8:
   v83.size.width = v17;
   v83.size.height = v19;
   v75 = CGRectIntersection(v74, v83);
-  [(_UIBoundingPath *)self _rectTuckedAgainstEdge:a3 ofBoundingRect:v75.origin.x withSize:v75.origin.y minimumPadding:v75.size.width, v75.size.height, a5, a7];
+  [(_UIBoundingPath *)self _rectTuckedAgainstEdge:edge ofBoundingRect:v75.origin.x withSize:v75.origin.y minimumPadding:v75.size.width, v75.size.height, size, padding];
   v25 = v76.origin.x;
   v26 = v76.origin.y;
   v27 = v76.size.width;
@@ -2529,37 +2529,37 @@ LABEL_8:
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = _UIRectEdgeConvertedFromOrientationToPortrait(a3, orientation);
+  v37 = _UIRectEdgeConvertedFromOrientationToPortrait(edge, orientation);
   CGAffineTransformMakeScale(&v65, scale, scale);
   v77.origin.x = v30;
   v77.origin.y = v32;
   v77.size.width = v34;
   v77.size.height = v36;
   v78 = CGRectApplyAffineTransform(v77, &v65);
-  *&v38 = (a6.topLeft * scale);
-  *&v39 = (a6.bottomLeft * scale);
-  v40 = (a6.bottomRight * scale);
-  v41 = (a6.topRight * scale);
+  *&v38 = (radii.topLeft * scale);
+  *&v39 = (radii.bottomLeft * scale);
+  v40 = (radii.bottomRight * scale);
+  v41 = (radii.topRight * scale);
   if (orientation == 2)
   {
-    v42 = (a6.topLeft * scale);
-    v43 = (a6.topRight * scale);
-    v41 = (a6.bottomRight * scale);
-    v40 = (a6.bottomLeft * scale);
+    v42 = (radii.topLeft * scale);
+    v43 = (radii.topRight * scale);
+    v41 = (radii.bottomRight * scale);
+    v40 = (radii.bottomLeft * scale);
     goto LABEL_15;
   }
 
   if (orientation == 3)
   {
-    v42 = (a6.topRight * scale);
-    v43 = (a6.bottomRight * scale);
-    v41 = (a6.bottomLeft * scale);
-    v40 = (a6.topLeft * scale);
+    v42 = (radii.topRight * scale);
+    v43 = (radii.bottomRight * scale);
+    v41 = (radii.bottomLeft * scale);
+    v40 = (radii.topLeft * scale);
     goto LABEL_15;
   }
 
-  v42 = (a6.bottomLeft * scale);
-  v43 = (a6.topLeft * scale);
+  v42 = (radii.bottomLeft * scale);
+  v43 = (radii.topLeft * scale);
   if (orientation == 4)
   {
 LABEL_15:
@@ -2573,7 +2573,7 @@ LABEL_15:
   v65.b = v39;
   *&v65.c = v40;
   *&v65.d = v41;
-  [(_UIComplexBoundingPath *)self _portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:v37 againstPortraitEdge:&v65 fromPortraitPixelRect:scale * a7 withPortraitPixelCornerRadii:v78.origin.x, v78.origin.y, v78.size.width, v78.size.height];
+  [(_UIComplexBoundingPath *)self _portaitPixelRectWithPixelMinimumPaddingFromBoundingPath:v37 againstPortraitEdge:&v65 fromPortraitPixelRect:scale * padding withPortraitPixelCornerRadii:v78.origin.x, v78.origin.y, v78.size.width, v78.size.height];
   v44 = v79.origin.x;
   v45 = v79.origin.y;
   v46 = v79.size.width;
@@ -2611,14 +2611,14 @@ LABEL_19:
   return result;
 }
 
-- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)a3
+- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = 1.0 / self->_scale;
-  [(_UIComplexBoundingPath *)self _inscribedRectInBoundingPathAndRect:10 byInsettingRect:1 onEdges:x withOptions:a3.origin.y, width, a3.size.height, x, CGRectGetMidY(a3), width, v8];
+  [(_UIComplexBoundingPath *)self _inscribedRectInBoundingPathAndRect:10 byInsettingRect:1 onEdges:x withOptions:rect.origin.y, width, rect.size.height, x, CGRectGetMidY(rect), width, v8];
   v9 = v32.origin.x;
   v10 = v32.origin.y;
   v11 = v32.size.width;
@@ -2691,16 +2691,16 @@ LABEL_19:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_UIBoundingPath *)self coordinateSpace];
+  coordinateSpace = [(_UIBoundingPath *)self coordinateSpace];
   v6 = [UIApplication stringForInterfaceOrientation:self->_orientation];
-  v7 = [v3 stringWithFormat:@"<%@: %p coordinateSpace=%@ orientation=%@; scale=%.1f; bitmap=%@>", v4, self, v5, v6, *&self->_scale, self->_bitmap];;
+  v7 = [v3 stringWithFormat:@"<%@: %p coordinateSpace=%@ orientation=%@; scale=%.1f; bitmap=%@>", v4, self, coordinateSpace, v6, *&self->_scale, self->_bitmap];;
 
   return v7;
 }
 
 - (id)_imageRepresentation
 {
-  v3 = [(_UIBoundingPathBitmap *)self->_bitmap _imageRepresentation];
+  _imageRepresentation = [(_UIBoundingPathBitmap *)self->_bitmap _imageRepresentation];
   scale = self->_scale;
   bitmap = self->_bitmap;
   if (bitmap)
@@ -2767,8 +2767,8 @@ LABEL_6:
   v22 = v7;
   v23 = v9;
   v18[4] = self;
-  v19 = v3;
-  v15 = v3;
+  v19 = _imageRepresentation;
+  v15 = _imageRepresentation;
   v16 = [(UIGraphicsImageRenderer *)v14 imageWithActions:v18];
 
   return v16;

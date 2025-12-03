@@ -1,36 +1,36 @@
 @interface SBUIPopoverExtensionRemoteViewController
 + (id)_exportedInterface;
-- (SBUIPopoverExtensionRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBUIPopoverExtensionRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)popoverExtensionContext;
 - (void)_invalidateSBUIPopoverExtension;
-- (void)_setupChildViewController:(id)a3;
-- (void)_updateForBundleIdentifier:(id)a3;
-- (void)_updateForWidgetConfiguration:(id)a3;
-- (void)_willAppearInRemoteViewController:(id)a3;
-- (void)addChildViewController:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)_setupChildViewController:(id)controller;
+- (void)_updateForBundleIdentifier:(id)identifier;
+- (void)_updateForWidgetConfiguration:(id)configuration;
+- (void)_willAppearInRemoteViewController:(id)controller;
+- (void)addChildViewController:(id)controller;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)dealloc;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBUIPopoverExtensionRemoteViewController
 
-- (SBUIPopoverExtensionRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBUIPopoverExtensionRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v16 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = SBUIPopoverExtensionRemoteViewController;
-  v4 = [(SBUIPopoverExtensionRemoteViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(SBUIPopoverExtensionRemoteViewController *)&v11 initWithNibName:name bundle:bundle];
   if (v4)
   {
     add = atomic_fetch_add(__activeInstanceCount, 1u);
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     instanceIdentifier = v4->_instanceIdentifier;
-    v4->_instanceIdentifier = v6;
+    v4->_instanceIdentifier = uUID;
 
     v8 = SBLogUIRemoteVC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -76,10 +76,10 @@
   return v2;
 }
 
-- (void)_updateForBundleIdentifier:(id)a3
+- (void)_updateForBundleIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SBLogUIRemoteVC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -87,18 +87,18 @@
     v8 = 138412546;
     v9 = instanceIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> _updateForBundleIdentifier: %@", &v8, 0x16u);
   }
 
-  v7 = [(SBUIPopoverExtensionRemoteViewController *)self extensionViewController];
-  [v7 updateForBundleIdentifier:v4];
+  extensionViewController = [(SBUIPopoverExtensionRemoteViewController *)self extensionViewController];
+  [extensionViewController updateForBundleIdentifier:identifierCopy];
 }
 
-- (void)_updateForWidgetConfiguration:(id)a3
+- (void)_updateForWidgetConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = SBLogUIRemoteVC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -106,23 +106,23 @@
     v8 = 138412546;
     v9 = instanceIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = configurationCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_INFO, "%@> _updateForWidgetConfiguration: %@", &v8, 0x16u);
   }
 
-  v7 = [(SBUIPopoverExtensionRemoteViewController *)self extensionViewController];
-  [v7 updateForWidgetConfiguration:v4];
+  extensionViewController = [(SBUIPopoverExtensionRemoteViewController *)self extensionViewController];
+  [extensionViewController updateForWidgetConfiguration:configurationCopy];
 }
 
 - (void)_invalidateSBUIPopoverExtension
 {
-  v3 = [(SBUIPopoverExtensionRemoteViewController *)self popoverExtensionContext];
+  popoverExtensionContext = [(SBUIPopoverExtensionRemoteViewController *)self popoverExtensionContext];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtension__block_invoke;
   v4[3] = &unk_1E789DC08;
   v4[4] = self;
-  [v3 completeRequestReturningItems:MEMORY[0x1E695E0F0] completionHandler:v4];
+  [popoverExtensionContext completeRequestReturningItems:MEMORY[0x1E695E0F0] completionHandler:v4];
 }
 
 void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtension__block_invoke(uint64_t a1, int a2)
@@ -140,9 +140,9 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBUIPopoverExtensionRemoteViewController;
@@ -154,14 +154,14 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     *buf = 138412546;
     v9 = instanceIdentifier;
     v10 = 1024;
-    v11 = v3;
+    v11 = appearCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> viewWillAppear:%{BOOL}d", buf, 0x12u);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBUIPopoverExtensionRemoteViewController;
@@ -173,14 +173,14 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     *buf = 138412546;
     v9 = instanceIdentifier;
     v10 = 1024;
-    v11 = v3;
+    v11 = appearCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> viewDidAppear:%{BOOL}d", buf, 0x12u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v12 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBUIPopoverExtensionRemoteViewController;
@@ -192,14 +192,14 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     *buf = 138412546;
     v9 = instanceIdentifier;
     v10 = 1024;
-    v11 = v3;
+    v11 = disappearCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> viewWillDisappear:%{BOOL}d", buf, 0x12u);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v12 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = SBUIPopoverExtensionRemoteViewController;
@@ -211,15 +211,15 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     *buf = 138412546;
     v9 = instanceIdentifier;
     v10 = 1024;
-    v11 = v3;
+    v11 = disappearCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> viewDidDisappear:%{BOOL}d", buf, 0x12u);
   }
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogUIRemoteVC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -227,25 +227,25 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     v9 = 138412546;
     v10 = instanceIdentifier;
     v11 = 2112;
-    v12 = v4;
+    v12 = controllerCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> _willAppearInRemoteViewController:%@", &v9, 0x16u);
   }
 
-  [(SBUIPopoverExtensionRemoteViewController *)self setHostService:v4];
-  v7 = [(SBUIPopoverExtensionRemoteViewController *)self popoverExtensionContext];
-  v8 = [(SBUIPopoverExtensionRemoteViewController *)self hostService];
-  [v7 setHostService:v8];
+  [(SBUIPopoverExtensionRemoteViewController *)self setHostService:controllerCopy];
+  popoverExtensionContext = [(SBUIPopoverExtensionRemoteViewController *)self popoverExtensionContext];
+  hostService = [(SBUIPopoverExtensionRemoteViewController *)self hostService];
+  [popoverExtensionContext setHostService:hostService];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6.receiver = self;
   v6.super_class = SBUIPopoverExtensionRemoteViewController;
-  [(SBUIPopoverExtensionRemoteViewController *)&v6 addChildViewController:v4];
-  if ([v4 conformsToProtocol:&unk_1F1E25460])
+  [(SBUIPopoverExtensionRemoteViewController *)&v6 addChildViewController:controllerCopy];
+  if ([controllerCopy conformsToProtocol:&unk_1F1E25460])
   {
-    [(SBUIPopoverExtensionRemoteViewController *)self _setupChildViewController:v4];
+    [(SBUIPopoverExtensionRemoteViewController *)self _setupChildViewController:controllerCopy];
   }
 
   else
@@ -258,20 +258,20 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   v8.receiver = self;
   v8.super_class = SBUIPopoverExtensionRemoteViewController;
-  [(SBUIPopoverExtensionRemoteViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  [(SBUIPopoverExtensionRemoteViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   [(SBUIPopoverExtensionRemoteViewController *)self setPreferredContentSize:?];
   v5 = SBLogUIRemoteVC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     instanceIdentifier = self->_instanceIdentifier;
-    [v4 preferredContentSize];
+    [containerCopy preferredContentSize];
     v7 = NSStringFromCGSize(v14);
     *buf = 138412546;
     v10 = instanceIdentifier;
@@ -281,13 +281,13 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
   }
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SBUIPopoverExtensionRemoteViewController;
-  [(SBUIPopoverExtensionRemoteViewController *)&v8 beginRequestWithExtensionContext:v4];
+  [(SBUIPopoverExtensionRemoteViewController *)&v8 beginRequestWithExtensionContext:contextCopy];
   v5 = SBLogUIRemoteVC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -295,7 +295,7 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     *buf = 138412546;
     v10 = instanceIdentifier;
     v11 = 2112;
-    v12 = v4;
+    v12 = contextCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> beginRequestWithExtensionContext: %@", buf, 0x16u);
   }
 
@@ -305,34 +305,34 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     v7 = SBLogUIRemoteVC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SBUIPopoverExtensionRemoteViewController *)self beginRequestWithExtensionContext:v4, v7];
+      [(SBUIPopoverExtensionRemoteViewController *)self beginRequestWithExtensionContext:contextCopy, v7];
     }
   }
 }
 
 - (id)popoverExtensionContext
 {
-  v3 = [(SBUIPopoverExtensionRemoteViewController *)self extensionContext];
+  extensionContext = [(SBUIPopoverExtensionRemoteViewController *)self extensionContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SBUIPopoverExtensionRemoteViewController *)self extensionContext];
+    extensionContext2 = [(SBUIPopoverExtensionRemoteViewController *)self extensionContext];
   }
 
   else
   {
-    v5 = 0;
+    extensionContext2 = 0;
   }
 
-  return v5;
+  return extensionContext2;
 }
 
-- (void)_setupChildViewController:(id)a3
+- (void)_setupChildViewController:(id)controller
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SBLogUIRemoteVC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -340,17 +340,17 @@ void __75__SBUIPopoverExtensionRemoteViewController__invalidateSBUIPopoverExtens
     v9 = 138412546;
     v10 = instanceIdentifier;
     v11 = 2112;
-    v12 = v4;
+    v12 = controllerCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "%@> _setupChildViewController:%@", &v9, 0x16u);
   }
 
-  [(SBUIPopoverExtensionRemoteViewController *)self setExtensionViewController:v4];
-  v7 = [(SBUIPopoverExtensionRemoteViewController *)self view];
-  v8 = [v4 view];
-  [v8 setAutoresizingMask:18];
-  [v7 bounds];
-  [v8 setFrame:?];
-  [v7 addSubview:v8];
+  [(SBUIPopoverExtensionRemoteViewController *)self setExtensionViewController:controllerCopy];
+  view = [(SBUIPopoverExtensionRemoteViewController *)self view];
+  view2 = [controllerCopy view];
+  [view2 setAutoresizingMask:18];
+  [view bounds];
+  [view2 setFrame:?];
+  [view addSubview:view2];
 }
 
 - (void)addChildViewController:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

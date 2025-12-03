@@ -1,17 +1,17 @@
 @interface SUScriptCanvasResult
-- (id)_initWithCanvas:(id)a3;
+- (id)_initWithCanvas:(id)canvas;
 - (void)dealloc;
 @end
 
 @implementation SUScriptCanvasResult
 
-- (id)_initWithCanvas:(id)a3
+- (id)_initWithCanvas:(id)canvas
 {
   v4 = [(SUScriptCanvasResult *)self init];
   if (v4)
   {
-    v4->_image = [a3 copyCanvasImage];
-    v4->_path = [a3 copyCanvasPath];
+    v4->_image = [canvas copyCanvasImage];
+    v4->_path = [canvas copyCanvasPath];
   }
 
   return v4;

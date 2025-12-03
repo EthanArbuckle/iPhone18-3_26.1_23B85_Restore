@@ -1,18 +1,18 @@
 @interface NSSQLFetchIntermediate
-- (NSSQLFetchIntermediate)initWithScope:(id)a3;
-- (id)fetchIntermediateForKeypathExpression:(id)a3;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLFetchIntermediate)initWithScope:(id)scope;
+- (id)fetchIntermediateForKeypathExpression:(id)expression;
+- (id)generateSQLStringInContext:(id)context;
 - (uint64_t)addGroupByKeypath:(uint64_t)result;
 - (uint64_t)finalJoinForKeypathWithComponents:(uint64_t)result;
-- (uint64_t)groupByClauseContainsKeypath:(uint64_t)a1;
+- (uint64_t)groupByClauseContainsKeypath:(uint64_t)keypath;
 - (uint64_t)promoteToOuterJoinAtKeypathWithComponents:(uint64_t)result;
 - (uint64_t)promoteToOuterJoinsAlongKeypathWithComponents:(uint64_t)result;
-- (void)addJoinIntermediate:(void *)a3 atKeypathWithComponents:;
+- (void)addJoinIntermediate:(void *)intermediate atKeypathWithComponents:;
 - (void)dealloc;
-- (void)setGroupByIntermediate:(uint64_t)a1;
-- (void)setHavingIntermediate:(uint64_t)a1;
-- (void)setOffsetIntermediate:(uint64_t)a1;
-- (void)setSelectIntermediate:(uint64_t)a1;
+- (void)setGroupByIntermediate:(uint64_t)intermediate;
+- (void)setHavingIntermediate:(uint64_t)intermediate;
+- (void)setOffsetIntermediate:(uint64_t)intermediate;
+- (void)setSelectIntermediate:(uint64_t)intermediate;
 @end
 
 @implementation NSSQLFetchIntermediate
@@ -34,11 +34,11 @@
   [(NSSQLStatementIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLFetchIntermediate)initWithScope:(id)a3
+- (NSSQLFetchIntermediate)initWithScope:(id)scope
 {
   v5.receiver = self;
   v5.super_class = NSSQLFetchIntermediate;
-  v3 = [(NSSQLIntermediate *)&v5 initWithScope:a3];
+  v3 = [(NSSQLIntermediate *)&v5 initWithScope:scope];
   if (v3)
   {
     v3->_joinIntermediates = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -48,28 +48,28 @@
   return v3;
 }
 
-- (void)setSelectIntermediate:(uint64_t)a1
+- (void)setSelectIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 64) != a2)
+    if (*(intermediate + 64) != a2)
     {
       v4 = a2;
 
-      *(a1 + 64) = a2;
+      *(intermediate + 64) = a2;
     }
   }
 }
 
-- (void)setGroupByIntermediate:(uint64_t)a1
+- (void)setGroupByIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 72) != a2)
+    if (*(intermediate + 72) != a2)
     {
       v4 = a2;
 
-      *(a1 + 72) = a2;
+      *(intermediate + 72) = a2;
     }
   }
 }
@@ -92,15 +92,15 @@
   return result;
 }
 
-- (uint64_t)groupByClauseContainsKeypath:(uint64_t)a1
+- (uint64_t)groupByClauseContainsKeypath:(uint64_t)keypath
 {
-  if (!a1)
+  if (!keypath)
   {
     return 0;
   }
 
   v2 = a2;
-  if ([*(a1 + 96) containsObject:a2])
+  if ([*(keypath + 96) containsObject:a2])
   {
     return 1;
   }
@@ -118,48 +118,48 @@
     v2 = [objc_msgSend(v5 subarrayWithRange:{0, objc_msgSend(v5, "count") - 1), "componentsJoinedByString:", @"."}];
   }
 
-  while (![*(a1 + 96) containsObject:v2]);
+  while (![*(keypath + 96) containsObject:v2]);
   return v4;
 }
 
-- (void)setHavingIntermediate:(uint64_t)a1
+- (void)setHavingIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 80) != a2)
+    if (*(intermediate + 80) != a2)
     {
       v4 = a2;
 
-      *(a1 + 80) = a2;
+      *(intermediate + 80) = a2;
     }
   }
 }
 
-- (void)setOffsetIntermediate:(uint64_t)a1
+- (void)setOffsetIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 88) != a2)
+    if (*(intermediate + 88) != a2)
     {
       v4 = a2;
 
-      *(a1 + 88) = a2;
+      *(intermediate + 88) = a2;
     }
   }
 }
 
-- (void)addJoinIntermediate:(void *)a3 atKeypathWithComponents:
+- (void)addJoinIntermediate:(void *)intermediate atKeypathWithComponents:
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [*(a1 + 112) addObject:a2];
-    v6 = *(a1 + 120);
+    [*(self + 112) addObject:a2];
+    v6 = *(self + 120);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [intermediate countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -171,14 +171,14 @@
           v11 = v6;
           if (*v17 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(intermediate);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
           v6 = [objc_msgSend(v6 objectForKey:{v12), "objectAtIndex:", 1}];
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [intermediate countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -344,17 +344,17 @@
   return result;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
   v40 = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     goto LABEL_65;
   }
 
   if (self && (whereClause = self->super._whereClause) != 0)
   {
-    v6 = [(NSSQLIntermediate *)whereClause generateSQLStringInContext:a3];
+    v6 = [(NSSQLIntermediate *)whereClause generateSQLStringInContext:context];
     if (!v6)
     {
       goto LABEL_10;
@@ -369,7 +369,7 @@
   havingClause = self->_havingClause;
   if (havingClause)
   {
-    v8 = [(NSSQLHavingIntermediate *)havingClause generateSQLStringInContext:a3];
+    v8 = [(NSSQLHavingIntermediate *)havingClause generateSQLStringInContext:context];
     if (!v8)
     {
 
@@ -391,7 +391,7 @@ LABEL_65:
   groupByClause = self->_groupByClause;
   if (groupByClause)
   {
-    v11 = [(NSSQLGroupByIntermediate *)groupByClause generateSQLStringInContext:a3];
+    v11 = [(NSSQLGroupByIntermediate *)groupByClause generateSQLStringInContext:context];
     if (!v11)
     {
       v9 = 0;
@@ -431,11 +431,11 @@ LABEL_65:
     v13 = v6;
   }
 
-  v9 = [(NSSQLSelectIntermediate *)self->_selectClause generateSQLStringInContext:a3];
+  v9 = [(NSSQLSelectIntermediate *)self->_selectClause generateSQLStringInContext:context];
   if (v9)
   {
     orderIntermediate = self->super._orderIntermediate;
-    if (!orderIntermediate || (orderIntermediate = [(NSSQLOrderIntermediate *)orderIntermediate generateSQLStringInContext:a3]) != 0)
+    if (!orderIntermediate || (orderIntermediate = [(NSSQLOrderIntermediate *)orderIntermediate generateSQLStringInContext:context]) != 0)
     {
       v31 = orderIntermediate;
       v32 = v11;
@@ -461,7 +461,7 @@ LABEL_65:
               objc_enumerationMutation(joinIntermediates);
             }
 
-            v22 = [*(*(&v35 + 1) + 8 * i) generateSQLStringInContext:{a3, v31, v32, v33}];
+            v22 = [*(*(&v35 + 1) + 8 * i) generateSQLStringInContext:{context, v31, v32, v33}];
             if (!v22)
             {
 
@@ -501,7 +501,7 @@ LABEL_61:
       v24 = v31;
       if (self && (limitClause = self->super._limitClause) != 0)
       {
-        v26 = [(NSSQLLimitIntermediate *)limitClause generateSQLStringInContext:a3];
+        v26 = [(NSSQLLimitIntermediate *)limitClause generateSQLStringInContext:context];
         if (!v26)
         {
           v12 = 1;
@@ -520,7 +520,7 @@ LABEL_60:
       offsetClause = self->_offsetClause;
       if (offsetClause)
       {
-        v28 = [(NSSQLOffsetIntermediate *)offsetClause generateSQLStringInContext:a3];
+        v28 = [(NSSQLOffsetIntermediate *)offsetClause generateSQLStringInContext:context];
         if (!v28)
         {
           v12 = 1;
@@ -591,12 +591,12 @@ LABEL_66:
   return v9;
 }
 
-- (id)fetchIntermediateForKeypathExpression:(id)a3
+- (id)fetchIntermediateForKeypathExpression:(id)expression
 {
   scope = self->super.super._scope;
   if (!scope)
   {
-    if ([objc_opt_class() isSimpleKeypath:a3])
+    if ([objc_opt_class() isSimpleKeypath:expression])
     {
       return self;
     }
@@ -604,7 +604,7 @@ LABEL_66:
     scope = self->super.super._scope;
   }
 
-  return [(NSSQLIntermediate *)scope fetchIntermediateForKeypathExpression:a3];
+  return [(NSSQLIntermediate *)scope fetchIntermediateForKeypathExpression:expression];
 }
 
 @end

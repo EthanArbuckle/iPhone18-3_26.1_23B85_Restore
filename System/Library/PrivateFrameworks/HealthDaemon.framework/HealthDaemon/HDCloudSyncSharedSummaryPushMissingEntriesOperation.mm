@@ -7,21 +7,21 @@
 - (void)main
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 syncAvailability];
-  v6 = [v5 shouldSyncSummarySharingPush];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  syncAvailability = [repository syncAvailability];
+  shouldSyncSummarySharingPush = [syncAvailability shouldSyncSummarySharingPush];
 
-  if (v6)
+  if (shouldSyncSummarySharingPush)
   {
-    v7 = [(HDCloudSyncOperation *)self configuration];
-    v8 = [v7 cachedCloudState];
-    v9 = [(HDCloudSyncOperation *)self configuration];
-    v10 = [v9 repository];
-    v11 = [v10 primaryCKContainer];
-    v12 = [v11 containerIdentifier];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration2 cachedCloudState];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    primaryCKContainer = [repository2 primaryCKContainer];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v32 = 0;
-    v13 = [v8 privateMetadataZoneForContainerID:v12 error:&v32];
+    v13 = [cachedCloudState privateMetadataZoneForContainerID:containerIdentifier error:&v32];
     v14 = v32;
 
     if (v13)
@@ -33,15 +33,15 @@
       {
         v28 = [v15 hk_mapToSet:&__block_literal_global_3];
         v17 = [HDCloudSyncCompoundOperation alloc];
-        v18 = [(HDCloudSyncOperation *)self configuration];
-        v19 = [(HDCloudSyncCompoundOperation *)v17 initWithConfiguration:v18 cloudState:0 name:@"Push Pending Invitations" continueOnSubOperationError:0];
+        configuration4 = [(HDCloudSyncOperation *)self configuration];
+        v19 = [(HDCloudSyncCompoundOperation *)v17 initWithConfiguration:configuration4 cloudState:0 name:@"Push Pending Invitations" continueOnSubOperationError:0];
 
-        v20 = [(HDCloudSyncOperation *)self configuration];
-        v21 = [v20 repository];
-        v22 = [v21 cloudSyncShimProvider];
-        v23 = [v22 summarySharingEntryShim];
+        configuration5 = [(HDCloudSyncOperation *)self configuration];
+        repository3 = [configuration5 repository];
+        cloudSyncShimProvider = [repository3 cloudSyncShimProvider];
+        summarySharingEntryShim = [cloudSyncShimProvider summarySharingEntryShim];
 
-        v24 = [(HDCloudSyncOperation *)self configuration];
+        configuration6 = [(HDCloudSyncOperation *)self configuration];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __59__HDCloudSyncSharedSummaryPushMissingEntriesOperation_main__block_invoke_2;
@@ -49,7 +49,7 @@
         v29[4] = self;
         v30 = v19;
         v25 = v19;
-        [v23 authorizationIdentifiersForEntriesNotExistingParticipants:v28 configuration:v24 completion:v29];
+        [summarySharingEntryShim authorizationIdentifiersForEntriesNotExistingParticipants:v28 configuration:configuration6 completion:v29];
       }
 
       else
@@ -76,7 +76,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v34 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping operation because platform/profile does not support summary sharing", buf, 0xCu);
     }
 

@@ -1,28 +1,28 @@
 @interface _DOCSidebarAXIdentifier
-+ (id)headerWithTitle:(id)a3;
-+ (id)itemWithTitle:(id)a3;
++ (id)headerWithTitle:(id)title;
++ (id)itemWithTitle:(id)title;
 @end
 
 @implementation _DOCSidebarAXIdentifier
 
-+ (id)headerWithTitle:(id)a3
++ (id)headerWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(@"header", v4);
+  titleCopy = title;
+  idBase = [self idBase];
+  v6 = composedID(@"header", titleCopy);
 
-  v7 = composedID(v5, v6);
+  v7 = composedID(idBase, v6);
 
   return v7;
 }
 
-+ (id)itemWithTitle:(id)a3
++ (id)itemWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [a1 idBase];
-  v6 = composedID(@"item", v4);
+  titleCopy = title;
+  idBase = [self idBase];
+  v6 = composedID(@"item", titleCopy);
 
-  v7 = composedID(v5, v6);
+  v7 = composedID(idBase, v6);
 
   return v7;
 }

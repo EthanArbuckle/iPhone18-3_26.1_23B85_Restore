@@ -1,6 +1,6 @@
 @interface UpsellGridView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider14UpsellGridView)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider14UpsellGridView)initWithFrame:(CGRect)frame;
 - (id)impressionItems;
 - (void)layoutSubviews;
 @end
@@ -9,14 +9,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4F29EC();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_4F3B14();
   v8 = v7;
   v10 = v9;
@@ -43,7 +43,7 @@
   return v2.super.isa;
 }
 
-- (_TtC18ASMessagesProvider14UpsellGridView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider14UpsellGridView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

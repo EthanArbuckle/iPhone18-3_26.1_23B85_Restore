@@ -1,32 +1,32 @@
 @interface IDSQRProtoAllocBindTestOption
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addExperimentOverrides:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addExperimentOverrides:(id)overrides;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoAllocBindTestOption
 
-- (void)addExperimentOverrides:(id)a3
+- (void)addExperimentOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   experimentOverrides = self->_experimentOverrides;
-  v8 = v4;
+  v8 = overridesCopy;
   if (!experimentOverrides)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_experimentOverrides;
     self->_experimentOverrides = v6;
 
-    v4 = v8;
+    overridesCopy = v8;
     experimentOverrides = self->_experimentOverrides;
   }
 
-  [(NSMutableArray *)experimentOverrides addObject:v4];
+  [(NSMutableArray *)experimentOverrides addObject:overridesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoAllocBindTestOption;
   v4 = [(IDSQRProtoAllocBindTestOption *)&v8 description];
-  v5 = [(IDSQRProtoAllocBindTestOption *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoAllocBindTestOption *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_experimentOverrides count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_experimentOverrides, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -77,16 +77,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"experiment_overrides"];
+    [dictionary setObject:v4 forKey:@"experiment_overrides"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -119,29 +119,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(IDSQRProtoAllocBindTestOption *)self experimentOverridesCount])
   {
-    [v8 clearExperimentOverrides];
-    v4 = [(IDSQRProtoAllocBindTestOption *)self experimentOverridesCount];
-    if (v4)
+    [toCopy clearExperimentOverrides];
+    experimentOverridesCount = [(IDSQRProtoAllocBindTestOption *)self experimentOverridesCount];
+    if (experimentOverridesCount)
     {
-      v5 = v4;
+      v5 = experimentOverridesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(IDSQRProtoAllocBindTestOption *)self experimentOverridesAtIndex:i];
-        [v8 addExperimentOverrides:v7];
+        [toCopy addExperimentOverrides:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addExperimentOverrides:v11];
 
         ++v10;
@@ -178,13 +178,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     experimentOverrides = self->_experimentOverrides;
-    if (experimentOverrides | v4[1])
+    if (experimentOverrides | equalCopy[1])
     {
       v6 = [(NSMutableArray *)experimentOverrides isEqual:?];
     }
@@ -203,14 +203,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

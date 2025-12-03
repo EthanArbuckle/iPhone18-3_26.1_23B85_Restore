@@ -1,26 +1,26 @@
 @interface PHEmergencyHandsetDialerLCDView
-- (PHEmergencyHandsetDialerLCDView)initWithFrame:(CGRect)a3 forDialerType:(int)a4 appType:(int64_t)a5;
+- (PHEmergencyHandsetDialerLCDView)initWithFrame:(CGRect)frame forDialerType:(int)type appType:(int64_t)appType;
 - (double)_emergencyDialerFontSize;
 - (int64_t)numberOfLinesInEmergencyTitleLabel;
 - (void)_applyLayoutConstraints;
 - (void)_updateEmergencyLabel;
 - (void)deleteCharacter;
-- (void)setText:(id)a3 needsFormat:(BOOL)a4;
-- (void)setText:(id)a3 needsFormat:(BOOL)a4 name:(id)a5 label:(id)a6;
+- (void)setText:(id)text needsFormat:(BOOL)format;
+- (void)setText:(id)text needsFormat:(BOOL)format name:(id)name label:(id)label;
 @end
 
 @implementation PHEmergencyHandsetDialerLCDView
 
-- (PHEmergencyHandsetDialerLCDView)initWithFrame:(CGRect)a3 forDialerType:(int)a4 appType:(int64_t)a5
+- (PHEmergencyHandsetDialerLCDView)initWithFrame:(CGRect)frame forDialerType:(int)type appType:(int64_t)appType
 {
   v21.receiver = self;
   v21.super_class = PHEmergencyHandsetDialerLCDView;
-  v5 = [(PHEmergencyHandsetDialerLCDView *)&v21 initWithFrame:*&a4 forDialerType:a5 appType:1 enableSmartDialer:0 enableSmartDialerExpandedSearch:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PHEmergencyHandsetDialerLCDView *)&v21 initWithFrame:*&type forDialerType:appType appType:1 enableSmartDialer:0 enableSmartDialerExpandedSearch:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = +[UIColor blackColor];
-    v7 = [(PHEmergencyHandsetDialerLCDView *)v5 numberTextField];
-    [v7 setTextColor:v6];
+    numberTextField = [(PHEmergencyHandsetDialerLCDView *)v5 numberTextField];
+    [numberTextField setTextColor:v6];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"EMERGENCY_CALL_STRINGS" value:&stru_100361FD0 table:@"EmergencyCallStrings"];
@@ -68,11 +68,11 @@
 - (void)_applyLayoutConstraints
 {
   v22[0] = @"emergencyLabel";
-  v3 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
+  emergencyTitleLabel = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
   v22[1] = @"numberLabel";
-  v23[0] = v3;
-  v4 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
-  v23[1] = v4;
+  v23[0] = emergencyTitleLabel;
+  numberTextField = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
+  v23[1] = numberTextField;
   v5 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
 
   v6 = [NSLayoutConstraint constraintsWithVisualFormat:@"|[emergencyLabel]|" options:0 metrics:0 views:v5];
@@ -81,28 +81,28 @@
   v7 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-[numberLabel]-|", 0x10000, 0, v5);
   [(PHEmergencyHandsetDialerLCDView *)self addConstraints:v7];
 
-  v8 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
+  emergencyTitleLabel2 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
   [PHUIConfiguration yOffsetForDialerLCDView:2];
-  v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:11 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:v9];
+  v10 = [NSLayoutConstraint constraintWithItem:emergencyTitleLabel2 attribute:11 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:v9];
   [(PHEmergencyHandsetDialerLCDView *)self addConstraint:v10];
 
-  v11 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
-  v12 = [NSLayoutConstraint constraintWithItem:self attribute:4 relatedBy:0 toItem:v11 attribute:11 multiplier:1.0 constant:0.0];
+  emergencyTitleLabel3 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
+  v12 = [NSLayoutConstraint constraintWithItem:self attribute:4 relatedBy:0 toItem:emergencyTitleLabel3 attribute:11 multiplier:1.0 constant:0.0];
   [(PHEmergencyHandsetDialerLCDView *)self addConstraint:v12];
 
-  v13 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
-  v14 = [NSLayoutConstraint constraintWithItem:v13 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  emergencyTitleLabel4 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
+  v14 = [NSLayoutConstraint constraintWithItem:emergencyTitleLabel4 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHEmergencyHandsetDialerLCDView *)self addConstraint:v14];
 
-  v15 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
-  v16 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
+  emergencyTitleLabel5 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
+  numberTextField2 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
   [(PHEmergencyHandsetDialerLCDView *)self spacingBetweenNumberBaselineAndNameBaseline];
-  v18 = [NSLayoutConstraint constraintWithItem:v15 attribute:11 relatedBy:0 toItem:v16 attribute:11 multiplier:1.0 constant:v17];
+  v18 = [NSLayoutConstraint constraintWithItem:emergencyTitleLabel5 attribute:11 relatedBy:0 toItem:numberTextField2 attribute:11 multiplier:1.0 constant:v17];
   [(PHEmergencyHandsetDialerLCDView *)self addConstraint:v18];
 
-  v19 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
-  v20 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
-  v21 = [NSLayoutConstraint constraintWithItem:v19 attribute:9 relatedBy:0 toItem:v20 attribute:9 multiplier:1.0 constant:0.0];
+  emergencyTitleLabel6 = [(PHEmergencyHandsetDialerLCDView *)self emergencyTitleLabel];
+  numberTextField3 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
+  v21 = [NSLayoutConstraint constraintWithItem:emergencyTitleLabel6 attribute:9 relatedBy:0 toItem:numberTextField3 attribute:9 multiplier:1.0 constant:0.0];
   [(PHEmergencyHandsetDialerLCDView *)self addConstraint:v21];
 }
 
@@ -113,12 +113,12 @@
     return;
   }
 
-  v3 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
-  v4 = [v3 text];
-  if ([v4 length])
+  numberTextField = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
+  text = [numberTextField text];
+  if ([text length])
   {
-    v5 = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
-    [v5 pointSize];
+    font = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
+    [font pointSize];
     v7 = v6;
     [(PHEmergencyHandsetDialerLCDView *)self _emergencyDialerFontSize];
     v9 = v8;
@@ -128,7 +128,7 @@
       v10 = [UIFont systemFontOfSize:11.0];
       emergencyTitleLabel = self->_emergencyTitleLabel;
 LABEL_10:
-      v16 = v10;
+      numberTextField2 = v10;
       [(PHTextCycleLabel *)emergencyTitleLabel setFont:?];
       goto LABEL_11;
     }
@@ -138,12 +138,12 @@ LABEL_10:
   {
   }
 
-  v16 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
-  v12 = [v16 text];
-  if (![v12 length])
+  numberTextField2 = [(PHEmergencyHandsetDialerLCDView *)self numberTextField];
+  text2 = [numberTextField2 text];
+  if (![text2 length])
   {
-    v13 = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
-    [v13 pointSize];
+    font2 = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
+    [font2 pointSize];
     v15 = v14;
 
     if (v15 != 11.0)
@@ -160,19 +160,19 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setText:(id)a3 needsFormat:(BOOL)a4 name:(id)a5 label:(id)a6
+- (void)setText:(id)text needsFormat:(BOOL)format name:(id)name label:(id)label
 {
   v7.receiver = self;
   v7.super_class = PHEmergencyHandsetDialerLCDView;
-  [(PHEmergencyHandsetDialerLCDView *)&v7 setText:a3 needsFormat:a4 name:a5 label:a6];
+  [(PHEmergencyHandsetDialerLCDView *)&v7 setText:text needsFormat:format name:name label:label];
   [(PHEmergencyHandsetDialerLCDView *)self _updateEmergencyLabel];
 }
 
-- (void)setText:(id)a3 needsFormat:(BOOL)a4
+- (void)setText:(id)text needsFormat:(BOOL)format
 {
   v5.receiver = self;
   v5.super_class = PHEmergencyHandsetDialerLCDView;
-  [(PHEmergencyHandsetDialerLCDView *)&v5 setText:a3 needsFormat:a4];
+  [(PHEmergencyHandsetDialerLCDView *)&v5 setText:text needsFormat:format];
   [(PHEmergencyHandsetDialerLCDView *)self _updateEmergencyLabel];
 }
 
@@ -200,16 +200,16 @@ LABEL_11:
 {
   [(PHTextCycleLabel *)self->_emergencyTitleLabel frame];
   v4 = v3;
-  v5 = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
-  [v5 lineHeight];
+  font = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
+  [font lineHeight];
   v7 = v6;
 
-  v8 = [(PHTextCycleLabel *)self->_emergencyTitleLabel text];
+  text = [(PHTextCycleLabel *)self->_emergencyTitleLabel text];
   v14 = NSFontAttributeName;
-  v9 = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
-  v15 = v9;
+  font2 = [(PHTextCycleLabel *)self->_emergencyTitleLabel font];
+  v15 = font2;
   v10 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  [v8 boundingRectWithSize:1 options:v10 attributes:0 context:{v4, 1.79769313e308}];
+  [text boundingRectWithSize:1 options:v10 attributes:0 context:{v4, 1.79769313e308}];
   v12 = v11;
 
   return (v12 / v7);

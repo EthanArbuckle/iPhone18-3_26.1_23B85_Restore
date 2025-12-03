@@ -1,17 +1,17 @@
 @interface SBExternalDisplaySceneSnapshotRequestStrategy
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5;
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context;
 @end
 
 @implementation SBExternalDisplaySceneSnapshotRequestStrategy
 
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  handleCopy = handle;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (handleCopy)
   {
-    if (v8)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -20,7 +20,7 @@
   else
   {
     [SBExternalDisplaySceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
-    if (v8)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -38,8 +38,8 @@ LABEL_3:
   v12 = MEMORY[0x223D6F7F0](v16);
   v12[2](v12, 0, 0);
   v12[2](v12, 2, 1);
-  v13 = [v9 sceneDisplayWindowManagementContext];
-  if (([v13 isChamoisOrFlexibleWindowing] & 1) == 0)
+  sceneDisplayWindowManagementContext = [contextCopy sceneDisplayWindowManagementContext];
+  if (([sceneDisplayWindowManagementContext isChamoisOrFlexibleWindowing] & 1) == 0)
   {
     v12[2](v12, 3, 0);
   }

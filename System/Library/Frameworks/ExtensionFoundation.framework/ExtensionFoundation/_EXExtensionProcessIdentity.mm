@@ -1,9 +1,9 @@
 @interface _EXExtensionProcessIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)dataRepresentation;
 - (NSUUID)instanceUUID;
 - (_TtC19ExtensionFoundation27_EXExtensionProcessIdentity)init;
-- (id)launchdJobDescriptorFor:(id)a3 error:(id *)a4;
+- (id)launchdJobDescriptorFor:(id)for error:(id *)error;
 - (int64_t)hash;
 @end
 
@@ -18,7 +18,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   JSONEncoder.init()();
   static JSONEncoder.OutputFormatting.sortedKeys.getter();
   dispatch thunk of JSONEncoder.outputFormatting.setter();
@@ -56,11 +56,11 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -69,7 +69,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _EXExtensionProcessIdentity.isEqual(_:)(v8);
@@ -81,7 +81,7 @@
 - (int64_t)hash
 {
   Hasher.init()();
-  v3 = self;
+  selfCopy = self;
   _EXExtensionProcessIdentity.Inner.hash(into:)(v6);
   v4 = Hasher.finalize()();
 
@@ -95,11 +95,11 @@
   return result;
 }
 
-- (id)launchdJobDescriptorFor:(id)a3 error:(id *)a4
+- (id)launchdJobDescriptorFor:(id)for error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = _EXExtensionProcessIdentity.launchdJobDescriptor(for:)(v5);
+  forCopy = for;
+  selfCopy = self;
+  v7 = _EXExtensionProcessIdentity.launchdJobDescriptor(for:)(forCopy);
 
   return v7;
 }

@@ -49,12 +49,12 @@ LABEL_8:
   v3 = MEMORY[0x277D010A8];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 identifier];
-  v7 = [v4 categoryDenyList];
-  v8 = [v4 geoCacheInfo];
-  v9 = [v4 modelCalibrationParameters];
+  identifier = [v4 identifier];
+  categoryDenyList = [v4 categoryDenyList];
+  geoCacheInfo = [v4 geoCacheInfo];
+  modelCalibrationParameters = [v4 modelCalibrationParameters];
 
-  v10 = [v5 initWithIdentifier:v6 categoryDenyList:v7 geoCacheInfo:v8 modelCalibrationParameters:v9];
+  v10 = [v5 initWithIdentifier:identifier categoryDenyList:categoryDenyList geoCacheInfo:geoCacheInfo modelCalibrationParameters:modelCalibrationParameters];
 
   return v10;
 }
@@ -63,7 +63,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTBluePOIMetadataMO managedObjectWithBluePOIMetadata:a1 inManagedObjectContext:a3];
+    v3 = [RTBluePOIMetadataMO managedObjectWithBluePOIMetadata:self inManagedObjectContext:a3];
   }
 
   else
@@ -84,8 +84,8 @@ LABEL_8:
 - (void)updateManagedObject:()RTCoreDataTransformable
 {
   v6 = a3;
-  v4 = [v6 managedObjectContext];
-  v5 = [RTBluePOIMetadataMO managedObjectWithBluePOIMetadata:a1 managedObject:v6 inManagedObjectContext:v4];
+  managedObjectContext = [v6 managedObjectContext];
+  v5 = [RTBluePOIMetadataMO managedObjectWithBluePOIMetadata:self managedObject:v6 inManagedObjectContext:managedObjectContext];
 }
 
 @end

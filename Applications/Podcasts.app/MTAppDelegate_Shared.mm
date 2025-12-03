@@ -1,36 +1,36 @@
 @interface MTAppDelegate_Shared
 - (BOOL)_isApplicationActive;
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application willContinueUserActivityWithType:(id)type;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
 - (MTAppDelegate_Shared)init;
 - (MTSecureDownloadRenewalManager)secureDownloadRenewalManager;
 - (MTSiriPlistDumper)siriDumper;
 - (NSOperationQueue)updateQueue;
 - (PFFairPlayValidationManager)fairPlayValidationManager;
 - (_TtC18PodcastsFoundation11SiriDonator)siriDonator;
-- (unint64_t)processNotification:(id)a3;
-- (void)_setNeedsRetryFlagFromNotificationForStoreId:(int64_t)a3;
+- (unint64_t)processNotification:(id)notification;
+- (void)_setNeedsRetryFlagFromNotificationForStoreId:(int64_t)id;
 - (void)_setupPlayer;
 - (void)_submitForegroundAnalytics;
 - (void)_validateFairPlayEpisodes;
-- (void)_validateFairPlayEpisodesWithCompletionHandler:(id)a3;
-- (void)_verifyFairPlayMigrationWithCompletionHandler:(id)a3;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationDidReceiveMemoryWarning:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
+- (void)_validateFairPlayEpisodesWithCompletionHandler:(id)handler;
+- (void)_verifyFairPlayMigrationWithCompletionHandler:(id)handler;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationDidReceiveMemoryWarning:(id)warning;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
 - (void)dealloc;
-- (void)didChangeStoreAccount:(id)a3;
-- (void)processFeedUpdateNotification:(int64_t)a3 triggerBy:(id)a4;
+- (void)didChangeStoreAccount:(id)account;
+- (void)processFeedUpdateNotification:(int64_t)notification triggerBy:(id)by;
 - (void)processSubscriptionSyncNotification;
 - (void)processUPPSyncNotification;
 - (void)setupAfterBecomingActive;
@@ -71,9 +71,9 @@
 - (void)_validateFairPlayEpisodes
 {
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  v4 = [v3 fairPlayMigrationRetryCount];
+  fairPlayMigrationRetryCount = [v3 fairPlayMigrationRetryCount];
 
-  if (v4)
+  if (fairPlayMigrationRetryCount)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -128,31 +128,31 @@
   [(MTAppDelegate_Shared *)&v4 dealloc];
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 absoluteString];
-  v7 = [MTDBUtil isSupportedUrlString:v6];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v7 = [MTDBUtil isSupportedUrlString:absoluteString];
 
   if (v7)
   {
-    v8 = [v5 absoluteString];
-    v9 = [v8 hasPrefix:@"feed:http"];
+    absoluteString2 = [lCopy absoluteString];
+    v9 = [absoluteString2 hasPrefix:@"feed:http"];
 
     if (v9)
     {
-      v10 = [v5 absoluteString];
-      v11 = [v10 stringByReplacingOccurrencesOfString:@"feed:" withString:&stru_1004F3018 options:8 range:{0, 5}];
+      absoluteString3 = [lCopy absoluteString];
+      v11 = [absoluteString3 stringByReplacingOccurrencesOfString:@"feed:" withString:&stru_1004F3018 options:8 range:{0, 5}];
 
       v12 = [NSURL URLWithString:v11];
 
-      v5 = v12;
+      lCopy = v12;
     }
 
-    v13 = [v5 scheme];
-    v14 = [v13 lowercaseString];
+    scheme = [lCopy scheme];
+    lowercaseString = [scheme lowercaseString];
 
-    if ([v14 hasPrefix:@"itms"])
+    if ([lowercaseString hasPrefix:@"itms"])
     {
       v15 = v22;
       v22[0] = _NSConcreteStackBlock;
@@ -163,9 +163,9 @@
 
     else
     {
-      if (![v14 hasPrefix:@"podcasts"])
+      if (![lowercaseString hasPrefix:@"podcasts"])
       {
-        if ([DebugUI isDebugUrl:v5])
+        if ([DebugUI isDebugUrl:lCopy])
         {
           +[DebugUI showDebugUI];
         }
@@ -182,7 +182,7 @@
 
     v15[2] = v17;
     v15[3] = &unk_1004D8358;
-    v15[4] = v5;
+    v15[4] = lCopy;
     v18 = objc_retainBlock(v15);
 
     if (v18)
@@ -197,9 +197,9 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v5 = [IMNetworkObserver sharedInstance:a3];
+  v5 = [IMNetworkObserver sharedInstance:application];
   [v5 beginObserving];
 
   if (+[PFClientUtil isRunningOnInternalOS])
@@ -220,9 +220,9 @@ LABEL_12:
   [v9 setActiveNotificationName:MTApplicationDidBecomeActiveNotification];
   v10 = +[MTReachability sharedInstance];
   v11 = +[MTLibrary sharedInstance];
-  v12 = [(MTAppDelegate_Shared *)self backgroundTaskScheduler];
+  backgroundTaskScheduler = [(MTAppDelegate_Shared *)self backgroundTaskScheduler];
 
-  if (!v12)
+  if (!backgroundTaskScheduler)
   {
     [MTBackgroundTaskScheduler registerBackgroundTaskClass:objc_opt_class()];
     v13 = objc_alloc_init(MTBackgroundTaskScheduler);
@@ -232,18 +232,18 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = +[NSNotificationCenter defaultCenter];
   v7 = MTApplicationDidFinishLaunchingNotification;
   v8 = +[UIApplication sharedApplication];
   [v6 postNotificationName:v7 object:v8];
 
   v9 = +[PodcastsApplicationStateMonitor shared];
-  v10 = [v5 applicationState];
+  applicationState = [applicationCopy applicationState];
 
-  [v9 setUIApplicationState:v10];
+  [v9 setUIApplicationState:applicationState];
   v11 = +[MTPushNotificationController sharedInstance];
   [v11 registerPushNotifications];
 
@@ -275,36 +275,36 @@ LABEL_12:
   return 1;
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = MTApplicationWillResignActiveNotification;
   v6 = +[UIApplication sharedApplication];
   [v4 postNotificationName:v5 object:v6];
 
   v7 = +[PodcastsApplicationStateMonitor shared];
-  v8 = [v3 applicationState];
+  applicationState = [activeCopy applicationState];
 
-  [v7 setUIApplicationState:v8];
+  [v7 setUIApplicationState:applicationState];
   +[MTBaseFeedManager saveSubscriptionMetadata];
   v10 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   v9 = +[NSDate now];
   [v10 setLastAppUseDate:v9];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = MTApplicationDidEnterBackgroundNotification;
   v6 = +[UIApplication sharedApplication];
   [v4 postNotificationName:v5 object:v6];
 
   v7 = +[PodcastsApplicationStateMonitor shared];
-  v8 = [v3 applicationState];
+  applicationState = [backgroundCopy applicationState];
 
-  [v7 setUIApplicationState:v8];
+  [v7 setUIApplicationState:applicationState];
   v9 = +[PFRestrictionsController shared];
   [v9 stopListening];
 
@@ -315,7 +315,7 @@ LABEL_12:
   [v11 endObserving];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v4 = +[IMNetworkObserver sharedInstance];
   [v4 beginObserving];
@@ -366,21 +366,21 @@ LABEL_12:
   dispatch_async(v16, block);
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = MTApplicationDidBecomeActiveNotification;
   v6 = +[UIApplication sharedApplication];
   [v4 postNotificationName:v5 object:v6];
 
   v8 = +[PodcastsApplicationStateMonitor shared];
-  v7 = [v3 applicationState];
+  applicationState = [activeCopy applicationState];
 
-  [v8 setUIApplicationState:v7];
+  [v8 setUIApplicationState:applicationState];
 }
 
-- (void)applicationDidReceiveMemoryWarning:(id)a3
+- (void)applicationDidReceiveMemoryWarning:(id)warning
 {
   v5 = +[NSNotificationCenter defaultCenter];
   v3 = MTApplicationDidReceiveMemoryWarningNotification;
@@ -388,7 +388,7 @@ LABEL_12:
   [v5 postNotificationName:v3 object:v4];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v5 = +[NSNotificationCenter defaultCenter];
   v3 = MTApplicationWillTerminateNotification;
@@ -396,34 +396,34 @@ LABEL_12:
   [v5 postNotificationName:v3 object:v4];
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = +[MTPushNotificationController sharedInstance];
-  [v5 didRegisterWithToken:v4];
+  [v5 didRegisterWithToken:tokenCopy];
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = +[MTPushNotificationController sharedInstance];
-  [v5 didFailToRegisterWithError:v4];
+  [v5 didFailToRegisterWithError:errorCopy];
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v9 = +[MTAccountController sharedInstance];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005ABE0;
   v12[3] = &unk_1004D8440;
-  v13 = v7;
-  v14 = v8;
+  v13 = notificationCopy;
+  v14 = handlerCopy;
   v12[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = notificationCopy;
+  v11 = handlerCopy;
   [v9 fetchActiveAccountWithCompletion:v12];
 }
 
@@ -444,22 +444,22 @@ LABEL_12:
   [v3 becomeActiveMediaPlayer];
 }
 
-- (void)_validateFairPlayEpisodesWithCompletionHandler:(id)a3
+- (void)_validateFairPlayEpisodesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[PFFairPlayRolloutController sharedInstance];
-  v6 = [v5 isEnabled];
+  isEnabled = [v5 isEnabled];
 
-  if (v6)
+  if (isEnabled)
   {
-    v7 = [(MTAppDelegate_Shared *)self fairPlayValidationManager];
+    fairPlayValidationManager = [(MTAppDelegate_Shared *)self fairPlayValidationManager];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10005AE58;
     v13[3] = &unk_1004D84A8;
-    v14 = v4;
-    v8 = v4;
-    [v7 validateDownloadedEpisodesWithCompletion:v13];
+    v14 = handlerCopy;
+    v8 = handlerCopy;
+    [fairPlayValidationManager validateDownloadedEpisodesWithCompletion:v13];
 
     v9 = v14;
   }
@@ -467,28 +467,28 @@ LABEL_12:
   else
   {
     v8 = objc_alloc_init(_TtC10PodcastsUI23UIStoreResponseDelegate);
-    v10 = [(MTAppDelegate_Shared *)self secureDownloadRenewalManager];
+    secureDownloadRenewalManager = [(MTAppDelegate_Shared *)self secureDownloadRenewalManager];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10005AE68;
     v11[3] = &unk_1004D84D0;
-    v12 = v4;
-    v9 = v4;
-    [v10 updateDRMKeysForDownloadsWithUrlProtocolDelegate:v8 completionHandler:v11];
+    v12 = handlerCopy;
+    v9 = handlerCopy;
+    [secureDownloadRenewalManager updateDRMKeysForDownloadsWithUrlProtocolDelegate:v8 completionHandler:v11];
   }
 }
 
-- (void)_verifyFairPlayMigrationWithCompletionHandler:(id)a3
+- (void)_verifyFairPlayMigrationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(2, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005AF30;
   v7[3] = &unk_1004D8520;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -541,9 +541,9 @@ LABEL_12:
   [IMMetrics endTimer:@"app_launch"];
 }
 
-- (void)didChangeStoreAccount:(id)a3
+- (void)didChangeStoreAccount:(id)account
 {
-  if ([MTAccountController iTunesAccountDidChangeForACAccountNotification:a3])
+  if ([MTAccountController iTunesAccountDidChangeForACAccountNotification:account])
   {
 
     [(MTAppDelegate_Shared *)self storeAccountDidChange];
@@ -565,49 +565,49 @@ LABEL_12:
   return self->_updateQueue;
 }
 
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  handlerCopy = handler;
   v9 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(handlerCopy);
     v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v7;
+    v22 = sessionCopy;
     v23 = 2112;
     v24 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ handleEventsForBackgroundURLSession called for session with identifier %@ and completionHandler: %@.", &v19, 0x20u);
   }
 
   v11 = +[PUIAssetDownloaders sharedDownloaders];
-  [v11 registerBackgroundCompletion:v8 forSession:v7];
+  [v11 registerBackgroundCompletion:handlerCopy forSession:sessionCopy];
 
-  if ([(NSString *)v7 containsString:@"MTImageDownloader"])
+  if ([(NSString *)sessionCopy containsString:@"MTImageDownloader"])
   {
-    v12 = [NSClassFromString(v7) sharedInstance];
-    v13 = [v12 sessionCompletionHandler];
+    nSClassFromString(sessionCopy) = [NSClassFromString(sessionCopy) sharedInstance];
+    sessionCompletionHandler = [nSClassFromString(sessionCopy) sessionCompletionHandler];
 
-    if (v13)
+    if (sessionCompletionHandler)
     {
       v14 = _MTLogCategoryNetwork();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v12 sessionCompletionHandler];
-        v16 = objc_retainBlock(v15);
+        sessionCompletionHandler2 = [nSClassFromString(sessionCopy) sessionCompletionHandler];
+        v16 = objc_retainBlock(sessionCompletionHandler2);
         v19 = 138412546;
-        v20 = v7;
+        selfCopy = sessionCopy;
         v21 = 2112;
         v22 = v16;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "handleEventsForBackgroundURLSession being called BEFORE URLSessionDidFinishEventsForBackgroundURLSession for identifier %@.  Invoking existing completionHandler %@.", &v19, 0x16u);
       }
 
-      v17 = [v12 sessionCompletionHandler];
-      v17[2]();
+      sessionCompletionHandler3 = [nSClassFromString(sessionCopy) sessionCompletionHandler];
+      sessionCompletionHandler3[2]();
 
-      [v12 setSessionCompletionHandler:0];
+      [nSClassFromString(sessionCopy) setSessionCompletionHandler:0];
     }
 
     v18 = _MTLogCategoryNetwork();
@@ -617,21 +617,21 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Setting sessionCompletionHandler for MTImageDownloader.", &v19, 2u);
     }
 
-    [v12 setSessionCompletionHandler:v8];
+    [nSClassFromString(sessionCopy) setSessionCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v12 = +[MTFeedManager sharedInstance];
-    [v12 handleEventsForBackgroundURLSessionFor:v7 completionHandler:v8];
+    nSClassFromString(sessionCopy) = +[MTFeedManager sharedInstance];
+    [nSClassFromString(sessionCopy) handleEventsForBackgroundURLSessionFor:sessionCopy completionHandler:handlerCopy];
   }
 }
 
-- (BOOL)application:(id)a3 willContinueUserActivityWithType:(id)a4
+- (BOOL)application:(id)application willContinueUserActivityWithType:(id)type
 {
-  v4 = a4;
+  typeCopy = type;
   NSLog(@"Will Continue");
-  if ([v4 isEqualToString:NSUserActivityTypeBrowsingWeb] & 1) != 0 || (+[MTIntentDonationUtil sharedInstance](MTIntentDonationUtil, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "canContinueIntentWithUserActivityType:", v4), v5, (v6))
+  if ([typeCopy isEqualToString:NSUserActivityTypeBrowsingWeb] & 1) != 0 || (+[MTIntentDonationUtil sharedInstance](MTIntentDonationUtil, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "canContinueIntentWithUserActivityType:", typeCopy), v5, (v6))
   {
     v7 = 1;
   }
@@ -639,32 +639,32 @@ LABEL_12:
   else
   {
     v8 = +[MTHandoffController sharedInstance];
-    v9 = [v8 supportedActivityTypes];
-    v7 = [v9 containsObject:v4];
+    supportedActivityTypes = [v8 supportedActivityTypes];
+    v7 = [supportedActivityTypes containsObject:typeCopy];
   }
 
   return v7;
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 userInfo];
-  NSLog(@"Continue Activity! %@", v9);
+  applicationCopy = application;
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  NSLog(@"Continue Activity! %@", userInfo);
 
-  v10 = [v8 activityType];
-  v11 = [v10 isEqualToString:NSUserActivityTypeBrowsingWeb];
+  activityType = [activityCopy activityType];
+  v11 = [activityType isEqualToString:NSUserActivityTypeBrowsingWeb];
 
   if (v11)
   {
-    v12 = [v8 referrerURL];
-    v13 = [v8 webpageURL];
+    referrerURL = [activityCopy referrerURL];
+    webpageURL = [activityCopy webpageURL];
     v25 = UIApplicationOpenURLOptionsAnnotationKey;
-    if (v12)
+    if (referrerURL)
     {
       v23 = LSReferrerURLKey;
-      v24 = v12;
+      v24 = referrerURL;
       v14 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     }
 
@@ -675,29 +675,29 @@ LABEL_12:
 
     v26 = v14;
     v21 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    [(MTAppDelegate_Shared *)self application:v7 openURL:v13 options:v21];
+    [(MTAppDelegate_Shared *)self application:applicationCopy openURL:webpageURL options:v21];
 
-    if (v12)
+    if (referrerURL)
     {
     }
 
     goto LABEL_12;
   }
 
-  if ([v8 isStateRestorationActivity])
+  if ([activityCopy isStateRestorationActivity])
   {
-    [(MTAppDelegate_Shared *)self application:v7 handleStateRestorationWith:v8];
+    [(MTAppDelegate_Shared *)self application:applicationCopy handleStateRestorationWith:activityCopy];
 LABEL_12:
     v20 = 1;
     goto LABEL_13;
   }
 
-  v15 = [v8 userInfo];
-  [IMMetrics recordUserAction:@"handoff" dataSource:0 withData:v15];
+  userInfo2 = [activityCopy userInfo];
+  [IMMetrics recordUserAction:@"handoff" dataSource:0 withData:userInfo2];
 
   v16 = +[MTIntentDonationUtil sharedInstance];
-  v17 = [v8 activityType];
-  v18 = [v16 canContinueIntentWithUserActivityType:v17];
+  activityType2 = [activityCopy activityType];
+  v18 = [v16 canContinueIntentWithUserActivityType:activityType2];
 
   if (!v18)
   {
@@ -705,43 +705,43 @@ LABEL_12:
   }
 
   v19 = +[MTIntentDonationUtil sharedInstance];
-  v20 = [v19 continueIntentsUserActivity:v8];
+  v20 = [v19 continueIntentsUserActivity:activityCopy];
 
 LABEL_13:
   return v20;
 }
 
-- (unint64_t)processNotification:(id)a3
+- (unint64_t)processNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v4;
+    v21 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Processing Notification %@", &v20, 0xCu);
   }
 
   v6 = +[MTPushNotificationController sharedInstance];
-  v7 = [v6 shouldShowAnnouncementNotification:v4];
+  v7 = [v6 shouldShowAnnouncementNotification:notificationCopy];
 
   if (v7)
   {
     v8 = +[MTPushNotificationController sharedInstance];
-    [v8 processAnnouncementNotification:v4];
+    [v8 processAnnouncementNotification:notificationCopy];
     v9 = 0;
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  if ([MTPushNotificationController shouldProcessNotification:v4])
+  if ([MTPushNotificationController shouldProcessNotification:notificationCopy])
   {
     v8 = objc_alloc_init(NSMutableDictionary);
-    if ([MTPushNotificationController shouldSyncFeedUpdateForNotification:v4])
+    if ([MTPushNotificationController shouldSyncFeedUpdateForNotification:notificationCopy])
     {
-      v10 = [MTPushNotificationController storeIdFromFeedUpdateNotification:v4];
-      v11 = [MTPushNotificationController triggeredByFromFeedUpdateNotification:v4];
+      v10 = [MTPushNotificationController storeIdFromFeedUpdateNotification:notificationCopy];
+      v11 = [MTPushNotificationController triggeredByFromFeedUpdateNotification:notificationCopy];
       -[MTAppDelegate_Shared _setNeedsRetryFlagFromNotificationForStoreId:](self, "_setNeedsRetryFlagFromNotificationForStoreId:", [v10 longLongValue]);
       -[MTAppDelegate_Shared processFeedUpdateNotification:triggerBy:](self, "processFeedUpdateNotification:triggerBy:", [v10 longLongValue], v11);
       v12 = _MTLogCategoryCloudSync();
@@ -763,7 +763,7 @@ LABEL_22:
 
     else
     {
-      if ([MTPushNotificationController shouldSyncSubscriptionsForNotification:v4])
+      if ([MTPushNotificationController shouldSyncSubscriptionsForNotification:notificationCopy])
       {
         v15 = _MTLogCategoryCloudSync();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -779,7 +779,7 @@ LABEL_22:
 
       else
       {
-        if (![MTPushNotificationController shouldSyncUppForNotification:v4])
+        if (![MTPushNotificationController shouldSyncUppForNotification:notificationCopy])
         {
           v9 = 1;
           goto LABEL_21;
@@ -814,21 +814,21 @@ LABEL_23:
   return v9;
 }
 
-- (void)processFeedUpdateNotification:(int64_t)a3 triggerBy:(id)a4
+- (void)processFeedUpdateNotification:(int64_t)notification triggerBy:(id)by
 {
-  v5 = a4;
+  byCopy = by;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
   v6 = +[UIApplication sharedApplication];
-  v7 = [NSString stringWithFormat:@"MTAppDelegate_Shared.FeedUpdatePushNotification.%lld", a3];
+  notification = [NSString stringWithFormat:@"MTAppDelegate_Shared.FeedUpdatePushNotification.%lld", notification];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005C6F8;
   v11[3] = &unk_1004D8688;
   v11[4] = &v12;
-  v8 = [v6 beginBackgroundTaskWithName:v7 expirationHandler:v11];
+  v8 = [v6 beginBackgroundTaskWithName:notification expirationHandler:v11];
 
   v13[3] = v8;
   v9 = +[MTFeedUpdateManager sharedInstance];
@@ -837,8 +837,8 @@ LABEL_23:
   v10[2] = sub_10005C758;
   v10[3] = &unk_1004D86B0;
   v10[4] = &v12;
-  v10[5] = a3;
-  [v9 updatePodcastWithStoreId:a3 triggerBy:v5 userInitiated:0 forced:1 source:2 completion:v10];
+  v10[5] = notification;
+  [v9 updatePodcastWithStoreId:notification triggerBy:byCopy userInitiated:0 forced:1 source:2 completion:v10];
 
   _Block_object_dispose(&v12, 8);
 }
@@ -847,14 +847,14 @@ LABEL_23:
 {
   if ((+[PFClientUtil isRunningOnHomepod]& 1) != 0)
   {
-    v3 = [(MTAppDelegate_Shared *)self siriDonator];
-    [v3 startDonation];
+    siriDonator = [(MTAppDelegate_Shared *)self siriDonator];
+    [siriDonator startDonation];
   }
 
   else
   {
-    v3 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
-    [v3 syncAllBookkeeperKeys];
+    siriDonator = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
+    [siriDonator syncAllBookkeeperKeys];
   }
 
   v4 = _MTLogCategoryCloudSync();
@@ -873,25 +873,25 @@ LABEL_23:
   [v2 performUniversalPlaybackPositionSync];
 }
 
-- (void)_setNeedsRetryFlagFromNotificationForStoreId:(int64_t)a3
+- (void)_setNeedsRetryFlagFromNotificationForStoreId:(int64_t)id
 {
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
-  [MTPodcast predicateForPodcastStoreId:a3];
+  [MTPodcast predicateForPodcastStoreId:id];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_10005CADC;
   v15 = &unk_1004D86D8;
-  v17 = v16 = v5;
-  v18 = a3;
+  v17 = v16 = mainOrPrivateContext;
+  idCopy = id;
   v6 = v17;
-  v7 = v5;
+  v7 = mainOrPrivateContext;
   [v7 performBlockAndWaitWithSave:&v12];
   v8 = [MTFeedUpdateMetricsAction notificationSetRetryFlag:v12];
   v9 = +[MTFeedUpdateMetricsDataKey podcastStoreId];
   v19 = v9;
-  v10 = [NSNumber numberWithLongLong:a3];
+  v10 = [NSNumber numberWithLongLong:id];
   v20 = v10;
   v11 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   [IMMetrics recordUserAction:v8 dataSource:0 withData:v11];
@@ -900,9 +900,9 @@ LABEL_23:
 - (MTSecureDownloadRenewalManager)secureDownloadRenewalManager
 {
   v2 = +[MTLibrary sharedInstance];
-  v3 = [v2 secureDownloadRenewalManager];
+  secureDownloadRenewalManager = [v2 secureDownloadRenewalManager];
 
-  return v3;
+  return secureDownloadRenewalManager;
 }
 
 - (_TtC18PodcastsFoundation11SiriDonator)siriDonator

@@ -1,26 +1,26 @@
 @interface CloudAccountManager
 - (CloudAccountManager)init;
-- (id)getAppleAccountWithEmailAddress:(id)a3 error:(id *)a4;
-- (id)getPrimaryAppleAccountAndReturnError:(id *)a3;
+- (id)getAppleAccountWithEmailAddress:(id)address error:(id *)error;
+- (id)getPrimaryAppleAccountAndReturnError:(id *)error;
 @end
 
 @implementation CloudAccountManager
 
-- (id)getAppleAccountWithEmailAddress:(id)a3 error:(id *)a4
+- (id)getAppleAccountWithEmailAddress:(id)address error:(id *)error
 {
   v5 = sub_1D373797C();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1D3735DC8(v5, v7);
 
   return v9;
 }
 
-- (id)getPrimaryAppleAccountAndReturnError:(id *)a3
+- (id)getPrimaryAppleAccountAndReturnError:(id *)error
 {
-  v4 = [objc_opt_self() defaultStore];
-  v5 = v4;
-  if (v4 && (v6 = [v4 aa_primaryAppleAccount]) != 0)
+  defaultStore = [objc_opt_self() defaultStore];
+  v5 = defaultStore;
+  if (defaultStore && (v6 = [defaultStore aa_primaryAppleAccount]) != 0)
   {
     v7 = v6;
 
@@ -33,13 +33,13 @@
     v9 = swift_allocError();
     swift_willThrow();
 
-    if (a3)
+    if (error)
     {
       v10 = sub_1D373759C();
 
       v11 = v10;
       v8 = 0;
-      *a3 = v10;
+      *error = v10;
     }
 
     else

@@ -1,52 +1,52 @@
 @interface CNUICoreInMemoryWhitelistedContactsDataSourceDecorator
-+ (id)modelBuilderForAddedContacts:(id)a3 withContactTypeAssessor:(id)a4;
-+ (id)modelBuilderForContacts:(id)a3 withContactTypeAssessor:(id)a4;
++ (id)modelBuilderForAddedContacts:(id)contacts withContactTypeAssessor:(id)assessor;
++ (id)modelBuilderForContacts:(id)contacts withContactTypeAssessor:(id)assessor;
 - (BOOL)familyMemberContainerIsEmpty;
 - (CNUICoreFamilyMemberContactsObserver)observer;
-- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)a3 familyInfoRetriever:(id)a4 schedulerProvider:(id)a5;
-- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)a3 schedulerProvider:(id)a4;
+- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)source familyInfoRetriever:(id)retriever schedulerProvider:(id)provider;
+- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)source schedulerProvider:(id)provider;
 - (NSArray)familyMemberContactItems;
-- (id)contactRepresentingItem:(id)a3;
+- (id)contactRepresentingItem:(id)item;
 - (id)contactTypeAssesor;
 - (id)familyMemberContactItemsFromDataSource;
 - (id)familyMemberContactItemsFromDataSourceAugmentedWithInMemoryEdits;
 - (int64_t)fetchStatus;
 - (void)dealloc;
-- (void)executeBlockIfEditingSessionNotInProgress:(id)a3;
+- (void)executeBlockIfEditingSessionNotInProgress:(id)progress;
 - (void)familyMemberContactItemsDidChange;
 - (void)finishPersistenceOfInMemoryContactsWhitelistState;
 - (void)flushEditingSession;
 - (void)notifyObserverContactItemsChange;
 - (void)persistInMemoryContactsWhitelistState;
-- (void)startEditingSessionIfNecessaryWithSnapshotOfItems:(id)a3;
-- (void)startImplicitEditngSessionForAnyItemsNotPersistedInItems:(id)a3;
-- (void)updateWhitelistByAddingContacts:(id)a3;
-- (void)updateWhitelistByRemovingContacts:(id)a3;
-- (void)updateWhitelistByUpdatingContacts:(id)a3;
+- (void)startEditingSessionIfNecessaryWithSnapshotOfItems:(id)items;
+- (void)startImplicitEditngSessionForAnyItemsNotPersistedInItems:(id)items;
+- (void)updateWhitelistByAddingContacts:(id)contacts;
+- (void)updateWhitelistByRemovingContacts:(id)contacts;
+- (void)updateWhitelistByUpdatingContacts:(id)contacts;
 @end
 
 @implementation CNUICoreInMemoryWhitelistedContactsDataSourceDecorator
 
-- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)a3 schedulerProvider:(id)a4
+- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)source schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  sourceCopy = source;
   v8 = [CNUICoreContactStoreProductionFacade alloc];
   v9 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v10 = [(CNUICoreContactStoreProductionFacade *)v8 initWithContactStore:v9];
 
-  v11 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v10 matchFamilyMembersWithContacts:1 schedulerProvider:v6];
-  v12 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self initWithDataSource:v7 familyInfoRetriever:v11 schedulerProvider:v6];
+  v11 = [[CNUICoreFamilyInfoRetriever alloc] initWithMainContactStoreFacade:v10 matchFamilyMembersWithContacts:1 schedulerProvider:providerCopy];
+  v12 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self initWithDataSource:sourceCopy familyInfoRetriever:v11 schedulerProvider:providerCopy];
 
   return v12;
 }
 
-- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)a3 familyInfoRetriever:(id)a4 schedulerProvider:(id)a5
+- (CNUICoreInMemoryWhitelistedContactsDataSourceDecorator)initWithDataSource:(id)source familyInfoRetriever:(id)retriever schedulerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  sourceCopy = source;
+  retrieverCopy = retriever;
+  providerCopy = provider;
+  if (sourceCopy)
   {
     goto LABEL_5;
   }
@@ -60,7 +60,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_1, OS_LOG_TYPE_FAULT))
   {
     [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)v12 initWithDataSource:v13 familyInfoRetriever:v14 schedulerProvider:v15, v16, v17, v18, v19];
-    if (v10)
+    if (retrieverCopy)
     {
       goto LABEL_10;
     }
@@ -69,7 +69,7 @@
   else
   {
 LABEL_5:
-    if (v10)
+    if (retrieverCopy)
     {
       goto LABEL_10;
     }
@@ -87,7 +87,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (!v11)
+  if (!providerCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_1 != -1)
     {
@@ -107,10 +107,10 @@ LABEL_10:
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->_dataSource, a3);
+    objc_storeStrong(&v36->_dataSource, source);
     [(CNUICoreFamilyMemberWhitelistedContactsDataSource *)v37->_dataSource setObserver:v37];
-    objc_storeStrong(&v37->_familyInfoRetriever, a4);
-    objc_storeStrong(&v37->_schedulerProvider, a5);
+    objc_storeStrong(&v37->_familyInfoRetriever, retriever);
+    objc_storeStrong(&v37->_schedulerProvider, provider);
     v38 = objc_alloc_init(CNUICoreContactEditingSession);
     editingSession = v37->_editingSession;
     v37->_editingSession = v38;
@@ -123,8 +123,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self endEditingNotificationToken];
-  [v3 cancel];
+  endEditingNotificationToken = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self endEditingNotificationToken];
+  [endEditingNotificationToken cancel];
 
   v4.receiver = self;
   v4.super_class = CNUICoreInMemoryWhitelistedContactsDataSourceDecorator;
@@ -169,40 +169,40 @@ id __76__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactTypeAsses
 
 - (void)notifyObserverContactItemsChange
 {
-  v2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self observer];
-  [v2 familyMemberContactItemsDidChange];
+  observer = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self observer];
+  [observer familyMemberContactItemsDidChange];
 }
 
-- (void)executeBlockIfEditingSessionNotInProgress:(id)a3
+- (void)executeBlockIfEditingSessionNotInProgress:(id)progress
 {
-  v7 = a3;
-  v4 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v5 = [v4 inProgress];
+  progressCopy = progress;
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  inProgress = [editingSession inProgress];
 
-  v6 = v7;
-  if (v7 && (v5 & 1) == 0)
+  v6 = progressCopy;
+  if (progressCopy && (inProgress & 1) == 0)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(progressCopy + 2))(progressCopy);
+    v6 = progressCopy;
   }
 }
 
-- (void)startEditingSessionIfNecessaryWithSnapshotOfItems:(id)a3
+- (void)startEditingSessionIfNecessaryWithSnapshotOfItems:(id)items
 {
-  v6 = a3;
-  v4 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsSnapshot];
+  itemsCopy = items;
+  familyMemberContactItemsSnapshot = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsSnapshot];
 
-  if (!v4)
+  if (!familyMemberContactItemsSnapshot)
   {
-    if (v6)
+    if (itemsCopy)
     {
-      [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self setFamilyMemberContactItemsSnapshot:v6];
+      [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self setFamilyMemberContactItemsSnapshot:itemsCopy];
     }
 
     else
     {
-      v5 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsFromDataSource];
-      [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self setFamilyMemberContactItemsSnapshot:v5];
+      familyMemberContactItemsFromDataSource = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsFromDataSource];
+      [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self setFamilyMemberContactItemsSnapshot:familyMemberContactItemsFromDataSource];
     }
   }
 }
@@ -216,26 +216,26 @@ id __76__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactTypeAsses
 
 - (BOOL)familyMemberContainerIsEmpty
 {
-  v2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
-  v3 = [v2 familyMemberContainerIsEmpty];
+  dataSource = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
+  familyMemberContainerIsEmpty = [dataSource familyMemberContainerIsEmpty];
 
-  return v3;
+  return familyMemberContainerIsEmpty;
 }
 
 - (int64_t)fetchStatus
 {
-  v2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
-  v3 = [v2 fetchStatus];
+  dataSource = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
+  fetchStatus = [dataSource fetchStatus];
 
-  return v3;
+  return fetchStatus;
 }
 
 - (NSArray)familyMemberContactItems
 {
-  v3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v4 = [v3 inProgress];
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  inProgress = [editingSession inProgress];
 
-  if (v4)
+  if (inProgress)
   {
     [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsFromDataSourceAugmentedWithInMemoryEdits];
   }
@@ -252,34 +252,34 @@ id __76__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactTypeAsses
 - (id)familyMemberContactItemsFromDataSourceAugmentedWithInMemoryEdits
 {
   v3 = objc_opt_class();
-  v4 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v5 = [v4 addedContacts];
-  v6 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self contactTypeAssesor];
-  v7 = [v3 modelBuilderForAddedContacts:v5 withContactTypeAssessor:v6];
-  v8 = [v7 build];
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  addedContacts = [editingSession addedContacts];
+  contactTypeAssesor = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self contactTypeAssesor];
+  v7 = [v3 modelBuilderForAddedContacts:addedContacts withContactTypeAssessor:contactTypeAssesor];
+  build = [v7 build];
 
   v9 = objc_opt_class();
-  v10 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v11 = [v10 updatedContacts];
-  v12 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self contactTypeAssesor];
-  v13 = [v9 modelBuilderForContacts:v11 withContactTypeAssessor:v12];
-  v14 = [v13 build];
+  editingSession2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  updatedContacts = [editingSession2 updatedContacts];
+  contactTypeAssesor2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self contactTypeAssesor];
+  v13 = [v9 modelBuilderForContacts:updatedContacts withContactTypeAssessor:contactTypeAssesor2];
+  build2 = [v13 build];
 
-  v15 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v16 = [v15 removedContacts];
-  v17 = [v16 _cn_map:&__block_literal_global_10];
+  editingSession3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  removedContacts = [editingSession3 removedContacts];
+  v17 = [removedContacts _cn_map:&__block_literal_global_10];
 
-  v18 = [v14 items];
-  v19 = [v18 _cn_indexBy:&__block_literal_global_17_0];
+  items = [build2 items];
+  v19 = [items _cn_indexBy:&__block_literal_global_17_0];
 
-  v20 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsSnapshot];
+  familyMemberContactItemsSnapshot = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self familyMemberContactItemsSnapshot];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __122__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_familyMemberContactItemsFromDataSourceAugmentedWithInMemoryEdits__block_invoke;
   v34[3] = &unk_1E76E8208;
   v35 = v17;
   v21 = v17;
-  v22 = [v20 _cn_filter:v34];
+  v22 = [familyMemberContactItemsSnapshot _cn_filter:v34];
 
   v29 = MEMORY[0x1E69E9820];
   v30 = 3221225472;
@@ -288,8 +288,8 @@ id __76__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactTypeAsses
   v33 = v19;
   v23 = v19;
   v24 = [v22 _cn_map:&v29];
-  v25 = [v8 items];
-  v26 = [v24 arrayByAddingObjectsFromArray:v25];
+  items2 = [build items];
+  v26 = [v24 arrayByAddingObjectsFromArray:items2];
 
   v27 = [CNUICoreFamilyMemberContactsModelBuilder itemsBySortingItems:v26];
 
@@ -328,19 +328,19 @@ id __122__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_familyMemberCon
 
 - (id)familyMemberContactItemsFromDataSource
 {
-  v3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
-  v4 = [v3 familyMemberContactItems];
+  dataSource = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
+  familyMemberContactItems = [dataSource familyMemberContactItems];
 
-  [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self startImplicitEditngSessionForAnyItemsNotPersistedInItems:v4];
+  [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self startImplicitEditngSessionForAnyItemsNotPersistedInItems:familyMemberContactItems];
 
-  return v4;
+  return familyMemberContactItems;
 }
 
-- (void)startImplicitEditngSessionForAnyItemsNotPersistedInItems:(id)a3
+- (void)startImplicitEditngSessionForAnyItemsNotPersistedInItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 _cn_filter:&__block_literal_global_19];
-  v6 = [v4 _cn_filter:&__block_literal_global_21];
+  itemsCopy = items;
+  v5 = [itemsCopy _cn_filter:&__block_literal_global_19];
+  v6 = [itemsCopy _cn_filter:&__block_literal_global_21];
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
     v10[0] = MEMORY[0x1E69E9820];
@@ -348,12 +348,12 @@ id __122__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_familyMemberCon
     v10[2] = __115__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_startImplicitEditngSessionForAnyItemsNotPersistedInItems___block_invoke;
     v10[3] = &unk_1E76E8258;
     v10[4] = self;
-    v7 = [v4 _cn_map:v10];
+    v7 = [itemsCopy _cn_map:v10];
     v8 = [v7 _cn_filter:*MEMORY[0x1E6996550]];
 
     [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self startEditingSessionIfNecessaryWithSnapshotOfItems:v6];
-    v9 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-    [v9 addContacts:v8];
+    editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+    [editingSession addContacts:v8];
   }
 }
 
@@ -367,58 +367,58 @@ id __115__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_startImplicitEd
   return v5;
 }
 
-- (void)updateWhitelistByAddingContacts:(id)a3
+- (void)updateWhitelistByAddingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self startEditingSessionIfNecessary];
-  v5 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  [v5 addContacts:v4];
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  [editingSession addContacts:contactsCopy];
 
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self notifyObserverContactItemsChange];
 }
 
-- (void)updateWhitelistByUpdatingContacts:(id)a3
+- (void)updateWhitelistByUpdatingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self startEditingSessionIfNecessary];
-  v5 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  [v5 updateContacts:v4];
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  [editingSession updateContacts:contactsCopy];
 
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self notifyObserverContactItemsChange];
 }
 
-- (void)updateWhitelistByRemovingContacts:(id)a3
+- (void)updateWhitelistByRemovingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self startEditingSessionIfNecessary];
-  v5 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  [v5 removeContacts:v4];
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  [editingSession removeContacts:contactsCopy];
 
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self notifyObserverContactItemsChange];
 }
 
-- (id)contactRepresentingItem:(id)a3
+- (id)contactRepresentingItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v6 = [v5 addedContacts];
+  itemCopy = item;
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  addedContacts = [editingSession addedContacts];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __82__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactRepresentingItem___block_invoke;
   v22[3] = &unk_1E76E81C0;
-  v7 = v4;
+  v7 = itemCopy;
   v23 = v7;
-  v8 = [v6 _cn_firstObjectPassingTest:v22];
+  v8 = [addedContacts _cn_firstObjectPassingTest:v22];
 
-  v9 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  v10 = [v9 updatedContacts];
+  editingSession2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  updatedContacts = [editingSession2 updatedContacts];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __82__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactRepresentingItem___block_invoke_2;
   v20 = &unk_1E76E81C0;
   v11 = v7;
   v21 = v11;
-  v12 = [v10 _cn_firstObjectPassingTest:&v17];
+  v12 = [updatedContacts _cn_firstObjectPassingTest:&v17];
 
   if (v8)
   {
@@ -462,37 +462,37 @@ uint64_t __82__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_contactRep
 
 - (void)persistInMemoryContactsWhitelistState
 {
-  v16 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-  if ([v16 inProgress])
+  editingSession = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+  if ([editingSession inProgress])
   {
-    v3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self endEditingNotificationToken];
+    endEditingNotificationToken = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self endEditingNotificationToken];
 
-    if (!v3)
+    if (!endEditingNotificationToken)
     {
-      v4 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
-      v5 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-      v6 = [v5 addedContacts];
-      [v4 updateWhitelistByAddingContacts:v6];
+      dataSource = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
+      editingSession2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+      addedContacts = [editingSession2 addedContacts];
+      [dataSource updateWhitelistByAddingContacts:addedContacts];
 
-      v7 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
-      v8 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-      v9 = [v8 updatedContacts];
-      [v7 updateWhitelistByUpdatingContacts:v9];
+      dataSource2 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
+      editingSession3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+      updatedContacts = [editingSession3 updatedContacts];
+      [dataSource2 updateWhitelistByUpdatingContacts:updatedContacts];
 
-      v10 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
-      v11 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
-      v12 = [v11 removedContacts];
-      [v10 updateWhitelistByRemovingContacts:v12];
+      dataSource3 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self dataSource];
+      editingSession4 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self editingSession];
+      removedContacts = [editingSession4 removedContacts];
+      [dataSource3 updateWhitelistByRemovingContacts:removedContacts];
 
       objc_initWeak(&location, self);
-      v13 = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self schedulerProvider];
-      v14 = [v13 mainThreadScheduler];
+      schedulerProvider = [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self schedulerProvider];
+      mainThreadScheduler = [schedulerProvider mainThreadScheduler];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __95__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_persistInMemoryContactsWhitelistState__block_invoke;
       v17[3] = &unk_1E76E8280;
       objc_copyWeak(&v18, &location);
-      v15 = [v14 afterDelay:v17 performBlock:2.5];
+      v15 = [mainThreadScheduler afterDelay:v17 performBlock:2.5];
       [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self setEndEditingNotificationToken:v15];
 
       objc_destroyWeak(&v18);
@@ -521,22 +521,22 @@ void __95__CNUICoreInMemoryWhitelistedContactsDataSourceDecorator_persistInMemor
   [(CNUICoreInMemoryWhitelistedContactsDataSourceDecorator *)self setEndEditingNotificationToken:0];
 }
 
-+ (id)modelBuilderForAddedContacts:(id)a3 withContactTypeAssessor:(id)a4
++ (id)modelBuilderForAddedContacts:(id)contacts withContactTypeAssessor:(id)assessor
 {
-  v4 = [a1 modelBuilderForContacts:a3 withContactTypeAssessor:a4];
+  v4 = [self modelBuilderForContacts:contacts withContactTypeAssessor:assessor];
   [v4 setMarkItemsAsPersisted:0];
 
   return v4;
 }
 
-+ (id)modelBuilderForContacts:(id)a3 withContactTypeAssessor:(id)a4
++ (id)modelBuilderForContacts:(id)contacts withContactTypeAssessor:(id)assessor
 {
-  v5 = a4;
-  v6 = a3;
+  assessorCopy = assessor;
+  contactsCopy = contacts;
   v7 = objc_alloc_init(CNUICoreFamilyMemberContactsModelBuilder);
-  [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContacts:v6];
+  [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContacts:contactsCopy];
 
-  [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContactTypeAssessor:v5];
+  [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContactTypeAssessor:assessorCopy];
   [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setContactFormatterStyle:+[CNUICoreFamilyMemberContactsModelRetriever contactFormatterStyle]];
   [(CNUICoreFamilyMemberContactsModelBuilder *)v7 setSortItemsByName:1];
 

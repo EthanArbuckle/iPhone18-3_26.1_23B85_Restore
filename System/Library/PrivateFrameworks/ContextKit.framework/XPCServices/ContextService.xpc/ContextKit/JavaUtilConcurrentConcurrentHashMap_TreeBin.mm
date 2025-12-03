@@ -26,7 +26,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     Unsafe = SunMiscUnsafe_getUnsafe();
     JreStrongAssign(&qword_100554D30, Unsafe);

@@ -2,8 +2,8 @@
 - (BuddyExistingSettings)init;
 - (NSData)walletData;
 - (id)backupMetadata;
-- (void)setBackupMetadata:(id)a3;
-- (void)setBackupMetadataWithProviderBlock:(id)a3;
+- (void)setBackupMetadata:(id)metadata;
+- (void)setBackupMetadataWithProviderBlock:(id)block;
 @end
 
 @implementation BuddyExistingSettings
@@ -31,68 +31,68 @@
 
 - (NSData)walletData
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [(BuddyExistingSettings *)self backupMetadata];
-  if (!v9[0] || ((location = [v9[0] expressSettings], (objc_msgSend(location, "hasWalletData") & 1) == 0) ? ((objc_msgSend(v9[0], "hasWalletData") & 1) == 0 ? (v7 = 0) : (v11 = objc_msgSend(v9[0], "walletData"), v7 = 1)) : (v11 = objc_msgSend(location, "walletData"), v7 = 1), objc_storeStrong(&location, 0), !v7))
+  if (!v9[0] || ((location = [v9[0] expressSettings], (objc_msgSend(location, "hasWalletData") & 1) == 0) ? ((objc_msgSend(v9[0], "hasWalletData") & 1) == 0 ? (v7 = 0) : (walletData = objc_msgSend(v9[0], "walletData"), v7 = 1)) : (walletData = objc_msgSend(location, "walletData"), v7 = 1), objc_storeStrong(&location, 0), !v7))
   {
-    v2 = [(BuddyExistingSettings *)v10 expressSettings];
-    v3 = [(SASExpressSettings *)v2 hasWalletData];
+    expressSettings = [(BuddyExistingSettings *)selfCopy expressSettings];
+    hasWalletData = [(SASExpressSettings *)expressSettings hasWalletData];
 
-    if (v3)
+    if (hasWalletData)
     {
-      v4 = [(BuddyExistingSettings *)v10 expressSettings];
-      v11 = [(SASExpressSettings *)v4 walletData];
+      expressSettings2 = [(BuddyExistingSettings *)selfCopy expressSettings];
+      walletData = [(SASExpressSettings *)expressSettings2 walletData];
     }
 
     else
     {
-      v11 = 0;
+      walletData = 0;
     }
   }
 
   objc_storeStrong(v9, 0);
-  v5 = v11;
+  v5 = walletData;
 
   return v5;
 }
 
-- (void)setBackupMetadataWithProviderBlock:(id)a3
+- (void)setBackupMetadataWithProviderBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyExistingSettings *)v12 metadataQueue];
+  objc_storeStrong(location, block);
+  metadataQueue = [(BuddyExistingSettings *)selfCopy metadataQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001A5B68;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(metadataQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setBackupMetadata:(id)a3
+- (void)setBackupMetadata:(id)metadata
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyExistingSettings *)v12 metadataQueue];
+  objc_storeStrong(location, metadata);
+  metadataQueue = [(BuddyExistingSettings *)selfCopy metadataQueue];
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001A5CD0;
   v8 = &unk_10032B838;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  dispatch_async(v3, &block);
+  dispatch_async(metadataQueue, &block);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
@@ -101,7 +101,7 @@
 
 - (id)backupMetadata
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v11 = 0;
   v12 = &v11;
@@ -110,15 +110,15 @@
   v15 = sub_1001A5E70;
   v16 = sub_1001A5EB4;
   v17[0] = 0;
-  v2 = [(BuddyExistingSettings *)self metadataQueue];
+  metadataQueue = [(BuddyExistingSettings *)self metadataQueue];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1001A5EC0;
   v9 = &unk_10032C290;
   v10[1] = &v11;
-  v10[0] = v18;
-  dispatch_sync(v2, &v5);
+  v10[0] = selfCopy;
+  dispatch_sync(metadataQueue, &v5);
 
   v3 = v12[5];
   objc_storeStrong(v10, 0);

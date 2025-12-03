@@ -1,19 +1,19 @@
 @interface PKFeatureApplicationDeclineDetails
-- (BOOL)isEqual:(id)a3;
-- (PKFeatureApplicationDeclineDetails)initWithCoder:(id)a3;
-- (PKFeatureApplicationDeclineDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKFeatureApplicationDeclineDetails)initWithCoder:(id)coder;
+- (PKFeatureApplicationDeclineDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFeatureApplicationDeclineDetails
 
-- (PKFeatureApplicationDeclineDetails)initWithDictionary:(id)a3
+- (PKFeatureApplicationDeclineDetails)initWithDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKFeatureApplicationDeclineDetails;
   v5 = [(PKFeatureApplicationDeclineDetails *)&v17 init];
@@ -22,17 +22,17 @@
     goto LABEL_4;
   }
 
-  v6 = [v4 PKStringForKey:@"declineTermsIdentifier"];
+  v6 = [dictionaryCopy PKStringForKey:@"declineTermsIdentifier"];
   declinedTermsIdentifier = v5->_declinedTermsIdentifier;
   v5->_declinedTermsIdentifier = v6;
 
   if (v5->_declinedTermsIdentifier)
   {
-    v8 = [v4 PKStringForKey:@"pathTermsIdentifier"];
+    v8 = [dictionaryCopy PKStringForKey:@"pathTermsIdentifier"];
     pathTermsIdentifier = v5->_pathTermsIdentifier;
     v5->_pathTermsIdentifier = v8;
 
-    v10 = [v4 PKStringForKey:@"pathIdentifier"];
+    v10 = [dictionaryCopy PKStringForKey:@"pathIdentifier"];
     pathIdentifier = v5->_pathIdentifier;
     v5->_pathIdentifier = v10;
 
@@ -57,23 +57,23 @@ LABEL_8:
   return v12;
 }
 
-- (PKFeatureApplicationDeclineDetails)initWithCoder:(id)a3
+- (PKFeatureApplicationDeclineDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKFeatureApplicationDeclineDetails;
   v5 = [(PKFeatureApplicationDeclineDetails *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"declinedTermsIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"declinedTermsIdentifier"];
     declinedTermsIdentifier = v5->_declinedTermsIdentifier;
     v5->_declinedTermsIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathTermsIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathTermsIdentifier"];
     pathTermsIdentifier = v5->_pathTermsIdentifier;
     v5->_pathTermsIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathIdentifier"];
     pathIdentifier = v5->_pathIdentifier;
     v5->_pathIdentifier = v10;
   }
@@ -81,13 +81,13 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   declinedTermsIdentifier = self->_declinedTermsIdentifier;
-  v5 = a3;
-  [v5 encodeObject:declinedTermsIdentifier forKey:@"declinedTermsIdentifier"];
-  [v5 encodeObject:self->_pathTermsIdentifier forKey:@"pathTermsIdentifier"];
-  [v5 encodeObject:self->_pathIdentifier forKey:@"pathIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:declinedTermsIdentifier forKey:@"declinedTermsIdentifier"];
+  [coderCopy encodeObject:self->_pathTermsIdentifier forKey:@"pathTermsIdentifier"];
+  [coderCopy encodeObject:self->_pathIdentifier forKey:@"pathIdentifier"];
 }
 
 - (id)description
@@ -100,9 +100,9 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -110,7 +110,7 @@ LABEL_8:
   }
 
   declinedTermsIdentifier = self->_declinedTermsIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (declinedTermsIdentifier && v6)
   {
     if (([(NSString *)declinedTermsIdentifier isEqual:?]& 1) == 0)
@@ -125,7 +125,7 @@ LABEL_8:
   }
 
   pathTermsIdentifier = self->_pathTermsIdentifier;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (!pathTermsIdentifier || !v8)
   {
     if (pathTermsIdentifier == v8)
@@ -145,7 +145,7 @@ LABEL_14:
 
 LABEL_10:
   pathIdentifier = self->_pathIdentifier;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (pathIdentifier && v10)
   {
     v11 = [(NSString *)pathIdentifier isEqual:?];
@@ -163,27 +163,27 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_declinedTermsIdentifier];
-  [v3 safelyAddObject:self->_pathTermsIdentifier];
-  [v3 safelyAddObject:self->_pathIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_declinedTermsIdentifier];
+  [array safelyAddObject:self->_pathTermsIdentifier];
+  [array safelyAddObject:self->_pathIdentifier];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFeatureApplicationDeclineDetails allocWithZone:](PKFeatureApplicationDeclineDetails init];
-  v6 = [(NSString *)self->_declinedTermsIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_declinedTermsIdentifier copyWithZone:zone];
   declinedTermsIdentifier = v5->_declinedTermsIdentifier;
   v5->_declinedTermsIdentifier = v6;
 
-  v8 = [(NSString *)self->_pathTermsIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_pathTermsIdentifier copyWithZone:zone];
   pathTermsIdentifier = v5->_pathTermsIdentifier;
   v5->_pathTermsIdentifier = v8;
 
-  v10 = [(NSString *)self->_pathIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_pathIdentifier copyWithZone:zone];
   pathIdentifier = v5->_pathIdentifier;
   v5->_pathIdentifier = v10;
 

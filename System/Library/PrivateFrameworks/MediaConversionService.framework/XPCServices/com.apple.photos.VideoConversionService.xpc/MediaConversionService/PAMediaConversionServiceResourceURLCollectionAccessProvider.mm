@@ -1,27 +1,27 @@
 @interface PAMediaConversionServiceResourceURLCollectionAccessProvider
 - (NSURL)blastDoorSourceURL;
-- (PAMediaConversionServiceResourceURLCollectionAccessProvider)initWithOptions:(id)a3;
-- (id)_blastDoorConvertImageMetadata:(id)a3;
-- (id)_blastDoorMetadataWithSourceURL:(id)a3;
-- (id)_blastDoorStoreTemporarySourceImageWithImageRef:(CGImage *)a3 sourceURL:(id)a4 error:(id *)a5;
-- (id)_blastDoorURLWithImageSourceURL:(id)a3 properties:(id *)a4;
-- (id)_blastDoorURLWithVideoSourceURL:(id)a3 sourceMetadata:(id)a4;
-- (id)propertiesForVideoComplementURL:(id)a3;
-- (id)validateAccessForURL:(id)a3 role:(id)a4;
+- (PAMediaConversionServiceResourceURLCollectionAccessProvider)initWithOptions:(id)options;
+- (id)_blastDoorConvertImageMetadata:(id)metadata;
+- (id)_blastDoorMetadataWithSourceURL:(id)l;
+- (id)_blastDoorStoreTemporarySourceImageWithImageRef:(CGImage *)ref sourceURL:(id)l error:(id *)error;
+- (id)_blastDoorURLWithImageSourceURL:(id)l properties:(id *)properties;
+- (id)_blastDoorURLWithVideoSourceURL:(id)l sourceMetadata:(id)metadata;
+- (id)propertiesForVideoComplementURL:(id)l;
+- (id)validateAccessForURL:(id)l role:(id)role;
 @end
 
 @implementation PAMediaConversionServiceResourceURLCollectionAccessProvider
 
-- (id)_blastDoorConvertImageMetadata:(id)a3
+- (id)_blastDoorConvertImageMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = kPFMediaPropertyCreationDate;
-  v6 = [v3 imageDate];
-  v7 = v6;
+  imageDate = [metadataCopy imageDate];
+  v7 = imageDate;
   if (v5)
   {
-    v8 = v6 == 0;
+    v8 = imageDate == 0;
   }
 
   else
@@ -31,13 +31,13 @@
 
   if (!v8)
   {
-    [v4 setObject:v6 forKey:v5];
+    [v4 setObject:imageDate forKey:v5];
   }
 
-  if ([v3 has_timezoneOffset])
+  if ([metadataCopy has_timezoneOffset])
   {
     v9 = kPFMediaPropertyTimeZoneOffsetSeconds;
-    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 timezoneOffset]);
+    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy timezoneOffset]);
     v11 = v10;
     if (v9)
     {
@@ -55,9 +55,9 @@
     }
   }
 
-  if ([v3 has_subsecTimeOriginal])
+  if ([metadataCopy has_subsecTimeOriginal])
   {
-    [v3 subsecTimeOriginal];
+    [metadataCopy subsecTimeOriginal];
     v13 = [NSNumber numberWithDouble:?];
     v14 = v13;
     if (kCGImagePropertyExifSubsecTimeOriginal)
@@ -76,9 +76,9 @@
     }
   }
 
-  if ([v3 has_rawOrientation])
+  if ([metadataCopy has_rawOrientation])
   {
-    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 rawOrientation]);
+    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy rawOrientation]);
     v17 = v16;
     if (kCGImagePropertyOrientation && v16)
     {
@@ -86,9 +86,9 @@
     }
   }
 
-  if ([v3 has_rawPixelWidth])
+  if ([metadataCopy has_rawPixelWidth])
   {
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 rawPixelWidth]);
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy rawPixelWidth]);
     v19 = v18;
     if (kCGImagePropertyPixelWidth && v18)
     {
@@ -96,9 +96,9 @@
     }
   }
 
-  if ([v3 has_rawPixelHeight])
+  if ([metadataCopy has_rawPixelHeight])
   {
-    v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 rawPixelHeight]);
+    v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy rawPixelHeight]);
     v21 = v20;
     if (kCGImagePropertyPixelHeight && v20)
     {
@@ -106,31 +106,31 @@
     }
   }
 
-  v22 = [v3 lensModel];
-  v23 = v22;
-  if (kCGImagePropertyExifLensModel && v22)
+  lensModel = [metadataCopy lensModel];
+  v23 = lensModel;
+  if (kCGImagePropertyExifLensModel && lensModel)
   {
-    [v4 setObject:v22 forKey:kCGImagePropertyExifLensModel];
+    [v4 setObject:lensModel forKey:kCGImagePropertyExifLensModel];
   }
 
-  v24 = [v3 lensMake];
-  v25 = v24;
-  if (kCGImagePropertyExifLensMake && v24)
+  lensMake = [metadataCopy lensMake];
+  v25 = lensMake;
+  if (kCGImagePropertyExifLensMake && lensMake)
   {
-    [v4 setObject:v24 forKey:kCGImagePropertyExifLensMake];
+    [v4 setObject:lensMake forKey:kCGImagePropertyExifLensMake];
   }
 
-  v26 = [v3 profileName];
-  v27 = v26;
-  if (kCGImagePropertyProfileName && v26)
+  profileName = [metadataCopy profileName];
+  v27 = profileName;
+  if (kCGImagePropertyProfileName && profileName)
   {
-    [v4 setObject:v26 forKey:kCGImagePropertyProfileName];
+    [v4 setObject:profileName forKey:kCGImagePropertyProfileName];
   }
 
-  if ([v3 has_processingFlags])
+  if ([metadataCopy has_processingFlags])
   {
     v28 = kPFImagePropertyCustomPhotoProcessingFlags;
-    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 processingFlags]);
+    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy processingFlags]);
     v30 = v29;
     if (v28 && v29)
     {
@@ -138,9 +138,9 @@
     }
   }
 
-  if ([v3 has_isCustomRendered])
+  if ([metadataCopy has_isCustomRendered])
   {
-    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isCustomRendered]);
+    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isCustomRendered]);
     v32 = v31;
     if (kCGImagePropertyExifCustomRendered && v31)
     {
@@ -148,9 +148,9 @@
     }
   }
 
-  if ([v3 has_apertureValue])
+  if ([metadataCopy has_apertureValue])
   {
-    [v3 apertureValue];
+    [metadataCopy apertureValue];
     v33 = [NSNumber numberWithDouble:?];
     v34 = v33;
     if (kCGImagePropertyExifFNumber && v33)
@@ -159,9 +159,9 @@
     }
   }
 
-  if ([v3 has_exposureBiasValue])
+  if ([metadataCopy has_exposureBiasValue])
   {
-    v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 exposureBiasValue]);
+    v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy exposureBiasValue]);
     v36 = v35;
     if (kCGImagePropertyExifExposureBiasValue && v35)
     {
@@ -169,9 +169,9 @@
     }
   }
 
-  if ([v3 has_flash])
+  if ([metadataCopy has_flash])
   {
-    v37 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 flash]);
+    v37 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy flash]);
     v38 = v37;
     if (kCGImagePropertyExifFlash && v37)
     {
@@ -179,9 +179,9 @@
     }
   }
 
-  if ([v3 has_focalLength])
+  if ([metadataCopy has_focalLength])
   {
-    [v3 focalLength];
+    [metadataCopy focalLength];
     v39 = [NSNumber numberWithDouble:?];
     v40 = v39;
     if (kCGImagePropertyExifFocalLength && v39)
@@ -190,9 +190,9 @@
     }
   }
 
-  if ([v3 has_focalLenIn35mmFilm])
+  if ([metadataCopy has_focalLenIn35mmFilm])
   {
-    [v3 focalLenIn35mmFilm];
+    [metadataCopy focalLenIn35mmFilm];
     v41 = [NSNumber numberWithDouble:?];
     v42 = v41;
     if (kCGImagePropertyExifFocalLenIn35mmFilm && v41)
@@ -201,9 +201,9 @@
     }
   }
 
-  if ([v3 has_isoRatingValue])
+  if ([metadataCopy has_isoRatingValue])
   {
-    v43 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 isoRatingValue]);
+    v43 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy isoRatingValue]);
     v44 = v43;
     if (kCGImagePropertyExifISOSpeed && v43)
     {
@@ -211,9 +211,9 @@
     }
   }
 
-  if ([v3 has_meteringMode])
+  if ([metadataCopy has_meteringMode])
   {
-    v45 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 meteringMode]);
+    v45 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy meteringMode]);
     v46 = v45;
     if (kCGImagePropertyExifMeteringMode && v45)
     {
@@ -221,9 +221,9 @@
     }
   }
 
-  if ([v3 has_shutterSpeed])
+  if ([metadataCopy has_shutterSpeed])
   {
-    [v3 shutterSpeed];
+    [metadataCopy shutterSpeed];
     v47 = [NSNumber numberWithDouble:?];
     v48 = v47;
     if (kCGImagePropertyExifExposureTime && v47)
@@ -232,23 +232,23 @@
     }
   }
 
-  v49 = [v3 model];
-  v50 = v49;
-  if (kCGImagePropertyTIFFModel && v49)
+  model = [metadataCopy model];
+  v50 = model;
+  if (kCGImagePropertyTIFFModel && model)
   {
-    [v4 setObject:v49 forKey:kCGImagePropertyTIFFModel];
+    [v4 setObject:model forKey:kCGImagePropertyTIFFModel];
   }
 
-  v51 = [v3 make];
-  v52 = v51;
-  if (kCGImagePropertyTIFFMake && v51)
+  make = [metadataCopy make];
+  v52 = make;
+  if (kCGImagePropertyTIFFMake && make)
   {
-    [v4 setObject:v51 forKey:kCGImagePropertyTIFFMake];
+    [v4 setObject:make forKey:kCGImagePropertyTIFFMake];
   }
 
-  if ([v3 has_whiteBalance])
+  if ([metadataCopy has_whiteBalance])
   {
-    v53 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 whiteBalance]);
+    v53 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy whiteBalance]);
     v54 = v53;
     if (kCGImagePropertyExifWhiteBalance && v53)
     {
@@ -256,9 +256,9 @@
     }
   }
 
-  if ([v3 has_lightSource])
+  if ([metadataCopy has_lightSource])
   {
-    v55 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 lightSource]);
+    v55 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy lightSource]);
     v56 = v55;
     if (kCGImagePropertyExifLightSource && v55)
     {
@@ -266,9 +266,9 @@
     }
   }
 
-  if ([v3 has_ciffWhiteBalanceIndex])
+  if ([metadataCopy has_ciffWhiteBalanceIndex])
   {
-    v57 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 ciffWhiteBalanceIndex]);
+    v57 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy ciffWhiteBalanceIndex]);
     v58 = v57;
     if (kCGImagePropertyCIFFWhiteBalanceIndex && v57)
     {
@@ -276,10 +276,10 @@
     }
   }
 
-  if ([v3 has_hdrGain])
+  if ([metadataCopy has_hdrGain])
   {
     v59 = kPFImagePropertyHDRGain;
-    [v3 hdrGain];
+    [metadataCopy hdrGain];
     v60 = [NSNumber numberWithDouble:?];
     v61 = v60;
     if (v59 && v60)
@@ -288,10 +288,10 @@
     }
   }
 
-  if ([v3 has_hasHDRGainMap])
+  if ([metadataCopy has_hasHDRGainMap])
   {
     v62 = kPFImagePropertyHasHDRGainMap;
-    v63 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hasHDRGainMap]);
+    v63 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy hasHDRGainMap]);
     v64 = v63;
     if (v62 && v63)
     {
@@ -299,10 +299,10 @@
     }
   }
 
-  if ([v3 has_videoDynamicRange])
+  if ([metadataCopy has_videoDynamicRange])
   {
     v65 = kPFVideoPropertyVideoDynamicRange;
-    v66 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 videoDynamicRange]);
+    v66 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy videoDynamicRange]);
     v67 = v66;
     if (v65 && v66)
     {
@@ -310,10 +310,10 @@
     }
   }
 
-  if ([v3 has_videoContainsCinematicData])
+  if ([metadataCopy has_videoContainsCinematicData])
   {
     v68 = kPFVideoPropertyVideoContainsCinematicData;
-    v69 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 videoContainsCinematicData]);
+    v69 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy videoContainsCinematicData]);
     v70 = v69;
     if (v68 && v69)
     {
@@ -322,16 +322,16 @@
   }
 
   v71 = kPFMediaPropertyLivePhotoPairingIdentifier;
-  v72 = [v3 videoComplementMediaGroupId];
-  v73 = v72;
-  if (v71 && v72)
+  videoComplementMediaGroupId = [metadataCopy videoComplementMediaGroupId];
+  v73 = videoComplementMediaGroupId;
+  if (v71 && videoComplementMediaGroupId)
   {
-    [v4 setObject:v72 forKey:v71];
+    [v4 setObject:videoComplementMediaGroupId forKey:v71];
   }
 
-  if ([v3 has_gifDelayTime])
+  if ([metadataCopy has_gifDelayTime])
   {
-    [v3 gifDelayTime];
+    [metadataCopy gifDelayTime];
     v74 = [NSNumber numberWithDouble:?];
     v75 = v74;
     if (kCGImagePropertyGIFDelayTime && v74)
@@ -340,10 +340,10 @@
     }
   }
 
-  if ([v3 has_variationIdentifier])
+  if ([metadataCopy has_variationIdentifier])
   {
     v76 = kPFVideoPropertyPlaybackVariationIdentifier;
-    v77 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 variationIdentifier]);
+    v77 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy variationIdentifier]);
     v78 = v77;
     if (v76 && v77)
     {
@@ -351,10 +351,10 @@
     }
   }
 
-  if ([v3 has_videoComplementDurationValue])
+  if ([metadataCopy has_videoComplementDurationValue])
   {
     v79 = kPFVideoPropertyVideoComplVideoDurationValue;
-    [v3 videoComplementDurationValue];
+    [metadataCopy videoComplementDurationValue];
     v80 = [NSNumber numberWithDouble:?];
     v81 = v80;
     if (v79 && v80)
@@ -363,10 +363,10 @@
     }
   }
 
-  if ([v3 has_videoComplementDurationTimescale])
+  if ([metadataCopy has_videoComplementDurationTimescale])
   {
     v82 = kPFVideoPropertyVideoComplVideoDurationTimescale;
-    [v3 videoComplementDurationTimescale];
+    [metadataCopy videoComplementDurationTimescale];
     v83 = [NSNumber numberWithDouble:?];
     v84 = v83;
     if (v82 && v83)
@@ -375,10 +375,10 @@
     }
   }
 
-  if ([v3 has_videoComplementImageDisplayValue])
+  if ([metadataCopy has_videoComplementImageDisplayValue])
   {
     v85 = kPFVideoPropertyVideoComplVideoImageDisplayValue;
-    [v3 videoComplementImageDisplayValue];
+    [metadataCopy videoComplementImageDisplayValue];
     v86 = [NSNumber numberWithDouble:?];
     v87 = v86;
     if (v85 && v86)
@@ -387,10 +387,10 @@
     }
   }
 
-  if ([v3 has_videoComplementImageDisplayTimescale])
+  if ([metadataCopy has_videoComplementImageDisplayTimescale])
   {
     v88 = kPFVideoPropertyVideoComplVideoImageDisplayTimescale;
-    [v3 videoComplementImageDisplayTimescale];
+    [metadataCopy videoComplementImageDisplayTimescale];
     v89 = [NSNumber numberWithDouble:?];
     v90 = v89;
     if (v88 && v89)
@@ -399,10 +399,10 @@
     }
   }
 
-  if ([v3 has_videoDurationValue])
+  if ([metadataCopy has_videoDurationValue])
   {
     v91 = kPFVideoPropertyVideoDurationValue;
-    [v3 videoDurationValue];
+    [metadataCopy videoDurationValue];
     v92 = [NSNumber numberWithDouble:?];
     v93 = v92;
     if (v91 && v92)
@@ -411,10 +411,10 @@
     }
   }
 
-  if ([v3 has_videoDurationTimescale])
+  if ([metadataCopy has_videoDurationTimescale])
   {
     v94 = kPFVideoPropertyVideoDurationTimescale;
-    [v3 videoDurationTimescale];
+    [metadataCopy videoDurationTimescale];
     v95 = [NSNumber numberWithDouble:?];
     v96 = v95;
     if (v94 && v95)
@@ -423,10 +423,10 @@
     }
   }
 
-  if ([v3 has_avFPS])
+  if ([metadataCopy has_avFPS])
   {
     v97 = kPFVideoPropertyAVFPS;
-    [v3 avFPS];
+    [metadataCopy avFPS];
     v98 = [NSNumber numberWithDouble:?];
     v99 = v98;
     if (v97 && v98)
@@ -436,33 +436,33 @@
   }
 
   v100 = kPFVideoPropertyCustomCodecFourCharCode;
-  v101 = [v3 codecFourCharCode];
-  v102 = v101;
-  if (v100 && v101)
+  codecFourCharCode = [metadataCopy codecFourCharCode];
+  v102 = codecFourCharCode;
+  if (v100 && codecFourCharCode)
   {
-    [v4 setObject:v101 forKey:v100];
+    [v4 setObject:codecFourCharCode forKey:v100];
   }
 
   v103 = kPFVideoPropertyCaptureMode;
-  v104 = [v3 captureMode];
-  v105 = v104;
-  if (v103 && v104)
+  captureMode = [metadataCopy captureMode];
+  v105 = captureMode;
+  if (v103 && captureMode)
   {
-    [v4 setObject:v104 forKey:v103];
+    [v4 setObject:captureMode forKey:v103];
   }
 
   v106 = kPFVideoPropertyVideoIsMontage;
-  v107 = [v3 isVideoMontage];
-  v108 = v107;
-  if (v106 && v107)
+  isVideoMontage = [metadataCopy isVideoMontage];
+  v108 = isVideoMontage;
+  if (v106 && isVideoMontage)
   {
-    [v4 setObject:v107 forKey:v106];
+    [v4 setObject:isVideoMontage forKey:v106];
   }
 
-  if ([v3 has_isProRes])
+  if ([metadataCopy has_isProRes])
   {
     v109 = kPFVideoPropertyIsProRes;
-    v110 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isProRes]);
+    v110 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isProRes]);
     v111 = v110;
     if (v109 && v110)
     {
@@ -471,16 +471,16 @@
   }
 
   v112 = kPFMediaPropertyOriginatingAssetIdentifier;
-  v113 = [v3 originatingAssetIdentifier];
-  v114 = v113;
-  if (v112 && v113)
+  originatingAssetIdentifier = [metadataCopy originatingAssetIdentifier];
+  v114 = originatingAssetIdentifier;
+  if (v112 && originatingAssetIdentifier)
   {
-    [v4 setObject:v113 forKey:v112];
+    [v4 setObject:originatingAssetIdentifier forKey:v112];
   }
 
-  if ([v3 has_longitude])
+  if ([metadataCopy has_longitude])
   {
-    [v3 longitude];
+    [metadataCopy longitude];
     v115 = [NSNumber numberWithDouble:?];
     v116 = v115;
     if (kCGImagePropertyGPSLongitude && v115)
@@ -489,9 +489,9 @@
     }
   }
 
-  if ([v3 has_latitude])
+  if ([metadataCopy has_latitude])
   {
-    [v3 latitude];
+    [metadataCopy latitude];
     v117 = [NSNumber numberWithDouble:?];
     v118 = v117;
     if (kCGImagePropertyGPSLatitude && v117)
@@ -500,9 +500,9 @@
     }
   }
 
-  if ([v3 has_gpsSpeed])
+  if ([metadataCopy has_gpsSpeed])
   {
-    [v3 gpsSpeed];
+    [metadataCopy gpsSpeed];
     v119 = [NSNumber numberWithDouble:?];
     v120 = v119;
     if (kCGImagePropertyGPSSpeed && v119)
@@ -511,24 +511,24 @@
     }
   }
 
-  v121 = [v3 gpsSpeedRef];
-  v122 = v121;
-  if (kCGImagePropertyGPSSpeedRef && v121)
+  gpsSpeedRef = [metadataCopy gpsSpeedRef];
+  v122 = gpsSpeedRef;
+  if (kCGImagePropertyGPSSpeedRef && gpsSpeedRef)
   {
-    [v4 setObject:v121 forKey:kCGImagePropertyGPSSpeedRef];
+    [v4 setObject:gpsSpeedRef forKey:kCGImagePropertyGPSSpeedRef];
   }
 
   v123 = kPFImagePropertyExifGPSDateTime;
-  v124 = [v3 gpsTimestamp];
-  v125 = v124;
-  if (v123 && v124)
+  gpsTimestamp = [metadataCopy gpsTimestamp];
+  v125 = gpsTimestamp;
+  if (v123 && gpsTimestamp)
   {
-    [v4 setObject:v124 forKey:v123];
+    [v4 setObject:gpsTimestamp forKey:v123];
   }
 
-  if ([v3 has_gpsHPositioningError])
+  if ([metadataCopy has_gpsHPositioningError])
   {
-    [v3 gpsHPositioningError];
+    [metadataCopy gpsHPositioningError];
     v126 = [NSNumber numberWithDouble:?];
     v127 = v126;
     if (kCGImagePropertyGPSHPositioningError && v126)
@@ -537,9 +537,9 @@
     }
   }
 
-  if ([v3 has_altitude])
+  if ([metadataCopy has_altitude])
   {
-    [v3 altitude];
+    [metadataCopy altitude];
     v128 = [NSNumber numberWithDouble:?];
     v129 = v128;
     if (kCGImagePropertyGPSAltitude && v128)
@@ -548,9 +548,9 @@
     }
   }
 
-  if ([v3 has_imageDirection])
+  if ([metadataCopy has_imageDirection])
   {
-    [v3 imageDirection];
+    [metadataCopy imageDirection];
     v130 = [NSNumber numberWithDouble:?];
     v131 = v130;
     if (kCGImagePropertyGPSImgDirection && v130)
@@ -559,17 +559,17 @@
     }
   }
 
-  v132 = [v3 imageDirectionRef];
-  v133 = v132;
-  if (kCGImagePropertyGPSImgDirectionRef && v132)
+  imageDirectionRef = [metadataCopy imageDirectionRef];
+  v133 = imageDirectionRef;
+  if (kCGImagePropertyGPSImgDirectionRef && imageDirectionRef)
   {
-    [v4 setObject:v132 forKey:kCGImagePropertyGPSImgDirectionRef];
+    [v4 setObject:imageDirectionRef forKey:kCGImagePropertyGPSImgDirectionRef];
   }
 
-  if ([v3 has_isPhotoBooth])
+  if ([metadataCopy has_isPhotoBooth])
   {
     v134 = kPFImagePropertyIsPhotoBooth;
-    v135 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isPhotoBooth]);
+    v135 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isPhotoBooth]);
     v136 = v135;
     if (v134 && v135)
     {
@@ -577,25 +577,25 @@
     }
   }
 
-  v137 = [v3 userComment];
-  v138 = v137;
-  if (kCGImagePropertyExifUserComment && v137)
+  userComment = [metadataCopy userComment];
+  v138 = userComment;
+  if (kCGImagePropertyExifUserComment && userComment)
   {
-    [v4 setObject:v137 forKey:kCGImagePropertyExifUserComment];
+    [v4 setObject:userComment forKey:kCGImagePropertyExifUserComment];
   }
 
   v139 = kPFImagePropertyBurstUuid;
-  v140 = [v3 burstUuid];
-  v141 = v140;
-  if (v139 && v140)
+  burstUuid = [metadataCopy burstUuid];
+  v141 = burstUuid;
+  if (v139 && burstUuid)
   {
-    [v4 setObject:v140 forKey:v139];
+    [v4 setObject:burstUuid forKey:v139];
   }
 
-  if ([v3 has_isFrontFacingCamera])
+  if ([metadataCopy has_isFrontFacingCamera])
   {
     v142 = kPFImagePropertyFrontFacingCamera;
-    v143 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isFrontFacingCamera]);
+    v143 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isFrontFacingCamera]);
     v144 = v143;
     if (v142 && v143)
     {
@@ -604,17 +604,17 @@
   }
 
   v145 = kPFImagePropertySpatialOverCaptureIdentifier;
-  v146 = [v3 spatialOverCaptureIdentifier];
-  v147 = v146;
-  if (v145 && v146)
+  spatialOverCaptureIdentifier = [metadataCopy spatialOverCaptureIdentifier];
+  v147 = spatialOverCaptureIdentifier;
+  if (v145 && spatialOverCaptureIdentifier)
   {
-    [v4 setObject:v146 forKey:v145];
+    [v4 setObject:spatialOverCaptureIdentifier forKey:v145];
   }
 
-  if ([v3 has_hasSpatialAudio])
+  if ([metadataCopy has_hasSpatialAudio])
   {
     v148 = kPFImagePropertyHasSpatialAudio;
-    v149 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hasSpatialAudio]);
+    v149 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy hasSpatialAudio]);
     v150 = v149;
     if (v148 && v149)
     {
@@ -622,9 +622,9 @@
     }
   }
 
-  if ([v3 has_fileSize])
+  if ([metadataCopy has_fileSize])
   {
-    v151 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 fileSize]);
+    v151 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy fileSize]);
     v152 = v151;
     if (NSFileSize && v151)
     {
@@ -633,17 +633,17 @@
   }
 
   v153 = kPFFilePropertyOriginalFilename;
-  v154 = [v3 originalFileName];
-  v155 = v154;
-  if (v153 && v154)
+  originalFileName = [metadataCopy originalFileName];
+  v155 = originalFileName;
+  if (v153 && originalFileName)
   {
-    [v4 setObject:v154 forKey:v153];
+    [v4 setObject:originalFileName forKey:v153];
   }
 
-  if ([v3 has_semanticStyleSceneBias])
+  if ([metadataCopy has_semanticStyleSceneBias])
   {
     v156 = kPFImagePropertySemanticStyleSceneBias;
-    [v3 semanticStyleSceneBias];
+    [metadataCopy semanticStyleSceneBias];
     v157 = [NSNumber numberWithDouble:?];
     v158 = v157;
     if (v156 && v157)
@@ -652,10 +652,10 @@
     }
   }
 
-  if ([v3 has_semanticStyleWarmthBias])
+  if ([metadataCopy has_semanticStyleWarmthBias])
   {
     v159 = kPFImagePropertySemanticStyleWarmthBias;
-    [v3 semanticStyleWarmthBias];
+    [metadataCopy semanticStyleWarmthBias];
     v160 = [NSNumber numberWithDouble:?];
     v161 = v160;
     if (v159 && v160)
@@ -664,10 +664,10 @@
     }
   }
 
-  if ([v3 has_semanticStyleRenderingVersion])
+  if ([metadataCopy has_semanticStyleRenderingVersion])
   {
     v162 = kPFImagePropertySemanticStyleRenderingVersion;
-    v163 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 semanticStyleRenderingVersion]);
+    v163 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy semanticStyleRenderingVersion]);
     v164 = v163;
     if (v162 && v163)
     {
@@ -675,10 +675,10 @@
     }
   }
 
-  if ([v3 has_semanticStylePreset])
+  if ([metadataCopy has_semanticStylePreset])
   {
     v165 = kPFImagePropertySemanticStylePreset;
-    v166 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 semanticStylePreset]);
+    v166 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy semanticStylePreset]);
     v167 = v166;
     if (v165 && v166)
     {
@@ -686,10 +686,10 @@
     }
   }
 
-  if ([v3 has_smartStyleToneBias])
+  if ([metadataCopy has_smartStyleToneBias])
   {
     v168 = kPFImagePropertySmartStyleToneBias;
-    [v3 smartStyleToneBias];
+    [metadataCopy smartStyleToneBias];
     v169 = [NSNumber numberWithDouble:?];
     v170 = v169;
     if (v168 && v169)
@@ -698,10 +698,10 @@
     }
   }
 
-  if ([v3 has_smartStyleColorBias])
+  if ([metadataCopy has_smartStyleColorBias])
   {
     v171 = kPFImagePropertySmartStyleColorBias;
-    [v3 smartStyleColorBias];
+    [metadataCopy smartStyleColorBias];
     v172 = [NSNumber numberWithDouble:?];
     v173 = v172;
     if (v171 && v172)
@@ -710,10 +710,10 @@
     }
   }
 
-  if ([v3 has_smartStyleIntensity])
+  if ([metadataCopy has_smartStyleIntensity])
   {
     v174 = kPFImagePropertySmartStyleIntensity;
-    [v3 smartStyleIntensity];
+    [metadataCopy smartStyleIntensity];
     v175 = [NSNumber numberWithDouble:?];
     v176 = v175;
     if (v174 && v175)
@@ -722,10 +722,10 @@
     }
   }
 
-  if ([v3 has_smartStyleCast])
+  if ([metadataCopy has_smartStyleCast])
   {
     v177 = kPFImagePropertySmartStyleCast;
-    [v3 smartStyleCast];
+    [metadataCopy smartStyleCast];
     v178 = [NSNumber numberWithDouble:?];
     v179 = v178;
     if (v177 && v178)
@@ -734,10 +734,10 @@
     }
   }
 
-  if ([v3 has_smartStyleRenderingVersion])
+  if ([metadataCopy has_smartStyleRenderingVersion])
   {
     v180 = kPFImagePropertySmartStyleRenderingVersion;
-    v181 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 smartStyleRenderingVersion]);
+    v181 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metadataCopy smartStyleRenderingVersion]);
     v182 = v181;
     if (v180 && v181)
     {
@@ -745,10 +745,10 @@
     }
   }
 
-  if ([v3 has_smartStyleIsReversible])
+  if ([metadataCopy has_smartStyleIsReversible])
   {
     v183 = kPFImagePropertySmartStyleIsReversible;
-    v184 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 smartStyleIsReversible]);
+    v184 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy smartStyleIsReversible]);
     v185 = v184;
     if (v183 && v184)
     {
@@ -757,7 +757,7 @@
   }
 
   v186 = kPFImagePropertyIsHDR;
-  v187 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isHDR]);
+  v187 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isHDR]);
   v188 = v187;
   if (v186 && v187)
   {
@@ -765,7 +765,7 @@
   }
 
   v189 = kPFImagePropertyHasISOGainMap;
-  v190 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hasISOGainMap]);
+  v190 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy hasISOGainMap]);
   v191 = v190;
   if (v189 && v190)
   {
@@ -773,7 +773,7 @@
   }
 
   v192 = kPFImagePropertyIsAnimatedImage;
-  v193 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isAnimatedImage]);
+  v193 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isAnimatedImage]);
   v194 = v193;
   if (v192 && v193)
   {
@@ -781,7 +781,7 @@
   }
 
   v195 = kPFImagePropertyStillImageCaptureFlags;
-  v196 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 stillImageCaptureFlags]);
+  v196 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [metadataCopy stillImageCaptureFlags]);
   v197 = v196;
   if (v195 && v196)
   {
@@ -789,7 +789,7 @@
   }
 
   v198 = kPFImagePropertyExifFlashFired;
-  v199 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 exifFlashFired]);
+  v199 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy exifFlashFired]);
   v200 = v199;
   if (v198 && v199)
   {
@@ -797,14 +797,14 @@
   }
 
   v201 = kPFImagePropertyIsAlchemist;
-  v202 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isAlchemist]);
+  v202 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isAlchemist]);
   v203 = v202;
   if (v201 && v202)
   {
     [v4 setObject:v202 forKey:v201];
   }
 
-  [v3 exifAuxFlashCompensation];
+  [metadataCopy exifAuxFlashCompensation];
   v204 = [NSNumber numberWithDouble:?];
   v205 = v204;
   if (kCGImagePropertyExifAuxFlashCompensation && v204)
@@ -812,15 +812,15 @@
     [v4 setObject:v204 forKey:kCGImagePropertyExifAuxFlashCompensation];
   }
 
-  v206 = [v3 IPTCCredit];
-  v207 = v206;
-  if (kCGImagePropertyIPTCCredit && v206)
+  iPTCCredit = [metadataCopy IPTCCredit];
+  v207 = iPTCCredit;
+  if (kCGImagePropertyIPTCCredit && iPTCCredit)
   {
-    [v4 setObject:v206 forKey:kCGImagePropertyIPTCCredit];
+    [v4 setObject:iPTCCredit forKey:kCGImagePropertyIPTCCredit];
   }
 
   v208 = kPFVideoPropertyCaptureModeTimelapse;
-  v209 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 captureModeTimelapse]);
+  v209 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy captureModeTimelapse]);
   v210 = v209;
   if (v208 && v209)
   {
@@ -828,7 +828,7 @@
   }
 
   v211 = kPFImagePropertyIsThreeImageStereoHEIC;
-  v212 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isThreeImageStereoHEIC]);
+  v212 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [metadataCopy isThreeImageStereoHEIC]);
   v213 = v212;
   if (v211 && v212)
   {
@@ -836,7 +836,7 @@
   }
 
   v214 = kPFImagePropertyGenerativeAIImageType;
-  [v3 generativeAIImageType];
+  [metadataCopy generativeAIImageType];
   v215 = [NSNumber numberWithDouble:?];
   v216 = v215;
   if (v214 && v215)
@@ -844,19 +844,19 @@
     [v4 setObject:v215 forKey:v214];
   }
 
-  v217 = [v3 uniformTypeIdentifier];
-  if (!v217)
+  uniformTypeIdentifier = [metadataCopy uniformTypeIdentifier];
+  if (!uniformTypeIdentifier)
   {
-    v218 = [v3 originalFileName];
-    v219 = [v218 pathExtension];
-    v220 = [PFUniformTypeUtilities typeWithFilenameExtension:v219];
+    originalFileName2 = [metadataCopy originalFileName];
+    pathExtension = [originalFileName2 pathExtension];
+    v220 = [PFUniformTypeUtilities typeWithFilenameExtension:pathExtension];
 
-    v217 = [v220 identifier];
+    uniformTypeIdentifier = [v220 identifier];
   }
 
-  if (v217 && kPFFilePropertyUniformTypeIdentifier)
+  if (uniformTypeIdentifier && kPFFilePropertyUniformTypeIdentifier)
   {
-    [v4 setObject:v217 forKey:?];
+    [v4 setObject:uniformTypeIdentifier forKey:?];
   }
 
   v221 = v4;
@@ -864,37 +864,37 @@
   return v4;
 }
 
-- (id)_blastDoorStoreTemporarySourceImageWithImageRef:(CGImage *)a3 sourceURL:(id)a4 error:(id *)a5
+- (id)_blastDoorStoreTemporarySourceImageWithImageRef:(CGImage *)ref sourceURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = v7;
-  if (!a3)
+  lCopy = l;
+  v8 = lCopy;
+  if (!ref)
   {
     v31 = NSDebugDescriptionErrorKey;
-    v11 = [NSString stringWithFormat:@"Invalid image access for the blast door reference. Source: %@", v7];
-    v32 = v11;
+    lCopy = [NSString stringWithFormat:@"Invalid image access for the blast door reference. Source: %@", lCopy];
+    v32 = lCopy;
     v16 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v22 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:3 userInfo:v16];
     goto LABEL_12;
   }
 
-  v9 = [v7 stringByDeletingPathExtension];
+  stringByDeletingPathExtension = [lCopy stringByDeletingPathExtension];
   v10 = [PFUniformTypeUtilities preferredOrFallbackFilenameExtensionForType:UTTypeJPEG];
-  v11 = [v9 stringByAppendingPathExtension:v10];
+  lCopy = [stringByDeletingPathExtension stringByAppendingPathExtension:v10];
 
   v12 = NSTemporaryDirectory();
   v39[0] = v12;
   v13 = +[NSUUID UUID];
-  v14 = [v13 UUIDString];
-  v39[1] = v14;
-  v39[2] = v11;
+  uUIDString = [v13 UUIDString];
+  v39[1] = uUIDString;
+  v39[2] = lCopy;
   v15 = [NSArray arrayWithObjects:v39 count:3];
   v16 = [NSURL fileURLWithPathComponents:v15];
 
   v17 = +[NSFileManager defaultManager];
-  v18 = [v16 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [v16 URLByDeletingLastPathComponent];
   v30 = 0;
-  LOBYTE(v15) = [v17 createDirectoryAtURL:v18 withIntermediateDirectories:1 attributes:0 error:&v30];
+  LOBYTE(v15) = [v17 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v30];
   v19 = v30;
 
   if ((v15 & 1) == 0)
@@ -909,8 +909,8 @@
     goto LABEL_9;
   }
 
-  v20 = [UTTypeJPEG identifier];
-  v21 = CGImageDestinationCreateWithURL(v16, v20, 1uLL, 0);
+  identifier = [UTTypeJPEG identifier];
+  v21 = CGImageDestinationCreateWithURL(v16, identifier, 1uLL, 0);
 
   if (!v21)
   {
@@ -921,14 +921,14 @@ LABEL_9:
     v24 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v22 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:3 userInfo:v24];
 
-    a3 = 0;
+    ref = 0;
     goto LABEL_12;
   }
 
-  CGImageDestinationAddImage(v21, a3, 0);
+  CGImageDestinationAddImage(v21, ref, 0);
   if (CGImageDestinationFinalize(v21))
   {
-    a3 = v16;
+    ref = v16;
   }
 
   else
@@ -939,7 +939,7 @@ LABEL_9:
     v26 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v27 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:3 userInfo:v26];
 
-    a3 = 0;
+    ref = 0;
     v19 = v27;
   }
 
@@ -949,7 +949,7 @@ LABEL_12:
 
   if (!v22 || !os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -960,32 +960,32 @@ LABEL_12:
   *buf = 138543362;
   v38 = v22;
   _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[BlastDoor] Failed to process blast door temporary source. Error: %{public}@", buf, 0xCu);
-  if (a5)
+  if (error)
   {
 LABEL_15:
     v28 = v22;
-    *a5 = v22;
+    *error = v22;
   }
 
 LABEL_16:
 
-  return a3;
+  return ref;
 }
 
-- (id)_blastDoorURLWithVideoSourceURL:(id)a3 sourceMetadata:(id)a4
+- (id)_blastDoorURLWithVideoSourceURL:(id)l sourceMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  lCopy = l;
+  metadataCopy = metadata;
+  v8 = metadataCopy;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = sub_1000032BC;
   v35 = sub_1000032CC;
   v36 = 0;
-  if (v7)
+  if (metadataCopy)
   {
-    v9 = [v7 objectForKeyedSubscript:kCGImagePropertyPixelWidth];
+    v9 = [metadataCopy objectForKeyedSubscript:kCGImagePropertyPixelWidth];
     [v9 floatValue];
     v11 = v10;
 
@@ -1028,7 +1028,7 @@ LABEL_16:
   v27[3] = &unk_10003CCC8;
   v30 = &v31;
   v27[4] = self;
-  v21 = v6;
+  v21 = lCopy;
   v28 = v21;
   v22 = v19;
   v29 = v22;
@@ -1043,9 +1043,9 @@ LABEL_16:
   return v25;
 }
 
-- (id)_blastDoorURLWithImageSourceURL:(id)a3 properties:(id *)a4
+- (id)_blastDoorURLWithImageSourceURL:(id)l properties:(id *)properties
 {
-  v6 = a3;
+  lCopy = l;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1066,16 +1066,16 @@ LABEL_16:
   v13[3] = &unk_10003CD10;
   v16 = &v24;
   v13[4] = self;
-  v9 = v6;
+  v9 = lCopy;
   v14 = v9;
   v17 = &v18;
   v10 = v7;
   v15 = v10;
   [(IMMessagesBlastDoorInterface *)blastdoorInterface generatePreviewforAttachmentWithfileURL:v9 resultHandler:v13];
   dispatch_block_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (properties)
   {
-    *a4 = v19[5];
+    *properties = v19[5];
   }
 
   v11 = v25[5];
@@ -1086,9 +1086,9 @@ LABEL_16:
   return v11;
 }
 
-- (id)_blastDoorMetadataWithSourceURL:(id)a3
+- (id)_blastDoorMetadataWithSourceURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1103,7 +1103,7 @@ LABEL_16:
   v11[3] = &unk_10003CCC8;
   v14 = &v15;
   v11[4] = self;
-  v7 = v4;
+  v7 = lCopy;
   v12 = v7;
   v8 = v5;
   v13 = v8;
@@ -1116,9 +1116,9 @@ LABEL_16:
   return v9;
 }
 
-- (id)propertiesForVideoComplementURL:(id)a3
+- (id)propertiesForVideoComplementURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)self _blastDoorMetadataWithSourceURL:?];
   }
@@ -1131,47 +1131,47 @@ LABEL_16:
   return v4;
 }
 
-- (id)validateAccessForURL:(id)a3 role:(id)a4
+- (id)validateAccessForURL:(id)l role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  lCopy = l;
+  roleCopy = role;
+  v8 = lCopy;
   v9 = v8;
   if ([(PAMediaConversionServiceResourceURLCollectionAccessProvider *)self isBlastDoorAccessRequired])
   {
     v9 = v8;
-    if ([v7 isEqualToString:@"PAMediaConversionResourceRoleMainResource"])
+    if ([roleCopy isEqualToString:@"PAMediaConversionResourceRoleMainResource"])
     {
-      v10 = self;
-      objc_sync_enter(v10);
-      if (!v10->_blastDoorSourceURL)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if (!selfCopy->_blastDoorSourceURL)
       {
-        if (v10->_isImageMedia)
+        if (selfCopy->_isImageMedia)
         {
           v18 = 0;
-          v11 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v10 _blastDoorURLWithImageSourceURL:v8 properties:&v18];
-          v12 = v18;
-          blastDoorSourceURL = v10->_blastDoorSourceURL;
-          v10->_blastDoorSourceURL = v11;
+          v11 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)selfCopy _blastDoorURLWithImageSourceURL:v8 properties:&v18];
+          blastDoorMainSourceProperties = v18;
+          blastDoorSourceURL = selfCopy->_blastDoorSourceURL;
+          selfCopy->_blastDoorSourceURL = v11;
 
-          [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v10 setBlastDoorMainSourceProperties:v12];
+          [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)selfCopy setBlastDoorMainSourceProperties:blastDoorMainSourceProperties];
         }
 
         else
         {
-          v14 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v10 _blastDoorMetadataWithSourceURL:v8];
-          [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v10 setBlastDoorMainSourceProperties:v14];
+          v14 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)selfCopy _blastDoorMetadataWithSourceURL:v8];
+          [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)selfCopy setBlastDoorMainSourceProperties:v14];
 
-          v12 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v10 blastDoorMainSourceProperties];
-          v15 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)v10 _blastDoorURLWithVideoSourceURL:v8 sourceMetadata:v12];
-          v16 = v10->_blastDoorSourceURL;
-          v10->_blastDoorSourceURL = v15;
+          blastDoorMainSourceProperties = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)selfCopy blastDoorMainSourceProperties];
+          v15 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)selfCopy _blastDoorURLWithVideoSourceURL:v8 sourceMetadata:blastDoorMainSourceProperties];
+          v16 = selfCopy->_blastDoorSourceURL;
+          selfCopy->_blastDoorSourceURL = v15;
         }
       }
 
-      v9 = v10->_blastDoorSourceURL;
+      v9 = selfCopy->_blastDoorSourceURL;
 
-      objc_sync_exit(v10);
+      objc_sync_exit(selfCopy);
     }
   }
 
@@ -1180,17 +1180,17 @@ LABEL_16:
 
 - (NSURL)blastDoorSourceURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_blastDoorSourceURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_blastDoorSourceURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (PAMediaConversionServiceResourceURLCollectionAccessProvider)initWithOptions:(id)a3
+- (PAMediaConversionServiceResourceURLCollectionAccessProvider)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v21.receiver = self;
   v21.super_class = PAMediaConversionServiceResourceURLCollectionAccessProvider;
   v5 = [(PAMediaConversionServiceResourceURLCollectionAccessProvider *)&v21 init];
@@ -1199,10 +1199,10 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"PAMediaConversionServiceOptionBlastDoorMediaIsImageKey"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionBlastDoorMediaIsImageKey"];
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"PAMediaConversionServiceOptionBlastDoorMediaIsImageKey"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionBlastDoorMediaIsImageKey"];
     v5->_isImageMedia = [v7 BOOLValue];
   }
 
@@ -1211,7 +1211,7 @@ LABEL_16:
     v5->_isImageMedia = 1;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequiresBlastDoorAccessKey"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"PAMediaConversionServiceOptionRequiresBlastDoorAccessKey"];
   v5->_blastDoorAccessRequired = [v8 BOOLValue];
 
   if (!v5->_blastDoorAccessRequired)

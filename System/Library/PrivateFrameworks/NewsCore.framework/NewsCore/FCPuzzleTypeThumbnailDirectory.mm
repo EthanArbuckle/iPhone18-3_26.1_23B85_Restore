@@ -1,42 +1,42 @@
 @interface FCPuzzleTypeThumbnailDirectory
-- (FCPuzzleTypeThumbnailDirectory)initWithResourceMapId:(id)a3 assetManager:(id)a4 context:(id)a5;
-- (id)smallThumbnailForDate:(id)a3 difficulty:(id)a4;
+- (FCPuzzleTypeThumbnailDirectory)initWithResourceMapId:(id)id assetManager:(id)manager context:(id)context;
+- (id)smallThumbnailForDate:(id)date difficulty:(id)difficulty;
 @end
 
 @implementation FCPuzzleTypeThumbnailDirectory
 
-- (FCPuzzleTypeThumbnailDirectory)initWithResourceMapId:(id)a3 assetManager:(id)a4 context:(id)a5
+- (FCPuzzleTypeThumbnailDirectory)initWithResourceMapId:(id)id assetManager:(id)manager context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  managerCopy = manager;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = FCPuzzleTypeThumbnailDirectory;
   v11 = [(FCPuzzleTypeThumbnailDirectory *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(FCPuzzleTypeThumbnailDirectory *)v11 setAssetManager:v9];
-    [(FCPuzzleTypeThumbnailDirectory *)v12 setContext:v10];
-    [(FCPuzzleTypeThumbnailDirectory *)v12 setResourceMapId:v8];
+    [(FCPuzzleTypeThumbnailDirectory *)v11 setAssetManager:managerCopy];
+    [(FCPuzzleTypeThumbnailDirectory *)v12 setContext:contextCopy];
+    [(FCPuzzleTypeThumbnailDirectory *)v12 setResourceMapId:idCopy];
   }
 
   return v12;
 }
 
-- (id)smallThumbnailForDate:(id)a3 difficulty:(id)a4
+- (id)smallThumbnailForDate:(id)date difficulty:(id)difficulty
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCPuzzleTypeThumbnailDirectory *)self resourceMapId];
+  dateCopy = date;
+  difficultyCopy = difficulty;
+  resourceMapId = [(FCPuzzleTypeThumbnailDirectory *)self resourceMapId];
 
-  if (v8)
+  if (resourceMapId)
   {
-    v9 = [(FCPuzzleTypeThumbnailDirectory *)self resourceMapId];
-    v10 = [FCPuzzleThumbnailURLProtocol URLForResourceMapID:v9 publishDate:v6 difficulty:v7];
+    resourceMapId2 = [(FCPuzzleTypeThumbnailDirectory *)self resourceMapId];
+    v10 = [FCPuzzleThumbnailURLProtocol URLForResourceMapID:resourceMapId2 publishDate:dateCopy difficulty:difficultyCopy];
 
-    v11 = [(FCPuzzleTypeThumbnailDirectory *)self assetManager];
-    v12 = [v11 assetHandleForURL:v10 lifetimeHint:0];
+    assetManager = [(FCPuzzleTypeThumbnailDirectory *)self assetManager];
+    v12 = [assetManager assetHandleForURL:v10 lifetimeHint:0];
   }
 
   else

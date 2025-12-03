@@ -1,30 +1,30 @@
 @interface SCUIInterventionViewController
 + (Class)rootScreenClass;
-+ (id)viewControllerWithAnalysis:(id)a3 contextDictionary:(id)a4 options:(int64_t)a5 error:(id *)a6;
-+ (id)viewControllerWithWorkflow:(int64_t)a3 contextDictionary:(id)a4;
-+ (id)viewControllerWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5;
-+ (void)setRootScreenClass:(Class)a3;
++ (id)viewControllerWithAnalysis:(id)analysis contextDictionary:(id)dictionary options:(int64_t)options error:(id *)error;
++ (id)viewControllerWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary;
++ (id)viewControllerWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options;
++ (void)setRootScreenClass:(Class)class;
 - (NSDictionary)contextDictionary;
-- (SCUIInterventionViewController)initWithCoder:(id)a3;
-- (SCUIInterventionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SCUIInterventionViewController)initWithTypeErasedConfig:(id)a3;
-- (SCUIInterventionViewController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4;
-- (SCUIInterventionViewController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5;
-- (SCUIInterventionViewController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5 type:(int64_t)a6;
-- (SCUIInterventionViewController)viewControllerWithParticipantAnalyses:(id)a3 contextDictionary:(id)a4 options:(int64_t)a5 error:(id *)a6;
+- (SCUIInterventionViewController)initWithCoder:(id)coder;
+- (SCUIInterventionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SCUIInterventionViewController)initWithTypeErasedConfig:(id)config;
+- (SCUIInterventionViewController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary;
+- (SCUIInterventionViewController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options;
+- (SCUIInterventionViewController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options type:(int64_t)type;
+- (SCUIInterventionViewController)viewControllerWithParticipantAnalyses:(id)analyses contextDictionary:(id)dictionary options:(int64_t)options error:(id *)error;
 - (SCUIInterventionViewControllerDelegate)interventionDelegate;
 - (int64_t)options;
 - (int64_t)type;
 - (int64_t)workflow;
-- (void)dismissInterventionFacadeWithCompletionHandler:(id)a3;
-- (void)setInterventionDelegate:(id)a3;
+- (void)dismissInterventionFacadeWithCompletionHandler:(id)handler;
+- (void)setInterventionDelegate:(id)delegate;
 @end
 
 @implementation SCUIInterventionViewController
 
 - (int64_t)workflow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BC675E34(sub_1BC6E4800);
 
   return v3;
@@ -32,7 +32,7 @@
 
 - (NSDictionary)contextDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BC675998();
 
   v3 = sub_1BC75BA30();
@@ -42,7 +42,7 @@
 
 - (int64_t)options
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BC675BE0();
 
   return v3;
@@ -50,7 +50,7 @@
 
 - (int64_t)type
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BC675E34(sub_1BC6E4990);
 
   return v3;
@@ -64,19 +64,19 @@
   return Strong;
 }
 
-- (void)setInterventionDelegate:(id)a3
+- (void)setInterventionDelegate:(id)delegate
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BC676124();
   swift_unknownObjectRelease();
 }
 
-+ (id)viewControllerWithWorkflow:(int64_t)a3 contextDictionary:(id)a4
++ (id)viewControllerWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary
 {
-  if (a4)
+  if (dictionary)
   {
     v5 = sub_1BC75BA40();
   }
@@ -87,14 +87,14 @@
   }
 
   swift_getObjCClassMetadata();
-  v6 = sub_1BC676488(a3, v5);
+  v6 = sub_1BC676488(workflow, v5);
 
   return v6;
 }
 
-+ (id)viewControllerWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5
++ (id)viewControllerWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options
 {
-  if (a4)
+  if (dictionary)
   {
     v7 = sub_1BC75BA40();
   }
@@ -105,14 +105,14 @@
   }
 
   swift_getObjCClassMetadata();
-  v8 = sub_1BC6765B4(a3, v7, a5);
+  v8 = sub_1BC6765B4(workflow, v7, options);
 
   return v8;
 }
 
-- (SCUIInterventionViewController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4
+- (SCUIInterventionViewController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary
 {
-  if (a4)
+  if (dictionary)
   {
     sub_1BC75BA40();
     v6 = sub_1BC75BA30();
@@ -123,14 +123,14 @@
     v6 = 0;
   }
 
-  v7 = -[SCUIInterventionViewController initWithWorkflow:contextDictionary:options:type:](self, sel_initWithWorkflow_contextDictionary_options_type_, a3, v6, 0, [objc_opt_self() getCurrentInterventionType]);
+  v7 = -[SCUIInterventionViewController initWithWorkflow:contextDictionary:options:type:](self, sel_initWithWorkflow_contextDictionary_options_type_, workflow, v6, 0, [objc_opt_self() getCurrentInterventionType]);
 
   return v7;
 }
 
-- (SCUIInterventionViewController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5
+- (SCUIInterventionViewController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options
 {
-  if (a4)
+  if (dictionary)
   {
     sub_1BC75BA40();
     v8 = sub_1BC75BA30();
@@ -141,12 +141,12 @@
     v8 = 0;
   }
 
-  v9 = -[SCUIInterventionViewController initWithWorkflow:contextDictionary:options:type:](self, sel_initWithWorkflow_contextDictionary_options_type_, a3, v8, a5, [objc_opt_self() getCurrentInterventionType]);
+  v9 = -[SCUIInterventionViewController initWithWorkflow:contextDictionary:options:type:](self, sel_initWithWorkflow_contextDictionary_options_type_, workflow, v8, options, [objc_opt_self() getCurrentInterventionType]);
 
   return v9;
 }
 
-- (SCUIInterventionViewController)initWithTypeErasedConfig:(id)a3
+- (SCUIInterventionViewController)initWithTypeErasedConfig:(id)config
 {
   swift_unknownObjectRetain();
   sub_1BC75C160();
@@ -161,9 +161,9 @@
   return v4;
 }
 
-- (SCUIInterventionViewController)initWithWorkflow:(int64_t)a3 contextDictionary:(id)a4 options:(int64_t)a5 type:(int64_t)a6
+- (SCUIInterventionViewController)initWithWorkflow:(int64_t)workflow contextDictionary:(id)dictionary options:(int64_t)options type:(int64_t)type
 {
-  if (a4)
+  if (dictionary)
   {
     v9 = sub_1BC75BA40();
   }
@@ -173,10 +173,10 @@
     v9 = 0;
   }
 
-  return sub_1BC676950(a3, v9, a5, a6);
+  return sub_1BC676950(workflow, v9, options, type);
 }
 
-- (SCUIInterventionViewController)initWithCoder:(id)a3
+- (SCUIInterventionViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___SCUIInterventionViewController_remoteController) = 0;
@@ -193,9 +193,9 @@
   return swift_getObjCClassFromMetadata();
 }
 
-+ (void)setRootScreenClass:(Class)a3
++ (void)setRootScreenClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     swift_getObjCClassMetadata();
     sub_1BC65F664(0, &qword_1EBCDC278, off_1E7FF1238);
@@ -218,16 +218,16 @@
   }
 }
 
-- (SCUIInterventionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SCUIInterventionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-+ (id)viewControllerWithAnalysis:(id)a3 contextDictionary:(id)a4 options:(int64_t)a5 error:(id *)a6
++ (id)viewControllerWithAnalysis:(id)analysis contextDictionary:(id)dictionary options:(int64_t)options error:(id *)error
 {
-  if (a4)
+  if (dictionary)
   {
     v8 = sub_1BC75BA40();
   }
@@ -238,19 +238,19 @@
   }
 
   swift_getObjCClassMetadata();
-  v9 = a3;
-  v10 = sub_1BC678360(v8, a5);
+  analysisCopy = analysis;
+  v10 = sub_1BC678360(v8, options);
 
   return v10;
 }
 
-- (SCUIInterventionViewController)viewControllerWithParticipantAnalyses:(id)a3 contextDictionary:(id)a4 options:(int64_t)a5 error:(id *)a6
+- (SCUIInterventionViewController)viewControllerWithParticipantAnalyses:(id)analyses contextDictionary:(id)dictionary options:(int64_t)options error:(id *)error
 {
   sub_1BC65F664(0, &qword_1EDDCDFB0, 0x1E697B648);
   sub_1BC65F664(0, &qword_1EDDCDF98, 0x1E697B670);
   sub_1BC678690();
   v8 = sub_1BC75BA40();
-  if (a4)
+  if (dictionary)
   {
     v9 = v8;
     v10 = sub_1BC75BA40();
@@ -262,12 +262,12 @@
     v10 = 0;
   }
 
-  return sub_1BC677130(v8, v10, a5);
+  return sub_1BC677130(v8, v10, options);
 }
 
-- (void)dismissInterventionFacadeWithCompletionHandler:(id)a3
+- (void)dismissInterventionFacadeWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -280,12 +280,12 @@
     v9[2] = sub_1BC67768C;
     v9[3] = &block_descriptor_4;
     v6 = _Block_copy(v9);
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 

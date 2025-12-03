@@ -1,49 +1,49 @@
 @interface _LNMetadataProviderXPC
-- (BOOL)enumerateActionsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateEntitiesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateEnumsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateQueriesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (_LNMetadataProviderXPC)initWithConnection:(id)a3;
-- (id)actionForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5;
-- (id)actionIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsConformingToSystemProtocol:(id)a3 withParametersOfTypes:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)actionsConformingToSystemProtocols:(id)a3 logicalType:(unint64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)actionsForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5;
-- (id)actionsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsWithError:(id *)a3;
-- (id)actionsWithFullyQualifiedIdentifiers:(id)a3 error:(id *)a4;
-- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)bundleRegistrationsWithError:(id *)a3;
-- (id)bundlesWithError:(id *)a3;
-- (id)entitiesForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)entitiesForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)entitiesWithError:(id *)a3;
-- (id)entityForBundleIdentifier:(id)a3 withEntityIdentifier:(id)a4 error:(id *)a5;
-- (id)entityIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)enumsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)enumsForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)enumsWithError:(id *)a3;
-- (id)examplePhrasesForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)openActionsForTypeIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (id)openCollectionActionsForEntityTypeIdentifier:(id)a3 capabilities:(int64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)queriesForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (id)queriesForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)queriesWithCapabilities:(unint64_t)a3 inputValueType:(id)a4 resultValueType:(id)a5 error:(id *)a6;
-- (id)queriesWithError:(id *)a3;
-- (id)queryForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (id)suggestionPhrasesForQueries:(id)a3 error:(id *)a4;
-- (int64_t)metadataVersionForBundleIdentifier:(id)a3 error:(id *)a4;
-- (void)diagnoseBundleIdentifier:(id)a3 completionHandler:(id)a4;
+- (BOOL)enumerateActionsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateEntitiesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateEnumsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateQueriesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (_LNMetadataProviderXPC)initWithConnection:(id)connection;
+- (id)actionForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error;
+- (id)actionIdentifiersForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsConformingToSystemProtocol:(id)protocol withParametersOfTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsConformingToSystemProtocols:(id)protocols logicalType:(unint64_t)type bundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error;
+- (id)actionsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)actionsWithError:(id *)error;
+- (id)actionsWithFullyQualifiedIdentifiers:(id)identifiers error:(id *)error;
+- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)bundleRegistrationsWithError:(id *)error;
+- (id)bundlesWithError:(id *)error;
+- (id)entitiesForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)entitiesForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)entitiesWithError:(id *)error;
+- (id)entityForBundleIdentifier:(id)identifier withEntityIdentifier:(id)entityIdentifier error:(id *)error;
+- (id)entityIdentifiersForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)enumsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)enumsForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)enumsWithError:(id *)error;
+- (id)examplePhrasesForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)openActionsForTypeIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (id)openCollectionActionsForEntityTypeIdentifier:(id)identifier capabilities:(int64_t)capabilities bundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (id)queriesForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error;
+- (id)queriesForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)queriesWithCapabilities:(unint64_t)capabilities inputValueType:(id)type resultValueType:(id)valueType error:(id *)error;
+- (id)queriesWithError:(id *)error;
+- (id)queryForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error;
+- (id)suggestionPhrasesForQueries:(id)queries error:(id *)error;
+- (int64_t)metadataVersionForBundleIdentifier:(id)identifier error:(id *)error;
+- (void)diagnoseBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation _LNMetadataProviderXPC
 
-- (void)diagnoseBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)diagnoseBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -57,19 +57,19 @@
   v10[3] = &unk_1E74B2658;
   v10[4] = &v11;
   v9 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v10];
-  [v9 diagnoseBundleIdentifier:v6 completionHandler:v7];
+  [v9 diagnoseBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 
   if (v12[5])
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   _Block_object_dispose(&v11, 8);
 }
 
-- (id)suggestionPhrasesForQueries:(id)a3 error:(id *)a4
+- (id)suggestionPhrasesForQueries:(id)queries error:(id *)error
 {
-  v6 = a3;
+  queriesCopy = queries;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -95,7 +95,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 suggestionPhrasesForQueries:v6 reply:v12];
+  [v8 suggestionPhrasesForQueries:queriesCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -105,7 +105,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -115,9 +115,9 @@
   return v9;
 }
 
-- (id)examplePhrasesForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)examplePhrasesForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -143,7 +143,7 @@
   v12[3] = &unk_1E74B11B0;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 examplePhrasesForBundleIdentifier:v6 reply:v12];
+  [v8 examplePhrasesForBundleIdentifier:identifierCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -153,7 +153,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -163,10 +163,10 @@
   return v9;
 }
 
-- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)identifier error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v6 = getLNLogCategoryMetadata();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -177,16 +177,16 @@
       _os_log_impl(&dword_19763D000, v6, OS_LOG_TYPE_ERROR, "%@ not supported via XPC", &v10, 0xCu);
     }
 
-    *a4 = NSErrorFromMetadataProviderError(9000);
+    *error = NSErrorFromMetadataProviderError(9000);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (int64_t)metadataVersionForBundleIdentifier:(id)a3 error:(id *)a4
+- (int64_t)metadataVersionForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -210,9 +210,9 @@
   v11[3] = &unk_1E74B0B48;
   v11[4] = &v13;
   v11[5] = &v17;
-  [v8 metadataVersionForBundleIdentifier:v6 reply:v11];
+  [v8 metadataVersionForBundleIdentifier:identifierCopy reply:v11];
 
-  *a4 = v18[5];
+  *error = v18[5];
   v9 = v14[3];
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v17, 8);
@@ -220,9 +220,9 @@
   return v9;
 }
 
-- (id)entitiesForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)entitiesForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -248,7 +248,7 @@
   v12[3] = &unk_1E74B11B0;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 entitiesForBundleIdentifier:v6 reply:v12];
+  [v8 entitiesForBundleIdentifier:identifierCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -258,7 +258,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -268,7 +268,7 @@
   return v9;
 }
 
-- (id)entitiesWithError:(id *)a3
+- (id)entitiesWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -305,7 +305,7 @@
 
   else
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -315,9 +315,9 @@
   return v6;
 }
 
-- (id)enumsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)enumsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -343,7 +343,7 @@
   v12[3] = &unk_1E74B11B0;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 enumsForBundleIdentifier:v6 reply:v12];
+  [v8 enumsForBundleIdentifier:identifierCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -353,7 +353,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -363,7 +363,7 @@
   return v9;
 }
 
-- (id)enumsWithError:(id *)a3
+- (id)enumsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -400,7 +400,7 @@
 
   else
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -410,10 +410,10 @@
   return v6;
 }
 
-- (id)queriesWithCapabilities:(unint64_t)a3 inputValueType:(id)a4 resultValueType:(id)a5 error:(id *)a6
+- (id)queriesWithCapabilities:(unint64_t)capabilities inputValueType:(id)type resultValueType:(id)valueType error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  valueTypeCopy = valueType;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -439,7 +439,7 @@
   v17[3] = &unk_1E74B1330;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v13 queriesWithCapabilities:a3 inputValueType:v10 resultValueType:v11 reply:v17];
+  [v13 queriesWithCapabilities:capabilities inputValueType:typeCopy resultValueType:valueTypeCopy reply:v17];
 
   v14 = v20[5];
   if (v14)
@@ -449,7 +449,7 @@
 
   else
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -459,10 +459,10 @@
   return v14;
 }
 
-- (id)queriesForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5
+- (id)queriesForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -488,7 +488,7 @@
   v15[3] = &unk_1E74B11B0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v11 queriesForBundleIdentifier:v8 ofType:v9 reply:v15];
+  [v11 queriesForBundleIdentifier:identifierCopy ofType:typeCopy reply:v15];
 
   v12 = v18[5];
   if (v12)
@@ -498,7 +498,7 @@
 
   else
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -508,7 +508,7 @@
   return v12;
 }
 
-- (id)queriesWithError:(id *)a3
+- (id)queriesWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -545,7 +545,7 @@
 
   else
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -555,9 +555,9 @@
   return v6;
 }
 
-- (id)actionsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -583,7 +583,7 @@
   v12[3] = &unk_1E74B11B0;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 actionsForBundleIdentifier:v6 reply:v12];
+  [v8 actionsForBundleIdentifier:identifierCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -593,7 +593,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -603,7 +603,7 @@
   return v9;
 }
 
-- (id)actionsWithError:(id *)a3
+- (id)actionsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -640,7 +640,7 @@
 
   else
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -650,7 +650,7 @@
   return v6;
 }
 
-- (id)bundleRegistrationsWithError:(id *)a3
+- (id)bundleRegistrationsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -687,7 +687,7 @@
 
   else
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -697,7 +697,7 @@
   return v6;
 }
 
-- (id)bundlesWithError:(id *)a3
+- (id)bundlesWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -734,7 +734,7 @@
 
   else
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -744,10 +744,10 @@
   return v6;
 }
 
-- (id)entityForBundleIdentifier:(id)a3 withEntityIdentifier:(id)a4 error:(id *)a5
+- (id)entityForBundleIdentifier:(id)identifier withEntityIdentifier:(id)entityIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  entityIdentifierCopy = entityIdentifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -773,7 +773,7 @@
   v17[3] = &unk_1E74B0B20;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v11 entityForBundleIdentifier:v8 withEntityIdentifier:v9 reply:v17];
+  [v11 entityForBundleIdentifier:identifierCopy withEntityIdentifier:entityIdentifierCopy reply:v17];
 
   v12 = v20[5];
   if (v12)
@@ -781,18 +781,18 @@
     v13 = v12;
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = v26[5];
     if (v15)
     {
-      *a5 = v15;
+      *error = v15;
     }
 
     else
     {
       v16 = NSErrorFromMetadataProviderError(9004);
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -803,9 +803,9 @@
   return v12;
 }
 
-- (id)entityIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)entityIdentifiersForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -831,7 +831,7 @@
   v14[3] = &unk_1E74B11B0;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v8 entityIdentifiersForBundleIdentifier:v6 reply:v14];
+  [v8 entityIdentifiersForBundleIdentifier:identifierCopy reply:v14];
 
   v9 = v17[5];
   if (v9)
@@ -839,18 +839,18 @@
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v23[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -861,10 +861,10 @@
   return v9;
 }
 
-- (id)openCollectionActionsForEntityTypeIdentifier:(id)a3 capabilities:(int64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)openCollectionActionsForEntityTypeIdentifier:(id)identifier capabilities:(int64_t)capabilities bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -890,7 +890,7 @@
   v17[3] = &unk_1E74B11B0;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v13 openCollectionActionsForEntityTypeIdentifier:v10 capabilities:a4 bundleIdentifier:v11 reply:v17];
+  [v13 openCollectionActionsForEntityTypeIdentifier:identifierCopy capabilities:capabilities bundleIdentifier:bundleIdentifierCopy reply:v17];
 
   v14 = v20[5];
   if (v14)
@@ -900,7 +900,7 @@
 
   else
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -910,10 +910,10 @@
   return v14;
 }
 
-- (id)openActionsForTypeIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (id)openActionsForTypeIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -939,7 +939,7 @@
   v15[3] = &unk_1E74B11B0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v11 openActionsForTypeIdentifier:v8 bundleIdentifier:v9 reply:v15];
+  [v11 openActionsForTypeIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy reply:v15];
 
   v12 = v18[5];
   if (v12)
@@ -949,7 +949,7 @@
 
   else
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -959,9 +959,9 @@
   return v12;
 }
 
-- (id)actionIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionIdentifiersForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -987,7 +987,7 @@
   v14[3] = &unk_1E74B11B0;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v8 actionIdentifiersForBundleIdentifier:v6 reply:v14];
+  [v8 actionIdentifiersForBundleIdentifier:identifierCopy reply:v14];
 
   v9 = v17[5];
   if (v9)
@@ -995,18 +995,18 @@
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v23[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -1017,9 +1017,9 @@
   return v9;
 }
 
-- (id)actionsWithFullyQualifiedIdentifiers:(id)a3 error:(id *)a4
+- (id)actionsWithFullyQualifiedIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1045,7 +1045,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 actionsWithFullyQualifiedIdentifiers:v6 reply:v12];
+  [v8 actionsWithFullyQualifiedIdentifiers:identifiersCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -1055,7 +1055,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1065,10 +1065,10 @@
   return v9;
 }
 
-- (id)actionForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5
+- (id)actionForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1094,7 +1094,7 @@
   v15[3] = &unk_1E74B11B0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v11 actionsForBundleIdentifier:v8 andActionIdentifier:v9 reply:v15];
+  [v11 actionsForBundleIdentifier:identifierCopy andActionIdentifier:actionIdentifierCopy reply:v15];
 
   v12 = v18[5];
   if (v12)
@@ -1104,7 +1104,7 @@
 
   else
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -1114,10 +1114,10 @@
   return v12;
 }
 
-- (id)actionsForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5
+- (id)actionsForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1143,7 +1143,7 @@
   v15[3] = &unk_1E74B11B0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v11 actionsForBundleIdentifier:v8 andActionIdentifier:v9 reply:v15];
+  [v11 actionsForBundleIdentifier:identifierCopy andActionIdentifier:actionIdentifierCopy reply:v15];
 
   v12 = v18[5];
   if (v12)
@@ -1153,7 +1153,7 @@
 
   else
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -1163,11 +1163,11 @@
   return v12;
 }
 
-- (id)actionsConformingToSystemProtocol:(id)a3 withParametersOfTypes:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)actionsConformingToSystemProtocol:(id)protocol withParametersOfTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  protocolCopy = protocol;
+  typesCopy = types;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1193,7 +1193,7 @@
   v18[3] = &unk_1E74B1330;
   v18[4] = &v20;
   v18[5] = &v26;
-  [v14 actionsConformingToSystemProtocol:v10 withParametersOfTypes:v11 bundleIdentifier:v12 reply:v18];
+  [v14 actionsConformingToSystemProtocol:protocolCopy withParametersOfTypes:typesCopy bundleIdentifier:identifierCopy reply:v18];
 
   v15 = v21[5];
   if (v15)
@@ -1203,7 +1203,7 @@
 
   else
   {
-    *a6 = v27[5];
+    *error = v27[5];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -1213,9 +1213,9 @@
   return v15;
 }
 
-- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1241,7 +1241,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 actionsAndSystemProtocolDefaultsForBundleIdentifier:v6 reply:v12];
+  [v8 actionsAndSystemProtocolDefaultsForBundleIdentifier:identifierCopy reply:v12];
 
   v9 = v15[5];
   if (v9)
@@ -1251,7 +1251,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1261,10 +1261,10 @@
   return v9;
 }
 
-- (id)actionsConformingToSystemProtocols:(id)a3 logicalType:(unint64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)actionsConformingToSystemProtocols:(id)protocols logicalType:(unint64_t)type bundleIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  protocolsCopy = protocols;
+  identifierCopy = identifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1290,7 +1290,7 @@
   v17[3] = &unk_1E74B1330;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v13 actionsConformingToSystemProtocols:v10 logicalType:a4 bundleIdentifier:v11 reply:v17];
+  [v13 actionsConformingToSystemProtocols:protocolsCopy logicalType:type bundleIdentifier:identifierCopy reply:v17];
 
   v14 = v20[5];
   if (v14)
@@ -1300,7 +1300,7 @@
 
   else
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -1310,10 +1310,10 @@
   return v14;
 }
 
-- (id)queryForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5
+- (id)queryForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1339,7 +1339,7 @@
   v15[3] = &unk_1E74B0AF8;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v11 queryForBundleIdentifier:v8 ofType:v9 reply:v15];
+  [v11 queryForBundleIdentifier:identifierCopy ofType:typeCopy reply:v15];
 
   v12 = v18[5];
   if (v12)
@@ -1349,7 +1349,7 @@
 
   else
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -1359,9 +1359,9 @@
   return v12;
 }
 
-- (id)queriesForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)queriesForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1387,7 +1387,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 queriesForSchemaIdentifier:v6 completionHandler:v12];
+  [v8 queriesForSchemaIdentifier:identifierCopy completionHandler:v12];
 
   v9 = v15[5];
   if (v9)
@@ -1397,7 +1397,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1407,9 +1407,9 @@
   return v9;
 }
 
-- (id)entitiesForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)entitiesForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1435,7 +1435,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 entitiesForSchemaIdentifier:v6 completionHandler:v12];
+  [v8 entitiesForSchemaIdentifier:identifierCopy completionHandler:v12];
 
   v9 = v15[5];
   if (v9)
@@ -1445,7 +1445,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1455,9 +1455,9 @@
   return v9;
 }
 
-- (id)enumsForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)enumsForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1483,7 +1483,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 enumsForSchemaIdentifier:v6 completionHandler:v12];
+  [v8 enumsForSchemaIdentifier:identifierCopy completionHandler:v12];
 
   v9 = v15[5];
   if (v9)
@@ -1493,7 +1493,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1503,9 +1503,9 @@
   return v9;
 }
 
-- (id)actionsForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)actionsForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1531,7 +1531,7 @@
   v12[3] = &unk_1E74B1330;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 actionsForSchemaIdentifier:v6 completionHandler:v12];
+  [v8 actionsForSchemaIdentifier:identifierCopy completionHandler:v12];
 
   v9 = v15[5];
   if (v9)
@@ -1541,7 +1541,7 @@
 
   else
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1551,54 +1551,54 @@
   return v9;
 }
 
-- (BOOL)enumerateQueriesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateQueriesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = NSErrorFromMetadataProviderError(9009);
+    *error = NSErrorFromMetadataProviderError(9009);
   }
 
   return 0;
 }
 
-- (BOOL)enumerateEntitiesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateEntitiesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = NSErrorFromMetadataProviderError(9009);
+    *error = NSErrorFromMetadataProviderError(9009);
   }
 
   return 0;
 }
 
-- (BOOL)enumerateEnumsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateEnumsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = NSErrorFromMetadataProviderError(9009);
+    *error = NSErrorFromMetadataProviderError(9009);
   }
 
   return 0;
 }
 
-- (BOOL)enumerateActionsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateActionsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = NSErrorFromMetadataProviderError(9009);
+    *error = NSErrorFromMetadataProviderError(9009);
   }
 
   return 0;
 }
 
-- (_LNMetadataProviderXPC)initWithConnection:(id)a3
+- (_LNMetadataProviderXPC)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = _LNMetadataProviderXPC;
   v5 = [(_LNMetadataProviderXPC *)&v8 init];
   connection = v5->_connection;
-  v5->_connection = v4;
+  v5->_connection = connectionCopy;
 
   return v5;
 }

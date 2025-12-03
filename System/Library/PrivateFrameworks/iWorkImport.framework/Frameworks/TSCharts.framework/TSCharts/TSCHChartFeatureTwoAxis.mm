@@ -1,20 +1,20 @@
 @interface TSCHChartFeatureTwoAxis
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4;
-- (TSCHChartFeatureTwoAxis)initWithChartType:(id)a3;
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale;
+- (TSCHChartFeatureTwoAxis)initWithChartType:(id)type;
 - (id)defaultDataFileName;
 - (id)genericToSpecificPropertyMap;
 - (id)supportedSeriesTypes;
 - (id)userInterfaceName;
-- (unint64_t)styleIndexForAxisID:(id)a3;
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4;
+- (unint64_t)styleIndexForAxisID:(id)d;
+- (void)updateTitlesForExportingModel:(id)model info:(id)info;
 @end
 
 @implementation TSCHChartFeatureTwoAxis
 
-- (TSCHChartFeatureTwoAxis)initWithChartType:(id)a3
+- (TSCHChartFeatureTwoAxis)initWithChartType:(id)type
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = [TSCHChartAxisID alloc];
   v10 = objc_msgSend_initWithType_ordinal_(v5, v6, v7, v8, v9, 2, 0);
   v40[0] = v10;
@@ -28,18 +28,18 @@
   v39 = v27;
   v32 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v28, v29, v30, v31, &v39, 1);
 
-  v37 = objc_msgSend_initWithChartType_valueAxisIDs_categoryAxisIDs_(self, v33, v34, v35, v36, v4, v21, v32);
+  v37 = objc_msgSend_initWithChartType_valueAxisIDs_categoryAxisIDs_(self, v33, v34, v35, v36, typeCopy, v21, v32);
   return v37;
 }
 
-- (Class)valueAxisClassForID:(id)a3 scale:(int64_t)a4
+- (Class)valueAxisClassForID:(id)d scale:(int64_t)scale
 {
-  v9 = objc_msgSend_type(a3, a2, v4, v5, v6);
+  v9 = objc_msgSend_type(d, a2, v4, v5, v6);
   if (v9 == 2)
   {
     v11 = objc_opt_class();
     v12 = objc_opt_class();
-    v10 = objc_msgSend_p_selectAxisClassForScale_linearClass_logClass_percentClass_(self, v13, v14, v15, v16, a4, v11, v12, 0);
+    v10 = objc_msgSend_p_selectAxisClassForScale_linearClass_logClass_percentClass_(self, v13, v14, v15, v16, scale, v11, v12, 0);
   }
 
   else if (v9 == 1)
@@ -55,11 +55,11 @@
   return v10;
 }
 
-- (unint64_t)styleIndexForAxisID:(id)a3
+- (unint64_t)styleIndexForAxisID:(id)d
 {
-  v3 = a3;
-  v8 = objc_msgSend_type(v3, v4, v5, v6, v7);
-  v13 = objc_msgSend_ordinal(v3, v9, v10, v11, v12);
+  dCopy = d;
+  v8 = objc_msgSend_type(dCopy, v4, v5, v6, v7);
+  v13 = objc_msgSend_ordinal(dCopy, v9, v10, v11, v12);
   if (v13 < 2 && v8 == 2)
   {
     v15 = v13;
@@ -135,14 +135,14 @@
   return v21;
 }
 
-- (void)updateTitlesForExportingModel:(id)a3 info:(id)a4
+- (void)updateTitlesForExportingModel:(id)model info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  infoCopy = info;
   v56.receiver = self;
   v56.super_class = TSCHChartFeatureTwoAxis;
-  [(TSCHChartFeatureCategory *)&v56 updateTitlesForExportingModel:v6 info:v7];
-  if (objc_msgSend_valueAxisStyleCount(v7, v8, v9, v10, v11) <= 1)
+  [(TSCHChartFeatureCategory *)&v56 updateTitlesForExportingModel:modelCopy info:infoCopy];
+  if (objc_msgSend_valueAxisStyleCount(infoCopy, v8, v9, v10, v11) <= 1)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "[TSCHChartFeatureTwoAxis updateTitlesForExportingModel:info:]");
@@ -152,7 +152,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  v31 = objc_msgSend_valueAxisNonstyleAtIndex_(v7, v12, v13, v14, v15, 1);
+  v31 = objc_msgSend_valueAxisNonstyleAtIndex_(infoCopy, v12, v13, v14, v15, 1);
   v37 = objc_msgSend_valueForProperty_(v31, v32, v33, v34, v35, 1294);
   if (!v37)
   {
@@ -164,7 +164,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
   }
 
-  objc_msgSend_setValue2Title_(v6, v36, v38, v39, v40, v37);
+  objc_msgSend_setValue2Title_(modelCopy, v36, v38, v39, v40, v37);
 }
 
 @end

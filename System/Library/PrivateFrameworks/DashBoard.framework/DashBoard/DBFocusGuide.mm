@@ -6,8 +6,8 @@
 
 - (void)_didUpdateFocusToPreferredFocusedView
 {
-  v2 = [(DBFocusGuide *)self focusUpdateHandler];
-  v2[2]();
+  focusUpdateHandler = [(DBFocusGuide *)self focusUpdateHandler];
+  focusUpdateHandler[2]();
 }
 
 @end

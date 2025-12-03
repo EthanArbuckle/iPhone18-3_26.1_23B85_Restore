@@ -9,21 +9,21 @@
 - (BOOL)userIsCurrentlyInATrip;
 - (MapsSuggestionsInsightsUpdates)insightUpdatesDelegate;
 - (NSString)uniqueName;
-- (char)signalPackForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
-- (char)signalPackForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
-- (char)signalPackForHereWithHandler:(id)a3;
+- (char)signalPackForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler;
+- (char)signalPackForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler;
+- (char)signalPackForHereWithHandler:(id)handler;
 - (double)isTouristHere;
 - (id).cxx_construct;
-- (id)initFromResourceDepot:(id)a3;
-- (id)signalPackForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4;
-- (id)signalPackForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4;
+- (id)initFromResourceDepot:(id)depot;
+- (id)signalPackForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)signalPackForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate;
 - (id)signalPackForHere;
 - (void)_closeConnection;
 - (void)_initCloseTimerIfNecessary;
 - (void)_scheduleCloseConnection;
 - (void)_unscheduleCloseConnection;
 - (void)dealloc;
-- (void)signalPackUpdated:(id)a3;
+- (void)signalPackUpdated:(id)updated;
 @end
 
 @implementation MapsSuggestionsRealInsights
@@ -38,13 +38,13 @@
 - (double)isTouristHere
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A22C8] sharedManager];
-  v4 = [v3 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_Tourist"];
+  mEMORY[0x1E69A22C8] = [MEMORY[0x1E69A22C8] sharedManager];
+  v4 = [mEMORY[0x1E69A22C8] isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_Tourist"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MSGPPTTest_Insights_ACRanking_TouristBEGIN" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MSGPPTTest_Insights_ACRanking_TouristBEGIN" object:0];
   }
 
   if (MapsSuggestionsLoggingIsVerbose())
@@ -58,10 +58,10 @@
     }
   }
 
-  v7 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v7)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v8 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v7];
+    v8 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
     if ([(MapsSuggestionsSignalPackEvaluator *)v8 hasTouristInfo])
     {
       if ([(MapsSuggestionsSignalPackEvaluator *)v8 isTouristHere])
@@ -86,13 +86,13 @@
         }
       }
 
-      v14 = [MEMORY[0x1E69A22C8] sharedManager];
-      v15 = [v14 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_Tourist"];
+      mEMORY[0x1E69A22C8]2 = [MEMORY[0x1E69A22C8] sharedManager];
+      v15 = [mEMORY[0x1E69A22C8]2 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_Tourist"];
 
       if (v15)
       {
-        v16 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v16 postNotificationName:@"MSGPPTTest_Insights_ACRanking_TouristEND" object:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 postNotificationName:@"MSGPPTTest_Insights_ACRanking_TouristEND" object:0];
       }
     }
 
@@ -127,17 +127,17 @@
 - (BOOL)_openConnectionIfNecessary
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (!*(a1 + 24))
+    dispatch_assert_queue_V2(*(self + 8));
+    if (!*(self + 24))
     {
       v2 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
-        v3 = [a1 uniqueName];
+        uniqueName = [self uniqueName];
         *buf = 138412546;
-        v22 = v3;
+        v22 = uniqueName;
         v23 = 2080;
         v24 = "openingConnectionForRealInsights";
         _os_log_impl(&dword_1C5126000, v2, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -159,8 +159,8 @@
       [v7 setClasses:v8 forSelector:sel_signalPackUpdated_ argumentIndex:0 ofReply:0];
 
       [v5 setExportedInterface:v7];
-      [v5 setExportedObject:a1];
-      objc_initWeak(&location, a1);
+      [v5 setExportedObject:self];
+      objc_initWeak(&location, self);
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __57__MapsSuggestionsRealInsights__openConnectionIfNecessary__block_invoke;
@@ -179,14 +179,14 @@
       v14[3] = &unk_1E81F69A0;
       objc_copyWeak(&v15, &location);
       v9 = [v5 remoteObjectProxyWithErrorHandler:v14];
-      objc_storeStrong((a1 + 24), v5);
+      objc_storeStrong((self + 24), v5);
       [v5 resume];
       v10 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [a1 uniqueName];
+        uniqueName2 = [self uniqueName];
         *buf = 138412546;
-        v22 = v11;
+        v22 = uniqueName2;
         v23 = 2080;
         v24 = "openingConnectionForRealInsights";
         _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -206,7 +206,7 @@
     }
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
 - (id)signalPackForHere
@@ -272,9 +272,9 @@
 
 - (void)_scheduleCloseConnection
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
+    dispatch_assert_queue_V2(self[1]);
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
@@ -282,12 +282,12 @@
       OUTLINED_FUNCTION_7(&dword_1C5126000, v3, v4, "_scheduleCloseConnection", v11);
     }
 
-    [(MapsSuggestionsRealInsights *)a1 _initCloseTimerIfNecessary];
+    [(MapsSuggestionsRealInsights *)self _initCloseTimerIfNecessary];
     GEOConfigGetDouble();
     v6 = v5;
     GEOConfigGetDouble();
     v8 = v7;
-    v9 = a1[4];
+    v9 = self[4];
     v10 = dispatch_time(0, (v6 * 1000000000.0));
     dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, (v8 * 1000000000.0));
   }
@@ -295,10 +295,10 @@
 
 - (void)_initCloseTimerIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
-    if (!a1[4])
+    dispatch_assert_queue_V2(self[1]);
+    if (!self[4])
     {
       v2 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -307,21 +307,21 @@
         OUTLINED_FUNCTION_7(&dword_1C5126000, v3, v4, "Re-initializing the _closeTimer", location);
       }
 
-      objc_initWeak(location, a1);
-      v5 = a1[1];
+      objc_initWeak(location, self);
+      v5 = self[1];
       v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v5);
-      v7 = a1[4];
-      a1[4] = v6;
+      v7 = self[4];
+      self[4] = v6;
 
-      dispatch_source_set_timer(a1[4], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      v8 = a1[4];
+      dispatch_source_set_timer(self[4], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+      v8 = self[4];
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __57__MapsSuggestionsRealInsights__initCloseTimerIfNecessary__block_invoke;
       handler[3] = &unk_1E81F5208;
       objc_copyWeak(&v10, location);
       dispatch_source_set_event_handler(v8, handler);
-      dispatch_resume(a1[4]);
+      dispatch_resume(self[4]);
       objc_destroyWeak(&v10);
       objc_destroyWeak(location);
     }
@@ -370,10 +370,10 @@ void __48__MapsSuggestionsRealInsights_signalPackForHere__block_invoke(uint64_t 
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
     [(MapsSuggestionsSignalPackEvaluator *)v5 isTransitUserHereConfidence];
     v7 = v6;
     v8 = MapsSuggestionsConfidenceDontKnow();
@@ -410,12 +410,12 @@ void __48__MapsSuggestionsRealInsights_signalPackForHere__block_invoke(uint64_t 
   return v9;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -434,9 +434,9 @@ void __48__MapsSuggestionsRealInsights_signalPackForHere__block_invoke(uint64_t 
     goto LABEL_19;
   }
 
-  v6 = [v4 oneRoutine];
+  oneRoutine = [depotCopy oneRoutine];
 
-  if (!v6)
+  if (!oneRoutine)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -455,9 +455,9 @@ void __48__MapsSuggestionsRealInsights_signalPackForHere__block_invoke(uint64_t 
     goto LABEL_19;
   }
 
-  v7 = [v5 oneNetworkRequester];
+  oneNetworkRequester = [v5 oneNetworkRequester];
 
-  if (!v7)
+  if (!oneNetworkRequester)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -476,9 +476,9 @@ void __48__MapsSuggestionsRealInsights_signalPackForHere__block_invoke(uint64_t 
     goto LABEL_19;
   }
 
-  v8 = [v5 onePortrait];
+  onePortrait = [v5 onePortrait];
 
-  if (!v8)
+  if (!onePortrait)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -496,7 +496,7 @@ void __48__MapsSuggestionsRealInsights_signalPackForHere__block_invoke(uint64_t 
 
 LABEL_19:
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -523,16 +523,16 @@ LABEL_19:
     connection = v9->_connection;
     v9->_connection = 0;
 
-    v17 = [v5 onePortrait];
+    onePortrait2 = [v5 onePortrait];
     portrait = v9->_portrait;
-    v9->_portrait = v17;
+    v9->_portrait = onePortrait2;
   }
 
   self = v9;
-  v19 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v19;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -565,10 +565,10 @@ LABEL_20:
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
     [(MapsSuggestionsSignalPackEvaluator *)v5 isTransitUserConfidence];
     v7 = v6;
     v8 = MapsSuggestionsConfidenceDontKnow();
@@ -616,11 +616,11 @@ LABEL_20:
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
-    v6 = MapsSuggestionsConfidenceDontKnow();
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
+    userHasAnExpressPaymentCard = MapsSuggestionsConfidenceDontKnow();
     if ([(MapsSuggestionsSignalPackEvaluator *)v5 hasSignalForExpressPaymentCard])
     {
       v7 = GEOFindOrCreateLog();
@@ -630,22 +630,22 @@ LABEL_20:
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "hasSignalForExpressPaymentCard", &v13, 2u);
       }
 
-      v6 = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasAnExpressPaymentCard];
+      userHasAnExpressPaymentCard = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasAnExpressPaymentCard];
     }
 
     v8 = MapsSuggestionsConfidenceDontKnow();
-    v9 = v6 > v8;
+    v9 = userHasAnExpressPaymentCard > v8;
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
-      if (v6 > v8)
+      if (userHasAnExpressPaymentCard > v8)
       {
         v11 = @"YES";
       }
 
       v13 = 134218242;
-      v14 = *&v6;
+      v14 = *&userHasAnExpressPaymentCard;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "userHasAnExpressPaymentCard: %f = %@", &v13, 0x16u);
@@ -678,11 +678,11 @@ LABEL_20:
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
-    v6 = MapsSuggestionsConfidenceDontKnow();
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
+    userHasAPaymentCard = MapsSuggestionsConfidenceDontKnow();
     if ([(MapsSuggestionsSignalPackEvaluator *)v5 hasSignalForPaymentCard])
     {
       v7 = GEOFindOrCreateLog();
@@ -692,22 +692,22 @@ LABEL_20:
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "hasSignalForPaymentCard", &v13, 2u);
       }
 
-      v6 = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasAPaymentCard];
+      userHasAPaymentCard = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasAPaymentCard];
     }
 
     v8 = MapsSuggestionsConfidenceDontKnow();
-    v9 = v6 > v8;
+    v9 = userHasAPaymentCard > v8;
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
-      if (v6 > v8)
+      if (userHasAPaymentCard > v8)
       {
         v11 = @"YES";
       }
 
       v13 = 134218242;
-      v14 = *&v6;
+      v14 = *&userHasAPaymentCard;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "userHasAPaymentCard: %f = %@", &v13, 0x16u);
@@ -740,11 +740,11 @@ LABEL_20:
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
-    v6 = MapsSuggestionsConfidenceDontKnow();
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
+    userHasATransitCard = MapsSuggestionsConfidenceDontKnow();
     if ([(MapsSuggestionsSignalPackEvaluator *)v5 hasSignalForHasATransitCard])
     {
       v7 = GEOFindOrCreateLog();
@@ -754,22 +754,22 @@ LABEL_20:
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "userHasATransitCard", &v13, 2u);
       }
 
-      v6 = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasATransitCard];
+      userHasATransitCard = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasATransitCard];
     }
 
     v8 = MapsSuggestionsConfidenceDontKnow();
-    v9 = v6 > v8;
+    v9 = userHasATransitCard > v8;
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
-      if (v6 > v8)
+      if (userHasATransitCard > v8)
       {
         v11 = @"YES";
       }
 
       v13 = 134218242;
-      v14 = *&v6;
+      v14 = *&userHasATransitCard;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "userHasATransitCard: %f = %@", &v13, 0x16u);
@@ -791,14 +791,14 @@ LABEL_20:
   return v9;
 }
 
-- (char)signalPackForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (char)signalPackForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -817,7 +817,7 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!itemCopy)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -842,9 +842,9 @@ LABEL_15:
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MapsSuggestionsRealInsights *)self uniqueName];
+    uniqueName = [(MapsSuggestionsRealInsights *)self uniqueName];
     *buf = 138412546;
-    v30 = v12;
+    v30 = uniqueName;
     v31 = 2080;
     *v32 = "signalPackForDestinationMapItem";
     _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -860,13 +860,13 @@ LABEL_15:
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [v9 _muid];
+    _muid = [itemCopy _muid];
     *buf = 134217984;
-    v30 = v15;
+    v30 = _muid;
     _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Getting SignalPack for MapItem with MUID %llu", buf, 0xCu);
   }
 
-  v16 = [v9 data];
+  data = [itemCopy data];
   v17 = NSDataFromCLLocationCoordinate(latitude, longitude);
   objc_initWeak(buf, self);
   v24[0] = MEMORY[0x1E69E9820];
@@ -874,12 +874,12 @@ LABEL_15:
   v24[2] = __88__MapsSuggestionsRealInsights_signalPackForDestinationMapItem_originCoordinate_handler___block_invoke;
   v24[3] = &unk_1E81F5B78;
   objc_copyWeak(&v28, buf);
-  v25 = v16;
+  v25 = data;
   v26 = v17;
-  v27 = v10;
+  v27 = handlerCopy;
   innerQueue = self->_queue._innerQueue;
   v19 = v17;
-  v20 = v16;
+  v20 = data;
   dispatch_async(innerQueue, v24);
 
   objc_destroyWeak(&v28);
@@ -1010,14 +1010,14 @@ LABEL_11:
 LABEL_19:
 }
 
-- (char)signalPackForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (char)signalPackForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  entryCopy = entry;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1036,7 +1036,7 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!entryCopy)
   {
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1061,9 +1061,9 @@ LABEL_15:
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MapsSuggestionsRealInsights *)self uniqueName];
+    uniqueName = [(MapsSuggestionsRealInsights *)self uniqueName];
     *buf = 138412546;
-    v28 = v12;
+    v28 = uniqueName;
     v29 = 2080;
     *v30 = "signalPackForDestinationEntry";
     _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1079,9 +1079,9 @@ LABEL_15:
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [v9 uniqueIdentifier];
+    uniqueIdentifier = [entryCopy uniqueIdentifier];
     *buf = 138412290;
-    v28 = v15;
+    v28 = uniqueIdentifier;
     _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Getting SignalPack for Entry %@", buf, 0xCu);
   }
 
@@ -1092,9 +1092,9 @@ LABEL_15:
   v22[2] = __86__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoordinate_handler___block_invoke;
   v22[3] = &unk_1E81F5B78;
   objc_copyWeak(&v26, buf);
-  v23 = v9;
+  v23 = entryCopy;
   v24 = v16;
-  v25 = v10;
+  v25 = handlerCopy;
   innerQueue = self->_queue._innerQueue;
   v18 = v16;
   dispatch_async(innerQueue, v22);
@@ -1227,18 +1227,18 @@ LABEL_11:
 LABEL_19:
 }
 
-- (char)signalPackForHereWithHandler:(id)a3
+- (char)signalPackForHereWithHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(MapsSuggestionsRealInsights *)self uniqueName];
+      uniqueName = [(MapsSuggestionsRealInsights *)self uniqueName];
       *buf = 138412546;
-      v16 = v6;
+      v16 = uniqueName;
       v17 = 2080;
       *v18 = "signalPackForHereWithHandler";
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -1264,7 +1264,7 @@ LABEL_19:
     v12[2] = __60__MapsSuggestionsRealInsights_signalPackForHereWithHandler___block_invoke;
     v12[3] = &unk_1E81F5190;
     objc_copyWeak(&v14, buf);
-    v13 = v4;
+    v13 = handlerCopy;
     dispatch_async(self->_queue._innerQueue, v12);
 
     objc_destroyWeak(&v14);
@@ -1412,13 +1412,13 @@ LABEL_11:
 LABEL_19:
 }
 
-- (id)signalPackForDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4
+- (id)signalPackForDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  itemCopy = item;
+  if (itemCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1434,7 +1434,7 @@ LABEL_19:
     v20 = buf;
     v9 = v8;
     v19 = v9;
-    if ([(MapsSuggestionsRealInsights *)self signalPackForDestinationMapItem:v7 originCoordinate:v18 handler:latitude, longitude])
+    if ([(MapsSuggestionsRealInsights *)self signalPackForDestinationMapItem:itemCopy originCoordinate:v18 handler:latitude, longitude])
     {
       GEOConfigGetDouble();
       v11 = dispatch_time(0, (v10 * 1000000000.0));
@@ -1512,13 +1512,13 @@ void __80__MapsSuggestionsRealInsights_signalPackForDestinationMapItem_originCoo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)signalPackForDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4
+- (id)signalPackForDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  entryCopy = entry;
+  if (entryCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1534,7 +1534,7 @@ void __80__MapsSuggestionsRealInsights_signalPackForDestinationMapItem_originCoo
     v20 = buf;
     v9 = v8;
     v19 = v9;
-    if ([(MapsSuggestionsRealInsights *)self signalPackForDestinationEntry:v7 originCoordinate:v18 handler:latitude, longitude])
+    if ([(MapsSuggestionsRealInsights *)self signalPackForDestinationEntry:entryCopy originCoordinate:v18 handler:latitude, longitude])
     {
       GEOConfigGetDouble();
       v11 = dispatch_time(0, (v10 * 1000000000.0));
@@ -1623,11 +1623,11 @@ void __78__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoord
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
-    v6 = MapsSuggestionsConfidenceDontKnow();
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
+    userHasAnUpcomingTrip = MapsSuggestionsConfidenceDontKnow();
     if ([(MapsSuggestionsSignalPackEvaluator *)v5 hasSignalForUpcomingTrip])
     {
       v7 = GEOFindOrCreateLog();
@@ -1637,22 +1637,22 @@ void __78__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoord
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "MSg has a signal for upcoming trip.", &v13, 2u);
       }
 
-      v6 = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasAnUpcomingTrip];
+      userHasAnUpcomingTrip = [(MapsSuggestionsSignalPackEvaluator *)v5 userHasAnUpcomingTrip];
     }
 
     v8 = MapsSuggestionsConfidenceDontKnow();
-    v9 = v6 > v8;
+    v9 = userHasAnUpcomingTrip > v8;
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
-      if (v6 > v8)
+      if (userHasAnUpcomingTrip > v8)
       {
         v11 = @"YES";
       }
 
       v13 = 134218242;
-      v14 = *&v6;
+      v14 = *&userHasAnUpcomingTrip;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "userHasAnUpcomingTrip: %f = %@", &v13, 0x16u);
@@ -1685,11 +1685,11 @@ void __78__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoord
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "%s", &v13, 0xCu);
   }
 
-  v4 = [(MapsSuggestionsRealInsights *)self signalPackForHere];
-  if (v4)
+  signalPackForHere = [(MapsSuggestionsRealInsights *)self signalPackForHere];
+  if (signalPackForHere)
   {
-    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:v4];
-    v6 = MapsSuggestionsConfidenceDontKnow();
+    v5 = [[MapsSuggestionsSignalPackEvaluator alloc] initWithSignalPack:signalPackForHere];
+    userIsCurrentlyInATrip = MapsSuggestionsConfidenceDontKnow();
     if ([(MapsSuggestionsSignalPackEvaluator *)v5 hasSignalForIsCurrentlyInATrip])
     {
       v7 = GEOFindOrCreateLog();
@@ -1699,22 +1699,22 @@ void __78__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoord
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "MSg has a signal for a current trip.", &v13, 2u);
       }
 
-      v6 = [(MapsSuggestionsSignalPackEvaluator *)v5 userIsCurrentlyInATrip];
+      userIsCurrentlyInATrip = [(MapsSuggestionsSignalPackEvaluator *)v5 userIsCurrentlyInATrip];
     }
 
     v8 = MapsSuggestionsConfidenceDontKnow();
-    v9 = v6 > v8;
+    v9 = userIsCurrentlyInATrip > v8;
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = @"NO";
-      if (v6 > v8)
+      if (userIsCurrentlyInATrip > v8)
       {
         v11 = @"YES";
       }
 
       v13 = 134218242;
-      v14 = *&v6;
+      v14 = *&userIsCurrentlyInATrip;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "userIsCurrenltyInATrip: %f = %@", &v13, 0x16u);
@@ -1736,12 +1736,12 @@ void __78__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoord
   return v9;
 }
 
-- (void)signalPackUpdated:(id)a3
+- (void)signalPackUpdated:(id)updated
 {
   *&v11[13] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MapsSuggestionsRealInsights *)self insightUpdatesDelegate];
-  if (!v5)
+  updatedCopy = updated;
+  insightUpdatesDelegate = [(MapsSuggestionsRealInsights *)self insightUpdatesDelegate];
+  if (!insightUpdatesDelegate)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1761,15 +1761,15 @@ void __78__MapsSuggestionsRealInsights_signalPackForDestinationEntry_originCoord
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = MapsSuggestionsSignalPackFromData(v4);
-    [v5 insightsUpdated:v6];
+    v6 = MapsSuggestionsSignalPackFromData(updatedCopy);
+    [insightUpdatesDelegate insightsUpdated:v6];
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412546;
       v9 = v6;
       v10 = 2112;
-      *v11 = v5;
+      *v11 = insightUpdatesDelegate;
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "Received a SignalPack update %@ and delivered to %@", &v8, 0x16u);
     }
 
@@ -2010,7 +2010,7 @@ void __57__MapsSuggestionsRealInsights__initCloseTimerIfNecessary__block_invoke(
 
 - (void)_unscheduleCloseConnection
 {
-  if (a1)
+  if (self)
   {
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -2019,13 +2019,13 @@ void __57__MapsSuggestionsRealInsights__initCloseTimerIfNecessary__block_invoke(
       OUTLINED_FUNCTION_7(&dword_1C5126000, v3, v4, "_unscheduleCloseConnection", v7);
     }
 
-    v5 = *(a1 + 32);
+    v5 = *(self + 32);
     if (v5)
     {
       dispatch_source_set_timer(v5, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      dispatch_source_cancel(*(a1 + 32));
-      v6 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      dispatch_source_cancel(*(self + 32));
+      v6 = *(self + 32);
+      *(self + 32) = 0;
     }
   }
 }

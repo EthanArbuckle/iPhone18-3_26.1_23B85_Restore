@@ -1,48 +1,48 @@
 @interface AFUIExplicitAutoFillController
-- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)a3 documentState:(id)a4 keyboardOutputHandler:(id)a5;
-- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5;
+- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)traits documentState:(id)state keyboardOutputHandler:(id)handler;
+- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler;
 - (AFUIModalUIDelegate)delegate;
-- (void)_finishWithSelectedCredential:(id)a3;
-- (void)_finishWithStringValue:(id)a3;
-- (void)_generateSuggestions:(id)a3;
-- (void)_showContactsPanelFromViewController:(id)a3;
-- (void)_showCreditCardsPanelFromViewController:(id)a3;
-- (void)_showPasswordsPanelFromViewController:(id)a3;
-- (void)authenticationDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)authenticationWillBeginForSessionUUID:(id)a3 completion:(id)a4;
+- (void)_finishWithSelectedCredential:(id)credential;
+- (void)_finishWithStringValue:(id)value;
+- (void)_generateSuggestions:(id)suggestions;
+- (void)_showContactsPanelFromViewController:(id)controller;
+- (void)_showCreditCardsPanelFromViewController:(id)controller;
+- (void)_showPasswordsPanelFromViewController:(id)controller;
+- (void)authenticationDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)authenticationWillBeginForSessionUUID:(id)d completion:(id)completion;
 - (void)contactPickerDidCancel;
-- (void)contactsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)contactsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)creditCardsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)creditCardsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)passwordsControllerDidFinish:(id)a3;
-- (void)passwordsUIDidEndForSessionUUID:(id)a3 completion:(id)a4;
-- (void)passwordsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4;
-- (void)presentFromViewController:(id)a3;
-- (void)userSelectedContactProperties:(id)a3;
+- (void)contactsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)contactsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)creditCardsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)creditCardsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)passwordsControllerDidFinish:(id)finish;
+- (void)passwordsUIDidEndForSessionUUID:(id)d completion:(id)completion;
+- (void)passwordsUIWillBeginForSessionUUID:(id)d completion:(id)completion;
+- (void)presentFromViewController:(id)controller;
+- (void)userSelectedContactProperties:(id)properties;
 @end
 
 @implementation AFUIExplicitAutoFillController
 
-- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)a3 documentState:(id)a4 textOperationsHandler:(id)a5
+- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)traits documentState:(id)state textOperationsHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  stateCopy = state;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = AFUIExplicitAutoFillController;
   v11 = [(AFUIExplicitAutoFillController *)&v22 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [traitsCopy copy];
     documentTraits = v11->_documentTraits;
     v11->_documentTraits = v12;
 
-    v14 = [v9 copy];
+    v14 = [stateCopy copy];
     documentState = v11->_documentState;
     v11->_documentState = v14;
 
-    v16 = MEMORY[0x1D38AFC90](v10);
+    v16 = MEMORY[0x1D38AFC90](handlerCopy);
     textOperationsHandler = v11->_textOperationsHandler;
     v11->_textOperationsHandler = v16;
 
@@ -56,25 +56,25 @@
   return v11;
 }
 
-- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)a3 documentState:(id)a4 keyboardOutputHandler:(id)a5
+- (AFUIExplicitAutoFillController)initWithDocumentTraits:(id)traits documentState:(id)state keyboardOutputHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  stateCopy = state;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = AFUIExplicitAutoFillController;
   v11 = [(AFUIExplicitAutoFillController *)&v22 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [traitsCopy copy];
     documentTraits = v11->_documentTraits;
     v11->_documentTraits = v12;
 
-    v14 = [v9 copy];
+    v14 = [stateCopy copy];
     documentState = v11->_documentState;
     v11->_documentState = v14;
 
-    v16 = MEMORY[0x1D38AFC90](v10);
+    v16 = MEMORY[0x1D38AFC90](handlerCopy);
     keyboardOutputHandler = v11->_keyboardOutputHandler;
     v11->_keyboardOutputHandler = v16;
 
@@ -88,99 +88,99 @@
   return v11;
 }
 
-- (void)presentFromViewController:(id)a3
+- (void)presentFromViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(RTIDocumentTraits *)self->_documentTraits autofillMode];
-  if (v4 == 1)
+  controllerCopy = controller;
+  autofillMode = [(RTIDocumentTraits *)self->_documentTraits autofillMode];
+  if (autofillMode == 1)
   {
-    [(AFUIExplicitAutoFillController *)self _showPasswordsPanelFromViewController:v7];
+    [(AFUIExplicitAutoFillController *)self _showPasswordsPanelFromViewController:controllerCopy];
     goto LABEL_8;
   }
 
-  if (v4 == 9)
+  if (autofillMode == 9)
   {
-    [(AFUIExplicitAutoFillController *)self _showCreditCardsPanelFromViewController:v7];
+    [(AFUIExplicitAutoFillController *)self _showCreditCardsPanelFromViewController:controllerCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 7;
-  v6 = v7;
+  v5 = autofillMode == 7;
+  v6 = controllerCopy;
   if (v5)
   {
-    [(AFUIExplicitAutoFillController *)self _showContactsPanelFromViewController:v7];
+    [(AFUIExplicitAutoFillController *)self _showContactsPanelFromViewController:controllerCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = controllerCopy;
   }
 }
 
-- (void)authenticationWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)authenticationWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)authenticationDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)authenticationDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)contactsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)contactsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)contactsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)contactsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)passwordsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)passwordsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)passwordsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)passwordsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)creditCardsUIWillBeginForSessionUUID:(id)a3 completion:(id)a4
+- (void)creditCardsUIWillBeginForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)creditCardsUIDidEndForSessionUUID:(id)a3 completion:(id)a4
+- (void)creditCardsUIDidEndForSessionUUID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)_showPasswordsPanelFromViewController:(id)a3
+- (void)_showPasswordsPanelFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!self->_passwordsController)
   {
     v5 = [[AFUIPasswordsController alloc] initWithDocumentTraits:self->_documentTraits];
@@ -190,19 +190,19 @@ LABEL_8:
     [(AFUIPasswordsController *)self->_passwordsController setPasswordPickerDelegate:self];
   }
 
-  v7 = [(AFUIExplicitAutoFillController *)self delegate];
-  v8 = v7;
-  if (v7)
+  delegate = [(AFUIExplicitAutoFillController *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    v9 = v7;
+    selfCopy = delegate;
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   [(AFUIExplicitAutoFillController *)v10 passwordsUIWillBeginForSessionUUID:0 completion:0];
   v13[0] = MEMORY[0x1E69E9820];
@@ -210,10 +210,10 @@ LABEL_8:
   v13[2] = __72__AFUIExplicitAutoFillController__showPasswordsPanelFromViewController___block_invoke;
   v13[3] = &unk_1E8424668;
   v13[4] = self;
-  v14 = v4;
+  v14 = controllerCopy;
   v15 = v10;
   v11 = v10;
-  v12 = v4;
+  v12 = controllerCopy;
   [(AFUIExplicitAutoFillController *)v11 authenticationWillBeginForSessionUUID:0 completion:v13];
 }
 
@@ -229,9 +229,9 @@ void __72__AFUIExplicitAutoFillController__showPasswordsPanelFromViewController_
   [v2 presentPasswordPickerFromViewController:v1 didFinishAuthenticationBlock:v3];
 }
 
-- (void)_showContactsPanelFromViewController:(id)a3
+- (void)_showContactsPanelFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!self->_contactsController)
   {
     v5 = objc_alloc_init(AFUIContactsController);
@@ -242,24 +242,24 @@ void __72__AFUIExplicitAutoFillController__showPasswordsPanelFromViewController_
     [(AFUIContactsController *)self->_contactsController setAlwaysAllowsNamePicking:1];
   }
 
-  v7 = [(AFUIExplicitAutoFillController *)self delegate];
+  delegate = [(AFUIExplicitAutoFillController *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(AFUIExplicitAutoFillController *)self delegate];
+    delegate2 = [(AFUIExplicitAutoFillController *)self delegate];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__AFUIExplicitAutoFillController__showContactsPanelFromViewController___block_invoke;
     v10[3] = &unk_1E8424990;
-    v11 = v4;
-    v12 = self;
-    [v8 contactsUIWillBeginForSessionUUID:0 completion:v10];
+    v11 = controllerCopy;
+    selfCopy = self;
+    [delegate2 contactsUIWillBeginForSessionUUID:0 completion:v10];
   }
 
   else
   {
     v9 = [(AFUIContactsController *)self->_contactsController allContactsViewControllerForTextContentType:0];
-    [v4 presentViewController:v9 animated:1 completion:&__block_literal_global_6];
+    [controllerCopy presentViewController:v9 animated:1 completion:&__block_literal_global_6];
   }
 }
 
@@ -283,10 +283,10 @@ void __71__AFUIExplicitAutoFillController__showContactsPanelFromViewController__
   [v1 presentViewController:v2 animated:1 completion:&__block_literal_global_4_0];
 }
 
-- (void)_showCreditCardsPanelFromViewController:(id)a3
+- (void)_showCreditCardsPanelFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
+  controllerCopy = controller;
+  v5 = controllerCopy;
   if (!self->_creditCardViewController)
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -294,7 +294,7 @@ void __71__AFUIExplicitAutoFillController__showContactsPanelFromViewController__
     v6[2] = __74__AFUIExplicitAutoFillController__showCreditCardsPanelFromViewController___block_invoke;
     v6[3] = &unk_1E8424AD8;
     v6[4] = self;
-    v7 = v4;
+    v7 = controllerCopy;
     [(AFUIExplicitAutoFillController *)self _generateSuggestions:v6];
   }
 }
@@ -338,15 +338,15 @@ void __74__AFUIExplicitAutoFillController__showCreditCardsPanelFromViewControlle
   [*(a1 + 40) presentViewController:v2 animated:1 completion:0];
 }
 
-- (void)_finishWithStringValue:(id)a3
+- (void)_finishWithStringValue:(id)value
 {
-  v13 = a3;
+  valueCopy = value;
   [(AFUIExplicitAutoFillController *)self _yieldToClientApplicationIfNeeded];
   p_textOperationsHandler = &self->_textOperationsHandler;
   if (self->_textOperationsHandler)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69C6FA8]);
-    [v5 _assertOrInsertText:v13 documentTraits:self->_documentTraits];
+    [v5 _assertOrInsertText:valueCopy documentTraits:self->_documentTraits];
     [v5 setIsExplicitAutoFillInvocation:1];
   }
 
@@ -359,13 +359,13 @@ void __74__AFUIExplicitAutoFillController__showCreditCardsPanelFromViewControlle
     }
 
     v5 = objc_alloc_init(MEMORY[0x1E69D9638]);
-    [v5 setInsertionText:v13];
-    v6 = [(RTIDocumentState *)self->_documentState documentState];
-    v7 = [v6 contextBeforeInput];
-    v8 = [v7 length];
-    v9 = [(RTIDocumentState *)self->_documentState documentState];
-    v10 = [v9 contextAfterInput];
-    [v5 setDeletionCount:{objc_msgSend(v10, "length") + v8}];
+    [v5 setInsertionText:valueCopy];
+    documentState = [(RTIDocumentState *)self->_documentState documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v8 = [contextBeforeInput length];
+    documentState2 = [(RTIDocumentState *)self->_documentState documentState];
+    contextAfterInput = [documentState2 contextAfterInput];
+    [v5 setDeletionCount:{objc_msgSend(contextAfterInput, "length") + v8}];
   }
 
   (*(*p_textOperationsHandler + 2))();
@@ -378,16 +378,16 @@ LABEL_6:
   self->_keyboardOutputHandler = 0;
 }
 
-- (void)_finishWithSelectedCredential:(id)a3
+- (void)_finishWithSelectedCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   [(AFUIExplicitAutoFillController *)self _yieldToClientApplicationIfNeeded];
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v4 user];
-  v6 = v5;
-  if (v5)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  user = [credentialCopy user];
+  v6 = user;
+  if (user)
   {
-    v7 = v5;
+    v7 = user;
   }
 
   else
@@ -395,13 +395,13 @@ LABEL_6:
     v7 = &stru_1F4E9A028;
   }
 
-  [v14 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69D98A0]];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E69D98A0]];
 
-  v8 = [v4 password];
+  password = [credentialCopy password];
 
-  if (v8)
+  if (password)
   {
-    v9 = v8;
+    v9 = password;
   }
 
   else
@@ -409,7 +409,7 @@ LABEL_6:
     v9 = &stru_1F4E9A028;
   }
 
-  [v14 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69D9888]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E69D9888]];
 
   p_textOperationsHandler = &self->_textOperationsHandler;
   if (self->_textOperationsHandler)
@@ -429,7 +429,7 @@ LABEL_6:
     v11 = objc_alloc_init(MEMORY[0x1E69D9638]);
   }
 
-  [v11 setCustomInfo:v14];
+  [v11 setCustomInfo:dictionary];
   (*(*p_textOperationsHandler + 2))();
 
 LABEL_12:
@@ -440,46 +440,46 @@ LABEL_12:
   self->_keyboardOutputHandler = 0;
 }
 
-- (void)userSelectedContactProperties:(id)a3
+- (void)userSelectedContactProperties:(id)properties
 {
-  v25 = a3;
+  propertiesCopy = properties;
   [(AFUIExplicitAutoFillController *)self _yieldToClientApplicationIfNeeded];
-  v4 = [(RTIDocumentTraits *)self->_documentTraits textInputTraits];
-  v5 = [v4 textContentType];
-  v6 = [v25 objectForKeyedSubscript:v5];
+  textInputTraits = [(RTIDocumentTraits *)self->_documentTraits textInputTraits];
+  textContentType = [textInputTraits textContentType];
+  v6 = [propertiesCopy objectForKeyedSubscript:textContentType];
 
-  v7 = [(RTIDocumentTraits *)self->_documentTraits textInputTraits];
-  v8 = [v7 textContentType];
+  textInputTraits2 = [(RTIDocumentTraits *)self->_documentTraits textInputTraits];
+  textContentType2 = [textInputTraits2 textContentType];
   v9 = *MEMORY[0x1E698E130];
-  if (([v8 isEqualToString:*MEMORY[0x1E698E130]] & 1) == 0)
+  if (([textContentType2 isEqualToString:*MEMORY[0x1E698E130]] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v10 = [v25 objectForKeyedSubscript:@"didPickContactNamePropertyKey"];
-  v11 = [v10 BOOLValue];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"didPickContactNamePropertyKey"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = *MEMORY[0x1E698E108];
-    v13 = [v25 objectForKeyedSubscript:*MEMORY[0x1E698E108]];
+    v13 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x1E698E108]];
     v14 = [v13 length];
 
     if (v14)
     {
-      [v25 objectForKeyedSubscript:v12];
-      v6 = v7 = v6;
+      [propertiesCopy objectForKeyedSubscript:v12];
+      v6 = textInputTraits2 = v6;
 LABEL_6:
     }
   }
 
   if (!v6)
   {
-    v6 = [v25 objectForKeyedSubscript:v9];
+    v6 = [propertiesCopy objectForKeyedSubscript:v9];
     if (!v6)
     {
-      v6 = [v25 objectForKeyedSubscript:*MEMORY[0x1E698E108]];
+      v6 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x1E698E108]];
     }
   }
 
@@ -501,12 +501,12 @@ LABEL_6:
 
     v16 = objc_alloc_init(MEMORY[0x1E69D9638]);
     [v16 setInsertionText:v6];
-    v17 = [(RTIDocumentState *)self->_documentState documentState];
-    v18 = [v17 contextBeforeInput];
-    v19 = [v18 length];
-    v20 = [(RTIDocumentState *)self->_documentState documentState];
-    v21 = [v20 contextAfterInput];
-    [v16 setDeletionCount:{objc_msgSend(v21, "length") + v19}];
+    documentState = [(RTIDocumentState *)self->_documentState documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v19 = [contextBeforeInput length];
+    documentState2 = [(RTIDocumentState *)self->_documentState documentState];
+    contextAfterInput = [documentState2 contextAfterInput];
+    [v16 setDeletionCount:{objc_msgSend(contextAfterInput, "length") + v19}];
   }
 
   (*(*p_textOperationsHandler + 2))();
@@ -518,58 +518,58 @@ LABEL_15:
   keyboardOutputHandler = self->_keyboardOutputHandler;
   self->_keyboardOutputHandler = 0;
 
-  v24 = [(AFUIExplicitAutoFillController *)self delegate];
-  [v24 contactsUIDidEndForSessionUUID:0 completion:0];
+  delegate = [(AFUIExplicitAutoFillController *)self delegate];
+  [delegate contactsUIDidEndForSessionUUID:0 completion:0];
 }
 
 - (void)contactPickerDidCancel
 {
-  v2 = [(AFUIExplicitAutoFillController *)self delegate];
-  [v2 contactsUIDidEndForSessionUUID:0 completion:0];
+  delegate = [(AFUIExplicitAutoFillController *)self delegate];
+  [delegate contactsUIDidEndForSessionUUID:0 completion:0];
 }
 
-- (void)passwordsControllerDidFinish:(id)a3
+- (void)passwordsControllerDidFinish:(id)finish
 {
-  v3 = [(AFUIExplicitAutoFillController *)self delegate];
-  [v3 passwordsUIDidEndForSessionUUID:0 completion:0];
+  delegate = [(AFUIExplicitAutoFillController *)self delegate];
+  [delegate passwordsUIDidEndForSessionUUID:0 completion:0];
 }
 
-- (void)_generateSuggestions:(id)a3
+- (void)_generateSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E1C0] sharedInstance];
-  v6 = [(RTIDocumentState *)self->_documentState documentState];
-  v7 = [v6 contextBeforeInput];
+  suggestionsCopy = suggestions;
+  mEMORY[0x1E698E1C0] = [MEMORY[0x1E698E1C0] sharedInstance];
+  documentState = [(RTIDocumentState *)self->_documentState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(AFUIExplicitAutoFillController *)self delegate];
-  v10 = v9;
-  if (v9)
+  array = [MEMORY[0x1E695DF70] array];
+  delegate = [(AFUIExplicitAutoFillController *)self delegate];
+  v10 = delegate;
+  if (delegate)
   {
-    v11 = v9;
+    selfCopy = delegate;
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  v12 = v11;
+  v12 = selfCopy;
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __55__AFUIExplicitAutoFillController__generateSuggestions___block_invoke;
   v17[3] = &unk_1E8424CF8;
   v17[4] = self;
-  v18 = v5;
-  v19 = v7;
-  v20 = v8;
-  v21 = v4;
+  v18 = mEMORY[0x1E698E1C0];
+  v19 = contextBeforeInput;
+  v20 = array;
+  v21 = suggestionsCopy;
   v22 = 9;
-  v13 = v4;
-  v14 = v8;
-  v15 = v7;
-  v16 = v5;
+  v13 = suggestionsCopy;
+  v14 = array;
+  v15 = contextBeforeInput;
+  v16 = mEMORY[0x1E698E1C0];
   [(AFUIExplicitAutoFillController *)v12 authenticationWillBeginForSessionUUID:0 completion:v17];
 }
 

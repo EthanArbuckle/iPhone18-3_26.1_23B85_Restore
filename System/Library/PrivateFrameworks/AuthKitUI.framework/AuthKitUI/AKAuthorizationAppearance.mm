@@ -28,20 +28,20 @@
 
 + (UIFont)titleFont
 {
-  v7 = [MEMORY[0x277CF0228] sharedManager];
-  v8 = [v7 isAuthKitSolariumFeatureEnabled];
-  *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v8)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v9 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76A20] traits:{2, v2}];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CF0228] sharedManager];
-    v6 = [v5 isLisbonAvailable];
-    *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-    if (v6)
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
+    isLisbonAvailable = [mEMORY[0x277CF0228]2 isLisbonAvailable];
+    *&v3 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2).n128_u64[0];
+    if (isLisbonAvailable)
     {
       v9 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76A20] traits:{32770, v3}];
     }
@@ -57,10 +57,10 @@
 
 + (UIFont)subtitleFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76988] traits:{0, v2}];
   }
@@ -75,20 +75,20 @@
 
 + (UIFont)smallTitleFont
 {
-  v7 = [MEMORY[0x277CF0228] sharedManager];
-  v8 = [v7 isAuthKitSolariumFeatureEnabled];
-  *&v2 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v8)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isAuthKitSolariumFeatureEnabled = [mEMORY[0x277CF0228] isAuthKitSolariumFeatureEnabled];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v9 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76A20] traits:{0, v2}];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CF0228] sharedManager];
-    v6 = [v5 isLisbonAvailable];
-    *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-    if (v6)
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
+    isLisbonAvailable = [mEMORY[0x277CF0228]2 isLisbonAvailable];
+    *&v3 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2).n128_u64[0];
+    if (isLisbonAvailable)
     {
       v9 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76988] traits:{0, v3}];
     }
@@ -104,10 +104,10 @@
 
 + (UIFont)captionFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76940] traits:{0, v2}];
   }
@@ -122,10 +122,10 @@
 
 + (UIFont)messageFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D769D0] traits:{0, v2}];
   }
@@ -140,10 +140,10 @@
 
 + (UIFont)scopeTitleFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76918] traits:{0x8000, v2}];
   }
@@ -158,59 +158,59 @@
 
 + (UIColor)scopeRowBackgroundColor
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v6 = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  return v6;
+  return secondarySystemGroupedBackgroundColor;
 }
 
 + (UIColor)paneBackgroundColor
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
   v6 = 0;
   v5 = 0;
-  if ([v4 isLisbonAvailable])
+  if ([mEMORY[0x277CF0228] isLisbonAvailable])
   {
-    v7 = [MEMORY[0x277CF0228] sharedManager];
+    mEMORY[0x277CF0228]2 = [MEMORY[0x277CF0228] sharedManager];
     v6 = 1;
-    v5 = [v7 isAuthKitSolariumFeatureEnabled] == 0;
+    v5 = [mEMORY[0x277CF0228]2 isAuthKitSolariumFeatureEnabled] == 0;
   }
 
   if (v6)
   {
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0228]2);
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
   if (v5)
   {
-    v8 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] clearColor];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  return v8;
+  return systemGroupedBackgroundColor;
 }
 
 + (int64_t)paneBlurEffectStyle
 {
-  v3 = [MEMORY[0x277CF0228] sharedManager];
-  v4 = [v3 isLisbonAvailable];
-  MEMORY[0x277D82BD8](v3);
-  if (v4)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
+  if (isLisbonAvailable)
   {
     return 9;
   }
@@ -223,10 +223,10 @@
 
 + (int64_t)tableViewStyle
 {
-  v3 = [MEMORY[0x277CF0228] sharedManager];
-  v4 = [v3 isLisbonAvailable];
-  MEMORY[0x277D82BD8](v3);
-  if (v4)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
+  if (isLisbonAvailable)
   {
     return 2;
   }
@@ -239,10 +239,10 @@
 
 + (int64_t)editingDoneButtonStyle
 {
-  v3 = [MEMORY[0x277CF0228] sharedManager];
-  v4 = [v3 isLisbonAvailable];
-  MEMORY[0x277D82BD8](v3);
-  if (v4)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
+  if (isLisbonAvailable)
   {
     return 2;
   }
@@ -255,10 +255,10 @@
 
 + (UIFont)scopeSelectionTitleFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D769D0] traits:{0, v2}];
   }
@@ -273,10 +273,10 @@
 
 + (UIFont)scopeSubtitleFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76968] traits:{0x8000, v2}];
   }
@@ -291,46 +291,46 @@
 
 + (UIColor)editScopeRowBackgroundColor
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v6 = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  return v6;
+  return secondarySystemGroupedBackgroundColor;
 }
 
 + (UIColor)editScopeInfoLabelTextColor
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] secondaryLabelColor];
+    labelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  return v6;
+  return labelColor;
 }
 
 + (UIFont)editScopeInfoLabelFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76918] traits:{2, v2}];
   }
@@ -345,50 +345,50 @@
 
 + (UIColor)continueButtonDefaultColor
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v6 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.48 blue:1.0 alpha:?];
+    systemBlueColor = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.48 blue:1.0 alpha:?];
   }
 
-  return v6;
+  return systemBlueColor;
 }
 
 + (UIColor)continueButtonDisabledColor
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v6 = [MEMORY[0x277D75348] systemGray3Color];
+    systemGray3Color = [MEMORY[0x277D75348] systemGray3Color];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] colorWithRed:0.75 green:0.75 blue:0.75 alpha:1.0];
+    systemGray3Color = [MEMORY[0x277D75348] colorWithRed:0.75 green:0.75 blue:0.75 alpha:1.0];
   }
 
-  return v6;
+  return systemGray3Color;
 }
 
 + (UIColor)continueButtonHighlightedColor
 {
-  v5 = [MEMORY[0x277CF0228] sharedManager];
-  v6 = [v5 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v6)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v4 = [MEMORY[0x277D75348] systemBlueColor];
-    v7 = [v4 colorWithAlphaComponent:0.25];
-    MEMORY[0x277D82BD8](v4);
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v7 = [systemBlueColor colorWithAlphaComponent:0.25];
+    MEMORY[0x277D82BD8](systemBlueColor);
   }
 
   else
@@ -401,10 +401,10 @@
 
 + (UIFont)continueButtonFont
 {
-  v4 = [MEMORY[0x277CF0228] sharedManager];
-  v5 = [v4 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
     v6 = [MEMORY[0x277D74300] ak_dynamicFontWithStyle:*MEMORY[0x277D76920] traits:{2, v2}];
   }
@@ -419,10 +419,10 @@
 
 + (UIImageSymbolConfiguration)emailSelectionSymbolConfiguration
 {
-  v3 = [MEMORY[0x277CF0228] sharedManager];
-  v4 = [v3 isLisbonAvailable];
-  MEMORY[0x277D82BD8](v3);
-  if (v4)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  MEMORY[0x277D82BD8](mEMORY[0x277CF0228]);
+  if (isLisbonAvailable)
   {
     v5 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:14.0];
   }
@@ -437,7 +437,7 @@
 
 + (UIButtonConfiguration)dismissButtonConfiguration
 {
-  v13[2] = a1;
+  v13[2] = self;
   v13[1] = a2;
   v13[0] = [MEMORY[0x277D75230] tintedButtonConfiguration];
   v8 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
@@ -449,11 +449,11 @@
   MEMORY[0x277D82BD8](v9);
   NSDirectionalEdgeInsetsMake_1();
   [v13[0] setContentInsets:{v3, v4, v5, v6}];
-  v10 = [MEMORY[0x277D75348] systemGrayColor];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   [v13[0] setBaseForegroundColor:?];
-  v11 = [MEMORY[0x277D75348] systemGray2Color];
+  systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
   [v13[0] setBaseBackgroundColor:?];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](systemGray2Color);
   v12 = MEMORY[0x277D82BE0](v13[0]);
   objc_storeStrong(v13, 0);
 
@@ -462,7 +462,7 @@
 
 + (UIButtonConfiguration)clearButtonConfiguration
 {
-  v13[2] = a1;
+  v13[2] = self;
   v13[1] = a2;
   v13[0] = [MEMORY[0x277D75230] tintedButtonConfiguration];
   v9 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
@@ -470,25 +470,25 @@
   [v13[0] setCornerStyle:{4, MEMORY[0x277D82BD8](v9).n128_f64[0]}];
   v10 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:-1 scale:10.0];
   [v13[0] setPreferredSymbolConfigurationForImage:?];
-  v11 = [MEMORY[0x277CF0228] sharedManager];
-  v12 = [v11 isLisbonAvailable];
-  *&v2 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v12)
+  mEMORY[0x277CF0228] = [MEMORY[0x277CF0228] sharedManager];
+  isLisbonAvailable = [mEMORY[0x277CF0228] isLisbonAvailable];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0228]).n128_u64[0];
+  if (isLisbonAvailable)
   {
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
     [v13[0] setBaseForegroundColor:?];
-    v8 = [MEMORY[0x277D75348] systemGray2Color];
+    systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
     [v13[0] setBaseBackgroundColor:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](systemGray2Color);
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] systemGray5Color];
+    systemGray5Color = [MEMORY[0x277D75348] systemGray5Color];
     [v13[0] setBaseForegroundColor:?];
-    v6 = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
     [v13[0] setBaseBackgroundColor:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](secondaryLabelColor);
   }
 
   v4 = MEMORY[0x277D82BE0](v13[0]);

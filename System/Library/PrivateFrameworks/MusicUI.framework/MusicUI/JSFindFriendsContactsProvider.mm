@@ -6,7 +6,7 @@
 
 - (id)contactsDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216ED82F4();
 
   return v3;

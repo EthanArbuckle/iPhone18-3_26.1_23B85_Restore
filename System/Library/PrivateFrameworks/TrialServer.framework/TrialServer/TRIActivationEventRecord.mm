@@ -1,40 +1,40 @@
 @interface TRIActivationEventRecord
-+ (id)recordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5 osBuild:(id)a6 languageCode:(id)a7 regionCode:(id)a8 carrierBundleIdentifier:(id)a9 carrierCountryIsoCode:(id)a10 diagnosticsUsageEnabled:(int64_t)a11 hasAne:(int64_t)a12 aneVersion:(id)a13;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecord:(id)a3;
-- (TRIActivationEventRecord)initWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5 osBuild:(id)a6 languageCode:(id)a7 regionCode:(id)a8 carrierBundleIdentifier:(id)a9 carrierCountryIsoCode:(id)a10 diagnosticsUsageEnabled:(int64_t)a11 hasAne:(int64_t)a12 aneVersion:(id)a13;
-- (id)copyWithReplacementAneVersion:(id)a3;
-- (id)copyWithReplacementCarrierBundleIdentifier:(id)a3;
-- (id)copyWithReplacementCarrierCountryIsoCode:(id)a3;
-- (id)copyWithReplacementFactorPackSetId:(id)a3;
-- (id)copyWithReplacementLanguageCode:(id)a3;
-- (id)copyWithReplacementOsBuild:(id)a3;
-- (id)copyWithReplacementParentId:(id)a3;
-- (id)copyWithReplacementRegionCode:(id)a3;
++ (id)recordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId osBuild:(id)build languageCode:(id)code regionCode:(id)regionCode carrierBundleIdentifier:(id)identifier carrierCountryIsoCode:(id)self0 diagnosticsUsageEnabled:(int64_t)self1 hasAne:(int64_t)self2 aneVersion:(id)self3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecord:(id)record;
+- (TRIActivationEventRecord)initWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId osBuild:(id)build languageCode:(id)code regionCode:(id)regionCode carrierBundleIdentifier:(id)identifier carrierCountryIsoCode:(id)self0 diagnosticsUsageEnabled:(int64_t)self1 hasAne:(int64_t)self2 aneVersion:(id)self3;
+- (id)copyWithReplacementAneVersion:(id)version;
+- (id)copyWithReplacementCarrierBundleIdentifier:(id)identifier;
+- (id)copyWithReplacementCarrierCountryIsoCode:(id)code;
+- (id)copyWithReplacementFactorPackSetId:(id)id;
+- (id)copyWithReplacementLanguageCode:(id)code;
+- (id)copyWithReplacementOsBuild:(id)build;
+- (id)copyWithReplacementParentId:(id)id;
+- (id)copyWithReplacementRegionCode:(id)code;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIActivationEventRecord
 
-- (TRIActivationEventRecord)initWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5 osBuild:(id)a6 languageCode:(id)a7 regionCode:(id)a8 carrierBundleIdentifier:(id)a9 carrierCountryIsoCode:(id)a10 diagnosticsUsageEnabled:(int64_t)a11 hasAne:(int64_t)a12 aneVersion:(id)a13
+- (TRIActivationEventRecord)initWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId osBuild:(id)build languageCode:(id)code regionCode:(id)regionCode carrierBundleIdentifier:(id)identifier carrierCountryIsoCode:(id)self0 diagnosticsUsageEnabled:(int64_t)self1 hasAne:(int64_t)self2 aneVersion:(id)self3
 {
-  v17 = a3;
-  v37 = a4;
-  v18 = a4;
-  v39 = a6;
-  v19 = a6;
-  v40 = a7;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v44 = a10;
-  v23 = a13;
-  v41 = v22;
-  v42 = v23;
-  if (v17)
+  idCopy = id;
+  setIdCopy = setId;
+  setIdCopy2 = setId;
+  buildCopy = build;
+  buildCopy2 = build;
+  codeCopy = code;
+  codeCopy2 = code;
+  regionCodeCopy = regionCode;
+  identifierCopy = identifier;
+  isoCodeCopy = isoCode;
+  versionCopy = version;
+  v41 = identifierCopy;
+  v42 = versionCopy;
+  if (idCopy)
   {
-    if (v18)
+    if (setIdCopy2)
     {
       goto LABEL_3;
     }
@@ -42,15 +42,15 @@
 
   else
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1266 description:{@"Invalid parameter not satisfying: %@", @"parentId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1266 description:{@"Invalid parameter not satisfying: %@", @"parentId != nil"}];
 
-    v22 = v41;
-    v23 = v42;
-    if (v18)
+    identifierCopy = v41;
+    versionCopy = v42;
+    if (setIdCopy2)
     {
 LABEL_3:
-      if (v19)
+      if (buildCopy2)
       {
         goto LABEL_4;
       }
@@ -59,15 +59,15 @@ LABEL_3:
     }
   }
 
-  v28 = [MEMORY[0x277CCA890] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1267 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1267 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId != nil"}];
 
-  v22 = v41;
-  v23 = v42;
-  if (v19)
+  identifierCopy = v41;
+  versionCopy = v42;
+  if (buildCopy2)
   {
 LABEL_4:
-    if (v20)
+    if (codeCopy2)
     {
       goto LABEL_5;
     }
@@ -76,24 +76,24 @@ LABEL_4:
   }
 
 LABEL_14:
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1268 description:{@"Invalid parameter not satisfying: %@", @"osBuild != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1268 description:{@"Invalid parameter not satisfying: %@", @"osBuild != nil"}];
 
-  v22 = v41;
-  v23 = v42;
-  if (v20)
+  identifierCopy = v41;
+  versionCopy = v42;
+  if (codeCopy2)
   {
 LABEL_5:
-    if (v21)
+    if (regionCodeCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_16:
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1270 description:{@"Invalid parameter not satisfying: %@", @"regionCode != nil"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1270 description:{@"Invalid parameter not satisfying: %@", @"regionCode != nil"}];
 
-    v23 = v42;
+    versionCopy = v42;
     if (v41)
     {
       goto LABEL_7;
@@ -103,31 +103,31 @@ LABEL_16:
   }
 
 LABEL_15:
-  v30 = [MEMORY[0x277CCA890] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1269 description:{@"Invalid parameter not satisfying: %@", @"languageCode != nil"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1269 description:{@"Invalid parameter not satisfying: %@", @"languageCode != nil"}];
 
-  v22 = v41;
-  v23 = v42;
-  if (!v21)
+  identifierCopy = v41;
+  versionCopy = v42;
+  if (!regionCodeCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_6:
-  if (v22)
+  if (identifierCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_17:
-  v32 = [MEMORY[0x277CCA890] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1271 description:{@"Invalid parameter not satisfying: %@", @"carrierBundleIdentifier != nil"}];
+  currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1271 description:{@"Invalid parameter not satisfying: %@", @"carrierBundleIdentifier != nil"}];
 
-  v23 = v42;
+  versionCopy = v42;
 LABEL_7:
-  if (v44)
+  if (isoCodeCopy)
   {
-    if (v23)
+    if (versionCopy)
     {
       goto LABEL_9;
     }
@@ -135,8 +135,8 @@ LABEL_7:
 
   else
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1272 description:{@"Invalid parameter not satisfying: %@", @"carrierCountryIsoCode != nil"}];
+    currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler7 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1272 description:{@"Invalid parameter not satisfying: %@", @"carrierCountryIsoCode != nil"}];
 
     if (v42)
     {
@@ -144,8 +144,8 @@ LABEL_7:
     }
   }
 
-  v34 = [MEMORY[0x277CCA890] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1273 description:{@"Invalid parameter not satisfying: %@", @"aneVersion != nil"}];
+  currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler8 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1273 description:{@"Invalid parameter not satisfying: %@", @"aneVersion != nil"}];
 
 LABEL_9:
   v45.receiver = self;
@@ -154,123 +154,123 @@ LABEL_9:
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_parentId, a3);
-    objc_storeStrong(&v25->_factorPackSetId, v37);
-    v25->_deploymentId = a5;
-    objc_storeStrong(&v25->_osBuild, v39);
-    objc_storeStrong(&v25->_languageCode, v40);
-    objc_storeStrong(&v25->_regionCode, a8);
-    objc_storeStrong(&v25->_carrierBundleIdentifier, a9);
-    objc_storeStrong(&v25->_carrierCountryIsoCode, a10);
-    v25->_diagnosticsUsageEnabled = a11;
-    v25->_hasAne = a12;
-    objc_storeStrong(&v25->_aneVersion, a13);
+    objc_storeStrong(&v24->_parentId, id);
+    objc_storeStrong(&v25->_factorPackSetId, setIdCopy);
+    v25->_deploymentId = deploymentId;
+    objc_storeStrong(&v25->_osBuild, buildCopy);
+    objc_storeStrong(&v25->_languageCode, codeCopy);
+    objc_storeStrong(&v25->_regionCode, regionCode);
+    objc_storeStrong(&v25->_carrierBundleIdentifier, identifier);
+    objc_storeStrong(&v25->_carrierCountryIsoCode, isoCode);
+    v25->_diagnosticsUsageEnabled = enabled;
+    v25->_hasAne = ane;
+    objc_storeStrong(&v25->_aneVersion, version);
   }
 
   return v25;
 }
 
-+ (id)recordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5 osBuild:(id)a6 languageCode:(id)a7 regionCode:(id)a8 carrierBundleIdentifier:(id)a9 carrierCountryIsoCode:(id)a10 diagnosticsUsageEnabled:(int64_t)a11 hasAne:(int64_t)a12 aneVersion:(id)a13
++ (id)recordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId osBuild:(id)build languageCode:(id)code regionCode:(id)regionCode carrierBundleIdentifier:(id)identifier carrierCountryIsoCode:(id)self0 diagnosticsUsageEnabled:(int64_t)self1 hasAne:(int64_t)self2 aneVersion:(id)self3
 {
-  v19 = a13;
-  v20 = a10;
-  v21 = a9;
-  v22 = a8;
-  v23 = a7;
-  v24 = a6;
-  v25 = a4;
-  v26 = a3;
-  v27 = [[a1 alloc] initWithParentId:v26 factorPackSetId:v25 deploymentId:a5 osBuild:v24 languageCode:v23 regionCode:v22 carrierBundleIdentifier:v21 carrierCountryIsoCode:v20 diagnosticsUsageEnabled:a11 hasAne:a12 aneVersion:v19];
+  versionCopy = version;
+  isoCodeCopy = isoCode;
+  identifierCopy = identifier;
+  regionCodeCopy = regionCode;
+  codeCopy = code;
+  buildCopy = build;
+  setIdCopy = setId;
+  idCopy = id;
+  v27 = [[self alloc] initWithParentId:idCopy factorPackSetId:setIdCopy deploymentId:deploymentId osBuild:buildCopy languageCode:codeCopy regionCode:regionCodeCopy carrierBundleIdentifier:identifierCopy carrierCountryIsoCode:isoCodeCopy diagnosticsUsageEnabled:enabled hasAne:ane aneVersion:versionCopy];
 
   return v27;
 }
 
-- (id)copyWithReplacementParentId:(id)a3
+- (id)copyWithReplacementParentId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   v6 = *&self->_carrierBundleIdentifier;
-  v7 = [v5 initWithParentId:v4 factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  v7 = [v5 initWithParentId:idCopy factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v7;
 }
 
-- (id)copyWithReplacementFactorPackSetId:(id)a3
+- (id)copyWithReplacementFactorPackSetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   v6 = *&self->_carrierBundleIdentifier;
-  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:v4 deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:idCopy deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v7;
 }
 
-- (id)copyWithReplacementOsBuild:(id)a3
+- (id)copyWithReplacementOsBuild:(id)build
 {
-  v4 = a3;
+  buildCopy = build;
   v5 = objc_alloc(objc_opt_class());
   v6 = *&self->_carrierBundleIdentifier;
-  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:v4 languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:buildCopy languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v7;
 }
 
-- (id)copyWithReplacementLanguageCode:(id)a3
+- (id)copyWithReplacementLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_alloc(objc_opt_class());
   v6 = *&self->_carrierBundleIdentifier;
-  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:v4 regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:codeCopy regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v7;
 }
 
-- (id)copyWithReplacementRegionCode:(id)a3
+- (id)copyWithReplacementRegionCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = objc_alloc(objc_opt_class());
   v6 = *&self->_carrierBundleIdentifier;
-  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:v4 carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  v7 = [v5 initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:codeCopy carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v7;
 }
 
-- (id)copyWithReplacementCarrierBundleIdentifier:(id)a3
+- (id)copyWithReplacementCarrierBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:v4 carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:identifierCopy carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v5;
 }
 
-- (id)copyWithReplacementCarrierCountryIsoCode:(id)a3
+- (id)copyWithReplacementCarrierCountryIsoCode:(id)code
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:v4 diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
+  codeCopy = code;
+  v5 = [objc_alloc(objc_opt_class()) initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:codeCopy diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:self->_aneVersion];
 
   return v5;
 }
 
-- (id)copyWithReplacementAneVersion:(id)a3
+- (id)copyWithReplacementAneVersion:(id)version
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:v4];
+  versionCopy = version;
+  v5 = [objc_alloc(objc_opt_class()) initWithParentId:self->_parentId factorPackSetId:self->_factorPackSetId deploymentId:self->_deploymentId osBuild:self->_osBuild languageCode:self->_languageCode regionCode:self->_regionCode carrierBundleIdentifier:self->_carrierBundleIdentifier carrierCountryIsoCode:self->_carrierCountryIsoCode diagnosticsUsageEnabled:self->_diagnosticsUsageEnabled hasAne:self->_hasAne aneVersion:versionCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRecord:(id)a3
+- (BOOL)isEqualToRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_29;
   }
 
   v6 = self->_parentId == 0;
-  v7 = [v4 parentId];
-  v8 = v7 != 0;
+  parentId = [recordCopy parentId];
+  v8 = parentId != 0;
 
   if (v6 == v8)
   {
@@ -280,8 +280,8 @@ LABEL_9:
   parentId = self->_parentId;
   if (parentId)
   {
-    v10 = [v5 parentId];
-    v11 = [(NSString *)parentId isEqual:v10];
+    parentId2 = [v5 parentId];
+    v11 = [(NSString *)parentId isEqual:parentId2];
 
     if (!v11)
     {
@@ -290,8 +290,8 @@ LABEL_9:
   }
 
   v12 = self->_factorPackSetId == 0;
-  v13 = [v5 factorPackSetId];
-  v14 = v13 != 0;
+  factorPackSetId = [v5 factorPackSetId];
+  v14 = factorPackSetId != 0;
 
   if (v12 == v14)
   {
@@ -301,8 +301,8 @@ LABEL_9:
   factorPackSetId = self->_factorPackSetId;
   if (factorPackSetId)
   {
-    v16 = [v5 factorPackSetId];
-    v17 = [(NSString *)factorPackSetId isEqual:v16];
+    factorPackSetId2 = [v5 factorPackSetId];
+    v17 = [(NSString *)factorPackSetId isEqual:factorPackSetId2];
 
     if (!v17)
     {
@@ -317,8 +317,8 @@ LABEL_9:
   }
 
   v19 = self->_osBuild == 0;
-  v20 = [v5 osBuild];
-  v21 = v20 != 0;
+  osBuild = [v5 osBuild];
+  v21 = osBuild != 0;
 
   if (v19 == v21)
   {
@@ -328,8 +328,8 @@ LABEL_9:
   osBuild = self->_osBuild;
   if (osBuild)
   {
-    v23 = [v5 osBuild];
-    v24 = [(NSString *)osBuild isEqual:v23];
+    osBuild2 = [v5 osBuild];
+    v24 = [(NSString *)osBuild isEqual:osBuild2];
 
     if (!v24)
     {
@@ -338,8 +338,8 @@ LABEL_9:
   }
 
   v25 = self->_languageCode == 0;
-  v26 = [v5 languageCode];
-  v27 = v26 != 0;
+  languageCode = [v5 languageCode];
+  v27 = languageCode != 0;
 
   if (v25 == v27)
   {
@@ -349,8 +349,8 @@ LABEL_9:
   languageCode = self->_languageCode;
   if (languageCode)
   {
-    v29 = [v5 languageCode];
-    v30 = [(NSString *)languageCode isEqual:v29];
+    languageCode2 = [v5 languageCode];
+    v30 = [(NSString *)languageCode isEqual:languageCode2];
 
     if (!v30)
     {
@@ -359,8 +359,8 @@ LABEL_9:
   }
 
   v31 = self->_regionCode == 0;
-  v32 = [v5 regionCode];
-  v33 = v32 != 0;
+  regionCode = [v5 regionCode];
+  v33 = regionCode != 0;
 
   if (v31 == v33)
   {
@@ -370,8 +370,8 @@ LABEL_9:
   regionCode = self->_regionCode;
   if (regionCode)
   {
-    v35 = [v5 regionCode];
-    v36 = [(NSString *)regionCode isEqual:v35];
+    regionCode2 = [v5 regionCode];
+    v36 = [(NSString *)regionCode isEqual:regionCode2];
 
     if (!v36)
     {
@@ -380,8 +380,8 @@ LABEL_9:
   }
 
   v37 = self->_carrierBundleIdentifier == 0;
-  v38 = [v5 carrierBundleIdentifier];
-  v39 = v38 != 0;
+  carrierBundleIdentifier = [v5 carrierBundleIdentifier];
+  v39 = carrierBundleIdentifier != 0;
 
   if (v37 == v39)
   {
@@ -391,8 +391,8 @@ LABEL_9:
   carrierBundleIdentifier = self->_carrierBundleIdentifier;
   if (carrierBundleIdentifier)
   {
-    v41 = [v5 carrierBundleIdentifier];
-    v42 = [(NSString *)carrierBundleIdentifier isEqual:v41];
+    carrierBundleIdentifier2 = [v5 carrierBundleIdentifier];
+    v42 = [(NSString *)carrierBundleIdentifier isEqual:carrierBundleIdentifier2];
 
     if (!v42)
     {
@@ -401,8 +401,8 @@ LABEL_9:
   }
 
   v43 = self->_carrierCountryIsoCode == 0;
-  v44 = [v5 carrierCountryIsoCode];
-  v45 = v44 != 0;
+  carrierCountryIsoCode = [v5 carrierCountryIsoCode];
+  v45 = carrierCountryIsoCode != 0;
 
   if (v43 == v45)
   {
@@ -412,8 +412,8 @@ LABEL_9:
   carrierCountryIsoCode = self->_carrierCountryIsoCode;
   if (carrierCountryIsoCode)
   {
-    v47 = [v5 carrierCountryIsoCode];
-    v48 = [(NSString *)carrierCountryIsoCode isEqual:v47];
+    carrierCountryIsoCode2 = [v5 carrierCountryIsoCode];
+    v48 = [(NSString *)carrierCountryIsoCode isEqual:carrierCountryIsoCode2];
 
     if (!v48)
     {
@@ -433,8 +433,8 @@ LABEL_29:
     aneVersion = self->_aneVersion;
     if (aneVersion)
     {
-      v55 = [v5 aneVersion];
-      v56 = [(NSString *)aneVersion isEqual:v55];
+      aneVersion = [v5 aneVersion];
+      v56 = [(NSString *)aneVersion isEqual:aneVersion];
     }
 
     else
@@ -446,18 +446,18 @@ LABEL_29:
   return v56 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIActivationEventRecord *)self isEqualToRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIActivationEventRecord *)self isEqualToRecord:v5];
   }
 
   return v6;

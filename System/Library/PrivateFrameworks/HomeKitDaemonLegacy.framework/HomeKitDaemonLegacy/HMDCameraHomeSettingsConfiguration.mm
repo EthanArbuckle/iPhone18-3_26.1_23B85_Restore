@@ -1,13 +1,13 @@
 @interface HMDCameraHomeSettingsConfiguration
-- (HMDCameraHomeSettingsConfiguration)initWithHome:(id)a3;
+- (HMDCameraHomeSettingsConfiguration)initWithHome:(id)home;
 @end
 
 @implementation HMDCameraHomeSettingsConfiguration
 
-- (HMDCameraHomeSettingsConfiguration)initWithHome:(id)a3
+- (HMDCameraHomeSettingsConfiguration)initWithHome:(id)home
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v64.receiver = self;
   v64.super_class = HMDCameraHomeSettingsConfiguration;
   v5 = [(HMDCameraHomeSettingsConfiguration *)&v64 init];
@@ -15,14 +15,14 @@
   if (v5)
   {
     v50 = v5;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v51 = v4;
-    v8 = [v4 accessories];
-    v9 = [v8 countByEnumeratingWithState:&v60 objects:v71 count:16];
+    v51 = homeCopy;
+    accessories = [homeCopy accessories];
+    v9 = [accessories countByEnumeratingWithState:&v60 objects:v71 count:16];
     if (v9)
     {
       v10 = v9;
@@ -33,7 +33,7 @@
         {
           if (*v61 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(accessories);
           }
 
           v13 = *(*(&v60 + 1) + 8 * i);
@@ -50,23 +50,23 @@
 
           v15 = v14;
 
-          v16 = [v15 cameraProfiles];
-          v17 = [v16 count];
+          cameraProfiles = [v15 cameraProfiles];
+          v17 = [cameraProfiles count];
 
           if (v17)
           {
             v18 = [[HMDCameraAccessorySettingsConfiguration alloc] initWithCameraAccessory:v15];
-            [v7 addObject:v18];
+            [array addObject:v18];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v60 objects:v71 count:16];
+        v10 = [accessories countByEnumeratingWithState:&v60 objects:v71 count:16];
       }
 
       while (v10);
     }
 
-    v19 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
+    v19 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     cameraSettings = v50->_cameraSettings;
     v50->_cameraSettings = v19;
 
@@ -76,22 +76,22 @@
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [(HMDCameraHomeSettingsConfiguration *)v22 cameraSettings];
+      cameraSettings = [(HMDCameraHomeSettingsConfiguration *)v22 cameraSettings];
       *buf = 138543618;
       v68 = v24;
       v69 = 2112;
-      v70 = v25;
+      v70 = cameraSettings;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_DEBUG, "%{public}@Camera accessory settings: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v21);
-    v26 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v27 = [v51 users];
-    v28 = [v27 countByEnumeratingWithState:&v56 objects:v66 count:16];
+    users = [v51 users];
+    v28 = [users countByEnumeratingWithState:&v56 objects:v66 count:16];
     if (v28)
     {
       v29 = v28;
@@ -102,20 +102,20 @@
         {
           if (*v57 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(users);
           }
 
           v32 = [[HMDCameraUserSettingsConfiguration alloc] initWithUser:*(*(&v56 + 1) + 8 * j)];
-          [v26 addObject:v32];
+          [array2 addObject:v32];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v56 objects:v66 count:16];
+        v29 = [users countByEnumeratingWithState:&v56 objects:v66 count:16];
       }
 
       while (v29);
     }
 
-    v33 = [MEMORY[0x277CBEA60] arrayWithArray:v26];
+    v33 = [MEMORY[0x277CBEA60] arrayWithArray:array2];
     userSettings = v22->_userSettings;
     v22->_userSettings = v33;
 
@@ -125,27 +125,27 @@
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
       v38 = HMFGetLogIdentifier();
-      v39 = [(HMDCameraHomeSettingsConfiguration *)v36 userSettings];
+      userSettings = [(HMDCameraHomeSettingsConfiguration *)v36 userSettings];
       *buf = 138543618;
       v68 = v38;
       v69 = 2112;
-      v70 = v39;
+      v70 = userSettings;
       _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_DEBUG, "%{public}@Camera user settings: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v35);
-    v4 = v51;
-    v40 = [v51 personManagerSettings];
-    v36->_faceClassificationEnabled = [v40 isFaceClassificationEnabled];
+    homeCopy = v51;
+    personManagerSettings = [v51 personManagerSettings];
+    v36->_faceClassificationEnabled = [personManagerSettings isFaceClassificationEnabled];
 
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v41 = [v51 residentDeviceManager];
-    v42 = [v41 availableResidentDevices];
+    residentDeviceManager = [v51 residentDeviceManager];
+    availableResidentDevices = [residentDeviceManager availableResidentDevices];
 
-    v43 = [v42 countByEnumeratingWithState:&v52 objects:v65 count:16];
+    v43 = [availableResidentDevices countByEnumeratingWithState:&v52 objects:v65 count:16];
     if (v43)
     {
       v44 = v43;
@@ -156,7 +156,7 @@
         {
           if (*v53 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(availableResidentDevices);
           }
 
           v47 = *(*(&v52 + 1) + 8 * k);
@@ -166,7 +166,7 @@
           }
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v52 objects:v65 count:16];
+        v44 = [availableResidentDevices countByEnumeratingWithState:&v52 objects:v65 count:16];
       }
 
       while (v44);

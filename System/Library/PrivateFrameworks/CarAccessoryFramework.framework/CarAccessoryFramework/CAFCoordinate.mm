@@ -1,22 +1,22 @@
 @interface CAFCoordinate
-- (CAFCoordinate)initWithAltitude:(float)a3 latitude:(float)a4 longitude:(float)a5;
-- (CAFCoordinate)initWithDictionary:(id)a3;
+- (CAFCoordinate)initWithAltitude:(float)altitude latitude:(float)latitude longitude:(float)longitude;
+- (CAFCoordinate)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFCoordinate
 
-- (CAFCoordinate)initWithDictionary:(id)a3
+- (CAFCoordinate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CAFCoordinate;
   v5 = [(CAFCoordinate *)&v16 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"altitude"];
+    v6 = [dictionaryCopy objectForKey:@"altitude"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_altitude = v8;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"latitude"];
+    v9 = [dictionaryCopy objectForKey:@"latitude"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
     v5->_latitude = v11;
 
     objc_opt_class();
-    v12 = [v4 objectForKey:@"longitude"];
+    v12 = [dictionaryCopy objectForKey:@"longitude"];
     if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (CAFCoordinate)initWithAltitude:(float)a3 latitude:(float)a4 longitude:(float)a5
+- (CAFCoordinate)initWithAltitude:(float)altitude latitude:(float)latitude longitude:(float)longitude
 {
   v9.receiver = self;
   v9.super_class = CAFCoordinate;
   result = [(CAFCoordinate *)&v9 init];
   if (result)
   {
-    result->_altitude = a3;
-    result->_latitude = a4;
-    result->_longitude = a5;
+    result->_altitude = altitude;
+    result->_latitude = latitude;
+    result->_longitude = longitude;
   }
 
   return result;

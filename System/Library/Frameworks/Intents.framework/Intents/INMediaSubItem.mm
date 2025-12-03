@@ -1,12 +1,12 @@
 @interface INMediaSubItem
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INMediaSubItem)initWithCoder:(id)a3;
-- (INMediaSubItem)initWithIdentifier:(id)a3 assetInfo:(id)a4;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INMediaSubItem)initWithCoder:(id)coder;
+- (INMediaSubItem)initWithIdentifier:(id)identifier assetInfo:(id)info;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INMediaSubItem
@@ -16,22 +16,22 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"identifier";
   identifier = self->_identifier;
-  v4 = identifier;
+  null = identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"assetInfo";
-  v11[0] = v4;
+  v11[0] = null;
   assetInfo = self->_assetInfo;
-  v6 = assetInfo;
+  null2 = assetInfo;
   if (!assetInfo)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (assetInfo)
   {
@@ -56,63 +56,63 @@ LABEL_7:
   return v7;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INMediaSubItem;
   v6 = [(INMediaSubItem *)&v11 description];
-  v7 = [(INMediaSubItem *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INMediaSubItem *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_identifier];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"identifier"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_identifier];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"identifier"];
 
-  v9 = [v6 encodeObject:self->_assetInfo];
+  v9 = [encoderCopy encodeObject:self->_assetInfo];
 
-  [v7 if_setObjectIfNonNil:v9 forKey:@"assetInfo"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"assetInfo"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_assetInfo forKey:@"assetInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_assetInfo forKey:@"assetInfo"];
 }
 
-- (INMediaSubItem)initWithCoder:(id)a3
+- (INMediaSubItem)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"identifier"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"identifier"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"assetInfo"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"assetInfo"];
 
   v13 = [(INMediaSubItem *)self initWithIdentifier:v8 assetInfo:v12];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -122,7 +122,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v8 = 0;
       if (identifier == v5->_identifier || [(NSString *)identifier isEqual:?])
@@ -144,20 +144,20 @@ LABEL_7:
   return v8;
 }
 
-- (INMediaSubItem)initWithIdentifier:(id)a3 assetInfo:(id)a4
+- (INMediaSubItem)initWithIdentifier:(id)identifier assetInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = INMediaSubItem;
   v8 = [(INMediaSubItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [infoCopy copy];
     assetInfo = v8->_assetInfo;
     v8->_assetInfo = v11;
   }
@@ -165,15 +165,15 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"identifier"];
-    v8 = [v6 objectForKeyedSubscript:@"assetInfo"];
-    v9 = [[a1 alloc] initWithIdentifier:v7 assetInfo:v8];
+    v7 = [fromCopy objectForKeyedSubscript:@"identifier"];
+    v8 = [fromCopy objectForKeyedSubscript:@"assetInfo"];
+    v9 = [[self alloc] initWithIdentifier:v7 assetInfo:v8];
   }
 
   else

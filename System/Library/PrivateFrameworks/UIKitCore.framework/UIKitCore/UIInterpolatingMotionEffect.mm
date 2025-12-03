@@ -1,12 +1,12 @@
 @interface UIInterpolatingMotionEffect
 - (UIInterpolatingMotionEffect)initWithCoder:(NSCoder *)coder;
 - (UIInterpolatingMotionEffect)initWithKeyPath:(NSString *)keyPath type:(UIInterpolatingMotionEffectType)type;
-- (id)_keyPathsAndRelativeValuesForPose:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_keyPathsAndRelativeValuesForPose:(id)pose;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3;
-- (void)_setKeyPath:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset;
+- (void)_setKeyPath:(id)path;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIInterpolatingMotionEffect
@@ -30,18 +30,18 @@
   return v7;
 }
 
-- (id)_keyPathsAndRelativeValuesForPose:(id)a3
+- (id)_keyPathsAndRelativeValuesForPose:(id)pose
 {
-  v4 = a3;
-  [v4 viewerOffset];
-  [v4 _acceleratedOutputForViewerOffset:? accelerationBoostFactor:?];
+  poseCopy = pose;
+  [poseCopy viewerOffset];
+  [poseCopy _acceleratedOutputForViewerOffset:? accelerationBoostFactor:?];
   v6 = v5;
   v8 = v7;
 
   return [(UIInterpolatingMotionEffect *)self keyPathsAndRelativeValuesForViewerOffset:v6, v8];
 }
 
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset
 {
   v11[1] = *MEMORY[0x1E69E9840];
   minimumRelativeValue = self->_minimumRelativeValue;
@@ -50,14 +50,14 @@
     type = self->_type;
     if (type)
     {
-      a3.horizontal = a3.vertical;
+      offset.horizontal = offset.vertical;
       if (type != 1)
       {
         abort();
       }
     }
 
-    v6 = a3.horizontal * 0.5 + 0.5;
+    v6 = offset.horizontal * 0.5 + 0.5;
     *&v6 = v6;
     v7 = [minimumRelativeValue CA_interpolateValue:v6 byFraction:?];
     keyPath = self->_keyPath;
@@ -73,7 +73,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIInterpolatingMotionEffect);
   objc_storeStrong(&v4->_keyPath, self->_keyPath);
@@ -85,16 +85,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyPath = self->_keyPath;
-  v5 = a3;
-  [v5 encodeObject:keyPath forKey:@"_keyPath"];
-  [v5 CA_encodeObject:self->_minimumRelativeValue forKey:@"_minimumRelativeValue" conditional:0];
-  [v5 CA_encodeObject:self->_maximumRelativeValue forKey:@"_maximumRelativeValue" conditional:0];
-  [v5 encodeInteger:self->_type forKey:@"_type"];
-  [v5 encodeDouble:@"_horizontalAccelerationBoostFactor" forKey:self->_horizontalAccelerationBoostFactor];
-  [v5 encodeDouble:@"_verticalAccelerationBoostFactor" forKey:self->_verticalAccelerationBoostFactor];
+  coderCopy = coder;
+  [coderCopy encodeObject:keyPath forKey:@"_keyPath"];
+  [coderCopy CA_encodeObject:self->_minimumRelativeValue forKey:@"_minimumRelativeValue" conditional:0];
+  [coderCopy CA_encodeObject:self->_maximumRelativeValue forKey:@"_maximumRelativeValue" conditional:0];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
+  [coderCopy encodeDouble:@"_horizontalAccelerationBoostFactor" forKey:self->_horizontalAccelerationBoostFactor];
+  [coderCopy encodeDouble:@"_verticalAccelerationBoostFactor" forKey:self->_verticalAccelerationBoostFactor];
 }
 
 - (UIInterpolatingMotionEffect)initWithCoder:(NSCoder *)coder
@@ -133,8 +133,8 @@
   type = self->_type;
   if (type >= 3)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIMotionEffect.m" lineNumber:289 description:@"Unknown motion type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMotionEffect.m" lineNumber:289 description:@"Unknown motion type"];
 
     v4 = @"unknown";
   }
@@ -152,11 +152,11 @@
   return v10;
 }
 
-- (void)_setKeyPath:(id)a3
+- (void)_setKeyPath:(id)path
 {
-  if (self->_keyPath != a3)
+  if (self->_keyPath != path)
   {
-    v4 = [a3 copy];
+    v4 = [path copy];
     keyPath = self->_keyPath;
     self->_keyPath = v4;
   }

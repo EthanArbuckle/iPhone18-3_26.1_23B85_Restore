@@ -1,18 +1,18 @@
 @interface ATXClientModelSuggestionReceiver
 + (ATXClientModelSuggestionReceiver)sharedInstance;
 + (id)layoutSelectorsForConsumerSubTypes;
-+ (void)_updateCacheForClientModel:(id)a3 withSuggestions:(id)a4 cacheManager:(id)a5;
++ (void)_updateCacheForClientModel:(id)model withSuggestions:(id)suggestions cacheManager:(id)manager;
 + (void)clearPreviouslyPersistedCachesForCardSuggestionClientsIfNecessary;
 - (ATXClientModelSuggestionReceiver)init;
-- (ATXClientModelSuggestionReceiver)initWithBlendingLayerServer:(id)a3;
-- (BOOL)rerouteSuggestions:(id)a3 clientModelId:(id)a4 completion:(id)a5;
-- (void)_sendStackChangeDebugNotification:(id)a3;
-- (void)blendingLayerRerankedSuggestions:(id)a3 consumerSubType:(unsigned __int8)a4;
-- (void)blendingLayerUpdatedUICache:(id)a3 consumerSubType:(unsigned __int8)a4;
+- (ATXClientModelSuggestionReceiver)initWithBlendingLayerServer:(id)server;
+- (BOOL)rerouteSuggestions:(id)suggestions clientModelId:(id)id completion:(id)completion;
+- (void)_sendStackChangeDebugNotification:(id)notification;
+- (void)blendingLayerRerankedSuggestions:(id)suggestions consumerSubType:(unsigned __int8)type;
+- (void)blendingLayerUpdatedUICache:(id)cache consumerSubType:(unsigned __int8)type;
 - (void)dealloc;
-- (void)routeSuggestionsToInfoSuggestionEngine:(id)a3 clientModelId:(id)a4 completion:(id)a5;
+- (void)routeSuggestionsToInfoSuggestionEngine:(id)engine clientModelId:(id)id completion:(id)completion;
 - (void)start;
-- (void)willCreateCacheUpdateWithFeedbackMetadataLength:(int64_t)a3 forClientModelId:(id)a4;
+- (void)willCreateCacheUpdateWithFeedbackMetadataLength:(int64_t)length forClientModelId:(id)id;
 @end
 
 @implementation ATXClientModelSuggestionReceiver
@@ -43,33 +43,33 @@ void __50__ATXClientModelSuggestionReceiver_sharedInstance__block_invoke()
 {
   v3 = objc_alloc(MEMORY[0x277D42110]);
   v4 = objc_opt_new();
-  v5 = [objc_opt_class() layoutSelectorsForConsumerSubTypes];
+  layoutSelectorsForConsumerSubTypes = [objc_opt_class() layoutSelectorsForConsumerSubTypes];
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x277D41B98] sharedInstance];
-  v8 = [v3 initWithSuggestionPreprocessor:v4 delegate:self layoutSelectorsForConsumerSubTypes:v5 blendingSessionLogger:v6 hyperParameters:v7];
+  mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
+  v8 = [v3 initWithSuggestionPreprocessor:v4 delegate:self layoutSelectorsForConsumerSubTypes:layoutSelectorsForConsumerSubTypes blendingSessionLogger:v6 hyperParameters:mEMORY[0x277D41B98]];
 
   v9 = objc_alloc(MEMORY[0x277D42118]);
-  v10 = [MEMORY[0x277CEB500] sharedInstance];
-  v11 = [MEMORY[0x277D41B98] sharedInstance];
-  v12 = [v9 initWithBlendingLayer:v8 engagementRecordsManager:v10 hyperParameters:v11 serverDelegate:self];
+  mEMORY[0x277CEB500] = [MEMORY[0x277CEB500] sharedInstance];
+  mEMORY[0x277D41B98]2 = [MEMORY[0x277D41B98] sharedInstance];
+  v12 = [v9 initWithBlendingLayer:v8 engagementRecordsManager:mEMORY[0x277CEB500] hyperParameters:mEMORY[0x277D41B98]2 serverDelegate:self];
 
   v13 = [(ATXClientModelSuggestionReceiver *)self initWithBlendingLayerServer:v12];
   return v13;
 }
 
-- (ATXClientModelSuggestionReceiver)initWithBlendingLayerServer:(id)a3
+- (ATXClientModelSuggestionReceiver)initWithBlendingLayerServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v23.receiver = self;
   v23.super_class = ATXClientModelSuggestionReceiver;
   v6 = [(ATXClientModelSuggestionReceiver *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_blendingLayerServer, a3);
-    v8 = [v5 clientModelCacheManager];
+    objc_storeStrong(&v6->_blendingLayerServer, server);
+    clientModelCacheManager = [serverCopy clientModelCacheManager];
     clientModelCacheManager = v7->_clientModelCacheManager;
-    v7->_clientModelCacheManager = v8;
+    v7->_clientModelCacheManager = clientModelCacheManager;
 
     v10 = objc_opt_new();
     appSwitcherSuggestionSender = v7->_appSwitcherSuggestionSender;
@@ -103,8 +103,8 @@ void __50__ATXClientModelSuggestionReceiver_sharedInstance__block_invoke()
 {
   [(ATXUniversalBlendingLayerServer *)self->_blendingLayerServer start];
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__sendStackChangeDebugNotification_ name:*MEMORY[0x277CEBAA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sendStackChangeDebugNotification_ name:*MEMORY[0x277CEBAA8] object:0];
 
   v4 = objc_opt_new();
   uninstallNotificationListener = self->_uninstallNotificationListener;
@@ -199,13 +199,13 @@ void __41__ATXClientModelSuggestionReceiver_start__block_invoke_41(uint64_t a1, 
   v5 = objc_opt_new();
   v6 = objc_alloc(MEMORY[0x277D42050]);
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277D41B98] sharedInstance];
-  v9 = [v6 initWithSuggestionDeduplicator:v7 hyperParameters:v8];
+  mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
+  v9 = [v6 initWithSuggestionDeduplicator:v7 hyperParameters:mEMORY[0x277D41B98]];
 
   v10 = [ATXSpotlightLayoutSelector alloc];
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x277D41B98] sharedInstance];
-  v13 = [(ATXSpotlightLayoutSelector *)v10 initWithSuggestionDeduplicator:v11 hyperParameters:v12];
+  mEMORY[0x277D41B98]2 = [MEMORY[0x277D41B98] sharedInstance];
+  v13 = [(ATXSpotlightLayoutSelector *)v10 initWithSuggestionDeduplicator:v11 hyperParameters:mEMORY[0x277D41B98]2];
 
   v14 = objc_opt_new();
   v19[0] = &unk_283A56B88;
@@ -245,24 +245,24 @@ void __41__ATXClientModelSuggestionReceiver_start__block_invoke_41(uint64_t a1, 
   return v16;
 }
 
-- (void)_sendStackChangeDebugNotification:(id)a3
+- (void)_sendStackChangeDebugNotification:(id)notification
 {
   if (self->_notificationCenter)
   {
-    v4 = a3;
+    notificationCopy = notification;
     v25 = objc_opt_new();
     [v25 setTitle:@"Widget Stack Change Alert"];
-    v5 = [v4 userInfo];
+    userInfo = [notificationCopy userInfo];
 
     v6 = *MEMORY[0x277CEBAB0];
-    v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEBAB0]];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEBAB0]];
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*MEMORY[0x277CEBAE8]];
     v9 = [v7 isEqualToNumber:v8];
 
     v10 = MEMORY[0x277CCACA8];
     if (v9)
     {
-      v11 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEBAB8]];
+      v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEBAB8]];
       v12 = v11;
       v13 = @"unknown";
       if (v11)
@@ -276,7 +276,7 @@ void __41__ATXClientModelSuggestionReceiver_start__block_invoke_41(uint64_t a1, 
 
     else
     {
-      v15 = [v5 objectForKeyedSubscript:v6];
+      v15 = [userInfo objectForKeyedSubscript:v6];
       v12 = v15;
       if (v15)
       {
@@ -288,7 +288,7 @@ void __41__ATXClientModelSuggestionReceiver_start__block_invoke_41(uint64_t a1, 
         v16 = @"unknown";
       }
 
-      v17 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEBAB8]];
+      v17 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEBAB8]];
       v14 = v17;
       if (v17)
       {
@@ -306,9 +306,9 @@ void __41__ATXClientModelSuggestionReceiver_start__block_invoke_41(uint64_t a1, 
 
     v20 = [MEMORY[0x277CE2020] triggerWithTimeInterval:0 repeats:1.0];
     v21 = MEMORY[0x277CE1FC0];
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v23 = [v22 UUIDString];
-    v24 = [v21 requestWithIdentifier:v23 content:v25 trigger:v20];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v24 = [v21 requestWithIdentifier:uUIDString content:v25 trigger:v20];
 
     [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v24 withCompletionHandler:&__block_literal_global_103];
   }
@@ -327,31 +327,31 @@ void __70__ATXClientModelSuggestionReceiver__sendStackChangeDebugNotification___
   }
 }
 
-- (void)blendingLayerRerankedSuggestions:(id)a3 consumerSubType:(unsigned __int8)a4
+- (void)blendingLayerRerankedSuggestions:(id)suggestions consumerSubType:(unsigned __int8)type
 {
-  if (a4 == 34)
+  if (type == 34)
   {
-    v5 = a3;
+    suggestionsCopy = suggestions;
     v6 = +[ATXContextualEngine sharedInstance];
-    [v6 donateRerankedBlendingSuggestions:v5];
+    [v6 donateRerankedBlendingSuggestions:suggestionsCopy];
   }
 }
 
-- (void)blendingLayerUpdatedUICache:(id)a3 consumerSubType:(unsigned __int8)a4
+- (void)blendingLayerUpdatedUICache:(id)cache consumerSubType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4 <= 34)
+  typeCopy = type;
+  cacheCopy = cache;
+  v7 = cacheCopy;
+  if (typeCopy <= 34)
   {
-    if (v4 > 30)
+    if (typeCopy > 30)
     {
-      if (v4 == 31)
+      if (typeCopy == 31)
       {
         [(ATXAppSwitcherSuggestionSender *)self->_appSwitcherSuggestionSender blendingLayerDidUpdateAppSwitcherUICache];
       }
 
-      else if (v4 == 34 && v6)
+      else if (typeCopy == 34 && cacheCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -369,7 +369,7 @@ void __70__ATXClientModelSuggestionReceiver__sendStackChangeDebugNotification___
       }
     }
 
-    else if (v4 == 21)
+    else if (typeCopy == 21)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -385,9 +385,9 @@ void __70__ATXClientModelSuggestionReceiver__sendStackChangeDebugNotification___
       [(ATXSpotlightActionsSuggestionSender *)self->_spotlightActionsSuggestionSender blendingLayerDidUpdateSpotlightUICache:v12];
     }
 
-    else if (v4 == 22)
+    else if (typeCopy == 22)
     {
-      if (v6)
+      if (cacheCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -407,11 +407,11 @@ LABEL_37:
     goto LABEL_40;
   }
 
-  if (v4 <= 46)
+  if (typeCopy <= 46)
   {
-    if (v4 == 35)
+    if (typeCopy == 35)
     {
-      if (v6)
+      if (cacheCopy)
       {
         appDirectoryOrderingProvider = self->_appDirectoryOrderingProvider;
         if (!appDirectoryOrderingProvider)
@@ -429,7 +429,7 @@ LABEL_37:
       goto LABEL_40;
     }
 
-    if (v4 != 46)
+    if (typeCopy != 46)
     {
       goto LABEL_40;
     }
@@ -442,15 +442,15 @@ LABEL_22:
       _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "Posting distributed notification about settings action suggestions refresh", v17, 2u);
     }
 
-    v11 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v11 postNotificationName:*MEMORY[0x277CEB270] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277CEB270] object:0];
 
     goto LABEL_40;
   }
 
-  if (v4 == 47)
+  if (typeCopy == 47)
   {
-    if (v6)
+    if (cacheCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -465,7 +465,7 @@ LABEL_22:
     goto LABEL_37;
   }
 
-  if (v4 == 49)
+  if (typeCopy == 49)
   {
     goto LABEL_22;
   }
@@ -488,28 +488,28 @@ void __80__ATXClientModelSuggestionReceiver_blendingLayerUpdatedUICache_consumer
   }
 }
 
-- (void)willCreateCacheUpdateWithFeedbackMetadataLength:(int64_t)a3 forClientModelId:(id)a4
+- (void)willCreateCacheUpdateWithFeedbackMetadataLength:(int64_t)length forClientModelId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   if (_PASIsInternalDevice())
   {
     if (self->_notificationCenter)
     {
       keyExistsAndHasValidFormat = 0;
       AppBooleanValue = CFPreferencesGetAppBooleanValue(@"ATXBlendingMemoryWarningAlert", *MEMORY[0x277CEBD00], &keyExistsAndHasValidFormat);
-      if (a3 >= 256000)
+      if (length >= 256000)
       {
         if (AppBooleanValue)
         {
           v8 = objc_opt_new();
           [v8 setTitle:@"File a Blending Memory Radar"];
-          v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"🚨 Feedback metadata for a blending update exceeded %d KB in size. (%@)", 250, v6];
-          [v8 setBody:v9];
+          idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"🚨 Feedback metadata for a blending update exceeded %d KB in size. (%@)", 250, idCopy];
+          [v8 setBody:idCopy];
 
           v10 = MEMORY[0x277CE1FC0];
-          v11 = [MEMORY[0x277CCAD78] UUID];
-          v12 = [v11 UUIDString];
-          v13 = [v10 requestWithIdentifier:v12 content:v8 trigger:0];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
+          v13 = [v10 requestWithIdentifier:uUIDString content:v8 trigger:0];
 
           [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v13 withCompletionHandler:&__block_literal_global_136];
         }
@@ -531,14 +531,14 @@ void __101__ATXClientModelSuggestionReceiver_willCreateCacheUpdateWithFeedbackMe
   }
 }
 
-- (BOOL)rerouteSuggestions:(id)a3 clientModelId:(id)a4 completion:(id)a5
+- (BOOL)rerouteSuggestions:(id)suggestions clientModelId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([MEMORY[0x277CEBC58] widgetSuggestionsEnabled] && -[ATXClientModelSuggestionRouter shouldRouteClientToInfoSuggestionEngine:](self->_router, "shouldRouteClientToInfoSuggestionEngine:", v9))
+  suggestionsCopy = suggestions;
+  idCopy = id;
+  completionCopy = completion;
+  if ([MEMORY[0x277CEBC58] widgetSuggestionsEnabled] && -[ATXClientModelSuggestionRouter shouldRouteClientToInfoSuggestionEngine:](self->_router, "shouldRouteClientToInfoSuggestionEngine:", idCopy))
   {
-    [(ATXClientModelSuggestionReceiver *)self routeSuggestionsToInfoSuggestionEngine:v8 clientModelId:v9 completion:v10];
+    [(ATXClientModelSuggestionReceiver *)self routeSuggestionsToInfoSuggestionEngine:suggestionsCopy clientModelId:idCopy completion:completionCopy];
     v11 = 1;
   }
 
@@ -550,11 +550,11 @@ void __101__ATXClientModelSuggestionReceiver_willCreateCacheUpdateWithFeedbackMe
   return v11;
 }
 
-- (void)routeSuggestionsToInfoSuggestionEngine:(id)a3 clientModelId:(id)a4 completion:(id)a5
+- (void)routeSuggestionsToInfoSuggestionEngine:(id)engine clientModelId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  idCopy = id;
+  completionCopy = completion;
   v11 = __atxlog_handle_blending();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -568,12 +568,12 @@ void __101__ATXClientModelSuggestionReceiver_willCreateCacheUpdateWithFeedbackMe
   v16[2] = __100__ATXClientModelSuggestionReceiver_routeSuggestionsToInfoSuggestionEngine_clientModelId_completion___block_invoke;
   v16[3] = &unk_27859EE30;
   v16[4] = self;
-  v17 = v9;
-  v18 = v8;
-  v19 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v17 = idCopy;
+  v18 = engineCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = engineCopy;
+  v15 = idCopy;
   [v12 overwriteSuggestionsWithProactiveSuggestions:v14 forClientModelIdentifier:v15 completionHandler:v16];
 }
 
@@ -603,15 +603,15 @@ void __100__ATXClientModelSuggestionReceiver_routeSuggestionsToInfoSuggestionEng
   (*(a1[7] + 16))();
 }
 
-+ (void)_updateCacheForClientModel:(id)a3 withSuggestions:(id)a4 cacheManager:(id)a5
++ (void)_updateCacheForClientModel:(id)model withSuggestions:(id)suggestions cacheManager:(id)manager
 {
   v7 = MEMORY[0x277D42020];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithClientModelId:v10 suggestions:v9 feedbackMetadata:0 responseForRealTimeRequest:0];
+  managerCopy = manager;
+  suggestionsCopy = suggestions;
+  modelCopy = model;
+  v11 = [[v7 alloc] initWithClientModelId:modelCopy suggestions:suggestionsCopy feedbackMetadata:0 responseForRealTimeRequest:0];
 
-  [v8 updateCachedSuggestions:v11];
+  [managerCopy updateCachedSuggestions:v11];
 }
 
 + (void)clearPreviouslyPersistedCachesForCardSuggestionClientsIfNecessary

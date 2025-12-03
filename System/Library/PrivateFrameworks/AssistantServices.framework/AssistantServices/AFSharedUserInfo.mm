@@ -1,70 +1,70 @@
 @interface AFSharedUserInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFSharedUserInfo)initWithBuilder:(id)a3;
-- (AFSharedUserInfo)initWithCoder:(id)a3;
-- (AFSharedUserInfo)initWithSharedUserId:(id)a3 loggableSharedUserId:(id)a4 companionDeviceInfo:(id)a5 personalRequestsEnabled:(BOOL)a6 companionLinkReady:(BOOL)a7 homeUserId:(id)a8 iCloudAltDSID:(id)a9 isDeviceOwner:(BOOL)a10 isMediaFallbackUser:(BOOL)a11;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSharedUserInfo)initWithBuilder:(id)builder;
+- (AFSharedUserInfo)initWithCoder:(id)coder;
+- (AFSharedUserInfo)initWithSharedUserId:(id)id loggableSharedUserId:(id)userId companionDeviceInfo:(id)info personalRequestsEnabled:(BOOL)enabled companionLinkReady:(BOOL)ready homeUserId:(id)homeUserId iCloudAltDSID:(id)d isDeviceOwner:(BOOL)self0 isMediaFallbackUser:(BOOL)self1;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSharedUserInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sharedUserId = self->_sharedUserId;
-  v5 = a3;
-  [v5 encodeObject:sharedUserId forKey:@"AFSharedUserInfo::sharedUserId"];
-  [v5 encodeObject:self->_loggableSharedUserId forKey:@"AFSharedUserInfo::loggableSharedUserId"];
-  [v5 encodeObject:self->_companionDeviceInfo forKey:@"AFSharedUserInfo::companionDeviceInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sharedUserId forKey:@"AFSharedUserInfo::sharedUserId"];
+  [coderCopy encodeObject:self->_loggableSharedUserId forKey:@"AFSharedUserInfo::loggableSharedUserId"];
+  [coderCopy encodeObject:self->_companionDeviceInfo forKey:@"AFSharedUserInfo::companionDeviceInfo"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_personalRequestsEnabled];
-  [v5 encodeObject:v6 forKey:@"AFSharedUserInfo::personalRequestsEnabled"];
+  [coderCopy encodeObject:v6 forKey:@"AFSharedUserInfo::personalRequestsEnabled"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_companionLinkReady];
-  [v5 encodeObject:v7 forKey:@"AFSharedUserInfo::companionLinkReady"];
+  [coderCopy encodeObject:v7 forKey:@"AFSharedUserInfo::companionLinkReady"];
 
-  [v5 encodeObject:self->_homeUserId forKey:@"AFSharedUserInfo::homeUserId"];
-  [v5 encodeObject:self->_iCloudAltDSID forKey:@"AFSharedUserInfo::iCloudAltDSID"];
+  [coderCopy encodeObject:self->_homeUserId forKey:@"AFSharedUserInfo::homeUserId"];
+  [coderCopy encodeObject:self->_iCloudAltDSID forKey:@"AFSharedUserInfo::iCloudAltDSID"];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDeviceOwner];
-  [v5 encodeObject:v8 forKey:@"AFSharedUserInfo::isDeviceOwner"];
+  [coderCopy encodeObject:v8 forKey:@"AFSharedUserInfo::isDeviceOwner"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isMediaFallbackUser];
-  [v5 encodeObject:v9 forKey:@"AFSharedUserInfo::isMediaFallbackUser"];
+  [coderCopy encodeObject:v9 forKey:@"AFSharedUserInfo::isMediaFallbackUser"];
 }
 
-- (AFSharedUserInfo)initWithCoder:(id)a3
+- (AFSharedUserInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::sharedUserId"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::loggableSharedUserId"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::companionDeviceInfo"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::personalRequestsEnabled"];
-  v7 = [v6 BOOLValue];
+  coderCopy = coder;
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::sharedUserId"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::loggableSharedUserId"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::companionDeviceInfo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::personalRequestsEnabled"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::companionLinkReady"];
-  v9 = [v8 BOOLValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::companionLinkReady"];
+  bOOLValue2 = [v8 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::homeUserId"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::iCloudAltDSID"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::isDeviceOwner"];
-  v13 = [v12 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::homeUserId"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::iCloudAltDSID"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::isDeviceOwner"];
+  bOOLValue3 = [v12 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::isMediaFallbackUser"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedUserInfo::isMediaFallbackUser"];
 
-  LOBYTE(v3) = [v14 BOOLValue];
-  BYTE1(v17) = v3;
-  LOBYTE(v17) = v13;
-  v15 = [(AFSharedUserInfo *)self initWithSharedUserId:v18 loggableSharedUserId:v4 companionDeviceInfo:v5 personalRequestsEnabled:v7 companionLinkReady:v9 homeUserId:v10 iCloudAltDSID:v11 isDeviceOwner:v17 isMediaFallbackUser:?];
+  LOBYTE(coderCopy) = [v14 BOOLValue];
+  BYTE1(v17) = coderCopy;
+  LOBYTE(v17) = bOOLValue3;
+  v15 = [(AFSharedUserInfo *)self initWithSharedUserId:v18 loggableSharedUserId:v4 companionDeviceInfo:v5 personalRequestsEnabled:bOOLValue companionLinkReady:bOOLValue2 homeUserId:v10 iCloudAltDSID:v11 isDeviceOwner:v17 isMediaFallbackUser:?];
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -74,29 +74,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       personalRequestsEnabled = self->_personalRequestsEnabled;
       if (personalRequestsEnabled == [(AFSharedUserInfo *)v5 personalRequestsEnabled]&& (companionLinkReady = self->_companionLinkReady, companionLinkReady == [(AFSharedUserInfo *)v5 companionLinkReady]) && (isDeviceOwner = self->_isDeviceOwner, isDeviceOwner == [(AFSharedUserInfo *)v5 isDeviceOwner]) && (isMediaFallbackUser = self->_isMediaFallbackUser, isMediaFallbackUser == [(AFSharedUserInfo *)v5 isMediaFallbackUser]))
       {
-        v10 = [(AFSharedUserInfo *)v5 sharedUserId];
+        sharedUserId = [(AFSharedUserInfo *)v5 sharedUserId];
         sharedUserId = self->_sharedUserId;
-        if (sharedUserId == v10 || [(NSString *)sharedUserId isEqual:v10])
+        if (sharedUserId == sharedUserId || [(NSString *)sharedUserId isEqual:sharedUserId])
         {
-          v12 = [(AFSharedUserInfo *)v5 loggableSharedUserId];
+          loggableSharedUserId = [(AFSharedUserInfo *)v5 loggableSharedUserId];
           loggableSharedUserId = self->_loggableSharedUserId;
-          if (loggableSharedUserId == v12 || [(NSString *)loggableSharedUserId isEqual:v12])
+          if (loggableSharedUserId == loggableSharedUserId || [(NSString *)loggableSharedUserId isEqual:loggableSharedUserId])
           {
-            v14 = [(AFSharedUserInfo *)v5 companionDeviceInfo];
+            companionDeviceInfo = [(AFSharedUserInfo *)v5 companionDeviceInfo];
             companionDeviceInfo = self->_companionDeviceInfo;
-            if (companionDeviceInfo == v14 || [(AFCompanionDeviceInfo *)companionDeviceInfo isEqual:v14])
+            if (companionDeviceInfo == companionDeviceInfo || [(AFCompanionDeviceInfo *)companionDeviceInfo isEqual:companionDeviceInfo])
             {
-              v16 = [(AFSharedUserInfo *)v5 homeUserId];
+              homeUserId = [(AFSharedUserInfo *)v5 homeUserId];
               homeUserId = self->_homeUserId;
-              if (homeUserId == v16 || [(NSString *)homeUserId isEqual:v16])
+              if (homeUserId == homeUserId || [(NSString *)homeUserId isEqual:homeUserId])
               {
-                v18 = [(AFSharedUserInfo *)v5 iCloudAltDSID];
+                iCloudAltDSID = [(AFSharedUserInfo *)v5 iCloudAltDSID];
                 iCloudAltDSID = self->_iCloudAltDSID;
-                v20 = iCloudAltDSID == v18 || [(NSString *)iCloudAltDSID isEqual:v18];
+                v20 = iCloudAltDSID == iCloudAltDSID || [(NSString *)iCloudAltDSID isEqual:iCloudAltDSID];
               }
 
               else
@@ -157,7 +157,7 @@
   return v10 ^ v15;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13.receiver = self;
@@ -205,31 +205,31 @@
   return v11;
 }
 
-- (AFSharedUserInfo)initWithSharedUserId:(id)a3 loggableSharedUserId:(id)a4 companionDeviceInfo:(id)a5 personalRequestsEnabled:(BOOL)a6 companionLinkReady:(BOOL)a7 homeUserId:(id)a8 iCloudAltDSID:(id)a9 isDeviceOwner:(BOOL)a10 isMediaFallbackUser:(BOOL)a11
+- (AFSharedUserInfo)initWithSharedUserId:(id)id loggableSharedUserId:(id)userId companionDeviceInfo:(id)info personalRequestsEnabled:(BOOL)enabled companionLinkReady:(BOOL)ready homeUserId:(id)homeUserId iCloudAltDSID:(id)d isDeviceOwner:(BOOL)self0 isMediaFallbackUser:(BOOL)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
+  idCopy = id;
+  userIdCopy = userId;
+  infoCopy = info;
+  homeUserIdCopy = homeUserId;
+  dCopy = d;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __184__AFSharedUserInfo_initWithSharedUserId_loggableSharedUserId_companionDeviceInfo_personalRequestsEnabled_companionLinkReady_homeUserId_iCloudAltDSID_isDeviceOwner_isMediaFallbackUser___block_invoke;
   v29[3] = &unk_1E7345D28;
-  v30 = v16;
-  v31 = v17;
-  v35 = a6;
-  v36 = a7;
-  v32 = v18;
-  v33 = v19;
-  v34 = v20;
-  v37 = a10;
-  v38 = a11;
-  v21 = v20;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
+  v30 = idCopy;
+  v31 = userIdCopy;
+  enabledCopy = enabled;
+  readyCopy = ready;
+  v32 = infoCopy;
+  v33 = homeUserIdCopy;
+  v34 = dCopy;
+  ownerCopy = owner;
+  userCopy = user;
+  v21 = dCopy;
+  v22 = homeUserIdCopy;
+  v23 = infoCopy;
+  v24 = userIdCopy;
+  v25 = idCopy;
   v26 = [(AFSharedUserInfo *)self initWithBuilder:v29];
 
   return v26;
@@ -250,43 +250,43 @@ void __184__AFSharedUserInfo_initWithSharedUserId_loggableSharedUserId_companion
   [v4 setIsMediaFallbackUser:*(a1 + 75)];
 }
 
-- (AFSharedUserInfo)initWithBuilder:(id)a3
+- (AFSharedUserInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v24.receiver = self;
   v24.super_class = AFSharedUserInfo;
   v5 = [(AFSharedUserInfo *)&v24 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSharedUserInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSharedUserInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFSharedUserInfoMutation *)v7 getSharedUserId];
-      v9 = [v8 copy];
+      getSharedUserId = [(_AFSharedUserInfoMutation *)v7 getSharedUserId];
+      v9 = [getSharedUserId copy];
       sharedUserId = v6->_sharedUserId;
       v6->_sharedUserId = v9;
 
-      v11 = [(_AFSharedUserInfoMutation *)v7 getLoggableSharedUserId];
-      v12 = [v11 copy];
+      getLoggableSharedUserId = [(_AFSharedUserInfoMutation *)v7 getLoggableSharedUserId];
+      v12 = [getLoggableSharedUserId copy];
       loggableSharedUserId = v6->_loggableSharedUserId;
       v6->_loggableSharedUserId = v12;
 
-      v14 = [(_AFSharedUserInfoMutation *)v7 getCompanionDeviceInfo];
-      v15 = [v14 copy];
+      getCompanionDeviceInfo = [(_AFSharedUserInfoMutation *)v7 getCompanionDeviceInfo];
+      v15 = [getCompanionDeviceInfo copy];
       companionDeviceInfo = v6->_companionDeviceInfo;
       v6->_companionDeviceInfo = v15;
 
       v6->_personalRequestsEnabled = [(_AFSharedUserInfoMutation *)v7 getPersonalRequestsEnabled];
       v6->_companionLinkReady = [(_AFSharedUserInfoMutation *)v7 getCompanionLinkReady];
-      v17 = [(_AFSharedUserInfoMutation *)v7 getHomeUserId];
-      v18 = [v17 copy];
+      getHomeUserId = [(_AFSharedUserInfoMutation *)v7 getHomeUserId];
+      v18 = [getHomeUserId copy];
       homeUserId = v6->_homeUserId;
       v6->_homeUserId = v18;
 
-      v20 = [(_AFSharedUserInfoMutation *)v7 getICloudAltDSID];
-      v21 = [v20 copy];
+      getICloudAltDSID = [(_AFSharedUserInfoMutation *)v7 getICloudAltDSID];
+      v21 = [getICloudAltDSID copy];
       iCloudAltDSID = v6->_iCloudAltDSID;
       v6->_iCloudAltDSID = v21;
 
@@ -298,48 +298,48 @@ void __184__AFSharedUserInfo_initWithSharedUserId_loggableSharedUserId_companion
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSharedUserInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSharedUserInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSharedUserInfo);
-      v7 = [(_AFSharedUserInfoMutation *)v5 getSharedUserId];
-      v8 = [v7 copy];
+      getSharedUserId = [(_AFSharedUserInfoMutation *)v5 getSharedUserId];
+      v8 = [getSharedUserId copy];
       sharedUserId = v6->_sharedUserId;
       v6->_sharedUserId = v8;
 
-      v10 = [(_AFSharedUserInfoMutation *)v5 getLoggableSharedUserId];
-      v11 = [v10 copy];
+      getLoggableSharedUserId = [(_AFSharedUserInfoMutation *)v5 getLoggableSharedUserId];
+      v11 = [getLoggableSharedUserId copy];
       loggableSharedUserId = v6->_loggableSharedUserId;
       v6->_loggableSharedUserId = v11;
 
-      v13 = [(_AFSharedUserInfoMutation *)v5 getCompanionDeviceInfo];
-      v14 = [v13 copy];
+      getCompanionDeviceInfo = [(_AFSharedUserInfoMutation *)v5 getCompanionDeviceInfo];
+      v14 = [getCompanionDeviceInfo copy];
       companionDeviceInfo = v6->_companionDeviceInfo;
       v6->_companionDeviceInfo = v14;
 
       v6->_personalRequestsEnabled = [(_AFSharedUserInfoMutation *)v5 getPersonalRequestsEnabled];
       v6->_companionLinkReady = [(_AFSharedUserInfoMutation *)v5 getCompanionLinkReady];
-      v16 = [(_AFSharedUserInfoMutation *)v5 getHomeUserId];
-      v17 = [v16 copy];
+      getHomeUserId = [(_AFSharedUserInfoMutation *)v5 getHomeUserId];
+      v17 = [getHomeUserId copy];
       homeUserId = v6->_homeUserId;
       v6->_homeUserId = v17;
 
-      v19 = [(_AFSharedUserInfoMutation *)v5 getICloudAltDSID];
-      v20 = [v19 copy];
+      getICloudAltDSID = [(_AFSharedUserInfoMutation *)v5 getICloudAltDSID];
+      v20 = [getICloudAltDSID copy];
       iCloudAltDSID = v6->_iCloudAltDSID;
       v6->_iCloudAltDSID = v20;
 

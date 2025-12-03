@@ -3,8 +3,8 @@
 - (NSString)localizedName;
 - (NSString)sfSymbolName;
 - (id)_init;
-- (id)beginConsumingPressesWithReason:(id)a3 consumer:(id)a4 priority:(int64_t)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (id)beginConsumingPressesWithReason:(id)reason consumer:(id)consumer priority:(int64_t)priority;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GCSystemButtonServiceRevlock
@@ -56,15 +56,15 @@ void __46__GCSystemButtonServiceRevlock_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"available"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"available"])
   {
     [(GCSystemButtonServiceRevlock *)self willChangeValueForKey:@"available"];
-    v13 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+    v13 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     self->_available = v13 != 0;
 
     [(GCSystemButtonServiceRevlock *)self didChangeValueForKey:@"available"];
@@ -74,7 +74,7 @@ void __46__GCSystemButtonServiceRevlock_sharedInstance__block_invoke()
   {
     v14.receiver = self;
     v14.super_class = GCSystemButtonServiceRevlock;
-    [(GCSystemButtonServiceRevlock *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(GCSystemButtonServiceRevlock *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -102,12 +102,12 @@ void __46__GCSystemButtonServiceRevlock_sharedInstance__block_invoke()
   return service;
 }
 
-- (id)beginConsumingPressesWithReason:(id)a3 consumer:(id)a4 priority:(int64_t)a5
+- (id)beginConsumingPressesWithReason:(id)reason consumer:(id)consumer priority:(int64_t)priority
 {
-  v17 = a3;
-  v8 = a4;
-  v15 = a5;
-  v16 = v8;
+  reasonCopy = reason;
+  consumerCopy = consumer;
+  priorityCopy = priority;
+  v16 = consumerCopy;
   if (self->service)
   {
     v9 = MEMORY[0x1E695DF50];
@@ -116,15 +116,15 @@ void __46__GCSystemButtonServiceRevlock_sharedInstance__block_invoke()
 
     [v11 setTarget:self->service];
     [v11 setSelector:sel_beginConsumingPressesWithReason_consumer_priority_];
-    [v11 setArgument:&v17 atIndex:2];
+    [v11 setArgument:&reasonCopy atIndex:2];
     [v11 setArgument:&v16 atIndex:3];
-    [v11 setArgument:&v15 atIndex:4];
+    [v11 setArgument:&priorityCopy atIndex:4];
     [v11 invoke];
     v14 = 0;
     [v11 getReturnValue:&v14];
     v12 = v14;
 
-    v8 = v16;
+    consumerCopy = v16;
   }
 
   else

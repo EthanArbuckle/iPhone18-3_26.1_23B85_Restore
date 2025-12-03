@@ -3,7 +3,7 @@
 - (UILabel)textLabel2;
 - (void)_layoutSubviewsCore;
 - (void)checkValueWidths;
-- (void)layoutText:(id)a3 andValue:(id)a4;
+- (void)layoutText:(id)text andValue:(id)value;
 @end
 
 @implementation PreferencesDoubleTwoPartValueCell
@@ -20,11 +20,11 @@
     v6 = _calendarPreferencesTableAdditionsBoldFont();
     [(UILabel *)self->_textLabel2 setFont:v6];
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_textLabel2 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_textLabel2 setBackgroundColor:clearColor];
 
-    v8 = [(PreferencesDoubleTwoPartValueCell *)self contentView];
-    [v8 addSubview:self->_textLabel2];
+    contentView = [(PreferencesDoubleTwoPartValueCell *)self contentView];
+    [contentView addSubview:self->_textLabel2];
 
     textLabel2 = self->_textLabel2;
   }
@@ -44,14 +44,14 @@
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(TwoPartTextLabel *)self->_twoPartLabel2 setFont:v6];
 
-    v7 = [(PreferencesTwoPartValueCell *)self valueColor];
-    [(TwoPartTextLabel *)self->_twoPartLabel2 setTextColor:v7];
+    valueColor = [(PreferencesTwoPartValueCell *)self valueColor];
+    [(TwoPartTextLabel *)self->_twoPartLabel2 setTextColor:valueColor];
 
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(TwoPartTextLabel *)self->_twoPartLabel2 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TwoPartTextLabel *)self->_twoPartLabel2 setBackgroundColor:clearColor];
 
-    v9 = [(PreferencesDoubleTwoPartValueCell *)self contentView];
-    [v9 addSubview:self->_twoPartLabel2];
+    contentView = [(PreferencesDoubleTwoPartValueCell *)self contentView];
+    [contentView addSubview:self->_twoPartLabel2];
 
     twoPartLabel2 = self->_twoPartLabel2;
   }
@@ -64,15 +64,15 @@
   v4.receiver = self;
   v4.super_class = PreferencesDoubleTwoPartValueCell;
   [(PreferencesTwoPartValueCell *)&v4 _layoutSubviewsCore];
-  v3 = [(PreferencesDoubleTwoPartValueCell *)self textLabel];
-  [(PreferencesDoubleTwoPartValueCell *)self layoutText:v3 andValue:self->_twoPartLabel2];
+  textLabel = [(PreferencesDoubleTwoPartValueCell *)self textLabel];
+  [(PreferencesDoubleTwoPartValueCell *)self layoutText:textLabel andValue:self->_twoPartLabel2];
 }
 
 - (void)checkValueWidths
 {
-  v3 = [(PreferencesTwoPartValueCell *)self shortener];
+  shortener = [(PreferencesTwoPartValueCell *)self shortener];
 
-  if (!v3)
+  if (!shortener)
   {
     return;
   }
@@ -110,25 +110,25 @@ LABEL_11:
   [(PreferencesTwoPartValueCell *)self shorten];
 }
 
-- (void)layoutText:(id)a3 andValue:(id)a4
+- (void)layoutText:(id)text andValue:(id)value
 {
   v47.receiver = self;
   v47.super_class = PreferencesDoubleTwoPartValueCell;
-  [(PreferencesTwoPartValueCell *)&v47 layoutText:a3 andValue:a4];
+  [(PreferencesTwoPartValueCell *)&v47 layoutText:text andValue:value];
   textLabel2 = self->_textLabel2;
   twoPartLabel2 = self->_twoPartLabel2;
   v46.receiver = self;
   v46.super_class = PreferencesDoubleTwoPartValueCell;
   [(PreferencesTwoPartValueCell *)&v46 layoutText:textLabel2 andValue:twoPartLabel2];
-  v7 = [(PreferencesDoubleTwoPartValueCell *)self contentView];
-  [v7 bounds];
+  contentView = [(PreferencesDoubleTwoPartValueCell *)self contentView];
+  [contentView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(PreferencesDoubleTwoPartValueCell *)self textLabel];
-  [v16 frame];
+  textLabel = [(PreferencesDoubleTwoPartValueCell *)self textLabel];
+  [textLabel frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -138,11 +138,11 @@ LABEL_11:
   v48.size.width = v13;
   v48.size.height = v15;
   v23 = CGRectGetMinY(v48) + 9.0;
-  v24 = [(PreferencesDoubleTwoPartValueCell *)self textLabel];
-  [v24 setFrame:{v18, v23, v20, v22}];
+  textLabel2 = [(PreferencesDoubleTwoPartValueCell *)self textLabel];
+  [textLabel2 setFrame:{v18, v23, v20, v22}];
 
-  v25 = [(PreferencesTwoPartValueCell *)self twoPartTextLabel];
-  [v25 frame];
+  twoPartTextLabel = [(PreferencesTwoPartValueCell *)self twoPartTextLabel];
+  [twoPartTextLabel frame];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -152,8 +152,8 @@ LABEL_11:
   v49.size.width = v13;
   v49.size.height = v15;
   v32 = CGRectGetMinY(v49) + 9.0;
-  v33 = [(PreferencesTwoPartValueCell *)self twoPartTextLabel];
-  [v33 setFrame:{v27, v32, v29, v31}];
+  twoPartTextLabel2 = [(PreferencesTwoPartValueCell *)self twoPartTextLabel];
+  [twoPartTextLabel2 setFrame:{v27, v32, v29, v31}];
 
   [(UILabel *)self->_textLabel2 frame];
   v35 = v34;

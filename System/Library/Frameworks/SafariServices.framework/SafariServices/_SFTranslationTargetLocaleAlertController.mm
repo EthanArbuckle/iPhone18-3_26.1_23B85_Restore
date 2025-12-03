@@ -1,49 +1,49 @@
 @interface _SFTranslationTargetLocaleAlertController
-+ (id)translationAlertControllerWithTranslationContext:(id)a3;
++ (id)translationAlertControllerWithTranslationContext:(id)context;
 - (_SFTranslationTargetLocaleAlertControllerDelegate)delegate;
-- (id)displayNameForLocaleIdentifier:(id)a3;
-- (void)_setUpWithLocaleIdentifiers:(id)a3;
-- (void)_translationAvailabilityDidChange:(id)a3;
-- (void)configurePopoverWithSourceInfo:(id)a3;
-- (void)translationAlertController:(id)a3 didSelectLocale:(id)a4;
-- (void)translationAlertController:(id)a3 validateTargetLocale:(id)a4 completionHandler:(id)a5;
+- (id)displayNameForLocaleIdentifier:(id)identifier;
+- (void)_setUpWithLocaleIdentifiers:(id)identifiers;
+- (void)_translationAvailabilityDidChange:(id)change;
+- (void)configurePopoverWithSourceInfo:(id)info;
+- (void)translationAlertController:(id)controller didSelectLocale:(id)locale;
+- (void)translationAlertController:(id)controller validateTargetLocale:(id)locale completionHandler:(id)handler;
 - (void)translationAvailabilityDidChange;
 @end
 
 @implementation _SFTranslationTargetLocaleAlertController
 
-+ (id)translationAlertControllerWithTranslationContext:(id)a3
++ (id)translationAlertControllerWithTranslationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = _WBSLocalizedString();
   v6 = _WBSLocalizedString();
-  v7 = [a1 alertControllerWithTitle:v5 message:v6 preferredStyle:0];
+  v7 = [self alertControllerWithTitle:v5 message:v6 preferredStyle:0];
   [v7 setImageIfNecessaryWithName:@"alert-translation"];
-  objc_storeWeak(v7 + 166, v4);
+  objc_storeWeak(v7 + 166, contextCopy);
   objc_storeWeak(v7 + 167, v7);
-  v8 = [v4 availableTargetLocaleIdentifiers];
-  [v7 _setUpWithLocaleIdentifiers:v8];
+  availableTargetLocaleIdentifiers = [contextCopy availableTargetLocaleIdentifiers];
+  [v7 _setUpWithLocaleIdentifiers:availableTargetLocaleIdentifiers];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:v7 selector:sel__translationAvailabilityDidChange_ name:*MEMORY[0x1E69C9A10] object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v7 selector:sel__translationAvailabilityDidChange_ name:*MEMORY[0x1E69C9A10] object:contextCopy];
 
   return v7;
 }
 
-- (void)_setUpWithLocaleIdentifiers:(id)a3
+- (void)_setUpWithLocaleIdentifiers:(id)identifiers
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  identifiersCopy = identifiers;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   localeIdentifierToAlertActionMap = self->_localeIdentifierToAlertActionMap;
-  self->_localeIdentifierToAlertActionMap = v5;
+  self->_localeIdentifierToAlertActionMap = dictionary;
 
   objc_initWeak(&location, self);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v7 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v7)
   {
@@ -125,14 +125,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)configurePopoverWithSourceInfo:(id)a3
+- (void)configurePopoverWithSourceInfo:(id)info
 {
-  v4 = a3;
-  v6 = [[_SFPopoverPresentationDelegate alloc] initWithSourceInfo:v4];
+  infoCopy = info;
+  v6 = [[_SFPopoverPresentationDelegate alloc] initWithSourceInfo:infoCopy];
 
   [(_SFTranslationTargetLocaleAlertController *)self setModalPresentationStyle:7];
-  v5 = [(_SFTranslationTargetLocaleAlertController *)self popoverPresentationController];
-  [(_SFPopoverPresentationDelegate *)v6 attachToPopoverPresentationController:v5];
+  popoverPresentationController = [(_SFTranslationTargetLocaleAlertController *)self popoverPresentationController];
+  [(_SFPopoverPresentationDelegate *)v6 attachToPopoverPresentationController:popoverPresentationController];
 }
 
 - (void)translationAvailabilityDidChange
@@ -146,8 +146,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSMutableDictionary *)self->_localeIdentifierToAlertActionMap allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    allKeys = [(NSMutableDictionary *)self->_localeIdentifierToAlertActionMap allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v5)
     {
       v6 = *v12;
@@ -158,7 +158,7 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v8 = *(*(&v11 + 1) + 8 * v7);
@@ -174,7 +174,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v5);
@@ -184,53 +184,53 @@
   }
 }
 
-- (void)_translationAvailabilityDidChange:(id)a3
+- (void)_translationAvailabilityDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79___SFTranslationTargetLocaleAlertController__translationAvailabilityDidChange___block_invoke;
   v6[3] = &unk_1E848F548;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (id)displayNameForLocaleIdentifier:(id)a3
+- (id)displayNameForLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF58] safari_displayNameForLocaleIdentifier:v3 inNativeLanguage:1];
-  if ([MEMORY[0x1E695DF58] safari_currentLocaleHasSameBaseLanguageAsLocaleIdentifier:v3])
+  identifierCopy = identifier;
+  v4 = [MEMORY[0x1E695DF58] safari_displayNameForLocaleIdentifier:identifierCopy inNativeLanguage:1];
+  if ([MEMORY[0x1E695DF58] safari_currentLocaleHasSameBaseLanguageAsLocaleIdentifier:identifierCopy])
   {
     v5 = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF58] safari_displayNameForLocaleIdentifier:v3 inNativeLanguage:0];
+    v6 = [MEMORY[0x1E695DF58] safari_displayNameForLocaleIdentifier:identifierCopy inNativeLanguage:0];
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v4, v6];
   }
 
   return v5;
 }
 
-- (void)translationAlertController:(id)a3 didSelectLocale:(id)a4
+- (void)translationAlertController:(id)controller didSelectLocale:(id)locale
 {
-  v6 = a4;
-  if ([v6 length])
+  localeCopy = locale;
+  if ([localeCopy length])
   {
     WeakRetained = objc_loadWeakRetained(&self->_translationContext);
-    [WeakRetained requestTranslatingWebpageToLocale:v6 completionHandler:0];
+    [WeakRetained requestTranslatingWebpageToLocale:localeCopy completionHandler:0];
   }
 }
 
-- (void)translationAlertController:(id)a3 validateTargetLocale:(id)a4 completionHandler:(id)a5
+- (void)translationAlertController:(id)controller validateTargetLocale:(id)locale completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  localeCopy = locale;
   WeakRetained = objc_loadWeakRetained(&self->_translationContext);
-  [WeakRetained validateTargetLocale:v8 completionHandler:v7];
+  [WeakRetained validateTargetLocale:localeCopy completionHandler:handlerCopy];
 }
 
 - (_SFTranslationTargetLocaleAlertControllerDelegate)delegate

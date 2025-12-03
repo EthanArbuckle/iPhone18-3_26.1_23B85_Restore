@@ -1,35 +1,35 @@
 @interface STDowntimeConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDowntimeState:(id)a3;
-- (STDowntimeConfiguration)initWithCurrentState:(int64_t)a3 currentDate:(id)a4 nextState:(int64_t)a5 nextStateChangeDate:(id)a6 calendar:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDowntimeState:(id)state;
+- (STDowntimeConfiguration)initWithCurrentState:(int64_t)state currentDate:(id)date nextState:(int64_t)nextState nextStateChangeDate:(id)changeDate calendar:(id)calendar;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STDowntimeConfiguration
 
-- (STDowntimeConfiguration)initWithCurrentState:(int64_t)a3 currentDate:(id)a4 nextState:(int64_t)a5 nextStateChangeDate:(id)a6 calendar:(id)a7
+- (STDowntimeConfiguration)initWithCurrentState:(int64_t)state currentDate:(id)date nextState:(int64_t)nextState nextStateChangeDate:(id)changeDate calendar:(id)calendar
 {
   v22.receiver = self;
   v22.super_class = STDowntimeConfiguration;
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
+  calendarCopy = calendar;
+  changeDateCopy = changeDate;
+  dateCopy = date;
   v14 = [(STDowntimeConfiguration *)&v22 init];
-  v14->_currentState = a3;
-  v15 = [v13 copy];
+  v14->_currentState = state;
+  v15 = [dateCopy copy];
 
   currentDate = v14->_currentDate;
   v14->_currentDate = v15;
 
-  v14->_nextState = a5;
-  v17 = [v12 copy];
+  v14->_nextState = nextState;
+  v17 = [changeDateCopy copy];
 
   nextStateChangeDate = v14->_nextStateChangeDate;
   v14->_nextStateChangeDate = v17;
 
-  v19 = [v11 copy];
+  v19 = [calendarCopy copy];
   calendar = v14->_calendar;
   v14->_calendar = v19;
 
@@ -62,16 +62,16 @@
     v8 = off_1E7CE7630[v7];
   }
 
-  v9 = [(STDowntimeConfiguration *)self currentDate];
-  v10 = [(STDowntimeConfiguration *)self nextStateChangeDate];
-  v11 = [(STDowntimeConfiguration *)self calendar];
-  v12 = [v11 calendarIdentifier];
-  v13 = [v3 stringWithFormat:@"<%@: %p { Current: %@, Next: %@, CurrentDate: %@, NextDate: %@, Calendar: %@ }>", v4, self, v6, v8, v9, v10, v12];
+  currentDate = [(STDowntimeConfiguration *)self currentDate];
+  nextStateChangeDate = [(STDowntimeConfiguration *)self nextStateChangeDate];
+  calendar = [(STDowntimeConfiguration *)self calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  v13 = [v3 stringWithFormat:@"<%@: %p { Current: %@, Next: %@, CurrentDate: %@, NextDate: %@, Calendar: %@ }>", v4, self, v6, v8, currentDate, nextStateChangeDate, calendarIdentifier];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   currentState = self->_currentState;
@@ -83,10 +83,10 @@
   return [v4 initWithCurrentState:currentState currentDate:currentDate nextState:nextState nextStateChangeDate:nextStateChangeDate calendar:calendar];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -94,31 +94,31 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STDowntimeConfiguration *)self isEqualToDowntimeState:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STDowntimeConfiguration *)self isEqualToDowntimeState:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToDowntimeState:(id)a3
+- (BOOL)isEqualToDowntimeState:(id)state
 {
-  v4 = a3;
-  if (v4 == self)
+  stateCopy = state;
+  if (stateCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    v5 = [(STDowntimeConfiguration *)self currentState];
-    if (v5 == [(STDowntimeConfiguration *)v4 currentState])
+    currentState = [(STDowntimeConfiguration *)self currentState];
+    if (currentState == [(STDowntimeConfiguration *)stateCopy currentState])
     {
-      v6 = [(STDowntimeConfiguration *)self nextState];
-      if (v6 == [(STDowntimeConfiguration *)v4 nextState])
+      nextState = [(STDowntimeConfiguration *)self nextState];
+      if (nextState == [(STDowntimeConfiguration *)stateCopy nextState])
       {
-        v7 = [(STDowntimeConfiguration *)self currentDate];
-        v8 = [(STDowntimeConfiguration *)v4 currentDate];
-        if (![v7 isEqualToDate:v8])
+        currentDate = [(STDowntimeConfiguration *)self currentDate];
+        currentDate2 = [(STDowntimeConfiguration *)stateCopy currentDate];
+        if (![currentDate isEqualToDate:currentDate2])
         {
           v13 = 0;
 LABEL_17:
@@ -126,18 +126,18 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v9 = [(STDowntimeConfiguration *)self nextStateChangeDate];
-        v10 = [(STDowntimeConfiguration *)v4 nextStateChangeDate];
-        if (v9 == v10)
+        nextStateChangeDate = [(STDowntimeConfiguration *)self nextStateChangeDate];
+        nextStateChangeDate2 = [(STDowntimeConfiguration *)stateCopy nextStateChangeDate];
+        if (nextStateChangeDate == nextStateChangeDate2)
         {
           [(STDowntimeConfiguration *)self calendar:v19];
         }
 
         else
         {
-          v11 = [(STDowntimeConfiguration *)self nextStateChangeDate];
-          v12 = [(STDowntimeConfiguration *)v4 nextStateChangeDate];
-          if (![v11 isEqualToDate:v12])
+          nextStateChangeDate3 = [(STDowntimeConfiguration *)self nextStateChangeDate];
+          nextStateChangeDate4 = [(STDowntimeConfiguration *)stateCopy nextStateChangeDate];
+          if (![nextStateChangeDate3 isEqualToDate:nextStateChangeDate4])
           {
             v13 = 0;
 LABEL_15:
@@ -146,17 +146,17 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          [(STDowntimeConfiguration *)self calendar:v12];
+          [(STDowntimeConfiguration *)self calendar:nextStateChangeDate4];
         }
         v14 = ;
-        v15 = [v14 calendarIdentifier];
-        v16 = [(STDowntimeConfiguration *)v4 calendar];
-        v17 = [v16 calendarIdentifier];
-        v13 = [v15 isEqualToString:v17];
+        calendarIdentifier = [v14 calendarIdentifier];
+        calendar = [(STDowntimeConfiguration *)stateCopy calendar];
+        calendarIdentifier2 = [calendar calendarIdentifier];
+        v13 = [calendarIdentifier isEqualToString:calendarIdentifier2];
 
-        v12 = v20;
-        v11 = v22;
-        if (v9 == v10)
+        nextStateChangeDate4 = v20;
+        nextStateChangeDate3 = v22;
+        if (nextStateChangeDate == nextStateChangeDate2)
         {
           goto LABEL_16;
         }
@@ -175,14 +175,14 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(STDowntimeConfiguration *)self currentState];
-  v4 = [(STDowntimeConfiguration *)self nextState]^ v3;
-  v5 = [(STDowntimeConfiguration *)self currentDate];
-  v6 = v4 ^ [v5 hash];
-  v7 = [(STDowntimeConfiguration *)self nextStateChangeDate];
-  v8 = [v7 hash];
-  v9 = [(STDowntimeConfiguration *)self calendar];
-  v10 = v8 ^ [v9 hash];
+  currentState = [(STDowntimeConfiguration *)self currentState];
+  v4 = [(STDowntimeConfiguration *)self nextState]^ currentState;
+  currentDate = [(STDowntimeConfiguration *)self currentDate];
+  v6 = v4 ^ [currentDate hash];
+  nextStateChangeDate = [(STDowntimeConfiguration *)self nextStateChangeDate];
+  v8 = [nextStateChangeDate hash];
+  calendar = [(STDowntimeConfiguration *)self calendar];
+  v10 = v8 ^ [calendar hash];
 
   return v6 ^ v10;
 }

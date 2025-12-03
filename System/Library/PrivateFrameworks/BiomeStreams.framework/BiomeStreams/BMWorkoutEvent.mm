@@ -1,9 +1,9 @@
 @interface BMWorkoutEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMWorkoutEvent)initWithProto:(id)a3;
-- (BMWorkoutEvent)initWithProtoData:(id)a3;
-- (BMWorkoutEvent)initWithStarting:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMWorkoutEvent)initWithProto:(id)proto;
+- (BMWorkoutEvent)initWithProtoData:(id)data;
+- (BMWorkoutEvent)initWithStarting:(BOOL)starting;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,14 +11,14 @@
 
 @implementation BMWorkoutEvent
 
-- (BMWorkoutEvent)initWithStarting:(BOOL)a3
+- (BMWorkoutEvent)initWithStarting:(BOOL)starting
 {
   v5.receiver = self;
   v5.super_class = BMWorkoutEvent;
   result = [(BMEventBase *)&v5 init];
   if (result)
   {
-    result->_starting = a3;
+    result->_starting = starting;
   }
 
   return result;
@@ -33,29 +33,29 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMWorkoutEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMWorkoutEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMWorkoutEvent)initWithProto:(id)a3
+- (BMWorkoutEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -71,30 +71,30 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self = -[BMWorkoutEvent initWithStarting:](self, "initWithStarting:", [v4 starting]);
-  v5 = self;
+  self = -[BMWorkoutEvent initWithStarting:](self, "initWithStarting:", [protoCopy starting]);
+  selfCopy = self;
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
-- (BMWorkoutEvent)initWithProtoData:(id)a3
+- (BMWorkoutEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBWorkoutEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBWorkoutEvent alloc] initWithData:dataCopy];
 
     self = [(BMWorkoutEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -105,17 +105,17 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWorkoutEvent *)self isStarting];
-    v7 = [v5 isStarting];
+    v5 = equalCopy;
+    isStarting = [(BMWorkoutEvent *)self isStarting];
+    isStarting2 = [v5 isStarting];
 
-    v8 = v6 ^ v7 ^ 1;
+    v8 = isStarting ^ isStarting2 ^ 1;
   }
 
   else

@@ -1,46 +1,46 @@
 @interface HMDNetworkRouterFirewallRuleCloudZone
-+ (BOOL)__verifyDataFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 dataKey:(id)a5 dataAssetKey:(id)a6 maxDataSize:(unint64_t)a7 signatureKey:(id)a8 signatureAssetKey:(id)a9 maxSignatureSize:(unint64_t)a10 baseAccessoryIdentifier:(id *)a11 data:(id *)a12 error:(id *)a13;
-+ (BOOL)__verifyDigestDataAgainstSignatureFromRecord:(id)a3 digestData:(id)a4 signatureData:(id)a5 signatureVerificationPublicKeys:(id)a6 error:(id *)a7;
-+ (BOOL)verifyNetworkDeclarationsFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 baseAccessoryIdentifier:(id *)a5 data:(id *)a6 error:(id *)a7;
-+ (BOOL)verifyNetworkDeclarationsFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 error:(id *)a5;
-+ (BOOL)verifyPairedMetadataFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 error:(id *)a5;
-+ (id)__calculateDigestDataFromRecord:(id)a3 dataKey:(id)a4 dataAssetKey:(id)a5 maxDataSize:(unint64_t)a6 error:(id *)a7;
-+ (id)__createBaseAccessoryIdentifierFromRecord:(id)a3 error:(id *)a4;
-+ (id)__getDataFromRecord:(id)a3 dataKey:(id)a4 dataAssetKey:(id)a5 maxDataSize:(unint64_t)a6 error:(id *)a7;
-+ (id)__getSignatureDataFromRecord:(id)a3 signatureKey:(id)a4 signatureAssetKey:(id)a5 maxSignatureSize:(unint64_t)a6 error:(id *)a7;
-+ (unint64_t)__maxSizeFromPreferenceWithKey:(id)a3 defaultValue:(unint64_t)a4;
-- (BOOL)__canRecoverFromError:(id)a3 fetchInfo:(id)a4;
-- (BOOL)__commitLocalChanges:(id)a3 error:(id *)a4;
-- (HMDNetworkRouterFirewallRuleCloudZone)initWithCloudDatabase:(id)a3 state:(id)a4 useAnonymousRequests:(BOOL)a5 watchedRecordIDs:(id)a6 signatureVerificationPublicKeys:(id)a7;
++ (BOOL)__verifyDataFromRecord:(id)record signatureVerificationPublicKeys:(id)keys dataKey:(id)key dataAssetKey:(id)assetKey maxDataSize:(unint64_t)size signatureKey:(id)signatureKey signatureAssetKey:(id)signatureAssetKey maxSignatureSize:(unint64_t)self0 baseAccessoryIdentifier:(id *)self1 data:(id *)self2 error:(id *)self3;
++ (BOOL)__verifyDigestDataAgainstSignatureFromRecord:(id)record digestData:(id)data signatureData:(id)signatureData signatureVerificationPublicKeys:(id)keys error:(id *)error;
++ (BOOL)verifyNetworkDeclarationsFromRecord:(id)record signatureVerificationPublicKeys:(id)keys baseAccessoryIdentifier:(id *)identifier data:(id *)data error:(id *)error;
++ (BOOL)verifyNetworkDeclarationsFromRecord:(id)record signatureVerificationPublicKeys:(id)keys error:(id *)error;
++ (BOOL)verifyPairedMetadataFromRecord:(id)record signatureVerificationPublicKeys:(id)keys error:(id *)error;
++ (id)__calculateDigestDataFromRecord:(id)record dataKey:(id)key dataAssetKey:(id)assetKey maxDataSize:(unint64_t)size error:(id *)error;
++ (id)__createBaseAccessoryIdentifierFromRecord:(id)record error:(id *)error;
++ (id)__getDataFromRecord:(id)record dataKey:(id)key dataAssetKey:(id)assetKey maxDataSize:(unint64_t)size error:(id *)error;
++ (id)__getSignatureDataFromRecord:(id)record signatureKey:(id)key signatureAssetKey:(id)assetKey maxSignatureSize:(unint64_t)size error:(id *)error;
++ (unint64_t)__maxSizeFromPreferenceWithKey:(id)key defaultValue:(unint64_t)value;
+- (BOOL)__canRecoverFromError:(id)error fetchInfo:(id)info;
+- (BOOL)__commitLocalChanges:(id)changes error:(id *)error;
+- (HMDNetworkRouterFirewallRuleCloudZone)initWithCloudDatabase:(id)database state:(id)state useAnonymousRequests:(BOOL)requests watchedRecordIDs:(id)ds signatureVerificationPublicKeys:(id)keys;
 - (NSMutableSet)uncommittedModifiedRecordIDsFromLastPull;
 - (NSSet)modifiedRecordIDsFromLastPull;
 - (id)attributeDescriptions;
-- (id)decodeModelFrom:(id)a3 recordSource:(unint64_t)a4 error:(id *)a5;
-- (id)fetchChangesWithToken:(id)a3 options:(id)a4;
-- (void)__fetchZoneChangesWithFetchInfo:(id)a3;
+- (id)decodeModelFrom:(id)from recordSource:(unint64_t)source error:(id *)error;
+- (id)fetchChangesWithToken:(id)token options:(id)options;
+- (void)__fetchZoneChangesWithFetchInfo:(id)info;
 - (void)__finalizeUpdatedRecordIDs;
-- (void)__noteUpdatedRecordID:(id)a3;
-- (void)__recordChanged:(id)a3 fetchInfo:(id)a4;
-- (void)__recordDeleted:(id)a3 recordType:(id)a4 fetchInfo:(id)a5;
-- (void)__retryFetchWithFetchInfo:(id)a3;
-- (void)__zoneChangeTokensUpdated:(id)a3 fetchInfo:(id)a4;
-- (void)__zoneChangesCompleted:(id)a3 fetchInfo:(id)a4;
-- (void)setModifiedRecordIDsFromLastPull:(id)a3;
-- (void)setUncommittedModifiedRecordIDsFromLastPull:(id)a3;
-- (void)startUpWithLocalZone:(id)a3;
+- (void)__noteUpdatedRecordID:(id)d;
+- (void)__recordChanged:(id)changed fetchInfo:(id)info;
+- (void)__recordDeleted:(id)deleted recordType:(id)type fetchInfo:(id)info;
+- (void)__retryFetchWithFetchInfo:(id)info;
+- (void)__zoneChangeTokensUpdated:(id)updated fetchInfo:(id)info;
+- (void)__zoneChangesCompleted:(id)completed fetchInfo:(id)info;
+- (void)setModifiedRecordIDsFromLastPull:(id)pull;
+- (void)setUncommittedModifiedRecordIDsFromLastPull:(id)pull;
+- (void)startUpWithLocalZone:(id)zone;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleCloudZone
 
-- (id)decodeModelFrom:(id)a3 recordSource:(unint64_t)a4 error:(id *)a5
+- (id)decodeModelFrom:(id)from recordSource:(unint64_t)source error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  fromCopy = from;
   v8 = objc_opt_class();
-  v9 = [(HMDNetworkRouterFirewallRuleCloudZone *)self signatureVerificationPublicKeys];
+  signatureVerificationPublicKeys = [(HMDNetworkRouterFirewallRuleCloudZone *)self signatureVerificationPublicKeys];
   v82 = 0;
   v83 = 0;
-  LODWORD(v8) = [v8 verifyNetworkDeclarationsFromRecord:v7 signatureVerificationPublicKeys:v9 baseAccessoryIdentifier:&v83 data:&v82 error:a5];
+  LODWORD(v8) = [v8 verifyNetworkDeclarationsFromRecord:fromCopy signatureVerificationPublicKeys:signatureVerificationPublicKeys baseAccessoryIdentifier:&v83 data:&v82 error:error];
   v10 = v83;
   v11 = v82;
 
@@ -53,30 +53,30 @@
     {
       HMFGetLogIdentifier();
       v16 = v65 = v10;
-      [v7 recordID];
-      v72 = v7;
+      [fromCopy recordID];
+      v72 = fromCopy;
       v17 = v76 = v11;
-      v18 = [v17 zoneID];
-      [v18 zoneName];
-      v20 = v19 = a5;
+      zoneID = [v17 zoneID];
+      [zoneID zoneName];
+      v20 = v19 = error;
       [v72 recordID];
       v21 = v68 = v13;
-      v22 = [v21 recordName];
+      recordName = [v21 recordName];
       v23 = *v19;
       *buf = 138544130;
       v85 = v16;
       v86 = 2112;
       v87 = v20;
       v88 = 2112;
-      v89 = v22;
+      v89 = recordName;
       v90 = 2112;
       v91 = v23;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Signature verification of fetched network declarations failed for record %@/%@ with error %@", buf, 0x2Au);
 
       v13 = v68;
-      a5 = v19;
+      error = v19;
 
-      v7 = v72;
+      fromCopy = v72;
       v11 = v76;
 
       v10 = v65;
@@ -85,11 +85,11 @@
     objc_autoreleasePoolPop(v13);
 LABEL_7:
     v24 = objc_opt_class();
-    v25 = [(HMDNetworkRouterFirewallRuleCloudZone *)self signatureVerificationPublicKeys];
-    v26 = [objc_opt_class() __maxSizeForCKRecordPairedMetadata];
+    signatureVerificationPublicKeys2 = [(HMDNetworkRouterFirewallRuleCloudZone *)self signatureVerificationPublicKeys];
+    __maxSizeForCKRecordPairedMetadata = [objc_opt_class() __maxSizeForCKRecordPairedMetadata];
     v80 = 0;
     v81 = v10;
-    LODWORD(v24) = [v24 __verifyDataFromRecord:v7 signatureVerificationPublicKeys:v25 dataKey:@"CD_pairedMetadata" dataAssetKey:@"CD_pairedMetadata_ckAsset" maxDataSize:v26 signatureKey:@"CD_pairedMetadataSignature" signatureAssetKey:@"CD_pairedMetadataSignature_ckAsset" maxSignatureSize:objc_msgSend(objc_opt_class() baseAccessoryIdentifier:"__maxSizeForCKRecordPairedMetadataSignature") data:&v81 error:{&v80, a5}];
+    LODWORD(v24) = [v24 __verifyDataFromRecord:fromCopy signatureVerificationPublicKeys:signatureVerificationPublicKeys2 dataKey:@"CD_pairedMetadata" dataAssetKey:@"CD_pairedMetadata_ckAsset" maxDataSize:__maxSizeForCKRecordPairedMetadata signatureKey:@"CD_pairedMetadataSignature" signatureAssetKey:@"CD_pairedMetadataSignature_ckAsset" maxSignatureSize:objc_msgSend(objc_opt_class() baseAccessoryIdentifier:"__maxSizeForCKRecordPairedMetadataSignature") data:&v81 error:{&v80, error}];
     v27 = v81;
 
     v28 = v80;
@@ -105,25 +105,25 @@ LABEL_7:
         {
           HMFGetLogIdentifier();
           v55 = v79 = v11;
-          [v7 recordID];
+          [fromCopy recordID];
           v56 = v67 = v52;
           [v56 zoneID];
           v75 = v27;
-          v58 = v57 = v7;
-          v59 = [v58 zoneName];
+          v58 = v57 = fromCopy;
+          zoneName = [v58 zoneName];
           [v57 recordID];
-          v60 = v71 = a5;
-          v61 = [v60 recordName];
+          v60 = v71 = error;
+          recordName2 = [v60 recordName];
           *buf = 138543874;
           v85 = v55;
           v86 = 2112;
-          v87 = v59;
+          v87 = zoneName;
           v88 = 2112;
-          v89 = v61;
+          v89 = recordName2;
           _os_log_impl(&dword_229538000, v54, OS_LOG_TYPE_ERROR, "%{public}@Fetched Paired metadata failed to parse for record %@/%@", buf, 0x20u);
 
-          a5 = v71;
-          v7 = v57;
+          error = v71;
+          fromCopy = v57;
           v27 = v75;
 
           v52 = v67;
@@ -131,10 +131,10 @@ LABEL_7:
         }
 
         objc_autoreleasePoolPop(v52);
-        if (a5)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-          *a5 = v41 = 0;
+          *error = v41 = 0;
           goto LABEL_24;
         }
 
@@ -153,14 +153,14 @@ LABEL_23:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         v33 = HMFGetLogIdentifier();
-        v66 = [v7 recordID];
-        v64 = [v66 zoneID];
-        [v64 zoneName];
+        recordID = [fromCopy recordID];
+        zoneID2 = [recordID zoneID];
+        [zoneID2 zoneName];
         v34 = v69 = v30;
-        v35 = [v7 recordID];
-        [v35 recordName];
+        recordID2 = [fromCopy recordID];
+        [recordID2 recordName];
         v36 = v73 = v27;
-        v37 = *a5;
+        v37 = *error;
         *buf = 138544130;
         v85 = v33;
         v86 = 2112;
@@ -182,9 +182,9 @@ LABEL_23:
     if (v11 | v28)
     {
       v38 = [HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel alloc];
-      v39 = [(HMBCloudZone *)self cloudZoneID];
-      v40 = [v7 recordID];
-      v41 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)v38 initWithCloudZoneID:v39 recordID:v40 networkDeclarationsData:v11 pairedMetadataData:v28];
+      cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+      recordID3 = [fromCopy recordID];
+      v41 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel *)v38 initWithCloudZoneID:cloudZoneID recordID:recordID3 networkDeclarationsData:v11 pairedMetadataData:v28];
 
 LABEL_24:
       goto LABEL_25;
@@ -206,35 +206,35 @@ LABEL_24:
   if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
   {
     v45 = HMFGetLogIdentifier();
-    [v7 recordID];
+    [fromCopy recordID];
     v46 = v74 = v42;
     [v46 zoneID];
-    v70 = a5;
+    errorCopy = error;
     v47 = v78 = v11;
     [v47 zoneName];
-    v49 = v48 = v7;
-    v50 = [v48 recordID];
-    v51 = [v50 recordName];
+    v49 = v48 = fromCopy;
+    recordID4 = [v48 recordID];
+    recordName3 = [recordID4 recordName];
     *buf = 138543874;
     v85 = v45;
     v86 = 2112;
     v87 = v49;
     v88 = 2112;
-    v89 = v51;
+    v89 = recordName3;
     _os_log_impl(&dword_229538000, v44, OS_LOG_TYPE_ERROR, "%{public}@Fetched network declarations failed to parse for record %@/%@", buf, 0x20u);
 
-    v7 = v48;
+    fromCopy = v48;
     v11 = v78;
-    a5 = v70;
+    error = errorCopy;
 
     v42 = v74;
   }
 
   objc_autoreleasePoolPop(v42);
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-    *a5 = v41 = 0;
+    *error = v41 = 0;
   }
 
   else
@@ -250,57 +250,57 @@ LABEL_25:
   return v41;
 }
 
-+ (BOOL)verifyPairedMetadataFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 error:(id *)a5
++ (BOOL)verifyPairedMetadataFromRecord:(id)record signatureVerificationPublicKeys:(id)keys error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  keysCopy = keys;
+  recordCopy = record;
   v11 = 0;
   v12 = 0;
-  LOBYTE(a5) = [a1 __verifyDataFromRecord:v9 signatureVerificationPublicKeys:v8 dataKey:@"CD_pairedMetadata" dataAssetKey:@"CD_pairedMetadata_ckAsset" maxDataSize:objc_msgSend(a1 signatureKey:"__maxSizeForCKRecordPairedMetadata") signatureAssetKey:@"CD_pairedMetadataSignature" maxSignatureSize:@"CD_pairedMetadataSignature_ckAsset" baseAccessoryIdentifier:objc_msgSend(a1 data:"__maxSizeForCKRecordPairedMetadataSignature") error:{&v12, &v11, a5}];
+  LOBYTE(error) = [self __verifyDataFromRecord:recordCopy signatureVerificationPublicKeys:keysCopy dataKey:@"CD_pairedMetadata" dataAssetKey:@"CD_pairedMetadata_ckAsset" maxDataSize:objc_msgSend(self signatureKey:"__maxSizeForCKRecordPairedMetadata") signatureAssetKey:@"CD_pairedMetadataSignature" maxSignatureSize:@"CD_pairedMetadataSignature_ckAsset" baseAccessoryIdentifier:objc_msgSend(self data:"__maxSizeForCKRecordPairedMetadataSignature") error:{&v12, &v11, error}];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)verifyNetworkDeclarationsFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 error:(id *)a5
++ (BOOL)verifyNetworkDeclarationsFromRecord:(id)record signatureVerificationPublicKeys:(id)keys error:(id *)error
 {
   v7 = 0;
   v8 = 0;
-  v5 = [a1 verifyNetworkDeclarationsFromRecord:a3 signatureVerificationPublicKeys:a4 baseAccessoryIdentifier:&v8 data:&v7 error:a5];
+  v5 = [self verifyNetworkDeclarationsFromRecord:record signatureVerificationPublicKeys:keys baseAccessoryIdentifier:&v8 data:&v7 error:error];
 
   return v5;
 }
 
-+ (BOOL)verifyNetworkDeclarationsFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 baseAccessoryIdentifier:(id *)a5 data:(id *)a6 error:(id *)a7
++ (BOOL)verifyNetworkDeclarationsFromRecord:(id)record signatureVerificationPublicKeys:(id)keys baseAccessoryIdentifier:(id *)identifier data:(id *)data error:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
-  LOBYTE(a7) = [a1 __verifyDataFromRecord:v13 signatureVerificationPublicKeys:v12 dataKey:@"CD_networkDeclarations" dataAssetKey:@"CD_networkDeclarations_ckAsset" maxDataSize:objc_msgSend(a1 signatureKey:"__maxSizeForCKRecordNetworkDeclarations") signatureAssetKey:@"CD_networkDeclarationsSignature" maxSignatureSize:@"CD_networkDeclarationsSignature_ckAsset" baseAccessoryIdentifier:objc_msgSend(a1 data:"__maxSizeForCKRecordNetworkDeclarationsSignature") error:{a5, a6, a7}];
+  keysCopy = keys;
+  recordCopy = record;
+  LOBYTE(error) = [self __verifyDataFromRecord:recordCopy signatureVerificationPublicKeys:keysCopy dataKey:@"CD_networkDeclarations" dataAssetKey:@"CD_networkDeclarations_ckAsset" maxDataSize:objc_msgSend(self signatureKey:"__maxSizeForCKRecordNetworkDeclarations") signatureAssetKey:@"CD_networkDeclarationsSignature" maxSignatureSize:@"CD_networkDeclarationsSignature_ckAsset" baseAccessoryIdentifier:objc_msgSend(self data:"__maxSizeForCKRecordNetworkDeclarationsSignature") error:{identifier, data, error}];
 
-  return a7;
+  return error;
 }
 
-+ (BOOL)__verifyDataFromRecord:(id)a3 signatureVerificationPublicKeys:(id)a4 dataKey:(id)a5 dataAssetKey:(id)a6 maxDataSize:(unint64_t)a7 signatureKey:(id)a8 signatureAssetKey:(id)a9 maxSignatureSize:(unint64_t)a10 baseAccessoryIdentifier:(id *)a11 data:(id *)a12 error:(id *)a13
++ (BOOL)__verifyDataFromRecord:(id)record signatureVerificationPublicKeys:(id)keys dataKey:(id)key dataAssetKey:(id)assetKey maxDataSize:(unint64_t)size signatureKey:(id)signatureKey signatureAssetKey:(id)signatureAssetKey maxSignatureSize:(unint64_t)self0 baseAccessoryIdentifier:(id *)self1 data:(id *)self2 error:(id *)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  v23 = a9;
-  v24 = [a1 __createBaseAccessoryIdentifierFromRecord:v18 error:a13];
+  recordCopy = record;
+  keysCopy = keys;
+  keyCopy = key;
+  assetKeyCopy = assetKey;
+  signatureKeyCopy = signatureKey;
+  signatureAssetKeyCopy = signatureAssetKey;
+  v24 = [self __createBaseAccessoryIdentifierFromRecord:recordCopy error:error];
   if (v24)
   {
-    v33 = v23;
-    v25 = v20;
-    v26 = [a1 __calculateDigestDataFromRecord:v18 dataKey:v20 dataAssetKey:v21 maxDataSize:a7 error:a13];
+    v33 = signatureAssetKeyCopy;
+    v25 = keyCopy;
+    v26 = [self __calculateDigestDataFromRecord:recordCopy dataKey:keyCopy dataAssetKey:assetKeyCopy maxDataSize:size error:error];
     if (v26)
     {
-      v32 = v19;
-      v27 = [a1 __getSignatureDataFromRecord:v18 signatureKey:v22 signatureAssetKey:v33 maxSignatureSize:a10 error:a13];
-      if (v27 && [a1 __verifyDigestDataAgainstSignatureFromRecord:v18 digestData:v26 signatureData:v27 signatureVerificationPublicKeys:v32 error:a13] && (objc_msgSend(a1, "__getDataFromRecord:dataKey:dataAssetKey:maxDataSize:error:", v18, v20, v21, a7, a13), v28 = objc_claimAutoreleasedReturnValue(), (*a12 = v28) != 0))
+      v32 = keysCopy;
+      v27 = [self __getSignatureDataFromRecord:recordCopy signatureKey:signatureKeyCopy signatureAssetKey:v33 maxSignatureSize:signatureSize error:error];
+      if (v27 && [self __verifyDigestDataAgainstSignatureFromRecord:recordCopy digestData:v26 signatureData:v27 signatureVerificationPublicKeys:v32 error:error] && (objc_msgSend(self, "__getDataFromRecord:dataKey:dataAssetKey:maxDataSize:error:", recordCopy, keyCopy, assetKeyCopy, size, error), v28 = objc_claimAutoreleasedReturnValue(), (*data = v28) != 0))
       {
         v29 = v24;
-        *a11 = v24;
+        *identifier = v24;
         v30 = 1;
       }
 
@@ -309,7 +309,7 @@ LABEL_25:
         v30 = 0;
       }
 
-      v19 = v32;
+      keysCopy = v32;
     }
 
     else
@@ -317,43 +317,43 @@ LABEL_25:
       v30 = 0;
     }
 
-    v23 = v33;
+    signatureAssetKeyCopy = v33;
   }
 
   else
   {
     v30 = 0;
-    v25 = v20;
+    v25 = keyCopy;
   }
 
   return v30;
 }
 
-+ (id)__getDataFromRecord:(id)a3 dataKey:(id)a4 dataAssetKey:(id)a5 maxDataSize:(unint64_t)a6 error:(id *)a7
++ (id)__getDataFromRecord:(id)record dataKey:(id)key dataAssetKey:(id)assetKey maxDataSize:(unint64_t)size error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v12 || (readDataFromCKRecordOptionalAssetField(v10), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  recordCopy = record;
+  keyCopy = key;
+  assetKeyCopy = assetKey;
+  if (!assetKeyCopy || (readDataFromCKRecordOptionalAssetField(recordCopy), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v13 = dataFromCKRecordRequiredField(v10, v11, a7);
+    v13 = dataFromCKRecordRequiredField(recordCopy, keyCopy, error);
   }
 
   return v13;
 }
 
-+ (BOOL)__verifyDigestDataAgainstSignatureFromRecord:(id)a3 digestData:(id)a4 signatureData:(id)a5 signatureVerificationPublicKeys:(id)a6 error:(id *)a7
++ (BOOL)__verifyDigestDataAgainstSignatureFromRecord:(id)record digestData:(id)data signatureData:(id)signatureData signatureVerificationPublicKeys:(id)keys error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v10 = a4;
-  v11 = a5;
+  recordCopy = record;
+  dataCopy = data;
+  signatureDataCopy = signatureData;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = a6;
-  v13 = [v12 countByEnumeratingWithState:&v34 objects:v43 count:16];
+  keysCopy = keys;
+  v13 = [keysCopy countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v13)
   {
     v14 = v13;
@@ -368,12 +368,12 @@ LABEL_25:
       {
         if (*v35 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keysCopy);
         }
 
         v20 = *(*(&v34 + 1) + 8 * v18);
         *error = 0;
-        v21 = SecKeyVerifySignature(v20, v17, v10, v11, error);
+        v21 = SecKeyVerifySignature(v20, v17, dataCopy, signatureDataCopy, error);
         v15 = *error;
 
         if (v21)
@@ -388,7 +388,7 @@ LABEL_25:
       }
 
       while (v14 != v18);
-      v14 = [v12 countByEnumeratingWithState:&v34 objects:v43 count:16];
+      v14 = [keysCopy countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v14)
       {
         continue;
@@ -404,27 +404,27 @@ LABEL_25:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = a1;
+  selfCopy = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     v26 = HMFGetLogIdentifier();
-    v27 = [v33 recordID];
-    v28 = [v27 hmbDescription];
+    recordID = [recordCopy recordID];
+    hmbDescription = [recordID hmbDescription];
     *error = 138543874;
     *&error[4] = v26;
     v39 = 2112;
-    v40 = v28;
+    v40 = hmbDescription;
     v41 = 2112;
     v42 = v15;
     _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Digest does not match signature on record %@: %@", error, 0x20u);
   }
 
   objc_autoreleasePoolPop(v23);
-  if (a7)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:53];
-    *a7 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -438,9 +438,9 @@ LABEL_17:
   return v22;
 }
 
-+ (id)__getSignatureDataFromRecord:(id)a3 signatureKey:(id)a4 signatureAssetKey:(id)a5 maxSignatureSize:(unint64_t)a6 error:(id *)a7
++ (id)__getSignatureDataFromRecord:(id)record signatureKey:(id)key signatureAssetKey:(id)assetKey maxSignatureSize:(unint64_t)size error:(id *)error
 {
-  v8 = stringFromCKRecord(a3, a4, a5, a6, a7);
+  v8 = stringFromCKRecord(record, key, assetKey, size, error);
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v8 options:0];
@@ -450,9 +450,9 @@ LABEL_17:
       v11 = v9;
     }
 
-    else if (a7)
+    else if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:53];
+      *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:53];
     }
   }
 
@@ -464,9 +464,9 @@ LABEL_17:
   return v10;
 }
 
-+ (id)__calculateDigestDataFromRecord:(id)a3 dataKey:(id)a4 dataAssetKey:(id)a5 maxDataSize:(unint64_t)a6 error:(id *)a7
++ (id)__calculateDigestDataFromRecord:(id)record dataKey:(id)key dataAssetKey:(id)assetKey maxDataSize:(unint64_t)size error:(id *)error
 {
-  v7 = MEMORY[0x28223BE20](a1);
+  v7 = MEMORY[0x28223BE20](self);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -547,13 +547,13 @@ LABEL_15:
   v77 = v16;
   v81 = v9;
   v75 = v22;
-  v34 = [v21 recordID];
-  v35 = [v34 zoneID];
-  v36 = [v35 zoneName];
-  v98[0] = v36;
-  v74 = v34;
-  v37 = [v34 recordName];
-  v98[1] = v37;
+  recordID = [v21 recordID];
+  zoneID = [recordID zoneID];
+  zoneName = [zoneID zoneName];
+  v98[0] = zoneName;
+  v74 = recordID;
+  recordName = [recordID recordName];
+  v98[1] = recordName;
   v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v98 count:2];
 
   memset(&c, 0, sizeof(c));
@@ -642,14 +642,14 @@ LABEL_32:
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
     {
       v64 = HMFGetLogIdentifier();
-      v73 = [v21 recordID];
-      v65 = [v73 hmbDescription];
+      recordID2 = [v21 recordID];
+      hmbDescription = [recordID2 hmbDescription];
       [v27 streamError];
       v66 = v79 = v61;
       *v87 = 138543874;
       v88 = v64;
       v89 = 2112;
-      v90 = v65;
+      v90 = hmbDescription;
       v91 = 2112;
       v92 = v66;
       _os_log_impl(&dword_229538000, v63, OS_LOG_TYPE_ERROR, "%{public}@Error reading data from record %@: %@", v87, 0x20u);
@@ -661,7 +661,7 @@ LABEL_32:
     v59 = v81;
     if (v81)
     {
-      v60 = [v27 streamError];
+      streamError = [v27 streamError];
       goto LABEL_44;
     }
 
@@ -698,14 +698,14 @@ LABEL_45:
   {
     HMFGetLogIdentifier();
     v56 = v78 = v53;
-    v57 = [v21 recordID];
-    v58 = [v57 hmbDescription];
+    recordID3 = [v21 recordID];
+    hmbDescription2 = [recordID3 hmbDescription];
     *v87 = 138543874;
     v88 = v56;
     v89 = 2048;
     v90 = v11;
     v91 = 2112;
-    v92 = v58;
+    v92 = hmbDescription2;
     _os_log_impl(&dword_229538000, v55, OS_LOG_TYPE_ERROR, "%{public}@Data size is bigger than maximum %ld bytes on record %@", v87, 0x20u);
 
     v53 = v78;
@@ -719,10 +719,10 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  v60 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+  streamError = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
 LABEL_44:
   v52 = 0;
-  *v59 = v60;
+  *v59 = streamError;
 LABEL_52:
 
 LABEL_53:
@@ -731,47 +731,47 @@ LABEL_53:
   return v52;
 }
 
-+ (id)__createBaseAccessoryIdentifierFromRecord:(id)a3 error:(id *)a4
++ (id)__createBaseAccessoryIdentifierFromRecord:(id)record error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = stringFromCKRecord(v6, @"CD_productGroup", @"CD_productGroup_ckAsset", [a1 __maxSizeForCKRecordString], a4);
+  recordCopy = record;
+  v7 = stringFromCKRecord(recordCopy, @"CD_productGroup", @"CD_productGroup_ckAsset", [self __maxSizeForCKRecordString], error);
   if (!v7)
   {
     v19 = 0;
     goto LABEL_20;
   }
 
-  v8 = stringFromCKRecord(v6, @"CD_productNumber", @"CD_productNumber_ckAsset", [a1 __maxSizeForCKRecordString], a4);
+  v8 = stringFromCKRecord(recordCopy, @"CD_productNumber", @"CD_productNumber_ckAsset", [self __maxSizeForCKRecordString], error);
   if (v8)
   {
-    v34 = a4;
+    errorCopy = error;
     v35 = v8;
     v9 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:v7 productNumber:v8 firmwareVersion:0];
-    v10 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v9 cloudKitZoneName];
-    v11 = [v6 recordID];
-    v12 = [v11 zoneID];
-    v13 = [v12 zoneName];
-    v14 = [v10 isEqualToString:v13];
+    cloudKitZoneName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v9 cloudKitZoneName];
+    recordID = [recordCopy recordID];
+    zoneID = [recordID zoneID];
+    zoneName = [zoneID zoneName];
+    v14 = [cloudKitZoneName isEqualToString:zoneName];
 
     if (v14)
     {
-      v15 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v9 cloudKitRecordName];
-      v16 = [v6 recordID];
-      v17 = [v16 recordName];
-      v18 = [v15 isEqualToString:v17];
+      cloudKitRecordName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v9 cloudKitRecordName];
+      recordID2 = [recordCopy recordID];
+      recordName = [recordID2 recordName];
+      v18 = [cloudKitRecordName isEqualToString:recordName];
 
       if ((v18 & 1) == 0)
       {
         v26 = objc_autoreleasePoolPush();
-        v27 = a1;
+        selfCopy = self;
         v28 = HMFGetOSLogHandle();
         v8 = v35;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           v29 = HMFGetLogIdentifier();
-          v30 = [v6 recordID];
-          v31 = [v30 hmbDescription];
+          recordID3 = [recordCopy recordID];
+          hmbDescription = [recordID3 hmbDescription];
           *buf = 138544130;
           v37 = v29;
           v38 = 2112;
@@ -779,15 +779,15 @@ LABEL_53:
           v40 = 2112;
           v41 = v35;
           v42 = 2112;
-          v43 = v31;
+          v43 = hmbDescription;
           _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_ERROR, "%{public}@'%@' field value '%@' does not match record name on %@", buf, 0x2Au);
         }
 
         objc_autoreleasePoolPop(v26);
-        if (v34)
+        if (errorCopy)
         {
           [MEMORY[0x277CCA9B8] hmErrorWithCode:53];
-          *v34 = v19 = 0;
+          *errorCopy = v19 = 0;
         }
 
         else
@@ -804,13 +804,13 @@ LABEL_53:
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = a1;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v23 = HMFGetLogIdentifier();
-        v24 = [v6 recordID];
-        v25 = [v24 hmbDescription];
+        recordID4 = [recordCopy recordID];
+        hmbDescription2 = [recordID4 hmbDescription];
         *buf = 138544130;
         v37 = v23;
         v38 = 2112;
@@ -818,15 +818,15 @@ LABEL_53:
         v40 = 2112;
         v41 = v7;
         v42 = 2112;
-        v43 = v25;
+        v43 = hmbDescription2;
         _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@'%@' field value '%@' does not match zone name on %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v20);
-      if (v34)
+      if (errorCopy)
       {
         [MEMORY[0x277CCA9B8] hmErrorWithCode:53];
-        *v34 = v19 = 0;
+        *errorCopy = v19 = 0;
       }
 
       else
@@ -850,36 +850,36 @@ LABEL_20:
   return v19;
 }
 
-+ (unint64_t)__maxSizeFromPreferenceWithKey:(id)a3 defaultValue:(unint64_t)a4
++ (unint64_t)__maxSizeFromPreferenceWithKey:(id)key defaultValue:(unint64_t)value
 {
-  v5 = a3;
+  keyCopy = key;
   if (isInternalBuild())
   {
-    v6 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v7 = [v6 preferenceForKey:v5];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v7 = [mEMORY[0x277D0F8D0] preferenceForKey:keyCopy];
 
-    v8 = [v7 numberValue];
+    numberValue = [v7 numberValue];
 
-    if (v8)
+    if (numberValue)
     {
-      v9 = [v7 numberValue];
-      a4 = [v9 unsignedIntegerValue];
+      numberValue2 = [v7 numberValue];
+      value = [numberValue2 unsignedIntegerValue];
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (void)__retryFetchWithFetchInfo:(id)a3
+- (void)__retryFetchWithFetchInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 retryIntervalSeconds];
+  infoCopy = info;
+  [infoCopy retryIntervalSeconds];
   v6 = v5;
-  [v4 retryIntervalSeconds];
+  [infoCopy retryIntervalSeconds];
   v8 = dispatch_time(0, (v7 * 1000000000.0));
   v9 = dispatch_get_global_queue(0, 0);
-  v10 = [v4 activity];
+  activity = [infoCopy activity];
   if (v6 <= 0.0)
   {
     v11 = "fetch the next batch of records";
@@ -890,16 +890,16 @@ LABEL_20:
     v11 = "retry the fetch";
   }
 
-  [v4 retryIntervalSeconds];
-  [v10 markWithFormat:@"Will %s in %lu seconds", v11, v12];
+  [infoCopy retryIntervalSeconds];
+  [activity markWithFormat:@"Will %s in %lu seconds", v11, v12];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = HMFGetLogIdentifier();
-    [v4 retryIntervalSeconds];
+    [infoCopy retryIntervalSeconds];
     *buf = 138543874;
     v25 = v16;
     v26 = 2080;
@@ -910,15 +910,15 @@ LABEL_20:
   }
 
   objc_autoreleasePoolPop(v13);
-  [v4 setShouldRetry:0];
-  [v4 setRetryCount:{objc_msgSend(v4, "retryCount") + 1}];
-  objc_initWeak(buf, v14);
+  [infoCopy setShouldRetry:0];
+  [infoCopy setRetryCount:{objc_msgSend(infoCopy, "retryCount") + 1}];
+  objc_initWeak(buf, selfCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___block_invoke;
   block[3] = &unk_278681A08;
-  v21 = v4;
-  v18 = v4;
+  v21 = infoCopy;
+  v18 = infoCopy;
   objc_copyWeak(&v22, buf);
   v23 = v6 > 0.0;
   dispatch_after(v8, v9, block);
@@ -1004,12 +1004,12 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)__canRecoverFromError:(id)a3 fetchInfo:(id)a4
+- (BOOL)__canRecoverFromError:(id)error fetchInfo:(id)info
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hmbIsCKPartialFailureError])
+  errorCopy = error;
+  infoCopy = info;
+  if ([errorCopy hmbIsCKPartialFailureError])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1017,8 +1017,8 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
     v35 = __Block_byref_object_copy__213133;
     v36 = __Block_byref_object_dispose__213134;
     v37 = 0;
-    v8 = [v6 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo___block_invoke;
@@ -1032,7 +1032,7 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
     {
       v11 = v10;
 
-      v6 = v11;
+      errorCopy = v11;
     }
 
     _Block_object_dispose(buf, 8);
@@ -1043,20 +1043,20 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
     }
   }
 
-  if (![v6 hmd_isCKError] || (objc_msgSend(v6, "hmd_isNonRecoverableCKError") & 1) != 0)
+  if (![errorCopy hmd_isCKError] || (objc_msgSend(errorCopy, "hmd_isNonRecoverableCKError") & 1) != 0)
   {
     goto LABEL_7;
   }
 
-  v15 = [v6 code];
-  switch(v15)
+  code = [errorCopy code];
+  switch(code)
   {
     case 21:
-      v26 = [v7 activity];
-      [v26 markWithFormat:@"Change token has expired: %@", v6];
+      activity = [infoCopy activity];
+      [activity markWithFormat:@"Change token has expired: %@", errorCopy];
 
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
@@ -1064,20 +1064,20 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
         *buf = 138543618;
         *&buf[4] = v30;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = errorCopy;
         _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Change token has expired: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v27);
-      [v7 setChangeToken:0];
-      [v7 setShouldRetry:1];
+      [infoCopy setChangeToken:0];
+      [infoCopy setShouldRetry:1];
       goto LABEL_25;
     case 28:
-      v21 = [v7 activity];
-      [v21 markWithFormat:@"Zone was deleted: %@", v6];
+      activity2 = [infoCopy activity];
+      [activity2 markWithFormat:@"Zone was deleted: %@", errorCopy];
 
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
@@ -1085,19 +1085,19 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
         *buf = 138543618;
         *&buf[4] = v25;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = errorCopy;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Zone was deleted: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
-      [(HMBCloudZone *)v23 handleDeletion];
+      [(HMBCloudZone *)selfCopy2 handleDeletion];
       goto LABEL_25;
     case 26:
-      v16 = [v7 activity];
-      [v16 markWithFormat:@"Zone does not exist: %@", v6];
+      activity3 = [infoCopy activity];
+      [activity3 markWithFormat:@"Zone does not exist: %@", errorCopy];
 
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy4 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
@@ -1105,7 +1105,7 @@ void __67__HMDNetworkRouterFirewallRuleCloudZone___retryFetchWithFetchInfo___blo
         *buf = 138543618;
         *&buf[4] = v20;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = errorCopy;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Zone does not exist: %@", buf, 0x16u);
       }
 
@@ -1117,15 +1117,15 @@ LABEL_25:
       goto LABEL_8;
   }
 
-  [v6 hmbCloudKitRetryDelay];
-  [v7 setRetryIntervalSeconds:?];
-  if ([v7 shouldRetry])
+  [errorCopy hmbCloudKitRetryDelay];
+  [infoCopy setRetryIntervalSeconds:?];
+  if ([infoCopy shouldRetry])
   {
-    v31 = [v7 activity];
-    [v31 markWithFormat:@"Ignoring non-fatal error: %@", v6];
+    activity4 = [infoCopy activity];
+    [activity4 markWithFormat:@"Ignoring non-fatal error: %@", errorCopy];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy4 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -1133,7 +1133,7 @@ LABEL_25:
       *buf = 138543618;
       *&buf[4] = v32;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = errorCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Ignoring non-fatal error: %@", buf, 0x16u);
     }
 
@@ -1203,15 +1203,15 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
   }
 }
 
-- (BOOL)__commitLocalChanges:(id)a3 error:(id *)a4
+- (BOOL)__commitLocalChanges:(id)changes error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 activity];
-  [v7 markWithFormat:@"Committing local changes"];
+  changesCopy = changes;
+  activity = [changesCopy activity];
+  [activity markWithFormat:@"Committing local changes"];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1222,23 +1222,23 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v6 mirrorInput];
-  v13 = [v6 options];
-  v14 = [v12 frmSyncCommitWithOptions:v13 error:a4];
+  mirrorInput = [changesCopy mirrorInput];
+  options = [changesCopy options];
+  v14 = [mirrorInput frmSyncCommitWithOptions:options error:error];
 
-  v15 = [v6 activity];
-  v16 = v15;
+  activity2 = [changesCopy activity];
+  v16 = activity2;
   if ((v14 & 1) == 0)
   {
-    [v15 markWithFormat:@"Failed to commit: %@", *a4];
+    [activity2 markWithFormat:@"Failed to commit: %@", *error];
 
     v37 = objc_autoreleasePoolPush();
-    v38 = v9;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
       v40 = HMFGetLogIdentifier();
-      v41 = *a4;
+      v41 = *error;
       *buf = 138543618;
       v60 = v40;
       v61 = 2112;
@@ -1251,10 +1251,10 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
     goto LABEL_21;
   }
 
-  [v15 markWithFormat:@"Committed successfully"];
+  [activity2 markWithFormat:@"Committed successfully"];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v9;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -1265,17 +1265,17 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
   }
 
   objc_autoreleasePoolPop(v17);
-  v21 = [v6 originalChangeToken];
-  v22 = [v6 changeToken];
+  originalChangeToken = [changesCopy originalChangeToken];
+  changeToken = [changesCopy changeToken];
   v23 = HMFEqualObjects();
 
-  v24 = [v6 activity];
-  v25 = [v6 changeToken];
-  v26 = [v25 hmbDescription];
-  v27 = v26;
+  activity3 = [changesCopy activity];
+  changeToken2 = [changesCopy changeToken];
+  hmbDescription = [changeToken2 hmbDescription];
+  v27 = hmbDescription;
   if (!v23)
   {
-    [v24 markWithFormat:@"Updating change token: %@", v26];
+    [activity3 markWithFormat:@"Updating change token: %@", hmbDescription];
 
     v43 = objc_autoreleasePoolPush();
     v44 = v18;
@@ -1283,25 +1283,25 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
     if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
     {
       v46 = HMFGetLogIdentifier();
-      v47 = [v6 changeToken];
-      v48 = [v47 hmbDescription];
+      changeToken3 = [changesCopy changeToken];
+      hmbDescription2 = [changeToken3 hmbDescription];
       *buf = 138543618;
       v60 = v46;
       v61 = 2112;
-      v62 = v48;
+      v62 = hmbDescription2;
       _os_log_impl(&dword_229538000, v45, OS_LOG_TYPE_INFO, "%{public}@Updating change token: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v43);
-    v49 = [(HMBCloudZone *)v44 cloudDatabase];
-    v50 = [v6 changeToken];
-    v51 = [(HMBCloudZone *)v44 cloudZoneID];
-    [v49 updateServerChangeToken:v50 forZoneWithID:v51];
+    cloudDatabase = [(HMBCloudZone *)v44 cloudDatabase];
+    changeToken4 = [changesCopy changeToken];
+    cloudZoneID = [(HMBCloudZone *)v44 cloudZoneID];
+    [cloudDatabase updateServerChangeToken:changeToken4 forZoneWithID:cloudZoneID];
 
-    v52 = [v6 activity];
-    v53 = [v6 changeToken];
-    v54 = [v53 hmbDescription];
-    [v52 markWithFormat:@"Updated change token successfully: %@", v54];
+    activity4 = [changesCopy activity];
+    changeToken5 = [changesCopy changeToken];
+    hmbDescription3 = [changeToken5 hmbDescription];
+    [activity4 markWithFormat:@"Updated change token successfully: %@", hmbDescription3];
 
     v28 = objc_autoreleasePoolPush();
     v55 = v44;
@@ -1312,19 +1312,19 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
     }
 
     v31 = HMFGetLogIdentifier();
-    v32 = [v6 changeToken];
-    v33 = [v32 hmbDescription];
+    changeToken6 = [changesCopy changeToken];
+    hmbDescription4 = [changeToken6 hmbDescription];
     *buf = 138543618;
     v60 = v31;
     v61 = 2112;
-    v62 = v33;
+    v62 = hmbDescription4;
     v34 = "%{public}@Updated change token successfully: %@";
     v35 = v30;
     v36 = OS_LOG_TYPE_INFO;
     goto LABEL_16;
   }
 
-  [v24 markWithFormat:@"Change token does not need to be updated: %@", v26];
+  [activity3 markWithFormat:@"Change token does not need to be updated: %@", hmbDescription];
 
   v28 = objc_autoreleasePoolPush();
   v29 = v18;
@@ -1332,12 +1332,12 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___canRecoverFromError_fetchInfo
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v31 = HMFGetLogIdentifier();
-    v32 = [v6 changeToken];
-    v33 = [v32 hmbDescription];
+    changeToken6 = [changesCopy changeToken];
+    hmbDescription4 = [changeToken6 hmbDescription];
     *buf = 138543618;
     v60 = v31;
     v61 = 2112;
-    v62 = v33;
+    v62 = hmbDescription4;
     v34 = "%{public}@Change token does not need to be updated: %@";
     v35 = v30;
     v36 = OS_LOG_TYPE_DEFAULT;
@@ -1348,19 +1348,19 @@ LABEL_16:
 LABEL_17:
 
   objc_autoreleasePoolPop(v28);
-  if (![v6 shouldRetry])
+  if (![changesCopy shouldRetry])
   {
 LABEL_20:
     LOBYTE(v42) = 1;
     goto LABEL_21;
   }
 
-  v56 = [(HMBCloudZone *)v18 localZone];
-  v42 = [v56 createMirrorInputWithError:a4];
+  localZone = [(HMBCloudZone *)v18 localZone];
+  v42 = [localZone createMirrorInputWithError:error];
 
   if (v42)
   {
-    [v6 setMirrorInput:v42];
+    [changesCopy setMirrorInput:v42];
 
     goto LABEL_20;
   }
@@ -1371,19 +1371,19 @@ LABEL_21:
   return v42;
 }
 
-- (void)__zoneChangesCompleted:(id)a3 fetchInfo:(id)a4
+- (void)__zoneChangesCompleted:(id)completed fetchInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 activity];
-  v9 = v8;
-  if (v6)
+  completedCopy = completed;
+  infoCopy = info;
+  activity = [infoCopy activity];
+  v9 = activity;
+  if (completedCopy)
   {
-    [v8 markWithFormat:@"Zone change operation completed unsuccessfully: %@", v6];
+    [activity markWithFormat:@"Zone change operation completed unsuccessfully: %@", completedCopy];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1391,21 +1391,21 @@ LABEL_21:
       *buf = 138543618;
       v26 = v13;
       v27 = 2112;
-      v28 = v6;
+      v28 = completedCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Zone change operation completed unsuccessfully: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = v6;
-    [(HMDNetworkRouterFirewallRuleCloudZone *)v11 __finalizeUpdatedRecordIDs];
+    v14 = completedCopy;
+    [(HMDNetworkRouterFirewallRuleCloudZone *)selfCopy __finalizeUpdatedRecordIDs];
   }
 
   else
   {
-    [v8 markWithFormat:@"Zone change operation completed successfully"];
+    [activity markWithFormat:@"Zone change operation completed successfully"];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -1417,7 +1417,7 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v15);
     v24 = 0;
-    v19 = [(HMDNetworkRouterFirewallRuleCloudZone *)v16 __commitLocalChanges:v7 error:&v24];
+    v19 = [(HMDNetworkRouterFirewallRuleCloudZone *)selfCopy2 __commitLocalChanges:infoCopy error:&v24];
     v20 = v24;
     v21 = v20;
     v14 = 0;
@@ -1426,29 +1426,29 @@ LABEL_21:
       v14 = v20;
     }
 
-    [(HMDNetworkRouterFirewallRuleCloudZone *)v16 __finalizeUpdatedRecordIDs];
+    [(HMDNetworkRouterFirewallRuleCloudZone *)selfCopy2 __finalizeUpdatedRecordIDs];
     if (!v14)
     {
       goto LABEL_11;
     }
   }
 
-  if (![(HMDNetworkRouterFirewallRuleCloudZone *)self __canRecoverFromError:v14 fetchInfo:v7])
+  if (![(HMDNetworkRouterFirewallRuleCloudZone *)self __canRecoverFromError:v14 fetchInfo:infoCopy])
   {
-    [v7 finishWithError:v14];
+    [infoCopy finishWithError:v14];
     goto LABEL_15;
   }
 
 LABEL_11:
-  if ([v7 shouldRetry])
+  if ([infoCopy shouldRetry])
   {
-    [(HMDNetworkRouterFirewallRuleCloudZone *)self __retryFetchWithFetchInfo:v7];
+    [(HMDNetworkRouterFirewallRuleCloudZone *)self __retryFetchWithFetchInfo:infoCopy];
   }
 
   else
   {
-    v22 = [MEMORY[0x277CBEB68] null];
-    [v7 finishWithResult:v22];
+    null = [MEMORY[0x277CBEB68] null];
+    [infoCopy finishWithResult:null];
   }
 
 LABEL_15:
@@ -1456,86 +1456,86 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__zoneChangeTokensUpdated:(id)a3 fetchInfo:(id)a4
+- (void)__zoneChangeTokensUpdated:(id)updated fetchInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 activity];
-  v9 = [v7 changeToken];
-  v10 = [v9 hmbDescription];
-  [v8 markWithFormat:@"Change token updated: %@", v10];
+  updatedCopy = updated;
+  infoCopy = info;
+  activity = [infoCopy activity];
+  changeToken = [infoCopy changeToken];
+  hmbDescription = [changeToken hmbDescription];
+  [activity markWithFormat:@"Change token updated: %@", hmbDescription];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v7 changeToken];
-    v16 = [v15 hmbDescription];
+    changeToken2 = [infoCopy changeToken];
+    hmbDescription2 = [changeToken2 hmbDescription];
     *buf = 138543618;
     v19 = v14;
     v20 = 2112;
-    v21 = v16;
+    v21 = hmbDescription2;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Change token updated: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  [v7 setChangeToken:v6];
+  [infoCopy setChangeToken:updatedCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__recordDeleted:(id)a3 recordType:(id)a4 fetchInfo:(id)a5
+- (void)__recordDeleted:(id)deleted recordType:(id)type fetchInfo:(id)info
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 activity];
-  v12 = [v8 hmbDescription];
-  [v11 markWithFormat:@"Fetched deleted recordID: %@ (%@)", v12, v9];
+  deletedCopy = deleted;
+  typeCopy = type;
+  infoCopy = info;
+  activity = [infoCopy activity];
+  hmbDescription = [deletedCopy hmbDescription];
+  [activity markWithFormat:@"Fetched deleted recordID: %@ (%@)", hmbDescription, typeCopy];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v8 hmbDescription];
+    hmbDescription2 = [deletedCopy hmbDescription];
     *buf = 138543874;
     v37 = v16;
     v38 = 2112;
-    v39 = v17;
+    v39 = hmbDescription2;
     v40 = 2112;
-    v41 = v9;
+    v41 = typeCopy;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Fetched deleted recordID: %@ (%@)", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
   v35 = 0;
-  v18 = [v8 externalID:&v35];
+  v18 = [deletedCopy externalID:&v35];
   v19 = v35;
   if (v18)
   {
-    v20 = [v10 mirrorInput];
+    mirrorInput = [infoCopy mirrorInput];
     v34 = v19;
-    v21 = [v20 stageRemovalForModelWithExternalID:v18 error:&v34];
+    v21 = [mirrorInput stageRemovalForModelWithExternalID:v18 error:&v34];
     v22 = v34;
 
     if (v21)
     {
-      [(HMDNetworkRouterFirewallRuleCloudZone *)v14 __noteUpdatedRecordID:v8];
+      [(HMDNetworkRouterFirewallRuleCloudZone *)selfCopy __noteUpdatedRecordID:deletedCopy];
     }
 
     else
     {
-      v28 = [v10 activity];
-      [v28 markWithFormat:@"Failed to remove model: %@", v22];
+      activity2 = [infoCopy activity];
+      [activity2 markWithFormat:@"Failed to remove model: %@", v22];
 
       v29 = objc_autoreleasePoolPush();
-      v30 = v14;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -1555,11 +1555,11 @@ LABEL_15:
 
   else
   {
-    v23 = [v10 activity];
-    [v23 markWithFormat:@"Failed to determine externalID: %@", v19];
+    activity3 = [infoCopy activity];
+    [activity3 markWithFormat:@"Failed to determine externalID: %@", v19];
 
     v24 = objc_autoreleasePoolPush();
-    v25 = v14;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -1577,76 +1577,76 @@ LABEL_15:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__recordChanged:(id)a3 fetchInfo:(id)a4
+- (void)__recordChanged:(id)changed fetchInfo:(id)info
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordID];
-  v9 = [v7 activity];
-  v10 = [v8 hmbDescription];
-  v11 = [v6 recordType];
-  [v9 markWithFormat:@"Fetched changed record %@ (%@)", v10, v11];
+  changedCopy = changed;
+  infoCopy = info;
+  recordID = [changedCopy recordID];
+  activity = [infoCopy activity];
+  hmbDescription = [recordID hmbDescription];
+  recordType = [changedCopy recordType];
+  [activity markWithFormat:@"Fetched changed record %@ (%@)", hmbDescription, recordType];
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v8 hmbDescription];
-    v17 = [v6 recordType];
+    hmbDescription2 = [recordID hmbDescription];
+    recordType2 = [changedCopy recordType];
     *buf = 138543874;
     v58 = v15;
     v59 = 2112;
-    v60 = v16;
+    v60 = hmbDescription2;
     v61 = 2112;
-    v62 = v17;
+    v62 = recordType2;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Fetched changed record %@ (%@)", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
   v56 = 0;
-  v18 = [(HMDNetworkRouterFirewallRuleCloudZone *)v13 decodeModelFrom:v6 recordSource:4 error:&v56];
+  v18 = [(HMDNetworkRouterFirewallRuleCloudZone *)selfCopy decodeModelFrom:changedCopy recordSource:4 error:&v56];
   v19 = v56;
   v20 = v19;
   if (v18)
   {
     v55 = v19;
-    v21 = [v6 externalID:&v55];
+    v21 = [changedCopy externalID:&v55];
     v22 = v55;
 
     if (v21)
     {
       v54 = v22;
-      v23 = [v6 externalData:&v54];
+      v23 = [changedCopy externalData:&v54];
       v24 = v54;
 
       if (v23)
       {
-        v25 = [v7 mirrorInput];
+        mirrorInput = [infoCopy mirrorInput];
         v53 = v24;
-        v26 = [v25 stageAdditionForModel:v18 externalID:v21 externalData:v23 error:&v53];
+        v26 = [mirrorInput stageAdditionForModel:v18 externalID:v21 externalData:v23 error:&v53];
         v51 = v53;
 
         if (v26)
         {
-          [(HMDNetworkRouterFirewallRuleCloudZone *)v13 __noteUpdatedRecordID:v8];
+          [(HMDNetworkRouterFirewallRuleCloudZone *)selfCopy __noteUpdatedRecordID:recordID];
         }
 
         else
         {
-          v42 = [v7 activity];
-          v43 = [v8 hmbDescription];
-          [v42 markWithFormat:@"Failed to update model for %@: %@", v43, v51];
+          activity2 = [infoCopy activity];
+          hmbDescription3 = [recordID hmbDescription];
+          [activity2 markWithFormat:@"Failed to update model for %@: %@", hmbDescription3, v51];
 
           v44 = objc_autoreleasePoolPush();
-          v45 = v13;
+          v45 = selfCopy;
           v46 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
             v47 = HMFGetLogIdentifier();
-            [v8 hmbDescription];
+            [recordID hmbDescription];
             v48 = v50 = v44;
             *buf = 138543874;
             v58 = v47;
@@ -1667,11 +1667,11 @@ LABEL_15:
 
       else
       {
-        v37 = [v7 activity];
-        [v37 markWithFormat:@"Failed to determine externalData: %@", v24];
+        activity3 = [infoCopy activity];
+        [activity3 markWithFormat:@"Failed to determine externalData: %@", v24];
 
         v38 = objc_autoreleasePoolPush();
-        v39 = v13;
+        v39 = selfCopy;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -1694,11 +1694,11 @@ LABEL_15:
 
     else
     {
-      v32 = [v7 activity];
-      [v32 markWithFormat:@"Failed to determine externalID: %@", v22];
+      activity4 = [infoCopy activity];
+      [activity4 markWithFormat:@"Failed to determine externalID: %@", v22];
 
       v33 = objc_autoreleasePoolPush();
-      v34 = v13;
+      v34 = selfCopy;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -1718,11 +1718,11 @@ LABEL_15:
 
   else
   {
-    v27 = [v7 activity];
-    [v27 markWithFormat:@"Failed to decode model: %@", v20];
+    activity5 = [infoCopy activity];
+    [activity5 markWithFormat:@"Failed to decode model: %@", v20];
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v13;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -1746,17 +1746,17 @@ LABEL_15:
   os_unfair_lock_lock_with_options();
   if (self->_modifiedRecordIDsFromLastPull)
   {
-    v4 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
+    uncommittedModifiedRecordIDsFromLastPull = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
 
-    if (v4)
+    if (uncommittedModifiedRecordIDsFromLastPull)
     {
-      v5 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
-      [v5 unionSet:self->_modifiedRecordIDsFromLastPull];
+      uncommittedModifiedRecordIDsFromLastPull2 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
+      [uncommittedModifiedRecordIDsFromLastPull2 unionSet:self->_modifiedRecordIDsFromLastPull];
     }
   }
 
-  v6 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
-  v7 = [v6 copy];
+  uncommittedModifiedRecordIDsFromLastPull3 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
+  v7 = [uncommittedModifiedRecordIDsFromLastPull3 copy];
   [(HMDNetworkRouterFirewallRuleCloudZone *)self setModifiedRecordIDsFromLastPull:v7];
 
   [(HMDNetworkRouterFirewallRuleCloudZone *)self setUncommittedModifiedRecordIDsFromLastPull:0];
@@ -1764,46 +1764,46 @@ LABEL_15:
   os_unfair_lock_unlock((self + v3));
 }
 
-- (void)__noteUpdatedRecordID:(id)a3
+- (void)__noteUpdatedRecordID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   v4 = *MEMORY[0x277D17140];
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
+  uncommittedModifiedRecordIDsFromLastPull = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
 
-  if (v5)
+  if (uncommittedModifiedRecordIDsFromLastPull)
   {
-    v6 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
-    [v6 addObject:v7];
+    uncommittedModifiedRecordIDsFromLastPull2 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
+    [uncommittedModifiedRecordIDsFromLastPull2 addObject:dCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB58] setWithObject:v7];
-    [(HMDNetworkRouterFirewallRuleCloudZone *)self setUncommittedModifiedRecordIDsFromLastPull:v6];
+    uncommittedModifiedRecordIDsFromLastPull2 = [MEMORY[0x277CBEB58] setWithObject:dCopy];
+    [(HMDNetworkRouterFirewallRuleCloudZone *)self setUncommittedModifiedRecordIDsFromLastPull:uncommittedModifiedRecordIDsFromLastPull2];
   }
 
   os_unfair_lock_unlock((self + v4));
 }
 
-- (void)__fetchZoneChangesWithFetchInfo:(id)a3
+- (void)__fetchZoneChangesWithFetchInfo:(id)info
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(MEMORY[0x277CBC3A0]);
-  v6 = [v4 changeToken];
-  [v5 setPreviousServerChangeToken:v6];
+  changeToken = [infoCopy changeToken];
+  [v5 setPreviousServerChangeToken:changeToken];
 
-  v7 = [(HMBCloudZone *)self cloudZoneID];
-  v8 = [v7 zoneID];
-  v42 = v8;
+  cloudZoneID = [(HMBCloudZone *)self cloudZoneID];
+  zoneID = [cloudZoneID zoneID];
+  v42 = zoneID;
   v43[0] = v5;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
 
   v10 = objc_alloc(MEMORY[0x277CBC3B8]);
-  v11 = [(HMBCloudZone *)self cloudZoneID];
-  v12 = [v11 zoneID];
-  v41 = v12;
+  cloudZoneID2 = [(HMBCloudZone *)self cloudZoneID];
+  zoneID2 = [cloudZoneID2 zoneID];
+  v41 = zoneID2;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
   v14 = [v10 initWithRecordZoneIDs:v13 configurationsByRecordZoneID:v9];
 
@@ -1813,7 +1813,7 @@ LABEL_15:
   v37[1] = 3221225472;
   v37[2] = __73__HMDNetworkRouterFirewallRuleCloudZone___fetchZoneChangesWithFetchInfo___block_invoke;
   v37[3] = &unk_278680920;
-  v15 = v4;
+  v15 = infoCopy;
   v38 = v15;
   objc_copyWeak(&v39, &location);
   [v14 setRecordChangedBlock:v37];
@@ -1847,16 +1847,16 @@ LABEL_15:
   v24[3] = &unk_278685D08;
   v19 = v18;
   v25 = v19;
-  v26 = self;
+  selfCopy = self;
   objc_copyWeak(&v27, &location);
   [v14 setFetchRecordZoneChangesCompletionBlock:v24];
-  v20 = [(HMBCloudZone *)self database];
-  [v20 addOperation:v14];
+  database = [(HMBCloudZone *)self database];
+  [database addOperation:v14];
 
-  v21 = [v19 operationStartTime];
-  LODWORD(v20) = v21 == 0;
+  operationStartTime = [v19 operationStartTime];
+  LODWORD(database) = operationStartTime == 0;
 
-  if (v20)
+  if (database)
   {
     v22 = [MEMORY[0x277CBEAA8] now];
     [v19 setOperationStartTime:v22];
@@ -2197,24 +2197,24 @@ void __73__HMDNetworkRouterFirewallRuleCloudZone___fetchZoneChangesWithFetchInfo
   }
 }
 
-- (id)fetchChangesWithToken:(id)a3 options:(id)a4
+- (id)fetchChangesWithToken:(id)token options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __71__HMDNetworkRouterFirewallRuleCloudZone_fetchChangesWithToken_options___block_invoke;
   v18 = &unk_2786808F8;
   objc_copyWeak(&v21, &location);
-  v8 = v7;
+  v8 = optionsCopy;
   v19 = v8;
-  v9 = v6;
+  v9 = tokenCopy;
   v20 = v9;
   v10 = _Block_copy(&v15);
   v11 = MEMORY[0x277D2C900];
-  v12 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-  v13 = [v11 lazyFutureWithBlock:v10 scheduler:v12];
+  globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+  v13 = [v11 lazyFutureWithBlock:v10 scheduler:globalAsyncScheduler];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -2331,19 +2331,19 @@ void __71__HMDNetworkRouterFirewallRuleCloudZone_fetchChangesWithToken_options__
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startUpWithLocalZone:(id)a3
+- (void)startUpWithLocalZone:(id)zone
 {
-  [(HMBCloudZone *)self setLocalZone:a3];
-  v4 = [(HMBCloudZone *)self startUp];
-  [v4 finishWithNoResult];
+  [(HMBCloudZone *)self setLocalZone:zone];
+  startUp = [(HMBCloudZone *)self startUp];
+  [startUp finishWithNoResult];
 }
 
-- (void)setUncommittedModifiedRecordIDsFromLastPull:(id)a3
+- (void)setUncommittedModifiedRecordIDsFromLastPull:(id)pull
 {
-  v4 = a3;
+  pullCopy = pull;
   os_unfair_lock_assert_owner((self + *MEMORY[0x277D17140]));
   uncommittedModifiedRecordIDsFromLastPull = self->_uncommittedModifiedRecordIDsFromLastPull;
-  self->_uncommittedModifiedRecordIDsFromLastPull = v4;
+  self->_uncommittedModifiedRecordIDsFromLastPull = pullCopy;
 }
 
 - (NSMutableSet)uncommittedModifiedRecordIDsFromLastPull
@@ -2354,12 +2354,12 @@ void __71__HMDNetworkRouterFirewallRuleCloudZone_fetchChangesWithToken_options__
   return uncommittedModifiedRecordIDsFromLastPull;
 }
 
-- (void)setModifiedRecordIDsFromLastPull:(id)a3
+- (void)setModifiedRecordIDsFromLastPull:(id)pull
 {
-  v4 = a3;
+  pullCopy = pull;
   os_unfair_lock_assert_owner((self + *MEMORY[0x277D17140]));
   modifiedRecordIDsFromLastPull = self->_modifiedRecordIDsFromLastPull;
-  self->_modifiedRecordIDsFromLastPull = v4;
+  self->_modifiedRecordIDsFromLastPull = pullCopy;
 }
 
 - (NSSet)modifiedRecordIDsFromLastPull
@@ -2377,50 +2377,50 @@ void __71__HMDNetworkRouterFirewallRuleCloudZone_fetchChangesWithToken_options__
   v25[5] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D17140];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
-  v22 = [v4 copy];
+  uncommittedModifiedRecordIDsFromLastPull = [(HMDNetworkRouterFirewallRuleCloudZone *)self uncommittedModifiedRecordIDsFromLastPull];
+  v22 = [uncommittedModifiedRecordIDsFromLastPull copy];
 
   os_unfair_lock_unlock((self + v3));
   v24.receiver = self;
   v24.super_class = HMDNetworkRouterFirewallRuleCloudZone;
-  v21 = [(HMBCloudZone *)&v24 attributeDescriptions];
+  attributeDescriptions = [(HMBCloudZone *)&v24 attributeDescriptions];
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v23 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDNetworkRouterFirewallRuleCloudZone useAnonymousRequests](self, "useAnonymousRequests")}];
   v6 = [v5 initWithName:@"UseAnonymousRequests" value:v23];
   v25[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDNetworkRouterFirewallRuleCloudZone *)self watchedRecordIDs];
-  v9 = [v7 initWithName:@"WatchedRecordIDs" value:v8];
+  watchedRecordIDs = [(HMDNetworkRouterFirewallRuleCloudZone *)self watchedRecordIDs];
+  v9 = [v7 initWithName:@"WatchedRecordIDs" value:watchedRecordIDs];
   v25[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDNetworkRouterFirewallRuleCloudZone *)self signatureVerificationPublicKeys];
-  v12 = [v10 initWithName:@"SignatureVerificationPublicKeys" value:v11];
+  signatureVerificationPublicKeys = [(HMDNetworkRouterFirewallRuleCloudZone *)self signatureVerificationPublicKeys];
+  v12 = [v10 initWithName:@"SignatureVerificationPublicKeys" value:signatureVerificationPublicKeys];
   v25[2] = v12;
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v14 = [(HMDNetworkRouterFirewallRuleCloudZone *)self modifiedRecordIDsFromLastPull];
-  v15 = [v13 initWithName:@"ModifiedRecordIDsFromLastPull" value:v14];
+  modifiedRecordIDsFromLastPull = [(HMDNetworkRouterFirewallRuleCloudZone *)self modifiedRecordIDsFromLastPull];
+  v15 = [v13 initWithName:@"ModifiedRecordIDsFromLastPull" value:modifiedRecordIDsFromLastPull];
   v25[3] = v15;
   v16 = [objc_alloc(MEMORY[0x277D0F778]) initWithName:@"UncommittedModifiedRecordIDsFromLastPull" value:v22];
   v25[4] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:5];
-  v18 = [v21 arrayByAddingObjectsFromArray:v17];
+  v18 = [attributeDescriptions arrayByAddingObjectsFromArray:v17];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (HMDNetworkRouterFirewallRuleCloudZone)initWithCloudDatabase:(id)a3 state:(id)a4 useAnonymousRequests:(BOOL)a5 watchedRecordIDs:(id)a6 signatureVerificationPublicKeys:(id)a7
+- (HMDNetworkRouterFirewallRuleCloudZone)initWithCloudDatabase:(id)database state:(id)state useAnonymousRequests:(BOOL)requests watchedRecordIDs:(id)ds signatureVerificationPublicKeys:(id)keys
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (![v15 count])
+  databaseCopy = database;
+  stateCopy = state;
+  dsCopy = ds;
+  keysCopy = keys;
+  if (![keysCopy count])
   {
     context = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -2439,13 +2439,13 @@ void __71__HMDNetworkRouterFirewallRuleCloudZone_fetchChangesWithToken_options__
   v16 = objc_alloc_init(MEMORY[0x277D17068]);
   v27.receiver = self;
   v27.super_class = HMDNetworkRouterFirewallRuleCloudZone;
-  v17 = [(HMBCloudZone *)&v27 initWithCloudDatabase:v12 configuration:v16 state:v13];
+  v17 = [(HMBCloudZone *)&v27 initWithCloudDatabase:databaseCopy configuration:v16 state:stateCopy];
 
   if (v17)
   {
-    *(&v17->_useAnonymousRequests + 4) = a5;
-    objc_storeStrong(&v17->_watchedRecordIDs, a6);
-    objc_storeStrong(&v17->_signatureVerificationPublicKeys, a7);
+    *(&v17->_useAnonymousRequests + 4) = requests;
+    objc_storeStrong(&v17->_watchedRecordIDs, ds);
+    objc_storeStrong(&v17->_signatureVerificationPublicKeys, keys);
     v18 = v17;
   }
 

@@ -26,32 +26,32 @@
 
 - (void)layoutSubviews
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8.receiver = self;
   v8.super_class = CPSLayoutHelperView;
   [(CPSLayoutHelperView *)&v8 layoutSubviews];
-  v4 = [(CPSLayoutHelperView *)v10 layoutDelegate];
+  layoutDelegate = [(CPSLayoutHelperView *)selfCopy layoutDelegate];
   v6 = 0;
   v5 = 0;
-  if (v4)
+  if (layoutDelegate)
   {
-    v7 = [(CPSLayoutHelperView *)v10 layoutDelegate];
+    layoutDelegate2 = [(CPSLayoutHelperView *)selfCopy layoutDelegate];
     v6 = 1;
     v5 = objc_opt_respondsToSelector();
   }
 
   if (v6)
   {
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](layoutDelegate2);
   }
 
-  *&v2 = MEMORY[0x277D82BD8](v4).n128_u64[0];
+  *&v2 = MEMORY[0x277D82BD8](layoutDelegate).n128_u64[0];
   if (v5)
   {
-    v3 = [(CPSLayoutHelperView *)v10 layoutDelegate];
-    [(CPSLayoutHelperViewDelegate *)v3 didChangeLayout:v10];
-    MEMORY[0x277D82BD8](v3);
+    layoutDelegate3 = [(CPSLayoutHelperView *)selfCopy layoutDelegate];
+    [(CPSLayoutHelperViewDelegate *)layoutDelegate3 didChangeLayout:selfCopy];
+    MEMORY[0x277D82BD8](layoutDelegate3);
   }
 }
 

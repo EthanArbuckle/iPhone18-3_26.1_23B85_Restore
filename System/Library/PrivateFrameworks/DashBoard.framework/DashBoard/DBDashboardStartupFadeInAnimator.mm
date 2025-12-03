@@ -1,13 +1,13 @@
 @interface DBDashboardStartupFadeInAnimator
 - (_TtC9DashBoard32DBDashboardStartupFadeInAnimator)init;
-- (_TtC9DashBoard32DBDashboardStartupFadeInAnimator)initWithBlackoutWindow:(id)a3 windows:(id)a4;
-- (void)performAnimationWithCompletion:(id)a3;
+- (_TtC9DashBoard32DBDashboardStartupFadeInAnimator)initWithBlackoutWindow:(id)window windows:(id)windows;
+- (void)performAnimationWithCompletion:(id)completion;
 - (void)prepareForAnimation;
 @end
 
 @implementation DBDashboardStartupFadeInAnimator
 
-- (_TtC9DashBoard32DBDashboardStartupFadeInAnimator)initWithBlackoutWindow:(id)a3 windows:(id)a4
+- (_TtC9DashBoard32DBDashboardStartupFadeInAnimator)initWithBlackoutWindow:(id)window windows:(id)windows
 {
   sub_248271824();
   sub_248271870();
@@ -16,22 +16,22 @@
   *(&self->super.isa + OBJC_IVAR____TtC9DashBoard32DBDashboardStartupFadeInAnimator_windows) = MEMORY[0x277D84FA0];
   swift_beginAccess();
   *(&self->super.isa + v7) = v6;
-  *(&self->super.isa + OBJC_IVAR____TtC9DashBoard32DBDashboardStartupFadeInAnimator_blackoutWindow) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC9DashBoard32DBDashboardStartupFadeInAnimator_blackoutWindow) = window;
   v10.receiver = self;
   v10.super_class = type metadata accessor for DBDashboardStartupFadeInAnimator();
-  v8 = a3;
+  windowCopy = window;
   return [(DBDashboardStartupFadeInAnimator *)&v10 init];
 }
 
 - (void)prepareForAnimation
 {
-  v2 = self;
+  selfCopy = self;
   DBDashboardStartupFadeInAnimator.prepareForAnimation()();
 }
 
-- (void)performAnimationWithCompletion:(id)a3
+- (void)performAnimationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -46,7 +46,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   DBDashboardStartupFadeInAnimator.performAnimation(completion:)(v7, v6);
   sub_248167864(v7);
 }

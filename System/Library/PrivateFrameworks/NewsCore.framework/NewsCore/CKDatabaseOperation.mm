@@ -1,6 +1,6 @@
 @interface CKDatabaseOperation
 - (void)fc_canBypassEncryptionRequirement;
-- (void)setFc_canBypassEncryptionRequirement:(void *)a1;
+- (void)setFc_canBypassEncryptionRequirement:(void *)requirement;
 @end
 
 @implementation CKDatabaseOperation
@@ -10,20 +10,20 @@
   if (result)
   {
     v1 = objc_getAssociatedObject(result, FCShouldBypassEncryptionKey);
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
 
-    return v2;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (void)setFc_canBypassEncryptionRequirement:(void *)a1
+- (void)setFc_canBypassEncryptionRequirement:(void *)requirement
 {
-  if (a1)
+  if (requirement)
   {
     v3 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    objc_setAssociatedObject(a1, FCShouldBypassEncryptionKey, v3, 0x301);
+    objc_setAssociatedObject(requirement, FCShouldBypassEncryptionKey, v3, 0x301);
   }
 }
 

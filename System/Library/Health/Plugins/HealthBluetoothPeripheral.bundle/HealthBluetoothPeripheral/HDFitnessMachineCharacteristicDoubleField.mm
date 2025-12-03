@@ -1,28 +1,28 @@
 @interface HDFitnessMachineCharacteristicDoubleField
 - (id)valueAsData;
-- (void)setValueWithBytes:(const char *)a3 before:(const char *)a4;
+- (void)setValueWithBytes:(const char *)bytes before:(const char *)before;
 @end
 
 @implementation HDFitnessMachineCharacteristicDoubleField
 
-- (void)setValueWithBytes:(const char *)a3 before:(const char *)a4
+- (void)setValueWithBytes:(const char *)bytes before:(const char *)before
 {
-  if (!*a3)
+  if (!*bytes)
   {
     return;
   }
 
-  v7 = [(HDFitnessMachineCharacteristicField *)self fieldLength];
-  v8 = *a3;
-  v9 = &(*a3)[v7];
-  if (v9 > a4)
+  fieldLength = [(HDFitnessMachineCharacteristicField *)self fieldLength];
+  v8 = *bytes;
+  v9 = &(*bytes)[fieldLength];
+  if (v9 > before)
   {
     *&self->_isSigned = 0;
-    *a3 = 0;
+    *bytes = 0;
     return;
   }
 
-  v10 = v7;
+  v10 = fieldLength;
   if ([(HDFitnessMachineCharacteristicDoubleField *)self isSigned])
   {
     v11 = *(v9 - 1) >= 0;
@@ -68,7 +68,7 @@ LABEL_11:
     v13 |= v15 << 8;
   }
 
-  *a3 += v10;
+  *bytes += v10;
   *&self->_isSigned = v13 / [(HDFitnessMachineCharacteristicField *)self factor];
   self->super._isSet = 1;
 }

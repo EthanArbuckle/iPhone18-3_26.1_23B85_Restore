@@ -1,10 +1,10 @@
 @interface SBAmbientMainDisplayController
 - (BOOL)_shouldEnableCoreBrightnessAmbientMode;
 - (SBAmbientMainDisplayController)init;
-- (SBAmbientMainDisplayController)initWithAmbientPresentationController:(id)a3;
-- (void)_updateCoreBrightnessAmbientModeForce:(BOOL)a3;
-- (void)ambientPresentationController:(id)a3 didUpdatePresented:(BOOL)a4;
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
+- (SBAmbientMainDisplayController)initWithAmbientPresentationController:(id)controller;
+- (void)_updateCoreBrightnessAmbientModeForce:(BOOL)force;
+- (void)ambientPresentationController:(id)controller didUpdatePresented:(BOOL)presented;
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source;
 - (void)dealloc;
 @end
 
@@ -12,30 +12,30 @@
 
 - (SBAmbientMainDisplayController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAmbientPresentationController_);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBAmbientMainDisplayController.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[SBAmbientMainDisplayController init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAmbientMainDisplayController.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[SBAmbientMainDisplayController init]", v5}];
 
   return 0;
 }
 
-- (SBAmbientMainDisplayController)initWithAmbientPresentationController:(id)a3
+- (SBAmbientMainDisplayController)initWithAmbientPresentationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = SBAmbientMainDisplayController;
   v5 = [(SBAmbientMainDisplayController *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_ambientPresentationController, v4);
-    [v4 addObserver:v6];
+    objc_storeWeak(&v5->_ambientPresentationController, controllerCopy);
+    [controllerCopy addObserver:v6];
     v7 = objc_alloc_init(MEMORY[0x277CFD390]);
     brightnessSystemClient = v6->_brightnessSystemClient;
     v6->_brightnessSystemClient = v7;
 
-    v9 = [MEMORY[0x277CF0C18] serial];
-    v10 = [v9 serviceClass:25];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v10 = [serial serviceClass:25];
     v11 = BSDispatchQueueCreate();
     brightnessSystemQueue = v6->_brightnessSystemQueue;
     v6->_brightnessSystemQueue = v11;
@@ -45,7 +45,7 @@
     v6->_backlightController = v13;
 
     [(SBBacklightController *)v6->_backlightController addObserver:v6];
-    v6->_ambientPresented = [v4 isPresented];
+    v6->_ambientPresented = [controllerCopy isPresented];
     v6->_backlightState = [(SBBacklightController *)v6->_backlightController backlightState];
     [(SBAmbientMainDisplayController *)v6 _updateCoreBrightnessAmbientModeForce:1];
   }
@@ -64,20 +64,20 @@
   [(SBAmbientMainDisplayController *)&v4 dealloc];
 }
 
-- (void)ambientPresentationController:(id)a3 didUpdatePresented:(BOOL)a4
+- (void)ambientPresentationController:(id)controller didUpdatePresented:(BOOL)presented
 {
-  if (self->_ambientPresented != a4)
+  if (self->_ambientPresented != presented)
   {
-    self->_ambientPresented = a4;
+    self->_ambientPresented = presented;
     [(SBAmbientMainDisplayController *)self _updateCoreBrightnessAmbientMode];
   }
 }
 
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
-  if (self->_backlightState != a4)
+  if (self->_backlightState != state)
   {
-    self->_backlightState = a4;
+    self->_backlightState = state;
     [(SBAmbientMainDisplayController *)self _updateCoreBrightnessAmbientMode];
   }
 }
@@ -97,19 +97,19 @@
   return SBBacklightStateIsActive(self->_backlightState);
 }
 
-- (void)_updateCoreBrightnessAmbientModeForce:(BOOL)a3
+- (void)_updateCoreBrightnessAmbientModeForce:(BOOL)force
 {
-  v3 = a3;
-  v5 = [(SBAmbientMainDisplayController *)self _shouldEnableCoreBrightnessAmbientMode];
-  if (self->_isCoreBrightnessAmbientModeEnabled != v5 || v3)
+  forceCopy = force;
+  _shouldEnableCoreBrightnessAmbientMode = [(SBAmbientMainDisplayController *)self _shouldEnableCoreBrightnessAmbientMode];
+  if (self->_isCoreBrightnessAmbientModeEnabled != _shouldEnableCoreBrightnessAmbientMode || forceCopy)
   {
-    self->_isCoreBrightnessAmbientModeEnabled = v5;
+    self->_isCoreBrightnessAmbientModeEnabled = _shouldEnableCoreBrightnessAmbientMode;
     brightnessSystemQueue = self->_brightnessSystemQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __72__SBAmbientMainDisplayController__updateCoreBrightnessAmbientModeForce___block_invoke;
     v8[3] = &unk_2783A9F58;
-    v9 = v5;
+    v9 = _shouldEnableCoreBrightnessAmbientMode;
     v8[4] = self;
     dispatch_async(brightnessSystemQueue, v8);
   }

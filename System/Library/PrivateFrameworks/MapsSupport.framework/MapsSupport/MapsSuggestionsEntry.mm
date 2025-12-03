@@ -1,19 +1,19 @@
 @interface MapsSuggestionsEntry
-+ (id)archivedDestinationForUniqueID:(id)a3;
-+ (id)entryFromLOI:(id)a3;
++ (id)archivedDestinationForUniqueID:(id)d;
++ (id)entryFromLOI:(id)i;
 + (id)sharedDefaults;
 + (void)removeStaleArchivedDestinations;
-- (id)notificationDetailsWithTitle:(id)a3 message:(id)a4;
+- (id)notificationDetailsWithTitle:(id)title message:(id)message;
 - (void)archiveDestination;
 @end
 
 @implementation MapsSuggestionsEntry
 
-+ (id)entryFromLOI:(id)a3
++ (id)entryFromLOI:(id)i
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  iCopy = i;
+  v4 = iCopy;
+  if (!iCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -36,9 +36,9 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v5 = [v3 identifierString];
+  identifierString = [iCopy identifierString];
 
-  if (!v5)
+  if (!identifierString)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -58,52 +58,52 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v6 = [v4 customLabel];
-  v7 = v6;
-  if (!v6)
+  customLabel = [v4 customLabel];
+  preferredName = customLabel;
+  if (!customLabel)
   {
-    v7 = [v4 preferredName];
+    preferredName = [v4 preferredName];
   }
 
-  v23[0] = v7;
+  v23[0] = preferredName;
   v22[1] = @"MapsSuggestionsCoreRoutinePK";
-  v8 = [v4 identifierString];
+  identifierString2 = [v4 identifierString];
   v22[2] = @"MapsSuggestionsPrimaryKey";
-  v23[1] = v8;
+  v23[1] = identifierString2;
   v23[2] = @"MapsSuggestionsCoreRoutinePK";
   v9 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:3];
 
-  if (!v6)
+  if (!customLabel)
   {
   }
 
-  v10 = [v4 type];
-  if (v10 > 2)
+  type = [v4 type];
+  if (type > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = qword_100049460[v10];
+    v11 = qword_100049460[type];
   }
 
   v14 = [MapsSuggestionsEntry alloc];
-  v15 = [v4 predictedEndDate];
-  v16 = [v4 mapItem];
-  v13 = [v14 initWithType:v11 title:&stru_1000689F8 subtitle:&stru_1000689F8 weight:v15 expires:v16 geoMapItem:v9 sourceSpecificInfo:0.5];
+  predictedEndDate = [v4 predictedEndDate];
+  mapItem = [v4 mapItem];
+  v13 = [v14 initWithType:v11 title:&stru_1000689F8 subtitle:&stru_1000689F8 weight:predictedEndDate expires:mapItem geoMapItem:v9 sourceSpecificInfo:0.5];
 
   v17 = objc_alloc_init(MapsSuggestionsHomeWorkImprover);
   [v17 improveEntry:v13];
   v18 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v13 title];
-    v20 = [v13 subtitle];
+    title = [v13 title];
+    subtitle = [v13 subtitle];
     *buf = 138412546;
-    v25 = v19;
+    v25 = title;
     v26 = 2112;
-    *v27 = v20;
+    *v27 = subtitle;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Title/Subtitle after improving: {%@}, {%@}", buf, 0x16u);
   }
 
@@ -112,13 +112,13 @@ LABEL_19:
   return v13;
 }
 
-+ (id)archivedDestinationForUniqueID:(id)a3
++ (id)archivedDestinationForUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [a1 sharedDefaults];
-    v6 = [v5 dataForKey:@"kSavedMapsCommuteDestinations"];
+    sharedDefaults = [self sharedDefaults];
+    v6 = [sharedDefaults dataForKey:@"kSavedMapsCommuteDestinations"];
     *v13 = objc_opt_class();
     *&v13[8] = objc_opt_class();
     *&v13[16] = objc_opt_class();
@@ -129,13 +129,13 @@ LABEL_19:
     v9 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v8 fromData:v6 error:0];
     v10 = [v9 objectForKeyedSubscript:@"kDestinationsKey"];
 
-    v11 = [v10 objectForKeyedSubscript:v4];
+    v11 = [v10 objectForKeyedSubscript:dCopy];
   }
 
   else
   {
-    v5 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    sharedDefaults = GEOFindOrCreateLog();
+    if (os_log_type_enabled(sharedDefaults, OS_LOG_TYPE_FAULT))
     {
       *v13 = 136446978;
       *&v13[4] = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/DOoM & Location Intelligence/MapsSuggestionsEntry+DoomExtras.m";
@@ -145,7 +145,7 @@ LABEL_19:
       *&v13[20] = "+[MapsSuggestionsEntry(DoomExtras) archivedDestinationForUniqueID:]";
       *&v13[28] = 2082;
       *&v13[30] = "0u == uniqueID.length";
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Desintation ID is nil", v13, 0x26u);
+      _os_log_impl(&_mh_execute_header, sharedDefaults, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Desintation ID is nil", v13, 0x26u);
     }
 
     v11 = 0;
@@ -156,8 +156,8 @@ LABEL_19:
 
 + (void)removeStaleArchivedDestinations
 {
-  v22 = [a1 sharedDefaults];
-  v2 = [v22 dataForKey:@"kSavedMapsCommuteDestinations"];
+  sharedDefaults = [self sharedDefaults];
+  v2 = [sharedDefaults dataForKey:@"kSavedMapsCommuteDestinations"];
   v28[0] = objc_opt_class();
   v28[1] = objc_opt_class();
   v28[2] = objc_opt_class();
@@ -176,8 +176,8 @@ LABEL_19:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v7 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allKeys = [v7 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -188,7 +188,7 @@ LABEL_19:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
@@ -203,25 +203,25 @@ LABEL_19:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v11);
   }
 
   v19 = [NSKeyedArchiver archivedDataWithRootObject:v20 requiringSecureCoding:1 error:0];
-  [v22 setObject:v19 forKey:@"kSavedMapsCommuteDestinations"];
-  [v22 synchronize];
+  [sharedDefaults setObject:v19 forKey:@"kSavedMapsCommuteDestinations"];
+  [sharedDefaults synchronize];
 }
 
 - (void)archiveDestination
 {
-  v3 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
 
-  if (v3)
+  if (uniqueIdentifier)
   {
-    v4 = [objc_opt_class() sharedDefaults];
-    v5 = [v4 dataForKey:@"kSavedMapsCommuteDestinations"];
+    sharedDefaults = [objc_opt_class() sharedDefaults];
+    v5 = [sharedDefaults dataForKey:@"kSavedMapsCommuteDestinations"];
     *v18 = objc_opt_class();
     *&v18[8] = objc_opt_class();
     *&v18[16] = objc_opt_class();
@@ -246,22 +246,22 @@ LABEL_19:
       v11 = v13;
     }
 
-    v14 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-    [v11 setObject:self forKeyedSubscript:v14];
+    uniqueIdentifier2 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+    [v11 setObject:self forKeyedSubscript:uniqueIdentifier2];
 
     v15 = MapsSuggestionsNow();
-    v16 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-    [v10 setObject:v15 forKeyedSubscript:v16];
+    uniqueIdentifier3 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+    [v10 setObject:v15 forKeyedSubscript:uniqueIdentifier3];
 
     v17 = [NSKeyedArchiver archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
-    [v4 setObject:v17 forKey:@"kSavedMapsCommuteDestinations"];
-    [v4 synchronize];
+    [sharedDefaults setObject:v17 forKey:@"kSavedMapsCommuteDestinations"];
+    [sharedDefaults synchronize];
   }
 
   else
   {
-    v4 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+    sharedDefaults = GEOFindOrCreateLog();
+    if (os_log_type_enabled(sharedDefaults, OS_LOG_TYPE_FAULT))
     {
       *v18 = 136446978;
       *&v18[4] = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/DOoM & Location Intelligence/MapsSuggestionsEntry+DoomExtras.m";
@@ -271,15 +271,15 @@ LABEL_19:
       *&v18[20] = "[MapsSuggestionsEntry(DoomExtras) archiveDestination]";
       *&v18[28] = 2082;
       *&v18[30] = "nil == (self.uniqueIdentifier)";
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Destination ID is nil", v18, 0x26u);
+      _os_log_impl(&_mh_execute_header, sharedDefaults, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Destination ID is nil", v18, 0x26u);
     }
   }
 }
 
-- (id)notificationDetailsWithTitle:(id)a3 message:(id)a4
+- (id)notificationDetailsWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  titleCopy = title;
   GEOConfigGetDouble();
   v9 = v8;
   v10 = [NSDate alloc];
@@ -287,8 +287,8 @@ LABEL_19:
   v12 = [v10 initWithTimeInterval:v11 sinceDate:v9];
 
   v13 = [GEOCommuteNotificationDetails alloc];
-  v14 = [(MapsSuggestionsEntry *)self uniqueIdentifier];
-  v15 = [v13 initWithTitle:v7 message:v6 commuteDetailsIdentifier:v14 expirationDate:v12 score:1];
+  uniqueIdentifier = [(MapsSuggestionsEntry *)self uniqueIdentifier];
+  v15 = [v13 initWithTitle:titleCopy message:messageCopy commuteDetailsIdentifier:uniqueIdentifier expirationDate:v12 score:1];
 
   return v15;
 }

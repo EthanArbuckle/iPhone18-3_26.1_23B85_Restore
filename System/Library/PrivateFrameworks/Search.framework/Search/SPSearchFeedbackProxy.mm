@@ -1,10 +1,10 @@
 @interface SPSearchFeedbackProxy
 + (id)sharedProxy;
-- (BOOL)clientID:(id)a3 supportsFeedbackListener:(id)a4;
+- (BOOL)clientID:(id)d supportsFeedbackListener:(id)listener;
 - (SPSearchFeedbackProxy)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sendCustomFeedback:(id)a3 clientID:(id)a4;
-- (void)sendFeedbackType:(int64_t)a3 feedback:(id)a4 queryId:(unint64_t)a5 clientID:(id)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sendCustomFeedback:(id)feedback clientID:(id)d;
+- (void)sendFeedbackType:(int64_t)type feedback:(id)feedback queryId:(unint64_t)id clientID:(id)d;
 - (void)updateParsecEnabled;
 @end
 
@@ -49,16 +49,16 @@ void __36__SPSearchFeedbackProxy_sharedProxy__block_invoke()
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = SPGetDisabledDomainSet();
-  v4 = 0;
+  isSpotlightInternetResultsAllowed = 0;
   if (([v3 containsObject:@"DOMAIN_PARSEC"] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v4 = [v5 isSpotlightInternetResultsAllowed];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    isSpotlightInternetResultsAllowed = [mEMORY[0x1E69ADFB8] isSpotlightInternetResultsAllowed];
   }
 
   v6 = [(NSUserDefaults *)self->_defaultsCenter integerForKey:@"SPUISearchFirstTimeShowCount"];
-  _permitParsecFeedback = (v6 > 0) & v4;
-  [(SPSearchFeedbackProxy *)self setIsParsecEnabled:v4];
+  _permitParsecFeedback = (v6 > 0) & isSpotlightInternetResultsAllowed;
+  [(SPSearchFeedbackProxy *)self setIsParsecEnabled:isSpotlightInternetResultsAllowed];
   v7 = +[SPCoreParsecInterface getSharedInstance];
   [v7 setParsecFeedbackAllowed:_permitParsecFeedback];
 
@@ -96,7 +96,7 @@ void __36__SPSearchFeedbackProxy_sharedProxy__block_invoke()
   if (os_log_type_enabled(v11, v13))
   {
     v18 = 67109120;
-    LODWORD(v19) = v4 ^ 1;
+    LODWORD(v19) = isSpotlightInternetResultsAllowed ^ 1;
     _os_log_impl(&dword_1C81BF000, v12, v13, "[FEEDBACK-DEBUG] (_userPrefsChanged) DOMAIN_PARSEC disabled: %d", &v18, 8u);
   }
 
@@ -163,12 +163,12 @@ void __44__SPSearchFeedbackProxy_updateParsecEnabled__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"SPUISearchFirstTimeShowCount"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"SBSearchDisabledDomains"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"SPUISearchFirstTimeShowCount"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"SBSearchDisabledDomains"))
   {
     [(SPSearchFeedbackProxy *)self updateParsecEnabled];
   }
@@ -181,34 +181,34 @@ void __44__SPSearchFeedbackProxy_updateParsecEnabled__block_invoke()
     {
       v13.receiver = self;
       v13.super_class = SPSearchFeedbackProxy;
-      [(SPSearchFeedbackProxy *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(SPSearchFeedbackProxy *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
   }
 }
 
-- (void)sendFeedbackType:(int64_t)a3 feedback:(id)a4 queryId:(unint64_t)a5 clientID:(id)a6
+- (void)sendFeedbackType:(int64_t)type feedback:(id)feedback queryId:(unint64_t)id clientID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  if ((a3 - 1) > 0x1A || !v10)
+  feedbackCopy = feedback;
+  dCopy = d;
+  if ((type - 1) > 0x1A || !feedbackCopy)
   {
     v26 = SPLogForSPLogCategoryFeedback();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [SPSearchFeedbackProxy sendFeedbackType:a3 feedback:v10 queryId:v26 clientID:?];
+      [SPSearchFeedbackProxy sendFeedbackType:type feedback:feedbackCopy queryId:v26 clientID:?];
     }
 
     goto LABEL_19;
   }
 
-  v12 = sSPFeedbackTypeClassTable[a3];
+  v12 = sSPFeedbackTypeClassTable[type];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v26 = SPLogForSPLogCategoryFeedback();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [SPSearchFeedbackProxy sendFeedbackType:a3 feedback:v10 queryId:? clientID:?];
+      [SPSearchFeedbackProxy sendFeedbackType:type feedback:feedbackCopy queryId:? clientID:?];
     }
 
 LABEL_19:
@@ -221,15 +221,15 @@ LABEL_19:
     [SPSearchFeedbackProxy sendFeedbackType:feedback:queryId:clientID:];
   }
 
-  if (a3 == 8 && (sendFeedbackType_feedback_queryId_clientID__isInternal & 1) != 0)
+  if (type == 8 && (sendFeedbackType_feedback_queryId_clientID__isInternal & 1) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v10;
-      v14 = [v13 result];
-      v15 = [v14 identifier];
-      v16 = [v15 isEqualToString:@"com.apple.other:taptoradar"];
+      v13 = feedbackCopy;
+      result = [v13 result];
+      identifier = [result identifier];
+      v16 = [identifier isEqualToString:@"com.apple.other:taptoradar"];
 
       if (v16)
       {
@@ -243,7 +243,7 @@ LABEL_19:
   v19 = gSPLogInfoAsDefault;
   if (os_log_type_enabled(v18, ((gSPLogInfoAsDefault & 1) == 0)))
   {
-    v20 = sSPFeedbackTypeDescriptionTable[a3];
+    v20 = sSPFeedbackTypeDescriptionTable[type];
     *buf = 136315138;
     v35 = v20;
     _os_log_impl(&dword_1C81BF000, v18, ((v19 & 1) == 0), "send feedback (%s)", buf, 0xCu);
@@ -257,12 +257,12 @@ LABEL_19:
   block[2] = __68__SPSearchFeedbackProxy_sendFeedbackType_feedback_queryId_clientID___block_invoke_266;
   block[3] = &unk_1E82F8D78;
   objc_copyWeak(v33, buf);
-  v23 = v10;
-  v33[1] = a3;
+  v23 = feedbackCopy;
+  v33[1] = type;
   v29 = v23;
-  v30 = self;
-  v24 = v11;
-  v33[2] = a5;
+  selfCopy = self;
+  v24 = dCopy;
+  v33[2] = id;
   v31 = v24;
   v32 = v21;
   v25 = v21;
@@ -536,22 +536,22 @@ void __68__SPSearchFeedbackProxy_sendFeedbackType_feedback_queryId_clientID___bl
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)clientID:(id)a3 supportsFeedbackListener:(id)a4
+- (BOOL)clientID:(id)d supportsFeedbackListener:(id)listener
 {
-  v5 = a4;
-  v6 = a3;
+  listenerCopy = listener;
+  dCopy = d;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  LOBYTE(v5) = [v6 isEqualToString:@"com.apple.PeopleViewService"];
-  return v5 & 1 | ((isKindOfClass & 1) == 0);
+  LOBYTE(listenerCopy) = [dCopy isEqualToString:@"com.apple.PeopleViewService"];
+  return listenerCopy & 1 | ((isKindOfClass & 1) == 0);
 }
 
-- (void)sendCustomFeedback:(id)a3 clientID:(id)a4
+- (void)sendCustomFeedback:(id)feedback clientID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  -[SPSearchFeedbackProxy sendFeedbackType:feedback:queryId:clientID:](self, "sendFeedbackType:feedback:queryId:clientID:", 11, v7, [v7 queryId], v6);
+  dCopy = d;
+  feedbackCopy = feedback;
+  -[SPSearchFeedbackProxy sendFeedbackType:feedback:queryId:clientID:](self, "sendFeedbackType:feedback:queryId:clientID:", 11, feedbackCopy, [feedbackCopy queryId], dCopy);
 }
 
 - (void)sendFeedbackType:(os_log_t)log feedback:queryId:clientID:.cold.1(int a1, uint64_t a2, os_log_t log)

@@ -1,36 +1,36 @@
 @interface SXSpecificComponentLayoutInstruction
-+ (id)instructionWithIdentifier:(id)a3;
-- (BOOL)isFulfilledForBlueprint:(id)a3;
++ (id)instructionWithIdentifier:(id)identifier;
+- (BOOL)isFulfilledForBlueprint:(id)blueprint;
 - (NSString)description;
 @end
 
 @implementation SXSpecificComponentLayoutInstruction
 
-+ (id)instructionWithIdentifier:(id)a3
++ (id)instructionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = identifierCopy;
 
   return v5;
 }
 
-- (BOOL)isFulfilledForBlueprint:(id)a3
+- (BOOL)isFulfilledForBlueprint:(id)blueprint
 {
-  v4 = a3;
-  v5 = [(SXSpecificComponentLayoutInstruction *)self componentIdentifier];
-  v6 = [v4 componentBlueprintForComponentIdentifier:v5 includeChildren:1];
+  blueprintCopy = blueprint;
+  componentIdentifier = [(SXSpecificComponentLayoutInstruction *)self componentIdentifier];
+  v6 = [blueprintCopy componentBlueprintForComponentIdentifier:componentIdentifier includeChildren:1];
 
-  LOBYTE(v5) = [v6 hasValidLayout];
-  return v5;
+  LOBYTE(componentIdentifier) = [v6 hasValidLayout];
+  return componentIdentifier;
 }
 
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SXSpecificComponentLayoutInstruction *)self componentIdentifier];
-  v4 = [v2 stringWithFormat:@"Require valid layout for component with identifier: %@", v3];
+  componentIdentifier = [(SXSpecificComponentLayoutInstruction *)self componentIdentifier];
+  v4 = [v2 stringWithFormat:@"Require valid layout for component with identifier: %@", componentIdentifier];
 
   return v4;
 }

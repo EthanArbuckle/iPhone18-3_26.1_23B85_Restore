@@ -1,16 +1,16 @@
 @interface AWDCoreRoutineDeletionStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addGroups:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addGroups:(id)groups;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleteType:(BOOL)a3;
-- (void)setHasSyncEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleteType:(BOOL)type;
+- (void)setHasSyncEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineDeletionStats
@@ -23,9 +23,9 @@
   [(AWDCoreRoutineDeletionStats *)&v3 dealloc];
 }
 
-- (void)setHasSyncEnabled:(BOOL)a3
+- (void)setHasSyncEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDeleteType:(BOOL)a3
+- (void)setHasDeleteType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -53,7 +53,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addGroups:(id)a3
+- (void)addGroups:(id)groups
 {
   groups = self->_groups;
   if (!groups)
@@ -62,7 +62,7 @@
     self->_groups = groups;
   }
 
-  [(NSMutableArray *)groups addObject:a3];
+  [(NSMutableArray *)groups addObject:groups];
 }
 
 - (id)description
@@ -75,11 +75,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -98,11 +98,11 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_syncEnabled), @"syncEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_syncEnabled), @"syncEnabled"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_deleteType), @"deleteType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_deleteType), @"deleteType"}];
   }
 
 LABEL_5:
@@ -137,14 +137,14 @@ LABEL_5:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"groups"];
+    [dictionary setObject:v5 forKey:@"groups"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -212,7 +212,7 @@ LABEL_5:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -223,8 +223,8 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 32) = self->_syncEnabled;
-    *(a3 + 36) |= 4u;
+    *(to + 32) = self->_syncEnabled;
+    *(to + 36) |= 4u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_5;
@@ -233,8 +233,8 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  *(a3 + 1) = self->_timestamp;
-  *(a3 + 36) |= 1u;
+  *(to + 1) = self->_timestamp;
+  *(to + 36) |= 1u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -245,30 +245,30 @@ LABEL_3:
   if ((has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 4) = self->_deleteType;
-    *(a3 + 36) |= 2u;
+    *(to + 4) = self->_deleteType;
+    *(to + 36) |= 2u;
   }
 
 LABEL_5:
   if ([(AWDCoreRoutineDeletionStats *)self groupsCount])
   {
-    [a3 clearGroups];
-    v6 = [(AWDCoreRoutineDeletionStats *)self groupsCount];
-    if (v6)
+    [to clearGroups];
+    groupsCount = [(AWDCoreRoutineDeletionStats *)self groupsCount];
+    if (groupsCount)
     {
-      v7 = v6;
+      v7 = groupsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addGroups:{-[AWDCoreRoutineDeletionStats groupsAtIndex:](self, "groupsAtIndex:", i)}];
+        [to addGroups:{-[AWDCoreRoutineDeletionStats groupsAtIndex:](self, "groupsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -322,7 +322,7 @@ LABEL_5:
           objc_enumerationMutation(groups);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addGroups:v13];
       }
 
@@ -336,31 +336,31 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = *(a3 + 36);
+  v6 = *(equal + 36);
   if (*&self->_has)
   {
-    if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(a3 + 36))
+  else if (*(equal + 36))
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(a3 + 36) & 4) == 0)
+    if ((*(equal + 36) & 4) == 0)
     {
       goto LABEL_9;
     }
@@ -370,15 +370,15 @@ LABEL_21:
     return v5;
   }
 
-  if ((*(a3 + 36) & 4) == 0)
+  if ((*(equal + 36) & 4) == 0)
   {
     goto LABEL_21;
   }
 
-  v7 = *(a3 + 32);
+  v7 = *(equal + 32);
   if (self->_syncEnabled)
   {
-    if ((*(a3 + 32) & 1) == 0)
+    if ((*(equal + 32) & 1) == 0)
     {
       goto LABEL_21;
     }
@@ -386,7 +386,7 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  if (*(a3 + 32))
+  if (*(equal + 32))
   {
     goto LABEL_21;
   }
@@ -394,19 +394,19 @@ LABEL_21:
 LABEL_9:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 36) & 2) == 0 || self->_deleteType != *(a3 + 4))
+    if ((*(equal + 36) & 2) == 0 || self->_deleteType != *(equal + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(a3 + 36) & 2) != 0)
+  else if ((*(equal + 36) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   groups = self->_groups;
-  if (groups | *(a3 + 3))
+  if (groups | *(equal + 3))
   {
 
     LOBYTE(v5) = [(NSMutableArray *)groups isEqual:?];
@@ -460,15 +460,15 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSMutableArray *)self->_groups hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  v4 = *(a3 + 36);
+  v4 = *(from + 36);
   if (v4)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v4 = *(a3 + 36);
+    v4 = *(from + 36);
     if ((v4 & 4) == 0)
     {
 LABEL_3:
@@ -481,17 +481,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 4) == 0)
+  else if ((*(from + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_syncEnabled = *(a3 + 32);
+  self->_syncEnabled = *(from + 32);
   *&self->_has |= 4u;
-  if ((*(a3 + 36) & 2) != 0)
+  if ((*(from + 36) & 2) != 0)
   {
 LABEL_4:
-    self->_deleteType = *(a3 + 4);
+    self->_deleteType = *(from + 4);
     *&self->_has |= 2u;
   }
 
@@ -500,7 +500,7 @@ LABEL_5:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

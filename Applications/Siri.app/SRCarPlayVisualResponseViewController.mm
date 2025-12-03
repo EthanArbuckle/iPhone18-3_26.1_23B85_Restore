@@ -1,62 +1,62 @@
 @interface SRCarPlayVisualResponseViewController
 - (void)cancelSpeechSynthesis;
 - (void)delayAutodismiss;
-- (void)emitInstrumentationEvent:(id)a3;
+- (void)emitInstrumentationEvent:(id)event;
 - (void)hideBackgroundBehindSiri;
-- (void)informHostOfBackgroundColor:(id)a3;
-- (void)informHostOfBackgroundMaterial:(int64_t)a3;
-- (void)informHostOfViewResize:(CGSize)a3;
-- (void)navigateWithAceCommand:(id)a3;
-- (void)navigateWithResponseData:(id)a3;
-- (void)performAceCommand:(id)a3;
-- (void)performShowResponse:(id)a3;
+- (void)informHostOfBackgroundColor:(id)color;
+- (void)informHostOfBackgroundMaterial:(int64_t)material;
+- (void)informHostOfViewResize:(CGSize)resize;
+- (void)navigateWithAceCommand:(id)command;
+- (void)navigateWithResponseData:(id)data;
+- (void)performAceCommand:(id)command;
+- (void)performShowResponse:(id)response;
 - (void)restartSpeechSynthesis;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)snippetFocusDidChange:(int64_t)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)snippetFocusDidChange:(int64_t)change;
 - (void)viewDidLoad;
 @end
 
 @implementation SRCarPlayVisualResponseViewController
 
-- (void)informHostOfViewResize:(CGSize)a3
+- (void)informHostOfViewResize:(CGSize)resize
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = resize.height;
+  width = resize.width;
+  selfCopy = self;
   sub_1000112B8(width, height);
 }
 
-- (void)emitInstrumentationEvent:(id)a3
+- (void)emitInstrumentationEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000155A4(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1000155A4(eventCopy);
 }
 
-- (void)snippetFocusDidChange:(int64_t)a3
+- (void)snippetFocusDidChange:(int64_t)change
 {
-  v4 = self;
-  sub_100015F34(a3);
+  selfCopy = self;
+  sub_100015F34(change);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017A64();
 }
 
-- (void)performAceCommand:(id)a3
+- (void)performAceCommand:(id)command
 {
   swift_getObjectType();
-  v5 = a3;
-  v6 = self;
-  sub_1000ACA7C(v5, 0, v6);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1000ACA7C(commandCopy, 0, selfCopy);
 }
 
-- (void)performShowResponse:(id)a3
+- (void)performShowResponse:(id)response
 {
-  v4 = a3;
-  v8 = self;
+  responseCopy = response;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -64,10 +64,10 @@
   sub_10001717C(v5, v7);
 }
 
-- (void)navigateWithResponseData:(id)a3
+- (void)navigateWithResponseData:(id)data
 {
-  v4 = a3;
-  v5 = self;
+  dataCopy = data;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
@@ -85,11 +85,11 @@
   sub_10001717C(v6, v8);
 }
 
-- (void)navigateWithAceCommand:(id)a3
+- (void)navigateWithAceCommand:(id)command
 {
   v4 = qword_10018D798;
-  v5 = a3;
-  v8 = self;
+  commandCopy = command;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -100,20 +100,20 @@
   v7 = static os_log_type_t.error.getter();
   sub_10000AABC(v7, 0x10uLL, 0xD00000000000001ALL, 0x8000000100118DB0, 0xD00000000000004ELL, 0x8000000100118DD0);
   swift_getObjectType();
-  sub_1000ACA7C(v5, 1, v8);
+  sub_1000ACA7C(commandCopy, 1, selfCopy);
 }
 
-- (void)informHostOfBackgroundColor:(id)a3
+- (void)informHostOfBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000AA380(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1000AA380(color);
 }
 
-- (void)informHostOfBackgroundMaterial:(int64_t)a3
+- (void)informHostOfBackgroundMaterial:(int64_t)material
 {
-  v4 = self;
-  sub_1000AA988(a3);
+  selfCopy = self;
+  sub_1000AA988(material);
 }
 
 - (void)cancelSpeechSynthesis
@@ -125,7 +125,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(*(v4 + 8) + 16);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -139,7 +139,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(*(v4 + 8) + 48);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -147,20 +147,20 @@
 
 - (void)delayAutodismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000AB08C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1000ACEF0();
 }
 
 - (void)hideBackgroundBehindSiri
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000ABA8C();
 }
 

@@ -1,34 +1,34 @@
 @interface MTLComputePipelineDescriptorInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithDevice:(id)device error:(id *)error;
 - (MTLComputePipelineDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (id)linkedFunctions;
-- (id)newSerializedComputeDataWithFlags:(unint64_t)a3 options:(unint64_t)a4;
+- (id)newSerializedComputeDataWithFlags:(unint64_t)flags options:(unint64_t)options;
 - (id)stageInputDescriptor;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setBinaryArchives:(id)a3;
-- (void)setComputeFunction:(id)a3;
-- (void)setDriverCompilerOptions:(id)a3;
-- (void)setFunctionPointers:(id)a3;
-- (void)setGpuCompilerSPIOptions:(id)a3;
-- (void)setInsertLibraries:(id)a3;
-- (void)setInternalPipeline:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setLinkedFunctions:(id)a3;
-- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)a3;
-- (void)setName:(id)a3;
-- (void)setOpenCLModeEnabled:(BOOL)a3;
-- (void)setPipelineLibrary:(id)a3;
-- (void)setPluginData:(id)a3;
-- (void)setPreloadedLibraries:(id)a3;
-- (void)setProfileControl:(id)a3;
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3;
-- (void)setStageInputDescriptor:(id)a3;
-- (void)validateWithDevice:(id)a3;
+- (void)setBinaryArchives:(id)archives;
+- (void)setComputeFunction:(id)function;
+- (void)setDriverCompilerOptions:(id)options;
+- (void)setFunctionPointers:(id)pointers;
+- (void)setGpuCompilerSPIOptions:(id)options;
+- (void)setInsertLibraries:(id)libraries;
+- (void)setInternalPipeline:(BOOL)pipeline;
+- (void)setLabel:(id)label;
+- (void)setLinkedFunctions:(id)functions;
+- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)threadgroup;
+- (void)setName:(id)name;
+- (void)setOpenCLModeEnabled:(BOOL)enabled;
+- (void)setPipelineLibrary:(id)library;
+- (void)setPluginData:(id)data;
+- (void)setPreloadedLibraries:(id)libraries;
+- (void)setProfileControl:(id)control;
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup;
+- (void)setStageInputDescriptor:(id)descriptor;
+- (void)validateWithDevice:(id)device;
 @end
 
 @implementation MTLComputePipelineDescriptorInternal
@@ -78,15 +78,15 @@
   [(MTLComputePipelineDescriptorInternal *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     p_private = &self->_private;
-    *(v5 + 16) = [(NSString *)p_private->label copyWithZone:a3];
-    *(v6 + 232) = [(NSString *)p_private->name copyWithZone:a3];
+    *(v5 + 16) = [(NSString *)p_private->label copyWithZone:zone];
+    *(v6 + 232) = [(NSString *)p_private->name copyWithZone:zone];
     *(v6 + 24) = p_private->computeFunction;
     *(v6 + 48) = [(NSDictionary *)p_private->driverCompilerOptions copy];
     *(v6 + 56) = [(NSDictionary *)p_private->gpuCompilerSPIOptions copy];
@@ -96,7 +96,7 @@
     *(v6 + 168) = v8;
     *(v6 + 176) = maxStackCallDepth;
     *(v6 + 184) = p_private->supportAddingBinaryFunctions;
-    *(v6 + 40) = [(MTLStageInputOutputDescriptor *)p_private->stageInputDescriptor copyWithZone:a3];
+    *(v6 + 40) = [(MTLStageInputOutputDescriptor *)p_private->stageInputDescriptor copyWithZone:zone];
     *(v6 + 72) = [(NSArray *)p_private->binaryArchives copy];
     *(v6 + 80) = [(NSArray *)p_private->var0.preloadedLibraries copy];
     v10 = 0;
@@ -105,7 +105,7 @@
     *(v6 + 34) = p_private->maxTotalThreadsPerThreadgroup;
     do
     {
-      *(*(v6 + 64) + 8 + v10 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->buffers->_descriptors[v10] copyWithZone:a3];
+      *(*(v6 + 64) + 8 + v10 * 8) = [(MTLPipelineBufferDescriptorInternal *)p_private->buffers->_descriptors[v10] copyWithZone:zone];
       ++v10;
     }
 
@@ -133,14 +133,14 @@
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:31];
   v7 = 0;
-  v41 = self;
+  selfCopy = self;
   p_private = &self->_private;
   do
   {
@@ -192,7 +192,7 @@
           v14 = objc_opt_new();
         }
 
-        [v14 appendString:{objc_msgSend(v17, "formattedDescription:", a3 + 8)}];
+        [v14 appendString:{objc_msgSend(v17, "formattedDescription:", description + 8)}];
       }
 
       v13 = [(NSArray *)preloadedLibraries countByEnumeratingWithState:&v50 objects:v56 count:16];
@@ -216,7 +216,7 @@
   if (v19)
   {
     v20 = v19;
-    v21 = 0;
+    null4 = 0;
     v22 = *v47;
     do
     {
@@ -228,17 +228,17 @@
         }
 
         v24 = *(*(&v46 + 1) + 8 * j);
-        if (v21)
+        if (null4)
         {
-          [v21 appendString:v5];
+          [null4 appendString:v5];
         }
 
         else
         {
-          v21 = objc_opt_new();
+          null4 = objc_opt_new();
         }
 
-        [v21 appendString:{objc_msgSend(v24, "formattedDescription:", a3 + 8)}];
+        [null4 appendString:{objc_msgSend(v24, "formattedDescription:", description + 8)}];
       }
 
       v20 = [(NSArray *)binaryArchives countByEnumeratingWithState:&v46 objects:v55 count:16];
@@ -249,7 +249,7 @@
 
   else
   {
-    v21 = 0;
+    null4 = 0;
   }
 
   v43 = *&v40->requiredThreadsPerThreadgroup.width;
@@ -278,13 +278,13 @@
   v54[5] = name;
   v54[6] = v5;
   v54[7] = @"computeFunction =";
-  v29 = [(MTLFunction *)computeFunction formattedDescription:a3 + 8];
-  if (!v29)
+  null = [(MTLFunction *)computeFunction formattedDescription:description + 8];
+  if (!null)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54[8] = v29;
+  v54[8] = null;
   v54[9] = v5;
   v54[10] = @"threadGroupSizeIsMultipleOfThreadExecutionWidth =";
   v54[11] = [MEMORY[0x1E696AD98] numberWithBool:v40->threadGroupSizeIsMultipleOfThreadExecutionWidth];
@@ -299,27 +299,27 @@
   v54[20] = MTLRoundingModeString(v40->textureWriteRoundingMode);
   v54[21] = v5;
   v54[22] = @"stageInputDescriptor =";
-  v30 = [(MTLStageInputOutputDescriptor *)v40->stageInputDescriptor formattedDescription:a3 + 8];
-  if (!v30)
+  null2 = [(MTLStageInputOutputDescriptor *)v40->stageInputDescriptor formattedDescription:description + 8];
+  if (!null2)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54[23] = v30;
+  v54[23] = null2;
   v54[24] = v5;
   v54[25] = @"linkedFunctions =";
   linkedFunctions = v40->linkedFunctions;
   if (linkedFunctions)
   {
-    v32 = [(MTLLinkedFunctions *)linkedFunctions formattedDescription:a3 + 8];
+    null3 = [(MTLLinkedFunctions *)linkedFunctions formattedDescription:description + 8];
   }
 
   else
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54[26] = v32;
+  v54[26] = null3;
   v54[27] = v5;
   v33 = @"YES";
   if (!v40->supportAddingBinaryFunctions)
@@ -352,12 +352,12 @@
   v54[38] = v35;
   v54[39] = v5;
   v54[40] = @"binaryArchives =";
-  if (!v21)
+  if (!null4)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54[41] = v21;
+  v54[41] = null4;
   v54[42] = v5;
   v54[43] = @"Needs custom border color samplers = ";
   v54[44] = [MEMORY[0x1E696AD98] numberWithBool:v40->needsCustomBorderColorSamplers];
@@ -383,7 +383,7 @@
   v54[64] = @"requiredThreadsPerThreadgroup =";
   v54[65] = v45;
   v36 = [v25 arrayWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v54, 66)}];
-  v42.receiver = v41;
+  v42.receiver = selfCopy;
   v42.super_class = MTLComputePipelineDescriptorInternal;
   result = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", -[MTLComputePipelineDescriptorInternal description](&v42, sel_description), objc_msgSend(v36, "componentsJoinedByString:", @" "];
   v38 = *MEMORY[0x1E69E9840];
@@ -426,9 +426,9 @@
   p_private->maxAccelerationStructureTraversalDepth = 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -444,16 +444,16 @@
   }
 
   label = self->_private.label;
-  if (label != a3)
+  if (label != label)
   {
 
-    self->_private.label = [a3 copy];
+    self->_private.label = [label copy];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -470,24 +470,24 @@
 
   p_private = &self->_private;
   name = p_private->name;
-  if (name != a3)
+  if (name != name)
   {
 
-    p_private->name = [a3 copy];
+    p_private->name = [name copy];
   }
 }
 
-- (void)setComputeFunction:(id)a3
+- (void)setComputeFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
     v10 = MTLFunctionTypeString(3);
     if (MTLFailureTypeGetEnabled(1uLL))
     {
-      [(MTLComputePipelineDescriptorInternal *)a3 setComputeFunction:v11, v12, v13, v14, v15, v16, v17, v27];
+      [(MTLComputePipelineDescriptorInternal *)function setComputeFunction:v11, v12, v13, v14, v15, v16, v17, v27];
     }
 
-    if ([a3 functionType] != 3)
+    if ([function functionType] != 3)
     {
       [(MTLComputePipelineDescriptorInternal *)v10 setComputeFunction:v18, v19, v20, v21, v22, v23, v24];
     }
@@ -498,15 +498,15 @@
     [(MTLComputePipelineDescriptorInternal *)self setComputeFunction:a2, 0, v3, v4, v5, v6, v7, v27];
   }
 
-  v25 = a3;
+  functionCopy = function;
   p_private = &self->_private;
 
-  p_private->computeFunction = a3;
+  p_private->computeFunction = function;
 }
 
-- (void)setStageInputDescriptor:(id)a3
+- (void)setStageInputDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -518,10 +518,10 @@
 
   p_private = &self->_private;
   stageInputDescriptor = p_private->stageInputDescriptor;
-  if (stageInputDescriptor != a3)
+  if (stageInputDescriptor != descriptor)
   {
 
-    p_private->stageInputDescriptor = [a3 copy];
+    p_private->stageInputDescriptor = [descriptor copy];
   }
 }
 
@@ -538,42 +538,42 @@
   return result;
 }
 
-- (void)setDriverCompilerOptions:(id)a3
+- (void)setDriverCompilerOptions:(id)options
 {
   p_private = &self->_private;
   driverCompilerOptions = self->_private.driverCompilerOptions;
-  if (driverCompilerOptions != a3)
+  if (driverCompilerOptions != options)
   {
 
-    p_private->driverCompilerOptions = [a3 copy];
+    p_private->driverCompilerOptions = [options copy];
   }
 }
 
-- (void)setGpuCompilerSPIOptions:(id)a3
+- (void)setGpuCompilerSPIOptions:(id)options
 {
   p_private = &self->_private;
   gpuCompilerSPIOptions = self->_private.gpuCompilerSPIOptions;
-  if (gpuCompilerSPIOptions != a3)
+  if (gpuCompilerSPIOptions != options)
   {
 
-    p_private->gpuCompilerSPIOptions = [a3 copy];
+    p_private->gpuCompilerSPIOptions = [options copy];
   }
 }
 
-- (void)setFunctionPointers:(id)a3
+- (void)setFunctionPointers:(id)pointers
 {
   p_private = &self->_private;
   functionPointers = self->_private.functionPointers;
-  if (functionPointers != a3)
+  if (functionPointers != pointers)
   {
 
-    p_private->functionPointers = [a3 copy];
+    p_private->functionPointers = [pointers copy];
   }
 }
 
-- (void)setLinkedFunctions:(id)a3
+- (void)setLinkedFunctions:(id)functions
 {
-  if (a3)
+  if (functions)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -585,77 +585,77 @@
 
   p_private = &self->_private;
   linkedFunctions = p_private->linkedFunctions;
-  if (linkedFunctions != a3)
+  if (linkedFunctions != functions)
   {
 
-    p_private->linkedFunctions = [a3 copy];
+    p_private->linkedFunctions = [functions copy];
   }
 }
 
-- (void)setBinaryArchives:(id)a3
+- (void)setBinaryArchives:(id)archives
 {
   p_private = &self->_private;
   binaryArchives = self->_private.binaryArchives;
-  if (binaryArchives != a3)
+  if (binaryArchives != archives)
   {
 
-    p_private->binaryArchives = [a3 copy];
+    p_private->binaryArchives = [archives copy];
   }
 }
 
-- (void)setPreloadedLibraries:(id)a3
+- (void)setPreloadedLibraries:(id)libraries
 {
   p_private = &self->_private;
   preloadedLibraries = self->_private.var0.preloadedLibraries;
-  if (preloadedLibraries != a3)
+  if (preloadedLibraries != libraries)
   {
 
-    p_private->var0.preloadedLibraries = [a3 copy];
+    p_private->var0.preloadedLibraries = [libraries copy];
   }
 }
 
-- (void)setInsertLibraries:(id)a3
+- (void)setInsertLibraries:(id)libraries
 {
-  if (!a3)
+  if (!libraries)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    libraries = MEMORY[0x1E695E0F0];
   }
 
-  [(MTLComputePipelineDescriptorInternal *)self setPreloadedLibraries:a3];
+  [(MTLComputePipelineDescriptorInternal *)self setPreloadedLibraries:libraries];
 }
 
-- (void)setPipelineLibrary:(id)a3
+- (void)setPipelineLibrary:(id)library
 {
   p_private = &self->_private;
   pipelineLibrary = self->_private.pipelineLibrary;
-  if (pipelineLibrary != a3)
+  if (pipelineLibrary != library)
   {
 
-    p_private->pipelineLibrary = a3;
+    p_private->pipelineLibrary = library;
   }
 }
 
-- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)a3
+- (void)setMaxTotalThreadsPerThreadgroup:(unint64_t)threadgroup
 {
-  v8 = a3;
-  if (a3 >= 0x10000)
+  threadgroupCopy = threadgroup;
+  if (threadgroup >= 0x10000)
   {
-    [(MTLComputePipelineDescriptorInternal *)self setMaxTotalThreadsPerThreadgroup:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLComputePipelineDescriptorInternal *)self setMaxTotalThreadsPerThreadgroup:a2, threadgroup, v3, v4, v5, v6, v7];
   }
 
-  self->_private.maxTotalThreadsPerThreadgroup = v8;
+  self->_private.maxTotalThreadsPerThreadgroup = threadgroupCopy;
 }
 
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_private.requiredThreadsPerThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_private.requiredThreadsPerThreadgroup.width = *&threadgroup->var0;
   self->_private.requiredThreadsPerThreadgroup.depth = var2;
 }
 
-- (void)setOpenCLModeEnabled:(BOOL)a3
+- (void)setOpenCLModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -668,9 +668,9 @@
   *(&self->_private + 137) = *(&self->_private + 137) & 0xFD | v3;
 }
 
-- (void)setInternalPipeline:(BOOL)a3
+- (void)setInternalPipeline:(BOOL)pipeline
 {
-  if (a3)
+  if (pipeline)
   {
     v3 = 4;
   }
@@ -683,25 +683,25 @@
   *(&self->_private + 137) = *(&self->_private + 137) & 0xFB | v3;
 }
 
-- (void)setProfileControl:(id)a3
+- (void)setProfileControl:(id)control
 {
   p_private = &self->_private;
   profileControl = self->_private.profileControl;
-  if (profileControl != a3)
+  if (profileControl != control)
   {
 
-    p_private->profileControl = [a3 copy];
+    p_private->profileControl = [control copy];
   }
 }
 
-- (void)setPluginData:(id)a3
+- (void)setPluginData:(id)data
 {
   p_private = &self->_private;
   pluginData = self->_private.pluginData;
-  if (pluginData != a3)
+  if (pluginData != data)
   {
 
-    p_private->pluginData = a3;
+    p_private->pluginData = data;
   }
 }
 
@@ -758,9 +758,9 @@
   return _MTLHashState(v12, 0x1C0uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -768,7 +768,7 @@
   else
   {
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
 LABEL_3:
       LOBYTE(v6) = 0;
@@ -776,7 +776,7 @@ LABEL_3:
     }
 
     p_private = &self->_private;
-    v8 = (a3 + 16);
+    v8 = (equal + 16);
     if (p_private->label == *v8 || (v6 = [(NSString *)p_private->label isEqual:?]) != 0)
     {
       computeFunction = p_private->computeFunction;
@@ -862,33 +862,33 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)validateWithDevice:(id)a3 error:(id *)a4
+- (BOOL)validateWithDevice:(id)device error:(id *)error
 {
   p_private = &self->_private;
   if ((*(&self->_private + 137) & 4) == 0)
   {
-    [a3 registerComputePipelineDescriptor:{self, a4}];
+    [device registerComputePipelineDescriptor:{self, error}];
   }
 
-  validateWithDevice(a3, p_private);
+  validateWithDevice(device, p_private);
   return 1;
 }
 
-- (void)validateWithDevice:(id)a3
+- (void)validateWithDevice:(id)device
 {
-  [a3 registerComputePipelineDescriptor:self];
+  [device registerComputePipelineDescriptor:self];
 
-  validateWithDevice(a3, &self->_private);
+  validateWithDevice(device, &self->_private);
 }
 
-- (id)newSerializedComputeDataWithFlags:(unint64_t)a3 options:(unint64_t)a4
+- (id)newSerializedComputeDataWithFlags:(unint64_t)flags options:(unint64_t)options
 {
   buffer_ptr = 0;
   size_ptr = 0;
   __src = 0;
   v22 = 0;
   p_private = &self->_private;
-  v5 = (a4 >> 23) & 2 | (a3 >> 4) & 4 | (8 * (*(&self->_private + 137) & 1)) & 0xEF | (16 * ((*(&self->_private + 137) >> 1) & 1));
+  v5 = (options >> 23) & 2 | (flags >> 4) & 4 | (8 * (*(&self->_private + 137) & 1)) & 0xEF | (16 * ((*(&self->_private + 137) >> 1) & 1));
   v23 = 0;
   v22 = v5;
   functionPointers = self->_private.functionPointers;

@@ -1,29 +1,29 @@
 @interface BTDevicePicker
-- (BTDevicePicker)initWithTitle:(id)a3 service:(unsigned int)a4 discoveryNameFilter:(id)a5;
-- (void)createAlertWindowForRootViewController:(id)a3;
+- (BTDevicePicker)initWithTitle:(id)title service:(unsigned int)service discoveryNameFilter:(id)filter;
+- (void)createAlertWindowForRootViewController:(id)controller;
 - (void)dealloc;
-- (void)didDismissWithResult:(int64_t)a3 deviceAddress:(id)a4;
-- (void)discoveredDevice:(id)a3 deviceAddress:(id)a4;
+- (void)didDismissWithResult:(int64_t)result deviceAddress:(id)address;
+- (void)discoveredDevice:(id)device deviceAddress:(id)address;
 - (void)show;
 @end
 
 @implementation BTDevicePicker
 
-- (BTDevicePicker)initWithTitle:(id)a3 service:(unsigned int)a4 discoveryNameFilter:(id)a5
+- (BTDevicePicker)initWithTitle:(id)title service:(unsigned int)service discoveryNameFilter:(id)filter
 {
-  v9 = a3;
-  v10 = a5;
+  titleCopy = title;
+  filterCopy = filter;
   v14.receiver = self;
   v14.super_class = BTDevicePicker;
   v11 = [(BTDevicePicker *)&v14 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v11 selector:sel_applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
 
-    objc_storeStrong(&v11->_title, a3);
-    v11->_service = a4;
-    objc_storeStrong(&v11->_predicate, a5);
+    objc_storeStrong(&v11->_title, title);
+    v11->_service = service;
+    objc_storeStrong(&v11->_predicate, filter);
   }
 
   return v11;
@@ -43,8 +43,8 @@
     _os_log_impl(&dword_245106000, v3, OS_LOG_TYPE_DEFAULT, "BTDevicePikcer dealloc", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_extensionRequestIdentifier)
   {
@@ -90,13 +90,13 @@
   [(BTDevicePicker *)self setExtension:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(BTDevicePicker *)self extension];
+  extension = [(BTDevicePicker *)self extension];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __22__BTDevicePicker_show__block_invoke;
   v5[3] = &unk_278E23080;
   objc_copyWeak(&v6, &location);
-  [v4 instantiateViewControllerWithInputItems:MEMORY[0x277CBEBF8] connectionHandler:v5];
+  [extension instantiateViewControllerWithInputItems:MEMORY[0x277CBEBF8] connectionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -153,42 +153,42 @@ void __22__BTDevicePicker_show__block_invoke(uint64_t a1, void *a2, void *a3, vo
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createAlertWindowForRootViewController:(id)a3
+- (void)createAlertWindowForRootViewController:(id)controller
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 delegate];
+  controllerCopy = controller;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  delegate = [mEMORY[0x277D75128] delegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [MEMORY[0x277D75128] sharedApplication];
-  v9 = [v8 delegate];
-  v10 = v9;
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  delegate2 = [mEMORY[0x277D75128]2 delegate];
+  v10 = delegate2;
   if (v7)
   {
-    v11 = [v9 window];
+    window = [delegate2 window];
 
-    v10 = v11;
+    v10 = window;
   }
 
   if (!v10)
   {
     v14 = [MEMORY[0x277D75DA0] allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1];
-    v21 = [v14 firstObject];
+    firstObject = [v14 firstObject];
     alertWindow = self->_alertWindow;
-    self->_alertWindow = v21;
+    self->_alertWindow = firstObject;
 
     goto LABEL_22;
   }
 
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  v13 = [v12 connectedScenes];
+  mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128]3 connectedScenes];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = v13;
+  v14 = connectedScenes;
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v15)
   {
@@ -258,7 +258,7 @@ LABEL_12:
   v25 = self->_alertWindow;
   self->_alertWindow = v24;
 
-  [(UIWindow_Custom *)self->_alertWindow setRootViewController:v4];
+  [(UIWindow_Custom *)self->_alertWindow setRootViewController:controllerCopy];
   [(UIWindow_Custom *)self->_alertWindow setWindowLevel:*MEMORY[0x277D772A8] + 1.0];
   [(UIWindow_Custom *)self->_alertWindow makeKeyAndVisible];
 
@@ -266,9 +266,9 @@ LABEL_22:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDismissWithResult:(int64_t)a3 deviceAddress:(id)a4
+- (void)didDismissWithResult:(int64_t)result deviceAddress:(id)address
 {
-  v6 = a4;
+  addressCopy = address;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
@@ -284,19 +284,19 @@ LABEL_22:
       _os_log_impl(&dword_245106000, v8, OS_LOG_TYPE_DEFAULT, "Calling didDismissWithResult delegate", v9, 2u);
     }
 
-    [(BTDevicePickerDelegate *)self->_delegate devicePicker:self didDismissWithResult:a3 deviceAddress:v6];
+    [(BTDevicePickerDelegate *)self->_delegate devicePicker:self didDismissWithResult:result deviceAddress:addressCopy];
   }
 }
 
-- (void)discoveredDevice:(id)a3 deviceAddress:(id)a4
+- (void)discoveredDevice:(id)device deviceAddress:(id)address
 {
-  v9 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  addressCopy = address;
   predicate = self->_predicate;
-  if (!predicate || [(NSPredicate *)predicate evaluateWithObject:v9])
+  if (!predicate || [(NSPredicate *)predicate evaluateWithObject:deviceCopy])
   {
-    v8 = [(_UIRemoteViewController *)self->_devicePickerRemoteViewController serviceViewControllerProxy];
-    [v8 displayDevice:v9 deviceAddress:v6];
+    serviceViewControllerProxy = [(_UIRemoteViewController *)self->_devicePickerRemoteViewController serviceViewControllerProxy];
+    [serviceViewControllerProxy displayDevice:deviceCopy deviceAddress:addressCopy];
   }
 }
 

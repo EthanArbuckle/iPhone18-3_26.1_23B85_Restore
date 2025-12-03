@@ -1,31 +1,31 @@
 @interface BKSHIDEventDeliveryChainObserver
 - (BKSHIDEventDeliveryChainObserver)init;
-- (BKSHIDEventDeliveryChainObserver)initWithDisplay:(id)a3 environment:(id)a4;
-- (id)addChainObserver:(id)a3;
+- (BKSHIDEventDeliveryChainObserver)initWithDisplay:(id)display environment:(id)environment;
+- (id)addChainObserver:(id)observer;
 @end
 
 @implementation BKSHIDEventDeliveryChainObserver
 
-- (id)addChainObserver:(id)a3
+- (id)addChainObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[BKSHIDEventObserver sharedInstance];
-  v6 = [v5 addObservingClient:v4 forChainObserver:self];
+  v6 = [v5 addObservingClient:observerCopy forChainObserver:self];
 
   return v6;
 }
 
-- (BKSHIDEventDeliveryChainObserver)initWithDisplay:(id)a3 environment:(id)a4
+- (BKSHIDEventDeliveryChainObserver)initWithDisplay:(id)display environment:(id)environment
 {
   v64 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  displayCopy = display;
+  environmentCopy = environment;
   v51.receiver = self;
   v51.super_class = BKSHIDEventDeliveryChainObserver;
   v10 = [(BKSHIDEventDeliveryChainObserver *)&v51 init];
   if (v10)
   {
-    v11 = v8;
+    v11 = displayCopy;
     if (!v11)
     {
       v19 = MEMORY[0x1E696AEC0];
@@ -66,13 +66,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v26 = MEMORY[0x1E696AEC0];
-      v27 = [v12 classForCoder];
-      if (!v27)
+      classForCoder = [v12 classForCoder];
+      if (!classForCoder)
       {
-        v27 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v28 = NSStringFromClass(v27);
+      v28 = NSStringFromClass(classForCoder);
       objc_opt_class();
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
@@ -104,7 +104,7 @@
       JUMPOUT(0x18635AB1CLL);
     }
 
-    v13 = v9;
+    v13 = environmentCopy;
     if (!v13)
     {
       v35 = MEMORY[0x1E696AEC0];
@@ -145,13 +145,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v42 = MEMORY[0x1E696AEC0];
-      v43 = [v14 classForCoder];
-      if (!v43)
+      classForCoder2 = [v14 classForCoder];
+      if (!classForCoder2)
       {
-        v43 = objc_opt_class();
+        classForCoder2 = objc_opt_class();
       }
 
-      v44 = NSStringFromClass(v43);
+      v44 = NSStringFromClass(classForCoder2);
       objc_opt_class();
       v45 = objc_opt_class();
       v46 = NSStringFromClass(v45);
@@ -183,8 +183,8 @@
       JUMPOUT(0x18635AD78);
     }
 
-    objc_storeStrong(&v10->_display, a3);
-    objc_storeStrong(&v10->_deferringEnvironment, a4);
+    objc_storeStrong(&v10->_display, display);
+    objc_storeStrong(&v10->_deferringEnvironment, environment);
     v15 = [[BKSEventDeferringChainIdentity alloc] initWithDisplay:v10->_display environment:v10->_deferringEnvironment];
     chainIdentity = v10->_chainIdentity;
     v10->_chainIdentity = v15;

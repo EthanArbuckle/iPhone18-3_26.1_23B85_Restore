@@ -1,33 +1,33 @@
 @interface CalDAVUtils
-+ (id)dropBoxLocationForUID:(id)a3 dropBoxPath:(id)a4;
-+ (id)headersFromHeaders:(id)a3 replacingPreconditionsWithScheduleTag:(id)a4;
-+ (id)stringFromUIDWithPathSafeCharacters:(id)a3;
++ (id)dropBoxLocationForUID:(id)d dropBoxPath:(id)path;
++ (id)headersFromHeaders:(id)headers replacingPreconditionsWithScheduleTag:(id)tag;
++ (id)stringFromUIDWithPathSafeCharacters:(id)characters;
 @end
 
 @implementation CalDAVUtils
 
-+ (id)dropBoxLocationForUID:(id)a3 dropBoxPath:(id)a4
++ (id)dropBoxLocationForUID:(id)d dropBoxPath:(id)path
 {
-  v5 = a4;
-  v6 = [CalDAVUtils stringFromUIDWithPathSafeCharacters:a3];
+  pathCopy = path;
+  v6 = [CalDAVUtils stringFromUIDWithPathSafeCharacters:d];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.dropbox", v6];
-  v8 = [v5 stringByAppendingPathComponent:v7];
+  v8 = [pathCopy stringByAppendingPathComponent:v7];
 
-  v9 = [v8 appendSlashIfNeeded];
+  appendSlashIfNeeded = [v8 appendSlashIfNeeded];
 
-  return v9;
+  return appendSlashIfNeeded;
 }
 
-+ (id)stringFromUIDWithPathSafeCharacters:(id)a3
++ (id)stringFromUIDWithPathSafeCharacters:(id)characters
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 length])
+  charactersCopy = characters;
+  v4 = charactersCopy;
+  if ([charactersCopy length])
   {
-    v4 = v3;
-    if ([v3 hasPrefix:@"http://"])
+    v4 = charactersCopy;
+    if ([charactersCopy hasPrefix:@"http://"])
     {
-      v4 = [v3 stringByReplacingOccurrencesOfString:@"http://" withString:&stru_285505238];
+      v4 = [charactersCopy stringByReplacingOccurrencesOfString:@"http://" withString:&stru_285505238];
     }
 
     if ([v4 hasPrefix:@"https://"])
@@ -75,18 +75,18 @@
   return v12;
 }
 
-+ (id)headersFromHeaders:(id)a3 replacingPreconditionsWithScheduleTag:(id)a4
++ (id)headersFromHeaders:(id)headers replacingPreconditionsWithScheduleTag:(id)tag
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  headersCopy = headers;
+  tagCopy = tag;
+  v7 = headersCopy;
   v8 = v7;
-  if ([v6 length])
+  if ([tagCopy length])
   {
     v8 = [v7 mutableCopy];
     [v8 removeObjectForKey:*MEMORY[0x277CFDB40]];
     [v8 removeObjectForKey:*MEMORY[0x277CFDB38]];
-    [v8 setObject:v6 forKey:@"If-Schedule-Tag-Match"];
+    [v8 setObject:tagCopy forKey:@"If-Schedule-Tag-Match"];
   }
 
   return v8;

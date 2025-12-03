@@ -1,26 +1,26 @@
 @interface PMLAWDSessionTracker
-- (void)trackSessionWithCovariates:(id)a3 label:(unint64_t)a4 locale:(id)a5 supervisionType:(unint64_t)a6;
+- (void)trackSessionWithCovariates:(id)covariates label:(unint64_t)label locale:(id)locale supervisionType:(unint64_t)type;
 @end
 
 @implementation PMLAWDSessionTracker
 
-- (void)trackSessionWithCovariates:(id)a3 label:(unint64_t)a4 locale:(id)a5 supervisionType:(unint64_t)a6
+- (void)trackSessionWithCovariates:(id)covariates label:(unint64_t)label locale:(id)locale supervisionType:(unint64_t)type
 {
-  v10 = a5;
-  v11 = a3;
+  localeCopy = locale;
+  covariatesCopy = covariates;
   v16 = objc_opt_new();
-  v12 = [(PMLAWDBaseTracker *)self modelInfo];
-  v13 = [v12 copy];
+  modelInfo = [(PMLAWDBaseTracker *)self modelInfo];
+  v13 = [modelInfo copy];
   [v16 setModelInfo:v13];
 
-  v14 = [v16 modelInfo];
-  [v14 setLocale:v10];
+  modelInfo2 = [v16 modelInfo];
+  [modelInfo2 setLocale:localeCopy];
 
-  v15 = [AWDProactiveModelFittingSparseFloatVector sparseFloatVectorFromSparseVector:v11];
+  v15 = [AWDProactiveModelFittingSparseFloatVector sparseFloatVectorFromSparseVector:covariatesCopy];
 
   [v16 setSparseFloatFeatures:v15];
-  [v16 setLabel:a4];
-  [v16 setSupervisionType:a6];
+  [v16 setLabel:label];
+  [v16 setSupervisionType:type];
   [(PMLAWDBaseTracker *)self postMetricId:5636097 message:v16];
 }
 

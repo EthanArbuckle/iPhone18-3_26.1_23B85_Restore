@@ -1,86 +1,86 @@
 @interface SFSSOspreyTTSClient
 + (id)sharedInstance;
 - (SFSSOspreyTTSClient)init;
-- (void)performCustomBidirectionalStreamingRequest:(id)a3 handler:(id)a4 completion:(id)a5;
+- (void)performCustomBidirectionalStreamingRequest:(id)request handler:(id)handler completion:(id)completion;
 - (void)prewarm;
-- (void)streamBlazarTTS:(id)a3 headers:(id)a4 beginHandler:(id)a5 chunkHandler:(id)a6 endHandler:(id)a7 completion:(id)a8;
-- (void)streamNativeTTS:(id)a3 headers:(id)a4 beginHandler:(id)a5 chunkHandler:(id)a6 endHandler:(id)a7 completion:(id)a8;
-- (void)streamTTS:(id)a3 headers:(id)a4 beginHandler:(id)a5 chunkHandler:(id)a6 endHandler:(id)a7 completion:(id)a8;
+- (void)streamBlazarTTS:(id)s headers:(id)headers beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion;
+- (void)streamNativeTTS:(id)s headers:(id)headers beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion;
+- (void)streamTTS:(id)s headers:(id)headers beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion;
 @end
 
 @implementation SFSSOspreyTTSClient
 
-- (void)streamBlazarTTS:(id)a3 headers:(id)a4 beginHandler:(id)a5 chunkHandler:(id)a6 endHandler:(id)a7 completion:(id)a8
+- (void)streamBlazarTTS:(id)s headers:(id)headers beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v45 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v41 = a8;
-  v42 = v15;
-  v43 = v16;
-  v44 = v17;
+  sCopy = s;
+  headersCopy = headers;
+  handlerCopy = handler;
+  chunkHandlerCopy = chunkHandler;
+  endHandlerCopy = endHandler;
+  completionCopy = completion;
+  v42 = handlerCopy;
+  v43 = chunkHandlerCopy;
+  v44 = endHandlerCopy;
   v18 = objc_alloc_init(QSSMutableTextToSpeechRouterStreamingStreamingRequest);
   [(QSSMutableTextToSpeechRouterStreamingStreamingRequest *)v18 setContent_type:1];
-  [(QSSMutableTextToSpeechRouterStreamingStreamingRequest *)v18 setContentAsQSSStartTextToSpeechStreamingRequest:v14];
+  [(QSSMutableTextToSpeechRouterStreamingStreamingRequest *)v18 setContentAsQSSStartTextToSpeechStreamingRequest:sCopy];
   v52[0] = 0;
   v52[1] = v52;
   v52[2] = 0x3032000000;
   v52[3] = __Block_byref_object_copy_;
   v52[4] = __Block_byref_object_dispose_;
-  v53 = MEMORY[0x26D631550](v41);
+  v53 = MEMORY[0x26D631550](completionCopy);
   v19 = SFSSGetLogObject();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v40 = [v14 speech_id];
-    v39 = [v14 session_id];
-    v38 = [v14 stream_id];
-    v20 = [v14 language];
-    v21 = [v14 gender];
-    v22 = [v14 voice_name];
-    v23 = [v14 meta_info];
-    v24 = [v23 app_id];
-    v25 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "preferred_voice_type")}];
+    speech_id = [sCopy speech_id];
+    session_id = [sCopy session_id];
+    stream_id = [sCopy stream_id];
+    language = [sCopy language];
+    gender = [sCopy gender];
+    voice_name = [sCopy voice_name];
+    meta_info = [sCopy meta_info];
+    app_id = [meta_info app_id];
+    v25 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(sCopy, "preferred_voice_type")}];
     *buf = 138414082;
-    v55 = v40;
+    v55 = speech_id;
     v56 = 2112;
-    v57 = v39;
+    v57 = session_id;
     v58 = 2112;
-    v59 = v38;
+    v59 = stream_id;
     v60 = 2112;
-    v61 = v20;
+    v61 = language;
     v62 = 2112;
-    v63 = v21;
+    v63 = gender;
     v64 = 2112;
-    v65 = v22;
+    v65 = voice_name;
     v66 = 2112;
-    v67 = v24;
+    v67 = app_id;
     v68 = 2112;
     v69 = v25;
     _os_log_impl(&dword_269079000, v19, OS_LOG_TYPE_INFO, "Sent Osprey Blazar streaming request with speech_id '%@', session_id '%@', stream_id '%@', locale '%@', gender '%@', voice '%@', app_id '%@', voice_type '%@'", buf, 0x52u);
   }
 
   v26 = [objc_alloc(MEMORY[0x277D37A50]) initWithMethodName:@"/siri.speech.qss_fb.Blazar/TextToSpeechRouterStreaming"];
-  v27 = [(QSSTextToSpeechRouterStreamingStreamingRequest *)v18 flatbuffData];
-  [v26 setData:v27];
+  flatbuffData = [(QSSTextToSpeechRouterStreamingStreamingRequest *)v18 flatbuffData];
+  [v26 setData:flatbuffData];
 
-  v28 = [v45 mutableCopy];
-  v29 = [(SFSSOspreyTTSClient *)self carryClusterId];
-  v30 = [v29 length] == 0;
+  v28 = [headersCopy mutableCopy];
+  carryClusterId = [(SFSSOspreyTTSClient *)self carryClusterId];
+  v30 = [carryClusterId length] == 0;
 
   if (!v30)
   {
-    v31 = [(SFSSOspreyTTSClient *)self carryClusterId];
-    [v28 setObject:v31 forKeyedSubscript:@"supercarry-cluster-override"];
+    carryClusterId2 = [(SFSSOspreyTTSClient *)self carryClusterId];
+    [v28 setObject:carryClusterId2 forKeyedSubscript:@"supercarry-cluster-override"];
   }
 
   v32 = [v28 copy];
   [v26 setHeaders:v32];
 
-  v33 = [v14 session_id];
-  [v26 setClientTraceId:v33];
+  session_id2 = [sCopy session_id];
+  [v26 setClientTraceId:session_id2];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -339,77 +339,77 @@ void __95__SFSSOspreyTTSClient_streamBlazarTTS_headers_beginHandler_chunkHandler
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamNativeTTS:(id)a3 headers:(id)a4 beginHandler:(id)a5 chunkHandler:(id)a6 endHandler:(id)a7 completion:(id)a8
+- (void)streamNativeTTS:(id)s headers:(id)headers beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion
 {
   v70 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v45 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v41 = a8;
-  v42 = v15;
-  v43 = v16;
-  v44 = v17;
+  sCopy = s;
+  headersCopy = headers;
+  handlerCopy = handler;
+  chunkHandlerCopy = chunkHandler;
+  endHandlerCopy = endHandler;
+  completionCopy = completion;
+  v42 = handlerCopy;
+  v43 = chunkHandlerCopy;
+  v44 = endHandlerCopy;
   v18 = objc_alloc_init(QSSMutableTextToSpeechStreamingStreamingRequest);
   [(QSSMutableTextToSpeechStreamingStreamingRequest *)v18 setContent_type:1];
-  [(QSSMutableTextToSpeechStreamingStreamingRequest *)v18 setContentAsQSSStartTextToSpeechStreamingRequest:v14];
+  [(QSSMutableTextToSpeechStreamingStreamingRequest *)v18 setContentAsQSSStartTextToSpeechStreamingRequest:sCopy];
   v52[0] = 0;
   v52[1] = v52;
   v52[2] = 0x3032000000;
   v52[3] = __Block_byref_object_copy_;
   v52[4] = __Block_byref_object_dispose_;
-  v53 = MEMORY[0x26D631550](v41);
+  v53 = MEMORY[0x26D631550](completionCopy);
   v19 = SFSSGetLogObject();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v40 = [v14 speech_id];
-    v39 = [v14 session_id];
-    v38 = [v14 stream_id];
-    v20 = [v14 language];
-    v21 = [v14 gender];
-    v22 = [v14 voice_name];
-    v23 = [v14 meta_info];
-    v24 = [v23 app_id];
-    v25 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "preferred_voice_type")}];
+    speech_id = [sCopy speech_id];
+    session_id = [sCopy session_id];
+    stream_id = [sCopy stream_id];
+    language = [sCopy language];
+    gender = [sCopy gender];
+    voice_name = [sCopy voice_name];
+    meta_info = [sCopy meta_info];
+    app_id = [meta_info app_id];
+    v25 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(sCopy, "preferred_voice_type")}];
     *buf = 138414082;
-    v55 = v40;
+    v55 = speech_id;
     v56 = 2112;
-    v57 = v39;
+    v57 = session_id;
     v58 = 2112;
-    v59 = v38;
+    v59 = stream_id;
     v60 = 2112;
-    v61 = v20;
+    v61 = language;
     v62 = 2112;
-    v63 = v21;
+    v63 = gender;
     v64 = 2112;
-    v65 = v22;
+    v65 = voice_name;
     v66 = 2112;
-    v67 = v24;
+    v67 = app_id;
     v68 = 2112;
     v69 = v25;
     _os_log_impl(&dword_269079000, v19, OS_LOG_TYPE_INFO, "Sent Osprey streaming request with speech_id '%@', session_id '%@', stream_id '%@', locale '%@', gender '%@', voice '%@', app_id '%@', voice_type '%@'", buf, 0x52u);
   }
 
   v26 = [objc_alloc(MEMORY[0x277D37A50]) initWithMethodName:@"/siri.speech.qss_fb.Tts/TextToSpeechStreaming"];
-  v27 = [(QSSTextToSpeechStreamingStreamingRequest *)v18 flatbuffData];
-  [v26 setData:v27];
+  flatbuffData = [(QSSTextToSpeechStreamingStreamingRequest *)v18 flatbuffData];
+  [v26 setData:flatbuffData];
 
-  v28 = [v45 mutableCopy];
-  v29 = [(SFSSOspreyTTSClient *)self carryClusterId];
-  v30 = [v29 length] == 0;
+  v28 = [headersCopy mutableCopy];
+  carryClusterId = [(SFSSOspreyTTSClient *)self carryClusterId];
+  v30 = [carryClusterId length] == 0;
 
   if (!v30)
   {
-    v31 = [(SFSSOspreyTTSClient *)self carryClusterId];
-    [v28 setObject:v31 forKeyedSubscript:@"supercarry-cluster-override"];
+    carryClusterId2 = [(SFSSOspreyTTSClient *)self carryClusterId];
+    [v28 setObject:carryClusterId2 forKeyedSubscript:@"supercarry-cluster-override"];
   }
 
   v32 = [v28 copy];
   [v26 setHeaders:v32];
 
-  v33 = [v14 session_id];
-  [v26 setClientTraceId:v33];
+  session_id2 = [sCopy session_id];
+  [v26 setClientTraceId:session_id2];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -668,51 +668,51 @@ void __95__SFSSOspreyTTSClient_streamNativeTTS_headers_beginHandler_chunkHandler
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamTTS:(id)a3 headers:(id)a4 beginHandler:(id)a5 chunkHandler:(id)a6 endHandler:(id)a7 completion:(id)a8
+- (void)streamTTS:(id)s headers:(id)headers beginHandler:(id)handler chunkHandler:(id)chunkHandler endHandler:(id)endHandler completion:(id)completion
 {
-  v21 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  [v21 setSpeech_id:self->_deviceId];
-  v19 = [MEMORY[0x277CCAD78] UUID];
-  v20 = [v19 UUIDString];
-  [v21 setStream_id:v20];
+  sCopy = s;
+  headersCopy = headers;
+  handlerCopy = handler;
+  chunkHandlerCopy = chunkHandler;
+  endHandlerCopy = endHandler;
+  completionCopy = completion;
+  [sCopy setSpeech_id:self->_deviceId];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [sCopy setStream_id:uUIDString];
 
   if ([(SFSSOspreyTTSClient *)self useBlazar])
   {
-    [(SFSSOspreyTTSClient *)self streamBlazarTTS:v21 headers:v14 beginHandler:v15 chunkHandler:v16 endHandler:v17 completion:v18];
+    [(SFSSOspreyTTSClient *)self streamBlazarTTS:sCopy headers:headersCopy beginHandler:handlerCopy chunkHandler:chunkHandlerCopy endHandler:endHandlerCopy completion:completionCopy];
   }
 
   else
   {
-    [(SFSSOspreyTTSClient *)self streamNativeTTS:v21 headers:v14 beginHandler:v15 chunkHandler:v16 endHandler:v17 completion:v18];
+    [(SFSSOspreyTTSClient *)self streamNativeTTS:sCopy headers:headersCopy beginHandler:handlerCopy chunkHandler:chunkHandlerCopy endHandler:endHandlerCopy completion:completionCopy];
   }
 }
 
-- (void)performCustomBidirectionalStreamingRequest:(id)a3 handler:(id)a4 completion:(id)a5
+- (void)performCustomBidirectionalStreamingRequest:(id)request handler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__SFSSOspreyTTSClient_performCustomBidirectionalStreamingRequest_handler_completion___block_invoke;
   v17[3] = &unk_279C4C178;
-  v11 = v8;
+  v11 = requestCopy;
   v18 = v11;
   v12 = MEMORY[0x26D631550](v17);
-  v13 = [v11 methodName];
-  v14 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:v13 requestBuilder:v12 streamingResponseHandler:v9 completion:v10];
+  methodName = [v11 methodName];
+  v14 = [(OspreyChannel *)self bidirectionalStreamingRequestWithMethodName:methodName requestBuilder:v12 streamingResponseHandler:handlerCopy completion:completionCopy];
 
-  v15 = [v11 data];
+  data = [v11 data];
 
-  if (v15)
+  if (data)
   {
-    v16 = [v11 data];
-    [v14 writeFrame:v16];
+    data2 = [v11 data];
+    [v14 writeFrame:data2];
 
     [v14 finishWriting];
   }
@@ -830,9 +830,9 @@ void __66__SFSSOspreyTTSClient_initWithURL_useBlazar_enableAuthentication___bloc
   }
 
   v5 = +[SFSpeechSynthesisInternalSetting sharedInstance];
-  v6 = [v5 ospreyEndpointURL];
+  ospreyEndpointURL = [v5 ospreyEndpointURL];
 
-  v7 = [(SFSSOspreyTTSClient *)v3 initWithURL:v6];
+  v7 = [(SFSSOspreyTTSClient *)v3 initWithURL:ospreyEndpointURL];
   return v7;
 }
 

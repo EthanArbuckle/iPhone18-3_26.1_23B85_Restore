@@ -1,11 +1,11 @@
 @interface NSLinguisticTagger
-+ (BOOL)supportsLanguage:(id)a3;
++ (BOOL)supportsLanguage:(id)language;
 + (NSArray)availableTagSchemesForUnit:(NSLinguisticTaggerUnit)unit language:(NSString *)language;
 + (NSArray)tagsForString:(NSString *)string range:(NSRange)range unit:(NSLinguisticTaggerUnit)unit scheme:(NSLinguisticTagScheme)scheme options:(NSLinguisticTaggerOptions)options orthography:(NSOrthography *)orthography tokenRanges:(NSArray *)tokenRanges;
 + (NSLinguisticTag)tagForString:(NSString *)string atIndex:(NSUInteger)charIndex unit:(NSLinguisticTaggerUnit)unit scheme:(NSLinguisticTagScheme)scheme orthography:(NSOrthography *)orthography tokenRange:(NSRangePointer)tokenRange;
 + (NSString)dominantLanguageForString:(NSString *)string;
 + (void)enumerateTagsForString:(NSString *)string range:(NSRange)range unit:(NSLinguisticTaggerUnit)unit scheme:(NSLinguisticTagScheme)scheme options:(NSLinguisticTaggerOptions)options orthography:(NSOrthography *)orthography usingBlock:(void *)block;
-- (BOOL)_acceptSentenceTerminatorRange:(_NSRange)a3 paragraphRange:(_NSRange)a4 tokens:(_NSLTToken *)a5 count:(unint64_t)a6 tokenIndex:(unint64_t)a7;
+- (BOOL)_acceptSentenceTerminatorRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange tokens:(_NSLTToken *)tokens count:(unint64_t)count tokenIndex:(unint64_t)index;
 - (NSArray)possibleTagsAtIndex:(NSUInteger)charIndex scheme:(NSString *)tagScheme tokenRange:(NSRangePointer)tokenRange sentenceRange:(NSRangePointer)sentenceRange scores:(NSArray *)scores;
 - (NSArray)tagsInRange:(NSRange)range scheme:(NSString *)tagScheme options:(NSLinguisticTaggerOptions)opts tokenRanges:(NSArray *)tokenRanges;
 - (NSArray)tagsInRange:(NSRange)range unit:(NSLinguisticTaggerUnit)unit scheme:(NSLinguisticTagScheme)scheme options:(NSLinguisticTaggerOptions)options tokenRanges:(NSArray *)tokenRanges;
@@ -14,23 +14,23 @@
 - (NSOrthography)orthographyAtIndex:(NSUInteger)charIndex effectiveRange:(NSRangePointer)effectiveRange;
 - (NSRange)tokenRangeAtIndex:(NSUInteger)charIndex unit:(NSLinguisticTaggerUnit)unit;
 - (NSString)dominantLanguage;
-- (_NSRange)_sentenceRangeForRange:(_NSRange)a3;
-- (id)_tagAtIndex:(unint64_t)a3 scheme:(id)a4 tokenRange:(_NSRange *)a5 sentenceRange:(_NSRange *)a6;
-- (id)_tagSchemeForScheme:(id)a3;
-- (id)_tokenDataForParagraphAtIndex:(unint64_t)a3 paragraphRange:(_NSRange *)a4 requireLemmas:(BOOL)a5 requirePartsOfSpeech:(BOOL)a6 requireNamedEntities:(BOOL)a7;
-- (id)_tokenDataForParagraphAtIndex:(unint64_t)a3 paragraphRange:(_NSRange *)a4 tagScheme:(id)a5;
-- (id)_tokenDataForParagraphRange:(_NSRange)a3 requireLemmas:(BOOL)a4 requirePartsOfSpeech:(BOOL)a5 requireNamedEntities:(BOOL)a6;
+- (_NSRange)_sentenceRangeForRange:(_NSRange)range;
+- (id)_tagAtIndex:(unint64_t)index scheme:(id)scheme tokenRange:(_NSRange *)range sentenceRange:(_NSRange *)sentenceRange;
+- (id)_tagSchemeForScheme:(id)scheme;
+- (id)_tokenDataForParagraphAtIndex:(unint64_t)index paragraphRange:(_NSRange *)range requireLemmas:(BOOL)lemmas requirePartsOfSpeech:(BOOL)speech requireNamedEntities:(BOOL)entities;
+- (id)_tokenDataForParagraphAtIndex:(unint64_t)index paragraphRange:(_NSRange *)range tagScheme:(id)scheme;
+- (id)_tokenDataForParagraphRange:(_NSRange)range requireLemmas:(BOOL)lemmas requirePartsOfSpeech:(BOOL)speech requireNamedEntities:(BOOL)entities;
 - (id)description;
-- (void)_acceptSentencesForParagraphRange:(_NSRange)a3;
-- (void)_analyzePunctuationTokensInRange:(_NSRange)a3 paragraphRange:(_NSRange)a4;
-- (void)_analyzeTokensInInterwordRange:(_NSRange)a3 paragraphRange:(_NSRange)a4;
-- (void)_analyzeTokensInWordRange:(_NSRange)a3 paragraphRange:(_NSRange)a4;
-- (void)_calculateSentenceRangesForParagraphRange:(_NSRange)a3;
-- (void)_detectOrthographyIfNeededAtIndex:(unint64_t)a3;
-- (void)_enumerateTagsInRange:(_NSRange)a3 scheme:(id)a4 options:(unint64_t)a5 usingBlock:(id)a6;
-- (void)_nativeSetOrthography:(id)a3 range:(_NSRange)a4;
-- (void)_setOrthography:(id)a3 range:(_NSRange)a4;
-- (void)_tokenizeParagraphAtIndex:(unint64_t)a3 requireLemmas:(BOOL)a4 requirePartsOfSpeech:(BOOL)a5 requireNamedEntities:(BOOL)a6;
+- (void)_acceptSentencesForParagraphRange:(_NSRange)range;
+- (void)_analyzePunctuationTokensInRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange;
+- (void)_analyzeTokensInInterwordRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange;
+- (void)_analyzeTokensInWordRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange;
+- (void)_calculateSentenceRangesForParagraphRange:(_NSRange)range;
+- (void)_detectOrthographyIfNeededAtIndex:(unint64_t)index;
+- (void)_enumerateTagsInRange:(_NSRange)range scheme:(id)scheme options:(unint64_t)options usingBlock:(id)block;
+- (void)_nativeSetOrthography:(id)orthography range:(_NSRange)range;
+- (void)_setOrthography:(id)orthography range:(_NSRange)range;
+- (void)_tokenizeParagraphAtIndex:(unint64_t)index requireLemmas:(BOOL)lemmas requirePartsOfSpeech:(BOOL)speech requireNamedEntities:(BOOL)entities;
 - (void)dealloc;
 - (void)enumerateTagsInRange:(NSRange)range unit:(NSLinguisticTaggerUnit)unit scheme:(NSLinguisticTagScheme)scheme options:(NSLinguisticTaggerOptions)options usingBlock:(void *)block;
 - (void)setOrthography:(NSOrthography *)orthography range:(NSRange)range;
@@ -86,7 +86,7 @@
   }
 
   v7 = [MEMORY[0x1E695DF70] arrayWithArray:tagSchemes];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (([v7 containsObject:@"Language"] & 1) == 0)
   {
     [v7 addObject:@"Language"];
@@ -99,12 +99,12 @@
 
   if ((opts & 0x20000000) != 0)
   {
-    [v8 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"LSTMLanguageIdentifier"}];
+    [dictionary setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"LSTMLanguageIdentifier"}];
   }
 
   if ((opts & 0x10000000) != 0)
   {
-    [v8 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"SmartTokenBreak"}];
+    [dictionary setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"SmartTokenBreak"}];
   }
 
   if (qword_1ED43FF98 != -1)
@@ -114,7 +114,7 @@
 
   if (_MergedGlobals_142 == 1)
   {
-    v6->_reserved = off_1ED43FE78(v7, v8);
+    v6->_reserved = off_1ED43FE78(v7, dictionary);
   }
 
   [qword_1ED43FE70 lock];
@@ -259,7 +259,7 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   return v3;
 }
 
-- (id)_tagSchemeForScheme:(id)a3
+- (id)_tagSchemeForScheme:(id)scheme
 {
   if (![(NSArray *)self->_schemes containsObject:?])
   {
@@ -267,31 +267,31 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   }
 
   v4 = @"TokenType";
-  if (([@"TokenType" isEqualToString:a3] & 1) == 0)
+  if (([@"TokenType" isEqualToString:scheme] & 1) == 0)
   {
     v4 = @"LexicalClass";
-    if (([@"LexicalClass" isEqualToString:a3] & 1) == 0)
+    if (([@"LexicalClass" isEqualToString:scheme] & 1) == 0)
     {
       v4 = @"NameType";
-      if (([@"NameType" isEqualToString:a3] & 1) == 0)
+      if (([@"NameType" isEqualToString:scheme] & 1) == 0)
       {
         v4 = @"NameTypeOrLexicalClass";
-        if (([@"NameTypeOrLexicalClass" isEqualToString:a3] & 1) == 0)
+        if (([@"NameTypeOrLexicalClass" isEqualToString:scheme] & 1) == 0)
         {
           v4 = @"Lemma";
-          if (([@"Lemma" isEqualToString:a3] & 1) == 0)
+          if (([@"Lemma" isEqualToString:scheme] & 1) == 0)
           {
             v4 = @"Language";
-            if (([@"Language" isEqualToString:a3] & 1) == 0)
+            if (([@"Language" isEqualToString:scheme] & 1) == 0)
             {
               v4 = @"Script";
-              if (([@"Script" isEqualToString:a3] & 1) == 0)
+              if (([@"Script" isEqualToString:scheme] & 1) == 0)
               {
                 v4 = @"PossibleClasses";
-                if (([@"PossibleClasses" isEqualToString:a3] & 1) == 0)
+                if (([@"PossibleClasses" isEqualToString:scheme] & 1) == 0)
                 {
                   v4 = @"InternalClass";
-                  if (![@"InternalClass" isEqualToString:a3])
+                  if (![@"InternalClass" isEqualToString:scheme])
                   {
                     return 0;
                   }
@@ -307,16 +307,16 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   return v4;
 }
 
-+ (BOOL)supportsLanguage:(id)a3
++ (BOOL)supportsLanguage:(id)language
 {
-  if (!a3)
+  if (!language)
   {
     return 0;
   }
 
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"en", @"fr", @"de", @"es", @"it", @"pt", @"ru", @"tr", @"ja", 0}];
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:language];
 }
 
 - (void)setString:(NSString *)string
@@ -419,30 +419,30 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
     }
 
     v17 = self->_tokenArray;
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     if (v12)
     {
-      [v17 replaceObjectsInRange:v13 withObject:v12 length:{v18, v12 + delta}];
+      [v17 replaceObjectsInRange:v13 withObject:v12 length:{null, v12 + delta}];
     }
 
     else
     {
-      [v17 insertObject:v18 range:{v13, delta}];
+      [v17 insertObject:null range:{v13, delta}];
     }
   }
 
   orthographyArray = self->_orthographyArray;
   if (orthographyArray)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
     if (v8)
     {
-      [orthographyArray replaceObjectsInRange:location withObject:v8 length:{v20, length}];
+      [orthographyArray replaceObjectsInRange:location withObject:v8 length:{null2, length}];
     }
 
     else
     {
-      [orthographyArray insertObject:v20 range:{location, length}];
+      [orthographyArray insertObject:null2 range:{location, length}];
     }
   }
 
@@ -453,14 +453,14 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   }
 }
 
-- (void)_setOrthography:(id)a3 range:(_NSRange)a4
+- (void)_setOrthography:(id)orthography range:(_NSRange)range
 {
   if (self->_reserved)
   {
-    length = a4.length;
-    location = a4.location;
-    v7 = [a3 dominantLanguage];
-    v8 = v7 ? CFLocaleCreate(0, v7) : 0;
+    length = range.length;
+    location = range.location;
+    dominantLanguage = [orthography dominantLanguage];
+    v8 = dominantLanguage ? CFLocaleCreate(0, dominantLanguage) : 0;
     off_1ED43FF20(self->_reserved, v8, location, length);
     if (v8)
     {
@@ -470,10 +470,10 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   }
 }
 
-- (void)_nativeSetOrthography:(id)a3 range:(_NSRange)a4
+- (void)_nativeSetOrthography:(id)orthography range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = [(NSString *)self->_string length];
   if (v9 < length || location > v9 - length)
   {
@@ -484,7 +484,7 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   if (length)
   {
     orthographyArray = self->_orthographyArray;
-    if (a3 | orthographyArray)
+    if (orthography | orthographyArray)
     {
       if (!orthographyArray)
       {
@@ -533,23 +533,23 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
       }
 
       v19 = self->_orthographyArray;
-      if (a3)
+      if (orthography)
       {
         v20 = v19;
         v21 = v17;
         v22 = v18;
-        v23 = a3;
+        orthographyCopy = orthography;
       }
 
       else
       {
-        v23 = [MEMORY[0x1E695DFB0] null];
+        orthographyCopy = [MEMORY[0x1E695DFB0] null];
         v20 = v19;
         v21 = v17;
         v22 = v18;
       }
 
-      [v20 replaceObjectsInRange:v21 withObject:v22 length:{v23, v18}];
+      [v20 replaceObjectsInRange:v21 withObject:v22 length:{orthographyCopy, v18}];
     }
   }
 }
@@ -566,16 +566,16 @@ NSLock *__49__NSLinguisticTagger_initWithTagSchemes_options___block_invoke()
   }
 }
 
-- (void)_detectOrthographyIfNeededAtIndex:(unint64_t)a3
+- (void)_detectOrthographyIfNeededAtIndex:(unint64_t)index
 {
   orthographyArray = self->_orthographyArray;
-  if (!orthographyArray || [orthographyArray count] <= a3 || (v6 = objc_msgSend(self->_orthographyArray, "objectAtIndex:effectiveRange:", a3, 0), objc_msgSend(v6, "isEqual:", objc_msgSend(MEMORY[0x1E695DFB0], "null"))))
+  if (!orthographyArray || [orthographyArray count] <= index || (v6 = objc_msgSend(self->_orthographyArray, "objectAtIndex:effectiveRange:", index, 0), objc_msgSend(v6, "isEqual:", objc_msgSend(MEMORY[0x1E695DFB0], "null"))))
   {
     reserved = self->_reserved;
     if (reserved)
     {
-      v8 = off_1ED43FF28(reserved, 2, a3, @"Script");
-      v9 = off_1ED43FF28(self->_reserved, 2, a3, @"Language");
+      v8 = off_1ED43FF28(reserved, 2, index, @"Script");
+      v9 = off_1ED43FF28(self->_reserved, 2, index, @"Language");
       v10 = v9;
       if (v8)
       {
@@ -605,9 +605,9 @@ LABEL_12:
 
       else
       {
-        v12 = [(NSString *)self->_string paragraphRangeForRange:a3, 0];
+        v12 = [(NSString *)self->_string paragraphRangeForRange:index, 0];
         v14 = v13;
-        v15 = off_1ED43FF30(self->_reserved, 2, a3);
+        v15 = off_1ED43FF30(self->_reserved, 2, index);
         v17 = v15;
         if (!v15 || (v18 = [v15 objectForKey:v8], v16 = v17, !v18))
         {
@@ -698,10 +698,10 @@ LABEL_14:
   }
 }
 
-- (_NSRange)_sentenceRangeForRange:(_NSRange)a3
+- (_NSRange)_sentenceRangeForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v20 = *MEMORY[0x1E69E9840];
   v7 = [(NSString *)[(NSLinguisticTagger *)self string] length];
   v8 = location + length;
@@ -759,16 +759,16 @@ LABEL_14:
   return result;
 }
 
-- (id)_tagAtIndex:(unint64_t)a3 scheme:(id)a4 tokenRange:(_NSRange *)a5 sentenceRange:(_NSRange *)a6
+- (id)_tagAtIndex:(unint64_t)index scheme:(id)scheme tokenRange:(_NSRange *)range sentenceRange:(_NSRange *)sentenceRange
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([(NSString *)self->_string length]<= a3)
+  if ([(NSString *)self->_string length]<= index)
   {
     v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: Range or index out of bounds", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v18);
   }
 
-  v12 = [(NSLinguisticTagger *)self _tagSchemeForScheme:a4];
+  v12 = [(NSLinguisticTagger *)self _tagSchemeForScheme:scheme];
   if (!v12)
   {
     return 0;
@@ -781,27 +781,27 @@ LABEL_14:
     return 0;
   }
 
-  v15 = off_1ED43FF28(reserved, 0, a3, v13);
+  v15 = off_1ED43FF28(reserved, 0, index, v13);
   v16 = tagForNLTag(v15);
   if (v15)
   {
     CFRelease(v15);
   }
 
-  if (a5)
+  if (range)
   {
     v19 = 0;
     v20 = 0;
-    off_1ED43FF38(&v19, self->_reserved, 0, a3);
-    *a5 = v19;
+    off_1ED43FF38(&v19, self->_reserved, 0, index);
+    *range = v19;
   }
 
-  if (a6)
+  if (sentenceRange)
   {
     v19 = 0;
     v20 = 0;
-    off_1ED43FF38(&v19, self->_reserved, 1, a3);
-    *a6 = v19;
+    off_1ED43FF38(&v19, self->_reserved, 1, index);
+    *sentenceRange = v19;
   }
 
   return v16;
@@ -832,12 +832,12 @@ LABEL_14:
   v122 = 0;
   v121 = 0;
   v18 = [(NSLinguisticTagger *)self _tokenDataForParagraphAtIndex:charIndex paragraphRange:&v123 tagScheme:v16];
-  v19 = [v18 bytes];
+  bytes = [v18 bytes];
   v20 = [v18 length] >> 4;
   v21 = v123;
   v22 = v124;
-  v23 = sentenceRangeAtIndexInTokens(charIndex, v123, v124, v19, v20, &v121);
-  v25 = v21 + *(v19 + 16 * v121);
+  v23 = sentenceRangeAtIndexInTokens(charIndex, v123, v124, bytes, v20, &v121);
+  v25 = v21 + *(bytes + 16 * v121);
   if (v25 > charIndex)
   {
     v118 = scores;
@@ -880,7 +880,7 @@ LABEL_48:
 
   v118 = scores;
   v117 = sentenceRange;
-  v39 = (v19 + 16 * v121);
+  v39 = (bytes + 16 * v121);
   v40 = v121 + 1;
   while (1)
   {
@@ -1185,18 +1185,18 @@ LABEL_157:
         p_location = &v120->location;
         if (v74 == 2)
         {
-          v77 = [v76 allScripts];
+          allScripts = [v76 allScripts];
           v78 = @"Jpan";
-          if (([v77 containsObject:@"Jpan"] & 1) == 0)
+          if (([allScripts containsObject:@"Jpan"] & 1) == 0)
           {
             v78 = @"Kore";
-            if (([v77 containsObject:@"Kore"] & 1) == 0)
+            if (([allScripts containsObject:@"Kore"] & 1) == 0)
             {
               v78 = @"Hans";
-              if (([v77 containsObject:@"Hans"] & 1) == 0)
+              if (([allScripts containsObject:@"Hans"] & 1) == 0)
               {
                 v78 = @"Hant";
-                if (![v77 containsObject:@"Hant"])
+                if (![allScripts containsObject:@"Hant"])
                 {
                   v78 = @"Hani";
                 }
@@ -1276,14 +1276,14 @@ LABEL_157:
         if (v82)
         {
           v83 = v82;
-          v84 = [MEMORY[0x1E695DF90] dictionary];
-          lemmatizerAddTagsForString(v83, [(NSString *)v113 substringWithRange:v21 + v80, v81], v84);
-          v85 = [v84 keysSortedByValueUsingComparator:&__block_literal_global_619];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          lemmatizerAddTagsForString(v83, [(NSString *)v113 substringWithRange:v21 + v80, v81], dictionary);
+          v85 = [dictionary keysSortedByValueUsingComparator:&__block_literal_global_619];
           v86 = v85;
           if (v17 != @"PossibleClasses")
           {
             v114 = [MEMORY[0x1E695DEC8] arrayWithArray:v85];
-            v87 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v131 = 0u;
             v132 = 0u;
             v133 = 0u;
@@ -1303,7 +1303,7 @@ LABEL_157:
                     objc_enumerationMutation(v86);
                   }
 
-                  v90 += [objc_msgSend(v84 objectForKey:{*(*(&v131 + 1) + 8 * i)), "integerValue"}];
+                  v90 += [objc_msgSend(dictionary objectForKey:{*(*(&v131 + 1) + 8 * i)), "integerValue"}];
                 }
 
                 v89 = [v86 countByEnumeratingWithState:&v131 objects:v130 count:16];
@@ -1336,8 +1336,8 @@ LABEL_157:
                     objc_enumerationMutation(v86);
                   }
 
-                  *&v109 = [objc_msgSend(v84 objectForKey:{*(*(&v126 + 1) + 8 * j)), "integerValue"}] / v93;
-                  [v87 addObject:{+[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v109)}];
+                  *&v109 = [objc_msgSend(dictionary objectForKey:{*(*(&v126 + 1) + 8 * j)), "integerValue"}] / v93;
+                  [array addObject:{+[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v109)}];
                 }
 
                 v106 = [v86 countByEnumeratingWithState:&v126 objects:v125 count:16];
@@ -1346,7 +1346,7 @@ LABEL_157:
               while (v106);
             }
 
-            v103 = [MEMORY[0x1E695DEC8] arrayWithArray:v87];
+            v103 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
             if (v114)
             {
               v33 = [MEMORY[0x1E695DEC8] arrayWithArray:?];
@@ -1601,7 +1601,7 @@ LABEL_49:
   v24 = 0x3052000000;
   v25 = __Block_byref_object_copy__23;
   v26 = __Block_byref_object_dispose__23;
-  v27 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3052000000;
@@ -1609,15 +1609,15 @@ LABEL_49:
   v20 = __Block_byref_object_dispose__23;
   if (tokenRanges)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
-    v12 = 0;
+    array2 = 0;
   }
 
-  v21 = v12;
+  v21 = array2;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__NSLinguisticTagger_tagsInRange_scheme_options_tokenRanges___block_invoke;
@@ -1749,30 +1749,30 @@ void __74__NSLinguisticTagger_enumerateTagsInRange_unit_scheme_options_usingBloc
   length = range.length;
   location = range.location;
   v17[6] = *MEMORY[0x1E69E9840];
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (tokenRanges)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
-    v15 = 0;
+    array2 = 0;
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __66__NSLinguisticTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke;
   v17[3] = &unk_1E69F7220;
-  v17[4] = v14;
-  v17[5] = v15;
+  v17[4] = array;
+  v17[5] = array2;
   [(NSLinguisticTagger *)self enumerateTagsInRange:location unit:length scheme:unit options:scheme usingBlock:options, v17];
   if (tokenRanges)
   {
-    *tokenRanges = v15;
+    *tokenRanges = array2;
   }
 
-  return v14;
+  return array;
 }
 
 uint64_t __66__NSLinguisticTagger_tagsInRange_unit_scheme_options_tokenRanges___block_invoke(uint64_t a1, __CFString *a2, uint64_t a3, uint64_t a4)
@@ -1880,9 +1880,9 @@ uint64_t __66__NSLinguisticTagger_tagsInRange_unit_scheme_options_tokenRanges___
     [(NSLinguisticTagger *)v16 setOrthography:orthography range:0, [(NSString *)string length]];
   }
 
-  v17 = [(NSLinguisticTagger *)v16 tagsInRange:location unit:length scheme:unit options:scheme tokenRanges:options, tokenRanges];
+  tokenRanges = [(NSLinguisticTagger *)v16 tagsInRange:location unit:length scheme:unit options:scheme tokenRanges:options, tokenRanges];
 
-  return v17;
+  return tokenRanges;
 }
 
 + (void)enumerateTagsForString:(NSString *)string range:(NSRange)range unit:(NSLinguisticTaggerUnit)unit scheme:(NSLinguisticTagScheme)scheme options:(NSLinguisticTaggerOptions)options orthography:(NSOrthography *)orthography usingBlock:(void *)block
@@ -1905,22 +1905,22 @@ uint64_t __66__NSLinguisticTagger_tagsInRange_unit_scheme_options_tokenRanges___
   v4 = [NSLinguisticTagger alloc];
   v5 = -[NSLinguisticTagger initWithTagSchemes:options:](v4, "initWithTagSchemes:options:", [MEMORY[0x1E695DEC8] arrayWithObject:@"Language"], 0x80000000);
   [(NSLinguisticTagger *)v5 setString:string];
-  v6 = [(NSLinguisticTagger *)v5 dominantLanguage];
+  dominantLanguage = [(NSLinguisticTagger *)v5 dominantLanguage];
 
-  return v6;
+  return dominantLanguage;
 }
 
-- (BOOL)_acceptSentenceTerminatorRange:(_NSRange)a3 paragraphRange:(_NSRange)a4 tokens:(_NSLTToken *)a5 count:(unint64_t)a6 tokenIndex:(unint64_t)a7
+- (BOOL)_acceptSentenceTerminatorRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange tokens:(_NSLTToken *)tokens count:(unint64_t)count tokenIndex:(unint64_t)index
 {
-  location = a4.location;
-  if ([(NSString *)self->_string characterAtIndex:a3.location, a3.length, a4.location, a4.length]== 46)
+  location = paragraphRange.location;
+  if ([(NSString *)self->_string characterAtIndex:range.location, range.length, paragraphRange.location, paragraphRange.length]== 46)
   {
-    if (!a7)
+    if (!index)
     {
       goto LABEL_14;
     }
 
-    v11 = &a5[a7];
+    v11 = &tokens[index];
     if (v11[-1].var2 - 14 > 0x4A)
     {
       goto LABEL_14;
@@ -1950,13 +1950,13 @@ uint64_t __66__NSLinguisticTagger_tagsInRange_unit_scheme_options_tokenRanges___
     if (v11[-1].var1)
     {
       v13 = [(NSString *)self->_string substringWithRange:location + v11[-1].var0];
-      v14 = [(NSString *)v13 lowercaseString];
-      if ([qword_1ED43FF58 containsObject:v13] & 1) != 0 || (objc_msgSend(qword_1ED43FF50, "containsObject:", v14))
+      lowercaseString = [(NSString *)v13 lowercaseString];
+      if ([qword_1ED43FF58 containsObject:v13] & 1) != 0 || (objc_msgSend(qword_1ED43FF50, "containsObject:", lowercaseString))
       {
         return 0;
       }
 
-      v15 = [@"no" isEqualToString:v14] ^ 1;
+      v15 = [@"no" isEqualToString:lowercaseString] ^ 1;
     }
 
     else
@@ -1965,16 +1965,16 @@ LABEL_14:
       v15 = 1;
     }
 
-    if (a7 + 1 < a6)
+    if (index + 1 < count)
     {
-      v16 = &a5[a7 + 1];
+      v16 = &tokens[index + 1];
       var2 = v16->var2;
       if ((var2 - 14) > 0x4A)
       {
         if ((var2 - 2) <= 0xB)
         {
           var0 = v16->var0;
-          if (a5[a7].var1 + a5[a7].var0 == var0)
+          if (tokens[index].var1 + tokens[index].var0 == var0)
           {
             [(NSString *)self->_string rangeOfCharacterFromSet:qword_1ED43FED8 options:8 range:location + var0, v16->var1];
             if (!v19 || [(NSString *)self->_string characterAtIndex:location + v16->var0]== 45)
@@ -1985,13 +1985,13 @@ LABEL_14:
         }
       }
 
-      else if (a5[a7].var1 + a5[a7].var0 == v16->var0)
+      else if (tokens[index].var1 + tokens[index].var0 == v16->var0)
       {
         return 0;
       }
 
-      v20 = a7 + 2;
-      p_var2 = &a5[a7 + 1].var2;
+      v20 = index + 2;
+      p_var2 = &tokens[index + 1].var2;
       v22 = 0x7FFFFFFFFFFFFFFFLL;
       do
       {
@@ -2013,7 +2013,7 @@ LABEL_14:
         p_var2 += 16;
       }
 
-      while (v20++ < a6);
+      while (v20++ < count);
       if (v23)
       {
         [(NSString *)self->_string rangeOfCharacterFromSet:+[NSCharacterSet options:"lowercaseLetterCharacterSet"]range:8, v22, v23];
@@ -2037,12 +2037,12 @@ LABEL_14:
   return 1;
 }
 
-- (void)_acceptSentencesForParagraphRange:(_NSRange)a3
+- (void)_acceptSentencesForParagraphRange:(_NSRange)range
 {
   if (qword_1ED43FF60 >= 2)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v6 = 0;
     v7 = 24;
     do
@@ -2092,19 +2092,19 @@ LABEL_16:
   }
 }
 
-- (void)_calculateSentenceRangesForParagraphRange:(_NSRange)a3
+- (void)_calculateSentenceRangesForParagraphRange:(_NSRange)range
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3.location + a3.length;
-  if (a3.location < a3.location + a3.length)
+  v3 = range.location + range.length;
+  if (range.location < range.location + range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v6 = 0;
     v8 = qword_1ED43FF60;
     v7 = qword_1ED43FF68;
     v9 = qword_1ED43FF70;
-    v10 = a3.location;
+    v10 = range.location;
     do
     {
       v14 = 0uLL;
@@ -2123,14 +2123,14 @@ LABEL_16:
   }
 }
 
-- (void)_analyzePunctuationTokensInRange:(_NSRange)a3 paragraphRange:(_NSRange)a4
+- (void)_analyzePunctuationTokensInRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange
 {
-  length = a4.length;
-  if (a3.length)
+  length = paragraphRange.length;
+  if (range.length)
   {
-    location = a4.location;
-    v5 = a3.length;
-    v6 = a3.location;
+    location = paragraphRange.location;
+    v5 = range.length;
+    v6 = range.location;
     while (1)
     {
       v8 = [(NSString *)self->_string rangeOfCharacterFromSet:qword_1ED43FEA8 options:0 range:v6, v5];
@@ -2546,14 +2546,14 @@ LABEL_45:
   }
 }
 
-- (void)_analyzeTokensInInterwordRange:(_NSRange)a3 paragraphRange:(_NSRange)a4
+- (void)_analyzeTokensInInterwordRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
-    v6 = a3.length;
-    v7 = a3.location;
+    length = paragraphRange.length;
+    location = paragraphRange.location;
+    v6 = range.length;
+    v7 = range.location;
     do
     {
       v9 = [(NSString *)self->_string rangeOfCharacterFromSet:qword_1ED43FE90 options:0 range:v7, v6];
@@ -2598,13 +2598,13 @@ LABEL_45:
   }
 }
 
-- (void)_analyzeTokensInWordRange:(_NSRange)a3 paragraphRange:(_NSRange)a4
+- (void)_analyzeTokensInWordRange:(_NSRange)range paragraphRange:(_NSRange)paragraphRange
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
-  v9 = [(NSString *)self->_string rangeOfCharacterFromSet:qword_1ED43FED0 options:4 range:a3.location, a3.length];
+  length = paragraphRange.length;
+  location = paragraphRange.location;
+  v6 = range.length;
+  v7 = range.location;
+  v9 = [(NSString *)self->_string rangeOfCharacterFromSet:qword_1ED43FED0 options:4 range:range.location, range.length];
   if (v10)
   {
     v11 = v9 > v7;
@@ -2805,16 +2805,16 @@ LABEL_19:
   [(NSLinguisticTagger *)self _analyzeTokensInWordRange:v36 + v7 paragraphRange:v6 - v36, location, length];
 }
 
-- (id)_tokenDataForParagraphRange:(_NSRange)a3 requireLemmas:(BOOL)a4 requirePartsOfSpeech:(BOOL)a5 requireNamedEntities:(BOOL)a6
+- (id)_tokenDataForParagraphRange:(_NSRange)range requireLemmas:(BOOL)lemmas requirePartsOfSpeech:(BOOL)speech requireNamedEntities:(BOOL)entities
 {
-  v6 = a6;
-  length = a3.length;
-  location = a3.location;
+  entitiesCopy = entities;
+  length = range.length;
+  location = range.location;
   v114 = *MEMORY[0x1E69E9840];
   memset(v113, 0, sizeof(v113));
   memset(v112, 0, sizeof(v112));
   bzero(v111, 0x800uLL);
-  v110 = self;
+  selfCopy = self;
   v115.location = location;
   v115.length = length;
   v12 = CFStringTokenizerCopyBestStringLanguage(self->_string, v115);
@@ -2891,8 +2891,8 @@ LABEL_180:
   tokenizer = v18;
   v118.location = location;
   v118.length = length;
-  CFStringTokenizerSetString(v18, v110[3], v118);
-  CharactersPtr = CFStringGetCharactersPtr(v110[3]);
+  CFStringTokenizerSetString(v18, selfCopy[3], v118);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy[3]);
   if (CharactersPtr)
   {
     v21 = CharactersPtr;
@@ -2961,7 +2961,7 @@ LABEL_23:
   }
 
   v23 = v26;
-  [(__CFString *)v110[3] getCharacters:v26 range:location, length];
+  [(__CFString *)selfCopy[3] getCharacters:v26 range:location, length];
   v25 = &v23[length];
   v24 = v23;
   if (length)
@@ -2971,13 +2971,13 @@ LABEL_23:
 
 LABEL_49:
   v100 = v23;
-  v101 = a4;
-  v99 = a5;
+  lemmasCopy = lemmas;
+  speechCopy = speech;
   v106 = location + length;
   v98 = v13;
   if (CFStringTokenizerAdvanceToNextToken(tokenizer))
   {
-    v97 = v6;
+    v97 = entitiesCopy;
     v104 = 0;
     v105 = 0;
     v37 = 0;
@@ -2995,12 +2995,12 @@ LABEL_49:
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v41);
       v43 = CurrentTokenRange.location;
       v44 = CurrentTokenRange.length;
-      if ((v39 & 1) == 0 || ([(__CFString *)v110[3] rangeOfCharacterFromSet:qword_1ED43FEB8 options:0 range:CurrentTokenRange.location, CurrentTokenRange.length], v45))
+      if ((v39 & 1) == 0 || ([(__CFString *)selfCopy[3] rangeOfCharacterFromSet:qword_1ED43FEB8 options:0 range:CurrentTokenRange.location, CurrentTokenRange.length], v45))
       {
         v46 = v40 + v37;
         if (CurrentTokenRange.location > v40 + v37)
         {
-          v47 = [(__CFString *)v110[3] characterAtIndex:CurrentTokenRange.location - 1];
+          v47 = [(__CFString *)selfCopy[3] characterAtIndex:CurrentTokenRange.location - 1];
           if (v47 == 95 || v47 == 46)
           {
             v44 = CurrentTokenRange.length + 1;
@@ -3019,9 +3019,9 @@ LABEL_49:
             break;
           }
 
-          v50 = [(__CFString *)v110[3] characterAtIndex:v44 + v108];
-          v53 = (v50 - 39) <= 0x38 && ((1 << (v50 - 39)) & 0x100000000000081) != 0 || v50 == 8217;
-          if ((v50 - 8208) >= 2 && v50 != 45)
+          v108 = [(__CFString *)selfCopy[3] characterAtIndex:v44 + v108];
+          v53 = (v108 - 39) <= 0x38 && ((1 << (v108 - 39)) & 0x100000000000081) != 0 || v108 == 8217;
+          if ((v108 - 8208) >= 2 && v108 != 45)
           {
             goto LABEL_78;
           }
@@ -3032,7 +3032,7 @@ LABEL_49:
             {
               if (v37 == 4)
               {
-                v55 = v110[3];
+                v55 = selfCopy[3];
                 v56 = @"anti";
                 goto LABEL_84;
               }
@@ -3046,10 +3046,10 @@ LABEL_78:
               goto LABEL_88;
             }
 
-            [(__CFString *)v110[3] rangeOfString:@"mal" options:9 range:v108, 3];
+            [(__CFString *)selfCopy[3] rangeOfString:@"mal" options:9 range:v108, 3];
             if (!v58)
             {
-              v55 = v110[3];
+              v55 = selfCopy[3];
               v56 = @"non";
 LABEL_84:
               [(__CFString *)v55 rangeOfString:v56 options:9 range:v108, v37, v95, v96];
@@ -3072,10 +3072,10 @@ LABEL_84:
 
           else if (v37 == 1)
           {
-            [(__CFString *)v110[3] rangeOfString:@"a" options:9 range:v108, 1];
+            [(__CFString *)selfCopy[3] rangeOfString:@"a" options:9 range:v108, 1];
             if (!v57)
             {
-              v55 = v110[3];
+              v55 = selfCopy[3];
               v56 = @"t";
               goto LABEL_84;
             }
@@ -3088,10 +3088,10 @@ LABEL_84:
               goto LABEL_78;
             }
 
-            [(__CFString *)v110[3] rangeOfString:@"co" options:9 range:v108, 2];
+            [(__CFString *)selfCopy[3] rangeOfString:@"co" options:9 range:v108, 2];
             if (!v54)
             {
-              v55 = v110[3];
+              v55 = selfCopy[3];
               v56 = @"un";
               goto LABEL_84;
             }
@@ -3117,7 +3117,7 @@ LABEL_88:
 
         if (v108 > v46)
         {
-          [(CFStringRef *)v110 _analyzeTokensInInterwordRange:v46 paragraphRange:v108 - v46, location, length];
+          [(CFStringRef *)selfCopy _analyzeTokensInInterwordRange:v46 paragraphRange:v108 - v46, location, length];
         }
 
         v62 = v108;
@@ -3159,7 +3159,7 @@ LABEL_88:
               }
             }
 
-            [(__CFString *)v110[3] rangeOfCharacterFromSet:qword_1ED43FF88 options:12 range:0, v62, v95];
+            [(__CFString *)selfCopy[3] rangeOfCharacterFromSet:qword_1ED43FF88 options:12 range:0, v62, v95];
             if (v65)
             {
               goto LABEL_105;
@@ -3177,7 +3177,7 @@ LABEL_109:
 
             else
             {
-              [(__CFString *)v110[3] rangeOfCharacterFromSet:qword_1ED43FF90 options:8 range:v63 + v62, v106 - (v63 + v62)];
+              [(__CFString *)selfCopy[3] rangeOfCharacterFromSet:qword_1ED43FF90 options:8 range:v63 + v62, v106 - (v63 + v62)];
               if (v49 != v62 && !v68)
               {
 LABEL_115:
@@ -3241,7 +3241,7 @@ LABEL_122:
             scoreOrthographyForCharacters(&v109[v62], v63, v64, v111);
             v38 = v62 - v107 + v63;
 LABEL_124:
-            [(CFStringRef *)v110 _analyzeTokensInWordRange:v62 paragraphRange:v63, location, length, v95];
+            [(CFStringRef *)selfCopy _analyzeTokensInWordRange:v62 paragraphRange:v63, location, length, v95];
             v62 = v67;
             if (v67 >= v49)
             {
@@ -3266,13 +3266,13 @@ LABEL_127:
       v73 = v105;
       if (v106 <= v107)
       {
-        v6 = v97;
+        entitiesCopy = v97;
         v74 = v104;
       }
 
       else
       {
-        v6 = v97;
+        entitiesCopy = v97;
         if (!v105)
         {
           v73 = langid_create();
@@ -3284,7 +3284,7 @@ LABEL_127:
 
     else
     {
-      v6 = v97;
+      entitiesCopy = v97;
       v74 = v104;
       v73 = v105;
     }
@@ -3331,7 +3331,7 @@ LABEL_127:
     v41 = tokenizer;
   }
 
-  v82 = [(CFStringRef *)v110 orthographyAtIndex:location effectiveRange:0, v95];
+  v82 = [(CFStringRef *)selfCopy orthographyAtIndex:location effectiveRange:0, v95];
   v83 = orthographyFlagsForScores(v113, v112, v111);
   if (!v82)
   {
@@ -3340,18 +3340,18 @@ LABEL_127:
       v84 = [NSSimpleOrthography orthographyWithFlags:v83];
       if (v84)
       {
-        [(CFStringRef *)v110 setOrthography:v84 range:location, length];
+        [(CFStringRef *)selfCopy setOrthography:v84 range:location, length];
       }
     }
   }
 
   if (v106 > v40 + v37)
   {
-    [(CFStringRef *)v110 _analyzeTokensInInterwordRange:v40 + v37 paragraphRange:v106 - (v40 + v37), location, length];
+    [(CFStringRef *)selfCopy _analyzeTokensInInterwordRange:v40 + v37 paragraphRange:v106 - (v40 + v37), location, length];
   }
 
-  [(CFStringRef *)v110 _acceptSentencesForParagraphRange:location, length];
-  if (v101 || v99 || v6)
+  [(CFStringRef *)selfCopy _acceptSentencesForParagraphRange:location, length];
+  if (lemmasCopy || speechCopy || entitiesCopy)
   {
     v85 = location;
     if (v82)
@@ -3374,10 +3374,10 @@ LABEL_127:
         {
           v90 = *v89;
           v91 = *(v89 + 2);
-          [(__CFString *)v110[3] rangeOfCharacterFromSet:qword_1ED43FEE8 options:0 range:v85 + v90, v91];
+          [(__CFString *)selfCopy[3] rangeOfCharacterFromSet:qword_1ED43FEE8 options:0 range:v85 + v90, v91];
           if (v92)
           {
-            [(__CFString *)v110[3] rangeOfCharacterFromSet:qword_1ED43FEF0 options:0 range:v85 + v90, v91];
+            [(__CFString *)selfCopy[3] rangeOfCharacterFromSet:qword_1ED43FEF0 options:0 range:v85 + v90, v91];
             if (!v93)
             {
               *(qword_1ED43FF68 + v87 + 3) = 17;
@@ -3395,7 +3395,7 @@ LABEL_127:
     v41 = tokenizer;
     if ((v98 & 1) == 0)
     {
-      [(CFStringRef *)v110 _calculateSentenceRangesForParagraphRange:v85, length];
+      [(CFStringRef *)selfCopy _calculateSentenceRangesForParagraphRange:v85, length];
     }
   }
 
@@ -3406,19 +3406,19 @@ LABEL_127:
   return [MEMORY[0x1E695DEF0] dataWithBytes:qword_1ED43FF68 length:16 * qword_1ED43FF60];
 }
 
-- (void)_tokenizeParagraphAtIndex:(unint64_t)a3 requireLemmas:(BOOL)a4 requirePartsOfSpeech:(BOOL)a5 requireNamedEntities:(BOOL)a6
+- (void)_tokenizeParagraphAtIndex:(unint64_t)index requireLemmas:(BOOL)lemmas requirePartsOfSpeech:(BOOL)speech requireNamedEntities:(BOOL)entities
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  entitiesCopy = entities;
+  speechCopy = speech;
+  lemmasCopy = lemmas;
   v11 = [(NSString *)self->_string length];
-  if (v11 <= a3)
+  if (v11 <= index)
   {
     return;
   }
 
   v12 = v11;
-  v13 = [(NSString *)self->_string paragraphRangeForRange:a3, 0];
+  v13 = [(NSString *)self->_string paragraphRangeForRange:index, 0];
   v15 = v14;
   if (v14 <= 0x10000)
   {
@@ -3432,7 +3432,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = ((a3 - v13) & 0xFFFFFFFFFFFF0000) + v13;
+  v16 = ((index - v13) & 0xFFFFFFFFFFFF0000) + v13;
   v15 = v13 + v14 - v16;
   if (v15 <= 0x10000)
   {
@@ -3442,11 +3442,11 @@ LABEL_6:
   v15 = 0x10000;
 LABEL_7:
   [qword_1ED43FE70 lock];
-  v17 = [(NSLinguisticTagger *)self _tokenDataForParagraphRange:v16 requireLemmas:v15 requirePartsOfSpeech:v8 requireNamedEntities:v7, v6];
+  entitiesCopy = [(NSLinguisticTagger *)self _tokenDataForParagraphRange:v16 requireLemmas:v15 requirePartsOfSpeech:lemmasCopy requireNamedEntities:speechCopy, entitiesCopy];
   [qword_1ED43FE70 unlock];
   if (self->_tokenArray)
   {
-    if (!v17)
+    if (!entitiesCopy)
     {
       return;
     }
@@ -3457,7 +3457,7 @@ LABEL_7:
     v19 = [(NSRLEArray *)[NSMutableRLEArray allocWithZone:?]];
     self->_tokenArray = v19;
     -[NSMutableRLEArray insertObject:range:](v19, "insertObject:range:", [MEMORY[0x1E695DFB0] null], 0, v12);
-    if (!v17)
+    if (!entitiesCopy)
     {
       return;
     }
@@ -3465,21 +3465,21 @@ LABEL_7:
 
   tokenArray = self->_tokenArray;
 
-  [tokenArray replaceObjectsInRange:v16 withObject:v15 length:{v17, v15}];
+  [tokenArray replaceObjectsInRange:v16 withObject:v15 length:{entitiesCopy, v15}];
 }
 
-- (id)_tokenDataForParagraphAtIndex:(unint64_t)a3 paragraphRange:(_NSRange *)a4 requireLemmas:(BOOL)a5 requirePartsOfSpeech:(BOOL)a6 requireNamedEntities:(BOOL)a7
+- (id)_tokenDataForParagraphAtIndex:(unint64_t)index paragraphRange:(_NSRange *)range requireLemmas:(BOOL)lemmas requirePartsOfSpeech:(BOOL)speech requireNamedEntities:(BOOL)entities
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  entitiesCopy = entities;
+  speechCopy = speech;
+  lemmasCopy = lemmas;
   v19 = *MEMORY[0x1E69E9840];
   v13 = [self->_tokenArray count];
   v18 = xmmword_181406480;
-  if (v13 <= a3 || (v14 = [self->_tokenArray objectAtIndex:a3 effectiveRange:&v18]) == 0 || (v15 = v14, objc_msgSend(v14, "isEqual:", objc_msgSend(MEMORY[0x1E695DFB0], "null"))))
+  if (v13 <= index || (v14 = [self->_tokenArray objectAtIndex:index effectiveRange:&v18]) == 0 || (v15 = v14, objc_msgSend(v14, "isEqual:", objc_msgSend(MEMORY[0x1E695DFB0], "null"))))
   {
-    [(NSLinguisticTagger *)self _tokenizeParagraphAtIndex:a3 requireLemmas:v9 requirePartsOfSpeech:v8 requireNamedEntities:v7, v18];
-    v16 = [self->_tokenArray objectAtIndex:a3 effectiveRange:&v18];
+    [(NSLinguisticTagger *)self _tokenizeParagraphAtIndex:index requireLemmas:lemmasCopy requirePartsOfSpeech:speechCopy requireNamedEntities:entitiesCopy, v18];
+    v16 = [self->_tokenArray objectAtIndex:index effectiveRange:&v18];
     if ([v16 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
     {
       v15 = 0;
@@ -3491,17 +3491,17 @@ LABEL_7:
     }
   }
 
-  if (a4)
+  if (range)
   {
-    *a4 = v18;
+    *range = v18;
   }
 
   return v15;
 }
 
-- (id)_tokenDataForParagraphAtIndex:(unint64_t)a3 paragraphRange:(_NSRange *)a4 tagScheme:(id)a5
+- (id)_tokenDataForParagraphAtIndex:(unint64_t)index paragraphRange:(_NSRange *)range tagScheme:(id)scheme
 {
-  v8 = [(NSLinguisticTagger *)self _tagSchemeForScheme:@"Lemma", a4, a5];
+  scheme = [(NSLinguisticTagger *)self _tagSchemeForScheme:@"Lemma", range, scheme];
   if ([(NSLinguisticTagger *)self _tagSchemeForScheme:@"NameType"]|| [(NSLinguisticTagger *)self _tagSchemeForScheme:@"NameTypeOrLexicalClass"])
   {
     v9 = 1;
@@ -3521,13 +3521,13 @@ LABEL_4:
   v10 = v12 != 0;
 LABEL_5:
 
-  return [(NSLinguisticTagger *)self _tokenDataForParagraphAtIndex:a3 paragraphRange:a4 requireLemmas:v8 != 0 requirePartsOfSpeech:v10 requireNamedEntities:v9];
+  return [(NSLinguisticTagger *)self _tokenDataForParagraphAtIndex:index paragraphRange:range requireLemmas:scheme != 0 requirePartsOfSpeech:v10 requireNamedEntities:v9];
 }
 
-- (void)_enumerateTagsInRange:(_NSRange)a3 scheme:(id)a4 options:(unint64_t)a5 usingBlock:(id)a6
+- (void)_enumerateTagsInRange:(_NSRange)range scheme:(id)scheme options:(unint64_t)options usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v18[6] = *MEMORY[0x1E69E9840];
   v13 = [(NSString *)self->_string length];
   v18[0] = 0;
@@ -3542,7 +3542,7 @@ LABEL_5:
     objc_exception_throw(v16);
   }
 
-  v14 = [(NSLinguisticTagger *)self _tagSchemeForScheme:a4];
+  v14 = [(NSLinguisticTagger *)self _tagSchemeForScheme:scheme];
   if (v14)
   {
     reserved = self->_reserved;
@@ -3554,9 +3554,9 @@ LABEL_5:
       v17[3] = &unk_1E69F7248;
       v17[4] = self;
       v17[5] = v14;
-      v17[6] = a6;
+      v17[6] = block;
       v17[7] = v18;
-      off_1ED43FF40(reserved, 0, location, length, a5, v17);
+      off_1ED43FF40(reserved, 0, location, length, options, v17);
     }
   }
 

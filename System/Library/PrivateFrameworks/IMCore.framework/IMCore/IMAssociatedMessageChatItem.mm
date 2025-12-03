@@ -1,5 +1,5 @@
 @interface IMAssociatedMessageChatItem
-- (BOOL)_isRecentForTapbackBackgroundAnimationWithinTimeInterval:(double)a3;
+- (BOOL)_isRecentForTapbackBackgroundAnimationWithinTimeInterval:(double)interval;
 - (BOOL)failed;
 - (BOOL)isFromMe;
 - (IMAssociatedMessageGeometryDescriptor)geometryDescriptor;
@@ -8,16 +8,16 @@
 - (NSString)associatedMessageEmoji;
 - (NSString)associatedMessageGUID;
 - (_NSRange)associatedMessageRange;
-- (id)_initWithItem:(id)a3 sender:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item sender:(id)sender;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)message;
 - (int64_t)associatedMessageType;
-- (void)_setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)a3;
+- (void)_setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)descriptor;
 @end
 
 @implementation IMAssociatedMessageChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMAssociatedMessageChatItem alloc];
   v7 = objc_msgSend__item(self, v5, v6);
@@ -37,18 +37,18 @@
   return v12;
 }
 
-- (id)_initWithItem:(id)a3 sender:(id)a4
+- (id)_initWithItem:(id)item sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend__initWithItem_(self, v8, v6);
+  itemCopy = item;
+  senderCopy = sender;
+  v11 = objc_msgSend__initWithItem_(self, v8, itemCopy);
   if (v11)
   {
-    v12 = objc_msgSend_guid(v6, v9, v10);
+    v12 = objc_msgSend_guid(itemCopy, v9, v10);
     v13 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v11, v14, v13);
-    objc_storeStrong(v11 + 8, a4);
+    objc_storeStrong(v11 + 8, sender);
   }
 
   return v11;
@@ -131,18 +131,18 @@
   return v6;
 }
 
-- (void)_setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)a3
+- (void)_setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)descriptor
 {
-  v4 = *&a3->parentPreviewWidth;
-  v3 = *&a3->yScalar;
-  v5 = *&a3->layoutIntent;
-  self->_geometryDescriptor.rotation = a3->rotation;
+  v4 = *&descriptor->parentPreviewWidth;
+  v3 = *&descriptor->yScalar;
+  v5 = *&descriptor->layoutIntent;
+  self->_geometryDescriptor.rotation = descriptor->rotation;
   *&self->_geometryDescriptor.parentPreviewWidth = v4;
   *&self->_geometryDescriptor.yScalar = v3;
   *&self->_geometryDescriptor.layoutIntent = v5;
 }
 
-- (BOOL)_isRecentForTapbackBackgroundAnimationWithinTimeInterval:(double)a3
+- (BOOL)_isRecentForTapbackBackgroundAnimationWithinTimeInterval:(double)interval
 {
   v6 = objc_msgSend_time(self, a2, v3);
   v9 = objc_msgSend_messageSummaryInfo(self, v7, v8);
@@ -164,7 +164,7 @@
 
   v15 = objc_msgSend_now(MEMORY[0x1E695DF00], v10, v11);
   objc_msgSend_timeIntervalSinceDate_(v15, v16, v6);
-  v18 = v17 < a3;
+  v18 = v17 < interval;
 
   return v18;
 }

@@ -1,55 +1,55 @@
 @interface ATXAppDirectorySessionMetadata
-- (ATXAppDirectorySessionMetadata)initWithCoder:(id)a3;
-- (ATXAppDirectorySessionMetadata)initWithEngagedBundleId:(id)a3 engagedBundleIdInTopAppsVisible:(id)a4 didSearchDuringSession:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAppDirectorySessionMetadata:(id)a3;
+- (ATXAppDirectorySessionMetadata)initWithCoder:(id)coder;
+- (ATXAppDirectorySessionMetadata)initWithEngagedBundleId:(id)id engagedBundleIdInTopAppsVisible:(id)visible didSearchDuringSession:(BOOL)session;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAppDirectorySessionMetadata:(id)metadata;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAppDirectorySessionMetadata
 
-- (ATXAppDirectorySessionMetadata)initWithEngagedBundleId:(id)a3 engagedBundleIdInTopAppsVisible:(id)a4 didSearchDuringSession:(BOOL)a5
+- (ATXAppDirectorySessionMetadata)initWithEngagedBundleId:(id)id engagedBundleIdInTopAppsVisible:(id)visible didSearchDuringSession:(BOOL)session
 {
-  v9 = a3;
-  v10 = a4;
+  idCopy = id;
+  visibleCopy = visible;
   v14.receiver = self;
   v14.super_class = ATXAppDirectorySessionMetadata;
   v11 = [(ATXAppDirectorySessionMetadata *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_engagedBundleId, a3);
-    objc_storeStrong(&v12->_engagedBundleIdInTopAppsVisible, a4);
-    v12->_didSearchDuringSession = a5;
+    objc_storeStrong(&v11->_engagedBundleId, id);
+    objc_storeStrong(&v12->_engagedBundleIdInTopAppsVisible, visible);
+    v12->_didSearchDuringSession = session;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   engagedBundleId = self->_engagedBundleId;
-  v5 = a3;
-  [v5 encodeObject:engagedBundleId forKey:@"engagedBundleId"];
-  [v5 encodeObject:self->_engagedBundleIdInTopAppsVisible forKey:@"bundleIdInTopAppsVisible"];
-  [v5 encodeBool:self->_didSearchDuringSession forKey:@"appDirDidSearchDuringSession"];
+  coderCopy = coder;
+  [coderCopy encodeObject:engagedBundleId forKey:@"engagedBundleId"];
+  [coderCopy encodeObject:self->_engagedBundleIdInTopAppsVisible forKey:@"bundleIdInTopAppsVisible"];
+  [coderCopy encodeBool:self->_didSearchDuringSession forKey:@"appDirDidSearchDuringSession"];
 }
 
-- (ATXAppDirectorySessionMetadata)initWithCoder:(id)a3
+- (ATXAppDirectorySessionMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_feedback();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"engagedBundleId" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"engagedBundleId" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  if (v9)
+  if (error)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -57,23 +57,23 @@
     v11 = MEMORY[0x1E69C5D78];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_feedback();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"bundleIdInTopAppsVisible" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"bundleIdInTopAppsVisible" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.ATXFeedbackSessionMetadata" errorCode:-1 logHandle:v13];
 
-    v15 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v15)
+    if (error2)
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      self = -[ATXAppDirectorySessionMetadata initWithEngagedBundleId:engagedBundleIdInTopAppsVisible:didSearchDuringSession:](self, "initWithEngagedBundleId:engagedBundleIdInTopAppsVisible:didSearchDuringSession:", v8, v14, [v4 decodeBoolForKey:@"appDirDidSearchDuringSession"]);
-      v10 = self;
+      self = -[ATXAppDirectorySessionMetadata initWithEngagedBundleId:engagedBundleIdInTopAppsVisible:didSearchDuringSession:](self, "initWithEngagedBundleId:engagedBundleIdInTopAppsVisible:didSearchDuringSession:", v8, v14, [coderCopy decodeBoolForKey:@"appDirDidSearchDuringSession"]);
+      selfCopy = self;
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -83,29 +83,29 @@
   return self->_didSearchDuringSession - (v4 - v3 + 32 * v3) + 32 * (v4 - v3 + 32 * v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppDirectorySessionMetadata *)self isEqualToATXAppDirectorySessionMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppDirectorySessionMetadata *)self isEqualToATXAppDirectorySessionMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAppDirectorySessionMetadata:(id)a3
+- (BOOL)isEqualToATXAppDirectorySessionMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = self->_engagedBundleId;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == metadataCopy[2])
   {
   }
 
@@ -121,7 +121,7 @@
 
   v8 = self->_engagedBundleIdInTopAppsVisible;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == metadataCopy[3])
   {
 
     goto LABEL_9;
@@ -132,7 +132,7 @@
   if (v10)
   {
 LABEL_9:
-    v11 = self->_didSearchDuringSession == *(v4 + 8);
+    v11 = self->_didSearchDuringSession == *(metadataCopy + 8);
     goto LABEL_10;
   }
 

@@ -1,5 +1,5 @@
 @interface CRTextResults
-+ (id)linesFromTextFeatures:(id)a3;
++ (id)linesFromTextFeatures:(id)features;
 - (NSArray)lineFeatures;
 @end
 
@@ -8,22 +8,22 @@
 - (NSArray)lineFeatures
 {
   v3 = objc_opt_class();
-  v4 = [(CRTextResults *)self textFeatures];
-  v5 = [v3 linesFromTextFeatures:v4];
+  textFeatures = [(CRTextResults *)self textFeatures];
+  v5 = [v3 linesFromTextFeatures:textFeatures];
 
   return v5;
 }
 
-+ (id)linesFromTextFeatures:(id)a3
++ (id)linesFromTextFeatures:(id)features
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  featuresCopy = features;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = featuresCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -44,8 +44,8 @@
           v18 = 0u;
           v15 = 0u;
           v16 = 0u;
-          v10 = [v9 subFeatures];
-          v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          subFeatures = [v9 subFeatures];
+          v11 = [subFeatures countByEnumeratingWithState:&v15 objects:v23 count:16];
           if (v11)
           {
             v12 = *v16;
@@ -55,13 +55,13 @@
               {
                 if (*v16 != v12)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(subFeatures);
                 }
 
                 [v4 addObject:*(*(&v15 + 1) + 8 * j)];
               }
 
-              v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+              v11 = [subFeatures countByEnumeratingWithState:&v15 objects:v23 count:16];
             }
 
             while (v11);

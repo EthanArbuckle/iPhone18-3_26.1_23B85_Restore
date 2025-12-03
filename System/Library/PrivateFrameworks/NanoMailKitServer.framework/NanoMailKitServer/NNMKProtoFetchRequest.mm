@@ -1,21 +1,21 @@
 @interface NNMKProtoFetchRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWantsBatchedResponse:(BOOL)a3;
-- (void)setHasWillTrimDatabaseAfterResults:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWantsBatchedResponse:(BOOL)response;
+- (void)setHasWillTrimDatabaseAfterResults:(BOOL)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoFetchRequest
 
-- (void)setHasWantsBatchedResponse:(BOOL)a3
+- (void)setHasWantsBatchedResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasWillTrimDatabaseAfterResults:(BOOL)a3
+- (void)setHasWillTrimDatabaseAfterResults:(BOOL)results
 {
-  if (a3)
+  if (results)
   {
     v3 = 4;
   }
@@ -49,160 +49,160 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoFetchRequest;
   v4 = [(NNMKProtoFetchRequest *)&v8 description];
-  v5 = [(NNMKProtoFetchRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoFetchRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v4 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v4 forKey:@"fullSyncVersion"];
   }
 
   conversationId = self->_conversationId;
   if (conversationId)
   {
-    [v3 setObject:conversationId forKey:@"conversationId"];
+    [dictionary setObject:conversationId forKey:@"conversationId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_wantsBatchedResponse];
-    [v3 setObject:v6 forKey:@"wantsBatchedResponse"];
+    [dictionary setObject:v6 forKey:@"wantsBatchedResponse"];
   }
 
   currentMessageIdsAndStatus = self->_currentMessageIdsAndStatus;
   if (currentMessageIdsAndStatus)
   {
-    [v3 setObject:currentMessageIdsAndStatus forKey:@"currentMessageIdsAndStatus"];
+    [dictionary setObject:currentMessageIdsAndStatus forKey:@"currentMessageIdsAndStatus"];
   }
 
   currentDateForRequestingMoreMessages = self->_currentDateForRequestingMoreMessages;
   if (currentDateForRequestingMoreMessages)
   {
-    [v3 setObject:currentDateForRequestingMoreMessages forKey:@"currentDateForRequestingMoreMessages"];
+    [dictionary setObject:currentDateForRequestingMoreMessages forKey:@"currentDateForRequestingMoreMessages"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_willTrimDatabaseAfterResults];
-    [v3 setObject:v9 forKey:@"willTrimDatabaseAfterResults"];
+    [dictionary setObject:v9 forKey:@"willTrimDatabaseAfterResults"];
   }
 
   mailboxId = self->_mailboxId;
   if (mailboxId)
   {
-    [v3 setObject:mailboxId forKey:@"mailboxId"];
+    [dictionary setObject:mailboxId forKey:@"mailboxId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (*&self->_has)
   {
     fullSyncVersion = self->_fullSyncVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_conversationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     wantsBatchedResponse = self->_wantsBatchedResponse;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_currentMessageIdsAndStatus)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_currentDateForRequestingMoreMessages)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     willTrimDatabaseAfterResults = self->_willTrimDatabaseAfterResults;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_mailboxId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_fullSyncVersion;
-    *(v4 + 52) |= 1u;
+    toCopy[8] = self->_fullSyncVersion;
+    *(toCopy + 52) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_conversationId)
   {
-    [v4 setConversationId:?];
-    v4 = v5;
+    [toCopy setConversationId:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 48) = self->_wantsBatchedResponse;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 48) = self->_wantsBatchedResponse;
+    *(toCopy + 52) |= 2u;
   }
 
   if (self->_currentMessageIdsAndStatus)
   {
     [v5 setCurrentMessageIdsAndStatus:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_currentDateForRequestingMoreMessages)
   {
     [v5 setCurrentDateForRequestingMoreMessages:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 49) = self->_willTrimDatabaseAfterResults;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 49) = self->_willTrimDatabaseAfterResults;
+    *(toCopy + 52) |= 4u;
   }
 
   if (self->_mailboxId)
   {
     [v5 setMailboxId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -210,7 +210,7 @@
     *(v5 + 52) |= 1u;
   }
 
-  v7 = [(NSString *)self->_conversationId copyWithZone:a3];
+  v7 = [(NSString *)self->_conversationId copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -220,11 +220,11 @@
     *(v6 + 52) |= 2u;
   }
 
-  v9 = [(NSData *)self->_currentMessageIdsAndStatus copyWithZone:a3];
+  v9 = [(NSData *)self->_currentMessageIdsAndStatus copyWithZone:zone];
   v10 = *(v6 + 24);
   *(v6 + 24) = v9;
 
-  v11 = [(NSData *)self->_currentDateForRequestingMoreMessages copyWithZone:a3];
+  v11 = [(NSData *)self->_currentDateForRequestingMoreMessages copyWithZone:zone];
   v12 = *(v6 + 16);
   *(v6 + 16) = v11;
 
@@ -234,38 +234,38 @@
     *(v6 + 52) |= 4u;
   }
 
-  v13 = [(NSString *)self->_mailboxId copyWithZone:a3];
+  v13 = [(NSString *)self->_mailboxId copyWithZone:zone];
   v14 = *(v6 + 40);
   *(v6 + 40) = v13;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_fullSyncVersion != *(v4 + 8))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 8))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_21;
   }
 
   conversationId = self->_conversationId;
-  if (conversationId | *(v4 + 1))
+  if (conversationId | *(equalCopy + 1))
   {
     if (![(NSString *)conversationId isEqual:?])
     {
@@ -275,42 +275,42 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_21;
     }
 
-    v15 = *(v4 + 48);
+    v15 = *(equalCopy + 48);
     if (self->_wantsBatchedResponse)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   currentMessageIdsAndStatus = self->_currentMessageIdsAndStatus;
-  if (currentMessageIdsAndStatus | *(v4 + 3) && ![(NSData *)currentMessageIdsAndStatus isEqual:?])
+  if (currentMessageIdsAndStatus | *(equalCopy + 3) && ![(NSData *)currentMessageIdsAndStatus isEqual:?])
   {
     goto LABEL_21;
   }
 
   currentDateForRequestingMoreMessages = self->_currentDateForRequestingMoreMessages;
-  if (currentDateForRequestingMoreMessages | *(v4 + 2))
+  if (currentDateForRequestingMoreMessages | *(equalCopy + 2))
   {
     if (![(NSData *)currentDateForRequestingMoreMessages isEqual:?])
     {
@@ -318,10 +318,10 @@
     }
   }
 
-  v11 = *(v4 + 52);
+  v11 = *(equalCopy + 52);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_18;
     }
@@ -331,28 +331,28 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ((*(v4 + 52) & 4) == 0)
+  if ((*(equalCopy + 52) & 4) == 0)
   {
     goto LABEL_21;
   }
 
-  v16 = *(v4 + 49);
+  v16 = *(equalCopy + 49);
   if (self->_willTrimDatabaseAfterResults)
   {
-    if ((*(v4 + 49) & 1) == 0)
+    if ((*(equalCopy + 49) & 1) == 0)
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 49))
+  else if (*(equalCopy + 49))
   {
     goto LABEL_21;
   }
 
 LABEL_18:
   mailboxId = self->_mailboxId;
-  if (mailboxId | *(v4 + 5))
+  if (mailboxId | *(equalCopy + 5))
   {
     v13 = [(NSString *)mailboxId isEqual:?];
   }
@@ -405,50 +405,50 @@ LABEL_22:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_mailboxId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 52))
+  fromCopy = from;
+  if (*(fromCopy + 52))
   {
-    self->_fullSyncVersion = *(v4 + 8);
+    self->_fullSyncVersion = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NNMKProtoFetchRequest *)self setConversationId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
-    self->_wantsBatchedResponse = *(v4 + 48);
+    self->_wantsBatchedResponse = *(fromCopy + 48);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NNMKProtoFetchRequest *)self setCurrentMessageIdsAndStatus:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoFetchRequest *)self setCurrentDateForRequestingMoreMessages:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 52) & 4) != 0)
+  if ((*(fromCopy + 52) & 4) != 0)
   {
-    self->_willTrimDatabaseAfterResults = *(v4 + 49);
+    self->_willTrimDatabaseAfterResults = *(fromCopy + 49);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NNMKProtoFetchRequest *)self setMailboxId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

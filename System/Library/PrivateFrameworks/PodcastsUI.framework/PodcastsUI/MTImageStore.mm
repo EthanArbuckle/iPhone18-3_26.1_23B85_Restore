@@ -2,10 +2,10 @@
 + (id)defaultBasePath;
 + (id)defaultStore;
 + (unint64_t)defaultMaxConcurrentOperations;
-- (MTImageStore)initWithName:(id)a3 basePath:(id)a4 maxImageDimensionInPixels:(double)a5 maxConcurrentOperations:(unint64_t)a6 alternativeSizeBlock:(id)a7;
-- (id)imageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6;
-- (void)addImage:(id)a3 forKey:(id)a4;
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6 completionHandler:(id)a7;
+- (MTImageStore)initWithName:(id)name basePath:(id)path maxImageDimensionInPixels:(double)pixels maxConcurrentOperations:(unint64_t)operations alternativeSizeBlock:(id)block;
+- (id)imageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier;
+- (void)addImage:(id)image forKey:(id)key;
+- (void)asyncImageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier completionHandler:(id)handler;
 @end
 
 @implementation MTImageStore
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __28__MTImageStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore_onceToken_0 != -1)
   {
     dispatch_once(&defaultStore_onceToken_0, block);
@@ -36,11 +36,11 @@ uint64_t __28__MTImageStore_defaultStore__block_invoke(uint64_t a1)
 
 + (id)defaultBasePath
 {
-  v2 = [MEMORY[0x277D3DB18] defaultImageStoreURL];
-  v3 = [v2 URLByDeletingLastPathComponent];
-  v4 = [v3 path];
+  defaultImageStoreURL = [MEMORY[0x277D3DB18] defaultImageStoreURL];
+  uRLByDeletingLastPathComponent = [defaultImageStoreURL URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
 
-  return v4;
+  return path;
 }
 
 + (unint64_t)defaultMaxConcurrentOperations
@@ -50,16 +50,16 @@ uint64_t __28__MTImageStore_defaultStore__block_invoke(uint64_t a1)
     return 3;
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MTImageStore;
   return objc_msgSendSuper2(&v4, sel_defaultMaxConcurrentOperations);
 }
 
-- (MTImageStore)initWithName:(id)a3 basePath:(id)a4 maxImageDimensionInPixels:(double)a5 maxConcurrentOperations:(unint64_t)a6 alternativeSizeBlock:(id)a7
+- (MTImageStore)initWithName:(id)name basePath:(id)path maxImageDimensionInPixels:(double)pixels maxConcurrentOperations:(unint64_t)operations alternativeSizeBlock:(id)block
 {
   v9.receiver = self;
   v9.super_class = MTImageStore;
-  v7 = [(IMImageStore *)&v9 initWithName:a3 basePath:a4 maxImageDimensionInPixels:a6 maxConcurrentOperations:a7 alternativeSizeBlock:a5];
+  v7 = [(IMImageStore *)&v9 initWithName:name basePath:path maxImageDimensionInPixels:operations maxConcurrentOperations:block alternativeSizeBlock:pixels];
   if (v7 && ([MEMORY[0x277D3DB60] isPodcastsApp] & 1) == 0)
   {
     [(IMImageStore *)v7 setDisableMemoryCache:1];
@@ -68,34 +68,34 @@ uint64_t __28__MTImageStore_defaultStore__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)imageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6
+- (id)imageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier
 {
-  v7 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a6;
+  v7 = *&options;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  modifierCopy = modifier;
   if ([MEMORY[0x277D3DB60] supportsImageStore])
   {
-    if ([v11 isEqualToString:*MEMORY[0x277D3DD30]])
+    if ([keyCopy isEqualToString:*MEMORY[0x277D3DD30]])
     {
-      v13 = [objc_opt_class() defaultPodcastArtworkWithWidth:width];
+      height = [objc_opt_class() defaultPodcastArtworkWithWidth:width];
     }
 
     else
     {
       v17.receiver = self;
       v17.super_class = MTImageStore;
-      v13 = [(IMImageStore *)&v17 imageForKey:v11 size:v7 resizeOptions:v12 modifier:width, height];
+      height = [(IMImageStore *)&v17 imageForKey:keyCopy size:v7 resizeOptions:modifierCopy modifier:width, height];
     }
 
-    v15 = v13;
+    v15 = height;
   }
 
   else
   {
-    v14 = [MEMORY[0x277D3DA90] sharedLogger];
-    [v14 logFile:"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Asset Caching/Legacy/MTImageStore.m" lineNumber:107 format:@"Image store is not supported on audio accessories. Returning early."];
+    mEMORY[0x277D3DA90] = [MEMORY[0x277D3DA90] sharedLogger];
+    [mEMORY[0x277D3DA90] logFile:"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Asset Caching/Legacy/MTImageStore.m" lineNumber:107 format:@"Image store is not supported on audio accessories. Returning early."];
 
     v15 = 0;
   }
@@ -103,20 +103,20 @@ uint64_t __28__MTImageStore_defaultStore__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6 completionHandler:(id)a7
+- (void)asyncImageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier completionHandler:(id)handler
 {
-  v9 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if ([v13 isEqualToString:*MEMORY[0x277D3DD30]])
+  v9 = *&options;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  modifierCopy = modifier;
+  handlerCopy = handler;
+  if ([keyCopy isEqualToString:*MEMORY[0x277D3DD30]])
   {
     v16 = [objc_opt_class() defaultPodcastArtworkWithWidth:width];
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, v16, v13);
+      handlerCopy[2](handlerCopy, v16, keyCopy);
     }
   }
 
@@ -124,32 +124,32 @@ uint64_t __28__MTImageStore_defaultStore__block_invoke(uint64_t a1)
   {
     v17.receiver = self;
     v17.super_class = MTImageStore;
-    [(IMImageStore *)&v17 asyncImageForKey:v13 size:v9 resizeOptions:v14 modifier:v15 completionHandler:width, height];
+    [(IMImageStore *)&v17 asyncImageForKey:keyCopy size:v9 resizeOptions:modifierCopy modifier:handlerCopy completionHandler:width, height];
   }
 }
 
-- (void)addImage:(id)a3 forKey:(id)a4
+- (void)addImage:(id)image forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  keyCopy = key;
   if ([MEMORY[0x277D3DB60] supportsImageStore])
   {
-    if ([(MTImageStore *)self requireSquareImages:v7])
+    if ([(MTImageStore *)self requireSquareImages:keyCopy])
     {
-      v8 = [v6 squareImage];
+      squareImage = [imageCopy squareImage];
 
-      v6 = v8;
+      imageCopy = squareImage;
     }
 
     v10.receiver = self;
     v10.super_class = MTImageStore;
-    [(IMImageStore *)&v10 addImage:v6 forKey:v7];
+    [(IMImageStore *)&v10 addImage:imageCopy forKey:keyCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D3DA90] sharedLogger];
-    [v9 logFile:"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Asset Caching/Legacy/MTImageStore.m" lineNumber:138 format:@"Image store is not supported on audio accessories. Returning early."];
+    mEMORY[0x277D3DA90] = [MEMORY[0x277D3DA90] sharedLogger];
+    [mEMORY[0x277D3DA90] logFile:"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Asset Caching/Legacy/MTImageStore.m" lineNumber:138 format:@"Image store is not supported on audio accessories. Returning early."];
   }
 }
 

@@ -6,9 +6,9 @@
 
 - (id)sortDateTitle
 {
-  v1 = [a1 sortDate];
-  v2 = [v1 keyPath];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696BE48]];
+  sortDate = [self sortDate];
+  keyPath = [sortDate keyPath];
+  v3 = [keyPath isEqualToString:*MEMORY[0x1E696BE48]];
 
   if (v3)
   {

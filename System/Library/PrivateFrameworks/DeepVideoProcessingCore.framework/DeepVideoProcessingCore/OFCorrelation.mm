@@ -1,16 +1,16 @@
 @interface OFCorrelation
-- (OFCorrelation)initWithDevice:(id)a3 interleaved:(BOOL)a4;
-- (void)calcCorrelation:(id)a3 with:(id)a4 output:(id)a5;
+- (OFCorrelation)initWithDevice:(id)device interleaved:(BOOL)interleaved;
+- (void)calcCorrelation:(id)correlation with:(id)with output:(id)output;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 destination:(id)a6;
+- (void)encodeToCommandBuffer:(id)buffer first:(id)first second:(id)second destination:(id)destination;
 - (void)setupMetal;
 @end
 
 @implementation OFCorrelation
 
-- (OFCorrelation)initWithDevice:(id)a3 interleaved:(BOOL)a4
+- (OFCorrelation)initWithDevice:(id)device interleaved:(BOOL)interleaved
 {
-  v7 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = OFCorrelation;
   v8 = [(VEMetalBase *)&v15 init];
@@ -23,8 +23,8 @@
     mtlLibrary = v8->super._mtlLibrary;
     v8->super._mtlLibrary = v12;
 
-    objc_storeStrong(&v8->super._device, a3);
-    v8->_interleaved = a4;
+    objc_storeStrong(&v8->super._device, device);
+    v8->_interleaved = interleaved;
     [(OFCorrelation *)v8 setupMetal];
   }
 
@@ -71,41 +71,41 @@
   [(OFCorrelation *)&v2 dealloc];
 }
 
-- (void)calcCorrelation:(id)a3 with:(id)a4 output:(id)a5
+- (void)calcCorrelation:(id)correlation with:(id)with output:(id)output
 {
   commandQueue = self->super._commandQueue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  [(OFCorrelation *)self encodeToCommandBuffer:v12 first:v11 second:v10 destination:v9];
+  outputCopy = output;
+  withCopy = with;
+  correlationCopy = correlation;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  [(OFCorrelation *)self encodeToCommandBuffer:commandBuffer first:correlationCopy second:withCopy destination:outputCopy];
 
-  [v12 commit];
-  [v12 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 destination:(id)a6
+- (void)encodeToCommandBuffer:(id)buffer first:(id)first second:(id)second destination:(id)destination
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11 && v12 && v13)
+  bufferCopy = buffer;
+  firstCopy = first;
+  secondCopy = second;
+  destinationCopy = destination;
+  v14 = destinationCopy;
+  if (firstCopy && secondCopy && destinationCopy)
   {
-    v15 = [v10 computeCommandEncoder];
-    if (v15)
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v16 = [v14 arrayLength];
+      arrayLength = [v14 arrayLength];
       v17 = &OBJC_IVAR___OFCorrelation__correlationSIMDKernel;
-      if (v16 > 0x51)
+      if (arrayLength > 0x51)
       {
         v17 = &OBJC_IVAR___OFCorrelation__correlationWithConcatSIMDKernel;
       }
 
       v18 = &OBJC_IVAR___OFCorrelation__correlationWithConcatKernel;
-      if (v16 <= 0x51)
+      if (arrayLength <= 0x51)
       {
         v18 = &OBJC_IVAR___OFCorrelation__correlationKernel;
       }
@@ -141,17 +141,17 @@
         v22 = 4;
       }
 
-      [v15 setComputePipelineState:v21];
-      [v15 setTexture:v11 atIndex:0];
-      [v15 setTexture:v12 atIndex:1];
-      [v15 setTexture:v14 atIndex:2];
+      [computeCommandEncoder setComputePipelineState:v21];
+      [computeCommandEncoder setTexture:firstCopy atIndex:0];
+      [computeCommandEncoder setTexture:secondCopy atIndex:1];
+      [computeCommandEncoder setTexture:v14 atIndex:2];
       *buf = (v20 + [v14 width] - 1) >> v22;
       *&buf[8] = ([v14 height] + 15) >> 4;
       *&buf[16] = 1;
       v24 = v20;
       v25 = xmmword_2487C37F0;
-      [v15 dispatchThreadgroups:buf threadsPerThreadgroup:&v24];
-      [v15 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:buf threadsPerThreadgroup:&v24];
+      [computeCommandEncoder endEncoding];
     }
   }
 
@@ -161,9 +161,9 @@
     if (os_log_type_enabled(global_logger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *&buf[4] = v11;
+      *&buf[4] = firstCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = secondCopy;
       *&buf[22] = 2112;
       v27 = v14;
       _os_log_error_impl(&dword_24874B000, v23, OS_LOG_TYPE_ERROR, "inputs and destination cannot be nil %@, %@, %@\n", buf, 0x20u);

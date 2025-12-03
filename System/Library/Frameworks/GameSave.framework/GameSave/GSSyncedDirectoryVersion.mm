@@ -1,7 +1,7 @@
 @interface GSSyncedDirectoryVersion
 - (BOOL)isLocal;
 - (GSSyncedDirectoryVersion)init;
-- (GSSyncedDirectoryVersion)initWithVersion:(id)a3;
+- (GSSyncedDirectoryVersion)initWithVersion:(id)version;
 - (NSDate)modifiedDate;
 - (NSString)description;
 - (NSString)localizedNameOfSavingComputer;
@@ -93,7 +93,7 @@
   v11 = &v18 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   if (*(&self->super.isa + OBJC_IVAR___GSSyncedDirectoryVersion_version))
   {
-    v12 = self;
+    selfCopy = self;
     GameSaveSyncedDirectory.Version.url.getter();
 
     (*(v8 + 56))(v6, 0, 1, v7);
@@ -103,7 +103,7 @@
   else
   {
     (*(v8 + 56))(v6, 1, 1, v7);
-    v14 = self;
+    selfCopy2 = self;
     URL.init(fileURLWithPath:)();
 
     if ((*(v8 + 48))(v6, 1, v7) != 1)
@@ -119,9 +119,9 @@
   return v16;
 }
 
-- (GSSyncedDirectoryVersion)initWithVersion:(id)a3
+- (GSSyncedDirectoryVersion)initWithVersion:(id)version
 {
-  if (a3)
+  if (version)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -141,7 +141,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR___GSSyncedDirectoryVersion_version);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v2 = GameSaveSyncedDirectory.Version.description.getter();
     v5 = v4;
   }

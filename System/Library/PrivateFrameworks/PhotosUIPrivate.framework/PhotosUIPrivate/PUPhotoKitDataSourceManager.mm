@@ -1,25 +1,25 @@
 @interface PUPhotoKitDataSourceManager
 - (PUPhotoKitDataSourceManager)init;
-- (PUPhotoKitDataSourceManager)initWithAssetsDataSourceManager:(id)a3;
-- (PUPhotoKitDataSourceManager)initWithPhotosDataSource:(id)a3;
-- (id)photosDataSourceInterestingAssetReferences:(id)a3;
+- (PUPhotoKitDataSourceManager)initWithAssetsDataSourceManager:(id)manager;
+- (PUPhotoKitDataSourceManager)initWithPhotosDataSource:(id)source;
+- (id)photosDataSourceInterestingAssetReferences:(id)references;
 - (void)dealloc;
-- (void)photosDataSource:(id)a3 didChange:(id)a4;
-- (void)setPhotosDataSource:(id)a3;
-- (void)updateWithPhotosDataSource:(id)a3 andDataSourceChange:(id)a4;
+- (void)photosDataSource:(id)source didChange:(id)change;
+- (void)setPhotosDataSource:(id)source;
+- (void)updateWithPhotosDataSource:(id)source andDataSourceChange:(id)change;
 @end
 
 @implementation PUPhotoKitDataSourceManager
 
-- (id)photosDataSourceInterestingAssetReferences:(id)a3
+- (id)photosDataSourceInterestingAssetReferences:(id)references
 {
-  v4 = a3;
-  v5 = [(PUPhotoKitDataSourceManager *)self photosDataSource];
+  referencesCopy = references;
+  photosDataSource = [(PUPhotoKitDataSourceManager *)self photosDataSource];
 
-  if (v5 == v4)
+  if (photosDataSource == referencesCopy)
   {
-    v7 = [(PUAssetsDataSourceManager *)self delegate];
-    v6 = [v7 assetsDataSourceManagerInterestingAssetReferences:self];
+    delegate = [(PUAssetsDataSourceManager *)self delegate];
+    v6 = [delegate assetsDataSourceManagerInterestingAssetReferences:self];
   }
 
   else
@@ -30,43 +30,43 @@
   return v6;
 }
 
-- (void)photosDataSource:(id)a3 didChange:(id)a4
+- (void)photosDataSource:(id)source didChange:(id)change
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PUPhotoKitDataSourceManager *)self photosDataSource];
+  sourceCopy = source;
+  changeCopy = change;
+  photosDataSource = [(PUPhotoKitDataSourceManager *)self photosDataSource];
 
-  if (v7 == v8)
+  if (photosDataSource == sourceCopy)
   {
-    [(PUPhotoKitDataSourceManager *)self updateWithPhotosDataSource:v8 andDataSourceChange:v6];
+    [(PUPhotoKitDataSourceManager *)self updateWithPhotosDataSource:sourceCopy andDataSourceChange:changeCopy];
   }
 }
 
-- (void)setPhotosDataSource:(id)a3
+- (void)setPhotosDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   photosDataSource = self->_photosDataSource;
-  if (photosDataSource != v5)
+  if (photosDataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(PXPhotosDataSource *)photosDataSource unregisterChangeObserver:self];
-    objc_storeStrong(&self->_photosDataSource, a3);
+    objc_storeStrong(&self->_photosDataSource, source);
     [(PXPhotosDataSource *)self->_photosDataSource registerChangeObserver:self];
     photosDataSource = [(PUPhotoKitDataSourceManager *)self updateWithPhotosDataSource:v7 andDataSourceChange:0];
-    v5 = v7;
+    sourceCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](photosDataSource, v5);
+  MEMORY[0x1EEE66BB8](photosDataSource, sourceCopy);
 }
 
-- (void)updateWithPhotosDataSource:(id)a3 andDataSourceChange:(id)a4
+- (void)updateWithPhotosDataSource:(id)source andDataSourceChange:(id)change
 {
-  v6 = a4;
-  v11 = [a3 immutableCopy];
+  changeCopy = change;
+  immutableCopy = [source immutableCopy];
   v7 = [PUPhotoKitAssetsDataSource alloc];
-  v8 = [(PUAssetsDataSourceManager *)self assetsDataSource];
-  v9 = [v8 identifier];
-  v10 = [(PUPhotoKitAssetsDataSource *)v7 initWithImmutablePhotosDataSource:v11 withChange:v6 fromDataSourceIdentifier:v9];
+  assetsDataSource = [(PUAssetsDataSourceManager *)self assetsDataSource];
+  identifier = [assetsDataSource identifier];
+  v10 = [(PUPhotoKitAssetsDataSource *)v7 initWithImmutablePhotosDataSource:immutableCopy withChange:changeCopy fromDataSourceIdentifier:identifier];
 
   [(PUAssetsDataSourceManager *)self setAssetsDataSource:v10];
 }
@@ -79,26 +79,26 @@
   [(PUPhotoKitDataSourceManager *)&v3 dealloc];
 }
 
-- (PUPhotoKitDataSourceManager)initWithAssetsDataSourceManager:(id)a3
+- (PUPhotoKitDataSourceManager)initWithAssetsDataSourceManager:(id)manager
 {
-  v4 = [a3 photosDataSource];
-  v5 = [(PUPhotoKitDataSourceManager *)self initWithPhotosDataSource:v4];
+  photosDataSource = [manager photosDataSource];
+  v5 = [(PUPhotoKitDataSourceManager *)self initWithPhotosDataSource:photosDataSource];
 
   return v5;
 }
 
-- (PUPhotoKitDataSourceManager)initWithPhotosDataSource:(id)a3
+- (PUPhotoKitDataSourceManager)initWithPhotosDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = PUPhotoKitDataSourceManager;
   v6 = [(PUPhotoKitDataSourceManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photosDataSource, a3);
-    [v5 registerChangeObserver:v7];
-    [(PUPhotoKitDataSourceManager *)v7 updateWithPhotosDataSource:v5 andDataSourceChange:0];
+    objc_storeStrong(&v6->_photosDataSource, source);
+    [sourceCopy registerChangeObserver:v7];
+    [(PUPhotoKitDataSourceManager *)v7 updateWithPhotosDataSource:sourceCopy andDataSourceChange:0];
   }
 
   return v7;
@@ -106,8 +106,8 @@
 
 - (PUPhotoKitDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoKitDataSourceManager.m" lineNumber:25 description:{@"%s is not available as initializer", "-[PUPhotoKitDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitDataSourceManager.m" lineNumber:25 description:{@"%s is not available as initializer", "-[PUPhotoKitDataSourceManager init]"}];
 
   abort();
 }

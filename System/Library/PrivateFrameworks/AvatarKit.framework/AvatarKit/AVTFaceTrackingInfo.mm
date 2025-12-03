@@ -1,7 +1,7 @@
 @interface AVTFaceTrackingInfo
-+ (id)dataWithARFrame:(id)a3 captureOrientation:(int64_t)a4 interfaceOrientation:(int64_t)a5;
-+ (id)trackingInfoWithARFrame:(id)a3 worldAlignment:(int64_t)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 constrainHeadPose:(BOOL)a7;
-+ (id)trackingInfoWithTrackingData:(id *)a3;
++ (id)dataWithARFrame:(id)frame captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation;
++ (id)trackingInfoWithARFrame:(id)frame worldAlignment:(int64_t)alignment captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation constrainHeadPose:(BOOL)pose;
++ (id)trackingInfoWithTrackingData:(id *)data;
 - (__n128)rawTransform;
 @end
 
@@ -9,27 +9,27 @@
 
 - (__n128)rawTransform
 {
-  result = *(a1 + 496);
-  v2 = *(a1 + 512);
-  v3 = *(a1 + 528);
-  v4 = *(a1 + 544);
+  result = *(self + 496);
+  v2 = *(self + 512);
+  v3 = *(self + 528);
+  v4 = *(self + 544);
   return result;
 }
 
-+ (id)trackingInfoWithARFrame:(id)a3 worldAlignment:(int64_t)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 constrainHeadPose:(BOOL)a7
++ (id)trackingInfoWithARFrame:(id)frame worldAlignment:(int64_t)alignment captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation constrainHeadPose:(BOOL)pose
 {
-  v7 = a7;
+  poseCopy = pose;
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  frameCopy = frame;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [v11 anchors];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  anchors = [frameCopy anchors];
+  v13 = [anchors countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
-    v20 = v7;
+    v20 = poseCopy;
     v14 = *v22;
     while (2)
     {
@@ -37,7 +37,7 @@
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(anchors);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
@@ -48,14 +48,14 @@
           if ([v17 isTracked])
           {
             v13 = objc_alloc_init(AVTFaceTrackingInfo);
-            AVTTrackingDataFromARFrame(&v13->_trackingData, v11, a4, v17, a5, a6, v20, 0, 0);
+            AVTTrackingDataFromARFrame(&v13->_trackingData, frameCopy, alignment, v17, orientation, interfaceOrientation, v20, 0, 0);
 
             goto LABEL_13;
           }
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [anchors countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v13)
       {
         continue;
@@ -72,16 +72,16 @@ LABEL_13:
   return v13;
 }
 
-+ (id)dataWithARFrame:(id)a3 captureOrientation:(int64_t)a4 interfaceOrientation:(int64_t)a5
++ (id)dataWithARFrame:(id)frame captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  frameCopy = frame;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [v7 anchors];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  anchors = [frameCopy anchors];
+  v9 = [anchors countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -92,7 +92,7 @@ LABEL_13:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(anchors);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -103,7 +103,7 @@ LABEL_13:
           if ([v14 isTracked])
           {
             memset(v18, 0, sizeof(v18));
-            AVTTrackingDataFromARFrame(v18, v7, [v7 worldAlignment], v14, a4, a5, 1, 0, 0);
+            AVTTrackingDataFromARFrame(v18, frameCopy, [frameCopy worldAlignment], v14, orientation, interfaceOrientation, 1, 0, 0);
             v15 = [MEMORY[0x1E695DEF0] dataWithBytes:v18 length:480];
 
             goto LABEL_13;
@@ -111,7 +111,7 @@ LABEL_13:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [anchors countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         continue;
@@ -129,10 +129,10 @@ LABEL_13:
   return v15;
 }
 
-+ (id)trackingInfoWithTrackingData:(id *)a3
++ (id)trackingInfoWithTrackingData:(id *)data
 {
   v4 = objc_alloc_init(AVTFaceTrackingInfo);
-  memcpy(&v4->_trackingData, a3, 0x1E0uLL);
+  memcpy(&v4->_trackingData, data, 0x1E0uLL);
 
   return v4;
 }

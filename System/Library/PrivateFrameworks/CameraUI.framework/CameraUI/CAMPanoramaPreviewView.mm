@@ -1,22 +1,22 @@
 @interface CAMPanoramaPreviewView
 - (_CAImageQueue)imageQueue;
-- (void)setImageQueue:(_CAImageQueue *)a3;
+- (void)setImageQueue:(_CAImageQueue *)queue;
 @end
 
 @implementation CAMPanoramaPreviewView
 
 - (_CAImageQueue)imageQueue
 {
-  v2 = [(CAMPanoramaPreviewView *)self layer];
-  v3 = [v2 contents];
+  layer = [(CAMPanoramaPreviewView *)self layer];
+  contents = [layer contents];
 
-  return v3;
+  return contents;
 }
 
-- (void)setImageQueue:(_CAImageQueue *)a3
+- (void)setImageQueue:(_CAImageQueue *)queue
 {
-  v4 = [(CAMPanoramaPreviewView *)self layer];
-  [v4 setContents:a3];
+  layer = [(CAMPanoramaPreviewView *)self layer];
+  [layer setContents:queue];
 }
 
 @end

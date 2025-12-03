@@ -1,42 +1,42 @@
 @interface ISApplicationIdentityIcon
-- (ISApplicationIdentityIcon)initWithApplicationIdentity:(id)a3;
-- (ISApplicationIdentityIcon)initWithCoder:(id)a3;
-- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)a3;
-- (id)_resourceForPersona:(unint64_t)a3;
+- (ISApplicationIdentityIcon)initWithApplicationIdentity:(id)identity;
+- (ISApplicationIdentityIcon)initWithCoder:(id)coder;
+- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)fallback;
+- (id)_resourceForPersona:(unint64_t)persona;
 - (id)description;
 - (unint64_t)_personaType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISApplicationIdentityIcon
 
-- (ISApplicationIdentityIcon)initWithApplicationIdentity:(id)a3
+- (ISApplicationIdentityIcon)initWithApplicationIdentity:(id)identity
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 identityString];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  identityString = [identityCopy identityString];
+  v8 = [v6 stringByAppendingPathComponent:identityString];
 
   v33 = 0;
-  v9 = [v4 findApplicationRecordWithError:&v33];
+  v9 = [identityCopy findApplicationRecordWithError:&v33];
   v10 = v33;
   if (!v9)
   {
-    v18 = _ISDefaultLog();
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    alternateIconName = _ISDefaultLog();
+    if (!os_log_type_enabled(alternateIconName, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_17;
     }
 
-    v19 = [v4 identityString];
-    v20 = [v10 localizedDescription];
+    identityString2 = [identityCopy identityString];
+    localizedDescription = [v10 localizedDescription];
     *buf = 138412546;
-    v35 = v19;
+    v35 = identityString2;
     v36 = 2112;
-    v37 = v20;
-    _os_log_impl(&dword_1A77B8000, v18, OS_LOG_TYPE_DEFAULT, "No record for identity: %@. Error: %@", buf, 0x16u);
+    v37 = localizedDescription;
+    _os_log_impl(&dword_1A77B8000, alternateIconName, OS_LOG_TYPE_DEFAULT, "No record for identity: %@. Error: %@", buf, 0x16u);
 
     goto LABEL_15;
   }
@@ -44,10 +44,10 @@
   if ([v9 isPlaceholder])
   {
     v11 = [v9 URL];
-    v12 = [v11 __is__contentModifiedDate];
+    __is__contentModifiedDate = [v11 __is__contentModifiedDate];
 
     v13 = MEMORY[0x1E696AEC0];
-    [v12 timeIntervalSinceReferenceDate];
+    [__is__contentModifiedDate timeIntervalSinceReferenceDate];
     v15 = [v13 stringWithFormat:@"%f", v14];
     v16 = [v8 stringByAppendingPathComponent:v15];
 
@@ -61,18 +61,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v21 = [v9 persistentIdentifier];
+  persistentIdentifier = [v9 persistentIdentifier];
 
-  if (v21)
+  if (persistentIdentifier)
   {
     v22 = MEMORY[0x1E696AFB0];
-    v23 = [v9 persistentIdentifier];
-    v24 = [v22 _IF_UUIDWithData:v23];
-    v25 = [v24 UUIDString];
-    v16 = [v8 stringByAppendingPathComponent:v25];
+    persistentIdentifier2 = [v9 persistentIdentifier];
+    v24 = [v22 _IF_UUIDWithData:persistentIdentifier2];
+    uUIDString = [v24 UUIDString];
+    v16 = [v8 stringByAppendingPathComponent:uUIDString];
 
-    v12 = _ISDefaultLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    __is__contentModifiedDate = _ISDefaultLog();
+    if (os_log_type_enabled(__is__contentModifiedDate, OS_LOG_TYPE_DEBUG))
     {
       [ISApplicationIdentityIcon initWithApplicationIdentity:];
     }
@@ -82,13 +82,13 @@ LABEL_11:
 
   v16 = v8;
 LABEL_12:
-  v18 = [v9 alternateIconName];
-  if (v18)
+  alternateIconName = [v9 alternateIconName];
+  if (alternateIconName)
   {
-    v8 = [v16 stringByAppendingPathComponent:v18];
+    v8 = [v16 stringByAppendingPathComponent:alternateIconName];
 
-    v19 = _ISDefaultLog();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    identityString2 = _ISDefaultLog();
+    if (os_log_type_enabled(identityString2, OS_LOG_TYPE_DEBUG))
     {
       [ISApplicationIdentityIcon initWithApplicationIdentity:];
     }
@@ -107,24 +107,24 @@ LABEL_17:
   v27 = [(ISConcreteIcon *)&v32 initWithDigest:v26];
   if (v27)
   {
-    v28 = [v4 identityString];
+    identityString3 = [identityCopy identityString];
     identityString = v27->_identityString;
-    v27->_identityString = v28;
+    v27->_identityString = identityString3;
   }
 
   v30 = *MEMORY[0x1E69E9840];
   return v27;
 }
 
-- (ISApplicationIdentityIcon)initWithCoder:(id)a3
+- (ISApplicationIdentityIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ISApplicationIdentityIcon;
-  v5 = [(ISConcreteIcon *)&v9 initWithCoder:v4];
+  v5 = [(ISConcreteIcon *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identityString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identityString"];
     identityString = v5->_identityString;
     v5->_identityString = v6;
   }
@@ -132,16 +132,16 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ISApplicationIdentityIcon;
-  v4 = a3;
-  [(ISConcreteIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identityString forKey:{@"identityString", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ISConcreteIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identityString forKey:{@"identityString", v5.receiver, v5.super_class}];
 }
 
-- (id)_resourceForPersona:(unint64_t)a3
+- (id)_resourceForPersona:(unint64_t)persona
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
@@ -166,20 +166,20 @@ LABEL_17:
 - (unint64_t)_personaType
 {
   v3 = objc_alloc(MEMORY[0x1E69635D8]);
-  v4 = [(ISApplicationIdentityIcon *)self identityString];
-  v5 = [v3 initWithIdentityString:v4];
+  identityString = [(ISApplicationIdentityIcon *)self identityString];
+  v5 = [v3 initWithIdentityString:identityString];
 
-  v6 = [v5 personaType];
-  return v6;
+  personaType = [v5 personaType];
+  return personaType;
 }
 
-- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)a3
+- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)fallback
 {
-  v3 = a3;
+  fallbackCopy = fallback;
   v29 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E69635D8]);
-  v6 = [(ISApplicationIdentityIcon *)self identityString];
-  v7 = [v5 initWithIdentityString:v6];
+  identityString = [(ISApplicationIdentityIcon *)self identityString];
+  v7 = [v5 initWithIdentityString:identityString];
 
   [(ISApplicationIdentityIcon *)self _personaType];
   v24 = 0;
@@ -196,17 +196,17 @@ LABEL_17:
     v12 = _ISDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138412546;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
-      v28 = v13;
+      v28 = localizedDescription;
       _os_log_impl(&dword_1A77B8000, v12, OS_LOG_TYPE_DEFAULT, "Unable to create resource provider for %@ - unable to find record. Error: %@", buf, 0x16u);
     }
 
     v14 = MEMORY[0x1E69636B0];
-    v15 = [*MEMORY[0x1E6982CB0] identifier];
-    v10 = [v14 typeRecordWithIdentifier:v15];
+    identifier = [*MEMORY[0x1E6982CB0] identifier];
+    v10 = [v14 typeRecordWithIdentifier:identifier];
 
     if (v10)
     {
@@ -218,11 +218,11 @@ LABEL_17:
 
   v17 = [[ISRecordResourceProvider alloc] initWithRecord:v10 options:0];
   v18 = v17;
-  if (v3)
+  if (fallbackCopy)
   {
-    v19 = [(ISRecordResourceProvider *)v17 iconResource];
+    iconResource = [(ISRecordResourceProvider *)v17 iconResource];
 
-    if (!v19)
+    if (!iconResource)
     {
       v20 = _ISDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -249,9 +249,9 @@ LABEL_17:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   Class = object_getClass(self);
   Name = class_getName(Class);
-  v6 = [(ISApplicationIdentityIcon *)self identityString];
-  v7 = [(ISConcreteIcon *)self digest];
-  v8 = [v3 initWithFormat:@"<%s %p> identity: %@ digest: %@", Name, self, v6, v7];
+  identityString = [(ISApplicationIdentityIcon *)self identityString];
+  digest = [(ISConcreteIcon *)self digest];
+  v8 = [v3 initWithFormat:@"<%s %p> identity: %@ digest: %@", Name, self, identityString, digest];
 
   return v8;
 }

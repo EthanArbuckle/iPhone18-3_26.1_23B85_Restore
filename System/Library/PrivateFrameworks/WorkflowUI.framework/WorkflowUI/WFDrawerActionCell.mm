@@ -1,8 +1,8 @@
 @interface WFDrawerActionCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
 - (void)layoutSubviews;
 @end
 
@@ -10,13 +10,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_274847BCC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_27484865C();
   v6 = v5;
 
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_2748491E8();
 
   swift_unknownObjectRelease();
@@ -41,22 +41,22 @@
   return v7;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v5 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_274849714();
 
   swift_unknownObjectRelease();
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_27484983C();
 
   swift_unknownObjectRelease();

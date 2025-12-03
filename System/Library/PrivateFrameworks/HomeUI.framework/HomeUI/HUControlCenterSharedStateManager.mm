@@ -3,7 +3,7 @@
 - (void)bootstrap;
 - (void)enterModuleViewWillAppear;
 - (void)exitModuleViewDidDisappear;
-- (void)setModuleWithIdentifier:(id)a3 subscribedToHome:(id)a4;
+- (void)setModuleWithIdentifier:(id)identifier subscribedToHome:(id)home;
 @end
 
 @implementation HUControlCenterSharedStateManager
@@ -31,7 +31,7 @@
 - (void)enterModuleViewWillAppear
 {
   v2 = *(&self->super.isa + OBJC_IVAR___HUControlCenterSharedStateManager_isVisibleRefCounter);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 24));
   sub_20CFD7018((v2 + 16));
@@ -41,23 +41,23 @@
 - (void)exitModuleViewDidDisappear
 {
   v2 = *(&self->super.isa + OBJC_IVAR___HUControlCenterSharedStateManager_isVisibleRefCounter);
-  v3 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + 24));
   sub_20CFD6F2C((v2 + 16));
   os_unfair_lock_unlock((v2 + 24));
 }
 
-- (void)setModuleWithIdentifier:(id)a3 subscribedToHome:(id)a4
+- (void)setModuleWithIdentifier:(id)identifier subscribedToHome:(id)home
 {
   v6 = sub_20D563818();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D5637E8();
-  v10 = a4;
-  v11 = self;
-  HUControlCenterSharedStateManager.setModuleWithIdentifier(_:subscribedTo:)(v9, a4);
+  homeCopy = home;
+  selfCopy = self;
+  HUControlCenterSharedStateManager.setModuleWithIdentifier(_:subscribedTo:)(v9, home);
 
   (*(v7 + 8))(v9, v6);
 }
@@ -74,8 +74,8 @@
   [v4 setConfiguration_];
 
   [v4 setAutomaticallySynchronizesHomeDataModel_];
-  v6 = [v4 sharedDispatcher];
-  [v6 warmup];
+  sharedDispatcher = [v4 sharedDispatcher];
+  [sharedDispatcher warmup];
 
   sub_20D563F48();
   v7 = sub_20D563F18();
@@ -83,8 +83,8 @@
   sub_20D563F08();
 
   (*(v1 + 8))(v3, v0);
-  v8 = [v4 sharedDispatcher];
-  v9 = [v8 homeManager];
+  sharedDispatcher2 = [v4 sharedDispatcher];
+  homeManager = [sharedDispatcher2 homeManager];
 
   if (qword_281120950 != -1)
   {
@@ -93,7 +93,7 @@
 
   v10 = sub_20D565988();
   __swift_project_value_buffer(v10, qword_281120958);
-  v11 = v9;
+  v11 = homeManager;
   v12 = sub_20D565968();
   v13 = sub_20D567EC8();
 
@@ -103,7 +103,7 @@
     v15 = swift_slowAlloc();
     *v14 = 138412290;
     *(v14 + 4) = v11;
-    *v15 = v9;
+    *v15 = homeManager;
     v16 = v11;
     _os_log_impl(&dword_20CEB6000, v12, v13, "ControlCenterSharedStateManager is bootstrapped: %@", v14, 0xCu);
     sub_20CEF928C(v15, &unk_27C81BE60);

@@ -1,16 +1,16 @@
 @interface TSWPTrackedDeletion
-- (TSWPTrackedDeletion)initWithRange:(_NSRange)a3 changeSession:(id)a4;
+- (TSWPTrackedDeletion)initWithRange:(_NSRange)range changeSession:(id)session;
 - (_NSRange)insertedRange;
 - (void)dealloc;
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 undoTransaction:(void *)a5 replaceBlock:(id)a6;
+- (void)performWithStorage:(id)storage delta:(int64_t)delta undoTransaction:(void *)transaction replaceBlock:(id)block;
 @end
 
 @implementation TSWPTrackedDeletion
 
-- (TSWPTrackedDeletion)initWithRange:(_NSRange)a3 changeSession:(id)a4
+- (TSWPTrackedDeletion)initWithRange:(_NSRange)range changeSession:(id)session
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v11.receiver = self;
   v11.super_class = TSWPTrackedDeletion;
   v7 = [(TSWPTrackedDeletion *)&v11 init];
@@ -18,14 +18,14 @@
   {
     if (!length)
     {
-      v8 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTrackedDeletion initWithRange:changeSession:]"];
-      [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTrackedDeletion.mm"), 30, @"Can't track a deletion over an empty range"}];
+      [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTrackedDeletion.mm"), 30, @"Can't track a deletion over an empty range"}];
     }
 
     v7->_range.location = location;
     v7->_range.length = length;
-    v7->_changeSession = a4;
+    v7->_changeSession = session;
   }
 
   return v7;
@@ -38,12 +38,12 @@
   [(TSWPTrackedDeletion *)&v3 dealloc];
 }
 
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 undoTransaction:(void *)a5 replaceBlock:(id)a6
+- (void)performWithStorage:(id)storage delta:(int64_t)delta undoTransaction:(void *)transaction replaceBlock:(id)block
 {
   location = self->_range.location;
-  if (a4)
+  if (delta)
   {
-    location += a4;
+    location += delta;
     self->_range.location = location;
   }
 
@@ -62,11 +62,11 @@
   v35[2] = __77__TSWPTrackedDeletion_performWithStorage_delta_undoTransaction_replaceBlock___block_invoke;
   v35[3] = &unk_279D49C88;
   v35[4] = &v36;
-  [a3 enumerateSmartFieldsWithAttributeKind:7 inRange:location usingBlock:{length, v35}];
+  [storage enumerateSmartFieldsWithAttributeKind:7 inRange:location usingBlock:{length, v35}];
   v11 = v37;
   for (i = v37[6]; i != v11[7]; i += 3)
   {
-    [a3 removeSmartField:*i fromRange:i[1] undoTransaction:{i[2], a5}];
+    [storage removeSmartField:*i fromRange:i[1] undoTransaction:{i[2], transaction}];
     v11 = v37;
   }
 
@@ -84,22 +84,22 @@
   v25[2] = __77__TSWPTrackedDeletion_performWithStorage_delta_undoTransaction_replaceBlock___block_invoke_2;
   v25[3] = &unk_279D49C88;
   v25[4] = &v26;
-  [a3 enumerateWithAttributeKind:14 inRange:location usingBlock:{length, v25}];
+  [storage enumerateWithAttributeKind:14 inRange:location usingBlock:{length, v25}];
   v13 = v27;
   for (j = v27[6]; j != v13[7]; j += 24)
   {
-    [a3 setDictationAndAutocorrection:0 forCharRange:*(j + 8) undoTransaction:{*(j + 16), a5}];
+    [storage setDictationAndAutocorrection:0 forCharRange:*(j + 8) undoTransaction:{*(j + 16), transaction}];
     v13 = v27;
   }
 
-  v15 = [a3 deletionChangesTable];
-  if (v15)
+  deletionChangesTable = [storage deletionChangesTable];
+  if (deletionChangesTable)
   {
-    [a3 range];
+    [storage range];
     v24.location = NSExpandedRange();
     v24.length = v16;
-    TSWPAttributeArray::begin(v15, &v24, &v22);
-    TSWPAttributeArray::end(v15, &v24, v21);
+    TSWPAttributeArray::begin(deletionChangesTable, &v24, &v22);
+    TSWPAttributeArray::end(deletionChangesTable, &v24, v21);
     for (k = v23; k != v21[1]; k = ++v23)
     {
       if ([*(v22->var4 + 2 * k + 1) canMergeWithKind:2 session:self->_changeSession])
@@ -116,10 +116,10 @@
           break;
         }
 
-        if (a5)
+        if (transaction)
         {
-          Object = TSWPAttributeArray::findObject(v15, v18, 0);
-          TSWPStorageTransaction::appendToTransaction(a5, 10, 16, Object, [(objc_object *)v18 date]);
+          Object = TSWPAttributeArray::findObject(deletionChangesTable, v18, 0);
+          TSWPStorageTransaction::appendToTransaction(transaction, 10, 16, Object, [(objc_object *)v18 date]);
         }
 
         -[objc_object setDate:](v18, "setDate:", [MEMORY[0x277CBEAA8] date]);
@@ -129,9 +129,9 @@
     }
   }
 
-  v18 = -[TSWPChange initWithContext:kind:session:]([TSWPChange alloc], "initWithContext:kind:session:", [a3 context], 2, self->_changeSession);
+  v18 = -[TSWPChange initWithContext:kind:session:]([TSWPChange alloc], "initWithContext:kind:session:", [storage context], 2, self->_changeSession);
 LABEL_19:
-  [a3 applyObject:v18 toCharRange:location forKind:length dolcContext:16 undoTransaction:{0, a5}];
+  [storage applyObject:v18 toCharRange:location forKind:length dolcContext:16 undoTransaction:{0, transaction}];
 
   _Block_object_dispose(&v26, 8);
   if (__p)

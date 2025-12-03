@@ -1,30 +1,30 @@
 @interface GuidesPickerViewModel
 - (_TtC4Maps21GuidesPickerViewModel)init;
-- (void)setIsLibrarySelected:(BOOL)a3;
-- (void)setShowsAddToLibrarySection:(BOOL)a3;
-- (void)set_isLibrarySelected:(BOOL)a3;
+- (void)setIsLibrarySelected:(BOOL)selected;
+- (void)setShowsAddToLibrarySection:(BOOL)section;
+- (void)set_isLibrarySelected:(BOOL)selected;
 @end
 
 @implementation GuidesPickerViewModel
 
-- (void)setShowsAddToLibrarySection:(BOOL)a3
+- (void)setShowsAddToLibrarySection:(BOOL)section
 {
-  v3 = a3;
-  v4 = self;
-  sub_1003066E0(v3);
+  sectionCopy = section;
+  selfCopy = self;
+  sub_1003066E0(sectionCopy);
 }
 
-- (void)set_isLibrarySelected:(BOOL)a3
+- (void)set_isLibrarySelected:(BOOL)selected
 {
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps21GuidesPickerViewModel__isLibrarySelected) = a3;
-  v3 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps21GuidesPickerViewModel__isLibrarySelected) = selected;
+  selfCopy = self;
   sub_10030685C();
 }
 
-- (void)setIsLibrarySelected:(BOOL)a3
+- (void)setIsLibrarySelected:(BOOL)selected
 {
-  v4 = self;
-  sub_100306BD8(a3);
+  selfCopy = self;
+  sub_100306BD8(selected);
 }
 
 - (_TtC4Maps21GuidesPickerViewModel)init

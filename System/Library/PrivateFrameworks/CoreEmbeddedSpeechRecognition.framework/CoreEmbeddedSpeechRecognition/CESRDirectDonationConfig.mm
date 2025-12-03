@@ -1,36 +1,36 @@
 @interface CESRDirectDonationConfig
-+ (id)_parseFieldTypeMappings:(id)a3;
-- (BOOL)_parseJsonObject:(id)a3;
-- (CESRDirectDonationConfig)initWithJsonObject:(id)a3;
-- (id)mappingForFieldTypeName:(id)a3;
++ (id)_parseFieldTypeMappings:(id)mappings;
+- (BOOL)_parseJsonObject:(id)object;
+- (CESRDirectDonationConfig)initWithJsonObject:(id)object;
+- (id)mappingForFieldTypeName:(id)name;
 @end
 
 @implementation CESRDirectDonationConfig
 
-- (id)mappingForFieldTypeName:(id)a3
+- (id)mappingForFieldTypeName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v5 = [(NSDictionary *)self->_fieldTypeToMapping objectForKeyedSubscript:v4];
-    v6 = [v5 anyObject];
+    v5 = [(NSDictionary *)self->_fieldTypeToMapping objectForKeyedSubscript:nameCopy];
+    anyObject = [v5 anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  return v6;
+  return anyObject;
 }
 
-- (BOOL)_parseJsonObject:(id)a3
+- (BOOL)_parseJsonObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"directDonations"];
+    v5 = [objectCopy objectForKeyedSubscript:@"directDonations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,10 +59,10 @@
   return isKindOfClass & 1;
 }
 
-- (CESRDirectDonationConfig)initWithJsonObject:(id)a3
+- (CESRDirectDonationConfig)initWithJsonObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = CESRDirectDonationConfig;
   v5 = [(CESRDirectDonationConfig *)&v13 init];
@@ -74,7 +74,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v7 = [(CESRDirectDonationConfig *)v5 _parseJsonObject:v4];
+  v7 = [(CESRDirectDonationConfig *)v5 _parseJsonObject:objectCopy];
   v8 = *MEMORY[0x277CEF0E8];
   if (v7)
   {
@@ -105,16 +105,16 @@ LABEL_9:
   return v9;
 }
 
-+ (id)_parseFieldTypeMappings:(id)a3
++ (id)_parseFieldTypeMappings:(id)mappings
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  mappingsCopy = mappings;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = v3;
+  v5 = mappingsCopy;
   v6 = [v5 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v6)
   {
@@ -122,7 +122,7 @@ LABEL_9:
     v8 = 0x277CBE000uLL;
     v9 = *v35;
     v31 = v5;
-    v32 = v4;
+    v32 = dictionary;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -188,7 +188,7 @@ LABEL_9:
               }
 
               v5 = v31;
-              v4 = v32;
+              dictionary = v32;
             }
 
             v8 = 0x277CBE000;
@@ -204,7 +204,7 @@ LABEL_9:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 @end

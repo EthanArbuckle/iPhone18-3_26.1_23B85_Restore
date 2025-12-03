@@ -1,10 +1,10 @@
 @interface VSSpeechCache
 + (VSSpeechCache)defaultCacheStore;
-- (BOOL)isPreinstalledCacheAvailableForRequest:(id)a3;
-- (VSSpeechCache)initWithStorePath:(id)a3;
-- (id)addCache:(id)a3;
-- (id)cacheDataForKey:(id)a3;
-- (id)preinstalledCacheForText:(id)a3 language:(id)a4 name:(id)a5;
+- (BOOL)isPreinstalledCacheAvailableForRequest:(id)request;
+- (VSSpeechCache)initWithStorePath:(id)path;
+- (id)addCache:(id)cache;
+- (id)cacheDataForKey:(id)key;
+- (id)preinstalledCacheForText:(id)text language:(id)language name:(id)name;
 - (unint64_t)totalCacheSize;
 - (void)cleanCache;
 - (void)deleteCache;
@@ -14,16 +14,16 @@
 
 - (void)deleteCache
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [(VSSpeechCache *)self dirPath];
-  [v4 removeDirectory:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  dirPath = [(VSSpeechCache *)self dirPath];
+  [defaultManager removeDirectory:dirPath];
 }
 
 - (unint64_t)totalCacheSize
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(VSSpeechCache *)self dirPath];
-  v5 = [v3 directorySize:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  dirPath = [(VSSpeechCache *)self dirPath];
+  v5 = [defaultManager directorySize:dirPath];
 
   return v5;
 }
@@ -40,28 +40,28 @@
     v3 = 2000;
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(VSSpeechCache *)self dirPath];
-  [v5 cleanDirectory:v4 withLRULimit:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  dirPath = [(VSSpeechCache *)self dirPath];
+  [defaultManager cleanDirectory:dirPath withLRULimit:v3];
 }
 
-- (BOOL)isPreinstalledCacheAvailableForRequest:(id)a3
+- (BOOL)isPreinstalledCacheAvailableForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v4 languageCode];
-  v7 = [v4 voiceName];
+  requestCopy = request;
+  text = [requestCopy text];
+  languageCode = [requestCopy languageCode];
+  voiceName = [requestCopy voiceName];
 
-  v8 = [(VSSpeechCache *)self preinstalledCacheForText:v5 language:v6 name:v7];
+  v8 = [(VSSpeechCache *)self preinstalledCacheForText:text language:languageCode name:voiceName];
 
   return v8 != 0;
 }
 
-- (id)cacheDataForKey:(id)a3
+- (id)cacheDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(VSSpeechCache *)self dirPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  keyCopy = key;
+  dirPath = [(VSSpeechCache *)self dirPath];
+  v6 = [dirPath stringByAppendingPathComponent:keyCopy];
 
   v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
   v8 = v7;
@@ -70,7 +70,7 @@
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(v8, "bytes")}];
     v10 = NSClassFromString(v9);
     v11 = [v8 subdataWithRange:{64, objc_msgSend(v8, "length") - 64}];
-    v12 = [[v10 alloc] initWithKey:v4 data:v11];
+    v12 = [[v10 alloc] initWithKey:keyCopy data:v11];
   }
 
   else
@@ -81,45 +81,45 @@
   return v12;
 }
 
-- (id)preinstalledCacheForText:(id)a3 language:(id)a4 name:(id)a5
+- (id)preinstalledCacheForText:(id)text language:(id)language name:(id)name
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D799B0] availableLanguages];
-  v12 = [v11 containsObject:v9];
+  textCopy = text;
+  languageCopy = language;
+  nameCopy = name;
+  availableLanguages = [MEMORY[0x277D799B0] availableLanguages];
+  v12 = [availableLanguages containsObject:languageCopy];
 
   if (v12)
   {
-    v13 = v9;
+    v13 = languageCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x277D799B0] fallbackLanguageForLanguage:v9];
+    v13 = [MEMORY[0x277D799B0] fallbackLanguageForLanguage:languageCopy];
     v14 = VSGetLogDefault();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v9;
+      v31 = languageCopy;
       v32 = 2114;
       v33 = v13;
       _os_log_impl(&dword_2727E4000, v14, OS_LOG_TYPE_DEFAULT, "{public}%@ is not TTS language, falling back to %{public}@", buf, 0x16u);
     }
   }
 
-  v15 = [v8 preinstalledAudioHashForLanguage:v13 name:v10];
-  v16 = [(VSSpeechCache *)self preinstalledCacheDir];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v13, v10];
-  v18 = [v16 stringByAppendingPathComponent:v17];
+  v15 = [textCopy preinstalledAudioHashForLanguage:v13 name:nameCopy];
+  preinstalledCacheDir = [(VSSpeechCache *)self preinstalledCacheDir];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v13, nameCopy];
+  v18 = [preinstalledCacheDir stringByAppendingPathComponent:nameCopy];
 
   v19 = [v18 stringByAppendingPathComponent:v15];
 
   v20 = [v19 stringByAppendingPathExtension:@"caf"];
 
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  LODWORD(v18) = [v21 isReadableFileAtPath:v20];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LODWORD(v18) = [defaultManager isReadableFileAtPath:v20];
 
   if (v18)
   {
@@ -143,7 +143,7 @@
 
     else
     {
-      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@:%@:%@:%@", v13, @"gryphon", @"unknown", v10, @"premium", @"0"];
+      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@:%@:%@:%@", v13, @"gryphon", @"unknown", nameCopy, @"premium", @"0"];
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@", v13, @"preinstalledCache", @"0"];
       v25 = [[VSSpeechCacheAudio alloc] initWithKey:v15 audio:v22 wordTimingInfo:0 voiceKey:v24 voiceResourceKey:v26];
     }
@@ -159,22 +159,22 @@
   return v25;
 }
 
-- (id)addCache:(id)a3
+- (id)addCache:(id)cache
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = [objc_opt_class() description];
   v6 = [v5 dataUsingEncoding:4];
   if (([v6 length] - 64) > 0xFFFFFFFFFFFFFFBELL)
   {
-    v9 = [v4 serializedData];
-    v11 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v9, "length") + 64}];
+    serializedData = [cacheCopy serializedData];
+    v11 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(serializedData, "length") + 64}];
     [v11 appendData:v6];
     [v11 setLength:64];
-    [v11 appendData:v9];
-    v12 = [(VSSpeechCache *)self dirPath];
-    v13 = [v4 key];
-    v14 = [v12 stringByAppendingPathComponent:v13];
+    [v11 appendData:serializedData];
+    dirPath = [(VSSpeechCache *)self dirPath];
+    v13 = [cacheCopy key];
+    v14 = [dirPath stringByAppendingPathComponent:v13];
 
     v19 = 0;
     LOBYTE(v13) = [v11 writeToFile:v14 options:0 error:&v19];
@@ -207,8 +207,8 @@
     v8 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA470];
     v25[0] = @"Cache type name too long";
-    v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v10 = [v8 errorWithDomain:@"VSSpeechCacheErrorDomain" code:0 userInfo:v9];
+    serializedData = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
+    v10 = [v8 errorWithDomain:@"VSSpeechCacheErrorDomain" code:0 userInfo:serializedData];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -216,10 +216,10 @@
   return v10;
 }
 
-- (VSSpeechCache)initWithStorePath:(id)a3
+- (VSSpeechCache)initWithStorePath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = VSSpeechCache;
   v6 = [(VSSpeechCache *)&v20 init];
@@ -229,19 +229,19 @@
   }
 
   v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.voiceservices"];
-  v8 = [v7 bundlePath];
-  v9 = [v8 stringByAppendingPathComponent:@"TTSResources/PreinstallCache/"];
+  bundlePath = [v7 bundlePath];
+  v9 = [bundlePath stringByAppendingPathComponent:@"TTSResources/PreinstallCache/"];
   preinstalledCacheDir = v6->_preinstalledCacheDir;
   v6->_preinstalledCacheDir = v9;
 
-  objc_storeStrong(&v6->_dirPath, a3);
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  objc_storeStrong(&v6->_dirPath, path);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   dirPath = v6->_dirPath;
   v19 = 0;
-  LOBYTE(v8) = [v11 createDirectoryAtPath:dirPath withIntermediateDirectories:1 attributes:0 error:&v19];
+  LOBYTE(bundlePath) = [defaultManager createDirectoryAtPath:dirPath withIntermediateDirectories:1 attributes:0 error:&v19];
   v13 = v19;
 
-  if (v8)
+  if (bundlePath)
   {
 
 LABEL_4:

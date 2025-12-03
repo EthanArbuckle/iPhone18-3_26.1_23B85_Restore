@@ -1,26 +1,26 @@
 @interface ADArbitrationFeedbackManager
 + (id)sharedManager;
-- (BOOL)_localDeviceIsSameAsLocationSharingDevice:(id)a3;
-- (id)_createDeviceContextUpdateOperationForParticipation:(id)a3;
-- (id)_createDeviceInfoOperationForParticipation:(id)a3;
-- (id)_createPeerInfoUpdateOperationForParticipation:(id)a3;
-- (id)_createPublishOperationForParticipation:(id)a3;
-- (id)_createRequestInfoUpdateOperationForParticipation:(id)a3 forTurnId:(id)a4 withExecutionContxt:(id)a5;
-- (id)_findContextCollectorIn:(id)a3 withIDSIdentifier:(id)a4;
+- (BOOL)_localDeviceIsSameAsLocationSharingDevice:(id)device;
+- (id)_createDeviceContextUpdateOperationForParticipation:(id)participation;
+- (id)_createDeviceInfoOperationForParticipation:(id)participation;
+- (id)_createPeerInfoUpdateOperationForParticipation:(id)participation;
+- (id)_createPublishOperationForParticipation:(id)participation;
+- (id)_createRequestInfoUpdateOperationForParticipation:(id)participation forTurnId:(id)id withExecutionContxt:(id)contxt;
+- (id)_findContextCollectorIn:(id)in withIDSIdentifier:(id)identifier;
 - (id)_init;
 - (id)_initForTesting;
-- (id)_mediaStateFrom:(int64_t)a3;
-- (void)_findTargetDeviceInDeviceCircleLocalPeer:(id)a3 remotePeers:(id)a4 completion:(id)a5;
-- (void)_forwardToContextCollectorMessage:(id)a3 From:(id)a4 completion:(id)a5;
-- (void)_forwardToDevice:(id)a3 message:(id)a4 From:(id)a5 completion:(id)a6;
-- (void)_handleArbitrationParticipationPush:(id)a3 from:(id)a4 completion:(id)a5;
+- (id)_mediaStateFrom:(int64_t)from;
+- (void)_findTargetDeviceInDeviceCircleLocalPeer:(id)peer remotePeers:(id)peers completion:(id)completion;
+- (void)_forwardToContextCollectorMessage:(id)message From:(id)from completion:(id)completion;
+- (void)_forwardToDevice:(id)device message:(id)message From:(id)from completion:(id)completion;
+- (void)_handleArbitrationParticipationPush:(id)push from:(id)from completion:(id)completion;
 - (void)_processAndSendUserFeedback;
 - (void)assistantDismissed;
-- (void)handle:(id)a3 fromPeer:(id)a4 completion:(id)a5;
-- (void)handleUserFeedbackAction:(int64_t)a3;
-- (void)publishParticipation:(id)a3;
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
-- (void)requestLifecycleObserver:(id)a3 requestWasCancelledWithInfo:(id)a4 forReason:(int64_t)a5 origin:(int64_t)a6 client:(id)a7 successorInfo:(id)a8;
+- (void)handle:(id)handle fromPeer:(id)peer completion:(id)completion;
+- (void)handleUserFeedbackAction:(int64_t)action;
+- (void)publishParticipation:(id)participation;
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client;
+- (void)requestLifecycleObserver:(id)observer requestWasCancelledWithInfo:(id)info forReason:(int64_t)reason origin:(int64_t)origin client:(id)client successorInfo:(id)successorInfo;
 @end
 
 @implementation ADArbitrationFeedbackManager
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001B204C;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590498 != -1)
   {
     dispatch_once(&qword_100590498, block);
@@ -44,22 +44,22 @@
 
 - (void)_processAndSendUserFeedback
 {
-  v3 = [(ADArbitrationFeedbackManager *)self completedTurnId];
-  if (v3)
+  completedTurnId = [(ADArbitrationFeedbackManager *)self completedTurnId];
+  if (completedTurnId)
   {
     participation = self->_participation;
 
     if (participation)
     {
       v5 = [SCDAFParticipation alloc];
-      v6 = [(SCDAFParticipation *)self->_participation dictionaryRepresentation];
-      v19 = [v5 initWithDictionaryRepresentation:v6];
+      dictionaryRepresentation = [(SCDAFParticipation *)self->_participation dictionaryRepresentation];
+      v19 = [v5 initWithDictionaryRepresentation:dictionaryRepresentation];
 
-      v7 = [(ADArbitrationFeedbackManager *)self completedTurnId];
-      v8 = [v7 copy];
+      completedTurnId2 = [(ADArbitrationFeedbackManager *)self completedTurnId];
+      v8 = [completedTurnId2 copy];
 
-      v9 = [(ADArbitrationFeedbackManager *)self executionContexts];
-      v10 = [v9 copy];
+      executionContexts = [(ADArbitrationFeedbackManager *)self executionContexts];
+      v10 = [executionContexts copy];
 
       v11 = self->_participation;
       self->_participation = 0;
@@ -91,78 +91,78 @@
   }
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
-  v7 = [a4 turnIdentifier];
-  [(ADArbitrationFeedbackManager *)self setCompletedTurnId:v7];
+  turnIdentifier = [info turnIdentifier];
+  [(ADArbitrationFeedbackManager *)self setCompletedTurnId:turnIdentifier];
 
   v8 = +[ADCommandCenter sharedCommandCenter];
-  v9 = [v8 rootExecutionContexts];
-  [(ADArbitrationFeedbackManager *)self setExecutionContexts:v9];
+  rootExecutionContexts = [v8 rootExecutionContexts];
+  [(ADArbitrationFeedbackManager *)self setExecutionContexts:rootExecutionContexts];
 
   [(ADArbitrationFeedbackManager *)self _processAndSendUserFeedback];
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWasCancelledWithInfo:(id)a4 forReason:(int64_t)a5 origin:(int64_t)a6 client:(id)a7 successorInfo:(id)a8
+- (void)requestLifecycleObserver:(id)observer requestWasCancelledWithInfo:(id)info forReason:(int64_t)reason origin:(int64_t)origin client:(id)client successorInfo:(id)successorInfo
 {
-  v10 = [ADCommandCenter sharedCommandCenter:a3];
-  v9 = [v10 rootExecutionContexts];
-  [(ADArbitrationFeedbackManager *)self setExecutionContexts:v9];
+  v10 = [ADCommandCenter sharedCommandCenter:observer];
+  rootExecutionContexts = [v10 rootExecutionContexts];
+  [(ADArbitrationFeedbackManager *)self setExecutionContexts:rootExecutionContexts];
 }
 
-- (void)_forwardToContextCollectorMessage:(id)a3 From:(id)a4 completion:(id)a5
+- (void)_forwardToContextCollectorMessage:(id)message From:(id)from completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
+  messageCopy = message;
+  fromCopy = from;
+  completionCopy = completion;
+  deviceCircleManager = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001AE6C0;
   v15[3] = &unk_100514E08;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 getContextCollectorDeviceIdentifiersWithCompletion:v15];
+  v16 = messageCopy;
+  v17 = fromCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = fromCopy;
+  v14 = messageCopy;
+  [deviceCircleManager getContextCollectorDeviceIdentifiersWithCompletion:v15];
 }
 
-- (void)_forwardToDevice:(id)a3 message:(id)a4 From:(id)a5 completion:(id)a6
+- (void)_forwardToDevice:(id)device message:(id)message From:(id)from completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  deviceCopy = device;
+  messageCopy = message;
+  completionCopy = completion;
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v21 = "[ADArbitrationFeedbackManager _forwardToDevice:message:From:completion:]";
     v22 = 2112;
-    v23 = v9;
+    v23 = deviceCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback Forward arbitration to device: %@", buf, 0x16u);
   }
 
-  v13 = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
+  deviceCircleManager = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
   queue = self->_queue;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001AEA14;
   v17[3] = &unk_100514DE0;
-  v18 = v9;
-  v19 = v11;
-  v15 = v11;
-  v16 = v9;
-  [v13 sendRequestType:@"arbitration_info_push" data:v10 toDeviceWithAssistantIdentifier:v16 onQueue:queue completion:v17];
+  v18 = deviceCopy;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = deviceCopy;
+  [deviceCircleManager sendRequestType:@"arbitration_info_push" data:messageCopy toDeviceWithAssistantIdentifier:v16 onQueue:queue completion:v17];
 }
 
-- (void)_handleArbitrationParticipationPush:(id)a3 from:(id)a4 completion:(id)a5
+- (void)_handleArbitrationParticipationPush:(id)push from:(id)from completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pushCopy = push;
+  fromCopy = from;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -171,18 +171,18 @@
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback Handle received arbitration request on this device.", &v18, 0xCu);
   }
 
-  v12 = [v8 objectForKeyedSubscript:@"ADArbitrationParticipationMessage"];
+  v12 = [pushCopy objectForKeyedSubscript:@"ADArbitrationParticipationMessage"];
   v13 = [[SCDAFParticipation alloc] initWithDictionaryRepresentation:v12];
-  v14 = [v13 advertisement];
+  advertisement = [v13 advertisement];
 
-  if (v14)
+  if (advertisement)
   {
-    v15 = [(ADArbitrationFeedbackManager *)self feedbackService];
-    [v15 handleReceivedArbitrationParticipation:v13];
+    feedbackService = [(ADArbitrationFeedbackManager *)self feedbackService];
+    [feedbackService handleReceivedArbitrationParticipation:v13];
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -197,37 +197,37 @@
     }
 
     v17 = [AFError errorWithCode:30 description:@"Unable to parse SCDAFParticipation from request."];
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0, v17);
+      (*(completionCopy + 2))(completionCopy, 0, v17);
     }
   }
 }
 
-- (id)_findContextCollectorIn:(id)a3 withIDSIdentifier:(id)a4
+- (id)_findContextCollectorIn:(id)in withIDSIdentifier:(id)identifier
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001AEDE0;
   v8[3] = &unk_100514DB8;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 af_firstObjectPassingTest:v8];
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  v6 = [in af_firstObjectPassingTest:v8];
 
   return v6;
 }
 
-- (void)_findTargetDeviceInDeviceCircleLocalPeer:(id)a3 remotePeers:(id)a4 completion:(id)a5
+- (void)_findTargetDeviceInDeviceCircleLocalPeer:(id)peer remotePeers:(id)peers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peerCopy = peer;
+  peersCopy = peers;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [(ADDeviceCircleManager *)self->_deviceCircleManager locationSharingDevice];
-    v12 = [v11 assistantIdentifier];
+    locationSharingDevice = [(ADDeviceCircleManager *)self->_deviceCircleManager locationSharingDevice];
+    assistantIdentifier = [locationSharingDevice assistantIdentifier];
 
-    if ([v12 length])
+    if ([assistantIdentifier length])
     {
       v13 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -235,25 +235,25 @@
         *buf = 136315394;
         v21 = "[ADArbitrationFeedbackManager _findTargetDeviceInDeviceCircleLocalPeer:remotePeers:completion:]";
         v22 = 2112;
-        v23 = v12;
+        v23 = assistantIdentifier;
         _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback Target device is location sharing device: %@", buf, 0x16u);
       }
 
-      v14 = [v8 assistantIdentifier];
-      v10[2](v10, v12, [v14 isEqualToString:v12]);
+      assistantIdentifier2 = [peerCopy assistantIdentifier];
+      completionCopy[2](completionCopy, assistantIdentifier, [assistantIdentifier2 isEqualToString:assistantIdentifier]);
     }
 
     else
     {
-      v16 = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
+      deviceCircleManager = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1001AF0C0;
       v17[3] = &unk_100514EF8;
       v17[4] = self;
-      v19 = v10;
-      v18 = v9;
-      [v16 getContextCollectorDeviceIdentifiersWithCompletion:v17];
+      v19 = completionCopy;
+      v18 = peersCopy;
+      [deviceCircleManager getContextCollectorDeviceIdentifiersWithCompletion:v17];
     }
   }
 
@@ -269,66 +269,66 @@
   }
 }
 
-- (BOOL)_localDeviceIsSameAsLocationSharingDevice:(id)a3
+- (BOOL)_localDeviceIsSameAsLocationSharingDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
-  v6 = [v5 localPeerInfo];
+  deviceCopy = device;
+  deviceCircleManager = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
+  localPeerInfo = [deviceCircleManager localPeerInfo];
 
-  v7 = [v6 assistantIdentifier];
-  v8 = [v4 isEqualToString:v7];
+  assistantIdentifier = [localPeerInfo assistantIdentifier];
+  v8 = [deviceCopy isEqualToString:assistantIdentifier];
 
   return v8;
 }
 
-- (void)handle:(id)a3 fromPeer:(id)a4 completion:(id)a5
+- (void)handle:(id)handle fromPeer:(id)peer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  peerCopy = peer;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v15 = 136315394;
     v16 = "[ADArbitrationFeedbackManager handle:fromPeer:completion:]";
     v17 = 2112;
-    v18 = v8;
+    v18 = handleCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback Received arbitration push message: %@", &v15, 0x16u);
   }
 
-  v12 = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
-  v13 = [v12 locationSharingDevice];
-  v14 = [v13 assistantIdentifier];
+  deviceCircleManager = [(ADArbitrationFeedbackManager *)self deviceCircleManager];
+  locationSharingDevice = [deviceCircleManager locationSharingDevice];
+  assistantIdentifier = [locationSharingDevice assistantIdentifier];
 
-  if (v14)
+  if (assistantIdentifier)
   {
-    if ([(ADArbitrationFeedbackManager *)self _localDeviceIsSameAsLocationSharingDevice:v14])
+    if ([(ADArbitrationFeedbackManager *)self _localDeviceIsSameAsLocationSharingDevice:assistantIdentifier])
     {
-      [(ADArbitrationFeedbackManager *)self _handleArbitrationParticipationPush:v8 from:v9 completion:v10];
+      [(ADArbitrationFeedbackManager *)self _handleArbitrationParticipationPush:handleCopy from:peerCopy completion:completionCopy];
     }
 
     else
     {
-      [(ADArbitrationFeedbackManager *)self _forwardToDevice:v14 message:v8 From:v9 completion:v10];
+      [(ADArbitrationFeedbackManager *)self _forwardToDevice:assistantIdentifier message:handleCopy From:peerCopy completion:completionCopy];
     }
   }
 
   else
   {
-    [(ADArbitrationFeedbackManager *)self _forwardToContextCollectorMessage:v8 From:v9 completion:v10];
+    [(ADArbitrationFeedbackManager *)self _forwardToContextCollectorMessage:handleCopy From:peerCopy completion:completionCopy];
   }
 }
 
-- (id)_mediaStateFrom:(int64_t)a3
+- (id)_mediaStateFrom:(int64_t)from
 {
-  if ((a3 - 1) > 4)
+  if ((from - 1) > 4)
   {
     return &off_100533A28;
   }
 
   else
   {
-    return off_100514E28[a3 - 1];
+    return off_100514E28[from - 1];
   }
 }
 
@@ -342,82 +342,82 @@
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback assistantDismissed", &v5, 0xCu);
   }
 
-  v4 = [(ADArbitrationFeedbackManager *)self feedbackService];
-  [v4 handleAssistantDismissed];
+  feedbackService = [(ADArbitrationFeedbackManager *)self feedbackService];
+  [feedbackService handleAssistantDismissed];
 }
 
-- (id)_createDeviceInfoOperationForParticipation:(id)a3
+- (id)_createDeviceInfoOperationForParticipation:(id)participation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001AFB74;
   v7[3] = &unk_10051E010;
-  v8 = a3;
-  v9 = self;
-  v4 = v8;
+  participationCopy = participation;
+  selfCopy = self;
+  v4 = participationCopy;
   v5 = [NSBlockOperation blockOperationWithBlock:v7];
 
   return v5;
 }
 
-- (id)_createPublishOperationForParticipation:(id)a3
+- (id)_createPublishOperationForParticipation:(id)participation
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001B01AC;
   v6[3] = &unk_10051E010;
   v6[4] = self;
-  v7 = a3;
-  v3 = v7;
+  participationCopy = participation;
+  v3 = participationCopy;
   v4 = [NSBlockOperation blockOperationWithBlock:v6];
 
   return v4;
 }
 
-- (id)_createPeerInfoUpdateOperationForParticipation:(id)a3
+- (id)_createPeerInfoUpdateOperationForParticipation:(id)participation
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001B095C;
   v6[3] = &unk_10051E010;
   v6[4] = self;
-  v7 = a3;
-  v3 = v7;
+  participationCopy = participation;
+  v3 = participationCopy;
   v4 = [NSBlockOperation blockOperationWithBlock:v6];
 
   return v4;
 }
 
-- (id)_createDeviceContextUpdateOperationForParticipation:(id)a3
+- (id)_createDeviceContextUpdateOperationForParticipation:(id)participation
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001B0E68;
   v6[3] = &unk_10051E010;
   v6[4] = self;
-  v7 = a3;
-  v3 = v7;
+  participationCopy = participation;
+  v3 = participationCopy;
   v4 = [NSBlockOperation blockOperationWithBlock:v6];
 
   return v4;
 }
 
-- (id)_createRequestInfoUpdateOperationForParticipation:(id)a3 forTurnId:(id)a4 withExecutionContxt:(id)a5
+- (id)_createRequestInfoUpdateOperationForParticipation:(id)participation forTurnId:(id)id withExecutionContxt:(id)contxt
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  participationCopy = participation;
+  idCopy = id;
+  contxtCopy = contxt;
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001B1784;
   v16[3] = &unk_100519FE8;
   objc_copyWeak(&v20, &location);
-  v11 = v10;
+  v11 = contxtCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = idCopy;
   v18 = v12;
-  v13 = v8;
+  v13 = participationCopy;
   v19 = v13;
   v14 = [NSBlockOperation blockOperationWithBlock:v16];
 
@@ -427,9 +427,9 @@
   return v14;
 }
 
-- (void)publishParticipation:(id)a3
+- (void)publishParticipation:(id)participation
 {
-  v5 = a3;
+  participationCopy = participation;
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -440,7 +440,7 @@
 
   if ((+[AFFeatureFlags isCrossDeviceArbitrationFeedbackEnabled]& 1) != 0)
   {
-    objc_storeStrong(&self->_participation, a3);
+    objc_storeStrong(&self->_participation, participation);
     [(ADArbitrationFeedbackManager *)self _processAndSendUserFeedback];
   }
 
@@ -456,13 +456,13 @@
   }
 }
 
-- (void)handleUserFeedbackAction:(int64_t)a3
+- (void)handleUserFeedbackAction:(int64_t)action
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v8 = v4;
-    v9 = [NSNumber numberWithInteger:a3];
+    v9 = [NSNumber numberWithInteger:action];
     *buf = 136315394;
     v11 = "[ADArbitrationFeedbackManager handleUserFeedbackAction:]";
     v12 = 2112;
@@ -470,11 +470,11 @@
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #myriad #feedback handleUserFeedbackAction: %@", buf, 0x16u);
   }
 
-  if (a3 != 2)
+  if (action != 2)
   {
     v5 = [NSURL alloc];
-    v6 = [NSString stringWithFormat:@"%@://open", SCDAFFeedbackAppBundleId];
-    v7 = [v5 initWithString:v6];
+    sCDAFFeedbackAppBundleId = [NSString stringWithFormat:@"%@://open", SCDAFFeedbackAppBundleId];
+    v7 = [v5 initWithString:sCDAFFeedbackAppBundleId];
     sub_100215118(v7);
   }
 }

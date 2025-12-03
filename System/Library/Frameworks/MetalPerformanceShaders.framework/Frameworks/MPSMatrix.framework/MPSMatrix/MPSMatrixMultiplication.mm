@@ -1,11 +1,11 @@
 @interface MPSMatrixMultiplication
-- (MPSMatrixMultiplication)initWithCoder:(id)a3 device:(id)a4;
+- (MPSMatrixMultiplication)initWithCoder:(id)coder device:(id)device;
 - (MPSMatrixMultiplication)initWithDevice:(id)device transposeLeft:(BOOL)transposeLeft transposeRight:(BOOL)transposeRight resultRows:(NSUInteger)resultRows resultColumns:(NSUInteger)resultColumns interiorColumns:(NSUInteger)interiorColumns alpha:(double)alpha beta:(double)beta;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer leftMatrix:(MPSMatrix *)leftMatrix rightMatrix:(MPSMatrix *)rightMatrix resultMatrix:(MPSMatrix *)resultMatrix;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setLeftMatrixOrigin:(MTLOrigin *)leftMatrixOrigin;
 - (void)setResultMatrixOrigin:(MTLOrigin *)resultMatrixOrigin;
 - (void)setRightMatrixOrigin:(MTLOrigin *)rightMatrixOrigin;
@@ -79,11 +79,11 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v14.receiver = self;
   v14.super_class = MPSMatrixMultiplication;
-  result = [(MPSKernel *)&v14 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v14 copyWithZone:zone device:device];
   if (result)
   {
     z = self->_resultMatrixOrigin.z;
@@ -147,70 +147,70 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.isa + *MEMORY[0x277CD7358]) = *(&self->super.super.isa + *MEMORY[0x277CD7358]) | 0x10100;
   v97.receiver = self;
   v97.super_class = MPSMatrixMultiplication;
   [(MPSKernel *)&v97 encodeWithCoder:?];
-  objc_msgSend_encodeBool_forKey_(a3, v5, self->_transA, @"MPSMatrixMultiplication.transA", v6, v7, v8, v9);
-  objc_msgSend_encodeBool_forKey_(a3, v10, self->_transB, @"MPSMatrixMultiplication.transB", v11, v12, v13, v14);
-  objc_msgSend_encodeDouble_forKey_(a3, v15, @"MPSMatrixMultiplication.alpha", v16, v17, v18, v19, v20, self->_alpha);
-  objc_msgSend_encodeDouble_forKey_(a3, v21, @"MPSMatrixMultiplication.beta", v22, v23, v24, v25, v26, self->_beta);
-  objc_msgSend_encodeInt64_forKey_(a3, v27, self->_M, @"MPSMatrixMultiplication.M", v28, v29, v30, v31);
-  objc_msgSend_encodeInt64_forKey_(a3, v32, self->_N, @"MPSMatrixMultiplication.N", v33, v34, v35, v36);
-  objc_msgSend_encodeInt64_forKey_(a3, v37, self->_K, @"MPSMatrixMultiplication.K", v38, v39, v40, v41);
-  objc_msgSend_encodeInt64_forKey_(a3, v42, self->_leftMatrixOrigin.x, @"MPSMatrixMultiplication.leftMatrixOrigin.x", v43, v44, v45, v46);
-  objc_msgSend_encodeInt64_forKey_(a3, v47, self->_leftMatrixOrigin.y, @"MPSMatrixMultiplication.leftMatrixOrigin.y", v48, v49, v50, v51);
-  objc_msgSend_encodeInt64_forKey_(a3, v52, self->_leftMatrixOrigin.z, @"MPSMatrixMultiplication.leftMatrixOrigin.z", v53, v54, v55, v56);
-  objc_msgSend_encodeInt64_forKey_(a3, v57, self->_rightMatrixOrigin.x, @"MPSMatrixMultiplication.rightMatrixOrigin.x", v58, v59, v60, v61);
-  objc_msgSend_encodeInt64_forKey_(a3, v62, self->_rightMatrixOrigin.y, @"MPSMatrixMultiplication.rightMatrixOrigin.y", v63, v64, v65, v66);
-  objc_msgSend_encodeInt64_forKey_(a3, v67, self->_rightMatrixOrigin.z, @"MPSMatrixMultiplication.rightMatrixOrigin.z", v68, v69, v70, v71);
-  objc_msgSend_encodeInt64_forKey_(a3, v72, self->_resultMatrixOrigin.x, @"MPSMatrixMultiplication.resultMatrixOrigin.x", v73, v74, v75, v76);
-  objc_msgSend_encodeInt64_forKey_(a3, v77, self->_resultMatrixOrigin.y, @"MPSMatrixMultiplication.resultMatrixOrigin.y", v78, v79, v80, v81);
-  objc_msgSend_encodeInt64_forKey_(a3, v82, self->_resultMatrixOrigin.z, @"MPSMatrixMultiplication.resulttMatrixOrigin.z", v83, v84, v85, v86);
-  objc_msgSend_encodeInt64_forKey_(a3, v87, self->_batchStart, @"MPSMatrixMultiplication.batchStart", v88, v89, v90, v91);
-  objc_msgSend_encodeInt64_forKey_(a3, v92, self->_batchSize, @"MPSMatrixMultiplication.batchSize", v93, v94, v95, v96);
+  objc_msgSend_encodeBool_forKey_(coder, v5, self->_transA, @"MPSMatrixMultiplication.transA", v6, v7, v8, v9);
+  objc_msgSend_encodeBool_forKey_(coder, v10, self->_transB, @"MPSMatrixMultiplication.transB", v11, v12, v13, v14);
+  objc_msgSend_encodeDouble_forKey_(coder, v15, @"MPSMatrixMultiplication.alpha", v16, v17, v18, v19, v20, self->_alpha);
+  objc_msgSend_encodeDouble_forKey_(coder, v21, @"MPSMatrixMultiplication.beta", v22, v23, v24, v25, v26, self->_beta);
+  objc_msgSend_encodeInt64_forKey_(coder, v27, self->_M, @"MPSMatrixMultiplication.M", v28, v29, v30, v31);
+  objc_msgSend_encodeInt64_forKey_(coder, v32, self->_N, @"MPSMatrixMultiplication.N", v33, v34, v35, v36);
+  objc_msgSend_encodeInt64_forKey_(coder, v37, self->_K, @"MPSMatrixMultiplication.K", v38, v39, v40, v41);
+  objc_msgSend_encodeInt64_forKey_(coder, v42, self->_leftMatrixOrigin.x, @"MPSMatrixMultiplication.leftMatrixOrigin.x", v43, v44, v45, v46);
+  objc_msgSend_encodeInt64_forKey_(coder, v47, self->_leftMatrixOrigin.y, @"MPSMatrixMultiplication.leftMatrixOrigin.y", v48, v49, v50, v51);
+  objc_msgSend_encodeInt64_forKey_(coder, v52, self->_leftMatrixOrigin.z, @"MPSMatrixMultiplication.leftMatrixOrigin.z", v53, v54, v55, v56);
+  objc_msgSend_encodeInt64_forKey_(coder, v57, self->_rightMatrixOrigin.x, @"MPSMatrixMultiplication.rightMatrixOrigin.x", v58, v59, v60, v61);
+  objc_msgSend_encodeInt64_forKey_(coder, v62, self->_rightMatrixOrigin.y, @"MPSMatrixMultiplication.rightMatrixOrigin.y", v63, v64, v65, v66);
+  objc_msgSend_encodeInt64_forKey_(coder, v67, self->_rightMatrixOrigin.z, @"MPSMatrixMultiplication.rightMatrixOrigin.z", v68, v69, v70, v71);
+  objc_msgSend_encodeInt64_forKey_(coder, v72, self->_resultMatrixOrigin.x, @"MPSMatrixMultiplication.resultMatrixOrigin.x", v73, v74, v75, v76);
+  objc_msgSend_encodeInt64_forKey_(coder, v77, self->_resultMatrixOrigin.y, @"MPSMatrixMultiplication.resultMatrixOrigin.y", v78, v79, v80, v81);
+  objc_msgSend_encodeInt64_forKey_(coder, v82, self->_resultMatrixOrigin.z, @"MPSMatrixMultiplication.resulttMatrixOrigin.z", v83, v84, v85, v86);
+  objc_msgSend_encodeInt64_forKey_(coder, v87, self->_batchStart, @"MPSMatrixMultiplication.batchStart", v88, v89, v90, v91);
+  objc_msgSend_encodeInt64_forKey_(coder, v92, self->_batchSize, @"MPSMatrixMultiplication.batchSize", v93, v94, v95, v96);
 }
 
-- (MPSMatrixMultiplication)initWithCoder:(id)a3 device:(id)a4
+- (MPSMatrixMultiplication)initWithCoder:(id)coder device:(id)device
 {
   if ((*(&self->super.super.isa + *MEMORY[0x277CD7358]) & 0xFFFF0000) == 0x10000)
   {
     v132.receiver = self;
     v132.super_class = MPSMatrixMultiplication;
-    v11 = [(MPSKernel *)&v132 initWithCoder:a3 device:a4];
+    v11 = [(MPSKernel *)&v132 initWithCoder:coder device:device];
     if (v11)
     {
-      v11->_transA = objc_msgSend_decodeBoolForKey_(a3, v5, @"MPSMatrixMultiplication.transA", v6, v7, v8, v9, v10);
-      v11->_transB = objc_msgSend_decodeBoolForKey_(a3, v12, @"MPSMatrixMultiplication.transB", v13, v14, v15, v16, v17);
-      objc_msgSend_decodeDoubleForKey_(a3, v18, @"MPSMatrixMultiplication.alpha", v19, v20, v21, v22, v23);
+      v11->_transA = objc_msgSend_decodeBoolForKey_(coder, v5, @"MPSMatrixMultiplication.transA", v6, v7, v8, v9, v10);
+      v11->_transB = objc_msgSend_decodeBoolForKey_(coder, v12, @"MPSMatrixMultiplication.transB", v13, v14, v15, v16, v17);
+      objc_msgSend_decodeDoubleForKey_(coder, v18, @"MPSMatrixMultiplication.alpha", v19, v20, v21, v22, v23);
       v11->_alpha = v24;
-      objc_msgSend_decodeDoubleForKey_(a3, v25, @"MPSMatrixMultiplication.beta", v26, v27, v28, v29, v30);
+      objc_msgSend_decodeDoubleForKey_(coder, v25, @"MPSMatrixMultiplication.beta", v26, v27, v28, v29, v30);
       v11->_beta = v31;
-      v11->_M = objc_msgSend_decodeInt64ForKey_(a3, v32, @"MPSMatrixMultiplication.M", v33, v34, v35, v36, v37);
-      v11->_N = objc_msgSend_decodeInt64ForKey_(a3, v38, @"MPSMatrixMultiplication.N", v39, v40, v41, v42, v43);
-      v11->_K = objc_msgSend_decodeInt64ForKey_(a3, v44, @"MPSMatrixMultiplication.K", v45, v46, v47, v48, v49);
-      v56 = objc_msgSend_decodeInt64ForKey_(a3, v50, @"MPSMatrixMultiplication.leftMatrixOrigin.x", v51, v52, v53, v54, v55);
-      v63 = objc_msgSend_decodeInt64ForKey_(a3, v57, @"MPSMatrixMultiplication.leftMatrixOrigin.y", v58, v59, v60, v61, v62);
-      v70 = objc_msgSend_decodeInt64ForKey_(a3, v64, @"MPSMatrixMultiplication.leftMatrixOrigin.z", v65, v66, v67, v68, v69);
+      v11->_M = objc_msgSend_decodeInt64ForKey_(coder, v32, @"MPSMatrixMultiplication.M", v33, v34, v35, v36, v37);
+      v11->_N = objc_msgSend_decodeInt64ForKey_(coder, v38, @"MPSMatrixMultiplication.N", v39, v40, v41, v42, v43);
+      v11->_K = objc_msgSend_decodeInt64ForKey_(coder, v44, @"MPSMatrixMultiplication.K", v45, v46, v47, v48, v49);
+      v56 = objc_msgSend_decodeInt64ForKey_(coder, v50, @"MPSMatrixMultiplication.leftMatrixOrigin.x", v51, v52, v53, v54, v55);
+      v63 = objc_msgSend_decodeInt64ForKey_(coder, v57, @"MPSMatrixMultiplication.leftMatrixOrigin.y", v58, v59, v60, v61, v62);
+      v70 = objc_msgSend_decodeInt64ForKey_(coder, v64, @"MPSMatrixMultiplication.leftMatrixOrigin.z", v65, v66, v67, v68, v69);
       v11->_leftMatrixOrigin.x = v56;
       v11->_leftMatrixOrigin.y = v63;
       v11->_leftMatrixOrigin.z = v70;
-      v77 = objc_msgSend_decodeInt64ForKey_(a3, v71, @"MPSMatrixMultiplication.rightMatrixOrigin.x", v72, v73, v74, v75, v76);
-      v84 = objc_msgSend_decodeInt64ForKey_(a3, v78, @"MPSMatrixMultiplication.rightMatrixOrigin.y", v79, v80, v81, v82, v83);
-      v91 = objc_msgSend_decodeInt64ForKey_(a3, v85, @"MPSMatrixMultiplication.rightMatrixOrigin.z", v86, v87, v88, v89, v90);
+      v77 = objc_msgSend_decodeInt64ForKey_(coder, v71, @"MPSMatrixMultiplication.rightMatrixOrigin.x", v72, v73, v74, v75, v76);
+      v84 = objc_msgSend_decodeInt64ForKey_(coder, v78, @"MPSMatrixMultiplication.rightMatrixOrigin.y", v79, v80, v81, v82, v83);
+      v91 = objc_msgSend_decodeInt64ForKey_(coder, v85, @"MPSMatrixMultiplication.rightMatrixOrigin.z", v86, v87, v88, v89, v90);
       v11->_rightMatrixOrigin.x = v77;
       v11->_rightMatrixOrigin.y = v84;
       v11->_rightMatrixOrigin.z = v91;
-      v98 = objc_msgSend_decodeInt64ForKey_(a3, v92, @"MPSMatrixMultiplication.resultMatrixOrigin.x", v93, v94, v95, v96, v97);
-      v105 = objc_msgSend_decodeInt64ForKey_(a3, v99, @"MPSMatrixMultiplication.resultMatrixOrigin.y", v100, v101, v102, v103, v104);
-      v112 = objc_msgSend_decodeInt64ForKey_(a3, v106, @"MPSMatrixMultiplication.resulttMatrixOrigin.z", v107, v108, v109, v110, v111);
+      v98 = objc_msgSend_decodeInt64ForKey_(coder, v92, @"MPSMatrixMultiplication.resultMatrixOrigin.x", v93, v94, v95, v96, v97);
+      v105 = objc_msgSend_decodeInt64ForKey_(coder, v99, @"MPSMatrixMultiplication.resultMatrixOrigin.y", v100, v101, v102, v103, v104);
+      v112 = objc_msgSend_decodeInt64ForKey_(coder, v106, @"MPSMatrixMultiplication.resulttMatrixOrigin.z", v107, v108, v109, v110, v111);
       v11->_resultMatrixOrigin.x = v98;
       v11->_resultMatrixOrigin.y = v105;
       v11->_resultMatrixOrigin.z = v112;
-      v11->_batchStart = objc_msgSend_decodeInt64ForKey_(a3, v113, @"MPSMatrixMultiplication.batchStart", v114, v115, v116, v117, v118);
-      v11->_batchSize = objc_msgSend_decodeInt64ForKey_(a3, v119, @"MPSMatrixMultiplication.batchSize", v120, v121, v122, v123, v124);
+      v11->_batchStart = objc_msgSend_decodeInt64ForKey_(coder, v113, @"MPSMatrixMultiplication.batchStart", v114, v115, v116, v117, v118);
+      v11->_batchSize = objc_msgSend_decodeInt64ForKey_(coder, v119, @"MPSMatrixMultiplication.batchSize", v120, v121, v122, v123, v124);
       v125 = (*(&v11->super.super.isa + *MEMORY[0x277CD7350]))[368];
       if (v125 < 18)
       {
@@ -248,15 +248,15 @@
   {
     if ((*(&self->super.super.isa + *MEMORY[0x277CD7358]) & 0xFF00) != 0x100)
     {
-      v129 = self;
+      selfCopy = self;
       v130 = MTLReportFailureTypeEnabled();
-      self = v129;
+      self = selfCopy;
       if (v130)
       {
         v131 = objc_opt_class();
         NSStringFromClass(v131);
         MTLReportFailure();
-        self = v129;
+        self = selfCopy;
       }
     }
 

@@ -1,9 +1,9 @@
 @interface ResumeTimerIntentResponse
 - (ResumeTimerIntentResponse)init;
-- (ResumeTimerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (ResumeTimerIntentResponse)initWithPropertiesByName:(id)a3;
+- (ResumeTimerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (ResumeTimerIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation ResumeTimerIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___ResumeTimerIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (ResumeTimerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (ResumeTimerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(ResumeTimerIntentResponse *)self init];
   v8 = OBJC_IVAR___ResumeTimerIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(ResumeTimerIntentResponse *)v9 setUserActivity:v6];
+  [(ResumeTimerIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(ResumeTimerIntentResponse *)&v3 init];
 }
 
-- (ResumeTimerIntentResponse)initWithPropertiesByName:(id)a3
+- (ResumeTimerIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2693B3720();
   }

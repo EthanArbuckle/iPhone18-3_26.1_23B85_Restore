@@ -1,43 +1,43 @@
 @interface SUUISignInDocumentViewController
-- (SUUISignInDocumentViewController)initWithTemplateElement:(id)a3;
+- (SUUISignInDocumentViewController)initWithTemplateElement:(id)element;
 - (id)_backgroundColor;
 - (id)_layoutContext;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_layoutScrollView;
 - (void)_reloadContentSize;
-- (void)_reloadPanelViewWithScrollViewSize:(CGSize)a3;
-- (void)_signInFailed:(id)a3 error:(id)a4;
-- (void)_signInSuccess:(id)a3;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_reloadPanelViewWithScrollViewSize:(CGSize)size;
+- (void)_signInFailed:(id)failed error:(id)error;
+- (void)_signInSuccess:(id)success;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)layoutCacheDidFinishBatch:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)layoutCacheDidFinishBatch:(id)batch;
 - (void)loadView;
-- (void)signInEntryComplete:(id)a3 accountName:(id)a4 password:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)signInEntryComplete:(id)complete accountName:(id)name password:(id)password;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUISignInDocumentViewController
 
-- (SUUISignInDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUISignInDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUISignInDocumentViewController;
   v6 = [(SUUISignInDocumentViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
-    [v8 addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    objc_storeStrong(&v6->_templateElement, element);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C48] object:0];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v7;
@@ -45,10 +45,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
   [(SUUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:0];
   [(SUUIViewElementLayoutContext *)self->_layoutContext setParentViewController:0];
   [(SUUILayoutCache *)self->_textLayoutCache setDelegate:0];
@@ -69,8 +69,8 @@
 
     [(SUUISignInTemplateView *)self->_loginView setDelegate:self];
     v5 = self->_loginView;
-    v6 = [(SUUISignInDocumentViewController *)self _backgroundColor];
-    [(SUUIViewReuseView *)v5 setBackgroundColor:v6];
+    _backgroundColor = [(SUUISignInDocumentViewController *)self _backgroundColor];
+    [(SUUIViewReuseView *)v5 setBackgroundColor:_backgroundColor];
 
     [(SUUISignInTemplateView *)self->_loginView setPreservesSuperviewLayoutMargins:1];
   }
@@ -93,9 +93,9 @@
   [(SUUISignInDocumentViewController *)self setView:v10];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUISignInDocumentViewController *)self _layoutScrollView];
   if (self->_loginView)
   {
@@ -105,16 +105,16 @@
 
   v7.receiver = self;
   v7.super_class = SUUISignInDocumentViewController;
-  [(SUUIViewController *)&v7 viewWillAppear:v3];
+  [(SUUIViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SUUISignInTemplateView *)self->_loginView resignFirstResponder];
   v5.receiver = self;
   v5.super_class = SUUISignInDocumentViewController;
-  [(SUUISignInDocumentViewController *)&v5 viewWillDisappear:v3];
+  [(SUUISignInDocumentViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -130,37 +130,37 @@
   [(SUUISignInDocumentViewController *)&v3 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(SUUISignInDocumentViewController *)self _reloadPanelViewWithScrollViewSize:width, height];
   v8.receiver = self;
   v8.super_class = SUUISignInDocumentViewController;
-  [(SUUISignInDocumentViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SUUISignInDocumentViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   loginView = self->_loginView;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SUUISignInDocumentViewController *)self _layoutContext];
-  [(SUUISignInTemplateView *)loginView setImage:v7 forArtworkRequest:v8 context:v9];
+  imageCopy = image;
+  requestCopy = request;
+  _layoutContext = [(SUUISignInDocumentViewController *)self _layoutContext];
+  [(SUUISignInTemplateView *)loginView setImage:imageCopy forArtworkRequest:requestCopy context:_layoutContext];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   loginView = self->_loginView;
   if (loginView)
   {
-    v7 = [(SUUISignInDocumentViewController *)self _backgroundColor];
-    [(SUUIViewReuseView *)loginView setBackgroundColor:v7];
+    _backgroundColor = [(SUUISignInDocumentViewController *)self _backgroundColor];
+    [(SUUIViewReuseView *)loginView setBackgroundColor:_backgroundColor];
 
     [(UIScrollView *)self->_scrollView bounds];
 
@@ -168,26 +168,26 @@
   }
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   loginView = self->_loginView;
   templateElement = self->_templateElement;
   [(UIScrollView *)self->_scrollView bounds];
   v7 = v6;
-  v8 = [(SUUISignInDocumentViewController *)self _layoutContext];
-  [(SUUISignInTemplateView *)loginView reloadWithViewElement:templateElement width:v8 context:v7];
+  _layoutContext = [(SUUISignInDocumentViewController *)self _layoutContext];
+  [(SUUISignInTemplateView *)loginView reloadWithViewElement:templateElement width:_layoutContext context:v7];
 }
 
-- (void)signInEntryComplete:(id)a3 accountName:(id)a4 password:(id)a5
+- (void)signInEntryComplete:(id)complete accountName:(id)name password:(id)password
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completeCopy = complete;
+  nameCopy = name;
+  passwordCopy = password;
   v11 = objc_alloc_init(MEMORY[0x277CF0178]);
   v12 = objc_alloc_init(MEMORY[0x277CF0380]);
   [v12 setServiceType:2];
-  [v12 setUsername:v9];
-  [v12 _setPassword:v10];
+  [v12 setUsername:nameCopy];
+  [v12 _setPassword:passwordCopy];
   [v12 setIsUsernameEditable:0];
   [v12 setShouldAllowAppleIDCreation:0];
   [v12 setPresentingViewController:self];
@@ -197,7 +197,7 @@
   v14[2] = __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_password___block_invoke;
   v14[3] = &unk_2798F6558;
   objc_copyWeak(&v16, &location);
-  v13 = v9;
+  v13 = nameCopy;
   v15 = v13;
   [v11 authenticateWithContext:v12 completion:v14];
 
@@ -318,16 +318,16 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   [WeakRetained _signInFailed:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v10)
   {
-    v5 = [(SUUISignInDocumentViewController *)self view];
+    view = [(SUUISignInDocumentViewController *)self view];
     [v10 CGRectValue];
-    [v5 convertRect:0 fromView:?];
+    [view convertRect:0 fromView:?];
     self->_keyboardFrame.origin.x = v6;
     self->_keyboardFrame.origin.y = v7;
     self->_keyboardFrame.size.width = v8;
@@ -338,16 +338,16 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   }
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [frame userInfo];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v10)
   {
-    v5 = [(SUUISignInDocumentViewController *)self view];
+    view = [(SUUISignInDocumentViewController *)self view];
     [v10 CGRectValue];
-    [v5 convertRect:0 fromView:?];
+    [view convertRect:0 fromView:?];
     self->_keyboardFrame.origin.x = v6;
     self->_keyboardFrame.origin.y = v7;
     self->_keyboardFrame.size.width = v8;
@@ -358,10 +358,10 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [hide userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   if (v6)
   {
@@ -375,21 +375,21 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
 
 - (id)_backgroundColor
 {
-  v2 = [(SUUISignInTemplateViewElement *)self->_templateElement style];
-  v3 = [v2 ikBackgroundColor];
-  v4 = [v3 color];
+  style = [(SUUISignInTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v4)
+  if (color)
   {
-    v5 = v4;
+    whiteColor = color;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 
   return v6;
 }
@@ -405,8 +405,8 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
     v6 = self->_layoutContext;
-    v7 = [(SUUIViewController *)self clientContext];
-    [(SUUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setContainerViewElementType:[(SUUISignInTemplateViewElement *)self->_templateElement elementType]];
     [(SUUIViewElementLayoutContext *)self->_layoutContext setParentViewController:self];
@@ -418,9 +418,9 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
     v10 = [[SUUIViewElementTextLayoutCache alloc] initWithLayoutCache:self->_textLayoutCache];
     [(SUUIViewElementLayoutContext *)self->_layoutContext setLabelLayoutCache:v10];
     v11 = [SUUIResourceLoader alloc];
-    v12 = [(SUUIViewController *)self operationQueue];
-    v13 = [(SUUIViewController *)self clientContext];
-    v14 = [(SUUIResourceLoader *)v11 initWithOperationQueue:v12 clientContext:v13];
+    operationQueue = [(SUUIViewController *)self operationQueue];
+    clientContext2 = [(SUUIViewController *)self clientContext];
+    v14 = [(SUUIResourceLoader *)v11 initWithOperationQueue:operationQueue clientContext:clientContext2];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setResourceLoader:v14];
     layoutContext = self->_layoutContext;
@@ -429,16 +429,16 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   return layoutContext;
 }
 
-- (void)_signInFailed:(id)a3 error:(id)a4
+- (void)_signInFailed:(id)failed error:(id)error
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(SUUIViewController *)self clientContext];
-  v8 = v7;
+  failedCopy = failed;
+  errorCopy = error;
+  clientContext = [(SUUIViewController *)self clientContext];
+  v8 = clientContext;
   v9 = MEMORY[0x277D75110];
-  if (v7)
+  if (clientContext)
   {
-    [v7 localizedStringForKey:@"CANNOT_LOGIN_TITLE"];
+    [clientContext localizedStringForKey:@"CANNOT_LOGIN_TITLE"];
   }
 
   else
@@ -446,8 +446,8 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
     [SUUIClientContext localizedStringForKey:@"CANNOT_LOGIN_TITLE" inBundles:0];
   }
   v10 = ;
-  v11 = [v6 localizedDescription];
-  v12 = [v9 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+  localizedDescription = [errorCopy localizedDescription];
+  v12 = [v9 alertControllerWithTitle:v10 message:localizedDescription preferredStyle:1];
 
   v13 = MEMORY[0x277D750F8];
   if (v8)
@@ -466,38 +466,38 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   [(SUUISignInDocumentViewController *)self presentViewController:v12 animated:1 completion:0];
   if (self->_templateElement)
   {
-    v16 = [v6 description];
-    v17 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"failed", @"result", v18, @"accountName", v16, @"reason", 0}];
+    v16 = [errorCopy description];
+    v17 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{@"failed", @"result", failedCopy, @"accountName", v16, @"reason", 0}];
     [(SUUISignInTemplateViewElement *)self->_templateElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v17 completionBlock:0];
   }
 }
 
-- (void)_signInSuccess:(id)a3
+- (void)_signInSuccess:(id)success
 {
   if (self->_templateElement)
   {
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    successCopy = success;
     v6 = [v4 alloc];
-    v7 = [v5 accountName];
+    accountName = [successCopy accountName];
 
-    v8 = [v6 initWithObjectsAndKeys:{@"success", @"result", v7, @"accountName", 0}];
+    v8 = [v6 initWithObjectsAndKeys:{@"success", @"result", accountName, @"accountName", 0}];
     [(SUUISignInTemplateViewElement *)self->_templateElement dispatchEventOfType:15 canBubble:1 isCancelable:1 extraInfo:v8 completionBlock:0];
   }
 }
 
 - (void)_layoutScrollView
 {
-  v3 = [(SUUISignInDocumentViewController *)self view];
-  [v3 frame];
+  view = [(SUUISignInDocumentViewController *)self view];
+  [view frame];
   v21 = CGRectIntersection(v20, self->_keyboardFrame);
   x = v21.origin.x;
   y = v21.origin.y;
   width = v21.size.width;
   height = v21.size.height;
 
-  v8 = [(SUUISignInDocumentViewController *)self view];
-  [v8 bounds];
+  view2 = [(SUUISignInDocumentViewController *)self view];
+  [view2 bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -539,8 +539,8 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   v18 = *(MEMORY[0x277CBF3A0] + 8);
   v19 = objc_opt_class();
   templateElement = self->_templateElement;
-  v21 = [(SUUISignInDocumentViewController *)self _layoutContext];
-  [v19 sizeThatFitsWidth:templateElement viewElement:v21 context:v16];
+  _layoutContext = [(SUUISignInDocumentViewController *)self _layoutContext];
+  [v19 sizeThatFitsWidth:templateElement viewElement:_layoutContext context:v16];
   v23 = v22;
   v25 = v24;
 
@@ -560,12 +560,12 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
   [(UIScrollView *)scrollView setContentSize:v23, v25];
 }
 
-- (void)_reloadPanelViewWithScrollViewSize:(CGSize)a3
+- (void)_reloadPanelViewWithScrollViewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (self->_loginView)
   {
-    v4 = a3.width <= 0.00000011920929;
+    v4 = size.width <= 0.00000011920929;
   }
 
   else
@@ -575,20 +575,20 @@ void __77__SUUISignInDocumentViewController_signInEntryComplete_accountName_pass
 
   if (!v4)
   {
-    v13 = [(SUUISignInDocumentViewController *)self _layoutContext];
-    v6 = [(SUUISignInTemplateView *)self->_loginView tintColor];
-    [v13 setTintColor:v6];
+    _layoutContext = [(SUUISignInDocumentViewController *)self _layoutContext];
+    tintColor = [(SUUISignInTemplateView *)self->_loginView tintColor];
+    [_layoutContext setTintColor:tintColor];
 
-    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:v13];
+    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:_layoutContext];
     [(SUUISignInTemplateView *)self->_loginView layoutMargins];
     v8 = v7;
     v10 = v9;
     [(SUUISignInTemplateView *)self->_loginView setLayoutMargins:0.0];
     v11 = width - v8 - v10;
     v12 = floorf(v11);
-    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:v13 context:v12];
+    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:_layoutContext context:v12];
     [(SUUILayoutCache *)self->_textLayoutCache commitLayoutRequests];
-    [(SUUISignInTemplateView *)self->_loginView reloadWithViewElement:self->_templateElement width:v13 context:v12];
+    [(SUUISignInTemplateView *)self->_loginView reloadWithViewElement:self->_templateElement width:_layoutContext context:v12];
     [(SUUISignInDocumentViewController *)self _reloadContentSize];
   }
 }

@@ -1,7 +1,7 @@
 @interface _DASShadowPolicyEvaluator
 + (id)sharedShadowPolicyEvaluator;
-- (BOOL)logPolicyForActivity:(id)a3 policy:(unint64_t)a4;
-- (BOOL)reportShadowEvaluationForPolicy:(unint64_t)a3 forActivity:(id)a4 atDate:(id)a5;
+- (BOOL)logPolicyForActivity:(id)activity policy:(unint64_t)policy;
+- (BOOL)reportShadowEvaluationForPolicy:(unint64_t)policy forActivity:(id)activity atDate:(id)date;
 @end
 
 @implementation _DASShadowPolicyEvaluator
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004F49C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B180 != -1)
   {
     dispatch_once(&qword_10020B180, block);
@@ -23,21 +23,21 @@
   return v2;
 }
 
-- (BOOL)reportShadowEvaluationForPolicy:(unint64_t)a3 forActivity:(id)a4 atDate:(id)a5
+- (BOOL)reportShadowEvaluationForPolicy:(unint64_t)policy forActivity:(id)activity atDate:(id)date
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 != 1)
+  activityCopy = activity;
+  dateCopy = date;
+  if (policy != 1)
   {
     goto LABEL_7;
   }
 
-  v10 = [v8 startDate];
+  startDate = [activityCopy startDate];
 
-  if (v10)
+  if (startDate)
   {
-    v11 = [v8 startDate];
-    [v9 timeIntervalSinceDate:v11];
+    startDate2 = [activityCopy startDate];
+    [dateCopy timeIntervalSinceDate:startDate2];
     v13 = v12;
 
     if (v13 >= 180.0)
@@ -70,37 +70,37 @@
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      if (!proc_pid_rusage([v8 pid], 6, &v15) && vaddvq_f64(vdivq_f64(vcvtq_f64_s64(v16), vdupq_n_s64(0x412E848000000000uLL))) < 0.0)
+      if (!proc_pid_rusage([activityCopy pid], 6, &v15) && vaddvq_f64(vdivq_f64(vcvtq_f64_s64(v16), vdupq_n_s64(0x412E848000000000uLL))) < 0.0)
       {
-        LOBYTE(v10) = 1;
-        [(_DASShadowPolicyEvaluator *)self logPolicyForActivity:v8 policy:1];
+        LOBYTE(startDate) = 1;
+        [(_DASShadowPolicyEvaluator *)self logPolicyForActivity:activityCopy policy:1];
         goto LABEL_8;
       }
     }
 
 LABEL_7:
-    LOBYTE(v10) = 0;
+    LOBYTE(startDate) = 0;
   }
 
 LABEL_8:
 
-  return v10;
+  return startDate;
 }
 
-- (BOOL)logPolicyForActivity:(id)a3 policy:(unint64_t)a4
+- (BOOL)logPolicyForActivity:(id)activity policy:(unint64_t)policy
 {
-  v5 = a3;
+  activityCopy = activity;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 name];
+  name = [activityCopy name];
 
-  [v6 setObject:v7 forKeyedSubscript:@"TaskName"];
-  v8 = [NSNumber numberWithUnsignedInteger:a4];
+  [v6 setObject:name forKeyedSubscript:@"TaskName"];
+  v8 = [NSNumber numberWithUnsignedInteger:policy];
   [v6 setObject:v8 forKeyedSubscript:@"Policy"];
 
   v9 = +[_DASPPSDataManager sharedInstance];
-  LOBYTE(v5) = [v9 sendDataToPPS:v6 subsystem:@"BackgroundProcessing" category:@"ShadowPolicyEvaluation"];
+  LOBYTE(activityCopy) = [v9 sendDataToPPS:v6 subsystem:@"BackgroundProcessing" category:@"ShadowPolicyEvaluation"];
 
-  return v5;
+  return activityCopy;
 }
 
 @end

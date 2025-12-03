@@ -1,24 +1,24 @@
 @interface HNDForegroundBubbleCursorLayer
-- (id)_strokeColorForTheme:(int)a3 level:(int)a4 pointerSizeMultiplier:(double)a5;
-- (void)updatePath:(id)a3 frame:(CGRect)a4 isSimpleRect:(BOOL)a5 animated:(BOOL)a6;
+- (id)_strokeColorForTheme:(int)theme level:(int)level pointerSizeMultiplier:(double)multiplier;
+- (void)updatePath:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated;
 @end
 
 @implementation HNDForegroundBubbleCursorLayer
 
-- (void)updatePath:(id)a3 frame:(CGRect)a4 isSimpleRect:(BOOL)a5 animated:(BOOL)a6
+- (void)updatePath:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  if (v13)
+  animatedCopy = animated;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v14 = v13;
+    v14 = pathCopy;
     [(HNDBubbleCursorLayer *)self valueForPointerSizeMultipler:4.0 withBaseValue:-2.0];
-    if (v7)
+    if (rectCopy)
     {
       v16 = v15 + 1.0;
       v20.origin.x = x;
@@ -52,10 +52,10 @@
 
   v19.receiver = self;
   v19.super_class = HNDForegroundBubbleCursorLayer;
-  [(HNDBubbleCursorLayer *)&v19 updatePath:v17 frame:v7 isSimpleRect:v6 animated:x, y, width, height];
+  [(HNDBubbleCursorLayer *)&v19 updatePath:v17 frame:rectCopy isSimpleRect:animatedCopy animated:x, y, width, height];
 }
 
-- (id)_strokeColorForTheme:(int)a3 level:(int)a4 pointerSizeMultiplier:(double)a5
+- (id)_strokeColorForTheme:(int)theme level:(int)level pointerSizeMultiplier:(double)multiplier
 {
   if (_AXSPointerStrokeColor() && _AXSPointerStrokeColor() != 1 && (_AXSPointerStrokeColor(), _AXSPointerStrokeColorValues()))
   {

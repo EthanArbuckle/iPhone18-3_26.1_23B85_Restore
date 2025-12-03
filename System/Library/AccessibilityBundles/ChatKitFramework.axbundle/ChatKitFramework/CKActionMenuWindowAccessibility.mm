@@ -1,29 +1,29 @@
 @interface CKActionMenuWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setHidden:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation CKActionMenuWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKActionMenuWindow" hasInstanceMethod:@"actionMenuView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKActionMenuView"];
-  [v3 validateClass:@"CKActionMenuView" hasInstanceMethod:@"defaultActionIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CKActionMenuView" hasInstanceMethod:@"actionMenuItems" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKActionMenuWindow" hasInstanceMethod:@"actionMenuView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKActionMenuView"];
+  [validationsCopy validateClass:@"CKActionMenuView" hasInstanceMethod:@"defaultActionIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CKActionMenuView" hasInstanceMethod:@"actionMenuItems" withFullSignature:{"@", 0}];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(CKActionMenuWindowAccessibility *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(CKActionMenuWindowAccessibility *)self isHidden];
   v10.receiver = self;
   v10.super_class = CKActionMenuWindowAccessibility;
-  [(CKActionMenuWindowAccessibility *)&v10 setHidden:v3];
-  if (v5 != v3)
+  [(CKActionMenuWindowAccessibility *)&v10 setHidden:hiddenCopy];
+  if (isHidden != hiddenCopy)
   {
-    if (v3)
+    if (hiddenCopy)
     {
       v6 = 0;
     }

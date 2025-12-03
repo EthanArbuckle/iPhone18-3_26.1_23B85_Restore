@@ -1,31 +1,31 @@
 @interface HKHRBloodPressureJournalNotificationAnalyticsUtilities
-- (HKHRBloodPressureJournalNotificationAnalyticsUtilities)initWithEventSubmissionManager:(id)a3;
-- (void)submitAnalyticsEvent:(unint64_t)a3 forJournal:(id)a4 windowType:(id)a5;
+- (HKHRBloodPressureJournalNotificationAnalyticsUtilities)initWithEventSubmissionManager:(id)manager;
+- (void)submitAnalyticsEvent:(unint64_t)event forJournal:(id)journal windowType:(id)type;
 @end
 
 @implementation HKHRBloodPressureJournalNotificationAnalyticsUtilities
 
-- (HKHRBloodPressureJournalNotificationAnalyticsUtilities)initWithEventSubmissionManager:(id)a3
+- (HKHRBloodPressureJournalNotificationAnalyticsUtilities)initWithEventSubmissionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = HKHRBloodPressureJournalNotificationAnalyticsUtilities;
   v6 = [(HKHRBloodPressureJournalNotificationAnalyticsUtilities *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventSubmissionManager, a3);
+    objc_storeStrong(&v6->_eventSubmissionManager, manager);
   }
 
   return v7;
 }
 
-- (void)submitAnalyticsEvent:(unint64_t)a3 forJournal:(id)a4 windowType:(id)a5
+- (void)submitAnalyticsEvent:(unint64_t)event forJournal:(id)journal windowType:(id)type
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [[HKHRBloodPressureJournalNotificationAnalyticsEvent alloc] initWithAction:a3 latestActiveJournal:v9 windowType:v8];
+  typeCopy = type;
+  journalCopy = journal;
+  v10 = [[HKHRBloodPressureJournalNotificationAnalyticsEvent alloc] initWithAction:event latestActiveJournal:journalCopy windowType:typeCopy];
 
   eventSubmissionManager = self->_eventSubmissionManager;
   v24 = 0;
@@ -46,11 +46,11 @@
 
       v20 = objc_opt_class();
       v17 = v20;
-      v18 = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)v10 eventName];
+      eventName = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)v10 eventName];
       *buf = 138543618;
       v26 = v20;
       v27 = 2114;
-      v28 = v18;
+      v28 = eventName;
       v21 = "[%{public}@:%{public}@] Event submitted";
     }
 
@@ -63,11 +63,11 @@
 
       v22 = objc_opt_class();
       v17 = v22;
-      v18 = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)v10 eventName];
+      eventName = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)v10 eventName];
       *buf = 138543618;
       v26 = v22;
       v27 = 2114;
-      v28 = v18;
+      v28 = eventName;
       v21 = "[%{public}@:%{public}@] Event not submitted but no error";
     }
 
@@ -79,11 +79,11 @@
   {
     v16 = objc_opt_class();
     v17 = v16;
-    v18 = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)v10 eventName];
+    eventName = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)v10 eventName];
     *buf = 138543874;
     v26 = v16;
     v27 = 2114;
-    v28 = v18;
+    v28 = eventName;
     v29 = 2114;
     v30 = v13;
     _os_log_error_impl(&dword_228942000, v15, OS_LOG_TYPE_ERROR, "[%{public}@:%{public}@] Analytic submission failed with error: %{public}@", buf, 0x20u);

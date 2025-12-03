@@ -1,11 +1,11 @@
 @interface CRCHNetworkCursor
 - (id).cxx_construct;
-- (void)addEdgeIndex:(unint64_t)a3;
+- (void)addEdgeIndex:(unint64_t)index;
 @end
 
 @implementation CRCHNetworkCursor
 
-- (void)addEdgeIndex:(unint64_t)a3
+- (void)addEdgeIndex:(unint64_t)index
 {
   end = self->_edgeIndexes.__end_;
   cap = self->_edgeIndexes.__cap_;
@@ -41,7 +41,7 @@
     v15 = end - begin;
     v16 = (8 * v10);
     v17 = (8 * v10 - 8 * v15);
-    *v16 = a3;
+    *v16 = index;
     v7 = v16 + 1;
     memcpy(v17, begin, v9);
     v18 = self->_edgeIndexes.__begin_;
@@ -56,7 +56,7 @@
 
   else
   {
-    *end = a3;
+    *end = index;
     v7 = end + 1;
   }
 

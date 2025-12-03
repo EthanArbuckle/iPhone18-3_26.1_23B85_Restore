@@ -1,82 +1,82 @@
 @interface IRNodeMO
-+ (id)nodeMOFromNodeDO:(id)a3 forCandidate:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfNodeMO:(id)a3 withNodeDO:(id)a4;
++ (id)nodeMOFromNodeDO:(id)o forCandidate:(id)candidate inManagedObjectContext:(id)context;
++ (void)setPropertiesOfNodeMO:(id)o withNodeDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IRNodeMO
 
-+ (id)nodeMOFromNodeDO:(id)a3 forCandidate:(id)a4 inManagedObjectContext:(id)a5
++ (id)nodeMOFromNodeDO:(id)o forCandidate:(id)candidate inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [[IRNodeMO alloc] initWithContext:v7];
-  v9 = [v6 avOutputDevice];
+  oCopy = o;
+  contextCopy = context;
+  v8 = [[IRNodeMO alloc] initWithContext:contextCopy];
+  avOutputDevice = [oCopy avOutputDevice];
 
-  if (v9)
+  if (avOutputDevice)
   {
-    v10 = [[IRAVOutputDeviceMO alloc] initWithContext:v7];
+    v10 = [[IRAVOutputDeviceMO alloc] initWithContext:contextCopy];
     [(IRNodeMO *)v8 setAvOutputDevice:v10];
   }
 
-  v11 = [v6 rapportDevice];
+  rapportDevice = [oCopy rapportDevice];
 
-  if (v11)
+  if (rapportDevice)
   {
-    v12 = [[IRRapportDeviceMO alloc] initWithContext:v7];
+    v12 = [[IRRapportDeviceMO alloc] initWithContext:contextCopy];
     [(IRNodeMO *)v8 setRapportDevice:v12];
   }
 
-  [IRNodeMO setPropertiesOfNodeMO:v8 withNodeDO:v6];
+  [IRNodeMO setPropertiesOfNodeMO:v8 withNodeDO:oCopy];
 
   return v8;
 }
 
-+ (void)setPropertiesOfNodeMO:(id)a3 withNodeDO:(id)a4
++ (void)setPropertiesOfNodeMO:(id)o withNodeDO:(id)dO
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v5 avOutputDevice];
+  oCopy = o;
+  dOCopy = dO;
+  avOutputDevice = [dOCopy avOutputDevice];
 
-  if (v6)
+  if (avOutputDevice)
   {
-    v7 = [v15 avOutputDevice];
-    v8 = [v5 avOutputDevice];
-    [IRAVOutputDeviceMO setPropertiesOfAVOutputDeviceMO:v7 withAVOutputDevice:v8];
+    avOutputDevice2 = [oCopy avOutputDevice];
+    avOutputDevice3 = [dOCopy avOutputDevice];
+    [IRAVOutputDeviceMO setPropertiesOfAVOutputDeviceMO:avOutputDevice2 withAVOutputDevice:avOutputDevice3];
   }
 
-  v9 = [v5 rapportDevice];
+  rapportDevice = [dOCopy rapportDevice];
 
-  if (v9)
+  if (rapportDevice)
   {
-    v10 = [v15 rapportDevice];
-    v11 = [v5 rapportDevice];
-    [IRRapportDeviceMO setPropertiesOfRapportDeviceMO:v10 withRapportDO:v11];
+    rapportDevice2 = [oCopy rapportDevice];
+    rapportDevice3 = [dOCopy rapportDevice];
+    [IRRapportDeviceMO setPropertiesOfRapportDeviceMO:rapportDevice2 withRapportDO:rapportDevice3];
   }
 
-  v12 = [v5 avOutpuDeviceIdentifier];
-  [v15 setAvOutpuDeviceIdentifier:v12];
+  avOutpuDeviceIdentifier = [dOCopy avOutpuDeviceIdentifier];
+  [oCopy setAvOutpuDeviceIdentifier:avOutpuDeviceIdentifier];
 
-  v13 = [v5 rapportIdentifier];
-  [v15 setRapportIdentifier:v13];
+  rapportIdentifier = [dOCopy rapportIdentifier];
+  [oCopy setRapportIdentifier:rapportIdentifier];
 
-  v14 = [v5 idsIdentifier];
-  [v15 setIdsIdentifier:v14];
+  idsIdentifier = [dOCopy idsIdentifier];
+  [oCopy setIdsIdentifier:idsIdentifier];
 
-  [v15 setIsLocal:{objc_msgSend(v5, "isLocal")}];
+  [oCopy setIsLocal:{objc_msgSend(dOCopy, "isLocal")}];
 }
 
 - (id)convert
 {
   v3 = [IRNodeDO alloc];
-  v4 = [(IRNodeMO *)self avOutpuDeviceIdentifier];
-  v5 = [(IRNodeMO *)self rapportIdentifier];
-  v6 = [(IRNodeMO *)self idsIdentifier];
-  v7 = [(IRNodeMO *)self avOutputDevice];
-  v8 = [v7 convert];
-  v9 = [(IRNodeMO *)self rapportDevice];
-  v10 = [v9 convert];
-  v11 = [(IRNodeDO *)v3 initWithAvOutpuDeviceIdentifier:v4 rapportIdentifier:v5 idsIdentifier:v6 avOutputDevice:v8 rapportDevice:v10 isLocal:[(IRNodeMO *)self isLocal]];
+  avOutpuDeviceIdentifier = [(IRNodeMO *)self avOutpuDeviceIdentifier];
+  rapportIdentifier = [(IRNodeMO *)self rapportIdentifier];
+  idsIdentifier = [(IRNodeMO *)self idsIdentifier];
+  avOutputDevice = [(IRNodeMO *)self avOutputDevice];
+  convert = [avOutputDevice convert];
+  rapportDevice = [(IRNodeMO *)self rapportDevice];
+  convert2 = [rapportDevice convert];
+  v11 = [(IRNodeDO *)v3 initWithAvOutpuDeviceIdentifier:avOutpuDeviceIdentifier rapportIdentifier:rapportIdentifier idsIdentifier:idsIdentifier avOutputDevice:convert rapportDevice:convert2 isLocal:[(IRNodeMO *)self isLocal]];
 
   return v11;
 }

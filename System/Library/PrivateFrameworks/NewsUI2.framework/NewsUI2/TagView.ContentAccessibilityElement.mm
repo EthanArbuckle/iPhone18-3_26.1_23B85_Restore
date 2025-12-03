@@ -4,7 +4,7 @@
 - (CGRect)accessibilityFrame;
 - (NSArray)accessibilityUserInputLabels;
 - (_TtCC7NewsUI27TagView27ContentAccessibilityElement)init;
-- (_TtCC7NewsUI27TagView27ContentAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC7NewsUI27TagView27ContentAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (unint64_t)accessibilityTraits;
 @end
 
@@ -12,15 +12,15 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
-  v3 = [(TagView.ContentAccessibilityElement *)v2 accessibilityContainer];
-  if (!v3)
+  selfCopy = self;
+  accessibilityContainer = [(TagView.ContentAccessibilityElement *)selfCopy accessibilityContainer];
+  if (!accessibilityContainer)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  if (([v3 respondsToSelector_] & 1) == 0)
+  v4 = accessibilityContainer;
+  if (([accessibilityContainer respondsToSelector_] & 1) == 0)
   {
     swift_unknownObjectRelease();
 LABEL_5:
@@ -53,15 +53,15 @@ LABEL_6:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
-  v3 = [(TagView.ContentAccessibilityElement *)v2 accessibilityContainer];
-  if (!v3)
+  selfCopy = self;
+  accessibilityContainer = [(TagView.ContentAccessibilityElement *)selfCopy accessibilityContainer];
+  if (!accessibilityContainer)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  if (([v3 respondsToSelector_] & 1) == 0)
+  v4 = accessibilityContainer;
+  if (([accessibilityContainer respondsToSelector_] & 1) == 0)
   {
     swift_unknownObjectRelease();
 LABEL_5:
@@ -86,24 +86,24 @@ LABEL_6:
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
-  v3 = [(TagView.ContentAccessibilityElement *)v2 accessibilityContainer];
-  if (!v3)
+  selfCopy = self;
+  accessibilityContainer = [(TagView.ContentAccessibilityElement *)selfCopy accessibilityContainer];
+  if (!accessibilityContainer)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  result = [v3 respondsToSelector_];
+  v4 = accessibilityContainer;
+  result = [accessibilityContainer respondsToSelector_];
   if ((result & 1) == 0)
   {
     __break(1u);
     return result;
   }
 
-  v6 = [v4 accessibilityUserInputLabels];
+  accessibilityUserInputLabels = [v4 accessibilityUserInputLabels];
   swift_unknownObjectRelease();
-  if (v6)
+  if (accessibilityUserInputLabels)
   {
     sub_219BF5924();
 
@@ -124,48 +124,48 @@ LABEL_5:
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
-  v3 = [(TagView.ContentAccessibilityElement *)v2 accessibilityContainer];
-  if (v3)
+  selfCopy = self;
+  accessibilityContainer = [(TagView.ContentAccessibilityElement *)selfCopy accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v4 = v3;
-    if ([v3 respondsToSelector_])
+    v4 = accessibilityContainer;
+    if ([accessibilityContainer respondsToSelector_])
     {
-      v5 = [v4 accessibilityTraits];
+      accessibilityTraits = [v4 accessibilityTraits];
       swift_unknownObjectRelease();
 
-      return v5;
+      return accessibilityTraits;
     }
 
     swift_unknownObjectRelease();
   }
 
-  v8.receiver = v2;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for TagView.ContentAccessibilityElement();
-  v7 = [(TagView.ContentAccessibilityElement *)&v8 accessibilityTraits];
+  accessibilityTraits2 = [(TagView.ContentAccessibilityElement *)&v8 accessibilityTraits];
 
-  return v7;
+  return accessibilityTraits2;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
-  v3 = [(TagView.ContentAccessibilityElement *)v2 accessibilityContainer];
-  if (v3)
+  selfCopy = self;
+  accessibilityContainer = [(TagView.ContentAccessibilityElement *)selfCopy accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v4 = [v3 accessibilityActivate];
+    accessibilityActivate = [accessibilityContainer accessibilityActivate];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v4 = 0;
+    accessibilityActivate = 0;
   }
 
-  return v4;
+  return accessibilityActivate;
 }
 
-- (_TtCC7NewsUI27TagView27ContentAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC7NewsUI27TagView27ContentAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_219BF70B4();

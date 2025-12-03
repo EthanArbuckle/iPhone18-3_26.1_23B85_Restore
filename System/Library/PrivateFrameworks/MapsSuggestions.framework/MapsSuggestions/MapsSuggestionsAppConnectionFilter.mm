@@ -1,15 +1,15 @@
 @interface MapsSuggestionsAppConnectionFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsAppConnectionFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if ([v3 type] != 12)
+  if ([entryCopy type] != 12)
   {
     v6 = 1;
     goto LABEL_17;

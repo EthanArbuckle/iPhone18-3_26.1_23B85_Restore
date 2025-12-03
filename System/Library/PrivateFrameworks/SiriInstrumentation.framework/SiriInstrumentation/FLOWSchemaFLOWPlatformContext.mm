@@ -1,27 +1,27 @@
 @interface FLOWSchemaFLOWPlatformContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FLOWSchemaFLOWEntityContext)entityContext;
-- (FLOWSchemaFLOWPlatformContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWPlatformContext)initWithJSON:(id)a3;
+- (FLOWSchemaFLOWPlatformContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWPlatformContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteEntityContext;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWPlatformContext
 
-- (FLOWSchemaFLOWPlatformContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWPlatformContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = FLOWSchemaFLOWPlatformContext;
   v5 = [(FLOWSchemaFLOWPlatformContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entityContext"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"entityContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(FLOWSchemaFLOWPlatformContext *)v5 setEntityContext:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"entityContextValue"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"entityContextValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,30 +43,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWPlatformContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWPlatformContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWPlatformContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWPlatformContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWPlatformContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -79,72 +79,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entityContext)
   {
-    v4 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    entityContext = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+    dictionaryRepresentation = [entityContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"entityContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"entityContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"entityContext"];
     }
   }
 
   if (self->_entityContextValue)
   {
-    v7 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    entityContextValue = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+    dictionaryRepresentation2 = [entityContextValue dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"entityContextValue"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"entityContextValue"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"entityContextValue"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"entityContextValue"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichPlatformcontext = self->_whichPlatformcontext;
-  if (whichPlatformcontext != [v4 whichPlatformcontext])
+  if (whichPlatformcontext != [equalCopy whichPlatformcontext])
   {
     goto LABEL_13;
   }
 
-  v6 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
-  v7 = [v4 entityContext];
-  if ((v6 != 0) == (v7 == 0))
+  entityContext = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+  entityContext2 = [equalCopy entityContext];
+  if ((entityContext != 0) == (entityContext2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
-  if (v8)
+  entityContext3 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+  if (entityContext3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
-    v11 = [v4 entityContext];
-    v12 = [v10 isEqual:v11];
+    v9 = entityContext3;
+    entityContext4 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+    entityContext5 = [equalCopy entityContext];
+    v12 = [entityContext4 isEqual:entityContext5];
 
     if (!v12)
     {
@@ -156,12 +156,12 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
-  v7 = [v4 entityContextValue];
-  if ((v6 != 0) != (v7 == 0))
+  entityContext = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+  entityContext2 = [equalCopy entityContextValue];
+  if ((entityContext != 0) != (entityContext2 == 0))
   {
-    v13 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
-    if (!v13)
+    entityContextValue = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+    if (!entityContextValue)
     {
 
 LABEL_16:
@@ -169,10 +169,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
-    v16 = [v4 entityContextValue];
-    v17 = [v15 isEqual:v16];
+    v14 = entityContextValue;
+    entityContextValue2 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+    entityContextValue3 = [equalCopy entityContextValue];
+    v17 = [entityContextValue2 isEqual:entityContextValue3];
 
     if (v17)
     {
@@ -192,22 +192,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+  toCopy = to;
+  entityContext = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
 
-  if (v4)
+  if (entityContext)
   {
-    v5 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+    entityContext2 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+  entityContextValue = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
 
-  if (v6)
+  if (entityContextValue)
   {
-    v7 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+    entityContextValue2 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -237,26 +237,26 @@ LABEL_14:
   return v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWPlatformContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  entityContext = [(FLOWSchemaFLOWPlatformContext *)self entityContext];
+  v7 = [entityContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWPlatformContext *)self deleteEntityContext];
   }
 
-  v9 = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  entityContextValue = [(FLOWSchemaFLOWPlatformContext *)self entityContextValue];
+  v10 = [entityContextValue applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWPlatformContext *)self deleteEntityContextValue];
   }

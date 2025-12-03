@@ -1,41 +1,41 @@
 @interface BMOasisAnalyticsRegionInfo
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsRegionInfo)initWithCountryCode:(int)a3 timezone:(id)a4 date:(id)a5;
-- (BMOasisAnalyticsRegionInfo)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsRegionInfo)initWithCountryCode:(int)code timezone:(id)timezone date:(id)date;
+- (BMOasisAnalyticsRegionInfo)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsRegionInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMOasisAnalyticsRegionInfo *)self countryCode];
-    if (v6 == [v5 countryCode])
+    v5 = equalCopy;
+    countryCode = [(BMOasisAnalyticsRegionInfo *)self countryCode];
+    if (countryCode == [v5 countryCode])
     {
-      v7 = [(BMOasisAnalyticsRegionInfo *)self timezone];
-      v8 = [v5 timezone];
-      v9 = v8;
-      if (v7 == v8)
+      timezone = [(BMOasisAnalyticsRegionInfo *)self timezone];
+      timezone2 = [v5 timezone];
+      v9 = timezone2;
+      if (timezone == timezone2)
       {
       }
 
       else
       {
-        v10 = [(BMOasisAnalyticsRegionInfo *)self timezone];
-        v11 = [v5 timezone];
-        v12 = [v10 isEqual:v11];
+        timezone3 = [(BMOasisAnalyticsRegionInfo *)self timezone];
+        timezone4 = [v5 timezone];
+        v12 = [timezone3 isEqual:timezone4];
 
         if (!v12)
         {
@@ -43,18 +43,18 @@
         }
       }
 
-      v14 = [(BMOasisAnalyticsRegionInfo *)self date];
-      v15 = [v5 date];
-      if (v14 == v15)
+      date = [(BMOasisAnalyticsRegionInfo *)self date];
+      date2 = [v5 date];
+      if (date == date2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(BMOasisAnalyticsRegionInfo *)self date];
-        v17 = [v5 date];
-        v13 = [v16 isEqual:v17];
+        date3 = [(BMOasisAnalyticsRegionInfo *)self date];
+        date4 = [v5 date];
+        v13 = [date3 isEqual:date4];
       }
 
       goto LABEL_12;
@@ -77,36 +77,36 @@ LABEL_13:
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMOasisAnalyticsRegionInfo countryCode](self, "countryCode")}];
-  v4 = [(BMOasisAnalyticsRegionInfo *)self timezone];
-  v5 = [(BMOasisAnalyticsRegionInfo *)self date];
+  timezone = [(BMOasisAnalyticsRegionInfo *)self timezone];
+  date = [(BMOasisAnalyticsRegionInfo *)self date];
   v12[0] = @"countryCode";
-  v6 = v3;
+  null = v3;
   if (!v3)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"timezone";
-  v7 = v4;
-  if (!v4)
+  null2 = timezone;
+  if (!timezone)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"date";
-  v8 = v5;
-  if (!v5)
+  null3 = date;
+  if (!date)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (date)
   {
-    if (v4)
+    if (timezone)
     {
       goto LABEL_9;
     }
@@ -121,7 +121,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!timezone)
   {
     goto LABEL_14;
   }
@@ -140,25 +140,25 @@ LABEL_10:
   return v9;
 }
 
-- (BMOasisAnalyticsRegionInfo)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsRegionInfo)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"countryCode"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"timezone"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"timezone"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
-          v14 = 0;
+          selfCopy = 0;
           goto LABEL_17;
         }
 
@@ -170,8 +170,8 @@ LABEL_9:
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v18 = [v24 initWithDomain:v17 code:2 userInfo:v12];
         v11 = 0;
-        v14 = 0;
-        *a4 = v18;
+        selfCopy = 0;
+        *error = v18;
         goto LABEL_16;
       }
 
@@ -183,13 +183,13 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"date"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"date"];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v25 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -197,11 +197,11 @@ LABEL_9:
           v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"date"];
           v27 = v19;
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-          *a4 = [v25 initWithDomain:v23 code:2 userInfo:v20];
+          *error = [v25 initWithDomain:v23 code:2 userInfo:v20];
         }
 
         v13 = 0;
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_16;
       }
 
@@ -214,7 +214,7 @@ LABEL_9:
     }
 
     self = -[BMOasisAnalyticsRegionInfo initWithCountryCode:timezone:date:](self, "initWithCountryCode:timezone:date:", [v8 intValue], v11, v13);
-    v14 = self;
+    selfCopy = self;
 LABEL_16:
 
     goto LABEL_17;
@@ -236,10 +236,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -250,29 +250,29 @@ LABEL_8:
   v31[0] = v11;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v8 = 0;
-  v14 = 0;
-  *a4 = [v21 initWithDomain:v22 code:2 userInfo:v10];
+  selfCopy = 0;
+  *error = [v21 initWithDomain:v22 code:2 userInfo:v10];
 LABEL_17:
 
 LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsRegionInfo *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   countryCode = self->_countryCode;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_timezone)
   {
@@ -285,9 +285,9 @@ LABEL_18:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMOasisAnalyticsRegionInfo;
   v5 = [(BMEventBase *)&v29 init];
@@ -296,12 +296,12 @@ LABEL_18:
     goto LABEL_42;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -312,18 +312,18 @@ LABEL_18:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -340,9 +340,9 @@ LABEL_18:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -366,18 +366,18 @@ LABEL_16:
             while (1)
             {
               v30 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v30 & 0x7F) << v16;
@@ -393,7 +393,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 0xFA)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 0xFA)
             {
 LABEL_37:
               LODWORD(v18) = 0;
@@ -418,13 +418,13 @@ LABEL_37:
       *(&v5->super.super.isa + v24) = v23;
 
 LABEL_39:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_41:
     v27 = 0;
@@ -443,26 +443,26 @@ LABEL_42:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMOasisAnalyticsRegionInfoCountryCodeAsString([(BMOasisAnalyticsRegionInfo *)self countryCode]);
-  v5 = [(BMOasisAnalyticsRegionInfo *)self timezone];
-  v6 = [(BMOasisAnalyticsRegionInfo *)self date];
-  v7 = [v3 initWithFormat:@"BMOasisAnalyticsRegionInfo with countryCode: %@, timezone: %@, date: %@", v4, v5, v6];
+  timezone = [(BMOasisAnalyticsRegionInfo *)self timezone];
+  date = [(BMOasisAnalyticsRegionInfo *)self date];
+  v7 = [v3 initWithFormat:@"BMOasisAnalyticsRegionInfo with countryCode: %@, timezone: %@, date: %@", v4, timezone, date];
 
   return v7;
 }
 
-- (BMOasisAnalyticsRegionInfo)initWithCountryCode:(int)a3 timezone:(id)a4 date:(id)a5
+- (BMOasisAnalyticsRegionInfo)initWithCountryCode:(int)code timezone:(id)timezone date:(id)date
 {
-  v9 = a4;
-  v10 = a5;
+  timezoneCopy = timezone;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = BMOasisAnalyticsRegionInfo;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    v11->_countryCode = a3;
-    objc_storeStrong(&v11->_timezone, a4);
-    objc_storeStrong(&v11->_date, a5);
+    v11->_countryCode = code;
+    objc_storeStrong(&v11->_timezone, timezone);
+    objc_storeStrong(&v11->_date, date);
   }
 
   return v11;
@@ -499,9 +499,9 @@ LABEL_42:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -509,8 +509,8 @@ LABEL_42:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsRegionInfo alloc] initByReadFrom:v7];
     v4 = v8;

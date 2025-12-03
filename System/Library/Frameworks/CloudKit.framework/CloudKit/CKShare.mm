@@ -1,10 +1,10 @@
 @interface CKShare
 + (void)initialize;
-- (BOOL)_participantArray:(id)a3 containsEquivalentWithPermissionsParticipant:(id)a4;
-- (BOOL)_participantArray:(id)a3 isEquivalentToArray:(id)a4;
+- (BOOL)_participantArray:(id)array containsEquivalentWithPermissionsParticipant:(id)participant;
+- (BOOL)_participantArray:(id)array isEquivalentToArray:(id)toArray;
 - (BOOL)accessRequestsEnabled;
-- (BOOL)allNonOwnerParticipantsHavePermission:(int64_t)a3;
-- (BOOL)allNonOwnerParticipantsHaveRole:(int64_t)a3;
+- (BOOL)allNonOwnerParticipantsHavePermission:(int64_t)permission;
+- (BOOL)allNonOwnerParticipantsHaveRole:(int64_t)role;
 - (BOOL)hasModifiedEncryptedData;
 - (BOOL)hasModifiedPropertiesRequiringEncryption;
 - (BOOL)hasPropertiesRequiringDecryption;
@@ -29,56 +29,56 @@
 - (NSArray)requesters;
 - (NSData)publicSharingIdentity;
 - (NSMutableDictionary)oneTimeURLMetadatasByParticipantID;
-- (id)_existingRequestersForUserIdentities:(id)a3;
-- (id)_knownParticipantEqualToParticipant:(id)a3;
-- (id)_knownParticipantEqualToParticipant:(id)a3 inParticipants:(id)a4;
-- (id)_knownParticipantWithParticipantID:(id)a3;
+- (id)_existingRequestersForUserIdentities:(id)identities;
+- (id)_knownParticipantEqualToParticipant:(id)participant;
+- (id)_knownParticipantEqualToParticipant:(id)participant inParticipants:(id)participants;
+- (id)_knownParticipantWithParticipantID:(id)d;
 - (id)addedParticipants;
 - (id)allParticipants;
 - (id)copyWithOriginalValues;
-- (id)initInternalWithShareRecordID:(id)a3;
-- (id)lookupInfosFromRequesters:(id)a3;
-- (id)oneTimeURLForParticipantID:(id)a3;
+- (id)initInternalWithShareRecordID:(id)d;
+- (id)lookupInfosFromRequesters:(id)requesters;
+- (id)oneTimeURLForParticipantID:(id)d;
 - (id)removedParticipants;
-- (id)updateFromServerShare:(id)a3;
-- (int64_t)_indexForIdentity:(id)a3 matchingAnyInCollection:(id)a4;
+- (id)updateFromServerShare:(id)share;
+- (int64_t)_indexForIdentity:(id)identity matchingAnyInCollection:(id)collection;
 - (int64_t)participantSelfRemovalBehavior;
 - (int64_t)participantVisibility;
-- (void)CKAssignToContainerWithID:(id)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (void)CKAssignToContainerWithID:(id)d;
+- (void)CKDescribePropertiesUsing:(id)using;
 - (void)_addOwnerParticipant;
-- (void)_addParticipantBypassingChecks:(id)a3;
-- (void)_addParticipantEmails:(id)a3 phoneNumbers:(id)a4 asReadWrite:(BOOL)a5 inContainer:(id)a6 completionHandler:(id)a7;
+- (void)_addParticipantBypassingChecks:(id)checks;
+- (void)_addParticipantEmails:(id)emails phoneNumbers:(id)numbers asReadWrite:(BOOL)write inContainer:(id)container completionHandler:(id)handler;
 - (void)_commonCKShareInit;
 - (void)_removeAllNonOneTimeLinkParticipants;
 - (void)_removeNonOneTimeLinkPendingPrivateAndAdminParticipants;
-- (void)_removeParticipantBypassingChecks:(id)a3;
-- (void)_setAccessRequestsEnabledNoSideEffects:(BOOL)a3;
-- (void)_setPublicPermissionNoSideEffects:(int64_t)a3;
-- (void)_unblockIdentitiesReferencedByParticipant:(id)a3;
+- (void)_removeParticipantBypassingChecks:(id)checks;
+- (void)_setAccessRequestsEnabledNoSideEffects:(BOOL)effects;
+- (void)_setPublicPermissionNoSideEffects:(int64_t)effects;
+- (void)_unblockIdentitiesReferencedByParticipant:(id)participant;
 - (void)addParticipant:(CKShareParticipant *)participant;
-- (void)approveRequesters:(id)a3 inContainer:(id)a4 withPermission:(int64_t)a5 asRole:(int64_t)a6 operationGroup:(id)a7 completionHandler:(id)a8;
-- (void)blockRequesters:(id)a3;
-- (void)blockUserIdentities:(id)a3;
-- (void)blockUserIdentityLookupInfos:(id)a3;
+- (void)approveRequesters:(id)requesters inContainer:(id)container withPermission:(int64_t)permission asRole:(int64_t)role operationGroup:(id)group completionHandler:(id)handler;
+- (void)blockRequesters:(id)requesters;
+- (void)blockUserIdentities:(id)identities;
+- (void)blockUserIdentityLookupInfos:(id)infos;
 - (void)clearModifiedParticipants;
-- (void)denyRequesters:(id)a3;
-- (void)encodeSystemFieldsWithCoder:(id)a3;
-- (void)registerFetchedParticipant:(id)a3;
+- (void)denyRequesters:(id)requesters;
+- (void)encodeSystemFieldsWithCoder:(id)coder;
+- (void)registerFetchedParticipant:(id)participant;
 - (void)removeParticipant:(CKShareParticipant *)participant;
 - (void)resetFetchedParticipants;
-- (void)setAllParticipants:(id)a3;
-- (void)setApprovedRequesters:(id)a3;
-- (void)setBlockedIdentities:(id)a3;
-- (void)setInvitedKeysToRemove:(id)a3;
-- (void)setOneTimeURLMetadatasByParticipantID:(id)a3;
-- (void)setParticipantSelfRemovalBehavior:(int64_t)a3;
-- (void)setParticipantVisibility:(int64_t)a3;
+- (void)setAllParticipants:(id)participants;
+- (void)setApprovedRequesters:(id)requesters;
+- (void)setBlockedIdentities:(id)identities;
+- (void)setInvitedKeysToRemove:(id)remove;
+- (void)setOneTimeURLMetadatasByParticipantID:(id)d;
+- (void)setParticipantSelfRemovalBehavior:(int64_t)behavior;
+- (void)setParticipantVisibility:(int64_t)visibility;
 - (void)setPublicPermission:(CKShareParticipantPermission)publicPermission;
-- (void)setPublicSharingIdentity:(id)a3;
-- (void)setRequesters:(id)a3;
-- (void)setWantsPublicSharingKey:(BOOL)a3;
-- (void)unblockIdentities:(id)a3;
+- (void)setPublicSharingIdentity:(id)identity;
+- (void)setRequesters:(id)requesters;
+- (void)setWantsPublicSharingKey:(BOOL)key;
+- (void)unblockIdentities:(id)identities;
 @end
 
 @implementation CKShare
@@ -87,7 +87,7 @@
 {
   v3 = objc_opt_class();
 
-  sub_1886CEE50(a1, v3, 0, &unk_1EFA85B00, 0);
+  sub_1886CEE50(self, v3, 0, &unk_1EFA85B00, 0);
 }
 
 - (CKShare)initWithRootRecord:(CKRecord *)rootRecord
@@ -151,11 +151,11 @@
   return v11;
 }
 
-- (id)initInternalWithShareRecordID:(id)a3
+- (id)initInternalWithShareRecordID:(id)d
 {
   v8.receiver = self;
   v8.super_class = CKShare;
-  v3 = [(CKRecord *)&v8 initWithRecordType:@"cloudkit.share" recordID:a3];
+  v3 = [(CKRecord *)&v8 initWithRecordType:@"cloudkit.share" recordID:d];
   v6 = v3;
   if (v3)
   {
@@ -348,10 +348,10 @@
 
 - (CKShareParticipantPermission)publicPermission
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  publicPermission = v2->_publicPermission;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  publicPermission = selfCopy->_publicPermission;
+  objc_sync_exit(selfCopy);
 
   return publicPermission;
 }
@@ -409,35 +409,35 @@
   objc_sync_exit(obj);
 }
 
-- (void)_setPublicPermissionNoSideEffects:(int64_t)a3
+- (void)_setPublicPermissionNoSideEffects:(int64_t)effects
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_publicPermission = a3;
+  obj->_publicPermission = effects;
   objc_sync_exit(obj);
 }
 
-- (void)setOneTimeURLMetadatasByParticipantID:(id)a3
+- (void)setOneTimeURLMetadatasByParticipantID:(id)d
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_CKDeepCopy(v12, v5, v6);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_CKDeepCopy(dCopy, v5, v6);
   v10 = objc_msgSend_mutableCopy(v7, v8, v9);
-  oneTimeURLMetadatasByParticipantID = v4->_oneTimeURLMetadatasByParticipantID;
-  v4->_oneTimeURLMetadatasByParticipantID = v10;
+  oneTimeURLMetadatasByParticipantID = selfCopy->_oneTimeURLMetadatasByParticipantID;
+  selfCopy->_oneTimeURLMetadatasByParticipantID = v10;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSMutableDictionary)oneTimeURLMetadatasByParticipantID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_CKDeepCopy(v2->_oneTimeURLMetadatasByParticipantID, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_CKDeepCopy(selfCopy->_oneTimeURLMetadatasByParticipantID, v3, v4);
   v8 = objc_msgSend_mutableCopy(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -447,16 +447,16 @@
   v57 = *MEMORY[0x1E69E9840];
   v55.receiver = self;
   v55.super_class = CKShare;
-  v2 = [(CKRecord *)&v55 copyWithOriginalValues];
-  v5 = objc_msgSend_removedParticipantIDs(v2, v3, v4);
+  copyWithOriginalValues = [(CKRecord *)&v55 copyWithOriginalValues];
+  v5 = objc_msgSend_removedParticipantIDs(copyWithOriginalValues, v3, v4);
   objc_msgSend_removeAllObjects(v5, v6, v7);
 
-  v10 = objc_msgSend_owner(v2, v8, v9);
+  v10 = objc_msgSend_owner(copyWithOriginalValues, v8, v9);
   v13 = objc_msgSend_participantID(v10, v11, v12);
 
   if (v13)
   {
-    v16 = objc_msgSend_addedParticipantIDs(v2, v14, v15);
+    v16 = objc_msgSend_addedParticipantIDs(copyWithOriginalValues, v14, v15);
     v50 = objc_msgSend_containsObject_(v16, v17, v13);
   }
 
@@ -469,7 +469,7 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v18 = objc_msgSend_mutableAllParticipants(v2, v14, v15);
+  v18 = objc_msgSend_mutableAllParticipants(copyWithOriginalValues, v14, v15);
   v21 = objc_msgSend_copy(v18, v19, v20);
 
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, &v51, v56, 16);
@@ -487,7 +487,7 @@
         }
 
         v29 = *(*(&v51 + 1) + 8 * i);
-        v30 = objc_msgSend_addedParticipantIDs(v2, v24, v25);
+        v30 = objc_msgSend_addedParticipantIDs(copyWithOriginalValues, v24, v25);
         v33 = objc_msgSend_participantID(v29, v31, v32);
         if (objc_msgSend_containsObject_(v30, v34, v33))
         {
@@ -498,7 +498,7 @@
             continue;
           }
 
-          v30 = objc_msgSend_mutableAllParticipants(v2, v24, v25);
+          v30 = objc_msgSend_mutableAllParticipants(copyWithOriginalValues, v24, v25);
           objc_msgSend_removeObject_(v30, v38, v29);
         }
 
@@ -513,110 +513,110 @@
     while (v26);
   }
 
-  v41 = objc_msgSend_addedParticipantIDs(v2, v39, v40);
+  v41 = objc_msgSend_addedParticipantIDs(copyWithOriginalValues, v39, v40);
   objc_msgSend_removeAllObjects(v41, v42, v43);
 
   if (v50)
   {
-    v46 = objc_msgSend_addedParticipantIDs(v2, v44, v45);
+    v46 = objc_msgSend_addedParticipantIDs(copyWithOriginalValues, v44, v45);
     objc_msgSend_addObject_(v46, v47, v13);
   }
 
   v48 = *MEMORY[0x1E69E9840];
-  return v2;
+  return copyWithOriginalValues;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v68.receiver = self;
   v68.super_class = CKShare;
-  [(CKRecord *)&v68 CKDescribePropertiesUsing:v4];
+  [(CKRecord *)&v68 CKDescribePropertiesUsing:usingCopy];
   v7 = objc_msgSend_rootRecordID(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"rootRecordID", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"rootRecordID", v7, 0);
 
   v11 = objc_msgSend_etag(self, v9, v10);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v12, @"etag", v11, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v12, @"etag", v11, 0);
 
   v15 = objc_msgSend_publicPermission(self, v13, v14);
   v16 = CKStringFromParticipantPermission(v15);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v17, @"publicPermission", v16, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v17, @"publicPermission", v16, 0);
 
   v20 = objc_msgSend_participantVisibility(self, v18, v19);
   if (v20 > 3)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v4, v21, @"participantVisibility", @"Unknown", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v21, @"participantVisibility", @"Unknown", 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v4, v21, @"participantVisibility", off_1E70BE360[v20], 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v21, @"participantVisibility", off_1E70BE360[v20], 0);
   }
 
   v24 = objc_msgSend_participantSelfRemovalBehavior(self, v22, v23);
   if (v24 > 3)
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v25, @"participantSelfRemovalBehavior", @"Unknown", 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v25, @"participantSelfRemovalBehavior", @"Unknown", 0);
   }
 
   else
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v25, @"participantSelfRemovalBehavior", off_1E70BE380[v24], 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v25, @"participantSelfRemovalBehavior", off_1E70BE380[v24], 0);
   }
 
   if (objc_msgSend_allowsAnonymousPublicAccess(self, v26, v27))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v4, v28, @"allowsAnonymousPublicAccess", @"true", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"allowsAnonymousPublicAccess", @"true", 0);
   }
 
   v30 = objc_msgSend_baseToken(self, v28, v29);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v31, @"baseToken", v30, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v31, @"baseToken", v30, 0);
 
   v34 = objc_msgSend_routingKey(self, v32, v33);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v35, @"routingKey", v34, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v35, @"routingKey", v34, 0);
 
   v38 = objc_msgSend_mutableEncryptedPSK(self, v36, v37);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v39, @"mutableEncryptedPSK", v38, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v39, @"mutableEncryptedPSK", v38, 0);
 
-  v40 = self;
-  objc_sync_enter(v40);
-  v43 = objc_msgSend_mutableAllParticipants(v40, v41, v42);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v43 = objc_msgSend_mutableAllParticipants(selfCopy, v41, v42);
   if (objc_msgSend_count(v43, v44, v45))
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v4, v46, @"participants", v43, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v46, @"participants", v43, 0);
   }
 
-  v48 = objc_msgSend_mutableRequesters(v40, v46, v47);
+  v48 = objc_msgSend_mutableRequesters(selfCopy, v46, v47);
   if (objc_msgSend_count(v48, v49, v50))
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v51, @"requesters", v48, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v51, @"requesters", v48, 0);
   }
 
-  v53 = objc_msgSend_mutableApprovedRequesters(v40, v51, v52);
+  v53 = objc_msgSend_mutableApprovedRequesters(selfCopy, v51, v52);
   if (objc_msgSend_count(v53, v54, v55))
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v56, @"approvedRequesters", v53, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v56, @"approvedRequesters", v53, 0);
   }
 
-  v58 = objc_msgSend_mutableBlockedIdentities(v40, v56, v57);
+  v58 = objc_msgSend_mutableBlockedIdentities(selfCopy, v56, v57);
   if (objc_msgSend_count(v58, v59, v60))
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v61, @"blockedIdentities", v58, 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v61, @"blockedIdentities", v58, 0);
   }
 
-  if (objc_msgSend_accessRequestsEnabled(v40, v61, v62))
+  if (objc_msgSend_accessRequestsEnabled(selfCopy, v61, v62))
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v63, @"accessRequestsEnabled", @"true", 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v63, @"accessRequestsEnabled", @"true", 0);
   }
 
   else
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v63, @"accessRequestsEnabled", @"false", 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v63, @"accessRequestsEnabled", @"false", 0);
   }
 
-  objc_sync_exit(v40);
-  v66 = objc_msgSend_currentUserParticipant(v40, v64, v65);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v4, v67, @"currentParticipant", v66, 0);
+  objc_sync_exit(selfCopy);
+  v66 = objc_msgSend_currentUserParticipant(selfCopy, v64, v65);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v67, @"currentParticipant", v66, 0);
 }
 
 - (BOOL)hasPropertiesRequiringDecryption
@@ -688,49 +688,49 @@
   return isEqualToString;
 }
 
-- (void)CKAssignToContainerWithID:(id)a3
+- (void)CKAssignToContainerWithID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v10.receiver = v5;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10.receiver = selfCopy;
   v10.super_class = CKShare;
-  [(CKRecord *)&v10 CKAssignToContainerWithID:v4];
-  v8 = objc_msgSend_mutableAllParticipants(v5, v6, v7);
-  objc_msgSend_CKAssignToContainerWithID_(v8, v9, v4);
+  [(CKRecord *)&v10 CKAssignToContainerWithID:dCopy];
+  v8 = objc_msgSend_mutableAllParticipants(selfCopy, v6, v7);
+  objc_msgSend_CKAssignToContainerWithID_(v8, v9, dCopy);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)allParticipants
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_mutableAllParticipants(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_mutableAllParticipants(selfCopy, v3, v4);
   v8 = objc_msgSend_copy(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)setAllParticipants:(id)a3
+- (void)setAllParticipants:(id)participants
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_mutableCopy(v9, v5, v6);
-  objc_msgSend_setMutableAllParticipants_(v4, v8, v7);
+  participantsCopy = participants;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_mutableCopy(participantsCopy, v5, v6);
+  objc_msgSend_setMutableAllParticipants_(selfCopy, v8, v7);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)participants
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_removedParticipantIDs(v2, v3, v4);
-  v8 = objc_msgSend_mutableAllParticipants(v2, v6, v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_removedParticipantIDs(selfCopy, v3, v4);
+  v8 = objc_msgSend_mutableAllParticipants(selfCopy, v6, v7);
   if (objc_msgSend_count(v5, v9, v10))
   {
     v16[0] = MEMORY[0x1E69E9820];
@@ -746,87 +746,87 @@
     v14 = objc_msgSend_copy(v8, v11, v12);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
 - (NSArray)requesters
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_copy(v2->_mutableRequesters, v3, v4);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_copy(selfCopy->_mutableRequesters, v3, v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setRequesters:(id)a3
+- (void)setRequesters:(id)requesters
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_mutableCopy(v9, v5, v6);
-  mutableRequesters = v4->_mutableRequesters;
-  v4->_mutableRequesters = v7;
+  requestersCopy = requesters;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_mutableCopy(requestersCopy, v5, v6);
+  mutableRequesters = selfCopy->_mutableRequesters;
+  selfCopy->_mutableRequesters = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)approvedRequesters
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_copy(v2->_mutableApprovedRequesters, v3, v4);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_copy(selfCopy->_mutableApprovedRequesters, v3, v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setApprovedRequesters:(id)a3
+- (void)setApprovedRequesters:(id)requesters
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_mutableCopy(v9, v5, v6);
-  mutableApprovedRequesters = v4->_mutableApprovedRequesters;
-  v4->_mutableApprovedRequesters = v7;
+  requestersCopy = requesters;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_mutableCopy(requestersCopy, v5, v6);
+  mutableApprovedRequesters = selfCopy->_mutableApprovedRequesters;
+  selfCopy->_mutableApprovedRequesters = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)blockedIdentities
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_copy(v2->_mutableBlockedIdentities, v3, v4);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_copy(selfCopy->_mutableBlockedIdentities, v3, v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setBlockedIdentities:(id)a3
+- (void)setBlockedIdentities:(id)identities
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_mutableCopy(v9, v5, v6);
-  mutableBlockedIdentities = v4->_mutableBlockedIdentities;
-  v4->_mutableBlockedIdentities = v7;
+  identitiesCopy = identities;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_mutableCopy(identitiesCopy, v5, v6);
+  mutableBlockedIdentities = selfCopy->_mutableBlockedIdentities;
+  selfCopy->_mutableBlockedIdentities = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)lookupInfosFromRequesters:(id)a3
+- (id)lookupInfosFromRequesters:(id)requesters
 {
   v84 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestersCopy = requesters;
   v6 = objc_msgSend_array(MEMORY[0x1E695DF70], v4, v5);
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v7 = v3;
+  v7 = requestersCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v79, v83, 16);
   if (v9)
   {
@@ -919,40 +919,40 @@ LABEL_13:
   return v75;
 }
 
-- (void)approveRequesters:(id)a3 inContainer:(id)a4 withPermission:(int64_t)a5 asRole:(int64_t)a6 operationGroup:(id)a7 completionHandler:(id)a8
+- (void)approveRequesters:(id)requesters inContainer:(id)container withPermission:(int64_t)permission asRole:(int64_t)role operationGroup:(id)group completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
+  requestersCopy = requesters;
+  containerCopy = container;
+  groupCopy = group;
+  handlerCopy = handler;
   v23 = objc_msgSend_currentUserParticipant(self, v19, v20);
   if (v23 && (objc_msgSend_isCurrentUserOwnerOrAdmin(self, v21, v22) & 1) == 0)
   {
     v39 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v21, v22);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v39, v40, a2, self, @"CKShare.m", 575, @"Only owners and admins may approve share requesters");
 
-    if (!v15)
+    if (!requestersCopy)
     {
       goto LABEL_10;
     }
   }
 
-  else if (!v15)
+  else if (!requestersCopy)
   {
     goto LABEL_10;
   }
 
-  v24 = objc_msgSend_count(v15, v21, v22);
-  if (v16 && v24)
+  v24 = objc_msgSend_count(requestersCopy, v21, v22);
+  if (containerCopy && v24)
   {
-    v26 = objc_msgSend_lookupInfosFromRequesters_(self, v25, v15);
+    v26 = objc_msgSend_lookupInfosFromRequesters_(self, v25, requestersCopy);
     v27 = [CKFetchShareParticipantsOperation alloc];
     v41 = v26;
     v29 = objc_msgSend_initWithUserIdentityLookupInfos_(v27, v28, v26);
     v32 = v29;
-    if (v17)
+    if (groupCopy)
     {
-      objc_msgSend_setGroup_(v29, v30, v17);
+      objc_msgSend_setGroup_(v29, v30, groupCopy);
     }
 
     v33 = objc_msgSend_array(MEMORY[0x1E695DF70], v30, v31);
@@ -961,8 +961,8 @@ LABEL_13:
     v47[1] = 3221225472;
     v47[2] = sub_18858FD24;
     v47[3] = &unk_1E70BE1C8;
-    v49 = a5;
-    v50 = a6;
+    permissionCopy = permission;
+    roleCopy = role;
     v34 = v33;
     v48 = v34;
     objc_msgSend_setPerShareParticipantCompletionBlock_(v32, v35, v47);
@@ -971,12 +971,12 @@ LABEL_13:
     v42[2] = sub_18858FEA8;
     v42[3] = &unk_1E70BE1F0;
     objc_copyWeak(&v46, location);
-    v45 = v18;
+    v45 = handlerCopy;
     v36 = v34;
     v43 = v36;
-    v44 = v15;
+    v44 = requestersCopy;
     objc_msgSend_setFetchShareParticipantsCompletionBlock_(v32, v37, v42);
-    objc_msgSend_addOperation_(v16, v38, v32);
+    objc_msgSend_addOperation_(containerCopy, v38, v32);
 
     objc_destroyWeak(&v46);
     objc_destroyWeak(location);
@@ -985,17 +985,17 @@ LABEL_13:
   }
 
 LABEL_10:
-  if (v18)
+  if (handlerCopy)
   {
-    (*(v18 + 2))(v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_12:
 }
 
-- (void)denyRequesters:(id)a3
+- (void)denyRequesters:(id)requesters
 {
-  v16 = a3;
+  requestersCopy = requesters;
   v9 = objc_msgSend_currentUserParticipant(self, v5, v6);
   if (v9 && (objc_msgSend_isCurrentUserOwnerOrAdmin(self, v7, v8) & 1) == 0)
   {
@@ -1003,22 +1003,22 @@ LABEL_12:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CKShare.m", 648, @"Only owners and admins may deny share requesters");
   }
 
-  if (v16)
+  if (requestersCopy)
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    objc_msgSend_removeObjectsInArray_(v12->_mutableRequesters, v13, v16);
-    objc_sync_exit(v12);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_msgSend_removeObjectsInArray_(selfCopy->_mutableRequesters, v13, requestersCopy);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_unblockIdentitiesReferencedByParticipant:(id)a3
+- (void)_unblockIdentitiesReferencedByParticipant:(id)participant
 {
   v92 = *MEMORY[0x1E69E9840];
-  v78 = a3;
-  if (v78)
+  participantCopy = participant;
+  if (participantCopy)
   {
-    v76 = self;
+    selfCopy = self;
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1027,17 +1027,17 @@ LABEL_12:
     v5 = v4;
     v86 = v5;
     v77 = _Block_copy(aBlock);
-    v8 = objc_msgSend_userIdentity(v78, v6, v7);
+    v8 = objc_msgSend_userIdentity(participantCopy, v6, v7);
     v11 = objc_msgSend_userRecordID(v8, v9, v10);
     v14 = objc_msgSend_recordName(v11, v12, v13);
     v77[2](v77, v14);
 
-    v17 = objc_msgSend_userIdentity(v78, v15, v16);
+    v17 = objc_msgSend_userIdentity(participantCopy, v15, v16);
     v20 = objc_msgSend_lookupInfo(v17, v18, v19);
     v23 = objc_msgSend_emailAddress(v20, v21, v22);
     v77[2](v77, v23);
 
-    v26 = objc_msgSend_userIdentity(v78, v24, v25);
+    v26 = objc_msgSend_userIdentity(participantCopy, v24, v25);
     v29 = objc_msgSend_lookupInfo(v26, v27, v28);
     v32 = objc_msgSend_phoneNumber(v29, v30, v31);
     v77[2](v77, v32);
@@ -1088,7 +1088,7 @@ LABEL_12:
       while (v36);
     }
 
-    v69 = v76;
+    v69 = selfCopy;
     objc_sync_enter(v69);
     if (objc_msgSend_count(v80, v70, v71))
     {
@@ -1103,11 +1103,11 @@ LABEL_12:
         *buf = 138412546;
         v88 = v80;
         v89 = 2112;
-        v90 = v78;
+        v90 = participantCopy;
         _os_log_impl(&dword_1883EA000, v72, OS_LOG_TYPE_DEFAULT, "Unblocking identities: %@ referenced by participant: %@", buf, 0x16u);
       }
 
-      objc_msgSend_removeObjectsInArray_(*(&v76->super.super.isa + v75), v73, v80, v75);
+      objc_msgSend_removeObjectsInArray_(*(&selfCopy->super.super.isa + v75), v73, v80, v75);
     }
 
     objc_sync_exit(v69);
@@ -1116,26 +1116,26 @@ LABEL_12:
   v74 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)_indexForIdentity:(id)a3 matchingAnyInCollection:(id)a4
+- (int64_t)_indexForIdentity:(id)identity matchingAnyInCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_userRecordID(v5, v7, v8);
+  identityCopy = identity;
+  collectionCopy = collection;
+  v9 = objc_msgSend_userRecordID(identityCopy, v7, v8);
   v58 = objc_msgSend_recordName(v9, v10, v11);
 
-  v14 = objc_msgSend_lookupInfo(v5, v12, v13);
+  v14 = objc_msgSend_lookupInfo(identityCopy, v12, v13);
   v57 = objc_msgSend_emailAddress(v14, v15, v16);
 
-  v19 = objc_msgSend_lookupInfo(v5, v17, v18);
+  v19 = objc_msgSend_lookupInfo(identityCopy, v17, v18);
   v56 = objc_msgSend_phoneNumber(v19, v20, v21);
 
-  if (objc_msgSend_count(v6, v22, v23))
+  if (objc_msgSend_count(collectionCopy, v22, v23))
   {
-    v55 = v5;
+    v55 = identityCopy;
     v25 = 0;
     while (1)
     {
-      v26 = objc_msgSend_objectAtIndexedSubscript_(v6, v24, v25, v55);
+      v26 = objc_msgSend_objectAtIndexedSubscript_(collectionCopy, v24, v25, v55);
       if (objc_opt_respondsToSelector())
       {
         v29 = objc_msgSend_userIdentity(v26, v27, v28);
@@ -1182,14 +1182,14 @@ LABEL_12:
         break;
       }
 
-      if (++v25 >= objc_msgSend_count(v6, v52, v53))
+      if (++v25 >= objc_msgSend_count(collectionCopy, v52, v53))
       {
         v25 = 0x7FFFFFFFFFFFFFFFLL;
         break;
       }
     }
 
-    v5 = v55;
+    identityCopy = v55;
   }
 
   else
@@ -1200,16 +1200,16 @@ LABEL_12:
   return v25;
 }
 
-- (id)_existingRequestersForUserIdentities:(id)a3
+- (id)_existingRequestersForUserIdentities:(id)identities
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identitiesCopy = identities;
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = identitiesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v19, v23, 16);
   if (v8)
   {
@@ -1246,10 +1246,10 @@ LABEL_12:
   return v5;
 }
 
-- (void)blockUserIdentities:(id)a3
+- (void)blockUserIdentities:(id)identities
 {
   v97 = *MEMORY[0x1E69E9840];
-  v69 = a3;
+  identitiesCopy = identities;
   v9 = objc_msgSend_currentUserParticipant(self, v5, v6);
   if (v9 && (objc_msgSend_isCurrentUserOwnerOrAdmin(self, v7, v8) & 1) == 0)
   {
@@ -1263,16 +1263,16 @@ LABEL_12:
   aBlock[3] = &unk_1E70BE240;
   v65 = v9;
   v90 = v65;
-  v91 = self;
+  selfCopy = self;
   v71 = _Block_copy(aBlock);
-  v12 = self;
-  objc_sync_enter(v12);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v67 = objc_opt_new();
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v15 = objc_msgSend_participants(v12, v13, v14);
+  v15 = objc_msgSend_participants(selfCopy2, v13, v14);
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v85, v96, 16);
   obj = v15;
   if (v17)
@@ -1294,7 +1294,7 @@ LABEL_12:
         v82 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v19 = v69;
+        v19 = identitiesCopy;
         v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v81, v95, 16, v65);
         if (v22)
         {
@@ -1311,7 +1311,7 @@ LABEL_12:
               v25 = *(*(&v81 + 1) + 8 * i);
               v94 = v18;
               v26 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v21, &v94, 1);
-              if (objc_msgSend__indexForIdentity_matchingAnyInCollection_(v12, v27, v25, v26) == 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend_isCurrentUser(v18, v28, v29) & 1) != 0)
+              if (objc_msgSend__indexForIdentity_matchingAnyInCollection_(selfCopy2, v27, v25, v26) == 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend_isCurrentUser(v18, v28, v29) & 1) != 0)
               {
               }
 
@@ -1367,7 +1367,7 @@ LABEL_22:
           objc_enumerationMutation(v34);
         }
 
-        objc_msgSend_removeParticipant_(v12, v36, *(*(&v77 + 1) + 8 * j), v65);
+        objc_msgSend_removeParticipant_(selfCopy2, v36, *(*(&v77 + 1) + 8 * j), v65);
       }
 
       v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v36, &v77, v93, 16);
@@ -1380,7 +1380,7 @@ LABEL_22:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v40 = v69;
+  v40 = identitiesCopy;
   v42 = objc_msgSend_countByEnumeratingWithState_objects_count_(v40, v41, &v73, v92, 16);
   if (v42)
   {
@@ -1399,17 +1399,17 @@ LABEL_22:
         {
           v47 = [CKShareBlockedIdentity alloc];
           v49 = objc_msgSend_initWithUserIdentity_(v47, v48, v45);
-          v52 = objc_msgSend__indexForIdentity_matchingAnyInCollection_(v12, v50, v45, v12->_mutableBlockedIdentities);
-          mutableBlockedIdentities = v12->_mutableBlockedIdentities;
+          v52 = objc_msgSend__indexForIdentity_matchingAnyInCollection_(selfCopy2, v50, v45, selfCopy2->_mutableBlockedIdentities);
+          mutableBlockedIdentities = selfCopy2->_mutableBlockedIdentities;
           if (v52 == 0x7FFFFFFFFFFFFFFFLL)
           {
             if (!mutableBlockedIdentities)
             {
               v54 = objc_opt_new();
-              v55 = v12->_mutableBlockedIdentities;
-              v12->_mutableBlockedIdentities = v54;
+              v55 = selfCopy2->_mutableBlockedIdentities;
+              selfCopy2->_mutableBlockedIdentities = v54;
 
-              mutableBlockedIdentities = v12->_mutableBlockedIdentities;
+              mutableBlockedIdentities = selfCopy2->_mutableBlockedIdentities;
             }
 
             objc_msgSend_addObject_(mutableBlockedIdentities, v51, v49, v65);
@@ -1429,24 +1429,24 @@ LABEL_22:
   }
 
   v58 = objc_msgSend_copy(v40, v56, v57);
-  v60 = objc_msgSend__existingRequestersForUserIdentities_(v12, v59, v58);
+  v60 = objc_msgSend__existingRequestersForUserIdentities_(selfCopy2, v59, v58);
 
-  objc_msgSend_removeObjectsInArray_(v12->_mutableRequesters, v61, v60);
-  objc_sync_exit(v12);
+  objc_msgSend_removeObjectsInArray_(selfCopy2->_mutableRequesters, v61, v60);
+  objc_sync_exit(selfCopy2);
 
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (void)blockRequesters:(id)a3
+- (void)blockRequesters:(id)requesters
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestersCopy = requesters;
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = requestersCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
   if (v8)
   {
@@ -1481,16 +1481,16 @@ LABEL_22:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)blockUserIdentityLookupInfos:(id)a3
+- (void)blockUserIdentityLookupInfos:(id)infos
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = objc_msgSend_copy(v4, v6, v7);
+  v8 = objc_msgSend_copy(infosCopy, v6, v7);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v27, v31, 16);
   if (v10)
   {
@@ -1528,10 +1528,10 @@ LABEL_22:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unblockIdentities:(id)a3
+- (void)unblockIdentities:(id)identities
 {
   v42 = *MEMORY[0x1E69E9840];
-  v29 = a3;
+  identitiesCopy = identities;
   v28 = objc_msgSend_currentUserParticipant(self, v5, v6);
   v9 = v28;
   if (v28 && (objc_msgSend_isCurrentUserOwnerOrAdmin(self, v7, v8) & 1) == 0)
@@ -1542,16 +1542,16 @@ LABEL_22:
     v9 = v28;
   }
 
-  if (v29 && objc_msgSend_count(v29, v7, v8))
+  if (identitiesCopy && objc_msgSend_count(identitiesCopy, v7, v8))
   {
-    v31 = self;
-    objc_sync_enter(v31);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v10 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v29;
+    obj = identitiesCopy;
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v36, v41, 16);
     if (v12)
     {
@@ -1570,7 +1570,7 @@ LABEL_22:
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v16 = v31->_mutableBlockedIdentities;
+          v16 = selfCopy->_mutableBlockedIdentities;
           v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v32, v40, 16);
           if (v19)
           {
@@ -1604,8 +1604,8 @@ LABEL_22:
       while (v12);
     }
 
-    objc_msgSend_removeObjectsInArray_(v31->_mutableBlockedIdentities, v24, v10);
-    objc_sync_exit(v31);
+    objc_msgSend_removeObjectsInArray_(selfCopy->_mutableBlockedIdentities, v24, v10);
+    objc_sync_exit(selfCopy);
 
     v9 = v28;
   }
@@ -1613,20 +1613,20 @@ LABEL_22:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setAccessRequestsEnabledNoSideEffects:(BOOL)a3
+- (void)_setAccessRequestsEnabledNoSideEffects:(BOOL)effects
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_accessRequestsEnabled = a3;
+  obj->_accessRequestsEnabled = effects;
   objc_sync_exit(obj);
 }
 
 - (BOOL)accessRequestsEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  accessRequestsEnabled = v2->_accessRequestsEnabled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accessRequestsEnabled = selfCopy->_accessRequestsEnabled;
+  objc_sync_exit(selfCopy);
 
   return accessRequestsEnabled;
 }
@@ -1634,8 +1634,8 @@ LABEL_22:
 - (void)clearModifiedParticipants
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -1644,54 +1644,54 @@ LABEL_22:
   v3 = ck_log_facility_ck;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v17 = objc_msgSend_recordID(v2, v4, v5);
+    v17 = objc_msgSend_recordID(selfCopy, v4, v5);
     v18 = 138412290;
     v19 = v17;
     _os_log_debug_impl(&dword_1883EA000, v3, OS_LOG_TYPE_DEBUG, "Clearing modified participants on share %@", &v18, 0xCu);
   }
 
-  v8 = objc_msgSend_addedParticipantIDs(v2, v6, v7);
+  v8 = objc_msgSend_addedParticipantIDs(selfCopy, v6, v7);
   objc_msgSend_removeAllObjects(v8, v9, v10);
 
-  v13 = objc_msgSend_removedParticipantIDs(v2, v11, v12);
+  v13 = objc_msgSend_removedParticipantIDs(selfCopy, v11, v12);
   objc_msgSend_removeAllObjects(v13, v14, v15);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (NSArray)invitedKeysToRemove
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_invitedKeysToRemove;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_invitedKeysToRemove;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setInvitedKeysToRemove:(id)a3
+- (void)setInvitedKeysToRemove:(id)remove
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  invitedKeysToRemove = v4->_invitedKeysToRemove;
-  v4->_invitedKeysToRemove = v7;
+  removeCopy = remove;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_CKDeepCopy(removeCopy, v5, v6);
+  invitedKeysToRemove = selfCopy->_invitedKeysToRemove;
+  selfCopy->_invitedKeysToRemove = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (CKShareParticipant)owner
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = objc_msgSend_mutableAllParticipants(v3, v4, v5, 0);
+  v6 = objc_msgSend_mutableAllParticipants(selfCopy, v4, v5, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
   if (v10)
   {
@@ -1737,22 +1737,22 @@ LABEL_9:
 
 LABEL_10:
     v16 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v14, v15);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v16, v17, a2, v3, @"CKShare.m", 916, @"You should never have a share without an owner");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v16, v17, a2, selfCopy, @"CKShare.m", 916, @"You should never have a share without an owner");
 
     v18 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-- (id)_knownParticipantWithParticipantID:(id)a3
+- (id)_knownParticipantWithParticipantID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1773,7 +1773,7 @@ LABEL_10:
 
         v14 = *(*(&v20 + 1) + 8 * i);
         v15 = objc_msgSend_participantID(v14, v9, v10);
-        isEqualToString = objc_msgSend_isEqualToString_(v4, v16, v15);
+        isEqualToString = objc_msgSend_isEqualToString_(dCopy, v16, v15);
 
         if (isEqualToString)
         {
@@ -1799,22 +1799,22 @@ LABEL_11:
   return v11;
 }
 
-- (id)_knownParticipantEqualToParticipant:(id)a3
+- (id)_knownParticipantEqualToParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v7 = objc_msgSend_participants(self, v5, v6);
-  v9 = objc_msgSend__knownParticipantEqualToParticipant_inParticipants_(self, v8, v4, v7);
+  v9 = objc_msgSend__knownParticipantEqualToParticipant_inParticipants_(self, v8, participantCopy, v7);
 
   return v9;
 }
 
-- (id)_knownParticipantEqualToParticipant:(id)a3 inParticipants:(id)a4
+- (id)_knownParticipantEqualToParticipant:(id)participant inParticipants:(id)participants
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  participantCopy = participant;
+  participantsCopy = participants;
+  v7 = participantsCopy;
+  if (participantCopy)
   {
     v55 = 0;
     v56 = &v55;
@@ -1827,13 +1827,13 @@ LABEL_11:
     v51 = 0x3032000000;
     v52 = sub_1883ED8C0;
     v53 = sub_1883EF5B4;
-    v54 = v6;
+    v54 = participantsCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_188592330;
     aBlock[3] = &unk_1E70BE290;
     v47 = &v49;
-    v40 = v5;
+    v40 = participantCopy;
     v46 = v40;
     v48 = &v55;
     v8 = _Block_copy(aBlock);
@@ -2004,34 +2004,34 @@ LABEL_15:
   __break(1u);
 }
 
-- (void)_addParticipantBypassingChecks:(id)a3
+- (void)_addParticipantBypassingChecks:(id)checks
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  checksCopy = checks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (checksCopy)
   {
-    v7 = objc_msgSend__knownParticipantEqualToParticipant_(v5, v6, v4);
+    v7 = objc_msgSend__knownParticipantEqualToParticipant_(selfCopy, v6, checksCopy);
     v10 = v7;
     if (v7)
     {
       if (objc_msgSend_acceptanceStatus(v7, v8, v9) != 2 && objc_msgSend_role(v10, v11, v12) != 1)
       {
-        v15 = objc_msgSend_role(v4, v13, v14);
+        v15 = objc_msgSend_role(checksCopy, v13, v14);
         objc_msgSend_setRole_(v10, v16, v15);
-        v19 = objc_msgSend_permission(v4, v17, v18);
+        v19 = objc_msgSend_permission(checksCopy, v17, v18);
         objc_msgSend_setPermission_(v10, v20, v19);
       }
     }
 
     else
     {
-      v86 = objc_msgSend_recordID(v5, v8, v9);
-      v25 = objc_msgSend_shareID(v4, v21, v22);
+      v86 = objc_msgSend_recordID(selfCopy, v8, v9);
+      v25 = objc_msgSend_shareID(checksCopy, v21, v22);
       if (v25)
       {
-        v26 = objc_msgSend_shareID(v4, v23, v24);
+        v26 = objc_msgSend_shareID(checksCopy, v23, v24);
         isEqual = objc_msgSend_isEqual_(v26, v27, v86);
 
         if ((isEqual & 1) == 0)
@@ -2042,13 +2042,13 @@ LABEL_15:
         }
       }
 
-      objc_msgSend_setShareID_(v4, v23, v86);
-      objc_msgSend__unblockIdentitiesReferencedByParticipant_(v5, v29, v4);
+      objc_msgSend_setShareID_(checksCopy, v23, v86);
+      objc_msgSend__unblockIdentitiesReferencedByParticipant_(selfCopy, v29, checksCopy);
       v89 = 0u;
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v32 = objc_msgSend_copy(v5->_mutableRequesters, v30, v31);
+      v32 = objc_msgSend_copy(selfCopy->_mutableRequesters, v30, v31);
       v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v87, v91, 16);
       if (v36)
       {
@@ -2063,15 +2063,15 @@ LABEL_15:
             }
 
             v39 = *(*(&v87 + 1) + 8 * i);
-            v40 = objc_msgSend_userIdentity(v4, v34, v35);
+            v40 = objc_msgSend_userIdentity(checksCopy, v34, v35);
             v43 = objc_msgSend_lookupInfo(v40, v41, v42);
 
             v46 = objc_msgSend_participantLookupInfo(v39, v44, v45);
             if (objc_msgSend_isEqual_(v43, v47, v46))
             {
-              objc_msgSend_setIsApprovedRequester_(v4, v48, 1);
-              objc_msgSend_removeObject_(v5->_mutableRequesters, v49, v39);
-              objc_msgSend_addObject_(v5->_mutableApprovedRequesters, v50, v39);
+              objc_msgSend_setIsApprovedRequester_(checksCopy, v48, 1);
+              objc_msgSend_removeObject_(selfCopy->_mutableRequesters, v49, v39);
+              objc_msgSend_addObject_(selfCopy->_mutableApprovedRequesters, v50, v39);
 
               goto LABEL_18;
             }
@@ -2089,36 +2089,36 @@ LABEL_15:
 
 LABEL_18:
 
-      v53 = objc_msgSend_removedParticipantIDs(v5, v51, v52);
-      v56 = objc_msgSend_participantID(v4, v54, v55);
+      v53 = objc_msgSend_removedParticipantIDs(selfCopy, v51, v52);
+      v56 = objc_msgSend_participantID(checksCopy, v54, v55);
       v58 = objc_msgSend_containsObject_(v53, v57, v56);
 
       if (v58)
       {
-        v61 = objc_msgSend_mutableAllParticipants(v5, v59, v60);
-        v63 = objc_msgSend__knownParticipantEqualToParticipant_inParticipants_(v5, v62, v4, v61);
+        v61 = objc_msgSend_mutableAllParticipants(selfCopy, v59, v60);
+        v63 = objc_msgSend__knownParticipantEqualToParticipant_inParticipants_(selfCopy, v62, checksCopy, v61);
 
         if (v63)
         {
-          v66 = objc_msgSend_mutableAllParticipants(v5, v64, v65);
+          v66 = objc_msgSend_mutableAllParticipants(selfCopy, v64, v65);
           objc_msgSend_removeObject_(v66, v67, v63);
         }
 
-        v68 = objc_msgSend_removedParticipantIDs(v5, v64, v65);
-        v71 = objc_msgSend_participantID(v4, v69, v70);
+        v68 = objc_msgSend_removedParticipantIDs(selfCopy, v64, v65);
+        v71 = objc_msgSend_participantID(checksCopy, v69, v70);
         objc_msgSend_removeObject_(v68, v72, v71);
       }
 
-      v73 = objc_msgSend_mutableAllParticipants(v5, v59, v60);
-      objc_msgSend_addObject_(v73, v74, v4);
+      v73 = objc_msgSend_mutableAllParticipants(selfCopy, v59, v60);
+      objc_msgSend_addObject_(v73, v74, checksCopy);
 
-      v77 = objc_msgSend_addedParticipantIDs(v5, v75, v76);
-      v80 = objc_msgSend_participantID(v4, v78, v79);
+      v77 = objc_msgSend_addedParticipantIDs(selfCopy, v75, v76);
+      v80 = objc_msgSend_participantID(checksCopy, v78, v79);
       objc_msgSend_addObject_(v77, v81, v80);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v82 = *MEMORY[0x1E69E9840];
 }
@@ -2192,71 +2192,71 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_removeParticipantBypassingChecks:(id)a3
+- (void)_removeParticipantBypassingChecks:(id)checks
 {
-  v31 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v6 = objc_msgSend__knownParticipantEqualToParticipant_(v4, v5, v31);
+  checksCopy = checks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend__knownParticipantEqualToParticipant_(selfCopy, v5, checksCopy);
   v8 = v6;
   if (v6)
   {
     objc_msgSend_setShareID_(v6, v7, 0);
-    v11 = objc_msgSend_addedParticipantIDs(v4, v9, v10);
+    v11 = objc_msgSend_addedParticipantIDs(selfCopy, v9, v10);
     v14 = objc_msgSend_participantID(v8, v12, v13);
     v16 = objc_msgSend_containsObject_(v11, v15, v14);
 
     if (v16)
     {
-      v19 = objc_msgSend_mutableAllParticipants(v4, v17, v18);
+      v19 = objc_msgSend_mutableAllParticipants(selfCopy, v17, v18);
       objc_msgSend_removeObject_(v19, v20, v8);
 
-      v23 = objc_msgSend_addedParticipantIDs(v4, v21, v22);
+      v23 = objc_msgSend_addedParticipantIDs(selfCopy, v21, v22);
       v26 = objc_msgSend_participantID(v8, v24, v25);
       objc_msgSend_removeObject_(v23, v27, v26);
     }
 
     else
     {
-      v23 = objc_msgSend_removedParticipantIDs(v4, v17, v18);
+      v23 = objc_msgSend_removedParticipantIDs(selfCopy, v17, v18);
       v26 = objc_msgSend_participantID(v8, v28, v29);
       objc_msgSend_addObject_(v23, v30, v26);
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)addedParticipants
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_mutableAllParticipants(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_mutableAllParticipants(selfCopy, v3, v4);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_188593170;
   v9[3] = &unk_1E70BE1A0;
-  v9[4] = v2;
+  v9[4] = selfCopy;
   v7 = objc_msgSend_CKFilter_(v5, v6, v9);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (id)removedParticipants
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_mutableAllParticipants(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_mutableAllParticipants(selfCopy, v3, v4);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1885932B8;
   v9[3] = &unk_1E70BE1A0;
-  v9[4] = v2;
+  v9[4] = selfCopy;
   v7 = objc_msgSend_CKFilter_(v5, v6, v9);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -2264,13 +2264,13 @@ LABEL_12:
 - (CKShareParticipant)currentUserParticipant
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = objc_msgSend_mutableAllParticipants(v2, v3, v4, 0);
+  v5 = objc_msgSend_mutableAllParticipants(selfCopy, v3, v4, 0);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v15, v19, 16);
   if (v9)
   {
@@ -2304,22 +2304,22 @@ LABEL_12:
 
 LABEL_11:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (BOOL)_participantArray:(id)a3 containsEquivalentWithPermissionsParticipant:(id)a4
+- (BOOL)_participantArray:(id)array containsEquivalentWithPermissionsParticipant:(id)participant
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  participantCopy = participant;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v22, v26, 16);
   if (v10)
   {
@@ -2334,7 +2334,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        if (objc_msgSend_isEqual_(v13, v9, v6, v22) && (v16 = objc_msgSend_acceptanceStatus(v13, v14, v15), v16 == objc_msgSend_acceptanceStatus(v6, v17, v18)) || objc_msgSend_role(v6, v14, v15) == 1 && objc_msgSend_role(v13, v9, v19) == 1)
+        if (objc_msgSend_isEqual_(v13, v9, participantCopy, v22) && (v16 = objc_msgSend_acceptanceStatus(v13, v14, v15), v16 == objc_msgSend_acceptanceStatus(participantCopy, v17, v18)) || objc_msgSend_role(participantCopy, v14, v15) == 1 && objc_msgSend_role(v13, v9, v19) == 1)
         {
           LOBYTE(v10) = 1;
           goto LABEL_14;
@@ -2357,20 +2357,20 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)_participantArray:(id)a3 isEquivalentToArray:(id)a4
+- (BOOL)_participantArray:(id)array isEquivalentToArray:(id)toArray
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_count(v6, v8, v9);
-  if (v10 == objc_msgSend_count(v7, v11, v12))
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  v10 = objc_msgSend_count(arrayCopy, v8, v9);
+  if (v10 == objc_msgSend_count(toArrayCopy, v11, v12))
   {
-    if (objc_msgSend_count(v6, v13, v14))
+    if (objc_msgSend_count(arrayCopy, v13, v14))
     {
       v16 = 0;
       do
       {
-        v17 = objc_msgSend_objectAtIndexedSubscript_(v6, v15, v16);
-        v19 = objc_msgSend__participantArray_containsEquivalentWithPermissionsParticipant_(self, v18, v7, v17);
+        v17 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v15, v16);
+        v19 = objc_msgSend__participantArray_containsEquivalentWithPermissionsParticipant_(self, v18, toArrayCopy, v17);
 
         if ((v19 & 1) == 0)
         {
@@ -2380,7 +2380,7 @@ LABEL_14:
         ++v16;
       }
 
-      while (v16 < objc_msgSend_count(v6, v20, v21));
+      while (v16 < objc_msgSend_count(arrayCopy, v20, v21));
     }
 
     else
@@ -2407,32 +2407,32 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (void)registerFetchedParticipant:(id)a3
+- (void)registerFetchedParticipant:(id)participant
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_lastFetchedParticipants(v4, v5, v6);
-  v10 = objc_msgSend_copy(v12, v8, v9);
+  participantCopy = participant;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_lastFetchedParticipants(selfCopy, v5, v6);
+  v10 = objc_msgSend_copy(participantCopy, v8, v9);
   objc_msgSend_addObject_(v7, v11, v10);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)updateFromServerShare:(id)a3
+- (id)updateFromServerShare:(id)share
 {
   v147 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_lastFetchedParticipants(v5, v6, v7);
-  v11 = objc_msgSend_participants(v5, v9, v10);
-  v14 = objc_msgSend_participants(v4, v12, v13);
-  isEquivalentToArray = objc_msgSend__participantArray_isEquivalentToArray_(v5, v15, v14, v8);
-  v18 = objc_msgSend__participantArray_isEquivalentToArray_(v5, v17, v11, v8);
-  v20 = objc_msgSend__participantArray_isEquivalentToArray_(v5, v19, v11, v14);
+  shareCopy = share;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_lastFetchedParticipants(selfCopy, v6, v7);
+  v11 = objc_msgSend_participants(selfCopy, v9, v10);
+  v14 = objc_msgSend_participants(shareCopy, v12, v13);
+  isEquivalentToArray = objc_msgSend__participantArray_isEquivalentToArray_(selfCopy, v15, v14, v8);
+  v18 = objc_msgSend__participantArray_isEquivalentToArray_(selfCopy, v17, v11, v8);
+  v20 = objc_msgSend__participantArray_isEquivalentToArray_(selfCopy, v19, v11, v14);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -2457,8 +2457,8 @@ LABEL_14:
     if (((v18 | v20) & 1) == 0)
     {
       v105 = objc_opt_new();
-      v108 = v4;
-      v109 = v5;
+      v108 = shareCopy;
+      v109 = selfCopy;
       v114 = objc_msgSend_copyWithOriginalValues(v109, v110, v111);
       if (v114)
       {
@@ -2482,11 +2482,11 @@ LABEL_14:
       goto LABEL_51;
     }
 
-    v24 = objc_msgSend_addedParticipants(v5, v22, v23);
-    v27 = objc_msgSend_removedParticipants(v5, v25, v26);
-    v28 = v5;
+    v24 = objc_msgSend_addedParticipants(selfCopy, v22, v23);
+    v27 = objc_msgSend_removedParticipants(selfCopy, v25, v26);
+    v28 = selfCopy;
     objc_sync_enter(v28);
-    v31 = objc_msgSend_participants(v4, v29, v30);
+    v31 = objc_msgSend_participants(shareCopy, v29, v30);
     v33 = v31;
     v34 = MEMORY[0x1E695E0F0];
     if (v31)
@@ -2527,7 +2527,7 @@ LABEL_14:
       while (v42);
     }
 
-    v47 = objc_msgSend_requesters(v4, v45, v46);
+    v47 = objc_msgSend_requesters(shareCopy, v45, v46);
     v49 = v47;
     if (v47)
     {
@@ -2539,7 +2539,7 @@ LABEL_14:
       objc_msgSend_setRequesters_(v28, v48, v34);
     }
 
-    v52 = objc_msgSend_approvedRequesters(v4, v50, v51);
+    v52 = objc_msgSend_approvedRequesters(shareCopy, v50, v51);
     v54 = v52;
     if (v52)
     {
@@ -2551,7 +2551,7 @@ LABEL_14:
       objc_msgSend_setApprovedRequesters_(v28, v53, v34);
     }
 
-    v57 = objc_msgSend_blockedIdentities(v4, v55, v56);
+    v57 = objc_msgSend_blockedIdentities(shareCopy, v55, v56);
     v59 = v57;
     if (v57)
     {
@@ -2620,27 +2620,27 @@ LABEL_14:
     }
   }
 
-  v74 = objc_msgSend_accessRequestsEnabled(v4, v22, v23);
-  objc_msgSend__setAccessRequestsEnabledNoSideEffects_(v5, v75, v74);
-  v78 = objc_msgSend_invitedProtectionData(v4, v76, v77);
-  objc_msgSend_setInvitedProtectionData_(v5, v79, v78);
+  v74 = objc_msgSend_accessRequestsEnabled(shareCopy, v22, v23);
+  objc_msgSend__setAccessRequestsEnabledNoSideEffects_(selfCopy, v75, v74);
+  v78 = objc_msgSend_invitedProtectionData(shareCopy, v76, v77);
+  objc_msgSend_setInvitedProtectionData_(selfCopy, v79, v78);
 
-  v82 = objc_msgSend_invitedProtectionEtag(v4, v80, v81);
-  objc_msgSend_setInvitedProtectionEtag_(v5, v83, v82);
+  v82 = objc_msgSend_invitedProtectionEtag(shareCopy, v80, v81);
+  objc_msgSend_setInvitedProtectionEtag_(selfCopy, v83, v82);
 
-  v86 = objc_msgSend_publicProtectionData(v4, v84, v85);
-  objc_msgSend_setPublicProtectionData_(v5, v87, v86);
+  v86 = objc_msgSend_publicProtectionData(shareCopy, v84, v85);
+  objc_msgSend_setPublicProtectionData_(selfCopy, v87, v86);
 
-  v90 = objc_msgSend_publicProtectionEtag(v4, v88, v89);
-  objc_msgSend_setPublicProtectionEtag_(v5, v91, v90);
+  v90 = objc_msgSend_publicProtectionEtag(shareCopy, v88, v89);
+  objc_msgSend_setPublicProtectionEtag_(selfCopy, v91, v90);
 
-  v94 = objc_msgSend_etag(v4, v92, v93);
-  objc_msgSend_setEtag_(v5, v95, v94);
+  v94 = objc_msgSend_etag(shareCopy, v92, v93);
+  objc_msgSend_setEtag_(selfCopy, v95, v94);
 
-  v98 = objc_msgSend_routingKey(v4, v96, v97);
-  objc_msgSend_setRoutingKey_(v5, v99, v98);
+  v98 = objc_msgSend_routingKey(shareCopy, v96, v97);
+  objc_msgSend_setRoutingKey_(selfCopy, v99, v98);
 
-  v102 = objc_msgSend_displayedHostname(v4, v100, v101);
+  v102 = objc_msgSend_displayedHostname(shareCopy, v100, v101);
 
   if (!v102)
   {
@@ -2648,8 +2648,8 @@ LABEL_14:
     goto LABEL_52;
   }
 
-  v105 = objc_msgSend_displayedHostname(v4, v103, v104);
-  objc_msgSend_setDisplayedHostname_(v5, v106, v105);
+  v105 = objc_msgSend_displayedHostname(shareCopy, v103, v104);
+  objc_msgSend_setDisplayedHostname_(selfCopy, v106, v105);
   v107 = 0;
 LABEL_51:
 
@@ -2659,13 +2659,13 @@ LABEL_52:
   return v107;
 }
 
-- (void)_addParticipantEmails:(id)a3 phoneNumbers:(id)a4 asReadWrite:(BOOL)a5 inContainer:(id)a6 completionHandler:(id)a7
+- (void)_addParticipantEmails:(id)emails phoneNumbers:(id)numbers asReadWrite:(BOOL)write inContainer:(id)container completionHandler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
-  v14 = a4;
-  v16 = objc_msgSend_lookupInfosWithEmails_(CKUserIdentityLookupInfo, v15, a3);
+  containerCopy = container;
+  handlerCopy = handler;
+  numbersCopy = numbers;
+  v16 = objc_msgSend_lookupInfosWithEmails_(CKUserIdentityLookupInfo, v15, emails);
   v17 = v16;
   v18 = MEMORY[0x1E695E0F0];
   if (v16)
@@ -2680,7 +2680,7 @@ LABEL_52:
 
   v20 = v19;
 
-  v22 = objc_msgSend_lookupInfosWithPhoneNumbers_(CKUserIdentityLookupInfo, v21, v14);
+  v22 = objc_msgSend_lookupInfosWithPhoneNumbers_(CKUserIdentityLookupInfo, v21, numbersCopy);
 
   if (v22)
   {
@@ -2705,7 +2705,7 @@ LABEL_52:
   v44[1] = 3221225472;
   v44[2] = sub_188594490;
   v44[3] = &unk_1E70BE2D8;
-  v45 = a5;
+  writeCopy = write;
   v44[4] = self;
   objc_msgSend_setPerShareParticipantCompletionBlock_(v29, v34, v44);
   if (ck_log_initialization_predicate != -1)
@@ -2725,18 +2725,18 @@ LABEL_52:
   v41[1] = 3221225472;
   v41[2] = sub_188594500;
   v41[3] = &unk_1E70BE300;
-  v42 = v12;
-  v43 = v13;
+  v42 = containerCopy;
+  v43 = handlerCopy;
   v41[4] = self;
-  v36 = v12;
-  v37 = v13;
+  v36 = containerCopy;
+  v37 = handlerCopy;
   objc_msgSend_setFetchShareParticipantsCompletionBlock_(v29, v38, v41);
   objc_msgSend_addOperation_(v36, v39, v29);
 
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWantsPublicSharingKey:(BOOL)a3
+- (void)setWantsPublicSharingKey:(BOOL)key
 {
   v3 = [CKException alloc];
   v5 = objc_msgSend_initWithCode_format_(v3, v4, 12, @"Cannot set this property on CKShare");
@@ -2751,45 +2751,45 @@ LABEL_52:
   return v6;
 }
 
-- (void)setPublicSharingIdentity:(id)a3
+- (void)setPublicSharingIdentity:(id)identity
 {
-  v17 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_mutableEncryptedPSK(v4, v5, v6);
+  identityCopy = identity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_mutableEncryptedPSK(selfCopy, v5, v6);
   v10 = objc_msgSend_data(v7, v8, v9);
 
-  if (v10 != v17)
+  if (v10 != identityCopy)
   {
-    if (v17)
+    if (identityCopy)
     {
       v12 = [CKEncryptedData alloc];
-      v14 = objc_msgSend_initWithData_(v12, v13, v17);
-      objc_msgSend_setMutableEncryptedPSK_(v4, v15, v14);
+      v14 = objc_msgSend_initWithData_(v12, v13, identityCopy);
+      objc_msgSend_setMutableEncryptedPSK_(selfCopy, v15, v14);
     }
 
     else
     {
-      objc_msgSend_setMutableEncryptedPSK_(v4, v11, 0);
+      objc_msgSend_setMutableEncryptedPSK_(selfCopy, v11, 0);
     }
 
-    objc_msgSend_setMutableURL_(v4, v16, 0);
+    objc_msgSend_setMutableURL_(selfCopy, v16, 0);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)oneTimeURLForParticipantID:(id)a3
+- (id)oneTimeURLForParticipantID:(id)d
 {
   v73 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = 0;
     goto LABEL_27;
   }
 
-  v6 = objc_msgSend__knownParticipantWithParticipantID_(self, v4, v5);
+  v6 = objc_msgSend__knownParticipantWithParticipantID_(self, v4, dCopy);
   v9 = v6;
   if (!v6)
   {
@@ -2838,7 +2838,7 @@ LABEL_52:
     if (v25)
     {
       v28 = objc_msgSend_oneTimeURLMetadatasByParticipantID(self, v26, v27);
-      v30 = objc_msgSend_objectForKeyedSubscript_(v28, v29, v5);
+      v30 = objc_msgSend_objectForKeyedSubscript_(v28, v29, dCopy);
 
       if (v30 && (objc_msgSend_encryptedOneTimeFullToken(v30, v31, v32), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend_data(v33, v34, v35), v36 = objc_claimAutoreleasedReturnValue(), v36, v33, v36))
       {
@@ -2869,7 +2869,7 @@ LABEL_52:
             v65 = v60;
             v68 = objc_msgSend_recordID(self, v66, v67);
             v69 = 138412546;
-            v70 = v5;
+            v70 = dCopy;
             v71 = 2112;
             v72 = v68;
             _os_log_error_impl(&dword_1883EA000, v65, OS_LOG_TYPE_ERROR, "Failed to get the one-time short token for participant %@ on %@", &v69, 0x16u);
@@ -2892,7 +2892,7 @@ LABEL_52:
           v61 = v59;
           v64 = objc_msgSend_recordID(self, v62, v63);
           v69 = 138412546;
-          v70 = v5;
+          v70 = dCopy;
           v71 = 2112;
           v72 = v64;
           _os_log_error_impl(&dword_1883EA000, v61, OS_LOG_TYPE_ERROR, "Failed to get the one-time URL metadata for %@ on record %@", &v69, 0x16u);
@@ -2935,29 +2935,29 @@ LABEL_27:
 
 - (int64_t)participantVisibility
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  participantVisibility = v2->_participantVisibility;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  participantVisibility = selfCopy->_participantVisibility;
+  objc_sync_exit(selfCopy);
 
   return participantVisibility;
 }
 
-- (void)setParticipantVisibility:(int64_t)a3
+- (void)setParticipantVisibility:(int64_t)visibility
 {
   obj = self;
   objc_sync_enter(obj);
   v7 = obj;
-  if (obj->_participantVisibility != a3)
+  if (obj->_participantVisibility != visibility)
   {
     v8 = objc_msgSend_publicPermission(obj, v5, v6);
-    if (a3 == 1)
+    if (visibility == 1)
     {
       if (v8 == 1)
       {
 LABEL_7:
         v7 = obj;
-        obj->_participantVisibility = a3;
+        obj->_participantVisibility = visibility;
         goto LABEL_8;
       }
 
@@ -2967,7 +2967,7 @@ LABEL_7:
 
     else
     {
-      if (a3 != 3 || v8 != 1)
+      if (visibility != 3 || v8 != 1)
       {
         goto LABEL_7;
       }
@@ -2985,15 +2985,15 @@ LABEL_8:
 
 - (int64_t)participantSelfRemovalBehavior
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  participantSelfRemovalBehavior = v2->_participantSelfRemovalBehavior;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  participantSelfRemovalBehavior = selfCopy->_participantSelfRemovalBehavior;
+  objc_sync_exit(selfCopy);
 
   return participantSelfRemovalBehavior;
 }
 
-- (void)setParticipantSelfRemovalBehavior:(int64_t)a3
+- (void)setParticipantSelfRemovalBehavior:(int64_t)behavior
 {
   obj = self;
   objc_sync_enter(obj);
@@ -3004,18 +3004,18 @@ LABEL_8:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, obj, @"CKShare.m", 1470, @"Only owners may set the participant self removal behavior of a share");
   }
 
-  if (obj->_participantSelfRemovalBehavior != a3)
+  if (obj->_participantSelfRemovalBehavior != behavior)
   {
-    obj->_participantSelfRemovalBehavior = a3;
+    obj->_participantSelfRemovalBehavior = behavior;
   }
 
   objc_sync_exit(obj);
 }
 
-- (BOOL)allNonOwnerParticipantsHavePermission:(int64_t)a3
+- (BOOL)allNonOwnerParticipantsHavePermission:(int64_t)permission
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_participants(self, a2, a3);
+  v4 = objc_msgSend_participants(self, a2, permission);
   if (objc_msgSend_count(v4, v5, v6) >= 2)
   {
     v21 = 0u;
@@ -3038,7 +3038,7 @@ LABEL_8:
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
-          if (objc_msgSend_role(v16, v11, v12, v19) != 1 && objc_msgSend_permission(v16, v11, v12) != a3)
+          if (objc_msgSend_role(v16, v11, v12, v19) != 1 && objc_msgSend_permission(v16, v11, v12) != permission)
           {
             v7 = 0;
             goto LABEL_14;
@@ -3068,10 +3068,10 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)allNonOwnerParticipantsHaveRole:(int64_t)a3
+- (BOOL)allNonOwnerParticipantsHaveRole:(int64_t)role
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = objc_msgSend_participants(self, a2, a3);
+  v4 = objc_msgSend_participants(self, a2, role);
   if (objc_msgSend_count(v4, v5, v6) >= 2)
   {
     v21 = 0u;
@@ -3094,7 +3094,7 @@ LABEL_14:
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
-          if (objc_msgSend_role(v16, v11, v12, v19) != 1 && objc_msgSend_role(v16, v11, v12) != a3)
+          if (objc_msgSend_role(v16, v11, v12, v19) != 1 && objc_msgSend_role(v16, v11, v12) != role)
           {
             v7 = 0;
             goto LABEL_14;
@@ -3124,9 +3124,9 @@ LABEL_14:
   return v7;
 }
 
-- (void)encodeSystemFieldsWithCoder:(id)a3
+- (void)encodeSystemFieldsWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_autoreleasePoolPush();
   if ((byte_1EA90C538 & 1) == 0 && (objc_msgSend_serializePersonalInfo(self, v5, v6) & 1) == 0)
   {
@@ -3136,82 +3136,82 @@ LABEL_14:
 
   v103.receiver = self;
   v103.super_class = CKShare;
-  [(CKRecord *)&v103 encodeSystemFieldsWithCoder:v4];
+  [(CKRecord *)&v103 encodeSystemFieldsWithCoder:coderCopy];
   v14 = objc_msgSend_containerID(self, v12, v13);
-  objc_msgSend_encodeObject_forKey_(v4, v15, v14, @"ContainerID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v14, @"ContainerID");
 
   v18 = objc_msgSend_rootRecordID(self, v16, v17);
-  objc_msgSend_encodeObject_forKey_(v4, v19, v18, @"RootRecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v18, @"RootRecordID");
 
   v22 = objc_msgSend_publicPermission(self, v20, v21);
-  objc_msgSend_encodeInteger_forKey_(v4, v23, v22, @"PublicPermission");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v23, v22, @"PublicPermission");
   LODWORD(v18) = objc_msgSend_encodeAllowsReadOnlyParticipantsToSeeEachOther(self, v24, v25);
   v28 = objc_msgSend_participantVisibility(self, v26, v27);
   if (v18)
   {
-    objc_msgSend_encodeBool_forKey_(v4, v29, v28 == 0, @"AllowsReadOnlyParticipantsToSeeEachOther");
+    objc_msgSend_encodeBool_forKey_(coderCopy, v29, v28 == 0, @"AllowsReadOnlyParticipantsToSeeEachOther");
   }
 
   else
   {
-    objc_msgSend_encodeInteger_forKey_(v4, v29, v28, @"ParticipantVisibility");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v29, v28, @"ParticipantVisibility");
   }
 
   v32 = objc_msgSend_participantSelfRemovalBehavior(self, v30, v31);
-  objc_msgSend_encodeInteger_forKey_(v4, v33, v32, @"ParticipantSelfRemovalBehavior");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v33, v32, @"ParticipantSelfRemovalBehavior");
   v36 = objc_msgSend_allowsAnonymousPublicAccess(self, v34, v35);
-  objc_msgSend_encodeBool_forKey_(v4, v37, v36, @"AllowsAnonymousAccess");
-  v38 = self;
-  objc_sync_enter(v38);
-  v41 = objc_msgSend_mutableAllParticipants(v38, v39, v40);
-  objc_msgSend_encodeObject_forKey_(v4, v42, v41, @"Participants");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v37, v36, @"AllowsAnonymousAccess");
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v41 = objc_msgSend_mutableAllParticipants(selfCopy, v39, v40);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v42, v41, @"Participants");
 
-  v45 = objc_msgSend_lastFetchedParticipants(v38, v43, v44);
-  objc_msgSend_encodeObject_forKey_(v4, v46, v45, @"LastFetchedParticipants");
+  v45 = objc_msgSend_lastFetchedParticipants(selfCopy, v43, v44);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v46, v45, @"LastFetchedParticipants");
 
-  v49 = objc_msgSend_addedParticipantIDs(v38, v47, v48);
-  objc_msgSend_encodeObject_forKey_(v4, v50, v49, @"AddedParticipantIDs");
+  v49 = objc_msgSend_addedParticipantIDs(selfCopy, v47, v48);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v50, v49, @"AddedParticipantIDs");
 
-  v53 = objc_msgSend_removedParticipantIDs(v38, v51, v52);
-  objc_msgSend_encodeObject_forKey_(v4, v54, v53, @"RemovedParticipantIDs");
+  v53 = objc_msgSend_removedParticipantIDs(selfCopy, v51, v52);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v54, v53, @"RemovedParticipantIDs");
 
-  v57 = objc_msgSend_mutableRequesters(v38, v55, v56);
-  objc_msgSend_encodeObject_forKey_(v4, v58, v57, @"Requesters");
+  v57 = objc_msgSend_mutableRequesters(selfCopy, v55, v56);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v58, v57, @"Requesters");
 
-  v61 = objc_msgSend_mutableApprovedRequesters(v38, v59, v60);
-  objc_msgSend_encodeObject_forKey_(v4, v62, v61, @"ApprovedRequesters");
+  v61 = objc_msgSend_mutableApprovedRequesters(selfCopy, v59, v60);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v62, v61, @"ApprovedRequesters");
 
-  v65 = objc_msgSend_mutableBlockedIdentities(v38, v63, v64);
-  objc_msgSend_encodeObject_forKey_(v4, v66, v65, @"BlockedIdentities");
+  v65 = objc_msgSend_mutableBlockedIdentities(selfCopy, v63, v64);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v66, v65, @"BlockedIdentities");
 
-  v69 = objc_msgSend_accessRequestsEnabled(v38, v67, v68);
-  objc_msgSend_encodeBool_forKey_(v4, v70, v69, @"AccessRequestsEnabled");
-  v73 = objc_msgSend_oneTimeURLMetadatasByParticipantID(v38, v71, v72);
-  objc_msgSend_encodeObject_forKey_(v4, v74, v73, @"oneTimeURLMetadatasByParticipantID");
+  v69 = objc_msgSend_accessRequestsEnabled(selfCopy, v67, v68);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v70, v69, @"AccessRequestsEnabled");
+  v73 = objc_msgSend_oneTimeURLMetadatasByParticipantID(selfCopy, v71, v72);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v74, v73, @"oneTimeURLMetadatasByParticipantID");
 
-  objc_sync_exit(v38);
-  v77 = objc_msgSend_invitedKeysToRemove(v38, v75, v76);
-  objc_msgSend_encodeObject_forKey_(v4, v78, v77, @"InvitedKeysToRemove");
+  objc_sync_exit(selfCopy);
+  v77 = objc_msgSend_invitedKeysToRemove(selfCopy, v75, v76);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v78, v77, @"InvitedKeysToRemove");
 
-  if ((byte_1EA90C538 & 1) != 0 || objc_msgSend_serializeProtectionData(v38, v79, v80))
+  if ((byte_1EA90C538 & 1) != 0 || objc_msgSend_serializeProtectionData(selfCopy, v79, v80))
   {
-    v81 = objc_msgSend_invitedProtectionData(v38, v79, v80);
-    objc_msgSend_encodeObject_forKey_(v4, v82, v81, @"InvitedPCS");
+    v81 = objc_msgSend_invitedProtectionData(selfCopy, v79, v80);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v82, v81, @"InvitedPCS");
 
-    v85 = objc_msgSend_invitedProtectionEtag(v38, v83, v84);
-    objc_msgSend_encodeObject_forKey_(v4, v86, v85, @"InvitedPCSEtag");
+    v85 = objc_msgSend_invitedProtectionEtag(selfCopy, v83, v84);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v86, v85, @"InvitedPCSEtag");
 
-    v89 = objc_msgSend_previousInvitedProtectionEtag(v38, v87, v88);
-    objc_msgSend_encodeObject_forKey_(v4, v90, v89, @"PreviousInvitedPCSEtag");
+    v89 = objc_msgSend_previousInvitedProtectionEtag(selfCopy, v87, v88);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v90, v89, @"PreviousInvitedPCSEtag");
 
-    v93 = objc_msgSend_publicProtectionData(v38, v91, v92);
-    objc_msgSend_encodeObject_forKey_(v4, v94, v93, @"PublicPCS");
+    v93 = objc_msgSend_publicProtectionData(selfCopy, v91, v92);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v94, v93, @"PublicPCS");
 
-    v97 = objc_msgSend_publicProtectionEtag(v38, v95, v96);
-    objc_msgSend_encodeObject_forKey_(v4, v98, v97, @"PublicPCSEtag");
+    v97 = objc_msgSend_publicProtectionEtag(selfCopy, v95, v96);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v98, v97, @"PublicPCSEtag");
 
-    v101 = objc_msgSend_previousPublicProtectionEtag(v38, v99, v100);
-    objc_msgSend_encodeObject_forKey_(v4, v102, v101, @"PreviousPublicPCSEtag");
+    v101 = objc_msgSend_previousPublicProtectionEtag(selfCopy, v99, v100);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v102, v101, @"PreviousPublicPCSEtag");
   }
 
   objc_autoreleasePoolPop(v7);

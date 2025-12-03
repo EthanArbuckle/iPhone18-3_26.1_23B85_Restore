@@ -1,8 +1,8 @@
 @interface PyramidStageShared_NRF
 + (BOOL)isRec709DownsampleSupported;
-+ (id)compileShader:(id)a3 kernelType:(int)a4;
-+ (id)compileShader:(id)a3 lumaWrite:(BOOL)a4 chromaWrite:(BOOL)a5;
-+ (id)getSharedInstanceOrRelease:(BOOL)a3;
++ (id)compileShader:(id)shader kernelType:(int)type;
++ (id)compileShader:(id)shader lumaWrite:(BOOL)write chromaWrite:(BOOL)chromaWrite;
++ (id)getSharedInstanceOrRelease:(BOOL)release;
 @end
 
 @implementation PyramidStageShared_NRF
@@ -15,18 +15,18 @@
   return v7;
 }
 
-+ (id)compileShader:(id)a3 lumaWrite:(BOOL)a4 chromaWrite:(BOOL)a5
++ (id)compileShader:(id)shader lumaWrite:(BOOL)write chromaWrite:(BOOL)chromaWrite
 {
-  v7 = a3;
-  v16 = a4;
-  v15 = a5;
+  shaderCopy = shader;
+  writeCopy = write;
+  chromaWriteCopy = chromaWrite;
   v8 = objc_opt_new();
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_setConstantValue_type_atIndex_(v8, v9, &v16, 53, 2);
-    objc_msgSend_setConstantValue_type_atIndex_(v10, v11, &v15, 53, 1);
-    v13 = objc_msgSend_computePipelineStateFor_constants_(v7, v12, @"pyramid_downsample", v10);
+    objc_msgSend_setConstantValue_type_atIndex_(v8, v9, &writeCopy, 53, 2);
+    objc_msgSend_setConstantValue_type_atIndex_(v10, v11, &chromaWriteCopy, 53, 1);
+    v13 = objc_msgSend_computePipelineStateFor_constants_(shaderCopy, v12, @"pyramid_downsample", v10);
   }
 
   else
@@ -38,11 +38,11 @@
   return v13;
 }
 
-+ (id)compileShader:(id)a3 kernelType:(int)a4
++ (id)compileShader:(id)shader kernelType:(int)type
 {
-  v5 = a3;
-  v7 = v5;
-  if (a4 >= 0xC)
+  shaderCopy = shader;
+  v7 = shaderCopy;
+  if (type >= 0xC)
   {
     sub_295898C24();
     v8 = 0;
@@ -50,18 +50,18 @@
 
   else
   {
-    v8 = objc_msgSend_computePipelineStateFor_constants_(v5, v6, *(&off_29EDDBF58 + a4), 0);
+    v8 = objc_msgSend_computePipelineStateFor_constants_(shaderCopy, v6, *(&off_29EDDBF58 + type), 0);
   }
 
   return v8;
 }
 
-+ (id)getSharedInstanceOrRelease:(BOOL)a3
++ (id)getSharedInstanceOrRelease:(BOOL)release
 {
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = qword_2A18C22B0;
-  if (a3)
+  if (release)
   {
     v6 = 0;
   }

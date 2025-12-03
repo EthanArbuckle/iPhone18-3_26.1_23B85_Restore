@@ -1,20 +1,20 @@
 @interface _UIPreviewInteractionCommitTransition
-- (_UIPreviewInteractionCommitTransition)initWithPresentedViewController:(id)a3;
+- (_UIPreviewInteractionCommitTransition)initWithPresentedViewController:(id)controller;
 - (id)_preferredTransitionAnimator;
 - (id)_preferredTransitionAnimatorForReducedMotion;
-- (void)_applyCommitEffectTransformToView:(id)a3;
-- (void)performTransitionWithPresentationBlock:(id)a3 completion:(id)a4;
+- (void)_applyCommitEffectTransformToView:(id)view;
+- (void)performTransitionWithPresentationBlock:(id)block completion:(id)completion;
 @end
 
 @implementation _UIPreviewInteractionCommitTransition
 
-- (_UIPreviewInteractionCommitTransition)initWithPresentedViewController:(id)a3
+- (_UIPreviewInteractionCommitTransition)initWithPresentedViewController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionCommitTransition.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionCommitTransition.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
   }
 
   v11.receiver = self;
@@ -23,21 +23,21 @@
   v7 = v6;
   if (v6)
   {
-    [(_UIPreviewInteractionCommitTransition *)v6 setViewController:v5];
+    [(_UIPreviewInteractionCommitTransition *)v6 setViewController:controllerCopy];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)performTransitionWithPresentationBlock:(id)a3 completion:(id)a4
+- (void)performTransitionWithPresentationBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIPreviewInteractionCommitTransition *)self viewController];
-  v30 = [v8 _existingPresentationControllerImmediate:0 effective:1];
-  v29 = [v30 containerView];
-  v9 = [v29 window];
+  blockCopy = block;
+  completionCopy = completion;
+  viewController = [(_UIPreviewInteractionCommitTransition *)self viewController];
+  v30 = [viewController _existingPresentationControllerImmediate:0 effective:1];
+  containerView = [v30 containerView];
+  window = [containerView window];
   v10 = objc_alloc_init(_UIPreviewInteractionTransitionWindow);
   [(UIWindow *)v10 setHidden:0];
   [(UIView *)v10 bounds];
@@ -48,37 +48,37 @@
   [(UIView *)v17 addSubview:v15];
   [(UIView *)v10 addSubview:v17];
   [(_UIPreviewInteractionCommitTransition *)self setCurrentCommitEffectWindow:v10];
-  v18 = [(_UIPreviewInteractionCommitTransition *)self _shouldReduceMotion];
+  _shouldReduceMotion = [(_UIPreviewInteractionCommitTransition *)self _shouldReduceMotion];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91___UIPreviewInteractionCommitTransition_performTransitionWithPresentationBlock_completion___block_invoke;
   aBlock[3] = &unk_1E70FCE78;
-  v40 = v18;
+  v40 = _shouldReduceMotion;
   aBlock[4] = self;
   v36 = v17;
-  v37 = v9;
+  v37 = window;
   v38 = v10;
-  v39 = v7;
-  v19 = v7;
+  v39 = completionCopy;
+  v19 = completionCopy;
   v20 = v10;
-  v21 = v9;
+  v21 = window;
   v22 = v17;
   v23 = _Block_copy(aBlock);
-  v24 = [v21 windowScene];
-  v25 = [v24 keyboardSceneDelegate];
+  windowScene = [v21 windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
-  [v25 _beginDisablingAnimations];
+  [keyboardSceneDelegate _beginDisablingAnimations];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __91___UIPreviewInteractionCommitTransition_performTransitionWithPresentationBlock_completion___block_invoke_5;
   v31[3] = &unk_1E70FE0C8;
-  v32 = v25;
-  v33 = v6;
+  v32 = keyboardSceneDelegate;
+  v33 = blockCopy;
   v34 = v23;
   v26 = v23;
-  v27 = v25;
-  v28 = v6;
-  [v8 dismissViewControllerAnimated:0 completion:v31];
+  v27 = keyboardSceneDelegate;
+  v28 = blockCopy;
+  [viewController dismissViewControllerAnimated:0 completion:v31];
   [UIWindow _synchronizeDrawingWithPreCommitHandler:0];
 }
 
@@ -98,19 +98,19 @@
   return v3;
 }
 
-- (void)_applyCommitEffectTransformToView:(id)a3
+- (void)_applyCommitEffectTransformToView:(id)view
 {
-  if (a3)
+  if (view)
   {
     memset(&v6, 0, sizeof(v6));
-    v3 = a3;
-    [v3 transform];
+    viewCopy = view;
+    [viewCopy transform];
     v4 = v6;
     CGAffineTransformScale(&v5, &v4, 1.75, 1.75);
     v4 = v5;
-    [v3 setTransform:&v4];
+    [viewCopy setTransform:&v4];
     v4 = v6;
-    [v3 setTransform:&v4];
+    [viewCopy setTransform:&v4];
   }
 }
 

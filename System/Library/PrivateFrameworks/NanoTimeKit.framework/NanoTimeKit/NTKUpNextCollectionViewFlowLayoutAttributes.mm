@@ -1,9 +1,9 @@
 @interface NTKUpNextCollectionViewFlowLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)computedFrame;
 - (CGRect)unitFrameOnScreen;
 - (NTKUpNextCollectionViewFlowLayoutAttributes)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -22,14 +22,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v16.receiver = self, v16.super_class = NTKUpNextCollectionViewFlowLayoutAttributes, -[UICollectionViewLayoutAttributes isEqual:](&v16, sel_isEqual_, v4)) && ([v4 darkeningAlphaUniform], CLKFloatEqualsFloat()) && (objc_msgSend(v4, "unitFrameOnScreen"), v17.origin.x = v5, v17.origin.y = v6, v17.size.width = v7, v17.size.height = v8, CGRectEqualToRect(self->_unitFrameOnScreen, v17)) && (objc_msgSend(v4, "computedFrame"), v18.origin.x = v9, v18.origin.y = v10, v18.size.width = v11, v18.size.height = v12, CGRectEqualToRect(self->_computedFrame, v18)))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v16.receiver = self, v16.super_class = NTKUpNextCollectionViewFlowLayoutAttributes, -[UICollectionViewLayoutAttributes isEqual:](&v16, sel_isEqual_, equalCopy)) && ([equalCopy darkeningAlphaUniform], CLKFloatEqualsFloat()) && (objc_msgSend(equalCopy, "unitFrameOnScreen"), v17.origin.x = v5, v17.origin.y = v6, v17.size.width = v7, v17.size.height = v8, CGRectEqualToRect(self->_unitFrameOnScreen, v17)) && (objc_msgSend(equalCopy, "computedFrame"), v18.origin.x = v9, v18.origin.y = v10, v18.size.width = v11, v18.size.height = v12, CGRectEqualToRect(self->_computedFrame, v18)))
   {
-    v13 = [(NTKUpNextCollectionViewFlowLayoutAttributes *)self notVisibleToUser];
-    v14 = v13 ^ [v4 notVisibleToUser] ^ 1;
+    notVisibleToUser = [(NTKUpNextCollectionViewFlowLayoutAttributes *)self notVisibleToUser];
+    v14 = notVisibleToUser ^ [equalCopy notVisibleToUser] ^ 1;
   }
 
   else
@@ -57,11 +57,11 @@
   return v9 ^ v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKUpNextCollectionViewFlowLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [(NTKUpNextCollectionViewFlowLayoutAttributes *)self darkeningAlphaUniform];
   [v4 setDarkeningAlphaUniform:?];
   [(NTKUpNextCollectionViewFlowLayoutAttributes *)self unitFrameOnScreen];

@@ -1,12 +1,12 @@
 @interface MBCKLockManager
 - (BOOL)_lockMustRenew;
-- (BOOL)reacquireLockWithError:(id *)a3;
+- (BOOL)reacquireLockWithError:(id *)error;
 - (MBCKLock)lock;
-- (MBCKLockManager)initWithAccount:(id)a3 restoreType:(int)a4 backupUDID:(id)a5 databaseManager:(id)a6 delegate:(id)a7 operationGroup:(id)a8 thermalPressureMonitor:(id)a9 snapshotUUID:(id)a10;
+- (MBCKLockManager)initWithAccount:(id)account restoreType:(int)type backupUDID:(id)d databaseManager:(id)manager delegate:(id)delegate operationGroup:(id)group thermalPressureMonitor:(id)monitor snapshotUUID:(id)self0;
 - (id)_fetchPluginFieldsFromDelegate;
 - (void)_releaseLockAndScheduleRetries;
 - (void)_renewLockAndScheduleRetries;
-- (void)_scheduleTimerWithInterval:(double)a3;
+- (void)_scheduleTimerWithInterval:(double)interval;
 - (void)_timerFired;
 - (void)releaseLockAsync;
 - (void)releaseLockSync;
@@ -17,36 +17,36 @@
 
 @implementation MBCKLockManager
 
-- (MBCKLockManager)initWithAccount:(id)a3 restoreType:(int)a4 backupUDID:(id)a5 databaseManager:(id)a6 delegate:(id)a7 operationGroup:(id)a8 thermalPressureMonitor:(id)a9 snapshotUUID:(id)a10
+- (MBCKLockManager)initWithAccount:(id)account restoreType:(int)type backupUDID:(id)d databaseManager:(id)manager delegate:(id)delegate operationGroup:(id)group thermalPressureMonitor:(id)monitor snapshotUUID:(id)self0
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v27 = a9;
-  v20 = a10;
-  if (!v17)
+  accountCopy = account;
+  dCopy = d;
+  managerCopy = manager;
+  delegateCopy = delegate;
+  groupCopy = group;
+  monitorCopy = monitor;
+  iDCopy = iD;
+  if (!managerCopy)
   {
     __assert_rtn("[MBCKLockManager initWithAccount:restoreType:backupUDID:databaseManager:delegate:operationGroup:thermalPressureMonitor:snapshotUUID:]", "MBCKLockManager.m", 39, "databaseManager");
   }
 
-  v26 = v20;
+  v26 = iDCopy;
   v28.receiver = self;
   v28.super_class = MBCKLockManager;
-  v21 = [(MBServiceLockManager *)&v28 initWithAccount:v15 backupUDID:v16 type:1 delegate:v18];
+  v21 = [(MBServiceLockManager *)&v28 initWithAccount:accountCopy backupUDID:dCopy type:1 delegate:delegateCopy];
   v22 = v21;
   if (v21)
   {
-    v21->_restoreType = a4;
+    v21->_restoreType = type;
     lock = v21->_lock;
     v21->_lock = 0;
 
     v22->_releaseLock = 0;
-    objc_storeStrong(&v22->_databaseManager, a6);
-    objc_storeStrong(&v22->_ckOperationGroup, a8);
-    objc_storeStrong(&v22->_thermalPressureMonitor, a9);
-    objc_storeStrong(&v22->_snapshotUUID, a10);
+    objc_storeStrong(&v22->_databaseManager, manager);
+    objc_storeStrong(&v22->_ckOperationGroup, group);
+    objc_storeStrong(&v22->_thermalPressureMonitor, monitor);
+    objc_storeStrong(&v22->_snapshotUUID, iD);
   }
 
   return v22;
@@ -54,24 +54,24 @@
 
 - (MBCKLock)lock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lock = v2->_lock;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lock = selfCopy->_lock;
   if (!lock)
   {
     v4 = [MBCKLock alloc];
-    backupUDID = v2->super._backupUDID;
-    v6 = [(MBCKLockManager *)v2 databaseManager];
-    v7 = [(MBCKLock *)v4 initWithDeviceUUID:backupUDID databaseManager:v6];
-    v8 = v2->_lock;
-    v2->_lock = v7;
+    backupUDID = selfCopy->super._backupUDID;
+    databaseManager = [(MBCKLockManager *)selfCopy databaseManager];
+    v7 = [(MBCKLock *)v4 initWithDeviceUUID:backupUDID databaseManager:databaseManager];
+    v8 = selfCopy->_lock;
+    selfCopy->_lock = v7;
 
-    [(MBCKLock *)v2->_lock setCkOperationGroup:v2->_ckOperationGroup];
-    lock = v2->_lock;
+    [(MBCKLock *)selfCopy->_lock setCkOperationGroup:selfCopy->_ckOperationGroup];
+    lock = selfCopy->_lock;
   }
 
   v9 = lock;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -136,7 +136,7 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)reacquireLockWithError:(id *)a3
+- (BOOL)reacquireLockWithError:(id *)error
 {
   if ([(MBCKLockManager *)self _lockMustRenew])
   {
@@ -204,9 +204,9 @@
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
-        *a3 = *(*(&buf + 1) + 40);
+        *error = *(*(&buf + 1) + 40);
       }
 
       if (self->super._delegate && (objc_opt_respondsToSelector() & 1) != 0)
@@ -265,11 +265,11 @@
   }
 
   self->_releaseLock = 1;
-  v5 = [(MBCKLockManager *)self _fetchPluginFieldsFromDelegate];
-  v6 = [(MBCKLockManager *)self lock];
-  v7 = [(MBServiceLockManager *)self account];
+  _fetchPluginFieldsFromDelegate = [(MBCKLockManager *)self _fetchPluginFieldsFromDelegate];
+  lock = [(MBCKLockManager *)self lock];
+  account = [(MBServiceLockManager *)self account];
   v15 = 0;
-  v8 = [v6 clearLockWithAccount:v7 pluginFields:v5 error:&v15];
+  v8 = [lock clearLockWithAccount:account pluginFields:_fetchPluginFieldsFromDelegate error:&v15];
   v9 = v15;
 
   if (v8)
@@ -320,11 +320,11 @@ LABEL_10:
 
   [(MBCKLockManager *)self timeout];
   v6 = v5;
-  v7 = [(MBCKLockManager *)self _fetchPluginFieldsFromDelegate];
-  v8 = [(MBCKLockManager *)self lock];
-  v9 = [(MBServiceLockManager *)self account];
+  _fetchPluginFieldsFromDelegate = [(MBCKLockManager *)self _fetchPluginFieldsFromDelegate];
+  lock = [(MBCKLockManager *)self lock];
+  account = [(MBServiceLockManager *)self account];
   v17 = 0;
-  v10 = [v8 saveLockWithAccount:v9 timeout:v7 pluginFields:&v17 error:v6];
+  v10 = [lock saveLockWithAccount:account timeout:_fetchPluginFieldsFromDelegate pluginFields:&v17 error:v6];
   v11 = v17;
 
   if (v10)
@@ -363,10 +363,10 @@ LABEL_10:
   }
 }
 
-- (void)_scheduleTimerWithInterval:(double)a3
+- (void)_scheduleTimerWithInterval:(double)interval
 {
   [(PCPersistentTimer *)self->super._timer invalidate];
-  v5 = [[PCPersistentTimer alloc] initWithTimeInterval:@"MobileBackupLockRenew" serviceIdentifier:self target:"_timerFired" selector:0 userInfo:a3];
+  v5 = [[PCPersistentTimer alloc] initWithTimeInterval:@"MobileBackupLockRenew" serviceIdentifier:self target:"_timerFired" selector:0 userInfo:interval];
   timer = self->super._timer;
   self->super._timer = v5;
 
@@ -375,7 +375,7 @@ LABEL_10:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = a3;
+    intervalCopy = interval;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Scheduled lock timer in %.3fs", buf, 0xCu);
     _MBLog();
   }
@@ -405,13 +405,13 @@ LABEL_10:
 
 - (BOOL)_lockMustRenew
 {
-  v3 = [(MBCKLockManager *)self lastAcquired];
-  if (!v3)
+  lastAcquired = [(MBCKLockManager *)self lastAcquired];
+  if (!lastAcquired)
   {
     return 1;
   }
 
-  v4 = v3;
+  v4 = lastAcquired;
   [(MBCKLockManager *)self lastDuration];
   v6 = v5;
 
@@ -421,8 +421,8 @@ LABEL_10:
   }
 
   v8 = +[NSDate date];
-  v9 = [(MBCKLockManager *)self lastAcquired];
-  [v8 timeIntervalSinceDate:v9];
+  lastAcquired2 = [(MBCKLockManager *)self lastAcquired];
+  [v8 timeIntervalSinceDate:lastAcquired2];
   v11 = v10;
   [(MBCKLockManager *)self lastDuration];
   v7 = v11 > v12 + -600.0;

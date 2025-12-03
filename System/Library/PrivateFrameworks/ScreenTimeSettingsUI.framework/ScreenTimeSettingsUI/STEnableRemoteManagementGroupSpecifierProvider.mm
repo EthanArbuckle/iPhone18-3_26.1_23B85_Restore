@@ -1,24 +1,24 @@
 @interface STEnableRemoteManagementGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4;
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller;
 - (BOOL)isHidden;
 - (STEnableRemoteManagementGroupSpecifierProvider)init;
 - (UIViewController)rootViewController;
 - (id)enableRemoteManagementButtonName;
 - (id)enableRemoteManagementFooterText;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setCoordinator:(id)a3;
-- (void)showChildOnboardingFlow:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setCoordinator:(id)coordinator;
+- (void)showChildOnboardingFlow:(id)flow;
 @end
 
 @implementation STEnableRemoteManagementGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(STRootGroupSpecifierProvider *)STEnableRemoteManagementGroupSpecifierProvider providerWithCoordinator:a3];
-  [v6 setRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [(STRootGroupSpecifierProvider *)STEnableRemoteManagementGroupSpecifierProvider providerWithCoordinator:coordinator];
+  [v6 setRootViewController:controllerCopy];
 
   return v6;
 }
@@ -30,8 +30,8 @@
   v2 = [(STGroupSpecifierProvider *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    v4 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]] != 2;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v4 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]] != 2;
 
     v5 = +[STScreenTimeSettingsUIBundle bundle];
     v6 = [v5 localizedStringForKey:@"EnableRemoteManagementGenericButtonName" value:&stru_28766E5A8 table:0];
@@ -44,10 +44,10 @@
     v9 = [MEMORY[0x277CCABB0] numberWithInt:v4];
     [(PSSpecifier *)v2->_enableRemoteManagementSpecifier setObject:v9 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
-    v10 = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
-    [v10 addObject:v2->_enableRemoteManagementSpecifier];
-    v11 = [MEMORY[0x277D262A0] sharedConnection];
-    [v11 registerObserver:v2];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
+    [mutableSpecifiers addObject:v2->_enableRemoteManagementSpecifier];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0]2 registerObserver:v2];
   }
 
   return v2;
@@ -55,36 +55,36 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STEnableRemoteManagementGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.isRemoteUnmanagedChild" context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.me" context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.isRemoteUnmanagedChild" context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.me" context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STEnableRemoteManagementGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.me" options:4 context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.isRemoteUnmanagedChild" options:4 context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.me" options:4 context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.isRemoteUnmanagedChild" options:4 context:"STEnableRemoteManagementGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == "STEnableRemoteManagementGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  if (context == "STEnableRemoteManagementGroupSpecifierProviderObservationContext")
   {
-    v11 = [MEMORY[0x277D262A0] sharedConnection];
-    v12 = [v11 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v12 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-    if ([v10 isEqualToString:@"viewModel.isRemoteUnmanagedChild"])
+    if ([pathCopy isEqualToString:@"viewModel.isRemoteUnmanagedChild"])
     {
       if (v12 == 2)
       {
@@ -92,44 +92,44 @@
         goto LABEL_17;
       }
 
-      v13 = [(STRootGroupSpecifierProvider *)self coordinator];
-      v14 = [v13 viewModel];
-      -[STGroupSpecifierProvider setIsHidden:](self, "setIsHidden:", [v14 isRemoteUnmanagedChild] ^ 1);
+      coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+      viewModel = [coordinator viewModel];
+      -[STGroupSpecifierProvider setIsHidden:](self, "setIsHidden:", [viewModel isRemoteUnmanagedChild] ^ 1);
     }
 
     else
     {
-      if (![v10 isEqualToString:@"viewModel.me"])
+      if (![pathCopy isEqualToString:@"viewModel.me"])
       {
         goto LABEL_17;
       }
 
-      v13 = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementButtonName];
-      v14 = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementSpecifier];
-      v15 = [v14 name];
-      if (([v15 isEqualToString:v13] & 1) == 0)
+      coordinator = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementButtonName];
+      viewModel = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementSpecifier];
+      name = [viewModel name];
+      if (([name isEqualToString:coordinator] & 1) == 0)
       {
-        [v14 setName:v13];
+        [viewModel setName:coordinator];
       }
 
       if (v12 == 2)
       {
         v16 = +[STScreenTimeSettingsUIBundle bundle];
-        v17 = [v16 localizedStringForKey:@"ScreenTimeRestrictedFooterText" value:&stru_28766E5A8 table:0];
+        enableRemoteManagementFooterText = [v16 localizedStringForKey:@"ScreenTimeRestrictedFooterText" value:&stru_28766E5A8 table:0];
       }
 
       else
       {
-        v17 = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementFooterText];
+        enableRemoteManagementFooterText = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementFooterText];
       }
 
-      v18 = [(STGroupSpecifierProvider *)self groupSpecifier];
+      groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
       v19 = *MEMORY[0x277D3FF88];
-      v20 = [v18 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
-      if (([v20 isEqualToString:v17] & 1) == 0)
+      v20 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
+      if (([v20 isEqualToString:enableRemoteManagementFooterText] & 1) == 0)
       {
-        [v18 setObject:v17 forKeyedSubscript:v19];
-        [(STGroupSpecifierProvider *)self reloadSpecifier:v18 animated:1];
+        [groupSpecifier setObject:enableRemoteManagementFooterText forKeyedSubscript:v19];
+        [(STGroupSpecifierProvider *)self reloadSpecifier:groupSpecifier animated:1];
       }
     }
 
@@ -138,68 +138,68 @@
 
   v21.receiver = self;
   v21.super_class = STEnableRemoteManagementGroupSpecifierProvider;
-  [(STEnableRemoteManagementGroupSpecifierProvider *)&v21 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(STEnableRemoteManagementGroupSpecifierProvider *)&v21 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 LABEL_17:
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
   if (v6 == 2)
   {
     v7 = +[STScreenTimeSettingsUIBundle bundle];
-    v15 = [v7 localizedStringForKey:@"ScreenTimeRestrictedFooterText" value:&stru_28766E5A8 table:0];
+    enableRemoteManagementFooterText = [v7 localizedStringForKey:@"ScreenTimeRestrictedFooterText" value:&stru_28766E5A8 table:0];
   }
 
   else
   {
-    v15 = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementFooterText];
+    enableRemoteManagementFooterText = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementFooterText];
   }
 
-  v8 = [(STGroupSpecifierProvider *)self groupSpecifier];
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
   v9 = *MEMORY[0x277D3FF88];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
-  if (([v10 isEqualToString:v15] & 1) == 0)
+  v10 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
+  if (([v10 isEqualToString:enableRemoteManagementFooterText] & 1) == 0)
   {
-    [v8 setObject:v15 forKeyedSubscript:v9];
-    [(STGroupSpecifierProvider *)self reloadSpecifier:v8 animated:1];
+    [groupSpecifier setObject:enableRemoteManagementFooterText forKeyedSubscript:v9];
+    [(STGroupSpecifierProvider *)self reloadSpecifier:groupSpecifier animated:1];
   }
 
-  v11 = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementSpecifier];
+  enableRemoteManagementSpecifier = [(STEnableRemoteManagementGroupSpecifierProvider *)self enableRemoteManagementSpecifier];
   v12 = *MEMORY[0x277D3FF38];
-  v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
+  v13 = [enableRemoteManagementSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
   if ((((v6 == 2) ^ [v13 BOOLValue]) & 1) == 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithInt:v6 != 2];
-    [v11 setObject:v14 forKeyedSubscript:v12];
+    [enableRemoteManagementSpecifier setObject:v14 forKeyedSubscript:v12];
 
-    [(STGroupSpecifierProvider *)self reloadSpecifier:v11 animated:1];
+    [(STGroupSpecifierProvider *)self reloadSpecifier:enableRemoteManagementSpecifier animated:1];
   }
 }
 
 - (id)enableRemoteManagementButtonName
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
   v5 = +[STScreenTimeSettingsUIBundle bundle];
-  v6 = [v4 name];
+  name = [v4 name];
 
-  if (v6)
+  if (name)
   {
     v7 = objc_opt_new();
-    v8 = [v4 name];
-    v9 = [v7 personNameComponentsFromString:v8];
+    name2 = [v4 name];
+    v9 = [v7 personNameComponentsFromString:name2];
 
-    v10 = [v9 givenName];
-    if ([v10 length])
+    givenName = [v9 givenName];
+    if ([givenName length])
     {
       v11 = MEMORY[0x277CCACA8];
       v12 = [v5 localizedStringForKey:@"EnableRemoteManagementButtonName" value:&stru_28766E5A8 table:0];
-      v13 = [v11 localizedStringWithFormat:v12, v10];
+      v13 = [v11 localizedStringWithFormat:v12, givenName];
 
       goto LABEL_6;
     }
@@ -213,25 +213,25 @@ LABEL_6:
 
 - (id)enableRemoteManagementFooterText
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
   v5 = +[STScreenTimeSettingsUIBundle bundle];
-  v6 = [v4 name];
+  name = [v4 name];
 
-  if (v6)
+  if (name)
   {
     v7 = objc_opt_new();
-    v8 = [v4 name];
-    v9 = [v7 personNameComponentsFromString:v8];
+    name2 = [v4 name];
+    v9 = [v7 personNameComponentsFromString:name2];
 
-    v10 = [v9 givenName];
-    if ([v10 length])
+    givenName = [v9 givenName];
+    if ([givenName length])
     {
       v11 = MEMORY[0x277CCACA8];
       v12 = [v5 localizedStringForKey:@"EnableRemoteManagementFooterText" value:&stru_28766E5A8 table:0];
-      v13 = [v11 localizedStringWithFormat:v12, v10];
+      v13 = [v11 localizedStringWithFormat:v12, givenName];
 
       goto LABEL_6;
     }
@@ -243,22 +243,22 @@ LABEL_6:
   return v13;
 }
 
-- (void)showChildOnboardingFlow:(id)a3
+- (void)showChildOnboardingFlow:(id)flow
 {
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v4 setHasShownMiniBuddy:1];
-  v5 = [[STIntroductionController alloc] initWithNewUserRootViewModelCoordinator:v4];
-  v6 = [v4 viewModel];
-  v7 = [v6 me];
-  v8 = [v7 isRemoteUser];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator setHasShownMiniBuddy:1];
+  v5 = [[STIntroductionController alloc] initWithNewUserRootViewModelCoordinator:coordinator];
+  viewModel = [coordinator viewModel];
+  v7 = [viewModel me];
+  isRemoteUser = [v7 isRemoteUser];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __74__STEnableRemoteManagementGroupSpecifierProvider_showChildOnboardingFlow___block_invoke;
   v14 = &unk_279B7CD30;
-  v15 = v4;
-  v16 = v8;
-  v9 = v4;
+  v15 = coordinator;
+  v16 = isRemoteUser;
+  v9 = coordinator;
   [(STIntroductionController *)v5 setCompletionBlock:&v11];
   v10 = [(STEnableRemoteManagementGroupSpecifierProvider *)self rootViewController:v11];
   [(STIntroductionController *)v5 presentOverViewController:v10];

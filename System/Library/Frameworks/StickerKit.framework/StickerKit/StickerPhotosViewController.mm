@@ -1,7 +1,7 @@
 @interface StickerPhotosViewController
-- (StickerPhotosViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (StickerPhotosViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StickerPhotosViewController
@@ -13,15 +13,15 @@
   [(StickerPhotosViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_19A78CB68(a3);
+  selfCopy = self;
+  sub_19A78CB68(appear);
 }
 
-- (StickerPhotosViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (StickerPhotosViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19A7AB014();
     v7 = v6;
@@ -33,8 +33,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return StickerPhotosViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return StickerPhotosViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

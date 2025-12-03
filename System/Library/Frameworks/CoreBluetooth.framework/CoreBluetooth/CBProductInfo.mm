@@ -1,20 +1,20 @@
 @interface CBProductInfo
-+ (id)productInfoWithProductID:(unsigned int)a3;
-- (CBProductInfo)initWithProductInfoPtr:(id *)a3;
++ (id)productInfoWithProductID:(unsigned int)d;
+- (CBProductInfo)initWithProductInfoPtr:(id *)ptr;
 @end
 
 @implementation CBProductInfo
 
-+ (id)productInfoWithProductID:(unsigned int)a3
++ (id)productInfoWithProductID:(unsigned int)d
 {
   v4 = [CBProductInfo alloc];
-  if (a3 <= 8193)
+  if (d <= 8193)
   {
-    if (a3 > 670)
+    if (d > 670)
     {
-      if (a3 > 801)
+      if (d > 801)
       {
-        switch(a3)
+        switch(d)
         {
           case 0x322u:
             v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoA284];
@@ -35,7 +35,7 @@
 
       else
       {
-        switch(a3)
+        switch(d)
         {
           case 0x29Fu:
             v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoA223];
@@ -55,9 +55,9 @@
       }
     }
 
-    else if (a3 > 619)
+    else if (d > 619)
     {
-      switch(a3)
+      switch(d)
       {
         case 0x26Cu:
           v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoA211];
@@ -78,7 +78,7 @@
 
     else
     {
-      switch(a3)
+      switch(d)
       {
         case 0x265u:
           v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoD67];
@@ -100,9 +100,9 @@
 
   else
   {
-    if (a3 <= 21759)
+    if (d <= 21759)
     {
-      switch(a3)
+      switch(d)
       {
         case 0x2002u:
           v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoB188];
@@ -235,18 +235,18 @@
       return v5;
     }
 
-    if (a3 > 28942)
+    if (d > 28942)
     {
-      if (a3 > 29454)
+      if (d > 29454)
       {
-        if (a3 == 29455)
+        if (d == 29455)
         {
           v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoJ305];
         }
 
         else
         {
-          if (a3 != 29715)
+          if (d != 29715)
           {
             goto LABEL_183;
           }
@@ -255,14 +255,14 @@
         }
       }
 
-      else if (a3 == 28943)
+      else if (d == 28943)
       {
         v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoB238A];
       }
 
       else
       {
-        if (a3 != 28944)
+        if (d != 28944)
         {
           goto LABEL_183;
         }
@@ -271,16 +271,16 @@
       }
     }
 
-    else if (a3 > 28419)
+    else if (d > 28419)
     {
-      if (a3 == 28420)
+      if (d == 28420)
       {
         v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoJ42];
       }
 
       else
       {
-        if (a3 != 28936)
+        if (d != 28936)
         {
           goto LABEL_183;
         }
@@ -291,9 +291,9 @@
 
     else
     {
-      if (a3 != 21760)
+      if (d != 21760)
       {
-        if (a3 == 22034)
+        if (d == 22034)
         {
           v5 = [(CBProductInfo *)v4 initWithProductInfoPtr:&CBProductInfoB5612];
 
@@ -313,7 +313,7 @@ LABEL_183:
   return v5;
 }
 
-- (CBProductInfo)initWithProductInfoPtr:(id *)a3
+- (CBProductInfo)initWithProductInfoPtr:(id *)ptr
 {
   v8.receiver = self;
   v8.super_class = CBProductInfo;
@@ -321,15 +321,15 @@ LABEL_183:
   v5 = v4;
   if (v4)
   {
-    v4->_flags = a3->var0;
-    objc_storeStrong(&v4->_model, a3->var1);
-    v5->_productID = a3->var2;
-    objc_storeStrong(&v5->_productName, a3->var3);
-    v5->_radarComponentID = a3->var4;
-    objc_storeStrong(&v5->_sfSymbolNameCase, a3->var5);
-    objc_storeStrong(&v5->_sfSymbolNameMain, a3->var6);
-    v5->_vendorIDBluetooth = a3->var7;
-    v5->_vendorIDUSB = a3->var8;
+    v4->_flags = ptr->var0;
+    objc_storeStrong(&v4->_model, ptr->var1);
+    v5->_productID = ptr->var2;
+    objc_storeStrong(&v5->_productName, ptr->var3);
+    v5->_radarComponentID = ptr->var4;
+    objc_storeStrong(&v5->_sfSymbolNameCase, ptr->var5);
+    objc_storeStrong(&v5->_sfSymbolNameMain, ptr->var6);
+    v5->_vendorIDBluetooth = ptr->var7;
+    v5->_vendorIDUSB = ptr->var8;
     v6 = v5;
   }
 

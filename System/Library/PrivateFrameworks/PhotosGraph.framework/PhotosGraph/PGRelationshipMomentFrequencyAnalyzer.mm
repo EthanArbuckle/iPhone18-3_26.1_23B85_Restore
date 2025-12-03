@@ -1,23 +1,23 @@
 @interface PGRelationshipMomentFrequencyAnalyzer
-- (PGRelationshipMomentFrequencyAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipMomentFrequencyAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipMomentFrequencyAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [WeakRetained momentNodes];
-    v10 = [WeakRetained personNodes];
-    v11 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v9 amongPersonNodes:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    momentNodes = [WeakRetained momentNodes];
+    personNodes = [WeakRetained personNodes];
+    v11 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:momentNodes amongPersonNodes:personNodes];
 
     if (![v11 count])
     {
@@ -65,7 +65,7 @@ LABEL_7:
           }
 
           v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "countForObject:", *(*(&v64 + 1) + 8 * i))}];
-          [v8 addObject:v17];
+          [array addObject:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v64 objects:v73 count:16];
@@ -100,7 +100,7 @@ LABEL_7:
       }
     }
 
-    v19 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v8];
+    v19 = [MEMORY[0x277CCA9C0] expressionForConstantValue:array];
     v20 = MEMORY[0x277CCA9C0];
     v72 = v19;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v72 count:1];
@@ -167,12 +167,12 @@ LABEL_7:
           }
 
           v39 = *(*(&v60 + 1) + 8 * j);
-          v40 = [v39 localIdentifier];
+          localIdentifier = [v39 localIdentifier];
           v41 = [v34 countForObject:v39];
           [MEMORY[0x277D27688] cumulativeNormalDistributionForX:v41 mu:v25 sigma:v31];
           if (v42 >= 0.6)
           {
-            [v33 addObject:v40];
+            [v33 addObject:localIdentifier];
           }
         }
 
@@ -301,16 +301,16 @@ LABEL_68:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipMomentFrequencyAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipMomentFrequencyAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipMomentFrequencyAnalyzer;
   v5 = [(PGRelationshipMomentFrequencyAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

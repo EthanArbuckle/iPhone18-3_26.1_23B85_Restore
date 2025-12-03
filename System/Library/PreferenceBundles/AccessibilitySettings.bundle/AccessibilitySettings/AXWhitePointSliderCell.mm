@@ -1,37 +1,37 @@
 @interface AXWhitePointSliderCell
-- (AXWhitePointSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_updateRightLabelWithValue:(double)a3;
-- (void)handleSliderBeingDragged:(id)a3;
-- (void)handleSliderDidFinishDrag:(id)a3;
+- (AXWhitePointSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_updateRightLabelWithValue:(double)value;
+- (void)handleSliderBeingDragged:(id)dragged;
+- (void)handleSliderDidFinishDrag:(id)drag;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXWhitePointSliderCell
 
-- (AXWhitePointSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXWhitePointSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = AXWhitePointSliderCell;
-  v4 = [(AXWhitePointSliderCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXWhitePointSliderCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = dispatch_queue_create("setter-queue", 0);
     setterQueue = v4->_setterQueue;
     v4->_setterQueue = v5;
 
-    v7 = [(AXWhitePointSliderCell *)v4 slider];
-    [v7 setContinuous:1];
+    slider = [(AXWhitePointSliderCell *)v4 slider];
+    [slider setContinuous:1];
   }
 
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v4.receiver = self;
   v4.super_class = AXWhitePointSliderCell;
-  [(AXWhitePointSliderCell *)&v4 refreshCellContentsWithSpecifier:a3];
+  [(AXWhitePointSliderCell *)&v4 refreshCellContentsWithSpecifier:specifier];
   [(AXWhitePointSliderCell *)self initialValue];
   [(AXWhitePointSliderCell *)self _updateRightLabelWithValue:?];
 }
@@ -41,25 +41,25 @@
   v4.receiver = self;
   v4.super_class = AXWhitePointSliderCell;
   [(AXWhitePointSliderCell *)&v4 prepareForReuse];
-  v3 = [(AXWhitePointSliderCell *)self slider];
-  [v3 setContinuous:1];
+  slider = [(AXWhitePointSliderCell *)self slider];
+  [slider setContinuous:1];
 }
 
-- (void)_updateRightLabelWithValue:(double)a3
+- (void)_updateRightLabelWithValue:(double)value
 {
-  v4 = [(AXWhitePointSliderCell *)self slider];
-  [v4 value];
+  slider = [(AXWhitePointSliderCell *)self slider];
+  [slider value];
   v5 = AXFormatFloatWithPercentage();
   [(AXWhitePointSliderCell *)self setLabelText:v5];
 
   v6 = objc_initWeak(&location, self);
-  v7 = [(AXWhitePointSliderCell *)self slider];
+  slider2 = [(AXWhitePointSliderCell *)self slider];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __53__AXWhitePointSliderCell__updateRightLabelWithValue___block_invoke;
   v8[3] = &unk_255F00;
   objc_copyWeak(&v9, &location);
-  [v7 _setAccessibilityValueBlock:v8];
+  [slider2 _setAccessibilityValueBlock:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -75,16 +75,16 @@ id __53__AXWhitePointSliderCell__updateRightLabelWithValue___block_invoke(uint64
   return v3;
 }
 
-- (void)handleSliderBeingDragged:(id)a3
+- (void)handleSliderBeingDragged:(id)dragged
 {
-  v4 = a3;
+  draggedCopy = dragged;
   setterQueue = self->_setterQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__AXWhitePointSliderCell_handleSliderBeingDragged___block_invoke;
   block[3] = &unk_2553B0;
-  v9 = v4;
-  v6 = v4;
+  v9 = draggedCopy;
+  v6 = draggedCopy;
   dispatch_async(setterQueue, block);
   [v6 value];
   [(AXWhitePointSliderCell *)self _updateRightLabelWithValue:v7];
@@ -98,12 +98,12 @@ uint64_t __51__AXWhitePointSliderCell_handleSliderBeingDragged___block_invoke(ui
   return _MADisplayFilterPrefSetReduceWhitePointIntensity(v1, v2);
 }
 
-- (void)handleSliderDidFinishDrag:(id)a3
+- (void)handleSliderDidFinishDrag:(id)drag
 {
-  v3 = [a3 value];
+  value = [drag value];
   v4.n128_f64[0] = v4.n128_f32[0];
 
-  _MADisplayFilterPrefSetReduceWhitePointIntensity(v3, v4);
+  _MADisplayFilterPrefSetReduceWhitePointIntensity(value, v4);
 }
 
 @end

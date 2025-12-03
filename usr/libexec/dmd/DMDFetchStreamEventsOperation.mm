@@ -1,7 +1,7 @@
 @interface DMDFetchStreamEventsOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,45 +21,45 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDTaskOperation *)self configurationEngine];
+  requestCopy = request;
+  configurationEngine = [(DMDTaskOperation *)self configurationEngine];
 
-  if (v5)
+  if (configurationEngine)
   {
-    v6 = [(DMDTaskOperation *)self configurationEngine];
+    configurationEngine2 = [(DMDTaskOperation *)self configurationEngine];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000492C8;
     v7[3] = &unk_1000CF298;
     v7[4] = self;
-    [v6 handleFetchStreamEvents:v4 completionHandler:v7];
+    [configurationEngine2 handleFetchStreamEvents:requestCopy completionHandler:v7];
   }
 
   else
   {
-    v6 = DMFErrorWithCodeAndUserInfo();
-    [(DMDFetchStreamEventsOperation *)self endOperationWithError:v6];
+    configurationEngine2 = DMFErrorWithCodeAndUserInfo();
+    [(DMDFetchStreamEventsOperation *)self endOperationWithError:configurationEngine2];
   }
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v14.receiver = a1;
+  requestCopy = request;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___DMDFetchStreamEventsOperation;
-  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 organizationIdentifier];
-  v8 = [v7 length];
+  organizationIdentifier = [requestCopy organizationIdentifier];
+  v8 = [organizationIdentifier length];
 
   if (!v8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -71,11 +71,11 @@
     goto LABEL_9;
   }
 
-  v9 = [v6 startDate];
+  startDate = [requestCopy startDate];
 
-  if (!v9)
+  if (!startDate)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -86,17 +86,17 @@
     v11 = &v15;
 LABEL_9:
     v12 = [NSDictionary dictionaryWithObjects:v10 forKeys:v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_10:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
 @end

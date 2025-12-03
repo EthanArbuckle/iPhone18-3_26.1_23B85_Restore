@@ -1,13 +1,13 @@
 @interface SKDiskImagePartitionLessResizer
-- (id)resizeStateMachine:(id *)a3;
+- (id)resizeStateMachine:(id *)machine;
 @end
 
 @implementation SKDiskImagePartitionLessResizer
 
-- (id)resizeStateMachine:(id *)a3
+- (id)resizeStateMachine:(id *)machine
 {
   v25[8] = *MEMORY[0x277D85DE8];
-  v5 = [(SKDiskResizerBase *)self disk];
+  disk = [(SKDiskResizerBase *)self disk];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -32,8 +32,8 @@ LABEL_4:
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:8];
     v17 = [SKStateTransitionTable tableWithTransitionEntries:v16 selectorTarget:self];
 
-    v18 = [(SKDiskResizerBase *)self eventFromSize];
-    if ([v18 isEqualToString:kGrowEvent])
+    eventFromSize = [(SKDiskResizerBase *)self eventFromSize];
+    if ([eventFromSize isEqualToString:kGrowEvent])
     {
       v19 = @"kImageResize";
     }
@@ -43,22 +43,22 @@ LABEL_4:
       v19 = @"kVolumeResize";
     }
 
-    v20 = [(SKDiskResizerBase *)self eventFromSize];
-    v21 = [SKStateMachine machineWithStateTransitionTable:v17 startState:v19 startEvent:v20];
+    eventFromSize2 = [(SKDiskResizerBase *)self eventFromSize];
+    v21 = [SKStateMachine machineWithStateTransitionTable:v17 startState:v19 startEvent:eventFromSize2];
 
     goto LABEL_9;
   }
 
-  v6 = [(SKDiskResizerBase *)self disk];
-  v7 = [v6 type];
-  v8 = [v7 isEqualToString:kSKDiskTypeHFS[0]];
+  disk2 = [(SKDiskResizerBase *)self disk];
+  type = [disk2 type];
+  v8 = [type isEqualToString:kSKDiskTypeHFS[0]];
 
   if (v8)
   {
     goto LABEL_4;
   }
 
-  v21 = [SKError nilWithPOSIXCode:45 error:a3];
+  v21 = [SKError nilWithPOSIXCode:45 error:machine];
 LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 

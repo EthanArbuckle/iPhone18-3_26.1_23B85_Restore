@@ -1,6 +1,6 @@
 @interface _HDUserDomainConceptObserverRecord
 - (_HDUserDomainConceptObserverRecord)init;
-- (_HDUserDomainConceptObserverRecord)initWithUserDomainConcept:(id)a3 modificationType:(int64_t)a4;
+- (_HDUserDomainConceptObserverRecord)initWithUserDomainConcept:(id)concept modificationType:(int64_t)type;
 @end
 
 @implementation _HDUserDomainConceptObserverRecord
@@ -15,17 +15,17 @@
   return 0;
 }
 
-- (_HDUserDomainConceptObserverRecord)initWithUserDomainConcept:(id)a3 modificationType:(int64_t)a4
+- (_HDUserDomainConceptObserverRecord)initWithUserDomainConcept:(id)concept modificationType:(int64_t)type
 {
-  v7 = a3;
+  conceptCopy = concept;
   v11.receiver = self;
   v11.super_class = _HDUserDomainConceptObserverRecord;
   v8 = [(_HDUserDomainConceptObserverRecord *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userDomainConcept, a3);
-    v9->_changeType = a4;
+    objc_storeStrong(&v8->_userDomainConcept, concept);
+    v9->_changeType = type;
   }
 
   return v9;

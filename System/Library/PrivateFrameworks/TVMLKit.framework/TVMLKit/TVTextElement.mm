@@ -1,7 +1,7 @@
 @interface TVTextElement
 - (NSAttributedString)attributedText;
-- (id)attributedStringWithFont:(id)a3;
-- (id)attributedStringWithFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5;
+- (id)attributedStringWithFont:(id)font;
+- (id)attributedStringWithFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment;
 - (int64_t)textStyle;
 @end
 
@@ -9,35 +9,35 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 tv_attributedString];
+  element = [(TVViewElement *)self element];
+  tv_attributedString = [element tv_attributedString];
 
-  return v3;
+  return tv_attributedString;
 }
 
 - (int64_t)textStyle
 {
-  v2 = [(TVViewElement *)self element];
-  v3 = [v2 tv_textStyle];
+  element = [(TVViewElement *)self element];
+  tv_textStyle = [element tv_textStyle];
 
-  return v3;
+  return tv_textStyle;
 }
 
-- (id)attributedStringWithFont:(id)a3
+- (id)attributedStringWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TVViewElement *)self element];
-  v6 = [v5 attributedStringWithFont:v4];
+  fontCopy = font;
+  element = [(TVViewElement *)self element];
+  v6 = [element attributedStringWithFont:fontCopy];
 
   return v6;
 }
 
-- (id)attributedStringWithFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5
+- (id)attributedStringWithFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TVViewElement *)self element];
-  v11 = [v10 attributedStringWithFont:v9 foregroundColor:v8 textAlignment:a5];
+  colorCopy = color;
+  fontCopy = font;
+  element = [(TVViewElement *)self element];
+  v11 = [element attributedStringWithFont:fontCopy foregroundColor:colorCopy textAlignment:alignment];
 
   return v11;
 }

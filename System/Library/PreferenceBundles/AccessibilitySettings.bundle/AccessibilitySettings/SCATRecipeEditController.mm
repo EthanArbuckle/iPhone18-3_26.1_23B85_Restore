@@ -2,63 +2,63 @@
 - (BOOL)_canShowCreateNewMappingSpecifier;
 - (BOOL)_isTimeoutEnabled;
 - (BOOL)_shouldAllowEditing;
-- (double)valueForSpecifier:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
 - (id)_createNewMappingSpecifier;
 - (id)_footerTextForNoMappings;
-- (id)_isTimeoutEnabledForSpecifier:(id)a3;
-- (id)_mappingActionForSpecifier:(id)a3;
+- (id)_isTimeoutEnabledForSpecifier:(id)specifier;
+- (id)_mappingActionForSpecifier:(id)specifier;
 - (id)_mappingsSpecifiers;
-- (id)_recipeNameForSpecifier:(id)a3;
+- (id)_recipeNameForSpecifier:(id)specifier;
 - (id)_timeoutSpecifiers;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)title;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_saveRecipeIfApplicable;
-- (void)_setRecipeName:(id)a3 specifier:(id)a4;
-- (void)_setTimeoutEnabled:(id)a3 specifier:(id)a4;
-- (void)_showActionsForExistingMapping:(id)a3 forSpecifier:(id)a4;
-- (void)_showActionsForExistingMappingForSpecifier:(id)a3;
-- (void)_showLongPressControllerForExistingMapping:(id)a3 forSpecifier:(id)a4;
-- (void)_showSwitchesForMapping:(id)a3 forSpecifier:(id)a4;
-- (void)_showSwitchesForNewMappingForSpecifier:(id)a3;
-- (void)setRecipe:(id)a3;
-- (void)specifier:(id)a3 setValue:(double)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setRecipeName:(id)name specifier:(id)specifier;
+- (void)_setTimeoutEnabled:(id)enabled specifier:(id)specifier;
+- (void)_showActionsForExistingMapping:(id)mapping forSpecifier:(id)specifier;
+- (void)_showActionsForExistingMappingForSpecifier:(id)specifier;
+- (void)_showLongPressControllerForExistingMapping:(id)mapping forSpecifier:(id)specifier;
+- (void)_showSwitchesForMapping:(id)mapping forSpecifier:(id)specifier;
+- (void)_showSwitchesForNewMappingForSpecifier:(id)specifier;
+- (void)setRecipe:(id)recipe;
+- (void)specifier:(id)specifier setValue:(double)value;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATRecipeEditController
 
 - (id)title
 {
-  v2 = [(SCATRecipeEditController *)self recipe];
-  v3 = [v2 name];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  name = [recipe name];
 
-  if (![v3 length])
+  if (![name length])
   {
     v4 = AXParameterizedLocalizedString();
 
-    v3 = v4;
+    name = v4;
   }
 
-  return v3;
+  return name;
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
-  v5 = a3;
-  if (self->_recipe != v5)
+  recipeCopy = recipe;
+  if (self->_recipe != recipeCopy)
   {
-    v7 = v5;
+    v7 = recipeCopy;
     v6 = +[AXSettings sharedInstance];
     [v6 validateAndUpdateRecipeIfNeeded:v7];
 
-    objc_storeStrong(&self->_recipe, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_recipe, recipe);
+    recipeCopy = v7;
   }
 }
 
@@ -73,11 +73,11 @@
     v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"_setRecipeName:specifier:" get:"_recipeNameForSpecifier:" detail:0 cell:8 edit:0];
 
     [v5 addObject:v7];
-    v8 = [(SCATRecipeEditController *)self _mappingsSpecifiers];
-    [v5 addObjectsFromArray:v8];
+    _mappingsSpecifiers = [(SCATRecipeEditController *)self _mappingsSpecifiers];
+    [v5 addObjectsFromArray:_mappingsSpecifiers];
 
-    v9 = [(SCATRecipeEditController *)self _timeoutSpecifiers];
-    [v5 addObjectsFromArray:v9];
+    _timeoutSpecifiers = [(SCATRecipeEditController *)self _timeoutSpecifiers];
+    [v5 addObjectsFromArray:_timeoutSpecifiers];
 
     v10 = *&self->AXUISettingsBaseListController_opaque[v3];
     *&self->AXUISettingsBaseListController_opaque[v3] = v5;
@@ -93,50 +93,50 @@
   v6.receiver = self;
   v6.super_class = SCATRecipeEditController;
   [(SCATRecipeEditController *)&v6 viewDidLoad];
-  v3 = [(SCATRecipeEditController *)self table];
+  table = [(SCATRecipeEditController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SCATRecipeEditController;
-  [(SCATRecipeEditController *)&v7 viewWillAppear:a3];
+  [(SCATRecipeEditController *)&v7 viewWillAppear:appear];
   [(SCATRecipeEditController *)self reloadSpecifiers];
-  v4 = [(SCATRecipeEditController *)self _shouldAllowEditing];
-  if (v4)
+  _shouldAllowEditing = [(SCATRecipeEditController *)self _shouldAllowEditing];
+  if (_shouldAllowEditing)
   {
-    v5 = [(SCATRecipeEditController *)self editButtonItem];
+    editButtonItem = [(SCATRecipeEditController *)self editButtonItem];
   }
 
   else
   {
-    v5 = 0;
+    editButtonItem = 0;
   }
 
-  v6 = [(SCATRecipeEditController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(SCATRecipeEditController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:editButtonItem];
 
-  if (v4)
+  if (_shouldAllowEditing)
   {
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATRecipeEditController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SCATRecipeEditController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"Mapping"];
   if (v9)
   {
     v10 = +[AXSettings sharedInstance];
     v11 = [v8 propertyForKey:@"NeedsToChooseSwitch"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       [(SCATRecipeEditController *)self _showSwitchesForMapping:v9 forSpecifier:v8];
 LABEL_11:
@@ -146,12 +146,12 @@ LABEL_11:
 
     if ([v10 assistiveTouchLongPressEnabled])
     {
-      v13 = [v9 switchUUID];
-      v14 = [v10 switchForUUID:v13];
+      switchUUID = [v9 switchUUID];
+      v14 = [v10 switchForUUID:switchUUID];
       if ([v14 supportsLongPress])
       {
-        v15 = [v9 action];
-        v16 = [v15 isEqualToString:AXSwitchRecipeMappingActionHoldAtPoint];
+        action = [v9 action];
+        v16 = [action isEqualToString:AXSwitchRecipeMappingActionHoldAtPoint];
 
         if ((v16 & 1) == 0)
         {
@@ -171,41 +171,41 @@ LABEL_11:
 
   v17.receiver = self;
   v17.super_class = SCATRecipeEditController;
-  [(SCATRecipeEditController *)&v17 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(SCATRecipeEditController *)&v17 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 LABEL_12:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = SCATRecipeEditController;
-  v6 = a4;
-  v7 = [(SCATRecipeEditController *)&v21 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [v7 textLabel];
-  v9 = [v8 textColor];
+  pathCopy = path;
+  v7 = [(SCATRecipeEditController *)&v21 tableView:view cellForRowAtIndexPath:pathCopy];
+  textLabel = [v7 textLabel];
+  textColor = [textLabel textColor];
 
-  v10 = [(SCATRecipeEditController *)self specifierForIndexPath:v6];
+  v10 = [(SCATRecipeEditController *)self specifierForIndexPath:pathCopy];
 
   v11 = [v10 propertyForKey:@"NeedsToChooseSwitch"];
-  LODWORD(v8) = [v11 BOOLValue];
+  LODWORD(textLabel) = [v11 BOOLValue];
 
-  if (v8)
+  if (textLabel)
   {
     v12 = [v10 propertyForKey:@"Mapping"];
     if ([v12 isOptional])
     {
       v13 = +[UIColor systemGrayColor];
-      v14 = v9;
+      font = textColor;
     }
 
     else
     {
-      v15 = [v7 textLabel];
-      v14 = [v15 font];
+      textLabel2 = [v7 textLabel];
+      font = [textLabel2 font];
 
-      if (v14)
+      if (font)
       {
-        [v14 pointSize];
+        [font pointSize];
       }
 
       else
@@ -214,51 +214,51 @@ LABEL_12:
       }
 
       v17 = [UIFont boldSystemFontOfSize:v16];
-      v18 = [v7 textLabel];
-      [v18 setFont:v17];
+      textLabel3 = [v7 textLabel];
+      [textLabel3 setFont:v17];
 
       v13 = +[UIColor systemRedColor];
     }
 
-    v9 = v13;
+    textColor = v13;
   }
 
-  v19 = [v7 textLabel];
-  [v19 setTextColor:v9];
+  textLabel4 = [v7 textLabel];
+  [textLabel4 setTextColor:textColor];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v20 = [(SCATRecipeEditController *)self specifierForIndexPath:a5];
+    v20 = [(SCATRecipeEditController *)self specifierForIndexPath:path];
     v7 = [v20 propertyForKey:@"Mapping"];
-    v8 = [(SCATRecipeEditController *)self recipe];
-    v9 = [v8 mappings];
-    v10 = [v9 mutableCopy];
+    recipe = [(SCATRecipeEditController *)self recipe];
+    mappings = [recipe mappings];
+    v10 = [mappings mutableCopy];
 
     [v10 removeObject:v7];
-    v11 = [(SCATRecipeEditController *)self recipe];
-    [v11 setMappings:v10];
+    recipe2 = [(SCATRecipeEditController *)self recipe];
+    [recipe2 setMappings:v10];
 
-    v12 = [(SCATRecipeEditController *)self recipe];
-    v13 = [v12 mappings];
-    v14 = [v13 count];
+    recipe3 = [(SCATRecipeEditController *)self recipe];
+    mappings2 = [recipe3 mappings];
+    v14 = [mappings2 count];
 
     if (v14)
     {
       v15 = +[AXSettings sharedInstance];
-      v16 = [(SCATRecipeEditController *)self recipe];
-      [v15 saveRecipe:v16];
+      recipe4 = [(SCATRecipeEditController *)self recipe];
+      [v15 saveRecipe:recipe4];
     }
 
     else
     {
       v15 = [(SCATRecipeEditController *)self specifierForID:@"MappingsGroup"];
-      v16 = [(SCATRecipeEditController *)self _footerTextForNoMappings];
-      [v15 setProperty:v16 forKey:PSFooterTextGroupKey];
+      recipe4 = [(SCATRecipeEditController *)self _footerTextForNoMappings];
+      [v15 setProperty:recipe4 forKey:PSFooterTextGroupKey];
     }
 
     [(SCATRecipeEditController *)self removeSpecifier:v20 animated:1];
@@ -268,61 +268,61 @@ LABEL_12:
 
       if (!v17)
       {
-        v18 = [(SCATRecipeEditController *)self _createNewMappingSpecifier];
-        [(SCATRecipeEditController *)self insertSpecifier:v18 atEndOfGroup:1 animated:1];
+        _createNewMappingSpecifier = [(SCATRecipeEditController *)self _createNewMappingSpecifier];
+        [(SCATRecipeEditController *)self insertSpecifier:_createNewMappingSpecifier atEndOfGroup:1 animated:1];
       }
     }
 
     if (![(SCATRecipeEditController *)self _shouldAllowEditing])
     {
       [(SCATRecipeEditController *)self setEditing:0];
-      v19 = [(SCATRecipeEditController *)self navigationItem];
-      [v19 setRightBarButtonItem:0];
+      navigationItem = [(SCATRecipeEditController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:0];
     }
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(SCATRecipeEditController *)self specifierForIndexPath:a4];
+  v4 = [(SCATRecipeEditController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"Mapping"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)_recipeNameForSpecifier:(id)a3
+- (id)_recipeNameForSpecifier:(id)specifier
 {
-  v3 = [(SCATRecipeEditController *)self recipe];
-  v4 = [v3 name];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  name = [recipe name];
 
-  return v4;
+  return name;
 }
 
-- (void)_setRecipeName:(id)a3 specifier:(id)a4
+- (void)_setRecipeName:(id)name specifier:(id)specifier
 {
-  v9 = a3;
+  nameCopy = name;
   v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v6 = [v9 stringByTrimmingCharactersInSet:v5];
+  v6 = [nameCopy stringByTrimmingCharactersInSet:v5];
   v7 = [v6 length];
 
   if (v7)
   {
-    v8 = [(SCATRecipeEditController *)self recipe];
-    [v8 setName:v9];
+    recipe = [(SCATRecipeEditController *)self recipe];
+    [recipe setName:nameCopy];
 
     [(SCATRecipeEditController *)self _saveRecipeIfApplicable];
   }
 }
 
-- (id)_mappingActionForSpecifier:(id)a3
+- (id)_mappingActionForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"Mapping"];
+  v3 = [specifier propertyForKey:@"Mapping"];
   v4 = +[AXSettings sharedInstance];
   if ([v4 assistiveTouchLongPressEnabled] && (objc_msgSend(v3, "longPressAction"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v3 action];
+    action = [v3 action];
     v8 = AXSwitchRecipeMappingActionAllowsLongPress();
 
     if (v8)
@@ -336,7 +336,7 @@ LABEL_12:
   {
   }
 
-  v10 = [v3 action];
+  action2 = [v3 action];
   v9 = AXSwitchRecipeMappingNameForAction();
 
 LABEL_7:
@@ -344,60 +344,60 @@ LABEL_7:
   return v9;
 }
 
-- (id)_isTimeoutEnabledForSpecifier:(id)a3
+- (id)_isTimeoutEnabledForSpecifier:(id)specifier
 {
-  v3 = [(SCATRecipeEditController *)self _isTimeoutEnabled];
+  _isTimeoutEnabled = [(SCATRecipeEditController *)self _isTimeoutEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:_isTimeoutEnabled];
 }
 
-- (void)_setTimeoutEnabled:(id)a3 specifier:(id)a4
+- (void)_setTimeoutEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(SCATRecipeEditController *)self _isTimeoutEnabled];
-  v7 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  _isTimeoutEnabled = [(SCATRecipeEditController *)self _isTimeoutEnabled];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (!v7 || (v6 & 1) != 0)
+  if (!bOOLValue || (_isTimeoutEnabled & 1) != 0)
   {
     v9 = AXSwitchRecipeTimeoutNone;
-    v10 = [(SCATRecipeEditController *)self recipe];
-    [v10 setTimeout:v9];
+    recipe = [(SCATRecipeEditController *)self recipe];
+    [recipe setTimeout:v9];
 
     [(SCATRecipeEditController *)self _saveRecipeIfApplicable];
-    v11 = [(SCATRecipeEditController *)self timeoutSpecifier];
+    timeoutSpecifier = [(SCATRecipeEditController *)self timeoutSpecifier];
     [SCATRecipeEditController removeSpecifier:"removeSpecifier:animated:" animated:?];
   }
 
   else
   {
-    v8 = [(SCATRecipeEditController *)self recipe];
-    [v8 setTimeout:60.0];
+    recipe2 = [(SCATRecipeEditController *)self recipe];
+    [recipe2 setTimeout:60.0];
 
     [(SCATRecipeEditController *)self _saveRecipeIfApplicable];
-    v11 = [(SCATRecipeEditController *)self timeoutSpecifier];
+    timeoutSpecifier = [(SCATRecipeEditController *)self timeoutSpecifier];
     [SCATRecipeEditController insertSpecifier:"insertSpecifier:afterSpecifierID:animated:" afterSpecifierID:? animated:?];
   }
 }
 
-- (void)_showSwitchesForNewMappingForSpecifier:(id)a3
+- (void)_showSwitchesForNewMappingForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_alloc_init(AXSwitchRecipeMapping);
-  [(SCATRecipeEditController *)self _showSwitchesForMapping:v5 forSpecifier:v4];
+  [(SCATRecipeEditController *)self _showSwitchesForMapping:v5 forSpecifier:specifierCopy];
 }
 
-- (void)_showSwitchesForMapping:(id)a3 forSpecifier:(id)a4
+- (void)_showSwitchesForMapping:(id)mapping forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  specifierCopy = specifier;
   v8 = objc_alloc_init(SCATRecipeSwitchesController);
   v9 = AXParameterizedLocalizedString();
   [(SCATRecipeSwitchesController *)v8 setTitle:v9];
 
-  v10 = [(SCATRecipeEditController *)self recipe];
-  [(SCATRecipeSwitchesController *)v8 setRecipe:v10];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  [(SCATRecipeSwitchesController *)v8 setRecipe:recipe];
 
-  [(SCATRecipeSwitchesController *)v8 setMapping:v6];
+  [(SCATRecipeSwitchesController *)v8 setMapping:mappingCopy];
   v11 = [[UINavigationController alloc] initWithRootViewController:v8];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -421,22 +421,22 @@ void __65__SCATRecipeEditController__showSwitchesForMapping_forSpecifier___block
   [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_showActionsForExistingMappingForSpecifier:(id)a3
+- (void)_showActionsForExistingMappingForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"Mapping"];
-  [(SCATRecipeEditController *)self _showActionsForExistingMapping:v5 forSpecifier:v4];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"Mapping"];
+  [(SCATRecipeEditController *)self _showActionsForExistingMapping:v5 forSpecifier:specifierCopy];
 }
 
-- (void)_showActionsForExistingMapping:(id)a3 forSpecifier:(id)a4
+- (void)_showActionsForExistingMapping:(id)mapping forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  specifierCopy = specifier;
   v8 = objc_alloc_init(SCATRecipeActionsController);
-  v9 = [(SCATRecipeEditController *)self recipe];
-  [(SCATRecipeActionsController *)v8 setRecipe:v9];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  [(SCATRecipeActionsController *)v8 setRecipe:recipe];
 
-  [(SCATRecipeActionsController *)v8 setMapping:v6];
+  [(SCATRecipeActionsController *)v8 setMapping:mappingCopy];
   v10 = [[UINavigationController alloc] initWithRootViewController:v8];
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
@@ -460,12 +460,12 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
   [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_showLongPressControllerForExistingMapping:(id)a3 forSpecifier:(id)a4
+- (void)_showLongPressControllerForExistingMapping:(id)mapping forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 action];
-  v9 = [v8 isEqualToString:AXSwitchRecipeMappingActionHoldAtPoint];
+  specifierCopy = specifier;
+  mappingCopy = mapping;
+  action = [mappingCopy action];
+  v9 = [action isEqualToString:AXSwitchRecipeMappingActionHoldAtPoint];
 
   if (v9)
   {
@@ -473,18 +473,18 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
   }
 
   v11 = objc_alloc_init(SCATRecipeLongPressController);
-  v10 = [(SCATRecipeEditController *)self recipe];
-  [(SCATRecipeLongPressController *)v11 setRecipe:v10];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  [(SCATRecipeLongPressController *)v11 setRecipe:recipe];
 
-  [(SCATRecipeLongPressController *)v11 setMapping:v7];
-  [(SCATRecipeEditController *)self showController:v11 withSpecifier:v6];
+  [(SCATRecipeLongPressController *)v11 setMapping:mappingCopy];
+  [(SCATRecipeEditController *)self showController:v11 withSpecifier:specifierCopy];
 }
 
 - (BOOL)_shouldAllowEditing
 {
-  v2 = [(SCATRecipeEditController *)self recipe];
-  v3 = [v2 mappings];
-  v4 = [v3 count] != 0;
+  recipe = [(SCATRecipeEditController *)self recipe];
+  mappings = [recipe mappings];
+  v4 = [mappings count] != 0;
 
   return v4;
 }
@@ -503,12 +503,12 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
 
 - (BOOL)_canShowCreateNewMappingSpecifier
 {
-  v2 = [(SCATRecipeEditController *)self recipe];
-  v3 = [v2 mappings];
-  v4 = [v3 count];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  mappings = [recipe mappings];
+  v4 = [mappings count];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchSwitches];
-  LOBYTE(v4) = v4 < [v6 count];
+  assistiveTouchSwitches = [v5 assistiveTouchSwitches];
+  LOBYTE(v4) = v4 < [assistiveTouchSwitches count];
 
   return v4;
 }
@@ -528,14 +528,14 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
   v5 = [PSSpecifier groupSpecifierWithName:v4];
 
   [v5 setIdentifier:@"MappingsGroup"];
-  v6 = [(SCATRecipeEditController *)self recipe];
-  v7 = [v6 mappings];
-  v8 = [v7 count];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  mappings = [recipe mappings];
+  v8 = [mappings count];
 
   if (!v8)
   {
-    v9 = [(SCATRecipeEditController *)self _footerTextForNoMappings];
-    [v5 setProperty:v9 forKey:PSFooterTextGroupKey];
+    _footerTextForNoMappings = [(SCATRecipeEditController *)self _footerTextForNoMappings];
+    [v5 setProperty:_footerTextForNoMappings forKey:PSFooterTextGroupKey];
   }
 
   v30 = v5;
@@ -544,12 +544,12 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v33 = self;
-  v10 = [(SCATRecipeEditController *)self recipe];
-  v11 = [v10 mappings];
+  selfCopy = self;
+  recipe2 = [(SCATRecipeEditController *)self recipe];
+  mappings2 = [recipe2 mappings];
 
-  obj = v11;
-  v12 = [v11 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  obj = mappings2;
+  v12 = [mappings2 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -567,30 +567,30 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
 
         v17 = *(*(&v34 + 1) + 8 * i);
         v18 = +[AXSettings sharedInstance];
-        v19 = [v17 switchUUID];
-        v20 = [v18 switchForUUID:v19];
+        switchUUID = [v17 switchUUID];
+        v20 = [v18 switchForUUID:switchUUID];
 
         if (v20)
         {
-          v21 = [v20 name];
-          v22 = [v20 remoteDeviceName];
-          v23 = [v22 length];
+          name = [v20 name];
+          remoteDeviceName = [v20 remoteDeviceName];
+          v23 = [remoteDeviceName length];
 
           if (v23)
           {
-            v29 = [v20 remoteDeviceName];
+            remoteDeviceName2 = [v20 remoteDeviceName];
             v24 = AXParameterizedLocalizedString();
 
-            v21 = v24;
+            name = v24;
           }
         }
 
         else
         {
-          v21 = AXParameterizedLocalizedString();
+          name = AXParameterizedLocalizedString();
         }
 
-        v25 = [PSSpecifier preferenceSpecifierNamed:v21 target:v33 set:0 get:"_mappingActionForSpecifier:" detail:0 cell:2 edit:0, v29];
+        v25 = [PSSpecifier preferenceSpecifierNamed:name target:selfCopy set:0 get:"_mappingActionForSpecifier:" detail:0 cell:2 edit:0, remoteDeviceName2];
         [v25 setProperty:&__kCFBooleanTrue forKey:v14];
         [v25 setProperty:v17 forKey:@"Mapping"];
         v26 = [NSNumber numberWithBool:v20 == 0];
@@ -606,10 +606,10 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
     while (v13);
   }
 
-  if ([(SCATRecipeEditController *)v33 _canShowCreateNewMappingSpecifier])
+  if ([(SCATRecipeEditController *)selfCopy _canShowCreateNewMappingSpecifier])
   {
-    v27 = [(SCATRecipeEditController *)v33 _createNewMappingSpecifier];
-    [v3 addObject:v27];
+    _createNewMappingSpecifier = [(SCATRecipeEditController *)selfCopy _createNewMappingSpecifier];
+    [v3 addObject:_createNewMappingSpecifier];
   }
 
   return v3;
@@ -617,8 +617,8 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
 
 - (BOOL)_isTimeoutEnabled
 {
-  v2 = [(SCATRecipeEditController *)self recipe];
-  [v2 timeout];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  [recipe timeout];
   v4 = v3 != AXSwitchRecipeTimeoutNone;
 
   return v4;
@@ -639,9 +639,9 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
 
   [v8 setIdentifier:@"TimeoutEnabled"];
   [v3 addObject:v8];
-  v9 = [(SCATRecipeEditController *)self timeoutSpecifier];
+  timeoutSpecifier = [(SCATRecipeEditController *)self timeoutSpecifier];
 
-  if (!v9)
+  if (!timeoutSpecifier)
   {
     v10 = [PSSpecifier ax_stepperSpecifierWithDelegate:self];
     [(SCATRecipeEditController *)self setTimeoutSpecifier:v10];
@@ -649,8 +649,8 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
 
   if ([(SCATRecipeEditController *)self _isTimeoutEnabled])
   {
-    v11 = [(SCATRecipeEditController *)self timeoutSpecifier];
-    [v3 addObject:v11];
+    timeoutSpecifier2 = [(SCATRecipeEditController *)self timeoutSpecifier];
+    [v3 addObject:timeoutSpecifier2];
   }
 
   return v3;
@@ -659,38 +659,38 @@ void __72__SCATRecipeEditController__showActionsForExistingMapping_forSpecifier_
 - (void)_saveRecipeIfApplicable
 {
   v6 = +[AXSettings sharedInstance];
-  v3 = [(SCATRecipeEditController *)self recipe];
-  v4 = [v6 isNewRecipe:v3];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  v4 = [v6 isNewRecipe:recipe];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(SCATRecipeEditController *)self recipe];
-    [v6 updateRecipe:v5];
+    recipe2 = [(SCATRecipeEditController *)self recipe];
+    [v6 updateRecipe:recipe2];
   }
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [(SCATRecipeEditController *)self recipe];
-  [v3 timeout];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  [recipe timeout];
   v5 = v4;
 
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v6 = [(SCATRecipeEditController *)self recipe];
-  [v6 setTimeout:a4];
+  recipe = [(SCATRecipeEditController *)self recipe];
+  [recipe setTimeout:value];
 
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_saveRecipeIfApplicable" object:0];
 
   [(SCATRecipeEditController *)self performSelector:"_saveRecipeIfApplicable" withObject:0 afterDelay:1.0];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(SCATRecipeEditController *)self valueForSpecifier:a3];
+  [(SCATRecipeEditController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

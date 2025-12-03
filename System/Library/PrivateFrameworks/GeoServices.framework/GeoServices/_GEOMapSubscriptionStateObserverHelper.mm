@@ -1,21 +1,21 @@
 @interface _GEOMapSubscriptionStateObserverHelper
-- (void)_broadcastState:(id)a3 forIdentifier:(id)a4 fromPairedDevice:(BOOL)a5 toPeer:(id)a6;
-- (void)geoXPCConnectionIsReadyToSend:(id)a3;
+- (void)_broadcastState:(id)state forIdentifier:(id)identifier fromPairedDevice:(BOOL)device toPeer:(id)peer;
+- (void)geoXPCConnectionIsReadyToSend:(id)send;
 @end
 
 @implementation _GEOMapSubscriptionStateObserverHelper
 
-- (void)_broadcastState:(id)a3 forIdentifier:(id)a4 fromPairedDevice:(BOOL)a5 toPeer:(id)a6
+- (void)_broadcastState:(id)state forIdentifier:(id)identifier fromPairedDevice:(BOOL)device toPeer:(id)peer
 {
-  v7 = a5;
-  v16 = a3;
-  v10 = a4;
-  v11 = a6;
+  deviceCopy = device;
+  stateCopy = state;
+  identifierCopy = identifier;
+  peerCopy = peer;
   isolater = self->_isolater;
   geo_assert_isolated();
-  if (!v7)
+  if (!deviceCopy)
   {
-    if (![(NSMutableArray *)self->_observingIdentifiers containsObject:v10])
+    if (![(NSMutableArray *)self->_observingIdentifiers containsObject:identifierCopy])
     {
       goto LABEL_6;
     }
@@ -23,33 +23,33 @@
     goto LABEL_5;
   }
 
-  if (([(NSMutableArray *)self->_observingPairedDeviceIdentifiers containsObject:v10]& 1) != 0)
+  if (([(NSMutableArray *)self->_observingPairedDeviceIdentifiers containsObject:identifierCopy]& 1) != 0)
   {
 LABEL_5:
     v13 = xpc_dictionary_create(0, 0, 0);
-    [v16 encodeToXPCDictionary:v13];
+    [stateCopy encodeToXPCDictionary:v13];
     v14 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v14, "message", "subscription_state_did_change");
     xpc_dictionary_set_value(v14, "state", v13);
-    xpc_dictionary_set_string(v14, "id", [v10 UTF8String]);
-    xpc_dictionary_set_BOOL(v14, "paired_device", v7);
-    v15 = [v11 connection];
-    [v15 sendMessage:v14];
+    xpc_dictionary_set_string(v14, "id", [identifierCopy UTF8String]);
+    xpc_dictionary_set_BOOL(v14, "paired_device", deviceCopy);
+    connection = [peerCopy connection];
+    [connection sendMessage:v14];
   }
 
 LABEL_6:
 }
 
-- (void)geoXPCConnectionIsReadyToSend:(id)a3
+- (void)geoXPCConnectionIsReadyToSend:(id)send
 {
-  v4 = a3;
+  sendCopy = send;
   WeakRetained = objc_loadWeakRetained(&self->_peer);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained connection];
+    connection = [WeakRetained connection];
 
-    if (v7 == v4)
+    if (connection == sendCopy)
     {
       v15 = self->_isolater;
       _geo_isolate_lock();

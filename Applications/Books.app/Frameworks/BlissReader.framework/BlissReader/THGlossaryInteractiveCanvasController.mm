@@ -1,11 +1,11 @@
 @interface THGlossaryInteractiveCanvasController
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)shouldShowTextOverflowGlyphs;
 - (CGSize)canvasScrollingOutset;
-- (void)handleHyperlinkGesture:(id)a3;
+- (void)handleHyperlinkGesture:(id)gesture;
 - (void)p_dismissSearchKeyboard;
-- (void)setSelection:(id)a3 onModel:(id)a4 withFlags:(unint64_t)a5;
-- (void)showHyperlinkInfoForField:(id)a3 inRep:(id)a4 openInEditMode:(BOOL)a5;
+- (void)setSelection:(id)selection onModel:(id)model withFlags:(unint64_t)flags;
+- (void)showHyperlinkInfoForField:(id)field inRep:(id)rep openInEditMode:(BOOL)mode;
 @end
 
 @implementation THGlossaryInteractiveCanvasController
@@ -27,11 +27,11 @@
   return [(NSUserDefaults *)v2 BOOLForKey:v3];
 }
 
-- (void)setSelection:(id)a3 onModel:(id)a4 withFlags:(unint64_t)a5
+- (void)setSelection:(id)selection onModel:(id)model withFlags:(unint64_t)flags
 {
   v5.receiver = self;
   v5.super_class = THGlossaryInteractiveCanvasController;
-  [(THInteractiveCanvasController *)&v5 setSelection:a3 onModel:a4 withFlags:a5 & 0xFFFFFFFFFFFFFFAFLL];
+  [(THInteractiveCanvasController *)&v5 setSelection:selection onModel:model withFlags:flags & 0xFFFFFFFFFFFFFFAFLL];
 }
 
 - (void)p_dismissSearchKeyboard
@@ -42,17 +42,17 @@
   [(NSNotificationCenter *)v3 postNotification:v2];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
   [(THGlossaryInteractiveCanvasController *)self p_dismissSearchKeyboard];
   v6.receiver = self;
   v6.super_class = THGlossaryInteractiveCanvasController;
-  return [(THInteractiveCanvasController *)&v6 handleGesture:a3];
+  return [(THInteractiveCanvasController *)&v6 handleGesture:gesture];
 }
 
-- (void)showHyperlinkInfoForField:(id)a3 inRep:(id)a4 openInEditMode:(BOOL)a5
+- (void)showHyperlinkInfoForField:(id)field inRep:(id)rep openInEditMode:(BOOL)mode
 {
-  v6 = [(THInteractiveCanvasController *)self linkForHyperlinkField:a3, a4, a5];
+  mode = [(THInteractiveCanvasController *)self linkForHyperlinkField:field, rep, mode];
   mLinkHandler = self->mLinkHandler;
   if (!mLinkHandler)
   {
@@ -60,19 +60,19 @@
     mLinkHandler = self->mLinkHandler;
   }
 
-  [(THLinkTraversalDelegate *)mLinkHandler followLink:v6];
+  [(THLinkTraversalDelegate *)mLinkHandler followLink:mode];
 }
 
-- (void)handleHyperlinkGesture:(id)a3
+- (void)handleHyperlinkGesture:(id)gesture
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([gesture state] == &dword_0 + 3)
   {
-    if ([a3 wasTapHold])
+    if ([gesture wasTapHold])
     {
       +[TSWPEditMenuController hideEditMenu];
     }
 
-    v5 = -[THInteractiveCanvasController linkForHyperlinkField:](self, "linkForHyperlinkField:", [a3 hitField]);
+    v5 = -[THInteractiveCanvasController linkForHyperlinkField:](self, "linkForHyperlinkField:", [gesture hitField]);
     [+[TSWPHyperlinkUIController sharedHyperlinkUIController](TSWPHyperlinkUIController "sharedHyperlinkUIController")];
     mLinkHandler = self->mLinkHandler;
     if (!mLinkHandler)

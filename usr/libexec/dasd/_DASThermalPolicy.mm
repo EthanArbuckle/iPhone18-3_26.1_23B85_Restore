@@ -1,18 +1,18 @@
 @interface _DASThermalPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)isRestoreInProgressWithContext:(id)a3;
-- (BOOL)shouldIgnoreThermalsForActivity:(id)a3 withState:(id)a4;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)isRestoreInProgressWithContext:(id)context;
+- (BOOL)shouldIgnoreThermalsForActivity:(id)activity withState:(id)state;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASThermalPolicy)init;
-- (double)getScoreForThermalLevel:(int)a3;
+- (double)getScoreForThermalLevel:(int)level;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (int)maxAllowableThermalPressureForActivity:(id)a3 restoreInProgress:(BOOL)a4 deviceInUse:(BOOL)a5;
-- (int)thermalPressureWithState:(id)a3;
-- (int64_t)getReasonForThermalLevel:(int)a3;
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4;
-- (void)updateSystemConstraintsWithContext:(id)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (int)maxAllowableThermalPressureForActivity:(id)activity restoreInProgress:(BOOL)progress deviceInUse:(BOOL)use;
+- (int)thermalPressureWithState:(id)state;
+- (int64_t)getReasonForThermalLevel:(int)level;
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace;
+- (void)updateSystemConstraintsWithContext:(id)context;
 - (void)updateTrialParameters;
 @end
 
@@ -93,9 +93,9 @@
     restoreInProgressKeyPath = v3->_restoreInProgressKeyPath;
     v3->_restoreInProgressKeyPath = v9;
 
-    v11 = [(_DASThermalPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASThermalPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v11;
+    v3->_triggers = initializeTriggers;
 
     v13 = +[_DASTrialManager sharedInstance];
     trialManager = v3->_trialManager;
@@ -117,9 +117,9 @@
   return v3;
 }
 
-- (void)dasTrialManager:(id)a3 hasUpdatedParametersForNamespace:(id)a4
+- (void)dasTrialManager:(id)manager hasUpdatedParametersForNamespace:(id)namespace
 {
-  if ([a4 isEqualToString:@"COREOS_DAS"])
+  if ([namespace isEqualToString:@"COREOS_DAS"])
   {
 
     [(_DASThermalPolicy *)self updateTrialParameters];
@@ -129,9 +129,9 @@
 - (void)updateTrialParameters
 {
   v3 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalUtilityMaxAllowable"];
-  v4 = [v3 longValue];
+  longValue = [v3 longValue];
 
-  self->_utilityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v4];
+  self->_utilityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue];
   v5 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -144,9 +144,9 @@
   }
 
   v7 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalUtilityInUseMaxAllowable"];
-  v8 = [v7 longValue];
+  longValue2 = [v7 longValue];
 
-  self->_utilityInUseMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v8];
+  self->_utilityInUseMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue2];
   v9 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,9 +159,9 @@
   }
 
   v11 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalUtilityInactivityMaxAllowable"];
-  v12 = [v11 longValue];
+  longValue3 = [v11 longValue];
 
-  self->_utilitySignificantInactivityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v12];
+  self->_utilitySignificantInactivityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue3];
   v13 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -174,9 +174,9 @@
   }
 
   v15 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalMaintenanceMaxAllowable"];
-  v16 = [v15 longValue];
+  longValue4 = [v15 longValue];
 
-  self->_maintenanceMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v16];
+  self->_maintenanceMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue4];
   v17 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -189,9 +189,9 @@
   }
 
   v19 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalMaintenanceInUseMaxAllowable"];
-  v20 = [v19 longValue];
+  longValue5 = [v19 longValue];
 
-  self->_maintenanceInUseMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v20];
+  self->_maintenanceInUseMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue5];
   v21 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -204,9 +204,9 @@
   }
 
   v23 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalMaintenanceInactivityMaxAllowable"];
-  v24 = [v23 longValue];
+  longValue6 = [v23 longValue];
 
-  self->_maintenanceSignificantInactivityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v24];
+  self->_maintenanceSignificantInactivityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue6];
   v25 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,9 +219,9 @@
   }
 
   v27 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalMaintenanceNetworkMaxAllowable"];
-  v28 = [v27 longValue];
+  longValue7 = [v27 longValue];
 
-  self->_maintenanceNWMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v28];
+  self->_maintenanceNWMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue7];
   v29 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
@@ -234,9 +234,9 @@
   }
 
   v31 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalContinuedProcessingMaxInUseAllowable"];
-  v32 = [v31 longValue];
+  longValue8 = [v31 longValue];
 
-  self->_continuedProcessingInUseMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v32];
+  self->_continuedProcessingInUseMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue8];
   v33 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
@@ -249,9 +249,9 @@
   }
 
   v35 = [(_DASTrialManager *)self->_trialManager factorWithName:@"PolicyThermalContinuedProcessingMaxSignificantInactivityAllowablePressure"];
-  v36 = [v35 longValue];
+  longValue9 = [v35 longValue];
 
-  self->_continuedProcessingSignificantInactivityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:v36];
+  self->_continuedProcessingSignificantInactivityMax = [(_DASThermalPolicy *)self levelFromTrialLevel:longValue9];
   v37 = [_DASDaemonLogger logForCategory:@"trial"];
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
@@ -264,21 +264,21 @@
   }
 }
 
-- (void)updateSystemConstraintsWithContext:(id)a3
+- (void)updateSystemConstraintsWithContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
-  v4 = [v3 unsignedIntValue];
+  v3 = [context objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
+  unsignedIntValue = [v3 unsignedIntValue];
 
   v5 = +[_DASDaemon sharedInstance];
   v6 = v5;
-  if (v4)
+  if (unsignedIntValue)
   {
     [v5 addConstraint:2 forSchedulingPriority:_DASSchedulingPriorityMaintenance];
 
     v7 = +[_DASDaemon sharedInstance];
     v8 = _DASSchedulingPriorityUtility;
     v9 = v7;
-    if (v4 >= 0x15)
+    if (unsignedIntValue >= 0x15)
     {
       [v7 addConstraint:2 forSchedulingPriority:_DASSchedulingPriorityUtility];
       goto LABEL_6;
@@ -298,31 +298,31 @@
 LABEL_6:
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.thermalpolicypolicy.thermalpressurechange"])
+  triggerCopy = trigger;
+  stateCopy = state;
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.thermalpolicypolicy.thermalpressurechange"])
   {
-    [(_DASThermalPolicy *)self updateSystemConstraintsWithContext:v7];
+    [(_DASThermalPolicy *)self updateSystemConstraintsWithContext:stateCopy];
     thermalPressureLevelKeyPath = self->_thermalPressureLevelKeyPath;
 LABEL_5:
-    v9 = [v7 objectForKeyedSubscript:thermalPressureLevelKeyPath];
-    v10 = [v9 unsignedIntValue];
+    v9 = [stateCopy objectForKeyedSubscript:thermalPressureLevelKeyPath];
+    unsignedIntValue = [v9 unsignedIntValue];
 
-    v11 = v10 != 0;
+    v11 = unsignedIntValue != 0;
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.thermalpolicypolicy.watchthermalpressurechange"])
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.thermalpolicypolicy.watchthermalpressurechange"])
   {
     thermalPressureLevelKeyPath = self->_watchThermalPressureLevelKeyPath;
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.thermalpolicy.restore"])
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.thermalpolicy.restore"])
   {
-    v11 = [(_DASThermalPolicy *)self isRestoreInProgressWithContext:v7];
+    v11 = [(_DASThermalPolicy *)self isRestoreInProgressWithContext:stateCopy];
   }
 
   else
@@ -335,27 +335,27 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)shouldIgnoreThermalsForActivity:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreThermalsForActivity:(id)activity withState:(id)state
 {
-  v6 = a4;
-  if (![_DASPhotosPolicy isiCPLActivity:a3])
+  stateCopy = state;
+  if (![_DASPhotosPolicy isiCPLActivity:activity])
   {
     goto LABEL_5;
   }
 
   v7 = +[_DASPhotosPolicy keyPathForPhotosBudgetOverride];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [stateCopy objectForKeyedSubscript:v7];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v6 objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
-  v11 = [v10 unsignedIntValue];
+  v10 = [stateCopy objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
+  unsignedIntValue = [v10 unsignedIntValue];
 
-  if ((v9 & 0x800) == 0)
+  if ((unsignedIntegerValue & 0x800) == 0)
   {
     goto LABEL_5;
   }
 
-  if (v11 < 0x15)
+  if (unsignedIntValue < 0x15)
   {
     v12 = 1;
   }
@@ -369,45 +369,45 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 isContinuedProcessingTask])
+  activityCopy = activity;
+  if ([activityCopy isContinuedProcessingTask])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 schedulingPriority];
-    v4 = v5 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v4 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   return v4;
 }
 
-- (double)getScoreForThermalLevel:(int)a3
+- (double)getScoreForThermalLevel:(int)level
 {
   result = 1.0;
-  if (a3 <= 29)
+  if (level <= 29)
   {
-    if (a3 == 10)
+    if (level == 10)
     {
       return 0.6;
     }
 
-    else if (a3 == 20)
+    else if (level == 20)
     {
       return 0.2;
     }
   }
 
-  else if (a3 == 30)
+  else if (level == 30)
   {
     return 0.1;
   }
 
-  else if (a3 == 40 || a3 == 50)
+  else if (level == 40 || level == 50)
   {
     return 0.0;
   }
@@ -415,18 +415,18 @@ LABEL_5:
   return result;
 }
 
-- (int64_t)getReasonForThermalLevel:(int)a3
+- (int64_t)getReasonForThermalLevel:(int)level
 {
   result = 1;
-  if (a3 <= 29)
+  if (level <= 29)
   {
     v4 = 4;
-    if (a3 != 20)
+    if (level != 20)
     {
       v4 = 1;
     }
 
-    if (a3 == 10)
+    if (level == 10)
     {
       return 2;
     }
@@ -437,12 +437,12 @@ LABEL_5:
     }
   }
 
-  else if (a3 == 30)
+  else if (level == 30)
   {
     return 8;
   }
 
-  else if (a3 == 40 || a3 == 50)
+  else if (level == 40 || level == 50)
   {
     return 16;
   }
@@ -450,21 +450,21 @@ LABEL_5:
   return result;
 }
 
-- (int)maxAllowableThermalPressureForActivity:(id)a3 restoreInProgress:(BOOL)a4 deviceInUse:(BOOL)a5
+- (int)maxAllowableThermalPressureForActivity:(id)activity restoreInProgress:(BOOL)progress deviceInUse:(BOOL)use
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 schedulingPriority];
-  if (v9 < _DASSchedulingPriorityUserInitiated || [v8 isContinuedProcessingTask])
+  useCopy = use;
+  progressCopy = progress;
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority < _DASSchedulingPriorityUserInitiated || [activityCopy isContinuedProcessingTask])
   {
     v10 = +[_DASDaemon sharedInstance];
     v11 = [_DASSmartPowerNapMonitor sharedMonitorWithDaemon:v10];
 
-    v12 = [v11 inSmartPowerNap];
-    if ([v8 isContinuedProcessingTask])
+    inSmartPowerNap = [v11 inSmartPowerNap];
+    if ([activityCopy isContinuedProcessingTask])
     {
-      if (v12)
+      if (inSmartPowerNap)
       {
         continuedProcessingSignificantInactivityMax = self->_continuedProcessingSignificantInactivityMax;
       }
@@ -478,12 +478,12 @@ LABEL_5:
     }
 
     v14 = +[_DASInternetSharingPolicy policyInstance];
-    v15 = [v14 enabled];
+    enabled = [v14 enabled];
 
-    v16 = [v8 schedulingPriority];
-    if (v16 >= _DASSchedulingPriorityUtility)
+    schedulingPriority2 = [activityCopy schedulingPriority];
+    if (schedulingPriority2 >= _DASSchedulingPriorityUtility)
     {
-      if (v5)
+      if (useCopy)
       {
         continuedProcessingSignificantInactivityMax = self->_utilityInUseMax;
 LABEL_27:
@@ -491,9 +491,9 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      if ((v15 & 1) == 0)
+      if ((enabled & 1) == 0)
       {
-        if (v12)
+        if (inSmartPowerNap)
         {
           continuedProcessingSignificantInactivityMax = self->_utilitySignificantInactivityMax;
         }
@@ -509,10 +509,10 @@ LABEL_27:
 
     else
     {
-      if (v6)
+      if (progressCopy)
       {
-        v17 = [v8 relatedApplications];
-        v18 = [v17 containsObject:@"com.apple.icloud.restore"];
+        relatedApplications = [activityCopy relatedApplications];
+        v18 = [relatedApplications containsObject:@"com.apple.icloud.restore"];
 
         if (v18)
         {
@@ -527,26 +527,26 @@ LABEL_27:
         goto LABEL_27;
       }
 
-      if (v12)
+      if (inSmartPowerNap)
       {
         continuedProcessingSignificantInactivityMax = self->_maintenanceSignificantInactivityMax;
         goto LABEL_27;
       }
 
-      if ([v8 requiresNetwork])
+      if ([activityCopy requiresNetwork])
       {
         continuedProcessingSignificantInactivityMax = self->_maintenanceNWMax;
         goto LABEL_27;
       }
 
-      if (([v8 triggersRestart] & 1) == 0)
+      if (([activityCopy triggersRestart] & 1) == 0)
       {
-        if (v5)
+        if (useCopy)
         {
           continuedProcessingSignificantInactivityMax = self->_maintenanceInUseMax;
         }
 
-        else if (v15)
+        else if (enabled)
         {
           continuedProcessingSignificantInactivityMax = 0;
         }
@@ -570,39 +570,39 @@ LABEL_28:
   return continuedProcessingSignificantInactivityMax;
 }
 
-- (BOOL)isRestoreInProgressWithContext:(id)a3
+- (BOOL)isRestoreInProgressWithContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:self->_restoreInProgressKeyPath];
-  v4 = [v3 BOOLValue];
+  v3 = [context objectForKeyedSubscript:self->_restoreInProgressKeyPath];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
+  activityCopy = activity;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006F050;
   block[3] = &unk_1001B56E0;
   block[4] = self;
-  v7 = a4;
-  v26 = v7;
+  stateCopy = state;
+  v26 = stateCopy;
   if (qword_10020B410 != -1)
   {
     dispatch_once(&qword_10020B410, block);
   }
 
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  v9 = [(_DASThermalPolicy *)self isRestoreInProgressWithContext:v7];
-  v10 = [(_DASThermalPolicy *)self maxAllowableThermalPressureForActivity:v6 restoreInProgress:v9 deviceInUse:[_DASDeviceActivityPolicy isDeviceInUse:v7]];
-  v11 = [v7 objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
-  v12 = [v11 unsignedIntValue];
+  v9 = [(_DASThermalPolicy *)self isRestoreInProgressWithContext:stateCopy];
+  v10 = [(_DASThermalPolicy *)self maxAllowableThermalPressureForActivity:activityCopy restoreInProgress:v9 deviceInUse:[_DASDeviceActivityPolicy isDeviceInUse:stateCopy]];
+  v11 = [stateCopy objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
+  unsignedIntValue = [v11 unsignedIntValue];
 
-  [(_DASPolicyResponseRationale *)v8 setResponseOptions:[(_DASPolicyResponseRationale *)v8 responseOptions]| [(_DASThermalPolicy *)self getReasonForThermalLevel:v12]];
-  if (v12 > v10)
+  [(_DASPolicyResponseRationale *)v8 setResponseOptions:[(_DASPolicyResponseRationale *)v8 responseOptions]| [(_DASThermalPolicy *)self getReasonForThermalLevel:unsignedIntValue]];
+  if (unsignedIntValue > v10)
   {
-    if ([(_DASThermalPolicy *)self shouldIgnoreThermalsForActivity:v6 withState:v7])
+    if ([(_DASThermalPolicy *)self shouldIgnoreThermalsForActivity:activityCopy withState:stateCopy])
     {
       v13 = [NSPredicate predicateWithFormat:@"shouldOverrideModerateThermals == YES"];
       [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v13];
@@ -629,20 +629,20 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if ([v6 targetDevice] == 1 || objc_msgSend(v6, "targetDevice") == 2)
+  if ([activityCopy targetDevice] == 1 || objc_msgSend(activityCopy, "targetDevice") == 2)
   {
-    v16 = [v7 objectForKeyedSubscript:self->_watchThermalPressureLevelKeyPath];
-    v17 = [v16 unsignedIntValue];
+    v16 = [stateCopy objectForKeyedSubscript:self->_watchThermalPressureLevelKeyPath];
+    unsignedIntValue2 = [v16 unsignedIntValue];
 
-    if (v17 > v10)
+    if (unsignedIntValue2 > v10)
     {
-      v18 = [NSPredicate predicateWithFormat:@"watchThermalLevel >= %ld", v12];
+      v18 = [NSPredicate predicateWithFormat:@"watchThermalLevel >= %ld", unsignedIntValue];
       [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v18];
       goto LABEL_14;
     }
   }
 
-  [(_DASThermalPolicy *)self getScoreForThermalLevel:v12];
+  [(_DASThermalPolicy *)self getScoreForThermalLevel:unsignedIntValue];
   if (v19 <= 0.0)
   {
     v15 = 100;
@@ -658,12 +658,12 @@ LABEL_18:
   return v23;
 }
 
-- (int)thermalPressureWithState:(id)a3
+- (int)thermalPressureWithState:(id)state
 {
-  v3 = [a3 objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
-  v4 = [v3 unsignedIntValue];
+  v3 = [state objectForKeyedSubscript:self->_thermalPressureLevelKeyPath];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 @end

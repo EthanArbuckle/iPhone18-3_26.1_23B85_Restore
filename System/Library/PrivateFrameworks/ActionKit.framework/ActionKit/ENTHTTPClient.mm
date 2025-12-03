@@ -1,25 +1,25 @@
 @interface ENTHTTPClient
 - (id)newRequest;
-- (int)readAll:(char *)a3 offset:(int)a4 length:(int)a5;
+- (int)readAll:(char *)all offset:(int)offset length:(int)length;
 - (void)flush;
-- (void)write:(const char *)a3 offset:(unsigned int)a4 length:(unsigned int)a5;
+- (void)write:(const char *)write offset:(unsigned int)offset length:(unsigned int)length;
 @end
 
 @implementation ENTHTTPClient
 
 - (void)flush
 {
-  v3 = [(ENTHTTPClient *)self newRequest];
-  v4 = [(ENTHTTPClient *)self requestData];
-  [v3 setHTTPBody:v4];
+  newRequest = [(ENTHTTPClient *)self newRequest];
+  requestData = [(ENTHTTPClient *)self requestData];
+  [newRequest setHTTPBody:requestData];
 
   v19 = 0;
   v20 = 0;
-  v5 = [MEMORY[0x277CBAB78] sendSynchronousRequest:v3 returningResponse:&v20 error:&v19];
+  v5 = [MEMORY[0x277CBAB78] sendSynchronousRequest:newRequest returningResponse:&v20 error:&v19];
   v6 = v20;
   v7 = v19;
-  v8 = [(ENTHTTPClient *)self requestData];
-  [v8 setLength:0];
+  requestData2 = [(ENTHTTPClient *)self requestData];
+  [requestData2 setLength:0];
 
   if (!v5)
   {
@@ -64,10 +64,10 @@ LABEL_8:
   [v5 setHTTPMethod:@"POST"];
   [v5 setValue:@"application/x-thrift" forHTTPHeaderField:@"Content-Type"];
   [v5 setValue:@"application/x-thrift" forHTTPHeaderField:@"Accept"];
-  v6 = [(ENTHTTPClient *)self userAgent];
-  if (v6)
+  userAgent = [(ENTHTTPClient *)self userAgent];
+  if (userAgent)
   {
-    v7 = v6;
+    v7 = userAgent;
   }
 
   else
@@ -85,20 +85,20 @@ LABEL_8:
   return v5;
 }
 
-- (void)write:(const char *)a3 offset:(unsigned int)a4 length:(unsigned int)a5
+- (void)write:(const char *)write offset:(unsigned int)offset length:(unsigned int)length
 {
-  v8 = [(ENTHTTPClient *)self requestData];
-  [v8 appendBytes:&a3[a4] length:a5];
+  requestData = [(ENTHTTPClient *)self requestData];
+  [requestData appendBytes:&write[offset] length:length];
 }
 
-- (int)readAll:(char *)a3 offset:(int)a4 length:(int)a5
+- (int)readAll:(char *)all offset:(int)offset length:(int)length
 {
-  v9 = [(ENTHTTPClient *)self responseDataOffset];
-  v10 = [(ENTHTTPClient *)self responseData];
-  [v10 getBytes:&a3[a4] range:{v9, a5}];
+  responseDataOffset = [(ENTHTTPClient *)self responseDataOffset];
+  responseData = [(ENTHTTPClient *)self responseData];
+  [responseData getBytes:&all[offset] range:{responseDataOffset, length}];
 
-  [(ENTHTTPClient *)self setResponseDataOffset:[(ENTHTTPClient *)self responseDataOffset]+ a5];
-  return a5;
+  [(ENTHTTPClient *)self setResponseDataOffset:[(ENTHTTPClient *)self responseDataOffset]+ length];
+  return length;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface SBHLibraryCategoryMap
-+ (id)diffMap:(id)a3 withMap:(id)a4;
-- (BOOL)categoriesContainApplicationIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCategoryMap:(id)a3;
++ (id)diffMap:(id)map withMap:(id)withMap;
+- (BOOL)categoriesContainApplicationIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCategoryMap:(id)map;
 - (NSDictionary)dictionaryRepresentation;
 - (SBHLibraryCategoryMap)init;
-- (SBHLibraryCategoryMap)initWithCoder:(id)a3;
-- (id)categoryIdentifierForProactiveCategoryIdentifier:(unint64_t)a3;
-- (id)categoryIdentifiersForApplicationIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBHLibraryCategoryMap)initWithCoder:(id)coder;
+- (id)categoryIdentifierForProactiveCategoryIdentifier:(unint64_t)identifier;
+- (id)categoryIdentifiersForApplicationIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)localizedCategoryNameForCategoryIdentifier:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sortedApplicationIdentifiersForCategoryIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCategoryIdentifiers:(id)a3;
-- (void)setLocalizedCategoryNameByCategoryIdentifier:(id)a3;
-- (void)setSortedApplicationIdentifiersByCategoryIdentifier:(id)a3;
+- (id)localizedCategoryNameForCategoryIdentifier:(id)identifier;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sortedApplicationIdentifiersForCategoryIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCategoryIdentifiers:(id)identifiers;
+- (void)setLocalizedCategoryNameByCategoryIdentifier:(id)identifier;
+- (void)setSortedApplicationIdentifiersByCategoryIdentifier:(id)identifier;
 @end
 
 @implementation SBHLibraryCategoryMap
@@ -40,14 +40,14 @@
     localizedCategoryNameByCategoryIdentifier = v2->_localizedCategoryNameByCategoryIdentifier;
     v2->_localizedCategoryNameByCategoryIdentifier = v7;
 
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueIdentifier = v2->_uniqueIdentifier;
-    v2->_uniqueIdentifier = v10;
+    v2->_uniqueIdentifier = uUIDString;
 
-    v12 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     generatedDate = v2->_generatedDate;
-    v2->_generatedDate = v12;
+    v2->_generatedDate = date;
 
     v2->_loadedFromDisk = 0;
   }
@@ -55,9 +55,9 @@
   return v2;
 }
 
-- (SBHLibraryCategoryMap)initWithCoder:(id)a3
+- (SBHLibraryCategoryMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = SBHLibraryCategoryMap;
   v5 = [(SBHLibraryCategoryMap *)&v41 init];
@@ -67,7 +67,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_categoryIdentifiers"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_categoryIdentifiers"];
     v11 = v10;
     v12 = MEMORY[0x1E695E0F0];
     if (v10)
@@ -87,7 +87,7 @@
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v16 setWithObjects:{v17, v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"_sortedApplicationIdentifiersByCategoryIdentifier"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_sortedApplicationIdentifiersByCategoryIdentifier"];
     v22 = v21;
     if (v21)
     {
@@ -106,7 +106,7 @@
     v26 = objc_opt_class();
     v27 = objc_opt_class();
     v28 = [v25 setWithObjects:{v26, v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"_localizedCategoryNameByCategoryIdentifier"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"_localizedCategoryNameByCategoryIdentifier"];
     v30 = v29;
     if (v29)
     {
@@ -121,24 +121,24 @@
     v32 = v31;
 
     objc_storeStrong(&v5->_localizedCategoryNameByCategoryIdentifier, v32);
-    if ([v4 containsValueForKey:@"_uniqueIdentifier"])
+    if ([coderCopy containsValueForKey:@"_uniqueIdentifier"])
     {
-      v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueIdentifier"];
+      uUIDString = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueIdentifier"];
     }
 
     else
     {
-      v34 = [MEMORY[0x1E696AFB0] UUID];
-      v33 = [v34 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v33;
-    v36 = v33;
+    v5->_uniqueIdentifier = uUIDString;
+    v36 = uUIDString;
 
-    if ([v4 containsValueForKey:@"_generatedDate"])
+    if ([coderCopy containsValueForKey:@"_generatedDate"])
     {
-      [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_generatedDate"];
+      [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_generatedDate"];
     }
 
     else
@@ -149,9 +149,9 @@
     generatedDate = v5->_generatedDate;
     v5->_generatedDate = v37;
 
-    if ([v4 containsValueForKey:@"_loadedFromDisk"])
+    if ([coderCopy containsValueForKey:@"_loadedFromDisk"])
     {
-      v39 = [v4 decodeBoolForKey:@"_loadedFromDisk"];
+      v39 = [coderCopy decodeBoolForKey:@"_loadedFromDisk"];
     }
 
     else
@@ -165,15 +165,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   categoryIdentifiers = self->_categoryIdentifiers;
-  v8 = a3;
-  v5 = [(NSMutableOrderedSet *)categoryIdentifiers array];
-  v6 = v5;
-  if (v5)
+  coderCopy = coder;
+  array = [(NSMutableOrderedSet *)categoryIdentifiers array];
+  v6 = array;
+  if (array)
   {
-    v7 = v5;
+    v7 = array;
   }
 
   else
@@ -181,13 +181,13 @@
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  [v8 encodeObject:v7 forKey:@"_categoryIdentifiers"];
+  [coderCopy encodeObject:v7 forKey:@"_categoryIdentifiers"];
 
-  [v8 encodeObject:self->_sortedApplicationIdentifiersByCategoryIdentifier forKey:@"_sortedApplicationIdentifiersByCategoryIdentifier"];
-  [v8 encodeObject:self->_localizedCategoryNameByCategoryIdentifier forKey:@"_localizedCategoryNameByCategoryIdentifier"];
-  [v8 encodeBool:1 forKey:@"_loadedFromDisk"];
-  [v8 encodeObject:self->_uniqueIdentifier forKey:@"_uniqueIdentifier"];
-  [v8 encodeObject:self->_generatedDate forKey:@"_generatedDate"];
+  [coderCopy encodeObject:self->_sortedApplicationIdentifiersByCategoryIdentifier forKey:@"_sortedApplicationIdentifiersByCategoryIdentifier"];
+  [coderCopy encodeObject:self->_localizedCategoryNameByCategoryIdentifier forKey:@"_localizedCategoryNameByCategoryIdentifier"];
+  [coderCopy encodeBool:1 forKey:@"_loadedFromDisk"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"_uniqueIdentifier"];
+  [coderCopy encodeObject:self->_generatedDate forKey:@"_generatedDate"];
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -240,10 +240,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -251,17 +251,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHLibraryCategoryMap *)self isEqualToCategoryMap:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHLibraryCategoryMap *)self isEqualToCategoryMap:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCategoryMap:(id)a3
+- (BOOL)isEqualToCategoryMap:(id)map
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [*(v4 + 1) isEqual:self->_categoryIdentifiers] && -[NSMutableDictionary isEqualToDictionary:](self->_sortedApplicationIdentifiersByCategoryIdentifier, "isEqualToDictionary:", v5[2]))
+  mapCopy = map;
+  v5 = mapCopy;
+  if (mapCopy && [*(mapCopy + 1) isEqual:self->_categoryIdentifiers] && -[NSMutableDictionary isEqualToDictionary:](self->_sortedApplicationIdentifiersByCategoryIdentifier, "isEqualToDictionary:", v5[2]))
   {
     v6 = [(NSMutableDictionary *)self->_localizedCategoryNameByCategoryIdentifier isEqualToDictionary:v5[3]];
   }
@@ -285,37 +285,37 @@
 
   [v3 appendDictionarySection:self->_sortedApplicationIdentifiersByCategoryIdentifier withName:@"sortedApplicationIdentifiersByCategoryIdentifier" skipIfEmpty:0];
   [v3 appendDictionarySection:self->_localizedCategoryNameByCategoryIdentifier withName:@"_localizedCategoryNameByCategoryIdentifier" skipIfEmpty:0];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-+ (id)diffMap:(id)a3 withMap:(id)a4
++ (id)diffMap:(id)map withMap:(id)withMap
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD60] stringWithFormat:@"LHS: %p\nRHS: %p\n", v5, v6];
+  mapCopy = map;
+  withMapCopy = withMap;
+  withMapCopy = [MEMORY[0x1E696AD60] stringWithFormat:@"LHS: %p\nRHS: %p\n", mapCopy, withMapCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__SBHLibraryCategoryMap_diffMap_withMap___block_invoke;
   aBlock[3] = &unk_1E808B7B0;
-  v38 = v7;
+  v38 = withMapCopy;
   v44 = v38;
   v8 = _Block_copy(aBlock);
   v9 = [SBHLibraryCategoryIdentifier categoryWithLocalizedDisplayName:@"CategoryIdentifiers" categoryID:31337 categoryIndex:0];
-  v10 = [v5[1] array];
-  v11 = [v6[1] array];
+  array = [mapCopy[1] array];
+  array2 = [withMapCopy[1] array];
   v35 = v9;
-  v8[2](v8, v9, v10, v11);
+  v8[2](v8, v9, array, array2);
 
   v12 = MEMORY[0x1E695DFA8];
-  v13 = [v5[1] set];
+  v13 = [mapCopy[1] set];
   v14 = [v12 setWithSet:v13];
 
-  v15 = v6;
-  v16 = [v6[1] array];
-  [v14 addObjectsFromArray:v16];
+  v15 = withMapCopy;
+  array3 = [withMapCopy[1] array];
+  [v14 addObjectsFromArray:array3];
 
   v41 = 0u;
   v42 = 0u;
@@ -337,7 +337,7 @@
         }
 
         v20 = *(*(&v39 + 1) + 8 * i);
-        v21 = [v5[3] objectForKeyedSubscript:v20];
+        v21 = [mapCopy[3] objectForKeyedSubscript:v20];
         v22 = [v15[3] objectForKeyedSubscript:v20];
         v23 = v22;
         if (v21)
@@ -361,8 +361,8 @@
           [v38 appendFormat:@"Category id '%@' name change from '%@'->'%@'", v20, v21, v23];
         }
 
-        [v5[2] objectForKeyedSubscript:v20];
-        v28 = v27 = v5;
+        [mapCopy[2] objectForKeyedSubscript:v20];
+        v28 = v27 = mapCopy;
         v29 = [v15[2] objectForKeyedSubscript:v20];
         v30 = v29;
         if (v28)
@@ -387,7 +387,7 @@
 
         v8[2](v8, v20, v31, v32);
 
-        v5 = v27;
+        mapCopy = v27;
       }
 
       v18 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -486,82 +486,82 @@ void __41__SBHLibraryCategoryMap_diffMap_withMap___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
-  [v4 setCategoryIdentifiers:v5];
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
+  [v4 setCategoryIdentifiers:categoryIdentifiers];
 
-  v6 = [(SBHLibraryCategoryMap *)self sortedApplicationIdentifiersByCategoryIdentifier];
-  [v4 setSortedApplicationIdentifiersByCategoryIdentifier:v6];
+  sortedApplicationIdentifiersByCategoryIdentifier = [(SBHLibraryCategoryMap *)self sortedApplicationIdentifiersByCategoryIdentifier];
+  [v4 setSortedApplicationIdentifiersByCategoryIdentifier:sortedApplicationIdentifiersByCategoryIdentifier];
 
-  v7 = [(SBHLibraryCategoryMap *)self localizedCategoryNameByCategoryIdentifier];
-  [v4 setLocalizedCategoryNameByCategoryIdentifier:v7];
+  localizedCategoryNameByCategoryIdentifier = [(SBHLibraryCategoryMap *)self localizedCategoryNameByCategoryIdentifier];
+  [v4 setLocalizedCategoryNameByCategoryIdentifier:localizedCategoryNameByCategoryIdentifier];
 
-  v8 = [(SBHLibraryCategoryMap *)self metadata];
-  [v4 setMetadata:v8];
+  metadata = [(SBHLibraryCategoryMap *)self metadata];
+  [v4 setMetadata:metadata];
 
   [v4 setLoadedFromDisk:{-[SBHLibraryCategoryMap loadedFromDisk](self, "loadedFromDisk")}];
-  v9 = [(SBHLibraryCategoryMap *)self uniqueIdentifier];
-  [v4 setUniqueIdentifier:v9];
+  uniqueIdentifier = [(SBHLibraryCategoryMap *)self uniqueIdentifier];
+  [v4 setUniqueIdentifier:uniqueIdentifier];
 
-  v10 = [(SBHLibraryCategoryMap *)self generatedDate];
-  [v4 setGeneratedDate:v10];
+  generatedDate = [(SBHLibraryCategoryMap *)self generatedDate];
+  [v4 setGeneratedDate:generatedDate];
 
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
-  [v4 setCategoryIdentifiers:v5];
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
+  [v4 setCategoryIdentifiers:categoryIdentifiers];
 
-  v6 = [(SBHLibraryCategoryMap *)self sortedApplicationIdentifiersByCategoryIdentifier];
-  [v4 setSortedApplicationIdentifiersByCategoryIdentifier:v6];
+  sortedApplicationIdentifiersByCategoryIdentifier = [(SBHLibraryCategoryMap *)self sortedApplicationIdentifiersByCategoryIdentifier];
+  [v4 setSortedApplicationIdentifiersByCategoryIdentifier:sortedApplicationIdentifiersByCategoryIdentifier];
 
-  v7 = [(SBHLibraryCategoryMap *)self localizedCategoryNameByCategoryIdentifier];
-  [v4 setLocalizedCategoryNameByCategoryIdentifier:v7];
+  localizedCategoryNameByCategoryIdentifier = [(SBHLibraryCategoryMap *)self localizedCategoryNameByCategoryIdentifier];
+  [v4 setLocalizedCategoryNameByCategoryIdentifier:localizedCategoryNameByCategoryIdentifier];
 
-  v8 = [(SBHLibraryCategoryMap *)self metadata];
-  [v4 setMetadata:v8];
+  metadata = [(SBHLibraryCategoryMap *)self metadata];
+  [v4 setMetadata:metadata];
 
   [v4 setLoadedFromDisk:{-[SBHLibraryCategoryMap loadedFromDisk](self, "loadedFromDisk")}];
-  v9 = [(SBHLibraryCategoryMap *)self uniqueIdentifier];
-  [v4 setUniqueIdentifier:v9];
+  uniqueIdentifier = [(SBHLibraryCategoryMap *)self uniqueIdentifier];
+  [v4 setUniqueIdentifier:uniqueIdentifier];
 
-  v10 = [(SBHLibraryCategoryMap *)self generatedDate];
-  [v4 setGeneratedDate:v10];
+  generatedDate = [(SBHLibraryCategoryMap *)self generatedDate];
+  [v4 setGeneratedDate:generatedDate];
 
   return v4;
 }
 
-- (id)localizedCategoryNameForCategoryIdentifier:(id)a3
+- (id)localizedCategoryNameForCategoryIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_localizedCategoryNameByCategoryIdentifier objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_localizedCategoryNameByCategoryIdentifier objectForKey:identifier];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)sortedApplicationIdentifiersForCategoryIdentifier:(id)a3
+- (id)sortedApplicationIdentifiersForCategoryIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sortedApplicationIdentifiersByCategoryIdentifier objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sortedApplicationIdentifiersByCategoryIdentifier objectForKey:identifier];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (BOOL)categoriesContainApplicationIdentifier:(id)a3
+- (BOOL)categoriesContainApplicationIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
+  v6 = [categoryIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -572,11 +572,11 @@ void __41__SBHLibraryCategoryMap_diffMap_withMap___block_invoke(uint64_t a1, voi
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(categoryIdentifiers);
         }
 
         v10 = [(SBHLibraryCategoryMap *)self sortedApplicationIdentifiersForCategoryIdentifier:*(*(&v14 + 1) + 8 * i)];
-        v11 = [v10 containsObject:v4];
+        v11 = [v10 containsObject:identifierCopy];
 
         if (v11)
         {
@@ -585,7 +585,7 @@ void __41__SBHLibraryCategoryMap_diffMap_withMap___block_invoke(uint64_t a1, voi
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [categoryIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -601,11 +601,11 @@ LABEL_11:
   return v12;
 }
 
-- (id)categoryIdentifiersForApplicationIdentifier:(id)a3
+- (id)categoryIdentifiersForApplicationIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -627,11 +627,11 @@ LABEL_11:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_sortedApplicationIdentifiersByCategoryIdentifier objectForKey:v11, v15];
-        v13 = [v12 containsObject:v4];
+        v13 = [v12 containsObject:identifierCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -641,21 +641,21 @@ LABEL_11:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)setCategoryIdentifiers:(id)a3
+- (void)setCategoryIdentifiers:(id)identifiers
 {
-  v4 = [MEMORY[0x1E695DFA0] orderedSetWithArray:a3];
+  v4 = [MEMORY[0x1E695DFA0] orderedSetWithArray:identifiers];
   categoryIdentifiers = self->_categoryIdentifiers;
   self->_categoryIdentifiers = v4;
 
   MEMORY[0x1EEE66BB8](v4, categoryIdentifiers);
 }
 
-- (void)setSortedApplicationIdentifiersByCategoryIdentifier:(id)a3
+- (void)setSortedApplicationIdentifiersByCategoryIdentifier:(id)identifier
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifier mutableCopy];
   v7 = v4;
   if (v4)
   {
@@ -671,9 +671,9 @@ LABEL_11:
   self->_sortedApplicationIdentifiersByCategoryIdentifier = v5;
 }
 
-- (void)setLocalizedCategoryNameByCategoryIdentifier:(id)a3
+- (void)setLocalizedCategoryNameByCategoryIdentifier:(id)identifier
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifier mutableCopy];
   v7 = v4;
   if (v4)
   {
@@ -689,15 +689,15 @@ LABEL_11:
   self->_localizedCategoryNameByCategoryIdentifier = v5;
 }
 
-- (id)categoryIdentifierForProactiveCategoryIdentifier:(unint64_t)a3
+- (id)categoryIdentifierForProactiveCategoryIdentifier:(unint64_t)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  categoryIdentifiers = [(SBHLibraryCategoryMap *)self categoryIdentifiers];
+  v5 = [categoryIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -708,18 +708,18 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(categoryIdentifiers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 predictionCategoryID] == a3)
+        if ([v9 predictionCategoryID] == identifier)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [categoryIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

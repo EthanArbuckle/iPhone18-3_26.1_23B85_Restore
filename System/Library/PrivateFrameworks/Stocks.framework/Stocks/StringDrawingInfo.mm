@@ -1,22 +1,22 @@
 @interface StringDrawingInfo
-+ (id)stringDrawingInfoWithString:(id)a3 color:(id)a4 font:(id)a5 size:(CGSize)a6;
++ (id)stringDrawingInfoWithString:(id)string color:(id)color font:(id)font size:(CGSize)size;
 - (CGSize)size;
 @end
 
 @implementation StringDrawingInfo
 
-+ (id)stringDrawingInfoWithString:(id)a3 color:(id)a4 font:(id)a5 size:(CGSize)a6
++ (id)stringDrawingInfoWithString:(id)string color:(id)color font:(id)font size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  fontCopy = font;
+  colorCopy = color;
+  stringCopy = string;
   v13 = objc_alloc_init(StringDrawingInfo);
-  [(StringDrawingInfo *)v13 setString:v12];
+  [(StringDrawingInfo *)v13 setString:stringCopy];
 
-  [(StringDrawingInfo *)v13 setColor:v11];
-  [(StringDrawingInfo *)v13 setFont:v10];
+  [(StringDrawingInfo *)v13 setColor:colorCopy];
+  [(StringDrawingInfo *)v13 setFont:fontCopy];
 
   [(StringDrawingInfo *)v13 setSize:width, height];
 

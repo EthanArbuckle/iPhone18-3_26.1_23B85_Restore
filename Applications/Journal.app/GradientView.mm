@@ -1,7 +1,7 @@
 @interface GradientView
 + (Class)layerClass;
 - (int64_t)semanticContentAttribute;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)updateProperties;
 @end
 
@@ -16,7 +16,7 @@
 
 - (void)updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_10080BCF0();
 }
 
@@ -27,19 +27,19 @@
   return [(GradientView *)&v3 semanticContentAttribute];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5 = type metadata accessor for GradientView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(GradientView *)&v9 semanticContentAttribute];
-  v8.receiver = v6;
+  selfCopy = self;
+  semanticContentAttribute = [(GradientView *)&v9 semanticContentAttribute];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(GradientView *)&v8 setSemanticContentAttribute:a3];
-  if ([(GradientView *)v6 semanticContentAttribute]!= v7)
+  [(GradientView *)&v8 setSemanticContentAttribute:attribute];
+  if ([(GradientView *)selfCopy semanticContentAttribute]!= semanticContentAttribute)
   {
-    [(GradientView *)v6 setNeedsUpdateProperties];
+    [(GradientView *)selfCopy setNeedsUpdateProperties];
   }
 }
 

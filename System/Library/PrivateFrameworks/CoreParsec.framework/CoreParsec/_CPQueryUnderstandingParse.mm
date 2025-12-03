@@ -1,90 +1,90 @@
 @interface _CPQueryUnderstandingParse
-- (BOOL)isEqual:(id)a3;
-- (_CPQueryUnderstandingParse)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPQueryUnderstandingParse)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPQueryUnderstandingParse
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   queryIntentType = self->_queryIntentType;
-  if (queryIntentType != [v4 queryIntentType])
+  if (queryIntentType != [equalCopy queryIntentType])
   {
     goto LABEL_21;
   }
 
   hasUnspecifiedTokens = self->_hasUnspecifiedTokens;
-  if (hasUnspecifiedTokens != [v4 hasUnspecifiedTokens])
+  if (hasUnspecifiedTokens != [equalCopy hasUnspecifiedTokens])
   {
     goto LABEL_21;
   }
 
   hasSortCriteriaTokens = self->_hasSortCriteriaTokens;
-  if (hasSortCriteriaTokens != [v4 hasSortCriteriaTokens])
+  if (hasSortCriteriaTokens != [equalCopy hasSortCriteriaTokens])
   {
     goto LABEL_21;
   }
 
   hasLocationTokens = self->_hasLocationTokens;
-  if (hasLocationTokens != [v4 hasLocationTokens])
+  if (hasLocationTokens != [equalCopy hasLocationTokens])
   {
     goto LABEL_21;
   }
 
   hasActionTokens = self->_hasActionTokens;
-  if (hasActionTokens != [v4 hasActionTokens])
+  if (hasActionTokens != [equalCopy hasActionTokens])
   {
     goto LABEL_21;
   }
 
   hasMediaTypeTokens = self->_hasMediaTypeTokens;
-  if (hasMediaTypeTokens != [v4 hasMediaTypeTokens])
+  if (hasMediaTypeTokens != [equalCopy hasMediaTypeTokens])
   {
     goto LABEL_21;
   }
 
   hasVisualQualityTokens = self->_hasVisualQualityTokens;
-  if (hasVisualQualityTokens != [v4 hasVisualQualityTokens])
+  if (hasVisualQualityTokens != [equalCopy hasVisualQualityTokens])
   {
     goto LABEL_21;
   }
 
   hasNounTokens = self->_hasNounTokens;
-  if (hasNounTokens != [v4 hasNounTokens])
+  if (hasNounTokens != [equalCopy hasNounTokens])
   {
     goto LABEL_21;
   }
 
   hasTimeTokens = self->_hasTimeTokens;
-  if (hasTimeTokens != [v4 hasTimeTokens])
+  if (hasTimeTokens != [equalCopy hasTimeTokens])
   {
     goto LABEL_21;
   }
 
   hasEventTokens = self->_hasEventTokens;
-  if (hasEventTokens != [v4 hasEventTokens])
+  if (hasEventTokens != [equalCopy hasEventTokens])
   {
     goto LABEL_21;
   }
 
   hasGenericLocationTokens = self->_hasGenericLocationTokens;
-  if (hasGenericLocationTokens != [v4 hasGenericLocationTokens])
+  if (hasGenericLocationTokens != [equalCopy hasGenericLocationTokens])
   {
     goto LABEL_21;
   }
 
   hasCaptureDeviceTokens = self->_hasCaptureDeviceTokens;
-  if (hasCaptureDeviceTokens == [v4 hasCaptureDeviceTokens] && (hasFavoritedTokens = self->_hasFavoritedTokens, hasFavoritedTokens == objc_msgSend(v4, "hasFavoritedTokens")) && (hasSourceAppTokens = self->_hasSourceAppTokens, hasSourceAppTokens == objc_msgSend(v4, "hasSourceAppTokens")) && (hasPersonTokens = self->_hasPersonTokens, hasPersonTokens == objc_msgSend(v4, "hasPersonTokens")) && (hasPersonSenderTokens = self->_hasPersonSenderTokens, hasPersonSenderTokens == objc_msgSend(v4, "hasPersonSenderTokens")) && (spotlightQueryIntent = self->_spotlightQueryIntent, spotlightQueryIntent == objc_msgSend(v4, "spotlightQueryIntent")) && (isUnsafeQuery = self->_isUnsafeQuery, isUnsafeQuery == objc_msgSend(v4, "isUnsafeQuery")))
+  if (hasCaptureDeviceTokens == [equalCopy hasCaptureDeviceTokens] && (hasFavoritedTokens = self->_hasFavoritedTokens, hasFavoritedTokens == objc_msgSend(equalCopy, "hasFavoritedTokens")) && (hasSourceAppTokens = self->_hasSourceAppTokens, hasSourceAppTokens == objc_msgSend(equalCopy, "hasSourceAppTokens")) && (hasPersonTokens = self->_hasPersonTokens, hasPersonTokens == objc_msgSend(equalCopy, "hasPersonTokens")) && (hasPersonSenderTokens = self->_hasPersonSenderTokens, hasPersonSenderTokens == objc_msgSend(equalCopy, "hasPersonSenderTokens")) && (spotlightQueryIntent = self->_spotlightQueryIntent, spotlightQueryIntent == objc_msgSend(equalCopy, "spotlightQueryIntent")) && (isUnsafeQuery = self->_isUnsafeQuery, isUnsafeQuery == objc_msgSend(equalCopy, "isUnsafeQuery")))
   {
     isBlocklistedQuery = self->_isBlocklistedQuery;
-    v24 = isBlocklistedQuery == [v4 isBlocklistedQuery];
+    v24 = isBlocklistedQuery == [equalCopy isBlocklistedQuery];
   }
 
   else
@@ -96,9 +96,9 @@ LABEL_21:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
+  toCopy = to;
   if ([(_CPQueryUnderstandingParse *)self queryIntentType])
   {
     queryIntentType = self->_queryIntentType;
@@ -214,28 +214,28 @@ LABEL_21:
   }
 }
 
-- (_CPQueryUnderstandingParse)initWithFacade:(id)a3
+- (_CPQueryUnderstandingParse)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPQueryUnderstandingParse *)self init];
   if (v5)
   {
-    -[_CPQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [v4 queryIntentType]);
-    -[_CPQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [v4 hasUnspecifiedTokens]);
-    -[_CPQueryUnderstandingParse setHasSortCriteriaTokens:](v5, "setHasSortCriteriaTokens:", [v4 hasSortCriteriaTokens]);
-    -[_CPQueryUnderstandingParse setHasLocationTokens:](v5, "setHasLocationTokens:", [v4 hasLocationTokens]);
-    -[_CPQueryUnderstandingParse setHasPersonTokens:](v5, "setHasPersonTokens:", [v4 hasPersonTokens]);
-    -[_CPQueryUnderstandingParse setHasPersonSenderTokens:](v5, "setHasPersonSenderTokens:", [v4 hasPersonSenderTokens]);
-    -[_CPQueryUnderstandingParse setHasActionTokens:](v5, "setHasActionTokens:", [v4 hasActionTokens]);
-    -[_CPQueryUnderstandingParse setHasMediaTypeTokens:](v5, "setHasMediaTypeTokens:", [v4 hasMediaTypeTokens]);
-    -[_CPQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [v4 hasVisualQualityTokens]);
-    -[_CPQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [v4 hasNounTokens]);
-    -[_CPQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [v4 hasTimeTokens]);
-    -[_CPQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [v4 hasEventTokens]);
-    -[_CPQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [v4 hasGenericLocationTokens]);
-    -[_CPQueryUnderstandingParse setHasCaptureDeviceTokens:](v5, "setHasCaptureDeviceTokens:", [v4 hasCaptureDeviceTokens]);
-    -[_CPQueryUnderstandingParse setHasFavoritedTokens:](v5, "setHasFavoritedTokens:", [v4 hasFavoritedTokens]);
-    -[_CPQueryUnderstandingParse setHasSourceAppTokens:](v5, "setHasSourceAppTokens:", [v4 hasSourceAppTokens]);
+    -[_CPQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [facadeCopy queryIntentType]);
+    -[_CPQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [facadeCopy hasUnspecifiedTokens]);
+    -[_CPQueryUnderstandingParse setHasSortCriteriaTokens:](v5, "setHasSortCriteriaTokens:", [facadeCopy hasSortCriteriaTokens]);
+    -[_CPQueryUnderstandingParse setHasLocationTokens:](v5, "setHasLocationTokens:", [facadeCopy hasLocationTokens]);
+    -[_CPQueryUnderstandingParse setHasPersonTokens:](v5, "setHasPersonTokens:", [facadeCopy hasPersonTokens]);
+    -[_CPQueryUnderstandingParse setHasPersonSenderTokens:](v5, "setHasPersonSenderTokens:", [facadeCopy hasPersonSenderTokens]);
+    -[_CPQueryUnderstandingParse setHasActionTokens:](v5, "setHasActionTokens:", [facadeCopy hasActionTokens]);
+    -[_CPQueryUnderstandingParse setHasMediaTypeTokens:](v5, "setHasMediaTypeTokens:", [facadeCopy hasMediaTypeTokens]);
+    -[_CPQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [facadeCopy hasVisualQualityTokens]);
+    -[_CPQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [facadeCopy hasNounTokens]);
+    -[_CPQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [facadeCopy hasTimeTokens]);
+    -[_CPQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [facadeCopy hasEventTokens]);
+    -[_CPQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [facadeCopy hasGenericLocationTokens]);
+    -[_CPQueryUnderstandingParse setHasCaptureDeviceTokens:](v5, "setHasCaptureDeviceTokens:", [facadeCopy hasCaptureDeviceTokens]);
+    -[_CPQueryUnderstandingParse setHasFavoritedTokens:](v5, "setHasFavoritedTokens:", [facadeCopy hasFavoritedTokens]);
+    -[_CPQueryUnderstandingParse setHasSourceAppTokens:](v5, "setHasSourceAppTokens:", [facadeCopy hasSourceAppTokens]);
     v6 = v5;
   }
 

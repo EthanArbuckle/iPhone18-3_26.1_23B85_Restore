@@ -1,19 +1,19 @@
 @interface CSAttSiriAttendingAudioSrcNode
-- (CSAttSiriAttendingAudioSrcNode)initWithAttSiriController:(id)a3;
-- (CSAttSiriAttendingAudioSrcNode)initWithAudioStreamProvider:(id)a3 audioProviderSelector:(id)a4 streamName:(id)a5 streamRequest:(id)a6;
+- (CSAttSiriAttendingAudioSrcNode)initWithAttSiriController:(id)controller;
+- (CSAttSiriAttendingAudioSrcNode)initWithAudioStreamProvider:(id)provider audioProviderSelector:(id)selector streamName:(id)name streamRequest:(id)request;
 - (CSAttSiriController)attSiriController;
 - (void)_handleDidStop;
 - (void)_handleDidStopStreamUnexpectedly;
-- (void)addReceiver:(id)a3;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
+- (void)addReceiver:(id)receiver;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
 - (void)cancelAudioStreamHold;
 - (void)dealloc;
-- (void)holdAudioStreamWithTimeout:(double)a3;
-- (void)removeReceiver:(id)a3;
-- (void)startAudioStreamWithOption:(id)a3 completion:(id)a4;
-- (void)stopAudioStreamWithOption:(id)a3 completion:(id)a4;
+- (void)holdAudioStreamWithTimeout:(double)timeout;
+- (void)removeReceiver:(id)receiver;
+- (void)startAudioStreamWithOption:(id)option completion:(id)completion;
+- (void)stopAudioStreamWithOption:(id)option completion:(id)completion;
 @end
 
 @implementation CSAttSiriAttendingAudioSrcNode
@@ -27,8 +27,8 @@
 
 - (void)_handleDidStopStreamUnexpectedly
 {
-  v3 = [(CSAttSiriAttendingAudioSrcNode *)self delegate];
-  [v3 attSiriAttendingAudioSrcNodeDidStopUnexpectedly:self];
+  delegate = [(CSAttSiriAttendingAudioSrcNode *)self delegate];
+  [delegate attSiriAttendingAudioSrcNodeDidStopUnexpectedly:self];
 
   [(CSAttSiriAttendingAudioSrcNode *)self _handleDidStop];
 }
@@ -75,28 +75,28 @@
   }
 }
 
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available
 {
-  v4 = a4;
+  availableCopy = available;
   v5 = +[CSAudioPowerProvider sharedInstance];
-  [v5 processAudioChunkForTV:v4];
+  [v5 processAudioChunkForTV:availableCopy];
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v5 = a4;
+  availableCopy = available;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100024274;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = availableCopy;
+  selfCopy = self;
+  v7 = availableCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -122,83 +122,83 @@
   [(CSAttSiriAttendingAudioSrcNode *)&v4 dealloc];
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100024638;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000246EC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
 - (void)cancelAudioStreamHold
 {
-  v3 = [(CSAttSiriAttendingAudioSrcNode *)self streamProvider];
-  [v3 cancelAudioStreamHold:self->_audioStreamHolding];
+  streamProvider = [(CSAttSiriAttendingAudioSrcNode *)self streamProvider];
+  [streamProvider cancelAudioStreamHold:self->_audioStreamHolding];
 
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = 0;
 }
 
-- (void)holdAudioStreamWithTimeout:(double)a3
+- (void)holdAudioStreamWithTimeout:(double)timeout
 {
-  v6 = [CSAudioStreamHoldRequestOption defaultOptionWithTimeout:a3];
-  v4 = [(CSAttSiriAttendingAudioSrcNode *)self streamProvider];
-  v5 = [v4 holdAudioStreamWithDescription:@"CSAttSiriAttendingAudioSrcNode" option:v6];
+  v6 = [CSAudioStreamHoldRequestOption defaultOptionWithTimeout:timeout];
+  streamProvider = [(CSAttSiriAttendingAudioSrcNode *)self streamProvider];
+  v5 = [streamProvider holdAudioStreamWithDescription:@"CSAttSiriAttendingAudioSrcNode" option:v6];
 }
 
-- (void)stopAudioStreamWithOption:(id)a3 completion:(id)a4
+- (void)stopAudioStreamWithOption:(id)option completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000249B0;
   v7[3] = &unk_100253270;
-  v8 = self;
-  v9 = a4;
-  v6.receiver = v8;
+  selfCopy = self;
+  completionCopy = completion;
+  v6.receiver = selfCopy;
   v6.super_class = CSAttSiriAttendingAudioSrcNode;
-  v5 = v9;
-  [(CSAttSiriAttendingAudioSrcNode *)&v6 stopAudioStreamWithOption:a3 completion:v7];
+  v5 = completionCopy;
+  [(CSAttSiriAttendingAudioSrcNode *)&v6 stopAudioStreamWithOption:option completion:v7];
 }
 
-- (void)startAudioStreamWithOption:(id)a3 completion:(id)a4
+- (void)startAudioStreamWithOption:(id)option completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100024B90;
   v7[3] = &unk_100253270;
-  v8 = self;
-  v9 = a4;
-  v6.receiver = v8;
+  selfCopy = self;
+  completionCopy = completion;
+  v6.receiver = selfCopy;
   v6.super_class = CSAttSiriAttendingAudioSrcNode;
-  v5 = v9;
-  [(CSAttSiriAttendingAudioSrcNode *)&v6 startAudioStreamWithOption:a3 completion:v7];
+  v5 = completionCopy;
+  [(CSAttSiriAttendingAudioSrcNode *)&v6 startAudioStreamWithOption:option completion:v7];
 }
 
-- (CSAttSiriAttendingAudioSrcNode)initWithAudioStreamProvider:(id)a3 audioProviderSelector:(id)a4 streamName:(id)a5 streamRequest:(id)a6
+- (CSAttSiriAttendingAudioSrcNode)initWithAudioStreamProvider:(id)provider audioProviderSelector:(id)selector streamName:(id)name streamRequest:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  providerCopy = provider;
+  selectorCopy = selector;
+  requestCopy = request;
   v28.receiver = self;
   v28.super_class = CSAttSiriAttendingAudioSrcNode;
   v12 = [(CSAttSiriAttendingAudioSrcNode *)&v28 init];
@@ -218,8 +218,8 @@
     requiredNodes = v13->_requiredNodes;
     v13->_requiredNodes = 0;
 
-    objc_storeStrong(&v13->_audioProviderSelector, a4);
-    v19 = v9;
+    objc_storeStrong(&v13->_audioProviderSelector, selector);
+    v19 = providerCopy;
     if (v19)
     {
       v20 = v19;
@@ -236,8 +236,8 @@
       }
 
       audioProviderSelector = v13->_audioProviderSelector;
-      v24 = [v11 recordContext];
-      v20 = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithContext:v24 error:0];
+      recordContext = [requestCopy recordContext];
+      v20 = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithContext:recordContext error:0];
 
       if (!v20)
       {
@@ -256,7 +256,7 @@
 
     v27.receiver = v13;
     v27.super_class = CSAttSiriAttendingAudioSrcNode;
-    v13 = [(CSAttSiriAttendingAudioSrcNode *)&v27 initWithAudioStreamProvider:v20 streamName:@"CSAttSiriAttendingAudioSrcNode" streamRequest:v11];
+    v13 = [(CSAttSiriAttendingAudioSrcNode *)&v27 initWithAudioStreamProvider:v20 streamName:@"CSAttSiriAttendingAudioSrcNode" streamRequest:requestCopy];
 
     v21 = v13;
 LABEL_9:
@@ -270,7 +270,7 @@ LABEL_10:
   return v21;
 }
 
-- (CSAttSiriAttendingAudioSrcNode)initWithAttSiriController:(id)a3
+- (CSAttSiriAttendingAudioSrcNode)initWithAttSiriController:(id)controller
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))

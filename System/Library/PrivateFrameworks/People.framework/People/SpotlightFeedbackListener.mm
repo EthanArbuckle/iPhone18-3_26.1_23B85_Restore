@@ -1,14 +1,14 @@
 @interface SpotlightFeedbackListener
-+ (void)didPerformCommand:(id)a3;
++ (void)didPerformCommand:(id)command;
 - (_TtC6People25SpotlightFeedbackListener)init;
 @end
 
 @implementation SpotlightFeedbackListener
 
-+ (void)didPerformCommand:(id)a3
++ (void)didPerformCommand:(id)command
 {
-  v3 = a3;
-  _s6People25SpotlightFeedbackListenerC17didPerformCommandyySo019SFCommandEngagementC0CFZ_0(v3);
+  commandCopy = command;
+  _s6People25SpotlightFeedbackListenerC17didPerformCommandyySo019SFCommandEngagementC0CFZ_0(commandCopy);
 }
 
 - (_TtC6People25SpotlightFeedbackListener)init

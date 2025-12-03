@@ -1,32 +1,32 @@
 @interface HNDScreen
-+ (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4;
-+ (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4;
-+ (CGRect)convertRect:(CGRect)a3 fromView:(id)a4;
-+ (CGRect)convertRect:(CGRect)a3 toView:(id)a4;
++ (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
++ (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
++ (CGRect)convertRect:(CGRect)rect fromView:(id)view;
++ (CGRect)convertRect:(CGRect)rect toView:(id)view;
 @end
 
 @implementation HNDScreen
 
-+ (CGPoint)convertPoint:(CGPoint)a3 toView:(id)a4
++ (CGPoint)convertPoint:(CGPoint)point toView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    window = viewCopy;
   }
 
   else
   {
-    v7 = [v6 window];
+    window = [viewCopy window];
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = window;
+  if (window)
   {
-    [v7 _convertPointFromSceneReferenceSpace:{x, y}];
+    [window _convertPointFromSceneReferenceSpace:{x, y}];
     x = v9;
     y = v10;
   }
@@ -36,13 +36,13 @@
     v21.x = x;
     v21.y = y;
     v19 = NSStringFromCGPoint(v21);
-    v20 = v6;
+    v20 = viewCopy;
     v18 = @"Tried to convert HNDScreen point %@ to view %@, but it had no window.";
     LOBYTE(v17) = 1;
     _AXLogWithFacility();
   }
 
-  [v6 convertPoint:0 fromView:{x, y, v17, v18, v19, v20}];
+  [viewCopy convertPoint:0 fromView:{x, y, v17, v18, v19, v20}];
   v12 = v11;
   v14 = v13;
 
@@ -53,29 +53,29 @@
   return result;
 }
 
-+ (CGPoint)convertPoint:(CGPoint)a3 fromView:(id)a4
++ (CGPoint)convertPoint:(CGPoint)point fromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 convertPoint:0 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  [viewCopy convertPoint:0 toView:{x, y}];
   v8 = v7;
   v10 = v9;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v6;
+    window = viewCopy;
   }
 
   else
   {
-    v11 = [v6 window];
+    window = [viewCopy window];
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = window;
+  if (window)
   {
-    [v11 _convertPointToSceneReferenceSpace:{v8, v10}];
+    [window _convertPointToSceneReferenceSpace:{v8, v10}];
     v8 = v13;
     v10 = v14;
   }
@@ -95,28 +95,28 @@
   return result;
 }
 
-+ (CGRect)convertRect:(CGRect)a3 toView:(id)a4
++ (CGRect)convertRect:(CGRect)rect toView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = viewCopy;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [viewCopy window];
   }
 
-  v10 = v9;
-  if (v9)
+  v10 = window;
+  if (window)
   {
-    [v9 _convertRectFromSceneReferenceSpace:{x, y, width, height}];
+    [window _convertRectFromSceneReferenceSpace:{x, y, width, height}];
     x = v11;
     y = v12;
     width = v13;
@@ -130,13 +130,13 @@
     v31.size.width = width;
     v31.size.height = height;
     v29 = NSStringFromCGRect(v31);
-    v30 = v8;
+    v30 = viewCopy;
     v28 = @"Tried to convert HNDScreen rect %@ to view %@, but it had no window.";
     LOBYTE(v27) = 1;
     _AXLogWithFacility();
   }
 
-  [v8 convertRect:0 fromView:{x, y, width, height, v27, v28, v29, v30}];
+  [viewCopy convertRect:0 fromView:{x, y, width, height, v27, v28, v29, v30}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -153,14 +153,14 @@
   return result;
 }
 
-+ (CGRect)convertRect:(CGRect)a3 fromView:(id)a4
++ (CGRect)convertRect:(CGRect)rect fromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  [v8 convertRect:0 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  [viewCopy convertRect:0 toView:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -168,18 +168,18 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v8;
+    window = viewCopy;
   }
 
   else
   {
-    v17 = [v8 window];
+    window = [viewCopy window];
   }
 
-  v18 = v17;
-  if (v17)
+  v18 = window;
+  if (window)
   {
-    [v17 _convertRectToSceneReferenceSpace:{v10, v12, v14, v16}];
+    [window _convertRectToSceneReferenceSpace:{v10, v12, v14, v16}];
     v10 = v19;
     v12 = v20;
     v14 = v21;

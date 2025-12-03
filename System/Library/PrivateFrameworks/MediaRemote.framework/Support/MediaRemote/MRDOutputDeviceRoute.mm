@@ -1,8 +1,8 @@
 @interface MRDOutputDeviceRoute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPicked;
 - (BOOL)isSpeakerRoute;
-- (MRDOutputDeviceRoute)initWithOutputDevice:(id)a3;
+- (MRDOutputDeviceRoute)initWithOutputDevice:(id)device;
 - (id)description;
 - (id)dictionary;
 - (id)extendedInfo;
@@ -12,29 +12,29 @@
 
 @implementation MRDOutputDeviceRoute
 
-- (MRDOutputDeviceRoute)initWithOutputDevice:(id)a3
+- (MRDOutputDeviceRoute)initWithOutputDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = MRDOutputDeviceRoute;
   v6 = [(MRDOutputDeviceRoute *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDevice, a3);
+    objc_storeStrong(&v6->_outputDevice, device);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 avOutputDevice];
-    v6 = [v5 isEqual:self->_outputDevice];
+    avOutputDevice = [equalCopy avOutputDevice];
+    v6 = [avOutputDevice isEqual:self->_outputDevice];
   }
 
   else
@@ -56,11 +56,11 @@
 
 - (id)uniqueIdentifier
 {
-  v3 = [(MRAVOutputDevice *)self->_outputDevice primaryID];
-  v4 = v3;
-  if (v3)
+  primaryID = [(MRAVOutputDevice *)self->_outputDevice primaryID];
+  v4 = primaryID;
+  if (primaryID)
   {
-    v5 = v3;
+    v5 = primaryID;
   }
 
   else
@@ -87,13 +87,13 @@
 - (BOOL)isPicked
 {
   v3 = +[AVOutputContext sharedAudioPresentationOutputContext];
-  v4 = [v3 outputDevices];
+  outputDevices = [v3 outputDevices];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = outputDevices;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -147,28 +147,28 @@ LABEL_11:
 - (id)dictionary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MRDOutputDeviceRoute *)self uniqueIdentifier];
+  uniqueIdentifier = [(MRDOutputDeviceRoute *)self uniqueIdentifier];
 
-  if (v4)
+  if (uniqueIdentifier)
   {
-    v5 = [(MRDOutputDeviceRoute *)self uniqueIdentifier];
-    [v3 setObject:v5 forKey:@"RouteUID"];
+    uniqueIdentifier2 = [(MRDOutputDeviceRoute *)self uniqueIdentifier];
+    [v3 setObject:uniqueIdentifier2 forKey:@"RouteUID"];
   }
 
-  v6 = [(MRDOutputDeviceRoute *)self name];
+  name = [(MRDOutputDeviceRoute *)self name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [(MRDOutputDeviceRoute *)self name];
-    [v3 setObject:v7 forKey:@"RouteName"];
+    name2 = [(MRDOutputDeviceRoute *)self name];
+    [v3 setObject:name2 forKey:@"RouteName"];
   }
 
   v20[0] = @"model";
-  v8 = [(MRDOutputDeviceRoute *)self modelName];
-  v9 = v8;
-  if (v8)
+  modelName = [(MRDOutputDeviceRoute *)self modelName];
+  v9 = modelName;
+  if (modelName)
   {
-    v10 = v8;
+    v10 = modelName;
   }
 
   else
@@ -178,11 +178,11 @@ LABEL_11:
 
   v20[1] = @"deviceID";
   v21[0] = v10;
-  v11 = [(MRDOutputDeviceRoute *)self uniqueIdentifier];
-  v12 = v11;
-  if (v11)
+  uniqueIdentifier3 = [(MRDOutputDeviceRoute *)self uniqueIdentifier];
+  v12 = uniqueIdentifier3;
+  if (uniqueIdentifier3)
   {
-    v13 = v11;
+    v13 = uniqueIdentifier3;
   }
 
   else
@@ -200,11 +200,11 @@ LABEL_11:
   v16 = [NSNumber numberWithBool:[(MRAVOutputDevice *)self->_outputDevice requiresAuthorization]];
   [v3 setObject:v16 forKeyedSubscript:@"PortHasPassword"];
 
-  v17 = [(MRAVOutputDevice *)self->_outputDevice deviceType];
-  if (v17 <= 5)
+  deviceType = [(MRAVOutputDevice *)self->_outputDevice deviceType];
+  if (deviceType <= 5)
   {
-    v18 = *(&off_1004C1828 + v17);
-    [v3 setObject:*(&off_1004C17F8 + v17) forKey:@"RouteType"];
+    v18 = *(&off_1004C1828 + deviceType);
+    [v3 setObject:*(&off_1004C17F8 + deviceType) forKey:@"RouteType"];
     [v3 setObject:v18 forKey:@"AVAudioRouteName"];
   }
 
@@ -214,8 +214,8 @@ LABEL_11:
 - (id)extendedInfo
 {
   v3 = [MRDAVRouteExtendedInfo alloc];
-  v4 = [(MRDOutputDeviceRoute *)self dictionary];
-  v5 = [(MRDAVRouteExtendedInfo *)v3 initWithRoute:v4];
+  dictionary = [(MRDOutputDeviceRoute *)self dictionary];
+  v5 = [(MRDAVRouteExtendedInfo *)v3 initWithRoute:dictionary];
 
   return v5;
 }

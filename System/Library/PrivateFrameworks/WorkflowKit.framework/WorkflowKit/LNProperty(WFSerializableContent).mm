@@ -10,14 +10,14 @@
   v11[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF90];
   v10 = @"identifier";
-  v3 = [a1 identifier];
-  v11[0] = v3;
+  identifier = [self identifier];
+  v11[0] = identifier;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v5 = [v2 dictionaryWithDictionary:v4];
 
-  v6 = [a1 value];
-  v7 = [v6 wfSerializedRepresentation];
-  [v5 if_setValueIfNonNil:v7 forKey:@"value"];
+  value = [self value];
+  wfSerializedRepresentation = [value wfSerializedRepresentation];
+  [v5 if_setValueIfNonNil:wfSerializedRepresentation forKey:@"value"];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -63,8 +63,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v12 identifier];
-      v20 = [v19 isEqualToString:v18];
+      identifier = [v12 identifier];
+      v20 = [identifier isEqualToString:v18];
 
       if (!v20)
       {
@@ -74,8 +74,8 @@
 
       v21 = [v17 objectForKeyedSubscript:@"value"];
       v22 = MEMORY[0x1E69ACA90];
-      v23 = [v12 valueType];
-      v24 = [v22 valueFromSerializedRepresentation:v21 valueType:v23 variableProvider:v13 parameter:v14 bundleIdentifier:v15];
+      valueType = [v12 valueType];
+      v24 = [v22 valueFromSerializedRepresentation:v21 valueType:valueType variableProvider:v13 parameter:v14 bundleIdentifier:v15];
 
       v25 = v24;
       v26 = [objc_alloc(MEMORY[0x1E69AC950]) initWithIdentifier:v18 value:v24];

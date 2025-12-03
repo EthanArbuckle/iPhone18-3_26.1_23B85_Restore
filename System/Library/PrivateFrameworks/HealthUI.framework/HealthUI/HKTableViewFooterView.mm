@@ -20,8 +20,8 @@
     v2->_label = v3;
 
     [(UILabel *)v2->_label setNumberOfLines:0];
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v2->_label setTextColor:v5];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v2->_label setTextColor:secondaryLabelColor];
 
     [(UILabel *)v2->_label setTextAlignment:4];
     [(HKTableViewFooterView *)v2 updateFont];

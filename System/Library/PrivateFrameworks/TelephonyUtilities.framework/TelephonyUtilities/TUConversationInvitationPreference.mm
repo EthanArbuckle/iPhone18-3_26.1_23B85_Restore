@@ -6,20 +6,20 @@
 + (NSSet)noNotificationInvitationPreferences;
 + (NSSet)screenShareRequestInvitationPreferences;
 + (NSSet)standardInvitationPreferencesForLink;
-+ (id)invitationPreferencesForAllHandlesWithStyles:(int64_t)a3;
-+ (int64_t)validateNotificationStyles:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInvitationPreference:(id)a3;
-- (TUConversationInvitationPreference)initWithCoder:(id)a3;
-- (TUConversationInvitationPreference)initWithHandleType:(int64_t)a3 notificationStyles:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)invitationPreferencesForAllHandlesWithStyles:(int64_t)styles;
++ (int64_t)validateNotificationStyles:(int64_t)styles;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInvitationPreference:(id)preference;
+- (TUConversationInvitationPreference)initWithCoder:(id)coder;
+- (TUConversationInvitationPreference)initWithHandleType:(int64_t)type notificationStyles:(int64_t)styles;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationInvitationPreference
 
-- (TUConversationInvitationPreference)initWithHandleType:(int64_t)a3 notificationStyles:(int64_t)a4
+- (TUConversationInvitationPreference)initWithHandleType:(int64_t)type notificationStyles:(int64_t)styles
 {
   v9.receiver = self;
   v9.super_class = TUConversationInvitationPreference;
@@ -27,25 +27,25 @@
   v7 = v6;
   if (v6)
   {
-    v6->_handleType = a3;
-    v6->_notificationStyles = [objc_opt_class() validateNotificationStyles:a4];
+    v6->_handleType = type;
+    v6->_notificationStyles = [objc_opt_class() validateNotificationStyles:styles];
   }
 
   return v7;
 }
 
-+ (int64_t)validateNotificationStyles:(int64_t)a3
++ (int64_t)validateNotificationStyles:(int64_t)styles
 {
   v3 = 30;
-  if ((a3 & 4) == 0)
+  if ((styles & 4) == 0)
   {
     v3 = 18;
   }
 
-  v4 = v3 & a3;
-  if (a3)
+  v4 = v3 & styles;
+  if (styles)
   {
-    return a3 & 0x21;
+    return styles & 0x21;
   }
 
   else
@@ -131,23 +131,23 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationInvitationPreference *)self isEqualToInvitationPreference:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationInvitationPreference *)self isEqualToInvitationPreference:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToInvitationPreference:(id)a3
+- (BOOL)isEqualToInvitationPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(TUConversationInvitationPreference *)self handleType];
-  if (v5 == [v4 handleType])
+  preferenceCopy = preference;
+  handleType = [(TUConversationInvitationPreference *)self handleType];
+  if (handleType == [preferenceCopy handleType])
   {
-    v6 = [(TUConversationInvitationPreference *)self notificationStyles];
-    v7 = v6 == [v4 notificationStyles];
+    notificationStyles = [(TUConversationInvitationPreference *)self notificationStyles];
+    v7 = notificationStyles == [preferenceCopy notificationStyles];
   }
 
   else
@@ -158,47 +158,47 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   handleType = self->_handleType;
   notificationStyles = self->_notificationStyles;
 
   return [v4 initWithHandleType:handleType notificationStyles:notificationStyles];
 }
 
-- (TUConversationInvitationPreference)initWithCoder:(id)a3
+- (TUConversationInvitationPreference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_handleType);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = NSStringFromSelector(sel_notificationStyles);
-  v8 = [v4 decodeIntegerForKey:v7];
+  v8 = [coderCopy decodeIntegerForKey:v7];
 
   return [(TUConversationInvitationPreference *)self initWithHandleType:v6 notificationStyles:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   handleType = self->_handleType;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_handleType);
-  [v5 encodeInteger:handleType forKey:v6];
+  [coderCopy encodeInteger:handleType forKey:v6];
 
   notificationStyles = self->_notificationStyles;
   v8 = NSStringFromSelector(sel_notificationStyles);
-  [v5 encodeInteger:notificationStyles forKey:v8];
+  [coderCopy encodeInteger:notificationStyles forKey:v8];
 }
 
-+ (id)invitationPreferencesForAllHandlesWithStyles:(int64_t)a3
++ (id)invitationPreferencesForAllHandlesWithStyles:(int64_t)styles
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v5 = [[TUConversationInvitationPreference alloc] initWithHandleType:2 notificationStyles:a3];
-  v6 = [[TUConversationInvitationPreference alloc] initWithHandleType:3 notificationStyles:a3, v5];
+  v5 = [[TUConversationInvitationPreference alloc] initWithHandleType:2 notificationStyles:styles];
+  v6 = [[TUConversationInvitationPreference alloc] initWithHandleType:3 notificationStyles:styles, v5];
   v12[1] = v6;
-  v7 = [[TUConversationInvitationPreference alloc] initWithHandleType:1 notificationStyles:a3];
+  v7 = [[TUConversationInvitationPreference alloc] initWithHandleType:1 notificationStyles:styles];
   v12[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
   v9 = [v4 initWithArray:v8];

@@ -3,14 +3,14 @@
 - (BOOL)repeatCurrentTrafficAlert;
 - (BOOL)wantsETAUpdates;
 - (MNNavigationSession)init;
-- (MNNavigationSession)initWithRouteManager:(id)a3 auditToken:(id)a4 traceManager:(id)a5;
-- (id)routeInfoForUpdateManager:(id)a3 reason:(unint64_t)a4;
-- (void)_addProbeCrumbLocation:(id)a3;
+- (MNNavigationSession)initWithRouteManager:(id)manager auditToken:(id)token traceManager:(id)traceManager;
+- (id)routeInfoForUpdateManager:(id)manager reason:(unint64_t)reason;
+- (void)_addProbeCrumbLocation:(id)location;
 - (void)_closeTileLoader;
 - (void)_openTileLoader;
-- (void)_startAudioSessionWithGuidanceLevelOverride:(unint64_t)a3;
+- (void)_startAudioSessionWithGuidanceLevelOverride:(unint64_t)override;
 - (void)_startIdleTimerUpdates;
-- (void)_startLocationTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4;
+- (void)_startLocationTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index;
 - (void)_startMotionUpdates;
 - (void)_startTravelTimeUpdates;
 - (void)_startVirtualGarageUpdates;
@@ -20,99 +20,99 @@
 - (void)_stopMotionUpdates;
 - (void)_stopTravelTimeUpdates;
 - (void)_stopVirtualGarageUpdates;
-- (void)_updateNavigationSessionState:(id)a3;
-- (void)_updateResumeRouteInfoFrom:(id)a3;
-- (void)audioManager:(id)a3 didChangeVoiceGuidanceLevel:(unint64_t)a4;
+- (void)_updateNavigationSessionState:(id)state;
+- (void)_updateResumeRouteInfoFrom:(id)from;
+- (void)audioManager:(id)manager didChangeVoiceGuidanceLevel:(unint64_t)level;
 - (void)dealloc;
-- (void)guidanceManager:(id)a3 announce:(id)a4 isImportant:(BOOL)a5 shortPromptType:(unint64_t)a6 stage:(unint64_t)a7 completionBlock:(id)a8;
-- (void)guidanceManager:(id)a3 didUpdateNavTrayGuidance:(id)a4;
-- (void)insertWaypoint:(id)a3;
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
-- (void)locationTracker:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)locationTracker:(id)a3 didFailRerouteWithError:(id)a4;
-- (void)locationTracker:(id)a3 didReroute:(id)a4 newAlternateRoutes:(id)a5 rerouteReason:(unint64_t)a6 request:(id)a7 response:(id)a8;
-- (void)locationTracker:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)locationTracker:(id)a3 didSwitchToNewTransportTypeWithRoute:(id)a4 rerouteReason:(unint64_t)a5 request:(id)a6 response:(id)a7;
-- (void)locationTracker:(id)a3 didUpdateAlternateRoutes:(id)a4;
-- (void)locationTracker:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)locationTracker:(id)a3 didUpdateETAForRoute:(id)a4;
-- (void)locationTracker:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4;
-- (void)locationTracker:(id)a3 dismissedTrafficIncidentAlert:(id)a4;
-- (void)locationTracker:(id)a3 invalidatedTrafficIncidentAlert:(id)a4;
-- (void)locationTracker:(id)a3 receivedTrafficIncidentAlert:(id)a4 responseCallback:(id)a5;
-- (void)locationTracker:(id)a3 updatedTrafficIncidentAlert:(id)a4;
-- (void)locationTrackerDidArrive:(id)a3;
-- (void)locationTrackerDidEnterPreArrivalState:(id)a3;
-- (void)motionContextDidUpdateMotion:(id)a3;
-- (void)removeWaypointAtIndex:(unint64_t)a3;
-- (void)rerouteWithWaypoints:(id)a3;
+- (void)guidanceManager:(id)manager announce:(id)announce isImportant:(BOOL)important shortPromptType:(unint64_t)type stage:(unint64_t)stage completionBlock:(id)block;
+- (void)guidanceManager:(id)manager didUpdateNavTrayGuidance:(id)guidance;
+- (void)insertWaypoint:(id)waypoint;
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
+- (void)locationTracker:(id)tracker didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)locationTracker:(id)tracker didFailRerouteWithError:(id)error;
+- (void)locationTracker:(id)tracker didReroute:(id)reroute newAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason request:(id)request response:(id)response;
+- (void)locationTracker:(id)tracker didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)locationTracker:(id)tracker didSwitchToNewTransportTypeWithRoute:(id)route rerouteReason:(unint64_t)reason request:(id)request response:(id)response;
+- (void)locationTracker:(id)tracker didUpdateAlternateRoutes:(id)routes;
+- (void)locationTracker:(id)tracker didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)locationTracker:(id)tracker didUpdateETAForRoute:(id)route;
+- (void)locationTracker:(id)tracker didUpdateTargetLegIndex:(unint64_t)index;
+- (void)locationTracker:(id)tracker dismissedTrafficIncidentAlert:(id)alert;
+- (void)locationTracker:(id)tracker invalidatedTrafficIncidentAlert:(id)alert;
+- (void)locationTracker:(id)tracker receivedTrafficIncidentAlert:(id)alert responseCallback:(id)callback;
+- (void)locationTracker:(id)tracker updatedTrafficIncidentAlert:(id)alert;
+- (void)locationTrackerDidArrive:(id)arrive;
+- (void)locationTrackerDidEnterPreArrivalState:(id)state;
+- (void)motionContextDidUpdateMotion:(id)motion;
+- (void)removeWaypointAtIndex:(unint64_t)index;
+- (void)rerouteWithWaypoints:(id)waypoints;
 - (void)resumeOriginalDestination;
 - (void)startArrivalInfoUpdates;
 - (void)startLocationUpdates;
-- (void)startNavigationSessionWithDetails:(id)a3;
+- (void)startNavigationSessionWithDetails:(id)details;
 - (void)startTimedETAUpdates;
 - (void)stopArrivalInfoUpdates;
 - (void)stopLocationUpdates;
-- (void)stopNavigationSessionWithReason:(unint64_t)a3;
+- (void)stopNavigationSessionWithReason:(unint64_t)reason;
 - (void)stopTimedETAUpdates;
-- (void)switchToRoute:(id)a3;
-- (void)tracePlayer:(id)a3 didJumpToRouteResponse:(id)a4 request:(id)a5 waypoints:(id)a6;
-- (void)tracePlayer:(id)a3 didSeekToTime:(double)a4 fromTime:(double)a5 location:(id)a6;
-- (void)tracePlayer:(id)a3 didUpdateCurrentRoute:(id)a4 reason:(unint64_t)a5;
-- (void)updateDestination:(id)a3;
-- (void)updateForLocation:(id)a3;
-- (void)updateForUserIncidentReport:(id)a3;
-- (void)updateManager:(id)a3 didReceiveETAResponse:(id)a4;
-- (void)updateManager:(id)a3 willSendETARequest:(id)a4;
-- (void)updateWithInitialLocation:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)vehicleMonitorDidDisconnectFromVehicle:(id)a3;
+- (void)switchToRoute:(id)route;
+- (void)tracePlayer:(id)player didJumpToRouteResponse:(id)response request:(id)request waypoints:(id)waypoints;
+- (void)tracePlayer:(id)player didSeekToTime:(double)time fromTime:(double)fromTime location:(id)location;
+- (void)tracePlayer:(id)player didUpdateCurrentRoute:(id)route reason:(unint64_t)reason;
+- (void)updateDestination:(id)destination;
+- (void)updateForLocation:(id)location;
+- (void)updateForUserIncidentReport:(id)report;
+- (void)updateManager:(id)manager didReceiveETAResponse:(id)response;
+- (void)updateManager:(id)manager willSendETARequest:(id)request;
+- (void)updateWithInitialLocation:(id)location;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)vehicleMonitorDidDisconnectFromVehicle:(id)vehicle;
 @end
 
 @implementation MNNavigationSession
 
 - (void)startArrivalInfoUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MNNavigationSession.startArrivalInfoUpdates()();
 }
 
 - (void)stopArrivalInfoUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MNNavigationSession.stopArrivalInfoUpdates()();
 }
 
 - (void)startTimedETAUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MNNavigationSession.startTimedETAUpdates()();
 }
 
 - (void)stopTimedETAUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MNNavigationSession.stopTimedETAUpdates()();
 }
 
-- (void)updateForUserIncidentReport:(id)a3
+- (void)updateForUserIncidentReport:(id)report
 {
-  v4 = a3;
-  v5 = self;
-  MNNavigationSession.update(for:)(v4);
+  reportCopy = report;
+  selfCopy = self;
+  MNNavigationSession.update(for:)(reportCopy);
 }
 
 - (void)startLocationUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MNNavigationSession.startLocationUpdates()();
 }
 
 - (void)stopLocationUpdates
 {
   v2 = qword_1EC75BF68;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -130,11 +130,11 @@
   [*(v4 + OBJC_IVAR___MNLocationManager__observers) unregisterObserver_];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
-  *(v6 + 24) = a4;
+  *(v6 + 24) = location;
   v11[4] = sub_1D3188860;
   v11[5] = v6;
   v11[0] = MEMORY[0x1E69E9820];
@@ -142,46 +142,46 @@
   v11[2] = sub_1D3122E0C;
   v11[3] = &block_descriptor_7;
   v7 = _Block_copy(v11);
-  v8 = a4;
-  v9 = self;
-  v10 = v8;
+  locationCopy = location;
+  selfCopy = self;
+  v10 = locationCopy;
 
   MNRunAsyncOnNavigationQueue(v7);
 
   _Block_release(v7);
 }
 
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D31886DC(v7);
+  managerCopy = manager;
+  headingCopy = heading;
+  selfCopy = self;
+  sub_1D31886DC(headingCopy);
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 8 && a3.var1 == &NavigationConfig_LocationProjectionTimeSeconds_Metadata)
+  if (key.var0 == 8 && key.var1 == &NavigationConfig_LocationProjectionTimeSeconds_Metadata)
   {
     GEOConfigGetDouble();
     self->_locationProjectionTime = v4;
   }
 }
 
-- (id)routeInfoForUpdateManager:(id)a3 reason:(unint64_t)a4
+- (id)routeInfoForUpdateManager:(id)manager reason:(unint64_t)reason
 {
-  v6 = a3;
-  if (a4 - 3 >= 4 && ([(MNLocationTracker *)self->_locationTracker isRerouting]|| [(MNNavigationSession *)self navigationState]== 6))
+  managerCopy = manager;
+  if (reason - 3 >= 4 && ([(MNLocationTracker *)self->_locationTracker isRerouting]|| [(MNNavigationSession *)self navigationState]== 6))
   {
-    v7 = 0;
+    currentRouteInfo = 0;
   }
 
   else
   {
-    v7 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+    currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
   }
 
-  return v7;
+  return currentRouteInfo;
 }
 
 - (BOOL)wantsETAUpdates
@@ -191,87 +191,87 @@
     return 0;
   }
 
-  v3 = [(MNRouteManager *)self->_routeManager currentRoute];
-  v4 = [v3 transportType];
+  currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+  transportType = [currentRoute transportType];
 
   if (self->_navigationType != 3)
   {
     return 0;
   }
 
-  return !v4 || v4 == 3;
+  return !transportType || transportType == 3;
 }
 
-- (void)updateManager:(id)a3 didReceiveETAResponse:(id)a4
+- (void)updateManager:(id)manager didReceiveETAResponse:(id)response
 {
-  v12 = a4;
-  [(MNLocationTracker *)self->_locationTracker updateForETAUResponse:v12];
+  responseCopy = response;
+  [(MNLocationTracker *)self->_locationTracker updateForETAUResponse:responseCopy];
   serverSessionStateInfo = self->_serverSessionStateInfo;
-  v6 = [v12 response];
-  [(MNServerSessionStateInfo *)serverSessionStateInfo updateWithETAUResponse:v6];
+  response = [responseCopy response];
+  [(MNServerSessionStateInfo *)serverSessionStateInfo updateWithETAUResponse:response];
 
-  v7 = [(MNNavigationSession *)self lastMatchedLocation];
-  v8 = [v7 routeMatch];
-  -[MNNavigationSession _updateResumeRouteInfoFrom:](self, "_updateResumeRouteInfoFrom:", [v8 routeCoordinate]);
+  lastMatchedLocation = [(MNNavigationSession *)self lastMatchedLocation];
+  routeMatch = [lastMatchedLocation routeMatch];
+  -[MNNavigationSession _updateResumeRouteInfoFrom:](self, "_updateResumeRouteInfoFrom:", [routeMatch routeCoordinate]);
 
-  v9 = [v12 error];
+  error = [responseCopy error];
 
-  if (v9)
+  if (error)
   {
     v10 = objc_opt_new();
-    v11 = [v12 error];
-    [v10 setError:v11];
+    error2 = [responseCopy error];
+    [v10 setError:error2];
 
     [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v10];
   }
 }
 
-- (void)updateManager:(id)a3 willSendETARequest:(id)a4
+- (void)updateManager:(id)manager willSendETARequest:(id)request
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  requestCopy = request;
   v6 = MNGetMNNavigationSessionLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     serverSessionStateInfo = self->_serverSessionStateInfo;
     v15 = 134218242;
-    v16 = v5;
+    v16 = requestCopy;
     v17 = 2112;
     v18 = serverSessionStateInfo;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEFAULT, "willSendETARequest - Request: %p | %@", &v15, 0x16u);
   }
 
-  v8 = [(MNServerSessionStateInfo *)self->_serverSessionStateInfo sessionState];
-  [v5 setSessionState:v8];
+  sessionState = [(MNServerSessionStateInfo *)self->_serverSessionStateInfo sessionState];
+  [requestCopy setSessionState:sessionState];
 
-  v9 = [(MNRouteManager *)self->_routeManager currentRoute];
-  v10 = [v9 directionsResponseID];
-  [v5 setDirectionsResponseID:v10];
+  currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+  directionsResponseID = [currentRoute directionsResponseID];
+  [requestCopy setDirectionsResponseID:directionsResponseID];
 
   v11 = objc_opt_new();
-  [v5 setTripInfo:v11];
+  [requestCopy setTripInfo:v11];
 
-  v12 = [(MNLocationTracker *)self->_locationTracker hasVisitedFirstStop];
-  v13 = [v5 tripInfo];
-  [v13 setHasVisitedFirstStop:v12];
+  hasVisitedFirstStop = [(MNLocationTracker *)self->_locationTracker hasVisitedFirstStop];
+  tripInfo = [requestCopy tripInfo];
+  [tripInfo setHasVisitedFirstStop:hasVisitedFirstStop];
 
-  [(MNLocationTracker *)self->_locationTracker updateRequestForETAUpdate:v5];
+  [(MNLocationTracker *)self->_locationTracker updateRequestForETAUpdate:requestCopy];
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)audioManager:(id)a3 didChangeVoiceGuidanceLevel:(unint64_t)a4
+- (void)audioManager:(id)manager didChangeVoiceGuidanceLevel:(unint64_t)level
 {
-  [(MNGuidanceManager *)self->_guidanceManager setPreferredGuidanceLevel:a4];
+  [(MNGuidanceManager *)self->_guidanceManager setPreferredGuidanceLevel:level];
   v6 = objc_alloc_init(MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel);
-  [(MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel *)v6 setVoiceGuidanceLevel:a4];
+  [(MNNavigationServiceCallback_DidChangeVoiceGuidanceLevel *)v6 setVoiceGuidanceLevel:level];
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v6];
-  if (a4 == 2)
+  if (level == 2)
   {
     [(MNNavigationSession *)self repeatCurrentGuidance];
   }
 }
 
-- (void)vehicleMonitorDidDisconnectFromVehicle:(id)a3
+- (void)vehicleMonitorDidDisconnectFromVehicle:(id)vehicle
 {
   v22 = *MEMORY[0x1E69E9840];
   BOOL = GEOConfigGetBOOL();
@@ -281,16 +281,16 @@
   {
     if (v6)
     {
-      v7 = [(MNLocationTracker *)self->_locationTracker arrivalInfo];
-      v8 = [v7 arrivalState];
-      if (v8 > 6)
+      arrivalInfo = [(MNLocationTracker *)self->_locationTracker arrivalInfo];
+      arrivalState = [arrivalInfo arrivalState];
+      if (arrivalState > 6)
       {
         v9 = @"MNArrivalState_Unknown";
       }
 
       else
       {
-        v9 = off_1E84301C8[v8];
+        v9 = off_1E84301C8[arrivalState];
       }
 
       v20 = 138412290;
@@ -298,15 +298,15 @@
       _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "Received vehicle monitor disconnect notification. Current arrival state: %@", &v20, 0xCu);
     }
 
-    v10 = [(MNLocationTracker *)self->_locationTracker arrivalInfo];
-    v11 = [v10 isInArrivalState];
+    arrivalInfo2 = [(MNLocationTracker *)self->_locationTracker arrivalInfo];
+    isInArrivalState = [arrivalInfo2 isInArrivalState];
 
-    if (v11)
+    if (isInArrivalState)
     {
-      v12 = [(MNNavigationSessionState *)self->_navigationSessionState isOnLastLeg];
+      isOnLastLeg = [(MNNavigationSessionState *)self->_navigationSessionState isOnLastLeg];
       v13 = MNGetMNNavigationSessionLog();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (isOnLastLeg)
       {
         if (v14)
         {
@@ -315,7 +315,7 @@
         }
 
         observers = self->_observers;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 5;
       }
 
@@ -328,11 +328,11 @@
         }
 
         observers = self->_observers;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 6;
       }
 
-      [(GEOObserverHashTable *)observers navigationSession:v16 shouldEndWithReason:v17];
+      [(GEOObserverHashTable *)observers navigationSession:selfCopy2 shouldEndWithReason:v17];
     }
 
     else
@@ -357,67 +357,67 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)tracePlayer:(id)a3 didUpdateCurrentRoute:(id)a4 reason:(unint64_t)a5
+- (void)tracePlayer:(id)player didUpdateCurrentRoute:(id)route reason:(unint64_t)reason
 {
-  v7 = a4;
-  v11 = [[MNActiveRouteInfo alloc] initWithRoute:v7];
-  v8 = [v7 waypoints];
+  routeCopy = route;
+  v11 = [[MNActiveRouteInfo alloc] initWithRoute:routeCopy];
+  waypoints = [routeCopy waypoints];
 
-  v9 = [v8 lastObject];
+  lastObject = [waypoints lastObject];
   destination = self->_destination;
-  self->_destination = v9;
+  self->_destination = lastObject;
 
-  [(MNLocationTracker *)self->_locationTracker reroute:v11 reason:a5];
+  [(MNLocationTracker *)self->_locationTracker reroute:v11 reason:reason];
 }
 
-- (void)tracePlayer:(id)a3 didSeekToTime:(double)a4 fromTime:(double)a5 location:(id)a6
+- (void)tracePlayer:(id)player didSeekToTime:(double)time fromTime:(double)fromTime location:(id)location
 {
-  v14 = a3;
-  v10 = a6;
-  if (a4 < a5)
+  playerCopy = player;
+  locationCopy = location;
+  if (time < fromTime)
   {
     [(MNGuidanceManager *)self->_guidanceManager reset];
   }
 
-  if (v10)
+  if (locationCopy)
   {
     locationTracker = self->_locationTracker;
-    v12 = [(MNNavigationSession *)self routeManager];
-    v13 = [v12 currentRoute];
-    [(MNLocationTracker *)locationTracker forceOnRoute:v13 atLocation:v10];
+    routeManager = [(MNNavigationSession *)self routeManager];
+    currentRoute = [routeManager currentRoute];
+    [(MNLocationTracker *)locationTracker forceOnRoute:currentRoute atLocation:locationCopy];
   }
 }
 
-- (void)tracePlayer:(id)a3 didJumpToRouteResponse:(id)a4 request:(id)a5 waypoints:(id)a6
+- (void)tracePlayer:(id)player didJumpToRouteResponse:(id)response request:(id)request waypoints:(id)waypoints
 {
   v9 = MEMORY[0x1E69A2538];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  waypointsCopy = waypoints;
+  requestCopy = request;
+  responseCopy = response;
   v13 = [v9 alloc];
-  v14 = [v11 routeAttributes];
+  routeAttributes = [requestCopy routeAttributes];
 
-  v18 = [v13 initWithWaypoints:v10 routeAttributes:v14 directionsResponse:v12];
-  v15 = [v18 mainRouteInfo];
-  v16 = [v10 lastObject];
+  v18 = [v13 initWithWaypoints:waypointsCopy routeAttributes:routeAttributes directionsResponse:responseCopy];
+  mainRouteInfo = [v18 mainRouteInfo];
+  lastObject = [waypointsCopy lastObject];
 
   destination = self->_destination;
-  self->_destination = v16;
+  self->_destination = lastObject;
 
-  [(MNLocationTracker *)self->_locationTracker reroute:v15 reason:0];
+  [(MNLocationTracker *)self->_locationTracker reroute:mainRouteInfo reason:0];
 }
 
-- (void)guidanceManager:(id)a3 didUpdateNavTrayGuidance:(id)a4
+- (void)guidanceManager:(id)manager didUpdateNavTrayGuidance:(id)guidance
 {
-  v5 = a4;
-  v6 = [[_TtC10Navigation52MNNavigationServiceCallback_DidUpdateNavTrayGuidance alloc] initWithNavTrayGuidanceEvent:v5];
+  guidanceCopy = guidance;
+  v6 = [[_TtC10Navigation52MNNavigationServiceCallback_DidUpdateNavTrayGuidance alloc] initWithNavTrayGuidanceEvent:guidanceCopy];
 
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v6];
 }
 
-- (void)guidanceManager:(id)a3 announce:(id)a4 isImportant:(BOOL)a5 shortPromptType:(unint64_t)a6 stage:(unint64_t)a7 completionBlock:(id)a8
+- (void)guidanceManager:(id)manager announce:(id)announce isImportant:(BOOL)important shortPromptType:(unint64_t)type stage:(unint64_t)stage completionBlock:(id)block
 {
-  if (a5)
+  if (important)
   {
     v12 = 1;
   }
@@ -428,49 +428,49 @@
   }
 
   audioManager = self->_audioManager;
-  v14 = a4;
-  [(MNAudioManager *)audioManager requestSpeech:v14 guidanceLevel:v12 modifier:0 shortPromptType:a6 completionHandler:a8];
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didAnnounce:v14 stage:a7];
+  announceCopy = announce;
+  [(MNAudioManager *)audioManager requestSpeech:announceCopy guidanceLevel:v12 modifier:0 shortPromptType:type completionHandler:block];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didAnnounce:announceCopy stage:stage];
 }
 
-- (void)locationTracker:(id)a3 updatedTrafficIncidentAlert:(id)a4
+- (void)locationTracker:(id)tracker updatedTrafficIncidentAlert:(id)alert
 {
-  v5 = a4;
-  v6 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:1 trafficIncidentAlert:v5];
+  alertCopy = alert;
+  v6 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:1 trafficIncidentAlert:alertCopy];
 
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v6];
 }
 
-- (void)locationTracker:(id)a3 dismissedTrafficIncidentAlert:(id)a4
+- (void)locationTracker:(id)tracker dismissedTrafficIncidentAlert:(id)alert
 {
   activeTrafficIncidentAlert = self->_activeTrafficIncidentAlert;
   self->_activeTrafficIncidentAlert = 0;
-  v6 = a4;
+  alertCopy = alert;
 
-  v7 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:2 trafficIncidentAlert:v6];
+  v7 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:2 trafficIncidentAlert:alertCopy];
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v7];
 }
 
-- (void)locationTracker:(id)a3 invalidatedTrafficIncidentAlert:(id)a4
+- (void)locationTracker:(id)tracker invalidatedTrafficIncidentAlert:(id)alert
 {
   activeTrafficIncidentAlert = self->_activeTrafficIncidentAlert;
   self->_activeTrafficIncidentAlert = 0;
-  v6 = a4;
+  alertCopy = alert;
 
-  v7 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:3 trafficIncidentAlert:v6];
+  v7 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:3 trafficIncidentAlert:alertCopy];
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v7];
 }
 
-- (void)locationTracker:(id)a3 receivedTrafficIncidentAlert:(id)a4 responseCallback:(id)a5
+- (void)locationTracker:(id)tracker receivedTrafficIncidentAlert:(id)alert responseCallback:(id)callback
 {
-  v21 = a4;
-  v8 = a5;
+  alertCopy = alert;
+  callbackCopy = callback;
   audioManager = self->_audioManager;
-  v10 = [v21 spokenTexts];
-  v11 = [v10 firstObject];
-  [(MNAudioManager *)audioManager requestSpeech:v11 guidanceLevel:1 modifier:1 shortPromptType:0 completionHandler:0];
+  spokenTexts = [alertCopy spokenTexts];
+  firstObject = [spokenTexts firstObject];
+  [(MNAudioManager *)audioManager requestSpeech:firstObject guidanceLevel:1 modifier:1 shortPromptType:0 completionHandler:0];
 
-  objc_storeStrong(&self->_activeTrafficIncidentAlert, a4);
+  objc_storeStrong(&self->_activeTrafficIncidentAlert, alert);
   trafficIncidentAlertCallbacks = self->_trafficIncidentAlertCallbacks;
   if (!trafficIncidentAlertCallbacks)
   {
@@ -481,52 +481,52 @@
     trafficIncidentAlertCallbacks = self->_trafficIncidentAlertCallbacks;
   }
 
-  v15 = _Block_copy(v8);
-  v16 = [v21 alertID];
-  [(NSMutableDictionary *)trafficIncidentAlertCallbacks setObject:v15 forKey:v16];
+  v15 = _Block_copy(callbackCopy);
+  alertID = [alertCopy alertID];
+  [(NSMutableDictionary *)trafficIncidentAlertCallbacks setObject:v15 forKey:alertID];
 
   serverSessionStateInfo = self->_serverSessionStateInfo;
-  v18 = [v21 bannerID];
-  v19 = [v21 eventInfo];
-  [(MNServerSessionStateInfo *)serverSessionStateInfo addDisplayedBannerID:v18 withEventInfo:v19];
+  bannerID = [alertCopy bannerID];
+  eventInfo = [alertCopy eventInfo];
+  [(MNServerSessionStateInfo *)serverSessionStateInfo addDisplayedBannerID:bannerID withEventInfo:eventInfo];
 
-  v20 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:0 trafficIncidentAlert:v21];
+  v20 = [[_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert alloc] initWithUpdateType:0 trafficIncidentAlert:alertCopy];
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v20];
 }
 
-- (void)locationTracker:(id)a3 didSwitchToNewTransportTypeWithRoute:(id)a4 rerouteReason:(unint64_t)a5 request:(id)a6 response:(id)a7
+- (void)locationTracker:(id)tracker didSwitchToNewTransportTypeWithRoute:(id)route rerouteReason:(unint64_t)reason request:(id)request response:(id)response
 {
   v38 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = [v11 route];
-  v15 = [v14 transportType];
+  routeCopy = route;
+  responseCopy = response;
+  requestCopy = request;
+  route = [routeCopy route];
+  transportType = [route transportType];
 
-  v16 = [v11 route];
-  v17 = [MNMapMatcher mapMatcherFor:v16];
+  route2 = [routeCopy route];
+  v17 = [MNMapMatcher mapMatcherFor:route2];
   mapMatcher = self->_mapMatcher;
   self->_mapMatcher = v17;
 
-  [(MNRouteManager *)self->_routeManager updateForReroute:v11 rerouteReason:a5 request:v13 response:v12];
+  [(MNRouteManager *)self->_routeManager updateForReroute:routeCopy rerouteReason:reason request:requestCopy response:responseCopy];
   [(MNRouteManager *)self->_routeManager updateWithAlternateRoutes:0];
-  [(MNNavigationSessionState *)self->_navigationSessionState updateCurrentRouteInfo:v11 rerouteReason:a5];
+  [(MNNavigationSessionState *)self->_navigationSessionState updateCurrentRouteInfo:routeCopy rerouteReason:reason];
   [(MNNavigationSessionState *)self->_navigationSessionState setAlternateRouteInfos:0];
-  if (a5 == 13)
+  if (reason == 13)
   {
     v19 = MNGetMNNavigationSessionLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v11 route];
-      v21 = [v20 source];
-      if ((v21 - 1) > 4)
+      route3 = [routeCopy route];
+      source = [route3 source];
+      if ((source - 1) > 4)
       {
         v22 = @"Unknown";
       }
 
       else
       {
-        v22 = off_1E84301A0[v21 - 1];
+        v22 = off_1E84301A0[source - 1];
       }
 
       v36 = 138412290;
@@ -534,27 +534,27 @@
       _os_log_impl(&dword_1D311E000, v19, OS_LOG_TYPE_DEFAULT, "Updating initial route source to %@.", &v36, 0xCu);
     }
 
-    v23 = [v11 route];
-    -[MNNavigationSessionState setInitialRouteSource:](self->_navigationSessionState, "setInitialRouteSource:", [v23 source]);
+    route4 = [routeCopy route];
+    -[MNNavigationSessionState setInitialRouteSource:](self->_navigationSessionState, "setInitialRouteSource:", [route4 source]);
   }
 
   [(MNNavigationSession *)self _updateNavigationSessionState:self->_navigationSessionState];
   timeAndDistanceUpdater = self->_timeAndDistanceUpdater;
-  v25 = [(MNRouteManager *)self->_routeManager allRoutes];
-  v26 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-  v27 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
-  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater setRoutes:v25 mainRoute:v26 location:v27 notificationType:0];
+  allRoutes = [(MNRouteManager *)self->_routeManager allRoutes];
+  currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+  lastMatchedLocation = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater setRoutes:allRoutes mainRoute:currentRouteInfo location:lastMatchedLocation notificationType:0];
 
   [(MNNavigationSession *)self _stopLocationTracking];
   [(MNAudioManager *)self->_audioManager clearAllAnnouncements];
-  if (v15 == 2)
+  if (transportType == 2)
   {
     v29 = @"Navigation_SwitchToWalkingNotification";
     v28 = 5;
     goto LABEL_12;
   }
 
-  if (!v15)
+  if (!transportType)
   {
     v28 = 0;
     v29 = @"Navigation_SwitchToDrivingNotification";
@@ -563,89 +563,89 @@ LABEL_12:
     [(MNAudioManager *)self->_audioManager requestSpeech:v30 guidanceLevel:2 modifier:0 shortPromptType:v28 completionHandler:0];
   }
 
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didSwitchToNewTransportType:v15 newRoute:v11 rerouteReason:a5];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didSwitchToNewTransportType:transportType newRoute:routeCopy rerouteReason:reason];
   [(MNNavigationSession *)self _startLocationTrackingWithInitialLocation:0 targetLegIndex:0];
   serverSessionStateInfo = self->_serverSessionStateInfo;
-  v32 = [v11 route];
-  [(MNServerSessionStateInfo *)serverSessionStateInfo updateWithRoute:v32];
+  route5 = [routeCopy route];
+  [(MNServerSessionStateInfo *)serverSessionStateInfo updateWithRoute:route5];
 
   [(MNNavigationSession *)self _updateResumeRouteInfoFrom:*MEMORY[0x1E69A1928]];
   [(MNGuidanceManager *)self->_guidanceManager updateSessionStateForReroute:self->_navigationSessionState reason:6 location:0];
-  [(MNAudioManager *)self->_audioManager changeTransportType:v15];
+  [(MNAudioManager *)self->_audioManager changeTransportType:transportType];
   probeCrumbs = self->_probeCrumbs;
-  v34 = [v11 route];
-  [(GEOProbeCrumbs *)probeCrumbs resetStateWithRoute:v34];
+  route6 = [routeCopy route];
+  [(GEOProbeCrumbs *)probeCrumbs resetStateWithRoute:route6];
 
   [(MNNavigationSession *)self _startGuidanceAllowMidRouteStart:1 announcementsToIgnore:0];
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationTracker:(id)a3 didUpdateAlternateRoutes:(id)a4
+- (void)locationTracker:(id)tracker didUpdateAlternateRoutes:(id)routes
 {
   routeManager = self->_routeManager;
-  v10 = a4;
-  [(MNRouteManager *)routeManager updateWithAlternateRoutes:v10];
-  [(MNNavigationSessionState *)self->_navigationSessionState setAlternateRouteInfos:v10];
+  routesCopy = routes;
+  [(MNRouteManager *)routeManager updateWithAlternateRoutes:routesCopy];
+  [(MNNavigationSessionState *)self->_navigationSessionState setAlternateRouteInfos:routesCopy];
   [(MNNavigationSession *)self _updateNavigationSessionState:self->_navigationSessionState];
   timeAndDistanceUpdater = self->_timeAndDistanceUpdater;
-  v7 = [(MNRouteManager *)self->_routeManager allRoutes];
-  v8 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-  v9 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
-  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater setRoutes:v7 mainRoute:v8 location:v9 notificationType:0];
+  allRoutes = [(MNRouteManager *)self->_routeManager allRoutes];
+  currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+  lastMatchedLocation = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater setRoutes:allRoutes mainRoute:currentRouteInfo location:lastMatchedLocation notificationType:0];
 
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateAlternateRoutes:v10];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateAlternateRoutes:routesCopy];
 }
 
-- (void)locationTracker:(id)a3 didFailRerouteWithError:(id)a4
+- (void)locationTracker:(id)tracker didFailRerouteWithError:(id)error
 {
-  v6 = a4;
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didFailRerouteWithError:v6];
-  if (v6)
+  errorCopy = error;
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didFailRerouteWithError:errorCopy];
+  if (errorCopy)
   {
     v5 = objc_opt_new();
-    [v5 setError:v6];
+    [v5 setError:errorCopy];
     [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v5];
   }
 }
 
-- (void)locationTracker:(id)a3 didReroute:(id)a4 newAlternateRoutes:(id)a5 rerouteReason:(unint64_t)a6 request:(id)a7 response:(id)a8
+- (void)locationTracker:(id)tracker didReroute:(id)reroute newAlternateRoutes:(id)routes rerouteReason:(unint64_t)reason request:(id)request response:(id)response
 {
   v39 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  if (a6 != 2 && a6 != 4)
+  trackerCopy = tracker;
+  rerouteCopy = reroute;
+  routesCopy = routes;
+  requestCopy = request;
+  responseCopy = response;
+  if (reason != 2 && reason != 4)
   {
     [(MNAudioManager *)self->_audioManager clearAllAnnouncements];
   }
 
-  v18 = [v14 route];
-  v19 = [MNMapMatcher mapMatcherFor:v18];
+  route = [rerouteCopy route];
+  v19 = [MNMapMatcher mapMatcherFor:route];
   mapMatcher = self->_mapMatcher;
   self->_mapMatcher = v19;
 
-  [(MNRouteManager *)self->_routeManager updateForReroute:v14 rerouteReason:a6 request:v16 response:v17];
-  [(MNRouteManager *)self->_routeManager updateWithAlternateRoutes:v15];
-  [(MNNavigationSessionState *)self->_navigationSessionState updateCurrentRouteInfo:v14 rerouteReason:a6];
-  [(MNNavigationSessionState *)self->_navigationSessionState setAlternateRouteInfos:v15];
+  [(MNRouteManager *)self->_routeManager updateForReroute:rerouteCopy rerouteReason:reason request:requestCopy response:responseCopy];
+  [(MNRouteManager *)self->_routeManager updateWithAlternateRoutes:routesCopy];
+  [(MNNavigationSessionState *)self->_navigationSessionState updateCurrentRouteInfo:rerouteCopy rerouteReason:reason];
+  [(MNNavigationSessionState *)self->_navigationSessionState setAlternateRouteInfos:routesCopy];
   [(MNNavigationSession *)self _updateNavigationSessionState:self->_navigationSessionState];
-  if (a6 == 13)
+  if (reason == 13)
   {
     v21 = MNGetMNNavigationSessionLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v14 route];
-      v23 = [v22 source];
-      if ((v23 - 1) > 4)
+      route2 = [rerouteCopy route];
+      source = [route2 source];
+      if ((source - 1) > 4)
       {
         v24 = @"Unknown";
       }
 
       else
       {
-        v24 = off_1E84301A0[v23 - 1];
+        v24 = off_1E84301A0[source - 1];
       }
 
       *buf = 138412290;
@@ -653,50 +653,50 @@ LABEL_12:
       _os_log_impl(&dword_1D311E000, v21, OS_LOG_TYPE_DEFAULT, "Updating initial route source to %@.", buf, 0xCu);
     }
 
-    v25 = [v14 route];
-    -[MNNavigationSessionState setInitialRouteSource:](self->_navigationSessionState, "setInitialRouteSource:", [v25 source]);
+    route3 = [rerouteCopy route];
+    -[MNNavigationSessionState setInitialRouteSource:](self->_navigationSessionState, "setInitialRouteSource:", [route3 source]);
   }
 
-  v26 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
-  [(MNGuidanceManager *)self->_guidanceManager updateSessionStateForReroute:self->_navigationSessionState reason:a6 location:v26];
+  lastMatchedLocation = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+  [(MNGuidanceManager *)self->_guidanceManager updateSessionStateForReroute:self->_navigationSessionState reason:reason location:lastMatchedLocation];
   timeAndDistanceUpdater = self->_timeAndDistanceUpdater;
-  v28 = [(MNRouteManager *)self->_routeManager allRoutes];
-  v29 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater setRoutes:v28 mainRoute:v29 location:v26 notificationType:0];
+  allRoutes = [(MNRouteManager *)self->_routeManager allRoutes];
+  currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater setRoutes:allRoutes mainRoute:currentRouteInfo location:lastMatchedLocation notificationType:0];
 
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didReroute:v14 withLocation:v26 withAlternateRoutes:v15 rerouteReason:a6];
-  -[MNGuidanceManager updateGuidanceForLocation:navigatorState:](self->_guidanceManager, "updateGuidanceForLocation:navigatorState:", v26, [v36 state]);
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didReroute:rerouteCopy withLocation:lastMatchedLocation withAlternateRoutes:routesCopy rerouteReason:reason];
+  -[MNGuidanceManager updateGuidanceForLocation:navigatorState:](self->_guidanceManager, "updateGuidanceForLocation:navigatorState:", lastMatchedLocation, [trackerCopy state]);
   serverSessionStateInfo = self->_serverSessionStateInfo;
-  v31 = [v14 route];
-  [(MNServerSessionStateInfo *)serverSessionStateInfo updateWithRoute:v31];
+  route4 = [rerouteCopy route];
+  [(MNServerSessionStateInfo *)serverSessionStateInfo updateWithRoute:route4];
 
-  v32 = [v26 routeMatch];
-  -[MNNavigationSession _updateResumeRouteInfoFrom:](self, "_updateResumeRouteInfoFrom:", [v32 routeCoordinate]);
+  routeMatch = [lastMatchedLocation routeMatch];
+  -[MNNavigationSession _updateResumeRouteInfoFrom:](self, "_updateResumeRouteInfoFrom:", [routeMatch routeCoordinate]);
 
   probeCrumbs = self->_probeCrumbs;
-  v34 = [v14 route];
-  [(GEOProbeCrumbs *)probeCrumbs resetStateWithRoute:v34];
+  route5 = [rerouteCopy route];
+  [(GEOProbeCrumbs *)probeCrumbs resetStateWithRoute:route5];
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationTracker:(id)a3 didUpdateETAForRoute:(id)a4
+- (void)locationTracker:(id)tracker didUpdateETAForRoute:(id)route
 {
   timeAndDistanceUpdater = self->_timeAndDistanceUpdater;
-  v6 = a4;
-  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater updateDisplayETAForRoute:v6 notificationType:1];
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateETAResponseForRoute:v6];
+  routeCopy = route;
+  [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater updateDisplayETAForRoute:routeCopy notificationType:1];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateETAResponseForRoute:routeCopy];
 }
 
-- (void)locationTrackerDidArrive:(id)a3
+- (void)locationTrackerDidArrive:(id)arrive
 {
   observers = self->_observers;
-  v5 = a3;
+  arriveCopy = arrive;
   [(GEOObserverHashTable *)observers navigationSessionDidArrive:self];
   guidanceManager = self->_guidanceManager;
-  v7 = [v5 lastMatchedLocation];
+  lastMatchedLocation = [arriveCopy lastMatchedLocation];
 
-  [(MNGuidanceManager *)guidanceManager updateGuidanceForLocation:v7 navigatorState:[(MNNavigationSession *)self navigationState]];
+  [(MNGuidanceManager *)guidanceManager updateGuidanceForLocation:lastMatchedLocation navigatorState:[(MNNavigationSession *)self navigationState]];
   if (GEOConfigGetBOOL())
   {
     v8 = dispatch_time(0, 1000000000);
@@ -709,7 +709,7 @@ LABEL_12:
   }
 }
 
-- (void)locationTrackerDidEnterPreArrivalState:(id)a3
+- (void)locationTrackerDidEnterPreArrivalState:(id)state
 {
   [(MNGuidanceManager *)self->_guidanceManager setIsInPreArrivalState:1];
   observers = self->_observers;
@@ -717,72 +717,72 @@ LABEL_12:
   [(GEOObserverHashTable *)observers navigationSessionDidEnterPreArrivalState:self];
 }
 
-- (void)locationTracker:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4
+- (void)locationTracker:(id)tracker didUpdateTargetLegIndex:(unint64_t)index
 {
-  [(MNNavigationSessionState *)self->_navigationSessionState setTargetLegIndex:a4];
+  [(MNNavigationSessionState *)self->_navigationSessionState setTargetLegIndex:index];
   [(MNNavigationSession *)self _updateNavigationSessionState:self->_navigationSessionState];
-  v6 = [[_TtC10Navigation51MNNavigationServiceCallback_DidUpdateTargetLegIndex alloc] initWithTargetLegIndex:a4];
+  v6 = [[_TtC10Navigation51MNNavigationServiceCallback_DidUpdateTargetLegIndex alloc] initWithTargetLegIndex:index];
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v6];
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateTargetLegIndex:a4];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateTargetLegIndex:index];
 }
 
-- (void)locationTracker:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)locationTracker:(id)tracker didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
   idleTimerUpdater = self->_idleTimerUpdater;
-  v12 = a4;
+  waypointCopy = waypoint;
   [(MNIdleTimerUpdater *)idleTimerUpdater updateForStartNavigation];
   [(MNGuidanceManager *)self->_guidanceManager setShouldShowChargingInfo:0];
   [(MNGuidanceManager *)self->_guidanceManager setIsInPreArrivalState:0];
   guidanceManager = self->_guidanceManager;
-  v11 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
-  [(MNGuidanceManager *)guidanceManager updateGuidanceForLocation:v11 navigatorState:[(MNNavigationSession *)self navigationState]];
+  lastMatchedLocation = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+  [(MNGuidanceManager *)guidanceManager updateGuidanceForLocation:lastMatchedLocation navigatorState:[(MNNavigationSession *)self navigationState]];
 
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didResumeNavigatingFromWaypoint:v12 endOfLegIndex:a5 reason:a6];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didResumeNavigatingFromWaypoint:waypointCopy endOfLegIndex:index reason:reason];
 }
 
-- (void)locationTracker:(id)a3 didEnterPreArrivalStateForWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)locationTracker:(id)tracker didEnterPreArrivalStateForWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
   guidanceManager = self->_guidanceManager;
-  v8 = a4;
+  waypointCopy = waypoint;
   [(MNGuidanceManager *)guidanceManager setIsInPreArrivalState:1];
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didEnterPreArrivalStateForWaypoint:v8 endOfLegIndex:a5];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didEnterPreArrivalStateForWaypoint:waypointCopy endOfLegIndex:index];
 }
 
-- (void)locationTracker:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)locationTracker:(id)tracker didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v11 = a4;
-  -[MNNavigationSessionState setArrivalState:](self->_navigationSessionState, "setArrivalState:", [v11 arrivalState]);
+  infoCopy = info;
+  -[MNNavigationSessionState setArrivalState:](self->_navigationSessionState, "setArrivalState:", [infoCopy arrivalState]);
   v7 = objc_opt_new();
-  [v7 setArrivalInfo:v11];
-  [v7 setPreviousState:a5];
+  [v7 setArrivalInfo:infoCopy];
+  [v7 setPreviousState:state];
   [(GEOObserverHashTable *)self->_observers navigationSession:self didSendNavigationServiceCallback:v7];
-  v8 = [(MNRouteManager *)self->_routeManager currentRoute];
-  v9 = [v8 legs];
-  if ([v9 count] >= 2)
+  currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+  legs = [currentRoute legs];
+  if ([legs count] >= 2)
   {
-    v10 = [v11 isInArrivalState];
+    isInArrivalState = [infoCopy isInArrivalState];
 
-    if (!v10)
+    if (!isInArrivalState)
     {
       goto LABEL_5;
     }
 
-    v8 = [(MNNavigationSession *)self lastMatchedLocation];
-    v9 = [v8 routeMatch];
-    -[MNNavigationSession _updateResumeRouteInfoFrom:](self, "_updateResumeRouteInfoFrom:", [v9 routeCoordinate]);
+    currentRoute = [(MNNavigationSession *)self lastMatchedLocation];
+    legs = [currentRoute routeMatch];
+    -[MNNavigationSession _updateResumeRouteInfoFrom:](self, "_updateResumeRouteInfoFrom:", [legs routeCoordinate]);
   }
 
 LABEL_5:
 }
 
-- (void)motionContextDidUpdateMotion:(id)a3
+- (void)motionContextDidUpdateMotion:(id)motion
 {
   observers = self->_observers;
-  v5 = a3;
-  v6 = [v5 motionType];
-  v7 = [v5 confidence];
+  motionCopy = motion;
+  motionType = [motionCopy motionType];
+  confidence = [motionCopy confidence];
 
-  [(GEOObserverHashTable *)observers navigationSession:self didUpdateMotionType:v6 confidence:v7];
+  [(GEOObserverHashTable *)observers navigationSession:self didUpdateMotionType:motionType confidence:confidence];
 }
 
 - (void)_stopVirtualGarageUpdates
@@ -800,33 +800,33 @@ LABEL_5:
   }
 }
 
-- (void)_addProbeCrumbLocation:(id)a3
+- (void)_addProbeCrumbLocation:(id)location
 {
-  v13 = a3;
-  if ([v13 referenceFrame] == 2)
+  locationCopy = location;
+  if ([locationCopy referenceFrame] == 2)
   {
-    [v13 rawShiftedCoordinate];
+    [locationCopy rawShiftedCoordinate];
   }
 
   else
   {
-    [v13 rawCoordinate];
+    [locationCopy rawCoordinate];
   }
 
   v6 = v4;
   v7 = v5;
   probeCrumbs = self->_probeCrumbs;
-  v9 = [v13 routeMatch];
-  v10 = [v9 routeCoordinate];
-  v11 = [v13 timestamp];
-  [v11 timeIntervalSinceReferenceDate];
-  [(GEOProbeCrumbs *)probeCrumbs addLocation:v10 polyCoordinate:v12 timestamp:v6, v7];
+  routeMatch = [locationCopy routeMatch];
+  routeCoordinate = [routeMatch routeCoordinate];
+  timestamp = [locationCopy timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
+  [(GEOProbeCrumbs *)probeCrumbs addLocation:routeCoordinate polyCoordinate:v12 timestamp:v6, v7];
 }
 
-- (void)_updateNavigationSessionState:(id)a3
+- (void)_updateNavigationSessionState:(id)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -847,7 +847,7 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setNavigationSessionState:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) setNavigationSessionState:{stateCopy, v11}];
       }
 
       while (v7 != v9);
@@ -860,34 +860,34 @@ LABEL_5:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateResumeRouteInfoFrom:(id)a3
+- (void)_updateResumeRouteInfoFrom:(id)from
 {
   if (!self->_serverSessionStateInfo)
   {
     return;
   }
 
-  v5 = [(MNLocationTracker *)self->_locationTracker arrivalInfo];
-  if (![v5 isInArrivalState])
+  arrivalInfo = [(MNLocationTracker *)self->_locationTracker arrivalInfo];
+  if (![arrivalInfo isInArrivalState])
   {
     goto LABEL_5;
   }
 
-  v6 = [(MNNavigationSessionState *)self->_navigationSessionState isOnLastLeg];
+  isOnLastLeg = [(MNNavigationSessionState *)self->_navigationSessionState isOnLastLeg];
 
-  if (!v6)
+  if (!isOnLastLeg)
   {
-    v5 = [(MNNavigationSessionState *)self->_navigationSessionState nextLeg];
-    a3 = [v5 startRouteCoordinate];
+    arrivalInfo = [(MNNavigationSessionState *)self->_navigationSessionState nextLeg];
+    from = [arrivalInfo startRouteCoordinate];
 LABEL_5:
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E69A24A0]);
-  v7 = [(MNServerSessionStateInfo *)self->_serverSessionStateInfo sessionState];
-  [v12 setServerSessionState:v7];
+  sessionState = [(MNServerSessionStateInfo *)self->_serverSessionStateInfo sessionState];
+  [v12 setServerSessionState:sessionState];
 
-  v8 = [(MNRouteManager *)self->_routeManager currentRoute];
-  v9 = [v8 geoOriginalWaypointRouteFromRouteCoordinate:a3 purpose:6];
+  currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+  v9 = [currentRoute geoOriginalWaypointRouteFromRouteCoordinate:from purpose:6];
   [v12 setRouteGeometry:v9];
 
   [v12 setHasVisitedFirstStop:{-[MNLocationTracker hasVisitedFirstStop](self->_locationTracker, "hasVisitedFirstStop")}];
@@ -937,10 +937,10 @@ LABEL_5:
     [(MNTimeAndDistanceUpdater *)self->_timeAndDistanceUpdater setNavigationSessionState:self->_navigationSessionState];
     [(NSMutableArray *)self->_navigationSessionStateListeners addObject:self->_timeAndDistanceUpdater];
     v5 = self->_timeAndDistanceUpdater;
-    v6 = [(MNRouteManager *)self->_routeManager allRoutes];
-    v7 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-    v8 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
-    [(MNTimeAndDistanceUpdater *)v5 setRoutes:v6 mainRoute:v7 location:v8 notificationType:2];
+    allRoutes = [(MNRouteManager *)self->_routeManager allRoutes];
+    currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+    lastMatchedLocation = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+    [(MNTimeAndDistanceUpdater *)v5 setRoutes:allRoutes mainRoute:currentRouteInfo location:lastMatchedLocation notificationType:2];
 
     v9 = self->_timeAndDistanceUpdater;
 
@@ -955,20 +955,20 @@ LABEL_5:
   self->_audioManager = 0;
 }
 
-- (void)_startAudioSessionWithGuidanceLevelOverride:(unint64_t)a3
+- (void)_startAudioSessionWithGuidanceLevelOverride:(unint64_t)override
 {
-  v5 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v6 = [v5 currentCountrySupportsNavigation];
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  currentCountrySupportsNavigation = [mEMORY[0x1E69A1CD8] currentCountrySupportsNavigation];
 
-  if (v6)
+  if (currentCountrySupportsNavigation)
   {
-    v7 = [(MNRouteManager *)self->_routeManager currentRoute];
-    v8 = [v7 transportType];
+    currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+    transportType = [currentRoute transportType];
 
     v9 = [MNAudioManager alloc];
-    v10 = [(MNRouteManager *)self->_routeManager routeAttributes];
-    v11 = [v10 phoneticLocaleIdentifier];
-    v12 = [(MNAudioManager *)v9 initWithTransportType:v8 voiceLanguage:v11 guidanceLevelOverride:a3];
+    routeAttributes = [(MNRouteManager *)self->_routeManager routeAttributes];
+    phoneticLocaleIdentifier = [routeAttributes phoneticLocaleIdentifier];
+    v12 = [(MNAudioManager *)v9 initWithTransportType:transportType voiceLanguage:phoneticLocaleIdentifier guidanceLevelOverride:override];
     audioManager = self->_audioManager;
     self->_audioManager = v12;
 
@@ -989,9 +989,9 @@ LABEL_5:
 
 - (void)_startMotionUpdates
 {
-  v3 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
 
-  if (v3)
+  if (tracePlayer)
   {
     v8 = self->_traceManager;
   }
@@ -999,8 +999,8 @@ LABEL_5:
   else
   {
     v4 = [MNCoreMotionContextProvider alloc];
-    v5 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
-    v8 = [(MNCoreMotionContextProvider *)v4 initWithTraceRecorder:v5];
+    traceRecorder = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+    v8 = [(MNCoreMotionContextProvider *)v4 initWithTraceRecorder:traceRecorder];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E69A2258]);
@@ -1022,20 +1022,20 @@ LABEL_5:
   self->_locationTracker = 0;
 }
 
-- (void)_startLocationTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4
+- (void)_startLocationTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(MNNavigationSession *)self routeManager];
-  v8 = [v7 currentRoute];
-  v9 = -[MNNavigationSession _locationTrackerForTransportType:navigationType:](self, "_locationTrackerForTransportType:navigationType:", [v8 transportType], self->_navigationType);
+  locationCopy = location;
+  routeManager = [(MNNavigationSession *)self routeManager];
+  currentRoute = [routeManager currentRoute];
+  v9 = -[MNNavigationSession _locationTrackerForTransportType:navigationType:](self, "_locationTrackerForTransportType:navigationType:", [currentRoute transportType], self->_navigationType);
   locationTracker = self->_locationTracker;
   self->_locationTracker = v9;
 
   [(MNLocationTracker *)self->_locationTracker setDelegate:self];
   [(MNLocationTracker *)self->_locationTracker setNavigationSessionState:self->_navigationSessionState];
   [(NSMutableArray *)self->_navigationSessionStateListeners addObject:self->_locationTracker];
-  [(MNLocationTracker *)self->_locationTracker startTrackingWithInitialLocation:v6 targetLegIndex:a4];
-  [(MNNavigationSessionState *)self->_navigationSessionState setLocation:v6];
+  [(MNLocationTracker *)self->_locationTracker startTrackingWithInitialLocation:locationCopy targetLegIndex:index];
+  [(MNNavigationSessionState *)self->_navigationSessionState setLocation:locationCopy];
 
   [(MNNavigationSession *)self _updateNavigationSessionState:self->_navigationSessionState];
   v12[0] = MEMORY[0x1E69E9820];
@@ -1051,10 +1051,10 @@ LABEL_5:
 {
   if (self->_tileLoaderClient)
   {
-    v5 = [MEMORY[0x1E69A2610] modernLoader];
-    [v5 closeForClient:self->_tileLoaderClient];
-    v3 = [MEMORY[0x1E69A2478] modernManager];
-    [v3 closeServerConnection:1];
+    modernLoader = [MEMORY[0x1E69A2610] modernLoader];
+    [modernLoader closeForClient:self->_tileLoaderClient];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager closeServerConnection:1];
 
     tileLoaderClient = self->_tileLoaderClient;
     self->_tileLoaderClient = 0;
@@ -1069,11 +1069,11 @@ LABEL_5:
     tileLoaderClient = self->_tileLoaderClient;
     self->_tileLoaderClient = v4;
 
-    v6 = [MEMORY[0x1E69A2610] modernLoader];
-    [v6 openForClient:self->_tileLoaderClient];
+    modernLoader = [MEMORY[0x1E69A2610] modernLoader];
+    [modernLoader openForClient:self->_tileLoaderClient];
 
-    v7 = [MEMORY[0x1E69A2478] modernManager];
-    [v7 openServerConnection];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager openServerConnection];
   }
 }
 
@@ -1089,10 +1089,10 @@ LABEL_5:
     return 1;
   }
 
-  v4 = [(MNTrafficIncidentAlert *)self->_activeTrafficIncidentAlert spokenTexts];
-  v5 = [v4 firstObject];
+  spokenTexts = [(MNTrafficIncidentAlert *)self->_activeTrafficIncidentAlert spokenTexts];
+  firstObject = [spokenTexts firstObject];
 
-  v6 = [v5 length];
+  v6 = [firstObject length];
   v3 = v6 != 0;
   if (v6)
   {
@@ -1103,7 +1103,7 @@ LABEL_5:
     v9[2] = __48__MNNavigationSession_repeatCurrentTrafficAlert__block_invoke;
     v9[3] = &unk_1E8430128;
     v9[4] = self;
-    [(MNAudioManager *)audioManager requestSpeech:v5 guidanceLevel:1 modifier:0 shortPromptType:0 completionHandler:v9];
+    [(MNAudioManager *)audioManager requestSpeech:firstObject guidanceLevel:1 modifier:0 shortPromptType:0 completionHandler:v9];
   }
 
   return v3;
@@ -1112,31 +1112,31 @@ LABEL_5:
 - (BOOL)repeatCurrentGuidance
 {
   v3 = +[MNLocationManager shared];
-  v4 = [v3 lastLocation];
+  lastLocation = [v3 lastLocation];
 
-  LOBYTE(self) = [(MNGuidanceManager *)self->_guidanceManager repeatLastGuidanceAnnouncement:v4];
+  LOBYTE(self) = [(MNGuidanceManager *)self->_guidanceManager repeatLastGuidanceAnnouncement:lastLocation];
   return self;
 }
 
-- (void)switchToRoute:(id)a3
+- (void)switchToRoute:(id)route
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 route];
-  if ([v5 transportType] != 1)
+  routeCopy = route;
+  route = [routeCopy route];
+  if ([route transportType] != 1)
   {
 
 LABEL_5:
-    v10 = [v4 routeID];
+    routeID = [routeCopy routeID];
 
-    if (v10)
+    if (routeID)
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v11 = [(MNRouteManager *)self->_routeManager alternateRoutes];
-      v12 = [v11 countByEnumeratingWithState:&v30 objects:v44 count:16];
+      alternateRoutes = [(MNRouteManager *)self->_routeManager alternateRoutes];
+      v12 = [alternateRoutes countByEnumeratingWithState:&v30 objects:v44 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1147,13 +1147,13 @@ LABEL_8:
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(alternateRoutes);
           }
 
           v16 = *(*(&v30 + 1) + 8 * v15);
-          v17 = [v4 routeID];
-          v18 = [v16 routeID];
-          v19 = [v17 isEqual:v18];
+          routeID2 = [routeCopy routeID];
+          routeID3 = [v16 routeID];
+          v19 = [routeID2 isEqual:routeID3];
 
           if (v19)
           {
@@ -1162,7 +1162,7 @@ LABEL_8:
 
           if (v13 == ++v15)
           {
-            v13 = [v11 countByEnumeratingWithState:&v30 objects:v44 count:16];
+            v13 = [alternateRoutes countByEnumeratingWithState:&v30 objects:v44 count:16];
             if (v13)
             {
               goto LABEL_8;
@@ -1206,13 +1206,13 @@ LABEL_15:
     v22 = MNGetMNNavigationSessionLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v4 route];
-      v24 = [v23 name];
-      v25 = [v4 routeID];
+      route2 = [routeCopy route];
+      name = [route2 name];
+      routeID4 = [routeCopy routeID];
       *buf = 138412546;
-      v35 = v24;
+      v35 = name;
       v36 = 2112;
-      v37 = v25;
+      v37 = routeID4;
       _os_log_impl(&dword_1D311E000, v22, OS_LOG_TYPE_ERROR, "switchToRoute: was called but no valid alternate route was found for %@ (%@)", buf, 0x16u);
     }
 
@@ -1223,30 +1223,30 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v6 = [v4 routeID];
-  v7 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-  v8 = [v7 routeID];
-  v9 = [v6 isEqual:v8];
+  routeID5 = [routeCopy routeID];
+  currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+  routeID6 = [currentRouteInfo routeID];
+  v9 = [routeID5 isEqual:routeID6];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  [(MNLocationTracker *)self->_locationTracker reroute:v4 reason:15];
+  [(MNLocationTracker *)self->_locationTracker reroute:routeCopy reason:15];
 LABEL_22:
   probeCrumbs = self->_probeCrumbs;
-  v28 = [v4 route];
-  [(GEOProbeCrumbs *)probeCrumbs resetStateWithRoute:v28];
+  route3 = [routeCopy route];
+  [(GEOProbeCrumbs *)probeCrumbs resetStateWithRoute:route3];
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
 - (void)resumeOriginalDestination
 {
-  v3 = [(MNRouteManager *)self->_routeManager originalDestination];
+  originalDestination = [(MNRouteManager *)self->_routeManager originalDestination];
   destination = self->_destination;
-  self->_destination = v3;
+  self->_destination = originalDestination;
 
   v6 = self->_destination;
   locationTracker = self->_locationTracker;
@@ -1272,27 +1272,27 @@ uint64_t __48__MNNavigationSession_resumeOriginalDestination__block_invoke(uint6
   }
 }
 
-- (void)updateDestination:(id)a3
+- (void)updateDestination:(id)destination
 {
-  objc_storeStrong(&self->_destination, a3);
-  v5 = a3;
-  [(MNLocationTracker *)self->_locationTracker updateDestination:v5 completionHandler:0];
-  [(MNGuidanceManager *)self->_guidanceManager updateDestination:v5];
-  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateDestination:v5];
+  objc_storeStrong(&self->_destination, destination);
+  destinationCopy = destination;
+  [(MNLocationTracker *)self->_locationTracker updateDestination:destinationCopy completionHandler:0];
+  [(MNGuidanceManager *)self->_guidanceManager updateDestination:destinationCopy];
+  [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateDestination:destinationCopy];
 }
 
-- (void)removeWaypointAtIndex:(unint64_t)a3
+- (void)removeWaypointAtIndex:(unint64_t)index
 {
-  v5 = [(MNNavigationSession *)self routeManager];
-  v6 = [v5 currentRoute];
+  routeManager = [(MNNavigationSession *)self routeManager];
+  currentRoute = [routeManager currentRoute];
 
-  v7 = [v6 waypoints];
-  v8 = [v7 count];
+  waypoints = [currentRoute waypoints];
+  v8 = [waypoints count];
 
-  if (v8 > a3)
+  if (v8 > index)
   {
-    v9 = [v6 waypoints];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    waypoints2 = [currentRoute waypoints];
+    v10 = [waypoints2 objectAtIndexedSubscript:index];
 
     objc_initWeak(&location, self);
     locationTracker = self->_locationTracker;
@@ -1303,7 +1303,7 @@ uint64_t __48__MNNavigationSession_resumeOriginalDestination__block_invoke(uint6
     objc_copyWeak(&v15, &location);
     v12 = v10;
     v14 = v12;
-    [(MNLocationTracker *)locationTracker removeWaypointAtIndex:a3 completionHandler:v13];
+    [(MNLocationTracker *)locationTracker removeWaypointAtIndex:index completionHandler:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -1322,9 +1322,9 @@ void __45__MNNavigationSession_removeWaypointAtIndex___block_invoke(uint64_t a1)
   }
 }
 
-- (void)insertWaypoint:(id)a3
+- (void)insertWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   objc_initWeak(&location, self);
   locationTracker = self->_locationTracker;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1332,7 +1332,7 @@ void __45__MNNavigationSession_removeWaypointAtIndex___block_invoke(uint64_t a1)
   v7[2] = __38__MNNavigationSession_insertWaypoint___block_invoke;
   v7[3] = &unk_1E8430100;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = waypointCopy;
   v8 = v6;
   [(MNLocationTracker *)locationTracker insertWaypoint:v6 completionHandler:v7];
 
@@ -1352,9 +1352,9 @@ void __38__MNNavigationSession_insertWaypoint___block_invoke(uint64_t a1)
   }
 }
 
-- (void)rerouteWithWaypoints:(id)a3
+- (void)rerouteWithWaypoints:(id)waypoints
 {
-  v4 = a3;
+  waypointsCopy = waypoints;
   objc_initWeak(&location, self);
   locationTracker = self->_locationTracker;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1362,7 +1362,7 @@ void __38__MNNavigationSession_insertWaypoint___block_invoke(uint64_t a1)
   v7[2] = __44__MNNavigationSession_rerouteWithWaypoints___block_invoke;
   v7[3] = &unk_1E8430100;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = waypointsCopy;
   v8 = v6;
   [(MNLocationTracker *)locationTracker rerouteWithWaypoints:v6 completionHandler:v7];
 
@@ -1382,7 +1382,7 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopNavigationSessionWithReason:(unint64_t)a3
+- (void)stopNavigationSessionWithReason:(unint64_t)reason
 {
   v31 = *MEMORY[0x1E69E9840];
   if (!self->_navigationType)
@@ -1406,15 +1406,15 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
   }
 
   observers = self->_observers;
-  v6 = [MNNavigationServiceCallback_WillEndNavigation willEndNavigationWithReason:a3];
+  v6 = [MNNavigationServiceCallback_WillEndNavigation willEndNavigationWithReason:reason];
   [(GEOObserverHashTable *)observers navigationSession:self didSendNavigationServiceCallback:v6];
 
-  if (a3 == 3 && ![(MNNavigationSessionState *)self->_navigationSessionState isOnLastLeg])
+  if (reason == 3 && ![(MNNavigationSessionState *)self->_navigationSessionState isOnLastLeg])
   {
-    v7 = [(MNNavigationSessionState *)self->_navigationSessionState nextLeg];
-    v8 = [v7 startRouteCoordinate];
+    nextLeg = [(MNNavigationSessionState *)self->_navigationSessionState nextLeg];
+    startRouteCoordinate = [nextLeg startRouteCoordinate];
 
-    [(MNNavigationSession *)self _updateResumeRouteInfoFrom:v8];
+    [(MNNavigationSession *)self _updateResumeRouteInfoFrom:startRouteCoordinate];
   }
 
   manifestUpdateAssertion = self->_manifestUpdateAssertion;
@@ -1446,7 +1446,7 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
   self->_navigationType = 0;
   [(MNNavigationSession *)self _stopVirtualGarageUpdates];
   v12 = self->_observers;
-  v13 = [MNNavigationServiceCallback_DidEndNavigation didEndNavigationWithReason:a3];
+  v13 = [MNNavigationServiceCallback_DidEndNavigation didEndNavigationWithReason:reason];
   [(GEOObserverHashTable *)v12 navigationSession:self didSendNavigationServiceCallback:v13];
 
   navigationSessionState = self->_navigationSessionState;
@@ -1469,57 +1469,57 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithInitialLocation:(id)a3
+- (void)updateWithInitialLocation:(id)location
 {
-  v13 = a3;
+  locationCopy = location;
   v4 = +[MNLocationManager shared];
   if ([v4 locationProviderType] == 3)
   {
-    v5 = v13 == 0;
+    v5 = locationCopy == 0;
   }
 
   else
   {
-    v6 = [v4 locationProviderType];
-    v5 = v13 == 0;
-    if (v13 && v6 != 4)
+    locationProviderType = [v4 locationProviderType];
+    v5 = locationCopy == 0;
+    if (locationCopy && locationProviderType != 4)
     {
-      [v4 pushLocation:v13];
+      [v4 pushLocation:locationCopy];
       v5 = 0;
     }
   }
 
   if (!self->_locationTracker && (self->_navigationType & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [(MNNavigationSession *)self _startLocationTrackingWithInitialLocation:v13 targetLegIndex:[(MNNavigationSessionState *)self->_navigationSessionState targetLegIndex]];
+    [(MNNavigationSession *)self _startLocationTrackingWithInitialLocation:locationCopy targetLegIndex:[(MNNavigationSessionState *)self->_navigationSessionState targetLegIndex]];
   }
 
   if (v5 && self->_navigationType == 3)
   {
-    v7 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+    lastMatchedLocation = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
 
-    if (v7)
+    if (lastMatchedLocation)
     {
       guidanceManager = self->_guidanceManager;
-      v9 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
-      [(MNGuidanceManager *)guidanceManager updateGuidanceForLocation:v9 navigatorState:[(MNLocationTracker *)self->_locationTracker state]];
+      lastMatchedLocation2 = [(MNLocationTracker *)self->_locationTracker lastMatchedLocation];
+      [(MNGuidanceManager *)guidanceManager updateGuidanceForLocation:lastMatchedLocation2 navigatorState:[(MNLocationTracker *)self->_locationTracker state]];
     }
 
-    v10 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+    currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
 
-    if (v10)
+    if (currentRouteInfo)
     {
       timeAndDistanceUpdater = self->_timeAndDistanceUpdater;
-      v12 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-      [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater updateDisplayETAForRoute:v12 notificationType:2];
+      currentRouteInfo2 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+      [(MNTimeAndDistanceUpdater *)timeAndDistanceUpdater updateDisplayETAForRoute:currentRouteInfo2 notificationType:2];
     }
   }
 }
 
-- (void)startNavigationSessionWithDetails:(id)a3
+- (void)startNavigationSessionWithDetails:(id)details
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  detailsCopy = details;
   if (self->_navigationType)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Navigation session already started"];
@@ -1542,15 +1542,15 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
     goto LABEL_5;
   }
 
-  v8 = [(MNRouteManager *)self->_routeManager currentRoute];
-  if (v8)
+  currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+  if (currentRoute)
   {
-    v5 = v8;
-    v9 = [v8 origin];
-    if (!v9 || (v10 = v9, [v5 destination], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+    v5 = currentRoute;
+    origin = [currentRoute origin];
+    if (!origin || (v10 = origin, [v5 destination], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
     {
-      v12 = [v5 origin];
-      if (!v12 || (v13 = v12, [v5 destination], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
+      origin2 = [v5 origin];
+      if (!origin2 || (v13 = origin2, [v5 destination], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
       {
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Starting navigation session without origin or destination"];
         v16 = GEOFindOrCreateLog();
@@ -1571,39 +1571,39 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
       }
     }
 
-    v17 = [v5 destination];
+    destination = [v5 destination];
     destination = self->_destination;
-    self->_destination = v17;
+    self->_destination = destination;
 
-    self->_navigationType = [v4 navigationType];
-    v19 = [MEMORY[0x1E695DF70] array];
+    self->_navigationType = [detailsCopy navigationType];
+    array = [MEMORY[0x1E695DF70] array];
     navigationSessionStateListeners = self->_navigationSessionStateListeners;
-    self->_navigationSessionStateListeners = v19;
+    self->_navigationSessionStateListeners = array;
 
     v21 = objc_alloc_init(MNNavigationSessionState);
     navigationSessionState = self->_navigationSessionState;
     self->_navigationSessionState = v21;
 
     [(MNNavigationSessionState *)self->_navigationSessionState setAuditToken:self->_auditToken];
-    v23 = [v4 requestingAppIdentifier];
-    [(MNNavigationSessionState *)self->_navigationSessionState setRequestingAppIdentifier:v23];
+    requestingAppIdentifier = [detailsCopy requestingAppIdentifier];
+    [(MNNavigationSessionState *)self->_navigationSessionState setRequestingAppIdentifier:requestingAppIdentifier];
 
-    v24 = [v4 traits];
-    [(MNNavigationSessionState *)self->_navigationSessionState setTraits:v24];
+    traits = [detailsCopy traits];
+    [(MNNavigationSessionState *)self->_navigationSessionState setTraits:traits];
 
     v25 = self->_navigationSessionState;
-    v26 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-    [(MNNavigationSessionState *)v25 updateCurrentRouteInfo:v26 rerouteReason:0];
+    currentRouteInfo = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+    [(MNNavigationSessionState *)v25 updateCurrentRouteInfo:currentRouteInfo rerouteReason:0];
 
-    v27 = [v4 reconnectionDetails];
+    reconnectionDetails = [detailsCopy reconnectionDetails];
 
-    if (v27)
+    if (reconnectionDetails)
     {
-      v28 = [v4 reconnectionDetails];
-      -[MNNavigationSessionState setInitialRouteSource:](self->_navigationSessionState, "setInitialRouteSource:", [v28 initialRouteSource]);
+      reconnectionDetails2 = [detailsCopy reconnectionDetails];
+      -[MNNavigationSessionState setInitialRouteSource:](self->_navigationSessionState, "setInitialRouteSource:", [reconnectionDetails2 initialRouteSource]);
 
-      v29 = [v4 reconnectionDetails];
-      -[MNNavigationSessionState setTargetLegIndex:](self->_navigationSessionState, "setTargetLegIndex:", [v29 targetLegIndex]);
+      reconnectionDetails3 = [detailsCopy reconnectionDetails];
+      -[MNNavigationSessionState setTargetLegIndex:](self->_navigationSessionState, "setTargetLegIndex:", [reconnectionDetails3 targetLegIndex]);
     }
 
     else
@@ -1628,13 +1628,13 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
 
     [(MNNavigationSession *)self registerObserver:self->_logger];
     [(NSMutableArray *)self->_navigationSessionStateListeners addObject:self->_logger];
-    v38 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+    traceRecorder = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
 
-    if (v38)
+    if (traceRecorder)
     {
       v39 = [MNTraceNavigationEventRecorder alloc];
-      v40 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
-      v41 = [(MNTraceNavigationEventRecorder *)v39 initWithTraceRecorder:v40];
+      traceRecorder2 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+      v41 = [(MNTraceNavigationEventRecorder *)v39 initWithTraceRecorder:traceRecorder2];
       navigationEventRecorder = self->_navigationEventRecorder;
       self->_navigationEventRecorder = v41;
 
@@ -1644,8 +1644,8 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
       }
 
       v43 = [MNTraceNavigationUpdateRecorder alloc];
-      v44 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
-      v45 = [(MNTraceNavigationUpdateRecorder *)v43 initWithTraceRecorder:v44];
+      traceRecorder3 = [(MNNavigationTraceManager *)self->_traceManager traceRecorder];
+      v45 = [(MNTraceNavigationUpdateRecorder *)v43 initWithTraceRecorder:traceRecorder3];
       navigationUpdateRecorder = self->_navigationUpdateRecorder;
       self->_navigationUpdateRecorder = v45;
 
@@ -1660,16 +1660,16 @@ void __44__MNNavigationSession_rerouteWithWaypoints___block_invoke(uint64_t a1)
     self->_mapMatcher = v47;
 
     [(MNNavigationSession *)self startLocationUpdates];
-    v49 = [v5 origin];
-    if ([v49 isCurrentLocation])
+    origin3 = [v5 origin];
+    if ([origin3 isCurrentLocation])
     {
     }
 
     else
     {
-      v50 = [v4 simulationType];
+      simulationType = [detailsCopy simulationType];
 
-      if (!v50)
+      if (!simulationType)
       {
 LABEL_31:
         if (self->_navigationType == 3)
@@ -1679,27 +1679,27 @@ LABEL_31:
           self->_serverSessionStateInfo = v51;
 
           [(MNServerSessionStateInfo *)self->_serverSessionStateInfo updateWithRoute:v5];
-          v53 = [v4 reconnectionDetails];
-          v54 = [v53 serverSessionState];
+          reconnectionDetails4 = [detailsCopy reconnectionDetails];
+          serverSessionState = [reconnectionDetails4 serverSessionState];
 
-          if (v54)
+          if (serverSessionState)
           {
             v55 = self->_serverSessionStateInfo;
-            v56 = [v4 reconnectionDetails];
-            v57 = [v56 serverSessionState];
-            [(MNServerSessionStateInfo *)v55 updateWithSessionState:v57];
+            reconnectionDetails5 = [detailsCopy reconnectionDetails];
+            serverSessionState2 = [reconnectionDetails5 serverSessionState];
+            [(MNServerSessionStateInfo *)v55 updateWithSessionState:serverSessionState2];
           }
 
-          self->_guidancePromptsEnabled = [v4 guidanceType] == 0;
-          -[MNNavigationSession _startAudioSessionWithGuidanceLevelOverride:](self, "_startAudioSessionWithGuidanceLevelOverride:", [v4 guidanceLevelOverride]);
+          self->_guidancePromptsEnabled = [detailsCopy guidanceType] == 0;
+          -[MNNavigationSession _startAudioSessionWithGuidanceLevelOverride:](self, "_startAudioSessionWithGuidanceLevelOverride:", [detailsCopy guidanceLevelOverride]);
           [(MNNavigationSession *)self startArrivalInfoUpdates];
           [(MNNavigationSession *)self _startTravelTimeUpdates];
           [(MNNavigationSession *)self _startIdleTimerUpdates];
           [(MNNavigationSession *)self startTimedETAUpdates];
-          v58 = [v4 isReconnecting];
-          v59 = [v4 reconnectionDetails];
-          v60 = [v59 spokenAnnouncements];
-          [(MNNavigationSession *)self _startGuidanceAllowMidRouteStart:v58 announcementsToIgnore:v60];
+          isReconnecting = [detailsCopy isReconnecting];
+          reconnectionDetails6 = [detailsCopy reconnectionDetails];
+          spokenAnnouncements = [reconnectionDetails6 spokenAnnouncements];
+          [(MNNavigationSession *)self _startGuidanceAllowMidRouteStart:isReconnecting announcementsToIgnore:spokenAnnouncements];
 
           v61 = objc_alloc_init(MNVehicleMonitor);
           vehicleMonitor = self->_vehicleMonitor;
@@ -1719,8 +1719,8 @@ LABEL_31:
         }
 
         observers = self->_observers;
-        v66 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
-        -[GEOObserverHashTable navigationSession:didStartWithRoute:navigationType:isResumingMultipointRoute:isReconnecting:](observers, "navigationSession:didStartWithRoute:navigationType:isResumingMultipointRoute:isReconnecting:", self, v66, self->_navigationType, [v4 isResumingMultipointRoute], objc_msgSend(v4, "isReconnecting"));
+        currentRouteInfo2 = [(MNRouteManager *)self->_routeManager currentRouteInfo];
+        -[GEOObserverHashTable navigationSession:didStartWithRoute:navigationType:isResumingMultipointRoute:isReconnecting:](observers, "navigationSession:didStartWithRoute:navigationType:isResumingMultipointRoute:isReconnecting:", self, currentRouteInfo2, self->_navigationType, [detailsCopy isResumingMultipointRoute], objc_msgSend(detailsCopy, "isReconnecting"));
 
         if (self->_serverSessionStateInfo)
         {
@@ -1761,12 +1761,12 @@ LABEL_5:
 - (void)dealloc
 {
   GEOConfigRemoveDelegateListenerForAllKeys();
-  v3 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+  tracePlayer = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
 
-  if (v3)
+  if (tracePlayer)
   {
-    v4 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
-    [v4 unregisterObserver:self];
+    tracePlayer2 = [(MNNavigationTraceManager *)self->_traceManager tracePlayer];
+    [tracePlayer2 unregisterObserver:self];
   }
 
   [(MNNavigationSession *)self stopLocationUpdates];
@@ -1777,11 +1777,11 @@ LABEL_5:
   [(MNNavigationSession *)&v5 dealloc];
 }
 
-- (MNNavigationSession)initWithRouteManager:(id)a3 auditToken:(id)a4 traceManager:(id)a5
+- (MNNavigationSession)initWithRouteManager:(id)manager auditToken:(id)token traceManager:(id)traceManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  tokenCopy = token;
+  traceManagerCopy = traceManager;
   v23.receiver = self;
   v23.super_class = MNNavigationSession;
   v12 = [(MNNavigationSession *)&v23 init];
@@ -1799,9 +1799,9 @@ LABEL_5:
       v12->_navigationCapabilities |= 0x10000uLL;
     }
 
-    objc_storeStrong(&v12->_auditToken, a4);
-    objc_storeStrong(&v12->_routeManager, a3);
-    objc_storeStrong(&v12->_traceManager, a5);
+    objc_storeStrong(&v12->_auditToken, token);
+    objc_storeStrong(&v12->_routeManager, manager);
+    objc_storeStrong(&v12->_traceManager, traceManager);
     v12->_navigationType = 0;
     v12->_guidancePromptsEnabled = 1;
     v12->_isSpeakingTrafficIncidentAlert = 0;
@@ -1812,12 +1812,12 @@ LABEL_5:
     GEOConfigGetDouble();
     v12->_locationProjectionTime = v18;
     _GEOConfigAddDelegateListenerForKey();
-    v19 = [v11 tracePlayer];
+    tracePlayer = [traceManagerCopy tracePlayer];
 
-    if (v19)
+    if (tracePlayer)
     {
-      v20 = [v11 tracePlayer];
-      [v20 registerObserver:v12];
+      tracePlayer2 = [traceManagerCopy tracePlayer];
+      [tracePlayer2 registerObserver:v12];
     }
 
     v21 = v12;
@@ -1833,15 +1833,15 @@ LABEL_5:
   return result;
 }
 
-- (void)updateForLocation:(id)a3
+- (void)updateForLocation:(id)location
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy)
   {
     navigationCapabilities = self->_navigationCapabilities;
-    v7 = v4;
+    v7 = locationCopy;
     v8 = v7;
     v9 = v7;
     if ((navigationCapabilities & 4) != 0)
@@ -1849,15 +1849,15 @@ LABEL_5:
       v9 = v7;
       if (([v7 locationUnreliable] & 1) == 0)
       {
-        v10 = [MEMORY[0x1E695DF00] date];
-        v11 = [v8 timestamp];
-        [v10 timeIntervalSinceDate:v11];
+        date = [MEMORY[0x1E695DF00] date];
+        timestamp = [v8 timestamp];
+        [date timeIntervalSinceDate:timestamp];
         v13 = v12;
 
         v9 = [v8 propagatedLocationForTimeInterval:-[MNLocationTracker shouldProjectAlongRoute](self->_locationTracker shouldProjectAlongRoute:{"shouldProjectAlongRoute"), self->_locationProjectionTime + fmin(v13, 1.0)}];
 
-        v14 = [v8 stepIndex];
-        if (v14 != [v9 stepIndex])
+        stepIndex = [v8 stepIndex];
+        if (stepIndex != [v9 stepIndex])
         {
           v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Propagating location shouldn't change step index"];
           v37 = GEOFindOrCreateLog();
@@ -1880,35 +1880,35 @@ LABEL_5:
     }
 
     [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateMatchedLocation:v9];
-    v15 = [(MNRouteManager *)self->_routeManager currentRoute];
-    v16 = [(MNNavigationSessionState *)self->_navigationSessionState location];
-    v17 = [v16 stepIndex];
+    currentRoute = [(MNRouteManager *)self->_routeManager currentRoute];
+    location = [(MNNavigationSessionState *)self->_navigationSessionState location];
+    stepIndex2 = [location stepIndex];
 
-    v18 = [v8 stepIndex];
-    if (v17 != v18)
+    stepIndex3 = [v8 stepIndex];
+    if (stepIndex2 != stepIndex3)
     {
-      v19 = v18;
-      v20 = [v8 routeMatch];
-      v21 = [v20 segmentIndex];
+      v19 = stepIndex3;
+      routeMatch = [v8 routeMatch];
+      segmentIndex = [routeMatch segmentIndex];
 
-      [(GEOObserverHashTable *)self->_observers navigationSession:self matchedToStepIndex:v19 segmentIndex:v21];
+      [(GEOObserverHashTable *)self->_observers navigationSession:self matchedToStepIndex:v19 segmentIndex:segmentIndex];
       if (v19 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v22 = [v15 stepAtIndex:v19];
-        v23 = [v22 firstNameOrBranch];
+        v22 = [currentRoute stepAtIndex:v19];
+        firstNameOrBranch = [v22 firstNameOrBranch];
 
-        [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateStepNameInfo:v23];
+        [(GEOObserverHashTable *)self->_observers navigationSession:self didUpdateStepNameInfo:firstNameOrBranch];
       }
     }
 
     if ([v8 state] == 1)
     {
-      v24 = [(MNNavigationSessionState *)self->_navigationSessionState upcomingAnchorPointIndex];
-      v25 = [v15 anchorPoints];
-      v26 = [v8 routeMatch];
-      v27 = [v25 nextAnchorPointIndexAfter:{objc_msgSend(v26, "routeCoordinate")}];
+      upcomingAnchorPointIndex = [(MNNavigationSessionState *)self->_navigationSessionState upcomingAnchorPointIndex];
+      anchorPoints = [currentRoute anchorPoints];
+      routeMatch2 = [v8 routeMatch];
+      v27 = [anchorPoints nextAnchorPointIndexAfter:{objc_msgSend(routeMatch2, "routeCoordinate")}];
 
-      if (v24 != v27)
+      if (upcomingAnchorPointIndex != v27)
       {
         [(MNNavigationSessionState *)self->_navigationSessionState setUpcomingAnchorPointIndex:v27];
         v28 = [[_TtC10Navigation61MNNavigationServiceCallback_DidUpdateUpcomingAnchorPointIndex alloc] initWithAnchorPointIndex:v27];
@@ -1927,16 +1927,16 @@ LABEL_5:
     [(MNTimeAndDistanceUpdater *)self->_timeAndDistanceUpdater setLocation:v8 notificationType:1];
     [(MNLocationTracker *)self->_locationTracker updateLocation:v8];
     [(MNNavigationSession *)self _addProbeCrumbLocation:v8];
-    v29 = [v8 routeMatch];
-    v30 = [v29 route];
-    v31 = [(MNNavigationSession *)self routeManager];
-    v32 = [v31 currentRoute];
+    routeMatch3 = [v8 routeMatch];
+    route = [routeMatch3 route];
+    routeManager = [(MNNavigationSession *)self routeManager];
+    currentRoute2 = [routeManager currentRoute];
 
-    if (v30 == v32)
+    if (route == currentRoute2)
     {
       guidanceManager = self->_guidanceManager;
-      v34 = [(MNNavigationSession *)self locationTracker];
-      -[MNGuidanceManager updateGuidanceForLocation:navigatorState:](guidanceManager, "updateGuidanceForLocation:navigatorState:", v8, [v34 state]);
+      locationTracker = [(MNNavigationSession *)self locationTracker];
+      -[MNGuidanceManager updateGuidanceForLocation:navigatorState:](guidanceManager, "updateGuidanceForLocation:navigatorState:", v8, [locationTracker state]);
     }
 
     [(GEOObserverHashTable *)self->_observers navigationSessionDidFinishLocationUpdate:self];

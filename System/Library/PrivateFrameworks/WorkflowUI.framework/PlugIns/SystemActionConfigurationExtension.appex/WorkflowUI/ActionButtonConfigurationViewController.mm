@@ -1,5 +1,5 @@
 @interface ActionButtonConfigurationViewController
-- (_TtC34SystemActionConfigurationExtension39ActionButtonConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC34SystemActionConfigurationExtension39ActionButtonConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000522C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000057B0();
 }
 
-- (_TtC34SystemActionConfigurationExtension39ActionButtonConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC34SystemActionConfigurationExtension39ActionButtonConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1000135EC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1000058B4();
 }
 

@@ -12,11 +12,11 @@
 {
   v7.receiver = self;
   v7.super_class = SBHomeButtonPressMesaUnlockTrigger;
-  v3 = [(SBMesaUnlockTrigger *)&v7 succinctDescriptionBuilder];
-  v4 = [v3 appendBool:*(&self->super._authenticated + 2) withName:@"primed"];
-  v5 = [v3 appendBool:*(&self->super._authenticated + 1) withName:@"menuButtonDown"];
+  succinctDescriptionBuilder = [(SBMesaUnlockTrigger *)&v7 succinctDescriptionBuilder];
+  v4 = [succinctDescriptionBuilder appendBool:*(&self->super._authenticated + 2) withName:@"primed"];
+  v5 = [succinctDescriptionBuilder appendBool:*(&self->super._authenticated + 1) withName:@"menuButtonDown"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 - (BOOL)bioUnlock

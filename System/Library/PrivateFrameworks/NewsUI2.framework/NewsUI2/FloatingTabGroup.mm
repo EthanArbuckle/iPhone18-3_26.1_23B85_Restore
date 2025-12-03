@@ -1,10 +1,10 @@
 @interface FloatingTabGroup
-- (_TtC7NewsUI216FloatingTabGroup)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5 children:(id)a6;
+- (_TtC7NewsUI216FloatingTabGroup)initWithIdentifier:(id)identifier title:(id)title image:(id)image children:(id)children;
 @end
 
 @implementation FloatingTabGroup
 
-- (_TtC7NewsUI216FloatingTabGroup)initWithIdentifier:(id)a3 title:(id)a4 image:(id)a5 children:(id)a6
+- (_TtC7NewsUI216FloatingTabGroup)initWithIdentifier:(id)identifier title:(id)title image:(id)image children:(id)children
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

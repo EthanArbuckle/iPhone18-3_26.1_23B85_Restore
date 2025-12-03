@@ -6,7 +6,7 @@
 
 - (double)wl_floatForKey:()Float
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), v2 = 0.0, (objc_opt_isKindOfClass()))
   {

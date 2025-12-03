@@ -1,21 +1,21 @@
 @interface BYPasscodeCacheManager
-- (BOOL)storePasscode:(id)a3;
-- (BYPasscodeCacheManager)initWithFeatureFlags:(id)a3;
+- (BOOL)storePasscode:(id)passcode;
+- (BYPasscodeCacheManager)initWithFeatureFlags:(id)flags;
 - (id)cachedPasscode;
 - (int)_passcodeType;
-- (unint64_t)_secretTypeCorrespondingToPasscodeType:(int)a3;
-- (void)_updateCachedLocalSecret:(id)a3;
-- (void)cachePasscode:(id)a3 retrievable:(BOOL)a4;
+- (unint64_t)_secretTypeCorrespondingToPasscodeType:(int)type;
+- (void)_updateCachedLocalSecret:(id)secret;
+- (void)cachePasscode:(id)passcode retrievable:(BOOL)retrievable;
 - (void)persistPasscodeStash;
 - (void)uncachePasscode;
-- (void)updateCoreCDPStateControllerWithPasscode:(id)a3;
+- (void)updateCoreCDPStateControllerWithPasscode:(id)passcode;
 @end
 
 @implementation BYPasscodeCacheManager
 
-- (BYPasscodeCacheManager)initWithFeatureFlags:(id)a3
+- (BYPasscodeCacheManager)initWithFeatureFlags:(id)flags
 {
-  v5 = a3;
+  flagsCopy = flags;
   v9.receiver = self;
   v9.super_class = BYPasscodeCacheManager;
   v6 = [(BYPasscodeCacheManager *)&v9 init];
@@ -23,19 +23,19 @@
   if (v6)
   {
     v6->_stashedFd = -1;
-    objc_storeStrong(&v6->_featureFlags, a3);
+    objc_storeStrong(&v6->_featureFlags, flags);
   }
 
   return v7;
 }
 
-- (void)cachePasscode:(id)a3 retrievable:(BOOL)a4
+- (void)cachePasscode:(id)passcode retrievable:(BOOL)retrievable
 {
-  v4 = a4;
+  retrievableCopy = retrievable;
   v38[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!self->_isCached && [v6 length])
+  passcodeCopy = passcode;
+  v7 = passcodeCopy;
+  if (!self->_isCached && [passcodeCopy length])
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _buddyFinished, @"com.apple.purplebuddy.setupdone", 0, CFNotificationSuspensionBehaviorCoalesce);
@@ -90,15 +90,15 @@
       _os_log_impl(&dword_1B862F000, v18, OS_LOG_TYPE_DEFAULT, "Keybag stash created successfully", &v28, 2u);
     }
 
-    if (v4)
+    if (retrievableCopy)
     {
       self->_retrievable = [(BYPasscodeCacheManager *)self storePasscode:v7];
     }
 
     v25 = [(BYPasscodeCacheManager *)self featureFlags:v28];
-    v26 = [v25 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+    isUseCDPContextSecretInsteadOfSBDSecretEnabled = [v25 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-    if (v26)
+    if (isUseCDPContextSecretInsteadOfSBDSecretEnabled)
     {
       [(BYPasscodeCacheManager *)self _updateCachedLocalSecret:v7];
     }
@@ -116,17 +116,17 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)storePasscode:(id)a3
+- (BOOL)storePasscode:(id)passcode
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = NSTemporaryDirectory();
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringByAppendingPathComponent:v7];
-  v9 = [v8 fileSystemRepresentation];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  domain = [v5 stringByAppendingPathComponent:uUIDString];
+  fileSystemRepresentation = [domain fileSystemRepresentation];
 
-  v10 = open_dprotected_np(v9, 1794, 1, 0, 384);
+  v10 = open_dprotected_np(fileSystemRepresentation, 1794, 1, 0, 384);
   if (v10 < 0)
   {
     v14 = _BYLoggingFacility();
@@ -150,10 +150,10 @@ LABEL_14:
   }
 
   v11 = v10;
-  if ((unlink(v9) & 0x80000000) == 0)
+  if ((unlink(fileSystemRepresentation) & 0x80000000) == 0)
   {
     v48 = @"passcode";
-    v49[0] = v4;
+    v49[0] = passcodeCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
     v43 = 0;
     v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:v12 format:200 options:0 error:&v43];
@@ -266,8 +266,8 @@ LABEL_44:
         else if (v14)
         {
           v38 = MEMORY[0x1E696AEC0];
-          v8 = [v14 domain];
-          v29 = [v38 stringWithFormat:@"<Error domain: %@, code %ld>", v8, -[NSObject code](v14, "code")];
+          domain = [v14 domain];
+          v29 = [v38 stringWithFormat:@"<Error domain: %@, code %ld>", domain, -[NSObject code](v14, "code")];
           v28 = 1;
         }
 
@@ -341,13 +341,13 @@ LABEL_48:
 - (id)cachedPasscode
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(BYPasscodeCacheManager *)self featureFlags];
-  if ([v4 isUseCDPContextSecretInsteadOfSBDSecretEnabled])
+  featureFlags = [(BYPasscodeCacheManager *)self featureFlags];
+  if ([featureFlags isUseCDPContextSecretInsteadOfSBDSecretEnabled])
   {
-    v5 = [(BYPasscodeCacheManager *)self cachedLocalSecret];
-    v6 = [v5 validatedSecret];
+    cachedLocalSecret = [(BYPasscodeCacheManager *)self cachedLocalSecret];
+    validatedSecret = [cachedLocalSecret validatedSecret];
 
-    if (v6)
+    if (validatedSecret)
     {
       v7 = _BYLoggingFacility();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -357,8 +357,8 @@ LABEL_48:
         _os_log_impl(&dword_1B862F000, v7, OS_LOG_TYPE_DEFAULT, "%s: Returning property value.", &buf, 0xCu);
       }
 
-      v8 = [(BYPasscodeCacheManager *)self cachedLocalSecret];
-      v9 = [v8 validatedSecret];
+      cachedLocalSecret2 = [(BYPasscodeCacheManager *)self cachedLocalSecret];
+      validatedSecret2 = [cachedLocalSecret2 validatedSecret];
       goto LABEL_36;
     }
   }
@@ -370,15 +370,15 @@ LABEL_48:
   stashedFd = self->_stashedFd;
   if (stashedFd < 0)
   {
-    v9 = 0;
+    validatedSecret2 = 0;
     goto LABEL_37;
   }
 
   memset(&buf, 0, sizeof(buf));
   if (fstat(stashedFd, &buf) < 0)
   {
-    v8 = _BYLoggingFacility();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    cachedLocalSecret2 = _BYLoggingFacility();
+    if (os_log_type_enabled(cachedLocalSecret2, OS_LOG_TYPE_DEFAULT))
     {
       v20 = self->_stashedFd;
       v21 = __error();
@@ -387,18 +387,18 @@ LABEL_48:
       *v34 = v20;
       *&v34[4] = 2080;
       *&v34[6] = v22;
-      _os_log_impl(&dword_1B862F000, v8, OS_LOG_TYPE_DEFAULT, "Failed to stat file (%d): %s", v33, 0x12u);
+      _os_log_impl(&dword_1B862F000, cachedLocalSecret2, OS_LOG_TYPE_DEFAULT, "Failed to stat file (%d): %s", v33, 0x12u);
     }
 
-    v9 = 0;
+    validatedSecret2 = 0;
     goto LABEL_36;
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DF88]);
-  v8 = [v11 initWithLength:buf.st_size];
+  cachedLocalSecret2 = [v11 initWithLength:buf.st_size];
   v12 = self->_stashedFd;
-  v13 = [v8 mutableBytes];
-  v14 = pread(v12, v13, buf.st_size, 0);
+  mutableBytes = [cachedLocalSecret2 mutableBytes];
+  v14 = pread(v12, mutableBytes, buf.st_size, 0);
   if (v14 < 0)
   {
     v16 = _BYLoggingFacility();
@@ -421,16 +421,16 @@ LABEL_48:
     if (v14 >= buf.st_size)
     {
       v32 = 0;
-      v25 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:0 format:0 error:&v32];
+      v25 = [MEMORY[0x1E696AE40] propertyListWithData:cachedLocalSecret2 options:0 format:0 error:&v32];
       v16 = v32;
       if (v25)
       {
-        v9 = [v25 objectForKeyedSubscript:@"passcode"];
+        validatedSecret2 = [v25 objectForKeyedSubscript:@"passcode"];
       }
 
       else
       {
-        if ([v8 length])
+        if ([cachedLocalSecret2 length])
         {
           v26 = _BYLoggingFacility();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -444,8 +444,8 @@ LABEL_48:
             else if (v16)
             {
               v29 = MEMORY[0x1E696AEC0];
-              v2 = [v16 domain];
-              v28 = [v29 stringWithFormat:@"<Error domain: %@, code %ld>", v2, -[NSObject code](v16, "code")];
+              domain = [v16 domain];
+              v28 = [v29 stringWithFormat:@"<Error domain: %@, code %ld>", domain, -[NSObject code](v16, "code")];
               v27 = 1;
             }
 
@@ -464,7 +464,7 @@ LABEL_48:
           }
         }
 
-        v9 = 0;
+        validatedSecret2 = 0;
       }
 
       goto LABEL_35;
@@ -485,14 +485,14 @@ LABEL_19:
     }
   }
 
-  v9 = 0;
+  validatedSecret2 = 0;
 LABEL_35:
 
 LABEL_36:
 LABEL_37:
   v30 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return validatedSecret2;
 }
 
 - (void)persistPasscodeStash
@@ -502,14 +502,14 @@ LABEL_37:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateCachedLocalSecret:(id)a3
+- (void)_updateCachedLocalSecret:(id)secret
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  secretCopy = secret;
   v5 = [(BYPasscodeCacheManager *)self _secretTypeCorrespondingToPasscodeType:[(BYPasscodeCacheManager *)self _passcodeType]];
   v6 = _BYLoggingFacility();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (secretCopy)
   {
     if (v7)
     {
@@ -518,7 +518,7 @@ LABEL_37:
       _os_log_impl(&dword_1B862F000, v6, OS_LOG_TYPE_DEFAULT, "%s: Caching secret", &v11, 0xCu);
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E69977F8]) initWithValidatedSecret:v4 secretType:v5];
+    v8 = [objc_alloc(MEMORY[0x1E69977F8]) initWithValidatedSecret:secretCopy secretType:v5];
   }
 
   else
@@ -542,18 +542,18 @@ LABEL_37:
 - (int)_passcodeType
 {
   v4 = 0;
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  [v2 unlockScreenTypeWithOutSimplePasscodeType:&v4];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  [mEMORY[0x1E69ADFB8] unlockScreenTypeWithOutSimplePasscodeType:&v4];
 
   return v4;
 }
 
-- (unint64_t)_secretTypeCorrespondingToPasscodeType:(int)a3
+- (unint64_t)_secretTypeCorrespondingToPasscodeType:(int)type
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = _BYLoggingFacility();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (a3 == -1)
+  if (type == -1)
   {
     if (v5)
     {
@@ -581,9 +581,9 @@ LABEL_37:
   return v6;
 }
 
-- (void)updateCoreCDPStateControllerWithPasscode:(id)a3
+- (void)updateCoreCDPStateControllerWithPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -591,10 +591,10 @@ LABEL_37:
     _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, "Updating CDP StateController", &v15, 2u);
   }
 
-  v6 = [(BYPasscodeCacheManager *)self featureFlags];
-  v7 = [v6 isUseCDPContextSecretInsteadOfSBDSecretEnabled];
+  featureFlags = [(BYPasscodeCacheManager *)self featureFlags];
+  isUseCDPContextSecretInsteadOfSBDSecretEnabled = [featureFlags isUseCDPContextSecretInsteadOfSBDSecretEnabled];
 
-  if (v7)
+  if (isUseCDPContextSecretInsteadOfSBDSecretEnabled)
   {
     v8 = [(BYPasscodeCacheManager *)self _secretTypeCorrespondingToPasscodeType:[(BYPasscodeCacheManager *)self _passcodeType]];
     v20 = 0;
@@ -636,7 +636,7 @@ LABEL_37:
     v13 = v12;
     _Block_object_dispose(&v20, 8);
     v14 = [[v12 alloc] initWithContext:v11];
-    [v14 localSecretChangedTo:v4 secretType:v8 completion:&__block_literal_global_26];
+    [v14 localSecretChangedTo:passcodeCopy secretType:v8 completion:&__block_literal_global_26];
   }
 }
 

@@ -1,24 +1,24 @@
 @interface SBPIPStashView
-- (SBPIPStashView)initWithFrame:(CGRect)a3;
-- (SBPIPStashView)initWithFrame:(CGRect)a3 settings:(id)a4;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (SBPIPStashView)initWithFrame:(CGRect)frame;
+- (SBPIPStashView)initWithFrame:(CGRect)frame settings:(id)settings;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_updateSettingsDerivedValues;
 - (void)dealloc;
 - (void)layoutStashChevrons;
 - (void)layoutSubviews;
-- (void)setBlurProgress:(double)a3;
-- (void)setChevronHidden:(BOOL)a3 left:(BOOL)a4;
+- (void)setBlurProgress:(double)progress;
+- (void)setChevronHidden:(BOOL)hidden left:(BOOL)left;
 @end
 
 @implementation SBPIPStashView
 
-- (SBPIPStashView)initWithFrame:(CGRect)a3 settings:(id)a4
+- (SBPIPStashView)initWithFrame:(CGRect)frame settings:(id)settings
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   v12 = SBLogPIP();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -27,13 +27,13 @@
 
   v44.receiver = self;
   v44.super_class = SBPIPStashView;
-  v13 = [(SBPIPStashView *)&v44 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(SBPIPStashView *)&v44 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_chevronsHidden = 1;
-    v43 = v11;
-    objc_storeStrong(&v13->_settings, a4);
+    height->_chevronsHidden = 1;
+    v43 = settingsCopy;
+    objc_storeStrong(&height->_settings, settings);
     [(PTSettings *)v14->_settings addKeyObserver:v14];
     [(SBPIPStashView *)v14 setAccessibilityIdentifier:@"PG-StashedView"];
     [(UIView *)v14 SBPIP_recursivelyDisallowGroupBlending];
@@ -47,9 +47,9 @@
     v20 = [(SBPIPBackdropView *)v15 initWithFrame:*MEMORY[0x277CBF3A0], v17, v18, v19];
     [(UIView *)v20 SBPIP_setAllowsEdgeAntialiasing:1];
     [(SBPIPBackdropView *)v20 setGaussianBlurRadius:0.0];
-    v21 = [MEMORY[0x277CCAD78] UUID];
-    v22 = [v21 UUIDString];
-    [(SBPIPBackdropView *)v20 setGroupName:v22];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(SBPIPBackdropView *)v20 setGroupName:uUIDString];
 
     [(SBPIPStashView *)v14 addSubview:v20];
     backdropView = v14->_backdropView;
@@ -92,7 +92,7 @@
     [(SBPIPStashView *)v14 addSubview:v38];
     rightChevron = v14->_rightChevron;
     v14->_rightChevron = v38;
-    v11 = v43;
+    settingsCopy = v43;
 
     [(SBPIPStashView *)v14 _updateSettingsDerivedValues];
   }
@@ -100,17 +100,17 @@
   return v14;
 }
 
-- (SBPIPStashView)initWithFrame:(CGRect)a3
+- (SBPIPStashView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[SBPIPSettingsDomain rootSettings];
-  v9 = [v8 stashVisualSettings];
-  v10 = [(SBPIPStashView *)self initWithFrame:v9 settings:x, y, width, height];
+  stashVisualSettings = [v8 stashVisualSettings];
+  height = [(SBPIPStashView *)self initWithFrame:stashVisualSettings settings:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
 - (void)dealloc
@@ -127,35 +127,35 @@
   self->_startBlurThreshold = v3;
   [(SBPIPStashVisualSettings *)self->_settings completeBlurTransition];
   self->_completeBlurThreshold = v4;
-  v5 = [(SBPIPStashVisualSettings *)self->_settings userInterfaceStyle];
-  if (v5)
+  userInterfaceStyle = [(SBPIPStashVisualSettings *)self->_settings userInterfaceStyle];
+  if (userInterfaceStyle)
   {
-    [(SBPIPStashView *)self setOverrideUserInterfaceStyle:v5];
+    [(SBPIPStashView *)self setOverrideUserInterfaceStyle:userInterfaceStyle];
   }
 
-  v6 = [(SBPIPStashView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(SBPIPStashView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  v17 = [(SBPIPStashVisualSettings *)self->_settings materialSettingsForUserInterfaceStyle:v7];
+  v17 = [(SBPIPStashVisualSettings *)self->_settings materialSettingsForUserInterfaceStyle:userInterfaceStyle2];
   darkTintView = self->_darkTintView;
-  v9 = [v17 darkTintColor];
-  [(UIView *)darkTintView setBackgroundColor:v9];
+  darkTintColor = [v17 darkTintColor];
+  [(UIView *)darkTintView setBackgroundColor:darkTintColor];
 
   lightTintView = self->_lightTintView;
-  v11 = [v17 lightTintColor];
-  [(UIView *)lightTintView setBackgroundColor:v11];
+  lightTintColor = [v17 lightTintColor];
+  [(UIView *)lightTintView setBackgroundColor:lightTintColor];
 
   leftChevron = self->_leftChevron;
-  v13 = [v17 chevronTintColor];
-  [(UIImageView *)leftChevron setTintColor:v13];
+  chevronTintColor = [v17 chevronTintColor];
+  [(UIImageView *)leftChevron setTintColor:chevronTintColor];
 
   rightChevron = self->_rightChevron;
-  v15 = [v17 chevronTintColor];
-  [(UIImageView *)rightChevron setTintColor:v15];
+  chevronTintColor2 = [v17 chevronTintColor];
+  [(UIImageView *)rightChevron setTintColor:chevronTintColor2];
 
-  v16 = [v17 chevronCompositingFilter];
-  [(UIImageView *)self->_leftChevron SBPIP_updateVibrancyEffectForTintColorWithFilter:v16];
-  [(UIImageView *)self->_rightChevron SBPIP_updateVibrancyEffectForTintColorWithFilter:v16];
+  chevronCompositingFilter = [v17 chevronCompositingFilter];
+  [(UIImageView *)self->_leftChevron SBPIP_updateVibrancyEffectForTintColorWithFilter:chevronCompositingFilter];
+  [(UIImageView *)self->_rightChevron SBPIP_updateVibrancyEffectForTintColorWithFilter:chevronCompositingFilter];
 }
 
 - (void)layoutSubviews
@@ -318,23 +318,23 @@
   [(UIImageView *)self->_rightChevron layoutIfNeeded];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SBPIPStashView;
   [(SBPIPStashView *)&v5 _setContinuousCornerRadius:?];
-  [(SBPIPBackdropView *)self->_backdropView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_lightTintView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_darkTintView _setContinuousCornerRadius:a3];
+  [(SBPIPBackdropView *)self->_backdropView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_lightTintView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_darkTintView _setContinuousCornerRadius:radius];
 }
 
-- (void)setBlurProgress:(double)a3
+- (void)setBlurProgress:(double)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_blurProgress != a3)
+  if (self->_blurProgress != progress)
   {
-    self->_blurProgress = a3;
-    v4 = (a3 - self->_startBlurThreshold) / (self->_completeBlurThreshold - self->_startBlurThreshold);
+    self->_blurProgress = progress;
+    v4 = (progress - self->_startBlurThreshold) / (self->_completeBlurThreshold - self->_startBlurThreshold);
     v5 = 0.0;
     if (v4 <= 0.0)
     {
@@ -377,12 +377,12 @@
   }
 }
 
-- (void)setChevronHidden:(BOOL)a3 left:(BOOL)a4
+- (void)setChevronHidden:(BOOL)hidden left:(BOOL)left
 {
-  if (self->_chevronsHidden != a3 || self->_isChevronShownLeft != a4)
+  if (self->_chevronsHidden != hidden || self->_isChevronShownLeft != left)
   {
-    self->_chevronsHidden = a3;
-    self->_isChevronShownLeft = a4 & ~a3;
+    self->_chevronsHidden = hidden;
+    self->_isChevronShownLeft = left & ~hidden;
     [(SBPIPStashView *)self layoutStashChevrons];
   }
 }

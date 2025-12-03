@@ -30,7 +30,7 @@
   [v6 setDuration:?];
   v13 = *MEMORY[0x1E695EFF8];
   v14 = *(MEMORY[0x1E695EFF8] + 8);
-  [v6 pkui_updateForAdditiveAnimationFromPoint:a1 toPoint:0.0 withLayerPoint:{*MEMORY[0x1E695EFF8], v14, a1, 0.0}];
+  [v6 pkui_updateForAdditiveAnimationFromPoint:self toPoint:0.0 withLayerPoint:{*MEMORY[0x1E695EFF8], v14, self, 0.0}];
   v15 = [MEMORY[0x1E6979318] animationWithKeyPath:@"position"];
   [v15 setAdditive:1];
   LODWORD(v16) = 1054276898;
@@ -41,12 +41,12 @@
 
   [v15 setDuration:0.100000001];
   [v15 setFillMode:v12];
-  [v15 pkui_updateForAdditiveAnimationFromPoint:v13 toPoint:v14 withLayerPoint:{a1, 0.0, v13, v14}];
-  v20 = [MEMORY[0x1E6979308] animation];
+  [v15 pkui_updateForAdditiveAnimationFromPoint:v13 toPoint:v14 withLayerPoint:{self, 0.0, v13, v14}];
+  animation = [MEMORY[0x1E6979308] animation];
   v27[0] = v6;
   v27[1] = v15;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-  [v20 setAnimations:v21];
+  [animation setAnimations:v21];
 
   [v6 duration];
   v23 = v22;
@@ -62,26 +62,26 @@
   }
 
   [v25 duration];
-  [v20 setDuration:?];
+  [animation setDuration:?];
 
-  return v20;
+  return animation;
 }
 
 - (id)pkui_didStartHandler
 {
-  v1 = [a1 delegate];
+  delegate = [self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 didStartHandler];
+    didStartHandler = [delegate didStartHandler];
   }
 
   else
   {
-    v2 = 0;
+    didStartHandler = 0;
   }
 
-  v3 = _Block_copy(v2);
+  v3 = _Block_copy(didStartHandler);
 
   return v3;
 }
@@ -89,35 +89,35 @@
 - (void)pkui_setDidStartHandler:()PKCAUtilities
 {
   v5 = a3;
-  v4 = [a1 delegate];
-  if (v5 && !v4)
+  delegate = [self delegate];
+  if (v5 && !delegate)
   {
-    v4 = objc_alloc_init(PKUIAnimationDelegate);
-    [a1 setDelegate:v4];
+    delegate = objc_alloc_init(PKUIAnimationDelegate);
+    [self setDelegate:delegate];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PKUIAnimationDelegate *)v4 setDidStartHandler:v5];
+    [(PKUIAnimationDelegate *)delegate setDidStartHandler:v5];
   }
 }
 
 - (id)pkui_completionHandler
 {
-  v1 = [a1 delegate];
+  delegate = [self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 completionHandler];
+    completionHandler = [delegate completionHandler];
   }
 
   else
   {
-    v2 = 0;
+    completionHandler = 0;
   }
 
-  v3 = _Block_copy(v2);
+  v3 = _Block_copy(completionHandler);
 
   return v3;
 }
@@ -125,8 +125,8 @@
 - (void)pkui_setCompletionHandler:()PKCAUtilities
 {
   v6 = a3;
-  v4 = [a1 delegate];
-  if (!v4)
+  delegate = [self delegate];
+  if (!delegate)
   {
     v5 = v6;
     if (!v6)
@@ -134,8 +134,8 @@
       goto LABEL_6;
     }
 
-    v4 = objc_alloc_init(PKUIAnimationDelegate);
-    [a1 setDelegate:v4];
+    delegate = objc_alloc_init(PKUIAnimationDelegate);
+    [self setDelegate:delegate];
   }
 
   objc_opt_class();
@@ -145,7 +145,7 @@
     return;
   }
 
-  [(PKUIAnimationDelegate *)v4 setCompletionHandler:v6];
+  [(PKUIAnimationDelegate *)delegate setCompletionHandler:v6];
 
   v5 = v6;
 LABEL_6:

@@ -1,17 +1,17 @@
 @interface FTRequestStatsResponse_DoubleStat
-- (FTRequestStatsResponse_DoubleStat)initWithFlatbuffData:(id)a3 root:(const DoubleStat *)a4 verify:(BOOL)a5;
+- (FTRequestStatsResponse_DoubleStat)initWithFlatbuffData:(id)data root:(const DoubleStat *)root verify:(BOOL)verify;
 - (NSString)name;
-- (Offset<siri::speech::schema_fb::RequestStatsResponse_::DoubleStat>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::RequestStatsResponse_::DoubleStat>)addObjectToBuffer:(void *)buffer;
 - (double)value;
 - (id)flatbuffData;
 @end
 
 @implementation FTRequestStatsResponse_DoubleStat
 
-- (FTRequestStatsResponse_DoubleStat)initWithFlatbuffData:(id)a3 root:(const DoubleStat *)a4 verify:(BOOL)a5
+- (FTRequestStatsResponse_DoubleStat)initWithFlatbuffData:(id)data root:(const DoubleStat *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTRequestStatsResponse_DoubleStat;
   v10 = [(FTRequestStatsResponse_DoubleStat *)&v25 init];
@@ -20,35 +20,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -114,28 +114,28 @@ LABEL_13:
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::RequestStatsResponse_::DoubleStat>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RequestStatsResponse_::DoubleStat>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTRequestStatsResponse_DoubleStat *)self name];
-  v6 = v5;
-  if (!v5)
+  name = [(FTRequestStatsResponse_DoubleStat *)self name];
+  v6 = name;
+  if (!name)
   {
-    v5 = &stru_284834138;
+    name = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)name UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   [(FTRequestStatsResponse_DoubleStat *)self value];
   v10 = v9;
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 10);
-  v12 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v7);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(a3, 6, v10, 0.0);
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 10);
+  v12 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, uTF8String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(buffer, 6, v10, 0.0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v12 + v11);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v12 + v11);
 }
 
 - (id)flatbuffData

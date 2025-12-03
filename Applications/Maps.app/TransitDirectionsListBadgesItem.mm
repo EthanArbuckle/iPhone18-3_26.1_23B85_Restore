@@ -1,12 +1,12 @@
 @interface TransitDirectionsListBadgesItem
-- (TransitDirectionsListBadgesItem)initWithBadges:(id)a3;
+- (TransitDirectionsListBadgesItem)initWithBadges:(id)badges;
 @end
 
 @implementation TransitDirectionsListBadgesItem
 
-- (TransitDirectionsListBadgesItem)initWithBadges:(id)a3
+- (TransitDirectionsListBadgesItem)initWithBadges:(id)badges
 {
-  v5 = a3;
+  badgesCopy = badges;
   v9.receiver = self;
   v9.super_class = TransitDirectionsListBadgesItem;
   v6 = [(TransitDirectionsListItem *)&v9 initWithInstructions:0];
@@ -14,7 +14,7 @@
   if (v6)
   {
     [(TransitDirectionsListItem *)v6 setType:17];
-    objc_storeStrong(&v7->super._badges, a3);
+    objc_storeStrong(&v7->super._badges, badges);
   }
 
   return v7;

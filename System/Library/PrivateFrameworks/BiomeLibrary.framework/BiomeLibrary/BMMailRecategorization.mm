@@ -1,15 +1,15 @@
 @interface BMMailRecategorization
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMailRecategorization)initWithCategory:(int)a3 previous:(int)a4 scope:(int)a5 sender:(id)a6 domain:(id)a7 language:(id)a8;
-- (BMMailRecategorization)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMailRecategorization)initWithCategory:(int)category previous:(int)previous scope:(int)scope sender:(id)sender domain:(id)domain language:(id)language;
+- (BMMailRecategorization)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMailRecategorization
@@ -58,43 +58,43 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMailRecategorization *)self category];
-    if (v6 != [v5 category])
+    v5 = equalCopy;
+    category = [(BMMailRecategorization *)self category];
+    if (category != [v5 category])
     {
       goto LABEL_12;
     }
 
-    v7 = [(BMMailRecategorization *)self previous];
-    if (v7 != [v5 previous])
+    previous = [(BMMailRecategorization *)self previous];
+    if (previous != [v5 previous])
     {
       goto LABEL_12;
     }
 
-    v8 = [(BMMailRecategorization *)self scope];
-    if (v8 != [v5 scope])
+    scope = [(BMMailRecategorization *)self scope];
+    if (scope != [v5 scope])
     {
       goto LABEL_12;
     }
 
-    v9 = [(BMMailRecategorization *)self sender];
-    v10 = [v5 sender];
-    v11 = v10;
-    if (v9 == v10)
+    sender = [(BMMailRecategorization *)self sender];
+    sender2 = [v5 sender];
+    v11 = sender2;
+    if (sender == sender2)
     {
     }
 
     else
     {
-      v12 = [(BMMailRecategorization *)self sender];
-      v13 = [v5 sender];
-      v14 = [v12 isEqual:v13];
+      sender3 = [(BMMailRecategorization *)self sender];
+      sender4 = [v5 sender];
+      v14 = [sender3 isEqual:sender4];
 
       if (!v14)
       {
@@ -102,18 +102,18 @@
       }
     }
 
-    v16 = [(BMMailRecategorization *)self domain];
-    v17 = [v5 domain];
-    v18 = v17;
-    if (v16 == v17)
+    domain = [(BMMailRecategorization *)self domain];
+    domain2 = [v5 domain];
+    v18 = domain2;
+    if (domain == domain2)
     {
     }
 
     else
     {
-      v19 = [(BMMailRecategorization *)self domain];
-      v20 = [v5 domain];
-      v21 = [v19 isEqual:v20];
+      domain3 = [(BMMailRecategorization *)self domain];
+      domain4 = [v5 domain];
+      v21 = [domain3 isEqual:domain4];
 
       if (!v21)
       {
@@ -125,18 +125,18 @@ LABEL_13:
       }
     }
 
-    v23 = [(BMMailRecategorization *)self language];
-    v24 = [v5 language];
-    if (v23 == v24)
+    language = [(BMMailRecategorization *)self language];
+    language2 = [v5 language];
+    if (language == language2)
     {
       v15 = 1;
     }
 
     else
     {
-      v25 = [(BMMailRecategorization *)self language];
-      v26 = [v5 language];
-      v15 = [v25 isEqual:v26];
+      language3 = [(BMMailRecategorization *)self language];
+      language4 = [v5 language];
+      v15 = [language3 isEqual:language4];
     }
 
     goto LABEL_13;
@@ -154,71 +154,71 @@ LABEL_14:
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailRecategorization category](self, "category")}];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailRecategorization previous](self, "previous")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailRecategorization scope](self, "scope")}];
-  v6 = [(BMMailRecategorization *)self sender];
-  v7 = [(BMMailRecategorization *)self domain];
-  v8 = [(BMMailRecategorization *)self language];
+  sender = [(BMMailRecategorization *)self sender];
+  domain = [(BMMailRecategorization *)self domain];
+  language = [(BMMailRecategorization *)self language];
   v22[0] = @"category";
-  v9 = v3;
+  null = v3;
   if (!v3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v23[0] = v9;
+  v20 = null;
+  v23[0] = null;
   v22[1] = @"previous";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"scope";
-  v11 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v3;
-  v23[2] = v11;
+  v23[2] = null3;
   v22[3] = @"sender";
-  v12 = v6;
-  if (!v6)
+  null4 = sender;
+  if (!sender)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"domain";
-  v13 = v7;
-  if (!v7)
+  null5 = domain;
+  if (!domain)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"language";
-  v14 = v8;
-  if (!v8)
+  null6 = language;
+  if (!language)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
-  if (v8)
+  if (language)
   {
-    if (v7)
+    if (domain)
     {
       goto LABEL_15;
     }
 
 LABEL_23:
 
-    if (v6)
+    if (sender)
     {
       goto LABEL_16;
     }
@@ -226,13 +226,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!domain)
   {
     goto LABEL_23;
   }
 
 LABEL_15:
-  if (v6)
+  if (sender)
   {
     goto LABEL_16;
   }
@@ -276,11 +276,11 @@ LABEL_19:
   return v15;
 }
 
-- (BMMailRecategorization)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMailRecategorization)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"category"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"category"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -294,11 +294,11 @@ LABEL_19:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v19 = 0;
-          v18 = self;
+          selfCopy6 = self;
           goto LABEL_54;
         }
 
@@ -310,7 +310,7 @@ LABEL_19:
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:&v55 count:1];
         v41 = 0;
         v19 = 0;
-        *a4 = [v30 initWithDomain:v31 code:2 userInfo:v8];
+        *error = [v30 initWithDomain:v31 code:2 userInfo:v8];
         goto LABEL_67;
       }
 
@@ -325,7 +325,7 @@ LABEL_19:
     v6 = 0;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"previous"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"previous"];
   v41 = v6;
   if (v8)
   {
@@ -348,7 +348,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (error)
       {
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
         v33 = *MEMORY[0x1E698F240];
@@ -358,21 +358,21 @@ LABEL_16:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
         v44 = 0;
         v19 = 0;
-        *a4 = [v32 initWithDomain:v33 code:2 userInfo:v10];
+        *error = [v32 initWithDomain:v33 code:2 userInfo:v10];
         goto LABEL_69;
       }
 
       v44 = 0;
       v19 = 0;
 LABEL_67:
-      v18 = self;
+      selfCopy6 = self;
       goto LABEL_53;
     }
   }
 
   v44 = 0;
 LABEL_17:
-  v10 = [v4 objectForKeyedSubscript:@"scope"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"scope"];
   v40 = v8;
   if (v10)
   {
@@ -395,7 +395,7 @@ LABEL_24:
         goto LABEL_24;
       }
 
-      if (a4)
+      if (error)
       {
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v35 = *MEMORY[0x1E698F240];
@@ -405,21 +405,21 @@ LABEL_24:
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
         v43 = 0;
         v19 = 0;
-        *a4 = [v34 initWithDomain:v35 code:2 userInfo:v12];
+        *error = [v34 initWithDomain:v35 code:2 userInfo:v12];
         goto LABEL_62;
       }
 
       v43 = 0;
       v19 = 0;
 LABEL_69:
-      v18 = self;
+      selfCopy6 = self;
       goto LABEL_52;
     }
   }
 
   v43 = 0;
 LABEL_25:
-  v12 = [v4 objectForKeyedSubscript:@"sender"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"sender"];
   v38 = v5;
   if (v12)
   {
@@ -433,7 +433,7 @@ LABEL_25:
         goto LABEL_28;
       }
 
-      if (a4)
+      if (error)
       {
         v20 = objc_alloc(MEMORY[0x1E696ABC0]);
         v21 = *MEMORY[0x1E698F240];
@@ -444,21 +444,21 @@ LABEL_25:
         v22 = [v20 initWithDomain:v21 code:2 userInfo:v14];
         v13 = 0;
         v19 = 0;
-        *a4 = v22;
+        *error = v22;
         goto LABEL_64;
       }
 
       v13 = 0;
       v19 = 0;
 LABEL_62:
-      v18 = self;
+      selfCopy6 = self;
       goto LABEL_51;
     }
   }
 
   v13 = 0;
 LABEL_28:
-  v14 = [v4 objectForKeyedSubscript:@"domain"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
   if (v14)
   {
     objc_opt_class();
@@ -471,7 +471,7 @@ LABEL_28:
         goto LABEL_31;
       }
 
-      if (a4)
+      if (error)
       {
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
         v24 = *MEMORY[0x1E698F240];
@@ -482,21 +482,21 @@ LABEL_28:
         v25 = [v23 initWithDomain:v24 code:2 userInfo:v16];
         v15 = 0;
         v19 = 0;
-        *a4 = v25;
+        *error = v25;
         goto LABEL_48;
       }
 
       v15 = 0;
       v19 = 0;
 LABEL_64:
-      v18 = self;
+      selfCopy6 = self;
       goto LABEL_50;
     }
   }
 
   v15 = 0;
 LABEL_31:
-  v16 = [v4 objectForKeyedSubscript:@"language"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"language"];
   if (v16)
   {
     objc_opt_class();
@@ -509,7 +509,7 @@ LABEL_31:
         goto LABEL_34;
       }
 
-      if (a4)
+      if (error)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
@@ -517,21 +517,21 @@ LABEL_31:
         v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"language"];
         v46 = v26;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-        *a4 = [v37 initWithDomain:v36 code:2 userInfo:v27];
+        *error = [v37 initWithDomain:v36 code:2 userInfo:v27];
       }
 
       v17 = 0;
       v19 = 0;
 LABEL_48:
-      v18 = self;
+      selfCopy6 = self;
       goto LABEL_49;
     }
   }
 
   v17 = 0;
 LABEL_34:
-  v18 = -[BMMailRecategorization initWithCategory:previous:scope:sender:domain:language:](self, "initWithCategory:previous:scope:sender:domain:language:", [v6 intValue], objc_msgSend(v44, "intValue"), objc_msgSend(v43, "intValue"), v13, v15, v17);
-  v19 = v18;
+  selfCopy6 = -[BMMailRecategorization initWithCategory:previous:scope:sender:domain:language:](self, "initWithCategory:previous:scope:sender:domain:language:", [v6 intValue], objc_msgSend(v44, "intValue"), objc_msgSend(v43, "intValue"), v13, v15, v17);
+  v19 = selfCopy6;
 LABEL_49:
 
 LABEL_50:
@@ -552,14 +552,14 @@ LABEL_54:
 {
   v3 = objc_opt_new();
   [(BMMailRecategorization *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   category = self->_category;
   PBDataWriterWriteUint32Field();
   previous = self->_previous;
@@ -576,17 +576,17 @@ LABEL_54:
     PBDataWriterWriteStringField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v40.receiver = self;
   v40.super_class = BMMailRecategorization;
   v5 = [(BMEventBase *)&v40 init];
@@ -595,12 +595,12 @@ LABEL_54:
     goto LABEL_74;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -611,18 +611,18 @@ LABEL_54:
       while (1)
       {
         v41 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v41 & 0x7F) << v7;
@@ -639,9 +639,9 @@ LABEL_54:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -688,18 +688,18 @@ LABEL_45:
             while (1)
             {
               v41 = 0;
-              v27 = [v4 position] + 1;
-              if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+              v27 = [fromCopy position] + 1;
+              if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
               {
-                v29 = [v4 data];
-                [v29 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v41 & 0x7F) << v25;
@@ -716,7 +716,7 @@ LABEL_45:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 6)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 6)
             {
 LABEL_60:
               LODWORD(v18) = 0;
@@ -731,18 +731,18 @@ LABEL_60:
             while (1)
             {
               v41 = 0;
-              v32 = [v4 position] + 1;
-              if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+              v32 = [fromCopy position] + 1;
+              if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
               {
-                v34 = [v4 data];
-                [v34 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v41 & 0x7F) << v30;
@@ -759,7 +759,7 @@ LABEL_60:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 6)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 6)
             {
 LABEL_68:
               LODWORD(v18) = 0;
@@ -774,18 +774,18 @@ LABEL_68:
             while (1)
             {
               v41 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v41 & 0x7F) << v16;
@@ -802,7 +802,7 @@ LABEL_68:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_64:
               LODWORD(v18) = 0;
@@ -818,13 +818,13 @@ LABEL_64:
       }
 
 LABEL_71:
-      v37 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v37 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_73:
     v38 = 0;
@@ -845,39 +845,39 @@ LABEL_74:
   v4 = BMMailRecategorizationCategoryAsString([(BMMailRecategorization *)self category]);
   v5 = BMMailRecategorizationCategoryAsString([(BMMailRecategorization *)self previous]);
   v6 = BMMailRecategorizationScopeAsString([(BMMailRecategorization *)self scope]);
-  v7 = [(BMMailRecategorization *)self sender];
-  v8 = [(BMMailRecategorization *)self domain];
-  v9 = [(BMMailRecategorization *)self language];
-  v10 = [v3 initWithFormat:@"BMMailRecategorization with category: %@, previous: %@, scope: %@, sender: %@, domain: %@, language: %@", v4, v5, v6, v7, v8, v9];
+  sender = [(BMMailRecategorization *)self sender];
+  domain = [(BMMailRecategorization *)self domain];
+  language = [(BMMailRecategorization *)self language];
+  v10 = [v3 initWithFormat:@"BMMailRecategorization with category: %@, previous: %@, scope: %@, sender: %@, domain: %@, language: %@", v4, v5, v6, sender, domain, language];
 
   return v10;
 }
 
-- (BMMailRecategorization)initWithCategory:(int)a3 previous:(int)a4 scope:(int)a5 sender:(id)a6 domain:(id)a7 language:(id)a8
+- (BMMailRecategorization)initWithCategory:(int)category previous:(int)previous scope:(int)scope sender:(id)sender domain:(id)domain language:(id)language
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  senderCopy = sender;
+  domainCopy = domain;
+  languageCopy = language;
   v20.receiver = self;
   v20.super_class = BMMailRecategorization;
   v18 = [(BMEventBase *)&v20 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    v18->_category = a3;
-    v18->_previous = a4;
-    v18->_scope = a5;
-    objc_storeStrong(&v18->_sender, a6);
-    objc_storeStrong(&v18->_domain, a7);
-    objc_storeStrong(&v18->_language, a8);
+    v18->_category = category;
+    v18->_previous = previous;
+    v18->_scope = scope;
+    objc_storeStrong(&v18->_sender, sender);
+    objc_storeStrong(&v18->_domain, domain);
+    objc_storeStrong(&v18->_language, language);
   }
 
   return v18;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -885,8 +885,8 @@ LABEL_74:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMailRecategorization alloc] initByReadFrom:v7];
     v4 = v8;

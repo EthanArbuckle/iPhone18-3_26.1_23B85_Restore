@@ -1,22 +1,22 @@
 @interface TIWordSearchChinesePhoneticOperationGetCandidates
-- (TIWordSearchChinesePhoneticOperationGetCandidates)initWithWordSearch:(id)a3 inputString:(id)a4 keyboardInput:(id)a5 segmentBreakIndex:(unint64_t)a6 disambiguationCandidates:(id)a7 unambiguousSyllableCount:(unint64_t)a8 selectedDisambiguationCandidateIndex:(unint64_t)a9 regenerateDisambiguationCandidates:(BOOL)a10 predictionEnabled:(BOOL)a11 reanalysisMode:(BOOL)a12 target:(id)a13 action:(SEL)a14 geometryModelData:(id)a15 hardwareKeyboardMode:(BOOL)a16 logger:(id)a17;
+- (TIWordSearchChinesePhoneticOperationGetCandidates)initWithWordSearch:(id)search inputString:(id)string keyboardInput:(id)input segmentBreakIndex:(unint64_t)index disambiguationCandidates:(id)candidates unambiguousSyllableCount:(unint64_t)count selectedDisambiguationCandidateIndex:(unint64_t)candidateIndex regenerateDisambiguationCandidates:(BOOL)self0 predictionEnabled:(BOOL)self1 reanalysisMode:(BOOL)self2 target:(id)self3 action:(SEL)self4 geometryModelData:(id)self5 hardwareKeyboardMode:(BOOL)self6 logger:(id)self7;
 @end
 
 @implementation TIWordSearchChinesePhoneticOperationGetCandidates
 
-- (TIWordSearchChinesePhoneticOperationGetCandidates)initWithWordSearch:(id)a3 inputString:(id)a4 keyboardInput:(id)a5 segmentBreakIndex:(unint64_t)a6 disambiguationCandidates:(id)a7 unambiguousSyllableCount:(unint64_t)a8 selectedDisambiguationCandidateIndex:(unint64_t)a9 regenerateDisambiguationCandidates:(BOOL)a10 predictionEnabled:(BOOL)a11 reanalysisMode:(BOOL)a12 target:(id)a13 action:(SEL)a14 geometryModelData:(id)a15 hardwareKeyboardMode:(BOOL)a16 logger:(id)a17
+- (TIWordSearchChinesePhoneticOperationGetCandidates)initWithWordSearch:(id)search inputString:(id)string keyboardInput:(id)input segmentBreakIndex:(unint64_t)index disambiguationCandidates:(id)candidates unambiguousSyllableCount:(unint64_t)count selectedDisambiguationCandidateIndex:(unint64_t)candidateIndex regenerateDisambiguationCandidates:(BOOL)self0 predictionEnabled:(BOOL)self1 reanalysisMode:(BOOL)self2 target:(id)self3 action:(SEL)self4 geometryModelData:(id)self5 hardwareKeyboardMode:(BOOL)self6 logger:(id)self7
 {
-  v28 = a7;
+  candidatesCopy = candidates;
   v29.receiver = self;
   v29.super_class = TIWordSearchChinesePhoneticOperationGetCandidates;
-  v22 = [(TIWordSearchOperationGetCandidates *)&v29 initWithWordSearch:a3 inputString:a4 keyboardInput:a5 segmentBreakIndex:a6 predictionEnabled:a11 reanalysisMode:a12 autocapitalizationType:0 target:a13 action:a14 geometryModelData:a15 hardwareKeyboardMode:a16 logger:a17];
+  v22 = [(TIWordSearchOperationGetCandidates *)&v29 initWithWordSearch:search inputString:string keyboardInput:input segmentBreakIndex:index predictionEnabled:enabled reanalysisMode:mode autocapitalizationType:0 target:target action:action geometryModelData:data hardwareKeyboardMode:keyboardMode logger:logger];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_disambiguationCandidates, a7);
-    v23->_unambiguousSyllableCount = a8;
-    v23->_selectedDisambiguationCandidateIndex = a9;
-    v23->_regenerateDisambiguationCandidates = a10;
+    objc_storeStrong(&v22->_disambiguationCandidates, candidates);
+    v23->_unambiguousSyllableCount = count;
+    v23->_selectedDisambiguationCandidateIndex = candidateIndex;
+    v23->_regenerateDisambiguationCandidates = disambiguationCandidates;
     [(TIWordSearchOperationGetCandidates *)v23 checkForCachedResults];
   }
 

@@ -1,14 +1,14 @@
 @interface _ATXNeuralNetworkBuilder
-- (_ATXNeuralNetworkBuilder)initWithInputSize:(unint64_t)a3;
+- (_ATXNeuralNetworkBuilder)initWithInputSize:(unint64_t)size;
 - (id)serialize;
-- (void)addHiddenLayer:(unint64_t)a3 weights:(const float *)a4 bias:(const float *)a5 activation:(unsigned __int8)a6 skip:(BOOL)a7;
-- (void)addOutputLayer:(unint64_t)a3 weights:(const float *)a4 bias:(const float *)a5 activation:(unsigned __int8)a6 softmax:(BOOL)a7;
+- (void)addHiddenLayer:(unint64_t)layer weights:(const float *)weights bias:(const float *)bias activation:(unsigned __int8)activation skip:(BOOL)skip;
+- (void)addOutputLayer:(unint64_t)layer weights:(const float *)weights bias:(const float *)bias activation:(unsigned __int8)activation softmax:(BOOL)softmax;
 - (void)serialize;
 @end
 
 @implementation _ATXNeuralNetworkBuilder
 
-- (_ATXNeuralNetworkBuilder)initWithInputSize:(unint64_t)a3
+- (_ATXNeuralNetworkBuilder)initWithInputSize:(unint64_t)size
 {
   v11.receiver = self;
   v11.super_class = _ATXNeuralNetworkBuilder;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_prevSize = a3;
+    v4->_prevSize = size;
     v4->_nlayers = 0;
     v6 = objc_opt_new();
     descriptors = v5->_descriptors;
@@ -32,19 +32,19 @@
   return v5;
 }
 
-- (void)addHiddenLayer:(unint64_t)a3 weights:(const float *)a4 bias:(const float *)a5 activation:(unsigned __int8)a6 skip:(BOOL)a7
+- (void)addHiddenLayer:(unint64_t)layer weights:(const float *)weights bias:(const float *)bias activation:(unsigned __int8)activation skip:(BOOL)skip
 {
-  v7 = a7;
+  skipCopy = skip;
   if (self->_done)
   {
     [_ATXNeuralNetworkBuilder addHiddenLayer:weights:bias:activation:skip:];
-    if (a3)
+    if (layer)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a3)
+  else if (layer)
   {
     goto LABEL_3;
   }
@@ -53,35 +53,35 @@
 LABEL_3:
   prevSize = self->_prevSize;
   v20 = prevSize;
-  v21 = a3;
+  layerCopy = layer;
   v22 = 0;
   v23 = 0;
-  v24 = a6;
-  v25 = v7;
+  activationCopy = activation;
+  v25 = skipCopy;
   v26 = 0;
-  if (!v7)
+  if (!skipCopy)
   {
     prevSize = 0;
   }
 
-  self->_prevSize = prevSize + a3;
+  self->_prevSize = prevSize + layer;
   [(NSMutableData *)self->_descriptors appendBytes:&v20 length:20];
   weightsAndBiases = self->_weightsAndBiases;
   v15 = objc_alloc(MEMORY[0x277CBEA90]);
-  v16 = [v15 initWithBytes:a4 length:4 * v21 * v20];
+  v16 = [v15 initWithBytes:weights length:4 * layerCopy * v20];
   [(NSMutableArray *)weightsAndBiases addObject:v16];
 
   v17 = self->_weightsAndBiases;
   v18 = objc_alloc(MEMORY[0x277CBEA90]);
-  v19 = [v18 initWithBytes:a5 length:4 * v21];
-  [(NSMutableArray *)v17 addObject:v19];
+  layerCopy = [v18 initWithBytes:bias length:4 * layerCopy];
+  [(NSMutableArray *)v17 addObject:layerCopy];
 
   ++self->_nlayers;
 }
 
-- (void)addOutputLayer:(unint64_t)a3 weights:(const float *)a4 bias:(const float *)a5 activation:(unsigned __int8)a6 softmax:(BOOL)a7
+- (void)addOutputLayer:(unint64_t)layer weights:(const float *)weights bias:(const float *)bias activation:(unsigned __int8)activation softmax:(BOOL)softmax
 {
-  v11 = a3;
+  layerCopy = layer;
   if (self->_haveOutputLayer)
   {
     [_ATXNeuralNetworkBuilder addOutputLayer:weights:bias:activation:softmax:];
@@ -93,22 +93,22 @@ LABEL_3:
   }
 
   prevSize = self->_prevSize;
-  v20 = v11;
+  v20 = layerCopy;
   v21 = 0;
   v22 = 0;
-  v23 = a6;
+  activationCopy = activation;
   v24 = 0;
-  v25 = a7;
+  softmaxCopy = softmax;
   v26 = 0;
   [(NSMutableData *)self->_descriptors appendBytes:&prevSize length:20];
   weightsAndBiases = self->_weightsAndBiases;
   v14 = objc_alloc(MEMORY[0x277CBEA90]);
-  v15 = [v14 initWithBytes:a4 length:4 * v20 * prevSize];
-  [(NSMutableArray *)weightsAndBiases addObject:v15];
+  prevSize = [v14 initWithBytes:weights length:4 * v20 * prevSize];
+  [(NSMutableArray *)weightsAndBiases addObject:prevSize];
 
   v16 = self->_weightsAndBiases;
   v17 = objc_alloc(MEMORY[0x277CBEA90]);
-  v18 = [v17 initWithBytes:a5 length:4 * v20];
+  v18 = [v17 initWithBytes:bias length:4 * v20];
   [(NSMutableArray *)v16 addObject:v18];
 
   ++self->_nlayers;
@@ -195,7 +195,7 @@ LABEL_3:
 - (void)serialize
 {
   OUTLINED_FUNCTION_1_4();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_18();
   [v0 handleFailureInMethod:@"!_done" object:? file:? lineNumber:? description:?];
 }

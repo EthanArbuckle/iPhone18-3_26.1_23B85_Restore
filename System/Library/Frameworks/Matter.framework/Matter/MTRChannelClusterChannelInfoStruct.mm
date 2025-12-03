@@ -1,6 +1,6 @@
 @interface MTRChannelClusterChannelInfoStruct
 - (MTRChannelClusterChannelInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -39,29 +39,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterChannelInfoStruct);
-  v5 = [(MTRChannelClusterChannelInfoStruct *)self majorNumber];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setMajorNumber:v5];
+  majorNumber = [(MTRChannelClusterChannelInfoStruct *)self majorNumber];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setMajorNumber:majorNumber];
 
-  v6 = [(MTRChannelClusterChannelInfoStruct *)self minorNumber];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setMinorNumber:v6];
+  minorNumber = [(MTRChannelClusterChannelInfoStruct *)self minorNumber];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setMinorNumber:minorNumber];
 
-  v7 = [(MTRChannelClusterChannelInfoStruct *)self name];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setName:v7];
+  name = [(MTRChannelClusterChannelInfoStruct *)self name];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setName:name];
 
-  v8 = [(MTRChannelClusterChannelInfoStruct *)self callSign];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setCallSign:v8];
+  callSign = [(MTRChannelClusterChannelInfoStruct *)self callSign];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setCallSign:callSign];
 
-  v9 = [(MTRChannelClusterChannelInfoStruct *)self affiliateCallSign];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setAffiliateCallSign:v9];
+  affiliateCallSign = [(MTRChannelClusterChannelInfoStruct *)self affiliateCallSign];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setAffiliateCallSign:affiliateCallSign];
 
-  v10 = [(MTRChannelClusterChannelInfoStruct *)self identifier];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setIdentifier:v10];
+  identifier = [(MTRChannelClusterChannelInfoStruct *)self identifier];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setIdentifier:identifier];
 
-  v11 = [(MTRChannelClusterChannelInfoStruct *)self type];
-  [(MTRChannelClusterChannelInfoStruct *)v4 setType:v11];
+  type = [(MTRChannelClusterChannelInfoStruct *)self type];
+  [(MTRChannelClusterChannelInfoStruct *)v4 setType:type];
 
   return v4;
 }

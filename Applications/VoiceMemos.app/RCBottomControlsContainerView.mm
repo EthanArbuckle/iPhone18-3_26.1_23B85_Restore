@@ -1,5 +1,5 @@
 @interface RCBottomControlsContainerView
-- (RCBottomControlsContainerView)initWithFrame:(CGRect)a3;
+- (RCBottomControlsContainerView)initWithFrame:(CGRect)frame;
 - (void)_setupContainerSubviews;
 @end
 
@@ -20,118 +20,118 @@
   v9 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(RCBottomControlsContainerView *)self setTrailingContainerView:v9];
 
-  v10 = [(RCBottomControlsContainerView *)self leadingContainerView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingContainerView = [(RCBottomControlsContainerView *)self leadingContainerView];
+  [leadingContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(RCBottomControlsContainerView *)self leadingContainerView];
-  [(RCBottomControlsContainerView *)self addSubview:v11];
+  leadingContainerView2 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  [(RCBottomControlsContainerView *)self addSubview:leadingContainerView2];
 
-  v12 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  leadingContainerView3 = [(RCBottomControlsContainerView *)self leadingContainerView];
   LODWORD(v13) = 1148846080;
-  [v12 setContentHuggingPriority:0 forAxis:v13];
+  [leadingContainerView3 setContentHuggingPriority:0 forAxis:v13];
 
-  v14 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  leadingContainerView4 = [(RCBottomControlsContainerView *)self leadingContainerView];
   LODWORD(v15) = 1148846080;
-  [v14 setContentCompressionResistancePriority:0 forAxis:v15];
+  [leadingContainerView4 setContentCompressionResistancePriority:0 forAxis:v15];
 
-  v16 = [(RCBottomControlsContainerView *)self trailingContainerView];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  trailingContainerView = [(RCBottomControlsContainerView *)self trailingContainerView];
+  [trailingContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(RCBottomControlsContainerView *)self trailingContainerView];
-  [(RCBottomControlsContainerView *)self addSubview:v17];
+  trailingContainerView2 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  [(RCBottomControlsContainerView *)self addSubview:trailingContainerView2];
 
-  v18 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  trailingContainerView3 = [(RCBottomControlsContainerView *)self trailingContainerView];
   LODWORD(v19) = 1148846080;
-  [v18 setContentHuggingPriority:0 forAxis:v19];
+  [trailingContainerView3 setContentHuggingPriority:0 forAxis:v19];
 
-  v20 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  trailingContainerView4 = [(RCBottomControlsContainerView *)self trailingContainerView];
   LODWORD(v21) = 1148846080;
-  [v20 setContentCompressionResistancePriority:0 forAxis:v21];
+  [trailingContainerView4 setContentCompressionResistancePriority:0 forAxis:v21];
 
-  v22 = [(RCBottomControlsContainerView *)self centerContainerView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  centerContainerView = [(RCBottomControlsContainerView *)self centerContainerView];
+  [centerContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(RCBottomControlsContainerView *)self centerContainerView];
-  [(RCBottomControlsContainerView *)self addSubview:v23];
+  centerContainerView2 = [(RCBottomControlsContainerView *)self centerContainerView];
+  [(RCBottomControlsContainerView *)self addSubview:centerContainerView2];
 
-  v24 = [(RCBottomControlsContainerView *)self centerContainerView];
+  centerContainerView3 = [(RCBottomControlsContainerView *)self centerContainerView];
   LODWORD(v25) = 1148846080;
-  [v24 setContentHuggingPriority:0 forAxis:v25];
+  [centerContainerView3 setContentHuggingPriority:0 forAxis:v25];
 
-  v26 = [(RCBottomControlsContainerView *)self centerContainerView];
+  centerContainerView4 = [(RCBottomControlsContainerView *)self centerContainerView];
   LODWORD(v27) = 1148846080;
-  [v26 setContentCompressionResistancePriority:0 forAxis:v27];
+  [centerContainerView4 setContentCompressionResistancePriority:0 forAxis:v27];
 
   v28 = +[RCRecorderStyleProvider sharedStyleProvider];
   [v28 bottomControlsContainerLeadingTrailingPadding];
   v30 = v29;
 
-  v77 = [(RCBottomControlsContainerView *)self leadingContainerView];
-  v76 = [v77 leadingAnchor];
-  v75 = [(RCBottomControlsContainerView *)self leadingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75 constant:v30];
+  leadingContainerView5 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  leadingAnchor = [leadingContainerView5 leadingAnchor];
+  leadingAnchor2 = [(RCBottomControlsContainerView *)self leadingAnchor];
+  v74 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v30];
   v78[0] = v74;
-  v73 = [(RCBottomControlsContainerView *)self leadingContainerView];
-  v72 = [v73 topAnchor];
-  v71 = [(RCBottomControlsContainerView *)self topAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  leadingContainerView6 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  topAnchor = [leadingContainerView6 topAnchor];
+  topAnchor2 = [(RCBottomControlsContainerView *)self topAnchor];
+  v70 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v78[1] = v70;
-  v69 = [(RCBottomControlsContainerView *)self leadingContainerView];
-  v68 = [v69 bottomAnchor];
-  v67 = [(RCBottomControlsContainerView *)self bottomAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  leadingContainerView7 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  bottomAnchor = [leadingContainerView7 bottomAnchor];
+  bottomAnchor2 = [(RCBottomControlsContainerView *)self bottomAnchor];
+  v66 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v78[2] = v66;
-  v65 = [(RCBottomControlsContainerView *)self trailingContainerView];
-  v64 = [v65 trailingAnchor];
-  v63 = [(RCBottomControlsContainerView *)self trailingAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:-v30];
+  trailingContainerView5 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  trailingAnchor = [trailingContainerView5 trailingAnchor];
+  trailingAnchor2 = [(RCBottomControlsContainerView *)self trailingAnchor];
+  v62 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v30];
   v78[3] = v62;
-  v61 = [(RCBottomControlsContainerView *)self trailingContainerView];
-  v60 = [v61 topAnchor];
-  v59 = [(RCBottomControlsContainerView *)self topAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  trailingContainerView6 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  topAnchor3 = [trailingContainerView6 topAnchor];
+  topAnchor4 = [(RCBottomControlsContainerView *)self topAnchor];
+  v58 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v78[4] = v58;
-  v57 = [(RCBottomControlsContainerView *)self trailingContainerView];
-  v56 = [v57 bottomAnchor];
-  v55 = [(RCBottomControlsContainerView *)self bottomAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  trailingContainerView7 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  bottomAnchor3 = [trailingContainerView7 bottomAnchor];
+  bottomAnchor4 = [(RCBottomControlsContainerView *)self bottomAnchor];
+  v54 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v78[5] = v54;
-  v53 = [(RCBottomControlsContainerView *)self centerContainerView];
-  v52 = [v53 centerXAnchor];
-  v51 = [(RCBottomControlsContainerView *)self centerXAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  centerContainerView5 = [(RCBottomControlsContainerView *)self centerContainerView];
+  centerXAnchor = [centerContainerView5 centerXAnchor];
+  centerXAnchor2 = [(RCBottomControlsContainerView *)self centerXAnchor];
+  v50 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v78[6] = v50;
-  v49 = [(RCBottomControlsContainerView *)self centerContainerView];
-  v48 = [v49 topAnchor];
-  v47 = [(RCBottomControlsContainerView *)self topAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  centerContainerView6 = [(RCBottomControlsContainerView *)self centerContainerView];
+  topAnchor5 = [centerContainerView6 topAnchor];
+  topAnchor6 = [(RCBottomControlsContainerView *)self topAnchor];
+  v46 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v78[7] = v46;
-  v45 = [(RCBottomControlsContainerView *)self centerContainerView];
-  v44 = [v45 bottomAnchor];
-  v43 = [(RCBottomControlsContainerView *)self bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  centerContainerView7 = [(RCBottomControlsContainerView *)self centerContainerView];
+  bottomAnchor5 = [centerContainerView7 bottomAnchor];
+  bottomAnchor6 = [(RCBottomControlsContainerView *)self bottomAnchor];
+  v42 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v78[8] = v42;
-  v41 = [(RCBottomControlsContainerView *)self leadingContainerView];
-  v31 = [v41 trailingAnchor];
-  v32 = [(RCBottomControlsContainerView *)self centerContainerView];
-  v33 = [v32 leadingAnchor];
-  v34 = [v31 constraintLessThanOrEqualToAnchor:v33];
+  leadingContainerView8 = [(RCBottomControlsContainerView *)self leadingContainerView];
+  trailingAnchor3 = [leadingContainerView8 trailingAnchor];
+  centerContainerView8 = [(RCBottomControlsContainerView *)self centerContainerView];
+  leadingAnchor3 = [centerContainerView8 leadingAnchor];
+  v34 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor3];
   v78[9] = v34;
-  v35 = [(RCBottomControlsContainerView *)self trailingContainerView];
-  v36 = [v35 leadingAnchor];
-  v37 = [(RCBottomControlsContainerView *)self centerContainerView];
-  v38 = [v37 trailingAnchor];
-  v39 = [v36 constraintGreaterThanOrEqualToAnchor:v38];
+  trailingContainerView8 = [(RCBottomControlsContainerView *)self trailingContainerView];
+  leadingAnchor4 = [trailingContainerView8 leadingAnchor];
+  centerContainerView9 = [(RCBottomControlsContainerView *)self centerContainerView];
+  trailingAnchor4 = [centerContainerView9 trailingAnchor];
+  v39 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
   v78[10] = v39;
   v40 = [NSArray arrayWithObjects:v78 count:11];
   [NSLayoutConstraint activateConstraints:v40];
 }
 
-- (RCBottomControlsContainerView)initWithFrame:(CGRect)a3
+- (RCBottomControlsContainerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RCBottomControlsContainerView;
-  v3 = [(RCBottomControlsContainerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCBottomControlsContainerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

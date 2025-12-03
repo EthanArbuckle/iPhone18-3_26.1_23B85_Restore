@@ -1,6 +1,6 @@
 @interface NotificationObserver
-+ (void)handleNFCNotification:(id)a3;
-- (void)handleNFCNotification:(id)a3;
++ (void)handleNFCNotification:(id)notification;
+- (void)handleNFCNotification:(id)notification;
 - (void)timezoneChanged;
 @end
 
@@ -8,22 +8,22 @@
 
 - (void)timezoneChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017F8F4();
 }
 
-- (void)handleNFCNotification:(id)a3
+- (void)handleNFCNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100180034(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100180034(notificationCopy);
 }
 
-+ (void)handleNFCNotification:(id)a3
++ (void)handleNFCNotification:(id)notification
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_100180338(v4);
+  notificationCopy = notification;
+  sub_100180338(notificationCopy);
 }
 
 @end

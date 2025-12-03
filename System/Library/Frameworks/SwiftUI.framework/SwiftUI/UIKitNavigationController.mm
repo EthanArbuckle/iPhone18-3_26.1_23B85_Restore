@@ -1,42 +1,42 @@
 @interface UIKitNavigationController
 - (NSArray)_swiftui_viewControllers;
-- (_TtC7SwiftUI25UIKitNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC7SwiftUI25UIKitNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_observeScrollViewGeometryAffectingContentBottomDidChange:(id)a3;
-- (void)_swiftui_pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)_swiftui_setViewControllers:(id)a3;
-- (void)_swiftui_setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7SwiftUI25UIKitNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC7SwiftUI25UIKitNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_observeScrollViewGeometryAffectingContentBottomDidChange:(id)change;
+- (void)_swiftui_pushViewController:(id)controller animated:(BOOL)animated;
+- (void)_swiftui_setViewControllers:(id)controllers;
+- (void)_swiftui_setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIKitNavigationController
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
   type metadata accessor for UIViewController();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
-  UIKitNavigationController.setViewControllers(_:animated:)(v6, a4);
+  selfCopy = self;
+  UIKitNavigationController.setViewControllers(_:animated:)(v6, animated);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UIKitNavigationController.viewWillLayoutSubviews()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for UIKitNavigationController();
   v4 = v7.receiver;
-  [(UIKitNavigationController *)&v7 viewDidAppear:v3];
+  [(UIKitNavigationController *)&v7 viewDidAppear:appearCopy];
   if (![v4 delegate])
   {
     goto LABEL_4;
@@ -46,7 +46,7 @@
   v6 = swift_conformsToProtocol2();
   if (v6)
   {
-    (*(v6 + 8))(v4, v3, ObjectType, v6);
+    (*(v6 + 8))(v4, appearCopy, ObjectType, v6);
     swift_unknownObjectRelease();
 LABEL_4:
 
@@ -56,41 +56,41 @@ LABEL_4:
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  UIKitNavigationController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  UIKitNavigationController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  UIKitNavigationController._observeScrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  UIKitNavigationController._observeScrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)_observeScrollViewGeometryAffectingContentBottomDidChange:(id)a3
+- (void)_observeScrollViewGeometryAffectingContentBottomDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  UIKitNavigationController._observeScrollViewGeometryAffectingContentBottomDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  UIKitNavigationController._observeScrollViewGeometryAffectingContentBottomDidChange(_:)(changeCopy);
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  UIKitNavigationController.pushViewController(_:animated:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  UIKitNavigationController.pushViewController(_:animated:)(controllerCopy, animated);
 }
 
 - (NSArray)_swiftui_viewControllers
 {
-  v2 = self;
-  isa = [(UIKitNavigationController *)v2 viewControllers];
+  selfCopy = self;
+  isa = [(UIKitNavigationController *)selfCopy viewControllers];
   if (!isa)
   {
     type metadata accessor for UIViewController();
@@ -101,43 +101,43 @@ LABEL_4:
   return isa;
 }
 
-- (void)_swiftui_setViewControllers:(id)a3
+- (void)_swiftui_setViewControllers:(id)controllers
 {
   v5 = OBJC_IVAR____TtC7SwiftUI25UIKitNavigationController_allowsNavigationControllerMutations;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI25UIKitNavigationController_allowsNavigationControllerMutations) = 1;
-  v6 = self;
-  [(UIKitNavigationController *)v6 setViewControllers:a3];
+  selfCopy = self;
+  [(UIKitNavigationController *)selfCopy setViewControllers:controllers];
   *(&self->super.super.super.super.isa + v5) = 0;
 }
 
-- (void)_swiftui_setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)_swiftui_setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = OBJC_IVAR____TtC7SwiftUI25UIKitNavigationController_allowsNavigationControllerMutations;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI25UIKitNavigationController_allowsNavigationControllerMutations) = 1;
-  v8 = self;
-  [(UIKitNavigationController *)v8 setViewControllers:a3 animated:v4];
+  selfCopy = self;
+  [(UIKitNavigationController *)selfCopy setViewControllers:controllers animated:animatedCopy];
   *(&self->super.super.super.super.isa + v7) = 0;
 }
 
-- (void)_swiftui_pushViewController:(id)a3 animated:(BOOL)a4
+- (void)_swiftui_pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = OBJC_IVAR____TtC7SwiftUI25UIKitNavigationController_allowsNavigationControllerMutations;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI25UIKitNavigationController_allowsNavigationControllerMutations) = 1;
-  v8 = self;
-  [(UIKitNavigationController *)v8 pushViewController:a3 animated:v4];
+  selfCopy = self;
+  [(UIKitNavigationController *)selfCopy pushViewController:controller animated:animatedCopy];
   *(&self->super.super.super.super.isa + v7) = 0;
 }
 
-- (_TtC7SwiftUI25UIKitNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC7SwiftUI25UIKitNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7SwiftUI25UIKitNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7SwiftUI25UIKitNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

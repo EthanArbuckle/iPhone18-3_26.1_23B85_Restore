@@ -1,11 +1,11 @@
 @interface VSAccountMetadataRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VSAccountMetadataRequest)init;
-- (VSAccountMetadataRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VSAccountMetadataRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAttributeNames:(NSArray *)attributeNames;
 - (void)setFeaturedAccountProviderIdentifiers:(NSArray *)featuredAccountProviderIdentifiers;
 - (void)setSupportedAccountProviderIdentifiers:(NSArray *)supportedAccountProviderIdentifiers;
@@ -27,32 +27,32 @@
   return v2;
 }
 
-- (VSAccountMetadataRequest)initWithCoder:(id)a3
+- (VSAccountMetadataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSAccountMetadataRequest;
   v5 = [(VSAccountMetadataRequest *)&v8 init];
   if (v5)
   {
     v6 = VSAccountMetadataRequestValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSAccountMetadataRequestValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSAccountMetadataRequestValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -65,11 +65,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSAccountMetadataRequestValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }

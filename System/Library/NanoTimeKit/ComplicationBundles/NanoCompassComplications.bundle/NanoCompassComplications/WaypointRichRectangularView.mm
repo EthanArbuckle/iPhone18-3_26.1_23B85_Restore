@@ -1,37 +1,37 @@
 @interface WaypointRichRectangularView
 - (CLKMonochromeFilterProvider)filterProvider;
 - (id)_alwaysVisibleConstraints;
-- (id)_filtersForStyle:(int64_t)a3 fraction:(id)a4;
-- (id)_formattedLabelText:(id)a3 direction:(id)a4;
+- (id)_filtersForStyle:(int64_t)style fraction:(id)fraction;
+- (id)_formattedLabelText:(id)text direction:(id)direction;
 - (id)_threeLineConstraints;
 - (id)_twoLineConstraints;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)labelFont;
 - (id)smallCapsUnitFont;
-- (void)_applyFilters:(id)a3 toViews:(id)a4;
-- (void)_configureSampleWaypoint:(id)a3 color:(id)a4;
-- (void)_updateForMonochrome:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_applyFilters:(id)filters toViews:(id)views;
+- (void)_configureSampleWaypoint:(id)waypoint color:(id)color;
+- (void)_updateForMonochrome:(id)monochrome;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 @end
 
 @implementation WaypointRichRectangularView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v109.receiver = self;
   v109.super_class = WaypointRichRectangularView;
   v6 = [(WaypointRichRectangularView *)&v109 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   v8 = objc_alloc(MEMORY[0x277CCAD78]);
   v11 = objc_msgSend_initWithUUIDString_(v8, v9, @"FE1BCD7B-63A2-4EB3-9EF5-D6A9E506101E", v10);
-  v14 = objc_msgSend_supportsCapability_(v5, v12, v11, v13);
+  v14 = objc_msgSend_supportsCapability_(deviceCopy, v12, v11, v13);
 
   v7->_supportsGossamer = v14;
   v15 = NanoCompassLocalizedString(@"WAYPOINT_RECTANGULAR_COMPLICATION_AWAY_TEXT");
@@ -62,7 +62,7 @@
   tapToActivateText = v7->_tapToActivateText;
   v7->_tapToActivateText = v27;
 
-  objc_msgSend_screenBounds(v5, v29, v30, v31);
+  objc_msgSend_screenBounds(deviceCopy, v29, v30, v31);
   v33 = v32 * 0.042;
   v7->_leftMargin = ceilf(v33);
   v7->_lineSpacing = 0.0;
@@ -73,7 +73,7 @@
 
   objc_msgSend_addLayoutGuide_(v7, v38, v7->_layoutGuide, v39);
   v40 = [WaypointRichRectangularCircleDialView alloc];
-  inited = objc_msgSend_initFullColorImageViewWithDevice_(v40, v41, v5, v42);
+  inited = objc_msgSend_initFullColorImageViewWithDevice_(v40, v41, deviceCopy, v42);
   dialView = v7->_dialView;
   v7->_dialView = inited;
 
@@ -116,7 +116,7 @@
   v91 = v7->_dialView;
   if (v91)
   {
-    objc_msgSend__layoutConstantsForDevice_(v91, v88, v5, v90);
+    objc_msgSend__layoutConstantsForDevice_(v91, v88, deviceCopy, v90);
   }
 
   else
@@ -145,10 +145,10 @@
   return v7;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v259 = a3;
-  v9 = objc_msgSend_metadata(v259, v6, v7, v8);
+  providerCopy = provider;
+  v9 = objc_msgSend_metadata(providerCopy, v6, v7, v8);
   v12 = objc_msgSend_objectForKeyedSubscript_(v9, v10, @"waypoint", v11);
 
   v16 = objc_msgSend_null(MEMORY[0x277CBEB68], v13, v14, v15);
@@ -160,26 +160,26 @@
     v12 = 0;
   }
 
-  v23 = objc_msgSend_metadata(v259, v20, v21, v22);
+  v23 = objc_msgSend_metadata(providerCopy, v20, v21, v22);
   v26 = objc_msgSend_objectForKeyedSubscript_(v23, v24, @"smart", v25);
   v30 = objc_msgSend_BOOLValue(v26, v27, v28, v29);
 
-  v34 = objc_msgSend_metadata(v259, v31, v32, v33);
+  v34 = objc_msgSend_metadata(providerCopy, v31, v32, v33);
   v37 = objc_msgSend_objectForKeyedSubscript_(v34, v35, @"showSampleData", v36);
   v41 = objc_msgSend_BOOLValue(v37, v38, v39, v40);
 
-  v45 = objc_msgSend_metadata(v259, v42, v43, v44);
+  v45 = objc_msgSend_metadata(providerCopy, v42, v43, v44);
   v48 = v45;
   if (!v41)
   {
     v62 = objc_msgSend_objectForKeyedSubscript_(v45, v46, @"nodata", v47);
     v66 = objc_msgSend_BOOLValue(v62, v63, v64, v65);
 
-    v70 = objc_msgSend_metadata(v259, v67, v68, v69);
+    v70 = objc_msgSend_metadata(providerCopy, v67, v68, v69);
     v73 = objc_msgSend_objectForKeyedSubscript_(v70, v71, @"inactive", v72);
     v77 = objc_msgSend_BOOLValue(v73, v74, v75, v76);
 
-    v81 = objc_msgSend_metadata(v259, v78, v79, v80);
+    v81 = objc_msgSend_metadata(providerCopy, v78, v79, v80);
     v84 = objc_msgSend_objectForKeyedSubscript_(v81, v82, @"alwayson", v83);
     v88 = objc_msgSend_BOOLValue(v84, v85, v86, v87);
 
@@ -222,12 +222,12 @@
       *p_waypointDetailsActivatedConstraints = v165;
 
       objc_msgSend_activateConstraints_(MEMORY[0x277CCAAD0], v188, *p_waypointDetailsActivatedConstraints, v189);
-      objc_msgSend_configureWithImageProvider_reason_(self->_dialView, v190, v259, a4);
+      objc_msgSend_configureWithImageProvider_reason_(self->_dialView, v190, providerCopy, reason);
       objc_msgSend_setNeedsLayout(self, v191, v192, v193);
       goto LABEL_28;
     }
 
-    v92 = objc_msgSend_metadata(v259, v89, v90, v91);
+    v92 = objc_msgSend_metadata(providerCopy, v89, v90, v91);
     v49 = objc_msgSend_objectForKeyedSubscript_(v92, v93, @"location", v94);
 
     v98 = objc_msgSend_null(MEMORY[0x277CBEB68], v95, v96, v97);
@@ -239,7 +239,7 @@
       v49 = 0;
     }
 
-    v105 = objc_msgSend_metadata(v259, v102, v103, v104);
+    v105 = objc_msgSend_metadata(providerCopy, v102, v103, v104);
     v108 = objc_msgSend_objectForKeyedSubscript_(v105, v106, @"altitude", v107);
 
     v112 = objc_msgSend_null(MEMORY[0x277CBEB68], v109, v110, v111);
@@ -341,7 +341,7 @@
 
     objc_msgSend_activateConstraints_(MEMORY[0x277CCAAD0], v228, self->_waypointDetailsActivatedConstraints, v229);
 LABEL_26:
-    objc_msgSend_configureWithImageProvider_reason_(self->_dialView, v230, v259, a4);
+    objc_msgSend_configureWithImageProvider_reason_(self->_dialView, v230, providerCopy, reason);
     objc_msgSend_setNeedsLayout(self, v231, v232, v233);
 
     goto LABEL_27;
@@ -349,11 +349,11 @@ LABEL_26:
 
   v49 = objc_msgSend_objectForKeyedSubscript_(v45, v46, @"label", v47);
 
-  v53 = objc_msgSend_metadata(v259, v50, v51, v52);
+  v53 = objc_msgSend_metadata(providerCopy, v50, v51, v52);
   v56 = objc_msgSend_objectForKeyedSubscript_(v53, v54, @"color", v55);
 
   objc_msgSend__configureSampleWaypoint_color_(self, v57, v49, v56);
-  objc_msgSend_configureWithImageProvider_reason_(self->_dialView, v58, v259, a4);
+  objc_msgSend_configureWithImageProvider_reason_(self->_dialView, v58, providerCopy, reason);
   objc_msgSend_setNeedsLayout(self, v59, v60, v61);
 
 LABEL_27:
@@ -503,11 +503,11 @@ LABEL_28:
   return v3;
 }
 
-- (id)_formattedLabelText:(id)a3 direction:(id)a4
+- (id)_formattedLabelText:(id)text direction:(id)direction
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v59 = a4;
-  v6 = a3;
+  directionCopy = direction;
+  textCopy = text;
   v7 = objc_opt_new();
   v8 = objc_alloc(MEMORY[0x277CCA898]);
   v64 = *MEMORY[0x277D740A8];
@@ -526,7 +526,7 @@ LABEL_28:
   v26 = objc_msgSend_smallCapsUnitFont(self, v23, v24, v25);
   v63[1] = v26;
   v28 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v27, v63, v62, 2);
-  v30 = objc_msgSend_initWithString_attributes_(v17, v29, v6, v28);
+  v30 = objc_msgSend_initWithString_attributes_(v17, v29, textCopy, v28);
 
   v31 = objc_alloc(MEMORY[0x277CCA898]);
   v60[0] = v18;
@@ -536,7 +536,7 @@ LABEL_28:
   v39 = objc_msgSend_labelFont(self, v36, v37, v38);
   v61[1] = v39;
   v41 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v40, v61, v60, 2);
-  v43 = objc_msgSend_initWithString_attributes_(v31, v42, v59, v41);
+  v43 = objc_msgSend_initWithString_attributes_(v31, v42, directionCopy, v41);
 
   v44 = NanoCompassLocalizedString(@"WAYPOINT_RECTANGULAR_COMPLICATION_SWAP_DISTANCE_TEXT_ORDER");
   v48 = objc_msgSend_BOOLValue(v44, v45, v46, v47);
@@ -567,12 +567,12 @@ LABEL_28:
   return v7;
 }
 
-- (void)_configureSampleWaypoint:(id)a3 color:(id)a4
+- (void)_configureSampleWaypoint:(id)waypoint color:(id)color
 {
   waypointLabel = self->_waypointLabel;
-  v7 = a4;
-  objc_msgSend_setText_(waypointLabel, v8, a3, v9);
-  objc_msgSend_setTextColor_(self->_waypointLabel, v10, v7, v11);
+  colorCopy = color;
+  objc_msgSend_setText_(waypointLabel, v8, waypoint, v9);
+  objc_msgSend_setTextColor_(self->_waypointLabel, v10, colorCopy, v11);
 
   v21 = formattedDistanceForWaypointComplication(805.0);
   v13 = objc_msgSend__formattedLabelText_direction_(self, v12, v21, self->_awayText);
@@ -583,23 +583,23 @@ LABEL_28:
   objc_msgSend_setAttributedText_(self->_line3Label, v19, v18, v20);
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v8 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, v3, v4, a3);
+  v8 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, v3, v4, fraction);
   objc_msgSend__updateForMonochrome_(self, v6, v8, v7);
 }
 
-- (void)_updateForMonochrome:(id)a3
+- (void)_updateForMonochrome:(id)monochrome
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend__filtersForStyle_fraction_(self, v5, 2, v4);
+  monochromeCopy = monochrome;
+  v6 = objc_msgSend__filtersForStyle_fraction_(self, v5, 2, monochromeCopy);
   dialView = self->_dialView;
   v18[0] = self->_waypointLabel;
   v18[1] = dialView;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v18, 2);
   objc_msgSend__applyFilters_toViews_(self, v10, v6, v9);
-  v12 = objc_msgSend__filtersForStyle_fraction_(self, v11, 0, v4);
+  v12 = objc_msgSend__filtersForStyle_fraction_(self, v11, 0, monochromeCopy);
 
   line3Label = self->_line3Label;
   v17[0] = self->_line2Label;
@@ -608,13 +608,13 @@ LABEL_28:
   objc_msgSend__applyFilters_toViews_(self, v16, v12, v15);
 }
 
-- (id)_filtersForStyle:(int64_t)a3 fraction:(id)a4
+- (id)_filtersForStyle:(int64_t)style fraction:(id)fraction
 {
-  v6 = a4;
-  v10 = v6;
-  if (v6)
+  fractionCopy = fraction;
+  v10 = fractionCopy;
+  if (fractionCopy)
   {
-    objc_msgSend_doubleValue(v6, v7, v8, v9);
+    objc_msgSend_doubleValue(fractionCopy, v7, v8, v9);
     if (CLKFloatEqualsFloat())
     {
       v14 = MEMORY[0x277CBEBF8];
@@ -623,13 +623,13 @@ LABEL_28:
 
     v15 = objc_msgSend_filterProvider(self, v11, v12, v13);
     objc_msgSend_doubleValue(v10, v18, v19, v20);
-    v17 = objc_msgSend_filtersForView_style_fraction_(v15, v21, self, a3);
+    v17 = objc_msgSend_filtersForView_style_fraction_(v15, v21, self, style);
   }
 
   else
   {
     v15 = objc_msgSend_filterProvider(self, v7, v8, v9);
-    v17 = objc_msgSend_filtersForView_style_(v15, v16, self, a3);
+    v17 = objc_msgSend_filtersForView_style_(v15, v16, self, style);
   }
 
   v14 = v17;
@@ -639,16 +639,16 @@ LABEL_7:
   return v14;
 }
 
-- (void)_applyFilters:(id)a3 toViews:(id)a4
+- (void)_applyFilters:(id)filters toViews:(id)views
 {
-  v5 = a3;
+  filtersCopy = filters;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_23BD53C04;
   v9[3] = &unk_278B942B8;
-  v10 = v5;
-  v6 = v5;
-  objc_msgSend_enumerateObjectsUsingBlock_(a4, v7, v9, v8);
+  v10 = filtersCopy;
+  v6 = filtersCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(views, v7, v9, v8);
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

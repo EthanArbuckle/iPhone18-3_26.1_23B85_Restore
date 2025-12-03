@@ -1,27 +1,27 @@
 @interface AVCaptureDataOutputSynchronizer
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)_earliestFollowerSynchronizedDataQueueTimestamp;
 - (AVCaptureDataOutputSynchronizer)initWithDataOutputs:(NSArray *)dataOutputs;
-- (BOOL)_allFollowerSynchronizedDataOutputsContainTimestampEqualToOrGreaterThanLeaderTimestamp:(id *)a3;
-- (int)_computedLeaderSynchronizedDataQueueMaxDepthForDataOutputs:(id)a3;
+- (BOOL)_allFollowerSynchronizedDataOutputsContainTimestampEqualToOrGreaterThanLeaderTimestamp:(id *)timestamp;
+- (int)_computedLeaderSynchronizedDataQueueMaxDepthForDataOutputs:(id)outputs;
 - (void)_adjustSynchronizedDataTimestamps;
-- (void)_appendSynchronizedData:(id)a3 forCaptureOutput:(id)a4;
+- (void)_appendSynchronizedData:(id)data forCaptureOutput:(id)output;
 - (void)_assignTimestampAdjustmentQueueToDataOutputStorageWithCommonProvenance;
 - (void)_dispatchRipenedSynchronizedData;
-- (void)_dispatchSynchronizedDataWithTimestamp:(id *)a3;
-- (void)_overrideDataOutputDelegatesForDelegateCallbackQueue:(id)a3;
-- (void)cameraCalibrationDataOutput:(id)a3 didDropCameraCalibrationDataAtTimestamp:(id *)a4 connection:(id)a5 reason:(int64_t)a6;
-- (void)cameraCalibrationDataOutput:(id)a3 didOutputCameraCalibrationData:(id)a4 timestamp:(id *)a5 connection:(id)a6;
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputMetadataObjectCollections:(id)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)_dispatchSynchronizedDataWithTimestamp:(id *)timestamp;
+- (void)_overrideDataOutputDelegatesForDelegateCallbackQueue:(id)queue;
+- (void)cameraCalibrationDataOutput:(id)output didDropCameraCalibrationDataAtTimestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason;
+- (void)cameraCalibrationDataOutput:(id)output didOutputCameraCalibrationData:(id)data timestamp:(id *)timestamp connection:(id)connection;
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputMetadataObjectCollections:(id)collections fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)dealloc;
-- (void)depthDataOutput:(id)a3 didDropDepthData:(id)a4 timestamp:(id *)a5 connection:(id)a6 reason:(int64_t)a7;
-- (void)depthDataOutput:(id)a3 didOutputDepthData:(id)a4 timestamp:(id *)a5 connection:(id)a6;
-- (void)pointCloudDataOutput:(id)a3 didDropPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6 reason:(int64_t)a7;
-- (void)pointCloudDataOutput:(id)a3 didOutputPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6;
+- (void)depthDataOutput:(id)output didDropDepthData:(id)data timestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason;
+- (void)depthDataOutput:(id)output didOutputDepthData:(id)data timestamp:(id *)timestamp connection:(id)connection;
+- (void)pointCloudDataOutput:(id)output didDropPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason;
+- (void)pointCloudDataOutput:(id)output didOutputPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection;
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateCallbackQueue;
-- (void)visionDataOutput:(id)a3 didDropVisionDataPixelBufferForTimestamp:(id *)a4 connection:(id)a5 reason:(int64_t)a6;
-- (void)visionDataOutput:(id)a3 didOutputVisionDataPixelBuffer:(__CVBuffer *)a4 timestamp:(id *)a5 connection:(id)a6;
+- (void)visionDataOutput:(id)output didDropVisionDataPixelBufferForTimestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason;
+- (void)visionDataOutput:(id)output didOutputVisionDataPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp connection:(id)connection;
 @end
 
 @implementation AVCaptureDataOutputSynchronizer
@@ -103,10 +103,10 @@ LABEL_45:
           }
         }
 
-        v11 = [v10 session];
+        session = [v10 session];
         if (v7)
         {
-          if (v11 != v7)
+          if (session != v7)
           {
             v23 = MEMORY[0x1E695DF30];
             v24 = *MEMORY[0x1E695D940];
@@ -116,8 +116,8 @@ LABEL_45:
 
         else
         {
-          v7 = v11;
-          if (!v11)
+          v7 = session;
+          if (!session)
           {
             v23 = MEMORY[0x1E695DF30];
             v24 = *MEMORY[0x1E695D940];
@@ -275,21 +275,21 @@ LABEL_45:
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v7 = [[AVCaptureSynchronizedSampleBufferData alloc] _initWithSampleBuffer:a4 sampleBufferWasDropped:0];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v7 forCaptureOutput:a3];
+  v7 = [[AVCaptureSynchronizedSampleBufferData alloc] _initWithSampleBuffer:buffer sampleBufferWasDropped:0];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v7 forCaptureOutput:output];
 }
 
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v7 = [[AVCaptureSynchronizedSampleBufferData alloc] _initWithSampleBuffer:a4 sampleBufferWasDropped:1];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v7 forCaptureOutput:a3];
+  v7 = [[AVCaptureSynchronizedSampleBufferData alloc] _initWithSampleBuffer:buffer sampleBufferWasDropped:1];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v7 forCaptureOutput:output];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjectCollections:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjectCollections:(id)collections fromConnection:(id)connection
 {
-  v7 = [a4 sortedArrayUsingComparator:&__block_literal_global_155];
+  v7 = [collections sortedArrayUsingComparator:&__block_literal_global_155];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -310,7 +310,7 @@ LABEL_45:
         }
 
         v12 = [[AVCaptureSynchronizedMetadataObjectData alloc] _initWithMetadataObjectCollection:*(*(&v14 + 1) + 8 * v11)];
-        [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v12 forCaptureOutput:a3];
+        [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v12 forCaptureOutput:output];
 
         ++v11;
       }
@@ -349,73 +349,73 @@ LABEL_3:
   return CMTimeCompare(&time1, &v5);
 }
 
-- (void)depthDataOutput:(id)a3 didOutputDepthData:(id)a4 timestamp:(id *)a5 connection:(id)a6
+- (void)depthDataOutput:(id)output didOutputDepthData:(id)data timestamp:(id *)timestamp connection:(id)connection
 {
   v10 = [AVCaptureSynchronizedDepthData alloc];
-  v12 = *a5;
-  v11 = [(AVCaptureSynchronizedDepthData *)v10 _initWithDepthData:a4 timestamp:&v12 depthDataWasDropped:0 droppedReason:0];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:a3];
+  v12 = *timestamp;
+  v11 = [(AVCaptureSynchronizedDepthData *)v10 _initWithDepthData:data timestamp:&v12 depthDataWasDropped:0 droppedReason:0];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:output];
 }
 
-- (void)depthDataOutput:(id)a3 didDropDepthData:(id)a4 timestamp:(id *)a5 connection:(id)a6 reason:(int64_t)a7
+- (void)depthDataOutput:(id)output didDropDepthData:(id)data timestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason
 {
   v12 = [AVCaptureSynchronizedDepthData alloc];
-  v14 = *a5;
-  v13 = [(AVCaptureSynchronizedDepthData *)v12 _initWithDepthData:a4 timestamp:&v14 depthDataWasDropped:1 droppedReason:a7];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v13 forCaptureOutput:a3];
+  v14 = *timestamp;
+  v13 = [(AVCaptureSynchronizedDepthData *)v12 _initWithDepthData:data timestamp:&v14 depthDataWasDropped:1 droppedReason:reason];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v13 forCaptureOutput:output];
 }
 
-- (void)visionDataOutput:(id)a3 didOutputVisionDataPixelBuffer:(__CVBuffer *)a4 timestamp:(id *)a5 connection:(id)a6
+- (void)visionDataOutput:(id)output didOutputVisionDataPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp connection:(id)connection
 {
   v10 = [AVCaptureSynchronizedVisionData alloc];
-  v12 = *a5;
-  v11 = [(AVCaptureSynchronizedVisionData *)v10 _initWithVisionDataPixelBuffer:a4 timestamp:&v12 visionDataWasDropped:0 droppedReason:0];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:a3];
+  v12 = *timestamp;
+  v11 = [(AVCaptureSynchronizedVisionData *)v10 _initWithVisionDataPixelBuffer:buffer timestamp:&v12 visionDataWasDropped:0 droppedReason:0];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:output];
 }
 
-- (void)visionDataOutput:(id)a3 didDropVisionDataPixelBufferForTimestamp:(id *)a4 connection:(id)a5 reason:(int64_t)a6
+- (void)visionDataOutput:(id)output didDropVisionDataPixelBufferForTimestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason
 {
   v10 = [AVCaptureSynchronizedVisionData alloc];
-  v12 = *a4;
-  v11 = [(AVCaptureSynchronizedVisionData *)v10 _initWithVisionDataPixelBuffer:0 timestamp:&v12 visionDataWasDropped:1 droppedReason:a6];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:a3];
+  v12 = *timestamp;
+  v11 = [(AVCaptureSynchronizedVisionData *)v10 _initWithVisionDataPixelBuffer:0 timestamp:&v12 visionDataWasDropped:1 droppedReason:reason];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:output];
 }
 
-- (void)pointCloudDataOutput:(id)a3 didOutputPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6
+- (void)pointCloudDataOutput:(id)output didOutputPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection
 {
   v10 = [AVCaptureSynchronizedPointCloudData alloc];
-  v12 = *a5;
-  v11 = [(AVCaptureSynchronizedPointCloudData *)v10 _initWithPointCloudDataBuffer:a4 timestamp:&v12 pointCloudDataWasDropped:0 droppedReason:0];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:a3];
+  v12 = *timestamp;
+  v11 = [(AVCaptureSynchronizedPointCloudData *)v10 _initWithPointCloudDataBuffer:data timestamp:&v12 pointCloudDataWasDropped:0 droppedReason:0];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:output];
 }
 
-- (void)pointCloudDataOutput:(id)a3 didDropPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6 reason:(int64_t)a7
+- (void)pointCloudDataOutput:(id)output didDropPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason
 {
   v12 = [AVCaptureSynchronizedPointCloudData alloc];
-  v14 = *a5;
-  v13 = [(AVCaptureSynchronizedPointCloudData *)v12 _initWithPointCloudDataBuffer:a4 timestamp:&v14 pointCloudDataWasDropped:1 droppedReason:a7];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v13 forCaptureOutput:a3];
+  v14 = *timestamp;
+  v13 = [(AVCaptureSynchronizedPointCloudData *)v12 _initWithPointCloudDataBuffer:data timestamp:&v14 pointCloudDataWasDropped:1 droppedReason:reason];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v13 forCaptureOutput:output];
 }
 
-- (void)cameraCalibrationDataOutput:(id)a3 didOutputCameraCalibrationData:(id)a4 timestamp:(id *)a5 connection:(id)a6
+- (void)cameraCalibrationDataOutput:(id)output didOutputCameraCalibrationData:(id)data timestamp:(id *)timestamp connection:(id)connection
 {
   v10 = [AVCaptureSynchronizedCameraCalibrationData alloc];
-  v12 = *a5;
-  v11 = [(AVCaptureSynchronizedCameraCalibrationData *)v10 _initWithCameraCalibrationData:a4 timestamp:&v12 cameraCalibrationDataWasDropped:0 droppedReason:0];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:a3];
+  v12 = *timestamp;
+  v11 = [(AVCaptureSynchronizedCameraCalibrationData *)v10 _initWithCameraCalibrationData:data timestamp:&v12 cameraCalibrationDataWasDropped:0 droppedReason:0];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:output];
 }
 
-- (void)cameraCalibrationDataOutput:(id)a3 didDropCameraCalibrationDataAtTimestamp:(id *)a4 connection:(id)a5 reason:(int64_t)a6
+- (void)cameraCalibrationDataOutput:(id)output didDropCameraCalibrationDataAtTimestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason
 {
   v10 = [AVCaptureSynchronizedCameraCalibrationData alloc];
-  v12 = *a4;
-  v11 = [(AVCaptureSynchronizedCameraCalibrationData *)v10 _initWithCameraCalibrationData:0 timestamp:&v12 cameraCalibrationDataWasDropped:1 droppedReason:a6];
-  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:a3];
+  v12 = *timestamp;
+  v11 = [(AVCaptureSynchronizedCameraCalibrationData *)v10 _initWithCameraCalibrationData:0 timestamp:&v12 cameraCalibrationDataWasDropped:1 droppedReason:reason];
+  [(AVCaptureDataOutputSynchronizer *)self _appendSynchronizedData:v11 forCaptureOutput:output];
 }
 
-- (int)_computedLeaderSynchronizedDataQueueMaxDepthForDataOutputs:(id)a3
+- (int)_computedLeaderSynchronizedDataQueueMaxDepthForDataOutputs:(id)outputs
 {
-  if ([a3 count] == 1)
+  if ([outputs count] == 1)
   {
     return 1;
   }
@@ -566,11 +566,11 @@ LABEL_3:
   }
 }
 
-- (void)_overrideDataOutputDelegatesForDelegateCallbackQueue:(id)a3
+- (void)_overrideDataOutputDelegatesForDelegateCallbackQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    qos_class = dispatch_queue_get_qos_class(a3, 0);
+    qos_class = dispatch_queue_get_qos_class(queue, 0);
   }
 
   else
@@ -599,7 +599,7 @@ LABEL_3:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (a3)
+        if (queue)
         {
           if (qos_class >= 0x16)
           {
@@ -630,13 +630,13 @@ LABEL_3:
   FigSimpleMutexUnlock();
 }
 
-- (void)_appendSynchronizedData:(id)a3 forCaptureOutput:(id)a4
+- (void)_appendSynchronizedData:(id)data forCaptureOutput:(id)output
 {
   FigSimpleMutexLock();
-  v7 = [(NSArray *)self->_internal->dataOutputs indexOfObject:a4];
+  v7 = [(NSArray *)self->_internal->dataOutputs indexOfObject:output];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_internal->dataOutputsStorage objectAtIndexedSubscript:{v7), "synchronizedDataQueue"), "addObject:", a3}];
+    [objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_internal->dataOutputsStorage objectAtIndexedSubscript:{v7), "synchronizedDataQueue"), "addObject:", data}];
     [(AVCaptureDataOutputSynchronizer *)self _dispatchRipenedSynchronizedData];
   }
 
@@ -672,8 +672,8 @@ LABEL_3:
           v51 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v27 = [v4 synchronizedDataQueue];
-          v5 = [v27 countByEnumeratingWithState:&v48 objects:v47 count:16];
+          synchronizedDataQueue = [v4 synchronizedDataQueue];
+          v5 = [synchronizedDataQueue countByEnumeratingWithState:&v48 objects:v47 count:16];
           if (!v5)
           {
             goto LABEL_61;
@@ -687,7 +687,7 @@ LABEL_3:
             {
               if (*v49 != v28)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(synchronizedDataQueue);
               }
 
               v8 = *(*(&v48 + 1) + 8 * j);
@@ -714,8 +714,8 @@ LABEL_3:
               v41 = 0u;
               v42 = 0u;
               *&v43.value = v9;
-              v10 = [v4 timestampAdjustmentsDataQueue];
-              v11 = [v10 countByEnumeratingWithState:&v39 objects:v38 count:16];
+              timestampAdjustmentsDataQueue = [v4 timestampAdjustmentsDataQueue];
+              v11 = [timestampAdjustmentsDataQueue countByEnumeratingWithState:&v39 objects:v38 count:16];
               if (!v11)
               {
                 continue;
@@ -729,7 +729,7 @@ LABEL_3:
                 {
                   if (*v40 != v13)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(timestampAdjustmentsDataQueue);
                   }
 
                   v15 = *(*(&v39 + 1) + 8 * k);
@@ -880,7 +880,7 @@ LABEL_58:
                   v43 = time1;
                 }
 
-                v12 = [v10 countByEnumeratingWithState:&v39 objects:v38 count:16];
+                v12 = [timestampAdjustmentsDataQueue countByEnumeratingWithState:&v39 objects:v38 count:16];
                 if (v12)
                 {
                   continue;
@@ -893,7 +893,7 @@ LABEL_59:
               ;
             }
 
-            v6 = [v27 countByEnumeratingWithState:&v48 objects:v47 count:16];
+            v6 = [synchronizedDataQueue countByEnumeratingWithState:&v48 objects:v47 count:16];
             if (!v6)
             {
 LABEL_61:
@@ -1033,7 +1033,7 @@ LABEL_10:
   return result;
 }
 
-- (void)_dispatchSynchronizedDataWithTimestamp:(id *)a3
+- (void)_dispatchSynchronizedDataWithTimestamp:(id *)timestamp
 {
   FigSimpleMutexCheckIsLockedOnThisThread();
   v5 = self->_internal->weakReference;
@@ -1079,12 +1079,12 @@ LABEL_12:
 
     v18 = time1;
 LABEL_9:
-    time1 = *a3;
+    time1 = *timestamp;
     time2 = v18;
     if (CMTimeCompare(&time1, &time2))
     {
       memset(&time1, 0, sizeof(time1));
-      time2 = *a3;
+      time2 = *timestamp;
       rhs = v18;
       CMTimeSubtract(&time1, &time2, &rhs);
     }
@@ -1099,7 +1099,7 @@ LABEL_9:
   }
 
 LABEL_13:
-  v13 = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeCallbackQueue];
+  activeCallbackQueue = [(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper activeCallbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__AVCaptureDataOutputSynchronizer__dispatchSynchronizedDataWithTimestamp___block_invoke;
@@ -1107,7 +1107,7 @@ LABEL_13:
   block[4] = v5;
   block[5] = self;
   block[6] = v6;
-  dispatch_async(v13, block);
+  dispatch_async(activeCallbackQueue, block);
 }
 
 void __74__AVCaptureDataOutputSynchronizer__dispatchSynchronizedDataWithTimestamp___block_invoke(uint64_t a1)
@@ -1169,10 +1169,10 @@ void __74__AVCaptureDataOutputSynchronizer__dispatchSynchronizedDataWithTimestam
           break;
         }
 
-        v7 = [v3 objectAtIndexedSubscript:0];
-        if (v7)
+        timestamp = [v3 objectAtIndexedSubscript:0];
+        if (timestamp)
         {
-          v7 = [v7 timestamp];
+          timestamp = [timestamp timestamp];
         }
 
         else
@@ -1180,7 +1180,7 @@ void __74__AVCaptureDataOutputSynchronizer__dispatchSynchronizedDataWithTimestam
           memset(&time1, 0, sizeof(time1));
         }
 
-        *&time1.value = OUTLINED_FUNCTION_1_9(v7, v8, v9, v10, v11, v12, v13, v14, v26.value, *&v26.timescale, v26.epoch, v27, v15, time1.value);
+        *&time1.value = OUTLINED_FUNCTION_1_9(timestamp, v8, v9, v10, v11, v12, v13, v14, v26.value, *&v26.timescale, v26.epoch, v27, v15, time1.value);
         time1.epoch = v16;
         if (![(AVCaptureDataOutputSynchronizer *)self _allFollowerSynchronizedDataOutputsContainTimestampEqualToOrGreaterThanLeaderTimestamp:&time1])
         {
@@ -1200,10 +1200,10 @@ LABEL_20:
           break;
         }
 
-        v17 = [v3 objectAtIndexedSubscript:0];
-        if (v17)
+        timestamp2 = [v3 objectAtIndexedSubscript:0];
+        if (timestamp2)
         {
-          v17 = [v17 timestamp];
+          timestamp2 = [timestamp2 timestamp];
         }
 
         else
@@ -1211,13 +1211,13 @@ LABEL_20:
           memset(&time1, 0, sizeof(time1));
         }
 
-        *&v6 = OUTLINED_FUNCTION_1_9(v17, v18, v19, v20, v21, v22, v23, v24, v26.value, *&v26.timescale, v26.epoch, v27, v25, time1.value).n128_u64[0];
+        *&v6 = OUTLINED_FUNCTION_1_9(timestamp2, v18, v19, v20, v21, v22, v23, v24, v26.value, *&v26.timescale, v26.epoch, v27, v25, time1.value).n128_u64[0];
       }
     }
   }
 }
 
-- (BOOL)_allFollowerSynchronizedDataOutputsContainTimestampEqualToOrGreaterThanLeaderTimestamp:(id *)a3
+- (BOOL)_allFollowerSynchronizedDataOutputsContainTimestampEqualToOrGreaterThanLeaderTimestamp:(id *)timestamp
 {
   FigSimpleMutexCheckIsLockedOnThisThread();
   v5 = [(NSArray *)self->_internal->dataOutputsStorage count];
@@ -1264,8 +1264,8 @@ LABEL_12:
         {
           if (!self->_internal->synchronizingVideoAndVisionData || ([v14 dataOutput], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || !v9 || objc_msgSend(v9, "hasCorrespondingVisionData"))
           {
-            v16 = *&a3->var0;
-            var3 = a3->var3;
+            v16 = *&timestamp->var0;
+            var3 = timestamp->var3;
             if (![v14 hasAllExpectedSynchronizedDataForLeaderTimestamp:&v16])
             {
               break;

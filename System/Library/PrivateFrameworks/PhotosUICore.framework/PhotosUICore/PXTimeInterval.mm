@@ -3,25 +3,25 @@
 - (double)beginTime;
 - (double)duration;
 - (double)endTime;
-- (id)addStateTransitionHandler:(id)a3;
-- (void)_notifyStateTransitionHandlersOfTransitionFromState:(int64_t)a3;
+- (id)addStateTransitionHandler:(id)handler;
+- (void)_notifyStateTransitionHandlersOfTransitionFromState:(int64_t)state;
 - (void)beginInterval;
-- (void)beginIntervalWithTimeOverride:(double)a3;
+- (void)beginIntervalWithTimeOverride:(double)override;
 - (void)endInterval;
-- (void)endIntervalWithTimeOverride:(double)a3;
-- (void)removeStateTransitionHandler:(id)a3;
+- (void)endIntervalWithTimeOverride:(double)override;
+- (void)removeStateTransitionHandler:(id)handler;
 - (void)reset;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PXTimeInterval
 
-- (void)_notifyStateTransitionHandlersOfTransitionFromState:(int64_t)a3
+- (void)_notifyStateTransitionHandlersOfTransitionFromState:(int64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PXTimeInterval *)self tokenToTransitionHandler];
-  v4 = [v3 allValues];
-  v5 = [v4 copy];
+  tokenToTransitionHandler = [(PXTimeInterval *)self tokenToTransitionHandler];
+  allValues = [tokenToTransitionHandler allValues];
+  v5 = [allValues copy];
 
   v13 = 0u;
   v14 = 0u;
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)endIntervalWithTimeOverride:(double)a3
+- (void)endIntervalWithTimeOverride:(double)override
 {
   if ([(PXTimeInterval *)self state]== 1)
   {
-    [(PXTimeInterval *)self setEndTime:a3];
+    [(PXTimeInterval *)self setEndTime:override];
 
     [(PXTimeInterval *)self setState:2];
   }
@@ -81,11 +81,11 @@
   [(PXTimeInterval *)self endIntervalWithTimeOverride:Current];
 }
 
-- (void)beginIntervalWithTimeOverride:(double)a3
+- (void)beginIntervalWithTimeOverride:(double)override
 {
   if (([(PXTimeInterval *)self state]| 2) == 2)
   {
-    [(PXTimeInterval *)self setBeginTime:a3];
+    [(PXTimeInterval *)self setBeginTime:override];
 
     [(PXTimeInterval *)self setState:1];
   }
@@ -98,35 +98,35 @@
   [(PXTimeInterval *)self beginIntervalWithTimeOverride:Current];
 }
 
-- (void)removeStateTransitionHandler:(id)a3
+- (void)removeStateTransitionHandler:(id)handler
 {
-  v7 = a3;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXTimeInterval.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"token != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTimeInterval.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"token != nil"}];
   }
 
-  v5 = [(PXTimeInterval *)self tokenToTransitionHandler];
-  [v5 removeObjectForKey:v7];
+  tokenToTransitionHandler = [(PXTimeInterval *)self tokenToTransitionHandler];
+  [tokenToTransitionHandler removeObjectForKey:handlerCopy];
 }
 
-- (id)addStateTransitionHandler:(id)a3
+- (id)addStateTransitionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXTimeInterval.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTimeInterval.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"handler != nil"}];
   }
 
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v5 copy];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v7 = [handlerCopy copy];
   v8 = _Block_copy(v7);
-  v9 = [(PXTimeInterval *)self tokenToTransitionHandler];
-  [v9 setObject:v8 forKeyedSubscript:v6];
+  tokenToTransitionHandler = [(PXTimeInterval *)self tokenToTransitionHandler];
+  [tokenToTransitionHandler setObject:v8 forKeyedSubscript:uUID];
 
-  return v6;
+  return uUID;
 }
 
 - (double)duration
@@ -139,14 +139,14 @@
 
 - (double)endTime
 {
-  v3 = [(PXTimeInterval *)self state];
-  if (v3 == 2)
+  state = [(PXTimeInterval *)self state];
+  if (state == 2)
   {
     return self->_endTime;
   }
 
   result = 0.0;
-  if (v3 == 1)
+  if (state == 1)
   {
 
     return CFAbsoluteTimeGetCurrent();
@@ -157,9 +157,9 @@
 
 - (double)beginTime
 {
-  v3 = [(PXTimeInterval *)self state];
+  state = [(PXTimeInterval *)self state];
   result = 0.0;
-  if ((v3 - 1) <= 1)
+  if ((state - 1) <= 1)
   {
     return self->_beginTime;
   }
@@ -167,11 +167,11 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PXTimeInterval *)self _notifyStateTransitionHandlersOfTransitionFromState:?];
   }
 }

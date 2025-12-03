@@ -1,16 +1,16 @@
 @interface FPFSChecker
-- (BOOL)isDataProtectedFileAtPath:(id)a3 handle:(fpfs_item_handle *)a4;
-- (void)enumerateItemsOnDiskAtURL:(id)a3 detachedRoots:(id)a4 usingFPFS:(BOOL)a5 ioContext:(id *)a6 delegate:(id)a7;
+- (BOOL)isDataProtectedFileAtPath:(id)path handle:(fpfs_item_handle *)handle;
+- (void)enumerateItemsOnDiskAtURL:(id)l detachedRoots:(id)roots usingFPFS:(BOOL)s ioContext:(id *)context delegate:(id)delegate;
 @end
 
 @implementation FPFSChecker
 
-- (BOOL)isDataProtectedFileAtPath:(id)a3 handle:(fpfs_item_handle *)a4
+- (BOOL)isDataProtectedFileAtPath:(id)path handle:(fpfs_item_handle *)handle
 {
   v9 = 0;
   v8 = xmmword_1CF9F4C90;
   memset(v7, 0, 40);
-  if (getattrlist([a3 fileSystemRepresentation], &v8, v7, 0x28uLL, 0x21u) < 0)
+  if (getattrlist([path fileSystemRepresentation], &v8, v7, 0x28uLL, 0x21u) < 0)
   {
     v6 = fp_current_or_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -21,39 +21,39 @@
 
   else if (DWORD2(v7[0]) == 1 && (DWORD1(v7[2]) - 3) >= 0xFFFFFFFE)
   {
-    a4->var5 = DWORD1(v7[0]);
-    *&a4->var0 = *(&v7[1] + 4);
-    *&a4->var2 = vrev64_s32(*(v7 + 12));
-    a4->var4 = 0;
+    handle->var5 = DWORD1(v7[0]);
+    *&handle->var0 = *(&v7[1] + 4);
+    *&handle->var2 = vrev64_s32(*(v7 + 12));
+    handle->var4 = 0;
     return 1;
   }
 
   return 0;
 }
 
-- (void)enumerateItemsOnDiskAtURL:(id)a3 detachedRoots:(id)a4 usingFPFS:(BOOL)a5 ioContext:(id *)a6 delegate:(id)a7
+- (void)enumerateItemsOnDiskAtURL:(id)l detachedRoots:(id)roots usingFPFS:(BOOL)s ioContext:(id *)context delegate:(id)delegate
 {
-  v45 = a6;
-  v44 = a5;
-  v48 = self;
+  contextCopy = context;
+  sCopy = s;
+  selfCopy = self;
   v83 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v47 = a7;
-  v11 = [v10 count];
+  lCopy = l;
+  rootsCopy = roots;
+  delegateCopy = delegate;
+  v11 = [rootsCopy count];
   v42[1] = v42;
   v12 = (v42 - ((8 * v11 + 31) & 0xFFFFFFFFFFFFFFF0));
   bzero(v12, 8 * v11 + 16);
-  v13 = v9;
-  v46 = v9;
-  v14 = [v13 fileSystemRepresentation];
+  v13 = lCopy;
+  v46 = lCopy;
+  fileSystemRepresentation = [v13 fileSystemRepresentation];
   *&v43 = v12;
-  *v12 = v14;
+  *v12 = fileSystemRepresentation;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v15 = v10;
+  v15 = rootsCopy;
   v16 = [v15 countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v16)
   {
@@ -72,9 +72,9 @@
           objc_enumerationMutation(v15);
         }
 
-        v22 = [*(*(&v70 + 1) + 8 * v20) physicalLocation];
-        v23 = v22;
-        *(v19 + 8 * v17) = [v22 fileSystemRepresentation];
+        physicalLocation = [*(*(&v70 + 1) + 8 * v20) physicalLocation];
+        v23 = physicalLocation;
+        *(v19 + 8 * v17) = [physicalLocation fileSystemRepresentation];
 
         ++v17;
         ++v20;
@@ -96,8 +96,8 @@
 
   v25 = v43;
   *(v43 + 8 * v24 + 8) = 0;
-  v26 = v48;
-  *&v48->_itemIsInsideAPackage = 0;
+  v26 = selfCopy;
+  *&selfCopy->_itemIsInsideAPackage = 0;
   v26->_itemIsInsideAnIgnoredFolder = 0;
   v68[0] = 0;
   v68[1] = v68;
@@ -150,13 +150,13 @@ LABEL_28:
         v51 = __84__FPFSChecker_enumerateItemsOnDiskAtURL_detachedRoots_usingFPFS_ioContext_delegate___block_invoke;
         v52 = &unk_1E83C18F8;
         v61 = v30;
-        v62 = v45;
-        v53 = v48;
+        v62 = contextCopy;
+        v53 = selfCopy;
         v58 = v66;
-        v63 = v44;
+        v63 = sCopy;
         v54 = v15;
         v55 = v46;
-        v56 = v47;
+        v56 = delegateCopy;
         v57 = v28;
         v59 = v68;
         v60 = v64;
@@ -170,16 +170,16 @@ LABEL_28:
 
       if (*__error() != 4)
       {
-        if (*__error() != 1 || ![(FPFSChecker *)v48 isDataProtectedFileAtPath:v31 handle:v80])
+        if (*__error() != 1 || ![(FPFSChecker *)selfCopy isDataProtectedFileAtPath:v31 handle:v80])
         {
           v36 = fp_current_or_default_log();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
-            v37 = [v31 fp_obfuscatedPath];
+            fp_obfuscatedPath = [v31 fp_obfuscatedPath];
             fts_ino = v30->fts_ino;
             v39 = *__error();
             v74 = v43;
-            v75 = v37;
+            v75 = fp_obfuscatedPath;
             v76 = 2048;
             v77 = fts_ino;
             v78 = 1024;
@@ -192,7 +192,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        if ([v47 checker:v48 handleLockedItemAtPath:v31 handle:v80])
+        if ([delegateCopy checker:selfCopy handleLockedItemAtPath:v31 handle:v80])
         {
           goto LABEL_26;
         }

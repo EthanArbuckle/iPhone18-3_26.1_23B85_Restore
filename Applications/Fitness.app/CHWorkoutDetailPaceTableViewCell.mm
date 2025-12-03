@@ -1,14 +1,14 @@
 @interface CHWorkoutDetailPaceTableViewCell
-+ (double)preferredHeightForWorkout:(id)a3;
++ (double)preferredHeightForWorkout:(id)workout;
 + (id)_paceFormats;
 - (CHWorkoutDetailPaceSelectionDelegate)paceSelectionDelegate;
-- (CHWorkoutDetailPaceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CHWorkoutDetailPaceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_createLabels;
 - (void)_createSegmentedControl;
 - (void)_createSeparator;
-- (void)_segmentedControlValueDidChange:(id)a3;
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5;
-- (void)setSelectedPaceFormat:(int64_t)a3;
+- (void)_segmentedControlValueDidChange:(id)change;
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator;
+- (void)setSelectedPaceFormat:(int64_t)format;
 @end
 
 @implementation CHWorkoutDetailPaceTableViewCell
@@ -25,11 +25,11 @@
   return v3;
 }
 
-+ (double)preferredHeightForWorkout:(id)a3
++ (double)preferredHeightForWorkout:(id)workout
 {
-  v3 = [a3 workoutActivityType];
+  workoutActivityType = [workout workoutActivityType];
   result = 74.0;
-  if (v3 == 46)
+  if (workoutActivityType == 46)
   {
     return 116.0;
   }
@@ -37,11 +37,11 @@
   return result;
 }
 
-- (CHWorkoutDetailPaceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailPaceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = CHWorkoutDetailPaceTableViewCell;
-  v4 = [(CHWorkoutDetailPaceTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHWorkoutDetailPaceTableViewCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor systemBackgroundColor];
@@ -49,10 +49,10 @@
 
     [(CHWorkoutDetailPaceTableViewCell *)v4 _createSeparator];
     [(CHWorkoutDetailPaceTableViewCell *)v4 _createLabels];
-    v6 = [(CHWorkoutDetailPaceTableViewCell *)v4 contentView];
-    v7 = [v6 heightAnchor];
+    contentView = [(CHWorkoutDetailPaceTableViewCell *)v4 contentView];
+    heightAnchor = [contentView heightAnchor];
     [objc_opt_class() preferredHeightForWorkout:0];
-    v8 = [v7 constraintEqualToConstant:?];
+    v8 = [heightAnchor constraintEqualToConstant:?];
 
     LODWORD(v9) = 1148829696;
     [v8 setPriority:v9];
@@ -80,20 +80,20 @@
   v8 = +[UIColor labelColor];
   [(UILabel *)self->_titleLabel setTextColor:v8];
 
-  v9 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  [v9 addSubview:self->_titleLabel];
+  contentView = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
-  v10 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v11 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:sub_1000B7B88()];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView2 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:sub_1000B7B88()];
 
-  v14 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v15 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  v16 = [v15 topAnchor];
-  v17 = [(UILabel *)self->_titleLabel font];
-  [v17 _scaledValueForValue:28.0];
-  v18 = [v14 constraintGreaterThanOrEqualToAnchor:v16 constant:?];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  contentView3 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  font = [(UILabel *)self->_titleLabel font];
+  [font _scaledValueForValue:28.0];
+  v18 = [firstBaselineAnchor constraintGreaterThanOrEqualToAnchor:topAnchor constant:?];
 
   v19 = [UIFont fu_mediumSausageFontOfSize:30.0];
   v20 = objc_alloc_init(UILabel);
@@ -103,22 +103,22 @@
   [(UILabel *)self->_valueLabel setFont:v19];
   [(UILabel *)self->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v22 = +[ARUIMetricColors paceColors];
-  v23 = [v22 nonGradientTextColor];
-  [(UILabel *)self->_valueLabel setTextColor:v23];
+  nonGradientTextColor = [v22 nonGradientTextColor];
+  [(UILabel *)self->_valueLabel setTextColor:nonGradientTextColor];
 
-  v24 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  [v24 addSubview:self->_valueLabel];
+  contentView4 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  [contentView4 addSubview:self->_valueLabel];
 
-  v25 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  [v25 bringSubviewToFront:self->_titleLabel];
+  contentView5 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  [contentView5 bringSubviewToFront:self->_titleLabel];
 
-  v26 = [(UILabel *)self->_valueLabel leadingAnchor];
-  v27 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  leadingAnchor3 = [(UILabel *)self->_valueLabel leadingAnchor];
+  leadingAnchor4 = [(UILabel *)self->_titleLabel leadingAnchor];
+  v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v29 = [(UILabel *)self->_valueLabel firstBaselineAnchor];
-  v30 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:30.0];
+  firstBaselineAnchor2 = [(UILabel *)self->_valueLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  v31 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:30.0];
 
   v33[0] = v13;
   v33[1] = v18;
@@ -132,7 +132,7 @@
 {
   if (!self->_segmentedControl)
   {
-    v34 = [objc_opt_class() _paceFormats];
+    _paceFormats = [objc_opt_class() _paceFormats];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_1000A8678;
@@ -140,14 +140,14 @@
     v35[4] = self;
     v3 = objc_retainBlock(v35);
     v4 = [UISegmentedControl alloc];
-    v5 = [v34 objectAtIndexedSubscript:0];
+    v5 = [_paceFormats objectAtIndexedSubscript:0];
     v6 = (v3[2])(v3, v5);
     v37[0] = v6;
-    v7 = [v34 objectAtIndexedSubscript:1];
+    v7 = [_paceFormats objectAtIndexedSubscript:1];
     v33 = v3;
     v8 = (v3[2])(v3, v7);
     v37[1] = v8;
-    v9 = [v34 objectAtIndexedSubscript:2];
+    v9 = [_paceFormats objectAtIndexedSubscript:2];
     v10 = (v3[2])(v3, v9);
     v37[2] = v10;
     v11 = [NSArray arrayWithObjects:v37 count:3];
@@ -157,32 +157,32 @@
 
     [(UISegmentedControl *)self->_segmentedControl setTranslatesAutoresizingMaskIntoConstraints:0];
     v14 = +[ARUIMetricColors paceColors];
-    v15 = [v14 nonGradientTextColor];
-    [(UISegmentedControl *)self->_segmentedControl setTintColor:v15];
+    nonGradientTextColor = [v14 nonGradientTextColor];
+    [(UISegmentedControl *)self->_segmentedControl setTintColor:nonGradientTextColor];
 
-    v16 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-    [v16 addSubview:self->_segmentedControl];
+    contentView = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+    [contentView addSubview:self->_segmentedControl];
 
     [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:0];
     [(UISegmentedControl *)self->_segmentedControl addTarget:self action:"_segmentedControlValueDidChange:" forControlEvents:4096];
-    v17 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-    v18 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-    v19 = [v18 leadingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:sub_1000B7B88()];
+    leadingAnchor = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+    contentView2 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:sub_1000B7B88()];
 
-    v21 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-    v22 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23 constant:-sub_1000B7B88()];
+    trailingAnchor = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+    contentView3 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-sub_1000B7B88()];
 
-    v25 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
-    v26 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-    v27 = [v26 topAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27 constant:14.0];
+    topAnchor = [(UISegmentedControl *)self->_segmentedControl topAnchor];
+    contentView4 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
 
-    v29 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v30 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:28.0];
+    firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    bottomAnchor = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+    v31 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:28.0];
 
     [(CHWorkoutDetailPaceTableViewCell *)self setSegControlToBaselineConstraint:v31];
     v36[0] = v20;
@@ -204,32 +204,32 @@
   [(UIView *)self->_separatorView setBackgroundColor:v5];
 
   [(UIView *)self->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  [v6 addSubview:self->_separatorView];
+  contentView = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  [contentView addSubview:self->_separatorView];
 
-  v7 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
-  v8 = [v7 heightAnchor];
+  separatorView = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
+  heightAnchor = [separatorView heightAnchor];
   v9 = +[UIScreen mainScreen];
   [v9 scale];
-  v11 = [v8 constraintEqualToConstant:1.0 / v10];
+  v11 = [heightAnchor constraintEqualToConstant:1.0 / v10];
 
-  v12 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
-  v13 = [v12 leadingAnchor];
-  v14 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:sub_1000B7B88()];
+  separatorView2 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
+  leadingAnchor = [separatorView2 leadingAnchor];
+  contentView2 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:sub_1000B7B88()];
 
-  v17 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
-  v18 = [v17 trailingAnchor];
-  v19 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  separatorView3 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
+  trailingAnchor = [separatorView3 trailingAnchor];
+  contentView3 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v22 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
-  v23 = [v22 topAnchor];
-  v24 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  separatorView4 = [(CHWorkoutDetailPaceTableViewCell *)self separatorView];
+  topAnchor = [separatorView4 topAnchor];
+  contentView4 = [(CHWorkoutDetailPaceTableViewCell *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
   v28[0] = v11;
   v28[1] = v16;
@@ -239,27 +239,27 @@
   [NSLayoutConstraint activateConstraints:v27];
 }
 
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  workoutCopy = workout;
+  activityCopy = activity;
+  calculatorCopy = calculator;
+  if (activityCopy)
   {
-    v11 = [v9 workoutConfiguration];
-    v12 = [v11 activityType];
+    workoutConfiguration = [activityCopy workoutConfiguration];
+    activityType = [workoutConfiguration activityType];
 
-    v13 = v9;
+    v13 = activityCopy;
   }
 
   else
   {
-    v12 = [v8 workoutActivityType];
-    v13 = v8;
+    activityType = [workoutCopy workoutActivityType];
+    v13 = workoutCopy;
   }
 
-  v14 = [v13 fiui_activityType];
-  if (v12 == 46)
+  fiui_activityType = [v13 fiui_activityType];
+  if (activityType == 46)
   {
     objc_initWeak(&location, self);
     v34 = _NSConcreteStackBlock;
@@ -267,18 +267,18 @@
     v36 = sub_1000A8DAC;
     v37 = &unk_10083A738;
     objc_copyWeak(&v38, &location);
-    [v10 swimmingSplitsForWorkout:v8 workoutActivity:v9 completion:&v34];
+    [calculatorCopy swimmingSplitsForWorkout:workoutCopy workoutActivity:activityCopy completion:&v34];
     v15 = [NSBundle mainBundle:v34];
     v16 = [v15 localizedStringForKey:@"WORKOUT_SWIM_PACE_TITLE" value:&stru_1008680E8 table:@"Localizable"];
-    v17 = [(CHWorkoutDetailPaceTableViewCell *)self titleLabel];
-    [v17 setText:v16];
+    titleLabel = [(CHWorkoutDetailPaceTableViewCell *)self titleLabel];
+    [titleLabel setText:v16];
 
     [(CHWorkoutDetailPaceTableViewCell *)self _createSegmentedControl];
-    v18 = [(CHWorkoutDetailPaceTableViewCell *)self segControlToBaselineConstraint];
-    [v18 setActive:1];
+    segControlToBaselineConstraint = [(CHWorkoutDetailPaceTableViewCell *)self segControlToBaselineConstraint];
+    [segControlToBaselineConstraint setActive:1];
 
-    v19 = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
-    [v19 setHidden:0];
+    segmentedControl = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
+    [segmentedControl setHidden:0];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -286,8 +286,8 @@
 
   else
   {
-    v20 = [(CHWorkoutDetailPaceTableViewCell *)self formattingManager];
-    v21 = [v20 formattedPaceOrSpeedForWorkout:v8 workoutActivity:v9 context:@"WorkoutDetailDisplayContext"];
+    formattingManager = [(CHWorkoutDetailPaceTableViewCell *)self formattingManager];
+    v21 = [formattingManager formattedPaceOrSpeedForWorkout:workoutCopy workoutActivity:activityCopy context:@"WorkoutDetailDisplayContext"];
 
     v22 = FIUIPaceFormatForWorkoutActivityType();
     v23 = +[NSBundle mainBundle];
@@ -303,45 +303,45 @@
     }
 
     v26 = [v23 localizedStringForKey:v25 value:&stru_1008680E8 table:@"Localizable"];
-    v27 = [(CHWorkoutDetailPaceTableViewCell *)self titleLabel];
-    [v27 setText:v26];
+    titleLabel2 = [(CHWorkoutDetailPaceTableViewCell *)self titleLabel];
+    [titleLabel2 setText:v26];
 
-    v28 = [(CHWorkoutDetailPaceTableViewCell *)self valueLabel];
-    [v28 setAttributedText:v21];
+    valueLabel = [(CHWorkoutDetailPaceTableViewCell *)self valueLabel];
+    [valueLabel setAttributedText:v21];
 
-    v29 = [(CHWorkoutDetailPaceTableViewCell *)self segControlToBaselineConstraint];
-    [v29 setActive:0];
+    segControlToBaselineConstraint2 = [(CHWorkoutDetailPaceTableViewCell *)self segControlToBaselineConstraint];
+    [segControlToBaselineConstraint2 setActive:0];
 
-    v30 = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
-    [v30 setHidden:1];
+    segmentedControl2 = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
+    [segmentedControl2 setHidden:1];
   }
 
-  [objc_opt_class() preferredHeightForWorkout:v8];
+  [objc_opt_class() preferredHeightForWorkout:workoutCopy];
   v32 = v31;
-  v33 = [(CHWorkoutDetailPaceTableViewCell *)self heightConstraint];
-  [v33 setConstant:v32];
+  heightConstraint = [(CHWorkoutDetailPaceTableViewCell *)self heightConstraint];
+  [heightConstraint setConstant:v32];
 }
 
-- (void)setSelectedPaceFormat:(int64_t)a3
+- (void)setSelectedPaceFormat:(int64_t)format
 {
-  self->_selectedPaceFormat = a3;
-  v5 = [objc_opt_class() _paceFormats];
+  self->_selectedPaceFormat = format;
+  _paceFormats = [objc_opt_class() _paceFormats];
   v6 = UICollectionViewCompositionalLayout_ptr;
-  v7 = [NSNumber numberWithInteger:a3];
-  v8 = [v5 indexOfObject:v7];
+  v7 = [NSNumber numberWithInteger:format];
+  v8 = [_paceFormats indexOfObject:v7];
 
-  v9 = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
-  v10 = [v9 selectedSegmentIndex];
+  segmentedControl = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
-  if (v10 != v8)
+  if (selectedSegmentIndex != v8)
   {
-    v11 = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
-    [v11 setSelectedSegmentIndex:v8];
+    segmentedControl2 = [(CHWorkoutDetailPaceTableViewCell *)self segmentedControl];
+    [segmentedControl2 setSelectedSegmentIndex:v8];
   }
 
-  v12 = [(CHWorkoutDetailPaceTableViewCell *)self splitsDictionary];
-  v13 = [NSNumber numberWithInteger:a3];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  splitsDictionary = [(CHWorkoutDetailPaceTableViewCell *)self splitsDictionary];
+  v13 = [NSNumber numberWithInteger:format];
+  v14 = [splitsDictionary objectForKeyedSubscript:v13];
 
   if ([v14 count])
   {
@@ -388,9 +388,9 @@
 
     v25 = llround(v24 / [v15 count]);
     v26 = v20 / [v15 count];
-    v27 = [(CHWorkoutDetailPaceTableViewCell *)self formattingManager];
-    v28 = [v27 fitnessUIFormattingManager];
-    v29 = [v28 stringWithDuration:1 durationFormat:v26];
+    formattingManager = [(CHWorkoutDetailPaceTableViewCell *)self formattingManager];
+    fitnessUIFormattingManager = [formattingManager fitnessUIFormattingManager];
+    v29 = [fitnessUIFormattingManager stringWithDuration:1 durationFormat:v26];
 
     v30 = [v6[214] numberWithInteger:v25];
     v31 = [FIUIFormattingManager stringWithNumber:v30 decimalPrecision:1];
@@ -398,24 +398,24 @@
     v32 = +[NSBundle mainBundle];
     v33 = [v32 localizedStringForKey:@"WORKOUT_SWIM_PACE_STROKECOUNT_FORMAT" value:&stru_1008680E8 table:@"Localizable"];
     v34 = [NSString stringWithFormat:v33, v29, v31, v37];
-    v35 = [(CHWorkoutDetailPaceTableViewCell *)self valueLabel];
-    [v35 setText:v34];
+    valueLabel = [(CHWorkoutDetailPaceTableViewCell *)self valueLabel];
+    [valueLabel setText:v34];
   }
 
-  v36 = [(CHWorkoutDetailPaceTableViewCell *)self paceSelectionDelegate];
-  [v36 paceCell:self didSelectNewPaceFormat:a3];
+  paceSelectionDelegate = [(CHWorkoutDetailPaceTableViewCell *)self paceSelectionDelegate];
+  [paceSelectionDelegate paceCell:self didSelectNewPaceFormat:format];
 }
 
-- (void)_segmentedControlValueDidChange:(id)a3
+- (void)_segmentedControlValueDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _paceFormats];
-  v6 = [v4 selectedSegmentIndex];
+  changeCopy = change;
+  _paceFormats = [objc_opt_class() _paceFormats];
+  selectedSegmentIndex = [changeCopy selectedSegmentIndex];
 
-  v7 = [v5 objectAtIndex:v6];
-  v8 = [v7 integerValue];
+  v7 = [_paceFormats objectAtIndex:selectedSegmentIndex];
+  integerValue = [v7 integerValue];
 
-  [(CHWorkoutDetailPaceTableViewCell *)self setSelectedPaceFormat:v8];
+  [(CHWorkoutDetailPaceTableViewCell *)self setSelectedPaceFormat:integerValue];
 }
 
 - (CHWorkoutDetailPaceSelectionDelegate)paceSelectionDelegate

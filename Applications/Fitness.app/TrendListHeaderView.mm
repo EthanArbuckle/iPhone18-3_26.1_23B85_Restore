@@ -1,14 +1,14 @@
 @interface TrendListHeaderView
-- (_TtC10FitnessApp19TrendListHeaderView)initWithCoder:(id)a3;
+- (_TtC10FitnessApp19TrendListHeaderView)initWithCoder:(id)coder;
 @end
 
 @implementation TrendListHeaderView
 
-- (_TtC10FitnessApp19TrendListHeaderView)initWithCoder:(id)a3
+- (_TtC10FitnessApp19TrendListHeaderView)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC10FitnessApp19TrendListHeaderView_label;
   sub_1000059F8(0, &qword_1008E2D40);
-  v6 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = sub_100555C98();
   v7 = OBJC_IVAR____TtC10FitnessApp19TrendListHeaderView_topConstraint;
   v8 = [objc_allocWithZone(NSLayoutConstraint) init];

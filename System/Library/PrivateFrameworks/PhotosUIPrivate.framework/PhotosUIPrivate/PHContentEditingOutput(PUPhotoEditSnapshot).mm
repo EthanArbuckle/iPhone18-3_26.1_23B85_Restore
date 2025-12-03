@@ -8,30 +8,30 @@
 {
   v28 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 initWithAdjustmentBaseVersion:0 mediaType:1 appropriateForURL:a4];
+  v7 = [self initWithAdjustmentBaseVersion:0 mediaType:1 appropriateForURL:a4];
   if (v7)
   {
-    v8 = [v6 adjustmentData];
-    [v7 setBaseVersion:{objc_msgSend(v8, "baseVersion")}];
+    adjustmentData = [v6 adjustmentData];
+    [v7 setBaseVersion:{objc_msgSend(adjustmentData, "baseVersion")}];
 
-    v9 = [v6 adjustmentData];
-    [v7 setAdjustmentData:v9];
+    adjustmentData2 = [v6 adjustmentData];
+    [v7 setAdjustmentData:adjustmentData2];
 
-    v10 = [v6 baseImageData];
-    [v7 setPenultimateRenderedJPEGData:v10];
+    baseImageData = [v6 baseImageData];
+    [v7 setPenultimateRenderedJPEGData:baseImageData];
 
     v11 = MEMORY[0x1E6982C40];
-    v12 = [v6 imageUTI];
-    v13 = [v11 typeWithIdentifier:v12];
+    imageUTI = [v6 imageUTI];
+    v13 = [v11 typeWithIdentifier:imageUTI];
 
     v23 = 0;
     v14 = [v7 renderedContentURLForType:v13 error:&v23];
     v15 = v23;
     if (v14)
     {
-      v16 = [v6 imageData];
+      imageData = [v6 imageData];
       v22 = v15;
-      v17 = [v16 writeToURL:v14 options:1073741825 error:&v22];
+      v17 = [imageData writeToURL:v14 options:1073741825 error:&v22];
       v18 = v22;
 
       if (v17)
@@ -55,9 +55,9 @@ LABEL_10:
       v19 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v13 identifier];
+        identifier = [v13 identifier];
         *buf = 138543618;
-        v25 = v20;
+        v25 = identifier;
         v26 = 2112;
         v27 = v15;
         _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_ERROR, "Failed to retrieve rendered content URL for identifier: %{public}@, error: %@", buf, 0x16u);

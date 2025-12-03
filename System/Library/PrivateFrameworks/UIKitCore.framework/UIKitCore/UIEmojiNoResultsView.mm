@@ -1,16 +1,16 @@
 @interface UIEmojiNoResultsView
-- (UIEmojiNoResultsView)initWithFrame:(CGRect)a3;
+- (UIEmojiNoResultsView)initWithFrame:(CGRect)frame;
 - (void)createNewEmoji;
 @end
 
 @implementation UIEmojiNoResultsView
 
-- (UIEmojiNoResultsView)initWithFrame:(CGRect)a3
+- (UIEmojiNoResultsView)initWithFrame:(CGRect)frame
 {
   v32[4] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = UIEmojiNoResultsView;
-  v3 = [(UIView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -46,21 +46,21 @@
 
     [(UIView *)v3 addSubview:v3->_createNewEmojiLabel];
     v25 = MEMORY[0x1E69977A0];
-    v30 = [(UIView *)v3->_noResultsLabel bottomAnchor];
-    v29 = [(UIView *)v3 centerYAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29 constant:-10.0];
+    bottomAnchor = [(UIView *)v3->_noResultsLabel bottomAnchor];
+    centerYAnchor = [(UIView *)v3 centerYAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:centerYAnchor constant:-10.0];
     v32[0] = v28;
-    v27 = [(UIView *)v3->_noResultsLabel centerXAnchor];
-    v26 = [(UIView *)v3 centerXAnchor];
-    v14 = [v27 constraintEqualToAnchor:v26];
+    centerXAnchor = [(UIView *)v3->_noResultsLabel centerXAnchor];
+    centerXAnchor2 = [(UIView *)v3 centerXAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v32[1] = v14;
-    v15 = [(UIView *)v3->_createNewEmojiLabel topAnchor];
-    v16 = [(UIView *)v3 centerYAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:10.0];
+    topAnchor = [(UIView *)v3->_createNewEmojiLabel topAnchor];
+    centerYAnchor2 = [(UIView *)v3 centerYAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:centerYAnchor2 constant:10.0];
     v32[2] = v17;
-    v18 = [(UIView *)v3->_createNewEmojiLabel centerXAnchor];
-    v19 = [(UIView *)v3 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor3 = [(UIView *)v3->_createNewEmojiLabel centerXAnchor];
+    centerXAnchor4 = [(UIView *)v3 centerXAnchor];
+    v20 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v32[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
     [v25 activateConstraints:v21];
@@ -80,8 +80,8 @@
   v2 = +[_UISignalAnalytics getIASignalGenmojiCreationCreateNewEmojiSelected];
   [_UISignalAnalytics sendGenmojiCreationSignal:v2 payload:0];
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"UIEmojiAndStickerShouldCreateNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIEmojiAndStickerShouldCreateNotification" object:0 userInfo:0];
 }
 
 @end

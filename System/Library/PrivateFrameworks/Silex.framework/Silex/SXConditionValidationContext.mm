@@ -1,6 +1,6 @@
 @interface SXConditionValidationContext
 - (CGSize)viewportSize;
-- (SXConditionValidationContext)initWithLayoutOptions:(id)a3 experiment:(id)a4;
+- (SXConditionValidationContext)initWithLayoutOptions:(id)options experiment:(id)experiment;
 - (int64_t)horizontalSizeClass;
 - (int64_t)userInterfaceStyle;
 - (int64_t)verticalSizeClass;
@@ -9,18 +9,18 @@
 
 @implementation SXConditionValidationContext
 
-- (SXConditionValidationContext)initWithLayoutOptions:(id)a3 experiment:(id)a4
+- (SXConditionValidationContext)initWithLayoutOptions:(id)options experiment:(id)experiment
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  experimentCopy = experiment;
   v12.receiver = self;
   v12.super_class = SXConditionValidationContext;
   v9 = [(SXConditionValidationContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutOptions, a3);
-    objc_storeStrong(&v10->_experiment, a4);
+    objc_storeStrong(&v9->_layoutOptions, options);
+    objc_storeStrong(&v10->_experiment, experiment);
   }
 
   return v10;
@@ -28,26 +28,26 @@
 
 - (unint64_t)numberOfColumns
 {
-  v2 = [(SXLayoutOptions *)self->_layoutOptions columnLayout];
-  v3 = [v2 numberOfColumns];
+  columnLayout = [(SXLayoutOptions *)self->_layoutOptions columnLayout];
+  numberOfColumns = [columnLayout numberOfColumns];
 
-  return v3;
+  return numberOfColumns;
 }
 
 - (int64_t)horizontalSizeClass
 {
-  v2 = [(SXLayoutOptions *)self->_layoutOptions traitCollection];
-  v3 = [v2 horizontalSizeClass];
+  traitCollection = [(SXLayoutOptions *)self->_layoutOptions traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v3;
+  return horizontalSizeClass;
 }
 
 - (int64_t)verticalSizeClass
 {
-  v2 = [(SXLayoutOptions *)self->_layoutOptions traitCollection];
-  v3 = [v2 verticalSizeClass];
+  traitCollection = [(SXLayoutOptions *)self->_layoutOptions traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  return v3;
+  return verticalSizeClass;
 }
 
 - (CGSize)viewportSize
@@ -60,10 +60,10 @@
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(SXLayoutOptions *)self->_layoutOptions traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(SXLayoutOptions *)self->_layoutOptions traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
 @end

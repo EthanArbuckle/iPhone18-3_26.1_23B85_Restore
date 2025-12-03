@@ -1,6 +1,6 @@
 @interface NTNewsTodayResultsFetchDescriptor
 - (NTNewsTodayResultsFetchDescriptor)init;
-- (id)placeholderSectionDescriptorsWithContentRequest:(id)a3;
+- (id)placeholderSectionDescriptorsWithContentRequest:(id)request;
 @end
 
 @implementation NTNewsTodayResultsFetchDescriptor
@@ -12,33 +12,33 @@
   return [(NTNewsTodayResultsFetchDescriptor *)&v3 init];
 }
 
-- (id)placeholderSectionDescriptorsWithContentRequest:(id)a3
+- (id)placeholderSectionDescriptorsWithContentRequest:(id)request
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 moduleDescriptorType];
-  if (v4 == 1)
+  requestCopy = request;
+  moduleDescriptorType = [requestCopy moduleDescriptorType];
+  if (moduleDescriptorType == 1)
   {
     v10 = [NTSectionPlaceholderDescriptor alloc];
-    v5 = [v3 name];
-    v6 = [v3 nameColorLight];
-    v7 = [v3 nameColorDark];
-    v8 = [v3 tagID];
-    v11 = [(NTSectionPlaceholderDescriptor *)v10 initWithName:v5 nameColorLight:v6 nameColorDark:v7 minimumStoriesAllocation:0 maximumStoriesAllocation:-1 backingTagID:v8];
+    name = [requestCopy name];
+    nameColorLight = [requestCopy nameColorLight];
+    nameColorDark = [requestCopy nameColorDark];
+    tagID = [requestCopy tagID];
+    v11 = [(NTSectionPlaceholderDescriptor *)v10 initWithName:name nameColorLight:nameColorLight nameColorDark:nameColorDark minimumStoriesAllocation:0 maximumStoriesAllocation:-1 backingTagID:tagID];
     v14 = v11;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
 
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!moduleDescriptorType)
   {
-    v5 = __85__NTNewsTodayResultsFetchDescriptor_placeholderSectionDescriptorsWithContentRequest___block_invoke();
-    v6 = __85__NTNewsTodayResultsFetchDescriptor_placeholderSectionDescriptorsWithContentRequest___block_invoke_2();
-    v7 = [[NTSectionPlaceholderDescriptor alloc] initWithName:v5 nameColorLight:@"FF2D54" nameColorDark:@"FF375F" minimumStoriesAllocation:1 maximumStoriesAllocation:2 backingTagID:0];
-    v15[0] = v7;
-    v8 = [[NTSectionPlaceholderDescriptor alloc] initWithName:v6 nameColorLight:@"ff8e00" nameColorDark:0 minimumStoriesAllocation:1 maximumStoriesAllocation:-1 backingTagID:0];
-    v15[1] = v8;
+    name = __85__NTNewsTodayResultsFetchDescriptor_placeholderSectionDescriptorsWithContentRequest___block_invoke();
+    nameColorLight = __85__NTNewsTodayResultsFetchDescriptor_placeholderSectionDescriptorsWithContentRequest___block_invoke_2();
+    nameColorDark = [[NTSectionPlaceholderDescriptor alloc] initWithName:name nameColorLight:@"FF2D54" nameColorDark:@"FF375F" minimumStoriesAllocation:1 maximumStoriesAllocation:2 backingTagID:0];
+    v15[0] = nameColorDark;
+    tagID = [[NTSectionPlaceholderDescriptor alloc] initWithName:nameColorLight nameColorLight:@"ff8e00" nameColorDark:0 minimumStoriesAllocation:1 maximumStoriesAllocation:-1 backingTagID:0];
+    v15[1] = tagID;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 LABEL_5:
 

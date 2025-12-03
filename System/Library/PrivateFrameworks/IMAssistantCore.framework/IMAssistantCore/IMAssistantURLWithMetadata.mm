@@ -1,21 +1,21 @@
 @interface IMAssistantURLWithMetadata
-- (IMAssistantURLWithMetadata)initWithURL:(id)a3 metadata:(id)a4;
+- (IMAssistantURLWithMetadata)initWithURL:(id)l metadata:(id)metadata;
 @end
 
 @implementation IMAssistantURLWithMetadata
 
-- (IMAssistantURLWithMetadata)initWithURL:(id)a3 metadata:(id)a4
+- (IMAssistantURLWithMetadata)initWithURL:(id)l metadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = IMAssistantURLWithMetadata;
   v9 = [(IMAssistantURLWithMetadata *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_metadata, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_metadata, metadata);
   }
 
   return v10;

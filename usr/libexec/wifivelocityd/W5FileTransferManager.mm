@@ -1,11 +1,11 @@
 @interface W5FileTransferManager
 - (W5FileTransferManager)init;
-- (void)_setupWithTargetID:(id)a3;
+- (void)_setupWithTargetID:(id)d;
 - (void)_stop;
-- (void)initializeReceiverWithTargetID:(id)a3;
-- (void)initializeSenderWithTargetID:(id)a3 peerPublicKey:(id)a4;
-- (void)startW5FileReceiverWithPeerPublicKey:(id)a3 reply:(id)a4;
-- (void)startW5FileSenderForFile:(id)a3;
+- (void)initializeReceiverWithTargetID:(id)d;
+- (void)initializeSenderWithTargetID:(id)d peerPublicKey:(id)key;
+- (void)startW5FileReceiverWithPeerPublicKey:(id)key reply:(id)reply;
+- (void)startW5FileSenderForFile:(id)file;
 @end
 
 @implementation W5FileTransferManager
@@ -32,27 +32,27 @@
   return v2;
 }
 
-- (void)_setupWithTargetID:(id)a3
+- (void)_setupWithTargetID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(RPFileTransferSession);
   session = self->_session;
   self->_session = v4;
 
   [(RPFileTransferSession *)self->_session setTemporaryDirectoryURL:self->_tempDirPath];
   [(RPFileTransferSession *)self->_session setDispatchQueue:self->_queue];
-  [(RPFileTransferSession *)self->_session setTargetID:v6];
+  [(RPFileTransferSession *)self->_session setTargetID:dCopy];
 }
 
-- (void)initializeReceiverWithTargetID:(id)a3
+- (void)initializeReceiverWithTargetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (self->_session)
   {
     [(W5FileTransferManager *)self _stop];
   }
 
-  [(W5FileTransferManager *)self _setupWithTargetID:v4];
+  [(W5FileTransferManager *)self _setupWithTargetID:dCopy];
   [(RPFileTransferSession *)self->_session setFlags:0];
   [(RPFileTransferSession *)self->_session setFlags:[(RPFileTransferSession *)self->_session flags]| 1];
   [(RPFileTransferSession *)self->_session setFlags:[(RPFileTransferSession *)self->_session flags]| 0x10];
@@ -71,31 +71,31 @@
     v15 = 1024;
     v16 = 71;
     v17 = 2114;
-    v18 = v4;
+    v18 = dCopy;
     v19 = 2114;
     v20 = v6;
     _os_log_send_and_compose_impl();
   }
 
-  v8 = [(RPFileTransferSession *)self->_session selfPublicKey];
+  selfPublicKey = [(RPFileTransferSession *)self->_session selfPublicKey];
   publicKeySelf = self->_publicKeySelf;
-  self->_publicKeySelf = v8;
+  self->_publicKeySelf = selfPublicKey;
 }
 
-- (void)initializeSenderWithTargetID:(id)a3 peerPublicKey:(id)a4
+- (void)initializeSenderWithTargetID:(id)d peerPublicKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  keyCopy = key;
   if (self->_session)
   {
     [(W5FileTransferManager *)self _stop];
   }
 
-  [(W5FileTransferManager *)self _setupWithTargetID:v6];
+  [(W5FileTransferManager *)self _setupWithTargetID:dCopy];
   [(RPFileTransferSession *)self->_session setFlags:0];
   [(RPFileTransferSession *)self->_session setFlags:[(RPFileTransferSession *)self->_session flags]| 0x10];
   [(RPFileTransferSession *)self->_session setFlags:[(RPFileTransferSession *)self->_session flags]| 0x100];
-  [(RPFileTransferSession *)self->_session setPeerPublicKey:v7];
+  [(RPFileTransferSession *)self->_session setPeerPublicKey:keyCopy];
   session = self->_session;
   v13 = 0;
   [(RPFileTransferSession *)session prepareTemplateAndReturnError:&v13];
@@ -110,25 +110,25 @@
     v18 = 1024;
     v19 = 93;
     v20 = 2114;
-    v21 = v6;
+    v21 = dCopy;
     v22 = 2114;
     v23 = v9;
     _os_log_send_and_compose_impl();
   }
 
-  v11 = [(RPFileTransferSession *)self->_session selfPublicKey];
+  selfPublicKey = [(RPFileTransferSession *)self->_session selfPublicKey];
   publicKeySelf = self->_publicKeySelf;
-  self->_publicKeySelf = v11;
+  self->_publicKeySelf = selfPublicKey;
 }
 
-- (void)startW5FileSenderForFile:(id)a3
+- (void)startW5FileSenderForFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = sub_100098A04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(RPFileTransferSession *)self->_session selfPublicKey];
-    v12 = [(RPFileTransferSession *)self->_session peerPublicKey];
+    selfPublicKey = [(RPFileTransferSession *)self->_session selfPublicKey];
+    peerPublicKey = [(RPFileTransferSession *)self->_session peerPublicKey];
     _os_log_send_and_compose_impl();
   }
 
@@ -143,10 +143,10 @@
   }
 
   v8 = objc_alloc_init(RPFileTransferItem);
-  [v8 setItemURL:v4];
-  v9 = [v4 path];
-  v10 = [v9 lastPathComponent];
-  [v8 setFilename:v10];
+  [v8 setItemURL:fileCopy];
+  path = [fileCopy path];
+  lastPathComponent = [path lastPathComponent];
+  [v8 setFilename:lastPathComponent];
 
   [v8 setCompletionHandler:&stru_1000E1608];
   v11 = sub_100098A04();
@@ -159,14 +159,14 @@
   [(RPFileTransferSession *)self->_session finish];
 }
 
-- (void)startW5FileReceiverWithPeerPublicKey:(id)a3 reply:(id)a4
+- (void)startW5FileReceiverWithPeerPublicKey:(id)key reply:(id)reply
 {
-  v6 = a4;
-  [(RPFileTransferSession *)self->_session setPeerPublicKey:a3];
+  replyCopy = reply;
+  [(RPFileTransferSession *)self->_session setPeerPublicKey:key];
   v7 = sub_100098A04();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(RPFileTransferSession *)self->_session selfPublicKey];
+    selfPublicKey = [(RPFileTransferSession *)self->_session selfPublicKey];
     [(RPFileTransferSession *)self->_session peerPublicKey];
     v13 = 136316162;
     v14 = "[W5FileTransferManager startW5FileReceiverWithPeerPublicKey:reply:]";
@@ -175,7 +175,7 @@
     v17 = 1024;
     v18 = 147;
     v19 = 2114;
-    v20 = v8;
+    v20 = selfPublicKey;
     v22 = v21 = 2114;
     _os_log_send_and_compose_impl();
   }
@@ -185,7 +185,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000145E4;
   v11[3] = &unk_1000E1650;
-  v9 = v6;
+  v9 = replyCopy;
   v12 = v9;
   [(RPFileTransferSession *)self->_session setReceivedItemHandler:v11];
   [(RPFileTransferSession *)self->_session activate];

@@ -1,7 +1,7 @@
 @interface NowPlayingTrackTitleStackView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NowPlayingTrackTitleStackView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NowPlayingTrackTitleStackView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NowPlaying.TrackTitleStackView.layoutSubviews()();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   NowPlaying.TrackTitleStackView.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(NowPlayingTrackTitleStackView *)self intrinsicContentSize:a3.width];
+  [(NowPlayingTrackTitleStackView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (NowPlayingTrackTitleStackView)initWithFrame:(CGRect)a3
+- (NowPlayingTrackTitleStackView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

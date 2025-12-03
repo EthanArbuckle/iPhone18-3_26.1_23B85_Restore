@@ -1,36 +1,36 @@
 @interface TransparencyGPBFileDescriptor
-- (BOOL)isEqual:(id)a3;
-- (TransparencyGPBFileDescriptor)initWithPackage:(id)a3 objcPrefix:(id)a4 syntax:(unsigned __int8)a5;
-- (TransparencyGPBFileDescriptor)initWithPackage:(id)a3 syntax:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (TransparencyGPBFileDescriptor)initWithPackage:(id)package objcPrefix:(id)prefix syntax:(unsigned __int8)syntax;
+- (TransparencyGPBFileDescriptor)initWithPackage:(id)package syntax:(unsigned __int8)syntax;
 - (void)dealloc;
 @end
 
 @implementation TransparencyGPBFileDescriptor
 
-- (TransparencyGPBFileDescriptor)initWithPackage:(id)a3 objcPrefix:(id)a4 syntax:(unsigned __int8)a5
+- (TransparencyGPBFileDescriptor)initWithPackage:(id)package objcPrefix:(id)prefix syntax:(unsigned __int8)syntax
 {
   v10.receiver = self;
   v10.super_class = TransparencyGPBFileDescriptor;
   v8 = [(TransparencyGPBFileDescriptor *)&v10 init];
   if (v8)
   {
-    v8->package_ = [a3 copy];
-    v8->objcPrefix_ = [a4 copy];
-    v8->syntax_ = a5;
+    v8->package_ = [package copy];
+    v8->objcPrefix_ = [prefix copy];
+    v8->syntax_ = syntax;
   }
 
   return v8;
 }
 
-- (TransparencyGPBFileDescriptor)initWithPackage:(id)a3 syntax:(unsigned __int8)a4
+- (TransparencyGPBFileDescriptor)initWithPackage:(id)package syntax:(unsigned __int8)syntax
 {
   v8.receiver = self;
   v8.super_class = TransparencyGPBFileDescriptor;
   v6 = [(TransparencyGPBFileDescriptor *)&v8 init];
   if (v6)
   {
-    v6->package_ = [a3 copy];
-    v6->syntax_ = a4;
+    v6->package_ = [package copy];
+    v6->syntax_ = syntax;
   }
 
   return v6;
@@ -43,27 +43,27 @@
   [(TransparencyGPBFileDescriptor *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_11;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->syntax_ != *(a3 + 24))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->syntax_ != *(equal + 24))
   {
     goto LABEL_10;
   }
 
-  v5 = [(NSString *)self->package_ isEqual:*(a3 + 1)];
+  v5 = [(NSString *)self->package_ isEqual:*(equal + 1)];
   if (!v5)
   {
     return v5;
   }
 
   objcPrefix = self->objcPrefix_;
-  v7 = *(a3 + 2);
+  v7 = *(equal + 2);
   if (objcPrefix == v7)
   {
 LABEL_11:

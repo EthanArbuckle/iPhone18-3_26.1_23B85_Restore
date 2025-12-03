@@ -1,26 +1,26 @@
 @interface CKMediaObjectManager
 + (id)sharedInstance;
-- (BOOL)_attachmentDataTooLargeToSend:(id)a3 utiType:(id)a4;
+- (BOOL)_attachmentDataTooLargeToSend:(id)send utiType:(id)type;
 - (CKMediaObjectManager)init;
-- (Class)classForFilename:(id)a3;
-- (Class)classForUTIType:(id)a3;
-- (id)UTITypeForExtension:(id)a3;
-- (id)UTITypeForFilename:(id)a3;
+- (Class)classForFilename:(id)filename;
+- (Class)classForUTIType:(id)type;
+- (id)UTITypeForExtension:(id)extension;
+- (id)UTITypeForFilename:(id)filename;
 - (id)allUTITypes;
-- (id)mediaObjectWithData:(id)a3 UTIType:(id)a4 filename:(id)a5 transcoderUserInfo:(id)a6;
-- (id)mediaObjectWithFileURL:(id)a3 filename:(id)a4 fileIsResolved:(BOOL)a5 transcoderUserInfo:(id)a6 attributionInfo:(id)a7 adaptiveImageGlyphContentIdentifier:(id)a8 adaptiveImageGlyphContentDescription:(id)a9 hideAttachment:(BOOL)a10 isScreenshot:(BOOL)a11;
-- (id)mediaObjectWithSticker:(id)a3 stickerUserInfo:(id)a4;
-- (id)mediaObjectWithTransferGUID:(id)a3 imMessage:(id)a4 chatContext:(id)a5;
-- (id)transferWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 adaptiveImageGlyphContentIdentifier:(id)a6 adaptiveImageGlyphContentDescription:(id)a7 hideAttachment:(BOOL)a8 isScreenshot:(BOOL)a9;
-- (id)transferWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 hideAttachment:(BOOL)a6;
-- (id)transferWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 hideAttachment:(BOOL)a6 isScreenshot:(BOOL)a7 stickerEffectType:(unint64_t)a8;
-- (id)transferWithStickerFileURL:(id)a3 transferUserInfo:(id)a4 attributionInfo:(id)a5 animatedImageCacheURL:(id)a6 adaptiveImageGlyphContentIdentifier:(id)a7 adaptiveImageGlyphContentDescription:(id)a8;
-- (id)transferWithTransferGUID:(id)a3 imMessage:(id)a4;
-- (void)_copyResolvedFileURL:(id)a3 toURL:(id)a4;
-- (void)_previewGenerationFailedNotification:(id)a3;
-- (void)_previewGenerationSucceededNotification:(id)a3;
+- (id)mediaObjectWithData:(id)data UTIType:(id)type filename:(id)filename transcoderUserInfo:(id)info;
+- (id)mediaObjectWithFileURL:(id)l filename:(id)filename fileIsResolved:(BOOL)resolved transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)self0 isScreenshot:(BOOL)self1;
+- (id)mediaObjectWithSticker:(id)sticker stickerUserInfo:(id)info;
+- (id)mediaObjectWithTransferGUID:(id)d imMessage:(id)message chatContext:(id)context;
+- (id)transferWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot;
+- (id)transferWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo hideAttachment:(BOOL)attachment;
+- (id)transferWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot stickerEffectType:(unint64_t)type;
+- (id)transferWithStickerFileURL:(id)l transferUserInfo:(id)info attributionInfo:(id)attributionInfo animatedImageCacheURL:(id)rL adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description;
+- (id)transferWithTransferGUID:(id)d imMessage:(id)message;
+- (void)_copyResolvedFileURL:(id)l toURL:(id)rL;
+- (void)_previewGenerationFailedNotification:(id)notification;
+- (void)_previewGenerationSucceededNotification:(id)notification;
 - (void)dealloc;
-- (void)transferRemoved:(id)a3;
+- (void)transferRemoved:(id)removed;
 @end
 
 @implementation CKMediaObjectManager
@@ -75,31 +75,31 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
     +[CKPassPreviewMediaObject isSupported];
     [v6 insertObject:objc_opt_class() atIndex:0];
     [v6 insertObject:objc_opt_class() atIndex:0];
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 objectForKey:@"kCKMediaObjectManagerDefaultsClasses"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults objectForKey:@"kCKMediaObjectManagerDefaultsClasses"];
     v9 = [v8 __imArrayByApplyingBlock:&__block_literal_global_245];
 
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    v11 = [v10 buildVersion];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    buildVersion = [currentDevice buildVersion];
 
-    v12 = [v7 objectForKey:@"kCKMediaObjectManagerDefaultsOSVersion"];
+    v12 = [standardUserDefaults objectForKey:@"kCKMediaObjectManagerDefaultsOSVersion"];
     v49 = v9;
     v50 = v6;
     v47 = v12;
-    v48 = v11;
-    if ([v9 isEqual:v6] && (objc_msgSend(v12, "isEqualToString:", v11) & 1) != 0)
+    v48 = buildVersion;
+    if ([v9 isEqual:v6] && (objc_msgSend(v12, "isEqualToString:", buildVersion) & 1) != 0)
     {
       [(CKMediaObjectManager *)v2 setClasses:v9];
-      v13 = v7;
-      v14 = [v7 objectForKey:@"kCKMediaObjectManagerDefaultsUTITypes"];
+      v13 = standardUserDefaults;
+      v14 = [standardUserDefaults objectForKey:@"kCKMediaObjectManagerDefaultsUTITypes"];
       v15 = [v14 mutableCopy];
 
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v16 = [v15 allKeys];
-      v17 = [v16 countByEnumeratingWithState:&v51 objects:v63 count:16];
+      allKeys = [v15 allKeys];
+      v17 = [allKeys countByEnumeratingWithState:&v51 objects:v63 count:16];
       if (v17)
       {
         v18 = v17;
@@ -110,7 +110,7 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
           {
             if (*v52 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(allKeys);
             }
 
             v21 = *(*(&v51 + 1) + 8 * i);
@@ -127,7 +127,7 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v51 objects:v63 count:16];
+          v18 = [allKeys countByEnumeratingWithState:&v51 objects:v63 count:16];
         }
 
         while (v18);
@@ -145,7 +145,7 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
 
     else
     {
-      v45 = v7;
+      v45 = standardUserDefaults;
       v46 = v3;
       [(CKMediaObjectManager *)v2 setClasses:v6, @"kCKMediaObjectManagerDefaultsOSVersion"];
       v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -166,8 +166,8 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v32 = [v31 allKeys];
-      v33 = [v32 countByEnumeratingWithState:&v55 objects:v64 count:16];
+      allKeys2 = [v31 allKeys];
+      v33 = [allKeys2 countByEnumeratingWithState:&v55 objects:v64 count:16];
       if (v33)
       {
         v34 = v33;
@@ -178,7 +178,7 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
           {
             if (*v56 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(allKeys2);
             }
 
             v37 = *(*(&v55 + 1) + 8 * j);
@@ -186,7 +186,7 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
             [v31 setObject:v38 forKey:v37];
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v55 objects:v64 count:16];
+          v34 = [allKeys2 countByEnumeratingWithState:&v55 objects:v64 count:16];
         }
 
         while (v34);
@@ -204,14 +204,14 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
       v3 = v46;
     }
 
-    v40 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v40 addObserver:v2 selector:sel_transferRemoved_ name:@"CKFileTransferRemovedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_transferRemoved_ name:@"CKFileTransferRemovedNotification" object:0];
 
-    v41 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v41 addObserver:v2 selector:sel__previewGenerationSucceededNotification_ name:*MEMORY[0x1E69A8468] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__previewGenerationSucceededNotification_ name:*MEMORY[0x1E69A8468] object:0];
 
-    v42 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v42 addObserver:v2 selector:sel__previewGenerationFailedNotification_ name:*MEMORY[0x1E69A8460] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__previewGenerationFailedNotification_ name:*MEMORY[0x1E69A8460] object:0];
   }
 
   return v2;
@@ -219,8 +219,8 @@ void __38__CKMediaObjectManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKMediaObjectManager;
@@ -283,21 +283,21 @@ void __28__CKMediaObjectManager_init__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (id)UTITypeForExtension:(id)a3
+- (id)UTITypeForExtension:(id)extension
 {
-  v4 = a3;
-  if ([v4 length])
+  extensionCopy = extension;
+  if ([extensionCopy length])
   {
-    v5 = [v4 lowercaseString];
-    v6 = [(CKMediaObjectManager *)self dynTypes];
-    v7 = [v6 objectForKey:v5];
+    lowercaseString = [extensionCopy lowercaseString];
+    dynTypes = [(CKMediaObjectManager *)self dynTypes];
+    v7 = [dynTypes objectForKey:lowercaseString];
 
     if (!v7)
     {
       PreferredIdentifierForTag = IMLookUpExtensionInCache();
       if (!PreferredIdentifierForTag)
       {
-        PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], v5, 0);
+        PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], lowercaseString, 0);
       }
 
       v7 = PreferredIdentifierForTag;
@@ -312,10 +312,10 @@ void __28__CKMediaObjectManager_init__block_invoke_3(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)UTITypeForFilename:(id)a3
+- (id)UTITypeForFilename:(id)filename
 {
-  v4 = a3;
-  if ([v4 length])
+  filenameCopy = filename;
+  if ([filenameCopy length])
   {
     IMAttachmentFileNameAndExtension();
     v5 = 0;
@@ -334,9 +334,9 @@ void __28__CKMediaObjectManager_init__block_invoke_3(uint64_t a1, void *a2)
 {
   v11[7] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(CKMediaObjectManager *)self UTITypes];
-  v5 = [v4 allKeys];
-  [v3 addObjectsFromArray:v5];
+  uTITypes = [(CKMediaObjectManager *)self UTITypes];
+  allKeys = [uTITypes allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
   v6 = *MEMORY[0x1E6963778];
   v11[0] = *MEMORY[0x1E6963790];
@@ -354,11 +354,11 @@ void __28__CKMediaObjectManager_init__block_invoke_3(uint64_t a1, void *a2)
   return v3;
 }
 
-- (Class)classForUTIType:(id)a3
+- (Class)classForUTIType:(id)type
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectManager *)self UTITypes];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  uTITypes = [(CKMediaObjectManager *)self UTITypes];
+  v6 = [uTITypes objectForKey:typeCopy];
 
   if (!v6)
   {
@@ -370,60 +370,60 @@ void __28__CKMediaObjectManager_init__block_invoke_3(uint64_t a1, void *a2)
   return v6;
 }
 
-- (Class)classForFilename:(id)a3
+- (Class)classForFilename:(id)filename
 {
-  v4 = [(CKMediaObjectManager *)self UTITypeForFilename:a3];
+  v4 = [(CKMediaObjectManager *)self UTITypeForFilename:filename];
   v5 = [(CKMediaObjectManager *)self classForUTIType:v4];
 
   return v5;
 }
 
-- (id)mediaObjectWithTransferGUID:(id)a3 imMessage:(id)a4 chatContext:(id)a5
+- (id)mediaObjectWithTransferGUID:(id)d imMessage:(id)message chatContext:(id)context
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v37 = a5;
-  v10 = [(CKMediaObjectManager *)self transfers];
-  v11 = [v10 objectForKey:v8];
+  dCopy = d;
+  messageCopy = message;
+  contextCopy = context;
+  transfers = [(CKMediaObjectManager *)self transfers];
+  v11 = [transfers objectForKey:dCopy];
 
   if (!v11)
   {
-    v11 = [(CKMediaObjectManager *)self transferWithTransferGUID:v8 imMessage:v9];
+    v11 = [(CKMediaObjectManager *)self transferWithTransferGUID:dCopy imMessage:messageCopy];
     if (v11)
     {
-      if ([v8 length])
+      if ([dCopy length])
       {
-        v22 = [(CKMediaObjectManager *)self transfers];
-        [v22 setObject:v11 forKey:v8];
+        transfers2 = [(CKMediaObjectManager *)self transfers];
+        [transfers2 setObject:v11 forKey:dCopy];
       }
     }
   }
 
-  v12 = [MEMORY[0x1E69A5B80] sharedInstance];
-  v13 = [v12 transferForGUID:v8];
+  mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+  v13 = [mEMORY[0x1E69A5B80] transferForGUID:dCopy];
 
-  v14 = [v11 fileURL];
+  fileURL = [v11 fileURL];
 
-  if (!v14 && IMOSLoggingEnabled())
+  if (!fileURL && IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v13 localURL];
+      localURL = [v13 localURL];
       *buf = 138412290;
-      v39 = v16;
+      v39 = localURL;
       _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "imFileTransfer localURL: %@, transfer fileURL: NULL", buf, 0xCu);
     }
   }
 
   if (v13)
   {
-    v17 = [v13 filename];
-    v18 = [v13 isSticker];
-    v19 = [v13 isAdaptiveImageGlyph];
-    v20 = [(CKMediaObjectManager *)self classForFilename:v17];
-    if (v19)
+    filename = [v13 filename];
+    isSticker = [v13 isSticker];
+    isAdaptiveImageGlyph = [v13 isAdaptiveImageGlyph];
+    v20 = [(CKMediaObjectManager *)self classForFilename:filename];
+    if (isAdaptiveImageGlyph)
     {
 LABEL_9:
       v21 = objc_opt_class();
@@ -433,18 +433,18 @@ LABEL_9:
 
   else
   {
-    v17 = [v11 filename];
-    v18 = [v11 isSticker];
-    v23 = [v11 isAdaptiveImageGlyph];
-    v20 = [(CKMediaObjectManager *)self classForFilename:v17];
-    if (v23)
+    filename = [v11 filename];
+    isSticker = [v11 isSticker];
+    isAdaptiveImageGlyph2 = [v11 isAdaptiveImageGlyph];
+    v20 = [(CKMediaObjectManager *)self classForFilename:filename];
+    if (isAdaptiveImageGlyph2)
     {
       goto LABEL_9;
     }
   }
 
   v21 = v20;
-  if (v18 && ((-[objc_class isEqual:](v20, "isEqual:", objc_opt_class()) & 1) != 0 || [v21 isEqual:objc_opt_class()]))
+  if (isSticker && ((-[objc_class isEqual:](v20, "isEqual:", objc_opt_class()) & 1) != 0 || [v21 isEqual:objc_opt_class()]))
   {
     goto LABEL_9;
   }
@@ -454,9 +454,9 @@ LABEL_17:
   {
     if (([v11 fileIsAnimated] & 1) == 0)
     {
-      v24 = [(CKMediaObjectManager *)self UTITypeForFilename:v17];
-      v25 = [*MEMORY[0x1E6982E00] identifier];
-      v26 = [v24 isEqualToString:v25];
+      v24 = [(CKMediaObjectManager *)self UTITypeForFilename:filename];
+      identifier = [*MEMORY[0x1E6982E00] identifier];
+      v26 = [v24 isEqualToString:identifier];
 
       if (v26)
       {
@@ -475,18 +475,18 @@ LABEL_17:
     }
   }
 
-  v28 = [v9 __ck_context];
-  v29 = [v28 mutableCopy];
+  __ck_context = [messageCopy __ck_context];
+  v29 = [__ck_context mutableCopy];
 
-  if (([v9 isFromMe] & 1) == 0)
+  if (([messageCopy isFromMe] & 1) == 0)
   {
-    [v29 setSpam:{objc_msgSend(v37, "isSpam")}];
+    [v29 setSpam:{objc_msgSend(contextCopy, "isSpam")}];
   }
 
-  [v29 setChatContext:v37];
-  v30 = [v9 __ck_service];
-  v31 = [v30 name];
-  [v29 setServiceName:v31];
+  [v29 setChatContext:contextCopy];
+  __ck_service = [messageCopy __ck_service];
+  name = [__ck_service name];
+  [v29 setServiceName:name];
 
   v32 = [[v21 alloc] initWithTransfer:v11 context:v29 forceInlinePreview:0];
   if (IMOSLoggingEnabled())
@@ -495,43 +495,43 @@ LABEL_17:
     v33 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [v11 guid];
+      guid = [v11 guid];
       *buf = 138412546;
       v39 = v32;
       v40 = 2112;
-      v41 = v34;
+      v41 = guid;
       _os_log_impl(&dword_19020E000, v33, OS_LOG_TYPE_DEBUG, "Create mediaObject %@ for transfer %@.", buf, 0x16u);
     }
   }
 
   if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
   {
-    v36 = [v11 guid];
+    guid2 = [v11 guid];
     _CKLog();
   }
 
   return v32;
 }
 
-- (id)mediaObjectWithData:(id)a3 UTIType:(id)a4 filename:(id)a5 transcoderUserInfo:(id)a6
+- (id)mediaObjectWithData:(id)data UTIType:(id)type filename:(id)filename transcoderUserInfo:(id)info
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  dataCopy = data;
+  typeCopy = type;
+  filenameCopy = filename;
+  infoCopy = info;
+  if (filenameCopy)
   {
-    v14 = [v12 lastPathComponent];
-    v16 = CKSafeFilename(v14, v15);
+    lastPathComponent = [filenameCopy lastPathComponent];
+    v16 = CKSafeFilename(lastPathComponent, v15);
   }
 
   else
   {
-    v17 = [(CKMediaObjectManager *)self classForUTIType:v11];
-    v18 = UTTypeCopyPreferredTagWithClass(v11, *MEMORY[0x1E6963710]);
-    v19 = [(objc_class *)v17 fallbackFilenamePrefix];
-    v16 = CKAttachmentFallbackFilename(v19, v18);
+    v17 = [(CKMediaObjectManager *)self classForUTIType:typeCopy];
+    v18 = UTTypeCopyPreferredTagWithClass(typeCopy, *MEMORY[0x1E6963710]);
+    fallbackFilenamePrefix = [(objc_class *)v17 fallbackFilenamePrefix];
+    v16 = CKAttachmentFallbackFilename(fallbackFilenamePrefix, v18);
     if (IMOSLoggingEnabled())
     {
       CKLogCStringForType(46);
@@ -551,17 +551,17 @@ LABEL_17:
     }
   }
 
-  if ([(CKMediaObjectManager *)self _attachmentDataTooLargeToSend:v10 utiType:v11, v33])
+  if ([(CKMediaObjectManager *)self _attachmentDataTooLargeToSend:dataCopy utiType:typeCopy, v33])
   {
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"CKTransferFileTooLargeNotification" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKTransferFileTooLargeNotification" object:0 userInfo:0];
 
 LABEL_13:
     v22 = 0;
     goto LABEL_25;
   }
 
-  if (![v10 length])
+  if (![dataCopy length])
   {
     if (IMOSLoggingEnabled())
     {
@@ -572,7 +572,7 @@ LABEL_13:
         *buf = 138412546;
         v37 = v16;
         v38 = 2112;
-        v39 = v11;
+        v39 = typeCopy;
         _os_log_impl(&dword_19020E000, v32, OS_LOG_TYPE_INFO, "No data for media %@ of type %@", buf, 0x16u);
       }
     }
@@ -604,11 +604,11 @@ LABEL_13:
     _CKLog();
   }
 
-  v25 = [(CKMediaObjectManager *)self fileManager];
-  v26 = [v23 URLByDeletingLastPathComponent];
-  [v25 createDirectoryAtURL:v26 withIntermediateDirectories:1 attributes:0 error:0];
+  fileManager = [(CKMediaObjectManager *)self fileManager];
+  uRLByDeletingLastPathComponent = [v23 URLByDeletingLastPathComponent];
+  [fileManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-  CKFreeSpaceWriteDataToURL(v10, v23, 1);
+  CKFreeSpaceWriteDataToURL(dataCopy, v23, 1);
   v27 = IMIsScreenshotURL();
   if (v27)
   {
@@ -616,42 +616,42 @@ LABEL_13:
   }
 
   LOBYTE(v35) = v27;
-  v28 = [(CKMediaObjectManager *)self transferWithFileURL:v23 transcoderUserInfo:v13 attributionInfo:0 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:0 isScreenshot:v35];
-  v29 = [v28 guid];
-  v30 = [(CKMediaObjectManager *)self transfers];
-  [v30 setObject:v28 forKey:v29];
+  v28 = [(CKMediaObjectManager *)self transferWithFileURL:v23 transcoderUserInfo:infoCopy attributionInfo:0 adaptiveImageGlyphContentIdentifier:0 adaptiveImageGlyphContentDescription:0 hideAttachment:0 isScreenshot:v35];
+  guid = [v28 guid];
+  transfers = [(CKMediaObjectManager *)self transfers];
+  [transfers setObject:v28 forKey:guid];
 
-  v22 = [(CKMediaObjectManager *)self mediaObjectWithTransferGUID:v29 imMessage:0];
+  v22 = [(CKMediaObjectManager *)self mediaObjectWithTransferGUID:guid imMessage:0];
 
 LABEL_25:
 
   return v22;
 }
 
-- (id)mediaObjectWithFileURL:(id)a3 filename:(id)a4 fileIsResolved:(BOOL)a5 transcoderUserInfo:(id)a6 attributionInfo:(id)a7 adaptiveImageGlyphContentIdentifier:(id)a8 adaptiveImageGlyphContentDescription:(id)a9 hideAttachment:(BOOL)a10 isScreenshot:(BOOL)a11
+- (id)mediaObjectWithFileURL:(id)l filename:(id)filename fileIsResolved:(BOOL)resolved transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)self0 isScreenshot:(BOOL)self1
 {
   v53 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v47 = a6;
-  v48 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (v17)
+  lCopy = l;
+  filenameCopy = filename;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  if (lCopy)
   {
-    v21 = [(CKMediaObjectManager *)self fileManager];
-    if (v18)
+    fileManager = [(CKMediaObjectManager *)self fileManager];
+    if (filenameCopy)
     {
-      v22 = [v18 lastPathComponent];
-      v24 = CKSafeFilename(v22, v23);
+      lastPathComponent = [filenameCopy lastPathComponent];
+      v24 = CKSafeFilename(lastPathComponent, v23);
 
-      v18 = v24;
+      filenameCopy = v24;
     }
 
     else
     {
-      v27 = [v17 path];
-      v18 = [v27 lastPathComponent];
+      path = [lCopy path];
+      filenameCopy = [path lastPathComponent];
 
       if (IMOSLoggingEnabled())
       {
@@ -660,14 +660,14 @@ LABEL_25:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v50 = v18;
+          v50 = filenameCopy;
           _os_log_impl(&dword_19020E000, v28, OS_LOG_TYPE_DEBUG, "No filename given, extracting the filename %@ from fileURL.", buf, 0xCu);
         }
       }
 
       if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
       {
-        v44 = v18;
+        v44 = filenameCopy;
         _CKLog();
       }
     }
@@ -678,51 +678,51 @@ LABEL_25:
       v29 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [v17 URLByResolvingSymlinksInPath];
+        uRLByResolvingSymlinksInPath = [lCopy URLByResolvingSymlinksInPath];
         *buf = 138412546;
-        v50 = v17;
+        v50 = lCopy;
         v51 = 2112;
-        v52 = v30;
+        v52 = uRLByResolvingSymlinksInPath;
         _os_log_impl(&dword_19020E000, v29, OS_LOG_TYPE_DEBUG, "Resolving %@ to %@.", buf, 0x16u);
       }
     }
 
     if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
     {
-      [v17 URLByResolvingSymlinksInPath];
-      v46 = v44 = v17;
+      [lCopy URLByResolvingSymlinksInPath];
+      v46 = v44 = lCopy;
       _CKLog();
     }
 
-    if (!a5)
+    if (!resolved)
     {
-      v31 = [v17 URLByResolvingSymlinksInPath];
+      uRLByResolvingSymlinksInPath2 = [lCopy URLByResolvingSymlinksInPath];
 
-      v17 = v31;
+      lCopy = uRLByResolvingSymlinksInPath2;
     }
 
-    v32 = [v17 path];
-    v33 = [v21 fileExistsAtPath:v32];
+    path2 = [lCopy path];
+    v33 = [fileManager fileExistsAtPath:path2];
 
     if (v33)
     {
-      v34 = CKAttachmentTmpFileURL(v18);
-      v35 = [v34 path];
-      v36 = [v21 fileExistsAtPath:v35];
+      v34 = CKAttachmentTmpFileURL(filenameCopy);
+      path3 = [v34 path];
+      v36 = [fileManager fileExistsAtPath:path3];
 
       if ((v36 & 1) == 0)
       {
-        v37 = [v34 URLByDeletingLastPathComponent];
-        [v21 createDirectoryAtURL:v37 withIntermediateDirectories:1 attributes:0 error:0];
+        uRLByDeletingLastPathComponent = [v34 URLByDeletingLastPathComponent];
+        [fileManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-        if (a5)
+        if (resolved)
         {
-          [(CKMediaObjectManager *)self _copyResolvedFileURL:v17 toURL:v34];
+          [(CKMediaObjectManager *)self _copyResolvedFileURL:lCopy toURL:v34];
         }
 
         else
         {
-          [v21 copyItemAtURL:v17 toURL:v34 error:0];
+          [fileManager copyItemAtURL:lCopy toURL:v34 error:0];
         }
       }
 
@@ -733,12 +733,12 @@ LABEL_25:
       }
 
       LOBYTE(v45) = v39;
-      v40 = [(CKMediaObjectManager *)self transferWithFileURL:v34 transcoderUserInfo:v47 attributionInfo:v48 adaptiveImageGlyphContentIdentifier:v19 adaptiveImageGlyphContentDescription:v20 hideAttachment:a10 isScreenshot:v45];
-      v41 = [v40 guid];
-      v42 = [(CKMediaObjectManager *)self transfers];
-      [v42 setObject:v40 forKey:v41];
+      v40 = [(CKMediaObjectManager *)self transferWithFileURL:v34 transcoderUserInfo:infoCopy attributionInfo:attributionInfoCopy adaptiveImageGlyphContentIdentifier:identifierCopy adaptiveImageGlyphContentDescription:descriptionCopy hideAttachment:attachment isScreenshot:v45];
+      guid = [v40 guid];
+      transfers = [(CKMediaObjectManager *)self transfers];
+      [transfers setObject:v40 forKey:guid];
 
-      v26 = [(CKMediaObjectManager *)self mediaObjectWithTransferGUID:v41 imMessage:0];
+      v26 = [(CKMediaObjectManager *)self mediaObjectWithTransferGUID:guid imMessage:0];
     }
 
     else
@@ -750,7 +750,7 @@ LABEL_25:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v50 = v17;
+          v50 = lCopy;
           _os_log_impl(&dword_19020E000, v38, OS_LOG_TYPE_INFO, "No file for media at %@", buf, 0xCu);
         }
       }
@@ -788,16 +788,16 @@ LABEL_25:
   return v26;
 }
 
-- (void)_copyResolvedFileURL:(id)a3 toURL:(id)a4
+- (void)_copyResolvedFileURL:(id)l toURL:(id)rL
 {
-  v5 = a4;
-  v6 = [a3 path];
-  v7 = [v6 fileSystemRepresentation];
+  rLCopy = rL;
+  path = [l path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  v8 = [v5 path];
+  path2 = [rLCopy path];
 
-  v9 = [v8 fileSystemRepresentation];
-  v10 = open(v7, 0x20000000);
+  fileSystemRepresentation2 = [path2 fileSystemRepresentation];
+  v10 = open(fileSystemRepresentation, 0x20000000);
   if (v10 == -1)
   {
     v15 = IMLogHandleForCategory();
@@ -810,7 +810,7 @@ LABEL_25:
   else
   {
     v11 = v10;
-    v12 = open(v9, 514, 384);
+    v12 = open(fileSystemRepresentation2, 514, 384);
     if (v12 == -1)
     {
       v16 = IMLogHandleForCategory();
@@ -839,15 +839,15 @@ LABEL_25:
   }
 }
 
-- (id)mediaObjectWithSticker:(id)a3 stickerUserInfo:(id)a4
+- (id)mediaObjectWithSticker:(id)sticker stickerUserInfo:(id)info
 {
   v111 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  stickerCopy = sticker;
+  infoCopy = info;
+  if (!stickerCopy)
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    stickerGUID = IMLogHandleForCategory();
+    if (os_log_type_enabled(stickerGUID, OS_LOG_TYPE_ERROR))
     {
       [CKMediaObjectManager mediaObjectWithSticker:stickerUserInfo:];
     }
@@ -855,12 +855,12 @@ LABEL_25:
     goto LABEL_11;
   }
 
-  if (([v6 prepareToSend] & 1) == 0)
+  if (([stickerCopy prepareToSend] & 1) == 0)
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    stickerGUID = IMLogHandleForCategory();
+    if (os_log_type_enabled(stickerGUID, OS_LOG_TYPE_ERROR))
     {
-      [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+      [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
     }
 
 LABEL_11:
@@ -868,31 +868,31 @@ LABEL_11:
     goto LABEL_49;
   }
 
-  v8 = [v6 stickerGUID];
-  v9 = [v6 stickerPackGUID];
+  stickerGUID = [stickerCopy stickerGUID];
+  stickerPackGUID = [stickerCopy stickerPackGUID];
   v10 = *MEMORY[0x1E69A7C90];
-  v11 = [v7 objectForKey:*MEMORY[0x1E69A7C90]];
-  v12 = [v6 recipe];
-  v13 = [v12 __imHexString];
+  v11 = [infoCopy objectForKey:*MEMORY[0x1E69A7C90]];
+  recipe = [stickerCopy recipe];
+  __imHexString = [recipe __imHexString];
 
-  v14 = [v6 ballonBundleID];
-  if (!v8 || ![v8 length])
+  ballonBundleID = [stickerCopy ballonBundleID];
+  if (!stickerGUID || ![stickerGUID length])
   {
     v17 = IMLogHandleForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+      [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
     }
 
     v16 = 0;
     goto LABEL_48;
   }
 
-  v94 = [v9 isEqualToString:@"com.apple.private.watchEmoji"];
-  value = v14;
-  if (v7)
+  v94 = [stickerPackGUID isEqualToString:@"com.apple.private.watchEmoji"];
+  value = ballonBundleID;
+  if (infoCopy)
   {
-    v15 = [v7 mutableCopy];
+    v15 = [infoCopy mutableCopy];
   }
 
   else
@@ -901,14 +901,14 @@ LABEL_11:
   }
 
   v17 = v15;
-  v18 = [v6 stickerEffectType];
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:v18];
+  stickerEffectType = [stickerCopy stickerEffectType];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:stickerEffectType];
   if (v19)
   {
     CFDictionarySetValue(v17, *MEMORY[0x1E69A7C88], v19);
   }
 
-  v20 = v9;
+  v20 = stickerPackGUID;
   if (v20)
   {
     CFDictionarySetValue(v17, *MEMORY[0x1E69A7CB0], v20);
@@ -929,68 +929,68 @@ LABEL_11:
     CFDictionarySetValue(v17, *MEMORY[0x1E69A7C80], value);
   }
 
-  if (v13)
+  if (__imHexString)
   {
-    CFDictionarySetValue(v17, *MEMORY[0x1E69A7CC0], v13);
+    CFDictionarySetValue(v17, *MEMORY[0x1E69A7CC0], __imHexString);
   }
 
-  v98 = v13;
-  v21 = [v6 representations];
-  if (v21)
+  v98 = __imHexString;
+  representations = [stickerCopy representations];
+  if (representations)
   {
-    v22 = v21;
-    v23 = [v6 fileURL];
+    v22 = representations;
+    fileURL = [stickerCopy fileURL];
 
-    if (!v23)
+    if (!fileURL)
     {
       v96 = v11;
-      v44 = [v6 representations];
-      v24 = [v44 firstObject];
+      representations2 = [stickerCopy representations];
+      firstObject = [representations2 firstObject];
 
-      v45 = [v24 data];
-      v46 = [v45 length];
+      data = [firstObject data];
+      v46 = [data length];
 
       if (!v46)
       {
         v63 = IMLogHandleForCategory();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
         {
-          [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+          [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
         }
 
         v16 = 0;
         goto LABEL_71;
       }
 
-      v47 = [v24 data];
+      data2 = [firstObject data];
       v48 = IMSharedHelperMD5OfData();
 
       v91 = v48;
       if (v48 && [v48 length])
       {
-        if ([v8 length])
+        if ([stickerGUID length])
         {
           CFDictionarySetValue(v17, *MEMORY[0x1E69A7CA0], v48);
           v49 = MEMORY[0x1E6982C40];
-          v50 = [v24 type];
-          v88 = [v49 typeWithIdentifier:v50];
+          type = [firstObject type];
+          v88 = [v49 typeWithIdentifier:type];
 
-          v52 = CKSafeFilename(v8, v51);
+          v52 = CKSafeFilename(stickerGUID, v51);
           v53 = [v52 stringByAppendingPathExtensionForType:v88];
 
           v54 = v53;
           v55 = CKAttachmentTmpFileURL(v54);
           v86 = v54;
 
-          v56 = [v55 path];
-          v57 = [v56 stringByDeletingLastPathComponent];
+          path = [v55 path];
+          stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-          v87 = v57;
+          v87 = stringByDeletingLastPathComponent;
           IMSharedHelperEnsureDirectoryExistsAtPath();
-          v58 = [v24 data];
+          data3 = [firstObject data];
           v102 = 0;
           v90 = v55;
-          LODWORD(v55) = [v58 writeToURL:v55 options:0x40000000 error:&v102];
+          LODWORD(v55) = [data3 writeToURL:v55 options:0x40000000 error:&v102];
           v59 = v102;
 
           if (!v55 || v59)
@@ -1002,48 +1002,48 @@ LABEL_11:
             }
 
             v16 = 0;
-            v8 = v86;
+            stickerGUID = v86;
             goto LABEL_71;
           }
 
-          v93 = v9;
-          v8 = v86;
+          v93 = stickerPackGUID;
+          stickerGUID = v86;
 LABEL_59:
 
           if (v94)
           {
-            Mutable = [v7 mutableCopy];
+            Mutable = [infoCopy mutableCopy];
             v11 = v96;
-            v13 = v98;
+            __imHexString = v98;
             goto LABEL_94;
           }
 
-          v86 = v8;
-          v65 = [MEMORY[0x1E69A5AD0] sharedInstance];
-          v66 = [v65 balloonPluginForBundleID:v20];
+          v86 = stickerGUID;
+          mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+          v66 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v20];
 
           v11 = v96;
           if (v66)
           {
-            v67 = [v66 attributionInfo];
-            Mutable = [v67 mutableCopy];
+            attributionInfo = [v66 attributionInfo];
+            Mutable = [attributionInfo mutableCopy];
 
-            v68 = [v6 attributionInfo];
-            v69 = v68;
+            attributionInfo2 = [stickerCopy attributionInfo];
+            v69 = attributionInfo2;
             if (Mutable)
             {
 
               if (v69)
               {
-                v13 = v98;
+                __imHexString = v98;
 LABEL_93:
 
-                v8 = v86;
+                stickerGUID = v86;
 LABEL_94:
-                v8 = v8;
-                if (v8)
+                stickerGUID = stickerGUID;
+                if (stickerGUID)
                 {
-                  CFDictionarySetValue(v17, *MEMORY[0x1E69A7C98], v8);
+                  CFDictionarySetValue(v17, *MEMORY[0x1E69A7C98], stickerGUID);
                 }
 
                 else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1056,36 +1056,36 @@ LABEL_94:
                   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
                 }
 
-                v73 = [v6 accessibilityLabel];
-                if (v73)
+                accessibilityLabel = [stickerCopy accessibilityLabel];
+                if (accessibilityLabel)
                 {
-                  CFDictionarySetValue(Mutable, *MEMORY[0x1E69A6F98], v73);
+                  CFDictionarySetValue(Mutable, *MEMORY[0x1E69A6F98], accessibilityLabel);
                 }
 
-                v99 = [v6 adaptiveImageGlyphContentIdentifier];
-                v74 = [v6 adaptiveImageGlyphContentDescription];
-                v75 = [v6 animatedImageCacheURLFromExtension];
+                adaptiveImageGlyphContentIdentifier = [stickerCopy adaptiveImageGlyphContentIdentifier];
+                adaptiveImageGlyphContentDescription = [stickerCopy adaptiveImageGlyphContentDescription];
+                animatedImageCacheURLFromExtension = [stickerCopy animatedImageCacheURLFromExtension];
                 v95 = Mutable;
-                v92 = v74;
-                v76 = [(CKMediaObjectManager *)self transferWithStickerFileURL:v90 transferUserInfo:v17 attributionInfo:Mutable animatedImageCacheURL:v75 adaptiveImageGlyphContentIdentifier:v99 adaptiveImageGlyphContentDescription:v74];
+                v92 = adaptiveImageGlyphContentDescription;
+                v76 = [(CKMediaObjectManager *)self transferWithStickerFileURL:v90 transferUserInfo:v17 attributionInfo:Mutable animatedImageCacheURL:animatedImageCacheURLFromExtension adaptiveImageGlyphContentIdentifier:adaptiveImageGlyphContentIdentifier adaptiveImageGlyphContentDescription:adaptiveImageGlyphContentDescription];
 
                 v89 = v76;
                 if (v76)
                 {
-                  v77 = [v76 guid];
-                  v78 = [(CKMediaObjectManager *)self transfers];
-                  [v78 setObject:v76 forKey:v77];
+                  guid = [v76 guid];
+                  transfers = [(CKMediaObjectManager *)self transfers];
+                  [transfers setObject:v76 forKey:guid];
 
-                  v97 = v77;
-                  v16 = [(CKMediaObjectManager *)self mediaObjectWithTransferGUID:v77 imMessage:0];
-                  v14 = value;
+                  v97 = guid;
+                  v16 = [(CKMediaObjectManager *)self mediaObjectWithTransferGUID:guid imMessage:0];
+                  ballonBundleID = value;
                   if (v16)
                   {
                     objc_opt_class();
-                    v9 = v93;
+                    stickerPackGUID = v93;
                     if (objc_opt_isKindOfClass())
                     {
-                      [v16 setSticker:v6];
+                      [v16 setSticker:stickerCopy];
                     }
 
                     else
@@ -1093,29 +1093,29 @@ LABEL_94:
                       v81 = IMLogHandleForCategory();
                       if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
                       {
-                        [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+                        [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
                       }
                     }
 
-                    v80 = [v6 cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly];
-                    [v16 setAdaptiveImageGlyph:v80];
+                    cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly = [stickerCopy cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly];
+                    [v16 setAdaptiveImageGlyph:cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly];
                     v82 = IMLogHandleForCategory();
                     if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138412290;
-                      v104 = v6;
+                      v104 = stickerCopy;
                       _os_log_impl(&dword_19020E000, v82, OS_LOG_TYPE_INFO, "Create media object for sticker: %@ OK", buf, 0xCu);
                     }
 
                     v83 = v16;
-                    v14 = value;
+                    ballonBundleID = value;
                   }
 
                   else
                   {
-                    v80 = IMLogHandleForCategory();
-                    v9 = v93;
-                    if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
+                    cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly = IMLogHandleForCategory();
+                    stickerPackGUID = v93;
+                    if (os_log_type_enabled(cachedAdaptiveImageGlyphForSkippingPreviewGenerationOnly, OS_LOG_TYPE_ERROR))
                     {
                       [CKMediaObjectManager mediaObjectWithSticker:stickerUserInfo:];
                     }
@@ -1125,11 +1125,11 @@ LABEL_94:
                 else
                 {
                   v79 = IMLogHandleForCategory();
-                  v14 = value;
+                  ballonBundleID = value;
                   v97 = v79;
                   if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
                   {
-                    v85 = [v6 description];
+                    v85 = [stickerCopy description];
                     *buf = 138413058;
                     v104 = v85;
                     v105 = 2112;
@@ -1141,12 +1141,12 @@ LABEL_94:
                     _os_log_error_impl(&dword_19020E000, v79, OS_LOG_TYPE_ERROR, "Failed to create file transfer for sticker: %@, tempFileURL: %@, transfer user info: %@, attribution info: %@", buf, 0x2Au);
 
                     v16 = 0;
-                    v9 = v93;
+                    stickerPackGUID = v93;
                     goto LABEL_118;
                   }
 
                   v16 = 0;
-                  v9 = v93;
+                  stickerPackGUID = v93;
                 }
 
                 Mutable = v95;
@@ -1157,17 +1157,17 @@ LABEL_118:
 
               v72 = Mutable;
               v71 = [(__CFDictionary *)Mutable copy];
-              [v6 setAttributionInfo:v71];
-              v13 = v98;
+              [stickerCopy setAttributionInfo:v71];
+              __imHexString = v98;
 LABEL_92:
 
               Mutable = v72;
               goto LABEL_93;
             }
 
-            Mutable = [v68 mutableCopy];
+            Mutable = [attributionInfo2 mutableCopy];
 
-            v13 = v98;
+            __imHexString = v98;
             if (Mutable)
             {
               goto LABEL_93;
@@ -1183,7 +1183,7 @@ LABEL_92:
           else
           {
             v71 = IMLogHandleForCategory();
-            v13 = v98;
+            __imHexString = v98;
             if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
             {
               [CKMediaObjectManager mediaObjectWithSticker:stickerUserInfo:];
@@ -1196,17 +1196,17 @@ LABEL_92:
 
         v62 = IMLogHandleForCategory();
         v11 = v96;
-        v13 = v98;
+        __imHexString = v98;
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
         {
-          [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+          [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
         }
       }
 
       else
       {
         v62 = IMLogHandleForCategory();
-        v13 = v98;
+        __imHexString = v98;
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
         {
           [CKMediaObjectManager mediaObjectWithSticker:stickerUserInfo:];
@@ -1219,31 +1219,31 @@ LABEL_92:
     }
   }
 
-  v24 = [v6 fileURL];
-  if (!v24)
+  firstObject = [stickerCopy fileURL];
+  if (!firstObject)
   {
     v42 = IMLogHandleForCategory();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+      [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
     }
 
-    v13 = v98;
+    __imHexString = v98;
     goto LABEL_45;
   }
 
   v96 = v11;
-  v93 = v9;
-  v25 = [MEMORY[0x1E696AC08] defaultManager];
-  v26 = [v24 path];
-  v27 = [v25 fileExistsAtPath:v26];
+  v93 = stickerPackGUID;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path2 = [firstObject path];
+  v27 = [defaultManager fileExistsAtPath:path2];
 
   if ((v27 & 1) == 0)
   {
     v42 = IMLogHandleForCategory();
-    v9 = v93;
+    stickerPackGUID = v93;
     v11 = v96;
-    v13 = v98;
+    __imHexString = v98;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       [CKMediaObjectManager mediaObjectWithSticker:stickerUserInfo:];
@@ -1256,46 +1256,46 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v28 = [v24 path];
+  path3 = [firstObject path];
   v29 = IMSharedHelperMD5HashOfFileAtPath();
 
   v30 = v29;
   v11 = v96;
-  v13 = v98;
+  __imHexString = v98;
   if (v30 && [v30 length])
   {
     v91 = v30;
-    v31 = [v24 path];
-    v32 = [v31 lastPathComponent];
+    path4 = [firstObject path];
+    lastPathComponent = [path4 lastPathComponent];
 
-    if (!v32)
+    if (!lastPathComponent)
     {
       v64 = IMLogHandleForCategory();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
-        [CKMediaObjectManager mediaObjectWithSticker:v6 stickerUserInfo:?];
+        [CKMediaObjectManager mediaObjectWithSticker:stickerCopy stickerUserInfo:?];
       }
 
       v16 = 0;
-      v9 = v93;
+      stickerPackGUID = v93;
       goto LABEL_75;
     }
 
     CFDictionarySetValue(v17, *MEMORY[0x1E69A7CA0], v91);
-    v34 = CKSafeFilename(v32, v33);
+    v34 = CKSafeFilename(lastPathComponent, v33);
 
     v88 = v34;
     v35 = CKAttachmentTmpFileURL(v34);
-    v36 = [v35 path];
-    v37 = [v36 stringByDeletingLastPathComponent];
+    path5 = [v35 path];
+    stringByDeletingLastPathComponent2 = [path5 stringByDeletingLastPathComponent];
 
-    v87 = v37;
+    v87 = stringByDeletingLastPathComponent2;
     IMSharedHelperEnsureDirectoryExistsAtPath();
-    v38 = [MEMORY[0x1E696AC08] defaultManager];
-    v39 = [v6 fileURL];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    fileURL2 = [stickerCopy fileURL];
     v101 = 0;
     v90 = v35;
-    LODWORD(v86) = [v38 copyItemAtURL:v39 toURL:v35 error:&v101];
+    LODWORD(v86) = [defaultManager2 copyItemAtURL:fileURL2 toURL:v35 error:&v101];
     v40 = v101;
 
     if (!v86 || v40)
@@ -1303,9 +1303,9 @@ LABEL_46:
       v41 = IMLogHandleForCategory();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
-        v84 = [v6 fileURL];
+        fileURL3 = [stickerCopy fileURL];
         *buf = 138412802;
-        v104 = v84;
+        v104 = fileURL3;
         v105 = 2112;
         v106 = v90;
         v107 = 2112;
@@ -1314,12 +1314,12 @@ LABEL_46:
       }
 
       v16 = 0;
-      v9 = v93;
+      stickerPackGUID = v93;
 LABEL_71:
       v11 = v96;
 LABEL_75:
-      v13 = v98;
-      v14 = value;
+      __imHexString = v98;
+      ballonBundleID = value;
       goto LABEL_48;
     }
 
@@ -1333,9 +1333,9 @@ LABEL_75:
   }
 
   v16 = 0;
-  v9 = v93;
+  stickerPackGUID = v93;
 LABEL_47:
-  v14 = value;
+  ballonBundleID = value;
 LABEL_48:
 
 LABEL_49:
@@ -1343,52 +1343,52 @@ LABEL_49:
   return v16;
 }
 
-- (id)transferWithTransferGUID:(id)a3 imMessage:(id)a4
+- (id)transferWithTransferGUID:(id)d imMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  dCopy = d;
   v8 = [objc_alloc(-[CKMediaObjectManager transferClass](self "transferClass"))];
 
   return v8;
 }
 
-- (id)transferWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 hideAttachment:(BOOL)a6
+- (id)transferWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo hideAttachment:(BOOL)attachment
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  attachmentCopy = attachment;
+  attributionInfoCopy = attributionInfo;
+  infoCopy = info;
+  lCopy = l;
   v13 = [objc_alloc(-[CKMediaObjectManager transferClass](self "transferClass"))];
 
   return v13;
 }
 
-- (id)transferWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 adaptiveImageGlyphContentIdentifier:(id)a6 adaptiveImageGlyphContentDescription:(id)a7 hideAttachment:(BOOL)a8 isScreenshot:(BOOL)a9
+- (id)transferWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot
 {
-  v9 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  LOBYTE(v22) = a9;
+  attachmentCopy = attachment;
+  descriptionCopy = description;
+  identifierCopy = identifier;
+  attributionInfoCopy = attributionInfo;
+  infoCopy = info;
+  lCopy = l;
+  LOBYTE(v22) = screenshot;
   v20 = [objc_alloc(-[CKMediaObjectManager transferClass](self "transferClass"))];
 
   return v20;
 }
 
-- (id)transferWithFileURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5 hideAttachment:(BOOL)a6 isScreenshot:(BOOL)a7 stickerEffectType:(unint64_t)a8
+- (id)transferWithFileURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo hideAttachment:(BOOL)attachment isScreenshot:(BOOL)screenshot stickerEffectType:(unint64_t)type
 {
-  v9 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v17 = [v16 isStickersAppEnabled];
+  attachmentCopy = attachment;
+  lCopy = l;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if (v17)
+  if (isStickersAppEnabled)
   {
-    LOBYTE(v20) = a7;
+    LOBYTE(v20) = screenshot;
     v18 = [objc_alloc(-[CKMediaObjectManager transferClass](self "transferClass"))];
   }
 
@@ -1400,43 +1400,43 @@ LABEL_49:
   return v18;
 }
 
-- (id)transferWithStickerFileURL:(id)a3 transferUserInfo:(id)a4 attributionInfo:(id)a5 animatedImageCacheURL:(id)a6 adaptiveImageGlyphContentIdentifier:(id)a7 adaptiveImageGlyphContentDescription:(id)a8
+- (id)transferWithStickerFileURL:(id)l transferUserInfo:(id)info attributionInfo:(id)attributionInfo animatedImageCacheURL:(id)rL adaptiveImageGlyphContentIdentifier:(id)identifier adaptiveImageGlyphContentDescription:(id)description
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  descriptionCopy = description;
+  identifierCopy = identifier;
+  rLCopy = rL;
+  attributionInfoCopy = attributionInfo;
+  infoCopy = info;
+  lCopy = l;
   v20 = [objc_alloc(-[CKMediaObjectManager transferClass](self "transferClass"))];
 
   return v20;
 }
 
-- (void)transferRemoved:(id)a3
+- (void)transferRemoved:(id)removed
 {
-  v6 = [a3 object];
-  v4 = [v6 guid];
-  if (v4)
+  object = [removed object];
+  guid = [object guid];
+  if (guid)
   {
-    v5 = [(CKMediaObjectManager *)self transfers];
-    [v5 removeObjectForKey:v4];
+    transfers = [(CKMediaObjectManager *)self transfers];
+    [transfers removeObjectForKey:guid];
   }
 }
 
-- (BOOL)_attachmentDataTooLargeToSend:(id)a3 utiType:(id)a4
+- (BOOL)_attachmentDataTooLargeToSend:(id)send utiType:(id)type
 {
-  v4 = a3;
-  v5 = (IMUTITypeIsSupportedForTranscodeOnSend() & 1) == 0 && [v4 length] > 0x6400000;
+  sendCopy = send;
+  v5 = (IMUTITypeIsSupportedForTranscodeOnSend() & 1) == 0 && [sendCopy length] > 0x6400000;
 
   return v5;
 }
 
-- (void)_previewGenerationSucceededNotification:(id)a3
+- (void)_previewGenerationSucceededNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   if ([MEMORY[0x1E69A7FF8] ignorePreviewGenerationNotifications])
   {
     if (IMOSLoggingEnabled())
@@ -1446,7 +1446,7 @@ LABEL_49:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        *&buf[4] = v4;
+        *&buf[4] = object;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "Preview generation succeeded for transfer %@, but ignoring due to override", buf, 0xCu);
       }
     }
@@ -1459,8 +1459,8 @@ LABEL_49:
 
   else
   {
-    v6 = [v3 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69A8470]];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A8470]];
     v8 = v7;
     *buf = 0uLL;
     if (v7)
@@ -1476,17 +1476,17 @@ LABEL_49:
       v10 = 0.0;
     }
 
-    v11 = [MEMORY[0x1E69A5B50] sharedInstance];
-    v12 = [v11 remoteDaemon];
-    [v12 successfullyGeneratedPreviewForTransfer:v4 withPreviewSize:{v10, v9}];
+    mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedInstance];
+    remoteDaemon = [mEMORY[0x1E69A5B50] remoteDaemon];
+    [remoteDaemon successfullyGeneratedPreviewForTransfer:object withPreviewSize:{v10, v9}];
   }
 }
 
-- (void)_previewGenerationFailedNotification:(id)a3
+- (void)_previewGenerationFailedNotification:(id)notification
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   if ([MEMORY[0x1E69A7FF8] ignorePreviewGenerationNotifications])
   {
     if (IMOSLoggingEnabled())
@@ -1496,7 +1496,7 @@ LABEL_49:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v9 = v4;
+        v9 = object;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "Preview generation failed for transfer %@, but ignoring due to override", buf, 0xCu);
       }
     }
@@ -1509,9 +1509,9 @@ LABEL_49:
 
   else
   {
-    v6 = [MEMORY[0x1E69A5B50] sharedInstance];
-    v7 = [v6 remoteDaemon];
-    [v7 failTransferPreviewGeneration:v4];
+    mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedInstance];
+    remoteDaemon = [mEMORY[0x1E69A5B50] remoteDaemon];
+    [remoteDaemon failTransferPreviewGeneration:object];
   }
 }
 

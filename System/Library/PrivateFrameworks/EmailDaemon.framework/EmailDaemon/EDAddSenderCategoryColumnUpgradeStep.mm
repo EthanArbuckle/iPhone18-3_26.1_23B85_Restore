@@ -1,6 +1,6 @@
 @interface EDAddSenderCategoryColumnUpgradeStep
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddSenderCategoryColumnUpgradeStep
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __43__EDAddSenderCategoryColumnUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_10 != -1)
   {
     dispatch_once(&log_onceToken_10, block);
@@ -30,12 +30,12 @@ void __43__EDAddSenderCategoryColumnUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_10 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = +[EDSenderPersistence sendersCategoryColumnName];
   v5 = +[EDSenderPersistence sendersTableName];
-  v6 = [v3 columnExists:v4 inTable:v5 type:0];
+  v6 = [connectionCopy columnExists:v4 inTable:v5 type:0];
 
   if (v6)
   {
@@ -58,7 +58,7 @@ void __43__EDAddSenderCategoryColumnUpgradeStep_log__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Create category column in senders", buf, 2u);
     }
 
-    v8 = sqlite3_exec([v3 sqlDB], "ALTER TABLE senders ADD COLUMN category INTEGER;CREATE INDEX IF NOT EXISTS senders_category_index ON senders(category);", 0, 0, 0);
+    v8 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE senders ADD COLUMN category INTEGER;CREATE INDEX IF NOT EXISTS senders_category_index ON senders(category);", 0, 0, 0);
   }
 
   return v8;

@@ -1,83 +1,83 @@
 @interface EKLocationEditItemViewController
 + (id)_boldTitleFont;
-+ (id)_sectionNameForSection:(unint64_t)a3;
++ (id)_sectionNameForSection:(unint64_t)section;
 - (BOOL)conferenceViewModelRemoved;
 - (BOOL)locationViewModelRemoved;
 - (BOOL)searchIsFirstResponder;
-- (BOOL)shouldIncludeConferenceRoom:(id)a3;
+- (BOOL)shouldIncludeConferenceRoom:(id)room;
 - (BOOL)showAvailableConferenceTypesAsRows;
 - (BOOL)showingCurrentLocationRow;
 - (BOOL)showingTextRow;
 - (CGSize)preferredContentSize;
-- (EKLocationEditItemViewController)initWithFrame:(CGRect)a3 calendarItem:(id)a4 eventStore:(id)a5;
-- (id)_cellForConferenceRoom:(id)a3 atIndexPath:(id)a4;
+- (EKLocationEditItemViewController)initWithFrame:(CGRect)frame calendarItem:(id)item eventStore:(id)store;
+- (id)_cellForConferenceRoom:(id)room atIndexPath:(id)path;
 - (id)_focusedTextField;
-- (id)_rowNameForIndexPath:(id)a3;
-- (id)conferenceRoomForRecent:(id)a3;
+- (id)_rowNameForIndexPath:(id)path;
+- (id)conferenceRoomForRecent:(id)recent;
 - (id)contactsImage;
-- (id)itemAtIndexPath:(id)a3;
+- (id)itemAtIndexPath:(id)path;
 - (id)locationArrowImage;
 - (id)searchText;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)title;
-- (int64_t)_accessoryTypeForSection:(unint64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)_accessoryTypeForSection:(unint64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setupViewsAndConstraints;
 - (void)kickoffSearchTextChangedIfNonEmpty;
-- (void)locationSearchModel:(id)a3 selectedLocation:(id)a4 withError:(id)a5;
-- (void)locationSearchModel:(id)a3 updatedSearchTypes:(unint64_t)a4;
-- (void)pendingVideoConferenceUpdated:(id)a3;
+- (void)locationSearchModel:(id)model selectedLocation:(id)location withError:(id)error;
+- (void)locationSearchModel:(id)model updatedSearchTypes:(unint64_t)types;
+- (void)pendingVideoConferenceUpdated:(id)updated;
 - (void)searchBecomeFirstResponder;
 - (void)searchDoneTapped;
 - (void)searchResignFirstResponder;
-- (void)searchTextChanged:(id)a3 allowClearingCheckedVirtualConference:(BOOL)a4;
-- (void)selectedRoomType:(id)a3;
-- (void)selectedTextFieldChanged:(id)a3;
-- (void)setSearchText:(id)a3;
-- (void)setSelectedConferenceRoom:(id)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)useAsString:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)searchTextChanged:(id)changed allowClearingCheckedVirtualConference:(BOOL)conference;
+- (void)selectedRoomType:(id)type;
+- (void)selectedTextFieldChanged:(id)changed;
+- (void)setSearchText:(id)text;
+- (void)setSelectedConferenceRoom:(id)room;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)useAsString:(id)string;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation EKLocationEditItemViewController
 
-- (EKLocationEditItemViewController)initWithFrame:(CGRect)a3 calendarItem:(id)a4 eventStore:(id)a5
+- (EKLocationEditItemViewController)initWithFrame:(CGRect)frame calendarItem:(id)item eventStore:(id)store
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
+  storeCopy = store;
   v21.receiver = self;
   v21.super_class = EKLocationEditItemViewController;
-  v14 = [(EKEditItemViewController *)&v21 initWithFrame:x, y, width, height];
-  if (v14)
+  height = [(EKEditItemViewController *)&v21 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v15 = [[EKUILocationSearchModel alloc] initWithEventStore:v13];
-    searchModel = v14->_searchModel;
-    v14->_searchModel = v15;
+    v15 = [[EKUILocationSearchModel alloc] initWithEventStore:storeCopy];
+    searchModel = height->_searchModel;
+    height->_searchModel = v15;
 
-    [(EKUILocationSearchModel *)v14->_searchModel setDelegate:v14];
-    objc_storeStrong(&v14->_calendarItem, a4);
-    v14->_autoFillSelectedTextField = 1;
-    v14->_supportedSearchTypes = 2047;
-    v14->_shouldShowCheckedVirtualConference = 1;
-    v17 = [(EKCalendarItem *)v14->_calendarItem calendar];
-    v18 = [v17 source];
-    v19 = [v18 constraints];
-    v14->_supportsStructuredLocations = [v19 supportsStructuredLocations];
+    [(EKUILocationSearchModel *)height->_searchModel setDelegate:height];
+    objc_storeStrong(&height->_calendarItem, item);
+    height->_autoFillSelectedTextField = 1;
+    height->_supportedSearchTypes = 2047;
+    height->_shouldShowCheckedVirtualConference = 1;
+    calendar = [(EKCalendarItem *)height->_calendarItem calendar];
+    source = [calendar source];
+    constraints = [source constraints];
+    height->_supportsStructuredLocations = [constraints supportsStructuredLocations];
 
-    [(EKLocationEditItemViewController *)v14 setDefinesPresentationContext:1];
+    [(EKLocationEditItemViewController *)height setDefinesPresentationContext:1];
   }
 
-  return v14;
+  return height;
 }
 
 - (id)title
@@ -114,20 +114,20 @@
     [(EKUILocationSearchModel *)self->_searchModel updateVirtualConferenceRoomOptions:0];
   }
 
-  v4 = [(EKLocationEditItemViewController *)self _singleSearchBar];
-  v5 = [(EKLocationEditItemViewController *)self locationViewModel];
-  v6 = [v5 location];
+  _singleSearchBar = [(EKLocationEditItemViewController *)self _singleSearchBar];
+  locationViewModel = [(EKLocationEditItemViewController *)self locationViewModel];
+  location = [locationViewModel location];
 
-  if (!v4)
+  if (!_singleSearchBar)
   {
-    v13 = [(EKLocationEditItemViewController *)self conferenceViewModel];
-    v11 = [v13 conference];
+    conferenceViewModel = [(EKLocationEditItemViewController *)self conferenceViewModel];
+    conference = [conferenceViewModel conference];
 
-    v14 = [(EKLocationEditItemViewController *)self autoFillSelectedTextField]|| [(EKLocationEditItemViewController *)self conferenceTextFieldSelected];
+    conferenceTextFieldSelected = [(EKLocationEditItemViewController *)self autoFillSelectedTextField]|| [(EKLocationEditItemViewController *)self conferenceTextFieldSelected];
     if ([(EKLocationEditItemViewController *)self autoFillSelectedTextField])
     {
       v15 = 1;
-      if (!v14)
+      if (!conferenceTextFieldSelected)
       {
         goto LABEL_26;
       }
@@ -136,38 +136,38 @@
     else
     {
       v15 = ![(EKLocationEditItemViewController *)self conferenceTextFieldSelected];
-      if (!v14)
+      if (!conferenceTextFieldSelected)
       {
         goto LABEL_26;
       }
     }
 
-    v16 = [v6 address];
+    address = [location address];
 
-    if (v16)
+    if (address)
     {
       v17 = MEMORY[0x1E6992FD8];
-      v18 = [v6 title];
-      v19 = [v6 address];
-      v20 = [v17 fullDisplayStringWithTitle:v18 address:v19];
+      title = [location title];
+      address2 = [location address];
+      title3 = [v17 fullDisplayStringWithTitle:title address:address2];
 
-      v21 = [v20 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
-      v22 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
-      [v22 setText:v21];
+      locationTextField2 = [title3 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
+      locationTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
+      [locationTextField setText:locationTextField2];
     }
 
     else
     {
-      v24 = [v6 title];
+      title2 = [location title];
 
-      if (!v24)
+      if (!title2)
       {
         goto LABEL_26;
       }
 
-      v20 = [v6 title];
-      v21 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
-      [v21 setText:v20];
+      title3 = [location title];
+      locationTextField2 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
+      [locationTextField2 setText:title3];
     }
 
 LABEL_26:
@@ -176,60 +176,60 @@ LABEL_26:
       goto LABEL_32;
     }
 
-    if (v11)
+    if (conference)
     {
       v25 = MEMORY[0x1E69933C0];
-      v26 = [v11 joinMethods];
-      v27 = [v26 firstObject];
+      joinMethods = [conference joinMethods];
+      firstObject = [joinMethods firstObject];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __47__EKLocationEditItemViewController_viewDidLoad__block_invoke;
       v31[3] = &unk_1E843EEB0;
       v31[4] = self;
-      [v25 displayDetailsForJoinMethod:v27 completionHandler:v31];
+      [v25 displayDetailsForJoinMethod:firstObject completionHandler:v31];
 
       return;
     }
 
-    v28 = [(EKLocationEditItemViewController *)self conferenceViewModel];
+    conferenceViewModel2 = [(EKLocationEditItemViewController *)self conferenceViewModel];
 
-    if (!v28)
+    if (!conferenceViewModel2)
     {
       goto LABEL_32;
     }
 
     v12 = EventKitUIBundle();
     v29 = [v12 localizedStringForKey:@"Pending Video Call" value:&stru_1F4EF6790 table:0];
-    v30 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
-    [v30 setText:v29];
+    virtualConferenceTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
+    [virtualConferenceTextField setText:v29];
 
     goto LABEL_31;
   }
 
   if (self->_autoFillSelectedTextField)
   {
-    v7 = [v6 address];
+    address3 = [location address];
 
-    if (v7)
+    if (address3)
     {
       v8 = MEMORY[0x1E6992FD8];
-      v9 = [v6 title];
-      v10 = [v6 address];
-      v11 = [v8 fullDisplayStringWithTitle:v9 address:v10];
+      title4 = [location title];
+      address4 = [location address];
+      conference = [v8 fullDisplayStringWithTitle:title4 address:address4];
 
-      v12 = [v11 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
+      v12 = [conference _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
       [(EKLocationEditItemViewController *)self setSearchText:v12];
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    v23 = [v6 title];
+    title5 = [location title];
 
-    if (v23)
+    if (title5)
     {
-      v11 = [v6 title];
-      [(EKLocationEditItemViewController *)self setSearchText:v11];
+      conference = [location title];
+      [(EKLocationEditItemViewController *)self setSearchText:conference];
 LABEL_32:
     }
   }
@@ -270,9 +270,9 @@ uint64_t __47__EKLocationEditItemViewController_viewDidLoad__block_invoke_2(uint
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__EKLocationEditItemViewController_viewDidAppear___block_invoke;
@@ -281,7 +281,7 @@ uint64_t __47__EKLocationEditItemViewController_viewDidLoad__block_invoke_2(uint
   dispatch_async(MEMORY[0x1E69E96A0], block);
   v5.receiver = self;
   v5.super_class = EKLocationEditItemViewController;
-  [(EKLocationEditItemViewController *)&v5 viewDidAppear:v3];
+  [(EKLocationEditItemViewController *)&v5 viewDidAppear:appearCopy];
 }
 
 void __50__EKLocationEditItemViewController_viewDidAppear___block_invoke(uint64_t a1)
@@ -309,17 +309,17 @@ void __50__EKLocationEditItemViewController_viewDidAppear___block_invoke(uint64_
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = EKLocationEditItemViewController;
-  [(EKLocationEditItemViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  if (v7)
+  [(EKLocationEditItemViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -352,8 +352,8 @@ void __50__EKLocationEditItemViewController_viewDidAppear___block_invoke(uint64_
   [(UITableView *)self->_tableView setEstimatedRowHeight:?];
 
   [(UITableView *)self->_tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
-  v7 = [(EKLocationEditItemViewController *)self view];
-  [v7 addSubview:self->_tableView];
+  view = [(EKLocationEditItemViewController *)self view];
+  [view addSubview:self->_tableView];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -376,19 +376,19 @@ void __50__EKLocationEditItemViewController_viewDidAppear___block_invoke(uint64_
     [v13 setObscuresBackgroundDuringPresentation:0];
     [v13 setHidesNavigationBarDuringPresentation:0];
     [v13 setAutomaticallyShowsCancelButton:0];
-    v14 = [(EKLocationEditItemViewController *)self navigationItem];
-    [v14 setPreferredSearchBarPlacement:2];
+    navigationItem = [(EKLocationEditItemViewController *)self navigationItem];
+    [navigationItem setPreferredSearchBarPlacement:2];
 
-    v15 = [(EKLocationEditItemViewController *)self navigationItem];
+    navigationItem2 = [(EKLocationEditItemViewController *)self navigationItem];
     v87 = v13;
-    [v15 setSearchController:v13];
+    [navigationItem2 setSearchController:v13];
 
-    v16 = [(EKLocationEditItemViewController *)self navigationItem];
-    [v16 setHidesSearchBarWhenScrolling:0];
+    navigationItem3 = [(EKLocationEditItemViewController *)self navigationItem];
+    [navigationItem3 setHidesSearchBarWhenScrolling:0];
 
-    v17 = [v13 searchBar];
+    searchBar = [v13 searchBar];
     searchBar = self->_searchBar;
-    self->_searchBar = v17;
+    self->_searchBar = searchBar;
 
     [(UISearchBar *)self->_searchBar setAutocorrectionType:0];
     [(UISearchBar *)self->_searchBar setDelegate:self];
@@ -412,29 +412,29 @@ void __50__EKLocationEditItemViewController_viewDidAppear___block_invoke(uint64_
     [(UISearchBar *)self->_searchBar setEnablesReturnKeyAutomatically:1];
     [(UISearchBar *)self->_searchBar setTextContentType:*MEMORY[0x1E69DE4C0]];
     [(UISearchBar *)self->_searchBar setSearchBarStyle:2];
-    v23 = [(UISearchBar *)self->_searchBar searchField];
-    [v23 setAccessibilityIdentifier:@"location-video-call-search-field"];
+    searchField = [(UISearchBar *)self->_searchBar searchField];
+    [searchField setAccessibilityIdentifier:@"location-video-call-search-field"];
 
     v71 = MEMORY[0x1E696ACD8];
-    v82 = [(UITableView *)self->_tableView topAnchor];
-    v84 = [(EKLocationEditItemViewController *)self view];
-    v80 = [v84 topAnchor];
-    v78 = [v82 constraintEqualToAnchor:v80];
+    topAnchor = [(UITableView *)self->_tableView topAnchor];
+    view2 = [(EKLocationEditItemViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v78 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v92[0] = v78;
-    v74 = [(UITableView *)self->_tableView bottomAnchor];
-    v76 = [(EKLocationEditItemViewController *)self view];
-    v72 = [v76 bottomAnchor];
-    v24 = [v74 constraintEqualToAnchor:v72];
+    bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+    view3 = [(EKLocationEditItemViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v92[1] = v24;
-    v25 = [(UITableView *)self->_tableView leadingAnchor];
-    v26 = [(EKLocationEditItemViewController *)self view];
-    v27 = [v26 leadingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+    view4 = [(EKLocationEditItemViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v92[2] = v28;
-    v29 = [(UITableView *)self->_tableView trailingAnchor];
-    v30 = [(EKLocationEditItemViewController *)self view];
-    v31 = [v30 trailingAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+    view5 = [(EKLocationEditItemViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v92[3] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:4];
     [v71 activateConstraints:v33];
@@ -458,65 +458,65 @@ void __50__EKLocationEditItemViewController_viewDidAppear___block_invoke(uint64_
 
     [(_UINavigationBarPalette *)self->_palette addSubview:self->_searchFieldsView];
     v65 = MEMORY[0x1E696ACD8];
-    v83 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView topAnchor];
-    v85 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
-    v81 = [v85 topAnchor];
-    v79 = [v83 constraintEqualToAnchor:v81];
+    topAnchor3 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView topAnchor];
+    safeAreaLayoutGuide = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
+    topAnchor4 = [safeAreaLayoutGuide topAnchor];
+    v79 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v91[0] = v79;
-    v75 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView leadingAnchor];
-    v77 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
-    v73 = [v77 leadingAnchor];
-    v70 = [v75 constraintEqualToAnchor:v73 constant:20.0];
+    leadingAnchor3 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView leadingAnchor];
+    safeAreaLayoutGuide2 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+    v70 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
     v91[1] = v70;
-    v69 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
-    v68 = [v69 trailingAnchor];
-    v67 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView trailingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67 constant:20.0];
+    safeAreaLayoutGuide3 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
+    trailingAnchor3 = [safeAreaLayoutGuide3 trailingAnchor];
+    trailingAnchor4 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView trailingAnchor];
+    v66 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:20.0];
     v91[2] = v66;
-    v64 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
-    v63 = [v64 bottomAnchor];
-    v62 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView bottomAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:15.0];
+    safeAreaLayoutGuide4 = [(_UINavigationBarPalette *)self->_palette safeAreaLayoutGuide];
+    bottomAnchor3 = [safeAreaLayoutGuide4 bottomAnchor];
+    bottomAnchor4 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView bottomAnchor];
+    v61 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:15.0];
     v91[3] = v61;
-    v59 = [(UITableView *)self->_tableView topAnchor];
-    v60 = [(EKLocationEditItemViewController *)self view];
-    v58 = [v60 topAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    topAnchor5 = [(UITableView *)self->_tableView topAnchor];
+    view6 = [(EKLocationEditItemViewController *)self view];
+    topAnchor6 = [view6 topAnchor];
+    v57 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v91[4] = v57;
-    v55 = [(UITableView *)self->_tableView bottomAnchor];
-    v56 = [(EKLocationEditItemViewController *)self view];
-    v54 = [v56 bottomAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    bottomAnchor5 = [(UITableView *)self->_tableView bottomAnchor];
+    view7 = [(EKLocationEditItemViewController *)self view];
+    bottomAnchor6 = [view7 bottomAnchor];
+    v53 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v91[5] = v53;
-    v40 = [(UITableView *)self->_tableView leadingAnchor];
-    v41 = [(EKLocationEditItemViewController *)self view];
-    v42 = [v41 leadingAnchor];
-    v43 = [v40 constraintEqualToAnchor:v42];
+    leadingAnchor5 = [(UITableView *)self->_tableView leadingAnchor];
+    view8 = [(EKLocationEditItemViewController *)self view];
+    leadingAnchor6 = [view8 leadingAnchor];
+    v43 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v91[6] = v43;
-    v44 = [(UITableView *)self->_tableView trailingAnchor];
-    v45 = [(EKLocationEditItemViewController *)self view];
-    v46 = [v45 trailingAnchor];
-    v47 = [v44 constraintEqualToAnchor:v46];
+    trailingAnchor5 = [(UITableView *)self->_tableView trailingAnchor];
+    view9 = [(EKLocationEditItemViewController *)self view];
+    trailingAnchor6 = [view9 trailingAnchor];
+    v47 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v91[7] = v47;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:8];
     [v65 activateConstraints:v48];
 
     v49 = self->_palette;
-    v50 = [(EKLocationEditItemViewController *)self navigationItem];
-    [v50 _setBottomPalette:v49];
+    navigationItem4 = [(EKLocationEditItemViewController *)self navigationItem];
+    [navigationItem4 _setBottomPalette:v49];
 
     if ([(EKLocationEditItemViewController *)self conferenceTextFieldSelected]&& ![(EKLocationEditItemViewController *)self disableConferenceTextField])
     {
-      v51 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
+      virtualConferenceTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
     }
 
     else
     {
-      v51 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
+      virtualConferenceTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
     }
 
-    v52 = v51;
-    [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView setSelectedTextField:v51];
+    v52 = virtualConferenceTextField;
+    [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView setSelectedTextField:virtualConferenceTextField];
 
     [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView setDisableConferenceTextField:[(EKLocationEditItemViewController *)self disableConferenceTextField]];
     v34 = v88;
@@ -531,12 +531,12 @@ void __61__EKLocationEditItemViewController__setupViewsAndConstraints__block_inv
 
 - (BOOL)showingTextRow
 {
-  v3 = [(EKLocationEditItemViewController *)self searchText];
-  v4 = v3;
+  searchText = [(EKLocationEditItemViewController *)self searchText];
+  v4 = searchText;
   LOBYTE(v5) = 0;
-  if ((self->_supportedSearchTypes & 0x80) != 0 && v3)
+  if ((self->_supportedSearchTypes & 0x80) != 0 && searchText)
   {
-    v5 = [v3 isEqualToString:&stru_1F4EF6790] ^ 1;
+    v5 = [searchText isEqualToString:&stru_1F4EF6790] ^ 1;
   }
 
   return v5;
@@ -547,9 +547,9 @@ void __61__EKLocationEditItemViewController__setupViewsAndConstraints__block_inv
   v3 = EventKitUIBundle();
   v4 = [v3 localizedStringForKey:@"Current Location" value:&stru_1F4EF6790 table:0];
 
-  v5 = [(EKLocationEditItemViewController *)self searchText];
-  v6 = v5;
-  v7 = v5 && ([v5 isEqualToString:&stru_1F4EF6790] & 1) == 0 && objc_msgSend(v4, "compare:options:", v6, 9) == 0;
+  searchText = [(EKLocationEditItemViewController *)self searchText];
+  v6 = searchText;
+  v7 = searchText && ([searchText isEqualToString:&stru_1F4EF6790] & 1) == 0 && objc_msgSend(v4, "compare:options:", v6, 9) == 0;
   v8 = 0;
   if (self->_searchModelCurrentLocation && !v7)
   {
@@ -566,31 +566,31 @@ void __61__EKLocationEditItemViewController__setupViewsAndConstraints__block_inv
     return 1;
   }
 
-  v4 = [(EKLocationEditItemViewController *)self searchText];
-  if ([v4 length])
+  searchText = [(EKLocationEditItemViewController *)self searchText];
+  if ([searchText length])
   {
     v2 = 1;
   }
 
   else
   {
-    v5 = [(EKLocationEditItemViewController *)self traitCollection];
-    v2 = EKUIUsesLargeTextLayout(v5);
+    traitCollection = [(EKLocationEditItemViewController *)self traitCollection];
+    v2 = EKUIUsesLargeTextLayout(traitCollection);
   }
 
   return v2;
 }
 
-- (void)useAsString:(id)a3
+- (void)useAsString:(id)string
 {
   if ((self->_supportedSearchTypes & 0x80) != 0)
   {
-    v8 = [(EKLocationEditItemViewController *)self searchText];
-    if ([v8 length])
+    searchText = [(EKLocationEditItemViewController *)self searchText];
+    if ([searchText length])
     {
       v5 = MEMORY[0x1E6966B08];
-      v6 = [(EKLocationEditItemViewController *)self searchText];
-      v7 = [v5 locationWithTitle:v6];
+      searchText2 = [(EKLocationEditItemViewController *)self searchText];
+      v7 = [v5 locationWithTitle:searchText2];
       [(EKLocationEditItemViewController *)self setSelectedLocation:v7];
     }
 
@@ -598,27 +598,27 @@ void __61__EKLocationEditItemViewController__setupViewsAndConstraints__block_inv
   }
 }
 
-- (void)setSelectedConferenceRoom:(id)a3
+- (void)setSelectedConferenceRoom:(id)room
 {
-  objc_storeStrong(&self->_selectedConferenceRoom, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_selectedConferenceRoom, room);
+  roomCopy = room;
   searchModel = self->_searchModel;
-  v8 = [(EKCalendarItem *)self->_calendarItem calendar];
-  v7 = [v8 source];
-  [(EKUILocationSearchModel *)searchModel addConferenceRoomToRecents:v5 fromSource:v7];
+  calendar = [(EKCalendarItem *)self->_calendarItem calendar];
+  source = [calendar source];
+  [(EKUILocationSearchModel *)searchModel addConferenceRoomToRecents:roomCopy fromSource:source];
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section] == 2)
+  pathCopy = path;
+  if ([pathCopy section] == 2)
   {
-    v5 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [v4 row]);
-    v6 = [v5 recent];
+    v5 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [pathCopy row]);
+    recent = [v5 recent];
 
-    v7 = [MEMORY[0x1E6966AA8] locationForRecent:v6];
+    location2 = [MEMORY[0x1E6966AA8] locationForRecent:recent];
 LABEL_3:
-    v8 = v7;
+    v8 = location2;
 LABEL_4:
 
 LABEL_20:
@@ -626,23 +626,23 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v4 section] != 5)
+  if ([pathCopy section] != 5)
   {
-    if ([v4 section] == 4)
+    if ([pathCopy section] == 4)
     {
       v18 = 1192;
     }
 
     else
     {
-      if ([v4 section] != 6)
+      if ([pathCopy section] != 6)
       {
-        if ([v4 section] == 1)
+        if ([pathCopy section] == 1)
         {
-          v6 = -[NSArray objectAtIndex:](self->_searchModelVirtualConferenceRoomSearchResults, "objectAtIndex:", [v4 row]);
+          recent = -[NSArray objectAtIndex:](self->_searchModelVirtualConferenceRoomSearchResults, "objectAtIndex:", [pathCopy row]);
           v28 = MEMORY[0x1E6966B08];
-          v29 = [v6 title];
-          v8 = [v28 locationWithTitle:v29];
+          title = [recent title];
+          v8 = [v28 locationWithTitle:title];
 
           goto LABEL_4;
         }
@@ -656,14 +656,14 @@ LABEL_32:
     }
 
     v19 = *(&self->super.super.super.super.isa + v18);
-    v20 = [v4 row];
+    v20 = [pathCopy row];
     searchModelFrequentsSearchResults = v19;
 LABEL_18:
-    v17 = [(NSArray *)searchModelFrequentsSearchResults objectAtIndex:v20];
+    location = [(NSArray *)searchModelFrequentsSearchResults objectAtIndex:v20];
     goto LABEL_19;
   }
 
-  v9 = [v4 row];
+  v9 = [pathCopy row];
   searchModelLocationFromMapsURL = self->_searchModelLocationFromMapsURL;
   v11 = [(NSArray *)self->_searchModelEventsSearchResults count];
   v12 = searchModelLocationFromMapsURL == 0;
@@ -682,35 +682,35 @@ LABEL_18:
   v16 = [(NSArray *)self->_searchModelMapCompletionSearchResults count];
   if (v9 < v13)
   {
-    v17 = [(EKStructuredLocationWithImage *)self->_searchModelLocationFromMapsURL location];
+    location = [(EKStructuredLocationWithImage *)self->_searchModelLocationFromMapsURL location];
 LABEL_19:
-    v8 = v17;
+    v8 = location;
     goto LABEL_20;
   }
 
   if (v9 < v14)
   {
-    v6 = [(NSArray *)self->_searchModelEventsSearchResults objectAtIndex:v9];
-    v7 = [v6 location];
+    recent = [(NSArray *)self->_searchModelEventsSearchResults objectAtIndex:v9];
+    location2 = [recent location];
     goto LABEL_3;
   }
 
   v26 = v16;
   v27 = v15 + v14;
-  if ([v4 row] < v27)
+  if ([pathCopy row] < v27)
   {
     searchModelFrequentsSearchResults = self->_searchModelFrequentsSearchResults;
     v20 = v9 - v14;
     goto LABEL_18;
   }
 
-  if ([v4 row] >= (v26 + v27))
+  if ([pathCopy row] >= (v26 + v27))
   {
     goto LABEL_32;
   }
 
   v30 = [(NSArray *)self->_searchModelMapCompletionSearchResults count];
-  if ([v4 row] - v27 >= v30)
+  if ([pathCopy row] - v27 >= v30)
   {
     goto LABEL_32;
   }
@@ -734,24 +734,24 @@ LABEL_21:
   return v23;
 }
 
-- (id)conferenceRoomForRecent:(id)a3
+- (id)conferenceRoomForRecent:(id)recent
 {
-  v4 = a3;
+  recentCopy = recent;
   if (!self->_cachedConferenceRooms)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cachedConferenceRooms = self->_cachedConferenceRooms;
-    self->_cachedConferenceRooms = v5;
+    self->_cachedConferenceRooms = dictionary;
   }
 
-  v7 = [(EKCalendarItem *)self->_calendarItem calendar];
-  v8 = [v7 source];
+  calendar = [(EKCalendarItem *)self->_calendarItem calendar];
+  source = [calendar source];
 
-  v9 = [MEMORY[0x1E6966AA8] directoryLocationForRecent:v4 onSource:v8];
+  v9 = [MEMORY[0x1E6966AA8] directoryLocationForRecent:recentCopy onSource:source];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v9 preferredAddress];
-  v12 = [v8 externalID];
-  v13 = [v10 stringWithFormat:@"%@.%@", v11, v12];
+  preferredAddress = [v9 preferredAddress];
+  externalID = [source externalID];
+  v13 = [v10 stringWithFormat:@"%@.%@", preferredAddress, externalID];
 
   v14 = [(NSMutableDictionary *)self->_cachedConferenceRooms objectForKey:v13];
   if (!v14)
@@ -759,8 +759,8 @@ LABEL_21:
     v14 = objc_alloc_init(EKUIConferenceRoom);
     [(EKUIConferenceRoom *)v14 setLocation:v9];
     [(EKUIConferenceRoom *)v14 setAvailability:0];
-    v15 = [v8 constraints];
-    -[EKUIConferenceRoom setSupportsAvailability:](v14, "setSupportsAvailability:", [v15 supportsAvailabilityRequests]);
+    constraints = [source constraints];
+    -[EKUIConferenceRoom setSupportsAvailability:](v14, "setSupportsAvailability:", [constraints supportsAvailabilityRequests]);
 
     [(NSMutableDictionary *)self->_cachedConferenceRooms setObject:v14 forKey:v13];
   }
@@ -768,18 +768,18 @@ LABEL_21:
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewCopy = view;
   v7 = 0;
-  if (a4 <= 2)
+  if (section <= 2)
   {
-    if (a4)
+    if (section)
     {
-      if (a4 != 1)
+      if (section != 1)
       {
-        if (a4 != 2)
+        if (section != 2)
         {
           goto LABEL_19;
         }
@@ -788,9 +788,9 @@ LABEL_21:
         goto LABEL_18;
       }
 
-      v19 = [(EKLocationEditItemViewController *)self showAvailableConferenceTypesAsRows];
+      showAvailableConferenceTypesAsRows = [(EKLocationEditItemViewController *)self showAvailableConferenceTypesAsRows];
       v20 = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults count];
-      if (v19)
+      if (showAvailableConferenceTypesAsRows)
       {
         v7 = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults count]+ v20;
       }
@@ -804,14 +804,14 @@ LABEL_21:
     else
     {
       LODWORD(v7) = [(EKLocationEditItemViewController *)self showingTextRow];
-      v9 = [(EKLocationEditItemViewController *)self showingCurrentLocationRow];
+      showingCurrentLocationRow = [(EKLocationEditItemViewController *)self showingCurrentLocationRow];
       v10 = 1;
       if (v7)
       {
         v10 = 2;
       }
 
-      if (v9)
+      if (showingCurrentLocationRow)
       {
         v7 = v10;
       }
@@ -825,9 +825,9 @@ LABEL_21:
 
   else
   {
-    if (a4 <= 4)
+    if (section <= 4)
     {
-      if (a4 == 3)
+      if (section == 3)
       {
         v8 = 1232;
       }
@@ -842,9 +842,9 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if (a4 != 5)
+    if (section != 5)
     {
-      if (a4 != 6)
+      if (section != 6)
       {
         goto LABEL_19;
       }
@@ -872,7 +872,7 @@ LABEL_19:
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
   {
     v12 = v11;
-    v13 = [objc_opt_class() _sectionNameForSection:a4];
+    v13 = [objc_opt_class() _sectionNameForSection:section];
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
     v21 = 138412546;
     v22 = v13;
@@ -884,15 +884,15 @@ LABEL_19:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v21 = a4;
+  pathCopy = path;
   if (![(EKLocationEditItemViewController *)self needsSave])
   {
     [(EKLocationEditItemViewController *)self setNeedsSave:1];
-    if (![v21 section])
+    if (![pathCopy section])
     {
-      if ([v21 row] || !-[EKLocationEditItemViewController showingTextRow](self, "showingTextRow"))
+      if ([pathCopy row] || !-[EKLocationEditItemViewController showingTextRow](self, "showingTextRow"))
       {
         if ([(EKLocationEditItemViewController *)self showingCurrentLocationRow])
         {
@@ -914,13 +914,13 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if ([v21 section] == 3)
+    if ([pathCopy section] == 3)
     {
-      v5 = -[NSArray objectAtIndex:](self->_searchModelConferenceRoomSearchResults, "objectAtIndex:", [v21 row]);
-      [(EKLocationEditItemViewController *)self setSelectedConferenceRoom:v5];
-      v6 = [v5 location];
-      v7 = [v6 displayName];
-      [(EKLocationEditItemViewController *)self setSearchText:v7];
+      recent = -[NSArray objectAtIndex:](self->_searchModelConferenceRoomSearchResults, "objectAtIndex:", [pathCopy row]);
+      [(EKLocationEditItemViewController *)self setSelectedConferenceRoom:recent];
+      location = [recent location];
+      displayName = [location displayName];
+      [(EKLocationEditItemViewController *)self setSearchText:displayName];
 
 LABEL_5:
       [(EKLocationEditItemViewController *)self searchResignFirstResponder];
@@ -930,18 +930,18 @@ LABEL_6:
       goto LABEL_20;
     }
 
-    if ([v21 section] == 2)
+    if ([pathCopy section] == 2)
     {
-      v8 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [v21 row]);
-      v5 = [v8 recent];
+      v8 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [pathCopy row]);
+      recent = [v8 recent];
 
-      if ([MEMORY[0x1E6966AA8] recentIsDirectoryLocation:v5])
+      if ([MEMORY[0x1E6966AA8] recentIsDirectoryLocation:recent])
       {
-        v9 = [(EKLocationEditItemViewController *)self conferenceRoomForRecent:v5];
+        v9 = [(EKLocationEditItemViewController *)self conferenceRoomForRecent:recent];
         [(EKLocationEditItemViewController *)self setSelectedConferenceRoom:v9];
-        v10 = [v9 location];
-        v11 = [v10 displayName];
-        [(EKLocationEditItemViewController *)self setSearchText:v11];
+        location2 = [v9 location];
+        displayName2 = [location2 displayName];
+        [(EKLocationEditItemViewController *)self setSearchText:displayName2];
 
         [(EKLocationEditItemViewController *)self searchResignFirstResponder];
         [(EKEditItemViewController *)self saveAndDismiss];
@@ -950,29 +950,29 @@ LABEL_6:
       }
 
 LABEL_24:
-      v5 = [(EKLocationEditItemViewController *)self itemAtIndexPath:v21];
+      recent = [(EKLocationEditItemViewController *)self itemAtIndexPath:pathCopy];
       EKWeakLinkClass();
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v5;
+        v16 = recent;
         if (!v16)
         {
           goto LABEL_6;
         }
 
         v17 = v16;
-        v18 = [v16 address];
+        address = [v16 address];
 
-        if (v18)
+        if (address)
         {
           [(EKUILocationSearchModel *)self->_searchModel selectLocation:v17];
         }
 
         else
         {
-          v20 = [v17 title];
-          [(EKLocationEditItemViewController *)self setSearchText:v20];
+          title = [v17 title];
+          [(EKLocationEditItemViewController *)self setSearchText:title];
 
           [(EKLocationEditItemViewController *)self useAsString:0];
           [(EKEditItemViewController *)self saveAndDismiss];
@@ -987,7 +987,7 @@ LABEL_24:
           goto LABEL_6;
         }
 
-        v19 = v5;
+        v19 = recent;
         if (!v19)
         {
           goto LABEL_6;
@@ -999,36 +999,36 @@ LABEL_24:
       goto LABEL_6;
     }
 
-    if ([v21 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_24;
     }
 
     if ([(EKLocationEditItemViewController *)self showAvailableConferenceTypesAsRows])
     {
-      v12 = [v21 row];
+      v12 = [pathCopy row];
       v13 = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults count];
       v14 = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults count];
       if (v12 < v13)
       {
-        v15 = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults objectAtIndex:v12];
+        firstObject = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults objectAtIndex:v12];
 LABEL_33:
-        v5 = v15;
-        [(EKLocationEditItemViewController *)self selectedRoomType:v15];
+        recent = firstObject;
+        [(EKLocationEditItemViewController *)self selectedRoomType:firstObject];
         goto LABEL_6;
       }
 
       if (v12 < (v14 + v13))
       {
-        v5 = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults objectAtIndex:v12 - v13];
-        [(EKLocationEditItemViewController *)self setSelectedVirtualConference:v5];
+        recent = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults objectAtIndex:v12 - v13];
+        [(EKLocationEditItemViewController *)self setSelectedVirtualConference:recent];
         goto LABEL_5;
       }
     }
 
     else if ([(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults count]== 1)
     {
-      v15 = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults firstObject];
+      firstObject = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults firstObject];
       goto LABEL_33;
     }
   }
@@ -1036,13 +1036,13 @@ LABEL_33:
 LABEL_20:
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4 <= 3)
+  viewCopy = view;
+  if (section <= 3)
   {
-    switch(a4)
+    switch(section)
     {
       case 1:
         v6 = EventKitUIBundle();
@@ -1066,11 +1066,11 @@ LABEL_20:
 
   else
   {
-    if (a4 <= 5)
+    if (section <= 5)
     {
       v6 = EventKitUIBundle();
       v7 = v6;
-      if (a4 == 4)
+      if (section == 4)
       {
         v8 = @"Contacts";
       }
@@ -1083,15 +1083,15 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (a4 != 6)
+    if (section != 6)
     {
-      if (a4 == 7)
+      if (section == 7)
       {
         v9 = kEKUILogEventEditorHandle;
         if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_ERROR))
         {
           v16 = 134217984;
-          v17 = 7;
+          sectionCopy = 7;
           v10 = "Invalid section supplied: [%tu]";
 LABEL_16:
           _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_ERROR, v10, &v16, 0xCu);
@@ -1106,7 +1106,7 @@ LABEL_14:
       if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_ERROR))
       {
         v16 = 134217984;
-        v17 = a4;
+        sectionCopy = section;
         v10 = "Invalid section supplied: [%ld]";
         goto LABEL_16;
       }
@@ -1129,9 +1129,9 @@ LABEL_22:
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = v12;
-    v14 = [objc_opt_class() _sectionNameForSection:a4];
+    v14 = [objc_opt_class() _sectionNameForSection:section];
     v16 = 138412546;
-    v17 = v11;
+    sectionCopy = v11;
     v18 = 2112;
     v19 = v14;
     _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_DEBUG, "Returning header name [%@] for section [%@]", &v16, 0x16u);
@@ -1140,23 +1140,23 @@ LABEL_22:
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v97 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v9 = 0;
-  v90 = v8;
-  v91 = v7;
-  if (v8 > 3)
+  v90 = section;
+  v91 = pathCopy;
+  if (section > 3)
   {
-    if (v8 > 5)
+    if (section > 5)
     {
-      v10 = self;
-      if (v8 != 6)
+      selfCopy10 = self;
+      if (section != 6)
       {
-        if (v8 == 7)
+        if (section == 7)
         {
           v9 = objc_opt_new();
         }
@@ -1166,70 +1166,70 @@ LABEL_22:
 
       v51 = objc_opt_class();
       v12 = NSStringFromClass(v51);
-      v9 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
-      v16 = [v9 defaultContentConfiguration];
-      v33 = -[NSArray objectAtIndex:](self->_searchModelTextualSearchResults, "objectAtIndex:", [v7 row]);
-      v52 = [v33 title];
-      [v16 setText:v52];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
+      defaultContentConfiguration = [v9 defaultContentConfiguration];
+      v33 = -[NSArray objectAtIndex:](self->_searchModelTextualSearchResults, "objectAtIndex:", [pathCopy row]);
+      title = [v33 title];
+      [defaultContentConfiguration setText:title];
 
-      v53 = [v33 address];
-      [v16 setSecondaryText:v53];
+      address = [v33 address];
+      [defaultContentConfiguration setSecondaryText:address];
 
-      v54 = [v16 secondaryText];
-      v55 = [v54 length];
+      secondaryText = [defaultContentConfiguration secondaryText];
+      v55 = [secondaryText length];
 
       if (!v55)
       {
 LABEL_38:
-        [v9 setContentConfiguration:v16];
+        [v9 setContentConfiguration:defaultContentConfiguration];
 
 LABEL_39:
         goto LABEL_40;
       }
 
-      v35 = [objc_opt_class() _boldTitleFont];
-      v36 = [v16 textProperties];
-      [v36 setFont:v35];
+      _boldTitleFont = [objc_opt_class() _boldTitleFont];
+      textProperties = [defaultContentConfiguration textProperties];
+      [textProperties setFont:_boldTitleFont];
       goto LABEL_36;
     }
 
-    v10 = self;
-    if (v8 == 4)
+    selfCopy10 = self;
+    if (section == 4)
     {
       v37 = objc_opt_class();
       v12 = NSStringFromClass(v37);
-      v9 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
-      v16 = [v9 defaultContentConfiguration];
-      v33 = -[NSArray objectAtIndex:](self->_searchModelContactsSearchResults, "objectAtIndex:", [v7 row]);
-      v38 = [v33 contactLabel];
-      [v16 setText:v38];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
+      defaultContentConfiguration = [v9 defaultContentConfiguration];
+      v33 = -[NSArray objectAtIndex:](self->_searchModelContactsSearchResults, "objectAtIndex:", [pathCopy row]);
+      contactLabel = [v33 contactLabel];
+      [defaultContentConfiguration setText:contactLabel];
 
-      v39 = [v33 title];
-      v40 = [v39 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
-      [v16 setSecondaryText:v40];
+      title2 = [v33 title];
+      v40 = [title2 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetNewline) withCharacter:32];
+      [defaultContentConfiguration setSecondaryText:v40];
 
-      v41 = [v16 secondaryText];
-      v42 = [v41 length];
+      secondaryText2 = [defaultContentConfiguration secondaryText];
+      v42 = [secondaryText2 length];
 
       if (v42)
       {
-        v43 = [objc_opt_class() _boldTitleFont];
-        v44 = [v16 textProperties];
-        [v44 setFont:v43];
+        _boldTitleFont2 = [objc_opt_class() _boldTitleFont];
+        textProperties2 = [defaultContentConfiguration textProperties];
+        [textProperties2 setFont:_boldTitleFont2];
       }
 
-      v35 = [(EKLocationEditItemViewController *)self contactsImage];
-      [v16 setImage:v35];
+      _boldTitleFont = [(EKLocationEditItemViewController *)self contactsImage];
+      [defaultContentConfiguration setImage:_boldTitleFont];
       goto LABEL_37;
     }
 
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v9 = [v6 dequeueReusableCellWithIdentifier:v18 forIndexPath:v7];
-    v87 = [v9 defaultContentConfiguration];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v18 forIndexPath:pathCopy];
+    defaultContentConfiguration2 = [v9 defaultContentConfiguration];
     v88 = v18;
-    v86 = v6;
-    v19 = [v7 row];
+    v86 = viewCopy;
+    v19 = [pathCopy row];
     searchModelLocationFromMapsURL = self->_searchModelLocationFromMapsURL;
     v21 = [(NSArray *)self->_searchModelEventsSearchResults count];
     if (searchModelLocationFromMapsURL)
@@ -1250,79 +1250,79 @@ LABEL_39:
       if (v19 >= v22)
       {
         v83 = v19 - (v85 + v22);
-        v10 = self;
+        selfCopy10 = self;
         if (v19 < (v85 + v22))
         {
           [(NSArray *)self->_searchModelFrequentsSearchResults objectAtIndex:v76];
-          v6 = v86;
-          v25 = v87;
+          viewCopy = v86;
+          v25 = defaultContentConfiguration2;
           v27 = v26 = v88;
-          v28 = [v27 title];
-          v29 = [v27 address];
+          title3 = [v27 title];
+          address2 = [v27 address];
           v77 = MapPinImage();
           goto LABEL_59;
         }
 
-        v25 = v87;
+        v25 = defaultContentConfiguration2;
         v26 = v88;
-        if (v19 >= (v23 + v85 + v22) || v83 >= [(NSArray *)v10->_searchModelMapCompletionSearchResults count])
+        if (v19 >= (v23 + v85 + v22) || v83 >= [(NSArray *)selfCopy10->_searchModelMapCompletionSearchResults count])
         {
           v77 = 0;
-          v29 = 0;
-          v28 = 0;
-          v6 = v86;
+          address2 = 0;
+          title3 = 0;
+          viewCopy = v86;
           goto LABEL_60;
         }
 
-        [(NSArray *)v10->_searchModelMapCompletionSearchResults objectAtIndex:v83];
-        v27 = v6 = v86;
-        v28 = [v27 title];
-        v29 = [v27 subtitle];
-        v24 = [v27 mapItem];
-        v30 = ImageForMapItem(v24);
+        [(NSArray *)selfCopy10->_searchModelMapCompletionSearchResults objectAtIndex:v83];
+        v27 = viewCopy = v86;
+        title3 = [v27 title];
+        address2 = [v27 subtitle];
+        mapItem = [v27 mapItem];
+        image = ImageForMapItem(mapItem);
       }
 
       else
       {
-        v10 = self;
+        selfCopy10 = self;
         [(NSArray *)self->_searchModelEventsSearchResults objectAtIndex:v19];
-        v6 = v86;
-        v25 = v87;
+        viewCopy = v86;
+        v25 = defaultContentConfiguration2;
         v27 = v26 = v88;
-        v24 = [v27 location];
-        v28 = [(EKStructuredLocationWithImage *)v24 title];
-        v29 = [(EKStructuredLocationWithImage *)v24 address];
-        v30 = [v27 image];
+        mapItem = [v27 location];
+        title3 = [(EKStructuredLocationWithImage *)mapItem title];
+        address2 = [(EKStructuredLocationWithImage *)mapItem address];
+        image = [v27 image];
       }
     }
 
     else
     {
-      v24 = self->_searchModelLocationFromMapsURL;
-      [(EKStructuredLocationWithImage *)v24 location];
-      v6 = v86;
-      v25 = v87;
+      mapItem = self->_searchModelLocationFromMapsURL;
+      [(EKStructuredLocationWithImage *)mapItem location];
+      viewCopy = v86;
+      v25 = defaultContentConfiguration2;
       v27 = v26 = v88;
-      v28 = [v27 title];
-      v29 = [v27 address];
-      v30 = [(EKStructuredLocationWithImage *)v24 image];
+      title3 = [v27 title];
+      address2 = [v27 address];
+      image = [(EKStructuredLocationWithImage *)mapItem image];
     }
 
-    v77 = v30;
+    v77 = image;
 
 LABEL_59:
 LABEL_60:
-    [v25 setText:v28];
-    [v25 setSecondaryText:v29];
+    [v25 setText:title3];
+    [v25 setSecondaryText:address2];
     [v25 setImage:v77];
-    v78 = [v25 secondaryText];
-    v79 = [v78 length];
+    secondaryText3 = [v25 secondaryText];
+    v79 = [secondaryText3 length];
 
     if (v79)
     {
-      v80 = [objc_opt_class() _boldTitleFont];
-      v81 = [v25 textProperties];
-      [v81 setFont:v80];
+      _boldTitleFont3 = [objc_opt_class() _boldTitleFont];
+      textProperties3 = [v25 textProperties];
+      [textProperties3 setFont:_boldTitleFont3];
     }
 
     [v9 setContentConfiguration:v25];
@@ -1330,27 +1330,27 @@ LABEL_60:
     goto LABEL_41;
   }
 
-  if (v8 > 1)
+  if (section > 1)
   {
-    v10 = self;
-    if (v8 != 2)
+    selfCopy10 = self;
+    if (section != 2)
     {
-      v12 = -[NSArray objectAtIndex:](self->_searchModelConferenceRoomSearchResults, "objectAtIndex:", [v7 row]);
-      v9 = [(EKLocationEditItemViewController *)self _cellForConferenceRoom:v12 atIndexPath:v7];
+      v12 = -[NSArray objectAtIndex:](self->_searchModelConferenceRoomSearchResults, "objectAtIndex:", [pathCopy row]);
+      v9 = [(EKLocationEditItemViewController *)self _cellForConferenceRoom:v12 atIndexPath:pathCopy];
 LABEL_40:
 
       goto LABEL_41;
     }
 
-    v89 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [v7 row]);
-    v45 = [v89 recent];
-    if ([MEMORY[0x1E6966AA8] recentIsDirectoryLocation:v45])
+    v89 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [pathCopy row]);
+    recent = [v89 recent];
+    if ([MEMORY[0x1E6966AA8] recentIsDirectoryLocation:recent])
     {
-      v46 = [(EKLocationEditItemViewController *)self conferenceRoomForRecent:v45];
-      v10 = self;
+      v46 = [(EKLocationEditItemViewController *)self conferenceRoomForRecent:recent];
+      selfCopy10 = self;
       v47 = objc_opt_class();
       v48 = NSStringFromClass(v47);
-      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:v48 forIndexPath:v7];
+      v9 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:v48 forIndexPath:pathCopy];
       if ([v46 supportsAvailability] && (objc_msgSend(v46, "availabilityRequestInProgress") & 1) == 0 && !objc_msgSend(v46, "availability"))
       {
         objc_initWeak(location, self);
@@ -1371,33 +1371,33 @@ LABEL_40:
 
     else
     {
-      v65 = [MEMORY[0x1E6966AA8] locationForRecent:v45];
-      v10 = self;
+      v65 = [MEMORY[0x1E6966AA8] locationForRecent:recent];
+      selfCopy10 = self;
       v66 = objc_opt_class();
       v67 = NSStringFromClass(v66);
-      v9 = [v6 dequeueReusableCellWithIdentifier:v67 forIndexPath:v7];
-      v68 = [v9 defaultContentConfiguration];
-      v69 = [v65 title];
-      [v68 setText:v69];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:v67 forIndexPath:pathCopy];
+      defaultContentConfiguration3 = [v9 defaultContentConfiguration];
+      title4 = [v65 title];
+      [defaultContentConfiguration3 setText:title4];
 
-      v70 = [v65 address];
-      [v68 setSecondaryText:v70];
+      address3 = [v65 address];
+      [defaultContentConfiguration3 setSecondaryText:address3];
 
-      v71 = [v68 secondaryText];
-      v72 = [v71 length];
+      secondaryText4 = [defaultContentConfiguration3 secondaryText];
+      v72 = [secondaryText4 length];
 
       if (v72)
       {
-        v73 = [objc_opt_class() _boldTitleFont];
-        v74 = [v68 textProperties];
-        [v74 setFont:v73];
+        _boldTitleFont4 = [objc_opt_class() _boldTitleFont];
+        textProperties4 = [defaultContentConfiguration3 textProperties];
+        [textProperties4 setFont:_boldTitleFont4];
       }
 
-      v75 = [v65 contactLabel];
+      contactLabel2 = [v65 contactLabel];
 
-      if (v75)
+      if (contactLabel2)
       {
-        [(EKLocationEditItemViewController *)v10 contactsImage];
+        [(EKLocationEditItemViewController *)selfCopy10 contactsImage];
       }
 
       else
@@ -1405,54 +1405,54 @@ LABEL_40:
         [v89 image];
       }
       v84 = ;
-      [v68 setImage:v84];
+      [defaultContentConfiguration3 setImage:v84];
 
-      [v9 setContentConfiguration:v68];
+      [v9 setContentConfiguration:defaultContentConfiguration3];
     }
 
     goto LABEL_41;
   }
 
-  v10 = self;
-  if (!v8)
+  selfCopy10 = self;
+  if (!section)
   {
     v31 = objc_opt_class();
     v12 = NSStringFromClass(v31);
-    v9 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
-    if ([v7 row] || !-[EKLocationEditItemViewController showingTextRow](self, "showingTextRow"))
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
+    if ([pathCopy row] || !-[EKLocationEditItemViewController showingTextRow](self, "showingTextRow"))
     {
       if (![(EKLocationEditItemViewController *)self showingCurrentLocationRow])
       {
         goto LABEL_40;
       }
 
-      v16 = [v9 defaultContentConfiguration];
+      defaultContentConfiguration = [v9 defaultContentConfiguration];
       v58 = EventKitUIBundle();
       v59 = [v58 localizedStringForKey:@"Current Location" value:&stru_1F4EF6790 table:0];
-      [v16 setText:v59];
+      [defaultContentConfiguration setText:v59];
 
-      v60 = [(EKLocationEditItemViewController *)self locationArrowImage];
-      [v16 setImage:v60];
+      locationArrowImage = [(EKLocationEditItemViewController *)self locationArrowImage];
+      [defaultContentConfiguration setImage:locationArrowImage];
 
-      [v9 setContentConfiguration:v16];
+      [v9 setContentConfiguration:defaultContentConfiguration];
       goto LABEL_39;
     }
 
-    v16 = [v9 defaultContentConfiguration];
+    defaultContentConfiguration = [v9 defaultContentConfiguration];
     v32 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v33 = [v32 localizedStringForKey:@"“%@”" value:&stru_1F4EF6790 table:0];
 
     v34 = MEMORY[0x1E696AEC0];
-    v35 = [(EKLocationEditItemViewController *)self searchText];
-    v36 = [v34 localizedStringWithFormat:v33, v35];
-    [v16 setText:v36];
+    _boldTitleFont = [(EKLocationEditItemViewController *)self searchText];
+    textProperties = [v34 localizedStringWithFormat:v33, _boldTitleFont];
+    [defaultContentConfiguration setText:textProperties];
 LABEL_36:
 
 LABEL_37:
     goto LABEL_38;
   }
 
-  if (v8 != 1)
+  if (section != 1)
   {
     goto LABEL_41;
   }
@@ -1461,29 +1461,29 @@ LABEL_37:
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v9 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
     [v9 setAccessoryType:0];
-    v13 = [v7 row];
+    v13 = [pathCopy row];
     v14 = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults count];
     v15 = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults count];
     if (v13 >= v14)
     {
-      v10 = self;
+      selfCopy10 = self;
       if (v13 >= (v15 + v14))
       {
         goto LABEL_40;
       }
 
-      v16 = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults objectAtIndex:v13 - v14];
-      [v9 updateWithCustomVirtualConference:v16];
+      defaultContentConfiguration = [(NSArray *)self->_searchModelVirtualConferenceCustomSearchResults objectAtIndex:v13 - v14];
+      [v9 updateWithCustomVirtualConference:defaultContentConfiguration];
     }
 
     else
     {
-      v16 = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults objectAtIndex:v13];
-      v10 = self;
-      [v9 updateWithRoomType:v16];
-      if (self->_shouldShowCheckedVirtualConference && [v16 isEqual:self->_checkedRoomType])
+      defaultContentConfiguration = [(NSArray *)self->_searchModelVirtualConferenceRoomSearchResults objectAtIndex:v13];
+      selfCopy10 = self;
+      [v9 updateWithRoomType:defaultContentConfiguration];
+      if (self->_shouldShowCheckedVirtualConference && [defaultContentConfiguration isEqual:self->_checkedRoomType])
       {
         [v9 setAccessoryType:3];
       }
@@ -1497,17 +1497,17 @@ LABEL_37:
   {
     v62 = objc_opt_class();
     v63 = NSStringFromClass(v62);
-    v9 = [v6 dequeueReusableCellWithIdentifier:v63 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v63 forIndexPath:pathCopy];
     [v9 setAccessoryType:0];
-    v64 = [(NSArray *)v61 firstObject];
-    [v9 updateWithRoomType:v64];
+    firstObject = [(NSArray *)v61 firstObject];
+    [v9 updateWithRoomType:firstObject];
   }
 
   else
   {
     v82 = objc_opt_class();
     v63 = NSStringFromClass(v82);
-    v9 = [v6 dequeueReusableCellWithIdentifier:v63 forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v63 forIndexPath:pathCopy];
     [v9 setDelegate:self];
     [v9 setRoomTypes:v61];
   }
@@ -1515,7 +1515,7 @@ LABEL_37:
 LABEL_41:
   if (![v9 accessoryType])
   {
-    [v9 setAccessoryType:{-[EKLocationEditItemViewController _accessoryTypeForSection:](v10, "_accessoryTypeForSection:", v90)}];
+    [v9 setAccessoryType:{-[EKLocationEditItemViewController _accessoryTypeForSection:](selfCopy10, "_accessoryTypeForSection:", v90)}];
   }
 
   v56 = kEKUILogEventEditorHandle;
@@ -1553,12 +1553,12 @@ void __68__EKLocationEditItemViewController_tableView_cellForRowAtIndexPath___bl
   }
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v36 = [(EKLocationEditItemViewController *)self itemAtIndexPath:v5];
-  v35 = [(EKLocationEditItemViewController *)self _rowNameForIndexPath:v5];
+  pathCopy = path;
+  v36 = [(EKLocationEditItemViewController *)self itemAtIndexPath:pathCopy];
+  v35 = [(EKLocationEditItemViewController *)self _rowNameForIndexPath:pathCopy];
 
   v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Row name: %@\n\nData description:\n%@", v35, v36];
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -1566,37 +1566,37 @@ void __68__EKLocationEditItemViewController_tableView_cellForRowAtIndexPath___bl
   [v6 setNumberOfLines:0];
   [v6 setText:v33];
   v7 = objc_alloc_init(MEMORY[0x1E69DD258]);
-  v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v9 = [v7 view];
-  [v9 setBackgroundColor:v8];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [v7 view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v10 = [v7 view];
-  [v10 addSubview:v6];
+  view2 = [v7 view];
+  [view2 addSubview:v6];
 
   v23 = MEMORY[0x1E696ACD8];
-  v32 = [v7 view];
-  v31 = [v32 layoutMarginsGuide];
-  v30 = [v31 leadingAnchor];
-  v29 = [v6 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  view3 = [v7 view];
+  layoutMarginsGuide = [view3 layoutMarginsGuide];
+  leadingAnchor = [layoutMarginsGuide leadingAnchor];
+  leadingAnchor2 = [v6 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v37[0] = v28;
-  v27 = [v7 view];
-  v26 = [v27 layoutMarginsGuide];
-  v25 = [v26 trailingAnchor];
-  v24 = [v6 trailingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24];
+  view4 = [v7 view];
+  layoutMarginsGuide2 = [view4 layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+  trailingAnchor2 = [v6 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v37[1] = v22;
-  v21 = [v7 view];
-  v20 = [v21 layoutMarginsGuide];
-  v19 = [v20 topAnchor];
-  v11 = [v6 topAnchor];
-  v12 = [v19 constraintEqualToAnchor:v11];
+  view5 = [v7 view];
+  layoutMarginsGuide3 = [view5 layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide3 topAnchor];
+  topAnchor2 = [v6 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v37[2] = v12;
-  v13 = [v7 view];
-  v14 = [v13 layoutMarginsGuide];
-  v15 = [v14 bottomAnchor];
-  v16 = [v6 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  view6 = [v7 view];
+  layoutMarginsGuide4 = [view6 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide4 bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[3] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
   [v23 activateConstraints:v18];
@@ -1604,14 +1604,14 @@ void __68__EKLocationEditItemViewController_tableView_cellForRowAtIndexPath___bl
   [(EKLocationEditItemViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (int64_t)_accessoryTypeForSection:(unint64_t)a3
+- (int64_t)_accessoryTypeForSection:(unint64_t)section
 {
   if (_accessoryTypeForSection__onceToken != -1)
   {
     [EKLocationEditItemViewController _accessoryTypeForSection:];
   }
 
-  v5 = a3 == 5 || a3 == 2;
+  v5 = section == 5 || section == 2;
   if ((v5 & _accessoryTypeForSection__showsAccessoryButtons) != 0)
   {
     return 4;
@@ -1637,15 +1637,15 @@ void __61__EKLocationEditItemViewController__accessoryTypeForSection___block_inv
   return v3;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  if ([v8 section] == 2)
+  pathCopy = path;
+  if ([pathCopy section] == 2)
   {
-    v6 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [v8 row]);
-    v7 = [v6 recent];
+    v6 = -[NSArray objectAtIndex:](self->_searchModelRecentsSearchResults, "objectAtIndex:", [pathCopy row]);
+    recent = [v6 recent];
 
-    [(EKUILocationSearchModel *)self->_searchModel removeRecentLocation:v7];
+    [(EKUILocationSearchModel *)self->_searchModel removeRecentLocation:recent];
   }
 }
 
@@ -1653,10 +1653,10 @@ void __61__EKLocationEditItemViewController__accessoryTypeForSection___block_inv
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69DCAD8];
-  v3 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v12[0] = v3;
-  v4 = [MEMORY[0x1E69DC888] systemGray4Color];
-  v12[1] = v4;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v12[0] = systemBlueColor;
+  systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
+  v12[1] = systemGray4Color;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v6 = [v2 _configurationWithHierarchicalColors:v5];
 
@@ -1675,17 +1675,17 @@ void __61__EKLocationEditItemViewController__accessoryTypeForSection___block_inv
   [MEMORY[0x1E69669E0] conferenceImageSize];
   v3 = [v2 configurationWithPointSize:?];
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.crop.circle.fill" withConfiguration:v3];
-  v5 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v6 = [v4 imageWithTintColor:v5 renderingMode:1];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v6 = [v4 imageWithTintColor:systemGrayColor renderingMode:1];
 
   return v6;
 }
 
-- (void)locationSearchModel:(id)a3 selectedLocation:(id)a4 withError:(id)a5
+- (void)locationSearchModel:(id)model selectedLocation:(id)location withError:(id)error
 {
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || a5)
+  locationCopy = location;
+  v8 = locationCopy;
+  if (!locationCopy || error)
   {
     v12 = MEMORY[0x1E69DC650];
     v13 = EventKitUIBundle();
@@ -1721,17 +1721,17 @@ void __61__EKLocationEditItemViewController__accessoryTypeForSection___block_inv
 
   else
   {
-    v9 = [v7 title];
+    title = [locationCopy title];
 
-    if (!v9)
+    if (!title)
     {
-      v10 = [v8 address];
-      [v8 setTitle:v10];
+      address = [v8 address];
+      [v8 setTitle:address];
     }
 
     [(EKLocationEditItemViewController *)self setSelectedLocation:v8];
-    v11 = [v8 title];
-    [(EKLocationEditItemViewController *)self setSearchText:v11];
+    title2 = [v8 title];
+    [(EKLocationEditItemViewController *)self setSearchText:title2];
 
     [(EKLocationEditItemViewController *)self searchResignFirstResponder];
     [(EKEditItemViewController *)self saveAndDismiss];
@@ -1803,14 +1803,14 @@ void __83__EKLocationEditItemViewController_locationSearchModel_selectedLocation
   [v1 deselectRowAtIndexPath:v2 animated:1];
 }
 
-- (BOOL)shouldIncludeConferenceRoom:(id)a3
+- (BOOL)shouldIncludeConferenceRoom:(id)room
 {
-  v4 = a3;
-  v5 = [v4 location];
-  v6 = [v5 displayName];
-  v7 = [(EKUILocationRowModel *)self->_locationViewModel location];
-  v8 = [v7 title];
-  v9 = [v6 isEqualToString:v8];
+  roomCopy = room;
+  location = [roomCopy location];
+  displayName = [location displayName];
+  location2 = [(EKUILocationRowModel *)self->_locationViewModel location];
+  title = [location2 title];
+  v9 = [displayName isEqualToString:title];
 
   v10 = 1;
   if ((v9 & 1) == 0)
@@ -1819,15 +1819,15 @@ void __83__EKLocationEditItemViewController_locationSearchModel_selectedLocation
     v18 = &v17;
     v19 = 0x2020000000;
     v20 = 1;
-    v11 = [(EKCalendarItem *)self->_calendarItem attendees];
+    attendees = [(EKCalendarItem *)self->_calendarItem attendees];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __64__EKLocationEditItemViewController_shouldIncludeConferenceRoom___block_invoke;
     v13[3] = &unk_1E8441628;
-    v14 = v4;
-    v15 = self;
+    v14 = roomCopy;
+    selfCopy = self;
     v16 = &v17;
-    [v11 enumerateObjectsUsingBlock:v13];
+    [attendees enumerateObjectsUsingBlock:v13];
 
     v10 = *(v18 + 24);
     _Block_object_dispose(&v17, 8);
@@ -1864,22 +1864,22 @@ void __64__EKLocationEditItemViewController_shouldIncludeConferenceRoom___block_
   }
 }
 
-- (void)locationSearchModel:(id)a3 updatedSearchTypes:(unint64_t)a4
+- (void)locationSearchModel:(id)model updatedSearchTypes:(unint64_t)types
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  typesCopy = types;
+  modelCopy = model;
+  v7 = modelCopy;
+  if (typesCopy)
   {
-    v8 = [v6 currentLocation];
-    v9 = [v8 copy];
+    currentLocation = [modelCopy currentLocation];
+    v9 = [currentLocation copy];
     searchModelCurrentLocation = self->_searchModelCurrentLocation;
     self->_searchModelCurrentLocation = v9;
 
-    if ((v4 & 4) == 0)
+    if ((typesCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v4 & 2) == 0)
+      if ((typesCopy & 2) == 0)
       {
         goto LABEL_4;
       }
@@ -1888,20 +1888,20 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((typesCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  v11 = [v7 mapCompletionSearchResults];
-  v12 = [v11 copy];
+  mapCompletionSearchResults = [v7 mapCompletionSearchResults];
+  v12 = [mapCompletionSearchResults copy];
   searchModelMapCompletionSearchResults = self->_searchModelMapCompletionSearchResults;
   self->_searchModelMapCompletionSearchResults = v12;
 
-  if ((v4 & 2) == 0)
+  if ((typesCopy & 2) == 0)
   {
 LABEL_4:
-    if ((v4 & 8) == 0)
+    if ((typesCopy & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -1910,14 +1910,14 @@ LABEL_4:
   }
 
 LABEL_14:
-  v14 = [v7 locationFromMapsURL];
+  locationFromMapsURL = [v7 locationFromMapsURL];
   searchModelLocationFromMapsURL = self->_searchModelLocationFromMapsURL;
-  self->_searchModelLocationFromMapsURL = v14;
+  self->_searchModelLocationFromMapsURL = locationFromMapsURL;
 
-  if ((v4 & 8) == 0)
+  if ((typesCopy & 8) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x10) == 0)
+    if ((typesCopy & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -1926,15 +1926,15 @@ LABEL_5:
   }
 
 LABEL_15:
-  v16 = [v7 contactsSearchResults];
-  v17 = [v16 copy];
+  contactsSearchResults = [v7 contactsSearchResults];
+  v17 = [contactsSearchResults copy];
   searchModelContactsSearchResults = self->_searchModelContactsSearchResults;
   self->_searchModelContactsSearchResults = v17;
 
-  if ((v4 & 0x10) == 0)
+  if ((typesCopy & 0x10) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x20) == 0)
+    if ((typesCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -1943,15 +1943,15 @@ LABEL_6:
   }
 
 LABEL_16:
-  v19 = [v7 recentsSearchResults];
-  v20 = [v19 copy];
+  recentsSearchResults = [v7 recentsSearchResults];
+  v20 = [recentsSearchResults copy];
   searchModelRecentsSearchResults = self->_searchModelRecentsSearchResults;
   self->_searchModelRecentsSearchResults = v20;
 
-  if ((v4 & 0x20) == 0)
+  if ((typesCopy & 0x20) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x40) == 0)
+    if ((typesCopy & 0x40) == 0)
     {
       goto LABEL_8;
     }
@@ -1960,15 +1960,15 @@ LABEL_7:
   }
 
 LABEL_17:
-  v22 = [v7 frequentsSearchResults];
-  v23 = [v22 copy];
+  frequentsSearchResults = [v7 frequentsSearchResults];
+  v23 = [frequentsSearchResults copy];
   searchModelFrequentsSearchResults = self->_searchModelFrequentsSearchResults;
   self->_searchModelFrequentsSearchResults = v23;
 
-  if ((v4 & 0x40) == 0)
+  if ((typesCopy & 0x40) == 0)
   {
 LABEL_8:
-    if ((v4 & 0x80) == 0)
+    if ((typesCopy & 0x80) == 0)
     {
       goto LABEL_9;
     }
@@ -1977,15 +1977,15 @@ LABEL_8:
   }
 
 LABEL_18:
-  v25 = [v7 eventsSearchResults];
-  v26 = [v25 copy];
+  eventsSearchResults = [v7 eventsSearchResults];
+  v26 = [eventsSearchResults copy];
   searchModelEventsSearchResults = self->_searchModelEventsSearchResults;
   self->_searchModelEventsSearchResults = v26;
 
-  if ((v4 & 0x80) == 0)
+  if ((typesCopy & 0x80) == 0)
   {
 LABEL_9:
-    if ((v4 & 0x100) == 0)
+    if ((typesCopy & 0x100) == 0)
     {
       goto LABEL_10;
     }
@@ -1994,15 +1994,15 @@ LABEL_9:
   }
 
 LABEL_19:
-  v28 = [v7 textualSearchResults];
-  v29 = [v28 copy];
+  textualSearchResults = [v7 textualSearchResults];
+  v29 = [textualSearchResults copy];
   searchModelTextualSearchResults = self->_searchModelTextualSearchResults;
   self->_searchModelTextualSearchResults = v29;
 
-  if ((v4 & 0x100) == 0)
+  if ((typesCopy & 0x100) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x200) == 0)
+    if ((typesCopy & 0x200) == 0)
     {
       goto LABEL_24;
     }
@@ -2011,46 +2011,46 @@ LABEL_10:
   }
 
 LABEL_20:
-  v31 = [v7 conferenceRoomSearchResults];
-  v32 = [v31 copy];
+  conferenceRoomSearchResults = [v7 conferenceRoomSearchResults];
+  v32 = [conferenceRoomSearchResults copy];
   searchModelConferenceRoomSearchResults = self->_searchModelConferenceRoomSearchResults;
   self->_searchModelConferenceRoomSearchResults = v32;
 
-  if ((v4 & 0x200) == 0)
+  if ((typesCopy & 0x200) == 0)
   {
     goto LABEL_24;
   }
 
 LABEL_21:
-  v34 = [v7 virtualConferenceRoomSearchResults];
-  v35 = [v34 copy];
+  virtualConferenceRoomSearchResults = [v7 virtualConferenceRoomSearchResults];
+  v35 = [virtualConferenceRoomSearchResults copy];
   searchModelVirtualConferenceRoomSearchResults = self->_searchModelVirtualConferenceRoomSearchResults;
   self->_searchModelVirtualConferenceRoomSearchResults = v35;
 
-  v37 = [(EKUILocationRowModel *)self->_conferenceViewModel conference];
-  if (v37)
+  conference = [(EKUILocationRowModel *)self->_conferenceViewModel conference];
+  if (conference)
   {
     shouldShowCheckedVirtualConference = self->_shouldShowCheckedVirtualConference;
 
     if (shouldShowCheckedVirtualConference)
     {
       v39 = MEMORY[0x1E69669E0];
-      v40 = [(EKUILocationRowModel *)self->_conferenceViewModel conference];
+      conference2 = [(EKUILocationRowModel *)self->_conferenceViewModel conference];
       v41 = self->_searchModelVirtualConferenceRoomSearchResults;
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __75__EKLocationEditItemViewController_locationSearchModel_updatedSearchTypes___block_invoke;
       v45[3] = &unk_1E8441650;
       v45[4] = self;
-      [v39 virtualConference:v40 likelyCameFromRoomTypes:v41 completionHandler:v45];
+      [v39 virtualConference:conference2 likelyCameFromRoomTypes:v41 completionHandler:v45];
     }
   }
 
 LABEL_24:
-  if ((v4 & 0x400) != 0)
+  if ((typesCopy & 0x400) != 0)
   {
-    v42 = [v7 virtualConferenceCustomSearchResults];
-    v43 = [v42 copy];
+    virtualConferenceCustomSearchResults = [v7 virtualConferenceCustomSearchResults];
+    v43 = [virtualConferenceCustomSearchResults copy];
     searchModelVirtualConferenceCustomSearchResults = self->_searchModelVirtualConferenceCustomSearchResults;
     self->_searchModelVirtualConferenceCustomSearchResults = v43;
   }
@@ -2079,26 +2079,26 @@ uint64_t __75__EKLocationEditItemViewController_locationSearchModel_updatedSearc
   return [v2 reloadData];
 }
 
-+ (id)_sectionNameForSection:(unint64_t)a3
++ (id)_sectionNameForSection:(unint64_t)section
 {
-  if (a3 > 7)
+  if (section > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E8441698[a3];
+    return off_1E8441698[section];
   }
 }
 
-- (id)_rowNameForIndexPath:(id)a3
+- (id)_rowNameForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _sectionNameForSection:{objc_msgSend(v4, "section")}];
-  if ([v4 section] == 5)
+  pathCopy = path;
+  v5 = [objc_opt_class() _sectionNameForSection:{objc_msgSend(pathCopy, "section")}];
+  if ([pathCopy section] == 5)
   {
-    v6 = [v4 row];
+    v6 = [pathCopy row];
     searchModelLocationFromMapsURL = self->_searchModelLocationFromMapsURL;
     v8 = [(NSArray *)self->_searchModelEventsSearchResults count];
     v9 = searchModelLocationFromMapsURL != 0;
@@ -2129,13 +2129,13 @@ LABEL_13:
     }
 
     v14 = v12;
-    if ([v4 row] < (v11 + v10))
+    if ([pathCopy row] < (v11 + v10))
     {
       v13 = @"Frequents Search Results";
       goto LABEL_13;
     }
 
-    if ([v4 row] < (v14 + v11 + v10))
+    if ([pathCopy row] < (v14 + v11 + v10))
     {
       v13 = @"Map Search Results";
       goto LABEL_13;
@@ -2149,15 +2149,15 @@ LABEL_15:
   return v16;
 }
 
-- (id)_cellForConferenceRoom:(id)a3 atIndexPath:(id)a4
+- (id)_cellForConferenceRoom:(id)room atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  roomCopy = room;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [(UITableView *)self->_tableView dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
-  [v10 reloadWithConferenceRoom:v7];
+  [v10 reloadWithConferenceRoom:roomCopy];
 
   return v10;
 }
@@ -2170,9 +2170,9 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(EKLocationVirtualConferenceSearchFieldsView *)searchFieldsView locationTextField];
-  v5 = [v4 text];
-  v6 = ![v5 length] && !self->_selectedConferenceRoom && self->_selectedLocation == 0;
+  locationTextField = [(EKLocationVirtualConferenceSearchFieldsView *)searchFieldsView locationTextField];
+  text = [locationTextField text];
+  v6 = ![text length] && !self->_selectedConferenceRoom && self->_selectedLocation == 0;
 
   return v6;
 }
@@ -2185,9 +2185,9 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(EKLocationVirtualConferenceSearchFieldsView *)searchFieldsView virtualConferenceTextField];
-  v5 = [v4 text];
-  if ([v5 length])
+  virtualConferenceTextField = [(EKLocationVirtualConferenceSearchFieldsView *)searchFieldsView virtualConferenceTextField];
+  text = [virtualConferenceTextField text];
+  if ([text length])
   {
     v6 = 0;
   }
@@ -2216,20 +2216,20 @@ LABEL_15:
   return v2;
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
   searchFieldsView = self->_searchFieldsView;
   if (searchFieldsView)
   {
-    v4 = a3;
-    v6 = [(EKLocationVirtualConferenceSearchFieldsView *)searchFieldsView selectedTextField];
-    [v6 setText:v4];
+    textCopy = text;
+    textCopy2 = [(EKLocationVirtualConferenceSearchFieldsView *)searchFieldsView selectedTextField];
+    [textCopy2 setText:textCopy];
   }
 
   else
   {
     searchBar = self->_searchBar;
-    v6 = a3;
+    textCopy2 = text;
     [(UISearchBar *)searchBar setText:?];
   }
 }
@@ -2238,26 +2238,26 @@ LABEL_15:
 {
   if (self->_searchFieldsView)
   {
-    v2 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
-    v3 = [v2 text];
+    selectedTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
+    text = [selectedTextField text];
   }
 
   else
   {
-    v3 = [(UISearchBar *)self->_searchBar text];
+    text = [(UISearchBar *)self->_searchBar text];
   }
 
-  return v3;
+  return text;
 }
 
 - (BOOL)searchIsFirstResponder
 {
   if (self->_searchFieldsView)
   {
-    v3 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
-    v4 = [v3 isFirstResponder];
+    selectedTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
+    isFirstResponder = [selectedTextField isFirstResponder];
 
-    return v4;
+    return isFirstResponder;
   }
 
   else
@@ -2272,8 +2272,8 @@ LABEL_15:
 {
   if (self->_searchFieldsView)
   {
-    v4 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
-    [v4 resignFirstResponder];
+    selectedTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
+    [selectedTextField resignFirstResponder];
   }
 
   else
@@ -2288,8 +2288,8 @@ LABEL_15:
 {
   if (self->_searchFieldsView)
   {
-    v4 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
-    [v4 becomeFirstResponder];
+    selectedTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView selectedTextField];
+    [selectedTextField becomeFirstResponder];
   }
 
   else
@@ -2302,27 +2302,27 @@ LABEL_15:
 
 - (void)kickoffSearchTextChangedIfNonEmpty
 {
-  v3 = [(EKLocationEditItemViewController *)self searchText];
-  v4 = [v3 length];
+  searchText = [(EKLocationEditItemViewController *)self searchText];
+  v4 = [searchText length];
 
   if (v4)
   {
-    v5 = [(EKLocationEditItemViewController *)self searchText];
-    [(EKLocationEditItemViewController *)self searchTextChanged:v5 allowClearingCheckedVirtualConference:0];
+    searchText2 = [(EKLocationEditItemViewController *)self searchText];
+    [(EKLocationEditItemViewController *)self searchTextChanged:searchText2 allowClearingCheckedVirtualConference:0];
   }
 }
 
-- (void)searchTextChanged:(id)a3 allowClearingCheckedVirtualConference:(BOOL)a4
+- (void)searchTextChanged:(id)changed allowClearingCheckedVirtualConference:(BOOL)conference
 {
-  v4 = a4;
+  conferenceCopy = conference;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4)
+  changedCopy = changed;
+  if (conferenceCopy)
   {
-    v7 = [(EKLocationEditItemViewController *)self _focusedTextField];
-    v8 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
+    _focusedTextField = [(EKLocationEditItemViewController *)self _focusedTextField];
+    virtualConferenceTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
 
-    if (v7 == v8)
+    if (_focusedTextField == virtualConferenceTextField)
     {
       self->_shouldShowCheckedVirtualConference = 0;
     }
@@ -2332,7 +2332,7 @@ LABEL_15:
   {
     if (self->_supportsStructuredLocations)
     {
-      if (!v6 || [v6 isEqualToString:&stru_1F4EF6790])
+      if (!changedCopy || [changedCopy isEqualToString:&stru_1F4EF6790])
       {
         [(EKUILocationSearchModel *)self->_searchModel cancelSearch];
         [(EKLocationEditItemViewController *)self setSelectedLocation:0];
@@ -2344,16 +2344,16 @@ LABEL_14:
         goto LABEL_18;
       }
 
-      v12 = [(EKLocationEditItemViewController *)self searchText];
+      searchText = [(EKLocationEditItemViewController *)self searchText];
       v13 = kEKUILogEventEditorHandle;
       if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
       {
         v14 = 138412290;
-        v15 = v12;
+        v15 = searchText;
         _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_DEBUG, "Beginning search for term: [%@]", &v14, 0xCu);
       }
 
-      [(EKUILocationSearchModel *)self->_searchModel beginSearchForTerm:v12];
+      [(EKUILocationSearchModel *)self->_searchModel beginSearchForTerm:searchText];
     }
 
     else
@@ -2362,9 +2362,9 @@ LABEL_14:
       if ((self->_supportedSearchTypes & 0x200) != 0)
       {
         v11 = self->_searchModel;
-        if ([v6 length])
+        if ([changedCopy length])
         {
-          v10 = v6;
+          v10 = changedCopy;
         }
 
         else
@@ -2383,21 +2383,21 @@ LABEL_18:
 
 - (void)searchDoneTapped
 {
-  v2 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x1E69E9840];
   [(EKLocationEditItemViewController *)self setNeedsSave:1];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = v2->_searchModelVirtualConferenceCustomSearchResults;
+  v3 = selfCopy->_searchModelVirtualConferenceCustomSearchResults;
   v4 = [(NSArray *)v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v4)
   {
 
     v6 = 0;
 LABEL_14:
-    [(EKLocationEditItemViewController *)v2 useAsString:0];
+    [(EKLocationEditItemViewController *)selfCopy useAsString:0];
     goto LABEL_15;
   }
 
@@ -2416,14 +2416,14 @@ LABEL_14:
       }
 
       v9 = *(*(&v24 + 1) + 8 * i);
-      v10 = [v9 joinMethods];
-      v11 = [v10 firstObject];
-      v12 = [v11 URL];
+      joinMethods = [v9 joinMethods];
+      firstObject = [joinMethods firstObject];
+      v12 = [firstObject URL];
 
-      v13 = [v12 absoluteString];
-      v14 = v2;
-      v15 = [(EKLocationEditItemViewController *)v2 searchText];
-      v16 = [v13 rangeOfString:v15];
+      absoluteString = [v12 absoluteString];
+      v14 = selfCopy;
+      searchText = [(EKLocationEditItemViewController *)selfCopy searchText];
+      v16 = [absoluteString rangeOfString:searchText];
 
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -2433,7 +2433,7 @@ LABEL_14:
         v6 = v17;
       }
 
-      v2 = v14;
+      selfCopy = v14;
     }
 
     v5 = [(NSArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -2447,9 +2447,9 @@ LABEL_14:
   }
 
   v18 = MEMORY[0x1E6992F40];
-  v19 = [v6 joinMethods];
-  v20 = [v19 firstObject];
-  v21 = [v20 URL];
+  joinMethods2 = [v6 joinMethods];
+  firstObject2 = [joinMethods2 firstObject];
+  v21 = [firstObject2 URL];
   LODWORD(v18) = [v18 isPreferredURL:v21];
 
   if (!v18)
@@ -2460,17 +2460,17 @@ LABEL_14:
   [(EKLocationEditItemViewController *)v14 setSelectedVirtualConference:v6];
   [(EKLocationEditItemViewController *)v14 searchResignFirstResponder];
 LABEL_15:
-  [(EKEditItemViewController *)v2 saveAndDismiss];
+  [(EKEditItemViewController *)selfCopy saveAndDismiss];
 }
 
-- (void)selectedTextFieldChanged:(id)a3
+- (void)selectedTextFieldChanged:(id)changed
 {
   searchModel = self->_searchModel;
-  v5 = a3;
+  changedCopy = changed;
   [(EKUILocationSearchModel *)searchModel cancelSearch];
-  v6 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
+  locationTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView locationTextField];
 
-  if (v6 == v5)
+  if (locationTextField == changedCopy)
   {
     v7 = 511;
   }
@@ -2506,11 +2506,11 @@ LABEL_15:
   [(EKLocationEditItemViewController *)self kickoffSearchTextChangedIfNonEmpty];
 }
 
-- (void)selectedRoomType:(id)a3
+- (void)selectedRoomType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(EKLocationEditItemViewController *)self setNeedsSave:1];
-  [(EKUILocationSearchModel *)self->_searchModel selectVirtualConferenceRoomType:v4];
+  [(EKUILocationSearchModel *)self->_searchModel selectVirtualConferenceRoomType:typeCopy];
   v5 = MEMORY[0x1E6966B38];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -2518,7 +2518,7 @@ LABEL_15:
   v7[3] = &unk_1E8441678;
   v7[4] = self;
   v6 = dispatch_get_global_queue(2, 0);
-  [v5 virtualConferenceForRoomType:v4 completion:v7 queue:v6];
+  [v5 virtualConferenceForRoomType:typeCopy completion:v7 queue:v6];
 
   [(EKLocationEditItemViewController *)self setPendingVirtualConference:1];
   [(EKEditItemViewController *)self saveAndDismiss];
@@ -2550,27 +2550,27 @@ void __53__EKLocationEditItemViewController_selectedRoomType___block_invoke_2(ui
   [v2 editItemPendingVideoConferenceCompleted:*(a1 + 32)];
 }
 
-- (void)pendingVideoConferenceUpdated:(id)a3
+- (void)pendingVideoConferenceUpdated:(id)updated
 {
-  v4 = a3;
-  if (v4)
+  updatedCopy = updated;
+  if (updatedCopy)
   {
-    [(EKLocationEditItemViewController *)self setSelectedVirtualConference:v4];
+    [(EKLocationEditItemViewController *)self setSelectedVirtualConference:updatedCopy];
     v5 = MEMORY[0x1E69933C0];
-    v6 = [v4 joinMethods];
-    v7 = [v6 firstObject];
+    joinMethods = [updatedCopy joinMethods];
+    firstObject = [joinMethods firstObject];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__EKLocationEditItemViewController_pendingVideoConferenceUpdated___block_invoke;
     v9[3] = &unk_1E843EEB0;
     v9[4] = self;
-    [v5 displayDetailsForJoinMethod:v7 completionHandler:v9];
+    [v5 displayDetailsForJoinMethod:firstObject completionHandler:v9];
   }
 
   else
   {
-    v8 = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
-    [v8 setText:&stru_1F4EF6790];
+    virtualConferenceTextField = [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView virtualConferenceTextField];
+    [virtualConferenceTextField setText:&stru_1F4EF6790];
 
     [(EKLocationEditItemViewController *)self setDisableConferenceTextField:0];
     [(EKLocationVirtualConferenceSearchFieldsView *)self->_searchFieldsView setDisableConferenceTextField:0];

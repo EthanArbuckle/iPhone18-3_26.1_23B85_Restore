@@ -1,10 +1,10 @@
 @interface MTLIOAccelIOHandleRaw
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLIOAccelIOHandleRaw
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v6.receiver = self;
   v6.super_class = MTLIOAccelIOHandleRaw;
@@ -13,7 +13,7 @@
   {
     [(_MTLIOHandleRaw *)self globalTraceObjectID];
     labelTraceID = self->super._labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->super._labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 }

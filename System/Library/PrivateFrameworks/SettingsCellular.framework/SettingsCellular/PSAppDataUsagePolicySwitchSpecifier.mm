@@ -1,23 +1,23 @@
 @interface PSAppDataUsagePolicySwitchSpecifier
-- (PSAppDataUsagePolicySwitchSpecifier)initWithBundleID:(id)a3 displayName:(id)a4 statisticsCache:(id)a5;
+- (PSAppDataUsagePolicySwitchSpecifier)initWithBundleID:(id)d displayName:(id)name statisticsCache:(id)cache;
 - (id)usagePolicy;
-- (void)setUsagePolicy:(id)a3;
+- (void)setUsagePolicy:(id)policy;
 @end
 
 @implementation PSAppDataUsagePolicySwitchSpecifier
 
-- (PSAppDataUsagePolicySwitchSpecifier)initWithBundleID:(id)a3 displayName:(id)a4 statisticsCache:(id)a5
+- (PSAppDataUsagePolicySwitchSpecifier)initWithBundleID:(id)d displayName:(id)name statisticsCache:(id)cache
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = PSAppDataUsagePolicySwitchSpecifier;
-  v10 = [(PSAppDataUsagePolicySwitchSpecifier *)&v13 initWithName:a4 target:self set:sel_setUsagePolicy_ get:sel_usagePolicy detail:0 cell:6 edit:0];
+  v10 = [(PSAppDataUsagePolicySwitchSpecifier *)&v13 initWithName:name target:self set:sel_setUsagePolicy_ get:sel_usagePolicy detail:0 cell:6 edit:0];
   v11 = v10;
   if (v10)
   {
-    [(PSAppCellularUsageSpecifier *)v10 setStatisticsCache:v9];
-    [(PSAppCellularUsageSpecifier *)v11 setBundleID:v8];
+    [(PSAppCellularUsageSpecifier *)v10 setStatisticsCache:cacheCopy];
+    [(PSAppCellularUsageSpecifier *)v11 setBundleID:dCopy];
   }
 
   return v11;
@@ -31,27 +31,27 @@
 
   if ([(PSAppCellularUsageSpecifier *)self shouldShowUsage])
   {
-    v5 = [(PSAppCellularUsageSpecifier *)self dataUsageString];
-    [(PSAppDataUsagePolicySwitchSpecifier *)self setProperty:v5 forKey:*MEMORY[0x277D40160]];
+    dataUsageString = [(PSAppCellularUsageSpecifier *)self dataUsageString];
+    [(PSAppDataUsagePolicySwitchSpecifier *)self setProperty:dataUsageString forKey:*MEMORY[0x277D40160]];
   }
 
   v6 = +[PSAppDataUsagePolicyCache sharedInstance];
-  v7 = [(PSAppCellularUsageSpecifier *)self bundleID];
-  v8 = [v6 policiesFor:v7];
+  bundleID = [(PSAppCellularUsageSpecifier *)self bundleID];
+  v8 = [v6 policiesFor:bundleID];
 
   if (v8)
   {
     if ([(PSAppCellularUsageSpecifier *)self usageType]== 1)
     {
-      v9 = [v8 satellite];
+      satellite = [v8 satellite];
     }
 
     else
     {
-      v9 = [v8 cellular];
+      satellite = [v8 cellular];
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:v9 != 0];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:satellite != 0];
   }
 
   else
@@ -63,44 +63,44 @@
   return v10;
 }
 
-- (void)setUsagePolicy:(id)a3
+- (void)setUsagePolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v5 = +[PSAppDataUsagePolicyCache sharedInstance];
-  v6 = [(PSAppCellularUsageSpecifier *)self bundleID];
-  v7 = [v5 policiesFor:v6];
+  bundleID = [(PSAppCellularUsageSpecifier *)self bundleID];
+  v7 = [v5 policiesFor:bundleID];
 
   if (v7)
   {
-    v8 = [(PSAppCellularUsageSpecifier *)self usageType];
-    v9 = [v4 integerValue];
-    if (v8 == 1)
+    usageType = [(PSAppCellularUsageSpecifier *)self usageType];
+    integerValue = [policyCopy integerValue];
+    if (usageType == 1)
     {
-      [v7 setSatellite:v9];
+      [v7 setSatellite:integerValue];
     }
 
     else
     {
-      [v7 setCellular:v9];
+      [v7 setCellular:integerValue];
     }
 
-    v12 = +[PSAppDataUsagePolicyCache sharedInstance];
+    delegate2 = +[PSAppDataUsagePolicyCache sharedInstance];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __54__PSAppDataUsagePolicySwitchSpecifier_setUsagePolicy___block_invoke;
     v13[3] = &unk_279BA8530;
     v13[4] = self;
-    [v12 setPolicies:v7 completion:v13];
+    [delegate2 setPolicies:v7 completion:v13];
     goto LABEL_8;
   }
 
-  v10 = [(PSAppCellularUsageSpecifier *)self delegate];
+  delegate = [(PSAppCellularUsageSpecifier *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(PSAppCellularUsageSpecifier *)self delegate];
-    [v12 didFailToSetPolicyForSpecifier:self];
+    delegate2 = [(PSAppCellularUsageSpecifier *)self delegate];
+    [delegate2 didFailToSetPolicyForSpecifier:self];
 LABEL_8:
 
     goto LABEL_9;

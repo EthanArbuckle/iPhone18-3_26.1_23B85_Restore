@@ -1,28 +1,28 @@
 @interface CCMediaMetaContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCMediaMetaContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCMediaMetaContent)initWithSourceItemIdentifier:(id)a3 linkedIdentifiers:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCMediaMetaContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCMediaMetaContent)initWithSourceItemIdentifier:(id)identifier linkedIdentifiers:(id)identifiers error:(id *)error;
 - (NSArray)linkedIdentifiers;
 - (NSString)sourceItemIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCMediaMetaContent
 
-- (CCMediaMetaContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCMediaMetaContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v36 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"sourceItemIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"linkedIdentifiers"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sourceItemIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"linkedIdentifiers"];
     if (v10)
     {
       v11 = v10;
@@ -39,7 +39,7 @@
       }
 
       v28 = v9;
-      v29 = self;
+      selfCopy = self;
       v14 = objc_opt_new();
       v31 = 0u;
       v32 = 0u;
@@ -82,7 +82,7 @@
 
               v25 = 0;
               v9 = v28;
-              self = v29;
+              self = selfCopy;
               goto LABEL_21;
             }
 
@@ -96,7 +96,7 @@
       }
 
       v9 = v28;
-      self = v29;
+      self = selfCopy;
     }
 
     else
@@ -105,7 +105,7 @@
       v13 = v8;
     }
 
-    v25 = [[CCMediaMetaContent alloc] initWithSourceItemIdentifier:v9 linkedIdentifiers:v14 error:a4];
+    v25 = [[CCMediaMetaContent alloc] initWithSourceItemIdentifier:v9 linkedIdentifiers:v14 error:error];
     v11 = v14;
 LABEL_21:
 
@@ -127,8 +127,8 @@ LABEL_22:
   v3 = objc_opt_new();
   if (self->_sourceItemIdentifier)
   {
-    v4 = [(CCMediaMetaContent *)self sourceItemIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"sourceItemIdentifier"];
+    sourceItemIdentifier = [(CCMediaMetaContent *)self sourceItemIdentifier];
+    [v3 setObject:sourceItemIdentifier forKeyedSubscript:@"sourceItemIdentifier"];
   }
 
   if (self->_linkedIdentifiers)
@@ -138,8 +138,8 @@ LABEL_22:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(CCMediaMetaContent *)self linkedIdentifiers];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    linkedIdentifiers = [(CCMediaMetaContent *)self linkedIdentifiers];
+    v7 = [linkedIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -150,14 +150,14 @@ LABEL_22:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(linkedIdentifiers);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
-          [v5 addObject:v11];
+          jsonDictionary = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
+          [v5 addObject:jsonDictionary];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [linkedIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -173,19 +173,19 @@ LABEL_22:
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_sourceItemIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18553 stringValue:self->_sourceItemIdentifier];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_linkedIdentifiers)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:18554 repeatedSubMessageValue:self->_linkedIdentifiers];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -203,10 +203,10 @@ LABEL_22:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v38 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v38];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -346,13 +346,13 @@ LABEL_38:
   {
     CCSetError();
     v30 = 0;
-    v31 = v38;
+    v31 = dataCopy;
   }
 
   else
   {
     v32 = MEMORY[0x1E6993AA8];
-    v31 = v38;
+    v31 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v33 = objc_opt_class();
@@ -373,16 +373,16 @@ LABEL_38:
   return v30;
 }
 
-- (CCMediaMetaContent)initWithSourceItemIdentifier:(id)a3 linkedIdentifiers:(id)a4 error:(id *)a5
+- (CCMediaMetaContent)initWithSourceItemIdentifier:(id)identifier linkedIdentifiers:(id)identifiers error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!identifiersCopy)
     {
       goto LABEL_15;
     }
@@ -396,7 +396,7 @@ LABEL_6:
     if (!v13)
     {
       CCSetError();
-      v22 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_18;
     }
@@ -406,7 +406,7 @@ LABEL_6:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v9;
+    v15 = identifiersCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v16)
     {
@@ -422,7 +422,7 @@ LABEL_6:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v26 + 1) + 8 * v19) data];
+          data = [*(*(&v26 + 1) + 8 * v19) data];
           CCPBDataWriterWriteDataField();
 
           ++v19;
@@ -446,36 +446,36 @@ LABEL_6:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (identifiersCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v21 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v21 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
   v3 = @"MediaMetaContent_linkedIdentifiers_type";
-  if (a3 != 18568)
+  if (identifier != 18568)
   {
     v3 = 0;
   }
 
-  if (a3 == 18567)
+  if (identifier == 18567)
   {
     v4 = @"MediaMetaContent_linkedIdentifiers_sourceItemIdentifier";
   }
@@ -486,12 +486,12 @@ LABEL_18:
   }
 
   v5 = @"MediaMetaContent_linkedIdentifiers";
-  if (a3 != 18554)
+  if (identifier != 18554)
   {
     v5 = 0;
   }
 
-  if (a3 == 18553)
+  if (identifier == 18553)
   {
     v6 = @"MediaMetaContent_sourceItemIdentifier";
   }
@@ -501,7 +501,7 @@ LABEL_18:
     v6 = v5;
   }
 
-  if (a3 <= 18566)
+  if (identifier <= 18566)
   {
     return v6;
   }

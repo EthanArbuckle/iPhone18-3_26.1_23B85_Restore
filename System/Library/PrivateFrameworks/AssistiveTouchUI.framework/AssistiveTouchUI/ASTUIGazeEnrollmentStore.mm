@@ -3,87 +3,87 @@
 - (NSArray)calibratedArray;
 - (id)_retrieveDictionary;
 - (void)clearStore;
-- (void)saveCalibratedArray:(id)a3;
-- (void)saveEnrollmentPoint:(CGPoint)a3 withGazePoint:(CGPoint)a4;
+- (void)saveCalibratedArray:(id)array;
+- (void)saveEnrollmentPoint:(CGPoint)point withGazePoint:(CGPoint)gazePoint;
 @end
 
 @implementation ASTUIGazeEnrollmentStore
 
 - (NSArray)calibratedArray
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 assistiveTouchMouseOnDeviceEyeTrackingCalibratedValues];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchMouseOnDeviceEyeTrackingCalibratedValues = [mEMORY[0x277CE7E20] assistiveTouchMouseOnDeviceEyeTrackingCalibratedValues];
 
-  return v3;
+  return assistiveTouchMouseOnDeviceEyeTrackingCalibratedValues;
 }
 
 - (BOOL)enrollmentComplete
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 assistiveTouchMouseOnDeviceEyeTrackingEnrollmentCompleted];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchMouseOnDeviceEyeTrackingEnrollmentCompleted = [mEMORY[0x277CE7E20] assistiveTouchMouseOnDeviceEyeTrackingEnrollmentCompleted];
 
-  return v3;
+  return assistiveTouchMouseOnDeviceEyeTrackingEnrollmentCompleted;
 }
 
-- (void)saveEnrollmentPoint:(CGPoint)a3 withGazePoint:(CGPoint)a4
+- (void)saveEnrollmentPoint:(CGPoint)point withGazePoint:(CGPoint)gazePoint
 {
-  y = a4.y;
-  x = a4.x;
-  v15 = [MEMORY[0x277CCAE60] valueWithCGPoint:{a3.x, a3.y}];
+  y = gazePoint.y;
+  x = gazePoint.x;
+  v15 = [MEMORY[0x277CCAE60] valueWithCGPoint:{point.x, point.y}];
   v6 = [MEMORY[0x277CCAE60] valueWithCGPoint:{x, y}];
-  v7 = [MEMORY[0x277CE7E20] sharedInstance];
-  v8 = [v7 assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap];
-  v9 = [v8 mutableCopy];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap = [mEMORY[0x277CE7E20] assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap];
+  dictionary = [assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap mutableCopy];
 
-  if (!v9)
+  if (!dictionary)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v15 requiringSecureCoding:1 error:0];
   v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
   v12 = [v10 base64EncodedStringWithOptions:0];
   v13 = [v11 base64EncodedStringWithOptions:0];
-  [v9 setObject:v13 forKey:v12];
-  v14 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v14 setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap:v9];
+  [dictionary setObject:v13 forKey:v12];
+  mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20]2 setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap:dictionary];
 }
 
-- (void)saveCalibratedArray:(id)a3
+- (void)saveCalibratedArray:(id)array
 {
   v3 = MEMORY[0x277CE7E20];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 setAssistiveTouchMouseOnDeviceEyeTrackingCalibratedValues:v4];
+  arrayCopy = array;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance setAssistiveTouchMouseOnDeviceEyeTrackingCalibratedValues:arrayCopy];
 
-  v6 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v6 setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap:0];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap:0];
 }
 
 - (void)clearStore
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v2 setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentCompleted:0];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentCompleted:0];
 
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v3 setAssistiveTouchMouseOnDeviceEyeTrackingCalibratedValues:0];
+  mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20]2 setAssistiveTouchMouseOnDeviceEyeTrackingCalibratedValues:0];
 
-  v4 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v4 setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap:0];
+  mEMORY[0x277CE7E20]3 = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20]3 setAssistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap:0];
 }
 
 - (id)_retrieveDictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap = [mEMORY[0x277CE7E20] assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap];
 
-  v19 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = v3;
+  v4 = assistiveTouchMouseOnDeviceEyeTrackingEnrollmentPointToGazePointMap;
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -119,7 +119,7 @@
 
         if (!v16)
         {
-          [v19 setObject:v14 forKey:v13];
+          [dictionary setObject:v14 forKey:v13];
         }
       }
 
@@ -131,7 +131,7 @@
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return dictionary;
 }
 
 @end

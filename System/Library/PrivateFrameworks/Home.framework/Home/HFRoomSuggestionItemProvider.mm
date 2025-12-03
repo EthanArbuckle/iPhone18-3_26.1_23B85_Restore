@@ -1,39 +1,39 @@
 @interface HFRoomSuggestionItemProvider
 - (HFRoomSuggestionItemProvider)init;
-- (HFRoomSuggestionItemProvider)initWithHome:(id)a3;
-- (HFRoomSuggestionItemProvider)initWithHome:(id)a3 suggestionVendor:(id)a4;
+- (HFRoomSuggestionItemProvider)initWithHome:(id)home;
+- (HFRoomSuggestionItemProvider)initWithHome:(id)home suggestionVendor:(id)vendor;
 - (id)_filteredSuggestions;
 - (id)_filteredSupplementaryRoomBuilders;
-- (id)_keyForRoomName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_keyForRoomName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFRoomSuggestionItemProvider
 
-- (HFRoomSuggestionItemProvider)initWithHome:(id)a3
+- (HFRoomSuggestionItemProvider)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = +[HFDefaultRoomSuggestionVendor homeAppSuggestionVendor];
-  v6 = [(HFRoomSuggestionItemProvider *)self initWithHome:v4 suggestionVendor:v5];
+  v6 = [(HFRoomSuggestionItemProvider *)self initWithHome:homeCopy suggestionVendor:v5];
 
   return v6;
 }
 
-- (HFRoomSuggestionItemProvider)initWithHome:(id)a3 suggestionVendor:(id)a4
+- (HFRoomSuggestionItemProvider)initWithHome:(id)home suggestionVendor:(id)vendor
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  vendorCopy = vendor;
   v12.receiver = self;
   v12.super_class = HFRoomSuggestionItemProvider;
   v9 = [(HFItemProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
+    objc_storeStrong(&v9->_home, home);
     v10->_suggestedRoomLimit = 3;
-    objc_storeStrong(&v10->_suggestionVendor, a4);
+    objc_storeStrong(&v10->_suggestionVendor, vendor);
   }
 
   return v10;
@@ -41,31 +41,31 @@
 
 - (HFRoomSuggestionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFRoomSuggestionItemProvider.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HFRoomSuggestionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFRoomSuggestionItemProvider.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HFRoomSuggestionItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFRoomSuggestionItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFRoomSuggestionItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFRoomSuggestionItemProvider *)self suggestionItems];
-  v4 = [v3 na_map:&__block_literal_global_219];
+  suggestionItems = [(HFRoomSuggestionItemProvider *)self suggestionItems];
+  v4 = [suggestionItems na_map:&__block_literal_global_219];
 
-  v30 = [(HFRoomSuggestionItemProvider *)self _filteredSuggestions];
-  v5 = [v30 allObjects];
+  _filteredSuggestions = [(HFRoomSuggestionItemProvider *)self _filteredSuggestions];
+  allObjects = [_filteredSuggestions allObjects];
   v6 = +[HFRoomSuggestion priorityComparator];
-  v7 = [v5 sortedArrayUsingComparator:v6];
+  v7 = [allObjects sortedArrayUsingComparator:v6];
   v8 = [v7 mutableCopy];
 
   while (1)
@@ -83,11 +83,11 @@
   v11 = [v8 na_map:&__block_literal_global_12_11];
   v12 = [v10 setWithArray:v11];
 
-  v13 = [(HFRoomSuggestionItemProvider *)self _filteredSupplementaryRoomBuilders];
-  v14 = [v13 na_dictionaryWithKeyGenerator:&__block_literal_global_15_11];
+  _filteredSupplementaryRoomBuilders = [(HFRoomSuggestionItemProvider *)self _filteredSupplementaryRoomBuilders];
+  v14 = [_filteredSupplementaryRoomBuilders na_dictionaryWithKeyGenerator:&__block_literal_global_15_11];
 
-  v15 = [v14 allKeys];
-  [v12 addObjectsFromArray:v15];
+  allKeys = [v14 allKeys];
+  [v12 addObjectsFromArray:allKeys];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -96,22 +96,22 @@
   aBlock[4] = self;
   v16 = _Block_copy(aBlock);
   v17 = [HFSetDiff diffFromSet:v4 toSet:v12];
-  v18 = [v17 additions];
+  additions = [v17 additions];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __43__HFRoomSuggestionItemProvider_reloadItems__block_invoke_6;
   v31[3] = &unk_277E014B0;
   v32 = v14;
-  v33 = self;
+  selfCopy = self;
   v19 = v14;
-  v20 = [v18 na_map:v31];
+  v20 = [additions na_map:v31];
 
   [v17 deletions];
   v21 = v29 = v4;
   v22 = [v21 na_map:v16];
 
-  v23 = [v17 updates];
-  v24 = [v23 na_map:v16];
+  updates = [v17 updates];
+  v24 = [updates na_map:v16];
 
   v25 = [v24 setByAddingObjectsFromSet:v20];
   [(HFRoomSuggestionItemProvider *)self setSuggestionItems:v25];
@@ -176,16 +176,16 @@ HFRoomBuilderItem *__43__HFRoomSuggestionItemProvider_reloadItems__block_invoke_
 {
   v5.receiver = self;
   v5.super_class = HFRoomSuggestionItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"room"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"room"];
 
   return v3;
 }
 
 - (id)_filteredSupplementaryRoomBuilders
 {
-  v2 = [(HFRoomSuggestionItemProvider *)self supplementaryRoomBuilders];
-  v3 = [v2 na_filter:&__block_literal_global_27_14];
+  supplementaryRoomBuilders = [(HFRoomSuggestionItemProvider *)self supplementaryRoomBuilders];
+  v3 = [supplementaryRoomBuilders na_filter:&__block_literal_global_27_14];
 
   return v3;
 }
@@ -200,14 +200,14 @@ BOOL __66__HFRoomSuggestionItemProvider__filteredSupplementaryRoomBuilders__bloc
 
 - (id)_filteredSuggestions
 {
-  v3 = [(HFRoomSuggestionItemProvider *)self suggestionVendor];
-  v4 = [v3 roomSuggestions];
+  suggestionVendor = [(HFRoomSuggestionItemProvider *)self suggestionVendor];
+  roomSuggestions = [suggestionVendor roomSuggestions];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HFRoomSuggestionItemProvider__filteredSuggestions__block_invoke;
   v7[3] = &unk_277E01540;
   v7[4] = self;
-  v5 = [v4 na_filter:v7];
+  v5 = [roomSuggestions na_filter:v7];
 
   return v5;
 }
@@ -273,14 +273,14 @@ uint64_t __52__HFRoomSuggestionItemProvider__filteredSuggestions__block_invoke_5
   return v6;
 }
 
-- (id)_keyForRoomName:(id)a3
+- (id)_keyForRoomName:(id)name
 {
-  v3 = [a3 stringByApplyingTransform:@"Any-Latin Latin-ASCII; Any-Lower" reverse:0];;
+  v3 = [name stringByApplyingTransform:@"Any-Latin Latin-ASCII; Any-Lower" reverse:0];;
   v4 = _HFLocalizedStringWithDefaultValue(@"HFRoomSuggestionRoomKey", @"HFRoomSuggestionRoomKey", 1);
-  v5 = [v4 lowercaseString];
-  v6 = [v3 stringByReplacingOccurrencesOfString:v5 withString:&stru_2824B1A78];
-  v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+  lowercaseString = [v4 lowercaseString];
+  v6 = [v3 stringByReplacingOccurrencesOfString:lowercaseString withString:&stru_2824B1A78];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v8 = [v6 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   v9 = [v8 componentsJoinedByString:&stru_2824B1A78];
 
   return v9;

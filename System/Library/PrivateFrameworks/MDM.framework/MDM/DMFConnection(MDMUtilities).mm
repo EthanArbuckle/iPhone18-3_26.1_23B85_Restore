@@ -22,7 +22,7 @@
   v14 = a4;
   v8 = v7;
   v12 = v8;
-  [a1 performRequest:v6 completion:v11];
+  [self performRequest:v6 completion:v11];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v16[5];
 

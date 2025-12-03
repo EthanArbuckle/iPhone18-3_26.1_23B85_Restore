@@ -1,39 +1,39 @@
 @interface SUUIDocumentContainerViewController
 - (BOOL)_shouldFillNavigationBarContentsBasedOnNavigationBarViewElement;
-- (BOOL)document:(id)a3 evaluateStyleMediaQuery:(id)a4;
-- (BOOL)performTestWithName:(id)a3 options:(id)a4;
+- (BOOL)document:(id)document evaluateStyleMediaQuery:(id)query;
+- (BOOL)performTestWithName:(id)name options:(id)options;
 - (BOOL)prefersNavigationBarBackgroundViewHidden;
 - (BOOL)prefersNavigationBarHidden;
-- (SUUIDocumentContainerViewController)initWithDocument:(id)a3 options:(id)a4 clientContext:(id)a5;
+- (SUUIDocumentContainerViewController)initWithDocument:(id)document options:(id)options clientContext:(id)context;
 - (UIScrollView)scrollingTabNestedPagingScrollView;
 - (UIView)navigationPaletteView;
 - (id)_navigationBarViewElement;
-- (id)_newViewControllerWithTemplateElement:(id)a3 options:(id)a4 clientContext:(id)a5;
-- (id)_sidepackViewControllerWithOptions:(id)a3 clientContext:(id)a4;
-- (id)additionalLeftBarButtonItemForNavigationBarController:(id)a3;
-- (id)additionalRightBarButtonItemForNavigationBarController:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_newViewControllerWithTemplateElement:(id)element options:(id)options clientContext:(id)context;
+- (id)_sidepackViewControllerWithOptions:(id)options clientContext:(id)context;
+- (id)additionalLeftBarButtonItemForNavigationBarController:(id)controller;
+- (id)additionalRightBarButtonItemForNavigationBarController:(id)controller;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)contentScrollView;
-- (id)impressionableViewElementsForDocument:(id)a3;
-- (id)mediaQueryEvaluator:(id)a3 valueForKey:(id)a4;
+- (id)impressionableViewElementsForDocument:(id)document;
+- (id)mediaQueryEvaluator:(id)evaluator valueForKey:(id)key;
 - (id)navigationBarTintColor;
 - (id)navigationBarTitleTextTintColor;
 - (id)pendingSizeTransitionCompletion;
-- (id)scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)a3;
+- (id)scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)index;
 - (int64_t)navigationBarTintAdjustmentMode;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_SUUI_applicationDidEnterBackground:(id)a3;
-- (void)_SUUI_applicationWillEnterForeground:(id)a3;
+- (void)_SUUI_applicationDidEnterBackground:(id)background;
+- (void)_SUUI_applicationWillEnterForeground:(id)foreground;
 - (void)_enqueueLoadURLOperation;
-- (void)_finishLegacyProtocolOperationForResponse:(id)a3 dataProvider:(id)a4 dictionary:(id)a5;
-- (void)_finishLoadOperationWithResponse:(id)a3 error:(id)a4;
-- (void)_networkTypeChangeNotification:(id)a3;
-- (void)_onReportDOMChange:(id)a3;
-- (void)_onReportDocumentReady:(id)a3;
-- (void)_onReportPlatformJsonTimes:(id)a3;
-- (void)_onReportRequestTimes:(id)a3;
-- (void)_redirectToURL:(id)a3;
+- (void)_finishLegacyProtocolOperationForResponse:(id)response dataProvider:(id)provider dictionary:(id)dictionary;
+- (void)_finishLoadOperationWithResponse:(id)response error:(id)error;
+- (void)_networkTypeChangeNotification:(id)notification;
+- (void)_onReportDOMChange:(id)change;
+- (void)_onReportDocumentReady:(id)ready;
+- (void)_onReportPlatformJsonTimes:(id)times;
+- (void)_onReportRequestTimes:(id)times;
+- (void)_redirectToURL:(id)l;
 - (void)_reloadDefaultBarButtonItems;
 - (void)_reloadNavigationBarController;
 - (void)_reloadNavigationBarControllerIfNeeded;
@@ -41,51 +41,51 @@
 - (void)_reloadNavigationPalette;
 - (void)_reloadPageData;
 - (void)_reloadToolbar;
-- (void)_sendOnViewAttributesChangeWithAttributes:(id)a3 viewWillAppear:(BOOL)a4;
-- (void)_setChildViewController:(id)a3;
-- (void)_showAccountViewControllerWithURL:(id)a3;
-- (void)_showLegacyStorePageWithRequest:(id)a3 page:(id)a4 pageType:(int64_t)a5 URLResponse:(id)a6;
+- (void)_sendOnViewAttributesChangeWithAttributes:(id)attributes viewWillAppear:(BOOL)appear;
+- (void)_setChildViewController:(id)controller;
+- (void)_showAccountViewControllerWithURL:(id)l;
+- (void)_showLegacyStorePageWithRequest:(id)request page:(id)page pageType:(int64_t)type URLResponse:(id)response;
 - (void)_submitPageRenderIfPossible;
 - (void)dealloc;
-- (void)document:(id)a3 runTestWithName:(id)a4 options:(id)a5;
-- (void)documentDidSendMessage:(id)a3;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentScrollToTop:(id)a3;
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4;
+- (void)document:(id)document runTestWithName:(id)name options:(id)options;
+- (void)documentDidSendMessage:(id)message;
+- (void)documentDidUpdate:(id)update;
+- (void)documentScrollToTop:(id)top;
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block;
 - (void)loadView;
-- (void)mediaQueryEvaluatorDidChange:(id)a3;
+- (void)mediaQueryEvaluatorDidChange:(id)change;
 - (void)reloadData;
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4;
-- (void)resourceLoaderDidBeginLoading:(id)a3;
-- (void)scrollingTabAppearanceStatusWasUpdated:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)suui_viewWillAppear:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason;
+- (void)resourceLoaderDidBeginLoading:(id)loading;
+- (void)scrollingTabAppearanceStatusWasUpdated:(id)updated;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)suui_viewWillAppear:(BOOL)appear;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SUUIDocumentContainerViewController
 
-- (SUUIDocumentContainerViewController)initWithDocument:(id)a3 options:(id)a4 clientContext:(id)a5
+- (SUUIDocumentContainerViewController)initWithDocument:(id)document options:(id)options clientContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  documentCopy = document;
+  optionsCopy = options;
+  contextCopy = context;
+  if (!contextCopy)
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v9 debugDescription];
+    v14 = [documentCopy debugDescription];
     NSLog(&cfstr_MissingClientC.isa, v13, v14);
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    NSLog(&cfstr_DocumentOption.isa, v16, v10);
+    NSLog(&cfstr_DocumentOption.isa, v16, optionsCopy);
   }
 
   v43.receiver = self;
@@ -94,26 +94,26 @@
   v18 = v17;
   if (v17)
   {
-    [(SUUIViewController *)v17 setClientContext:v11];
-    v19 = [v10 objectForKey:@"sidepackType"];
-    v20 = [v10 objectForKey:@"url"];
+    [(SUUIViewController *)v17 setClientContext:contextCopy];
+    v19 = [optionsCopy objectForKey:@"sidepackType"];
+    v20 = [optionsCopy objectForKey:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v18->_urlString, v20);
     }
 
-    v21 = [v9 templateElement];
+    templateElement = [documentCopy templateElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = v21;
-      v22 = [(SUUIDocumentContainerViewController *)v18 _sidepackViewControllerWithOptions:v10 clientContext:v11];
-      v23 = [(SUUIDocumentContainerViewController *)v18 navigationItem];
-      [v22 _setExistingNavigationItem:v23];
+      v40 = templateElement;
+      v22 = [(SUUIDocumentContainerViewController *)v18 _sidepackViewControllerWithOptions:optionsCopy clientContext:contextCopy];
+      navigationItem = [(SUUIDocumentContainerViewController *)v18 navigationItem];
+      [v22 _setExistingNavigationItem:navigationItem];
     }
 
-    else if (v21 || !v20)
+    else if (templateElement || !v20)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -123,26 +123,26 @@
         goto LABEL_24;
       }
 
-      v25 = [(SUUIDocumentContainerViewController *)v18 _newViewControllerWithTemplateElement:v21 options:v10 clientContext:v11];
-      v26 = v21;
-      v23 = v25;
+      v25 = [(SUUIDocumentContainerViewController *)v18 _newViewControllerWithTemplateElement:templateElement options:optionsCopy clientContext:contextCopy];
+      v26 = templateElement;
+      navigationItem = v25;
       v40 = v26;
       if (v25)
       {
-        v23 = v25;
+        navigationItem = v25;
         v18->_templateViewElementType = [v26 elementType];
       }
 
-      v22 = v23;
+      v22 = navigationItem;
     }
 
     else
     {
       v40 = 0;
       v22 = objc_alloc_init(MEMORY[0x277D75D28]);
-      v23 = [v22 view];
-      v24 = [MEMORY[0x277D75348] whiteColor];
-      [v23 setBackgroundColor:v24];
+      navigationItem = [v22 view];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [navigationItem setBackgroundColor:whiteColor];
     }
 
     if (!v22)
@@ -150,29 +150,29 @@
       v22 = v18;
       v18 = 0;
 LABEL_23:
-      v21 = v40;
+      templateElement = v40;
 LABEL_24:
 
       goto LABEL_25;
     }
 
     v39 = v19;
-    objc_storeStrong(&v18->_document, a3);
+    objc_storeStrong(&v18->_document, document);
     [(IKAppDocument *)v18->_document setDelegate:v18];
     v18->_scrollingTabAppearanceStatus.progress = 1.0;
     *&v18->_scrollingTabAppearanceStatus.isBouncingOffTheEdge = 0;
     [(SUUIDocumentContainerViewController *)v18 _setChildViewController:v22];
-    v27 = [v10 copy];
+    v27 = [optionsCopy copy];
     presentationOptions = v18->_presentationOptions;
     v18->_presentationOptions = v27;
 
     [(IKAppDocument *)v18->_document onLoad];
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v18 selector:sel__SUUI_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
-    [v29 addObserver:v18 selector:sel_documentDidSendMessage_ name:0x286AFEBA0 object:v18->_document];
-    v30 = [v11 applicationController];
-    v31 = [v30 options];
-    if ([v31 pageRenderMetricsEnabled])
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel__SUUI_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v18 selector:sel_documentDidSendMessage_ name:0x286AFEBA0 object:v18->_document];
+    applicationController = [contextCopy applicationController];
+    options = [applicationController options];
+    if ([options pageRenderMetricsEnabled])
     {
       v32 = [SUUIMetricsPageRenderEvent shouldCollectPageRenderDataForDocument:v18->_document];
 
@@ -188,8 +188,8 @@ LABEL_22:
       [(SUUIDocumentContainerViewController *)v18 setPageRenderEvent:v33];
 
       urlString = v18->_urlString;
-      v35 = [(SUUIDocumentContainerViewController *)v18 pageRenderEvent];
-      [v35 setPageURL:urlString];
+      pageRenderEvent = [(SUUIDocumentContainerViewController *)v18 pageRenderEvent];
+      [pageRenderEvent setPageURL:urlString];
 
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
@@ -201,7 +201,7 @@ LABEL_22:
       v37 = objc_alloc_init(SUUIMetricsDOMChangeQueue);
       [(SUUIDocumentContainerViewController *)v36 setDomChangeTimingQueue:v37];
 
-      v30 = v42;
+      applicationController = v42;
     }
 
     else
@@ -225,11 +225,11 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  [v3 removeObserver:self name:0x286AFEBA0 object:self->_document];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter removeObserver:self name:0x286AFEBA0 object:self->_document];
   if ([(NSSet *)self->_personalizationItems count])
   {
     v4 = +[SUUIItemStateCenter defaultCenter];
@@ -252,48 +252,48 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
   [(SUUIViewController *)&v5 dealloc];
 }
 
-- (void)suui_viewWillAppear:(BOOL)a3
+- (void)suui_viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIViewController *)self->_childViewController suui_viewWillAppear:v3];
+    [(UIViewController *)self->_childViewController suui_viewWillAppear:appearCopy];
   }
 
   v5.receiver = self;
   v5.super_class = SUUIDocumentContainerViewController;
-  [(SUUIViewController *)&v5 suui_viewWillAppear:v3];
+  [(SUUIViewController *)&v5 suui_viewWillAppear:appearCopy];
 }
 
 - (id)contentScrollView
 {
   if (self->_childViewController)
   {
-    v2 = [(UIViewController *)self->_childViewController contentScrollView];
+    contentScrollView = [(UIViewController *)self->_childViewController contentScrollView];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SUUIDocumentContainerViewController;
-    v2 = [(SUUIDocumentContainerViewController *)&v4 contentScrollView];
+    contentScrollView = [(SUUIDocumentContainerViewController *)&v4 contentScrollView];
   }
 
-  return v2;
+  return contentScrollView;
 }
 
 - (void)loadView
 {
-  v3 = [(IKAppDocument *)self->_document templateElement];
-  v4 = [v3 style];
-  v5 = [v4 ikBackgroundColor];
-  v6 = [v5 color];
+  templateElement = [(IKAppDocument *)self->_document templateElement];
+  style = [templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v6)
+  if (color)
   {
     v15 = 1.0;
-    if ([v6 getRed:0 green:0 blue:0 alpha:&v15])
+    if ([color getRed:0 green:0 blue:0 alpha:&v15])
     {
       v7 = v15 <= 0.00000011920929;
     }
@@ -305,35 +305,35 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
 
     if (v7)
     {
-      v8 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
     }
 
     else
     {
-      v8 = v6;
+      clearColor = color;
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] systemBackgroundColor];
+    clearColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v9 = v8;
+  v9 = clearColor;
   v10 = objc_alloc(MEMORY[0x277D75D18]);
-  v11 = [MEMORY[0x277D75DA0] keyWindow];
-  [v11 bounds];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  [keyWindow bounds];
   v12 = [v10 initWithFrame:?];
 
   [v12 setBackgroundColor:v9];
   childViewController = self->_childViewController;
   if (childViewController)
   {
-    v14 = [(UIViewController *)childViewController view];
-    [v14 setAutoresizingMask:18];
+    view = [(UIViewController *)childViewController view];
+    [view setAutoresizingMask:18];
     [v12 bounds];
-    [v14 setFrame:?];
-    [v12 addSubview:v14];
+    [view setFrame:?];
+    [v12 addSubview:view];
   }
 
   [(SUUIDocumentContainerViewController *)self setView:v12];
@@ -350,10 +350,10 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
   }
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = SUUIDocumentContainerViewController;
   [(SUUIDocumentContainerViewController *)&v6 setPreferredContentSize:?];
@@ -362,8 +362,8 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SUUIViewController *)self clientContext];
-  v3 = SUUIUserInterfaceIdiom(v2);
+  clientContext = [(SUUIViewController *)self clientContext];
+  v3 = SUUIUserInterfaceIdiom(clientContext);
 
   if (v3 == 1)
   {
@@ -378,75 +378,75 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
   return 2;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v5 = self->_childViewController;
     if (objc_opt_respondsToSelector())
     {
-      [(UIViewController *)v5 delayPresentationIfNeededForParentViewController:v4];
+      [(UIViewController *)v5 delayPresentationIfNeededForParentViewController:controllerCopy];
     }
   }
 
   v6.receiver = self;
   v6.super_class = SUUIDocumentContainerViewController;
-  [(SUUIDocumentContainerViewController *)&v6 willMoveToParentViewController:v4];
+  [(SUUIDocumentContainerViewController *)&v6 willMoveToParentViewController:controllerCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-  [v5 pageAppearTime];
+  appearCopy = appear;
+  pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  [pageRenderEvent pageAppearTime];
   v7 = v6;
 
   if (v7 < 2.22044605e-16)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v8 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10 = v9;
-    v11 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v11 setPageAppearTime:v10];
+    pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent2 setPageAppearTime:v10];
 
     [(SUUIDocumentContainerViewController *)self _submitPageRenderIfPossible];
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"SUUIApplicationPageDidDisplayNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIApplicationPageDidDisplayNotification" object:self];
 
   [(IKAppDocument *)self->_document onAppear];
   v13.receiver = self;
   v13.super_class = SUUIDocumentContainerViewController;
-  [(SUUIDocumentContainerViewController *)&v13 viewDidAppear:v3];
+  [(SUUIDocumentContainerViewController *)&v13 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  disappearCopy = disappear;
+  pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
 
-  if (v5)
+  if (pageRenderEvent)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v8 = v7;
-    v9 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v9 setPageDisappearTime:v8];
+    pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent2 setPageDisappearTime:v8];
   }
 
   [(IKAppDocument *)self->_document onDisappear];
   v10.receiver = self;
   v10.super_class = SUUIDocumentContainerViewController;
-  [(SUUIDocumentContainerViewController *)&v10 viewDidDisappear:v3];
+  [(SUUIDocumentContainerViewController *)&v10 viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
 {
   p_viewSize = &self->_viewSize;
-  v4 = [(SUUIDocumentContainerViewController *)self view];
-  [v4 bounds];
+  view = [(SUUIDocumentContainerViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   width = p_viewSize->width;
@@ -454,8 +454,8 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
 
   if (width != v6 || height != v8)
   {
-    v12 = [(SUUIDocumentContainerViewController *)self view];
-    [v12 bounds];
+    view2 = [(SUUIDocumentContainerViewController *)self view];
+    [view2 bounds];
     p_viewSize->width = v13;
     p_viewSize->height = v14;
 
@@ -474,12 +474,12 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
   v25.receiver = self;
   v25.super_class = SUUIDocumentContainerViewController;
   [(SUUIDocumentContainerViewController *)&v25 viewDidLayoutSubviews];
-  v18 = [(SUUIDocumentContainerViewController *)self bottomLayoutGuide];
-  [v18 length];
+  bottomLayoutGuide = [(SUUIDocumentContainerViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v20 = v19;
 
-  v21 = [(SUUIDocumentContainerViewController *)self topLayoutGuide];
-  [v21 length];
+  topLayoutGuide = [(SUUIDocumentContainerViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v23 = v22;
 
   if (vabdd_f64(self->_lastBottomLayoutGuideLength, v20) > 0.00000011920929 || vabdd_f64(self->_lastTopLayoutGuideLength, v23) > 0.00000011920929)
@@ -488,31 +488,31 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
     self->_lastTopLayoutGuideLength = v23;
     if ([(UIViewController *)self->_childViewController isViewLoaded])
     {
-      v24 = [(UIViewController *)self->_childViewController view];
-      [v24 setNeedsLayout];
+      view3 = [(UIViewController *)self->_childViewController view];
+      [view3 setNeedsLayout];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   p_viewSize = &self->_viewSize;
-  v6 = [(SUUIDocumentContainerViewController *)self view];
-  [v6 bounds];
+  view = [(SUUIDocumentContainerViewController *)self view];
+  [view bounds];
   p_viewSize->width = v7;
   p_viewSize->height = v8;
 
   [(SUUIDocumentContainerViewController *)self reloadData];
   if (!self->_personalizationItems)
   {
-    v9 = [(IKAppDocument *)self->_document templateElement];
-    v10 = v9;
-    if (v9)
+    templateElement = [(IKAppDocument *)self->_document templateElement];
+    v10 = templateElement;
+    if (templateElement)
     {
-      v11 = [v9 personalizationLibraryItems];
+      personalizationLibraryItems = [templateElement personalizationLibraryItems];
       personalizationItems = self->_personalizationItems;
-      self->_personalizationItems = v11;
+      self->_personalizationItems = personalizationLibraryItems;
 
       v13 = +[SUUIItemStateCenter defaultCenter];
       [v13 beginObservingLibraryItems:self->_personalizationItems];
@@ -522,21 +522,21 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
   [(SUUIDocumentContainerViewController *)self _reloadNavigationBarControllerIfNeeded];
   if ([(SUUIDocumentContainerViewController *)self _shouldFillNavigationBarContentsBasedOnNavigationBarViewElement])
   {
-    v14 = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
-    v15 = [(SUUIDocumentContainerViewController *)self navigationItem];
-    [v15 setHidesBackButton:objc_msgSend(v14 animated:{"hidesBackButton"), 0}];
+    _navigationBarViewElement = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
+    navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
+    [navigationItem setHidesBackButton:objc_msgSend(_navigationBarViewElement animated:{"hidesBackButton"), 0}];
 
-    v16 = [v14 style];
-    v17 = [v16 visibility];
-    v18 = [v17 isEqualToString:@"hidden"];
+    style = [_navigationBarViewElement style];
+    visibility = [style visibility];
+    v18 = [visibility isEqualToString:@"hidden"];
 
-    v19 = [(SUUIDocumentContainerViewController *)self navigationController];
-    [v19 setNavigationBarHidden:v18 animated:v3];
+    navigationController = [(SUUIDocumentContainerViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:v18 animated:appearCopy];
   }
 
   [(SUUIViewController *)self forceOrientationBackToSupportedOrientation];
-  v20 = [(SUUIDocumentContainerViewController *)self contentScrollView];
-  [v20 contentInset];
+  contentScrollView = [(SUUIDocumentContainerViewController *)self contentScrollView];
+  [contentScrollView contentInset];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -544,14 +544,14 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
 
   if (v22 == 0.0)
   {
-    v29 = [(SUUIDocumentContainerViewController *)self topLayoutGuide];
-    [v29 length];
+    topLayoutGuide = [(SUUIDocumentContainerViewController *)self topLayoutGuide];
+    [topLayoutGuide length];
     v31 = v30;
 
     if (v22 != v31)
     {
-      v32 = [(SUUIDocumentContainerViewController *)self topLayoutGuide];
-      [v32 length];
+      topLayoutGuide2 = [(SUUIDocumentContainerViewController *)self topLayoutGuide];
+      [topLayoutGuide2 length];
       v34 = v33;
 
       [(SUUIDocumentContainerViewController *)self _setNavigationControllerContentInsetAdjustment:v34, v24, v26, v28];
@@ -561,12 +561,12 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
   v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (self->_orientationAtDisappear)
   {
-    v36 = [MEMORY[0x277D75128] sharedApplication];
-    v37 = [v36 statusBarOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-    if (v37 != [(NSNumber *)self->_orientationAtDisappear integerValue])
+    if (statusBarOrientation != [(NSNumber *)self->_orientationAtDisappear integerValue])
     {
-      if ((v37 - 3) >= 2)
+      if ((statusBarOrientation - 3) >= 2)
       {
         v38 = @"portrait";
       }
@@ -585,8 +585,8 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
 
   if (self->_sizeAtDisappear)
   {
-    v40 = [(SUUIDocumentContainerViewController *)self view];
-    [v40 frame];
+    view2 = [(SUUIDocumentContainerViewController *)self view];
+    [view2 frame];
     v42 = v41;
     v44 = v43;
 
@@ -605,18 +605,18 @@ void __78__SUUIDocumentContainerViewController_initWithDocument_options_clientCo
     goto LABEL_24;
   }
 
-  v51 = [MEMORY[0x277D75418] currentDevice];
-  v52 = [v51 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v52 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v53 = [MEMORY[0x277D75128] sharedApplication];
-    v54 = [v53 SUUI_isFullscreen];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    sUUI_isFullscreen = [mEMORY[0x277D75128]2 SUUI_isFullscreen];
 
-    if ((v54 & 1) == 0)
+    if ((sUUI_isFullscreen & 1) == 0)
     {
-      v55 = [(SUUIDocumentContainerViewController *)self view];
-      [v55 frame];
+      view3 = [(SUUIDocumentContainerViewController *)self view];
+      [view3 frame];
       v57 = v56;
       v59 = v58;
 
@@ -637,45 +637,45 @@ LABEL_24:
 
   v61.receiver = self;
   v61.super_class = SUUIDocumentContainerViewController;
-  [(SUUIViewController *)&v61 viewWillAppear:v3];
+  [(SUUIViewController *)&v61 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v5 initWithInteger:{objc_msgSend(v6, "statusBarOrientation")}];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v7 = [v5 initWithInteger:{objc_msgSend(mEMORY[0x277D75128], "statusBarOrientation")}];
   orientationAtDisappear = self->_orientationAtDisappear;
   self->_orientationAtDisappear = v7;
 
   v9 = MEMORY[0x277CCAE60];
-  v10 = [(SUUIDocumentContainerViewController *)self view];
-  [v10 bounds];
+  view = [(SUUIDocumentContainerViewController *)self view];
+  [view bounds];
   v13 = [v9 valueWithCGSize:{v11, v12}];
   sizeAtDisappear = self->_sizeAtDisappear;
   self->_sizeAtDisappear = v13;
 
-  v15 = [(SUUIDocumentContainerViewController *)self navigationController];
-  v16 = [v15 viewControllers];
-  v17 = [v16 containsObject:self];
+  navigationController = [(SUUIDocumentContainerViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v17 = [viewControllers containsObject:self];
 
   if ((v17 & 1) == 0)
   {
-    v18 = [(IKAppDocument *)self->_document navigationBarElement];
-    [v18 dispatchEventOfType:8 canBubble:0 isCancelable:0 extraInfo:0 completionBlock:0];
+    navigationBarElement = [(IKAppDocument *)self->_document navigationBarElement];
+    [navigationBarElement dispatchEventOfType:8 canBubble:0 isCancelable:0 extraInfo:0 completionBlock:0];
   }
 
   v19.receiver = self;
   v19.super_class = SUUIDocumentContainerViewController;
-  [(SUUIDocumentContainerViewController *)&v19 viewWillDisappear:v3];
+  [(SUUIDocumentContainerViewController *)&v19 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = [(NSDictionary *)self->_presentationOptions objectForKey:@"type"];
   v9 = [v8 isEqualToString:@"popover"];
 
@@ -690,9 +690,9 @@ LABEL_24:
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:width];
     [v10 setObject:v12 forKey:@"width"];
 
-    if (v7)
+    if (coordinatorCopy)
     {
-      [v7 targetTransform];
+      [coordinatorCopy targetTransform];
     }
 
     else
@@ -721,10 +721,10 @@ LABEL_24:
     v15[2] = __90__SUUIDocumentContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v15[3] = &unk_2798F5A88;
     v15[4] = self;
-    [v7 animateAlongsideTransition:0 completion:v15];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v15];
     v14.receiver = self;
     v14.super_class = SUUIDocumentContainerViewController;
-    [(SUUIDocumentContainerViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(SUUIDocumentContainerViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
     [(SUUIDocumentContainerViewController *)self _reloadNavigationPalette];
   }
 }
@@ -736,9 +736,9 @@ LABEL_24:
   return v2;
 }
 
-- (BOOL)document:(id)a3 evaluateStyleMediaQuery:(id)a4
+- (BOOL)document:(id)document evaluateStyleMediaQuery:(id)query
 {
-  v5 = a4;
+  queryCopy = query;
   mediaQueryEvaluator = self->_mediaQueryEvaluator;
   if (!mediaQueryEvaluator)
   {
@@ -750,44 +750,44 @@ LABEL_24:
     mediaQueryEvaluator = self->_mediaQueryEvaluator;
   }
 
-  v9 = [(SUUIMediaQueryEvaluator *)mediaQueryEvaluator evaluateMediaQuery:v5];
+  v9 = [(SUUIMediaQueryEvaluator *)mediaQueryEvaluator evaluateMediaQuery:queryCopy];
 
   return v9;
 }
 
-- (void)document:(id)a3 runTestWithName:(id)a4 options:(id)a5
+- (void)document:(id)document runTestWithName:(id)name options:(id)options
 {
-  v8 = a4;
-  v7 = a5;
+  nameCopy = name;
+  optionsCopy = options;
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BF6B10])
   {
-    [(UIViewController *)self->_childViewController performTestWithName:v8 options:v7];
+    [(UIViewController *)self->_childViewController performTestWithName:nameCopy options:optionsCopy];
   }
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   if (!self->_pageResponseAbsoluteTime)
   {
     goto LABEL_13;
   }
 
-  v5 = [MEMORY[0x277D69B38] sharedConfig];
-  v6 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v9 = v7;
   }
@@ -820,9 +820,9 @@ LABEL_24:
 
   if (v16)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithCString:v16 encoding:{4, &v58, v55}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v16 encoding:{4, &v58, v55}];
     free(v16);
-    v54 = v8;
+    v54 = oSLogObject;
     SSFileLog();
 LABEL_11:
   }
@@ -831,27 +831,27 @@ LABEL_11:
   self->_pageResponseAbsoluteTime = 0;
 
 LABEL_13:
-  v18 = [MEMORY[0x277CBEAA8] date];
-  [v18 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v20 = v19;
 
-  v21 = [v4 templateElement];
+  templateElement = [updateCopy templateElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = [v21 elementType];
+    elementType = [templateElement elementType];
   }
 
   else
   {
-    v22 = 0;
+    elementType = 0;
   }
 
   v23 = +[SUUIItemStateCenter defaultCenter];
   v24 = self->_personalizationItems;
-  v25 = [v21 personalizationLibraryItems];
+  personalizationLibraryItems = [templateElement personalizationLibraryItems];
   personalizationItems = self->_personalizationItems;
-  self->_personalizationItems = v25;
+  self->_personalizationItems = personalizationLibraryItems;
 
   if ([(NSSet *)self->_personalizationItems count])
   {
@@ -863,29 +863,29 @@ LABEL_13:
     [v23 endObservingLibraryItems:v24];
   }
 
-  if (v22 == self->_templateViewElementType)
+  if (elementType == self->_templateViewElementType)
   {
     v27 = self->_childViewController;
     if (objc_opt_respondsToSelector())
     {
-      [(UIViewController *)v27 documentDidUpdate:v4];
+      [(UIViewController *)v27 documentDidUpdate:updateCopy];
     }
 
     if (SUUIViewControllerIsVisible(self->_childViewController))
     {
       v57 = *MEMORY[0x277CBE738];
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-      [v4 performSelector:sel_onUpdate withObject:0 afterDelay:v28 inModes:0.0];
+      [updateCopy performSelector:sel_onUpdate withObject:0 afterDelay:v28 inModes:0.0];
     }
   }
 
   else
   {
-    if (v22)
+    if (elementType)
     {
       presentationOptions = self->_presentationOptions;
-      v30 = [(SUUIViewController *)self clientContext];
-      v27 = [(SUUIDocumentContainerViewController *)self _newViewControllerWithTemplateElement:v21 options:presentationOptions clientContext:v30];
+      clientContext = [(SUUIViewController *)self clientContext];
+      v27 = [(SUUIDocumentContainerViewController *)self _newViewControllerWithTemplateElement:templateElement options:presentationOptions clientContext:clientContext];
     }
 
     else
@@ -894,20 +894,20 @@ LABEL_13:
     }
 
     [(SUUIDocumentContainerViewController *)self _setChildViewController:v27];
-    self->_templateViewElementType = v22;
+    self->_templateViewElementType = elementType;
   }
 
-  v31 = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
-  v32 = [(SUUIDocumentContainerViewController *)self navigationItem];
+  _navigationBarViewElement = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
+  navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
   navigationBarController = self->_navigationBarController;
-  v56 = v4;
-  if (v31)
+  v56 = updateCopy;
+  if (_navigationBarViewElement)
   {
-    v34 = [(SUUINavigationBarController *)navigationBarController navigationBarViewElement];
+    navigationBarViewElement = [(SUUINavigationBarController *)navigationBarController navigationBarViewElement];
 
-    if (v34 == v31)
+    if (navigationBarViewElement == _navigationBarViewElement)
     {
-      [(SUUINavigationBarController *)self->_navigationBarController updateNavigationItem:v32];
+      [(SUUINavigationBarController *)self->_navigationBarController updateNavigationItem:navigationItem];
       [(SUUIDocumentContainerViewController *)self _reloadNavigationPalette];
     }
 
@@ -919,11 +919,11 @@ LABEL_13:
 
   else
   {
-    v35 = [(SUUINavigationBarController *)navigationBarController existingSearchBarControllers];
+    existingSearchBarControllers = [(SUUINavigationBarController *)navigationBarController existingSearchBarControllers];
     searchBarControllers = self->_searchBarControllers;
-    self->_searchBarControllers = v35;
+    self->_searchBarControllers = existingSearchBarControllers;
 
-    [(SUUINavigationBarController *)self->_navigationBarController detachFromNavigationItem:v32];
+    [(SUUINavigationBarController *)self->_navigationBarController detachFromNavigationItem:navigationItem];
     [(SUUINavigationBarController *)self->_navigationBarController setParentViewController:0];
     v37 = self->_navigationBarController;
     self->_navigationBarController = 0;
@@ -932,29 +932,29 @@ LABEL_13:
   [(SUUIDocumentContainerViewController *)self prefersNavigationBarHidden];
   if ([(SUUIDocumentContainerViewController *)self _shouldFillNavigationBarContentsBasedOnNavigationBarViewElement])
   {
-    v38 = [v31 hidesBackButton];
-    v39 = [(SUUIDocumentContainerViewController *)self navigationItem];
-    [v39 setHidesBackButton:v38];
+    hidesBackButton = [_navigationBarViewElement hidesBackButton];
+    navigationItem2 = [(SUUIDocumentContainerViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:hidesBackButton];
 
-    v40 = [v31 style];
-    v41 = [v40 visibility];
-    v42 = [v41 isEqualToString:@"hidden"];
+    style = [_navigationBarViewElement style];
+    visibility = [style visibility];
+    v42 = [visibility isEqualToString:@"hidden"];
 
-    v43 = [(SUUIDocumentContainerViewController *)self navigationController];
-    [v43 setNavigationBarHidden:v42 animated:0];
+    navigationController = [(SUUIDocumentContainerViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:v42 animated:0];
   }
 
   [(SUUIDocumentContainerViewController *)self _reloadDefaultBarButtonItems];
-  v44 = [(SUUIDocumentContainerViewController *)self _toolbarViewElement];
-  v45 = [(SUUIDocumentContainerViewController *)self navigationController];
+  _toolbarViewElement = [(SUUIDocumentContainerViewController *)self _toolbarViewElement];
+  navigationController2 = [(SUUIDocumentContainerViewController *)self navigationController];
   toolbarController = self->_toolbarController;
-  if (v44)
+  if (_toolbarViewElement)
   {
-    v47 = [(SUUIToolbarController *)toolbarController toolbarViewElement];
+    toolbarViewElement = [(SUUIToolbarController *)toolbarController toolbarViewElement];
 
-    if (v47 == v44)
+    if (toolbarViewElement == _toolbarViewElement)
     {
-      [(SUUIToolbarController *)self->_toolbarController updateToolbarForNavigationController:v45];
+      [(SUUIToolbarController *)self->_toolbarController updateToolbarForNavigationController:navigationController2];
     }
 
     else
@@ -965,71 +965,71 @@ LABEL_13:
 
   else
   {
-    [(SUUIToolbarController *)toolbarController detachFromNavigationController:v45];
+    [(SUUIToolbarController *)toolbarController detachFromNavigationController:navigationController2];
     [(SUUIToolbarController *)self->_toolbarController setDelegate:0];
     v48 = self->_toolbarController;
     self->_toolbarController = 0;
   }
 
-  v49 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v49 postNotificationName:@"SUUIApplicationPageDidUpdateNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIApplicationPageDidUpdateNotification" object:self];
 
-  v50 = [(SUUIDocumentContainerViewController *)self domChangeTimingQueue];
-  v51 = [v50 oldestPendingChange];
+  domChangeTimingQueue = [(SUUIDocumentContainerViewController *)self domChangeTimingQueue];
+  oldestPendingChange = [domChangeTimingQueue oldestPendingChange];
 
-  if (v51)
+  if (oldestPendingChange)
   {
-    v52 = [MEMORY[0x277CBEAA8] date];
-    [v52 timeIntervalSince1970];
-    [v51 setRenderEndTime:?];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSince1970];
+    [oldestPendingChange setRenderEndTime:?];
 
-    [v51 setRenderStartTime:v20];
-    v53 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v53 addDOMChange:v51];
+    [oldestPendingChange setRenderStartTime:v20];
+    pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent addDOMChange:oldestPendingChange];
   }
 
   [(SUUIDocumentContainerViewController *)self _submitPageRenderIfPossible];
 }
 
-- (void)documentScrollToTop:(id)a3
+- (void)documentScrollToTop:(id)top
 {
-  v3 = [(SUUIDocumentContainerViewController *)self contentScrollView];
-  if (v3)
+  contentScrollView = [(SUUIDocumentContainerViewController *)self contentScrollView];
+  if (contentScrollView)
   {
-    v7 = v3;
-    [v3 contentOffset];
+    v7 = contentScrollView;
+    [contentScrollView contentOffset];
     v5 = v4;
     [v7 contentInset];
     [v7 setContentOffset:0 animated:{v5, -v6}];
-    v3 = v7;
+    contentScrollView = v7;
   }
 }
 
-- (id)impressionableViewElementsForDocument:(id)a3
+- (id)impressionableViewElementsForDocument:(id)document
 {
   v3 = self->_childViewController;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UIViewController *)v3 impressionableViewElements];
+    impressionableViewElements = [(UIViewController *)v3 impressionableViewElements];
   }
 
   else
   {
-    v4 = 0;
+    impressionableViewElements = 0;
   }
 
-  return v4;
+  return impressionableViewElements;
 }
 
-- (void)documentDidSendMessage:(id)a3
+- (void)documentDidSendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKeyedSubscript:0x286AFEBC0];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:0x286AFEBC0];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [messageCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:0x286AFEBE0];
+  v7 = [userInfo2 objectForKeyedSubscript:0x286AFEBE0];
 
   if ([v8 isEqualToString:0x286AFEB20])
   {
@@ -1052,59 +1052,59 @@ LABEL_13:
   }
 }
 
-- (void)resourceLoaderDidBeginLoading:(id)a3
+- (void)resourceLoaderDidBeginLoading:(id)loading
 {
-  v4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-  [v4 resourceRequestStartTime];
+  pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  [pageRenderEvent resourceRequestStartTime];
   v6 = v5;
 
   if (v6 < 2.22044605e-16)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v9 = v8;
-    v10 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v10 setResourceRequestStartTime:v9];
+    pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent2 setResourceRequestStartTime:v9];
   }
 
-  v11 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-  [v11 setResourceRequestEndTime:0.0];
+  pageRenderEvent3 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  [pageRenderEvent3 setResourceRequestEndTime:0.0];
 }
 
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason
 {
-  v15 = a3;
-  if (a4 == 1)
+  loaderCopy = loader;
+  if (reason == 1)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v8 = v7;
-    v9 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v9 setResourceRequestOnScreenEndTime:v8];
+    pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent setResourceRequestOnScreenEndTime:v8];
   }
 
-  if ([v15 isIdle])
+  if ([loaderCopy isIdle])
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [v10 timeIntervalSince1970];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSince1970];
     v12 = v11;
-    v13 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v13 setResourceRequestEndTime:v12];
+    pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent2 setResourceRequestEndTime:v12];
 
     [(SUUIDocumentContainerViewController *)self _submitPageRenderIfPossible];
   }
 
   else
   {
-    v14 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v14 setResourceRequestEndTime:0.0];
+    pageRenderEvent3 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent3 setResourceRequestEndTime:0.0];
   }
 }
 
-- (id)mediaQueryEvaluator:(id)a3 valueForKey:(id)a4
+- (id)mediaQueryEvaluator:(id)evaluator valueForKey:(id)key
 {
-  v5 = a4;
-  if ([v5 isEqualToString:0x286AECA60])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:0x286AECA60])
   {
     v6 = MEMORY[0x277CCABB0];
     height = self->_viewSize.height;
@@ -1113,17 +1113,17 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:0x286AECB20])
+  if ([keyCopy isEqualToString:0x286AECB20])
   {
     v6 = MEMORY[0x277CCABB0];
     height = self->_viewSize.width;
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:0x286AFFE40])
+  if ([keyCopy isEqualToString:0x286AFFE40])
   {
-    v10 = [MEMORY[0x277D7FD00] sharedInstance];
-    v8 = SUUIMediaQueryNetworkTypeString([v10 networkType]);
+    mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+    v8 = SUUIMediaQueryNetworkTypeString([mEMORY[0x277D7FD00] networkType]);
   }
 
   else
@@ -1136,7 +1136,7 @@ LABEL_6:
   return v8;
 }
 
-- (void)mediaQueryEvaluatorDidChange:(id)a3
+- (void)mediaQueryEvaluatorDidChange:(id)change
 {
   [(SUUIMediaQueryEvaluator *)self->_mediaQueryEvaluator setDelegate:self];
   mediaQueryEvaluator = self->_mediaQueryEvaluator;
@@ -1162,52 +1162,52 @@ LABEL_6:
   }
 }
 
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SUUINavigationBarController *)self->_navigationBarController barButtonItemForElementIdentifier:v10];
+  identifierCopy = identifier;
+  blockCopy = block;
+  v7 = [(SUUINavigationBarController *)self->_navigationBarController barButtonItemForElementIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc_init(SUUIModalSourceViewProvider);
     [(SUUIModalSourceViewProvider *)v8 setSourceButtonBarItem:v7];
-    v6[2](v6, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   else
   {
-    v8 = [(SUUINavigationBarController *)self->_navigationBarController viewForElementIdentifier:v10];
+    v8 = [(SUUINavigationBarController *)self->_navigationBarController viewForElementIdentifier:identifierCopy];
     if (v8)
     {
       v9 = objc_alloc_init(SUUIModalSourceViewProvider);
       [(SUUIModalSourceViewProvider *)v9 setOriginalSourceView:v8];
-      v6[2](v6, v9);
+      blockCopy[2](blockCopy, v9);
     }
 
     else if (([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286C43A28]& 1) != 0)
     {
-      [(UIViewController *)self->_childViewController getModalSourceViewForElementIdentifier:v10 completionBlock:v6];
+      [(UIViewController *)self->_childViewController getModalSourceViewForElementIdentifier:identifierCopy completionBlock:blockCopy];
     }
 
     else
     {
-      v6[2](v6, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 }
 
-- (id)additionalLeftBarButtonItemForNavigationBarController:(id)a3
+- (id)additionalLeftBarButtonItemForNavigationBarController:(id)controller
 {
-  v4 = [(SUUIViewController *)self clientContext];
-  v5 = [v4 additionalLeftBarButtonItemForDocumentContainerViewController:self];
+  clientContext = [(SUUIViewController *)self clientContext];
+  v5 = [clientContext additionalLeftBarButtonItemForDocumentContainerViewController:self];
 
   return v5;
 }
 
-- (id)additionalRightBarButtonItemForNavigationBarController:(id)a3
+- (id)additionalRightBarButtonItemForNavigationBarController:(id)controller
 {
-  v4 = [(SUUIViewController *)self clientContext];
-  v5 = [v4 additionalRightBarButtonItemForDocumentContainerViewController:self];
+  clientContext = [(SUUIViewController *)self clientContext];
+  v5 = [clientContext additionalRightBarButtonItemForDocumentContainerViewController:self];
 
   return v5;
 }
@@ -1216,15 +1216,15 @@ LABEL_6:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIViewController *)self->_childViewController navigationBarTitleTextTintColor];
+    navigationBarTitleTextTintColor = [(UIViewController *)self->_childViewController navigationBarTitleTextTintColor];
   }
 
   else
   {
-    v3 = 0;
+    navigationBarTitleTextTintColor = 0;
   }
 
-  return v3;
+  return navigationBarTitleTextTintColor;
 }
 
 - (int64_t)navigationBarTintAdjustmentMode
@@ -1243,16 +1243,16 @@ LABEL_6:
 {
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286C33488])
   {
-    v3 = [(UIViewController *)self->_childViewController navigationBarTintColor];
+    navigationBarTintColor = [(UIViewController *)self->_childViewController navigationBarTintColor];
   }
 
   else
   {
-    v4 = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
-    v3 = [v4 tintColor];
+    _navigationBarViewElement = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
+    navigationBarTintColor = [_navigationBarViewElement tintColor];
   }
 
-  return v3;
+  return navigationBarTintColor;
 }
 
 - (BOOL)prefersNavigationBarBackgroundViewHidden
@@ -1266,10 +1266,10 @@ LABEL_6:
 
   else
   {
-    v5 = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
-    v6 = [v5 isTransparent];
+    _navigationBarViewElement = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
+    isTransparent = [_navigationBarViewElement isTransparent];
 
-    return v6;
+    return isTransparent;
   }
 }
 
@@ -1287,27 +1287,27 @@ LABEL_6:
 
 - (UIView)navigationPaletteView
 {
-  v3 = [(SUUINavigationBarController *)self->_navigationBarController navigationPaletteView];
-  if (!v3)
+  navigationPaletteView = [(SUUINavigationBarController *)self->_navigationBarController navigationPaletteView];
+  if (!navigationPaletteView)
   {
     if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BCFAE8]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v3 = [(UIViewController *)self->_childViewController navigationPaletteView];
+      navigationPaletteView = [(UIViewController *)self->_childViewController navigationPaletteView];
     }
 
     else
     {
-      v3 = 0;
+      navigationPaletteView = 0;
     }
   }
 
-  return v3;
+  return navigationPaletteView;
 }
 
-- (void)scrollingTabAppearanceStatusWasUpdated:(id)a3
+- (void)scrollingTabAppearanceStatusWasUpdated:(id)updated
 {
   p_scrollingTabAppearanceStatus = &self->_scrollingTabAppearanceStatus;
-  self->_scrollingTabAppearanceStatus = a3;
+  self->_scrollingTabAppearanceStatus = updated;
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BCF800])
   {
     childViewController = self->_childViewController;
@@ -1322,22 +1322,22 @@ LABEL_6:
 {
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BCF8D8])
   {
-    v3 = [(UIViewController *)self->_childViewController scrollingTabNestedPagingScrollView];
+    scrollingTabNestedPagingScrollView = [(UIViewController *)self->_childViewController scrollingTabNestedPagingScrollView];
   }
 
   else
   {
-    v3 = 0;
+    scrollingTabNestedPagingScrollView = 0;
   }
 
-  return v3;
+  return scrollingTabNestedPagingScrollView;
 }
 
-- (id)scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)a3
+- (id)scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:(unint64_t)index
 {
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BCF8D8])
   {
-    v5 = [(UIViewController *)self->_childViewController scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:a3];
+    v5 = [(UIViewController *)self->_childViewController scrollingTabViewControllerInNestedPagingScrollViewAtPageIndex:index];
   }
 
   else
@@ -1348,13 +1348,13 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)performTestWithName:(id)a3 options:(id)a4
+- (BOOL)performTestWithName:(id)name options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BF6B10])
   {
-    v8 = [(UIViewController *)self->_childViewController performTestWithName:v6 options:v7];
+    v8 = [(UIViewController *)self->_childViewController performTestWithName:nameCopy options:optionsCopy];
   }
 
   else
@@ -1365,118 +1365,118 @@ LABEL_6:
   return v8;
 }
 
-- (void)_onReportPlatformJsonTimes:(id)a3
+- (void)_onReportPlatformJsonTimes:(id)times
 {
-  v18 = a3;
-  v4 = [v18 objectForKeyedSubscript:@"jsonParseStartTime"];
+  timesCopy = times;
+  v4 = [timesCopy objectForKeyedSubscript:@"jsonParseStartTime"];
   if (v4)
   {
-    v5 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v5 platformJsonParseStartTime];
+    pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent platformJsonParseStartTime];
     v7 = v6;
 
     if (v7 < 2.22044605e-16)
     {
       [SUUIMetricsUtilities timeIntervalFromJSTime:v4];
       v9 = v8;
-      v10 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-      [v10 setPlatformJsonParseStartTime:v9];
+      pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+      [pageRenderEvent2 setPlatformJsonParseStartTime:v9];
     }
   }
 
-  v11 = [v18 objectForKeyedSubscript:@"jsonParseEndTime"];
+  v11 = [timesCopy objectForKeyedSubscript:@"jsonParseEndTime"];
   if (v11)
   {
-    v12 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v12 platformJsonParseEndTime];
+    pageRenderEvent3 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent3 platformJsonParseEndTime];
     v14 = v13;
 
     if (v14 < 2.22044605e-16)
     {
       [SUUIMetricsUtilities timeIntervalFromJSTime:v11];
       v16 = v15;
-      v17 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-      [v17 setPlatformJsonParseEndTime:v16];
+      pageRenderEvent4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+      [pageRenderEvent4 setPlatformJsonParseEndTime:v16];
     }
   }
 }
 
-- (void)_onReportDOMChange:(id)a3
+- (void)_onReportDOMChange:(id)change
 {
-  v4 = a3;
-  v6 = [[SUUIMetricsDOMChange alloc] initWithReportDomBuildTimesMessagePayload:v4];
+  changeCopy = change;
+  v6 = [[SUUIMetricsDOMChange alloc] initWithReportDomBuildTimesMessagePayload:changeCopy];
 
   if (v6)
   {
-    v5 = [(SUUIDocumentContainerViewController *)self domChangeTimingQueue];
-    [v5 addPendingChange:v6];
+    domChangeTimingQueue = [(SUUIDocumentContainerViewController *)self domChangeTimingQueue];
+    [domChangeTimingQueue addPendingChange:v6];
   }
 }
 
-- (void)_onReportRequestTimes:(id)a3
+- (void)_onReportRequestTimes:(id)times
 {
-  v7 = a3;
-  v4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  timesCopy = times;
+  pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
 
-  if (v4)
+  if (pageRenderEvent)
   {
-    v5 = [[SUUIMetricsRequestInfo alloc] initWithReportRequestTimesMessagePayload:v7];
+    v5 = [[SUUIMetricsRequestInfo alloc] initWithReportRequestTimesMessagePayload:timesCopy];
     if (v5)
     {
-      v6 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-      [v6 addRequest:v5];
+      pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+      [pageRenderEvent2 addRequest:v5];
     }
   }
 }
 
-- (void)_onReportDocumentReady:(id)a3
+- (void)_onReportDocumentReady:(id)ready
 {
-  v20 = a3;
-  v4 = [v20 objectForKeyedSubscript:@"clientCorrelationKey"];
+  readyCopy = ready;
+  v4 = [readyCopy objectForKeyedSubscript:@"clientCorrelationKey"];
 
   if (v4)
   {
-    v5 = [v20 objectForKeyedSubscript:@"clientCorrelationKey"];
-    v6 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v6 setClientCorrelationKey:v5];
+    v5 = [readyCopy objectForKeyedSubscript:@"clientCorrelationKey"];
+    pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent setClientCorrelationKey:v5];
   }
 
-  v7 = [v20 objectForKeyedSubscript:@"metricsBase"];
+  v7 = [readyCopy objectForKeyedSubscript:@"metricsBase"];
 
   if (v7)
   {
-    v8 = [v20 objectForKeyedSubscript:@"metricsBase"];
-    v9 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v9 setMetricsBase:v8];
+    v8 = [readyCopy objectForKeyedSubscript:@"metricsBase"];
+    pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent2 setMetricsBase:v8];
   }
 
-  v10 = [v20 objectForKeyedSubscript:@"documentReadyTime"];
+  v10 = [readyCopy objectForKeyedSubscript:@"documentReadyTime"];
 
   if (v10)
   {
-    v11 = [v20 objectForKeyedSubscript:@"documentReadyTime"];
-    [SUUIMetricsUtilities timeIntervalFromJSTime:v11];
+    date = [readyCopy objectForKeyedSubscript:@"documentReadyTime"];
+    [SUUIMetricsUtilities timeIntervalFromJSTime:date];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
   }
 
   v13 = v12;
-  v14 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-  [v14 setPageUserReadyTime:v13];
+  pageRenderEvent3 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  [pageRenderEvent3 setPageUserReadyTime:v13];
 
-  v15 = [v20 objectForKeyedSubscript:@"userInteractionTime"];
+  v15 = [readyCopy objectForKeyedSubscript:@"userInteractionTime"];
 
   if (v15)
   {
-    v16 = [v20 objectForKeyedSubscript:@"userInteractionTime"];
+    v16 = [readyCopy objectForKeyedSubscript:@"userInteractionTime"];
     [SUUIMetricsUtilities timeIntervalFromJSTime:v16];
     v18 = v17;
-    v19 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v19 setPageRequestedTime:v18];
+    pageRenderEvent4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent4 setPageRequestedTime:v18];
   }
 
   [(SUUIDocumentContainerViewController *)self _submitPageRenderIfPossible];
@@ -1484,41 +1484,41 @@ LABEL_6:
 
 - (void)_submitPageRenderIfPossible
 {
-  v14 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-  if ([v14 isReadyForSubmission])
+  pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  if ([pageRenderEvent isReadyForSubmission])
   {
-    v3 = [(SUUIDocumentContainerViewController *)self domChangeTimingQueue];
-    v4 = [v3 isEmpty];
+    domChangeTimingQueue = [(SUUIDocumentContainerViewController *)self domChangeTimingQueue];
+    isEmpty = [domChangeTimingQueue isEmpty];
 
-    if (v4)
+    if (isEmpty)
     {
-      v5 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-      v6 = [(SUUIViewController *)self clientContext];
-      [v5 appendSamplingPropertiesFromClientContext:v6];
+      pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+      clientContext = [(SUUIViewController *)self clientContext];
+      [pageRenderEvent2 appendSamplingPropertiesFromClientContext:clientContext];
 
-      v7 = [(SUUIViewController *)self clientContext];
-      v8 = [v7 _applicationController];
-      v9 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-      [v8 recordMetricsEvent:v9 flushImmediately:0];
+      clientContext2 = [(SUUIViewController *)self clientContext];
+      _applicationController = [clientContext2 _applicationController];
+      pageRenderEvent3 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+      [_applicationController recordMetricsEvent:pageRenderEvent3 flushImmediately:0];
 
       if (+[SUUIMetricsUtilities shouldLogTimingMetrics])
       {
         SSDebugLevel();
         SSDebugFileLevel();
-        v13 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        pageRenderEvent4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
         SSDebugLog();
       }
 
       if (+[SUUIMetricsUtilities showEventNotifications])
       {
-        v10 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        pageRenderEvent5 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
         v11 = +[SUUIStatusBarAlertCenter sharedCenter];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __66__SUUIDocumentContainerViewController__submitPageRenderIfPossible__block_invoke;
         v15[3] = &unk_2798F5BE8;
-        v16 = v10;
-        v12 = v10;
+        v16 = pageRenderEvent5;
+        v12 = pageRenderEvent5;
         [v11 showMessage:@"Page Rendered" withStyle:0 forDuration:v15 actionBlock:0.0];
       }
 
@@ -1536,13 +1536,13 @@ LABEL_6:
 {
   if ([(SUUIDocumentContainerViewController *)self _shouldFillNavigationBarContentsBasedOnNavigationBarViewElement])
   {
-    v3 = [(SUUIDocumentContainerViewController *)self navigationItem];
-    [(SUUINavigationBarController *)self->_navigationBarController detachFromNavigationItem:v3];
-    [(SUUINavigationBarController *)self->_navigationBarController attachToNavigationItem:v3];
+    navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
+    [(SUUINavigationBarController *)self->_navigationBarController detachFromNavigationItem:navigationItem];
+    [(SUUINavigationBarController *)self->_navigationBarController attachToNavigationItem:navigationItem];
   }
 }
 
-- (void)_networkTypeChangeNotification:(id)a3
+- (void)_networkTypeChangeNotification:(id)notification
 {
   objc_initWeak(&location, self);
   v3 = dispatch_time(0, 5000000000);
@@ -1562,17 +1562,17 @@ void __70__SUUIDocumentContainerViewController__networkTypeChangeNotification___
   [WeakRetained _reloadPageData];
 }
 
-- (void)_SUUI_applicationDidEnterBackground:(id)a3
+- (void)_SUUI_applicationDidEnterBackground:(id)background
 {
-  v4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+  pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
 
-  if (v4)
+  if (pageRenderEvent)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [v5 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v7 = v6;
-    v8 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-    [v8 setPageDisappearTime:v7];
+    pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+    [pageRenderEvent2 setPageDisappearTime:v7];
   }
 
   if (SUUIViewControllerIsVisible(self))
@@ -1580,29 +1580,29 @@ void __70__SUUIDocumentContainerViewController__networkTypeChangeNotification___
     [(IKAppDocument *)self->_document onDisappear];
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = *MEMORY[0x277D76758];
-  [v10 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  [v10 addObserver:self selector:sel__SUUI_applicationWillEnterForeground_ name:v9 object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter addObserver:self selector:sel__SUUI_applicationWillEnterForeground_ name:v9 object:0];
 }
 
-- (void)_SUUI_applicationWillEnterForeground:(id)a3
+- (void)_SUUI_applicationWillEnterForeground:(id)foreground
 {
   if (SUUIViewControllerIsVisible(self))
   {
     [(IKAppDocument *)self->_document onAppear];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
 }
 
 - (void)_enqueueLoadURLOperation
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:self->_urlString];
-  v4 = [(SUUIViewController *)self clientContext];
-  v5 = [v4 newLoadStoreURLOperationWithURL:v3];
+  clientContext = [(SUUIViewController *)self clientContext];
+  v5 = [clientContext newLoadStoreURLOperationWithURL:v3];
   loadURLOperation = self->_loadURLOperation;
   self->_loadURLOperation = v5;
 
@@ -1618,22 +1618,22 @@ void __70__SUUIDocumentContainerViewController__networkTypeChangeNotification___
   v24 = &unk_2798FE578;
   objc_copyWeak(&v25, &location);
   [(SSVLoadURLOperation *)v9 setOutputBlock:&v21];
-  v10 = [MEMORY[0x277D69B38] sharedConfig];
-  v11 = [v10 shouldLog];
-  v12 = [v10 shouldLogToDisk];
-  v13 = [v10 OSLogObject];
-  v14 = v13;
-  if (v12)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  v14 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v11 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
-    v11 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v11)
+  if (!shouldLog)
   {
     goto LABEL_8;
   }
@@ -1656,8 +1656,8 @@ void __70__SUUIDocumentContainerViewController__networkTypeChangeNotification___
 LABEL_8:
   }
 
-  v19 = [(SUUIViewController *)self operationQueue];
-  [v19 addOperation:self->_loadURLOperation];
+  operationQueue = [(SUUIViewController *)self operationQueue];
+  [operationQueue addOperation:self->_loadURLOperation];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -1687,60 +1687,60 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
   [WeakRetained _finishLoadOperationWithResponse:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_finishLegacyProtocolOperationForResponse:(id)a3 dataProvider:(id)a4 dictionary:(id)a5
+- (void)_finishLegacyProtocolOperationForResponse:(id)response dataProvider:(id)provider dictionary:(id)dictionary
 {
-  v21 = a3;
-  v8 = a5;
-  v9 = [a4 redirectURL];
-  if (v9)
+  responseCopy = response;
+  dictionaryCopy = dictionary;
+  redirectURL = [provider redirectURL];
+  if (redirectURL)
   {
-    [(SUUIDocumentContainerViewController *)self _redirectToURL:v9];
+    [(SUUIDocumentContainerViewController *)self _redirectToURL:redirectURL];
   }
 
   else
   {
-    v10 = [v21 URLResponse];
-    v11 = [v10 URL];
-    v12 = [v11 absoluteString];
+    uRLResponse = [responseCopy URLResponse];
+    v11 = [uRLResponse URL];
+    absoluteString = [v11 absoluteString];
     urlString = self->_urlString;
-    self->_urlString = v12;
+    self->_urlString = absoluteString;
 
     [(SUUIDocumentContainerViewController *)self _setChildViewController:0];
-    v14 = [v8 objectForKey:*MEMORY[0x277D7FD78]];
+    v14 = [dictionaryCopy objectForKey:*MEMORY[0x277D7FD78]];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = [objc_alloc(MEMORY[0x277D7FCE8]) initWithDialogDictionary:v14], v16 = objc_msgSend(v15, "kind"), v15, v16 != 1))
     {
-      v17 = [(SUUIViewController *)self clientContext];
+      clientContext = [(SUUIViewController *)self clientContext];
       document = self->_document;
-      v19 = [v21 data];
-      v20 = [v21 URLResponse];
-      [v17 sendOnPageResponseWithDocument:document data:v19 URLResponse:v20 performanceMetrics:0];
+      data = [responseCopy data];
+      uRLResponse2 = [responseCopy URLResponse];
+      [clientContext sendOnPageResponseWithDocument:document data:data URLResponse:uRLResponse2 performanceMetrics:0];
     }
   }
 }
 
-- (void)_finishLoadOperationWithResponse:(id)a3 error:(id)a4
+- (void)_finishLoadOperationWithResponse:(id)response error:(id)error
 {
   v111 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v93 = v7;
-  if (!v6 || v7)
+  responseCopy = response;
+  errorCopy = error;
+  v93 = errorCopy;
+  if (!responseCopy || errorCopy)
   {
-    v34 = [MEMORY[0x277D69B38] sharedConfig];
-    v35 = [v34 shouldLog];
-    if ([v34 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v36 = v35 | 2;
+      v36 = shouldLog | 2;
     }
 
     else
     {
-      v36 = v35;
+      v36 = shouldLog;
     }
 
-    v37 = [v34 OSLogObject];
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v38 = v36;
     }
@@ -1779,18 +1779,18 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
     }
 
     objc_storeStrong(&self->_beforeErrorChildViewController, self->_childViewController);
-    v53 = [(UIViewController *)self->_beforeErrorChildViewController view];
-    v54 = [v53 backgroundColor];
+    view = [(UIViewController *)self->_beforeErrorChildViewController view];
+    backgroundColor = [view backgroundColor];
 
-    if (!v54)
+    if (!backgroundColor)
     {
-      v55 = [(SUUIDocumentContainerViewController *)self view];
-      v54 = [v55 backgroundColor];
+      view2 = [(SUUIDocumentContainerViewController *)self view];
+      backgroundColor = [view2 backgroundColor];
     }
 
     v56 = [SUUIErrorDocumentViewController alloc];
-    v57 = [(SUUIViewController *)self clientContext];
-    v58 = [(SUUIErrorDocumentViewController *)v56 initWithBackgroundColor:v54 clientContext:v57];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v58 = [(SUUIErrorDocumentViewController *)v56 initWithBackgroundColor:backgroundColor clientContext:clientContext];
 
     objc_initWeak(location, self);
     v102[0] = MEMORY[0x277D85DD0];
@@ -1803,13 +1803,13 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
     v59 = +[SUUIMetricsUtilities newErrorPageEvent];
     [v59 setPageURL:self->_urlString];
     [v59 setPageType:@"SUUIDocumentContainerViewController"];
-    v60 = [(SUUIViewController *)self clientContext];
-    v61 = [v60 _applicationController];
-    [v61 recordMetricsEvent:v59 flushImmediately:0];
+    clientContext2 = [(SUUIViewController *)self clientContext];
+    _applicationController = [clientContext2 _applicationController];
+    [_applicationController recordMetricsEvent:v59 flushImmediately:0];
 
-    v62 = [MEMORY[0x277CCAB98] defaultCenter];
-    v63 = [MEMORY[0x277D7FD00] sharedInstance];
-    [v62 addObserver:self selector:sel__networkTypeChangeNotification_ name:*MEMORY[0x277D7FCC0] object:v63];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+    [defaultCenter addObserver:self selector:sel__networkTypeChangeNotification_ name:*MEMORY[0x277D7FCC0] object:mEMORY[0x277D7FD00]];
 
     objc_destroyWeak(&v103);
     objc_destroyWeak(location);
@@ -1817,59 +1817,59 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
 
   else
   {
-    v92 = [v6 URLResponse];
-    v8 = [v92 allHeaderFields];
-    v9 = ISDictionaryValueForCaseInsensitiveString();
+    uRLResponse = [responseCopy URLResponse];
+    allHeaderFields = [uRLResponse allHeaderFields];
+    mIMEType = ISDictionaryValueForCaseInsensitiveString();
 
-    if (!v9)
+    if (!mIMEType)
     {
-      v9 = [v92 MIMEType];
+      mIMEType = [uRLResponse MIMEType];
     }
 
-    v10 = [(SSVLoadURLOperation *)self->_loadURLOperation metricsPageEvent];
-    if (v10)
+    metricsPageEvent = [(SSVLoadURLOperation *)self->_loadURLOperation metricsPageEvent];
+    if (metricsPageEvent)
     {
-      v11 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-      v12 = [v11 clientCorrelationKey];
+      pageRenderEvent = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+      clientCorrelationKey = [pageRenderEvent clientCorrelationKey];
 
-      if (!v12)
+      if (!clientCorrelationKey)
       {
-        v13 = [v10 clientCorrelationKey];
-        v14 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-        [v14 setClientCorrelationKey:v13];
+        clientCorrelationKey2 = [metricsPageEvent clientCorrelationKey];
+        pageRenderEvent2 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        [pageRenderEvent2 setClientCorrelationKey:clientCorrelationKey2];
 
-        [v10 requestStartTime];
+        [metricsPageEvent requestStartTime];
         v16 = v15;
-        v17 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-        [v17 setPlatformRequestStartTime:v16];
+        pageRenderEvent3 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        [pageRenderEvent3 setPlatformRequestStartTime:v16];
 
-        [v10 responseStartTime];
+        [metricsPageEvent responseStartTime];
         v19 = v18;
-        v20 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-        [v20 setPlatformResponseStartTime:v19];
+        pageRenderEvent4 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        [pageRenderEvent4 setPlatformResponseStartTime:v19];
 
-        [v10 responseEndTime];
+        [metricsPageEvent responseEndTime];
         v22 = v21;
-        v23 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-        [v23 setPlatformResponseEndTime:v22];
+        pageRenderEvent5 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        [pageRenderEvent5 setPlatformResponseEndTime:v22];
 
-        v24 = [v10 isCachedResponse];
-        v25 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
-        [v25 setPlatformResponseWasCached:v24];
+        isCachedResponse = [metricsPageEvent isCachedResponse];
+        pageRenderEvent6 = [(SUUIDocumentContainerViewController *)self pageRenderEvent];
+        [pageRenderEvent6 setPlatformResponseWasCached:isCachedResponse];
       }
     }
 
-    if ([v9 rangeOfString:@"itml" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([mIMEType rangeOfString:@"itml" options:1] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v9 rangeOfString:@"application/json" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([mIMEType rangeOfString:@"application/json" options:1] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v9 rangeOfString:@"html" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([mIMEType rangeOfString:@"html" options:1] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ([v9 rangeOfString:@"text/xml" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([mIMEType rangeOfString:@"text/xml" options:1] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v26 = MEMORY[0x277CCAC58];
-            v27 = [v6 data];
-            v28 = [v26 propertyListWithData:v27 options:0 format:0 error:0];
+            data = [responseCopy data];
+            v28 = [v26 propertyListWithData:data options:0 format:0 error:0];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -1879,27 +1879,27 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
               {
                 v31 = objc_alloc_init(MEMORY[0x277D7FE98]);
                 [v31 loadFromDictionary:v28];
-                v32 = [(SSVLoadURLOperation *)self->_loadURLOperation URLRequest];
-                v33 = [v6 URLResponse];
-                [(SUUIDocumentContainerViewController *)self _showLegacyStorePageWithRequest:v32 page:v31 pageType:0 URLResponse:v33];
+                uRLRequest = [(SSVLoadURLOperation *)self->_loadURLOperation URLRequest];
+                uRLResponse2 = [responseCopy URLResponse];
+                [(SUUIDocumentContainerViewController *)self _showLegacyStorePageWithRequest:uRLRequest page:v31 pageType:0 URLResponse:uRLResponse2];
               }
 
               else
               {
                 v82 = [objc_alloc(MEMORY[0x277D7FD28]) initWithPropertyList:v28];
-                v83 = [MEMORY[0x277D7FD30] provider];
-                [v83 setShouldProcessAuthenticationDialogs:1];
-                [v83 setShouldProcessDialogs:0];
-                v84 = [MEMORY[0x277D69A20] defaultStore];
-                v91 = [v84 activeAccount];
+                provider = [MEMORY[0x277D7FD30] provider];
+                [provider setShouldProcessAuthenticationDialogs:1];
+                [provider setShouldProcessDialogs:0];
+                defaultStore = [MEMORY[0x277D69A20] defaultStore];
+                activeAccount = [defaultStore activeAccount];
 
-                if (v91)
+                if (activeAccount)
                 {
-                  v85 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:v91];
-                  [v83 setAuthenticationContext:v85];
+                  v85 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:activeAccount];
+                  [provider setAuthenticationContext:v85];
                 }
 
-                [v82 setDataProvider:v83];
+                [v82 setDataProvider:provider];
                 objc_initWeak(location, v82);
                 objc_initWeak(&from, self);
                 v94[0] = MEMORY[0x277D85DD0];
@@ -1908,11 +1908,11 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
                 v94[3] = &unk_2798FE5A0;
                 objc_copyWeak(&v97, location);
                 objc_copyWeak(&v98, &from);
-                v95 = v6;
+                v95 = responseCopy;
                 v96 = v28;
                 [v82 setCompletionBlock:v94];
-                v86 = [(SUUIViewController *)self operationQueue];
-                [v86 addOperation:v82];
+                operationQueue = [(SUUIViewController *)self operationQueue];
+                [operationQueue addOperation:v82];
 
                 objc_destroyWeak(&v98);
                 objc_destroyWeak(&v97);
@@ -1925,15 +1925,15 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
 
         else
         {
-          v79 = [v6 URLResponse];
-          v80 = [v79 URL];
+          uRLResponse3 = [responseCopy URLResponse];
+          v80 = [uRLResponse3 URL];
           v81 = +[SUUIClientContext amsBag];
           v100[0] = MEMORY[0x277D85DD0];
           v100[1] = 3221225472;
           v100[2] = __78__SUUIDocumentContainerViewController__finishLoadOperationWithResponse_error___block_invoke_243;
           v100[3] = &unk_2798FBB00;
           v100[4] = self;
-          v101 = v6;
+          v101 = responseCopy;
           [SUUIURLResolver isLegacyWebViewForURL:v80 bag:v81 completion:v100];
         }
       }
@@ -1941,14 +1941,14 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
       else
       {
         v64 = [SUUILegacyNativeViewController alloc];
-        v65 = [v6 data];
-        v66 = [(SUUILegacyNativeViewController *)v64 initWithData:v65 fromOperation:self->_loadURLOperation];
+        data2 = [responseCopy data];
+        v66 = [(SUUILegacyNativeViewController *)v64 initWithData:data2 fromOperation:self->_loadURLOperation];
 
-        v67 = [(SUUIViewController *)self clientContext];
-        [(SUUIViewController *)v66 setClientContext:v67];
+        clientContext3 = [(SUUIViewController *)self clientContext];
+        [(SUUIViewController *)v66 setClientContext:clientContext3];
 
-        v68 = [(SUUIDocumentContainerViewController *)self navigationItem];
-        [(SUUILegacyNativeViewController *)v66 _setExistingNavigationItem:v68];
+        navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
+        [(SUUILegacyNativeViewController *)v66 _setExistingNavigationItem:navigationItem];
 
         [(SUUILegacyNativeViewController *)v66 reloadData];
         [(SUUIDocumentContainerViewController *)self _setChildViewController:v66];
@@ -1957,22 +1957,22 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
 
     else
     {
-      v44 = [MEMORY[0x277D69B38] sharedConfig];
-      v45 = [v44 shouldLog];
-      if ([v44 shouldLogToDisk])
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+      shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+      if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
       {
-        v45 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      v46 = [v44 OSLogObject];
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
+      oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
       {
-        v47 = v45;
+        v47 = shouldLog2;
       }
 
       else
       {
-        v47 = v45 & 2;
+        v47 = shouldLog2 & 2;
       }
 
       if (v47)
@@ -2006,24 +2006,24 @@ void __63__SUUIDocumentContainerViewController__enqueueLoadURLOperation__block_i
       self->_pageResponseAbsoluteTime = v69;
 
       v104[0] = @"requestStartTime";
-      [v10 requestStartTime];
+      [metricsPageEvent requestStartTime];
       v71 = [SUUIMetricsUtilities jsTimeFromTimeInterval:?];
       v105[0] = v71;
       v104[1] = @"responseStartTime";
-      [v10 responseStartTime];
+      [metricsPageEvent responseStartTime];
       v72 = [SUUIMetricsUtilities jsTimeFromTimeInterval:?];
       v105[1] = v72;
       v104[2] = @"responseEndTime";
-      [v10 responseEndTime];
+      [metricsPageEvent responseEndTime];
       v73 = [SUUIMetricsUtilities jsTimeFromTimeInterval:?];
       v105[2] = v73;
       v74 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:v104 count:3];
 
-      v75 = [(SUUIViewController *)self clientContext];
+      clientContext4 = [(SUUIViewController *)self clientContext];
       document = self->_document;
-      v77 = [v6 data];
-      v78 = [v6 URLResponse];
-      [v75 sendOnPageResponseWithDocument:document data:v77 URLResponse:v78 performanceMetrics:v74];
+      data3 = [responseCopy data];
+      uRLResponse4 = [responseCopy URLResponse];
+      [clientContext4 sendOnPageResponseWithDocument:document data:data3 URLResponse:uRLResponse4 performanceMetrics:v74];
     }
 
     v87 = self->_urlString;
@@ -2163,56 +2163,56 @@ void __78__SUUIDocumentContainerViewController__finishLoadOperationWithResponse_
 {
   if ([(SUUIDocumentContainerViewController *)self _shouldFillNavigationBarContentsBasedOnNavigationBarViewElement])
   {
-    v3 = [(IKAppDocument *)self->_document navigationBarElement];
-    if (!v3)
+    navigationBarElement = [(IKAppDocument *)self->_document navigationBarElement];
+    if (!navigationBarElement)
     {
-      v4 = [(IKAppDocument *)self->_document templateElement];
+      templateElement = [(IKAppDocument *)self->_document templateElement];
       if (objc_opt_respondsToSelector())
       {
-        v3 = [v4 navigationBarElement];
+        navigationBarElement = [templateElement navigationBarElement];
       }
 
       else
       {
-        v3 = 0;
+        navigationBarElement = 0;
       }
     }
   }
 
   else
   {
-    v3 = 0;
+    navigationBarElement = 0;
   }
 
-  return v3;
+  return navigationBarElement;
 }
 
-- (id)_newViewControllerWithTemplateElement:(id)a3 options:(id)a4 clientContext:(id)a5
+- (id)_newViewControllerWithTemplateElement:(id)element options:(id)options clientContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUUIViewController *)self clientContext];
-  v12 = [v11 documentViewControllerForTemplateViewElement:v8];
+  elementCopy = element;
+  optionsCopy = options;
+  contextCopy = context;
+  clientContext = [(SUUIViewController *)self clientContext];
+  v12 = [clientContext documentViewControllerForTemplateViewElement:elementCopy];
 
   if (!v12)
   {
-    v13 = [v9 objectForKey:@"type"];
+    v13 = [optionsCopy objectForKey:@"type"];
     v14 = [v13 isEqual:0x286AFDC80];
-    v15 = [v8 elementType];
-    if (v15 <= 82)
+    elementType = [elementCopy elementType];
+    if (elementType <= 82)
     {
-      if (v15 <= 36)
+      if (elementType <= 36)
       {
-        if (v15 > 26)
+        if (elementType > 26)
         {
-          if (v15 == 27)
+          if (elementType == 27)
           {
             v16 = SUUIContentUnavailableDocumentViewController;
             goto LABEL_43;
           }
 
-          if (v15 == 34)
+          if (elementType == 34)
           {
             v16 = SUUIEditorDocumentViewController;
             goto LABEL_43;
@@ -2221,11 +2221,11 @@ void __78__SUUIDocumentContainerViewController__finishLoadOperationWithResponse_
 
         else
         {
-          if (v15 == 17)
+          if (elementType == 17)
           {
-            v19 = v8;
-            v20 = [v19 type];
-            v21 = [v20 isEqualToString:@"modern"];
+            v19 = elementCopy;
+            type = [v19 type];
+            v21 = [type isEqualToString:@"modern"];
 
             v22 = off_2798F40A8;
             if (!v21)
@@ -2238,11 +2238,11 @@ void __78__SUUIDocumentContainerViewController__finishLoadOperationWithResponse_
             goto LABEL_45;
           }
 
-          if (v15 == 25)
+          if (elementType == 25)
           {
             v16 = SUUICommentDocumentViewController;
 LABEL_43:
-            v18 = [[v16 alloc] initWithTemplateElement:v8];
+            v18 = [[v16 alloc] initWithTemplateElement:elementCopy];
             goto LABEL_44;
           }
         }
@@ -2250,15 +2250,15 @@ LABEL_43:
         goto LABEL_45;
       }
 
-      if (v15 <= 70)
+      if (elementType <= 70)
       {
-        if (v15 == 37)
+        if (elementType == 37)
         {
           v16 = SUUIExploreDocumentViewController;
           goto LABEL_43;
         }
 
-        if (v15 == 65)
+        if (elementType == 65)
         {
           v16 = SUUILoadingDocumentViewController;
           goto LABEL_43;
@@ -2269,13 +2269,13 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      if (v15 == 71)
+      if (elementType == 71)
       {
         v16 = SUUIMenuBarTemplateDocumentViewController;
         goto LABEL_43;
       }
 
-      if (v15 != 78)
+      if (elementType != 78)
       {
         goto LABEL_45;
       }
@@ -2283,17 +2283,17 @@ LABEL_45:
       goto LABEL_30;
     }
 
-    if (v15 > 120)
+    if (elementType > 120)
     {
-      if (v15 <= 131)
+      if (elementType <= 131)
       {
-        if (v15 == 121)
+        if (elementType == 121)
         {
           v16 = SUUISignInDocumentViewController;
           goto LABEL_43;
         }
 
-        if (v15 != 129)
+        if (elementType != 129)
         {
           goto LABEL_45;
         }
@@ -2302,9 +2302,9 @@ LABEL_45:
         goto LABEL_27;
       }
 
-      if (v15 != 132)
+      if (elementType != 132)
       {
-        if (v15 == 148)
+        if (elementType == 148)
         {
           v16 = SUUITrendingSearchDocumentViewController;
           goto LABEL_43;
@@ -2316,70 +2316,70 @@ LABEL_45:
 
     else
     {
-      if (v15 <= 92)
+      if (elementType <= 92)
       {
-        if (v15 == 83)
+        if (elementType == 83)
         {
           v16 = SUUIPanelDocumentViewController;
           goto LABEL_43;
         }
 
-        if (v15 != 85)
+        if (elementType != 85)
         {
           goto LABEL_45;
         }
 
 LABEL_30:
-        v18 = [[SUUIPhysicalCirclesDocumentViewController alloc] initWithPhysicalCirclesTemplateViewElement:v8];
+        v18 = [[SUUIPhysicalCirclesDocumentViewController alloc] initWithPhysicalCirclesTemplateViewElement:elementCopy];
         goto LABEL_44;
       }
 
-      if (v15 != 93)
+      if (elementType != 93)
       {
-        if (v15 != 115)
+        if (elementType != 115)
         {
           goto LABEL_45;
         }
 
         v17 = SUUISettingsDocumentViewController;
 LABEL_27:
-        v18 = [[v17 alloc] initWithTemplateElement:v8 clientContext:v10];
+        v18 = [[v17 alloc] initWithTemplateElement:elementCopy clientContext:contextCopy];
 LABEL_44:
         v12 = v18;
         goto LABEL_45;
       }
     }
 
-    v18 = [[SUUIStackDocumentViewController alloc] initWithTemplateElement:v8 layoutStyle:v14];
+    v18 = [[SUUIStackDocumentViewController alloc] initWithTemplateElement:elementCopy layoutStyle:v14];
     goto LABEL_44;
   }
 
 LABEL_46:
-  [v12 setClientContext:v10];
+  [v12 setClientContext:contextCopy];
 
   return v12;
 }
 
-- (void)_redirectToURL:(id)a3
+- (void)_redirectToURL:(id)l
 {
   loadURLOperation = self->_loadURLOperation;
-  v5 = a3;
+  lCopy = l;
   [(SSVLoadURLOperation *)loadURLOperation setOutputBlock:0];
   [(SSVLoadURLOperation *)self->_loadURLOperation cancel];
   v6 = self->_loadURLOperation;
   self->_loadURLOperation = 0;
 
-  v7 = [v5 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
   urlString = self->_urlString;
-  self->_urlString = v7;
+  self->_urlString = absoluteString;
 
   [(SUUIDocumentContainerViewController *)self _enqueueLoadURLOperation];
 }
 
 - (void)_reloadDefaultBarButtonItems
 {
-  v10 = [(SUUIDocumentContainerViewController *)self navigationItem];
+  navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
   v3 = self->_childViewController;
   if (objc_opt_respondsToSelector())
   {
@@ -2394,8 +2394,8 @@ LABEL_46:
   defaultLeftBarButtonItems = self->_defaultLeftBarButtonItems;
   if (defaultLeftBarButtonItems != v4 && ![(NSArray *)defaultLeftBarButtonItems isEqualToArray:v4])
   {
-    v6 = [v10 leftBarButtonItems];
-    v7 = [v6 mutableCopy];
+    leftBarButtonItems = [navigationItem leftBarButtonItems];
+    v7 = [leftBarButtonItems mutableCopy];
 
     if (v7)
     {
@@ -2419,7 +2419,7 @@ LABEL_46:
       [v7 addObjectsFromArray:self->_defaultLeftBarButtonItems];
     }
 
-    [v10 setLeftBarButtonItems:v7 animated:0];
+    [navigationItem setLeftBarButtonItems:v7 animated:0];
   }
 }
 
@@ -2429,13 +2429,13 @@ LABEL_46:
   {
     if (!self->_loadURLOperation)
     {
-      v3 = [MEMORY[0x277D7FD00] sharedInstance];
-      v4 = [v3 networkType];
+      mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+      networkType = [mEMORY[0x277D7FD00] networkType];
 
-      if (v4)
+      if (networkType)
       {
-        v6 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v6 removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
         [(SUUIDocumentContainerViewController *)self _setChildViewController:self->_beforeErrorChildViewController];
         beforeErrorChildViewController = self->_beforeErrorChildViewController;
         self->_beforeErrorChildViewController = 0;
@@ -2465,27 +2465,27 @@ LABEL_46:
 
 - (void)_reloadNavigationBarController
 {
-  v16 = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
-  v3 = [(SUUIDocumentContainerViewController *)self navigationItem];
+  _navigationBarViewElement = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
+  navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
   navigationBarController = self->_navigationBarController;
   if (navigationBarController)
   {
-    v5 = [(SUUINavigationBarController *)navigationBarController existingSearchBarControllers];
+    existingSearchBarControllers = [(SUUINavigationBarController *)navigationBarController existingSearchBarControllers];
     searchBarControllers = self->_searchBarControllers;
-    self->_searchBarControllers = v5;
+    self->_searchBarControllers = existingSearchBarControllers;
 
     if (self->_makeSearchBarFirstResponderOnLoad)
     {
-      v7 = [(NSArray *)self->_searchBarControllers firstObject];
+      firstObject = [(NSArray *)self->_searchBarControllers firstObject];
       self->_makeSearchBarFirstResponderOnLoad = 0;
     }
 
     else
     {
-      v7 = 0;
+      firstObject = 0;
     }
 
-    v9 = [v16 firstChildForElementType:106];
+    v9 = [_navigationBarViewElement firstChildForElementType:106];
 
     v10 = self->_navigationBarController;
     if (v9)
@@ -2496,7 +2496,7 @@ LABEL_46:
 
     else
     {
-      [(SUUINavigationBarController *)v10 detachFromNavigationItem:v3];
+      [(SUUINavigationBarController *)v10 detachFromNavigationItem:navigationItem];
       v8 = 0;
     }
   }
@@ -2504,12 +2504,12 @@ LABEL_46:
   else
   {
     v8 = 0;
-    v7 = 0;
+    firstObject = 0;
   }
 
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BCF968])
   {
-    v11 = [(UIViewController *)self->_childViewController navigationBarControllerWithViewElement:v16];
+    v11 = [(UIViewController *)self->_childViewController navigationBarControllerWithViewElement:_navigationBarViewElement];
     if (v11)
     {
       goto LABEL_15;
@@ -2521,39 +2521,39 @@ LABEL_46:
     v11 = 0;
   }
 
-  if (v16)
+  if (_navigationBarViewElement)
   {
-    v11 = [[SUUINavigationBarController alloc] initWithNavigationBarViewElement:v16];
+    v11 = [[SUUINavigationBarController alloc] initWithNavigationBarViewElement:_navigationBarViewElement];
   }
 
 LABEL_15:
   if (v11)
   {
-    v12 = [(SUUIViewController *)self clientContext];
-    [(SUUINavigationBarController *)v11 setClientContext:v12];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUINavigationBarController *)v11 setClientContext:clientContext];
 
     [(SUUINavigationBarController *)v11 setDelegate:self];
     [(SUUINavigationBarController *)v11 setParentViewController:self];
     [(SUUINavigationBarController *)v11 setReusableSearchBarControllers:self->_searchBarControllers];
-    [(SUUINavigationBarController *)v11 attachToNavigationItem:v3];
+    [(SUUINavigationBarController *)v11 attachToNavigationItem:navigationItem];
   }
 
   else if (v8)
   {
-    [(SUUINavigationBarController *)self->_navigationBarController detachFromNavigationItem:v3];
+    [(SUUINavigationBarController *)self->_navigationBarController detachFromNavigationItem:navigationItem];
   }
 
   v13 = self->_navigationBarController;
   self->_navigationBarController = v11;
 
-  if ([v7 canBecomeActive])
+  if ([firstObject canBecomeActive])
   {
-    [v7 becomeActive];
+    [firstObject becomeActive];
     if (self->_selectSearchBarContentOnBecomingFirstResponder)
     {
-      v14 = [v7 searchBar];
-      v15 = [v14 searchField];
-      [v15 selectAll:0];
+      searchBar = [firstObject searchBar];
+      searchField = [searchBar searchField];
+      [searchField selectAll:0];
 
       self->_selectSearchBarContentOnBecomingFirstResponder = 0;
     }
@@ -2564,55 +2564,55 @@ LABEL_15:
 
 - (void)_reloadNavigationPalette
 {
-  v8 = [(SUUIDocumentContainerViewController *)self navigationController];
-  v3 = [v8 topViewController];
+  navigationController = [(SUUIDocumentContainerViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v3 == self)
+  if (topViewController == self)
   {
-    v4 = [(SUUIViewController *)self clientContext];
-    v5 = [SUUINavigationControllerAssistant assistantForNavigationController:v8 clientContext:v4];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v5 = [SUUINavigationControllerAssistant assistantForNavigationController:navigationController clientContext:clientContext];
 
-    v6 = [(SUUIDocumentContainerViewController *)self navigationPaletteView];
-    [v5 setPaletteView:v6 animated:0];
-    v7 = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
-    [v5 setHidesShadow:{objc_msgSend(v7, "hidesShadow")}];
+    navigationPaletteView = [(SUUIDocumentContainerViewController *)self navigationPaletteView];
+    [v5 setPaletteView:navigationPaletteView animated:0];
+    _navigationBarViewElement = [(SUUIDocumentContainerViewController *)self _navigationBarViewElement];
+    [v5 setHidesShadow:{objc_msgSend(_navigationBarViewElement, "hidesShadow")}];
   }
 }
 
 - (void)_reloadToolbar
 {
-  v7 = [(SUUIDocumentContainerViewController *)self _toolbarViewElement];
-  v3 = [(SUUIDocumentContainerViewController *)self navigationController];
-  v4 = [[SUUIToolbarController alloc] initWithToolbarViewElement:v7];
+  _toolbarViewElement = [(SUUIDocumentContainerViewController *)self _toolbarViewElement];
+  navigationController = [(SUUIDocumentContainerViewController *)self navigationController];
+  v4 = [[SUUIToolbarController alloc] initWithToolbarViewElement:_toolbarViewElement];
   v5 = v4;
   if (v4)
   {
     [(SUUIToolbarController *)v4 setDelegate:self];
-    [(SUUIToolbarController *)v5 updateToolbarForNavigationController:v3];
+    [(SUUIToolbarController *)v5 updateToolbarForNavigationController:navigationController];
   }
 
   toolbarController = self->_toolbarController;
   self->_toolbarController = v5;
 }
 
-- (void)_sendOnViewAttributesChangeWithAttributes:(id)a3 viewWillAppear:(BOOL)a4
+- (void)_sendOnViewAttributesChangeWithAttributes:(id)attributes viewWillAppear:(BOOL)appear
 {
-  v6 = a3;
+  attributesCopy = attributes;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAttributes_viewWillAppear___block_invoke;
   aBlock[3] = &unk_2798FE5C8;
   objc_copyWeak(&v18, &location);
-  v19 = a4;
+  appearCopy = appear;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = attributesCopy;
   v17 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  v10 = [v9 applicationState];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  applicationState = [mEMORY[0x277D75128] applicationState];
 
-  if (v10 == 2)
+  if (applicationState == 2)
   {
     pendingSizeTransitionCompletion = self->_pendingSizeTransitionCompletion;
     v12 = _Block_copy(v8);
@@ -2703,22 +2703,22 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
   *(v2 + 1256) = 0;
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   childViewController = self->_childViewController;
-  if (childViewController != v5)
+  if (childViewController != controllerCopy)
   {
-    v11 = v5;
+    v11 = controllerCopy;
     [(UIViewController *)childViewController willMoveToParentViewController:0];
     if ([(UIViewController *)self->_childViewController isViewLoaded])
     {
-      v7 = [(UIViewController *)self->_childViewController view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)self->_childViewController view];
+      [view removeFromSuperview];
     }
 
     [(UIViewController *)self->_childViewController removeFromParentViewController];
-    objc_storeStrong(&self->_childViewController, a3);
+    objc_storeStrong(&self->_childViewController, controller);
     [(SUUIDocumentContainerViewController *)self _setNavigationControllerContentInsetAdjustment:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
     if (self->_childViewController)
     {
@@ -2731,73 +2731,73 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
         [(UIViewController *)self->_childViewController beginAppearanceTransition:1 animated:0];
       }
 
-      v9 = [(SUUIDocumentContainerViewController *)self view];
-      v10 = [(UIViewController *)self->_childViewController view];
-      [v10 setAutoresizingMask:18];
-      [v9 bounds];
-      [v10 setFrame:?];
-      [v9 insertSubview:v10 atIndex:0];
+      view2 = [(SUUIDocumentContainerViewController *)self view];
+      view3 = [(UIViewController *)self->_childViewController view];
+      [view3 setAutoresizingMask:18];
+      [view2 bounds];
+      [view3 setFrame:?];
+      [view2 insertSubview:view3 atIndex:0];
       [(UIViewController *)self->_childViewController didMoveToParentViewController:self];
       [(UIViewController *)self setNeedsScrollingSegmentContentScrollViewUpdate];
     }
 
     [(SUUIDocumentContainerViewController *)self _reloadDefaultBarButtonItems];
     childViewController = [(SUUIDocumentContainerViewController *)self setNeedsStatusBarAppearanceUpdate];
-    v5 = v11;
+    controllerCopy = v11;
   }
 
-  MEMORY[0x2821F96F8](childViewController, v5);
+  MEMORY[0x2821F96F8](childViewController, controllerCopy);
 }
 
 - (BOOL)_shouldFillNavigationBarContentsBasedOnNavigationBarViewElement
 {
-  v3 = [(SUUIDocumentContainerViewController *)self _appearState];
-  if (v3)
+  _appearState = [(SUUIDocumentContainerViewController *)self _appearState];
+  if (_appearState)
   {
-    v3 = [objc_opt_class() allowsChildViewControllerNavigationBarManagement];
-    if (v3)
+    _appearState = [objc_opt_class() allowsChildViewControllerNavigationBarManagement];
+    if (_appearState)
     {
-      v4 = [(SUUIDocumentContainerViewController *)self parentViewController];
+      parentViewController = [(SUUIDocumentContainerViewController *)self parentViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(_appearState) = 0;
       }
 
       else if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_286BCFAE8]&& (objc_opt_respondsToSelector() & 1) != 0)
       {
-        LOBYTE(v3) = [(UIViewController *)self->_childViewController managesNavigationBarContents]^ 1;
+        LOBYTE(_appearState) = [(UIViewController *)self->_childViewController managesNavigationBarContents]^ 1;
       }
 
       else
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(_appearState) = 1;
       }
     }
   }
 
-  return v3;
+  return _appearState;
 }
 
-- (void)_showAccountViewControllerWithURL:(id)a3
+- (void)_showAccountViewControllerWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SUUIViewController *)self clientContext];
-  v6 = [v5 clientInterface];
-  v7 = [objc_alloc(MEMORY[0x277D7FD90]) initWithExternalAccountURL:v4];
+  lCopy = l;
+  clientContext = [(SUUIViewController *)self clientContext];
+  clientInterface = [clientContext clientInterface];
+  v7 = [objc_alloc(MEMORY[0x277D7FD90]) initWithExternalAccountURL:lCopy];
 
   [v7 setCanMoveToOverlay:0];
-  [v7 setClientInterface:v6];
+  [v7 setClientInterface:clientInterface];
   v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v7];
-  if (SUUIUserInterfaceIdiom(v5) == 1)
+  if (SUUIUserInterfaceIdiom(clientContext) == 1)
   {
     [v8 setModalPresentationStyle:2];
   }
 
-  v9 = [(SUUIDocumentContainerViewController *)self transitionCoordinator];
-  if (v9)
+  transitionCoordinator = [(SUUIDocumentContainerViewController *)self transitionCoordinator];
+  if (transitionCoordinator)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -2805,7 +2805,7 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
     v10[3] = &unk_2798FBAB0;
     v10[4] = self;
     v11 = v8;
-    [v9 animateAlongsideTransition:0 completion:v10];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v10];
   }
 
   else
@@ -2814,53 +2814,53 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
   }
 }
 
-- (void)_showLegacyStorePageWithRequest:(id)a3 page:(id)a4 pageType:(int64_t)a5 URLResponse:(id)a6
+- (void)_showLegacyStorePageWithRequest:(id)request page:(id)page pageType:(int64_t)type URLResponse:(id)response
 {
-  v19 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(SUUIViewController *)self clientContext];
-  v13 = [v12 newLegacyStorePageViewControllerForURLResponse:v19];
+  responseCopy = response;
+  pageCopy = page;
+  requestCopy = request;
+  clientContext = [(SUUIViewController *)self clientContext];
+  v13 = [clientContext newLegacyStorePageViewControllerForURLResponse:responseCopy];
   if (!v13)
   {
     v13 = objc_alloc_init(MEMORY[0x277D7FE88]);
   }
 
-  v14 = [v13 clientInterface];
+  clientInterface = [v13 clientInterface];
 
-  if (!v14)
+  if (!clientInterface)
   {
-    v15 = [v12 clientInterface];
-    [v13 setClientInterface:v15];
+    clientInterface2 = [clientContext clientInterface];
+    [v13 setClientInterface:clientInterface2];
   }
 
   [v13 setCanMoveToOverlay:0];
   [v13 setShouldAdjustContentOffsets:0];
-  v16 = [(SUUIDocumentContainerViewController *)self navigationItem];
-  [v13 _setExistingNavigationItem:v16];
+  navigationItem = [(SUUIDocumentContainerViewController *)self navigationItem];
+  [v13 _setExistingNavigationItem:navigationItem];
 
   [v13 setExternalRequest:1];
   [(SUUIDocumentContainerViewController *)self _setChildViewController:v13];
-  v17 = [v19 URL];
-  [v13 reloadWithStorePage:v10 ofType:a5 forURL:v17];
+  v17 = [responseCopy URL];
+  [v13 reloadWithStorePage:pageCopy ofType:type forURL:v17];
 
-  v18 = [objc_alloc(MEMORY[0x277D69CA0]) initWithURLRequest:v11];
+  v18 = [objc_alloc(MEMORY[0x277D69CA0]) initWithURLRequest:requestCopy];
   [v13 setURLRequestProperties:v18];
 }
 
-- (id)_sidepackViewControllerWithOptions:(id)a3 clientContext:(id)a4
+- (id)_sidepackViewControllerWithOptions:(id)options clientContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"sidepackType"];
+  optionsCopy = options;
+  contextCopy = context;
+  v7 = [optionsCopy objectForKey:@"sidepackType"];
   if ([v7 isEqualToString:0x286B00C80])
   {
-    v8 = [v5 objectForKey:@"sidepackData"];
+    v8 = [optionsCopy objectForKey:@"sidepackData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = [[SUUIItem alloc] initWithLookupDictionary:v8];
-      v10 = SUUIUserInterfaceIdiom(v6);
+      v10 = SUUIUserInterfaceIdiom(contextCopy);
       v11 = off_2798F3ED8;
       if (v10 != 1)
       {
@@ -2868,7 +2868,7 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
       }
 
       v12 = [objc_alloc(*v11) initWithItem:v9];
-      [v12 setClientContext:v6];
+      [v12 setClientContext:contextCopy];
     }
 
     else
@@ -2885,14 +2885,14 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
   return v12;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(UIViewController *)self->_childViewController animationControllerForPresentedController:v8 presentingController:v9 sourceController:v10];
+    v11 = [(UIViewController *)self->_childViewController animationControllerForPresentedController:controllerCopy presentingController:presentingControllerCopy sourceController:sourceControllerCopy];
   }
 
   else
@@ -2903,12 +2903,12 @@ void __96__SUUIDocumentContainerViewController__sendOnViewAttributesChangeWithAt
   return v11;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(UIViewController *)self->_childViewController animationControllerForDismissedController:v4];
+    v5 = [(UIViewController *)self->_childViewController animationControllerForDismissedController:controllerCopy];
   }
 
   else

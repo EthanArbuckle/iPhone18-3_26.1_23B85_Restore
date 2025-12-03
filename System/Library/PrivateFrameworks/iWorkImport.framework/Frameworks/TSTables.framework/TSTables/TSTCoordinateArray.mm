@@ -1,14 +1,14 @@
 @interface TSTCoordinateArray
-- (BOOL)isEqual:(id)a3;
-- (TSTCoordinateArray)initWithCount:(unsigned int)a3 atOffset:(unsigned int)a4 layoutDirectionIsLeftToRight:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (TSTCoordinateArray)initWithCount:(unsigned int)count atOffset:(unsigned int)offset layoutDirectionIsLeftToRight:(BOOL)right;
 - (id)description;
 - (void)dealloc;
-- (void)setTableWidthForRightToLeft:(double)a3;
+- (void)setTableWidthForRightToLeft:(double)left;
 @end
 
 @implementation TSTCoordinateArray
 
-- (TSTCoordinateArray)initWithCount:(unsigned int)a3 atOffset:(unsigned int)a4 layoutDirectionIsLeftToRight:(BOOL)a5
+- (TSTCoordinateArray)initWithCount:(unsigned int)count atOffset:(unsigned int)offset layoutDirectionIsLeftToRight:(BOOL)right
 {
   v16.receiver = self;
   v16.super_class = TSTCoordinateArray;
@@ -16,23 +16,23 @@
   v9 = v8;
   if (v8)
   {
-    v8->_offset = a4;
-    v8->_count = a3;
-    v8->_coordinates = malloc_type_calloc(8uLL, a3 + 1, 0x100004000313F17uLL);
+    v8->_offset = offset;
+    v8->_count = count;
+    v8->_coordinates = malloc_type_calloc(8uLL, count + 1, 0x100004000313F17uLL);
     v9->_average = 0.0;
     v10 = objc_alloc(MEMORY[0x277CCAB58]);
-    v13 = objc_msgSend_initWithIndexesInRange_(v10, v11, v9->_offset, a3, v12);
+    v13 = objc_msgSend_initWithIndexesInRange_(v10, v11, v9->_offset, count, v12);
     visibleIndices = v9->_visibleIndices;
     v9->_visibleIndices = v13;
 
-    v9->_layoutDirectionIsLeftToRight = a5;
+    v9->_layoutDirectionIsLeftToRight = right;
     v9->_tableWidth = 0.0;
   }
 
   return v9;
 }
 
-- (void)setTableWidthForRightToLeft:(double)a3
+- (void)setTableWidthForRightToLeft:(double)left
 {
   if (self->_layoutDirectionIsLeftToRight)
   {
@@ -44,7 +44,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  self->_tableWidth = a3;
+  self->_tableWidth = left;
 }
 
 - (void)dealloc
@@ -60,9 +60,9 @@
   [(TSTCoordinateArray *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (v5 && self->_layoutDirectionIsLeftToRight == *(v5 + 40) && *&self->_offset == *(v5 + 8) && self->_average == *(v5 + 24))

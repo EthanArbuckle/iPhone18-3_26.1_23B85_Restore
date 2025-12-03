@@ -1,5 +1,5 @@
 @interface ATXLazyIntent
-- (ATXLazyIntent)initWithIntent:(id)a3 intentData:(id)a4;
+- (ATXLazyIntent)initWithIntent:(id)intent intentData:(id)data;
 - (ATXLazyIntentDelegateProtocol)delegate;
 - (INIntent)intent;
 - (NSData)intentData;
@@ -12,14 +12,14 @@
 
 - (id)_deserializeIntent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSData *)v2->_intentData length])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSData *)selfCopy->_intentData length])
   {
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E696ACD0];
     v5 = objc_opt_class();
-    intentData = v2->_intentData;
+    intentData = selfCopy->_intentData;
     v11 = 0;
     v7 = [v4 unarchivedObjectOfClass:v5 fromData:intentData error:&v11];
     v8 = v11;
@@ -40,49 +40,49 @@
     v7 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (INIntent)intent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  intent = v2->_intent;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  intent = selfCopy->_intent;
   if (!intent)
   {
-    v4 = [(ATXLazyIntent *)v2 _deserializeIntent];
-    v5 = v2->_intent;
-    v2->_intent = v4;
+    _deserializeIntent = [(ATXLazyIntent *)selfCopy _deserializeIntent];
+    v5 = selfCopy->_intent;
+    selfCopy->_intent = _deserializeIntent;
 
-    WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-    [WeakRetained didDeserializeIntent:v2->_intent];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    [WeakRetained didDeserializeIntent:selfCopy->_intent];
 
-    intent = v2->_intent;
+    intent = selfCopy->_intent;
   }
 
   v7 = intent;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSData)intentData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_intentData;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_intentData;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (ATXLazyIntent)initWithIntent:(id)a3 intentData:(id)a4
+- (ATXLazyIntent)initWithIntent:(id)intent intentData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  if (!(v8 | v9))
+  intentCopy = intent;
+  dataCopy = data;
+  if (!(intentCopy | dataCopy))
   {
     [ATXLazyIntent initWithIntent:a2 intentData:self];
   }
@@ -93,8 +93,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_intent, a3);
-    objc_storeStrong(&v11->_intentData, a4);
+    objc_storeStrong(&v10->_intent, intent);
+    objc_storeStrong(&v11->_intentData, data);
   }
 
   return v11;
@@ -102,14 +102,14 @@
 
 - (void)handleMemoryPressure
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ATXLazyIntent *)v2 intentData];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  intentData = [(ATXLazyIntent *)selfCopy intentData];
+  if (intentData)
   {
-    v4 = [(ATXLazyIntent *)v2 intent];
+    intent = [(ATXLazyIntent *)selfCopy intent];
 
-    if (v4)
+    if (intent)
     {
       v5 = __atxlog_handle_default();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -118,12 +118,12 @@
         _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ATXLazyIntent purging intent data due to memory pressure", v7, 2u);
       }
 
-      intentData = v2->_intentData;
-      v2->_intentData = 0;
+      intentData = selfCopy->_intentData;
+      selfCopy->_intentData = 0;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (ATXLazyIntentDelegateProtocol)delegate
@@ -143,7 +143,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1BF549000, a2, OS_LOG_TYPE_FAULT, "ATXLazyIntent could not de-serialize intent: %@", &v2, 0xCu);
 }
 

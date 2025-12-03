@@ -7,7 +7,7 @@
 
 - (id)psso_base64URLEncodedString
 {
-  v1 = [a1 base64EncodedStringWithOptions:0];
+  v1 = [self base64EncodedStringWithOptions:0];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
   v3 = [v2 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
@@ -46,7 +46,7 @@
 
     v10 = [v9 stringByAppendingString:v7];
 
-    v11 = [a1 initWithBase64EncodedString:v10 options:0];
+    v11 = [self initWithBase64EncodedString:v10 options:0];
   }
 
   else

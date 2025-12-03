@@ -4,24 +4,24 @@
 - (DIDeviceListDelegate)deviceListDelegate;
 - (DIDeviceStatusDelegate)deviceStatusDelegate;
 - (DISessionStatusDelegate)sessionStatusDelegate;
-- (void)didAddDevice:(id)a3;
-- (void)didAddSession:(id)a3;
-- (void)didLoadDevices:(id)a3;
-- (void)didRemoveDevice:(id)a3;
-- (void)didRemoveSession:(id)a3;
-- (void)didUpdateAudioPower:(float)a3;
-- (void)didUpdateDevice:(id)a3;
-- (void)didUpdateDownlinkMuteStatus:(BOOL)a3;
-- (void)didUpdateSession:(id)a3;
-- (void)didUpdateUplinkMuteStatus:(BOOL)a3;
-- (void)fetchClientContextWithCompletionHandler:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateUplinkMuteStatus:(BOOL)a4;
-- (void)setAudioPowerDelegate:(id)a3;
-- (void)setAudioStatusDelegate:(id)a3;
-- (void)setDeviceListDelegate:(id)a3;
-- (void)setDeviceStatusDelegate:(id)a3;
-- (void)setSessionStatusDelegate:(id)a3;
+- (void)didAddDevice:(id)device;
+- (void)didAddSession:(id)session;
+- (void)didLoadDevices:(id)devices;
+- (void)didRemoveDevice:(id)device;
+- (void)didRemoveSession:(id)session;
+- (void)didUpdateAudioPower:(float)power;
+- (void)didUpdateDevice:(id)device;
+- (void)didUpdateDownlinkMuteStatus:(BOOL)status;
+- (void)didUpdateSession:(id)session;
+- (void)didUpdateUplinkMuteStatus:(BOOL)status;
+- (void)fetchClientContextWithCompletionHandler:(id)handler;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateUplinkMuteStatus:(BOOL)status;
+- (void)setAudioPowerDelegate:(id)delegate;
+- (void)setAudioStatusDelegate:(id)delegate;
+- (void)setDeviceListDelegate:(id)delegate;
+- (void)setDeviceStatusDelegate:(id)delegate;
+- (void)setSessionStatusDelegate:(id)delegate;
 @end
 
 @implementation DIXPCDispatcher
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)setDeviceListDelegate:(id)a3
+- (void)setDeviceListDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_249DD2B4C(a3);
+  selfCopy = self;
+  sub_249DD2B4C(delegate);
 }
 
 - (DIDeviceStatusDelegate)deviceStatusDelegate
@@ -47,11 +47,11 @@
   return v2;
 }
 
-- (void)setDeviceStatusDelegate:(id)a3
+- (void)setDeviceStatusDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_249DD2C88(a3);
+  selfCopy = self;
+  sub_249DD2C88(delegate);
 }
 
 - (DISessionStatusDelegate)sessionStatusDelegate
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (void)setSessionStatusDelegate:(id)a3
+- (void)setSessionStatusDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_249DD2DC4(a3);
+  selfCopy = self;
+  sub_249DD2DC4(delegate);
 }
 
 - (DIAudioPowerDelegate)audioPowerDelegate
@@ -75,11 +75,11 @@
   return v2;
 }
 
-- (void)setAudioPowerDelegate:(id)a3
+- (void)setAudioPowerDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_249DD2F00(a3);
+  selfCopy = self;
+  sub_249DD2F00(delegate);
 }
 
 - (DIAudioStatusDelegate)audioStatusDelegate
@@ -89,105 +89,105 @@
   return v2;
 }
 
-- (void)setAudioStatusDelegate:(id)a3
+- (void)setAudioStatusDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_249DD3078(a3);
+  selfCopy = self;
+  sub_249DD3078(delegate);
 }
 
-- (void)fetchClientContextWithCompletionHandler:(id)a3
+- (void)fetchClientContextWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_249DD3638(&unk_249DDFDD8, v5);
 }
 
-- (void)didLoadDevices:(id)a3
+- (void)didLoadDevices:(id)devices
 {
   sub_249DD38BC();
   v4 = sub_249DDC908();
-  v5 = self;
+  selfCopy = self;
   sub_249DD3748(v4);
 }
 
-- (void)didAddDevice:(id)a3
+- (void)didAddDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  sub_249DD3964(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  sub_249DD3964(deviceCopy);
 }
 
-- (void)didRemoveDevice:(id)a3
+- (void)didRemoveDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  sub_249DD39E8(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  sub_249DD39E8(deviceCopy);
 }
 
-- (void)didUpdateDevice:(id)a3
+- (void)didUpdateDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  sub_249DD3BA4(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  sub_249DD3BA4(deviceCopy);
 }
 
-- (void)didAddSession:(id)a3
+- (void)didAddSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  sub_249DD3C28(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DD3C28(sessionCopy);
 }
 
-- (void)didRemoveSession:(id)a3
+- (void)didRemoveSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  sub_249DD3CAC(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DD3CAC(sessionCopy);
 }
 
-- (void)didUpdateSession:(id)a3
+- (void)didUpdateSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  sub_249DD3D30(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DD3D30(sessionCopy);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_249DD3DB4(v6, v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_249DD3DB4(sessionCopy, errorCopy);
 }
 
-- (void)session:(id)a3 didUpdateUplinkMuteStatus:(BOOL)a4
+- (void)session:(id)session didUpdateUplinkMuteStatus:(BOOL)status
 {
-  v6 = a3;
-  v7 = self;
-  sub_249DD4008(v6, a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_249DD4008(sessionCopy, status);
 }
 
-- (void)didUpdateAudioPower:(float)a3
+- (void)didUpdateAudioPower:(float)power
 {
-  v4 = self;
-  sub_249DD41C0(a3);
+  selfCopy = self;
+  sub_249DD41C0(power);
 }
 
-- (void)didUpdateUplinkMuteStatus:(BOOL)a3
+- (void)didUpdateUplinkMuteStatus:(BOOL)status
 {
-  v4 = self;
-  sub_249DD430C(a3);
+  selfCopy = self;
+  sub_249DD430C(status);
 }
 
-- (void)didUpdateDownlinkMuteStatus:(BOOL)a3
+- (void)didUpdateDownlinkMuteStatus:(BOOL)status
 {
-  v4 = self;
-  sub_249DD4374(a3);
+  selfCopy = self;
+  sub_249DD4374(status);
 }
 
 @end

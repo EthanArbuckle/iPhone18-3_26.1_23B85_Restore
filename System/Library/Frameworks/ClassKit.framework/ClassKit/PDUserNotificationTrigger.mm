@@ -1,47 +1,47 @@
 @interface PDUserNotificationTrigger
-- (BOOL)isIncompleteHandout:(id)a3;
-- (PDUserNotificationTrigger)initWithDatabase:(id)a3;
+- (BOOL)isIncompleteHandout:(id)handout;
+- (PDUserNotificationTrigger)initWithDatabase:(id)database;
 - (PDUserNotificationTriggerDelegate)delegate;
-- (id)classIDFromHandout:(id)a3;
-- (void)fireTriggerWithNotificationData:(id)a3;
+- (id)classIDFromHandout:(id)handout;
+- (void)fireTriggerWithNotificationData:(id)data;
 @end
 
 @implementation PDUserNotificationTrigger
 
-- (PDUserNotificationTrigger)initWithDatabase:(id)a3
+- (PDUserNotificationTrigger)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = PDUserNotificationTrigger;
   v6 = [(PDUserNotificationTrigger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
   }
 
   return v7;
 }
 
-- (void)fireTriggerWithNotificationData:(id)a3
+- (void)fireTriggerWithNotificationData:(id)data
 {
-  v5 = a3;
-  v4 = [(PDUserNotificationTrigger *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  dataCopy = data;
+  delegate = [(PDUserNotificationTrigger *)self delegate];
+  if (dataCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 triggerDidFire:self notificationData:v5];
+    [delegate triggerDidFire:self notificationData:dataCopy];
   }
 }
 
-- (BOOL)isIncompleteHandout:(id)a3
+- (BOOL)isIncompleteHandout:(id)handout
 {
-  v4 = a3;
-  v5 = [(PDUserNotificationTrigger *)self database];
+  handoutCopy = handout;
+  database = [(PDUserNotificationTrigger *)self database];
   v6 = objc_opt_class();
-  v7 = [v4 objectID];
-  v16 = v7;
+  objectID = [handoutCopy objectID];
+  v16 = objectID;
   v8 = [NSArray arrayWithObjects:&v16 count:1];
-  v9 = [v5 select:v6 where:@"parentObjectID = ?" bindings:v8];
+  v9 = [database select:v6 where:@"parentObjectID = ?" bindings:v8];
 
   if (v9)
   {
@@ -56,9 +56,9 @@
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v11;
-      v12 = [v4 objectID];
+      objectID2 = [handoutCopy objectID];
       v14 = 138543362;
-      v15 = v12;
+      v15 = objectID2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "PDUserNotificationTrigger: collaboration state for handout with id: %{public}@ not available.", &v14, 0xCu);
 
       LOBYTE(v10) = 0;
@@ -68,29 +68,29 @@
   return v10;
 }
 
-- (id)classIDFromHandout:(id)a3
+- (id)classIDFromHandout:(id)handout
 {
-  v4 = a3;
-  v5 = [v4 objectID];
+  handoutCopy = handout;
+  objectID = [handoutCopy objectID];
 
-  if (v5)
+  if (objectID)
   {
-    v6 = [(PDUserNotificationTrigger *)self database];
+    database = [(PDUserNotificationTrigger *)self database];
     v7 = objc_opt_class();
-    v8 = [v4 objectID];
-    v13 = v8;
+    objectID2 = [handoutCopy objectID];
+    v13 = objectID2;
     v9 = [NSArray arrayWithObjects:&v13 count:1];
-    v10 = [v6 select:v7 where:@"parentObjectID = ?" bindings:v9];
+    v10 = [database select:v7 where:@"parentObjectID = ?" bindings:v9];
 
-    v11 = [v10 classID];
+    classID = [v10 classID];
   }
 
   else
   {
-    v11 = 0;
+    classID = 0;
   }
 
-  return v11;
+  return classID;
 }
 
 - (PDUserNotificationTriggerDelegate)delegate

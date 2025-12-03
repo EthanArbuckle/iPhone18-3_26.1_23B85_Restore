@@ -1,26 +1,26 @@
 @interface CUIKORContentImageRequest
-- (CUIKORContentImageRequest)initWithId:(int64_t)a3 options:(unint64_t)a4 state:(id)a5 resultHandler:(id)a6;
+- (CUIKORContentImageRequest)initWithId:(int64_t)id options:(unint64_t)options state:(id)state resultHandler:(id)handler;
 @end
 
 @implementation CUIKORContentImageRequest
 
-- (CUIKORContentImageRequest)initWithId:(int64_t)a3 options:(unint64_t)a4 state:(id)a5 resultHandler:(id)a6
+- (CUIKORContentImageRequest)initWithId:(int64_t)id options:(unint64_t)options state:(id)state resultHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  stateCopy = state;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = CUIKORContentImageRequest;
   v12 = [(CUIKORContentImageRequest *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_requestId = a3;
-    v12->_options = a4;
-    v14 = [v10 copy];
+    v12->_requestId = id;
+    v12->_options = options;
+    v14 = [stateCopy copy];
     state = v13->_state;
     v13->_state = v14;
 
-    v16 = [v11 copy];
+    v16 = [handlerCopy copy];
     resultHandler = v13->_resultHandler;
     v13->_resultHandler = v16;
   }

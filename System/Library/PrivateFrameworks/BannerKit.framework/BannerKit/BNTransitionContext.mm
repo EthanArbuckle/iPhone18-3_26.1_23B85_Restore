@@ -1,16 +1,16 @@
 @interface BNTransitionContext
-+ (id)transitionContextForTransitionFromViewController:(id)a3 toViewController:(id)a4 inContainerView:(id)a5;
-+ (id)transitionContextForTransitionOfViewController:(id)a3 fromFrame:(CGRect)a4 toFrame:(CGRect)a5 inContainerView:(id)a6;
++ (id)transitionContextForTransitionFromViewController:(id)controller toViewController:(id)viewController inContainerView:(id)view;
++ (id)transitionContextForTransitionOfViewController:(id)controller fromFrame:(CGRect)frame toFrame:(CGRect)toFrame inContainerView:(id)view;
 - (BNTransitionContext)init;
 - (CGAffineTransform)targetTransform;
-- (CGRect)finalFrameForViewController:(id)a3;
+- (CGRect)finalFrameForViewController:(id)controller;
 - (CGRect)fromEndFrame;
 - (CGRect)fromStartFrame;
-- (CGRect)initialFrameForViewController:(id)a3;
+- (CGRect)initialFrameForViewController:(id)controller;
 - (CGRect)toEndFrame;
 - (CGRect)toStartFrame;
-- (void)completeTransition:(BOOL)a3;
-- (void)performTransitionWithAnimator:(id)a3;
+- (void)completeTransition:(BOOL)transition;
+- (void)performTransitionWithAnimator:(id)animator;
 @end
 
 @implementation BNTransitionContext
@@ -30,38 +30,38 @@
   return v2;
 }
 
-+ (id)transitionContextForTransitionFromViewController:(id)a3 toViewController:(id)a4 inContainerView:(id)a5
++ (id)transitionContextForTransitionFromViewController:(id)controller toViewController:(id)viewController inContainerView:(id)view
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
+  viewCopy = view;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v11 = objc_alloc_init(self);
   v12 = v11[1];
-  [v12 _setContainerView:v8];
+  [v12 _setContainerView:viewCopy];
 
-  [v12 _setFromViewController:v10];
-  [v12 _setToViewController:v9];
+  [v12 _setFromViewController:controllerCopy];
+  [v12 _setToViewController:viewControllerCopy];
 
   return v11;
 }
 
-+ (id)transitionContextForTransitionOfViewController:(id)a3 fromFrame:(CGRect)a4 toFrame:(CGRect)a5 inContainerView:(id)a6
++ (id)transitionContextForTransitionOfViewController:(id)controller fromFrame:(CGRect)frame toFrame:(CGRect)toFrame inContainerView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  v12 = a4.origin.y;
-  v13 = a4.origin.x;
-  v16 = a6;
-  v17 = a3;
-  v18 = objc_alloc_init(a1);
+  height = toFrame.size.height;
+  width = toFrame.size.width;
+  y = toFrame.origin.y;
+  x = toFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  viewCopy = view;
+  controllerCopy = controller;
+  v18 = objc_alloc_init(self);
   v19 = v18[1];
-  [v19 _setContainerView:v16];
+  [v19 _setContainerView:viewCopy];
 
-  [v19 _setToViewController:v17];
+  [v19 _setToViewController:controllerCopy];
   [v19 _setToStartFrame:{v13, v12, v11, v10}];
   [v19 _setToEndFrame:{x, y, width, height}];
 
@@ -71,8 +71,8 @@
 - (CGRect)fromStartFrame
 {
   transitionContext = self->_transitionContext;
-  v3 = [(_UIViewControllerOneToOneTransitionContext *)transitionContext fromViewController];
-  [(_UIViewControllerOneToOneTransitionContext *)transitionContext initialFrameForViewController:v3];
+  fromViewController = [(_UIViewControllerOneToOneTransitionContext *)transitionContext fromViewController];
+  [(_UIViewControllerOneToOneTransitionContext *)transitionContext initialFrameForViewController:fromViewController];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -92,8 +92,8 @@
 - (CGRect)fromEndFrame
 {
   transitionContext = self->_transitionContext;
-  v3 = [(_UIViewControllerOneToOneTransitionContext *)transitionContext fromViewController];
-  [(_UIViewControllerOneToOneTransitionContext *)transitionContext finalFrameForViewController:v3];
+  fromViewController = [(_UIViewControllerOneToOneTransitionContext *)transitionContext fromViewController];
+  [(_UIViewControllerOneToOneTransitionContext *)transitionContext finalFrameForViewController:fromViewController];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -113,8 +113,8 @@
 - (CGRect)toEndFrame
 {
   transitionContext = self->_transitionContext;
-  v3 = [(_UIViewControllerOneToOneTransitionContext *)transitionContext toViewController];
-  [(_UIViewControllerOneToOneTransitionContext *)transitionContext finalFrameForViewController:v3];
+  toViewController = [(_UIViewControllerOneToOneTransitionContext *)transitionContext toViewController];
+  [(_UIViewControllerOneToOneTransitionContext *)transitionContext finalFrameForViewController:toViewController];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -134,8 +134,8 @@
 - (CGRect)toStartFrame
 {
   transitionContext = self->_transitionContext;
-  v3 = [(_UIViewControllerOneToOneTransitionContext *)transitionContext toViewController];
-  [(_UIViewControllerOneToOneTransitionContext *)transitionContext initialFrameForViewController:v3];
+  toViewController = [(_UIViewControllerOneToOneTransitionContext *)transitionContext toViewController];
+  [(_UIViewControllerOneToOneTransitionContext *)transitionContext initialFrameForViewController:toViewController];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -152,14 +152,14 @@
   return result;
 }
 
-- (void)performTransitionWithAnimator:(id)a3
+- (void)performTransitionWithAnimator:(id)animator
 {
-  v4 = a3;
+  animatorCopy = animator;
   transitionContext = self->_transitionContext;
-  v6 = v4;
-  if (v4)
+  v6 = animatorCopy;
+  if (animatorCopy)
   {
-    [(_UIViewControllerOneToOneTransitionContext *)transitionContext _setAnimator:v4];
+    [(_UIViewControllerOneToOneTransitionContext *)transitionContext _setAnimator:animatorCopy];
     [v6 animateTransition:self];
   }
 
@@ -170,11 +170,11 @@
   }
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
   if (!self->_explicitCompletionRequired)
   {
-    [(BNTransitionContext *)self explictlyCompleteTransition:a3];
+    [(BNTransitionContext *)self explictlyCompleteTransition:transition];
   }
 }
 
@@ -192,9 +192,9 @@
   return result;
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
-  [(_UIViewControllerOneToOneTransitionContext *)self->_transitionContext initialFrameForViewController:a3];
+  [(_UIViewControllerOneToOneTransitionContext *)self->_transitionContext initialFrameForViewController:controller];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -202,9 +202,9 @@
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
-  [(_UIViewControllerOneToOneTransitionContext *)self->_transitionContext finalFrameForViewController:a3];
+  [(_UIViewControllerOneToOneTransitionContext *)self->_transitionContext finalFrameForViewController:controller];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

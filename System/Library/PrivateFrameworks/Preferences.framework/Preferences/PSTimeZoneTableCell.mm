@@ -1,6 +1,6 @@
 @interface PSTimeZoneTableCell
 - (void)prepareForReuse;
-- (void)setCity:(id)a3;
+- (void)setCity:(id)city;
 @end
 
 @implementation PSTimeZoneTableCell
@@ -14,14 +14,14 @@
   self->_city = 0;
 }
 
-- (void)setCity:(id)a3
+- (void)setCity:(id)city
 {
-  objc_storeStrong(&self->_city, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_city, city);
+  cityCopy = city;
   v7 = [(ALCity *)self->_city displayNameIncludingCountry:1];
 
-  v6 = [(PSTimeZoneTableCell *)self textLabel];
-  [v6 setText:v7];
+  textLabel = [(PSTimeZoneTableCell *)self textLabel];
+  [textLabel setText:v7];
 }
 
 @end

@@ -2,37 +2,37 @@
 - (BOOL)showProgressTray;
 - (UIColor)progressBackgroundColor;
 - (UIColor)progressColor;
-- (_UIAirDropProgressView)initWithFrame:(CGRect)a3;
+- (_UIAirDropProgressView)initWithFrame:(CGRect)frame;
 - (double)progress;
 - (double)progressLineWidth;
 - (double)progressPresentationValue;
-- (void)animateProgressCompletedWithCompletion:(id)a3;
+- (void)animateProgressCompletedWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4 forced:(BOOL)a5 completion:(id)a6;
-- (void)setProgressBackgroundColor:(id)a3;
-- (void)setProgressColor:(id)a3;
-- (void)setProgressLineWidth:(double)a3;
-- (void)setShowProgressTray:(BOOL)a3;
+- (void)setProgress:(double)progress;
+- (void)setProgress:(double)progress animated:(BOOL)animated forced:(BOOL)forced completion:(id)completion;
+- (void)setProgressBackgroundColor:(id)color;
+- (void)setProgressColor:(id)color;
+- (void)setProgressLineWidth:(double)width;
+- (void)setShowProgressTray:(BOOL)tray;
 @end
 
 @implementation _UIAirDropProgressView
 
-- (_UIAirDropProgressView)initWithFrame:(CGRect)a3
+- (_UIAirDropProgressView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UIAirDropProgressView;
-  v3 = [(_UIAirDropProgressView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIAirDropProgressView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(_UIAirDropProgressView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_UIAirDropProgressView *)v3 setBackgroundColor:clearColor];
 
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v7 = v6;
-    v8 = [(_UIAirDropProgressView *)v3 layer];
-    [v8 setContentsScale:v7];
+    layer = [(_UIAirDropProgressView *)v3 layer];
+    [layer setContentsScale:v7];
   }
 
   return v3;
@@ -45,89 +45,89 @@
   [(_UIAirDropProgressView *)&v2 layoutSubviews];
 }
 
-- (void)setProgressColor:(id)a3
+- (void)setProgressColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_UIAirDropProgressView *)self layer];
-  [v5 setProgressColor:v4];
+  colorCopy = color;
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer setProgressColor:colorCopy];
 }
 
 - (UIColor)progressColor
 {
-  v2 = [(_UIAirDropProgressView *)self layer];
-  v3 = [v2 progressColor];
+  layer = [(_UIAirDropProgressView *)self layer];
+  progressColor = [layer progressColor];
 
-  return v3;
+  return progressColor;
 }
 
-- (void)setProgressBackgroundColor:(id)a3
+- (void)setProgressBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_UIAirDropProgressView *)self layer];
-  [v5 setProgressBackgroundColor:v4];
+  colorCopy = color;
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer setProgressBackgroundColor:colorCopy];
 }
 
 - (UIColor)progressBackgroundColor
 {
-  v2 = [(_UIAirDropProgressView *)self layer];
-  v3 = [v2 progressBackgroundColor];
+  layer = [(_UIAirDropProgressView *)self layer];
+  progressBackgroundColor = [layer progressBackgroundColor];
 
-  return v3;
+  return progressBackgroundColor;
 }
 
-- (void)setProgressLineWidth:(double)a3
+- (void)setProgressLineWidth:(double)width
 {
-  v4 = [(_UIAirDropProgressView *)self layer];
-  [v4 setProgressLineWidth:a3];
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer setProgressLineWidth:width];
 }
 
 - (double)progressLineWidth
 {
-  v2 = [(_UIAirDropProgressView *)self layer];
-  [v2 progressLineWidth];
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer progressLineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShowProgressTray:(BOOL)a3
+- (void)setShowProgressTray:(BOOL)tray
 {
-  v3 = a3;
-  v4 = [(_UIAirDropProgressView *)self layer];
-  [v4 setShowProgressTray:v3];
+  trayCopy = tray;
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer setShowProgressTray:trayCopy];
 }
 
 - (BOOL)showProgressTray
 {
-  v2 = [(_UIAirDropProgressView *)self layer];
-  v3 = [v2 showProgressTray];
+  layer = [(_UIAirDropProgressView *)self layer];
+  showProgressTray = [layer showProgressTray];
 
-  return v3;
+  return showProgressTray;
 }
 
 - (double)progress
 {
-  v2 = [(_UIAirDropProgressView *)self layer];
-  [v2 progress];
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = [(_UIAirDropProgressView *)self layer];
-  [v4 setProgress:a3];
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer setProgress:progress];
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4 forced:(BOOL)a5 completion:(id)a6
+- (void)setProgress:(double)progress animated:(BOOL)animated forced:(BOOL)forced completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  if (v10)
+  forcedCopy = forced;
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = v10;
+    v11 = completionCopy;
   }
 
   else
@@ -135,21 +135,21 @@
     v11 = &__block_literal_global_0;
   }
 
-  v12 = [(_UIAirDropProgressView *)self layer];
-  [v12 progress];
+  layer = [(_UIAirDropProgressView *)self layer];
+  [layer progress];
   v14 = v13;
 
-  if (v14 == a3 && !v6)
+  if (v14 == progress && !forcedCopy)
   {
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!animatedCopy)
   {
-    v20 = [(_UIAirDropProgressView *)self layer];
-    [v20 removeAnimationForKey:@"_UIAirDropProgressViewAnimationKey"];
+    layer2 = [(_UIAirDropProgressView *)self layer];
+    [layer2 removeAnimationForKey:@"_UIAirDropProgressViewAnimationKey"];
 
-    [(_UIAirDropProgressView *)self setProgress:a3];
+    [(_UIAirDropProgressView *)self setProgress:progress];
 LABEL_13:
     v11[2](v11);
     goto LABEL_21;
@@ -157,7 +157,7 @@ LABEL_13:
 
   [(_UIAirDropProgressView *)self progressPresentationValue];
   v17 = v16;
-  v18 = vabdd_f64(a3, v16);
+  v18 = vabdd_f64(progress, v16);
   v19 = 1.0;
   if (v18 <= 0.9)
   {
@@ -176,9 +176,9 @@ LABEL_13:
     }
   }
 
-  v21 = [(_UIAirDropProgressView *)self layer];
-  v22 = [v21 animationKeys];
-  v23 = [v22 containsObject:@"_UIAirDropProgressViewAnimationKey"];
+  layer3 = [(_UIAirDropProgressView *)self layer];
+  animationKeys = [layer3 animationKeys];
+  v23 = [animationKeys containsObject:@"_UIAirDropProgressViewAnimationKey"];
 
   v24 = MEMORY[0x1E6979ED0];
   if (!v23)
@@ -187,7 +187,7 @@ LABEL_13:
   }
 
   v25 = *v24;
-  if (v17 < a3)
+  if (v17 < progress)
   {
     v26 = [MEMORY[0x1E6979318] animationWithKeyPath:@"progress"];
     v27 = [MEMORY[0x1E69793D0] functionWithName:v25];
@@ -198,7 +198,7 @@ LABEL_13:
     v28 = [MEMORY[0x1E696AD98] numberWithDouble:v17];
     [v26 setFromValue:v28];
 
-    v29 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v29 = [MEMORY[0x1E696AD98] numberWithDouble:progress];
     [v26 setToValue:v29];
 
     [MEMORY[0x1E6979518] begin];
@@ -209,26 +209,26 @@ LABEL_13:
     v32[3] = &unk_1E71F9360;
     v33 = v11;
     [v30 setCompletionBlock:v32];
-    v31 = [(_UIAirDropProgressView *)self layer];
-    [v31 addAnimation:v26 forKey:@"_UIAirDropProgressViewAnimationKey"];
+    layer4 = [(_UIAirDropProgressView *)self layer];
+    [layer4 addAnimation:v26 forKey:@"_UIAirDropProgressViewAnimationKey"];
 
     [MEMORY[0x1E6979518] commit];
   }
 
-  [(_UIAirDropProgressView *)self setProgress:a3];
+  [(_UIAirDropProgressView *)self setProgress:progress];
 
 LABEL_21:
 }
 
-- (void)animateProgressCompletedWithCompletion:(id)a3
+- (void)animateProgressCompletedWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v4 = &__block_literal_global_59;
+    completionCopy = &__block_literal_global_59;
   }
 
-  v6 = v4;
+  v6 = completionCopy;
   [(_UIAirDropProgressView *)self progressPresentationValue];
   if (v5 == 1.0)
   {
@@ -243,9 +243,9 @@ LABEL_21:
 
 - (double)progressPresentationValue
 {
-  v2 = [(_UIAirDropProgressView *)self layer];
-  v3 = [v2 presentationLayer];
-  [v3 progress];
+  layer = [(_UIAirDropProgressView *)self layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer progress];
   v5 = v4;
 
   return v5;

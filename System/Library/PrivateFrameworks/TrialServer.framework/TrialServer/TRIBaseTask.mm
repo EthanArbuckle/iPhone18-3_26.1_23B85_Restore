@@ -1,5 +1,5 @@
 @interface TRIBaseTask
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)taskName;
 - (TRITaskQueueStateProviding)stateProvider;
 - (id)description;
@@ -15,13 +15,13 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       isKindOfClass = 1;
     }
@@ -43,8 +43,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TRIBaseTask *)self taskName];
-  v3 = [v2 hash];
+  taskName = [(TRIBaseTask *)self taskName];
+  v3 = [taskName hash];
 
   return v3 + 629;
 }

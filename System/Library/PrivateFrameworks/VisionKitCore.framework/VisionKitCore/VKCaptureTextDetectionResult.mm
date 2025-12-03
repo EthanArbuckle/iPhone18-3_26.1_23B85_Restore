@@ -1,32 +1,32 @@
 @interface VKCaptureTextDetectionResult
 - (CGRect)_imageBounds;
 - (CGRect)boundingBox;
-- (VKCaptureTextDetectionResult)initWithBlock:(id)a3 imageSize:(CGSize)a4;
-- (VKCaptureTextDetectionResult)initWithBlocks:(id)a3 imageSize:(CGSize)a4;
-- (id)boundingPathWithPadding:(double)a3 cornerRadius:(double)a4;
+- (VKCaptureTextDetectionResult)initWithBlock:(id)block imageSize:(CGSize)size;
+- (VKCaptureTextDetectionResult)initWithBlocks:(id)blocks imageSize:(CGSize)size;
+- (id)boundingPathWithPadding:(double)padding cornerRadius:(double)radius;
 - (id)groupedPath;
-- (id)groupedPathForLinesWithPadding:(double)a3 cornerRadius:(double)a4;
+- (id)groupedPathForLinesWithPadding:(double)padding cornerRadius:(double)radius;
 @end
 
 @implementation VKCaptureTextDetectionResult
 
-- (VKCaptureTextDetectionResult)initWithBlock:(id)a3 imageSize:(CGSize)a4
+- (VKCaptureTextDetectionResult)initWithBlock:(id)block imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  blockCopy = block;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a3;
-  v9 = [v7 arrayWithObjects:&v12 count:1];
+  blockCopy2 = block;
+  v9 = [v7 arrayWithObjects:&blockCopy count:1];
 
-  v10 = [(VKCaptureTextDetectionResult *)self initWithBlocks:v9 imageSize:width, height, v12, v13];
+  v10 = [(VKCaptureTextDetectionResult *)self initWithBlocks:v9 imageSize:width, height, blockCopy, v13];
   return v10;
 }
 
-- (VKCaptureTextDetectionResult)initWithBlocks:(id)a3 imageSize:(CGSize)a4
+- (VKCaptureTextDetectionResult)initWithBlocks:(id)blocks imageSize:(CGSize)size
 {
-  v5 = a3;
+  blocksCopy = blocks;
   v33.receiver = self;
   v33.super_class = VKCaptureTextDetectionResult;
   v6 = [(VKCaptureTextDetectionResult *)&v33 init];
@@ -42,11 +42,11 @@
     v31[3] = &unk_1E7BE4458;
     v10 = v6;
     v32 = v10;
-    v11 = [v5 vk_compactMap:v31];
+    v11 = [blocksCopy vk_compactMap:v31];
     blockQuads = v10->_blockQuads;
     v10->_blockQuads = v11;
 
-    v13 = [v5 vk_flatMap:&__block_literal_global_1];
+    v13 = [blocksCopy vk_flatMap:&__block_literal_global_1];
     v14 = [v13 vk_compactMap:&__block_literal_global_153];
     normalizedLineQuads = v10->_normalizedLineQuads;
     v10->_normalizedLineQuads = v14;
@@ -147,8 +147,8 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
 
 - (CGRect)boundingBox
 {
-  v2 = [(VKCaptureTextDetectionResult *)self boundingQuad];
-  [v2 boundingBox];
+  boundingQuad = [(VKCaptureTextDetectionResult *)self boundingQuad];
+  [boundingQuad boundingBox];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -172,8 +172,8 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
   v6 = v5;
   v7 = VKMAspectRatio(v3, v5);
   v8 = MEMORY[0x1E69DC728];
-  v9 = [(VKCaptureTextDetectionResult *)self normalizedLineQuads];
-  v10 = [v8 vk_roundAndGroupNormalizedQuadsForHighlight:v9 aspectRatio:v7 expansionScale:0.3 radiusToAvgHeightRatio:0.35];
+  normalizedLineQuads = [(VKCaptureTextDetectionResult *)self normalizedLineQuads];
+  v10 = [v8 vk_roundAndGroupNormalizedQuadsForHighlight:normalizedLineQuads aspectRatio:v7 expansionScale:0.3 radiusToAvgHeightRatio:0.35];
 
   CGAffineTransformMakeScale(&v12, v4, v6);
   [v10 applyTransform:&v12];
@@ -181,19 +181,19 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
   return v10;
 }
 
-- (id)boundingPathWithPadding:(double)a3 cornerRadius:(double)a4
+- (id)boundingPathWithPadding:(double)padding cornerRadius:(double)radius
 {
-  v7 = [(VKCaptureTextDetectionResult *)self boundingQuad];
-  v8 = [v7 path];
+  boundingQuad = [(VKCaptureTextDetectionResult *)self boundingQuad];
+  path = [boundingQuad path];
 
-  v9 = [v8 vk_expandWithOffset:a3];
+  v9 = [path vk_expandWithOffset:padding];
   v10 = MEMORY[0x1E69DC728];
   [(VKCaptureTextDetectionResult *)self _imageBounds];
   v11 = [v10 bezierPathWithRect:?];
   v12 = [v9 vk_intersectAndFlattenWithPath:v11];
   v13 = MEMORY[0x1E69DC728];
-  v14 = [v12 vk_allPoints];
-  v15 = [v13 vk_newRoundedPathWithRadius:v14 points:a4];
+  vk_allPoints = [v12 vk_allPoints];
+  v15 = [v13 vk_newRoundedPathWithRadius:vk_allPoints points:radius];
 
   v16 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:v15];
   CGPathRelease(v15);
@@ -201,7 +201,7 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
   return v16;
 }
 
-- (id)groupedPathForLinesWithPadding:(double)a3 cornerRadius:(double)a4
+- (id)groupedPathForLinesWithPadding:(double)padding cornerRadius:(double)radius
 {
   v38 = *MEMORY[0x1E69E9840];
   [(VKCaptureTextDetectionResult *)self _imageBounds];
@@ -225,20 +225,20 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
   v43.size.width = width;
   v43.size.height = height;
   MaxY = CGRectGetMaxY(v43);
-  v14 = [(VKCaptureTextDetectionResult *)self lineQuads];
+  lineQuads = [(VKCaptureTextDetectionResult *)self lineQuads];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __76__VKCaptureTextDetectionResult_groupedPathForLinesWithPadding_cornerRadius___block_invoke;
   v36[3] = &__block_descriptor_72_e22__32__0__VKQuad_8q16q24l;
   *&v36[4] = MinX;
-  *&v36[5] = a3;
+  *&v36[5] = padding;
   *&v36[6] = MinY;
   *&v36[7] = MaxX;
   *&v36[8] = MaxY;
-  v15 = [v14 vk_compactMap:v36];
+  v15 = [lineQuads vk_compactMap:v36];
 
-  v16 = [MEMORY[0x1E69DC728] bezierPath];
-  [v16 setUsesEvenOddFillRule:0];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath setUsesEvenOddFillRule:0];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -259,18 +259,18 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
         }
 
         v21 = *(*(&v32 + 1) + 8 * i);
-        v22 = [MEMORY[0x1E695DF70] array];
-        v23 = [v21 CGPath];
+        array = [MEMORY[0x1E695DF70] array];
+        cGPath = [v21 CGPath];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __76__VKCaptureTextDetectionResult_groupedPathForLinesWithPadding_cornerRadius___block_invoke_2;
         block[3] = &unk_1E7BE4508;
-        v31 = v22;
-        v24 = v22;
-        CGPathApplyWithBlock(v23, block);
-        v25 = [MEMORY[0x1E69DC728] vk_newRoundedPathWithRadius:v24 points:a4];
+        v31 = array;
+        v24 = array;
+        CGPathApplyWithBlock(cGPath, block);
+        v25 = [MEMORY[0x1E69DC728] vk_newRoundedPathWithRadius:v24 points:radius];
         v26 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:v25];
-        [v16 appendPath:v26];
+        [bezierPath appendPath:v26];
 
         CGPathRelease(v25);
       }
@@ -281,7 +281,7 @@ VKQuad *__57__VKCaptureTextDetectionResult_initWithBlocks_imageSize___block_invo
     while (v18);
   }
 
-  return v16;
+  return bezierPath;
 }
 
 id __76__VKCaptureTextDetectionResult_groupedPathForLinesWithPadding_cornerRadius___block_invoke(double *a1, void *a2)

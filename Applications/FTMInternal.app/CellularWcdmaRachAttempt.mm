@@ -1,28 +1,28 @@
 @interface CellularWcdmaRachAttempt
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccbState:(BOOL)a3;
-- (void)setHasAichStatus:(BOOL)a3;
-- (void)setHasAntenna:(BOOL)a3;
-- (void)setHasMsgLengthMs:(BOOL)a3;
-- (void)setHasNumPreambles:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTxPwrDbm:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccbState:(BOOL)state;
+- (void)setHasAichStatus:(BOOL)status;
+- (void)setHasAntenna:(BOOL)antenna;
+- (void)setHasMsgLengthMs:(BOOL)ms;
+- (void)setHasNumPreambles:(BOOL)preambles;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTxPwrDbm:(BOOL)dbm;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularWcdmaRachAttempt
 
-- (void)setHasMsgLengthMs:(BOOL)a3
+- (void)setHasMsgLengthMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumPreambles:(BOOL)a3
+- (void)setHasNumPreambles:(BOOL)preambles
 {
-  if (a3)
+  if (preambles)
   {
     v3 = 32;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAichStatus:(BOOL)a3
+- (void)setHasAichStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTxPwrDbm:(BOOL)a3
+- (void)setHasTxPwrDbm:(BOOL)dbm
 {
-  if (a3)
+  if (dbm)
   {
     v3 = 512;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAntenna:(BOOL)a3
+- (void)setHasAntenna:(BOOL)antenna
 {
-  if (a3)
+  if (antenna)
   {
     v3 = 8;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAccbState:(BOOL)a3
+- (void)setHasAccbState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 64;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 256;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 128;
   }
@@ -160,8 +160,8 @@
   v7.receiver = self;
   v7.super_class = CellularWcdmaRachAttempt;
   v3 = [(CellularWcdmaRachAttempt *)&v7 description];
-  v4 = [(CellularWcdmaRachAttempt *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularWcdmaRachAttempt *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -308,9 +308,9 @@ LABEL_10:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -439,14 +439,14 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 30) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 30) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -465,8 +465,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 7) = self->_msgLengthMs;
-  *(v4 + 30) |= 0x10u;
+  *(toCopy + 7) = self->_msgLengthMs;
+  *(toCopy + 30) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -480,8 +480,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  *(v4 + 8) = self->_numPreambles;
-  *(v4 + 30) |= 0x20u;
+  *(toCopy + 8) = self->_numPreambles;
+  *(toCopy + 30) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -495,8 +495,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  *(v4 + 5) = self->_aichStatus;
-  *(v4 + 30) |= 4u;
+  *(toCopy + 5) = self->_aichStatus;
+  *(toCopy + 30) |= 4u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -510,8 +510,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(v4 + 14) = self->_txPwrDbm;
-  *(v4 + 30) |= 0x200u;
+  *(toCopy + 14) = self->_txPwrDbm;
+  *(toCopy + 30) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -525,8 +525,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  *(v4 + 6) = self->_antenna;
-  *(v4 + 30) |= 8u;
+  *(toCopy + 6) = self->_antenna;
+  *(toCopy + 30) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -540,41 +540,41 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(v4 + 4) = self->_accbState;
-  *(v4 + 30) |= 2u;
+  *(toCopy + 4) = self->_accbState;
+  *(toCopy + 30) |= 2u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_9:
-    *(v4 + 9) = self->_numSubs;
-    *(v4 + 30) |= 0x40u;
+    *(toCopy + 9) = self->_numSubs;
+    *(toCopy + 30) |= 0x40u;
   }
 
 LABEL_10:
   if (self->_plmn)
   {
-    v7 = v4;
-    [v4 setPlmn:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x100) != 0)
   {
-    *(v4 + 13) = self->_subsId;
-    *(v4 + 30) |= 0x100u;
+    *(toCopy + 13) = self->_subsId;
+    *(toCopy + 30) |= 0x100u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x80) != 0)
   {
-    *(v4 + 12) = self->_psPref;
-    *(v4 + 30) |= 0x80u;
+    *(toCopy + 12) = self->_psPref;
+    *(toCopy + 30) |= 0x80u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -684,7 +684,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
@@ -705,19 +705,19 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
   has = self->_has;
-  v6 = *(v4 + 30);
+  v6 = *(equalCopy + 30);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_55;
     }
@@ -730,7 +730,7 @@ LABEL_10:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_msgLengthMs != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_msgLengthMs != *(equalCopy + 7))
     {
       goto LABEL_55;
     }
@@ -743,7 +743,7 @@ LABEL_10:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_numPreambles != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_numPreambles != *(equalCopy + 8))
     {
       goto LABEL_55;
     }
@@ -756,7 +756,7 @@ LABEL_10:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_aichStatus != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_aichStatus != *(equalCopy + 5))
     {
       goto LABEL_55;
     }
@@ -769,20 +769,20 @@ LABEL_10:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 30) & 0x200) == 0 || self->_txPwrDbm != *(v4 + 14))
+    if ((*(equalCopy + 30) & 0x200) == 0 || self->_txPwrDbm != *(equalCopy + 14))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 30) & 0x200) != 0)
+  else if ((*(equalCopy + 30) & 0x200) != 0)
   {
     goto LABEL_55;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_antenna != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_antenna != *(equalCopy + 6))
     {
       goto LABEL_55;
     }
@@ -795,7 +795,7 @@ LABEL_10:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_accbState != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_accbState != *(equalCopy + 4))
     {
       goto LABEL_55;
     }
@@ -808,7 +808,7 @@ LABEL_10:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_numSubs != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_numSubs != *(equalCopy + 9))
     {
       goto LABEL_55;
     }
@@ -820,7 +820,7 @@ LABEL_10:
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 5))
+  if (plmn | *(equalCopy + 5))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -832,23 +832,23 @@ LABEL_55:
     has = self->_has;
   }
 
-  v8 = *(v4 + 30);
+  v8 = *(equalCopy + 30);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 30) & 0x100) == 0 || self->_subsId != *(v4 + 13))
+    if ((*(equalCopy + 30) & 0x100) == 0 || self->_subsId != *(equalCopy + 13))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 30) & 0x100) != 0)
+  else if ((*(equalCopy + 30) & 0x100) != 0)
   {
     goto LABEL_55;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_psPref != *(v4 + 12))
+    if ((v8 & 0x80) == 0 || self->_psPref != *(equalCopy + 12))
     {
       goto LABEL_55;
     }
@@ -1001,15 +1001,15 @@ LABEL_20:
   return v4 ^ v16 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 30);
+  fromCopy = from;
+  v5 = *(fromCopy + 30);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 30);
+    v5 = *(fromCopy + 30);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -1027,9 +1027,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_msgLengthMs = *(v4 + 7);
+  self->_msgLengthMs = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -1042,9 +1042,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_numPreambles = *(v4 + 8);
+  self->_numPreambles = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -1057,9 +1057,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_aichStatus = *(v4 + 5);
+  self->_aichStatus = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x200) == 0)
   {
 LABEL_6:
@@ -1072,9 +1072,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_txPwrDbm = *(v4 + 14);
+  self->_txPwrDbm = *(fromCopy + 14);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -1087,9 +1087,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_antenna = *(v4 + 6);
+  self->_antenna = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -1102,34 +1102,34 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_accbState = *(v4 + 4);
+  self->_accbState = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 30) & 0x40) != 0)
+  if ((*(fromCopy + 30) & 0x40) != 0)
   {
 LABEL_9:
-    self->_numSubs = *(v4 + 9);
+    self->_numSubs = *(fromCopy + 9);
     *&self->_has |= 0x40u;
   }
 
 LABEL_10:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(CellularWcdmaRachAttempt *)self setPlmn:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 30);
+  v6 = *(fromCopy + 30);
   if ((v6 & 0x100) != 0)
   {
-    self->_subsId = *(v4 + 13);
+    self->_subsId = *(fromCopy + 13);
     *&self->_has |= 0x100u;
-    v6 = *(v4 + 30);
+    v6 = *(fromCopy + 30);
   }
 
   if ((v6 & 0x80) != 0)
   {
-    self->_psPref = *(v4 + 12);
+    self->_psPref = *(fromCopy + 12);
     *&self->_has |= 0x80u;
   }
 }

@@ -1,21 +1,21 @@
 @interface IOKitUtilities
-+ (int)arrayForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(id *)a5;
-+ (int)isRegistryEntry:(unsigned int)a3 descendentOfRegistryEntry:(unsigned int)a4 outValue:(BOOL *)a5;
-+ (int)uint32ForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(unsigned int *)a5;
-+ (int)uint64ForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(unint64_t *)a5;
-+ (int)uint8ForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(char *)a5;
++ (int)arrayForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(id *)value;
++ (int)isRegistryEntry:(unsigned int)entry descendentOfRegistryEntry:(unsigned int)registryEntry outValue:(BOOL *)value;
++ (int)uint32ForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(unsigned int *)value;
++ (int)uint64ForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(unint64_t *)value;
++ (int)uint8ForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(char *)value;
 @end
 
 @implementation IOKitUtilities
 
-+ (int)uint8ForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(char *)a5
++ (int)uint8ForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(char *)value
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, a4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, key, kCFAllocatorDefault, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = 0;
-    *a5 = [CFProperty unsignedCharValue];
+    *value = [CFProperty unsignedCharValue];
   }
 
   else
@@ -26,14 +26,14 @@
   return v7;
 }
 
-+ (int)uint32ForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(unsigned int *)a5
++ (int)uint32ForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(unsigned int *)value
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, a4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, key, kCFAllocatorDefault, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = 0;
-    *a5 = [CFProperty unsignedLongValue];
+    *value = [CFProperty unsignedLongValue];
   }
 
   else
@@ -44,9 +44,9 @@
   return v7;
 }
 
-+ (int)uint64ForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(unint64_t *)a5
++ (int)uint64ForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(unint64_t *)value
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, a4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, key, kCFAllocatorDefault, 0);
   if (CFProperty)
   {
     v7 = 0;
@@ -70,21 +70,21 @@
 
   if (!v8)
   {
-    *a5 = [CFProperty unsignedLongLongValue];
+    *value = [CFProperty unsignedLongLongValue];
   }
 
   return v8;
 }
 
-+ (int)arrayForRegistryEntry:(unsigned int)a3 andKey:(id)a4 outValue:(id *)a5
++ (int)arrayForRegistryEntry:(unsigned int)entry andKey:(id)key outValue:(id *)value
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, a4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(entry, key, kCFAllocatorDefault, 0);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = CFProperty;
     v8 = 0;
-    *a5 = CFProperty;
+    *value = CFProperty;
   }
 
   else
@@ -95,38 +95,38 @@
   return v8;
 }
 
-+ (int)isRegistryEntry:(unsigned int)a3 descendentOfRegistryEntry:(unsigned int)a4 outValue:(BOOL *)a5
++ (int)isRegistryEntry:(unsigned int)entry descendentOfRegistryEntry:(unsigned int)registryEntry outValue:(BOOL *)value
 {
   result = -536870206;
-  if (a3 && a4 && a5)
+  if (entry && registryEntry && value)
   {
-    v9 = a3;
+    entryCopy = entry;
     do
     {
-      v10 = v9;
-      if (v9 == a4)
+      v10 = entryCopy;
+      if (entryCopy == registryEntry)
       {
         break;
       }
 
       parent = 0;
-      result = IORegistryEntryGetParentEntry(v9, "IOService", &parent);
+      result = IORegistryEntryGetParentEntry(entryCopy, "IOService", &parent);
       if (result)
       {
         return result;
       }
 
-      if (v10 != a3)
+      if (v10 != entry)
       {
         IOObjectRelease(v10);
       }
 
-      v9 = parent;
+      entryCopy = parent;
     }
 
     while (parent);
     result = 0;
-    *a5 = v10 == a4;
+    *value = v10 == registryEntry;
   }
 
   return result;

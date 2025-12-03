@@ -1,28 +1,28 @@
 @interface OTPrepareAndRecoverTLKSharesForInheritancePeerOperation
-- (OTPrepareAndRecoverTLKSharesForInheritancePeerOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 ik:(id)a6 deviceInfo:(id)a7 policyOverride:(id)a8 isInheritedAccount:(BOOL)a9 epoch:(unint64_t)a10;
+- (OTPrepareAndRecoverTLKSharesForInheritancePeerOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState ik:(id)ik deviceInfo:(id)info policyOverride:(id)override isInheritedAccount:(BOOL)account epoch:(unint64_t)self0;
 - (void)groupStart;
-- (void)proceedWithFilteredTLKShares:(id)a3;
+- (void)proceedWithFilteredTLKShares:(id)shares;
 @end
 
 @implementation OTPrepareAndRecoverTLKSharesForInheritancePeerOperation
 
-- (void)proceedWithFilteredTLKShares:(id)a3
+- (void)proceedWithFilteredTLKShares:(id)shares
 {
-  v4 = a3;
+  sharesCopy = shares;
   objc_initWeak(&location, self);
-  v5 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
-  v6 = [v5 cuttlefishXPCWrapper];
-  v7 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
-  v8 = [v7 activeAccount];
-  v9 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self tphcrk];
+  deps = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
+  cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+  deps2 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
+  tphcrk = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self tphcrk];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100146058;
   v11[3] = &unk_100338010;
   objc_copyWeak(&v13, &location);
-  v10 = v4;
+  v10 = sharesCopy;
   v12 = v10;
-  [v6 recoverTLKSharesForInheritorWithSpecificUser:v8 crk:v9 tlkShares:v10 reply:v11];
+  [cuttlefishXPCWrapper recoverTLKSharesForInheritorWithSpecificUser:activeAccount crk:tphcrk tlkShares:v10 reply:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -40,20 +40,20 @@
   v4 = objc_alloc_init(NSOperation);
   [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self setFinishOp:v4];
 
-  v5 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishOp = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
   v6 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self ik];
-  v7 = [v6 recoveryKeyData];
-  v40 = [v7 base64EncodedStringWithOptions:0];
+  recoveryKeyData = [v6 recoveryKeyData];
+  v40 = [recoveryKeyData base64EncodedStringWithOptions:0];
 
   [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self setSalt:&stru_100348050];
   v8 = [TrustedPeersHelperCustodianRecoveryKey alloc];
   v9 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self ik];
-  v10 = [v9 uuid];
-  v11 = [v10 UUIDString];
-  v12 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self salt];
-  v13 = [(TrustedPeersHelperCustodianRecoveryKey *)v8 initWithUUID:v11 encryptionKey:0 signingKey:0 recoveryString:v40 salt:v12 kind:2];
+  uuid = [v9 uuid];
+  uUIDString = [uuid UUIDString];
+  salt = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self salt];
+  v13 = [(TrustedPeersHelperCustodianRecoveryKey *)v8 initWithUUID:uUIDString encryptionKey:0 signingKey:0 recoveryString:v40 salt:salt kind:2];
   [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self setTphcrk:v13];
 
   *buf = 0;
@@ -62,15 +62,15 @@
   v49 = sub_1001469AC;
   v50 = sub_1001469BC;
   v51 = 0;
-  v14 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
-  v15 = [v14 stateHolder];
+  deps = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
+  stateHolder = [deps stateHolder];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_1001469C4;
   v45[3] = &unk_100337FC0;
   v45[4] = buf;
   v44 = 0;
-  v16 = [v15 persistAccountChanges:v45 error:&v44];
+  v16 = [stateHolder persistAccountChanges:v45 error:&v44];
   v41 = v44;
 
   if (v41)
@@ -95,33 +95,33 @@
   }
 
   objc_initWeak(v52, self);
-  v39 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
-  v34 = [v39 cuttlefishXPCWrapper];
-  v38 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
-  v33 = [v38 activeAccount];
-  v30 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self epoch];
-  v37 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
-  v32 = [v37 machineID];
+  deps2 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
+  cuttlefishXPCWrapper = [deps2 cuttlefishXPCWrapper];
+  deps3 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deps];
+  activeAccount = [deps3 activeAccount];
+  epoch = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self epoch];
+  deviceInfo = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
+  machineID = [deviceInfo machineID];
   v36 = +[NSUUID UUID];
-  v31 = [v36 UUIDString];
-  v35 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
-  v19 = [v35 modelID];
-  v20 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
-  v21 = [v20 deviceName];
-  v22 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
-  v23 = [v22 serialNumber];
-  v24 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
-  v25 = [v24 osVersion];
-  v26 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self policyOverride];
+  uUIDString2 = [v36 UUIDString];
+  deviceInfo2 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
+  modelID = [deviceInfo2 modelID];
+  deviceInfo3 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
+  deviceName = [deviceInfo3 deviceName];
+  deviceInfo4 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
+  serialNumber = [deviceInfo4 serialNumber];
+  deviceInfo5 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self deviceInfo];
+  osVersion = [deviceInfo5 osVersion];
+  policyOverride = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self policyOverride];
   v27 = *(v47 + 5);
-  v28 = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self tphcrk];
+  tphcrk = [(OTPrepareAndRecoverTLKSharesForInheritancePeerOperation *)self tphcrk];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_100146A1C;
   v42[3] = &unk_100337FE8;
   objc_copyWeak(&v43, v52);
   LODWORD(v29) = 0;
-  [v34 prepareInheritancePeerWithSpecificUser:v33 epoch:v30 machineID:v32 bottleSalt:&stru_100348050 bottleID:v31 modelID:v19 deviceName:v21 serialNumber:v23 osVersion:v25 policyVersion:v26 policySecrets:0 syncUserControllableViews:v29 secureElementIdentity:v27 signingPrivKeyPersistentRef:0 encPrivKeyPersistentRef:0 crk:v28 reply:v42];
+  [cuttlefishXPCWrapper prepareInheritancePeerWithSpecificUser:activeAccount epoch:epoch machineID:machineID bottleSalt:&stru_100348050 bottleID:uUIDString2 modelID:modelID deviceName:deviceName serialNumber:serialNumber osVersion:osVersion policyVersion:policyOverride policySecrets:0 syncUserControllableViews:v29 secureElementIdentity:v27 signingPrivKeyPersistentRef:0 encPrivKeyPersistentRef:0 crk:tphcrk reply:v42];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(v52);
@@ -129,29 +129,29 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (OTPrepareAndRecoverTLKSharesForInheritancePeerOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 ik:(id)a6 deviceInfo:(id)a7 policyOverride:(id)a8 isInheritedAccount:(BOOL)a9 epoch:(unint64_t)a10
+- (OTPrepareAndRecoverTLKSharesForInheritancePeerOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState ik:(id)ik deviceInfo:(id)info policyOverride:(id)override isInheritedAccount:(BOOL)account epoch:(unint64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  ikCopy = ik;
+  infoCopy = info;
+  overrideCopy = override;
   v26.receiver = self;
   v26.super_class = OTPrepareAndRecoverTLKSharesForInheritancePeerOperation;
   v20 = [(CKKSGroupOperation *)&v26 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_deps, a3);
-    objc_storeStrong(&v21->_intendedState, a4);
-    objc_storeStrong(&v21->_nextState, a5);
-    objc_storeStrong(&v21->_ik, a6);
-    objc_storeStrong(&v21->_deviceInfo, a7);
-    v21->_epoch = a10;
-    objc_storeStrong(&v21->_intendedState, a4);
-    objc_storeStrong(&v21->_nextState, a5);
-    objc_storeStrong(&v21->_policyOverride, a8);
+    objc_storeStrong(&v20->_deps, dependencies);
+    objc_storeStrong(&v21->_intendedState, state);
+    objc_storeStrong(&v21->_nextState, errorState);
+    objc_storeStrong(&v21->_ik, ik);
+    objc_storeStrong(&v21->_deviceInfo, info);
+    v21->_epoch = epoch;
+    objc_storeStrong(&v21->_intendedState, state);
+    objc_storeStrong(&v21->_nextState, errorState);
+    objc_storeStrong(&v21->_policyOverride, override);
   }
 
   return v21;

@@ -1,53 +1,53 @@
 @interface CRLWPLongPressGestureRecognizer
 - (CGPoint)previousPosition;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLWPLongPressGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(CRLWPLongPressGestureRecognizer *)self setDidSendReset:0];
   [(CRLWPLongPressGestureRecognizer *)self setPreviousTimestamp:CFAbsoluteTimeGetCurrent()];
   v13.receiver = self;
   v13.super_class = CRLWPLongPressGestureRecognizer;
-  [(CRLWPLongPressGestureRecognizer *)&v13 touchesBegan:v7 withEvent:v6];
-  v8 = [v7 anyObject];
+  [(CRLWPLongPressGestureRecognizer *)&v13 touchesBegan:beganCopy withEvent:eventCopy];
+  anyObject = [beganCopy anyObject];
 
-  v9 = [(CRLWPLongPressGestureRecognizer *)self view];
-  [v8 locationInView:v9];
+  view = [(CRLWPLongPressGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   [(CRLWPLongPressGestureRecognizer *)self setPreviousPosition:?];
 
   v10 = 0;
   if ([(CRLWPLongPressGestureRecognizer *)self numberOfTouchesRequired]<= 1)
   {
-    v11 = [v6 allTouches];
-    v10 = [v11 count] > 1;
+    allTouches = [eventCopy allTouches];
+    v10 = [allTouches count] > 1;
   }
 
-  v12 = [v8 tapCount];
-  -[CRLWPLongPressGestureRecognizer setInputType:](self, "setInputType:", sub_10042B6C0([v8 type]));
-  if ((v12 > 1 || v10) && [(CRLWPLongPressGestureRecognizer *)self state]!= 5)
+  tapCount = [anyObject tapCount];
+  -[CRLWPLongPressGestureRecognizer setInputType:](self, "setInputType:", sub_10042B6C0([anyObject type]));
+  if ((tapCount > 1 || v10) && [(CRLWPLongPressGestureRecognizer *)self state]!= 5)
   {
     [(CRLWPLongPressGestureRecognizer *)self setState:5];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   Current = CFAbsoluteTimeGetCurrent();
   [(CRLWPLongPressGestureRecognizer *)self previousTimestamp];
   v10 = Current - v9;
   [(CRLWPLongPressGestureRecognizer *)self setPreviousTimestamp:Current];
-  v11 = [v6 anyObject];
-  v12 = [(CRLWPLongPressGestureRecognizer *)self view];
-  [v11 locationInView:v12];
+  anyObject = [movedCopy anyObject];
+  view = [(CRLWPLongPressGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   v14 = v13;
   v16 = v15;
 
@@ -95,7 +95,7 @@
   [(CRLWPLongPressGestureRecognizer *)self setVelocity:v21];
   v27.receiver = self;
   v27.super_class = CRLWPLongPressGestureRecognizer;
-  [(CRLWPLongPressGestureRecognizer *)&v27 touchesMoved:v6 withEvent:v7];
+  [(CRLWPLongPressGestureRecognizer *)&v27 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
 - (void)reset
@@ -105,8 +105,8 @@
   [(CRLWPLongPressGestureRecognizer *)&v11 reset];
   if (![(CRLWPLongPressGestureRecognizer *)self didSendReset])
   {
-    v3 = [(CRLWPLongPressGestureRecognizer *)self delegate];
-    v10 = sub_1003035DC(v3, 1, v4, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLGestureDelegate);
+    delegate = [(CRLWPLongPressGestureRecognizer *)self delegate];
+    v10 = sub_1003035DC(delegate, 1, v4, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLGestureDelegate);
 
     [v10 didReset:self];
     [(CRLWPLongPressGestureRecognizer *)self setDidSendReset:1];

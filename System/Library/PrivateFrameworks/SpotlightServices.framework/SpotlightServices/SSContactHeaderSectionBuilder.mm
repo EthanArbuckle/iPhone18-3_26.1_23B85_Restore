@@ -6,10 +6,10 @@
 
 - (id)buildBridgedResult
 {
-  v2 = [(SSContactEntitySectionBuilder *)self contactResultBuilder];
-  v3 = [v2 buildHeaderResultForEntity];
+  contactResultBuilder = [(SSContactEntitySectionBuilder *)self contactResultBuilder];
+  buildHeaderResultForEntity = [contactResultBuilder buildHeaderResultForEntity];
 
-  return v3;
+  return buildHeaderResultForEntity;
 }
 
 @end

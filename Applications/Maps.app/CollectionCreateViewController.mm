@@ -1,11 +1,11 @@
 @interface CollectionCreateViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CollectionCreateViewController)initWithEditSession:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CollectionCreateViewController)initWithEditSession:(id)session;
 - (id)keyCommands;
 - (id)preferredFocusEnvironments;
-- (void)collectionHandlerInfoUpdated:(id)a3;
-- (void)createAction:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionHandlerInfoUpdated:(id)updated;
+- (void)createAction:(id)action;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -17,22 +17,22 @@
   v4.receiver = self;
   v4.super_class = CollectionCreateViewController;
   [(ContaineeViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self headerView];
-  [v3 bounds];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView bounds];
   [(NSLayoutConstraint *)self->_collectionViewToTopConstraint setConstant:CGRectGetHeight(v5)];
 }
 
-- (void)collectionHandlerInfoUpdated:(id)a3
+- (void)collectionHandlerInfoUpdated:(id)updated
 {
-  v6 = [a3 title];
-  v4 = [v6 length] != 0;
-  v5 = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
-  [v5 setEnabled:v4];
+  title = [updated title];
+  v4 = [title length] != 0;
+  trailingButton = [(ModalCardHeaderView *)self->_modalHeaderView trailingButton];
+  [trailingButton setEnabled:v4];
 }
 
-- (void)createAction:(id)a3
+- (void)createAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
   editSession = self->_editSession;
   collection = self->_collection;
@@ -44,7 +44,7 @@
     v13[3] = &unk_10165D288;
     v7 = &v15;
     objc_copyWeak(&v15, &location);
-    v14 = v4;
+    v14 = actionCopy;
     [(CollectionEditSession *)editSession applyToCollection:collection completion:v13];
     v8 = &v14;
   }
@@ -57,7 +57,7 @@
     v10[3] = &unk_10165D288;
     v7 = &v12;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = actionCopy;
     [(CollectionHandler *)collection createCollection:v10];
     v8 = &v11;
   }
@@ -73,11 +73,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CollectionCreateViewController;
-  [(CollectionCreateViewController *)&v4 viewDidAppear:a3];
+  [(CollectionCreateViewController *)&v4 viewDidAppear:appear];
   [(CollectionView *)self->_collectionView becomeFirstResponder];
 }
 
@@ -86,26 +86,26 @@
   v73.receiver = self;
   v73.super_class = CollectionCreateViewController;
   [(ContaineeViewController *)&v73 viewDidLoad];
-  v3 = [(ContaineeViewController *)self headerView];
-  v4 = [(ContaineeViewController *)self contentView];
-  v5 = [(CollectionCreateViewController *)self view];
-  [v5 setAccessibilityIdentifier:@"CollectionCreateView"];
+  headerView = [(ContaineeViewController *)self headerView];
+  contentView = [(ContaineeViewController *)self contentView];
+  view = [(CollectionCreateViewController *)self view];
+  [view setAccessibilityIdentifier:@"CollectionCreateView"];
 
-  [v4 setAccessibilityIdentifier:@"CollectionCreateContent"];
+  [contentView setAccessibilityIdentifier:@"CollectionCreateContent"];
   v6 = [_TtC4Maps19ModalCardHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v10 = [(ModalCardHeaderView *)v6 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ModalCardHeaderView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  height = [(ModalCardHeaderView *)v6 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ModalCardHeaderView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"[Guide] New guide" value:@"localized string not found" table:0];
-  [(ModalCardHeaderView *)v10 setTitle:v12];
+  [(ModalCardHeaderView *)height setTitle:v12];
 
   v13 = [MapsThemeButton buttonWithType:1];
   [v13 addTarget:self action:"cancelAction:" forControlEvents:64];
   v68 = v13;
-  [(ModalCardHeaderView *)v10 setLeadingButton:v13];
+  [(ModalCardHeaderView *)height setLeadingButton:v13];
   v14 = [MapsThemeButton buttonWithType:1];
   v15 = +[NSBundle mainBundle];
   v16 = [v15 localizedStringForKey:@"[Collection] Create" value:@"localized string not found" table:0];
@@ -114,9 +114,9 @@
   [v14 addTarget:self action:"createAction:" forControlEvents:64];
   [v14 setEnabled:0];
   v67 = v14;
-  [(ModalCardHeaderView *)v10 setTrailingButton:v14];
-  [v3 addSubview:v10];
-  objc_storeStrong(&self->_modalHeaderView, v10);
+  [(ModalCardHeaderView *)height setTrailingButton:v14];
+  [headerView addSubview:height];
+  objc_storeStrong(&self->_modalHeaderView, height);
   v17 = [[CollectionView alloc] initWithCollectionViewSize:1];
   [(CollectionView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CollectionView *)v17 setEditSession:self->_editSession];
@@ -124,43 +124,43 @@
   [(CollectionView *)v17 setAllowAccessibilityTextWrapping:0];
   [(CollectionView *)v17 setCollectionInfo:self->_collection];
   [(CollectionView *)v17 setEditing:1];
-  [v4 addSubview:v17];
+  [contentView addSubview:v17];
   objc_storeStrong(&self->_collectionView, v17);
-  v18 = [(CollectionView *)v17 topAnchor];
-  v19 = [v4 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  topAnchor = [(CollectionView *)v17 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   collectionViewToTopConstraint = self->_collectionViewToTopConstraint;
   self->_collectionViewToTopConstraint = v20;
 
-  v65 = [(ModalCardHeaderView *)v10 leadingAnchor];
-  v63 = [v3 leadingAnchor];
-  v61 = [v65 constraintEqualToAnchor:v63];
+  leadingAnchor = [(ModalCardHeaderView *)height leadingAnchor];
+  leadingAnchor2 = [headerView leadingAnchor];
+  v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[0] = v61;
-  v59 = [(ModalCardHeaderView *)v10 topAnchor];
-  v57 = [v3 topAnchor];
-  v55 = [v59 constraintEqualToAnchor:v57];
+  topAnchor3 = [(ModalCardHeaderView *)height topAnchor];
+  topAnchor4 = [headerView topAnchor];
+  v55 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v75[1] = v55;
-  v54 = [(ModalCardHeaderView *)v10 trailingAnchor];
-  v53 = [v3 trailingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  trailingAnchor = [(ModalCardHeaderView *)height trailingAnchor];
+  trailingAnchor2 = [headerView trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v75[2] = v52;
-  v69 = v10;
-  v51 = [(ModalCardHeaderView *)v10 bottomAnchor];
-  v70 = v3;
-  v22 = [v3 bottomAnchor];
-  v23 = [v51 constraintEqualToAnchor:v22];
+  v69 = height;
+  bottomAnchor = [(ModalCardHeaderView *)height bottomAnchor];
+  v70 = headerView;
+  bottomAnchor2 = [headerView bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24 = self->_collectionViewToTopConstraint;
   v75[3] = v23;
   v75[4] = v24;
-  v25 = [(CollectionView *)v17 leadingAnchor];
-  v26 = [v4 leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  leadingAnchor3 = [(CollectionView *)v17 leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v75[5] = v27;
   v71 = v17;
-  v28 = [(CollectionView *)v17 trailingAnchor];
-  v72 = v4;
-  v29 = [v4 trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  trailingAnchor3 = [(CollectionView *)v17 trailingAnchor];
+  v72 = contentView;
+  trailingAnchor4 = [contentView trailingAnchor];
+  v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v75[6] = v30;
   v31 = [NSArray arrayWithObjects:v75 count:7];
   [NSLayoutConstraint activateConstraints:v31];
@@ -181,17 +181,17 @@
 
   if (v34)
   {
-    v35 = [[MapsThemeTableView alloc] initWithFrame:0 style:CGRectZero.origin.x, y, width, height];
-    [(MapsThemeTableView *)v35 setTranslatesAutoresizingMaskIntoConstraints:0];
+    height2 = [[MapsThemeTableView alloc] initWithFrame:0 style:CGRectZero.origin.x, y, width, height];
+    [(MapsThemeTableView *)height2 setTranslatesAutoresizingMaskIntoConstraints:0];
     v36 = +[UIColor clearColor];
-    [(MapsThemeTableView *)v35 setBackgroundColor:v36];
+    [(MapsThemeTableView *)height2 setBackgroundColor:v36];
 
-    [(MapsThemeTableView *)v35 setScrollEnabled:0];
-    [(MapsThemeTableView *)v35 setAccessibilityIdentifier:@"CollectionCreateTable"];
-    [v72 addSubview:v35];
+    [(MapsThemeTableView *)height2 setScrollEnabled:0];
+    [(MapsThemeTableView *)height2 setAccessibilityIdentifier:@"CollectionCreateTable"];
+    [v72 addSubview:height2];
     tableView = self->_tableView;
-    self->_tableView = v35;
-    v38 = v35;
+    self->_tableView = height2;
+    v38 = height2;
 
     v39 = 0.0;
     v40 = [(CollectionView *)v71 _maps_addHairlineAtTopWithMargin:0.0];
@@ -200,22 +200,22 @@
       v39 = 16.0;
     }
 
-    v64 = [(MapsThemeTableView *)v38 leadingAnchor];
-    v62 = [v72 leadingAnchor];
-    v60 = [v64 constraintEqualToAnchor:v62 constant:v39];
+    leadingAnchor5 = [(MapsThemeTableView *)v38 leadingAnchor];
+    leadingAnchor6 = [v72 leadingAnchor];
+    v60 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:v39];
     v74[0] = v60;
-    v58 = [(MapsThemeTableView *)v38 topAnchor];
-    v56 = [(CollectionView *)v71 bottomAnchor];
-    [v58 constraintEqualToAnchor:v56 constant:10.0];
+    topAnchor5 = [(MapsThemeTableView *)v38 topAnchor];
+    bottomAnchor3 = [(CollectionView *)v71 bottomAnchor];
+    [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:10.0];
     v41 = v66 = v34;
     v74[1] = v41;
-    v42 = [(MapsThemeTableView *)v38 trailingAnchor];
-    v43 = [v72 trailingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43 constant:-v39];
+    trailingAnchor5 = [(MapsThemeTableView *)v38 trailingAnchor];
+    trailingAnchor6 = [v72 trailingAnchor];
+    v44 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v39];
     v74[2] = v44;
-    v45 = [(MapsThemeTableView *)v38 bottomAnchor];
-    v46 = [v72 bottomAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    bottomAnchor4 = [(MapsThemeTableView *)v38 bottomAnchor];
+    bottomAnchor5 = [v72 bottomAnchor];
+    v47 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v74[3] = v47;
     v48 = [NSArray arrayWithObjects:v74 count:4];
     [NSLayoutConstraint activateConstraints:v48];
@@ -245,21 +245,21 @@
 {
   v8.receiver = self;
   v8.super_class = CollectionCreateViewController;
-  v2 = [(ContaineeViewController *)&v8 keyCommands];
+  keyCommands = [(ContaineeViewController *)&v8 keyCommands];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[Guide] Create" value:@"localized string not found" table:0];
   v5 = [UIKeyCommand commandWithTitle:v4 image:0 action:"createAction:" input:@"\r" modifierFlags:0x100000 propertyList:0];
-  v6 = [v2 arrayByAddingObject:v5];
+  v6 = [keyCommands arrayByAddingObject:v5];
 
   return v6;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if ("createAction:" == a3)
+  if ("createAction:" == action)
   {
-    v5 = [(CollectionHandler *)self->_collection stagedTitle];
-    v4 = [v5 length] != 0;
+    stagedTitle = [(CollectionHandler *)self->_collection stagedTitle];
+    v4 = [stagedTitle length] != 0;
   }
 
   else
@@ -272,24 +272,24 @@
   return v4;
 }
 
-- (CollectionCreateViewController)initWithEditSession:(id)a3
+- (CollectionCreateViewController)initWithEditSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = CollectionCreateViewController;
   v6 = [(CollectionCreateViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_editSession, a3);
-    v8 = [(ContaineeViewController *)v7 cardPresentationController];
-    [v8 setPresentedModally:1];
+    objc_storeStrong(&v6->_editSession, session);
+    cardPresentationController = [(ContaineeViewController *)v7 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v9 = [(ContaineeViewController *)v7 cardPresentationController];
-    [v9 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v7 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
-    v10 = [(ContaineeViewController *)v7 cardPresentationController];
-    [v10 setAllowsSwipeToDismiss:0];
+    cardPresentationController3 = [(ContaineeViewController *)v7 cardPresentationController];
+    [cardPresentationController3 setAllowsSwipeToDismiss:0];
 
     [(ContaineeViewController *)v7 setPreferredPresentationStyle:5];
     v11 = +[CollectionHandler collection];

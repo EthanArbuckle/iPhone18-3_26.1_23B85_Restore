@@ -2,7 +2,7 @@
 - (NSString)displayName;
 - (PKPeerPaymentIdentityManager)init;
 - (PKPeerPaymentIdentityManagerDelegate)delegate;
-- (void)peerPaymentIdentityManager:(id)a3 didUpdateProfileAppearanceData:(id)a4;
+- (void)peerPaymentIdentityManager:(id)manager didUpdateProfileAppearanceData:(id)data;
 - (void)toggleSharingLastName;
 - (void)toggleSharingProfilePicture;
 @end
@@ -28,10 +28,10 @@
 
 - (NSString)displayName
 {
-  v2 = [(_PKPeerPaymentIdentityManager *)self->_internalManager appearanceData];
-  v3 = [v2 displayName];
+  appearanceData = [(_PKPeerPaymentIdentityManager *)self->_internalManager appearanceData];
+  displayName = [appearanceData displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (void)toggleSharingLastName
@@ -50,11 +50,11 @@
   [(_PKPeerPaymentIdentityManager *)internalManager setShareProfilePicture:v3];
 }
 
-- (void)peerPaymentIdentityManager:(id)a3 didUpdateProfileAppearanceData:(id)a4
+- (void)peerPaymentIdentityManager:(id)manager didUpdateProfileAppearanceData:(id)data
 {
-  v6 = [(PKPeerPaymentIdentityManager *)self delegate:a3];
-  v5 = [(PKPeerPaymentIdentityManager *)self appearanceData];
-  [v6 peerPaymentIdentityManager:self didUpdateAppearanceData:v5];
+  v6 = [(PKPeerPaymentIdentityManager *)self delegate:manager];
+  appearanceData = [(PKPeerPaymentIdentityManager *)self appearanceData];
+  [v6 peerPaymentIdentityManager:self didUpdateAppearanceData:appearanceData];
 }
 
 - (PKPeerPaymentIdentityManagerDelegate)delegate

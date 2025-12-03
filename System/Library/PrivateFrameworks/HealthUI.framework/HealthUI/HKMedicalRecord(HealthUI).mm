@@ -10,49 +10,49 @@
 
 - (id)displayName
 {
-  v2 = [a1 primaryConcept];
-  v3 = [v2 localizedPreferredName];
+  primaryConcept = [self primaryConcept];
+  localizedPreferredName = [primaryConcept localizedPreferredName];
 
-  if ([v3 length])
+  if ([localizedPreferredName length])
   {
     goto LABEL_2;
   }
 
-  v5 = [a1 medicalRecordCodings];
-  v6 = [v5 hk_firstObjectPassingTest:&__block_literal_global_34];
-  v7 = [v6 displayString];
+  medicalRecordCodings = [self medicalRecordCodings];
+  v6 = [medicalRecordCodings hk_firstObjectPassingTest:&__block_literal_global_34];
+  displayString = [v6 displayString];
 
-  if ([v7 length])
+  if ([displayString length])
   {
-    v4 = v7;
+    v4 = displayString;
     goto LABEL_5;
   }
 
-  v10 = [a1 medicalRecordCodings];
-  v11 = [v10 hk_firstObjectPassingTest:&__block_literal_global_294_0];
-  v3 = [v11 displayString];
+  medicalRecordCodings2 = [self medicalRecordCodings];
+  v11 = [medicalRecordCodings2 hk_firstObjectPassingTest:&__block_literal_global_294_0];
+  localizedPreferredName = [v11 displayString];
 
-  if ([v3 length])
+  if ([localizedPreferredName length])
   {
 LABEL_2:
-    v4 = v3;
+    v4 = localizedPreferredName;
 LABEL_5:
-    v8 = v4;
-    v3 = v4;
+    fallbackDisplayString = v4;
+    localizedPreferredName = v4;
     goto LABEL_6;
   }
 
-  v8 = [a1 fallbackDisplayString];
+  fallbackDisplayString = [self fallbackDisplayString];
 LABEL_6:
 
-  return v8;
+  return fallbackDisplayString;
 }
 
 - (uint64_t)isDateLess
 {
-  v1 = [a1 sortDate];
-  v2 = [v1 keyPath];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696B9B0]];
+  sortDate = [self sortDate];
+  keyPath = [sortDate keyPath];
+  v3 = [keyPath isEqualToString:*MEMORY[0x1E696B9B0]];
 
   return v3;
 }
@@ -60,8 +60,8 @@ LABEL_6:
 - (id)displayItems
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 recordItem];
-  [v2 hk_addNonNilObject:v3];
+  recordItem = [self recordItem];
+  [v2 hk_addNonNilObject:recordItem];
 
   v4 = [v2 copy];
 
@@ -70,19 +70,19 @@ LABEL_6:
 
 - (id)recordItem
 {
-  v2 = [a1 sortDate];
-  v3 = [v2 date];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [v3 hk_utcDateAdjustedToCalendar:v4];
+  sortDate = [self sortDate];
+  date = [sortDate date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v5 = [date hk_utcDateAdjustedToCalendar:currentCalendar];
 
-  v6 = [a1 sortDateTitle];
+  sortDateTitle = [self sortDateTitle];
   v7 = HKLocalizedStringForDateAndTemplate(v5, 10);
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v9 = [v8 localizedStringForKey:@"DETAIL_VIEW_RECORDS_DATE_STRING_FORMAT_%1$@_%2$@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
 
-  if ([v6 length])
+  if ([sortDateTitle length])
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:v9, v6, v7];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:v9, sortDateTitle, v7];
   }
 
   else
@@ -91,7 +91,7 @@ LABEL_6:
   }
 
   v11 = v10;
-  if ([a1 isDateLess])
+  if ([self isDateLess])
   {
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = [v12 localizedStringForKey:@"DETAIL_VIEW_RECORDS_NO_DATE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
@@ -102,8 +102,8 @@ LABEL_6:
     v13 = v11;
   }
 
-  v14 = [a1 displayName];
-  v15 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v14 detailText:v13 style:0];
+  displayName = [self displayName];
+  v15 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:displayName detailText:v13 style:0];
 
   return v15;
 }
@@ -112,8 +112,8 @@ LABEL_6:
 {
   v2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v3 = [v2 localizedStringForKey:@"DETAIL_VIEW_RECORDS_STATUS_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pasadena"];
-  v4 = [a1 localizedStatusDisplayString];
-  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:v4 style:1];
+  localizedStatusDisplayString = [self localizedStatusDisplayString];
+  v5 = [HKVerifiableClinicalRecordDisplayItem subtitleItemWithTitleText:v3 detailText:localizedStatusDisplayString style:1];
 
   return v5;
 }

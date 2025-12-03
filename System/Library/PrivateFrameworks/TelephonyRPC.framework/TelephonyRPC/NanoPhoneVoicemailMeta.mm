@@ -1,30 +1,30 @@
 @interface NanoPhoneVoicemailMeta
-+ (id)voicemailWithMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)voicemailWithMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (NanoPhoneVoicemailMeta)initWithVoicemailMessage:(id)a3;
+- (NanoPhoneVoicemailMeta)initWithVoicemailMessage:(id)message;
 - (id)amrDataPath;
 - (id)asXpcObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)voicemailDescription;
 - (unint64_t)hash;
 - (void)clearVoicemailBody;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)loadVoicemailBodyIfNeeded;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasFlags:(BOOL)a3;
-- (void)setHasIdentifier:(BOOL)a3;
-- (void)setHasRemoteUID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasFlags:(BOOL)flags;
+- (void)setHasIdentifier:(BOOL)identifier;
+- (void)setHasRemoteUID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NanoPhoneVoicemailMeta
 
-- (void)setHasIdentifier:(BOOL)a3
+- (void)setHasIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 2;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRemoteUID:(BOOL)a3
+- (void)setHasRemoteUID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasFlags:(BOOL)a3
+- (void)setHasFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 16;
   }
@@ -88,23 +88,23 @@
   v8.receiver = self;
   v8.super_class = NanoPhoneVoicemailMeta;
   v4 = [(NanoPhoneVoicemailMeta *)&v8 description];
-  v5 = [(NanoPhoneVoicemailMeta(Wrapper) *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NanoPhoneVoicemailMeta(Wrapper) *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_voicemailNumber];
-  [v3 setObject:v4 forKey:@"voicemailNumber"];
+  [dictionary setObject:v4 forKey:@"voicemailNumber"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_identifier];
-    [v3 setObject:v23 forKey:@"identifier"];
+    [dictionary setObject:v23 forKey:@"identifier"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -125,104 +125,104 @@ LABEL_3:
   }
 
   v24 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_remoteUID];
-  [v3 setObject:v24 forKey:@"remoteUID"];
+  [dictionary setObject:v24 forKey:@"remoteUID"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_date];
-    [v3 setObject:v6 forKey:@"date"];
+    [dictionary setObject:v6 forKey:@"date"];
   }
 
 LABEL_5:
   sender = self->_sender;
   if (sender)
   {
-    [v3 setObject:sender forKey:@"sender"];
+    [dictionary setObject:sender forKey:@"sender"];
   }
 
   callbackNumber = self->_callbackNumber;
   if (callbackNumber)
   {
-    [v3 setObject:callbackNumber forKey:@"callbackNumber"];
+    [dictionary setObject:callbackNumber forKey:@"callbackNumber"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_duration];
-    [v3 setObject:v9 forKey:@"duration"];
+    [dictionary setObject:v9 forKey:@"duration"];
   }
 
   dataPath = self->_dataPath;
   if (dataPath)
   {
-    [v3 setObject:dataPath forKey:@"dataPath"];
+    [dictionary setObject:dataPath forKey:@"dataPath"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithInt:self->_flags];
-    [v3 setObject:v11 forKey:@"flags"];
+    [dictionary setObject:v11 forKey:@"flags"];
   }
 
   voicemailBody = self->_voicemailBody;
   if (voicemailBody)
   {
-    v13 = [(NanoPhoneVoicemailBody *)voicemailBody dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"voicemailBody"];
+    dictionaryRepresentation = [(NanoPhoneVoicemailBody *)voicemailBody dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"voicemailBody"];
   }
 
   voicemailTranscript = self->_voicemailTranscript;
   if (voicemailTranscript)
   {
-    v15 = [(NanoPhoneVoicemailTranscript *)voicemailTranscript dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"voicemailTranscript"];
+    dictionaryRepresentation2 = [(NanoPhoneVoicemailTranscript *)voicemailTranscript dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"voicemailTranscript"];
   }
 
   receiverDestinationID = self->_receiverDestinationID;
   if (receiverDestinationID)
   {
-    [v3 setObject:receiverDestinationID forKey:@"receiverDestinationID"];
+    [dictionary setObject:receiverDestinationID forKey:@"receiverDestinationID"];
   }
 
   nphReceiverISOCountryCode = self->_nphReceiverISOCountryCode;
   if (nphReceiverISOCountryCode)
   {
-    [v3 setObject:nphReceiverISOCountryCode forKey:@"nph_receiverISOCountryCode"];
+    [dictionary setObject:nphReceiverISOCountryCode forKey:@"nph_receiverISOCountryCode"];
   }
 
   providerID = self->_providerID;
   if (providerID)
   {
-    [v3 setObject:providerID forKey:@"providerID"];
+    [dictionary setObject:providerID forKey:@"providerID"];
   }
 
   conversationIDString = self->_conversationIDString;
   if (conversationIDString)
   {
-    [v3 setObject:conversationIDString forKey:@"conversationIDString"];
+    [dictionary setObject:conversationIDString forKey:@"conversationIDString"];
   }
 
   callUUIDString = self->_callUUIDString;
   if (callUUIDString)
   {
-    [v3 setObject:callUUIDString forKey:@"callUUIDString"];
+    [dictionary setObject:callUUIDString forKey:@"callUUIDString"];
   }
 
   simID = self->_simID;
   if (simID)
   {
-    [v3 setObject:simID forKey:@"simID"];
+    [dictionary setObject:simID forKey:@"simID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   voicemailNumber = self->_voicemailNumber;
-  v13 = v4;
+  v13 = toCopy;
   PBDataWriterWriteInt64Field();
   has = self->_has;
   if ((has & 2) != 0)
@@ -328,15 +328,15 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_voicemailNumber;
+  toCopy = to;
+  toCopy[4] = self->_voicemailNumber;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_identifier;
-    *(v4 + 136) |= 2u;
+    toCopy[2] = self->_identifier;
+    *(toCopy + 136) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -355,99 +355,99 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_remoteUID;
-  *(v4 + 136) |= 4u;
+  toCopy[3] = self->_remoteUID;
+  *(toCopy + 136) |= 4u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = *&self->_date;
-    *(v4 + 136) |= 1u;
+    toCopy[1] = *&self->_date;
+    *(toCopy + 136) |= 1u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_sender)
   {
-    [v4 setSender:?];
-    v4 = v6;
+    [toCopy setSender:?];
+    toCopy = v6;
   }
 
   if (self->_callbackNumber)
   {
     [v6 setCallbackNumber:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 18) = self->_duration;
-    *(v4 + 136) |= 8u;
+    *(toCopy + 18) = self->_duration;
+    *(toCopy + 136) |= 8u;
   }
 
   if (self->_dataPath)
   {
     [v6 setDataPath:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 19) = self->_flags;
-    *(v4 + 136) |= 0x10u;
+    *(toCopy + 19) = self->_flags;
+    *(toCopy + 136) |= 0x10u;
   }
 
   if (self->_voicemailBody)
   {
     [v6 setVoicemailBody:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_voicemailTranscript)
   {
     [v6 setVoicemailTranscript:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_receiverDestinationID)
   {
     [v6 setReceiverDestinationID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_nphReceiverISOCountryCode)
   {
     [v6 setNphReceiverISOCountryCode:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_providerID)
   {
     [v6 setProviderID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_conversationIDString)
   {
     [v6 setConversationIDString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_callUUIDString)
   {
     [v6 setCallUUIDString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_simID)
   {
     [v6 setSimID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 32) = self->_voicemailNumber;
   has = self->_has;
@@ -483,11 +483,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_sender copyWithZone:a3];
+  v8 = [(NSString *)self->_sender copyWithZone:zone];
   v9 = *(v6 + 104);
   *(v6 + 104) = v8;
 
-  v10 = [(NSString *)self->_callbackNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_callbackNumber copyWithZone:zone];
   v11 = *(v6 + 48);
   *(v6 + 48) = v10;
 
@@ -497,7 +497,7 @@ LABEL_5:
     *(v6 + 136) |= 8u;
   }
 
-  v12 = [(NSString *)self->_dataPath copyWithZone:a3];
+  v12 = [(NSString *)self->_dataPath copyWithZone:zone];
   v13 = *(v6 + 64);
   *(v6 + 64) = v12;
 
@@ -507,97 +507,97 @@ LABEL_5:
     *(v6 + 136) |= 0x10u;
   }
 
-  v14 = [(NanoPhoneVoicemailBody *)self->_voicemailBody copyWithZone:a3];
+  v14 = [(NanoPhoneVoicemailBody *)self->_voicemailBody copyWithZone:zone];
   v15 = *(v6 + 120);
   *(v6 + 120) = v14;
 
-  v16 = [(NanoPhoneVoicemailTranscript *)self->_voicemailTranscript copyWithZone:a3];
+  v16 = [(NanoPhoneVoicemailTranscript *)self->_voicemailTranscript copyWithZone:zone];
   v17 = *(v6 + 128);
   *(v6 + 128) = v16;
 
-  v18 = [(NSString *)self->_receiverDestinationID copyWithZone:a3];
+  v18 = [(NSString *)self->_receiverDestinationID copyWithZone:zone];
   v19 = *(v6 + 96);
   *(v6 + 96) = v18;
 
-  v20 = [(NSString *)self->_nphReceiverISOCountryCode copyWithZone:a3];
+  v20 = [(NSString *)self->_nphReceiverISOCountryCode copyWithZone:zone];
   v21 = *(v6 + 80);
   *(v6 + 80) = v20;
 
-  v22 = [(NSString *)self->_providerID copyWithZone:a3];
+  v22 = [(NSString *)self->_providerID copyWithZone:zone];
   v23 = *(v6 + 88);
   *(v6 + 88) = v22;
 
-  v24 = [(NSString *)self->_conversationIDString copyWithZone:a3];
+  v24 = [(NSString *)self->_conversationIDString copyWithZone:zone];
   v25 = *(v6 + 56);
   *(v6 + 56) = v24;
 
-  v26 = [(NSString *)self->_callUUIDString copyWithZone:a3];
+  v26 = [(NSString *)self->_callUUIDString copyWithZone:zone];
   v27 = *(v6 + 40);
   *(v6 + 40) = v26;
 
-  v28 = [(NSString *)self->_simID copyWithZone:a3];
+  v28 = [(NSString *)self->_simID copyWithZone:zone];
   v29 = *(v6 + 112);
   *(v6 + 112) = v28;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_voicemailNumber != *(v4 + 4))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_voicemailNumber != *(equalCopy + 4))
   {
     goto LABEL_51;
   }
 
-  v5 = *(v4 + 136);
+  v5 = *(equalCopy + 136);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 136) & 2) == 0 || self->_identifier != *(v4 + 2))
+    if ((*(equalCopy + 136) & 2) == 0 || self->_identifier != *(equalCopy + 2))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 136) & 2) != 0)
+  else if ((*(equalCopy + 136) & 2) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 136) & 4) == 0 || self->_remoteUID != *(v4 + 3))
+    if ((*(equalCopy + 136) & 4) == 0 || self->_remoteUID != *(equalCopy + 3))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 136) & 4) != 0)
+  else if ((*(equalCopy + 136) & 4) != 0)
   {
     goto LABEL_51;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 136) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 136) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 136))
+  else if (*(equalCopy + 136))
   {
     goto LABEL_51;
   }
 
   sender = self->_sender;
-  if (sender | *(v4 + 13) && ![(NSString *)sender isEqual:?])
+  if (sender | *(equalCopy + 13) && ![(NSString *)sender isEqual:?])
   {
     goto LABEL_51;
   }
 
   callbackNumber = self->_callbackNumber;
-  if (callbackNumber | *(v4 + 6))
+  if (callbackNumber | *(equalCopy + 6))
   {
     if (![(NSString *)callbackNumber isEqual:?])
     {
@@ -606,22 +606,22 @@ LABEL_5:
   }
 
   has = self->_has;
-  v9 = *(v4 + 136);
+  v9 = *(equalCopy + 136);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 136) & 8) == 0 || self->_duration != *(v4 + 18))
+    if ((*(equalCopy + 136) & 8) == 0 || self->_duration != *(equalCopy + 18))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 136) & 8) != 0)
+  else if ((*(equalCopy + 136) & 8) != 0)
   {
     goto LABEL_51;
   }
 
   dataPath = self->_dataPath;
-  if (dataPath | *(v4 + 8))
+  if (dataPath | *(equalCopy + 8))
   {
     if (![(NSString *)dataPath isEqual:?])
     {
@@ -633,28 +633,28 @@ LABEL_51:
     has = self->_has;
   }
 
-  v11 = *(v4 + 136);
+  v11 = *(equalCopy + 136);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 136) & 0x10) == 0 || self->_flags != *(v4 + 19))
+    if ((*(equalCopy + 136) & 0x10) == 0 || self->_flags != *(equalCopy + 19))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 136) & 0x10) != 0)
+  else if ((*(equalCopy + 136) & 0x10) != 0)
   {
     goto LABEL_51;
   }
 
   voicemailBody = self->_voicemailBody;
-  if (voicemailBody | *(v4 + 15) && ![(NanoPhoneVoicemailBody *)voicemailBody isEqual:?])
+  if (voicemailBody | *(equalCopy + 15) && ![(NanoPhoneVoicemailBody *)voicemailBody isEqual:?])
   {
     goto LABEL_51;
   }
 
   voicemailTranscript = self->_voicemailTranscript;
-  if (voicemailTranscript | *(v4 + 16))
+  if (voicemailTranscript | *(equalCopy + 16))
   {
     if (![(NanoPhoneVoicemailTranscript *)voicemailTranscript isEqual:?])
     {
@@ -663,7 +663,7 @@ LABEL_51:
   }
 
   receiverDestinationID = self->_receiverDestinationID;
-  if (receiverDestinationID | *(v4 + 12))
+  if (receiverDestinationID | *(equalCopy + 12))
   {
     if (![(NSString *)receiverDestinationID isEqual:?])
     {
@@ -672,7 +672,7 @@ LABEL_51:
   }
 
   nphReceiverISOCountryCode = self->_nphReceiverISOCountryCode;
-  if (nphReceiverISOCountryCode | *(v4 + 10))
+  if (nphReceiverISOCountryCode | *(equalCopy + 10))
   {
     if (![(NSString *)nphReceiverISOCountryCode isEqual:?])
     {
@@ -681,7 +681,7 @@ LABEL_51:
   }
 
   providerID = self->_providerID;
-  if (providerID | *(v4 + 11))
+  if (providerID | *(equalCopy + 11))
   {
     if (![(NSString *)providerID isEqual:?])
     {
@@ -690,7 +690,7 @@ LABEL_51:
   }
 
   conversationIDString = self->_conversationIDString;
-  if (conversationIDString | *(v4 + 7))
+  if (conversationIDString | *(equalCopy + 7))
   {
     if (![(NSString *)conversationIDString isEqual:?])
     {
@@ -699,7 +699,7 @@ LABEL_51:
   }
 
   callUUIDString = self->_callUUIDString;
-  if (callUUIDString | *(v4 + 5))
+  if (callUUIDString | *(equalCopy + 5))
   {
     if (![(NSString *)callUUIDString isEqual:?])
     {
@@ -708,7 +708,7 @@ LABEL_51:
   }
 
   simID = self->_simID;
-  if (simID | *(v4 + 14))
+  if (simID | *(equalCopy + 14))
   {
     v20 = [(NSString *)simID isEqual:?];
   }
@@ -813,17 +813,17 @@ LABEL_52:
   return v22 ^ v24 ^ [(NSString *)self->_simID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  self->_voicemailNumber = *(v4 + 4);
-  v6 = *(v4 + 136);
+  fromCopy = from;
+  v5 = fromCopy;
+  self->_voicemailNumber = *(fromCopy + 4);
+  v6 = *(fromCopy + 136);
   if ((v6 & 2) != 0)
   {
-    self->_identifier = *(v4 + 2);
+    self->_identifier = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 136);
+    v6 = *(fromCopy + 136);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -836,23 +836,23 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 136) & 4) == 0)
+  else if ((*(fromCopy + 136) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_remoteUID = *(v4 + 3);
+  self->_remoteUID = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if (*(v4 + 136))
+  if (*(fromCopy + 136))
   {
 LABEL_4:
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  v11 = v4;
-  if (*(v4 + 13))
+  v11 = fromCopy;
+  if (*(fromCopy + 13))
   {
     [(NanoPhoneVoicemailMeta *)self setSender:?];
     v5 = v11;
@@ -968,52 +968,52 @@ LABEL_30:
   MEMORY[0x2821F96F8]();
 }
 
-- (NanoPhoneVoicemailMeta)initWithVoicemailMessage:(id)a3
+- (NanoPhoneVoicemailMeta)initWithVoicemailMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v18.receiver = self;
   v18.super_class = NanoPhoneVoicemailMeta;
   v5 = [(NanoPhoneVoicemailMeta *)&v18 init];
   if (v5)
   {
-    v6 = [v4 callbackDestinationID];
-    [(NanoPhoneVoicemailMeta *)v5 setCallbackNumber:v6];
+    callbackDestinationID = [messageCopy callbackDestinationID];
+    [(NanoPhoneVoicemailMeta *)v5 setCallbackNumber:callbackDestinationID];
 
-    v7 = [v4 senderDestinationID];
-    [(NanoPhoneVoicemailMeta *)v5 setSender:v7];
+    senderDestinationID = [messageCopy senderDestinationID];
+    [(NanoPhoneVoicemailMeta *)v5 setSender:senderDestinationID];
 
-    v8 = [v4 receiverDestinationID];
-    [(NanoPhoneVoicemailMeta *)v5 setReceiverDestinationID:v8];
+    receiverDestinationID = [messageCopy receiverDestinationID];
+    [(NanoPhoneVoicemailMeta *)v5 setReceiverDestinationID:receiverDestinationID];
 
-    -[NanoPhoneVoicemailMeta setRemoteUID:](v5, "setRemoteUID:", [v4 remoteUID]);
-    [v4 date];
+    -[NanoPhoneVoicemailMeta setRemoteUID:](v5, "setRemoteUID:", [messageCopy remoteUID]);
+    [messageCopy date];
     [(NanoPhoneVoicemailMeta *)v5 setDate:?];
-    [v4 duration];
+    [messageCopy duration];
     [(NanoPhoneVoicemailMeta *)v5 setDuration:v9];
-    -[NanoPhoneVoicemailMeta setFlags:](v5, "setFlags:", [v4 flags]);
-    -[NanoPhoneVoicemailMeta setIdentifier:](v5, "setIdentifier:", [v4 identifier]);
-    -[NanoPhoneVoicemailMeta setVoicemailNumber:](v5, "setVoicemailNumber:", [v4 remoteUID]);
+    -[NanoPhoneVoicemailMeta setFlags:](v5, "setFlags:", [messageCopy flags]);
+    -[NanoPhoneVoicemailMeta setIdentifier:](v5, "setIdentifier:", [messageCopy identifier]);
+    -[NanoPhoneVoicemailMeta setVoicemailNumber:](v5, "setVoicemailNumber:", [messageCopy remoteUID]);
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"/var/mobile/Library/Voicemail/%lld.amr", -[NanoPhoneVoicemailMeta voicemailNumber](v5, "voicemailNumber")];
     [(NanoPhoneVoicemailMeta *)v5 setDataPath:v10];
 
     v11 = [NanoPhoneVoicemailBody alloc];
-    v12 = [v4 audio];
-    v13 = [(NanoPhoneVoicemailBody *)v11 initWithAudioMessage:v12 voicemailNumber:[(NanoPhoneVoicemailMeta *)v5 voicemailNumber]];
+    audio = [messageCopy audio];
+    v13 = [(NanoPhoneVoicemailBody *)v11 initWithAudioMessage:audio voicemailNumber:[(NanoPhoneVoicemailMeta *)v5 voicemailNumber]];
     [(NanoPhoneVoicemailMeta *)v5 setVoicemailBody:v13];
 
     v14 = [NanoPhoneVoicemailTranscript alloc];
-    v15 = [v4 transcript];
-    v16 = [(NanoPhoneVoicemailTranscript *)v14 initWithTranscriptMessage:v15 voicemailNumber:[(NanoPhoneVoicemailMeta *)v5 voicemailNumber]];
+    transcript = [messageCopy transcript];
+    v16 = [(NanoPhoneVoicemailTranscript *)v14 initWithTranscriptMessage:transcript voicemailNumber:[(NanoPhoneVoicemailMeta *)v5 voicemailNumber]];
     [(NanoPhoneVoicemailMeta *)v5 setVoicemailTranscript:v16];
   }
 
   return v5;
 }
 
-+ (id)voicemailWithMessage:(id)a3
++ (id)voicemailWithMessage:(id)message
 {
   length = 0;
-  data = xpc_dictionary_get_data(a3, "NanoTelephonyVoicemail", &length);
+  data = xpc_dictionary_get_data(message, "NanoTelephonyVoicemail", &length);
   if (data)
   {
     v4 = length == 0;
@@ -1041,8 +1041,8 @@ LABEL_30:
 - (id)asXpcObject
 {
   v3 = xpc_dictionary_create(0, 0, 0);
-  v4 = [(NanoPhoneVoicemailMeta *)self data];
-  xpc_dictionary_set_data(v3, "NanoTelephonyVoicemail", [v4 bytes], objc_msgSend(v4, "length"));
+  data = [(NanoPhoneVoicemailMeta *)self data];
+  xpc_dictionary_set_data(v3, "NanoTelephonyVoicemail", [data bytes], objc_msgSend(data, "length"));
 
   return v3;
 }
@@ -1052,13 +1052,13 @@ LABEL_30:
   if ([(NanoPhoneVoicemailMeta *)self hasVoicemailBody])
   {
     v3 = MEMORY[0x277CBEA90];
-    v4 = [(NanoPhoneVoicemailMeta *)self amrDataPath];
-    v6 = [v3 dataWithContentsOfFile:v4];
+    amrDataPath = [(NanoPhoneVoicemailMeta *)self amrDataPath];
+    v6 = [v3 dataWithContentsOfFile:amrDataPath];
 
     if (v6)
     {
-      v5 = [(NanoPhoneVoicemailMeta *)self voicemailBody];
-      [v5 setVoicemailRecording:v6];
+      voicemailBody = [(NanoPhoneVoicemailMeta *)self voicemailBody];
+      [voicemailBody setVoicemailRecording:v6];
     }
 
     else
@@ -1070,8 +1070,8 @@ LABEL_30:
 
 - (void)clearVoicemailBody
 {
-  v2 = [(NanoPhoneVoicemailMeta *)self voicemailBody];
-  [v2 setVoicemailRecording:0];
+  voicemailBody = [(NanoPhoneVoicemailMeta *)self voicemailBody];
+  [voicemailBody setVoicemailRecording:0];
 }
 
 - (id)voicemailDescription
@@ -1080,15 +1080,15 @@ LABEL_30:
   v8.receiver = self;
   v8.super_class = NanoPhoneVoicemailMeta;
   v4 = [(NanoPhoneVoicemailMeta *)&v8 description];
-  v5 = [(NanoPhoneVoicemailMeta(Wrapper) *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NanoPhoneVoicemailMeta(Wrapper) *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)amrDataPath
 {
-  v2 = self;
+  selfCopy = self;
   sub_26D276DB8();
   v4 = v3;
 

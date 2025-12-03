@@ -1,13 +1,13 @@
 @interface ATXCandidateRelevanceLogisticRegressionModelTrainingPlan
-+ (id)stringForPMLRegularizationStrategy:(unint64_t)a3;
-+ (unint64_t)regularizationStrategyForString:(id)a3;
++ (id)stringForPMLRegularizationStrategy:(unint64_t)strategy;
++ (unint64_t)regularizationStrategyForString:(id)string;
 - (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)init;
-- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithIntercept:(BOOL)a3 learningRate:(float)a4 minIterations:(unint64_t)a5 stoppingThreshold:(float)a6 regularizationStrategy:(unint64_t)a7 regularizationRate:(float)a8 regularizationL1Ratio:(float)a9 weightTruncationThreshold:(float)a10;
-- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithParameters:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModelTrainingPlan:(id)a3;
-- (id)trainModelForDataPoints:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
-- (id)truncatedWeightsForWeights:(id)a3;
+- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithIntercept:(BOOL)intercept learningRate:(float)rate minIterations:(unint64_t)iterations stoppingThreshold:(float)threshold regularizationStrategy:(unint64_t)strategy regularizationRate:(float)regularizationRate regularizationL1Ratio:(float)ratio weightTruncationThreshold:(float)self0;
+- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithParameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModelTrainingPlan:(id)plan;
+- (id)trainModelForDataPoints:(id)points candidate:(id)candidate featurizationManager:(id)manager;
+- (id)truncatedWeightsForWeights:(id)weights;
 @end
 
 @implementation ATXCandidateRelevanceLogisticRegressionModelTrainingPlan
@@ -20,22 +20,22 @@
   return v4;
 }
 
-- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithParameters:(id)a3
+- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"LogisticRegressionIntercept"];
+  parametersCopy = parameters;
+  v5 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionIntercept"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"LogisticRegressionLearningRate"];
+  v8 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionLearningRate"];
   v9 = v8;
   if (v8)
   {
@@ -48,19 +48,19 @@
     v11 = 1017370378;
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"LogisticRegressionMinIterations"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionMinIterations"];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v14 = 100;
+    intValue = 100;
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"LogisticRegressionStoppingThreshold"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionStoppingThreshold"];
   v16 = v15;
   if (v15)
   {
@@ -73,7 +73,7 @@
     v18 = 953267991;
   }
 
-  v19 = [v4 objectForKeyedSubscript:@"LogisticRegressionRegularizationStrategy"];
+  v19 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionRegularizationStrategy"];
   v20 = NSClassFromString(&cfstr_Nsstring.isa);
   v21 = v19;
   if (v20)
@@ -105,7 +105,7 @@
   v25 = v24;
 
   v26 = [objc_opt_class() regularizationStrategyForString:v25];
-  v27 = [v4 objectForKeyedSubscript:@"LogisticRegressionRegularizationRate"];
+  v27 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionRegularizationRate"];
   v28 = v27;
   if (v27)
   {
@@ -118,7 +118,7 @@
     v30 = 4.0;
   }
 
-  v31 = [v4 objectForKeyedSubscript:@"LogisticRegressionRegularizationL1Ratio"];
+  v31 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionRegularizationL1Ratio"];
   v32 = v31;
   if (v31)
   {
@@ -131,7 +131,7 @@
     v34 = 1053609165;
   }
 
-  v35 = [v4 objectForKeyedSubscript:@"LogisticRegressionWeightTruncationThreshold"];
+  v35 = [parametersCopy objectForKeyedSubscript:@"LogisticRegressionWeightTruncationThreshold"];
   v36 = v35;
   if (v35)
   {
@@ -149,45 +149,45 @@
   *&v41 = v30;
   LODWORD(v42) = v34;
   LODWORD(v43) = v38;
-  v44 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)self initWithIntercept:v7 learningRate:v14 minIterations:v26 stoppingThreshold:v39 regularizationStrategy:v40 regularizationRate:v41 regularizationL1Ratio:v42 weightTruncationThreshold:v43];
+  v44 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)self initWithIntercept:bOOLValue learningRate:intValue minIterations:v26 stoppingThreshold:v39 regularizationStrategy:v40 regularizationRate:v41 regularizationL1Ratio:v42 weightTruncationThreshold:v43];
 
   return v44;
 }
 
-- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithIntercept:(BOOL)a3 learningRate:(float)a4 minIterations:(unint64_t)a5 stoppingThreshold:(float)a6 regularizationStrategy:(unint64_t)a7 regularizationRate:(float)a8 regularizationL1Ratio:(float)a9 weightTruncationThreshold:(float)a10
+- (ATXCandidateRelevanceLogisticRegressionModelTrainingPlan)initWithIntercept:(BOOL)intercept learningRate:(float)rate minIterations:(unint64_t)iterations stoppingThreshold:(float)threshold regularizationStrategy:(unint64_t)strategy regularizationRate:(float)regularizationRate regularizationL1Ratio:(float)ratio weightTruncationThreshold:(float)self0
 {
   v19.receiver = self;
   v19.super_class = ATXCandidateRelevanceLogisticRegressionModelTrainingPlan;
   result = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)&v19 init];
   if (result)
   {
-    result->_intercept = a3;
-    result->_learningRate = a4;
-    result->_stoppingThreshold = a6;
-    result->_minIterations = a5;
-    result->_regularizationStrategy = a7;
-    result->_regularizationRate = a8;
-    result->_regularizationL1Ratio = a9;
-    result->_weightTruncationThreshold = a10;
+    result->_intercept = intercept;
+    result->_learningRate = rate;
+    result->_stoppingThreshold = threshold;
+    result->_minIterations = iterations;
+    result->_regularizationStrategy = strategy;
+    result->_regularizationRate = regularizationRate;
+    result->_regularizationL1Ratio = ratio;
+    result->_weightTruncationThreshold = truncationThreshold;
   }
 
   return result;
 }
 
-+ (unint64_t)regularizationStrategyForString:(id)a3
++ (unint64_t)regularizationStrategyForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"L1"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"L1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"L2"])
+  else if ([stringCopy isEqualToString:@"L2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ElasticNet"])
+  else if ([stringCopy isEqualToString:@"ElasticNet"])
   {
     v4 = 3;
   }
@@ -200,43 +200,43 @@
   return v4;
 }
 
-+ (id)stringForPMLRegularizationStrategy:(unint64_t)a3
++ (id)stringForPMLRegularizationStrategy:(unint64_t)strategy
 {
-  if (a3 >= 4)
+  if (strategy >= 4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %lu)", a3];
+    strategy = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %lu)", strategy];
   }
 
   else
   {
-    v4 = off_27859DE80[a3];
+    strategy = off_27859DE80[strategy];
   }
 
-  return v4;
+  return strategy;
 }
 
-- (id)trainModelForDataPoints:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (id)trainModelForDataPoints:(id)points candidate:(id)candidate featurizationManager:(id)manager
 {
   v7 = MEMORY[0x277D41F40];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 zeroWeightsOfLength:{self->_intercept + objc_msgSend(v8, "numberOfInputDimensions")}];
+  managerCopy = manager;
+  pointsCopy = points;
+  v10 = [v7 zeroWeightsOfLength:{self->_intercept + objc_msgSend(managerCopy, "numberOfInputDimensions")}];
   *&v11 = self->_learningRate;
   *&v12 = self->_stoppingThreshold;
   *&v13 = self->_regularizationRate;
   *&v14 = self->_regularizationL1Ratio;
   v15 = [MEMORY[0x277D41F30] solverWithWeights:v10 andIntercept:self->_intercept learningRate:self->_minIterations minIterations:self->_regularizationStrategy stoppingThreshold:v11 regularizationStrategy:v12 regularizationRate:v13 l1Ratio:v14];
-  v16 = [v8 sparseFeatureMatrixFromDataPoints:v9];
+  v16 = [managerCopy sparseFeatureMatrixFromDataPoints:pointsCopy];
   [v15 setCovariates:v16];
   v17 = objc_opt_class();
 
-  v18 = [v17 denseLabelVectorFromDataPoints:v9];
+  v18 = [v17 denseLabelVectorFromDataPoints:pointsCopy];
 
   v19 = [MEMORY[0x277D41F38] modelRegressorFromFloats:v18];
   [v15 setObjective:v19];
   [v15 solve];
-  v20 = [v15 weights];
-  v21 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)self truncatedWeightsForWeights:v20];
+  weights = [v15 weights];
+  v21 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)self truncatedWeightsForWeights:weights];
 
   v22 = [ATXCandidateRelevanceLogisticRegressionModel alloc];
   v23 = [MEMORY[0x277D41F30] withWeights:v21 andIntercept:self->_intercept];
@@ -245,28 +245,28 @@
   return v24;
 }
 
-- (id)truncatedWeightsForWeights:(id)a3
+- (id)truncatedWeightsForWeights:(id)weights
 {
-  v4 = a3;
-  v5 = v4;
+  weightsCopy = weights;
+  v5 = weightsCopy;
   if (self->_weightTruncationThreshold == 0.0)
   {
-    v6 = v4;
+    v6 = weightsCopy;
   }
 
   else
   {
-    v7 = [v4 asMutableDenseVector];
+    asMutableDenseVector = [weightsCopy asMutableDenseVector];
     v8 = objc_opt_new();
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __87__ATXCandidateRelevanceLogisticRegressionModelTrainingPlan_truncatedWeightsForWeights___block_invoke;
     v14 = &unk_27859DE60;
-    v15 = self;
+    selfCopy = self;
     v16 = v8;
     v9 = v8;
-    [v7 enumerateValuesWithBlock:&v11];
-    v6 = [MEMORY[0x277D41F40] modelWeightsFromFloats:{v9, v11, v12, v13, v14, v15}];
+    [asMutableDenseVector enumerateValuesWithBlock:&v11];
+    v6 = [MEMORY[0x277D41F40] modelWeightsFromFloats:{v9, v11, v12, v13, v14, selfCopy}];
   }
 
   return v6;
@@ -284,27 +284,27 @@ uint64_t __87__ATXCandidateRelevanceLogisticRegressionModelTrainingPlan_truncate
   return [v2 append:a2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)self isEqualToATXCandidateRelevanceLogisticRegressionModelTrainingPlan:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)self isEqualToATXCandidateRelevanceLogisticRegressionModelTrainingPlan:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModelTrainingPlan:(id)a3
+- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModelTrainingPlan:(id)plan
 {
-  v4 = a3;
-  v5 = self->_intercept == *(v4 + 8) && self->_learningRate == v4[3] && self->_minIterations == *(v4 + 4) && self->_stoppingThreshold == v4[4] && self->_regularizationRate == v4[5] && self->_regularizationStrategy == *(v4 + 5) && self->_regularizationL1Ratio == v4[6] && self->_weightTruncationThreshold == v4[7];
+  planCopy = plan;
+  v5 = self->_intercept == *(planCopy + 8) && self->_learningRate == planCopy[3] && self->_minIterations == *(planCopy + 4) && self->_stoppingThreshold == planCopy[4] && self->_regularizationRate == planCopy[5] && self->_regularizationStrategy == *(planCopy + 5) && self->_regularizationL1Ratio == planCopy[6] && self->_weightTruncationThreshold == planCopy[7];
 
   return v5;
 }

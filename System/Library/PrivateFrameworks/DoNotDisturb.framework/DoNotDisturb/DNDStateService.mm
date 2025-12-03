@@ -1,13 +1,13 @@
 @interface DNDStateService
-+ (id)serviceForClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
 - (BOOL)_queue_registerForStateUpdatesIfRequired;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)queryCurrentStateWithError:(id *)a3;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)queryCurrentStateWithError:(id *)error;
 - (void)_queue_registerForStateUpdatesIfRequired;
-- (void)addStateUpdateListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)queryCurrentStateWithCompletionHandler:(id)a3;
-- (void)remoteService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
-- (void)removeStateUpdateListener:(id)a3;
+- (void)addStateUpdateListener:(id)listener withCompletionHandler:(id)handler;
+- (void)queryCurrentStateWithCompletionHandler:(id)handler;
+- (void)remoteService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
+- (void)removeStateUpdateListener:(id)listener;
 @end
 
 @implementation DNDStateService
@@ -85,9 +85,9 @@ void __59__DNDStateService__queue_registerForStateUpdatesIfRequired__block_invok
   *(v6 + 40) = v5;
 }
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_5 != -1)
   {
     +[DNDStateService serviceForClientIdentifier:];
@@ -104,10 +104,10 @@ void __59__DNDStateService__queue_registerForStateUpdatesIfRequired__block_invok
   block[1] = 3221225472;
   block[2] = __46__DNDStateService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -152,9 +152,9 @@ void __46__DNDStateService_serviceForClientIdentifier___block_invoke_2(uint64_t 
   }
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = DNDStateService;
   v5 = [(DNDStateService *)&v18 init];
@@ -170,7 +170,7 @@ void __46__DNDStateService_serviceForClientIdentifier___block_invoke_2(uint64_t 
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v12;
 
@@ -185,9 +185,9 @@ void __46__DNDStateService_serviceForClientIdentifier___block_invoke_2(uint64_t 
   return v5;
 }
 
-- (void)queryCurrentStateWithCompletionHandler:(id)a3
+- (void)queryCurrentStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDStateService.queryCurrentState.async", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -198,9 +198,9 @@ void __46__DNDStateService_serviceForClientIdentifier___block_invoke_2(uint64_t 
   block[2] = __58__DNDStateService_queryCurrentStateWithCompletionHandler___block_invoke;
   block[3] = &unk_27843A198;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   dispatch_async(queue, block);
 
@@ -289,7 +289,7 @@ uint64_t __58__DNDStateService_queryCurrentStateWithCompletionHandler___block_in
   return result;
 }
 
-- (id)queryCurrentStateWithError:(id *)a3
+- (id)queryCurrentStateWithError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDStateService.queryCurrentState", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -333,9 +333,9 @@ uint64_t __58__DNDStateService_queryCurrentStateWithCompletionHandler___block_in
       [(DNDStateService *)v6 queryCurrentStateWithError:v16];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -375,10 +375,10 @@ void __46__DNDStateService_queryCurrentStateWithError___block_invoke(uint64_t a1
   *(v9 + 40) = v6;
 }
 
-- (void)addStateUpdateListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addStateUpdateListener:(id)listener withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDStateService.addStateUpdateListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -388,11 +388,11 @@ void __46__DNDStateService_queryCurrentStateWithError___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __64__DNDStateService_addStateUpdateListener_withCompletionHandler___block_invoke;
   block[3] = &unk_27843A198;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = listenerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = listenerCopy;
   dispatch_sync(queue, block);
 
   os_activity_scope_leave(&state);
@@ -453,9 +453,9 @@ void __64__DNDStateService_addStateUpdateListener_withCompletionHandler___block_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeStateUpdateListener:(id)a3
+- (void)removeStateUpdateListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDStateService.removeStateUpdateListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -465,9 +465,9 @@ void __64__DNDStateService_addStateUpdateListener_withCompletionHandler___block_
   v8[1] = 3221225472;
   v8[2] = __45__DNDStateService_removeStateUpdateListener___block_invoke;
   v8[3] = &unk_27843A1E8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = listenerCopy;
+  selfCopy = self;
+  v7 = listenerCopy;
   dispatch_sync(queue, v8);
 
   os_activity_scope_leave(&state);
@@ -490,17 +490,17 @@ uint64_t __45__DNDStateService_removeStateUpdateListener___block_invoke(uint64_t
   return result;
 }
 
-- (void)remoteService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)remoteService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__DNDStateService_remoteService_didReceiveDoNotDisturbStateUpdate___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = updateCopy;
+  v7 = updateCopy;
   dispatch_sync(queue, v8);
 }
 

@@ -8,7 +8,7 @@
 {
   [self _accessibilityReloadMediaStrings];
   v3 = [(SUReviewsHeaderCellConfigurationAccessibility *)self safeValueForKey:@"_accessibilityStringsArrayPointer"];
-  v4 = [v3 bytes];
+  bytes = [v3 bytes];
   v5 = [(SUReviewsHeaderCellConfigurationAccessibility *)self safeValueForKey:@"_representedObject"];
   v6 = v5;
   if (v5)
@@ -26,8 +26,8 @@
     v11 = 0;
   }
 
-  v12 = v4[1];
-  v15 = *v4;
+  v12 = bytes[1];
+  v15 = *bytes;
   v13 = __UIAXStringForVariables();
 
   return v13;

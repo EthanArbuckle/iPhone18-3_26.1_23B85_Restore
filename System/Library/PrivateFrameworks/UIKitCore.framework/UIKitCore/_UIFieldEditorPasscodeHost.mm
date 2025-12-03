@@ -6,10 +6,10 @@
 
 - (id)_viewForHostingFieldEditor
 {
-  v2 = [(_UIFieldEditorHost *)self hostingView];
-  v3 = [v2 _backgroundView];
+  hostingView = [(_UIFieldEditorHost *)self hostingView];
+  _backgroundView = [hostingView _backgroundView];
 
-  return v3;
+  return _backgroundView;
 }
 
 @end

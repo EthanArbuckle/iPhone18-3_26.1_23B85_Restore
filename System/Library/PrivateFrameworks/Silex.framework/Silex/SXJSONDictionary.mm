@@ -1,23 +1,23 @@
 @interface SXJSONDictionary
-- (SXJSONDictionary)initWithValueClassBlock:(id)a3 objectValueClassBlock:(id)a4 purgeBlock:(id)a5 andJSONObject:(id)a6 andVersion:(id)a7;
+- (SXJSONDictionary)initWithValueClassBlock:(id)block objectValueClassBlock:(id)classBlock purgeBlock:(id)purgeBlock andJSONObject:(id)object andVersion:(id)version;
 - (id)NSDictionary;
 - (id)allObjects;
 - (id)description;
-- (id)keyAtIndex:(unint64_t)a3;
-- (id)objectForKey:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)keyAtIndex:(unint64_t)index;
+- (id)objectForKey:(id)key;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation SXJSONDictionary
 
-- (SXJSONDictionary)initWithValueClassBlock:(id)a3 objectValueClassBlock:(id)a4 purgeBlock:(id)a5 andJSONObject:(id)a6 andVersion:(id)a7
+- (SXJSONDictionary)initWithValueClassBlock:(id)block objectValueClassBlock:(id)classBlock purgeBlock:(id)purgeBlock andJSONObject:(id)object andVersion:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  blockCopy = block;
+  classBlockCopy = classBlock;
+  purgeBlockCopy = purgeBlock;
+  objectCopy = object;
+  versionCopy = version;
+  if (blockCopy)
   {
     v37.receiver = self;
     v37.super_class = SXJSONDictionary;
@@ -25,22 +25,22 @@
     v18 = v17;
     if (v17)
     {
-      objc_storeStrong(&v17->super._specificationVersion, a7);
-      v19 = [(SXJSONDictionary *)v15 mutableCopy];
+      objc_storeStrong(&v17->super._specificationVersion, version);
+      v19 = [(SXJSONDictionary *)objectCopy mutableCopy];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __102__SXJSONDictionary_initWithValueClassBlock_objectValueClassBlock_purgeBlock_andJSONObject_andVersion___block_invoke;
       v33[3] = &unk_1E8500100;
       v34 = v19;
-      v36 = v14;
-      v35 = v16;
+      v36 = purgeBlockCopy;
+      v35 = versionCopy;
       v20 = v19;
-      [(SXJSONDictionary *)v15 enumerateKeysAndObjectsUsingBlock:v33];
-      v21 = [v13 copy];
+      [(SXJSONDictionary *)objectCopy enumerateKeysAndObjectsUsingBlock:v33];
+      v21 = [classBlockCopy copy];
       objectValueClassBlock = v18->_objectValueClassBlock;
       v18->_objectValueClassBlock = v21;
 
-      v23 = [v12 copy];
+      v23 = [blockCopy copy];
       valueClassBlock = v18->_valueClassBlock;
       v18->_valueClassBlock = v23;
 
@@ -53,9 +53,9 @@
       objects = v18->_objects;
       v18->_objects = v27;
 
-      v29 = [(NSDictionary *)v18->_json allKeys];
+      allKeys = [(NSDictionary *)v18->_json allKeys];
       keys = v18->_keys;
-      v18->_keys = v29;
+      v18->_keys = allKeys;
     }
 
     self = v18;
@@ -63,7 +63,7 @@
 
   else
   {
-    v18 = v15;
+    v18 = objectCopy;
   }
 
   v31 = v18;
@@ -83,24 +83,24 @@ void __102__SXJSONDictionary_initWithValueClassBlock_objectValueClassBlock_purge
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v5 = 0;
     goto LABEL_23;
   }
 
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_objects objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_objects objectForKey:keyCopy];
   os_unfair_lock_unlock(&self->super._unfairLock);
   if (v5)
   {
     goto LABEL_23;
   }
 
-  v6 = [(NSDictionary *)self->_json objectForKey:v4];
+  v6 = [(NSDictionary *)self->_json objectForKey:keyCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -109,7 +109,7 @@ void __102__SXJSONDictionary_initWithValueClassBlock_objectValueClassBlock_purge
       v5 = v6;
 LABEL_20:
       os_unfair_lock_lock_with_options();
-      [(NSMutableDictionary *)self->_objects setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_objects setObject:v5 forKey:keyCopy];
       os_unfair_lock_unlock(&self->super._unfairLock);
       goto LABEL_22;
     }
@@ -144,9 +144,9 @@ LABEL_20:
   {
     if ([(objc_class *)v8 isSubclassOfClass:objc_opt_class()])
     {
-      v10 = [objc_opt_class() objectValueClassBlockForPropertyWithName:v4];
-      v11 = [objc_opt_class() valueClassBlockForPropertyWithName:v4];
-      v12 = [objc_opt_class() purgeClassBlockForPropertyWithName:v4];
+      v10 = [objc_opt_class() objectValueClassBlockForPropertyWithName:keyCopy];
+      v11 = [objc_opt_class() valueClassBlockForPropertyWithName:keyCopy];
+      v12 = [objc_opt_class() purgeClassBlockForPropertyWithName:keyCopy];
       v13 = SXJSONArray;
       goto LABEL_18;
     }
@@ -156,9 +156,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v10 = [objc_opt_class() objectValueClassBlockForPropertyWithName:v4];
-  v11 = [objc_opt_class() valueClassBlockForPropertyWithName:v4];
-  v12 = [objc_opt_class() purgeClassBlockForPropertyWithName:v4];
+  v10 = [objc_opt_class() objectValueClassBlockForPropertyWithName:keyCopy];
+  v11 = [objc_opt_class() valueClassBlockForPropertyWithName:keyCopy];
+  v12 = [objc_opt_class() purgeClassBlockForPropertyWithName:keyCopy];
   v13 = SXJSONDictionary;
 LABEL_18:
   v5 = [[v13 alloc] initWithValueClassBlock:v11 objectValueClassBlock:v10 purgeBlock:v12 andJSONObject:v6 andVersion:self->super._specificationVersion];
@@ -176,9 +176,9 @@ LABEL_23:
   return v5;
 }
 
-- (id)keyAtIndex:(unint64_t)a3
+- (id)keyAtIndex:(unint64_t)index
 {
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
     v5 = 0;
   }
@@ -225,7 +225,7 @@ LABEL_23:
 - (id)NSDictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -247,7 +247,7 @@ LABEL_23:
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v10 = [(SXJSONDictionary *)self objectForKey:v9, v12];
-        [v3 setObject:v10 forKey:v9];
+        [dictionary setObject:v10 forKey:v9];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -256,55 +256,55 @@ LABEL_23:
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (self->_count - a3->var0 >= a5)
+  var0 = state->var0;
+  if (self->_count - state->var0 >= count)
   {
-    v7 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v7 = self->_count - a3->var0;
+    countCopy = self->_count - state->var0;
   }
 
-  a3->var1 = a4;
-  a3->var2 = a3->var3;
-  if (v7)
+  state->var1 = objects;
+  state->var2 = state->var3;
+  if (countCopy)
   {
-    v8 = a4;
+    objectsCopy = objects;
     v10 = var0;
-    v11 = v7;
+    v11 = countCopy;
     do
     {
-      *v8++ = [(SXJSONDictionary *)self keyAtIndex:v10++];
+      *objectsCopy++ = [(SXJSONDictionary *)self keyAtIndex:v10++];
       --v11;
     }
 
     while (v11);
   }
 
-  a3->var0 = v7 + var0;
-  return v7;
+  state->var0 = countCopy + var0;
+  return countCopy;
 }
 
 - (id)description
 {
-  v3 = [(SXJSONDictionary *)self allKeys];
-  v4 = [(SXJSONDictionary *)self allObjects];
+  allKeys = [(SXJSONDictionary *)self allKeys];
+  allObjects = [(SXJSONDictionary *)self allObjects];
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"{"];
-  if ([v3 count])
+  if ([allKeys count])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndex:v6];
-      v8 = [v4 objectAtIndex:v6];
-      if (v6 != [v3 count] - 1)
+      v7 = [allKeys objectAtIndex:v6];
+      v8 = [allObjects objectAtIndex:v6];
+      if (v6 != [allKeys count] - 1)
       {
         [v5 appendFormat:@"%@ => %@, \n", v7, v8];
       }
@@ -312,7 +312,7 @@ LABEL_23:
       ++v6;
     }
 
-    while (v6 < [v3 count]);
+    while (v6 < [allKeys count]);
   }
 
   [v5 appendString:@"}"];

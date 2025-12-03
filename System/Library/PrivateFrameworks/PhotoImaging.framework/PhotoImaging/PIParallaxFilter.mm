@@ -60,8 +60,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -88,8 +88,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -145,8 +145,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -173,8 +173,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -230,8 +230,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -258,8 +258,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

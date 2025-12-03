@@ -3,11 +3,11 @@
 - (HKHealthPrivacySettingsSourcesViewController)init;
 - (PSController)parentController;
 - (PSRootController)rootController;
-- (id)_healthPrivacySubSettingViewControllerForResourceDictionary:(id)a3;
-- (id)readPreferenceValue:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showController:(id)a3;
+- (id)_healthPrivacySubSettingViewControllerForResourceDictionary:(id)dictionary;
+- (id)readPreferenceValue:(id)value;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -23,9 +23,9 @@
   v18.super_class = HKHealthPrivacySettingsSourcesViewController;
   v6 = [(HKHealthPrivacySettingsSourcesViewController *)&v18 initWithProfile:v5 usingInsetStyling:1];
   v7 = +[_HKBehavior sharedBehavior];
-  v8 = [v7 healthAppHiddenOrNotInstalled];
+  healthAppHiddenOrNotInstalled = [v7 healthAppHiddenOrNotInstalled];
   v9 = @"SOURCES_VIEW_CONTROLLER_TITLE_HEALTH";
-  if (v8)
+  if (healthAppHiddenOrNotInstalled)
   {
     v9 = @"SOURCES_VIEW_CONTROLLER_TITLE_HEALTH_DATA";
   }
@@ -37,18 +37,18 @@
 
   [(HKHealthPrivacySettingsSourcesViewController *)v6 setTitle:v12];
   v13 = [UIView alloc];
-  v14 = [(HKHealthPrivacySettingsSourcesViewController *)v6 tableView];
-  [v14 frame];
+  tableView = [(HKHealthPrivacySettingsSourcesViewController *)v6 tableView];
+  [tableView frame];
   v15 = [v13 initWithFrame:{0.0, 0.0}];
-  v16 = [(HKHealthPrivacySettingsSourcesViewController *)v6 tableView];
-  [v16 setTableHeaderView:v15];
+  tableView2 = [(HKHealthPrivacySettingsSourcesViewController *)v6 tableView];
+  [tableView2 setTableHeaderView:v15];
 
   return v6;
 }
 
 + (id)tableViewSectionClasses
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HKHealthPrivacySettingsSourcesViewController;
   v2 = objc_msgSendSuper2(&v5, "tableViewSectionClasses");
   v3 = [v2 mutableCopy];
@@ -69,8 +69,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(HKHealthPrivacySettingsSourcesViewController *)self tableSections];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  tableSections = [(HKHealthPrivacySettingsSourcesViewController *)self tableSections];
+  v4 = [tableSections countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -82,7 +82,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tableSections);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -102,21 +102,21 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [tableSections countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained handleURL:v7 withCompletion:v6];
+  [WeakRetained handleURL:lCopy withCompletion:completionCopy];
 
-  v10 = [(HKHealthPrivacySettingsSourcesViewController *)self _healthPrivacySubSettingViewControllerForResourceDictionary:v7];
+  v10 = [(HKHealthPrivacySettingsSourcesViewController *)self _healthPrivacySubSettingViewControllerForResourceDictionary:lCopy];
 
   v9 = v10;
   if (v10)
@@ -126,33 +126,33 @@
   }
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained setPreferenceValue:v7 specifier:v6];
+  [WeakRetained setPreferenceValue:valueCopy specifier:specifierCopy];
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  v6 = [WeakRetained readPreferenceValue:v4];
+  v6 = [WeakRetained readPreferenceValue:valueCopy];
 
   return v6;
 }
 
-- (void)showController:(id)a3
+- (void)showController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  [WeakRetained showController:v4];
+  [WeakRetained showController:controllerCopy];
 }
 
-- (id)_healthPrivacySubSettingViewControllerForResourceDictionary:(id)a3
+- (id)_healthPrivacySubSettingViewControllerForResourceDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"path"];
+  v3 = [dictionary objectForKey:@"path"];
   if ([v3 isEqualToString:@"HEADPHONE_AUDIO_LEVELS"])
   {
     v4 = objc_alloc_init(HKHealthPrivacyHeadphoneLevelsViewController);

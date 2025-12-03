@@ -1,6 +1,6 @@
 @interface MSDThisDeviceViewController
 - (MSDThisDeviceViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -43,32 +43,32 @@
   [v4 setDataSource:self];
   [v4 setScrollEnabled:0];
   [v4 setUserInteractionEnabled:0];
-  v5 = [(MSDThisDeviceViewController *)self view];
-  [v5 addSubview:v4];
+  view = [(MSDThisDeviceViewController *)self view];
+  [view addSubview:v4];
 
-  v26 = [v4 topAnchor];
-  v27 = [(MSDThisDeviceViewController *)self view];
-  v25 = [v27 safeAreaLayoutGuide];
-  v24 = [v25 topAnchor];
-  v23 = [v26 constraintEqualToAnchor:v24];
+  topAnchor = [v4 topAnchor];
+  view2 = [(MSDThisDeviceViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v23;
-  v21 = [v4 bottomAnchor];
-  v22 = [(MSDThisDeviceViewController *)self view];
-  v20 = [v22 safeAreaLayoutGuide];
-  v19 = [v20 bottomAnchor];
-  v18 = [v21 constraintEqualToAnchor:v19];
+  bottomAnchor = [v4 bottomAnchor];
+  view3 = [(MSDThisDeviceViewController *)self view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[1] = v18;
-  v16 = [v4 leftAnchor];
-  v6 = [(MSDThisDeviceViewController *)self view];
-  v7 = [v6 safeAreaLayoutGuide];
-  v8 = [v7 leftAnchor];
-  v9 = [v16 constraintEqualToAnchor:v8];
+  leftAnchor = [v4 leftAnchor];
+  view4 = [(MSDThisDeviceViewController *)self view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide3 leftAnchor];
+  v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v29[2] = v9;
-  v10 = [v4 rightAnchor];
-  v11 = [(MSDThisDeviceViewController *)self view];
-  v12 = [v11 safeAreaLayoutGuide];
-  v13 = [v12 rightAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  rightAnchor = [v4 rightAnchor];
+  view5 = [(MSDThisDeviceViewController *)self view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide4 rightAnchor];
+  v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v29[3] = v14;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
 
@@ -78,50 +78,50 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 row] > 2)
+  pathCopy = path;
+  if ([pathCopy row] > 2)
   {
     v6 = 0;
     goto LABEL_11;
   }
 
   v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"ThisDeviceViewTableCell"];
-  v7 = [v6 defaultContentConfiguration];
-  if (![v5 row])
+  defaultContentConfiguration = [v6 defaultContentConfiguration];
+  if (![pathCopy row])
   {
     v10 = [MSDSetupUILocalization localizedStringForKey:@"MODEL_OPTION"];
-    [v7 setText:v10];
+    [defaultContentConfiguration setText:v10];
 
-    v9 = [(MSDThisDeviceViewController *)self deviceModel];
+    deviceModel = [(MSDThisDeviceViewController *)self deviceModel];
     goto LABEL_9;
   }
 
-  if ([v5 row] == 1)
+  if ([pathCopy row] == 1)
   {
     v8 = [MSDSetupUILocalization localizedStringForKey:@"OS_OPTION"];
-    [v7 setText:v8];
+    [defaultContentConfiguration setText:v8];
 
-    v9 = [(MSDThisDeviceViewController *)self osString];
+    deviceModel = [(MSDThisDeviceViewController *)self osString];
 LABEL_9:
-    v12 = v9;
-    [v7 setSecondaryText:v9];
+    v12 = deviceModel;
+    [defaultContentConfiguration setSecondaryText:deviceModel];
 
     goto LABEL_10;
   }
 
-  if ([v5 row] == 2)
+  if ([pathCopy row] == 2)
   {
     v11 = [MSDSetupUILocalization localizedStringForKey:@"SERIAL_NUMBER_OPTION"];
-    [v7 setText:v11];
+    [defaultContentConfiguration setText:v11];
 
-    v9 = [(MSDThisDeviceViewController *)self serialNumber];
+    deviceModel = [(MSDThisDeviceViewController *)self serialNumber];
     goto LABEL_9;
   }
 
 LABEL_10:
-  [v6 setContentConfiguration:v7];
+  [v6 setContentConfiguration:defaultContentConfiguration];
 
 LABEL_11:
 

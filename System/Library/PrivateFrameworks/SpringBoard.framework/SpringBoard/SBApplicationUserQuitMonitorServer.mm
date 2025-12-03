@@ -1,9 +1,9 @@
 @interface SBApplicationUserQuitMonitorServer
 - (SBApplicationUserQuitMonitorServer)init;
-- (void)_queue_addConnection:(id)a3;
-- (void)_queue_removeConnection:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)userClosedLastSceneOfApplicationWithBundleID:(id)a3;
+- (void)_queue_addConnection:(id)connection;
+- (void)_queue_removeConnection:(id)connection;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)userClosedLastSceneOfApplicationWithBundleID:(id)d;
 @end
 
 @implementation SBApplicationUserQuitMonitorServer
@@ -15,9 +15,9 @@
   v2 = [(SBApplicationUserQuitMonitorServer *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connections = v2->_connections;
-    v2->_connections = v3;
+    v2->_connections = array;
 
     v5 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.monitorAppSwitcherUserQuit"];
     clientAuthenticator = v2->_clientAuthenticator;
@@ -54,17 +54,17 @@ void __42__SBApplicationUserQuitMonitorServer_init__block_invoke(uint64_t a1, vo
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)userClosedLastSceneOfApplicationWithBundleID:(id)a3
+- (void)userClosedLastSceneOfApplicationWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__SBApplicationUserQuitMonitorServer_userClosedLastSceneOfApplicationWithBundleID___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -105,15 +105,15 @@ void __83__SBApplicationUserQuitMonitorServer_userClosedLastSceneOfApplicationWi
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogAppQuitMonitor();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Received Connection: %{public}@", buf, 0xCu);
   }
 
@@ -122,11 +122,11 @@ void __83__SBApplicationUserQuitMonitorServer_userClosedLastSceneOfApplicationWi
   v15[2] = __80__SBApplicationUserQuitMonitorServer_listener_didReceiveConnection_withContext___block_invoke;
   v15[3] = &unk_2783AB730;
   v15[4] = self;
-  [v6 configureConnection:v15];
+  [connectionCopy configureConnection:v15];
   clientAuthenticator = self->_clientAuthenticator;
-  v9 = [v6 remoteProcess];
-  v10 = [v9 auditToken];
-  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:v10];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:auditToken];
 
   if (clientAuthenticator)
   {
@@ -136,7 +136,7 @@ void __83__SBApplicationUserQuitMonitorServer_userClosedLastSceneOfApplicationWi
     block[2] = __80__SBApplicationUserQuitMonitorServer_listener_didReceiveConnection_withContext___block_invoke_9;
     block[3] = &unk_2783A92D8;
     block[4] = self;
-    v12 = v6;
+    v12 = connectionCopy;
     v14 = v12;
     dispatch_async(queue, block);
     [v12 activate];
@@ -144,7 +144,7 @@ void __83__SBApplicationUserQuitMonitorServer_userClosedLastSceneOfApplicationWi
 
   else
   {
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -183,36 +183,36 @@ void __80__SBApplicationUserQuitMonitorServer_listener_didReceiveConnection_with
   [*(a1 + 32) _queue_removeConnection:v3];
 }
 
-- (void)_queue_addConnection:(id)a3
+- (void)_queue_addConnection:(id)connection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = SBLogAppQuitMonitor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Adding Connection: %{public}@", &v6, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableArray *)self->_connections addObject:v4];
+  [(NSMutableArray *)self->_connections addObject:connectionCopy];
 }
 
-- (void)_queue_removeConnection:(id)a3
+- (void)_queue_removeConnection:(id)connection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = SBLogAppQuitMonitor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Removing Connection: %{public}@", &v6, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableArray *)self->_connections removeObject:v4];
+  [(NSMutableArray *)self->_connections removeObject:connectionCopy];
 }
 
 @end

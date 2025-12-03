@@ -5,24 +5,24 @@
 - (void)_createSuggestionSources;
 - (void)_deregisterFromProactiveSuggestionNotifications;
 - (void)_destroySuggestionSources;
-- (void)_evaluateSuggestionUpdates:(id)a3;
-- (void)_handleAppUninstall:(id)a3;
+- (void)_evaluateSuggestionUpdates:(id)updates;
+- (void)_handleAppUninstall:(id)uninstall;
 - (void)_handleInitialSpringBoardLaunch;
 - (void)_listenForNotifications;
 - (void)_registerForProactiveSuggestionNotifications;
-- (void)_screenDidUndim:(id)a3;
-- (void)_setContinuitySuggestionUpdatesEnabled:(BOOL)a3 expertCenterSuggestionUpdatesEnabled:(BOOL)a4;
+- (void)_screenDidUndim:(id)undim;
+- (void)_setContinuitySuggestionUpdatesEnabled:(BOOL)enabled expertCenterSuggestionUpdatesEnabled:(BOOL)updatesEnabled;
 - (void)_stopListeningForNotifications;
-- (void)bestAppSuggestionChanged:(id)a3;
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4;
+- (void)bestAppSuggestionChanged:(id)changed;
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event;
 - (void)dealloc;
-- (void)disableListeningForUpdatesForReason:(id)a3;
-- (void)enableListeningForUpdatesForReason:(id)a3;
-- (void)noteActivatingForAppSuggestion:(id)a3 fromSource:(int64_t)a4;
-- (void)noteNotActivatingForAppSuggestion:(id)a3 fromSource:(int64_t)a4;
-- (void)performWithCurrentSuggestedAppAndApplication:(id)a3;
+- (void)disableListeningForUpdatesForReason:(id)reason;
+- (void)enableListeningForUpdatesForReason:(id)reason;
+- (void)noteActivatingForAppSuggestion:(id)suggestion fromSource:(int64_t)source;
+- (void)noteNotActivatingForAppSuggestion:(id)suggestion fromSource:(int64_t)source;
+- (void)performWithCurrentSuggestedAppAndApplication:(id)application;
 - (void)proactiveSuggestionChanged;
-- (void)startFetchingPayloadForAppSuggestion:(id)a3;
+- (void)startFetchingPayloadForAppSuggestion:(id)suggestion;
 @end
 
 @implementation SBAppSuggestionManager
@@ -81,16 +81,16 @@ LABEL_9:
   self->_currentBestSuggestion = &v7->super;
 
 LABEL_10:
-  v9 = [(SBBestAppSuggestion *)self->_currentBestSuggestion bundleIdentifier];
-  if (v9)
+  bundleIdentifier = [(SBBestAppSuggestion *)self->_currentBestSuggestion bundleIdentifier];
+  if (bundleIdentifier)
   {
     v10 = +[SBApplicationController sharedInstance];
-    v11 = [v10 applicationWithBundleIdentifier:v9];
+    v11 = [v10 applicationWithBundleIdentifier:bundleIdentifier];
 
     if (v11)
     {
       v12 = +[SBIconController sharedIconRepository];
-      v13 = [v12 applicationIconForBundleIdentifier:v9];
+      v13 = [v12 applicationIconForBundleIdentifier:bundleIdentifier];
       if (v13 && ([v12 isIconVisible:v13] & 1) == 0)
       {
 
@@ -122,8 +122,8 @@ LABEL_10:
     v16 = 0;
     v11 = 0;
 LABEL_22:
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 postNotificationName:@"SBSuggestedAppChangedNotification" object:self userInfo:v16];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBSuggestedAppChangedNotification" object:self userInfo:v16];
   }
 }
 
@@ -132,13 +132,13 @@ LABEL_22:
   p_proactiveSuggestionNotificationToken = &self->_proactiveSuggestionNotificationToken;
   if (!self->_proactiveSuggestionNotificationToken)
   {
-    v4 = [*MEMORY[0x277CEB1C8] UTF8String];
+    uTF8String = [*MEMORY[0x277CEB1C8] UTF8String];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __70__SBAppSuggestionManager__registerForProactiveSuggestionNotifications__block_invoke;
     handler[3] = &unk_2783A95E8;
     handler[4] = self;
-    notify_register_dispatch(v4, p_proactiveSuggestionNotificationToken, MEMORY[0x277D85CD0], handler);
+    notify_register_dispatch(uTF8String, p_proactiveSuggestionNotificationToken, MEMORY[0x277D85CD0], handler);
   }
 }
 
@@ -209,37 +209,37 @@ void __40__SBAppSuggestionManager_sharedInstance__block_invoke()
 
 - (void)_listenForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__screenDidUndim_ name:*MEMORY[0x277D67A38] object:0];
-  [v3 addObserver:self selector:sel__screenDidDim_ name:*MEMORY[0x277D67A18] object:0];
-  [v3 addObserver:self selector:sel__evaluateSuggestionUpdates_ name:*MEMORY[0x277D67A48] object:0];
-  [v3 addObserver:self selector:sel__handleInitialSpringBoardLaunch name:*MEMORY[0x277D76668] object:0];
-  [v3 addObserver:self selector:sel__handleAppUninstall_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__screenDidUndim_ name:*MEMORY[0x277D67A38] object:0];
+  [defaultCenter addObserver:self selector:sel__screenDidDim_ name:*MEMORY[0x277D67A18] object:0];
+  [defaultCenter addObserver:self selector:sel__evaluateSuggestionUpdates_ name:*MEMORY[0x277D67A48] object:0];
+  [defaultCenter addObserver:self selector:sel__handleInitialSpringBoardLaunch name:*MEMORY[0x277D76668] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAppUninstall_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 }
 
 - (void)_stopListeningForNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D67A38] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D67A18] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D67A48] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76668] object:0];
-  [v3 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D67A38] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D67A18] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D67A48] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76668] object:0];
+  [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 }
 
-- (void)performWithCurrentSuggestedAppAndApplication:(id)a3
+- (void)performWithCurrentSuggestedAppAndApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = +[SBApplicationController sharedInstance];
-  v6 = [(SBBestAppSuggestion *)self->_currentBestSuggestion bundleIdentifier];
-  v7 = [v5 applicationWithBundleIdentifier:v6];
+  bundleIdentifier = [(SBBestAppSuggestion *)self->_currentBestSuggestion bundleIdentifier];
+  v7 = [v5 applicationWithBundleIdentifier:bundleIdentifier];
 
-  v4[2](v4, self->_currentBestSuggestion, v7);
+  applicationCopy[2](applicationCopy, self->_currentBestSuggestion, v7);
 }
 
-- (void)startFetchingPayloadForAppSuggestion:(id)a3
+- (void)startFetchingPayloadForAppSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -249,53 +249,53 @@ void __40__SBAppSuggestionManager_sharedInstance__block_invoke()
     v6[2] = __63__SBAppSuggestionManager_startFetchingPayloadForAppSuggestion___block_invoke;
     v6[3] = &unk_2783A92D8;
     v6[4] = self;
-    v7 = v4;
+    v7 = suggestionCopy;
     dispatch_async(v5, v6);
   }
 }
 
-- (void)enableListeningForUpdatesForReason:(id)a3
+- (void)enableListeningForUpdatesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   listeningReasons = self->_listeningReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!listeningReasons)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCA940]);
     v7 = self->_listeningReasons;
     self->_listeningReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     listeningReasons = self->_listeningReasons;
   }
 
-  if (([(NSCountedSet *)listeningReasons containsObject:v4]& 1) == 0)
+  if (([(NSCountedSet *)listeningReasons containsObject:reasonCopy]& 1) == 0)
   {
     [(NSCountedSet *)self->_listeningReasons addObject:v8];
     [(SBAppSuggestionManager *)self _evaluateSuggestionUpdates:0];
   }
 }
 
-- (void)disableListeningForUpdatesForReason:(id)a3
+- (void)disableListeningForUpdatesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(NSCountedSet *)self->_listeningReasons containsObject:?])
   {
-    [(NSCountedSet *)self->_listeningReasons removeObject:v4];
+    [(NSCountedSet *)self->_listeningReasons removeObject:reasonCopy];
     [(SBAppSuggestionManager *)self _evaluateSuggestionUpdates:0];
   }
 }
 
-- (void)_screenDidUndim:(id)a3
+- (void)_screenDidUndim:(id)undim
 {
-  v8 = a3;
-  v4 = [v8 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D67A10]];
+  undimCopy = undim;
+  userInfo = [undimCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D67A10]];
 
   if (v5)
   {
-    v6 = [v5 intValue];
-    if (v6 > 0x2F || ((1 << v6) & 0x8001801002FCLL) == 0)
+    intValue = [v5 intValue];
+    if (intValue > 0x2F || ((1 << intValue) & 0x8001801002FCLL) == 0)
     {
       self->_screenOnAndLookingForEvent = 1;
       [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:1];
@@ -306,13 +306,13 @@ void __40__SBAppSuggestionManager_sharedInstance__block_invoke()
       self->_screenOnDueToUserEvent = 1;
     }
 
-    [(SBAppSuggestionManager *)self _evaluateSuggestionUpdates:v8];
+    [(SBAppSuggestionManager *)self _evaluateSuggestionUpdates:undimCopy];
   }
 }
 
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event
 {
-  [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:0, a4];
+  [(SBAttentionAwarenessClient *)self->_idleTouchAwarenessClient setEnabled:0, event];
   if (self->_screenOnAndLookingForEvent)
   {
     self->_screenOnAndLookingForEvent = 0;
@@ -326,9 +326,9 @@ void __40__SBAppSuggestionManager_sharedInstance__block_invoke()
 - (void)_handleInitialSpringBoardLaunch
 {
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 isUILocked];
+  isUILocked = [v3 isUILocked];
 
-  if (v4)
+  if (isUILocked)
   {
     self->_screenOnDueToUserEvent = 1;
 
@@ -336,30 +336,30 @@ void __40__SBAppSuggestionManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)_evaluateSuggestionUpdates:(id)a3
+- (void)_evaluateSuggestionUpdates:(id)updates
 {
   v8 = +[SBLockScreenManager sharedInstance];
-  v4 = [v8 isUILocked];
+  isUILocked = [v8 isUILocked];
   v5 = self->_screenOnDueToUserEvent || self->_screenOnAndLookingForEvent;
   v6 = [(NSCountedSet *)self->_listeningReasons count];
   screenOnDueToUserEvent = v6 != 0;
-  if (!v6 && ((v4 ^ 1) & 1) == 0)
+  if (!v6 && ((isUILocked ^ 1) & 1) == 0)
   {
     screenOnDueToUserEvent = self->_screenOnDueToUserEvent;
   }
 
-  [(SBAppSuggestionManager *)self _setContinuitySuggestionUpdatesEnabled:screenOnDueToUserEvent expertCenterSuggestionUpdatesEnabled:(screenOnDueToUserEvent | v4 & v5) & 1];
+  [(SBAppSuggestionManager *)self _setContinuitySuggestionUpdatesEnabled:screenOnDueToUserEvent expertCenterSuggestionUpdatesEnabled:(screenOnDueToUserEvent | isUILocked & v5) & 1];
 }
 
-- (void)_setContinuitySuggestionUpdatesEnabled:(BOOL)a3 expertCenterSuggestionUpdatesEnabled:(BOOL)a4
+- (void)_setContinuitySuggestionUpdatesEnabled:(BOOL)enabled expertCenterSuggestionUpdatesEnabled:(BOOL)updatesEnabled
 {
-  v4 = a4;
+  updatesEnabledCopy = updatesEnabled;
   isListeningForContinuitySuggestion = self->_isListeningForContinuitySuggestion;
   isListeningForExpertCenterSuggestion = self->_isListeningForExpertCenterSuggestion;
-  if (!a3 || self->_isListeningForContinuitySuggestion)
+  if (!enabled || self->_isListeningForContinuitySuggestion)
   {
     v9 = 0;
-    if (!a3 && self->_isListeningForContinuitySuggestion)
+    if (!enabled && self->_isListeningForContinuitySuggestion)
     {
       v10 = SBLogContinuity();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -391,7 +391,7 @@ void __40__SBAppSuggestionManager_sharedInstance__block_invoke()
     self->_isListeningForContinuitySuggestion = 1;
   }
 
-  if (v4)
+  if (updatesEnabledCopy)
   {
     if (!self->_isListeningForExpertCenterSuggestion)
     {
@@ -458,10 +458,10 @@ LABEL_28:
   }
 }
 
-- (void)noteActivatingForAppSuggestion:(id)a3 fromSource:(int64_t)a4
+- (void)noteActivatingForAppSuggestion:(id)suggestion fromSource:(int64_t)source
 {
-  v7 = a3;
-  if (a4 == -1)
+  suggestionCopy = suggestion;
+  if (source == -1)
   {
     [SBAppSuggestionManager noteActivatingForAppSuggestion:a2 fromSource:self];
   }
@@ -469,30 +469,30 @@ LABEL_28:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SBAppSuggestionManager *)v7 noteActivatingForAppSuggestion:a4 fromSource:?];
+    [(SBAppSuggestionManager *)suggestionCopy noteActivatingForAppSuggestion:source fromSource:?];
   }
 }
 
-- (void)noteNotActivatingForAppSuggestion:(id)a3 fromSource:(int64_t)a4
+- (void)noteNotActivatingForAppSuggestion:(id)suggestion fromSource:(int64_t)source
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [SBAppSuggestionManager noteNotActivatingForAppSuggestion:v5 fromSource:?];
+    [SBAppSuggestionManager noteNotActivatingForAppSuggestion:suggestionCopy fromSource:?];
   }
 }
 
-- (void)bestAppSuggestionChanged:(id)a3
+- (void)bestAppSuggestionChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SBAppSuggestionManager_bestAppSuggestionChanged___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changedCopy;
+  selfCopy = self;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -546,11 +546,11 @@ LABEL_10:
   }
 }
 
-- (void)_handleAppUninstall:(id)a3
+- (void)_handleAppUninstall:(id)uninstall
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"SBInstalledApplicationsRemovedBundleIDs"];
+  userInfo = [uninstall userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"SBInstalledApplicationsRemovedBundleIDs"];
 
   v21 = 0u;
   v22 = 0u;
@@ -573,8 +573,8 @@ LABEL_10:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [(SBBestAppSuggestion *)self->_currentBestSuggestion bundleIdentifier];
-        v14 = [v12 isEqualToString:v13];
+        bundleIdentifier = [(SBBestAppSuggestion *)self->_currentBestSuggestion bundleIdentifier];
+        v14 = [v12 isEqualToString:bundleIdentifier];
 
         if (v14)
         {
@@ -584,8 +584,8 @@ LABEL_10:
           v9 = 1;
         }
 
-        v16 = [(UABestAppSuggestion *)self->_continuityCurrentBestSuggestion bundleIdentifier];
-        v17 = [v12 isEqualToString:v16];
+        bundleIdentifier2 = [(UABestAppSuggestion *)self->_continuityCurrentBestSuggestion bundleIdentifier];
+        v17 = [v12 isEqualToString:bundleIdentifier2];
 
         if (v17)
         {
@@ -615,19 +615,19 @@ LABEL_10:
 - (void)proactiveSuggestionChanged
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXProactiveSuggestionClient *)self->_proactiveSuggestionClient suggestionLayoutFromCache];
-  v4 = [v3 allSuggestionsInLayout];
-  v5 = [v4 firstObject];
+  suggestionLayoutFromCache = [(ATXProactiveSuggestionClient *)self->_proactiveSuggestionClient suggestionLayoutFromCache];
+  allSuggestionsInLayout = [suggestionLayoutFromCache allSuggestionsInLayout];
+  firstObject = [allSuggestionsInLayout firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
     goto LABEL_23;
   }
 
-  v6 = [v5 executableSpecification];
-  v7 = [v6 executableType];
+  executableSpecification = [firstObject executableSpecification];
+  executableType = [executableSpecification executableType];
 
-  if (v7 != 1)
+  if (executableType != 1)
   {
 
     v8 = SBLogContinuity();
@@ -636,11 +636,11 @@ LABEL_10:
       [SBAppSuggestionManager proactiveSuggestionChanged];
     }
 
-    v5 = 0;
+    firstObject = 0;
   }
 
-  v9 = [v5 executableSpecification];
-  v10 = [v9 executableObject];
+  executableSpecification2 = [firstObject executableSpecification];
+  executableObject = [executableSpecification2 executableObject];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -652,15 +652,15 @@ LABEL_10:
       [SBAppSuggestionManager proactiveSuggestionChanged];
     }
 
-    v5 = 0;
+    firstObject = 0;
   }
 
-  if (v10)
+  if (executableObject)
   {
     v12 = +[SBApplicationController sharedInstance];
-    v13 = [v12 applicationWithBundleIdentifier:v10];
-    v14 = [v13 processState];
-    if ([v14 isForeground])
+    v13 = [v12 applicationWithBundleIdentifier:executableObject];
+    processState = [v13 processState];
+    if ([processState isForeground])
     {
 
 LABEL_14:
@@ -670,13 +670,13 @@ LABEL_14:
         [SBAppSuggestionManager proactiveSuggestionChanged];
       }
 
-      v5 = 0;
+      firstObject = 0;
       goto LABEL_17;
     }
 
     v15 = +[SBApplicationController sharedInstance];
-    v16 = [v15 restrictionController];
-    v17 = [v16 isApplicationIdentifierRestricted:v10];
+    restrictionController = [v15 restrictionController];
+    v17 = [restrictionController isApplicationIdentifierRestricted:executableObject];
 
     if (v17)
     {
@@ -687,9 +687,9 @@ LABEL_14:
 LABEL_17:
   v19 = +[SBIconController sharedIconRepository];
   v20 = v19;
-  if (v10)
+  if (executableObject)
   {
-    v21 = [v19 applicationIconForBundleIdentifier:v10];
+    v21 = [v19 applicationIconForBundleIdentifier:executableObject];
     v22 = [v20 isIconVisible:v21];
 
     if ((v22 & 1) == 0)
@@ -701,7 +701,7 @@ LABEL_17:
         [SBAppSuggestionManager proactiveSuggestionChanged];
       }
 
-      v5 = 0;
+      firstObject = 0;
     }
   }
 
@@ -710,12 +710,12 @@ LABEL_23:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     v26 = 138412290;
-    v27 = v5;
+    v27 = firstObject;
     _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_INFO, "Got Proactive app suggestion: %@", &v26, 0xCu);
   }
 
   currentProactiveBestSuggestion = self->_currentProactiveBestSuggestion;
-  self->_currentProactiveBestSuggestion = v5;
+  self->_currentProactiveBestSuggestion = firstObject;
 
   [(SBAppSuggestionManager *)self _calculateBestSuggestionAndNotifyListeners];
 }

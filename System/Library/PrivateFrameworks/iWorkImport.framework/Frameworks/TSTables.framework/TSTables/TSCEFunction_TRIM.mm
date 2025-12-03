@@ -1,22 +1,22 @@
 @interface TSCEFunction_TRIM
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_TRIM
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v12 = v7;
   v44 = 0;
   if (v7)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v44);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v44);
     v13 = v44;
     if (v13)
     {
       v14 = v13;
-      v15 = objc_msgSend_raiseErrorOrConvert_(a3, v8, v13, v10, v11);
+      v15 = objc_msgSend_raiseErrorOrConvert_(context, v8, v13, v10, v11);
       goto LABEL_30;
     }
   }
@@ -81,7 +81,7 @@
               v41 = v32;
               v42 = v31;
               sub_2210780F0(&v45, &v41, v21, v22, v23, &v37);
-              sub_221077424(&v39, &v37, a3);
+              sub_221077424(&v39, &v37, context);
 
               v31 = 0;
             }
@@ -112,7 +112,7 @@
         v36[0] = v32;
         v36[1] = v31;
         sub_2210780F0(&v45, v36, v21, v22, v23, &v37);
-        sub_221077424(&v39, &v37, a3);
+        sub_221077424(&v39, &v37, context);
       }
     }
 

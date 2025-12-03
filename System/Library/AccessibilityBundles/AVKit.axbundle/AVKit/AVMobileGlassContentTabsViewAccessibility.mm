@@ -1,27 +1,27 @@
 @interface AVMobileGlassContentTabsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation AVMobileGlassContentTabsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileGlassContentTabsView" hasInstanceVariable:@"_contentTabSelectionView" withType:"AVMobileGlassContentTabSelectionView"];
-  [v3 validateClass:@"AVMobileGlassContentTabsView" hasInstanceVariable:@"_contentView" withType:"AVMobileGlassContentTabsContentView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileGlassContentTabsView" hasInstanceVariable:@"_contentTabSelectionView" withType:"AVMobileGlassContentTabSelectionView"];
+  [validationsCopy validateClass:@"AVMobileGlassContentTabsView" hasInstanceVariable:@"_contentView" withType:"AVMobileGlassContentTabsContentView"];
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(AVMobileGlassContentTabsViewAccessibility *)self safeValueForKey:@"_contentTabSelectionView"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
   v5 = [(AVMobileGlassContentTabsViewAccessibility *)self safeValueForKey:@"_contentView"];
-  [v3 axSafelyAddObject:v5];
+  [array axSafelyAddObject:v5];
 
-  return v3;
+  return array;
 }
 
 @end

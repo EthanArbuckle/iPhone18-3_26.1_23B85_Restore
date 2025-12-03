@@ -7,61 +7,61 @@
 - (BOOL)isShowingFailureView;
 - (BOOL)isWaitingForActiveFeature;
 - (PedestrianARLocalizingView)localizingView;
-- (PedestrianARViewController)initWithRoute:(id)a3 platformController:(id)a4 guidanceObserver:(id)a5 navigationService:(id)a6;
+- (PedestrianARViewController)initWithRoute:(id)route platformController:(id)controller guidanceObserver:(id)observer navigationService:(id)service;
 - (PedestrianARViewControllerDelegate)arDelegate;
 - (PlatformController)platformController;
 - (id)mapView;
 - (int)analyticsTarget;
-- (void)VLFSessionLocalizationFailedWithError:(id)a3;
+- (void)VLFSessionLocalizationFailedWithError:(id)error;
 - (void)VLFSessionLocalizationSucceeded;
-- (void)_updateConstraintsForLandscape:(BOOL)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applyTransitionWithProgress:(double)a3;
+- (void)_updateConstraintsForLandscape:(BOOL)landscape;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applyTransitionWithProgress:(double)progress;
 - (void)cancelReroute;
 - (void)cancelWaitingForActiveFeature;
-- (void)closeButtonTapped:(id)a3;
+- (void)closeButtonTapped:(id)tapped;
 - (void)createViews;
 - (void)dealloc;
-- (void)didResignContainee:(id)a3 finished:(BOOL)a4;
+- (void)didResignContainee:(id)containee finished:(BOOL)finished;
 - (void)disableIdleTimer;
 - (void)enableIdleTimer;
-- (void)failureViewDismissButtonTapped:(id)a3;
-- (void)failureViewRetryButtonTapped:(id)a3;
+- (void)failureViewDismissButtonTapped:(id)tapped;
+- (void)failureViewRetryButtonTapped:(id)tapped;
 - (void)hideArrowGuidanceView;
 - (void)hideFailureView;
 - (void)hideInstructionView;
 - (void)hideSafetyView;
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4;
-- (void)mapLayer:(id)a3 failedElevationRequestWithReason:(int64_t)a4;
-- (void)mapLayer:(id)a3 updatedFeatures:(id)a4;
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update;
+- (void)mapLayer:(id)layer failedElevationRequestWithReason:(int64_t)reason;
+- (void)mapLayer:(id)layer updatedFeatures:(id)features;
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)playFailureHaptic;
 - (void)playSuccessHaptic;
-- (void)replayConfigurationDidFinishReplaying:(id)a3;
+- (void)replayConfigurationDidFinishReplaying:(id)replaying;
 - (void)reroute;
 - (void)resetAnalytics;
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4;
-- (void)sessionManager:(id)a3 didResignSessionOwnership:(id)a4;
-- (void)setRoute:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership;
+- (void)sessionManager:(id)manager didResignSessionOwnership:(id)ownership;
+- (void)setRoute:(id)route;
+- (void)setState:(int64_t)state;
 - (void)showArrowGuidanceView;
 - (void)showFailureView;
 - (void)showInstructionView;
 - (void)showSafetyView;
-- (void)showVLTracePopupIfNecessaryWithCompletion:(id)a3;
+- (void)showVLTracePopupIfNecessaryWithCompletion:(id)completion;
 - (void)start;
 - (void)startFailureViewTimeoutTimer;
 - (void)stop;
-- (void)ttrButtonTapped:(id)a3;
+- (void)ttrButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)waitForActiveFeatureIfNecessary;
 @end
 
@@ -81,18 +81,18 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"PedestrianARAutoFocusDistanceKey"] && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == v11))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"PedestrianARAutoFocusDistanceKey"] && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == objectCopy))
   {
-    v14 = [(PedestrianARViewController *)self configuration];
-    if (v14)
+    configuration = [(PedestrianARViewController *)self configuration];
+    if (configuration)
     {
-      v15 = [(PedestrianARViewController *)self configuration];
-      -[PedestrianARViewController setShouldUpdateCameraFocusLensPosition:](self, "setShouldUpdateCameraFocusLensPosition:", [v15 isAutoFocusEnabled] ^ 1);
+      configuration2 = [(PedestrianARViewController *)self configuration];
+      -[PedestrianARViewController setShouldUpdateCameraFocusLensPosition:](self, "setShouldUpdateCameraFocusLensPosition:", [configuration2 isAutoFocusEnabled] ^ 1);
     }
 
     else
@@ -105,31 +105,31 @@
   {
     v16.receiver = self;
     v16.super_class = PedestrianARViewController;
-    [(PedestrianARViewController *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PedestrianARViewController *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  collectionCopy = collection;
   v8 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v8, &v14);
 
-  v9 = [v7 currentRoute];
+  currentRoute = [collectionCopy currentRoute];
   v10 = sub_100C276B8();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v9 uniqueRouteID];
-    v12 = [v11 UUIDString];
+    uniqueRouteID = [currentRoute uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
     *buf = 134349314;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v12;
+    v18 = uUIDString;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Route updated: %@", buf, 0x16u);
   }
 
-  [(PedestrianARViewController *)self setRoute:v9];
+  [(PedestrianARViewController *)self setRoute:currentRoute];
   if ([(PedestrianARViewController *)self isRerouting])
   {
     [(PedestrianARViewController *)self cancelReroute];
@@ -137,7 +137,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Reroute succeeded", buf, 0xCu);
     }
 
@@ -147,9 +147,9 @@
   os_activity_scope_leave(&v14);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v5, &v7);
 
@@ -157,7 +157,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] App backgrounded; dismissing ourselves", buf, 0xCu);
   }
 
@@ -165,16 +165,16 @@
   os_activity_scope_leave(&v7);
 }
 
-- (void)didResignContainee:(id)a3 finished:(BOOL)a4
+- (void)didResignContainee:(id)containee finished:(BOOL)finished
 {
-  v5 = a3;
-  v7 = [(PedestrianARViewController *)self failureContainee];
+  containeeCopy = containee;
+  failureContainee = [(PedestrianARViewController *)self failureContainee];
 
-  if (v7 == v5)
+  if (failureContainee == containeeCopy)
   {
-    v6 = [(PedestrianARViewController *)self isDismissing];
+    isDismissing = [(PedestrianARViewController *)self isDismissing];
 
-    if (v6)
+    if (isDismissing)
     {
 
       [(PedestrianARViewController *)self stop];
@@ -186,13 +186,13 @@
   }
 }
 
-- (void)failureViewDismissButtonTapped:(id)a3
+- (void)failureViewDismissButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v6 = sub_100799F08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -206,13 +206,13 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)failureViewRetryButtonTapped:(id)a3
+- (void)failureViewRetryButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v6 = sub_100799F08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -233,19 +233,19 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)applyTransitionWithProgress:(double)a3
+- (void)applyTransitionWithProgress:(double)progress
 {
-  v4 = [(PedestrianARViewController *)self view];
-  [v4 setAlpha:a3];
+  view = [(PedestrianARViewController *)self view];
+  [view setAlpha:progress];
 }
 
-- (void)ttrButtonTapped:(id)a3
+- (void)ttrButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v6 = sub_100799F08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -260,13 +260,13 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v6 = sub_100799F08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -279,9 +279,9 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)VLFSessionLocalizationFailedWithError:(id)a3
+- (void)VLFSessionLocalizationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v5, &v12);
 
@@ -289,44 +289,44 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 134349314;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[%{public}p] VLF localization failed with error: %@", buf, 0x16u);
   }
 
-  v7 = [(PedestrianARViewController *)v4 domain];
-  v8 = [v7 isEqualToString:@"com.apple.Maps.VLFSession"];
+  domain = [(PedestrianARViewController *)errorCopy domain];
+  v8 = [domain isEqualToString:@"com.apple.Maps.VLFSession"];
 
   if (v8)
   {
-    if ([(PedestrianARViewController *)v4 code]== 2)
+    if ([(PedestrianARViewController *)errorCopy code]== 2)
     {
-      v9 = [(PedestrianARViewController *)self analyticsTarget];
+      analyticsTarget = [(PedestrianARViewController *)self analyticsTarget];
       v10 = 122;
     }
 
     else
     {
-      v9 = [(PedestrianARViewController *)self analyticsTarget];
+      analyticsTarget = [(PedestrianARViewController *)self analyticsTarget];
       v10 = 119;
     }
   }
 
   else
   {
-    v9 = [(PedestrianARViewController *)self analyticsTarget];
+    analyticsTarget = [(PedestrianARViewController *)self analyticsTarget];
     v10 = 120;
   }
 
-  [GEOAPPortal captureUserAction:v10 target:v9 value:0];
+  [GEOAPPortal captureUserAction:v10 target:analyticsTarget value:0];
   if (![(PedestrianARViewController *)self isStopping])
   {
     v11 = sub_100799F08();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v4;
+      selfCopy = errorCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "VLF localization failed: %@", buf, 0xCu);
     }
 
@@ -340,8 +340,8 @@
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v4 = sub_100799F08();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -351,10 +351,10 @@
   }
 
   v5 = +[PedestrianARSessionUsageTracker sharedInstance];
-  v6 = [(PedestrianARViewController *)self route];
-  v7 = [v6 uniqueRouteID];
-  v8 = [v7 UUIDString];
-  [v5 registerLocalizationSuccessForRoute:v8];
+  route = [(PedestrianARViewController *)self route];
+  uniqueRouteID = [route uniqueRouteID];
+  uUIDString = [uniqueRouteID UUIDString];
+  [v5 registerLocalizationSuccessForRoute:uUIDString];
 
   v9 = +[MapsARSessionManager sharedManager];
   [v9 requestSessionWithOwner:self];
@@ -373,42 +373,42 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)sessionManager:(id)a3 didResignSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didResignSessionOwnership:(id)ownership
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  ownershipCopy = ownership;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v8 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v8, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
-  v9 = [(PedestrianARViewController *)self session];
-  [v9 _removeObserver:self];
+  session = [(PedestrianARViewController *)self session];
+  [session _removeObserver:self];
 
   if ([(PedestrianARViewController *)self isARSessionBeingRecorded])
   {
-    v10 = [(PedestrianARViewController *)self configuration];
-    v11 = [v10 fileURL];
-    v12 = [v11 path];
+    configuration = [(PedestrianARViewController *)self configuration];
+    fileURL = [configuration fileURL];
+    path = [fileURL path];
 
     v13 = sub_100C276B8();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Ending ARKit session recording", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v14 = [(PedestrianARViewController *)self configuration];
+    configuration2 = [(PedestrianARViewController *)self configuration];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_100C2834C;
     v21 = &unk_10165D288;
     objc_copyWeak(&v23, buf);
-    v15 = v12;
-    v22 = v15;
-    [v14 finishRecordingWithHandler:&v18];
+    configuration3 = path;
+    v22 = configuration3;
+    [configuration2 finishRecordingWithHandler:&v18];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -417,8 +417,8 @@
 
   if ([(PedestrianARViewController *)self isARSessionReplayingFromRecording])
   {
-    v15 = [(PedestrianARViewController *)self configuration];
-    [v15 setDelegate:0];
+    configuration3 = [(PedestrianARViewController *)self configuration];
+    [configuration3 setDelegate:0];
 LABEL_7:
   }
 
@@ -431,30 +431,30 @@ LABEL_7:
   os_activity_scope_leave(&state);
 }
 
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  ownershipCopy = ownership;
   v8 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v8, &v20);
 
-  objc_storeStrong(&self->_session, a4);
+  objc_storeStrong(&self->_session, ownership);
   if ([(PedestrianARViewController *)self isARSessionBeingRecorded])
   {
-    v9 = [(PedestrianARViewController *)self configuration];
-    v10 = [v9 fileURL];
-    v11 = [v10 path];
+    configuration = [(PedestrianARViewController *)self configuration];
+    fileURL = [configuration fileURL];
+    path = [fileURL path];
 
-    v12 = [(PedestrianARViewController *)self navigationService];
-    [v12 recordPedestrianTracePath:v11];
+    navigationService = [(PedestrianARViewController *)self navigationService];
+    [navigationService recordPedestrianTracePath:path];
   }
 
   else
   {
     if ([(PedestrianARViewController *)self isARSessionReplayingFromRecording])
     {
-      v9 = [(PedestrianARViewController *)self configuration];
-      [v9 setDelegate:self];
+      configuration = [(PedestrianARViewController *)self configuration];
+      [configuration setDelegate:self];
       goto LABEL_6;
     }
 
@@ -463,42 +463,42 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v9 = [(PedestrianARViewController *)self configuration];
+    configuration = [(PedestrianARViewController *)self configuration];
     GEOConfigGetDouble();
     v18 = v17;
     v19 = sub_100C276B8();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 134349312;
-      v22 = self;
+      selfCopy = self;
       v23 = 2048;
       v24 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[%{public}p] Configuring VL with custom interval: %f", buf, 0x16u);
     }
 
-    [v9 setVisualLocalizationCallInterval:v18];
-    v11 = [(PedestrianARViewController *)self session];
-    [v11 runWithConfiguration:v9];
+    [configuration setVisualLocalizationCallInterval:v18];
+    path = [(PedestrianARViewController *)self session];
+    [path runWithConfiguration:configuration];
   }
 
 LABEL_6:
 LABEL_7:
-  v13 = [(PedestrianARViewController *)self configuration];
-  -[PedestrianARViewController setShouldUpdateCameraFocusLensPosition:](self, "setShouldUpdateCameraFocusLensPosition:", [v13 isAutoFocusEnabled] ^ 1);
+  configuration2 = [(PedestrianARViewController *)self configuration];
+  -[PedestrianARViewController setShouldUpdateCameraFocusLensPosition:](self, "setShouldUpdateCameraFocusLensPosition:", [configuration2 isAutoFocusEnabled] ^ 1);
 
-  v14 = [(PedestrianARViewController *)self session];
-  [v14 _addObserver:self];
+  session = [(PedestrianARViewController *)self session];
+  [session _addObserver:self];
 
-  v15 = [(PedestrianARViewController *)self session];
+  session2 = [(PedestrianARViewController *)self session];
   v16 = +[PedestrianARFloatingDebugViewController sharedInstance];
-  [v16 setSession:v15];
+  [v16 setSession:session2];
 
   os_activity_scope_leave(&v20);
 }
 
-- (void)replayConfigurationDidFinishReplaying:(id)a3
+- (void)replayConfigurationDidFinishReplaying:(id)replaying
 {
-  v4 = a3;
+  replayingCopy = replaying;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -510,7 +510,7 @@ LABEL_7:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v16 = 136316418;
-        v17 = "[PedestrianARViewController replayConfigurationDidFinishReplaying:]";
+        selfCopy3 = "[PedestrianARViewController replayConfigurationDidFinishReplaying:]";
         v18 = 2080;
         v19 = "PedestrianARViewController.m";
         v20 = 1024;
@@ -531,7 +531,7 @@ LABEL_7:
         {
           v15 = +[NSThread callStackSymbols];
           v16 = 138412290;
-          v17 = v15;
+          selfCopy3 = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
         }
       }
@@ -542,7 +542,7 @@ LABEL_7:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v16 = 134349056;
-    v17 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] ARKit replay ended", &v16, 0xCu);
   }
 
@@ -556,7 +556,7 @@ LABEL_7:
     if (v12)
     {
       v16 = 134349056;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Looping replay", &v16, 0xCu);
     }
 
@@ -569,7 +569,7 @@ LABEL_7:
     if (v12)
     {
       v16 = 134349056;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Stopping AR", &v16, 0xCu);
     }
 
@@ -577,7 +577,7 @@ LABEL_7:
   }
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -590,15 +590,15 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status
 {
-  if ([a4 state] != 3)
+  if ([status state] != 3)
   {
     v5 = sub_100C276B8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] ARKit is no longer localized; re-starting localization", buf, 0xCu);
     }
 
@@ -614,16 +614,16 @@ LABEL_7:
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_100C276B8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[%{public}p] ARSession did fail with error: %@", buf, 0x16u);
   }
 
@@ -633,39 +633,39 @@ LABEL_7:
   v8[2] = sub_100C2918C;
   v8[3] = &unk_101661340;
   objc_copyWeak(&v10, buf);
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)mapLayer:(id)a3 failedElevationRequestWithReason:(int64_t)a4
+- (void)mapLayer:(id)layer failedElevationRequestWithReason:(int64_t)reason
 {
-  if (a4 == 2 && ![(PedestrianARViewController *)self didFailUndulationLookup])
+  if (reason == 2 && ![(PedestrianARViewController *)self didFailUndulationLookup])
   {
 
     [(PedestrianARViewController *)self setDidFailUndulationLookup:1];
   }
 }
 
-- (void)mapLayer:(id)a3 updatedFeatures:(id)a4
+- (void)mapLayer:(id)layer updatedFeatures:(id)features
 {
-  v8 = [(PedestrianARViewController *)self renderingView:a3];
-  v5 = [v8 mapViewDelegate];
-  if ([v5 hasActiveFeatureSet])
+  v8 = [(PedestrianARViewController *)self renderingView:layer];
+  mapViewDelegate = [v8 mapViewDelegate];
+  if ([mapViewDelegate hasActiveFeatureSet])
   {
-    v6 = [(PedestrianARViewController *)self isWaitingForActiveFeature];
+    isWaitingForActiveFeature = [(PedestrianARViewController *)self isWaitingForActiveFeature];
 
-    if (v6)
+    if (isWaitingForActiveFeature)
     {
       [(PedestrianARViewController *)self cancelWaitingForActiveFeature];
       v7 = sub_100C276B8();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Got first active feature; changing state to .Running", buf, 0xCu);
       }
 
@@ -678,18 +678,18 @@ LABEL_7:
   }
 }
 
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  updateCopy = update;
   v8 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v8, &v20);
 
   v9 = sub_100C276B8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 feature];
-    if ([v7 isVisible])
+    feature = [updateCopy feature];
+    if ([updateCopy isVisible])
     {
       v11 = @"YES";
     }
@@ -700,7 +700,7 @@ LABEL_7:
     }
 
     v12 = v11;
-    if ([v7 isDirectlyBehind])
+    if ([updateCopy isDirectlyBehind])
     {
       v13 = @"YES";
     }
@@ -711,13 +711,13 @@ LABEL_7:
     }
 
     v14 = v13;
-    [v7 screenHeading];
+    [updateCopy screenHeading];
     *buf = 134350338;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v7;
+    v24 = updateCopy;
     v25 = 2112;
-    v26 = v10;
+    v26 = feature;
     v27 = 2112;
     v28 = v12;
     v29 = 2112;
@@ -727,18 +727,18 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Feature did update: %@, feature: %@, isVisible: %@, isDirectlyBehind: %@, screenHeading: %f", buf, 0x3Eu);
   }
 
-  v16 = [v7 feature];
-  if (v16)
+  feature2 = [updateCopy feature];
+  if (feature2)
   {
-    v17 = [(PedestrianARViewController *)self didRenderLabel];
+    didRenderLabel = [(PedestrianARViewController *)self didRenderLabel];
 
-    if ((v17 & 1) == 0)
+    if ((didRenderLabel & 1) == 0)
     {
       [(PedestrianARViewController *)self setDidRenderLabel:1];
     }
   }
 
-  if ([v7 isVisible])
+  if ([updateCopy isVisible])
   {
     v18 = +[PedestrianARSessionUsageTracker sharedInstance];
     [v18 registerARElementRendered];
@@ -752,11 +752,11 @@ LABEL_7:
 
 - (id)mapView
 {
-  v2 = [(PedestrianARViewController *)self renderingView];
-  v3 = [v2 mapViewDelegate];
-  v4 = [v3 mapView];
+  renderingView = [(PedestrianARViewController *)self renderingView];
+  mapViewDelegate = [renderingView mapViewDelegate];
+  mapView = [mapViewDelegate mapView];
 
-  return v4;
+  return mapView;
 }
 
 - (int)analyticsTarget
@@ -774,7 +774,7 @@ LABEL_7:
 
 - (BOOL)isARSessionReplayingFromRecording
 {
-  v2 = [(PedestrianARViewController *)self configuration];
+  configuration = [(PedestrianARViewController *)self configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -783,7 +783,7 @@ LABEL_7:
 
 - (BOOL)isARSessionBeingRecorded
 {
-  v2 = [(PedestrianARViewController *)self configuration];
+  configuration = [(PedestrianARViewController *)self configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -792,28 +792,28 @@ LABEL_7:
 
 - (ARConfiguration)configuration
 {
-  v2 = [(PedestrianARViewController *)self session];
-  v3 = [v2 configuration];
+  session = [(PedestrianARViewController *)self session];
+  configuration = [session configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (void)playFailureHaptic
 {
-  v2 = [(PedestrianARViewController *)self notificationGenerator];
-  [v2 notificationOccurred:2];
+  notificationGenerator = [(PedestrianARViewController *)self notificationGenerator];
+  [notificationGenerator notificationOccurred:2];
 }
 
 - (void)playSuccessHaptic
 {
-  v2 = [(PedestrianARViewController *)self notificationGenerator];
-  [v2 notificationOccurred:0];
+  notificationGenerator = [(PedestrianARViewController *)self notificationGenerator];
+  [notificationGenerator notificationOccurred:0];
 }
 
-- (void)showVLTracePopupIfNecessaryWithCompletion:(id)a3
+- (void)showVLTracePopupIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -843,11 +843,11 @@ LABEL_7:
   }
 
   v5 = +[GEOPlatform sharedPlatform];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if ((v6 & 1) == 0 || -[PedestrianARViewController didShowVLTracePopup](self, "didShowVLTracePopup") || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"PedestrianARViewControllerTemporarilyEnableVLTraceRecordingKey"], v7, v8) || GEOConfigGetBOOL())
+  if ((isInternalInstall & 1) == 0 || -[PedestrianARViewController didShowVLTracePopup](self, "didShowVLTracePopup") || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"PedestrianARViewControllerTemporarilyEnableVLTraceRecordingKey"], v7, v8) || GEOConfigGetBOOL())
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -859,7 +859,7 @@ LABEL_7:
     v19[2] = sub_100C29DAC;
     v19[3] = &unk_10164E1A8;
     objc_copyWeak(&v21, location);
-    v10 = v4;
+    v10 = completionCopy;
     v20 = v10;
     v11 = [UIAlertAction actionWithTitle:@"Yes" style:0 handler:v19];
     [v9 addAction:v11];
@@ -872,8 +872,8 @@ LABEL_7:
     v12 = [UIAlertAction actionWithTitle:@"No" style:1 handler:v17];
     [v9 addAction:v12];
 
-    v13 = [(ContainerViewController *)self chromeViewController];
-    [v13 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+    chromeViewController = [(ContainerViewController *)self chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:v9 animated:1 completion:0];
 
     [(PedestrianARViewController *)self setDidShowVLTracePopup:1];
     [(PedestrianARViewController *)self stopFailureViewTimeoutTimer];
@@ -894,8 +894,8 @@ LABEL_7:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   GEOConfigGetDouble();
   v5 = v4;
@@ -903,7 +903,7 @@ LABEL_7:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Starting failure view timeout with threshold: %f", buf, 0x16u);
@@ -929,8 +929,8 @@ LABEL_7:
   v3 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v3, &v6);
 
-  v4 = [(PedestrianARViewController *)self activeFeatureTimer];
-  LOBYTE(v3) = v4 == 0;
+  activeFeatureTimer = [(PedestrianARViewController *)self activeFeatureTimer];
+  LOBYTE(v3) = activeFeatureTimer == 0;
 
   if ((v3 & 1) == 0)
   {
@@ -938,7 +938,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Canceling active feature timer", buf, 0xCu);
     }
 
@@ -952,23 +952,23 @@ LABEL_7:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
-  v4 = [(PedestrianARViewController *)self renderingView];
-  [v4 setShouldGenerateFeatures:1];
+  renderingView = [(PedestrianARViewController *)self renderingView];
+  [renderingView setShouldGenerateFeatures:1];
 
-  v5 = [(PedestrianARViewController *)self renderingView];
-  v6 = [v5 mapViewDelegate];
-  v7 = [v6 hasActiveFeatureSet];
+  renderingView2 = [(PedestrianARViewController *)self renderingView];
+  mapViewDelegate = [renderingView2 mapViewDelegate];
+  hasActiveFeatureSet = [mapViewDelegate hasActiveFeatureSet];
 
-  if (v7)
+  if (hasActiveFeatureSet)
   {
     v8 = sub_100C276B8();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Active feature already exists; no need to wait", buf, 0xCu);
     }
 
@@ -983,7 +983,7 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134349312;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2048;
       v20 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Waiting for active feature with timeout: %f", buf, 0x16u);
@@ -1008,8 +1008,8 @@ LABEL_7:
 
 - (BOOL)isWaitingForActiveFeature
 {
-  v2 = [(PedestrianARViewController *)self activeFeatureTimer];
-  v3 = v2 != 0;
+  activeFeatureTimer = [(PedestrianARViewController *)self activeFeatureTimer];
+  v3 = activeFeatureTimer != 0;
 
   return v3;
 }
@@ -1019,8 +1019,8 @@ LABEL_7:
   v3 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v3, &v6);
 
-  v4 = [(PedestrianARViewController *)self rerouteCompletionTimer];
-  LOBYTE(v3) = v4 == 0;
+  rerouteCompletionTimer = [(PedestrianARViewController *)self rerouteCompletionTimer];
+  LOBYTE(v3) = rerouteCompletionTimer == 0;
 
   if ((v3 & 1) == 0)
   {
@@ -1028,7 +1028,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Canceling reroute timer", buf, 0xCu);
     }
 
@@ -1042,8 +1042,8 @@ LABEL_7:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   if (![(PedestrianARViewController *)self isRerouteNecessary])
   {
@@ -1051,7 +1051,7 @@ LABEL_7:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v22 = "[PedestrianARViewController reroute]";
+      selfCopy3 = "[PedestrianARViewController reroute]";
       v23 = 2080;
       v24 = "PedestrianARViewController.m";
       v25 = 1024;
@@ -1068,15 +1068,15 @@ LABEL_7:
       {
         v16 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v22 = v16;
+        selfCopy3 = v16;
         v17 = v16;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
   }
 
-  v4 = [(PedestrianARViewController *)self rerouteCompletionTimer];
-  v5 = v4 == 0;
+  rerouteCompletionTimer = [(PedestrianARViewController *)self rerouteCompletionTimer];
+  v5 = rerouteCompletionTimer == 0;
 
   v6 = sub_100C276B8();
   v7 = v6;
@@ -1085,12 +1085,12 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Rerouting", buf, 0xCu);
     }
 
-    v8 = [(PedestrianARViewController *)self navigationService];
-    [v8 forceReroute];
+    navigationService = [(PedestrianARViewController *)self navigationService];
+    [navigationService forceReroute];
 
     GEOConfigGetDouble();
     v10 = v9;
@@ -1098,7 +1098,7 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134349312;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2048;
       v24 = *&v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Starting reroute completion timer with timeout: %f", buf, 0x16u);
@@ -1123,7 +1123,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Reroute already in progress; ignoring", buf, 0xCu);
     }
   }
@@ -1133,8 +1133,8 @@ LABEL_7:
 
 - (BOOL)isRerouting
 {
-  v2 = [(PedestrianARViewController *)self rerouteCompletionTimer];
-  v3 = v2 != 0;
+  rerouteCompletionTimer = [(PedestrianARViewController *)self rerouteCompletionTimer];
+  v3 = rerouteCompletionTimer != 0;
 
   return v3;
 }
@@ -1144,58 +1144,58 @@ LABEL_7:
   v3 = [(PedestrianARViewController *)self activity:0];
   os_activity_scope_enter(v3, &v30);
 
-  v4 = [(PedestrianARViewController *)self route];
-  if ([v4 source] == 2)
+  route = [(PedestrianARViewController *)self route];
+  if ([route source] == 2)
   {
 
 LABEL_4:
-    v7 = sub_100C276B8();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    lastLocation = sub_100C276B8();
+    if (os_log_type_enabled(lastLocation, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v32 = self;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] The current route is curated or user created; do not re-route", buf, 0xCu);
+      selfCopy4 = self;
+      _os_log_impl(&_mh_execute_header, lastLocation, OS_LOG_TYPE_INFO, "[%{public}p] The current route is curated or user created; do not re-route", buf, 0xCu);
     }
 
     v8 = 0;
     goto LABEL_23;
   }
 
-  v5 = [(PedestrianARViewController *)self route];
-  v6 = [v5 source] == 3;
+  route2 = [(PedestrianARViewController *)self route];
+  v6 = [route2 source] == 3;
 
   if (v6)
   {
     goto LABEL_4;
   }
 
-  v9 = [(PedestrianARViewController *)self navigationService];
-  v7 = [v9 lastLocation];
+  navigationService = [(PedestrianARViewController *)self navigationService];
+  lastLocation = [navigationService lastLocation];
 
-  v10 = [(PedestrianARViewController *)self session];
-  v11 = [v10 currentFrame];
-  v12 = [v11 location];
+  session = [(PedestrianARViewController *)self session];
+  currentFrame = [session currentFrame];
+  location = [currentFrame location];
 
-  if (v7 | v12)
+  if (lastLocation | location)
   {
-    if (v12)
+    if (location)
     {
-      v13 = v12;
+      v13 = location;
       v14 = [[GEOLocation alloc] initWithCLLocation:v13];
       v15 = [GEORouteMatcher alloc];
-      v16 = [(PedestrianARViewController *)self route];
-      v17 = [v15 initWithRoute:v16 auditToken:0];
+      route3 = [(PedestrianARViewController *)self route];
+      v17 = [v15 initWithRoute:route3 auditToken:0];
 
-      v18 = [v17 matchToRouteWithLocation:v14];
+      routeMatch = [v17 matchToRouteWithLocation:v14];
     }
 
     else
     {
-      v13 = v7;
-      v18 = [v13 routeMatch];
+      v13 = lastLocation;
+      routeMatch = [v13 routeMatch];
     }
 
-    [v18 distanceFromRoute];
+    [routeMatch distanceFromRoute];
     v20 = v19;
     GEOConfigGetDouble();
     v22 = v21;
@@ -1203,7 +1203,7 @@ LABEL_4:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 134349568;
-      v32 = self;
+      selfCopy4 = self;
       v33 = 2048;
       v34 = v20;
       v35 = 2048;
@@ -1221,7 +1221,7 @@ LABEL_4:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 134349568;
-        v32 = self;
+        selfCopy4 = self;
         v33 = 2048;
         v34 = v25;
         v35 = 2048;
@@ -1244,7 +1244,7 @@ LABEL_4:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v32 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] There is no known last location; cannot determine whether reroute is necessary", buf, 0xCu);
     }
 
@@ -1259,15 +1259,15 @@ LABEL_23:
 - (void)enableIdleTimer
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v2 = [v3 idleTimerController];
-  [v2 setDesiredIdleTimerState:0 forReason:4];
+  idleTimerController = [v3 idleTimerController];
+  [idleTimerController setDesiredIdleTimerState:0 forReason:4];
 }
 
 - (void)disableIdleTimer
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v2 = [v3 idleTimerController];
-  [v2 setDesiredIdleTimerState:1 forReason:4];
+  idleTimerController = [v3 idleTimerController];
+  [idleTimerController setDesiredIdleTimerState:1 forReason:4];
 }
 
 - (void)hideSafetyView
@@ -1278,16 +1278,16 @@ LABEL_23:
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self safetyView];
+    safetyView = [(PedestrianARViewController *)self safetyView];
     *buf = 134349312;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v5;
+    v11 = safetyView;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Hiding safety view: %p", buf, 0x16u);
   }
 
-  v6 = [(PedestrianARViewController *)self safetyView];
-  [v6 setHidden:1];
+  safetyView2 = [(PedestrianARViewController *)self safetyView];
+  [safetyView2 setHidden:1];
 
   os_activity_scope_leave(&v7);
 }
@@ -1300,16 +1300,16 @@ LABEL_23:
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self safetyView];
+    safetyView = [(PedestrianARViewController *)self safetyView];
     *buf = 134349312;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v5;
+    v11 = safetyView;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Showing safety view: %p", buf, 0x16u);
   }
 
-  v6 = [(PedestrianARViewController *)self safetyView];
-  [v6 setHidden:0];
+  safetyView2 = [(PedestrianARViewController *)self safetyView];
+  [safetyView2 setHidden:0];
 
   os_activity_scope_leave(&v7);
 }
@@ -1322,19 +1322,19 @@ LABEL_23:
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self arrowGuidanceView];
+    arrowGuidanceView = [(PedestrianARViewController *)self arrowGuidanceView];
     *buf = 134349312;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = v5;
+    v12 = arrowGuidanceView;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Hiding arrow guidance view: %p", buf, 0x16u);
   }
 
-  v6 = [(PedestrianARViewController *)self arrowGuidanceView];
-  [v6 _removeAllAnimations:0];
+  arrowGuidanceView2 = [(PedestrianARViewController *)self arrowGuidanceView];
+  [arrowGuidanceView2 _removeAllAnimations:0];
 
-  v7 = [(PedestrianARViewController *)self arrowGuidanceView];
-  [v7 setHidden:1];
+  arrowGuidanceView3 = [(PedestrianARViewController *)self arrowGuidanceView];
+  [arrowGuidanceView3 setHidden:1];
 
   os_activity_scope_leave(&v8);
 }
@@ -1343,26 +1343,26 @@ LABEL_23:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self arrowGuidanceView];
+    arrowGuidanceView = [(PedestrianARViewController *)self arrowGuidanceView];
     *buf = 134349312;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = v5;
+    v15 = arrowGuidanceView;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Showing arrow guidance view: %p", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(PedestrianARViewController *)self arrowGuidanceView];
-  [v6 setHidden:0];
+  arrowGuidanceView2 = [(PedestrianARViewController *)self arrowGuidanceView];
+  [arrowGuidanceView2 setHidden:0];
 
-  v7 = [(PedestrianARViewController *)self arrowGuidanceView];
-  [v7 setAlpha:0.0];
+  arrowGuidanceView3 = [(PedestrianARViewController *)self arrowGuidanceView];
+  [arrowGuidanceView3 setAlpha:0.0];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -1388,17 +1388,17 @@ LABEL_23:
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self failureContainee];
+    failureContainee = [(PedestrianARViewController *)self failureContainee];
     *buf = 134349312;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = v5;
+    v11 = failureContainee;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Hiding failure view: %p", buf, 0x16u);
   }
 
   [(ContainerViewController *)self popLastViewControllerAnimated:1];
-  v6 = [(PedestrianARViewController *)self closeButton];
-  [v6 setHidden:0];
+  closeButton = [(PedestrianARViewController *)self closeButton];
+  [closeButton setHidden:0];
 
   os_activity_scope_leave(&v7);
 }
@@ -1411,26 +1411,26 @@ LABEL_23:
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self failureContainee];
+    failureContainee = [(PedestrianARViewController *)self failureContainee];
     *buf = 134349312;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = v5;
+    v14 = failureContainee;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Showing failure view: %p", buf, 0x16u);
   }
 
-  v6 = [(PedestrianARViewController *)self vlfSession];
-  [v6 stop];
+  vlfSession = [(PedestrianARViewController *)self vlfSession];
+  [vlfSession stop];
 
-  v7 = [(PedestrianARViewController *)self vlfSession];
-  [v7 sendAnalytics:0];
+  vlfSession2 = [(PedestrianARViewController *)self vlfSession];
+  [vlfSession2 sendAnalytics:0];
 
   [(PedestrianARViewController *)self setArkitSessionStartTimestamp:0];
-  v8 = [(PedestrianARViewController *)self closeButton];
-  [v8 setHidden:1];
+  closeButton = [(PedestrianARViewController *)self closeButton];
+  [closeButton setHidden:1];
 
-  v9 = [(PedestrianARViewController *)self failureContainee];
-  [(ContainerViewController *)self presentController:v9];
+  failureContainee2 = [(PedestrianARViewController *)self failureContainee];
+  [(ContainerViewController *)self presentController:failureContainee2];
 
   os_activity_scope_leave(&v10);
 }
@@ -1443,19 +1443,19 @@ LABEL_23:
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self instructionContainerView];
+    instructionContainerView = [(PedestrianARViewController *)self instructionContainerView];
     *buf = 134349312;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = v5;
+    v12 = instructionContainerView;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Hiding instruction view: %p", buf, 0x16u);
   }
 
-  v6 = [(PedestrianARViewController *)self instructionContainerView];
-  [v6 _removeAllAnimations:1];
+  instructionContainerView2 = [(PedestrianARViewController *)self instructionContainerView];
+  [instructionContainerView2 _removeAllAnimations:1];
 
-  v7 = [(PedestrianARViewController *)self instructionContainerView];
-  [v7 setHidden:1];
+  instructionContainerView3 = [(PedestrianARViewController *)self instructionContainerView];
+  [instructionContainerView3 setHidden:1];
 
   os_activity_scope_leave(&v8);
 }
@@ -1464,26 +1464,26 @@ LABEL_23:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PedestrianARViewController *)self instructionContainerView];
+    instructionContainerView = [(PedestrianARViewController *)self instructionContainerView];
     *buf = 134349312;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = v5;
+    v15 = instructionContainerView;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Showing instruction view: %p", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(PedestrianARViewController *)self instructionContainerView];
-  [v6 setHidden:0];
+  instructionContainerView2 = [(PedestrianARViewController *)self instructionContainerView];
+  [instructionContainerView2 setHidden:0];
 
-  v7 = [(PedestrianARViewController *)self instructionContainerView];
-  [v7 setAlpha:0.0];
+  instructionContainerView3 = [(PedestrianARViewController *)self instructionContainerView];
+  [instructionContainerView3 setAlpha:0.0];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -1513,7 +1513,7 @@ LABEL_23:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Stopping pedestrian AR", buf, 0xCu);
     }
 
@@ -1524,21 +1524,21 @@ LABEL_23:
     v6 = objc_alloc_init(GEOVLFARFailureTypes);
     [v6 setArWalkingNoLabels:{-[PedestrianARViewController didRenderLabel](self, "didRenderLabel") ^ 1}];
     [v6 setArWalkingUndulationFailure:{-[PedestrianARViewController didFailUndulationLookup](self, "didFailUndulationLookup")}];
-    v7 = [(PedestrianARViewController *)self vlfSession];
-    [v7 stop];
+    vlfSession = [(PedestrianARViewController *)self vlfSession];
+    [vlfSession stop];
 
-    v8 = [(PedestrianARViewController *)self vlfSession];
-    [v8 sendAnalytics:v6];
+    vlfSession2 = [(PedestrianARViewController *)self vlfSession];
+    [vlfSession2 sendAnalytics:v6];
 
     [(PedestrianARViewController *)self setArkitSessionStartTimestamp:0];
     v9 = +[MapsARSessionManager sharedManager];
     [v9 resignSessionWithOwner:self];
 
-    v10 = [(PedestrianARViewController *)self arrowGuidanceView];
-    [v10 stop];
+    arrowGuidanceView = [(PedestrianARViewController *)self arrowGuidanceView];
+    [arrowGuidanceView stop];
 
-    v11 = [(PedestrianARViewController *)self arDelegate];
-    [v11 pedestrianARViewControllerDidStop:self];
+    arDelegate = [(PedestrianARViewController *)self arDelegate];
+    [arDelegate pedestrianARViewControllerDidStop:self];
 
     v12 = +[PedestrianARFloatingDebugViewController sharedInstance];
     [v12 setSession:0];
@@ -1556,14 +1556,14 @@ LABEL_23:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2080;
     v35 = "[PedestrianARViewController start]";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] %s", buf, 0x16u);
   }
 
-  v5 = [(PedestrianARViewController *)self arkitSessionStartTimestamp];
-  v6 = v5 == 0;
+  arkitSessionStartTimestamp = [(PedestrianARViewController *)self arkitSessionStartTimestamp];
+  v6 = arkitSessionStartTimestamp == 0;
 
   if (v6)
   {
@@ -1577,14 +1577,14 @@ LABEL_23:
     v12 = sub_100799F08();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(GEOComposedRoute *)self->_route origin];
-      v14 = [v13 hawkQueryRepresentation];
-      v15 = [(GEOComposedRoute *)self->_route destination];
-      v16 = [v15 hawkQueryRepresentation];
+      origin = [(GEOComposedRoute *)self->_route origin];
+      hawkQueryRepresentation = [origin hawkQueryRepresentation];
+      destination = [(GEOComposedRoute *)self->_route destination];
+      hawkQueryRepresentation2 = [destination hawkQueryRepresentation];
       *buf = 138478083;
-      v33 = v14;
+      selfCopy2 = hawkQueryRepresentation;
       v34 = 2113;
-      v35 = v16;
+      v35 = hawkQueryRepresentation2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Origin: %{private}@ -- Destination: %{private}@", buf, 0x16u);
     }
 
@@ -1596,41 +1596,41 @@ LABEL_23:
     v18 = [[VLFSession alloc] initWithMode:0];
     [(PedestrianARViewController *)self setVlfSession:v18];
 
-    v19 = [(PedestrianARViewController *)self vlfSession];
-    [v19 setDelegate:self];
+    vlfSession = [(PedestrianARViewController *)self vlfSession];
+    [vlfSession setDelegate:self];
 
     if ([(PedestrianARViewController *)self entryPoint])
     {
-      v20 = [(PedestrianARViewController *)self vlfSession];
-      [v20 setEntryPoint:4];
+      vlfSession2 = [(PedestrianARViewController *)self vlfSession];
+      [vlfSession2 setEntryPoint:4];
     }
 
     else
     {
-      v20 = [(PedestrianARViewController *)self vlfSession];
-      [v20 setEntryPoint:3];
+      vlfSession2 = [(PedestrianARViewController *)self vlfSession];
+      [vlfSession2 setEntryPoint:3];
     }
 
-    v21 = [(PedestrianARViewController *)self vlfSession];
-    [v21 start];
+    vlfSession3 = [(PedestrianARViewController *)self vlfSession];
+    [vlfSession3 start];
 
-    v22 = [(PedestrianARViewController *)self notificationGenerator];
-    [v22 prepare];
+    notificationGenerator = [(PedestrianARViewController *)self notificationGenerator];
+    [notificationGenerator prepare];
 
-    v23 = [(PedestrianARViewController *)self vlfSession];
-    v24 = [v23 session];
+    vlfSession4 = [(PedestrianARViewController *)self vlfSession];
+    session = [vlfSession4 session];
     v25 = +[PedestrianARFloatingDebugViewController sharedInstance];
-    [v25 setSession:v24];
+    [v25 setSession:session];
 
-    v26 = [(PedestrianARViewController *)self vlfSession];
-    v27 = [v26 session];
-    v28 = [(PedestrianARViewController *)self localizingView];
-    [v28 setSession:v27];
+    vlfSession5 = [(PedestrianARViewController *)self vlfSession];
+    session2 = [vlfSession5 session];
+    localizingView = [(PedestrianARViewController *)self localizingView];
+    [localizingView setSession:session2];
 
-    v10 = [(PedestrianARViewController *)self vlfSession];
-    v29 = [v10 session];
-    v30 = [(PedestrianARViewController *)self renderingView];
-    [v30 setSession:v29];
+    vlfSession6 = [(PedestrianARViewController *)self vlfSession];
+    session3 = [vlfSession6 session];
+    renderingView = [(PedestrianARViewController *)self renderingView];
+    [renderingView setSession:session3];
   }
 
   else
@@ -1639,7 +1639,7 @@ LABEL_23:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v33 = "[PedestrianARViewController start]";
+      selfCopy2 = "[PedestrianARViewController start]";
       v34 = 2080;
       v35 = "PedestrianARViewController.m";
       v36 = 1024;
@@ -1654,17 +1654,17 @@ LABEL_23:
       {
         v9 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v33 = v9;
+        selfCopy2 = v9;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
 
-    v10 = sub_100C276B8();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    vlfSession6 = sub_100C276B8();
+    if (os_log_type_enabled(vlfSession6, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v33 = self;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}p] ARKit session has already been started. Cannot start twice.", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, vlfSession6, OS_LOG_TYPE_ERROR, "[%{public}p] ARKit session has already been started. Cannot start twice.", buf, 0xCu);
     }
   }
 
@@ -1674,16 +1674,16 @@ LABEL_23:
 - (void)createViews
 {
   v3 = [PedestrianARRenderingView alloc];
-  v4 = [(PedestrianARViewController *)self guidanceObserver];
-  v5 = [(PedestrianARViewController *)self navigationService];
-  v6 = [(PedestrianARRenderingView *)v3 initWithGuidanceObserver:v4 navigationService:v5];
+  guidanceObserver = [(PedestrianARViewController *)self guidanceObserver];
+  navigationService = [(PedestrianARViewController *)self navigationService];
+  v6 = [(PedestrianARRenderingView *)v3 initWithGuidanceObserver:guidanceObserver navigationService:navigationService];
 
   [(PedestrianARRenderingView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(PedestrianARViewController *)self route];
-  [(PedestrianARRenderingView *)v6 setRoute:v7];
+  route = [(PedestrianARViewController *)self route];
+  [(PedestrianARRenderingView *)v6 setRoute:route];
 
-  v8 = [(PedestrianARRenderingView *)v6 mapViewDelegate];
-  [v8 registerObserver:self];
+  mapViewDelegate = [(PedestrianARRenderingView *)v6 mapViewDelegate];
+  [mapViewDelegate registerObserver:self];
 
   renderingView = self->_renderingView;
   self->_renderingView = v6;
@@ -1733,12 +1733,12 @@ LABEL_5:
   [v21 setNonBlurredColor:v22];
 
   [v21 _setCornerRadius:21.0];
-  v23 = [v21 layer];
-  [v23 setMasksToBounds:1];
+  layer = [v21 layer];
+  [layer setMasksToBounds:1];
 
   [v21 setClipsToBounds:1];
-  v24 = [(PedestrianARViewController *)self traitCollection];
-  v25 = [v24 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryLarge];
+  traitCollection = [(PedestrianARViewController *)self traitCollection];
+  v25 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryLarge];
   v26 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:v25 compatibleWithTraitCollection:UIFontWeightBold];
   v61 = [UIImageSymbolConfiguration configurationWithFont:v26];
 
@@ -1753,21 +1753,21 @@ LABEL_5:
 
   [v28 addTarget:self action:"closeButtonTapped:" forControlEvents:64];
   [v21 addSubview:v28];
-  v59 = [v28 leadingAnchor];
-  v58 = [v21 leadingAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  leadingAnchor = [v28 leadingAnchor];
+  leadingAnchor2 = [v21 leadingAnchor];
+  v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v62[0] = v57;
-  v56 = [v28 trailingAnchor];
-  v55 = [v21 trailingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  trailingAnchor = [v28 trailingAnchor];
+  trailingAnchor2 = [v21 trailingAnchor];
+  v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v62[1] = v54;
-  v30 = [v28 topAnchor];
-  v31 = [v21 topAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  topAnchor = [v28 topAnchor];
+  topAnchor2 = [v21 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v62[2] = v32;
-  v33 = [v28 bottomAnchor];
-  v34 = [v21 bottomAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  bottomAnchor = [v28 bottomAnchor];
+  bottomAnchor2 = [v21 bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v62[3] = v35;
   v36 = [NSArray arrayWithObjects:v62 count:4];
   [NSLayoutConstraint activateConstraints:v36];
@@ -1776,23 +1776,23 @@ LABEL_5:
   self->_closeButton = v21;
 
   v38 = [PedestrianARInstructionContainerView alloc];
-  v39 = [(PedestrianARRenderingView *)self->_renderingView mapViewDelegate];
-  v40 = [(PedestrianARInstructionContainerView *)v38 initWithMapViewDelegate:v39 navigationService:self->_navigationService];
+  mapViewDelegate2 = [(PedestrianARRenderingView *)self->_renderingView mapViewDelegate];
+  v40 = [(PedestrianARInstructionContainerView *)v38 initWithMapViewDelegate:mapViewDelegate2 navigationService:self->_navigationService];
 
   [(PedestrianARInstructionContainerView *)v40 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PedestrianARInstructionContainerView *)v40 setUserInteractionEnabled:0];
   [(PedestrianARInstructionContainerView *)v40 setHidden:1];
-  v41 = [(PedestrianARViewController *)self route];
-  [(PedestrianARInstructionContainerView *)v40 setRoute:v41];
+  route2 = [(PedestrianARViewController *)self route];
+  [(PedestrianARInstructionContainerView *)v40 setRoute:route2];
 
   instructionContainerView = self->_instructionContainerView;
   self->_instructionContainerView = v40;
 
   v43 = [PedestrianARArrowGuidanceView alloc];
-  v44 = [(PedestrianARRenderingView *)self->_renderingView mapViewDelegate];
-  v45 = [(PedestrianARViewController *)self route];
-  v46 = [(PedestrianARViewController *)self activity];
-  v47 = [(PedestrianARArrowGuidanceView *)v43 initWithMapViewDelegate:v44 route:v45 activity:v46];
+  mapViewDelegate3 = [(PedestrianARRenderingView *)self->_renderingView mapViewDelegate];
+  route3 = [(PedestrianARViewController *)self route];
+  activity = [(PedestrianARViewController *)self activity];
+  v47 = [(PedestrianARArrowGuidanceView *)v43 initWithMapViewDelegate:mapViewDelegate3 route:route3 activity:activity];
 
   [(PedestrianARArrowGuidanceView *)v47 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PedestrianARArrowGuidanceView *)v47 setUserInteractionEnabled:0];
@@ -1806,9 +1806,9 @@ LABEL_5:
   self->_failureContainee = v49;
 
   v51 = +[NSUserDefaults standardUserDefaults];
-  LODWORD(v44) = [v51 BOOLForKey:@"PedestrianARSafetyUIKey"];
+  LODWORD(mapViewDelegate3) = [v51 BOOLForKey:@"PedestrianARSafetyUIKey"];
 
-  if (v44)
+  if (mapViewDelegate3)
   {
     v52 = objc_alloc_init(PedestrianARSafetyView);
     [(PedestrianARSafetyView *)v52 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -1821,17 +1821,17 @@ LABEL_5:
 
 - (BOOL)isShowingFailureView
 {
-  v2 = self;
-  v3 = [(ContainerViewController *)self currentViewController];
-  v4 = [(PedestrianARViewController *)v2 failureContainee];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  currentViewController = [(ContainerViewController *)self currentViewController];
+  failureContainee = [(PedestrianARViewController *)selfCopy failureContainee];
+  LOBYTE(selfCopy) = currentViewController == failureContainee;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v7 = dispatch_queue_get_label(0);
   if (label != v7)
@@ -1875,105 +1875,105 @@ LABEL_5:
   os_activity_scope_enter(v9, &v18);
 
   v10 = self->_route;
-  v11 = v5;
+  v11 = routeCopy;
   if (v11 | v10)
   {
     v12 = [v10 isEqual:v11];
 
     if ((v12 & 1) == 0)
     {
-      objc_storeStrong(&self->_route, a3);
-      v13 = [(PedestrianARViewController *)self renderingView];
-      [v13 setRoute:v11];
+      objc_storeStrong(&self->_route, route);
+      renderingView = [(PedestrianARViewController *)self renderingView];
+      [renderingView setRoute:v11];
 
-      v14 = [(PedestrianARViewController *)self instructionContainerView];
-      [v14 setRoute:v11];
+      instructionContainerView = [(PedestrianARViewController *)self instructionContainerView];
+      [instructionContainerView setRoute:v11];
     }
   }
 
   os_activity_scope_leave(&v18);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
-    v5 = [(PedestrianARViewController *)self activity];
-    os_activity_scope_enter(v5, &state);
+    activity = [(PedestrianARViewController *)self activity];
+    os_activity_scope_enter(activity, &state);
 
     if ([(PedestrianARViewController *)self isStopping])
     {
-      v6 = sub_100C276B8();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      gradientOverlay = sub_100C276B8();
+      if (os_log_type_enabled(gradientOverlay, OS_LOG_TYPE_INFO))
       {
-        if (a3 >= 4)
+        if (state >= 4)
         {
-          v7 = [NSString stringWithFormat:@"%ld", a3];
+          state = [NSString stringWithFormat:@"%ld", state];
         }
 
         else
         {
-          v7 = off_10164E1E8[a3];
+          state = off_10164E1E8[state];
         }
 
         *buf = 134349314;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2112;
-        v35 = v7;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Requested to update state: %@, but we are currently stopping; ignoring", buf, 0x16u);
+        v35 = state;
+        _os_log_impl(&_mh_execute_header, gradientOverlay, OS_LOG_TYPE_INFO, "[%{public}p] Requested to update state: %@, but we are currently stopping; ignoring", buf, 0x16u);
       }
     }
 
     else
     {
-      self->_state = a3;
+      self->_state = state;
       v8 = sub_100C276B8();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        if (a3 >= 4)
+        if (state >= 4)
         {
-          v9 = [NSString stringWithFormat:@"%ld", a3];
+          state2 = [NSString stringWithFormat:@"%ld", state];
         }
 
         else
         {
-          v9 = off_10164E1E8[a3];
+          state2 = off_10164E1E8[state];
         }
 
         *buf = 134349314;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 2112;
-        v35 = v9;
+        v35 = state2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating state: %@", buf, 0x16u);
       }
 
-      if (a3 > 1)
+      if (state > 1)
       {
-        if (a3 == 2)
+        if (state == 2)
         {
           objc_initWeak(buf, self);
-          v22 = [(PedestrianARViewController *)self localizingView];
+          localizingView = [(PedestrianARViewController *)self localizingView];
           v29[0] = _NSConcreteStackBlock;
           v29[1] = 3221225472;
           v29[2] = sub_100C2DAE8;
           v29[3] = &unk_1016619A8;
           objc_copyWeak(&v30, buf);
-          [v22 hideAnimated:1 completion:v29];
+          [localizingView hideAnimated:1 completion:v29];
 
           [(PedestrianARViewController *)self showInstructionView];
           [(PedestrianARViewController *)self showArrowGuidanceView];
           [(PedestrianARViewController *)self hideFailureView];
-          v23 = [(PedestrianARViewController *)self safetyView];
-          [v23 didStartARSession];
+          safetyView = [(PedestrianARViewController *)self safetyView];
+          [safetyView didStartARSession];
 
           [(PedestrianARViewController *)self showSafetyView];
-          v24 = [(PedestrianARViewController *)self renderingView];
-          [v24 setShouldGenerateFeatures:1];
+          renderingView = [(PedestrianARViewController *)self renderingView];
+          [renderingView setShouldGenerateFeatures:1];
 
-          v25 = [(PedestrianARViewController *)self renderingView];
-          [v25 setShouldShowFeatures:1];
+          renderingView2 = [(PedestrianARViewController *)self renderingView];
+          [renderingView2 setShouldShowFeatures:1];
 
           [(PedestrianARViewController *)self disableIdleTimer];
           [(PedestrianARViewController *)self stopFailureViewTimeoutTimer];
@@ -1983,29 +1983,29 @@ LABEL_5:
           objc_destroyWeak(buf);
         }
 
-        else if (a3 == 3)
+        else if (state == 3)
         {
           objc_initWeak(buf, self);
-          v15 = [(PedestrianARViewController *)self localizingView];
+          localizingView2 = [(PedestrianARViewController *)self localizingView];
           v27[0] = _NSConcreteStackBlock;
           v27[1] = 3221225472;
           v27[2] = sub_100C2DB6C;
           v27[3] = &unk_1016619A8;
           objc_copyWeak(&v28, buf);
-          [v15 hideAnimated:0 completion:v27];
+          [localizingView2 hideAnimated:0 completion:v27];
 
           [(PedestrianARViewController *)self hideInstructionView];
           [(PedestrianARViewController *)self hideArrowGuidanceView];
           [(PedestrianARViewController *)self showFailureView];
           [(PedestrianARViewController *)self hideSafetyView];
-          v16 = [(PedestrianARViewController *)self safetyView];
-          [v16 didEndARSession];
+          safetyView2 = [(PedestrianARViewController *)self safetyView];
+          [safetyView2 didEndARSession];
 
-          v17 = [(PedestrianARViewController *)self renderingView];
-          [v17 setShouldGenerateFeatures:1];
+          renderingView3 = [(PedestrianARViewController *)self renderingView];
+          [renderingView3 setShouldGenerateFeatures:1];
 
-          v18 = [(PedestrianARViewController *)self renderingView];
-          [v18 setShouldShowFeatures:0];
+          renderingView4 = [(PedestrianARViewController *)self renderingView];
+          [renderingView4 setShouldShowFeatures:0];
 
           [(PedestrianARViewController *)self enableIdleTimer];
           [(PedestrianARViewController *)self startFailureViewTimeoutTimer];
@@ -2016,30 +2016,30 @@ LABEL_5:
         }
       }
 
-      else if (a3)
+      else if (state)
       {
-        if (a3 == 1)
+        if (state == 1)
         {
           [(PedestrianARViewController *)self resetAnalytics];
           [(PedestrianARViewController *)self hideInstructionView];
           [(PedestrianARViewController *)self hideArrowGuidanceView];
           [(PedestrianARViewController *)self hideFailureView];
           [(PedestrianARViewController *)self hideSafetyView];
-          v10 = [(PedestrianARViewController *)self safetyView];
-          [v10 didEndARSession];
+          safetyView3 = [(PedestrianARViewController *)self safetyView];
+          [safetyView3 didEndARSession];
 
-          v11 = [(PedestrianARViewController *)self isRerouteNecessary];
-          v12 = [(PedestrianARViewController *)self renderingView];
-          [v12 setShouldGenerateFeatures:v11 ^ 1];
+          isRerouteNecessary = [(PedestrianARViewController *)self isRerouteNecessary];
+          renderingView5 = [(PedestrianARViewController *)self renderingView];
+          [renderingView5 setShouldGenerateFeatures:isRerouteNecessary ^ 1];
 
-          v13 = [(PedestrianARViewController *)self renderingView];
-          [v13 setShouldShowFeatures:0];
+          renderingView6 = [(PedestrianARViewController *)self renderingView];
+          [renderingView6 setShouldShowFeatures:0];
 
           [(PedestrianARViewController *)self disableIdleTimer];
           [(PedestrianARViewController *)self stopFailureViewTimeoutTimer];
           [(PedestrianARViewController *)self cancelReroute];
-          v14 = [(PedestrianARViewController *)self localizingView];
-          [v14 showAnimated:1 completion:0];
+          localizingView3 = [(PedestrianARViewController *)self localizingView];
+          [localizingView3 showAnimated:1 completion:0];
 
           [GEOAPPortal captureUserAction:123 target:[(PedestrianARViewController *)self analyticsTarget] value:0];
         }
@@ -2051,7 +2051,7 @@ LABEL_5:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315650;
-          v33 = "[PedestrianARViewController setState:]";
+          selfCopy2 = "[PedestrianARViewController setState:]";
           v34 = 2080;
           v35 = "PedestrianARViewController.m";
           v36 = 1024;
@@ -2066,15 +2066,15 @@ LABEL_5:
           {
             v21 = +[NSThread callStackSymbols];
             *buf = 138412290;
-            v33 = v21;
+            selfCopy2 = v21;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
         }
       }
 
       v26 = self->_state;
-      v6 = [(PedestrianARViewController *)self gradientOverlay];
-      [v6 setState:v26];
+      gradientOverlay = [(PedestrianARViewController *)self gradientOverlay];
+      [gradientOverlay setState:v26];
     }
 
     os_activity_scope_leave(&state);
@@ -2092,30 +2092,30 @@ LABEL_5:
     v5 = self->_localizingView;
     self->_localizingView = v4;
 
-    v6 = [(PedestrianARViewController *)self view];
+    view = [(PedestrianARViewController *)self view];
     v7 = self->_localizingView;
-    v8 = [(PedestrianARViewController *)self gradientOverlay];
-    [v6 insertSubview:v7 aboveSubview:v8];
+    gradientOverlay = [(PedestrianARViewController *)self gradientOverlay];
+    [view insertSubview:v7 aboveSubview:gradientOverlay];
 
-    v25 = [(PedestrianARLocalizingView *)self->_localizingView leadingAnchor];
-    v26 = [(PedestrianARViewController *)self view];
-    v24 = [v26 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    leadingAnchor = [(PedestrianARLocalizingView *)self->_localizingView leadingAnchor];
+    view2 = [(PedestrianARViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v27[0] = v23;
-    v21 = [(PedestrianARLocalizingView *)self->_localizingView trailingAnchor];
-    v22 = [(PedestrianARViewController *)self view];
-    v20 = [v22 trailingAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20];
+    trailingAnchor = [(PedestrianARLocalizingView *)self->_localizingView trailingAnchor];
+    view3 = [(PedestrianARViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v27[1] = v19;
-    v18 = [(PedestrianARLocalizingView *)self->_localizingView topAnchor];
-    v9 = [(PedestrianARViewController *)self view];
-    v10 = [v9 topAnchor];
-    v11 = [v18 constraintEqualToAnchor:v10];
+    topAnchor = [(PedestrianARLocalizingView *)self->_localizingView topAnchor];
+    view4 = [(PedestrianARViewController *)self view];
+    topAnchor2 = [view4 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v27[2] = v11;
-    v12 = [(PedestrianARLocalizingView *)self->_localizingView bottomAnchor];
-    v13 = [(PedestrianARViewController *)self view];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [(PedestrianARLocalizingView *)self->_localizingView bottomAnchor];
+    view5 = [(PedestrianARViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v27[3] = v15;
     v16 = [NSArray arrayWithObjects:v27 count:4];
     [NSLayoutConstraint activateConstraints:v16];
@@ -2126,120 +2126,120 @@ LABEL_5:
   return localizingView;
 }
 
-- (void)_updateConstraintsForLandscape:(BOOL)a3
+- (void)_updateConstraintsForLandscape:(BOOL)landscape
 {
-  if (!a3)
+  if (!landscape)
   {
-    v18 = [(PedestrianARViewController *)self closeButtonTopConstraint];
-    [v18 setConstant:10.0];
+    closeButtonTopConstraint = [(PedestrianARViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint setConstant:10.0];
 
-    v19 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
-    [v19 setActive:0];
+    closeButtonTrailingConstraint = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
+    [closeButtonTrailingConstraint setActive:0];
 
-    v20 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
-    [v20 setActive:1];
+    closeButtonSafeAreaTrailingConstraint = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
+    [closeButtonSafeAreaTrailingConstraint setActive:1];
 
-    v21 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
-    [v21 setConstant:-16.0];
+    closeButtonSafeAreaTrailingConstraint2 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
+    [closeButtonSafeAreaTrailingConstraint2 setConstant:-16.0];
 
-    v22 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingSafeAreaConstraint];
-    [v22 setActive:0];
+    arrowGuidanceViewLeadingSafeAreaConstraint = [(PedestrianARViewController *)self arrowGuidanceViewLeadingSafeAreaConstraint];
+    [arrowGuidanceViewLeadingSafeAreaConstraint setActive:0];
 
-    v23 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingSafeAreaConstraint];
-    [v23 setActive:0];
+    arrowGuidanceViewTrailingSafeAreaConstraint = [(PedestrianARViewController *)self arrowGuidanceViewTrailingSafeAreaConstraint];
+    [arrowGuidanceViewTrailingSafeAreaConstraint setActive:0];
 
-    v24 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
-    [v24 setActive:1];
+    arrowGuidanceViewLeadingConstraint = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
+    [arrowGuidanceViewLeadingConstraint setActive:1];
 
-    v25 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
-    [v25 setActive:1];
+    arrowGuidanceViewTrailingConstraint = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
+    [arrowGuidanceViewTrailingConstraint setActive:1];
 
-    v26 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
-    [v26 setConstant:16.0];
+    arrowGuidanceViewLeadingConstraint2 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
+    [arrowGuidanceViewLeadingConstraint2 setConstant:16.0];
 
-    v27 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
+    arrowGuidanceViewTrailingConstraint2 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
     v28 = -16.0;
     goto LABEL_9;
   }
 
-  v4 = [(PedestrianARViewController *)self view];
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
+  view = [(PedestrianARViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  v6 = [(PedestrianARViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  v9 = [v8 interfaceOrientation];
+  view2 = [(PedestrianARViewController *)self view];
+  window = [view2 window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  if (v5 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
-    if (v9 != 4)
+    if (interfaceOrientation != 4)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v29 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
-    [v29 setActive:0];
+    closeButtonTrailingConstraint2 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
+    [closeButtonTrailingConstraint2 setActive:0];
 
-    v30 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
-    [v30 setActive:1];
+    closeButtonSafeAreaTrailingConstraint3 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
+    [closeButtonSafeAreaTrailingConstraint3 setActive:1];
 
-    v31 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
-    [v31 setConstant:0.0];
+    closeButtonSafeAreaTrailingConstraint4 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
+    [closeButtonSafeAreaTrailingConstraint4 setConstant:0.0];
 
-    v32 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingSafeAreaConstraint];
-    [v32 setActive:0];
+    arrowGuidanceViewLeadingSafeAreaConstraint2 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingSafeAreaConstraint];
+    [arrowGuidanceViewLeadingSafeAreaConstraint2 setActive:0];
 
-    v33 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingSafeAreaConstraint];
-    [v33 setActive:1];
+    arrowGuidanceViewTrailingSafeAreaConstraint2 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingSafeAreaConstraint];
+    [arrowGuidanceViewTrailingSafeAreaConstraint2 setActive:1];
 
-    v34 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
-    [v34 setActive:1];
+    arrowGuidanceViewLeadingConstraint3 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
+    [arrowGuidanceViewLeadingConstraint3 setActive:1];
 
-    v35 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
-    [v35 setConstant:24.0];
+    arrowGuidanceViewLeadingConstraint4 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
+    [arrowGuidanceViewLeadingConstraint4 setConstant:24.0];
 
-    v17 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
-    [v17 setActive:0];
+    arrowGuidanceViewTrailingConstraint3 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
+    [arrowGuidanceViewTrailingConstraint3 setActive:0];
     goto LABEL_8;
   }
 
-  if (v9 == 3)
+  if (interfaceOrientation == 3)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v10 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
-  [v10 setActive:0];
+  closeButtonSafeAreaTrailingConstraint5 = [(PedestrianARViewController *)self closeButtonSafeAreaTrailingConstraint];
+  [closeButtonSafeAreaTrailingConstraint5 setActive:0];
 
-  v11 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
-  [v11 setActive:1];
+  closeButtonTrailingConstraint3 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
+  [closeButtonTrailingConstraint3 setActive:1];
 
-  v12 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
-  [v12 setConstant:-24.0];
+  closeButtonTrailingConstraint4 = [(PedestrianARViewController *)self closeButtonTrailingConstraint];
+  [closeButtonTrailingConstraint4 setConstant:-24.0];
 
-  v13 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingSafeAreaConstraint];
-  [v13 setActive:1];
+  arrowGuidanceViewLeadingSafeAreaConstraint3 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingSafeAreaConstraint];
+  [arrowGuidanceViewLeadingSafeAreaConstraint3 setActive:1];
 
-  v14 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingSafeAreaConstraint];
-  [v14 setActive:0];
+  arrowGuidanceViewTrailingSafeAreaConstraint3 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingSafeAreaConstraint];
+  [arrowGuidanceViewTrailingSafeAreaConstraint3 setActive:0];
 
-  v15 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
-  [v15 setActive:0];
+  arrowGuidanceViewLeadingConstraint5 = [(PedestrianARViewController *)self arrowGuidanceViewLeadingConstraint];
+  [arrowGuidanceViewLeadingConstraint5 setActive:0];
 
-  v16 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
-  [v16 setActive:1];
+  arrowGuidanceViewTrailingConstraint4 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
+  [arrowGuidanceViewTrailingConstraint4 setActive:1];
 
-  v17 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
-  [v17 setConstant:-24.0];
+  arrowGuidanceViewTrailingConstraint3 = [(PedestrianARViewController *)self arrowGuidanceViewTrailingConstraint];
+  [arrowGuidanceViewTrailingConstraint3 setConstant:-24.0];
 LABEL_8:
 
-  v27 = [(PedestrianARViewController *)self closeButtonTopConstraint];
+  arrowGuidanceViewTrailingConstraint2 = [(PedestrianARViewController *)self closeButtonTopConstraint];
   v28 = 24.0;
 LABEL_9:
-  v36 = v27;
-  [v27 setConstant:v28];
+  v36 = arrowGuidanceViewTrailingConstraint2;
+  [arrowGuidanceViewTrailingConstraint2 setConstant:v28];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -2247,24 +2247,24 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = PedestrianARViewController;
   [(ContainerViewController *)&v7 viewSafeAreaInsetsDidChange];
-  v3 = [(PedestrianARViewController *)self view];
-  [v3 frame];
+  view = [(PedestrianARViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v8);
-  v5 = [(PedestrianARViewController *)self view];
-  [v5 frame];
+  view2 = [(PedestrianARViewController *)self view];
+  [view2 frame];
   v6 = Width > CGRectGetHeight(v9);
 
   [(PedestrianARViewController *)self _updateConstraintsForLandscape:v6];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = PedestrianARViewController;
-  [(ContainerViewController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ContainerViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -2278,19 +2278,19 @@ LABEL_9:
   v8[3] = &unk_10164E158;
   objc_copyWeak(&v9, &location);
   v10 = width > height;
-  [v7 animateAlongsideTransition:v11 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v6 = sub_100799F08();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -2301,27 +2301,27 @@ LABEL_9:
 
   v7.receiver = self;
   v7.super_class = PedestrianARViewController;
-  [(ContainerViewController *)&v7 viewWillDisappear:v3];
+  [(ContainerViewController *)&v7 viewWillDisappear:disappearCopy];
   [(PedestrianARViewController *)self stop];
   os_activity_scope_leave(&state);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v5 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v5, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v10.receiver = self;
   v10.super_class = PedestrianARViewController;
-  [(ContainerViewController *)&v10 viewWillAppear:v3];
+  [(ContainerViewController *)&v10 viewWillAppear:appearCopy];
   v6 = +[PedestrianARSessionUsageTracker sharedInstance];
-  v7 = [(PedestrianARViewController *)self route];
-  v8 = [v7 uniqueRouteID];
-  v9 = [v8 UUIDString];
-  [v6 registerUserEnteredARForRoute:v9 entryPoint:{-[PedestrianARViewController entryPoint](self, "entryPoint")}];
+  route = [(PedestrianARViewController *)self route];
+  uniqueRouteID = [route uniqueRouteID];
+  uUIDString = [uniqueRouteID UUIDString];
+  [v6 registerUserEnteredARForRoute:uUIDString entryPoint:{-[PedestrianARViewController entryPoint](self, "entryPoint")}];
 
   os_activity_scope_leave(&state);
 }
@@ -2333,205 +2333,205 @@ LABEL_9:
   [(ContainerViewController *)&v161 viewDidLoad];
   [(PedestrianARViewController *)self setOverrideUserInterfaceStyle:2];
   v160 = +[NSMutableArray array];
-  v3 = [(PedestrianARViewController *)self view];
+  view = [(PedestrianARViewController *)self view];
   renderingView = self->_renderingView;
-  v5 = [(ContainerViewController *)self containerView];
-  [v3 insertSubview:renderingView belowSubview:v5];
+  containerView = [(ContainerViewController *)self containerView];
+  [view insertSubview:renderingView belowSubview:containerView];
 
-  v149 = [(PedestrianARRenderingView *)self->_renderingView leadingAnchor];
-  v154 = [(PedestrianARViewController *)self view];
-  v144 = [v154 leadingAnchor];
-  v139 = [v149 constraintEqualToAnchor:v144];
+  leadingAnchor = [(PedestrianARRenderingView *)self->_renderingView leadingAnchor];
+  view2 = [(PedestrianARViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v139 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v168[0] = v139;
-  v129 = [(PedestrianARRenderingView *)self->_renderingView trailingAnchor];
-  v134 = [(PedestrianARViewController *)self view];
-  v124 = [v134 trailingAnchor];
-  v120 = [v129 constraintEqualToAnchor:v124];
+  trailingAnchor = [(PedestrianARRenderingView *)self->_renderingView trailingAnchor];
+  view3 = [(PedestrianARViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v120 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v168[1] = v120;
-  v6 = [(PedestrianARRenderingView *)self->_renderingView topAnchor];
-  v7 = [(PedestrianARViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [(PedestrianARRenderingView *)self->_renderingView topAnchor];
+  view4 = [(PedestrianARViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v168[2] = v9;
-  v10 = [(PedestrianARRenderingView *)self->_renderingView bottomAnchor];
-  v11 = [(PedestrianARViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  bottomAnchor = [(PedestrianARRenderingView *)self->_renderingView bottomAnchor];
+  view5 = [(PedestrianARViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v168[3] = v13;
   v14 = [NSArray arrayWithObjects:v168 count:4];
   [v160 addObjectsFromArray:v14];
 
-  v15 = [(PedestrianARViewController *)self view];
+  view6 = [(PedestrianARViewController *)self view];
   gradientOverlay = self->_gradientOverlay;
-  v17 = [(ContainerViewController *)self containerView];
-  [v15 insertSubview:gradientOverlay belowSubview:v17];
+  containerView2 = [(ContainerViewController *)self containerView];
+  [view6 insertSubview:gradientOverlay belowSubview:containerView2];
 
-  v150 = [(PedestrianARGradientOverlay *)self->_gradientOverlay leadingAnchor];
-  v155 = [(PedestrianARViewController *)self view];
-  v145 = [v155 leadingAnchor];
-  v140 = [v150 constraintEqualToAnchor:v145];
+  leadingAnchor3 = [(PedestrianARGradientOverlay *)self->_gradientOverlay leadingAnchor];
+  view7 = [(PedestrianARViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v140 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v167[0] = v140;
-  v130 = [(PedestrianARGradientOverlay *)self->_gradientOverlay trailingAnchor];
-  v135 = [(PedestrianARViewController *)self view];
-  v125 = [v135 trailingAnchor];
-  v121 = [v130 constraintEqualToAnchor:v125];
+  trailingAnchor3 = [(PedestrianARGradientOverlay *)self->_gradientOverlay trailingAnchor];
+  view8 = [(PedestrianARViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v121 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v167[1] = v121;
-  v18 = [(PedestrianARGradientOverlay *)self->_gradientOverlay topAnchor];
-  v19 = [(PedestrianARViewController *)self view];
-  v20 = [v19 topAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  topAnchor3 = [(PedestrianARGradientOverlay *)self->_gradientOverlay topAnchor];
+  view9 = [(PedestrianARViewController *)self view];
+  topAnchor4 = [view9 topAnchor];
+  v21 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v167[2] = v21;
-  v22 = [(PedestrianARGradientOverlay *)self->_gradientOverlay bottomAnchor];
-  v23 = [(PedestrianARViewController *)self view];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  bottomAnchor3 = [(PedestrianARGradientOverlay *)self->_gradientOverlay bottomAnchor];
+  view10 = [(PedestrianARViewController *)self view];
+  bottomAnchor4 = [view10 bottomAnchor];
+  v25 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v167[3] = v25;
   v26 = [NSArray arrayWithObjects:v167 count:4];
   [v160 addObjectsFromArray:v26];
 
-  v27 = [(PedestrianARViewController *)self view];
+  view11 = [(PedestrianARViewController *)self view];
   instructionContainerView = self->_instructionContainerView;
-  v29 = [(ContainerViewController *)self containerView];
-  [v27 insertSubview:instructionContainerView belowSubview:v29];
+  containerView3 = [(ContainerViewController *)self containerView];
+  [view11 insertSubview:instructionContainerView belowSubview:containerView3];
 
-  v151 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView leadingAnchor];
-  v156 = [(PedestrianARViewController *)self view];
-  v146 = [v156 leadingAnchor];
-  v141 = [v151 constraintEqualToAnchor:v146];
+  leadingAnchor5 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView leadingAnchor];
+  view12 = [(PedestrianARViewController *)self view];
+  leadingAnchor6 = [view12 leadingAnchor];
+  v141 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v166[0] = v141;
-  v131 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView trailingAnchor];
-  v136 = [(PedestrianARViewController *)self view];
-  v126 = [v136 trailingAnchor];
-  v122 = [v131 constraintEqualToAnchor:v126];
+  trailingAnchor5 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView trailingAnchor];
+  view13 = [(PedestrianARViewController *)self view];
+  trailingAnchor6 = [view13 trailingAnchor];
+  v122 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v166[1] = v122;
-  v30 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView topAnchor];
-  v31 = [(PedestrianARViewController *)self view];
-  v32 = [v31 topAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  topAnchor5 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView topAnchor];
+  view14 = [(PedestrianARViewController *)self view];
+  topAnchor6 = [view14 topAnchor];
+  v33 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v166[2] = v33;
-  v34 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView bottomAnchor];
-  v35 = [(PedestrianARViewController *)self view];
-  v36 = [v35 bottomAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  bottomAnchor5 = [(PedestrianARInstructionContainerView *)self->_instructionContainerView bottomAnchor];
+  view15 = [(PedestrianARViewController *)self view];
+  bottomAnchor6 = [view15 bottomAnchor];
+  v37 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v166[3] = v37;
   v38 = [NSArray arrayWithObjects:v166 count:4];
   [v160 addObjectsFromArray:v38];
 
-  v39 = [(PedestrianARViewController *)self view];
+  view16 = [(PedestrianARViewController *)self view];
   arrowGuidanceView = self->_arrowGuidanceView;
-  v41 = [(ContainerViewController *)self containerView];
-  [v39 insertSubview:arrowGuidanceView belowSubview:v41];
+  containerView4 = [(ContainerViewController *)self containerView];
+  [view16 insertSubview:arrowGuidanceView belowSubview:containerView4];
 
-  v42 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView leadingAnchor];
-  v43 = [(PedestrianARViewController *)self view];
-  v44 = [v43 leadingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44 constant:16.0];
+  leadingAnchor7 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView leadingAnchor];
+  view17 = [(PedestrianARViewController *)self view];
+  leadingAnchor8 = [view17 leadingAnchor];
+  v45 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
   arrowGuidanceViewLeadingConstraint = self->_arrowGuidanceViewLeadingConstraint;
   self->_arrowGuidanceViewLeadingConstraint = v45;
 
-  v47 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView trailingAnchor];
-  v48 = [(PedestrianARViewController *)self view];
-  v49 = [v48 trailingAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:-16.0];
+  trailingAnchor7 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView trailingAnchor];
+  view18 = [(PedestrianARViewController *)self view];
+  trailingAnchor8 = [view18 trailingAnchor];
+  v50 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-16.0];
   arrowGuidanceViewTrailingConstraint = self->_arrowGuidanceViewTrailingConstraint;
   self->_arrowGuidanceViewTrailingConstraint = v50;
 
-  v52 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView leadingAnchor];
-  v53 = [(PedestrianARViewController *)self view];
-  v54 = [v53 safeAreaLayoutGuide];
-  v55 = [v54 leadingAnchor];
-  v56 = [v52 constraintEqualToAnchor:v55];
+  leadingAnchor9 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView leadingAnchor];
+  view19 = [(PedestrianARViewController *)self view];
+  safeAreaLayoutGuide = [view19 safeAreaLayoutGuide];
+  leadingAnchor10 = [safeAreaLayoutGuide leadingAnchor];
+  v56 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   arrowGuidanceViewLeadingSafeAreaConstraint = self->_arrowGuidanceViewLeadingSafeAreaConstraint;
   self->_arrowGuidanceViewLeadingSafeAreaConstraint = v56;
 
-  v58 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView trailingAnchor];
-  v59 = [(PedestrianARViewController *)self view];
-  v60 = [v59 safeAreaLayoutGuide];
-  v61 = [v60 trailingAnchor];
-  v62 = [v58 constraintEqualToAnchor:v61];
+  trailingAnchor9 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView trailingAnchor];
+  view20 = [(PedestrianARViewController *)self view];
+  safeAreaLayoutGuide2 = [view20 safeAreaLayoutGuide];
+  trailingAnchor10 = [safeAreaLayoutGuide2 trailingAnchor];
+  v62 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   arrowGuidanceViewTrailingSafeAreaConstraint = self->_arrowGuidanceViewTrailingSafeAreaConstraint;
   self->_arrowGuidanceViewTrailingSafeAreaConstraint = v62;
 
   v64 = self->_arrowGuidanceViewTrailingConstraint;
   v165[0] = self->_arrowGuidanceViewLeadingConstraint;
   v165[1] = v64;
-  v157 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView heightAnchor];
-  v65 = [(PedestrianARViewController *)self view];
-  v66 = [v65 heightAnchor];
-  v67 = [v157 constraintEqualToAnchor:v66 multiplier:0.5];
+  heightAnchor = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView heightAnchor];
+  view21 = [(PedestrianARViewController *)self view];
+  heightAnchor2 = [view21 heightAnchor];
+  v67 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
   v165[2] = v67;
-  v68 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView topAnchor];
-  v69 = [(MUBlurView *)self->_closeButton bottomAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69];
+  topAnchor7 = [(PedestrianARArrowGuidanceView *)self->_arrowGuidanceView topAnchor];
+  bottomAnchor7 = [(MUBlurView *)self->_closeButton bottomAnchor];
+  v70 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7];
   v165[3] = v70;
   v71 = [NSArray arrayWithObjects:v165 count:4];
   [v160 addObjectsFromArray:v71];
 
-  v72 = [(PedestrianARViewController *)self view];
+  view22 = [(PedestrianARViewController *)self view];
   closeButton = self->_closeButton;
-  v74 = [(ContainerViewController *)self containerView];
-  [v72 insertSubview:closeButton belowSubview:v74];
+  containerView5 = [(ContainerViewController *)self containerView];
+  [view22 insertSubview:closeButton belowSubview:containerView5];
 
-  v75 = [(MUBlurView *)self->_closeButton topAnchor];
-  v76 = [(PedestrianARViewController *)self view];
-  v77 = [v76 safeAreaLayoutGuide];
-  v78 = [v77 topAnchor];
-  v79 = [v75 constraintEqualToAnchor:v78];
+  topAnchor8 = [(MUBlurView *)self->_closeButton topAnchor];
+  view23 = [(PedestrianARViewController *)self view];
+  safeAreaLayoutGuide3 = [view23 safeAreaLayoutGuide];
+  topAnchor9 = [safeAreaLayoutGuide3 topAnchor];
+  v79 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   closeButtonTopConstraint = self->_closeButtonTopConstraint;
   self->_closeButtonTopConstraint = v79;
 
-  v81 = [(MUBlurView *)self->_closeButton trailingAnchor];
-  v82 = [(PedestrianARViewController *)self view];
-  v83 = [v82 trailingAnchor];
-  v84 = [v81 constraintEqualToAnchor:v83];
+  trailingAnchor11 = [(MUBlurView *)self->_closeButton trailingAnchor];
+  view24 = [(PedestrianARViewController *)self view];
+  trailingAnchor12 = [view24 trailingAnchor];
+  v84 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   closeButtonTrailingConstraint = self->_closeButtonTrailingConstraint;
   self->_closeButtonTrailingConstraint = v84;
 
-  v86 = [(MUBlurView *)self->_closeButton trailingAnchor];
-  v87 = [(PedestrianARViewController *)self view];
-  v88 = [v87 safeAreaLayoutGuide];
-  v89 = [v88 trailingAnchor];
-  v90 = [v86 constraintEqualToAnchor:v89];
+  trailingAnchor13 = [(MUBlurView *)self->_closeButton trailingAnchor];
+  view25 = [(PedestrianARViewController *)self view];
+  safeAreaLayoutGuide4 = [view25 safeAreaLayoutGuide];
+  trailingAnchor14 = [safeAreaLayoutGuide4 trailingAnchor];
+  v90 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
   closeButtonSafeAreaTrailingConstraint = self->_closeButtonSafeAreaTrailingConstraint;
   self->_closeButtonSafeAreaTrailingConstraint = v90;
 
   v92 = self->_closeButtonTopConstraint;
   v164[0] = self->_closeButtonSafeAreaTrailingConstraint;
   v164[1] = v92;
-  v93 = [(MUBlurView *)self->_closeButton widthAnchor];
-  v94 = [v93 constraintEqualToConstant:42.0];
+  widthAnchor = [(MUBlurView *)self->_closeButton widthAnchor];
+  v94 = [widthAnchor constraintEqualToConstant:42.0];
   v164[2] = v94;
-  v95 = [(MUBlurView *)self->_closeButton heightAnchor];
-  v96 = [(MUBlurView *)self->_closeButton widthAnchor];
-  v97 = [v95 constraintEqualToAnchor:v96];
+  heightAnchor3 = [(MUBlurView *)self->_closeButton heightAnchor];
+  widthAnchor2 = [(MUBlurView *)self->_closeButton widthAnchor];
+  v97 = [heightAnchor3 constraintEqualToAnchor:widthAnchor2];
   v164[3] = v97;
   v98 = [NSArray arrayWithObjects:v164 count:4];
   [v160 addObjectsFromArray:v98];
 
   if (self->_ttrButton)
   {
-    v99 = [(PedestrianARViewController *)self view];
+    view26 = [(PedestrianARViewController *)self view];
     ttrButton = self->_ttrButton;
-    v101 = [(ContainerViewController *)self containerView];
-    [v99 insertSubview:ttrButton belowSubview:v101];
+    containerView6 = [(ContainerViewController *)self containerView];
+    [view26 insertSubview:ttrButton belowSubview:containerView6];
 
-    v152 = [(UIButton *)self->_ttrButton leadingAnchor];
-    v158 = [(PedestrianARViewController *)self view];
-    v147 = [v158 safeAreaLayoutGuide];
-    v142 = [v147 leadingAnchor];
-    v137 = [v152 constraintEqualToAnchor:v142 constant:16.0];
+    leadingAnchor11 = [(UIButton *)self->_ttrButton leadingAnchor];
+    view27 = [(PedestrianARViewController *)self view];
+    safeAreaLayoutGuide5 = [view27 safeAreaLayoutGuide];
+    leadingAnchor12 = [safeAreaLayoutGuide5 leadingAnchor];
+    v137 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:16.0];
     v163[0] = v137;
-    v132 = [(UIButton *)self->_ttrButton topAnchor];
-    v127 = [(MUBlurView *)self->_closeButton topAnchor];
-    v123 = [v132 constraintEqualToAnchor:v127];
+    topAnchor10 = [(UIButton *)self->_ttrButton topAnchor];
+    topAnchor11 = [(MUBlurView *)self->_closeButton topAnchor];
+    v123 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
     v163[1] = v123;
-    v102 = [(UIButton *)self->_ttrButton widthAnchor];
-    v103 = [(MUBlurView *)self->_closeButton widthAnchor];
-    v104 = [v102 constraintEqualToAnchor:v103];
+    widthAnchor3 = [(UIButton *)self->_ttrButton widthAnchor];
+    widthAnchor4 = [(MUBlurView *)self->_closeButton widthAnchor];
+    v104 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v163[2] = v104;
-    v105 = [(UIButton *)self->_ttrButton heightAnchor];
-    v106 = [(UIButton *)self->_ttrButton widthAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106];
+    heightAnchor4 = [(UIButton *)self->_ttrButton heightAnchor];
+    widthAnchor5 = [(UIButton *)self->_ttrButton widthAnchor];
+    v107 = [heightAnchor4 constraintEqualToAnchor:widthAnchor5];
     v163[3] = v107;
     v108 = [NSArray arrayWithObjects:v163 count:4];
     [v160 addObjectsFromArray:v108];
@@ -2539,28 +2539,28 @@ LABEL_9:
 
   if (self->_safetyView)
   {
-    v109 = [(PedestrianARViewController *)self view];
-    [v109 insertSubview:self->_safetyView belowSubview:self->_closeButton];
+    view28 = [(PedestrianARViewController *)self view];
+    [view28 insertSubview:self->_safetyView belowSubview:self->_closeButton];
 
-    v153 = [(PedestrianARSafetyView *)self->_safetyView leadingAnchor];
-    v159 = [(PedestrianARViewController *)self view];
-    v148 = [v159 leadingAnchor];
-    v143 = [v153 constraintEqualToAnchor:v148];
+    leadingAnchor13 = [(PedestrianARSafetyView *)self->_safetyView leadingAnchor];
+    view29 = [(PedestrianARViewController *)self view];
+    leadingAnchor14 = [view29 leadingAnchor];
+    v143 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14];
     v162[0] = v143;
-    v133 = [(PedestrianARSafetyView *)self->_safetyView trailingAnchor];
-    v138 = [(PedestrianARViewController *)self view];
-    v128 = [v138 trailingAnchor];
-    v110 = [v133 constraintEqualToAnchor:v128];
+    trailingAnchor15 = [(PedestrianARSafetyView *)self->_safetyView trailingAnchor];
+    view30 = [(PedestrianARViewController *)self view];
+    trailingAnchor16 = [view30 trailingAnchor];
+    v110 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16];
     v162[1] = v110;
-    v111 = [(PedestrianARSafetyView *)self->_safetyView topAnchor];
-    v112 = [(PedestrianARViewController *)self view];
-    v113 = [v112 topAnchor];
-    v114 = [v111 constraintEqualToAnchor:v113];
+    topAnchor12 = [(PedestrianARSafetyView *)self->_safetyView topAnchor];
+    view31 = [(PedestrianARViewController *)self view];
+    topAnchor13 = [view31 topAnchor];
+    v114 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
     v162[2] = v114;
-    v115 = [(PedestrianARSafetyView *)self->_safetyView bottomAnchor];
-    v116 = [(PedestrianARViewController *)self view];
-    v117 = [v116 bottomAnchor];
-    v118 = [v115 constraintEqualToAnchor:v117];
+    bottomAnchor8 = [(PedestrianARSafetyView *)self->_safetyView bottomAnchor];
+    view32 = [(PedestrianARViewController *)self view];
+    bottomAnchor9 = [view32 bottomAnchor];
+    v118 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     v162[3] = v118;
     v119 = [NSArray arrayWithObjects:v162 count:4];
     [v160 addObjectsFromArray:v119];
@@ -2573,26 +2573,26 @@ LABEL_9:
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v3 = [(PedestrianARViewController *)self activity];
-  os_activity_scope_enter(v3, &state);
+  activity = [(PedestrianARViewController *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v4 = sub_100C276B8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
-  v5 = [(PedestrianARViewController *)self session];
-  [v5 _removeObserver:self];
+  session = [(PedestrianARViewController *)self session];
+  [session _removeObserver:self];
 
   v6 = +[MapsARSessionManager sharedManager];
   [v6 resignSessionWithOwner:self];
 
   [(NavigationSession *)self->_navigationSession unregisterObserver:self];
-  v7 = [(PedestrianARViewController *)self safetyView];
-  [v7 didEndARSession];
+  safetyView = [(PedestrianARViewController *)self safetyView];
+  [safetyView didEndARSession];
 
   [(PedestrianARViewController *)self enableIdleTimer];
   if (!self->_sentDisappearNotification)
@@ -2610,13 +2610,13 @@ LABEL_9:
   [(PedestrianARViewController *)&v10 dealloc];
 }
 
-- (PedestrianARViewController)initWithRoute:(id)a3 platformController:(id)a4 guidanceObserver:(id)a5 navigationService:(id)a6
+- (PedestrianARViewController)initWithRoute:(id)route platformController:(id)controller guidanceObserver:(id)observer navigationService:(id)service
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  routeCopy = route;
+  controllerCopy = controller;
+  observerCopy = observer;
+  serviceCopy = service;
+  if (!routeCopy)
   {
     v30 = sub_10006D178();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -2646,7 +2646,7 @@ LABEL_9:
     }
   }
 
-  if (!v11)
+  if (!controllerCopy)
   {
     v34 = sub_10006D178();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -2676,7 +2676,7 @@ LABEL_9:
     }
   }
 
-  if (!v12)
+  if (!observerCopy)
   {
     v38 = sub_10006D178();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -2706,7 +2706,7 @@ LABEL_9:
     }
   }
 
-  if (!v13)
+  if (!serviceCopy)
   {
     v42 = sub_10006D178();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -2767,16 +2767,16 @@ LABEL_9:
     v21 = +[NSUserDefaults standardUserDefaults];
     [v21 addObserver:v14 forKeyPath:@"PedestrianARAutoFocusDistanceKey" options:0 context:0];
 
-    objc_storeWeak(&v14->_platformController, v11);
-    objc_storeStrong(&v14->_guidanceObserver, a5);
-    objc_storeStrong(&v14->_navigationService, a6);
+    objc_storeWeak(&v14->_platformController, controllerCopy);
+    objc_storeStrong(&v14->_guidanceObserver, observer);
+    objc_storeStrong(&v14->_navigationService, service);
     WeakRetained = objc_loadWeakRetained(&v14->_platformController);
-    v23 = [WeakRetained currentSession];
+    currentSession = [WeakRetained currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = v23;
+      v24 = currentSession;
     }
 
     else
@@ -2824,7 +2824,7 @@ LABEL_9:
     notificationGenerator = v14->_notificationGenerator;
     v14->_notificationGenerator = v27;
 
-    [(PedestrianARViewController *)v14 setRoute:v10];
+    [(PedestrianARViewController *)v14 setRoute:routeCopy];
     [(PedestrianARViewController *)v14 createViews];
     [(PedestrianARViewController *)v14 start];
     os_activity_scope_leave(&v49);

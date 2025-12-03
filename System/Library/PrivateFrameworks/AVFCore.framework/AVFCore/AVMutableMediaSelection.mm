@@ -1,17 +1,17 @@
 @interface AVMutableMediaSelection
-- (BOOL)_isValidMediaSelectionOption:(id)a3 forMediaSelectionGroup:(id)a4;
-- (id)_validatedGroupIdentifierKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isValidMediaSelectionOption:(id)option forMediaSelectionGroup:(id)group;
+- (id)_validatedGroupIdentifierKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)selectMediaOption:(AVMediaSelectionOption *)mediaSelectionOption inMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup;
 @end
 
 @implementation AVMutableMediaSelection
 
-- (BOOL)_isValidMediaSelectionOption:(id)a3 forMediaSelectionGroup:(id)a4
+- (BOOL)_isValidMediaSelectionOption:(id)option forMediaSelectionGroup:(id)group
 {
-  if (!a3)
+  if (!option)
   {
-    if (([a4 allowsEmptySelection] & 1) == 0)
+    if (([group allowsEmptySelection] & 1) == 0)
     {
       LOBYTE(v4) = 0;
       return v4;
@@ -20,7 +20,7 @@
     goto LABEL_6;
   }
 
-  if (!a4 || (v4 = [objc_msgSend(a4 "options")]) != 0)
+  if (!group || (v4 = [objc_msgSend(group "options")]) != 0)
   {
 LABEL_6:
     LOBYTE(v4) = 1;
@@ -29,7 +29,7 @@ LABEL_6:
   return v4;
 }
 
-- (id)_validatedGroupIdentifierKey:(id)a3
+- (id)_validatedGroupIdentifierKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
   [(AVMediaSelection *)self _loadiVarsIfNeeded];
@@ -55,7 +55,7 @@ LABEL_6:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if ([objc_msgSend(v12 objectForKey:{v9), "isEqual:", objc_msgSend(a3, "_groupID")}])
+        if ([objc_msgSend(v12 objectForKey:{v9), "isEqual:", objc_msgSend(key, "_groupID")}])
         {
           v13 = v9;
         }
@@ -65,7 +65,7 @@ LABEL_6:
           v13 = 0;
         }
 
-        if ([objc_msgSend(v12 objectForKey:{v10), "isEqual:", objc_msgSend(a3, "_groupMediaType")}])
+        if ([objc_msgSend(v12 objectForKey:{v10), "isEqual:", objc_msgSend(key, "_groupMediaType")}])
         {
           v14 = v10;
         }
@@ -96,13 +96,13 @@ LABEL_6:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVMediaSelection alloc];
-  v5 = [(AVMediaSelection *)self asset];
-  v6 = [(AVMediaSelection *)self _selectedMediaArray];
+  asset = [(AVMediaSelection *)self asset];
+  _selectedMediaArray = [(AVMediaSelection *)self _selectedMediaArray];
 
-  return [(AVMediaSelection *)v4 _initWithAsset:v5 selectedMediaArray:v6];
+  return [(AVMediaSelection *)v4 _initWithAsset:asset selectedMediaArray:_selectedMediaArray];
 }
 
 - (void)selectMediaOption:(AVMediaSelectionOption *)mediaSelectionOption inMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup
@@ -116,20 +116,20 @@ LABEL_6:
     {
       if (mediaSelectionOption)
       {
-        v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[AVMediaSelectionOption dictionary](mediaSelectionOption, "dictionary")}];
+        dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[AVMediaSelectionOption dictionary](mediaSelectionOption, "dictionary")}];
       }
 
       else
       {
-        v9 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v10 = v9;
+      v10 = dictionary;
       v11 = *MEMORY[0x1E6973750];
       if ([v8 isEqualToString:*MEMORY[0x1E6973750]])
       {
-        v12 = [(AVMediaSelectionGroup *)mediaSelectionGroup _groupMediaType];
-        if (!v12)
+        _groupMediaType = [(AVMediaSelectionGroup *)mediaSelectionGroup _groupMediaType];
+        if (!_groupMediaType)
         {
 LABEL_13:
           v13 = *([(AVMediaSelection *)self _internal]+ 24);
@@ -162,10 +162,10 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v12 = [(AVMediaSelectionGroup *)mediaSelectionGroup _groupID];
+        _groupMediaType = [(AVMediaSelectionGroup *)mediaSelectionGroup _groupID];
       }
 
-      [v10 setObject:v12 forKey:v11];
+      [v10 setObject:_groupMediaType forKey:v11];
       goto LABEL_13;
     }
   }

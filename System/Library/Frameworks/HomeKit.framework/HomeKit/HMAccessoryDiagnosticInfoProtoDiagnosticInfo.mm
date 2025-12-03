@@ -1,26 +1,26 @@
 @interface HMAccessoryDiagnosticInfoProtoDiagnosticInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHomeHubVersion:(BOOL)a3;
-- (void)setHasNumHomes:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHomeHubVersion:(BOOL)version;
+- (void)setHasNumHomes:(BOOL)homes;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoDiagnosticInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[8] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[8] & 2) != 0)
   {
-    self->_version = v4[2];
+    self->_version = fromCopy[2];
     *&self->_has |= 2u;
   }
 
@@ -200,24 +200,24 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v8 ^ v9 ^ v13 ^ [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self->_lastSetupInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_version != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_version != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
 LABEL_28:
     v10 = 0;
@@ -225,13 +225,13 @@ LABEL_28:
   }
 
   appleMediaAccessoryDiagnosticInfo = self->_appleMediaAccessoryDiagnosticInfo;
-  if (appleMediaAccessoryDiagnosticInfo | *(v4 + 3) && ![(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)appleMediaAccessoryDiagnosticInfo isEqual:?])
+  if (appleMediaAccessoryDiagnosticInfo | *(equalCopy + 3) && ![(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)appleMediaAccessoryDiagnosticInfo isEqual:?])
   {
     goto LABEL_28;
   }
 
   primaryResidentDiagnosticInfo = self->_primaryResidentDiagnosticInfo;
-  if (primaryResidentDiagnosticInfo | *(v4 + 7))
+  if (primaryResidentDiagnosticInfo | *(equalCopy + 7))
   {
     if (![(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)primaryResidentDiagnosticInfo isEqual:?])
     {
@@ -239,48 +239,48 @@ LABEL_28:
     }
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_homeHubVersion != *(v4 + 8))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_homeHubVersion != *(equalCopy + 8))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_numHomes != *(v4 + 12))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_numHomes != *(equalCopy + 12))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_28;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_generationTime != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_generationTime != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_28;
   }
 
   lastSetupInfo = self->_lastSetupInfo;
-  if (lastSetupInfo | *(v4 + 5))
+  if (lastSetupInfo | *(equalCopy + 5))
   {
     v10 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)lastSetupInfo isEqual:?];
   }
@@ -295,9 +295,9 @@ LABEL_29:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -305,11 +305,11 @@ LABEL_29:
     *(v5 + 64) |= 2u;
   }
 
-  v7 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self->_appleMediaAccessoryDiagnosticInfo copyWithZone:a3];
+  v7 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)self->_appleMediaAccessoryDiagnosticInfo copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
-  v9 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self->_primaryResidentDiagnosticInfo copyWithZone:a3];
+  v9 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)self->_primaryResidentDiagnosticInfo copyWithZone:zone];
   v10 = *(v6 + 56);
   *(v6 + 56) = v9;
 
@@ -349,40 +349,40 @@ LABEL_6:
   }
 
 LABEL_7:
-  v12 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self->_lastSetupInfo copyWithZone:a3];
+  v12 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self->_lastSetupInfo copyWithZone:zone];
   v13 = *(v6 + 40);
   *(v6 + 40) = v12;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_version;
-    *(v4 + 64) |= 2u;
+    toCopy[2] = self->_version;
+    *(toCopy + 64) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_appleMediaAccessoryDiagnosticInfo)
   {
-    [v4 setAppleMediaAccessoryDiagnosticInfo:?];
-    v4 = v6;
+    [toCopy setAppleMediaAccessoryDiagnosticInfo:?];
+    toCopy = v6;
   }
 
   if (self->_primaryResidentDiagnosticInfo)
   {
     [v6 setPrimaryResidentDiagnosticInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 8) = self->_homeHubVersion;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 8) = self->_homeHubVersion;
+    *(toCopy + 64) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -401,44 +401,44 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 12) = self->_numHomes;
-  *(v4 + 64) |= 8u;
+  *(toCopy + 12) = self->_numHomes;
+  *(toCopy + 64) |= 8u;
   if (*&self->_has)
   {
 LABEL_10:
-    v4[1] = *&self->_generationTime;
-    *(v4 + 64) |= 1u;
+    toCopy[1] = *&self->_generationTime;
+    *(toCopy + 64) |= 1u;
   }
 
 LABEL_11:
   if (self->_lastSetupInfo)
   {
     [v6 setLastSetupInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_appleMediaAccessoryDiagnosticInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_primaryResidentDiagnosticInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -446,7 +446,7 @@ LABEL_11:
   {
     homeHubVersion = self->_homeHubVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -467,51 +467,51 @@ LABEL_9:
 
   numHomes = self->_numHomes;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if (*&self->_has)
   {
 LABEL_10:
     generationTime = self->_generationTime;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_11:
   if (self->_lastSetupInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   appleMediaAccessoryDiagnosticInfo = self->_appleMediaAccessoryDiagnosticInfo;
   if (appleMediaAccessoryDiagnosticInfo)
   {
-    v6 = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)appleMediaAccessoryDiagnosticInfo dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"appleMediaAccessoryDiagnosticInfo"];
+    dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoAppleMediaAccessoryDiagnosticInfo *)appleMediaAccessoryDiagnosticInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"appleMediaAccessoryDiagnosticInfo"];
   }
 
   primaryResidentDiagnosticInfo = self->_primaryResidentDiagnosticInfo;
   if (primaryResidentDiagnosticInfo)
   {
-    v8 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)primaryResidentDiagnosticInfo dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"primaryResidentDiagnosticInfo"];
+    dictionaryRepresentation2 = [(HMAccessoryDiagnosticInfoProtoPrimaryResidentDiagnosticInfo *)primaryResidentDiagnosticInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"primaryResidentDiagnosticInfo"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:self->_homeHubVersion];
-    [v3 setObject:v10 forKey:@"homeHubVersion"];
+    [dictionary setObject:v10 forKey:@"homeHubVersion"];
 
     has = self->_has;
   }
@@ -519,23 +519,23 @@ LABEL_11:
   if ((has & 8) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInt:self->_numHomes];
-    [v3 setObject:v11 forKey:@"numHomes"];
+    [dictionary setObject:v11 forKey:@"numHomes"];
   }
 
   lastSetupInfo = self->_lastSetupInfo;
   if (lastSetupInfo)
   {
-    v13 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)lastSetupInfo dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"lastSetupInfo"];
+    dictionaryRepresentation3 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)lastSetupInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"lastSetupInfo"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_generationTime];
-    [v3 setObject:v14 forKey:@"generationTime"];
+    [dictionary setObject:v14 forKey:@"generationTime"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -544,15 +544,15 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoDiagnosticInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoDiagnosticInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNumHomes:(BOOL)a3
+- (void)setHasNumHomes:(BOOL)homes
 {
-  if (a3)
+  if (homes)
   {
     v3 = 8;
   }
@@ -565,9 +565,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHomeHubVersion:(BOOL)a3
+- (void)setHasHomeHubVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -580,9 +580,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

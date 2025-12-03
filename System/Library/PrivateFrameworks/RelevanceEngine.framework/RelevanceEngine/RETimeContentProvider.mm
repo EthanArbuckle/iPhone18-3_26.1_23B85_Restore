@@ -1,38 +1,38 @@
 @interface RETimeContentProvider
-+ (id)timeContentProviderWithDate:(id)a3 timeZone:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RETimeContentProvider)initWithCoder:(id)a3;
-- (RETimeContentProvider)initWithDate:(id)a3 timeZone:(id)a4;
++ (id)timeContentProviderWithDate:(id)date timeZone:(id)zone;
+- (BOOL)isEqual:(id)equal;
+- (RETimeContentProvider)initWithCoder:(id)coder;
+- (RETimeContentProvider)initWithDate:(id)date timeZone:(id)zone;
 - (id)attributedStringRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RETimeContentProvider
 
-+ (id)timeContentProviderWithDate:(id)a3 timeZone:(id)a4
++ (id)timeContentProviderWithDate:(id)date timeZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDate:v7 timeZone:v6];
+  zoneCopy = zone;
+  dateCopy = date;
+  v8 = [[self alloc] initWithDate:dateCopy timeZone:zoneCopy];
 
   return v8;
 }
 
-- (RETimeContentProvider)initWithDate:(id)a3 timeZone:(id)a4
+- (RETimeContentProvider)initWithDate:(id)date timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v14.receiver = self;
   v14.super_class = RETimeContentProvider;
   v8 = [(RETimeContentProvider *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v9;
 
-    v11 = [v7 copy];
+    v11 = [zoneCopy copy];
     timeZone = v8->_timeZone;
     v8->_timeZone = v11;
   }
@@ -40,36 +40,36 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   date = self->_date;
   timeZone = self->_timeZone;
 
   return [v4 initWithDate:date timeZone:timeZone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 date];
-    v7 = v6;
-    if (v6 == self->_date || [(NSDate *)v6 isEqual:?])
+    v5 = equalCopy;
+    date = [v5 date];
+    v7 = date;
+    if (date == self->_date || [(NSDate *)date isEqual:?])
     {
-      v8 = [v5 timeZone];
-      v9 = v8;
-      if (v8 == self->_timeZone)
+      timeZone = [v5 timeZone];
+      v9 = timeZone;
+      if (timeZone == self->_timeZone)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [(NSTimeZone *)v8 isEqual:?];
+        v10 = [(NSTimeZone *)timeZone isEqual:?];
       }
     }
 
@@ -87,19 +87,19 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
 }
 
-- (RETimeContentProvider)initWithCoder:(id)a3
+- (RETimeContentProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
 
   v7 = [(RETimeContentProvider *)self initWithDate:v5 timeZone:v6];
   return v7;

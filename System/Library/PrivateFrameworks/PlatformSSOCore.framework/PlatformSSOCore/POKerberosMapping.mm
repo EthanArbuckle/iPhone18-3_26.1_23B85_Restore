@@ -1,5 +1,5 @@
 @interface POKerberosMapping
-- (POKerberosMapping)initWithDictionary:(id)a3;
+- (POKerberosMapping)initWithDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
 @end
 
@@ -39,44 +39,44 @@
   return v3;
 }
 
-- (POKerberosMapping)initWithDictionary:(id)a3
+- (POKerberosMapping)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(POKerberosMapping *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_ticketKeyPath);
-    v7 = [v4 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:v6];
     ticketKeyPath = v5->_ticketKeyPath;
     v5->_ticketKeyPath = v7;
 
     v9 = NSStringFromSelector(sel_messageBufferKeyName);
-    v10 = [v4 objectForKeyedSubscript:v9];
+    v10 = [dictionaryCopy objectForKeyedSubscript:v9];
     messageBufferKeyName = v5->_messageBufferKeyName;
     v5->_messageBufferKeyName = v10;
 
     v12 = NSStringFromSelector(sel_realmKeyName);
-    v13 = [v4 objectForKeyedSubscript:v12];
+    v13 = [dictionaryCopy objectForKeyedSubscript:v12];
     realmKeyName = v5->_realmKeyName;
     v5->_realmKeyName = v13;
 
     v15 = NSStringFromSelector(sel_serviceNameKeyName);
-    v16 = [v4 objectForKeyedSubscript:v15];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v15];
     serviceNameKeyName = v5->_serviceNameKeyName;
     v5->_serviceNameKeyName = v16;
 
     v18 = NSStringFromSelector(sel_clientNameKeyName);
-    v19 = [v4 objectForKeyedSubscript:v18];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v18];
     clientNameKeyName = v5->_clientNameKeyName;
     v5->_clientNameKeyName = v19;
 
     v21 = NSStringFromSelector(sel_encryptionKeyTypeKeyName);
-    v22 = [v4 objectForKeyedSubscript:v21];
+    v22 = [dictionaryCopy objectForKeyedSubscript:v21];
     encryptionKeyTypeKeyName = v5->_encryptionKeyTypeKeyName;
     v5->_encryptionKeyTypeKeyName = v22;
 
     v24 = NSStringFromSelector(sel_sessionKeyKeyName);
-    v25 = [v4 objectForKeyedSubscript:v24];
+    v25 = [dictionaryCopy objectForKeyedSubscript:v24];
     sessionKeyKeyName = v5->_sessionKeyKeyName;
     v5->_sessionKeyKeyName = v25;
   }

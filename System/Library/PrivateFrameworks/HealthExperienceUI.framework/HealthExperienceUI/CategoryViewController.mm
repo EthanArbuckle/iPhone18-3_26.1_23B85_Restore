@@ -1,11 +1,11 @@
 @interface CategoryViewController
 - (NSString)sidebarSelectionIdentifier;
-- (_TtC18HealthExperienceUI22CategoryViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI22CategoryViewController)initWithCollectionViewLayout:(id)a3;
-- (void)observedTraitsDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
-- (void)restoreUserActivityState:(id)a3;
+- (_TtC18HealthExperienceUI22CategoryViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI22CategoryViewController)initWithCollectionViewLayout:(id)layout;
+- (void)observedTraitsDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
+- (void)restoreUserActivityState:(id)state;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -17,17 +17,17 @@
   v8 = *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC18HealthExperienceUI22CategoryViewController_typeGroup);
   v9 = *(&self->super.super.super._overrideTransitioningDelegate + OBJC_IVAR____TtC18HealthExperienceUI22CategoryViewController_typeGroup);
   v10 = *(&self->super.super.super._tabBarItem + OBJC_IVAR____TtC18HealthExperienceUI22CategoryViewController_typeGroup);
-  v2 = self;
+  selfCopy = self;
   v3 = HKTypeGroup.displayCategory.getter();
-  v4 = [v3 categoryID];
+  categoryID = [v3 categoryID];
 
-  HKDisplayCategoryIdentifier.sidebarFeedItemIdentifier.getter(v4);
+  HKDisplayCategoryIdentifier.sidebarFeedItemIdentifier.getter(categoryID);
   v5 = sub_1BA4A6758();
 
   return v5;
 }
 
-- (_TtC18HealthExperienceUI22CategoryViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI22CategoryViewController)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI22CategoryViewController_gradientView);
   type metadata accessor for CategoryGradientView();
@@ -41,39 +41,39 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2F7534();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1BA2F773C(a3);
+  selfCopy = self;
+  sub_1BA2F773C(appearing);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2F7968();
 }
 
-- (void)observedTraitsDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)observedTraitsDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_1B9F46930(a3, v7);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1B9F46930(environment, collectionCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA2F8384(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1BA2F8384(stateCopy);
 }
 
-- (_TtC18HealthExperienceUI22CategoryViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI22CategoryViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

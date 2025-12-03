@@ -1,5 +1,5 @@
 @interface ABAccountScorer
-- (ABAccountScorer)initWithAddressBook:(void *)a3 accountStore:(id)a4 account:(void *)a5 defaultSourceID:(int)a6;
+- (ABAccountScorer)initWithAddressBook:(void *)book accountStore:(id)store account:(void *)account defaultSourceID:(int)d;
 - (NSString)accountDisambiguationDescription;
 - (NSString)accountTypeDescription;
 - (int)_findBestSourceID;
@@ -9,20 +9,20 @@
 
 @implementation ABAccountScorer
 
-- (ABAccountScorer)initWithAddressBook:(void *)a3 accountStore:(id)a4 account:(void *)a5 defaultSourceID:(int)a6
+- (ABAccountScorer)initWithAddressBook:(void *)book accountStore:(id)store account:(void *)account defaultSourceID:(int)d
 {
-  v11 = a4;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = ABAccountScorer;
   v12 = [(ABAccountScorer *)&v15 init];
   if (v12)
   {
-    v12->_addressBook = CFRetain(a3);
-    objc_storeStrong(&v12->_accountStore, a4);
-    v12->_account = CFRetain(a5);
+    v12->_addressBook = CFRetain(book);
+    objc_storeStrong(&v12->_accountStore, store);
+    v12->_account = CFRetain(account);
     v12->_score = 0.0;
     v12->_sourceID = -1;
-    v12->_defaultSourceID = a6;
+    v12->_defaultSourceID = d;
     v13 = v12;
   }
 
@@ -51,26 +51,26 @@
 - (NSString)accountTypeDescription
 {
   v3 = ABAccountCopyIdentifier([(ABAccountScorer *)self account]);
-  v4 = [(ABAccountScorer *)self accountStore];
-  v5 = [v4 accountWithIdentifier:v3];
-  v6 = [v5 displayAccount];
+  accountStore = [(ABAccountScorer *)self accountStore];
+  v5 = [accountStore accountWithIdentifier:v3];
+  displayAccount = [v5 displayAccount];
 
-  v7 = [v6 accountType];
-  v8 = [v7 accountTypeDescription];
+  accountType = [displayAccount accountType];
+  accountTypeDescription = [accountType accountTypeDescription];
 
-  return v8;
+  return accountTypeDescription;
 }
 
 - (NSString)accountDisambiguationDescription
 {
   v3 = ABAccountCopyIdentifier([(ABAccountScorer *)self account]);
-  v4 = [(ABAccountScorer *)self accountStore];
-  v5 = [v4 accountWithIdentifier:v3];
-  v6 = [v5 displayAccount];
+  accountStore = [(ABAccountScorer *)self accountStore];
+  v5 = [accountStore accountWithIdentifier:v3];
+  displayAccount = [v5 displayAccount];
 
-  v7 = [v6 username];
+  username = [displayAccount username];
 
-  return v7;
+  return username;
 }
 
 - (void)calculateScore
@@ -92,20 +92,20 @@
   v16[4] = &unk_1F2FF4838;
   v16[5] = &unk_1F2FF4848;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:6];
-  v7 = [(ABAccountScorer *)self accountStore];
-  v8 = ABAccountStoreGetAccountTypeForAccount(v7, [(ABAccountScorer *)self account]);
+  accountStore = [(ABAccountScorer *)self accountStore];
+  v8 = ABAccountStoreGetAccountTypeForAccount(accountStore, [(ABAccountScorer *)self account]);
   [(ABAccountScorer *)self setAccountType:v8];
 
-  v9 = [(ABAccountScorer *)self accountType];
-  LOBYTE(v7) = [ABFacebookMigrator isAccountTypeFacebook:v9];
+  accountType = [(ABAccountScorer *)self accountType];
+  LOBYTE(accountStore) = [ABFacebookMigrator isAccountTypeFacebook:accountType];
 
-  if ((v7 & 1) == 0)
+  if ((accountStore & 1) == 0)
   {
     [(ABAccountScorer *)self setSourceID:[(ABAccountScorer *)self _findBestSourceID]];
     if ([(ABAccountScorer *)self sourceID]!= -1)
     {
-      v10 = [(ABAccountScorer *)self accountType];
-      v11 = [v6 objectForKeyedSubscript:v10];
+      accountType2 = [(ABAccountScorer *)self accountType];
+      v11 = [v6 objectForKeyedSubscript:accountType2];
 
       if (v11)
       {
@@ -118,8 +118,8 @@
       }
 
       [(ABAccountScorer *)self setScore:v12];
-      v13 = [(ABAccountScorer *)self sourceID];
-      if (v13 == [(ABAccountScorer *)self defaultSourceID])
+      sourceID = [(ABAccountScorer *)self sourceID];
+      if (sourceID == [(ABAccountScorer *)self defaultSourceID])
       {
         [(ABAccountScorer *)self score];
         [(ABAccountScorer *)self setScore:v14 + 0.5];

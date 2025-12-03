@@ -7,9 +7,9 @@
 - (void)beginAccountCreation
 {
   objc_initWeak(&location, self);
-  v3 = [(AccountCreationControllerBase *)self specifier];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:ACUIAccountKey];
+  specifier = [(AccountCreationControllerBase *)self specifier];
+  userInfo = [specifier userInfo];
+  v5 = [userInfo objectForKeyedSubscript:ACUIAccountKey];
   v6 = +[ACAccountStore defaultStore];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;

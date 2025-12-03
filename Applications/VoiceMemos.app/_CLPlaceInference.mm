@@ -13,31 +13,31 @@
 
 - (NSString)preferredName
 {
-  v3 = [(_CLPlaceInference *)self placemark];
-  v4 = [v3 name];
-  v5 = v4;
-  if (v4)
+  placemark = [(_CLPlaceInference *)self placemark];
+  name = [placemark name];
+  v5 = name;
+  if (name)
   {
-    v6 = v4;
+    v6 = name;
 LABEL_5:
     v8 = v6;
     goto LABEL_6;
   }
 
-  v7 = [(_CLPlaceInference *)self userType];
-  if (v7)
+  userType = [(_CLPlaceInference *)self userType];
+  if (userType)
   {
-    v6 = [qword_1002D70B8 objectAtIndexedSubscript:v7];
+    v6 = [qword_1002D70B8 objectAtIndexedSubscript:userType];
     goto LABEL_5;
   }
 
-  v10 = [v3 subThoroughfare];
-  v11 = [v3 thoroughfare];
-  v12 = v11;
+  subThoroughfare = [placemark subThoroughfare];
+  thoroughfare = [placemark thoroughfare];
+  v12 = thoroughfare;
   v8 = 0;
-  if (v10 && v11)
+  if (subThoroughfare && thoroughfare)
   {
-    v8 = [NSString stringWithFormat:@"%@ %@", v10, v11];
+    v8 = [NSString stringWithFormat:@"%@ %@", subThoroughfare, thoroughfare];
   }
 
 LABEL_6:

@@ -1,23 +1,23 @@
 @interface PedestrianARSessionThermalStateMonitor
 + ($6E15C01CA1BE37A4936191A84F7075E2)enablementGEOConfigKey;
-- (PedestrianARSessionThermalStateMonitor)initWithObserver:(id)a3 thermalPressureController:(id)a4;
+- (PedestrianARSessionThermalStateMonitor)initWithObserver:(id)observer thermalPressureController:(id)controller;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)didUpdateThermalPressureLevel:(int)a3;
+- (void)didUpdateThermalPressureLevel:(int)level;
 - (void)updateState;
 @end
 
 @implementation PedestrianARSessionThermalStateMonitor
 
-- (void)didUpdateThermalPressureLevel:(int)a3
+- (void)didUpdateThermalPressureLevel:(int)level
 {
   v5 = sub_10092B934();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = a3;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Got thermal pressure update: %d", buf, 0x12u);
   }
 
@@ -34,30 +34,30 @@
 
 - (id)debugDescription
 {
-  v3 = [objc_opt_class() friendlyName];
-  v4 = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@\nthermal state: %d\n", v3, [v4 currentThermalPressureLevel]);
+  friendlyName = [objc_opt_class() friendlyName];
+  thermalPressureController = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@\nthermal state: %d\n", friendlyName, [thermalPressureController currentThermalPressureLevel]);
 
   return v5;
 }
 
 - (void)updateState
 {
-  v3 = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
-  v4 = [v3 currentThermalPressureLevel];
+  thermalPressureController = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
+  currentThermalPressureLevel = [thermalPressureController currentThermalPressureLevel];
 
   Integer = GEOConfigGetInteger();
   v6 = sub_10092B934();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v4 >= Integer)
+  if (currentThermalPressureLevel >= Integer)
   {
     if (v7)
     {
-      v8 = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
+      thermalPressureController2 = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
       v10 = 134349568;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 1024;
-      v13 = [v8 currentThermalPressureLevel];
+      currentThermalPressureLevel2 = [thermalPressureController2 currentThermalPressureLevel];
       v14 = 1024;
       v15 = Integer;
       v9 = "[%{public}p] Detected thermal state is too high (%d >= %d); updating state";
@@ -67,11 +67,11 @@
 
   else if (v7)
   {
-    v8 = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
+    thermalPressureController2 = [(PedestrianARSessionThermalStateMonitor *)self thermalPressureController];
     v10 = 134349568;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1024;
-    v13 = [v8 currentThermalPressureLevel];
+    currentThermalPressureLevel2 = [thermalPressureController2 currentThermalPressureLevel];
     v14 = 1024;
     v15 = Integer;
     v9 = "[%{public}p] Detected thermal state is sufficiently low (%d < %d); updating state";
@@ -79,7 +79,7 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, v9, &v10, 0x18u);
   }
 
-  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:v4 < Integer];
+  [(PedestrianARSessionMonitor *)self setShouldShowPedestrianAR:currentThermalPressureLevel < Integer];
 }
 
 - (void)dealloc
@@ -88,7 +88,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -98,11 +98,11 @@ LABEL_6:
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionThermalStateMonitor)initWithObserver:(id)a3 thermalPressureController:(id)a4
+- (PedestrianARSessionThermalStateMonitor)initWithObserver:(id)observer thermalPressureController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -133,7 +133,7 @@ LABEL_6:
 
   v14.receiver = self;
   v14.super_class = PedestrianARSessionThermalStateMonitor;
-  v8 = [(PedestrianARSessionMonitor *)&v14 initWithObserver:v6];
+  v8 = [(PedestrianARSessionMonitor *)&v14 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = sub_10092B934();
@@ -144,7 +144,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v8->_thermalPressureController, a4);
+    objc_storeStrong(&v8->_thermalPressureController, controller);
     [(MapsThermalPressureController *)v8->_thermalPressureController addThermalPressureObserver:v8];
     [(PedestrianARSessionThermalStateMonitor *)v8 updateState];
   }

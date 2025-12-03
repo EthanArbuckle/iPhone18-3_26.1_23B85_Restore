@@ -1,15 +1,15 @@
 @interface UIDictationSerializableResults
 - (UIDictationSerializableResults)init;
-- (UIDictationSerializableResults)initWithArrayOfArrayOfStrings:(id)a3;
-- (UIDictationSerializableResults)initWithCoder:(id)a3;
-- (UIDictationSerializableResults)initWithDetectedPhrases:(id)a3 multilingualAlternatives:(id)a4;
-- (UIDictationSerializableResults)initWithPhrases:(id)a3;
+- (UIDictationSerializableResults)initWithArrayOfArrayOfStrings:(id)strings;
+- (UIDictationSerializableResults)initWithCoder:(id)coder;
+- (UIDictationSerializableResults)initWithDetectedPhrases:(id)phrases multilingualAlternatives:(id)alternatives;
+- (UIDictationSerializableResults)initWithPhrases:(id)phrases;
 - (id)bestResults;
 - (id)bestText;
 - (id)bestTextArray;
-- (id)bestTextArrayForAlternatives:(id)a3;
+- (id)bestTextArrayForAlternatives:(id)alternatives;
 - (id)bestTextForMultilingualAlternatives;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictationPhraseArray;
 - (id)multilingualResultsByLanguageCode;
@@ -18,11 +18,11 @@
 - (id)singleLineResult;
 - (id)text;
 - (id)textArray;
-- (id)textArrayForAlternatives:(id)a3;
+- (id)textArrayForAlternatives:(id)alternatives;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIndexPathOfInterpretations:(id)a3;
-- (void)setTransform:(__CFString *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIndexPathOfInterpretations:(id)interpretations;
+- (void)setTransform:(__CFString *)transform;
 @end
 
 @implementation UIDictationSerializableResults
@@ -53,13 +53,13 @@
   return v3;
 }
 
-- (UIDictationSerializableResults)initWithPhrases:(id)a3
+- (UIDictationSerializableResults)initWithPhrases:(id)phrases
 {
-  v4 = a3;
+  phrasesCopy = phrases;
   v5 = [(UIDictationSerializableResults *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [phrasesCopy copy];
     phrases = v5->_phrases;
     v5->_phrases = v6;
 
@@ -69,18 +69,18 @@
   return v5;
 }
 
-- (UIDictationSerializableResults)initWithDetectedPhrases:(id)a3 multilingualAlternatives:(id)a4
+- (UIDictationSerializableResults)initWithDetectedPhrases:(id)phrases multilingualAlternatives:(id)alternatives
 {
-  v6 = a3;
-  v7 = a4;
+  phrasesCopy = phrases;
+  alternativesCopy = alternatives;
   v8 = [(UIDictationSerializableResults *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [phrasesCopy copy];
     phrases = v8->_phrases;
     v8->_phrases = v9;
 
-    v11 = [v7 copy];
+    v11 = [alternativesCopy copy];
     multilingualAlternatives = v8->_multilingualAlternatives;
     v8->_multilingualAlternatives = v11;
 
@@ -91,9 +91,9 @@
   return v8;
 }
 
-- (UIDictationSerializableResults)initWithArrayOfArrayOfStrings:(id)a3
+- (UIDictationSerializableResults)initWithArrayOfArrayOfStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v5 = [(UIDictationSerializableResults *)self init];
   if (v5)
   {
@@ -102,7 +102,7 @@
     v13 = 3221225472;
     v14 = __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_invoke;
     v15 = &unk_1E7115878;
-    v16 = v4;
+    v16 = stringsCopy;
     v17 = v6;
     v7 = v6;
     [v16 enumerateObjectsUsingBlock:&v12];
@@ -153,9 +153,9 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   [v5 addObject:v9];
 }
 
-- (UIDictationSerializableResults)initWithCoder:(id)a3
+- (UIDictationSerializableResults)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = UIDictationSerializableResults;
   v5 = [(UIDictationSerializableResults *)&v20 init];
@@ -164,28 +164,28 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"phrases"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"phrases"];
     phrases = v5->_phrases;
     v5->_phrases = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"multilingualAlternatives"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"multilingualAlternatives"];
     multilingualAlternatives = v5->_multilingualAlternatives;
     v5->_multilingualAlternatives = v14;
 
-    v5->_showMultilingualAlternatives = [v4 decodeBoolForKey:@"showMultilingualAlternatives"];
-    v5->_lowConfidenceAboutLanguageDetection = [v4 decodeBoolForKey:@"lowConfidenceAboutLanguageDetection"];
-    v5->_fromKeyboard = [v4 decodeBoolForKey:@"fromKeyboard"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
+    v5->_showMultilingualAlternatives = [coderCopy decodeBoolForKey:@"showMultilingualAlternatives"];
+    v5->_lowConfidenceAboutLanguageDetection = [coderCopy decodeBoolForKey:@"lowConfidenceAboutLanguageDetection"];
+    v5->_fromKeyboard = [coderCopy decodeBoolForKey:@"fromKeyboard"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
     v17 = [v16 copy];
     v5->_transform = v17;
 
-    v5->_useServerCapitalization = [v4 decodeBoolForKey:@"useServerCapitalization"];
-    v5->_allowsAlternatives = [v4 decodeBoolForKey:@"allowsAlternatives"];
-    v5->_isFinalResult = [v4 decodeBoolForKey:@"isFinalResult"];
-    v5->_addTrailingSpace = [v4 decodeBoolForKey:@"addTrailingSpace"];
+    v5->_useServerCapitalization = [coderCopy decodeBoolForKey:@"useServerCapitalization"];
+    v5->_allowsAlternatives = [coderCopy decodeBoolForKey:@"allowsAlternatives"];
+    v5->_isFinalResult = [coderCopy decodeBoolForKey:@"isFinalResult"];
+    v5->_addTrailingSpace = [coderCopy decodeBoolForKey:@"addTrailingSpace"];
     v18 = v5;
   }
 
@@ -206,27 +206,27 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   [(UIDictationSerializableResults *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_phrases forKey:@"phrases"];
-  [v5 encodeObject:self->_multilingualAlternatives forKey:@"multilingualAlternatives"];
-  [v5 encodeBool:self->_showMultilingualAlternatives forKey:@"showMultilingualAlternatives"];
-  [v5 encodeBool:self->_lowConfidenceAboutLanguageDetection forKey:@"lowConfidenceAboutLanguageDetection"];
-  [v5 encodeBool:self->_fromKeyboard forKey:@"fromKeyboard"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_phrases forKey:@"phrases"];
+  [coderCopy encodeObject:self->_multilingualAlternatives forKey:@"multilingualAlternatives"];
+  [coderCopy encodeBool:self->_showMultilingualAlternatives forKey:@"showMultilingualAlternatives"];
+  [coderCopy encodeBool:self->_lowConfidenceAboutLanguageDetection forKey:@"lowConfidenceAboutLanguageDetection"];
+  [coderCopy encodeBool:self->_fromKeyboard forKey:@"fromKeyboard"];
   if (self->_transform)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:self->_transform];
-    [v5 encodeObject:v4 forKey:@"transform"];
+    [coderCopy encodeObject:v4 forKey:@"transform"];
   }
 
-  [v5 encodeBool:self->_useServerCapitalization forKey:@"useServerCapitalization"];
-  [v5 encodeBool:self->_allowsAlternatives forKey:@"allowsAlternatives"];
-  [v5 encodeBool:self->_isFinalResult forKey:@"isFinalResult"];
-  [v5 encodeBool:self->_addTrailingSpace forKey:@"addTrailingSpace"];
+  [coderCopy encodeBool:self->_useServerCapitalization forKey:@"useServerCapitalization"];
+  [coderCopy encodeBool:self->_allowsAlternatives forKey:@"allowsAlternatives"];
+  [coderCopy encodeBool:self->_isFinalResult forKey:@"isFinalResult"];
+  [coderCopy encodeBool:self->_addTrailingSpace forKey:@"addTrailingSpace"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIDictationSerializableResults);
   v5 = [(NSArray *)self->_phrases copy];
@@ -259,36 +259,36 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   return v4;
 }
 
-- (void)setTransform:(__CFString *)a3
+- (void)setTransform:(__CFString *)transform
 {
   transform = self->_transform;
-  if (transform != a3)
+  if (transform != transform)
   {
     if (transform)
     {
       CFRelease(transform);
     }
 
-    self->_transform = a3;
-    if (a3)
+    self->_transform = transform;
+    if (transform)
     {
 
-      CFRetain(a3);
+      CFRetain(transform);
     }
   }
 }
 
-- (void)setIndexPathOfInterpretations:(id)a3
+- (void)setIndexPathOfInterpretations:(id)interpretations
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  interpretationsCopy = interpretations;
+  v6 = interpretationsCopy;
+  if (interpretationsCopy)
   {
-    v7 = [(NSIndexPath *)v5 length];
+    v7 = [(NSIndexPath *)interpretationsCopy length];
     if (v7 != [(NSArray *)self->_phrases count])
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"UIDictationUtilities.m" lineNumber:1838 description:@"Incorrect number of interpretation indexes"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDictationUtilities.m" lineNumber:1838 description:@"Incorrect number of interpretation indexes"];
     }
   }
 
@@ -298,24 +298,24 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
 
 - (id)text
 {
-  v2 = [(UIDictationSerializableResults *)self textArray];
-  v3 = [v2 componentsJoinedByString:&stru_1EFB14550];
+  textArray = [(UIDictationSerializableResults *)self textArray];
+  v3 = [textArray componentsJoinedByString:&stru_1EFB14550];
 
   return v3;
 }
 
 - (id)bestText
 {
-  v2 = [(UIDictationSerializableResults *)self bestTextArray];
-  v3 = [v2 componentsJoinedByString:&stru_1EFB14550];
+  bestTextArray = [(UIDictationSerializableResults *)self bestTextArray];
+  v3 = [bestTextArray componentsJoinedByString:&stru_1EFB14550];
 
   return v3;
 }
 
 - (id)secondBestText
 {
-  v2 = [(UIDictationSerializableResults *)self secondBestTextArray];
-  v3 = [v2 componentsJoinedByString:&stru_1EFB14550];
+  secondBestTextArray = [(UIDictationSerializableResults *)self secondBestTextArray];
+  v3 = [secondBestTextArray componentsJoinedByString:&stru_1EFB14550];
 
   return v3;
 }
@@ -323,7 +323,7 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
 - (id)multilingualResultsByLanguageCode
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -344,8 +344,8 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 dominantLanguage];
-        [v3 setObject:v9 forKey:v10];
+        dominantLanguage = [v9 dominantLanguage];
+        [dictionary setObject:v9 forKey:dominantLanguage];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -354,7 +354,7 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)bestTextForMultilingualAlternatives
@@ -381,8 +381,8 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
         }
 
         v7 = *(*(&v20 + 1) + 8 * i);
-        v8 = [v7 phrases];
-        v9 = [(UIDictationSerializableResults *)self bestTextArrayForAlternatives:v8];
+        phrases = [v7 phrases];
+        v9 = [(UIDictationSerializableResults *)self bestTextArrayForAlternatives:phrases];
 
         if ([v9 count])
         {
@@ -401,11 +401,11 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
           v24[1] = @"language";
           v25[0] = v12;
           v24[0] = @"text";
-          v13 = [v7 dominantLanguage];
-          v14 = v13;
-          if (v13)
+          dominantLanguage = [v7 dominantLanguage];
+          v14 = dominantLanguage;
+          if (dominantLanguage)
           {
-            v15 = v13;
+            v15 = dominantLanguage;
           }
 
           else
@@ -446,7 +446,7 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    removeSpaceAfter = 0;
     v9 = 0;
     v20 = v4 | useServerCapitalization;
     v19 = v4 | useServerCapitalization | 4;
@@ -464,8 +464,8 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
       }
 
       v12 = [(NSArray *)self->_phrases objectAtIndex:v9, v19];
-      v13 = [v12 interpretations];
-      v14 = [v13 objectAtIndex:v11];
+      interpretations = [v12 interpretations];
+      v14 = [interpretations objectAtIndex:v11];
 
       if (v9)
       {
@@ -477,16 +477,16 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
         v15 = v19;
       }
 
-      v16 = [v14 tokens];
-      v17 = [UIDictationController serializedInterpretationFromTokens:v16 transform:[(UIDictationSerializableResults *)self transform] capitalization:v15];
+      tokens = [v14 tokens];
+      v17 = [UIDictationController serializedInterpretationFromTokens:tokens transform:[(UIDictationSerializableResults *)self transform] capitalization:v15];
 
-      if (v9 && (([v14 removeSpaceBefore] | v8) & 1) == 0)
+      if (v9 && (([v14 removeSpaceBefore] | removeSpaceAfter) & 1) == 0)
       {
         [v3 addObject:@" "];
       }
 
       [v3 addObject:v17];
-      v8 = [v14 removeSpaceAfter];
+      removeSpaceAfter = [v14 removeSpaceAfter];
 
       ++v9;
     }
@@ -502,9 +502,9 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   return v3;
 }
 
-- (id)textArrayForAlternatives:(id)a3
+- (id)textArrayForAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (self->_fromKeyboard)
   {
@@ -517,12 +517,12 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   }
 
   useServerCapitalization = self->_useServerCapitalization;
-  v23 = v4;
-  v8 = [v4 count];
+  v23 = alternativesCopy;
+  v8 = [alternativesCopy count];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    removeSpaceAfter = 0;
     v11 = 0;
     v22 = v6 | useServerCapitalization;
     v21 = v6 | useServerCapitalization | 4;
@@ -540,8 +540,8 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
       }
 
       v14 = [v23 objectAtIndex:v11];
-      v15 = [v14 interpretations];
-      v16 = [v15 objectAtIndex:v13];
+      interpretations = [v14 interpretations];
+      v16 = [interpretations objectAtIndex:v13];
 
       if (v11)
       {
@@ -553,16 +553,16 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
         v17 = v21;
       }
 
-      v18 = [v16 tokens];
-      v19 = [UIDictationController serializedInterpretationFromTokens:v18 transform:[(UIDictationSerializableResults *)self transform] capitalization:v17];
+      tokens = [v16 tokens];
+      v19 = [UIDictationController serializedInterpretationFromTokens:tokens transform:[(UIDictationSerializableResults *)self transform] capitalization:v17];
 
-      if (v11 && (([v16 removeSpaceBefore] | v10) & 1) == 0)
+      if (v11 && (([v16 removeSpaceBefore] | removeSpaceAfter) & 1) == 0)
       {
         [v5 addObject:@" "];
       }
 
       [v5 addObject:v19];
-      v10 = [v16 removeSpaceAfter];
+      removeSpaceAfter = [v16 removeSpaceAfter];
 
       ++v11;
     }
@@ -584,11 +584,11 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   indexPathOfInterpretations = self->_indexPathOfInterpretations;
   self->_indexPathOfInterpretations = 0;
 
-  v5 = [(UIDictationSerializableResults *)self textArray];
+  textArray = [(UIDictationSerializableResults *)self textArray];
   v6 = self->_indexPathOfInterpretations;
   self->_indexPathOfInterpretations = v3;
 
-  return v5;
+  return textArray;
 }
 
 - (id)secondBestTextArray
@@ -608,7 +608,7 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
   v35 = [(NSArray *)self->_phrases count];
   if (v35)
   {
-    v6 = 0;
+    removeSpaceAfter = 0;
     v32 = 0;
     v7 = 0;
     v34 = v4 | useServerCapitalization;
@@ -627,8 +627,8 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
       }
 
       v10 = [(NSArray *)self->_phrases objectAtIndex:v7];
-      v11 = [v10 interpretations];
-      v12 = [v11 count];
+      interpretations = [v10 interpretations];
+      v12 = [interpretations count];
 
       if (v12 < 2)
       {
@@ -640,27 +640,27 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
       v15 = 1;
       do
       {
-        v16 = [v10 interpretations];
-        v17 = [v16 objectAtIndex:v15];
+        interpretations2 = [v10 interpretations];
+        v17 = [interpretations2 objectAtIndex:v15];
         [v17 averageConfidenceScore];
         v19 = v18;
 
         if (v19 > v14)
         {
-          v20 = [v10 interpretations];
-          v21 = [v20 objectAtIndex:v15];
+          interpretations3 = [v10 interpretations];
+          v21 = [interpretations3 objectAtIndex:v15];
           [v21 averageConfidenceScore];
           v14 = v22;
 
-          v23 = [v10 interpretations];
-          v24 = [v23 objectAtIndex:v15];
+          interpretations4 = [v10 interpretations];
+          v24 = [interpretations4 objectAtIndex:v15];
 
           v13 = v24;
         }
 
         ++v15;
-        v25 = [v10 interpretations];
-        v26 = [v25 count];
+        interpretations5 = [v10 interpretations];
+        v26 = [interpretations5 count];
       }
 
       while (v15 < v26);
@@ -668,8 +668,8 @@ void __64__UIDictationSerializableResults_initWithArrayOfArrayOfStrings___block_
       if (!v13)
       {
 LABEL_15:
-        v27 = [v10 interpretations];
-        v13 = [v27 objectAtIndex:v9];
+        interpretations6 = [v10 interpretations];
+        v13 = [interpretations6 objectAtIndex:v9];
       }
 
       if (v7)
@@ -682,16 +682,16 @@ LABEL_15:
         v28 = v33;
       }
 
-      v29 = [v13 tokens];
-      v30 = [UIDictationController serializedInterpretationFromTokens:v29 transform:[(UIDictationSerializableResults *)self transform] capitalization:v28];
+      tokens = [v13 tokens];
+      v30 = [UIDictationController serializedInterpretationFromTokens:tokens transform:[(UIDictationSerializableResults *)self transform] capitalization:v28];
 
-      if (v7 && (([v13 removeSpaceBefore] | v6) & 1) == 0)
+      if (v7 && (([v13 removeSpaceBefore] | removeSpaceAfter) & 1) == 0)
       {
         [v3 addObject:@" "];
       }
 
       [v3 addObject:v30];
-      v6 = [v13 removeSpaceAfter];
+      removeSpaceAfter = [v13 removeSpaceAfter];
 
       ++v7;
     }
@@ -718,16 +718,16 @@ LABEL_15:
   return v3;
 }
 
-- (id)bestTextArrayForAlternatives:(id)a3
+- (id)bestTextArrayForAlternatives:(id)alternatives
 {
-  v4 = a3;
-  if ([v4 count])
+  alternativesCopy = alternatives;
+  if ([alternativesCopy count])
   {
     v5 = self->_indexPathOfInterpretations;
     indexPathOfInterpretations = self->_indexPathOfInterpretations;
     self->_indexPathOfInterpretations = 0;
 
-    v7 = [(UIDictationSerializableResults *)self textArrayForAlternatives:v4];
+    v7 = [(UIDictationSerializableResults *)self textArrayForAlternatives:alternativesCopy];
     v8 = self->_indexPathOfInterpretations;
     self->_indexPathOfInterpretations = v5;
   }
@@ -742,7 +742,7 @@ LABEL_15:
 
 - (id)dictationPhraseArray
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = 2;
   if (!self->_fromKeyboard)
   {
@@ -766,7 +766,7 @@ LABEL_15:
   v15 = v5;
   v11[4] = self;
   v13 = v18;
-  v7 = v3;
+  v7 = array;
   v12 = v7;
   v14 = v16;
   [(NSArray *)phrases enumerateObjectsUsingBlock:v11];
@@ -979,7 +979,7 @@ void __45__UIDictationSerializableResults_bestResults__block_invoke(uint64_t a1,
 
 - (id)singleLineResult
 {
-  v2 = self;
+  selfCopy = self;
   v60[1] = *MEMORY[0x1E69E9840];
   v3 = [(NSArray *)self->_phrases count];
   if (v3)
@@ -988,16 +988,16 @@ void __45__UIDictationSerializableResults_bestResults__block_invoke(uint64_t a1,
     v5 = 0;
     v6 = 0;
     v54 = v3;
-    v55 = v2;
+    v55 = selfCopy;
     while (1)
     {
-      indexPathOfInterpretations = v2->_indexPathOfInterpretations;
+      indexPathOfInterpretations = selfCopy->_indexPathOfInterpretations;
       v8 = indexPathOfInterpretations ? [(NSIndexPath *)indexPathOfInterpretations indexAtPosition:v6]: 0;
-      v9 = [(NSArray *)v2->_phrases objectAtIndex:v6];
-      v10 = [(UIDictationInterpretationGroup *)v9 interpretations];
-      v11 = [v10 objectAtIndex:v8];
-      v12 = [v11 tokens];
-      v13 = [v12 count];
+      v9 = [(NSArray *)selfCopy->_phrases objectAtIndex:v6];
+      interpretations = [(UIDictationInterpretationGroup *)v9 interpretations];
+      v11 = [interpretations objectAtIndex:v8];
+      tokens = [v11 tokens];
+      v13 = [tokens count];
 
       if (v13)
       {
@@ -1023,9 +1023,9 @@ LABEL_13:
         if (++v6 == v4)
         {
           v51 = [[UIDictationSerializableResults alloc] initWithPhrases:v5];
-          [(UIDictationSerializableResults *)v51 setFromKeyboard:v2->_fromKeyboard];
-          [(UIDictationSerializableResults *)v51 setTransform:v2->_transform];
-          [(UIDictationSerializableResults *)v51 setUseServerCapitalization:v2->_useServerCapitalization];
+          [(UIDictationSerializableResults *)v51 setFromKeyboard:selfCopy->_fromKeyboard];
+          [(UIDictationSerializableResults *)v51 setTransform:selfCopy->_transform];
+          [(UIDictationSerializableResults *)v51 setUseServerCapitalization:selfCopy->_useServerCapitalization];
 
           goto LABEL_36;
         }
@@ -1042,16 +1042,16 @@ LABEL_33:
       }
     }
 
-    v56 = v5;
+    array = v5;
     v14 = 0;
     while (1)
     {
-      v15 = [(UIDictationInterpretationGroup *)v9 bestInterpretation];
-      v16 = [v15 tokens];
-      v17 = [v16 objectAtIndex:v14];
+      bestInterpretation = [(UIDictationInterpretationGroup *)v9 bestInterpretation];
+      tokens2 = [bestInterpretation tokens];
+      v17 = [tokens2 objectAtIndex:v14];
 
-      v18 = [v17 text];
-      v19 = [v18 rangeOfString:@"\n"];
+      text = [v17 text];
+      v19 = [text rangeOfString:@"\n"];
 
       if (v19 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1061,8 +1061,8 @@ LABEL_33:
       if (v13 == ++v14)
       {
         v20 = 0;
-        v5 = v56;
-        if (v56)
+        v5 = array;
+        if (array)
         {
           goto LABEL_13;
         }
@@ -1073,30 +1073,30 @@ LABEL_33:
 
     if (v14)
     {
-      if (!v56)
+      if (!array)
       {
-        v56 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         if (v6)
         {
           for (i = 0; i != v6; ++i)
           {
             v23 = [(NSArray *)v55->_phrases objectAtIndex:i];
-            [v56 addObject:v23];
+            [array addObject:v23];
           }
         }
       }
 
-      v24 = [(UIDictationInterpretationGroup *)v9 bestInterpretation];
-      v25 = [v24 tokens];
-      v26 = [v25 subarrayWithRange:{0, v14 - 1}];
+      bestInterpretation2 = [(UIDictationInterpretationGroup *)v9 bestInterpretation];
+      tokens3 = [bestInterpretation2 tokens];
+      v26 = [tokens3 subarrayWithRange:{0, v14 - 1}];
       v27 = [v26 mutableCopy];
 
       v28 = [UIDictationScoredToken alloc];
-      v29 = [v17 text];
-      v30 = [v29 substringToIndex:v19];
-      v31 = [v17 removeSpaceBefore];
+      text2 = [v17 text];
+      v30 = [text2 substringToIndex:v19];
+      removeSpaceBefore = [v17 removeSpaceBefore];
       [v17 confidenceScore];
-      v32 = [(UIDictationScoredToken *)v28 initWithText:v30 removeSpaceBefore:v31 removeSpaceAfter:1 confidenceScore:?];
+      v32 = [(UIDictationScoredToken *)v28 initWithText:v30 removeSpaceBefore:removeSpaceBefore removeSpaceAfter:1 confidenceScore:?];
 
       [v27 addObject:v32];
       v33 = [UIDictationInterpretation alloc];
@@ -1110,20 +1110,20 @@ LABEL_33:
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
       v20 = [(UIDictationInterpretationGroup *)v36 initWithInterpretations:v37];
 
-      v5 = v56;
+      v5 = array;
     }
 
     else
     {
-      if (!v56)
+      if (!array)
       {
-        v56 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         if (v6)
         {
           for (j = 0; j != v6; ++j)
           {
             v39 = [(NSArray *)v55->_phrases objectAtIndex:j];
-            [v56 addObject:v39];
+            [array addObject:v39];
           }
         }
       }
@@ -1131,11 +1131,11 @@ LABEL_33:
       if (v19)
       {
         v40 = [UIDictationScoredToken alloc];
-        v41 = [v17 text];
-        v42 = [v41 substringToIndex:v19];
-        v43 = [v17 removeSpaceBefore];
+        text3 = [v17 text];
+        v42 = [text3 substringToIndex:v19];
+        removeSpaceBefore2 = [v17 removeSpaceBefore];
         [v17 confidenceScore];
-        v44 = [(UIDictationScoredToken *)v40 initWithText:v42 removeSpaceBefore:v43 removeSpaceAfter:1 confidenceScore:?];
+        v44 = [(UIDictationScoredToken *)v40 initWithText:v42 removeSpaceBefore:removeSpaceBefore2 removeSpaceAfter:1 confidenceScore:?];
 
         v45 = [UIDictationInterpretation alloc];
         v60[0] = v44;
@@ -1148,12 +1148,12 @@ LABEL_33:
         v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
         v50 = [(UIDictationInterpretationGroup *)v48 initWithInterpretations:v49];
 
-        [v56 addObject:v50];
+        [array addObject:v50];
       }
 
-      v53 = [[UIDictationSerializableResults alloc] initWithPhrases:v56];
+      v53 = [[UIDictationSerializableResults alloc] initWithPhrases:array];
       v20 = 0;
-      v5 = v56;
+      v5 = array;
     }
 
     if (!v14)
@@ -1164,7 +1164,7 @@ LABEL_33:
     }
 
     v4 = v54;
-    v2 = v55;
+    selfCopy = v55;
     if (v5)
     {
       goto LABEL_13;
@@ -1174,7 +1174,7 @@ LABEL_33:
   }
 
 LABEL_34:
-  v51 = v2;
+  v51 = selfCopy;
 LABEL_36:
 
   return v51;
@@ -1185,8 +1185,8 @@ LABEL_36:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIDictationSerializableResults *)self bestText];
-  v7 = [v3 stringWithFormat:@"<%@ best=%@>", v5, v6];
+  bestText = [(UIDictationSerializableResults *)self bestText];
+  v7 = [v3 stringWithFormat:@"<%@ best=%@>", v5, bestText];
 
   return v7;
 }

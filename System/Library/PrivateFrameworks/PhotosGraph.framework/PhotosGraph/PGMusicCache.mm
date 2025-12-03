@@ -1,24 +1,24 @@
 @interface PGMusicCache
-+ (id)cacheAtURL:(id)a3 error:(id *)a4;
-+ (id)cacheWithPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)removeAllWithProgressReporter:(id)a3 error:(id *)a4;
-- (BOOL)removeSongSourcesWithSongSourceCategories:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)removeSongSourcesWithSongSourceCategory:(id)a3 progressReporter:(id)a4 error:(id *)a5;
++ (id)cacheAtURL:(id)l error:(id *)error;
++ (id)cacheWithPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)removeAllWithProgressReporter:(id)reporter error:(id *)error;
+- (BOOL)removeSongSourcesWithSongSourceCategories:(id)categories progressReporter:(id)reporter error:(id *)error;
+- (BOOL)removeSongSourcesWithSongSourceCategory:(id)category progressReporter:(id)reporter error:(id *)error;
 - (PGMusicCache)init;
-- (id)statusAndReturnError:(id *)a3;
+- (id)statusAndReturnError:(id *)error;
 @end
 
 @implementation PGMusicCache
 
-+ (id)cacheWithPhotoLibrary:(id)a3 error:(id *)a4
++ (id)cacheWithPhotoLibrary:(id)library error:(id *)error
 {
-  v4 = a3;
-  v5 = sub_22F1A26E0(v4);
+  libraryCopy = library;
+  v5 = sub_22F1A26E0(libraryCopy);
 
   return v5;
 }
 
-+ (id)cacheAtURL:(id)a3 error:(id *)a4
++ (id)cacheAtURL:(id)l error:(id *)error
 {
   v4 = sub_22F73F470();
   v5 = *(v4 - 8);
@@ -32,10 +32,10 @@
   return v9;
 }
 
-- (BOOL)removeAllWithProgressReporter:(id)a3 error:(id *)a4
+- (BOOL)removeAllWithProgressReporter:(id)reporter error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  reporterCopy = reporter;
+  selfCopy = self;
   MusicCache.removeAll(progressReporter:)();
 
   return 1;
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (BOOL)removeSongSourcesWithSongSourceCategory:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)removeSongSourcesWithSongSourceCategory:(id)category progressReporter:(id)reporter error:(id *)error
 {
   v7 = sub_22F740E20();
   v9 = v8;
@@ -57,27 +57,27 @@
   *(v10 + 16) = xmmword_22F771340;
   *(v10 + 32) = v7;
   *(v10 + 40) = v9;
-  v11 = a4;
-  v12 = self;
-  MusicCache.removeSongSources(songSourceCategories:progressReporter:)(v10, v11);
+  reporterCopy = reporter;
+  selfCopy = self;
+  MusicCache.removeSongSources(songSourceCategories:progressReporter:)(v10, reporterCopy);
 
   return 1;
 }
 
-- (BOOL)removeSongSourcesWithSongSourceCategories:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)removeSongSourcesWithSongSourceCategories:(id)categories progressReporter:(id)reporter error:(id *)error
 {
   v7 = sub_22F741180();
-  v8 = a4;
-  v9 = self;
-  MusicCache.removeSongSources(songSourceCategories:progressReporter:)(v7, v8);
+  reporterCopy = reporter;
+  selfCopy = self;
+  MusicCache.removeSongSources(songSourceCategories:progressReporter:)(v7, reporterCopy);
 
   return 1;
 }
 
-- (id)statusAndReturnError:(id *)a3
+- (id)statusAndReturnError:(id *)error
 {
   v3 = *(&self->super.isa + OBJC_IVAR___PGMusicCache_managedObjectContext);
-  v4 = self;
+  selfCopy = self;
   sub_22F7417A0();
 
   v5 = sub_22F740DF0();

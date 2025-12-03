@@ -1,28 +1,28 @@
 @interface HUHomeTheaterOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUHomeTheaterOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
-- (id)viewControllerForAccessory:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUHomeTheaterOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
+- (id)viewControllerForAccessory:(id)accessory;
 @end
 
 @implementation HUHomeTheaterOnboardingFlow
 
-- (HUHomeTheaterOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUHomeTheaterOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v19.receiver = self;
   v19.super_class = HUHomeTheaterOnboardingFlow;
   v8 = [(HUHomeTheaterOnboardingFlow *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
-    v10 = [v7 hf_appleTVsSupportingHomeTheater];
+    objc_storeStrong(&v8->_home, home);
+    hf_appleTVsSupportingHomeTheater = [homeCopy hf_appleTVsSupportingHomeTheater];
     appleTVs = v9->_appleTVs;
-    v9->_appleTVs = v10;
+    v9->_appleTVs = hf_appleTVsSupportingHomeTheater;
 
-    v12 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v12 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __57__HUHomeTheaterOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -71,101 +71,101 @@ void __57__HUHomeTheaterOnboardingFlow_initWithUsageOptions_home___block_invoke_
   }
 }
 
-- (id)viewControllerForAccessory:(id)a3
+- (id)viewControllerForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 audioDestinationController];
-  v6 = [v5 availableDestinations];
-  v7 = [v6 count];
+  accessoryCopy = accessory;
+  audioDestinationController = [accessoryCopy audioDestinationController];
+  availableDestinations = [audioDestinationController availableDestinations];
+  v7 = [availableDestinations count];
 
   if (v7 == 1)
   {
-    v8 = [v4 audioDestinationController];
-    v9 = [v8 availableDestinations];
-    v10 = [v9 firstObject];
+    audioDestinationController2 = [accessoryCopy audioDestinationController];
+    availableDestinations2 = [audioDestinationController2 availableDestinations];
+    firstObject = [availableDestinations2 firstObject];
 
     v11 = [HUHomeTheaterSimpleSetupViewController alloc];
-    v12 = [(HUHomeTheaterOnboardingFlow *)self home];
-    v13 = [(HUHomeTheaterSimpleSetupViewController *)v11 initWithAppleTVAccessory:v4 destination:v10 inHome:v12];
+    home = [(HUHomeTheaterOnboardingFlow *)self home];
+    v13 = [(HUHomeTheaterSimpleSetupViewController *)v11 initWithAppleTVAccessory:accessoryCopy destination:firstObject inHome:home];
 
-    v4 = v12;
+    accessoryCopy = home;
   }
 
   else
   {
     v14 = [HUHomeTheaterSetupViewController alloc];
-    v10 = [(HUHomeTheaterOnboardingFlow *)self home];
-    v13 = [(HUHomeTheaterSetupViewController *)v14 initWithAppleTVAccessory:v4 inHome:v10];
+    firstObject = [(HUHomeTheaterOnboardingFlow *)self home];
+    v13 = [(HUHomeTheaterSetupViewController *)v14 initWithAppleTVAccessory:accessoryCopy inHome:firstObject];
   }
 
   return v13;
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUHomeTheaterOnboardingKey_UserInput"];
-  v7 = [v5 objectForKeyedSubscript:@"HUHomeTheaterOnboardingKey_Accessory"];
-  v8 = [(HUHomeTheaterOnboardingFlow *)self appleTVs];
-  v9 = [v8 indexOfObject:v7];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUHomeTheaterOnboardingKey_UserInput"];
+  v7 = [inputCopy objectForKeyedSubscript:@"HUHomeTheaterOnboardingKey_Accessory"];
+  appleTVs = [(HUHomeTheaterOnboardingFlow *)self appleTVs];
+  v9 = [appleTVs indexOfObject:v7];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v11;
     v24 = 2112;
-    v25 = v5;
+    v25 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] && objc_msgSend(v6, "integerValue") != 1)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HUHomeTheaterOnboardingFlow.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUHomeTheaterOnboardingValue_Setup) || (userInputValue.integerValue == HUHomeTheaterOnboardingValue_DontSetup)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeTheaterOnboardingFlow.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUHomeTheaterOnboardingValue_Setup) || (userInputValue.integerValue == HUHomeTheaterOnboardingValue_DontSetup)"}];
   }
 
   [v6 integerValue];
   [v6 integerValue];
   v12 = v9 + 1;
-  v13 = [(HUHomeTheaterOnboardingFlow *)self appleTVs];
-  v14 = [v13 count];
+  appleTVs2 = [(HUHomeTheaterOnboardingFlow *)self appleTVs];
+  v14 = [appleTVs2 count];
 
   if (v12 >= v14)
   {
-    [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_HomeTheater_FinishedOnboarding"];
-    v16 = [(HUHomeTheaterOnboardingFlow *)self onboardingFuture];
-    [v16 finishWithNoResult];
+    [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_HomeTheater_FinishedOnboarding"];
+    onboardingFuture = [(HUHomeTheaterOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
     v17 = 0;
   }
 
   else
   {
-    v15 = [(HUHomeTheaterOnboardingFlow *)self appleTVs];
-    v16 = [v15 objectAtIndexedSubscript:v12];
+    appleTVs3 = [(HUHomeTheaterOnboardingFlow *)self appleTVs];
+    onboardingFuture = [appleTVs3 objectAtIndexedSubscript:v12];
 
-    v17 = [(HUHomeTheaterOnboardingFlow *)self viewControllerForAccessory:v16];
+    v17 = [(HUHomeTheaterOnboardingFlow *)self viewControllerForAccessory:onboardingFuture];
   }
 
   return v17;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  objc_initWeak(&location, a1);
+  homeCopy = home;
+  optionsCopy = options;
+  objc_initWeak(&location, self);
   v9 = MEMORY[0x277D2C900];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__HUHomeTheaterOnboardingFlow_needsOnboardingForHome_options___block_invoke;
   v13[3] = &unk_277DB75B0;
   objc_copyWeak(v15, &location);
-  v10 = v7;
+  v10 = homeCopy;
   v14 = v10;
   v15[1] = a2;
   v11 = [v9 futureWithBlock:v13];

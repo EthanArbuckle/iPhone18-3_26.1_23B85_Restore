@@ -20,18 +20,18 @@
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
 
   [v13 storeUserInfo:v15 error:a5];
-  v16 = [v13 assetDirectory];
+  assetDirectory = [v13 assetDirectory];
   v39 = 0;
-  v17 = [a1 saveToURL:v16 error:&v39];
+  v17 = [self saveToURL:assetDirectory error:&v39];
   v18 = v39;
 
   if (v17)
   {
-    v19 = [v13 _path];
-    if (v19)
+    _path = [v13 _path];
+    if (_path)
     {
       gotLoadHelper_x8__OBJC_CLASS___PRSPosterConfigurationAttributes(v20);
-      v22 = [objc_alloc(*(v21 + 8)) initWithPath:v19 extensionIdentifier:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+      v22 = [objc_alloc(*(v21 + 8)) initWithPath:_path extensionIdentifier:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
       Helper_x8__OBJC_CLASS___PRPosterConfiguredProperties = gotLoadHelper_x8__OBJC_CLASS___PRPosterConfiguredProperties(v23);
       v26 = [*(v25 + 752) defaultConfiguredPropertiesForRole:{v10, Helper_x8__OBJC_CLASS___PRPosterConfiguredProperties}];
       Helper_x8__OBJC_CLASS___PRUISPosterConfigurationFinalizer = gotLoadHelper_x8__OBJC_CLASS___PRUISPosterConfigurationFinalizer(v27);
@@ -75,9 +75,9 @@
 
 + (id)ck_temporaryImageDirectoryURL
 {
-  v0 = [MEMORY[0x1E696AC08] defaultManager];
-  v1 = [v0 temporaryDirectory];
-  v2 = [v1 URLByAppendingPathComponent:@"PFPosterConfigurationImages"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v2 = [temporaryDirectory URLByAppendingPathComponent:@"PFPosterConfigurationImages"];
 
   return v2;
 }

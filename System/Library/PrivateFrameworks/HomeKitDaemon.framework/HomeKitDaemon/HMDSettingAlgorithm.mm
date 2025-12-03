@@ -1,38 +1,38 @@
 @interface HMDSettingAlgorithm
-+ (id)allGroupsFromRootGroup:(id)a3;
-+ (id)allSettingsFromRootGroup:(id)a3;
-+ (void)findChangedSettingsWithRootGroup:(id)a3 currentGroups:(id)a4 currentSettings:(id)a5 completion:(id)a6;
++ (id)allGroupsFromRootGroup:(id)group;
++ (id)allSettingsFromRootGroup:(id)group;
++ (void)findChangedSettingsWithRootGroup:(id)group currentGroups:(id)groups currentSettings:(id)settings completion:(id)completion;
 @end
 
 @implementation HMDSettingAlgorithm
 
-+ (void)findChangedSettingsWithRootGroup:(id)a3 currentGroups:(id)a4 currentSettings:(id)a5 completion:(id)a6
++ (void)findChangedSettingsWithRootGroup:(id)group currentGroups:(id)groups currentSettings:(id)settings completion:(id)completion
 {
   v90 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v65 = a5;
-  v56 = a6;
+  groupCopy = group;
+  groupsCopy = groups;
+  settingsCopy = settings;
+  completionCopy = completion;
   context = objc_autoreleasePoolPush();
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = v13;
-  if (v10)
+  if (groupCopy)
   {
     v82[0] = MEMORY[0x277D85DD0];
     v82[1] = 3221225472;
     v82[2] = __97__HMDSettingAlgorithm_findChangedSettingsWithRootGroup_currentGroups_currentSettings_completion___block_invoke;
     v82[3] = &unk_2786788A0;
     v83 = v13;
-    v85 = a1;
+    selfCopy = self;
     v84 = v12;
-    BFSTraverseGroupWithBlock(v10, v82);
+    BFSTraverseGroupWithBlock(groupCopy, v82);
   }
 
   v62 = v14;
-  v57 = v10;
-  v15 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-  v16 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  v57 = groupCopy;
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
   v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v60 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v59 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -57,15 +57,15 @@
         }
 
         v21 = *(*(&v78 + 1) + 8 * i);
-        v22 = [v21 identifier];
-        [v15 setObject:v21 forKey:v22];
+        identifier = [v21 identifier];
+        [strongToWeakObjectsMapTable setObject:v21 forKey:identifier];
 
-        v23 = [v21 identifier];
-        if (v23)
+        identifier2 = [v21 identifier];
+        if (identifier2)
         {
-          v24 = v23;
-          v25 = [v21 identifier];
-          v26 = [v65 objectForKey:v25];
+          v24 = identifier2;
+          identifier3 = [v21 identifier];
+          v26 = [settingsCopy objectForKey:identifier3];
 
           if (!v26)
           {
@@ -100,15 +100,15 @@
         }
 
         v31 = *(*(&v74 + 1) + 8 * j);
-        v32 = [v31 identifier];
-        [v16 setObject:v31 forKey:v32];
+        identifier4 = [v31 identifier];
+        [strongToWeakObjectsMapTable2 setObject:v31 forKey:identifier4];
 
-        v33 = [v31 identifier];
-        if (v33)
+        identifier5 = [v31 identifier];
+        if (identifier5)
         {
-          v34 = v33;
-          v35 = [v31 identifier];
-          v36 = [v11 objectForKey:v35];
+          v34 = identifier5;
+          identifier6 = [v31 identifier];
+          v36 = [groupsCopy objectForKey:identifier6];
 
           if (!v36)
           {
@@ -127,7 +127,7 @@
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v37 = v11;
+  v37 = groupsCopy;
   v38 = [v37 countByEnumeratingWithState:&v70 objects:v87 count:16];
   if (v38)
   {
@@ -143,7 +143,7 @@
         }
 
         v42 = *(*(&v70 + 1) + 8 * k);
-        v43 = [v16 objectForKey:v42];
+        v43 = [strongToWeakObjectsMapTable2 objectForKey:v42];
 
         if (!v43)
         {
@@ -165,7 +165,7 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v45 = v65;
+  v45 = settingsCopy;
   v46 = [v45 countByEnumeratingWithState:&v66 objects:v86 count:16];
   if (v46)
   {
@@ -181,7 +181,7 @@
         }
 
         v50 = *(*(&v66 + 1) + 8 * m);
-        v51 = [v15 objectForKey:v50];
+        v51 = [strongToWeakObjectsMapTable objectForKey:v50];
 
         if (!v51)
         {
@@ -199,7 +199,7 @@
     while (v47);
   }
 
-  v56[2](v56, v16, v15, v60, v61, v58, v59);
+  completionCopy[2](completionCopy, strongToWeakObjectsMapTable2, strongToWeakObjectsMapTable, v60, v61, v58, v59);
   objc_autoreleasePoolPop(contexta);
 
   v53 = *MEMORY[0x277D85DE8];
@@ -286,37 +286,37 @@ uint64_t __97__HMDSettingAlgorithm_findChangedSettingsWithRootGroup_currentGroup
   return v5;
 }
 
-+ (id)allGroupsFromRootGroup:(id)a3
++ (id)allGroupsFromRootGroup:(id)group
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
-  if (v3)
+  groupCopy = group;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
+  if (groupCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__HMDSettingAlgorithm_allGroupsFromRootGroup___block_invoke;
     v7[3] = &unk_278678850;
-    v8 = v4;
-    BFSTraverseGroupWithBlock(v3, v7);
+    v8 = array;
+    BFSTraverseGroupWithBlock(groupCopy, v7);
   }
 
   return v5;
 }
 
-+ (id)allSettingsFromRootGroup:(id)a3
++ (id)allSettingsFromRootGroup:(id)group
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
-  if (v3)
+  groupCopy = group;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
+  if (groupCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__HMDSettingAlgorithm_allSettingsFromRootGroup___block_invoke;
     v7[3] = &unk_278678850;
-    v8 = v4;
-    BFSTraverseGroupWithBlock(v3, v7);
+    v8 = array;
+    BFSTraverseGroupWithBlock(groupCopy, v7);
   }
 
   return v5;

@@ -1,29 +1,29 @@
 @interface MosaicCell
 - (NSArray)accessibilityCustomActions;
 - (int64_t)focusItemDeferralMode;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setAccessibilityCustomActions:(id)a3;
+- (void)setAccessibilityCustomActions:(id)actions;
 @end
 
 @implementation MosaicCell
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_100069310(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_100069310(attributesCopy);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100072BF4();
 
   (*(v5 + 8))(v7, v4);
@@ -31,7 +31,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100077808();
 }
 
@@ -41,13 +41,13 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(MosaicCell *)v7 _bridgedConfigurationState];
+  selfCopy = self;
+  _bridgedConfigurationState = [(MosaicCell *)selfCopy _bridgedConfigurationState];
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
 
-  LOBYTE(v8) = UICellConfigurationState.isEditing.getter();
+  LOBYTE(_bridgedConfigurationState) = UICellConfigurationState.isEditing.getter();
   (*(v4 + 8))(v6, v3);
-  if (v8)
+  if (_bridgedConfigurationState)
   {
     return 2;
   }
@@ -63,10 +63,10 @@
   v8.receiver = self;
   v8.super_class = type metadata accessor for MosaicCell();
   v2 = v8.receiver;
-  v3 = [(MosaicCell *)&v8 accessibilityCustomActions];
-  if (v3)
+  accessibilityCustomActions = [(MosaicCell *)&v8 accessibilityCustomActions];
+  if (accessibilityCustomActions)
   {
-    v4 = v3;
+    v4 = accessibilityCustomActions;
     sub_10043C194();
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -80,20 +80,20 @@
   return v6.super.isa;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
-  isa = a3;
-  if (a3)
+  isa = actions;
+  if (actions)
   {
     sub_10043C194();
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v5 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;

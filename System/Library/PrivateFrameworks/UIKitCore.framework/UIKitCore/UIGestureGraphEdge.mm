@@ -1,17 +1,17 @@
 @interface UIGestureGraphEdge
-- (UIGestureGraphEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 directed:(BOOL)a6;
-- (id)commonNode:(id)a3;
+- (UIGestureGraphEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode directed:(BOOL)directed;
+- (id)commonNode:(id)node;
 - (id)description;
-- (id)oppositeNode:(id)a3;
+- (id)oppositeNode:(id)node;
 @end
 
 @implementation UIGestureGraphEdge
 
-- (UIGestureGraphEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 directed:(BOOL)a6
+- (UIGestureGraphEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode directed:(BOOL)directed
 {
-  if (a4)
+  if (node)
   {
-    if (a5)
+    if (targetNode)
     {
       goto LABEL_3;
     }
@@ -19,39 +19,39 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIGestureGraphEdge.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"sourceNode"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIGestureGraphEdge.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"sourceNode"}];
 
-    if (a5)
+    if (targetNode)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"UIGestureGraphEdge.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"targetNode"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIGestureGraphEdge.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"targetNode"}];
 
 LABEL_3:
   v17.receiver = self;
   v17.super_class = UIGestureGraphEdge;
-  v12 = [(UIGestureGraphElement *)&v17 initWithLabel:a3];
+  v12 = [(UIGestureGraphElement *)&v17 initWithLabel:label];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sourceNode, a4);
-    objc_storeStrong(&v13->_targetNode, a5);
-    v13->_directed = a6;
+    objc_storeStrong(&v12->_sourceNode, node);
+    objc_storeStrong(&v13->_targetNode, targetNode);
+    v13->_directed = directed;
   }
 
   return v13;
 }
 
-- (id)oppositeNode:(id)a3
+- (id)oppositeNode:(id)node
 {
   targetNode = self->_targetNode;
-  if (self->_sourceNode != a3)
+  if (self->_sourceNode != node)
   {
-    if (targetNode != a3)
+    if (targetNode != node)
     {
       v5 = 0;
 
@@ -66,19 +66,19 @@ LABEL_3:
   return v5;
 }
 
-- (id)commonNode:(id)a3
+- (id)commonNode:(id)node
 {
   p_sourceNode = &self->_sourceNode;
   sourceNode = self->_sourceNode;
-  v7 = [a3 sourceNode];
-  if (([(UIGestureGraphNode *)sourceNode isEqual:v7]& 1) != 0)
+  sourceNode = [node sourceNode];
+  if (([(UIGestureGraphNode *)sourceNode isEqual:sourceNode]& 1) != 0)
   {
     goto LABEL_2;
   }
 
   v8 = *p_sourceNode;
-  v9 = [a3 targetNode];
-  LOBYTE(v8) = [v8 isEqual:v9];
+  targetNode = [node targetNode];
+  LOBYTE(v8) = [v8 isEqual:targetNode];
 
   if (v8)
   {
@@ -87,8 +87,8 @@ LABEL_3:
 
   p_sourceNode = &self->_targetNode;
   targetNode = self->_targetNode;
-  v7 = [a3 sourceNode];
-  if (([(UIGestureGraphNode *)targetNode isEqual:v7]& 1) != 0)
+  sourceNode = [node sourceNode];
+  if (([(UIGestureGraphNode *)targetNode isEqual:sourceNode]& 1) != 0)
   {
 LABEL_2:
 
@@ -98,8 +98,8 @@ LABEL_4:
   }
 
   v13 = *p_sourceNode;
-  v14 = [a3 targetNode];
-  LOBYTE(v13) = [v13 isEqual:v14];
+  targetNode2 = [node targetNode];
+  LOBYTE(v13) = [v13 isEqual:targetNode2];
 
   if (v13)
   {
@@ -117,13 +117,13 @@ LABEL_5:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIGestureGraphEdge *)self isDirected];
+  isDirected = [(UIGestureGraphEdge *)self isDirected];
   v12.receiver = self;
   v12.super_class = UIGestureGraphEdge;
   v7 = [(UIGestureGraphElement *)&v12 description];
-  v8 = [(UIGestureGraphEdge *)self sourceNode];
-  v9 = [(UIGestureGraphEdge *)self targetNode];
-  v10 = [v3 stringWithFormat:@"[<%@ %p>] directed:[%d] %@\n\tsourceNode:%@\n\ttargetNode:%@", v5, self, v6, v7, v8, v9];
+  sourceNode = [(UIGestureGraphEdge *)self sourceNode];
+  targetNode = [(UIGestureGraphEdge *)self targetNode];
+  v10 = [v3 stringWithFormat:@"[<%@ %p>] directed:[%d] %@\n\tsourceNode:%@\n\ttargetNode:%@", v5, self, isDirected, v7, sourceNode, targetNode];
 
   return v10;
 }

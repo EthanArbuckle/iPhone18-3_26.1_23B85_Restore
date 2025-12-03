@@ -6,19 +6,19 @@
 
 - (id)alertActionRepresentationWithHandler:()UIKitBridging
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  if ([v8 style] <= 2)
+  if ([selfCopy style] <= 2)
   {
-    [v8 style];
+    [selfCopy style];
   }
 
   v4 = MEMORY[0x277D750F8];
-  v5 = [v8 title];
+  title = [selfCopy title];
   v6 = [v4 actionWithTitle:? style:? handler:?];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](title);
   objc_storeStrong(location, 0);
 
   return v6;

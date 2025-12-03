@@ -1,5 +1,5 @@
 @interface IUISessionChangeContext
-- (IUISessionChangeContext)initWithService:(id)a3 session:(id)a4 sessionChange:(id)a5 completion:(id)a6;
+- (IUISessionChangeContext)initWithService:(id)service session:(id)session sessionChange:(id)change completion:(id)completion;
 - (RTIInputSystemService)service;
 - (RTIInputSystemServiceSession)session;
 - (id)description;
@@ -7,25 +7,25 @@
 
 @implementation IUISessionChangeContext
 
-- (IUISessionChangeContext)initWithService:(id)a3 session:(id)a4 sessionChange:(id)a5 completion:(id)a6
+- (IUISessionChangeContext)initWithService:(id)service session:(id)session sessionChange:(id)change completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  sessionCopy = session;
+  changeCopy = change;
+  completionCopy = completion;
   v21.receiver = self;
   v21.super_class = IUISessionChangeContext;
   v14 = [(IUISessionChangeContext *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_service, v10);
-    objc_storeWeak(&v15->_session, v11);
-    v16 = [v12 copy];
+    objc_storeWeak(&v14->_service, serviceCopy);
+    objc_storeWeak(&v15->_session, sessionCopy);
+    v16 = [changeCopy copy];
     sessionChange = v15->_sessionChange;
     v15->_sessionChange = v16;
 
-    v18 = [v13 copy];
+    v18 = [completionCopy copy];
     completion = v15->_completion;
     v15->_completion = v18;
   }

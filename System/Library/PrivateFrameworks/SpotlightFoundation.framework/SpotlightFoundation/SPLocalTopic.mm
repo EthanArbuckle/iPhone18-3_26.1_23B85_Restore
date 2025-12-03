@@ -1,84 +1,84 @@
 @interface SPLocalTopic
-+ (id)localTopicWithContactName:(id)a3 contactIdentifier:(id)a4;
-+ (id)localTopicWithContactName:(id)a3 contactIdentifier:(id)a4 detailText:(id)a5;
-+ (id)localTopicWithContactName:(id)a3 emails:(id)a4 phones:(id)a5 detailText:(id)a6;
-+ (id)localTopicWithDictionaryResult:(id)a3;
-+ (id)localTopicWithTitle:(id)a3;
-+ (id)localTopicWithTopicIdentifier:(id)a3;
-+ (id)proactiveTopicWithIdentifier:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 detailText:(id)a6;
-- (SPLocalTopic)initWithContactName:(id)a3 contactIdentifier:(id)a4 detailText:(id)a5;
-- (SPLocalTopic)initWithContactName:(id)a3 emails:(id)a4 phones:(id)a5 detailText:(id)a6;
-- (SPLocalTopic)initWithDictionaryResult:(id)a3;
-- (SPLocalTopic)initWithTopicIdentifier:(id)a3;
++ (id)localTopicWithContactName:(id)name contactIdentifier:(id)identifier;
++ (id)localTopicWithContactName:(id)name contactIdentifier:(id)identifier detailText:(id)text;
++ (id)localTopicWithContactName:(id)name emails:(id)emails phones:(id)phones detailText:(id)text;
++ (id)localTopicWithDictionaryResult:(id)result;
++ (id)localTopicWithTitle:(id)title;
++ (id)localTopicWithTopicIdentifier:(id)identifier;
++ (id)proactiveTopicWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class detailText:(id)text;
+- (SPLocalTopic)initWithContactName:(id)name contactIdentifier:(id)identifier detailText:(id)text;
+- (SPLocalTopic)initWithContactName:(id)name emails:(id)emails phones:(id)phones detailText:(id)text;
+- (SPLocalTopic)initWithDictionaryResult:(id)result;
+- (SPLocalTopic)initWithTopicIdentifier:(id)identifier;
 @end
 
 @implementation SPLocalTopic
 
-+ (id)proactiveTopicWithIdentifier:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5 detailText:(id)a6
++ (id)proactiveTopicWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class detailText:(id)text
 {
-  v6 = topicIdentifierWithIdentifierAndDetail(a3, a4, a5, a6, 3, 0);
+  v6 = topicIdentifierWithIdentifierAndDetail(identifier, bundleIdentifier, class, text, 3, 0);
   v7 = [SPLocalTopic localTopicWithTopicIdentifier:v6];
 
   return v7;
 }
 
-+ (id)localTopicWithTopicIdentifier:(id)a3
++ (id)localTopicWithTopicIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[SPLocalTopic alloc] initWithTopicIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[SPLocalTopic alloc] initWithTopicIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)localTopicWithContactName:(id)a3 emails:(id)a4 phones:(id)a5 detailText:(id)a6
++ (id)localTopicWithContactName:(id)name emails:(id)emails phones:(id)phones detailText:(id)text
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[SPLocalTopic alloc] initWithContactName:v12 emails:v11 phones:v10 detailText:v9];
+  textCopy = text;
+  phonesCopy = phones;
+  emailsCopy = emails;
+  nameCopy = name;
+  v13 = [[SPLocalTopic alloc] initWithContactName:nameCopy emails:emailsCopy phones:phonesCopy detailText:textCopy];
 
   return v13;
 }
 
-+ (id)localTopicWithContactName:(id)a3 contactIdentifier:(id)a4 detailText:(id)a5
++ (id)localTopicWithContactName:(id)name contactIdentifier:(id)identifier detailText:(id)text
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SPLocalTopic alloc] initWithContactName:v9 contactIdentifier:v8 detailText:v7];
+  textCopy = text;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v10 = [[SPLocalTopic alloc] initWithContactName:nameCopy contactIdentifier:identifierCopy detailText:textCopy];
 
   return v10;
 }
 
-+ (id)localTopicWithContactName:(id)a3 contactIdentifier:(id)a4
++ (id)localTopicWithContactName:(id)name contactIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SPLocalTopic alloc] initWithContactName:v6 contactIdentifier:v5 detailText:0];
+  identifierCopy = identifier;
+  nameCopy = name;
+  v7 = [[SPLocalTopic alloc] initWithContactName:nameCopy contactIdentifier:identifierCopy detailText:0];
 
   return v7;
 }
 
-+ (id)localTopicWithTitle:(id)a3
++ (id)localTopicWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[SPLocalTopic alloc] initWithTitle:v3 type:16 score:&unk_287C3DF40 isCached:0];
+  titleCopy = title;
+  v4 = [[SPLocalTopic alloc] initWithTitle:titleCopy type:16 score:&unk_287C3DF40 isCached:0];
 
   return v4;
 }
 
-+ (id)localTopicWithDictionaryResult:(id)a3
++ (id)localTopicWithDictionaryResult:(id)result
 {
-  v3 = a3;
-  v4 = [[SPLocalTopic alloc] initWithDictionaryResult:v3];
+  resultCopy = result;
+  v4 = [[SPLocalTopic alloc] initWithDictionaryResult:resultCopy];
 
   return v4;
 }
 
-- (SPLocalTopic)initWithContactName:(id)a3 emails:(id)a4 phones:(id)a5 detailText:(id)a6
+- (SPLocalTopic)initWithContactName:(id)name emails:(id)emails phones:(id)phones detailText:(id)text
 {
-  v7 = topicIdentifierWithContactInfoAndDetail(a3, a4, a5, a6, 0x26u, 0);
+  v7 = topicIdentifierWithContactInfoAndDetail(name, emails, phones, text, 0x26u, 0);
   v10.receiver = self;
   v10.super_class = SPLocalTopic;
   v8 = [(SFLocalTopic *)&v10 initWithIdentifier:v7];
@@ -86,19 +86,19 @@
   return v8;
 }
 
-- (SPLocalTopic)initWithContactName:(id)a3 contactIdentifier:(id)a4 detailText:(id)a5
+- (SPLocalTopic)initWithContactName:(id)name contactIdentifier:(id)identifier detailText:(id)text
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 length] || v8 && (objc_msgSend(v9, "isEqualToString:", v8) & 1) != 0)
+  nameCopy = name;
+  identifierCopy = identifier;
+  textCopy = text;
+  if (![identifierCopy length] || nameCopy && (objc_msgSend(identifierCopy, "isEqualToString:", nameCopy) & 1) != 0)
   {
-    v11 = topicIdentifierWithContactInfoAndDetail(v8, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], v10, 0x26u, 0);
+    v11 = topicIdentifierWithContactInfoAndDetail(nameCopy, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], textCopy, 0x26u, 0);
   }
 
   else
   {
-    v11 = topicIdentifierWithContactIdentifierAndDetail(v8, v9, v10, 32, 0);
+    v11 = topicIdentifierWithContactIdentifierAndDetail(nameCopy, identifierCopy, textCopy, 32, 0);
   }
 
   v12 = v11;
@@ -109,28 +109,28 @@
   return v13;
 }
 
-- (SPLocalTopic)initWithDictionaryResult:(id)a3
+- (SPLocalTopic)initWithDictionaryResult:(id)result
 {
   v4 = MEMORY[0x277D4C690];
-  v5 = a3;
-  v6 = [v5 completion];
-  v7 = [v4 textWithString:v6];
-  [v5 setTitle:v7];
+  resultCopy = result;
+  completion = [resultCopy completion];
+  v7 = [v4 textWithString:completion];
+  [resultCopy setTitle:v7];
 
-  [v5 setSectionBundleIdentifier:@"com.apple.searchd.recent.dictionary"];
-  v8 = [v5 identifier];
+  [resultCopy setSectionBundleIdentifier:@"com.apple.searchd.recent.dictionary"];
+  identifier = [resultCopy identifier];
   v11.receiver = self;
   v11.super_class = SPLocalTopic;
-  v9 = [(SFLocalTopic *)&v11 initWithResult:v5 identifier:v8];
+  v9 = [(SFLocalTopic *)&v11 initWithResult:resultCopy identifier:identifier];
 
   return v9;
 }
 
-- (SPLocalTopic)initWithTopicIdentifier:(id)a3
+- (SPLocalTopic)initWithTopicIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = SPLocalTopic;
-  return [(SFLocalTopic *)&v4 initWithIdentifier:a3];
+  return [(SFLocalTopic *)&v4 initWithIdentifier:identifier];
 }
 
 @end

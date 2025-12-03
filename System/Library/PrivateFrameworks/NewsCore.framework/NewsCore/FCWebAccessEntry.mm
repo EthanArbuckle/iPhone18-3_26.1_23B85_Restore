@@ -1,19 +1,19 @@
 @interface FCWebAccessEntry
-- (void)initWithEntryID:(void *)a3 tagID:(void *)a4 purchaseID:(void *)a5 lastRetryAttemptTime:(void *)a6 email:(void *)a7 purchaseReceipt:;
+- (void)initWithEntryID:(void *)d tagID:(void *)iD purchaseID:(void *)purchaseID lastRetryAttemptTime:(void *)time email:(void *)email purchaseReceipt:;
 @end
 
 @implementation FCWebAccessEntry
 
-- (void)initWithEntryID:(void *)a3 tagID:(void *)a4 purchaseID:(void *)a5 lastRetryAttemptTime:(void *)a6 email:(void *)a7 purchaseReceipt:
+- (void)initWithEntryID:(void *)d tagID:(void *)iD purchaseID:(void *)purchaseID lastRetryAttemptTime:(void *)time email:(void *)email purchaseReceipt:
 {
   v45 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!a1)
+  dCopy = d;
+  iDCopy = iD;
+  purchaseIDCopy = purchaseID;
+  timeCopy = time;
+  emailCopy = email;
+  if (!self)
   {
     goto LABEL_12;
   }
@@ -31,7 +31,7 @@
     v44 = v34;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v14)
+    if (!dCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -50,55 +50,55 @@ LABEL_5:
     }
   }
 
-  else if (!v14)
+  else if (!dCopy)
   {
     goto LABEL_5;
   }
 
-  v36.receiver = a1;
+  v36.receiver = self;
   v36.super_class = FCWebAccessEntry;
   v19 = objc_msgSendSuper2(&v36, sel_init);
-  a1 = v19;
+  self = v19;
   if (v19)
   {
     if (v13)
     {
       v20 = [v13 copy];
-      v21 = a1[5];
-      a1[5] = v20;
+      v21 = self[5];
+      self[5] = v20;
 
-      v22 = [v14 copy];
-      v23 = a1[6];
-      a1[6] = v22;
+      v22 = [dCopy copy];
+      v23 = self[6];
+      self[6] = v22;
 
-      v24 = [v15 copy];
-      v25 = a1[2];
-      a1[2] = v24;
+      v24 = [iDCopy copy];
+      v25 = self[2];
+      self[2] = v24;
 
-      v26 = [v16 copy];
-      v27 = a1[4];
-      a1[4] = v26;
+      v26 = [purchaseIDCopy copy];
+      v27 = self[4];
+      self[4] = v26;
 
-      v28 = [v17 copy];
-      v29 = a1[1];
-      a1[1] = v28;
+      v28 = [timeCopy copy];
+      v29 = self[1];
+      self[1] = v28;
 
-      v30 = [v18 copy];
-      v31 = a1[3];
-      a1[3] = v30;
+      v30 = [emailCopy copy];
+      v31 = self[3];
+      self[3] = v30;
     }
 
     else
     {
       v31 = v19;
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_12:
 
   v32 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 @end

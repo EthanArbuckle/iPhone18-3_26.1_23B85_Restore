@@ -1,7 +1,7 @@
 @interface ComponentMultiTouch
 - (BOOL)isPresent;
 - (id)resetCount;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentMultiTouch
@@ -61,8 +61,8 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentMultiTouch *)self resetCount];
-  if (v2)
+  resetCount = [(ComponentMultiTouch *)self resetCount];
+  if (resetCount)
   {
     objc_opt_class();
     v3 = objc_opt_isKindOfClass() ^ 1;
@@ -76,11 +76,11 @@
   return v3 & 1;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentMultiTouch *)self resetCount];
-  [v4 setObject:v5 forKeyedSubscript:@"multitouchResetCount"];
+  attributesCopy = attributes;
+  resetCount = [(ComponentMultiTouch *)self resetCount];
+  [attributesCopy setObject:resetCount forKeyedSubscript:@"multitouchResetCount"];
 }
 
 @end

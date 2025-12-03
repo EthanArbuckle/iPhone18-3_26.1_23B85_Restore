@@ -1,17 +1,17 @@
 @interface CLStore
 - (BOOL)commitChangesToStore;
-- (BOOL)deleteRecordsWithEntityName:(id)a3 byAndPredicates:(id)a4;
-- (CLStore)initWithDefaultPersistenceManager:(BOOL)a3;
-- (CLStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRecordsWithEntityName:(id)a3 byAndPredicates:(id)a4;
-- (int)countRecordsWithEntityName:(id)a3 predicates:(id)a4;
+- (BOOL)deleteRecordsWithEntityName:(id)name byAndPredicates:(id)predicates;
+- (CLStore)initWithDefaultPersistenceManager:(BOOL)manager;
+- (CLStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRecordsWithEntityName:(id)name byAndPredicates:(id)predicates;
+- (int)countRecordsWithEntityName:(id)name predicates:(id)predicates;
 @end
 
 @implementation CLStore
 
-- (CLStore)initWithPersistenceManager:(id)a3
+- (CLStore)initWithPersistenceManager:(id)manager
 {
-  if (!a3)
+  if (!manager)
   {
     sub_10194FDF4(a2, self);
   }
@@ -22,16 +22,16 @@
   v6 = v5;
   if (v5)
   {
-    v5->_persistenceManager = a3;
-    v5->_managedObjectContext = [a3 createManagedObjectContext];
+    v5->_persistenceManager = manager;
+    v5->_managedObjectContext = [manager createManagedObjectContext];
   }
 
   return v6;
 }
 
-- (CLStore)initWithDefaultPersistenceManager:(BOOL)a3
+- (CLStore)initWithDefaultPersistenceManager:(BOOL)manager
 {
-  v4 = [[CLPersistenceManager alloc] initWithDefaultDirectories:a3];
+  v4 = [[CLPersistenceManager alloc] initWithDefaultDirectories:manager];
   if ([(CLPersistenceManager *)v4 connectToStore])
   {
 
@@ -72,7 +72,7 @@
   return v3 == 0;
 }
 
-- (BOOL)deleteRecordsWithEntityName:(id)a3 byAndPredicates:(id)a4
+- (BOOL)deleteRecordsWithEntityName:(id)name byAndPredicates:(id)predicates
 {
   v8 = 0;
   v9 = &v8;
@@ -85,8 +85,8 @@
   v7[1] = 3221225472;
   v7[2] = sub_100835BF4;
   v7[3] = &unk_102475E90;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = name;
+  v7[5] = predicates;
   v7[6] = self;
   v7[7] = &v8;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v7];
@@ -100,7 +100,7 @@
   return v5 == 0;
 }
 
-- (id)fetchRecordsWithEntityName:(id)a3 byAndPredicates:(id)a4
+- (id)fetchRecordsWithEntityName:(id)name byAndPredicates:(id)predicates
 {
   v18 = 0;
   v19 = &v18;
@@ -119,9 +119,9 @@
   v11[1] = 3221225472;
   v11[2] = sub_100835E2C;
   v11[3] = &unk_102475EE0;
-  v11[4] = a3;
+  v11[4] = name;
   v11[5] = self;
-  v11[6] = a4;
+  v11[6] = predicates;
   v11[7] = &v18;
   v11[8] = &v12;
   v11[9] = a2;
@@ -137,7 +137,7 @@
   return v9;
 }
 
-- (int)countRecordsWithEntityName:(id)a3 predicates:(id)a4
+- (int)countRecordsWithEntityName:(id)name predicates:(id)predicates
 {
   v12 = 0;
   v13 = &v12;
@@ -154,8 +154,8 @@
   v7[1] = 3221225472;
   v7[2] = sub_10083611C;
   v7[3] = &unk_102475F08;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = name;
+  v7[5] = predicates;
   v7[6] = self;
   v7[7] = &v8;
   v7[8] = &v12;

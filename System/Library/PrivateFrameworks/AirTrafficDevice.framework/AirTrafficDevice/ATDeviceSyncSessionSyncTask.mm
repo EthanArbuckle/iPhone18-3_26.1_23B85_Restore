@@ -1,32 +1,32 @@
 @interface ATDeviceSyncSessionSyncTask
-- (ATDeviceSyncSessionSyncTask)initWithDataClass:(id)a3 onMessageLink:(id)a4;
-- (void)_applyChangesForSyncResponse:(id)a3 toCurrentRevision:(unint64_t)a4 versionToken:(id)a5 onMessageLink:(id)a6;
-- (void)_drainInputStream:(id)a3 withCompletion:(id)a4;
-- (void)_finishSyncWithError:(id)a3;
-- (void)_finishTaskWithError:(id)a3;
-- (void)_processSyncRequest:(id)a3 onMessageLink:(id)a4;
-- (void)_processSyncResponse:(id)a3 onMessageLink:(id)a4;
-- (void)_resetSyncDataForLibrary:(id)a3 withCompletionHandler:(id)a4;
-- (void)_sendSyncRequestOnMessageLink:(id)a3;
-- (void)_sendSyncRequestWithChangesAfterRevision:(unint64_t)a3 toRevision:(unint64_t)a4 withNewRevision:(unint64_t)a5 withSyncType:(unsigned int)a6 onMessageLink:(id)a7;
-- (void)_sendSyncRequestWithParams:(id)a3 withSyncType:(unsigned int)a4 syncState:(id)a5 newRevision:(unint64_t)a6 versionToken:(id)a7 inputStream:(id)a8 onMessageLink:(id)a9;
-- (void)_sendSyncResponseToRequest:(id)a3 withChangesAfterRevision:(unint64_t)a4 toRevision:(unint64_t)a5 withNewRevision:(unint64_t)a6 withSyncType:(unsigned int)a7 onMessageLink:(id)a8;
-- (void)_sendSyncResponseToRequest:(id)a3 withParams:(id)a4 withNewRevision:(unint64_t)a5 withSyncType:(unsigned int)a6 inputStream:(id)a7 onMessageLink:(id)a8;
-- (void)_updateProgressWithCount:(unint64_t)a3 totalItemCount:(unint64_t)clientTotalItemCount forEndpointType:(int)a5;
+- (ATDeviceSyncSessionSyncTask)initWithDataClass:(id)class onMessageLink:(id)link;
+- (void)_applyChangesForSyncResponse:(id)response toCurrentRevision:(unint64_t)revision versionToken:(id)token onMessageLink:(id)link;
+- (void)_drainInputStream:(id)stream withCompletion:(id)completion;
+- (void)_finishSyncWithError:(id)error;
+- (void)_finishTaskWithError:(id)error;
+- (void)_processSyncRequest:(id)request onMessageLink:(id)link;
+- (void)_processSyncResponse:(id)response onMessageLink:(id)link;
+- (void)_resetSyncDataForLibrary:(id)library withCompletionHandler:(id)handler;
+- (void)_sendSyncRequestOnMessageLink:(id)link;
+- (void)_sendSyncRequestWithChangesAfterRevision:(unint64_t)revision toRevision:(unint64_t)toRevision withNewRevision:(unint64_t)newRevision withSyncType:(unsigned int)type onMessageLink:(id)link;
+- (void)_sendSyncRequestWithParams:(id)params withSyncType:(unsigned int)type syncState:(id)state newRevision:(unint64_t)revision versionToken:(id)token inputStream:(id)stream onMessageLink:(id)link;
+- (void)_sendSyncResponseToRequest:(id)request withChangesAfterRevision:(unint64_t)revision toRevision:(unint64_t)toRevision withNewRevision:(unint64_t)newRevision withSyncType:(unsigned int)type onMessageLink:(id)link;
+- (void)_sendSyncResponseToRequest:(id)request withParams:(id)params withNewRevision:(unint64_t)revision withSyncType:(unsigned int)type inputStream:(id)stream onMessageLink:(id)link;
+- (void)_updateProgressWithCount:(unint64_t)count totalItemCount:(unint64_t)clientTotalItemCount forEndpointType:(int)type;
 - (void)cancel;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4;
+- (void)messageLink:(id)link didReceiveRequest:(id)request;
 - (void)start;
 @end
 
 @implementation ATDeviceSyncSessionSyncTask
 
-- (void)_updateProgressWithCount:(unint64_t)a3 totalItemCount:(unint64_t)clientTotalItemCount forEndpointType:(int)a5
+- (void)_updateProgressWithCount:(unint64_t)count totalItemCount:(unint64_t)clientTotalItemCount forEndpointType:(int)type
 {
   if (self->_syncIterationCount == 1)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
-      self->_serverCurrentItemCount = a3;
+      self->_serverCurrentItemCount = count;
       self->_serverTotalItemCount = clientTotalItemCount;
       if (self->_clientTotalItemCount)
       {
@@ -38,7 +38,7 @@
 
     else
     {
-      self->_clientCurrentItemCount = a3;
+      self->_clientCurrentItemCount = count;
       self->_clientTotalItemCount = clientTotalItemCount;
     }
 
@@ -53,16 +53,16 @@
   }
 }
 
-- (void)_drainInputStream:(id)a3 withCompletion:(id)a4
+- (void)_drainInputStream:(id)stream withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  streamCopy = stream;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (streamCopy)
   {
     v9 = objc_alloc(MEMORY[0x277D27F20]);
-    v10 = [(ATDeviceSyncSessionTask *)self queue];
-    v11 = [v9 initWithInputStream:v6 queue:v10];
+    queue = [(ATDeviceSyncSessionTask *)self queue];
+    v11 = [v9 initWithInputStream:streamCopy queue:queue];
 
     [(NSMutableArray *)self->_streamReaders addObject:v11];
     objc_initWeak(&location, self);
@@ -98,9 +98,9 @@
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -154,20 +154,20 @@ LABEL_8:
   }
 }
 
-- (void)_resetSyncDataForLibrary:(id)a3 withCompletionHandler:(id)a4
+- (void)_resetSyncDataForLibrary:(id)library withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_pluginClient);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__ATDeviceSyncSessionSyncTask__resetSyncDataForLibrary_withCompletionHandler___block_invoke;
   v11[3] = &unk_2784E5398;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = libraryCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = libraryCopy;
   [WeakRetained resetSyncDataWithCompletion:v11];
 }
 
@@ -205,23 +205,23 @@ void __78__ATDeviceSyncSessionSyncTask__resetSyncDataForLibrary_withCompletionHa
   }
 }
 
-- (void)_sendSyncResponseToRequest:(id)a3 withParams:(id)a4 withNewRevision:(unint64_t)a5 withSyncType:(unsigned int)a6 inputStream:(id)a7 onMessageLink:(id)a8
+- (void)_sendSyncResponseToRequest:(id)request withParams:(id)params withNewRevision:(unint64_t)revision withSyncType:(unsigned int)type inputStream:(id)stream onMessageLink:(id)link
 {
-  v10 = *&a6;
+  v10 = *&type;
   v39[3] = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a8;
+  paramsCopy = params;
+  linkCopy = link;
   settings = self->_settings;
-  v30 = a7;
-  v16 = a3;
-  v17 = [v14 identifier];
-  v18 = [(ATSessionTask *)self dataClass];
-  v19 = [(ATDeviceSettings *)settings syncStateForLibrary:v17 dataClass:v18];
+  streamCopy = stream;
+  requestCopy = request;
+  identifier = [linkCopy identifier];
+  dataClass = [(ATSessionTask *)self dataClass];
+  v19 = [(ATDeviceSettings *)settings syncStateForLibrary:identifier dataClass:dataClass];
 
-  v32 = v13;
-  if (v13)
+  v32 = paramsCopy;
+  if (paramsCopy)
   {
-    [MEMORY[0x277CBEB38] dictionaryWithDictionary:v13];
+    [MEMORY[0x277CBEB38] dictionaryWithDictionary:paramsCopy];
   }
 
   else
@@ -229,8 +229,8 @@ void __78__ATDeviceSyncSessionSyncTask__resetSyncDataForLibrary_withCompletionHa
     [MEMORY[0x277CBEB38] dictionary];
   }
   v20 = ;
-  v21 = [v14 identifier];
-  [v20 setObject:v21 forKey:@"LibraryID"];
+  identifier2 = [linkCopy identifier];
+  [v20 setObject:identifier2 forKey:@"LibraryID"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10];
   [v20 setObject:v22 forKey:@"SyncType"];
@@ -242,12 +242,12 @@ void __78__ATDeviceSyncSessionSyncTask__resetSyncDataForLibrary_withCompletionHa
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v19, "lastClientRevision")}];
   v39[1] = v24;
   v38[2] = @"NewRevisionKey";
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:revision];
   v39[2] = v25;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:3];
   [v20 setObject:v26 forKey:@"SyncState"];
 
-  v27 = [v16 responseWithError:0 parameters:v20];
+  v27 = [requestCopy responseWithError:0 parameters:v20];
 
   [v27 setDataStream:v31];
   [v27 setOptions:3];
@@ -257,9 +257,9 @@ void __78__ATDeviceSyncSessionSyncTask__resetSyncDataForLibrary_withCompletionHa
   v34[3] = &unk_2784E5230;
   v34[4] = self;
   v35 = v19;
-  v36 = v14;
-  v37 = a5;
-  v28 = v14;
+  v36 = linkCopy;
+  revisionCopy = revision;
+  v28 = linkCopy;
   v29 = v19;
   [v28 sendResponse:v27 withCompletion:v34];
 }
@@ -324,26 +324,26 @@ void __124__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withParams_wi
   }
 }
 
-- (void)_sendSyncResponseToRequest:(id)a3 withChangesAfterRevision:(unint64_t)a4 toRevision:(unint64_t)a5 withNewRevision:(unint64_t)a6 withSyncType:(unsigned int)a7 onMessageLink:(id)a8
+- (void)_sendSyncResponseToRequest:(id)request withChangesAfterRevision:(unint64_t)revision toRevision:(unint64_t)toRevision withNewRevision:(unint64_t)newRevision withSyncType:(unsigned int)type onMessageLink:(id)link
 {
-  v15 = a3;
-  v16 = a8;
-  v17 = [(ATDeviceSyncSessionTask *)self queue];
+  requestCopy = request;
+  linkCopy = link;
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAfterRevision_toRevision_withNewRevision_withSyncType_onMessageLink___block_invoke;
   v20[3] = &unk_2784E5370;
-  v27 = a7;
+  typeCopy = type;
   v20[4] = self;
-  v21 = v16;
-  v22 = v15;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
+  v21 = linkCopy;
+  v22 = requestCopy;
+  revisionCopy = revision;
+  toRevisionCopy = toRevision;
+  newRevisionCopy = newRevision;
   v26 = a2;
-  v18 = v15;
-  v19 = v16;
-  dispatch_async(v17, v20);
+  v18 = requestCopy;
+  v19 = linkCopy;
+  dispatch_async(queue, v20);
 }
 
 void __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAfterRevision_toRevision_withNewRevision_withSyncType_onMessageLink___block_invoke(uint64_t a1)
@@ -556,30 +556,30 @@ void __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAf
   }
 }
 
-- (void)_processSyncRequest:(id)a3 onMessageLink:(id)a4
+- (void)_processSyncRequest:(id)request onMessageLink:(id)link
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  linkCopy = link;
   ++self->_syncIterationCount;
-  v8 = [v6 parameters];
-  v9 = [v8 objectForKey:@"SyncState"];
+  parameters = [requestCopy parameters];
+  v9 = [parameters objectForKey:@"SyncState"];
 
   settings = self->_settings;
-  v11 = [v7 identifier];
-  v12 = [(ATSessionTask *)self dataClass];
-  v13 = [(ATDeviceSettings *)settings syncStateForLibrary:v11 dataClass:v12];
+  identifier = [linkCopy identifier];
+  dataClass = [(ATSessionTask *)self dataClass];
+  v13 = [(ATDeviceSettings *)settings syncStateForLibrary:identifier dataClass:dataClass];
 
   WeakRetained = objc_loadWeakRetained(&self->_pluginClient);
-  v15 = [WeakRetained currentRevision];
+  currentRevision = [WeakRetained currentRevision];
   v16 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v6 parameters];
+    parameters2 = [requestCopy parameters];
     *buf = 138543618;
-    v72 = self;
+    selfCopy7 = self;
     v73 = 2114;
-    v74 = v17;
+    v74 = parameters2;
     _os_log_impl(&dword_223819000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: received sync request. params=%{public}@", buf, 0x16u);
   }
 
@@ -587,123 +587,123 @@ void __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAf
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v72 = self;
+    selfCopy7 = self;
     v73 = 2114;
     v74 = v13;
     v75 = 2114;
     v76 = v9;
     v77 = 2048;
-    v78 = v15;
+    v78 = currentRevision;
     _os_log_impl(&dword_223819000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: syncState=%{public}@, requestSyncState=%{public}@, currentRevision=%llu", buf, 0x2Au);
   }
 
-  v43 = v15;
+  v43 = currentRevision;
 
-  v19 = [WeakRetained revisionVersionToken];
-  v20 = [v13 versionToken];
+  revisionVersionToken = [WeakRetained revisionVersionToken];
+  versionToken = [v13 versionToken];
   v45 = v9;
-  if (v20 && (v21 = v20, [v13 versionToken], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", v19), v22, v9 = v45, v21, (v23 & 1) == 0))
+  if (versionToken && (v21 = versionToken, [v13 versionToken], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", revisionVersionToken), v22, v9 = v45, v21, (v23 & 1) == 0))
   {
     v35 = _ATLogCategoryDeviceSync();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v13 versionToken];
+      versionToken2 = [v13 versionToken];
       *buf = 138543874;
-      v72 = self;
+      selfCopy7 = self;
       v73 = 2114;
-      v74 = v36;
+      v74 = versionToken2;
       v75 = 2114;
-      v76 = v19;
+      v76 = revisionVersionToken;
       _os_log_impl(&dword_223819000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@: library version token has changed from %{public}@ to %{public}@ - forcing reset", buf, 0x20u);
     }
 
-    v27 = [v6 dataStream];
+    dataStream = [requestCopy dataStream];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block_invoke;
     v68[3] = &unk_2784E5230;
     v68[4] = self;
     v28 = &v69;
-    v69 = v6;
+    v69 = requestCopy;
     v70[1] = v43;
     v29 = v70;
-    v70[0] = v7;
+    v70[0] = linkCopy;
     v30 = v68;
   }
 
   else
   {
-    v24 = [v9 lastServerRevision];
-    if (v24 <= [v13 lastServerRevision])
+    lastServerRevision = [v9 lastServerRevision];
+    if (lastServerRevision <= [v13 lastServerRevision])
     {
-      v31 = [v6 parameters];
-      v32 = [v31 objectForKey:@"SyncType"];
-      v33 = [v32 integerValue];
+      parameters3 = [requestCopy parameters];
+      v32 = [parameters3 objectForKey:@"SyncType"];
+      integerValue = [v32 integerValue];
 
-      if (v33 == 2)
+      if (integerValue == 2)
       {
-        v42 = 0;
+        lastServerRevision2 = 0;
         v34 = v45;
       }
 
       else
       {
         v34 = v45;
-        v42 = [v45 lastServerRevision];
+        lastServerRevision2 = [v45 lastServerRevision];
       }
 
-      v37 = [v34 newRevision];
-      if (v37 == [v13 lastClientRevision])
+      newRevision = [v34 newRevision];
+      if (newRevision == [v13 lastClientRevision])
       {
         v38 = _ATLogCategoryDeviceSync();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v72 = self;
+          selfCopy7 = self;
           _os_log_impl(&dword_223819000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@: ignoring request data we've already applied", buf, 0xCu);
         }
 
-        v27 = [v6 dataStream];
+        dataStream = [requestCopy dataStream];
         v61[0] = MEMORY[0x277D85DD0];
         v61[1] = 3221225472;
         v61[2] = __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block_invoke_144;
         v61[3] = &unk_2784E5258;
         v61[4] = self;
         v28 = &v62;
-        v62 = v6;
-        v63[1] = v42;
+        v62 = requestCopy;
+        v63[1] = lastServerRevision2;
         v63[2] = v43;
-        v64 = v33;
+        v64 = integerValue;
         v29 = v63;
-        v63[0] = v7;
+        v63[0] = linkCopy;
         v30 = v61;
       }
 
       else
       {
-        v39 = [v34 lastClientRevision];
-        if (v39 <= [v13 lastClientRevision])
+        lastClientRevision = [v34 lastClientRevision];
+        if (lastClientRevision <= [v13 lastClientRevision])
         {
           if ([v34 lastServerRevision] <= v43)
           {
-            v44 = [(ATDeviceSyncSessionTask *)self queue];
+            queue = [(ATDeviceSyncSessionTask *)self queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block_invoke_2;
             block[3] = &unk_2784E52D0;
             block[4] = self;
-            v53 = v33;
+            v53 = integerValue;
             v28 = &v47;
-            v47 = v7;
+            v47 = linkCopy;
             v29 = &v48;
-            v48 = v6;
+            v48 = requestCopy;
             v49 = v13;
             v50 = v34;
-            v51 = v19;
-            v52 = v42;
-            dispatch_async(v44, block);
+            v51 = revisionVersionToken;
+            v52 = lastServerRevision2;
+            dispatch_async(queue, block);
 
-            v27 = v49;
+            dataStream = v49;
             goto LABEL_30;
           }
 
@@ -711,21 +711,21 @@ void __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAf
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v72 = self;
+            selfCopy7 = self;
             _os_log_impl(&dword_223819000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@: client has a newer revision than the server - forcing reset sync", buf, 0xCu);
           }
 
-          v27 = [v6 dataStream];
+          dataStream = [requestCopy dataStream];
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
           v54[2] = __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block_invoke_146;
           v54[3] = &unk_2784E5230;
           v54[4] = self;
           v28 = &v55;
-          v55 = v6;
+          v55 = requestCopy;
           v56[1] = v43;
           v29 = v56;
-          v56[0] = v7;
+          v56[0] = linkCopy;
           v30 = v54;
         }
 
@@ -735,23 +735,23 @@ void __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAf
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v72 = self;
+            selfCopy7 = self;
             _os_log_impl(&dword_223819000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@: ignoring request data because we are out of sync - draining request stream and respond with our current state", buf, 0xCu);
           }
 
-          v27 = [v6 dataStream];
+          dataStream = [requestCopy dataStream];
           v57[0] = MEMORY[0x277D85DD0];
           v57[1] = 3221225472;
           v57[2] = __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block_invoke_145;
           v57[3] = &unk_2784E5258;
           v57[4] = self;
           v28 = &v58;
-          v58 = v6;
-          v59[1] = v42;
+          v58 = requestCopy;
+          v59[1] = lastServerRevision2;
           v59[2] = v43;
-          v60 = v33;
+          v60 = integerValue;
           v29 = v59;
-          v59[0] = v7;
+          v59[0] = linkCopy;
           v30 = v57;
         }
       }
@@ -762,30 +762,30 @@ void __137__ATDeviceSyncSessionSyncTask__sendSyncResponseToRequest_withChangesAf
       v25 = _ATLogCategoryDeviceSync();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v7 identifier];
+        identifier2 = [linkCopy identifier];
         *buf = 138543618;
-        v72 = self;
+        selfCopy7 = self;
         v73 = 2114;
-        v74 = v26;
+        v74 = identifier2;
         _os_log_impl(&dword_223819000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: server revision for %{public}@ has been reset - forcing reset", buf, 0x16u);
       }
 
-      v27 = [v6 dataStream];
+      dataStream = [requestCopy dataStream];
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
       v65[2] = __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block_invoke_143;
       v65[3] = &unk_2784E5230;
       v65[4] = self;
       v28 = &v66;
-      v66 = v6;
+      v66 = requestCopy;
       v67[1] = v43;
       v29 = v67;
-      v67[0] = v7;
+      v67[0] = linkCopy;
       v30 = v65;
     }
   }
 
-  [(ATDeviceSyncSessionSyncTask *)self _drainInputStream:v27 withCompletion:v30];
+  [(ATDeviceSyncSessionSyncTask *)self _drainInputStream:dataStream withCompletion:v30];
 LABEL_30:
 }
 
@@ -940,22 +940,22 @@ void __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block
   }
 }
 
-- (void)_applyChangesForSyncResponse:(id)a3 toCurrentRevision:(unint64_t)a4 versionToken:(id)a5 onMessageLink:(id)a6
+- (void)_applyChangesForSyncResponse:(id)response toCurrentRevision:(unint64_t)revision versionToken:(id)token onMessageLink:(id)link
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  responseCopy = response;
+  tokenCopy = token;
+  linkCopy = link;
   settings = self->_settings;
-  v13 = [v11 identifier];
-  v14 = [(ATSessionTask *)self dataClass];
-  v15 = [(ATDeviceSettings *)settings syncStateForLibrary:v13 dataClass:v14];
+  identifier = [linkCopy identifier];
+  dataClass = [(ATSessionTask *)self dataClass];
+  v15 = [(ATDeviceSettings *)settings syncStateForLibrary:identifier dataClass:dataClass];
 
-  v16 = [v9 parameters];
-  v17 = [v16 objectForKey:@"SyncState"];
+  parameters = [responseCopy parameters];
+  v17 = [parameters objectForKey:@"SyncState"];
 
-  v18 = [v9 parameters];
-  v19 = [v18 objectForKey:@"SyncType"];
-  v20 = [v19 integerValue];
+  parameters2 = [responseCopy parameters];
+  v19 = [parameters2 objectForKey:@"SyncType"];
+  integerValue = [v19 integerValue];
 
   v42[0] = 0;
   v42[1] = v42;
@@ -965,28 +965,28 @@ void __65__ATDeviceSyncSessionSyncTask__processSyncRequest_onMessageLink___block
   v40[1] = v40;
   v40[2] = 0x2020000000;
   v41 = 0;
-  v21 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105__ATDeviceSyncSessionSyncTask__applyChangesForSyncResponse_toCurrentRevision_versionToken_onMessageLink___block_invoke;
   block[3] = &unk_2784E5208;
-  v39 = v20;
+  v39 = integerValue;
   block[4] = self;
-  v30 = v11;
+  v30 = linkCopy;
   v35 = v42;
   v36 = v40;
-  v31 = v9;
+  v31 = responseCopy;
   v32 = v15;
   v33 = v17;
-  v34 = v10;
-  v37 = a4;
+  v34 = tokenCopy;
+  revisionCopy = revision;
   v38 = a2;
-  v22 = v10;
+  v22 = tokenCopy;
   v23 = v17;
   v24 = v15;
-  v25 = v9;
-  v26 = v11;
-  dispatch_async(v21, block);
+  v25 = responseCopy;
+  v26 = linkCopy;
+  dispatch_async(queue, block);
 
   _Block_object_dispose(v40, 8);
   _Block_object_dispose(v42, 8);
@@ -1175,93 +1175,93 @@ void __105__ATDeviceSyncSessionSyncTask__applyChangesForSyncResponse_toCurrentRe
   }
 }
 
-- (void)_processSyncResponse:(id)a3 onMessageLink:(id)a4
+- (void)_processSyncResponse:(id)response onMessageLink:(id)link
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isPartial] & 1) == 0)
+  responseCopy = response;
+  linkCopy = link;
+  if (([responseCopy isPartial] & 1) == 0)
   {
     settings = self->_settings;
-    v9 = [v7 identifier];
-    v10 = [(ATSessionTask *)self dataClass];
-    v11 = [(ATDeviceSettings *)settings syncStateForLibrary:v9 dataClass:v10];
+    identifier = [linkCopy identifier];
+    dataClass = [(ATSessionTask *)self dataClass];
+    v11 = [(ATDeviceSettings *)settings syncStateForLibrary:identifier dataClass:dataClass];
 
-    v12 = [v6 parameters];
-    v43 = [v12 objectForKey:@"SyncState"];
+    parameters = [responseCopy parameters];
+    v43 = [parameters objectForKey:@"SyncState"];
 
-    v13 = [v6 parameters];
-    v14 = [v13 objectForKey:@"SyncType"];
-    v15 = [v14 integerValue];
+    parameters2 = [responseCopy parameters];
+    v14 = [parameters2 objectForKey:@"SyncType"];
+    integerValue = [v14 integerValue];
 
     WeakRetained = objc_loadWeakRetained(&self->_pluginClient);
-    v44 = [WeakRetained revisionVersionToken];
-    v17 = [WeakRetained currentRevision];
+    revisionVersionToken = [WeakRetained revisionVersionToken];
+    currentRevision = [WeakRetained currentRevision];
     v18 = _ATLogCategoryDeviceSync();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v7 identifier];
+      identifier2 = [linkCopy identifier];
       *buf = 138544130;
-      v49 = self;
+      selfCopy5 = self;
       v50 = 2114;
-      v51 = v19;
+      v51 = identifier2;
       v52 = 2048;
-      v53 = v17;
+      v53 = currentRevision;
       v54 = 2114;
       v55 = v11;
       _os_log_impl(&dword_223819000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: processing sync response. library=%{public}@, currentRevision=%llu, syncState=%{public}@", buf, 0x2Au);
     }
 
-    v20 = [v11 versionToken];
-    if (v20)
+    versionToken = [v11 versionToken];
+    if (versionToken)
     {
-      v21 = v20;
-      v22 = [v11 versionToken];
-      v23 = [v22 isEqualToString:v44];
+      v21 = versionToken;
+      versionToken2 = [v11 versionToken];
+      v23 = [versionToken2 isEqualToString:revisionVersionToken];
 
       if ((v23 & 1) == 0)
       {
         v36 = _ATLogCategoryDeviceSync();
-        v35 = v44;
+        v35 = revisionVersionToken;
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = [v11 versionToken];
+          versionToken3 = [v11 versionToken];
           *buf = 138543874;
-          v49 = self;
+          selfCopy5 = self;
           v50 = 2114;
-          v51 = v37;
+          v51 = versionToken3;
           v52 = 2114;
-          v53 = v44;
+          v53 = revisionVersionToken;
           _os_log_impl(&dword_223819000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@: ignoring sync response because the revision token has changed (%{public}@ -> %{public}@)", buf, 0x20u);
         }
 
         v38 = self->_settings;
-        v39 = [v7 identifier];
-        v40 = [(ATSessionTask *)self dataClass];
-        [(ATDeviceSettings *)v38 setSyncState:0 forLibrary:v39 dataClass:v40];
+        identifier3 = [linkCopy identifier];
+        dataClass2 = [(ATSessionTask *)self dataClass];
+        [(ATDeviceSettings *)v38 setSyncState:0 forLibrary:identifier3 dataClass:dataClass2];
 
-        v41 = [v6 dataStream];
+        dataStream = [responseCopy dataStream];
         v46[0] = MEMORY[0x277D85DD0];
         v46[1] = 3221225472;
         v46[2] = __66__ATDeviceSyncSessionSyncTask__processSyncResponse_onMessageLink___block_invoke;
         v46[3] = &unk_2784E59D8;
         v46[4] = self;
-        v47 = v7;
-        [(ATDeviceSyncSessionSyncTask *)self _drainInputStream:v41 withCompletion:v46];
+        v47 = linkCopy;
+        [(ATDeviceSyncSessionSyncTask *)self _drainInputStream:dataStream withCompletion:v46];
 
         v24 = v43;
         goto LABEL_21;
       }
     }
 
-    if (v15 == 2)
+    if (integerValue == 2)
     {
       v42 = _ATLogCategoryDeviceSync();
       v24 = v43;
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v49 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_223819000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@: the server is requesting a reset sync - prepare for a full update", buf, 0xCu);
       }
     }
@@ -1269,75 +1269,75 @@ void __105__ATDeviceSyncSessionSyncTask__applyChangesForSyncResponse_toCurrentRe
     else
     {
       v24 = v43;
-      if (v15 == 1)
+      if (integerValue == 1)
       {
-        v25 = [v43 newRevision];
-        if (v25 == [v11 lastServerRevision])
+        newRevision = [v43 newRevision];
+        if (newRevision == [v11 lastServerRevision])
         {
           v26 = _ATLogCategoryDeviceSync();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v7 identifier];
+            identifier4 = [linkCopy identifier];
             *buf = 138543618;
-            v49 = self;
+            selfCopy5 = self;
             v50 = 2114;
-            v51 = v27;
+            v51 = identifier4;
             _os_log_impl(&dword_223819000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: sync complete for library %{public}@", buf, 0x16u);
           }
 
           v28 = [v11 mutableCopy];
           [v28 setLastClientRevision:{objc_msgSend(v43, "lastClientRevision")}];
-          [v28 setVersionToken:v44];
+          [v28 setVersionToken:revisionVersionToken];
           v29 = _ATLogCategoryDeviceSync();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v7 identifier];
+            identifier5 = [linkCopy identifier];
             *buf = 138543874;
-            v49 = self;
+            selfCopy5 = self;
             v50 = 2114;
-            v51 = v30;
+            v51 = identifier5;
             v52 = 2114;
             v53 = v28;
             _os_log_impl(&dword_223819000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: saving new sync state for %{public}@, %{public}@", buf, 0x20u);
           }
 
           v31 = self->_settings;
-          v32 = [v7 identifier];
-          v33 = [(ATSessionTask *)self dataClass];
-          [(ATDeviceSettings *)v31 setSyncState:v28 forLibrary:v32 dataClass:v33];
+          identifier6 = [linkCopy identifier];
+          dataClass3 = [(ATSessionTask *)self dataClass];
+          [(ATDeviceSettings *)v31 setSyncState:v28 forLibrary:identifier6 dataClass:dataClass3];
 
-          v34 = [v6 dataStream];
+          dataStream2 = [responseCopy dataStream];
           v45[0] = MEMORY[0x277D85DD0];
           v45[1] = 3221225472;
           v45[2] = __66__ATDeviceSyncSessionSyncTask__processSyncResponse_onMessageLink___block_invoke_135;
           v45[3] = &unk_2784E58E8;
           v45[4] = self;
-          [(ATDeviceSyncSessionSyncTask *)self _drainInputStream:v34 withCompletion:v45];
+          [(ATDeviceSyncSessionSyncTask *)self _drainInputStream:dataStream2 withCompletion:v45];
 
-          v35 = v44;
+          v35 = revisionVersionToken;
           goto LABEL_21;
         }
       }
     }
 
-    v35 = v44;
-    [(ATDeviceSyncSessionSyncTask *)self _applyChangesForSyncResponse:v6 toCurrentRevision:v17 versionToken:v44 onMessageLink:v7];
+    v35 = revisionVersionToken;
+    [(ATDeviceSyncSessionSyncTask *)self _applyChangesForSyncResponse:responseCopy toCurrentRevision:currentRevision versionToken:revisionVersionToken onMessageLink:linkCopy];
 LABEL_21:
   }
 }
 
-- (void)_sendSyncRequestWithParams:(id)a3 withSyncType:(unsigned int)a4 syncState:(id)a5 newRevision:(unint64_t)a6 versionToken:(id)a7 inputStream:(id)a8 onMessageLink:(id)a9
+- (void)_sendSyncRequestWithParams:(id)params withSyncType:(unsigned int)type syncState:(id)state newRevision:(unint64_t)revision versionToken:(id)token inputStream:(id)stream onMessageLink:(id)link
 {
-  v12 = *&a4;
+  v12 = *&type;
   v41[3] = *MEMORY[0x277D85DE8];
-  v15 = a5;
-  v33 = a7;
-  v16 = a9;
+  stateCopy = state;
+  tokenCopy = token;
+  linkCopy = link;
   v17 = MEMORY[0x277CBEB38];
-  v18 = a8;
-  if (a3)
+  streamCopy = stream;
+  if (params)
   {
-    [v17 dictionaryWithDictionary:a3];
+    [v17 dictionaryWithDictionary:params];
   }
 
   else
@@ -1345,43 +1345,43 @@ LABEL_21:
     [v17 dictionary];
   }
   v19 = ;
-  v20 = [v16 identifier];
-  [v19 setObject:v20 forKey:@"LibraryID"];
+  identifier = [linkCopy identifier];
+  [v19 setObject:identifier forKey:@"LibraryID"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
   [v19 setObject:v21 forKey:@"SyncType"];
 
   v40[0] = @"LastServerRevision";
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v15, "lastServerRevision")}];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(stateCopy, "lastServerRevision")}];
   v41[0] = v22;
   v40[1] = @"LastClientRevision";
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v15, "lastClientRevision")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(stateCopy, "lastClientRevision")}];
   v41[1] = v23;
   v40[2] = @"NewRevisionKey";
-  [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a6];
-  v25 = v24 = a6;
+  [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:revision];
+  v25 = v24 = revision;
   v41[2] = v25;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:3];
   [v19 setObject:v26 forKey:@"SyncState"];
 
   v27 = objc_alloc(MEMORY[0x277CEA458]);
-  v28 = [(ATSessionTask *)self dataClass];
-  v29 = [v27 initWithCommand:@"Sync" dataClass:v28 parameters:v19];
+  dataClass = [(ATSessionTask *)self dataClass];
+  v29 = [v27 initWithCommand:@"Sync" dataClass:dataClass parameters:v19];
 
-  [v29 setDataStream:v18];
+  [v29 setDataStream:streamCopy];
   [v29 setOptions:3];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __132__ATDeviceSyncSessionSyncTask__sendSyncRequestWithParams_withSyncType_syncState_newRevision_versionToken_inputStream_onMessageLink___block_invoke;
   v34[3] = &unk_2784E5190;
-  v38 = v16;
+  v38 = linkCopy;
   v39 = v24;
-  v35 = v15;
-  v36 = v33;
-  v37 = self;
-  v30 = v16;
-  v31 = v33;
-  v32 = v15;
+  v35 = stateCopy;
+  v36 = tokenCopy;
+  selfCopy = self;
+  v30 = linkCopy;
+  v31 = tokenCopy;
+  v32 = stateCopy;
   [(ATDeviceSyncSessionTask *)self sendRequest:v29 withCompletion:v34];
 }
 
@@ -1467,28 +1467,28 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_sendSyncRequestWithChangesAfterRevision:(unint64_t)a3 toRevision:(unint64_t)a4 withNewRevision:(unint64_t)a5 withSyncType:(unsigned int)a6 onMessageLink:(id)a7
+- (void)_sendSyncRequestWithChangesAfterRevision:(unint64_t)revision toRevision:(unint64_t)toRevision withNewRevision:(unint64_t)newRevision withSyncType:(unsigned int)type onMessageLink:(id)link
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a7;
+  linkCopy = link;
   settings = self->_settings;
-  v12 = [v10 identifier];
-  v13 = [(ATSessionTask *)self dataClass];
-  v14 = [(ATDeviceSettings *)settings syncStateForLibrary:v12 dataClass:v13];
+  identifier = [linkCopy identifier];
+  dataClass = [(ATSessionTask *)self dataClass];
+  v14 = [(ATDeviceSettings *)settings syncStateForLibrary:identifier dataClass:dataClass];
 
   WeakRetained = objc_loadWeakRetained(&self->_pluginClient);
-  v16 = [WeakRetained revisionVersionToken];
+  revisionVersionToken = [WeakRetained revisionVersionToken];
 
-  if (!a3)
+  if (!revision)
   {
     goto LABEL_9;
   }
 
-  v17 = [v14 versionToken];
-  v18 = v17;
-  if (v17)
+  versionToken = [v14 versionToken];
+  v18 = versionToken;
+  if (versionToken)
   {
-    v19 = v16 == 0;
+    v19 = revisionVersionToken == 0;
   }
 
   else
@@ -1502,8 +1502,8 @@ LABEL_15:
 
   else
   {
-    v20 = [v14 versionToken];
-    v21 = [v16 isEqualToString:v20];
+    versionToken2 = [v14 versionToken];
+    v21 = [revisionVersionToken isEqualToString:versionToken2];
 
     if (v21)
     {
@@ -1511,43 +1511,43 @@ LABEL_9:
       v22 = _ATLogCategoryDeviceSync();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v10 identifier];
-        v24 = [(ATSessionTask *)self dataClass];
+        identifier2 = [linkCopy identifier];
+        dataClass2 = [(ATSessionTask *)self dataClass];
         *buf = 138544642;
-        v47 = self;
+        selfCopy2 = self;
         v48 = 2114;
-        v49 = v23;
+        v49 = identifier2;
         v50 = 2114;
-        v51 = v24;
+        v51 = dataClass2;
         v52 = 2048;
-        v53 = a3;
+        revisionCopy = revision;
         v54 = 2048;
-        v55 = a4;
+        toRevisionCopy = toRevision;
         v56 = 2114;
         v57 = v14;
         _os_log_impl(&dword_223819000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: building sync request. library=%{public}@, dataclass=%{public}@, fromRevision=%lld, toRevision=%lld. current sync state=%{public}@", buf, 0x3Eu);
       }
 
       ++self->_syncIterationCount;
-      v25 = [(ATDeviceSyncSessionTask *)self queue];
+      queue = [(ATDeviceSyncSessionTask *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __126__ATDeviceSyncSessionSyncTask__sendSyncRequestWithChangesAfterRevision_toRevision_withNewRevision_withSyncType_onMessageLink___block_invoke_104;
       block[3] = &unk_2784E5150;
-      v43 = a6;
+      typeCopy = type;
       v26 = &v36;
       block[4] = self;
-      v36 = v10;
-      v39 = a3;
-      v40 = a4;
+      v36 = linkCopy;
+      revisionCopy2 = revision;
+      toRevisionCopy2 = toRevision;
       v37 = v14;
-      v41 = a5;
-      v38 = v16;
+      newRevisionCopy = newRevision;
+      v38 = revisionVersionToken;
       v42 = a2;
-      v27 = v10;
-      dispatch_async(v25, block);
+      v27 = linkCopy;
+      dispatch_async(queue, block);
 
-      v28 = v37;
+      identifier3 = v37;
       goto LABEL_15;
     }
   }
@@ -1555,26 +1555,26 @@ LABEL_9:
   v29 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v14 versionToken];
+    versionToken3 = [v14 versionToken];
     *buf = 138543874;
-    v47 = self;
+    selfCopy2 = self;
     v48 = 2114;
-    v49 = v30;
+    v49 = versionToken3;
     v50 = 2114;
-    v51 = v16;
+    v51 = revisionVersionToken;
     _os_log_impl(&dword_223819000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: library version token has changed from %{public}@ to %{public}@ - forcing reset", buf, 0x20u);
   }
 
-  v28 = [v10 identifier];
+  identifier3 = [linkCopy identifier];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __126__ATDeviceSyncSessionSyncTask__sendSyncRequestWithChangesAfterRevision_toRevision_withNewRevision_withSyncType_onMessageLink___block_invoke;
   v44[3] = &unk_2784E59D8;
   v26 = &v45;
   v44[4] = self;
-  v45 = v10;
-  v31 = v10;
-  [(ATDeviceSyncSessionSyncTask *)self _resetSyncDataForLibrary:v28 withCompletionHandler:v44];
+  v45 = linkCopy;
+  v31 = linkCopy;
+  [(ATDeviceSyncSessionSyncTask *)self _resetSyncDataForLibrary:identifier3 withCompletionHandler:v44];
 LABEL_15:
 }
 
@@ -1804,20 +1804,20 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)_sendSyncRequestOnMessageLink:(id)a3
+- (void)_sendSyncRequestOnMessageLink:(id)link
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linkCopy = link;
   settings = self->_settings;
-  v6 = [v4 identifier];
-  v7 = [(ATSessionTask *)self dataClass];
-  v8 = [(ATDeviceSettings *)settings syncStateForLibrary:v6 dataClass:v7];
+  identifier = [linkCopy identifier];
+  dataClass = [(ATSessionTask *)self dataClass];
+  v8 = [(ATDeviceSettings *)settings syncStateForLibrary:identifier dataClass:dataClass];
 
   v9 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v8;
     _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: sending sync request. syncState=%{public}@", &v14, 0x16u);
@@ -1835,35 +1835,35 @@ LABEL_14:
       v10 = 2;
     }
 
-    v11 = [v8 lastClientRevision];
+    lastClientRevision = [v8 lastClientRevision];
     WeakRetained = objc_loadWeakRetained(&self->_pluginClient);
-    v13 = [WeakRetained currentRevision];
+    currentRevision = [WeakRetained currentRevision];
   }
 
   else
   {
-    v13 = 0;
-    v11 = 0;
+    currentRevision = 0;
+    lastClientRevision = 0;
     v10 = 2;
   }
 
-  [(ATDeviceSyncSessionSyncTask *)self _sendSyncRequestWithChangesAfterRevision:v11 toRevision:v13 withNewRevision:v13 withSyncType:v10 onMessageLink:v4];
+  [(ATDeviceSyncSessionSyncTask *)self _sendSyncRequestWithChangesAfterRevision:lastClientRevision toRevision:currentRevision withNewRevision:currentRevision withSyncType:v10 onMessageLink:linkCopy];
 }
 
-- (void)_finishTaskWithError:(id)a3
+- (void)_finishTaskWithError:(id)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATDeviceSyncSessionTask *)self messageLink];
-  v6 = [(ATSessionTask *)self session];
-  v7 = v6;
-  if (!v4 && self->_startAssetTaskWhenFinished)
+  errorCopy = error;
+  messageLink = [(ATDeviceSyncSessionTask *)self messageLink];
+  session = [(ATSessionTask *)self session];
+  v7 = session;
+  if (!errorCopy && self->_startAssetTaskWhenFinished)
   {
-    if (([v6 isCancelled] & 1) == 0 && (objc_msgSend(v7, "isFinished") & 1) == 0 && objc_msgSend(v5, "isOpen"))
+    if (([session isCancelled] & 1) == 0 && (objc_msgSend(v7, "isFinished") & 1) == 0 && objc_msgSend(messageLink, "isOpen"))
     {
       v8 = [ATDeviceSyncSessionAssetTask alloc];
-      v9 = [(ATSessionTask *)self dataClass];
-      v10 = [(ATDeviceSyncSessionAssetTask *)v8 initWithDataClass:v9 onMessageLink:v5];
+      dataClass = [(ATSessionTask *)self dataClass];
+      v10 = [(ATDeviceSyncSessionAssetTask *)v8 initWithDataClass:dataClass onMessageLink:messageLink];
 
       v38[0] = v10;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
@@ -1875,7 +1875,7 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
 LABEL_10:
     v10 = _ATLogCategoryDeviceSync();
@@ -1883,15 +1883,15 @@ LABEL_10:
     {
       startAssetTaskWhenFinished = self->_startAssetTaskWhenFinished;
       *buf = 138544386;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 1024;
       v29 = startAssetTaskWhenFinished;
       v30 = 1024;
-      v31 = [v7 isCancelled];
+      isCancelled = [v7 isCancelled];
       v32 = 1024;
-      v33 = [v7 isFinished];
+      isFinished = [v7 isFinished];
       v34 = 1024;
-      v35 = [v5 isOpen];
+      isOpen = [messageLink isOpen];
       _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: not starting asset task. syncAssets=%d, cancelled=%d, finished=%d, messageLinkOpen=%d", buf, 0x24u);
     }
 
@@ -1902,40 +1902,40 @@ LABEL_10:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v12 = self->_startAssetTaskWhenFinished;
-    v13 = [v7 isCancelled];
-    v14 = [v7 isFinished];
-    v15 = [v5 isOpen];
-    v16 = [v4 msv_description];
+    isCancelled2 = [v7 isCancelled];
+    isFinished2 = [v7 isFinished];
+    isOpen2 = [messageLink isOpen];
+    msv_description = [errorCopy msv_description];
     *buf = 138544642;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 1024;
     v29 = v12;
     v30 = 1024;
-    v31 = v13;
+    isCancelled = isCancelled2;
     v32 = 1024;
-    v33 = v14;
+    isFinished = isFinished2;
     v34 = 1024;
-    v35 = v15;
+    isOpen = isOpen2;
     v36 = 2114;
-    v37 = v16;
+    v37 = msv_description;
     _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_ERROR, "%{public}@: not starting asset task. syncAssets=%d, cancelled=%d, finished=%d, messageLinkOpen=%d error=%{public}@", buf, 0x2Eu);
   }
 
 LABEL_12:
 
-  v18 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __52__ATDeviceSyncSessionSyncTask__finishTaskWithError___block_invoke;
   v22[3] = &unk_2784E5100;
   v22[4] = self;
-  v23 = v4;
-  v24 = v5;
+  v23 = errorCopy;
+  v24 = messageLink;
   v25 = v7;
   v19 = v7;
-  v20 = v5;
-  v21 = v4;
-  dispatch_async(v18, v22);
+  v20 = messageLink;
+  v21 = errorCopy;
+  dispatch_async(queue, v22);
 }
 
 void __52__ATDeviceSyncSessionSyncTask__finishTaskWithError___block_invoke(uint64_t a1)
@@ -2075,58 +2075,58 @@ uint64_t __52__ATDeviceSyncSessionSyncTask__finishTaskWithError___block_invoke_1
   return [*(a1 + 32) setFinished:1];
 }
 
-- (void)_finishSyncWithError:(id)a3
+- (void)_finishSyncWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   settings = self->_settings;
-  v6 = [(ATDeviceSyncSessionTask *)self messageLink];
-  v7 = [v6 identifier];
-  v8 = [(ATSessionTask *)self dataClass];
-  [(ATDeviceSettings *)settings updateLastSyncTimeForLibrary:v7 dataClass:v8];
+  messageLink = [(ATDeviceSyncSessionTask *)self messageLink];
+  identifier = [messageLink identifier];
+  dataClass = [(ATSessionTask *)self dataClass];
+  [(ATDeviceSettings *)settings updateLastSyncTimeForLibrary:identifier dataClass:dataClass];
 
   v9 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v4;
+    v22 = errorCopy;
     _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: finishSyncWithError. err=%{public}@", buf, 0x16u);
   }
 
-  v10 = [(ATDeviceSyncSessionTask *)self messageLink];
-  v11 = [v10 endpointType];
+  messageLink2 = [(ATDeviceSyncSessionTask *)self messageLink];
+  endpointType = [messageLink2 endpointType];
 
-  if (v11)
+  if (endpointType)
   {
-    [(ATDeviceSyncSessionSyncTask *)self _finishTaskWithError:v4];
+    [(ATDeviceSyncSessionSyncTask *)self _finishTaskWithError:errorCopy];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    if (v4)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    if (errorCopy)
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "code")}];
-      [v12 setObject:v13 forKey:@"_SyncTaskFinishedResult"];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+      [dictionary setObject:v13 forKey:@"_SyncTaskFinishedResult"];
     }
 
     if (![(ATDeviceSyncSessionSyncTask *)self startAssetTaskWhenFinished])
     {
-      [v12 setObject:MEMORY[0x277CBEC28] forKey:@"_SyncTaskFinishedSyncAssets"];
+      [dictionary setObject:MEMORY[0x277CBEC28] forKey:@"_SyncTaskFinishedSyncAssets"];
     }
 
     v14 = objc_alloc(MEMORY[0x277CEA458]);
-    v15 = [(ATSessionTask *)self dataClass];
-    v16 = [v14 initWithCommand:@"SyncTaskFinished" dataClass:v15 parameters:v12];
+    dataClass2 = [(ATSessionTask *)self dataClass];
+    v16 = [v14 initWithCommand:@"SyncTaskFinished" dataClass:dataClass2 parameters:dictionary];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __52__ATDeviceSyncSessionSyncTask__finishSyncWithError___block_invoke;
     v17[3] = &unk_2784E50D8;
     v17[4] = self;
-    v18 = v4;
+    v18 = errorCopy;
     [(ATDeviceSyncSessionTask *)self sendRequest:v16 withCompletion:v17];
   }
 }
@@ -2208,91 +2208,91 @@ void __52__ATDeviceSyncSessionSyncTask__finishSyncWithError___block_invoke(uint6
   }
 }
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4
+- (void)messageLink:(id)link didReceiveRequest:(id)request
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  requestCopy = request;
   v8 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 command];
-    v10 = [v7 parameters];
+    command = [requestCopy command];
+    parameters = [requestCopy parameters];
     *buf = 138543874;
-    v37 = self;
+    selfCopy = self;
     v38 = 2114;
-    v39 = v9;
+    v39 = command;
     v40 = 2114;
-    v41 = v10;
+    v41 = parameters;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: received request %{public}@. params=%{public}@", buf, 0x20u);
   }
 
-  v11 = [v7 command];
-  v12 = [v11 isEqualToString:@"Sync"];
+  command2 = [requestCopy command];
+  v12 = [command2 isEqualToString:@"Sync"];
 
   if (v12)
   {
-    [(ATDeviceSyncSessionSyncTask *)self _processSyncRequest:v7 onMessageLink:v6];
+    [(ATDeviceSyncSessionSyncTask *)self _processSyncRequest:requestCopy onMessageLink:linkCopy];
   }
 
   else
   {
-    v13 = [v7 command];
-    v14 = [v13 isEqualToString:@"UpdateSyncSessionTask"];
+    command3 = [requestCopy command];
+    v14 = [command3 isEqualToString:@"UpdateSyncSessionTask"];
 
     if (v14)
     {
-      v15 = [v7 parameters];
-      v16 = [v15 valueForKey:@"_CompletedItemCount"];
-      v17 = [v16 unsignedLongLongValue];
+      parameters2 = [requestCopy parameters];
+      v16 = [parameters2 valueForKey:@"_CompletedItemCount"];
+      unsignedLongLongValue = [v16 unsignedLongLongValue];
 
-      v18 = [v7 parameters];
-      v19 = [v18 valueForKey:@"_TotalItemCount"];
-      v20 = [v19 unsignedLongLongValue];
+      parameters3 = [requestCopy parameters];
+      v19 = [parameters3 valueForKey:@"_TotalItemCount"];
+      unsignedLongLongValue2 = [v19 unsignedLongLongValue];
 
-      [(ATDeviceSyncSessionSyncTask *)self _updateProgressWithCount:v17 totalItemCount:v20 forEndpointType:0];
-      v21 = [v7 responseWithError:0 parameters:0];
-      [v6 sendResponse:v21 withCompletion:0];
+      [(ATDeviceSyncSessionSyncTask *)self _updateProgressWithCount:unsignedLongLongValue totalItemCount:unsignedLongLongValue2 forEndpointType:0];
+      v21 = [requestCopy responseWithError:0 parameters:0];
+      [linkCopy sendResponse:v21 withCompletion:0];
     }
 
     else
     {
-      v22 = [v7 command];
-      v23 = [v22 isEqualToString:@"SyncTaskFinished"];
+      command4 = [requestCopy command];
+      v23 = [command4 isEqualToString:@"SyncTaskFinished"];
 
       if (v23)
       {
-        v24 = [v7 parameters];
-        v25 = [v24 objectForKey:@"_SyncTaskFinishedResult"];
+        parameters4 = [requestCopy parameters];
+        v25 = [parameters4 objectForKey:@"_SyncTaskFinishedResult"];
 
         if (v25)
         {
           v26 = MEMORY[0x277CCA9B8];
-          v27 = [v24 objectForKey:@"_SyncTaskFinishedResult"];
+          v27 = [parameters4 objectForKey:@"_SyncTaskFinishedResult"];
           v25 = [v26 errorWithDomain:@"ATError" code:objc_msgSend(v27 userInfo:{"integerValue"), 0}];
         }
 
-        v28 = [v24 objectForKey:@"_SyncTaskFinishedSyncAssets"];
+        v28 = [parameters4 objectForKey:@"_SyncTaskFinishedSyncAssets"];
 
         if (v28)
         {
-          v29 = [v24 objectForKey:@"_SyncTaskFinishedSyncAssets"];
+          v29 = [parameters4 objectForKey:@"_SyncTaskFinishedSyncAssets"];
           -[ATDeviceSyncSessionSyncTask setStartAssetTaskWhenFinished:](self, "setStartAssetTaskWhenFinished:", [v29 BOOLValue]);
         }
 
-        v30 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         if (![(ATDeviceSyncSessionSyncTask *)self startAssetTaskWhenFinished])
         {
-          [v30 setObject:MEMORY[0x277CBEC28] forKey:@"_SyncTaskFinishedSyncAssets"];
+          [dictionary setObject:MEMORY[0x277CBEC28] forKey:@"_SyncTaskFinishedSyncAssets"];
         }
 
-        v31 = [v7 responseWithError:0 parameters:v30];
+        v31 = [requestCopy responseWithError:0 parameters:dictionary];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __61__ATDeviceSyncSessionSyncTask_messageLink_didReceiveRequest___block_invoke;
         v33[3] = &unk_2784E50B0;
         v33[4] = self;
-        v34 = v6;
+        v34 = linkCopy;
         v35 = v25;
         v32 = v25;
         [v34 sendResponse:v31 withCompletion:v33];
@@ -2337,13 +2337,13 @@ void __61__ATDeviceSyncSessionSyncTask_messageLink_didReceiveRequest___block_inv
 
 - (void)cancel
 {
-  v3 = [(ATDeviceSyncSessionTask *)self queue];
+  queue = [(ATDeviceSyncSessionTask *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ATDeviceSyncSessionSyncTask_cancel__block_invoke;
   block[3] = &unk_2784E5938;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __37__ATDeviceSyncSessionSyncTask_cancel__block_invoke(uint64_t a1)
@@ -2361,41 +2361,41 @@ void __37__ATDeviceSyncSessionSyncTask_cancel__block_invoke(uint64_t a1)
   v4 = _ATLogCategoryDeviceSync();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [WeakRetained syncDataClass];
+    syncDataClass = [WeakRetained syncDataClass];
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = syncDataClass;
     _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Sync Task starting for %{public}@", &v10, 0x16u);
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_taskStartTime = v6;
-  v7 = [(ATDeviceSyncSessionTask *)self messageLink];
-  v8 = [v7 endpointType];
+  messageLink = [(ATDeviceSyncSessionTask *)self messageLink];
+  endpointType = [messageLink endpointType];
 
-  if (!v8)
+  if (!endpointType)
   {
-    v9 = [(ATDeviceSyncSessionTask *)self messageLink];
-    [(ATDeviceSyncSessionSyncTask *)self _sendSyncRequestOnMessageLink:v9];
+    messageLink2 = [(ATDeviceSyncSessionTask *)self messageLink];
+    [(ATDeviceSyncSessionSyncTask *)self _sendSyncRequestOnMessageLink:messageLink2];
   }
 }
 
-- (ATDeviceSyncSessionSyncTask)initWithDataClass:(id)a3 onMessageLink:(id)a4
+- (ATDeviceSyncSessionSyncTask)initWithDataClass:(id)class onMessageLink:(id)link
 {
-  v7 = a3;
+  classCopy = class;
   v17.receiver = self;
   v17.super_class = ATDeviceSyncSessionSyncTask;
-  v8 = [(ATDeviceSyncSessionTask *)&v17 initWithDataClass:v7 onMessageLink:a4];
+  v8 = [(ATDeviceSyncSessionTask *)&v17 initWithDataClass:classCopy onMessageLink:link];
   if (v8)
   {
     v9 = +[ATClientController sharedInstance];
-    v10 = [v9 clientForDataclass:v7];
+    v10 = [v9 clientForDataclass:classCopy];
 
     if (([v10 conformsToProtocol:&unk_2837092A8] & 1) == 0)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v8 file:@"ATDeviceSyncSessionSyncTask.m" lineNumber:49 description:{@"client for data class '%@' is not an ATSyncClient", v7}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"ATDeviceSyncSessionSyncTask.m" lineNumber:49 description:{@"client for data class '%@' is not an ATSyncClient", classCopy}];
     }
 
     objc_storeWeak(&v8->_pluginClient, v10);
@@ -2403,9 +2403,9 @@ void __37__ATDeviceSyncSessionSyncTask_cancel__block_invoke(uint64_t a1)
     settings = v8->_settings;
     v8->_settings = v11;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     streamReaders = v8->_streamReaders;
-    v8->_streamReaders = v13;
+    v8->_streamReaders = array;
 
     v8->_startAssetTaskWhenFinished = 1;
     v8->_isFinishing = 0;

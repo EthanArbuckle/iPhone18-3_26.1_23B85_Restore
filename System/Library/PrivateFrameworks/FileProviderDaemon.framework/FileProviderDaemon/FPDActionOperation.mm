@@ -1,34 +1,34 @@
 @interface FPDActionOperation
-- (FPDActionOperation)initWithActionInfo:(id)a3 request:(id)a4 server:(id)a5;
+- (FPDActionOperation)initWithActionInfo:(id)info request:(id)request server:(id)server;
 - (FPDExtensionManager)manager;
-- (id)progressForRoot:(id)a3 completion:(id)a4;
+- (id)progressForRoot:(id)root completion:(id)completion;
 - (void)cancel;
-- (void)cancelRoot:(id)a3;
-- (void)dumpStateTo:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)forAllClients:(id)a3;
-- (void)registerFrameworkClient:(id)a3 operationCompletion:(id)a4;
-- (void)sendPastUpdatesToClient:(id)a3;
+- (void)cancelRoot:(id)root;
+- (void)dumpStateTo:(id)to;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)forAllClients:(id)clients;
+- (void)registerFrameworkClient:(id)client operationCompletion:(id)completion;
+- (void)sendPastUpdatesToClient:(id)client;
 - (void)unregisterClientsAfterCompletion;
 @end
 
 @implementation FPDActionOperation
 
-- (FPDActionOperation)initWithActionInfo:(id)a3 request:(id)a4 server:(id)a5
+- (FPDActionOperation)initWithActionInfo:(id)info request:(id)request server:(id)server
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  requestCopy = request;
+  serverCopy = server;
   v31.receiver = self;
   v31.super_class = FPDActionOperation;
   v12 = [(FPOperation *)&v31 init];
   if (v12)
   {
-    v13 = [v11 extensionManager];
-    objc_storeWeak(&v12->_manager, v13);
+    extensionManager = [serverCopy extensionManager];
+    objc_storeWeak(&v12->_manager, extensionManager);
 
-    objc_storeStrong(&v12->_info, a3);
-    objc_storeStrong(&v12->_request, a4);
+    objc_storeStrong(&v12->_info, info);
+    objc_storeStrong(&v12->_request, request);
     v14 = objc_opt_new();
     clients = v12->_clients;
     v12->_clients = v14;
@@ -58,8 +58,8 @@
     createdItemByRoot = v12->_createdItemByRoot;
     v12->_createdItemByRoot = v26;
 
-    v28 = [(FPOperation *)v12 callbackQueue];
-    dispatch_activate(v28);
+    callbackQueue = [(FPOperation *)v12 callbackQueue];
+    dispatch_activate(callbackQueue);
 
     objc_destroyWeak(&location);
   }
@@ -67,28 +67,28 @@
   return v12;
 }
 
-- (id)progressForRoot:(id)a3 completion:(id)a4
+- (id)progressForRoot:(id)root completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__5;
   v21 = __Block_byref_object_dispose__5;
   v22 = 0;
-  v8 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__FPDActionOperation_progressForRoot_completion___block_invoke;
   v13[3] = &unk_1E83BF428;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = rootCopy;
+  v15 = completionCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = completionCopy;
+  v10 = rootCopy;
+  dispatch_sync(callbackQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -161,12 +161,12 @@ uint64_t __49__FPDActionOperation_progressForRoot_completion___block_invoke_3(ui
   return v2();
 }
 
-- (void)forAllClients:(id)a3
+- (void)forAllClients:(id)clients
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v5);
+  clientsCopy = clients;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v14 = 0u;
   v15 = 0u;
@@ -188,7 +188,7 @@ uint64_t __49__FPDActionOperation_progressForRoot_completion___block_invoke_3(ui
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v10++));
+        clientsCopy[2](clientsCopy, *(*(&v12 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -201,37 +201,37 @@ uint64_t __49__FPDActionOperation_progressForRoot_completion___block_invoke_3(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v9);
+  errorCopy = error;
+  resultCopy = result;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  objc_storeStrong(&self->_error, a4);
+  objc_storeStrong(&self->_error, error);
   v10 = fp_current_or_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(FPDActionOperation *)self finishWithResult:v7 error:v10];
+    [(FPDActionOperation *)self finishWithResult:errorCopy error:v10];
   }
 
   [(FPDActionOperation *)self unregisterClientsAfterCompletion];
   v11.receiver = self;
   v11.super_class = FPDActionOperation;
-  [(FPOperation *)&v11 finishWithResult:v8 error:v7];
+  [(FPOperation *)&v11 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)cancelRoot:(id)a3
+- (void)cancelRoot:(id)root
 {
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
+  rootCopy = root;
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__FPDActionOperation_cancelRoot___block_invoke;
   block[3] = &unk_1E83BE068;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = rootCopy;
+  v6 = rootCopy;
+  dispatch_sync(callbackQueue, block);
 }
 
 void __33__FPDActionOperation_cancelRoot___block_invoke(uint64_t a1)
@@ -253,15 +253,15 @@ void __33__FPDActionOperation_cancelRoot___block_invoke(uint64_t a1)
 - (void)unregisterClientsAfterCompletion
 {
   v7 = _Block_copy(aBlock);
-  *a1 = 138412290;
+  *self = 138412290;
   *a3 = v7;
-  _os_log_debug_impl(&dword_1CEFC7000, a4, OS_LOG_TYPE_DEBUG, "[DEBUG] unregisterClientsAfterCompletion calling completion %@", a1, 0xCu);
+  _os_log_debug_impl(&dword_1CEFC7000, a4, OS_LOG_TYPE_DEBUG, "[DEBUG] unregisterClientsAfterCompletion calling completion %@", self, 0xCu);
 }
 
-- (void)sendPastUpdatesToClient:(id)a3
+- (void)sendPastUpdatesToClient:(id)client
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  clientCopy = client;
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ UNREACHABLE: should be overriden"];
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -274,24 +274,24 @@ void __33__FPDActionOperation_cancelRoot___block_invoke(uint64_t a1)
   __assert_rtn("-[FPDActionOperation sendPastUpdatesToClient:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/action operation engine/FPDActionOperation.m", 165, [v4 UTF8String]);
 }
 
-- (void)registerFrameworkClient:(id)a3 operationCompletion:(id)a4
+- (void)registerFrameworkClient:(id)client operationCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPOperation *)self callbackQueue];
-  dispatch_activate(v8);
+  clientCopy = client;
+  completionCopy = completion;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_activate(callbackQueue);
 
-  v9 = [(FPOperation *)self callbackQueue];
+  callbackQueue2 = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__FPDActionOperation_registerFrameworkClient_operationCompletion___block_invoke;
   block[3] = &unk_1E83BE828;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = clientCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = clientCopy;
+  dispatch_async(callbackQueue2, block);
 }
 
 void __66__FPDActionOperation_registerFrameworkClient_operationCompletion___block_invoke(uint64_t a1)
@@ -306,21 +306,21 @@ void __66__FPDActionOperation_registerFrameworkClient_operationCompletion___bloc
   [*(a1 + 40) sendPastUpdatesToClient:v4];
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
-  dispatch_activate(v5);
+  toCopy = to;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_activate(callbackQueue);
 
-  v6 = [(FPOperation *)self callbackQueue];
+  callbackQueue2 = [(FPOperation *)self callbackQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __34__FPDActionOperation_dumpStateTo___block_invoke;
   v8[3] = &unk_1E83BE158;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = toCopy;
+  selfCopy = self;
+  v7 = toCopy;
+  dispatch_sync(callbackQueue2, v8);
 }
 
 uint64_t __34__FPDActionOperation_dumpStateTo___block_invoke(uint64_t a1)

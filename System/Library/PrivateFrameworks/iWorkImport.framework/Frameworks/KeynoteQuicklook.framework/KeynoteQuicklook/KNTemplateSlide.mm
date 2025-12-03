@@ -1,51 +1,51 @@
 @interface KNTemplateSlide
 + (BOOL)hasLocalizedThumbnailText;
 + (id)masterGuideColor;
-+ (void)setMasterGuideColor:(id)a3;
-+ (void)templatesNotEquivalentWithFile:(id)a3 lineNumber:(int64_t)a4 reason:(id)a5;
-- (BOOL)containsProperty:(int)a3;
++ (void)setMasterGuideColor:(id)color;
++ (void)templatesNotEquivalentWithFile:(id)file lineNumber:(int64_t)number reason:(id)reason;
+- (BOOL)containsProperty:(int)property;
 - (BOOL)hasBug16580905;
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3;
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison;
 - (BOOL)isObjectVisible;
 - (CGRect)objectRect;
-- (KNTemplateSlide)initWithSlideNode:(id)a3 context:(id)a4;
+- (KNTemplateSlide)initWithSlideNode:(id)node context:(id)context;
 - (NSString)description;
 - (id)buildChunks;
 - (id)builds;
 - (id)childEnumerator;
-- (id)defaultTagForDrawable:(id)a3;
+- (id)defaultTagForDrawable:(id)drawable;
 - (id)imagePlaceholders;
 - (id)nonPlaceholderObjects;
-- (id)objectForProperty:(int)a3;
-- (id)p_defaultThumbnailTextForPlaceholder:(id)a3;
+- (id)objectForProperty:(int)property;
+- (id)p_defaultThumbnailTextForPlaceholder:(id)placeholder;
 - (id)referencedStyles;
-- (id)tagsForNewPlaceholderInfos:(id)a3;
-- (id)thumbnailTextForPlaceholder:(id)a3;
-- (id)unusedPlaceholderTagBasedOnTag:(id)a3;
-- (int)intValueForProperty:(int)a3;
+- (id)tagsForNewPlaceholderInfos:(id)infos;
+- (id)thumbnailTextForPlaceholder:(id)placeholder;
+- (id)unusedPlaceholderTagBasedOnTag:(id)tag;
+- (int)intValueForProperty:(int)property;
 - (unint64_t)buildChunkCount;
 - (unint64_t)buildCount;
-- (void)acceptVisitor:(id)a3;
-- (void)addBuild:(id)a3;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (void)acceptVisitor:(id)visitor;
+- (void)addBuild:(id)build;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)flushClassicStylesheetRecord;
 - (void)generateObjectPlaceholderIfNecessary;
-- (void)insertBuildChunk:(id)a3 afterChunk:(id)a4 generateIdentifier:(BOOL)a5;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)removeBuild:(id)a3;
-- (void)removeBuildChunk:(id)a3 rollbackGeneratedIdentifier:(BOOL)a4;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setBodyListStyles:(id)a3;
-- (void)setBodyParagraphStyles:(id)a3;
-- (void)setName:(id)a3;
-- (void)setObjectRect:(CGRect)a3;
-- (void)setSlideObjectsLayerWithTemplate:(BOOL)a3;
-- (void)setThumbnailTextForBodyPlaceholder:(id)a3;
-- (void)setThumbnailTextForTitlePlaceholder:(id)a3;
+- (void)insertBuildChunk:(id)chunk afterChunk:(id)afterChunk generateIdentifier:(BOOL)identifier;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)removeBuild:(id)build;
+- (void)removeBuildChunk:(id)chunk rollbackGeneratedIdentifier:(BOOL)identifier;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBodyListStyles:(id)styles;
+- (void)setBodyParagraphStyles:(id)styles;
+- (void)setName:(id)name;
+- (void)setObjectRect:(CGRect)rect;
+- (void)setSlideObjectsLayerWithTemplate:(BOOL)template;
+- (void)setThumbnailTextForBodyPlaceholder:(id)placeholder;
+- (void)setThumbnailTextForTitlePlaceholder:(id)placeholder;
 - (void)updatePlaceholderText;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation KNTemplateSlide
@@ -59,17 +59,17 @@
   return isEqualToString ^ 1;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  if (self->_name != v4)
+  nameCopy = name;
+  if (self->_name != nameCopy)
   {
-    v10 = v4;
+    v10 = nameCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_name, v9);
-    v4 = v9;
+    nameCopy = v9;
   }
 }
 
@@ -86,14 +86,14 @@
   return result;
 }
 
-- (void)setObjectRect:(CGRect)a3
+- (void)setObjectRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_objectRect = &self->_objectRect;
-  if (!CGRectEqualToRect(self->_objectRect, a3))
+  if (!CGRectEqualToRect(self->_objectRect, rect))
   {
     objc_msgSend_willModify(self, v9, v10);
     p_objectRect->origin.x = x;
@@ -103,77 +103,77 @@
   }
 }
 
-- (void)setBodyParagraphStyles:(id)a3
+- (void)setBodyParagraphStyles:(id)styles
 {
-  v4 = a3;
-  if (self->_bodyParagraphStyles != v4)
+  stylesCopy = styles;
+  if (self->_bodyParagraphStyles != stylesCopy)
   {
-    v10 = v4;
+    v10 = stylesCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_bodyParagraphStyles, v9);
-    v4 = v9;
+    stylesCopy = v9;
   }
 }
 
-- (void)setBodyListStyles:(id)a3
+- (void)setBodyListStyles:(id)styles
 {
-  v4 = a3;
-  if (self->_bodyListStyles != v4)
+  stylesCopy = styles;
+  if (self->_bodyListStyles != stylesCopy)
   {
-    v10 = v4;
+    v10 = stylesCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_bodyListStyles, v9);
-    v4 = v9;
+    stylesCopy = v9;
   }
 }
 
-- (void)setThumbnailTextForTitlePlaceholder:(id)a3
+- (void)setThumbnailTextForTitlePlaceholder:(id)placeholder
 {
-  v4 = a3;
-  if (self->_thumbnailTextForTitlePlaceholder != v4)
+  placeholderCopy = placeholder;
+  if (self->_thumbnailTextForTitlePlaceholder != placeholderCopy)
   {
-    v10 = v4;
+    v10 = placeholderCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_thumbnailTextForTitlePlaceholder, v9);
-    v4 = v9;
+    placeholderCopy = v9;
   }
 }
 
-- (void)setThumbnailTextForBodyPlaceholder:(id)a3
+- (void)setThumbnailTextForBodyPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  if (self->_thumbnailTextForBodyPlaceholder != v4)
+  placeholderCopy = placeholder;
+  if (self->_thumbnailTextForBodyPlaceholder != placeholderCopy)
   {
-    v10 = v4;
+    v10 = placeholderCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->_thumbnailTextForBodyPlaceholder, v9);
-    v4 = v9;
+    placeholderCopy = v9;
   }
 }
 
-- (void)setSlideObjectsLayerWithTemplate:(BOOL)a3
+- (void)setSlideObjectsLayerWithTemplate:(BOOL)template
 {
-  if (self->_slideObjectsLayerWithTemplate != a3)
+  if (self->_slideObjectsLayerWithTemplate != template)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_slideObjectsLayerWithTemplate = a3;
+    objc_msgSend_willModify(self, a2, template);
+    self->_slideObjectsLayerWithTemplate = template;
   }
 }
 
-- (KNTemplateSlide)initWithSlideNode:(id)a3 context:(id)a4
+- (KNTemplateSlide)initWithSlideNode:(id)node context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = KNTemplateSlide;
-  v7 = [(KNAbstractSlide *)&v15 initWithSlideNode:a3 context:v6];
+  v7 = [(KNAbstractSlide *)&v15 initWithSlideNode:node context:contextCopy];
   v8 = v7;
   if (v7)
   {
@@ -181,7 +181,7 @@
     v7->_name = @"Template Slide";
 
     v10 = [KNClassicStylesheetRecord alloc];
-    v12 = objc_msgSend_initWithContext_(v10, v11, v6);
+    v12 = objc_msgSend_initWithContext_(v10, v11, contextCopy);
     classicStylesheetRecord = v8->_classicStylesheetRecord;
     v8->_classicStylesheetRecord = v12;
 
@@ -203,14 +203,14 @@
   return v10;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
   v65.receiver = self;
   v65.super_class = KNTemplateSlide;
-  [(KNAbstractSlide *)&v65 adoptStylesheet:v6 withMapper:v7];
+  [(KNAbstractSlide *)&v65 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
   v10 = objc_msgSend_bodyParagraphStyles(self, v8, v9);
 
   if (v10)
@@ -240,7 +240,7 @@
             objc_enumerationMutation(v24);
           }
 
-          v31 = objc_msgSend_mappedStyleForStyle_(v7, v27, *(*(&v61 + 1) + 8 * v30));
+          v31 = objc_msgSend_mappedStyleForStyle_(mapperCopy, v27, *(*(&v61 + 1) + 8 * v30));
           objc_msgSend_addObject_(v21, v32, v31);
 
           ++v30;
@@ -285,7 +285,7 @@
             objc_enumerationMutation(v47);
           }
 
-          v54 = objc_msgSend_mappedStyleForStyle_(v7, v50, *(*(&v57 + 1) + 8 * v53));
+          v54 = objc_msgSend_mappedStyleForStyle_(mapperCopy, v50, *(*(&v57 + 1) + 8 * v53));
           objc_msgSend_addObject_(v44, v55, v54);
 
           ++v53;
@@ -301,12 +301,12 @@
     objc_msgSend_setBodyListStyles_(self, v56, v44);
   }
 
-  objc_msgSend_adoptStylesheet_withMapper_(self->_classicStylesheetRecord, v35, v6, v7);
+  objc_msgSend_adoptStylesheet_withMapper_(self->_classicStylesheetRecord, v35, stylesheetCopy, mapperCopy);
 }
 
-- (id)defaultTagForDrawable:(id)a3
+- (id)defaultTagForDrawable:(id)drawable
 {
-  v3 = a3;
+  drawableCopy = drawable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -338,7 +338,7 @@ LABEL_7:
   v9 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNTemplateSlide defaultTagForDrawable:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTemplateSlide.m");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 201, 0, "No default tag for drawable %{public}@.", v3);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 201, 0, "No default tag for drawable %{public}@.", drawableCopy);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   v16 = sub_275DC204C();
@@ -349,11 +349,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)tagsForNewPlaceholderInfos:(id)a3
+- (id)tagsForNewPlaceholderInfos:(id)infos
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  infosCopy = infos;
+  if (!infosCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[KNTemplateSlide tagsForNewPlaceholderInfos:]");
@@ -368,7 +368,7 @@ LABEL_9:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v6;
+  obj = infosCopy;
   v46 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v49, v53, 16);
   if (v46)
   {
@@ -428,10 +428,10 @@ LABEL_9:
   return v14;
 }
 
-- (id)unusedPlaceholderTagBasedOnTag:(id)a3
+- (id)unusedPlaceholderTagBasedOnTag:(id)tag
 {
-  v4 = a3;
-  v6 = objc_msgSend_infoForTag_(self, v5, v4);
+  tagCopy = tag;
+  v6 = objc_msgSend_infoForTag_(self, v5, tagCopy);
 
   if (v6)
   {
@@ -444,25 +444,25 @@ LABEL_9:
 
   else
   {
-    v19 = v4;
+    v19 = tagCopy;
   }
 
   return v19;
 }
 
-- (id)p_defaultThumbnailTextForPlaceholder:(id)a3
+- (id)p_defaultThumbnailTextForPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   v7 = objc_msgSend_titlePlaceholder(self, v5, v6);
 
-  if (v7 == v4 || (objc_msgSend_bodyPlaceholder(self, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != v4))
+  if (v7 == placeholderCopy || (objc_msgSend_bodyPlaceholder(self, v8, v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != placeholderCopy))
   {
     v13 = sub_275DC204C();
     v15 = objc_msgSend_localizedStringForKey_value_table_(v13, v14, @"Lorem Ipsum Dolor", &stru_2884D8E20, @"Keynote");
     goto LABEL_14;
   }
 
-  v16 = objc_msgSend_textStorage(v4, v11, v12);
+  v16 = objc_msgSend_textStorage(placeholderCopy, v11, v12);
   v13 = objc_msgSend_listStyleAtCharIndex_effectiveRange_(v16, v17, 0, 0);
 
   if (!objc_msgSend_firstLabelType(v13, v18, v19))
@@ -471,7 +471,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v22 = objc_msgSend_geometry(v4, v20, v21);
+  v22 = objc_msgSend_geometry(placeholderCopy, v20, v21);
   objc_msgSend_size(v22, v23, v24);
   v26 = v25;
   v29 = objc_msgSend_background(self, v27, v28);
@@ -479,7 +479,7 @@ LABEL_9:
   objc_msgSend_size(v32, v33, v34);
   v36 = v35 * 0.5;
 
-  v39 = objc_msgSend_style(v4, v37, v38);
+  v39 = objc_msgSend_style(placeholderCopy, v37, v38);
   LODWORD(v22) = objc_msgSend_containsProperty_(v39, v40, 148);
 
   if (!v22)
@@ -494,7 +494,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v43 = objc_msgSend_style(v4, v41, v42);
+  v43 = objc_msgSend_style(placeholderCopy, v41, v42);
   v45 = objc_msgSend_objectForProperty_(v43, v44, 148);
   v48 = objc_msgSend_columnCount(v45, v46, v47);
 
@@ -520,15 +520,15 @@ LABEL_14:
   return v15;
 }
 
-- (id)thumbnailTextForPlaceholder:(id)a3
+- (id)thumbnailTextForPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   v5 = objc_opt_class();
   if ((objc_msgSend_hasLocalizedThumbnailText(v5, v6, v7) & 1) == 0)
   {
     v10 = objc_msgSend_titlePlaceholder(self, v8, v9);
 
-    if (v10 == v4)
+    if (v10 == placeholderCopy)
     {
       v14 = &OBJC_IVAR___KNTemplateSlide__thumbnailTextForTitlePlaceholder;
 LABEL_6:
@@ -543,7 +543,7 @@ LABEL_6:
 
     v13 = objc_msgSend_bodyPlaceholder(self, v11, v12);
 
-    if (v13 == v4)
+    if (v13 == placeholderCopy)
     {
       v14 = &OBJC_IVAR___KNTemplateSlide__thumbnailTextForBodyPlaceholder;
       goto LABEL_6;
@@ -551,7 +551,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v15 = objc_msgSend_p_defaultThumbnailTextForPlaceholder_(self, v8, v4);
+  v15 = objc_msgSend_p_defaultThumbnailTextForPlaceholder_(self, v8, placeholderCopy);
 LABEL_8:
 
   return v15;
@@ -600,7 +600,7 @@ LABEL_8:
   v12[3] = &unk_27A697E90;
   v8 = v4;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   objc_msgSend_enumerateObjectsUsingBlock_(v7, v9, v12);
 
   v10 = v8;
@@ -613,14 +613,14 @@ LABEL_8:
   self->_classicStylesheetRecord = 0;
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v24.receiver = self;
   v24.super_class = KNTemplateSlide;
-  v6 = a3;
-  [(KNAbstractSlide *)&v24 wasAddedToDocumentRoot:v6 dolcContext:a4];
+  rootCopy = root;
+  [(KNAbstractSlide *)&v24 wasAddedToDocumentRoot:rootCopy dolcContext:context];
   v9 = objc_msgSend_style(self, v7, v8, v24.receiver, v24.super_class);
-  v12 = objc_msgSend_stylesheet(v6, v10, v11);
+  v12 = objc_msgSend_stylesheet(rootCopy, v10, v11);
 
   v17 = objc_msgSend_stylesheet(v9, v13, v14);
   if (v17 == v12)
@@ -647,19 +647,19 @@ LABEL_8:
 LABEL_5:
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v37.receiver = self;
   v37.super_class = KNTemplateSlide;
-  [(KNAbstractSlide *)&v37 willBeRemovedFromDocumentRoot:v4];
+  [(KNAbstractSlide *)&v37 willBeRemovedFromDocumentRoot:rootCopy];
   v7 = objc_msgSend_style(self, v5, v6);
   v10 = objc_msgSend_stylesheet(v7, v8, v9);
-  v13 = objc_msgSend_stylesheet(v4, v11, v12);
+  v13 = objc_msgSend_stylesheet(rootCopy, v11, v12);
 
   if (v10 == v13)
   {
-    v14 = v4;
+    v14 = rootCopy;
     v33 = 0;
     v34 = &v33;
     v35 = 0x2020000000;
@@ -694,7 +694,7 @@ LABEL_5:
   return MEMORY[0x2821F9670](v2, sel_p_defaultTemplateGuideColor, v3);
 }
 
-+ (void)setMasterGuideColor:(id)a3
++ (void)setMasterGuideColor:(id)color
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[KNTemplateSlide setMasterGuideColor:]");
@@ -853,8 +853,8 @@ LABEL_5:
 {
   v17.receiver = self;
   v17.super_class = KNTemplateSlide;
-  v2 = [(KNAbstractSlide *)&v17 builds];
-  v5 = objc_msgSend_count(v2, v3, v4);
+  builds = [(KNAbstractSlide *)&v17 builds];
+  v5 = objc_msgSend_count(builds, v3, v4);
 
   if (v5)
   {
@@ -892,8 +892,8 @@ LABEL_5:
 {
   v17.receiver = self;
   v17.super_class = KNTemplateSlide;
-  v2 = [(KNAbstractSlide *)&v17 buildChunks];
-  v5 = objc_msgSend_count(v2, v3, v4);
+  buildChunks = [(KNAbstractSlide *)&v17 buildChunks];
+  v5 = objc_msgSend_count(buildChunks, v3, v4);
 
   if (v5)
   {
@@ -927,9 +927,9 @@ LABEL_5:
   return 0;
 }
 
-- (void)addBuild:(id)a3
+- (void)addBuild:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNTemplateSlide addBuild:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTemplateSlide.m");
@@ -945,9 +945,9 @@ LABEL_5:
   objc_exception_throw(v17);
 }
 
-- (void)removeBuild:(id)a3
+- (void)removeBuild:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNTemplateSlide removeBuild:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTemplateSlide.m");
@@ -963,10 +963,10 @@ LABEL_5:
   objc_exception_throw(v17);
 }
 
-- (void)insertBuildChunk:(id)a3 afterChunk:(id)a4 generateIdentifier:(BOOL)a5
+- (void)insertBuildChunk:(id)chunk afterChunk:(id)afterChunk generateIdentifier:(BOOL)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  chunkCopy = chunk;
+  afterChunkCopy = afterChunk;
   v8 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[KNTemplateSlide insertBuildChunk:afterChunk:generateIdentifier:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTemplateSlide.m");
@@ -982,9 +982,9 @@ LABEL_5:
   objc_exception_throw(v21);
 }
 
-- (void)removeBuildChunk:(id)a3 rollbackGeneratedIdentifier:(BOOL)a4
+- (void)removeBuildChunk:(id)chunk rollbackGeneratedIdentifier:(BOOL)identifier
 {
-  v4 = a3;
+  chunkCopy = chunk;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNTemplateSlide removeBuildChunk:rollbackGeneratedIdentifier:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNTemplateSlide.m");
@@ -1000,7 +1000,7 @@ LABEL_5:
   objc_exception_throw(v18);
 }
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
   v4 = TSUProtocolCast();
   if (v4)
@@ -1016,16 +1016,16 @@ LABEL_5:
   v3 = MEMORY[0x277D81148];
   v11.receiver = self;
   v11.super_class = KNTemplateSlide;
-  v4 = [(KNAbstractSlide *)&v11 childEnumerator];
+  childEnumerator = [(KNAbstractSlide *)&v11 childEnumerator];
   v7 = objc_msgSend_classicStylesheetRecord(self, v5, v6);
-  v9 = objc_msgSend_aggregateEnumeratorWithObjects_(v3, v8, v4, v7, 0);
+  v9 = objc_msgSend_aggregateEnumeratorWithObjects_(v3, v8, childEnumerator, v7, 0);
 
   return v9;
 }
 
-- (BOOL)containsProperty:(int)a3
+- (BOOL)containsProperty:(int)property
 {
-  if (a3 >> 1 == 2106)
+  if (property >> 1 == 2106)
   {
     return 1;
   }
@@ -1037,11 +1037,11 @@ LABEL_5:
   return [(KNAbstractSlide *)&v6 containsProperty:?];
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  if (a3 == 4216)
+  if (property == 4216)
   {
-    return objc_msgSend_slideObjectsLayerWithTemplate(self, a2, *&a3);
+    return objc_msgSend_slideObjectsLayerWithTemplate(self, a2, *&property);
   }
 
   v4.receiver = self;
@@ -1049,16 +1049,16 @@ LABEL_5:
   return [(KNAbstractSlide *)&v4 intValueForProperty:?];
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 4213)
+  if (property == 4213)
   {
-    v3 = objc_msgSend_bodyListStyles(self, a2, *&a3);
+    v3 = objc_msgSend_bodyListStyles(self, a2, *&property);
   }
 
-  else if (a3 == 4212)
+  else if (property == 4212)
   {
-    v3 = objc_msgSend_bodyParagraphStyles(self, a2, *&a3);
+    v3 = objc_msgSend_bodyParagraphStyles(self, a2, *&property);
   }
 
   else
@@ -1075,8 +1075,8 @@ LABEL_5:
 {
   v16.receiver = self;
   v16.super_class = KNTemplateSlide;
-  v3 = [(KNAbstractSlide *)&v16 referencedStyles];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  referencedStyles = [(KNAbstractSlide *)&v16 referencedStyles];
+  v6 = objc_msgSend_mutableCopy(referencedStyles, v4, v5);
 
   v9 = objc_msgSend_bodyParagraphStyles(self, v7, v8);
   objc_msgSend_addObjectsFromArray_(v6, v10, v9);
@@ -1087,23 +1087,23 @@ LABEL_5:
   return v6;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
   v17.receiver = self;
   v17.super_class = KNTemplateSlide;
-  v4 = a3;
-  [(KNAbstractSlide *)&v17 replaceReferencedStylesUsingBlock:v4];
+  blockCopy = block;
+  [(KNAbstractSlide *)&v17 replaceReferencedStylesUsingBlock:blockCopy];
   v7 = objc_msgSend_bodyParagraphStyles(self, v5, v6, v17.receiver, v17.super_class);
-  v9 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v7, v8, v4);
+  v9 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v7, v8, blockCopy);
   objc_msgSend_setBodyParagraphStyles_(self, v10, v9);
 
   v13 = objc_msgSend_bodyListStyles(self, v11, v12);
-  v15 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v13, v14, v4);
+  v15 = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(v13, v14, blockCopy);
 
   objc_msgSend_setBodyListStyles_(self, v16, v15);
 }
 
-+ (void)templatesNotEquivalentWithFile:(id)a3 lineNumber:(int64_t)a4 reason:(id)a5
++ (void)templatesNotEquivalentWithFile:(id)file lineNumber:(int64_t)number reason:(id)reason
 {
   if (byte_280A3BF58 == 1)
   {
@@ -1111,9 +1111,9 @@ LABEL_5:
   }
 }
 
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison
 {
-  v4 = a3;
+  comparisonCopy = comparison;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (!v7)
@@ -1362,15 +1362,15 @@ LABEL_7:
   return self->_hasBug16580905;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812EA908[32]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812EA908[32]);
 
   v92.receiver = self;
   v92.super_class = KNTemplateSlide;
-  [(KNAbstractSlide *)&v92 loadFromArchive:v6 unarchiver:v4];
+  [(KNAbstractSlide *)&v92 loadFromArchive:v6 unarchiver:unarchiverCopy];
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = objc_msgSend_tsp_initWithProtobufString_(v7, v8, *(v6 + 264) & 0xFFFFFFFFFFFFFFFELL);
   name = self->_name;
@@ -1384,7 +1384,7 @@ LABEL_7:
     v91[2] = sub_275D64F94;
     v91[3] = &unk_27A697FC8;
     v91[4] = self;
-    v12 = v4;
+    v12 = unarchiverCopy;
     v13 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v12, v14, v11, v13, 0, v91);
   }
@@ -1394,7 +1394,7 @@ LABEL_7:
   v90[2] = sub_275D64FAC;
   v90[3] = &unk_27A697A10;
   v90[4] = self;
-  v15 = v4;
+  v15 = unarchiverCopy;
   v16 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v15, v17, v6 + 144, v16, 0, v90);
 
@@ -1632,15 +1632,15 @@ LABEL_36:
   objc_msgSend_addFinalizeHandler_(v49, v58, v76);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_275D55CF8, off_2812EA908[32]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_275D55CF8, off_2812EA908[32]);
 
   v26.receiver = self;
   v26.super_class = KNTemplateSlide;
-  [(KNAbstractSlide *)&v26 saveToArchive:v6 archiver:v4];
+  [(KNAbstractSlide *)&v26 saveToArchive:v6 archiver:archiverCopy];
   v9 = objc_msgSend_name(self, v7, v8);
   v10 = v9;
   v13 = objc_msgSend_UTF8String(v10, v11, v12);
@@ -1669,19 +1669,19 @@ LABEL_36:
       *(v6 + 392) = v16;
     }
 
-    objc_msgSend_setStrongReference_message_(v4, v14, classicStylesheetRecord, v16);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v14, classicStylesheetRecord, v16);
   }
 
   bodyParagraphStyles = self->_bodyParagraphStyles;
   if (bodyParagraphStyles)
   {
-    objc_msgSend_setStrongReferenceArray_message_(v4, v14, bodyParagraphStyles, v6 + 144);
+    objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v14, bodyParagraphStyles, v6 + 144);
   }
 
   bodyListStyles = self->_bodyListStyles;
   if (bodyListStyles)
   {
-    objc_msgSend_setStrongReferenceArray_message_(v4, v14, bodyListStyles, v6 + 168);
+    objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v14, bodyListStyles, v6 + 168);
   }
 
   thumbnailTextForTitlePlaceholder = self->_thumbnailTextForTitlePlaceholder;
@@ -1721,7 +1721,7 @@ LABEL_36:
   *(v6 + 456) = slideObjectsLayerWithTemplate;
   if (slideObjectsLayerWithTemplate)
   {
-    objc_msgSend_requiresDocumentVersion_(v4, v14, *MEMORY[0x277D80958]);
+    objc_msgSend_requiresDocumentVersion_(archiverCopy, v14, *MEMORY[0x277D80958]);
   }
 }
 

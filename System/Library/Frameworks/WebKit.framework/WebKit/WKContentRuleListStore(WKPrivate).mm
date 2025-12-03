@@ -9,7 +9,7 @@
 {
   v2 = *a2;
   *a2 = 0;
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   if (v2)
   {
     atomic_fetch_add_explicit(v2, 2u, memory_order_relaxed);
@@ -35,7 +35,7 @@
   else
   {
     v7 = *(v3 + 16);
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
 
     v7(v8, 0);
   }

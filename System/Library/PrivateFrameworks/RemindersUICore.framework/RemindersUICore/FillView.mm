@@ -1,10 +1,10 @@
 @interface FillView
-- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF160558FillView)initWithCoder:(id)a3;
+- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF160558FillView)initWithCoder:(id)coder;
 @end
 
 @implementation FillView
 
-- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF160558FillView)initWithCoder:(id)a3
+- (_TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF160558FillView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF160558FillView_fillColor) = 0;
   v3 = self + OBJC_IVAR____TtC15RemindersUICoreP33_679F6607466DBBD5F847885A7EF160558FillView_glowRect;

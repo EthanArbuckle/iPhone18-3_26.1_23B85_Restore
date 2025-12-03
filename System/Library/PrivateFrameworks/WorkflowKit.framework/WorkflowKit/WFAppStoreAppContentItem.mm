@@ -1,30 +1,30 @@
 @interface WFAppStoreAppContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 @end
 
 @implementation WFAppStoreAppContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"App Store Apps", @"App Store Apps");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"App Store App", @"App Store App");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -210,19 +210,19 @@ void __44__WFAppStoreAppContentItem_propertyBuilders__block_invoke_2(uint64_t a1
   (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  v8 = thumbnailCopy;
+  if (thumbnailCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__WFAppStoreAppContentItem_getListThumbnail_forSize___block_invoke;
     v10[3] = &unk_1E837D710;
-    v11 = v7;
+    v11 = thumbnailCopy;
     [(WFiTunesObjectContentItem *)self getArtworkForSize:v10 completionHandler:width, height];
   }
 
@@ -255,28 +255,28 @@ void __53__WFAppStoreAppContentItem_getListThumbnail_forSize___block_invoke_2(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  if (v4)
+  subtitleCopy = subtitle;
+  if (subtitleCopy)
   {
-    v5 = [(WFAppStoreAppContentItem *)self softwareObject];
-    v6 = [v5 artistName];
-    if (v6)
+    softwareObject = [(WFAppStoreAppContentItem *)self softwareObject];
+    artistName = [softwareObject artistName];
+    if (artistName)
     {
-      v7 = v6;
-      v8 = [(WFAppStoreAppContentItem *)self softwareObject];
-      v9 = [v8 formattedPrice];
+      v7 = artistName;
+      softwareObject2 = [(WFAppStoreAppContentItem *)self softwareObject];
+      formattedPrice = [softwareObject2 formattedPrice];
 
-      if (v9)
+      if (formattedPrice)
       {
         v10 = MEMORY[0x1E696AEC0];
-        v11 = [(WFAppStoreAppContentItem *)self softwareObject];
-        v12 = [v11 artistName];
-        v13 = [(WFAppStoreAppContentItem *)self softwareObject];
-        v14 = [v13 formattedPrice];
-        v15 = [v10 stringWithFormat:@"%@ • %@", v12, v14];
-        v4[2](v4, v15);
+        softwareObject3 = [(WFAppStoreAppContentItem *)self softwareObject];
+        artistName2 = [softwareObject3 artistName];
+        softwareObject4 = [(WFAppStoreAppContentItem *)self softwareObject];
+        formattedPrice2 = [softwareObject4 formattedPrice];
+        v15 = [v10 stringWithFormat:@"%@ • %@", artistName2, formattedPrice2];
+        subtitleCopy[2](subtitleCopy, v15);
 
 LABEL_8:
         goto LABEL_9;
@@ -287,14 +287,14 @@ LABEL_8:
     {
     }
 
-    v16 = [(WFAppStoreAppContentItem *)self softwareObject];
-    v17 = [v16 artistName];
+    softwareObject5 = [(WFAppStoreAppContentItem *)self softwareObject];
+    artistName3 = [softwareObject5 artistName];
 
-    if (v17)
+    if (artistName3)
     {
-      v11 = [(WFAppStoreAppContentItem *)self softwareObject];
-      v12 = [v11 artistName];
-      v4[2](v4, v12);
+      softwareObject3 = [(WFAppStoreAppContentItem *)self softwareObject];
+      artistName2 = [softwareObject3 artistName];
+      subtitleCopy[2](subtitleCopy, artistName2);
       goto LABEL_8;
     }
   }

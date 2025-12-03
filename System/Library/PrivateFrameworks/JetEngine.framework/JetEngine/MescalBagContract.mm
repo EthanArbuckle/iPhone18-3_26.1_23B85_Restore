@@ -10,31 +10,31 @@
 - (id)mescalCertificateURL
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine17MescalBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 URLForKey_];
+  uRLForKey_ = [v2 URLForKey_];
 
-  return v5;
+  return uRLForKey_;
 }
 
 - (id)mescalSignSapRequests
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine17MescalBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 dictionaryForKey_];
+  dictionaryForKey_ = [v2 dictionaryForKey_];
 
-  return v5;
+  return dictionaryForKey_;
 }
 
 - (id)mescalSignSapResponses
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine17MescalBagContract_backing);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1AB460514();
-  v5 = [v2 dictionaryForKey_];
+  dictionaryForKey_ = [v2 dictionaryForKey_];
 
-  return v5;
+  return dictionaryForKey_;
 }
 
 - (_TtC9JetEngine17MescalBagContract)init

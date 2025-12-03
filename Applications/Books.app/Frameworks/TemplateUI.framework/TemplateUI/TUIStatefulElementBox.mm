@@ -2,14 +2,14 @@
 - (TUIStatefulElementBox)init;
 - (UIEdgeInsets)touchInsets;
 - (double)pressedScale;
-- (void)appendContainedChildrenToArray:(id)a3;
-- (void)appendLayoutChildrenToArray:(id)a3;
+- (void)appendContainedChildrenToArray:(id)array;
+- (void)appendLayoutChildrenToArray:(id)array;
 - (void)onContainedModelsChanged;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMenuContainer:(id)a3;
-- (void)setPressedScale:(double)a3;
-- (void)setStateMap:(id)a3;
-- (void)setTouchInsets:(UIEdgeInsets)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMenuContainer:(id)container;
+- (void)setPressedScale:(double)scale;
+- (void)setStateMap:(id)map;
+- (void)setTouchInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation TUIStatefulElementBox
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (void)setMenuContainer:(id)a3
+- (void)setMenuContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   menuContainer = self->_menuContainer;
-  v7 = v5;
-  if (menuContainer != v5)
+  v7 = containerCopy;
+  if (menuContainer != containerCopy)
   {
     [(TUIMenuContainer *)menuContainer setParentModel:0];
-    objc_storeStrong(&self->_menuContainer, a3);
+    objc_storeStrong(&self->_menuContainer, container);
     [(TUIMenuContainer *)self->_menuContainer setParentModel:self];
   }
 }
@@ -47,14 +47,14 @@
   [(TUIContainerBox *)&v2 onContainedModelsChanged];
 }
 
-- (void)setStateMap:(id)a3
+- (void)setStateMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   stateMap = self->_stateMap;
-  if (stateMap != v5)
+  if (stateMap != mapCopy)
   {
     [(NSDictionary *)stateMap enumerateKeysAndObjectsUsingBlock:&stru_2635E0];
-    objc_storeStrong(&self->_stateMap, a3);
+    objc_storeStrong(&self->_stateMap, map);
     v7 = self->_stateMap;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -66,35 +66,35 @@
   }
 }
 
-- (void)appendLayoutChildrenToArray:(id)a3
+- (void)appendLayoutChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   stateMap = self->_stateMap;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1743B4;
   v7[3] = &unk_261900;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSDictionary *)stateMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)appendContainedChildrenToArray:(id)a3
+- (void)appendContainedChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   stateMap = self->_stateMap;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_17447C;
   v7[3] = &unk_263608;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSDictionary *)stateMap enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -107,10 +107,10 @@
   *(&self->super.super._flags + 2) = *(&self->super.super._flags + 2) & 0xFFFD | v3;
 }
 
-- (void)setPressedScale:(double)a3
+- (void)setPressedScale:(double)scale
 {
-  v4 = a3;
-  if (v4 == 0.0)
+  scaleCopy = scale;
+  if (scaleCopy == 0.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0xBu);
     if (!v5)
@@ -131,7 +131,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = scaleCopy;
 }
 
 - (double)pressedScale
@@ -148,12 +148,12 @@
   }
 }
 
-- (void)setTouchInsets:(UIEdgeInsets)a3
+- (void)setTouchInsets:(UIEdgeInsets)insets
 {
-  top = a3.top;
-  left = a3.left;
-  bottom = a3.bottom;
-  right = a3.right;
+  top = insets.top;
+  left = insets.left;
+  bottom = insets.bottom;
+  right = insets.right;
   if (TUIInsets32Equal(top, left, bottom, right, 0.0, 0.0, 0.0, 0.0))
   {
     v8 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0x26u);

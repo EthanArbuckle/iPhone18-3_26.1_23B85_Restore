@@ -1,81 +1,81 @@
 @interface VCSymptomReporter
-- (VCSymptomReporter)initWithCallID:(unsigned int)a3;
-- (int)reportAlgosScoreWithOptionalDictionary:(id)a3;
-- (int)reportAudioConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)a3;
-- (int)reportAudioErasurePercentageRegressedFromTelemetryWithOptionalDictionary:(id)a3;
-- (int)reportAudioStall:(id)a3;
+- (VCSymptomReporter)initWithCallID:(unsigned int)d;
+- (int)reportAlgosScoreWithOptionalDictionary:(id)dictionary;
+- (int)reportAudioConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)dictionary;
+- (int)reportAudioErasurePercentageRegressedFromTelemetryWithOptionalDictionary:(id)dictionary;
+- (int)reportAudioStall:(id)stall;
 - (int)reportBandwidthEstimationMismatch;
-- (int)reportCCReliableDataNotReceived:(id)a3;
-- (int)reportConnectionSliceStatus:(unsigned int)a3;
-- (int)reportConnectionTimeout:(id)a3;
+- (int)reportCCReliableDataNotReceived:(id)received;
+- (int)reportConnectionSliceStatus:(unsigned int)status;
+- (int)reportConnectionTimeout:(id)timeout;
 - (int)reportDLTargetBitrateOvershoot;
-- (int)reportExtendedPoorConnectionWithOptionalDictionary:(id)a3;
+- (int)reportExtendedPoorConnectionWithOptionalDictionary:(id)dictionary;
 - (int)reportFailedToSetupAudioCodec;
 - (int)reportFailedToStartAudio;
 - (int)reportFailedToStartVideo;
 - (int)reportFrameQueueForDecodeHighWaterMarkExceeded;
-- (int)reportHighConsecutiveAudioErasuresWithOptionalDictionary:(id)a3;
+- (int)reportHighConsecutiveAudioErasuresWithOptionalDictionary:(id)dictionary;
 - (int)reportIDSDataChannelEventUsageError;
 - (int)reportInactiveSlotsInChannelSequence;
 - (int)reportInvalidAudioJitterBuffer;
 - (int)reportInvalidTransportType;
-- (int)reportInvalidUseOfFaceTimeClassicWithOptionalDictionary:(id)a3;
+- (int)reportInvalidUseOfFaceTimeClassicWithOptionalDictionary:(id)dictionary;
 - (int)reportInvalidVideoStallTime;
-- (int)reportInvalidVideoTxCaptureFrameCountWithOptionalDictionary:(id)a3;
+- (int)reportInvalidVideoTxCaptureFrameCountWithOptionalDictionary:(id)dictionary;
 - (int)reportKeyFrameGenerationFailure;
 - (int)reportKeyIndexNotReceived;
-- (int)reportLongMediaStallRecoveredWithOptionalDictionary:(id)a3;
-- (int)reportMKMDecryptionWithOptionalDictionary:(id)a3;
+- (int)reportLongMediaStallRecoveredWithOptionalDictionary:(id)dictionary;
+- (int)reportMKMDecryptionWithOptionalDictionary:(id)dictionary;
 - (int)reportMediaQueueFlushingTooFrequent;
 - (int)reportMediaQueueOvershoot;
 - (int)reportMediaQueuePoolEmpty;
-- (int)reportMediaSymptomSubtypeConnectionWithContext:(id)a3;
+- (int)reportMediaSymptomSubtypeConnectionWithContext:(id)context;
 - (int)reportNegativeJitterBufferSize;
-- (int)reportNoFirstFrameWithOptionalDictionary:(id)a3;
+- (int)reportNoFirstFrameWithOptionalDictionary:(id)dictionary;
 - (int)reportNoMediaBlob;
-- (int)reportNoPackets:(unsigned int)a3 WithOptionalDictionary:(id)a4;
-- (int)reportNoRelayResponseWithOptionalDictionary:(id)a3;
-- (int)reportNoSNATMAPResponseWithOptionalDictionary:(id)a3;
+- (int)reportNoPackets:(unsigned int)packets WithOptionalDictionary:(id)dictionary;
+- (int)reportNoRelayResponseWithOptionalDictionary:(id)dictionary;
+- (int)reportNoSNATMAPResponseWithOptionalDictionary:(id)dictionary;
 - (int)reportNoServerStatsActivity;
-- (int)reportNoVideoDisplayedFailSafeFIRWithOptionalDictionary:(id)a3;
-- (int)reportOSLogSymptomWithDictionary:(id)a3;
-- (int)reportPoorConnectionDespiteVideoReceivedWithOptionalDictionary:(id)a3;
-- (int)reportPoorConnectionPercentageRegressedFromTelemetryWithOptionalDictionary:(id)a3;
+- (int)reportNoVideoDisplayedFailSafeFIRWithOptionalDictionary:(id)dictionary;
+- (int)reportOSLogSymptomWithDictionary:(id)dictionary;
+- (int)reportPoorConnectionDespiteVideoReceivedWithOptionalDictionary:(id)dictionary;
+- (int)reportPoorConnectionPercentageRegressedFromTelemetryWithOptionalDictionary:(id)dictionary;
 - (int)reportQRATKNTokenError;
 - (int)reportRateTargetMismatch;
 - (int)reportReceiveSessionStatsFailed;
-- (int)reportSelfTerminationWithOptionalDictionary:(id)a3;
+- (int)reportSelfTerminationWithOptionalDictionary:(id)dictionary;
 - (int)reportSessionInfoErrorResponse;
-- (int)reportSignalingFailed:(id)a3;
-- (int)reportSignificantHandshakeDelayWithOptionalDictionary:(id)a3;
+- (int)reportSignalingFailed:(id)failed;
+- (int)reportSignificantHandshakeDelayWithOptionalDictionary:(id)dictionary;
 - (int)reportSustainedHighDownlinkPacketLoss;
 - (int)reportSustainedHighUplinkPacketLoss;
-- (int)reportSymptomWithGroupID:(id)a3 signature:(id)a4 actions:(id)a5;
-- (int)reportSymptomWithIDSDestination:(id)a3 sessionID:(id)a4 type:(id)a5 subType:(id)a6 context:(id)a7;
-- (int)reportSymptomWithOptions:(id)a3 type:(id)a4 subType:(id)a5 context:(id)a6;
-- (int)reportSymptomWithType:(id)a3 subType:(id)a4 context:(id)a5 actions:(id)a6;
-- (int)reportThermalIncreaseAudioOnlyWithOptionalDictionary:(id)a3;
+- (int)reportSymptomWithGroupID:(id)d signature:(id)signature actions:(id)actions;
+- (int)reportSymptomWithIDSDestination:(id)destination sessionID:(id)d type:(id)type subType:(id)subType context:(id)context;
+- (int)reportSymptomWithOptions:(id)options type:(id)type subType:(id)subType context:(id)context;
+- (int)reportSymptomWithType:(id)type subType:(id)subType context:(id)context actions:(id)actions;
+- (int)reportThermalIncreaseAudioOnlyWithOptionalDictionary:(id)dictionary;
 - (int)reportULSRTPEncryptionSetupError;
 - (int)reportULTargetBitrateOvershoot;
 - (int)reportUnbinnedCameraFormatSelected;
-- (int)reportUnexpectedHighRTTWithOptionalDictionary:(id)a3;
+- (int)reportUnexpectedHighRTTWithOptionalDictionary:(id)dictionary;
 - (int)reportUnexpectedLowTargetBitrate;
 - (int)reportUnexpectedRampUpFrozen;
 - (int)reportV1SpeechAPIEnabled;
-- (int)reportVideoConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)a3;
-- (int)reportVideoReceiverEnqueueFrameRateTooHighWithOptionalDictionary:(id)a3;
-- (int)reportVideoStall:(id)a3;
-- (int)reportVideoStallPercentageRegressedFromTelemetryWithOptionalDictionary:(id)a3;
-- (int)reportVideoSymptom:(id)a3 options:(id)a4;
-- (int)requestRemoteSideWithOptions:(id)a3 context:(id)a4 signature:(id)a5;
-- (void)VCSymptomReporterSetCallback:(void *)a3 context:(void *)a4;
+- (int)reportVideoConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)dictionary;
+- (int)reportVideoReceiverEnqueueFrameRateTooHighWithOptionalDictionary:(id)dictionary;
+- (int)reportVideoStall:(id)stall;
+- (int)reportVideoStallPercentageRegressedFromTelemetryWithOptionalDictionary:(id)dictionary;
+- (int)reportVideoSymptom:(id)symptom options:(id)options;
+- (int)requestRemoteSideWithOptions:(id)options context:(id)context signature:(id)signature;
+- (void)VCSymptomReporterSetCallback:(void *)callback context:(void *)context;
 - (void)dealloc;
-- (void)reportSymptom:(unsigned int)a3 optionalDictionary:(id)a4;
+- (void)reportSymptom:(unsigned int)symptom optionalDictionary:(id)dictionary;
 @end
 
 @implementation VCSymptomReporter
 
-- (VCSymptomReporter)initWithCallID:(unsigned int)a3
+- (VCSymptomReporter)initWithCallID:(unsigned int)d
 {
   v32 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
@@ -84,7 +84,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_callID = a3;
+    v4->_callID = d;
     v4->_reportingQueue = dispatch_queue_create("com.apple.VideoConference.SymptomReporter", 0);
     v5->_osLogNetworkingHandle = os_log_create("com.apple.AVConferenceFramework", "AVConference.Networking");
     bzero(v21, 0x3FDuLL);
@@ -152,16 +152,16 @@
   return v5;
 }
 
-- (void)reportSymptom:(unsigned int)a3 optionalDictionary:(id)a4
+- (void)reportSymptom:(unsigned int)symptom optionalDictionary:(id)dictionary
 {
   reportingQueue = self->_reportingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__VCSymptomReporter_reportSymptom_optionalDictionary___block_invoke;
   block[3] = &unk_278BD48B8;
-  v6 = a3;
+  symptomCopy = symptom;
   block[4] = self;
-  block[5] = a4;
+  block[5] = dictionary;
   dispatch_async(reportingQueue, block);
 }
 
@@ -224,11 +224,11 @@ void __54__VCSymptomReporter_reportSymptom_optionalDictionary___block_invoke(uin
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)VCSymptomReporterSetCallback:(void *)a3 context:(void *)a4
+- (void)VCSymptomReporterSetCallback:(void *)callback context:(void *)context
 {
-  if (a4)
+  if (context)
   {
-    CFRetain(a4);
+    CFRetain(context);
   }
 
   reportingQueue = self->_reportingQueue;
@@ -237,8 +237,8 @@ void __54__VCSymptomReporter_reportSymptom_optionalDictionary___block_invoke(uin
   block[2] = __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke;
   block[3] = &unk_278BD4FE0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = context;
   dispatch_async(reportingQueue, block);
 }
 
@@ -344,7 +344,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
   return result;
 }
 
-- (int)reportSignalingFailed:(id)a3
+- (int)reportSignalingFailed:(id)failed
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -366,12 +366,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"SIP" context:@"SignalingFailed"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:failed type:@"Networking" subType:@"SIP" context:@"SignalingFailed"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportConnectionTimeout:(id)a3
+- (int)reportConnectionTimeout:(id)timeout
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -393,18 +393,18 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Connection" context:@"ConnectionTimeout"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:timeout type:@"Networking" subType:@"Connection" context:@"ConnectionTimeout"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportNoRelayResponseWithOptionalDictionary:(id)a3
+- (int)reportNoRelayResponseWithOptionalDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = -2144337919;
-  if (a3 && [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"])
+  if (dictionary && [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"])
   {
-    v6 = [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"];
+    v6 = [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"];
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR(7u);
@@ -426,20 +426,20 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
       }
     }
 
-    v3 = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Relay" context:@"NoRelayResponse"];
+    v3 = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"Relay" context:@"NoRelayResponse"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v3;
 }
 
-- (int)reportNoSNATMAPResponseWithOptionalDictionary:(id)a3
+- (int)reportNoSNATMAPResponseWithOptionalDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = -2144337919;
-  if (a3 && [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"])
+  if (dictionary && [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"])
   {
-    v6 = [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"];
+    v6 = [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyEndpointIP"];
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR(7u);
@@ -461,7 +461,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
       }
     }
 
-    v3 = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"SNATMAP" context:@"NoSNATMAPResponse"];
+    v3 = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"SNATMAP" context:@"NoSNATMAPResponse"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -576,7 +576,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
   return result;
 }
 
-- (int)reportNoFirstFrameWithOptionalDictionary:(id)a3
+- (int)reportNoFirstFrameWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -595,16 +595,16 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Video" context:@"NoFirstFrame"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"Video" context:@"NoFirstFrame"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportNoPackets:(unsigned int)a3 WithOptionalDictionary:(id)a4
+- (int)reportNoPackets:(unsigned int)packets WithOptionalDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule("");
-  if (a3 == 12)
+  if (packets == 12)
   {
     if (ErrorLogLevelForModule >= 7)
     {
@@ -646,12 +646,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     v10 = @"NoPacketsWiFi";
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a4 type:@"Networking" subType:@"ConnectionHealth" context:v10];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"ConnectionHealth" context:v10];
   v14 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportCCReliableDataNotReceived:(id)a3
+- (int)reportCCReliableDataNotReceived:(id)received
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -670,12 +670,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Connection" context:@"CCReliableDataNotReceived"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:received type:@"Networking" subType:@"Connection" context:@"CCReliableDataNotReceived"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportMKMDecryptionWithOptionalDictionary:(id)a3
+- (int)reportMKMDecryptionWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -694,12 +694,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Security" context:@"MKMDecryption"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"Security" context:@"MKMDecryption"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportExtendedPoorConnectionWithOptionalDictionary:(id)a3
+- (int)reportExtendedPoorConnectionWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -718,12 +718,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"ConnectionHealth" context:@"ExtendedPoorConnection"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"ConnectionHealth" context:@"ExtendedPoorConnection"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportSignificantHandshakeDelayWithOptionalDictionary:(id)a3
+- (int)reportSignificantHandshakeDelayWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -742,12 +742,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"ConnectionHealth" context:@"SignificantHandshakeDelay"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"ConnectionHealth" context:@"SignificantHandshakeDelay"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportAudioStall:(id)a3
+- (int)reportAudioStall:(id)stall
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -769,12 +769,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"ConnectionHealth" context:@"AudioStall"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:stall type:@"Networking" subType:@"ConnectionHealth" context:@"AudioStall"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportVideoStall:(id)a3
+- (int)reportVideoStall:(id)stall
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -796,19 +796,19 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"ConnectionHealth" context:@"VideoStall"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:stall type:@"Networking" subType:@"ConnectionHealth" context:@"VideoStall"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportAlgosScoreWithOptionalDictionary:(id)a3
+- (int)reportAlgosScoreWithOptionalDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = -2144337919;
-  if (a3)
+  if (dictionary)
   {
-    v6 = [a3 objectForKeyedSubscript:@"kSymptomReporterAlgosDictionaryKey"];
-    v7 = [a3 objectForKeyedSubscript:@"kSymptomReporterClientUUID"];
+    v6 = [dictionary objectForKeyedSubscript:@"kSymptomReporterAlgosDictionaryKey"];
+    v7 = [dictionary objectForKeyedSubscript:@"kSymptomReporterClientUUID"];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule("");
     if (v6 && v7)
     {
@@ -1204,7 +1204,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
   return result;
 }
 
-- (int)reportHighConsecutiveAudioErasuresWithOptionalDictionary:(id)a3
+- (int)reportHighConsecutiveAudioErasuresWithOptionalDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1226,12 +1226,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Audio" context:@"HighConsecutiveAudioErasures"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Audio" context:@"HighConsecutiveAudioErasures"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportUnexpectedHighRTTWithOptionalDictionary:(id)a3
+- (int)reportUnexpectedHighRTTWithOptionalDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1253,7 +1253,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"RateAdaptation" context:@"UnexpectedHighRTT"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"RateAdaptation" context:@"UnexpectedHighRTT"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -1474,10 +1474,10 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
   return result;
 }
 
-- (int)reportSelfTerminationWithOptionalDictionary:(id)a3
+- (int)reportSelfTerminationWithOptionalDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyTerminationSource"];
+  v5 = [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyTerminationSource"];
   v6 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@SelfTermination", v5];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
   {
@@ -1510,12 +1510,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Termination" context:v6];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Termination" context:v6];
   v12 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportInvalidUseOfFaceTimeClassicWithOptionalDictionary:(id)a3
+- (int)reportInvalidUseOfFaceTimeClassicWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1534,7 +1534,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Connection" context:@"InvalidFaceTimeClassic"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"Connection" context:@"InvalidFaceTimeClassic"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -1566,7 +1566,7 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
   return result;
 }
 
-- (int)reportAudioConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)a3
+- (int)reportAudioConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1585,12 +1585,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"ConnectionHealth" context:@"AudioConnectionTimeRegressedFromTelemetry"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"ConnectionHealth" context:@"AudioConnectionTimeRegressedFromTelemetry"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportAudioErasurePercentageRegressedFromTelemetryWithOptionalDictionary:(id)a3
+- (int)reportAudioErasurePercentageRegressedFromTelemetryWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1609,12 +1609,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Audio" context:@"AudioErasurePercentageRegressedFromTelemetry"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Audio" context:@"AudioErasurePercentageRegressedFromTelemetry"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportPoorConnectionPercentageRegressedFromTelemetryWithOptionalDictionary:(id)a3
+- (int)reportPoorConnectionPercentageRegressedFromTelemetryWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1633,12 +1633,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Video" context:@"PoorConnectionPercentageRegressedFromTelemetry"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Video" context:@"PoorConnectionPercentageRegressedFromTelemetry"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportVideoStallPercentageRegressedFromTelemetryWithOptionalDictionary:(id)a3
+- (int)reportVideoStallPercentageRegressedFromTelemetryWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1657,12 +1657,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Video" context:@"VideoStallPercentageRegressedFromTelemetry"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Video" context:@"VideoStallPercentageRegressedFromTelemetry"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportVideoConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)a3
+- (int)reportVideoConnectionTimeRegressedFromTelemetryWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1681,18 +1681,18 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"Connection" context:@"VideoConnectionTimeRegressedFromTelemetry"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"Connection" context:@"VideoConnectionTimeRegressedFromTelemetry"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportThermalIncreaseAudioOnlyWithOptionalDictionary:(id)a3
+- (int)reportThermalIncreaseAudioOnlyWithOptionalDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = -2144337919;
-  if (a3 && [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyThermalPressureLevel"])
+  if (dictionary && [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyThermalPressureLevel"])
   {
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SymptomReporterOptionalKeyThermalPressureLevel", "intValue"}];
+    v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SymptomReporterOptionalKeyThermalPressureLevel", "intValue"}];
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR(7u);
@@ -1714,14 +1714,14 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
       }
     }
 
-    v3 = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Audio" context:@"ThermalIncreaseAudioOnly"];
+    v3 = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Audio" context:@"ThermalIncreaseAudioOnly"];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v3;
 }
 
-- (int)reportPoorConnectionDespiteVideoReceivedWithOptionalDictionary:(id)a3
+- (int)reportPoorConnectionDespiteVideoReceivedWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1740,12 +1740,12 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Video" context:@"PoorConnectionDespiteVideoReceived"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Video" context:@"PoorConnectionDespiteVideoReceived"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportVideoSymptom:(id)a3 options:(id)a4
+- (int)reportVideoSymptom:(id)symptom options:(id)options
 {
   v27 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") < 7)
@@ -1755,13 +1755,13 @@ void __58__VCSymptomReporter_VCSymptomReporterSetCallback_context___block_invoke
 
   __str = 0;
   callID = self->_callID;
-  if (a3)
+  if (symptom)
   {
-    v8 = [objc_msgSend(a3 "description")];
-    if (a4)
+    v8 = [objc_msgSend(symptom "description")];
+    if (options)
     {
 LABEL_4:
-      v9 = [objc_msgSend(a4 "description")];
+      v9 = [objc_msgSend(options "description")];
       goto LABEL_7;
     }
   }
@@ -1769,7 +1769,7 @@ LABEL_4:
   else
   {
     v8 = "<nil>";
-    if (a4)
+    if (options)
     {
       goto LABEL_4;
     }
@@ -1812,12 +1812,12 @@ LABEL_7:
   }
 
 LABEL_14:
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a4 type:@"Media" subType:@"Video" context:a3];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:options type:@"Media" subType:@"Video" context:symptom];
   v14 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportMediaSymptomSubtypeConnectionWithContext:(id)a3
+- (int)reportMediaSymptomSubtypeConnectionWithContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1834,19 +1834,19 @@ LABEL_14:
       v14 = 1024;
       v15 = 950;
       v16 = 2112;
-      v17 = a3;
+      contextCopy = context;
       v18 = 1024;
       v19 = callID;
       _os_log_impl(&dword_23D4DF000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d SymptomReporter: reporting symptom context=%@ for session=%u", &v10, 0x2Cu);
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithType:@"Media" subType:@"Connection" context:a3 actions:0];
+  result = [(VCSymptomReporter *)self reportSymptomWithType:@"Media" subType:@"Connection" context:context actions:0];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportSymptomWithType:(id)a3 subType:(id)a4 context:(id)a5 actions:(id)a6
+- (int)reportSymptomWithType:(id)type subType:(id)subType context:(id)context actions:(id)actions
 {
   dispatch_assert_queue_V2(self->_reportingQueue);
   v17 = 0;
@@ -1860,8 +1860,8 @@ LABEL_14:
     self->_diagnosticReporter = diagnosticReporter;
   }
 
-  v12 = [(SDRDiagnosticReporter *)diagnosticReporter signatureWithDomain:@"AVConference" type:a3 subType:a4 detectedProcess:self->_procName triggerThresholdValues:0];
-  [v12 setObject:a5 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
+  v12 = [(SDRDiagnosticReporter *)diagnosticReporter signatureWithDomain:@"AVConference" type:type subType:subType detectedProcess:self->_procName triggerThresholdValues:0];
+  [v12 setObject:context forKeyedSubscript:*MEMORY[0x277D6B1F0]];
   v13 = self->_diagnosticReporter;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1869,7 +1869,7 @@ LABEL_14:
   v16[3] = &unk_278BD5550;
   v16[4] = v12;
   v16[5] = &v17;
-  [(SDRDiagnosticReporter *)v13 snapshotWithSignature:v12 duration:0 events:0 payload:a6 actions:v16 reply:0.0];
+  [(SDRDiagnosticReporter *)v13 snapshotWithSignature:v12 duration:0 events:0 payload:actions actions:v16 reply:0.0];
   v14 = *(v18 + 6);
   _Block_object_dispose(&v17, 8);
   return v14;
@@ -1929,7 +1929,7 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (int)reportLongMediaStallRecoveredWithOptionalDictionary:(id)a3
+- (int)reportLongMediaStallRecoveredWithOptionalDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1948,12 +1948,12 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Networking" subType:@"ConnectionHealth" context:@"LongMediaStallRecovered"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Networking" subType:@"ConnectionHealth" context:@"LongMediaStallRecovered"];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportConnectionSliceStatus:(unsigned int)a3
+- (int)reportConnectionSliceStatus:(unsigned int)status
 {
   v20 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -1972,26 +1972,26 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
       v16 = 1024;
       v17 = callID;
       v18 = 1024;
-      v19 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_23D4DF000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d SymptomReporter: reporting symptom on connection Slice status for callID=%u symptomID=%d", &v10, 0x28u);
     }
   }
 
-  if (a3 - 75 > 3)
+  if (status - 75 > 3)
   {
     result = 0;
   }
 
   else
   {
-    result = [(VCSymptomReporter *)self reportSymptomWithType:@"Networking" subType:@"ConnectionHealth" context:off_278BD55E0[a3 - 75] actions:0];
+    result = [(VCSymptomReporter *)self reportSymptomWithType:@"Networking" subType:@"ConnectionHealth" context:off_278BD55E0[status - 75] actions:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)reportVideoReceiverEnqueueFrameRateTooHighWithOptionalDictionary:(id)a3
+- (int)reportVideoReceiverEnqueueFrameRateTooHighWithOptionalDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -2007,7 +2007,7 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
       v13 = 1024;
       v14 = 1024;
       v15 = 2112;
-      v16 = a3;
+      dictionaryCopy = dictionary;
       _os_log_impl(&dword_23D4DF000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d SymptomReporter: reporting symptom on VideoReceiverEnqueueFrameRateTooHigh optionalDictionary=%@", &v9, 0x26u);
     }
   }
@@ -2017,7 +2017,7 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
   return result;
 }
 
-- (int)reportNoVideoDisplayedFailSafeFIRWithOptionalDictionary:(id)a3
+- (int)reportNoVideoDisplayedFailSafeFIRWithOptionalDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -2039,7 +2039,7 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
     }
   }
 
-  result = [(VCSymptomReporter *)self reportSymptomWithOptions:a3 type:@"Media" subType:@"Video" context:@"NoVideoDisplayedFailSafeFIR"];
+  result = [(VCSymptomReporter *)self reportSymptomWithOptions:dictionary type:@"Media" subType:@"Video" context:@"NoVideoDisplayedFailSafeFIR"];
   v9 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -2125,13 +2125,13 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
   return result;
 }
 
-- (int)reportInvalidVideoTxCaptureFrameCountWithOptionalDictionary:(id)a3
+- (int)reportInvalidVideoTxCaptureFrameCountWithOptionalDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = -2144337919;
-  if (a3 && [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyCaptureFrameCount"])
+  if (dictionary && [dictionary objectForKeyedSubscript:@"SymptomReporterOptionalKeyCaptureFrameCount"])
   {
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SymptomReporterOptionalKeyCaptureFrameCount", "intValue"}];
+    v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SymptomReporterOptionalKeyCaptureFrameCount", "intValue"}];
     if (VRTraceGetErrorLogLevelForModule("") >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR(7u);
@@ -2160,7 +2160,7 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
   return v3;
 }
 
-- (int)reportSymptomWithIDSDestination:(id)a3 sessionID:(id)a4 type:(id)a5 subType:(id)a6 context:(id)a7
+- (int)reportSymptomWithIDSDestination:(id)destination sessionID:(id)d type:(id)type subType:(id)subType context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_reportingQueue);
@@ -2171,9 +2171,9 @@ void __67__VCSymptomReporter_reportSymptomWithType_subType_context_actions___blo
     self->_diagnosticReporter = diagnosticReporter;
   }
 
-  v14 = [(SDRDiagnosticReporter *)diagnosticReporter signatureWithDomain:@"AVConference" type:a5 subType:a6 detectedProcess:self->_procName triggerThresholdValues:a4];
-  [v14 setObject:a7 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
-  v15 = [(SDRDiagnosticReporter *)self->_diagnosticReporter snapshotWithSignature:v14 withIDSDestinations:a3 validFor:0 duration:0 events:0 payload:&__block_literal_global_2 actions:600.0 reply:15.0];
+  v14 = [(SDRDiagnosticReporter *)diagnosticReporter signatureWithDomain:@"AVConference" type:type subType:subType detectedProcess:self->_procName triggerThresholdValues:d];
+  [v14 setObject:context forKeyedSubscript:*MEMORY[0x277D6B1F0]];
+  v15 = [(SDRDiagnosticReporter *)self->_diagnosticReporter snapshotWithSignature:v14 withIDSDestinations:destination validFor:0 duration:0 events:0 payload:&__block_literal_global_2 actions:600.0 reply:15.0];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule("");
   if (v15)
   {
@@ -2259,10 +2259,10 @@ void __84__VCSymptomReporter_reportSymptomWithIDSDestination_sessionID_type_subT
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (int)reportOSLogSymptomWithDictionary:(id)a3
+- (int)reportOSLogSymptomWithDictionary:(id)dictionary
 {
   dispatch_assert_queue_V2(self->_reportingQueue);
-  if (a3 && [MEMORY[0x277CCAA98] isValidJSONObject:a3] && (v5 = objc_msgSend(MEMORY[0x277CCAA98], "dataWithJSONObject:options:error:", a3, 0, 0)) != 0 && (v6 = objc_msgSend(objc_alloc(MEMORY[0x277CCACA0]), "initWithData:encoding:", v5, 4)) != 0)
+  if (dictionary && [MEMORY[0x277CCAA98] isValidJSONObject:dictionary] && (v5 = objc_msgSend(MEMORY[0x277CCAA98], "dataWithJSONObject:options:error:", dictionary, 0, 0)) != 0 && (v6 = objc_msgSend(objc_alloc(MEMORY[0x277CCACA0]), "initWithData:encoding:", v5, 4)) != 0)
   {
     v7 = v6;
     if (os_log_type_enabled(self->_osLogNetworkingHandle, OS_LOG_TYPE_ERROR))
@@ -2289,7 +2289,7 @@ void __84__VCSymptomReporter_reportSymptomWithIDSDestination_sessionID_type_subT
   return v8;
 }
 
-- (int)reportSymptomWithGroupID:(id)a3 signature:(id)a4 actions:(id)a5
+- (int)reportSymptomWithGroupID:(id)d signature:(id)signature actions:(id)actions
 {
   v29 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -2305,7 +2305,7 @@ void __84__VCSymptomReporter_reportSymptomWithIDSDestination_sessionID_type_subT
       v25 = 1024;
       v26 = 1135;
       v27 = 2112;
-      v28 = a3;
+      dCopy = d;
       _os_log_impl(&dword_23D4DF000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d SymptomReporter: symptomGroupID=%@ receives request to trigger symptom", buf, 0x26u);
     }
   }
@@ -2315,14 +2315,14 @@ void __84__VCSymptomReporter_reportSymptomWithIDSDestination_sessionID_type_subT
     goto LABEL_15;
   }
 
-  [a4 setObject:a3 forKeyedSubscript:*MEMORY[0x277D6B1B0]];
+  [signature setObject:d forKeyedSubscript:*MEMORY[0x277D6B1B0]];
   diagnosticReporter = self->_diagnosticReporter;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __64__VCSymptomReporter_reportSymptomWithGroupID_signature_actions___block_invoke;
   v20[3] = &unk_278BD5598;
   v20[4] = self;
-  v12 = [(SDRDiagnosticReporter *)diagnosticReporter snapshotWithSignature:a4 duration:0 events:0 payload:a5 actions:v20 reply:0.0];
+  v12 = [(SDRDiagnosticReporter *)diagnosticReporter snapshotWithSignature:signature duration:0 events:0 payload:actions actions:v20 reply:0.0];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule("");
   if (v12)
   {
@@ -2332,9 +2332,9 @@ void __84__VCSymptomReporter_reportSymptomWithIDSDestination_sessionID_type_subT
       v15 = gVRTraceOSLog;
       if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (signature)
         {
-          v16 = [objc_msgSend(a4 "description")];
+          v16 = [objc_msgSend(signature "description")];
         }
 
         else
@@ -2349,7 +2349,7 @@ void __84__VCSymptomReporter_reportSymptomWithIDSDestination_sessionID_type_subT
         v25 = 1024;
         v26 = 1152;
         v27 = 2080;
-        v28 = v16;
+        dCopy = v16;
         _os_log_impl(&dword_23D4DF000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d SymptomReporter: Sent snapshot for signature %s", buf, 0x26u);
       }
     }
@@ -2433,7 +2433,7 @@ void __64__VCSymptomReporter_reportSymptomWithGroupID_signature_actions___block_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int)requestRemoteSideWithOptions:(id)a3 context:(id)a4 signature:(id)a5
+- (int)requestRemoteSideWithOptions:(id)options context:(id)context signature:(id)signature
 {
   v5 = 0;
   v19 = *MEMORY[0x277D85DE8];
@@ -2449,11 +2449,11 @@ void __64__VCSymptomReporter_reportSymptomWithGroupID_signature_actions___block_
     v13[2] = __68__VCSymptomReporter_requestRemoteSideWithOptions_context_signature___block_invoke;
     v13[3] = &unk_278BD55C0;
     v13[4] = self;
-    v13[5] = a3;
-    v13[6] = a4;
-    v13[7] = a5;
+    v13[5] = options;
+    v13[6] = context;
+    v13[7] = signature;
     v13[8] = &v14;
-    if ([(SDRDiagnosticReporter *)diagnosticReporter groupCaseIdentifierForSignature:a5 reply:v13])
+    if ([(SDRDiagnosticReporter *)diagnosticReporter groupCaseIdentifierForSignature:signature reply:v13])
     {
       v5 = *(v15 + 6);
     }
@@ -2466,9 +2466,9 @@ void __64__VCSymptomReporter_reportSymptomWithGroupID_signature_actions___block_
         v9 = gVRTraceOSLog;
         if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_ERROR))
         {
-          if (a5)
+          if (signature)
           {
-            v10 = [objc_msgSend(a5 "description")];
+            v10 = [objc_msgSend(signature "description")];
           }
 
           else
@@ -2627,7 +2627,7 @@ void __68__VCSymptomReporter_requestRemoteSideWithOptions_context_signature___bl
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (int)reportSymptomWithOptions:(id)a3 type:(id)a4 subType:(id)a5 context:(id)a6
+- (int)reportSymptomWithOptions:(id)options type:(id)type subType:(id)subType context:(id)context
 {
   dispatch_assert_queue_V2(self->_reportingQueue);
   diagnosticReporter = self->_diagnosticReporter;
@@ -2637,37 +2637,37 @@ void __68__VCSymptomReporter_requestRemoteSideWithOptions_context_signature___bl
     self->_diagnosticReporter = diagnosticReporter;
   }
 
-  v12 = [(SDRDiagnosticReporter *)diagnosticReporter signatureWithDomain:@"AVConference" type:a4 subType:a5 detectedProcess:self->_procName triggerThresholdValues:0];
-  v13 = [a3 objectForKeyedSubscript:@"SymptomReporterOptionalKeyGroupID"];
-  v14 = [a3 objectForKeyedSubscript:@"SymptomReporterOptionalIsLocalSideOnly"];
+  v12 = [(SDRDiagnosticReporter *)diagnosticReporter signatureWithDomain:@"AVConference" type:type subType:subType detectedProcess:self->_procName triggerThresholdValues:0];
+  v13 = [options objectForKeyedSubscript:@"SymptomReporterOptionalKeyGroupID"];
+  v14 = [options objectForKeyedSubscript:@"SymptomReporterOptionalIsLocalSideOnly"];
   if (v13)
   {
     if (!v14 || !CFEqual(v14, *MEMORY[0x277CBED28]))
     {
-      a6 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@%@", a6, @"Group"];
+      context = [MEMORY[0x277CCACA0] stringWithFormat:@"%@%@", context, @"Group"];
     }
 
-    [v12 setObject:a6 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
-    v15 = self;
+    [v12 setObject:context forKeyedSubscript:*MEMORY[0x277D6B1F0]];
+    selfCopy2 = self;
     v16 = v13;
 LABEL_8:
 
-    return [(VCSymptomReporter *)v15 reportSymptomWithGroupID:v16 signature:v12 actions:0];
+    return [(VCSymptomReporter *)selfCopy2 reportSymptomWithGroupID:v16 signature:v12 actions:0];
   }
 
   if (v14 && CFEqual(v14, *MEMORY[0x277CBED28]))
   {
-    if (a6)
+    if (context)
     {
-      [v12 setObject:a6 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
+      [v12 setObject:context forKeyedSubscript:*MEMORY[0x277D6B1F0]];
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
     goto LABEL_8;
   }
 
-  return [(VCSymptomReporter *)self requestRemoteSideWithOptions:a3 context:a6 signature:v12];
+  return [(VCSymptomReporter *)self requestRemoteSideWithOptions:options context:context signature:v12];
 }
 
 - (void)reportSymptomInternal:(os_log_t)log optionalDictionary:.cold.1(uint64_t a1, int a2, os_log_t log)

@@ -1,22 +1,22 @@
 @interface _AXGlassBackgroundView
-- (_AXGlassBackgroundView)initWithCoder:(id)a3;
-- (void)_updateGlassWithPath:(const CGPath *)a3;
+- (_AXGlassBackgroundView)initWithCoder:(id)coder;
+- (void)_updateGlassWithPath:(const CGPath *)path;
 @end
 
 @implementation _AXGlassBackgroundView
 
-- (void)_updateGlassWithPath:(const CGPath *)a3
+- (void)_updateGlassWithPath:(const CGPath *)path
 {
-  v4 = a3;
-  v5 = self;
+  pathCopy = path;
+  selfCopy = self;
   Path.init(_:)();
   v9[0] = v6;
   v9[1] = v7;
   v10 = v8;
-  (*((swift_isaMask & v5->super.super.super.isa) + 0x68))(v9);
+  (*((swift_isaMask & selfCopy->super.super.super.isa) + 0x68))(v9);
 }
 
-- (_AXGlassBackgroundView)initWithCoder:(id)a3
+- (_AXGlassBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____AXGlassBackgroundView_glassBackgroundHostingController;
   v5 = objc_allocWithZone(type metadata accessor for GlassBackgroundHostingController());

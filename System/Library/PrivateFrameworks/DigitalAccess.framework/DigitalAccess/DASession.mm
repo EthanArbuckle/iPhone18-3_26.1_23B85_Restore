@@ -1,23 +1,23 @@
 @interface DASession
-- (DASession)initWithCoder:(id)a3;
-- (DASession)initWithDelegate:(id)a3;
-- (id)getRemoteProxy:(id)a3;
-- (void)didEnd:(id)a3;
-- (void)didStart:(BOOL)a3;
+- (DASession)initWithCoder:(id)coder;
+- (DASession)initWithDelegate:(id)delegate;
+- (id)getRemoteProxy:(id)proxy;
+- (void)didEnd:(id)end;
+- (void)didStart:(BOOL)start;
 - (void)endSession;
 @end
 
 @implementation DASession
 
-- (DASession)initWithDelegate:(id)a3
+- (DASession)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = DASession;
   v5 = [(DASession *)&v9 init];
   if (v5)
   {
-    v6 = [[DASessionInternal alloc] initWithDelegate:v4];
+    v6 = [[DASessionInternal alloc] initWithDelegate:delegateCopy];
     internal = v5->_internal;
     v5->_internal = v6;
   }
@@ -28,9 +28,9 @@
 - (void)endSession
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_hasEnded)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_hasEnded)
   {
     v8[0] = 0;
     v8[1] = v8;
@@ -53,19 +53,19 @@
     v7[2] = __23__DASession_endSession__block_invoke;
     v7[3] = &unk_278F6FB00;
     v7[4] = v8;
-    v4 = [(DASession *)v2 getRemoteProxy:v7];
+    v4 = [(DASession *)selfCopy getRemoteProxy:v7];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __23__DASession_endSession__block_invoke_14;
     v6[3] = &unk_278F70868;
-    v6[4] = v2;
+    v6[4] = selfCopy;
     v6[5] = v8;
     [v4 endSessionWithCompletion:v6];
 
     _Block_object_dispose(v8, 8);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -122,11 +122,11 @@ void __23__DASession_endSession__block_invoke_14(uint64_t a1, void *a2)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getRemoteProxy:(id)a3
+- (id)getRemoteProxy:(id)proxy
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DASessionInternal *)self->_internal synchronousRemoteObjectProxyWithErrorHandler:v4];
+  proxyCopy = proxy;
+  v5 = [(DASessionInternal *)self->_internal synchronousRemoteObjectProxyWithErrorHandler:proxyCopy];
   if (!v5)
   {
     v6 = KmlLogger();
@@ -145,7 +145,7 @@ void __23__DASession_endSession__block_invoke_14(uint64_t a1, void *a2)
     v14 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v10 = [v7 errorWithDomain:@"DigitalAccessError" code:216 userInfo:v9];
-    v4[2](v4, v10);
+    proxyCopy[2](proxyCopy, v10);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -153,9 +153,9 @@ void __23__DASession_endSession__block_invoke_14(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)didStart:(BOOL)a3
+- (void)didStart:(BOOL)start
 {
-  v3 = a3;
+  startCopy = start;
   v16 = *MEMORY[0x277D85DE8];
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -165,7 +165,7 @@ void __23__DASession_endSession__block_invoke_14(uint64_t a1, void *a2)
     v12 = 1024;
     v13 = 98;
     v14 = 1024;
-    v15 = v3;
+    v15 = startCopy;
     _os_log_impl(&dword_248BF3000, v5, OS_LOG_TYPE_DEBUG, "%s : %i : : %d", buf, 0x18u);
   }
 
@@ -195,10 +195,10 @@ void __22__DASession_didStart___block_invoke(uint64_t a1)
   }
 }
 
-- (void)didEnd:(id)a3
+- (void)didEnd:(id)end
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -207,7 +207,7 @@ void __22__DASession_didStart___block_invoke(uint64_t a1)
     v14 = 1024;
     v15 = 112;
     v16 = 2112;
-    v17 = v4;
+    v17 = endCopy;
     _os_log_impl(&dword_248BF3000, v5, OS_LOG_TYPE_DEBUG, "%s : %i : :%@", buf, 0x1Cu);
   }
 
@@ -218,7 +218,7 @@ void __22__DASession_didStart___block_invoke(uint64_t a1)
   v9[2] = __20__DASession_didEnd___block_invoke;
   v9[3] = &unk_278F708B8;
   objc_copyWeak(&v11, buf);
-  v7 = v4;
+  v7 = endCopy;
   v10 = v7;
   [(DASessionInternal *)internal dispatchBlockOnCallback:v9];
 
@@ -248,7 +248,7 @@ uint64_t __20__DASession_didEnd___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (DASession)initWithCoder:(id)a3
+- (DASession)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DASession;

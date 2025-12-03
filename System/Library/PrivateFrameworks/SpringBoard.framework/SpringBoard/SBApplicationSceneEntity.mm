@@ -1,18 +1,18 @@
 @interface SBApplicationSceneEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)viewControllerClass;
-- (id)_initWithSceneHandle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)_initWithSceneHandle:(id)handle;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)entityGenerator;
-- (int64_t)flagForProcessSetting:(int64_t)a3;
+- (int64_t)flagForProcessSetting:(int64_t)setting;
 - (unint64_t)hash;
-- (void)_initializeWithSceneHandle:(id)a3;
-- (void)addActions:(id)a3;
-- (void)applyProcessSettings:(id)a3;
-- (void)removeActions:(id)a3;
-- (void)setFlag:(int64_t)a3 forProcessSetting:(int64_t)a4;
-- (void)setObject:(id)a3 forProcessSetting:(int64_t)a4;
+- (void)_initializeWithSceneHandle:(id)handle;
+- (void)addActions:(id)actions;
+- (void)applyProcessSettings:(id)settings;
+- (void)removeActions:(id)actions;
+- (void)setFlag:(int64_t)flag forProcessSetting:(int64_t)setting;
+- (void)setObject:(id)object forProcessSetting:(int64_t)setting;
 - (void)translateActivationSettingsToActions;
 @end
 
@@ -20,8 +20,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SBApplicationSceneEntity *)self sceneHandle];
-  v3 = [v2 hash];
+  sceneHandle = [(SBApplicationSceneEntity *)self sceneHandle];
+  v3 = [sceneHandle hash];
 
   return v3;
 }
@@ -29,8 +29,8 @@
 - (void)translateActivationSettingsToActions
 {
   v3 = [(SBWorkspaceEntity *)self objectForActivationSetting:5];
-  v4 = [(SBApplicationSceneEntity *)self actions];
-  v5 = [v4 copy];
+  actions = [(SBApplicationSceneEntity *)self actions];
+  v5 = [actions copy];
 
   v12 = 0;
   v13 = &v12;
@@ -62,14 +62,14 @@
 {
   v3 = self->_sceneHandle;
   v4 = objc_opt_class();
-  v5 = [(SBApplicationSceneEntity *)self isFrozen];
+  isFrozen = [(SBApplicationSceneEntity *)self isFrozen];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__SBApplicationSceneEntity_entityGenerator__block_invoke;
   v10[3] = &unk_2783C2108;
   v11 = v3;
   v12 = v4;
-  v13 = v5;
+  v13 = isFrozen;
   v6 = v3;
   v7 = MEMORY[0x223D6F7F0](v10);
   v8 = MEMORY[0x223D6F7F0]();
@@ -109,10 +109,10 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
   }
 }
 
-- (void)_initializeWithSceneHandle:(id)a3
+- (void)_initializeWithSceneHandle:(id)handle
 {
-  v11 = a3;
-  objc_storeStrong(&self->_sceneHandle, a3);
+  handleCopy = handle;
+  objc_storeStrong(&self->_sceneHandle, handle);
   v5 = objc_alloc_init(SBProcessSettings);
   processSettings = self->_processSettings;
   self->_processSettings = v5;
@@ -121,48 +121,48 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
   actions = self->_actions;
   self->_actions = v7;
 
-  v9 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-  v10 = [v9 info];
-  if ([v10 wantsLaunchWithoutPNG])
+  application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+  info = [application info];
+  if ([info wantsLaunchWithoutPNG])
   {
     [(SBWorkspaceEntity *)self setFlag:1 forActivationSetting:7];
   }
 
-  if ([v10 shouldLaunchWithLiveContentASAP])
+  if ([info shouldLaunchWithLiveContentASAP])
   {
     [(SBWorkspaceEntity *)self setFlag:1 forActivationSetting:10];
   }
 
-  if ([v10 shouldLaunchSuspendedAlways])
+  if ([info shouldLaunchSuspendedAlways])
   {
     [(SBWorkspaceEntity *)self setFlag:1 forActivationSetting:3];
   }
 }
 
-- (id)_initWithSceneHandle:(id)a3
+- (id)_initWithSceneHandle:(id)handle
 {
-  v5 = a3;
-  if (!v5)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [(SBApplicationSceneEntity *)a2 _initWithSceneHandle:?];
   }
 
-  v6 = [v5 sceneIdentifier];
+  sceneIdentifier = [handleCopy sceneIdentifier];
   v9.receiver = self;
   v9.super_class = SBApplicationSceneEntity;
-  v7 = [(SBWorkspaceEntity *)&v9 initWithIdentifier:v6 displayChangeSettings:0];
+  v7 = [(SBWorkspaceEntity *)&v9 initWithIdentifier:sceneIdentifier displayChangeSettings:0];
 
   if (v7)
   {
-    [(SBApplicationSceneEntity *)v7 _initializeWithSceneHandle:v5];
+    [(SBApplicationSceneEntity *)v7 _initializeWithSceneHandle:handleCopy];
   }
 
   return v7;
 }
 
-- (void)setFlag:(int64_t)a3 forProcessSetting:(int64_t)a4
+- (void)setFlag:(int64_t)flag forProcessSetting:(int64_t)setting
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && !self->_processSettings)
+  if (flag != 0x7FFFFFFFFFFFFFFFLL && !self->_processSettings)
   {
     v7 = objc_alloc_init(SBProcessSettings);
     processSettings = self->_processSettings;
@@ -171,15 +171,15 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
 
   v9 = self->_processSettings;
 
-  [(SBProcessSettings *)v9 setFlag:a3 forProcessSetting:a4];
+  [(SBProcessSettings *)v9 setFlag:flag forProcessSetting:setting];
 }
 
-- (int64_t)flagForProcessSetting:(int64_t)a3
+- (int64_t)flagForProcessSetting:(int64_t)setting
 {
   processSettings = self->_processSettings;
   if (processSettings)
   {
-    return [(SBProcessSettings *)processSettings flagForProcessSetting:a3];
+    return [(SBProcessSettings *)processSettings flagForProcessSetting:setting];
   }
 
   else
@@ -188,65 +188,65 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
   }
 }
 
-- (void)setObject:(id)a3 forProcessSetting:(int64_t)a4
+- (void)setObject:(id)object forProcessSetting:(int64_t)setting
 {
-  v6 = a3;
-  v9 = v6;
-  if (v6 && !self->_processSettings)
+  objectCopy = object;
+  v9 = objectCopy;
+  if (objectCopy && !self->_processSettings)
   {
     v7 = objc_alloc_init(SBProcessSettings);
     processSettings = self->_processSettings;
     self->_processSettings = v7;
 
-    v6 = v9;
+    objectCopy = v9;
   }
 
-  [(SBProcessSettings *)self->_processSettings setObject:v6 forProcessSetting:a4];
+  [(SBProcessSettings *)self->_processSettings setObject:objectCopy forProcessSetting:setting];
 }
 
-- (void)applyProcessSettings:(id)a3
+- (void)applyProcessSettings:(id)settings
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && !self->_processSettings)
+  settingsCopy = settings;
+  v7 = settingsCopy;
+  if (settingsCopy && !self->_processSettings)
   {
     v5 = objc_alloc_init(SBProcessSettings);
     processSettings = self->_processSettings;
     self->_processSettings = v5;
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 
-  [(SBProcessSettings *)self->_processSettings applyProcessSettings:v4];
+  [(SBProcessSettings *)self->_processSettings applyProcessSettings:settingsCopy];
 }
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     [(NSMutableSet *)self->_actions unionSet:?];
   }
 }
 
-- (void)removeActions:(id)a3
+- (void)removeActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     [(NSMutableSet *)self->_actions minusSet:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SBApplicationSceneEntity *)self sceneHandle];
-    v7 = [v5 sceneHandle];
+    v5 = equalCopy;
+    sceneHandle = [(SBApplicationSceneEntity *)self sceneHandle];
+    sceneHandle2 = [v5 sceneHandle];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [sceneHandle isEqual:sceneHandle2];
   }
 
   else
@@ -257,11 +257,11 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SBApplicationSceneEntity;
-  v4 = [(SBWorkspaceEntity *)&v6 copyWithZone:a3];
+  v4 = [(SBWorkspaceEntity *)&v6 copyWithZone:zone];
   [v4 _initializeWithSceneHandle:self->_sceneHandle];
   [v4 applyProcessSettings:self->_processSettings];
   [v4 addActions:self->_actions];
@@ -269,12 +269,12 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
   return v4;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v10.receiver = self;
   v10.super_class = SBApplicationSceneEntity;
-  v5 = [(SBWorkspaceEntity *)&v10 descriptionBuilderWithMultilinePrefix:v4];
+  v5 = [(SBWorkspaceEntity *)&v10 descriptionBuilderWithMultilinePrefix:prefixCopy];
   processSettings = self->_processSettings;
   if (processSettings && ![(SBProcessSettings *)processSettings isEmpty]|| [(NSMutableSet *)self->_actions count])
   {
@@ -284,7 +284,7 @@ void __73__SBApplicationSceneEntity_Actions__translateActivationSettingsToAction
     v8[3] = &unk_2783A92D8;
     v8[4] = self;
     v9 = v5;
-    [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+    [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
   }
 
   return v5;

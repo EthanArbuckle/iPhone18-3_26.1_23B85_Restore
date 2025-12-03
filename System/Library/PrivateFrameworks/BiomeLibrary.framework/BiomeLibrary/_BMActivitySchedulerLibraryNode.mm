@@ -2,7 +2,7 @@
 + (id)ActivityProfile;
 + (id)configurationForActivityProfile;
 + (id)storeConfigurationForActivityProfile;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -12,8 +12,8 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 Dependency];
-  v6[0] = v2;
+  dependency = [self Dependency];
+  v6[0] = dependency;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -24,7 +24,7 @@
 + (id)ActivityProfile
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForActivityProfile];
+  configurationForActivityProfile = [self configurationForActivityProfile];
   v3 = +[BMActivitySchedulerActivityProfile columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -36,7 +36,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ActivityScheduler.ActivityProfile" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ActivityScheduler.ActivityProfile" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ActivityScheduler.ActivityProfile" schema:v9 configuration:configurationForActivityProfile];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -45,13 +45,13 @@
 
 + (id)configurationForActivityProfile
 {
-  v3 = [a1 storeConfigurationForActivityProfile];
-  v4 = [a1 syncPolicyForActivityProfile];
+  storeConfigurationForActivityProfile = [self storeConfigurationForActivityProfile];
+  syncPolicyForActivityProfile = [self syncPolicyForActivityProfile];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"296F6267-B80B-43C2-A029-A875E83E0E1F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ActivityScheduler.ActivityProfile" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ActivityScheduler.ActivityProfile" eventClass:objc_opt_class() storeConfig:storeConfigurationForActivityProfile syncPolicy:syncPolicyForActivityProfile legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -64,19 +64,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"ActivityProfile"])
+  if ([name isEqualToString:@"ActivityProfile"])
   {
-    v4 = [a1 ActivityProfile];
+    activityProfile = [self ActivityProfile];
   }
 
   else
   {
-    v4 = 0;
+    activityProfile = 0;
   }
 
-  return v4;
+  return activityProfile;
 }
 
 + (id)validKeyPaths

@@ -1,15 +1,15 @@
 @interface NTKDLoadOnceCollectionObserver
-- (NTKDLoadOnceCollectionObserver)initWithCollection:(id)a3;
+- (NTKDLoadOnceCollectionObserver)initWithCollection:(id)collection;
 - (void)_queue_performInitialLoad;
-- (void)faceCollectionDidLoad:(id)a3;
-- (void)performOnLoad:(id)a3;
+- (void)faceCollectionDidLoad:(id)load;
+- (void)performOnLoad:(id)load;
 @end
 
 @implementation NTKDLoadOnceCollectionObserver
 
-- (NTKDLoadOnceCollectionObserver)initWithCollection:(id)a3
+- (NTKDLoadOnceCollectionObserver)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = NTKDLoadOnceCollectionObserver;
   v6 = [(NTKDLoadOnceCollectionObserver *)&v16 init];
@@ -21,17 +21,17 @@
     v6->_queue = v8;
 
     v6->_hasLoaded = 0;
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     handlers = v6->_handlers;
-    v6->_handlers = v10;
+    v6->_handlers = array;
 
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__NTKDLoadOnceCollectionObserver_initWithCollection___block_invoke;
     v13[3] = &unk_27877E438;
     v14 = v6;
-    v15 = v5;
+    v15 = collectionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v13);
   }
 
@@ -67,22 +67,22 @@ void __53__NTKDLoadOnceCollectionObserver_initWithCollection___block_invoke(uint
   }
 }
 
-- (void)performOnLoad:(id)a3
+- (void)performOnLoad:(id)load
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadCopy = load;
   v5 = _NTKLoggingObjectForDomain(1, "NTKLoggingDomainDaemon");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     collection = self->_collection;
     *buf = 134218242;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = collection;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "LoadOnce(%p): Collection %@ got work to do…", buf, 0x16u);
   }
 
-  if (v4)
+  if (loadCopy)
   {
     queue = self->_queue;
     v10[0] = MEMORY[0x277D85DD0];
@@ -90,7 +90,7 @@ void __53__NTKDLoadOnceCollectionObserver_initWithCollection___block_invoke(uint
     v10[2] = __48__NTKDLoadOnceCollectionObserver_performOnLoad___block_invoke;
     v10[3] = &unk_27877FF60;
     v10[4] = self;
-    v11 = v4;
+    v11 = loadCopy;
     dispatch_async(queue, v10);
   }
 
@@ -101,7 +101,7 @@ void __53__NTKDLoadOnceCollectionObserver_initWithCollection___block_invoke(uint
     {
       v9 = self->_collection;
       *buf = 134218242;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "LoadOnce(%p): No work provided for %@.", buf, 0x16u);
@@ -151,17 +151,17 @@ void __48__NTKDLoadOnceCollectionObserver_performOnLoad___block_invoke(uint64_t 
   }
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadCopy = load;
   v5 = _NTKLoggingObjectForDomain(1, "NTKLoggingDomainDaemon");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = loadCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "LoadOnce(%p): Collection loaded %@!", buf, 0x16u);
   }
 
@@ -186,7 +186,7 @@ void __48__NTKDLoadOnceCollectionObserver_performOnLoad___block_invoke(uint64_t 
     {
       collection = self->_collection;
       *buf = 134218498;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = collection;
       v20 = 2048;

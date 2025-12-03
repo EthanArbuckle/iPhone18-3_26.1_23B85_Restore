@@ -1,17 +1,17 @@
 @interface HKSPSleepSettings
-- (BOOL)_needsMigrationForCoder:(id)a3;
-- (BOOL)isEqualToFeatureSettingsModel:(id)a3;
+- (BOOL)_needsMigrationForCoder:(id)coder;
+- (BOOL)isEqualToFeatureSettingsModel:(id)model;
 - (BOOL)sleepTrackingFeatureEnabled;
 - (HKSPSleepSettings)init;
-- (HKSPSleepSettings)initWithCoder:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initFromObject:(id)a3;
+- (HKSPSleepSettings)initWithCoder:(id)coder;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initFromObject:(id)object;
 - (id)mutableCopy;
-- (id)objectWithSyncAnchor:(id)a3;
+- (id)objectWithSyncAnchor:(id)anchor;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_migrateForCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_migrateForCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSPSleepSettings
@@ -33,25 +33,25 @@
   return v3;
 }
 
-- (BOOL)isEqualToFeatureSettingsModel:(id)a3
+- (BOOL)isEqualToFeatureSettingsModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   LOBYTE(self) = [(HKSPSleepSettings *)self sleepTrackingFeatureEnabled];
-  v5 = [v4 sleepTrackingFeatureEnabled];
+  sleepTrackingFeatureEnabled = [modelCopy sleepTrackingFeatureEnabled];
 
-  return self ^ v5 ^ 1;
+  return self ^ sleepTrackingFeatureEnabled ^ 1;
 }
 
 - (BOOL)sleepTrackingFeatureEnabled
 {
-  v3 = [(HKSPSleepSettings *)self sleepTracking];
-  if (v3)
+  sleepTracking = [(HKSPSleepSettings *)self sleepTracking];
+  if (sleepTracking)
   {
 
-    LOBYTE(v3) = [(HKSPSleepSettings *)self watchSleepFeaturesEnabled];
+    LOBYTE(sleepTracking) = [(HKSPSleepSettings *)self watchSleepFeaturesEnabled];
   }
 
-  return v3;
+  return sleepTracking;
 }
 
 - (HKSPSleepSettings)init
@@ -73,38 +73,38 @@
   return v3;
 }
 
-- (id)initFromObject:(id)a3
+- (id)initFromObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [(HKSPSleepSettings *)self init];
     HKSPCopyFromObject(v5, v6);
-    v7 = [v5 syncAnchor];
+    syncAnchor = [v5 syncAnchor];
 
-    v8 = [v7 copyWithZone:0];
+    v8 = [syncAnchor copyWithZone:0];
     syncAnchor = v6->_syncAnchor;
     v6->_syncAnchor = v8;
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)objectWithSyncAnchor:(id)a3
+- (id)objectWithSyncAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [objc_alloc(objc_opt_class()) initFromObject:self];
-  v6 = [v4 copyWithZone:0];
+  v6 = [anchorCopy copyWithZone:0];
 
   v7 = v5[5];
   v5[5] = v6;
@@ -112,26 +112,26 @@
   return v5;
 }
 
-- (HKSPSleepSettings)initWithCoder:(id)a3
+- (HKSPSleepSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKSPSleepSettings;
   v5 = [(HKSPSleepSettings *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    HKSPDecodeObjectWithCoder(v5, v4);
-    if (([v4 hksp_serializationOptions] & 1) == 0)
+    HKSPDecodeObjectWithCoder(v5, coderCopy);
+    if (([coderCopy hksp_serializationOptions] & 1) == 0)
     {
-      v7 = [v4 decodeObjectOfClass:HKSPSyncAnchorClass() forKey:@"HKSPSettingsSyncAnchor"];
+      v7 = [coderCopy decodeObjectOfClass:HKSPSyncAnchorClass() forKey:@"HKSPSettingsSyncAnchor"];
       syncAnchor = v6->_syncAnchor;
       v6->_syncAnchor = v7;
     }
 
-    if ([(HKSPSleepSettings *)v6 _needsMigrationForCoder:v4])
+    if ([(HKSPSleepSettings *)v6 _needsMigrationForCoder:coderCopy])
     {
-      [(HKSPSleepSettings *)v6 _migrateForCoder:v4];
+      [(HKSPSleepSettings *)v6 _migrateForCoder:coderCopy];
     }
 
     v9 = v6;
@@ -140,17 +140,17 @@
   return v6;
 }
 
-- (BOOL)_needsMigrationForCoder:(id)a3
+- (BOOL)_needsMigrationForCoder:(id)coder
 {
-  v3 = a3;
-  v4 = ([v3 hksp_serializationOptions] & 1) != 0 && objc_msgSend(v3, "decodeIntegerForKey:", @"HKSPSettingsVersion") < 0xB;
+  coderCopy = coder;
+  v4 = ([coderCopy hksp_serializationOptions] & 1) != 0 && objc_msgSend(coderCopy, "decodeIntegerForKey:", @"HKSPSettingsVersion") < 0xB;
 
   return v4;
 }
 
-- (void)_migrateForCoder:(id)a3
+- (void)_migrateForCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   version = self->_version;
   if (version <= 1)
   {
@@ -237,13 +237,13 @@
   self->_version = 11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  HKSPEncodeObjectWithCoder(self, v4);
-  if (([v4 hksp_serializationOptions] & 1) == 0)
+  coderCopy = coder;
+  HKSPEncodeObjectWithCoder(self, coderCopy);
+  if (([coderCopy hksp_serializationOptions] & 1) == 0)
   {
-    [v4 encodeObject:self->_syncAnchor forKey:@"HKSPSettingsSyncAnchor"];
+    [coderCopy encodeObject:self->_syncAnchor forKey:@"HKSPSettingsSyncAnchor"];
   }
 }
 
@@ -256,18 +256,18 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPSleepSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPSleepSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPSleepSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPSleepSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

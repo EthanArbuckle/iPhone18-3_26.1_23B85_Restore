@@ -1,26 +1,26 @@
 @interface INFERENCESchemaINFERENCEContact
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContact)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContact)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContact)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContact)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addAnonymizedHandleValues:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnonymizedHandleValues:(id)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContact
 
-- (INFERENCESchemaINFERENCEContact)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContact)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = INFERENCESchemaINFERENCEContact;
   v5 = [(INFERENCESchemaINFERENCEContact *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anonymizedContactIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedContactIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(INFERENCESchemaINFERENCEContact *)v5 setAnonymizedContactIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"anonymizedHandleValues"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedHandleValues"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContact)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContact)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContact *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContact *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContact *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,48 +113,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedContactIdentifier)
   {
-    v4 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"anonymizedContactIdentifier"];
+    anonymizedContactIdentifier = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
+    v5 = [anonymizedContactIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"anonymizedContactIdentifier"];
   }
 
   if (self->_anonymizedHandleValues)
   {
-    v6 = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"anonymizedHandleValues"];
+    anonymizedHandleValues = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
+    v7 = [anonymizedHandleValues copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"anonymizedHandleValues"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
-  v6 = [v4 anonymizedContactIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  anonymizedContactIdentifier = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
+  anonymizedContactIdentifier2 = [equalCopy anonymizedContactIdentifier];
+  if ((anonymizedContactIdentifier != 0) == (anonymizedContactIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
-  if (v7)
+  anonymizedContactIdentifier3 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
+  if (anonymizedContactIdentifier3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
-    v10 = [v4 anonymizedContactIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = anonymizedContactIdentifier3;
+    anonymizedContactIdentifier4 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
+    anonymizedContactIdentifier5 = [equalCopy anonymizedContactIdentifier];
+    v11 = [anonymizedContactIdentifier4 isEqual:anonymizedContactIdentifier5];
 
     if (!v11)
     {
@@ -166,12 +166,12 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
-  v6 = [v4 anonymizedHandleValues];
-  if ((v5 != 0) != (v6 == 0))
+  anonymizedContactIdentifier = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
+  anonymizedContactIdentifier2 = [equalCopy anonymizedHandleValues];
+  if ((anonymizedContactIdentifier != 0) != (anonymizedContactIdentifier2 == 0))
   {
-    v12 = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
-    if (!v12)
+    anonymizedHandleValues = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
+    if (!anonymizedHandleValues)
     {
 
 LABEL_15:
@@ -179,10 +179,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
-    v15 = [v4 anonymizedHandleValues];
-    v16 = [v14 isEqual:v15];
+    v13 = anonymizedHandleValues;
+    anonymizedHandleValues2 = [(INFERENCESchemaINFERENCEContact *)self anonymizedHandleValues];
+    anonymizedHandleValues3 = [equalCopy anonymizedHandleValues];
+    v16 = [anonymizedHandleValues2 isEqual:anonymizedHandleValues3];
 
     if (v16)
     {
@@ -202,13 +202,13 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
+  toCopy = to;
+  anonymizedContactIdentifier = [(INFERENCESchemaINFERENCEContact *)self anonymizedContactIdentifier];
 
-  if (v5)
+  if (anonymizedContactIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -245,22 +245,22 @@ LABEL_13:
   }
 }
 
-- (void)addAnonymizedHandleValues:(id)a3
+- (void)addAnonymizedHandleValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   anonymizedHandleValues = self->_anonymizedHandleValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!anonymizedHandleValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_anonymizedHandleValues;
-    self->_anonymizedHandleValues = v6;
+    self->_anonymizedHandleValues = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     anonymizedHandleValues = self->_anonymizedHandleValues;
   }
 
-  [(NSArray *)anonymizedHandleValues addObject:v4];
+  [(NSArray *)anonymizedHandleValues addObject:valuesCopy];
 }
 
 - (id)suppressMessageUnderConditions

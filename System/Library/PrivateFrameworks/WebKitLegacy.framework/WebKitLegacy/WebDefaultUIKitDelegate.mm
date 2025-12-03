@@ -1,8 +1,8 @@
 @interface WebDefaultUIKitDelegate
 + (id)sharedUIKitDelegate;
-- (CGPoint)contentsPointForWebView:(id)a3;
+- (CGPoint)contentsPointForWebView:(id)view;
 - (CGPoint)interactionLocation;
-- (CGRect)documentVisibleRectForWebView:(id)a3;
+- (CGRect)documentVisibleRectForWebView:(id)view;
 @end
 
 @implementation WebDefaultUIKitDelegate
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (CGPoint)contentsPointForWebView:(id)a3
+- (CGPoint)contentsPointForWebView:(id)view
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (CGRect)documentVisibleRectForWebView:(id)a3
+- (CGRect)documentVisibleRectForWebView:(id)view
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);

@@ -1,11 +1,11 @@
 @interface HVMutableContentState
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setConsumers:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setConsumers:(id)consumers;
 @end
 
 @implementation HVMutableContentState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HVContentState alloc];
   consumers = self->super._consumers;
@@ -14,9 +14,9 @@
   return [(HVContentState *)v4 initWithConsumers:consumers levelOfService:levelOfService];
 }
 
-- (void)setConsumers:(id)a3
+- (void)setConsumers:(id)consumers
 {
-  v4 = [a3 copy];
+  v4 = [consumers copy];
   consumers = self->super._consumers;
   self->super._consumers = v4;
 

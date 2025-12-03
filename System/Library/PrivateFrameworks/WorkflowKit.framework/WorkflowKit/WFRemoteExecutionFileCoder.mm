@@ -1,14 +1,14 @@
 @interface WFRemoteExecutionFileCoder
 - (WFRemoteExecutionCoordinator)coordinator;
-- (WFRemoteExecutionFileCoder)initWithCoder:(id)a3;
-- (WFRemoteExecutionFileCoder)initWithCoordinator:(id)a3 requestIdentifier:(id)a4;
-- (id)decodeFileWithCoder:(id)a3 fileShouldBeDeletedOnDeallocation:(BOOL *)a4 fileIsSecurityScoped:(BOOL *)a5;
+- (WFRemoteExecutionFileCoder)initWithCoder:(id)coder;
+- (WFRemoteExecutionFileCoder)initWithCoordinator:(id)coordinator requestIdentifier:(id)identifier;
+- (id)decodeFileWithCoder:(id)coder fileShouldBeDeletedOnDeallocation:(BOOL *)deallocation fileIsSecurityScoped:(BOOL *)scoped;
 - (int64_t)targetPlatform;
-- (void)archiveFileAtURL:(id)a3 fileShouldBeDeletedOnDeallocation:(BOOL)a4 withCoder:(id)a5;
+- (void)archiveFileAtURL:(id)l fileShouldBeDeletedOnDeallocation:(BOOL)deallocation withCoder:(id)coder;
 - (void)cancelOutstandingTransfers;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fileAvailabilityChanged;
-- (void)waitForFileAvailabilityWithCompletionHandler:(id)a3;
+- (void)waitForFileAvailabilityWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFRemoteExecutionFileCoder
@@ -20,12 +20,12 @@
   return WeakRetained;
 }
 
-- (WFRemoteExecutionFileCoder)initWithCoder:(id)a3
+- (WFRemoteExecutionFileCoder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFRemoteExecutionFileCoder;
-  v5 = [(WFFileCoder *)&v14 initWithCoder:v4];
+  v5 = [(WFFileCoder *)&v14 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
@@ -35,7 +35,7 @@
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
   v9 = NSStringFromSelector(sel_transferIdentifiers);
-  v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
   transferIdentifiers = v5->_transferIdentifiers;
   v5->_transferIdentifiers = v10;
 
@@ -53,29 +53,29 @@ LABEL_4:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFRemoteExecutionFileCoder;
-  v4 = a3;
-  [(WFFileCoder *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFFileCoder *)&v7 encodeWithCoder:coderCopy];
   transferIdentifiers = self->_transferIdentifiers;
   v6 = NSStringFromSelector(sel_transferIdentifiers);
-  [v4 encodeObject:transferIdentifiers forKey:{v6, v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:transferIdentifiers forKey:{v6, v7.receiver, v7.super_class}];
 }
 
-- (void)waitForFileAvailabilityWithCompletionHandler:(id)a3
+- (void)waitForFileAvailabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WFRemoteExecutionFileCoder_waitForFileAvailabilityWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E837E1F8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFRemoteExecutionFileCoder;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFFileCoder *)&v6 waitForFileAvailabilityWithCompletionHandler:v7];
 }
 
@@ -137,13 +137,13 @@ uint64_t __75__WFRemoteExecutionFileCoder_waitForFileAvailabilityWithCompletionH
 
 - (void)fileAvailabilityChanged
 {
-  v3 = [(WFRemoteExecutionFileCoder *)self fileURL];
+  fileURL = [(WFRemoteExecutionFileCoder *)self fileURL];
 
-  if (v3)
+  if (fileURL)
   {
-    v4 = [(WFRemoteExecutionFileCoder *)self fileAvailabilityHandler];
+    fileAvailabilityHandler = [(WFRemoteExecutionFileCoder *)self fileAvailabilityHandler];
 
-    if (v4)
+    if (fileAvailabilityHandler)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -177,67 +177,67 @@ uint64_t __53__WFRemoteExecutionFileCoder_fileAvailabilityChanged__block_invoke(
   return result;
 }
 
-- (id)decodeFileWithCoder:(id)a3 fileShouldBeDeletedOnDeallocation:(BOOL *)a4 fileIsSecurityScoped:(BOOL *)a5
+- (id)decodeFileWithCoder:(id)coder fileShouldBeDeletedOnDeallocation:(BOOL *)deallocation fileIsSecurityScoped:(BOOL *)scoped
 {
-  v8 = a3;
-  v9 = [v8 decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferIdentifier"];
   if (v9 && ([(NSMutableArray *)self->_transferIdentifiers containsObject:v9]& 1) != 0)
   {
-    v10 = [(WFRemoteExecutionFileCoder *)self fileURL];
+    fileURL = [(WFRemoteExecutionFileCoder *)self fileURL];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = WFRemoteExecutionFileCoder;
-    v10 = [(WFFileCoder *)&v13 decodeFileWithCoder:v8 fileShouldBeDeletedOnDeallocation:a4 fileIsSecurityScoped:a5];
+    fileURL = [(WFFileCoder *)&v13 decodeFileWithCoder:coderCopy fileShouldBeDeletedOnDeallocation:deallocation fileIsSecurityScoped:scoped];
   }
 
-  v11 = v10;
+  v11 = fileURL;
 
   return v11;
 }
 
 - (void)cancelOutstandingTransfers
 {
-  v2 = [(WFRemoteExecutionFileCoder *)self coordinator];
-  [v2 cancelPendingFileTransfers];
+  coordinator = [(WFRemoteExecutionFileCoder *)self coordinator];
+  [coordinator cancelPendingFileTransfers];
 }
 
-- (void)archiveFileAtURL:(id)a3 fileShouldBeDeletedOnDeallocation:(BOOL)a4 withCoder:(id)a5
+- (void)archiveFileAtURL:(id)l fileShouldBeDeletedOnDeallocation:(BOOL)deallocation withCoder:(id)coder
 {
   v7 = MEMORY[0x1E696AFB0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 UUID];
-  v14 = [v10 UUIDString];
+  coderCopy = coder;
+  lCopy = l;
+  uUID = [v7 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v11 = [(WFRemoteExecutionFileCoder *)self coordinator];
-  v12 = [(WFRemoteExecutionFileCoder *)self requestIdentifier];
-  [v11 sendFileAtURL:v9 transferIdentifier:v14 requestIdentifier:v12 error:0];
+  coordinator = [(WFRemoteExecutionFileCoder *)self coordinator];
+  requestIdentifier = [(WFRemoteExecutionFileCoder *)self requestIdentifier];
+  [coordinator sendFileAtURL:lCopy transferIdentifier:uUIDString requestIdentifier:requestIdentifier error:0];
 
-  v13 = [(WFRemoteExecutionFileCoder *)self transferIdentifiers];
-  [v13 addObject:v14];
+  transferIdentifiers = [(WFRemoteExecutionFileCoder *)self transferIdentifiers];
+  [transferIdentifiers addObject:uUIDString];
 
-  [v8 encodeObject:v14 forKey:@"transferIdentifier"];
+  [coderCopy encodeObject:uUIDString forKey:@"transferIdentifier"];
 }
 
 - (int64_t)targetPlatform
 {
-  v2 = [MEMORY[0x1E69E0A90] currentDevice];
-  v3 = 2 * ([v2 platform] == 0);
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  v3 = 2 * ([currentDevice platform] == 0);
 
   return v3;
 }
 
-- (WFRemoteExecutionFileCoder)initWithCoordinator:(id)a3 requestIdentifier:(id)a4
+- (WFRemoteExecutionFileCoder)initWithCoordinator:(id)coordinator requestIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  coordinatorCopy = coordinator;
+  identifierCopy = identifier;
+  if (!coordinatorCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionFileCoder.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"coordinator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionFileCoder.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"coordinator"}];
   }
 
   v15.receiver = self;
@@ -249,8 +249,8 @@ uint64_t __53__WFRemoteExecutionFileCoder_fileAvailabilityChanged__block_invoke(
     transferIdentifiers = v9->_transferIdentifiers;
     v9->_transferIdentifiers = v10;
 
-    objc_storeWeak(&v9->_coordinator, v7);
-    objc_storeStrong(&v9->_requestIdentifier, a4);
+    objc_storeWeak(&v9->_coordinator, coordinatorCopy);
+    objc_storeStrong(&v9->_requestIdentifier, identifier);
     v12 = v9;
   }
 

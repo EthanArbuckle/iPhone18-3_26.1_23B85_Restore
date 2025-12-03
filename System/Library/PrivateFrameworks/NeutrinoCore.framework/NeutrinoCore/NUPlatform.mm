@@ -7,9 +7,9 @@
 - (NUDisplay)mainDisplay;
 - (id)currentDevice;
 - (id)debugDescription;
-- (id)deviceForDisplay:(id)a3;
-- (id)deviceForMetalDevice:(id)a3;
-- (id)displayWithIdentifier:(id)a3;
+- (id)deviceForDisplay:(id)display;
+- (id)deviceForMetalDevice:(id)device;
+- (id)displayWithIdentifier:(id)identifier;
 - (void)clearCaches;
 @end
 
@@ -18,9 +18,9 @@
 + (id)currentPlatform
 {
   v2 = +[NUFactory sharedFactory];
-  v3 = [v2 platform];
+  platform = [v2 platform];
 
-  return v3;
+  return platform;
 }
 
 - (BOOL)supportsSemanticStyleRendering
@@ -30,18 +30,18 @@
     return 0;
   }
 
-  v3 = [(NUPlatform *)self mainDevice];
-  v4 = [v3 family] > 6;
+  mainDevice = [(NUPlatform *)self mainDevice];
+  v4 = [mainDevice family] > 6;
 
   return v4;
 }
 
-- (id)deviceForMetalDevice:(id)a3
+- (id)deviceForMetalDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NUPlatform *)self devices];
-  v9 = v4;
-  v6 = v4;
+  deviceCopy = device;
+  devices = [(NUPlatform *)self devices];
+  v9 = deviceCopy;
+  v6 = deviceCopy;
   v7 = PFFind();
 
   return v7;
@@ -100,8 +100,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -117,8 +117,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -132,18 +132,18 @@ LABEL_14:
   _NUAssertFailHandler("[NUPlatform defaultSupportsLiveVideoRendering]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Runtime/NUPlatform.m", 85, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v23, v24, v25, v26, v22);
 }
 
-- (id)displayWithIdentifier:(id)a3
+- (id)displayWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(NUPlatform *)self displays];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    displays = [(NUPlatform *)self displays];
+    v6 = [displays countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -154,22 +154,22 @@ LABEL_14:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(displays);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v11 isEqual:v4];
+          identifier = [v10 identifier];
+          v12 = [identifier isEqual:identifierCopy];
 
           if (v12)
           {
-            v13 = v10;
+            mainDisplay = v10;
 
             goto LABEL_13;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [displays countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v7)
         {
           continue;
@@ -179,17 +179,17 @@ LABEL_14:
       }
     }
 
-    v13 = 0;
+    mainDisplay = 0;
   }
 
   else
   {
-    v13 = [(NUPlatform *)self mainDisplay];
+    mainDisplay = [(NUPlatform *)self mainDisplay];
   }
 
 LABEL_13:
 
-  return v13;
+  return mainDisplay;
 }
 
 - (NUDisplay)mainDisplay
@@ -237,8 +237,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -254,8 +254,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -314,8 +314,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -331,8 +331,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -354,8 +354,8 @@ LABEL_14:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(NUPlatform *)self devices];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(NUPlatform *)self devices];
+  v4 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -367,24 +367,24 @@ LABEL_14:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) clearCaches];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)deviceForDisplay:(id)a3
+- (id)deviceForDisplay:(id)display
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  displayCopy = display;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_17352);
@@ -427,8 +427,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -444,8 +444,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -461,10 +461,10 @@ LABEL_14:
 
 - (id)currentDevice
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"NUPlatform.currentDevice"];
+  v4 = [threadDictionary objectForKeyedSubscript:@"NUPlatform.currentDevice"];
 
   return v4;
 }
@@ -514,8 +514,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -531,8 +531,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -550,9 +550,9 @@ LABEL_14:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUPlatform *)self name];
-  v6 = [(NUPlatform *)self devices];
-  v7 = [v3 stringWithFormat:@"<%@:%p name:%@ devices: %@>", v4, self, v5, v6];
+  name = [(NUPlatform *)self name];
+  devices = [(NUPlatform *)self devices];
+  v7 = [v3 stringWithFormat:@"<%@:%p name:%@ devices: %@>", v4, self, name, devices];
 
   return v7;
 }

@@ -1,23 +1,23 @@
 @interface PKPaymentTransactionDetailAmountLineItemGeneric
-- (PKPaymentTransactionDetailAmountLineItemGeneric)initWithLabel:(id)a3 value:(id)a4;
+- (PKPaymentTransactionDetailAmountLineItemGeneric)initWithLabel:(id)label value:(id)value;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemGeneric
 
-- (PKPaymentTransactionDetailAmountLineItemGeneric)initWithLabel:(id)a3 value:(id)a4
+- (PKPaymentTransactionDetailAmountLineItemGeneric)initWithLabel:(id)label value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = PKPaymentTransactionDetailAmountLineItemGeneric;
   v8 = [(PKPaymentTransactionDetailAmountLineItemGeneric *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v11;
   }

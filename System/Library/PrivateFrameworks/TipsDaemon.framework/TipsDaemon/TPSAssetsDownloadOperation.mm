@@ -2,10 +2,10 @@
 - (NSString)assetIdentifier;
 - (NSURL)downloadedURL;
 - (TPSAssetsDownloadOperation)init;
-- (TPSAssetsDownloadOperation)initWithAssetIdentifier:(id)a3 assetURLPath:(id)a4;
+- (TPSAssetsDownloadOperation)initWithAssetIdentifier:(id)identifier assetURLPath:(id)path;
 - (void)main;
-- (void)setAssetIdentifier:(id)a3;
-- (void)setDownloadedURL:(id)a3;
+- (void)setAssetIdentifier:(id)identifier;
+- (void)setDownloadedURL:(id)l;
 @end
 
 @implementation TPSAssetsDownloadOperation
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (void)setAssetIdentifier:(id)a3
+- (void)setAssetIdentifier:(id)identifier
 {
   v4 = sub_232E014D0();
   v6 = v5;
@@ -56,13 +56,13 @@
   return v11;
 }
 
-- (void)setDownloadedURL:(id)a3
+- (void)setDownloadedURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDD7300, &qword_232E06830);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     sub_232E00BB0();
     v9 = sub_232E00BE0();
@@ -77,12 +77,12 @@
 
   v11 = OBJC_IVAR___TPSAssetsDownloadOperation_downloadedURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_232DDEBE0(v8, self + v11);
   swift_endAccess();
 }
 
-- (TPSAssetsDownloadOperation)initWithAssetIdentifier:(id)a3 assetURLPath:(id)a4
+- (TPSAssetsDownloadOperation)initWithAssetIdentifier:(id)identifier assetURLPath:(id)path
 {
   v5 = sub_232E014D0();
   v7 = v6;
@@ -106,7 +106,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_232DDE3C8();
 }
 

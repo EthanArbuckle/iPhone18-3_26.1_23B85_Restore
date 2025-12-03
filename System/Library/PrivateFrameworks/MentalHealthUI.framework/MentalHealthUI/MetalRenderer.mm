@@ -1,7 +1,7 @@
 @interface MetalRenderer
 - (_TtC14MentalHealthUI13MetalRenderer)init;
 - (id)displayLinkWillRenderFrame;
-- (void)setDisplayLinkWillRenderFrame:(id)a3;
+- (void)setDisplayLinkWillRenderFrame:(id)frame;
 @end
 
 @implementation MetalRenderer
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (void)setDisplayLinkWillRenderFrame:(id)a3
+- (void)setDisplayLinkWillRenderFrame:(id)frame
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(frame);
   if (v4)
   {
     v5 = v4;
@@ -49,7 +49,7 @@
   v9 = *(self + OBJC_IVAR____TtC14MentalHealthUI13MetalRenderer_displayLinkWillRenderFrame + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_258A1040C(v8);
 }
 

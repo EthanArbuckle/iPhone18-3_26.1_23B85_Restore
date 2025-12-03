@@ -1,11 +1,11 @@
 @interface InteropLayerSystemConfigurationQuery
 - (_TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery)init;
-- (_TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery)initWithResourcePath:(id)a3 tuningBasePath:(id)a4 hardwareIdentifier:(id)a5 os:(int)a6;
+- (_TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery)initWithResourcePath:(id)path tuningBasePath:(id)basePath hardwareIdentifier:(id)identifier os:(int)os;
 @end
 
 @implementation InteropLayerSystemConfigurationQuery
 
-- (_TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery)initWithResourcePath:(id)a3 tuningBasePath:(id)a4 hardwareIdentifier:(id)a5 os:(int)a6
+- (_TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery)initWithResourcePath:(id)path tuningBasePath:(id)basePath hardwareIdentifier:(id)identifier os:(int)os
 {
   v8 = sub_223BF454C();
   v10 = v9;
@@ -21,7 +21,7 @@
   v17 = (self + OBJC_IVAR____TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery_hardwareIdentifier);
   *v17 = v14;
   v17[1] = v18;
-  *(&self->super.isa + OBJC_IVAR____TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery_os) = a6;
+  *(&self->super.isa + OBJC_IVAR____TtC20AudioDSPManagerSwift36InteropLayerSystemConfigurationQuery_os) = os;
   v20.receiver = self;
   v20.super_class = type metadata accessor for InteropLayerSystemConfigurationQuery();
   return [(InteropLayerSystemConfigurationQuery *)&v20 init];

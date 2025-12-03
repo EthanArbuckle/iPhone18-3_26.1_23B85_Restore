@@ -5,11 +5,11 @@
 - (BOOL)supportsLegacyWAC;
 - (BOOL)supportsTokenAuth;
 - (BOOL)supportsWAC2;
-- (HAPWACAccessory)initWithName:(id)a3 identifier:(id)a4 category:(id)a5 ssid:(id)a6 deviceId:(id)a7 flags:(unsigned int)a8;
-- (HAPWACAccessory)initWithWiFiDevice:(id)a3;
+- (HAPWACAccessory)initWithName:(id)name identifier:(id)identifier category:(id)category ssid:(id)ssid deviceId:(id)id flags:(unsigned int)flags;
+- (HAPWACAccessory)initWithWiFiDevice:(id)device;
 - (id)description;
-- (void)__setupSupportedFlags:(unsigned int)a3;
-- (void)updateWithHAPWACAccessory:(id)a3;
+- (void)__setupSupportedFlags:(unsigned int)flags;
+- (void)updateWithHAPWACAccessory:(id)accessory;
 @end
 
 @implementation HAPWACAccessory
@@ -95,67 +95,67 @@
   return v3;
 }
 
-- (void)updateWithHAPWACAccessory:(id)a3
+- (void)updateWithHAPWACAccessory:(id)accessory
 {
-  v30 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
-  v4 = [v30 cuWiFiDevice];
+  cuWiFiDevice = [accessoryCopy cuWiFiDevice];
   cuWiFiDevice = self->_cuWiFiDevice;
-  self->_cuWiFiDevice = v4;
+  self->_cuWiFiDevice = cuWiFiDevice;
 
-  v6 = [v30 name];
+  name = [accessoryCopy name];
   name = self->_name;
-  self->_name = v6;
+  self->_name = name;
 
-  v8 = [v30 model];
+  model = [accessoryCopy model];
   model = self->_model;
-  self->_model = v8;
+  self->_model = model;
 
-  v10 = [v30 manufacturer];
+  manufacturer = [accessoryCopy manufacturer];
   manufacturer = self->_manufacturer;
-  self->_manufacturer = v10;
+  self->_manufacturer = manufacturer;
 
-  v12 = [v30 wacCategory];
+  wacCategory = [accessoryCopy wacCategory];
   wacCategory = self->_wacCategory;
-  self->_wacCategory = v12;
+  self->_wacCategory = wacCategory;
 
-  v14 = [v30 rssi];
+  rssi = [accessoryCopy rssi];
   rssi = self->_rssi;
-  self->_rssi = v14;
+  self->_rssi = rssi;
 
-  v16 = [v30 bssid];
+  bssid = [accessoryCopy bssid];
   bssid = self->_bssid;
-  self->_bssid = v16;
+  self->_bssid = bssid;
 
-  v18 = [v30 ssid];
+  ssid = [accessoryCopy ssid];
   ssid = self->_ssid;
-  self->_ssid = v18;
+  self->_ssid = ssid;
 
-  v20 = [v30 identifier];
+  identifier = [accessoryCopy identifier];
   identifier = self->_identifier;
-  self->_identifier = v20;
+  self->_identifier = identifier;
 
-  v22 = [v30 setupHash];
+  setupHash = [accessoryCopy setupHash];
   setupHash = self->_setupHash;
-  self->_setupHash = v22;
+  self->_setupHash = setupHash;
 
-  v24 = [v30 deviceId];
+  deviceId = [accessoryCopy deviceId];
   deviceId = self->_deviceId;
-  self->_deviceId = v24;
+  self->_deviceId = deviceId;
 
-  v26 = [v30 rawScanResult];
+  rawScanResult = [accessoryCopy rawScanResult];
   rawScanResult = self->_rawScanResult;
-  self->_rawScanResult = v26;
+  self->_rawScanResult = rawScanResult;
 
   self->_supportsAirPlay = 0;
   self->_homeKitPaired = 0;
   self->_pairSetupWAC = 0;
   self->_supportedWiFiBands = 0;
   self->_authFeatures = 0;
-  v28 = [v30 cuWiFiDevice];
-  -[HAPWACAccessory __setupSupportedFlags:](self, "__setupSupportedFlags:", [v28 deviceIEFlags]);
+  cuWiFiDevice2 = [accessoryCopy cuWiFiDevice];
+  -[HAPWACAccessory __setupSupportedFlags:](self, "__setupSupportedFlags:", [cuWiFiDevice2 deviceIEFlags]);
 
-  [v30 discoveryTime];
+  [accessoryCopy discoveryTime];
   self->_discoveryTime = v29;
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -166,66 +166,66 @@
   v29 = HAPIsInternalBuild();
   if (v29)
   {
-    v3 = [(HAPWACAccessory *)self name];
+    name = [(HAPWACAccessory *)self name];
   }
 
   else
   {
-    v3 = @"<private>";
+    name = @"<private>";
   }
 
   v27 = HAPIsInternalBuild();
   if (v27)
   {
-    v4 = [(HAPWACAccessory *)self model];
+    model = [(HAPWACAccessory *)self model];
   }
 
   else
   {
-    v4 = @"<private>";
+    model = @"<private>";
   }
 
   v23 = HAPIsInternalBuild();
   if (v23)
   {
-    v5 = [(HAPWACAccessory *)self manufacturer];
+    manufacturer = [(HAPWACAccessory *)self manufacturer];
   }
 
   else
   {
-    v5 = @"<private>";
+    manufacturer = @"<private>";
   }
 
-  v6 = [(HAPWACAccessory *)self wacCategory];
+  wacCategory = [(HAPWACAccessory *)self wacCategory];
   v20 = HAPIsInternalBuild();
   if (v20)
   {
-    v30 = [(HAPWACAccessory *)self bssid];
+    bssid = [(HAPWACAccessory *)self bssid];
   }
 
   else
   {
-    v30 = @"<private>";
+    bssid = @"<private>";
   }
 
   v19 = HAPIsInternalBuild();
-  v28 = v3;
-  v26 = v4;
-  v21 = v6;
-  v22 = v5;
+  v28 = name;
+  v26 = model;
+  v21 = wacCategory;
+  v22 = manufacturer;
   if (v19)
   {
-    v7 = [(HAPWACAccessory *)self ssid];
+    ssid = [(HAPWACAccessory *)self ssid];
   }
 
   else
   {
-    v7 = @"<private>";
+    ssid = @"<private>";
   }
 
-  v18 = [(HAPWACAccessory *)self identifier];
-  v8 = [(HAPWACAccessory *)self deviceId];
-  v9 = [(HAPWACAccessory *)self setupHash];
+  identifier = [(HAPWACAccessory *)self identifier];
+  deviceId = [(HAPWACAccessory *)self deviceId];
+  setupHash = [(HAPWACAccessory *)self setupHash];
   if ([(HAPWACAccessory *)self supportsAirPlay])
   {
     v10 = @"Yes";
@@ -274,7 +274,7 @@
   v14 = HAPAuthFeaturesToString([(HAPWACAccessory *)self authFeatures]);
   v15 = HAPWACWiFiBandToString([(HAPWACAccessory *)self supportedWiFiBands]);
   [(HAPWACAccessory *)self discoveryTime];
-  v25 = [v24 stringWithFormat:@"\n Name: %@\n Model: %@\n Manufacturer: %@\n Category: %@\n BSSID: %@\n SSID: %@\n Identifier: %@\n DeviceId: %@\n setup hash: %@\n AirPlay: %@\n HomeKit Paired: %@\n Pair Setup WAC: %@\n HomeKit Version: %@\n Auth: %@\n Supported WiFi Band(s): %@\n DiscoveryTime: %f sec\n ", v28, v26, v22, v21, v30, v7, v18, v8, v9, v10, v11, v12, v13, v14, v15, v16];
+  v25 = [v24 stringWithFormat:@"\n Name: %@\n Model: %@\n Manufacturer: %@\n Category: %@\n BSSID: %@\n SSID: %@\n Identifier: %@\n DeviceId: %@\n setup hash: %@\n AirPlay: %@\n HomeKit Paired: %@\n Pair Setup WAC: %@\n HomeKit Version: %@\n Auth: %@\n Supported WiFi Band(s): %@\n DiscoveryTime: %f sec\n ", v28, v26, v22, v21, bssid, ssid, identifier, deviceId, setupHash, v10, v11, v12, v13, v14, v15, v16];
 
   if (v19)
   {
@@ -299,54 +299,54 @@
   return v25;
 }
 
-- (HAPWACAccessory)initWithName:(id)a3 identifier:(id)a4 category:(id)a5 ssid:(id)a6 deviceId:(id)a7 flags:(unsigned int)a8
+- (HAPWACAccessory)initWithName:(id)name identifier:(id)identifier category:(id)category ssid:(id)ssid deviceId:(id)id flags:(unsigned int)flags
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  categoryCopy = category;
+  ssidCopy = ssid;
+  idCopy = id;
   v23.receiver = self;
   v23.super_class = HAPWACAccessory;
   v18 = [(HAPWACAccessory *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_name, a3);
-    objc_storeStrong(&v19->_identifier, a4);
-    objc_storeStrong(&v19->_wacCategory, a5);
-    objc_storeStrong(&v19->_ssid, a6);
-    objc_storeStrong(&v19->_deviceId, a7);
-    [(HAPWACAccessory *)v19 __setupSupportedFlags:a8];
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v19->_wacCategory, category);
+    objc_storeStrong(&v19->_ssid, ssid);
+    objc_storeStrong(&v19->_deviceId, id);
+    [(HAPWACAccessory *)v19 __setupSupportedFlags:flags];
   }
 
   return v19;
 }
 
-- (void)__setupSupportedFlags:(unsigned int)a3
+- (void)__setupSupportedFlags:(unsigned int)flags
 {
-  if ((a3 & 0x1000) != 0)
+  if ((flags & 0x1000) != 0)
   {
     self->_supportsAirPlay = 1;
   }
 
-  if ((a3 & 0x20000) != 0)
+  if ((flags & 0x20000) != 0)
   {
     self->_supportedWiFiBands |= 1uLL;
   }
 
-  if ((a3 & 0x10000) != 0)
+  if ((flags & 0x10000) != 0)
   {
     self->_supportedWiFiBands |= 2uLL;
   }
 
-  if ((a3 & 0x4000) != 0)
+  if ((flags & 0x4000) != 0)
   {
     self->_version = 1;
-    if ((a3 & 0x2000) == 0)
+    if ((flags & 0x2000) == 0)
     {
 LABEL_9:
-      if ((a3 & 0x400000) == 0)
+      if ((flags & 0x400000) == 0)
       {
         goto LABEL_10;
       }
@@ -355,16 +355,16 @@ LABEL_9:
     }
   }
 
-  else if ((a3 & 0x2000) == 0)
+  else if ((flags & 0x2000) == 0)
   {
     goto LABEL_9;
   }
 
   self->_version = 2;
-  if ((a3 & 0x400000) == 0)
+  if ((flags & 0x400000) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x800) == 0)
+    if ((flags & 0x800) == 0)
     {
       goto LABEL_12;
     }
@@ -374,25 +374,25 @@ LABEL_10:
 
 LABEL_21:
   self->_homeKitPaired = 1;
-  if ((a3 & 0x800) != 0)
+  if ((flags & 0x800) != 0)
   {
 LABEL_11:
     self->_pairSetupWAC = 1;
   }
 
 LABEL_12:
-  if ((a3 & 0x20000400) != 0)
+  if ((flags & 0x20000400) != 0)
   {
     self->_authFeatures |= 1uLL;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     self->_authFeatures |= 4uLL;
-    if ((a3 & 0x200) == 0)
+    if ((flags & 0x200) == 0)
     {
 LABEL_16:
-      if ((a3 & 0x100) == 0)
+      if ((flags & 0x100) == 0)
       {
         goto LABEL_17;
       }
@@ -401,16 +401,16 @@ LABEL_16:
     }
   }
 
-  else if ((a3 & 0x200) == 0)
+  else if ((flags & 0x200) == 0)
   {
     goto LABEL_16;
   }
 
   self->_authFeatures |= 2uLL;
-  if ((a3 & 0x100) == 0)
+  if ((flags & 0x100) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x20) == 0)
+    if ((flags & 0x20) == 0)
     {
       return;
     }
@@ -422,39 +422,39 @@ LABEL_26:
 
 LABEL_25:
   self->_authFeatures |= 8uLL;
-  if ((a3 & 0x20) != 0)
+  if ((flags & 0x20) != 0)
   {
     goto LABEL_26;
   }
 }
 
-- (HAPWACAccessory)initWithWiFiDevice:(id)a3
+- (HAPWACAccessory)initWithWiFiDevice:(id)device
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v34.receiver = self;
   v34.super_class = HAPWACAccessory;
   v6 = [(HAPWACAccessory *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cuWiFiDevice, a3);
-    v8 = [v5 deviceIEName];
+    objc_storeStrong(&v6->_cuWiFiDevice, device);
+    deviceIEName = [deviceCopy deviceIEName];
     name = v7->_name;
-    v7->_name = v8;
+    v7->_name = deviceIEName;
 
-    v10 = [v5 deviceIEModel];
+    deviceIEModel = [deviceCopy deviceIEModel];
     model = v7->_model;
-    v7->_model = v10;
+    v7->_model = deviceIEModel;
 
-    v12 = [v5 deviceIEManufacturer];
+    deviceIEManufacturer = [deviceCopy deviceIEManufacturer];
     manufacturer = v7->_manufacturer;
-    v7->_manufacturer = v12;
+    v7->_manufacturer = deviceIEManufacturer;
 
-    v14 = [v5 deviceIECategory];
-    if (v14)
+    deviceIECategory = [deviceCopy deviceIECategory];
+    if (deviceIECategory)
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "deviceIECategory")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(deviceCopy, "deviceIECategory")}];
     }
 
     else
@@ -463,43 +463,43 @@ LABEL_25:
     }
 
     objc_storeStrong(&v7->_wacCategory, v15);
-    if (v14)
+    if (deviceIECategory)
     {
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "rssi")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(deviceCopy, "rssi")}];
     rssi = v7->_rssi;
     v7->_rssi = v16;
 
-    v18 = [v5 bssid];
+    bssid = [deviceCopy bssid];
     bssid = v7->_bssid;
-    v7->_bssid = v18;
+    v7->_bssid = bssid;
 
-    v20 = [v5 ssid];
+    ssid = [deviceCopy ssid];
     ssid = v7->_ssid;
-    v7->_ssid = v20;
+    v7->_ssid = ssid;
 
-    v22 = [v5 identifier];
+    identifier = [deviceCopy identifier];
     identifier = v7->_identifier;
-    v7->_identifier = v22;
+    v7->_identifier = identifier;
 
-    v24 = [v5 deviceIDSetupHash];
+    deviceIDSetupHash = [deviceCopy deviceIDSetupHash];
     setupHash = v7->_setupHash;
-    v7->_setupHash = v24;
+    v7->_setupHash = deviceIDSetupHash;
 
-    v26 = [v5 deviceIEDeviceID];
-    [v26 bytes];
-    v27 = [v5 deviceIEDeviceID];
-    [v27 length];
+    deviceIEDeviceID = [deviceCopy deviceIEDeviceID];
+    [deviceIEDeviceID bytes];
+    deviceIEDeviceID2 = [deviceCopy deviceIEDeviceID];
+    [deviceIEDeviceID2 length];
     HardwareAddressToCString();
 
     v28 = [MEMORY[0x277CCACA8] stringWithCString:v35 encoding:4];
     deviceId = v7->_deviceId;
     v7->_deviceId = v28;
 
-    v30 = [v5 rawScanResult];
+    rawScanResult = [deviceCopy rawScanResult];
     rawScanResult = v7->_rawScanResult;
-    v7->_rawScanResult = v30;
+    v7->_rawScanResult = rawScanResult;
 
     v7->_supportsAirPlay = 0;
     v7->_homeKitPaired = 0;
@@ -507,7 +507,7 @@ LABEL_25:
     v7->_requiresOwnershipToken = 0;
     v7->_supportedWiFiBands = 0;
     v7->_authFeatures = 0;
-    -[HAPWACAccessory __setupSupportedFlags:](v7, "__setupSupportedFlags:", [v5 deviceIEFlags]);
+    -[HAPWACAccessory __setupSupportedFlags:](v7, "__setupSupportedFlags:", [deviceCopy deviceIEFlags]);
   }
 
   v32 = *MEMORY[0x277D85DE8];

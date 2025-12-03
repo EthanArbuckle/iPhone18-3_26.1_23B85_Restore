@@ -1,25 +1,25 @@
 @interface CAFTestAccRequestWithReqAndResParamsControl
 + (void)load;
-- (BOOL)_didRequestWithValue:(id)a3 response:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (BOOL)_didRequestWithValue:(id)value response:(id)response;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestAccRequestWithReqAndResParamsControl
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestAccRequestWithReqAndResParamsControl;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -32,12 +32,12 @@
   [(CAFControl *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,16 +50,16 @@
   [(CAFControl *)&v6 unregisterObserver:v5];
 }
 
-- (BOOL)_didRequestWithValue:(id)a3 response:(id)a4
+- (BOOL)_didRequestWithValue:(id)value response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFTestAccRequestWithReqAndResParamsControl *)self handler];
+  valueCopy = value;
+  responseCopy = response;
+  handler = [(CAFTestAccRequestWithReqAndResParamsControl *)self handler];
 
-  if (v8)
+  if (handler)
   {
     objc_opt_class();
-    v9 = [v6 objectForKeyedSubscript:@"testInput5"];
+    v9 = [valueCopy objectForKeyedSubscript:@"testInput5"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -71,7 +71,7 @@
     }
 
     objc_opt_class();
-    v11 = [v6 objectForKeyedSubscript:@"testInput6"];
+    v11 = [valueCopy objectForKeyedSubscript:@"testInput6"];
     if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v12 = v11;
@@ -84,24 +84,24 @@
 
     if (v10 | v12)
     {
-      v13 = [(CAFTestAccRequestWithReqAndResParamsControl *)self handler];
-      v14 = [v10 unsignedCharValue];
+      handler2 = [(CAFTestAccRequestWithReqAndResParamsControl *)self handler];
+      unsignedCharValue = [v10 unsignedCharValue];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __77__CAFTestAccRequestWithReqAndResParamsControl__didRequestWithValue_response___block_invoke;
       v17[3] = &unk_27890F1A8;
-      v18 = v7;
-      (v13)[2](v13, v14, v12, v17);
+      v18 = responseCopy;
+      (handler2)[2](handler2, unsignedCharValue, v12, v17);
     }
 
-    else if (v7)
+    else if (responseCopy)
     {
       v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.caraccessoryframework.cardata" code:8 userInfo:0];
-      (*(v7 + 2))(v7, 0, v15);
+      (*(responseCopy + 2))(responseCopy, 0, v15);
     }
   }
 
-  return v8 != 0;
+  return handler != 0;
 }
 
 void __77__CAFTestAccRequestWithReqAndResParamsControl__didRequestWithValue_response___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)

@@ -1,26 +1,26 @@
 @interface CRLiOSCanvasViewControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_crlaxAccessibilityFocusIsInMiniFormatter;
 - (BOOL)_crlaxIsEditMenuAllowedToAppear;
 - (BOOL)accessibilityPerformEscape;
 - (CRLCanvasInteractiveCanvasControllerAccessibility)_crlaxInteractiveCanvasController;
 - (NSArray)crlaxEditMenuItems;
-- (SEL)crlaxSelectorForEditMenuItemName:(id)a3;
+- (SEL)crlaxSelectorForEditMenuItemName:(id)name;
 - (id)accessibilityCustomActions;
 - (id)crlaxBasicEditMenuItemNames;
 - (id)crlaxWindow;
 - (void)crlaxCancelEyeDropperMode;
 - (void)crlaxEnterQuickSelect;
-- (void)showEditMenuForSelectionPath:(id)a3;
+- (void)showEditMenuForSelectionPath:(id)path;
 @end
 
 @implementation CRLiOSCanvasViewControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -39,15 +39,15 @@
 {
   if ([(CRLiOSCanvasViewControllerAccessibility *)self _crlaxIsEditMenuAllowedToAppear])
   {
-    v3 = [(CRLiOSCanvasViewControllerAccessibility *)self _crlaxInteractiveCanvasController];
-    v4 = [v3 crlaxEditorController];
-    v5 = [v4 crlaxSelectionPath];
+    _crlaxInteractiveCanvasController = [(CRLiOSCanvasViewControllerAccessibility *)self _crlaxInteractiveCanvasController];
+    crlaxEditorController = [_crlaxInteractiveCanvasController crlaxEditorController];
+    crlaxSelectionPath = [crlaxEditorController crlaxSelectionPath];
 
-    if (v5)
+    if (crlaxSelectionPath)
     {
       v6 = +[NSMutableArray array];
-      v7 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxBasicEditMenuItemNames];
-      [v6 addObjectsFromArray:v7];
+      crlaxBasicEditMenuItemNames = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxBasicEditMenuItemNames];
+      [v6 addObjectsFromArray:crlaxBasicEditMenuItemNames];
 
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -56,7 +56,7 @@
       v11[4] = self;
       v8 = v6;
       v12 = v8;
-      v13 = v5;
+      v13 = crlaxSelectionPath;
       if (__CRLAccessibilityPerformSafeBlock(v11))
       {
         abort();
@@ -89,54 +89,54 @@
 
 - (id)crlaxWindow
 {
-  v2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 view];
-  v4 = [v3 window];
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  view = [crlaxTarget view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (void)showEditMenuForSelectionPath:(id)a3
+- (void)showEditMenuForSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[UIMenuController sharedMenuController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DC498;
   v7[3] = &unk_10183AE28;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = pathCopy;
+  selfCopy = self;
+  v6 = pathCopy;
   [v5 crlaxPerformBlockPreventingMakingVisible:v7];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  v4 = [v3 isCurrentlyInQuickSelectMode];
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  isCurrentlyInQuickSelectMode = [crlaxTarget isCurrentlyInQuickSelectMode];
 
-  if (!v4)
+  if (!isCurrentlyInQuickSelectMode)
   {
     return 0;
   }
 
-  v5 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  [v5 leaveQuickSelectModeIfNeeded];
+  crlaxTarget2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  [crlaxTarget2 leaveQuickSelectModeIfNeeded];
 
-  v6 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  LOBYTE(v5) = [v6 isCurrentlyInQuickSelectMode];
+  crlaxTarget3 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  LOBYTE(crlaxTarget2) = [crlaxTarget3 isCurrentlyInQuickSelectMode];
 
-  return v5 ^ 1;
+  return crlaxTarget2 ^ 1;
 }
 
 - (CRLCanvasInteractiveCanvasControllerAccessibility)_crlaxInteractiveCanvasController
 {
   v8 = 0;
-  v2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 interactiveCanvasController];
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  interactiveCanvasController = [crlaxTarget interactiveCanvasController];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, interactiveCanvasController, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -203,12 +203,12 @@
   return v27;
 }
 
-- (SEL)crlaxSelectorForEditMenuItemName:(id)a3
+- (SEL)crlaxSelectorForEditMenuItemName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Cut" value:0 table:0];
-  v6 = [v3 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -219,7 +219,7 @@
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Copy" value:0 table:0];
-    v10 = [v3 isEqualToString:v9];
+    v10 = [nameCopy isEqualToString:v9];
 
     if (v10)
     {
@@ -230,7 +230,7 @@
     {
       v11 = +[NSBundle mainBundle];
       v12 = [v11 localizedStringForKey:@"Paste" value:0 table:0];
-      v13 = [v3 isEqualToString:v12];
+      v13 = [nameCopy isEqualToString:v12];
 
       if (v13)
       {
@@ -241,7 +241,7 @@
       {
         v14 = +[NSBundle mainBundle];
         v15 = [v14 localizedStringForKey:@"Delete" value:0 table:0];
-        v16 = [v3 isEqualToString:v15];
+        v16 = [nameCopy isEqualToString:v15];
 
         if (v16)
         {
@@ -252,7 +252,7 @@
         {
           v17 = +[NSBundle mainBundle];
           v18 = [v17 localizedStringForKey:@"Duplicate" value:0 table:0];
-          v19 = [v3 isEqualToString:v18];
+          v19 = [nameCopy isEqualToString:v18];
 
           if (v19)
           {
@@ -263,7 +263,7 @@
           {
             v20 = +[NSBundle mainBundle];
             v21 = [v20 localizedStringForKey:@"Lock" value:0 table:0];
-            v22 = [v3 isEqualToString:v21];
+            v22 = [nameCopy isEqualToString:v21];
 
             if (v22)
             {
@@ -274,7 +274,7 @@
             {
               v23 = +[NSBundle mainBundle];
               v24 = [v23 localizedStringForKey:@"Unlock" value:0 table:0];
-              v25 = [v3 isEqualToString:v24];
+              v25 = [nameCopy isEqualToString:v24];
 
               if (v25)
               {
@@ -285,7 +285,7 @@
               {
                 v26 = +[NSBundle mainBundle];
                 v27 = [v26 localizedStringForKey:@"Back" value:0 table:0];
-                v28 = [v3 isEqualToString:v27];
+                v28 = [nameCopy isEqualToString:v27];
 
                 if (v28)
                 {
@@ -296,7 +296,7 @@
                 {
                   v29 = +[NSBundle mainBundle];
                   v30 = [v29 localizedStringForKey:@"Front" value:0 table:0];
-                  v31 = [v3 isEqualToString:v30];
+                  v31 = [nameCopy isEqualToString:v30];
 
                   if (v31)
                   {
@@ -307,7 +307,7 @@
                   {
                     v32 = +[NSBundle mainBundle];
                     v33 = [v32 localizedStringForKey:@"Select" value:0 table:0];
-                    v34 = [v3 isEqualToString:v33];
+                    v34 = [nameCopy isEqualToString:v33];
 
                     if (v34)
                     {
@@ -318,7 +318,7 @@
                     {
                       v35 = +[NSBundle mainBundle];
                       v36 = [v35 localizedStringForKey:@"Select All" value:0 table:0];
-                      v37 = [v3 isEqualToString:v36];
+                      v37 = [nameCopy isEqualToString:v36];
 
                       if (v37)
                       {
@@ -329,7 +329,7 @@
                       {
                         v38 = +[NSBundle mainBundle];
                         v39 = [v38 localizedStringForKey:@"Deselect All" value:0 table:0];
-                        v40 = [v3 isEqualToString:v39];
+                        v40 = [nameCopy isEqualToString:v39];
 
                         if (v40)
                         {
@@ -358,19 +358,19 @@
 - (id)accessibilityCustomActions
 {
   v3 = [[NSMutableArray alloc] initWithArray:&__NSArray0__struct];
-  v4 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  if ([v4 allowedToEnterQuickSelectMode])
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  if ([crlaxTarget allowedToEnterQuickSelectMode])
   {
-    v5 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-    if ([v5 isCurrentlyInQuickSelectMode])
+    crlaxTarget2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+    if ([crlaxTarget2 isCurrentlyInQuickSelectMode])
     {
     }
 
     else
     {
-      v6 = [(CRLiOSCanvasViewControllerAccessibility *)self _crlaxAccessibilityFocusIsInMiniFormatter];
+      _crlaxAccessibilityFocusIsInMiniFormatter = [(CRLiOSCanvasViewControllerAccessibility *)self _crlaxAccessibilityFocusIsInMiniFormatter];
 
-      if (v6)
+      if (_crlaxAccessibilityFocusIsInMiniFormatter)
       {
         goto LABEL_7;
       }
@@ -378,9 +378,9 @@
       v7 = [UIAccessibilityCustomAction alloc];
       v8 = +[NSBundle mainBundle];
       v9 = [v8 localizedStringForKey:@"Select Objects" value:0 table:0];
-      v4 = [v7 initWithName:v9 image:0 target:self selector:"crlaxEnterQuickSelect"];
+      crlaxTarget = [v7 initWithName:v9 image:0 target:self selector:"crlaxEnterQuickSelect"];
 
-      [v3 addObject:v4];
+      [v3 addObject:crlaxTarget];
     }
   }
 
@@ -391,19 +391,19 @@ LABEL_7:
 
 - (void)crlaxEnterQuickSelect
 {
-  v2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  [v2 enterQuickSelectMode];
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  [crlaxTarget enterQuickSelectMode];
 }
 
 - (BOOL)_crlaxIsEditMenuAllowedToAppear
 {
-  v2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 delegate];
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  delegate = [crlaxTarget delegate];
 
   NSSelectorFromString(@"allowEditMenuToAppear");
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 crlaxBoolValueForKey:@"allowEditMenuToAppear"];
+    v4 = [delegate crlaxBoolValueForKey:@"allowEditMenuToAppear"];
   }
 
   else
@@ -416,23 +416,23 @@ LABEL_7:
 
 - (BOOL)_crlaxAccessibilityFocusIsInMiniFormatter
 {
-  v3 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  v4 = [v3 miniFormatterPresenter];
-  v5 = [v4 isPresentingMiniFormatter];
+  crlaxTarget = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  miniFormatterPresenter = [crlaxTarget miniFormatterPresenter];
+  isPresentingMiniFormatter = [miniFormatterPresenter isPresentingMiniFormatter];
 
-  if (!v5)
+  if (!isPresentingMiniFormatter)
   {
     return 0;
   }
 
   v6 = +[CRLAccessibility currentlyFocusedElement];
   v17 = 0;
-  v7 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
-  v8 = [v7 interactiveCanvasController];
-  v9 = [v8 canvas];
+  crlaxTarget2 = [(CRLiOSCanvasViewControllerAccessibility *)self crlaxTarget];
+  interactiveCanvasController = [crlaxTarget2 interactiveCanvasController];
+  canvas = [interactiveCanvasController canvas];
 
   v10 = objc_opt_class();
-  v11 = __CRLAccessibilityCastAsSafeCategory(v10, v9, 1, &v17);
+  v11 = __CRLAccessibilityCastAsSafeCategory(v10, canvas, 1, &v17);
   if (v17 == 1)
   {
     abort();
@@ -440,8 +440,8 @@ LABEL_7:
 
   v12 = v11;
 
-  v13 = [v12 crlaxMiniFormatterElements];
-  v14 = [NSSet setWithArray:v13];
+  crlaxMiniFormatterElements = [v12 crlaxMiniFormatterElements];
+  v14 = [NSSet setWithArray:crlaxMiniFormatterElements];
 
   v15 = [v14 containsObject:v6];
   return v15;

@@ -1,26 +1,26 @@
 @interface FedStatsPluginTrialClient
-- (BOOL)fetchAssets:(id)a3 error:(id *)a4;
-- (FedStatsPluginTrialClient)initWithTask:(id)a3 error:(id *)a4;
+- (BOOL)fetchAssets:(id)assets error:(id *)error;
+- (FedStatsPluginTrialClient)initWithTask:(id)task error:(id *)error;
 - (NSDictionary)recipeDictionary;
-- (id)assetURLForRecipe:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)deploymentIdentifierForRecipe:(id)a3;
-- (id)downloadFactor:(id)a3 error:(id *)a4;
-- (id)experimentIdentifierForRecipe:(id)a3;
-- (id)namespaceIdentifierForRecipe:(id)a3;
-- (id)recipeDictionaryForRecipe:(id)a3 error:(id *)a4;
+- (id)assetURLForRecipe:(id)recipe forKey:(id)key error:(id *)error;
+- (id)deploymentIdentifierForRecipe:(id)recipe;
+- (id)downloadFactor:(id)factor error:(id *)error;
+- (id)experimentIdentifierForRecipe:(id)recipe;
+- (id)namespaceIdentifierForRecipe:(id)recipe;
+- (id)recipeDictionaryForRecipe:(id)recipe error:(id *)error;
 - (id)recipeIdentifiers;
-- (id)treatmentIdentifierForRecipe:(id)a3;
-- (id)updateMetadataWithDPParameters:(id)a3;
-- (void)loadRecipeWithError:(id *)a3;
+- (id)treatmentIdentifierForRecipe:(id)recipe;
+- (id)updateMetadataWithDPParameters:(id)parameters;
+- (void)loadRecipeWithError:(id *)error;
 - (void)removeAssets;
-- (void)removeFactor:(id)a3;
+- (void)removeFactor:(id)factor;
 @end
 
 @implementation FedStatsPluginTrialClient
 
-- (FedStatsPluginTrialClient)initWithTask:(id)a3 error:(id *)a4
+- (FedStatsPluginTrialClient)initWithTask:(id)task error:(id *)error
 {
-  v7 = a3;
+  taskCopy = task;
   v50.receiver = self;
   v50.super_class = FedStatsPluginTrialClient;
   v8 = [(FedStatsPluginTrialClient *)&v50 init];
@@ -29,7 +29,7 @@
     goto LABEL_24;
   }
 
-  v46 = a4;
+  errorCopy = error;
   v9 = +[NSMutableDictionary dictionary];
   assetURLs = v8->_assetURLs;
   v8->_assetURLs = v9;
@@ -41,11 +41,11 @@
   if (![v11 count])
   {
 LABEL_13:
-    if (v46)
+    if (errorCopy)
     {
       [FedStatsPluginError errorWithCode:300 description:@"Could not find any matching namespace on client"];
       v23 = 0;
-      *v46 = v4 = 0;
+      *errorCopy = v4 = 0;
     }
 
     else
@@ -70,9 +70,9 @@ LABEL_13:
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Checking for namespace: %@", buf, 0xCu);
     }
 
-    v14 = [v7 triClient];
+    triClient = [taskCopy triClient];
     v15 = [v11 objectAtIndexedSubscript:v4];
-    v16 = [v14 levelForFactor:@"recipe" withNamespaceName:v15];
+    v16 = [triClient levelForFactor:@"recipe" withNamespaceName:v15];
 
     v17 = +[FedStatsPluginLog logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -84,16 +84,16 @@ LABEL_13:
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Got level: %@ for factor %@", buf, 0x16u);
     }
 
-    v18 = [v16 fileValue];
-    if (([v18 hasPath] & 1) == 0)
+    fileValue = [v16 fileValue];
+    if (([fileValue hasPath] & 1) == 0)
     {
 
       goto LABEL_12;
     }
 
-    v19 = [v16 fileValue];
-    v20 = [v19 path];
-    v21 = [v20 rangeOfString:@".recipe"];
+    fileValue2 = [v16 fileValue];
+    path = [fileValue2 path];
+    v21 = [path rangeOfString:@".recipe"];
 
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -109,36 +109,36 @@ LABEL_12:
     }
   }
 
-  v24 = [v16 fileValue];
-  v25 = [v24 path];
-  v26 = [NSURL fileURLWithPath:v25];
+  fileValue3 = [v16 fileValue];
+  path2 = [fileValue3 path];
+  v26 = [NSURL fileURLWithPath:path2];
   recipeURL = v8->_recipeURL;
   v8->_recipeURL = v26;
 
-  [(FedStatsPluginTrialClient *)v8 loadRecipeWithError:v46];
+  [(FedStatsPluginTrialClient *)v8 loadRecipeWithError:errorCopy];
   if (v8->_recipeDictionary)
   {
     v28 = [v11 objectAtIndexedSubscript:v4];
     namespaceIdentifier = v8->_namespaceIdentifier;
     v8->_namespaceIdentifier = v28;
 
-    v30 = [v7 triClient];
-    [v30 refresh];
+    triClient2 = [taskCopy triClient];
+    [triClient2 refresh];
     v31 = [v11 objectAtIndexedSubscript:v4];
-    v32 = [v30 experimentIdentifiersWithNamespaceName:v31];
+    v32 = [triClient2 experimentIdentifiersWithNamespaceName:v31];
 
     if (v32)
     {
-      v33 = [v32 experimentId];
+      experimentId = [v32 experimentId];
       experimentIdentifier = v8->_experimentIdentifier;
-      v8->_experimentIdentifier = v33;
+      v8->_experimentIdentifier = experimentId;
 
       v35 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v32 deploymentId]);
-      v36 = [v35 stringValue];
+      stringValue = [v35 stringValue];
       deploymentIdentifier = v8->_deploymentIdentifier;
-      v8->_deploymentIdentifier = v36;
+      v8->_deploymentIdentifier = stringValue;
 
-      v38 = [v32 treatmentId];
+      treatmentId = [v32 treatmentId];
     }
 
     else
@@ -149,15 +149,15 @@ LABEL_12:
       v40 = v8->_deploymentIdentifier;
       v8->_deploymentIdentifier = 0;
 
-      v38 = 0;
+      treatmentId = 0;
     }
 
     treatmentIdentifier = v8->_treatmentIdentifier;
-    v8->_treatmentIdentifier = v38;
+    v8->_treatmentIdentifier = treatmentId;
 
-    v42 = [v7 triClient];
+    triClient3 = [taskCopy triClient];
     trialClient = v8->_trialClient;
-    v8->_trialClient = v42;
+    v8->_trialClient = triClient3;
 
     v4 = v8;
   }
@@ -191,13 +191,13 @@ LABEL_24:
   return recipeDictionary;
 }
 
-- (void)loadRecipeWithError:(id *)a3
+- (void)loadRecipeWithError:(id *)error
 {
   p_recipeURL = &self->_recipeURL;
-  v6 = [NSData dataWithContentsOfURL:self->_recipeURL options:1 error:a3];
+  v6 = [NSData dataWithContentsOfURL:self->_recipeURL options:1 error:error];
   if (v6)
   {
-    v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:a3];
+    v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:error];
     recipeDictionary = self->_recipeDictionary;
     p_recipeDictionary = &self->_recipeDictionary;
     *p_recipeDictionary = v7;
@@ -221,9 +221,9 @@ LABEL_24:
       v13 = *p_recipeDictionary;
       *p_recipeDictionary = 0;
 
-      if (a3)
+      if (error)
       {
-        *a3 = [FedStatsPluginError errorWithCode:300 description:@"Recipe is not dictionary format"];
+        *error = [FedStatsPluginError errorWithCode:300 description:@"Recipe is not dictionary format"];
       }
     }
   }
@@ -238,13 +238,13 @@ LABEL_24:
   }
 }
 
-- (id)updateMetadataWithDPParameters:(id)a3
+- (id)updateMetadataWithDPParameters:(id)parameters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [parameters mutableCopy];
   [v4 setObject:&stru_100008378 forKeyedSubscript:kDPMetadataVersionHash];
-  v5 = [(FedStatsPluginTrialClient *)self recipeDictionary];
+  recipeDictionary = [(FedStatsPluginTrialClient *)self recipeDictionary];
   v6 = kDPMetadataDediscoTaskConfig;
-  v7 = [v5 objectForKeyedSubscript:kDPMetadataDediscoTaskConfig];
+  v7 = [recipeDictionary objectForKeyedSubscript:kDPMetadataDediscoTaskConfig];
 
   if (v7)
   {
@@ -270,12 +270,12 @@ LABEL_24:
   return v4;
 }
 
-- (id)downloadFactor:(id)a3 error:(id *)a4
+- (id)downloadFactor:(id)factor error:(id *)error
 {
-  v5 = a3;
+  factorCopy = factor;
   trialClient = self->_trialClient;
-  v7 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
-  v8 = [(TRIClient *)trialClient factorLevelsWithNamespaceName:v7];
+  namespaceIdentifier = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+  v8 = [(TRIClient *)trialClient factorLevelsWithNamespaceName:namespaceIdentifier];
 
   v61 = 0u;
   v59 = 0u;
@@ -297,32 +297,32 @@ LABEL_24:
         }
 
         v14 = *(*(&v58 + 1) + 8 * i);
-        v15 = [v14 factor];
-        v16 = [v15 name];
-        v17 = [v16 isEqualToString:v5];
+        factor = [v14 factor];
+        name = [factor name];
+        v17 = [name isEqualToString:factorCopy];
 
         if (v17)
         {
-          v21 = [v14 level];
-          v22 = [v21 fileValue];
-          v23 = [v22 hasPath];
+          level = [v14 level];
+          fileValue = [level fileValue];
+          hasPath = [fileValue hasPath];
 
-          if (v23)
+          if (hasPath)
           {
             v24 = +[FedStatsPluginLog logger];
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
-              v25 = [v14 level];
-              v26 = [v25 fileValue];
-              v27 = [v26 path];
+              level2 = [v14 level];
+              fileValue2 = [level2 fileValue];
+              path = [fileValue2 path];
               *buf = 138412290;
-              v64 = v27;
+              v64 = path;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%@ file exists.", buf, 0xCu);
             }
 
-            v28 = [v14 level];
-            v29 = [v28 fileValue];
-            v20 = [v29 path];
+            level3 = [v14 level];
+            fileValue3 = [level3 fileValue];
+            path2 = [fileValue3 path];
 
             v19 = v9;
           }
@@ -334,25 +334,25 @@ LABEL_24:
             v31 = +[FedStatsPluginLog logger];
             if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
             {
-              v32 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+              namespaceIdentifier2 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
               *buf = 138412546;
-              v64 = v5;
+              v64 = factorCopy;
               v65 = 2112;
-              v66 = v32;
+              v66 = namespaceIdentifier2;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Downloading factor %@ for namespace %@", buf, 0x16u);
             }
 
             v33 = [[TRIDownloadOptions alloc] initWithAllowsCellular:0 discretionaryBehavior:0];
             v34 = self->_trialClient;
-            v62 = v5;
+            v62 = factorCopy;
             v35 = [NSArray arrayWithObjects:&v62 count:1];
-            v36 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+            namespaceIdentifier3 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
             v37 = dispatch_get_global_queue(0, 0);
             v56[0] = _NSConcreteStackBlock;
             v56[1] = 3221225472;
             v56[2] = sub_100001C60;
             v56[3] = &unk_100008228;
-            v57 = v5;
+            v57 = factorCopy;
             v53[0] = _NSConcreteStackBlock;
             v53[1] = 3221225472;
             v53[2] = sub_100001CC4;
@@ -362,52 +362,52 @@ LABEL_24:
             v19 = v30;
             v55 = v19;
             v51 = v33;
-            [(TRIClient *)v34 downloadLevelsForFactors:v35 withNamespace:v36 queue:v37 options:v33 progress:v56 completion:v53];
+            [(TRIClient *)v34 downloadLevelsForFactors:v35 withNamespace:namespaceIdentifier3 queue:v37 options:v33 progress:v56 completion:v53];
 
             v39 = dispatch_time(0, 600000000000);
             dispatch_semaphore_wait(v19, v39);
-            v40 = [(FedStatsPluginTrialClient *)self trialClient];
-            [v40 refresh];
+            trialClient = [(FedStatsPluginTrialClient *)self trialClient];
+            [trialClient refresh];
 
-            v41 = [(FedStatsPluginTrialClient *)self trialClient];
-            v42 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
-            v43 = [v41 levelForFactor:v38 withNamespaceName:v42];
+            trialClient2 = [(FedStatsPluginTrialClient *)self trialClient];
+            namespaceIdentifier4 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+            v43 = [trialClient2 levelForFactor:v38 withNamespaceName:namespaceIdentifier4];
 
-            v44 = [v43 fileValue];
-            LOBYTE(v42) = [v44 hasPath];
+            fileValue4 = [v43 fileValue];
+            LOBYTE(namespaceIdentifier4) = [fileValue4 hasPath];
 
-            if (v42)
+            if (namespaceIdentifier4)
             {
               v45 = +[FedStatsPluginLog logger];
               if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
               {
-                v46 = [v43 fileValue];
-                v47 = [v46 path];
+                fileValue5 = [v43 fileValue];
+                path3 = [fileValue5 path];
                 *buf = 138412546;
                 v64 = v38;
                 v65 = 2112;
-                v66 = v47;
+                v66 = path3;
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "Downloaded file for %@: %@", buf, 0x16u);
               }
 
-              v48 = [v43 fileValue];
-              v20 = [v48 path];
+              fileValue6 = [v43 fileValue];
+              path2 = [fileValue6 path];
             }
 
             else
             {
-              v49 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
-              v48 = [NSString stringWithFormat:@"Factor %@ of namespace %@ does not have a file downloaded", v38, v49];
+              namespaceIdentifier5 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+              fileValue6 = [NSString stringWithFormat:@"Factor %@ of namespace %@ does not have a file downloaded", v38, namespaceIdentifier5];
 
-              if (a4)
+              if (error)
               {
-                [FedStatsPluginError errorWithCode:300 description:v48];
-                *a4 = v20 = 0;
+                [FedStatsPluginError errorWithCode:300 description:fileValue6];
+                *error = path2 = 0;
               }
 
               else
               {
-                v20 = 0;
+                path2 = 0;
               }
             }
           }
@@ -426,69 +426,69 @@ LABEL_24:
     }
   }
 
-  v18 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
-  v19 = [NSString stringWithFormat:@"Could not find any matching factor %@ for namespace %@", v5, v18];
+  namespaceIdentifier6 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+  v19 = [NSString stringWithFormat:@"Could not find any matching factor %@ for namespace %@", factorCopy, namespaceIdentifier6];
 
-  if (a4)
+  if (error)
   {
     [FedStatsPluginError errorWithCode:300 description:v19];
-    *a4 = v20 = 0;
+    *error = path2 = 0;
   }
 
   else
   {
-    v20 = 0;
+    path2 = 0;
   }
 
 LABEL_26:
 
-  return v20;
+  return path2;
 }
 
-- (void)removeFactor:(id)a3
+- (void)removeFactor:(id)factor
 {
-  v4 = a3;
+  factorCopy = factor;
   v5 = +[FedStatsPluginLog logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000031E4(v4, self);
+    sub_1000031E4(factorCopy, self);
   }
 
   trialClient = self->_trialClient;
-  v14 = v4;
+  v14 = factorCopy;
   v7 = [NSArray arrayWithObjects:&v14 count:1];
-  v8 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+  namespaceIdentifier = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
   v9 = dispatch_get_global_queue(0, 0);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100001EAC;
   v11[3] = &unk_100008250;
-  v12 = v4;
-  v13 = self;
-  v10 = v4;
-  [(TRIClient *)trialClient removeLevelsForFactors:v7 withNamespace:v8 queue:v9 completion:v11];
+  v12 = factorCopy;
+  selfCopy = self;
+  v10 = factorCopy;
+  [(TRIClient *)trialClient removeLevelsForFactors:v7 withNamespace:namespaceIdentifier queue:v9 completion:v11];
 }
 
 - (id)recipeIdentifiers
 {
-  v2 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
-  v5 = v2;
+  treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+  v5 = treatmentIdentifier;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
 }
 
-- (id)assetURLForRecipe:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)assetURLForRecipe:(id)recipe forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
-  v11 = [v9 isEqualToString:v10];
+  keyCopy = key;
+  recipeCopy = recipe;
+  treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+  v11 = [recipeCopy isEqualToString:treatmentIdentifier];
 
   if (v11)
   {
-    v12 = [(FedStatsPluginTrialClient *)self assetURLs];
-    v13 = [v12 objectForKey:v8];
+    assetURLs = [(FedStatsPluginTrialClient *)self assetURLs];
+    v13 = [assetURLs objectForKey:keyCopy];
 
     if (v13)
     {
@@ -497,15 +497,15 @@ LABEL_26:
 
     else
     {
-      v15 = [(FedStatsPluginTrialClient *)self downloadFactor:v8 error:a5];
+      v15 = [(FedStatsPluginTrialClient *)self downloadFactor:keyCopy error:error];
       if (v15)
       {
-        v16 = [(FedStatsPluginTrialClient *)self assetURLs];
+        assetURLs2 = [(FedStatsPluginTrialClient *)self assetURLs];
         v17 = [NSURL fileURLWithPath:v15];
-        [v16 setObject:v17 forKey:v8];
+        [assetURLs2 setObject:v17 forKey:keyCopy];
 
-        v18 = [(FedStatsPluginTrialClient *)self assetURLs];
-        v14 = [v18 objectForKey:v8];
+        assetURLs3 = [(FedStatsPluginTrialClient *)self assetURLs];
+        v14 = [assetURLs3 objectForKey:keyCopy];
       }
 
       else
@@ -515,10 +515,10 @@ LABEL_26:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [FedStatsPluginError errorWithCode:300 description:@"Recipe identifier doesn't match the Trial client"];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -529,102 +529,102 @@ LABEL_26:
   return v14;
 }
 
-- (id)recipeDictionaryForRecipe:(id)a3 error:(id *)a4
+- (id)recipeDictionaryForRecipe:(id)recipe error:(id *)error
 {
-  v6 = [(FedStatsPluginTrialClient *)self recipeDictionary];
+  recipeDictionary = [(FedStatsPluginTrialClient *)self recipeDictionary];
 
-  if (!v6)
+  if (!recipeDictionary)
   {
-    [(FedStatsPluginTrialClient *)self loadRecipeWithError:a4];
+    [(FedStatsPluginTrialClient *)self loadRecipeWithError:error];
   }
 
   return [(FedStatsPluginTrialClient *)self recipeDictionary];
 }
 
-- (id)treatmentIdentifierForRecipe:(id)a3
+- (id)treatmentIdentifierForRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  recipeCopy = recipe;
+  treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+  v6 = [recipeCopy isEqualToString:treatmentIdentifier];
 
   if (v6)
   {
-    v7 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+    treatmentIdentifier2 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    treatmentIdentifier2 = 0;
   }
 
-  return v7;
+  return treatmentIdentifier2;
 }
 
-- (id)experimentIdentifierForRecipe:(id)a3
+- (id)experimentIdentifierForRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  recipeCopy = recipe;
+  treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+  v6 = [recipeCopy isEqualToString:treatmentIdentifier];
 
   if (v6)
   {
-    v7 = [(FedStatsPluginTrialClient *)self experimentIdentifier];
+    experimentIdentifier = [(FedStatsPluginTrialClient *)self experimentIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    experimentIdentifier = 0;
   }
 
-  return v7;
+  return experimentIdentifier;
 }
 
-- (id)deploymentIdentifierForRecipe:(id)a3
+- (id)deploymentIdentifierForRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  recipeCopy = recipe;
+  treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+  v6 = [recipeCopy isEqualToString:treatmentIdentifier];
 
   if (v6)
   {
-    v7 = [(FedStatsPluginTrialClient *)self deploymentIdentifier];
+    deploymentIdentifier = [(FedStatsPluginTrialClient *)self deploymentIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    deploymentIdentifier = 0;
   }
 
-  return v7;
+  return deploymentIdentifier;
 }
 
-- (id)namespaceIdentifierForRecipe:(id)a3
+- (id)namespaceIdentifierForRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  recipeCopy = recipe;
+  treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+  v6 = [recipeCopy isEqualToString:treatmentIdentifier];
 
   if (v6)
   {
-    v7 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+    namespaceIdentifier = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    namespaceIdentifier = 0;
   }
 
-  return v7;
+  return namespaceIdentifier;
 }
 
-- (BOOL)fetchAssets:(id)a3 error:(id *)a4
+- (BOOL)fetchAssets:(id)assets error:(id *)error
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  assetsCopy = assets;
+  v7 = [assetsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -635,21 +635,21 @@ LABEL_26:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
+        treatmentIdentifier = [(FedStatsPluginTrialClient *)self treatmentIdentifier];
         v18 = 0;
-        v13 = [(FedStatsPluginTrialClient *)self assetURLForRecipe:v12 forKey:v11 error:&v18];
+        v13 = [(FedStatsPluginTrialClient *)self assetURLForRecipe:treatmentIdentifier forKey:v11 error:&v18];
         v14 = v18;
 
         if (!v13)
         {
-          if (a4)
+          if (error)
           {
             v16 = [NSString stringWithFormat:@"Cannot get path for asset '%@'", v11];
-            *a4 = [FedStatsPluginError errorWithCode:300 underlyingError:v14 description:v16];
+            *error = [FedStatsPluginError errorWithCode:300 underlyingError:v14 description:v16];
           }
 
           v15 = 0;
@@ -657,7 +657,7 @@ LABEL_26:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [assetsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -675,17 +675,17 @@ LABEL_13:
 
 - (void)removeAssets
 {
-  v3 = [(FedStatsPluginTrialClient *)self assetURLs];
-  v4 = [v3 allKeys];
+  assetURLs = [(FedStatsPluginTrialClient *)self assetURLs];
+  allKeys = [assetURLs allKeys];
 
-  v5 = [v4 count];
+  v5 = [allKeys count];
   v6 = +[FedStatsPluginLog logger];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   if (v5)
   {
     if (v7)
     {
-      sub_1000033A4(v4, self, v6);
+      sub_1000033A4(allKeys, self, v6);
     }
 
     v17[0] = 0;
@@ -699,7 +699,7 @@ LABEL_13:
     v15 = 0x2020000000;
     v16 = 0;
     trialClient = self->_trialClient;
-    v9 = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
+    namespaceIdentifier = [(FedStatsPluginTrialClient *)self namespaceIdentifier];
     v10 = dispatch_get_global_queue(0, 0);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -707,7 +707,7 @@ LABEL_13:
     v12[3] = &unk_100008278;
     v12[4] = &v13;
     v12[5] = v17;
-    [(TRIClient *)trialClient removeLevelsForFactors:v4 withNamespace:v9 queue:v10 completion:v12];
+    [(TRIClient *)trialClient removeLevelsForFactors:allKeys withNamespace:namespaceIdentifier queue:v10 completion:v12];
 
     if ((v14[3] & 1) == 0)
     {

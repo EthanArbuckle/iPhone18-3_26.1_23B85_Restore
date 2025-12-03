@@ -8,7 +8,7 @@
 
 - (uint64_t)databaseValue_type
 {
-  v2 = *[a1 objCType] - 66;
+  v2 = *[self objCType] - 66;
   if (v2 > 0x31)
   {
     goto LABEL_6;
@@ -28,7 +28,7 @@ LABEL_6:
   v4 = __biome_log_for_category();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(NSNumber(CCDatabaseValue) *)a1 databaseValue_type];
+    [(NSNumber(CCDatabaseValue) *)self databaseValue_type];
   }
 
   return 0;
@@ -36,19 +36,19 @@ LABEL_6:
 
 - (id)databaseValue_toData
 {
-  v1 = [a1 databaseValue_toString];
-  v2 = [v1 databaseValue_toData];
+  databaseValue_toString = [self databaseValue_toString];
+  databaseValue_toData = [databaseValue_toString databaseValue_toData];
 
-  return v2;
+  return databaseValue_toData;
 }
 
 - (void)databaseValue_type
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
-  v7 = [a1 objCType];
+  objCType = [self objCType];
   _os_log_error_impl(&dword_1B6DB2000, a2, OS_LOG_TYPE_ERROR, "%@ (objCType = %s)", &v4, 0x16u);
   v3 = *MEMORY[0x1E69E9840];
 }

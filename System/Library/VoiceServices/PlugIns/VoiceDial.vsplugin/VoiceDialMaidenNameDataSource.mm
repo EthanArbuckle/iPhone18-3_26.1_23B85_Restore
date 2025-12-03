@@ -1,8 +1,8 @@
 @interface VoiceDialMaidenNameDataSource
-- (BOOL)getName:(id *)a3 phoneticName:(id *)a4 atIndex:(unint64_t)a5 forPerson:(void *)a6;
-- (int)matchingNameType:(id)a3 fromTypes:(unint64_t)a4 forPerson:(void *)a5;
-- (int)typeOfNameAtIndex:(unint64_t)a3;
-- (unint64_t)countOfNamesOfType:(int)a3;
+- (BOOL)getName:(id *)name phoneticName:(id *)phoneticName atIndex:(unint64_t)index forPerson:(void *)person;
+- (int)matchingNameType:(id)type fromTypes:(unint64_t)types forPerson:(void *)person;
+- (int)typeOfNameAtIndex:(unint64_t)index;
+- (unint64_t)countOfNamesOfType:(int)type;
 - (unint64_t)personNameCount;
 @end
 
@@ -15,29 +15,29 @@
   return [(VoiceDialNameDataSource *)&v3 personNameCount]+ 2;
 }
 
-- (BOOL)getName:(id *)a3 phoneticName:(id *)a4 atIndex:(unint64_t)a5 forPerson:(void *)a6
+- (BOOL)getName:(id *)name phoneticName:(id *)phoneticName atIndex:(unint64_t)index forPerson:(void *)person
 {
   v25.receiver = self;
   v25.super_class = VoiceDialMaidenNameDataSource;
-  v11 = [(VoiceDialNameDataSource *)&v25 personNameCount];
-  v12 = a5 - v11;
-  if (a5 < v11)
+  personNameCount = [(VoiceDialNameDataSource *)&v25 personNameCount];
+  v12 = index - personNameCount;
+  if (index < personNameCount)
   {
     v24.receiver = self;
     v24.super_class = VoiceDialMaidenNameDataSource;
-    return [(VoiceDialNameDataSource *)&v24 getName:a3 phoneticName:a4 atIndex:a5 forPerson:a6];
+    return [(VoiceDialNameDataSource *)&v24 getName:name phoneticName:phoneticName atIndex:index forPerson:person];
   }
 
-  if (!a3)
+  if (!name)
   {
-    if (!a4)
+    if (!phoneticName)
     {
       return 0;
     }
 
 LABEL_8:
     v14 = 0;
-    *a4 = 0;
+    *phoneticName = 0;
     if (!v12)
     {
       goto LABEL_6;
@@ -46,8 +46,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  *a3 = 0;
-  if (a4)
+  *name = 0;
+  if (phoneticName)
   {
     goto LABEL_8;
   }
@@ -68,14 +68,14 @@ LABEL_9:
 
   v15 = 9;
 LABEL_11:
-  if (!VoiceDialPersonIsCompany(a6))
+  if (!VoiceDialPersonIsCompany(person))
   {
-    v16 = ABRecordCopyValue(a6, *MEMORY[0x29EDBE1E8]);
+    v16 = ABRecordCopyValue(person, *MEMORY[0x29EDBE1E8]);
     if (v16)
     {
       v17 = v16;
       v18 = *MEMORY[0x29EDBE210];
-      v19 = ABRecordCopyValue(a6, *MEMORY[0x29EDBE210]);
+      v19 = ABRecordCopyValue(person, *MEMORY[0x29EDBE210]);
       if (v19)
       {
         v20 = v19;
@@ -83,14 +83,14 @@ LABEL_11:
         if (MaidenNameFromLastName)
         {
           v22 = MaidenNameFromLastName;
-          if (a3)
+          if (name)
           {
-            *a3 = VoiceDialPersonCopyCompositeNameWithSubstitution(a6, MaidenNameFromLastName, v18, v15);
+            *name = VoiceDialPersonCopyCompositeNameWithSubstitution(person, MaidenNameFromLastName, v18, v15);
           }
 
           if ((v14 & 1) == 0)
           {
-            *a4 = VoiceDialPersonCopyCompositeNameWithSubstitution(a6, v22, v18, v15 | 6u);
+            *phoneticName = VoiceDialPersonCopyCompositeNameWithSubstitution(person, v22, v18, v15 | 6u);
           }
 
           CFRelease(v22);
@@ -104,18 +104,18 @@ LABEL_11:
   }
 
 LABEL_22:
-  if (!a3)
+  if (!name)
   {
     if ((v14 & 1) == 0)
     {
-      return *a4 != 0;
+      return *phoneticName != 0;
     }
 
     return 0;
   }
 
-  result = *a3 != 0;
-  if (*a3)
+  result = *name != 0;
+  if (*name)
   {
     v23 = 1;
   }
@@ -127,20 +127,20 @@ LABEL_22:
 
   if ((v23 & 1) == 0)
   {
-    return *a4 != 0;
+    return *phoneticName != 0;
   }
 
   return result;
 }
 
-- (int)typeOfNameAtIndex:(unint64_t)a3
+- (int)typeOfNameAtIndex:(unint64_t)index
 {
   v8.receiver = self;
   v8.super_class = VoiceDialMaidenNameDataSource;
-  v5 = [(VoiceDialNameDataSource *)&v8 personNameCount];
-  if (a3 >= v5)
+  personNameCount = [(VoiceDialNameDataSource *)&v8 personNameCount];
+  if (index >= personNameCount)
   {
-    if (a3 - v5 >= 2)
+    if (index - personNameCount >= 2)
     {
       return -1;
     }
@@ -155,16 +155,16 @@ LABEL_22:
   {
     v7.receiver = self;
     v7.super_class = VoiceDialMaidenNameDataSource;
-    return [(VoiceDialNameDataSource *)&v7 typeOfNameAtIndex:a3];
+    return [(VoiceDialNameDataSource *)&v7 typeOfNameAtIndex:index];
   }
 }
 
-- (unint64_t)countOfNamesOfType:(int)a3
+- (unint64_t)countOfNamesOfType:(int)type
 {
   v5.receiver = self;
   v5.super_class = VoiceDialMaidenNameDataSource;
   result = [(VoiceDialNameDataSource *)&v5 countOfNamesOfType:?];
-  if (a3 == 1)
+  if (type == 1)
   {
     ++result;
   }
@@ -172,22 +172,22 @@ LABEL_22:
   return result;
 }
 
-- (int)matchingNameType:(id)a3 fromTypes:(unint64_t)a4 forPerson:(void *)a5
+- (int)matchingNameType:(id)type fromTypes:(unint64_t)types forPerson:(void *)person
 {
-  v8 = a3;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = VoiceDialMaidenNameDataSource;
-  v9 = [(VoiceDialNameDataSource *)&v15 matchingNameType:v8 fromTypes:a4 forPerson:a5];
+  v9 = [(VoiceDialNameDataSource *)&v15 matchingNameType:typeCopy fromTypes:types forPerson:person];
   if (v9 == -1)
   {
-    if ((a4 & 2) != 0 && (v10 = ABRecordCopyValue(a5, *MEMORY[0x29EDBE210])) != 0)
+    if ((types & 2) != 0 && (v10 = ABRecordCopyValue(person, *MEMORY[0x29EDBE210])) != 0)
     {
       v11 = v10;
       MaidenNameFromLastName = VoiceDialMaidenNameDataSourceCreateMaidenNameFromLastName(v10);
       if (MaidenNameFromLastName)
       {
         v13 = MaidenNameFromLastName;
-        if ([v8 caseInsensitiveCompare:MaidenNameFromLastName])
+        if ([typeCopy caseInsensitiveCompare:MaidenNameFromLastName])
         {
           v9 = -1;
         }

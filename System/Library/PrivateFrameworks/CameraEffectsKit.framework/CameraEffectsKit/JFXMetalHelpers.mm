@@ -1,68 +1,68 @@
 @interface JFXMetalHelpers
-+ (__CVBuffer)createCVTextureFromImage:(__CVBuffer *)a3 withTextureCache:(__CVMetalTextureCache *)a4;
-+ (id)copyMetalLibraryWithDevice:(id)a3 error:(id *)a4;
-+ (unint64_t)metalPixelFormatForImage:(__CVBuffer *)a3;
-- (BOOL)runComputeEncoder:(id)a3 pipelineState:(id)a4 referenceTexture:(id)a5;
-- (JFXMetalHelpers)initWithDevice:(id)a3;
-- (id)newPipelineStateForFunctionWithName:(id)a3;
-- (id)newTexture:(id)a3;
-- (id)newTextureWithSameSizeAs:(id)a3 pixelFormat:(unint64_t)a4;
-- (id)newTextureWithWidth:(unsigned int)a3 height:(unsigned int)a4 pixelFormat:(unint64_t)a5 usage:(unint64_t)a6;
++ (__CVBuffer)createCVTextureFromImage:(__CVBuffer *)image withTextureCache:(__CVMetalTextureCache *)cache;
++ (id)copyMetalLibraryWithDevice:(id)device error:(id *)error;
++ (unint64_t)metalPixelFormatForImage:(__CVBuffer *)image;
+- (BOOL)runComputeEncoder:(id)encoder pipelineState:(id)state referenceTexture:(id)texture;
+- (JFXMetalHelpers)initWithDevice:(id)device;
+- (id)newPipelineStateForFunctionWithName:(id)name;
+- (id)newTexture:(id)texture;
+- (id)newTextureWithSameSizeAs:(id)as pixelFormat:(unint64_t)format;
+- (id)newTextureWithWidth:(unsigned int)width height:(unsigned int)height pixelFormat:(unint64_t)format usage:(unint64_t)usage;
 @end
 
 @implementation JFXMetalHelpers
 
-- (JFXMetalHelpers)initWithDevice:(id)a3
+- (JFXMetalHelpers)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = JFXMetalHelpers;
   v6 = [(JFXMetalHelpers *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->m_device, a3);
+    objc_storeStrong(&v6->m_device, device);
   }
 
   return v7;
 }
 
-- (id)newTexture:(id)a3
+- (id)newTexture:(id)texture
 {
-  v4 = a3;
-  v5 = -[JFXMetalHelpers newTextureWithSameSizeAs:pixelFormat:](self, "newTextureWithSameSizeAs:pixelFormat:", v4, [v4 pixelFormat]);
+  textureCopy = texture;
+  v5 = -[JFXMetalHelpers newTextureWithSameSizeAs:pixelFormat:](self, "newTextureWithSameSizeAs:pixelFormat:", textureCopy, [textureCopy pixelFormat]);
 
   return v5;
 }
 
-- (id)newTextureWithSameSizeAs:(id)a3 pixelFormat:(unint64_t)a4
+- (id)newTextureWithSameSizeAs:(id)as pixelFormat:(unint64_t)format
 {
-  v6 = a3;
-  v7 = -[JFXMetalHelpers newTextureWithWidth:height:pixelFormat:usage:](self, "newTextureWithWidth:height:pixelFormat:usage:", [v6 width], objc_msgSend(v6, "height"), a4, 3);
+  asCopy = as;
+  v7 = -[JFXMetalHelpers newTextureWithWidth:height:pixelFormat:usage:](self, "newTextureWithWidth:height:pixelFormat:usage:", [asCopy width], objc_msgSend(asCopy, "height"), format, 3);
 
   return v7;
 }
 
-- (id)newTextureWithWidth:(unsigned int)a3 height:(unsigned int)a4 pixelFormat:(unint64_t)a5 usage:(unint64_t)a6
+- (id)newTextureWithWidth:(unsigned int)width height:(unsigned int)height pixelFormat:(unint64_t)format usage:(unint64_t)usage
 {
-  v8 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a5 width:a3 height:a4 mipmapped:0];
-  [v8 setUsage:a6];
+  v8 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:format width:width height:height mipmapped:0];
+  [v8 setUsage:usage];
   [v8 setStorageMode:2];
   v9 = [(MTLDevice *)self->m_device newTextureWithDescriptor:v8];
 
   return v9;
 }
 
-- (id)newPipelineStateForFunctionWithName:(id)a3
+- (id)newPipelineStateForFunctionWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   m_device = self->m_device;
   v16 = 0;
   v6 = [JFXMetalHelpers copyMetalLibraryWithDevice:m_device error:&v16];
   v7 = v16;
   if (v6)
   {
-    v8 = [v6 newFunctionWithName:v4];
+    v8 = [v6 newFunctionWithName:nameCopy];
     if (v8)
     {
       v9 = self->m_device;
@@ -117,14 +117,14 @@
   return v12;
 }
 
-- (BOOL)runComputeEncoder:(id)a3 pipelineState:(id)a4 referenceTexture:(id)a5
+- (BOOL)runComputeEncoder:(id)encoder pipelineState:(id)state referenceTexture:(id)texture
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 threadExecutionWidth];
-  v11 = [v8 maxTotalThreadsPerThreadgroup];
-  if (v10 > v11)
+  encoderCopy = encoder;
+  stateCopy = state;
+  textureCopy = texture;
+  threadExecutionWidth = [stateCopy threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [stateCopy maxTotalThreadsPerThreadgroup];
+  if (threadExecutionWidth > maxTotalThreadsPerThreadgroup)
   {
     v12 = JFXLog_matting();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -135,21 +135,21 @@
 
   else
   {
-    v15[0] = [v9 width];
-    v15[1] = [v9 height];
+    v15[0] = [textureCopy width];
+    v15[1] = [textureCopy height];
     v15[2] = 1;
-    v14[0] = v10;
-    v14[1] = v11 / v10;
+    v14[0] = threadExecutionWidth;
+    v14[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v14[2] = 1;
-    [v7 dispatchThreads:v15 threadsPerThreadgroup:v14];
+    [encoderCopy dispatchThreads:v15 threadsPerThreadgroup:v14];
   }
 
-  return v10 <= v11;
+  return threadExecutionWidth <= maxTotalThreadsPerThreadgroup;
 }
 
-+ (unint64_t)metalPixelFormatForImage:(__CVBuffer *)a3
++ (unint64_t)metalPixelFormatForImage:(__CVBuffer *)image
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   if (PixelFormatType <= 1278226535)
   {
     if (PixelFormatType <= 1111970368)
@@ -217,9 +217,9 @@ LABEL_23:
   return 0;
 }
 
-+ (__CVBuffer)createCVTextureFromImage:(__CVBuffer *)a3 withTextureCache:(__CVMetalTextureCache *)a4
++ (__CVBuffer)createCVTextureFromImage:(__CVBuffer *)image withTextureCache:(__CVMetalTextureCache *)cache
 {
-  if (!a4)
+  if (!cache)
   {
     v10 = JFXLog_matting();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -230,7 +230,7 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!image)
   {
     v10 = JFXLog_matting();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -243,10 +243,10 @@ LABEL_23:
 
   textureOut = 0;
   v6 = *MEMORY[0x277CBECE8];
-  v7 = [JFXMetalHelpers metalPixelFormatForImage:a3];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (CVMetalTextureCacheCreateTextureFromImage(v6, a4, a3, 0, v7, Width, Height, 0, &textureOut))
+  v7 = [JFXMetalHelpers metalPixelFormatForImage:image];
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  if (CVMetalTextureCacheCreateTextureFromImage(v6, cache, image, 0, v7, Width, Height, 0, &textureOut))
   {
     v10 = JFXLog_matting();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -262,25 +262,25 @@ LABEL_10:
   return textureOut;
 }
 
-+ (id)copyMetalLibraryWithDevice:(id)a3 error:(id *)a4
++ (id)copyMetalLibraryWithDevice:(id)device error:(id *)error
 {
-  v5 = a3;
+  deviceCopy = device;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 pathForResource:@"default" ofType:@"metallib"];
 
   if (v7 && ([MEMORY[0x277CBEBC0] fileURLWithPath:v7 isDirectory:0], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v15 = 0;
-    v9 = [v5 newLibraryWithURL:v8 error:&v15];
+    v9 = [deviceCopy newLibraryWithURL:v8 error:&v15];
     v10 = v15;
     v11 = v10;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v12 = v10;
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else

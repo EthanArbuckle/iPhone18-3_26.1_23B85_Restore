@@ -1,35 +1,35 @@
 @interface DialogEngineSchemaDLGENGNamedEntitiesUsed
-- (BOOL)isEqual:(id)a3;
-- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithDictionary:(id)a3;
-- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithDictionary:(id)dictionary;
+- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addNamedEntities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNamedEntities:(id)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DialogEngineSchemaDLGENGNamedEntitiesUsed
 
-- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithDictionary:(id)a3
+- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = DialogEngineSchemaDLGENGNamedEntitiesUsed;
   v5 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"catId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"catId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DialogEngineSchemaDLGENGNamedEntitiesUsed setCatId:](v5, "setCatId:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"namedEntities"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"namedEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithJSON:(id)a3
+- (DialogEngineSchemaDLGENGNamedEntitiesUsed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,7 +118,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self catId]- 1;
@@ -132,12 +132,12 @@
       v5 = off_1E78D3638[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"catId"];
+    [dictionary setObject:v5 forKeyedSubscript:@"catId"];
   }
 
   if ([(NSArray *)self->_namedEntities count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -176,12 +176,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"namedEntities"];
+    [dictionary setObject:array forKeyedSubscript:@"namedEntities"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v15];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v15];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -199,22 +199,22 @@
   return [(NSArray *)self->_namedEntities hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (catId = self->_catId, catId == [v4 catId]))
+      if ((*&self->_has & 1) == 0 || (catId = self->_catId, catId == [equalCopy catId]))
       {
-        v6 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities];
-        v7 = [v4 namedEntities];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        namedEntities = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities];
+        namedEntities2 = [equalCopy namedEntities];
+        v8 = namedEntities2;
+        if ((namedEntities != 0) != (namedEntities2 == 0))
         {
-          v9 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities];
-          if (!v9)
+          namedEntities3 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities];
+          if (!namedEntities3)
           {
 
 LABEL_13:
@@ -222,10 +222,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities];
-          v12 = [v4 namedEntities];
-          v13 = [v11 isEqual:v12];
+          v10 = namedEntities3;
+          namedEntities4 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities];
+          namedEntities5 = [equalCopy namedEntities];
+          v13 = [namedEntities4 isEqual:namedEntities5];
 
           if (v13)
           {
@@ -246,10 +246,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -287,32 +287,32 @@ LABEL_11:
   }
 }
 
-- (void)addNamedEntities:(id)a3
+- (void)addNamedEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   namedEntities = self->_namedEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!namedEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_namedEntities;
-    self->_namedEntities = v6;
+    self->_namedEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     namedEntities = self->_namedEntities;
   }
 
-  [(NSArray *)namedEntities addObject:v4];
+  [(NSArray *)namedEntities addObject:entitiesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = DialogEngineSchemaDLGENGNamedEntitiesUsed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self namedEntities:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(DialogEngineSchemaDLGENGNamedEntitiesUsed *)self setNamedEntities:v7];
 

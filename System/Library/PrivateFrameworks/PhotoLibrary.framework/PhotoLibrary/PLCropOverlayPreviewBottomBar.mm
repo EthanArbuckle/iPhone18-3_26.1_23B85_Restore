@@ -1,11 +1,11 @@
 @interface PLCropOverlayPreviewBottomBar
-- (PLCropOverlayPreviewBottomBar)initWithCoder:(id)a3;
-- (PLCropOverlayPreviewBottomBar)initWithFrame:(CGRect)a3;
+- (PLCropOverlayPreviewBottomBar)initWithCoder:(id)coder;
+- (PLCropOverlayPreviewBottomBar)initWithFrame:(CGRect)frame;
 - (void)_commonPLCropOverlayEditPhotoBottomBarInitialization;
 - (void)_updateBackgroundStyle;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated;
 @end
 
 @implementation PLCropOverlayPreviewBottomBar
@@ -14,30 +14,30 @@
 {
   if (self->_backgroundStyle == 1)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] colorWithWhite:0.101960786 alpha:0.75];
+    clearColor = [MEMORY[0x277D75348] colorWithWhite:0.101960786 alpha:0.75];
   }
 
-  [(PLCropOverlayPreviewBottomBar *)self setBackgroundColor:v3];
+  [(PLCropOverlayPreviewBottomBar *)self setBackgroundColor:clearColor];
 }
 
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
     v6[5] = v4;
     v6[6] = v5;
-    self->_backgroundStyle = a3;
+    self->_backgroundStyle = style;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__PLCropOverlayPreviewBottomBar_setBackgroundStyle_animated___block_invoke;
     v6[3] = &unk_2782A2020;
     v6[4] = self;
-    if (a4)
+    if (animated)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v6 animations:0.3];
     }
@@ -313,11 +313,11 @@
   [(PLCropOverlayPreviewBottomBar *)&v3 dealloc];
 }
 
-- (PLCropOverlayPreviewBottomBar)initWithCoder:(id)a3
+- (PLCropOverlayPreviewBottomBar)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayPreviewBottomBar;
-  v3 = [(PLCropOverlayPreviewBottomBar *)&v6 initWithCoder:a3];
+  v3 = [(PLCropOverlayPreviewBottomBar *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -327,11 +327,11 @@
   return v4;
 }
 
-- (PLCropOverlayPreviewBottomBar)initWithFrame:(CGRect)a3
+- (PLCropOverlayPreviewBottomBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayPreviewBottomBar;
-  v3 = [(PLCropOverlayPreviewBottomBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLCropOverlayPreviewBottomBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

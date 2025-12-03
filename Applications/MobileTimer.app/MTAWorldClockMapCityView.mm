@@ -1,26 +1,26 @@
 @interface MTAWorldClockMapCityView
 - (CGPoint)hotspotOffset;
-- (CGPoint)hotspotOffsetForPlacement:(unint64_t)a3;
-- (CGRect)dotImageFrameForPlacement:(unint64_t)a3;
-- (CGSize)sizeForIntersectionWithCityView:(id)a3 atOrigin:(CGPoint)a4 selfOrigin:(CGPoint)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTAWorldClockMapCityView)initWithCity:(id)a3;
+- (CGPoint)hotspotOffsetForPlacement:(unint64_t)placement;
+- (CGRect)dotImageFrameForPlacement:(unint64_t)placement;
+- (CGSize)sizeForIntersectionWithCityView:(id)view atOrigin:(CGPoint)origin selfOrigin:(CGPoint)selfOrigin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTAWorldClockMapCityView)initWithCity:(id)city;
 - (id)labelViews;
 - (void)layoutIfNeeded;
 - (void)layoutSubviews;
-- (void)setCity:(id)a3;
-- (void)setIconPlacement:(unint64_t)a3;
-- (void)setTimeFormatter:(id)a3;
-- (void)setTimeLabelWidth:(double)a3;
+- (void)setCity:(id)city;
+- (void)setIconPlacement:(unint64_t)placement;
+- (void)setTimeFormatter:(id)formatter;
+- (void)setTimeLabelWidth:(double)width;
 - (void)start;
 - (void)updateTime;
 @end
 
 @implementation MTAWorldClockMapCityView
 
-- (MTAWorldClockMapCityView)initWithCity:(id)a3
+- (MTAWorldClockMapCityView)initWithCity:(id)city
 {
-  v4 = a3;
+  cityCopy = city;
   v28.receiver = self;
   v28.super_class = MTAWorldClockMapCityView;
   v5 = [(MTAWorldClockMapCityView *)&v28 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -38,8 +38,8 @@
     [(UILabel *)v9 setBackgroundColor:v10];
 
     v11 = v5->_timeLabel;
-    v12 = [objc_opt_class() secondaryLabelFont];
-    [(UILabel *)v11 setFont:v12];
+    secondaryLabelFont = [objc_opt_class() secondaryLabelFont];
+    [(UILabel *)v11 setFont:secondaryLabelFont];
 
     v13 = v5->_timeLabel;
     v14 = +[UIColor whiteColor];
@@ -69,32 +69,32 @@
     v25 = [v23 initWithImage:v24];
     [(MTAWorldClockMapCityView *)v5 setDotImageView:v25];
 
-    v26 = [(MTAWorldClockMapCityView *)v5 dotImageView];
-    [(MTAWorldClockMapCityView *)v5 addSubview:v26];
+    dotImageView = [(MTAWorldClockMapCityView *)v5 dotImageView];
+    [(MTAWorldClockMapCityView *)v5 addSubview:dotImageView];
 
     [(MTAWorldClockMapCityView *)v5 setIconPlacement:1];
-    [(MTAWorldClockMapCityView *)v5 setCity:v4];
+    [(MTAWorldClockMapCityView *)v5 setCity:cityCopy];
   }
 
   return v5;
 }
 
-- (void)setTimeFormatter:(id)a3
+- (void)setTimeFormatter:(id)formatter
 {
-  if (self->_timeFormatter != a3)
+  if (self->_timeFormatter != formatter)
   {
-    v4 = [a3 copy];
+    v4 = [formatter copy];
     timeFormatter = self->_timeFormatter;
     self->_timeFormatter = v4;
 
     v6 = self->_timeFormatter;
-    v8 = [(WorldClockCity *)self->_city timeZone];
-    v7 = [NSTimeZone timeZoneWithName:v8];
+    timeZone = [(WorldClockCity *)self->_city timeZone];
+    v7 = [NSTimeZone timeZoneWithName:timeZone];
     [(NSDateFormatter *)v6 setTimeZone:v7];
   }
 }
 
-- (void)setTimeLabelWidth:(double)a3
+- (void)setTimeLabelWidth:(double)width
 {
   timeLabel = self->_timeLabel;
   timeFormatter = self->_timeFormatter;
@@ -109,37 +109,37 @@
   [(UILabel *)v8 setFrame:?];
 }
 
-- (void)setCity:(id)a3
+- (void)setCity:(id)city
 {
-  v5 = a3;
-  if (self->_city != v5)
+  cityCopy = city;
+  if (self->_city != cityCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_city, a3);
+    v11 = cityCopy;
+    objc_storeStrong(&self->_city, city);
     timeFormatter = self->_timeFormatter;
-    v7 = [(WorldClockCity *)v11 timeZone];
-    v8 = [NSTimeZone timeZoneWithName:v7];
+    timeZone = [(WorldClockCity *)v11 timeZone];
+    v8 = [NSTimeZone timeZoneWithName:timeZone];
     [(NSDateFormatter *)timeFormatter setTimeZone:v8];
 
     [(MTAWorldClockMapCityView *)self updateTime];
     nameLabel = self->_nameLabel;
-    v10 = [(WorldClockCity *)v11 name];
-    [(UILabel *)nameLabel setText:v10];
+    name = [(WorldClockCity *)v11 name];
+    [(UILabel *)nameLabel setText:name];
 
     [(UILabel *)self->_nameLabel sizeToFit];
     [(MTAWorldClockMapCityView *)self setNeedsLayout];
-    v5 = v11;
+    cityCopy = v11;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_timeLabel bounds:a3.width];
+  [(UILabel *)self->_timeLabel bounds:fits.width];
   v5 = v4;
   [(UILabel *)self->_nameLabel bounds];
   v7 = fmax(v5, v6);
-  v8 = [(MTAWorldClockMapCityView *)self dotImageView];
-  [v8 bounds];
+  dotImageView = [(MTAWorldClockMapCityView *)self dotImageView];
+  [dotImageView bounds];
   v10 = v7 + v9 + 4.0;
 
   v11 = 48.0;
@@ -149,18 +149,18 @@
   return result;
 }
 
-- (CGRect)dotImageFrameForPlacement:(unint64_t)a3
+- (CGRect)dotImageFrameForPlacement:(unint64_t)placement
 {
   [(MTAWorldClockMapCityView *)self bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(MTAWorldClockMapCityView *)self dotImageView];
-  [v9 frame];
+  dotImageView = [(MTAWorldClockMapCityView *)self dotImageView];
+  [dotImageView frame];
   v11 = v10;
   v13 = v12;
 
   v14 = v6 - v11;
-  if (a3 == 1)
+  if (placement == 1)
   {
     v14 = 0.0;
   }
@@ -186,15 +186,15 @@
   return v3;
 }
 
-- (CGSize)sizeForIntersectionWithCityView:(id)a3 atOrigin:(CGPoint)a4 selfOrigin:(CGPoint)a5
+- (CGSize)sizeForIntersectionWithCityView:(id)view atOrigin:(CGPoint)origin selfOrigin:(CGPoint)selfOrigin
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v10 = a3;
+  y = selfOrigin.y;
+  x = selfOrigin.x;
+  v7 = origin.y;
+  v8 = origin.x;
+  viewCopy = view;
   [(MTAWorldClockMapCityView *)self layoutIfNeeded];
-  [v10 layoutIfNeeded];
+  [viewCopy layoutIfNeeded];
   [(MTAWorldClockMapCityView *)self frame];
   v95 = CGRectOffset(v94, x, y);
   v11 = v95.origin.x;
@@ -209,10 +209,10 @@
   v97.size.height = height;
   if (CGRectIntersectsRect(v97, v123))
   {
-    v15 = [(MTAWorldClockMapCityView *)self labelViews];
-    v78 = v10;
-    v16 = [v10 labelViews];
-    v17 = [v15 count];
+    labelViews = [(MTAWorldClockMapCityView *)self labelViews];
+    v78 = viewCopy;
+    labelViews2 = [viewCopy labelViews];
+    v17 = [labelViews count];
     v77 = &v77;
     v18 = &v77 - 4 * v17;
     if (v17)
@@ -222,13 +222,13 @@
       v21 = v18 + 2;
       do
       {
-        v22 = [v15 objectAtIndexedSubscript:{v19, v77}];
+        v22 = [labelViews objectAtIndexedSubscript:{v19, v77}];
         [v22 frame];
         v99 = CGRectOffset(v98, x, y);
         *(v20 - 2) = CGRectInset(v99, 0.0, 2.0);
         v20 += 4;
 
-        v23 = [v16 objectAtIndexedSubscript:v19];
+        v23 = [labelViews2 objectAtIndexedSubscript:v19];
         [v23 frame];
         v101 = CGRectOffset(v100, v8, v7);
         *(v21 - 2) = CGRectInset(v101, 0.0, 2.0);
@@ -240,8 +240,8 @@
       while (v17 != v19);
     }
 
-    v24 = [(MTAWorldClockMapCityView *)self dotImageView];
-    [v24 frame];
+    dotImageView = [(MTAWorldClockMapCityView *)self dotImageView];
+    [dotImageView frame];
     v103 = CGRectOffset(v102, x, y);
     v104 = CGRectInset(v103, 1.0, 2.0);
     v25 = v104.origin.x;
@@ -251,9 +251,9 @@
     v27 = v104.size.width;
     v28 = v104.size.height;
 
-    v10 = v78;
-    v29 = [v78 dotImageView];
-    [v29 frame];
+    viewCopy = v78;
+    dotImageView2 = [v78 dotImageView];
+    [dotImageView2 frame];
     v106 = CGRectOffset(v105, v8, v7);
     v107 = CGRectInset(v106, 1.0, 2.0);
     v30 = v107.origin.x;
@@ -433,9 +433,9 @@
   return result;
 }
 
-- (CGPoint)hotspotOffsetForPlacement:(unint64_t)a3
+- (CGPoint)hotspotOffsetForPlacement:(unint64_t)placement
 {
-  [(MTAWorldClockMapCityView *)self dotImageFrameForPlacement:a3];
+  [(MTAWorldClockMapCityView *)self dotImageFrameForPlacement:placement];
   x = v11.origin.x;
   y = v11.origin.y;
   width = v11.size.width;
@@ -482,8 +482,8 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MTAWorldClockMapCityView *)self dotImageView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  dotImageView = [(MTAWorldClockMapCityView *)self dotImageView];
+  [dotImageView setFrame:{v5, v7, v9, v11}];
 
   [(UILabel *)self->_timeLabel frame];
   v14 = v13;
@@ -525,11 +525,11 @@
   [(UILabel *)nameLabel setFrame:v23, v26, v18, v20];
 }
 
-- (void)setIconPlacement:(unint64_t)a3
+- (void)setIconPlacement:(unint64_t)placement
 {
-  if (self->_iconPlacement != a3)
+  if (self->_iconPlacement != placement)
   {
-    self->_iconPlacement = a3;
+    self->_iconPlacement = placement;
     [(MTAWorldClockMapCityView *)self setNeedsLayout];
   }
 }

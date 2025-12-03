@@ -1,16 +1,16 @@
 @interface NEAppInfo
-- (NEAppInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEAppInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEAppInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v4;
   if (self)
   {
@@ -165,53 +165,53 @@ LABEL_15:
   return v10;
 }
 
-- (NEAppInfo)initWithCoder:(id)a3
+- (NEAppInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEAppInfo;
   v5 = [(NEAppInfo *)&v15 init];
   if (v5)
   {
-    v5->_pid = [v4 decodeIntForKey:@"Pid"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v5->_pid = [coderCopy decodeIntForKey:@"Pid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     objc_setProperty_nonatomic_copy(v5, v7, v6, 16);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BundleID"];
     objc_setProperty_nonatomic_copy(v5, v9, v8, 24);
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppVersion"];
     objc_setProperty_nonatomic_copy(v5, v11, v10, 32);
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CDHash"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CDHash"];
     objc_setProperty_nonatomic_copy(v5, v13, v12, 40);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeInt:self->_pid forKey:@"Pid"];
-    [v5 encodeObject:self->_uuid forKey:@"UUID"];
-    [v5 encodeObject:self->_bundleID forKey:@"BundleID"];
-    [v5 encodeObject:self->_appVersion forKey:@"AppVersion"];
+    [coderCopy encodeInt:self->_pid forKey:@"Pid"];
+    [coderCopy encodeObject:self->_uuid forKey:@"UUID"];
+    [coderCopy encodeObject:self->_bundleID forKey:@"BundleID"];
+    [coderCopy encodeObject:self->_appVersion forKey:@"AppVersion"];
     cdHash = self->_cdHash;
   }
 
   else
   {
-    [v5 encodeInt:0 forKey:@"Pid"];
-    [v5 encodeObject:0 forKey:@"UUID"];
-    [v5 encodeObject:0 forKey:@"BundleID"];
-    [v5 encodeObject:0 forKey:@"AppVersion"];
+    [coderCopy encodeInt:0 forKey:@"Pid"];
+    [coderCopy encodeObject:0 forKey:@"UUID"];
+    [coderCopy encodeObject:0 forKey:@"BundleID"];
+    [coderCopy encodeObject:0 forKey:@"AppVersion"];
     cdHash = 0;
   }
 
-  [v5 encodeObject:cdHash forKey:@"CDHash"];
+  [coderCopy encodeObject:cdHash forKey:@"CDHash"];
 }
 
 @end

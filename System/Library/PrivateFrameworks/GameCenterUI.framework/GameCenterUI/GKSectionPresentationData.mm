@@ -1,16 +1,16 @@
 @interface GKSectionPresentationData
-- (GKSectionPresentationData)initWithSection:(int64_t)a3 presentationData:(id)a4;
+- (GKSectionPresentationData)initWithSection:(int64_t)section presentationData:(id)data;
 - (double)itemsMinY;
 - (double)showMoreMaxY;
 - (id)description;
-- (void)updateWithLayoutAttributes:(id)a3 supplementaryLocation:(unint64_t)a4;
+- (void)updateWithLayoutAttributes:(id)attributes supplementaryLocation:(unint64_t)location;
 @end
 
 @implementation GKSectionPresentationData
 
-- (GKSectionPresentationData)initWithSection:(int64_t)a3 presentationData:(id)a4
+- (GKSectionPresentationData)initWithSection:(int64_t)section presentationData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = GKSectionPresentationData;
   v7 = [(GKSectionPresentationData *)&v11 init];
@@ -20,12 +20,12 @@
     v7->_showMoreMaxY = -1.0;
     v7->_itemsMinY = 1.79769313e308;
     v7->_minY = 1.79769313e308;
-    v7->_section = a3;
+    v7->_section = section;
     v7->_headerMinY = 1.79769313e308;
     v7->_footerMinY = 1.79769313e308;
-    if (v6)
+    if (dataCopy)
     {
-      [v6 maxY];
+      [dataCopy maxY];
       v8->_maxY = v9;
     }
   }
@@ -236,15 +236,15 @@
   return result;
 }
 
-- (void)updateWithLayoutAttributes:(id)a3 supplementaryLocation:(unint64_t)a4
+- (void)updateWithLayoutAttributes:(id)attributes supplementaryLocation:(unint64_t)location
 {
-  v23 = a3;
-  [v23 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   MinY = CGRectGetMinY(v25);
-  [v23 frame];
+  [attributesCopy frame];
   MaxY = CGRectGetMaxY(v26);
-  v6 = [v23 representedElementCategory];
-  if (!v6)
+  representedElementCategory = [attributesCopy representedElementCategory];
+  if (!representedElementCategory)
   {
     v14 = 40;
     v15 = 32;
@@ -263,19 +263,19 @@ LABEL_9:
 
   v7 = MaxY;
   v8 = MinY;
-  if (v6 != 1)
+  if (representedElementCategory != 1)
   {
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!location)
   {
     v14 = 24;
     v15 = 16;
     goto LABEL_9;
   }
 
-  if (a4 != 1)
+  if (location != 1)
   {
     goto LABEL_15;
   }
@@ -287,8 +287,8 @@ LABEL_9:
   v11 = vcgtq_f64(v9, v10);
   v9.f64[0] = MinY;
   *&self->_footerMinY = vbslq_s8(v11, v9, *&self->_footerMinY);
-  v12 = [v23 representedElementKind];
-  v13 = [v12 isEqualToString:@"IncrementalReveal"];
+  representedElementKind = [attributesCopy representedElementKind];
+  v13 = [representedElementKind isEqualToString:@"IncrementalReveal"];
 
   v7 = MaxY;
   v8 = MinY;

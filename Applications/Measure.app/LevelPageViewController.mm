@@ -1,24 +1,24 @@
 @interface LevelPageViewController
 + (void)initialize;
-- (BOOL)_updateForRotation:(double)a3 shiftAngle:(double)a4;
-- (LevelPageViewController)initWithCoder:(id)a3;
-- (LevelPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_updateForRotation:(double)rotation shiftAngle:(double)angle;
+- (LevelPageViewController)initWithCoder:(id)coder;
+- (LevelPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)labelFont;
 - (void)_enableIdleTimer;
-- (void)_updateOffsetLabel:(double)a3;
+- (void)_updateOffsetLabel:(double)label;
 - (void)configure;
 - (void)dealloc;
 - (void)notifyViewHidden;
 - (void)notifyViewShown;
-- (void)toggleHold:(id)a3;
+- (void)toggleHold:(id)hold;
 - (void)updateColors;
 - (void)updateDegreesLabel;
-- (void)updateLevelWithForcedInterfaceUpdate:(BOOL)a3;
-- (void)updateTicsForOrientation:(int64_t)a3;
-- (void)userDefaultsChanged:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateLevelWithForcedInterfaceUpdate:(BOOL)update;
+- (void)updateTicsForOrientation:(int64_t)orientation;
+- (void)userDefaultsChanged:(id)changed;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -26,7 +26,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     v4 = @"0.5";
@@ -36,11 +36,11 @@
   }
 }
 
-- (LevelPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (LevelPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = LevelPageViewController;
-  v4 = [(LevelPageViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(LevelPageViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -50,11 +50,11 @@
   return v5;
 }
 
-- (LevelPageViewController)initWithCoder:(id)a3
+- (LevelPageViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = LevelPageViewController;
-  v3 = [(LevelPageViewController *)&v6 initWithCoder:a3];
+  v3 = [(LevelPageViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -100,12 +100,12 @@
   v127.receiver = self;
   v127.super_class = LevelPageViewController;
   [(LevelPageViewController *)&v127 viewDidLoad];
-  v3 = [(LevelPageViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(LevelPageViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v4 = [(LevelPageViewController *)self view];
+  view2 = [(LevelPageViewController *)self view];
   v5 = +[UIColor whiteColor];
-  [v4 setBackgroundColor:v5];
+  [view2 setBackgroundColor:v5];
 
   v6 = +[UIScreen mainScreen];
   [v6 _referenceBounds];
@@ -114,8 +114,8 @@
   v12 = v11;
   v14 = v13;
 
-  v15 = [(LevelPageViewController *)self view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view3 = [(LevelPageViewController *)self view];
+  [view3 setFrame:{v8, v10, v12, v14}];
 
   v16 = [[UIView alloc] initWithFrame:{v8, v10, v12, v14}];
   filterContainer = self->_filterContainer;
@@ -163,10 +163,10 @@
   [(UIView *)v34 setBackgroundColor:v35];
 
   [(UIView *)self->_ticContainer setAutoresizingMask:18];
-  v36 = [(UIView *)self->_ticContainer layer];
+  layer = [(UIView *)self->_ticContainer layer];
   v126 = kCAFilterXor;
   v37 = [CAFilter filterWithType:?];
-  [v36 setCompositingFilter:v37];
+  [layer setCompositingFilter:v37];
 
   v128.origin.x = v8;
   v128.origin.y = v10;
@@ -204,8 +204,8 @@
 
   [(CALayer *)self->_heldLevelBottomBacking setAllowsEdgeAntialiasing:1];
   [(CALayer *)self->_heldLevelBottomBacking setHidden:1];
-  v50 = [(UIView *)self->_levelContainer layer];
-  [v50 addSublayer:self->_heldLevelBottomBacking];
+  layer2 = [(UIView *)self->_levelContainer layer];
+  [layer2 addSublayer:self->_heldLevelBottomBacking];
 
   v51 = +[CALayer layer];
   heldLevelBottom = self->_heldLevelBottom;
@@ -223,8 +223,8 @@
   v56 = [CAFilter filterWithType:v126];
   [(CALayer *)v55 setCompositingFilter:v56];
 
-  v57 = [(UIView *)self->_levelHoldContainer layer];
-  [v57 addSublayer:self->_heldLevelBottom];
+  layer3 = [(UIView *)self->_levelHoldContainer layer];
+  [layer3 addSublayer:self->_heldLevelBottom];
 
   v58 = +[CALayer layer];
   divergenceLevelBottom = self->_divergenceLevelBottom;
@@ -242,8 +242,8 @@
   v63 = [CAFilter filterWithType:v126];
   [(CALayer *)v62 setCompositingFilter:v63];
 
-  v64 = [(UIView *)self->_levelHoldContainer layer];
-  [v64 addSublayer:self->_divergenceLevelBottom];
+  layer4 = [(UIView *)self->_levelHoldContainer layer];
+  [layer4 addSublayer:self->_divergenceLevelBottom];
 
   v65 = +[CALayer layer];
   levelBottom = self->_levelBottom;
@@ -256,8 +256,8 @@
   -[CALayer setBackgroundColor:](v67, "setBackgroundColor:", [v68 CGColor]);
 
   [(CALayer *)self->_levelBottom setAllowsEdgeAntialiasing:1];
-  v69 = [(UIView *)self->_levelContainer layer];
-  [v69 addSublayer:self->_levelBottom];
+  layer5 = [(UIView *)self->_levelContainer layer];
+  [layer5 addSublayer:self->_levelBottom];
 
   [(UIView *)self->_filterContainer addSubview:self->_levelContainer];
   [(UIView *)self->_levelContainer addSubview:self->_levelHoldContainer];
@@ -329,17 +329,17 @@
   v101 = [CAFilter filterWithType:v126];
   [(CAShapeLayer *)v100 setCompositingFilter:v101];
 
-  v102 = [(UIView *)self->_filterContainer layer];
-  [v102 addSublayer:self->_topOuterCircle];
+  layer6 = [(UIView *)self->_filterContainer layer];
+  [layer6 addSublayer:self->_topOuterCircle];
 
-  v103 = [(UIView *)self->_filterContainer layer];
-  [v103 addSublayer:self->_topInnerCircle];
+  layer7 = [(UIView *)self->_filterContainer layer];
+  [layer7 addSublayer:self->_topInnerCircle];
 
-  v104 = [(UIView *)self->_filterContainer layer];
-  [v104 addSublayer:self->_bottomOuterCircle];
+  layer8 = [(UIView *)self->_filterContainer layer];
+  [layer8 addSublayer:self->_bottomOuterCircle];
 
-  v105 = [(UIView *)self->_filterContainer layer];
-  [v105 addSublayer:self->_bottomInnerCircle];
+  layer9 = [(UIView *)self->_filterContainer layer];
+  [layer9 addSublayer:self->_bottomInnerCircle];
 
   v106 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 100.0, 100.0}];
   degreesLabel = self->_degreesLabel;
@@ -350,9 +350,9 @@
   [(UILabel *)v108 setTextColor:v109];
 
   [(LevelPageViewController *)self updateDegreesLabel];
-  v110 = [(UILabel *)self->_degreesLabel layer];
+  layer10 = [(UILabel *)self->_degreesLabel layer];
   v111 = [CAFilter filterWithType:v126];
-  [v110 setCompositingFilter:v111];
+  [layer10 setCompositingFilter:v111];
 
   [(UIView *)self->_filterContainer addSubview:self->_degreesLabel];
   v112 = +[CALayer layer];
@@ -365,8 +365,8 @@
   -[CALayer setBackgroundColor:](v114, "setBackgroundColor:", [v115 CGColor]);
 
   [(CALayer *)self->_rightLevelTic setAllowsEdgeAntialiasing:1];
-  v116 = [(UIView *)self->_ticContainer layer];
-  [v116 addSublayer:self->_rightLevelTic];
+  layer11 = [(UIView *)self->_ticContainer layer];
+  [layer11 addSublayer:self->_rightLevelTic];
 
   v117 = +[CALayer layer];
   leftLevelTic = self->_leftLevelTic;
@@ -378,26 +378,26 @@
   -[CALayer setBackgroundColor:](v119, "setBackgroundColor:", [v120 CGColor]);
 
   [(CALayer *)self->_leftLevelTic setAllowsEdgeAntialiasing:1];
-  v121 = [(UIView *)self->_ticContainer layer];
-  [v121 addSublayer:self->_leftLevelTic];
+  layer12 = [(UIView *)self->_ticContainer layer];
+  [layer12 addSublayer:self->_leftLevelTic];
 
   [(UIView *)self->_filterContainer addSubview:self->_ticContainer];
-  v122 = [(LevelPageViewController *)self view];
-  [v122 addSubview:self->_filterContainer];
+  view4 = [(LevelPageViewController *)self view];
+  [view4 addSubview:self->_filterContainer];
 
   v123 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"toggleHold:"];
   holdRecognizer = self->_holdRecognizer;
   self->_holdRecognizer = v123;
 
-  v125 = [(LevelPageViewController *)self view];
-  [v125 addGestureRecognizer:self->_holdRecognizer];
+  view5 = [(LevelPageViewController *)self view];
+  [view5 addGestureRecognizer:self->_holdRecognizer];
 }
 
-- (BOOL)_updateForRotation:(double)a3 shiftAngle:(double)a4
+- (BOOL)_updateForRotation:(double)rotation shiftAngle:(double)angle
 {
-  self->_currentShift = a4;
-  self->_currentRotation = a3;
-  v7 = a3 * 180.0 / 3.14159265;
+  self->_currentShift = angle;
+  self->_currentRotation = rotation;
+  v7 = rotation * 180.0 / 3.14159265;
   if (self->_isHeld)
   {
     v8 = 216;
@@ -406,7 +406,7 @@ LABEL_3:
     goto LABEL_18;
   }
 
-  if (fabs(a4 * 180.0 / 3.14159265) <= 40.0)
+  if (fabs(angle * 180.0 / 3.14159265) <= 40.0)
   {
     v10 = fabs(v7);
     if (v10 >= 20.0)
@@ -442,7 +442,7 @@ LABEL_3:
     }
   }
 
-  else if (a4 <= 0.0)
+  else if (angle <= 0.0)
   {
     v9 = 6;
   }
@@ -459,10 +459,10 @@ LABEL_18:
   v12 = v9 != orientation;
   if (v9 != orientation)
   {
-    v13 = [(LevelPageViewController *)self traitCollection];
-    v14 = [v13 verticalSizeClass];
+    traitCollection = [(LevelPageViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    if (v14 == 2)
+    if (verticalSizeClass == 2)
     {
       self->_previousOrientation = v9;
       [(LevelPageViewController *)self updateTicsForOrientation:v9];
@@ -470,10 +470,10 @@ LABEL_18:
 
     else
     {
-      v15 = [(LevelPageViewController *)self traitCollection];
-      v16 = [v15 verticalSizeClass];
+      traitCollection2 = [(LevelPageViewController *)self traitCollection];
+      verticalSizeClass2 = [traitCollection2 verticalSizeClass];
 
-      if (v16 == 1)
+      if (verticalSizeClass2 == 1)
       {
         self->_previousOrientation = v9;
       }
@@ -517,7 +517,7 @@ LABEL_39:
 LABEL_36:
         v21 = 1.57079633;
 LABEL_38:
-        v18 = a4 + v21;
+        v18 = angle + v21;
         goto LABEL_39;
       }
 
@@ -526,7 +526,7 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v19 = sub_100003088(-2.35619449, a3) * 180.0 / 3.14159265;
+    v19 = sub_100003088(-2.35619449, rotation) * 180.0 / 3.14159265;
     v20 = 90.0;
   }
 
@@ -539,7 +539,7 @@ LABEL_37:
 
     if (v9 == 2)
     {
-      v19 = sub_100003088(3.14159265, a3) * 180.0 / 3.14159265;
+      v19 = sub_100003088(3.14159265, rotation) * 180.0 / 3.14159265;
       v20 = -180.0;
     }
 
@@ -551,7 +551,7 @@ LABEL_37:
         goto LABEL_43;
       }
 
-      v19 = sub_100003088(1.57079633, a3) * 180.0 / 3.14159265;
+      v19 = sub_100003088(1.57079633, rotation) * 180.0 / 3.14159265;
       v20 = -90.0;
     }
   }
@@ -607,8 +607,8 @@ LABEL_43:
       {
         v28 = [UIImpactFeedbackGenerator alloc];
         v29 = self->_impactConfig;
-        v30 = [(LevelPageViewController *)self view];
-        v31 = [v28 initWithConfiguration:v29 view:v30];
+        view = [(LevelPageViewController *)self view];
+        v31 = [v28 initWithConfiguration:v29 view:view];
         v32 = self->_impactGenerator;
         self->_impactGenerator = v31;
 
@@ -641,13 +641,13 @@ LABEL_43:
 - (void)updateDegreesLabel
 {
   degreesLabel = self->_degreesLabel;
-  v4 = [(LevelPageViewController *)self labelFont];
-  [(UILabel *)degreesLabel setFont:v4];
+  labelFont = [(LevelPageViewController *)self labelFont];
+  [(UILabel *)degreesLabel setFont:labelFont];
 
   [(UILabel *)self->_degreesLabel sizeToFit];
   v5 = self->_degreesLabel;
-  v6 = [(LevelPageViewController *)self view];
-  [v6 center];
+  view = [(LevelPageViewController *)self view];
+  [view center];
   [(UILabel *)v5 setCenter:?];
 }
 
@@ -721,18 +721,18 @@ LABEL_43:
   [v2 setIdleTimerDisabled:0];
 }
 
-- (void)_updateOffsetLabel:(double)a3
+- (void)_updateOffsetLabel:(double)label
 {
-  v4 = a3;
-  v5 = fabs(a3);
+  labelCopy = label;
+  v5 = fabs(label);
   if (v5 < 1.0 && v5 > self->_zeroRange)
   {
-    v4 = (*&a3 >> 63) | 1;
+    labelCopy = (*&label >> 63) | 1;
   }
 
   lastDisplayDegrees = self->_lastDisplayDegrees;
   levelIdleTimer = self->_levelIdleTimer;
-  if (lastDisplayDegrees == v4)
+  if (lastDisplayDegrees == labelCopy)
   {
     if (levelIdleTimer)
     {
@@ -753,33 +753,33 @@ LABEL_43:
     v9 = +[UIApplication sharedApplication];
     [v9 setIdleTimerDisabled:1];
 
-    self->_lastDisplayDegrees = v4;
+    self->_lastDisplayDegrees = labelCopy;
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"COMPASS_DEGREES" value:&stru_10047BCD0 table:0];
-    v16 = [NSString localizedStringWithFormat:v11, v4];
+    labelCopy = [NSString localizedStringWithFormat:v11, labelCopy];
 
-    [(UILabel *)self->_degreesLabel setText:v16];
+    [(UILabel *)self->_degreesLabel setText:labelCopy];
     [(UILabel *)self->_degreesLabel sizeToFit];
     degreesLabel = self->_degreesLabel;
-    v13 = [(LevelPageViewController *)self view];
-    [v13 center];
+    view = [(LevelPageViewController *)self view];
+    [view center];
     [(UILabel *)degreesLabel setCenter:?];
 
-    v15 = v16;
+    v15 = labelCopy;
   }
 
   _objc_release_x1(v14, v15);
 }
 
-- (void)updateLevelWithForcedInterfaceUpdate:(BOOL)a3
+- (void)updateLevelWithForcedInterfaceUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(CMMotionManager *)self->_manager deviceMotion];
-  v6 = [v5 attitude];
+  updateCopy = update;
+  deviceMotion = [(CMMotionManager *)self->_manager deviceMotion];
+  attitude = [deviceMotion attitude];
 
   if (self->_holdAttitude)
   {
-    [v6 multiplyByInverseOfAttitude:?];
+    [attitude multiplyByInverseOfAttitude:?];
   }
 
   v62 = 0.0;
@@ -790,9 +790,9 @@ LABEL_43:
   v7 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  if (v6)
+  if (attitude)
   {
-    [v6 rotationMatrix];
+    [attitude rotationMatrix];
     v9 = *&v59;
     v8 = *(&v60 + 1);
     v7 = v62;
@@ -874,7 +874,7 @@ LABEL_43:
 
   if (vabdd_f64(v19, self->_previousShift) <= 0.0000999999975 && vabdd_f64(v16, self->_previousRotation) <= 0.0000999999975)
   {
-    v27 = v21 | v3;
+    v27 = v21 | updateCopy;
   }
 
   else
@@ -915,8 +915,8 @@ LABEL_26:
 
 LABEL_27:
   v32 = self->_holdShift / 1.57079633;
-  v33 = [(LevelPageViewController *)self view];
-  [v33 bounds];
+  view = [(LevelPageViewController *)self view];
+  [view bounds];
   v34 = CGRectGetHeight(v63) * 1.29999995;
 
   *&v35 = v14;
@@ -958,9 +958,9 @@ LABEL_27:
   divergenceLevelBottom = self->_divergenceLevelBottom;
   v49 = v55;
   [(CALayer *)divergenceLevelBottom setTransform:&v49];
-  v42 = [(UILabel *)self->_degreesLabel layer];
+  layer = [(UILabel *)self->_degreesLabel layer];
   v49 = v57;
-  [v42 setTransform:&v49];
+  [layer setTransform:&v49];
 
   bottomOuterCircle = self->_bottomOuterCircle;
   v49 = v53;
@@ -975,7 +975,7 @@ LABEL_27:
   v49 = v50;
   [(CAShapeLayer *)topInnerCircle setTransform:&v49];
   isHeld = self->_isHeld;
-  v48 = [(UIView *)self->_ticContainer layer];
+  layer2 = [(UIView *)self->_ticContainer layer];
   if (isHeld)
   {
     v49 = v56;
@@ -986,7 +986,7 @@ LABEL_27:
     CATransform3DMakeRotation(&v49, v18, 0.0, 0.0, 1.0);
   }
 
-  [v48 setTransform:&v49];
+  [layer2 setTransform:&v49];
 
   +[CATransaction commit];
 LABEL_31:
@@ -1000,32 +1000,32 @@ LABEL_31:
   v39.super_class = LevelPageViewController;
   [(LevelPageViewController *)&v39 viewWillLayoutSubviews];
   degreesLabel = self->_degreesLabel;
-  v4 = [(LevelPageViewController *)self view];
-  [v4 center];
+  view = [(LevelPageViewController *)self view];
+  [view center];
   [(UILabel *)degreesLabel setCenter:?];
 
   bottomOuterCircle = self->_bottomOuterCircle;
-  v6 = [(LevelPageViewController *)self view];
-  [v6 center];
+  view2 = [(LevelPageViewController *)self view];
+  [view2 center];
   [(CAShapeLayer *)bottomOuterCircle setPosition:?];
 
   bottomInnerCircle = self->_bottomInnerCircle;
-  v8 = [(LevelPageViewController *)self view];
-  [v8 center];
+  view3 = [(LevelPageViewController *)self view];
+  [view3 center];
   [(CAShapeLayer *)bottomInnerCircle setPosition:?];
 
   topOuterCircle = self->_topOuterCircle;
-  v10 = [(LevelPageViewController *)self view];
-  [v10 center];
+  view4 = [(LevelPageViewController *)self view];
+  [view4 center];
   [(CAShapeLayer *)topOuterCircle setPosition:?];
 
   topInnerCircle = self->_topInnerCircle;
-  v12 = [(LevelPageViewController *)self view];
-  [v12 center];
+  view5 = [(LevelPageViewController *)self view];
+  [view5 center];
   [(CAShapeLayer *)topInnerCircle setPosition:?];
 
-  v13 = [(LevelPageViewController *)self view];
-  [v13 bounds];
+  view6 = [(LevelPageViewController *)self view];
+  [view6 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1119,11 +1119,11 @@ LABEL_31:
   [(LevelPageViewController *)self updateLevelWithForcedInterfaceUpdate:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = LevelPageViewController;
-  [(LevelPageViewController *)&v10 viewWillAppear:a3];
+  [(LevelPageViewController *)&v10 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"userDefaultsChanged:" name:NSUserDefaultsDidChangeNotification object:0];
 
@@ -1141,11 +1141,11 @@ LABEL_31:
   [(LevelPageViewController *)self notifyViewShown];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = LevelPageViewController;
-  [(LevelPageViewController *)&v10 viewDidDisappear:a3];
+  [(LevelPageViewController *)&v10 viewDidDisappear:disappear];
   [(UIImpactFeedbackGenerator *)self->_impactGenerator deactivate];
   impactGenerator = self->_impactGenerator;
   self->_impactGenerator = 0;
@@ -1166,22 +1166,22 @@ LABEL_31:
   [(LevelPageViewController *)self notifyViewHidden];
 }
 
-- (void)updateTicsForOrientation:(int64_t)a3
+- (void)updateTicsForOrientation:(int64_t)orientation
 {
-  v4 = (a3 - 5) < 0xFFFFFFFFFFFFFFFCLL;
+  v4 = (orientation - 5) < 0xFFFFFFFFFFFFFFFCLL;
   [(CALayer *)self->_leftLevelTic setHidden:v4];
   rightLevelTic = self->_rightLevelTic;
 
   [(CALayer *)rightLevelTic setHidden:v4];
 }
 
-- (void)userDefaultsChanged:(id)a3
+- (void)userDefaultsChanged:(id)changed
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   self->_zeroRange = [v4 BOOLForKey:@"0.5"];
 }
 
-- (void)toggleHold:(id)a3
+- (void)toggleHold:(id)hold
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
@@ -1219,9 +1219,9 @@ LABEL_31:
 
     else
     {
-      v5 = [(CMMotionManager *)self->_manager deviceMotion];
-      v6 = [v5 attitude];
-      [(LevelPageViewController *)self setHoldAttitude:v6];
+      deviceMotion = [(CMMotionManager *)self->_manager deviceMotion];
+      attitude = [deviceMotion attitude];
+      [(LevelPageViewController *)self setHoldAttitude:attitude];
     }
   }
 

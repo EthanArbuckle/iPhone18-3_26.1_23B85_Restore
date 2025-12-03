@@ -1,6 +1,6 @@
 @interface T1ReadyBlock
-+ (id)readyBlockWithNad:(unsigned __int8)a3 sequence:(unsigned __int8)a4 status:(char)a5 redundancyCode:(char)a6;
-- (T1ReadyBlock)initWithData:(id)a3;
++ (id)readyBlockWithNad:(unsigned __int8)nad sequence:(unsigned __int8)sequence status:(char)status redundancyCode:(char)code;
+- (T1ReadyBlock)initWithData:(id)data;
 - (char)status;
 - (id)description;
 - (id)statusStr;
@@ -8,11 +8,11 @@
 
 @implementation T1ReadyBlock
 
-- (T1ReadyBlock)initWithData:(id)a3
+- (T1ReadyBlock)initWithData:(id)data
 {
   v8.receiver = self;
   v8.super_class = T1ReadyBlock;
-  v3 = [(T1TPDUBlock *)&v8 initWithData:a3 needAck:0];
+  v3 = [(T1TPDUBlock *)&v8 initWithData:data needAck:0];
   v4 = v3;
   if (!v3)
   {
@@ -73,25 +73,25 @@ LABEL_10:
   v4 = [(T1TPDUBlock *)&v7 description];
   [v3 appendFormat:@"{ %@", v4];
 
-  v5 = [(T1ReadyBlock *)self statusStr];
-  [v3 appendFormat:@"status: %@ }", v5];
+  statusStr = [(T1ReadyBlock *)self statusStr];
+  [v3 appendFormat:@"status: %@ }", statusStr];
 
   return v3;
 }
 
-+ (id)readyBlockWithNad:(unsigned __int8)a3 sequence:(unsigned __int8)a4 status:(char)a5 redundancyCode:(char)a6
++ (id)readyBlockWithNad:(unsigned __int8)nad sequence:(unsigned __int8)sequence status:(char)status redundancyCode:(char)code
 {
-  v6 = a6;
-  v8 = a4;
-  v20 = a3;
-  if (a5 >= 3)
+  codeCopy = code;
+  sequenceCopy = sequence;
+  nadCopy = nad;
+  if (status >= 3)
   {
     [NSException raise:NSInvalidArgumentException format:@"Unsupported operation parameter"];
   }
 
   v9 = +[NSMutableData data];
-  [v9 appendBytes:&v20 length:1];
-  if (v8)
+  [v9 appendBytes:&nadCopy length:1];
+  if (sequenceCopy)
   {
     v10 = -112;
   }
@@ -101,11 +101,11 @@ LABEL_10:
     v10 = 0x80;
   }
 
-  v19 = v10 | a5;
+  v19 = v10 | status;
   [v9 appendBytes:&v19 length:1];
   v18 = 0;
   [v9 appendBytes:&v18 length:1];
-  if (v6)
+  if (codeCopy)
   {
     v16 = [RedundancyCheck crc16:v9];
     v11 = &v16;

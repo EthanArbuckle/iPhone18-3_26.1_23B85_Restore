@@ -3,16 +3,16 @@
 - (BOOL)shouldRampUp;
 - (VCVideoStreamOWRDLossEventRateControl)init;
 - (id)className;
-- (int)lossEventCountThresholdForBitrate:(unsigned int)a3;
+- (int)lossEventCountThresholdForBitrate:(unsigned int)bitrate;
 - (unsigned)rampDownTier;
 - (unsigned)rampUpTier;
-- (void)calculateOWRDWithTimestamp:(unsigned int)a3 sampleRate:(unsigned int)a4 time:(double)a5;
-- (void)doRateControlWithTime:(double)a3 roundTripTime:(double)a4 packetLossRate:(double)a5 operatingTierIndex:(unsigned __int16)a6 averageReceivedBitrate:(unsigned int)a7;
-- (void)printRateControlFullInfoWithLogDump:(void *)a3 time:(double)a4 videoStall:(BOOL)a5 videoFrozenDuration:(double)a6 averageTargetBitrate:(unsigned int)a7;
-- (void)setMaxTierIndex:(unsigned __int16)a3 minTierIndex:(unsigned __int16)a4;
-- (void)stateChange:(int)a3;
+- (void)calculateOWRDWithTimestamp:(unsigned int)timestamp sampleRate:(unsigned int)rate time:(double)time;
+- (void)doRateControlWithTime:(double)time roundTripTime:(double)tripTime packetLossRate:(double)rate operatingTierIndex:(unsigned __int16)index averageReceivedBitrate:(unsigned int)bitrate;
+- (void)printRateControlFullInfoWithLogDump:(void *)dump time:(double)time videoStall:(BOOL)stall videoFrozenDuration:(double)duration averageTargetBitrate:(unsigned int)bitrate;
+- (void)setMaxTierIndex:(unsigned __int16)index minTierIndex:(unsigned __int16)tierIndex;
+- (void)stateChange:(int)change;
 - (void)stateEnter;
-- (void)updatePacketLossRate:(double)a3 time:(double)a4;
+- (void)updatePacketLossRate:(double)rate time:(double)time;
 @end
 
 @implementation VCVideoStreamOWRDLossEventRateControl
@@ -47,24 +47,24 @@
   return v3;
 }
 
-- (void)setMaxTierIndex:(unsigned __int16)a3 minTierIndex:(unsigned __int16)a4
+- (void)setMaxTierIndex:(unsigned __int16)index minTierIndex:(unsigned __int16)tierIndex
 {
-  self->_maxTierIndex = a3;
-  self->_minTierIndex = a4;
-  self->_currentTierIndex = a4;
+  self->_maxTierIndex = index;
+  self->_minTierIndex = tierIndex;
+  self->_currentTierIndex = tierIndex;
   self->_state = 2;
 }
 
-- (void)doRateControlWithTime:(double)a3 roundTripTime:(double)a4 packetLossRate:(double)a5 operatingTierIndex:(unsigned __int16)a6 averageReceivedBitrate:(unsigned int)a7
+- (void)doRateControlWithTime:(double)time roundTripTime:(double)tripTime packetLossRate:(double)rate operatingTierIndex:(unsigned __int16)index averageReceivedBitrate:(unsigned int)bitrate
 {
   if (self->_state != 3)
   {
     self->_rampUpStatus = 0;
-    self->_rateControlTime = a3;
-    self->_roundTripTime = a4;
-    self->_averageReceivedBitrate = a7;
-    [(VCVideoStreamOWRDLossEventRateControl *)self updatePacketLossRate:a5 time:a3];
-    self->_currentTierIndex = a6;
+    self->_rateControlTime = time;
+    self->_roundTripTime = tripTime;
+    self->_averageReceivedBitrate = bitrate;
+    [(VCVideoStreamOWRDLossEventRateControl *)self updatePacketLossRate:rate time:time];
+    self->_currentTierIndex = index;
     state = self->_state;
     if (state)
     {
@@ -74,8 +74,8 @@
         if ([(VCVideoStreamOWRDLossEventRateControl *)self shouldRampDown])
         {
           self->_currentTierIndex = [(VCVideoStreamOWRDLossEventRateControl *)self rampDownTier];
-          self->_rampUpFrozenTime = a3;
-          rampUpFrozenTime = a3;
+          self->_rampUpFrozenTime = time;
+          rampUpFrozenTime = time;
         }
 
         else
@@ -83,7 +83,7 @@
           rampUpFrozenTime = self->_rampUpFrozenTime;
         }
 
-        if (a3 - rampUpFrozenTime <= self->_rampUpFrozenDuration)
+        if (time - rampUpFrozenTime <= self->_rampUpFrozenDuration)
         {
           goto LABEL_20;
         }
@@ -102,10 +102,10 @@ LABEL_20:
       {
         self->_currentTierIndex = [(VCVideoStreamOWRDLossEventRateControl *)self rampDownTier];
 LABEL_13:
-        v13 = self;
+        selfCopy2 = self;
         v14 = 0;
 LABEL_14:
-        [(VCVideoStreamOWRDLossEventRateControl *)v13 stateChange:v14];
+        [(VCVideoStreamOWRDLossEventRateControl *)selfCopy2 stateChange:v14];
         goto LABEL_20;
       }
 
@@ -114,7 +114,7 @@ LABEL_14:
         goto LABEL_20;
       }
 
-      v12 = [(VCVideoStreamOWRDLossEventRateControl *)self rampUpTier];
+      rampUpTier = [(VCVideoStreamOWRDLossEventRateControl *)self rampUpTier];
     }
 
     else
@@ -127,31 +127,31 @@ LABEL_14:
         }
 
         self->_currentTierIndex = [(VCVideoStreamOWRDLossEventRateControl *)self rampUpTier];
-        v13 = self;
+        selfCopy2 = self;
         v14 = 1;
         goto LABEL_14;
       }
 
-      v12 = [(VCVideoStreamOWRDLossEventRateControl *)self rampDownTier];
+      rampUpTier = [(VCVideoStreamOWRDLossEventRateControl *)self rampDownTier];
     }
 
-    self->_currentTierIndex = v12;
+    self->_currentTierIndex = rampUpTier;
     goto LABEL_20;
   }
 }
 
-- (void)printRateControlFullInfoWithLogDump:(void *)a3 time:(double)a4 videoStall:(BOOL)a5 videoFrozenDuration:(double)a6 averageTargetBitrate:(unsigned int)a7
+- (void)printRateControlFullInfoWithLogDump:(void *)dump time:(double)time videoStall:(BOOL)stall videoFrozenDuration:(double)duration averageTargetBitrate:(unsigned int)bitrate
 {
-  if (a3)
+  if (dump)
   {
-    VRLogfilePrintWithTimestamp(a3, "%8.3f/%04X:\t%.4f\t%.4f\t%.4f\t%.4f %c\tRTT:%-4u\tPLR:%4.2f@%.1f\tRRx:0\tMBL:0\t%3u/%3u\t 0:0/0  0:0/0 CS: 0 0 0 BB: %u\t%d\t0\t UAT S _\t%d\n", a3, a5, *&a7, v7, v8, v9, SLOBYTE(a4));
+    VRLogfilePrintWithTimestamp(dump, "%8.3f/%04X:\t%.4f\t%.4f\t%.4f\t%.4f %c\tRTT:%-4u\tPLR:%4.2f@%.1f\tRRx:0\tMBL:0\t%3u/%3u\t 0:0/0  0:0/0 CS: 0 0 0 BB: %u\t%d\t0\t UAT S _\t%d\n", dump, stall, *&bitrate, v7, v8, v9, SLOBYTE(time));
   }
 }
 
-- (void)stateChange:(int)a3
+- (void)stateChange:(int)change
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != change)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -174,13 +174,13 @@ LABEL_14:
         v19 = 1024;
         v20 = state;
         v21 = 1024;
-        v22 = a3;
+        changeCopy = change;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s:%d Exiting state:%d Entering state:%d", &v9, 0x38u);
       }
     }
 
     [(VCVideoStreamOWRDLossEventRateControl *)self stateExit];
-    self->_state = a3;
+    self->_state = change;
     [(VCVideoStreamOWRDLossEventRateControl *)self stateEnter];
   }
 }
@@ -221,8 +221,8 @@ LABEL_14:
 {
   v3 = self->_owrd >= self->_rampDownOWRDThreshold;
   v4 = g_adwTxRateTiers[self->_currentTierIndex];
-  v5 = [(VCVideoStreamOWRDLossEventRateControl *)self lossEventCount];
-  if (v5 >= [(VCVideoStreamOWRDLossEventRateControl *)self lossEventCountThresholdForBitrate:v4])
+  lossEventCount = [(VCVideoStreamOWRDLossEventRateControl *)self lossEventCount];
+  if (lossEventCount >= [(VCVideoStreamOWRDLossEventRateControl *)self lossEventCountThresholdForBitrate:v4])
   {
     [(VCVideoStreamOWRDLossEventRateControl *)self resetLossEventBuffer];
     return 1;
@@ -256,12 +256,12 @@ LABEL_14:
   return result;
 }
 
-- (void)updatePacketLossRate:(double)a3 time:(double)a4
+- (void)updatePacketLossRate:(double)rate time:(double)time
 {
-  self->_packetLossRate = a3;
+  self->_packetLossRate = rate;
   lossEventBuffer = self->_lossEventBuffer;
   lossEventBufferIndex = self->_lossEventBufferIndex;
-  if (self->_rampDownLossRateThreshold >= a3)
+  if (self->_rampDownLossRateThreshold >= rate)
   {
     lossEventBuffer[lossEventBufferIndex] = 0;
   }
@@ -269,7 +269,7 @@ LABEL_14:
   else
   {
     lossEventBuffer[lossEventBufferIndex] = 1;
-    self->_lastLossEventTime = a4;
+    self->_lastLossEventTime = time;
   }
 
   v6 = lossEventBufferIndex + 1;
@@ -284,9 +284,9 @@ LABEL_14:
   self->_lossEventBufferIndex = v9;
 }
 
-- (int)lossEventCountThresholdForBitrate:(unsigned int)a3
+- (int)lossEventCountThresholdForBitrate:(unsigned int)bitrate
 {
-  if (self->_rampDownLossEventBitrateThreshold <= a3)
+  if (self->_rampDownLossEventBitrateThreshold <= bitrate)
   {
     return 1;
   }
@@ -297,26 +297,26 @@ LABEL_14:
   }
 }
 
-- (void)calculateOWRDWithTimestamp:(unsigned int)a3 sampleRate:(unsigned int)a4 time:(double)a5
+- (void)calculateOWRDWithTimestamp:(unsigned int)timestamp sampleRate:(unsigned int)rate time:(double)time
 {
   v45 = *MEMORY[0x1E69E9840];
   firstSendTimestamp = self->_firstSendTimestamp;
   if (!firstSendTimestamp)
   {
-    self->_firstSendTimestamp = a3;
-    firstSendTimestamp = a3;
+    self->_firstSendTimestamp = timestamp;
+    firstSendTimestamp = timestamp;
   }
 
   firstReceiveTime = self->_firstReceiveTime;
   if (firstReceiveTime == 0.0)
   {
-    self->_firstReceiveTime = a5;
-    firstReceiveTime = a5;
+    self->_firstReceiveTime = time;
+    firstReceiveTime = time;
   }
 
-  if (self->_previousSendTimestamp < a3)
+  if (self->_previousSendTimestamp < timestamp)
   {
-    v11 = a3 - firstSendTimestamp;
+    v11 = timestamp - firstSendTimestamp;
     previousTimestampDiff = self->_previousTimestampDiff;
     if (v11 - previousTimestampDiff <= 0x7FFFFFFE)
     {
@@ -345,8 +345,8 @@ LABEL_14:
       self->_previousTimestampDiff = v11;
     }
 
-    v15 = a5 - firstReceiveTime - (v11 - self->_sendTimestampWrappedAround) / a4;
-    self->_previousSendTimestamp = a3;
+    v15 = time - firstReceiveTime - (v11 - self->_sendTimestampWrappedAround) / rate;
+    self->_previousSendTimestamp = timestamp;
     shortAverageLag = self->_shortAverageLag;
     if (shortAverageLag == 0.0 || (longAverageLag = self->_longAverageLag, longAverageLag == 0.0))
     {
@@ -389,9 +389,9 @@ LABEL_14:
             v39 = 1024;
             v40 = 345;
             v41 = 1024;
-            *v42 = a3;
+            *v42 = timestamp;
             *&v42[4] = 2048;
-            *&v42[6] = a5;
+            *&v42[6] = time;
             *&v42[14] = 2048;
             *&v42[16] = v15;
             *&v42[24] = 2048;
@@ -416,9 +416,9 @@ LABEL_14:
           v39 = 1024;
           v40 = 345;
           v41 = 1024;
-          *v42 = a3;
+          *v42 = timestamp;
           *&v42[4] = 2048;
-          *&v42[6] = a5;
+          *&v42[6] = time;
           *&v42[14] = 2048;
           *&v42[16] = v15;
           *&v42[24] = 2048;

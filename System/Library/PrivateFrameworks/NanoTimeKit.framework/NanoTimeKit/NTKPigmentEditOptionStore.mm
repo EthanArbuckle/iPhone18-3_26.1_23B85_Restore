@@ -1,43 +1,43 @@
 @interface NTKPigmentEditOptionStore
 + (NTKPigmentEditOptionStore)sharedInstance;
-- (BOOL)hasAddableCollectionsForDomain:(id)a3 bundle:(id)a4 slot:(id)a5;
+- (BOOL)hasAddableCollectionsForDomain:(id)domain bundle:(id)bundle slot:(id)slot;
 - (BOOL)isCacheRussiaLocaleStateChanged;
 - (BOOL)shouldClearPersistanceStoreCache;
 - (BOOL)shouldForceResetingPersistentCache;
 - (NSDictionary)sharedCollections;
 - (NTKPigmentEditOptionStore)init;
-- (id)_companion_loadPigmentSetForDomain:(id)a3 bundle:(id)a4;
-- (id)_loadPigmentSetForDomain:(id)a3 bundle:(id)a4;
-- (id)_migratedOptionForInvalidOption:(id)a3 collection:(id)a4;
-- (id)_normalizeOptionForOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6;
+- (id)_companion_loadPigmentSetForDomain:(id)domain bundle:(id)bundle;
+- (id)_loadPigmentSetForDomain:(id)domain bundle:(id)bundle;
+- (id)_migratedOptionForInvalidOption:(id)option collection:(id)collection;
+- (id)_normalizeOptionForOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot;
 - (id)_threadunsafe_sharedCollections;
-- (id)_watch_loadPigmentSetForDomain:(id)a3 bundle:(id)a4;
-- (id)colorOptionsForDomain:(id)a3 bundle:(id)a4 slot:(id)a5;
-- (id)defaultColorOptionForDomain:(id)a3 bundle:(id)a4 slot:(id)a5;
-- (id)defaultGalleryColorsForDomain:(id)a3 bundle:(id)a4;
-- (id)fulfilledOptionForOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6;
-- (id)migratedOptionForInvalidOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6;
-- (id)optionAtIndex:(unint64_t)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6;
-- (id)pigmentSetForDomain:(id)a3 bundle:(id)a4;
-- (unint64_t)indexOfOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6;
-- (unint64_t)numberOfOptionsForDomain:(id)a3 bundle:(id)a4 slot:(id)a5;
-- (void)_autoSelectPigmentsForSharedCollections:(id)a3;
-- (void)_autoSelectPigmentsFromFacePigmentSet:(id)a3;
+- (id)_watch_loadPigmentSetForDomain:(id)domain bundle:(id)bundle;
+- (id)colorOptionsForDomain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (id)defaultColorOptionForDomain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (id)defaultGalleryColorsForDomain:(id)domain bundle:(id)bundle;
+- (id)fulfilledOptionForOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (id)migratedOptionForInvalidOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (id)optionAtIndex:(unint64_t)index domain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (id)pigmentSetForDomain:(id)domain bundle:(id)bundle;
+- (unint64_t)indexOfOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (unint64_t)numberOfOptionsForDomain:(id)domain bundle:(id)bundle slot:(id)slot;
+- (void)_autoSelectPigmentsForSharedCollections:(id)collections;
+- (void)_autoSelectPigmentsFromFacePigmentSet:(id)set;
 - (void)_companion_setupPersistentStorage;
 - (void)_setupPlistLoader;
 - (void)_threadunsafe_resetCache;
-- (void)addListener:(id)a3 forDomain:(id)a4;
+- (void)addListener:(id)listener forDomain:(id)domain;
 - (void)colorBundleContentChanged;
 - (void)faceBundlesUpdated;
 - (void)handleActiveDeviceChangedNotification;
 - (void)notifyListenersStoreContentChanged;
-- (void)removeListener:(id)a3 forDomain:(id)a4;
+- (void)removeListener:(id)listener forDomain:(id)domain;
 - (void)resetCacheAndNotifyListeners;
 - (void)savePersistentCacheVersion;
 - (void)sensitiveUIStateChanged;
-- (void)setIgnoreSensitiveUIItems:(BOOL)a3;
-- (void)setIncludesAllDeviceSpecificColors:(BOOL)a3;
-- (void)setPersistenceCacheEnabled:(BOOL)a3;
+- (void)setIgnoreSensitiveUIItems:(BOOL)items;
+- (void)setIncludesAllDeviceSpecificColors:(BOOL)colors;
+- (void)setPersistenceCacheEnabled:(BOOL)enabled;
 @end
 
 @implementation NTKPigmentEditOptionStore
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = __43__NTKPigmentEditOptionStore_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_9 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_9, block);
@@ -75,14 +75,14 @@ void __43__NTKPigmentEditOptionStore_sharedInstance__block_invoke(uint64_t a1)
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v5 = [v4 device];
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
     device = v3->_device;
-    v3->_device = v5;
+    v3->_device = device;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     listenersByDomain = v3->_listenersByDomain;
-    v3->_listenersByDomain = v7;
+    v3->_listenersByDomain = dictionary;
 
     v9 = objc_alloc_init(MEMORY[0x277CBEA78]);
     cache = v3->_cache;
@@ -100,8 +100,8 @@ void __43__NTKPigmentEditOptionStore_sharedInstance__block_invoke(uint64_t a1)
     v3->_persistenceCacheEnabled = CLKIsClockFaceApp();
     [(NTKPigmentEditOptionStore *)v3 _setupPlistLoader];
     [(NTKPigmentEditOptionStore *)v3 _companion_setupPersistentStorage];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v3 selector:sel_colorBundleContentChanged name:@"NTKColorBundleContentChangedNotificationName" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_colorBundleContentChanged name:@"NTKColorBundleContentChangedNotificationName" object:0];
   }
 
   return v3;
@@ -114,15 +114,15 @@ void __43__NTKPigmentEditOptionStore_sharedInstance__block_invoke(uint64_t a1)
   plistLoader = self->_plistLoader;
   self->_plistLoader = v3;
 
-  v5 = [MEMORY[0x277CBBB70] sharedMonitor];
-  -[NTKPlistPigmentEditOptionLoader setIgnoreSensitiveUIItems:](self->_plistLoader, "setIgnoreSensitiveUIItems:", [v5 isSensitiveUIEnabled] ^ 1);
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  -[NTKPlistPigmentEditOptionLoader setIgnoreSensitiveUIItems:](self->_plistLoader, "setIgnoreSensitiveUIItems:", [mEMORY[0x277CBBB70] isSensitiveUIEnabled] ^ 1);
 
-  v6 = [MEMORY[0x277CBBB70] sharedMonitor];
-  [v6 addSensitiveUIObserver:self];
+  mEMORY[0x277CBBB70]2 = [MEMORY[0x277CBBB70] sharedMonitor];
+  [mEMORY[0x277CBBB70]2 addSensitiveUIObserver:self];
 
-  v7 = [(CLKDevice *)self->_device deviceBrand];
-  v8 = v7;
-  if (v7 && [v7 integerValue])
+  deviceBrand = [(CLKDevice *)self->_device deviceBrand];
+  v8 = deviceBrand;
+  if (deviceBrand && [deviceBrand integerValue])
   {
     [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader setSku:v8];
     v9 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
@@ -135,61 +135,61 @@ void __43__NTKPigmentEditOptionStore_sharedInstance__block_invoke(uint64_t a1)
     }
   }
 
-  v11 = [(CLKDevice *)self->_device materialType];
-  if (v11)
+  materialType = [(CLKDevice *)self->_device materialType];
+  if (materialType)
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:materialType];
     [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader setClhs:v12];
 
     v13 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader clhs];
+      clhs = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader clhs];
       v23 = 138543362;
-      v24 = v14;
+      v24 = clhs;
       _os_log_impl(&dword_22D9C5000, v13, OS_LOG_TYPE_DEFAULT, "#store Plist loader configured with material %{public}@", &v23, 0xCu);
     }
   }
 
-  v15 = [(CLKDevice *)self->_device productFamilyType];
-  if (v15 != -1)
+  productFamilyType = [(CLKDevice *)self->_device productFamilyType];
+  if (productFamilyType != -1)
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:productFamilyType];
     [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader setFamily:v16];
 
     v17 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader family];
+      family = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader family];
       v23 = 138543362;
-      v24 = v18;
+      v24 = family;
       _os_log_impl(&dword_22D9C5000, v17, OS_LOG_TYPE_DEFAULT, "#store Plist loader configured with family %{public}@", &v23, 0xCu);
     }
   }
 
   [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader setIncludesAllDeviceSpecificColors:NTKShowHardwareSpecificFaces()];
   v19 = +[NTKColorBundleLoader sharedInstance];
-  v20 = [v19 loadColorBundles];
-  [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader setAdditionalBundles:v20];
+  loadColorBundles = [v19 loadColorBundles];
+  [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader setAdditionalBundles:loadColorBundles];
 
   v21 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader additionalBundles];
+    additionalBundles = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader additionalBundles];
     v23 = 138543362;
-    v24 = v22;
+    v24 = additionalBundles;
     _os_log_impl(&dword_22D9C5000, v21, OS_LOG_TYPE_DEFAULT, "#store Additional color bundles loaded: %{public}@", &v23, 0xCu);
   }
 }
 
-- (void)setIncludesAllDeviceSpecificColors:(BOOL)a3
+- (void)setIncludesAllDeviceSpecificColors:(BOOL)colors
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __64__NTKPigmentEditOptionStore_setIncludesAllDeviceSpecificColors___block_invoke;
   v4[3] = &unk_27877F7E8;
   v4[4] = self;
-  v5 = a3;
+  colorsCopy = colors;
   _executeWithLock(&self->_lock, v4);
   [(NTKPigmentEditOptionStore *)self resetCacheAndNotifyListeners];
 }
@@ -201,14 +201,14 @@ void __64__NTKPigmentEditOptionStore_setIncludesAllDeviceSpecificColors___block_
   [v2 setIncludesAllDeviceSpecificColors:v1];
 }
 
-- (void)setIgnoreSensitiveUIItems:(BOOL)a3
+- (void)setIgnoreSensitiveUIItems:(BOOL)items
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__NTKPigmentEditOptionStore_setIgnoreSensitiveUIItems___block_invoke;
   v4[3] = &unk_27877F7E8;
   v4[4] = self;
-  v5 = a3;
+  itemsCopy = items;
   _executeWithLock(&self->_lock, v4);
   [(NTKPigmentEditOptionStore *)self resetCacheAndNotifyListeners];
 }
@@ -220,21 +220,21 @@ void __55__NTKPigmentEditOptionStore_setIgnoreSensitiveUIItems___block_invoke(ui
   [v2 setIgnoreSensitiveUIItems:v1];
 }
 
-- (void)setPersistenceCacheEnabled:(BOOL)a3
+- (void)setPersistenceCacheEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__NTKPigmentEditOptionStore_setPersistenceCacheEnabled___block_invoke;
   v3[3] = &unk_27877F7E8;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   _executeWithLock(&self->_lock, v3);
 }
 
 - (BOOL)isCacheRussiaLocaleStateChanged
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"NTKPigmentEditOptionStoreLocaleRussia"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"NTKPigmentEditOptionStoreLocaleRussia"];
 
   v5 = NTKGizmoOrCompanionAreRussian(self->_device);
   if (v4)
@@ -255,18 +255,18 @@ void __55__NTKPigmentEditOptionStore_setIgnoreSensitiveUIItems___block_invoke(ui
   v22 = *MEMORY[0x277D85DE8];
   if (self->_persistenceCacheEnabled)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 objectForKey:@"NTKPigmentEditOptionStoreBuildVersion"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"NTKPigmentEditOptionStoreBuildVersion"];
 
     v5 = NTKBuildVersion();
     v6 = [v4 isEqualToString:v5] ^ 1;
-    v7 = [(NTKPigmentEditOptionStore *)self shouldForceResetingPersistentCache];
-    v8 = [(NTKPigmentEditOptionStore *)self isCacheRussiaLocaleStateChanged];
-    v9 = v6 | (v7 || v8);
+    shouldForceResetingPersistentCache = [(NTKPigmentEditOptionStore *)self shouldForceResetingPersistentCache];
+    isCacheRussiaLocaleStateChanged = [(NTKPigmentEditOptionStore *)self isCacheRussiaLocaleStateChanged];
+    v9 = v6 | (shouldForceResetingPersistentCache || isCacheRussiaLocaleStateChanged);
     if (v9)
     {
-      v10 = v8;
-      if (v7)
+      v10 = isCacheRussiaLocaleStateChanged;
+      if (shouldForceResetingPersistentCache)
       {
         [(NTKPigmentEditOptionStore *)self savePersistentCacheVersion];
       }
@@ -277,14 +277,14 @@ void __55__NTKPigmentEditOptionStore_setIgnoreSensitiveUIItems___block_invoke(ui
         v16 = 134218496;
         v17 = v6;
         v18 = 2048;
-        v19 = v7;
+        v19 = shouldForceResetingPersistentCache;
         v20 = 2048;
         v21 = v10;
         _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_INFO, "#store It should clear persistent cache. versionChanged: %lu, force: %lu, LocaleChanged: %lu", &v16, 0x20u);
       }
 
-      v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v12 setObject:v5 forKey:@"NTKPigmentEditOptionStoreBuildVersion"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults2 setObject:v5 forKey:@"NTKPigmentEditOptionStoreBuildVersion"];
 
       if (!v10)
       {
@@ -293,8 +293,8 @@ void __55__NTKPigmentEditOptionStore_setIgnoreSensitiveUIItems___block_invoke(ui
       }
 
       v13 = [MEMORY[0x277CCABB0] numberWithBool:NTKGizmoOrCompanionAreRussian(self->_device)];
-      v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v14 setObject:v13 forKey:@"NTKPigmentEditOptionStoreLocaleRussia"];
+      standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults3 setObject:v13 forKey:@"NTKPigmentEditOptionStoreLocaleRussia"];
     }
 
     else
@@ -317,18 +317,18 @@ LABEL_14:
 
 - (void)savePersistentCacheVersion
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-  [v3 setObject:v2 forKey:@"NTKPigmentPersistentCacheVersionKey"];
+  [standardUserDefaults setObject:v2 forKey:@"NTKPigmentPersistentCacheVersionKey"];
 }
 
 - (BOOL)shouldForceResetingPersistentCache
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"NTKPigmentPersistentCacheVersionKey"];
-  v4 = [v3 integerValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"NTKPigmentPersistentCacheVersionKey"];
+  integerValue = [v3 integerValue];
 
-  if (v4)
+  if (integerValue)
   {
     return 1;
   }
@@ -342,11 +342,11 @@ LABEL_14:
   storageController = self->_storageController;
   self->_storageController = v3;
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_handleActiveDeviceChangedNotification name:*MEMORY[0x277CBB640] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleActiveDeviceChangedNotification name:*MEMORY[0x277CBB640] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_faceBundlesUpdated name:@"NTKFaceBundleManagerDidUpdateBundlesNotificationName" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_faceBundlesUpdated name:@"NTKFaceBundleManagerDidUpdateBundlesNotificationName" object:0];
 
   objc_initWeak(&location, self);
   v7 = +[NTKDarwinNotificationCenter defaultCenter];
@@ -378,11 +378,11 @@ void __62__NTKPigmentEditOptionStore__companion_setupPersistentStorage__block_in
   }
 }
 
-- (id)pigmentSetForDomain:(id)a3 bundle:(id)a4
+- (id)pigmentSetForDomain:(id)domain bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  domainCopy = domain;
+  bundleCopy = bundle;
+  if (domainCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -396,7 +396,7 @@ void __62__NTKPigmentEditOptionStore__companion_setupPersistentStorage__block_in
     v14[3] = &unk_278780498;
     v16 = &v17;
     v14[4] = self;
-    v8 = v6;
+    v8 = domainCopy;
     v15 = v8;
     _executeWithLock(&self->_lock, v14);
     objc_opt_class();
@@ -410,7 +410,7 @@ void __62__NTKPigmentEditOptionStore__companion_setupPersistentStorage__block_in
       v10 = v18[5];
       if (!v10)
       {
-        v11 = [(NTKPigmentEditOptionStore *)self _loadPigmentSetForDomain:v8 bundle:v7];
+        v11 = [(NTKPigmentEditOptionStore *)self _loadPigmentSetForDomain:v8 bundle:bundleCopy];
         v12 = v18[5];
         v18[5] = v11;
 
@@ -439,15 +439,15 @@ void __56__NTKPigmentEditOptionStore_pigmentSetForDomain_bundle___block_invoke(v
   *(v3 + 40) = v2;
 }
 
-- (id)colorOptionsForDomain:(id)a3 bundle:(id)a4 slot:(id)a5
+- (id)colorOptionsForDomain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v8 = a5;
-  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:a3 bundle:a4];
-  v10 = [v9 collectionForSlot:v8];
+  slotCopy = slot;
+  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domain bundle:bundle];
+  v10 = [v9 collectionForSlot:slotCopy];
 
-  v11 = [v10 allItems];
+  allItems = [v10 allItems];
 
-  return v11;
+  return allItems;
 }
 
 - (NSDictionary)sharedCollections
@@ -485,8 +485,8 @@ void __46__NTKPigmentEditOptionStore_sharedCollections__block_invoke(uint64_t a1
   sharedCollections = self->_sharedCollections;
   if (!sharedCollections)
   {
-    v4 = [(NTKPigmentPersistentStorageController *)self->_storageController sharedCollections];
-    if (!v4)
+    sharedCollections = [(NTKPigmentPersistentStorageController *)self->_storageController sharedCollections];
+    if (!sharedCollections)
     {
       v5 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -494,12 +494,12 @@ void __46__NTKPigmentEditOptionStore_sharedCollections__block_invoke(uint64_t a1
         [(NTKPigmentEditOptionStore *)v5 _threadunsafe_sharedCollections];
       }
 
-      v6 = [(NTKPigmentEditOptionStore *)self plistLoader];
-      v4 = [v6 loadSharedCollections];
+      plistLoader = [(NTKPigmentEditOptionStore *)self plistLoader];
+      sharedCollections = [plistLoader loadSharedCollections];
     }
 
     v7 = self->_sharedCollections;
-    self->_sharedCollections = v4;
+    self->_sharedCollections = sharedCollections;
 
     sharedCollections = self->_sharedCollections;
   }
@@ -507,19 +507,19 @@ void __46__NTKPigmentEditOptionStore_sharedCollections__block_invoke(uint64_t a1
   return sharedCollections;
 }
 
-- (id)_loadPigmentSetForDomain:(id)a3 bundle:(id)a4
+- (id)_loadPigmentSetForDomain:(id)domain bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = [(NTKPigmentEditOptionStore *)self _companion_loadPigmentSetForDomain:v6 bundle:a4];
+  domainCopy = domain;
+  v7 = [(NTKPigmentEditOptionStore *)self _companion_loadPigmentSetForDomain:domainCopy bundle:bundle];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__NTKPigmentEditOptionStore__loadPigmentSetForDomain_bundle___block_invoke;
   v13[3] = &unk_27877E238;
   v8 = v7;
   v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v16 = domainCopy;
+  v9 = domainCopy;
   _executeWithLock(&self->_lock, v13);
   v10 = v16;
   v11 = v8;
@@ -545,21 +545,21 @@ void __61__NTKPigmentEditOptionStore__loadPigmentSetForDomain_bundle___block_inv
   }
 }
 
-- (id)_watch_loadPigmentSetForDomain:(id)a3 bundle:(id)a4
+- (id)_watch_loadPigmentSetForDomain:(id)domain bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKPigmentEditOptionStore *)self sharedCollections];
-  v9 = [(NTKPigmentPersistentStorageController *)self->_storageController facePigmentSetForDomain:v6 sharedCollections:v8];
+  domainCopy = domain;
+  bundleCopy = bundle;
+  sharedCollections = [(NTKPigmentEditOptionStore *)self sharedCollections];
+  v9 = [(NTKPigmentPersistentStorageController *)self->_storageController facePigmentSetForDomain:domainCopy sharedCollections:sharedCollections];
   if (!v9)
   {
     v10 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [NTKPigmentEditOptionStore _watch_loadPigmentSetForDomain:v6 bundle:v10];
+      [NTKPigmentEditOptionStore _watch_loadPigmentSetForDomain:domainCopy bundle:v10];
     }
 
-    v9 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader parseColorOptionsForDomain:v6 bundle:v7 sharedCollections:v8];
+    v9 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader parseColorOptionsForDomain:domainCopy bundle:bundleCopy sharedCollections:sharedCollections];
     if (self->_persistenceCacheEnabled)
     {
       privateQueue = self->_privateQueue;
@@ -567,8 +567,8 @@ void __61__NTKPigmentEditOptionStore__loadPigmentSetForDomain_bundle___block_inv
       block[1] = 3221225472;
       block[2] = __67__NTKPigmentEditOptionStore__watch_loadPigmentSetForDomain_bundle___block_invoke;
       block[3] = &unk_27877E238;
-      v14 = v6;
-      v15 = self;
+      v14 = domainCopy;
+      selfCopy = self;
       v9 = v9;
       v16 = v9;
       dispatch_async(privateQueue, block);
@@ -590,12 +590,12 @@ uint64_t __67__NTKPigmentEditOptionStore__watch_loadPigmentSetForDomain_bundle__
   return [*(*(a1 + 40) + 64) persistFacePigmentSet:*(a1 + 48) deviceUUID:0];
 }
 
-- (id)_companion_loadPigmentSetForDomain:(id)a3 bundle:(id)a4
+- (id)_companion_loadPigmentSetForDomain:(id)domain bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKPigmentEditOptionStore *)self sharedCollections];
-  v9 = [(NTKPigmentPersistentStorageController *)self->_storageController facePigmentSetForDomain:v6 sharedCollections:v8];
+  domainCopy = domain;
+  bundleCopy = bundle;
+  sharedCollections = [(NTKPigmentEditOptionStore *)self sharedCollections];
+  v9 = [(NTKPigmentPersistentStorageController *)self->_storageController facePigmentSetForDomain:domainCopy sharedCollections:sharedCollections];
   v10 = v9;
   if (!v9 || ![v9 numberOfItemsForAllSlots])
   {
@@ -604,11 +604,11 @@ uint64_t __67__NTKPigmentEditOptionStore__watch_loadPigmentSetForDomain_bundle__
       v11 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [NTKPigmentEditOptionStore _companion_loadPigmentSetForDomain:v6 bundle:v11];
+        [NTKPigmentEditOptionStore _companion_loadPigmentSetForDomain:domainCopy bundle:v11];
       }
     }
 
-    v12 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader parseColorOptionsForDomain:v6 bundle:v7 sharedCollections:v8];
+    v12 = [(NTKPlistPigmentEditOptionLoader *)self->_plistLoader parseColorOptionsForDomain:domainCopy bundle:bundleCopy sharedCollections:sharedCollections];
 
     v10 = v12;
   }
@@ -616,21 +616,21 @@ uint64_t __67__NTKPigmentEditOptionStore__watch_loadPigmentSetForDomain_bundle__
   return v10;
 }
 
-- (void)_autoSelectPigmentsFromFacePigmentSet:(id)a3
+- (void)_autoSelectPigmentsFromFacePigmentSet:(id)set
 {
-  v7 = a3;
+  setCopy = set;
   if (CLKIsClockFaceApp())
   {
-    v4 = [v7 pigmentsFromMostRecentAddableCollectionForSlot:0];
+    v4 = [setCopy pigmentsFromMostRecentAddableCollectionForSlot:0];
     preferenceManager = self->_preferenceManager;
-    v6 = [v7 domain];
-    [(NTKPigmentPreferenceManager *)preferenceManager setAutoSelectedPigments:v4 forCollectionName:v6];
+    domain = [setCopy domain];
+    [(NTKPigmentPreferenceManager *)preferenceManager setAutoSelectedPigments:v4 forCollectionName:domain];
   }
 }
 
-- (void)_autoSelectPigmentsForSharedCollections:(id)a3
+- (void)_autoSelectPigmentsForSharedCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   if (CLKIsClockFaceApp())
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -638,7 +638,7 @@ uint64_t __67__NTKPigmentEditOptionStore__watch_loadPigmentSetForDomain_bundle__
     v5[2] = __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___block_invoke;
     v5[3] = &unk_278781A98;
     v5[4] = self;
-    [v4 enumerateKeysAndObjectsUsingBlock:v5];
+    [collectionsCopy enumerateKeysAndObjectsUsingBlock:v5];
   }
 }
 
@@ -654,129 +654,129 @@ void __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___b
   }
 }
 
-- (id)defaultColorOptionForDomain:(id)a3 bundle:(id)a4 slot:(id)a5
+- (id)defaultColorOptionForDomain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v8 = a5;
-  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:a3 bundle:a4];
-  v10 = [v9 collectionForSlot:v8];
+  slotCopy = slot;
+  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domain bundle:bundle];
+  v10 = [v9 collectionForSlot:slotCopy];
 
-  v11 = [v10 defaultOption];
+  defaultOption = [v10 defaultOption];
 
-  return v11;
+  return defaultOption;
 }
 
-- (unint64_t)numberOfOptionsForDomain:(id)a3 bundle:(id)a4 slot:(id)a5
+- (unint64_t)numberOfOptionsForDomain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v8 = a5;
-  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:a3 bundle:a4];
-  v10 = [v9 collectionForSlot:v8];
+  slotCopy = slot;
+  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domain bundle:bundle];
+  v10 = [v9 collectionForSlot:slotCopy];
 
   v11 = [v10 count];
   return v11;
 }
 
-- (unint64_t)indexOfOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6
+- (unint64_t)indexOfOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v10 = a3;
-  v11 = [(NTKPigmentEditOptionStore *)self colorOptionsForDomain:a4 bundle:a5 slot:a6];
-  v12 = [v11 indexOfObject:v10];
+  optionCopy = option;
+  v11 = [(NTKPigmentEditOptionStore *)self colorOptionsForDomain:domain bundle:bundle slot:slot];
+  v12 = [v11 indexOfObject:optionCopy];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[NTKPigmentEditOption defaultFraction];
-    v13 = [v10 copyWithColorFraction:?];
+    v13 = [optionCopy copyWithColorFraction:?];
     v12 = [v11 indexOfObject:v13];
   }
 
   return v12;
 }
 
-- (id)optionAtIndex:(unint64_t)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6
+- (id)optionAtIndex:(unint64_t)index domain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v7 = [(NTKPigmentEditOptionStore *)self colorOptionsForDomain:a4 bundle:a5 slot:a6];
-  if ([v7 count] <= a3)
+  v7 = [(NTKPigmentEditOptionStore *)self colorOptionsForDomain:domain bundle:bundle slot:slot];
+  if ([v7 count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:a3];
+    v8 = [v7 objectAtIndex:index];
   }
 
   return v8;
 }
 
-- (id)defaultGalleryColorsForDomain:(id)a3 bundle:(id)a4
+- (id)defaultGalleryColorsForDomain:(id)domain bundle:(id)bundle
 {
-  v4 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:a3 bundle:a4];
-  v5 = [v4 defaultGalleryColors];
+  v4 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domain bundle:bundle];
+  defaultGalleryColors = [v4 defaultGalleryColors];
 
-  return v5;
+  return defaultGalleryColors;
 }
 
-- (BOOL)hasAddableCollectionsForDomain:(id)a3 bundle:(id)a4 slot:(id)a5
+- (BOOL)hasAddableCollectionsForDomain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v8 = a5;
-  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:a3 bundle:a4];
-  v10 = [v9 collectionForSlot:v8];
+  slotCopy = slot;
+  v9 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domain bundle:bundle];
+  v10 = [v9 collectionForSlot:slotCopy];
 
   LOBYTE(self) = [v10 hasAddableCollection];
   return self;
 }
 
-- (id)fulfilledOptionForOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6
+- (id)fulfilledOptionForOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 isFromStore])
+  optionCopy = option;
+  domainCopy = domain;
+  bundleCopy = bundle;
+  slotCopy = slot;
+  if ([optionCopy isFromStore])
   {
-    v14 = v10;
+    v14 = optionCopy;
   }
 
   else
   {
-    v15 = [(NTKPigmentEditOptionStore *)self indexOfOption:v10 domain:v11 bundle:v12 slot:v13];
+    v15 = [(NTKPigmentEditOptionStore *)self indexOfOption:optionCopy domain:domainCopy bundle:bundleCopy slot:slotCopy];
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NTKPigmentEditOptionStore *)self _normalizeOptionForOption:v10 domain:v11 bundle:v12 slot:v13];
+      [(NTKPigmentEditOptionStore *)self _normalizeOptionForOption:optionCopy domain:domainCopy bundle:bundleCopy slot:slotCopy];
     }
 
     else
     {
-      [(NTKPigmentEditOptionStore *)self optionAtIndex:v15 domain:v11 bundle:v12 slot:v13];
+      [(NTKPigmentEditOptionStore *)self optionAtIndex:v15 domain:domainCopy bundle:bundleCopy slot:slotCopy];
     }
     v16 = ;
     v14 = v16;
-    if (!v16 || ([v16 colorFraction], v18 = v17, objc_msgSend(v10, "colorFraction"), v18 != v19) && (objc_msgSend(v10, "colorFraction"), v20 = objc_msgSend(v14, "copyWithColorFraction:"), v14, (v14 = v20) == 0))
+    if (!v16 || ([v16 colorFraction], v18 = v17, objc_msgSend(optionCopy, "colorFraction"), v18 != v19) && (objc_msgSend(optionCopy, "colorFraction"), v20 = objc_msgSend(v14, "copyWithColorFraction:"), v14, (v14 = v20) == 0))
     {
-      v21 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:v11 bundle:v12];
-      v22 = [v21 collectionForSlot:v13];
+      v21 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domainCopy bundle:bundleCopy];
+      v22 = [v21 collectionForSlot:slotCopy];
 
       v23 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [NTKPigmentEditOptionStore fulfilledOptionForOption:v10 domain:v22 bundle:v23 slot:?];
+        [NTKPigmentEditOptionStore fulfilledOptionForOption:optionCopy domain:v22 bundle:v23 slot:?];
       }
 
-      v14 = v10;
+      v14 = optionCopy;
     }
   }
 
   return v14;
 }
 
-- (id)migratedOptionForInvalidOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6
+- (id)migratedOptionForInvalidOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:v11 bundle:a5];
-  v14 = [v13 collectionForSlot:v12];
+  optionCopy = option;
+  domainCopy = domain;
+  slotCopy = slot;
+  v13 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domainCopy bundle:bundle];
+  v14 = [v13 collectionForSlot:slotCopy];
 
-  v15 = [(NTKPigmentEditOptionStore *)self _migratedOptionForInvalidOption:v10 collection:v14];
+  v15 = [(NTKPigmentEditOptionStore *)self _migratedOptionForInvalidOption:optionCopy collection:v14];
   v16 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   v17 = v16;
   if (v15)
@@ -784,44 +784,44 @@ void __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___b
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138543874;
-      v23 = v10;
+      v23 = optionCopy;
       v24 = 2114;
       v25 = v15;
       v26 = 2114;
-      v27 = v11;
+      v27 = domainCopy;
       _os_log_impl(&dword_22D9C5000, v17, OS_LOG_TYPE_DEFAULT, "#store Pigment option migrated from %{public}@ to %{public}@ - domain %{public}@", &v22, 0x20u);
     }
   }
 
   else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v14 allItems];
-    v20 = [v14 config];
-    v21 = [v20 migration];
+    allItems = [v14 allItems];
+    config = [v14 config];
+    migration = [config migration];
     v22 = 138544130;
-    v23 = v10;
+    v23 = optionCopy;
     v24 = 2114;
-    v25 = v11;
+    v25 = domainCopy;
     v26 = 2114;
-    v27 = v19;
+    v27 = allItems;
     v28 = 2114;
-    v29 = v21;
+    v29 = migration;
     _os_log_error_impl(&dword_22D9C5000, v17, OS_LOG_TYPE_ERROR, "#store Failed to migrate pigment option %{public}@ - domain %{public}@ - items:%{public}@ - migration: %{public}@", &v22, 0x2Au);
   }
 
   return v15;
 }
 
-- (id)_migratedOptionForInvalidOption:(id)a3 collection:(id)a4
+- (id)_migratedOptionForInvalidOption:(id)option collection:(id)collection
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 migration];
-  v8 = [v5 identifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  optionCopy = option;
+  collectionCopy = collection;
+  migration = [collectionCopy migration];
+  identifier = [optionCopy identifier];
+  v9 = [migration objectForKeyedSubscript:identifier];
 
-  if (v9 || ([v5 optionName], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKeyedSubscript:", v10), v9 = objc_claimAutoreleasedReturnValue(), v10, v9) || (v33 = 0, objc_msgSend(v5, "extractEffectiveCollectionName:effectiveOptionName:", 0, &v33), v11 = v33, objc_msgSend(v7, "objectForKeyedSubscript:", v11), v9 = objc_claimAutoreleasedReturnValue(), v11, v9))
+  if (v9 || ([optionCopy optionName], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(migration, "objectForKeyedSubscript:", v10), v9 = objc_claimAutoreleasedReturnValue(), v10, v9) || (v33 = 0, objc_msgSend(optionCopy, "extractEffectiveCollectionName:effectiveOptionName:", 0, &v33), v11 = v33, objc_msgSend(migration, "objectForKeyedSubscript:", v11), v9 = objc_claimAutoreleasedReturnValue(), v11, v9))
   {
     v31 = 0;
     v32 = 0;
@@ -832,13 +832,13 @@ void __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___b
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [v6 allItems];
-    v15 = [v14 countByEnumeratingWithState:&v27 objects:v34 count:16];
+    allItems = [collectionCopy allItems];
+    v15 = [allItems countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (v15)
     {
-      v22 = v7;
-      v23 = v6;
-      v24 = v5;
+      v22 = migration;
+      v23 = collectionCopy;
+      v24 = optionCopy;
       v16 = *v28;
       while (2)
       {
@@ -846,7 +846,7 @@ void __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___b
         {
           if (*v28 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allItems);
           }
 
           v18 = *(*(&v27 + 1) + 8 * i);
@@ -863,7 +863,7 @@ void __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___b
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v27 objects:v34 count:16];
+        v15 = [allItems countByEnumeratingWithState:&v27 objects:v34 count:16];
         if (v15)
         {
           continue;
@@ -873,9 +873,9 @@ void __69__NTKPigmentEditOptionStore__autoSelectPigmentsForSharedCollections___b
       }
 
 LABEL_16:
-      v6 = v23;
-      v5 = v24;
-      v7 = v22;
+      collectionCopy = v23;
+      optionCopy = v24;
+      migration = v22;
     }
   }
 
@@ -887,31 +887,31 @@ LABEL_16:
   return v15;
 }
 
-- (id)_normalizeOptionForOption:(id)a3 domain:(id)a4 bundle:(id)a5 slot:(id)a6
+- (id)_normalizeOptionForOption:(id)option domain:(id)domain bundle:(id)bundle slot:(id)slot
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:a4 bundle:a5];
-  v13 = [v12 collectionForSlot:v10];
+  slotCopy = slot;
+  optionCopy = option;
+  v12 = [(NTKPigmentEditOptionStore *)self pigmentSetForDomain:domain bundle:bundle];
+  v13 = [v12 collectionForSlot:slotCopy];
 
-  v14 = [v11 fullname];
+  fullname = [optionCopy fullname];
 
-  v15 = [v13 pigmentWithFullname:v14];
+  v15 = [v13 pigmentWithFullname:fullname];
 
   return v15;
 }
 
-- (void)addListener:(id)a3 forDomain:(id)a4
+- (void)addListener:(id)listener forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  domainCopy = domain;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__NTKPigmentEditOptionStore_addListener_forDomain___block_invoke;
   v11[3] = &unk_27877E238;
-  if (v7)
+  if (domainCopy)
   {
-    v8 = v7;
+    v8 = domainCopy;
   }
 
   else
@@ -921,8 +921,8 @@ LABEL_16:
 
   v11[4] = self;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = listenerCopy;
+  v9 = listenerCopy;
   v10 = v8;
   _executeWithLock(&self->_lock, v11);
 }
@@ -941,17 +941,17 @@ void __51__NTKPigmentEditOptionStore_addListener_forDomain___block_invoke(void *
   [v2 addObject:a1[6]];
 }
 
-- (void)removeListener:(id)a3 forDomain:(id)a4
+- (void)removeListener:(id)listener forDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  domainCopy = domain;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__NTKPigmentEditOptionStore_removeListener_forDomain___block_invoke;
   v11[3] = &unk_27877E238;
-  if (v7)
+  if (domainCopy)
   {
-    v8 = v7;
+    v8 = domainCopy;
   }
 
   else
@@ -961,8 +961,8 @@ void __51__NTKPigmentEditOptionStore_addListener_forDomain___block_invoke(void *
 
   v11[4] = self;
   v12 = v8;
-  v13 = v6;
-  v9 = v6;
+  v13 = listenerCopy;
+  v9 = listenerCopy;
   v10 = v8;
   _executeWithLock(&self->_lock, v11);
 }
@@ -1079,7 +1079,7 @@ void __54__NTKPigmentEditOptionStore_removeListener_forDomain___block_invoke(uin
   v8[2] = __63__NTKPigmentEditOptionStore_notifyListenersStoreContentChanged__block_invoke_3;
   v8[3] = &unk_278781B10;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   [v6 enumerateObjectsUsingBlock:v8];
 }

@@ -1,101 +1,101 @@
 @interface HAPAccessoryServerBrowserBTLE
 + (id)logCategory;
 - (BOOL)_canStartScan;
-- (BOOL)_delegateRespondsToSelector:(SEL)a3;
-- (BOOL)_hasPairedAccessoriesOfType:(unint64_t)a3;
-- (BOOL)_hasRecentlySeenAccessoriesWithIdentifiers:(id)a3;
-- (BOOL)_shouldCreateHAPAccessoryServerWithIdentifier:(id)a3 statusFlags:(id)a4 stateNumber:(id)a5 category:(id)a6 configNumber:(id)a7 name:(id)a8 forPeripheral:(id)a9 advertisementFormat:(unint64_t)a10 setupHash:(id)a11 stateChanged:(BOOL *)a12 connectReason:(unsigned __int8 *)a13;
+- (BOOL)_delegateRespondsToSelector:(SEL)selector;
+- (BOOL)_hasPairedAccessoriesOfType:(unint64_t)type;
+- (BOOL)_hasRecentlySeenAccessoriesWithIdentifiers:(id)identifiers;
+- (BOOL)_shouldCreateHAPAccessoryServerWithIdentifier:(id)identifier statusFlags:(id)flags stateNumber:(id)number category:(id)category configNumber:(id)configNumber name:(id)name forPeripheral:(id)peripheral advertisementFormat:(unint64_t)self0 setupHash:(id)self1 stateChanged:(BOOL *)self2 connectReason:(unsigned __int8 *)self3;
 - (BOOL)isPerformingGeneralScan;
 - (BOOL)remoteBrowsingAndScanEnabled;
 - (BOOL)remoteBrowsingEnabled;
-- (HAPAccessoryServerBrowserBTLE)initWithQueue:(id)a3;
+- (HAPAccessoryServerBrowserBTLE)initWithQueue:(id)queue;
 - (HAPAccessoryServerBrowserBTLEDelegate)delegate;
 - (HAPAccessoryServerBrowserWiProxBTLE)hapWiProxBLEBrowser;
-- (id)_bleAccessoryServerTupleForIdentifier:(id)a3;
-- (id)_blePeripheralForAccessoryServerIdentifier:(id)a3;
-- (id)_blePeripheralForCBPeripheral:(id)a3;
-- (id)_cachedCharacteristicForInstanceID:(id)a3 identifier:(id)a4;
-- (id)_cbPeripheralForHAPBLEPeripheral:(id)a3 routeMode:(unsigned __int8 *)a4;
-- (id)_cbPeripheralForPeripheralUUID:(id)a3 stableIdentifier:(id)a4 routeMode:(unsigned __int8 *)a5;
-- (id)_discoveredAccessoryServerTupleForBLEPeripheral:(id)a3 shouldMerge:(BOOL)a4;
-- (id)_recentlySeenPairedPeripheralTupleWithPeripheral:(id)a3;
-- (id)cachedAccessoryForIdentifier:(id)a3;
-- (id)hapCharacteristicsForEncryptedPayload:(id)a3 identifier:(id)a4 shouldConnect:(BOOL *)a5;
+- (id)_bleAccessoryServerTupleForIdentifier:(id)identifier;
+- (id)_blePeripheralForAccessoryServerIdentifier:(id)identifier;
+- (id)_blePeripheralForCBPeripheral:(id)peripheral;
+- (id)_cachedCharacteristicForInstanceID:(id)d identifier:(id)identifier;
+- (id)_cbPeripheralForHAPBLEPeripheral:(id)peripheral routeMode:(unsigned __int8 *)mode;
+- (id)_cbPeripheralForPeripheralUUID:(id)d stableIdentifier:(id)identifier routeMode:(unsigned __int8 *)mode;
+- (id)_discoveredAccessoryServerTupleForBLEPeripheral:(id)peripheral shouldMerge:(BOOL)merge;
+- (id)_recentlySeenPairedPeripheralTupleWithPeripheral:(id)peripheral;
+- (id)cachedAccessoryForIdentifier:(id)identifier;
+- (id)hapCharacteristicsForEncryptedPayload:(id)payload identifier:(id)identifier shouldConnect:(BOOL *)connect;
 - (id)peripheralsPendingConnection;
 - (id)peripheralsWithConnectionRequests;
-- (id)retrieveCBPeripheralWithUUID:(id)a3 blePeripheral:(id)a4;
+- (id)retrieveCBPeripheralWithUUID:(id)d blePeripheral:(id)peripheral;
 - (int64_t)scanState;
-- (unint64_t)_parseAdvertisementData:(id)a3 forPeripheral:(id)a4 name:(id *)a5 pairingUsername:(id *)a6 statusFlags:(id *)a7 stateNumber:(id *)a8 category:(id *)a9 configNumber:(id *)a10 setupHash:(id *)a11;
+- (unint64_t)_parseAdvertisementData:(id)data forPeripheral:(id)peripheral name:(id *)name pairingUsername:(id *)username statusFlags:(id *)flags stateNumber:(id *)number category:(id *)category configNumber:(id *)self0 setupHash:(id *)self1;
 - (unint64_t)qosLimits;
-- (void)_addToActiveConnections:(id)a3;
-- (void)_addToPendingConnections:(id)a3;
-- (void)_callPowerOnCompletionsWithError:(id)a3;
-- (void)_connectHAPPeripheralWhenAllowed:(id)a3;
+- (void)_addToActiveConnections:(id)connections;
+- (void)_addToPendingConnections:(id)connections;
+- (void)_callPowerOnCompletionsWithError:(id)error;
+- (void)_connectHAPPeripheralWhenAllowed:(id)allowed;
 - (void)_connectPendingConnections;
-- (void)_createHAPAccessoryAndNotifyDelegateWithPeripheral:(id)a3 name:(id)a4 pairingUsername:(id)a5 statusFlags:(id)a6 stateNumber:(id)a7 stateChanged:(BOOL)a8 connectReason:(unsigned __int8)a9 configNumber:(id)a10 category:(id)a11 connectionIdleTime:(unsigned __int8)a12 format:(unint64_t)a13 setupHash:(id)a14 encryptedPayload:(id)a15 whbStableIdentifier:(id)a16;
-- (void)_didDiscoverPeripheral:(id)a3 accessoryName:(id)a4 pairingIdentifier:(id)a5 format:(unint64_t)a6 statusFlags:(id)a7 stateNumber:(id)a8 category:(id)a9 configNumber:(id)a10 setupHash:(id)a11 encryptedPayload:(id)a12 whbStableIdentifier:(id)a13;
-- (void)_disconnectFromHAPBLEPeripheral:(id)a3 cbPeripheral:(id)a4;
-- (void)_discoverAccessoryServerWithIdentifier:(id)a3;
-- (void)_forgetPairedAccessoryWithIdentifier:(id)a3;
+- (void)_createHAPAccessoryAndNotifyDelegateWithPeripheral:(id)peripheral name:(id)name pairingUsername:(id)username statusFlags:(id)flags stateNumber:(id)number stateChanged:(BOOL)changed connectReason:(unsigned __int8)reason configNumber:(id)self0 category:(id)self1 connectionIdleTime:(unsigned __int8)self2 format:(unint64_t)self3 setupHash:(id)self4 encryptedPayload:(id)self5 whbStableIdentifier:(id)self6;
+- (void)_didDiscoverPeripheral:(id)peripheral accessoryName:(id)name pairingIdentifier:(id)identifier format:(unint64_t)format statusFlags:(id)flags stateNumber:(id)number category:(id)category configNumber:(id)self0 setupHash:(id)self1 encryptedPayload:(id)self2 whbStableIdentifier:(id)self3;
+- (void)_disconnectFromHAPBLEPeripheral:(id)peripheral cbPeripheral:(id)cbPeripheral;
+- (void)_discoverAccessoryServerWithIdentifier:(id)identifier;
+- (void)_forgetPairedAccessoryWithIdentifier:(id)identifier;
 - (void)_handleTargetedScanTimeout;
 - (void)_invalidTargetedScanActivity;
-- (void)_matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)_monitorDisconnectionOfHAPPeripheral:(id)a3 peripheral:(id)a4;
-- (void)_notifyDelegatesOfRemovedAccessoryServer:(id)a3 error:(id)a4;
-- (void)_performTargetedScanForAccessoryWithIdentifier:(id)a3;
-- (void)_performTimedConnectionRequestForIdentifier:(id)a3;
-- (void)_performTimedScanForIdentifiers:(id)a3 forceScan:(BOOL)a4 withCompletion:(id)a5;
-- (void)_powerOnCentralManagerWithCompletion:(id)a3;
-- (void)_probeReachabilityForAccessoryServersWithIdentifiers:(id)a3 forceScan:(BOOL)a4 withCompletion:(id)a5;
-- (void)_removeDiscoveredPeripheralsWithIdentifier:(id)a3;
-- (void)_removeFromActiveConnections:(id)a3;
-- (void)_removeFromPendingConnections:(id)a3;
+- (void)_matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_monitorDisconnectionOfHAPPeripheral:(id)peripheral peripheral:(id)a4;
+- (void)_notifyDelegatesOfRemovedAccessoryServer:(id)server error:(id)error;
+- (void)_performTargetedScanForAccessoryWithIdentifier:(id)identifier;
+- (void)_performTimedConnectionRequestForIdentifier:(id)identifier;
+- (void)_performTimedScanForIdentifiers:(id)identifiers forceScan:(BOOL)scan withCompletion:(id)completion;
+- (void)_powerOnCentralManagerWithCompletion:(id)completion;
+- (void)_probeReachabilityForAccessoryServersWithIdentifiers:(id)identifiers forceScan:(BOOL)scan withCompletion:(id)completion;
+- (void)_removeDiscoveredPeripheralsWithIdentifier:(id)identifier;
+- (void)_removeFromActiveConnections:(id)connections;
+- (void)_removeFromPendingConnections:(id)connections;
 - (void)_removeIdentifiersForReachabilityScan;
-- (void)_removeRecentlySeenPairedPeripheralWithIdentifier:(id)a3;
-- (void)_reportReachabilityForAccessoryWithIdentifier:(id)a3;
+- (void)_removeRecentlySeenPairedPeripheralWithIdentifier:(id)identifier;
+- (void)_reportReachabilityForAccessoryWithIdentifier:(id)identifier;
 - (void)_startBrowsingForLegacyHAPBTLE100Accessories;
 - (void)_startDiscoveringAccessoryServers;
-- (void)_startScanningForReachability:(id)a3;
-- (void)_stopMonitorDisconnectionOfCBPeripheral:(id)a3;
+- (void)_startScanningForReachability:(id)reachability;
+- (void)_stopMonitorDisconnectionOfCBPeripheral:(id)peripheral;
 - (void)_updateTargetedScanTimer;
-- (void)accessoryServerBrowserBTLE:(id)a3 didDiscoverHAPPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)configureAccessoryWithIdentifier:(id)a3 trackState:(BOOL)a4 connectionPriority:(unint64_t)a5;
-- (void)configureBTLEQoSLimits:(unint64_t)a3;
-- (void)connectToBTLEAccessoryServer:(id)a3;
-- (void)connectedHAPPeripheral:(id)a3;
-- (void)deRegisterAccessoryWithIdentifier:(id)a3;
-- (void)disconnectFromBTLEAccessoryServer:(id)a3;
-- (void)disconnectedHAPPeripheral:(id)a3 error:(id)a4;
-- (void)discoverAccessoryServerWithIdentifier:(id)a3;
-- (void)failedToConnectHAPPeripheral:(id)a3 error:(id)a4;
-- (void)markNotifyingCharacteristicUpdatedForIdentifier:(id)a3;
-- (void)matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)accessoryServerBrowserBTLE:(id)e didDiscoverHAPPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)configureAccessoryWithIdentifier:(id)identifier trackState:(BOOL)state connectionPriority:(unint64_t)priority;
+- (void)configureBTLEQoSLimits:(unint64_t)limits;
+- (void)connectToBTLEAccessoryServer:(id)server;
+- (void)connectedHAPPeripheral:(id)peripheral;
+- (void)deRegisterAccessoryWithIdentifier:(id)identifier;
+- (void)disconnectFromBTLEAccessoryServer:(id)server;
+- (void)disconnectedHAPPeripheral:(id)peripheral error:(id)error;
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier;
+- (void)failedToConnectHAPPeripheral:(id)peripheral error:(id)error;
+- (void)markNotifyingCharacteristicUpdatedForIdentifier:(id)identifier;
+- (void)matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)pauseScans;
-- (void)probeReachabilityForAccessoryServersWithIdentifiers:(id)a3 forceScan:(BOOL)a4 withCompletion:(id)a5;
-- (void)removeCachedAccessoryWithIdentifier:(id)a3;
-- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)a3;
-- (void)resetLastSeenForAccessoryServersWithIdentifiers:(id)a3;
+- (void)probeReachabilityForAccessoryServersWithIdentifiers:(id)identifiers forceScan:(BOOL)scan withCompletion:(id)completion;
+- (void)removeCachedAccessoryWithIdentifier:(id)identifier;
+- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)identifier;
+- (void)resetLastSeenForAccessoryServersWithIdentifiers:(id)identifiers;
 - (void)resetPairedAccessories;
-- (void)retrieveCurrentStateForIdentifier:(id)a3 stateNumber:(id *)a4 isReachable:(BOOL *)a5 linkQuality:(unint64_t *)a6 lastSeen:(id *)a7;
-- (void)saveCacheToDisk:(id)a3;
-- (void)setConnectionLatency:(int64_t)a3 forPeripheral:(id)a4;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setPerformingGeneralScan:(BOOL)a3;
-- (void)setQosLimits:(unint64_t)a3;
-- (void)setReachabilityCompletionHandler:(id)a3;
-- (void)setScanState:(int64_t)a3;
+- (void)retrieveCurrentStateForIdentifier:(id)identifier stateNumber:(id *)number isReachable:(BOOL *)reachable linkQuality:(unint64_t *)quality lastSeen:(id *)seen;
+- (void)saveCacheToDisk:(id)disk;
+- (void)setConnectionLatency:(int64_t)latency forPeripheral:(id)peripheral;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setPerformingGeneralScan:(BOOL)scan;
+- (void)setQosLimits:(unint64_t)limits;
+- (void)setReachabilityCompletionHandler:(id)handler;
+- (void)setScanState:(int64_t)state;
 - (void)startDiscoveringAccessoryServers;
 - (void)stopDiscoveringAccessoryServers;
-- (void)stopTrackingBTLEAccessoriesWithIdentifiers:(id)a3;
-- (void)updateBroadcastKeyForIdentifier:(id)a3 key:(id)a4 keyUpdatedStateNumber:(id)a5 keyUpdatedTime:(double)a6;
-- (void)updateCachedStateForIdentifier:(id)a3 stateNumber:(id)a4;
-- (void)updateRemoteBrowsing:(BOOL)a3 shouldScan:(BOOL)a4;
-- (void)updateScanInBackground:(BOOL)a3;
-- (void)updateStateForIdentifier:(id)a3 stateNumber:(id)a4;
+- (void)stopTrackingBTLEAccessoriesWithIdentifiers:(id)identifiers;
+- (void)updateBroadcastKeyForIdentifier:(id)identifier key:(id)key keyUpdatedStateNumber:(id)number keyUpdatedTime:(double)time;
+- (void)updateCachedStateForIdentifier:(id)identifier stateNumber:(id)number;
+- (void)updateRemoteBrowsing:(BOOL)browsing shouldScan:(BOOL)scan;
+- (void)updateScanInBackground:(BOOL)background;
+- (void)updateStateForIdentifier:(id)identifier stateNumber:(id)number;
 @end
 
 @implementation HAPAccessoryServerBrowserBTLE
@@ -107,8 +107,8 @@
   if (!hapWiProxBLEBrowser)
   {
     v4 = [HAPAccessoryServerBrowserWiProxBTLE alloc];
-    v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-    v6 = [(HAPAccessoryServerBrowserWiProxBTLE *)v4 initWithDelegate:self queue:v5];
+    workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+    v6 = [(HAPAccessoryServerBrowserWiProxBTLE *)v4 initWithDelegate:self queue:workQueue];
     v7 = self->_hapWiProxBLEBrowser;
     self->_hapWiProxBLEBrowser = v6;
 
@@ -131,23 +131,23 @@
 - (void)_handleTargetedScanTimeout
 {
   v77 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
+  targetedScanTimer = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
 
-  if (v3)
+  if (targetedScanTimer)
   {
-    v4 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
-    dispatch_source_cancel(v4);
+    targetedScanTimer2 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
+    dispatch_source_cancel(targetedScanTimer2);
 
     [(HAPAccessoryServerBrowserBTLE *)self setTargetedScanTimer:0];
   }
 
   [(HAPAccessoryServerBrowserBTLE *)self _invalidTargetedScanActivity];
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self isPerformingGeneralScan];
+  isPerformingGeneralScan = [(HAPAccessoryServerBrowserBTLE *)self isPerformingGeneralScan];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (isPerformingGeneralScan)
   {
     if (v9)
     {
@@ -162,7 +162,7 @@
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = [(HAPAccessoryServerBrowserBTLE *)v7 identifiersWithReachabilityScanTuples];
+    obj = [(HAPAccessoryServerBrowserBTLE *)selfCopy identifiersWithReachabilityScanTuples];
     v11 = [obj countByEnumeratingWithState:&v67 objects:v76 count:16];
     if (v11)
     {
@@ -182,53 +182,53 @@
           }
 
           v15 = *(*(&v67 + 1) + 8 * v14);
-          v16 = [(HAPAccessoryServerBrowserBTLE *)v7 identifiersWithReachabilityScanTuples:v52];
+          v16 = [(HAPAccessoryServerBrowserBTLE *)selfCopy identifiersWithReachabilityScanTuples:v52];
           v17 = [v16 objectForKey:v15];
 
           if (v17)
           {
-            v18 = [v17 completion];
+            completion = [v17 completion];
 
-            if (v18)
+            if (completion)
             {
-              v19 = [v17 identifier];
-              v20 = [(HAPAccessoryServerBrowserBTLE *)v7 _blePeripheralForAccessoryServerIdentifier:v19];
-              v21 = [v20 cbPeripheral];
+              identifier = [v17 identifier];
+              v20 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _blePeripheralForAccessoryServerIdentifier:identifier];
+              cbPeripheral = [v20 cbPeripheral];
 
-              if (!v21)
+              if (!cbPeripheral)
               {
-                v22 = [v17 identifier];
-                v23 = [(HAPAccessoryServerBrowserBTLE *)v7 _bleAccessoryServerTupleForIdentifier:v22];
-                v24 = [v23 accessoryServer];
-                v21 = [v24 peripheral];
+                identifier2 = [v17 identifier];
+                v23 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _bleAccessoryServerTupleForIdentifier:identifier2];
+                accessoryServer = [v23 accessoryServer];
+                cbPeripheral = [accessoryServer peripheral];
               }
 
-              v25 = [v21 state];
+              state = [cbPeripheral state];
               v26 = objc_autoreleasePoolPush();
-              v27 = v7;
+              v27 = selfCopy;
               v28 = HMFGetOSLogHandle();
               v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
-              if (v25)
+              if (state)
               {
                 if (v29)
                 {
                   v30 = HMFGetLogIdentifier();
-                  v31 = [v17 identifier];
+                  identifier3 = [v17 identifier];
                   *buf = 138543618;
                   v73 = v30;
                   v74 = 2114;
-                  v75 = v31;
+                  v75 = identifier3;
                   _os_log_impl(&dword_22AADC000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Targeted scan timed out, setting reachability for %{public}@ to YES as we are connected", buf, 0x16u);
                 }
 
                 objc_autoreleasePoolPop(v26);
-                v32 = [v17 queue];
+                queue = [v17 queue];
                 block[0] = MEMORY[0x277D85DD0];
                 block[1] = 3221225472;
                 block[2] = __59__HAPAccessoryServerBrowserBTLE__handleTargetedScanTimeout__block_invoke_185;
                 block[3] = &unk_2786D6CA0;
                 v63 = v17;
-                dispatch_async(v32, block);
+                dispatch_async(queue, block);
                 v33 = &v63;
               }
 
@@ -237,22 +237,22 @@
                 if (v29)
                 {
                   v34 = HMFGetLogIdentifier();
-                  v35 = [v17 identifier];
+                  identifier4 = [v17 identifier];
                   *buf = 138543618;
                   v73 = v34;
                   v74 = 2114;
-                  v75 = v35;
+                  v75 = identifier4;
                   _os_log_impl(&dword_22AADC000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Targeted scan timed out, setting reachability for %{public}@ to NO", buf, 0x16u);
                 }
 
                 objc_autoreleasePoolPop(v26);
-                v32 = [v17 queue];
+                queue = [v17 queue];
                 v64[0] = MEMORY[0x277D85DD0];
                 v64[1] = 3221225472;
                 v65[0] = __59__HAPAccessoryServerBrowserBTLE__handleTargetedScanTimeout__block_invoke;
                 v65[1] = &unk_2786D6CA0;
                 v66 = v17;
-                dispatch_async(v32, v64);
+                dispatch_async(queue, v64);
                 v33 = v52;
               }
 
@@ -282,15 +282,15 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HAPAccessoryServerBrowserBTLE *)v7 _stopActiveScanWithForce:0];
-    [(HAPAccessoryServerBrowserBTLE *)v7 _removeIdentifiersForReachabilityScan];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _stopActiveScanWithForce:0];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _removeIdentifiersForReachabilityScan];
   }
 
-  if ([(HAPAccessoryServerBrowserBTLE *)v7 _delegateRespondsToSelector:sel_accessoryServerBrowser_didFailToDiscoverAccessoryServerWithIdentifier_])
+  if ([(HAPAccessoryServerBrowserBTLE *)selfCopy _delegateRespondsToSelector:sel_accessoryServerBrowser_didFailToDiscoverAccessoryServerWithIdentifier_])
   {
     v37 = MEMORY[0x277CBEA60];
-    v38 = [(HAPAccessoryServerBrowserBTLE *)v7 targetedScanAccessoryIdentifiers];
-    v39 = [v37 arrayWithArray:v38];
+    targetedScanAccessoryIdentifiers = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanAccessoryIdentifiers];
+    v39 = [v37 arrayWithArray:targetedScanAccessoryIdentifiers];
 
     v60 = 0u;
     v61 = 0u;
@@ -312,11 +312,11 @@
           }
 
           v44 = *(*(&v58 + 1) + 8 * i);
-          v45 = [(HAPAccessoryServerBrowserBTLE *)v7 targetedScanAccessoryIdentifiers];
-          [v45 removeObject:v44];
+          targetedScanAccessoryIdentifiers2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanAccessoryIdentifiers];
+          [targetedScanAccessoryIdentifiers2 removeObject:v44];
 
           v46 = objc_autoreleasePoolPush();
-          v47 = v7;
+          v47 = selfCopy;
           v48 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
           {
@@ -329,14 +329,14 @@
           }
 
           objc_autoreleasePoolPop(v46);
-          v50 = [(HAPAccessoryServerBrowserBTLE *)v47 delegateQueue];
+          delegateQueue = [(HAPAccessoryServerBrowserBTLE *)v47 delegateQueue];
           v57[0] = MEMORY[0x277D85DD0];
           v57[1] = 3221225472;
           v57[2] = __59__HAPAccessoryServerBrowserBTLE__handleTargetedScanTimeout__block_invoke_186;
           v57[3] = &unk_2786D7050;
           v57[4] = v47;
           v57[5] = v44;
-          dispatch_async(v50, v57);
+          dispatch_async(delegateQueue, v57);
         }
 
         v41 = [obja countByEnumeratingWithState:&v58 objects:v71 count:16];
@@ -371,12 +371,12 @@ void __59__HAPAccessoryServerBrowserBTLE__handleTargetedScanTimeout__block_invok
 
 - (void)_invalidTargetedScanActivity
 {
-  v3 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanActivity];
+  targetedScanActivity = [(HAPAccessoryServerBrowserBTLE *)self targetedScanActivity];
 
-  if (v3)
+  if (targetedScanActivity)
   {
-    v4 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanActivity];
-    [v4 invalidate];
+    targetedScanActivity2 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanActivity];
+    [targetedScanActivity2 invalidate];
 
     [(HAPAccessoryServerBrowserBTLE *)self setTargetedScanActivity:0];
   }
@@ -386,7 +386,7 @@ void __59__HAPAccessoryServerBrowserBTLE__handleTargetedScanTimeout__block_invok
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -397,44 +397,44 @@ void __59__HAPAccessoryServerBrowserBTLE__handleTargetedScanTimeout__block_invok
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HAPAccessoryServerBrowserBTLE *)v4 targetedScanTimer];
-  v8 = v7 == 0;
+  targetedScanTimer = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanTimer];
+  v8 = targetedScanTimer == 0;
 
   if (v8)
   {
-    [(HAPAccessoryServerBrowserBTLE *)v4 _invalidTargetedScanActivity];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _invalidTargetedScanActivity];
     v11 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Targeted Scan" parent:0 options:2];
-    [(HAPAccessoryServerBrowserBTLE *)v4 setTargetedScanActivity:v11];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy setTargetedScanActivity:v11];
 
-    v12 = [(HAPAccessoryServerBrowser *)v4 workQueue];
-    v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v12);
-    [(HAPAccessoryServerBrowserBTLE *)v4 setTargetedScanTimer:v13];
+    workQueue = [(HAPAccessoryServerBrowser *)selfCopy workQueue];
+    v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue);
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy setTargetedScanTimer:v13];
 
-    objc_initWeak(buf, v4);
-    v14 = [(HAPAccessoryServerBrowserBTLE *)v4 targetedScanTimer];
+    objc_initWeak(buf, selfCopy);
+    targetedScanTimer2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanTimer];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __57__HAPAccessoryServerBrowserBTLE__updateTargetedScanTimer__block_invoke;
     v21 = &unk_2786D6EB0;
     objc_copyWeak(&v23, buf);
-    v22 = v4;
-    dispatch_source_set_event_handler(v14, &v18);
+    v22 = selfCopy;
+    dispatch_source_set_event_handler(targetedScanTimer2, &v18);
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
-    v15 = [(HAPAccessoryServerBrowserBTLE *)v4 targetedScanTimer:v18];
+    v15 = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanTimer:v18];
     v16 = dispatch_walltime(0, 3000000000);
     dispatch_source_set_timer(v15, v16, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
 
-    v9 = [(HAPAccessoryServerBrowserBTLE *)v4 targetedScanTimer];
-    dispatch_resume(v9);
+    targetedScanTimer3 = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanTimer];
+    dispatch_resume(targetedScanTimer3);
   }
 
   else
   {
-    v9 = [(HAPAccessoryServerBrowserBTLE *)v4 targetedScanTimer];
+    targetedScanTimer3 = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanTimer];
     v10 = dispatch_walltime(0, 3000000000);
-    dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
+    dispatch_source_set_timer(targetedScanTimer3, v10, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -452,55 +452,55 @@ void __57__HAPAccessoryServerBrowserBTLE__updateTargetedScanTimer__block_invoke(
   }
 }
 
-- (BOOL)_shouldCreateHAPAccessoryServerWithIdentifier:(id)a3 statusFlags:(id)a4 stateNumber:(id)a5 category:(id)a6 configNumber:(id)a7 name:(id)a8 forPeripheral:(id)a9 advertisementFormat:(unint64_t)a10 setupHash:(id)a11 stateChanged:(BOOL *)a12 connectReason:(unsigned __int8 *)a13
+- (BOOL)_shouldCreateHAPAccessoryServerWithIdentifier:(id)identifier statusFlags:(id)flags stateNumber:(id)number category:(id)category configNumber:(id)configNumber name:(id)name forPeripheral:(id)peripheral advertisementFormat:(unint64_t)self0 setupHash:(id)self1 stateChanged:(BOOL *)self2 connectReason:(unsigned __int8 *)self3
 {
   v142 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v127 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v126 = a8;
-  v23 = a9;
-  v24 = a11;
-  v25 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
-  v26 = [v25 containsObject:v19];
+  identifierCopy = identifier;
+  flagsCopy = flags;
+  numberCopy = number;
+  categoryCopy = category;
+  configNumberCopy = configNumber;
+  nameCopy = name;
+  peripheralCopy = peripheral;
+  hashCopy = hash;
+  targetedScanAccessoryIdentifiers = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
+  v26 = [targetedScanAccessoryIdentifiers containsObject:identifierCopy];
 
-  [(HAPAccessoryServerBrowserBTLE *)self _reportReachabilityForAccessoryWithIdentifier:v19];
-  v27 = [v23 cbPeripheral];
-  v28 = [v27 state];
+  [(HAPAccessoryServerBrowserBTLE *)self _reportReachabilityForAccessoryWithIdentifier:identifierCopy];
+  cbPeripheral = [peripheralCopy cbPeripheral];
+  state = [cbPeripheral state];
 
-  if (v28)
+  if (state)
   {
 LABEL_2:
-    v29 = 0;
+    monitorState = 0;
     goto LABEL_59;
   }
 
   if (v26)
   {
-    *a13 = 1;
-    v30 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
-    [v30 removeObject:v19];
+    *reason = 1;
+    targetedScanAccessoryIdentifiers2 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
+    [targetedScanAccessoryIdentifiers2 removeObject:identifierCopy];
 
-    v31 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
-    if ([v31 count])
+    targetedScanAccessoryIdentifiers3 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
+    if ([targetedScanAccessoryIdentifiers3 count])
     {
     }
 
     else
     {
-      v33 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
-      v34 = [v33 count];
+      identifiersWithReachabilityScanTuples = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
+      v34 = [identifiersWithReachabilityScanTuples count];
 
       if (!v34)
       {
-        v35 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
+        targetedScanTimer = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
 
-        if (v35)
+        if (targetedScanTimer)
         {
-          v36 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
-          dispatch_source_cancel(v36);
+          targetedScanTimer2 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanTimer];
+          dispatch_source_cancel(targetedScanTimer2);
 
           [(HAPAccessoryServerBrowserBTLE *)self setTargetedScanTimer:0];
         }
@@ -509,7 +509,7 @@ LABEL_2:
         if (![(HAPAccessoryServerBrowserBTLE *)self isPerformingGeneralScan])
         {
           v37 = objc_autoreleasePoolPush();
-          v38 = self;
+          selfCopy = self;
           v39 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
           {
@@ -523,7 +523,7 @@ LABEL_2:
           }
 
           objc_autoreleasePoolPop(v37);
-          [(HAPAccessoryServerBrowserBTLE *)v38 _stopActiveScanWithForce:0];
+          [(HAPAccessoryServerBrowserBTLE *)selfCopy _stopActiveScanWithForce:0];
         }
       }
     }
@@ -531,10 +531,10 @@ LABEL_2:
     v32 = 1;
   }
 
-  else if ([(HAPAccessoryServerBrowserBTLE *)self isPerformingGeneralScan]&& ![(HAPAccessoryServerBrowser *)self isPaired:v19])
+  else if ([(HAPAccessoryServerBrowserBTLE *)self isPerformingGeneralScan]&& ![(HAPAccessoryServerBrowser *)self isPaired:identifierCopy])
   {
     v32 = 1;
-    *a13 = 1;
+    *reason = 1;
   }
 
   else
@@ -542,12 +542,12 @@ LABEL_2:
     v32 = 0;
   }
 
-  v41 = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
-  v42 = [v41 objectForKey:v19];
+  recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
+  v42 = [recentlySeenPairedPeripherals objectForKey:identifierCopy];
 
   if (v32)
   {
-    v29 = 1;
+    monitorState = 1;
     if (!v42)
     {
       goto LABEL_59;
@@ -558,10 +558,10 @@ LABEL_2:
 
   if (!v42)
   {
-    if (![(HAPAccessoryServerBrowser *)self isPaired:v19])
+    if (![(HAPAccessoryServerBrowser *)self isPaired:identifierCopy])
     {
       v91 = objc_autoreleasePoolPush();
-      v92 = self;
+      selfCopy2 = self;
       v93 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v93, OS_LOG_TYPE_DEBUG))
       {
@@ -575,23 +575,23 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    v42 = [[HAPRecentlySeenPairedBTLEPeripheralTuple alloc] initRecentlySeenPairedHAPBLEPeripheral:v23];
+    v42 = [[HAPRecentlySeenPairedBTLEPeripheralTuple alloc] initRecentlySeenPairedHAPBLEPeripheral:peripheralCopy];
     v122 = v42;
     if (v42)
     {
       v46 = objc_autoreleasePoolPush();
-      v47 = self;
+      selfCopy3 = self;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
         v49 = v116 = v46;
-        [v23 shortDescription];
-        v108 = v23;
-        v50 = v22;
-        v51 = v20;
-        v52 = v21;
-        v54 = v53 = v24;
+        [peripheralCopy shortDescription];
+        v108 = peripheralCopy;
+        v50 = configNumberCopy;
+        v51 = numberCopy;
+        v52 = categoryCopy;
+        v54 = v53 = hashCopy;
         *buf = 138543874;
         v129 = v49;
         v130 = 2114;
@@ -600,75 +600,75 @@ LABEL_2:
         v133 = v122;
         _os_log_impl(&dword_22AADC000, v48, OS_LOG_TYPE_INFO, "%{public}@Adding accessory server: %{public}@ to recently seen paired peripherals: %{public}@", buf, 0x20u);
 
-        v24 = v53;
-        v21 = v52;
-        v20 = v51;
-        v22 = v50;
-        v23 = v108;
+        hashCopy = v53;
+        categoryCopy = v52;
+        numberCopy = v51;
+        configNumberCopy = v50;
+        peripheralCopy = v108;
 
         v46 = v116;
       }
 
       objc_autoreleasePoolPop(v46);
-      v55 = [(HAPAccessoryServerBrowserBTLE *)v47 recentlySeenPairedPeripherals];
-      v56 = [v23 identifier];
+      recentlySeenPairedPeripherals2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy3 recentlySeenPairedPeripherals];
+      identifier = [peripheralCopy identifier];
       v42 = v122;
-      [v55 setObject:v122 forKey:v56];
+      [recentlySeenPairedPeripherals2 setObject:v122 forKey:identifier];
     }
 
-    v117 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:v19];
-    v57 = [v117 peripheralInfo];
-    v58 = [v57 stateNumber];
-    if ([v58 isEqual:v20])
+    v117 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:identifierCopy];
+    peripheralInfo = [v117 peripheralInfo];
+    stateNumber = [peripheralInfo stateNumber];
+    if ([stateNumber isEqual:numberCopy])
     {
-      v59 = [v117 lastKeyBagIdentityIndexFailingPV];
-      if (!v59)
+      lastKeyBagIdentityIndexFailingPV = [v117 lastKeyBagIdentityIndexFailingPV];
+      if (!lastKeyBagIdentityIndexFailingPV)
       {
         v115 = +[HAPBLEAccessoryCache currentDiscoveryVersion];
-        v95 = v23;
-        v96 = v22;
-        v97 = v20;
-        v98 = v21;
-        v99 = v24;
-        v100 = [v117 discoveryVersion];
+        v95 = peripheralCopy;
+        v96 = configNumberCopy;
+        v97 = numberCopy;
+        v98 = categoryCopy;
+        v99 = hashCopy;
+        discoveryVersion = [v117 discoveryVersion];
 
-        v101 = v115 == v100;
-        v24 = v99;
-        v21 = v98;
-        v20 = v97;
-        v22 = v96;
-        v23 = v95;
+        v101 = v115 == discoveryVersion;
+        hashCopy = v99;
+        categoryCopy = v98;
+        numberCopy = v97;
+        configNumberCopy = v96;
+        peripheralCopy = v95;
         v42 = v122;
         if (v101)
         {
-          v29 = 0;
+          monitorState = 0;
           goto LABEL_37;
         }
 
 LABEL_34:
         context = objc_autoreleasePoolPush();
-        v113 = self;
+        selfCopy4 = self;
         v60 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
         {
           v106 = HMFGetLogIdentifier();
-          v105 = [v23 identifier];
-          v103 = [v117 peripheralInfo];
-          v104 = [v103 stateNumber];
-          v109 = v23;
-          v102 = v22;
-          v61 = v20;
-          v62 = v21;
-          v63 = v24;
+          identifier2 = [peripheralCopy identifier];
+          peripheralInfo2 = [v117 peripheralInfo];
+          stateNumber2 = [peripheralInfo2 stateNumber];
+          v109 = peripheralCopy;
+          v102 = configNumberCopy;
+          v61 = numberCopy;
+          v62 = categoryCopy;
+          v63 = hashCopy;
           v64 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v117, "discoveryVersion")}];
           v65 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HAPBLEAccessoryCache currentDiscoveryVersion](HAPBLEAccessoryCache, "currentDiscoveryVersion")}];
-          v66 = [v117 lastKeyBagIdentityIndexFailingPV];
+          lastKeyBagIdentityIndexFailingPV2 = [v117 lastKeyBagIdentityIndexFailingPV];
           *buf = 138544898;
           v129 = v106;
           v130 = 2114;
-          v131 = v105;
+          v131 = identifier2;
           v132 = 2114;
-          v133 = v104;
+          v133 = stateNumber2;
           v134 = 2114;
           v135 = v61;
           v136 = 2114;
@@ -677,21 +677,21 @@ LABEL_34:
           v138 = 2114;
           v139 = v65;
           v140 = 2114;
-          v141 = v66;
+          v141 = lastKeyBagIdentityIndexFailingPV2;
           _os_log_impl(&dword_22AADC000, v60, OS_LOG_TYPE_INFO, "%{public}@Creating accessory server for %{public}@ due to State Number: (%{public}@ -> %{public}@), BT Discovery Version: (%{public}@ -> %{public}@), KeyBagPVIndex: (%{public}@)", buf, 0x48u);
 
-          v24 = v63;
-          v21 = v62;
-          v20 = v61;
-          v22 = v102;
-          v23 = v109;
+          hashCopy = v63;
+          categoryCopy = v62;
+          numberCopy = v61;
+          configNumberCopy = v102;
+          peripheralCopy = v109;
 
           v42 = v122;
         }
 
         objc_autoreleasePoolPop(context);
-        *a13 = 4;
-        v29 = 1;
+        *reason = 4;
+        monitorState = 1;
 LABEL_37:
 
         if (!v42)
@@ -706,18 +706,18 @@ LABEL_37:
     goto LABEL_34;
   }
 
-  v119 = v24;
-  if (v20)
+  v119 = hashCopy;
+  if (numberCopy)
   {
     v43 = v42;
-    v44 = [v42 stateNumber];
-    v45 = [v44 isEqualToNumber:v20];
+    stateNumber3 = [v42 stateNumber];
+    v45 = [stateNumber3 isEqualToNumber:numberCopy];
 
     if (v45)
     {
-      v29 = 0;
+      monitorState = 0;
       v42 = v43;
-      if (!v21)
+      if (!categoryCopy)
       {
         goto LABEL_49;
       }
@@ -726,29 +726,29 @@ LABEL_37:
     else
     {
       v75 = objc_autoreleasePoolPush();
-      v124 = self;
+      selfCopy5 = self;
       v76 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
       {
         contexta = HMFGetLogIdentifier();
         v114 = v75;
-        v107 = [v43 stateNumber];
+        stateNumber4 = [v43 stateNumber];
         [v43 monitorState];
         v110 = HMFBooleanToString();
-        v77 = [v23 shortDescription];
+        shortDescription = [peripheralCopy shortDescription];
         *buf = 138544642;
         v129 = contexta;
         v130 = 2114;
-        v131 = v19;
+        v131 = identifierCopy;
         v132 = 2114;
-        v133 = v107;
+        v133 = stateNumber4;
         v134 = 2114;
-        v135 = v20;
+        v135 = numberCopy;
         v136 = 2114;
         v137 = v110;
         v138 = 2114;
-        v139 = v77;
-        v78 = v77;
+        v139 = shortDescription;
+        v78 = shortDescription;
         _os_log_impl(&dword_22AADC000, v76, OS_LOG_TYPE_INFO, "%{public}@Accessory server: %{public}@ updated state number %{public}@ -> %{public}@. Monitoring state: %{public}@. %{public}@", buf, 0x3Eu);
 
         v75 = v114;
@@ -756,10 +756,10 @@ LABEL_37:
 
       objc_autoreleasePoolPop(v75);
       v42 = v43;
-      v29 = [v43 monitorState];
-      *a12 = 1;
-      *a13 = 4;
-      if (!v21)
+      monitorState = [v43 monitorState];
+      *changed = 1;
+      *reason = 4;
+      if (!categoryCopy)
       {
         goto LABEL_49;
       }
@@ -767,60 +767,60 @@ LABEL_37:
 
 LABEL_41:
     v123 = v42;
-    v68 = [v42 category];
-    v69 = [v68 isEqualToNumber:v21];
+    category = [v42 category];
+    v69 = [category isEqualToNumber:categoryCopy];
 
     if ((v69 & 1) == 0)
     {
       v70 = objc_autoreleasePoolPush();
-      v71 = self;
+      selfCopy6 = self;
       v72 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v73 = v118 = v71;
-        v74 = [v123 category];
+        v73 = v118 = selfCopy6;
+        category2 = [v123 category];
         *buf = 138544130;
         v129 = v73;
         v130 = 2114;
-        v131 = v19;
+        v131 = identifierCopy;
         v132 = 2114;
-        v133 = v74;
+        v133 = category2;
         v134 = 2114;
-        v135 = v21;
+        v135 = categoryCopy;
         _os_log_impl(&dword_22AADC000, v72, OS_LOG_TYPE_INFO, "%{public}@Accessory server: %{public}@ updated category %{public}@ -> %{public}@", buf, 0x2Au);
 
-        v71 = v118;
+        selfCopy6 = v118;
       }
 
       objc_autoreleasePoolPop(v70);
-      *a13 = 4;
-      v29 = 1;
+      *reason = 4;
+      monitorState = 1;
     }
 
-    v24 = v119;
+    hashCopy = v119;
     v42 = v123;
     goto LABEL_50;
   }
 
-  v29 = 0;
-  if (v21)
+  monitorState = 0;
+  if (categoryCopy)
   {
     goto LABEL_41;
   }
 
 LABEL_49:
-  v24 = v119;
+  hashCopy = v119;
 LABEL_50:
-  v120 = v20;
-  v79 = v21;
-  if (v22)
+  v120 = numberCopy;
+  v79 = categoryCopy;
+  if (configNumberCopy)
   {
-    v80 = v24;
+    v80 = hashCopy;
     v125 = v42;
-    v81 = [v42 configNumber];
-    v82 = v22;
-    if ([v81 isEqualToNumber:v22])
+    configNumber = [v42 configNumber];
+    v82 = configNumberCopy;
+    if ([configNumber isEqualToNumber:configNumberCopy])
     {
 
       v42 = v125;
@@ -828,24 +828,24 @@ LABEL_50:
 
     else
     {
-      v83 = [v23 isCached];
+      isCached = [peripheralCopy isCached];
 
       v42 = v125;
-      if ((v83 & 1) == 0)
+      if ((isCached & 1) == 0)
       {
         v84 = objc_autoreleasePoolPush();
-        v85 = self;
+        selfCopy7 = self;
         v86 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
         {
           v87 = HMFGetLogIdentifier();
-          v88 = [v125 configNumber];
+          configNumber2 = [v125 configNumber];
           *buf = 138544130;
           v129 = v87;
           v130 = 2114;
-          v131 = v19;
+          v131 = identifierCopy;
           v132 = 2114;
-          v133 = v88;
+          v133 = configNumber2;
           v134 = 2114;
           v135 = v82;
           _os_log_impl(&dword_22AADC000, v86, OS_LOG_TYPE_INFO, "%{public}@Invalidating cache for accessory: %{public}@ on config number update %{public}@ -> %{public}@", buf, 0x2Au);
@@ -854,9 +854,9 @@ LABEL_50:
         }
 
         objc_autoreleasePoolPop(v84);
-        [(HAPAccessoryServerBrowserBTLE *)v85 removeCachedAccessoryWithIdentifier:v19];
-        *a13 = 4;
-        v29 = 1;
+        [(HAPAccessoryServerBrowserBTLE *)selfCopy7 removeCachedAccessoryWithIdentifier:identifierCopy];
+        *reason = 4;
+        monitorState = 1;
       }
     }
   }
@@ -864,44 +864,44 @@ LABEL_50:
   else
   {
     v82 = 0;
-    v80 = v24;
+    v80 = hashCopy;
   }
 
-  [v42 updateWithPeripheral:v23];
+  [v42 updateWithPeripheral:peripheralCopy];
 
-  v24 = v80;
-  v21 = v79;
-  v20 = v120;
-  v22 = v82;
+  hashCopy = v80;
+  categoryCopy = v79;
+  numberCopy = v120;
+  configNumberCopy = v82;
 LABEL_59:
 
   v89 = *MEMORY[0x277D85DE8];
-  return v29;
+  return monitorState;
 }
 
-- (void)_reportReachabilityForAccessoryWithIdentifier:(id)a3
+- (void)_reportReachabilityForAccessoryWithIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
-  [v5 containsObject:v4];
+  identifierCopy = identifier;
+  targetedScanAccessoryIdentifiers = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
+  [targetedScanAccessoryIdentifiers containsObject:identifierCopy];
 
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
-  v7 = [v6 objectForKey:v4];
+  identifiersWithReachabilityScanTuples = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
+  v7 = [identifiersWithReachabilityScanTuples objectForKey:identifierCopy];
 
-  if ([(HAPAccessoryServerBrowser *)self isPaired:v4])
+  if ([(HAPAccessoryServerBrowser *)self isPaired:identifierCopy])
   {
-    v8 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
-    [v8 accessoryServerBrowser:self didChangeReachability:1 forAccessoryServerWithIdentifier:v4];
+    delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+    [delegate accessoryServerBrowser:self didChangeReachability:1 forAccessoryServerWithIdentifier:identifierCopy];
   }
 
   if (v7)
   {
-    v9 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
-    [v9 removeObjectForKey:v4];
+    identifiersWithReachabilityScanTuples2 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
+    [identifiersWithReachabilityScanTuples2 removeObjectForKey:identifierCopy];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -909,23 +909,23 @@ LABEL_59:
       *buf = 138543618;
       v21 = v13;
       v22 = 2114;
-      v23 = v4;
+      v23 = identifierCopy;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Reporting reachability for accessory in reachability scan with identifier %{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [v7 completion];
+    completion = [v7 completion];
 
-    if (v14)
+    if (completion)
     {
-      v15 = [v7 queue];
+      queue = [v7 queue];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __79__HAPAccessoryServerBrowserBTLE__reportReachabilityForAccessoryWithIdentifier___block_invoke;
       v17[3] = &unk_2786D7050;
       v18 = v7;
-      v19 = v4;
-      dispatch_async(v15, v17);
+      v19 = identifierCopy;
+      dispatch_async(queue, v17);
     }
   }
 
@@ -938,50 +938,50 @@ void __79__HAPAccessoryServerBrowserBTLE__reportReachabilityForAccessoryWithIden
   v2[2](v2, *(a1 + 40), 1);
 }
 
-- (void)_performTargetedScanForAccessoryWithIdentifier:(id)a3
+- (void)_performTargetedScanForAccessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
-  [v5 addObject:v4];
+  identifierCopy = identifier;
+  targetedScanAccessoryIdentifiers = [(HAPAccessoryServerBrowserBTLE *)self targetedScanAccessoryIdentifiers];
+  [targetedScanAccessoryIdentifiers addObject:identifierCopy];
 
   [(HAPAccessoryServerBrowserBTLE *)self _updateTargetedScanTimer];
   [(HAPAccessoryServerBrowserBTLE *)self _startBrowsingForLegacyHAPBTLE100Accessories];
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  [v6 resetLastSeenForTrackedAccessories:v4];
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  [hapWiProxBLEBrowser resetLastSeenForTrackedAccessories:identifierCopy];
 
-  v7 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  [v7 startBrowsingForHAPBLEAccessories];
+  hapWiProxBLEBrowser2 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  [hapWiProxBLEBrowser2 startBrowsingForHAPBLEAccessories];
 }
 
 - (void)_connectPendingConnections
 {
   v46 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HAPAccessoryServerBrowserBTLE *)v4 peripheralsPendingConnection];
-    v8 = [v7 count];
-    v9 = [(HAPAccessoryServerBrowserBTLE *)v4 peripheralsWithConnectionRequests];
+    peripheralsPendingConnection = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsPendingConnection];
+    v8 = [peripheralsPendingConnection count];
+    peripheralsWithConnectionRequests = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsWithConnectionRequests];
     *buf = 138543874;
     v41 = v6;
     v42 = 2048;
     v43 = v8;
     v44 = 2048;
-    v45 = [v9 count];
+    v45 = [peripheralsWithConnectionRequests count];
     _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_DEBUG, "%{public}@Current pending connections: %tu, Connected/Connecting: %tu", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v10 = [(HAPAccessoryServerBrowserBTLE *)v4 peripheralsPendingConnection];
-  v11 = [v10 count];
+  peripheralsPendingConnection2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsPendingConnection];
+  v11 = [peripheralsPendingConnection2 count];
 
   if (!v11)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v4;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
@@ -1005,8 +1005,8 @@ LABEL_27:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = [(HAPAccessoryServerBrowserBTLE *)v4 peripheralsPendingConnection];
-  v13 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  peripheralsPendingConnection3 = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsPendingConnection];
+  v13 = [peripheralsPendingConnection3 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1018,25 +1018,25 @@ LABEL_27:
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(peripheralsPendingConnection3);
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
-        v19 = [(HAPAccessoryServerBrowserBTLE *)v4 _blePeripheralForAccessoryServerIdentifier:v18];
-        v20 = [(HAPAccessoryServerBrowserBTLE *)v4 recentlySeenPairedPeripherals];
-        v21 = [v20 objectForKey:v18];
+        v19 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _blePeripheralForAccessoryServerIdentifier:v18];
+        recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)selfCopy recentlySeenPairedPeripherals];
+        v21 = [recentlySeenPairedPeripherals objectForKey:v18];
 
         if ([v21 connectionPriority] == 1 && v15 == 0)
         {
           v15 = v19;
         }
 
-        v23 = [(HAPAccessoryServerBrowserBTLE *)v4 _discoveredAccessoryServerTupleForBLEPeripheral:v19 shouldMerge:0];
-        v24 = [v23 accessoryServer];
-        [v24 updateConnectionIdleTime:2];
+        v23 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _discoveredAccessoryServerTupleForBLEPeripheral:v19 shouldMerge:0];
+        accessoryServer = [v23 accessoryServer];
+        [accessoryServer updateConnectionIdleTime:2];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v14 = [peripheralsPendingConnection3 countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v14);
@@ -1051,14 +1051,14 @@ LABEL_27:
   {
   }
 
-  v32 = [(HAPAccessoryServerBrowserBTLE *)v4 peripheralsPendingConnection];
-  v33 = [v32 lastObject];
-  v15 = [(HAPAccessoryServerBrowserBTLE *)v4 _blePeripheralForAccessoryServerIdentifier:v33];
+  peripheralsPendingConnection4 = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsPendingConnection];
+  lastObject = [peripheralsPendingConnection4 lastObject];
+  v15 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _blePeripheralForAccessoryServerIdentifier:lastObject];
 
   if (!v15)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v4;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -1075,56 +1075,56 @@ LABEL_27:
   }
 
 LABEL_23:
-  [(HAPAccessoryServerBrowserBTLE *)v4 _removeFromPendingConnections:v15];
-  [(HAPAccessoryServerBrowserBTLE *)v4 _connectHAPPeripheralWhenAllowed:v15];
+  [(HAPAccessoryServerBrowserBTLE *)selfCopy _removeFromPendingConnections:v15];
+  [(HAPAccessoryServerBrowserBTLE *)selfCopy _connectHAPPeripheralWhenAllowed:v15];
 
 LABEL_28:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectHAPPeripheralWhenAllowed:(id)a3
+- (void)_connectHAPPeripheralWhenAllowed:(id)allowed
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self qosLimits];
+  allowedCopy = allowed;
+  qosLimits = [(HAPAccessoryServerBrowserBTLE *)self qosLimits];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
-    v11 = [(HAPAccessoryServerBrowserBTLE *)v7 peripheralsWithConnectionRequests];
-    v12 = [v11 count];
-    v13 = [(HAPAccessoryServerBrowserBTLE *)v7 peripheralsPendingConnection];
+    shortDescription = [allowedCopy shortDescription];
+    peripheralsWithConnectionRequests = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsWithConnectionRequests];
+    v12 = [peripheralsWithConnectionRequests count];
+    peripheralsPendingConnection = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsPendingConnection];
     *buf = 138544130;
     v58 = v9;
     v59 = 2114;
-    v60 = v10;
+    v60 = shortDescription;
     v61 = 2048;
     v62 = v12;
     v63 = 2048;
-    v64 = [v13 count];
+    v64 = [peripheralsPendingConnection count];
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEBUG, "%{public}@Connection request to peripheral: %{public}@, Current connection count : %tu, Pending: %tu", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v6);
-  if (v5 == 2)
+  if (qosLimits == 2)
   {
     goto LABEL_22;
   }
 
-  if (v5 == 1)
+  if (qosLimits == 1)
   {
-    v14 = [(HAPAccessoryServerBrowserBTLE *)v7 connectionsObserver];
+    connectionsObserver = [(HAPAccessoryServerBrowserBTLE *)selfCopy connectionsObserver];
 
-    if (v14)
+    if (connectionsObserver)
     {
-      v15 = [(HAPAccessoryServerBrowserBTLE *)v7 connectionsObserver];
-      v16 = [v15 getAvailableHAPConnections];
+      connectionsObserver2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy connectionsObserver];
+      getAvailableHAPConnections = [connectionsObserver2 getAvailableHAPConnections];
 
       v17 = objc_autoreleasePoolPush();
-      v18 = v7;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -1132,19 +1132,19 @@ LABEL_28:
         *buf = 138543618;
         v58 = v20;
         v59 = 1024;
-        LODWORD(v60) = v16;
+        LODWORD(v60) = getAvailableHAPConnections;
         _os_log_impl(&dword_22AADC000, v19, OS_LOG_TYPE_INFO, "%{public}@: Coex Recommendation = %d", buf, 0x12u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v21 = v16 >= 3 ? 3 : v16;
-      v22 = v16 >= 1 ? v21 : 3;
+      v21 = getAvailableHAPConnections >= 3 ? 3 : getAvailableHAPConnections;
+      v22 = getAvailableHAPConnections >= 1 ? v21 : 3;
     }
 
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v7;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
@@ -1159,7 +1159,7 @@ LABEL_28:
     }
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v7;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
@@ -1180,25 +1180,25 @@ LABEL_28:
     v23 = 3;
   }
 
-  v32 = [(HAPAccessoryServerBrowserBTLE *)v7 peripheralsWithConnectionRequests];
-  v33 = [v32 count];
+  peripheralsWithConnectionRequests2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsWithConnectionRequests];
+  v33 = [peripheralsWithConnectionRequests2 count];
 
   if (v33 < v23)
   {
 LABEL_22:
-    [(HAPAccessoryServerBrowserBTLE *)v7 _addToActiveConnections:v4];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _addToActiveConnections:allowedCopy];
     v56 = 0;
-    v34 = [(HAPAccessoryServerBrowserBTLE *)v7 _cbPeripheralForHAPBLEPeripheral:v4 routeMode:&v56];
+    v34 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _cbPeripheralForHAPBLEPeripheral:allowedCopy routeMode:&v56];
     if (v34)
     {
-      [v4 setCbPeripheral:v34];
+      [allowedCopy setCbPeripheral:v34];
       v35 = objc_autoreleasePoolPush();
-      v36 = v7;
+      v36 = selfCopy;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
         v38 = HMFGetLogIdentifier();
-        v39 = [v4 shortDescription];
+        shortDescription2 = [allowedCopy shortDescription];
         if (v56)
         {
           v40 = @"WHB";
@@ -1210,12 +1210,12 @@ LABEL_22:
         }
 
         v41 = MEMORY[0x277CCABB0];
-        v42 = [(HAPAccessoryServerBrowserBTLE *)v36 peripheralsWithConnectionRequests];
-        v43 = [v41 numberWithUnsignedInteger:{objc_msgSend(v42, "count")}];
+        peripheralsWithConnectionRequests3 = [(HAPAccessoryServerBrowserBTLE *)v36 peripheralsWithConnectionRequests];
+        v43 = [v41 numberWithUnsignedInteger:{objc_msgSend(peripheralsWithConnectionRequests3, "count")}];
         *buf = 138544130;
         v58 = v38;
         v59 = 2114;
-        v60 = v39;
+        v60 = shortDescription2;
         v61 = 2114;
         v62 = v40;
         v63 = 2114;
@@ -1224,82 +1224,82 @@ LABEL_22:
       }
 
       objc_autoreleasePoolPop(v35);
-      v44 = [(HAPAccessoryServerBrowserBTLE *)v36 centralManager];
-      [v44 connectPeripheral:v34 options:0];
+      centralManager = [(HAPAccessoryServerBrowserBTLE *)v36 centralManager];
+      [centralManager connectPeripheral:v34 options:0];
     }
 
     else
     {
       v50 = objc_autoreleasePoolPush();
-      v51 = v7;
+      v51 = selfCopy;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
         v53 = HMFGetLogIdentifier();
-        v54 = [v4 shortDescription];
+        shortDescription3 = [allowedCopy shortDescription];
         *buf = 138543618;
         v58 = v53;
         v59 = 2114;
-        v60 = v54;
+        v60 = shortDescription3;
         _os_log_impl(&dword_22AADC000, v52, OS_LOG_TYPE_ERROR, "%{public}@Failed to retrieve a CBPeripheral for accessory: %{public}@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v50);
-      v44 = [MEMORY[0x277CCA9B8] hapErrorWithCode:8 marker:2101];
-      [(HAPAccessoryServerBrowserBTLE *)v51 failedToConnectHAPPeripheral:v4 error:v44];
+      centralManager = [MEMORY[0x277CCA9B8] hapErrorWithCode:8 marker:2101];
+      [(HAPAccessoryServerBrowserBTLE *)v51 failedToConnectHAPPeripheral:allowedCopy error:centralManager];
     }
   }
 
   else
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = v7;
+    v46 = selfCopy;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
     {
       v48 = HMFGetLogIdentifier();
-      v49 = [v4 shortDescription];
+      shortDescription4 = [allowedCopy shortDescription];
       *buf = 138543618;
       v58 = v48;
       v59 = 2114;
-      v60 = v49;
+      v60 = shortDescription4;
       _os_log_impl(&dword_22AADC000, v47, OS_LOG_TYPE_DEBUG, "%{public}@: Pending connection to peripheral: %{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v45);
-    [(HAPAccessoryServerBrowserBTLE *)v46 _addToPendingConnections:v4];
+    [(HAPAccessoryServerBrowserBTLE *)v46 _addToPendingConnections:allowedCopy];
   }
 
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeFromPendingConnections:(id)a3
+- (void)_removeFromPendingConnections:(id)connections
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionsCopy = connections;
   os_unfair_lock_lock_with_options();
   peripheralsPendingConnection = self->_peripheralsPendingConnection;
-  v6 = [v4 identifier];
-  LODWORD(peripheralsPendingConnection) = [(NSMutableOrderedSet *)peripheralsPendingConnection containsObject:v6];
+  identifier = [connectionsCopy identifier];
+  LODWORD(peripheralsPendingConnection) = [(NSMutableOrderedSet *)peripheralsPendingConnection containsObject:identifier];
 
   if (peripheralsPendingConnection)
   {
     v7 = self->_peripheralsPendingConnection;
-    v8 = [v4 identifier];
-    [(NSMutableOrderedSet *)v7 removeObject:v8];
+    identifier2 = [connectionsCopy identifier];
+    [(NSMutableOrderedSet *)v7 removeObject:identifier2];
 
     os_unfair_lock_unlock(&self->super._lock);
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 shortDescription];
+      shortDescription = [connectionsCopy shortDescription];
       v15 = 138543618;
       v16 = v12;
       v17 = 2114;
-      v18 = v13;
+      v18 = shortDescription;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Removed pending connection for peripheral: %{public}@", &v15, 0x16u);
     }
 
@@ -1314,14 +1314,14 @@ LABEL_22:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addToPendingConnections:(id)a3
+- (void)_addToPendingConnections:(id)connections
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionsCopy = connections;
   os_unfair_lock_lock_with_options();
   peripheralsPendingConnection = self->_peripheralsPendingConnection;
-  v6 = [v4 identifier];
-  LOBYTE(peripheralsPendingConnection) = [(NSMutableOrderedSet *)peripheralsPendingConnection containsObject:v6];
+  identifier = [connectionsCopy identifier];
+  LOBYTE(peripheralsPendingConnection) = [(NSMutableOrderedSet *)peripheralsPendingConnection containsObject:identifier];
 
   if (peripheralsPendingConnection)
   {
@@ -1331,21 +1331,21 @@ LABEL_22:
   else
   {
     v7 = self->_peripheralsPendingConnection;
-    v8 = [v4 identifier];
-    [(NSMutableOrderedSet *)v7 addObject:v8];
+    identifier2 = [connectionsCopy identifier];
+    [(NSMutableOrderedSet *)v7 addObject:identifier2];
 
     os_unfair_lock_unlock(&self->super._lock);
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 shortDescription];
+      shortDescription = [connectionsCopy shortDescription];
       v15 = 138543618;
       v16 = v12;
       v17 = 2114;
-      v18 = v13;
+      v18 = shortDescription;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Pending connection to peripheral: %{public}@", &v15, 0x16u);
     }
 
@@ -1359,41 +1359,41 @@ LABEL_22:
 {
   os_unfair_lock_lock_with_options();
   v3 = MEMORY[0x277CBEA60];
-  v4 = [(NSMutableOrderedSet *)self->_peripheralsPendingConnection array];
-  v5 = [v3 arrayWithArray:v4];
+  array = [(NSMutableOrderedSet *)self->_peripheralsPendingConnection array];
+  v5 = [v3 arrayWithArray:array];
 
   os_unfair_lock_unlock(&self->super._lock);
 
   return v5;
 }
 
-- (void)_removeFromActiveConnections:(id)a3
+- (void)_removeFromActiveConnections:(id)connections
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionsCopy = connections;
   os_unfair_lock_lock_with_options();
   peripheralsWithConnectionRequests = self->_peripheralsWithConnectionRequests;
-  v6 = [v4 identifier];
-  LODWORD(peripheralsWithConnectionRequests) = [(NSMutableOrderedSet *)peripheralsWithConnectionRequests containsObject:v6];
+  identifier = [connectionsCopy identifier];
+  LODWORD(peripheralsWithConnectionRequests) = [(NSMutableOrderedSet *)peripheralsWithConnectionRequests containsObject:identifier];
 
   if (peripheralsWithConnectionRequests)
   {
     v7 = self->_peripheralsWithConnectionRequests;
-    v8 = [v4 identifier];
-    [(NSMutableOrderedSet *)v7 removeObject:v8];
+    identifier2 = [connectionsCopy identifier];
+    [(NSMutableOrderedSet *)v7 removeObject:identifier2];
 
     os_unfair_lock_unlock(&self->super._lock);
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 shortDescription];
+      shortDescription = [connectionsCopy shortDescription];
       v15 = 138543618;
       v16 = v12;
       v17 = 2114;
-      v18 = v13;
+      v18 = shortDescription;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Removed active connection for peripheral: %{public}@", &v15, 0x16u);
     }
 
@@ -1408,14 +1408,14 @@ LABEL_22:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addToActiveConnections:(id)a3
+- (void)_addToActiveConnections:(id)connections
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionsCopy = connections;
   os_unfair_lock_lock_with_options();
   peripheralsWithConnectionRequests = self->_peripheralsWithConnectionRequests;
-  v6 = [v4 identifier];
-  LOBYTE(peripheralsWithConnectionRequests) = [(NSMutableOrderedSet *)peripheralsWithConnectionRequests containsObject:v6];
+  identifier = [connectionsCopy identifier];
+  LOBYTE(peripheralsWithConnectionRequests) = [(NSMutableOrderedSet *)peripheralsWithConnectionRequests containsObject:identifier];
 
   if (peripheralsWithConnectionRequests)
   {
@@ -1425,21 +1425,21 @@ LABEL_22:
   else
   {
     v7 = self->_peripheralsWithConnectionRequests;
-    v8 = [v4 identifier];
-    [(NSMutableOrderedSet *)v7 addObject:v8];
+    identifier2 = [connectionsCopy identifier];
+    [(NSMutableOrderedSet *)v7 addObject:identifier2];
 
     os_unfair_lock_unlock(&self->super._lock);
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 shortDescription];
+      shortDescription = [connectionsCopy shortDescription];
       v15 = 138543618;
       v16 = v12;
       v17 = 2114;
-      v18 = v13;
+      v18 = shortDescription;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Adding active connection for peripheral: %{public}@", &v15, 0x16u);
     }
 
@@ -1453,20 +1453,20 @@ LABEL_22:
 {
   os_unfair_lock_lock_with_options();
   v3 = MEMORY[0x277CBEA60];
-  v4 = [(NSMutableOrderedSet *)self->_peripheralsWithConnectionRequests array];
-  v5 = [v3 arrayWithArray:v4];
+  array = [(NSMutableOrderedSet *)self->_peripheralsWithConnectionRequests array];
+  v5 = [v3 arrayWithArray:array];
 
   os_unfair_lock_unlock(&self->super._lock);
 
   return v5;
 }
 
-- (void)_performTimedConnectionRequestForIdentifier:(id)a3
+- (void)_performTimedConnectionRequestForIdentifier:(id)identifier
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1474,62 +1474,62 @@ LABEL_22:
     *buf = 138543618;
     v61 = v8;
     v62 = 2114;
-    v63 = v4;
+    v63 = identifierCopy;
     _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%{public}@Received request to perform a timed connection request for accessory with identifier %{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPAccessoryServerBrowserBTLE *)v6 _bleAccessoryServerTupleForIdentifier:v4];
-  v10 = [v9 accessoryServer];
+  v9 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _bleAccessoryServerTupleForIdentifier:identifierCopy];
+  accessoryServer = [v9 accessoryServer];
 
-  if (v10)
+  if (accessoryServer)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v10 shortDescription];
-      v16 = [v10 blePeripheral];
-      v17 = [v16 shortDescription];
+      shortDescription = [accessoryServer shortDescription];
+      blePeripheral = [accessoryServer blePeripheral];
+      shortDescription2 = [blePeripheral shortDescription];
       *buf = 138543874;
       v61 = v14;
       v62 = 2114;
-      v63 = v15;
+      v63 = shortDescription;
       v64 = 2114;
-      v65 = v17;
+      v65 = shortDescription2;
       _os_log_impl(&dword_22AADC000, v13, OS_LOG_TYPE_INFO, "%{public}@Found Accessory Server: %{public}@. Requesting discovery via peripheral: %{public}@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    [v10 discoverAccessories];
+    [accessoryServer discoverAccessories];
     goto LABEL_29;
   }
 
-  [(HAPAccessoryServerBrowserBTLE *)v6 _removeDiscoveredPeripheralsWithIdentifier:v4];
-  v18 = [(HAPAccessoryServerBrowserBTLE *)v6 targetedScanAccessoryIdentifiers];
-  v19 = [v18 containsObject:v4];
+  [(HAPAccessoryServerBrowserBTLE *)selfCopy _removeDiscoveredPeripheralsWithIdentifier:identifierCopy];
+  targetedScanAccessoryIdentifiers = [(HAPAccessoryServerBrowserBTLE *)selfCopy targetedScanAccessoryIdentifiers];
+  v19 = [targetedScanAccessoryIdentifiers containsObject:identifierCopy];
 
   if (!v19)
   {
-    v24 = [(HAPAccessoryServerBrowserBTLE *)v6 hapWiProxBLEBrowser];
-    v25 = [v24 trackedPeripheralForIdentifier:v4];
+    hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapWiProxBLEBrowser];
+    v25 = [hapWiProxBLEBrowser trackedPeripheralForIdentifier:identifierCopy];
 
-    v26 = [(HAPAccessoryServerBrowserBTLE *)v6 recentlySeenPairedPeripherals];
-    v27 = [v26 objectForKey:v4];
+    recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)selfCopy recentlySeenPairedPeripherals];
+    v27 = [recentlySeenPairedPeripherals objectForKey:identifierCopy];
 
     if (v27 && [v25 isReachable])
     {
       v28 = [v25 copy];
-      v29 = [v27 stateNumber];
-      [v28 setStateNumber:v29];
+      stateNumber = [v27 stateNumber];
+      [v28 setStateNumber:stateNumber];
 
-      v30 = [v27 configNumber];
-      [v28 setConfigNumber:v30];
+      configNumber = [v27 configNumber];
+      [v28 setConfigNumber:configNumber];
 
-      v31 = [v27 category];
-      [v28 setCategory:v31];
+      category = [v27 category];
+      [v28 setCategory:category];
     }
 
     else
@@ -1537,15 +1537,15 @@ LABEL_22:
       v28 = 0;
     }
 
-    v32 = [v28 statusFlags];
-    if ([v32 integerValue])
+    statusFlags = [v28 statusFlags];
+    if ([statusFlags integerValue])
     {
-      v33 = [(HAPAccessoryServerBrowser *)v6 isPaired:v4];
+      v33 = [(HAPAccessoryServerBrowser *)selfCopy isPaired:identifierCopy];
 
       if (v33)
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = v6;
+        v35 = selfCopy;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
         {
@@ -1554,7 +1554,7 @@ LABEL_22:
           *buf = 138543618;
           v61 = v38;
           v62 = 2114;
-          v63 = v4;
+          v63 = identifierCopy;
           _os_log_impl(&dword_22AADC000, v36, OS_LOG_TYPE_INFO, "%{public}@Found recently seen paired peripheral has invalid pairing status. %{public}@ - Finding it again", buf, 0x16u);
 
           v27 = v37;
@@ -1574,7 +1574,7 @@ LABEL_22:
       v59 = v27;
       [v28 setIsCached:1];
       v39 = objc_autoreleasePoolPush();
-      v40 = v6;
+      v40 = selfCopy;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
@@ -1587,18 +1587,18 @@ LABEL_22:
       }
 
       objc_autoreleasePoolPop(v39);
-      v58 = [v28 name];
-      v57 = [v28 identifier];
-      v56 = [v28 statusFlags];
-      v43 = [v28 stateNumber];
-      v55 = [v28 configNumber];
-      v44 = [v28 category];
-      v45 = [v28 advertisementFormat];
-      v46 = [v28 setupHash];
-      v47 = [v28 whbStableIdentifier];
+      name = [v28 name];
+      identifier = [v28 identifier];
+      statusFlags2 = [v28 statusFlags];
+      stateNumber2 = [v28 stateNumber];
+      configNumber2 = [v28 configNumber];
+      category2 = [v28 category];
+      advertisementFormat = [v28 advertisementFormat];
+      setupHash = [v28 setupHash];
+      whbStableIdentifier = [v28 whbStableIdentifier];
       LOBYTE(v54) = 0;
       LOBYTE(v53) = 1;
-      [(HAPAccessoryServerBrowserBTLE *)v40 _createHAPAccessoryAndNotifyDelegateWithPeripheral:v28 name:v58 pairingUsername:v57 statusFlags:v56 stateNumber:v43 stateChanged:0 connectReason:v53 configNumber:v55 category:v44 connectionIdleTime:v54 format:v45 setupHash:v46 encryptedPayload:0 whbStableIdentifier:v47];
+      [(HAPAccessoryServerBrowserBTLE *)v40 _createHAPAccessoryAndNotifyDelegateWithPeripheral:v28 name:name pairingUsername:identifier statusFlags:statusFlags2 stateNumber:stateNumber2 stateChanged:0 connectReason:v53 configNumber:configNumber2 category:category2 connectionIdleTime:v54 format:advertisementFormat setupHash:setupHash encryptedPayload:0 whbStableIdentifier:whbStableIdentifier];
 
       v27 = v59;
       goto LABEL_28;
@@ -1606,7 +1606,7 @@ LABEL_22:
 
 LABEL_25:
     v48 = objc_autoreleasePoolPush();
-    v49 = v6;
+    v49 = selfCopy;
     v50 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
     {
@@ -1614,21 +1614,21 @@ LABEL_25:
       *buf = 138543874;
       v61 = v51;
       v62 = 2114;
-      v63 = v4;
+      v63 = identifierCopy;
       v64 = 2114;
       v65 = v27;
       _os_log_impl(&dword_22AADC000, v50, OS_LOG_TYPE_INFO, "%{public}@Peripheral identifier without server %{public}@ - Finding it again. %{public}@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v48);
-    [(HAPAccessoryServerBrowserBTLE *)v49 _performTargetedScanForAccessoryWithIdentifier:v4];
+    [(HAPAccessoryServerBrowserBTLE *)v49 _performTargetedScanForAccessoryWithIdentifier:identifierCopy];
 LABEL_28:
 
     goto LABEL_29;
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = v6;
+  v21 = selfCopy;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -1636,7 +1636,7 @@ LABEL_28:
     *buf = 138543618;
     v61 = v23;
     v62 = 2114;
-    v63 = v4;
+    v63 = identifierCopy;
     _os_log_impl(&dword_22AADC000, v22, OS_LOG_TYPE_INFO, "%{public}@Targeted scan is in progress for server identifier: %{public}@", buf, 0x16u);
   }
 
@@ -1646,38 +1646,38 @@ LABEL_29:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createHAPAccessoryAndNotifyDelegateWithPeripheral:(id)a3 name:(id)a4 pairingUsername:(id)a5 statusFlags:(id)a6 stateNumber:(id)a7 stateChanged:(BOOL)a8 connectReason:(unsigned __int8)a9 configNumber:(id)a10 category:(id)a11 connectionIdleTime:(unsigned __int8)a12 format:(unint64_t)a13 setupHash:(id)a14 encryptedPayload:(id)a15 whbStableIdentifier:(id)a16
+- (void)_createHAPAccessoryAndNotifyDelegateWithPeripheral:(id)peripheral name:(id)name pairingUsername:(id)username statusFlags:(id)flags stateNumber:(id)number stateChanged:(BOOL)changed connectReason:(unsigned __int8)reason configNumber:(id)self0 category:(id)self1 connectionIdleTime:(unsigned __int8)self2 format:(unint64_t)self3 setupHash:(id)self4 encryptedPayload:(id)self5 whbStableIdentifier:(id)self6
 {
-  v106 = a8;
-  v104 = a9;
+  changedCopy = changed;
+  reasonCopy = reason;
   v135 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v105 = a4;
-  v21 = a5;
-  v22 = a6;
-  v113 = a7;
-  v112 = a10;
-  v111 = a11;
-  v103 = a14;
-  v110 = a15;
-  v107 = a16;
+  peripheralCopy = peripheral;
+  nameCopy = name;
+  usernameCopy = username;
+  flagsCopy = flags;
+  numberCopy = number;
+  configNumberCopy = configNumber;
+  categoryCopy = category;
+  hashCopy = hash;
+  payloadCopy = payload;
+  identifierCopy = identifier;
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy = self;
   v25 = HMFGetOSLogHandle();
-  v109 = v21;
+  v109 = usernameCopy;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     v26 = HMFGetLogIdentifier();
-    v27 = [v20 shortDescription];
+    shortDescription = [peripheralCopy shortDescription];
     v28 = HMFBooleanToString();
     v29 = HMFBooleanToString();
-    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a12];
+    v30 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:time];
     *buf = 138544642;
     v124 = v26;
     v125 = 2114;
-    v126 = v27;
+    v126 = shortDescription;
     v127 = 2048;
-    v128 = a13;
+    formatCopy = format;
     v129 = 2114;
     v130 = v28;
     v131 = 2114;
@@ -1686,23 +1686,23 @@ LABEL_29:
     v134 = v30;
     _os_log_impl(&dword_22AADC000, v25, OS_LOG_TYPE_INFO, "%{public}@Creating a HAPAccessoryServerBTLE instance for discovered peripheral: '%{public}@' V: '%tu', ST: '%{public}@' ENC: '%{public}@' CT: '%{public}@'", buf, 0x3Eu);
 
-    v21 = v109;
+    usernameCopy = v109;
   }
 
   objc_autoreleasePoolPop(v23);
   v122 = 0;
-  if ([(HAPAccessoryServerBrowser *)v24 isPaired:v21])
+  if ([(HAPAccessoryServerBrowser *)selfCopy isPaired:usernameCopy])
   {
-    v31 = [(HAPAccessoryServerBrowserBTLE *)v24 cachedAccessoryForIdentifier:v21];
+    v31 = [(HAPAccessoryServerBrowserBTLE *)selfCopy cachedAccessoryForIdentifier:usernameCopy];
     v32 = v31;
-    v33 = v105;
-    v34 = v22;
-    if (v110)
+    accessoryName = nameCopy;
+    statusFlags = flagsCopy;
+    if (payloadCopy)
     {
-      if ([v20 isCached])
+      if ([peripheralCopy isCached])
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = v24;
+        v36 = selfCopy;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
@@ -1717,40 +1717,40 @@ LABEL_29:
         goto LABEL_9;
       }
 
-      v47 = [(HAPAccessoryServerBrowserBTLE *)v24 hapCharacteristicsForEncryptedPayload:v110 identifier:v21 shouldConnect:&v122];
+      v47 = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapCharacteristicsForEncryptedPayload:payloadCopy identifier:usernameCopy shouldConnect:&v122];
       if (v47)
       {
         v39 = v47;
-        v48 = [v47 firstObject];
-        v49 = [v48 stateNumber];
+        firstObject = [v47 firstObject];
+        stateNumber = [firstObject stateNumber];
 
         if (v122)
         {
-          v113 = v49;
+          numberCopy = stateNumber;
         }
 
         else
         {
-          v50 = [v32 peripheralInfo];
-          v51 = [v50 stateNumber];
-          v52 = [v49 isEqual:v51];
+          peripheralInfo = [v32 peripheralInfo];
+          stateNumber2 = [peripheralInfo stateNumber];
+          v52 = [stateNumber isEqual:stateNumber2];
 
           if ((v52 & 1) == 0)
           {
             v122 = 1;
-            v104 = 2;
-            v113 = v49;
-            v34 = v22;
+            reasonCopy = 2;
+            numberCopy = stateNumber;
+            statusFlags = flagsCopy;
 LABEL_9:
-            v21 = v109;
+            usernameCopy = v109;
             goto LABEL_27;
           }
 
-          v21 = v109;
+          usernameCopy = v109;
           if (!v122)
           {
             v97 = objc_autoreleasePoolPush();
-            v98 = v24;
+            v98 = selfCopy;
             v99 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG))
             {
@@ -1763,14 +1763,14 @@ LABEL_9:
             }
 
             objc_autoreleasePoolPop(v97);
-            v34 = v22;
-            v21 = v109;
-            v44 = v103;
+            statusFlags = flagsCopy;
+            usernameCopy = v109;
+            v44 = hashCopy;
             goto LABEL_62;
           }
 
-          v113 = v49;
-          v34 = v22;
+          numberCopy = stateNumber;
+          statusFlags = flagsCopy;
         }
       }
 
@@ -1779,9 +1779,9 @@ LABEL_9:
         if (!v32)
         {
           v93 = objc_autoreleasePoolPush();
-          v94 = v24;
+          v94 = selfCopy;
           v95 = HMFGetOSLogHandle();
-          v44 = v103;
+          v44 = hashCopy;
           if (os_log_type_enabled(v95, OS_LOG_TYPE_INFO))
           {
             v96 = HMFGetLogIdentifier();
@@ -1791,81 +1791,81 @@ LABEL_9:
             v126 = v109;
             _os_log_impl(&dword_22AADC000, v95, OS_LOG_TYPE_INFO, "%{public}@No accessory cache found for: %{public}@", buf, 0x16u);
 
-            v21 = v109;
+            usernameCopy = v109;
           }
 
           objc_autoreleasePoolPop(v93);
-          [(HAPAccessoryServerBrowserBTLE *)v94 _performTimedConnectionRequestForIdentifier:v21];
+          [(HAPAccessoryServerBrowserBTLE *)v94 _performTimedConnectionRequestForIdentifier:usernameCopy];
           v32 = 0;
           v39 = 0;
           goto LABEL_58;
         }
 
         v39 = 0;
-        v106 = 1;
+        changedCopy = 1;
       }
 
 LABEL_27:
-      v44 = v103;
-      v53 = [(HAPAccessoryServerBrowserBTLE *)v24 recentlySeenPairedPeripherals];
-      v54 = [v53 objectForKey:v21];
+      v44 = hashCopy;
+      recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)selfCopy recentlySeenPairedPeripherals];
+      v54 = [recentlySeenPairedPeripherals objectForKey:usernameCopy];
 
-      if (v105)
+      if (nameCopy)
       {
-        if (v34)
+        if (statusFlags)
         {
 LABEL_29:
-          if (!v113)
+          if (!numberCopy)
           {
-            v55 = [v54 stateNumber];
-            v56 = v55;
-            if (v55)
+            stateNumber3 = [v54 stateNumber];
+            v56 = stateNumber3;
+            if (stateNumber3)
             {
-              v113 = v55;
+              numberCopy = stateNumber3;
             }
 
             else
             {
-              v59 = [v32 peripheralInfo];
-              v113 = [v59 stateNumber];
+              peripheralInfo2 = [v32 peripheralInfo];
+              numberCopy = [peripheralInfo2 stateNumber];
 
-              v21 = v109;
+              usernameCopy = v109;
             }
           }
 
-          if (!v112)
+          if (!configNumberCopy)
           {
-            v60 = [v54 configNumber];
-            v61 = v60;
-            if (v60)
+            configNumber = [v54 configNumber];
+            v61 = configNumber;
+            if (configNumber)
             {
-              v112 = v60;
+              configNumberCopy = configNumber;
             }
 
             else
             {
-              v62 = [v32 peripheralInfo];
-              v112 = [v62 configNumber];
+              peripheralInfo3 = [v32 peripheralInfo];
+              configNumberCopy = [peripheralInfo3 configNumber];
 
-              v21 = v109;
+              usernameCopy = v109;
             }
           }
 
-          if (!v111)
+          if (!categoryCopy)
           {
-            v63 = [v54 category];
-            v64 = v63;
-            if (v63)
+            category = [v54 category];
+            v64 = category;
+            if (category)
             {
-              v111 = v63;
+              categoryCopy = category;
             }
 
             else
             {
-              v65 = [v32 peripheralInfo];
-              v111 = [v65 categoryIdentifier];
+              peripheralInfo4 = [v32 peripheralInfo];
+              categoryCopy = [peripheralInfo4 categoryIdentifier];
 
-              v21 = v109;
+              usernameCopy = v109;
             }
           }
 
@@ -1875,41 +1875,41 @@ LABEL_29:
 
       else
       {
-        v57 = [v32 peripheralInfo];
-        v33 = [v57 accessoryName];
+        peripheralInfo5 = [v32 peripheralInfo];
+        accessoryName = [peripheralInfo5 accessoryName];
 
-        if (v34)
+        if (statusFlags)
         {
           goto LABEL_29;
         }
       }
 
-      v58 = [v32 peripheralInfo];
-      v34 = [v58 statusFlags];
+      peripheralInfo6 = [v32 peripheralInfo];
+      statusFlags = [peripheralInfo6 statusFlags];
 
       goto LABEL_29;
     }
 
-    if (v31 && ([v20 isCached] & 1) == 0)
+    if (v31 && ([peripheralCopy isCached] & 1) == 0)
     {
-      v45 = [v32 peripheralInfo];
-      v46 = [v45 stateNumber];
-      if (![v113 isEqual:v46])
+      peripheralInfo7 = [v32 peripheralInfo];
+      stateNumber4 = [peripheralInfo7 stateNumber];
+      if (![numberCopy isEqual:stateNumber4])
       {
-        v79 = [v32 peripheralInfo];
-        v80 = [v79 broadcastKey];
-        if (v80)
+        peripheralInfo8 = [v32 peripheralInfo];
+        broadcastKey = [peripheralInfo8 broadcastKey];
+        if (broadcastKey)
         {
-          v81 = v80;
-          v82 = [v32 peripheralInfo];
-          v83 = [v82 keyUpdatedStateNumber];
+          v81 = broadcastKey;
+          peripheralInfo9 = [v32 peripheralInfo];
+          keyUpdatedStateNumber = [peripheralInfo9 keyUpdatedStateNumber];
 
-          if (v83)
+          if (keyUpdatedStateNumber)
           {
             v84 = objc_autoreleasePoolPush();
-            v85 = v24;
+            v85 = selfCopy;
             v86 = HMFGetOSLogHandle();
-            v34 = v22;
+            statusFlags = flagsCopy;
             if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
             {
               v87 = HMFGetLogIdentifier();
@@ -1922,27 +1922,27 @@ LABEL_29:
 
             objc_autoreleasePoolPop(v84);
             Current = CFAbsoluteTimeGetCurrent();
-            v89 = [v32 peripheralInfo];
-            [v89 keyUpdatedTime];
+            peripheralInfo10 = [v32 peripheralInfo];
+            [peripheralInfo10 keyUpdatedTime];
             v91 = Current - v90;
 
             v39 = 0;
-            v92 = a9;
+            reasonCopy2 = reason;
             if (v91 > 86400.0)
             {
-              v92 = 3;
+              reasonCopy2 = 3;
             }
 
-            v104 = v92;
+            reasonCopy = reasonCopy2;
             v122 = 1;
-            v33 = v105;
+            accessoryName = nameCopy;
           }
 
           else
           {
             v39 = 0;
-            v33 = v105;
-            v34 = v22;
+            accessoryName = nameCopy;
+            statusFlags = flagsCopy;
           }
         }
 
@@ -1952,24 +1952,24 @@ LABEL_29:
           v39 = 0;
         }
 
-        v21 = v109;
+        usernameCopy = v109;
         goto LABEL_18;
       }
     }
 
     v39 = 0;
 LABEL_18:
-    v44 = v103;
+    v44 = hashCopy;
 LABEL_47:
 
     goto LABEL_48;
   }
 
   v40 = objc_autoreleasePoolPush();
-  v41 = v24;
+  v41 = selfCopy;
   v42 = HMFGetOSLogHandle();
-  v33 = v105;
-  v34 = v22;
+  accessoryName = nameCopy;
+  statusFlags = flagsCopy;
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
     v43 = HMFGetLogIdentifier();
@@ -1977,21 +1977,21 @@ LABEL_47:
     v124 = v43;
     _os_log_impl(&dword_22AADC000, v42, OS_LOG_TYPE_INFO, "%{public}@This accessory is unpaired", buf, 0xCu);
 
-    v21 = v109;
+    usernameCopy = v109;
   }
 
   objc_autoreleasePoolPop(v40);
   v39 = 0;
-  v44 = v103;
+  v44 = hashCopy;
 LABEL_48:
-  if (a13 == 1)
+  if (format == 1)
   {
     v66 = off_2786D2040;
   }
 
   else
   {
-    if (a13 != 2)
+    if (format != 2)
     {
       v68 = 0;
       goto LABEL_54;
@@ -2004,43 +2004,43 @@ LABEL_48:
   v68 = objc_opt_class();
 LABEL_54:
   v69 = [v68 alloc];
-  v70 = [(HAPAccessoryServerBrowser *)v24 keyStore];
-  LOBYTE(v102) = a12;
-  LOBYTE(v101) = v104;
-  v32 = [v69 initWithPeripheral:v20 name:v33 pairingUsername:v21 statusFlags:v34 stateNumber:v113 stateChanged:v106 connectReason:v101 configNumber:v112 category:v111 setupHash:v44 connectionIdleTime:v102 browser:v24 keyStore:v70 whbStableIdentifier:v107];
+  keyStore = [(HAPAccessoryServerBrowser *)selfCopy keyStore];
+  LOBYTE(v102) = time;
+  LOBYTE(v101) = reasonCopy;
+  v32 = [v69 initWithPeripheral:peripheralCopy name:accessoryName pairingUsername:usernameCopy statusFlags:statusFlags stateNumber:numberCopy stateChanged:changedCopy connectReason:v101 configNumber:configNumberCopy category:categoryCopy setupHash:v44 connectionIdleTime:v102 browser:selfCopy keyStore:keyStore whbStableIdentifier:identifierCopy];
 
   if (v32)
   {
     v71 = [HAPDiscoveredBTLEAccessoryServerTuple discoveredAccessoryServerTupleWithAccessoryServer:v32];
-    v72 = [(HAPAccessoryServerBrowserBTLE *)v24 discoveredPeripheralsWithAccessories];
-    [v72 setObject:v71 forKey:v20];
+    discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)selfCopy discoveredPeripheralsWithAccessories];
+    [discoveredPeripheralsWithAccessories setObject:v71 forKey:peripheralCopy];
 
-    if ([(HAPAccessoryServerBrowserBTLE *)v24 _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
+    if ([(HAPAccessoryServerBrowserBTLE *)selfCopy _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
     {
-      v73 = [(HAPAccessoryServerBrowserBTLE *)v24 delegateQueue];
+      delegateQueue = [(HAPAccessoryServerBrowserBTLE *)selfCopy delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __251__HAPAccessoryServerBrowserBTLE__createHAPAccessoryAndNotifyDelegateWithPeripheral_name_pairingUsername_statusFlags_stateNumber_stateChanged_connectReason_configNumber_category_connectionIdleTime_format_setupHash_encryptedPayload_whbStableIdentifier___block_invoke;
       block[3] = &unk_2786D3D20;
       v115 = v39;
-      v116 = v24;
+      v116 = selfCopy;
       v117 = v32;
       v118 = v109;
       v120 = v122;
-      v121 = v106;
-      v119 = v113;
-      dispatch_async(v73, block);
+      v121 = changedCopy;
+      v119 = numberCopy;
+      dispatch_async(delegateQueue, block);
 
-      v21 = v109;
+      usernameCopy = v109;
     }
 
 LABEL_58:
-    v49 = v113;
+    stateNumber = numberCopy;
     goto LABEL_62;
   }
 
   v74 = objc_autoreleasePoolPush();
-  v75 = v24;
+  v75 = selfCopy;
   v76 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
   {
@@ -2048,14 +2048,14 @@ LABEL_58:
     *buf = 138543618;
     v124 = v77;
     v125 = 2114;
-    v126 = v20;
+    v126 = peripheralCopy;
     _os_log_impl(&dword_22AADC000, v76, OS_LOG_TYPE_ERROR, "%{public}@Failed to create a HAPAccessoryServerBTLE instance for discovered peripheral %{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v74);
   v32 = 0;
-  v49 = v113;
-  v21 = v109;
+  stateNumber = numberCopy;
+  usernameCopy = v109;
 LABEL_62:
 
   v78 = *MEMORY[0x277D85DE8];
@@ -2090,20 +2090,20 @@ LABEL_4:
   }
 }
 
-- (id)hapCharacteristicsForEncryptedPayload:(id)a3 identifier:(id)a4 shouldConnect:(BOOL *)a5
+- (id)hapCharacteristicsForEncryptedPayload:(id)payload identifier:(id)identifier shouldConnect:(BOOL *)connect
 {
   v154 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  [(HAPCharacteristic *)v9 cStringUsingEncoding:4];
-  [(HAPCharacteristic *)v9 length];
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  [(HAPCharacteristic *)identifierCopy cStringUsingEncoding:4];
+  [(HAPCharacteristic *)identifierCopy length];
   TextToHardwareAddress();
-  v10 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:v9];
+  v10 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:identifierCopy];
   v11 = v10;
   if (!v10)
   {
     v38 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy = self;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
@@ -2111,42 +2111,42 @@ LABEL_4:
       *buf = 138543618;
       v143 = v41;
       v144 = 2114;
-      v145 = v9;
+      v145 = identifierCopy;
       _os_log_impl(&dword_22AADC000, v40, OS_LOG_TYPE_ERROR, "%{public}@[Enc Adv] No cached accessory for: %{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v38);
     v37 = 0;
-    if (a5)
+    if (connect)
     {
-      *a5 = 1;
+      *connect = 1;
     }
 
     goto LABEL_76;
   }
 
-  v129 = self;
-  v124 = a5;
-  v12 = [v10 peripheralInfo];
-  v13 = [v12 stateNumber];
-  v14 = [v13 unsignedShortValue] + 1;
+  selfCopy2 = self;
+  connectCopy = connect;
+  peripheralInfo = [v10 peripheralInfo];
+  stateNumber = [peripheralInfo stateNumber];
+  v14 = [stateNumber unsignedShortValue] + 1;
 
   v139 = v14;
   v15 = [MEMORY[0x277CBEA90] dataWithBytes:&v139 length:2];
   v127 = v11;
-  v16 = [v11 peripheralInfo];
-  v17 = [v16 broadcastKey];
+  peripheralInfo2 = [v11 peripheralInfo];
+  broadcastKey = [peripheralInfo2 broadcastKey];
 
-  v18 = [v8 subdataWithRange:{objc_msgSend(v8, "length") - 4, 4}];
-  v128 = v8;
-  v19 = [v8 subdataWithRange:{0, objc_msgSend(v8, "length") - 4}];
+  v18 = [payloadCopy subdataWithRange:{objc_msgSend(payloadCopy, "length") - 4, 4}];
+  v128 = payloadCopy;
+  v19 = [payloadCopy subdataWithRange:{0, objc_msgSend(payloadCopy, "length") - 4}];
   v20 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{-[HAPCharacteristic length](v19, "length")}];
   v134 = v18;
-  v131 = v9;
-  if (!v17)
+  v131 = identifierCopy;
+  if (!broadcastKey)
   {
     v42 = objc_autoreleasePoolPush();
-    v43 = v129;
+    v43 = selfCopy2;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
@@ -2154,19 +2154,19 @@ LABEL_4:
       *buf = 138543618;
       v143 = v45;
       v144 = 2114;
-      v145 = v9;
+      v145 = identifierCopy;
       _os_log_impl(&dword_22AADC000, v44, OS_LOG_TYPE_ERROR, "%{public}@[Enc Adv] No keys to decrypt for accessory: %{public}@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v42);
-    if (v124)
+    if (connectCopy)
     {
       v36 = 0;
       v37 = 0;
-      *v124 = 1;
+      *connectCopy = 1;
 LABEL_39:
       v68 = v134;
-      v8 = v128;
+      payloadCopy = v128;
       goto LABEL_75;
     }
 
@@ -2176,8 +2176,8 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v132 = v17;
-  [v17 bytes];
+  v132 = broadcastKey;
+  [broadcastKey bytes];
   [v15 bytes];
   [(HAPCharacteristic *)v19 bytes];
   [(HAPCharacteristic *)v19 length];
@@ -2207,7 +2207,7 @@ LABEL_8:
     if (!--v24)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v129;
+      v28 = selfCopy2;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -2227,7 +2227,7 @@ LABEL_8:
       v31 = objc_autoreleasePoolPush();
       v32 = v28;
       v33 = HMFGetOSLogHandle();
-      v8 = v128;
+      payloadCopy = v128;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
         v34 = HMFGetLogIdentifier();
@@ -2239,7 +2239,7 @@ LABEL_8:
         v146 = 1024;
         *v147 = v22;
         *&v147[4] = 2112;
-        *&v147[6] = v17;
+        *&v147[6] = broadcastKey;
         *&v147[14] = 2112;
         *&v147[16] = v19;
         v148 = 2112;
@@ -2250,16 +2250,16 @@ LABEL_8:
         v153 = v134;
         _os_log_impl(&dword_22AADC000, v33, OS_LOG_TYPE_DEBUG, "%{public}@[Enc Adv] Failed to decrypt: %@, status: %d, key: %@, enc data: %@, nonce: %@, aad: %@ authTag: %@", buf, 0x4Eu);
 
-        v8 = v128;
+        payloadCopy = v128;
       }
 
       objc_autoreleasePoolPop(v31);
       [(HAPAccessoryServerBrowserBTLE *)v32 updateBroadcastKeyForIdentifier:v131 key:0 keyUpdatedStateNumber:0 keyUpdatedTime:0.0];
       v36 = 0;
       v37 = 0;
-      if (v124)
+      if (connectCopy)
       {
-        *v124 = 1;
+        *connectCopy = 1;
       }
 
       v68 = v134;
@@ -2269,7 +2269,7 @@ LABEL_8:
 
   v25 = [MEMORY[0x277CBEA90] dataWithBytes:&v138 length:{8, v119}];
 
-  [v17 bytes];
+  [broadcastKey bytes];
   v135 = v25;
   [v25 bytes];
   [(HAPCharacteristic *)v19 bytes];
@@ -2281,16 +2281,16 @@ LABEL_8:
   if (v26)
   {
     v22 = v26;
-    v17 = v132;
+    broadcastKey = v132;
     v20 = v133;
     v15 = v25;
     goto LABEL_8;
   }
 
   v46 = objc_autoreleasePoolPush();
-  v47 = v129;
+  v47 = selfCopy2;
   v48 = HMFGetOSLogHandle();
-  v9 = v131;
+  identifierCopy = v131;
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
   {
     v49 = HMFGetLogIdentifier();
@@ -2304,17 +2304,17 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v46);
-  v17 = v132;
+  broadcastKey = v132;
   v20 = v133;
-  if (v124 && v23 >= 1)
+  if (connectCopy && v23 >= 1)
   {
-    *v124 = 1;
+    *connectCopy = 1;
   }
 
   v15 = v135;
 LABEL_30:
   v50 = objc_autoreleasePoolPush();
-  v51 = v129;
+  v51 = selfCopy2;
   v52 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
   {
@@ -2322,22 +2322,22 @@ LABEL_30:
     *buf = 138543874;
     v143 = v53;
     v144 = 2114;
-    v145 = v9;
+    v145 = identifierCopy;
     v146 = 2112;
     *v147 = v20;
     _os_log_impl(&dword_22AADC000, v52, OS_LOG_TYPE_INFO, "%{public}@[Enc Adv]: Decrypted data from %{public}@: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v50);
-  v54 = [v20 bytes];
+  bytes = [v20 bytes];
   if ([v20 length] < 5)
   {
     goto LABEL_38;
   }
 
-  v55 = [MEMORY[0x277CCABB0] numberWithInteger:*v54];
-  v125 = v54;
-  v56 = [MEMORY[0x277CCABB0] numberWithInteger:v54[1]];
+  v55 = [MEMORY[0x277CCABB0] numberWithInteger:*bytes];
+  v125 = bytes;
+  v56 = [MEMORY[0x277CCABB0] numberWithInteger:bytes[1]];
   v57 = objc_autoreleasePoolPush();
   v58 = v51;
   v59 = HMFGetOSLogHandle();
@@ -2364,9 +2364,9 @@ LABEL_30:
   if (v62)
   {
     v63 = v62;
-    v64 = [(HAPCharacteristic *)v62 characteristicMetadata];
-    v65 = [v64 format];
-    v66 = HAPCharacteristicFormatFromString(v65);
+    characteristicMetadata = [(HAPCharacteristic *)v62 characteristicMetadata];
+    format = [characteristicMetadata format];
+    v66 = HAPCharacteristicFormatFromString(format);
     if ((v66 - 1) > 9)
     {
       v67 = 0;
@@ -2420,7 +2420,7 @@ LABEL_30:
       objc_autoreleasePoolPop(v90);
       v36 = 0;
       v37 = 0;
-      v8 = v128;
+      payloadCopy = v128;
       v55 = v130;
       v20 = v133;
       v68 = v134;
@@ -2430,11 +2430,11 @@ LABEL_30:
     v123 = v56;
     v81 = [MEMORY[0x277CBEA90] dataWithBytes:v125 + 4 length:v67];
     v82 = +[HAPDataValueTransformer defaultDataValueTransformer];
-    v83 = [(HAPCharacteristic *)v63 characteristicMetadata];
-    v84 = [v83 format];
+    characteristicMetadata2 = [(HAPCharacteristic *)v63 characteristicMetadata];
+    format2 = [characteristicMetadata2 format];
     v137 = 0;
     v122 = v81;
-    v85 = [v82 reverseTransformedValue:v81 format:HAPCharacteristicFormatFromString(v84) error:&v137];
+    v85 = [v82 reverseTransformedValue:v81 format:HAPCharacteristicFormatFromString(format2) error:&v137];
     v121 = v137;
 
     v86 = objc_autoreleasePoolPush();
@@ -2508,13 +2508,13 @@ LABEL_63:
     v85 = v96;
 LABEL_65:
     v103 = [HAPCharacteristic alloc];
-    v104 = [(HAPCharacteristic *)v63 characteristicUUID];
-    v105 = [v104 UUIDString];
-    v106 = [(HAPCharacteristic *)v63 characteristicProperties];
-    v107 = [(HAPCharacteristic *)v63 characteristicMetadata];
+    characteristicUUID = [(HAPCharacteristic *)v63 characteristicUUID];
+    uUIDString = [characteristicUUID UUIDString];
+    characteristicProperties = [(HAPCharacteristic *)v63 characteristicProperties];
+    characteristicMetadata3 = [(HAPCharacteristic *)v63 characteristicMetadata];
     LOBYTE(v119) = 1;
     v108 = v85;
-    v36 = [(HAPCharacteristic *)v103 initWithType:v105 instanceID:v123 value:v85 stateNumber:v130 properties:v106 eventNotificationsEnabled:0 implicitWriteWithResponse:v119 metadata:v107];
+    v36 = [(HAPCharacteristic *)v103 initWithType:uUIDString instanceID:v123 value:v85 stateNumber:v130 properties:characteristicProperties eventNotificationsEnabled:0 implicitWriteWithResponse:v119 metadata:characteristicMetadata3];
 
     if (v36)
     {
@@ -2522,7 +2522,7 @@ LABEL_65:
       v109 = objc_autoreleasePoolPush();
       v110 = v120;
       v111 = HMFGetOSLogHandle();
-      v17 = v132;
+      broadcastKey = v132;
       v20 = v133;
       if (os_log_type_enabled(v111, OS_LOG_TYPE_INFO))
       {
@@ -2546,7 +2546,7 @@ LABEL_65:
       v113 = objc_autoreleasePoolPush();
       v114 = v120;
       v115 = HMFGetOSLogHandle();
-      v17 = v132;
+      broadcastKey = v132;
       v20 = v133;
       if (os_log_type_enabled(v115, OS_LOG_TYPE_INFO))
       {
@@ -2567,7 +2567,7 @@ LABEL_65:
     v56 = v123;
 
     v68 = v134;
-    v8 = v128;
+    payloadCopy = v128;
     v55 = v130;
     if (v36)
     {
@@ -2599,14 +2599,14 @@ LABEL_73:
 
     objc_autoreleasePoolPop(v69);
     v68 = v134;
-    v8 = v128;
+    payloadCopy = v128;
   }
 
   v36 = 0;
   v37 = 0;
 LABEL_75:
 
-  v9 = v131;
+  identifierCopy = v131;
   v11 = v127;
 LABEL_76:
 
@@ -2615,15 +2615,15 @@ LABEL_76:
   return v37;
 }
 
-- (BOOL)_delegateRespondsToSelector:(SEL)a3
+- (BOOL)_delegateRespondsToSelector:(SEL)selector
 {
-  v4 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
-  if (v4)
+  delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+  if (delegate)
   {
-    v5 = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
-    if (v5)
+    delegateQueue = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
+    if (delegateQueue)
     {
-      v6 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+      delegate2 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
       v7 = objc_opt_respondsToSelector();
     }
 
@@ -2641,17 +2641,17 @@ LABEL_76:
   return v7 & 1;
 }
 
-- (id)_cachedCharacteristicForInstanceID:(id)a3 identifier:(id)a4
+- (id)_cachedCharacteristicForInstanceID:(id)d identifier:(id)identifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:a4];
+  dCopy = d;
+  v7 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:identifier];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [v7 cachedServices];
-  v25 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  cachedServices = [v7 cachedServices];
+  v25 = [cachedServices countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v25)
   {
     v9 = *v31;
@@ -2663,7 +2663,7 @@ LABEL_76:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(cachedServices);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
@@ -2671,8 +2671,8 @@ LABEL_76:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v12 = [v11 cachedCharacteristics];
-        v13 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        cachedCharacteristics = [v11 cachedCharacteristics];
+        v13 = [cachedCharacteristics countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v13)
         {
           v14 = v13;
@@ -2683,12 +2683,12 @@ LABEL_76:
             {
               if (*v27 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(cachedCharacteristics);
               }
 
               v17 = *(*(&v26 + 1) + 8 * j);
-              v18 = [v17 characteristicInstanceId];
-              v19 = [v18 isEqual:v6];
+              characteristicInstanceId = [v17 characteristicInstanceId];
+              v19 = [characteristicInstanceId isEqual:dCopy];
 
               if (v19)
               {
@@ -2699,7 +2699,7 @@ LABEL_76:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v14 = [cachedCharacteristics countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v14)
             {
               continue;
@@ -2714,7 +2714,7 @@ LABEL_76:
 
       v20 = 0;
       v7 = v24;
-      v25 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v25 = [cachedServices countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v25);
@@ -2732,54 +2732,54 @@ LABEL_19:
   return v20;
 }
 
-- (id)retrieveCBPeripheralWithUUID:(id)a3 blePeripheral:(id)a4
+- (id)retrieveCBPeripheralWithUUID:(id)d blePeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 whbStableIdentifier];
-  if (v8)
+  dCopy = d;
+  peripheralCopy = peripheral;
+  whbStableIdentifier = [peripheralCopy whbStableIdentifier];
+  if (whbStableIdentifier)
   {
-    v9 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:v6 stableIdentifier:v8 routeMode:0];
+    v9 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:dCopy stableIdentifier:whbStableIdentifier routeMode:0];
   }
 
   else
   {
-    v10 = [v7 identifier];
-    v9 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:v6 stableIdentifier:v10 routeMode:0];
+    identifier = [peripheralCopy identifier];
+    v9 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:dCopy stableIdentifier:identifier routeMode:0];
   }
 
   return v9;
 }
 
-- (void)accessoryServerBrowserBTLE:(id)a3 didDiscoverHAPPeripheral:(id)a4
+- (void)accessoryServerBrowserBTLE:(id)e didDiscoverHAPPeripheral:(id)peripheral
 {
-  v16 = a4;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  peripheralCopy = peripheral;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v16)
+  if (peripheralCopy)
   {
-    v15 = [v16 name];
-    v6 = [v16 identifier];
-    v7 = [v16 advertisementFormat];
-    v8 = [v16 statusFlags];
-    v9 = [v16 stateNumber];
-    v10 = [v16 category];
-    v11 = [v16 configNumber];
-    v12 = [v16 setupHash];
-    v13 = [v16 encryptedPayload];
-    v14 = [v16 whbStableIdentifier];
-    [(HAPAccessoryServerBrowserBTLE *)self _didDiscoverPeripheral:v16 accessoryName:v15 pairingIdentifier:v6 format:v7 statusFlags:v8 stateNumber:v9 category:v10 configNumber:v11 setupHash:v12 encryptedPayload:v13 whbStableIdentifier:v14];
+    name = [peripheralCopy name];
+    identifier = [peripheralCopy identifier];
+    advertisementFormat = [peripheralCopy advertisementFormat];
+    statusFlags = [peripheralCopy statusFlags];
+    stateNumber = [peripheralCopy stateNumber];
+    category = [peripheralCopy category];
+    configNumber = [peripheralCopy configNumber];
+    setupHash = [peripheralCopy setupHash];
+    encryptedPayload = [peripheralCopy encryptedPayload];
+    whbStableIdentifier = [peripheralCopy whbStableIdentifier];
+    [(HAPAccessoryServerBrowserBTLE *)self _didDiscoverPeripheral:peripheralCopy accessoryName:name pairingIdentifier:identifier format:advertisementFormat statusFlags:statusFlags stateNumber:stateNumber category:category configNumber:configNumber setupHash:setupHash encryptedPayload:encryptedPayload whbStableIdentifier:whbStableIdentifier];
   }
 }
 
-- (id)_bleAccessoryServerTupleForIdentifier:(id)a3
+- (id)_bleAccessoryServerTupleForIdentifier:(id)identifier
 {
-  v4 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForAccessoryServerIdentifier:a3];
+  v4 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForAccessoryServerIdentifier:identifier];
   if (v4)
   {
-    v5 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-    v6 = [v5 objectForKey:v4];
+    discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+    v6 = [discoveredPeripheralsWithAccessories objectForKey:v4];
   }
 
   else
@@ -2790,18 +2790,18 @@ LABEL_19:
   return v6;
 }
 
-- (id)_blePeripheralForAccessoryServerIdentifier:(id)a3
+- (id)_blePeripheralForAccessoryServerIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-  v6 = [v5 keyEnumerator];
+  discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+  keyEnumerator = [discoveredPeripheralsWithAccessories keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2812,16 +2812,16 @@ LABEL_19:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-        v13 = [v12 objectForKey:v11];
-        v14 = [v13 accessoryServer];
+        discoveredPeripheralsWithAccessories2 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+        v13 = [discoveredPeripheralsWithAccessories2 objectForKey:v11];
+        accessoryServer = [v13 accessoryServer];
 
-        v15 = [v14 identifier];
-        LOBYTE(v13) = [v15 isEqual:v4];
+        identifier = [accessoryServer identifier];
+        LOBYTE(v13) = [identifier isEqual:identifierCopy];
 
         if (v13)
         {
@@ -2831,7 +2831,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -2849,30 +2849,30 @@ LABEL_11:
   return v16;
 }
 
-- (id)_blePeripheralForCBPeripheral:(id)a3
+- (id)_blePeripheralForCBPeripheral:(id)peripheral
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
+  peripheralCopy = peripheral;
+  identifier = [peripheralCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
     v26 = 0;
     goto LABEL_27;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v7 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-  v8 = [v7 keyEnumerator];
-  v9 = [v8 allObjects];
+  discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+  keyEnumerator = [discoveredPeripheralsWithAccessories keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v46 objects:v51 count:16];
-  v39 = v6;
+  obj = allObjects;
+  v10 = [allObjects countByEnumeratingWithState:&v46 objects:v51 count:16];
+  v39 = array;
   if (!v10)
   {
     goto LABEL_14;
@@ -2890,27 +2890,27 @@ LABEL_11:
       }
 
       v13 = *(*(&v46 + 1) + 8 * i);
-      v14 = self;
-      v15 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-      v16 = [v15 objectForKey:v13];
-      v17 = [v16 accessoryServer];
+      selfCopy = self;
+      discoveredPeripheralsWithAccessories2 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+      v16 = [discoveredPeripheralsWithAccessories2 objectForKey:v13];
+      accessoryServer = [v16 accessoryServer];
 
-      if (v17)
+      if (accessoryServer)
       {
-        v18 = [v13 cbPeripheral];
-        if ([v18 isEqual:v4])
+        cbPeripheral = [v13 cbPeripheral];
+        if ([cbPeripheral isEqual:peripheralCopy])
         {
         }
 
         else
         {
-          v19 = [v13 peripheralUUIDs];
-          [v4 identifier];
-          v21 = v20 = v4;
-          v22 = [v19 containsObject:v21];
+          peripheralUUIDs = [v13 peripheralUUIDs];
+          [peripheralCopy identifier];
+          v21 = v20 = peripheralCopy;
+          v22 = [peripheralUUIDs containsObject:v21];
 
-          v4 = v20;
-          v6 = v39;
+          peripheralCopy = v20;
+          array = v39;
 
           if (!v22)
           {
@@ -2918,12 +2918,12 @@ LABEL_11:
           }
         }
 
-        [v6 addObject:v13];
+        [array addObject:v13];
       }
 
 LABEL_12:
 
-      self = v14;
+      self = selfCopy;
     }
 
     v11 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -2932,10 +2932,10 @@ LABEL_12:
   while (v11);
 LABEL_14:
 
-  v23 = [v6 count];
-  v24 = [v6 firstObject];
-  v25 = v6;
-  v26 = v24;
+  v23 = [array count];
+  firstObject = [array firstObject];
+  v25 = array;
+  v26 = firstObject;
   if (v23 >= 2)
   {
     v44 = 0u;
@@ -2982,74 +2982,74 @@ LABEL_27:
   return v26;
 }
 
-- (id)_cbPeripheralForPeripheralUUID:(id)a3 stableIdentifier:(id)a4 routeMode:(unsigned __int8 *)a5
+- (id)_cbPeripheralForPeripheralUUID:(id)d stableIdentifier:(id)identifier routeMode:(unsigned __int8 *)mode
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    if (a5)
+    if (mode)
     {
-      *a5 = 0;
+      *mode = 0;
     }
 
-    v6 = a3;
-    v7 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
-    v13[0] = v6;
+    dCopy = d;
+    centralManager = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
+    v13[0] = dCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
-    v9 = [v7 retrievePeripheralsWithIdentifiers:v8];
-    v10 = [v9 firstObject];
+    v9 = [centralManager retrievePeripheralsWithIdentifiers:v8];
+    firstObject = [v9 firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)_cbPeripheralForHAPBLEPeripheral:(id)a3 routeMode:(unsigned __int8 *)a4
+- (id)_cbPeripheralForHAPBLEPeripheral:(id)peripheral routeMode:(unsigned __int8 *)mode
 {
-  v6 = a3;
-  v7 = [v6 peripheralUUIDs];
-  v8 = [v7 lastObject];
-  v9 = [v6 whbStableIdentifier];
-  if (v9)
+  peripheralCopy = peripheral;
+  peripheralUUIDs = [peripheralCopy peripheralUUIDs];
+  lastObject = [peripheralUUIDs lastObject];
+  whbStableIdentifier = [peripheralCopy whbStableIdentifier];
+  if (whbStableIdentifier)
   {
-    v10 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:v8 stableIdentifier:v9 routeMode:a4];
+    v10 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:lastObject stableIdentifier:whbStableIdentifier routeMode:mode];
   }
 
   else
   {
-    v11 = [v6 identifier];
-    v10 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:v8 stableIdentifier:v11 routeMode:a4];
+    identifier = [peripheralCopy identifier];
+    v10 = [(HAPAccessoryServerBrowserBTLE *)self _cbPeripheralForPeripheralUUID:lastObject stableIdentifier:identifier routeMode:mode];
   }
 
   return v10;
 }
 
-- (void)_monitorDisconnectionOfHAPPeripheral:(id)a3 peripheral:(id)a4
+- (void)_monitorDisconnectionOfHAPPeripheral:(id)peripheral peripheral:(id)a4
 {
-  v6 = a3;
+  peripheralCopy = peripheral;
   v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (v7)
   {
-    v9 = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
-    v10 = [v9 objectForKey:v7];
+    peripheralDisconnectionMonitorMap = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
+    v10 = [peripheralDisconnectionMonitorMap objectForKey:v7];
 
     if (!v10)
     {
-      v11 = [(HAPAccessoryServerBrowser *)self workQueue];
-      v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v11);
+      workQueue2 = [(HAPAccessoryServerBrowser *)self workQueue];
+      v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue2);
 
-      v13 = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
-      [v13 setObject:v12 forKey:v7];
+      peripheralDisconnectionMonitorMap2 = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
+      [peripheralDisconnectionMonitorMap2 setObject:v12 forKey:v7];
 
       objc_initWeak(&location, self);
       v14 = dispatch_time(0, 1000000000 * [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionTimeout]);
@@ -3060,7 +3060,7 @@ LABEL_27:
       v15[3] = &unk_2786D6F50;
       objc_copyWeak(&v18, &location);
       v16 = v7;
-      v17 = v6;
+      v17 = peripheralCopy;
       dispatch_source_set_event_handler(v12, v15);
       dispatch_resume(v12);
 
@@ -3103,65 +3103,65 @@ void __81__HAPAccessoryServerBrowserBTLE__monitorDisconnectionOfHAPPeripheral_pe
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopMonitorDisconnectionOfCBPeripheral:(id)a3
+- (void)_stopMonitorDisconnectionOfCBPeripheral:(id)peripheral
 {
-  v4 = a3;
-  if (v4)
+  peripheralCopy = peripheral;
+  if (peripheralCopy)
   {
-    v8 = v4;
-    v5 = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
-    v6 = [v5 objectForKey:v8];
+    v8 = peripheralCopy;
+    peripheralDisconnectionMonitorMap = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
+    v6 = [peripheralDisconnectionMonitorMap objectForKey:v8];
 
     if (v6)
     {
       dispatch_source_cancel(v6);
-      v7 = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
-      [v7 removeObjectForKey:v8];
+      peripheralDisconnectionMonitorMap2 = [(HAPAccessoryServerBrowserBTLE *)self peripheralDisconnectionMonitorMap];
+      [peripheralDisconnectionMonitorMap2 removeObjectForKey:v8];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_disconnectFromHAPBLEPeripheral:(id)a3 cbPeripheral:(id)a4
+- (void)_disconnectFromHAPBLEPeripheral:(id)peripheral cbPeripheral:(id)cbPeripheral
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  peripheralCopy = peripheral;
+  cbPeripheralCopy = cbPeripheral;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
-  if (v6 | v7)
+  if (peripheralCopy | cbPeripheralCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v6 shortDescription];
+      shortDescription = [peripheralCopy shortDescription];
       v26 = 138543874;
       v27 = v13;
       v28 = 2114;
-      v29 = v14;
+      v29 = shortDescription;
       v30 = 2112;
-      v31 = v7;
+      v31 = cbPeripheralCopy;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%{public}@Disconnecting from Peripheral: %{public}@ (%@)", &v26, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    if (v6)
+    if (peripheralCopy)
     {
-      [(HAPAccessoryServerBrowserBTLE *)v10 _removeFromActiveConnections:v6];
+      [(HAPAccessoryServerBrowserBTLE *)selfCopy _removeFromActiveConnections:peripheralCopy];
     }
 
-    v15 = [v7 state];
+    state = [cbPeripheralCopy state];
     v16 = objc_autoreleasePoolPush();
-    v17 = v10;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
-    if (v15)
+    if (state)
     {
       if (v19)
       {
@@ -3169,14 +3169,14 @@ void __81__HAPAccessoryServerBrowserBTLE__monitorDisconnectionOfHAPPeripheral_pe
         v26 = 138543618;
         v27 = v20;
         v28 = 2112;
-        v29 = v7;
+        v29 = cbPeripheralCopy;
         _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_INFO, "%{public}@Cancelling connection to peripheral: %@", &v26, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      [(HAPAccessoryServerBrowserBTLE *)v17 _monitorDisconnectionOfHAPPeripheral:v6 peripheral:v7];
-      v21 = [(HAPAccessoryServerBrowserBTLE *)v17 centralManager];
-      [v21 cancelPeripheralConnection:v7];
+      [(HAPAccessoryServerBrowserBTLE *)v17 _monitorDisconnectionOfHAPPeripheral:peripheralCopy peripheral:cbPeripheralCopy];
+      centralManager = [(HAPAccessoryServerBrowserBTLE *)v17 centralManager];
+      [centralManager cancelPeripheralConnection:cbPeripheralCopy];
     }
 
     else
@@ -3187,13 +3187,13 @@ void __81__HAPAccessoryServerBrowserBTLE__monitorDisconnectionOfHAPPeripheral_pe
         v26 = 138543618;
         v27 = v23;
         v28 = 2112;
-        v29 = v7;
+        v29 = cbPeripheralCopy;
         _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_INFO, "%{public}@Peripheral: %@ is already disconnected", &v26, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
       v24 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:23];
-      [(HAPAccessoryServerBrowserBTLE *)v17 disconnectedHAPPeripheral:v6 error:v24];
+      [(HAPAccessoryServerBrowserBTLE *)v17 disconnectedHAPPeripheral:peripheralCopy error:v24];
     }
   }
 
@@ -3213,76 +3213,76 @@ void __81__HAPAccessoryServerBrowserBTLE__monitorDisconnectionOfHAPPeripheral_pe
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectedHAPPeripheral:(id)a3 error:(id)a4
+- (void)disconnectedHAPPeripheral:(id)peripheral error:(id)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cbPeripheral];
-  if (v6)
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  cbPeripheral = [peripheralCopy cbPeripheral];
+  if (peripheralCopy)
   {
-    [(HAPAccessoryServerBrowserBTLE *)self _removeFromActiveConnections:v6];
-    v9 = [(HAPAccessoryServerBrowserBTLE *)self _recentlySeenPairedPeripheralTupleWithPeripheral:v6];
-    v10 = [(HAPAccessoryServerBrowserBTLE *)self _discoveredAccessoryServerTupleForBLEPeripheral:v6 shouldMerge:0];
-    v11 = [v10 accessoryServer];
+    [(HAPAccessoryServerBrowserBTLE *)self _removeFromActiveConnections:peripheralCopy];
+    v9 = [(HAPAccessoryServerBrowserBTLE *)self _recentlySeenPairedPeripheralTupleWithPeripheral:peripheralCopy];
+    v10 = [(HAPAccessoryServerBrowserBTLE *)self _discoveredAccessoryServerTupleForBLEPeripheral:peripheralCopy shouldMerge:0];
+    accessoryServer = [v10 accessoryServer];
   }
 
   else
   {
     v9 = 0;
-    v11 = 0;
+    accessoryServer = 0;
   }
 
-  [(HAPAccessoryServerBrowserBTLE *)self _stopMonitorDisconnectionOfCBPeripheral:v8];
+  [(HAPAccessoryServerBrowserBTLE *)self _stopMonitorDisconnectionOfCBPeripheral:cbPeripheral];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v6 shortDescription];
+    shortDescription = [peripheralCopy shortDescription];
     *buf = 138544130;
     v31 = v15;
     v32 = 2114;
-    v33 = v16;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v8;
+    v35 = cbPeripheral;
     v36 = 2114;
-    v37 = v7;
+    v37 = errorCopy;
     _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_INFO, "%{public}@Disconnected from BLE peripheral: %{public}@, CB Peripheral: %@ with error %{public}@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  if (v7 && v9)
+  if (errorCopy && v9)
   {
-    v17 = [(HAPAccessoryServerBrowserBTLE *)v13 hapWiProxBLEBrowser];
-    v18 = [v6 identifier];
-    [v17 resetLastSeenForTrackedAccessories:v18];
+    hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapWiProxBLEBrowser];
+    identifier = [peripheralCopy identifier];
+    [hapWiProxBLEBrowser resetLastSeenForTrackedAccessories:identifier];
 
-    v19 = [(HAPAccessoryServerBrowserBTLE *)v13 delegate];
-    v20 = [v6 identifier];
-    [v19 accessoryServerBrowser:v13 didChangeReachability:0 forAccessoryServerWithIdentifier:v20];
+    delegate = [(HAPAccessoryServerBrowserBTLE *)selfCopy delegate];
+    identifier2 = [peripheralCopy identifier];
+    [delegate accessoryServerBrowser:selfCopy didChangeReachability:0 forAccessoryServerWithIdentifier:identifier2];
   }
 
   [v9 setNotifyingCharacteristicUpdated:0];
-  if (v11)
+  if (accessoryServer)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block_invoke;
     v27[3] = &unk_2786D3C08;
-    v27[4] = v13;
-    v28 = v11;
-    v29 = v7;
+    v27[4] = selfCopy;
+    v28 = accessoryServer;
+    v29 = errorCopy;
     [v28 handleDisconnectionWithError:v29 completionHandler:v27];
-    [v6 disconnectedFromCBPeripheral:v8 shouldRemove:0];
-    [(HAPAccessoryServerBrowserBTLE *)v13 _connectPendingConnections];
+    [peripheralCopy disconnectedFromCBPeripheral:cbPeripheral shouldRemove:0];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _connectPendingConnections];
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v13;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -3290,15 +3290,15 @@ void __81__HAPAccessoryServerBrowserBTLE__monitorDisconnectionOfHAPPeripheral_pe
       *buf = 138543618;
       v31 = v24;
       v32 = 2112;
-      v33 = v8;
+      v33 = cbPeripheral;
       _os_log_impl(&dword_22AADC000, v23, OS_LOG_TYPE_ERROR, "%{public}@Unable to find accessory for disconnected peripheral: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v21);
-    if (v6)
+    if (peripheralCopy)
     {
-      v25 = [v6 identifier];
-      [(HAPAccessoryServerBrowserBTLE *)v22 _removeDiscoveredPeripheralsWithIdentifier:v25];
+      identifier3 = [peripheralCopy identifier];
+      [(HAPAccessoryServerBrowserBTLE *)v22 _removeDiscoveredPeripheralsWithIdentifier:identifier3];
     }
   }
 
@@ -3322,28 +3322,28 @@ void __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v9 = a4;
-  v7 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (peripheralCopy)
   {
-    [(HAPAccessoryServerBrowserBTLE *)self _stopMonitorDisconnectionOfCBPeripheral:v9];
+    [(HAPAccessoryServerBrowserBTLE *)self _stopMonitorDisconnectionOfCBPeripheral:peripheralCopy];
   }
 
-  v8 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForCBPeripheral:v9];
-  [(HAPAccessoryServerBrowserBTLE *)self disconnectedHAPPeripheral:v8 error:v7];
+  v8 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForCBPeripheral:peripheralCopy];
+  [(HAPAccessoryServerBrowserBTLE *)self disconnectedHAPPeripheral:v8 error:errorCopy];
 }
 
-- (void)failedToConnectHAPPeripheral:(id)a3 error:(id)a4
+- (void)failedToConnectHAPPeripheral:(id)peripheral error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (-[HAPAccessoryServerBrowserBTLE _removeFromActiveConnections:](self, "_removeFromActiveConnections:", v6), -[HAPAccessoryServerBrowserBTLE _discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:](self, "_discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:", v6, 0), v8 = objc_claimAutoreleasedReturnValue(), [v8 accessoryServer], v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (peripheralCopy && (-[HAPAccessoryServerBrowserBTLE _removeFromActiveConnections:](self, "_removeFromActiveConnections:", peripheralCopy), -[HAPAccessoryServerBrowserBTLE _discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:](self, "_discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:", peripheralCopy, 0), v8 = objc_claimAutoreleasedReturnValue(), [v8 accessoryServer], v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -3353,120 +3353,120 @@ void __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block
       v24 = 2114;
       v25 = v9;
       v26 = 2114;
-      v27 = v7;
+      v27 = errorCopy;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%{public}@Failed to connect to accessory %{public}@ with error %{public}@", &v22, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [v6 cbPeripheral];
-    [v9 handleConnectionWithPeripheral:v14 withError:v7];
+    cbPeripheral = [peripheralCopy cbPeripheral];
+    [v9 handleConnectionWithPeripheral:cbPeripheral withError:errorCopy];
 
-    [(HAPAccessoryServerBrowserBTLE *)v11 _notifyDelegatesOfRemovedAccessoryServer:v9 error:v7];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _notifyDelegatesOfRemovedAccessoryServer:v9 error:errorCopy];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v6 shortDescription];
+      shortDescription = [peripheralCopy shortDescription];
       v22 = 138543618;
       v23 = v18;
       v24 = 2114;
-      v25 = v19;
+      v25 = shortDescription;
       _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_ERROR, "%{public}@unexpected disconnection without server from peripheral: %{public}@", &v22, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
   }
 
-  v20 = [v6 cbPeripheral];
-  [v6 connectedToCBPeripheral:v20 error:v7];
+  cbPeripheral2 = [peripheralCopy cbPeripheral];
+  [peripheralCopy connectedToCBPeripheral:cbPeripheral2 error:errorCopy];
 
   [(HAPAccessoryServerBrowserBTLE *)self _connectPendingConnections];
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForCBPeripheral:v9];
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v11 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForCBPeripheral:peripheralCopy];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 shortDescription];
+    shortDescription = [v11 shortDescription];
     v18 = 138544130;
     v19 = v15;
     v20 = 2114;
-    v21 = v16;
+    v21 = shortDescription;
     v22 = 2112;
-    v23 = v9;
+    v23 = peripheralCopy;
     v24 = 2114;
-    v25 = v10;
+    v25 = errorCopy;
     _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_INFO, "%{public}@Did fail to connect BLE peripheral: %{public}@ with CBPeripheral: %@ with error %{public}@", &v18, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  [(HAPAccessoryServerBrowserBTLE *)v13 failedToConnectHAPPeripheral:v11 error:v10];
+  [(HAPAccessoryServerBrowserBTLE *)selfCopy failedToConnectHAPPeripheral:v11 error:errorCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectedHAPPeripheral:(id)a3
+- (void)connectedHAPPeripheral:(id)peripheral
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  peripheralCopy = peripheral;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForCBPeripheral:v4];
+  v6 = [(HAPAccessoryServerBrowserBTLE *)self _blePeripheralForCBPeripheral:peripheralCopy];
   v7 = v6;
-  if (v6 && ([v6 connectedToCBPeripheral:v4 error:0], -[HAPAccessoryServerBrowserBTLE _discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:](self, "_discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:", v7, 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "accessoryServer"), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
+  if (v6 && ([v6 connectedToCBPeripheral:peripheralCopy error:0], -[HAPAccessoryServerBrowserBTLE _discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:](self, "_discoveredAccessoryServerTupleForBLEPeripheral:shouldMerge:", v7, 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "accessoryServer"), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v7 shortDescription];
+      shortDescription = [v7 shortDescription];
       v23 = 138543874;
       v24 = v13;
       v25 = 2114;
-      v26 = v14;
+      v26 = shortDescription;
       v27 = 2112;
-      v28 = v4;
+      v28 = peripheralCopy;
       _os_log_impl(&dword_22AADC000, v12, OS_LOG_TYPE_INFO, "%{public}@Successfully connected to BLE Peripheral: %{public}@ with CB Peripheral: %@", &v23, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v9 setConnectionStartTime:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v9 setConnectionStartTime:date];
 
-    v16 = [(HAPAccessoryServerBrowserBTLE *)v11 peripheralsPendingConnection];
-    v17 = [v16 count];
+    peripheralsPendingConnection = [(HAPAccessoryServerBrowserBTLE *)selfCopy peripheralsPendingConnection];
+    v17 = [peripheralsPendingConnection count];
 
     if (v17)
     {
       [v9 updateConnectionIdleTime:1];
     }
 
-    [v9 handleConnectionWithPeripheral:v4 withError:0];
+    [v9 handleConnectionWithPeripheral:peripheralCopy withError:0];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -3476,31 +3476,31 @@ void __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block
       v25 = 2114;
       v26 = v7;
       v27 = 2112;
-      v28 = v4;
+      v28 = peripheralCopy;
       _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_ERROR, "%{public}@unexpected connection complete without server: %{public}@ for CB peripheral: %@", &v23, 0x20u);
     }
 
     objc_autoreleasePoolPop(v18);
-    [(HAPAccessoryServerBrowserBTLE *)v19 _disconnectFromHAPBLEPeripheral:v7 cbPeripheral:v4];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy2 _disconnectFromHAPBLEPeripheral:v7 cbPeripheral:peripheralCopy];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v8 = a4;
-  v9 = a5;
+  peripheralCopy = peripheral;
+  dataCopy = data;
   if ([(HAPAccessoryServerBrowserBTLE *)self _delegateRespondsToSelector:sel_accessoryServerBrowserBTLE_didDiscoverAccessoryWithAdvertisementData_])
   {
-    v10 = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
+    delegateQueue = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __93__HAPAccessoryServerBrowserBTLE_centralManager_didDiscoverPeripheral_advertisementData_RSSI___block_invoke;
     block[3] = &unk_2786D7050;
     block[4] = self;
-    v34 = v9;
-    dispatch_async(v10, block);
+    v34 = dataCopy;
+    dispatch_async(delegateQueue, block);
   }
 
   v32 = 0;
@@ -3510,9 +3510,9 @@ void __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block
   v29 = 0;
   v26 = 0;
   v27 = 0;
-  v24 = self;
-  v25 = v9;
-  v11 = [(HAPAccessoryServerBrowserBTLE *)self _parseAdvertisementData:v9 forPeripheral:v8 name:&v32 pairingUsername:&v31 statusFlags:&v30 stateNumber:&v29 category:&v28 configNumber:&v27 setupHash:&v26];
+  selfCopy = self;
+  v25 = dataCopy;
+  v11 = [(HAPAccessoryServerBrowserBTLE *)self _parseAdvertisementData:dataCopy forPeripheral:peripheralCopy name:&v32 pairingUsername:&v31 statusFlags:&v30 stateNumber:&v29 category:&v28 configNumber:&v27 setupHash:&v26];
   v12 = v32;
   v13 = v31;
   v14 = v30;
@@ -3521,10 +3521,10 @@ void __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block
   v17 = v27;
   v22 = v26;
   v18 = [HAPBLEPeripheral alloc];
-  v23 = v8;
-  v19 = [v8 identifier];
+  v23 = peripheralCopy;
+  identifier = [peripheralCopy identifier];
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-  v21 = [(HAPBLEPeripheral *)v18 initWithName:v12 peripheralUUID:v19 identifier:v13 hapVersion:v20 hkType:0 advInterval:0 statusFlags:v14 category:v16 stateNumber:v15 configNumber:v17 setupHash:0 encryptedPayload:0 whbStableIdentifier:0 advDeviceAddress:0];
+  v21 = [(HAPBLEPeripheral *)v18 initWithName:v12 peripheralUUID:identifier identifier:v13 hapVersion:v20 hkType:0 advInterval:0 statusFlags:v14 category:v16 stateNumber:v15 configNumber:v17 setupHash:0 encryptedPayload:0 whbStableIdentifier:0 advDeviceAddress:0];
 
   if (HAPIsHH2Enabled_onceToken != -1)
   {
@@ -3536,7 +3536,7 @@ void __65__HAPAccessoryServerBrowserBTLE_disconnectedHAPPeripheral_error___block
     [(HAPBLEPeripheral *)v21 setCbPeripheral:v23];
   }
 
-  [(HAPAccessoryServerBrowserBTLE *)v24 _didDiscoverPeripheral:v21 accessoryName:v12 pairingIdentifier:v13 format:v11 statusFlags:v14 stateNumber:v15 category:v16 configNumber:v17 setupHash:v22 encryptedPayload:0 whbStableIdentifier:0];
+  [(HAPAccessoryServerBrowserBTLE *)selfCopy _didDiscoverPeripheral:v21 accessoryName:v12 pairingIdentifier:v13 format:v11 statusFlags:v14 stateNumber:v15 category:v16 configNumber:v17 setupHash:v22 encryptedPayload:0 whbStableIdentifier:0];
 }
 
 void __93__HAPAccessoryServerBrowserBTLE_centralManager_didDiscoverPeripheral_advertisementData_RSSI___block_invoke(uint64_t a1)
@@ -3545,49 +3545,49 @@ void __93__HAPAccessoryServerBrowserBTLE_centralManager_didDiscoverPeripheral_ad
   [v2 accessoryServerBrowserBTLE:*(a1 + 32) didDiscoverAccessoryWithAdvertisementData:*(a1 + 40)];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v80 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v4 = [v54 state];
+  stateCopy = state;
+  state = [stateCopy state];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    if (v4 > 5)
+    if (state > 5)
     {
       v9 = @"Unenumerated State?";
     }
 
     else
     {
-      v9 = off_2786D3D40[v4];
+      v9 = off_2786D3D40[state];
     }
 
     v10 = v9;
     *buf = 138543874;
     v75 = v8;
     v76 = 2048;
-    v77 = v4;
+    v77 = state;
     v78 = 2112;
     v79 = v10;
     _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%{public}@Central manager changed state: %ld (%@)", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v4 > 3)
+  if (state > 3)
   {
-    if (v4 != 4)
+    if (state != 4)
     {
-      if (v4 == 5)
+      if (state == 5)
       {
-        [(HAPAccessoryServerBrowserBTLE *)v6 _callPowerOnCompletionsWithError:0];
-        if ([(HAPAccessoryServerBrowserBTLE *)v6 isPerformingGeneralScan])
+        [(HAPAccessoryServerBrowserBTLE *)selfCopy _callPowerOnCompletionsWithError:0];
+        if ([(HAPAccessoryServerBrowserBTLE *)selfCopy isPerformingGeneralScan])
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = v6;
+          v19 = selfCopy;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
@@ -3601,11 +3601,11 @@ void __93__HAPAccessoryServerBrowserBTLE_centralManager_didDiscoverPeripheral_ad
           [(HAPAccessoryServerBrowserBTLE *)v19 _startBrowsingForLegacyHAPBTLE100Accessories];
         }
 
-        v22 = [(HAPAccessoryServerBrowserBTLE *)v6 reachabilityCompletion];
-        v15 = v22;
-        if (v22)
+        reachabilityCompletion = [(HAPAccessoryServerBrowserBTLE *)selfCopy reachabilityCompletion];
+        v15 = reachabilityCompletion;
+        if (reachabilityCompletion)
         {
-          (*(v22 + 16))(v22, 1, 0);
+          (*(reachabilityCompletion + 16))(reachabilityCompletion, 1, 0);
         }
 
         goto LABEL_46;
@@ -3616,20 +3616,20 @@ void __93__HAPAccessoryServerBrowserBTLE_centralManager_didDiscoverPeripheral_ad
 
 LABEL_22:
     v56 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:57 reason:@"Bluetooth was turned off or reset" underlyingError:0];
-    [(HAPAccessoryServerBrowserBTLE *)v6 _callPowerOnCompletionsWithError:v56];
-    v23 = [(HAPAccessoryServerBrowserBTLE *)v6 reachabilityCompletion];
-    v24 = v23;
-    if (v23)
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _callPowerOnCompletionsWithError:v56];
+    reachabilityCompletion2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy reachabilityCompletion];
+    v24 = reachabilityCompletion2;
+    if (reachabilityCompletion2)
     {
-      (*(v23 + 16))(v23, 0, v56);
+      (*(reachabilityCompletion2 + 16))(reachabilityCompletion2, 0, v56);
     }
 
     v70 = 0u;
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v25 = [(HAPAccessoryServerBrowser *)v6 pairedAccessoryIdentifiers];
-    v26 = [v25 copy];
+    pairedAccessoryIdentifiers = [(HAPAccessoryServerBrowser *)selfCopy pairedAccessoryIdentifiers];
+    v26 = [pairedAccessoryIdentifiers copy];
 
     v27 = [v26 countByEnumeratingWithState:&v68 objects:v73 count:16];
     if (v27)
@@ -3646,7 +3646,7 @@ LABEL_22:
 
           v30 = *(*(&v68 + 1) + 8 * i);
           v31 = objc_autoreleasePoolPush();
-          v32 = v6;
+          v32 = selfCopy;
           v33 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
@@ -3657,8 +3657,8 @@ LABEL_22:
           }
 
           objc_autoreleasePoolPop(v31);
-          v35 = [(HAPAccessoryServerBrowserBTLE *)v32 delegate];
-          [v35 accessoryServerBrowser:v32 didChangeReachability:0 forAccessoryServerWithIdentifier:v30];
+          delegate = [(HAPAccessoryServerBrowserBTLE *)v32 delegate];
+          [delegate accessoryServerBrowser:v32 didChangeReachability:0 forAccessoryServerWithIdentifier:v30];
         }
 
         v27 = [v26 countByEnumeratingWithState:&v68 objects:v73 count:16];
@@ -3668,12 +3668,12 @@ LABEL_22:
     }
 
     v36 = MEMORY[0x277CBEA60];
-    v37 = [(HAPAccessoryServerBrowserBTLE *)v6 discoveredPeripheralsWithAccessories];
-    v38 = [v37 keyEnumerator];
-    v39 = [v38 allObjects];
-    v40 = [v36 arrayWithArray:v39];
+    discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)selfCopy discoveredPeripheralsWithAccessories];
+    keyEnumerator = [discoveredPeripheralsWithAccessories keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    v40 = [v36 arrayWithArray:allObjects];
 
-    objc_initWeak(buf, v6);
+    objc_initWeak(buf, selfCopy);
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_invoke;
@@ -3699,17 +3699,17 @@ LABEL_22:
           }
 
           v45 = *(*(&v62 + 1) + 8 * j);
-          v46 = [(HAPAccessoryServerBrowserBTLE *)v6 _discoveredAccessoryServerTupleForBLEPeripheral:v45 shouldMerge:0];
-          v47 = [v46 accessoryServer];
+          v46 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _discoveredAccessoryServerTupleForBLEPeripheral:v45 shouldMerge:0];
+          accessoryServer = [v46 accessoryServer];
 
-          if (v47)
+          if (accessoryServer)
           {
             v57[0] = MEMORY[0x277D85DD0];
             v57[1] = 3221225472;
             v57[2] = __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_invoke_2;
             v57[3] = &unk_2786D3CF8;
-            v57[4] = v6;
-            v48 = v47;
+            v57[4] = selfCopy;
+            v48 = accessoryServer;
             v58 = v48;
             v49 = v56;
             v59 = v49;
@@ -3743,15 +3743,15 @@ LABEL_22:
     goto LABEL_46;
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
     goto LABEL_22;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -3764,11 +3764,11 @@ LABEL_22:
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:48 reason:@"Failed to power on Bluetooth because Bluetooth LE is unsupported on this system." underlyingError:0];
     [(HAPAccessoryServerBrowserBTLE *)v12 _callPowerOnCompletionsWithError:v15];
-    v16 = [(HAPAccessoryServerBrowserBTLE *)v12 reachabilityCompletion];
-    v17 = v16;
-    if (v16)
+    reachabilityCompletion3 = [(HAPAccessoryServerBrowserBTLE *)v12 reachabilityCompletion];
+    v17 = reachabilityCompletion3;
+    if (reachabilityCompletion3)
     {
-      (*(v16 + 16))(v16, 0, v15);
+      (*(reachabilityCompletion3 + 16))(reachabilityCompletion3, 0, v15);
     }
 
 LABEL_46:
@@ -3819,70 +3819,70 @@ void __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_in
   }
 }
 
-- (void)_didDiscoverPeripheral:(id)a3 accessoryName:(id)a4 pairingIdentifier:(id)a5 format:(unint64_t)a6 statusFlags:(id)a7 stateNumber:(id)a8 category:(id)a9 configNumber:(id)a10 setupHash:(id)a11 encryptedPayload:(id)a12 whbStableIdentifier:(id)a13
+- (void)_didDiscoverPeripheral:(id)peripheral accessoryName:(id)name pairingIdentifier:(id)identifier format:(unint64_t)format statusFlags:(id)flags stateNumber:(id)number category:(id)category configNumber:(id)self0 setupHash:(id)self1 encryptedPayload:(id)self2 whbStableIdentifier:(id)self3
 {
   v143 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v110 = a5;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = v20;
-  v109 = a10;
-  v108 = a11;
-  v111 = a12;
-  v107 = a13;
-  v24 = [v18 identifier];
-  v25 = self;
-  v26 = self;
-  v27 = v21;
-  v28 = [(HAPAccessoryServerBrowserBTLE *)v26 _blePeripheralForAccessoryServerIdentifier:v24];
+  peripheralCopy = peripheral;
+  nameCopy = name;
+  identifierCopy = identifier;
+  flagsCopy = flags;
+  numberCopy = number;
+  categoryCopy = category;
+  v23 = flagsCopy;
+  configNumberCopy = configNumber;
+  hashCopy = hash;
+  payloadCopy = payload;
+  stableIdentifierCopy = stableIdentifier;
+  identifier = [peripheralCopy identifier];
+  selfCopy = self;
+  selfCopy2 = self;
+  v27 = numberCopy;
+  v28 = [(HAPAccessoryServerBrowserBTLE *)selfCopy2 _blePeripheralForAccessoryServerIdentifier:identifier];
 
-  if (a6)
+  if (format)
   {
-    v29 = a6;
-    v30 = [v18 cbPeripheral];
-    if ([v30 state])
+    formatCopy3 = format;
+    cbPeripheral = [peripheralCopy cbPeripheral];
+    if ([cbPeripheral state])
     {
 
       goto LABEL_37;
     }
 
     [v28 cbPeripheral];
-    v31 = v102 = v22;
-    v32 = [v31 state];
+    v31 = v102 = categoryCopy;
+    state = [v31 state];
 
-    v22 = v102;
-    if (v32)
+    categoryCopy = v102;
+    if (state)
     {
       goto LABEL_37;
     }
 
     v120 = 0;
-    v33 = [(HAPAccessoryServerBrowserBTLE *)v25 _discoveredAccessoryServerTupleForBLEPeripheral:v18 shouldMerge:1];
+    v33 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _discoveredAccessoryServerTupleForBLEPeripheral:peripheralCopy shouldMerge:1];
     if (!v33)
     {
       v112 = 0;
-      if (v111 || [(HAPAccessoryServerBrowserBTLE *)v25 _shouldCreateHAPAccessoryServerWithIdentifier:v110 statusFlags:v23 stateNumber:v27 category:v102 configNumber:v109 name:v19 forPeripheral:v18 advertisementFormat:a6 setupHash:v108 stateChanged:&v112 + 1 connectReason:&v112])
+      if (payloadCopy || [(HAPAccessoryServerBrowserBTLE *)selfCopy _shouldCreateHAPAccessoryServerWithIdentifier:identifierCopy statusFlags:v23 stateNumber:v27 category:v102 configNumber:configNumberCopy name:nameCopy forPeripheral:peripheralCopy advertisementFormat:format setupHash:hashCopy stateChanged:&v112 + 1 connectReason:&v112])
       {
-        v92 = v19;
+        v92 = nameCopy;
         v46 = objc_autoreleasePoolPush();
-        v47 = v25;
+        v47 = selfCopy;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
         {
           v90 = HMFGetLogIdentifier();
-          v97 = [v18 name];
+          name = [peripheralCopy name];
           v49 = HMFBooleanToString();
           v50 = HMFBooleanToString();
           v51 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v112];
           *buf = 138545922;
           v122 = v90;
           v123 = 2112;
-          v124 = v97;
+          v124 = name;
           v125 = 2114;
-          v126 = v110;
+          v126 = identifierCopy;
           v127 = 2114;
           v128 = v27;
           v129 = 2114;
@@ -3890,30 +3890,30 @@ void __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_in
           v131 = 2114;
           v132 = v23;
           v133 = 2048;
-          v134 = a6;
+          formatCopy2 = format;
           v135 = 2114;
           v136 = v49;
           v137 = 2114;
           v138 = v50;
           v139 = 2114;
-          v140 = v109;
+          v140 = configNumberCopy;
           v141 = 2114;
           v142 = v51;
           v52 = v51;
           _os_log_impl(&dword_22AADC000, v48, OS_LOG_TYPE_INFO, "%{public}@Discovered new accessory '%@/%{public}@/%{public}@' C: '%{public}@' SF: '%{public}@' V: '%tu' ENC: '%{public}@' ST: '%{public}@' C#: '%{public}@', CR: '%{public}@'", buf, 0x70u);
 
-          v29 = a6;
+          formatCopy3 = format;
         }
 
         objc_autoreleasePoolPop(v46);
-        v53 = [MEMORY[0x277D0F8C0] sharedPowerLogger];
-        v22 = v102;
-        [v53 reportIncomingAdvertisementChange:v110 accessoryCategory:v102];
+        mEMORY[0x277D0F8C0] = [MEMORY[0x277D0F8C0] sharedPowerLogger];
+        categoryCopy = v102;
+        [mEMORY[0x277D0F8C0] reportIncomingAdvertisementChange:identifierCopy accessoryCategory:v102];
 
         LOBYTE(v89) = HIBYTE(v112);
         LOBYTE(v88) = v112;
-        v19 = v92;
-        [(HAPAccessoryServerBrowserBTLE *)v47 _createHAPAccessoryAndNotifyDelegateWithPeripheral:v18 name:v92 pairingUsername:v110 statusFlags:v23 stateNumber:v27 stateChanged:v88 connectReason:v109 configNumber:v102 category:v89 connectionIdleTime:v29 format:v108 setupHash:v111 encryptedPayload:v107 whbStableIdentifier:?];
+        nameCopy = v92;
+        [(HAPAccessoryServerBrowserBTLE *)v47 _createHAPAccessoryAndNotifyDelegateWithPeripheral:peripheralCopy name:v92 pairingUsername:identifierCopy statusFlags:v23 stateNumber:v27 stateChanged:v88 connectReason:configNumberCopy configNumber:v102 category:v89 connectionIdleTime:formatCopy3 format:hashCopy setupHash:payloadCopy encryptedPayload:stableIdentifierCopy whbStableIdentifier:?];
         v33 = 0;
       }
 
@@ -3921,128 +3921,128 @@ void __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_in
     }
 
     v96 = v23;
-    v34 = [(HAPAccessoryServerBrowserBTLE *)v25 recentlySeenPairedPeripherals];
-    v35 = [v18 identifier];
-    v36 = [v34 objectForKey:v35];
-    [v36 updateWithPeripheral:v18];
+    recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)selfCopy recentlySeenPairedPeripherals];
+    identifier2 = [peripheralCopy identifier];
+    v36 = [recentlySeenPairedPeripherals objectForKey:identifier2];
+    [v36 updateWithPeripheral:peripheralCopy];
 
-    [(HAPAccessoryServerBrowserBTLE *)v25 _reportReachabilityForAccessoryWithIdentifier:v110];
-    v37 = [(HAPAccessoryServerBrowser *)v25 isPaired:v110];
-    if (v111 && v37 && ([v18 isCached] & 1) == 0)
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _reportReachabilityForAccessoryWithIdentifier:identifierCopy];
+    v37 = [(HAPAccessoryServerBrowser *)selfCopy isPaired:identifierCopy];
+    if (payloadCopy && v37 && ([peripheralCopy isCached] & 1) == 0)
     {
-      v38 = [(HAPAccessoryServerBrowserBTLE *)v25 hapCharacteristicsForEncryptedPayload:v111 identifier:v110 shouldConnect:&v120];
+      v38 = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapCharacteristicsForEncryptedPayload:payloadCopy identifier:identifierCopy shouldConnect:&v120];
       if (!v38)
       {
         v23 = v96;
-        v22 = v102;
-        if (v120 == 1 && [(HAPAccessoryServerBrowserBTLE *)v25 _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
+        categoryCopy = v102;
+        if (v120 == 1 && [(HAPAccessoryServerBrowserBTLE *)selfCopy _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
         {
-          v87 = [(HAPAccessoryServerBrowserBTLE *)v25 delegateQueue];
+          delegateQueue = [(HAPAccessoryServerBrowserBTLE *)selfCopy delegateQueue];
           v116[0] = MEMORY[0x277D85DD0];
           v116[1] = 3221225472;
           v116[2] = __188__HAPAccessoryServerBrowserBTLE__didDiscoverPeripheral_accessoryName_pairingIdentifier_format_statusFlags_stateNumber_category_configNumber_setupHash_encryptedPayload_whbStableIdentifier___block_invoke;
           v116[3] = &unk_2786D7078;
           v117 = v33;
-          v118 = v25;
+          v118 = selfCopy;
           v119 = v27;
-          dispatch_async(v87, v116);
+          dispatch_async(delegateQueue, v116);
         }
 
         goto LABEL_36;
       }
 
       v91 = v38;
-      v39 = [(HAPAccessoryServerBrowserBTLE *)v25 delegate];
-      v40 = [v33 accessoryServer];
+      delegate = [(HAPAccessoryServerBrowserBTLE *)selfCopy delegate];
+      accessoryServer = [v33 accessoryServer];
       [v91 firstObject];
       v104 = v98 = v33;
-      v41 = [v104 stateNumber];
-      [v39 accessoryServerBrowser:v25 accessoryServer:v40 didUpdateValuesForCharacteristics:v91 stateNumber:v41 broadcast:1];
+      stateNumber = [v104 stateNumber];
+      [delegate accessoryServerBrowser:selfCopy accessoryServer:accessoryServer didUpdateValuesForCharacteristics:v91 stateNumber:stateNumber broadcast:1];
 
       v33 = v98;
-      v42 = [v91 firstObject];
-      v43 = [v42 stateNumber];
-      [(HAPAccessoryServerBrowserBTLE *)v25 updateStateForIdentifier:v110 stateNumber:v43];
+      firstObject = [v91 firstObject];
+      stateNumber2 = [firstObject stateNumber];
+      [(HAPAccessoryServerBrowserBTLE *)selfCopy updateStateForIdentifier:identifierCopy stateNumber:stateNumber2];
     }
 
-    v44 = [v33 accessoryServer];
-    v45 = [v44 identifier];
-    if ([v45 isEqualToString:v110])
+    accessoryServer2 = [v33 accessoryServer];
+    identifier3 = [accessoryServer2 identifier];
+    if ([identifier3 isEqualToString:identifierCopy])
     {
 
-      v22 = v102;
+      categoryCopy = v102;
     }
 
     else
     {
-      v54 = [v33 accessoryServer];
-      [v54 identifier];
+      accessoryServer3 = [v33 accessoryServer];
+      [accessoryServer3 identifier];
       v55 = v99 = v33;
-      v105 = [(HAPAccessoryServerBrowser *)v25 isPaired:v55];
+      v105 = [(HAPAccessoryServerBrowser *)selfCopy isPaired:v55];
 
       v33 = v99;
-      v22 = v102;
+      categoryCopy = v102;
       if (!v105)
       {
-        v95 = v19;
+        v95 = nameCopy;
         v78 = objc_autoreleasePoolPush();
-        v79 = v25;
+        v79 = selfCopy;
         v80 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
           v82 = v81 = v78;
-          v83 = [v99 accessoryServer];
-          v84 = [v83 identifier];
+          accessoryServer4 = [v99 accessoryServer];
+          identifier4 = [accessoryServer4 identifier];
           *buf = 138543874;
           v122 = v82;
           v123 = 2114;
-          v124 = v84;
+          v124 = identifier4;
           v125 = 2114;
-          v126 = v110;
+          v126 = identifierCopy;
           _os_log_impl(&dword_22AADC000, v80, OS_LOG_TYPE_INFO, "%{public}@Unpaired Accessory updated its identifier from %{public}@ to %{public}@", buf, 0x20u);
 
           v33 = v99;
-          v22 = v102;
+          categoryCopy = v102;
 
           v78 = v81;
         }
 
         objc_autoreleasePoolPop(v78);
-        v85 = [v33 accessoryServer];
-        [(HAPAccessoryServerBrowserBTLE *)v79 _notifyDelegatesOfRemovedAccessoryServer:v85 error:0];
+        accessoryServer5 = [v33 accessoryServer];
+        [(HAPAccessoryServerBrowserBTLE *)v79 _notifyDelegatesOfRemovedAccessoryServer:accessoryServer5 error:0];
 
-        v19 = v95;
+        nameCopy = v95;
         v23 = v96;
         goto LABEL_36;
       }
     }
 
     [v33 setLastSeen:CFAbsoluteTimeGetCurrent()];
-    v106 = [v33 accessoryServer];
+    accessoryServer6 = [v33 accessoryServer];
     if (v27)
     {
-      v56 = [v33 accessoryServer];
-      v57 = [v56 stateNumber];
-      v58 = [v57 isEqualToNumber:v27];
+      accessoryServer7 = [v33 accessoryServer];
+      stateNumber3 = [accessoryServer7 stateNumber];
+      v58 = [stateNumber3 isEqualToNumber:v27];
 
-      v22 = v102;
+      categoryCopy = v102;
       if ((v58 & 1) == 0)
       {
         v59 = objc_autoreleasePoolPush();
-        v60 = v25;
+        v60 = selfCopy;
         v61 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
           v62 = v93 = v59;
-          v63 = [v106 shortDescription];
-          [v18 shortDescription];
+          shortDescription = [accessoryServer6 shortDescription];
+          [peripheralCopy shortDescription];
           v64 = v100 = v33;
           *buf = 138544130;
           v122 = v62;
           v123 = 2114;
-          v124 = v63;
+          v124 = shortDescription;
           v125 = 2114;
           v126 = v27;
           v127 = 2114;
@@ -4050,54 +4050,54 @@ void __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_in
           _os_log_impl(&dword_22AADC000, v61, OS_LOG_TYPE_INFO, "%{public}@Discovered accessory: %{public}@ updated State Number to %{public}@ for %{public}@", buf, 0x2Au);
 
           v33 = v100;
-          v22 = v102;
+          categoryCopy = v102;
 
           v59 = v93;
         }
 
         objc_autoreleasePoolPop(v59);
-        v65 = [v33 accessoryServer];
-        [v65 setStateNumber:v27];
+        accessoryServer8 = [v33 accessoryServer];
+        [accessoryServer8 setStateNumber:v27];
 
         if ([(HAPAccessoryServerBrowserBTLE *)v60 _delegateRespondsToSelector:sel_accessoryServerBrowser_didFindAccessoryServer_stateChanged_stateNumber_])
         {
-          v66 = [(HAPAccessoryServerBrowserBTLE *)v60 delegateQueue];
+          delegateQueue2 = [(HAPAccessoryServerBrowserBTLE *)v60 delegateQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __188__HAPAccessoryServerBrowserBTLE__didDiscoverPeripheral_accessoryName_pairingIdentifier_format_statusFlags_stateNumber_category_configNumber_setupHash_encryptedPayload_whbStableIdentifier___block_invoke_164;
           block[3] = &unk_2786D7078;
           block[4] = v60;
-          v114 = v106;
+          v114 = accessoryServer6;
           v115 = v27;
-          dispatch_async(v66, block);
+          dispatch_async(delegateQueue2, block);
         }
       }
     }
 
-    if (v19)
+    if (nameCopy)
     {
-      v67 = [v19 length];
-      v68 = [v106 name];
-      v69 = [v68 length];
+      v67 = [nameCopy length];
+      name2 = [accessoryServer6 name];
+      v69 = [name2 length];
 
-      v22 = v102;
+      categoryCopy = v102;
       if (v67 > v69)
       {
-        v94 = v19;
+        v94 = nameCopy;
         v70 = objc_autoreleasePoolPush();
-        v71 = v25;
+        v71 = selfCopy;
         v72 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
           v74 = v73 = v70;
-          v75 = [v106 identifier];
-          [v106 name];
+          identifier5 = [accessoryServer6 identifier];
+          [accessoryServer6 name];
           v76 = v101 = v33;
           *buf = 138544130;
           v122 = v74;
           v123 = 2114;
-          v124 = v75;
+          v124 = identifier5;
           v125 = 2112;
           v126 = v76;
           v127 = 2112;
@@ -4105,22 +4105,22 @@ void __62__HAPAccessoryServerBrowserBTLE_centralManagerDidUpdateState___block_in
           _os_log_impl(&dword_22AADC000, v72, OS_LOG_TYPE_INFO, "%{public}@Discovered accessory: %{public}@ updated name from %@ to %@", buf, 0x2Au);
 
           v33 = v101;
-          v22 = v102;
+          categoryCopy = v102;
 
           v70 = v73;
         }
 
         objc_autoreleasePoolPop(v70);
-        v77 = [v33 accessoryServer];
-        v19 = v94;
-        [v77 setName:v94];
+        accessoryServer9 = [v33 accessoryServer];
+        nameCopy = v94;
+        [accessoryServer9 setName:v94];
       }
     }
 
     v23 = v96;
     if (v96)
     {
-      [v106 setHasPairings:{(objc_msgSend(v96, "unsignedCharValue") & 1) == 0}];
+      [accessoryServer6 setHasPairings:{(objc_msgSend(v96, "unsignedCharValue") & 1) == 0}];
     }
 
 LABEL_36:
@@ -4144,20 +4144,20 @@ void __188__HAPAccessoryServerBrowserBTLE__didDiscoverPeripheral_accessoryName_p
   [v2 accessoryServerBrowser:*(a1 + 32) didFindAccessoryServer:*(a1 + 40) stateChanged:1 stateNumber:*(a1 + 48)];
 }
 
-- (id)_discoveredAccessoryServerTupleForBLEPeripheral:(id)a3 shouldMerge:(BOOL)a4
+- (id)_discoveredAccessoryServerTupleForBLEPeripheral:(id)peripheral shouldMerge:(BOOL)merge
 {
-  v4 = a4;
+  mergeCopy = merge;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  peripheralCopy = peripheral;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-  v8 = [v7 keyEnumerator];
-  v9 = [v8 allObjects];
+  discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+  keyEnumerator = [discoveredPeripheralsWithAccessories keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4168,25 +4168,25 @@ void __188__HAPAccessoryServerBrowserBTLE__didDiscoverPeripheral_accessoryName_p
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        if ([v6 isEqual:v14])
+        if ([peripheralCopy isEqual:v14])
         {
-          v16 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-          v15 = [v16 objectForKey:v14];
+          discoveredPeripheralsWithAccessories2 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+          v15 = [discoveredPeripheralsWithAccessories2 objectForKey:v14];
 
-          if (v4)
+          if (mergeCopy)
           {
-            [v14 mergeWithPeripheral:v6];
+            [v14 mergeWithPeripheral:peripheralCopy];
           }
 
           goto LABEL_12;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         continue;
@@ -4204,20 +4204,20 @@ LABEL_12:
   return v15;
 }
 
-- (void)_removeDiscoveredPeripheralsWithIdentifier:(id)a3
+- (void)_removeDiscoveredPeripheralsWithIdentifier:(id)identifier
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v31 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-  v6 = [v5 keyEnumerator];
+  discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+  keyEnumerator = [discoveredPeripheralsWithAccessories keyEnumerator];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  obj = keyEnumerator;
+  v7 = [keyEnumerator countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4233,17 +4233,17 @@ LABEL_12:
 
         v11 = *(*(&v37 + 1) + 8 * i);
         v12 = [(HAPAccessoryServerBrowserBTLE *)self _discoveredAccessoryServerTupleForBLEPeripheral:v11 shouldMerge:0];
-        v13 = [v12 accessoryServer];
+        accessoryServer = [v12 accessoryServer];
 
-        v14 = [v11 identifier];
-        if ([v14 isEqualToString:v4])
+        identifier = [v11 identifier];
+        if ([identifier isEqualToString:identifierCopy])
         {
         }
 
         else
         {
-          v15 = [v13 identifier];
-          v16 = [v15 isEqualToString:v4];
+          identifier2 = [accessoryServer identifier];
+          v16 = [identifier2 isEqualToString:identifierCopy];
 
           if (!v16)
           {
@@ -4251,7 +4251,7 @@ LABEL_12:
           }
         }
 
-        [v31 addObject:v11];
+        [array addObject:v11];
 LABEL_10:
       }
 
@@ -4265,7 +4265,7 @@ LABEL_10:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v32 = v31;
+  v32 = array;
   v17 = [v32 countByEnumeratingWithState:&v33 objects:v45 count:16];
   if (v17)
   {
@@ -4282,20 +4282,20 @@ LABEL_10:
         }
 
         v21 = *(*(&v33 + 1) + 8 * j);
-        v22 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-        [v22 removeObjectForKey:v21];
+        discoveredPeripheralsWithAccessories2 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+        [discoveredPeripheralsWithAccessories2 removeObjectForKey:v21];
 
         v23 = objc_autoreleasePoolPush();
-        v24 = self;
+        selfCopy = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           v26 = HMFGetLogIdentifier();
-          v27 = [v21 shortDescription];
+          shortDescription = [v21 shortDescription];
           *buf = obja;
           v42 = v26;
           v43 = 2114;
-          v44 = v27;
+          v44 = shortDescription;
           _os_log_impl(&dword_22AADC000, v25, OS_LOG_TYPE_INFO, "%{public}@Browser removed discovered peripheral: %{public}@", buf, 0x16u);
         }
 
@@ -4311,27 +4311,27 @@ LABEL_10:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyDelegatesOfRemovedAccessoryServer:(id)a3 error:(id)a4
+- (void)_notifyDelegatesOfRemovedAccessoryServer:(id)server error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  serverCopy = server;
+  errorCopy = error;
+  if (serverCopy)
   {
     if ([(HAPAccessoryServerBrowserBTLE *)self _delegateRespondsToSelector:sel_accessoryServerBrowser_didRemoveAccessoryServer_error_])
     {
-      v8 = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServer_error___block_invoke;
       block[3] = &unk_2786D7078;
       block[4] = self;
-      v11 = v6;
-      v12 = v7;
-      dispatch_async(v8, block);
+      v11 = serverCopy;
+      v12 = errorCopy;
+      dispatch_async(delegateQueue, block);
     }
 
-    v9 = [v6 identifier];
-    [(HAPAccessoryServerBrowserBTLE *)self _removeDiscoveredPeripheralsWithIdentifier:v9];
+    identifier = [serverCopy identifier];
+    [(HAPAccessoryServerBrowserBTLE *)self _removeDiscoveredPeripheralsWithIdentifier:identifier];
   }
 }
 
@@ -4341,19 +4341,19 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
   [v2 accessoryServerBrowser:*(a1 + 32) didRemoveAccessoryServer:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)_performTimedScanForIdentifiers:(id)a3 forceScan:(BOOL)a4 withCompletion:(id)a5
+- (void)_performTimedScanForIdentifiers:(id)identifiers forceScan:(BOOL)scan withCompletion:(id)completion
 {
-  v40 = a4;
+  scanCopy = scan;
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v42 = a5;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(identifiersCopy, "count")}];
     v13 = HMFBooleanToString();
     *buf = 138543874;
     v49 = v11;
@@ -4369,7 +4369,7 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v7;
+  obj = identifiersCopy;
   v14 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v14)
   {
@@ -4386,7 +4386,7 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
 
         v18 = *(*(&v43 + 1) + 8 * i);
         v19 = objc_autoreleasePoolPush();
-        v20 = v9;
+        v20 = selfCopy;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
@@ -4400,9 +4400,9 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
 
         objc_autoreleasePoolPop(v19);
         v23 = [(HAPAccessoryServerBrowserBTLE *)v20 _blePeripheralForAccessoryServerIdentifier:v18];
-        v24 = [v23 cbPeripheral];
+        cbPeripheral = [v23 cbPeripheral];
 
-        if ([v24 state] == 2)
+        if ([cbPeripheral state] == 2)
         {
           v25 = objc_autoreleasePoolPush();
           v26 = v20;
@@ -4418,7 +4418,7 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
           }
 
           objc_autoreleasePoolPop(v25);
-          v29 = MEMORY[0x231885210](v42);
+          v29 = MEMORY[0x231885210](completionCopy);
           v30 = v29;
           if (v29)
           {
@@ -4428,21 +4428,21 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
 
         else
         {
-          v31 = [(HAPAccessoryServerBrowserBTLE *)v20 identifiersWithReachabilityScanTuples];
-          v30 = [v31 objectForKey:v18];
+          identifiersWithReachabilityScanTuples = [(HAPAccessoryServerBrowserBTLE *)v20 identifiersWithReachabilityScanTuples];
+          v30 = [identifiersWithReachabilityScanTuples objectForKey:v18];
 
           if (!v30)
           {
-            v32 = [(HAPAccessoryServerBrowser *)v20 workQueue];
-            v30 = [HAPBTLEReachabilityScanTuple reachabilityScanTupleWithCompletion:v42 workQueue:v32 identifier:v18];
+            workQueue = [(HAPAccessoryServerBrowser *)v20 workQueue];
+            v30 = [HAPBTLEReachabilityScanTuple reachabilityScanTupleWithCompletion:completionCopy workQueue:workQueue identifier:v18];
 
-            v33 = [(HAPAccessoryServerBrowserBTLE *)v20 identifiersWithReachabilityScanTuples];
-            [v33 setObject:v30 forKey:v18];
+            identifiersWithReachabilityScanTuples2 = [(HAPAccessoryServerBrowserBTLE *)v20 identifiersWithReachabilityScanTuples];
+            [identifiersWithReachabilityScanTuples2 setObject:v30 forKey:v18];
 
-            if (v40)
+            if (scanCopy)
             {
-              v34 = [(HAPAccessoryServerBrowserBTLE *)v20 hapWiProxBLEBrowser];
-              [v34 resetLastSeenForTrackedAccessories:v18];
+              hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)v20 hapWiProxBLEBrowser];
+              [hapWiProxBLEBrowser resetLastSeenForTrackedAccessories:v18];
             }
           }
         }
@@ -4454,16 +4454,16 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
     while (v15);
   }
 
-  v35 = [(HAPAccessoryServerBrowserBTLE *)v9 identifiersWithReachabilityScanTuples];
-  v36 = [v35 count];
+  identifiersWithReachabilityScanTuples3 = [(HAPAccessoryServerBrowserBTLE *)selfCopy identifiersWithReachabilityScanTuples];
+  v36 = [identifiersWithReachabilityScanTuples3 count];
 
   if (v36)
   {
-    v37 = [(HAPAccessoryServerBrowserBTLE *)v9 hapWiProxBLEBrowser];
-    v38 = [(HAPAccessoryServerBrowserBTLE *)v9 identifiersWithReachabilityScanTuples];
-    [v37 probeReachabilityForTrackedAccessoriesWithScanTuples:v38];
+    hapWiProxBLEBrowser2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapWiProxBLEBrowser];
+    identifiersWithReachabilityScanTuples4 = [(HAPAccessoryServerBrowserBTLE *)selfCopy identifiersWithReachabilityScanTuples];
+    [hapWiProxBLEBrowser2 probeReachabilityForTrackedAccessoriesWithScanTuples:identifiersWithReachabilityScanTuples4];
 
-    [(HAPAccessoryServerBrowserBTLE *)v9 _updateTargetedScanTimer];
+    [(HAPAccessoryServerBrowserBTLE *)selfCopy _updateTargetedScanTimer];
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -4491,59 +4491,59 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
         }
 
         v4 = *(*(&v30 + 1) + 8 * i);
-        v5 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
-        v6 = [v5 objectForKey:v4];
+        identifiersWithReachabilityScanTuples = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
+        v6 = [identifiersWithReachabilityScanTuples objectForKey:v4];
 
         v7 = objc_autoreleasePoolPush();
-        v8 = self;
+        selfCopy = self;
         v9 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v10 = HMFGetLogIdentifier();
-          v11 = [v6 identifier];
+          identifier = [v6 identifier];
           *buf = 138543618;
           v35 = v10;
           v36 = 2114;
-          v37 = v11;
+          v37 = identifier;
           _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Reachability scan timed out for %{public}@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v7);
-        v12 = [(HAPAccessoryServerBrowserBTLE *)v8 _blePeripheralForAccessoryServerIdentifier:v4];
-        v13 = [v12 cbPeripheral];
+        v12 = [(HAPAccessoryServerBrowserBTLE *)selfCopy _blePeripheralForAccessoryServerIdentifier:v4];
+        cbPeripheral = [v12 cbPeripheral];
 
-        v14 = [v13 state];
-        if (v14 == 2)
+        state = [cbPeripheral state];
+        if (state == 2)
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = v8;
+          v16 = selfCopy;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             v18 = HMFGetLogIdentifier();
-            v19 = [v6 identifier];
+            identifier2 = [v6 identifier];
             *buf = 138543618;
             v35 = v18;
             v36 = 2114;
-            v37 = v19;
+            v37 = identifier2;
             _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_INFO, "%{public}@Marking accessory as we are connected to %{public}@", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v15);
         }
 
-        v20 = [v6 completion];
+        completion = [v6 completion];
 
-        if (v20)
+        if (completion)
         {
-          v21 = [v6 queue];
+          queue = [v6 queue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __70__HAPAccessoryServerBrowserBTLE__removeIdentifiersForReachabilityScan__block_invoke;
           block[3] = &unk_2786D6768;
           v28 = v6;
-          v29 = v14 == 2;
-          dispatch_async(v21, block);
+          v29 = state == 2;
+          dispatch_async(queue, block);
         }
       }
 
@@ -4553,8 +4553,8 @@ void __80__HAPAccessoryServerBrowserBTLE__notifyDelegatesOfRemovedAccessoryServe
     while (v26);
   }
 
-  v22 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
-  [v22 removeAllObjects];
+  identifiersWithReachabilityScanTuples2 = [(HAPAccessoryServerBrowserBTLE *)self identifiersWithReachabilityScanTuples];
+  [identifiersWithReachabilityScanTuples2 removeAllObjects];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -4566,19 +4566,19 @@ void __70__HAPAccessoryServerBrowserBTLE__removeIdentifiersForReachabilityScan__
   v3[2](v3, v2, *(a1 + 40));
 }
 
-- (id)_recentlySeenPairedPeripheralTupleWithPeripheral:(id)a3
+- (id)_recentlySeenPairedPeripheralTupleWithPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
-  v6 = [v5 objectEnumerator];
-  v7 = [v6 allObjects];
+  peripheralCopy = peripheral;
+  recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
+  objectEnumerator = [recentlySeenPairedPeripherals objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__HAPAccessoryServerBrowserBTLE__recentlySeenPairedPeripheralTupleWithPeripheral___block_invoke;
   v11[3] = &unk_2786D3CA8;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 hmf_objectPassingTest:v11];
+  v12 = peripheralCopy;
+  v8 = peripheralCopy;
+  v9 = [allObjects hmf_objectPassingTest:v11];
 
   return v9;
 }
@@ -4592,15 +4592,15 @@ uint64_t __82__HAPAccessoryServerBrowserBTLE__recentlySeenPairedPeripheralTupleW
   return v5;
 }
 
-- (void)_forgetPairedAccessoryWithIdentifier:(id)a3
+- (void)_forgetPairedAccessoryWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
-  [v5 accessoryServerBrowser:self removeCacheForAccessoryWithIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+  [delegate accessoryServerBrowser:self removeCacheForAccessoryWithIdentifier:identifierCopy];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -4608,23 +4608,23 @@ uint64_t __82__HAPAccessoryServerBrowserBTLE__recentlySeenPairedPeripheralTupleW
     *buf = 138543618;
     v23 = v9;
     v24 = 2114;
-    v25 = v4;
+    v25 = identifierCopy;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Request to forget accessory with Id %{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HAPAccessoryServerBrowserBTLE *)v7 hapWiProxBLEBrowser];
-  v21 = v4;
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapWiProxBLEBrowser];
+  v21 = identifierCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-  [v10 stopTrackingHAPBLEAccessoriesWithIdentifiers:v11];
+  [hapWiProxBLEBrowser stopTrackingHAPBLEAccessoriesWithIdentifiers:v11];
 
-  v12 = [(HAPAccessoryServerBrowserBTLE *)v7 recentlySeenPairedPeripherals];
-  v13 = [v12 objectForKey:v4];
+  recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)selfCopy recentlySeenPairedPeripherals];
+  v13 = [recentlySeenPairedPeripherals objectForKey:identifierCopy];
 
   if (v13)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v7;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -4637,26 +4637,26 @@ uint64_t __82__HAPAccessoryServerBrowserBTLE__recentlySeenPairedPeripheralTupleW
     }
 
     objc_autoreleasePoolPop(v14);
-    v18 = [(HAPAccessoryServerBrowserBTLE *)v15 recentlySeenPairedPeripherals];
-    [v18 removeObjectForKey:v4];
+    recentlySeenPairedPeripherals2 = [(HAPAccessoryServerBrowserBTLE *)v15 recentlySeenPairedPeripherals];
+    [recentlySeenPairedPeripherals2 removeObjectForKey:identifierCopy];
   }
 
-  v20.receiver = v7;
+  v20.receiver = selfCopy;
   v20.super_class = HAPAccessoryServerBrowserBTLE;
-  [(HAPAccessoryServerBrowser *)&v20 deRegisterAccessoryWithIdentifier:v4];
+  [(HAPAccessoryServerBrowser *)&v20 deRegisterAccessoryWithIdentifier:identifierCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
 - (void)resetPairedAccessories
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__HAPAccessoryServerBrowserBTLE_resetPairedAccessories__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __55__HAPAccessoryServerBrowserBTLE_resetPairedAccessories__block_invoke(uint64_t a1)
@@ -4697,35 +4697,35 @@ void __55__HAPAccessoryServerBrowserBTLE_resetPairedAccessories__block_invoke(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deRegisterAccessoryWithIdentifier:(id)a3
+- (void)deRegisterAccessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HAPAccessoryServerBrowserBTLE;
-  [(HAPAccessoryServerBrowser *)&v9 deRegisterAccessoryWithIdentifier:v4];
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  [(HAPAccessoryServerBrowser *)&v9 deRegisterAccessoryWithIdentifier:identifierCopy];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HAPAccessoryServerBrowserBTLE_deRegisterAccessoryWithIdentifier___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)markNotifyingCharacteristicUpdatedForIdentifier:(id)a3
+- (void)markNotifyingCharacteristicUpdatedForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__HAPAccessoryServerBrowserBTLE_markNotifyingCharacteristicUpdatedForIdentifier___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __81__HAPAccessoryServerBrowserBTLE_markNotifyingCharacteristicUpdatedForIdentifier___block_invoke(uint64_t a1)
@@ -4774,19 +4774,19 @@ void __81__HAPAccessoryServerBrowserBTLE_markNotifyingCharacteristicUpdatedForId
   return qosLimits;
 }
 
-- (void)setQosLimits:(unint64_t)a3
+- (void)setQosLimits:(unint64_t)limits
 {
   os_unfair_lock_lock_with_options();
-  self->_qosLimits = a3;
+  self->_qosLimits = limits;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)configureBTLEQoSLimits:(unint64_t)a3
+- (void)configureBTLEQoSLimits:(unint64_t)limits
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -4794,25 +4794,25 @@ void __81__HAPAccessoryServerBrowserBTLE_markNotifyingCharacteristicUpdatedForId
     v10 = 138543618;
     v11 = v8;
     v12 = 2048;
-    v13 = a3;
+    limitsCopy = limits;
     _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%{public}@Configuring browser for qosLimits: %tu", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HAPAccessoryServerBrowserBTLE *)v6 setQosLimits:a3];
+  [(HAPAccessoryServerBrowserBTLE *)selfCopy setQosLimits:limits];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateScanInBackground:(BOOL)a3
+- (void)updateScanInBackground:(BOOL)background
 {
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__HAPAccessoryServerBrowserBTLE_updateScanInBackground___block_invoke;
   v6[3] = &unk_2786D6768;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  backgroundCopy = background;
+  dispatch_async(workQueue, v6);
 }
 
 void __56__HAPAccessoryServerBrowserBTLE_updateScanInBackground___block_invoke(uint64_t a1)
@@ -4822,18 +4822,18 @@ void __56__HAPAccessoryServerBrowserBTLE_updateScanInBackground___block_invoke(u
   [v2 setScanInBackground:v1];
 }
 
-- (void)stopTrackingBTLEAccessoriesWithIdentifiers:(id)a3
+- (void)stopTrackingBTLEAccessoriesWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifiersCopy = identifiers;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HAPAccessoryServerBrowserBTLE_stopTrackingBTLEAccessoriesWithIdentifiers___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __76__HAPAccessoryServerBrowserBTLE_stopTrackingBTLEAccessoriesWithIdentifiers___block_invoke(uint64_t a1)
@@ -4842,21 +4842,21 @@ void __76__HAPAccessoryServerBrowserBTLE_stopTrackingBTLEAccessoriesWithIdentifi
   [v2 stopTrackingHAPBLEAccessoriesWithIdentifiers:*(a1 + 40)];
 }
 
-- (void)updateStateForIdentifier:(id)a3 stateNumber:(id)a4
+- (void)updateStateForIdentifier:(id)identifier stateNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  numberCopy = number;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HAPAccessoryServerBrowserBTLE_updateStateForIdentifier_stateNumber___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = numberCopy;
+  v9 = numberCopy;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __70__HAPAccessoryServerBrowserBTLE_updateStateForIdentifier_stateNumber___block_invoke(uint64_t a1)
@@ -4998,27 +4998,27 @@ void __70__HAPAccessoryServerBrowserBTLE_updateStateForIdentifier_stateNumber___
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveCurrentStateForIdentifier:(id)a3 stateNumber:(id *)a4 isReachable:(BOOL *)a5 linkQuality:(unint64_t *)a6 lastSeen:(id *)a7
+- (void)retrieveCurrentStateForIdentifier:(id)identifier stateNumber:(id *)number isReachable:(BOOL *)reachable linkQuality:(unint64_t *)quality lastSeen:(id *)seen
 {
-  v12 = a3;
-  v13 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  [v13 retrieveStateForTrackedAccessoryWithIdentifier:v12 stateNumber:a4 isReachable:a5 linkQuality:a6 lastSeen:a7];
+  identifierCopy = identifier;
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  [hapWiProxBLEBrowser retrieveStateForTrackedAccessoryWithIdentifier:identifierCopy stateNumber:number isReachable:reachable linkQuality:quality lastSeen:seen];
 }
 
-- (void)configureAccessoryWithIdentifier:(id)a3 trackState:(BOOL)a4 connectionPriority:(unint64_t)a5
+- (void)configureAccessoryWithIdentifier:(id)identifier trackState:(BOOL)state connectionPriority:(unint64_t)priority
 {
-  v8 = a3;
-  v9 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __96__HAPAccessoryServerBrowserBTLE_configureAccessoryWithIdentifier_trackState_connectionPriority___block_invoke;
   v11[3] = &unk_2786D3C80;
   v11[4] = self;
-  v12 = v8;
-  v14 = a4;
-  v13 = a5;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = identifierCopy;
+  stateCopy = state;
+  priorityCopy = priority;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, v11);
 }
 
 void __96__HAPAccessoryServerBrowserBTLE_configureAccessoryWithIdentifier_trackState_connectionPriority___block_invoke(uint64_t a1)
@@ -5029,18 +5029,18 @@ void __96__HAPAccessoryServerBrowserBTLE_configureAccessoryWithIdentifier_trackS
   [v3 updatePairedPeripheralConfiguration:*(a1 + 56) connectionPriority:*(a1 + 48)];
 }
 
-- (void)resetLastSeenForAccessoryServersWithIdentifiers:(id)a3
+- (void)resetLastSeenForAccessoryServersWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifiersCopy = identifiers;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__HAPAccessoryServerBrowserBTLE_resetLastSeenForAccessoryServersWithIdentifiers___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __81__HAPAccessoryServerBrowserBTLE_resetLastSeenForAccessoryServersWithIdentifiers___block_invoke(uint64_t a1)
@@ -5086,20 +5086,20 @@ void __81__HAPAccessoryServerBrowserBTLE_resetLastSeenForAccessoryServersWithIde
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_probeReachabilityForAccessoryServersWithIdentifiers:(id)a3 forceScan:(BOOL)a4 withCompletion:(id)a5
+- (void)_probeReachabilityForAccessoryServersWithIdentifiers:(id)identifiers forceScan:(BOOL)scan withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __111__HAPAccessoryServerBrowserBTLE__probeReachabilityForAccessoryServersWithIdentifiers_forceScan_withCompletion___block_invoke;
   v12[3] = &unk_2786D5290;
-  v13 = v8;
-  v14 = v9;
+  v13 = identifiersCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v15 = a4;
-  v10 = v8;
-  v11 = v9;
+  scanCopy = scan;
+  v10 = identifiersCopy;
+  v11 = completionCopy;
   [(HAPAccessoryServerBrowserBTLE *)self _powerOnCentralManagerWithCompletion:v12];
 }
 
@@ -5139,22 +5139,22 @@ void __111__HAPAccessoryServerBrowserBTLE__probeReachabilityForAccessoryServersW
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)probeReachabilityForAccessoryServersWithIdentifiers:(id)a3 forceScan:(BOOL)a4 withCompletion:(id)a5
+- (void)probeReachabilityForAccessoryServersWithIdentifiers:(id)identifiers forceScan:(BOOL)scan withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __110__HAPAccessoryServerBrowserBTLE_probeReachabilityForAccessoryServersWithIdentifiers_forceScan_withCompletion___block_invoke;
   v13[3] = &unk_2786D5F70;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = identifiersCopy;
+  scanCopy = scan;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifiersCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __110__HAPAccessoryServerBrowserBTLE_probeReachabilityForAccessoryServersWithIdentifiers_forceScan_withCompletion___block_invoke(uint64_t a1)
@@ -5167,26 +5167,26 @@ void __110__HAPAccessoryServerBrowserBTLE_probeReachabilityForAccessoryServersWi
   }
 }
 
-- (void)setReachabilityCompletionHandler:(id)a3
+- (void)setReachabilityCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HAPAccessoryServerBrowserBTLE_setReachabilityCompletionHandler___block_invoke;
   v7[3] = &unk_2786D65D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_removeRecentlySeenPairedPeripheralWithIdentifier:(id)a3
+- (void)_removeRecentlySeenPairedPeripheralWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -5194,41 +5194,41 @@ void __110__HAPAccessoryServerBrowserBTLE_probeReachabilityForAccessoryServersWi
     v11 = 138543618;
     v12 = v8;
     v13 = 2114;
-    v14 = v4;
+    v14 = identifierCopy;
     _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%{public}@Removed recently seen paired peripheral with identifier %{public}@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPAccessoryServerBrowserBTLE *)v6 recentlySeenPairedPeripherals];
-  [v9 removeObjectForKey:v4];
+  recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)selfCopy recentlySeenPairedPeripherals];
+  [recentlySeenPairedPeripherals removeObjectForKey:identifierCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)a3
+- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__HAPAccessoryServerBrowserBTLE_removeRecentlySeenPairedPeripheralWithIdentifier___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_discoverAccessoryServerWithIdentifier:(id)a3
+- (void)_discoverAccessoryServerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__HAPAccessoryServerBrowserBTLE__discoverAccessoryServerWithIdentifier___block_invoke;
   v6[3] = &unk_2786D6A98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(HAPAccessoryServerBrowserBTLE *)self _powerOnCentralManagerWithCompletion:v6];
 }
 
@@ -5286,33 +5286,33 @@ void __72__HAPAccessoryServerBrowserBTLE__discoverAccessoryServerWithIdentifier_
   [v2 accessoryServerBrowser:*(a1 + 32) didFailToDiscoverAccessoryServerWithIdentifier:*(a1 + 40)];
 }
 
-- (void)discoverAccessoryServerWithIdentifier:(id)a3
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  identifierCopy = identifier;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HAPAccessoryServerBrowserBTLE_discoverAccessoryServerWithIdentifier___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_callPowerOnCompletionsWithError:(id)a3
+- (void)_callPowerOnCompletionsWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self powerOnCentralManagerCompletions];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  powerOnCentralManagerCompletions = [(HAPAccessoryServerBrowserBTLE *)self powerOnCentralManagerCompletions];
+  v7 = [powerOnCentralManagerCompletions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5324,47 +5324,47 @@ void __72__HAPAccessoryServerBrowserBTLE__discoverAccessoryServerWithIdentifier_
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(powerOnCentralManagerCompletions);
         }
 
         v11 = MEMORY[0x231885210](*(*(&v15 + 1) + 8 * v10));
         v12 = v11;
         if (v11)
         {
-          (*(v11 + 16))(v11, v4);
+          (*(v11 + 16))(v11, errorCopy);
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [powerOnCentralManagerCompletions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(HAPAccessoryServerBrowserBTLE *)self powerOnCentralManagerCompletions];
-  [v13 removeAllObjects];
+  powerOnCentralManagerCompletions2 = [(HAPAccessoryServerBrowserBTLE *)self powerOnCentralManagerCompletions];
+  [powerOnCentralManagerCompletions2 removeAllObjects];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_powerOnCentralManagerWithCompletion:(id)a3
+- (void)_powerOnCentralManagerWithCompletion:(id)completion
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
+  centralManager = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
 
-  if (v6)
+  if (centralManager)
   {
-    v7 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
-    v8 = [v7 state];
+    centralManager2 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
+    state = [centralManager2 state];
 
-    switch(v8)
+    switch(state)
     {
       case 2uLL:
         v28 = MEMORY[0x277CCA9B8];
@@ -5377,8 +5377,8 @@ void __72__HAPAccessoryServerBrowserBTLE__discoverAccessoryServerWithIdentifier_
         v30 = 57;
         break;
       case 5uLL:
-        v9 = MEMORY[0x231885210](v4);
-        v10 = v9;
+        v9 = MEMORY[0x231885210](completionCopy);
+        powerOnCentralManagerCompletions = v9;
         if (v9)
         {
           (*(v9 + 16))(v9, 0);
@@ -5387,73 +5387,73 @@ void __72__HAPAccessoryServerBrowserBTLE__discoverAccessoryServerWithIdentifier_
         goto LABEL_24;
       default:
         v33 = objc_autoreleasePoolPush();
-        v34 = self;
+        selfCopy = self;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           v36 = HMFGetLogIdentifier();
-          if (v8 > 5)
+          if (state > 5)
           {
             v37 = @"Unenumerated State?";
           }
 
           else
           {
-            v37 = off_2786D3D40[v8];
+            v37 = off_2786D3D40[state];
           }
 
           v38 = v37;
           *buf = 138543874;
           v43 = v36;
           v44 = 2048;
-          v45 = v8;
+          v45 = state;
           v46 = 2112;
           v47 = v38;
           _os_log_impl(&dword_22AADC000, v35, OS_LOG_TYPE_INFO, "%{public}@Central Manager has state %ld (%@), adding block to be called when the state is updated.", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v33);
-        v10 = [(HAPAccessoryServerBrowserBTLE *)v34 powerOnCentralManagerCompletions];
-        v32 = MEMORY[0x231885210](v4);
-        [v10 addObject:v32];
+        powerOnCentralManagerCompletions = [(HAPAccessoryServerBrowserBTLE *)selfCopy powerOnCentralManagerCompletions];
+        v32 = MEMORY[0x231885210](completionCopy);
+        [powerOnCentralManagerCompletions addObject:v32];
 LABEL_23:
 
 LABEL_24:
         goto LABEL_25;
     }
 
-    v10 = [v28 errorWithHMErrorCode:v30 reason:v29 underlyingError:0];
-    v31 = MEMORY[0x231885210](v4);
+    powerOnCentralManagerCompletions = [v28 errorWithHMErrorCode:v30 reason:v29 underlyingError:0];
+    v31 = MEMORY[0x231885210](completionCopy);
     v32 = v31;
     if (v31)
     {
-      (*(v31 + 16))(v31, v10);
+      (*(v31 + 16))(v31, powerOnCentralManagerCompletions);
     }
 
     goto LABEL_23;
   }
 
-  v11 = [(HAPAccessoryServerBrowserBTLE *)self powerOnCentralManagerCompletions];
-  v12 = MEMORY[0x231885210](v4);
-  [v11 addObject:v12];
+  powerOnCentralManagerCompletions2 = [(HAPAccessoryServerBrowserBTLE *)self powerOnCentralManagerCompletions];
+  v12 = MEMORY[0x231885210](completionCopy);
+  [powerOnCentralManagerCompletions2 addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x277CBDFF8]);
-  v14 = [(HAPAccessoryServerBrowser *)self workQueue];
-  v15 = [v13 initWithDelegate:self queue:v14];
+  workQueue2 = [(HAPAccessoryServerBrowser *)self workQueue];
+  v15 = [v13 initWithDelegate:self queue:workQueue2];
   [(HAPAccessoryServerBrowserBTLE *)self setCentralManager:v15];
 
   v16 = [CBConnectionsObserver alloc];
-  v17 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
-  v18 = [(HAPAccessoryServerBrowser *)self workQueue];
+  centralManager3 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
+  workQueue3 = [(HAPAccessoryServerBrowser *)self workQueue];
   v41 = 0;
-  v19 = [(CBConnectionsObserver *)v16 initWithCentralManager:v17 Queue:v18 Error:&v41];
+  v19 = [(CBConnectionsObserver *)v16 initWithCentralManager:centralManager3 Queue:workQueue3 Error:&v41];
   v20 = v41;
   [(HAPAccessoryServerBrowserBTLE *)self setConnectionsObserver:v19];
 
   if (v20)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -5466,16 +5466,16 @@ LABEL_24:
     }
 
     objc_autoreleasePoolPop(v21);
-    v25 = [(HAPAccessoryServerBrowserBTLE *)v22 connectionsObserver];
+    connectionsObserver = [(HAPAccessoryServerBrowserBTLE *)selfCopy2 connectionsObserver];
 
-    if (v25)
+    if (connectionsObserver)
     {
-      v26 = [(HAPAccessoryServerBrowserBTLE *)v22 connectionsObserver];
+      connectionsObserver2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy2 connectionsObserver];
       v40 = v20;
-      [v26 cleanupWithError:&v40];
+      [connectionsObserver2 cleanupWithError:&v40];
       v27 = v40;
 
-      [(HAPAccessoryServerBrowserBTLE *)v22 setConnectionsObserver:0];
+      [(HAPAccessoryServerBrowserBTLE *)selfCopy2 setConnectionsObserver:0];
       v20 = v27;
     }
   }
@@ -5484,11 +5484,11 @@ LABEL_25:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startScanningForReachability:(id)a3
+- (void)_startScanningForReachability:(id)reachability
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(HAPAccessoryServerBrowserBTLE *)self _hasRecentlySeenAccessoriesWithIdentifiers:v4])
+  reachabilityCopy = reachability;
+  if ([(HAPAccessoryServerBrowserBTLE *)self _hasRecentlySeenAccessoriesWithIdentifiers:reachabilityCopy])
   {
     v5 = [(HAPAccessoryServerBrowserBTLE *)self _hasPairedAccessoriesOfType:1];
   }
@@ -5496,7 +5496,7 @@ LABEL_25:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -5513,17 +5513,17 @@ LABEL_25:
   if ([(HAPAccessoryServerBrowserBTLE *)self scanState]|| !v5)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [(HAPAccessoryServerBrowserBTLE *)v22 scanState];
+      scanState = [(HAPAccessoryServerBrowserBTLE *)selfCopy2 scanState];
       v26 = HMFBooleanToString();
       *buf = 138543874;
       v31 = v24;
       v32 = 2048;
-      v33 = v25;
+      v33 = scanState;
       v34 = 2112;
       v35 = v26;
       _os_log_impl(&dword_22AADC000, v23, OS_LOG_TYPE_INFO, "%{public}@Skip 1.0 reachability: Scan State: %tu, 1.0 Accessories: %@", buf, 0x20u);
@@ -5534,12 +5534,12 @@ LABEL_25:
 
   else
   {
-    v10 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
-    [v10 stopScan];
+    centralManager = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
+    [centralManager stopScan];
 
     [(HAPAccessoryServerBrowserBTLE *)self setScanState:2];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -5551,7 +5551,7 @@ LABEL_25:
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x277CBE0A0] UUIDWithString:@"FED4"];
-    v16 = [(HAPAccessoryServerBrowserBTLE *)v12 centralManager];
+    centralManager2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy3 centralManager];
     v38[0] = v15;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
     v18 = *MEMORY[0x277CBDDB0];
@@ -5567,18 +5567,18 @@ LABEL_25:
     v36[4] = *MEMORY[0x277CBDE38];
     v37[4] = &unk_283EA97D0;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:5];
-    [v16 scanForPeripheralsWithServices:v17 options:v20];
+    [centralManager2 scanForPeripheralsWithServices:v17 options:v20];
   }
 
   if ([(HAPAccessoryServerBrowserBTLE *)self _delegateRespondsToSelector:sel_accessoryServerBrowser_didStartDiscoveringWithError_])
   {
-    v27 = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
+    delegateQueue = [(HAPAccessoryServerBrowserBTLE *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__HAPAccessoryServerBrowserBTLE__startScanningForReachability___block_invoke;
     block[3] = &unk_2786D6CA0;
     block[4] = self;
-    dispatch_async(v27, block);
+    dispatch_async(delegateQueue, block);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -5590,19 +5590,19 @@ void __63__HAPAccessoryServerBrowserBTLE__startScanningForReachability___block_i
   [v2 accessoryServerBrowser:*(a1 + 32) didStartDiscoveringWithError:0];
 }
 
-- (BOOL)_hasRecentlySeenAccessoriesWithIdentifiers:(id)a3
+- (BOOL)_hasRecentlySeenAccessoriesWithIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB98] setWithArray:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithArray:identifiers];
   v5 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
-  v7 = [v6 objectEnumerator];
+  recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
+  objectEnumerator = [recentlySeenPairedPeripherals objectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5614,17 +5614,17 @@ void __63__HAPAccessoryServerBrowserBTLE__startScanningForReachability___block_i
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) identifier];
-        [v5 addObject:v12];
+        identifier = [*(*(&v16 + 1) + 8 * v11) identifier];
+        [v5 addObject:identifier];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -5635,17 +5635,17 @@ void __63__HAPAccessoryServerBrowserBTLE__startScanningForReachability___block_i
   return v13;
 }
 
-- (BOOL)_hasPairedAccessoriesOfType:(unint64_t)a3
+- (BOOL)_hasPairedAccessoriesOfType:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
-  v6 = [v5 objectEnumerator];
+  recentlySeenPairedPeripherals = [(HAPAccessoryServerBrowserBTLE *)self recentlySeenPairedPeripherals];
+  objectEnumerator = [recentlySeenPairedPeripherals objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5656,14 +5656,14 @@ void __63__HAPAccessoryServerBrowserBTLE__startScanningForReachability___block_i
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        if ([v11 advertisementFormat] == a3)
+        if ([v11 advertisementFormat] == type)
         {
-          v12 = [v11 identifier];
-          v13 = [(HAPAccessoryServerBrowser *)self isPaired:v12];
+          identifier = [v11 identifier];
+          v13 = [(HAPAccessoryServerBrowser *)self isPaired:identifier];
 
           if (v13)
           {
@@ -5673,7 +5673,7 @@ void __63__HAPAccessoryServerBrowserBTLE__startScanningForReachability___block_i
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -5693,12 +5693,12 @@ LABEL_12:
 - (void)_startBrowsingForLegacyHAPBTLE100Accessories
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
-  [v3 stopScan];
+  centralManager = [(HAPAccessoryServerBrowserBTLE *)self centralManager];
+  [centralManager stopScan];
 
   [(HAPAccessoryServerBrowserBTLE *)self setScanState:1];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -5710,7 +5710,7 @@ LABEL_12:
 
   objc_autoreleasePoolPop(v4);
   v8 = [MEMORY[0x277CBE0A0] UUIDWithString:@"FED4"];
-  v9 = [(HAPAccessoryServerBrowserBTLE *)v5 centralManager];
+  centralManager2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy centralManager];
   v19 = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
   v11 = *MEMORY[0x277CBDDB0];
@@ -5726,17 +5726,17 @@ LABEL_12:
   v17[4] = *MEMORY[0x277CBDE38];
   v18[4] = &unk_283EA97D0;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  [v9 scanForPeripheralsWithServices:v10 options:v13];
+  [centralManager2 scanForPeripheralsWithServices:v10 options:v13];
 
-  if ([(HAPAccessoryServerBrowserBTLE *)v5 _delegateRespondsToSelector:sel_accessoryServerBrowser_didStartDiscoveringWithError_])
+  if ([(HAPAccessoryServerBrowserBTLE *)selfCopy _delegateRespondsToSelector:sel_accessoryServerBrowser_didStartDiscoveringWithError_])
   {
-    v14 = [(HAPAccessoryServerBrowserBTLE *)v5 delegateQueue];
+    delegateQueue = [(HAPAccessoryServerBrowserBTLE *)selfCopy delegateQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __77__HAPAccessoryServerBrowserBTLE__startBrowsingForLegacyHAPBTLE100Accessories__block_invoke;
     v16[3] = &unk_2786D6CA0;
-    v16[4] = v5;
-    dispatch_async(v14, v16);
+    v16[4] = selfCopy;
+    dispatch_async(delegateQueue, v16);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -5756,29 +5756,29 @@ void __58__HAPAccessoryServerBrowserBTLE__stopActiveScanWithForce___block_invoke
 
 - (BOOL)remoteBrowsingAndScanEnabled
 {
-  v2 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  v3 = (~[v2 routeMode] & 3) == 0;
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  v3 = (~[hapWiProxBLEBrowser routeMode] & 3) == 0;
 
   return v3;
 }
 
 - (BOOL)remoteBrowsingEnabled
 {
-  v2 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  v3 = [v2 routeMode];
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  routeMode = [hapWiProxBLEBrowser routeMode];
 
-  return v3 & 1;
+  return routeMode & 1;
 }
 
 - (void)pauseScans
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__HAPAccessoryServerBrowserBTLE_pauseScans__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __43__HAPAccessoryServerBrowserBTLE_pauseScans__block_invoke(uint64_t a1)
@@ -5794,22 +5794,22 @@ uint64_t __43__HAPAccessoryServerBrowserBTLE_pauseScans__block_invoke(uint64_t a
   return [v4 setScanState:0];
 }
 
-- (void)_matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5
+- (void)_matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v11 = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
-    v12 = [v11 objectEnumerator];
+    discoveredPeripheralsWithAccessories = [(HAPAccessoryServerBrowserBTLE *)self discoveredPeripheralsWithAccessories];
+    objectEnumerator = [discoveredPeripheralsWithAccessories objectEnumerator];
 
-    v13 = [v12 countByEnumeratingWithState:&v30 objects:v44 count:16];
+    v13 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v44 count:16];
     if (v13)
     {
       v14 = v13;
@@ -5820,18 +5820,18 @@ LABEL_4:
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) accessoryServer];
-        if ([v17 matchesSetupID:v8 serverIdentifier:v9])
+        accessoryServer = [*(*(&v30 + 1) + 8 * v16) accessoryServer];
+        if ([accessoryServer matchesSetupID:dCopy serverIdentifier:identifierCopy])
         {
           break;
         }
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v30 objects:v44 count:16];
+          v14 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v44 count:16];
           if (v14)
           {
             goto LABEL_4;
@@ -5841,18 +5841,18 @@ LABEL_4:
         }
       }
 
-      v18 = [v17 identifier];
-      v19 = [(HAPAccessoryServerBrowser *)self isPaired:v18];
+      identifier = [accessoryServer identifier];
+      v19 = [(HAPAccessoryServerBrowser *)self isPaired:identifier];
 
-      v20 = [v17 hasPairings];
-      v21 = v20;
-      if (!v19 && !v20)
+      hasPairings = [accessoryServer hasPairings];
+      v21 = hasPairings;
+      if (!v19 && !hasPairings)
       {
         goto LABEL_13;
       }
 
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
@@ -5862,9 +5862,9 @@ LABEL_4:
         *buf = 138544386;
         v35 = v29;
         v36 = 2114;
-        v37 = v17;
+        v37 = accessoryServer;
         v38 = 2114;
-        v39 = v8;
+        v39 = dCopy;
         v40 = 2114;
         v41 = v26;
         v42 = 2114;
@@ -5879,53 +5879,53 @@ LABEL_4:
     else
     {
 LABEL_10:
-      v17 = 0;
+      accessoryServer = 0;
 LABEL_13:
       v22 = 0;
     }
 
-    v10[2](v10, v22, v17);
+    handlerCopy[2](handlerCopy, v22, accessoryServer);
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5
+- (void)matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HAPAccessoryServerBrowser *)self workQueue];
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __100__HAPAccessoryServerBrowserBTLE_matchAccessoryServerWithSetupID_serverIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_2786D66C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = dCopy;
+  dispatch_async(workQueue, v15);
 }
 
-- (void)updateRemoteBrowsing:(BOOL)a3 shouldScan:(BOOL)a4
+- (void)updateRemoteBrowsing:(BOOL)browsing shouldScan:(BOOL)scan
 {
-  v4 = a3;
+  browsingCopy = browsing;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  v7 = [v6 routeMode];
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  routeMode = [hapWiProxBLEBrowser routeMode];
 
-  if (v7)
+  if (routeMode)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      if (v4)
+      if (browsingCopy)
       {
         v12 = @"WHB";
       }
@@ -5946,11 +5946,11 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v8);
-    v14 = [(HAPAccessoryServerBrowserBTLE *)v9 hapWiProxBLEBrowser];
-    [v14 setRouteMode:0];
+    hapWiProxBLEBrowser2 = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapWiProxBLEBrowser];
+    [hapWiProxBLEBrowser2 setRouteMode:0];
 
-    v15 = [(HAPAccessoryServerBrowserBTLE *)v9 hapWiProxBLEBrowser];
-    [v15 restartScans];
+    hapWiProxBLEBrowser3 = [(HAPAccessoryServerBrowserBTLE *)selfCopy hapWiProxBLEBrowser];
+    [hapWiProxBLEBrowser3 restartScans];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -5958,13 +5958,13 @@ LABEL_13:
 
 - (void)stopDiscoveringAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HAPAccessoryServerBrowserBTLE_stopDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __64__HAPAccessoryServerBrowserBTLE_stopDiscoveringAccessoryServers__block_invoke(uint64_t a1)
@@ -6093,8 +6093,8 @@ void __64__HAPAccessoryServerBrowserBTLE_stopDiscoveringAccessoryServers__block_
 - (void)_startDiscoveringAccessoryServers
 {
   [(HAPAccessoryServerBrowserBTLE *)self setPerformingGeneralScan:1];
-  v3 = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
-  [v3 startBrowsingForHAPBLEAccessories];
+  hapWiProxBLEBrowser = [(HAPAccessoryServerBrowserBTLE *)self hapWiProxBLEBrowser];
+  [hapWiProxBLEBrowser startBrowsingForHAPBLEAccessories];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -6138,13 +6138,13 @@ void __66__HAPAccessoryServerBrowserBTLE__startDiscoveringAccessoryServers__bloc
 
 - (void)startDiscoveringAccessoryServers
 {
-  v3 = [(HAPAccessoryServerBrowser *)self workQueue];
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HAPAccessoryServerBrowserBTLE_startDiscoveringAccessoryServers__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __65__HAPAccessoryServerBrowserBTLE_startDiscoveringAccessoryServers__block_invoke(uint64_t a1)
@@ -6160,10 +6160,10 @@ uint64_t __65__HAPAccessoryServerBrowserBTLE_startDiscoveringAccessoryServers__b
   return result;
 }
 
-- (void)setScanState:(int64_t)a3
+- (void)setScanState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_scanState = a3;
+  self->_scanState = state;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -6188,27 +6188,27 @@ uint64_t __65__HAPAccessoryServerBrowserBTLE_startDiscoveringAccessoryServers__b
     return 1;
   }
 
-  v3 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
-  v4 = [v3 isServerLinkTypeBrowseable:2];
+  delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+  v4 = [delegate isServerLinkTypeBrowseable:2];
 
   return v4;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAPAccessoryServerBrowser *)self workQueue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HAPAccessoryServerBrowserBTLE_setDelegate_queue___block_invoke;
   block[3] = &unk_2786D7078;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __51__HAPAccessoryServerBrowserBTLE_setDelegate_queue___block_invoke(uint64_t a1)
@@ -6220,44 +6220,44 @@ uint64_t __51__HAPAccessoryServerBrowserBTLE_setDelegate_queue___block_invoke(ui
   return [v3 setDelegateQueue:v2];
 }
 
-- (HAPAccessoryServerBrowserBTLE)initWithQueue:(id)a3
+- (HAPAccessoryServerBrowserBTLE)initWithQueue:(id)queue
 {
   v21.receiver = self;
   v21.super_class = HAPAccessoryServerBrowserBTLE;
-  v3 = [(HAPAccessoryServerBrowser *)&v21 initWithQueue:a3];
+  v3 = [(HAPAccessoryServerBrowser *)&v21 initWithQueue:queue];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     discoveredPeripheralsWithAccessories = v3->_discoveredPeripheralsWithAccessories;
-    v3->_discoveredPeripheralsWithAccessories = v4;
+    v3->_discoveredPeripheralsWithAccessories = strongToStrongObjectsMapTable;
 
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     recentlySeenPairedPeripherals = v3->_recentlySeenPairedPeripherals;
-    v3->_recentlySeenPairedPeripherals = v6;
+    v3->_recentlySeenPairedPeripherals = strongToStrongObjectsMapTable2;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     powerOnCentralManagerCompletions = v3->_powerOnCentralManagerCompletions;
-    v3->_powerOnCentralManagerCompletions = v8;
+    v3->_powerOnCentralManagerCompletions = array;
 
-    v10 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     peripheralsWithConnectionRequests = v3->_peripheralsWithConnectionRequests;
-    v3->_peripheralsWithConnectionRequests = v10;
+    v3->_peripheralsWithConnectionRequests = orderedSet;
 
-    v12 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     peripheralsPendingConnection = v3->_peripheralsPendingConnection;
-    v3->_peripheralsPendingConnection = v12;
+    v3->_peripheralsPendingConnection = orderedSet2;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     targetedScanAccessoryIdentifiers = v3->_targetedScanAccessoryIdentifiers;
-    v3->_targetedScanAccessoryIdentifiers = v14;
+    v3->_targetedScanAccessoryIdentifiers = array2;
 
-    v16 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     identifiersWithReachabilityScanTuples = v3->_identifiersWithReachabilityScanTuples;
-    v3->_identifiersWithReachabilityScanTuples = v16;
+    v3->_identifiersWithReachabilityScanTuples = strongToStrongObjectsMapTable3;
 
-    v18 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     peripheralDisconnectionMonitorMap = v3->_peripheralDisconnectionMonitorMap;
-    v3->_peripheralDisconnectionMonitorMap = v18;
+    v3->_peripheralDisconnectionMonitorMap = strongToStrongObjectsMapTable4;
 
     v3->_peripheralDisconnectionTimeout = 10;
     v3->_scanState = 0;
@@ -6275,56 +6275,56 @@ uint64_t __51__HAPAccessoryServerBrowserBTLE_setDelegate_queue___block_invoke(ui
   return performingGeneralScan;
 }
 
-- (void)setPerformingGeneralScan:(BOOL)a3
+- (void)setPerformingGeneralScan:(BOOL)scan
 {
   os_unfair_lock_lock_with_options();
-  self->_performingGeneralScan = a3;
+  self->_performingGeneralScan = scan;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)updateCachedStateForIdentifier:(id)a3 stateNumber:(id)a4
+- (void)updateCachedStateForIdentifier:(id)identifier stateNumber:(id)number
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  numberCopy = number;
+  if (numberCopy)
   {
-    v8 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:v6];
+    v8 = [(HAPAccessoryServerBrowserBTLE *)self cachedAccessoryForIdentifier:identifierCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 peripheralInfo];
-      v11 = [v10 stateNumber];
-      v12 = HAPCompareStateNumberWithRollover(v11, v7, 0xFFuLL);
+      peripheralInfo = [v8 peripheralInfo];
+      stateNumber = [peripheralInfo stateNumber];
+      v12 = HAPCompareStateNumberWithRollover(stateNumber, numberCopy, 0xFFuLL);
 
       if (v12 == -1)
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v16 = HMFGetLogIdentifier();
-          v17 = [v9 pairingIdentifier];
-          v18 = [v9 peripheralInfo];
-          v19 = [v18 stateNumber];
+          pairingIdentifier = [v9 pairingIdentifier];
+          peripheralInfo2 = [v9 peripheralInfo];
+          stateNumber2 = [peripheralInfo2 stateNumber];
           v22 = 138544130;
           v23 = v16;
           v24 = 2114;
-          v25 = v17;
+          v25 = pairingIdentifier;
           v26 = 2114;
-          v27 = v19;
+          v27 = stateNumber2;
           v28 = 2114;
-          v29 = v7;
+          v29 = numberCopy;
           _os_log_impl(&dword_22AADC000, v15, OS_LOG_TYPE_INFO, "%{public}@Updating cached s# for: %{public}@ from %{public}@ to %{public}@", &v22, 0x2Au);
         }
 
         objc_autoreleasePoolPop(v13);
-        v20 = [v9 peripheralInfo];
-        [v20 updateStateNumber:v7];
+        peripheralInfo3 = [v9 peripheralInfo];
+        [peripheralInfo3 updateStateNumber:numberCopy];
 
-        [(HAPAccessoryServerBrowserBTLE *)v14 saveCacheToDisk:v9];
+        [(HAPAccessoryServerBrowserBTLE *)selfCopy saveCacheToDisk:v9];
       }
     }
   }
@@ -6332,25 +6332,25 @@ uint64_t __51__HAPAccessoryServerBrowserBTLE_setDelegate_queue___block_invoke(ui
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBroadcastKeyForIdentifier:(id)a3 key:(id)a4 keyUpdatedStateNumber:(id)a5 keyUpdatedTime:(double)a6
+- (void)updateBroadcastKeyForIdentifier:(id)identifier key:(id)key keyUpdatedStateNumber:(id)number keyUpdatedTime:(double)time
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+  identifierCopy = identifier;
+  keyCopy = key;
+  numberCopy = number;
+  delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __106__HAPAccessoryServerBrowserBTLE_updateBroadcastKeyForIdentifier_key_keyUpdatedStateNumber_keyUpdatedTime___block_invoke;
   v17[3] = &unk_2786D3C58;
   v17[4] = self;
-  v18 = v10;
-  v19 = v12;
-  v20 = v11;
-  v21 = a6;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  [v13 accessoryServerBrowser:self getCacheForAccessoryWithIdentifier:v16 withCompletion:v17];
+  v18 = identifierCopy;
+  v19 = numberCopy;
+  v20 = keyCopy;
+  timeCopy = time;
+  v14 = keyCopy;
+  v15 = numberCopy;
+  v16 = identifierCopy;
+  [delegate accessoryServerBrowser:self getCacheForAccessoryWithIdentifier:v16 withCompletion:v17];
 }
 
 void __106__HAPAccessoryServerBrowserBTLE_updateBroadcastKeyForIdentifier_key_keyUpdatedStateNumber_keyUpdatedTime___block_invoke(uint64_t a1, void *a2)
@@ -6408,33 +6408,33 @@ void __106__HAPAccessoryServerBrowserBTLE_updateBroadcastKeyForIdentifier_key_ke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCacheToDisk:(id)a3
+- (void)saveCacheToDisk:(id)disk
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  diskCopy = disk;
   v15 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:diskCopy requiringSecureCoding:1 error:&v15];
   v6 = v15;
   if (v5)
   {
-    v7 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
-    v8 = [v4 pairingIdentifier];
-    [v7 accessoryServerBrowser:self saveCache:v5 serverIdentifier:v8];
+    delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+    pairingIdentifier = [diskCopy pairingIdentifier];
+    [delegate accessoryServerBrowser:self saveCache:v5 serverIdentifier:pairingIdentifier];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 pairingIdentifier];
+      pairingIdentifier2 = [diskCopy pairingIdentifier];
       *buf = 138543874;
       v17 = v12;
       v18 = 2114;
-      v19 = v13;
+      v19 = pairingIdentifier2;
       v20 = 2114;
       v21 = v6;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to create BLE cache archive for %{public}@ with error: %{public}@", buf, 0x20u);
@@ -6446,30 +6446,30 @@ void __106__HAPAccessoryServerBrowserBTLE_updateBroadcastKeyForIdentifier_key_ke
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCachedAccessoryWithIdentifier:(id)a3
+- (void)removeCachedAccessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
-  [v5 accessoryServerBrowser:self removeCacheForAccessoryWithIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+  [delegate accessoryServerBrowser:self removeCacheForAccessoryWithIdentifier:identifierCopy];
 }
 
-- (id)cachedAccessoryForIdentifier:(id)a3
+- (id)cachedAccessoryForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__6553;
   v19 = __Block_byref_object_dispose__6554;
   v20 = 0;
-  v5 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+  delegate = [(HAPAccessoryServerBrowserBTLE *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = dispatch_group_create();
     dispatch_group_enter(v7);
-    v8 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
+    delegate2 = [(HAPAccessoryServerBrowserBTLE *)self delegate];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __62__HAPAccessoryServerBrowserBTLE_cachedAccessoryForIdentifier___block_invoke;
@@ -6478,7 +6478,7 @@ void __106__HAPAccessoryServerBrowserBTLE_updateBroadcastKeyForIdentifier_key_ke
     v12[4] = self;
     v9 = v7;
     v13 = v9;
-    [v8 accessoryServerBrowser:self getCacheForAccessoryWithIdentifier:v4 withCompletion:v12];
+    [delegate2 accessoryServerBrowser:self getCacheForAccessoryWithIdentifier:identifierCopy withCompletion:v12];
 
     dispatch_group_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -6526,19 +6526,19 @@ void __62__HAPAccessoryServerBrowserBTLE_cachedAccessoryForIdentifier___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConnectionLatency:(int64_t)a3 forPeripheral:(id)a4
+- (void)setConnectionLatency:(int64_t)latency forPeripheral:(id)peripheral
 {
-  v6 = a4;
-  v7 = [(HAPAccessoryServerBrowser *)self workQueue];
+  peripheralCopy = peripheral;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___block_invoke;
   block[3] = &unk_2786D4978;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  selfCopy = self;
+  latencyCopy = latency;
+  v10 = peripheralCopy;
+  v8 = peripheralCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___block_invoke(uint64_t a1)
@@ -6561,21 +6561,21 @@ void __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___bl
   }
 }
 
-- (unint64_t)_parseAdvertisementData:(id)a3 forPeripheral:(id)a4 name:(id *)a5 pairingUsername:(id *)a6 statusFlags:(id *)a7 stateNumber:(id *)a8 category:(id *)a9 configNumber:(id *)a10 setupHash:(id *)a11
+- (unint64_t)_parseAdvertisementData:(id)data forPeripheral:(id)peripheral name:(id *)name pairingUsername:(id *)username statusFlags:(id *)flags stateNumber:(id *)number category:(id *)category configNumber:(id *)self0 setupHash:(id *)self1
 {
   v35 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = [v15 objectForKeyedSubscript:*MEMORY[0x277CBDD08]];
-  v18 = [v16 name];
-  v19 = [v18 length];
+  dataCopy = data;
+  peripheralCopy = peripheral;
+  v17 = [dataCopy objectForKeyedSubscript:*MEMORY[0x277CBDD08]];
+  name = [peripheralCopy name];
+  v19 = [name length];
   v20 = [(__CFString *)v17 length];
 
   if (v19 > v20)
   {
-    v21 = [v16 name];
+    name2 = [peripheralCopy name];
 
-    v17 = v21;
+    v17 = name2;
   }
 
   if (!v17)
@@ -6583,13 +6583,13 @@ void __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___bl
     v17 = @"Unknown";
   }
 
-  if (a5)
+  if (name)
   {
     v22 = v17;
-    *a5 = v17;
+    *name = v17;
   }
 
-  v23 = [v15 objectForKeyedSubscript:*MEMORY[0x277CBDD28]];
+  v23 = [dataCopy objectForKeyedSubscript:*MEMORY[0x277CBDD28]];
   v24 = [MEMORY[0x277CBE0A0] UUIDWithString:@"FED4"];
   v25 = [v23 objectForKeyedSubscript:v24];
   if ([v25 length] == 9)
@@ -6598,21 +6598,21 @@ void __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___bl
     HardwareAddressToCString();
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:v34];
     v27 = v26;
-    if (a6)
+    if (username)
     {
       v28 = v26;
-      *a6 = v27;
+      *username = v27;
     }
 
-    v29 = [v25 bytes];
-    if (a7)
+    bytes = [v25 bytes];
+    if (flags)
     {
-      *a7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v29 + 8)];
+      *flags = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(bytes + 8)];
     }
 
-    if (a9)
+    if (category)
     {
-      if (*(v29 + 6))
+      if (*(bytes + 6))
       {
         v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
       }
@@ -6622,7 +6622,7 @@ void __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___bl
         v30 = &unk_283EA97A0;
       }
 
-      *a9 = v30;
+      *category = v30;
     }
 
     v31 = 1;
@@ -6637,18 +6637,18 @@ void __68__HAPAccessoryServerBrowserBTLE_setConnectionLatency_forPeripheral___bl
   return v31;
 }
 
-- (void)disconnectFromBTLEAccessoryServer:(id)a3
+- (void)disconnectFromBTLEAccessoryServer:(id)server
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  serverCopy = server;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HAPAccessoryServerBrowserBTLE_disconnectFromBTLEAccessoryServer___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = serverCopy;
+  selfCopy = self;
+  v6 = serverCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __67__HAPAccessoryServerBrowserBTLE_disconnectFromBTLEAccessoryServer___block_invoke(uint64_t a1)
@@ -6761,18 +6761,18 @@ void __67__HAPAccessoryServerBrowserBTLE_disconnectFromBTLEAccessoryServer___blo
   dispatch_async(v2, block);
 }
 
-- (void)connectToBTLEAccessoryServer:(id)a3
+- (void)connectToBTLEAccessoryServer:(id)server
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServerBrowser *)self workQueue];
+  serverCopy = server;
+  workQueue = [(HAPAccessoryServerBrowser *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HAPAccessoryServerBrowserBTLE_connectToBTLEAccessoryServer___block_invoke;
   v7[3] = &unk_2786D7050;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = serverCopy;
+  selfCopy = self;
+  v6 = serverCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __62__HAPAccessoryServerBrowserBTLE_connectToBTLEAccessoryServer___block_invoke(uint64_t a1)

@@ -1,16 +1,16 @@
 @interface IMMessageFromStoragePipelineComponent
-- (BOOL)_itemIsEligibleForStorageControllerWithInput:(id)a3;
-- (IMMessageFromStoragePipelineComponent)initWithStorageProcessingType:(unint64_t)a3 storageController:(id)a4 broadcaster:(id)a5;
-- (id)runIndividuallyWithInput:(id)a3;
+- (BOOL)_itemIsEligibleForStorageControllerWithInput:(id)input;
+- (IMMessageFromStoragePipelineComponent)initWithStorageProcessingType:(unint64_t)type storageController:(id)controller broadcaster:(id)broadcaster;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMMessageFromStoragePipelineComponent
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 GUID];
+  inputCopy = input;
+  gUID = [inputCopy GUID];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -37,7 +37,7 @@
       *buf = 138412546;
       v46 = v10;
       v47 = 2112;
-      v48 = v5;
+      v48 = gUID;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "<IMMessageFromStoragePipelineComponent> Started processing type (%@) for guid %@", buf, 0x16u);
     }
   }
@@ -46,7 +46,7 @@
   v12 = self->_processingType;
   if (v12 == 1)
   {
-    if ([v4 isLastFromStorage] && -[IMMessageFromStoragePipelineComponent _itemIsEligibleForStorageControllerWithInput:](self, "_itemIsEligibleForStorageControllerWithInput:", v4))
+    if ([inputCopy isLastFromStorage] && -[IMMessageFromStoragePipelineComponent _itemIsEligibleForStorageControllerWithInput:](self, "_itemIsEligibleForStorageControllerWithInput:", inputCopy))
     {
       if (IMOSLoggingEnabled())
       {
@@ -61,7 +61,7 @@
       [(IMDMessageFromStorageController *)self->_storageController noteLastItemProcessed];
     }
 
-    if (-[IMDMessageFromStorageController isAwaitingStorageTimer](self->_storageController, "isAwaitingStorageTimer") || ([v4 messageItems], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count") == 0, v15, v16))
+    if (-[IMDMessageFromStorageController isAwaitingStorageTimer](self->_storageController, "isAwaitingStorageTimer") || ([inputCopy messageItems], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count") == 0, v15, v16))
     {
       if (IMOSLoggingEnabled())
       {
@@ -73,7 +73,7 @@
         }
       }
 
-      [(IMDMessageFromStorageController *)self->_storageController noteSuppressedMessageUpdate:v5];
+      [(IMDMessageFromStorageController *)self->_storageController noteSuppressedMessageUpdate:gUID];
     }
 
     else
@@ -83,33 +83,33 @@
         v17 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [v4 messageItems];
-          v19 = [v18 count];
-          v20 = [v4 account];
-          v21 = [v20 service];
-          v22 = [v21 internalName];
+          messageItems = [inputCopy messageItems];
+          v19 = [messageItems count];
+          account = [inputCopy account];
+          service = [account service];
+          internalName = [service internalName];
           broadcaster = self->_broadcaster;
           *buf = 134218498;
           v46 = v19;
           v47 = 2112;
-          v48 = v22;
+          v48 = internalName;
           v49 = 2048;
           v50 = broadcaster;
           _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "    Updated messages: %lu for service: %@ with broadcaster: %p", buf, 0x20u);
         }
       }
 
-      v24 = [v4 messageItems];
+      messageItems2 = [inputCopy messageItems];
       v44 = IMCreateSerializedItemsFromArray();
 
       v25 = self->_broadcaster;
-      v26 = [v4 account];
-      v27 = [v26 service];
-      v28 = [v27 internalName];
-      v29 = [v4 chat];
-      v30 = [v29 chatIdentifier];
-      v31 = [v4 chat];
-      [v25 service:v28 chat:v30 style:objc_msgSend(v31 messagesUpdated:{"style"), v44}];
+      account2 = [inputCopy account];
+      service2 = [account2 service];
+      internalName2 = [service2 internalName];
+      chat = [inputCopy chat];
+      chatIdentifier = [chat chatIdentifier];
+      chat2 = [inputCopy chat];
+      [v25 service:internalName2 chat:chatIdentifier style:objc_msgSend(chat2 messagesUpdated:{"style"), v44}];
 
       v11 = v43;
     }
@@ -117,7 +117,7 @@
 
   else if (!v12)
   {
-    if ([v4 isLastFromStorage] && -[IMMessageFromStoragePipelineComponent _itemIsEligibleForStorageControllerWithInput:](self, "_itemIsEligibleForStorageControllerWithInput:", v4))
+    if ([inputCopy isLastFromStorage] && -[IMMessageFromStoragePipelineComponent _itemIsEligibleForStorageControllerWithInput:](self, "_itemIsEligibleForStorageControllerWithInput:", inputCopy))
     {
       if (IMOSLoggingEnabled())
       {
@@ -129,24 +129,24 @@
         }
       }
 
-      [(IMDMessageFromStorageController *)self->_storageController noteLastItemFromStorage:v5];
+      [(IMDMessageFromStorageController *)self->_storageController noteLastItemFromStorage:gUID];
     }
 
-    else if ([(IMMessageFromStoragePipelineComponent *)self _itemIsEligibleForStorageControllerWithInput:v4])
+    else if ([(IMMessageFromStoragePipelineComponent *)self _itemIsEligibleForStorageControllerWithInput:inputCopy])
     {
       if (IMOSLoggingEnabled())
       {
         v32 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v33 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isFromStorage")}];
+          v33 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(inputCopy, "isFromStorage")}];
           *buf = 138412290;
           v46 = v33;
           _os_log_impl(&dword_22B4CC000, v32, OS_LOG_TYPE_INFO, "    Is from storage (%@)", buf, 0xCu);
         }
       }
 
-      -[IMDMessageFromStorageController noteItemFromStorage:extendsStorageTimer:](self->_storageController, "noteItemFromStorage:extendsStorageTimer:", v5, [v4 isFromStorage]);
+      -[IMDMessageFromStorageController noteItemFromStorage:extendsStorageTimer:](self->_storageController, "noteItemFromStorage:extendsStorageTimer:", gUID, [inputCopy isFromStorage]);
     }
   }
 
@@ -176,39 +176,39 @@
       *buf = 138412546;
       v46 = v39;
       v47 = 2112;
-      v48 = v5;
+      v48 = gUID;
       _os_log_impl(&dword_22B4CC000, v35, OS_LOG_TYPE_INFO, "    Processed type (%@) for guid %@", buf, 0x16u);
     }
   }
 
-  v40 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+  v40 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 
   v41 = *MEMORY[0x277D85DE8];
 
   return v40;
 }
 
-- (IMMessageFromStoragePipelineComponent)initWithStorageProcessingType:(unint64_t)a3 storageController:(id)a4 broadcaster:(id)a5
+- (IMMessageFromStoragePipelineComponent)initWithStorageProcessingType:(unint64_t)type storageController:(id)controller broadcaster:(id)broadcaster
 {
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  broadcasterCopy = broadcaster;
   v14.receiver = self;
   v14.super_class = IMMessageFromStoragePipelineComponent;
   v11 = [(IMMessageFromStoragePipelineComponent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_storageController, a4);
-    v12->_processingType = a3;
-    objc_storeStrong(&v12->_broadcaster, a5);
+    objc_storeStrong(&v11->_storageController, controller);
+    v12->_processingType = type;
+    objc_storeStrong(&v12->_broadcaster, broadcaster);
   }
 
   return v12;
 }
 
-- (BOOL)_itemIsEligibleForStorageControllerWithInput:(id)a3
+- (BOOL)_itemIsEligibleForStorageControllerWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if ([(IMDMessageFromStorageController *)self->_storageController isAwaitingStorageTimer])
   {
     if (IMOSLoggingEnabled())
@@ -221,17 +221,17 @@
       }
     }
 
-    v6 = 1;
+    isFromStorage = 1;
   }
 
   else
   {
     v7 = +[IMDMessageStore sharedInstance];
-    v8 = [v4 GUID];
-    v9 = [v7 messageWithGUID:v8];
-    v10 = [v9 scheduleType];
+    gUID = [inputCopy GUID];
+    v9 = [v7 messageWithGUID:gUID];
+    scheduleType = [v9 scheduleType];
 
-    if (v10 == 2)
+    if (scheduleType == 2)
     {
       if (IMOSLoggingEnabled())
       {
@@ -243,16 +243,16 @@
         }
       }
 
-      v6 = 0;
+      isFromStorage = 0;
     }
 
     else
     {
-      v6 = [v4 isFromStorage];
+      isFromStorage = [inputCopy isFromStorage];
     }
   }
 
-  return v6;
+  return isFromStorage;
 }
 
 @end

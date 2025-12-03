@@ -1,7 +1,7 @@
 @interface UITabSidebarScrollTarget
 + (id)targetForFooter;
 + (id)targetForHeader;
-+ (id)targetForTab:(id)a3;
++ (id)targetForTab:(id)tab;
 @end
 
 @implementation UITabSidebarScrollTarget
@@ -22,12 +22,12 @@
   return v2;
 }
 
-+ (id)targetForTab:(id)a3
++ (id)targetForTab:(id)tab
 {
-  v3 = a3;
+  tabCopy = tab;
   v4 = objc_opt_new();
   v5 = v4[2];
-  v4[2] = v3;
+  v4[2] = tabCopy;
 
   return v4;
 }

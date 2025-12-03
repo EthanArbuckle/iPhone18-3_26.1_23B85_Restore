@@ -1,15 +1,15 @@
 @interface MTCCRoundButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MTCCRoundButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTCCRoundButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTCCRoundButton" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTCCRoundButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTCCRoundButton" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,8 +23,8 @@
   else
   {
     v5 = [(MTCCRoundButtonAccessibility *)self safeValueForKey:@"image"];
-    v6 = [v5 accessibilityIdentifier];
-    v7 = [v6 isEqualToString:@"plus"];
+    accessibilityIdentifier = [v5 accessibilityIdentifier];
+    v7 = [accessibilityIdentifier isEqualToString:@"plus"];
 
     if (v7)
     {

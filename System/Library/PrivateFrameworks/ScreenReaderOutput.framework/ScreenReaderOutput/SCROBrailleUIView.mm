@@ -1,7 +1,7 @@
 @interface SCROBrailleUIView
 + (id)visibleView;
 + (void)dismissAll;
-- (SCROBrailleUIView)initWithIdentifier:(id)a3;
+- (SCROBrailleUIView)initWithIdentifier:(id)identifier;
 - (void)dismiss;
 @end
 
@@ -10,9 +10,9 @@
 + (id)visibleView
 {
   v2 = +[SCROBrailleUIDisplayManager sharedManager];
-  v3 = [v2 visibleView];
+  visibleView = [v2 visibleView];
 
-  return v3;
+  return visibleView;
 }
 
 + (void)dismissAll
@@ -27,16 +27,16 @@
   [v3 dismissLineForView:self];
 }
 
-- (SCROBrailleUIView)initWithIdentifier:(id)a3
+- (SCROBrailleUIView)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SCROBrailleUIView;
   v6 = [(SCROBrailleUIView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;

@@ -69,12 +69,12 @@
         v12 = 7;
       }
 
-      v16 = [v10 unsupportedForReason:v12];
+      unsupported = [v10 unsupportedForReason:v12];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CD42C8] unsupported];
+      unsupported = [MEMORY[0x277CD42C8] unsupported];
     }
 
     goto LABEL_32;
@@ -84,7 +84,7 @@
 
   if (v14)
   {
-    v15 = [MEMORY[0x277CD42C8] needsValue];
+    needsValue = [MEMORY[0x277CD42C8] needsValue];
   }
 
   else
@@ -93,7 +93,7 @@
 
     if (!v17)
     {
-      v19.receiver = a1;
+      v19.receiver = self;
       v19.super_class = &off_2856BC348;
       v9 = objc_msgSendSuper2(&v19, sel_instanceFromCMSCoded_, v5);
       if (!v9)
@@ -104,16 +104,16 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v16 = [objc_alloc(MEMORY[0x277CD42C8]) initWithMediaItemResolutionResult:v9];
+      unsupported = [objc_alloc(MEMORY[0x277CD42C8]) initWithMediaItemResolutionResult:v9];
 LABEL_32:
-      v13 = v16;
+      v13 = unsupported;
       goto LABEL_33;
     }
 
-    v15 = [MEMORY[0x277CD42C8] notRequired];
+    needsValue = [MEMORY[0x277CD42C8] notRequired];
   }
 
-  v13 = v15;
+  v13 = needsValue;
 LABEL_34:
 
 LABEL_35:

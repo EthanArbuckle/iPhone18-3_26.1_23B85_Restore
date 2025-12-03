@@ -1,115 +1,115 @@
 @interface HKInteractiveChartOverlayViewController
-- (BOOL)_deliverCachedDataFromSource:(id)a3 graphSeriesContext:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 startDate:(id)a7 endDate:(id)a8 completion:(id)a9;
-- (HKInteractiveChartOverlayViewController)initWithHealthStore:(id)a3 primaryDisplayType:(id)a4 unitPreferenceController:(id)a5 dateCache:(id)a6 chartDataCacheController:(id)a7 selectedTimeScopeController:(id)a8 sampleTypeDateRangeController:(id)a9 initialXValue:(id)a10 currentCalendarOverride:(id)a11 options:(unint64_t)a12;
-- (HKInteractiveChartOverlayViewController)initWithStackedDisplayTypes:(id)a3 primaryDisplayTypeStackIndex:(id)a4 stackedDisplayTypeHeights:(id)a5 healthStore:(id)a6 unitPreferenceController:(id)a7 dateCache:(id)a8 chartDataCacheController:(id)a9 selectedTimeScopeController:(id)a10 sampleTypeDateRangeController:(id)a11 initialXValue:(id)a12 currentCalendarOverride:(id)a13 options:(unint64_t)a14 timeScopeRanges:(id)a15;
-- (HKInteractiveChartOverlayViewController)initWithTimeScopeRanges:(id)a3 healthStore:(id)a4 primaryDisplayType:(id)a5 unitPreferenceController:(id)a6 dateCache:(id)a7 chartDataCacheController:(id)a8 selectedTimeScopeController:(id)a9 sampleTypeDateRangeController:(id)a10 initialXValue:(id)a11 currentCalendarOverride:(id)a12 options:(unint64_t)a13;
+- (BOOL)_deliverCachedDataFromSource:(id)source graphSeriesContext:(id)context timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (HKInteractiveChartOverlayViewController)initWithHealthStore:(id)store primaryDisplayType:(id)type unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)rangeController initialXValue:(id)self0 currentCalendarOverride:(id)self1 options:(unint64_t)self2;
+- (HKInteractiveChartOverlayViewController)initWithStackedDisplayTypes:(id)types primaryDisplayTypeStackIndex:(id)index stackedDisplayTypeHeights:(id)heights healthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)self0 sampleTypeDateRangeController:(id)self1 initialXValue:(id)self2 currentCalendarOverride:(id)self3 options:(unint64_t)self4 timeScopeRanges:(id)self5;
+- (HKInteractiveChartOverlayViewController)initWithTimeScopeRanges:(id)ranges healthStore:(id)store primaryDisplayType:(id)type unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)self0 initialXValue:(id)self1 currentCalendarOverride:(id)self2 options:(unint64_t)self3;
 - (double)minimumHeightForChart;
-- (id)_dataSourceForDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 namedPredicate:(id)a5;
-- (id)_dataSourceForNamedDataSource:(id)a3 templateDisplayType:(id)a4;
-- (id)_dataSourceForQuantityType:(id)a3 timeScope:(int64_t)a4 customDataSource:(id)a5;
-- (id)_overlayChartCacheForDataSource:(id)a3 templateDisplayType:(id)a4;
-- (id)_overlayChartCacheForDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 namedPredicate:(id)a5;
-- (id)displayTypeForGraphSeries:(id)a3 namedDataSource:(id)a4 templateDisplayType:(id)a5 timeScope:(int64_t)a6 formatter:(id)a7;
-- (id)displayTypeForQuantityDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 overlayColor:(id)a5 options:(int64_t)a6 alternateFormatter:(id)a7 namedPredicate:(id)a8;
-- (id)displayTypeForQuantityIdentifier:(id)a3 timeScope:(int64_t)a4 displayTypeController:(id)a5 overlayColor:(id)a6 cacheDataSource:(id)a7 alternateLineSeries:(id)a8 alternateFormatter:(id)a9 seriesOptions:(int64_t)a10;
-- (id)visibleRangeForTimeScope:(int64_t)a3 proposedRange:(id)a4;
-- (void)_commonInitializationWithDisplayType:(id)a3;
-- (void)_deliverOrWaitForDataSource:(id)a3 graphSeriesContext:(id)a4 priorityDelegate:(id)a5 timeScope:(int64_t)a6 resolution:(int64_t)a7 startDate:(id)a8 endDate:(id)a9 queryIfNeeded:(BOOL)a10 completion:(id)a11;
-- (void)_modifyFormatter:(id)a3 forTitleOptions:(int64_t)a4;
-- (void)cachedDataForCustomGraphSeries:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 completion:(id)a8;
-- (void)cachedDataForCustomGraphSeries:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 queryIfNeeded:(BOOL)a8 completion:(id)a9;
-- (void)cachedDataForQuantityDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 namedPredicate:(id)a8 completion:(id)a9;
-- (void)cachedDataForQuantityIdentifier:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 cacheDataSource:(id)a8 completion:(id)a9;
-- (void)cachedDataForStandardDisplayType:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 completion:(id)a8;
+- (id)_dataSourceForDistributionStyle:(int64_t)style timeScope:(int64_t)scope namedPredicate:(id)predicate;
+- (id)_dataSourceForNamedDataSource:(id)source templateDisplayType:(id)type;
+- (id)_dataSourceForQuantityType:(id)type timeScope:(int64_t)scope customDataSource:(id)source;
+- (id)_overlayChartCacheForDataSource:(id)source templateDisplayType:(id)type;
+- (id)_overlayChartCacheForDistributionStyle:(int64_t)style timeScope:(int64_t)scope namedPredicate:(id)predicate;
+- (id)displayTypeForGraphSeries:(id)series namedDataSource:(id)source templateDisplayType:(id)type timeScope:(int64_t)scope formatter:(id)formatter;
+- (id)displayTypeForQuantityDistributionStyle:(int64_t)style timeScope:(int64_t)scope overlayColor:(id)color options:(int64_t)options alternateFormatter:(id)formatter namedPredicate:(id)predicate;
+- (id)displayTypeForQuantityIdentifier:(id)identifier timeScope:(int64_t)scope displayTypeController:(id)controller overlayColor:(id)color cacheDataSource:(id)source alternateLineSeries:(id)series alternateFormatter:(id)formatter seriesOptions:(int64_t)self0;
+- (id)visibleRangeForTimeScope:(int64_t)scope proposedRange:(id)range;
+- (void)_commonInitializationWithDisplayType:(id)type;
+- (void)_deliverOrWaitForDataSource:(id)source graphSeriesContext:(id)context priorityDelegate:(id)delegate timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate queryIfNeeded:(BOOL)self0 completion:(id)self1;
+- (void)_modifyFormatter:(id)formatter forTitleOptions:(int64_t)options;
+- (void)cachedDataForCustomGraphSeries:(id)series timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)cachedDataForCustomGraphSeries:(id)series timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate queryIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)cachedDataForQuantityDistributionStyle:(int64_t)style timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate namedPredicate:(id)predicate completion:(id)completion;
+- (void)cachedDataForQuantityIdentifier:(id)identifier timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate cacheDataSource:(id)source completion:(id)completion;
+- (void)cachedDataForStandardDisplayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate completion:(id)completion;
 - (void)clearDisplayTypeStack;
-- (void)clearOverlayDisplayTypeWithAutomaticAutoscale:(BOOL)a3;
-- (void)configureDisplayTypes:(id)a3 timeScope:(int64_t)a4 stackOffset:(int64_t)a5;
-- (void)installOverlayDisplayType:(id)a3;
-- (void)installStackedDisplayType:(id)a3;
-- (void)unitPreferencesWillUpdate:(id)a3;
+- (void)clearOverlayDisplayTypeWithAutomaticAutoscale:(BOOL)autoscale;
+- (void)configureDisplayTypes:(id)types timeScope:(int64_t)scope stackOffset:(int64_t)offset;
+- (void)installOverlayDisplayType:(id)type;
+- (void)installStackedDisplayType:(id)type;
+- (void)unitPreferencesWillUpdate:(id)update;
 @end
 
 @implementation HKInteractiveChartOverlayViewController
 
-- (HKInteractiveChartOverlayViewController)initWithHealthStore:(id)a3 primaryDisplayType:(id)a4 unitPreferenceController:(id)a5 dateCache:(id)a6 chartDataCacheController:(id)a7 selectedTimeScopeController:(id)a8 sampleTypeDateRangeController:(id)a9 initialXValue:(id)a10 currentCalendarOverride:(id)a11 options:(unint64_t)a12
+- (HKInteractiveChartOverlayViewController)initWithHealthStore:(id)store primaryDisplayType:(id)type unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)rangeController initialXValue:(id)self0 currentCalendarOverride:(id)self1 options:(unint64_t)self2
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v30 = a4;
-  v32[0] = v30;
+  typeCopy = type;
+  v32[0] = typeCopy;
   v17 = MEMORY[0x1E695DEC8];
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a3;
+  overrideCopy = override;
+  valueCopy = value;
+  rangeControllerCopy = rangeController;
+  scopeControllerCopy = scopeController;
+  cacheControllerCopy = cacheController;
+  cacheCopy = cache;
+  controllerCopy = controller;
+  storeCopy = store;
   v26 = [v17 arrayWithObjects:v32 count:1];
   v31.receiver = self;
   v31.super_class = HKInteractiveChartOverlayViewController;
-  v27 = [(HKInteractiveChartViewController *)&v31 initWithDisplayTypes:v26 healthStore:v25 unitPreferenceController:v24 dateCache:v23 chartDataCacheController:v22 selectedTimeScopeController:v21 sampleTypeDateRangeController:v20 initialXValue:v19 currentCalendarOverride:v18 options:a12];
+  v27 = [(HKInteractiveChartViewController *)&v31 initWithDisplayTypes:v26 healthStore:storeCopy unitPreferenceController:controllerCopy dateCache:cacheCopy chartDataCacheController:cacheControllerCopy selectedTimeScopeController:scopeControllerCopy sampleTypeDateRangeController:rangeControllerCopy initialXValue:valueCopy currentCalendarOverride:overrideCopy options:options];
 
   if (v27)
   {
-    [(HKInteractiveChartOverlayViewController *)v27 _commonInitializationWithDisplayType:v30];
+    [(HKInteractiveChartOverlayViewController *)v27 _commonInitializationWithDisplayType:typeCopy];
   }
 
   return v27;
 }
 
-- (HKInteractiveChartOverlayViewController)initWithTimeScopeRanges:(id)a3 healthStore:(id)a4 primaryDisplayType:(id)a5 unitPreferenceController:(id)a6 dateCache:(id)a7 chartDataCacheController:(id)a8 selectedTimeScopeController:(id)a9 sampleTypeDateRangeController:(id)a10 initialXValue:(id)a11 currentCalendarOverride:(id)a12 options:(unint64_t)a13
+- (HKInteractiveChartOverlayViewController)initWithTimeScopeRanges:(id)ranges healthStore:(id)store primaryDisplayType:(id)type unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)scopeController sampleTypeDateRangeController:(id)self0 initialXValue:(id)self1 currentCalendarOverride:(id)self2 options:(unint64_t)self3
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v34 = a5;
-  v36 = v34;
+  typeCopy = type;
+  v36 = typeCopy;
   v18 = MEMORY[0x1E695DEC8];
-  v30 = a12;
-  v31 = a11;
-  v29 = a10;
-  v19 = a9;
-  v27 = a8;
-  v28 = a7;
-  v20 = a6;
-  v21 = a4;
-  v26 = a3;
+  overrideCopy = override;
+  valueCopy = value;
+  rangeControllerCopy = rangeController;
+  scopeControllerCopy = scopeController;
+  cacheControllerCopy = cacheController;
+  cacheCopy = cache;
+  controllerCopy = controller;
+  storeCopy = store;
+  rangesCopy = ranges;
   v33 = [v18 arrayWithObjects:&v36 count:1];
   v37[0] = v33;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
   v35.receiver = self;
   v35.super_class = HKInteractiveChartOverlayViewController;
-  v23 = v20;
-  v24 = [(HKInteractiveChartViewController *)&v35 initWithStackedDisplayTypes:v22 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:v21 unitPreferenceController:v20 dateCache:v28 chartDataCacheController:v27 selectedTimeScopeController:v19 sampleTypeDateRangeController:v29 initialXValue:v31 currentCalendarOverride:v30 options:a13 timeScopeRanges:v26];
+  v23 = controllerCopy;
+  v24 = [(HKInteractiveChartViewController *)&v35 initWithStackedDisplayTypes:v22 primaryDisplayTypeStackIndex:0 stackedDisplayTypeHeights:0 healthStore:storeCopy unitPreferenceController:controllerCopy dateCache:cacheCopy chartDataCacheController:cacheControllerCopy selectedTimeScopeController:scopeControllerCopy sampleTypeDateRangeController:rangeControllerCopy initialXValue:valueCopy currentCalendarOverride:overrideCopy options:options timeScopeRanges:rangesCopy];
 
   if (v24)
   {
-    [(HKInteractiveChartOverlayViewController *)v24 _commonInitializationWithDisplayType:v34];
+    [(HKInteractiveChartOverlayViewController *)v24 _commonInitializationWithDisplayType:typeCopy];
   }
 
   return v24;
 }
 
-- (HKInteractiveChartOverlayViewController)initWithStackedDisplayTypes:(id)a3 primaryDisplayTypeStackIndex:(id)a4 stackedDisplayTypeHeights:(id)a5 healthStore:(id)a6 unitPreferenceController:(id)a7 dateCache:(id)a8 chartDataCacheController:(id)a9 selectedTimeScopeController:(id)a10 sampleTypeDateRangeController:(id)a11 initialXValue:(id)a12 currentCalendarOverride:(id)a13 options:(unint64_t)a14 timeScopeRanges:(id)a15
+- (HKInteractiveChartOverlayViewController)initWithStackedDisplayTypes:(id)types primaryDisplayTypeStackIndex:(id)index stackedDisplayTypeHeights:(id)heights healthStore:(id)store unitPreferenceController:(id)controller dateCache:(id)cache chartDataCacheController:(id)cacheController selectedTimeScopeController:(id)self0 sampleTypeDateRangeController:(id)self1 initialXValue:(id)self2 currentCalendarOverride:(id)self3 options:(unint64_t)self4 timeScopeRanges:(id)self5
 {
-  v21 = a3;
+  typesCopy = types;
   v26.receiver = self;
   v26.super_class = HKInteractiveChartOverlayViewController;
-  v22 = [(HKInteractiveChartViewController *)&v26 initWithStackedDisplayTypes:v21 primaryDisplayTypeStackIndex:a4 stackedDisplayTypeHeights:a5 healthStore:a6 unitPreferenceController:a7 dateCache:a8 chartDataCacheController:a9 selectedTimeScopeController:a10 sampleTypeDateRangeController:a11 initialXValue:a12 currentCalendarOverride:a13 options:a14 timeScopeRanges:a15];
+  v22 = [(HKInteractiveChartViewController *)&v26 initWithStackedDisplayTypes:typesCopy primaryDisplayTypeStackIndex:index stackedDisplayTypeHeights:heights healthStore:store unitPreferenceController:controller dateCache:cache chartDataCacheController:cacheController selectedTimeScopeController:scopeController sampleTypeDateRangeController:rangeController initialXValue:value currentCalendarOverride:override options:options timeScopeRanges:ranges];
   if (v22)
   {
-    v23 = [v21 firstObject];
-    v24 = [v23 firstObject];
+    firstObject = [typesCopy firstObject];
+    v23FirstObject = [firstObject firstObject];
 
-    [(HKInteractiveChartOverlayViewController *)v22 _commonInitializationWithDisplayType:v24];
+    [(HKInteractiveChartOverlayViewController *)v22 _commonInitializationWithDisplayType:v23FirstObject];
   }
 
   return v22;
 }
 
-- (void)_commonInitializationWithDisplayType:(id)a3
+- (void)_commonInitializationWithDisplayType:(id)type
 {
-  objc_storeStrong(&self->_primaryDisplayType, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_primaryDisplayType, type);
+  typeCopy = type;
   overlayDisplayType = self->_overlayDisplayType;
   self->_overlayDisplayType = 0;
 
@@ -134,27 +134,27 @@
   [(HKInteractiveChartViewController *)self addChartViewObserver:self];
 }
 
-- (void)unitPreferencesWillUpdate:(id)a3
+- (void)unitPreferencesWillUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(HKInteractiveChartOverlayViewController *)self overlayChartCaches];
-  [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_27];
+  updateCopy = update;
+  overlayChartCaches = [(HKInteractiveChartOverlayViewController *)self overlayChartCaches];
+  [overlayChartCaches enumerateKeysAndObjectsUsingBlock:&__block_literal_global_27];
 
-  v6 = [(HKInteractiveChartOverlayViewController *)self customNamedCaches];
-  [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_299];
+  customNamedCaches = [(HKInteractiveChartOverlayViewController *)self customNamedCaches];
+  [customNamedCaches enumerateKeysAndObjectsUsingBlock:&__block_literal_global_299];
 
   v7.receiver = self;
   v7.super_class = HKInteractiveChartOverlayViewController;
-  [(HKInteractiveChartViewController *)&v7 unitPreferencesWillUpdate:v4];
+  [(HKInteractiveChartViewController *)&v7 unitPreferencesWillUpdate:updateCopy];
 }
 
-- (void)installOverlayDisplayType:(id)a3
+- (void)installOverlayDisplayType:(id)type
 {
-  v5 = a3;
-  [(HKInteractiveChartOverlayViewController *)self clearOverlayDisplayTypeWithAutomaticAutoscale:v5 == 0];
-  if (v5)
+  typeCopy = type;
+  [(HKInteractiveChartOverlayViewController *)self clearOverlayDisplayTypeWithAutomaticAutoscale:typeCopy == 0];
+  if (typeCopy)
   {
-    objc_storeStrong(&self->_overlayDisplayType, a3);
+    objc_storeStrong(&self->_overlayDisplayType, type);
     overlayDisplayType = self->_overlayDisplayType;
     v7.receiver = self;
     v7.super_class = HKInteractiveChartOverlayViewController;
@@ -162,29 +162,29 @@
   }
 }
 
-- (void)clearOverlayDisplayTypeWithAutomaticAutoscale:(BOOL)a3
+- (void)clearOverlayDisplayTypeWithAutomaticAutoscale:(BOOL)autoscale
 {
-  v3 = a3;
+  autoscaleCopy = autoscale;
   overlayDisplayType = self->_overlayDisplayType;
   if (overlayDisplayType)
   {
     v7.receiver = self;
     v7.super_class = HKInteractiveChartOverlayViewController;
-    [(HKInteractiveChartViewController *)&v7 removeOverlayDisplayType:overlayDisplayType stackOffset:0 automaticAutoscale:v3];
+    [(HKInteractiveChartViewController *)&v7 removeOverlayDisplayType:overlayDisplayType stackOffset:0 automaticAutoscale:autoscaleCopy];
     v6 = self->_overlayDisplayType;
     self->_overlayDisplayType = 0;
   }
 }
 
-- (void)installStackedDisplayType:(id)a3
+- (void)installStackedDisplayType:(id)type
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  typeCopy = type;
   [(HKInteractiveChartOverlayViewController *)self clearDisplayTypeStack];
-  if (v5)
+  if (typeCopy)
   {
-    objc_storeStrong(&self->_stackedDisplayType, a3);
-    v8[0] = v5;
+    objc_storeStrong(&self->_stackedDisplayType, type);
+    v8[0] = typeCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     v7.receiver = self;
     v7.super_class = HKInteractiveChartOverlayViewController;
@@ -194,25 +194,25 @@
 
 - (void)clearDisplayTypeStack
 {
-  v3 = [(HKInteractiveChartOverlayViewController *)self stackedDisplayType];
+  stackedDisplayType = [(HKInteractiveChartOverlayViewController *)self stackedDisplayType];
 
-  if (v3)
+  if (stackedDisplayType)
   {
-    v4 = [(HKInteractiveChartOverlayViewController *)self stackedDisplayType];
-    [(HKInteractiveChartViewController *)self removeStackedDisplayType:v4];
+    stackedDisplayType2 = [(HKInteractiveChartOverlayViewController *)self stackedDisplayType];
+    [(HKInteractiveChartViewController *)self removeStackedDisplayType:stackedDisplayType2];
 
     stackedDisplayType = self->_stackedDisplayType;
     self->_stackedDisplayType = 0;
   }
 }
 
-- (id)displayTypeForQuantityDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 overlayColor:(id)a5 options:(int64_t)a6 alternateFormatter:(id)a7 namedPredicate:(id)a8
+- (id)displayTypeForQuantityDistributionStyle:(int64_t)style timeScope:(int64_t)scope overlayColor:(id)color options:(int64_t)options alternateFormatter:(id)formatter namedPredicate:(id)predicate
 {
-  v14 = a7;
-  v15 = a8;
-  v16 = a5;
-  v17 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-  v18 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v17 timeScope:a4 stackOffset:0];
+  formatterCopy = formatter;
+  predicateCopy = predicate;
+  colorCopy = color;
+  primaryDisplayType = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+  v18 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:primaryDisplayType timeScope:scope stackOffset:0];
 
   if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -231,104 +231,104 @@
     v19 = 0;
   }
 
-  v44 = v15;
-  v21 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForDistributionStyle:a3 timeScope:a4 namedPredicate:v15];
+  v44 = predicateCopy;
+  v21 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForDistributionStyle:style timeScope:scope namedPredicate:predicateCopy];
   v22 = objc_alloc_init(HKQuantityDistributionSeries);
-  v23 = [v19 unselectedStrokeStyle];
-  [(HKQuantityDistributionSeries *)v22 setUnselectedStrokeStyle:v23];
+  unselectedStrokeStyle = [v19 unselectedStrokeStyle];
+  [(HKQuantityDistributionSeries *)v22 setUnselectedStrokeStyle:unselectedStrokeStyle];
 
-  v24 = [(HKQuantityDistributionSeries *)v22 unselectedStrokeStyle];
-  [v24 setStrokeColor:v16];
+  unselectedStrokeStyle2 = [(HKQuantityDistributionSeries *)v22 unselectedStrokeStyle];
+  [unselectedStrokeStyle2 setStrokeColor:colorCopy];
 
-  v25 = [v19 inactiveStrokeStyle];
-  [(HKQuantityDistributionSeries *)v22 setInactiveStrokeStyle:v25];
+  inactiveStrokeStyle = [v19 inactiveStrokeStyle];
+  [(HKQuantityDistributionSeries *)v22 setInactiveStrokeStyle:inactiveStrokeStyle];
 
-  v26 = [v19 selectedStrokeStyle];
-  [(HKQuantityDistributionSeries *)v22 setSelectedStrokeStyle:v26];
+  selectedStrokeStyle = [v19 selectedStrokeStyle];
+  [(HKQuantityDistributionSeries *)v22 setSelectedStrokeStyle:selectedStrokeStyle];
 
-  v27 = [(HKQuantityDistributionSeries *)v22 selectedStrokeStyle];
-  [v27 setStrokeColor:v16];
+  selectedStrokeStyle2 = [(HKQuantityDistributionSeries *)v22 selectedStrokeStyle];
+  [selectedStrokeStyle2 setStrokeColor:colorCopy];
 
-  v28 = [v19 minMaxLabelStyle];
-  [(HKQuantityDistributionSeries *)v22 setMinMaxLabelStyle:v28];
+  minMaxLabelStyle = [v19 minMaxLabelStyle];
+  [(HKQuantityDistributionSeries *)v22 setMinMaxLabelStyle:minMaxLabelStyle];
 
-  v29 = [(HKQuantityDistributionSeries *)v22 minMaxLabelStyle];
-  [v29 setTextColor:v16];
+  minMaxLabelStyle2 = [(HKQuantityDistributionSeries *)v22 minMaxLabelStyle];
+  [minMaxLabelStyle2 setTextColor:colorCopy];
 
-  v30 = [v19 minMaxValueStyle];
-  [(HKQuantityDistributionSeries *)v22 setMinMaxValueStyle:v30];
+  minMaxValueStyle = [v19 minMaxValueStyle];
+  [(HKQuantityDistributionSeries *)v22 setMinMaxValueStyle:minMaxValueStyle];
 
-  v31 = [(HKQuantityDistributionSeries *)v22 minMaxValueStyle];
-  [v31 setTextColor:v16];
+  minMaxValueStyle2 = [(HKQuantityDistributionSeries *)v22 minMaxValueStyle];
+  [minMaxValueStyle2 setTextColor:colorCopy];
 
-  v32 = [v19 minMaxPointStyle];
-  [(HKQuantityDistributionSeries *)v22 setMinMaxPointStyle:v32];
+  minMaxPointStyle = [v19 minMaxPointStyle];
+  [(HKQuantityDistributionSeries *)v22 setMinMaxPointStyle:minMaxPointStyle];
 
-  v33 = [(HKQuantityDistributionSeries *)v22 minMaxPointStyle];
-  [v33 setStrokeColor:v16];
+  minMaxPointStyle2 = [(HKQuantityDistributionSeries *)v22 minMaxPointStyle];
+  [minMaxPointStyle2 setStrokeColor:colorCopy];
 
-  v34 = [v19 yAxis];
-  [(HKGraphSeries *)v22 setYAxis:v34];
+  yAxis = [v19 yAxis];
+  [(HKGraphSeries *)v22 setYAxis:yAxis];
 
-  v35 = [v19 axisScalingRule];
-  [(HKGraphSeries *)v22 setAxisScalingRule:v35];
+  axisScalingRule = [v19 axisScalingRule];
+  [(HKGraphSeries *)v22 setAxisScalingRule:axisScalingRule];
 
   -[HKQuantityDistributionSeries setZeroCountForGap:](v22, "setZeroCountForGap:", [v19 zeroCountForGap]);
-  if ((a6 & 2) != 0)
+  if ((options & 2) != 0)
   {
     [(HKQuantityDistributionSeries *)v22 setExcludeDistribution:1];
   }
 
   [(HKGraphSeries *)v22 setDataSource:v21];
-  if (v14)
+  if (formatterCopy)
   {
-    v36 = v14;
+    v36 = formatterCopy;
   }
 
   else
   {
-    v37 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-    v36 = [v37 hk_interactiveChartsFormatterForTimeScope:a4];
+    primaryDisplayType2 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+    v36 = [primaryDisplayType2 hk_interactiveChartsFormatterForTimeScope:scope];
   }
 
-  [(HKInteractiveChartOverlayViewController *)self _modifyFormatter:v36 forTitleOptions:a6];
+  [(HKInteractiveChartOverlayViewController *)self _modifyFormatter:v36 forTitleOptions:options];
   v38 = [HKInteractiveChartDisplayType alloc];
-  v39 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-  v40 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-  v41 = [v40 objectType];
-  v42 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v38, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v22, v39, v36, [v41 code]);
+  primaryDisplayType3 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+  primaryDisplayType4 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+  objectType = [primaryDisplayType4 objectType];
+  v42 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v38, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v22, primaryDisplayType3, v36, [objectType code]);
 
   return v42;
 }
 
-- (void)_modifyFormatter:(id)a3 forTitleOptions:(int64_t)a4
+- (void)_modifyFormatter:(id)formatter forTitleOptions:(int64_t)options
 {
-  v4 = a4;
-  v10 = a3;
+  optionsCopy = options;
+  formatterCopy = formatter;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v10;
+  v6 = formatterCopy;
   if (isKindOfClass)
   {
-    v7 = v10;
+    v7 = formatterCopy;
     v8 = v7;
-    if ((v4 & 0x20) != 0)
+    if ((optionsCopy & 0x20) != 0)
     {
       v9 = &unk_1F4381210;
     }
 
-    else if ((v4 & 0x40) != 0)
+    else if ((optionsCopy & 0x40) != 0)
     {
       v9 = &unk_1F4381228;
     }
 
     else
     {
-      if ((v4 & 0x80) == 0)
+      if ((optionsCopy & 0x80) == 0)
       {
 LABEL_9:
 
-        v6 = v10;
+        v6 = formatterCopy;
         goto LABEL_10;
       }
 
@@ -344,26 +344,26 @@ LABEL_10:
   MEMORY[0x1EEE66BB8](isKindOfClass, v6);
 }
 
-- (id)displayTypeForQuantityIdentifier:(id)a3 timeScope:(int64_t)a4 displayTypeController:(id)a5 overlayColor:(id)a6 cacheDataSource:(id)a7 alternateLineSeries:(id)a8 alternateFormatter:(id)a9 seriesOptions:(int64_t)a10
+- (id)displayTypeForQuantityIdentifier:(id)identifier timeScope:(int64_t)scope displayTypeController:(id)controller overlayColor:(id)color cacheDataSource:(id)source alternateLineSeries:(id)series alternateFormatter:(id)formatter seriesOptions:(int64_t)self0
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v16 = a6;
-  v17 = a8;
-  v94 = a9;
+  colorCopy = color;
+  seriesCopy = series;
+  formatterCopy = formatter;
   v18 = MEMORY[0x1E696C2E0];
-  v91 = a7;
-  v19 = a5;
-  v90 = a3;
+  sourceCopy = source;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v88 = [v18 quantityTypeForIdentifier:?];
-  v20 = [v19 displayTypeForObjectType:?];
+  v20 = [controllerCopy displayTypeForObjectType:?];
 
-  v102 = [v20 chartingRules];
-  v21 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-  v100 = self;
-  v92 = a4;
-  v99 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v21 timeScope:a4 stackOffset:0];
+  chartingRules = [v20 chartingRules];
+  primaryDisplayType = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+  selfCopy = self;
+  scopeCopy = scope;
+  v99 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:primaryDisplayType timeScope:scope stackOffset:0];
 
-  v22 = v17;
+  v22 = seriesCopy;
   v93 = v22;
   if (!v22)
   {
@@ -371,49 +371,49 @@ LABEL_10:
   }
 
   v23 = [HKGradientFillStyle alloc];
-  v24 = [v16 colorWithAlphaComponent:0.3];
-  v25 = [v16 colorWithAlphaComponent:0.0];
+  v24 = [colorCopy colorWithAlphaComponent:0.3];
+  v25 = [colorCopy colorWithAlphaComponent:0.0];
   v98 = [(HKGradientFillStyle *)v23 initWithFirstColor:v24 secondColor:v25];
 
   v26 = [HKGradientFillStyle alloc];
-  v27 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
-  v28 = [v27 colorWithAlphaComponent:0.3];
-  v29 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
-  v30 = [v29 colorWithAlphaComponent:0.0];
+  hk_vitalsKeyColor = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
+  v28 = [hk_vitalsKeyColor colorWithAlphaComponent:0.3];
+  hk_vitalsKeyColor2 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
+  v30 = [hk_vitalsKeyColor2 colorWithAlphaComponent:0.0];
   v97 = [(HKGradientFillStyle *)v26 initWithFirstColor:v28 secondColor:v30];
 
   v31 = objc_alloc_init(HKLineSeriesPresentationStyle);
-  v89 = [HKStrokeStyle strokeStyleWithColor:v16 lineWidth:2.0];
+  v89 = [HKStrokeStyle strokeStyleWithColor:colorCopy lineWidth:2.0];
   [(HKLineSeriesPresentationStyle *)v31 setStrokeStyle:?];
   v101 = v31;
   [(HKLineSeriesPresentationStyle *)v31 setWaveForm:0];
-  v32 = v102;
-  if (a10)
+  v32 = chartingRules;
+  if (options)
   {
     v33 = [MEMORY[0x1E69DB878] hk_roundedSystemFontWithSize:18.0 weight:*MEMORY[0x1E69DB970]];
-    if ([v102 shouldDisplayUnitForAxisLabels])
+    if ([chartingRules shouldDisplayUnitForAxisLabels])
     {
       v34 = [HKDisplayTypeNumberFormatter alloc];
-      v35 = [(HKInteractiveChartViewController *)v100 unitPreferenceController];
-      v36 = [(HKDisplayTypeNumberFormatter *)v34 initWithDisplayType:v20 unitController:v35];
+      unitPreferenceController = [(HKInteractiveChartViewController *)selfCopy unitPreferenceController];
+      v36 = [(HKDisplayTypeNumberFormatter *)v34 initWithDisplayType:v20 unitController:unitPreferenceController];
     }
 
     else
     {
-      v37 = [(HKInteractiveChartViewController *)v100 unitPreferenceController];
-      v35 = [v37 unitForDisplayType:v20];
+      unitPreferenceController2 = [(HKInteractiveChartViewController *)selfCopy unitPreferenceController];
+      unitPreferenceController = [unitPreferenceController2 unitForDisplayType:v20];
 
-      v36 = [v20 hk_numberFormatterForUnit:v35];
+      v36 = [v20 hk_numberFormatterForUnit:unitPreferenceController];
     }
 
     v38 = v36;
 
-    v39 = [HKAxisLabelStyle labelStyleWithColor:v16 font:v33 horizontalAlignment:0 verticalAlignment:2 numberFormatter:v38];
+    v39 = [HKAxisLabelStyle labelStyleWithColor:colorCopy font:v33 horizontalAlignment:0 verticalAlignment:2 numberFormatter:v38];
     [(HKLineSeriesPresentationStyle *)v101 setAnnotationStyle:v39];
   }
 
   v40 = objc_alloc_init(HKLineSeriesPresentationStyle);
-  v41 = [HKStrokeStyle strokeStyleWithColor:v16 lineWidth:2.0];
+  v41 = [HKStrokeStyle strokeStyleWithColor:colorCopy lineWidth:2.0];
   [(HKLineSeriesPresentationStyle *)v40 setStrokeStyle:v41];
 
   [(HKLineSeriesPresentationStyle *)v40 setFillStyle:v98];
@@ -431,32 +431,32 @@ LABEL_10:
   [(HKLineSeriesPresentationStyle *)v42 setPointMarkerStyle:v47];
   [(HKLineSeriesPresentationStyle *)v42 setFillStyle:v97];
   [(HKLineSeriesPresentationStyle *)v42 setWaveForm:0];
-  v48 = [(HKInteractiveChartViewController *)v100 selectedTimeScopeController];
-  v49 = [v48 selectedTimeScope];
+  selectedTimeScopeController = [(HKInteractiveChartViewController *)selfCopy selectedTimeScopeController];
+  selectedTimeScope = [selectedTimeScopeController selectedTimeScope];
 
   v96 = v20;
-  if (a10)
+  if (options)
   {
     v56 = 0;
   }
 
   else
   {
-    v50 = (a10 >> 2) & 1;
-    v51 = v50 | [v102 lineChartFlatLastValueForTimeScope:v49];
+    v50 = (options >> 2) & 1;
+    v51 = v50 | [chartingRules lineChartFlatLastValueForTimeScope:selectedTimeScope];
     [(HKLineSeries *)v22 setFlatLastValue:v51];
-    v52 = v16;
-    v53 = [v102 lineChartExtendLastValueForTimeScope:v49];
+    v52 = colorCopy;
+    v53 = [chartingRules lineChartExtendLastValueForTimeScope:selectedTimeScope];
     [(HKLineSeries *)v22 setExtendLastValue:v50 | v53];
-    v54 = [v102 lineChartExtendFirstValueForTimeScope:v49];
+    v54 = [chartingRules lineChartExtendFirstValueForTimeScope:selectedTimeScope];
     [(HKLineSeries *)v22 setExtendFirstValue:v50 | v54];
     v55 = v53 | v54;
-    v16 = v52;
-    v32 = v102;
+    colorCopy = v52;
+    v32 = chartingRules;
     v56 = v51 | v55;
   }
 
-  v57 = [v32 lineChartUsesPointMarkerImageForTimeScope:v49];
+  v57 = [v32 lineChartUsesPointMarkerImageForTimeScope:selectedTimeScope];
   if ((v56 & 1) == 0 && v57)
   {
     v58 = 0.0;
@@ -480,43 +480,43 @@ LABEL_10:
       v59 = v62;
     }
 
-    v63 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:v16 radius:~(a10 >> 3) & 1 style:v59 * 0.5];
+    v63 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:colorCopy radius:~(options >> 3) & 1 style:v59 * 0.5];
     v64 = [HKLineSeriesPointMarkerStyle alloc];
     HKHealthKeyColor();
-    v66 = v65 = v16;
+    v66 = v65 = colorCopy;
     v67 = [(HKLineSeriesPointMarkerStyle *)v64 initWithColor:v66 radius:0 style:v58 * 0.5];
 
-    v16 = v65;
+    colorCopy = v65;
     [(HKLineSeriesPresentationStyle *)v101 setPointMarkerStyle:v63];
     [(HKLineSeriesPresentationStyle *)v40 setPointMarkerStyle:v47];
     [(HKLineSeries *)v22 setSelectedPointMarkerStyle:v67];
 
-    v32 = v102;
+    v32 = chartingRules;
   }
 
-  v68 = [v32 lineChartUsesValueAxisAnnotationForTimeScope:v49];
-  if ((a10 & 1) == 0 && (a10 >> 4) & 1 | v68)
+  v68 = [v32 lineChartUsesValueAxisAnnotationForTimeScope:selectedTimeScope];
+  if ((options & 1) == 0 && (options >> 4) & 1 | v68)
   {
-    v69 = v16;
+    v69 = colorCopy;
     v70 = [MEMORY[0x1E69DB878] hk_roundedSystemFontWithSize:18.0 weight:*MEMORY[0x1E69DB970]];
     if ([v32 shouldDisplayUnitForAxisLabels])
     {
       v71 = [HKDisplayTypeNumberFormatter alloc];
-      v72 = [(HKInteractiveChartViewController *)v100 unitPreferenceController];
-      v73 = [(HKDisplayTypeNumberFormatter *)v71 initWithDisplayType:v96 unitController:v72];
+      unitPreferenceController3 = [(HKInteractiveChartViewController *)selfCopy unitPreferenceController];
+      v73 = [(HKDisplayTypeNumberFormatter *)v71 initWithDisplayType:v96 unitController:unitPreferenceController3];
     }
 
     else
     {
-      v74 = [(HKInteractiveChartViewController *)v100 unitPreferenceController];
-      v72 = [v74 unitForDisplayType:v96];
+      unitPreferenceController4 = [(HKInteractiveChartViewController *)selfCopy unitPreferenceController];
+      unitPreferenceController3 = [unitPreferenceController4 unitForDisplayType:v96];
 
-      v73 = [v96 hk_numberFormatterForUnit:v72];
+      v73 = [v96 hk_numberFormatterForUnit:unitPreferenceController3];
     }
 
     v75 = v73;
 
-    v16 = v69;
+    colorCopy = v69;
     v76 = [HKAxisLabelStyle labelStyleWithColor:v69 font:v70 horizontalAlignment:0 verticalAlignment:2 numberFormatter:v75];
     [(HKLineSeriesPresentationStyle *)v101 setAxisAnnotationStyle:v76];
     [(HKLineSeriesPresentationStyle *)v40 setAxisAnnotationStyle:v76];
@@ -535,28 +535,28 @@ LABEL_10:
   v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v103 count:1];
   [(HKLineSeries *)v22 setSelectedPresentationStyles:v79];
 
-  v80 = [v99 yAxis];
-  [(HKGraphSeries *)v22 setYAxis:v80];
+  yAxis = [v99 yAxis];
+  [(HKGraphSeries *)v22 setYAxis:yAxis];
 
-  v81 = [(HKGraphSeries *)v22 yAxis];
-  [v81 clearAnnotations];
+  yAxis2 = [(HKGraphSeries *)v22 yAxis];
+  [yAxis2 clearAnnotations];
 
-  v82 = [v99 axisScalingRule];
-  [(HKGraphSeries *)v22 setAxisScalingRule:v82];
+  axisScalingRule = [v99 axisScalingRule];
+  [(HKGraphSeries *)v22 setAxisScalingRule:axisScalingRule];
 
-  v83 = [(HKInteractiveChartOverlayViewController *)v100 _dataSourceForQuantityType:v90 timeScope:v92 customDataSource:v91];
+  v83 = [(HKInteractiveChartOverlayViewController *)selfCopy _dataSourceForQuantityType:identifierCopy timeScope:scopeCopy customDataSource:sourceCopy];
 
   [(HKGraphSeries *)v22 setDataSource:v83];
-  if (v94)
+  if (formatterCopy)
   {
-    v84 = v94;
+    v84 = formatterCopy;
     v85 = v96;
   }
 
   else
   {
     v85 = v96;
-    v84 = [v96 hk_interactiveChartsFormatterForTimeScope:v92];
+    v84 = [v96 hk_interactiveChartsFormatterForTimeScope:scopeCopy];
   }
 
   v86 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:]([HKInteractiveChartDisplayType alloc], "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v22, v85, v84, [v88 code]);
@@ -564,101 +564,101 @@ LABEL_10:
   return v86;
 }
 
-- (id)displayTypeForGraphSeries:(id)a3 namedDataSource:(id)a4 templateDisplayType:(id)a5 timeScope:(int64_t)a6 formatter:(id)a7
+- (id)displayTypeForGraphSeries:(id)series namedDataSource:(id)source templateDisplayType:(id)type timeScope:(int64_t)scope formatter:(id)formatter
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForNamedDataSource:a4 templateDisplayType:v12];
-  [v13 setDataSource:v14];
+  formatterCopy = formatter;
+  typeCopy = type;
+  seriesCopy = series;
+  v14 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForNamedDataSource:source templateDisplayType:typeCopy];
+  [seriesCopy setDataSource:v14];
 
   v15 = [HKInteractiveChartDisplayType alloc];
-  v16 = [v12 sampleType];
-  v17 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v15, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", v13, v12, v11, [v16 code]);
+  sampleType = [typeCopy sampleType];
+  v17 = -[HKInteractiveChartDisplayType initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:](v15, "initWithGraphSeries:baseDisplayType:valueFormatter:dataTypeCode:", seriesCopy, typeCopy, formatterCopy, [sampleType code]);
 
   return v17;
 }
 
-- (void)cachedDataForQuantityDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 namedPredicate:(id)a8 completion:(id)a9
+- (void)cachedDataForQuantityDistributionStyle:(int64_t)style timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate namedPredicate:(id)predicate completion:(id)completion
 {
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v20 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForDistributionStyle:a3 timeScope:a4 namedPredicate:a8];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v20 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForDistributionStyle:style timeScope:scope namedPredicate:predicate];
   LOBYTE(v19) = 1;
-  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v20 graphSeriesContext:0 priorityDelegate:0 timeScope:a4 resolution:a5 startDate:v18 endDate:v17 queryIfNeeded:v19 completion:v16];
+  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v20 graphSeriesContext:0 priorityDelegate:0 timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy queryIfNeeded:v19 completion:completionCopy];
 }
 
-- (void)cachedDataForQuantityIdentifier:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 cacheDataSource:(id)a8 completion:(id)a9
+- (void)cachedDataForQuantityIdentifier:(id)identifier timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate cacheDataSource:(id)source completion:(id)completion
 {
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v20 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForQuantityType:a3 timeScope:a4 customDataSource:a8];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v20 = [(HKInteractiveChartOverlayViewController *)self _dataSourceForQuantityType:identifier timeScope:scope customDataSource:source];
   LOBYTE(v19) = 1;
-  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v20 graphSeriesContext:0 priorityDelegate:0 timeScope:a4 resolution:a5 startDate:v18 endDate:v17 queryIfNeeded:v19 completion:v16];
+  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v20 graphSeriesContext:0 priorityDelegate:0 timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy queryIfNeeded:v19 completion:completionCopy];
 }
 
-- (void)cachedDataForCustomGraphSeries:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 completion:(id)a8
+- (void)cachedDataForCustomGraphSeries:(id)series timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a3;
-  v20 = [v17 dataSource];
-  v18 = [v17 seriesDataSourceContext];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  seriesCopy = series;
+  dataSource = [seriesCopy dataSource];
+  seriesDataSourceContext = [seriesCopy seriesDataSourceContext];
   LOBYTE(v19) = 1;
-  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v20 graphSeriesContext:v18 priorityDelegate:v17 timeScope:a4 resolution:a5 startDate:v16 endDate:v15 queryIfNeeded:v19 completion:v14];
+  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:dataSource graphSeriesContext:seriesDataSourceContext priorityDelegate:seriesCopy timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy queryIfNeeded:v19 completion:completionCopy];
 }
 
-- (void)cachedDataForCustomGraphSeries:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 queryIfNeeded:(BOOL)a8 completion:(id)a9
+- (void)cachedDataForCustomGraphSeries:(id)series timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate queryIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a3;
-  v22 = [v19 dataSource];
-  v20 = [v19 seriesDataSourceContext];
-  LOBYTE(v21) = a8;
-  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v22 graphSeriesContext:v20 priorityDelegate:v19 timeScope:a4 resolution:a5 startDate:v18 endDate:v17 queryIfNeeded:v21 completion:v16];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  seriesCopy = series;
+  dataSource = [seriesCopy dataSource];
+  seriesDataSourceContext = [seriesCopy seriesDataSourceContext];
+  LOBYTE(v21) = needed;
+  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:dataSource graphSeriesContext:seriesDataSourceContext priorityDelegate:seriesCopy timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy queryIfNeeded:v21 completion:completionCopy];
 }
 
-- (void)cachedDataForStandardDisplayType:(id)a3 timeScope:(int64_t)a4 resolution:(int64_t)a5 startDate:(id)a6 endDate:(id)a7 completion:(id)a8
+- (void)cachedDataForStandardDisplayType:(id)type timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a3;
-  v18 = [(HKInteractiveChartViewController *)self chartDataCacheController];
-  v21 = [v18 interactiveChartsCacheForDisplayType:v17 timeScope:a4];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
+  chartDataCacheController = [(HKInteractiveChartViewController *)self chartDataCacheController];
+  v21 = [chartDataCacheController interactiveChartsCacheForDisplayType:typeCopy timeScope:scope];
 
   v19 = objc_alloc_init(HKCacheBackedChartSeriesDataSource);
   [(HKCacheBackedChartSeriesDataSource *)v19 setChartCache:v21];
   LOBYTE(v20) = 1;
-  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v19 graphSeriesContext:0 priorityDelegate:0 timeScope:a4 resolution:a5 startDate:v16 endDate:v15 queryIfNeeded:v20 completion:v14];
+  [(HKInteractiveChartOverlayViewController *)self _deliverOrWaitForDataSource:v19 graphSeriesContext:0 priorityDelegate:0 timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy queryIfNeeded:v20 completion:completionCopy];
 }
 
-- (void)_deliverOrWaitForDataSource:(id)a3 graphSeriesContext:(id)a4 priorityDelegate:(id)a5 timeScope:(int64_t)a6 resolution:(int64_t)a7 startDate:(id)a8 endDate:(id)a9 queryIfNeeded:(BOOL)a10 completion:(id)a11
+- (void)_deliverOrWaitForDataSource:(id)source graphSeriesContext:(id)context priorityDelegate:(id)delegate timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate queryIfNeeded:(BOOL)self0 completion:(id)self1
 {
-  v24 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = a11;
-  v22 = [(HKInteractiveChartOverlayViewController *)self _deliverCachedDataFromSource:v24 graphSeriesContext:v17 timeScope:a6 resolution:a7 startDate:v19 endDate:v20 completion:v21];
-  if (v22 || !a10)
+  sourceCopy = source;
+  contextCopy = context;
+  delegateCopy = delegate;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
+  v22 = [(HKInteractiveChartOverlayViewController *)self _deliverCachedDataFromSource:sourceCopy graphSeriesContext:contextCopy timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy completion:completionCopy];
+  if (v22 || !needed)
   {
-    if (!v22 && !a10)
+    if (!v22 && !needed)
     {
-      (*(v21 + 2))(v21, MEMORY[0x1E695E0F0], 1, 0);
+      (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], 1, 0);
     }
   }
 
   else
   {
-    v23 = [(HKInteractiveChartOverlayViewController *)self waitForCacheData];
-    [v23 addWaitForDataSource:v24 graphSeriesContext:v17 timeScope:a6 resolution:a7 startDate:v19 endDate:v20 priorityDelegate:v18 completion:v21];
+    waitForCacheData = [(HKInteractiveChartOverlayViewController *)self waitForCacheData];
+    [waitForCacheData addWaitForDataSource:sourceCopy graphSeriesContext:contextCopy timeScope:scope resolution:resolution startDate:dateCopy endDate:endDateCopy priorityDelegate:delegateCopy completion:completionCopy];
   }
 }
 
@@ -698,37 +698,37 @@ LABEL_10:
   }
 }
 
-- (id)visibleRangeForTimeScope:(int64_t)a3 proposedRange:(id)a4
+- (id)visibleRangeForTimeScope:(int64_t)scope proposedRange:(id)range
 {
-  v5 = a4;
-  v6 = [(HKInteractiveChartOverlayViewController *)self initialVisibleDateRange];
+  rangeCopy = range;
+  initialVisibleDateRange = [(HKInteractiveChartOverlayViewController *)self initialVisibleDateRange];
 
-  v7 = v5;
-  if (v6)
+  initialVisibleDateRange2 = rangeCopy;
+  if (initialVisibleDateRange)
   {
-    v7 = [(HKInteractiveChartOverlayViewController *)self initialVisibleDateRange];
+    initialVisibleDateRange2 = [(HKInteractiveChartOverlayViewController *)self initialVisibleDateRange];
 
     [(HKInteractiveChartOverlayViewController *)self setInitialVisibleDateRange:0];
   }
 
-  return v7;
+  return initialVisibleDateRange2;
 }
 
-- (void)configureDisplayTypes:(id)a3 timeScope:(int64_t)a4 stackOffset:(int64_t)a5
+- (void)configureDisplayTypes:(id)types timeScope:(int64_t)scope stackOffset:(int64_t)offset
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 count] == 1)
+  typesCopy = types;
+  if ([typesCopy count] == 1)
   {
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v9 timeScope:a4 stackOffset:a5];
+    v9 = [typesCopy objectAtIndexedSubscript:0];
+    v10 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v9 timeScope:scope stackOffset:offset];
 
     [v10 setAllowsSelection:1];
   }
 
   else
   {
-    v11 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:self->_overlayDisplayType timeScope:a4 stackOffset:a5];
+    v11 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:self->_overlayDisplayType timeScope:scope stackOffset:offset];
     v22 = v11;
     if (v11)
     {
@@ -744,8 +744,8 @@ LABEL_10:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v23 = v8;
-    v12 = v8;
+    v23 = typesCopy;
+    v12 = typesCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
@@ -761,7 +761,7 @@ LABEL_10:
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v17 timeScope:a4 stackOffset:a5];
+          v18 = [(HKInteractiveChartViewController *)self graphSeriesForDisplayType:v17 timeScope:scope stackOffset:offset];
           v19 = v18;
           if (v17 != self->_overlayDisplayType)
           {
@@ -775,65 +775,65 @@ LABEL_10:
       while (v14);
     }
 
-    v20 = [(HKInteractiveChartViewController *)self primaryGraphViewController];
-    v21 = [v20 graphView];
+    primaryGraphViewController = [(HKInteractiveChartViewController *)self primaryGraphViewController];
+    graphView = [primaryGraphViewController graphView];
 
     if (v24)
     {
-      [v21 setMoveSelectedSeriesToFront:0];
+      [graphView setMoveSelectedSeriesToFront:0];
     }
 
-    v8 = v23;
+    typesCopy = v23;
   }
 }
 
-- (id)_overlayChartCacheForDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 namedPredicate:(id)a5
+- (id)_overlayChartCacheForDistributionStyle:(int64_t)style timeScope:(int64_t)scope namedPredicate:(id)predicate
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  predicateCopy = predicate;
+  v10 = predicateCopy;
+  if (predicateCopy)
   {
-    v11 = [v9 localizedNameKey];
+    localizedNameKey = [predicateCopy localizedNameKey];
   }
 
   else
   {
-    v11 = &stru_1F42FFBE0;
+    localizedNameKey = &stru_1F42FFBE0;
   }
 
-  v12 = [[_HKInteractiveChartDistributionStyleKey alloc] initWithDistributionStyle:a3 timeScope:a4 predicateName:v11];
-  v13 = [(HKInteractiveChartOverlayViewController *)self overlayChartCaches];
-  v14 = [v13 objectForKey:v12];
+  v12 = [[_HKInteractiveChartDistributionStyleKey alloc] initWithDistributionStyle:style timeScope:scope predicateName:localizedNameKey];
+  overlayChartCaches = [(HKInteractiveChartOverlayViewController *)self overlayChartCaches];
+  v14 = [overlayChartCaches objectForKey:v12];
 
   if (!v14)
   {
-    v38 = v11;
-    v15 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-    v16 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-    v17 = [v16 objectType];
+    v38 = localizedNameKey;
+    primaryDisplayType = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+    primaryDisplayType2 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+    objectType = [primaryDisplayType2 objectType];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [HKInteractiveChartOverlayViewController _overlayChartCacheForDistributionStyle:a2 timeScope:self namedPredicate:v17];
+      [HKInteractiveChartOverlayViewController _overlayChartCacheForDistributionStyle:a2 timeScope:self namedPredicate:objectType];
     }
 
-    v18 = v17;
+    v18 = objectType;
     v36 = v18;
-    v19 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-    v20 = [(HKInteractiveChartOverlayViewController *)self _displayTypeRequiresAverageAndDuration:v19];
+    primaryDisplayType3 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+    v20 = [(HKInteractiveChartOverlayViewController *)self _displayTypeRequiresAverageAndDuration:primaryDisplayType3];
 
     v21 = v20;
-    if ([v15 contextItemShouldDisplayEventCountForDistributionStyle:a3])
+    if ([primaryDisplayType contextItemShouldDisplayEventCountForDistributionStyle:style])
     {
       v21 = v20 | 2;
     }
 
-    v22 = [v18 identifier];
-    v37 = v15;
+    identifier = [v18 identifier];
+    v37 = primaryDisplayType;
     v23 = *MEMORY[0x1E696BD08];
 
-    if (v22 == v23)
+    if (identifier == v23)
     {
       v24 = v21 | 4;
     }
@@ -844,30 +844,30 @@ LABEL_10:
     }
 
     v25 = [HKQuantityDistributionDataSource alloc];
-    v26 = [(HKInteractiveChartViewController *)self unitPreferenceController];
-    v27 = [(HKInteractiveChartViewController *)self healthStore];
-    v28 = [v10 predicate];
-    v29 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+    unitPreferenceController = [(HKInteractiveChartViewController *)self unitPreferenceController];
+    healthStore = [(HKInteractiveChartViewController *)self healthStore];
+    predicate = [v10 predicate];
+    primaryDisplayType4 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __107__HKInteractiveChartOverlayViewController__overlayChartCacheForDistributionStyle_timeScope_namedPredicate___block_invoke;
     v39[3] = &__block_descriptor_40_e48__24__0___HKQuantityDistributionData_8__HKUnit_16l;
     v39[4] = v24;
-    v30 = [(HKQuantityDistributionDataSource *)v25 initWithQuantityType:v36 unitController:v26 healthStore:v27 contextStyle:a3 predicate:v28 options:v24 baseDisplayType:v29 specificStartDate:0 specificEndDate:0 userInfoCreationBlock:v39];
+    v30 = [(HKQuantityDistributionDataSource *)v25 initWithQuantityType:v36 unitController:unitPreferenceController healthStore:healthStore contextStyle:style predicate:predicate options:v24 baseDisplayType:primaryDisplayType4 specificStartDate:0 specificEndDate:0 userInfoCreationBlock:v39];
 
     v14 = objc_alloc_init(HKChartCache);
     [(HKChartCache *)v14 setDataSource:v30];
     v31 = +[HKOutstandingFetchOperationManager sharedOperationManager];
     [(HKChartCache *)v14 setOperationManager:v31];
 
-    v32 = [(HKInteractiveChartOverlayViewController *)self overlayChartCaches];
-    [v32 setObject:v14 forKey:v12];
+    overlayChartCaches2 = [(HKInteractiveChartOverlayViewController *)self overlayChartCaches];
+    [overlayChartCaches2 setObject:v14 forKey:v12];
 
-    v33 = [(HKInteractiveChartViewController *)self chartDataCacheController];
-    v34 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
-    [v33 addCustomChartCache:v14 forDisplayType:v34];
+    chartDataCacheController = [(HKInteractiveChartViewController *)self chartDataCacheController];
+    primaryDisplayType5 = [(HKInteractiveChartOverlayViewController *)self primaryDisplayType];
+    [chartDataCacheController addCustomChartCache:v14 forDisplayType:primaryDisplayType5];
 
-    v11 = v38;
+    localizedNameKey = v38;
   }
 
   return v14;
@@ -916,61 +916,61 @@ HKInteractiveChartSinglePointEventIdentifierData *__107__HKInteractiveChartOverl
   return v6;
 }
 
-- (id)_overlayChartCacheForDataSource:(id)a3 templateDisplayType:(id)a4
+- (id)_overlayChartCacheForDataSource:(id)source templateDisplayType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKInteractiveChartOverlayViewController *)self customNamedCaches];
-  v9 = [v6 name];
-  v10 = [v8 objectForKey:v9];
+  sourceCopy = source;
+  typeCopy = type;
+  customNamedCaches = [(HKInteractiveChartOverlayViewController *)self customNamedCaches];
+  name = [sourceCopy name];
+  v10 = [customNamedCaches objectForKey:name];
 
   if (!v10)
   {
     v10 = objc_alloc_init(HKChartCache);
-    v11 = [v6 dataSource];
-    [(HKChartCache *)v10 setDataSource:v11];
+    dataSource = [sourceCopy dataSource];
+    [(HKChartCache *)v10 setDataSource:dataSource];
 
     v12 = +[HKOutstandingFetchOperationManager sharedOperationManager];
     [(HKChartCache *)v10 setOperationManager:v12];
 
-    v13 = [(HKInteractiveChartOverlayViewController *)self customNamedCaches];
-    v14 = [v6 name];
-    [v13 setObject:v10 forKey:v14];
+    customNamedCaches2 = [(HKInteractiveChartOverlayViewController *)self customNamedCaches];
+    name2 = [sourceCopy name];
+    [customNamedCaches2 setObject:v10 forKey:name2];
 
-    v15 = [(HKInteractiveChartViewController *)self chartDataCacheController];
-    [v15 addCustomChartCache:v10 forDisplayType:v7];
+    chartDataCacheController = [(HKInteractiveChartViewController *)self chartDataCacheController];
+    [chartDataCacheController addCustomChartCache:v10 forDisplayType:typeCopy];
   }
 
   return v10;
 }
 
-- (id)_dataSourceForDistributionStyle:(int64_t)a3 timeScope:(int64_t)a4 namedPredicate:(id)a5
+- (id)_dataSourceForDistributionStyle:(int64_t)style timeScope:(int64_t)scope namedPredicate:(id)predicate
 {
-  v5 = [(HKInteractiveChartOverlayViewController *)self _overlayChartCacheForDistributionStyle:a3 timeScope:a4 namedPredicate:a5];
+  v5 = [(HKInteractiveChartOverlayViewController *)self _overlayChartCacheForDistributionStyle:style timeScope:scope namedPredicate:predicate];
   v6 = objc_alloc_init(HKCacheBackedChartSeriesDataSource);
   [(HKCacheBackedChartSeriesDataSource *)v6 setChartCache:v5];
 
   return v6;
 }
 
-- (id)_dataSourceForQuantityType:(id)a3 timeScope:(int64_t)a4 customDataSource:(id)a5
+- (id)_dataSourceForQuantityType:(id)type timeScope:(int64_t)scope customDataSource:(id)source
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HKInteractiveChartViewController *)self displayTypeController];
-  v11 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:v9];
+  sourceCopy = source;
+  typeCopy = type;
+  displayTypeController = [(HKInteractiveChartViewController *)self displayTypeController];
+  v11 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:typeCopy];
 
-  v12 = [v10 displayTypeForObjectType:v11];
+  v12 = [displayTypeController displayTypeForObjectType:v11];
 
-  if (v8)
+  if (sourceCopy)
   {
-    v13 = [(HKInteractiveChartOverlayViewController *)self _overlayChartCacheForDataSource:v8 templateDisplayType:v12];
+    v13 = [(HKInteractiveChartOverlayViewController *)self _overlayChartCacheForDataSource:sourceCopy templateDisplayType:v12];
   }
 
   else
   {
-    v14 = [(HKInteractiveChartViewController *)self chartDataCacheController];
-    v13 = [v14 interactiveChartsCacheForDisplayType:v12 timeScope:a4];
+    chartDataCacheController = [(HKInteractiveChartViewController *)self chartDataCacheController];
+    v13 = [chartDataCacheController interactiveChartsCacheForDisplayType:v12 timeScope:scope];
   }
 
   v15 = objc_alloc_init(HKCacheBackedChartSeriesDataSource);
@@ -979,31 +979,31 @@ HKInteractiveChartSinglePointEventIdentifierData *__107__HKInteractiveChartOverl
   return v15;
 }
 
-- (id)_dataSourceForNamedDataSource:(id)a3 templateDisplayType:(id)a4
+- (id)_dataSourceForNamedDataSource:(id)source templateDisplayType:(id)type
 {
-  v4 = [(HKInteractiveChartOverlayViewController *)self _overlayChartCacheForDataSource:a3 templateDisplayType:a4];
+  v4 = [(HKInteractiveChartOverlayViewController *)self _overlayChartCacheForDataSource:source templateDisplayType:type];
   v5 = objc_alloc_init(HKCacheBackedChartSeriesDataSource);
   [(HKCacheBackedChartSeriesDataSource *)v5 setChartCache:v4];
 
   return v5;
 }
 
-- (BOOL)_deliverCachedDataFromSource:(id)a3 graphSeriesContext:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 startDate:(id)a7 endDate:(id)a8 completion:(id)a9
+- (BOOL)_deliverCachedDataFromSource:(id)source graphSeriesContext:(id)context timeScope:(int64_t)scope resolution:(int64_t)resolution startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v37 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  sourceCopy = source;
+  contextCopy = context;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
   v50 = 0uLL;
   v51 = 0;
-  if (v14)
+  if (sourceCopy)
   {
-    [v14 blockPathForX:v15 zoom:a5 resolution:a6];
+    [sourceCopy blockPathForX:dateCopy zoom:scope resolution:resolution];
     v48 = 0uLL;
     v49 = 0;
-    [v14 blockPathForX:v16 zoom:a5 resolution:a6];
+    [sourceCopy blockPathForX:endDateCopy zoom:scope resolution:resolution];
   }
 
   else
@@ -1013,36 +1013,36 @@ HKInteractiveChartSinglePointEventIdentifierData *__107__HKInteractiveChartOverl
   }
 
   v46 = v50;
-  v47 = v51;
+  resolutionCopy2 = v51;
   v44 = v48;
   v45 = v49;
-  v18 = [v14 hasAllBlocksAvailableBetweenStartPath:&v46 endPath:&v44];
+  v18 = [sourceCopy hasAllBlocksAvailableBetweenStartPath:&v46 endPath:&v44];
   v19 = v18;
   if (v18)
   {
     v32 = v18;
-    v33 = v17;
+    v33 = completionCopy;
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = v50;
     if (v50 <= v48)
     {
-      v35 = a6;
-      v36 = v14;
-      v34 = a5;
+      resolutionCopy = resolution;
+      v36 = sourceCopy;
+      scopeCopy = scope;
       do
       {
         v39 = v21;
         *&v46 = v21;
-        *(&v46 + 1) = a5;
-        v47 = a6;
-        v22 = [v14 cachedBlockForPath:&v46 context:v37];
+        *(&v46 + 1) = scope;
+        resolutionCopy2 = resolution;
+        v22 = [sourceCopy cachedBlockForPath:&v46 context:contextCopy];
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
         v38 = v22;
-        v23 = [v22 chartPoints];
-        v24 = [v23 countByEnumeratingWithState:&v40 objects:v52 count:16];
+        chartPoints = [v22 chartPoints];
+        v24 = [chartPoints countByEnumeratingWithState:&v40 objects:v52 count:16];
         if (v24)
         {
           v25 = v24;
@@ -1053,34 +1053,34 @@ HKInteractiveChartSinglePointEventIdentifierData *__107__HKInteractiveChartOverl
             {
               if (*v41 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(chartPoints);
               }
 
               v28 = *(*(&v40 + 1) + 8 * i);
-              v29 = [v28 minXValueAsGenericType];
-              v30 = [v28 maxXValueAsGenericType];
-              if (([v30 hk_isBeforeDate:v15] & 1) == 0 && (objc_msgSend(v29, "hk_isAfterDate:", v16) & 1) == 0)
+              minXValueAsGenericType = [v28 minXValueAsGenericType];
+              maxXValueAsGenericType = [v28 maxXValueAsGenericType];
+              if (([maxXValueAsGenericType hk_isBeforeDate:dateCopy] & 1) == 0 && (objc_msgSend(minXValueAsGenericType, "hk_isAfterDate:", endDateCopy) & 1) == 0)
               {
                 [v20 addObject:v28];
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v40 objects:v52 count:16];
+            v25 = [chartPoints countByEnumeratingWithState:&v40 objects:v52 count:16];
           }
 
           while (v25);
         }
 
         v21 = v39 + 1;
-        a6 = v35;
-        v14 = v36;
-        a5 = v34;
+        resolution = resolutionCopy;
+        sourceCopy = v36;
+        scope = scopeCopy;
       }
 
       while (v39 < v48);
     }
 
-    v17 = v33;
+    completionCopy = v33;
     (*(v33 + 2))(v33, v20, 1, 0);
 
     v19 = v32;

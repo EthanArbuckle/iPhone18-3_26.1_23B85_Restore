@@ -1,9 +1,9 @@
 @interface HMDoorbellChimeProfile
 + (id)logCategory;
-- (HMDoorbellChimeProfile)initWithDoorbellChimeProfile:(id)a3;
+- (HMDoorbellChimeProfile)initWithDoorbellChimeProfile:(id)profile;
 - (HMDoorbellChimeProfileDelegate)delegate;
-- (void)didReceiveDoorbellChimeMessage:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)didReceiveDoorbellChimeMessage:(id)message;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HMDoorbellChimeProfile
@@ -16,18 +16,18 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)didReceiveDoorbellChimeMessage:(id)a3
+- (void)didReceiveDoorbellChimeMessage:(id)message
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  messagePayload = [messageCopy messagePayload];
+  v6 = messagePayload;
+  if (messagePayload)
   {
-    v7 = [v5 hmf_numberForKey:@"HM.doorbell.chime.mode"];
+    v7 = [messagePayload hmf_numberForKey:@"HM.doorbell.chime.mode"];
     v8 = [v6 hmf_dateForKey:@"HM.doorbell.chime.date"];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     v12 = v11;
     if (v7 && v8)
@@ -38,23 +38,23 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
         *buf = 138543874;
         v60 = v13;
         v61 = 2048;
-        v62 = [v7 integerValue];
+        integerValue = [v7 integerValue];
         v63 = 2112;
         v64 = v8;
         _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Received message to chime (mode %ld) on %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v14 = [v7 integerValue];
-      v15 = [(HMDoorbellChimeProfile *)v10 delegate];
-      if ((v14 - 2) >= 2)
+      integerValue2 = [v7 integerValue];
+      delegate = [(HMDoorbellChimeProfile *)selfCopy delegate];
+      if ((integerValue2 - 2) >= 2)
       {
-        if (v14 == 1)
+        if (integerValue2 == 1)
         {
           if (objc_opt_respondsToSelector())
           {
             v26 = objc_autoreleasePoolPush();
-            v27 = v10;
+            v27 = selfCopy;
             v28 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
             {
@@ -62,39 +62,39 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
               *buf = 138543618;
               v60 = v29;
               v61 = 2112;
-              v62 = v15;
+              integerValue = delegate;
               _os_log_impl(&dword_19BB39000, v28, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate: %@ of chime", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v26);
-            v30 = [(HMAccessoryProfile *)v27 accessoryProfile];
-            v31 = [v30 context];
-            v32 = [v31 delegateCaller];
+            accessoryProfile = [(HMAccessoryProfile *)v27 accessoryProfile];
+            context = [accessoryProfile context];
+            delegateCaller = [context delegateCaller];
             v54[0] = MEMORY[0x1E69E9820];
             v54[1] = 3221225472;
             v54[2] = __57__HMDoorbellChimeProfile_didReceiveDoorbellChimeMessage___block_invoke;
             v54[3] = &unk_1E754A938;
-            v55 = v15;
+            v55 = delegate;
             v56 = v27;
             v58 = 1;
             v57 = v8;
-            [v32 invokeBlock:v54];
+            [delegateCaller invokeBlock:v54];
           }
         }
 
         else
         {
           v33 = objc_autoreleasePoolPush();
-          v34 = v10;
+          v34 = selfCopy;
           v35 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
             v36 = HMFGetLogIdentifier();
-            v37 = [v7 integerValue];
+            integerValue3 = [v7 integerValue];
             *buf = 138543618;
             v60 = v36;
             v61 = 2048;
-            v62 = v37;
+            integerValue = integerValue3;
             _os_log_impl(&dword_19BB39000, v35, OS_LOG_TYPE_ERROR, "%{public}@Unknown chime mode (%ld)", buf, 0x16u);
           }
 
@@ -110,7 +110,7 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
           if (objc_opt_respondsToSelector())
           {
             context = objc_autoreleasePoolPush();
-            v17 = v10;
+            v17 = selfCopy;
             v18 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
@@ -118,7 +118,7 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
               *buf = 138543874;
               v60 = v43;
               v61 = 2112;
-              v62 = v15;
+              integerValue = delegate;
               v63 = 2048;
               v64 = v7;
               _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate: %@ of chime (%ld) with person identification text", buf, 0x20u);
@@ -126,26 +126,26 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
 
             objc_autoreleasePoolPop(context);
             contexta = [(HMAccessoryProfile *)v17 accessoryProfile];
-            v19 = [contexta context];
-            v20 = [v19 delegateCaller];
+            context2 = [contexta context];
+            delegateCaller2 = [context2 delegateCaller];
             v47[0] = MEMORY[0x1E69E9820];
             v47[1] = 3221225472;
             v47[2] = __57__HMDoorbellChimeProfile_didReceiveDoorbellChimeMessage___block_invoke_82;
             v47[3] = &unk_1E7546DF8;
-            v48 = v15;
+            v48 = delegate;
             v49 = v17;
-            v53 = v14;
+            v53 = integerValue2;
             v50 = v8;
             v51 = v16;
             v52 = v7;
-            [v20 invokeBlock:v47];
+            [delegateCaller2 invokeBlock:v47];
           }
         }
 
         else
         {
           v38 = objc_autoreleasePoolPush();
-          v39 = v10;
+          v39 = selfCopy;
           v40 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
@@ -154,7 +154,7 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
             *buf = 138543874;
             v60 = v41;
             v61 = 2048;
-            v62 = v7;
+            integerValue = v7;
             v63 = 2112;
             v64 = v8;
             _os_log_impl(&dword_19BB39000, v40, OS_LOG_TYPE_ERROR, "%{public}@No person identification text in spoken message, mode: %ld, date: %@", buf, 0x20u);
@@ -175,7 +175,7 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
         *buf = 138543874;
         v60 = v25;
         v61 = 2048;
-        v62 = [v7 integerValue];
+        integerValue = [v7 integerValue];
         v63 = 2112;
         v64 = v8;
         _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_ERROR, "%{public}@No chime mode (%ld) or date (%@) in chime message", buf, 0x20u);
@@ -188,7 +188,7 @@ uint64_t __38___HMDoorbellChimeProfile_logCategory__block_invoke()
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -251,11 +251,11 @@ void __57__HMDoorbellChimeProfile_didReceiveDoorbellChimeMessage___block_invoke_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -269,15 +269,15 @@ void __57__HMDoorbellChimeProfile_didReceiveDoorbellChimeMessage___block_invoke_
   return WeakRetained;
 }
 
-- (HMDoorbellChimeProfile)initWithDoorbellChimeProfile:(id)a3
+- (HMDoorbellChimeProfile)initWithDoorbellChimeProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v7.receiver = self;
   v7.super_class = HMDoorbellChimeProfile;
-  v5 = [(HMAccessoryProfile *)&v7 initWithAccessoryProfile:v4];
+  v5 = [(HMAccessoryProfile *)&v7 initWithAccessoryProfile:profileCopy];
   if (v5)
   {
-    [v4 setDelegate:v5];
+    [profileCopy setDelegate:v5];
   }
 
   return v5;

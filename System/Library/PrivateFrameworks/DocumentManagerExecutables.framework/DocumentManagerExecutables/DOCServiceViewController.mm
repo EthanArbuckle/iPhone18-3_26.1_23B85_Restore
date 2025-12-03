@@ -4,17 +4,17 @@
 - (DOCConfiguration)configuration;
 - (NSArray)preferredFocusEnvironments;
 - (UIViewController)childViewControllerForScreenEdgesDeferringSystemGestures;
-- (_TtC26DocumentManagerExecutables24DOCServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)embedViewController:(id)a3;
+- (_TtC26DocumentManagerExecutables24DOCServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)embedViewController:(id)controller;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setIsBrowserViewController:(BOOL)a3;
-- (void)setShouldOverrideWindowAppearance:(BOOL)a3;
-- (void)updateAppearance:(id)a3 completionBlock:(id)a4;
-- (void)updateAppearance:(id)a3 shouldFlushCA:(BOOL)a4 completionBlock:(id)a5;
-- (void)updateEditingTo:(BOOL)a3 animated:(BOOL)a4;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setIsBrowserViewController:(BOOL)controller;
+- (void)setShouldOverrideWindowAppearance:(BOOL)appearance;
+- (void)updateAppearance:(id)appearance completionBlock:(id)block;
+- (void)updateAppearance:(id)appearance shouldFlushCA:(BOOL)a completionBlock:(id)block;
+- (void)updateEditingTo:(BOOL)to animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation DOCServiceViewController
@@ -22,7 +22,7 @@
 - (DOCConfiguration)configuration
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0xB8);
-  v3 = self;
+  selfCopy = self;
   result = v2();
   if (result)
   {
@@ -46,11 +46,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setIsBrowserViewController:(BOOL)a3
+- (void)setIsBrowserViewController:(BOOL)controller
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables24DOCServiceViewController_isBrowserViewController;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = controller;
 }
 
 - (BOOL)shouldOverrideWindowAppearance
@@ -60,16 +60,16 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setShouldOverrideWindowAppearance:(BOOL)a3
+- (void)setShouldOverrideWindowAppearance:(BOOL)appearance
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables24DOCServiceViewController_shouldOverrideWindowAppearance;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = appearance;
 }
 
-- (_TtC26DocumentManagerExecutables24DOCServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables24DOCServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -81,17 +81,17 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return DOCServiceViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return DOCServiceViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)loadView
 {
   type metadata accessor for DOCServiceView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(DOCServiceViewController *)v5 setView:v4];
+  [(DOCServiceViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
@@ -100,13 +100,13 @@
   v6.super_class = type metadata accessor for DOCServiceViewController();
   v2 = v6.receiver;
   [(DOCServiceViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v3 layer];
+    v4 = view;
+    layer = [view layer];
 
-    [v5 setHitTestsAsOpaque_];
+    [layer setHitTestsAsOpaque_];
   }
 
   else
@@ -115,19 +115,19 @@
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  if (a3)
+  disappearCopy = disappear;
+  if (window)
   {
     v7 = MEMORY[0x277D85000];
     v8 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0xF0);
-    v9 = a3;
-    v10 = self;
+    windowCopy = window;
+    selfCopy = self;
     if (v8())
     {
-      v11 = (*((*v7 & v10->super.super.super.isa) + 0x108))();
-      [v9 setAppearance_];
+      v11 = (*((*v7 & selfCopy->super.super.super.isa) + 0x108))();
+      [windowCopy setAppearance_];
     }
 
     else
@@ -137,22 +137,22 @@
 
   else
   {
-    v12 = self;
+    selfCopy2 = self;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for DOCServiceViewController();
-  [(DOCServiceViewController *)&v13 viewDidMoveToWindow:a3 shouldAppearOrDisappear:v4];
+  [(DOCServiceViewController *)&v13 viewDidMoveToWindow:window shouldAppearOrDisappear:disappearCopy];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for DOCServiceViewController();
   swift_unknownObjectRetain();
   v4 = v5.receiver;
-  [(DOCServiceViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:a3];
-  [a3 preferredContentSize];
+  [(DOCServiceViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:container];
+  [container preferredContentSize];
   [v4 setPreferredContentSize_];
   swift_unknownObjectRelease();
 }
@@ -160,15 +160,15 @@
 - (UIViewController)childViewControllerForScreenEdgesDeferringSystemGestures
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-- (void)updateAppearance:(id)a3 completionBlock:(id)a4
+- (void)updateAppearance:(id)appearance completionBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -182,16 +182,16 @@
   }
 
   v8 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x130);
-  v10 = a3;
-  v9 = self;
-  v8(v10, 0, v6, v7);
+  appearanceCopy = appearance;
+  selfCopy = self;
+  v8(appearanceCopy, 0, v6, v7);
 
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v6);
 }
 
-- (void)updateAppearance:(id)a3 shouldFlushCA:(BOOL)a4 completionBlock:(id)a5
+- (void)updateAppearance:(id)appearance shouldFlushCA:(BOOL)a completionBlock:(id)block
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(block);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -206,33 +206,33 @@
 
   v10 = swift_allocObject();
   *(v10 + 16) = self;
-  *(v10 + 24) = a3;
+  *(v10 + 24) = appearance;
   *(v10 + 32) = v8;
   *(v10 + 40) = v9;
-  *(v10 + 48) = a4;
-  v11 = a3;
-  v12 = self;
-  v13 = v11;
+  *(v10 + 48) = a;
+  appearanceCopy = appearance;
+  selfCopy = self;
+  v13 = appearanceCopy;
   outlined copy of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v8);
   DOCRunInMainThread(_:)();
 
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v8);
 }
 
-- (void)updateEditingTo:(BOOL)a3 animated:(BOOL)a4
+- (void)updateEditingTo:(BOOL)to animated:(BOOL)animated
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a3;
-  *(v7 + 25) = a4;
-  v8 = self;
+  *(v7 + 24) = to;
+  *(v7 + 25) = animated;
+  selfCopy = self;
   DOCRunInMainThread(_:)();
 }
 
 - (NSArray)preferredFocusEnvironments
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -245,9 +245,9 @@
 
   else
   {
-    v10.receiver = v3;
+    v10.receiver = selfCopy;
     v10.super_class = type metadata accessor for DOCServiceViewController();
-    v7 = [(DOCServiceViewController *)&v10 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(DOCServiceViewController *)&v10 preferredFocusEnvironments];
     __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo18UIFocusEnvironment_pMd);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -258,11 +258,11 @@
   return v8.super.isa;
 }
 
-- (void)embedViewController:(id)a3
+- (void)embedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCServiceViewController.embedViewController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCServiceViewController.embedViewController(_:)(controllerCopy);
 }
 
 @end

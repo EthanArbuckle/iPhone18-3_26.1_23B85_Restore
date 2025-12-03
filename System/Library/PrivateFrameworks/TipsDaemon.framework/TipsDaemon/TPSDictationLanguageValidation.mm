@@ -1,24 +1,24 @@
 @interface TPSDictationLanguageValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSDictationLanguageValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!+[TPSKeyboardUtilities isDictationEnabled])
   {
     v9 = 0;
     goto LABEL_13;
   }
 
-  v5 = [(TPSTargetingValidation *)self value];
+  value = [(TPSTargetingValidation *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 TPSSafeArrayForKey:@"values"];
-    v7 = [v5 TPSSafeStringForKey:@"joinType"];
+    v6 = [value TPSSafeArrayForKey:@"values"];
+    v7 = [value TPSSafeStringForKey:@"joinType"];
     if ([v7 isEqualToString:@"AND"])
     {
       v8 = [v6 na_all:&__block_literal_global];
@@ -45,13 +45,13 @@ LABEL_11:
 LABEL_12:
 
 LABEL_13:
-  v10 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v9, v10];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:v9, targeting];
   }
 
-  v4[2](v4, v9, 0);
+  completionCopy[2](completionCopy, v9, 0);
 }
 
 - (void)validateWithCompletion:(NSObject *)a3 .cold.1(void *a1, char a2, NSObject *a3)

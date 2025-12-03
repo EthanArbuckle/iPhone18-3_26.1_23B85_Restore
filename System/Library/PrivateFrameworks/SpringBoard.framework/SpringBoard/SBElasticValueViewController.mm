@@ -1,91 +1,91 @@
 @interface SBElasticValueViewController
-- (BOOL)_changeValue:(float)a3;
+- (BOOL)_changeValue:(float)value;
 - (BOOL)_computeCachedRouteDisplayInformation;
-- (BOOL)_isStateChangeAllowedFrom:(int64_t)a3 toState:(int64_t)a4;
-- (BOOL)updateActiveRouteDisplay:(id *)a3;
+- (BOOL)_isStateChangeAllowedFrom:(int64_t)from toState:(int64_t)state;
+- (BOOL)updateActiveRouteDisplay:(id *)display;
 - (CGPoint)centerForElasticHUDWhenInInteractingState;
-- (CGPoint)centerForState:(int64_t)a3 sliderSize:(CGSize)a4 bounds:(CGRect)a5;
+- (CGPoint)centerForState:(int64_t)state sliderSize:(CGSize)size bounds:(CGRect)bounds;
 - (CGPoint)positionOffset;
 - (CGSize)maximumSizeForSlider;
-- (CGSize)sizeForState:(int64_t)a3;
+- (CGSize)sizeForState:(int64_t)state;
 - (SBElasticValueDataSource)dataSource;
-- (SBElasticValueViewController)initWithCoder:(id)a3;
-- (SBElasticValueViewController)initWithDataSource:(id)a3;
-- (SBElasticValueViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBElasticValueViewController)initWithCoder:(id)coder;
+- (SBElasticValueViewController)initWithDataSource:(id)source;
+- (SBElasticValueViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBElasticValueViewControllerDelegate)delegate;
 - (SBHUDAttachmentDelegate)attachmentDelegate;
-- (double)glyphScaleForState:(int64_t)a3;
+- (double)glyphScaleForState:(int64_t)state;
 - (float)currentValue;
 - (id)createSliderView;
 - (int64_t)hudPresentationOrientation;
-- (unint64_t)_updateSliderValue:(float)a3 animated:(BOOL)a4 transitioningStateContextuallyIfNecessary:(BOOL)a5;
+- (unint64_t)_updateSliderValue:(float)value animated:(BOOL)animated transitioningStateContextuallyIfNecessary:(BOOL)necessary;
 - (unint64_t)axis;
-- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)a3;
+- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)orientation;
 - (void)_actuallyDismiss;
-- (void)_animateFromState:(int64_t)a3 toState:(int64_t)a4 primaryAnimations:(id)a5 primaryCompletion:(id)a6 positionAnimations:(id)a7 positionCompletion:(id)a8 finalCompletion:(id)a9;
+- (void)_animateFromState:(int64_t)state toState:(int64_t)toState primaryAnimations:(id)animations primaryCompletion:(id)completion positionAnimations:(id)positionAnimations positionCompletion:(id)positionCompletion finalCompletion:(id)finalCompletion;
 - (void)_beginDeflationDismissalAnimation;
-- (void)_debugAutoDismissalSwitchValueChanged:(id)a3;
-- (void)_debugChangingStateFromSegmentedControl:(id)a3;
-- (void)_debugDidTapNextRoute:(id)a3;
-- (void)_debugDidTapResetRoute:(id)a3;
-- (void)_debugDimensionSliderValueDidChange:(id)a3;
-- (void)_debugDump:(id)a3;
-- (void)_debugLockStateSwitchValueChanged:(id)a3;
-- (void)_dismissalTimerFired:(id)a3;
-- (void)_displayLinkFired:(id)a3;
-- (void)_handleShortLongPressGestureRecognizer:(id)a3;
-- (void)_invalidateDismissalTimerForReason:(id)a3;
+- (void)_debugAutoDismissalSwitchValueChanged:(id)changed;
+- (void)_debugChangingStateFromSegmentedControl:(id)control;
+- (void)_debugDidTapNextRoute:(id)route;
+- (void)_debugDidTapResetRoute:(id)route;
+- (void)_debugDimensionSliderValueDidChange:(id)change;
+- (void)_debugDump:(id)dump;
+- (void)_debugLockStateSwitchValueChanged:(id)changed;
+- (void)_dismissalTimerFired:(id)fired;
+- (void)_displayLinkFired:(id)fired;
+- (void)_handleShortLongPressGestureRecognizer:(id)recognizer;
+- (void)_invalidateDismissalTimerForReason:(id)reason;
 - (void)_noteSliderViewDidBeginTracking;
 - (void)_noteSliderViewDidEndTracking;
-- (void)_refreshDebugUI:(BOOL)a3;
+- (void)_refreshDebugUI:(BOOL)i;
 - (void)_reloadData;
-- (void)_scheduleDismissal:(id)a3;
-- (void)_scheduleDismissal:(id)a3 afterInterval:(double)a4;
-- (void)_sliderEditingDidBegin:(id)a3;
-- (void)_sliderEditingDidEnd:(id)a3;
-- (void)_sliderIndirectInputDidBegin:(id)a3;
-- (void)_sliderIndirectInputDidEnd:(id)a3;
-- (void)_sliderValueDidChange:(id)a3;
-- (void)_sliderViewMetricsUpdatersForState:(int64_t)a3 bounds:(CGRect)a4 primaryMetricsUpdater:(id *)a5 positionUpdater:(id *)a6;
+- (void)_scheduleDismissal:(id)dismissal;
+- (void)_scheduleDismissal:(id)dismissal afterInterval:(double)interval;
+- (void)_sliderEditingDidBegin:(id)begin;
+- (void)_sliderEditingDidEnd:(id)end;
+- (void)_sliderIndirectInputDidBegin:(id)begin;
+- (void)_sliderIndirectInputDidEnd:(id)end;
+- (void)_sliderValueDidChange:(id)change;
+- (void)_sliderViewMetricsUpdatersForState:(int64_t)state bounds:(CGRect)bounds primaryMetricsUpdater:(id *)updater positionUpdater:(id *)positionUpdater;
 - (void)_startMonitoringForSliderVisiblyOffscreen;
 - (void)_stopMonitoringForSliderVisiblyOffscreen;
-- (void)_updateDebugString:(id)a3;
+- (void)_updateDebugString:(id)string;
 - (void)_updateDebugUIPositions;
-- (void)_updateDimmingVisible:(BOOL)a3;
-- (void)_updateGlyphStateIfNecessaryForValue:(float *)a3;
-- (void)_updateLabelsForAxis:(unint64_t)a3;
+- (void)_updateDimmingVisible:(BOOL)visible;
+- (void)_updateGlyphStateIfNecessaryForValue:(float *)value;
+- (void)_updateLabelsForAxis:(unint64_t)axis;
 - (void)_updateLiveRenderingAssertion;
 - (void)_updateSliderTracking;
-- (void)_updateSliderViewMetricsForState:(int64_t)a3 bounds:(CGRect)a4;
-- (void)_updateSliderWithAxis:(unint64_t)a3;
+- (void)_updateSliderViewMetricsForState:(int64_t)state bounds:(CGRect)bounds;
+- (void)_updateSliderWithAxis:(unint64_t)axis;
 - (void)_updateTouchTrackingArea;
-- (void)changeValue:(float)a3 animated:(BOOL)a4;
+- (void)changeValue:(float)value animated:(BOOL)animated;
 - (void)dealloc;
-- (void)dismissAnimatedWithCompletion:(id)a3;
+- (void)dismissAnimatedWithCompletion:(id)completion;
 - (void)loadView;
 - (void)reloadData;
-- (void)setButtonStepCount:(unint64_t)a3;
-- (void)setHUDAttached:(BOOL)a3;
-- (void)setPositionOffset:(CGPoint)a3;
-- (void)setupFailureRelationshipForGestureRecognizer:(id)a3;
+- (void)setButtonStepCount:(unint64_t)count;
+- (void)setHUDAttached:(BOOL)attached;
+- (void)setPositionOffset:(CGPoint)offset;
+- (void)setupFailureRelationshipForGestureRecognizer:(id)recognizer;
 - (void)transitionStateContextuallyForValueChangeEvent;
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)updateValue:(float)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated completion:(id)completion;
+- (void)updateValue:(float)value;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBElasticValueViewController
 
-- (SBElasticValueViewController)initWithDataSource:(id)a3
+- (SBElasticValueViewController)initWithDataSource:(id)source
 {
-  v5 = a3;
-  if (!v5)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     [(SBElasticValueViewController *)a2 initWithDataSource:?];
   }
@@ -99,7 +99,7 @@
     v6->_previousState = -1;
     v6->_state = -1;
     v6->_axis = 0;
-    objc_storeWeak(&v6->_dataSource, v5);
+    objc_storeWeak(&v6->_dataSource, sourceCopy);
     v8 = +[SBElasticHUDDomain rootSettings];
     settings = v7->_settings;
     v7->_settings = v8;
@@ -118,18 +118,18 @@
   return v7;
 }
 
-- (SBElasticValueViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBElasticValueViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBElasticValueViewController.m" lineNumber:167 description:@"Use -initWithDataSource: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBElasticValueViewController.m" lineNumber:167 description:@"Use -initWithDataSource: instead."];
 
   return [(SBElasticValueViewController *)self initWithDataSource:0];
 }
 
-- (SBElasticValueViewController)initWithCoder:(id)a3
+- (SBElasticValueViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBElasticValueViewController.m" lineNumber:172 description:@"Use -initWithDataSource: instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBElasticValueViewController.m" lineNumber:172 description:@"Use -initWithDataSource: instead."];
 
   return [(SBElasticValueViewController *)self initWithDataSource:0];
 }
@@ -148,8 +148,8 @@
   v59.receiver = self;
   v59.super_class = SBElasticValueViewController;
   [(SBElasticValueViewController *)&v59 viewDidLoad];
-  v3 = [(SBElasticValueViewController *)self view];
-  [v3 bounds];
+  view = [(SBElasticValueViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -159,25 +159,25 @@
   self->_dimmingView = v12;
 
   [(UIView *)self->_dimmingView setAutoresizingMask:18];
-  v14 = [(UIView *)self->_dimmingView layer];
-  [v14 setAllowsHitTesting:0];
+  layer = [(UIView *)self->_dimmingView layer];
+  [layer setAllowsHitTesting:0];
 
-  [v3 addSubview:self->_dimmingView];
+  [view addSubview:self->_dimmingView];
   if (self->_isDebugging)
   {
     v15 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{v5, v7, v9, v11}];
     debugContainerView = self->_debugContainerView;
     self->_debugContainerView = v15;
 
-    [v3 addSubview:self->_debugContainerView];
+    [view addSubview:self->_debugContainerView];
   }
 
   v17 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{v5, v7, v9, v11}];
   sliderContainerView = self->_sliderContainerView;
   self->_sliderContainerView = v17;
 
-  v54 = v3;
-  [v3 addSubview:self->_sliderContainerView];
+  v54 = view;
+  [view addSubview:self->_sliderContainerView];
   v19 = [MEMORY[0x277D760A8] sharedInstanceForStyle:1];
   [(SBElasticValueViewController *)self _computeCachedRouteDisplayInformation];
   [(SBElasticHUDSettings *)self->_settings legibilityStrength];
@@ -231,25 +231,25 @@
     while (v35);
   }
 
-  v39 = [(SBElasticValueViewController *)self createSliderView];
+  createSliderView = [(SBElasticValueViewController *)self createSliderView];
   sliderView = self->_sliderView;
-  self->_sliderView = v39;
+  self->_sliderView = createSliderView;
 
   [(SBFTouchPassThroughView *)self->_sliderContainerView addSubview:self->_sliderView];
   v41 = self->_sliderView;
-  v42 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphImage];
-  [(CCUIBaseSliderView *)v41 setGlyphImage:v42];
+  glyphImage = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphImage];
+  [(CCUIBaseSliderView *)v41 setGlyphImage:glyphImage];
 
   v43 = self->_sliderView;
-  v44 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphPackage];
-  [(CCUIBaseSliderView *)v43 setGlyphPackageDescription:v44];
+  glyphPackage = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphPackage];
+  [(CCUIBaseSliderView *)v43 setGlyphPackageDescription:glyphPackage];
 
   v45 = self->_sliderView;
   [(SBElasticValueViewController *)self currentValue];
   [(CCUIBaseSliderView *)v45 setValue:0 animated:?];
   v46 = self->_sliderView;
-  v47 = [(SBElasticValueViewController *)self sliderAccessibilityIdentifier];
-  [(SBElasticSliderView *)v46 setAccessibilityIdentifier:v47];
+  sliderAccessibilityIdentifier = [(SBElasticValueViewController *)self sliderAccessibilityIdentifier];
+  [(SBElasticSliderView *)v46 setAccessibilityIdentifier:sliderAccessibilityIdentifier];
 
   [(SBElasticSliderView *)self->_sliderView setLeadingAccessoryView:self->_leadingLabel];
   [(SBElasticSliderView *)self->_sliderView setTrailingAccessoryView:self->_trailingLabel];
@@ -269,19 +269,19 @@
   self->_touchTrackingView = v50;
 
   [(UIView *)self->_touchTrackingView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v52 = [(UIView *)self->_touchTrackingView layer];
-  [v52 setHitTestsAsOpaque:1];
+  layer2 = [(UIView *)self->_touchTrackingView layer];
+  [layer2 setHitTestsAsOpaque:1];
 
   [(SBFTouchPassThroughView *)self->_sliderContainerView insertSubview:self->_touchTrackingView atIndex:0];
   [(SBElasticSliderView *)self->_sliderView addGestureRecognizer:self->_shortLongPressGestureRecognizer];
-  v53 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v53 addObserver:self selector:sel__reduceMotionStatusDidChange name:*MEMORY[0x277D764C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__reduceMotionStatusDidChange name:*MEMORY[0x277D764C0] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D764C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D764C0] object:0];
 
   [(SBElasticValueViewController *)self _stopMonitoringForSliderVisiblyOffscreen];
   [(SBElasticValueViewController *)self _refreshDebugUI:1];
@@ -295,8 +295,8 @@
   v14.receiver = self;
   v14.super_class = SBElasticValueViewController;
   [(SBElasticValueViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(SBElasticValueViewController *)self view];
-  [v3 bounds];
+  view = [(SBElasticValueViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -308,24 +308,24 @@
   [(UIView *)self->_debugContainerView setFrame:v12, v13, v9, v11];
 }
 
-- (void)setPositionOffset:(CGPoint)a3
+- (void)setPositionOffset:(CGPoint)offset
 {
-  if (a3.x != self->_positionOffset.x || a3.y != self->_positionOffset.y)
+  if (offset.x != self->_positionOffset.x || offset.y != self->_positionOffset.y)
   {
-    self->_positionOffset = a3;
-    v5 = [(SBElasticValueViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_positionOffset = offset;
+    view = [(SBElasticValueViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = SBElasticValueViewController;
   [(SBElasticValueViewController *)&v12 viewWillAppear:?];
-  v5 = [(SBElasticValueViewController *)self view];
+  view = [(SBElasticValueViewController *)self view];
   v6 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -333,7 +333,7 @@
     *buf = 138412546;
     v14 = v7;
     v15 = 1024;
-    v16 = v3;
+    v16 = appearCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%@ animated: %{BOOL}u", buf, 0x12u);
   }
 
@@ -344,8 +344,8 @@
   v10[1] = 3221225472;
   v10[2] = __47__SBElasticValueViewController_viewWillAppear___block_invoke;
   v10[3] = &unk_2783A8C18;
-  v11 = v5;
-  v9 = v5;
+  v11 = view;
+  v9 = view;
   [v8 performWithoutAnimation:v10];
 }
 
@@ -357,29 +357,29 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
   return [v2 layoutIfNeeded];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v16 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = SBElasticValueViewController;
-  [(SBElasticValueViewController *)&v11 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(SBElasticValueViewController *)&v11 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     self->_axis = 0;
-    v6 = [(SBElasticValueViewController *)self axis];
+    axis = [(SBElasticValueViewController *)self axis];
     v7 = [(SBElasticValueViewController *)self log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = _SBFLoggingMethodProem();
       v9 = v8;
-      if (v6 > 2)
+      if (axis > 2)
       {
         v10 = @"both";
       }
 
       else
       {
-        v10 = off_2783B35C0[v6];
+        v10 = off_2783B35C0[axis];
       }
 
       *buf = 138412546;
@@ -389,7 +389,7 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "%@ axis: %@", buf, 0x16u);
     }
 
-    [(SBElasticValueViewController *)self _updateForAxisChange:v6];
+    [(SBElasticValueViewController *)self _updateForAxisChange:axis];
     if (self->_state == -1)
     {
       [(SBElasticValueViewController *)self transitionToState:0 animated:0 completion:0];
@@ -404,9 +404,9 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
   [(SBElasticValueViewController *)self _updateLiveRenderingAssertion];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = SBElasticValueViewController;
@@ -418,7 +418,7 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
     *buf = 138412546;
     v9 = v6;
     v10 = 1024;
-    v11 = v3;
+    v11 = appearCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "%@ animated: %{BOOL}u", buf, 0x12u);
   }
 
@@ -426,9 +426,9 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
   [(SBElasticValueViewController *)self transitionToState:1 animated:1 completion:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = SBElasticValueViewController;
@@ -440,26 +440,26 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
     *buf = 138412546;
     v10 = v6;
     v11 = 1024;
-    v12 = v3;
+    v12 = disappearCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "%@ animated: %{BOOL}u", buf, 0x12u);
   }
 
-  v7 = [(SBElasticValueViewController *)self view];
-  [v7 setAlpha:0.0];
+  view = [(SBElasticValueViewController *)self view];
+  [view setAlpha:0.0];
 
   [(SBElasticValueViewController *)self _updateLiveRenderingAssertion];
   [(SBElasticValueViewController *)self _actuallyDismiss];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v47.receiver = self;
   v47.super_class = SBElasticValueViewController;
-  [(SBElasticValueViewController *)&v47 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SBElasticValueViewController *)&v47 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -472,7 +472,7 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
     v50 = 2112;
     v51 = v10;
     v52 = 2112;
-    v53 = v7;
+    v53 = coordinatorCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "%@ size:%@ coordinator:%@", buf, 0x20u);
   }
 
@@ -530,7 +530,7 @@ uint64_t __47__SBElasticValueViewController_viewWillAppear___block_invoke(uint64
   v29 = v26;
   v31 = v29;
   v33[2] = state;
-  [v7 animateAlongsideTransition:v35 completion:v30];
+  [coordinatorCopy animateAlongsideTransition:v35 completion:v30];
 
   objc_destroyWeak(v33);
   objc_destroyWeak(v46);
@@ -609,31 +609,31 @@ void __83__SBElasticValueViewController_viewWillTransitionToSize_withTransitionC
   }
 }
 
-- (void)setButtonStepCount:(unint64_t)a3
+- (void)setButtonStepCount:(unint64_t)count
 {
   [(SBElasticValueViewController *)self loadViewIfNeeded];
   sliderView = self->_sliderView;
 
-  [(CCUIBaseSliderView *)sliderView setButtonInputStepCount:a3];
+  [(CCUIBaseSliderView *)sliderView setButtonInputStepCount:count];
 }
 
-- (void)updateValue:(float)a3
+- (void)updateValue:(float)value
 {
   if (![(SBElasticValueViewController *)self isSliderTracking])
   {
     if ([(SBElasticValueViewController *)self isViewLoaded])
     {
-      v6 = [(SBElasticValueViewController *)self bs_isAppearingOrAppeared];
+      bs_isAppearingOrAppeared = [(SBElasticValueViewController *)self bs_isAppearingOrAppeared];
     }
 
     else
     {
-      v6 = 0;
+      bs_isAppearingOrAppeared = 0;
     }
 
-    *&v5 = a3;
+    *&v5 = value;
 
-    [(SBElasticValueViewController *)self _updateSliderValue:v6 animated:v5];
+    [(SBElasticValueViewController *)self _updateSliderValue:bs_isAppearingOrAppeared animated:v5];
   }
 }
 
@@ -642,7 +642,7 @@ void __83__SBElasticValueViewController_viewWillTransitionToSize_withTransitionC
   v27 = *MEMORY[0x277D85DE8];
   if ([(SBElasticValueViewController *)self _computeCachedRouteDisplayInformation])
   {
-    v3 = [(SBElasticValueViewController *)self axis];
+    axis = [(SBElasticValueViewController *)self axis];
     v4 = self->_initialTransitionCompleted && [(SBElasticValueViewController *)self _appearState]== 2 && (self->_state & 0xFFFFFFFFFFFFFFFDLL) == 1;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -655,7 +655,7 @@ void __83__SBElasticValueViewController_viewWillTransitionToSize_withTransitionC
     v23[2] = __42__SBElasticValueViewController_reloadData__block_invoke_2;
     v23[3] = &unk_2783A8BC8;
     v23[4] = self;
-    v23[5] = v3;
+    v23[5] = axis;
     v6 = MEMORY[0x223D6F7F0](v23);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -788,10 +788,10 @@ uint64_t __42__SBElasticValueViewController_reloadData__block_invoke_8(uint64_t 
   return v2();
 }
 
-- (void)setupFailureRelationshipForGestureRecognizer:(id)a3
+- (void)setupFailureRelationshipForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  [v4 requireGestureRecognizerToFail:self->_shortLongPressGestureRecognizer];
+  recognizerCopy = recognizer;
+  [recognizerCopy requireGestureRecognizerToFail:self->_shortLongPressGestureRecognizer];
   v5 = [(SBElasticValueViewController *)self log];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
 
@@ -800,15 +800,15 @@ uint64_t __42__SBElasticValueViewController_reloadData__block_invoke_8(uint64_t 
     v7 = [(SBElasticValueViewController *)self log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(SBElasticValueViewController *)v4 setupFailureRelationshipForGestureRecognizer:v7];
+      [(SBElasticValueViewController *)recognizerCopy setupFailureRelationshipForGestureRecognizer:v7];
     }
   }
 }
 
 - (CGPoint)centerForElasticHUDWhenInInteractingState
 {
-  v3 = [(SBElasticValueViewController *)self sliderView];
-  [v3 bounds];
+  sliderView = [(SBElasticValueViewController *)self sliderView];
+  [sliderView bounds];
   v5 = v4;
   v7 = v6;
   [(SBFTouchPassThroughView *)self->_sliderContainerView bounds];
@@ -823,17 +823,17 @@ uint64_t __42__SBElasticValueViewController_reloadData__block_invoke_8(uint64_t 
   return result;
 }
 
-- (BOOL)updateActiveRouteDisplay:(id *)a3
+- (BOOL)updateActiveRouteDisplay:(id *)display
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBElasticValueViewController.m" lineNumber:501 description:@"Subclasses must implement this method and should not call super."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBElasticValueViewController.m" lineNumber:501 description:@"Subclasses must implement this method and should not call super."];
 
   return 0;
 }
 
-- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)a3
+- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     return 1;
   }
@@ -853,16 +853,16 @@ uint64_t __42__SBElasticValueViewController_reloadData__block_invoke_8(uint64_t 
   return v3;
 }
 
-- (void)dismissAnimatedWithCompletion:(id)a3
+- (void)dismissAnimatedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__SBElasticValueViewController_dismissAnimatedWithCompletion___block_invoke;
   v6[3] = &unk_2783B33B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SBElasticValueViewController *)self transitionToState:0 animated:1 completion:v6];
 }
 
@@ -894,30 +894,30 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
   return result;
 }
 
-- (void)setHUDAttached:(BOOL)a3
+- (void)setHUDAttached:(BOOL)attached
 {
-  self->_isHUDAttached = a3;
-  v4 = [(SBElasticValueViewController *)self attachmentDelegate];
-  [v4 updateAttachmentStateForHUDViewController:self];
+  self->_isHUDAttached = attached;
+  attachmentDelegate = [(SBElasticValueViewController *)self attachmentDelegate];
+  [attachmentDelegate updateAttachmentStateForHUDViewController:self];
 }
 
 - (float)currentValue
 {
-  v3 = [(SBElasticValueViewController *)self dataSource];
-  [v3 elasticValueViewControllerCurrentValue:self];
+  dataSource = [(SBElasticValueViewController *)self dataSource];
+  [dataSource elasticValueViewControllerCurrentValue:self];
   v5 = v4;
 
   return v5;
 }
 
-- (void)changeValue:(float)a3 animated:(BOOL)a4
+- (void)changeValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(SBElasticValueViewController *)self _changeValue:?])
   {
-    *&v7 = a3;
+    *&v7 = value;
 
-    [(SBElasticValueViewController *)self _updateSliderValue:v4 animated:v7];
+    [(SBElasticValueViewController *)self _updateSliderValue:animatedCopy animated:v7];
   }
 
   else
@@ -931,14 +931,14 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
   }
 }
 
-- (BOOL)_changeValue:(float)a3
+- (BOOL)_changeValue:(float)value
 {
-  v4 = self;
-  v5 = [(SBElasticValueViewController *)self dataSource];
-  *&v6 = a3;
-  LOBYTE(v4) = [v5 elasticValueViewController:v4 updateCurrentValue:v6];
+  selfCopy = self;
+  dataSource = [(SBElasticValueViewController *)self dataSource];
+  *&v6 = value;
+  LOBYTE(selfCopy) = [dataSource elasticValueViewController:selfCopy updateCurrentValue:v6];
 
-  return v4;
+  return selfCopy;
 }
 
 - (unint64_t)axis
@@ -955,12 +955,12 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
 
 - (int64_t)hudPresentationOrientation
 {
-  v2 = [(SBElasticValueViewController *)self viewIfLoaded];
-  v3 = [v2 window];
+  viewIfLoaded = [(SBElasticValueViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [v3 interfaceOrientation];
+    interfaceOrientation = [window interfaceOrientation];
   }
 
   else
@@ -973,10 +973,10 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
       NSLog(&cfstr_ThisIsnTTheWor.isa);
     }
 
-    v4 = 1;
+    interfaceOrientation = 1;
   }
 
-  return v4;
+  return interfaceOrientation;
 }
 
 - (void)transitionStateContextuallyForValueChangeEvent
@@ -997,37 +997,37 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
   }
 }
 
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   v108 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   state = self->_state;
-  if ([(SBElasticValueViewController *)self _isStateChangeAllowedFrom:state toState:a3])
+  if ([(SBElasticValueViewController *)self _isStateChangeAllowedFrom:state toState:state])
   {
     if (self->_lockState)
     {
-      if (a3)
+      if (state)
       {
         goto LABEL_32;
       }
 
-      v55 = v5;
-      v62 = v8;
-      a3 = 1;
+      v55 = animatedCopy;
+      v62 = completionCopy;
+      state = 1;
     }
 
     else
     {
-      v55 = v5;
-      v62 = v8;
+      v55 = animatedCopy;
+      v62 = completionCopy;
     }
 
     v10 = [(SBElasticValueViewController *)self log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromSBElasticValueState(state);
-      v12 = NSStringFromSBElasticValueState(a3);
+      v12 = NSStringFromSBElasticValueState(state);
       *buf = 138543618;
       v105 = v11;
       v106 = 2114;
@@ -1036,10 +1036,10 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
     }
 
     self->_previousState = state;
-    self->_state = a3;
+    self->_state = state;
     objc_initWeak(buf, self);
-    v13 = self;
-    v14 = v13;
+    selfCopy = self;
+    v14 = selfCopy;
     if (state)
     {
       v15 = 0;
@@ -1047,7 +1047,7 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
 
     else
     {
-      v15 = a3 == 1;
+      v15 = state == 1;
     }
 
     if (v15)
@@ -1056,7 +1056,7 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
       v103[1] = 3221225472;
       v103[2] = __70__SBElasticValueViewController_transitionToState_animated_completion___block_invoke;
       v103[3] = &unk_2783A8C18;
-      v103[4] = v13;
+      v103[4] = selfCopy;
       v60 = MEMORY[0x223D6F7F0](v103);
       v17 = v102;
       v102[0] = MEMORY[0x277D85DD0];
@@ -1066,7 +1066,7 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
 
     else
     {
-      if (state == -1 || a3 != 0)
+      if (state == -1 || state != 0)
       {
         v53 = 0;
         v60 = 0;
@@ -1077,7 +1077,7 @@ uint64_t __62__SBElasticValueViewController_dismissAnimatedWithCompletion___bloc
       v101[1] = 3221225472;
       v101[2] = __70__SBElasticValueViewController_transitionToState_animated_completion___block_invoke_92;
       v101[3] = &unk_2783A8C18;
-      v101[4] = v13;
+      v101[4] = selfCopy;
       v60 = MEMORY[0x223D6F7F0](v101);
       v17 = v100;
       v100[0] = MEMORY[0x277D85DD0];
@@ -1093,8 +1093,8 @@ LABEL_22:
     v19 = v14->_debugStateSegmentedControl;
     v20 = v14->_leadingLabel;
     v21 = v14->_trailingLabel;
-    v22 = [(SBElasticValueViewController *)v14 sliderView];
-    v23 = [(SBElasticValueViewController *)v14 axis];
+    sliderView = [(SBElasticValueViewController *)v14 sliderView];
+    axis = [(SBElasticValueViewController *)v14 axis];
     v56 = v21;
     v58 = v20;
     v49 = v19;
@@ -1118,7 +1118,7 @@ LABEL_22:
     v51 = MEMORY[0x223D6F7F0](v96);
     v95 = 0;
     v94 = 0;
-    [(SBElasticValueViewController *)v14 _sliderViewMetricsUpdatersForState:a3 bounds:&v95 primaryMetricsUpdater:&v94 positionUpdater:v25, v27, v29, v31];
+    [(SBElasticValueViewController *)v14 _sliderViewMetricsUpdatersForState:state bounds:&v95 primaryMetricsUpdater:&v94 positionUpdater:v25, v27, v29, v31];
     v33 = MEMORY[0x223D6F7F0](v95);
     v34 = MEMORY[0x223D6F7F0](v94);
     v86[0] = MEMORY[0x277D85DD0];
@@ -1129,14 +1129,14 @@ LABEL_22:
     v44 = v60;
     v88 = v44;
     v92[1] = state;
-    v92[2] = a3;
+    v92[2] = state;
     v35 = v32;
     v89 = v35;
-    v92[3] = v23;
+    v92[3] = axis;
     v93 = v19;
     v36 = v33;
     v90 = v36;
-    v37 = v22;
+    v37 = sliderView;
     v87 = v37;
     v38 = v34;
     v91 = v38;
@@ -1147,7 +1147,7 @@ LABEL_22:
     v77[3] = &unk_2783B3450;
     objc_copyWeak(v85, buf);
     v85[1] = state;
-    v85[2] = a3;
+    v85[2] = state;
     v46 = v37;
     v78 = v46;
     v79 = v14;
@@ -1155,7 +1155,7 @@ LABEL_22:
     v82 = v48;
     v47 = v35;
     v83 = v47;
-    v85[3] = v23;
+    v85[3] = axis;
     v39 = v51;
     v84 = v39;
     v52 = v56;
@@ -1172,8 +1172,8 @@ LABEL_22:
     v74 = v59;
     v57 = v39;
     v75 = v57;
-    v76[1] = a3;
-    v76[2] = v23;
+    v76[1] = state;
+    v76[2] = axis;
     v41 = MEMORY[0x223D6F7F0](v73);
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
@@ -1188,13 +1188,13 @@ LABEL_22:
     v67[3] = &unk_2783B34A0;
     objc_copyWeak(v70, buf);
     v70[1] = state;
-    v70[2] = a3;
+    v70[2] = state;
     v50 = v49;
     v68 = v50;
     v54 = v53;
     v69 = v54;
     v43 = MEMORY[0x223D6F7F0](v67);
-    if (state == -1 || a3 || ![(SBElasticValueViewController *)v14 bs_isAppearingOrAppeared])
+    if (state == -1 || state || ![(SBElasticValueViewController *)v14 bs_isAppearingOrAppeared])
     {
       [(SBElasticValueViewController *)v14 _stopMonitoringForSliderVisiblyOffscreen];
     }
@@ -1215,8 +1215,8 @@ LABEL_22:
       objc_copyWeak(v66, buf);
       v65 = v62;
       v66[1] = state;
-      v66[2] = a3;
-      [(SBElasticValueViewController *)v14 _animateFromState:state toState:a3 primaryAnimations:v40 primaryCompletion:&__block_literal_global_115 positionAnimations:v41 positionCompletion:v42 finalCompletion:v63];
+      v66[2] = state;
+      [(SBElasticValueViewController *)v14 _animateFromState:state toState:state primaryAnimations:v40 primaryCompletion:&__block_literal_global_115 positionAnimations:v41 positionCompletion:v42 finalCompletion:v63];
 
       objc_destroyWeak(v66);
     }
@@ -1229,7 +1229,7 @@ LABEL_22:
       v43[2](v43);
       if (v62)
       {
-        (v62)[2](v62, state, a3, self->_state, 1);
+        (v62)[2](v62, state, state, self->_state, 1);
       }
     }
 
@@ -1244,13 +1244,13 @@ LABEL_22:
 
     objc_destroyWeak(&v99);
     objc_destroyWeak(buf);
-    v8 = v62;
+    completionCopy = v62;
     goto LABEL_32;
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8, state, a3, self->_state, 0);
+    (*(completionCopy + 2))(completionCopy, state, state, self->_state, 0);
   }
 
 LABEL_32:
@@ -1611,30 +1611,30 @@ void __70__SBElasticValueViewController_transitionToState_animated_completion___
   }
 }
 
-- (void)_animateFromState:(int64_t)a3 toState:(int64_t)a4 primaryAnimations:(id)a5 primaryCompletion:(id)a6 positionAnimations:(id)a7 positionCompletion:(id)a8 finalCompletion:(id)a9
+- (void)_animateFromState:(int64_t)state toState:(int64_t)toState primaryAnimations:(id)animations primaryCompletion:(id)completion positionAnimations:(id)positionAnimations positionCompletion:(id)positionCompletion finalCompletion:(id)finalCompletion
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v33 = a9;
-  v19 = [(SBElasticValueViewController *)self settings];
-  v20 = v19;
-  v34 = a4;
-  if (!a3 && a4 == 1)
+  animationsCopy = animations;
+  completionCopy = completion;
+  positionAnimationsCopy = positionAnimations;
+  positionCompletionCopy = positionCompletion;
+  finalCompletionCopy = finalCompletion;
+  settings = [(SBElasticValueViewController *)self settings];
+  v20 = settings;
+  toStateCopy = toState;
+  if (!state && toState == 1)
   {
-    v21 = [v19 baseToInitialTransitionSettings];
-    v22 = [v20 baseToInitialPositionSettings];
+    baseToInitialTransitionSettings = [settings baseToInitialTransitionSettings];
+    baseToInitialPositionSettings = [v20 baseToInitialPositionSettings];
     goto LABEL_4;
   }
 
-  if (a3 == 1 && a4 == 4)
+  if (state == 1 && toState == 4)
   {
-    v24 = [v19 deflationTransitionSettings];
+    deflationTransitionSettings = [settings deflationTransitionSettings];
 LABEL_9:
-    v21 = v24;
+    baseToInitialTransitionSettings = deflationTransitionSettings;
     v23 = 0;
-    if (!v24)
+    if (!deflationTransitionSettings)
     {
       goto LABEL_17;
     }
@@ -1642,35 +1642,35 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a3 != 4 || a4)
+  if (state != 4 || toState)
   {
-    if (a4)
+    if (toState)
     {
       v23 = 0;
       goto LABEL_17;
     }
 
-    if (a3 == 2 && !self->_reduceMotionEnabled)
+    if (state == 2 && !self->_reduceMotionEnabled)
     {
-      v24 = [v19 compactToBaseTransitionSettings];
+      deflationTransitionSettings = [settings compactToBaseTransitionSettings];
     }
 
     else
     {
-      v24 = [v19 generalToBaseTransitionSettings];
+      deflationTransitionSettings = [settings generalToBaseTransitionSettings];
     }
 
     goto LABEL_9;
   }
 
-  v21 = [v19 deflatingToBaseTransitionSettings];
-  v22 = [v20 deflatingToBasePositionSettings];
+  baseToInitialTransitionSettings = [settings deflatingToBaseTransitionSettings];
+  baseToInitialPositionSettings = [v20 deflatingToBasePositionSettings];
 LABEL_4:
-  v23 = v22;
-  if (!v21)
+  v23 = baseToInitialPositionSettings;
+  if (!baseToInitialTransitionSettings)
   {
 LABEL_17:
-    v21 = [v20 defaultTransitionSettings];
+    baseToInitialTransitionSettings = [v20 defaultTransitionSettings];
     if (!v23)
     {
       goto LABEL_18;
@@ -1683,12 +1683,12 @@ LABEL_10:
   if (!v23)
   {
 LABEL_18:
-    v23 = v21;
+    v23 = baseToInitialTransitionSettings;
   }
 
 LABEL_11:
   v47 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v21 setFrameRateRange:1114141 highFrameRateReason:{*&v47.minimum, *&v47.maximum, *&v47.preferred}];
+  [baseToInitialTransitionSettings setFrameRateRange:1114141 highFrameRateReason:{*&v47.minimum, *&v47.maximum, *&v47.preferred}];
   v48 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [v23 setFrameRateRange:1114141 highFrameRateReason:{*&v48.minimum, *&v48.maximum, *&v48.preferred}];
   objc_initWeak(location, self);
@@ -1697,27 +1697,27 @@ LABEL_11:
   v38[1] = 3221225472;
   v38[2] = __148__SBElasticValueViewController__animateFromState_toState_primaryAnimations_primaryCompletion_positionAnimations_positionCompletion_finalCompletion___block_invoke;
   v38[3] = &unk_2783B34F0;
-  v26 = v21;
+  v26 = baseToInitialTransitionSettings;
   v39 = v26;
   v45 = 3;
-  v27 = v15;
+  v27 = animationsCopy;
   v41 = v27;
-  v28 = v16;
+  v28 = completionCopy;
   v42 = v28;
   v29 = v23;
   v40 = v29;
-  v30 = v17;
+  v30 = positionAnimationsCopy;
   v43 = v30;
-  v31 = v18;
+  v31 = positionCompletionCopy;
   v44 = v31;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __148__SBElasticValueViewController__animateFromState_toState_primaryAnimations_primaryCompletion_positionAnimations_positionCompletion_finalCompletion___block_invoke_4;
   v35[3] = &unk_2783B3518;
   objc_copyWeak(v37, location);
-  v32 = v33;
+  v32 = finalCompletionCopy;
   v36 = v32;
-  v37[1] = v34;
+  v37[1] = toStateCopy;
   [v25 perform:v38 finalCompletion:v35];
 
   objc_destroyWeak(v37);
@@ -1791,12 +1791,12 @@ void __148__SBElasticValueViewController__animateFromState_toState_primaryAnimat
   (*(*(a1 + 32) + 16))(*(a1 + 32), v3 == *(a1 + 48));
 }
 
-- (BOOL)_isStateChangeAllowedFrom:(int64_t)a3 toState:(int64_t)a4
+- (BOOL)_isStateChangeAllowedFrom:(int64_t)from toState:(int64_t)state
 {
   v26 = *MEMORY[0x277D85DE8];
   if (!self->_isRotating)
   {
-    if (a3 == a4)
+    if (from == state)
     {
       v7 = [(SBElasticValueViewController *)self log];
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1804,8 +1804,8 @@ void __148__SBElasticValueViewController__animateFromState_toState_primaryAnimat
         goto LABEL_14;
       }
 
-      v13 = NSStringFromSBElasticValueState(a3);
-      v14 = NSStringFromSBElasticValueState(a3);
+      v13 = NSStringFromSBElasticValueState(from);
+      v14 = NSStringFromSBElasticValueState(from);
       *buf = 138543618;
       v21 = v13;
       v22 = 2114;
@@ -1815,16 +1815,16 @@ void __148__SBElasticValueViewController__animateFromState_toState_primaryAnimat
 
     else
     {
-      if (a3 != -1 || !a4)
+      if (from != -1 || !state)
       {
-        if (a3)
+        if (from)
         {
           return 1;
         }
 
-        v17 = [(SBElasticValueViewController *)self delegate];
+        delegate = [(SBElasticValueViewController *)self delegate];
         v19 = 0;
-        v18 = [v17 elasticValueViewControllerCanBePresented:self withReason:&v19];
+        v18 = [delegate elasticValueViewControllerCanBePresented:self withReason:&v19];
         v7 = v19;
 
         if (v18)
@@ -1839,7 +1839,7 @@ void __148__SBElasticValueViewController__animateFromState_toState_primaryAnimat
           goto LABEL_5;
         }
 
-        v9 = NSStringFromSBElasticValueState(a4);
+        v9 = NSStringFromSBElasticValueState(state);
         *buf = 138543874;
         v21 = @"Base";
         v22 = 2114;
@@ -1862,7 +1862,7 @@ LABEL_5:
         goto LABEL_14;
       }
 
-      v13 = NSStringFromSBElasticValueState(a4);
+      v13 = NSStringFromSBElasticValueState(state);
       *buf = 138543618;
       v21 = @"Null";
       v22 = 2114;
@@ -1876,8 +1876,8 @@ LABEL_5:
   v7 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromSBElasticValueState(a3);
-    v9 = NSStringFromSBElasticValueState(a4);
+    v8 = NSStringFromSBElasticValueState(from);
+    v9 = NSStringFromSBElasticValueState(state);
     *buf = 138543618;
     v21 = v8;
     v22 = 2114;
@@ -1922,8 +1922,8 @@ LABEL_15:
     self->_displayLinkForVisiblyOffscreenMonitoring = v4;
 
     v6 = self->_displayLinkForVisiblyOffscreenMonitoring;
-    v7 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 }
 
@@ -1944,7 +1944,7 @@ LABEL_15:
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   v52 = *MEMORY[0x277D85DE8];
   if (self->_state)
@@ -1952,16 +1952,16 @@ LABEL_15:
     return;
   }
 
-  v4 = [(SBElasticValueViewController *)self sliderView];
-  v5 = [v4 layer];
-  [v5 position];
-  [v5 bounds];
+  sliderView = [(SBElasticValueViewController *)self sliderView];
+  layer = [sliderView layer];
+  [layer position];
+  [layer bounds];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = [v5 presentationModifiers];
-  v7 = [v6 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  presentationModifiers = [layer presentationModifiers];
+  v7 = [presentationModifiers countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (!v7)
   {
 
@@ -1969,8 +1969,8 @@ LABEL_15:
   }
 
   v8 = v7;
-  v44 = self;
-  v45 = v4;
+  selfCopy = self;
+  v45 = sliderView;
   v9 = 0;
   v10 = *v48;
   do
@@ -1979,41 +1979,41 @@ LABEL_15:
     {
       if (*v48 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(presentationModifiers);
       }
 
       v12 = *(*(&v47 + 1) + 8 * i);
-      v13 = [v12 keyPath];
-      v14 = [v13 isEqual:@"position"];
+      keyPath = [v12 keyPath];
+      v14 = [keyPath isEqual:@"position"];
 
       if (v14)
       {
-        v15 = [v12 value];
-        [v15 CGPointValue];
+        value = [v12 value];
+        [value CGPointValue];
         v9 = 1;
       }
 
       else
       {
-        v16 = [v12 keyPath];
-        v17 = [v16 isEqual:@"bounds"];
+        keyPath2 = [v12 keyPath];
+        v17 = [keyPath2 isEqual:@"bounds"];
 
         if (!v17)
         {
           continue;
         }
 
-        v15 = [v12 value];
-        [v15 CGRectValue];
+        value = [v12 value];
+        [value CGRectValue];
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    v8 = [presentationModifiers countByEnumeratingWithState:&v47 objects:v51 count:16];
   }
 
   while (v8);
 
-  v4 = v45;
+  sliderView = v45;
   if (v9)
   {
     SBUnintegralizedRectCenteredAboutPoint();
@@ -2026,8 +2026,8 @@ LABEL_15:
     v29 = v21 + v28;
     v31 = v23 - (v26 + v30);
     v33 = v25 - (v28 + v32);
-    v34 = [(SBElasticValueViewController *)v44 view];
-    [v34 bounds];
+    view = [(SBElasticValueViewController *)selfCopy view];
+    [view bounds];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -2043,82 +2043,82 @@ LABEL_15:
     v54.size.height = v42;
     if (!CGRectIntersectsRect(v53, v54))
     {
-      v43 = [(SBElasticValueViewController *)v44 log];
+      v43 = [(SBElasticValueViewController *)selfCopy log];
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         _os_log_impl(&dword_21ED4E000, v43, OS_LOG_TYPE_DEFAULT, "Dismissing immediately due to being visibly offscreen in the base state", buf, 2u);
       }
 
-      [(SBElasticValueViewController *)v44 _actuallyDismiss];
+      [(SBElasticValueViewController *)selfCopy _actuallyDismiss];
     }
   }
 
 LABEL_20:
 }
 
-- (void)_scheduleDismissal:(id)a3
+- (void)_scheduleDismissal:(id)dismissal
 {
-  v7 = a3;
-  v4 = [(SBElasticValueViewController *)self settings];
-  [v4 dismissalInterval];
+  dismissalCopy = dismissal;
+  settings = [(SBElasticValueViewController *)self settings];
+  [settings dismissalInterval];
   v6 = v5;
 
-  [(SBElasticValueViewController *)self _scheduleDismissal:v7 afterInterval:v6];
+  [(SBElasticValueViewController *)self _scheduleDismissal:dismissalCopy afterInterval:v6];
 }
 
-- (void)_scheduleDismissal:(id)a3 afterInterval:(double)a4
+- (void)_scheduleDismissal:(id)dismissal afterInterval:(double)interval
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dismissalCopy = dismissal;
   v7 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v18 = a4;
+    intervalCopy = interval;
     v19 = 2114;
-    v20 = v6;
+    v20 = dismissalCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "_scheduleDismissal after %fs: %{public}@", buf, 0x16u);
   }
 
   [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:@"SCHEDULING NEW DISMISSAL TIMER"];
   v8 = MEMORY[0x277CBEBB8];
   v15 = @"DismissalReason";
-  v16 = v6;
+  v16 = dismissalCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v10 = [v8 timerWithTimeInterval:self target:sel__dismissalTimerFired_ selector:v9 userInfo:0 repeats:a4];
+  v10 = [v8 timerWithTimeInterval:self target:sel__dismissalTimerFired_ selector:v9 userInfo:0 repeats:interval];
   dismissalTimer = self->_dismissalTimer;
   self->_dismissalTimer = v10;
 
-  v12 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v12 addTimer:self->_dismissalTimer forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:self->_dismissalTimer forMode:*MEMORY[0x277CBE738]];
 
   v13 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = self->_dismissalTimer;
     *buf = 138543362;
-    v18 = *&v14;
+    intervalCopy = *&v14;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "_scheduleDismissal's new timer: %{public}@", buf, 0xCu);
   }
 }
 
-- (void)_invalidateDismissalTimerForReason:(id)a3
+- (void)_invalidateDismissalTimerForReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSTimer *)self->_dismissalTimer userInfo];
-    v7 = [v6 objectForKey:@"DismissalReason"];
+    userInfo = [(NSTimer *)self->_dismissalTimer userInfo];
+    v7 = [userInfo objectForKey:@"DismissalReason"];
     dismissalTimer = self->_dismissalTimer;
     v10 = 138543874;
     v11 = v7;
     v12 = 2114;
     v13 = dismissalTimer;
     v14 = 2114;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "_invalidateDismissalTimer; (original dismissal timer reason: '%{public}@') -- invalidating %{public}@ for reason '%{public}@'", &v10, 0x20u);
   }
 
@@ -2127,16 +2127,16 @@ LABEL_20:
   self->_dismissalTimer = 0;
 }
 
-- (void)_dismissalTimerFired:(id)a3
+- (void)_dismissalTimerFired:(id)fired
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  firedCopy = fired;
   v6 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     dismissalTimer = self->_dismissalTimer;
-    v8 = [(NSTimer *)dismissalTimer userInfo];
-    v9 = [v8 objectForKey:@"DismissalReason"];
+    userInfo = [(NSTimer *)dismissalTimer userInfo];
+    v9 = [userInfo objectForKey:@"DismissalReason"];
     *buf = 138543618;
     v20 = dismissalTimer;
     v21 = 2114;
@@ -2144,7 +2144,7 @@ LABEL_20:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "_dismissalTimerFired:%{public}@; (original dismissal timer reason: '%{public}@')", buf, 0x16u);
   }
 
-  if (self->_dismissalTimer != v5)
+  if (self->_dismissalTimer != firedCopy)
   {
     [(SBElasticValueViewController *)a2 _dismissalTimerFired:?];
   }
@@ -2156,19 +2156,19 @@ LABEL_20:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = self->_dismissalTimer;
-      v12 = [(SBElasticValueViewController *)self isSliderTracking];
+      isSliderTracking = [(SBElasticValueViewController *)self isSliderTracking];
       *buf = 138543618;
       v20 = v11;
       v21 = 1024;
-      LODWORD(v22) = v12;
+      LODWORD(v22) = isSliderTracking;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "_dismissalTimerFired:%{public}@; aborting dismissal; tracking state has us locked down. (isSliderTracking:%{BOOL}u, _lockState:{BOOL}u", buf, 0x12u);
     }
   }
 
   else
   {
-    v13 = [(NSTimer *)v5 userInfo];
-    v10 = [v13 objectForKey:@"DismissalReason"];
+    userInfo2 = [(NSTimer *)firedCopy userInfo];
+    v10 = [userInfo2 objectForKey:@"DismissalReason"];
 
     [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:@"DISMISSAL TIMER FIRED; CLEANUP ANY RESIDUAL STATE"];
     objc_initWeak(&location, self);
@@ -2176,7 +2176,7 @@ LABEL_20:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v5;
+      v20 = firedCopy;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "_dismissalTimerFired:%{public}@; transitioning to base state for dismissal", buf, 0xCu);
     }
 
@@ -2185,7 +2185,7 @@ LABEL_20:
     v15[2] = __53__SBElasticValueViewController__dismissalTimerFired___block_invoke;
     v15[3] = &unk_2783B3540;
     objc_copyWeak(&v17, &location);
-    v16 = v5;
+    v16 = firedCopy;
     [(SBElasticValueViewController *)self transitionToState:0 animated:1 completion:v15];
 
     objc_destroyWeak(&v17);
@@ -2258,8 +2258,8 @@ LABEL_14:
 - (void)_actuallyDismiss
 {
   [(SBElasticValueViewController *)self _stopMonitoringForSliderVisiblyOffscreen];
-  v3 = [(SBElasticValueViewController *)self delegate];
-  [v3 elasticValueViewControllerNeedsDismissal:self];
+  delegate = [(SBElasticValueViewController *)self delegate];
+  [delegate elasticValueViewControllerNeedsDismissal:self];
 
   [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:@"actually dismissing"];
   v4 = [(SBElasticValueViewController *)self log];
@@ -2270,14 +2270,14 @@ LABEL_14:
   }
 }
 
-- (void)_handleShortLongPressGestureRecognizer:(id)a3
+- (void)_handleShortLongPressGestureRecognizer:(id)recognizer
 {
-  if (self->_shortLongPressGestureRecognizer == a3)
+  if (self->_shortLongPressGestureRecognizer == recognizer)
   {
-    v4 = [a3 state];
-    if (v4 != 2)
+    state = [recognizer state];
+    if (state != 2)
     {
-      if (v4 == 1)
+      if (state == 1)
       {
         [(SBElasticValueViewController *)self _noteSliderViewDidBeginTracking];
 
@@ -2293,9 +2293,9 @@ LABEL_14:
   }
 }
 
-- (void)_sliderEditingDidBegin:(id)a3
+- (void)_sliderEditingDidBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   self->_sliderIsEditing = 1;
   [(SBElasticValueViewController *)self noteContinuousValueInteractionWillBegin];
   if (!self->_sliderApplyValueTimer)
@@ -2341,9 +2341,9 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
   }
 }
 
-- (void)_sliderValueDidChange:(id)a3
+- (void)_sliderValueDidChange:(id)change
 {
-  [a3 value];
+  [change value];
   v5 = v4;
   [(SBElasticValueViewController *)self _updateSliderValue:1 animated:?];
   LODWORD(v6) = v5;
@@ -2352,7 +2352,7 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
   self->_pendingValueToApply = v7;
 }
 
-- (void)_sliderIndirectInputDidBegin:(id)a3
+- (void)_sliderIndirectInputDidBegin:(id)begin
 {
   [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:@"Button Input Began"];
   if (self->_isRotating)
@@ -2378,7 +2378,7 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
   }
 }
 
-- (void)_sliderIndirectInputDidEnd:(id)a3
+- (void)_sliderIndirectInputDidEnd:(id)end
 {
   if (self->_initialTransitionCompleted)
   {
@@ -2386,7 +2386,7 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
   }
 }
 
-- (void)_sliderEditingDidEnd:(id)a3
+- (void)_sliderEditingDidEnd:(id)end
 {
   [(NSTimer *)self->_sliderApplyValueTimer invalidate];
   sliderApplyValueTimer = self->_sliderApplyValueTimer;
@@ -2412,7 +2412,7 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 - (void)_noteSliderViewDidBeginTracking
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(SBElasticValueViewController *)self isSliderTracking];
+  isSliderTracking = [(SBElasticValueViewController *)self isSliderTracking];
   ++self->_sliderTrackingCount;
   v4 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2423,7 +2423,7 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "_noteSliderViewDidBeginTracking: %lu", &v6, 0xCu);
   }
 
-  if (v3 != [(SBElasticValueViewController *)self isSliderTracking])
+  if (isSliderTracking != [(SBElasticValueViewController *)self isSliderTracking])
   {
     [(SBElasticValueViewController *)self _updateSliderTracking];
   }
@@ -2431,8 +2431,8 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 
 - (void)_noteSliderViewDidEndTracking
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBElasticValueViewController.m" lineNumber:1258 description:@"_sliderTrackingCount overflow"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBElasticValueViewController.m" lineNumber:1258 description:@"_sliderTrackingCount overflow"];
 }
 
 - (void)_updateSliderTracking
@@ -2475,27 +2475,27 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
   [(SBElasticValueViewController *)self _updateDimmingVisible:v6];
 }
 
-- (void)_refreshDebugUI:(BOOL)a3
+- (void)_refreshDebugUI:(BOOL)i
 {
   v262[2] = *MEMORY[0x277D85DE8];
   if (os_variant_has_internal_content())
   {
-    v5 = [(SBElasticValueViewController *)self settings];
-    [v5 showDebugUI];
+    settings = [(SBElasticValueViewController *)self settings];
+    [settings showDebugUI];
     IsZero = BSFloatIsZero();
-    v7 = [(SBElasticValueViewController *)self view];
-    v8 = v7;
+    view = [(SBElasticValueViewController *)self view];
+    v8 = view;
     debugContainerView = self->_debugContainerView;
     if (IsZero)
     {
-      [v7 sendSubviewToBack:debugContainerView];
+      [view sendSubviewToBack:debugContainerView];
     }
 
     else
     {
-      [v7 bringSubviewToFront:debugContainerView];
+      [view bringSubviewToFront:debugContainerView];
 
-      if (!a3)
+      if (!i)
       {
         debugLabel = self->_debugLabel;
         if (!debugLabel)
@@ -2509,12 +2509,12 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 
         [(UILabel *)debugLabel setText:@"LAYING IN WAIT FOR ACTION"];
         v27 = self->_debugLabel;
-        v28 = [MEMORY[0x277D75348] whiteColor];
-        [(UILabel *)v27 setTextColor:v28];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [(UILabel *)v27 setTextColor:whiteColor];
 
         v29 = self->_debugLabel;
-        v30 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v29 setBackgroundColor:v30];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v29 setBackgroundColor:blackColor];
 
         [(UILabel *)self->_debugLabel sizeToFit];
         [(UILabel *)self->_debugLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2533,12 +2533,12 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         [(UIButton *)self->_debugDumpButton setTitle:@"  DUMP TO CONSOLE  " forState:0];
         [(UIButton *)self->_debugDumpButton addTarget:self action:sel__debugDump_ forControlEvents:64];
         v34 = self->_debugDumpButton;
-        v35 = [MEMORY[0x277D75348] whiteColor];
-        [(UIButton *)v34 setTitleColor:v35 forState:0];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        [(UIButton *)v34 setTitleColor:whiteColor2 forState:0];
 
         v36 = self->_debugDumpButton;
-        v37 = [MEMORY[0x277D75348] blackColor];
-        [(UIButton *)v36 setBackgroundColor:v37];
+        blackColor2 = [MEMORY[0x277D75348] blackColor];
+        [(UIButton *)v36 setBackgroundColor:blackColor2];
 
         [(UIButton *)self->_debugDumpButton _setContinuousCornerRadius:8.0];
         [(UIView *)self->_debugContainerView addSubview:self->_debugDumpButton];
@@ -2558,26 +2558,26 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 
         [(UIButton *)self->_debugNextAudioRouteButton _setContinuousCornerRadius:8.0];
         v42 = self->_debugNextAudioRouteButton;
-        v43 = [MEMORY[0x277D75348] darkGrayColor];
-        [(UIButton *)v42 setBackgroundColor:v43];
+        darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+        [(UIButton *)v42 setBackgroundColor:darkGrayColor];
 
         [(UIButton *)self->_debugNextAudioRouteButton setTranslatesAutoresizingMaskIntoConstraints:0];
         [(UIButton *)self->_debugNextAudioRouteButton setTitle:@"  NEXT ROUTE →  " forState:0];
         v44 = self->_debugNextAudioRouteButton;
-        v45 = [MEMORY[0x277D75348] whiteColor];
-        [(UIButton *)v44 setTitleColor:v45 forState:0];
+        whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+        [(UIButton *)v44 setTitleColor:whiteColor3 forState:0];
 
         [(UIButton *)self->_debugNextAudioRouteButton addTarget:self action:sel__debugDidTapNextRoute_ forControlEvents:64];
         [(UIButton *)self->_debugResetAudioRouteButton _setContinuousCornerRadius:8.0];
         v46 = self->_debugResetAudioRouteButton;
-        v47 = [MEMORY[0x277D75348] darkGrayColor];
-        [(UIButton *)v46 setBackgroundColor:v47];
+        darkGrayColor2 = [MEMORY[0x277D75348] darkGrayColor];
+        [(UIButton *)v46 setBackgroundColor:darkGrayColor2];
 
         [(UIButton *)self->_debugResetAudioRouteButton setTranslatesAutoresizingMaskIntoConstraints:0];
         [(UIButton *)self->_debugResetAudioRouteButton setTitle:@"  ↺ RESET ROUTE  " forState:0];
         v48 = self->_debugResetAudioRouteButton;
-        v49 = [MEMORY[0x277D75348] whiteColor];
-        [(UIButton *)v48 setTitleColor:v49 forState:0];
+        whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+        [(UIButton *)v48 setTitleColor:whiteColor4 forState:0];
 
         [(UIButton *)self->_debugResetAudioRouteButton addTarget:self action:sel__debugDidTapResetRoute_ forControlEvents:64];
         [(UIView *)self->_debugContainerView addSubview:self->_debugNextAudioRouteButton];
@@ -2597,8 +2597,8 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         [(UISegmentedControl *)debugStateSegmentedControl sizeToFit];
         [(UISegmentedControl *)self->_debugStateSegmentedControl addTarget:self action:sel__debugChangingStateFromSegmentedControl_ forControlEvents:4096];
         v55 = self->_debugStateSegmentedControl;
-        v56 = [MEMORY[0x277D75348] blackColor];
-        [(UISegmentedControl *)v55 setBackgroundColor:v56];
+        blackColor3 = [MEMORY[0x277D75348] blackColor];
+        [(UISegmentedControl *)v55 setBackgroundColor:blackColor3];
 
         [(UISegmentedControl *)self->_debugStateSegmentedControl setSelectedSegmentIndex:self->_state];
         [(UISegmentedControl *)self->_debugStateSegmentedControl setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2614,11 +2614,11 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         }
 
         [(UISwitch *)debugAutoDismissalSwitch sizeToFit];
-        v256 = v5;
-        -[UISwitch setOn:](self->_debugAutoDismissalSwitch, "setOn:", [v5 autoDismiss]);
+        v256 = settings;
+        -[UISwitch setOn:](self->_debugAutoDismissalSwitch, "setOn:", [settings autoDismiss]);
         v60 = self->_debugAutoDismissalSwitch;
-        v61 = [MEMORY[0x277D75348] blackColor];
-        [(UISwitch *)v60 setBackgroundColor:v61];
+        blackColor4 = [MEMORY[0x277D75348] blackColor];
+        [(UISwitch *)v60 setBackgroundColor:blackColor4];
 
         [(UISwitch *)self->_debugAutoDismissalSwitch addTarget:self action:sel__debugAutoDismissalSwitchValueChanged_ forControlEvents:4096];
         [(UISwitch *)self->_debugAutoDismissalSwitch setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2634,12 +2634,12 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 
         [(UILabel *)debugAutoDismissLabel setText:@"AutoDismiss"];
         v65 = self->_debugAutoDismissLabel;
-        v66 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v65 setBackgroundColor:v66];
+        blackColor5 = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v65 setBackgroundColor:blackColor5];
 
         v67 = self->_debugAutoDismissLabel;
-        v68 = [MEMORY[0x277D75348] whiteColor];
-        [(UILabel *)v67 setTextColor:v68];
+        whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+        [(UILabel *)v67 setTextColor:whiteColor5];
 
         [(UILabel *)self->_debugAutoDismissLabel setTranslatesAutoresizingMaskIntoConstraints:0];
         [(UILabel *)self->_debugAutoDismissLabel sizeToFit];
@@ -2657,8 +2657,8 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 
         [(UISwitch *)debugLockStateSwitch sizeToFit];
         v72 = self->_debugLockStateSwitch;
-        v73 = [MEMORY[0x277D75348] blackColor];
-        [(UISwitch *)v72 setBackgroundColor:v73];
+        blackColor6 = [MEMORY[0x277D75348] blackColor];
+        [(UISwitch *)v72 setBackgroundColor:blackColor6];
 
         [(UISwitch *)self->_debugLockStateSwitch addTarget:self action:sel__debugLockStateSwitchValueChanged_ forControlEvents:4096];
         [(UISwitch *)self->_debugLockStateSwitch setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2674,12 +2674,12 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
 
         [(UILabel *)debugLockStateLabel setText:@"Lock State?"];
         v77 = self->_debugLockStateLabel;
-        v78 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v77 setBackgroundColor:v78];
+        blackColor7 = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v77 setBackgroundColor:blackColor7];
 
         v79 = self->_debugLockStateLabel;
-        v80 = [MEMORY[0x277D75348] whiteColor];
-        [(UILabel *)v79 setTextColor:v80];
+        whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+        [(UILabel *)v79 setTextColor:whiteColor6];
 
         [(UILabel *)self->_debugLockStateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
         [(UILabel *)self->_debugLockStateLabel sizeToFit];
@@ -2705,10 +2705,10 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         v262[0] = self->_debugWidthSlider;
         v262[1] = debugHeightSlider;
         v86 = [MEMORY[0x277CBEA60] arrayWithObjects:v262 count:2];
-        v87 = [MEMORY[0x277D75418] currentDevice];
-        v88 = [v87 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v88 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
         {
           v89 = objc_opt_new();
           debugPortraitYOriginSlider = self->_debugPortraitYOriginSlider;
@@ -2758,8 +2758,8 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         v100 = self->_debugPortraitYOriginSlider;
         if (v100)
         {
-          v101 = [MEMORY[0x277D759A0] mainScreen];
-          [v101 bounds];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen bounds];
           *&v103 = v102;
           [(UISlider *)v100 setMaximumValue:v103];
 
@@ -2767,278 +2767,278 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         }
 
         v22 = self->_debugAutoLayoutConstraints;
-        v104 = [(UIView *)self->_touchTrackingView layer];
-        [v104 setBorderWidth:1.0];
+        layer = [(UIView *)self->_touchTrackingView layer];
+        [layer setBorderWidth:1.0];
 
-        v105 = [(UIView *)self->_touchTrackingView layer];
-        v106 = [MEMORY[0x277D75348] blackColor];
-        [v105 setBorderColor:{objc_msgSend(v106, "CGColor")}];
+        layer2 = [(UIView *)self->_touchTrackingView layer];
+        blackColor8 = [MEMORY[0x277D75348] blackColor];
+        [layer2 setBorderColor:{objc_msgSend(blackColor8, "CGColor")}];
 
-        v107 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
-        [v107 setBorderWidth:5.0];
+        layer3 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
+        [layer3 setBorderWidth:5.0];
 
-        v108 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
-        v109 = [MEMORY[0x277D75348] systemPinkColor];
-        [v108 setBorderColor:{objc_msgSend(v109, "CGColor")}];
+        layer4 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
+        systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+        [layer4 setBorderColor:{objc_msgSend(systemPinkColor, "CGColor")}];
 
-        v110 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
-        v111 = [(SBElasticValueViewController *)self traitCollection];
-        [v111 displayCornerRadius];
-        [v110 setCornerRadius:?];
+        layer5 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
+        traitCollection = [(SBElasticValueViewController *)self traitCollection];
+        [traitCollection displayCornerRadius];
+        [layer5 setCornerRadius:?];
 
-        v112 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
+        layer6 = [(SBFTouchPassThroughView *)self->_sliderContainerView layer];
         v113 = *MEMORY[0x277CDA138];
-        [v112 setCornerCurve:*MEMORY[0x277CDA138]];
+        [layer6 setCornerCurve:*MEMORY[0x277CDA138]];
 
-        v114 = [(SBElasticSliderView *)self->_sliderView layer];
-        [v114 setBorderWidth:1.0];
+        layer7 = [(SBElasticSliderView *)self->_sliderView layer];
+        [layer7 setBorderWidth:1.0];
 
-        v115 = [(SBElasticSliderView *)self->_sliderView layer];
-        v116 = [MEMORY[0x277D75348] magentaColor];
-        [v115 setBorderColor:{objc_msgSend(v116, "CGColor")}];
+        layer8 = [(SBElasticSliderView *)self->_sliderView layer];
+        magentaColor = [MEMORY[0x277D75348] magentaColor];
+        [layer8 setBorderColor:{objc_msgSend(magentaColor, "CGColor")}];
 
-        v117 = [(UIView *)self->_debugContainerView layer];
-        [v117 setBorderWidth:1.0];
+        layer9 = [(UIView *)self->_debugContainerView layer];
+        [layer9 setBorderWidth:1.0];
 
-        v118 = [(UIView *)self->_debugContainerView layer];
-        v119 = [MEMORY[0x277D75348] systemYellowColor];
-        [v118 setBorderColor:{objc_msgSend(v119, "CGColor")}];
+        layer10 = [(UIView *)self->_debugContainerView layer];
+        systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+        [layer10 setBorderColor:{objc_msgSend(systemYellowColor, "CGColor")}];
 
-        v120 = [(UIView *)self->_debugContainerView layer];
-        v121 = [(SBElasticValueViewController *)self traitCollection];
-        [v121 displayCornerRadius];
-        [v120 setCornerRadius:?];
+        layer11 = [(UIView *)self->_debugContainerView layer];
+        traitCollection2 = [(SBElasticValueViewController *)self traitCollection];
+        [traitCollection2 displayCornerRadius];
+        [layer11 setCornerRadius:?];
 
-        v122 = [(UIView *)self->_debugContainerView layer];
-        [v122 setCornerCurve:v113];
+        layer12 = [(UIView *)self->_debugContainerView layer];
+        [layer12 setCornerCurve:v113];
 
-        v123 = [(_UILegibilityLabel *)self->_leadingLabel layer];
-        [v123 setBorderWidth:1.0];
+        layer13 = [(_UILegibilityLabel *)self->_leadingLabel layer];
+        [layer13 setBorderWidth:1.0];
 
-        v124 = [(_UILegibilityLabel *)self->_trailingLabel layer];
-        [v124 setBorderWidth:1.0];
+        layer14 = [(_UILegibilityLabel *)self->_trailingLabel layer];
+        [layer14 setBorderWidth:1.0];
 
         v125 = objc_opt_new();
-        v126 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
-        v127 = [(UIView *)self->_debugContainerView centerXAnchor];
-        v128 = [v126 constraintEqualToAnchor:v127];
+        centerXAnchor = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
+        centerXAnchor2 = [(UIView *)self->_debugContainerView centerXAnchor];
+        v128 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [(NSArray *)v125 addObject:v128];
 
-        v129 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerYAnchor];
-        v130 = [(UIView *)self->_debugContainerView centerYAnchor];
-        v131 = [v129 constraintEqualToAnchor:v130];
+        centerYAnchor = [(UISegmentedControl *)self->_debugStateSegmentedControl centerYAnchor];
+        centerYAnchor2 = [(UIView *)self->_debugContainerView centerYAnchor];
+        v131 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         [(NSArray *)v125 addObject:v131];
 
-        v132 = [(UILabel *)self->_debugLabel centerXAnchor];
-        v133 = [(UIView *)self->_debugContainerView centerXAnchor];
-        v134 = [v132 constraintEqualToAnchor:v133];
+        centerXAnchor3 = [(UILabel *)self->_debugLabel centerXAnchor];
+        centerXAnchor4 = [(UIView *)self->_debugContainerView centerXAnchor];
+        v134 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         [(NSArray *)v125 addObject:v134];
 
-        v135 = [(UILabel *)self->_debugLabel leadingAnchor];
-        v136 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v137 = [v135 constraintGreaterThanOrEqualToAnchor:v136];
+        leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+        leadingAnchor2 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v137 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
         [(NSArray *)v125 addObject:v137];
 
-        v138 = [(UILabel *)self->_debugLabel trailingAnchor];
-        v139 = [(UIView *)self->_debugContainerView trailingAnchor];
-        v140 = [v138 constraintLessThanOrEqualToAnchor:v139];
+        trailingAnchor = [(UILabel *)self->_debugLabel trailingAnchor];
+        trailingAnchor2 = [(UIView *)self->_debugContainerView trailingAnchor];
+        v140 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
         [(NSArray *)v125 addObject:v140];
 
-        v141 = [(UILabel *)self->_debugLabel topAnchor];
-        v142 = [(UISegmentedControl *)self->_debugStateSegmentedControl bottomAnchor];
-        v143 = [v141 constraintEqualToAnchor:v142 constant:10.0];
+        topAnchor = [(UILabel *)self->_debugLabel topAnchor];
+        bottomAnchor = [(UISegmentedControl *)self->_debugStateSegmentedControl bottomAnchor];
+        v143 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
         [(NSArray *)v125 addObject:v143];
 
-        v144 = [(UISwitch *)self->_debugAutoDismissalSwitch topAnchor];
-        v145 = [(UILabel *)self->_debugLabel bottomAnchor];
-        v146 = [v144 constraintEqualToAnchor:v145 constant:10.0];
+        topAnchor2 = [(UISwitch *)self->_debugAutoDismissalSwitch topAnchor];
+        bottomAnchor2 = [(UILabel *)self->_debugLabel bottomAnchor];
+        v146 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:10.0];
         [(NSArray *)v125 addObject:v146];
 
-        v147 = [(UISwitch *)self->_debugAutoDismissalSwitch centerXAnchor];
-        v148 = [(UIView *)self->_debugContainerView centerXAnchor];
-        v149 = [v147 constraintEqualToAnchor:v148];
+        centerXAnchor5 = [(UISwitch *)self->_debugAutoDismissalSwitch centerXAnchor];
+        centerXAnchor6 = [(UIView *)self->_debugContainerView centerXAnchor];
+        v149 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
         [(NSArray *)v125 addObject:v149];
 
-        v150 = [(UISwitch *)self->_debugAutoDismissalSwitch leadingAnchor];
-        v151 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v152 = [v150 constraintGreaterThanOrEqualToAnchor:v151];
+        leadingAnchor3 = [(UISwitch *)self->_debugAutoDismissalSwitch leadingAnchor];
+        leadingAnchor4 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v152 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
         [(NSArray *)v125 addObject:v152];
 
-        v153 = [(UISwitch *)self->_debugAutoDismissalSwitch widthAnchor];
-        v154 = [v153 constraintEqualToConstant:100.0];
+        widthAnchor = [(UISwitch *)self->_debugAutoDismissalSwitch widthAnchor];
+        v154 = [widthAnchor constraintEqualToConstant:100.0];
         [(NSArray *)v125 addObject:v154];
 
-        v155 = [(UISwitch *)self->_debugAutoDismissalSwitch trailingAnchor];
-        v156 = [(UIView *)self->_debugContainerView trailingAnchor];
-        v157 = [v155 constraintLessThanOrEqualToAnchor:v156];
+        trailingAnchor3 = [(UISwitch *)self->_debugAutoDismissalSwitch trailingAnchor];
+        trailingAnchor4 = [(UIView *)self->_debugContainerView trailingAnchor];
+        v157 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
         [(NSArray *)v125 addObject:v157];
 
-        v158 = [(UILabel *)self->_debugAutoDismissLabel widthAnchor];
-        v159 = [v158 constraintEqualToConstant:200.0];
+        widthAnchor2 = [(UILabel *)self->_debugAutoDismissLabel widthAnchor];
+        v159 = [widthAnchor2 constraintEqualToConstant:200.0];
         [(NSArray *)v125 addObject:v159];
 
-        v160 = [(UILabel *)self->_debugAutoDismissLabel centerYAnchor];
-        v161 = [(UISwitch *)self->_debugAutoDismissalSwitch centerYAnchor];
-        v162 = [v160 constraintEqualToAnchor:v161];
+        centerYAnchor3 = [(UILabel *)self->_debugAutoDismissLabel centerYAnchor];
+        centerYAnchor4 = [(UISwitch *)self->_debugAutoDismissalSwitch centerYAnchor];
+        v162 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         [(NSArray *)v125 addObject:v162];
 
-        v163 = [(UILabel *)self->_debugAutoDismissLabel leadingAnchor];
-        v164 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v165 = [v163 constraintGreaterThanOrEqualToAnchor:v164];
+        leadingAnchor5 = [(UILabel *)self->_debugAutoDismissLabel leadingAnchor];
+        leadingAnchor6 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v165 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
         [(NSArray *)v125 addObject:v165];
 
-        v166 = [(UILabel *)self->_debugAutoDismissLabel trailingAnchor];
-        v167 = [(UISwitch *)self->_debugAutoDismissalSwitch leadingAnchor];
-        v168 = [v166 constraintLessThanOrEqualToAnchor:v167 constant:-50.0];
+        trailingAnchor5 = [(UILabel *)self->_debugAutoDismissLabel trailingAnchor];
+        leadingAnchor7 = [(UISwitch *)self->_debugAutoDismissalSwitch leadingAnchor];
+        v168 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor7 constant:-50.0];
         [(NSArray *)v125 addObject:v168];
 
-        v169 = [(UISwitch *)self->_debugLockStateSwitch topAnchor];
-        v170 = [(UISwitch *)self->_debugAutoDismissalSwitch bottomAnchor];
-        v171 = [v169 constraintEqualToAnchor:v170 constant:10.0];
+        topAnchor3 = [(UISwitch *)self->_debugLockStateSwitch topAnchor];
+        bottomAnchor3 = [(UISwitch *)self->_debugAutoDismissalSwitch bottomAnchor];
+        v171 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:10.0];
         [(NSArray *)v125 addObject:v171];
 
-        v172 = [(UISwitch *)self->_debugLockStateSwitch centerXAnchor];
-        v173 = [(UIView *)self->_debugContainerView centerXAnchor];
-        v174 = [v172 constraintEqualToAnchor:v173];
+        centerXAnchor7 = [(UISwitch *)self->_debugLockStateSwitch centerXAnchor];
+        centerXAnchor8 = [(UIView *)self->_debugContainerView centerXAnchor];
+        v174 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
         [(NSArray *)v125 addObject:v174];
 
-        v175 = [(UISwitch *)self->_debugLockStateSwitch widthAnchor];
-        v176 = [v175 constraintEqualToConstant:100.0];
+        widthAnchor3 = [(UISwitch *)self->_debugLockStateSwitch widthAnchor];
+        v176 = [widthAnchor3 constraintEqualToConstant:100.0];
         [(NSArray *)v125 addObject:v176];
 
-        v177 = [(UISwitch *)self->_debugLockStateSwitch leadingAnchor];
-        v178 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v179 = [v177 constraintGreaterThanOrEqualToAnchor:v178];
+        leadingAnchor8 = [(UISwitch *)self->_debugLockStateSwitch leadingAnchor];
+        leadingAnchor9 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v179 = [leadingAnchor8 constraintGreaterThanOrEqualToAnchor:leadingAnchor9];
         [(NSArray *)v125 addObject:v179];
 
-        v180 = [(UISwitch *)self->_debugLockStateSwitch trailingAnchor];
-        v181 = [(UIView *)self->_debugContainerView trailingAnchor];
-        v182 = [v180 constraintLessThanOrEqualToAnchor:v181];
+        trailingAnchor6 = [(UISwitch *)self->_debugLockStateSwitch trailingAnchor];
+        trailingAnchor7 = [(UIView *)self->_debugContainerView trailingAnchor];
+        v182 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:trailingAnchor7];
         [(NSArray *)v125 addObject:v182];
 
-        v183 = [(UILabel *)self->_debugLockStateLabel widthAnchor];
-        v184 = [v183 constraintEqualToConstant:200.0];
+        widthAnchor4 = [(UILabel *)self->_debugLockStateLabel widthAnchor];
+        v184 = [widthAnchor4 constraintEqualToConstant:200.0];
         [(NSArray *)v125 addObject:v184];
 
-        v185 = [(UILabel *)self->_debugLockStateLabel centerYAnchor];
-        v186 = [(UISwitch *)self->_debugLockStateSwitch centerYAnchor];
-        v187 = [v185 constraintEqualToAnchor:v186];
+        centerYAnchor5 = [(UILabel *)self->_debugLockStateLabel centerYAnchor];
+        centerYAnchor6 = [(UISwitch *)self->_debugLockStateSwitch centerYAnchor];
+        v187 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
         [(NSArray *)v125 addObject:v187];
 
-        v188 = [(UILabel *)self->_debugLockStateLabel leadingAnchor];
-        v189 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v190 = [v188 constraintGreaterThanOrEqualToAnchor:v189];
+        leadingAnchor10 = [(UILabel *)self->_debugLockStateLabel leadingAnchor];
+        leadingAnchor11 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v190 = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:leadingAnchor11];
         [(NSArray *)v125 addObject:v190];
 
-        v191 = [(UILabel *)self->_debugLockStateLabel trailingAnchor];
-        v192 = [(UISwitch *)self->_debugLockStateSwitch leadingAnchor];
-        v193 = [v191 constraintLessThanOrEqualToAnchor:v192 constant:-50.0];
+        trailingAnchor8 = [(UILabel *)self->_debugLockStateLabel trailingAnchor];
+        leadingAnchor12 = [(UISwitch *)self->_debugLockStateSwitch leadingAnchor];
+        v193 = [trailingAnchor8 constraintLessThanOrEqualToAnchor:leadingAnchor12 constant:-50.0];
         [(NSArray *)v125 addObject:v193];
 
-        v194 = [(UISlider *)self->_debugWidthSlider topAnchor];
-        v195 = [(UILabel *)self->_debugLockStateLabel bottomAnchor];
-        v196 = [v194 constraintEqualToAnchor:v195 constant:30.0];
+        topAnchor4 = [(UISlider *)self->_debugWidthSlider topAnchor];
+        bottomAnchor4 = [(UILabel *)self->_debugLockStateLabel bottomAnchor];
+        v196 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:30.0];
         [(NSArray *)v125 addObject:v196];
 
-        v197 = [(UISlider *)self->_debugWidthSlider centerXAnchor];
-        v198 = [(UIView *)self->_debugContainerView centerXAnchor];
-        v199 = [v197 constraintEqualToAnchor:v198];
+        centerXAnchor9 = [(UISlider *)self->_debugWidthSlider centerXAnchor];
+        centerXAnchor10 = [(UIView *)self->_debugContainerView centerXAnchor];
+        v199 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
         [(NSArray *)v125 addObject:v199];
 
-        v200 = [(UISlider *)self->_debugWidthSlider widthAnchor];
-        v201 = [v200 constraintEqualToConstant:300.0];
+        widthAnchor5 = [(UISlider *)self->_debugWidthSlider widthAnchor];
+        v201 = [widthAnchor5 constraintEqualToConstant:300.0];
         [(NSArray *)v125 addObject:v201];
 
-        v202 = [(UISlider *)self->_debugWidthSlider leadingAnchor];
-        v203 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v204 = [v202 constraintGreaterThanOrEqualToAnchor:v203];
+        leadingAnchor13 = [(UISlider *)self->_debugWidthSlider leadingAnchor];
+        leadingAnchor14 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v204 = [leadingAnchor13 constraintGreaterThanOrEqualToAnchor:leadingAnchor14];
         [(NSArray *)v125 addObject:v204];
 
-        v205 = [(UISlider *)self->_debugWidthSlider trailingAnchor];
-        v206 = [(UIView *)self->_debugContainerView trailingAnchor];
-        v207 = [v205 constraintLessThanOrEqualToAnchor:v206];
+        trailingAnchor9 = [(UISlider *)self->_debugWidthSlider trailingAnchor];
+        trailingAnchor10 = [(UIView *)self->_debugContainerView trailingAnchor];
+        v207 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10];
         [(NSArray *)v125 addObject:v207];
 
-        v208 = [(UISlider *)self->_debugHeightSlider topAnchor];
-        v209 = [(UISlider *)self->_debugWidthSlider bottomAnchor];
-        v210 = [v208 constraintEqualToAnchor:v209 constant:30.0];
+        topAnchor5 = [(UISlider *)self->_debugHeightSlider topAnchor];
+        bottomAnchor5 = [(UISlider *)self->_debugWidthSlider bottomAnchor];
+        v210 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:30.0];
         [(NSArray *)v125 addObject:v210];
 
-        v211 = [(UISlider *)self->_debugHeightSlider centerXAnchor];
-        v212 = [(UIView *)self->_debugContainerView centerXAnchor];
-        v213 = [v211 constraintEqualToAnchor:v212];
+        centerXAnchor11 = [(UISlider *)self->_debugHeightSlider centerXAnchor];
+        centerXAnchor12 = [(UIView *)self->_debugContainerView centerXAnchor];
+        v213 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
         [(NSArray *)v125 addObject:v213];
 
-        v214 = [(UISlider *)self->_debugHeightSlider widthAnchor];
-        v215 = [v214 constraintEqualToConstant:300.0];
+        widthAnchor6 = [(UISlider *)self->_debugHeightSlider widthAnchor];
+        v215 = [widthAnchor6 constraintEqualToConstant:300.0];
         [(NSArray *)v125 addObject:v215];
 
-        v216 = [(UISlider *)self->_debugHeightSlider leadingAnchor];
-        v217 = [(UIView *)self->_debugContainerView leadingAnchor];
-        v218 = [v216 constraintGreaterThanOrEqualToAnchor:v217];
+        leadingAnchor15 = [(UISlider *)self->_debugHeightSlider leadingAnchor];
+        leadingAnchor16 = [(UIView *)self->_debugContainerView leadingAnchor];
+        v218 = [leadingAnchor15 constraintGreaterThanOrEqualToAnchor:leadingAnchor16];
         [(NSArray *)v125 addObject:v218];
 
-        v219 = [(UISlider *)self->_debugHeightSlider trailingAnchor];
-        v220 = [(UIView *)self->_debugContainerView trailingAnchor];
-        v221 = [v219 constraintLessThanOrEqualToAnchor:v220];
+        trailingAnchor11 = [(UISlider *)self->_debugHeightSlider trailingAnchor];
+        trailingAnchor12 = [(UIView *)self->_debugContainerView trailingAnchor];
+        v221 = [trailingAnchor11 constraintLessThanOrEqualToAnchor:trailingAnchor12];
         [(NSArray *)v125 addObject:v221];
 
         v222 = self->_debugPortraitYOriginSlider;
         if (v222)
         {
-          v223 = [(UISlider *)v222 topAnchor];
-          v224 = [(UISlider *)self->_debugHeightSlider bottomAnchor];
-          v225 = [v223 constraintEqualToAnchor:v224 constant:30.0];
+          topAnchor6 = [(UISlider *)v222 topAnchor];
+          bottomAnchor6 = [(UISlider *)self->_debugHeightSlider bottomAnchor];
+          v225 = [topAnchor6 constraintEqualToAnchor:bottomAnchor6 constant:30.0];
           [(NSArray *)v125 addObject:v225];
 
-          v226 = [(UISlider *)self->_debugPortraitYOriginSlider centerXAnchor];
-          v227 = [(UIView *)self->_debugContainerView centerXAnchor];
-          v228 = [v226 constraintEqualToAnchor:v227];
+          centerXAnchor13 = [(UISlider *)self->_debugPortraitYOriginSlider centerXAnchor];
+          centerXAnchor14 = [(UIView *)self->_debugContainerView centerXAnchor];
+          v228 = [centerXAnchor13 constraintEqualToAnchor:centerXAnchor14];
           [(NSArray *)v125 addObject:v228];
 
-          v229 = [(UISlider *)self->_debugPortraitYOriginSlider widthAnchor];
-          v230 = [v229 constraintEqualToConstant:300.0];
+          widthAnchor7 = [(UISlider *)self->_debugPortraitYOriginSlider widthAnchor];
+          v230 = [widthAnchor7 constraintEqualToConstant:300.0];
           [(NSArray *)v125 addObject:v230];
 
-          v231 = [(UISlider *)self->_debugPortraitYOriginSlider leadingAnchor];
-          v232 = [(UIView *)self->_debugContainerView leadingAnchor];
-          v233 = [v231 constraintGreaterThanOrEqualToAnchor:v232];
+          leadingAnchor17 = [(UISlider *)self->_debugPortraitYOriginSlider leadingAnchor];
+          leadingAnchor18 = [(UIView *)self->_debugContainerView leadingAnchor];
+          v233 = [leadingAnchor17 constraintGreaterThanOrEqualToAnchor:leadingAnchor18];
           [(NSArray *)v125 addObject:v233];
 
-          v234 = [(UISlider *)self->_debugPortraitYOriginSlider trailingAnchor];
-          v235 = [(UIView *)self->_debugContainerView trailingAnchor];
-          v236 = [v234 constraintLessThanOrEqualToAnchor:v235];
+          trailingAnchor13 = [(UISlider *)self->_debugPortraitYOriginSlider trailingAnchor];
+          trailingAnchor14 = [(UIView *)self->_debugContainerView trailingAnchor];
+          v236 = [trailingAnchor13 constraintLessThanOrEqualToAnchor:trailingAnchor14];
           [(NSArray *)v125 addObject:v236];
         }
 
-        v237 = [(UIButton *)self->_debugDumpButton centerXAnchor];
-        v238 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
-        v239 = [v237 constraintEqualToAnchor:v238];
+        centerXAnchor15 = [(UIButton *)self->_debugDumpButton centerXAnchor];
+        centerXAnchor16 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
+        v239 = [centerXAnchor15 constraintEqualToAnchor:centerXAnchor16];
         [(NSArray *)v125 addObject:v239];
 
-        v240 = [(UIButton *)self->_debugDumpButton centerYAnchor];
-        v241 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerYAnchor];
-        v242 = [v240 constraintEqualToAnchor:v241 constant:-50.0];
+        centerYAnchor7 = [(UIButton *)self->_debugDumpButton centerYAnchor];
+        centerYAnchor8 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerYAnchor];
+        v242 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8 constant:-50.0];
         [(NSArray *)v125 addObject:v242];
 
-        v243 = [(UIButton *)self->_debugResetAudioRouteButton centerXAnchor];
-        v244 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
-        v245 = [v243 constraintEqualToAnchor:v244];
+        centerXAnchor17 = [(UIButton *)self->_debugResetAudioRouteButton centerXAnchor];
+        centerXAnchor18 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
+        v245 = [centerXAnchor17 constraintEqualToAnchor:centerXAnchor18];
         [(NSArray *)v125 addObject:v245];
 
-        v246 = [(UIButton *)self->_debugResetAudioRouteButton centerYAnchor];
-        v247 = [(UIButton *)self->_debugDumpButton centerYAnchor];
-        v248 = [v246 constraintEqualToAnchor:v247 constant:-40.0];
+        centerYAnchor9 = [(UIButton *)self->_debugResetAudioRouteButton centerYAnchor];
+        centerYAnchor10 = [(UIButton *)self->_debugDumpButton centerYAnchor];
+        v248 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10 constant:-40.0];
         [(NSArray *)v125 addObject:v248];
 
-        v249 = [(UIButton *)self->_debugNextAudioRouteButton centerXAnchor];
-        v250 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
-        v251 = [v249 constraintEqualToAnchor:v250];
+        centerXAnchor19 = [(UIButton *)self->_debugNextAudioRouteButton centerXAnchor];
+        centerXAnchor20 = [(UISegmentedControl *)self->_debugStateSegmentedControl centerXAnchor];
+        v251 = [centerXAnchor19 constraintEqualToAnchor:centerXAnchor20];
         [(NSArray *)v125 addObject:v251];
 
-        v252 = [(UIButton *)self->_debugNextAudioRouteButton centerYAnchor];
-        v253 = [(UIButton *)self->_debugResetAudioRouteButton centerYAnchor];
-        v254 = [v252 constraintEqualToAnchor:v253 constant:-40.0];
+        centerYAnchor11 = [(UIButton *)self->_debugNextAudioRouteButton centerYAnchor];
+        centerYAnchor12 = [(UIButton *)self->_debugResetAudioRouteButton centerYAnchor];
+        v254 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12 constant:-40.0];
         [(NSArray *)v125 addObject:v254];
 
         debugAutoLayoutConstraints = self->_debugAutoLayoutConstraints;
@@ -3046,7 +3046,7 @@ void __55__SBElasticValueViewController__sliderEditingDidBegin___block_invoke(ui
         v23 = v125;
 
         [MEMORY[0x277CCAAD0] activateConstraints:self->_debugAutoLayoutConstraints];
-        v5 = v256;
+        settings = v256;
         goto LABEL_42;
       }
     }
@@ -3119,15 +3119,15 @@ id __48__SBElasticValueViewController__refreshDebugUI___block_invoke()
   return v0;
 }
 
-- (void)_updateDebugString:(id)a3
+- (void)_updateDebugString:(id)string
 {
-  [(UILabel *)self->_debugLabel setText:a3];
+  [(UILabel *)self->_debugLabel setText:string];
   debugLabel = self->_debugLabel;
 
   [(UILabel *)debugLabel sizeToFit];
 }
 
-- (void)_debugDump:(id)a3
+- (void)_debugDump:(id)dump
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = [(SBElasticHUDSettings *)self->_settings performSelector:sel__ivarDescription];
@@ -3144,13 +3144,13 @@ id __48__SBElasticValueViewController__refreshDebugUI___block_invoke()
   v8 = [v6 fileURLWithPath:v7];
   v9 = [v8 URLByAppendingPathComponent:@"ElasticHUD.dump"];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  [v10 removeItemAtURL:v9 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtURL:v9 error:0];
 
   [v4 writeToURL:v9 atomically:1 encoding:4 error:0];
 }
 
-- (void)_debugDidTapNextRoute:(id)a3
+- (void)_debugDidTapNextRoute:(id)route
 {
   [(SBElasticValueViewController *)self _debugHandleNextRoute];
   [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:@"DEBUG NEXT ROUTE"];
@@ -3158,77 +3158,77 @@ id __48__SBElasticValueViewController__refreshDebugUI___block_invoke()
   [(SBElasticValueViewController *)self reloadData];
 }
 
-- (void)_debugDidTapResetRoute:(id)a3
+- (void)_debugDidTapResetRoute:(id)route
 {
   [(SBElasticValueViewController *)self _debugHandleResetRoute];
 
   [(SBElasticValueViewController *)self reloadData];
 }
 
-- (void)_debugChangingStateFromSegmentedControl:(id)a3
+- (void)_debugChangingStateFromSegmentedControl:(id)control
 {
-  v4 = [a3 selectedSegmentIndex];
+  selectedSegmentIndex = [control selectedSegmentIndex];
 
-  [(SBElasticValueViewController *)self transitionToState:v4 animated:1 completion:0];
+  [(SBElasticValueViewController *)self transitionToState:selectedSegmentIndex animated:1 completion:0];
 }
 
-- (void)_debugAutoDismissalSwitchValueChanged:(id)a3
+- (void)_debugAutoDismissalSwitchValueChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   v6 = NSStringFromSelector(a2);
   [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:v6];
 
-  v7 = [(SBElasticValueViewController *)self settings];
-  [v7 setAutoDismiss:{objc_msgSend(v5, "isOn")}];
+  settings = [(SBElasticValueViewController *)self settings];
+  [settings setAutoDismiss:{objc_msgSend(changedCopy, "isOn")}];
 
-  LODWORD(v7) = [v5 isOn];
-  if (v7 && !self->_state)
+  LODWORD(settings) = [changedCopy isOn];
+  if (settings && !self->_state)
   {
 
     [(SBElasticValueViewController *)self _actuallyDismiss];
   }
 }
 
-- (void)_debugLockStateSwitchValueChanged:(id)a3
+- (void)_debugLockStateSwitchValueChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   v6 = NSStringFromSelector(a2);
   [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:v6];
 
-  LODWORD(v6) = [v5 isOn];
+  LODWORD(v6) = [changedCopy isOn];
   self->_lockState = v6;
   [(UISegmentedControl *)self->_debugStateSegmentedControl setEnabled:v6 ^ 1];
 
   [(SBElasticValueViewController *)self _scheduleDismissal:@"RESUME AFTER DEBUGGING LOCK"];
 }
 
-- (void)_debugDimensionSliderValueDidChange:(id)a3
+- (void)_debugDimensionSliderValueDidChange:(id)change
 {
-  v20 = a3;
-  v4 = [(SBElasticValueViewController *)self settings];
+  changeCopy = change;
+  settings = [(SBElasticValueViewController *)self settings];
   state = self->_state;
-  v6 = [(SBElasticValueViewController *)self axis];
-  if (!v6)
+  axis = [(SBElasticValueViewController *)self axis];
+  if (!axis)
   {
     goto LABEL_40;
   }
 
-  if (self->_debugHeightSlider == v20)
+  if (self->_debugHeightSlider == changeCopy)
   {
     if (state > 2)
     {
       if (state == 3)
       {
-        if (v6 == 1)
+        if (axis == 1)
         {
-          [(UISlider *)v20 value];
-          [v4 setLandscapeState3Height:v16];
+          [(UISlider *)changeCopy value];
+          [settings setLandscapeState3Height:v16];
         }
 
-        else if (v6 == 2)
+        else if (axis == 2)
         {
-          [(UISlider *)v20 value];
-          [v4 setPortraitState3Height:v13];
+          [(UISlider *)changeCopy value];
+          [settings setPortraitState3Height:v13];
         }
 
         goto LABEL_40;
@@ -3244,43 +3244,43 @@ id __48__SBElasticValueViewController__refreshDebugUI___block_invoke()
     {
       if (state == 2)
       {
-        if (v6 == 1)
+        if (axis == 1)
         {
-          [(UISlider *)v20 value];
-          [v4 setLandscapeState2Height:v17];
+          [(UISlider *)changeCopy value];
+          [settings setLandscapeState2Height:v17];
         }
 
-        else if (v6 == 2)
+        else if (axis == 2)
         {
-          [(UISlider *)v20 value];
-          [v4 setPortraitState2Height:v8];
+          [(UISlider *)changeCopy value];
+          [settings setPortraitState2Height:v8];
         }
       }
 
       goto LABEL_40;
     }
 
-    if (v6 == 1)
+    if (axis == 1)
     {
-      [(UISlider *)v20 value];
-      [v4 setLandscapeState1Height:v12];
+      [(UISlider *)changeCopy value];
+      [settings setLandscapeState1Height:v12];
     }
 
-    else if (v6 == 2)
+    else if (axis == 2)
     {
-      [(UISlider *)v20 value];
-      [v4 setPortraitState1Height:v10];
+      [(UISlider *)changeCopy value];
+      [settings setPortraitState1Height:v10];
     }
 
     goto LABEL_40;
   }
 
-  if (self->_debugWidthSlider != v20)
+  if (self->_debugWidthSlider != changeCopy)
   {
     if (self->_debugPortraitYOriginSlider)
     {
-      [(UISlider *)v20 value];
-      [v4 setVolumeButtonsCenterY:v7];
+      [(UISlider *)changeCopy value];
+      [settings setVolumeButtonsCenterY:v7];
     }
 
     goto LABEL_40;
@@ -3292,16 +3292,16 @@ id __48__SBElasticValueViewController__refreshDebugUI___block_invoke()
     {
       if (state == 2)
       {
-        if (v6 == 1)
+        if (axis == 1)
         {
-          [(UISlider *)v20 value];
-          [v4 setLandscapeState2Width:v19];
+          [(UISlider *)changeCopy value];
+          [settings setLandscapeState2Width:v19];
         }
 
-        else if (v6 == 2)
+        else if (axis == 2)
         {
-          [(UISlider *)v20 value];
-          [v4 setPortraitState2Width:v9];
+          [(UISlider *)changeCopy value];
+          [settings setPortraitState2Width:v9];
         }
       }
 
@@ -3319,31 +3319,31 @@ id __48__SBElasticValueViewController__refreshDebugUI___block_invoke()
     }
 
 LABEL_25:
-    if (v6 == 1)
+    if (axis == 1)
     {
-      [(UISlider *)v20 value];
-      [v4 setLandscapeState1Width:v14];
+      [(UISlider *)changeCopy value];
+      [settings setLandscapeState1Width:v14];
     }
 
-    else if (v6 == 2)
+    else if (axis == 2)
     {
-      [(UISlider *)v20 value];
-      [v4 setPortraitState1Width:v11];
+      [(UISlider *)changeCopy value];
+      [settings setPortraitState1Width:v11];
     }
 
     goto LABEL_40;
   }
 
-  if (v6 == 1)
+  if (axis == 1)
   {
-    [(UISlider *)v20 value];
-    [v4 setLandscapeState3Width:v18];
+    [(UISlider *)changeCopy value];
+    [settings setLandscapeState3Width:v18];
   }
 
-  else if (v6 == 2)
+  else if (axis == 2)
   {
-    [(UISlider *)v20 value];
-    [v4 setPortraitState3Width:v15];
+    [(UISlider *)changeCopy value];
+    [settings setPortraitState3Width:v15];
   }
 
 LABEL_40:
@@ -3352,11 +3352,11 @@ LABEL_40:
 - (void)_updateLiveRenderingAssertion
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SBElasticValueViewController *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  viewIfLoaded = [(SBElasticValueViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
     v6 = [(SBElasticValueViewController *)self _appearState]!= 0;
   }
@@ -3367,15 +3367,15 @@ LABEL_40:
   }
 
   liveRenderingAssertion = self->_liveRenderingAssertion;
-  v8 = [(BLSAssertion *)liveRenderingAssertion isAcquired];
-  v9 = v8;
-  if (v6 && (v8 & 1) == 0)
+  isAcquired = [(BLSAssertion *)liveRenderingAssertion isAcquired];
+  v9 = isAcquired;
+  if (v6 && (isAcquired & 1) == 0)
   {
     v10 = [(SBElasticValueViewController *)self log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "%@ is requesting live rendering", &v22, 0xCu);
     }
 
@@ -3383,12 +3383,12 @@ LABEL_40:
     v12 = NSStringFromClass(v11);
     [(BLSAssertion *)self->_liveRenderingAssertion invalidate];
     v13 = MEMORY[0x277CF0868];
-    v14 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:v5];
+    v14 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:windowScene];
     v26[0] = v14;
-    v15 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:v5];
+    v15 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:windowScene];
     v26[1] = v15;
-    v16 = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
-    v26[2] = v16;
+    ignoreWhenBacklightInactivates = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
+    v26[2] = ignoreWhenBacklightInactivates;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
     v18 = [v13 acquireWithExplanation:v12 observer:0 attributes:v17];
     v19 = self->_liveRenderingAssertion;
@@ -3414,7 +3414,7 @@ LABEL_16:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 1024;
       v25 = v9;
       _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, "%@ is relinquishing live rendering (was acquired: %{BOOL}u)", &v22, 0x12u);
@@ -3437,96 +3437,96 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)sizeForState:(int64_t)a3
+- (CGSize)sizeForState:(int64_t)state
 {
-  v5 = [(SBElasticValueViewController *)self axis];
-  v6 = [(SBElasticValueViewController *)self settings];
-  v7 = v6;
-  if (v5 != 2)
+  axis = [(SBElasticValueViewController *)self axis];
+  settings = [(SBElasticValueViewController *)self settings];
+  v7 = settings;
+  if (axis != 2)
   {
-    if (v5 != 1)
+    if (axis != 1)
     {
       goto LABEL_20;
     }
 
-    if (a3 > 2)
+    if (state > 2)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
-        [v6 landscapeState3Width];
+        [settings landscapeState3Width];
         [v7 landscapeState3Height];
         goto LABEL_20;
       }
 
-      if (a3 != 4)
+      if (state != 4)
       {
         goto LABEL_20;
       }
     }
 
-    else if (a3 >= 2)
+    else if (state >= 2)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
-        [v6 landscapeState2Width];
+        [settings landscapeState2Width];
         [v7 landscapeState2Height];
       }
 
       goto LABEL_20;
     }
 
-    [v6 landscapeState1Width];
+    [settings landscapeState1Width];
     [v7 landscapeState1Height];
     goto LABEL_20;
   }
 
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
-      [v6 portraitState3Width];
+      [settings portraitState3Width];
       [v7 portraitState3Height];
       goto LABEL_20;
     }
 
-    if (a3 != 4)
+    if (state != 4)
     {
       goto LABEL_20;
     }
 
 LABEL_17:
-    [v6 portraitState1Width];
+    [settings portraitState1Width];
     [v7 portraitState1Height];
     goto LABEL_20;
   }
 
-  if (a3 < 2)
+  if (state < 2)
   {
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
-    [v6 portraitState2Width];
+    [settings portraitState2Width];
     [v7 portraitState2Height];
   }
 
 LABEL_20:
   if (!self->_reduceMotionEnabled)
   {
-    if (a3 == 4)
+    if (state == 4)
     {
       [(SBElasticHUDSettings *)self->_settings deflatedScaleFactor];
     }
 
-    else if (!a3)
+    else if (!state)
     {
       [(SBElasticHUDSettings *)self->_settings baseScaleFactor];
     }
   }
 
-  v8 = [(SBElasticValueViewController *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(SBElasticValueViewController *)self traitCollection];
+  [traitCollection displayScale];
 
   BSSizeRoundForScale();
   v10 = v9;
@@ -3539,30 +3539,30 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)centerForState:(int64_t)a3 sliderSize:(CGSize)a4 bounds:(CGRect)a5
+- (CGPoint)centerForState:(int64_t)state sliderSize:(CGSize)size bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = [(SBElasticValueViewController *)self axis];
-  v12 = [(SBElasticValueViewController *)self settings];
-  v13 = v12;
-  if (a3 == 3)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  axis = [(SBElasticValueViewController *)self axis];
+  settings = [(SBElasticValueViewController *)self settings];
+  v13 = settings;
+  if (state == 3)
   {
     v16 = height;
   }
 
   else
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (!a3 && !self->_reduceMotionEnabled)
+      if (!state && !self->_reduceMotionEnabled)
       {
-        [v12 offscreenTopMargin];
+        [settings offscreenTopMargin];
         [v13 offscreenLeadingMargin];
         [v13 volumeButtonsCenterY];
-        if (v11 == 1)
+        if (axis == 1)
         {
           v28.origin.x = x;
           v28.origin.y = y;
@@ -3579,12 +3579,12 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    if (v11 == 1)
+    if (axis == 1)
     {
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      v15 = [v14 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v15 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
         v16 = height;
 LABEL_14:
@@ -3594,13 +3594,13 @@ LABEL_14:
         v29.size.width = width;
         v29.size.height = v16;
         CGRectGetMidX(v29);
-        v17 = [MEMORY[0x277D75418] currentDevice];
-        v18 = [v17 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-        if ((v18 & 0xFFFFFFFFFFFFFFFBLL) != 1 && ([(SBElasticValueViewController *)self hudPresentationOrientation]- 1) <= 1)
+        if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1 && ([(SBElasticValueViewController *)self hudPresentationOrientation]- 1) <= 1)
         {
-          v19 = [(SBElasticValueViewController *)self view];
-          [v19 safeAreaInsets];
+          view = [(SBElasticValueViewController *)self view];
+          [view safeAreaInsets];
         }
 
         goto LABEL_18;
@@ -3613,21 +3613,21 @@ LABEL_14:
   }
 
 LABEL_12:
-  if (v11 == 2)
+  if (axis == 2)
   {
     [v13 onscreenLeadingMargin];
     [v13 volumeButtonsCenterY];
     goto LABEL_18;
   }
 
-  if (v11 == 1)
+  if (axis == 1)
   {
     goto LABEL_14;
   }
 
 LABEL_18:
-  v20 = [(SBElasticValueViewController *)self traitCollection];
-  [v20 displayScale];
+  traitCollection = [(SBElasticValueViewController *)self traitCollection];
+  [traitCollection displayScale];
 
   BSRectWithSize();
   UIRectCenteredAboutPointScale();
@@ -3642,16 +3642,16 @@ LABEL_18:
   return result;
 }
 
-- (double)glyphScaleForState:(int64_t)a3
+- (double)glyphScaleForState:(int64_t)state
 {
-  v5 = [(SBElasticValueViewController *)self settings];
-  v6 = v5;
+  settings = [(SBElasticValueViewController *)self settings];
+  v6 = settings;
   v7 = 1.17549435e-38;
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         v7 = 1.0;
       }
@@ -3659,15 +3659,15 @@ LABEL_18:
       goto LABEL_15;
     }
 
-    [v5 baseScaleFactor];
+    [settings baseScaleFactor];
 LABEL_10:
     v7 = v8;
     goto LABEL_15;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
-    if (a3 != 4)
+    if (state != 4)
     {
       goto LABEL_15;
     }
@@ -3710,14 +3710,14 @@ LABEL_15:
   return v3;
 }
 
-- (void)_updateGlyphStateIfNecessaryForValue:(float *)a3
+- (void)_updateGlyphStateIfNecessaryForValue:(float *)value
 {
-  v5 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphStateValueTransformer];
-  if (v5)
+  glyphStateValueTransformer = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphStateValueTransformer];
+  if (glyphStateValueTransformer)
   {
-    if (a3)
+    if (value)
     {
-      v6.n128_f32[0] = *a3;
+      v6.n128_f32[0] = *value;
     }
 
     else
@@ -3725,7 +3725,7 @@ LABEL_15:
       [(SBElasticValueViewController *)self currentValue];
     }
 
-    v7 = v5[2](v5, v6);
+    v7 = glyphStateValueTransformer[2](glyphStateValueTransformer, v6);
   }
 
   else
@@ -3737,7 +3737,7 @@ LABEL_15:
   [(CCUIBaseSliderView *)self->_sliderView setGlyphState:v7];
 }
 
-- (void)_updateLabelsForAxis:(unint64_t)a3
+- (void)_updateLabelsForAxis:(unint64_t)axis
 {
   v34[1] = *MEMORY[0x277D85DE8];
   if (__sb__runningInSpringBoard())
@@ -3747,8 +3747,8 @@ LABEL_15:
 
   else
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    if ([v6 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       v5 = 0;
     }
@@ -3764,26 +3764,26 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v7 = [(CCUIBaseSliderView *)self->_sliderView glyphPackageDescription];
-  if (v7)
+  glyphPackageDescription = [(CCUIBaseSliderView *)self->_sliderView glyphPackageDescription];
+  if (glyphPackageDescription)
   {
 
     goto LABEL_15;
   }
 
-  v8 = [(CCUIBaseSliderView *)self->_sliderView glyphImage];
+  glyphImage = [(CCUIBaseSliderView *)self->_sliderView glyphImage];
 
-  if (!v8)
+  if (!glyphImage)
   {
 LABEL_14:
     [(SBElasticValueViewController *)self _computeCachedRouteDisplayInformation];
     sliderView = self->_sliderView;
-    v10 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphImage];
-    [(CCUIBaseSliderView *)sliderView setGlyphImage:v10];
+    glyphImage2 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphImage];
+    [(CCUIBaseSliderView *)sliderView setGlyphImage:glyphImage2];
 
     v11 = self->_sliderView;
-    v12 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphPackage];
-    [(CCUIBaseSliderView *)v11 setGlyphPackageDescription:v12];
+    glyphPackage = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo glyphPackage];
+    [(CCUIBaseSliderView *)v11 setGlyphPackageDescription:glyphPackage];
 
     [(SBElasticValueViewController *)self _updateGlyphStateIfNecessaryForValue:0];
   }
@@ -3793,22 +3793,22 @@ LABEL_15:
   v14 = v13;
   if (v13)
   {
-    v15 = v13;
+    localizedDisplayName = v13;
   }
 
   else
   {
-    v15 = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo localizedDisplayName];
+    localizedDisplayName = [(SBElasticRouteDisplaying *)self->_routeDisplayInfo localizedDisplayName];
   }
 
-  v16 = v15;
+  v16 = localizedDisplayName;
   v17 = 2;
   if (v5)
   {
     v17 = 4;
   }
 
-  if (a3 == 1)
+  if (axis == 1)
   {
     v18 = v17;
   }
@@ -3819,18 +3819,18 @@ LABEL_15:
   }
 
   [(SBElasticSliderView *)self->_sliderView setAccessoryLayoutEdge:v18];
-  v19 = [(SBElasticValueViewController *)self traitCollection];
-  [v19 displayScale];
+  traitCollection = [(SBElasticValueViewController *)self traitCollection];
+  [traitCollection displayScale];
 
-  v20 = [(_UILegibilityLabel *)self->_trailingLabel string];
+  string = [(_UILegibilityLabel *)self->_trailingLabel string];
   v21 = BSEqualStrings();
 
   v22 = MEMORY[0x277D740A8];
   if ((v21 & 1) == 0)
   {
     v33 = *MEMORY[0x277D740A8];
-    v23 = [(_UILegibilityLabel *)self->_trailingLabel font];
-    v34[0] = v23;
+    font = [(_UILegibilityLabel *)self->_trailingLabel font];
+    v34[0] = font;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     [0 sizeWithAttributes:v24];
 
@@ -3842,14 +3842,14 @@ LABEL_15:
     [(SBElasticSliderView *)self->_sliderView setNeedsLayout];
   }
 
-  v26 = [(_UILegibilityLabel *)self->_leadingLabel string];
+  string2 = [(_UILegibilityLabel *)self->_leadingLabel string];
   v27 = BSEqualStrings();
 
   if ((v27 & 1) == 0)
   {
     v31 = *v22;
-    v28 = [(_UILegibilityLabel *)self->_leadingLabel font];
-    v32 = v28;
+    font2 = [(_UILegibilityLabel *)self->_leadingLabel font];
+    v32 = font2;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     [v16 sizeWithAttributes:v29];
 
@@ -3862,43 +3862,43 @@ LABEL_15:
   }
 }
 
-- (void)_updateDimmingVisible:(BOOL)a3
+- (void)_updateDimmingVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   settings = self->_settings;
   v5 = self->_dimmingView;
   [(SBElasticHUDSettings *)settings dimmingAlpha];
   v7 = v6;
-  if (v3)
+  if (visibleCopy)
   {
-    v8 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
   else
   {
-    v8 = 0;
+    blackColor = 0;
   }
 
-  v10 = v8;
-  v9 = [v8 colorWithAlphaComponent:v7];
+  v10 = blackColor;
+  v9 = [blackColor colorWithAlphaComponent:v7];
   [(UIView *)v5 setBackgroundColor:v9];
 }
 
-- (void)_updateSliderViewMetricsForState:(int64_t)a3 bounds:(CGRect)a4
+- (void)_updateSliderViewMetricsForState:(int64_t)state bounds:(CGRect)bounds
 {
   v7 = 0;
   v8 = 0;
-  [(SBElasticValueViewController *)self _sliderViewMetricsUpdatersForState:a3 bounds:&v8 primaryMetricsUpdater:&v7 positionUpdater:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(SBElasticValueViewController *)self _sliderViewMetricsUpdatersForState:state bounds:&v8 primaryMetricsUpdater:&v7 positionUpdater:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v5 = MEMORY[0x223D6F7F0](v8);
   v6 = MEMORY[0x223D6F7F0](v7);
   (v5)[2](v5, self->_sliderView);
   (v6)[2](v6, self->_sliderView);
 }
 
-- (void)_sliderViewMetricsUpdatersForState:(int64_t)a3 bounds:(CGRect)a4 primaryMetricsUpdater:(id *)a5 positionUpdater:(id *)a6
+- (void)_sliderViewMetricsUpdatersForState:(int64_t)state bounds:(CGRect)bounds primaryMetricsUpdater:(id *)updater positionUpdater:(id *)positionUpdater
 {
   previousState = self->_previousState;
-  if (a3 || !self->_reduceMotionEnabled)
+  if (state || !self->_reduceMotionEnabled)
   {
     v12 = previousState == 2;
   }
@@ -3907,16 +3907,16 @@ LABEL_15:
   {
     if (previousState != -1)
     {
-      if (a5)
+      if (updater)
       {
-        *a5 = &__block_literal_global_226_0;
+        *updater = &__block_literal_global_226_0;
       }
 
-      if (a6)
+      if (positionUpdater)
       {
         v11 = &__block_literal_global_228_0;
 LABEL_17:
-        *a6 = v11;
+        *positionUpdater = v11;
         return;
       }
 
@@ -3926,27 +3926,27 @@ LABEL_17:
     v12 = 0;
   }
 
-  v13 = a3 == 0;
+  v13 = state == 0;
   v14 = v13 && v12;
   if (v13 && v12)
   {
-    v15 = 2;
+    stateCopy = 2;
   }
 
   else
   {
-    v15 = a3;
+    stateCopy = state;
   }
 
-  [(SBElasticValueViewController *)self glyphScaleForState:a3];
+  [(SBElasticValueViewController *)self glyphScaleForState:state];
   v17 = v16;
-  [(SBElasticValueViewController *)self sizeForState:v15];
+  [(SBElasticValueViewController *)self sizeForState:stateCopy];
   v19 = v18;
   v21 = v20;
-  [SBElasticValueViewController centerForState:"centerForState:sliderSize:bounds:" sliderSize:a3 bounds:?];
+  [SBElasticValueViewController centerForState:"centerForState:sliderSize:bounds:" sliderSize:state bounds:?];
   v23 = v22;
   v25 = v24;
-  if (a5)
+  if (updater)
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -3956,10 +3956,10 @@ LABEL_17:
     v27[4] = v17;
     v27[5] = v19;
     v27[6] = v21;
-    *a5 = MEMORY[0x223D6F7F0](v27);
+    *updater = MEMORY[0x223D6F7F0](v27);
   }
 
-  if (a6)
+  if (positionUpdater)
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -4066,38 +4066,38 @@ void __112__SBElasticValueViewController__sliderViewMetricsUpdatersForState_boun
 
 - (void)_updateDebugUIPositions
 {
-  v9 = [(SBElasticValueViewController *)self sliderView];
+  sliderView = [(SBElasticValueViewController *)self sliderView];
   if (([(UISlider *)self->_debugWidthSlider isTracking]& 1) == 0)
   {
-    [v9 bounds];
+    [sliderView bounds];
     *&v4 = v3;
     [(UISlider *)self->_debugWidthSlider setValue:v4];
   }
 
   if (([(UISlider *)self->_debugHeightSlider isTracking]& 1) == 0)
   {
-    [v9 bounds];
+    [sliderView bounds];
     *&v6 = v5;
     [(UISlider *)self->_debugHeightSlider setValue:v6];
   }
 
   if (([(UISlider *)self->_debugPortraitYOriginSlider isTracking]& 1) == 0)
   {
-    [v9 center];
+    [sliderView center];
     *&v8 = v7;
     [(UISlider *)self->_debugPortraitYOriginSlider setValue:v8];
   }
 }
 
-- (void)_updateSliderWithAxis:(unint64_t)a3
+- (void)_updateSliderWithAxis:(unint64_t)axis
 {
-  v15 = [(SBElasticValueViewController *)self sliderView];
-  [v15 setAxis:a3];
-  v5 = [(SBElasticValueViewController *)self settings];
-  v6 = v5;
-  if (a3 == 1)
+  sliderView = [(SBElasticValueViewController *)self sliderView];
+  [sliderView setAxis:axis];
+  settings = [(SBElasticValueViewController *)self settings];
+  v6 = settings;
+  if (axis == 1)
   {
-    [v5 landscapeCornerRadiusFraction];
+    [settings landscapeCornerRadiusFraction];
     v8 = v7;
     [v6 landscapeState1Height];
     v10 = v9;
@@ -4106,7 +4106,7 @@ void __112__SBElasticValueViewController__sliderViewMetricsUpdatersForState_boun
 
   else
   {
-    [v5 portraitCornerRadiusFraction];
+    [settings portraitCornerRadiusFraction];
     v8 = v12;
     [v6 portraitState1Width];
     v10 = v13;
@@ -4114,24 +4114,24 @@ void __112__SBElasticValueViewController__sliderViewMetricsUpdatersForState_boun
   }
 
   v14 = v11;
-  [v15 setCornerRadiusMinorAxisFraction:v8];
-  [v15 setRegularMinorAxisDimension:v10];
-  [v15 setCompactMinorAxisDimension:v14];
+  [sliderView setCornerRadiusMinorAxisFraction:v8];
+  [sliderView setRegularMinorAxisDimension:v10];
+  [sliderView setCompactMinorAxisDimension:v14];
 }
 
-- (unint64_t)_updateSliderValue:(float)a3 animated:(BOOL)a4 transitioningStateContextuallyIfNecessary:(BOOL)a5
+- (unint64_t)_updateSliderValue:(float)value animated:(BOOL)animated transitioningStateContextuallyIfNecessary:(BOOL)necessary
 {
-  v6 = a4;
+  animatedCopy = animated;
   v29 = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  valueCopy = value;
   v9 = [(SBElasticValueViewController *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     dismissalTimer = self->_dismissalTimer;
     *buf = 134218498;
-    v24 = a3;
+    valueCopy2 = value;
     v25 = 1024;
-    v26 = v6;
+    v26 = animatedCopy;
     v27 = 2112;
     v28 = dismissalTimer;
     _os_log_debug_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEBUG, "updateSliderValue:%f animated:%{BOOL}u -- Dismissal Timer: %@", buf, 0x1Cu);
@@ -4148,18 +4148,18 @@ void __112__SBElasticValueViewController__sliderViewMetricsUpdatersForState_boun
     [(CCUIBaseSliderView *)self->_sliderView value];
     v11 = BSFloatApproximatelyEqualToFloat();
     sliderView = self->_sliderView;
-    v13 = [(SBElasticValueViewController *)self bs_isAppearingOrAppeared];
-    *&v14 = a3;
-    [(CCUIBaseSliderView *)sliderView setValue:v13 & v6 animated:v14];
+    bs_isAppearingOrAppeared = [(SBElasticValueViewController *)self bs_isAppearingOrAppeared];
+    *&v14 = value;
+    [(CCUIBaseSliderView *)sliderView setValue:bs_isAppearingOrAppeared & animatedCopy animated:v14];
   }
 
-  [(SBElasticValueViewController *)self _updateGlyphStateIfNecessaryForValue:&v22];
+  [(SBElasticValueViewController *)self _updateGlyphStateIfNecessaryForValue:&valueCopy];
   v15 = self->_dismissalTimer;
   v16 = 1;
   if (v15 && (v11 & 1) == 0)
   {
-    v17 = [(NSTimer *)v15 userInfo];
-    v18 = [v17 objectForKey:@"DismissalReason"];
+    userInfo = [(NSTimer *)v15 userInfo];
+    v18 = [userInfo objectForKey:@"DismissalReason"];
 
     [(SBElasticValueViewController *)self _invalidateDismissalTimerForReason:@"updateSliderValue:animated: called"];
     [(SBElasticValueViewController *)self _scheduleDismissal:v18];
@@ -4167,8 +4167,8 @@ void __112__SBElasticValueViewController__sliderViewMetricsUpdatersForState_boun
     v16 = 0;
   }
 
-  v19 = [(SBElasticValueViewController *)self isSliderTracking];
-  if (!((self->_state == 2 || !a5) | v11 & 1) && !v19 && !sliderIsEditing)
+  isSliderTracking = [(SBElasticValueViewController *)self isSliderTracking];
+  if (!((self->_state == 2 || !necessary) | v11 & 1) && !isSliderTracking && !sliderIsEditing)
   {
     [(SBElasticValueViewController *)self transitionStateContextuallyForValueChangeEvent];
   }

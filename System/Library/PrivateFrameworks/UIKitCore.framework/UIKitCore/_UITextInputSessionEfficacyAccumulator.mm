@@ -1,16 +1,16 @@
 @interface _UITextInputSessionEfficacyAccumulator
-+ (id)accumulatorWithName:(id)a3;
-+ (id)getOrInitializeArrayFromArray:(id)a3 forKey:(unint64_t)a4 initCapacity:(unint64_t)a5;
-+ (id)getOrInitializeArrayFromDictionary:(id)a3 forKey:(id)a4 initCapacity:(unint64_t)a5;
-+ (id)getOrInitializeDictionaryFrom:(id)a3 forKey:(unint64_t)a4 initCapacity:(int64_t)a5;
++ (id)accumulatorWithName:(id)name;
++ (id)getOrInitializeArrayFromArray:(id)array forKey:(unint64_t)key initCapacity:(unint64_t)capacity;
++ (id)getOrInitializeArrayFromDictionary:(id)dictionary forKey:(id)key initCapacity:(unint64_t)capacity;
++ (id)getOrInitializeDictionaryFrom:(id)from forKey:(unint64_t)key initCapacity:(int64_t)capacity;
 - (_UITextInputSessionEfficacyAccumulator)init;
-- (id)cleanIdForPublishing:(id)a3;
-- (id)computeSessionActionsStringOnSession:(id)a3;
-- (id)generateSessionErrorStringFromSet:(id)a3;
-- (void)enumerateTextInputActionsAnalytics:(id)a3;
-- (void)increaseCountForAppBundleId:(id)a3 forSource:(int64_t)a4 forActionType:(int64_t)a5 forFlagOptions:(int64_t)a6 forInputModeKey:(id)a7 byAccumulatorEntry:(id)a8;
-- (void)increaseWithAction:(id)a3;
-- (void)logErrorCodeIfNotNil:(id)a3;
+- (id)cleanIdForPublishing:(id)publishing;
+- (id)computeSessionActionsStringOnSession:(id)session;
+- (id)generateSessionErrorStringFromSet:(id)set;
+- (void)enumerateTextInputActionsAnalytics:(id)analytics;
+- (void)increaseCountForAppBundleId:(id)id forSource:(int64_t)source forActionType:(int64_t)type forFlagOptions:(int64_t)options forInputModeKey:(id)key byAccumulatorEntry:(id)entry;
+- (void)increaseWithAction:(id)action;
+- (void)logErrorCodeIfNotNil:(id)nil;
 - (void)reset;
 @end
 
@@ -42,11 +42,11 @@
   return v2;
 }
 
-+ (id)accumulatorWithName:(id)a3
++ (id)accumulatorWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v3 copy];
+  v5 = [nameCopy copy];
 
   v6 = v4[15];
   v4[15] = v5;
@@ -56,13 +56,13 @@
   return v4;
 }
 
-- (void)logErrorCodeIfNotNil:(id)a3
+- (void)logErrorCodeIfNotNil:(id)nil
 {
-  v4 = a3;
-  if (v4)
+  nilCopy = nil;
+  if (nilCopy)
   {
-    v7 = v4;
-    if ([v4 length] == 1)
+    v7 = nilCopy;
+    if ([nilCopy length] == 1)
     {
       v5 = v7;
     }
@@ -79,37 +79,37 @@
   }
 }
 
-+ (id)getOrInitializeArrayFromDictionary:(id)a3 forKey:(id)a4 initCapacity:(unint64_t)a5
++ (id)getOrInitializeArrayFromDictionary:(id)dictionary forKey:(id)key initCapacity:(unint64_t)capacity
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 valueForKey:v8];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v9 = [dictionaryCopy valueForKey:keyCopy];
   if (!v9)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a5];
-    if (a5)
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
+    if (capacity)
     {
-      v10 = a5;
+      capacityCopy = capacity;
       do
       {
-        v11 = [MEMORY[0x1E695DFB0] null];
-        [v9 addObject:v11];
+        null = [MEMORY[0x1E695DFB0] null];
+        [v9 addObject:null];
 
-        --v10;
+        --capacityCopy;
       }
 
-      while (v10);
+      while (capacityCopy);
     }
 
-    [v7 setObject:v9 forKey:v8];
+    [dictionaryCopy setObject:v9 forKey:keyCopy];
     v12 = UITextInputSessionLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v14 = 134218240;
-      v15 = v8;
+      v15 = keyCopy;
       v16 = 2048;
-      v17 = a5;
+      capacityCopy2 = capacity;
       _os_log_debug_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] New key found - initializing new array for key %lu with capacity %lu", &v14, 0x16u);
     }
   }
@@ -117,77 +117,77 @@
   return v9;
 }
 
-+ (id)getOrInitializeArrayFromArray:(id)a3 forKey:(unint64_t)a4 initCapacity:(unint64_t)a5
++ (id)getOrInitializeArrayFromArray:(id)array forKey:(unint64_t)key initCapacity:(unint64_t)capacity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if ([v9 count] <= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] <= key)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"UITextInputSessionEfficacyAccumulator.m" lineNumber:243 description:{@"Attempt to access index %lu, which is out of bounds for array with capacity %lu", a4, objc_msgSend(v9, "count")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextInputSessionEfficacyAccumulator.m" lineNumber:243 description:{@"Attempt to access index %lu, which is out of bounds for array with capacity %lu", key, objc_msgSend(arrayCopy, "count")}];
   }
 
-  v10 = [v9 objectAtIndexedSubscript:a4];
-  v11 = [MEMORY[0x1E695DFB0] null];
-  v12 = [v10 isEqual:v11];
+  v10 = [arrayCopy objectAtIndexedSubscript:key];
+  null = [MEMORY[0x1E695DFB0] null];
+  v12 = [v10 isEqual:null];
 
   if (v12)
   {
-    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a5];
-    if (a5)
+    v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
+    if (capacity)
     {
-      v14 = a5;
+      capacityCopy = capacity;
       do
       {
-        v15 = [MEMORY[0x1E695DFB0] null];
-        [v13 addObject:v15];
+        null2 = [MEMORY[0x1E695DFB0] null];
+        [v13 addObject:null2];
 
-        --v14;
+        --capacityCopy;
       }
 
-      while (v14);
+      while (capacityCopy);
     }
 
-    [v9 setObject:v13 atIndexedSubscript:a4];
+    [arrayCopy setObject:v13 atIndexedSubscript:key];
     v16 = UITextInputSessionLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v20 = a4;
+      keyCopy = key;
       v21 = 2048;
-      v22 = a5;
+      capacityCopy2 = capacity;
       _os_log_debug_impl(&dword_188A29000, v16, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] New key found - initializing new array for key %lu with capacity %lu", buf, 0x16u);
     }
   }
 
   else
   {
-    v13 = [v9 objectAtIndexedSubscript:a4];
+    v13 = [arrayCopy objectAtIndexedSubscript:key];
   }
 
   return v13;
 }
 
-+ (id)getOrInitializeDictionaryFrom:(id)a3 forKey:(unint64_t)a4 initCapacity:(int64_t)a5
++ (id)getOrInitializeDictionaryFrom:(id)from forKey:(unint64_t)key initCapacity:(int64_t)capacity
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 objectAtIndexedSubscript:a4];
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v10 = [v8 isEqual:v9];
+  fromCopy = from;
+  v8 = [fromCopy objectAtIndexedSubscript:key];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [v8 isEqual:null];
 
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a5];
+    v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
 
-    [v7 setObject:v11 atIndexedSubscript:a4];
+    [fromCopy setObject:v11 atIndexedSubscript:key];
     v12 = UITextInputSessionLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v14 = 134218240;
-      v15 = a4;
+      keyCopy = key;
       v16 = 2048;
-      v17 = a5;
+      capacityCopy = capacity;
       _os_log_debug_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] New key found - initializing new dictionary for key %lu with capacity %lu", &v14, 0x16u);
     }
 
@@ -197,72 +197,72 @@
   return v8;
 }
 
-- (void)increaseCountForAppBundleId:(id)a3 forSource:(int64_t)a4 forActionType:(int64_t)a5 forFlagOptions:(int64_t)a6 forInputModeKey:(id)a7 byAccumulatorEntry:(id)a8
+- (void)increaseCountForAppBundleId:(id)id forSource:(int64_t)source forActionType:(int64_t)type forFlagOptions:(int64_t)options forInputModeKey:(id)key byAccumulatorEntry:(id)entry
 {
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
-  if (([v16 isAllZeroes] & 1) == 0)
+  idCopy = id;
+  keyCopy = key;
+  entryCopy = entry;
+  if (([entryCopy isAllZeroes] & 1) == 0)
   {
-    if (v15)
+    if (keyCopy)
     {
-      if (!v14)
+      if (!idCopy)
       {
-        v14 = &stru_1EFB14550;
+        idCopy = &stru_1EFB14550;
       }
 
-      v17 = [_UITextInputSessionEfficacyAccumulator getOrInitializeArrayFromDictionary:self->_entries forKey:v14 initCapacity:13];
-      v28 = [_UITextInputSessionEfficacyAccumulator getOrInitializeArrayFromArray:v17 forKey:a4 initCapacity:17];
+      v17 = [_UITextInputSessionEfficacyAccumulator getOrInitializeArrayFromDictionary:self->_entries forKey:idCopy initCapacity:13];
+      v28 = [_UITextInputSessionEfficacyAccumulator getOrInitializeArrayFromArray:v17 forKey:source initCapacity:17];
       v27 = [_UITextInputSessionEfficacyAccumulator getOrInitializeArrayFromArray:"getOrInitializeArrayFromArray:forKey:initCapacity:" forKey:? initCapacity:?];
       v18 = [_UITextInputSessionEfficacyAccumulator getOrInitializeDictionaryFrom:"getOrInitializeDictionaryFrom:forKey:initCapacity:" forKey:? initCapacity:?];
-      v19 = [v18 objectForKeyedSubscript:v15];
+      v19 = [v18 objectForKeyedSubscript:keyCopy];
       if (!v19)
       {
         v19 = objc_alloc_init(_UITextInputSessionEfficacyAccumulatorEntry);
-        [v18 setObject:v19 forKeyedSubscript:v15];
+        [v18 setObject:v19 forKeyedSubscript:keyCopy];
         v20 = UITextInputSessionLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134218754;
-          v30 = a4;
+          sourceCopy2 = source;
           v31 = 2048;
-          v32 = a5;
+          typeCopy2 = type;
           v33 = 2048;
-          v34 = a6;
+          optionsCopy2 = options;
           v35 = 2112;
-          v36 = v15;
+          v36 = keyCopy;
           _os_log_debug_impl(&dword_188A29000, v20, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] New input mode key found - initializing new entry for source:%lu actionType:%lu flagOptions%lu inputMode:%@", buf, 0x2Au);
         }
       }
 
-      [(_UITextInputSessionEfficacyAccumulatorEntry *)v19 increaseWithEntry:v16];
+      [(_UITextInputSessionEfficacyAccumulatorEntry *)v19 increaseWithEntry:entryCopy];
       v21 = UITextInputSessionLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v16 netCharacters];
-        v25 = [v16 userRemovedCharacters];
-        v24 = [v16 netEmojiCharacters];
-        v23 = [v16 userRemovedEmojiCharacters];
-        v22 = [v16 inputActions];
+        netCharacters = [entryCopy netCharacters];
+        userRemovedCharacters = [entryCopy userRemovedCharacters];
+        netEmojiCharacters = [entryCopy netEmojiCharacters];
+        userRemovedEmojiCharacters = [entryCopy userRemovedEmojiCharacters];
+        inputActions = [entryCopy inputActions];
         *buf = 134220034;
-        v30 = a4;
+        sourceCopy2 = source;
         v31 = 2048;
-        v32 = a5;
+        typeCopy2 = type;
         v33 = 2048;
-        v34 = a6;
+        optionsCopy2 = options;
         v35 = 2112;
-        v36 = v15;
+        v36 = keyCopy;
         v37 = 2048;
-        v38 = v26;
+        v38 = netCharacters;
         v39 = 2048;
-        v40 = v25;
+        v40 = userRemovedCharacters;
         v41 = 2048;
-        v42 = v24;
+        v42 = netEmojiCharacters;
         v43 = 2048;
-        v44 = v23;
+        v44 = userRemovedEmojiCharacters;
         v45 = 2048;
-        v46 = v22;
+        v46 = inputActions;
         _os_log_debug_impl(&dword_188A29000, v21, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] Updated entry for source:%lu actionType:%lu flagOptions%lu inputMode:%@ by netChars:%ld userRemovedChars:%ld netEmojiChars:%ld userRemovedEmojiChars:%ld actions:%ld", buf, 0x5Cu);
       }
     }
@@ -279,81 +279,81 @@
   }
 }
 
-- (void)increaseWithAction:(id)a3
+- (void)increaseWithAction:(id)action
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [_UITextInputSessionEfficacyAccumulatorEntry generateAccumulatorEntryFromAction:v4];
-  v6 = [v4 inputModeUniqueString];
+  actionCopy = action;
+  v5 = [_UITextInputSessionEfficacyAccumulatorEntry generateAccumulatorEntryFromAction:actionCopy];
+  inputModeUniqueString = [actionCopy inputModeUniqueString];
   v7 = UITextInputSessionLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138414338;
-    v43 = v4;
+    v43 = actionCopy;
     v44 = 2048;
-    v45 = [v5 netCharacters];
+    netCharacters = [v5 netCharacters];
     v46 = 2048;
-    v47 = [v5 userRemovedCharacters];
+    userRemovedCharacters = [v5 userRemovedCharacters];
     v48 = 2048;
-    v49 = [v5 netEmojiCharacters];
+    netEmojiCharacters = [v5 netEmojiCharacters];
     v50 = 2048;
-    v51 = [v5 userRemovedEmojiCharacters];
+    userRemovedEmojiCharacters = [v5 userRemovedEmojiCharacters];
     v52 = 2048;
-    v53 = [v5 inputActions];
+    inputActions = [v5 inputActions];
     v54 = 2048;
-    v55 = [v4 textInputActionsSource];
+    textInputActionsSource = [actionCopy textInputActionsSource];
     v56 = 2048;
-    v57 = [v4 textInputActionsType];
+    textInputActionsType = [actionCopy textInputActionsType];
     v58 = 2112;
-    v59 = v6;
+    v59 = inputModeUniqueString;
     _os_log_debug_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] increaseWithAction(): %@ netCharactersDelta:%ld userRemovedCharactersDelta:%ld netEmojiCharactersDelta:%ld sysRemovedObjectsDelta:%ld inputActionsDelta:%ld for source:%lu type:%lu inputMode:%@", buf, 0x5Cu);
   }
 
-  [v4 source];
-  v8 = [v4 appBundleId];
-  -[_UITextInputSessionEfficacyAccumulator increaseCountForAppBundleId:forSource:forActionType:forFlagOptions:forInputModeKey:byAccumulatorEntry:](self, "increaseCountForAppBundleId:forSource:forActionType:forFlagOptions:forInputModeKey:byAccumulatorEntry:", v8, [v4 textInputActionsSource], objc_msgSend(v4, "textInputActionsType"), objc_msgSend(v4, "flagOptions"), v6, v5);
+  [actionCopy source];
+  appBundleId = [actionCopy appBundleId];
+  -[_UITextInputSessionEfficacyAccumulator increaseCountForAppBundleId:forSource:forActionType:forFlagOptions:forInputModeKey:byAccumulatorEntry:](self, "increaseCountForAppBundleId:forSource:forActionType:forFlagOptions:forInputModeKey:byAccumulatorEntry:", appBundleId, [actionCopy textInputActionsSource], objc_msgSend(actionCopy, "textInputActionsType"), objc_msgSend(actionCopy, "flagOptions"), inputModeUniqueString, v5);
 
-  v9 = [v4 language];
-  if (v9)
+  language = [actionCopy language];
+  if (language)
   {
   }
 
   else
   {
-    v10 = [v4 region];
+    region = [actionCopy region];
 
-    if (!v10)
+    if (!region)
     {
       goto LABEL_8;
     }
   }
 
-  v11 = [v4 language];
-  v12 = [v11 copy];
+  language2 = [actionCopy language];
+  v12 = [language2 copy];
   language = self->_language;
   self->_language = v12;
 
-  v14 = [v4 region];
-  v15 = [v14 copy];
+  region2 = [actionCopy region];
+  v15 = [region2 copy];
   region = self->_region;
   self->_region = v15;
 
-  v17 = [v4 keyboardVariant];
-  v18 = [v17 copy];
+  keyboardVariant = [actionCopy keyboardVariant];
+  v18 = [keyboardVariant copy];
   keyboardVariant = self->_keyboardVariant;
   self->_keyboardVariant = v18;
 
-  v20 = [v4 keyboardLayout];
-  v21 = [v20 copy];
+  keyboardLayout = [actionCopy keyboardLayout];
+  v21 = [keyboardLayout copy];
   keyboardLayout = self->_keyboardLayout;
   self->_keyboardLayout = v21;
 
-  v23 = [v4 keyboardType];
-  v24 = [v23 copy];
+  keyboardType = [actionCopy keyboardType];
+  v24 = [keyboardType copy];
   keyboardType = self->_keyboardType;
   self->_keyboardType = v24;
 
-  if ([v4 textInputActionsSource] == 4)
+  if ([actionCopy textInputActionsSource] == 4)
   {
     v26 = _UITextInputActionsValidateLanguage(self->_language);
     [(_UITextInputSessionEfficacyAccumulator *)self logErrorCodeIfNotNil:v26];
@@ -363,80 +363,80 @@
   }
 
 LABEL_8:
-  v28 = [v4 asDictationBegan];
-  v29 = v28;
-  if (v28 && [v28 modelessUsedAtLeastOnceCount])
+  asDictationBegan = [actionCopy asDictationBegan];
+  v29 = asDictationBegan;
+  if (asDictationBegan && [asDictationBegan modelessUsedAtLeastOnceCount])
   {
     self->_sessionIsModeless = 1;
   }
 
-  v30 = [v4 largestSingleInsertionLength];
-  v31 = [v4 largestSingleDeletionLength];
-  v32 = [v4 netCharacterCount];
-  if ([v4 flagOptions])
+  largestSingleInsertionLength = [actionCopy largestSingleInsertionLength];
+  largestSingleDeletionLength = [actionCopy largestSingleDeletionLength];
+  netCharacterCount = [actionCopy netCharacterCount];
+  if ([actionCopy flagOptions])
   {
-    v30 = [v4 insertedEmojiCount];
-    v31 = [v4 removedEmojiCount];
-    v33 = [v4 insertedEmojiCount];
-    v32 = v33 - [v4 removedEmojiCount];
+    largestSingleInsertionLength = [actionCopy insertedEmojiCount];
+    largestSingleDeletionLength = [actionCopy removedEmojiCount];
+    insertedEmojiCount = [actionCopy insertedEmojiCount];
+    netCharacterCount = insertedEmojiCount - [actionCopy removedEmojiCount];
     v34 = UITextInputSessionLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218496;
-      v43 = v30;
+      v43 = largestSingleInsertionLength;
       v44 = 2048;
-      v45 = v31;
+      netCharacters = largestSingleDeletionLength;
       v46 = 2048;
-      v47 = v32;
+      userRemovedCharacters = netCharacterCount;
       _os_log_debug_impl(&dword_188A29000, v34, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] emoji search - override insertion %lu, deletion %lu, net %ld", buf, 0x20u);
     }
   }
 
-  if (v30 > self->_largestSessionInsertionLength)
+  if (largestSingleInsertionLength > self->_largestSessionInsertionLength)
   {
     v35 = UITextInputSessionLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
       largestSessionInsertionLength = self->_largestSessionInsertionLength;
-      v39 = [v4 largestSingleInsertionLength];
+      largestSingleInsertionLength2 = [actionCopy largestSingleInsertionLength];
       *buf = 134218240;
       v43 = largestSessionInsertionLength;
       v44 = 2048;
-      v45 = v39;
+      netCharacters = largestSingleInsertionLength2;
       _os_log_debug_impl(&dword_188A29000, v35, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] largestSessionInsertionLength %lu -> %lu", buf, 0x16u);
     }
 
-    self->_largestSessionInsertionLength = v30;
+    self->_largestSessionInsertionLength = largestSingleInsertionLength;
   }
 
-  if (v31 > self->_largestSessionDeletionLength)
+  if (largestSingleDeletionLength > self->_largestSessionDeletionLength)
   {
     v36 = UITextInputSessionLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
       largestSessionDeletionLength = self->_largestSessionDeletionLength;
-      v41 = [v4 largestSingleDeletionLength];
+      largestSingleDeletionLength2 = [actionCopy largestSingleDeletionLength];
       *buf = 134218240;
       v43 = largestSessionDeletionLength;
       v44 = 2048;
-      v45 = v41;
+      netCharacters = largestSingleDeletionLength2;
       _os_log_debug_impl(&dword_188A29000, v36, OS_LOG_TYPE_DEBUG, "[UITextInputSessionEfficacyAccumulator] largestSessionDeletionLength %lu -> %lu", buf, 0x16u);
     }
 
-    self->_largestSessionDeletionLength = v31;
+    self->_largestSessionDeletionLength = largestSingleDeletionLength;
   }
 
-  self->_sessionNetCharacters += v32;
-  if ([v4 isCapableOfTextInsertion] && ((objc_msgSend(v4, "flagOptions") & 1) == 0 || (objc_msgSend(v4, "flagOptions") & 1) != 0 && objc_msgSend(v4, "insertedEmojiCount")))
+  self->_sessionNetCharacters += netCharacterCount;
+  if ([actionCopy isCapableOfTextInsertion] && ((objc_msgSend(actionCopy, "flagOptions") & 1) == 0 || (objc_msgSend(actionCopy, "flagOptions") & 1) != 0 && objc_msgSend(actionCopy, "insertedEmojiCount")))
   {
     self->_insertionObservedInSession = 1;
   }
 
-  else if (!self->_insertionObservedInSession && ([v4 flagOptions] & 1) == 0)
+  else if (!self->_insertionObservedInSession && ([actionCopy flagOptions] & 1) == 0)
   {
-    v37 = [v4 removedTextLength];
-    self->_charsRemovedBeforeFirstInsertionCount += v37 - [v4 removedEmojiCount];
-    self->_emojisRemovedBeforeFirstInsertionCount += [v4 removedEmojiCount];
+    removedTextLength = [actionCopy removedTextLength];
+    self->_charsRemovedBeforeFirstInsertionCount += removedTextLength - [actionCopy removedEmojiCount];
+    self->_emojisRemovedBeforeFirstInsertionCount += [actionCopy removedEmojiCount];
   }
 }
 
@@ -457,9 +457,9 @@ LABEL_8:
   }
 }
 
-- (id)computeSessionActionsStringOnSession:(id)a3
+- (id)computeSessionActionsStringOnSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = objc_alloc_init(_UITextInputSessionActionInformation);
   [(_UITextInputSessionActionInformation *)v6 setSessionHasOnlyPrimaryInput:1];
   [(_UITextInputSessionActionInformation *)v6 setSessionHasDictation:0];
@@ -484,7 +484,7 @@ LABEL_8:
   v24 = v10;
   v11 = v6;
   v25 = v11;
-  [v5 enumerateObjectsUsingBlock:v23];
+  [sessionCopy enumerateObjectsUsingBlock:v23];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -513,16 +513,16 @@ LABEL_8:
   return v14;
 }
 
-- (id)generateSessionErrorStringFromSet:(id)a3
+- (id)generateSessionErrorStringFromSet:(id)set
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  setCopy = set;
+  if ([setCopy count])
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"self" ascending:1];
     v9[0] = v4;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    v6 = [v3 sortedArrayUsingDescriptors:v5];
+    v6 = [setCopy sortedArrayUsingDescriptors:v5];
 
     v7 = [v6 componentsJoinedByString:&stru_1EFB14550];
   }
@@ -535,22 +535,22 @@ LABEL_8:
   return v7;
 }
 
-- (id)cleanIdForPublishing:(id)a3
+- (id)cleanIdForPublishing:(id)publishing
 {
-  v3 = a3;
+  publishingCopy = publishing;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x1E69D9558] performSelector:sel_isReportableClientId_ withObject:v3] != 0;
+    v4 = [MEMORY[0x1E69D9558] performSelector:sel_isReportableClientId_ withObject:publishingCopy] != 0;
   }
 
   else
   {
-    v4 = [(__CFString *)v3 hasPrefix:@"com.apple."];
+    v4 = [(__CFString *)publishingCopy hasPrefix:@"com.apple."];
   }
 
   if (v4)
   {
-    v5 = v3;
+    v5 = publishingCopy;
   }
 
   else
@@ -563,9 +563,9 @@ LABEL_8:
   return v5;
 }
 
-- (void)enumerateTextInputActionsAnalytics:(id)a3
+- (void)enumerateTextInputActionsAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = UITextInputSessionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -597,7 +597,7 @@ LABEL_8:
   v10[4] = self;
   v12 = buf;
   v13 = v14;
-  v9 = v4;
+  v9 = analyticsCopy;
   v11 = v9;
   [(NSMutableDictionary *)entries enumerateKeysAndObjectsUsingBlock:v10];
 

@@ -1,14 +1,14 @@
 @interface WFTakePhotoImmediateModeManager
 - (WFTakePhotoImmediateModeDelegate)delegate;
-- (WFTakePhotoImmediateModeManager)initWithCameraPosition:(int64_t)a3 delegate:(id)a4;
-- (id)captureSessionWithDevice:(id)a3 output:(id)a4 error:(id *)a5;
-- (id)configuredCaptureDeviceWithError:(id *)a3;
-- (void)cameraIsReady:(id)a3;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
+- (WFTakePhotoImmediateModeManager)initWithCameraPosition:(int64_t)position delegate:(id)delegate;
+- (id)captureSessionWithDevice:(id)device output:(id)output error:(id *)error;
+- (id)configuredCaptureDeviceWithError:(id *)error;
+- (void)cameraIsReady:(id)ready;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
 - (void)dealloc;
-- (void)startSessionWithError:(id *)a3;
+- (void)startSessionWithError:(id *)error;
 - (void)stop;
-- (void)takePhotoWithError:(id *)a3;
+- (void)takePhotoWithError:(id *)error;
 @end
 
 @implementation WFTakePhotoImmediateModeManager
@@ -20,46 +20,46 @@
   return WeakRetained;
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(WFTakePhotoImmediateModeManager *)self delegate];
+  photoCopy = photo;
+  errorCopy = error;
+  delegate = [(WFTakePhotoImmediateModeManager *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(WFTakePhotoImmediateModeManager *)self delegate];
-    [v10 manager:self didFinishWithPhoto:v11 error:v7];
+    delegate2 = [(WFTakePhotoImmediateModeManager *)self delegate];
+    [delegate2 manager:self didFinishWithPhoto:photoCopy error:errorCopy];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CE5930] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE5930] object:0];
 
   v4.receiver = self;
   v4.super_class = WFTakePhotoImmediateModeManager;
   [(WFTakePhotoImmediateModeManager *)&v4 dealloc];
 }
 
-- (void)cameraIsReady:(id)a3
+- (void)cameraIsReady:(id)ready
 {
-  v4 = [(WFTakePhotoImmediateModeManager *)self delegate];
+  delegate = [(WFTakePhotoImmediateModeManager *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFTakePhotoImmediateModeManager *)self delegate];
-    [v6 managerDidBecomeReady:self];
+    delegate2 = [(WFTakePhotoImmediateModeManager *)self delegate];
+    [delegate2 managerDidBecomeReady:self];
   }
 }
 
-- (id)captureSessionWithDevice:(id)a3 output:(id)a4 error:(id *)a5
+- (id)captureSessionWithDevice:(id)device output:(id)output error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  deviceCopy = device;
+  outputCopy = output;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -120,11 +120,11 @@
 
     v17 = v16;
     _Block_object_dispose(&v28, 8);
-    v18 = [v16 deviceInputWithDevice:v8 error:a5];
+    v18 = [v16 deviceInputWithDevice:deviceCopy error:error];
     if (v18)
     {
       [v12 addInput:v18];
-      [v12 addOutput:v9];
+      [v12 addOutput:outputCopy];
       [(WFTakePhotoImmediateModeManager *)self setSession:v12];
       v19 = v12;
     }
@@ -139,9 +139,9 @@
 
   else
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVCaptureSessionPreset getAVCaptureSessionPresetPhoto(void)"];
-    [v21 handleFailureInFunction:v22 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:24 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v22 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:24 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -149,7 +149,7 @@
   return result;
 }
 
-- (id)configuredCaptureDeviceWithError:(id *)a3
+- (id)configuredCaptureDeviceWithError:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
   v45 = 0;
@@ -173,9 +173,9 @@
   _Block_object_dispose(&v45, 8);
   if (!v5)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVCaptureDeviceType getAVCaptureDeviceTypeBuiltInDualCamera(void)"];
-    [v34 handleFailureInFunction:v35 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:20 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v35 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:20 description:{@"%s", dlerror()}];
 
     goto LABEL_29;
   }
@@ -203,9 +203,9 @@
   _Block_object_dispose(&v45, 8);
   if (!v8)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVCaptureDeviceType getAVCaptureDeviceTypeBuiltInWideAngleCamera(void)"];
-    [v36 handleFailureInFunction:v37 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:21 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v37 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:21 description:{@"%s", dlerror()}];
 
     goto LABEL_29;
   }
@@ -255,9 +255,9 @@
   _Block_object_dispose(&v45, 8);
   if (!v15)
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMediaType getAVMediaTypeVideo(void)"];
-    [v38 handleFailureInFunction:v39 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v39 file:@"WFTakePhotoImmediateModeManager.m" lineNumber:22 description:{@"%s", dlerror()}];
 
 LABEL_29:
     __break(1u);
@@ -266,10 +266,10 @@ LABEL_29:
   v18 = *v15;
   v19 = [v13 discoverySessionWithDeviceTypes:v12 mediaType:v18 position:{-[WFTakePhotoImmediateModeManager position](self, "position")}];
 
-  v20 = [v19 devices];
-  v21 = [v20 firstObject];
+  devices = [v19 devices];
+  firstObject = [devices firstObject];
 
-  if (!v21)
+  if (!firstObject)
   {
     v23 = MEMORY[0x277CCA9B8];
     v24 = getAVFoundationErrorDomain();
@@ -277,14 +277,14 @@ LABEL_29:
     v25 = WFLocalizedString(@"No suitable camera was detected on this device.");
     v52 = v25;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-    *a3 = [v23 errorWithDomain:v24 code:-11814 userInfo:v26];
+    *error = [v23 errorWithDomain:v24 code:-11814 userInfo:v26];
 
 LABEL_18:
     v31 = 0;
     goto LABEL_23;
   }
 
-  if (![v21 lockForConfiguration:0])
+  if (![firstObject lockForConfiguration:0])
   {
     v27 = MEMORY[0x277CCA9B8];
     v28 = getAVFoundationErrorDomain();
@@ -292,28 +292,28 @@ LABEL_18:
     v29 = WFLocalizedString(@"The camera is already in use.");
     v50 = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-    *a3 = [v27 errorWithDomain:v28 code:-11817 userInfo:v30];
+    *error = [v27 errorWithDomain:v28 code:-11817 userInfo:v30];
 
     goto LABEL_18;
   }
 
-  if ([v21 isFocusModeSupported:2])
+  if ([firstObject isFocusModeSupported:2])
   {
     v22 = 2;
 LABEL_21:
-    [v21 setFocusMode:v22];
+    [firstObject setFocusMode:v22];
     goto LABEL_22;
   }
 
-  if ([v21 isFocusModeSupported:1])
+  if ([firstObject isFocusModeSupported:1])
   {
     v22 = 1;
     goto LABEL_21;
   }
 
 LABEL_22:
-  [v21 unlockForConfiguration];
-  v31 = v21;
+  [firstObject unlockForConfiguration];
+  v31 = firstObject;
 LABEL_23:
 
   v32 = *MEMORY[0x277D85DE8];
@@ -323,17 +323,17 @@ LABEL_23:
 
 - (void)stop
 {
-  v3 = [(WFTakePhotoImmediateModeManager *)self session];
-  [v3 stopRunning];
+  session = [(WFTakePhotoImmediateModeManager *)self session];
+  [session stopRunning];
 
   [(WFTakePhotoImmediateModeManager *)self setSession:0];
 
   [(WFTakePhotoImmediateModeManager *)self setOutput:0];
 }
 
-- (void)takePhotoWithError:(id *)a3
+- (void)takePhotoWithError:(id *)error
 {
-  v4 = [(WFTakePhotoImmediateModeManager *)self output];
+  output = [(WFTakePhotoImmediateModeManager *)self output];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -352,17 +352,17 @@ LABEL_23:
 
   v6 = v5;
   _Block_object_dispose(&v9, 8);
-  v7 = [v5 photoSettings];
-  [v4 capturePhotoWithSettings:v7 delegate:self];
+  photoSettings = [v5 photoSettings];
+  [output capturePhotoWithSettings:photoSettings delegate:self];
 }
 
-- (void)startSessionWithError:(id *)a3
+- (void)startSessionWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_cameraIsReady_ name:*MEMORY[0x277CE5930] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_cameraIsReady_ name:*MEMORY[0x277CE5930] object:0];
 
-  v6 = [(WFTakePhotoImmediateModeManager *)self configuredCaptureDeviceWithError:a3];
-  if (!*a3)
+  v6 = [(WFTakePhotoImmediateModeManager *)self configuredCaptureDeviceWithError:error];
+  if (!*error)
   {
     v13 = 0;
     v14 = &v13;
@@ -384,21 +384,21 @@ LABEL_23:
     _Block_object_dispose(&v13, 8);
     v9 = objc_opt_new();
     [(WFTakePhotoImmediateModeManager *)self setOutput:v9];
-    v10 = [(WFTakePhotoImmediateModeManager *)self captureSessionWithDevice:v6 output:v9 error:a3];
+    v10 = [(WFTakePhotoImmediateModeManager *)self captureSessionWithDevice:v6 output:v9 error:error];
     [(WFTakePhotoImmediateModeManager *)self setSession:v10];
 
-    v11 = [(WFTakePhotoImmediateModeManager *)self session];
-    [v11 startRunning];
+    session = [(WFTakePhotoImmediateModeManager *)self session];
+    [session startRunning];
   }
 }
 
-- (WFTakePhotoImmediateModeManager)initWithCameraPosition:(int64_t)a3 delegate:(id)a4
+- (WFTakePhotoImmediateModeManager)initWithCameraPosition:(int64_t)position delegate:(id)delegate
 {
-  v7 = a4;
-  if (!v7)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFTakePhotoImmediateModeManager.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTakePhotoImmediateModeManager.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
   }
 
   v14.receiver = self;
@@ -407,14 +407,14 @@ LABEL_23:
   v9 = v8;
   if (v8)
   {
-    v10 = 2 * (a3 == 1);
-    if (!a3)
+    v10 = 2 * (position == 1);
+    if (!position)
     {
       v10 = 1;
     }
 
     v8->_position = v10;
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v11 = v9;
   }
 

@@ -1,16 +1,16 @@
 @interface PPEventHighlight
-+ (id)describeProminentFeature:(unint64_t)a3;
-+ (id)eventHighlightWithEKEvent:(id)a3 score:(double)a4 prominentFeature:(unint64_t)a5 features:(id)a6 isExtraordinary:(BOOL)a7;
-+ (id)eventHighlightWithEvent:(id)a3 score:(double)a4 prominentFeature:(unint64_t)a5 features:(id)a6 isExtraordinary:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEventHighlight:(id)a3;
-- (PPEventHighlight)initWithCoder:(id)a3;
-- (PPEventHighlight)initWithEventIdentifier:(id)a3 externalURI:(id)a4 title:(id)a5 startDate:(id)a6 endDate:(id)a7 location:(id)a8 organizer:(id)a9 calendarColor:(CGColor *)a10 prominentFeature:(unint64_t)a11 features:(id)a12 score:(double)a13 isExtraordinary:(BOOL)a14;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)describeProminentFeature:(unint64_t)feature;
++ (id)eventHighlightWithEKEvent:(id)event score:(double)score prominentFeature:(unint64_t)feature features:(id)features isExtraordinary:(BOOL)extraordinary;
++ (id)eventHighlightWithEvent:(id)event score:(double)score prominentFeature:(unint64_t)feature features:(id)features isExtraordinary:(BOOL)extraordinary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEventHighlight:(id)highlight;
+- (PPEventHighlight)initWithCoder:(id)coder;
+- (PPEventHighlight)initWithEventIdentifier:(id)identifier externalURI:(id)i title:(id)title startDate:(id)date endDate:(id)endDate location:(id)location organizer:(id)organizer calendarColor:(CGColor *)self0 prominentFeature:(unint64_t)self1 features:(id)self2 score:(double)self3 isExtraordinary:(BOOL)self4;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPEventHighlight
@@ -23,17 +23,17 @@
   [(PPEventHighlight *)&v3 dealloc];
 }
 
-- (BOOL)isEqualToEventHighlight:(id)a3
+- (BOOL)isEqualToEventHighlight:(id)highlight
 {
-  v4 = a3;
-  if (!v4)
+  highlightCopy = highlight;
+  if (!highlightCopy)
   {
     goto LABEL_35;
   }
 
   v5 = self->_eventIdentifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == highlightCopy[2])
   {
   }
 
@@ -51,7 +51,7 @@ LABEL_35:
 
   v8 = self->_externalURI;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == highlightCopy[3])
   {
   }
 
@@ -67,7 +67,7 @@ LABEL_35:
 
   v11 = self->_title;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == highlightCopy[4])
   {
   }
 
@@ -83,7 +83,7 @@ LABEL_35:
 
   v14 = self->_startDate;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == highlightCopy[5])
   {
   }
 
@@ -99,7 +99,7 @@ LABEL_35:
 
   v17 = self->_endDate;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == highlightCopy[6])
   {
   }
 
@@ -115,7 +115,7 @@ LABEL_35:
 
   v20 = self->_location;
   v21 = v20;
-  if (v20 == v4[7])
+  if (v20 == highlightCopy[7])
   {
   }
 
@@ -131,7 +131,7 @@ LABEL_35:
 
   v23 = self->_organizer;
   v24 = v23;
-  if (v23 == v4[8])
+  if (v23 == highlightCopy[8])
   {
   }
 
@@ -145,30 +145,30 @@ LABEL_35:
     }
   }
 
-  if (!CGColorEqualToColor(self->_calendarColor, [v4 calendarColor]))
+  if (!CGColorEqualToColor(self->_calendarColor, [highlightCopy calendarColor]))
   {
     goto LABEL_35;
   }
 
   prominentFeature = self->_prominentFeature;
-  if (prominentFeature != [v4 prominentFeature])
+  if (prominentFeature != [highlightCopy prominentFeature])
   {
     goto LABEL_35;
   }
 
   score = self->_score;
-  [v4 score];
+  [highlightCopy score];
   if (score != v28)
   {
     goto LABEL_35;
   }
 
   features = self->_features;
-  v30 = [v4 features];
-  if ([(NSArray *)features isEqualToArray:v30])
+  features = [highlightCopy features];
+  if ([(NSArray *)features isEqualToArray:features])
   {
     isExtraordinary = self->_isExtraordinary;
-    v32 = isExtraordinary == [v4 isExtraordinary];
+    v32 = isExtraordinary == [highlightCopy isExtraordinary];
   }
 
   else
@@ -180,54 +180,54 @@ LABEL_36:
   return v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPEventHighlight *)self isEqualToEventHighlight:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPEventHighlight *)self isEqualToEventHighlight:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(NSString *)self->_eventIdentifier copyWithZone:a3];
+    v6 = [(NSString *)self->_eventIdentifier copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
-    v8 = [(NSURL *)self->_externalURI copyWithZone:a3];
+    v8 = [(NSURL *)self->_externalURI copyWithZone:zone];
     v9 = *(v5 + 24);
     *(v5 + 24) = v8;
 
-    v10 = [(NSString *)self->_title copyWithZone:a3];
+    v10 = [(NSString *)self->_title copyWithZone:zone];
     v11 = *(v5 + 32);
     *(v5 + 32) = v10;
 
-    v12 = [(NSDate *)self->_startDate copyWithZone:a3];
+    v12 = [(NSDate *)self->_startDate copyWithZone:zone];
     v13 = *(v5 + 40);
     *(v5 + 40) = v12;
 
-    v14 = [(NSDate *)self->_endDate copyWithZone:a3];
+    v14 = [(NSDate *)self->_endDate copyWithZone:zone];
     v15 = *(v5 + 48);
     *(v5 + 48) = v14;
 
-    v16 = [(NSString *)self->_location copyWithZone:a3];
+    v16 = [(NSString *)self->_location copyWithZone:zone];
     v17 = *(v5 + 56);
     *(v5 + 56) = v16;
 
-    v18 = [(NSString *)self->_organizer copyWithZone:a3];
+    v18 = [(NSString *)self->_organizer copyWithZone:zone];
     v19 = *(v5 + 64);
     *(v5 + 64) = v18;
 
@@ -236,7 +236,7 @@ LABEL_36:
     *(v5 + 72) = Copy;
     *(v5 + 80) = prominentFeature;
     *(v5 + 96) = self->_score;
-    v22 = [(NSArray *)self->_features copyWithZone:a3];
+    v22 = [(NSArray *)self->_features copyWithZone:zone];
     v23 = *(v5 + 88);
     *(v5 + 88) = v22;
 
@@ -246,34 +246,34 @@ LABEL_36:
   return v5;
 }
 
-- (PPEventHighlight)initWithCoder:(id)a3
+- (PPEventHighlight)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
-  v6 = [v3 decodeObjectOfClass:v4 forKey:@"eid"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"eur"];
-  v8 = [v3 decodeObjectOfClass:v4 forKey:@"ttl"];
-  v9 = [v3 decodeObjectOfClass:v5 forKey:@"std"];
-  v10 = [v3 decodeObjectOfClass:v5 forKey:@"end"];
+  v6 = [coderCopy decodeObjectOfClass:v4 forKey:@"eid"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eur"];
+  v8 = [coderCopy decodeObjectOfClass:v4 forKey:@"ttl"];
+  v9 = [coderCopy decodeObjectOfClass:v5 forKey:@"std"];
+  v10 = [coderCopy decodeObjectOfClass:v5 forKey:@"end"];
   v11 = objc_autoreleasePoolPush();
   v12 = objc_alloc(MEMORY[0x1E695DFD8]);
   v13 = objc_opt_class();
   v14 = [v12 initWithObjects:{v13, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v11);
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"fea"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"fea"];
 
   v16 = v10;
   if (v6 && v7 && v8 && v9 && v10 && v15)
   {
-    v17 = PPCreateCalendarColorWithDecoder(v3);
-    v27 = [v3 decodeObjectOfClass:v4 forKey:@"loc"];
-    v18 = [v3 decodeObjectOfClass:v4 forKey:@"org"];
-    v19 = [v3 decodeInt32ForKey:@"pft"];
-    [v3 decodeDoubleForKey:@"scr"];
+    v17 = PPCreateCalendarColorWithDecoder(coderCopy);
+    v27 = [coderCopy decodeObjectOfClass:v4 forKey:@"loc"];
+    v18 = [coderCopy decodeObjectOfClass:v4 forKey:@"org"];
+    v19 = [coderCopy decodeInt32ForKey:@"pft"];
+    [coderCopy decodeDoubleForKey:@"scr"];
     v21 = v20;
-    LOBYTE(v26) = [v3 decodeBoolForKey:@"ise"];
+    LOBYTE(v26) = [coderCopy decodeBoolForKey:@"ise"];
     v22 = [(PPEventHighlight *)self initWithEventIdentifier:v6 externalURI:v7 title:v8 startDate:v9 endDate:v16 location:v27 organizer:v21 calendarColor:v18 prominentFeature:v17 features:v19 score:v15 isExtraordinary:v26];
 
     CGColorRelease(v17);
@@ -286,7 +286,7 @@ LABEL_36:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v30 = v3;
+      v30 = coderCopy;
       _os_log_error_impl(&dword_1A7FD3000, v23, OS_LOG_TYPE_ERROR, "failed to decode eventIdentifier, externalURI, title, startDate, endDate, or features from %@", buf, 0xCu);
     }
 
@@ -297,22 +297,22 @@ LABEL_36:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventIdentifier = self->_eventIdentifier;
-  v5 = a3;
-  [v5 encodeObject:eventIdentifier forKey:@"eid"];
-  [v5 encodeObject:self->_externalURI forKey:@"eur"];
-  [v5 encodeObject:self->_title forKey:@"ttl"];
-  [v5 encodeObject:self->_startDate forKey:@"std"];
-  [v5 encodeObject:self->_endDate forKey:@"end"];
-  [v5 encodeObject:self->_location forKey:@"loc"];
-  [v5 encodeObject:self->_organizer forKey:@"org"];
-  PPEncodeCalendarColor(v5, self->_calendarColor);
-  [v5 encodeInt32:LODWORD(self->_prominentFeature) forKey:@"pft"];
-  [v5 encodeObject:self->_features forKey:@"fea"];
-  [v5 encodeDouble:@"scr" forKey:self->_score];
-  [v5 encodeBool:self->_isExtraordinary forKey:@"ise"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventIdentifier forKey:@"eid"];
+  [coderCopy encodeObject:self->_externalURI forKey:@"eur"];
+  [coderCopy encodeObject:self->_title forKey:@"ttl"];
+  [coderCopy encodeObject:self->_startDate forKey:@"std"];
+  [coderCopy encodeObject:self->_endDate forKey:@"end"];
+  [coderCopy encodeObject:self->_location forKey:@"loc"];
+  [coderCopy encodeObject:self->_organizer forKey:@"org"];
+  PPEncodeCalendarColor(coderCopy, self->_calendarColor);
+  [coderCopy encodeInt32:LODWORD(self->_prominentFeature) forKey:@"pft"];
+  [coderCopy encodeObject:self->_features forKey:@"fea"];
+  [coderCopy encodeDouble:@"scr" forKey:self->_score];
+  [coderCopy encodeBool:self->_isExtraordinary forKey:@"ise"];
 }
 
 - (unint64_t)hash
@@ -359,10 +359,10 @@ LABEL_36:
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_isExtraordinary];
-  v19 = [v18 unsignedIntegerValue];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
 
   v20 = *MEMORY[0x1E69E9840];
-  return v19 - v12 + 32 * v12;
+  return unsignedIntegerValue - v12 + 32 * v12;
 }
 
 - (id)description
@@ -387,96 +387,96 @@ LABEL_36:
   return v9;
 }
 
-- (PPEventHighlight)initWithEventIdentifier:(id)a3 externalURI:(id)a4 title:(id)a5 startDate:(id)a6 endDate:(id)a7 location:(id)a8 organizer:(id)a9 calendarColor:(CGColor *)a10 prominentFeature:(unint64_t)a11 features:(id)a12 score:(double)a13 isExtraordinary:(BOOL)a14
+- (PPEventHighlight)initWithEventIdentifier:(id)identifier externalURI:(id)i title:(id)title startDate:(id)date endDate:(id)endDate location:(id)location organizer:(id)organizer calendarColor:(CGColor *)self0 prominentFeature:(unint64_t)self1 features:(id)self2 score:(double)self3 isExtraordinary:(BOOL)self4
 {
-  v38 = a3;
-  v37 = a4;
-  v21 = a5;
-  v36 = a6;
-  v35 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a12;
+  identifierCopy = identifier;
+  iCopy = i;
+  titleCopy = title;
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationCopy = location;
+  organizerCopy = organizer;
+  featuresCopy = features;
   v39.receiver = self;
   v39.super_class = PPEventHighlight;
   v25 = [(PPEventHighlight *)&v39 init];
   if (v25)
   {
-    v26 = [v38 copy];
+    v26 = [identifierCopy copy];
     eventIdentifier = v25->_eventIdentifier;
     v25->_eventIdentifier = v26;
 
-    objc_storeStrong(&v25->_externalURI, a4);
-    v28 = [v21 copy];
+    objc_storeStrong(&v25->_externalURI, i);
+    v28 = [titleCopy copy];
     title = v25->_title;
     v25->_title = v28;
 
-    objc_storeStrong(&v25->_startDate, a6);
-    objc_storeStrong(&v25->_endDate, a7);
-    v30 = [v22 copy];
+    objc_storeStrong(&v25->_startDate, date);
+    objc_storeStrong(&v25->_endDate, endDate);
+    v30 = [locationCopy copy];
     location = v25->_location;
     v25->_location = v30;
 
-    v32 = [v23 copy];
+    v32 = [organizerCopy copy];
     organizer = v25->_organizer;
     v25->_organizer = v32;
 
-    v25->_calendarColor = CGColorRetain(a10);
-    v25->_prominentFeature = a11;
-    objc_storeStrong(&v25->_features, a12);
-    v25->_score = a13;
-    v25->_isExtraordinary = a14;
+    v25->_calendarColor = CGColorRetain(color);
+    v25->_prominentFeature = feature;
+    objc_storeStrong(&v25->_features, features);
+    v25->_score = score;
+    v25->_isExtraordinary = extraordinary;
   }
 
   return v25;
 }
 
-+ (id)describeProminentFeature:(unint64_t)a3
++ (id)describeProminentFeature:(unint64_t)feature
 {
-  if (a3 - 1 > 7)
+  if (feature - 1 > 7)
   {
     return @"Calendar";
   }
 
   else
   {
-    return *(&off_1E77F7AC8 + a3 - 1);
+    return *(&off_1E77F7AC8 + feature - 1);
   }
 }
 
-+ (id)eventHighlightWithEvent:(id)a3 score:(double)a4 prominentFeature:(unint64_t)a5 features:(id)a6 isExtraordinary:(BOOL)a7
++ (id)eventHighlightWithEvent:(id)event score:(double)score prominentFeature:(unint64_t)feature features:(id)features isExtraordinary:(BOOL)extraordinary
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [v10 calendar];
-  v23 = [v11 color];
+  featuresCopy = features;
+  eventCopy = event;
+  calendar = [eventCopy calendar];
+  color = [calendar color];
 
   v12 = [PPEventHighlight alloc];
-  v13 = [v10 eventIdentifier];
-  v14 = [v10 externalURI];
-  v15 = [v10 title];
-  v16 = [v10 startDate];
-  v17 = [v10 endDate];
-  v18 = [v10 location];
-  v19 = [v10 organizerName];
+  eventIdentifier = [eventCopy eventIdentifier];
+  externalURI = [eventCopy externalURI];
+  title = [eventCopy title];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  location = [eventCopy location];
+  organizerName = [eventCopy organizerName];
 
-  LOBYTE(v22) = a7;
-  v20 = [(PPEventHighlight *)v12 initWithEventIdentifier:v13 externalURI:v14 title:v15 startDate:v16 endDate:v17 location:v18 organizer:a4 calendarColor:v19 prominentFeature:v23 features:a5 score:v9 isExtraordinary:v22];
+  LOBYTE(v22) = extraordinary;
+  v20 = [(PPEventHighlight *)v12 initWithEventIdentifier:eventIdentifier externalURI:externalURI title:title startDate:startDate endDate:endDate location:location organizer:score calendarColor:organizerName prominentFeature:color features:feature score:featuresCopy isExtraordinary:v22];
 
   return v20;
 }
 
-+ (id)eventHighlightWithEKEvent:(id)a3 score:(double)a4 prominentFeature:(unint64_t)a5 features:(id)a6 isExtraordinary:(BOOL)a7
++ (id)eventHighlightWithEKEvent:(id)event score:(double)score prominentFeature:(unint64_t)feature features:(id)features isExtraordinary:(BOOL)extraordinary
 {
-  v10 = a3;
-  v29 = a6;
+  eventCopy = event;
+  featuresCopy = features;
   v11 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
-  v12 = [v10 calendar];
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v11, kCGRenderingIntentDefault, [v12 CGColor], 0);
+  calendar = [eventCopy calendar];
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v11, kCGRenderingIntentDefault, [calendar CGColor], 0);
 
   CGColorSpaceRelease(v11);
-  v13 = [v10 locationWithoutPrediction];
-  v14 = [v13 copy];
+  locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+  v14 = [locationWithoutPrediction copy];
 
   if (![v14 length])
   {
@@ -486,15 +486,15 @@ LABEL_36:
 
   context = objc_autoreleasePoolPush();
   v24 = [PPEventHighlight alloc];
-  v15 = [v10 eventIdentifier];
-  v16 = [v10 externalURI];
-  v17 = [v10 title];
-  v18 = [v10 startDate];
-  v19 = [v10 endDate];
-  v20 = [v10 organizer];
-  v21 = [v20 name];
-  LOBYTE(v23) = a7;
-  v26 = [(PPEventHighlight *)v24 initWithEventIdentifier:v15 externalURI:v16 title:v17 startDate:v18 endDate:v19 location:v14 organizer:a4 calendarColor:v21 prominentFeature:CopyByMatchingToColorSpace features:a5 score:v29 isExtraordinary:v23];
+  eventIdentifier = [eventCopy eventIdentifier];
+  externalURI = [eventCopy externalURI];
+  title = [eventCopy title];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  organizer = [eventCopy organizer];
+  name = [organizer name];
+  LOBYTE(v23) = extraordinary;
+  v26 = [(PPEventHighlight *)v24 initWithEventIdentifier:eventIdentifier externalURI:externalURI title:title startDate:startDate endDate:endDate location:v14 organizer:score calendarColor:name prominentFeature:CopyByMatchingToColorSpace features:feature score:featuresCopy isExtraordinary:v23];
 
   objc_autoreleasePoolPop(context);
   CGColorRelease(CopyByMatchingToColorSpace);

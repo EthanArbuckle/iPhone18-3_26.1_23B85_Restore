@@ -1,24 +1,24 @@
 @interface COMeshControllerQueuedBroadcastRequest
-- (COMeshControllerQueuedBroadcastRequest)initWithRequest:(id)a3 destination:(id)a4 completionHandler:(id)a5;
-- (void)invokeCallbackWithError:(id)a3;
+- (COMeshControllerQueuedBroadcastRequest)initWithRequest:(id)request destination:(id)destination completionHandler:(id)handler;
+- (void)invokeCallbackWithError:(id)error;
 @end
 
 @implementation COMeshControllerQueuedBroadcastRequest
 
-- (COMeshControllerQueuedBroadcastRequest)initWithRequest:(id)a3 destination:(id)a4 completionHandler:(id)a5
+- (COMeshControllerQueuedBroadcastRequest)initWithRequest:(id)request destination:(id)destination completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  destinationCopy = destination;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = COMeshControllerQueuedBroadcastRequest;
   v12 = [(COMeshControllerQueuedBroadcastRequest *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_destination, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_destination, destination);
+    v14 = [handlerCopy copy];
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v14;
   }
@@ -26,14 +26,14 @@
   return v13;
 }
 
-- (void)invokeCallbackWithError:(id)a3
+- (void)invokeCallbackWithError:(id)error
 {
-  v4 = a3;
-  v8 = [(COMeshControllerQueuedBroadcastRequest *)self completionHandler];
-  v5 = [(COMeshControllerQueuedBroadcastRequest *)self request];
-  v6 = [(COMeshControllerQueuedBroadcastRequest *)self destination];
-  v7 = [(COMeshControllerQueuedBroadcastRequest *)self response];
-  v8[2](v8, v5, v6, v7, v4);
+  errorCopy = error;
+  completionHandler = [(COMeshControllerQueuedBroadcastRequest *)self completionHandler];
+  request = [(COMeshControllerQueuedBroadcastRequest *)self request];
+  destination = [(COMeshControllerQueuedBroadcastRequest *)self destination];
+  response = [(COMeshControllerQueuedBroadcastRequest *)self response];
+  completionHandler[2](completionHandler, request, destination, response, errorCopy);
 }
 
 @end

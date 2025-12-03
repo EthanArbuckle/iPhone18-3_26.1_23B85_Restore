@@ -1,35 +1,35 @@
 @interface HFAccessoryNetworkInfoItem
-- (BOOL)_hiddenForType:(unint64_t)a3;
-- (BOOL)_showSignalStrength:(unint64_t)a3;
+- (BOOL)_hiddenForType:(unint64_t)type;
+- (BOOL)_showSignalStrength:(unint64_t)strength;
 - (BOOL)supportsWiFiStrengthDisplay;
-- (HFAccessoryNetworkInfoItem)initWithAccessory:(id)a3 home:(id)a4;
+- (HFAccessoryNetworkInfoItem)initWithAccessory:(id)accessory home:(id)home;
 - (id)_currentDeviceNetworkSSID;
-- (id)_extractWiFiInfo:(id)a3;
-- (id)_localizedDescriptionForType:(unint64_t)a3;
-- (id)_localizedTitleForType:(unint64_t)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_extractWiFiInfo:(id)info;
+- (id)_localizedDescriptionForType:(unint64_t)type;
+- (id)_localizedTitleForType:(unint64_t)type;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)_updateAccessoryWifiInfo;
 - (id)accessoryMACAddress;
 - (id)accessoryNetworkSSID;
-- (int64_t)_getWiFiStrength:(id)a3 forFastUpdate:(BOOL)a4;
+- (int64_t)_getWiFiStrength:(id)strength forFastUpdate:(BOOL)update;
 - (unint64_t)_nextNetworkInfoType;
 - (void)toggleNetworkInfoType;
 @end
 
 @implementation HFAccessoryNetworkInfoItem
 
-- (HFAccessoryNetworkInfoItem)initWithAccessory:(id)a3 home:(id)a4
+- (HFAccessoryNetworkInfoItem)initWithAccessory:(id)accessory home:(id)home
 {
   v8.receiver = self;
   v8.super_class = HFAccessoryNetworkInfoItem;
-  v4 = [(HFAccessoryInfoItem *)&v8 initWithAccessory:a3 infoType:3 home:a4];
+  v4 = [(HFAccessoryInfoItem *)&v8 initWithAccessory:accessory infoType:3 home:home];
   v5 = v4;
   if (v4)
   {
     v4->_networkInfoType = 2;
     [(HFAccessoryNetworkInfoItem *)v4 setFakeNetworkStrength:-1];
     [(HFAccessoryNetworkInfoItem *)v5 setInitialSetup:1];
-    v6 = [(HFAccessoryNetworkInfoItem *)v5 _updateAccessoryWifiInfo];
+    _updateAccessoryWifiInfo = [(HFAccessoryNetworkInfoItem *)v5 _updateAccessoryWifiInfo];
   }
 
   return v5;
@@ -37,30 +37,30 @@
 
 - (void)toggleNetworkInfoType
 {
-  v3 = [(HFAccessoryNetworkInfoItem *)self _nextNetworkInfoType];
+  _nextNetworkInfoType = [(HFAccessoryNetworkInfoItem *)self _nextNetworkInfoType];
 
-  [(HFAccessoryNetworkInfoItem *)self setNetworkInfoType:v3];
+  [(HFAccessoryNetworkInfoItem *)self setNetworkInfoType:_nextNetworkInfoType];
 }
 
 - (BOOL)supportsWiFiStrengthDisplay
 {
-  v3 = [(HFAccessoryInfoItem *)self accessory];
-  v4 = [v3 home];
-  v5 = [v4 hf_currentUserIsAdministrator];
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  home = [accessory home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (!v5)
+  if (!hf_currentUserIsAdministrator)
   {
     return 0;
   }
 
-  v6 = [(HFAccessoryInfoItem *)self accessory];
-  v7 = [v6 hf_isFirstPartyAccessory];
+  accessory2 = [(HFAccessoryInfoItem *)self accessory];
+  hf_isFirstPartyAccessory = [accessory2 hf_isFirstPartyAccessory];
 
-  if (v7)
+  if (hf_isFirstPartyAccessory)
   {
-    v8 = [(HFAccessoryInfoItem *)self accessory];
-    v9 = [v8 softwareVersion];
-    v10 = [v9 hf_canProvideWifiStrength];
+    accessory3 = [(HFAccessoryInfoItem *)self accessory];
+    softwareVersion = [accessory3 softwareVersion];
+    hf_canProvideWifiStrength = [softwareVersion hf_canProvideWifiStrength];
     goto LABEL_7;
   }
 
@@ -69,51 +69,51 @@
     return 0;
   }
 
-  v8 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-  if (!v8)
+  accessory3 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+  if (!accessory3)
   {
-    v10 = 0;
+    hf_canProvideWifiStrength = 0;
     goto LABEL_8;
   }
 
-  v9 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-  v11 = [v9 objectForKeyedSubscript:@"HMAccessoryLinkQualityNetworkSupported"];
-  v10 = v11 != 0;
+  softwareVersion = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+  v11 = [softwareVersion objectForKeyedSubscript:@"HMAccessoryLinkQualityNetworkSupported"];
+  hf_canProvideWifiStrength = v11 != 0;
 
 LABEL_7:
 LABEL_8:
 
-  return v10;
+  return hf_canProvideWifiStrength;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v21.receiver = self;
   v21.super_class = HFAccessoryNetworkInfoItem;
-  v6 = [(HFAccessoryInfoItem *)&v21 _subclass_updateWithOptions:v5];
+  v6 = [(HFAccessoryInfoItem *)&v21 _subclass_updateWithOptions:optionsCopy];
   v23[0] = v6;
-  v7 = [(HFAccessoryNetworkInfoItem *)self _updateAccessoryWifiInfo];
+  _updateAccessoryWifiInfo = [(HFAccessoryNetworkInfoItem *)self _updateAccessoryWifiInfo];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __58__HFAccessoryNetworkInfoItem__subclass_updateWithOptions___block_invoke;
   v20[3] = &unk_277DF3FD0;
   v20[4] = self;
-  v8 = [v7 flatMap:v20];
+  v8 = [_updateAccessoryWifiInfo flatMap:v20];
   v23[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
 
   v10 = MEMORY[0x277D2C900];
-  v11 = [MEMORY[0x277D2C938] immediateScheduler];
-  v12 = [v10 combineAllFutures:v9 scheduler:v11];
+  immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+  v12 = [v10 combineAllFutures:v9 scheduler:immediateScheduler];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__HFAccessoryNetworkInfoItem__subclass_updateWithOptions___block_invoke_2;
   v17[3] = &unk_277DF8750;
   objc_copyWeak(v19, &location);
-  v13 = v5;
+  v13 = optionsCopy;
   v18 = v13;
   v19[1] = a2;
   v14 = [v12 flatMap:v17];
@@ -270,47 +270,47 @@ id __58__HFAccessoryNetworkInfoItem__subclass_updateWithOptions___block_invoke_4
 
 - (unint64_t)_nextNetworkInfoType
 {
-  v3 = [(HFAccessoryNetworkInfoItem *)self networkInfoType];
+  networkInfoType = [(HFAccessoryNetworkInfoItem *)self networkInfoType];
   do
   {
-    if (!v3)
+    if (!networkInfoType)
     {
-      v4 = [(HFAccessoryNetworkInfoItem *)self fakeNetworkStrength];
-      [(HFAccessoryNetworkInfoItem *)self setFakeNetworkStrength:~(5 * ((v4 + 2) / 5)) + v4 + 2];
+      fakeNetworkStrength = [(HFAccessoryNetworkInfoItem *)self fakeNetworkStrength];
+      [(HFAccessoryNetworkInfoItem *)self setFakeNetworkStrength:~(5 * ((fakeNetworkStrength + 2) / 5)) + fakeNetworkStrength + 2];
     }
 
-    v3 = (v3 + 1) % 3;
+    networkInfoType = (networkInfoType + 1) % 3;
   }
 
-  while ([(HFAccessoryNetworkInfoItem *)self _hiddenForType:v3]&& v3 != [(HFAccessoryNetworkInfoItem *)self networkInfoType]);
-  return v3;
+  while ([(HFAccessoryNetworkInfoItem *)self _hiddenForType:networkInfoType]&& networkInfoType != [(HFAccessoryNetworkInfoItem *)self networkInfoType]);
+  return networkInfoType;
 }
 
-- (id)_localizedTitleForType:(unint64_t)a3
+- (id)_localizedTitleForType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = HFLocalizedWiFiString(off_277DF87E8[a3]);
+    v4 = HFLocalizedWiFiString(off_277DF87E8[type]);
   }
 
   return v4;
 }
 
-- (id)_localizedDescriptionForType:(unint64_t)a3
+- (id)_localizedDescriptionForType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
-      v7 = [(HFAccessoryNetworkInfoItem *)self accessoryNetworkSSID];
-      v4 = v7;
-      if (v7)
+      accessoryNetworkSSID = [(HFAccessoryNetworkInfoItem *)self accessoryNetworkSSID];
+      accessory = accessoryNetworkSSID;
+      if (accessoryNetworkSSID)
       {
-        v8 = v7;
+        v8 = accessoryNetworkSSID;
       }
 
       else
@@ -318,82 +318,82 @@ id __58__HFAccessoryNetworkInfoItem__subclass_updateWithOptions___block_invoke_4
         v8 = _HFLocalizedStringWithDefaultValue(@"HFAccessoryInfoTypeNetworkNotConnected", @"HFAccessoryInfoTypeNetworkNotConnected", 1);
       }
 
-      v3 = v8;
+      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 = v8;
       goto LABEL_11;
     case 2uLL:
-      v4 = [(HFAccessoryInfoItem *)self accessory];
-      v5 = [v4 hf_networkConfigurationProfiles];
-      v6 = [v5 firstObject];
-      v3 = [v6 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];
+      accessory = [(HFAccessoryInfoItem *)self accessory];
+      hf_networkConfigurationProfiles = [accessory hf_networkConfigurationProfiles];
+      firstObject = [hf_networkConfigurationProfiles firstObject];
+      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 = [firstObject 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];
 
 LABEL_11:
       break;
     case 1uLL:
-      v3 = [(HFAccessoryNetworkInfoItem *)self accessoryMACAddress];
+      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 = [(HFAccessoryNetworkInfoItem *)self accessoryMACAddress];
       break;
     default:
-      v3 = 0;
+      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 = 0;
       break;
   }
 
-  return v3;
+  return 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;
 }
 
-- (BOOL)_showSignalStrength:(unint64_t)a3
+- (BOOL)_showSignalStrength:(unint64_t)strength
 {
-  v5 = [(HFAccessoryNetworkInfoItem *)self supportsWiFiStrengthDisplay];
+  supportsWiFiStrengthDisplay = [(HFAccessoryNetworkInfoItem *)self supportsWiFiStrengthDisplay];
   v6 = 0;
-  if (a3 || !v5)
+  if (strength || !supportsWiFiStrengthDisplay)
   {
     return v6;
   }
 
-  v7 = [(HFAccessoryInfoItem *)self accessory];
-  v8 = [v7 hf_fakeNetworkStrengthError];
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  hf_fakeNetworkStrengthError = [accessory hf_fakeNetworkStrengthError];
 
-  if (v8)
+  if (hf_fakeNetworkStrengthError)
   {
     return 1;
   }
 
-  v9 = [(HFAccessoryNetworkInfoItem *)self accessoryNetworkSSID];
-  v10 = [(HFAccessoryNetworkInfoItem *)self _currentDeviceNetworkSSID];
-  v11 = [v9 isEqualToString:v10];
+  accessoryNetworkSSID = [(HFAccessoryNetworkInfoItem *)self accessoryNetworkSSID];
+  _currentDeviceNetworkSSID = [(HFAccessoryNetworkInfoItem *)self _currentDeviceNetworkSSID];
+  v11 = [accessoryNetworkSSID isEqualToString:_currentDeviceNetworkSSID];
 
   if (!v11)
   {
-    v14 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-    v6 = v14 != 0;
+    wifiInfo = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+    v6 = wifiInfo != 0;
 LABEL_9:
 
     return v6;
   }
 
-  v12 = [(HFAccessoryInfoItem *)self accessory];
-  v13 = [v12 mediaProfile];
-  if ([v13 hf_isReachable])
+  accessory2 = [(HFAccessoryInfoItem *)self accessory];
+  mediaProfile = [accessory2 mediaProfile];
+  if ([mediaProfile hf_isReachable])
   {
     v6 = 1;
   }
 
   else
   {
-    v15 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-    v6 = v15 != 0;
+    wifiInfo2 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+    v6 = wifiInfo2 != 0;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v16 = [(HFAccessoryInfoItem *)self accessory];
-    v17 = [v16 hf_isHomePod];
+    accessory3 = [(HFAccessoryInfoItem *)self accessory];
+    hf_isHomePod = [accessory3 hf_isHomePod];
 
-    if ((v17 & 1) == 0)
+    if ((hf_isHomePod & 1) == 0)
     {
-      v14 = [(HFAccessoryInfoItem *)self accessory];
-      if ([v14 isReachable])
+      wifiInfo = [(HFAccessoryInfoItem *)self accessory];
+      if ([wifiInfo isReachable])
       {
-        v19 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-        v6 = v19 != 0;
+        wifiInfo3 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+        v6 = wifiInfo3 != 0;
       }
 
       else
@@ -408,22 +408,22 @@ LABEL_9:
   return v6;
 }
 
-- (int64_t)_getWiFiStrength:(id)a3 forFastUpdate:(BOOL)a4
+- (int64_t)_getWiFiStrength:(id)strength forFastUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HFAccessoryInfoItem *)self accessory];
-  v8 = [v7 hf_fakeNetworkStrengthError];
+  updateCopy = update;
+  strengthCopy = strength;
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  hf_fakeNetworkStrengthError = [accessory hf_fakeNetworkStrengthError];
 
-  if (v8)
+  if (hf_fakeNetworkStrengthError)
   {
-    v9 = [(HFAccessoryNetworkInfoItem *)self fakeNetworkStrength];
+    fakeNetworkStrength = [(HFAccessoryNetworkInfoItem *)self fakeNetworkStrength];
   }
 
-  else if (v6)
+  else if (strengthCopy)
   {
     objc_opt_class();
-    v10 = [v6 objectForKeyedSubscript:@"num3BarsRSSI"];
+    v10 = [strengthCopy objectForKeyedSubscript:@"num3BarsRSSI"];
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -438,13 +438,13 @@ LABEL_9:
 
     if (v12)
     {
-      v9 = [v12 integerValue];
+      fakeNetworkStrength = [v12 integerValue];
     }
 
     else
     {
       objc_opt_class();
-      v13 = [v6 objectForKeyedSubscript:@"RSSI"];
+      v13 = [strengthCopy objectForKeyedSubscript:@"RSSI"];
       if (objc_opt_isKindOfClass())
       {
         v14 = v13;
@@ -459,85 +459,85 @@ LABEL_9:
 
       if (v15)
       {
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
         v17 = 2;
-        if (v16 >= -70)
+        if (integerValue >= -70)
         {
           v17 = 3;
         }
 
-        if (v16 >= -80)
+        if (integerValue >= -80)
         {
-          v9 = v17;
+          fakeNetworkStrength = v17;
         }
 
         else
         {
-          v9 = 1;
+          fakeNetworkStrength = 1;
         }
       }
 
-      else if (_os_feature_enabled_impl() && ((objc_opt_class(), [v6 objectForKeyedSubscript:@"HMAccessoryLinkQuality"], v18 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v19 = 0) : (v19 = v18), v20 = v19, v18, v20))
+      else if (_os_feature_enabled_impl() && ((objc_opt_class(), [strengthCopy objectForKeyedSubscript:@"HMAccessoryLinkQuality"], v18 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v19 = 0) : (v19 = v18), v20 = v19, v18, v20))
       {
         if ([v20 integerValue] <= 2)
         {
           if ([v20 integerValue] > 1)
           {
-            v9 = 2;
+            fakeNetworkStrength = 2;
           }
 
           else
           {
-            v9 = [v20 integerValue];
+            fakeNetworkStrength = [v20 integerValue];
           }
         }
 
         else
         {
-          v9 = 3;
+          fakeNetworkStrength = 3;
         }
       }
 
       else
       {
-        v9 = -1;
+        fakeNetworkStrength = -1;
       }
     }
   }
 
   else
   {
-    v9 = v4 - 1;
+    fakeNetworkStrength = updateCopy - 1;
   }
 
-  return v9;
+  return fakeNetworkStrength;
 }
 
 - (id)_updateAccessoryWifiInfo
 {
-  v4 = [(HFAccessoryInfoItem *)self accessory];
-  v5 = [v4 hf_isFirstPartyAccessory];
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  hf_isFirstPartyAccessory = [accessory hf_isFirstPartyAccessory];
 
-  if ((v5 & 1) == 0 && (_os_feature_enabled_impl() & 1) == 0)
+  if ((hf_isFirstPartyAccessory & 1) == 0 && (_os_feature_enabled_impl() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v6 = [(HFAccessoryNetworkInfoItem *)self debounceDate];
-  if (v6)
+  debounceDate = [(HFAccessoryNetworkInfoItem *)self debounceDate];
+  if (debounceDate)
   {
-    v7 = v6;
-    v8 = [(HFAccessoryNetworkInfoItem *)self debounceDate];
-    [v8 timeIntervalSinceNow];
+    v7 = debounceDate;
+    debounceDate2 = [(HFAccessoryNetworkInfoItem *)self debounceDate];
+    [debounceDate2 timeIntervalSinceNow];
     if (v9 >= 5.0)
     {
     }
 
     else
     {
-      v10 = [(HFAccessoryNetworkInfoItem *)self initialSetup];
+      initialSetup = [(HFAccessoryNetworkInfoItem *)self initialSetup];
 
-      if (!v10)
+      if (!initialSetup)
       {
 LABEL_6:
         v11 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC10]];
@@ -550,8 +550,8 @@ LABEL_6:
   [(HFAccessoryNetworkInfoItem *)self setDebounceDate:v12];
 
   objc_initWeak(&location, self);
-  v13 = [(HFAccessoryInfoItem *)self accessory];
-  v14 = [(HFAccessoryNetworkInfoItem *)self _extractWiFiInfo:v13];
+  accessory2 = [(HFAccessoryInfoItem *)self accessory];
+  v14 = [(HFAccessoryNetworkInfoItem *)self _extractWiFiInfo:accessory2];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__HFAccessoryNetworkInfoItem__updateAccessoryWifiInfo__block_invoke;
@@ -640,15 +640,15 @@ id __54__HFAccessoryNetworkInfoItem__updateAccessoryWifiInfo__block_invoke_55(ui
   return v7;
 }
 
-- (id)_extractWiFiInfo:(id)a3
+- (id)_extractWiFiInfo:(id)info
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 hf_isHomePod])
+  infoCopy = info;
+  if ([infoCopy hf_isHomePod])
   {
-    v6 = [v5 mediaProfile];
-    v7 = [v6 hf_settingsAdapterManager];
-    v8 = [v7 adapterForIdentifier:@"DeviceOptions"];
+    mediaProfile = [infoCopy mediaProfile];
+    hf_settingsAdapterManager = [mediaProfile hf_settingsAdapterManager];
+    v8 = [hf_settingsAdapterManager adapterForIdentifier:@"DeviceOptions"];
 
     v9 = HFLogForCategory(0);
     v10 = v9;
@@ -658,15 +658,15 @@ id __54__HFAccessoryNetworkInfoItem__updateAccessoryWifiInfo__block_invoke_55(ui
       {
         v11 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
         v33 = v11;
         v34 = 2112;
-        v35 = v6;
+        v35 = mediaProfile;
         _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ Preparing to send extract WiFi message to accessory: %@", buf, 0x20u);
       }
 
-      v12 = [v8 extractWiFiInfo];
+      extractWiFiInfo = [v8 extractWiFiInfo];
     }
 
     else
@@ -676,20 +676,20 @@ id __54__HFAccessoryNetworkInfoItem__updateAccessoryWifiInfo__block_invoke_55(ui
         v24 = NSStringFromSelector(a2);
         v25 = [MEMORY[0x277CCA9B8] hf_errorWithCode:25];
         *buf = 138413058;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
         v33 = v24;
         v34 = 2112;
-        v35 = v5;
+        v35 = infoCopy;
         v36 = 2112;
         v37 = v25;
         _os_log_error_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_ERROR, "%@:%@ Device options adapter missing for accessory %@: %@", buf, 0x2Au);
       }
 
-      v12 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC10]];
+      extractWiFiInfo = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC10]];
     }
 
-    v20 = v12;
+    v20 = extractWiFiInfo;
   }
 
   else
@@ -704,11 +704,11 @@ id __54__HFAccessoryNetworkInfoItem__updateAccessoryWifiInfo__block_invoke_55(ui
       {
         v17 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
         v33 = v17;
         v34 = 2112;
-        v35 = v5;
+        v35 = infoCopy;
         _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@ Preparing to call extract WiFi api to homekit for accessory: %@", buf, 0x20u);
       }
 
@@ -718,7 +718,7 @@ id __54__HFAccessoryNetworkInfoItem__updateAccessoryWifiInfo__block_invoke_55(ui
       v26[3] = &unk_277DF87C8;
       v26[4] = self;
       v29 = a2;
-      v27 = v5;
+      v27 = infoCopy;
       v18 = v15;
       v28 = v18;
       [v27 queryLinkQualityWithCompletion:v26];
@@ -817,34 +817,34 @@ LABEL_10:
 - (id)_currentDeviceNetworkSSID
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(HFAccessoryNetworkInfoItem *)self forceCurrentDeviceNetworkSSID];
+  forceCurrentDeviceNetworkSSID = [(HFAccessoryNetworkInfoItem *)self forceCurrentDeviceNetworkSSID];
 
-  if (v4)
+  if (forceCurrentDeviceNetworkSSID)
   {
-    v5 = [(HFAccessoryNetworkInfoItem *)self forceCurrentDeviceNetworkSSID];
+    forceCurrentDeviceNetworkSSID2 = [(HFAccessoryNetworkInfoItem *)self forceCurrentDeviceNetworkSSID];
   }
 
   else
   {
     v6 = [objc_alloc(MEMORY[0x277D02B18]) initWithServiceType:3];
     [v6 resume];
-    v7 = [v6 networkName];
-    v5 = v7;
-    if (!v6 || ![v7 length])
+    networkName = [v6 networkName];
+    forceCurrentDeviceNetworkSSID2 = networkName;
+    if (!v6 || ![networkName length])
     {
       v8 = HFLogForCategory(0);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v11 = NSStringFromSelector(a2);
-        v12 = [v6 networkName];
+        networkName2 = [v6 networkName];
         v13 = 138413058;
-        v14 = self;
+        selfCopy = self;
         v15 = 2112;
         v16 = v11;
         v17 = 2112;
         v18 = v6;
         v19 = 2112;
-        v20 = v12;
+        v20 = networkName2;
         _os_log_error_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_ERROR, "%@:%@ Can't find WiFi network SSID name: interface = %@, name = %@", &v13, 0x2Au);
       }
     }
@@ -854,32 +854,32 @@ LABEL_10:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return forceCurrentDeviceNetworkSSID2;
 }
 
 - (id)accessoryNetworkSSID
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 diagnosticInfoManager];
-  v5 = [(HFAccessoryInfoItem *)self accessory];
-  v6 = [v4 wifiNetworkInfoForAccessory:v5];
-  v7 = [v6 SSID];
+  diagnosticInfoManager = [v3 diagnosticInfoManager];
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  v6 = [diagnosticInfoManager wifiNetworkInfoForAccessory:accessory];
+  sSID = [v6 SSID];
 
-  LODWORD(v4) = _os_feature_enabled_impl();
-  v8 = [(HFAccessoryInfoItem *)self accessory];
-  v9 = [v8 hf_isFirstPartyAccessory];
+  LODWORD(diagnosticInfoManager) = _os_feature_enabled_impl();
+  accessory2 = [(HFAccessoryInfoItem *)self accessory];
+  hf_isFirstPartyAccessory = [accessory2 hf_isFirstPartyAccessory];
 
-  if (v4)
+  if (diagnosticInfoManager)
   {
-    if (!v9)
+    if (!hf_isFirstPartyAccessory)
     {
-      v10 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+      wifiInfo = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
 
-      if (v10)
+      if (wifiInfo)
       {
         objc_opt_class();
-        v11 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-        v12 = [v11 objectForKeyedSubscript:@"HMAccessoryLinkQualityNetworkName"];
+        wifiInfo2 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+        v12 = [wifiInfo2 objectForKeyedSubscript:@"HMAccessoryLinkQualityNetworkName"];
         if (objc_opt_isKindOfClass())
         {
           v13 = v12;
@@ -902,18 +902,18 @@ LABEL_10:
     }
 
 LABEL_9:
-    v15 = [(HFAccessoryInfoItem *)self accessory];
-    v16 = [v15 wifiNetworkInfo];
-    v17 = [v16 SSID];
-    v18 = v17;
-    if (v17)
+    accessory3 = [(HFAccessoryInfoItem *)self accessory];
+    wifiNetworkInfo = [accessory3 wifiNetworkInfo];
+    sSID2 = [wifiNetworkInfo SSID];
+    v18 = sSID2;
+    if (sSID2)
     {
-      v19 = v17;
+      v19 = sSID2;
     }
 
     else
     {
-      v19 = v7;
+      v19 = sSID;
     }
 
     v14 = v19;
@@ -921,12 +921,12 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (v9)
+  if (hf_isFirstPartyAccessory)
   {
     goto LABEL_9;
   }
 
-  v14 = v7;
+  v14 = sSID;
 LABEL_15:
 
   return v14;
@@ -935,22 +935,22 @@ LABEL_15:
 - (id)accessoryMACAddress
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 diagnosticInfoManager];
-  v5 = [(HFAccessoryInfoItem *)self accessory];
-  v6 = [v4 wifiNetworkInfoForAccessory:v5];
-  v7 = [v6 MACAddress];
+  diagnosticInfoManager = [v3 diagnosticInfoManager];
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  v6 = [diagnosticInfoManager wifiNetworkInfoForAccessory:accessory];
+  mACAddress = [v6 MACAddress];
 
-  LODWORD(v4) = _os_feature_enabled_impl();
-  v8 = [(HFAccessoryInfoItem *)self accessory];
-  v9 = [v8 hf_isFirstPartyAccessory];
+  LODWORD(diagnosticInfoManager) = _os_feature_enabled_impl();
+  accessory2 = [(HFAccessoryInfoItem *)self accessory];
+  hf_isFirstPartyAccessory = [accessory2 hf_isFirstPartyAccessory];
 
-  if (v4)
+  if (diagnosticInfoManager)
   {
-    if (!v9)
+    if (!hf_isFirstPartyAccessory)
     {
       objc_opt_class();
-      v10 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-      v11 = [v10 objectForKeyedSubscript:@"HMAccessoryLinkQualityMacAddress"];
+      wifiInfo = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+      v11 = [wifiInfo objectForKeyedSubscript:@"HMAccessoryLinkQualityMacAddress"];
       if (objc_opt_isKindOfClass())
       {
         v12 = v11;
@@ -961,44 +961,44 @@ LABEL_15:
         v12 = 0;
       }
 
-      v13 = v12;
+      formattedString3 = v12;
 
       goto LABEL_13;
     }
 
 LABEL_8:
-    v14 = [(HFAccessoryInfoItem *)self accessory];
-    v15 = [v14 wifiNetworkInfo];
-    v16 = [v15 MACAddress];
-    v17 = [v16 formattedString];
-    v18 = v17;
-    if (v17)
+    accessory3 = [(HFAccessoryInfoItem *)self accessory];
+    wifiNetworkInfo = [accessory3 wifiNetworkInfo];
+    mACAddress2 = [wifiNetworkInfo MACAddress];
+    formattedString = [mACAddress2 formattedString];
+    v18 = formattedString;
+    if (formattedString)
     {
-      v19 = v17;
+      formattedString2 = formattedString;
     }
 
     else
     {
-      v19 = [v7 formattedString];
+      formattedString2 = [mACAddress formattedString];
     }
 
-    v13 = v19;
+    formattedString3 = formattedString2;
 
     goto LABEL_13;
   }
 
-  if (v9)
+  if (hf_isFirstPartyAccessory)
   {
     goto LABEL_8;
   }
 
-  v13 = [v7 formattedString];
+  formattedString3 = [mACAddress formattedString];
 LABEL_13:
 
-  return v13;
+  return formattedString3;
 }
 
-- (BOOL)_hiddenForType:(unint64_t)a3
+- (BOOL)_hiddenForType:(unint64_t)type
 {
   v5 = [(HFAccessoryNetworkInfoItem *)self _localizedDescriptionForType:?];
   v6 = [v5 length];
@@ -1008,18 +1008,18 @@ LABEL_13:
     return 1;
   }
 
-  if (a3 >= 2)
+  if (type >= 2)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v9 = [(HFAccessoryInfoItem *)self accessory];
-      v10 = [v9 home];
-      if (![v10 hf_isNetworkCredentialManagementEnabled])
+      accessory = [(HFAccessoryInfoItem *)self accessory];
+      home = [accessory home];
+      if (![home hf_isNetworkCredentialManagementEnabled])
       {
-        v13 = [(HFAccessoryInfoItem *)self accessory];
-        v14 = [v13 hf_hasManagedNetworkCredential];
+        accessory2 = [(HFAccessoryInfoItem *)self accessory];
+        hf_hasManagedNetworkCredential = [accessory2 hf_hasManagedNetworkCredential];
 
-        return !v14;
+        return !hf_hasManagedNetworkCredential;
       }
     }
 
@@ -1028,23 +1028,23 @@ LABEL_13:
 
   if (!_os_feature_enabled_impl())
   {
-    v11 = [(HFAccessoryInfoItem *)self accessory];
-    v12 = [v11 wifiNetworkInfo];
+    accessory3 = [(HFAccessoryInfoItem *)self accessory];
+    wifiNetworkInfo = [accessory3 wifiNetworkInfo];
 
-    return !v12;
+    return !wifiNetworkInfo;
   }
 
-  v7 = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
-  if (v7)
+  wifiInfo = [(HFAccessoryNetworkInfoItem *)self wifiInfo];
+  if (wifiInfo)
   {
     v8 = 0;
   }
 
   else
   {
-    v15 = [(HFAccessoryInfoItem *)self accessory];
-    v16 = [v15 wifiNetworkInfo];
-    v8 = v16 == 0;
+    accessory4 = [(HFAccessoryInfoItem *)self accessory];
+    wifiNetworkInfo2 = [accessory4 wifiNetworkInfo];
+    v8 = wifiNetworkInfo2 == 0;
   }
 
   return v8;

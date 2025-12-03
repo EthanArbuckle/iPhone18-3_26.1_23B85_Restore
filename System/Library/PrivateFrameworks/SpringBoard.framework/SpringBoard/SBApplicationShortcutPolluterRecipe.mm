@@ -40,11 +40,11 @@
 
         v7 = *(*(&v29 + 1) + 8 * i);
         v8 = [v27 applicationWithBundleIdentifier:{v7, v24}];
-        v9 = [v8 info];
+        info = [v8 info];
 
-        v10 = [v9 dynamicApplicationShortcutItemsVersion];
+        dynamicApplicationShortcutItemsVersion = [info dynamicApplicationShortcutItemsVersion];
         v11 = v2;
-        v12 = [v2 applicationShortcutItemsForBundleIdentifier:v7 withVersion:v10];
+        v12 = [v2 applicationShortcutItemsForBundleIdentifier:v7 withVersion:dynamicApplicationShortcutItemsVersion];
         v13 = [v12 mutableCopy];
         v14 = v13;
         if (v13)
@@ -83,7 +83,7 @@
         [v16 addObjectsFromArray:v22];
 
         v2 = v11;
-        [v11 setApplicationShortcutItems:v16 forBundleIdentifier:v7 withVersion:v10];
+        [v11 setApplicationShortcutItems:v16 forBundleIdentifier:v7 withVersion:dynamicApplicationShortcutItemsVersion];
 
         v5 = v17;
       }
@@ -107,8 +107,8 @@
 {
   v50 = *MEMORY[0x277D85DE8];
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 iconDefaults];
-  [v3 setSuppressAppShortcutTruncation:0];
+  iconDefaults = [v2 iconDefaults];
+  [iconDefaults setSuppressAppShortcutTruncation:0];
 
   v4 = __mockShortcutPlist();
   v5 = [v4 objectForKey:@"UIApplicationShortcutItemType"];
@@ -148,11 +148,11 @@
         v35 = v9;
         v10 = *(*(&v42 + 1) + 8 * v9);
         v11 = [v31 applicationWithBundleIdentifier:v10];
-        v12 = [v11 info];
+        info = [v11 info];
 
-        v34 = v12;
+        v34 = info;
         v36 = v10;
-        v33 = [v12 dynamicApplicationShortcutItemsVersion];
+        dynamicApplicationShortcutItemsVersion = [info dynamicApplicationShortcutItemsVersion];
         v13 = [v7 applicationShortcutItemsForBundleIdentifier:v10 withVersion:?];
         v14 = [v13 mutableCopy];
         v15 = v14;
@@ -188,11 +188,11 @@
               }
 
               v23 = *(*(&v38 + 1) + 8 * i);
-              v24 = [v23 type];
-              if ([v24 isEqualToString:v5])
+              type = [v23 type];
+              if ([type isEqualToString:v5])
               {
-                v25 = [v23 localizedTitle];
-                v26 = [v25 isEqualToString:v37];
+                localizedTitle = [v23 localizedTitle];
+                v26 = [localizedTitle isEqualToString:v37];
 
                 if (!v26)
                 {
@@ -200,12 +200,12 @@
                 }
 
                 [v17 removeObject:v23];
-                v24 = SBLogAppShortcuts();
-                if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+                type = SBLogAppShortcuts();
+                if (os_log_type_enabled(type, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
                   v47 = v36;
-                  _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_INFO, "Removing mock shortcut from %@", buf, 0xCu);
+                  _os_log_impl(&dword_21ED4E000, type, OS_LOG_TYPE_INFO, "Removing mock shortcut from %@", buf, 0xCu);
                 }
               }
             }
@@ -217,7 +217,7 @@
         }
 
         v7 = v30;
-        [v30 setApplicationShortcutItems:v17 forBundleIdentifier:v36 withVersion:v33];
+        [v30 setApplicationShortcutItems:v17 forBundleIdentifier:v36 withVersion:dynamicApplicationShortcutItemsVersion];
 
         v9 = v35 + 1;
       }

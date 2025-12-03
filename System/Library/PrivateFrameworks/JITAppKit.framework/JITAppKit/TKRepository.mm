@@ -1,24 +1,24 @@
 @interface TKRepository
-+ (BOOL)_hasEntitlement:(id)a3;
++ (BOOL)_hasEntitlement:(id)entitlement;
 + (BOOL)_isApprovedProcess;
 + (id)_processBundleIdentifier;
-+ (id)bundlePathForURL:(id)a3;
-+ (void)loadWithURL:(id)a3 completion:(id)a4;
++ (id)bundlePathForURL:(id)l;
++ (void)loadWithURL:(id)l completion:(id)completion;
 + (void)reset;
-+ (void)unpackBundleWithURL:(id)a3 destinationPath:(id)a4 completion:(id)a5;
-- (TKRepository)initWithURL:(id)a3 bundlePath:(id)a4;
++ (void)unpackBundleWithURL:(id)l destinationPath:(id)path completion:(id)completion;
+- (TKRepository)initWithURL:(id)l bundlePath:(id)path;
 - (id)pathForVerificationCertificate;
-- (id)tmlPathForName:(id)a3;
+- (id)tmlPathForName:(id)name;
 @end
 
 @implementation TKRepository
 
-+ (BOOL)_hasEntitlement:(id)a3
++ (BOOL)_hasEntitlement:(id)entitlement
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, entitlement);
   v11 = 0;
   Default = CFAllocatorGetDefault();
   task = SecTaskCreateFromSelf(Default);
@@ -49,7 +49,7 @@
 
 + (id)_processBundleIdentifier
 {
-  v8[2] = a1;
+  v8[2] = self;
   v8[1] = a2;
   v8[0] = 0;
   Default = CFAllocatorGetDefault();
@@ -71,9 +71,9 @@
 
 + (BOOL)_isApprovedProcess
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
-  v4[0] = [a1 _processBundleIdentifier];
+  v4[0] = [self _processBundleIdentifier];
   location = MEMORY[0x277D82BE0](&unk_286780EE0);
   if (v4[0] && [v4[0] length])
   {
@@ -90,32 +90,32 @@
   return v5 & 1;
 }
 
-+ (void)loadWithURL:(id)a3 completion:(id)a4
++ (void)loadWithURL:(id)l completion:(id)completion
 {
-  v63 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v61 = 0;
-  objc_storeStrong(&v61, a4);
-  v60 = [v63 _hasEntitlement:@"com.apple.jitappkit.bundle.load"];
-  v59 = [v63 _isApprovedProcess];
-  if (v60 & 1) != 0 || (v59)
+  objc_storeStrong(&v61, completion);
+  v60 = [selfCopy _hasEntitlement:@"com.apple.jitappkit.bundle.load"];
+  _isApprovedProcess = [selfCopy _isApprovedProcess];
+  if (v60 & 1) != 0 || (_isApprovedProcess)
   {
     v56 = 0;
     v20 = 0;
     if ([location[0] isFileURL])
     {
-      v57 = [location[0] absoluteString];
+      absoluteString = [location[0] absoluteString];
       v56 = 1;
-      v54 = [v57 rangeOfString:@"cloudkit" options:1];
+      v54 = [absoluteString rangeOfString:@"cloudkit" options:1];
       v55 = v4;
       v20 = v54 == 0x7FFFFFFFFFFFFFFFLL;
     }
 
     if (v56)
     {
-      MEMORY[0x277D82BD8](v57);
+      MEMORY[0x277D82BD8](absoluteString);
     }
 
     if (v20)
@@ -139,31 +139,31 @@
 
     else
     {
-      v46 = [v63 bundlePathForURL:location[0]];
+      v46 = [selfCopy bundlePathForURL:location[0]];
       v45 = [v46 stringByAppendingPathExtension:@"unpacked"];
-      v44 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v42 = 0;
       v17 = 0;
       if ([location[0] isFileURL])
       {
-        v43 = [location[0] absoluteString];
+        absoluteString2 = [location[0] absoluteString];
         v42 = 1;
-        v40 = [v43 rangeOfString:@"cloudkit" options:1];
+        v40 = [absoluteString2 rangeOfString:@"cloudkit" options:1];
         v41 = v6;
         v17 = v40 != 0x7FFFFFFFFFFFFFFFLL;
       }
 
       if (v42)
       {
-        MEMORY[0x277D82BD8](v43);
+        MEMORY[0x277D82BD8](absoluteString2);
       }
 
       if (v17)
       {
-        v16 = [location[0] absoluteString];
-        v39 = [v16 stringByReplacingOccurrencesOfString:@"file://" withString:&stru_28677B088];
-        MEMORY[0x277D82BD8](v16);
-        [v63 unpackBundleWithURL:location[0] destinationPath:v39 completion:v61];
+        absoluteString3 = [location[0] absoluteString];
+        v39 = [absoluteString3 stringByReplacingOccurrencesOfString:@"file://" withString:&stru_28677B088];
+        MEMORY[0x277D82BD8](absoluteString3);
+        [selfCopy unpackBundleWithURL:location[0] destinationPath:v39 completion:v61];
         v58 = 1;
         objc_storeStrong(&v39, 0);
       }
@@ -171,7 +171,7 @@
       else
       {
         v38 = 0;
-        if ([v44 fileExistsAtPath:v45] & 1) != 0 && (objc_msgSend(v44, "fileExistsAtPath:isDirectory:", v46, &v38) & 1) != 0 && (v38)
+        if ([defaultManager fileExistsAtPath:v45] & 1) != 0 && (objc_msgSend(defaultManager, "fileExistsAtPath:isDirectory:", v46, &v38) & 1) != 0 && (v38)
         {
           v14 = MEMORY[0x277D85CD0];
           v7 = MEMORY[0x277D85CD0];
@@ -208,7 +208,7 @@
           v25 = __39__TKRepository_loadWithURL_completion___block_invoke_3;
           v26 = &unk_2797EE3D8;
           v28[0] = MEMORY[0x277D82BE0](v61);
-          v28[1] = v63;
+          v28[1] = selfCopy;
           v27 = MEMORY[0x277D82BE0](location[0]);
           v8 = [v13 downloadRequest:v12 priority:1 completion:&v22];
           MEMORY[0x277D82BD8](v13);
@@ -219,7 +219,7 @@
         }
       }
 
-      objc_storeStrong(&v44, 0);
+      objc_storeStrong(&defaultManager, 0);
       objc_storeStrong(&v45, 0);
       objc_storeStrong(&v46, 0);
     }
@@ -279,7 +279,7 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
 
 + (void)reset
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v2 = +[TKUtils applicationLibraryPath];
   v4[0] = [v2 stringByAppendingPathComponent:@"JITAppKit"];
@@ -294,63 +294,63 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
   objc_storeStrong(v4, 0);
 }
 
-- (TKRepository)initWithURL:(id)a3 bundlePath:(id)a4
+- (TKRepository)initWithURL:(id)l bundlePath:(id)path
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v4 = v21;
-  v21 = 0;
+  objc_storeStrong(&v19, path);
+  v4 = selfCopy;
+  selfCopy = 0;
   v18.receiver = v4;
   v18.super_class = TKRepository;
-  v21 = [(TKRepository *)&v18 init];
-  objc_storeStrong(&v21, v21);
-  if (v21)
+  selfCopy = [(TKRepository *)&v18 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = [location[0] copy];
-    URL = v21->_URL;
-    v21->_URL = v5;
+    URL = selfCopy->_URL;
+    selfCopy->_URL = v5;
     MEMORY[0x277D82BD8](URL);
     v7 = [v19 copy];
-    bundlePath = v21->_bundlePath;
-    v21->_bundlePath = v7;
+    bundlePath = selfCopy->_bundlePath;
+    selfCopy->_bundlePath = v7;
     MEMORY[0x277D82BD8](bundlePath);
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
     v16 = [v19 stringByAppendingPathComponent:@"version.txt"];
     v9 = [v15 initWithContentsOfFile:? encoding:? error:?];
-    version = v21->_version;
-    v21->_version = v9;
+    version = selfCopy->_version;
+    selfCopy->_version = v9;
     MEMORY[0x277D82BD8](version);
     MEMORY[0x277D82BD8](v16);
-    v11 = [(TKRepository *)v21 pathForVerificationCertificate];
-    certificatePath = v21->_certificatePath;
-    v21->_certificatePath = v11;
+    pathForVerificationCertificate = [(TKRepository *)selfCopy pathForVerificationCertificate];
+    certificatePath = selfCopy->_certificatePath;
+    selfCopy->_certificatePath = pathForVerificationCertificate;
     MEMORY[0x277D82BD8](certificatePath);
   }
 
-  v14 = MEMORY[0x277D82BE0](v21);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
-- (id)tmlPathForName:(id)a3
+- (id)tmlPathForName:(id)name
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   if ([location[0] length])
   {
-    v5 = [(NSString *)v10->_bundlePath stringByAppendingPathComponent:location[0]];
+    v5 = [(NSString *)selfCopy->_bundlePath stringByAppendingPathComponent:location[0]];
     v7 = [(NSString *)v5 stringByAppendingPathExtension:@"tml"];
     MEMORY[0x277D82BD8](v5);
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v6 fileExistsAtPath:v7])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:v7])
     {
       v11 = MEMORY[0x277D82BE0](v7);
     }
@@ -361,7 +361,7 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
     }
 
     v8 = 1;
-    objc_storeStrong(&v6, 0);
+    objc_storeStrong(&defaultManager, 0);
     objc_storeStrong(&v7, 0);
   }
 
@@ -400,12 +400,12 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
   return v2;
 }
 
-+ (id)bundlePathForURL:(id)a3
++ (id)bundlePathForURL:(id)l
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v4 = +[TKUtils applicationLibraryPath];
   v9 = [v4 stringByAppendingPathComponent:@"JITAppKit"];
   MEMORY[0x277D82BD8](v4);
@@ -421,18 +421,18 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
   return v7;
 }
 
-+ (void)unpackBundleWithURL:(id)a3 destinationPath:(id)a4 completion:(id)a5
++ (void)unpackBundleWithURL:(id)l destinationPath:(id)path completion:(id)completion
 {
-  v25 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, path);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v20 = [v25 bundlePathForURL:location[0]];
+  objc_storeStrong(&v22, completion);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v20 = [selfCopy bundlePathForURL:location[0]];
   v19 = [v20 stringByAppendingPathExtension:@"unpacked"];
   queue = dispatch_get_global_queue(2, 0);
   v8 = MEMORY[0x277D85DD0];
@@ -442,7 +442,7 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
   v12 = &unk_2797EE428;
   v13 = MEMORY[0x277D82BE0](v23);
   v14 = MEMORY[0x277D82BE0](v20);
-  v15 = MEMORY[0x277D82BE0](v21);
+  v15 = MEMORY[0x277D82BE0](defaultManager);
   v16 = MEMORY[0x277D82BE0](v19);
   v17 = MEMORY[0x277D82BE0](location[0]);
   v18 = MEMORY[0x277D82BE0](v22);
@@ -456,7 +456,7 @@ void __39__TKRepository_loadWithURL_completion___block_invoke_3(uint64_t a1, voi
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(location, 0);

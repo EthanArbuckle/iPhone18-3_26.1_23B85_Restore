@@ -1,26 +1,26 @@
 @interface CloudCoordinator
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)superclass;
 - (NSString)cloudContainerIdentifier;
 - (OS_dispatch_queue)pushDelegateQueue;
 - (_TtC15audioaccessoryd16CloudCoordinator)self;
-- (id)performSelector:(SEL)a3;
-- (id)performSelector:(SEL)a3 withObject:(id)a4;
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
+- (id)performSelector:(SEL)selector;
+- (id)performSelector:(SEL)selector withObject:(id)object;
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
 - (int64_t)hash;
-- (void)accountDidChange:(id)a3;
-- (void)didReceiveWithMessage:(id)a3;
-- (void)didReceiveWithPublicToken:(id)a3;
-- (void)didReceiveWithToken:(id)a3 forTopic:(id)a4 identifier:(id)a5;
+- (void)accountDidChange:(id)change;
+- (void)didReceiveWithMessage:(id)message;
+- (void)didReceiveWithPublicToken:(id)token;
+- (void)didReceiveWithToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)onIdentityUpdateNotification;
-- (void)setPushDelegateQueue:(id)a3;
+- (void)setPushDelegateQueue:(id)queue;
 @end
 
 @implementation CloudCoordinator
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -59,16 +59,16 @@
   return v2;
 }
 
-- (id)performSelector:(SEL)a3
+- (id)performSelector:(SEL)selector
 {
-  v3 = [(CloudCoordinator *)self cloudContainerIdentifier];
+  cloudContainerIdentifier = [(CloudCoordinator *)self cloudContainerIdentifier];
 
-  return v3;
+  return cloudContainerIdentifier;
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4
+- (id)performSelector:(SEL)selector withObject:(id)object
 {
-  if (a4)
+  if (object)
   {
 
     swift_unknownObjectRetain();
@@ -88,15 +88,15 @@
   return v5;
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
-  if (!a4)
+  if (!object)
   {
     v11 = 0u;
     v12 = 0u;
     swift_unknownObjectRetain();
 
-    if (a5)
+    if (withObject)
     {
       goto LABEL_3;
     }
@@ -112,7 +112,7 @@ LABEL_5:
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!withObject)
   {
     goto LABEL_5;
   }
@@ -136,11 +136,11 @@ LABEL_6:
   return v2;
 }
 
-- (void)setPushDelegateQueue:(id)a3
+- (void)setPushDelegateQueue:(id)queue
 {
   v3 = *self->$__lazy_storage_$_pushDelegateQueue;
-  *self->$__lazy_storage_$_pushDelegateQueue = a3;
-  v4 = a3;
+  *self->$__lazy_storage_$_pushDelegateQueue = queue;
+  queueCopy = queue;
 
   sub_100163058(v3);
 }
@@ -151,7 +151,7 @@ LABEL_6:
   sub_10014D774();
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -177,9 +177,9 @@ LABEL_6:
   return v6;
 }
 
-- (void)didReceiveWithPublicToken:(id)a3
+- (void)didReceiveWithPublicToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 
@@ -202,11 +202,11 @@ LABEL_6:
   sub_1000EF870(v4, v6);
 }
 
-- (void)didReceiveWithToken:(id)a3 forTopic:(id)a4 identifier:(id)a5
+- (void)didReceiveWithToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -222,11 +222,11 @@ LABEL_6:
   sub_1000EF870(v10, v12);
 }
 
-- (void)didReceiveWithMessage:(id)a3
+- (void)didReceiveWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
 
-  sub_10015BD68(v3);
+  sub_10015BD68(messageCopy);
 }
 
 @end

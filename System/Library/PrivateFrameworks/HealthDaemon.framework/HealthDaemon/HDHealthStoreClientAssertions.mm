@@ -1,34 +1,34 @@
 @interface HDHealthStoreClientAssertions
 - (_TtC12HealthDaemon29HDHealthStoreClientAssertions)init;
 - (id)accessibilityAssertions;
-- (id)assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:(id)a3;
+- (id)assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:(id)assertion;
 - (id)firstAssertion;
-- (void)addAssertionMappingWithAssertion:(id)a3;
+- (void)addAssertionMappingWithAssertion:(id)assertion;
 - (void)dealloc;
 - (void)invalidateAssertions;
-- (void)removeAssertionMappingWithAssertion:(id)a3;
+- (void)removeAssertionMappingWithAssertion:(id)assertion;
 @end
 
 @implementation HDHealthStoreClientAssertions
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_2289E6C60();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for HDHealthStoreClientAssertions();
   [(HDHealthStoreClientAssertions *)&v3 dealloc];
 }
 
 - (void)invalidateAssertions
 {
-  v2 = self;
+  selfCopy = self;
   sub_2289E6C60();
 }
 
 - (id)firstAssertion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2289E6E20();
 
   return v3;
@@ -36,7 +36,7 @@
 
 - (id)accessibilityAssertions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2289E6F3C();
 
   if (v3)
@@ -53,27 +53,27 @@
   return v4;
 }
 
-- (id)assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:(id)a3
+- (id)assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2289E7114(v4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  v6 = sub_2289E7114(assertionCopy);
 
   return v6;
 }
 
-- (void)addAssertionMappingWithAssertion:(id)a3
+- (void)addAssertionMappingWithAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = self;
-  sub_2289E7350(v4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  sub_2289E7350(assertionCopy);
 }
 
-- (void)removeAssertionMappingWithAssertion:(id)a3
+- (void)removeAssertionMappingWithAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = self;
-  sub_2289E757C(v4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  sub_2289E757C(assertionCopy);
 }
 
 - (_TtC12HealthDaemon29HDHealthStoreClientAssertions)init

@@ -1,28 +1,28 @@
 @interface RTPlaceInferenceQuery
-- (BOOL)isEqual:(id)a3;
-- (RTPlaceInferenceQuery)initWithCoder:(id)a3;
-- (RTPlaceInferenceQuery)initWithIdentifier:(id)a3 date:(id)a4 errorCode:(int64_t)a5 fidelityPolicyMask:(unint64_t)a6 placeInference:(id)a7 sourceIdentifier:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPlaceInferenceQuery)initWithCoder:(id)coder;
+- (RTPlaceInferenceQuery)initWithIdentifier:(id)identifier date:(id)date errorCode:(int64_t)code fidelityPolicyMask:(unint64_t)mask placeInference:(id)inference sourceIdentifier:(id)sourceIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPlaceInferenceQuery
 
-- (RTPlaceInferenceQuery)initWithIdentifier:(id)a3 date:(id)a4 errorCode:(int64_t)a5 fidelityPolicyMask:(unint64_t)a6 placeInference:(id)a7 sourceIdentifier:(id)a8
+- (RTPlaceInferenceQuery)initWithIdentifier:(id)identifier date:(id)date errorCode:(int64_t)code fidelityPolicyMask:(unint64_t)mask placeInference:(id)inference sourceIdentifier:(id)sourceIdentifier
 {
-  v15 = a3;
-  v16 = a4;
-  v24 = a7;
-  v17 = a8;
-  if (!v15)
+  identifierCopy = identifier;
+  dateCopy = date;
+  inferenceCopy = inference;
+  sourceIdentifierCopy = sourceIdentifier;
+  if (!identifierCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v20 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -33,7 +33,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v16)
+  if (!dateCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -52,25 +52,25 @@ LABEL_12:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_date, a4);
-    v19->_errorCode = a5;
-    v19->_fidelityPolicyMask = a6;
-    objc_storeStrong(&v19->_placeInference, a7);
-    objc_storeStrong(&v19->_sourceIdentifier, a8);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_date, date);
+    v19->_errorCode = code;
+    v19->_fidelityPolicyMask = mask;
+    objc_storeStrong(&v19->_placeInference, inference);
+    objc_storeStrong(&v19->_sourceIdentifier, sourceIdentifier);
   }
 
   self = v19;
-  v20 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v20;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -80,9 +80,9 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RTPlaceInferenceQuery *)self identifier];
-      v6 = [(RTPlaceInferenceQuery *)v4 identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(RTPlaceInferenceQuery *)self identifier];
+      identifier2 = [(RTPlaceInferenceQuery *)equalCopy identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -94,47 +94,47 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTPlaceInferenceQuery alloc];
-  v5 = [(RTPlaceInferenceQuery *)self identifier];
-  v6 = [(RTPlaceInferenceQuery *)self date];
-  v7 = [(RTPlaceInferenceQuery *)self errorCode];
-  v8 = [(RTPlaceInferenceQuery *)self fidelityPolicyMask];
-  v9 = [(RTPlaceInferenceQuery *)self placeInference];
-  v10 = [(RTPlaceInferenceQuery *)self sourceIdentifier];
-  v11 = [(RTPlaceInferenceQuery *)v4 initWithIdentifier:v5 date:v6 errorCode:v7 fidelityPolicyMask:v8 placeInference:v9 sourceIdentifier:v10];
+  identifier = [(RTPlaceInferenceQuery *)self identifier];
+  date = [(RTPlaceInferenceQuery *)self date];
+  errorCode = [(RTPlaceInferenceQuery *)self errorCode];
+  fidelityPolicyMask = [(RTPlaceInferenceQuery *)self fidelityPolicyMask];
+  placeInference = [(RTPlaceInferenceQuery *)self placeInference];
+  sourceIdentifier = [(RTPlaceInferenceQuery *)self sourceIdentifier];
+  v11 = [(RTPlaceInferenceQuery *)v4 initWithIdentifier:identifier date:date errorCode:errorCode fidelityPolicyMask:fidelityPolicyMask placeInference:placeInference sourceIdentifier:sourceIdentifier];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RTPlaceInferenceQuery *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(RTPlaceInferenceQuery *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(RTPlaceInferenceQuery *)self date];
-  [v4 encodeObject:v6 forKey:@"date"];
+  date = [(RTPlaceInferenceQuery *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  [v4 encodeInteger:-[RTPlaceInferenceQuery errorCode](self forKey:{"errorCode"), @"errorCode"}];
-  [v4 encodeInteger:-[RTPlaceInferenceQuery fidelityPolicyMask](self forKey:{"fidelityPolicyMask"), @"fidelityPolicyMask"}];
-  v7 = [(RTPlaceInferenceQuery *)self placeInference];
-  [v4 encodeObject:v7 forKey:@"placeInference"];
+  [coderCopy encodeInteger:-[RTPlaceInferenceQuery errorCode](self forKey:{"errorCode"), @"errorCode"}];
+  [coderCopy encodeInteger:-[RTPlaceInferenceQuery fidelityPolicyMask](self forKey:{"fidelityPolicyMask"), @"fidelityPolicyMask"}];
+  placeInference = [(RTPlaceInferenceQuery *)self placeInference];
+  [coderCopy encodeObject:placeInference forKey:@"placeInference"];
 
-  v8 = [(RTPlaceInferenceQuery *)self sourceIdentifier];
-  [v4 encodeObject:v8 forKey:@"sourceIdentifier"];
+  sourceIdentifier = [(RTPlaceInferenceQuery *)self sourceIdentifier];
+  [coderCopy encodeObject:sourceIdentifier forKey:@"sourceIdentifier"];
 }
 
-- (RTPlaceInferenceQuery)initWithCoder:(id)a3
+- (RTPlaceInferenceQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v7 = [v4 decodeIntegerForKey:@"errorCode"];
-  v8 = [v4 decodeIntegerForKey:@"fidelityPolicyMask"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeInference"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v7 = [coderCopy decodeIntegerForKey:@"errorCode"];
+  v8 = [coderCopy decodeIntegerForKey:@"fidelityPolicyMask"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeInference"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
 
   v11 = [(RTPlaceInferenceQuery *)self initWithIdentifier:v5 date:v6 errorCode:v7 fidelityPolicyMask:v8 placeInference:v9 sourceIdentifier:v10];
   return v11;
@@ -143,13 +143,13 @@ LABEL_10:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTPlaceInferenceQuery *)self identifier];
-  v5 = [(RTPlaceInferenceQuery *)self date];
-  v6 = [(RTPlaceInferenceQuery *)self errorCode];
-  v7 = [(RTPlaceInferenceQuery *)self fidelityPolicyMask];
-  v8 = [(RTPlaceInferenceQuery *)self placeInference];
-  v9 = [(RTPlaceInferenceQuery *)self sourceIdentifier];
-  v10 = [v3 stringWithFormat:@"identifier, %@, date, %@, errorCode, %lu, fidelityPolicyMask, %lu, placeInference, %@, source identifier, %@", v4, v5, v6, v7, v8, v9];
+  identifier = [(RTPlaceInferenceQuery *)self identifier];
+  date = [(RTPlaceInferenceQuery *)self date];
+  errorCode = [(RTPlaceInferenceQuery *)self errorCode];
+  fidelityPolicyMask = [(RTPlaceInferenceQuery *)self fidelityPolicyMask];
+  placeInference = [(RTPlaceInferenceQuery *)self placeInference];
+  sourceIdentifier = [(RTPlaceInferenceQuery *)self sourceIdentifier];
+  v10 = [v3 stringWithFormat:@"identifier, %@, date, %@, errorCode, %lu, fidelityPolicyMask, %lu, placeInference, %@, source identifier, %@", identifier, date, errorCode, fidelityPolicyMask, placeInference, sourceIdentifier];
 
   return v10;
 }

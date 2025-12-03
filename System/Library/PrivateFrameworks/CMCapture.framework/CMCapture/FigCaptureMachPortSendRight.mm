@@ -1,5 +1,5 @@
 @interface FigCaptureMachPortSendRight
-- (FigCaptureMachPortSendRight)initWithPort:(unsigned int)a3;
+- (FigCaptureMachPortSendRight)initWithPort:(unsigned int)port;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -24,9 +24,9 @@
   }
 }
 
-- (FigCaptureMachPortSendRight)initWithPort:(unsigned int)a3
+- (FigCaptureMachPortSendRight)initWithPort:(unsigned int)port
 {
-  if (a3 - 1 >= 0xFFFFFFFE)
+  if (port - 1 >= 0xFFFFFFFE)
   {
 
     return 0;
@@ -39,7 +39,7 @@
     result = [(FigCaptureMachPortSendRight *)&v5 init];
     if (result)
     {
-      result->_port = a3;
+      result->_port = port;
     }
   }
 

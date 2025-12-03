@@ -1,35 +1,35 @@
 @interface CKKSReachabilityTracker
-+ (BOOL)isNetworkError:(id)a3;
-+ (BOOL)isNetworkFailureError:(id)a3;
++ (BOOL)isNetworkError:(id)error;
++ (BOOL)isNetworkFailureError:(id)error;
 - (BOOL)currentReachability;
 - (CKKSReachabilityTracker)init;
 - (id)description;
 - (void)_onQueueResetReachabilityDependency;
 - (void)_onQueueRunReachabilityDependency;
-- (void)setNetworkReachability:(BOOL)a3;
+- (void)setNetworkReachability:(BOOL)reachability;
 @end
 
 @implementation CKKSReachabilityTracker
 
-- (void)setNetworkReachability:(BOOL)a3
+- (void)setNetworkReachability:(BOOL)reachability
 {
-  v5 = [(CKKSReachabilityTracker *)self queue];
+  queue = [(CKKSReachabilityTracker *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100161EF8;
   v6[3] = &unk_100343A90;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  reachabilityCopy = reachability;
+  dispatch_sync(queue, v6);
 }
 
 - (void)_onQueueResetReachabilityDependency
 {
-  v3 = [(CKKSReachabilityTracker *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKKSReachabilityTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CKKSReachabilityTracker *)self reachabilityDependency];
-  if (!v4 || (v5 = v4, -[CKKSReachabilityTracker reachabilityDependency](self, "reachabilityDependency"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPending], v6, v5, (v7 & 1) == 0))
+  reachabilityDependency = [(CKKSReachabilityTracker *)self reachabilityDependency];
+  if (!reachabilityDependency || (v5 = reachabilityDependency, -[CKKSReachabilityTracker reachabilityDependency](self, "reachabilityDependency"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPending], v6, v5, (v7 & 1) == 0))
   {
     objc_initWeak(&location, self);
     v8 = sub_100019104(@"network", 0);
@@ -47,24 +47,24 @@
     v9 = [CKKSResultOperation named:@"network-available-dependency" withBlock:v21];
     [(CKKSReachabilityTracker *)self setReachabilityDependency:v9];
 
-    v10 = [(CKKSReachabilityTracker *)self queue];
-    v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v10);
+    queue2 = [(CKKSReachabilityTracker *)self queue];
+    v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
     [(CKKSReachabilityTracker *)self setTimer:v11];
 
-    v12 = [(CKKSReachabilityTracker *)self timer];
+    timer = [(CKKSReachabilityTracker *)self timer];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_100162308;
     v19 = &unk_1003452E8;
     objc_copyWeak(&v20, &location);
-    dispatch_source_set_event_handler(v12, &v16);
+    dispatch_source_set_event_handler(timer, &v16);
 
     v13 = [(CKKSReachabilityTracker *)self timer:v16];
     v14 = dispatch_time(0, 43200000000000);
     dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, 0x6FC23AC00uLL);
 
-    v15 = [(CKKSReachabilityTracker *)self timer];
-    dispatch_resume(v15);
+    timer2 = [(CKKSReachabilityTracker *)self timer];
+    dispatch_resume(timer2);
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v22);
@@ -74,26 +74,26 @@
 
 - (void)_onQueueRunReachabilityDependency
 {
-  v3 = [(CKKSReachabilityTracker *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CKKSReachabilityTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CKKSReachabilityTracker *)self reachabilityDependency];
+  reachabilityDependency = [(CKKSReachabilityTracker *)self reachabilityDependency];
 
-  if (v4)
+  if (reachabilityDependency)
   {
-    v5 = [(CKKSReachabilityTracker *)self operationQueue];
-    v6 = [(CKKSReachabilityTracker *)self reachabilityDependency];
-    [v5 addOperation:v6];
+    operationQueue = [(CKKSReachabilityTracker *)self operationQueue];
+    reachabilityDependency2 = [(CKKSReachabilityTracker *)self reachabilityDependency];
+    [operationQueue addOperation:reachabilityDependency2];
 
     [(CKKSReachabilityTracker *)self setReachabilityDependency:0];
   }
 
-  v7 = [(CKKSReachabilityTracker *)self timer];
+  timer = [(CKKSReachabilityTracker *)self timer];
 
-  if (v7)
+  if (timer)
   {
-    v8 = [(CKKSReachabilityTracker *)self timer];
-    dispatch_source_cancel(v8);
+    timer2 = [(CKKSReachabilityTracker *)self timer];
+    dispatch_source_cancel(timer2);
 
     [(CKKSReachabilityTracker *)self setTimer:0];
   }
@@ -101,30 +101,30 @@
 
 - (BOOL)currentReachability
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CKKSReachabilityTracker *)self queue];
+  queue = [(CKKSReachabilityTracker *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100162660;
   v5[3] = &unk_100344E90;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v2 = [(CKKSReachabilityTracker *)self haveNetwork];
+  haveNetwork = [(CKKSReachabilityTracker *)self haveNetwork];
   v3 = @"offline";
-  if (v2)
+  if (haveNetwork)
   {
     v3 = @"online";
   }
@@ -161,19 +161,19 @@
     v11 = v9[5];
     v9[5] = v10;
 
-    v12 = [v9 networkMonitor];
-    nw_path_monitor_set_queue(v12, *(v2 + 3));
+    networkMonitor = [v9 networkMonitor];
+    nw_path_monitor_set_queue(networkMonitor, *(v2 + 3));
 
-    v13 = [v9 networkMonitor];
+    networkMonitor2 = [v9 networkMonitor];
     update_handler[0] = _NSConcreteStackBlock;
     update_handler[1] = 3221225472;
     update_handler[2] = sub_100020118;
     update_handler[3] = &unk_100338780;
     objc_copyWeak(&v17, &location);
-    nw_path_monitor_set_update_handler(v13, update_handler);
+    nw_path_monitor_set_update_handler(networkMonitor2, update_handler);
 
-    v14 = [v9 networkMonitor];
-    nw_path_monitor_start(v14);
+    networkMonitor3 = [v9 networkMonitor];
+    nw_path_monitor_start(networkMonitor3);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -182,25 +182,25 @@
   return v2;
 }
 
-+ (BOOL)isNetworkFailureError:(id)a3
++ (BOOL)isNetworkFailureError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 domain];
-  if (![v5 isEqualToString:CKErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:CKErrorDomain])
   {
 
     goto LABEL_6;
   }
 
-  v6 = [v4 code];
+  code = [v4 code];
 
-  if (v6 != 4)
+  if (code != 4)
   {
 LABEL_6:
     v7 = 0;
@@ -213,22 +213,22 @@ LABEL_7:
   return v7;
 }
 
-+ (BOOL)isNetworkError:(id)a3
++ (BOOL)isNetworkError:(id)error
 {
-  v3 = a3;
-  if (!v3)
+  errorCopy = error;
+  if (!errorCopy)
   {
     goto LABEL_12;
   }
 
-  if (![CKKSReachabilityTracker isNetworkFailureError:v3])
+  if (![CKKSReachabilityTracker isNetworkFailureError:errorCopy])
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:CKErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:CKErrorDomain])
     {
-      v6 = [v3 code];
+      code = [errorCopy code];
 
-      if (v6 == 3)
+      if (code == 3)
       {
         goto LABEL_3;
       }
@@ -238,18 +238,18 @@ LABEL_7:
     {
     }
 
-    v7 = [v3 domain];
-    if ([v7 isEqualToString:NSURLErrorDomain])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:NSURLErrorDomain])
     {
-      if ([v3 code] == -1001)
+      if ([errorCopy code] == -1001)
       {
 
         goto LABEL_3;
       }
 
-      v9 = [v3 code];
+      code2 = [errorCopy code];
 
-      if (v9 == -1009)
+      if (code2 == -1009)
       {
         goto LABEL_3;
       }

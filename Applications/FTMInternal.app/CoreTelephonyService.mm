@@ -2,11 +2,11 @@
 - (_TtC11FTMInternal20CoreTelephonyService)init;
 - (void)applicationForeground;
 - (void)applicationInBackground;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections;
 - (void)dealloc;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)systemConfigurationChanged:(id)a3 withConfiguration:(id)a4;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)systemConfigurationChanged:(id)changed withConfiguration:(id)configuration;
 @end
 
 @implementation CoreTelephonyService
@@ -15,25 +15,25 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:UIApplicationDidBecomeActiveNotification];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:UIApplicationDidBecomeActiveNotification];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(CoreTelephonyService *)&v7 dealloc];
 }
 
 - (void)applicationForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E3FF8();
 }
 
 - (void)applicationInBackground
 {
   v2 = qword_100374FD8;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -41,8 +41,8 @@
 
   static os_log_type_t.default.getter();
   os_log(_:dso:log:type:_:)();
-  *(&v3->super.isa + OBJC_IVAR____TtC11FTMInternal20CoreTelephonyService_isApplicationForeground) = 0;
-  [*(&v3->super.isa + OBJC_IVAR____TtC11FTMInternal20CoreTelephonyService_updateNetworkValueTimer) invalidate];
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC11FTMInternal20CoreTelephonyService_isApplicationForeground) = 0;
+  [*(&selfCopy->super.isa + OBJC_IVAR____TtC11FTMInternal20CoreTelephonyService_updateNetworkValueTimer) invalidate];
 }
 
 - (_TtC11FTMInternal20CoreTelephonyService)init
@@ -52,39 +52,39 @@
   return result;
 }
 
-- (void)systemConfigurationChanged:(id)a3 withConfiguration:(id)a4
+- (void)systemConfigurationChanged:(id)changed withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100204394(v7);
+  changedCopy = changed;
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_100204394(configurationCopy);
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1001F3B94(a3, a4);
+  updateCopy = update;
+  infoCopy = info;
+  selfCopy = self;
+  sub_1001F3B94(update, info);
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1001F449C(a3, a4);
+  changedCopy = changed;
+  infoCopy = info;
+  selfCopy = self;
+  sub_1001F449C(changed, info);
 }
 
-- (void)connectionAvailability:(id)a3 availableConnections:(id)a4
+- (void)connectionAvailability:(id)availability availableConnections:(id)connections
 {
-  if (a4)
+  if (connections)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  availabilityCopy = availability;
+  selfCopy = self;
   sub_1002049CC();
 }
 

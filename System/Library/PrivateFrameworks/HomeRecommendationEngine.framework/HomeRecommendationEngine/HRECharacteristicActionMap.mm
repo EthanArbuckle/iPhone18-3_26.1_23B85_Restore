@@ -1,24 +1,24 @@
 @interface HRECharacteristicActionMap
-+ (id)characteristicActionMap:(id)a3;
-+ (id)conditonalCharacteristicActionMap:(id)a3 condition:(id)a4;
++ (id)characteristicActionMap:(id)map;
++ (id)conditonalCharacteristicActionMap:(id)map condition:(id)condition;
 + (id)emptyMap;
-- (HRECharacteristicActionMap)initWithMap:(id)a3 condition:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)flattenedMapEvaluatedForObject:(id)a3;
-- (id)mergeWithActionMaps:(id)a3;
+- (HRECharacteristicActionMap)initWithMap:(id)map condition:(id)condition;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)flattenedMapEvaluatedForObject:(id)object;
+- (id)mergeWithActionMaps:(id)maps;
 @end
 
 @implementation HRECharacteristicActionMap
 
-- (HRECharacteristicActionMap)initWithMap:(id)a3 condition:(id)a4
+- (HRECharacteristicActionMap)initWithMap:(id)map condition:(id)condition
 {
-  v6 = a3;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = HRECharacteristicActionMap;
-  v7 = [(HREActionMap *)&v11 initWithCondition:a4 childMaps:0];
+  v7 = [(HREActionMap *)&v11 initWithCondition:condition childMaps:0];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [mapCopy mutableCopy];
     characteristicTypeValues = v7->_characteristicTypeValues;
     v7->_characteristicTypeValues = v8;
   }
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __38__HRECharacteristicActionMap_emptyMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27F5F97F0 != -1)
   {
     dispatch_once(&qword_27F5F97F0, block);
@@ -51,29 +51,29 @@ uint64_t __38__HRECharacteristicActionMap_emptyMap__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)characteristicActionMap:(id)a3
++ (id)characteristicActionMap:(id)map
 {
-  v3 = a3;
-  v4 = [[HRECharacteristicActionMap alloc] initWithMap:v3 condition:0];
+  mapCopy = map;
+  v4 = [[HRECharacteristicActionMap alloc] initWithMap:mapCopy condition:0];
 
   return v4;
 }
 
-+ (id)conditonalCharacteristicActionMap:(id)a3 condition:(id)a4
++ (id)conditonalCharacteristicActionMap:(id)map condition:(id)condition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HRECharacteristicActionMap alloc] initWithMap:v6 condition:v5];
+  conditionCopy = condition;
+  mapCopy = map;
+  v7 = [[HRECharacteristicActionMap alloc] initWithMap:mapCopy condition:conditionCopy];
 
   return v7;
 }
 
-- (id)mergeWithActionMaps:(id)a3
+- (id)mergeWithActionMaps:(id)maps
 {
-  v4 = a3;
-  if ([v4 count])
+  mapsCopy = maps;
+  if ([mapsCopy count])
   {
-    v5 = [v4 na_filter:&__block_literal_global_5];
+    v5 = [mapsCopy na_filter:&__block_literal_global_5];
 
     if ([v5 na_all:&__block_literal_global_4])
     {
@@ -95,25 +95,25 @@ uint64_t __38__HRECharacteristicActionMap_emptyMap__block_invoke(uint64_t a1)
       v12[1] = 3221225472;
       v12[2] = __50__HRECharacteristicActionMap_mergeWithActionMaps___block_invoke_3;
       v12[3] = &unk_279776D78;
-      v9 = v10;
-      v13 = v9;
+      selfCopy2 = v10;
+      v13 = selfCopy2;
       [v5 na_each:v12];
     }
 
     else
     {
       NSLog(&cfstr_CannotMergeMap.isa, self, v5);
-      v9 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v9 = self;
-    v5 = v4;
+    selfCopy2 = self;
+    v5 = mapsCopy;
   }
 
-  return v9;
+  return selfCopy2;
 }
 
 uint64_t __50__HRECharacteristicActionMap_mergeWithActionMaps___block_invoke(uint64_t a1, void *a2)
@@ -168,12 +168,12 @@ void __50__HRECharacteristicActionMap_mergeWithActionMaps___block_invoke_4(uint6
   [v6 setObject:v5 forKeyedSubscript:v4];
 }
 
-- (id)flattenedMapEvaluatedForObject:(id)a3
+- (id)flattenedMapEvaluatedForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = HRECharacteristicActionMap;
-  v5 = [(HREActionMap *)&v10 flattenedMapEvaluatedForObject:v4];
+  v5 = [(HREActionMap *)&v10 flattenedMapEvaluatedForObject:objectCopy];
   if (v5)
   {
     objc_opt_class();
@@ -195,7 +195,7 @@ void __50__HRECharacteristicActionMap_mergeWithActionMaps___block_invoke_4(uint6
       goto LABEL_8;
     }
 
-    NSLog(&cfstr_SuperFlattened.isa, self, v4, v6);
+    NSLog(&cfstr_SuperFlattened.isa, self, objectCopy, v6);
   }
 
   v6 = 0;
@@ -204,11 +204,11 @@ LABEL_8:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = HRECharacteristicActionMap;
-  v4 = [(HREActionMap *)&v12 copyWithZone:a3];
+  v4 = [(HREActionMap *)&v12 copyWithZone:zone];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -223,8 +223,8 @@ LABEL_8:
 
   v7 = v6;
 
-  v8 = [(HRECharacteristicActionMap *)self characteristicTypeValues];
-  v9 = [v8 mutableCopy];
+  characteristicTypeValues = [(HRECharacteristicActionMap *)self characteristicTypeValues];
+  v9 = [characteristicTypeValues mutableCopy];
   if (v9)
   {
     [v7 setCharacteristicTypeValues:v9];
@@ -232,8 +232,8 @@ LABEL_8:
 
   else
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [v7 setCharacteristicTypeValues:v10];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [v7 setCharacteristicTypeValues:dictionary];
   }
 
   return v5;

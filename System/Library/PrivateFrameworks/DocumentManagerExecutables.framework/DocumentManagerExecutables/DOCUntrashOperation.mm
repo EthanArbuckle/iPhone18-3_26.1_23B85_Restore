@@ -1,6 +1,6 @@
 @interface DOCUntrashOperation
 - (NSString)actionNameForUndoing;
-- (_TtC26DocumentManagerExecutables19DOCUntrashOperation)initWithItems:(id)a3 restoreDirectory:(id)a4;
+- (_TtC26DocumentManagerExecutables19DOCUntrashOperation)initWithItems:(id)items restoreDirectory:(id)directory;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 @end
@@ -9,7 +9,7 @@
 
 - (NSString)actionNameForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   DOCUntrashOperation.actionNameForUndoing.getter();
   v4 = v3;
   v6 = v5;
@@ -29,7 +29,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCUntrashOperation.operationForRedoing()();
 
   return v3;
@@ -37,13 +37,13 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCUntrashOperation.operationForUndoing()();
 
   return v3;
 }
 
-- (_TtC26DocumentManagerExecutables19DOCUntrashOperation)initWithItems:(id)a3 restoreDirectory:(id)a4
+- (_TtC26DocumentManagerExecutables19DOCUntrashOperation)initWithItems:(id)items restoreDirectory:(id)directory
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

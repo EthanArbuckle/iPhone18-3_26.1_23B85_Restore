@@ -1,8 +1,8 @@
 @interface LKCGImageCodingProxy
-- (LKCGImageCodingProxy)initWithCoder:(id)a3;
-- (LKCGImageCodingProxy)initWithObject:(id)a3;
+- (LKCGImageCodingProxy)initWithCoder:(id)coder;
+- (LKCGImageCodingProxy)initWithObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LKCGImageCodingProxy
@@ -16,7 +16,7 @@
   [(LKCGImageCodingProxy *)&v3 dealloc];
 }
 
-- (LKCGImageCodingProxy)initWithCoder:(id)a3
+- (LKCGImageCodingProxy)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([LKCGImageCodingProxy initWithCoder:]::onceToken != -1)
@@ -29,9 +29,9 @@
   v5 = [(LKCGImageCodingProxy *)&v16 init];
   if (v5)
   {
-    if ([a3 containsValueForKey:@"loadAsHDR"])
+    if ([coder containsValueForKey:@"loadAsHDR"])
     {
-      v6 = [a3 decodeBoolForKey:@"loadAsHDR"];
+      v6 = [coder decodeBoolForKey:@"loadAsHDR"];
       v7 = &[LKCGImageCodingProxy initWithCoder:]::dictHDR;
       if ((v6 & 1) == 0)
       {
@@ -46,10 +46,10 @@
       v8 = [LKCGImageCodingProxy initWithCoder:]::dictSDR;
     }
 
-    v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     if (v9 && (v10 = v9, (v11 = CGImageSourceCreateWithData(v9, v8)) != 0) && (v12 = v11, v5->_image = CGImageSourceCreateImageAtIndex(v11, 0, v8), CFRelease(v12), v5->_image))
     {
-      if ([a3 containsValueForKey:@"A8asL8"] && objc_msgSend(a3, "decodeBoolForKey:", @"A8asL8"))
+      if ([coder containsValueForKey:@"A8asL8"] && objc_msgSend(coder, "decodeBoolForKey:", @"A8asL8"))
       {
         v13 = CA_copyL8CGImageAsA8(v5->_image);
         CGImageRelease(v5->_image);
@@ -59,10 +59,10 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [a3 delegate];
+        delegate = [coder delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v14 unarchiver:a3 didReadData:v10 forImage:v5->_image];
+          [delegate unarchiver:coder didReadData:v10 forImage:v5->_image];
         }
       }
     }
@@ -85,24 +85,24 @@ id __38__LKCGImageCodingProxy_initWithCoder___block_invoke()
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = CACodingImageFormat;
   image = self->_image;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a3 delegate];
+    delegate = [coder delegate];
     if (objc_opt_respondsToSelector())
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = [v6 archiver:a3 dataForImage:image];
+      v8 = [delegate archiver:coder dataForImage:image];
       if (v8)
       {
         v15 = v8;
         v9 = v8;
         objc_autoreleasePoolPop(v7);
-        [a3 encodeObject:v15 forKey:@"data"];
+        [coder encodeObject:v15 forKey:@"data"];
         if (!image)
         {
 
@@ -117,7 +117,7 @@ id __38__LKCGImageCodingProxy_initWithCoder___block_invoke()
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v6 archiver:a3 formatForImage:image];
+      v10 = [delegate archiver:coder formatForImage:image];
       if (v10)
       {
         v4 = v10;
@@ -163,11 +163,11 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  [a3 encodeObject:v15 forKey:@"data"];
+  [coder encodeObject:v15 forKey:@"data"];
   if (v11)
   {
     v14 = 1;
-    [a3 encodeBool:1 forKey:@"A8asL8"];
+    [coder encodeBool:1 forKey:@"A8asL8"];
     goto LABEL_22;
   }
 
@@ -177,7 +177,7 @@ LABEL_22:
   CGImageGetColorSpace(image);
   if (CGColorSpaceContainsFlexGTCInfo())
   {
-    [a3 encodeBool:1 forKey:@"loadAsHDR"];
+    [coder encodeBool:1 forKey:@"loadAsHDR"];
   }
 
   if (v14)
@@ -186,7 +186,7 @@ LABEL_22:
   }
 }
 
-- (LKCGImageCodingProxy)initWithObject:(id)a3
+- (LKCGImageCodingProxy)initWithObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -197,7 +197,7 @@ LABEL_22:
     return v4;
   }
 
-  v5 = CFGetTypeID(a3);
+  v5 = CFGetTypeID(object);
   if (CAMachPortGetTypeID::once[0] != -1)
   {
     dispatch_once(CAMachPortGetTypeID::once, &__block_literal_global_6212);
@@ -205,9 +205,9 @@ LABEL_22:
 
   if (v5 == CAMachPortGetTypeID::type)
   {
-    if (a3)
+    if (object)
     {
-      v6 = *(a3 + 4);
+      v6 = *(object + 4);
       if (v6)
       {
         v7 = IOSurfaceLookupFromMachPort(v6);
@@ -227,7 +227,7 @@ LABEL_9:
 
   if (v5 == CVPixelBufferGetTypeID())
   {
-    IOSurface = CVPixelBufferGetIOSurface(a3);
+    IOSurface = CVPixelBufferGetIOSurface(object);
     if (!IOSurface)
     {
       return v4;
@@ -238,7 +238,7 @@ LABEL_9:
 
   if (v5 == IOSurfaceGetTypeID())
   {
-    IOSurface = a3;
+    IOSurface = object;
 LABEL_15:
     cgimage_from_iosurface = create_cgimage_from_iosurface(IOSurface);
 LABEL_16:
@@ -253,7 +253,7 @@ LABEL_16:
 
   if (v5 == CAImageQueueGetTypeID::type)
   {
-    v12 = CAImageQueueCopyLastIOSurface(a3);
+    v12 = CAImageQueueCopyLastIOSurface(object);
     if (v12)
     {
       v13 = v12;
@@ -277,13 +277,13 @@ LABEL_16:
 
   if (v5 != CAIOSurfaceGetTypeID::type)
   {
-    cgimage_from_iosurface = CGImageRetain(a3);
+    cgimage_from_iosurface = CGImageRetain(object);
     goto LABEL_16;
   }
 
-  if (a3)
+  if (object)
   {
-    v15 = *(a3 + 2);
+    v15 = *(object + 2);
     v8 = *(v15 + 128);
     if (v8)
     {

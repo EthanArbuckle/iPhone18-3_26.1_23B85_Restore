@@ -1,15 +1,15 @@
 @interface EventEditViewController.Coordinator
 - (_TtCV20VisualIntelligenceUI23EventEditViewController11Coordinator)init;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
 @end
 
 @implementation EventEditViewController.Coordinator
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  v7 = self;
-  sub_21E125508(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21E125508(controllerCopy, action);
 }
 
 - (_TtCV20VisualIntelligenceUI23EventEditViewController11Coordinator)init

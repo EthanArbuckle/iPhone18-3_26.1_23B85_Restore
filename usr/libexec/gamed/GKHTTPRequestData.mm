@@ -1,23 +1,23 @@
 @interface GKHTTPRequestData
-- (GKHTTPRequestData)initWithData:(id)a3 headers:(id)a4;
+- (GKHTTPRequestData)initWithData:(id)data headers:(id)headers;
 - (const)bytes;
 - (unint64_t)length;
 @end
 
 @implementation GKHTTPRequestData
 
-- (GKHTTPRequestData)initWithData:(id)a3 headers:(id)a4
+- (GKHTTPRequestData)initWithData:(id)data headers:(id)headers
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  headersCopy = headers;
   v12.receiver = self;
   v12.super_class = GKHTTPRequestData;
   v9 = [(GKHTTPRequestData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_headers, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_headers, headers);
   }
 
   return v10;
@@ -25,16 +25,16 @@
 
 - (const)bytes
 {
-  v2 = [(GKHTTPRequestData *)self data];
-  v3 = [v2 bytes];
+  data = [(GKHTTPRequestData *)self data];
+  bytes = [data bytes];
 
-  return v3;
+  return bytes;
 }
 
 - (unint64_t)length
 {
-  v2 = [(GKHTTPRequestData *)self data];
-  v3 = [v2 length];
+  data = [(GKHTTPRequestData *)self data];
+  v3 = [data length];
 
   return v3;
 }

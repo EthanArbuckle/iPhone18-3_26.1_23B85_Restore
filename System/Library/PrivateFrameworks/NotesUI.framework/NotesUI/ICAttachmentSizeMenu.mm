@@ -1,45 +1,45 @@
 @interface ICAttachmentSizeMenu
-- (ICAttachmentSizeMenu)initWithTitle:(id)a3 image:(id)a4 preferredViewSize:(signed __int16)a5 supportedSizes:(id)a6 supportsPlainLink:(BOOL)a7 isOverrideVariant:(BOOL)a8 selectedSizeHandler:(id)a9 plainLinkHandler:(id)a10;
+- (ICAttachmentSizeMenu)initWithTitle:(id)title image:(id)image preferredViewSize:(signed __int16)size supportedSizes:(id)sizes supportsPlainLink:(BOOL)link isOverrideVariant:(BOOL)variant selectedSizeHandler:(id)handler plainLinkHandler:(id)self0;
 - (id)actionForPlainLink;
-- (id)actionForSize:(signed __int16)a3;
+- (id)actionForSize:(signed __int16)size;
 - (id)createMenu;
-- (id)localizedTitleForSize:(signed __int16)a3;
+- (id)localizedTitleForSize:(signed __int16)size;
 @end
 
 @implementation ICAttachmentSizeMenu
 
-- (ICAttachmentSizeMenu)initWithTitle:(id)a3 image:(id)a4 preferredViewSize:(signed __int16)a5 supportedSizes:(id)a6 supportsPlainLink:(BOOL)a7 isOverrideVariant:(BOOL)a8 selectedSizeHandler:(id)a9 plainLinkHandler:(id)a10
+- (ICAttachmentSizeMenu)initWithTitle:(id)title image:(id)image preferredViewSize:(signed __int16)size supportedSizes:(id)sizes supportsPlainLink:(BOOL)link isOverrideVariant:(BOOL)variant selectedSizeHandler:(id)handler plainLinkHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a9;
-  v20 = a10;
+  titleCopy = title;
+  imageCopy = image;
+  sizesCopy = sizes;
+  handlerCopy = handler;
+  linkHandlerCopy = linkHandler;
   v33.receiver = self;
   v33.super_class = ICAttachmentSizeMenu;
   v21 = [(ICAttachmentSizeMenu *)&v33 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [titleCopy copy];
     title = v21->_title;
     v21->_title = v22;
 
-    v24 = [v17 copy];
+    v24 = [imageCopy copy];
     image = v21->_image;
     v21->_image = v24;
 
-    v21->_preferredViewSize = a5;
-    v26 = [v18 copy];
+    v21->_preferredViewSize = size;
+    v26 = [sizesCopy copy];
     supportedSizes = v21->_supportedSizes;
     v21->_supportedSizes = v26;
 
-    v21->_supportsPlainLink = a7;
-    v21->_isOverrideVariant = a8;
-    v28 = _Block_copy(v19);
+    v21->_supportsPlainLink = link;
+    v21->_isOverrideVariant = variant;
+    v28 = _Block_copy(handlerCopy);
     selectedSizeHandler = v21->_selectedSizeHandler;
     v21->_selectedSizeHandler = v28;
 
-    v30 = _Block_copy(v20);
+    v30 = _Block_copy(linkHandlerCopy);
     plainLinkHandler = v21->_plainLinkHandler;
     v21->_plainLinkHandler = v30;
   }
@@ -50,38 +50,38 @@
 - (id)createMenu
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(ICAttachmentSizeMenu *)self actionForPlainLink];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  actionForPlainLink = [(ICAttachmentSizeMenu *)self actionForPlainLink];
+  v5 = actionForPlainLink;
+  if (actionForPlainLink)
   {
     v6 = MEMORY[0x1E69DCC60];
-    v20[0] = v4;
+    v20[0] = actionForPlainLink;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     v8 = [v6 menuWithTitle:&stru_1F4F94F00 image:0 identifier:0 options:1 children:v7];
 
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  v9 = [(ICAttachmentSizeMenu *)self supportedSizes];
+  supportedSizes = [(ICAttachmentSizeMenu *)self supportedSizes];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __34__ICAttachmentSizeMenu_createMenu__block_invoke;
   v19[3] = &unk_1E846CF90;
   v19[4] = self;
-  v10 = [v9 ic_compactMap:v19];
+  v10 = [supportedSizes ic_compactMap:v19];
 
   if ([v10 count])
   {
     v11 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4F94F00 image:0 identifier:0 options:1 children:v10];
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
   v12 = MEMORY[0x1E69DCC60];
-  v13 = [(ICAttachmentSizeMenu *)self title];
-  v14 = [(ICAttachmentSizeMenu *)self image];
-  v15 = [v3 copy];
-  v16 = [v12 menuWithTitle:v13 image:v14 identifier:@"com.apple.mobilenotes.attachmentSizeMenu" options:0 children:v15];
+  title = [(ICAttachmentSizeMenu *)self title];
+  image = [(ICAttachmentSizeMenu *)self image];
+  v15 = [array copy];
+  v16 = [v12 menuWithTitle:title image:image identifier:@"com.apple.mobilenotes.attachmentSizeMenu" options:0 children:v15];
 
   if (![(ICAttachmentSizeMenu *)self isOverrideVariant])
   {
@@ -105,13 +105,13 @@ uint64_t __34__ICAttachmentSizeMenu_createMenu__block_invoke(uint64_t a1, void *
   if ([(ICAttachmentSizeMenu *)self supportsPlainLink])
   {
     v3 = MEMORY[0x1E69DC628];
-    v4 = [(ICAttachmentSizeMenu *)self localizedTitleForPlainLink];
+    localizedTitleForPlainLink = [(ICAttachmentSizeMenu *)self localizedTitleForPlainLink];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__ICAttachmentSizeMenu_actionForPlainLink__block_invoke;
     v7[3] = &unk_1E846BDC8;
     v7[4] = self;
-    v5 = [v3 actionWithTitle:v4 image:0 identifier:0 handler:v7];
+    v5 = [v3 actionWithTitle:localizedTitleForPlainLink image:0 identifier:0 handler:v7];
   }
 
   else
@@ -133,9 +133,9 @@ void __42__ICAttachmentSizeMenu_actionForPlainLink__block_invoke(uint64_t a1)
   }
 }
 
-- (id)actionForSize:(signed __int16)a3
+- (id)actionForSize:(signed __int16)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v5 = [(ICAttachmentSizeMenu *)self localizedTitleForSize:?];
   if (v5)
   {
@@ -144,13 +144,13 @@ void __42__ICAttachmentSizeMenu_actionForPlainLink__block_invoke(uint64_t a1)
     v12[2] = __38__ICAttachmentSizeMenu_actionForSize___block_invoke;
     v12[3] = &unk_1E846CFB8;
     v12[4] = self;
-    v13 = v3;
+    v13 = sizeCopy;
     v6 = [MEMORY[0x1E69DC628] actionWithTitle:v5 image:0 identifier:0 handler:v12];
     if (![(ICAttachmentSizeMenu *)self isOverrideVariant])
     {
-      v7 = [(ICAttachmentSizeMenu *)self preferredViewSize];
-      v8 = v7 == v3;
-      if (v7 == v3)
+      preferredViewSize = [(ICAttachmentSizeMenu *)self preferredViewSize];
+      v8 = preferredViewSize == sizeCopy;
+      if (preferredViewSize == sizeCopy)
       {
         v9 = MEMORY[0x1E69DDA08];
       }
@@ -170,7 +170,7 @@ void __42__ICAttachmentSizeMenu_actionForPlainLink__block_invoke(uint64_t a1)
     v10 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ICAttachmentSizeMenu *)v3 actionForSize:v10];
+      [(ICAttachmentSizeMenu *)sizeCopy actionForSize:v10];
     }
 
     v6 = 0;
@@ -190,22 +190,22 @@ void __38__ICAttachmentSizeMenu_actionForSize___block_invoke(uint64_t a1)
   }
 }
 
-- (id)localizedTitleForSize:(signed __int16)a3
+- (id)localizedTitleForSize:(signed __int16)size
 {
-  v3 = a3;
-  v4 = [(ICAttachmentSizeMenu *)self isOverrideVariant];
-  if (v4)
+  sizeCopy = size;
+  isOverrideVariant = [(ICAttachmentSizeMenu *)self isOverrideVariant];
+  if (isOverrideVariant)
   {
-    if (v3)
+    if (sizeCopy)
     {
-      if (v3 == 2)
+      if (sizeCopy == 2)
       {
         v5 = @"Set All to Medium";
       }
 
       else
       {
-        if (v3 != 1)
+        if (sizeCopy != 1)
         {
           goto LABEL_15;
         }
@@ -220,16 +220,16 @@ void __38__ICAttachmentSizeMenu_actionForSize___block_invoke(uint64_t a1)
     }
   }
 
-  else if (v3)
+  else if (sizeCopy)
   {
-    if (v3 == 2)
+    if (sizeCopy == 2)
     {
       v5 = @"Medium";
     }
 
     else
     {
-      if (v3 != 1)
+      if (sizeCopy != 1)
       {
         goto LABEL_15;
       }
@@ -243,10 +243,10 @@ void __38__ICAttachmentSizeMenu_actionForSize___block_invoke(uint64_t a1)
     v5 = @"Large";
   }
 
-  v4 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
+  isOverrideVariant = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
 LABEL_15:
 
-  return v4;
+  return isOverrideVariant;
 }
 
 - (void)actionForSize:(__int16)a1 .cold.1(__int16 a1, NSObject *a2)

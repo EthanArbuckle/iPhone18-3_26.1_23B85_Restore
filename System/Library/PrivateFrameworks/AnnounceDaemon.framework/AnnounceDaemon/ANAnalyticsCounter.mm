@@ -1,8 +1,8 @@
 @interface ANAnalyticsCounter
 - (ANAnalyticsCounter)init;
-- (ANAnalyticsCounter)initWithHexCount:(unint64_t)a3;
-- (id)payload:(id)a3 keyTwo:(id)a4;
-- (void)append:(unint64_t)a3;
+- (ANAnalyticsCounter)initWithHexCount:(unint64_t)count;
+- (id)payload:(id)payload keyTwo:(id)two;
+- (void)append:(unint64_t)append;
 @end
 
 @implementation ANAnalyticsCounter
@@ -21,42 +21,42 @@
   return result;
 }
 
-- (ANAnalyticsCounter)initWithHexCount:(unint64_t)a3
+- (ANAnalyticsCounter)initWithHexCount:(unint64_t)count
 {
   v5.receiver = self;
   v5.super_class = ANAnalyticsCounter;
   result = [(ANAnalyticsCounter *)&v5 init];
   if (result)
   {
-    result->_hexCount = a3;
-    result->_count = a3 & 0xF;
+    result->_hexCount = count;
+    result->_count = count & 0xF;
   }
 
   return result;
 }
 
-- (void)append:(unint64_t)a3
+- (void)append:(unint64_t)append
 {
   count = self->_count;
   if (count <= 9)
   {
     v4 = count + 1;
     self->_count = v4;
-    v5 = 10;
-    if (a3 < 0xA)
+    appendCopy = 10;
+    if (append < 0xA)
     {
-      v5 = a3;
+      appendCopy = append;
     }
 
-    self->_hexCount |= v5 << (4 * v4);
+    self->_hexCount |= appendCopy << (4 * v4);
   }
 }
 
-- (id)payload:(id)a3 keyTwo:(id)a4
+- (id)payload:(id)payload keyTwo:(id)two
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  twoCopy = two;
   v8 = objc_opt_new();
   if (self->_count)
   {
@@ -65,9 +65,9 @@
     do
     {
       v11 = self->_hexCount >> v10;
-      v17[0] = v6;
+      v17[0] = payloadCopy;
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
-      v17[1] = v7;
+      v17[1] = twoCopy;
       v18[0] = v12;
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11 & 0xF];
       v18[1] = v13;

@@ -1,19 +1,19 @@
 @interface CTSweetgumDataPlanMetricsError
-+ (id)errorDescriptionForCode:(int64_t)a3;
++ (id)errorDescriptionForCode:(int64_t)code;
 @end
 
 @implementation CTSweetgumDataPlanMetricsError
 
-+ (id)errorDescriptionForCode:(int64_t)a3
++ (id)errorDescriptionForCode:(int64_t)code
 {
-  if (a3 > 0x12)
+  if (code > 0x12)
   {
     return @"Unknown Error";
   }
 
   else
   {
-    return *(&off_1E6A43ED8 + a3);
+    return *(&off_1E6A43ED8 + code);
   }
 }
 

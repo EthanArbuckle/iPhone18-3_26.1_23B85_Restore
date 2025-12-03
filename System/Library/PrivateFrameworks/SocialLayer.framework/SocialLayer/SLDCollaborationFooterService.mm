@@ -1,10 +1,10 @@
 @interface SLDCollaborationFooterService
 + (id)sharedService;
-+ (void)slotForModel:(id)a3 maxWidth:(double)a4 completion:(id)a5;
-+ (void)slotForModelNeedingNameAndEmail:(id)a3 maxWidth:(double)a4 completion:(id)a5;
++ (void)slotForModel:(id)model maxWidth:(double)width completion:(id)completion;
++ (void)slotForModelNeedingNameAndEmail:(id)email maxWidth:(double)width completion:(id)completion;
 - (UISSlotMachine)footerViewSlotMachine;
-- (id)slotMachineForViewIdentifier:(id)a3;
-- (void)footerViewForModel:(id)a3 style:(id)a4 maxWidth:(double)a5 layerContextID:(unint64_t)a6 reply:(id)a7;
+- (id)slotMachineForViewIdentifier:(id)identifier;
+- (void)footerViewForModel:(id)model style:(id)style maxWidth:(double)width layerContextID:(unint64_t)d reply:(id)reply;
 @end
 
 @implementation SLDCollaborationFooterService
@@ -47,31 +47,31 @@ uint64_t __46__SLDCollaborationFooterService_sharedService__block_invoke()
   return footerViewSlotMachine;
 }
 
-- (id)slotMachineForViewIdentifier:(id)a3
+- (id)slotMachineForViewIdentifier:(id)identifier
 {
-  v4 = [a3 tag];
+  v4 = [identifier tag];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(SLDCollaborationFooterService *)self footerViewSlotMachine];
+    footerViewSlotMachine = [(SLDCollaborationFooterService *)self footerViewSlotMachine];
   }
 
   else
   {
-    v6 = 0;
+    footerViewSlotMachine = 0;
   }
 
-  return v6;
+  return footerViewSlotMachine;
 }
 
-- (void)footerViewForModel:(id)a3 style:(id)a4 maxWidth:(double)a5 layerContextID:(unint64_t)a6 reply:(id)a7
+- (void)footerViewForModel:(id)model style:(id)style maxWidth:(double)width layerContextID:(unint64_t)d reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (a5 <= 0.0)
+  modelCopy = model;
+  styleCopy = style;
+  replyCopy = reply;
+  if (width <= 0.0)
   {
     v18 = SLDaemonLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -79,24 +79,24 @@ uint64_t __46__SLDCollaborationFooterService_sharedService__block_invoke()
       [SLDCollaborationFooterService footerViewForModel:v18 style:? maxWidth:? layerContextID:? reply:?];
     }
 
-    v14[2](v14, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCAE80] currentConnection];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
     v16 = objc_opt_class();
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __88__SLDCollaborationFooterService_footerViewForModel_style_maxWidth_layerContextID_reply___block_invoke;
     v19[3] = &unk_278925ED0;
-    v20 = v13;
-    v21 = self;
-    v22 = v15;
-    v24 = a6;
-    v23 = v14;
-    v17 = v15;
-    [v16 slotForModel:v12 maxWidth:v19 completion:a5];
+    v20 = styleCopy;
+    selfCopy = self;
+    v22 = currentConnection;
+    dCopy = d;
+    v23 = replyCopy;
+    v17 = currentConnection;
+    [v16 slotForModel:modelCopy maxWidth:v19 completion:width];
   }
 }
 
@@ -113,31 +113,31 @@ void __88__SLDCollaborationFooterService_footerViewForModel_style_maxWidth_layer
   [*(a1 + 40) _connectionTouchedView:v5];
 }
 
-+ (void)slotForModel:(id)a3 maxWidth:(double)a4 completion:(id)a5
++ (void)slotForModel:(id)model maxWidth:(double)width completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 type];
-  if ((v10 - 1) < 2)
+  modelCopy = model;
+  completionCopy = completion;
+  type = [modelCopy type];
+  if ((type - 1) < 2)
   {
-    [a1 slotForModelNeedingNameAndEmail:v8 maxWidth:v9 completion:a4];
+    [self slotForModelNeedingNameAndEmail:modelCopy maxWidth:completionCopy completion:width];
   }
 
   else
   {
-    if (v10 == 3)
+    if (type == 3)
     {
-      v11 = [v8 optionsSummary];
-      v15 = [v8 metadata];
-      v16 = [v15 initiatorNameComponents];
+      optionsSummary = [modelCopy optionsSummary];
+      metadata = [modelCopy metadata];
+      initiatorNameComponents = [metadata initiatorNameComponents];
 
-      if (v16)
+      if (initiatorNameComponents)
       {
         v17 = objc_opt_class();
-        v18 = [v8 metadata];
-        v19 = [v18 initiatorNameComponents];
-        v13 = [v17 nameFromNameComponents:v19];
+        metadata2 = [modelCopy metadata];
+        initiatorNameComponents2 = [metadata2 initiatorNameComponents];
+        v13 = [v17 nameFromNameComponents:initiatorNameComponents2];
       }
 
       else
@@ -145,55 +145,55 @@ void __88__SLDCollaborationFooterService_footerViewForModel_style_maxWidth_layer
         v20 = SLDaemonLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v8 metadata];
+          metadata3 = [modelCopy metadata];
           *buf = 138412290;
-          v29 = v21;
+          v29 = metadata3;
           _os_log_impl(&dword_231772000, v20, OS_LOG_TYPE_DEFAULT, "Metadata has no initiator name components: %@", buf, 0xCu);
         }
 
         v13 = 0;
       }
 
-      v22 = [v8 metadata];
-      v14 = [v22 initiatorHandle];
+      metadata4 = [modelCopy metadata];
+      initiatorHandle = [metadata4 initiatorHandle];
 
-      v12 = 0;
-      if (v13 && v14)
+      subtitle = 0;
+      if (v13 && initiatorHandle)
       {
         v23 = MEMORY[0x277CCACA8];
         v24 = SLFrameworkBundle();
         v25 = [v24 localizedStringForKey:@"SHARE_AS" value:&stru_28468DAB8 table:@"SocialLayer"];
-        v12 = [v23 stringWithFormat:v25, v13, v14];
+        subtitle = [v23 stringWithFormat:v25, v13, initiatorHandle];
       }
     }
 
-    else if (v10)
+    else if (type)
     {
       v13 = 0;
-      v14 = 0;
-      v11 = 0;
-      v12 = 0;
+      initiatorHandle = 0;
+      optionsSummary = 0;
+      subtitle = 0;
     }
 
     else
     {
-      v11 = [v8 title];
-      v12 = [v8 subtitle];
+      optionsSummary = [modelCopy title];
+      subtitle = [modelCopy subtitle];
       v13 = 0;
-      v14 = 0;
+      initiatorHandle = 0;
     }
 
-    v26 = [[SLDCollaborationFooterSlotTag alloc] initWithTitle:v11 subtitle:v12 maxWidth:a4];
-    v9[2](v9, v26);
+    v26 = [[SLDCollaborationFooterSlotTag alloc] initWithTitle:optionsSummary subtitle:subtitle maxWidth:width];
+    completionCopy[2](completionCopy, v26);
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)slotForModelNeedingNameAndEmail:(id)a3 maxWidth:(double)a4 completion:(id)a5
++ (void)slotForModelNeedingNameAndEmail:(id)email maxWidth:(double)width completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  emailCopy = email;
+  completionCopy = completion;
   v9 = SLDaemonLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,18 +205,18 @@ void __88__SLDCollaborationFooterService_footerViewForModel_style_maxWidth_layer
   if (objc_opt_respondsToSelector())
   {
     CloudSharingClass = getCloudSharingClass();
-    v11 = [v7 fileURL];
-    v12 = [v7 containerSetupInfo];
+    fileURL = [emailCopy fileURL];
+    containerSetupInfo = [emailCopy containerSetupInfo];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __85__SLDCollaborationFooterService_slotForModelNeedingNameAndEmail_maxWidth_completion___block_invoke;
     v16[3] = &unk_278925EF8;
-    v17 = v7;
-    v19 = a4;
-    v18 = v8;
-    [CloudSharingClass userNameAndEmail:v11 containerSetupInfo:v12 completionHandler:v16];
+    v17 = emailCopy;
+    widthCopy = width;
+    v18 = completionCopy;
+    [CloudSharingClass userNameAndEmail:fileURL containerSetupInfo:containerSetupInfo completionHandler:v16];
 
-    v13 = v17;
+    optionsSummary = v17;
   }
 
   else
@@ -227,9 +227,9 @@ void __88__SLDCollaborationFooterService_footerViewForModel_style_maxWidth_layer
       [SLDCollaborationFooterService slotForModelNeedingNameAndEmail:v14 maxWidth:? completion:?];
     }
 
-    v13 = [v7 optionsSummary];
-    v15 = [[SLDCollaborationFooterSlotTag alloc] initWithTitle:v13 subtitle:&stru_28468DAB8 maxWidth:a4];
-    (*(v8 + 2))(v8, v15);
+    optionsSummary = [emailCopy optionsSummary];
+    v15 = [[SLDCollaborationFooterSlotTag alloc] initWithTitle:optionsSummary subtitle:&stru_28468DAB8 maxWidth:width];
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 }
 

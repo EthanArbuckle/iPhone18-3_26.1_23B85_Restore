@@ -1,32 +1,32 @@
 @interface CLSSchedule
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 + (id)hashableColumnNames;
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSSchedule)initWithCKRecord:(id)a3;
-- (CLSSchedule)initWithDatabaseRow:(id)a3;
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4;
-- (int64_t)syncBackend:(id)a3;
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSSchedule)initWithCKRecord:(id)record;
+- (CLSSchedule)initWithDatabaseRow:(id)row;
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies;
+- (int64_t)syncBackend:(id)backend;
 - (unint64_t)changeHash;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSSchedule
 
-- (CLSSchedule)initWithCKRecord:(id)a3
+- (CLSSchedule)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CLSSchedule *)self _init];
-  v6 = v5;
-  if (v5)
+  recordCopy = record;
+  _init = [(CLSSchedule *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithRecord:v4];
-    v7 = [v4 objectForKeyedSubscript:@"scheduleDate"];
+    [_init _initCommonPropsWithRecord:recordCopy];
+    v7 = [recordCopy objectForKeyedSubscript:@"scheduleDate"];
     [v6 setScheduleDate:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"scheduledEntityType"];
+    v8 = [recordCopy objectForKeyedSubscript:@"scheduledEntityType"];
     v9 = v8;
     if (v8)
     {
@@ -44,7 +44,7 @@
       }
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"scheduleAction"];
+    v11 = [recordCopy objectForKeyedSubscript:@"scheduleAction"];
     v12 = v11;
     if (v11)
     {
@@ -62,48 +62,48 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"scheduledObjectID"];
+    v14 = [recordCopy objectForKeyedSubscript:@"scheduledObjectID"];
     [v6 setParentObjectID:v14];
 
-    v15 = [v4 objectForKeyedSubscript:@"scheduledEntityType"];
+    v15 = [recordCopy objectForKeyedSubscript:@"scheduledEntityType"];
     [v6 setScheduledEntityType:{objc_msgSend(v15, "integerValue")}];
   }
 
   return v6;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v9.receiver = self;
   v9.super_class = CLSSchedule;
-  v4 = a3;
-  [(CLSSchedule *)&v9 populate:v4];
+  populateCopy = populate;
+  [(CLSSchedule *)&v9 populate:populateCopy];
   v5 = [(CLSSchedule *)self scheduleDate:v9.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"scheduleDate"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"scheduleDate"];
 
   v6 = [NSNumber numberWithInteger:[(CLSSchedule *)self scheduledEntityType]];
-  [v4 setObject:v6 forKeyedSubscript:@"scheduledEntityType"];
+  [populateCopy setObject:v6 forKeyedSubscript:@"scheduledEntityType"];
 
   v7 = [NSNumber numberWithInteger:[(CLSSchedule *)self scheduleAction]];
-  [v4 setObject:v7 forKeyedSubscript:@"scheduleAction"];
+  [populateCopy setObject:v7 forKeyedSubscript:@"scheduleAction"];
 
-  v8 = [(CLSSchedule *)self parentObjectID];
-  [v4 setObject:v8 forKeyedSubscript:@"scheduledObjectID"];
+  parentObjectID = [(CLSSchedule *)self parentObjectID];
+  [populateCopy setObject:parentObjectID forKeyedSubscript:@"scheduledObjectID"];
 
-  [(CLSSchedule *)self updateParentReferencesForRecord:v4];
+  [(CLSSchedule *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSSchedule *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSSchedule *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else
@@ -120,15 +120,15 @@
   return v8;
 }
 
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  itemCopy = item;
+  databaseCopy = database;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   [v11 setType:30];
-  v12 = [v8 state] - 1;
+  v12 = [itemCopy state] - 1;
   if (v12 < 3)
   {
     v13 = (v12 + 1);
@@ -140,23 +140,23 @@
   }
 
   [v11 setAction:v13];
-  v14 = [v8 entityIdentity];
-  v15 = v7;
-  v64 = v8;
+  entityIdentity = [itemCopy entityIdentity];
+  v15 = objectCopy;
+  v64 = itemCopy;
   v68 = v15;
-  v63 = v9;
-  v65 = v14;
-  if ([v8 state] == 3)
+  v63 = databaseCopy;
+  v65 = entityIdentity;
+  if ([itemCopy state] == 3)
   {
     v16 = objc_opt_new();
     [v11 setSchedule:v16];
 
-    v17 = [v11 schedule];
-    [v17 setObjectId:v14];
+    schedule = [v11 schedule];
+    [schedule setObjectId:entityIdentity];
 
-    v18 = [v9 select:objc_opt_class() identity:v14];
+    v18 = [databaseCopy select:objc_opt_class() identity:entityIdentity];
     v19 = v18;
-    v20 = v9;
+    v20 = databaseCopy;
     if (v18)
     {
       v21 = *(v18 + 16);
@@ -168,11 +168,11 @@
     }
 
     v22 = v21;
-    v23 = [v22 firstObject];
-    v24 = [v23 copy];
+    firstObject = [v22 firstObject];
+    v24 = [firstObject copy];
 
-    v25 = [v11 schedule];
-    [v25 setClassId:v24];
+    schedule2 = [v11 schedule];
+    [schedule2 setClassId:v24];
 
     [v10 addObject:v11];
     v26 = sub_1000C23D8(v20, v65);
@@ -209,15 +209,15 @@
     goto LABEL_54;
   }
 
-  v34 = sub_1000C2320(v9, v15);
+  v34 = sub_1000C2320(databaseCopy, v15);
   v35 = sub_10001FF94(v15);
   [v11 setSchedule:v35];
 
-  v36 = [v11 schedule];
-  [v36 setClassId:v34];
+  schedule3 = [v11 schedule];
+  [schedule3 setClassId:v34];
 
   [v10 addObject:v11];
-  v37 = sub_1000C23D8(v9, v14);
+  v37 = sub_1000C23D8(databaseCopy, entityIdentity);
   v71 = v34;
   v33 = v15;
   v62 = v37;
@@ -292,8 +292,8 @@ LABEL_40:
         }
       }
 
-      v72 = [v33 scheduleDate];
-      if (v72)
+      scheduleDate = [v33 scheduleDate];
+      if (scheduleDate)
       {
         if (v41)
         {
@@ -305,15 +305,15 @@ LABEL_40:
             v46 = v48;
             v47 = 1;
 LABEL_30:
-            v49 = [v33 scheduleDate];
-            if (v49)
+            scheduleDate2 = [v33 scheduleDate];
+            if (scheduleDate2)
             {
-              v50 = v49;
+              v50 = scheduleDate2;
               v51 = v33;
               v52 = v10;
               v53 = *v42;
-              v54 = [v51 scheduleDate];
-              v55 = [v53 isEqualToDate:v54];
+              scheduleDate3 = [v51 scheduleDate];
+              v55 = [v53 isEqualToDate:scheduleDate3];
 
               if (v47)
               {
@@ -354,7 +354,7 @@ LABEL_30:
         goto LABEL_35;
       }
 
-      v72 = 0;
+      scheduleDate = 0;
       v66 = 1;
 LABEL_41:
       v40 = v40 + 1;
@@ -386,21 +386,21 @@ LABEL_54:
   return v10;
 }
 
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies
 {
-  v5 = a3;
+  dsCopy = ds;
   v6 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v6 setType:30];
   v7 = sub_10001FF94(self);
   [(PDDPPayload *)v6 setSchedule:v7];
 
-  v8 = [v5 firstObject];
-  v9 = [(PDDPPayload *)v6 schedule];
-  [v9 setClassId:v8];
+  firstObject = [dsCopy firstObject];
+  schedule = [(PDDPPayload *)v6 schedule];
+  [schedule setClassId:firstObject];
 
-  v10 = [v5 firstObject];
+  firstObject2 = [dsCopy firstObject];
 
-  v11 = sub_1000205FC(self, v10);
+  v11 = sub_1000205FC(self, firstObject2);
 
   v14[0] = v6;
   v14[1] = v11;
@@ -409,15 +409,15 @@ LABEL_54:
   return v12;
 }
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSSchedule *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSSchedule *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
 + (id)hashableColumnNames
@@ -437,108 +437,108 @@ LABEL_54:
 {
   v13.receiver = self;
   v13.super_class = CLSSchedule;
-  v3 = [(CLSSchedule *)&v13 changeHash];
-  v4 = [(CLSSchedule *)self parentObjectID];
-  if (v4)
+  changeHash = [(CLSSchedule *)&v13 changeHash];
+  parentObjectID = [(CLSSchedule *)self parentObjectID];
+  if (parentObjectID)
   {
-    v5 = [(CLSSchedule *)self parentObjectID];
-    v6 = [v5 _cls_stableHash];
+    parentObjectID2 = [(CLSSchedule *)self parentObjectID];
+    _cls_stableHash = [parentObjectID2 _cls_stableHash];
   }
 
   else
   {
-    v6 = 11;
+    _cls_stableHash = 11;
   }
 
-  v7 = v6 ^ v3 ^ (2 * [(CLSSchedule *)self scheduledEntityType]);
+  v7 = _cls_stableHash ^ changeHash ^ (2 * [(CLSSchedule *)self scheduledEntityType]);
   v8 = v7 ^ (4 * [(CLSSchedule *)self scheduleAction]);
   v9 = v8 ^ (8 * [(CLSSchedule *)self scheduleUpdateStatus]);
-  v10 = [(CLSSchedule *)self scheduleDate];
-  v11 = [v10 hash];
+  scheduleDate = [(CLSSchedule *)self scheduleDate];
+  v11 = [scheduleDate hash];
 
   return v9 ^ v11;
 }
 
-- (CLSSchedule)initWithDatabaseRow:(id)a3
+- (CLSSchedule)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSSchedule *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSSchedule *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D6F0(v4, @"scheduleDate");
+    v8 = sub_10016D6F0(rowCopy, @"scheduleDate");
     [v6 setScheduleDate:v8];
 
-    v9 = sub_10016D778(v4, @"scheduledEntityType");
+    v9 = sub_10016D778(rowCopy, @"scheduledEntityType");
     [v6 setScheduledEntityType:{objc_msgSend(v9, "integerValue")}];
 
-    v10 = sub_10016D778(v4, @"scheduleAction");
+    v10 = sub_10016D778(rowCopy, @"scheduleAction");
     [v6 setScheduleAction:{objc_msgSend(v10, "integerValue")}];
 
-    v11 = sub_10016D778(v4, @"scheduleUpdateStatus");
+    v11 = sub_10016D778(rowCopy, @"scheduleUpdateStatus");
     [v6 setScheduleUpdateStatus:{objc_msgSend(v11, "integerValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v11.receiver = self;
   v11.super_class = CLSSchedule;
-  v4 = a3;
-  [(CLSSchedule *)&v11 bindTo:v4];
+  toCopy = to;
+  [(CLSSchedule *)&v11 bindTo:toCopy];
   v12 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v12 count:1, v11.receiver, v11.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSSchedule *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSSchedule *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
   v7 = [NSNumber numberWithInteger:[(CLSSchedule *)self scheduledEntityType]];
-  sub_1000982FC(v4, v7, @"scheduledEntityType");
+  sub_1000982FC(toCopy, v7, @"scheduledEntityType");
 
   v8 = [NSNumber numberWithInteger:[(CLSSchedule *)self scheduleAction]];
-  sub_1000982FC(v4, v8, @"scheduleAction");
+  sub_1000982FC(toCopy, v8, @"scheduleAction");
 
-  v9 = [(CLSSchedule *)self scheduleDate];
-  sub_1000982FC(v4, v9, @"scheduleDate");
+  scheduleDate = [(CLSSchedule *)self scheduleDate];
+  sub_1000982FC(toCopy, scheduleDate, @"scheduleDate");
 
   v10 = [NSNumber numberWithInteger:[(CLSSchedule *)self scheduleUpdateStatus]];
-  sub_1000982FC(v4, v10, @"scheduleUpdateStatus");
+  sub_1000982FC(toCopy, v10, @"scheduleUpdateStatus");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSSchedule(   objectID              text not null,\n    parentObjectID        text not null,\n    dateCreated           real not null,\n    dateLastModified      real not null,\n    scheduledEntityType   integer not null,\n    scheduleAction        integer not null,\n    scheduleDate          real not null,\n    scheduleUpdateStatus  integer\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSSchedule_objectID on CLSSchedule (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSSchedule(   objectID              text not null,\n    parentObjectID        text not null,\n    dateCreated           real not null,\n    dateLastModified      real not null,\n    scheduledEntityType   integer not null,\n    scheduleAction        integer not null,\n    scheduleDate          real not null,\n    scheduleUpdateStatus  integer\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSSchedule_objectID on CLSSchedule (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSSchedule *)self objectID];
-  v6 = [v4 select:objc_opt_class() identity:v5];
+  databaseCopy = database;
+  objectID = [(CLSSchedule *)self objectID];
+  v6 = [databaseCopy select:objc_opt_class() identity:objectID];
   v7 = objc_opt_new();
   if (v6)
   {
@@ -552,26 +552,26 @@ LABEL_7:
     v6 = v9;
     if (v9)
     {
-      objc_setProperty_nonatomic_copy(v9, v10, v5, 8);
+      objc_setProperty_nonatomic_copy(v9, v10, objectID, 8);
     }
   }
 
-  v11 = [v4 select:objc_opt_class() identity:v5];
-  v12 = sub_1000C2320(v4, v11);
+  v11 = [databaseCopy select:objc_opt_class() identity:objectID];
+  v12 = sub_1000C2320(databaseCopy, v11);
   if (v12)
   {
     [v7 addObject:v12];
-    v13 = [v7 allObjects];
-    sub_10008121C(v6, v13);
+    allObjects = [v7 allObjects];
+    sub_10008121C(v6, allObjects);
 
-    if (([v4 insertOrUpdateObject:v6] & 1) == 0)
+    if (([databaseCopy insertOrUpdateObject:v6] & 1) == 0)
     {
       CLSInitLog();
       v14 = CLSLogDatabase;
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
       {
         v19 = 138412290;
-        v20 = v5;
+        v20 = objectID;
         v15 = "Could not insert into PDDeletedObjectClassIDs, objectID=%@";
         v16 = v14;
         v17 = 12;

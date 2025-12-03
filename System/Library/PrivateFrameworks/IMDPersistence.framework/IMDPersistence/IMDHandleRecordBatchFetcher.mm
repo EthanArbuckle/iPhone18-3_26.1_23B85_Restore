@@ -1,10 +1,10 @@
 @interface IMDHandleRecordBatchFetcher
-- (id)nextBatchWithSize:(unint64_t)a3;
+- (id)nextBatchWithSize:(unint64_t)size;
 @end
 
 @implementation IMDHandleRecordBatchFetcher
 
-- (id)nextBatchWithSize:(unint64_t)a3
+- (id)nextBatchWithSize:(unint64_t)size
 {
   v52[2] = *MEMORY[0x1E69E9840];
   v45 = 0;
@@ -44,7 +44,7 @@
   v44[2] = sub_1B7B6EE70;
   v44[3] = &unk_1E7CB6860;
   v44[4] = &v45;
-  objc_msgSend_fetchHandleRecordsFilteredUsingPredicate_sortedUsingDescriptors_limit_completionHandler_(v27, v30, v24, v29, a3, v44);
+  objc_msgSend_fetchHandleRecordsFilteredUsingPredicate_sortedUsingDescriptors_limit_completionHandler_(v27, v30, v24, v29, size, v44);
 
   if (objc_msgSend_count(v46[5], v31, v32))
   {

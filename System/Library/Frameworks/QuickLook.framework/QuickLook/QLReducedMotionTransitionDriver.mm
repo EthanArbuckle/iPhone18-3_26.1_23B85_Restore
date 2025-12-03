@@ -6,11 +6,11 @@
 
 - (void)animateTransition
 {
-  v3 = [(QLTransitionDriver *)self presenting];
-  v4 = (v3 ^ 1);
-  v5 = v3;
-  v6 = [(QLTransitionDriver *)self destinationView];
-  [v6 setAlpha:v4];
+  presenting = [(QLTransitionDriver *)self presenting];
+  v4 = (presenting ^ 1);
+  v5 = presenting;
+  destinationView = [(QLTransitionDriver *)self destinationView];
+  [destinationView setAlpha:v4];
 
   v7 = MEMORY[0x277D75D18];
   [(QLTransitionDriver *)self duration];

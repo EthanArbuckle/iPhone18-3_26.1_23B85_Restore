@@ -1,19 +1,19 @@
 @interface AAUIImageControl
-- (AAUIImageControl)initWithCoder:(id)a3;
-- (AAUIImageControl)initWithFrame:(CGRect)a3;
+- (AAUIImageControl)initWithCoder:(id)coder;
+- (AAUIImageControl)initWithFrame:(CGRect)frame;
 - (void)_updateLabelVisibility;
 - (void)_updateOverlayViewVisibility;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AAUIImageControl
 
-- (AAUIImageControl)initWithFrame:(CGRect)a3
+- (AAUIImageControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AAUIImageControl;
-  v3 = [(AAUIImageControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUIImageControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (AAUIImageControl)initWithCoder:(id)a3
+- (AAUIImageControl)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUIImageControl;
-  v3 = [(AAUIImageControl *)&v6 initWithCoder:a3];
+  v3 = [(AAUIImageControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = AAUIImageControl;
-  [(AAUIImageControl *)&v4 setEnabled:a3];
+  [(AAUIImageControl *)&v4 setEnabled:enabled];
   [(AAUIImageControl *)self _updateLabelVisibility];
 }
 
@@ -53,14 +53,14 @@
   [(AAUILabel *)label setHidden:v3];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = AAUIImageControl;
   [(AAUIImageControl *)&v5 setHighlighted:?];
-  [(UIImageView *)self->_imageView setHighlighted:v3];
-  [(AAUILabel *)self->_label setHighlighted:v3];
+  [(UIImageView *)self->_imageView setHighlighted:highlightedCopy];
+  [(AAUILabel *)self->_label setHighlighted:highlightedCopy];
   [(AAUIImageControl *)self _updateOverlayViewVisibility];
 }
 

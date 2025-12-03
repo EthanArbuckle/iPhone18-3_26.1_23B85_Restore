@@ -1,34 +1,34 @@
 @interface SSCacheObjectStore
-- (BOOL)addObject:(id)a3 withItemIdentifier:(id)a4;
-- (BOOL)removeObjectWithItemIdentifier:(id)a3;
-- (SSCacheObjectStore)initWithSessionIdentifier:(id)a3;
-- (id)_factoryForTypeIdentifier:(id)a3;
-- (id)cacheObjectWithItemIdentifier:(id)a3;
+- (BOOL)addObject:(id)object withItemIdentifier:(id)identifier;
+- (BOOL)removeObjectWithItemIdentifier:(id)identifier;
+- (SSCacheObjectStore)initWithSessionIdentifier:(id)identifier;
+- (id)_factoryForTypeIdentifier:(id)identifier;
+- (id)cacheObjectWithItemIdentifier:(id)identifier;
 - (id)description;
-- (void)addCacheObjectFactory:(id)a3;
+- (void)addCacheObjectFactory:(id)factory;
 - (void)clearSession;
 - (void)dealloc;
-- (void)removeCacheObjectFactory:(id)a3;
+- (void)removeCacheObjectFactory:(id)factory;
 @end
 
 @implementation SSCacheObjectStore
 
-- (SSCacheObjectStore)initWithSessionIdentifier:(id)a3
+- (SSCacheObjectStore)initWithSessionIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([identifier length])
   {
     v5 = [(SSCacheObjectStore *)self init];
     if (v5)
     {
-      v5->_sessionIdentifier = a3;
+      v5->_sessionIdentifier = identifier;
       v5->_factories = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:5];
       v6 = [SSDatabaseCache alloc];
       v7 = objc_opt_class();
-      v8 = [(SSDatabaseCache *)v6 initWithIdentifier:NSStringFromClass(v7) cacheName:a3];
+      v8 = [(SSDatabaseCache *)v6 initWithIdentifier:NSStringFromClass(v7) cacheName:identifier];
       v5->_databaseCache = v8;
       [(SSDatabaseCache *)v8 setMaximumInlineBlobSize:1024];
-      v9 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_opt_class(), a3), "UTF8String"];
+      v9 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_opt_class(), identifier), "UTF8String"];
       v5->_serialQueue = dispatch_queue_create(v9, 0);
     }
   }
@@ -41,15 +41,15 @@
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
     if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -93,10 +93,10 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: [Session Identifier: %@] [Factories: %d]", -[SSCacheObjectStore description](&v3, sel_description), self->_sessionIdentifier, -[NSMutableSet count](self->_factories, "count")];
 }
 
-- (id)_factoryForTypeIdentifier:(id)a3
+- (id)_factoryForTypeIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([identifier length])
   {
     v28 = 0u;
     v29 = 0u;
@@ -118,7 +118,7 @@ LABEL_4:
         }
 
         v10 = *(*(&v26 + 1) + 8 * v9);
-        if ([v10 supportsTypeIdentifier:a3])
+        if ([v10 supportsTypeIdentifier:identifier])
         {
           break;
         }
@@ -150,15 +150,15 @@ LABEL_12:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [v12 shouldLog];
+  shouldLog = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog;
   }
 
   if (os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -177,7 +177,7 @@ LABEL_12:
   }
 
   v30 = 138412290;
-  v31 = a3;
+  identifierCopy = identifier;
   LODWORD(v25) = 12;
   v11 = _os_log_send_and_compose_impl();
   if (v11)
@@ -254,7 +254,7 @@ uint64_t __34__SSCacheObjectStore_clearSession__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 8) clear];
 }
 
-- (BOOL)addObject:(id)a3 withItemIdentifier:(id)a4
+- (BOOL)addObject:(id)object withItemIdentifier:(id)identifier
 {
   v8 = 0;
   v9 = &v8;
@@ -265,9 +265,9 @@ uint64_t __34__SSCacheObjectStore_clearSession__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __51__SSCacheObjectStore_addObject_withItemIdentifier___block_invoke;
   v7[3] = &unk_1E84B34C0;
-  v7[4] = a3;
+  v7[4] = object;
   v7[5] = self;
-  v7[6] = a4;
+  v7[6] = identifier;
   v7[7] = &v8;
   dispatch_sync(serialQueue, v7);
   v5 = *(v9 + 24);
@@ -335,14 +335,14 @@ void __51__SSCacheObjectStore_addObject_withItemIdentifier___block_invoke(uint64
   }
 }
 
-- (BOOL)removeObjectWithItemIdentifier:(id)a3
+- (BOOL)removeObjectWithItemIdentifier:(id)identifier
 {
   serialQueue = self->_serialQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__SSCacheObjectStore_removeObjectWithItemIdentifier___block_invoke;
   v5[3] = &unk_1E84AC458;
-  v5[4] = a3;
+  v5[4] = identifier;
   v5[5] = self;
   dispatch_sync(serialQueue, v5);
   return 0;
@@ -400,7 +400,7 @@ void __53__SSCacheObjectStore_removeObjectWithItemIdentifier___block_invoke(uint
   }
 }
 
-- (id)cacheObjectWithItemIdentifier:(id)a3
+- (id)cacheObjectWithItemIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -413,7 +413,7 @@ void __53__SSCacheObjectStore_removeObjectWithItemIdentifier___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __52__SSCacheObjectStore_cacheObjectWithItemIdentifier___block_invoke;
   block[3] = &unk_1E84AC7B0;
-  block[4] = a3;
+  block[4] = identifier;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(serialQueue, block);
@@ -555,9 +555,9 @@ LABEL_32:
   }
 }
 
-- (void)addCacheObjectFactory:(id)a3
+- (void)addCacheObjectFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
     serialQueue = self->_serialQueue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -565,14 +565,14 @@ LABEL_32:
     v4[2] = __44__SSCacheObjectStore_addCacheObjectFactory___block_invoke;
     v4[3] = &unk_1E84AC458;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = factory;
     dispatch_sync(serialQueue, v4);
   }
 }
 
-- (void)removeCacheObjectFactory:(id)a3
+- (void)removeCacheObjectFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
     serialQueue = self->_serialQueue;
     v4[0] = MEMORY[0x1E69E9820];
@@ -580,7 +580,7 @@ LABEL_32:
     v4[2] = __47__SSCacheObjectStore_removeCacheObjectFactory___block_invoke;
     v4[3] = &unk_1E84AC458;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = factory;
     dispatch_sync(serialQueue, v4);
   }
 }

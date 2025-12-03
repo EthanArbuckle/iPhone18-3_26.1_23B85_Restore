@@ -1,38 +1,38 @@
 @interface BSUISearchFeedViewController
 - (BOOL)bc_analyticsVisibilityOfSelf;
 - (BOOL)bc_navBarVisible;
-- (BOOL)handleActionForObject:(id)a3 withName:(id)a4 arguments:(id)a5;
+- (BOOL)handleActionForObject:(id)object withName:(id)name arguments:(id)arguments;
 - (Class)jsaFeedControllerClass;
 - (UIEdgeInsets)navigationBarMetricsLayoutMargins;
-- (_TtC11BookStoreUI28BSUISearchFeedViewController)initWithOptions:(id)a3;
-- (void)bc_setNavBarVisible:(BOOL)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)feedController:(id)a3 dismissKeyboard:(id)a4;
-- (void)feedController:(id)a3 wantsToPresentCardsWithCardArray:(id)a4 focusedIndex:(unint64_t)a5 animated:(BOOL)a6 options:(id)a7 completion:(id)a8;
-- (void)feedController:(id)a3 wantsToUpdateSearchText:(id)a4;
-- (void)navigationBarItemsDidUpdate:(id)a3 hasItems:(BOOL)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (_TtC11BookStoreUI28BSUISearchFeedViewController)initWithOptions:(id)options;
+- (void)bc_setNavBarVisible:(BOOL)visible;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)feedController:(id)controller dismissKeyboard:(id)keyboard;
+- (void)feedController:(id)controller wantsToPresentCardsWithCardArray:(id)array focusedIndex:(unint64_t)index animated:(BOOL)animated options:(id)options completion:(id)completion;
+- (void)feedController:(id)controller wantsToUpdateSearchText:(id)text;
+- (void)navigationBarItemsDidUpdate:(id)update hasItems:(BOOL)items;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BSUISearchFeedViewController
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for BSUISearchFeedViewController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(BSUIFeedViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(BSUIFeedViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   [v7 _updateNavigationLayoutMetrics];
   swift_unknownObjectRelease();
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -45,15 +45,15 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  sub_78E0C(v10, a4, v8, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_78E0C(controllerCopy, animated, v8, v9);
   sub_77BDC(v8);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -66,18 +66,18 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_790C0(a3, v6, v7);
+  selfCopy = self;
+  sub_790C0(animated, v6, v7);
   sub_77BDC(v6);
 }
 
 - (BOOL)bc_analyticsVisibilityOfSelf
 {
-  v2 = self;
-  v3 = [(BSUIFeedViewController *)v2 navigationItem];
-  v4 = [(UINavigationItem *)v3 searchController];
+  selfCopy = self;
+  navigationItem = [(BSUIFeedViewController *)selfCopy navigationItem];
+  searchController = [(UINavigationItem *)navigationItem searchController];
 
-  if (v4 && (v5 = [(UISearchController *)v4 presentedViewController], v4, v5))
+  if (searchController && (v5 = [(UISearchController *)searchController presentedViewController], searchController, v5))
   {
 
     return 0;
@@ -85,28 +85,28 @@
 
   else
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for BSUISearchFeedViewController();
-    v6 = [(BSUISearchFeedViewController *)&v8 bc_analyticsVisibilityOfSelf];
+    bc_analyticsVisibilityOfSelf = [(BSUISearchFeedViewController *)&v8 bc_analyticsVisibilityOfSelf];
   }
 
-  return v6;
+  return bc_analyticsVisibilityOfSelf;
 }
 
 - (BOOL)bc_navBarVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_79464();
 
   return v3 & 1;
 }
 
-- (void)bc_setNavBarVisible:(BOOL)a3
+- (void)bc_setNavBarVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4.receiver = self;
   v4.super_class = type metadata accessor for BSUISearchFeedViewController();
-  [(BSUISearchFeedViewController *)&v4 bc_setNavBarVisible:v3];
+  [(BSUISearchFeedViewController *)&v4 bc_setNavBarVisible:visibleCopy];
 }
 
 - (Class)jsaFeedControllerClass
@@ -116,9 +116,9 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)feedController:(id)a3 dismissKeyboard:(id)a4
+- (void)feedController:(id)controller dismissKeyboard:(id)keyboard
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(keyboard);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -131,15 +131,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_795AC(v8, v6, v7);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_795AC(controllerCopy, v6, v7);
   sub_77BDC(v6);
 }
 
-- (void)feedController:(id)a3 wantsToPresentCardsWithCardArray:(id)a4 focusedIndex:(unint64_t)a5 animated:(BOOL)a6 options:(id)a7 completion:(id)a8
+- (void)feedController:(id)controller wantsToPresentCardsWithCardArray:(id)array focusedIndex:(unint64_t)index animated:(BOOL)animated options:(id)options completion:(id)completion
 {
-  v12 = _Block_copy(a8);
+  v12 = _Block_copy(completion);
   sub_6620C(&qword_3BC1F8);
   v13 = sub_2C5B28();
   v14 = sub_2C57E8();
@@ -155,24 +155,24 @@
     v15 = 0;
   }
 
-  v16 = a3;
-  v17 = self;
-  sub_798D4(v16, v13, a5, a6, v14, v12, v15);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_798D4(controllerCopy, v13, index, animated, v14, v12, v15);
   sub_77BDC(v12);
 }
 
-- (void)feedController:(id)a3 wantsToUpdateSearchText:(id)a4
+- (void)feedController:(id)controller wantsToUpdateSearchText:(id)text
 {
   v5 = sub_2C58C8();
   v7 = v6;
-  v9 = self;
+  selfCopy = self;
   if (sub_79C80(v5, v7))
   {
   }
 
   else
   {
-    v8 = &v9->super.TUIFeedViewController_opaque[OBJC_IVAR____TtC11BookStoreUI28BSUISearchFeedViewController_pendingSearchText];
+    v8 = &selfCopy->super.TUIFeedViewController_opaque[OBJC_IVAR____TtC11BookStoreUI28BSUISearchFeedViewController_pendingSearchText];
     *v8 = v5;
     v8[1] = v7;
   }
@@ -180,7 +180,7 @@
 
 - (UIEdgeInsets)navigationBarMetricsLayoutMargins
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_79FE4();
   v5 = v4;
   v7 = v6;
@@ -197,17 +197,17 @@
   return result;
 }
 
-- (BOOL)handleActionForObject:(id)a3 withName:(id)a4 arguments:(id)a5
+- (BOOL)handleActionForObject:(id)object withName:(id)name arguments:(id)arguments
 {
-  if (a3)
+  if (object)
   {
-    v8 = a4;
-    v9 = a5;
-    v10 = self;
+    nameCopy = name;
+    argumentsCopy = arguments;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2C6128();
     swift_unknownObjectRelease();
-    if (a4)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -215,7 +215,7 @@
 LABEL_6:
     v11 = 0;
     v13 = 0;
-    if (a5)
+    if (arguments)
     {
       goto LABEL_4;
     }
@@ -226,10 +226,10 @@ LABEL_7:
   }
 
   memset(v20, 0, sizeof(v20));
-  v15 = a4;
-  v16 = a5;
-  v17 = self;
-  if (!a4)
+  nameCopy2 = name;
+  argumentsCopy2 = arguments;
+  selfCopy2 = self;
+  if (!name)
   {
     goto LABEL_6;
   }
@@ -238,7 +238,7 @@ LABEL_3:
   v11 = sub_2C58C8();
   v13 = v12;
 
-  if (!a5)
+  if (!arguments)
   {
     goto LABEL_7;
   }
@@ -253,14 +253,14 @@ LABEL_8:
   return v18 & 1;
 }
 
-- (void)navigationBarItemsDidUpdate:(id)a3 hasItems:(BOOL)a4
+- (void)navigationBarItemsDidUpdate:(id)update hasItems:(BOOL)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v11.receiver = self;
   v11.super_class = type metadata accessor for BSUISearchFeedViewController();
-  v6 = a3;
+  updateCopy = update;
   v7 = v11.receiver;
-  [(BSUIFeedViewController *)&v11 navigationBarItemsDidUpdate:v6 hasItems:v4];
+  [(BSUIFeedViewController *)&v11 navigationBarItemsDidUpdate:updateCopy hasItems:itemsCopy];
   v8 = &v7[OBJC_IVAR____TtC11BookStoreUI28BSUISearchFeedViewController_pendingSearchText];
   v9 = *&v7[OBJC_IVAR____TtC11BookStoreUI28BSUISearchFeedViewController_pendingSearchText + 8];
   if (v9)
@@ -283,9 +283,9 @@ LABEL_8:
   }
 }
 
-- (_TtC11BookStoreUI28BSUISearchFeedViewController)initWithOptions:(id)a3
+- (_TtC11BookStoreUI28BSUISearchFeedViewController)initWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v3 = sub_2C57E8();
   }

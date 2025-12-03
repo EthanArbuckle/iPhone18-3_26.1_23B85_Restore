@@ -1,48 +1,48 @@
 @interface PSAppListController
-+ (BOOL)canUseOnBoardingKitFOrPrivacyDisplayForBundleName:(id)a3;
-+ (BOOL)canUseOnBoardingKitForPrivacyDisplayForBundleID:(id)a3;
-+ (id)_typeErrorStringForKeyWithName:(id)a3 expectedType:(Class)a4 actualType:(Class)a5;
++ (BOOL)canUseOnBoardingKitFOrPrivacyDisplayForBundleName:(id)name;
++ (BOOL)canUseOnBoardingKitForPrivacyDisplayForBundleID:(id)d;
++ (id)_typeErrorStringForKeyWithName:(id)name expectedType:(Class)type actualType:(Class)actualType;
 + (id)allowedPrivacyBundlesForID;
 + (id)allowedPrivacyBundlesForName;
-+ (id)childPaneSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)groupSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)localizedTitlesFromUnlocalizedTitles:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5;
-+ (id)multiValueSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
++ (id)childPaneSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)groupSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)localizedTitlesFromUnlocalizedTitles:(id)titles stringsTable:(id)table parentSpecifier:(id)specifier;
++ (id)multiValueSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
 + (id)onBoardingKitBundleIDDict;
 + (id)onBoardingKitBundleNameDict;
-+ (id)radioGroupSpecifiersFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)sliderSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)specifiersFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)textFieldSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)titleValueSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-+ (id)toggleSwitchSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6;
-- (id)_readToggleSwitchSpecifierValue:(id)a3;
-- (id)_uiValueFromValue:(id)a3 specifier:(id)a4;
-- (id)_valueFromUIValue:(id)a3 specifier:(id)a4;
++ (id)radioGroupSpecifiersFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)sliderSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)specifiersFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)textFieldSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)titleValueSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
++ (id)toggleSwitchSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target;
+- (id)_readToggleSwitchSpecifierValue:(id)value;
+- (id)_uiValueFromValue:(id)value specifier:(id)specifier;
+- (id)_valueFromUIValue:(id)value specifier:(id)specifier;
 - (id)bundle;
 - (id)specifiers;
-- (void)_setToggleSwitchSpecifierValue:(id)a3 specifier:(id)a4;
-- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showPrivacyControllerForBundleID:(id)a3;
-- (void)showPrivacyControllerForBundleName:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)_setToggleSwitchSpecifierValue:(id)value specifier:(id)specifier;
+- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)specifier;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showPrivacyControllerForBundleID:(id)d;
+- (void)showPrivacyControllerForBundleName:(id)name;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PSAppListController
 
-- (id)_uiValueFromValue:(id)a3 specifier:(id)a4
+- (id)_uiValueFromValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 propertyForKey:@"TrueValue"];
+  valueCopy = value;
+  v6 = [specifier propertyForKey:@"TrueValue"];
   v7 = MEMORY[0x1E695E4D0];
   if (!v6)
   {
     v6 = *MEMORY[0x1E695E4D0];
   }
 
-  v8 = [v5 isEqual:v6];
+  v8 = [valueCopy isEqual:v6];
 
   v9 = MEMORY[0x1E695E4C0];
   if (v8)
@@ -56,12 +56,12 @@
   return v10;
 }
 
-- (id)_valueFromUIValue:(id)a3 specifier:(id)a4
+- (id)_valueFromUIValue:(id)value specifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 propertyForKey:@"TrueValue"];
-  v8 = [v5 propertyForKey:@"FalseValue"];
+  specifierCopy = specifier;
+  valueCopy = value;
+  v7 = [specifierCopy propertyForKey:@"TrueValue"];
+  v8 = [specifierCopy propertyForKey:@"FalseValue"];
 
   if (v7)
   {
@@ -82,9 +82,9 @@
 
   v8 = *MEMORY[0x1E695E4C0];
 LABEL_3:
-  v9 = [v6 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = v7;
   }
@@ -99,35 +99,35 @@ LABEL_3:
   return v10;
 }
 
-- (id)_readToggleSwitchSpecifierValue:(id)a3
+- (id)_readToggleSwitchSpecifierValue:(id)value
 {
-  v4 = a3;
-  v5 = [(PSViewController *)self readPreferenceValue:v4];
+  valueCopy = value;
+  v5 = [(PSViewController *)self readPreferenceValue:valueCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 propertyForKey:@"negate"];
-    v8 = [v7 BOOLValue];
+    v7 = [valueCopy propertyForKey:@"negate"];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "BOOLValue") ^ 1}];
 
       v6 = v9;
     }
 
-    [v4 setProperty:v6 forKey:@"value"];
+    [valueCopy setProperty:v6 forKey:@"value"];
     goto LABEL_7;
   }
 
-  v10 = [v4 propertyForKey:@"default"];
+  v10 = [valueCopy propertyForKey:@"default"];
   if (v10)
   {
     v6 = v10;
-    [(PSAppListController *)self setPreferenceValue:v10 specifier:v4];
+    [(PSAppListController *)self setPreferenceValue:v10 specifier:valueCopy];
 LABEL_7:
-    v11 = [(PSAppListController *)self _uiValueFromValue:v6 specifier:v4];
-    [v4 setProperty:v11 forKey:@"value"];
+    v11 = [(PSAppListController *)self _uiValueFromValue:v6 specifier:valueCopy];
+    [valueCopy setProperty:v11 forKey:@"value"];
 
     goto LABEL_8;
   }
@@ -138,13 +138,13 @@ LABEL_8:
   return v11;
 }
 
-- (void)_setToggleSwitchSpecifierValue:(id)a3 specifier:(id)a4
+- (void)_setToggleSwitchSpecifierValue:(id)value specifier:(id)specifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(PSAppListController *)self _valueFromUIValue:v12 specifier:v6];
-  v8 = [v6 propertyForKey:@"defaults"];
-  v9 = [v6 propertyForKey:@"key"];
+  valueCopy = value;
+  specifierCopy = specifier;
+  v7 = [(PSAppListController *)self _valueFromUIValue:valueCopy specifier:specifierCopy];
+  v8 = [specifierCopy propertyForKey:@"defaults"];
+  v9 = [specifierCopy propertyForKey:@"key"];
   if (v8)
   {
     v10 = v9 == 0;
@@ -162,16 +162,16 @@ LABEL_8:
 
   else
   {
-    [(PSAppListController *)self setPreferenceValue:v12 specifier:v6];
+    [(PSAppListController *)self setPreferenceValue:valueCopy specifier:specifierCopy];
     GSSendAppPreferencesChanged();
   }
 }
 
-- (void)showPrivacyControllerForBundleID:(id)a3
+- (void)showPrivacyControllerForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[PSAppListController onBoardingKitBundleIDDict];
-  v6 = [v4 propertyForKey:@"AppBundleID"];
+  v6 = [dCopy propertyForKey:@"AppBundleID"];
 
   v8 = [v5 objectForKey:v6];
 
@@ -183,19 +183,19 @@ LABEL_8:
   }
 }
 
-- (void)showPrivacyControllerForBundleName:(id)a3
+- (void)showPrivacyControllerForBundleName:(id)name
 {
-  v12 = a3;
+  nameCopy = name;
   v4 = +[PSAppListController onBoardingKitBundleNameDict];
-  v5 = [v12 propertyForKey:@"AppBundleID"];
+  v5 = [nameCopy propertyForKey:@"AppBundleID"];
   v6 = [v4 objectForKey:v5];
 
   if ([v6 length])
   {
-    v7 = [v12 objectForKeyedSubscript:@"AppSettingsBundle"];
-    v8 = [v7 bundlePath];
-    v9 = [v8 stringByDeletingLastPathComponent];
-    v10 = [v9 stringByAppendingPathComponent:v6];
+    v7 = [nameCopy objectForKeyedSubscript:@"AppSettingsBundle"];
+    bundlePath = [v7 bundlePath];
+    stringByDeletingLastPathComponent = [bundlePath stringByDeletingLastPathComponent];
+    v10 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v6];
     v11 = [getOBPrivacyPresenterClass() presenterForPrivacySplashWithBundleAtPath:v10];
     [v11 setPresentingViewController:self];
     [v11 present];
@@ -278,38 +278,38 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   onBoardingKitBundleNameDict_dict = &unk_1EFE65990;
 }
 
-+ (BOOL)canUseOnBoardingKitForPrivacyDisplayForBundleID:(id)a3
++ (BOOL)canUseOnBoardingKitForPrivacyDisplayForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[PSAppListController allowedPrivacyBundlesForID];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:dCopy];
 
   return v5;
 }
 
-+ (BOOL)canUseOnBoardingKitFOrPrivacyDisplayForBundleName:(id)a3
++ (BOOL)canUseOnBoardingKitFOrPrivacyDisplayForBundleName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PSAppListController allowedPrivacyBundlesForName];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:nameCopy];
 
   return v5;
 }
 
-+ (id)localizedTitlesFromUnlocalizedTitles:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5
++ (id)localizedTitlesFromUnlocalizedTitles:(id)titles stringsTable:(id)table parentSpecifier:(id)specifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 count];
+  titlesCopy = titles;
+  tableCopy = table;
+  specifierCopy = specifier;
+  v10 = [titlesCopy count];
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:v10];
   if (v10)
   {
     for (i = 0; i != v10; ++i)
     {
-      v13 = [v9 propertyForKey:@"AppSettingsBundle"];
-      v14 = [v7 objectAtIndex:i];
-      v15 = [v13 localizedStringForKey:v14 value:&stru_1EFE45030 table:v8];
+      v13 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+      v14 = [titlesCopy objectAtIndex:i];
+      v15 = [v13 localizedStringForKey:v14 value:&stru_1EFE45030 table:tableCopy];
       [v11 addObject:v15];
     }
   }
@@ -317,10 +317,10 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   return v11;
 }
 
-- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)a3
+- (void)postThirdPartySettingDidChangeNotificationForSpecifier:(id)specifier
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 propertyForKey:@"AppBundleID"];
+  v3 = [specifier propertyForKey:@"AppBundleID"];
   v4 = v3;
   if (v3)
   {
@@ -330,23 +330,23 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   }
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PSAppListController;
-  v6 = a4;
-  [(PSViewController *)&v7 setPreferenceValue:a3 specifier:v6];
-  [(PSAppListController *)self postThirdPartySettingDidChangeNotificationForSpecifier:v6, v7.receiver, v7.super_class];
+  specifierCopy = specifier;
+  [(PSViewController *)&v7 setPreferenceValue:value specifier:specifierCopy];
+  [(PSAppListController *)self postThirdPartySettingDidChangeNotificationForSpecifier:specifierCopy, v7.receiver, v7.super_class];
 }
 
-+ (id)groupSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)groupSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  targetCopy = target;
+  specifierCopy = specifier;
+  tableCopy = table;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v13 = [v12 objectForKeyedSubscript:@"Title"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -360,7 +360,7 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   v15 = v14;
 
   objc_opt_class();
-  v16 = [v12 objectForKeyedSubscript:@"FooterText"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"FooterText"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -374,54 +374,54 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
 
   v18 = v17;
 
-  v19 = [v10 propertyForKey:@"AppSettingsBundle"];
-  v20 = [v19 localizedStringForKey:v15 value:&stru_1EFE45030 table:v11];
+  v19 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+  v20 = [v19 localizedStringForKey:v15 value:&stru_1EFE45030 table:tableCopy];
 
-  v21 = [v10 propertyForKey:@"AppSettingsBundle"];
+  v21 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
 
-  v22 = [v21 localizedStringForKey:v18 value:&stru_1EFE45030 table:v11];
+  v22 = [v21 localizedStringForKey:v18 value:&stru_1EFE45030 table:tableCopy];
 
-  v23 = [PSSpecifier preferenceSpecifierNamed:v20 target:v9 set:0 get:0 detail:0 cell:0 edit:0];
+  v23 = [PSSpecifier preferenceSpecifierNamed:v20 target:targetCopy set:0 get:0 detail:0 cell:0 edit:0];
 
   [v23 setProperty:v22 forKey:@"footerText"];
-  v24 = [v23 identifier];
-  v25 = [v24 length];
+  identifier = [v23 identifier];
+  v25 = [identifier length];
 
   if (!v25)
   {
     [v23 setIdentifier:v15];
   }
 
-  v26 = [v23 identifier];
-  v27 = [v26 length];
+  identifier2 = [v23 identifier];
+  v27 = [identifier2 length];
 
   if (!v27)
   {
     [v23 setIdentifier:v18];
   }
 
-  v28 = [v23 identifier];
-  v29 = [v28 length];
+  identifier3 = [v23 identifier];
+  v29 = [identifier3 length];
 
   if (!v29)
   {
-    v30 = [MEMORY[0x1E696AFB0] UUID];
-    v31 = [v30 UUIDString];
-    [v23 setIdentifier:v31];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v23 setIdentifier:uUIDString];
   }
 
   return v23;
 }
 
-+ (id)radioGroupSpecifiersFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)radioGroupSpecifiersFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v73 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v57 = a4;
-  v10 = a5;
-  v60 = a6;
+  dictionaryCopy = dictionary;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
   objc_opt_class();
-  v11 = [v10 objectForKeyedSubscript:@"AppBundleID"];
+  v11 = [specifierCopy objectForKeyedSubscript:@"AppBundleID"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -435,7 +435,7 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   v13 = v12;
 
   objc_opt_class();
-  v14 = [v9 objectForKeyedSubscript:@"Key"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"Key"];
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -448,9 +448,9 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
 
   v16 = v15;
 
-  v62 = [v9 objectForKey:@"DefaultValue"];
+  v62 = [dictionaryCopy objectForKey:@"DefaultValue"];
   objc_opt_class();
-  v17 = [v9 objectForKeyedSubscript:@"Values"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"Values"];
   if (objc_opt_isKindOfClass())
   {
     v18 = v17;
@@ -464,7 +464,7 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   v19 = v18;
 
   objc_opt_class();
-  v20 = [v9 objectForKeyedSubscript:@"Titles"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"Titles"];
   if (objc_opt_isKindOfClass())
   {
     v21 = v20;
@@ -478,7 +478,7 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
   v22 = v21;
 
   objc_opt_class();
-  v23 = [v9 objectForKeyedSubscript:@"DisplaySortedByTitle"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"DisplaySortedByTitle"];
   if (objc_opt_isKindOfClass())
   {
     v24 = v23;
@@ -491,31 +491,31 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
 
   v25 = v24;
 
-  v26 = [v25 BOOLValue];
+  bOOLValue = [v25 BOOLValue];
   v56 = v13;
   v27 = v13;
   v28 = v16;
-  v61 = v10;
+  v61 = specifierCopy;
   if (-[__CFString length](v27, "length") && [v16 length] && v62 && v19 && v22 && objc_msgSend(v19, "count") && (v29 = objc_msgSend(v19, "count"), v29 == objc_msgSend(v22, "count")))
   {
-    v30 = v57;
-    v31 = [a1 groupSpecifierFromDictionary:v9 stringsTable:v57 parentSpecifier:v10 target:v60];
-    v32 = [v61 propertyForKey:@"AppBundleID"];
+    v30 = tableCopy;
+    v31 = [self groupSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
+    string = [v61 propertyForKey:@"AppBundleID"];
     v33 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v31 setProperty:v33 forKey:@"isRadioGroup"];
 
-    [v31 setProperty:v32 forKey:@"defaults"];
+    [v31 setProperty:string forKey:@"defaults"];
     [v31 setProperty:v28 forKey:@"key"];
     [v31 setProperty:v62 forKey:@"default"];
-    [v31 setProperty:v32 forKey:@"AppBundleID"];
-    [v31 setProperty:v32 forKey:@"containerBundleID"];
-    v34 = [a1 localizedTitlesFromUnlocalizedTitles:v22 stringsTable:v57 parentSpecifier:v61];
-    [v31 setValues:v19 titles:v34 shortTitles:0 usingLocalizedTitleSorting:v26];
+    [v31 setProperty:string forKey:@"AppBundleID"];
+    [v31 setProperty:string forKey:@"containerBundleID"];
+    v34 = [self localizedTitlesFromUnlocalizedTitles:v22 stringsTable:tableCopy parentSpecifier:v61];
+    [v31 setValues:v19 titles:v34 shortTitles:0 usingLocalizedTitleSorting:bOOLValue];
     v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count") + 1}];
     [v35 addObject:v31];
     [PSRootController readPreferenceValue:v31];
     v36 = v59 = v28;
-    v37 = [v31 values];
+    values = [v31 values];
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_parentSpecifier_target___block_invoke;
@@ -526,7 +526,7 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
     v66 = v38;
     v39 = v31;
     v40 = v36;
-    [v37 enumerateObjectsUsingBlock:v63];
+    [values enumerateObjectsUsingBlock:v63];
 
     v41 = v61;
     v28 = v59;
@@ -535,21 +535,21 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
 
   else
   {
-    v32 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v43 = objc_opt_class();
-    v44 = [a1 _typeErrorStringForKeyWithName:@"Key" expectedType:v43 actualType:objc_opt_class()];
+    v44 = [self _typeErrorStringForKeyWithName:@"Key" expectedType:v43 actualType:objc_opt_class()];
     v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v16, "length")}];
-    [v32 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v44, v45];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v44, v45];
 
     v46 = objc_opt_class();
-    v47 = [a1 _typeErrorStringForKeyWithName:@"Values" expectedType:v46 actualType:objc_opt_class()];
+    v47 = [self _typeErrorStringForKeyWithName:@"Values" expectedType:v46 actualType:objc_opt_class()];
     v48 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
-    [v32 appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v47, v48];
+    [string appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v47, v48];
 
     v49 = objc_opt_class();
-    v50 = [a1 _typeErrorStringForKeyWithName:@"Titles" expectedType:v49 actualType:objc_opt_class()];
+    v50 = [self _typeErrorStringForKeyWithName:@"Titles" expectedType:v49 actualType:objc_opt_class()];
     v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v22, "count")}];
-    [v32 appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v50, v51];
+    [string appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v50, v51];
 
     v34 = PKLogForCategory(2);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -568,18 +568,18 @@ void __50__PSAppListController_onBoardingKitBundleNameDict__block_invoke()
       v69 = 2114;
       v70 = v55;
       v71 = 2114;
-      v72 = v32;
+      v72 = string;
       _os_log_error_impl(&dword_18B008000, v34, OS_LOG_TYPE_ERROR, "%{public}@: Could not create radio group specifiers for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
 
       v38 = 0;
-      v30 = v57;
+      v30 = tableCopy;
     }
 
     else
     {
       v38 = 0;
       v42 = v56;
-      v30 = v57;
+      v30 = tableCopy;
     }
 
     v41 = v61;
@@ -607,15 +607,15 @@ void __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_p
   [a1[6] addObject:v8];
 }
 
-+ (id)textFieldSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)textFieldSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v67 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v60 = a6;
+  dictionaryCopy = dictionary;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
   objc_opt_class();
-  v13 = [v10 objectForKeyedSubscript:@"Title"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -628,9 +628,9 @@ void __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_p
 
   v59 = v14;
 
-  v15 = [v12 propertyForKey:@"AppBundleID"];
+  v15 = [specifierCopy propertyForKey:@"AppBundleID"];
   objc_opt_class();
-  v16 = [v10 objectForKeyedSubscript:@"Key"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"Key"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -643,19 +643,19 @@ void __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_p
 
   v18 = v17;
 
-  v19 = [v10 objectForKey:@"DefaultValue"];
-  if (!v19)
+  string = [dictionaryCopy objectForKey:@"DefaultValue"];
+  if (!string)
   {
-    v19 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
   }
 
   v57 = v18;
   v58 = v15;
-  v56 = v19;
-  if (-[__CFString length](v15, "length") && [v18 length] && v19)
+  v56 = string;
+  if (-[__CFString length](v15, "length") && [v18 length] && string)
   {
     objc_opt_class();
-    v20 = [v10 objectForKeyedSubscript:@"IsSecure"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"IsSecure"];
     if (objc_opt_isKindOfClass())
     {
       v21 = v20;
@@ -668,8 +668,8 @@ void __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_p
 
     v22 = v21;
 
-    v23 = [v22 BOOLValue];
-    if (v23)
+    bOOLValue = [v22 BOOLValue];
+    if (bOOLValue)
     {
       v24 = 12;
     }
@@ -679,19 +679,19 @@ void __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_p
       v24 = 8;
     }
 
-    v54 = v12;
-    v25 = [v12 propertyForKey:@"AppSettingsBundle"];
-    v26 = v11;
+    v54 = specifierCopy;
+    v25 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+    v26 = tableCopy;
     v27 = v25;
     v55 = v26;
     v28 = [v25 localizedStringForKey:v59 value:&stru_1EFE45030 table:?];
-    v29 = [PSTextFieldSpecifier preferenceSpecifierNamed:v28 target:v60 set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:0 cell:v24 edit:0];
+    v29 = [PSTextFieldSpecifier preferenceSpecifierNamed:v28 target:targetCopy set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:0 cell:v24 edit:0];
 
     [v29 setProperty:v15 forKey:@"defaults"];
     [v29 setProperty:v18 forKey:@"key"];
-    [v29 setProperty:v19 forKey:@"default"];
+    [v29 setProperty:string forKey:@"default"];
     objc_opt_class();
-    v30 = [v10 objectForKeyedSubscript:@"KeyboardType"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"KeyboardType"];
     if (objc_opt_isKindOfClass())
     {
       v31 = v30;
@@ -741,7 +741,7 @@ void __94__PSAppListController_radioGroupSpecifiersFromDictionary_stringsTable_p
 
 LABEL_38:
     objc_opt_class();
-    v45 = [v10 objectForKeyedSubscript:@"AutocapitalizationType"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"AutocapitalizationType"];
     if (objc_opt_isKindOfClass())
     {
       v46 = v45;
@@ -786,9 +786,9 @@ LABEL_38:
 
 LABEL_51:
     v35 = v59;
-    v34 = v60;
+    v34 = targetCopy;
     objc_opt_class();
-    v49 = [v10 objectForKeyedSubscript:@"AutocorrectionType"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"AutocorrectionType"];
     if (objc_opt_isKindOfClass())
     {
       v50 = v49;
@@ -802,7 +802,7 @@ LABEL_51:
     v51 = v50;
 
     v36 = v54;
-    v11 = v55;
+    tableCopy = v55;
     if (!v51)
     {
       goto LABEL_62;
@@ -835,13 +835,13 @@ LABEL_62:
   }
 
   v35 = v59;
-  v34 = v60;
-  v36 = v12;
-  v37 = [MEMORY[0x1E696AD60] string];
+  v34 = targetCopy;
+  v36 = specifierCopy;
+  string2 = [MEMORY[0x1E696AD60] string];
   v38 = objc_opt_class();
-  v39 = [a1 _typeErrorStringForKeyWithName:@"Key" expectedType:v38 actualType:objc_opt_class()];
+  v39 = [self _typeErrorStringForKeyWithName:@"Key" expectedType:v38 actualType:objc_opt_class()];
   v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v18, "length")}];
-  [v37 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v39, v40];
+  [string2 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v39, v40];
 
   v41 = PKLogForCategory(2);
   if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -859,7 +859,7 @@ LABEL_62:
     v63 = 2114;
     v64 = v44;
     v65 = 2114;
-    v66 = v37;
+    v66 = string2;
     _os_log_error_impl(&dword_18B008000, v41, OS_LOG_TYPE_ERROR, "%{public}@: Could not create text-field specifier for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
   }
 
@@ -869,15 +869,15 @@ LABEL_63:
   return v29;
 }
 
-+ (id)toggleSwitchSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)toggleSwitchSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v52 = *MEMORY[0x1E69E9840];
-  v45 = a4;
-  v10 = a5;
-  v43 = a6;
-  v11 = a3;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v12 = [v11 objectForKeyedSubscript:@"Title"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -890,9 +890,9 @@ LABEL_63:
 
   v14 = v13;
 
-  v15 = [v10 propertyForKey:@"AppBundleID"];
+  v15 = [specifierCopy propertyForKey:@"AppBundleID"];
   objc_opt_class();
-  v16 = [v11 objectForKeyedSubscript:@"Key"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"Key"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -905,18 +905,18 @@ LABEL_63:
 
   v18 = v17;
 
-  v19 = [v11 objectForKey:@"DefaultValue"];
-  v42 = [v11 objectForKey:@"TrueValue"];
-  v41 = [v11 objectForKey:@"FalseValue"];
+  v19 = [dictionaryCopy objectForKey:@"DefaultValue"];
+  v42 = [dictionaryCopy objectForKey:@"TrueValue"];
+  v41 = [dictionaryCopy objectForKey:@"FalseValue"];
 
-  v44 = v10;
+  v44 = specifierCopy;
   if ([v14 length] && -[__CFString length](v15, "length") && objc_msgSend(v18, "length") && v19)
   {
-    v20 = [v10 propertyForKey:@"AppSettingsBundle"];
-    v21 = v45;
-    v22 = [v20 localizedStringForKey:v14 value:&stru_1EFE45030 table:v45];
-    v23 = v43;
-    v24 = [PSSpecifier preferenceSpecifierNamed:v22 target:v43 set:sel__setToggleSwitchSpecifierValue_specifier_ get:sel__readToggleSwitchSpecifierValue_ detail:0 cell:6 edit:0];
+    v20 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+    v21 = tableCopy;
+    v22 = [v20 localizedStringForKey:v14 value:&stru_1EFE45030 table:tableCopy];
+    v23 = targetCopy;
+    v24 = [PSSpecifier preferenceSpecifierNamed:v22 target:targetCopy set:sel__setToggleSwitchSpecifierValue_specifier_ get:sel__readToggleSwitchSpecifierValue_ detail:0 cell:6 edit:0];
 
     v25 = v15;
     [v24 setProperty:v15 forKey:@"defaults"];
@@ -939,24 +939,24 @@ LABEL_63:
 
   else
   {
-    v29 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v30 = objc_opt_class();
-    v31 = [a1 _typeErrorStringForKeyWithName:@"Key" expectedType:v30 actualType:objc_opt_class()];
+    v31 = [self _typeErrorStringForKeyWithName:@"Key" expectedType:v30 actualType:objc_opt_class()];
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v18, "length")}];
-    [v29 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v31, v32];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v31, v32];
 
     v33 = objc_opt_class();
-    v34 = [a1 _typeErrorStringForKeyWithName:@"Title" expectedType:v33 actualType:objc_opt_class()];
+    v34 = [self _typeErrorStringForKeyWithName:@"Title" expectedType:v33 actualType:objc_opt_class()];
     v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "length")}];
-    [v29 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v34, v35];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v34, v35];
 
     if (!v19)
     {
-      [v29 appendString:@"\n\t DefaultValue is missing (must be set)."];
+      [string appendString:@"\n\t DefaultValue is missing (must be set)."];
     }
 
     v36 = PKLogForCategory(2);
-    v21 = v45;
+    v21 = tableCopy;
     v25 = v15;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
@@ -973,12 +973,12 @@ LABEL_63:
       v48 = 2114;
       v49 = v40;
       v50 = 2114;
-      v51 = v29;
+      v51 = string;
       _os_log_error_impl(&dword_18B008000, v36, OS_LOG_TYPE_ERROR, "%{public}@: Could not create toggle switch specifier for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
     }
 
     v24 = 0;
-    v23 = v43;
+    v23 = targetCopy;
     v28 = v44;
     v27 = v41;
     v26 = v42;
@@ -987,17 +987,17 @@ LABEL_63:
   return v24;
 }
 
-+ (id)sliderSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)sliderSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v68 = *MEMORY[0x1E69E9840];
-  v59 = a6;
-  v8 = a5;
-  v9 = a3;
-  v58 = [v8 propertyForKey:@"AppSettingsBundle"];
-  v10 = [v8 propertyForKey:@"AppBundleID"];
+  targetCopy = target;
+  specifierCopy = specifier;
+  dictionaryCopy = dictionary;
+  v58 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+  v10 = [specifierCopy propertyForKey:@"AppBundleID"];
 
   objc_opt_class();
-  v11 = [v9 objectForKeyedSubscript:@"Key"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"Key"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -1011,7 +1011,7 @@ LABEL_63:
   v13 = v12;
 
   objc_opt_class();
-  v14 = [v9 objectForKeyedSubscript:@"DefaultValue"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"DefaultValue"];
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -1025,7 +1025,7 @@ LABEL_63:
   v61 = v15;
 
   objc_opt_class();
-  v16 = [v9 objectForKeyedSubscript:@"MinimumValue"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"MinimumValue"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -1039,7 +1039,7 @@ LABEL_63:
   v18 = v17;
 
   objc_opt_class();
-  v19 = [v9 objectForKeyedSubscript:@"MaximumValue"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"MaximumValue"];
   if (objc_opt_isKindOfClass())
   {
     v20 = v19;
@@ -1053,7 +1053,7 @@ LABEL_63:
   v21 = v20;
 
   objc_opt_class();
-  v22 = [v9 objectForKeyedSubscript:@"MinimumValueImage"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"MinimumValueImage"];
   if (objc_opt_isKindOfClass())
   {
     v23 = v22;
@@ -1067,7 +1067,7 @@ LABEL_63:
   v57 = v23;
 
   objc_opt_class();
-  v24 = [v9 objectForKeyedSubscript:@"MaximumValueImage"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"MaximumValueImage"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1086,7 +1086,7 @@ LABEL_63:
   v28 = v13;
   if ([v27 length] && objc_msgSend(v13, "length") && v61 && v18 && v21)
   {
-    v29 = [PSSpecifier preferenceSpecifierNamed:0 target:v59 set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:0 cell:5 edit:0];
+    v29 = [PSSpecifier preferenceSpecifierNamed:0 target:targetCopy set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:0 cell:5 edit:0];
     [v29 setProperty:v60 forKey:@"defaults"];
     [v29 setProperty:v13 forKey:@"key"];
     [v29 setProperty:v61 forKey:@"default"];
@@ -1096,9 +1096,9 @@ LABEL_63:
     if (v57)
     {
       v31 = MEMORY[0x1E69DCAB8];
-      v32 = [MEMORY[0x1E69DCEB0] mainScreen];
-      v33 = [v32 traitCollection];
-      v34 = [v31 imageNamed:v57 inBundle:v58 compatibleWithTraitCollection:v33];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      v34 = [v31 imageNamed:v57 inBundle:v58 compatibleWithTraitCollection:traitCollection];
 
       if (v34)
       {
@@ -1112,10 +1112,10 @@ LABEL_63:
     {
       v35 = v28;
       v36 = MEMORY[0x1E69DCAB8];
-      v37 = [MEMORY[0x1E69DCEB0] mainScreen];
-      v38 = [v37 traitCollection];
+      mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+      traitCollection2 = [mainScreen2 traitCollection];
       v39 = v58;
-      v40 = [v36 imageNamed:v26 inBundle:v58 compatibleWithTraitCollection:v38];
+      v40 = [v36 imageNamed:v26 inBundle:v58 compatibleWithTraitCollection:traitCollection2];
 
       if (v40)
       {
@@ -1133,23 +1133,23 @@ LABEL_63:
 
   else
   {
-    v41 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v42 = objc_opt_class();
-    v43 = [a1 _typeErrorStringForKeyWithName:@"Key" expectedType:v42 actualType:objc_opt_class()];
+    v43 = [self _typeErrorStringForKeyWithName:@"Key" expectedType:v42 actualType:objc_opt_class()];
     v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "length")}];
-    [v41 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v43, v44];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v43, v44];
 
     v45 = objc_opt_class();
-    v46 = [a1 _typeErrorStringForKeyWithName:@"DefaultValue" expectedType:v45 actualType:objc_opt_class()];
-    [v41 appendFormat:@"\n\t%@", v46];
+    v46 = [self _typeErrorStringForKeyWithName:@"DefaultValue" expectedType:v45 actualType:objc_opt_class()];
+    [string appendFormat:@"\n\t%@", v46];
 
     v47 = objc_opt_class();
-    v48 = [a1 _typeErrorStringForKeyWithName:@"MinimumValue" expectedType:v47 actualType:objc_opt_class()];
-    [v41 appendFormat:@"\n\t%@", v48];
+    v48 = [self _typeErrorStringForKeyWithName:@"MinimumValue" expectedType:v47 actualType:objc_opt_class()];
+    [string appendFormat:@"\n\t%@", v48];
 
     v49 = objc_opt_class();
-    v50 = [a1 _typeErrorStringForKeyWithName:@"MaximumValue" expectedType:v49 actualType:objc_opt_class()];
-    [v41 appendFormat:@"\n\t%@", v50];
+    v50 = [self _typeErrorStringForKeyWithName:@"MaximumValue" expectedType:v49 actualType:objc_opt_class()];
+    [string appendFormat:@"\n\t%@", v50];
 
     v51 = PKLogForCategory(2);
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -1167,7 +1167,7 @@ LABEL_63:
       v64 = 2114;
       v65 = v55;
       v66 = 2114;
-      v67 = v41;
+      v67 = string;
       _os_log_error_impl(&dword_18B008000, v51, OS_LOG_TYPE_ERROR, "%{public}@: Could not create slider specifier for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
     }
 
@@ -1179,15 +1179,15 @@ LABEL_63:
   return v29;
 }
 
-+ (id)titleValueSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)titleValueSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v65 = *MEMORY[0x1E69E9840];
-  v56 = a4;
-  v9 = a5;
-  v57 = a6;
-  v10 = a3;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v11 = [v10 objectForKeyedSubscript:@"Title"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -1200,10 +1200,10 @@ LABEL_63:
 
   v13 = v12;
 
-  v55 = v9;
-  v14 = [v9 propertyForKey:@"AppBundleID"];
+  v55 = specifierCopy;
+  v14 = [specifierCopy propertyForKey:@"AppBundleID"];
   objc_opt_class();
-  v15 = [v10 objectForKeyedSubscript:@"Key"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"Key"];
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -1216,9 +1216,9 @@ LABEL_63:
 
   v17 = v16;
 
-  v18 = [v10 objectForKey:@"DefaultValue"];
+  v18 = [dictionaryCopy objectForKey:@"DefaultValue"];
   objc_opt_class();
-  v19 = [v10 objectForKeyedSubscript:@"Values"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"Values"];
   if (objc_opt_isKindOfClass())
   {
     v20 = v19;
@@ -1232,7 +1232,7 @@ LABEL_63:
   v21 = v20;
 
   objc_opt_class();
-  v22 = [v10 objectForKeyedSubscript:@"Titles"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"Titles"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1252,12 +1252,12 @@ LABEL_63:
     v53 = v24;
     v25 = v55;
     v26 = [v55 propertyForKey:@"AppSettingsBundle"];
-    v27 = v56;
-    [v26 localizedStringForKey:v13 value:&stru_1EFE45030 table:v56];
+    v27 = tableCopy;
+    [v26 localizedStringForKey:v13 value:&stru_1EFE45030 table:tableCopy];
     v28 = v21;
     v30 = v29 = v18;
-    v31 = v57;
-    v32 = [PSSpecifier preferenceSpecifierNamed:v30 target:v57 set:0 get:sel_readPreferenceValue_ detail:0 cell:4 edit:0];
+    v31 = targetCopy;
+    v32 = [PSSpecifier preferenceSpecifierNamed:v30 target:targetCopy set:0 get:sel_readPreferenceValue_ detail:0 cell:4 edit:0];
 
     v18 = v29;
     v21 = v28;
@@ -1273,11 +1273,11 @@ LABEL_63:
         v33 = [v21 count];
         if (v33 == [v53 count])
         {
-          v34 = [a1 localizedTitlesFromUnlocalizedTitles:v53 stringsTable:v56 parentSpecifier:v55];
+          v34 = [self localizedTitlesFromUnlocalizedTitles:v53 stringsTable:tableCopy parentSpecifier:v55];
           [v32 setValues:v21 titles:v34 shortTitles:0];
         }
 
-        v31 = v57;
+        v31 = targetCopy;
       }
     }
 
@@ -1289,26 +1289,26 @@ LABEL_63:
 
   else
   {
-    v35 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v36 = objc_opt_class();
-    v37 = [a1 _typeErrorStringForKeyWithName:@"Key" expectedType:v36 actualType:objc_opt_class()];
+    v37 = [self _typeErrorStringForKeyWithName:@"Key" expectedType:v36 actualType:objc_opt_class()];
     v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v17, "length")}];
-    [v35 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v37, v38];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v37, v38];
 
     v39 = objc_opt_class();
-    v40 = [a1 _typeErrorStringForKeyWithName:@"Title" expectedType:v39 actualType:objc_opt_class()];
+    v40 = [self _typeErrorStringForKeyWithName:@"Title" expectedType:v39 actualType:objc_opt_class()];
     v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "length")}];
-    [v35 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v40, v41];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v40, v41];
 
     v42 = objc_opt_class();
-    v43 = [a1 _typeErrorStringForKeyWithName:@"Values" expectedType:v42 actualType:objc_opt_class()];
+    v43 = [self _typeErrorStringForKeyWithName:@"Values" expectedType:v42 actualType:objc_opt_class()];
     v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v21, "count")}];
-    [v35 appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v43, v44];
+    [string appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v43, v44];
 
     v45 = objc_opt_class();
-    v46 = [a1 _typeErrorStringForKeyWithName:@"Titles" expectedType:v45 actualType:objc_opt_class()];
+    v46 = [self _typeErrorStringForKeyWithName:@"Titles" expectedType:v45 actualType:objc_opt_class()];
     v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v24, "count")}];
-    [v35 appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v46, v47];
+    [string appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v46, v47];
 
     v48 = PKLogForCategory(2);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1326,28 +1326,28 @@ LABEL_63:
       v61 = 2114;
       v62 = v52;
       v63 = 2114;
-      v64 = v35;
+      v64 = string;
       _os_log_error_impl(&dword_18B008000, v48, OS_LOG_TYPE_ERROR, "%{public}@: Could not create title-value specifier for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
     }
 
     v32 = 0;
     v25 = v55;
-    v27 = v56;
-    v31 = v57;
+    v27 = tableCopy;
+    v31 = targetCopy;
   }
 
   return v32;
 }
 
-+ (id)multiValueSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)multiValueSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v76 = *MEMORY[0x1E69E9840];
-  v64 = a4;
-  v10 = a5;
-  v62 = a6;
-  v11 = a3;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v12 = [v11 objectForKeyedSubscript:@"Title"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -1360,10 +1360,10 @@ LABEL_63:
 
   v14 = v13;
 
-  v63 = v10;
-  v15 = [v10 propertyForKey:@"AppBundleID"];
+  v63 = specifierCopy;
+  v15 = [specifierCopy propertyForKey:@"AppBundleID"];
   objc_opt_class();
-  v16 = [v11 objectForKeyedSubscript:@"Key"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"Key"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -1376,9 +1376,9 @@ LABEL_63:
 
   v69 = v17;
 
-  v66 = [v11 objectForKey:@"DefaultValue"];
+  v66 = [dictionaryCopy objectForKey:@"DefaultValue"];
   objc_opt_class();
-  v18 = [v11 objectForKeyedSubscript:@"Values"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"Values"];
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -1392,7 +1392,7 @@ LABEL_63:
   v67 = v19;
 
   objc_opt_class();
-  v20 = [v11 objectForKeyedSubscript:@"Titles"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"Titles"];
   if (objc_opt_isKindOfClass())
   {
     v21 = v20;
@@ -1406,7 +1406,7 @@ LABEL_63:
   v22 = v21;
 
   objc_opt_class();
-  v23 = [v11 objectForKeyedSubscript:@"ShortTitles"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"ShortTitles"];
   if (objc_opt_isKindOfClass())
   {
     v24 = v23;
@@ -1420,7 +1420,7 @@ LABEL_63:
   v61 = v24;
 
   objc_opt_class();
-  v25 = [v11 objectForKeyedSubscript:@"DisplaySortedByTitle"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"DisplaySortedByTitle"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1434,23 +1434,23 @@ LABEL_63:
 
   v27 = v26;
 
-  v28 = [v27 BOOLValue];
+  bOOLValue = [v27 BOOLValue];
   v68 = v14;
   v65 = v15;
   if ([v14 length] && -[__CFString length](v15, "length") && objc_msgSend(v69, "length") && v66 && v67 && v22 && objc_msgSend(v67, "count") && (v29 = objc_msgSend(v67, "count"), v29 == objc_msgSend(v22, "count")))
   {
-    v30 = v10;
-    v59 = [v10 propertyForKey:@"AppSettingsBundle"];
-    v31 = v64;
-    v32 = [v59 localizedStringForKey:v14 value:&stru_1EFE45030 table:v64];
+    v30 = specifierCopy;
+    v59 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+    v31 = tableCopy;
+    v32 = [v59 localizedStringForKey:v14 value:&stru_1EFE45030 table:tableCopy];
     v33 = v15;
-    v34 = v62;
-    v35 = [PSSpecifier preferenceSpecifierNamed:v32 target:v62 set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:objc_opt_class() cell:2 edit:0];
+    v34 = targetCopy;
+    v35 = [PSSpecifier preferenceSpecifierNamed:v32 target:targetCopy set:sel_setPreferenceValue_specifier_ get:sel_readPreferenceValue_ detail:objc_opt_class() cell:2 edit:0];
 
     [v35 setProperty:v33 forKey:@"defaults"];
     [v35 setProperty:v69 forKey:@"key"];
     [v35 setProperty:v66 forKey:@"default"];
-    v60 = [a1 localizedTitlesFromUnlocalizedTitles:v22 stringsTable:v64 parentSpecifier:v63];
+    v60 = [self localizedTitlesFromUnlocalizedTitles:v22 stringsTable:tableCopy parentSpecifier:v63];
     v36 = v61;
     if (v61)
     {
@@ -1459,7 +1459,7 @@ LABEL_63:
       v39 = v67;
       if (v38)
       {
-        v58 = [a1 localizedTitlesFromUnlocalizedTitles:v61 stringsTable:v64 parentSpecifier:v63];
+        v58 = [self localizedTitlesFromUnlocalizedTitles:v61 stringsTable:tableCopy parentSpecifier:v63];
       }
 
       else
@@ -1474,32 +1474,32 @@ LABEL_63:
       v39 = v67;
     }
 
-    [v35 setValues:v39 titles:v60 shortTitles:v58 usingLocalizedTitleSorting:v28];
+    [v35 setValues:v39 titles:v60 shortTitles:v58 usingLocalizedTitleSorting:bOOLValue];
   }
 
   else
   {
-    v40 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v41 = objc_opt_class();
-    v42 = [a1 _typeErrorStringForKeyWithName:@"Key" expectedType:v41 actualType:objc_opt_class()];
+    v42 = [self _typeErrorStringForKeyWithName:@"Key" expectedType:v41 actualType:objc_opt_class()];
     v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v69, "length")}];
-    [v40 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v42, v43];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v42, v43];
 
     v44 = objc_opt_class();
-    v45 = [a1 _typeErrorStringForKeyWithName:@"Title" expectedType:v44 actualType:objc_opt_class()];
+    v45 = [self _typeErrorStringForKeyWithName:@"Title" expectedType:v44 actualType:objc_opt_class()];
     v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "length")}];
-    [v40 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v45, v46];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v45, v46];
 
     v47 = objc_opt_class();
     v39 = v67;
-    v48 = [a1 _typeErrorStringForKeyWithName:@"Values" expectedType:v47 actualType:objc_opt_class()];
+    v48 = [self _typeErrorStringForKeyWithName:@"Values" expectedType:v47 actualType:objc_opt_class()];
     v49 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v67, "count")}];
-    [v40 appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v48, v49];
+    [string appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v48, v49];
 
     v50 = objc_opt_class();
-    v51 = [a1 _typeErrorStringForKeyWithName:@"Titles" expectedType:v50 actualType:objc_opt_class()];
+    v51 = [self _typeErrorStringForKeyWithName:@"Titles" expectedType:v50 actualType:objc_opt_class()];
     v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v22, "count")}];
-    [v40 appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v51, v52];
+    [string appendFormat:@"\n\t%@ Number of items is %@ (must be greater than 0).", v51, v52];
 
     v53 = PKLogForCategory(2);
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -1517,29 +1517,29 @@ LABEL_63:
       v72 = 2114;
       v73 = v57;
       v74 = 2114;
-      v75 = v40;
+      v75 = string;
       _os_log_error_impl(&dword_18B008000, v53, OS_LOG_TYPE_ERROR, "%{public}@: Could not multi-value specifier for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
     }
 
     v35 = 0;
     v30 = v63;
-    v31 = v64;
+    v31 = tableCopy;
     v36 = v61;
-    v34 = v62;
+    v34 = targetCopy;
   }
 
   return v35;
 }
 
-+ (id)childPaneSpecifierFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)childPaneSpecifierFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
   v65 = *MEMORY[0x1E69E9840];
-  v57 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = a3;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v12 = [v11 objectForKeyedSubscript:@"Title"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"Title"];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -1553,7 +1553,7 @@ LABEL_63:
   v14 = v13;
 
   objc_opt_class();
-  v15 = [v11 objectForKeyedSubscript:@"File"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"File"];
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -1567,7 +1567,7 @@ LABEL_63:
   v17 = v16;
 
   objc_opt_class();
-  v18 = [v11 objectForKeyedSubscript:@"ShouldShowGDPR"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"ShouldShowGDPR"];
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -1581,7 +1581,7 @@ LABEL_63:
   v20 = v19;
 
   objc_opt_class();
-  v21 = [v11 objectForKeyedSubscript:@"ShouldShowGDPRFromAppBundle"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"ShouldShowGDPRFromAppBundle"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1598,7 +1598,7 @@ LABEL_63:
   v56 = v20;
   if ([v20 BOOLValue])
   {
-    v24 = [v9 propertyForKey:@"AppBundleID"];
+    v24 = [specifierCopy propertyForKey:@"AppBundleID"];
     v25 = [PSAppListController canUseOnBoardingKitForPrivacyDisplayForBundleID:v24];
   }
 
@@ -1607,10 +1607,10 @@ LABEL_63:
     v25 = 0;
   }
 
-  v55 = v10;
+  v55 = targetCopy;
   if ([v23 BOOLValue])
   {
-    v26 = [v9 propertyForKey:@"AppBundleID"];
+    v26 = [specifierCopy propertyForKey:@"AppBundleID"];
     v27 = [PSAppListController canUseOnBoardingKitFOrPrivacyDisplayForBundleName:v26];
   }
 
@@ -1619,14 +1619,14 @@ LABEL_63:
     v27 = 0;
   }
 
-  v58 = v9;
+  v58 = specifierCopy;
   if ([v14 length])
   {
     if (v25)
     {
-      v28 = [v9 propertyForKey:@"AppSettingsBundle"];
-      v29 = v57;
-      v30 = [v28 localizedStringForKey:v14 value:&stru_1EFE45030 table:v57];
+      v28 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+      v29 = tableCopy;
+      v30 = [v28 localizedStringForKey:v14 value:&stru_1EFE45030 table:tableCopy];
       v31 = v55;
       v32 = [PSSpecifier preferenceSpecifierNamed:v30 target:v55 set:0 get:0 detail:0 cell:1 edit:0];
 
@@ -1638,12 +1638,12 @@ LABEL_63:
 
     else
     {
-      v29 = v57;
+      v29 = tableCopy;
       v33 = v17;
       if (v27)
       {
-        v42 = [v9 propertyForKey:@"AppSettingsBundle"];
-        v43 = [v42 localizedStringForKey:v14 value:&stru_1EFE45030 table:v57];
+        v42 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+        v43 = [v42 localizedStringForKey:v14 value:&stru_1EFE45030 table:tableCopy];
         v31 = v55;
         v32 = [PSSpecifier preferenceSpecifierNamed:v43 target:v55 set:0 get:0 detail:0 cell:1 edit:0];
 
@@ -1654,8 +1654,8 @@ LABEL_63:
 
       else if ([v17 length])
       {
-        v44 = [v9 propertyForKey:@"AppSettingsBundle"];
-        v45 = [v44 localizedStringForKey:v14 value:&stru_1EFE45030 table:v57];
+        v44 = [specifierCopy propertyForKey:@"AppSettingsBundle"];
+        v45 = [v44 localizedStringForKey:v14 value:&stru_1EFE45030 table:tableCopy];
         v31 = v55;
         v32 = [PSSpecifier preferenceSpecifierNamed:v45 target:v55 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
@@ -1674,17 +1674,17 @@ LABEL_63:
 
   else
   {
-    v34 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v35 = objc_opt_class();
-    v36 = [a1 _typeErrorStringForKeyWithName:@"Title" expectedType:v35 actualType:objc_opt_class()];
+    v36 = [self _typeErrorStringForKeyWithName:@"Title" expectedType:v35 actualType:objc_opt_class()];
     v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "length")}];
-    [v34 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v36, v37];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v36, v37];
 
     v38 = objc_opt_class();
-    v39 = [a1 _typeErrorStringForKeyWithName:@"File" expectedType:v38 actualType:objc_opt_class()];
+    v39 = [self _typeErrorStringForKeyWithName:@"File" expectedType:v38 actualType:objc_opt_class()];
     v33 = v17;
     v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v17, "length")}];
-    [v34 appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v39, v40];
+    [string appendFormat:@"\n\t%@ String length is %@ (must be greater than 0).", v39, v40];
 
     v41 = PKLogForCategory(2);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -1692,7 +1692,7 @@ LABEL_63:
       v47 = objc_opt_class();
       v48 = NSStringFromClass(v47);
       objc_opt_class();
-      v49 = [v9 objectForKeyedSubscript:@"AppBundleID"];
+      v49 = [specifierCopy objectForKeyedSubscript:@"AppBundleID"];
       if (objc_opt_isKindOfClass())
       {
         v50 = v49;
@@ -1716,29 +1716,29 @@ LABEL_63:
       v61 = 2114;
       v62 = v53;
       v63 = 2114;
-      v64 = v34;
+      v64 = string;
       _os_log_error_impl(&dword_18B008000, v41, OS_LOG_TYPE_ERROR, "%{public}@: Could not create child pane specifier for application '%{public}@' due to invalid input. %{public}@", buf, 0x20u);
     }
 
     v32 = 0;
-    v29 = v57;
+    v29 = tableCopy;
     v31 = v55;
   }
 
   return v32;
 }
 
-+ (id)specifiersFromDictionary:(id)a3 stringsTable:(id)a4 parentSpecifier:(id)a5 target:(id)a6
++ (id)specifiersFromDictionary:(id)dictionary stringsTable:(id)table parentSpecifier:(id)specifier target:(id)target
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  tableCopy = table;
+  specifierCopy = specifier;
+  targetCopy = target;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v14 = [v10 objectForKeyedSubscript:@"Type"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"Type"];
     if (objc_opt_isKindOfClass())
     {
       v15 = v14;
@@ -1751,7 +1751,7 @@ LABEL_63:
 
     v16 = v15;
 
-    v17 = [v10 objectForKey:@"SupportedUserInterfaceIdioms"];
+    v17 = [dictionaryCopy objectForKey:@"SupportedUserInterfaceIdioms"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1759,51 +1759,51 @@ LABEL_63:
       v17 = 0;
     }
 
-    v18 = [MEMORY[0x1E69DC938] currentDevice];
-    v19 = [v18 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v20 = [v12 propertyForKey:@"AppBundleID"];
-    if (!v17 || (v19 ? (v21 = @"Pad") : (v21 = @"Phone"), [v17 containsObject:v21]))
+    v20 = [specifierCopy propertyForKey:@"AppBundleID"];
+    if (!v17 || (userInterfaceIdiom ? (v21 = @"Pad") : (v21 = @"Phone"), [v17 containsObject:v21]))
     {
       if ([v16 isEqualToString:@"PSGroupSpecifier"])
       {
-        v22 = [a1 groupSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self groupSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         goto LABEL_29;
       }
 
       if ([v16 isEqualToString:@"PSTextFieldSpecifier"])
       {
-        v22 = [a1 textFieldSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self textFieldSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         goto LABEL_29;
       }
 
       if ([v16 isEqualToString:@"PSToggleSwitchSpecifier"])
       {
-        v22 = [a1 toggleSwitchSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self toggleSwitchSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         goto LABEL_29;
       }
 
       if ([v16 isEqualToString:@"PSSliderSpecifier"])
       {
-        v22 = [a1 sliderSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self sliderSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         goto LABEL_29;
       }
 
       if ([v16 isEqualToString:@"PSTitleValueSpecifier"])
       {
-        v22 = [a1 titleValueSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self titleValueSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         goto LABEL_29;
       }
 
       if ([v16 isEqualToString:@"PSMultiValueSpecifier"])
       {
-        v22 = [a1 multiValueSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self multiValueSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         goto LABEL_29;
       }
 
       if ([v16 isEqualToString:@"PSChildPaneSpecifier"])
       {
-        v22 = [a1 childPaneSpecifierFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v22 = [self childPaneSpecifierFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
 LABEL_29:
         v23 = v22;
         if (v22)
@@ -1815,7 +1815,7 @@ LABEL_35:
           v27[2] = __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpecifier_target___block_invoke;
           v27[3] = &unk_1E71DBDE0;
           v28 = v20;
-          v29 = v12;
+          v29 = specifierCopy;
           v25 = v20;
           [v24 enumerateObjectsUsingBlock:v27];
 
@@ -1829,7 +1829,7 @@ LABEL_34:
 
       if ([v16 isEqualToString:@"PSRadioGroupSpecifier"])
       {
-        v24 = [a1 radioGroupSpecifiersFromDictionary:v10 stringsTable:v11 parentSpecifier:v12 target:v13];
+        v24 = [self radioGroupSpecifiersFromDictionary:dictionaryCopy stringsTable:tableCopy parentSpecifier:specifierCopy target:targetCopy];
         v23 = 0;
         goto LABEL_35;
       }
@@ -1842,7 +1842,7 @@ LABEL_34:
   v23 = PKLogForCategory(2);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    [PSAppListController specifiersFromDictionary:a1 stringsTable:v23 parentSpecifier:? target:?];
+    [PSAppListController specifiersFromDictionary:self stringsTable:v23 parentSpecifier:? target:?];
   }
 
   v24 = MEMORY[0x1E695E0F0];
@@ -1872,11 +1872,11 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PSAppListController;
-  [(PSListController *)&v4 viewWillAppear:a3];
+  [(PSListController *)&v4 viewWillAppear:appear];
   [(PSListController *)self reloadSpecifierID:@"NOTIFICATIONS"];
   [(PSListController *)self reloadSpecifierID:@"SIRI"];
   [(PSListController *)self reloadSpecifierID:@"SEARCH"];
@@ -1887,58 +1887,58 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
   specifiers = self->super._specifiers;
   if (!specifiers)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = [(PSSpecifier *)self->super.super._specifier propertyForKey:?];
     v6 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"isThirdPartyDetail"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    v74 = v7;
-    if (v7)
+    v74 = bOOLValue;
+    if (bOOLValue)
     {
       v66 = 1;
     }
 
     else
     {
-      v8 = [(PSAppListController *)self appPolicy];
+      appPolicy = [(PSAppListController *)self appPolicy];
 
-      if (!v8)
+      if (!appPolicy)
       {
         v9 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:v5];
         [(PSAppListController *)self setAppPolicy:v9];
 
-        v10 = [(PSAppListController *)self appPolicy];
-        [v10 setDelegate:self];
+        appPolicy2 = [(PSAppListController *)self appPolicy];
+        [appPolicy2 setDelegate:self];
 
-        v11 = [(PSAppListController *)self appPolicy];
-        [(PSAppListController *)self setSystemPolicy:v11];
+        appPolicy3 = [(PSAppListController *)self appPolicy];
+        [(PSAppListController *)self setSystemPolicy:appPolicy3];
       }
 
-      v12 = [(PSAppListController *)self systemPolicy];
-      v13 = [v12 specifiers];
+      systemPolicy = [(PSAppListController *)self systemPolicy];
+      specifiers = [systemPolicy specifiers];
 
-      v66 = [v13 count] == 0;
-      [(NSArray *)v4 addObjectsFromArray:v13];
+      v66 = [specifiers count] == 0;
+      [(NSArray *)array addObjectsFromArray:specifiers];
     }
 
-    v14 = [(PSAppListController *)self title];
+    title = [(PSAppListController *)self title];
     v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v16 = [(PSListController *)self loadSpecifiersFromPlistName:@"KeyboardExtension" target:self bundle:v15];
 
     v69 = v16;
-    [(NSArray *)v4 addObjectsFromArray:v16];
-    v70 = v14;
-    [(PSListController *)self setTitle:v14];
-    v17 = [MEMORY[0x1E695DF70] array];
+    [(NSArray *)array addObjectsFromArray:v16];
+    v70 = title;
+    [(PSListController *)self setTitle:title];
+    array2 = [MEMORY[0x1E695DF70] array];
     v18 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"File"];
-    v19 = [(PSAppListController *)self bundle];
-    v20 = [v19 pathForResource:v18 ofType:@"plist"];
+    bundle = [(PSAppListController *)self bundle];
+    v20 = [bundle pathForResource:v18 ofType:@"plist"];
     if (![v20 length])
     {
-      NSLog(&cfstr_ErrorCanTFindP.isa, v18, v19);
+      NSLog(&cfstr_ErrorCanTFindP.isa, v18, bundle);
     }
 
-    v67 = v19;
+    v67 = bundle;
     v68 = v18;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v20];
     v22 = 0x1E696A000uLL;
@@ -1964,11 +1964,11 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
       if (v25)
       {
         specifier = self->super.super._specifier;
-        v27 = [v25 stringByDeletingPathExtension];
-        [(PSSpecifier *)specifier setProperty:v27 forKey:@"StringsTable"];
+        stringByDeletingPathExtension = [v25 stringByDeletingPathExtension];
+        [(PSSpecifier *)specifier setProperty:stringByDeletingPathExtension forKey:@"StringsTable"];
       }
 
-      v65 = v4;
+      v65 = array;
       objc_opt_class();
       v28 = [v21 objectForKeyedSubscript:@"ApplicationGroupContainerIdentifier"];
       if (objc_opt_isKindOfClass())
@@ -1986,8 +1986,8 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
       if (v30)
       {
         v31 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v5];
-        v32 = [v31 groupContainerURLs];
-        v33 = [v32 objectForKey:v30];
+        groupContainerURLs = [v31 groupContainerURLs];
+        v33 = [groupContainerURLs objectForKey:v30];
 
         if (v33)
         {
@@ -2020,12 +2020,12 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
           v41 = [objc_opt_class() specifiersFromDictionary:v40 stringsTable:v25 parentSpecifier:self->super.super._specifier target:self];
           if (v41)
           {
-            [v17 addObjectsFromArray:v41];
+            [array2 addObjectsFromArray:v41];
           }
         }
       }
 
-      v4 = v65;
+      array = v65;
       v20 = v71;
       v5 = v72;
       v21 = v73;
@@ -2037,35 +2037,35 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
       NSLog(&cfstr_ErrorCouldnTLo.isa, v20);
     }
 
-    if (!(([v17 count] == 0) | (v74 | v66) & 1))
+    if (!(([array2 count] == 0) | (v74 | v66) & 1))
     {
       v42 = v5;
-      v43 = v4;
+      v43 = array;
       v44 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v42];
-      v45 = [v44 localizedName];
+      localizedName = [v44 localizedName];
 
       v46 = *(v22 + 3776);
       v47 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v48 = [v47 localizedStringForKey:@"APP_SETTINGS" value:&stru_1EFE45030 table:@"PSSystemPolicy"];
-      v49 = [v46 stringWithFormat:v48, v45];
-      v50 = [v49 localizedUppercaseString];
+      v49 = [v46 stringWithFormat:v48, localizedName];
+      localizedUppercaseString = [v49 localizedUppercaseString];
 
-      v51 = [v17 firstObject];
-      v52 = [v51 name];
-      v53 = [v52 length];
+      firstObject = [array2 firstObject];
+      name = [firstObject name];
+      v53 = [name length];
 
       if (v53)
       {
-        v54 = [PSSpecifier groupSpecifierWithName:v50];
-        v4 = v43;
-        [(NSArray *)v43 addObject:v54];
+        firstObject2 = [PSSpecifier groupSpecifierWithName:localizedUppercaseString];
+        array = v43;
+        [(NSArray *)v43 addObject:firstObject2];
       }
 
       else
       {
-        v54 = [v17 firstObject];
-        [v54 setName:v50];
-        v4 = v43;
+        firstObject2 = [array2 firstObject];
+        [firstObject2 setName:localizedUppercaseString];
+        array = v43;
       }
 
       v20 = v71;
@@ -2073,24 +2073,24 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
       v21 = v73;
     }
 
-    [(NSArray *)v4 addObjectsFromArray:v17];
+    [(NSArray *)array addObjectsFromArray:array2];
     if ((v74 & 1) == 0)
     {
-      v55 = [(PSAppListController *)self driverPolicy];
+      driverPolicy = [(PSAppListController *)self driverPolicy];
 
-      if (!v55)
+      if (!driverPolicy)
       {
         v56 = [[PSDriverPolicyForApp alloc] initWithBundleIdentifier:v5];
         [(PSAppListController *)self setDriverPolicy:v56];
 
-        v57 = [(PSAppListController *)self driverPolicy];
-        [v57 setDelegate:self];
+        driverPolicy2 = [(PSAppListController *)self driverPolicy];
+        [driverPolicy2 setDelegate:self];
       }
 
-      v58 = [(PSAppListController *)self driverPolicy];
-      v59 = [v58 specifiers];
+      driverPolicy3 = [(PSAppListController *)self driverPolicy];
+      specifiers2 = [driverPolicy3 specifiers];
 
-      [(NSArray *)v4 addObjectsFromArray:v59];
+      [(NSArray *)array addObjectsFromArray:specifiers2];
     }
 
     v60 = self->super.super._specifier;
@@ -2106,7 +2106,7 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
     }
 
     v63 = self->super._specifiers;
-    self->super._specifiers = v4;
+    self->super._specifiers = array;
 
     specifiers = self->super._specifiers;
   }
@@ -2114,15 +2114,15 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
   return specifiers;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = PSAppListController;
-  v6 = a4;
-  [(PSListController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(PSListController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexOfGroup:v7]];
+  v8 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexOfGroup:section]];
   if ([v8 isRadioGroup])
   {
     v9 = [v8 propertyForKey:@"radioGroupCheckedSpecifier"];
@@ -2134,9 +2134,9 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
 - (id)bundle
 {
   v3 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"AppSettingsBundle"];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 bundlePath];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  bundlePath = [v3 bundlePath];
+  v6 = [defaultManager fileExistsAtPath:bundlePath];
 
   if (v6)
   {
@@ -2148,8 +2148,8 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
     v8 = [(PSSpecifier *)self->super.super._specifier propertyForKey:@"AppBundleID"];
     v9 = [PSSystemPolicyManager thirdPartyApplicationForBundleID:v8];
 
-    v10 = [v9 record];
-    v11 = [v10 URL];
+    record = [v9 record];
+    v11 = [record URL];
     v12 = [v11 URLByAppendingPathComponent:@"Settings.bundle"];
 
     if (v12)
@@ -2167,13 +2167,13 @@ void __84__PSAppListController_specifiersFromDictionary_stringsTable_parentSpeci
   return v7;
 }
 
-+ (id)_typeErrorStringForKeyWithName:(id)a3 expectedType:(Class)a4 actualType:(Class)a5
++ (id)_typeErrorStringForKeyWithName:(id)name expectedType:(Class)type actualType:(Class)actualType
 {
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a3;
-  v9 = NSStringFromClass(a5);
-  v10 = NSStringFromClass(a4);
-  v11 = [v7 stringWithFormat:@"The type of the '%@' key is %@ (expected %@)", v8, v9, v10];
+  nameCopy = name;
+  v9 = NSStringFromClass(actualType);
+  v10 = NSStringFromClass(type);
+  v11 = [v7 stringWithFormat:@"The type of the '%@' key is %@ (expected %@)", nameCopy, v9, v10];
 
   return v11;
 }

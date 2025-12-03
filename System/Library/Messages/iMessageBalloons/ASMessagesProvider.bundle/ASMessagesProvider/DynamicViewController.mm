@@ -1,14 +1,14 @@
 @interface DynamicViewController
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)a3 bagValue:(id)a4;
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)a3 javaScriptBagValue:(id)a4;
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)bag bagValue:(id)value;
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)bag javaScriptBagValue:(id)value;
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation DynamicViewController
 
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithCoder:(id)coder
 {
   *&self->AMSUIDynamicViewController_opaque[OBJC_IVAR____TtC18ASMessagesProvider21DynamicViewController_dynamicDelegate] = 0;
   *&self->AMSUIDynamicViewController_opaque[OBJC_IVAR____TtC18ASMessagesProvider21DynamicViewController_gridPresenter] = 0;
@@ -24,28 +24,28 @@
 {
   ObjectType = swift_getObjectType();
   sub_529D58(&qword_959CE8);
-  v4 = self;
+  selfCopy = self;
   sub_7632E0();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(DynamicViewController *)&v5 viewDidLoad];
 }
 
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)a3 bagValue:(id)a4
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)bag bagValue:(id)value
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)a3 javaScriptBagValue:(id)a4
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithBag:(id)bag javaScriptBagValue:(id)value
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18ASMessagesProvider21DynamicViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider21DynamicViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

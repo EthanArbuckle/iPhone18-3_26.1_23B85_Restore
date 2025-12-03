@@ -1,46 +1,46 @@
 @interface HDSPNanoDefaults
-- (BOOL)hksp_BOOLForKey:(id)a3;
-- (HDSPNanoDefaults)initWithEnvironment:(id)a3 configuration:(id)a4;
+- (BOOL)hksp_BOOLForKey:(id)key;
+- (HDSPNanoDefaults)initWithEnvironment:(id)environment configuration:(id)configuration;
 - (HDSPSyncedUserDefaultsExternalChangeDelegate)delegate;
 - (NPSDomainAccessor)npsDomainAccessor;
-- (float)hksp_floatForKey:(id)a3;
-- (id)_keysForChangeNotification:(id)a3;
-- (id)hksp_dataForKey:(id)a3;
+- (float)hksp_floatForKey:(id)key;
+- (id)_keysForChangeNotification:(id)notification;
+- (id)hksp_dataForKey:(id)key;
 - (id)hksp_dictionaryRepresentation;
-- (id)hksp_dictionaryRepresentationForKeys:(id)a3;
-- (id)hksp_objectForKey:(id)a3;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (int64_t)hksp_integerForKey:(id)a3;
-- (void)_handleActivePairedDeviceDidChange:(id)a3;
-- (void)_handleNanoPreferencesSync:(id)a3;
+- (id)hksp_dictionaryRepresentationForKeys:(id)keys;
+- (id)hksp_objectForKey:(id)key;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (int64_t)hksp_integerForKey:(id)key;
+- (void)_handleActivePairedDeviceDidChange:(id)change;
+- (void)_handleNanoPreferencesSync:(id)sync;
 - (void)_registerForNotifications;
 - (void)_resetNPSDomainAccessor;
-- (void)hdsp_forceSynchronizeWithCompletion:(id)a3;
-- (void)hdsp_setExternalChangeDelegate:(id)a3;
-- (void)hksp_removeObjectForKey:(id)a3;
-- (void)hksp_removeObjectsForKeys:(id)a3;
-- (void)hksp_saveDictionary:(id)a3;
-- (void)hksp_setFloat:(float)a3 forKey:(id)a4;
-- (void)hksp_setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)hksp_setObject:(id)a3 forKey:(id)a4;
+- (void)hdsp_forceSynchronizeWithCompletion:(id)completion;
+- (void)hdsp_setExternalChangeDelegate:(id)delegate;
+- (void)hksp_removeObjectForKey:(id)key;
+- (void)hksp_removeObjectsForKeys:(id)keys;
+- (void)hksp_saveDictionary:(id)dictionary;
+- (void)hksp_setFloat:(float)float forKey:(id)key;
+- (void)hksp_setInteger:(int64_t)integer forKey:(id)key;
+- (void)hksp_setObject:(id)object forKey:(id)key;
 - (void)hksp_synchronize;
-- (void)hksp_synchronizeKeys:(id)a3;
+- (void)hksp_synchronizeKeys:(id)keys;
 @end
 
 @implementation HDSPNanoDefaults
 
-- (HDSPNanoDefaults)initWithEnvironment:(id)a3 configuration:(id)a4
+- (HDSPNanoDefaults)initWithEnvironment:(id)environment configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = HDSPNanoDefaults;
   v8 = [(HDSPNanoDefaults *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_environment, v6);
-    objc_storeStrong(&v9->_configuration, a4);
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    objc_storeStrong(&v9->_configuration, configuration);
     v10 = objc_alloc_init(MEMORY[0x277D2BA60]);
     npsManager = v9->_npsManager;
     v9->_npsManager = v10;
@@ -102,37 +102,37 @@ void __54__HDSPNanoDefaults_initWithEnvironment_configuration___block_invoke(uin
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_keysForChangeNotification:(id)a3
+- (id)_keysForChangeNotification:(id)notification
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.sleep.sync.SleepScheduleDidChange"])
+  notificationCopy = notification;
+  if ([notificationCopy isEqualToString:@"com.apple.sleep.sync.SleepScheduleDidChange"])
   {
     configuration = self->_configuration;
 LABEL_7:
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = [(HDSPSyncedDefaultsConfiguration *)configuration keySetForIdentifier:v7];
-    v9 = [v8 keysToSync];
+    keysToSync = [v8 keysToSync];
 
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"com.apple.sleep.sync.SleepSettingsDidChange"])
+  if ([notificationCopy isEqualToString:@"com.apple.sleep.sync.SleepSettingsDidChange"])
   {
     configuration = self->_configuration;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"com.apple.sleep.sync.SleepRecordDidChange"])
+  if ([notificationCopy isEqualToString:@"com.apple.sleep.sync.SleepRecordDidChange"])
   {
     configuration = self->_configuration;
     goto LABEL_7;
   }
 
-  v9 = objc_alloc_init(MEMORY[0x277CBEB98]);
+  keysToSync = objc_alloc_init(MEMORY[0x277CBEB98]);
 LABEL_8:
 
-  return v9;
+  return keysToSync;
 }
 
 - (NPSDomainAccessor)npsDomainAccessor
@@ -231,11 +231,11 @@ void __43__HDSPNanoDefaults__resetNPSDomainAccessor__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (([v5 isEqualToString:@"com.apple.sleep.sync.SleepScheduleDidChange"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"com.apple.sleep.sync.SleepSettingsDidChange") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.sleep.sync.SleepRecordDidChange"))
+  nameCopy = name;
+  if (([nameCopy isEqualToString:@"com.apple.sleep.sync.SleepScheduleDidChange"] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.sleep.sync.SleepSettingsDidChange") & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"com.apple.sleep.sync.SleepRecordDidChange"))
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -243,60 +243,60 @@ void __43__HDSPNanoDefaults__resetNPSDomainAccessor__block_invoke(uint64_t a1)
       *v12 = 138543618;
       *&v12[4] = objc_opt_class();
       *&v12[12] = 2114;
-      *&v12[14] = v5;
+      *&v12[14] = nameCopy;
       v7 = *&v12[4];
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", v12, 0x16u);
     }
 
-    v8 = [(HDSPNanoDefaults *)self _keysForChangeNotification:v5];
+    v8 = [(HDSPNanoDefaults *)self _keysForChangeNotification:nameCopy];
     [(HDSPNanoDefaults *)self _handleNanoPreferencesSync:v8];
   }
 
-  v9 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return futureWithNoResult;
 }
 
-- (void)_handleActivePairedDeviceDidChange:(id)a3
+- (void)_handleActivePairedDeviceDidChange:(id)change
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v4;
+    v12 = changeCopy;
     v6 = v10;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] _handleActivePairedDeviceDidChange: %{public}@", &v9, 0x16u);
   }
 
   [(HDSPNanoDefaults *)self _resetNPSDomainAccessor];
-  v7 = [(HDSPNanoDefaults *)self delegate];
-  [v7 syncedUserDefaultsDidChangeExternally:self];
+  delegate = [(HDSPNanoDefaults *)self delegate];
+  [delegate syncedUserDefaultsDidChangeExternally:self];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNanoPreferencesSync:(id)a3
+- (void)_handleNanoPreferencesSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v6 = [v5 synchronize];
+  syncCopy = sync;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  synchronize = [npsDomainAccessor synchronize];
 
   notifyAccumulator = self->_notifyAccumulator;
-  v8 = [v4 allObjects];
+  allObjects = [syncCopy allObjects];
 
-  [(HKSPAccumulator *)notifyAccumulator accumulateValues:v8];
+  [(HKSPAccumulator *)notifyAccumulator accumulateValues:allObjects];
 }
 
-- (void)hdsp_forceSynchronizeWithCompletion:(id)a3
+- (void)hdsp_forceSynchronizeWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -306,15 +306,15 @@ void __43__HDSPNanoDefaults__resetNPSDomainAccessor__block_invoke(uint64_t a1)
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] performing full sync", buf, 0xCu);
   }
 
-  v7 = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__HDSPNanoDefaults_hdsp_forceSynchronizeWithCompletion___block_invoke;
   v10[3] = &unk_279C7C878;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v7 synchronizeWithCompletionHandler:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  [npsDomainAccessor synchronizeWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -354,25 +354,25 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hdsp_setExternalChangeDelegate:(id)a3
+- (void)hdsp_setExternalChangeDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2114;
-    v13 = v4;
+    v13 = delegateCopy;
     v6 = v11;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] hdsp_setExternalChangeDelegate %{public}@", &v10, 0x16u);
   }
 
-  [(HDSPNanoDefaults *)self setDelegate:v4];
+  [(HDSPNanoDefaults *)self setDelegate:delegateCopy];
   [(HDSPNanoDefaults *)self _registerForNotifications];
-  v7 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v8 = [v7 synchronize];
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  synchronize = [npsDomainAccessor synchronize];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -380,143 +380,143 @@ LABEL_6:
 - (void)_registerForNotifications
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained notificationListener];
-  [v4 addObserver:self];
+  notificationListener = [WeakRetained notificationListener];
+  [notificationListener addObserver:self];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__handleActivePairedDeviceDidChange_ name:*MEMORY[0x277D2BC48] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleActivePairedDeviceDidChange_ name:*MEMORY[0x277D2BC48] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__handleActivePairedDeviceDidChange_ name:*MEMORY[0x277D2BC68] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleActivePairedDeviceDidChange_ name:*MEMORY[0x277D2BC68] object:0];
 }
 
-- (id)hksp_objectForKey:(id)a3
+- (id)hksp_objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  v6 = [npsDomainAccessor objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)hksp_setObject:(id)a3 forKey:(id)a4
+- (void)hksp_setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  [npsDomainAccessor setObject:objectCopy forKey:keyCopy];
 }
 
-- (void)hksp_removeObjectForKey:(id)a3
+- (void)hksp_removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  [npsDomainAccessor removeObjectForKey:keyCopy];
 }
 
-- (BOOL)hksp_BOOLForKey:(id)a3
+- (BOOL)hksp_BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v6 = [v5 BOOLForKey:v4];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  v6 = [npsDomainAccessor BOOLForKey:keyCopy];
 
   return v6;
 }
 
-- (float)hksp_floatForKey:(id)a3
+- (float)hksp_floatForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  [v5 floatForKey:v4];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  [npsDomainAccessor floatForKey:keyCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (void)hksp_setFloat:(float)a3 forKey:(id)a4
+- (void)hksp_setFloat:(float)float forKey:(id)key
 {
-  v6 = a4;
-  v8 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  *&v7 = a3;
-  [v8 setFloat:v6 forKey:v7];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  *&v7 = float;
+  [npsDomainAccessor setFloat:keyCopy forKey:v7];
 }
 
-- (int64_t)hksp_integerForKey:(id)a3
+- (int64_t)hksp_integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v6 = [v5 integerForKey:v4];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  v6 = [npsDomainAccessor integerForKey:keyCopy];
 
   return v6;
 }
 
-- (void)hksp_setInteger:(int64_t)a3 forKey:(id)a4
+- (void)hksp_setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  [v7 setInteger:a3 forKey:v6];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  [npsDomainAccessor setInteger:integer forKey:keyCopy];
 }
 
-- (id)hksp_dataForKey:(id)a3
+- (id)hksp_dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v6 = [v5 dataForKey:v4];
+  keyCopy = key;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  v6 = [npsDomainAccessor dataForKey:keyCopy];
 
   return v6;
 }
 
 - (id)hksp_dictionaryRepresentation
 {
-  v2 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v3 = [v2 dictionaryRepresentation];
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  dictionaryRepresentation = [npsDomainAccessor dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (id)hksp_dictionaryRepresentationForKeys:(id)a3
+- (id)hksp_dictionaryRepresentationForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self hksp_dictionaryRepresentation];
-  v6 = [v5 hksp_dictionaryByFilteringKeys:v4];
+  keysCopy = keys;
+  hksp_dictionaryRepresentation = [(HDSPNanoDefaults *)self hksp_dictionaryRepresentation];
+  v6 = [hksp_dictionaryRepresentation hksp_dictionaryByFilteringKeys:keysCopy];
 
   return v6;
 }
 
-- (void)hksp_saveDictionary:(id)a3
+- (void)hksp_saveDictionary:(id)dictionary
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __40__HDSPNanoDefaults_hksp_saveDictionary___block_invoke;
   v3[3] = &unk_279C7C8A0;
   v3[4] = self;
-  [a3 na_each:v3];
+  [dictionary na_each:v3];
 }
 
-- (void)hksp_removeObjectsForKeys:(id)a3
+- (void)hksp_removeObjectsForKeys:(id)keys
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __46__HDSPNanoDefaults_hksp_removeObjectsForKeys___block_invoke;
   v3[3] = &unk_279C7C8C8;
   v3[4] = self;
-  [a3 na_each:v3];
+  [keys na_each:v3];
 }
 
 - (void)hksp_synchronize
 {
-  v3 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToSync];
-  [(HDSPNanoDefaults *)self hksp_synchronizeKeys:v3];
+  allKeysToSync = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allKeysToSync];
+  [(HDSPNanoDefaults *)self hksp_synchronizeKeys:allKeysToSync];
 }
 
-- (void)hksp_synchronizeKeys:(id)a3
+- (void)hksp_synchronizeKeys:(id)keys
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPNanoDefaults *)self npsDomainAccessor];
-  v6 = [v5 synchronize];
+  keysCopy = keys;
+  npsDomainAccessor = [(HDSPNanoDefaults *)self npsDomainAccessor];
+  synchronize = [npsDomainAccessor synchronize];
 
-  if (v6)
+  if (synchronize)
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -524,7 +524,7 @@ LABEL_6:
       *v23 = 138543618;
       *&v23[4] = objc_opt_class();
       *&v23[12] = 2114;
-      *&v23[14] = v6;
+      *&v23[14] = synchronize;
       v8 = *&v23[4];
       v9 = "[%{public}@] synchronize failed with error %{public}@";
       v10 = v7;
@@ -553,8 +553,8 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    v12 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allPerGizmoKeys];
-    v7 = [v4 na_setByRemovingObjectsFromSet:v12];
+    allPerGizmoKeys = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allPerGizmoKeys];
+    v7 = [keysCopy na_setByRemovingObjectsFromSet:allPerGizmoKeys];
 
     v13 = [v7 count];
     v14 = MEMORY[0x277D62050];
@@ -575,7 +575,7 @@ LABEL_4:
     }
 
     v17 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration allPerGizmoKeys:*v23];
-    v18 = [v4 na_setByIntersectingWithSet:v17];
+    v18 = [keysCopy na_setByIntersectingWithSet:v17];
 
     if ([v18 count])
     {

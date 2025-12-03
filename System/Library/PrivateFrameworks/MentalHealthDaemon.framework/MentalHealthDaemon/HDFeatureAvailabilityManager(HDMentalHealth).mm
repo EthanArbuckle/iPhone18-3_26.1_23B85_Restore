@@ -19,32 +19,32 @@
   v5 = objc_alloc(MEMORY[0x277CCD420]);
   v31[0] = *MEMORY[0x277CCBE50];
   v6 = MEMORY[0x277CCD428];
-  v25 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v24 = [v25 features];
-  v23 = [v6 featureFlagIsEnabled:{objc_msgSend(v24, "chamomile")}];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  v23 = [v6 featureFlagIsEnabled:{objc_msgSend(features, "chamomile")}];
   v30[0] = v23;
-  v7 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v30[1] = v7;
+  profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v30[1] = profileIsNotFamilySetupPairingProfile;
   v8 = [MEMORY[0x277CCD428] onboardingRecordIsNotPresentForFeatureWithIdentifier:v3];
   v30[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
   v32[0] = v9;
   v31[1] = *MEMORY[0x277CCBEA0];
   v10 = MEMORY[0x277CCD428];
-  v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v12 = [v11 features];
-  v13 = [v10 featureFlagIsEnabled:{objc_msgSend(v12, "chamomile")}];
+  mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features2 = [mEMORY[0x277CCDD30]2 features];
+  v13 = [v10 featureFlagIsEnabled:{objc_msgSend(features2, "chamomile")}];
   v29[0] = v13;
-  v14 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v29[1] = v14;
+  profileIsNotFamilySetupPairingProfile2 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v29[1] = profileIsNotFamilySetupPairingProfile2;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
   v32[1] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
   v17 = [v5 initWithRequirementsByContext:v16];
 
-  v18 = [MEMORY[0x277D10828] uncheckedAvailability];
+  uncheckedAvailability = [MEMORY[0x277D10828] uncheckedAvailability];
   v19 = objc_alloc_init(MEMORY[0x277D106E8]);
-  v20 = [v27 initWithProfile:v28 featureIdentifier:v26 availabilityRequirements:v17 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:v18 disableAndExpiryProvider:v19 loggingCategory:*MEMORY[0x277CCC2F0]];
+  v20 = [v27 initWithProfile:v28 featureIdentifier:v26 availabilityRequirements:v17 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:uncheckedAvailability disableAndExpiryProvider:v19 loggingCategory:*MEMORY[0x277CCC2F0]];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -59,12 +59,12 @@
   v12 = a4;
   v13 = a3;
   v14 = [v9 alloc];
-  v15 = [v12 daemon];
-  v16 = [v14 initWithFeatureIdentifier:v13 defaultCountrySet:v10 healthDaemon:v15];
+  daemon = [v12 daemon];
+  v16 = [v14 initWithFeatureIdentifier:v13 defaultCountrySet:v10 healthDaemon:daemon];
 
   v17 = objc_alloc(MEMORY[0x277D107C0]);
-  v18 = [v12 daemon];
-  v19 = [v17 initWithDaemon:v18 featureIdentifier:v13];
+  daemon2 = [v12 daemon];
+  v19 = [v17 initWithDaemon:daemon2 featureIdentifier:v13];
 
   v20 = objc_alloc(MEMORY[0x277D106D8]);
   v21 = [v20 initWithProfile:v12 featureIdentifier:v13 availabilityRequirements:v11 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:v16 disableAndExpiryProvider:v19 loggingCategory:*MEMORY[0x277CCC2F0]];
@@ -81,9 +81,9 @@
   v30 = [v4 alloc];
   v45[0] = *MEMORY[0x277CCBE00];
   v5 = MEMORY[0x277CCD428];
-  v38 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v37 = [v38 features];
-  v36 = [v5 featureFlagIsEnabled:{objc_msgSend(v37, "chamomile")}];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  v36 = [v5 featureFlagIsEnabled:{objc_msgSend(features, "chamomile")}];
   v44[0] = v36;
   v35 = [MEMORY[0x277CCD428] featureIsNotRemotelyDisabledWithIdentifier:v3];
   v44[1] = v35;
@@ -93,12 +93,12 @@
   v46[0] = v33;
   v45[1] = *MEMORY[0x277CCBE70];
   v6 = MEMORY[0x277CCD428];
-  v32 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v29 = [v32 features];
-  v28 = [v6 featureFlagIsEnabled:{objc_msgSend(v29, "chamomile")}];
+  mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features2 = [mEMORY[0x277CCDD30]2 features];
+  v28 = [v6 featureFlagIsEnabled:{objc_msgSend(features2, "chamomile")}];
   v43[0] = v28;
-  v27 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v43[1] = v27;
+  profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v43[1] = profileIsNotFamilySetupPairingProfile;
   v26 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC238]];
   v43[2] = v26;
   v25 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v3];
@@ -114,12 +114,12 @@
   v46[2] = v21;
   v45[3] = *MEMORY[0x277CCBEA0];
   v7 = MEMORY[0x277CCD428];
-  v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v9 = [v8 features];
-  v10 = [v7 featureFlagIsEnabled:{objc_msgSend(v9, "chamomile")}];
+  mEMORY[0x277CCDD30]3 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features3 = [mEMORY[0x277CCDD30]3 features];
+  v10 = [v7 featureFlagIsEnabled:{objc_msgSend(features3, "chamomile")}];
   v41[0] = v10;
-  v11 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v41[1] = v11;
+  profileIsNotFamilySetupPairingProfile2 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v41[1] = profileIsNotFamilySetupPairingProfile2;
   v12 = [MEMORY[0x277CCD428] featureIsNotRemotelyDisabledWithIdentifier:v3];
   v41[2] = v12;
   v13 = [MEMORY[0x277CCD428] countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v3];
@@ -131,8 +131,8 @@
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:4];
   v31 = [v30 initWithRequirementsByContext:v16];
 
-  v17 = [MEMORY[0x277CCD260] localAvailabilityForDepressionAndAnxietyAssessments];
-  v18 = [a1 _hdmc_availabilityManagerForFeatureIdentifier:v3 profile:v39 availabilityRequirements:v31 localCountrySet:v17];
+  localAvailabilityForDepressionAndAnxietyAssessments = [MEMORY[0x277CCD260] localAvailabilityForDepressionAndAnxietyAssessments];
+  v18 = [self _hdmc_availabilityManagerForFeatureIdentifier:v3 profile:v39 availabilityRequirements:v31 localCountrySet:localAvailabilityForDepressionAndAnxietyAssessments];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -148,9 +148,9 @@
   v36 = [v4 alloc];
   v55[0] = *MEMORY[0x277CCBE00];
   v5 = MEMORY[0x277CCD428];
-  v47 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v46 = [v47 features];
-  v45 = [v5 featureFlagIsEnabled:{objc_msgSend(v46, "chamomile")}];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  v45 = [v5 featureFlagIsEnabled:{objc_msgSend(features, "chamomile")}];
   v54[0] = v45;
   v44 = [MEMORY[0x277CCD428] featureIsNotRemotelyDisabledWithIdentifier:v3];
   v54[1] = v44;
@@ -160,12 +160,12 @@
   v56[0] = v42;
   v55[1] = *MEMORY[0x277CCBE70];
   v6 = MEMORY[0x277CCD428];
-  v41 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v40 = [v41 features];
-  v39 = [v6 featureFlagIsEnabled:{objc_msgSend(v40, "chamomile")}];
+  mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features2 = [mEMORY[0x277CCDD30]2 features];
+  v39 = [v6 featureFlagIsEnabled:{objc_msgSend(features2, "chamomile")}];
   v53[0] = v39;
-  v38 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v53[1] = v38;
+  profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v53[1] = profileIsNotFamilySetupPairingProfile;
   v7 = *MEMORY[0x277CCC238];
   v35 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC238]];
   v53[2] = v35;
@@ -182,12 +182,12 @@
   v56[2] = v30;
   v55[3] = *MEMORY[0x277CCBEA0];
   v8 = MEMORY[0x277CCD428];
-  v29 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v28 = [v29 features];
-  v27 = [v8 featureFlagIsEnabled:{objc_msgSend(v28, "chamomile")}];
+  mEMORY[0x277CCDD30]3 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features3 = [mEMORY[0x277CCDD30]3 features];
+  v27 = [v8 featureFlagIsEnabled:{objc_msgSend(features3, "chamomile")}];
   v51[0] = v27;
-  v26 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v51[1] = v26;
+  profileIsNotFamilySetupPairingProfile2 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v51[1] = profileIsNotFamilySetupPairingProfile2;
   v25 = [MEMORY[0x277CCD428] featureIsNotRemotelyDisabledWithIdentifier:v3];
   v51[2] = v25;
   v24 = [MEMORY[0x277CCD428] countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v3];
@@ -201,8 +201,8 @@
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:7];
   v56[3] = v10;
   v55[4] = *MEMORY[0x277CCBE60];
-  v11 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v50[0] = v11;
+  profileIsNotFamilySetupPairingProfile3 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v50[0] = profileIsNotFamilySetupPairingProfile3;
   v12 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:v7];
   v50[1] = v12;
   v13 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v3];
@@ -216,8 +216,8 @@
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:5];
   v37 = [v36 initWithRequirementsByContext:v17];
 
-  v18 = [MEMORY[0x277CCD260] localAvailabilityForPeriodicDepressionAndAnxietyAssessmentPrompts];
-  v19 = [a1 _hdmc_availabilityManagerForFeatureIdentifier:v3 profile:v48 availabilityRequirements:v37 localCountrySet:v18];
+  localAvailabilityForPeriodicDepressionAndAnxietyAssessmentPrompts = [MEMORY[0x277CCD260] localAvailabilityForPeriodicDepressionAndAnxietyAssessmentPrompts];
+  v19 = [self _hdmc_availabilityManagerForFeatureIdentifier:v3 profile:v48 availabilityRequirements:v37 localCountrySet:localAvailabilityForPeriodicDepressionAndAnxietyAssessmentPrompts];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -233,9 +233,9 @@
   v32 = [v4 alloc];
   v48[0] = *MEMORY[0x277CCBE00];
   v5 = MEMORY[0x277CCD428];
-  v41 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v40 = [v41 features];
-  v39 = [v5 featureFlagIsEnabled:{objc_msgSend(v40, "chamomile")}];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  v39 = [v5 featureFlagIsEnabled:{objc_msgSend(features, "chamomile")}];
   v47[0] = v39;
   v38 = [MEMORY[0x277CCD428] featureIsNotRemotelyDisabledWithIdentifier:v3];
   v47[1] = v38;
@@ -245,12 +245,12 @@
   v49[0] = v36;
   v48[1] = *MEMORY[0x277CCBE70];
   v6 = MEMORY[0x277CCD428];
-  v35 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v34 = [v35 features];
-  v31 = [v6 featureFlagIsEnabled:{objc_msgSend(v34, "chamomile")}];
+  mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features2 = [mEMORY[0x277CCDD30]2 features];
+  v31 = [v6 featureFlagIsEnabled:{objc_msgSend(features2, "chamomile")}];
   v46[0] = v31;
-  v30 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v46[1] = v30;
+  profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v46[1] = profileIsNotFamilySetupPairingProfile;
   v7 = *MEMORY[0x277CCC238];
   v29 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:*MEMORY[0x277CCC238]];
   v46[2] = v29;
@@ -267,12 +267,12 @@
   v49[2] = v24;
   v48[3] = *MEMORY[0x277CCBEA0];
   v8 = MEMORY[0x277CCD428];
-  v23 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v22 = [v23 features];
-  v9 = [v8 featureFlagIsEnabled:{objc_msgSend(v22, "chamomile")}];
+  mEMORY[0x277CCDD30]3 = [MEMORY[0x277CCDD30] sharedBehavior];
+  features3 = [mEMORY[0x277CCDD30]3 features];
+  v9 = [v8 featureFlagIsEnabled:{objc_msgSend(features3, "chamomile")}];
   v44[0] = v9;
-  v10 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-  v44[1] = v10;
+  profileIsNotFamilySetupPairingProfile2 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+  v44[1] = profileIsNotFamilySetupPairingProfile2;
   v11 = [MEMORY[0x277CCD428] featureIsNotRemotelyDisabledWithIdentifier:v3];
   v44[2] = v11;
   v12 = [MEMORY[0x277CCD428] countryIsSupportedOnLocalDeviceForFeatureWithIdentifier:v3];
@@ -288,8 +288,8 @@
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:4];
   v33 = [v32 initWithRequirementsByContext:v17];
 
-  v18 = [MEMORY[0x277CCD260] localAvailabilityForStateOfMindLoggingPatternEscalations];
-  v19 = [a1 _hdmc_availabilityManagerForFeatureIdentifier:v3 profile:v42 availabilityRequirements:v33 localCountrySet:v18];
+  localAvailabilityForStateOfMindLoggingPatternEscalations = [MEMORY[0x277CCD260] localAvailabilityForStateOfMindLoggingPatternEscalations];
+  v19 = [self _hdmc_availabilityManagerForFeatureIdentifier:v3 profile:v42 availabilityRequirements:v33 localCountrySet:localAvailabilityForStateOfMindLoggingPatternEscalations];
 
   v20 = *MEMORY[0x277D85DE8];
 

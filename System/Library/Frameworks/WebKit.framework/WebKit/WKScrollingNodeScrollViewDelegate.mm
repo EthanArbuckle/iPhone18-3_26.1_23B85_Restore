@@ -1,35 +1,35 @@
 @interface WKScrollingNodeScrollViewDelegate
-- (BOOL)shouldAllowPanGestureRecognizerToReceiveTouchesInScrollView:(id)a3;
-- (WKScrollingNodeScrollViewDelegate)initWithScrollingTreeNodeDelegate:(void *)a3;
-- (id)parentScrollViewForScrollView:(id)a3;
-- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)a3;
-- (void)cancelPointersForGestureRecognizer:(id)a3;
-- (void)scrollView:(id)a3 handleScrollUpdate:(id)a4 completion:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (BOOL)shouldAllowPanGestureRecognizerToReceiveTouchesInScrollView:(id)view;
+- (WKScrollingNodeScrollViewDelegate)initWithScrollingTreeNodeDelegate:(void *)delegate;
+- (id)parentScrollViewForScrollView:(id)view;
+- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)view;
+- (void)cancelPointersForGestureRecognizer:(id)recognizer;
+- (void)scrollView:(id)view handleScrollUpdate:(id)update completion:(id)completion;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation WKScrollingNodeScrollViewDelegate
 
-- (WKScrollingNodeScrollViewDelegate)initWithScrollingTreeNodeDelegate:(void *)a3
+- (WKScrollingNodeScrollViewDelegate)initWithScrollingTreeNodeDelegate:(void *)delegate
 {
   v11.receiver = self;
   v11.super_class = WKScrollingNodeScrollViewDelegate;
   v5 = [(WKScrollingNodeScrollViewDelegate *)&v11 init];
   if (v5)
   {
-    if (!*(a3 + 3))
+    if (!*(delegate + 3))
     {
       v6 = WTF::fastCompactMalloc(0x10);
       *v6 = 1;
-      *(v6 + 8) = a3;
-      v7 = *(a3 + 3);
-      *(a3 + 3) = v6;
+      *(v6 + 8) = delegate;
+      v7 = *(delegate + 3);
+      *(delegate + 3) = v6;
       if (v7)
       {
         if (atomic_fetch_add(v7, 0xFFFFFFFF) == 1)
@@ -40,7 +40,7 @@
       }
     }
 
-    v8 = *(a3 + 3);
+    v8 = *(delegate + 3);
     atomic_fetch_add(v8, 1u);
     m_ptr = v5->_scrollingTreeNodeDelegate.m_impl.m_ptr;
     v5->_scrollingTreeNodeDelegate.m_impl.m_ptr = v8;
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -63,7 +63,7 @@
     if (v4)
     {
       ++*(v4 + 32);
-      v7 = WTF::dynamic_objc_cast<WKBaseScrollView>(a3);
+      v7 = WTF::dynamic_objc_cast<WKBaseScrollView>(scroll);
       v8 = v7;
       if (v7)
       {
@@ -71,7 +71,7 @@
         [v8 updateInteractiveScrollVelocity];
       }
 
-      [a3 contentOffset];
+      [scroll contentOffset];
       v13.x = v10;
       v13.y = v11;
       WebCore::FloatPoint::FloatPoint(v14, &v13);
@@ -90,7 +90,7 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -100,7 +100,7 @@
     {
       ++*(v4 + 32);
       self->_inUserInteraction = 1;
-      if ([objc_msgSend(a3 "panGestureRecognizer")] == 1)
+      if ([objc_msgSend(dragging "panGestureRecognizer")] == 1)
       {
         WebCore::ScrollingTreeScrollingNodeDelegate::scrollingTree(&v16, v4);
         v5 = v16;
@@ -145,7 +145,7 @@
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -154,7 +154,7 @@
     if (v6)
     {
       ++*(v6 + 32);
-      if (([a3 isZooming] & 1) == 0)
+      if (([dragging isZooming] & 1) == 0)
       {
         v10 = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
         if (!v10 || (v11 = *(v10 + 1)) == 0)
@@ -177,18 +177,18 @@
 
         if (v13)
         {
-          v14 = [WTF::dynamic_objc_cast<WKBaseScrollView>(a3) axesToPreventMomentumScrolling];
-          v15 = v14;
-          if (v12 & 8) == 0 || (v14)
+          axesToPreventMomentumScrolling = [WTF::dynamic_objc_cast<WKBaseScrollView>(dragging) axesToPreventMomentumScrolling];
+          v15 = axesToPreventMomentumScrolling;
+          if (v12 & 8) == 0 || (axesToPreventMomentumScrolling)
           {
-            [a3 contentOffset];
-            a5->x = v16;
+            [dragging contentOffset];
+            offset->x = v16;
           }
 
           if ((v12 & 0x10) == 0 || (v15 & 2) != 0)
           {
-            [a3 contentOffset];
-            a5->y = v17;
+            [dragging contentOffset];
+            offset->y = v17;
           }
         }
       }
@@ -203,9 +203,9 @@
       v71 = 0;
       WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebCore::ScrollingTreeNode,(WTF::DestructionThread)0>::deref(v21 + 1, v22);
       v23 = WebCore::ScrollingTreeScrollingNode::currentVerticalSnapPointIndex(v21);
-      [a3 bounds];
+      [dragging bounds];
       Width = CGRectGetWidth(v76);
-      [a3 bounds];
+      [dragging bounds];
       Height = CGRectGetHeight(v77);
       v26 = Width;
       *&Height = Height;
@@ -230,8 +230,8 @@
       v31 = WebCore::ScrollingTreeScrollingNode::snapOffsetsInfo(v29);
       if (*(v31 + 20))
       {
-        WebCore::FloatPoint::FloatPoint(&v75, a5);
-        [a3 contentOffset];
+        WebCore::FloatPoint::FloatPoint(&v75, offset);
+        [dragging contentOffset];
         v32 = WebCore::ScrollSnapOffsetsInfo<float,WebCore::FloatRect>::closestSnapOffset<WebCore::FloatSize,WebCore::FloatPoint>();
         v33 = *&v32;
         v71 = v32;
@@ -241,21 +241,21 @@
         v75 = 0;
         WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebCore::ScrollingTreeNode,(WTF::DestructionThread)0>::deref((v35 + 8), v36);
         WebCore::ScrollingTreeScrollingNode::setCurrentHorizontalSnapPointIndex();
-        x = a5->x;
-        if (a5->x >= 0.0)
+        x = offset->x;
+        if (offset->x >= 0.0)
         {
-          [a3 contentSize];
+          [dragging contentSize];
           if (x <= v38)
           {
-            a5->x = v33;
+            offset->x = v33;
           }
         }
       }
 
       if (*(v31 + 36))
       {
-        WebCore::FloatPoint::FloatPoint(&v75, a5);
-        [a3 contentOffset];
+        WebCore::FloatPoint::FloatPoint(&v75, offset);
+        [dragging contentOffset];
         v39 = WebCore::ScrollSnapOffsetsInfo<float,WebCore::FloatRect>::closestSnapOffset<WebCore::FloatSize,WebCore::FloatPoint>();
         v40 = *&v39;
         v71 = v39;
@@ -265,13 +265,13 @@
         v75 = 0;
         WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebCore::ScrollingTreeNode,(WTF::DestructionThread)0>::deref((v42 + 8), v43);
         WebCore::ScrollingTreeScrollingNode::setCurrentVerticalSnapPointIndex();
-        y = a5->y;
+        y = offset->y;
         if (y >= 0.0)
         {
-          [a3 contentSize];
+          [dragging contentSize];
           if (y <= v45)
           {
-            a5->y = v40;
+            offset->y = v40;
           }
         }
       }
@@ -377,7 +377,7 @@ LABEL_52:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -387,10 +387,10 @@ LABEL_52:
     {
       v7 = *(v5 + 32) + 1;
       *(v5 + 32) = v7;
-      if (self->_inUserInteraction && !a4)
+      if (self->_inUserInteraction && !decelerate)
       {
         self->_inUserInteraction = 0;
-        [a3 contentOffset];
+        [dragging contentOffset];
         v10.x = v8;
         v10.y = v9;
         WebCore::FloatPoint::FloatPoint(v11, &v10);
@@ -412,7 +412,7 @@ LABEL_52:
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -425,7 +425,7 @@ LABEL_52:
       if (self->_inUserInteraction)
       {
         self->_inUserInteraction = 0;
-        [a3 contentOffset];
+        [decelerating contentOffset];
         v9.x = v7;
         v9.y = v8;
         WebCore::FloatPoint::FloatPoint(v10, &v9);
@@ -447,7 +447,7 @@ LABEL_52:
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -471,14 +471,14 @@ LABEL_52:
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v5 = [a3 pinchGestureRecognizer];
+  pinchGestureRecognizer = [zooming pinchGestureRecognizer];
 
-  [(WKScrollingNodeScrollViewDelegate *)self cancelPointersForGestureRecognizer:v5];
+  [(WKScrollingNodeScrollViewDelegate *)self cancelPointersForGestureRecognizer:pinchGestureRecognizer];
 }
 
-- (void)cancelPointersForGestureRecognizer:(id)a3
+- (void)cancelPointersForGestureRecognizer:(id)recognizer
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (!m_ptr)
@@ -540,7 +540,7 @@ LABEL_19:
     if (v14)
     {
       (*(*v14 + 1712))(v14);
-      (*(*v14 + 1872))(v14, a3);
+      (*(*v14 + 1872))(v14, recognizer);
       (*(*v14 + 1720))(v14);
     }
   }
@@ -556,7 +556,7 @@ LABEL_14:
   *(v4 + 8) = v15 - 1;
 }
 
-- (BOOL)shouldAllowPanGestureRecognizerToReceiveTouchesInScrollView:(id)a3
+- (BOOL)shouldAllowPanGestureRecognizerToReceiveTouchesInScrollView:(id)view
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (m_ptr)
@@ -656,7 +656,7 @@ LABEL_20:
   return v9;
 }
 
-- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)a3
+- (unint64_t)axesToPreventScrollingForPanGestureInScrollView:(id)view
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (!m_ptr)
@@ -671,7 +671,7 @@ LABEL_20:
   }
 
   ++*(v4 + 32);
-  v7 = [a3 panGestureRecognizer];
+  panGestureRecognizer = [view panGestureRecognizer];
   WebCore::ScrollingTreeScrollingNodeDelegate::scrollingTree(&v28, v4);
   if (!(*(*v28 + 32))(v28))
   {
@@ -711,7 +711,7 @@ LABEL_20:
         if (v17)
         {
           (*(*v17 + 1712))(v17);
-          v18 = (*(*v17 + 1880))(v17, v7);
+          v18 = (*(*v17 + 1880))(v17, panGestureRecognizer);
           if ((v18 & 0x100000000) != 0)
           {
             v29 = v18;
@@ -773,10 +773,10 @@ LABEL_22:
         v23 = v12;
       }
 
-      [v7 translationInView:{a3, v28}];
+      [panGestureRecognizer translationInView:{view, v28}];
       if ((v22 & 8) != 0 && fabs(v24) > 2.22044605e-16 || (v22 & 0x10) != 0 && (v12 = (v22 & 8) == 0, fabs(v25) > 2.22044605e-16))
       {
-        [(WKScrollingNodeScrollViewDelegate *)self cancelPointersForGestureRecognizer:v7];
+        [(WKScrollingNodeScrollViewDelegate *)self cancelPointersForGestureRecognizer:panGestureRecognizer];
         v12 = v23;
       }
 
@@ -786,7 +786,7 @@ LABEL_22:
 
   else
   {
-    [(WKScrollingNodeScrollViewDelegate *)self cancelPointersForGestureRecognizer:v7, v28];
+    [(WKScrollingNodeScrollViewDelegate *)self cancelPointersForGestureRecognizer:panGestureRecognizer, v28];
   }
 
   v12 = 0;
@@ -802,7 +802,7 @@ LABEL_35:
   return v12;
 }
 
-- (id)parentScrollViewForScrollView:(id)a3
+- (id)parentScrollViewForScrollView:(id)view
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (!m_ptr)
@@ -844,7 +844,7 @@ LABEL_35:
     WTF::ThreadSafeRefCountedAndCanMakeThreadSafeWeakPtr<WebCore::ScrollingTree,(WTF::DestructionThread)0>::deref((v12 + 8), v11);
   }
 
-  if (v9 && (v13 = WebKit::RemoteScrollingCoordinatorProxy::layerTreeHost(v9)) != 0 && (ActingScrollParent = WebKit::findActingScrollParent(a3, v13, v14)) != 0)
+  if (v9 && (v13 = WebKit::RemoteScrollingCoordinatorProxy::layerTreeHost(v9)) != 0 && (ActingScrollParent = WebKit::findActingScrollParent(view, v13, v14)) != 0)
   {
     objc_opt_class();
     result = (objc_opt_isKindOfClass() & 1) != 0 ? ActingScrollParent : 0;
@@ -867,7 +867,7 @@ LABEL_19:
   return result;
 }
 
-- (void)scrollView:(id)a3 handleScrollUpdate:(id)a4 completion:(id)a5
+- (void)scrollView:(id)view handleScrollUpdate:(id)update completion:(id)completion
 {
   m_ptr = self->_scrollingTreeNodeDelegate.m_impl.m_ptr;
   if (!m_ptr)
@@ -929,7 +929,7 @@ LABEL_19:
     if (v18)
     {
       (*(*v18 + 1712))(v18);
-      (*(*v18 + 1232))(v18, a3, a4, a5);
+      (*(*v18 + 1232))(v18, view, update, completion);
       (*(*v18 + 1720))(v18);
     }
   }

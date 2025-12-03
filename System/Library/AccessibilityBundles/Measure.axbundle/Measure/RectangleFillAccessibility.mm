@@ -1,26 +1,26 @@
 @interface RectangleFillAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setState:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation RectangleFillAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.RectangleFill" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Measure.RectangleFill" hasInstanceMethod:@"setState:" withFullSignature:{"v", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.RectangleFill" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Measure.RectangleFill" hasInstanceMethod:@"setState:" withFullSignature:{"v", "q", 0}];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5 = [(RectangleFillAccessibility *)self safeIntegerForKey:@"state"];
   v9.receiver = self;
   v9.super_class = RectangleFillAccessibility;
-  [(RectangleFillAccessibility *)&v9 setState:a3];
-  if (v5 != a3)
+  [(RectangleFillAccessibility *)&v9 setState:state];
+  if (v5 != state)
   {
-    switch(a3)
+    switch(state)
     {
       case 1:
         v6 = @"RECTANGLE_REMOVED";

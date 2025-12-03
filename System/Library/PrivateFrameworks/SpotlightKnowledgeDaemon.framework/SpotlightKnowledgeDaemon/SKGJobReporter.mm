@@ -1,27 +1,27 @@
 @interface SKGJobReporter
-- (SKGJobReporter)initWithVerbosity:(int)a3;
-- (id)extractionReportForProcessor:(id)a3 bundles:(id)a4 attributes:(id)a5;
-- (id)loggingReportForProcessor:(id)a3 bundles:(id)a4 attributes:(id)a5;
-- (id)pipelineReportForProcessor:(id)a3 bundles:(id)a4 attributes:(id)a5;
+- (SKGJobReporter)initWithVerbosity:(int)verbosity;
+- (id)extractionReportForProcessor:(id)processor bundles:(id)bundles attributes:(id)attributes;
+- (id)loggingReportForProcessor:(id)processor bundles:(id)bundles attributes:(id)attributes;
+- (id)pipelineReportForProcessor:(id)processor bundles:(id)bundles attributes:(id)attributes;
 - (id)reports;
-- (void)_addValue:(id)a3 attribute:(id)a4 uniqueID:(id)a5 bundleID:(id)a6;
-- (void)addAttribute:(id)a3 bundleID:(id)a4;
-- (void)addFromRecord:(id)a3 bundleID:(id)a4;
+- (void)_addValue:(id)value attribute:(id)attribute uniqueID:(id)d bundleID:(id)iD;
+- (void)addAttribute:(id)attribute bundleID:(id)d;
+- (void)addFromRecord:(id)record bundleID:(id)d;
 - (void)clear;
-- (void)enableCountingAttribute:(id)a3 message:(id)a4 processor:(id)a5;
-- (void)enableLoggingAttribute:(id)a3 message:(id)a4 processor:(id)a5;
-- (void)enableReportingAttribute:(id)a3 message:(id)a4 processor:(id)a5;
-- (void)logAttribute:(id)a3 value:(id)a4 uniqueID:(id)a5 bundleID:(id)a6;
-- (void)logFromRecord:(id)a3 uniqueID:(id)a4 bundleID:(id)a5;
+- (void)enableCountingAttribute:(id)attribute message:(id)message processor:(id)processor;
+- (void)enableLoggingAttribute:(id)attribute message:(id)message processor:(id)processor;
+- (void)enableReportingAttribute:(id)attribute message:(id)message processor:(id)processor;
+- (void)logAttribute:(id)attribute value:(id)value uniqueID:(id)d bundleID:(id)iD;
+- (void)logFromRecord:(id)record uniqueID:(id)d bundleID:(id)iD;
 @end
 
 @implementation SKGJobReporter
 
-- (void)enableCountingAttribute:(id)a3 message:(id)a4 processor:(id)a5
+- (void)enableCountingAttribute:(id)attribute message:(id)message processor:(id)processor
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  attributeCopy = attribute;
+  messageCopy = message;
+  processorCopy = processor;
   countingPairs = self->_countingPairs;
   if (!countingPairs)
   {
@@ -32,26 +32,26 @@
     countingPairs = self->_countingPairs;
   }
 
-  v13 = [(NSMutableDictionary *)countingPairs objectForKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)countingPairs objectForKeyedSubscript:processorCopy];
 
   if (!v13)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_countingPairs setObject:v14 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_countingPairs setObject:v14 forKeyedSubscript:processorCopy];
   }
 
-  v15 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:v9];
-  [v15 setObject:v8 forKey:v16];
+  v15 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:processorCopy];
+  [v15 setObject:messageCopy forKey:attributeCopy];
 
-  [(NSMutableSet *)self->_countingAttributes addObject:v16];
-  [(NSMutableSet *)self->_fetchAttributes addObject:v16];
+  [(NSMutableSet *)self->_countingAttributes addObject:attributeCopy];
+  [(NSMutableSet *)self->_fetchAttributes addObject:attributeCopy];
 }
 
-- (void)enableReportingAttribute:(id)a3 message:(id)a4 processor:(id)a5
+- (void)enableReportingAttribute:(id)attribute message:(id)message processor:(id)processor
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  attributeCopy = attribute;
+  messageCopy = message;
+  processorCopy = processor;
   reportingPairs = self->_reportingPairs;
   if (!reportingPairs)
   {
@@ -62,26 +62,26 @@
     reportingPairs = self->_reportingPairs;
   }
 
-  v13 = [(NSMutableDictionary *)reportingPairs objectForKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)reportingPairs objectForKeyedSubscript:processorCopy];
 
   if (!v13)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_reportingPairs setObject:v14 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_reportingPairs setObject:v14 forKeyedSubscript:processorCopy];
   }
 
-  v15 = [(NSMutableDictionary *)self->_reportingPairs objectForKeyedSubscript:v9];
-  [v15 setObject:v8 forKey:v16];
+  v15 = [(NSMutableDictionary *)self->_reportingPairs objectForKeyedSubscript:processorCopy];
+  [v15 setObject:messageCopy forKey:attributeCopy];
 
-  [(NSMutableSet *)self->_reportingAttributes addObject:v16];
-  [(NSMutableSet *)self->_fetchAttributes addObject:v16];
+  [(NSMutableSet *)self->_reportingAttributes addObject:attributeCopy];
+  [(NSMutableSet *)self->_fetchAttributes addObject:attributeCopy];
 }
 
-- (void)enableLoggingAttribute:(id)a3 message:(id)a4 processor:(id)a5
+- (void)enableLoggingAttribute:(id)attribute message:(id)message processor:(id)processor
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  attributeCopy = attribute;
+  messageCopy = message;
+  processorCopy = processor;
   loggingPairs = self->_loggingPairs;
   if (!loggingPairs)
   {
@@ -92,22 +92,22 @@
     loggingPairs = self->_loggingPairs;
   }
 
-  v13 = [(NSMutableDictionary *)loggingPairs objectForKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)loggingPairs objectForKeyedSubscript:processorCopy];
 
   if (!v13)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_loggingPairs setObject:v14 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_loggingPairs setObject:v14 forKeyedSubscript:processorCopy];
   }
 
-  v15 = [(NSMutableDictionary *)self->_loggingPairs objectForKeyedSubscript:v9];
-  [v15 setObject:v8 forKey:v16];
+  v15 = [(NSMutableDictionary *)self->_loggingPairs objectForKeyedSubscript:processorCopy];
+  [v15 setObject:messageCopy forKey:attributeCopy];
 
-  [(NSMutableSet *)self->_loggingAttributes addObject:v16];
-  [(NSMutableSet *)self->_fetchAttributes addObject:v16];
+  [(NSMutableSet *)self->_loggingAttributes addObject:attributeCopy];
+  [(NSMutableSet *)self->_fetchAttributes addObject:attributeCopy];
 }
 
-- (SKGJobReporter)initWithVerbosity:(int)a3
+- (SKGJobReporter)initWithVerbosity:(int)verbosity
 {
   v30.receiver = self;
   v30.super_class = SKGJobReporter;
@@ -115,7 +115,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_verbosity = a3;
+    v4->_verbosity = verbosity;
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     counter = v5->_counter;
     v5->_counter = v6;
@@ -149,38 +149,38 @@
     v5->_fetchAttributes = v20;
 
     v22 = MEMORY[0x277CCACA8];
-    v23 = [MEMORY[0x277CCAD78] UUID];
-    v24 = [v23 description];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v24 = [uUID description];
     v25 = [v22 stringWithFormat:@"/tmp/skg/reports/%@", v24];
     outputRoot = v5->_outputRoot;
     v5->_outputRoot = v25;
 
-    v27 = [MEMORY[0x277CCAA00] defaultManager];
-    LOBYTE(v23) = [v27 fileExistsAtPath:v5->_outputRoot];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    LOBYTE(uUID) = [defaultManager fileExistsAtPath:v5->_outputRoot];
 
-    if ((v23 & 1) == 0)
+    if ((uUID & 1) == 0)
     {
-      v28 = [MEMORY[0x277CCAA00] defaultManager];
-      [v28 createDirectoryAtPath:v5->_outputRoot withIntermediateDirectories:1 attributes:MEMORY[0x277CBEC10] error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 createDirectoryAtPath:v5->_outputRoot withIntermediateDirectories:1 attributes:MEMORY[0x277CBEC10] error:0];
     }
   }
 
   return v5;
 }
 
-- (void)addAttribute:(id)a3 bundleID:(id)a4
+- (void)addAttribute:(id)attribute bundleID:(id)d
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(SKGJobReporter *)self countingAttributes];
-  if ([v7 containsObject:v13])
+  attributeCopy = attribute;
+  dCopy = d;
+  countingAttributes = [(SKGJobReporter *)self countingAttributes];
+  if ([countingAttributes containsObject:attributeCopy])
   {
   }
 
   else
   {
-    v8 = [(SKGJobReporter *)self reportingAttributes];
-    v9 = [v8 containsObject:v13];
+    reportingAttributes = [(SKGJobReporter *)self reportingAttributes];
+    v9 = [reportingAttributes containsObject:attributeCopy];
 
     if (!v9)
     {
@@ -188,31 +188,31 @@
     }
   }
 
-  v10 = [(NSMutableDictionary *)self->_counter objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)self->_counter objectForKeyedSubscript:dCopy];
 
   if (!v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277CCA940]);
-    [(NSMutableDictionary *)self->_counter setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_counter setObject:v11 forKeyedSubscript:dCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_counter objectForKeyedSubscript:v6];
-  [v12 addObject:v13];
+  v12 = [(NSMutableDictionary *)self->_counter objectForKeyedSubscript:dCopy];
+  [v12 addObject:attributeCopy];
 
 LABEL_7:
 }
 
-- (void)addFromRecord:(id)a3 bundleID:(id)a4
+- (void)addFromRecord:(id)record bundleID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(SKGJobReporter *)self fetchAttributes];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  fetchAttributes = [(SKGJobReporter *)self fetchAttributes];
+  v9 = [fetchAttributes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -224,11 +224,11 @@ LABEL_7:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(fetchAttributes);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v6 objectForKeyedSubscript:v14];
+        v15 = [recordCopy objectForKeyedSubscript:v14];
         v16 = v15;
         if (v15)
         {
@@ -242,11 +242,11 @@ LABEL_7:
 
         if (!v17)
         {
-          [(SKGJobReporter *)self addAttribute:v14 bundleID:v7];
+          [(SKGJobReporter *)self addAttribute:v14 bundleID:dCopy];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [fetchAttributes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -255,26 +255,26 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addValue:(id)a3 attribute:(id)a4 uniqueID:(id)a5 bundleID:(id)a6
+- (void)_addValue:(id)value attribute:(id)attribute uniqueID:(id)d bundleID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  attributeCopy = attribute;
+  dCopy = d;
+  iDCopy = iD;
   context = objc_autoreleasePoolPush();
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", self->_outputRoot, v13];
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [v15 fileExistsAtPath:v14];
+  iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", self->_outputRoot, iDCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v16 = [defaultManager fileExistsAtPath:iDCopy];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    [v17 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtPath:iDCopy withIntermediateDirectories:1 attributes:0 error:0];
   }
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.txt", v14, v11];
+  attributeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.txt", iDCopy, attributeCopy];
   v29 = 0;
-  v19 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v18 encoding:4 error:&v29];
+  v19 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:attributeCopy encoding:4 error:&v29];
   v20 = v29;
   if (v19)
   {
@@ -286,34 +286,34 @@ LABEL_7:
     v21 = &stru_2846CE8D8;
   }
 
-  [(__CFString *)v21 stringByAppendingFormat:@"%@;=;%@\n", v12, v10];
-  v22 = v26 = v10;
+  [(__CFString *)v21 stringByAppendingFormat:@"%@;=;%@\n", dCopy, valueCopy];
+  v22 = v26 = valueCopy;
   v28 = v20;
-  [v22 writeToFile:v18 atomically:1 encoding:4 error:&v28];
+  [v22 writeToFile:attributeCopy atomically:1 encoding:4 error:&v28];
   v23 = v28;
 
-  v24 = [(NSMutableDictionary *)self->_counter objectForKeyedSubscript:v13];
+  v24 = [(NSMutableDictionary *)self->_counter objectForKeyedSubscript:iDCopy];
 
   if (!v24)
   {
     v25 = objc_alloc_init(MEMORY[0x277CCA940]);
-    [(NSMutableDictionary *)self->_counter setObject:v25 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_counter setObject:v25 forKeyedSubscript:iDCopy];
   }
 
   objc_autoreleasePoolPop(context);
 }
 
-- (void)logAttribute:(id)a3 value:(id)a4 uniqueID:(id)a5 bundleID:(id)a6
+- (void)logAttribute:(id)attribute value:(id)value uniqueID:(id)d bundleID:(id)iD
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SKGJobReporter *)self loggingAttributes];
-  v15 = [v14 containsObject:v10];
+  attributeCopy = attribute;
+  valueCopy = value;
+  dCopy = d;
+  iDCopy = iD;
+  loggingAttributes = [(SKGJobReporter *)self loggingAttributes];
+  v15 = [loggingAttributes containsObject:attributeCopy];
 
-  if (v15 && v11 && *MEMORY[0x277CBEEE8] != v11)
+  if (v15 && valueCopy && *MEMORY[0x277CBEEE8] != valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -322,7 +322,7 @@ LABEL_7:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v16 = v11;
+      v16 = valueCopy;
       v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v17)
       {
@@ -338,7 +338,7 @@ LABEL_7:
               objc_enumerationMutation(v16);
             }
 
-            [(SKGJobReporter *)self _addValue:*(*(&v22 + 1) + 8 * v20++) attribute:v10 uniqueID:v12 bundleID:v13, v22];
+            [(SKGJobReporter *)self _addValue:*(*(&v22 + 1) + 8 * v20++) attribute:attributeCopy uniqueID:dCopy bundleID:iDCopy, v22];
           }
 
           while (v18 != v20);
@@ -351,25 +351,25 @@ LABEL_7:
 
     else
     {
-      [(SKGJobReporter *)self _addValue:v11 attribute:v10 uniqueID:v12 bundleID:v13];
+      [(SKGJobReporter *)self _addValue:valueCopy attribute:attributeCopy uniqueID:dCopy bundleID:iDCopy];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logFromRecord:(id)a3 uniqueID:(id)a4 bundleID:(id)a5
+- (void)logFromRecord:(id)record uniqueID:(id)d bundleID:(id)iD
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  dCopy = d;
+  iDCopy = iD;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [(SKGJobReporter *)self loggingAttributes];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  loggingAttributes = [(SKGJobReporter *)self loggingAttributes];
+  v12 = [loggingAttributes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -380,18 +380,18 @@ LABEL_7:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(loggingAttributes);
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        v17 = [v8 objectForKeyedSubscript:v16];
+        v17 = [recordCopy objectForKeyedSubscript:v16];
         if (v17)
         {
-          [(SKGJobReporter *)self logAttribute:v16 value:v17 uniqueID:v9 bundleID:v10];
+          [(SKGJobReporter *)self logAttribute:v16 value:v17 uniqueID:dCopy bundleID:iDCopy];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [loggingAttributes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v13);
@@ -400,13 +400,13 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pipelineReportForProcessor:(id)a3 bundles:(id)a4 attributes:(id)a5
+- (id)pipelineReportForProcessor:(id)processor bundles:(id)bundles attributes:(id)attributes
 {
   v101 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v73 = a5;
-  v10 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:v8];
+  processorCopy = processor;
+  bundlesCopy = bundles;
+  attributesCopy = attributes;
+  v10 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:processorCopy];
   v11 = [v10 count];
 
   if (v11)
@@ -418,10 +418,10 @@ LABEL_7:
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v69 = v9;
-    obj = v9;
-    v79 = v8;
-    v82 = self;
+    v69 = bundlesCopy;
+    obj = bundlesCopy;
+    v79 = processorCopy;
+    selfCopy = self;
     v74 = [obj countByEnumeratingWithState:&v94 objects:v100 count:16];
     if (v74)
     {
@@ -463,7 +463,7 @@ LABEL_7:
           v91 = 0u;
           v92 = 0u;
           v93 = 0u;
-          v83 = v73;
+          v83 = attributesCopy;
           v19 = [v83 countByEnumeratingWithState:&v90 objects:v99 count:16];
           if (v19)
           {
@@ -481,7 +481,7 @@ LABEL_7:
                 }
 
                 v24 = *(*(&v90 + 1) + 8 * i);
-                v25 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:v8];
+                v25 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:processorCopy];
                 v26 = [v25 objectForKeyedSubscript:v24];
 
                 if (v26)
@@ -501,7 +501,7 @@ LABEL_7:
                     v32 = v31;
 
                     v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v28 + objc_msgSend(v32, "unsignedIntValue")}];
-                    self = v82;
+                    self = selfCopy;
                     [v80 setObject:v33 forKeyedSubscript:v24];
 
                     v34 = MEMORY[0x277CCACA8];
@@ -512,7 +512,7 @@ LABEL_7:
                     [v12 addObject:v36];
                     v21 += v28;
                     v85 = v36;
-                    v8 = v79;
+                    processorCopy = v79;
                   }
                 }
               }
@@ -573,7 +573,7 @@ LABEL_7:
       v89 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v45 = v73;
+      v45 = attributesCopy;
       v46 = [v45 countByEnumeratingWithState:&v86 objects:v98 count:16];
       if (v46)
       {
@@ -590,7 +590,7 @@ LABEL_7:
             }
 
             v51 = *(*(&v86 + 1) + 8 * j);
-            v52 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:v8];
+            v52 = [(NSMutableDictionary *)self->_countingPairs objectForKeyedSubscript:processorCopy];
             v53 = [v52 objectForKeyedSubscript:v51];
 
             if (v53)
@@ -608,14 +608,14 @@ LABEL_7:
               v58 = [MEMORY[0x277CCACA8] stringWithFormat:@" %@: %@", v53, v57];
 
               [v44 addObject:v58];
-              v59 = [v57 unsignedIntValue];
+              unsignedIntValue = [v57 unsignedIntValue];
 
-              v8 = v79;
-              v48 += v59;
+              processorCopy = v79;
+              v48 += unsignedIntValue;
               v85 = v58;
             }
 
-            self = v82;
+            self = selfCopy;
           }
 
           v47 = [v45 countByEnumeratingWithState:&v86 objects:v98 count:16];
@@ -648,7 +648,7 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(context);
-    v9 = v69;
+    bundlesCopy = v69;
     if ([v43 count])
     {
       v42 = [v43 componentsJoinedByString:@"\n"];
@@ -670,26 +670,26 @@ LABEL_7:
   return v42;
 }
 
-- (id)extractionReportForProcessor:(id)a3 bundles:(id)a4 attributes:(id)a5
+- (id)extractionReportForProcessor:(id)processor bundles:(id)bundles attributes:(id)attributes
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v45 = a5;
-  v52 = v8;
-  v10 = [(NSMutableDictionary *)self->_reportingPairs objectForKeyedSubscript:v8];
+  processorCopy = processor;
+  bundlesCopy = bundles;
+  attributesCopy = attributes;
+  v52 = processorCopy;
+  v10 = [(NSMutableDictionary *)self->_reportingPairs objectForKeyedSubscript:processorCopy];
   v11 = [v10 count];
 
   if (v11)
   {
     v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
     context = objc_autoreleasePoolPush();
-    v41 = v9;
+    v41 = bundlesCopy;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = v9;
+    obj = bundlesCopy;
     v46 = [obj countByEnumeratingWithState:&v57 objects:v62 count:16];
     v12 = 0;
     if (v46)
@@ -731,7 +731,7 @@ LABEL_7:
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v21 = v45;
+          v21 = attributesCopy;
           v22 = [v21 countByEnumeratingWithState:&v53 objects:v61 count:16];
           if (v22)
           {
@@ -777,10 +777,10 @@ LABEL_7:
             v33 = MEMORY[0x277CCACA8];
             v34 = [v51 componentsJoinedByString:{@", "}];
             v35 = v49;
-            v36 = [v33 stringWithFormat:@"%@%@%@", v48, v49, v34, context];
+            context = [v33 stringWithFormat:@"%@%@%@", v48, v49, v34, context];
 
-            [v43 addObject:v36];
-            v47 = v36;
+            [v43 addObject:context];
+            v47 = context;
           }
 
           else
@@ -816,7 +816,7 @@ LABEL_7:
       v37 = 0;
     }
 
-    v9 = v41;
+    bundlesCopy = v41;
   }
 
   else
@@ -829,14 +829,14 @@ LABEL_7:
   return v37;
 }
 
-- (id)loggingReportForProcessor:(id)a3 bundles:(id)a4 attributes:(id)a5
+- (id)loggingReportForProcessor:(id)processor bundles:(id)bundles attributes:(id)attributes
 {
   v225 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v126 = a4;
-  v136 = a5;
-  v159 = v8;
-  v9 = [(NSMutableDictionary *)self->_loggingPairs objectForKeyedSubscript:v8];
+  processorCopy = processor;
+  bundlesCopy = bundles;
+  attributesCopy = attributes;
+  v159 = processorCopy;
+  v9 = [(NSMutableDictionary *)self->_loggingPairs objectForKeyedSubscript:processorCopy];
   v10 = [v9 count];
 
   if (v10)
@@ -845,7 +845,7 @@ LABEL_7:
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     verbosity = self->_verbosity;
     v160 = v12;
-    v158 = self;
+    selfCopy = self;
     switch(verbosity)
     {
       case 4:
@@ -853,7 +853,7 @@ LABEL_7:
         v180 = 0u;
         v177 = 0u;
         v178 = 0u;
-        v138 = v126;
+        v138 = bundlesCopy;
         v131 = [v138 countByEnumeratingWithState:&v177 objects:v216 count:16];
         if (v131)
         {
@@ -876,7 +876,7 @@ LABEL_7:
               v174 = 0u;
               v175 = 0u;
               v176 = 0u;
-              v146 = v136;
+              v146 = attributesCopy;
               v52 = [v146 countByEnumeratingWithState:&v173 objects:v215 count:16];
               if (v52)
               {
@@ -901,8 +901,8 @@ LABEL_7:
                     if (v58)
                     {
                       v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@.txt", self->_outputRoot, v162, v56];
-                      v60 = [*(v50 + 2560) defaultManager];
-                      v61 = [v60 fileExistsAtPath:v59];
+                      defaultManager = [*(v50 + 2560) defaultManager];
+                      v61 = [defaultManager fileExistsAtPath:v59];
 
                       if (v61)
                       {
@@ -931,18 +931,18 @@ LABEL_7:
                               }
 
                               v69 = [*(*(&v169 + 1) + 8 * i) componentsSeparatedByString:@"=;"];;
-                              v70 = [v69 firstObject];
-                              v71 = [v69 lastObject];
-                              v72 = [v62 objectForKeyedSubscript:v70];
+                              firstObject = [v69 firstObject];
+                              lastObject = [v69 lastObject];
+                              v72 = [v62 objectForKeyedSubscript:firstObject];
 
                               if (!v72)
                               {
                                 v73 = objc_alloc_init(MEMORY[0x277CBEB58]);
-                                [v62 setObject:v73 forKeyedSubscript:v70];
+                                [v62 setObject:v73 forKeyedSubscript:firstObject];
                               }
 
-                              v74 = [v62 objectForKeyedSubscript:v70];
-                              [v74 addObject:v71];
+                              v74 = [v62 objectForKeyedSubscript:firstObject];
+                              [v74 addObject:lastObject];
                             }
 
                             v66 = [v64 countByEnumeratingWithState:&v169 objects:v214 count:16];
@@ -978,8 +978,8 @@ LABEL_7:
                               {
                                 v83 = MEMORY[0x277CCACA8];
                                 v84 = [v75 objectForKeyedSubscript:v56];
-                                v85 = [v84 allObjects];
-                                v86 = [v85 componentsJoinedByString:@"\n\t\t"];
+                                allObjects = [v84 allObjects];
+                                v86 = [allObjects componentsJoinedByString:@"\n\t\t"];
                                 v87 = [v83 stringWithFormat:@"%@: %@:\n\t%@:\n\t\t%@", v162, v80, v56, v86];
 
                                 [v160 addObject:v87];
@@ -993,7 +993,7 @@ LABEL_7:
                         }
 
                         v55 = v155;
-                        self = v158;
+                        self = selfCopy;
                         v50 = 0x277CCA000;
                         v54 = v140;
                         v53 = v143;
@@ -1028,7 +1028,7 @@ LABEL_7:
         v196 = 0u;
         v193 = 0u;
         v194 = 0u;
-        v138 = v126;
+        v138 = bundlesCopy;
         v132 = [v138 countByEnumeratingWithState:&v193 objects:v220 count:16];
         if (v132)
         {
@@ -1051,7 +1051,7 @@ LABEL_7:
               v190 = 0u;
               v191 = 0u;
               v192 = 0u;
-              v150 = v136;
+              v150 = attributesCopy;
               v91 = [v150 countByEnumeratingWithState:&v189 objects:v219 count:16];
               if (v91)
               {
@@ -1071,14 +1071,14 @@ LABEL_7:
                     }
 
                     v95 = *(*(&v189 + 1) + 8 * v94);
-                    v96 = [(NSMutableDictionary *)v158->_loggingPairs objectForKeyedSubscript:v159];
+                    v96 = [(NSMutableDictionary *)selfCopy->_loggingPairs objectForKeyedSubscript:v159];
                     v97 = [v96 objectForKeyedSubscript:v95];
 
                     if (v97)
                     {
-                      v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@.txt", v158->_outputRoot, v89, v95];
-                      v99 = [MEMORY[0x277CCAA00] defaultManager];
-                      v100 = [v99 fileExistsAtPath:v98];
+                      v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@.txt", selfCopy->_outputRoot, v89, v95];
+                      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+                      v100 = [defaultManager2 fileExistsAtPath:v98];
 
                       if (v100)
                       {
@@ -1106,7 +1106,7 @@ LABEL_7:
                               }
 
                               v107 = [*(*(&v185 + 1) + 8 * k) componentsSeparatedByString:@"=;"];;
-                              v108 = [v107 lastObject];
+                              lastObject2 = [v107 lastObject];
                               v109 = [v90 objectForKeyedSubscript:v95];
 
                               if (!v109)
@@ -1116,7 +1116,7 @@ LABEL_7:
                               }
 
                               v111 = [v90 objectForKeyedSubscript:v95];
-                              [v111 addObject:v108];
+                              [v111 addObject:lastObject2];
                             }
 
                             v104 = [v102 countByEnumeratingWithState:&v185 objects:v218 count:16];
@@ -1173,12 +1173,12 @@ LABEL_7:
                       {
                         v118 = MEMORY[0x277CCACA8];
                         v119 = [v113 objectForKeyedSubscript:v115];
-                        v120 = [v119 allObjects];
-                        v121 = [v120 componentsJoinedByString:@"\n\t\t"];
-                        v122 = [v118 stringWithFormat:@"\t%@:\n\t\t%@\n", v115, v121];
+                        allObjects2 = [v119 allObjects];
+                        v121 = [allObjects2 componentsJoinedByString:@"\n\t\t"];
+                        v121 = [v118 stringWithFormat:@"\t%@:\n\t\t%@\n", v115, v121];
 
-                        [v12 addObject:v122];
-                        v112 = v122;
+                        [v12 addObject:v121];
+                        v112 = v121;
                       }
                     }
 
@@ -1210,7 +1210,7 @@ LABEL_118:
         v210 = 0u;
         v211 = 0u;
         v212 = 0u;
-        obj = v126;
+        obj = bundlesCopy;
         v133 = [obj countByEnumeratingWithState:&v209 objects:v224 count:16];
         if (v133)
         {
@@ -1232,7 +1232,7 @@ LABEL_118:
               v206 = 0u;
               v207 = 0u;
               v208 = 0u;
-              v142 = v136;
+              v142 = attributesCopy;
               v154 = [v142 countByEnumeratingWithState:&v205 objects:v223 count:16];
               if (v154)
               {
@@ -1256,8 +1256,8 @@ LABEL_118:
                     if (v21)
                     {
                       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@.txt", self->_outputRoot, v17, v19];
-                      v23 = [*(v15 + 2560) defaultManager];
-                      v24 = [v23 fileExistsAtPath:v22];
+                      defaultManager3 = [*(v15 + 2560) defaultManager];
+                      v24 = [defaultManager3 fileExistsAtPath:v22];
 
                       if (v24)
                       {
@@ -1284,7 +1284,7 @@ LABEL_118:
                               }
 
                               v31 = [*(*(&v201 + 1) + 8 * n) componentsSeparatedByString:@"=;"];;
-                              v32 = [v31 lastObject];
+                              lastObject3 = [v31 lastObject];
                               v33 = [v14 objectForKeyedSubscript:v19];
 
                               if (!v33)
@@ -1294,7 +1294,7 @@ LABEL_118:
                               }
 
                               v35 = [v14 objectForKeyedSubscript:v19];
-                              [v35 addObject:v32];
+                              [v35 addObject:lastObject3];
                             }
 
                             v28 = [v26 countByEnumeratingWithState:&v201 objects:v222 count:16];
@@ -1303,7 +1303,7 @@ LABEL_118:
                           while (v28);
                         }
 
-                        self = v158;
+                        self = selfCopy;
                         v15 = 0x277CCA000;
                         v17 = v139;
                         v22 = v148;
@@ -1359,8 +1359,8 @@ LABEL_118:
               {
                 v44 = MEMORY[0x277CCACA8];
                 v45 = [v40 objectForKeyedSubscript:v41];
-                v46 = [v45 allObjects];
-                v47 = [v46 componentsJoinedByString:@"\n\t"];
+                allObjects3 = [v45 allObjects];
+                v47 = [allObjects3 componentsJoinedByString:@"\n\t"];
                 v48 = [v44 stringWithFormat:@"%@:\n\t%@\n", v41, v47];
 
                 [v160 addObject:v48];
@@ -1403,28 +1403,28 @@ LABEL_124:
 
 - (void)clear
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  [v3 removeItemAtPath:self->_outputRoot error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:self->_outputRoot error:0];
 }
 
 - (id)reports
 {
   v39 = *MEMORY[0x277D85DE8];
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(NSMutableDictionary *)self->_counter allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_counter allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v5 = [(NSMutableDictionary *)self->_countingPairs allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  allKeys2 = [(NSMutableDictionary *)self->_countingPairs allKeys];
+  v6 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
-  v7 = [(NSMutableSet *)self->_countingAttributes allObjects];
-  v31 = [v7 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [(NSMutableSet *)self->_countingAttributes allObjects];
+  v31 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-  v8 = [(NSMutableSet *)self->_reportingAttributes allObjects];
-  v30 = [v8 sortedArrayUsingSelector:sel_compare_];
+  allObjects2 = [(NSMutableSet *)self->_reportingAttributes allObjects];
+  v30 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
 
-  v9 = [(NSMutableSet *)self->_loggingAttributes allObjects];
-  v29 = [v9 sortedArrayUsingSelector:sel_compare_];
+  allObjects3 = [(NSMutableSet *)self->_loggingAttributes allObjects];
+  v29 = [allObjects3 sortedArrayUsingSelector:sel_compare_];
 
   v36 = 0u;
   v37 = 0u;

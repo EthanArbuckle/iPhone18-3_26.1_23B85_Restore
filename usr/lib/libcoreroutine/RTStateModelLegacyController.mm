@@ -1,23 +1,23 @@
 @interface RTStateModelLegacyController
-+ (BOOL)archiveExists:(int64_t)a3;
++ (BOOL)archiveExists:(int64_t)exists;
 + (BOOL)stateModelLegacyExists;
-+ (id)pathToArchiveFor:(int64_t)a3;
-+ (id)pathToChecksumFor:(int64_t)a3;
-+ (unint64_t)crcFromData:(id)a3;
-- (BOOL)_migrateStateModelLegacy:(id)a3 error:(id *)a4;
-- (BOOL)_removeStateModelForArchive:(int64_t)a3 error:(id *)a4;
-- (BOOL)migrateStateModelLegacyWithError:(id *)a3;
-- (BOOL)removeStateModelLegacyWithError:(id *)a3;
-- (RTStateModelLegacyController)initWithLearnedLocationStore:(id)a3 mapServiceManager:(id)a4;
-- (id)_getStateModelLegacyWithError:(id *)a3;
-- (id)_unarchiveStateModelForArchive:(int64_t)a3 error:(id *)a4;
++ (id)pathToArchiveFor:(int64_t)for;
++ (id)pathToChecksumFor:(int64_t)for;
++ (unint64_t)crcFromData:(id)data;
+- (BOOL)_migrateStateModelLegacy:(id)legacy error:(id *)error;
+- (BOOL)_removeStateModelForArchive:(int64_t)archive error:(id *)error;
+- (BOOL)migrateStateModelLegacyWithError:(id *)error;
+- (BOOL)removeStateModelLegacyWithError:(id *)error;
+- (RTStateModelLegacyController)initWithLearnedLocationStore:(id)store mapServiceManager:(id)manager;
+- (id)_getStateModelLegacyWithError:(id *)error;
+- (id)_unarchiveStateModelForArchive:(int64_t)archive error:(id *)error;
 @end
 
 @implementation RTStateModelLegacyController
 
-+ (id)pathToArchiveFor:(int64_t)a3
++ (id)pathToArchiveFor:(int64_t)for
 {
-  if (a3 == 1)
+  if (for == 1)
   {
     v5 = @"StateModel1.archive";
 LABEL_5:
@@ -26,7 +26,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 2)
+  if (for == 2)
   {
     v5 = @"StateModel2.archive";
     goto LABEL_5;
@@ -37,9 +37,9 @@ LABEL_5:
   return v6;
 }
 
-+ (id)pathToChecksumFor:(int64_t)a3
++ (id)pathToChecksumFor:(int64_t)for
 {
-  if (a3 == 1)
+  if (for == 1)
   {
     v5 = @"StateModel1.checksum";
 LABEL_5:
@@ -48,7 +48,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 2)
+  if (for == 2)
   {
     v5 = @"StateModel2.checksum";
     goto LABEL_5;
@@ -59,35 +59,35 @@ LABEL_5:
   return v6;
 }
 
-+ (unint64_t)crcFromData:(id)a3
++ (unint64_t)crcFromData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v3 = a3;
+  dataCopy = data;
   v4 = crc32(0, 0, 0);
-  v5 = [v3 bytes];
-  v6 = [v3 length];
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
 
-  return crc32(v4, v5, v6);
+  return crc32(v4, bytes, v6);
 }
 
-+ (BOOL)archiveExists:(int64_t)a3
++ (BOOL)archiveExists:(int64_t)exists
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [objc_opt_class() pathToArchiveFor:a3];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [objc_opt_class() pathToArchiveFor:exists];
+  v6 = [defaultManager fileExistsAtPath:v5];
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [objc_opt_class() pathToChecksumFor:a3];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [objc_opt_class() pathToChecksumFor:exists];
+  v9 = [defaultManager2 fileExistsAtPath:v8];
 
   return v9;
 }
@@ -138,13 +138,13 @@ LABEL_5:
   return v2;
 }
 
-- (RTStateModelLegacyController)initWithLearnedLocationStore:(id)a3 mapServiceManager:(id)a4
+- (RTStateModelLegacyController)initWithLearnedLocationStore:(id)store mapServiceManager:(id)manager
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  storeCopy = store;
+  managerCopy = manager;
+  v9 = managerCopy;
+  if (!storeCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -164,7 +164,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!managerCopy)
   {
 LABEL_9:
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -178,7 +178,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -188,34 +188,34 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_learnedLocationStore, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_learnedLocationStore, store);
+    objc_storeStrong(p_isa + 2, manager);
     xpc_activity_unregister("com.apple.routined.sequentialClusterIdentification");
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)_unarchiveStateModelForArchive:(int64_t)a3 error:(id *)a4
+- (id)_unarchiveStateModelForArchive:(int64_t)archive error:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  if (![objc_opt_class() archiveExists:a3])
+  if (![objc_opt_class() archiveExists:archive])
   {
     v11 = 0;
     goto LABEL_22;
   }
 
-  v31 = [objc_opt_class() pathToArchiveFor:a3];
+  v31 = [objc_opt_class() pathToArchiveFor:archive];
   v35[0] = 0;
   v30 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v31 options:0 error:v35];
   v6 = v35[0];
   if (!v6)
   {
-    v28 = [objc_opt_class() pathToChecksumFor:a3];
+    v28 = [objc_opt_class() pathToChecksumFor:archive];
     v34 = 0;
     v29 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v28 options:0 error:&v34];
     v7 = v34;
@@ -229,8 +229,8 @@ LABEL_13:
       if (v13)
       {
         v15 = MEMORY[0x277CCA9B8];
-        v16 = [v13 userInfo];
-        *a4 = [v15 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:2 userInfo:v16];
+        userInfo = [v13 userInfo];
+        *error = [v15 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:2 userInfo:userInfo];
       }
     }
 
@@ -251,14 +251,14 @@ LABEL_13:
       if (v19)
       {
         v20 = MEMORY[0x277CCA9B8];
-        v21 = [v19 userInfo];
-        *a4 = [v20 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:2 userInfo:v21];
+        userInfo2 = [v19 userInfo];
+        *error = [v20 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:2 userInfo:userInfo2];
       }
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v22 = MEMORY[0x277CCACA8];
         v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v17];
@@ -268,7 +268,7 @@ LABEL_13:
         v36 = *MEMORY[0x277CCA450];
         v37 = v24;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-        *a4 = [v25 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:2 userInfo:v26];
+        *error = [v25 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:2 userInfo:v26];
       }
 
       v11 = 0;
@@ -278,7 +278,7 @@ LABEL_13:
   }
 
   v7 = v6;
-  if (a4)
+  if (error)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = [v6 description];
@@ -289,7 +289,7 @@ LABEL_13:
     v39[0] = v28;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     [v10 errorWithDomain:@"RTStateModelLegacyControllerErrorDomain" code:1 userInfo:v29];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
 LABEL_20:
 
     goto LABEL_21;
@@ -303,7 +303,7 @@ LABEL_22:
   return v11;
 }
 
-- (id)_getStateModelLegacyWithError:(id *)a3
+- (id)_getStateModelLegacyWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -328,9 +328,9 @@ LABEL_22:
           objc_enumerationMutation(&unk_2845A15F8);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * v9) integerValue];
+        integerValue = [*(*(&v26 + 1) + 8 * v9) integerValue];
         v25 = 0;
-        v12 = [(RTStateModelLegacyController *)self _unarchiveStateModelForArchive:v11 error:&v25];
+        v12 = [(RTStateModelLegacyController *)self _unarchiveStateModelForArchive:integerValue error:&v25];
         v13 = v25;
         if (v13)
         {
@@ -339,22 +339,22 @@ LABEL_22:
 
         if (v12)
         {
-          v14 = [MEMORY[0x277CBEB18] array];
-          v15 = [v12 stateModelLut];
+          array = [MEMORY[0x277CBEB18] array];
+          stateModelLut = [v12 stateModelLut];
           v23[0] = MEMORY[0x277D85DD0];
           v23[1] = 3221225472;
           v23[2] = __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_invoke;
           v23[3] = &unk_2788D05B8;
-          v24 = v14;
-          v16 = v14;
-          [v15 enumerateKeysAndObjectsUsingBlock:v23];
+          v24 = array;
+          v16 = array;
+          [stateModelLut enumerateKeysAndObjectsUsingBlock:v23];
 
-          v17 = [v12 stateModelLut];
-          [v17 removeObjectsForKeys:v16];
+          stateModelLut2 = [v12 stateModelLut];
+          [stateModelLut2 removeObjectsForKeys:v16];
         }
 
-        v18 = [v10 version];
-        if (v18 >= [v12 version])
+        version = [v10 version];
+        if (version >= [v12 version])
         {
           v19 = v10;
         }
@@ -382,10 +382,10 @@ LABEL_22:
     v7 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v20 = _RTSafeArray();
-    *a3 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
   return v7;
@@ -402,12 +402,12 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
   }
 }
 
-- (BOOL)_removeStateModelForArchive:(int64_t)a3 error:(id *)a4
+- (BOOL)_removeStateModelForArchive:(int64_t)archive error:(id *)error
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v6 = [objc_opt_class() pathToArchiveFor:a3];
+  v6 = [objc_opt_class() pathToArchiveFor:archive];
   v34[0] = v6;
-  v7 = [objc_opt_class() pathToChecksumFor:a3];
+  v7 = [objc_opt_class() pathToChecksumFor:archive];
   v34[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
 
@@ -435,15 +435,15 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
         }
 
         v15 = *(*(&v25 + 1) + 8 * v14);
-        v16 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v24 = 0;
-        v17 = [v16 removeItemAtPath:v15 error:&v24];
+        v17 = [defaultManager removeItemAtPath:v15 error:&v24];
         v18 = v24;
 
-        if (a4 && (v17 & 1) == 0)
+        if (error && (v17 & 1) == 0)
         {
           v19 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -472,7 +472,7 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
   return 1;
 }
 
-- (BOOL)removeStateModelLegacyWithError:(id *)a3
+- (BOOL)removeStateModelLegacyWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -494,14 +494,14 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
           objc_enumerationMutation(&unk_2845A1610);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) integerValue];
+        integerValue = [*(*(&v14 + 1) + 8 * v8) integerValue];
         v13 = 0;
-        v10 = [(RTStateModelLegacyController *)self _removeStateModelForArchive:v9 error:&v13];
+        v10 = [(RTStateModelLegacyController *)self _removeStateModelForArchive:integerValue error:&v13];
         v11 = v13;
-        if (a3 && !v10)
+        if (error && !v10)
         {
           v11 = v11;
-          *a3 = v11;
+          *error = v11;
         }
 
         ++v8;
@@ -517,21 +517,21 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
   return 1;
 }
 
-- (BOOL)_migrateStateModelLegacy:(id)a3 error:(id *)a4
+- (BOOL)_migrateStateModelLegacy:(id)legacy error:(id *)error
 {
   v317[1] = *MEMORY[0x277D85DE8];
-  v225 = a3;
-  v230 = [MEMORY[0x277CBEB38] dictionary];
-  v243 = [MEMORY[0x277CBEB38] dictionary];
-  v227 = [MEMORY[0x277CBEB18] array];
-  v261 = [MEMORY[0x277CBEAA8] date];
-  v231 = [MEMORY[0x277CBEB38] dictionary];
+  legacyCopy = legacy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v303 = 0u;
   v304 = 0u;
   v301 = 0u;
   v302 = 0u;
-  v4 = [v225 stateModelLut];
-  obj = [v4 allValues];
+  stateModelLut = [legacyCopy stateModelLut];
+  obj = [stateModelLut allValues];
 
   v257 = [obj countByEnumeratingWithState:&v301 objects:v316 count:16];
   if (v257)
@@ -550,8 +550,8 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
         }
 
         v266 = *(*(&v301 + 1) + 8 * v262);
-        v5 = [v266 uniqueId];
-        v6 = v5 == 0;
+        uniqueId = [v266 uniqueId];
+        v6 = uniqueId == 0;
 
         if (!v6)
         {
@@ -561,33 +561,33 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
           v313 = __Block_byref_object_copy__154;
           v314 = __Block_byref_object_dispose__154;
           v315 = 0;
-          v7 = [v266 stateDepiction];
-          v8 = [v7 geoMapItem];
+          stateDepiction = [v266 stateDepiction];
+          geoMapItem = [stateDepiction geoMapItem];
 
-          if (v8)
+          if (geoMapItem)
           {
             mapServiceManager = self->_mapServiceManager;
-            v10 = [MEMORY[0x277CCAD78] UUID];
-            v11 = [v266 stateDepiction];
-            v12 = [v11 geoMapItem];
-            v13 = [v266 stateDepiction];
-            v14 = +[RTLearnedLocationOfInterest mapItemSourceFromGeoMapItemSource:](RTLearnedLocationOfInterest, "mapItemSourceFromGeoMapItemSource:", [v13 mapItemSource]);
-            v15 = [v266 stateDepiction];
-            v16 = [v15 geocodeDate];
-            v17 = v16;
-            if (!v16)
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            stateDepiction2 = [v266 stateDepiction];
+            geoMapItem2 = [stateDepiction2 geoMapItem];
+            stateDepiction3 = [v266 stateDepiction];
+            v14 = +[RTLearnedLocationOfInterest mapItemSourceFromGeoMapItemSource:](RTLearnedLocationOfInterest, "mapItemSourceFromGeoMapItemSource:", [stateDepiction3 mapItemSource]);
+            stateDepiction4 = [v266 stateDepiction];
+            geocodeDate = [stateDepiction4 geocodeDate];
+            v17 = geocodeDate;
+            if (!geocodeDate)
             {
-              v236 = [MEMORY[0x277CBEAA8] date];
-              v17 = v236;
+              date2 = [MEMORY[0x277CBEAA8] date];
+              v17 = date2;
             }
 
             v300 = 0;
-            v18 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:v10 geoMapItem:v12 source:v14 creationDate:v17 error:&v300];
+            v18 = [(RTMapServiceManager *)mapServiceManager mapItemWithIdentifier:uUID geoMapItem:geoMapItem2 source:v14 creationDate:v17 error:&v300];
             v19 = v300;
             v20 = *(*(&buf + 1) + 40);
             *(*(&buf + 1) + 40) = v18;
 
-            if (!v16)
+            if (!geocodeDate)
             {
             }
           }
@@ -598,18 +598,18 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
           }
 
           v21 = objc_alloc(MEMORY[0x277D01160]);
-          v22 = [v266 stateDepiction];
-          v23 = [v22 location];
-          [v23 Latitude_deg];
+          stateDepiction5 = [v266 stateDepiction];
+          location = [stateDepiction5 location];
+          [location Latitude_deg];
           v25 = v24;
-          v26 = [v266 stateDepiction];
-          v27 = [v26 location];
-          [v27 Longitude_deg];
+          stateDepiction6 = [v266 stateDepiction];
+          location2 = [stateDepiction6 location];
+          [location2 Longitude_deg];
           v29 = v28;
-          v30 = [v266 stateDepiction];
-          v31 = [v30 location];
-          [v31 uncertainty_m];
-          v249 = [v21 initWithLatitude:v261 longitude:v25 horizontalUncertainty:v29 date:v32];
+          stateDepiction7 = [v266 stateDepiction];
+          location3 = [stateDepiction7 location];
+          [location3 uncertainty_m];
+          v249 = [v21 initWithLatitude:date longitude:v25 horizontalUncertainty:v29 date:v32];
 
           v33 = dispatch_semaphore_create(0);
           v34 = objc_alloc(MEMORY[0x277D011B0]);
@@ -617,7 +617,7 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
           v36 = NSStringFromClass(v35);
           v37 = [v34 initWithUseBackgroundTraits:1 analyticsIdentifier:v36];
 
-          v38 = [(RTStateModelLegacyController *)self mapServiceManager];
+          mapServiceManager = [(RTStateModelLegacyController *)self mapServiceManager];
           v297[0] = MEMORY[0x277D85DD0];
           v297[1] = 3221225472;
           v297[2] = __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_invoke;
@@ -625,7 +625,7 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
           p_buf = &buf;
           v39 = v33;
           v298 = v39;
-          [v38 fetchMapItemsFromLocation:v249 options:v37 handler:v297];
+          [mapServiceManager fetchMapItemsFromLocation:v249 options:v37 handler:v297];
 
           v40 = v39;
           v41 = [MEMORY[0x277CBEAA8] now];
@@ -637,11 +637,11 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
             v45 = v44;
             v46 = objc_opt_new();
             v47 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_144_1];
-            v48 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v49 = [v48 filteredArrayUsingPredicate:v47];
-            v50 = [v49 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v49 = [callStackSymbols filteredArrayUsingPredicate:v47];
+            firstObject = [v49 firstObject];
 
-            [v46 submitToCoreAnalytics:v50 type:1 duration:v45];
+            [v46 submitToCoreAnalytics:firstObject type:1 duration:v45];
             v51 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v51, OS_LOG_TYPE_FAULT))
             {
@@ -676,11 +676,11 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
             v62 = [v58 initWithLatitude:0 longitude:v60 addressDictionary:v61];
             v63 = [MEMORY[0x277D0EBC0] mapItemStorageForPlace:v62];
             v64 = self->_mapServiceManager;
-            v65 = [MEMORY[0x277CCAD78] UUID];
-            v66 = [v266 stateDepiction];
-            v67 = +[RTLearnedLocationOfInterest mapItemSourceFromGeoMapItemSource:](RTLearnedLocationOfInterest, "mapItemSourceFromGeoMapItemSource:", [v66 mapItemSource]);
+            uUID2 = [MEMORY[0x277CCAD78] UUID];
+            stateDepiction8 = [v266 stateDepiction];
+            v67 = +[RTLearnedLocationOfInterest mapItemSourceFromGeoMapItemSource:](RTLearnedLocationOfInterest, "mapItemSourceFromGeoMapItemSource:", [stateDepiction8 mapItemSource]);
             v296 = 0;
-            v68 = [(RTMapServiceManager *)v64 mapItemWithIdentifier:v65 geoMapItem:v63 source:v67 creationDate:v261 error:&v296];
+            v68 = [(RTMapServiceManager *)v64 mapItemWithIdentifier:uUID2 geoMapItem:v63 source:v67 creationDate:date error:&v296];
             v69 = v296;
             v70 = *(*(&buf + 1) + 40);
             *(*(&buf + 1) + 40) = v68;
@@ -689,25 +689,25 @@ void __62__RTStateModelLegacyController__getStateModelLegacyWithError___block_in
           if (*(*(&buf + 1) + 40))
           {
 LABEL_27:
-            v71 = [v261 dateByAddingTimeInterval:4838400.0];
+            v71 = [date dateByAddingTimeInterval:4838400.0];
             v72 = [RTLearnedPlace alloc];
-            v73 = [v266 uniqueId];
-            v74 = [v266 stateDepiction];
-            v75 = +[RTLearnedPlace placeTypeFromType:](RTLearnedPlace, "placeTypeFromType:", [v74 type]);
-            v76 = [v266 stateDepiction];
-            v77 = +[RTLearnedPlace placeTypeSourceFromTypeSource:](RTLearnedPlace, "placeTypeSourceFromTypeSource:", [v76 typeSource]);
+            uniqueId2 = [v266 uniqueId];
+            stateDepiction9 = [v266 stateDepiction];
+            v75 = +[RTLearnedPlace placeTypeFromType:](RTLearnedPlace, "placeTypeFromType:", [stateDepiction9 type]);
+            stateDepiction10 = [v266 stateDepiction];
+            v77 = +[RTLearnedPlace placeTypeSourceFromTypeSource:](RTLearnedPlace, "placeTypeSourceFromTypeSource:", [stateDepiction10 typeSource]);
             v78 = *(*(&buf + 1) + 40);
-            v79 = [v266 stateDepiction];
-            v80 = [v79 customLabel];
-            v81 = [(RTLearnedPlace *)v72 initWithIdentifier:v73 type:v75 typeSource:v77 mapItem:v78 customLabel:v80 creationDate:v261 expirationDate:v71];
+            stateDepiction11 = [v266 stateDepiction];
+            customLabel = [stateDepiction11 customLabel];
+            v81 = [(RTLearnedPlace *)v72 initWithIdentifier:uniqueId2 type:v75 typeSource:v77 mapItem:v78 customLabel:customLabel creationDate:date expirationDate:v71];
 
             if (v81)
             {
-              v82 = [(RTLearnedPlace *)v81 identifier];
-              [v230 setObject:v81 forKey:v82];
+              identifier = [(RTLearnedPlace *)v81 identifier];
+              [dictionary setObject:v81 forKey:identifier];
 
-              v83 = [v266 uniqueId];
-              [v231 setObject:v81 forKey:v83];
+              uniqueId3 = [v266 uniqueId];
+              [dictionary3 setObject:v81 forKey:uniqueId3];
             }
 
             goto LABEL_30;
@@ -759,10 +759,10 @@ LABEL_32:
   v295 = 0u;
   v292 = 0u;
   v293 = 0u;
-  v86 = [v225 stateModelLut];
-  v263 = [v86 allValues];
+  stateModelLut2 = [legacyCopy stateModelLut];
+  allValues = [stateModelLut2 allValues];
 
-  v87 = [v263 countByEnumeratingWithState:&v292 objects:v309 count:16];
+  v87 = [allValues countByEnumeratingWithState:&v292 objects:v309 count:16];
   if (!v87)
   {
     goto LABEL_59;
@@ -776,23 +776,23 @@ LABEL_32:
     {
       if (*v293 != v267)
       {
-        objc_enumerationMutation(v263);
+        objc_enumerationMutation(allValues);
       }
 
       v89 = *(*(&v292 + 1) + 8 * v88);
-      v90 = [v89 uniqueId];
-      v91 = v90 == 0;
+      uniqueId4 = [v89 uniqueId];
+      v91 = uniqueId4 == 0;
 
       if (!v91)
       {
-        v92 = [v89 stateDepiction];
-        v93 = [v92 getAllOneVisits];
+        stateDepiction12 = [v89 stateDepiction];
+        getAllOneVisits = [stateDepiction12 getAllOneVisits];
 
         v290 = 0u;
         v291 = 0u;
         v288 = 0u;
         v289 = 0u;
-        v94 = v93;
+        v94 = getAllOneVisits;
         v95 = [v94 countByEnumeratingWithState:&v288 objects:v308 count:16];
         if (v95)
         {
@@ -838,7 +838,7 @@ LABEL_53:
     }
 
     while (v88 != v87);
-    v99 = [v263 countByEnumeratingWithState:&v292 objects:v309 count:16];
+    v99 = [allValues countByEnumeratingWithState:&v292 objects:v309 count:16];
     v87 = v99;
   }
 
@@ -852,8 +852,8 @@ LABEL_59:
   v287 = 0u;
   v284 = 0u;
   v285 = 0u;
-  v100 = [v85 allObjects];
-  v229 = [v100 sortedArrayUsingDescriptors:v224];
+  allObjects = [v85 allObjects];
+  v229 = [allObjects sortedArrayUsingDescriptors:v224];
 
   v237 = [v229 countByEnumeratingWithState:&v284 objects:v306 count:16];
   if (!v237)
@@ -878,107 +878,107 @@ LABEL_59:
 
       v258 = v101;
       v103 = *(*(&v284 + 1) + 8 * v101);
-      v268 = [MEMORY[0x277CCAD78] UUID];
-      v104 = [v103 oneState];
-      v105 = [v104 uniqueId];
-      v106 = v105 == 0;
+      uUID3 = [MEMORY[0x277CCAD78] UUID];
+      oneState = [v103 oneState];
+      uniqueId5 = [oneState uniqueId];
+      v106 = uniqueId5 == 0;
 
       if (!v106)
       {
-        v107 = [v103 oneState];
-        v108 = [v107 stateDepiction];
-        v109 = [v108 numOfDataPts];
-        v110 = [v103 oneState];
-        v111 = [v110 stateDepiction];
-        v112 = [v111 getNumOfVisitsOverall];
+        oneState2 = [v103 oneState];
+        stateDepiction13 = [oneState2 stateDepiction];
+        numOfDataPts = [stateDepiction13 numOfDataPts];
+        oneState3 = [v103 oneState];
+        stateDepiction14 = [oneState3 stateDepiction];
+        getNumOfVisitsOverall = [stateDepiction14 getNumOfVisitsOverall];
 
-        v113 = v109 / v112;
-        if (v109 / v112 <= 1)
+        v113 = numOfDataPts / getNumOfVisitsOverall;
+        if (numOfDataPts / getNumOfVisitsOverall <= 1)
         {
           v113 = 1;
         }
 
         v244 = v113;
         v114 = MEMORY[0x277CBEAA8];
-        v115 = [v103 entryExit];
-        [v115 entry_s];
+        entryExit = [v103 entryExit];
+        [entryExit entry_s];
         v247 = [v114 dateWithTimeIntervalSinceReferenceDate:?];
 
         v116 = MEMORY[0x277CBEAA8];
-        v117 = [v103 entryExit];
-        [v117 exit_s];
+        entryExit2 = [v103 entryExit];
+        [entryExit2 exit_s];
         v264 = [v116 dateWithTimeIntervalSinceReferenceDate:?];
 
         objc = [RTLearnedLocation alloc];
         v118 = objc_alloc(MEMORY[0x277D01160]);
-        v254 = [v103 oneState];
-        v250 = [v254 stateDepiction];
-        v119 = [v250 location];
-        [v119 Latitude_deg];
+        oneState4 = [v103 oneState];
+        stateDepiction15 = [oneState4 stateDepiction];
+        location4 = [stateDepiction15 location];
+        [location4 Latitude_deg];
         v121 = v120;
-        v122 = [v103 oneState];
-        v123 = [v122 stateDepiction];
-        v124 = [v123 location];
-        [v124 Longitude_deg];
+        oneState5 = [v103 oneState];
+        stateDepiction16 = [oneState5 stateDepiction];
+        location5 = [stateDepiction16 location];
+        [location5 Longitude_deg];
         v126 = v125;
-        v127 = [v103 oneState];
-        v128 = [v127 stateDepiction];
-        v129 = [v128 location];
-        [v129 uncertainty_m];
+        oneState6 = [v103 oneState];
+        stateDepiction17 = [oneState6 stateDepiction];
+        location6 = [stateDepiction17 location];
+        [location6 uncertainty_m];
         v131 = [v118 initWithLatitude:0 longitude:v121 horizontalUncertainty:v126 date:v130];
         v245 = [(RTLearnedLocation *)objc initWithLocation:v131 dataPointCount:v244 confidence:1.0];
 
-        v132 = [v103 oneState];
-        v133 = [v132 stateDepiction];
-        v134 = [v133 getNumOfVisitsOverall];
+        oneState7 = [v103 oneState];
+        stateDepiction18 = [oneState7 stateDepiction];
+        getNumOfVisitsOverall2 = [stateDepiction18 getNumOfVisitsOverall];
 
-        v135 = [v264 dateByAddingTimeInterval:dbl_230AFE560[v134 > 1]];
-        v136 = [[RTLearnedVisit alloc] initWithIdentifier:v268 location:v245 entryDate:v247 exitDate:v264 creationDate:v261 expirationDate:v135];
+        v135 = [v264 dateByAddingTimeInterval:dbl_230AFE560[getNumOfVisitsOverall2 > 1]];
+        v136 = [[RTLearnedVisit alloc] initWithIdentifier:uUID3 location:v245 entryDate:v247 exitDate:v264 creationDate:date expirationDate:v135];
         if (v136)
         {
-          v137 = [v103 oneState];
-          v138 = [v137 uniqueId];
-          v139 = [v231 objectForKey:v138];
+          oneState8 = [v103 oneState];
+          uniqueId6 = [oneState8 uniqueId];
+          v139 = [dictionary3 objectForKey:uniqueId6];
 
           if (v139)
           {
-            v140 = [v139 mapItem];
-            -[RTLearnedVisit setPlaceSource:](v136, "setPlaceSource:", [v140 source]);
+            mapItem = [v139 mapItem];
+            -[RTLearnedVisit setPlaceSource:](v136, "setPlaceSource:", [mapItem source]);
 
-            v141 = [v139 identifier];
-            v142 = [v243 objectForKey:v141];
+            identifier2 = [v139 identifier];
+            v142 = [dictionary2 objectForKey:identifier2];
             v143 = v142 == 0;
 
             if (v143)
             {
-              v144 = [MEMORY[0x277CBEB18] array];
-              v145 = [v139 identifier];
-              [v243 setObject:v144 forKey:v145];
+              array2 = [MEMORY[0x277CBEB18] array];
+              identifier3 = [v139 identifier];
+              [dictionary2 setObject:array2 forKey:identifier3];
             }
 
-            v146 = [v139 identifier];
-            v147 = [v243 objectForKey:v146];
+            identifier4 = [v139 identifier];
+            v147 = [dictionary2 objectForKey:identifier4];
             [v147 addObject:v136];
 
             if (v235)
             {
-              v148 = [MEMORY[0x277CCAD78] UUID];
-              v149 = [(RTLearnedVisit *)v235 exitDate];
-              v150 = [(RTLearnedVisit *)v136 entryDate];
+              uUID4 = [MEMORY[0x277CCAD78] UUID];
+              exitDate = [(RTLearnedVisit *)v235 exitDate];
+              entryDate = [(RTLearnedVisit *)v136 entryDate];
               v255 = v235;
               v151 = v136;
-              if (v149 && v150)
+              if (exitDate && entryDate)
               {
                 v251 = v151;
                 obja = v135;
                 v152 = [RTLearnedTransition alloc];
-                v153 = [(RTLearnedVisit *)v255 identifier];
-                v154 = [(RTLearnedVisit *)v251 identifier];
-                v155 = [(RTLearnedTransition *)v152 initWithIdentifier:v148 startDate:v149 stopDate:v150 visitIdentifierOrigin:v153 visitIdentifierDestination:v154 creationDate:v261 expirationDate:obja predominantMotionActivityType:0];
+                identifier5 = [(RTLearnedVisit *)v255 identifier];
+                identifier6 = [(RTLearnedVisit *)v251 identifier];
+                v155 = [(RTLearnedTransition *)v152 initWithIdentifier:uUID4 startDate:exitDate stopDate:entryDate visitIdentifierOrigin:identifier5 visitIdentifierDestination:identifier6 creationDate:date expirationDate:obja predominantMotionActivityType:0];
 
                 if (v155)
                 {
-                  [v227 addObject:v155];
+                  [array addObject:v155];
                 }
 
                 v151 = v251;
@@ -1029,13 +1029,13 @@ LABEL_81:
 
 LABEL_90:
 
-  v234 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v246 = dispatch_semaphore_create(0);
   v280 = 0u;
   v281 = 0u;
   v282 = 0u;
   v283 = 0u;
-  v265 = v230;
+  v265 = dictionary;
   v252 = [v265 countByEnumeratingWithState:&v280 objects:v305 count:16];
   if (v252)
   {
@@ -1054,10 +1054,10 @@ LABEL_90:
 
         v160 = *(*(&v280 + 1) + 8 * j);
         v161 = [v265 objectForKeyedSubscript:v160];
-        v162 = [v243 objectForKey:v160];
+        v162 = [dictionary2 objectForKey:v160];
         if ([v162 count])
         {
-          v163 = [(RTStateModelLegacyController *)self learnedLocationStore];
+          learnedLocationStore = [(RTStateModelLegacyController *)self learnedLocationStore];
           v276[0] = MEMORY[0x277D85DD0];
           v276[1] = 3221225472;
           v276[2] = __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_invoke_93;
@@ -1068,7 +1068,7 @@ LABEL_90:
           v278 = v165;
           v166 = v246;
           v279 = v166;
-          [v163 storeVisits:v164 place:v165 handler:v276];
+          [learnedLocationStore storeVisits:v164 place:v165 handler:v276];
 
           v167 = v166;
           v168 = [MEMORY[0x277CBEAA8] now];
@@ -1081,11 +1081,11 @@ LABEL_90:
             v172 = v171;
             v256 = objc_opt_new();
             v173 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_144_1];
-            v174 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v175 = [v174 filteredArrayUsingPredicate:v173];
-            v176 = [v175 firstObject];
+            callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+            v175 = [callStackSymbols2 filteredArrayUsingPredicate:v173];
+            firstObject2 = [v175 firstObject];
 
-            [v256 submitToCoreAnalytics:v176 type:1 duration:v172];
+            [v256 submitToCoreAnalytics:firstObject2 type:1 duration:v172];
             v177 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v177, OS_LOG_TYPE_FAULT))
             {
@@ -1114,7 +1114,7 @@ LABEL_90:
 
         else
         {
-          [v234 addObject:v161];
+          [array3 addObject:v161];
         }
       }
 
@@ -1129,17 +1129,17 @@ LABEL_90:
     v269 = 0;
   }
 
-  if ([v234 count])
+  if ([array3 count])
   {
-    v183 = [(RTStateModelLegacyController *)self learnedLocationStore];
+    learnedLocationStore2 = [(RTStateModelLegacyController *)self learnedLocationStore];
     v273[0] = MEMORY[0x277D85DD0];
     v273[1] = 3221225472;
     v273[2] = __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_invoke_95;
     v273[3] = &unk_2788C7E48;
-    v274 = v234;
+    v274 = array3;
     v184 = v246;
     v275 = v184;
-    [v183 storePlaces:v274 handler:v273];
+    [learnedLocationStore2 storePlaces:v274 handler:v273];
 
     v185 = v184;
     v186 = [MEMORY[0x277CBEAA8] now];
@@ -1152,11 +1152,11 @@ LABEL_90:
       v191 = v190;
       v192 = objc_opt_new();
       v193 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_144_1];
-      v194 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v195 = [v194 filteredArrayUsingPredicate:v193];
-      v196 = [v195 firstObject];
+      callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v195 = [callStackSymbols3 filteredArrayUsingPredicate:v193];
+      firstObject3 = [v195 firstObject];
 
-      [v192 submitToCoreAnalytics:v196 type:1 duration:v191];
+      [v192 submitToCoreAnalytics:firstObject3 type:1 duration:v191];
       v197 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v197, OS_LOG_TYPE_FAULT))
       {
@@ -1183,17 +1183,17 @@ LABEL_90:
     v269 = v202;
   }
 
-  if ([v227 count])
+  if ([array count])
   {
-    v203 = [(RTStateModelLegacyController *)self learnedLocationStore];
+    learnedLocationStore3 = [(RTStateModelLegacyController *)self learnedLocationStore];
     v270[0] = MEMORY[0x277D85DD0];
     v270[1] = 3221225472;
     v270[2] = __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_invoke_96;
     v270[3] = &unk_2788C7E48;
-    v271 = v227;
+    v271 = array;
     v204 = v246;
     v272 = v204;
-    [v203 storeTransitions:v271 handler:v270];
+    [learnedLocationStore3 storeTransitions:v271 handler:v270];
 
     v205 = v204;
     v206 = [MEMORY[0x277CBEAA8] now];
@@ -1206,11 +1206,11 @@ LABEL_90:
       v211 = v210;
       v212 = objc_opt_new();
       v213 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_144_1];
-      v214 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v215 = [v214 filteredArrayUsingPredicate:v213];
-      v216 = [v215 firstObject];
+      callStackSymbols4 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v215 = [callStackSymbols4 filteredArrayUsingPredicate:v213];
+      firstObject4 = [v215 firstObject];
 
-      [v212 submitToCoreAnalytics:v216 type:1 duration:v211];
+      [v212 submitToCoreAnalytics:firstObject4 type:1 duration:v211];
       v217 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v217, OS_LOG_TYPE_FAULT))
       {
@@ -1408,7 +1408,7 @@ void __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_i
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)migrateStateModelLegacyWithError:(id *)a3
+- (BOOL)migrateStateModelLegacyWithError:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -1427,17 +1427,17 @@ void __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_i
     }
   }
 
-  v8 = [v5 stateModelLut];
-  v9 = [v8 allValues];
-  [v9 enumerateObjectsUsingBlock:&__block_literal_global_127];
+  stateModelLut = [v5 stateModelLut];
+  allValues = [stateModelLut allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_127];
 
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v10 = v6;
       v11 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -1448,7 +1448,7 @@ void __63__RTStateModelLegacyController__migrateStateModelLegacy_error___block_i
 
   else
   {
-    v11 = [(RTStateModelLegacyController *)self _migrateStateModelLegacy:v5 error:a3];
+    v11 = [(RTStateModelLegacyController *)self _migrateStateModelLegacy:v5 error:error];
   }
 
   return v11;

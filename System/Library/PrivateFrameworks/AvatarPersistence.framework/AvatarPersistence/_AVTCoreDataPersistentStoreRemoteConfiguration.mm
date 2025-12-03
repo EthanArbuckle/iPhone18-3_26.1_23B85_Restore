@@ -1,7 +1,7 @@
 @interface _AVTCoreDataPersistentStoreRemoteConfiguration
 + (id)createContainerForRemoteConfiguration;
-- (BOOL)setupIfNeeded:(id *)a3;
-- (_AVTCoreDataPersistentStoreRemoteConfiguration)initWithDaemonClient:(id)a3 environment:(id)a4;
+- (BOOL)setupIfNeeded:(id *)needed;
+- (_AVTCoreDataPersistentStoreRemoteConfiguration)initWithDaemonClient:(id)client environment:(id)environment;
 - (id)createManagedObjectContext;
 - (id)persistentStoreCoordinator;
 - (id)storeDescription;
@@ -9,23 +9,23 @@
 
 @implementation _AVTCoreDataPersistentStoreRemoteConfiguration
 
-- (_AVTCoreDataPersistentStoreRemoteConfiguration)initWithDaemonClient:(id)a3 environment:(id)a4
+- (_AVTCoreDataPersistentStoreRemoteConfiguration)initWithDaemonClient:(id)client environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = _AVTCoreDataPersistentStoreRemoteConfiguration;
   v9 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)&v15 init];
   if (v9)
   {
-    v10 = [v8 logger];
+    logger = [environmentCopy logger];
     logger = v9->_logger;
-    v9->_logger = v10;
+    v9->_logger = logger;
 
-    objc_storeStrong(&v9->_daemonClient, a3);
-    v12 = [objc_opt_class() createContainerForRemoteConfiguration];
+    objc_storeStrong(&v9->_daemonClient, client);
+    createContainerForRemoteConfiguration = [objc_opt_class() createContainerForRemoteConfiguration];
     container = v9->_container;
-    v9->_container = v12;
+    v9->_container = createContainerForRemoteConfiguration;
   }
 
   return v9;
@@ -54,18 +54,18 @@
   return v3;
 }
 
-- (BOOL)setupIfNeeded:(id *)a3
+- (BOOL)setupIfNeeded:(id *)needed
 {
-  v5 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [v6 persistentStores];
-  v8 = [v7 count];
+  container = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
+  persistentStoreCoordinator = [container persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v8 = [persistentStores count];
 
   v9 = 1;
   if (!v8)
   {
-    v10 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self daemonClient];
-    [v10 checkIn];
+    daemonClient = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self daemonClient];
+    [daemonClient checkIn];
 
     v20 = 0;
     v21 = &v20;
@@ -77,19 +77,19 @@
     v17 = __Block_byref_object_copy__7;
     v18 = __Block_byref_object_dispose__7;
     v19 = 0;
-    v11 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
+    container2 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __64___AVTCoreDataPersistentStoreRemoteConfiguration_setupIfNeeded___block_invoke;
     v13[3] = &unk_278CFAEB8;
     v13[4] = &v14;
     v13[5] = &v20;
-    [v11 loadPersistentStoresWithCompletionHandler:v13];
+    [container2 loadPersistentStoresWithCompletionHandler:v13];
 
     v9 = *(v21 + 24);
-    if (a3 && (v21[3] & 1) == 0)
+    if (needed && (v21[3] & 1) == 0)
     {
-      *a3 = v15[5];
+      *needed = v15[5];
     }
 
     _Block_object_dispose(&v14, 8);
@@ -102,29 +102,29 @@
 
 - (id)createManagedObjectContext
 {
-  v2 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
-  v3 = [v2 newBackgroundContext];
+  container = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
-  [v3 setTransactionAuthor:@"AvatarUIClient"];
+  [newBackgroundContext setTransactionAuthor:@"AvatarUIClient"];
 
-  return v3;
+  return newBackgroundContext;
 }
 
 - (id)persistentStoreCoordinator
 {
-  v2 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
-  v3 = [v2 persistentStoreCoordinator];
+  container = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
+  persistentStoreCoordinator = [container persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (id)storeDescription
 {
-  v2 = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
-  v3 = [v2 persistentStoreDescriptions];
-  v4 = [v3 firstObject];
+  container = [(_AVTCoreDataPersistentStoreRemoteConfiguration *)self container];
+  persistentStoreDescriptions = [container persistentStoreDescriptions];
+  firstObject = [persistentStoreDescriptions firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

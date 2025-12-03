@@ -1,19 +1,19 @@
 @interface AWDFlagstoneTopologyMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)fEDCountAtIndex:(unint64_t)a3;
-- (unsigned)nodeCountAtIndex:(unint64_t)a3;
-- (unsigned)routerCountAtIndex:(unint64_t)a3;
-- (unsigned)sEDCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)fEDCountAtIndex:(unint64_t)index;
+- (unsigned)nodeCountAtIndex:(unint64_t)index;
+- (unsigned)routerCountAtIndex:(unint64_t)index;
+- (unsigned)sEDCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMaxChangeinNodeCount:(BOOL)a3;
-- (void)setHasPercTopologyChangeTimeInstances:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasMaxChangeinNodeCount:(BOOL)count;
+- (void)setHasPercTopologyChangeTimeInstances:(BOOL)instances;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFlagstoneTopologyMetrics
@@ -29,65 +29,65 @@
   [(AWDFlagstoneTopologyMetrics *)&v3 dealloc];
 }
 
-- (unsigned)nodeCountAtIndex:(unint64_t)a3
+- (unsigned)nodeCountAtIndex:(unint64_t)index
 {
   p_nodeCounts = &self->_nodeCounts;
   count = self->_nodeCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_nodeCounts->list[a3];
+  return p_nodeCounts->list[index];
 }
 
-- (unsigned)routerCountAtIndex:(unint64_t)a3
+- (unsigned)routerCountAtIndex:(unint64_t)index
 {
   p_routerCounts = &self->_routerCounts;
   count = self->_routerCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_routerCounts->list[a3];
+  return p_routerCounts->list[index];
 }
 
-- (unsigned)fEDCountAtIndex:(unint64_t)a3
+- (unsigned)fEDCountAtIndex:(unint64_t)index
 {
   p_fEDCounts = &self->_fEDCounts;
   count = self->_fEDCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_fEDCounts->list[a3];
+  return p_fEDCounts->list[index];
 }
 
-- (unsigned)sEDCountAtIndex:(unint64_t)a3
+- (unsigned)sEDCountAtIndex:(unint64_t)index
 {
   p_sEDCounts = &self->_sEDCounts;
   count = self->_sEDCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sEDCounts->list[a3];
+  return p_sEDCounts->list[index];
 }
 
-- (void)setHasMaxChangeinNodeCount:(BOOL)a3
+- (void)setHasMaxChangeinNodeCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPercTopologyChangeTimeInstances:(BOOL)a3
+- (void)setHasPercTopologyChangeTimeInstances:(BOOL)instances
 {
-  if (a3)
+  if (instances)
   {
     v3 = 4;
   }
@@ -120,8 +120,8 @@
   v7.receiver = self;
   v7.super_class = AWDFlagstoneTopologyMetrics;
   v3 = [(AWDFlagstoneTopologyMetrics *)&v7 description];
-  v4 = [(AWDFlagstoneTopologyMetrics *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDFlagstoneTopologyMetrics *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -138,8 +138,8 @@
   header = self->_header;
   if (header)
   {
-    v6 = [(AWDHeaderInfoS *)header dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"header"];
+    dictionaryRepresentation = [(AWDHeaderInfoS *)header dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   v7 = PBRepeatedUInt32NSArray();
@@ -172,21 +172,21 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v16 = v4;
+  toCopy = to;
+  v16 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v16;
+    toCopy = v16;
   }
 
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v16;
+    toCopy = v16;
   }
 
   if (self->_nodeCounts.count)
@@ -196,7 +196,7 @@
     {
       v7 = self->_nodeCounts.list[v6];
       PBDataWriterWriteUint32Field();
-      v4 = v16;
+      toCopy = v16;
       ++v6;
     }
 
@@ -210,7 +210,7 @@
     {
       v9 = self->_routerCounts.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v16;
+      toCopy = v16;
       ++v8;
     }
 
@@ -224,7 +224,7 @@
     {
       v11 = self->_fEDCounts.list[v10];
       PBDataWriterWriteUint32Field();
-      v4 = v16;
+      toCopy = v16;
       ++v10;
     }
 
@@ -238,7 +238,7 @@
     {
       v13 = self->_sEDCounts.list[v12];
       PBDataWriterWriteUint32Field();
-      v4 = v16;
+      toCopy = v16;
       ++v12;
     }
 
@@ -249,7 +249,7 @@
   {
     maxChangeinNodeCount = self->_maxChangeinNodeCount;
     PBDataWriterWriteUint32Field();
-    v4 = v16;
+    toCopy = v16;
     if ((*&self->_has & 4) == 0)
     {
 LABEL_19:
@@ -265,33 +265,33 @@ LABEL_19:
 
   percTopologyChangeTimeInstances = self->_percTopologyChangeTimeInstances;
   PBDataWriterWriteUint32Field();
-  v4 = v16;
+  toCopy = v16;
 
 LABEL_21:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[13] = self->_timestamp;
-    *(v4 + 128) |= 1u;
+    toCopy[13] = self->_timestamp;
+    *(toCopy + 128) |= 1u;
   }
 
-  v17 = v4;
+  v17 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
+    [toCopy setHeader:?];
   }
 
   if ([(AWDFlagstoneTopologyMetrics *)self nodeCountsCount])
   {
     [v17 clearNodeCounts];
-    v5 = [(AWDFlagstoneTopologyMetrics *)self nodeCountsCount];
-    if (v5)
+    nodeCountsCount = [(AWDFlagstoneTopologyMetrics *)self nodeCountsCount];
+    if (nodeCountsCount)
     {
-      v6 = v5;
+      v6 = nodeCountsCount;
       for (i = 0; i != v6; ++i)
       {
         [v17 addNodeCount:{-[AWDFlagstoneTopologyMetrics nodeCountAtIndex:](self, "nodeCountAtIndex:", i)}];
@@ -302,10 +302,10 @@ LABEL_21:
   if ([(AWDFlagstoneTopologyMetrics *)self routerCountsCount])
   {
     [v17 clearRouterCounts];
-    v8 = [(AWDFlagstoneTopologyMetrics *)self routerCountsCount];
-    if (v8)
+    routerCountsCount = [(AWDFlagstoneTopologyMetrics *)self routerCountsCount];
+    if (routerCountsCount)
     {
-      v9 = v8;
+      v9 = routerCountsCount;
       for (j = 0; j != v9; ++j)
       {
         [v17 addRouterCount:{-[AWDFlagstoneTopologyMetrics routerCountAtIndex:](self, "routerCountAtIndex:", j)}];
@@ -316,10 +316,10 @@ LABEL_21:
   if ([(AWDFlagstoneTopologyMetrics *)self fEDCountsCount])
   {
     [v17 clearFEDCounts];
-    v11 = [(AWDFlagstoneTopologyMetrics *)self fEDCountsCount];
-    if (v11)
+    fEDCountsCount = [(AWDFlagstoneTopologyMetrics *)self fEDCountsCount];
+    if (fEDCountsCount)
     {
-      v12 = v11;
+      v12 = fEDCountsCount;
       for (k = 0; k != v12; ++k)
       {
         [v17 addFEDCount:{-[AWDFlagstoneTopologyMetrics fEDCountAtIndex:](self, "fEDCountAtIndex:", k)}];
@@ -330,10 +330,10 @@ LABEL_21:
   if ([(AWDFlagstoneTopologyMetrics *)self sEDCountsCount])
   {
     [v17 clearSEDCounts];
-    v14 = [(AWDFlagstoneTopologyMetrics *)self sEDCountsCount];
-    if (v14)
+    sEDCountsCount = [(AWDFlagstoneTopologyMetrics *)self sEDCountsCount];
+    if (sEDCountsCount)
     {
-      v15 = v14;
+      v15 = sEDCountsCount;
       for (m = 0; m != v15; ++m)
       {
         [v17 addSEDCount:{-[AWDFlagstoneTopologyMetrics sEDCountAtIndex:](self, "sEDCountAtIndex:", m)}];
@@ -364,9 +364,9 @@ LABEL_23:
 LABEL_25:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -374,7 +374,7 @@ LABEL_25:
     *(v5 + 128) |= 1u;
   }
 
-  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:a3];
+  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:zone];
   v8 = v6[14];
   v6[14] = v7;
 
@@ -402,24 +402,24 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = *(v4 + 128);
+  v5 = *(equalCopy + 128);
   if (*&self->_has)
   {
-    if ((*(v4 + 128) & 1) == 0 || self->_timestamp != *(v4 + 13))
+    if ((*(equalCopy + 128) & 1) == 0 || self->_timestamp != *(equalCopy + 13))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 128))
+  else if (*(equalCopy + 128))
   {
 LABEL_22:
     v7 = 0;
@@ -427,28 +427,28 @@ LABEL_22:
   }
 
   header = self->_header;
-  if (header | *(v4 + 14) && ![(AWDHeaderInfoS *)header isEqual:?]|| !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
+  if (header | *(equalCopy + 14) && ![(AWDHeaderInfoS *)header isEqual:?]|| !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 128) & 2) == 0 || self->_maxChangeinNodeCount != *(v4 + 30))
+    if ((*(equalCopy + 128) & 2) == 0 || self->_maxChangeinNodeCount != *(equalCopy + 30))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 128) & 2) != 0)
+  else if ((*(equalCopy + 128) & 2) != 0)
   {
     goto LABEL_22;
   }
 
-  v7 = (*(v4 + 128) & 4) == 0;
+  v7 = (*(equalCopy + 128) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 128) & 4) == 0 || self->_percTopologyChangeTimeInstances != *(v4 + 31))
+    if ((*(equalCopy + 128) & 4) == 0 || self->_percTopologyChangeTimeInstances != *(equalCopy + 31))
     {
       goto LABEL_22;
     }
@@ -502,13 +502,13 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[16])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[16])
   {
-    self->_timestamp = v4[13];
+    self->_timestamp = fromCopy[13];
     *&self->_has |= 1u;
   }
 
@@ -537,40 +537,40 @@ LABEL_6:
 
   v5 = v20;
 LABEL_9:
-  v8 = [v5 nodeCountsCount];
-  if (v8)
+  nodeCountsCount = [v5 nodeCountsCount];
+  if (nodeCountsCount)
   {
-    v9 = v8;
+    v9 = nodeCountsCount;
     for (i = 0; i != v9; ++i)
     {
       -[AWDFlagstoneTopologyMetrics addNodeCount:](self, "addNodeCount:", [v20 nodeCountAtIndex:i]);
     }
   }
 
-  v11 = [v20 routerCountsCount];
-  if (v11)
+  routerCountsCount = [v20 routerCountsCount];
+  if (routerCountsCount)
   {
-    v12 = v11;
+    v12 = routerCountsCount;
     for (j = 0; j != v12; ++j)
     {
       -[AWDFlagstoneTopologyMetrics addRouterCount:](self, "addRouterCount:", [v20 routerCountAtIndex:j]);
     }
   }
 
-  v14 = [v20 fEDCountsCount];
-  if (v14)
+  fEDCountsCount = [v20 fEDCountsCount];
+  if (fEDCountsCount)
   {
-    v15 = v14;
+    v15 = fEDCountsCount;
     for (k = 0; k != v15; ++k)
     {
       -[AWDFlagstoneTopologyMetrics addFEDCount:](self, "addFEDCount:", [v20 fEDCountAtIndex:k]);
     }
   }
 
-  v17 = [v20 sEDCountsCount];
-  if (v17)
+  sEDCountsCount = [v20 sEDCountsCount];
+  if (sEDCountsCount)
   {
-    v18 = v17;
+    v18 = sEDCountsCount;
     for (m = 0; m != v18; ++m)
     {
       -[AWDFlagstoneTopologyMetrics addSEDCount:](self, "addSEDCount:", [v20 sEDCountAtIndex:m]);

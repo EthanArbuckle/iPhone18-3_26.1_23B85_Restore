@@ -1,8 +1,8 @@
 @interface _HDActivityCacheEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)_decodeActivityQuantityStatisticsInfosWithRow:(int)a3 column:;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)_decodeActivityQuantityStatisticsInfosWithRow:(int)row column:;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 - (uint64_t)_shouldIncludeActivityCachePrivateProperties;
 - (uint64_t)_shouldIncludeActivityCacheStatistics;
@@ -57,9 +57,9 @@
 
   v8 = [v3 arrayByAddingObject:@"paused"];
 
-  v9 = [(HDEntityEncoder *)self superclassEncoder];
-  v10 = [v9 orderedProperties];
-  v11 = [v8 arrayByAddingObjectsFromArray:v10];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v11 = [v8 arrayByAddingObjectsFromArray:orderedProperties];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -68,77 +68,77 @@
 
 - (uint64_t)_shouldIncludeActivityCachePrivateProperties
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (![a1 purpose])
+  if (![self purpose])
   {
     return 1;
   }
 
-  v2 = [a1 encodingOptions];
-  v3 = [v2 objectForKeyedSubscript:@"IncludePrivateActivityCacheProperties"];
+  encodingOptions = [self encodingOptions];
+  v3 = [encodingOptions objectForKeyedSubscript:@"IncludePrivateActivityCacheProperties"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (uint64_t)_shouldIncludeActivityCacheStatistics
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (![a1 purpose])
+  if (![self purpose])
   {
     return 1;
   }
 
-  v2 = [a1 encodingOptions];
-  v3 = [v2 objectForKeyedSubscript:@"IncludeActivityCacheStatistics"];
+  encodingOptions = [self encodingOptions];
+  v3 = [encodingOptions objectForKeyedSubscript:@"IncludeActivityCacheStatistics"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
   if (([(_HDActivityCacheEntityEncoder *)self _shouldIncludeActivityCachePrivateProperties]& 1) == 0)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"HDActivityCacheEntity.m" lineNumber:629 description:{@"Invalid parameter not satisfying: %@", @"[self _shouldIncludeActivityCachePrivateProperties]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDActivityCacheEntity.m" lineNumber:629 description:{@"Invalid parameter not satisfying: %@", @"[self _shouldIncludeActivityCachePrivateProperties]"}];
   }
 
   if (([(_HDActivityCacheEntityEncoder *)self _shouldIncludeActivityCacheStatistics]& 1) == 0)
   {
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"HDActivityCacheEntity.m" lineNumber:630 description:{@"Invalid parameter not satisfying: %@", @"[self _shouldIncludeActivityCacheStatistics]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDActivityCacheEntity.m" lineNumber:630 description:{@"Invalid parameter not satisfying: %@", @"[self _shouldIncludeActivityCacheStatistics]"}];
   }
 
-  v10 = [(HDEntityEncoder *)self superclassEncoder];
-  v11 = [v10 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v11 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v11)
   {
@@ -147,12 +147,12 @@
     [(HDCodableActivityCache *)v12 setCacheIndex:HDSQLiteColumnWithNameAsInt64()];
     [(HDCodableActivityCache *)v12 setSequence:HDSQLiteColumnWithNameAsInt64()];
     v13 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a4, v13) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v13) & 1) == 0)
     {
       [(HDCodableActivityCache *)v12 setWheelchairUse:HDSQLiteColumnAsInt64()];
     }
 
-    [(HDCodableActivityCache *)v12 setActivityMoveMode:HDEntityActivityModeModeForRowAndColumnName(a4)];
+    [(HDCodableActivityCache *)v12 setActivityMoveMode:HDEntityActivityModeModeForRowAndColumnName(row)];
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       [(HDCodableActivityCache *)v12 setPaused:HDSQLiteColumnWithNameAsBoolean()];
@@ -255,9 +255,9 @@
     }
 
     v14 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a4, v14) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v14) & 1) == 0)
     {
-      v15 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:a4 column:v14];
+      v15 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:row column:v14];
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
@@ -276,8 +276,8 @@
               objc_enumerationMutation(v15);
             }
 
-            v20 = [*(*(&v47 + 1) + 8 * i) codableRepresentationForSync];
-            [(HDCodableActivityCache *)v12 addDailyEnergyBurnedStatistics:v20];
+            codableRepresentationForSync = [*(*(&v47 + 1) + 8 * i) codableRepresentationForSync];
+            [(HDCodableActivityCache *)v12 addDailyEnergyBurnedStatistics:codableRepresentationForSync];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v47 objects:v53 count:16];
@@ -288,9 +288,9 @@
     }
 
     v21 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a4, v21) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v21) & 1) == 0)
     {
-      v22 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:a4 column:v21];
+      v22 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:row column:v21];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
@@ -309,8 +309,8 @@
               objc_enumerationMutation(v22);
             }
 
-            v27 = [*(*(&v43 + 1) + 8 * j) codableRepresentationForSync];
-            [(HDCodableActivityCache *)v12 addDailyMoveMinutesStatistics:v27];
+            codableRepresentationForSync2 = [*(*(&v43 + 1) + 8 * j) codableRepresentationForSync];
+            [(HDCodableActivityCache *)v12 addDailyMoveMinutesStatistics:codableRepresentationForSync2];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v43 objects:v52 count:16];
@@ -321,9 +321,9 @@
     }
 
     v28 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a4, v28) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v28) & 1) == 0)
     {
-      v29 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:a4 column:v28];
+      v29 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:row column:v28];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
@@ -342,8 +342,8 @@
               objc_enumerationMutation(v29);
             }
 
-            v34 = [*(*(&v39 + 1) + 8 * k) codableRepresentationForSync];
-            [(HDCodableActivityCache *)v12 addDailyBriskMinutesStatistics:v34];
+            codableRepresentationForSync3 = [*(*(&v39 + 1) + 8 * k) codableRepresentationForSync];
+            [(HDCodableActivityCache *)v12 addDailyBriskMinutesStatistics:codableRepresentationForSync3];
           }
 
           v31 = [v29 countByEnumeratingWithState:&v39 objects:v51 count:16];
@@ -364,25 +364,25 @@
   return v12;
 }
 
-- (id)_decodeActivityQuantityStatisticsInfosWithRow:(int)a3 column:
+- (id)_decodeActivityQuantityStatisticsInfosWithRow:(int)row column:
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 72);
+    v6 = *(self + 72);
     if (!v6)
     {
       v7 = MEMORY[0x277CBEB98];
       v8 = objc_opt_class();
       v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-      v10 = *(a1 + 72);
-      *(a1 + 72) = v9;
+      v10 = *(self + 72);
+      *(self + 72) = v9;
 
-      v6 = *(a1 + 72);
+      v6 = *(self + 72);
     }
 
     v11 = MEMORY[0x277CCAAC8];
-    v12 = MEMORY[0x22AAC6C30](a2, a3);
+    v12 = MEMORY[0x22AAC6C30](a2, row);
     v18 = 0;
     v13 = [v11 unarchivedObjectOfClasses:v6 fromData:v12 error:&v18];
     v14 = v18;
@@ -410,139 +410,139 @@
   return v13;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCCFA0]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCCFA0]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
-    [v10 _setCacheIndex:HDSQLiteColumnWithNameAsInt64()];
-    [v10 _setSequence:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setCacheIndex:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setSequence:HDSQLiteColumnWithNameAsInt64()];
     v13 = MEMORY[0x277CCD7E8];
-    v14 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+    kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
     HDSQLiteColumnWithNameAsDouble();
-    v15 = [v13 quantityWithUnit:v14 doubleValue:?];
-    [v10 _setEnergyBurned:v15];
+    v15 = [v13 quantityWithUnit:kilocalorieUnit doubleValue:?];
+    [objectCopy _setEnergyBurned:v15];
 
     v16 = MEMORY[0x277CCD7E8];
-    v17 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+    kilocalorieUnit2 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
     HDSQLiteColumnWithNameAsDouble();
-    v18 = [v16 quantityWithUnit:v17 doubleValue:?];
-    [v10 _setEnergyBurnedGoalOnly:v18];
+    v18 = [v16 quantityWithUnit:kilocalorieUnit2 doubleValue:?];
+    [objectCopy _setEnergyBurnedGoalOnly:v18];
 
     v19 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setEnergyBurnedGoalDateOnly:v19];
+    [objectCopy _setEnergyBurnedGoalDateOnly:v19];
 
     v20 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v20) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v20) & 1) == 0)
     {
-      MEMORY[0x22AAC6C50](a5, v20);
-      [v10 _setMoveMinutes:?];
+      MEMORY[0x22AAC6C50](row, v20);
+      [objectCopy _setMoveMinutes:?];
     }
 
     v21 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v21) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v21) & 1) == 0)
     {
       v22 = MEMORY[0x277CCD7E8];
-      v23 = [MEMORY[0x277CCDAB0] minuteUnit];
-      MEMORY[0x22AAC6C50](a5, v21);
-      v24 = [v22 quantityWithUnit:v23 doubleValue:?];
-      [v10 _setMoveMinutesGoalOnly:v24];
+      minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+      MEMORY[0x22AAC6C50](row, v21);
+      v24 = [v22 quantityWithUnit:minuteUnit doubleValue:?];
+      [objectCopy _setMoveMinutesGoalOnly:v24];
     }
 
     v25 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setMoveMinutesGoalDateOnly:v25];
+    [objectCopy _setMoveMinutesGoalDateOnly:v25];
 
     v26 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v26) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v26) & 1) == 0)
     {
-      MEMORY[0x22AAC6C50](a5, v26);
-      [v10 _setBriskMinutes:?];
+      MEMORY[0x22AAC6C50](row, v26);
+      [objectCopy _setBriskMinutes:?];
     }
 
     v27 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v27) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v27) & 1) == 0)
     {
       v28 = MEMORY[0x277CCD7E8];
-      v29 = [MEMORY[0x277CCDAB0] minuteUnit];
-      MEMORY[0x22AAC6C50](a5, v27);
-      v30 = [v28 quantityWithUnit:v29 doubleValue:?];
-      [v10 _setBriskMinutesGoalOnly:v30];
+      minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+      MEMORY[0x22AAC6C50](row, v27);
+      v30 = [v28 quantityWithUnit:minuteUnit2 doubleValue:?];
+      [objectCopy _setBriskMinutesGoalOnly:v30];
     }
 
     v31 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setBriskMinutesGoalDateOnly:v31];
+    [objectCopy _setBriskMinutesGoalDateOnly:v31];
 
     v32 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v32) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v32) & 1) == 0)
     {
-      MEMORY[0x22AAC6C50](a5, v32);
-      [v10 _setActiveHours:?];
+      MEMORY[0x22AAC6C50](row, v32);
+      [objectCopy _setActiveHours:?];
     }
 
     v33 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v33) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v33) & 1) == 0)
     {
       v34 = MEMORY[0x277CCD7E8];
-      v35 = [MEMORY[0x277CCDAB0] countUnit];
-      MEMORY[0x22AAC6C50](a5, v33);
-      v36 = [v34 quantityWithUnit:v35 doubleValue:?];
-      [v10 _setActiveHoursGoalOnly:v36];
+      countUnit = [MEMORY[0x277CCDAB0] countUnit];
+      MEMORY[0x22AAC6C50](row, v33);
+      v36 = [v34 quantityWithUnit:countUnit doubleValue:?];
+      [objectCopy _setActiveHoursGoalOnly:v36];
     }
 
     v37 = HDSQLiteColumnWithNameAsDate();
-    [v10 _setActiveHoursGoalDateOnly:v37];
+    [objectCopy _setActiveHoursGoalDateOnly:v37];
 
-    [v10 _setActivityMoveMode:HDEntityActivityModeModeForRowAndColumnName(a5)];
-    [v10 _setPaused:HDSQLiteColumnWithNameAsBoolean()];
-    [v10 _setVersion:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setActivityMoveMode:HDEntityActivityModeModeForRowAndColumnName(row)];
+    [objectCopy _setPaused:HDSQLiteColumnWithNameAsBoolean()];
+    [objectCopy _setVersion:HDSQLiteColumnWithNameAsInt64()];
     if ([(_HDActivityCacheEntityEncoder *)self _shouldIncludeActivityCachePrivateProperties])
     {
-      v38 = v10;
+      v38 = objectCopy;
       if (self)
       {
         v39 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v39) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v39) & 1) == 0)
         {
           [v38 _setStepCount:HDSQLiteColumnAsInt64()];
         }
 
         v40 = MEMORY[0x277CCD7E8];
-        v41 = [MEMORY[0x277CCDAB0] meterUnit];
+        meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
         HDSQLiteColumnWithNameAsDouble();
-        v42 = [v40 quantityWithUnit:v41 doubleValue:?];
+        v42 = [v40 quantityWithUnit:meterUnit doubleValue:?];
         [v38 _setWalkingAndRunningDistance:v42];
 
         v43 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v43) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v43) & 1) == 0)
         {
           [v38 _setPushCount:HDSQLiteColumnAsInt64()];
         }
 
         v44 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v44) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v44) & 1) == 0)
         {
-          MEMORY[0x22AAC6C50](a5, v44);
+          MEMORY[0x22AAC6C50](row, v44);
           [v38 _setDeepBreathingDuration:?];
         }
 
         v45 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v45) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v45) & 1) == 0)
         {
           [v38 _setFlightsClimbed:HDSQLiteColumnAsInt64()];
         }
 
         v46 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v46) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v46) & 1) == 0)
         {
           [v38 _setWheelchairUse:HDSQLiteColumnAsInt64()];
         }
@@ -551,27 +551,27 @@
 
     if ([(_HDActivityCacheEntityEncoder *)self _shouldIncludeActivityCacheStatistics])
     {
-      v47 = v10;
+      v47 = objectCopy;
       if (self)
       {
         v48 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v48) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v48) & 1) == 0)
         {
-          v49 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:a5 column:v48];
+          v49 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:row column:v48];
           [v47 _setDailyEnergyBurnedStatistics:v49];
         }
 
         v50 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v50) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v50) & 1) == 0)
         {
-          v51 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:a5 column:v50];
+          v51 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:row column:v50];
           [v47 _setDailyMoveMinutesStatistics:v51];
         }
 
         v52 = HDSQLiteColumnWithName();
-        if ((MEMORY[0x22AAC6CD0](a5, v52) & 1) == 0)
+        if ((MEMORY[0x22AAC6CD0](row, v52) & 1) == 0)
         {
-          v53 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:a5 column:v52];
+          v53 = [(_HDActivityCacheEntityEncoder *)self _decodeActivityQuantityStatisticsInfosWithRow:row column:v52];
           [v47 _setDailyBriskMinutesStatistics:v53];
         }
       }

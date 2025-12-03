@@ -1,20 +1,20 @@
 @interface COSGetStartedViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation COSGetStartedViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSGetStartedViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"COSGetStartedViewController" hasInstanceVariable:@"_automationButton" withType:"UIButton"];
-  [v3 validateClass:@"COSGetStartedViewController" hasInstanceVariable:@"_marketingBannerImage" withType:"UIImageView"];
-  [v3 validateClass:@"COSGetStartedViewController" isKindOfClass:@"BPSWelcomeOptinViewController"];
-  [v3 validateClass:@"BPSWelcomeOptinViewController" hasInstanceMethod:@"suggestedChoiceButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BPSWelcomeOptinViewController" hasInstanceMethod:@"alternateChoiceButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSGetStartedViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"COSGetStartedViewController" hasInstanceVariable:@"_automationButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"COSGetStartedViewController" hasInstanceVariable:@"_marketingBannerImage" withType:"UIImageView"];
+  [validationsCopy validateClass:@"COSGetStartedViewController" isKindOfClass:@"BPSWelcomeOptinViewController"];
+  [validationsCopy validateClass:@"BPSWelcomeOptinViewController" hasInstanceMethod:@"suggestedChoiceButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BPSWelcomeOptinViewController" hasInstanceMethod:@"alternateChoiceButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

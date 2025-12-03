@@ -1,8 +1,8 @@
 @interface MICodeSigningInfo
-+ (BOOL)getValue:(id *)a3 forEntitlement:(id)a4 fromProcessWithAuditToken:(id *)a5 error:(id *)a6;
-+ (id)signingIdentifierForAuditToken:(id *)a3 error:(id *)a4;
-- (MICodeSigningInfo)initWithDictionaryRepresentation:(id)a3 fromSource:(unint64_t)a4;
-- (MICodeSigningInfo)initWithSignerIdentity:(id)a3 signerOrganization:(id)a4 codeInfoIdentifier:(id)a5 teamIdentifier:(id)a6 signatureVersion:(id)a7 entitlements:(id)a8 signerType:(unint64_t)a9 profileType:(unint64_t)a10 signingInfoSource:(unint64_t)a11 launchWarningData:(id)a12;
++ (BOOL)getValue:(id *)value forEntitlement:(id)entitlement fromProcessWithAuditToken:(id *)token error:(id *)error;
++ (id)signingIdentifierForAuditToken:(id *)token error:(id *)error;
+- (MICodeSigningInfo)initWithDictionaryRepresentation:(id)representation fromSource:(unint64_t)source;
+- (MICodeSigningInfo)initWithSignerIdentity:(id)identity signerOrganization:(id)organization codeInfoIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier signatureVersion:(id)version entitlements:(id)entitlements signerType:(unint64_t)type profileType:(unint64_t)self0 signingInfoSource:(unint64_t)self1 launchWarningData:(id)self2;
 - (NSDictionary)dictionaryRepresentation;
 - (id)initForTesting;
 @end
@@ -16,41 +16,41 @@
   return [(MICodeSigningInfo *)&v3 init];
 }
 
-- (MICodeSigningInfo)initWithSignerIdentity:(id)a3 signerOrganization:(id)a4 codeInfoIdentifier:(id)a5 teamIdentifier:(id)a6 signatureVersion:(id)a7 entitlements:(id)a8 signerType:(unint64_t)a9 profileType:(unint64_t)a10 signingInfoSource:(unint64_t)a11 launchWarningData:(id)a12
+- (MICodeSigningInfo)initWithSignerIdentity:(id)identity signerOrganization:(id)organization codeInfoIdentifier:(id)identifier teamIdentifier:(id)teamIdentifier signatureVersion:(id)version entitlements:(id)entitlements signerType:(unint64_t)type profileType:(unint64_t)self0 signingInfoSource:(unint64_t)self1 launchWarningData:(id)self2
 {
-  v19 = a3;
-  v20 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v21 = a12;
+  identityCopy = identity;
+  organizationCopy = organization;
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
+  versionCopy = version;
+  entitlementsCopy = entitlements;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = MICodeSigningInfo;
   v22 = [(MICodeSigningInfo *)&v29 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_signerIdentity, a3);
-    objc_storeStrong(&v23->_signerOrganization, a4);
-    objc_storeStrong(&v23->_codeInfoIdentifier, a5);
-    objc_storeStrong(&v23->_teamIdentifier, a6);
-    objc_storeStrong(&v23->_signatureVersion, a7);
-    objc_storeStrong(&v23->_entitlements, a8);
-    v23->_profileValidationType = a10;
-    v23->_signingInfoSource = a11;
-    v23->_codeSignerType = a9;
-    objc_storeStrong(&v23->_launchWarningData, a12);
+    objc_storeStrong(&v22->_signerIdentity, identity);
+    objc_storeStrong(&v23->_signerOrganization, organization);
+    objc_storeStrong(&v23->_codeInfoIdentifier, identifier);
+    objc_storeStrong(&v23->_teamIdentifier, teamIdentifier);
+    objc_storeStrong(&v23->_signatureVersion, version);
+    objc_storeStrong(&v23->_entitlements, entitlements);
+    v23->_profileValidationType = profileType;
+    v23->_signingInfoSource = source;
+    v23->_codeSignerType = type;
+    objc_storeStrong(&v23->_launchWarningData, data);
   }
 
   return v23;
 }
 
-- (MICodeSigningInfo)initWithDictionaryRepresentation:(id)a3 fromSource:(unint64_t)a4
+- (MICodeSigningInfo)initWithDictionaryRepresentation:(id)representation fromSource:(unint64_t)source
 {
-  v6 = a3;
+  representationCopy = representation;
   objc_opt_class();
-  v7 = v6;
+  v7 = representationCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -88,15 +88,15 @@ LABEL_41:
     v11 = 0;
   }
 
-  v12 = [v11 unsignedIntegerValue];
-  if (a4)
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
+  if (source)
   {
-    v13 = a4;
+    sourceCopy = source;
   }
 
   else
   {
-    v13 = v12;
+    sourceCopy = unsignedIntegerValue;
   }
 
   v14 = v7;
@@ -115,7 +115,7 @@ LABEL_41:
 
   if (v17)
   {
-    v18 = [v17 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v17 unsignedIntegerValue];
   }
 
   else
@@ -134,12 +134,12 @@ LABEL_41:
 
     if (v20)
     {
-      v18 = 1;
+      unsignedIntegerValue2 = 1;
     }
 
     else
     {
-      v18 = v23;
+      unsignedIntegerValue2 = v23;
     }
   }
 
@@ -159,7 +159,7 @@ LABEL_41:
 
   if (v27)
   {
-    v28 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v27 unsignedIntegerValue];
   }
 
   else
@@ -174,7 +174,7 @@ LABEL_41:
 
       if (v32)
       {
-        v28 = 2;
+        unsignedIntegerValue3 = 2;
       }
 
       else
@@ -184,23 +184,23 @@ LABEL_41:
 
         if (v34)
         {
-          v28 = 3;
+          unsignedIntegerValue3 = 3;
         }
 
         else
         {
-          v28 = 4;
+          unsignedIntegerValue3 = 4;
         }
       }
     }
 
     else
     {
-      v28 = 1;
+      unsignedIntegerValue3 = 1;
     }
   }
 
-  if (v18 == 3 && v28 == 1)
+  if (unsignedIntegerValue2 == 3 && unsignedIntegerValue3 == 1)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -243,7 +243,7 @@ LABEL_41:
   v40 = [v24 objectForKeyedSubscript:@"CodeInfoIdentifier"];
   objc_opt_class();
   v41 = v40;
-  v64 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
     v58 = v41;
@@ -269,7 +269,7 @@ LABEL_41:
     v56 = 0;
   }
 
-  v44 = v28;
+  v44 = unsignedIntegerValue3;
   v57 = v43;
 
   v45 = [v24 objectForKeyedSubscript:@"SignatureVersion"];
@@ -312,7 +312,7 @@ LABEL_41:
     v53 = 0;
   }
 
-  v35 = [(MICodeSigningInfo *)v64 initWithSignerIdentity:v62 signerOrganization:v60 codeInfoIdentifier:v58 teamIdentifier:v56 signatureVersion:v47 entitlements:v50 signerType:v18 profileType:v44 signingInfoSource:v13 launchWarningData:v53];
+  v35 = [(MICodeSigningInfo *)selfCopy initWithSignerIdentity:v62 signerOrganization:v60 codeInfoIdentifier:v58 teamIdentifier:v56 signatureVersion:v47 entitlements:v50 signerType:unsignedIntegerValue2 profileType:v44 signingInfoSource:sourceCopy launchWarningData:v53];
   self = v35;
 
 LABEL_64:
@@ -322,52 +322,52 @@ LABEL_64:
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(MICodeSigningInfo *)self entitlements];
+  entitlements = [(MICodeSigningInfo *)self entitlements];
 
-  if (v4)
+  if (entitlements)
   {
-    v5 = [(MICodeSigningInfo *)self entitlements];
-    [v3 setObject:v5 forKeyedSubscript:@"com.apple.MobileContainerManager.Entitlements"];
+    entitlements2 = [(MICodeSigningInfo *)self entitlements];
+    [v3 setObject:entitlements2 forKeyedSubscript:@"com.apple.MobileContainerManager.Entitlements"];
   }
 
-  v6 = [(MICodeSigningInfo *)self signerIdentity];
+  signerIdentity = [(MICodeSigningInfo *)self signerIdentity];
 
-  if (v6)
+  if (signerIdentity)
   {
-    v7 = [(MICodeSigningInfo *)self signerIdentity];
-    [v3 setObject:v7 forKeyedSubscript:@"SignerIdentity"];
+    signerIdentity2 = [(MICodeSigningInfo *)self signerIdentity];
+    [v3 setObject:signerIdentity2 forKeyedSubscript:@"SignerIdentity"];
   }
 
-  v8 = [(MICodeSigningInfo *)self signerOrganization];
+  signerOrganization = [(MICodeSigningInfo *)self signerOrganization];
 
-  if (v8)
+  if (signerOrganization)
   {
-    v9 = [(MICodeSigningInfo *)self signerOrganization];
-    [v3 setObject:v9 forKeyedSubscript:@"SignerOrganization"];
+    signerOrganization2 = [(MICodeSigningInfo *)self signerOrganization];
+    [v3 setObject:signerOrganization2 forKeyedSubscript:@"SignerOrganization"];
   }
 
-  v10 = [(MICodeSigningInfo *)self codeInfoIdentifier];
+  codeInfoIdentifier = [(MICodeSigningInfo *)self codeInfoIdentifier];
 
-  if (v10)
+  if (codeInfoIdentifier)
   {
-    v11 = [(MICodeSigningInfo *)self codeInfoIdentifier];
-    [v3 setObject:v11 forKeyedSubscript:@"CodeInfoIdentifier"];
+    codeInfoIdentifier2 = [(MICodeSigningInfo *)self codeInfoIdentifier];
+    [v3 setObject:codeInfoIdentifier2 forKeyedSubscript:@"CodeInfoIdentifier"];
   }
 
-  v12 = [(MICodeSigningInfo *)self teamIdentifier];
+  teamIdentifier = [(MICodeSigningInfo *)self teamIdentifier];
 
-  if (v12)
+  if (teamIdentifier)
   {
-    v13 = [(MICodeSigningInfo *)self teamIdentifier];
-    [v3 setObject:v13 forKeyedSubscript:@"TeamIdentifier"];
+    teamIdentifier2 = [(MICodeSigningInfo *)self teamIdentifier];
+    [v3 setObject:teamIdentifier2 forKeyedSubscript:@"TeamIdentifier"];
   }
 
-  v14 = [(MICodeSigningInfo *)self signatureVersion];
+  signatureVersion = [(MICodeSigningInfo *)self signatureVersion];
 
-  if (v14)
+  if (signatureVersion)
   {
-    v15 = [(MICodeSigningInfo *)self signatureVersion];
-    [v3 setObject:v15 forKeyedSubscript:@"SignatureVersion"];
+    signatureVersion2 = [(MICodeSigningInfo *)self signatureVersion];
+    [v3 setObject:signatureVersion2 forKeyedSubscript:@"SignatureVersion"];
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MICodeSigningInfo profileValidationType](self, "profileValidationType")}];
@@ -379,31 +379,31 @@ LABEL_64:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MICodeSigningInfo signingInfoSource](self, "signingInfoSource")}];
   [v3 setObject:v18 forKeyedSubscript:@"SigningInfoSource"];
 
-  v19 = [(MICodeSigningInfo *)self launchWarningData];
-  [v3 setObject:v19 forKeyedSubscript:@"LaunchWarningData"];
+  launchWarningData = [(MICodeSigningInfo *)self launchWarningData];
+  [v3 setObject:launchWarningData forKeyedSubscript:@"LaunchWarningData"];
 
   v20 = [v3 copy];
 
   return v20;
 }
 
-+ (id)signingIdentifierForAuditToken:(id *)a3 error:(id *)a4
++ (id)signingIdentifierForAuditToken:(id *)token error:(id *)error
 {
   error = 0;
   v6 = *MEMORY[0x1E695E480];
-  v7 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(v6, &token);
   if (!v8)
   {
-    v17 = *&a3->var0[4];
-    *token.val = *a3->var0;
+    v17 = *&token->var0[4];
+    *token.val = *token->var0;
     *&token.val[4] = v17;
     v18 = audit_token_to_pid(&token);
-    v12 = _CreateAndLogError("+[MICodeSigningInfo signingIdentifierForAuditToken:error:]", 197, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to create SecTask from audit token for pid %d", v19, v18);
+    errorCopy = _CreateAndLogError("+[MICodeSigningInfo signingIdentifierForAuditToken:error:]", 197, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to create SecTask from audit token for pid %d", v19, v18);
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -414,7 +414,7 @@ LABEL_64:
   v9 = v8;
   v10 = SecTaskCopySigningIdentifier(v8, &error);
   v11 = v10;
-  v12 = error;
+  errorCopy = error;
   if (error)
   {
     error = 0;
@@ -422,23 +422,23 @@ LABEL_64:
 
   if (!v10)
   {
-    v13 = *&a3->var0[4];
-    *token.val = *a3->var0;
+    v13 = *&token->var0[4];
+    *token.val = *token->var0;
     *&token.val[4] = v13;
     v14 = audit_token_to_pid(&token);
-    v16 = _CreateAndLogError("+[MICodeSigningInfo signingIdentifierForAuditToken:error:]", 209, @"MIInstallerErrorDomain", 4, v12, 0, @"Failed to get signing identifier from SecTask for pid %d", v15, v14);
+    v16 = _CreateAndLogError("+[MICodeSigningInfo signingIdentifierForAuditToken:error:]", 209, @"MIInstallerErrorDomain", 4, errorCopy, 0, @"Failed to get signing identifier from SecTask for pid %d", v15, v14);
 
-    v12 = v16;
+    errorCopy = v16;
   }
 
   CFRelease(v9);
-  if (a4)
+  if (error)
   {
 LABEL_9:
     if (!v11)
     {
-      v20 = v12;
-      *a4 = v12;
+      v20 = errorCopy;
+      *error = errorCopy;
     }
   }
 
@@ -447,32 +447,32 @@ LABEL_11:
   return v11;
 }
 
-+ (BOOL)getValue:(id *)a3 forEntitlement:(id)a4 fromProcessWithAuditToken:(id *)a5 error:(id *)a6
++ (BOOL)getValue:(id *)value forEntitlement:(id)entitlement fromProcessWithAuditToken:(id *)token error:(id *)error
 {
-  v9 = a4;
+  entitlementCopy = entitlement;
   error = 0;
   v10 = *MEMORY[0x1E695E480];
-  v11 = *&a5->var0[4];
-  *token.val = *a5->var0;
+  v11 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v11;
   v12 = SecTaskCreateWithAuditToken(v10, &token);
   if (v12)
   {
     v13 = v12;
-    v14 = SecTaskCopyValueForEntitlement(v12, v9, &error);
+    v14 = SecTaskCopyValueForEntitlement(v12, entitlementCopy, &error);
     v15 = v14;
-    v16 = error;
+    errorCopy = error;
     if (error && (error = 0, !v14))
     {
-      v21 = *&a5->var0[4];
-      *token.val = *a5->var0;
+      v21 = *&token->var0[4];
+      *token.val = *token->var0;
       *&token.val[4] = v21;
       v22 = audit_token_to_pid(&token);
-      v24 = _CreateAndLogError("+[MICodeSigningInfo getValue:forEntitlement:fromProcessWithAuditToken:error:]", 245, @"MIInstallerErrorDomain", 4, v16, 0, @"Failed to get signing identifier from SecTask for pid %d", v23, v22);
+      v24 = _CreateAndLogError("+[MICodeSigningInfo getValue:forEntitlement:fromProcessWithAuditToken:error:]", 245, @"MIInstallerErrorDomain", 4, errorCopy, 0, @"Failed to get signing identifier from SecTask for pid %d", v23, v22);
 
       v17 = 0;
       v15 = 0;
-      v16 = v24;
+      errorCopy = v24;
     }
 
     else
@@ -481,7 +481,7 @@ LABEL_11:
     }
 
     CFRelease(v13);
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -489,14 +489,14 @@ LABEL_11:
 
   else
   {
-    v18 = *&a5->var0[4];
-    *token.val = *a5->var0;
+    v18 = *&token->var0[4];
+    *token.val = *token->var0;
     *&token.val[4] = v18;
     v19 = audit_token_to_pid(&token);
-    v16 = _CreateAndLogError("+[MICodeSigningInfo getValue:forEntitlement:fromProcessWithAuditToken:error:]", 232, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to create SecTask from audit token for pid %d", v20, v19);
+    errorCopy = _CreateAndLogError("+[MICodeSigningInfo getValue:forEntitlement:fromProcessWithAuditToken:error:]", 232, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to create SecTask from audit token for pid %d", v20, v19);
     v15 = 0;
     v17 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -504,13 +504,13 @@ LABEL_11:
 
   if (!v17)
   {
-    v25 = v16;
-    *a6 = v16;
+    v25 = errorCopy;
+    *error = errorCopy;
   }
 
 LABEL_11:
   v26 = !v17;
-  if (!a3)
+  if (!value)
   {
     v26 = 1;
   }
@@ -518,7 +518,7 @@ LABEL_11:
   if ((v26 & 1) == 0)
   {
     v27 = v15;
-    *a3 = v15;
+    *value = v15;
   }
 
   return v17;

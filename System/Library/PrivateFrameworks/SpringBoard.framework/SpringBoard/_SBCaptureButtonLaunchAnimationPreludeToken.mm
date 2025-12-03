@@ -1,6 +1,6 @@
 @interface _SBCaptureButtonLaunchAnimationPreludeToken
 - (CGRect)preludeAnimationRectPresentationValue;
-- (_SBCaptureButtonLaunchAnimationPreludeToken)initWithPreludeAnimating:(id)a3 invalidationBlock:(id)a4;
+- (_SBCaptureButtonLaunchAnimationPreludeToken)initWithPreludeAnimating:(id)animating invalidationBlock:(id)block;
 - (id)associatedBezelEffectsCoordinator;
 - (void)associatedBezelEffectsCoordinator;
 - (void)cancel;
@@ -11,14 +11,14 @@
 
 @implementation _SBCaptureButtonLaunchAnimationPreludeToken
 
-- (_SBCaptureButtonLaunchAnimationPreludeToken)initWithPreludeAnimating:(id)a3 invalidationBlock:(id)a4
+- (_SBCaptureButtonLaunchAnimationPreludeToken)initWithPreludeAnimating:(id)animating invalidationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  animatingCopy = animating;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (animatingCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -41,16 +41,16 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bezelEffectsCoordinator, a3);
+    objc_storeStrong(&v10->_bezelEffectsCoordinator, animating);
     v12 = objc_alloc(MEMORY[0x277CF0CE8]);
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __90___SBCaptureButtonLaunchAnimationPreludeToken_initWithPreludeAnimating_invalidationBlock___block_invoke;
     v18[3] = &unk_2783A8A70;
     v19 = v9;
-    v15 = [v12 initWithIdentifier:v14 forReason:@"Prelude" queue:MEMORY[0x277D85CD0] invalidationBlock:v18];
+    v15 = [v12 initWithIdentifier:uUIDString forReason:@"Prelude" queue:MEMORY[0x277D85CD0] invalidationBlock:v18];
     underlyingAssertion = v11->_underlyingAssertion;
     v11->_underlyingAssertion = v15;
 
@@ -63,7 +63,7 @@ LABEL_3:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -71,7 +71,7 @@ LABEL_3:
 - (void)cancel
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -108,7 +108,7 @@ LABEL_3:
 - (void)invalidate
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -132,7 +132,7 @@ LABEL_3:
 - (void)preludeAnimationRectPresentationValue
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -140,7 +140,7 @@ LABEL_3:
 - (void)associatedBezelEffectsCoordinator
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

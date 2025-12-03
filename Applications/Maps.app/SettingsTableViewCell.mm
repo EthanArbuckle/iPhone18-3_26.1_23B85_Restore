@@ -1,7 +1,7 @@
 @interface SettingsTableViewCell
 + (void)initialize;
-- (SettingsTableViewCell)initWithReuseIdentifier:(id)a3;
-- (void)updateBeforeDisplayWithTextAlignment:(int64_t)a3;
+- (SettingsTableViewCell)initWithReuseIdentifier:(id)identifier;
+- (void)updateBeforeDisplayWithTextAlignment:(int64_t)alignment;
 - (void)updateTheme;
 @end
 
@@ -12,34 +12,34 @@
   v6.receiver = self;
   v6.super_class = SettingsTableViewCell;
   [(MapsThemeTableViewCell *)&v6 updateTheme];
-  v3 = [(SettingsTableViewCell *)self theme];
-  v4 = [v3 keyColor];
-  v5 = [(SettingsTableViewCell *)self textLabel];
-  [v5 setTextColor:v4];
+  theme = [(SettingsTableViewCell *)self theme];
+  keyColor = [theme keyColor];
+  textLabel = [(SettingsTableViewCell *)self textLabel];
+  [textLabel setTextColor:keyColor];
 }
 
-- (void)updateBeforeDisplayWithTextAlignment:(int64_t)a3
+- (void)updateBeforeDisplayWithTextAlignment:(int64_t)alignment
 {
   [(SettingsTableViewCell *)self setOpaque:0];
   [(SettingsTableViewCell *)self setBackgroundColor:0];
-  v7 = [(SettingsTableViewCell *)self contentView];
-  [v7 setOpaque:0];
-  [v7 setBackgroundColor:0];
-  v5 = [(SettingsTableViewCell *)self textLabel];
-  [v5 setTextAlignment:a3];
-  [v5 setOpaque:0];
+  contentView = [(SettingsTableViewCell *)self contentView];
+  [contentView setOpaque:0];
+  [contentView setBackgroundColor:0];
+  textLabel = [(SettingsTableViewCell *)self textLabel];
+  [textLabel setTextAlignment:alignment];
+  [textLabel setOpaque:0];
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v5 setFont:v6];
+  [textLabel setFont:v6];
 
-  [v5 setBackgroundColor:0];
+  [textLabel setBackgroundColor:0];
   [(SettingsTableViewCell *)self _maps_recursivelySetAllowsGroupOpacity:0];
 }
 
-- (SettingsTableViewCell)initWithReuseIdentifier:(id)a3
+- (SettingsTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = SettingsTableViewCell;
-  v3 = [(MapsThemeTableViewCell *)&v6 initWithStyle:0 reuseIdentifier:a3];
+  v3 = [(MapsThemeTableViewCell *)&v6 initWithStyle:0 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {

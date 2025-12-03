@@ -1,39 +1,39 @@
 @interface SDAirDropUISessionManager
 - (void)activate;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
 - (void)remoteAlertHandleDidDeactivate:;
-- (void)removedTransfer:(id)a3;
-- (void)updatedTransfer:(id)a3;
+- (void)removedTransfer:(id)transfer;
+- (void)updatedTransfer:(id)transfer;
 @end
 
 @implementation SDAirDropUISessionManager
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004445A0();
 }
 
-- (void)updatedTransfer:(id)a3
+- (void)updatedTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = self;
-  sub_10044A260(v4);
+  transferCopy = transfer;
+  selfCopy = self;
+  sub_10044A260(transferCopy);
 }
 
-- (void)removedTransfer:(id)a3
+- (void)removedTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = self;
-  sub_10044A844(v4);
+  transferCopy = transfer;
+  selfCopy = self;
+  sub_10044A844(transferCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_10044DD58(a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_10044DD58(error);
 }
 
 - (void)remoteAlertHandleDidDeactivate:

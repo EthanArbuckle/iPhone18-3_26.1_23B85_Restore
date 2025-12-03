@@ -1,25 +1,25 @@
 @interface FMR1GlyphButton
-- (_TtC11FMFindingUI15FMR1GlyphButton)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)ringDisplayLinkUpdateWithDisplaylink:(id)a3;
+- (_TtC11FMFindingUI15FMR1GlyphButton)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)ringDisplayLinkUpdateWithDisplaylink:(id)displaylink;
 @end
 
 @implementation FMR1GlyphButton
 
-- (void)ringDisplayLinkUpdateWithDisplaylink:(id)a3
+- (void)ringDisplayLinkUpdateWithDisplaylink:(id)displaylink
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A62A6F8(v4);
+  displaylinkCopy = displaylink;
+  selfCopy = self;
+  sub_24A62A6F8(displaylinkCopy);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_24A62B81C();
 }
 
-- (_TtC11FMFindingUI15FMR1GlyphButton)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI15FMR1GlyphButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

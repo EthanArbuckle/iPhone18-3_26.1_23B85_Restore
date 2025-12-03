@@ -1,14 +1,14 @@
 @interface _UIHyperrectangle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UIHyperrectangle)initWithCoder:(id)a3;
-- (_UIHyperrectangle)initWithDimensions:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4;
-- (void)_mutateMaximumPoint:(id)a3;
-- (void)_mutateMinimumPoint:(id)a3;
+- (_UIHyperrectangle)initWithCoder:(id)coder;
+- (_UIHyperrectangle)initWithDimensions:(unint64_t)dimensions;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint;
+- (void)_mutateMaximumPoint:(id)point;
+- (void)_mutateMinimumPoint:(id)point;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIHyperrectangle
@@ -22,16 +22,16 @@
   [(_UIHyperrectangle *)&v3 dealloc];
 }
 
-- (_UIHyperrectangle)initWithDimensions:(unint64_t)a3
+- (_UIHyperrectangle)initWithDimensions:(unint64_t)dimensions
 {
   v6.receiver = self;
   v6.super_class = _UIHyperrectangle;
   v4 = [(_UIHyperrectangle *)&v6 init];
   if (v4)
   {
-    v4->__minimumPoint = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-    v4->__maximumPoint = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-    v4->__dimensions = a3;
+    v4->__minimumPoint = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
+    v4->__maximumPoint = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
+    v4->__dimensions = dimensions;
   }
 
   return v4;
@@ -48,45 +48,45 @@
   return v7;
 }
 
-- (void)_mutateMinimumPoint:(id)a3
+- (void)_mutateMinimumPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   [(_UIHyperrectangle *)self willChangeValueForKey:@"_minimumPoint"];
-  v4[2](v4, self->__minimumPoint);
+  pointCopy[2](pointCopy, self->__minimumPoint);
 
   [(_UIHyperrectangle *)self didChangeValueForKey:@"_minimumPoint"];
 }
 
-- (void)_mutateMaximumPoint:(id)a3
+- (void)_mutateMaximumPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   [(_UIHyperrectangle *)self willChangeValueForKey:@"_maximumPoint"];
-  v4[2](v4, self->__maximumPoint);
+  pointCopy[2](pointCopy, self->__maximumPoint);
 
   [(_UIHyperrectangle *)self didChangeValueForKey:@"_maximumPoint"];
 }
 
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint
 {
-  vDSP_vmaxD(self->__minimumPoint, 1, a4, 1, a3, 1, self->__dimensions);
+  vDSP_vmaxD(self->__minimumPoint, 1, toPoint, 1, point, 1, self->__dimensions);
   maximumPoint = self->__maximumPoint;
   dimensions = self->__dimensions;
 
-  vDSP_vminD(maximumPoint, 1, a3, 1, a3, 1, dimensions);
+  vDSP_vminD(maximumPoint, 1, point, 1, point, 1, dimensions);
 }
 
-- (_UIHyperrectangle)initWithCoder:(id)a3
+- (_UIHyperrectangle)initWithCoder:(id)coder
 {
   v11 = 0;
   v12 = 0;
-  v5 = a3;
-  v6 = [v5 _ui_decodeVectorForKey:@"_minimumPoint" returnedCount:&v12];
-  v7 = [v5 _ui_decodeVectorForKey:@"_maximumPoint" returnedCount:&v11];
+  coderCopy = coder;
+  v6 = [coderCopy _ui_decodeVectorForKey:@"_minimumPoint" returnedCount:&v12];
+  v7 = [coderCopy _ui_decodeVectorForKey:@"_maximumPoint" returnedCount:&v11];
 
   if (v12 != v11)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:338 description:{@"Tried to decode minimumPoint (%lu) and maximumPoint (%lu) with different number of dimensions", v12, v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:338 description:{@"Tried to decode minimumPoint (%lu) and maximumPoint (%lu) with different number of dimensions", v12, v11}];
   }
 
   v8 = [(_UIHyperrectangle *)self initWithDimensions:?];
@@ -96,16 +96,16 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minimumPoint = self->__minimumPoint;
   dimensions = self->__dimensions;
-  v6 = a3;
-  [v6 _ui_encodeVector:minimumPoint count:dimensions forKey:@"_minimumPoint"];
-  [v6 _ui_encodeVector:self->__maximumPoint count:self->__dimensions forKey:@"_maximumPoint"];
+  coderCopy = coder;
+  [coderCopy _ui_encodeVector:minimumPoint count:dimensions forKey:@"_minimumPoint"];
+  [coderCopy _ui_encodeVector:self->__maximumPoint count:self->__dimensions forKey:@"_maximumPoint"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIHyperrectangle alloc] initWithDimensions:[(_UIHyperrectangle *)self _dimensions]];
   v7[0] = MEMORY[0x1E69E9820];
@@ -123,15 +123,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIHyperrectangle *)self _dimensions];
-    v7 = v6 == [v5 _dimensions] && !memcmp(-[_UIHyperrectangle _minimumPoint](self, "_minimumPoint"), objc_msgSend(v5, "_minimumPoint"), 8 * -[_UIHyperrectangle _dimensions](self, "_dimensions")) && memcmp(-[_UIHyperrectangle _maximumPoint](self, "_maximumPoint"), objc_msgSend(v5, "_maximumPoint"), 8 * -[_UIHyperrectangle _dimensions](self, "_dimensions")) == 0;
+    v5 = equalCopy;
+    _dimensions = [(_UIHyperrectangle *)self _dimensions];
+    v7 = _dimensions == [v5 _dimensions] && !memcmp(-[_UIHyperrectangle _minimumPoint](self, "_minimumPoint"), objc_msgSend(v5, "_minimumPoint"), 8 * -[_UIHyperrectangle _dimensions](self, "_dimensions")) && memcmp(-[_UIHyperrectangle _maximumPoint](self, "_maximumPoint"), objc_msgSend(v5, "_maximumPoint"), 8 * -[_UIHyperrectangle _dimensions](self, "_dimensions")) == 0;
   }
 
   else

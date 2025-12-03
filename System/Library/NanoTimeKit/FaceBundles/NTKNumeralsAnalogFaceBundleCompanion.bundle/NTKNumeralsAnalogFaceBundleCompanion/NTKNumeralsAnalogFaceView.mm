@@ -1,66 +1,66 @@
 @interface NTKNumeralsAnalogFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (BOOL)_needComplicationAnimationForChangeToHour:(int64_t)a3;
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (BOOL)_needComplicationAnimationForChangeToHour:(int64_t)hour;
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected;
 - (CGRect)_keylineFrameForFullScreenEditingReducedForOutsideLabel;
 - (CGRect)_keylineFrameForStyleEditing;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (NTKNumeralsAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_handsAlphaForEditMode:(int64_t)a3;
-- (double)_secondHandAlphaForEditMode:(int64_t)a3;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (NTKNumeralsAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_handsAlphaForEditMode:(int64_t)mode;
+- (double)_secondHandAlphaForEditMode:(int64_t)mode;
 - (id)_faceConfiguration;
-- (id)_faceConfigurationWithPalette:(id)a3;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_faceConfigurationWithPalette:(id)palette;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (int64_t)_complicationPlacementForCurrentHour;
-- (int64_t)_complicationPlacementForHour:(int64_t)a3;
+- (int64_t)_complicationPlacementForHour:(int64_t)hour;
 - (int64_t)_currentHour;
-- (int64_t)_styleIndexForStyle:(unint64_t)a3;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (int64_t)_styleIndexForStyle:(unint64_t)style;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyFaceColorPalette:(id)a3 toComplicationView:(id)a4;
-- (void)_applyForegroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyFaceColorPalette:(id)palette toComplicationView:(id)view;
+- (void)_applyForegroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyStyle:(unint64_t)a3;
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyStyle:(unint64_t)style;
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterStyleEditing;
-- (void)_configureComplicationFactory:(id)a3;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
+- (void)_configureComplicationFactory:(id)factory;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
 - (void)_configureForStyleEditing;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_displayLinkFired;
-- (void)_enumerateComplicationViewsWithBlock:(id)a3;
+- (void)_enumerateComplicationViewsWithBlock:(id)block;
 - (void)_handleTimeChange;
 - (void)_loadHoursManagerIfNecessary;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
-- (void)_prepareForHourChangeWithSecondsUntilChange:(double)a3;
+- (void)_prepareForHourChangeWithSecondsUntilChange:(double)change;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateAreAllComplicationsOffState;
-- (void)_updateComplicationAndHourNodePlacementsWithToHour:(int64_t)a3 duration:(double)a4;
-- (void)_updateComplicationPositionWithAnimationProgress:(double)a3;
+- (void)_updateComplicationAndHourNodePlacementsWithToHour:(int64_t)hour duration:(double)duration;
+- (void)_updateComplicationPositionWithAnimationProgress:(double)progress;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKNumeralsAnalogFaceView
 
-- (NTKNumeralsAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKNumeralsAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKNumeralsAnalogFaceView;
-  v9 = [(NTKNumeralsAnalogFaceView *)&v14 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKNumeralsAnalogFaceView *)&v14 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v9->_complicationFactory;
     v9->_complicationFactory = v10;
 
@@ -102,8 +102,8 @@
     v5 = 0u;
     v6 = 0u;
     v4 = 0u;
-    v3 = [(NTKNumeralsAnalogFaceView *)self device];
-    sub_74AC(v3, &v4);
+    device = [(NTKNumeralsAnalogFaceView *)self device];
+    sub_74AC(device, &v4);
 
     [(NTKEditOptionPickerView *)self->_stylePickerView frame];
     [(NTKEditOptionPickerView *)self->_stylePickerView setFrame:0.0, v4, *&v5];
@@ -115,9 +115,9 @@
   v13.receiver = self;
   v13.super_class = NTKNumeralsAnalogFaceView;
   [(NTKNumeralsAnalogFaceView *)&v13 _applyFrozen];
-  v3 = [(NTKNumeralsAnalogFaceView *)self isFrozen];
+  isFrozen = [(NTKNumeralsAnalogFaceView *)self isFrozen];
   clockTimerToken = self->_clockTimerToken;
-  if (v3)
+  if (isFrozen)
   {
     if (clockTimerToken)
     {
@@ -151,15 +151,15 @@
 {
   if (([(NTKNumeralsAnalogFaceView *)self dataMode]== &dword_0 + 1 || [(NTKNumeralsAnalogFaceView *)self dataMode]== &dword_4 + 1) && ![(NTKNumeralsAnalogFaceView *)self _isInTimeTravel])
   {
-    v3 = [(NTKNumeralsAnalogFaceView *)self timeView];
-    v4 = [v3 calendar];
+    timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+    calendar = [timeView calendar];
 
-    v5 = [(NTKNumeralsAnalogFaceView *)self _faceCurrentDate];
+    _faceCurrentDate = [(NTKNumeralsAnalogFaceView *)self _faceCurrentDate];
     v10 = 0;
     v8 = 0;
     v9 = 0;
     v7 = 0;
-    [v4 getHour:&v10 minute:&v9 second:&v8 nanosecond:&v7 fromDate:v5];
+    [calendar getHour:&v10 minute:&v9 second:&v8 nanosecond:&v7 fromDate:_faceCurrentDate];
     v6 = v10 % 12;
     if (!(v10 % 12))
     {
@@ -193,48 +193,48 @@
   [(NTKUtilityComplicationFactory *)self->_complicationFactory configureComplicationLayout:v11 forSlot:self->_utilitySlot withBounds:v4, v6, v8, v10];
 }
 
-- (void)_configureComplicationFactory:(id)a3
+- (void)_configureComplicationFactory:(id)factory
 {
-  v9 = a3;
-  [v9 setForegroundAlpha:1.0];
-  [v9 setForegroundImageAlpha:1.0];
-  v4 = [(NTKNumeralsAnalogFaceView *)self device];
-  v5 = [v4 deviceCategory];
+  factoryCopy = factory;
+  [factoryCopy setForegroundAlpha:1.0];
+  [factoryCopy setForegroundImageAlpha:1.0];
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  v6 = [(NTKNumeralsAnalogFaceView *)self device];
-  v7 = [v6 sizeClass];
+  device2 = [(NTKNumeralsAnalogFaceView *)self device];
+  sizeClass = [device2 sizeClass];
 
-  if (v5 != &dword_0 + 1)
+  if (deviceCategory != &dword_0 + 1)
   {
-    [v9 setNormalCircularPadding:{CGSizeZero.width, CGSizeZero.height}];
+    [factoryCopy setNormalCircularPadding:{CGSizeZero.width, CGSizeZero.height}];
     v8 = 23.5;
-    if (v7 != &dword_0 + 3)
+    if (sizeClass != &dword_0 + 3)
     {
       v8 = 21.0;
     }
 
-    [v9 setScreenEdgeInsets:{v8, 4.5, v8, 4.5}];
+    [factoryCopy setScreenEdgeInsets:{v8, 4.5, v8, 4.5}];
   }
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
   utilitySlot = self->_utilitySlot;
-  v10 = a5;
-  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:a3 family:a4 forSlot:utilitySlot];
-  [(NTKNumeralsAnalogFaceView *)self _configureComplicationView:v11 forSlot:v10];
+  slotCopy = slot;
+  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:complication family:family forSlot:utilitySlot];
+  [(NTKNumeralsAnalogFaceView *)self _configureComplicationView:v11 forSlot:slotCopy];
 
   return v11;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v8 = a3;
-  if ([v8 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  viewCopy = view;
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
     complicationFactory = self->_complicationFactory;
-    v6 = v8;
+    v6 = viewCopy;
     [(NTKUtilityComplicationFactory *)complicationFactory foregroundAlphaForEditing:[(NTKNumeralsAnalogFaceView *)self editing]];
     [v6 setForegroundAlpha:?];
     [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForEditing:[(NTKNumeralsAnalogFaceView *)self editing]];
@@ -243,18 +243,18 @@
     [v6 setFontWeight:UIFontWeightSemibold];
   }
 
-  v7 = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
-  [(NTKNumeralsAnalogFaceView *)self _applyFaceColorPalette:v7 toComplicationView:v8];
+  faceColorPalette = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
+  [(NTKNumeralsAnalogFaceView *)self _applyFaceColorPalette:faceColorPalette toComplicationView:viewCopy];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v18.receiver = self;
   v18.super_class = NTKNumeralsAnalogFaceView;
   [(NTKNumeralsAnalogFaceView *)&v18 _configureForEditMode:?];
-  [(NTKNumeralsAnalogFaceView *)self _applyForegroundAlphaForTransitionFraction:a3 fromEditMode:a3 toEditMode:0.0];
-  [(NTKNumeralsHourViewsManager *)self->_hourViewsManager configureForEditMode:a3];
-  if (a3 == 13)
+  [(NTKNumeralsAnalogFaceView *)self _applyForegroundAlphaForTransitionFraction:mode fromEditMode:mode toEditMode:0.0];
+  [(NTKNumeralsHourViewsManager *)self->_hourViewsManager configureForEditMode:mode];
+  if (mode == 13)
   {
     [(NTKNumeralsAnalogFaceView *)self _configureForStyleEditing];
   }
@@ -264,84 +264,84 @@
     [(NTKNumeralsAnalogFaceView *)self _cleanupAfterStyleEditing];
   }
 
-  [(NTKNumeralsAnalogFaceView *)self _secondHandAlphaForEditMode:a3];
+  [(NTKNumeralsAnalogFaceView *)self _secondHandAlphaForEditMode:mode];
   v6 = v5;
-  v7 = [(NTKNumeralsAnalogFaceView *)self timeView];
-  v8 = [v7 secondHandView];
-  [v8 setAlpha:v6];
+  timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:v6];
 
-  [(NTKNumeralsAnalogFaceView *)self _handsAlphaForEditMode:a3];
+  [(NTKNumeralsAnalogFaceView *)self _handsAlphaForEditMode:mode];
   v10 = v9;
-  v11 = [(NTKNumeralsAnalogFaceView *)self timeView];
-  v12 = [v11 minuteHandView];
-  [v12 setAlpha:v10];
+  timeView2 = [(NTKNumeralsAnalogFaceView *)self timeView];
+  minuteHandView = [timeView2 minuteHandView];
+  [minuteHandView setAlpha:v10];
 
-  v13 = [(NTKNumeralsAnalogFaceView *)self timeView];
-  v14 = [v13 hourHandView];
-  [v14 setAlpha:v10];
+  timeView3 = [(NTKNumeralsAnalogFaceView *)self timeView];
+  hourHandView = [timeView3 hourHandView];
+  [hourHandView setAlpha:v10];
 
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v15 = [(NTKNumeralsAnalogFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKNumeralsAnalogFaceView *)self complicationContainerView];
     v16 = *&CGAffineTransformIdentity.c;
     v17[0] = *&CGAffineTransformIdentity.a;
     v17[1] = v16;
     v17[2] = *&CGAffineTransformIdentity.tx;
-    [v15 setTransform:v17];
+    [complicationContainerView setTransform:v17];
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v24.receiver = self;
   v24.super_class = NTKNumeralsAnalogFaceView;
   [NTKNumeralsAnalogFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKNumeralsAnalogFaceView *)self _applyForegroundAlphaForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
-  if (a5 != 13)
+  [(NTKNumeralsAnalogFaceView *)self _applyForegroundAlphaForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
+  if (editMode != 13)
   {
     [(NTKNumeralsAnalogFaceView *)self _cleanupAfterStyleEditing];
   }
 
   hourViewsManager = self->_hourViewsManager;
-  v10 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
-  [(NTKNumeralsHourViewsManager *)hourViewsManager applyTransitionFraction:a4 fromEditMode:a5 toEditMode:v10 faceConfiguration:a3];
+  _faceConfiguration = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+  [(NTKNumeralsHourViewsManager *)hourViewsManager applyTransitionFraction:mode fromEditMode:editMode toEditMode:_faceConfiguration faceConfiguration:fraction];
 
-  [(NTKNumeralsAnalogFaceView *)self _secondHandAlphaForEditMode:a4];
-  [(NTKNumeralsAnalogFaceView *)self _secondHandAlphaForEditMode:a5];
+  [(NTKNumeralsAnalogFaceView *)self _secondHandAlphaForEditMode:mode];
+  [(NTKNumeralsAnalogFaceView *)self _secondHandAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v13 = [(NTKNumeralsAnalogFaceView *)self timeView];
-  v14 = [v13 secondHandView];
-  [v14 setAlpha:v12];
+  timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:v12];
 
-  [(NTKNumeralsAnalogFaceView *)self _handsAlphaForEditMode:a4];
-  [(NTKNumeralsAnalogFaceView *)self _handsAlphaForEditMode:a5];
+  [(NTKNumeralsAnalogFaceView *)self _handsAlphaForEditMode:mode];
+  [(NTKNumeralsAnalogFaceView *)self _handsAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v16 = v15;
-  v17 = [(NTKNumeralsAnalogFaceView *)self timeView];
-  v18 = [v17 minuteHandView];
-  [v18 setAlpha:v16];
+  timeView2 = [(NTKNumeralsAnalogFaceView *)self timeView];
+  minuteHandView = [timeView2 minuteHandView];
+  [minuteHandView setAlpha:v16];
 
-  v19 = [(NTKNumeralsAnalogFaceView *)self timeView];
-  v20 = [v19 hourHandView];
-  [v20 setAlpha:v16];
+  timeView3 = [(NTKNumeralsAnalogFaceView *)self timeView];
+  hourHandView = [timeView3 hourHandView];
+  [hourHandView setAlpha:v16];
 
-  if (a5 == 1 && fabs(a3 + -1.0) < 0.00000011920929 || a4 == 1 && fabs(a3) < 0.00000011920929)
+  if (editMode == 1 && fabs(fraction + -1.0) < 0.00000011920929 || mode == 1 && fabs(fraction) < 0.00000011920929)
   {
-    v21 = [(NTKNumeralsAnalogFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKNumeralsAnalogFaceView *)self complicationContainerView];
     v22 = *&CGAffineTransformIdentity.c;
     v23[0] = *&CGAffineTransformIdentity.a;
     v23[1] = v22;
     v23[2] = *&CGAffineTransformIdentity.tx;
-    [v21 setTransform:v23];
+    [complicationContainerView setTransform:v23];
   }
 }
 
-- (void)_applyForegroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_applyForegroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [NTKUtilityComplicationFactory foregroundAlphaForTransitionFraction:"foregroundAlphaForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
   v10 = v9;
-  [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_4800;
@@ -351,23 +351,23 @@
   [(NTKNumeralsAnalogFaceView *)self _enumerateComplicationViewsWithBlock:v12];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v10 = [(NTKNumeralsAnalogFaceView *)self device];
-    v11 = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
-    v12 = [NTKFaceColorScheme colorSchemeForDevice:v10 withFaceColorPalette:v11 units:25];
+    device = [(NTKNumeralsAnalogFaceView *)self device];
+    faceColorPalette = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
+    v12 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:faceColorPalette units:25];
 
     hourViewsManager = self->_hourViewsManager;
-    v14 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
-    [(NTKNumeralsHourViewsManager *)hourViewsManager applyFaceColorFromFaceConfiguration:v14];
+    _faceConfiguration = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+    [(NTKNumeralsHourViewsManager *)hourViewsManager applyFaceColorFromFaceConfiguration:_faceConfiguration];
 
-    v15 = [v12 foregroundColor];
-    v16 = [(NTKNumeralsAnalogFaceView *)self timeView];
-    [v16 applySecondHandColor:v15];
+    foregroundColor = [v12 foregroundColor];
+    timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+    [timeView applySecondHandColor:foregroundColor];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -377,32 +377,32 @@
     [(NTKNumeralsAnalogFaceView *)self _enumerateComplicationViewsWithBlock:v17];
   }
 
-  else if (a4 == 13)
+  else if (mode == 13)
   {
-    -[NTKNumeralsAnalogFaceView _applyStyle:](self, "_applyStyle:", [v8 style]);
+    -[NTKNumeralsAnalogFaceView _applyStyle:](self, "_applyStyle:", [optionCopy style]);
     [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:[(NTKNumeralsAnalogFaceView *)self _currentHour] duration:0.0];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v36 = v12;
-    v15 = [(NTKNumeralsAnalogFaceView *)self device];
-    v16 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
-    v17 = [v16 fromPalette];
-    v18 = [NTKFaceColorScheme colorSchemeForDevice:v15 withFaceColorPalette:v17 units:25];
+    v36 = optionCopy;
+    device = [(NTKNumeralsAnalogFaceView *)self device];
+    interpolatedColorPalette = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    v18 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:fromPalette units:25];
     [(NTKNumeralsAnalogFaceView *)self device];
-    v19 = v34 = v14;
-    v20 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
-    [v20 toPalette];
-    v21 = v35 = v13;
+    v19 = v34 = slotCopy;
+    interpolatedColorPalette2 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
+    [interpolatedColorPalette2 toPalette];
+    v21 = v35 = toOptionCopy;
     v22 = [NTKFaceColorScheme colorSchemeForDevice:v19 withFaceColorPalette:v21 units:25];
-    v23 = [NTKFaceColorScheme interpolationFrom:v18 to:v22 fraction:a3];
+    v23 = [NTKFaceColorScheme interpolationFrom:v18 to:v22 fraction:fraction];
 
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -411,43 +411,43 @@
     v38 = v23;
     v24 = v23;
     [(NTKNumeralsAnalogFaceView *)self _enumerateComplicationViewsWithBlock:v37];
-    v25 = [(NTKNumeralsAnalogFaceView *)self timeView];
-    v26 = [v24 foregroundColor];
-    [v25 applySecondHandColor:v26];
+    timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+    foregroundColor = [v24 foregroundColor];
+    [timeView applySecondHandColor:foregroundColor];
 
     hourViewsManager = self->_hourViewsManager;
-    v28 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
-    v29 = [v28 fromPalette];
-    v30 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
-    v31 = [v30 toPalette];
-    v32 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+    interpolatedColorPalette3 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
+    fromPalette2 = [interpolatedColorPalette3 fromPalette];
+    interpolatedColorPalette4 = [(NTKNumeralsAnalogFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette4 toPalette];
+    _faceConfiguration = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
     v33 = hourViewsManager;
-    v12 = v36;
-    [(NTKNumeralsHourViewsManager *)v33 applyTransitionFraction:v29 fromFaceColorPalette:v31 toFaceColorPalette:v32 faceConfiguration:a3];
+    optionCopy = v36;
+    [(NTKNumeralsHourViewsManager *)v33 applyTransitionFraction:fromPalette2 fromFaceColorPalette:toPalette toFaceColorPalette:_faceConfiguration faceConfiguration:fraction];
 
-    v14 = v34;
-    v13 = v35;
+    slotCopy = v34;
+    toOptionCopy = v35;
   }
 
-  else if (a6 == 13)
+  else if (mode == 13)
   {
-    -[NTKEditOptionPickerView setTransitionFraction:fromIndex:toIndex:](self->_stylePickerView, "setTransitionFraction:fromIndex:toIndex:", -[NTKNumeralsAnalogFaceView _styleIndexForStyle:](self, "_styleIndexForStyle:", [v12 style]), -[NTKNumeralsAnalogFaceView _styleIndexForStyle:](self, "_styleIndexForStyle:", objc_msgSend(v13, "style")), a3);
+    -[NTKEditOptionPickerView setTransitionFraction:fromIndex:toIndex:](self->_stylePickerView, "setTransitionFraction:fromIndex:toIndex:", -[NTKNumeralsAnalogFaceView _styleIndexForStyle:](self, "_styleIndexForStyle:", [optionCopy style]), -[NTKNumeralsAnalogFaceView _styleIndexForStyle:](self, "_styleIndexForStyle:", objc_msgSend(toOptionCopy, "style")), fraction);
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot
 {
-  v10 = a6;
+  slotCopy = slot;
   v15.receiver = self;
   v15.super_class = NTKNumeralsAnalogFaceView;
-  [(NTKNumeralsAnalogFaceView *)&v15 _applyTransitionFraction:a4 fromComplication:a5 toComplication:v10 slot:a3];
+  [(NTKNumeralsAnalogFaceView *)&v15 _applyTransitionFraction:complication fromComplication:toComplication toComplication:slotCopy slot:fraction];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_4EE4;
   v12[3] = &unk_105B0;
-  v13 = v10;
-  v14 = self;
-  v11 = v10;
+  v13 = slotCopy;
+  selfCopy = self;
+  v11 = slotCopy;
   [(NTKNumeralsAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v12];
 }
 
@@ -458,11 +458,11 @@
     v22 = 0u;
     v23 = 0u;
     v21 = 0u;
-    v3 = [(NTKNumeralsAnalogFaceView *)self device];
-    sub_74AC(v3, &v21);
+    device = [(NTKNumeralsAnalogFaceView *)self device];
+    sub_74AC(device, &v21);
 
-    v4 = [(NTKNumeralsAnalogFaceView *)self device];
-    v5 = [NTKNumeralsAnalogStyleEditOption availableOrderedValuesForDevice:v4];
+    device2 = [(NTKNumeralsAnalogFaceView *)self device];
+    v5 = [NTKNumeralsAnalogStyleEditOption availableOrderedValuesForDevice:device2];
 
     v6 = [NTKEditOptionPickerView alloc];
     v7 = [NSNumber numberWithUnsignedInteger:self->_selectedStyle];
@@ -484,8 +484,8 @@
     [(NTKEditOptionPickerView *)self->_stylePickerView setNumberOfSides:SDWORD2(v22), v12, v13, v14, v15];
     [(NTKEditOptionPickerView *)self->_stylePickerView setActive:1];
     [(NTKEditOptionPickerView *)self->_stylePickerView setClipsToBounds:1];
-    v11 = [(NTKNumeralsAnalogFaceView *)self contentView];
-    [v11 addSubview:self->_stylePickerView];
+    contentView = [(NTKNumeralsAnalogFaceView *)self contentView];
+    [contentView addSubview:self->_stylePickerView];
 
     [(NTKNumeralsAnalogFaceView *)self setNeedsLayout];
     objc_destroyWeak(&v16);
@@ -504,11 +504,11 @@
   }
 }
 
-- (void)_applyStyle:(unint64_t)a3
+- (void)_applyStyle:(unint64_t)style
 {
-  if (self->_selectedStyle != a3)
+  if (self->_selectedStyle != style)
   {
-    self->_selectedStyle = a3;
+    self->_selectedStyle = style;
     hourViewsManager = self->_hourViewsManager;
     if (hourViewsManager)
     {
@@ -526,24 +526,24 @@
   if (!self->_hourViewsManager)
   {
     v3 = [NTKNumeralsHourViewsManager alloc];
-    v4 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
-    v5 = [(NTKNumeralsAnalogFaceView *)self device];
-    v6 = [(NTKNumeralsHourViewsManager *)v3 initWithStyleFromFaceConfiguration:v4 forDevice:v5];
+    _faceConfiguration = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+    device = [(NTKNumeralsAnalogFaceView *)self device];
+    v6 = [(NTKNumeralsHourViewsManager *)v3 initWithStyleFromFaceConfiguration:_faceConfiguration forDevice:device];
     hourViewsManager = self->_hourViewsManager;
     self->_hourViewsManager = v6;
 
     v8 = self->_hourViewsManager;
-    v9 = [(NTKNumeralsAnalogFaceView *)self _currentHour];
+    _currentHour = [(NTKNumeralsAnalogFaceView *)self _currentHour];
     utilitySlot = self->_utilitySlot;
-    v11 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
-    [(NTKNumeralsHourViewsManager *)v8 updateVisibleHour:v9 targetUtilitySlot:utilitySlot faceConfiguration:v11 animationProgress:[(NTKNumeralsAnalogFaceView *)self toEditMode] forEditMode:1.0];
+    _faceConfiguration2 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+    [(NTKNumeralsHourViewsManager *)v8 updateVisibleHour:_currentHour targetUtilitySlot:utilitySlot faceConfiguration:_faceConfiguration2 animationProgress:[(NTKNumeralsAnalogFaceView *)self toEditMode] forEditMode:1.0];
 
     if ([(NTKNumeralsAnalogFaceView *)self editing])
     {
-      v12 = [(NTKNumeralsAnalogFaceView *)self fromEditMode];
-      v13 = [(NTKNumeralsAnalogFaceView *)self toEditMode];
+      fromEditMode = [(NTKNumeralsAnalogFaceView *)self fromEditMode];
+      toEditMode = [(NTKNumeralsAnalogFaceView *)self toEditMode];
       v14 = self->_hourViewsManager;
-      if (v12 == v13)
+      if (fromEditMode == toEditMode)
       {
         [(NTKNumeralsHourViewsManager *)v14 configureForEditMode:[(NTKNumeralsAnalogFaceView *)self toEditMode]];
       }
@@ -552,16 +552,16 @@
       {
         [(NTKNumeralsAnalogFaceView *)self editModeTransitionFraction];
         v16 = v15;
-        v17 = [(NTKNumeralsAnalogFaceView *)self fromEditMode];
-        v18 = [(NTKNumeralsAnalogFaceView *)self toEditMode];
-        v19 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
-        [(NTKNumeralsHourViewsManager *)v14 applyTransitionFraction:v17 fromEditMode:v18 toEditMode:v19 faceConfiguration:v16];
+        fromEditMode2 = [(NTKNumeralsAnalogFaceView *)self fromEditMode];
+        toEditMode2 = [(NTKNumeralsAnalogFaceView *)self toEditMode];
+        _faceConfiguration3 = [(NTKNumeralsAnalogFaceView *)self _faceConfiguration];
+        [(NTKNumeralsHourViewsManager *)v14 applyTransitionFraction:fromEditMode2 fromEditMode:toEditMode2 toEditMode:_faceConfiguration3 faceConfiguration:v16];
       }
     }
 
     v20 = self->_hourViewsManager;
-    v21 = [(NTKNumeralsAnalogFaceView *)self contentView];
-    [(NTKNumeralsHourViewsManager *)v20 addHourViewsToSuperview:v21];
+    contentView = [(NTKNumeralsAnalogFaceView *)self contentView];
+    [(NTKNumeralsHourViewsManager *)v20 addHourViewsToSuperview:contentView];
   }
 }
 
@@ -571,9 +571,9 @@
   v5.super_class = NTKNumeralsAnalogFaceView;
   [(NTKNumeralsAnalogFaceView *)&v5 _loadSnapshotContentViews];
   [(NTKNumeralsAnalogFaceView *)self _loadHoursManagerIfNecessary];
-  v3 = [(NTKNumeralsAnalogFaceView *)self contentView];
+  contentView = [(NTKNumeralsAnalogFaceView *)self contentView];
   v4 = +[UIColor blackColor];
-  [v3 setBackgroundColor:v4];
+  [contentView setBackgroundColor:v4];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -581,17 +581,17 @@
   v5.receiver = self;
   v5.super_class = NTKNumeralsAnalogFaceView;
   [(NTKNumeralsAnalogFaceView *)&v5 _unloadSnapshotContentViews];
-  v3 = [(NTKNumeralsAnalogFaceView *)self contentView];
-  [v3 setBackgroundColor:0];
+  contentView = [(NTKNumeralsAnalogFaceView *)self contentView];
+  [contentView setBackgroundColor:0];
 
   [(NTKNumeralsHourViewsManager *)self->_hourViewsManager removeHourViews];
   hourViewsManager = self->_hourViewsManager;
   self->_hourViewsManager = 0;
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
     NTKKeylineCornerRadiusSmall();
     v4 = NTKKeylineViewWithContinuousCurveCornerRadius();
@@ -601,15 +601,15 @@
   {
     v6.receiver = self;
     v6.super_class = NTKNumeralsAnalogFaceView;
-    v4 = [(NTKNumeralsAnalogFaceView *)&v6 _keylineViewForCustomEditMode:a3 slot:a4];
+    v4 = [(NTKNumeralsAnalogFaceView *)&v6 _keylineViewForCustomEditMode:mode slot:slot];
   }
 
   return v4;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
     [(NTKNumeralsAnalogFaceView *)self _keylineFrameForStyleEditing:13];
   }
@@ -618,7 +618,7 @@
   {
     v8.receiver = self;
     v8.super_class = NTKNumeralsAnalogFaceView;
-    [(NTKNumeralsAnalogFaceView *)&v8 _relativeKeylineFrameForCustomEditMode:a3 slot:a4];
+    [(NTKNumeralsAnalogFaceView *)&v8 _relativeKeylineFrameForCustomEditMode:mode slot:slot];
   }
 
   result.size.height = v7;
@@ -628,9 +628,9 @@
   return result;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
     return 140;
   }
@@ -639,33 +639,33 @@
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKNumeralsAnalogFaceView;
-  return [(NTKNumeralsAnalogFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:a3 slot:a4];
+  return [(NTKNumeralsAnalogFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:mode slot:slot];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v17.receiver = self;
   v17.super_class = NTKNumeralsAnalogFaceView;
-  [(NTKNumeralsAnalogFaceView *)&v17 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKNumeralsAnalogFaceView *)&v17 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
-    [(NTKNumeralsHourViewsManager *)self->_hourViewsManager applyBreathingFraction:10 forCustomEditMode:a3];
+    [(NTKNumeralsHourViewsManager *)self->_hourViewsManager applyBreathingFraction:10 forCustomEditMode:fraction];
     NTKLargeElementScaleForBreathingFraction();
     v11 = v10;
-    v12 = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
     CGAffineTransformMakeScale(&v16, v11, v11);
-    [v12 setTransform:&v16];
+    [foregroundContainerView setTransform:&v16];
 
-    v13 = [(NTKNumeralsAnalogFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKNumeralsAnalogFaceView *)self complicationContainerView];
     CGAffineTransformMakeScale(&v16, v11, v11);
-    [v13 setTransform:&v16];
+    [complicationContainerView setTransform:&v16];
 
-    v14 = [(NTKNumeralsAnalogFaceView *)self timeView];
-    v15 = [v14 secondHandView];
-    [v15 setScale:v11];
+    timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+    secondHandView = [timeView secondHandView];
+    [secondHandView setScale:v11];
   }
 
-  else if (a4 == 13)
+  else if (mode == 13)
   {
     NTKLargeElementScaleForBreathingFraction();
     stylePickerView = self->_stylePickerView;
@@ -674,16 +674,16 @@
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v21.receiver = self;
   v21.super_class = NTKNumeralsAnalogFaceView;
-  [(NTKNumeralsAnalogFaceView *)&v21 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKNumeralsAnalogFaceView *)&v21 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
   NTKScaleForRubberBandingFraction();
   v9 = v8;
   NTKAlphaForRubberBandingFraction();
   v11 = v10;
-  if (a4 == 13)
+  if (mode == 13)
   {
     stylePickerView = self->_stylePickerView;
     CGAffineTransformMakeScale(&v20, v9, v9);
@@ -693,51 +693,51 @@
 
   else
   {
-    if (a4 == 10)
+    if (mode == 10)
     {
-      [(NTKNumeralsHourViewsManager *)self->_hourViewsManager applyRubberBandingFraction:10 forCustomEditMode:a3];
-      v14 = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
+      [(NTKNumeralsHourViewsManager *)self->_hourViewsManager applyRubberBandingFraction:10 forCustomEditMode:fraction];
+      foregroundContainerView = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
       CGAffineTransformMakeScale(&v20, v9, v9);
-      [v14 setTransform:&v20];
+      [foregroundContainerView setTransform:&v20];
 
-      v15 = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
-      [v15 setAlpha:v11];
+      foregroundContainerView2 = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
+      [foregroundContainerView2 setAlpha:v11];
 
-      v16 = [(NTKNumeralsAnalogFaceView *)self timeView];
-      v17 = [v16 secondHandView];
-      [v17 setScale:v9];
+      timeView = [(NTKNumeralsAnalogFaceView *)self timeView];
+      secondHandView = [timeView secondHandView];
+      [secondHandView setScale:v9];
 
-      v13 = [(NTKNumeralsAnalogFaceView *)self timeView];
-      v18 = [v13 secondHandView];
-      [v18 setAlpha:v11];
+      timeView2 = [(NTKNumeralsAnalogFaceView *)self timeView];
+      secondHandView2 = [timeView2 secondHandView];
+      [secondHandView2 setAlpha:v11];
     }
 
     else
     {
-      if (a4)
+      if (mode)
       {
         return;
       }
 
-      v12 = [(NTKNumeralsAnalogFaceView *)self timeView];
+      timeView3 = [(NTKNumeralsAnalogFaceView *)self timeView];
       CGAffineTransformMakeScale(&v20, v9, v9);
-      [v12 setTransform:&v20];
+      [timeView3 setTransform:&v20];
 
-      v13 = [(NTKNumeralsAnalogFaceView *)self timeView];
-      [v13 setAlpha:v11];
+      timeView2 = [(NTKNumeralsAnalogFaceView *)self timeView];
+      [timeView2 setAlpha:v11];
     }
   }
 }
 
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  v5 = a3;
-  v6 = [(NTKNumeralsAnalogFaceView *)self delegate];
-  v7 = [v6 faceViewComplicationIsEmptyForSlot:v5];
+  slotCopy = slot;
+  delegate = [(NTKNumeralsAnalogFaceView *)self delegate];
+  v7 = [delegate faceViewComplicationIsEmptyForSlot:slotCopy];
 
   v20.receiver = self;
   v20.super_class = NTKNumeralsAnalogFaceView;
-  [(NTKNumeralsAnalogFaceView *)&v20 _keylineFrameForComplicationSlot:v5 selected:v7];
+  [(NTKNumeralsAnalogFaceView *)&v20 _keylineFrameForComplicationSlot:slotCopy selected:v7];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -754,9 +754,9 @@
   return result;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 13)
+  if (options == 13)
   {
     return &off_114E8;
   }
@@ -767,10 +767,10 @@
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   if (!qword_16628)
   {
     v10 = objc_opt_new();
@@ -778,39 +778,39 @@
     qword_16628 = v10;
   }
 
-  if (a4 == 13)
+  if (mode == 13)
   {
-    v12 = v8;
-    v13 = [v9 objectForKeyedSubscript:&off_11080];
+    v12 = optionCopy;
+    v13 = [optionsCopy objectForKeyedSubscript:&off_11080];
     v14 = [NSString stringWithFormat:@"%@-%@", v12, v13];
     v15 = [qword_16628 objectForKey:v14];
     if (!v15)
     {
-      v16 = [v12 style];
-      if (v16 > 8)
+      style = [v12 style];
+      if (style > 8)
       {
         v17 = 0;
       }
 
       else
       {
-        v17 = *(&off_10748 + v16);
+        v17 = *(&off_10748 + style);
       }
 
       v29 = [NSString stringWithFormat:@"Swatch-Numerals-%@", v17];
-      v18 = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
-      v19 = [v18 copy];
+      faceColorPalette = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
+      v19 = [faceColorPalette copy];
 
       v20 = [NTKFaceColorPaletteConfiguration alloc];
-      v21 = [v13 pigmentEditOption];
-      v22 = [v20 initWithPigmentEditOption:v21];
+      pigmentEditOption = [v13 pigmentEditOption];
+      v22 = [v20 initWithPigmentEditOption:pigmentEditOption];
       [v19 setConfiguration:v22];
 
-      v23 = [(NTKNumeralsAnalogFaceView *)self device];
-      v24 = [NTKFaceColorScheme colorSchemeForDevice:v23 withFaceColorPalette:v19 units:1];
-      v25 = [v24 foregroundColor];
+      device = [(NTKNumeralsAnalogFaceView *)self device];
+      v24 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:v19 units:1];
+      foregroundColor = [v24 foregroundColor];
 
-      v26 = [v25 colorWithAlphaComponent:1.0];
+      v26 = [foregroundColor colorWithAlphaComponent:1.0];
 
       v27 = [NTKNumeralsAnalogFaceBundle imageWithName:v29];
       v15 = [v27 _flatImageWithColor:v26];
@@ -823,18 +823,18 @@
   {
     v30.receiver = self;
     v30.super_class = NTKNumeralsAnalogFaceView;
-    v15 = [(NTKNumeralsAnalogFaceView *)&v30 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKNumeralsAnalogFaceView *)&v30 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = NTKNumeralsAnalogFaceView;
-  [(NTKNumeralsAnalogFaceView *)&v6 setOverrideDate:a3 duration:?];
-  [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:[(NTKNumeralsAnalogFaceView *)self _currentHour] duration:a4];
+  [(NTKNumeralsAnalogFaceView *)&v6 setOverrideDate:date duration:?];
+  [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:[(NTKNumeralsAnalogFaceView *)self _currentHour] duration:duration];
 }
 
 - (void)_applyDataMode
@@ -842,8 +842,8 @@
   v4.receiver = self;
   v4.super_class = NTKNumeralsAnalogFaceView;
   [(NTKNumeralsAnalogFaceView *)&v4 _applyDataMode];
-  v3 = [(NTKNumeralsAnalogFaceView *)self dataMode];
-  if (v3 <= 5 && ((1 << v3) & 0x32) != 0)
+  dataMode = [(NTKNumeralsAnalogFaceView *)self dataMode];
+  if (dataMode <= 5 && ((1 << dataMode) & 0x32) != 0)
   {
     [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:[(NTKNumeralsAnalogFaceView *)self _currentHour] duration:0.0];
   }
@@ -851,9 +851,9 @@
 
 - (void)_handleTimeChange
 {
-  v3 = [(NTKNumeralsAnalogFaceView *)self _currentHour];
+  _currentHour = [(NTKNumeralsAnalogFaceView *)self _currentHour];
 
-  [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:v3 duration:0.0];
+  [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:_currentHour duration:0.0];
 }
 
 - (CGRect)_keylineFrameForStyleEditing
@@ -861,8 +861,8 @@
   v8 = 0u;
   v9 = 0u;
   v7 = 0u;
-  v2 = [(NTKNumeralsAnalogFaceView *)self device];
-  sub_74AC(v2, &v7);
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  sub_74AC(device, &v7);
 
   v4 = *(&v7 + 1);
   v3 = *&v7;
@@ -882,8 +882,8 @@
   v6 = v5;
   v8 = v7;
   memset(v14, 0, sizeof(v14));
-  v9 = [(NTKNumeralsAnalogFaceView *)self device];
-  sub_74AC(v9, v14);
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  sub_74AC(device, v14);
 
   v10 = *v14;
   v11 = v8 - *v14;
@@ -896,14 +896,14 @@
   return result;
 }
 
-- (void)_enumerateComplicationViewsWithBlock:(id)a3
+- (void)_enumerateComplicationViewsWithBlock:(id)block
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_6120;
   v5[3] = &unk_10600;
-  v6 = a3;
-  v4 = v6;
+  blockCopy = block;
+  v4 = blockCopy;
   [(NTKNumeralsAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
@@ -929,7 +929,7 @@
   _Block_object_dispose(&v5, 8);
 }
 
-- (BOOL)_needComplicationAnimationForChangeToHour:(int64_t)a3
+- (BOOL)_needComplicationAnimationForChangeToHour:(int64_t)hour
 {
   if (([(NTKNumeralsAnalogFaceView *)self timeScrubbing]& 1) != 0)
   {
@@ -938,11 +938,11 @@
 
   else
   {
-    return [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForHour:a3]!= self->_utilitySlot || self->_complicationPositionNeedsUpdate;
+    return [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForHour:hour]!= self->_utilitySlot || self->_complicationPositionNeedsUpdate;
   }
 }
 
-- (void)_updateComplicationAndHourNodePlacementsWithToHour:(int64_t)a3 duration:(double)a4
+- (void)_updateComplicationAndHourNodePlacementsWithToHour:(int64_t)hour duration:(double)duration
 {
   if ([(NTKNumeralsAnalogFaceView *)self _isInTimeTravel])
   {
@@ -951,19 +951,19 @@
 
   else
   {
-    utilitySlot = [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForHour:a3];
+    utilitySlot = [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForHour:hour];
   }
 
   [(NTKNumeralsAnalogFaceView *)self _updateAreAllComplicationsOffState];
   v7 = [NTKNumeralsAnalogFaceConfiguration alloc];
-  v8 = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
+  faceColorPalette = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
   areAllComplicationsOff = self->_areAllComplicationsOff;
   selectedStyle = self->_selectedStyle;
-  v11 = [(NTKNumeralsAnalogFaceView *)self device];
-  v12 = [(NTKNumeralsAnalogFaceConfiguration *)v7 initWithFaceColorPalette:v8 colorSchemeUnits:25 areAllComplicationsOff:areAllComplicationsOff utilitySlot:utilitySlot selectedStyle:selectedStyle forDevice:v11];
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  v12 = [(NTKNumeralsAnalogFaceConfiguration *)v7 initWithFaceColorPalette:faceColorPalette colorSchemeUnits:25 areAllComplicationsOff:areAllComplicationsOff utilitySlot:utilitySlot selectedStyle:selectedStyle forDevice:device];
 
-  v13 = [(NTKNumeralsHourViewsManager *)self->_hourViewsManager needHourAnimationForChangeToHour:a3 toFaceConfiguration:v12];
-  v14 = [(NTKNumeralsAnalogFaceView *)self _needComplicationAnimationForChangeToHour:a3];
+  v13 = [(NTKNumeralsHourViewsManager *)self->_hourViewsManager needHourAnimationForChangeToHour:hour toFaceConfiguration:v12];
+  v14 = [(NTKNumeralsAnalogFaceView *)self _needComplicationAnimationForChangeToHour:hour];
   v15 = v14;
   if ((v13 & 1) != 0 || v14)
   {
@@ -975,7 +975,7 @@
     objc_copyWeak(v23, &location);
     v24 = v15;
     v25 = v13;
-    v23[1] = a3;
+    v23[1] = hour;
     v23[2] = utilitySlot;
     v16 = objc_retainBlock(v22);
     v18[0] = _NSConcreteStackBlock;
@@ -985,7 +985,7 @@
     objc_copyWeak(v19, &location);
     v20 = v15;
     v21 = v13;
-    v19[1] = a3;
+    v19[1] = hour;
     v19[2] = utilitySlot;
     v17 = objc_retainBlock(v18);
     (v16[2])(v16, 1.0);
@@ -997,10 +997,10 @@
   }
 }
 
-- (void)_updateComplicationPositionWithAnimationProgress:(double)a3
+- (void)_updateComplicationPositionWithAnimationProgress:(double)progress
 {
-  v5 = [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForCurrentHour];
-  if (a3 >= 0.5 && (self->_utilitySlot != v5 || self->_complicationPositionNeedsUpdate))
+  _complicationPlacementForCurrentHour = [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForCurrentHour];
+  if (progress >= 0.5 && (self->_utilitySlot != _complicationPlacementForCurrentHour || self->_complicationPositionNeedsUpdate))
   {
     [(NTKNumeralsAnalogFaceView *)self _loadLayoutRules];
     v10[0] = _NSConcreteStackBlock;
@@ -1009,19 +1009,19 @@
     v10[3] = &unk_106A0;
     v10[4] = self;
     [(NTKNumeralsAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v10];
-    v6 = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
-    [v6 setNeedsLayout];
+    foregroundContainerView = [(NTKNumeralsAnalogFaceView *)self foregroundContainerView];
+    [foregroundContainerView setNeedsLayout];
 
-    v7 = [(NTKNumeralsAnalogFaceView *)self delegate];
-    [v7 faceViewWantsComplicationKeylineFramesReloaded];
+    delegate = [(NTKNumeralsAnalogFaceView *)self delegate];
+    [delegate faceViewWantsComplicationKeylineFramesReloaded];
 
     self->_complicationPositionNeedsUpdate = 0;
   }
 
-  v8 = 1.0 - a3 * 2.0;
-  if (a3 >= 0.5)
+  v8 = 1.0 - progress * 2.0;
+  if (progress >= 0.5)
   {
-    v8 = a3 * 2.0 + -1.0;
+    v8 = progress * 2.0 + -1.0;
   }
 
   v9[0] = _NSConcreteStackBlock;
@@ -1032,77 +1032,77 @@
   [(NTKNumeralsAnalogFaceView *)self _enumerateComplicationViewsWithBlock:v9];
 }
 
-- (int64_t)_complicationPlacementForHour:(int64_t)a3
+- (int64_t)_complicationPlacementForHour:(int64_t)hour
 {
-  v4 = [(NTKNumeralsAnalogFaceView *)self device];
-  v5 = [NTKNumeralsAnalogElementsPlacement complicationPlacementForHour:a3 forDevice:v4];
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  v5 = [NTKNumeralsAnalogElementsPlacement complicationPlacementForHour:hour forDevice:device];
 
   return v5;
 }
 
 - (int64_t)_complicationPlacementForCurrentHour
 {
-  v3 = [(NTKNumeralsAnalogFaceView *)self _currentHour];
+  _currentHour = [(NTKNumeralsAnalogFaceView *)self _currentHour];
 
-  return [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForHour:v3];
+  return [(NTKNumeralsAnalogFaceView *)self _complicationPlacementForHour:_currentHour];
 }
 
 - (int64_t)_currentHour
 {
-  v2 = [(NTKNumeralsAnalogFaceView *)self currentDisplayDate];
+  currentDisplayDate = [(NTKNumeralsAnalogFaceView *)self currentDisplayDate];
   v3 = NTKDateHourIn12HourTime();
 
   return v3;
 }
 
-- (void)_applyFaceColorPalette:(id)a3 toComplicationView:(id)a4
+- (void)_applyFaceColorPalette:(id)palette toComplicationView:(id)view
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  paletteCopy = palette;
+  viewCopy = view;
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
-    [v5 applyFaceColorPalette:v6 units:25];
+    [viewCopy applyFaceColorPalette:paletteCopy units:25];
   }
 }
 
-- (int64_t)_styleIndexForStyle:(unint64_t)a3
+- (int64_t)_styleIndexForStyle:(unint64_t)style
 {
-  v4 = [(NTKNumeralsAnalogFaceView *)self device];
-  v5 = [NTKNumeralsAnalogStyleEditOption indexForNumeralsStyle:a3 forDevice:v4];
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  v5 = [NTKNumeralsAnalogStyleEditOption indexForNumeralsStyle:style forDevice:device];
 
   return v5;
 }
 
 - (id)_faceConfiguration
 {
-  v3 = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
-  v4 = [(NTKNumeralsAnalogFaceView *)self _faceConfigurationWithPalette:v3];
+  faceColorPalette = [(NTKNumeralsAnalogFaceView *)self faceColorPalette];
+  v4 = [(NTKNumeralsAnalogFaceView *)self _faceConfigurationWithPalette:faceColorPalette];
 
   return v4;
 }
 
-- (id)_faceConfigurationWithPalette:(id)a3
+- (id)_faceConfigurationWithPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   v5 = [NTKNumeralsAnalogFaceConfiguration alloc];
   areAllComplicationsOff = self->_areAllComplicationsOff;
   utilitySlot = self->_utilitySlot;
   selectedStyle = self->_selectedStyle;
-  v9 = [(NTKNumeralsAnalogFaceView *)self device];
-  v10 = [(NTKNumeralsAnalogFaceConfiguration *)v5 initWithFaceColorPalette:v4 colorSchemeUnits:25 areAllComplicationsOff:areAllComplicationsOff utilitySlot:utilitySlot selectedStyle:selectedStyle forDevice:v9];
+  device = [(NTKNumeralsAnalogFaceView *)self device];
+  v10 = [(NTKNumeralsAnalogFaceConfiguration *)v5 initWithFaceColorPalette:paletteCopy colorSchemeUnits:25 areAllComplicationsOff:areAllComplicationsOff utilitySlot:utilitySlot selectedStyle:selectedStyle forDevice:device];
 
   return v10;
 }
 
-- (double)_secondHandAlphaForEditMode:(int64_t)a3
+- (double)_secondHandAlphaForEditMode:(int64_t)mode
 {
-  if (a3 == 13)
+  if (mode == 13)
   {
     return NTKEditModeDimmedAlpha;
   }
 
   result = 1.0;
-  if (a3 == 1)
+  if (mode == 1)
   {
     return NTKEditModeDimmedAlpha;
   }
@@ -1110,10 +1110,10 @@
   return result;
 }
 
-- (double)_handsAlphaForEditMode:(int64_t)a3
+- (double)_handsAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3 <= 0xD && ((1 << a3) & 0x2402) != 0)
+  if (mode <= 0xD && ((1 << mode) & 0x2402) != 0)
   {
     return NTKEditModeDimmedAlpha;
   }
@@ -1121,12 +1121,12 @@
   return result;
 }
 
-- (void)_prepareForHourChangeWithSecondsUntilChange:(double)a3
+- (void)_prepareForHourChangeWithSecondsUntilChange:(double)change
 {
-  v5 = [(NTKNumeralsAnalogFaceView *)self currentDisplayDate];
-  v6 = [v5 dateByAddingTimeInterval:a3];
+  currentDisplayDate = [(NTKNumeralsAnalogFaceView *)self currentDisplayDate];
+  v6 = [currentDisplayDate dateByAddingTimeInterval:change];
 
-  [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:NTKDateHourIn12HourTime() duration:a3 + a3];
+  [(NTKNumeralsAnalogFaceView *)self _updateComplicationAndHourNodePlacementsWithToHour:NTKDateHourIn12HourTime() duration:change + change];
 }
 
 @end

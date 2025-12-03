@@ -1,43 +1,43 @@
 @interface NTKExtraLargeTimeView
 - (NSArray)fontScaleFactorForNumberSystemOverrides;
-- (NTKExtraLargeTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
+- (NTKExtraLargeTimeView)initWithFrame:(CGRect)frame forDevice:(id)device;
 - (id)_timeLabelFont;
 - (void)_configureTimeLabelsFont;
 - (void)_updateNumbers;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setForcedNumberSystem:(unint64_t)a3;
-- (void)setFrozen:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setStatusBarVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTimeOffset:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setForcedNumberSystem:(unint64_t)system;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setStatusBarVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setTimeOffset:(double)offset;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKExtraLargeTimeView
 
-- (NTKExtraLargeTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKExtraLargeTimeView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v24.receiver = self;
   v24.super_class = NTKExtraLargeTimeView;
-  v11 = [(NTKExtraLargeTimeView *)&v24 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKExtraLargeTimeView *)&v24 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v12->_numberSystem = -1;
     v13 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:1024 forDevice:v12->_device];
     timeHourView = v12->_timeHourView;
     v12->_timeHourView = v13;
 
     v15 = v12->_timeHourView;
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKDigitalTimeLabel *)v15 setTextColor:v16];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(NTKDigitalTimeLabel *)v15 setTextColor:whiteColor];
 
     [(NTKExtraLargeTimeView *)v12 addSubview:v12->_timeHourView];
     v17 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:2057 forDevice:v12->_device];
@@ -45,15 +45,15 @@
     v12->_timeMinuteView = v17;
 
     v19 = v12->_timeMinuteView;
-    v20 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKDigitalTimeLabel *)v19 setTextColor:v20];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(NTKDigitalTimeLabel *)v19 setTextColor:whiteColor2];
 
     [(NTKExtraLargeTimeView *)v12 addSubview:v12->_timeMinuteView];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v12, _handleNumbersChangedNotification, @"AppleNumberPreferencesChangedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     [(NTKExtraLargeTimeView *)v12 _configureTimeLabelsFont];
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(NTKExtraLargeTimeView *)v12 setBackgroundColor:v22];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKExtraLargeTimeView *)v12 setBackgroundColor:clearColor];
   }
 
   return v12;
@@ -128,17 +128,17 @@
   [(NTKDigitalTimeLabel *)timeMinuteView setFrame:v5 - v18 - v14, v16 + v17];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NTKExtraLargeTimeView;
-  v4 = a3;
-  [(NTKExtraLargeTimeView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NTKExtraLargeTimeView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NTKExtraLargeTimeView *)self traitCollection:v8.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     [(NTKExtraLargeTimeView *)self _configureTimeLabelsFont];
     [(NTKExtraLargeTimeView *)self setNeedsLayout];
@@ -147,9 +147,9 @@
 
 - (void)_configureTimeLabelsFont
 {
-  v3 = [(NTKExtraLargeTimeView *)self _timeLabelFont];
-  [(CLKUITimeLabel *)self->_timeHourView setTimeFont:v3 designatorFont:v3];
-  [(CLKUITimeLabel *)self->_timeMinuteView setTimeFont:v3 designatorFont:v3];
+  _timeLabelFont = [(NTKExtraLargeTimeView *)self _timeLabelFont];
+  [(CLKUITimeLabel *)self->_timeHourView setTimeFont:_timeLabelFont designatorFont:_timeLabelFont];
+  [(CLKUITimeLabel *)self->_timeMinuteView setTimeFont:_timeLabelFont designatorFont:_timeLabelFont];
 }
 
 - (id)_timeLabelFont
@@ -169,8 +169,8 @@
   {
     if (self->_numberSystem != -1)
     {
-      v6 = [(NTKExtraLargeTimeView *)self fontScaleFactorForNumberSystemOverrides];
-      v7 = [v6 objectAtIndexedSubscript:self->_numberSystem];
+      fontScaleFactorForNumberSystemOverrides = [(NTKExtraLargeTimeView *)self fontScaleFactorForNumberSystemOverrides];
+      v7 = [fontScaleFactorForNumberSystemOverrides objectAtIndexedSubscript:self->_numberSystem];
       [v7 doubleValue];
 
       CLKRoundForDevice();
@@ -185,24 +185,24 @@
     v9 = [MEMORY[0x277CBBB08] compactSoftFontOfSize:v5 weight:*MEMORY[0x277D74410]];
     if (CLKLocaleCurrentNumberSystem() == 2)
     {
-      v10 = [v9 CLKFontWithMonospacedNumbers];
-      v11 = [v10 CLKFontWithAlternativePunctuation];
+      cLKFontWithMonospacedNumbers = [v9 CLKFontWithMonospacedNumbers];
+      cLKFontWithAlternativePunctuation = [cLKFontWithMonospacedNumbers CLKFontWithAlternativePunctuation];
 
-      v9 = v11;
+      v9 = cLKFontWithAlternativePunctuation;
     }
   }
 
   return v9;
 }
 
-- (void)setStatusBarVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setStatusBarVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_statusBarVisible != a3)
+  if (self->_statusBarVisible != visible)
   {
     aBlock[7] = v4;
     aBlock[8] = v5;
-    v6 = a4;
-    self->_statusBarVisible = a3;
+    animatedCopy = animated;
+    self->_statusBarVisible = visible;
     [(NTKExtraLargeTimeView *)self setNeedsLayout];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -211,7 +211,7 @@
     aBlock[4] = self;
     v8 = _Block_copy(aBlock);
     v9 = v8;
-    if (v6)
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:v8 animations:0.2];
     }
@@ -223,28 +223,28 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   timeHourView = self->_timeHourView;
-  v6 = a3;
-  v7 = [(CLKUITimeLabel *)timeHourView timeFormatter];
-  [v7 setOverrideDate:v6];
+  dateCopy = date;
+  timeFormatter = [(CLKUITimeLabel *)timeHourView timeFormatter];
+  [timeFormatter setOverrideDate:dateCopy];
 
-  v8 = [(CLKUITimeLabel *)self->_timeMinuteView timeFormatter];
-  [v8 setOverrideDate:v6];
+  timeFormatter2 = [(CLKUITimeLabel *)self->_timeMinuteView timeFormatter];
+  [timeFormatter2 setOverrideDate:dateCopy];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   [(NTKDigitalTimeLabel *)self->_timeHourView setTimeOffset:?];
   timeMinuteView = self->_timeMinuteView;
 
-  [(NTKDigitalTimeLabel *)timeMinuteView setTimeOffset:a3];
+  [(NTKDigitalTimeLabel *)timeMinuteView setTimeOffset:offset];
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  self->_frozen = a3;
+  self->_frozen = frozen;
   [(CLKUITimeLabel *)self->_timeHourView setPaused:?];
   timeMinuteView = self->_timeMinuteView;
   frozen = self->_frozen;
@@ -259,14 +259,14 @@
   [(NTKExtraLargeTimeView *)self setNeedsLayout];
 }
 
-- (void)setForcedNumberSystem:(unint64_t)a3
+- (void)setForcedNumberSystem:(unint64_t)system
 {
-  self->_numberSystem = a3;
-  v5 = [(NTKExtraLargeTimeView *)self timeHourView];
-  [v5 setForcedNumberSystem:a3];
+  self->_numberSystem = system;
+  timeHourView = [(NTKExtraLargeTimeView *)self timeHourView];
+  [timeHourView setForcedNumberSystem:system];
 
-  v6 = [(NTKExtraLargeTimeView *)self timeMinuteView];
-  [v6 setForcedNumberSystem:a3];
+  timeMinuteView = [(NTKExtraLargeTimeView *)self timeMinuteView];
+  [timeMinuteView setForcedNumberSystem:system];
 
   [(NTKExtraLargeTimeView *)self _configureTimeLabelsFont];
 

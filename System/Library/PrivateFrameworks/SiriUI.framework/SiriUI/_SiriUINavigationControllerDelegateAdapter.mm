@@ -1,53 +1,53 @@
 @interface _SiriUINavigationControllerDelegateAdapter
 - (UINavigationControllerDelegate)externalDelegate;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)navigationController:(id)a3 interactionControllerForAnimationController:(id)a4;
-- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)a3;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)navigationController:(id)controller interactionControllerForAnimationController:(id)animationController;
+- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)presentation;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation _SiriUINavigationControllerDelegateAdapter
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  v9 = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  externalDelegate = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 navigationController:v12 willShowViewController:v8 animated:v5];
+    [externalDelegate navigationController:controllerCopy willShowViewController:viewControllerCopy animated:animatedCopy];
   }
 
-  v10 = [(_SiriUINavigationControllerDelegateAdapter *)self transitionController];
+  transitionController = [(_SiriUINavigationControllerDelegateAdapter *)self transitionController];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v12 transitionCoordinator];
-    [v10 coordinateAdditionalTransitionsWithTransitionCoordinator:v11];
-  }
-}
-
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
-{
-  v5 = a5;
-  v10 = a3;
-  v8 = a4;
-  v9 = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
-  if (objc_opt_respondsToSelector())
-  {
-    [v9 navigationController:v10 didShowViewController:v8 animated:v5];
+    transitionCoordinator = [controllerCopy transitionCoordinator];
+    [transitionController coordinateAdditionalTransitionsWithTransitionCoordinator:transitionCoordinator];
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v4 = a3;
-  v5 = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  externalDelegate = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 navigationControllerSupportedInterfaceOrientations:v4];
+    [externalDelegate navigationController:controllerCopy didShowViewController:viewControllerCopy animated:animatedCopy];
+  }
+}
+
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
+{
+  orientationsCopy = orientations;
+  externalDelegate = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
+  if (objc_opt_respondsToSelector())
+  {
+    v6 = [externalDelegate navigationControllerSupportedInterfaceOrientations:orientationsCopy];
   }
 
   else
@@ -58,13 +58,13 @@
   return v6;
 }
 
-- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)a3
+- (int64_t)navigationControllerPreferredInterfaceOrientationForPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
+  presentationCopy = presentation;
+  externalDelegate = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 navigationControllerPreferredInterfaceOrientationForPresentation:v4];
+    v6 = [externalDelegate navigationControllerPreferredInterfaceOrientationForPresentation:presentationCopy];
   }
 
   else
@@ -75,23 +75,23 @@
   return v6;
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(_SiriUINavigationControllerDelegateAdapter *)self transitionController];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  transitionController = [(_SiriUINavigationControllerDelegateAdapter *)self transitionController];
   if (objc_opt_respondsToSelector())
   {
-    [v13 setOperation:a4];
+    [transitionController setOperation:operation];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v13 animationController], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([transitionController animationController], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v15 = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
+    externalDelegate = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v15 navigationController:v10 animationControllerForOperation:a4 fromViewController:v11 toViewController:v12];
+      v14 = [externalDelegate navigationController:controllerCopy animationControllerForOperation:operation fromViewController:viewControllerCopy toViewController:toViewControllerCopy];
     }
 
     else
@@ -103,17 +103,17 @@
   return v14;
 }
 
-- (id)navigationController:(id)a3 interactionControllerForAnimationController:(id)a4
+- (id)navigationController:(id)controller interactionControllerForAnimationController:(id)animationController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SiriUINavigationControllerDelegateAdapter *)self transitionController];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v8 interactionControllerForAnimationController:v7], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  controllerCopy = controller;
+  animationControllerCopy = animationController;
+  transitionController = [(_SiriUINavigationControllerDelegateAdapter *)self transitionController];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([transitionController interactionControllerForAnimationController:animationControllerCopy], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v10 = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
+    externalDelegate = [(_SiriUINavigationControllerDelegateAdapter *)self externalDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v10 navigationController:v6 interactionControllerForAnimationController:v7];
+      v9 = [externalDelegate navigationController:controllerCopy interactionControllerForAnimationController:animationControllerCopy];
     }
 
     else

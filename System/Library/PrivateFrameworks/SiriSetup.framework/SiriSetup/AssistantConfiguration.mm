@@ -1,15 +1,15 @@
 @interface AssistantConfiguration
 - (NSString)description;
 - (_TtC9SiriSetup22AssistantConfiguration)init;
-- (_TtC9SiriSetup22AssistantConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9SiriSetup22AssistantConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AssistantConfiguration
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_26902C320();
 
   v3 = sub_269057944();
@@ -17,17 +17,17 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26902D950(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26902D950(coderCopy);
 }
 
-- (_TtC9SiriSetup22AssistantConfiguration)initWithCoder:(id)a3
+- (_TtC9SiriSetup22AssistantConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_26902E2A4(v3);
+  coderCopy = coder;
+  v4 = sub_26902E2A4(coderCopy);
 
   return v4;
 }

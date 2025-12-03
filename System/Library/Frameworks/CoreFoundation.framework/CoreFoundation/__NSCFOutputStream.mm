@@ -1,31 +1,31 @@
 @interface __NSCFOutputStream
-- (BOOL)isEqual:(id)a3;
-- (__NSCFOutputStream)initWithURL:(id)a3 append:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (__NSCFOutputStream)initWithURL:(id)l append:(BOOL)append;
 - (id)delegate;
-- (id)initToBuffer:(char *)a3 capacity:(unint64_t)a4;
+- (id)initToBuffer:(char *)buffer capacity:(unint64_t)capacity;
 - (id)initToMemory;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)streamError;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation __NSCFOutputStream
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  return _CFNonObjCEqual(self, a3) != 0;
+  return _CFNonObjCEqual(self, equal) != 0;
 }
 
 - (id)initToMemory
@@ -35,43 +35,43 @@
   return CFWriteStreamCreateWithAllocatedBuffers(0, 0);
 }
 
-- (id)initToBuffer:(char *)a3 capacity:(unint64_t)a4
+- (id)initToBuffer:(char *)buffer capacity:(unint64_t)capacity
 {
   [(__NSCFOutputStream *)self dealloc];
 
-  return CFWriteStreamCreateWithBuffer(0, a3, a4);
+  return CFWriteStreamCreateWithBuffer(0, buffer, capacity);
 }
 
-- (__NSCFOutputStream)initWithURL:(id)a3 append:(BOOL)a4
+- (__NSCFOutputStream)initWithURL:(id)l append:(BOOL)append
 {
-  v4 = a4;
+  appendCopy = append;
   [(__NSCFOutputStream *)self dealloc];
-  if (a3)
+  if (l)
   {
-    v6 = CFWriteStreamCreateWithFile(0, a3);
-    a3 = v6;
-    if (v4)
+    v6 = CFWriteStreamCreateWithFile(0, l);
+    l = v6;
+    if (appendCopy)
     {
       CFWriteStreamSetProperty(v6, @"kCFStreamPropertyAppendToFile", &__kCFBooleanTrue);
     }
   }
 
-  return a3;
+  return l;
 }
 
 - (id)delegate
 {
-  v2 = [_CFWriteStreamGetClient(self) retainedDelegate];
+  retainedDelegate = [_CFWriteStreamGetClient(self) retainedDelegate];
 
-  return v2;
+  return retainedDelegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (delegate)
   {
-    v4 = [[__NSCFStreamWeakDelegateWrapper alloc] initWithDelegate:a3];
+    v4 = [[__NSCFStreamWeakDelegateWrapper alloc] initWithDelegate:delegate];
     v7.version = 0;
     v7.info = v4;
     v7.retain = CFRetain;
@@ -90,30 +90,30 @@
   }
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v3 = CFWriteStreamCopyProperty(self, a3);
+  v3 = CFWriteStreamCopyProperty(self, key);
 
   return v3;
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3)
+  if (loop)
   {
-    v6 = [a3 getCFRunLoop];
+    getCFRunLoop = [loop getCFRunLoop];
 
-    CFWriteStreamScheduleWithRunLoop(self, v6, a4);
+    CFWriteStreamScheduleWithRunLoop(self, getCFRunLoop, mode);
   }
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3)
+  if (loop)
   {
-    v6 = [a3 getCFRunLoop];
+    getCFRunLoop = [loop getCFRunLoop];
 
-    CFWriteStreamUnscheduleFromRunLoop(self, v6, a4);
+    CFWriteStreamUnscheduleFromRunLoop(self, getCFRunLoop, mode);
   }
 }
 

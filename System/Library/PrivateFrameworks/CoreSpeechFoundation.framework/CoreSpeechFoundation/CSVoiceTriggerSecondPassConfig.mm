@@ -1,5 +1,5 @@
 @interface CSVoiceTriggerSecondPassConfig
-- (CSVoiceTriggerSecondPassConfig)initWithPreTriggerAudioTime:(float)a3 prependingAudioTime:(float)a4 trailingAudioTime:(float)a5 resourcePath:(id)a6 configPathNDAPI:(id)a7 useRecognizerCombination:(BOOL)a8 configPathRecognizer:(id)a9 useKeywordSpotting:(BOOL)a10 phraseConfigs:(id)a11 wearerDetectionConfig:(id)a12 quasarCheckerResultCutOffCount:(id)a13 useTimeBasedTriggerLength:(BOOL)a14;
+- (CSVoiceTriggerSecondPassConfig)initWithPreTriggerAudioTime:(float)time prependingAudioTime:(float)audioTime trailingAudioTime:(float)trailingAudioTime resourcePath:(id)path configPathNDAPI:(id)i useRecognizerCombination:(BOOL)combination configPathRecognizer:(id)recognizer useKeywordSpotting:(BOOL)self0 phraseConfigs:(id)self1 wearerDetectionConfig:(id)self2 quasarCheckerResultCutOffCount:(id)self3 useTimeBasedTriggerLength:(BOOL)self4;
 - (id)phraseNamesHash;
 @end
 
@@ -8,7 +8,7 @@
 - (id)phraseNamesHash
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -28,14 +28,14 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) name];
-        v10 = v9;
-        if (v9 && ([v9 isEqualToString:@"NULL"] & 1) == 0)
+        name = [*(*(&v14 + 1) + 8 * i) name];
+        v10 = name;
+        if (name && ([name isEqualToString:@"NULL"] & 1) == 0)
         {
           v11 = [CSFHashUtils sha256HashStringFromInputString:v10];
           if (v11)
           {
-            [v3 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -48,35 +48,35 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (CSVoiceTriggerSecondPassConfig)initWithPreTriggerAudioTime:(float)a3 prependingAudioTime:(float)a4 trailingAudioTime:(float)a5 resourcePath:(id)a6 configPathNDAPI:(id)a7 useRecognizerCombination:(BOOL)a8 configPathRecognizer:(id)a9 useKeywordSpotting:(BOOL)a10 phraseConfigs:(id)a11 wearerDetectionConfig:(id)a12 quasarCheckerResultCutOffCount:(id)a13 useTimeBasedTriggerLength:(BOOL)a14
+- (CSVoiceTriggerSecondPassConfig)initWithPreTriggerAudioTime:(float)time prependingAudioTime:(float)audioTime trailingAudioTime:(float)trailingAudioTime resourcePath:(id)path configPathNDAPI:(id)i useRecognizerCombination:(BOOL)combination configPathRecognizer:(id)recognizer useKeywordSpotting:(BOOL)self0 phraseConfigs:(id)self1 wearerDetectionConfig:(id)self2 quasarCheckerResultCutOffCount:(id)self3 useTimeBasedTriggerLength:(BOOL)self4
 {
-  v22 = a6;
-  v32 = a7;
-  v31 = a9;
-  v30 = a11;
-  v23 = a12;
-  v24 = a13;
+  pathCopy = path;
+  iCopy = i;
+  recognizerCopy = recognizer;
+  configsCopy = configs;
+  configCopy = config;
+  countCopy = count;
   v33.receiver = self;
   v33.super_class = CSVoiceTriggerSecondPassConfig;
   v25 = [(CSVoiceTriggerSecondPassConfig *)&v33 init];
   v26 = v25;
   if (v25)
   {
-    v25->_preTriggerAudioTime = a3;
-    v25->_prependingAudioTime = a4;
-    v25->_trailingAudioTime = a5;
-    objc_storeStrong(&v25->_resourcePath, a6);
-    objc_storeStrong(&v26->_configPathNDAPI, a7);
-    v26->_useRecognizerCombination = a8;
-    objc_storeStrong(&v26->_configPathRecognizer, a9);
-    v26->_useKeywordSpotting = a10;
-    objc_storeStrong(&v26->_phraseConfigs, a11);
-    objc_storeStrong(&v26->_wearerDetectionConfig, a12);
-    objc_storeStrong(&v26->_quasarCheckerResultCutOffCount, a13);
-    v26->_useTimeBasedTriggerLength = a14;
+    v25->_preTriggerAudioTime = time;
+    v25->_prependingAudioTime = audioTime;
+    v25->_trailingAudioTime = trailingAudioTime;
+    objc_storeStrong(&v25->_resourcePath, path);
+    objc_storeStrong(&v26->_configPathNDAPI, i);
+    v26->_useRecognizerCombination = combination;
+    objc_storeStrong(&v26->_configPathRecognizer, recognizer);
+    v26->_useKeywordSpotting = spotting;
+    objc_storeStrong(&v26->_phraseConfigs, configs);
+    objc_storeStrong(&v26->_wearerDetectionConfig, config);
+    objc_storeStrong(&v26->_quasarCheckerResultCutOffCount, count);
+    v26->_useTimeBasedTriggerLength = length;
   }
 
   return v26;

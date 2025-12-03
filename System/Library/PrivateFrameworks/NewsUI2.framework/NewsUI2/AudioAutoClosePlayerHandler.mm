@@ -1,6 +1,6 @@
 @interface AudioAutoClosePlayerHandler
 - (_TtC7NewsUI227AudioAutoClosePlayerHandler)init;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation AudioAutoClosePlayerHandler
@@ -12,16 +12,16 @@
   return result;
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   sub_2186C66AC();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_219BF6F74();
   sub_219BF6214();
   sub_219BE5314();
 
-  *(swift_allocObject() + 16) = v4;
-  v6 = v4;
+  *(swift_allocObject() + 16) = selfCopy;
+  v6 = selfCopy;
   sub_219BE3494();
 }
 

@@ -1,39 +1,39 @@
 @interface HUTableViewDiffableDataSource
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (HUTableViewDiffableDataSource)initWithTableView:(id)a3 cellProvider:(id)a4 delegate:(id)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (HUTableViewDiffableDataSource)initWithTableView:(id)view cellProvider:(id)provider delegate:(id)delegate;
 - (HUTableViewDiffableDataSourceDelegate)delegate;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation HUTableViewDiffableDataSource
 
-- (HUTableViewDiffableDataSource)initWithTableView:(id)a3 cellProvider:(id)a4 delegate:(id)a5
+- (HUTableViewDiffableDataSource)initWithTableView:(id)view cellProvider:(id)provider delegate:(id)delegate
 {
-  v8 = a4;
-  v9 = a3;
-  objc_storeWeak(&self->_delegate, a5);
+  providerCopy = provider;
+  viewCopy = view;
+  objc_storeWeak(&self->_delegate, delegate);
   v12.receiver = self;
   v12.super_class = HUTableViewDiffableDataSource;
-  v10 = [(UITableViewDiffableDataSource *)&v12 initWithTableView:v9 cellProvider:v8];
+  v10 = [(UITableViewDiffableDataSource *)&v12 initWithTableView:viewCopy cellProvider:providerCopy];
 
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUTableViewDiffableDataSource *)self delegate];
+  viewCopy = view;
+  delegate = [(HUTableViewDiffableDataSource *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(HUTableViewDiffableDataSource *)self delegate];
-    v10 = [v9 tableView:v6 titleForHeaderInSection:a4];
+    delegate2 = [(HUTableViewDiffableDataSource *)self delegate];
+    v10 = [delegate2 tableView:viewCopy titleForHeaderInSection:section];
   }
 
   else
@@ -44,16 +44,16 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUTableViewDiffableDataSource *)self delegate];
+  viewCopy = view;
+  delegate = [(HUTableViewDiffableDataSource *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(HUTableViewDiffableDataSource *)self delegate];
-    v10 = [v9 tableView:v6 titleForFooterInSection:a4];
+    delegate2 = [(HUTableViewDiffableDataSource *)self delegate];
+    v10 = [delegate2 tableView:viewCopy titleForFooterInSection:section];
   }
 
   else
@@ -64,17 +64,17 @@
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUTableViewDiffableDataSource *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(HUTableViewDiffableDataSource *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HUTableViewDiffableDataSource *)self delegate];
-    v11 = [v10 tableView:v6 canEditRowAtIndexPath:v7];
+    delegate2 = [(HUTableViewDiffableDataSource *)self delegate];
+    v11 = [delegate2 tableView:viewCopy canEditRowAtIndexPath:pathCopy];
   }
 
   else
@@ -85,17 +85,17 @@
   return v11;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUTableViewDiffableDataSource *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(HUTableViewDiffableDataSource *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HUTableViewDiffableDataSource *)self delegate];
-    v11 = [v10 tableView:v6 canMoveRowAtIndexPath:v7];
+    delegate2 = [(HUTableViewDiffableDataSource *)self delegate];
+    v11 = [delegate2 tableView:viewCopy canMoveRowAtIndexPath:pathCopy];
   }
 
   else
@@ -106,40 +106,40 @@
   return v11;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(HUTableViewDiffableDataSource *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(HUTableViewDiffableDataSource *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(HUTableViewDiffableDataSource *)self delegate];
-    [v11 tableView:v12 commitEditingStyle:a4 forRowAtIndexPath:v8];
+    delegate2 = [(HUTableViewDiffableDataSource *)self delegate];
+    [delegate2 tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
   }
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HUTableViewDiffableDataSource *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  delegate = [(HUTableViewDiffableDataSource *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(HUTableViewDiffableDataSource *)self delegate];
-    [v12 tableView:v13 moveRowAtIndexPath:v8 toIndexPath:v9];
+    delegate2 = [(HUTableViewDiffableDataSource *)self delegate];
+    [delegate2 tableView:viewCopy moveRowAtIndexPath:pathCopy toIndexPath:indexPathCopy];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_tableView_commitEditingStyle_forRowAtIndexPath_ == a3)
+  if (sel_tableView_commitEditingStyle_forRowAtIndexPath_ == selector)
   {
-    v4 = [(HUTableViewDiffableDataSource *)self delegate];
+    delegate = [(HUTableViewDiffableDataSource *)self delegate];
     v3 = objc_opt_respondsToSelector();
   }
 

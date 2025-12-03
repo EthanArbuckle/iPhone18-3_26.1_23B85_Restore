@@ -1,33 +1,33 @@
 @interface HMDCameraClipsQuotaDisableCameraResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMDCameraClipsQuotaDisableCameraResponse
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
   while (1)
   {
-    v4 = [a3 position];
-    if (v4 >= [a3 length] || (objc_msgSend(a3, "hasError") & 1) != 0)
+    position = [from position];
+    if (position >= [from length] || (objc_msgSend(from, "hasError") & 1) != 0)
     {
       break;
     }
@@ -38,18 +38,18 @@
     while (1)
     {
       v14 = 0;
-      v8 = [a3 position] + 1;
-      if (v8 >= [a3 position] && (v9 = objc_msgSend(a3, "position") + 1, v9 <= objc_msgSend(a3, "length")))
+      v8 = [from position] + 1;
+      if (v8 >= [from position] && (v9 = objc_msgSend(from, "position") + 1, v9 <= objc_msgSend(from, "length")))
       {
-        v10 = [a3 data];
-        [v10 getBytes:&v14 range:{objc_msgSend(a3, "position"), 1}];
+        data = [from data];
+        [data getBytes:&v14 range:{objc_msgSend(from, "position"), 1}];
 
-        [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        [from setPosition:{objc_msgSend(from, "position") + 1}];
       }
 
       else
       {
-        [a3 _setError];
+        [from _setError];
       }
 
       v7 |= (v14 & 0x7F) << v5;
@@ -66,9 +66,9 @@
       }
     }
 
-    v12 = [a3 hasError] ? 0 : v7;
+    v12 = [from hasError] ? 0 : v7;
 LABEL_15:
-    if (([a3 hasError] & 1) != 0 || (v12 & 7) == 4)
+    if (([from hasError] & 1) != 0 || (v12 & 7) == 4)
     {
       break;
     }
@@ -79,7 +79,7 @@ LABEL_15:
     }
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (NSString)description
@@ -88,8 +88,8 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = HMDCameraClipsQuotaDisableCameraResponse;
   v4 = [(HMDCameraClipsQuotaDisableCameraResponse *)&v8 description];
-  v5 = [(HMDCameraClipsQuotaDisableCameraResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDCameraClipsQuotaDisableCameraResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

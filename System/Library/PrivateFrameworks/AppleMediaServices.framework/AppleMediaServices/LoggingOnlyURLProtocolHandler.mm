@@ -1,6 +1,6 @@
 @interface LoggingOnlyURLProtocolHandler
 - (AMSURLSession)session;
-- (void)setSession:(id)a3;
+- (void)setSession:(id)session;
 @end
 
 @implementation LoggingOnlyURLProtocolHandler
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
-  v6 = self;
-  sub_192C35954(a3);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_192C35954(session);
 }
 
 @end

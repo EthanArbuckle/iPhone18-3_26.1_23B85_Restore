@@ -6,9 +6,9 @@
 
 - (__CFString)sb_filteredFirstPartyAppBundleID
 {
-  if ([a1 hasPrefix:@"com.apple."])
+  if ([self hasPrefix:@"com.apple."])
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
   }
 
   else

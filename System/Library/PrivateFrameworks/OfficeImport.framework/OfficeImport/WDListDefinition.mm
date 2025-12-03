@@ -1,8 +1,8 @@
 @interface WDListDefinition
-- (WDListDefinition)initWithDocument:(id)a3 listDefinitionId:(int)a4 styleId:(id)a5;
+- (WDListDefinition)initWithDocument:(id)document listDefinitionId:(int)id styleId:(id)styleId;
 - (id)addLevel;
 - (id)description;
-- (id)levelAt:(int)a3;
+- (id)levelAt:(int)at;
 @end
 
 @implementation WDListDefinition
@@ -25,41 +25,41 @@
   return v7;
 }
 
-- (id)levelAt:(int)a3
+- (id)levelAt:(int)at
 {
   if (self->mType)
   {
-    v4 = a3;
+    atCopy = at;
   }
 
   else
   {
-    v4 = 0;
+    atCopy = 0;
   }
 
   v5 = [(NSMutableArray *)self->mLevels count];
   if (v5)
   {
     mLevels = self->mLevels;
-    if (v4 >= v5)
+    if (atCopy >= v5)
     {
       v8 = [(NSMutableArray *)mLevels objectAtIndex:0];
       if ([v8 legacy])
       {
-        v9 = v8;
+        lastObject = v8;
       }
 
       else
       {
-        v9 = [(NSMutableArray *)self->mLevels lastObject];
+        lastObject = [(NSMutableArray *)self->mLevels lastObject];
       }
 
-      v7 = v9;
+      v7 = lastObject;
     }
 
     else
     {
-      v7 = [(NSMutableArray *)mLevels objectAtIndex:v4];
+      v7 = [(NSMutableArray *)mLevels objectAtIndex:atCopy];
     }
   }
 
@@ -71,19 +71,19 @@
   return v7;
 }
 
-- (WDListDefinition)initWithDocument:(id)a3 listDefinitionId:(int)a4 styleId:(id)a5
+- (WDListDefinition)initWithDocument:(id)document listDefinitionId:(int)id styleId:(id)styleId
 {
-  v8 = a3;
-  v9 = a5;
+  documentCopy = document;
+  styleIdCopy = styleId;
   v15.receiver = self;
   v15.super_class = WDListDefinition;
   v10 = [(WDListDefinition *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->mDocument, v8);
-    v11->mListDefinitionId = a4;
-    v12 = [v9 copy];
+    objc_storeWeak(&v10->mDocument, documentCopy);
+    v11->mListDefinitionId = id;
+    v12 = [styleIdCopy copy];
     mStyleId = v11->mStyleId;
     v11->mStyleId = v12;
   }

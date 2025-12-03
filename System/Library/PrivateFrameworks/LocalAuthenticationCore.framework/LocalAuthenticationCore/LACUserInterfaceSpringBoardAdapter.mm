@@ -1,31 +1,31 @@
 @interface LACUserInterfaceSpringBoardAdapter
-+ (id)_targetPredicateWithAuditTokenData:(id)a3;
-+ (id)_targetPredicateWithLSApplicationInfoData:(id)a3;
-- (LACUserInterfaceSpringBoardAdapter)initWithBundleId:(id)a3 configurationId:(id)a4;
-- (id)_activationContextForRequest:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_processRequest:(id)a3 completion:(id)a4;
++ (id)_targetPredicateWithAuditTokenData:(id)data;
++ (id)_targetPredicateWithLSApplicationInfoData:(id)data;
+- (LACUserInterfaceSpringBoardAdapter)initWithBundleId:(id)id configurationId:(id)configurationId;
+- (id)_activationContextForRequest:(id)request;
+- (void)_finishWithError:(id)error;
+- (void)_processRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)terminateWithReason:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)terminateWithReason:(id)reason;
 @end
 
 @implementation LACUserInterfaceSpringBoardAdapter
 
-- (LACUserInterfaceSpringBoardAdapter)initWithBundleId:(id)a3 configurationId:(id)a4
+- (LACUserInterfaceSpringBoardAdapter)initWithBundleId:(id)id configurationId:(id)configurationId
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  configurationIdCopy = configurationId;
   v12.receiver = self;
   v12.super_class = LACUserInterfaceSpringBoardAdapter;
   v9 = [(LACUserInterfaceSpringBoardAdapter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleId, a3);
-    objc_storeStrong(&v10->_configurationId, a4);
+    objc_storeStrong(&v9->_bundleId, id);
+    objc_storeStrong(&v10->_configurationId, configurationId);
   }
 
   return v10;
@@ -47,9 +47,9 @@
   [(LACUserInterfaceSpringBoardAdapter *)&v5 dealloc];
 }
 
-- (void)terminateWithReason:(id)a3
+- (void)terminateWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -59,10 +59,10 @@
   [(SBSRemoteAlertHandle *)self->_alertHandle invalidate];
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activateCopy = activate;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -71,7 +71,7 @@
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  if (self->_alertHandle != v4)
+  if (self->_alertHandle != activateCopy)
   {
     v6 = LACLogUI();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -83,10 +83,10 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -95,7 +95,7 @@
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  if (self->_alertHandle == v4)
+  if (self->_alertHandle == deactivateCopy)
   {
     [(LACUserInterfaceSpringBoardAdapter *)self _finishWithError:0];
   }
@@ -112,10 +112,10 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handleCopy = handle;
   v6 = LACLogUI();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,7 +124,7 @@
     _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  if (self->_alertHandle == v5)
+  if (self->_alertHandle == handleCopy)
   {
     [(LACUserInterfaceSpringBoardAdapter *)self _finishWithError:0];
   }
@@ -141,9 +141,9 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_targetPredicateWithAuditTokenData:(id)a3
++ (id)_targetPredicateWithAuditTokenData:(id)data
 {
-  v3 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(a3 objCType:{"bytes"), "{?=[8I]}"}];
+  v3 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(data objCType:{"bytes"), "{?=[8I]}"}];
   v4 = v3;
   if (v3)
   {
@@ -165,12 +165,12 @@
   return v7;
 }
 
-+ (id)_targetPredicateWithLSApplicationInfoData:(id)a3
++ (id)_targetPredicateWithLSApplicationInfoData:(id)data
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
-  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
 
   v6 = v10;
   if (v5)
@@ -192,22 +192,22 @@
   return v7;
 }
 
-- (id)_activationContextForRequest:(id)a3
+- (id)_activationContextForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_class();
-  v5 = [v3 clientAuditTokenData];
-  v6 = [v3 isAuditTokenApplicationIdentity];
-  v7 = [v3 isForSiri];
+  clientAuditTokenData = [requestCopy clientAuditTokenData];
+  isAuditTokenApplicationIdentity = [requestCopy isAuditTokenApplicationIdentity];
+  isForSiri = [requestCopy isForSiri];
 
-  v8 = [v4 activationContextWithAuditToken:v5 isAuditTokenApplicationIdentity:v6 isForSiri:v7];
+  v8 = [v4 activationContextWithAuditToken:clientAuditTokenData isAuditTokenApplicationIdentity:isAuditTokenApplicationIdentity isForSiri:isForSiri];
 
   return v8;
 }
 
-- (void)_processRequest:(id)a3 completion:(id)a4
+- (void)_processRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
+  requestCopy = request;
   if (self->_handler)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ instance is already in use", self];
@@ -217,7 +217,7 @@
 
   else
   {
-    v9 = _Block_copy(a4);
+    v9 = _Block_copy(completion);
     handler = self->_handler;
     self->_handler = v9;
 
@@ -228,7 +228,7 @@
     v17[1] = 3221225472;
     v17[2] = __65__LACUserInterfaceSpringBoardAdapter__processRequest_completion___block_invoke;
     v17[3] = &unk_1E7A97168;
-    v12 = v6;
+    v12 = requestCopy;
     v18 = v12;
     v13 = __65__LACUserInterfaceSpringBoardAdapter__processRequest_completion___block_invoke(v17);
     [v11 setUserInfo:v13];
@@ -258,9 +258,9 @@ id __65__LACUserInterfaceSpringBoardAdapter__processRequest_completion___block_i
   return v3;
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   handler = self->_handler;
   if (handler)
   {
@@ -268,7 +268,7 @@ id __65__LACUserInterfaceSpringBoardAdapter__processRequest_completion___block_i
     v7 = self->_handler;
     self->_handler = 0;
 
-    (v6)[2](v6, v4);
+    (v6)[2](v6, errorCopy);
   }
 
   else

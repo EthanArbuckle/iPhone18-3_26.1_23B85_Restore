@@ -6,12 +6,12 @@
 
 - (BOOL)doc_isPending
 {
-  if ([a1 isIndeterminate])
+  if ([self isIndeterminate])
   {
     return 1;
   }
 
-  [a1 fractionCompleted];
+  [self fractionCompleted];
   return v3 == 0.0;
 }
 

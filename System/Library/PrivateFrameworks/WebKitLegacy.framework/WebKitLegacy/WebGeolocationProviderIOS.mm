@@ -1,28 +1,28 @@
 @interface WebGeolocationProviderIOS
 + (id)sharedGeolocationProvider;
 - (id).cxx_construct;
-- (uint64_t)initializeGeolocationForWebView:(WTF *)a1 listener:(void *)a2;
-- (uint64_t)initializeGeolocationForWebView:(uint64_t)a1 listener:;
-- (uint64_t)registerWebView:(WTF *)a1;
-- (uint64_t)registerWebView:(uint64_t)a1;
-- (uint64_t)setEnableHighAccuracy:(WTF *)a1;
-- (uint64_t)unregisterWebView:(WTF *)a1;
-- (void)_handlePendingInitialPosition:(id)a3;
+- (uint64_t)initializeGeolocationForWebView:(WTF *)view listener:(void *)listener;
+- (uint64_t)initializeGeolocationForWebView:(uint64_t)view listener:;
+- (uint64_t)registerWebView:(WTF *)view;
+- (uint64_t)registerWebView:(uint64_t)view;
+- (uint64_t)setEnableHighAccuracy:(WTF *)accuracy;
+- (uint64_t)unregisterWebView:(WTF *)view;
+- (void)_handlePendingInitialPosition:(id)position;
 - (void)dealloc;
-- (void)errorOccurred:(id)a3;
+- (void)errorOccurred:(id)occurred;
 - (void)geolocationAuthorizationDenied;
 - (void)geolocationAuthorizationGranted;
-- (void)initializeGeolocationForWebView:(id)a3 listener:(id)a4;
+- (void)initializeGeolocationForWebView:(id)view listener:(id)listener;
 - (void)initializeGeolocationForWebView:(void *)result listener:;
-- (void)positionChanged:(id)a3;
-- (void)registerWebView:(id)a3;
+- (void)positionChanged:(id)changed;
+- (void)registerWebView:(id)view;
 - (void)registerWebView:(void *)result;
 - (void)resetGeolocation;
 - (void)resume;
-- (void)setEnableHighAccuracy:(BOOL)a3;
+- (void)setEnableHighAccuracy:(BOOL)accuracy;
 - (void)setEnableHighAccuracy:(void *)result;
 - (void)suspend;
-- (void)unregisterWebView:(id)a3;
+- (void)unregisterWebView:(id)view;
 - (void)unregisterWebView:(void *)result;
 @end
 
@@ -160,7 +160,7 @@ void __54__WebGeolocationProviderIOS_sharedGeolocationProvider__block_invoke()
   }
 }
 
-- (void)_handlePendingInitialPosition:(id)a3
+- (void)_handlePendingInitialPosition:(id)position
 {
   if (self->_lastPosition.m_ptr)
   {
@@ -262,23 +262,23 @@ LABEL_22:
   }
 }
 
-- (void)registerWebView:(id)a3
+- (void)registerWebView:(id)view
 {
-  v23 = a3;
+  viewCopy = view;
   m_table = self->_registeredWebViews.m_impl.m_table;
   p_registeredWebViews = &self->_registeredWebViews;
   v5 = m_table;
   if (!m_table)
   {
 LABEL_9:
-    WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(p_registeredWebViews, &v23, v22);
-    v14 = CallUIDelegateReturningBoolean(1, v23, sel_webViewCanCheckGeolocationAuthorizationStatus_);
+    WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(p_registeredWebViews, &viewCopy, v22);
+    v14 = CallUIDelegateReturningBoolean(1, viewCopy, sel_webViewCanCheckGeolocationAuthorizationStatus_);
     if (v14)
     {
       if (!self->_isSuspended)
       {
         WTF::RunLoop::mainSingleton(v14);
-        v15 = self;
+        selfCopy = self;
         v16 = WTF::fastMalloc(0x18);
         *v16 = &unk_1F472DE28;
         v16[1] = self;
@@ -293,7 +293,7 @@ LABEL_9:
         }
       }
 
-      WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(&self->_pendingInitialPositionWebView, &v23, v22);
+      WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(&self->_pendingInitialPositionWebView, &viewCopy, v22);
       if (!self->_sendLastPositionAsynchronouslyTimer.m_ptr)
       {
         v18 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel__handlePendingInitialPosition_ selector:0 userInfo:0 repeats:0.0];
@@ -316,19 +316,19 @@ LABEL_9:
     return;
   }
 
-  if (a3 == -1 || !a3)
+  if (view == -1 || !view)
   {
     __break(0xC471u);
     JUMPOUT(0x1C7ADB810);
   }
 
   v7 = *(v5 - 2);
-  v8 = (a3 + ~(a3 << 32)) ^ ((a3 + ~(a3 << 32)) >> 22);
+  v8 = (view + ~(view << 32)) ^ ((view + ~(view << 32)) >> 22);
   v9 = 9 * ((v8 + ~(v8 << 13)) ^ ((v8 + ~(v8 << 13)) >> 8));
   v10 = (v9 ^ (v9 >> 15)) + ~((v9 ^ (v9 >> 15)) << 27);
   v11 = v7 & ((v10 >> 31) ^ v10);
   v12 = v5[v11];
-  if (v12 != a3)
+  if (v12 != view)
   {
     v13 = 1;
     while (v12)
@@ -336,7 +336,7 @@ LABEL_9:
       v11 = (v11 + v13) & v7;
       v12 = v5[v11];
       ++v13;
-      if (v12 == a3)
+      if (v12 == view)
       {
         return;
       }
@@ -346,36 +346,36 @@ LABEL_9:
   }
 }
 
-- (void)unregisterWebView:(id)a3
+- (void)unregisterWebView:(id)view
 {
-  v20 = a3;
+  viewCopy = view;
   m_table = self->_registeredWebViews.m_impl.m_table;
   p_registeredWebViews = &self->_registeredWebViews;
   v5 = m_table;
   if (m_table)
   {
-    if (a3 == -1 || !a3)
+    if (view == -1 || !view)
     {
       __break(0xC471u);
       JUMPOUT(0x1C7ADBA00);
     }
 
     v7 = *(v5 - 2);
-    v8 = (a3 + ~(a3 << 32)) ^ ((a3 + ~(a3 << 32)) >> 22);
+    v8 = (view + ~(view << 32)) ^ ((view + ~(view << 32)) >> 22);
     v9 = 9 * ((v8 + ~(v8 << 13)) ^ ((v8 + ~(v8 << 13)) >> 8));
     v10 = (v9 ^ (v9 >> 15)) + ~((v9 ^ (v9 >> 15)) << 27);
     v11 = v7 & ((v10 >> 31) ^ v10);
     v12 = v5[v11];
-    if (v12 == a3)
+    if (v12 == view)
     {
 LABEL_8:
-      WTF::HashSet<WebView *,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::remove(p_registeredWebViews, &v20);
-      v14 = WTF::HashSet<WebView *,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::remove(&self->_pendingInitialPositionWebView, &v20);
+      WTF::HashSet<WebView *,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::remove(p_registeredWebViews, &viewCopy);
+      v14 = WTF::HashSet<WebView *,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::remove(&self->_pendingInitialPositionWebView, &viewCopy);
       v15 = self->_registeredWebViews.m_impl.m_table;
       if (!v15 || !*(v15 - 3))
       {
         WTF::RunLoop::mainSingleton(v14);
-        v16 = self;
+        selfCopy = self;
         v17 = WTF::fastMalloc(0x18);
         *v17 = &unk_1F472DE50;
         v17[1] = self;
@@ -404,7 +404,7 @@ LABEL_8:
         v11 = (v11 + v13) & v7;
         v12 = v5[v11];
         ++v13;
-        if (v12 == a3)
+        if (v12 == view)
         {
           goto LABEL_8;
         }
@@ -413,11 +413,11 @@ LABEL_8:
   }
 }
 
-- (void)setEnableHighAccuracy:(BOOL)a3
+- (void)setEnableHighAccuracy:(BOOL)accuracy
 {
-  self->_enableHighAccuracy |= a3;
+  self->_enableHighAccuracy |= accuracy;
   WTF::RunLoop::mainSingleton(self);
-  v4 = self;
+  selfCopy = self;
   v5 = WTF::fastMalloc(0x18);
   *v5 = &unk_1F472DE78;
   v5[1] = self;
@@ -430,20 +430,20 @@ LABEL_8:
   }
 }
 
-- (void)initializeGeolocationForWebView:(id)a3 listener:(id)a4
+- (void)initializeGeolocationForWebView:(id)view listener:(id)listener
 {
-  v32 = a3;
-  if (!CallUIDelegateReturningBoolean(1, a3, sel_webViewCanCheckGeolocationAuthorizationStatus_))
+  viewCopy = view;
+  if (!CallUIDelegateReturningBoolean(1, view, sel_webViewCanCheckGeolocationAuthorizationStatus_))
   {
     return;
   }
 
-  if (a3)
+  if (view)
   {
-    v7 = a3;
+    viewCopy2 = view;
   }
 
-  if (a3 == -1 || !a3)
+  if (view == -1 || !view)
   {
     __break(0xC471u);
     JUMPOUT(0x1C7ADBF2CLL);
@@ -457,7 +457,7 @@ LABEL_8:
   }
 
   v9 = *(m_table - 2);
-  v10 = (a3 + ~(a3 << 32)) ^ ((a3 + ~(a3 << 32)) >> 22);
+  v10 = (view + ~(view << 32)) ^ ((view + ~(view << 32)) >> 22);
   v11 = 9 * ((v10 + ~(v10 << 13)) ^ ((v10 + ~(v10 << 13)) >> 8));
   v12 = (v11 ^ (v11 >> 15)) + ~((v11 ^ (v11 >> 15)) << 27);
   v13 = v9 & ((v12 >> 31) ^ v12);
@@ -469,7 +469,7 @@ LABEL_8:
     v17 = 1;
     do
     {
-      if (v15 == a3)
+      if (v15 == view)
       {
 
         goto LABEL_32;
@@ -496,7 +496,7 @@ LABEL_8:
     v16[1] = 0;
     --*(self->_webViewsWaitingForCoreLocationAuthorization.m_impl.m_table - 4);
     v18 = *v16;
-    *v16 = a3;
+    *v16 = view;
     if (v18)
     {
     }
@@ -505,17 +505,17 @@ LABEL_8:
   else
   {
 LABEL_17:
-    *v14 = a3;
+    *v14 = view;
     v16 = v14;
   }
 
-  if (a4)
+  if (listener)
   {
-    v19 = a4;
+    listenerCopy = listener;
   }
 
   v20 = v16[1];
-  v16[1] = a4;
+  v16[1] = listener;
   if (v20)
   {
   }
@@ -568,11 +568,11 @@ LABEL_30:
   }
 
 LABEL_32:
-  v27 = WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(&self->_trackedWebViews, &v32, &v31);
+  v27 = WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(&self->_trackedWebViews, &viewCopy, &v31);
   WTF::RunLoop::mainSingleton(v27);
   if (self)
   {
-    v28 = self;
+    selfCopy = self;
   }
 
   v29 = WTF::fastMalloc(0x18);
@@ -787,7 +787,7 @@ LABEL_17:
   }
 }
 
-- (void)positionChanged:(id)a3
+- (void)positionChanged:(id)changed
 {
   m_table = self->_pendingInitialPositionWebView.m_impl.m_table;
   if (m_table)
@@ -803,13 +803,13 @@ LABEL_17:
   {
   }
 
-  if (a3)
+  if (changed)
   {
-    v7 = a3;
+    changedCopy = changed;
   }
 
   v8 = self->_lastPosition.m_ptr;
-  self->_lastPosition.m_ptr = a3;
+  self->_lastPosition.m_ptr = changed;
   if (v8)
   {
   }
@@ -900,7 +900,7 @@ LABEL_30:
   }
 }
 
-- (void)errorOccurred:(id)a3
+- (void)errorOccurred:(id)occurred
 {
   m_ptr = self->_lastPosition.m_ptr;
   self->_lastPosition.m_ptr = 0;
@@ -977,7 +977,7 @@ LABEL_17:
               v21 = 8 * v19;
               do
               {
-                [*(v10 + v20) _geolocationDidFailWithMessage:a3];
+                [*(v10 + v20) _geolocationDidFailWithMessage:occurred];
                 v20 += 8;
               }
 
@@ -1173,51 +1173,51 @@ LABEL_40:
   return result;
 }
 
-- (uint64_t)registerWebView:(WTF *)a1
+- (uint64_t)registerWebView:(WTF *)view
 {
-  *a1 = &unk_1F472DE28;
-  v3 = *(a1 + 2);
-  *(a1 + 2) = 0;
+  *view = &unk_1F472DE28;
+  v3 = *(view + 2);
+  *(view + 2) = 0;
   if (v3)
   {
-    v4 = a1;
+    viewCopy = view;
 
-    a1 = v4;
+    view = viewCopy;
     v2 = vars8;
   }
 
-  return WTF::fastFree(a1, a2);
+  return WTF::fastFree(view, a2);
 }
 
-- (uint64_t)registerWebView:(uint64_t)a1
+- (uint64_t)registerWebView:(uint64_t)view
 {
-  if (*(*(a1 + 8) + 8))
+  if (*(*(view + 8) + 8))
   {
     goto LABEL_2;
   }
 
-  v4 = [[_WebCoreLocationUpdateThreadingProxy alloc] initWithProvider:*(a1 + 8)];
-  v5 = *(a1 + 8);
+  v4 = [[_WebCoreLocationUpdateThreadingProxy alloc] initWithProvider:*(view + 8)];
+  v5 = *(view + 8);
   v6 = *(v5 + 16);
   *(v5 + 16) = v4;
   if (v6)
   {
   }
 
-  v7 = [[WebGeolocationCoreLocationProvider alloc] initWithListener:*(*(a1 + 8) + 16)];
-  v8 = *(a1 + 8);
+  v7 = [[WebGeolocationCoreLocationProvider alloc] initWithListener:*(*(view + 8) + 16)];
+  v8 = *(view + 8);
   v9 = *(v8 + 8);
   *(v8 + 8) = v7;
   if (!v9)
   {
 LABEL_2:
-    v2 = *(*(a1 + 8) + 8);
+    v2 = *(*(view + 8) + 8);
   }
 
   else
   {
 
-    v2 = *(*(a1 + 8) + 8);
+    v2 = *(*(view + 8) + 8);
   }
 
   return [v2 start];
@@ -1238,20 +1238,20 @@ LABEL_2:
   return result;
 }
 
-- (uint64_t)unregisterWebView:(WTF *)a1
+- (uint64_t)unregisterWebView:(WTF *)view
 {
-  *a1 = &unk_1F472DE50;
-  v3 = *(a1 + 2);
-  *(a1 + 2) = 0;
+  *view = &unk_1F472DE50;
+  v3 = *(view + 2);
+  *(view + 2) = 0;
   if (v3)
   {
-    v4 = a1;
+    viewCopy = view;
 
-    a1 = v4;
+    view = viewCopy;
     v2 = vars8;
   }
 
-  return WTF::fastFree(a1, a2);
+  return WTF::fastFree(view, a2);
 }
 
 - (void)setEnableHighAccuracy:(void *)result
@@ -1269,20 +1269,20 @@ LABEL_2:
   return result;
 }
 
-- (uint64_t)setEnableHighAccuracy:(WTF *)a1
+- (uint64_t)setEnableHighAccuracy:(WTF *)accuracy
 {
-  *a1 = &unk_1F472DE78;
-  v3 = *(a1 + 2);
-  *(a1 + 2) = 0;
+  *accuracy = &unk_1F472DE78;
+  v3 = *(accuracy + 2);
+  *(accuracy + 2) = 0;
   if (v3)
   {
-    v4 = a1;
+    accuracyCopy = accuracy;
 
-    a1 = v4;
+    accuracy = accuracyCopy;
     v2 = vars8;
   }
 
-  return WTF::fastFree(a1, a2);
+  return WTF::fastFree(accuracy, a2);
 }
 
 - (void)initializeGeolocationForWebView:(void *)result listener:
@@ -1300,51 +1300,51 @@ LABEL_2:
   return result;
 }
 
-- (uint64_t)initializeGeolocationForWebView:(WTF *)a1 listener:(void *)a2
+- (uint64_t)initializeGeolocationForWebView:(WTF *)view listener:(void *)listener
 {
-  *a1 = &unk_1F472DEA0;
-  v3 = *(a1 + 2);
-  *(a1 + 2) = 0;
+  *view = &unk_1F472DEA0;
+  v3 = *(view + 2);
+  *(view + 2) = 0;
   if (v3)
   {
-    v4 = a1;
+    viewCopy = view;
 
-    a1 = v4;
+    view = viewCopy;
     v2 = vars8;
   }
 
-  return WTF::fastFree(a1, a2);
+  return WTF::fastFree(view, listener);
 }
 
-- (uint64_t)initializeGeolocationForWebView:(uint64_t)a1 listener:
+- (uint64_t)initializeGeolocationForWebView:(uint64_t)view listener:
 {
-  if (*(*(a1 + 8) + 8))
+  if (*(*(view + 8) + 8))
   {
     goto LABEL_2;
   }
 
-  v4 = [[_WebCoreLocationUpdateThreadingProxy alloc] initWithProvider:*(a1 + 8)];
-  v5 = *(a1 + 8);
+  v4 = [[_WebCoreLocationUpdateThreadingProxy alloc] initWithProvider:*(view + 8)];
+  v5 = *(view + 8);
   v6 = *(v5 + 16);
   *(v5 + 16) = v4;
   if (v6)
   {
   }
 
-  v7 = [[WebGeolocationCoreLocationProvider alloc] initWithListener:*(*(a1 + 8) + 16)];
-  v8 = *(a1 + 8);
+  v7 = [[WebGeolocationCoreLocationProvider alloc] initWithListener:*(*(view + 8) + 16)];
+  v8 = *(view + 8);
   v9 = *(v8 + 8);
   *(v8 + 8) = v7;
   if (!v9)
   {
 LABEL_2:
-    v2 = *(*(a1 + 8) + 8);
+    v2 = *(*(view + 8) + 8);
   }
 
   else
   {
 
-    v2 = *(*(a1 + 8) + 8);
+    v2 = *(*(view + 8) + 8);
   }
 
   return [v2 requestGeolocationAuthorization];

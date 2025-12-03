@@ -1,13 +1,13 @@
 @interface ZWMenuChooserTableViewController
 - (UIEdgeInsets)contentInset;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ZWMenuChooserTableViewController
@@ -19,8 +19,8 @@
   v4 = [UIBlurEffect effectWithStyle:19];
   v5 = [v3 initWithEffect:v4];
 
-  v6 = [v5 contentView];
-  [v6 addSubview:v29];
+  contentView = [v5 contentView];
+  [contentView addSubview:v29];
 
   [(ZWMenuChooserTableViewController *)self setView:v5];
   [(ZWMenuChooserTableViewController *)self setTableView:v29];
@@ -38,8 +38,8 @@
   if (_UISolariumEnabled())
   {
     [v5 setEffect:0];
-    v9 = [v5 traitOverrides];
-    [v9 setUserInterfaceStyle:2];
+    traitOverrides = [v5 traitOverrides];
+    [traitOverrides setUserInterfaceStyle:2];
 
     [v5 ax_setWantsGlassAppearance:1];
     [(ZWMenuChooserTableViewController *)self setContentInset:10.0, 0.0, 10.0, 0.0];
@@ -48,19 +48,19 @@
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(ZWMenuChooserTableViewController *)self tableView];
-    [v18 setContentInset:{v11, v13, v15, v17}];
+    tableView = [(ZWMenuChooserTableViewController *)self tableView];
+    [tableView setContentInset:{v11, v13, v15, v17}];
 
     [(ZWMenuChooserTableViewController *)self contentInset];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(ZWMenuChooserTableViewController *)self tableView];
-    [v27 setScrollIndicatorInsets:{v20, v22, v24, v26}];
+    tableView2 = [(ZWMenuChooserTableViewController *)self tableView];
+    [tableView2 setScrollIndicatorInsets:{v20, v22, v24, v26}];
 
-    v28 = [(ZWMenuChooserTableViewController *)self tableView];
-    [v28 setSeparatorStyle:0];
+    tableView3 = [(ZWMenuChooserTableViewController *)self tableView];
+    [tableView3 setSeparatorStyle:0];
   }
 }
 
@@ -69,8 +69,8 @@
   v7.receiver = self;
   v7.super_class = ZWMenuChooserTableViewController;
   [(ZWMenuChooserTableViewController *)&v7 viewDidLoad];
-  v3 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:ZWMenuItemCellReuseID];
+  tableView = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:ZWMenuItemCellReuseID];
 
   if (_UISolariumEnabled())
   {
@@ -82,57 +82,57 @@
     v4 = 44.0;
   }
 
-  v5 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v5 setEstimatedRowHeight:v4];
+  tableView2 = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:v4];
 
-  v6 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v6 setRowHeight:UITableViewAutomaticDimension];
+  tableView3 = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView3 setRowHeight:UITableViewAutomaticDimension];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v17.receiver = self;
   v17.super_class = ZWMenuChooserTableViewController;
-  [(ZWMenuChooserTableViewController *)&v17 viewWillAppear:a3];
+  [(ZWMenuChooserTableViewController *)&v17 viewWillAppear:appear];
   if (ZWUseVibrantBlendModes())
   {
     v4 = [UIColor colorWithWhite:0.25 alpha:1.0];
-    v5 = [(ZWMenuChooserTableViewController *)self tableView];
-    [v5 setSeparatorColor:v4];
+    tableView = [(ZWMenuChooserTableViewController *)self tableView];
+    [tableView setSeparatorColor:v4];
 
     v6 = [UIBlurEffect effectWithStyle:2];
-    v7 = [UIVibrancyEffect effectForBlurEffect:v6];
-    v8 = [(ZWMenuChooserTableViewController *)self tableView];
-    [v8 setSeparatorEffect:v7];
+    tableView3 = [UIVibrancyEffect effectForBlurEffect:v6];
+    tableView2 = [(ZWMenuChooserTableViewController *)self tableView];
+    [tableView2 setSeparatorEffect:tableView3];
   }
 
   else
   {
     v6 = [UIColor colorWithWhite:0.5 alpha:1.0];
-    v7 = [(ZWMenuChooserTableViewController *)self tableView];
-    [v7 setSeparatorColor:v6];
+    tableView3 = [(ZWMenuChooserTableViewController *)self tableView];
+    [tableView3 setSeparatorColor:v6];
   }
 
-  v9 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v9 frame];
+  tableView4 = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView4 frame];
   ZWCornerRadiusForBackgroundWithSize(v10, v11);
   v13 = v12;
-  v14 = [(ZWMenuChooserTableViewController *)self view];
-  v15 = [v14 superview];
-  v16 = [v15 layer];
-  [v16 setCornerRadius:v13];
+  view = [(ZWMenuChooserTableViewController *)self view];
+  superview = [view superview];
+  layer = [superview layer];
+  [layer setCornerRadius:v13];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = ZWMenuChooserTableViewController;
-  [(ZWMenuChooserTableViewController *)&v13 viewDidAppear:a3];
-  v4 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v4 layoutIfNeeded];
+  [(ZWMenuChooserTableViewController *)&v13 viewDidAppear:appear];
+  tableView = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v5 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v5 contentSize];
+  tableView2 = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView2 contentSize];
   v7 = v6;
   v9 = v8;
 
@@ -147,45 +147,45 @@
   v10.receiver = self;
   v10.super_class = ZWMenuChooserTableViewController;
   [(ZWMenuChooserTableViewController *)&v10 viewDidLayoutSubviews];
-  v3 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v3 contentSize];
+  tableView = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView contentSize];
   v5 = v4;
-  v6 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v6 bounds];
+  tableView2 = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView2 bounds];
   v8 = v5 > v7;
-  v9 = [(ZWMenuChooserTableViewController *)self tableView];
-  [v9 setScrollEnabled:v8];
+  tableView3 = [(ZWMenuChooserTableViewController *)self tableView];
+  [tableView3 setScrollEnabled:v8];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [cellCopy setBackgroundColor:v6];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  [v13 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v13 numberOfRowsInSection:0];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = [viewCopy numberOfRowsInSection:0];
   if (v7)
   {
     v8 = v7;
     for (i = 0; i != v8; ++i)
     {
       v10 = [NSIndexPath indexPathForRow:i inSection:0];
-      v11 = [v13 cellForRowAtIndexPath:v10];
+      v11 = [viewCopy cellForRowAtIndexPath:v10];
       if (_UISolariumEnabled() && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [v11 setAccessoryType:0];
-        [v11 setIsChecked:{i == objc_msgSend(v6, "row")}];
+        [v11 setIsChecked:{i == objc_msgSend(pathCopy, "row")}];
       }
 
       else
       {
-        if (i == [v6 row])
+        if (i == [pathCopy row])
         {
           v12 = 3;
         }
@@ -203,9 +203,9 @@
   [(ZWMenuChooserTableViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:{ZWMenuItemCellReuseID, a4}];
+  v4 = [view dequeueReusableCellWithIdentifier:{ZWMenuItemCellReuseID, path}];
   if (!_UISolariumEnabled() || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v5 = 0.5;

@@ -3,9 +3,9 @@
 - (IOGPUMemoryInfo)init;
 - (__CFArray)annotationList;
 - (__CFArray)getAnnotationListAndEmitResourceInfo;
-- (void)addResourceToList:(id)a3;
+- (void)addResourceToList:(id)list;
 - (void)dealloc;
-- (void)removeResourceFromList:(id)a3;
+- (void)removeResourceFromList:(id)list;
 - (void)shutdown;
 @end
 
@@ -58,11 +58,11 @@ uint64_t __29__IOGPUMemoryInfo_initialize__block_invoke()
     Weak = objc_loadWeak(&i->weakSelf);
     if (Weak)
     {
-      v8 = [Weak copyAnnotations];
-      if (v8)
+      copyAnnotations = [Weak copyAnnotations];
+      if (copyAnnotations)
       {
-        v9 = v8;
-        v11.length = CFArrayGetCount(v8);
+        v9 = copyAnnotations;
+        v11.length = CFArrayGetCount(copyAnnotations);
         v11.location = 0;
         CFArrayAppendArray(Mutable, v9, v11);
         CFRelease(v9);
@@ -88,11 +88,11 @@ uint64_t __29__IOGPUMemoryInfo_initialize__block_invoke()
     {
       v8 = Weak;
       [Weak emitResourceInfoTraceEvent];
-      v9 = [v8 copyAnnotations];
-      if (v9)
+      copyAnnotations = [v8 copyAnnotations];
+      if (copyAnnotations)
       {
-        v10 = v9;
-        v12.length = CFArrayGetCount(v9);
+        v10 = copyAnnotations;
+        v12.length = CFArrayGetCount(copyAnnotations);
         v12.location = 0;
         CFArrayAppendArray(Mutable, v10, v12);
         CFRelease(v10);
@@ -112,25 +112,25 @@ uint64_t __29__IOGPUMemoryInfo_initialize__block_invoke()
   [(IOGPUMemoryInfo *)self dealloc];
 }
 
-- (void)addResourceToList:(id)a3
+- (void)addResourceToList:(id)list
 {
   os_unfair_lock_lock(&self->_memoryInfoLock);
   fResourceListHead = self->fResourceListHead;
-  *(a3 + 33) = fResourceListHead;
-  *(a3 + 34) = fResourceListHead->prev;
-  self->fResourceListHead->prev->next = a3;
-  self->fResourceListHead->prev = a3;
+  *(list + 33) = fResourceListHead;
+  *(list + 34) = fResourceListHead->prev;
+  self->fResourceListHead->prev->next = list;
+  self->fResourceListHead->prev = list;
 
   os_unfair_lock_unlock(&self->_memoryInfoLock);
 }
 
-- (void)removeResourceFromList:(id)a3
+- (void)removeResourceFromList:(id)list
 {
   os_unfair_lock_lock(&self->_memoryInfoLock);
-  *(*(a3 + 33) + 272) = *(a3 + 34);
-  *(*(a3 + 34) + 264) = *(a3 + 33);
-  *(a3 + 33) = 0;
-  *(a3 + 34) = 0;
+  *(*(list + 33) + 272) = *(list + 34);
+  *(*(list + 34) + 264) = *(list + 33);
+  *(list + 33) = 0;
+  *(list + 34) = 0;
 
   os_unfair_lock_unlock(&self->_memoryInfoLock);
 }

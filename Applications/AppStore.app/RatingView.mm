@@ -1,15 +1,15 @@
 @interface RatingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC8AppStore10RatingView)initWithCoder:(id)a3;
-- (_TtC8AppStore10RatingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC8AppStore10RatingView)initWithCoder:(id)coder;
+- (_TtC8AppStore10RatingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation RatingView
 
-- (_TtC8AppStore10RatingView)initWithCoder:(id)a3
+- (_TtC8AppStore10RatingView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore10RatingView_rating) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore10RatingView_emptyStarColor) = 0;
@@ -23,13 +23,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A36D4();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A57BC();
   v4 = v3;
   v6 = v5;
@@ -41,9 +41,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1003A57BC();
   v5 = v4;
   v7 = v6;
@@ -55,11 +55,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1003A5CBC(a4);
+  selfCopy = self;
+  v7 = sub_1003A5CBC(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -76,7 +76,7 @@
   return result;
 }
 
-- (_TtC8AppStore10RatingView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore10RatingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

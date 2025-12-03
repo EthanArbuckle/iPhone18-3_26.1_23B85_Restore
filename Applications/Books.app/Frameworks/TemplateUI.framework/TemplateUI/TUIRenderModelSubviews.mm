@@ -1,32 +1,32 @@
 @interface TUIRenderModelSubviews
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
-- (TUIRenderModelSubviews)initWithSubmodels:(id)a3;
-- (id)_finalRenderModelForDeletedRenderModel:(id)a3;
-- (id)_initialRenderModelForInsertedRenderModel:(id)a3;
-- (id)computeContainerUpdateCurrent:(id)a3 from:(id)a4 tracker:(id)a5 flags:(unint64_t)a6;
-- (id)computeDeletedFrom:(id)a3;
-- (id)computeInsertedFrom:(id)a3;
-- (id)configureSubviewsWithFactory:(id)a3 outsets:(UIEdgeInsets)a4 host:(id)a5 overrides:(id)a6 usedOverrides:(BOOL *)a7 UUID:(id)a8 uid:(id)a9;
-- (id)copyForFinalAppearanceWithFlags:(unint64_t)a3;
-- (id)copyForInitialAppearanceWithFlags:(unint64_t)a3;
-- (id)copyWithContainedSubmodels:(id)a3;
+- (TUIRenderModelSubviews)initWithSubmodels:(id)submodels;
+- (id)_finalRenderModelForDeletedRenderModel:(id)model;
+- (id)_initialRenderModelForInsertedRenderModel:(id)model;
+- (id)computeContainerUpdateCurrent:(id)current from:(id)from tracker:(id)tracker flags:(unint64_t)flags;
+- (id)computeDeletedFrom:(id)from;
+- (id)computeInsertedFrom:(id)from;
+- (id)configureSubviewsWithFactory:(id)factory outsets:(UIEdgeInsets)outsets host:(id)host overrides:(id)overrides usedOverrides:(BOOL *)usedOverrides UUID:(id)d uid:(id)uid;
+- (id)copyForFinalAppearanceWithFlags:(unint64_t)flags;
+- (id)copyForInitialAppearanceWithFlags:(unint64_t)flags;
+- (id)copyWithContainedSubmodels:(id)submodels;
 - (unint64_t)hash;
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6;
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4;
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver;
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUIRenderModelSubviews
 
-- (TUIRenderModelSubviews)initWithSubmodels:(id)a3
+- (TUIRenderModelSubviews)initWithSubmodels:(id)submodels
 {
-  v4 = a3;
+  submodelsCopy = submodels;
   v16.receiver = self;
   v16.super_class = TUIRenderModelSubviews;
   v5 = [(TUIRenderModelSubviews *)&v16 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&stru_25E850];
+    v6 = [submodelsCopy sortedArrayUsingComparator:&stru_25E850];
     submodels = v5->_submodels;
     v5->_submodels = v6;
 
@@ -47,17 +47,17 @@
   return v5;
 }
 
-- (id)copyWithContainedSubmodels:(id)a3
+- (id)copyWithContainedSubmodels:(id)submodels
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithSubmodels:v3];
+  submodelsCopy = submodels;
+  v4 = [objc_alloc(objc_opt_class()) initWithSubmodels:submodelsCopy];
 
   return v4;
 }
 
-- (void)appendResourcesToCollector:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendResourcesToCollector:(id)collector transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  collectorCopy = collector;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -79,11 +79,11 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = *&a4->c;
-        v14[0] = *&a4->a;
+        v13 = *&transform->c;
+        v14[0] = *&transform->a;
         v14[1] = v13;
-        v14[2] = *&a4->tx;
-        [v12 appendResourcesToCollector:v6 transform:v14];
+        v14[2] = *&transform->tx;
+        [v12 appendResourcesToCollector:collectorCopy transform:v14];
         v11 = v11 + 1;
       }
 
@@ -95,11 +95,11 @@
   }
 }
 
-- (void)appendReferencesToCollector:(id)a3 transform:(CGAffineTransform *)a4 query:(id)a5 liveTransformResolver:(id)a6
+- (void)appendReferencesToCollector:(id)collector transform:(CGAffineTransform *)transform query:(id)query liveTransformResolver:(id)resolver
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  collectorCopy = collector;
+  queryCopy = query;
+  resolverCopy = resolver;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -121,11 +121,11 @@
         }
 
         v18 = *(*(&v21 + 1) + 8 * v17);
-        v19 = *&a4->c;
-        v20[0] = *&a4->a;
+        v19 = *&transform->c;
+        v20[0] = *&transform->a;
         v20[1] = v19;
-        v20[2] = *&a4->tx;
-        [v18 appendReferencesToCollector:v10 transform:v20 query:v11 liveTransformResolver:v12];
+        v20[2] = *&transform->tx;
+        [v18 appendReferencesToCollector:collectorCopy transform:v20 query:queryCopy liveTransformResolver:resolverCopy];
         v17 = v17 + 1;
       }
 
@@ -137,22 +137,22 @@
   }
 }
 
-- (id)configureSubviewsWithFactory:(id)a3 outsets:(UIEdgeInsets)a4 host:(id)a5 overrides:(id)a6 usedOverrides:(BOOL *)a7 UUID:(id)a8 uid:(id)a9
+- (id)configureSubviewsWithFactory:(id)factory outsets:(UIEdgeInsets)outsets host:(id)host overrides:(id)overrides usedOverrides:(BOOL *)usedOverrides UUID:(id)d uid:(id)uid
 {
-  left = a4.left;
-  top = a4.top;
-  v93 = a3;
-  v14 = a5;
-  v100 = a6;
-  v115 = a8;
-  v114 = a9;
+  left = outsets.left;
+  top = outsets.top;
+  factoryCopy = factory;
+  hostCopy = host;
+  overridesCopy = overrides;
+  dCopy = d;
+  uidCopy = uid;
   v95 = objc_opt_new();
-  v15 = [v14 tui_hostedSubviewsMap];
-  v16 = [v15 mutableCopy];
+  tui_hostedSubviewsMap = [hostCopy tui_hostedSubviewsMap];
+  v16 = [tui_hostedSubviewsMap mutableCopy];
 
   v94 = objc_opt_new();
-  v17 = v14;
-  v91 = [v14 tui_hostingView];
+  v17 = hostCopy;
+  tui_hostingView = [hostCopy tui_hostingView];
   v138 = 0u;
   v139 = 0u;
   v140 = 0u;
@@ -172,7 +172,7 @@ LABEL_40:
   v109 = 0;
   v97 = *v139;
   v89 = v16;
-  v90 = v14;
+  v90 = hostCopy;
   do
   {
     for (i = 0; i != v98; i = i + 1)
@@ -183,15 +183,15 @@ LABEL_40:
       }
 
       v20 = *(*(&v138 + 1) + 8 * i);
-      v21 = [v20 identifier];
+      identifier = [v20 identifier];
       v111 = v20;
-      v22 = [v20 submodel];
-      v23 = [v22 reuseIdentifier];
+      submodel = [v20 submodel];
+      reuseIdentifier = [submodel reuseIdentifier];
 
-      v24 = [v16 objectForKeyedSubscript:v21];
+      v24 = [v16 objectForKeyedSubscript:identifier];
       [NSIndexPath tui_indexPathForRow:v18 inSection:0];
       v108 = v107 = v24;
-      if (v24 && ([v24 reuseIdentifier], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", v23), v25, v27 = v108, v106 = v24, (v26 & 1) != 0) || (objc_msgSend(v93, "viewFactoryDequeueReusableSubviewWithReuseIdentifier:indexPath:host:", v23, v108, v17), v28 = objc_claimAutoreleasedReturnValue(), v24, v27 = v108, (v106 = v28) != 0))
+      if (v24 && ([v24 reuseIdentifier], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", reuseIdentifier), v25, v27 = v108, v106 = v24, (v26 & 1) != 0) || (objc_msgSend(factoryCopy, "viewFactoryDequeueReusableSubviewWithReuseIdentifier:indexPath:host:", reuseIdentifier, v108, v17), v28 = objc_claimAutoreleasedReturnValue(), v24, v27 = v108, (v106 = v28) != 0))
       {
         v29 = [TUILayoutAttributes newLayoutAttributesWithIndexPath:v27];
         [v111 outsets];
@@ -218,41 +218,41 @@ LABEL_40:
 
         v48 = v37 + v32 + v35;
         v49 = v102 + *&v112 + v39;
-        v50 = [v111 zIndex];
+        zIndex = [v111 zIndex];
         [v29 setBounds:{0.0, 0.0, v48, v49}];
         [v29 setCenter:{v45 + v48 * 0.5 - (v32 + v41 * 0.5), v47 + v49 * 0.5 - (v102 + v43 * 0.5)}];
         v137[0] = *&v118.m11;
         v137[1] = *&v118.m13;
         v137[2] = *&v118.m21;
         [v29 setTransform:v137];
-        v99 = v50;
-        [v29 setZIndex:v50];
+        v99 = zIndex;
+        [v29 setZIndex:zIndex];
         [v111 submodel];
         v51 = v110 = v29;
         [v110 setRenderModel:v51];
 
         [v111 alpha];
         [v110 setAlpha:?];
-        v52 = [v111 refId];
-        [v110 setRefId:v52];
+        refId = [v111 refId];
+        [v110 setRefId:refId];
 
-        v53 = [v111 refInstance];
-        [v110 setRefInstance:v53];
+        refInstance = [v111 refInstance];
+        [v110 setRefInstance:refInstance];
 
         [v110 setOutsets:{v102, v32, *&v112, v35}];
-        v104 = v23;
+        v104 = reuseIdentifier;
         v105 = i;
-        if (v100)
+        if (overridesCopy)
         {
-          v101 = v21;
+          v101 = identifier;
           v103 = v18;
-          v54 = [v110 refId];
-          v55 = [v110 refInstance];
+          refId2 = [v110 refId];
+          refInstance2 = [v110 refInstance];
           v133 = 0u;
           v134 = 0u;
           v135 = 0u;
           v136 = 0u;
-          v113 = v100;
+          v113 = overridesCopy;
           v56 = [v113 countByEnumeratingWithState:&v133 objects:v143 count:16];
           if (!v56)
           {
@@ -271,20 +271,20 @@ LABEL_40:
               }
 
               v60 = *(*(&v133 + 1) + 8 * j);
-              v61 = [v60 query];
-              if ([(TUIRenderReferenceIdentifier *)v61 matchesUUID:v115 uid:v114])
+              query = [v60 query];
+              if ([(TUIRenderReferenceIdentifier *)query matchesUUID:dCopy uid:uidCopy])
               {
-                v62 = [v60 query];
-                v63 = [v111 identifier];
-                v64 = [v62 matchesRefId:v54 refInstance:v55 identifier:v63];
+                query2 = [v60 query];
+                identifier2 = [v111 identifier];
+                v64 = [query2 matchesRefId:refId2 refInstance:refInstance2 identifier:identifier2];
 
                 if (!v64)
                 {
                   continue;
                 }
 
-                v61 = [[TUIRenderReferenceIdentifier alloc] initWithUUID:0 uid:0 refId:v54 refInstance:v55];
-                [v60 updateLayoutAttributes:v110 forIdentifier:v61];
+                query = [[TUIRenderReferenceIdentifier alloc] initWithUUID:0 uid:0 refId:refId2 refInstance:refInstance2];
+                [v60 updateLayoutAttributes:v110 forIdentifier:query];
                 v109 = 1;
               }
             }
@@ -296,7 +296,7 @@ LABEL_23:
 
               v16 = v89;
               v17 = v90;
-              v21 = v101;
+              identifier = v101;
               v18 = v103;
               break;
             }
@@ -313,17 +313,17 @@ LABEL_23:
         v132 = v66;
         v67 = objc_retainBlock(v130);
         [v95 addObject:v65];
-        [v94 setObject:v65 forKey:v21];
+        [v94 setObject:v65 forKey:identifier];
         if (v65 == v107)
         {
-          [v16 removeObjectForKey:v21];
-          v68 = [v107 layoutAttributes];
-          v69 = v21;
-          v70 = [v68 zIndex];
-          LODWORD(v70) = v70 != [v66 zIndex];
+          [v16 removeObjectForKey:identifier];
+          layoutAttributes = [v107 layoutAttributes];
+          v69 = identifier;
+          zIndex2 = [layoutAttributes zIndex];
+          LODWORD(zIndex2) = zIndex2 != [v66 zIndex];
 
-          v71 = v70 | v92;
-          v21 = v69;
+          v71 = zIndex2 | v92;
+          identifier = v69;
           v92 = v71;
           (v67[2])(v67);
         }
@@ -334,7 +334,7 @@ LABEL_23:
           v124[1] = 3221225472;
           v124[2] = sub_2D094;
           v124[3] = &unk_25E8A0;
-          v125 = v91;
+          v125 = tui_hostingView;
           v126 = v65;
           v129 = v99;
           v127 = v17;
@@ -342,7 +342,7 @@ LABEL_23:
           [UIView performWithoutAnimation:v124];
         }
 
-        v23 = v104;
+        reuseIdentifier = v104;
         i = v105;
         v27 = v108;
       }
@@ -358,8 +358,8 @@ LABEL_23:
   if (v92)
   {
     obj = [v17 tui_hostingView];
-    v72 = [(NSArray *)obj subviews];
-    v73 = [v72 sortedArrayUsingComparator:&stru_25E8E0];
+    subviews = [(NSArray *)obj subviews];
+    v73 = [subviews sortedArrayUsingComparator:&stru_25E8E0];
 
     v122 = 0u;
     v123 = 0u;
@@ -395,10 +395,10 @@ LABEL_23:
 LABEL_41:
   [v17 setTui_hostedSubviewsMap:{v94, *&left, *&top}];
   CATransform3DMakeTranslation(&v119, v85, v87, 0.0);
-  v79 = [v17 tui_hostingView];
-  v80 = [v79 layer];
+  tui_hostingView2 = [v17 tui_hostingView];
+  layer = [tui_hostingView2 layer];
   v118 = v119;
-  [v80 setSublayerTransform:&v118];
+  [layer setSublayerTransform:&v118];
 
   v116[0] = _NSConcreteStackBlock;
   v116[1] = 3221225472;
@@ -407,36 +407,36 @@ LABEL_41:
   v117 = v16;
   v81 = v16;
   [UIView performWithoutAnimation:v116];
-  v82 = [v81 allValues];
-  [v93 viewFactoryReuseSubviews:v82 host:v17];
+  allValues = [v81 allValues];
+  [factoryCopy viewFactoryReuseSubviews:allValues host:v17];
 
-  *a7 = v109 & 1;
+  *usedOverrides = v109 & 1;
 
   return v95;
 }
 
-- (id)_initialRenderModelForInsertedRenderModel:(id)a3
+- (id)_initialRenderModelForInsertedRenderModel:(id)model
 {
-  v3 = [a3 copyWithAlpha:0.0];
+  v3 = [model copyWithAlpha:0.0];
 
   return v3;
 }
 
-- (id)_finalRenderModelForDeletedRenderModel:(id)a3
+- (id)_finalRenderModelForDeletedRenderModel:(id)model
 {
-  v3 = [a3 copyWithAlpha:0.0];
+  v3 = [model copyWithAlpha:0.0];
 
   return v3;
 }
 
-- (id)computeDeletedFrom:(id)a3
+- (id)computeDeletedFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 submodels];
+  fromCopy = from;
+  submodels = [fromCopy submodels];
   submodels = self->_submodels;
-  v7 = v5;
+  v7 = submodels;
   v8 = submodels;
-  v29 = v4;
+  v29 = fromCopy;
   v9 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSArray count](v8, "count")}];
   v34 = 0u;
   v35 = 0u;
@@ -458,8 +458,8 @@ LABEL_41:
         }
 
         v15 = *(*(&v34 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        [v9 setObject:v15 forKeyedSubscript:v16];
+        identifier = [v15 identifier];
+        [v9 setObject:v15 forKeyedSubscript:identifier];
       }
 
       v12 = [(NSArray *)v10 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -489,8 +489,8 @@ LABEL_41:
         }
 
         v23 = *(*(&v30 + 1) + 8 * j);
-        v24 = [v23 identifier];
-        v25 = [v9 objectForKeyedSubscript:v24];
+        identifier2 = [v23 identifier];
+        v25 = [v9 objectForKeyedSubscript:identifier2];
 
         if (!v25)
         {
@@ -520,14 +520,14 @@ LABEL_41:
   return v27;
 }
 
-- (id)computeInsertedFrom:(id)a3
+- (id)computeInsertedFrom:(id)from
 {
-  v28 = a3;
-  v4 = [v28 submodels];
+  fromCopy = from;
+  submodels = [fromCopy submodels];
   submodels = self->_submodels;
-  v6 = v4;
+  v6 = submodels;
   v7 = submodels;
-  v29 = self;
+  selfCopy = self;
   v8 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSArray count](v7, "count")}];
   v34 = 0u;
   v35 = 0u;
@@ -549,8 +549,8 @@ LABEL_41:
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        [v8 setObject:v14 forKeyedSubscript:v15];
+        identifier = [v14 identifier];
+        [v8 setObject:v14 forKeyedSubscript:identifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -580,8 +580,8 @@ LABEL_41:
         }
 
         v22 = *(*(&v30 + 1) + 8 * j);
-        v23 = [v22 identifier];
-        v24 = [v8 objectForKeyedSubscript:v23];
+        identifier2 = [v22 identifier];
+        v24 = [v8 objectForKeyedSubscript:identifier2];
 
         if (!v24)
         {
@@ -590,7 +590,7 @@ LABEL_41:
             v19 = objc_opt_new();
           }
 
-          v25 = [(TUIRenderModelSubviews *)v29 _initialRenderModelForInsertedRenderModel:v22];
+          v25 = [(TUIRenderModelSubviews *)selfCopy _initialRenderModelForInsertedRenderModel:v22];
           [v19 addObject:v25];
         }
       }
@@ -611,17 +611,17 @@ LABEL_41:
   return v26;
 }
 
-- (id)copyForInitialAppearanceWithFlags:(unint64_t)a3
+- (id)copyForInitialAppearanceWithFlags:(unint64_t)flags
 {
-  v4 = self;
-  if ((a3 & 1) == 0)
+  selfCopy = self;
+  if ((flags & 1) == 0)
   {
-    v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](v4->_submodels, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](selfCopy->_submodels, "count")}];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4->_submodels;
+    v6 = selfCopy->_submodels;
     v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -637,7 +637,7 @@ LABEL_41:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) copyForInitialAppearanceWithFlags:{a3, v14}];
+          v11 = [*(*(&v14 + 1) + 8 * v10) copyForInitialAppearanceWithFlags:{flags, v14}];
           [v5 addObject:v11];
 
           v10 = v10 + 1;
@@ -651,26 +651,26 @@ LABEL_41:
     }
 
     v12 = [[TUIRenderModelSubviews alloc] initWithSubmodels:v5];
-    [(TUIRenderModelSubviews *)v12 setIdentifier:v4->_identifier];
-    [(TUIRenderModelSubviews *)v12 setSize:v4->_size.width, v4->_size.height];
+    [(TUIRenderModelSubviews *)v12 setIdentifier:selfCopy->_identifier];
+    [(TUIRenderModelSubviews *)v12 setSize:selfCopy->_size.width, selfCopy->_size.height];
 
     return v12;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)copyForFinalAppearanceWithFlags:(unint64_t)a3
+- (id)copyForFinalAppearanceWithFlags:(unint64_t)flags
 {
-  v4 = self;
-  if ((a3 & 1) == 0)
+  selfCopy = self;
+  if ((flags & 1) == 0)
   {
-    v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](v4->_submodels, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](selfCopy->_submodels, "count")}];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4->_submodels;
+    v6 = selfCopy->_submodels;
     v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -686,7 +686,7 @@ LABEL_41:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) copyForFinalAppearanceWithFlags:{a3, v14}];
+          v11 = [*(*(&v14 + 1) + 8 * v10) copyForFinalAppearanceWithFlags:{flags, v14}];
           [v5 addObject:v11];
 
           v10 = v10 + 1;
@@ -700,39 +700,39 @@ LABEL_41:
     }
 
     v12 = [[TUIRenderModelSubviews alloc] initWithSubmodels:v5];
-    TUIRenderModelCopyProperties(v12, v4);
+    TUIRenderModelCopyProperties(v12, selfCopy);
 
     return v12;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)computeContainerUpdateCurrent:(id)a3 from:(id)a4 tracker:(id)a5 flags:(unint64_t)a6
+- (id)computeContainerUpdateCurrent:(id)current from:(id)from tracker:(id)tracker flags:(unint64_t)flags
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[TUIRenderUpdateArrayContainer alloc] initWithCurrent:v12 from:v11 to:self tracker:v10 flags:a6];
+  trackerCopy = tracker;
+  fromCopy = from;
+  currentCopy = current;
+  v13 = [[TUIRenderUpdateArrayContainer alloc] initWithCurrent:currentCopy from:fromCopy to:self tracker:trackerCopy flags:flags];
 
   return v13;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = modelCopy;
     }
 
     else
     {
       v6 = objc_opt_class();
-      v7 = TUIDynamicCast(v6, v4);
+      v7 = TUIDynamicCast(v6, modelCopy);
     }
 
     v9 = v7;
@@ -749,8 +749,8 @@ LABEL_41:
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelSubviews *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelSubviews *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

@@ -1,31 +1,31 @@
 @interface CRVideoSettingsSessionController
-- (BOOL)performForVehicleID:(id)a3 videoSettingsRelayUpdate:(id)a4;
+- (BOOL)performForVehicleID:(id)d videoSettingsRelayUpdate:(id)update;
 - (CRSessionStoredVehicleProviding)storedVehicleProvider;
-- (CRVideoSettingsSessionController)initWithSessionStatus:(id)a3 storedVehicleProvider:(id)a4;
-- (void)_setupForSession:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (CRVideoSettingsSessionController)initWithSessionStatus:(id)status storedVehicleProvider:(id)provider;
+- (void)_setupForSession:(id)session;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation CRVideoSettingsSessionController
 
-- (CRVideoSettingsSessionController)initWithSessionStatus:(id)a3 storedVehicleProvider:(id)a4
+- (CRVideoSettingsSessionController)initWithSessionStatus:(id)status storedVehicleProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = CRVideoSettingsSessionController;
   v9 = [(CRVideoSettingsSessionController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sessionStatus, a3);
-    [v7 addSessionObserver:v10];
-    objc_storeWeak(&v10->_storedVehicleProvider, v8);
+    objc_storeStrong(&v9->_sessionStatus, status);
+    [statusCopy addSessionObserver:v10];
+    objc_storeWeak(&v10->_storedVehicleProvider, providerCopy);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000B55C;
     v12[3] = &unk_1000DD580;
-    v13 = v7;
+    v13 = statusCopy;
     v14 = v10;
     dispatch_async(&_dispatch_main_q, v12);
   }
@@ -33,64 +33,64 @@
   return v10;
 }
 
-- (BOOL)performForVehicleID:(id)a3 videoSettingsRelayUpdate:(id)a4
+- (BOOL)performForVehicleID:(id)d videoSettingsRelayUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v6 = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
+  videoSettingsRelay = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
 
-  if (!v6)
+  if (!videoSettingsRelay)
   {
-    v7 = sub_100002A68(6uLL);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    videoSettingsRelay2 = sub_100002A68(6uLL);
+    if (os_log_type_enabled(videoSettingsRelay2, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "will not relay video diagnostics setting, not in a session", v9, 2u);
+      _os_log_impl(&_mh_execute_header, videoSettingsRelay2, OS_LOG_TYPE_DEFAULT, "will not relay video diagnostics setting, not in a session", v9, 2u);
     }
 
     goto LABEL_6;
   }
 
-  if (v5)
+  if (updateCopy)
   {
-    v7 = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
-    v5[2](v5, v7);
+    videoSettingsRelay2 = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
+    updateCopy[2](updateCopy, videoSettingsRelay2);
 LABEL_6:
   }
 
-  return v6 != 0;
+  return videoSettingsRelay != 0;
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
+  videoSettingsRelay = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
 
-  if (v4)
+  if (videoSettingsRelay)
   {
-    v5 = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
-    [v5 invalidate];
+    videoSettingsRelay2 = [(CRVideoSettingsSessionController *)self videoSettingsRelay];
+    [videoSettingsRelay2 invalidate];
 
     [(CRVideoSettingsSessionController *)self setVideoSettingsRelay:0];
   }
 }
 
-- (void)_setupForSession:(id)a3
+- (void)_setupForSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 configuration];
-  v6 = [v5 videoPlaybackSupported];
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
+  videoPlaybackSupported = [configuration videoPlaybackSupported];
 
-  if (v6)
+  if (videoPlaybackSupported)
   {
-    v7 = [CRVideoSettingsRelay settingsRelayForSession:v4];
+    v7 = [CRVideoSettingsRelay settingsRelayForSession:sessionCopy];
     [(CRVideoSettingsSessionController *)self setVideoSettingsRelay:v7];
-    v8 = [(CRVideoSettingsSessionController *)self storedVehicleProvider];
-    v9 = [v8 storedVehicleForSession:v4];
+    storedVehicleProvider = [(CRVideoSettingsSessionController *)self storedVehicleProvider];
+    v9 = [storedVehicleProvider storedVehicleForSession:sessionCopy];
 
     if (v9)
     {
-      v10 = [v9 subtitleSettings];
-      if (!v10)
+      subtitleSettings = [v9 subtitleSettings];
+      if (!subtitleSettings)
       {
         v11 = sub_100002A68(6uLL);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -99,35 +99,35 @@ LABEL_6:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "using default subtitle settings", &v18, 2u);
         }
 
-        v10 = +[CRSubtitleSettings defaultSettings];
+        subtitleSettings = +[CRSubtitleSettings defaultSettings];
       }
 
       v12 = sub_100002A68(6uLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v10;
+        v19 = subtitleSettings;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "sending subtitle settings: %@", &v18, 0xCu);
       }
 
-      [v7 sendSubtitleSettings:v10];
-      v13 = [v9 videoDiagnosticsEnabled];
-      if (v13)
+      [v7 sendSubtitleSettings:subtitleSettings];
+      videoDiagnosticsEnabled = [v9 videoDiagnosticsEnabled];
+      if (videoDiagnosticsEnabled)
       {
-        v14 = [v9 videoDiagnosticsEnabled];
-        v15 = [v14 BOOLValue];
+        videoDiagnosticsEnabled2 = [v9 videoDiagnosticsEnabled];
+        bOOLValue = [videoDiagnosticsEnabled2 BOOLValue];
       }
 
       else
       {
-        v15 = 0;
+        bOOLValue = 0;
       }
 
       v16 = sub_100002A68(6uLL);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = @"NO";
-        if (v15)
+        if (bOOLValue)
         {
           v17 = @"YES";
         }
@@ -137,16 +137,16 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "sending video diagnostics enabled: %@", &v18, 0xCu);
       }
 
-      [v7 sendDiagnosticsSetting:v15];
+      [v7 sendDiagnosticsSetting:bOOLValue];
     }
 
     else
     {
-      v10 = sub_100002A68(6uLL);
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      subtitleSettings = sub_100002A68(6uLL);
+      if (os_log_type_enabled(subtitleSettings, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v18) = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "no pairing for video settings", &v18, 2u);
+        _os_log_impl(&_mh_execute_header, subtitleSettings, OS_LOG_TYPE_DEFAULT, "no pairing for video settings", &v18, 2u);
       }
     }
   }

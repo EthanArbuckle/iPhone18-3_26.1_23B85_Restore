@@ -1,14 +1,14 @@
 @interface WFPasteboardItem
 - (NSArray)fileURLItems;
-- (WFPasteboardItem)initWithItemsByType:(id)a3 fileURLs:(id)a4;
+- (WFPasteboardItem)initWithItemsByType:(id)type fileURLs:(id)ls;
 @end
 
 @implementation WFPasteboardItem
 
 - (NSArray)fileURLItems
 {
-  v2 = [(WFPasteboardItem *)self fileURLs];
-  v3 = [v2 if_compactMap:&__block_literal_global_7991];
+  fileURLs = [(WFPasteboardItem *)self fileURLs];
+  v3 = [fileURLs if_compactMap:&__block_literal_global_7991];
 
   return v3;
 }
@@ -44,14 +44,14 @@ id __32__WFPasteboardItem_fileURLItems__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (WFPasteboardItem)initWithItemsByType:(id)a3 fileURLs:(id)a4
+- (WFPasteboardItem)initWithItemsByType:(id)type fileURLs:(id)ls
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  typeCopy = type;
+  lsCopy = ls;
+  if (!typeCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFContentCollection+WFPasteboard.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"itemsByType"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentCollection+WFPasteboard.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"itemsByType"}];
   }
 
   v15.receiver = self;
@@ -60,8 +60,8 @@ id __32__WFPasteboardItem_fileURLItems__block_invoke(uint64_t a1, void *a2)
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_itemsByType, a3);
-    objc_storeStrong(&v11->_fileURLs, a4);
+    objc_storeStrong(&v10->_itemsByType, type);
+    objc_storeStrong(&v11->_fileURLs, ls);
     v12 = v11;
   }
 

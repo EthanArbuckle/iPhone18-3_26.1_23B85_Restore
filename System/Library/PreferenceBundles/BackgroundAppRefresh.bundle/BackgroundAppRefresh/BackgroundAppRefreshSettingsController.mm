@@ -1,6 +1,6 @@
 @interface BackgroundAppRefreshSettingsController
-- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithCoder:(id)a3;
-- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithCoder:(id)coder;
+- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,17 +8,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_42DC();
 }
 
-- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_12EEC();
-    a3 = v8;
+    name = v8;
   }
 
   v9 = OBJC_IVAR____TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController_backgroundAppRefreshSettingsListState;
@@ -26,9 +26,9 @@
   v11 = *(refreshed + 48);
   v12 = *(refreshed + 52);
   swift_allocObject();
-  v13 = a4;
+  bundleCopy = bundle;
   *&self->PSViewController_opaque[v9] = sub_AB2C();
-  if (a3)
+  if (name)
   {
     v14 = sub_12EBC();
   }
@@ -40,12 +40,12 @@
 
   v17.receiver = self;
   v17.super_class = ObjectType;
-  v15 = [(BackgroundAppRefreshSettingsController *)&v17 initWithNibName:v14 bundle:v13];
+  v15 = [(BackgroundAppRefreshSettingsController *)&v17 initWithNibName:v14 bundle:bundleCopy];
 
   return v15;
 }
 
-- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithCoder:(id)a3
+- (_TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC20BackgroundAppRefresh38BackgroundAppRefreshSettingsController_backgroundAppRefreshSettingsListState;
@@ -53,11 +53,11 @@
   v8 = *(refreshed + 48);
   v9 = *(refreshed + 52);
   swift_allocObject();
-  v10 = a3;
+  coderCopy = coder;
   *&self->PSViewController_opaque[v6] = sub_AB2C();
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = [(BackgroundAppRefreshSettingsController *)&v13 initWithCoder:v10];
+  v11 = [(BackgroundAppRefreshSettingsController *)&v13 initWithCoder:coderCopy];
 
   if (v11)
   {

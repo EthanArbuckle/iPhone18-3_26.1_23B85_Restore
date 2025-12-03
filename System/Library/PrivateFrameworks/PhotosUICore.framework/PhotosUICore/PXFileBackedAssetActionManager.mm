@@ -1,45 +1,45 @@
 @interface PXFileBackedAssetActionManager
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)supportsActionType:(id)a3;
-- (PXFileBackedAssetActionManager)initWithSelectionManager:(id)a3;
-- (id)_selectionSnapshotForPerformerClass:(Class)a3;
-- (id)actionPerformerForActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)supportsActionType:(id)type;
+- (PXFileBackedAssetActionManager)initWithSelectionManager:(id)manager;
+- (id)_selectionSnapshotForPerformerClass:(Class)class;
+- (id)actionPerformerForActionType:(id)type;
 @end
 
 @implementation PXFileBackedAssetActionManager
 
-- (id)_selectionSnapshotForPerformerClass:(Class)a3
+- (id)_selectionSnapshotForPerformerClass:(Class)class
 {
-  v4 = [(PXFileBackedAssetActionManager *)self selectionManager];
-  v5 = [v4 selectionSnapshot];
+  selectionManager = [(PXFileBackedAssetActionManager *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  if (-[objc_class canPerformOnImplicitSelection](a3, "canPerformOnImplicitSelection") && ([v5 isAnyItemSelected] & 1) == 0)
+  if (-[objc_class canPerformOnImplicitSelection](class, "canPerformOnImplicitSelection") && ([selectionSnapshot isAnyItemSelected] & 1) == 0)
   {
-    v6 = [v5 dataSource];
+    dataSource = [selectionSnapshot dataSource];
     v7 = [off_1E77218D8 alloc];
-    v8 = [v6 allItemIndexPaths];
-    v9 = [v7 initWithDataSource:v6 selectedIndexPaths:v8];
+    allItemIndexPaths = [dataSource allItemIndexPaths];
+    v9 = [v7 initWithDataSource:dataSource selectedIndexPaths:allItemIndexPaths];
 
-    v5 = v9;
+    selectionSnapshot = v9;
   }
 
-  return v5;
+  return selectionSnapshot;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v4 = a3;
-  if (-[PXFileBackedAssetActionManager canPerformActionType:](self, "canPerformActionType:", v4) && (-[PXFileBackedAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:v4], v5, v6))
+  typeCopy = type;
+  if (-[PXFileBackedAssetActionManager canPerformActionType:](self, "canPerformActionType:", typeCopy) && (-[PXFileBackedAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:typeCopy], v5, v6))
   {
-    v7 = [[v6 alloc] initWithActionType:v4];
+    v7 = [[v6 alloc] initWithActionType:typeCopy];
     v8 = [(PXFileBackedAssetActionManager *)self _selectionSnapshotForPerformerClass:v6];
     [v7 setSelectionSnapshot:v8];
 
-    v9 = [(PXFileBackedAssetActionManager *)self selectionManager];
-    [v7 setSelectionManager:v9];
+    selectionManager = [(PXFileBackedAssetActionManager *)self selectionManager];
+    [v7 setSelectionManager:selectionManager];
 
-    v10 = [(PXActionManager *)self performerDelegate];
-    [v7 setDelegate:v10];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [v7 setDelegate:performerDelegate];
   }
 
   else
@@ -50,10 +50,10 @@
   return v7;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  if (v4 && -[PXActionManager isActionTypeAllowed:](self, "isActionTypeAllowed:", v4) && (-[PXFileBackedAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:v4], v5, v6))
+  typeCopy = type;
+  if (typeCopy && -[PXActionManager isActionTypeAllowed:](self, "isActionTypeAllowed:", typeCopy) && (-[PXFileBackedAssetActionManager performerClassByType](self, "performerClassByType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 objectForKeyedSubscript:typeCopy], v5, v6))
   {
     v7 = [v6 canPerformWithActionManager:self error:0];
   }
@@ -66,25 +66,25 @@
   return v7;
 }
 
-- (BOOL)supportsActionType:(id)a3
+- (BOOL)supportsActionType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PXFileBackedAssetActionManager *)self performerClassByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  performerClassByType = [(PXFileBackedAssetActionManager *)self performerClassByType];
+  v6 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   return v6 != 0;
 }
 
-- (PXFileBackedAssetActionManager)initWithSelectionManager:(id)a3
+- (PXFileBackedAssetActionManager)initWithSelectionManager:(id)manager
 {
   v7.receiver = self;
   v7.super_class = PXFileBackedAssetActionManager;
-  v3 = [(PXFileBackedAssetActionManager *)&v7 initWithSelectionManager:a3];
+  v3 = [(PXFileBackedAssetActionManager *)&v7 initWithSelectionManager:manager];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);

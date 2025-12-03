@@ -1,11 +1,11 @@
 @interface WeekDayInitialsHeaderView
 + (id)dayInitialFont;
-- (WeekDayInitialsHeaderView)initWithFrame:(CGRect)a3;
+- (WeekDayInitialsHeaderView)initWithFrame:(CGRect)frame;
 - (id)_automaticDayFrames;
 - (id)dayFrames;
 - (id)weekdayAbbreviations;
-- (void)drawRect:(CGRect)a3;
-- (void)setDayFrames:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setDayFrames:(id)frames;
 @end
 
 @implementation WeekDayInitialsHeaderView
@@ -13,8 +13,8 @@
 - (id)weekdayAbbreviations
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [v3 hasPrefix:@"ar"];
+  localeIdentifier = [v2 localeIdentifier];
+  v4 = [localeIdentifier hasPrefix:@"ar"];
 
   if (v4)
   {
@@ -34,50 +34,50 @@
 {
   if (self->_useCustomDayFrames)
   {
-    v2 = self->_dayFrames;
+    _automaticDayFrames = self->_dayFrames;
   }
 
   else
   {
-    v2 = [(WeekDayInitialsHeaderView *)self _automaticDayFrames];
+    _automaticDayFrames = [(WeekDayInitialsHeaderView *)self _automaticDayFrames];
   }
 
-  return v2;
+  return _automaticDayFrames;
 }
 
-- (WeekDayInitialsHeaderView)initWithFrame:(CGRect)a3
+- (WeekDayInitialsHeaderView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = WeekDayInitialsHeaderView;
-  v3 = [(WeekDayInitialsHeaderView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WeekDayInitialsHeaderView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(WeekDayInitialsHeaderView *)v3 setOpaque:0];
     [(WeekDayInitialsHeaderView *)v4 setClearsContextBeforeDrawing:1];
-    v5 = [(WeekDayInitialsHeaderView *)v4 layer];
-    [v5 setValue:&__kCFBooleanTrue forKeyPath:@"separatedOptions.enableContext"];
-    [v5 setNeedsDisplay];
+    layer = [(WeekDayInitialsHeaderView *)v4 layer];
+    [layer setValue:&__kCFBooleanTrue forKeyPath:@"separatedOptions.enableContext"];
+    [layer setNeedsDisplay];
   }
 
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v36 = [(WeekDayInitialsHeaderView *)self weekdayAbbreviations:a3.origin.x];
-  v4 = [objc_opt_class() dayInitialFont];
+  v36 = [(WeekDayInitialsHeaderView *)self weekdayAbbreviations:rect.origin.x];
+  dayInitialFont = [objc_opt_class() dayInitialFont];
   v34 = +[UIColor labelColor];
   v33 = WeekendTextColor();
-  v5 = [(WeekDayInitialsHeaderView *)self dayFrames];
-  [v4 lineHeight];
+  dayFrames = [(WeekDayInitialsHeaderView *)self dayFrames];
+  [dayInitialFont lineHeight];
   CalCeilToScreenScale();
   v7 = v6;
-  v35 = v4;
-  [v4 descender];
-  v8 = [(WeekDayInitialsHeaderView *)self dayInitialTextAlignment];
+  v35 = dayInitialFont;
+  [dayInitialFont descender];
+  dayInitialTextAlignment = [(WeekDayInitialsHeaderView *)self dayInitialTextAlignment];
   v32 = objc_alloc_init(NSMutableParagraphStyle);
-  [v32 setAlignment:v8];
+  [v32 setAlignment:dayInitialTextAlignment];
   v9 = CUIKZeroIndexedWeekStart();
   if (CalTimeDirectionIsLeftToRight())
   {
@@ -86,7 +86,7 @@
 
   else
   {
-    v9 = ([v5 count] + v9 - 1) % 7;
+    v9 = ([dayFrames count] + v9 - 1) % 7;
     v10 = -1;
   }
 
@@ -95,7 +95,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = dayFrames;
   v11 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v11)
   {
@@ -159,17 +159,17 @@
   }
 }
 
-- (void)setDayFrames:(id)a3
+- (void)setDayFrames:(id)frames
 {
-  v18 = a3;
+  framesCopy = frames;
   self->_useCustomDayFrames = 1;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v18, "count")}];
-  if ([v18 count])
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(framesCopy, "count")}];
+  if ([framesCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v18 objectAtIndexedSubscript:v5];
+      v6 = [framesCopy objectAtIndexedSubscript:v5];
       [v6 CGRectValue];
       v8 = v7;
       v10 = v9;
@@ -183,7 +183,7 @@
       ++v5;
     }
 
-    while (v5 < [v18 count]);
+    while (v5 < [framesCopy count]);
   }
 
   dayFrames = self->_dayFrames;
@@ -195,8 +195,8 @@
 - (id)_automaticDayFrames
 {
   v3 = [[NSMutableArray alloc] initWithCapacity:7];
-  v4 = [(WeekDayInitialsHeaderView *)self weekdayAbbreviations];
-  v5 = [v4 count];
+  weekdayAbbreviations = [(WeekDayInitialsHeaderView *)self weekdayAbbreviations];
+  v5 = [weekdayAbbreviations count];
 
   [(WeekDayInitialsHeaderView *)self bounds];
   if (v5)

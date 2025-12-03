@@ -1,21 +1,21 @@
 @interface RecommendationActionController
-+ (RecommendationActionController)recommendationActionControllerWithTableManager:(id)a3 andAssistantUIViewController:(id)a4;
++ (RecommendationActionController)recommendationActionControllerWithTableManager:(id)manager andAssistantUIViewController:(id)controller;
 - (BOOL)isPrimaryRecommendation;
-- (id)getSectionInfoWithLongStrings:(BOOL)a3;
+- (id)getSectionInfoWithLongStrings:(BOOL)strings;
 - (void)selectPrimaryRecommendation;
 @end
 
 @implementation RecommendationActionController
 
-+ (RecommendationActionController)recommendationActionControllerWithTableManager:(id)a3 andAssistantUIViewController:(id)a4
++ (RecommendationActionController)recommendationActionControllerWithTableManager:(id)manager andAssistantUIViewController:(id)controller
 {
   v4 = 0;
-  if (a3 && a4)
+  if (manager && controller)
   {
     v4 = objc_alloc_init(RecommendationActionController);
     objc_msgSend_setSectionIdentifier_(v4, v7, @"ActionTableSection");
-    objc_msgSend_setTableManager_(v4, v8, a3);
-    v11 = objc_msgSend_recommendationParamDict(a4, v9, v10);
+    objc_msgSend_setTableManager_(v4, v8, manager);
+    v11 = objc_msgSend_recommendationParamDict(controller, v9, v10);
     v13 = objc_msgSend_objectForKey_(v11, v12, @"actionKey");
     objc_msgSend_setActionKey_(v4, v14, v13);
   }
@@ -23,12 +23,12 @@
   return v4;
 }
 
-- (id)getSectionInfoWithLongStrings:(BOOL)a3
+- (id)getSectionInfoWithLongStrings:(BOOL)strings
 {
-  v3 = a3;
+  stringsCopy = strings;
   valid = sub_23EB6CD3C(self->actionKey, qword_27E383800);
   v10 = objc_msgSend_array(MEMORY[0x277CBEB18], v6, v7);
-  if (v3)
+  if (stringsCopy)
   {
     v11 = sub_23EB6CD3C(@"TextualSentenceConcatenator", qword_27E383800);
     v12 = MEMORY[0x277CCACA8];

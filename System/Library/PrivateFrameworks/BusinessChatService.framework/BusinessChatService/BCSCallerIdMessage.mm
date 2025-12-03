@@ -1,20 +1,20 @@
 @interface BCSCallerIdMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsVerified:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsVerified:(BOOL)verified;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSCallerIdMessage
 
-- (void)setHasIsVerified:(BOOL)a3
+- (void)setHasIsVerified:(BOOL)verified
 {
-  if (a3)
+  if (verified)
   {
     v3 = 2;
   }
@@ -33,197 +33,197 @@
   v8.receiver = self;
   v8.super_class = BCSCallerIdMessage;
   v4 = [(BCSCallerIdMessage *)&v8 description];
-  v5 = [(BCSCallerIdMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSCallerIdMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_phoneHash];
-    [v3 setObject:v4 forKey:@"phone_hash"];
+    [dictionary setObject:v4 forKey:@"phone_hash"];
   }
 
   companyId = self->_companyId;
   if (companyId)
   {
-    [v3 setObject:companyId forKey:@"company_id"];
+    [dictionary setObject:companyId forKey:@"company_id"];
   }
 
   businessId = self->_businessId;
   if (businessId)
   {
-    [v3 setObject:businessId forKey:@"business_id"];
+    [dictionary setObject:businessId forKey:@"business_id"];
   }
 
   locationId = self->_locationId;
   if (locationId)
   {
-    [v3 setObject:locationId forKey:@"location_id"];
+    [dictionary setObject:locationId forKey:@"location_id"];
   }
 
   name = self->_name;
   if (name)
   {
-    v9 = [(BCSCallerIdLocalizedString *)name dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"name"];
+    dictionaryRepresentation = [(BCSCallerIdLocalizedString *)name dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"name"];
   }
 
   logoUrl = self->_logoUrl;
   if (logoUrl)
   {
-    [v3 setObject:logoUrl forKey:@"logo_url"];
+    [dictionary setObject:logoUrl forKey:@"logo_url"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_isVerified];
-    [v3 setObject:v11 forKey:@"is_verified"];
+    [dictionary setObject:v11 forKey:@"is_verified"];
   }
 
   intent = self->_intent;
   if (intent)
   {
-    v13 = [(BCSCallerIdLocalizedString *)intent dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"intent"];
+    dictionaryRepresentation2 = [(BCSCallerIdLocalizedString *)intent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"intent"];
   }
 
   conflatedMuid = self->_conflatedMuid;
   if (conflatedMuid)
   {
-    [v3 setObject:conflatedMuid forKey:@"conflated_muid"];
+    [dictionary setObject:conflatedMuid forKey:@"conflated_muid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     phoneHash = self->_phoneHash;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_companyId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_businessId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_locationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_logoUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     isVerified = self->_isVerified;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_intent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_conflatedMuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_phoneHash;
-    *(v4 + 76) |= 1u;
+    toCopy[1] = self->_phoneHash;
+    *(toCopy + 76) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_companyId)
   {
-    [v4 setCompanyId:?];
-    v4 = v5;
+    [toCopy setCompanyId:?];
+    toCopy = v5;
   }
 
   if (self->_businessId)
   {
     [v5 setBusinessId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationId)
   {
     [v5 setLocationId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_name)
   {
     [v5 setName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_logoUrl)
   {
     [v5 setLogoUrl:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 72) = self->_isVerified;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 72) = self->_isVerified;
+    *(toCopy + 76) |= 2u;
   }
 
   if (self->_intent)
   {
     [v5 setIntent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_conflatedMuid)
   {
     [v5 setConflatedMuid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -231,23 +231,23 @@
     *(v5 + 76) |= 1u;
   }
 
-  v7 = [(NSString *)self->_companyId copyWithZone:a3];
+  v7 = [(NSString *)self->_companyId copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
-  v9 = [(NSString *)self->_businessId copyWithZone:a3];
+  v9 = [(NSString *)self->_businessId copyWithZone:zone];
   v10 = *(v6 + 16);
   *(v6 + 16) = v9;
 
-  v11 = [(NSString *)self->_locationId copyWithZone:a3];
+  v11 = [(NSString *)self->_locationId copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
-  v13 = [(BCSCallerIdLocalizedString *)self->_name copyWithZone:a3];
+  v13 = [(BCSCallerIdLocalizedString *)self->_name copyWithZone:zone];
   v14 = *(v6 + 64);
   *(v6 + 64) = v13;
 
-  v15 = [(NSString *)self->_logoUrl copyWithZone:a3];
+  v15 = [(NSString *)self->_logoUrl copyWithZone:zone];
   v16 = *(v6 + 56);
   *(v6 + 56) = v15;
 
@@ -257,47 +257,47 @@
     *(v6 + 76) |= 2u;
   }
 
-  v17 = [(BCSCallerIdLocalizedString *)self->_intent copyWithZone:a3];
+  v17 = [(BCSCallerIdLocalizedString *)self->_intent copyWithZone:zone];
   v18 = *(v6 + 40);
   *(v6 + 40) = v17;
 
-  v19 = [(NSString *)self->_conflatedMuid copyWithZone:a3];
+  v19 = [(NSString *)self->_conflatedMuid copyWithZone:zone];
   v20 = *(v6 + 32);
   *(v6 + 32) = v19;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(equalCopy + 76);
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_phoneHash != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_phoneHash != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_24;
   }
 
   companyId = self->_companyId;
-  if (companyId | *(v4 + 3) && ![(NSString *)companyId isEqual:?])
+  if (companyId | *(equalCopy + 3) && ![(NSString *)companyId isEqual:?])
   {
     goto LABEL_24;
   }
 
   businessId = self->_businessId;
-  if (businessId | *(v4 + 2))
+  if (businessId | *(equalCopy + 2))
   {
     if (![(NSString *)businessId isEqual:?])
     {
@@ -306,7 +306,7 @@
   }
 
   locationId = self->_locationId;
-  if (locationId | *(v4 + 6))
+  if (locationId | *(equalCopy + 6))
   {
     if (![(NSString *)locationId isEqual:?])
     {
@@ -315,7 +315,7 @@
   }
 
   name = self->_name;
-  if (name | *(v4 + 8))
+  if (name | *(equalCopy + 8))
   {
     if (![(BCSCallerIdLocalizedString *)name isEqual:?])
     {
@@ -324,7 +324,7 @@
   }
 
   logoUrl = self->_logoUrl;
-  if (logoUrl | *(v4 + 7))
+  if (logoUrl | *(equalCopy + 7))
   {
     if (![(NSString *)logoUrl isEqual:?])
     {
@@ -332,10 +332,10 @@
     }
   }
 
-  v11 = *(v4 + 76);
+  v11 = *(equalCopy + 76);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 76) & 2) == 0)
+    if ((*(equalCopy + 76) & 2) == 0)
     {
       goto LABEL_19;
     }
@@ -345,34 +345,34 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ((*(v4 + 76) & 2) == 0)
+  if ((*(equalCopy + 76) & 2) == 0)
   {
     goto LABEL_24;
   }
 
-  v16 = *(v4 + 72);
+  v16 = *(equalCopy + 72);
   if (self->_isVerified)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_24;
   }
 
 LABEL_19:
   intent = self->_intent;
-  if (intent | *(v4 + 5) && ![(BCSCallerIdLocalizedString *)intent isEqual:?])
+  if (intent | *(equalCopy + 5) && ![(BCSCallerIdLocalizedString *)intent isEqual:?])
   {
     goto LABEL_24;
   }
 
   conflatedMuid = self->_conflatedMuid;
-  if (conflatedMuid | *(v4 + 4))
+  if (conflatedMuid | *(equalCopy + 4))
   {
     v14 = [(NSString *)conflatedMuid isEqual:?];
   }
@@ -419,18 +419,18 @@ LABEL_25:
   return v10 ^ v11 ^ [(NSString *)self->_conflatedMuid hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 76))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 76))
   {
-    self->_phoneHash = v4[1];
+    self->_phoneHash = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  v10 = v4;
-  if (v4[3])
+  v10 = fromCopy;
+  if (fromCopy[3])
   {
     [(BCSCallerIdMessage *)self setCompanyId:?];
     v5 = v10;

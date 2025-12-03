@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchFieldValueHitQueue_Entry
-- (OrgApacheLuceneSearchFieldValueHitQueue_Entry)initWithInt:(int)a3 withInt:(int)a4 withFloat:(float)a5;
+- (OrgApacheLuceneSearchFieldValueHitQueue_Entry)initWithInt:(int)int withInt:(int)withInt withFloat:(float)float;
 - (id)description;
 @end
 
 @implementation OrgApacheLuceneSearchFieldValueHitQueue_Entry
 
-- (OrgApacheLuceneSearchFieldValueHitQueue_Entry)initWithInt:(int)a3 withInt:(int)a4 withFloat:(float)a5
+- (OrgApacheLuceneSearchFieldValueHitQueue_Entry)initWithInt:(int)int withInt:(int)withInt withFloat:(float)float
 {
-  OrgApacheLuceneSearchScoreDoc_initWithInt_withFloat_(self, a4, a5);
-  *(&self->super.shardIndex_ + 1) = a3;
+  OrgApacheLuceneSearchScoreDoc_initWithInt_withFloat_(self, withInt, float);
+  *(&self->super.shardIndex_ + 1) = int;
   return self;
 }
 

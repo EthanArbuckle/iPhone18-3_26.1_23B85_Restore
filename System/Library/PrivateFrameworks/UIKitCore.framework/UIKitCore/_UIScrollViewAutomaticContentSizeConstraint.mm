@@ -9,17 +9,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UIScrollViewAutomaticContentSizeConstraint *)self firstAttribute];
-  v7 = [(_UIScrollViewAutomaticContentSizeConstraint *)self firstItem];
-  v8 = v7;
-  if (v6 == 101)
+  firstAttribute = [(_UIScrollViewAutomaticContentSizeConstraint *)self firstAttribute];
+  firstItem = [(_UIScrollViewAutomaticContentSizeConstraint *)self firstItem];
+  v8 = firstItem;
+  if (firstAttribute == 101)
   {
-    [v7 _contentWidthVariable];
+    [firstItem _contentWidthVariable];
   }
 
   else
   {
-    [v7 _contentHeightVariable];
+    [firstItem _contentHeightVariable];
   }
   v9 = ;
   [(_UIScrollViewAutomaticContentSizeConstraint *)self constant];

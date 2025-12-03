@@ -1,20 +1,20 @@
 @interface MTRCommissioneeInfo
-- (BOOL)isEqual:(id)a3;
-- (MTRCommissioneeInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTRCommissioneeInfo)initWithCoder:(id)coder;
 - (MTREndpointInfo)rootEndpoint;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRCommissioneeInfo
 
-- (MTRCommissioneeInfo)initWithCoder:(id)a3
+- (MTRCommissioneeInfo)initWithCoder:(id)coder
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = MTRCommissioneeInfo;
   v5 = [(MTRCommissioneeInfo *)&v38 init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pi"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pi"];
   productIdentity = v5->_productIdentity;
   v5->_productIdentity = v6;
 
@@ -24,7 +24,7 @@
   }
 
   v8 = objc_opt_class();
-  v9 = [v4 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"ep"];
+  v9 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"ep"];
   endpointsById = v5->_endpointsById;
   v5->_endpointsById = v9;
 
@@ -42,7 +42,7 @@
     v5 = v26;
   }
 
-  v11 = [v4 decodeObjectOfClasses:qword_27DF77538 forKey:@"at"];
+  v11 = [coderCopy decodeObjectOfClasses:qword_27DF77538 forKey:@"at"];
   attributes = v5->_attributes;
   v5->_attributes = v11;
 
@@ -156,21 +156,21 @@ LABEL_32:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_productIdentity forKey:@"pi"];
-  [v4 encodeObject:self->_endpointsById forKey:@"ep"];
-  [v4 encodeObject:self->_attributes forKey:@"at"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_productIdentity forKey:@"pi"];
+  [coderCopy encodeObject:self->_endpointsById forKey:@"ep"];
+  [coderCopy encodeObject:self->_attributes forKey:@"at"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if ((sub_238DB32F8(self->_productIdentity, v7[1]) & 1) != 0 && sub_238DB32F8(self->_endpointsById, v7[2]))
     {
       v6 = sub_238DB32F8(self->_attributes, v7[3]);
@@ -192,8 +192,8 @@ LABEL_32:
 
 - (MTREndpointInfo)rootEndpoint
 {
-  v2 = [(MTRCommissioneeInfo *)self endpointsById];
-  v3 = [v2 objectForKeyedSubscript:&unk_284C3E3A8];
+  endpointsById = [(MTRCommissioneeInfo *)self endpointsById];
+  v3 = [endpointsById objectForKeyedSubscript:&unk_284C3E3A8];
 
   return v3;
 }

@@ -1,13 +1,13 @@
 @interface UpsellGridViewController
-- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation UpsellGridViewController
 
-- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
@@ -16,10 +16,10 @@
 
 - (void)loadView
 {
-  v2 = self;
-  if (([(UpsellGridViewController *)v2 isViewLoaded]& 1) == 0)
+  selfCopy = self;
+  if (([(UpsellGridViewController *)selfCopy isViewLoaded]& 1) == 0)
   {
-    [(UpsellGridViewController *)v2 setView:*(&v2->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider24UpsellGridViewController_gridView)];
+    [(UpsellGridViewController *)selfCopy setView:*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider24UpsellGridViewController_gridView)];
   }
 }
 
@@ -29,11 +29,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(UpsellGridViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setLayoutMargins:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+    v4 = view;
+    [view setLayoutMargins:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
     sub_75A160();
   }
@@ -44,7 +44,7 @@
   }
 }
 
-- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider24UpsellGridViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

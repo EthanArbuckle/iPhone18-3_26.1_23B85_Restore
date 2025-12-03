@@ -1,16 +1,16 @@
 @interface NSUbiquitousKeyValueStore
 + (NSUbiquitousKeyValueStore)defaultStore;
-+ (id)additionalStoreWithIdentifier:(id)a3;
++ (id)additionalStoreWithIdentifier:(id)identifier;
 - (BOOL)BOOLForKey:(NSString *)aKey;
 - (NSArray)arrayForKey:(NSString *)aKey;
 - (NSData)dataForKey:(NSString *)aKey;
 - (NSDictionary)dictionaryForKey:(NSString *)aKey;
 - (NSString)stringForKey:(NSString *)aKey;
-- (NSUbiquitousKeyValueStore)initWithStoreIdentifier:(id)a3 type:(int64_t)a4;
+- (NSUbiquitousKeyValueStore)initWithStoreIdentifier:(id)identifier type:(int64_t)type;
 - (double)doubleForKey:(NSString *)aKey;
-- (id)_initWithStoreIdentifier:(id)a3 type:(int64_t)a4;
+- (id)_initWithStoreIdentifier:(id)identifier type:(int64_t)type;
 - (uint64_t)longLongForKey:(NSString *)aKey;
-- (void)_sourceDidChangePassthroughNotification:(id)a3;
+- (void)_sourceDidChangePassthroughNotification:(id)notification;
 - (void)dealloc;
 - (void)setArray:(NSArray *)anArray forKey:(NSString *)aKey;
 - (void)setBool:(BOOL)value forKey:(NSString *)aKey;
@@ -49,16 +49,16 @@ NSUbiquitousKeyValueStore *__41__NSUbiquitousKeyValueStore_defaultStore__block_i
   [(NSUbiquitousKeyValueStore *)&v3 dealloc];
 }
 
-- (NSUbiquitousKeyValueStore)initWithStoreIdentifier:(id)a3 type:(int64_t)a4
+- (NSUbiquitousKeyValueStore)initWithStoreIdentifier:(id)identifier type:(int64_t)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a4 >= 4)
+  if (type >= 4)
   {
     v7 = _NSOSLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       v8 = 134217984;
-      v9 = a4;
+      typeCopy = type;
       _os_log_fault_impl(&dword_18075C000, v7, OS_LOG_TYPE_FAULT, "Unsupported store type: %zd", &v8, 0xCu);
     }
 
@@ -68,11 +68,11 @@ NSUbiquitousKeyValueStore *__41__NSUbiquitousKeyValueStore_defaultStore__block_i
   else
   {
 
-    return [(NSUbiquitousKeyValueStore *)self _initWithStoreIdentifier:a3 type:?];
+    return [(NSUbiquitousKeyValueStore *)self _initWithStoreIdentifier:identifier type:?];
   }
 }
 
-- (id)_initWithStoreIdentifier:(id)a3 type:(int64_t)a4
+- (id)_initWithStoreIdentifier:(id)identifier type:(int64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -89,7 +89,7 @@ NSUbiquitousKeyValueStore *__41__NSUbiquitousKeyValueStore_defaultStore__block_i
     {
       if ([qword_1ED440228 instancesRespondToSelector:sel_initWithStoreIdentifier_type_])
       {
-        v7 = [[qword_1ED440228 alloc] initWithStoreIdentifier:a3 type:a4];
+        v7 = [[qword_1ED440228 alloc] initWithStoreIdentifier:identifier type:type];
         v6->_source = v7;
         if (!v7)
         {
@@ -132,19 +132,19 @@ void __59__NSUbiquitousKeyValueStore__initWithStoreIdentifier_type___block_invok
   }
 }
 
-+ (id)additionalStoreWithIdentifier:(id)a3
++ (id)additionalStoreWithIdentifier:(id)identifier
 {
-  v3 = [[a1 alloc] initWithBundleIdentifier:0 storeIdentifier:a3 additionalStore:1];
+  v3 = [[self alloc] initWithBundleIdentifier:0 storeIdentifier:identifier additionalStore:1];
 
   return v3;
 }
 
-- (void)_sourceDidChangePassthroughNotification:(id)a3
+- (void)_sourceDidChangePassthroughNotification:(id)notification
 {
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [a3 userInfo];
+  userInfo = [notification userInfo];
 
-  [(NSNotificationCenter *)v5 postNotificationName:@"NSUbiquitousKeyValueStoreDidChangeExternallyNotification" object:self userInfo:v6];
+  [(NSNotificationCenter *)v5 postNotificationName:@"NSUbiquitousKeyValueStoreDidChangeExternallyNotification" object:self userInfo:userInfo];
 }
 
 - (NSString)stringForKey:(NSString *)aKey

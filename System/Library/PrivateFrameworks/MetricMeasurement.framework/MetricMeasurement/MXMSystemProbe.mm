@@ -2,12 +2,12 @@
 + (id)probe;
 - (MXMSystemProbe)init;
 - (void)_beginUpdates;
-- (void)_buildData:(id)a3 timestamp:(unint64_t)a4 cpuLoad:(processor_cpu_load_info *)a5;
-- (void)_buildData:(id)a3 timestamp:(unint64_t)a4 loadInfo:(processor_set_load_info *)a5;
+- (void)_buildData:(id)data timestamp:(unint64_t)timestamp cpuLoad:(processor_cpu_load_info *)load;
+- (void)_buildData:(id)data timestamp:(unint64_t)timestamp loadInfo:(processor_set_load_info *)info;
 - (void)_gatherConstantSystemProperties;
-- (void)_pollProcessorLoadInformationWithData:(id)a3;
-- (void)_pollSystemHostProcessorInfoWithData:(id)a3;
-- (void)_pollSystemLoadInformationWithData:(id)a3;
+- (void)_pollProcessorLoadInformationWithData:(id)data;
+- (void)_pollSystemHostProcessorInfoWithData:(id)data;
+- (void)_pollSystemLoadInformationWithData:(id)data;
 - (void)_pollSystemLoop;
 - (void)_pollSystemMainBody;
 - (void)_prepareData;
@@ -18,7 +18,7 @@
 
 + (id)probe
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -38,36 +38,36 @@
   return v3;
 }
 
-- (void)_buildData:(id)a3 timestamp:(unint64_t)a4 cpuLoad:(processor_cpu_load_info *)a5
+- (void)_buildData:(id)data timestamp:(unint64_t)timestamp cpuLoad:(processor_cpu_load_info *)load
 {
-  v19 = a3;
-  v7 = a5->cpu_ticks[0];
-  v8 = a5->cpu_ticks[1];
-  v10 = a5->cpu_ticks[2];
-  v9 = a5->cpu_ticks[3];
+  dataCopy = data;
+  v7 = load->cpu_ticks[0];
+  v8 = load->cpu_ticks[1];
+  v10 = load->cpu_ticks[2];
+  v9 = load->cpu_ticks[3];
   v11 = +[MXMUtilizationSampleTag CPUTicksIdle];
-  v12 = [v19 appendUnsignedIntValue:v10 tag:v11 timestamp:a4];
+  v12 = [dataCopy appendUnsignedIntValue:v10 tag:v11 timestamp:timestamp];
 
   v13 = +[MXMUtilizationSampleTag CPUTicksUser];
-  v14 = [v19 appendUnsignedIntValue:v7 tag:v13 timestamp:a4];
+  v14 = [dataCopy appendUnsignedIntValue:v7 tag:v13 timestamp:timestamp];
 
   v15 = +[MXMUtilizationSampleTag CPUTicksSystem];
-  v16 = [v19 appendUnsignedIntValue:v8 tag:v15 timestamp:a4];
+  v16 = [dataCopy appendUnsignedIntValue:v8 tag:v15 timestamp:timestamp];
 
   v17 = +[MXMUtilizationSampleTag CPUTicksNice];
-  v18 = [v19 appendUnsignedIntValue:v9 tag:v17 timestamp:a4];
+  v18 = [dataCopy appendUnsignedIntValue:v9 tag:v17 timestamp:timestamp];
 }
 
-- (void)_buildData:(id)a3 timestamp:(unint64_t)a4 loadInfo:(processor_set_load_info *)a5
+- (void)_buildData:(id)data timestamp:(unint64_t)timestamp loadInfo:(processor_set_load_info *)info
 {
-  v13 = a3;
-  thread_count = a5->thread_count;
+  dataCopy = data;
+  thread_count = info->thread_count;
   v8 = +[MXMUtilizationSampleTag CPULoadThread];
-  v9 = [v13 appendIntValue:thread_count tag:v8 timestamp:a4];
+  v9 = [dataCopy appendIntValue:thread_count tag:v8 timestamp:timestamp];
 
-  task_count = a5->task_count;
+  task_count = info->task_count;
   v11 = +[MXMUtilizationSampleTag CPULoadTask];
-  v12 = [v13 appendIntValue:task_count tag:v11 timestamp:a4];
+  v12 = [dataCopy appendIntValue:task_count tag:v11 timestamp:timestamp];
 }
 
 - (void)_prepareData
@@ -138,8 +138,8 @@
 
 - (void)_pollSystemLoop
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  if ([v4 isCancelled])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if ([currentThread isCancelled])
   {
 LABEL_4:
   }
@@ -148,9 +148,9 @@ LABEL_4:
   {
     while (1)
     {
-      v3 = [(MXMProbe *)self updating];
+      updating = [(MXMProbe *)self updating];
 
-      if (!v3)
+      if (!updating)
       {
         break;
       }
@@ -158,8 +158,8 @@ LABEL_4:
       [(MXMSystemProbe *)self _pollSystemMainBody];
       usleep(0xF4240u);
       [(MXMSystemProbe *)self _pollSystemLoop];
-      v4 = [MEMORY[0x277CCACC8] currentThread];
-      if ([v4 isCancelled])
+      currentThread = [MEMORY[0x277CCACC8] currentThread];
+      if ([currentThread isCancelled])
       {
         goto LABEL_4;
       }
@@ -183,17 +183,17 @@ LABEL_4:
   [(MXMSystemProbe *)self _pollSystemBatteryWithData:v3];
 }
 
-- (void)_pollSystemHostProcessorInfoWithData:(id)a3
+- (void)_pollSystemHostProcessorInfoWithData:(id)data
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v33[0] = &unk_286A26088;
   v33[1] = &unk_286A260B8;
   v34[0] = &unk_286A260A0;
   v34[1] = &unk_286A260D0;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
-  v6 = [v5 allKeys];
-  v7 = [v6 count];
+  allKeys = [v5 allKeys];
+  v7 = [allKeys count];
 
   if (v7)
   {
@@ -201,28 +201,28 @@ LABEL_4:
     v27 = v5;
     do
     {
-      v9 = [v5 allKeys];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      allKeys2 = [v5 allKeys];
+      v10 = [allKeys2 objectAtIndexedSubscript:v8];
 
       v11 = [v5 objectForKeyedSubscript:v10];
       v29 = v10;
-      v12 = [v10 intValue];
+      intValue = [v10 intValue];
       v28 = v11;
-      v13 = [v11 integerValue];
-      v14 = malloc_type_malloc(v13, 0x18C85E1CuLL);
+      integerValue = [v11 integerValue];
+      v14 = malloc_type_malloc(integerValue, 0x18C85E1CuLL);
       *out_processor_infoCnt = 0;
       v15 = MEMORY[0x259C9CA60]();
-      LODWORD(v10) = host_processor_info(v15, v12, &out_processor_infoCnt[1], v14, out_processor_infoCnt);
+      LODWORD(v10) = host_processor_info(v15, intValue, &out_processor_infoCnt[1], v14, out_processor_infoCnt);
       v16 = mach_absolute_time();
       if (v10)
       {
         [MXMSystemProbe _pollSystemHostProcessorInfoWithData:];
       }
 
-      [(MXMSystemProbe *)self _buildData:v4 timestamp:v16 processorCount:out_processor_infoCnt[1]];
+      [(MXMSystemProbe *)self _buildData:dataCopy timestamp:v16 processorCount:out_processor_infoCnt[1]];
       if (out_processor_infoCnt[1])
       {
-        if ((v12 - 1) > 1)
+        if ((intValue - 1) > 1)
         {
           v26 = [MEMORY[0x277CBEAD8] exceptionWithName:@"MetricMeasurement" reason:@"Invalid Processor Flavor Value" userInfo:0];
           objc_exception_throw(v26);
@@ -234,14 +234,14 @@ LABEL_4:
         do
         {
           v20 = *v14;
-          if (v12 == 1)
+          if (intValue == 1)
           {
-            [(MXMSystemProbe *)self _buildData:v4 timestamp:v16 cpuInfo:&v20[v17]];
+            [(MXMSystemProbe *)self _buildData:dataCopy timestamp:v16 cpuInfo:&v20[v17]];
           }
 
           else
           {
-            [(MXMSystemProbe *)self _buildData:v4 timestamp:v16 cpuLoad:&v20[v18]];
+            [(MXMSystemProbe *)self _buildData:dataCopy timestamp:v16 cpuLoad:&v20[v18]];
           }
 
           ++v19;
@@ -252,7 +252,7 @@ LABEL_4:
         while (v19 < out_processor_infoCnt[1]);
       }
 
-      v21 = mach_vm_deallocate(*MEMORY[0x277D85F48], *v14, v13);
+      v21 = mach_vm_deallocate(*MEMORY[0x277D85F48], *v14, integerValue);
       v22 = _MXMGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
@@ -264,8 +264,8 @@ LABEL_4:
       free(v14);
       ++v8;
       v5 = v27;
-      v23 = [v27 allKeys];
-      v24 = [v23 count];
+      allKeys3 = [v27 allKeys];
+      v24 = [allKeys3 count];
     }
 
     while (v8 < v24);
@@ -274,9 +274,9 @@ LABEL_4:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pollProcessorLoadInformationWithData:(id)a3
+- (void)_pollProcessorLoadInformationWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   *info_out = 0;
   v11 = 0;
   info_outCnt = 4;
@@ -294,14 +294,14 @@ LABEL_4:
     [MXMSystemProbe _pollProcessorLoadInformationWithData:];
   }
 
-  [(MXMSystemProbe *)self _buildData:v4 timestamp:v7 loadInfo:info_out];
+  [(MXMSystemProbe *)self _buildData:dataCopy timestamp:v7 loadInfo:info_out];
 }
 
-- (void)_pollSystemLoadInformationWithData:(id)a3
+- (void)_pollSystemLoadInformationWithData:(id)data
 {
   host_info64_outCnt = 0;
   memset(&v9[6], 0, 64);
-  v8 = MEMORY[0x259C9CA60](self, a2, a3, v3, v4, v5, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  v8 = MEMORY[0x259C9CA60](self, a2, data, v3, v4, v5, v6, v7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   if (host_statistics64(v8, 4, v9, &host_info64_outCnt))
   {
     [MXMSystemProbe _pollSystemLoadInformationWithData:];

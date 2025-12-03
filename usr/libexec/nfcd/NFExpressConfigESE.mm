@@ -1,24 +1,24 @@
 @interface NFExpressConfigESE
-- (BOOL)hasUWBKeys:(id)a3;
-- (BOOL)validateAndUpdateExpressConfig:(id)a3 avoidChangingRouting:(BOOL)a4;
-- (NFExpressConfigESE)initWithDriverWrapper:(id)a3;
-- (id)disableExpressForKeys:(id)a3 onApplet:(id)a4;
-- (id)extractConfigFrom:(id)a3;
+- (BOOL)hasUWBKeys:(id)keys;
+- (BOOL)validateAndUpdateExpressConfig:(id)config avoidChangingRouting:(BOOL)routing;
+- (NFExpressConfigESE)initWithDriverWrapper:(id)wrapper;
+- (id)disableExpressForKeys:(id)keys onApplet:(id)applet;
+- (id)extractConfigFrom:(id)from;
 - (id)fetchFromStorage;
 - (id)getSecureElementWrapper;
 - (id)getSecureElementWrapperAndSetRouting;
 - (id)migrateFromDefaults;
-- (id)updateExpressConfigLimitedTo:(id)a3 andActivate:(BOOL)a4 hasChanged:(BOOL *)a5 disableDPDEnter:(BOOL *)a6;
+- (id)updateExpressConfigLimitedTo:(id)to andActivate:(BOOL)activate hasChanged:(BOOL *)changed disableDPDEnter:(BOOL *)enter;
 - (void)updateStorage;
 @end
 
 @implementation NFExpressConfigESE
 
-- (NFExpressConfigESE)initWithDriverWrapper:(id)a3
+- (NFExpressConfigESE)initWithDriverWrapper:(id)wrapper
 {
   v11.receiver = self;
   v11.super_class = NFExpressConfigESE;
-  v3 = [(NFExpressConfig *)&v11 initWithDriverWrapper:a3];
+  v3 = [(NFExpressConfig *)&v11 initWithDriverWrapper:wrapper];
   v4 = v3;
   if (v3)
   {
@@ -28,9 +28,9 @@
     v6 = v5;
     if (v5)
     {
-      v7 = [*(v5 + 128) walletDomain];
-      v8 = 0x19u >> v7;
-      if (v7 > 4)
+      walletDomain = [*(v5 + 128) walletDomain];
+      v8 = 0x19u >> walletDomain;
+      if (walletDomain > 4)
       {
         LOBYTE(v8) = 0;
       }
@@ -52,21 +52,21 @@
 - (id)getSecureElementWrapper
 {
   v2 = +[_NFHardwareManager sharedHardwareManager];
-  v3 = [v2 secureElementWrapper];
+  secureElementWrapper = [v2 secureElementWrapper];
 
-  return v3;
+  return secureElementWrapper;
 }
 
 - (id)getSecureElementWrapperAndSetRouting
 {
   v4 = +[_NFHardwareManager sharedHardwareManager];
   v5 = sub_10004BF2C();
-  v6 = [v4 lastKnownRoutingConfig];
-  if (sub_10004B630(v6, v5))
+  lastKnownRoutingConfig = [v4 lastKnownRoutingConfig];
+  if (sub_10004B630(lastKnownRoutingConfig, v5))
   {
 
 LABEL_14:
-    v17 = [v4 secureElementWrapper];
+    secureElementWrapper = [v4 secureElementWrapper];
     goto LABEL_15;
   }
 
@@ -121,10 +121,10 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to set eSE to wired mode", buf, 0x22u);
   }
 
-  v17 = 0;
+  secureElementWrapper = 0;
 LABEL_15:
 
-  return v17;
+  return secureElementWrapper;
 }
 
 - (void)updateStorage
@@ -500,11 +500,11 @@ LABEL_62:
 LABEL_82:
 }
 
-- (BOOL)validateAndUpdateExpressConfig:(id)a3 avoidChangingRouting:(BOOL)a4
+- (BOOL)validateAndUpdateExpressConfig:(id)config avoidChangingRouting:(BOOL)routing
 {
-  v4 = a4;
-  v7 = a3;
-  if (![v7 count])
+  routingCopy = routing;
+  configCopy = config;
+  if (![configCopy count])
   {
     v35 = 1;
     goto LABEL_93;
@@ -515,7 +515,7 @@ LABEL_82:
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  obj = v7;
+  obj = configCopy;
   v8 = [obj countByEnumeratingWithState:&v107 objects:v123 count:16];
   if (!v8)
   {
@@ -526,7 +526,7 @@ LABEL_82:
   v9 = v8;
   v10 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
   v105 = *v108;
-  v102 = v7;
+  v102 = configCopy;
   while (2)
   {
     for (i = 0; i != v9; i = i + 1)
@@ -563,7 +563,7 @@ LABEL_82:
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v67 = NFSharedLogGetLogger();
-        v7 = v102;
+        configCopy = v102;
         if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
         {
           v68 = object_getClass(self);
@@ -653,7 +653,7 @@ LABEL_82:
         sub_100199C14(NFBugCapture, @"Incorrect express type", v47, 0);
         [NFExceptionsCALogger postAnalyticsExpressSetupFailureEvent:1 context:2 error:0];
 
-        v7 = v102;
+        configCopy = v102;
         goto LABEL_91;
       }
 
@@ -686,9 +686,9 @@ LABEL_82:
       }
 
       v106 = 0;
-      v21 = sub_10000ADB0(self, v13, !v4, &v106);
+      v21 = sub_10000ADB0(self, v13, !routingCopy, &v106);
       v22 = v21;
-      if (v4 && (v106 & 1) != 0)
+      if (routingCopy && (v106 & 1) != 0)
       {
         goto LABEL_35;
       }
@@ -748,7 +748,7 @@ LABEL_82:
 
         v60 = 3;
 LABEL_90:
-        v7 = v102;
+        configCopy = v102;
 
         [NFExceptionsCALogger postAnalyticsExpressSetupFailureEvent:0 context:v60 error:0];
 LABEL_91:
@@ -757,26 +757,26 @@ LABEL_91:
         goto LABEL_92;
       }
 
-      v23 = self;
+      selfCopy = self;
       v24 = [v12 objectForKeyedSubscript:@"expressEnabled"];
       if ([v24 BOOLValue])
       {
-        v25 = [v22 authTransientSupport];
+        authTransientSupport = [v22 authTransientSupport];
 
-        if (v25)
+        if (authTransientSupport)
         {
           v82 = [NSString stringWithFormat:@"NFExpressConfigESE: validateAndUpdateExpressConfig, Error: Transient authorization enabled for %@", v13];
           sub_100199C14(NFBugCapture, @"Unable to set as express", v82, 0);
 
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
           v83 = NFLogGetLogger();
-          v84 = v23;
+          v84 = selfCopy;
           if (v83)
           {
             v85 = v83;
-            v86 = object_getClass(v23);
+            v86 = object_getClass(selfCopy);
             v87 = class_isMetaClass(v86);
-            v96 = object_getClassName(v23);
+            v96 = object_getClassName(selfCopy);
             v101 = sel_getName(v103);
             v88 = 45;
             if (v87)
@@ -833,13 +833,13 @@ LABEL_91:
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v49 = NFLogGetLogger();
-        v50 = v23;
+        v50 = selfCopy;
         if (v49)
         {
           v51 = v49;
-          v52 = object_getClass(v23);
+          v52 = object_getClass(selfCopy);
           v53 = class_isMetaClass(v52);
-          v94 = object_getClassName(v23);
+          v94 = object_getClassName(selfCopy);
           v98 = sel_getName(v103);
           v54 = 45;
           if (v53)
@@ -886,39 +886,39 @@ LABEL_91:
 
       v26 = [v12 objectForKeyedSubscript:@"moduleIdentifier"];
 
-      self = v23;
+      self = selfCopy;
       if (!v26)
       {
-        v27 = [v22 moduleIdentifier];
-        [v12 setObject:v27 forKeyedSubscript:@"moduleIdentifier"];
+        moduleIdentifier = [v22 moduleIdentifier];
+        [v12 setObject:moduleIdentifier forKeyedSubscript:@"moduleIdentifier"];
       }
 
       v28 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v22 groupActivationStyle]);
       [v12 setObject:v28 forKeyedSubscript:@"groupActivationStyle"];
 
-      v29 = [v22 moduleIdentifier];
+      moduleIdentifier2 = [v22 moduleIdentifier];
 
       v10 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
-      if (v29)
+      if (moduleIdentifier2)
       {
-        v30 = [v22 moduleIdentifier];
-        [v12 setObject:v30 forKeyedSubscript:@"moduleIdentifier"];
+        moduleIdentifier3 = [v22 moduleIdentifier];
+        [v12 setObject:moduleIdentifier3 forKeyedSubscript:@"moduleIdentifier"];
       }
 
-      v31 = [v22 groupHeadID];
+      groupHeadID = [v22 groupHeadID];
 
-      if (v31)
+      if (groupHeadID)
       {
-        v32 = [v22 groupHeadID];
-        [v12 setObject:v32 forKeyedSubscript:@"groupHead"];
+        groupHeadID2 = [v22 groupHeadID];
+        [v12 setObject:groupHeadID2 forKeyedSubscript:@"groupHead"];
       }
 
-      v33 = [v22 groupMemberIDs];
+      groupMemberIDs = [v22 groupMemberIDs];
 
-      if (v33)
+      if (groupMemberIDs)
       {
-        v34 = [v22 groupMemberIDs];
-        [v12 setObject:v34 forKeyedSubscript:@"groupMembers"];
+        groupMemberIDs2 = [v22 groupMemberIDs];
+        [v12 setObject:groupMemberIDs2 forKeyedSubscript:@"groupMembers"];
       }
 
 LABEL_35:
@@ -926,7 +926,7 @@ LABEL_35:
 
     v9 = [obj countByEnumeratingWithState:&v107 objects:v123 count:16];
     v35 = 1;
-    v7 = v102;
+    configCopy = v102;
     if (v9)
     {
       continue;
@@ -1071,14 +1071,14 @@ LABEL_141:
   v159 = [v3 objectForKey:@"ExpressTransitIdentifier"];
   v6 = objc_opt_new();
   v16 = +[_NFHardwareManager sharedHardwareManager];
-  v17 = [v16 secureElementWrapper];
+  secureElementWrapper = [v16 secureElementWrapper];
 
-  if (v17)
+  if (secureElementWrapper)
   {
-    v154 = v17;
+    v154 = secureElementWrapper;
     v160 = v3;
     v167 = v6;
-    if (([v17 supportedTechnologies] & 4) != 0)
+    if (([secureElementWrapper supportedTechnologies] & 4) != 0)
     {
       if (v15)
       {
@@ -1714,32 +1714,32 @@ LABEL_142:
   return v43;
 }
 
-- (id)extractConfigFrom:(id)a3
+- (id)extractConfigFrom:(id)from
 {
-  v4 = a3;
-  v52 = self;
-  [(NFExpressConfig *)self dumpConfig:v4 logLevel:8 prefix:@"expressConfig"];
+  fromCopy = from;
+  selfCopy = self;
+  [(NFExpressConfig *)self dumpConfig:fromCopy logLevel:8 prefix:@"expressConfig"];
   v5 = objc_opt_new();
   v6 = +[_NFHardwareManager sharedHardwareManager];
-  v7 = [v6 secureElementWrapper];
+  secureElementWrapper = [v6 secureElementWrapper];
 
-  if (v7)
+  if (secureElementWrapper)
   {
-    v8 = [v7 supportedTechnologies];
+    supportedTechnologies = [secureElementWrapper supportedTechnologies];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v9 = v4;
+    v9 = fromCopy;
     v10 = [v9 countByEnumeratingWithState:&v54 objects:v58 count:16];
     if (v10)
     {
       v11 = v10;
-      v49 = v4;
+      v49 = fromCopy;
       v53 = v5;
       v50 = 0;
       v12 = *v55;
-      v13 = v8 & 4;
+      v13 = supportedTechnologies & 4;
       do
       {
         v14 = v9;
@@ -1758,9 +1758,9 @@ LABEL_142:
           {
             v20 = [v16 mutableCopy];
             v21 = [v16 objectForKeyedSubscript:@"expressEnabled"];
-            v22 = [v21 BOOLValue];
+            bOOLValue = [v21 BOOLValue];
 
-            if (v22)
+            if (bOOLValue)
             {
               v23 = v18 == 6;
             }
@@ -1777,9 +1777,9 @@ LABEL_142:
               if (Logger)
               {
                 v25 = Logger;
-                Class = object_getClass(v52);
+                Class = object_getClass(selfCopy);
                 isMetaClass = class_isMetaClass(Class);
-                ClassName = object_getClassName(v52);
+                ClassName = object_getClassName(selfCopy);
                 Name = sel_getName(a2);
                 v29 = 45;
                 if (isMetaClass)
@@ -1794,7 +1794,7 @@ LABEL_142:
               v30 = NFSharedLogGetLogger();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
               {
-                v31 = object_getClass(v52);
+                v31 = object_getClass(selfCopy);
                 if (class_isMetaClass(v31))
                 {
                   v32 = 43;
@@ -1805,7 +1805,7 @@ LABEL_142:
                   v32 = 45;
                 }
 
-                v33 = object_getClassName(v52);
+                v33 = object_getClassName(selfCopy);
                 v34 = sel_getName(a2);
                 *buf = 67109890;
                 v60 = v32;
@@ -1842,7 +1842,7 @@ LABEL_142:
         v35 = 8;
       }
 
-      v4 = v49;
+      fromCopy = v49;
       v5 = v53;
     }
 
@@ -1852,7 +1852,7 @@ LABEL_142:
       v35 = 8;
     }
 
-    [(NFExpressConfig *)v52 dumpConfig:v5 logLevel:v35 prefix:@"new config"];
+    [(NFExpressConfig *)selfCopy dumpConfig:v5 logLevel:v35 prefix:@"new config"];
     v45 = v5;
   }
 
@@ -1863,9 +1863,9 @@ LABEL_142:
     if (v36)
     {
       v37 = v36;
-      v38 = object_getClass(v52);
+      v38 = object_getClass(selfCopy);
       v39 = class_isMetaClass(v38);
-      v40 = object_getClassName(v52);
+      v40 = object_getClassName(selfCopy);
       v48 = sel_getName(a2);
       v41 = 45;
       if (v39)
@@ -1880,7 +1880,7 @@ LABEL_142:
     v42 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      v43 = object_getClass(v52);
+      v43 = object_getClass(selfCopy);
       if (class_isMetaClass(v43))
       {
         v44 = 43;
@@ -1894,7 +1894,7 @@ LABEL_142:
       *buf = 67109890;
       v60 = v44;
       v61 = 2082;
-      v62 = object_getClassName(v52);
+      v62 = object_getClassName(selfCopy);
       v63 = 2082;
       v64 = sel_getName(a2);
       v65 = 1024;
@@ -1908,10 +1908,10 @@ LABEL_142:
   return v45;
 }
 
-- (id)disableExpressForKeys:(id)a3 onApplet:(id)a4
+- (id)disableExpressForKeys:(id)keys onApplet:(id)applet
 {
-  v7 = a3;
-  v8 = a4;
+  keysCopy = keys;
+  appletCopy = applet;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1921,14 +1921,14 @@ LABEL_142:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v15 = [v8 identifier];
+    identifier = [appletCopy identifier];
     v16 = 45;
     if (isMetaClass)
     {
       v16 = 43;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i keys:%{public}@ applet:%{public}@", v16, ClassName, Name, 757, v7, v15);
+    v10(6, "%c[%{public}s %{public}s]:%i keys:%{public}@ applet:%{public}@", v16, ClassName, Name, 757, keysCopy, identifier);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1948,7 +1948,7 @@ LABEL_142:
 
     v20 = object_getClassName(self);
     v21 = sel_getName(a2);
-    v22 = [v8 identifier];
+    identifier2 = [appletCopy identifier];
     *buf = 67110402;
     v78 = v19;
     v79 = 2082;
@@ -1958,25 +1958,25 @@ LABEL_142:
     v83 = 1024;
     v84 = 757;
     v85 = 2114;
-    v86 = v7;
+    v86 = keysCopy;
     v87 = 2114;
-    v88 = v22;
+    v88 = identifier2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i keys:%{public}@ applet:%{public}@", buf, 0x36u);
   }
 
-  v23 = [(NFExpressConfigESE *)self getSecureElementWrapperAndSetRouting];
-  v24 = v23;
-  if (v23)
+  getSecureElementWrapperAndSetRouting = [(NFExpressConfigESE *)self getSecureElementWrapperAndSetRouting];
+  v24 = getSecureElementWrapperAndSetRouting;
+  if (getSecureElementWrapperAndSetRouting)
   {
-    v66 = v23;
-    v69 = v8;
+    v66 = getSecureElementWrapperAndSetRouting;
+    v69 = appletCopy;
     v68 = objc_alloc_init(NSMutableArray);
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v67 = v7;
-    v25 = v7;
+    v67 = keysCopy;
+    v25 = keysCopy;
     v26 = [v25 countByEnumeratingWithState:&v70 objects:v74 count:16];
     if (!v26)
     {
@@ -2005,8 +2005,8 @@ LABEL_142:
 
           v31 = objc_alloc_init(NSMutableDictionary);
           [v31 setObject:v30 forKeyedSubscript:@"keyIdentifier"];
-          v32 = [v69 identifier];
-          [v31 setObject:v32 forKeyedSubscript:@"appletIdentifier"];
+          identifier3 = [v69 identifier];
+          [v31 setObject:identifier3 forKeyedSubscript:@"appletIdentifier"];
 
           [v68 addObject:v31];
         }
@@ -2069,16 +2069,16 @@ LABEL_31:
         v43 = v68;
         if ([v68 count])
         {
-          v8 = v69;
+          appletCopy = v69;
           v44 = sub_10000E24C(self, v68, v69, 0, 0, 0xFFFFFFFF);
-          v7 = v67;
+          keysCopy = v67;
         }
 
         else
         {
           v44 = 0;
-          v7 = v67;
-          v8 = v69;
+          keysCopy = v67;
+          appletCopy = v69;
         }
 
         v24 = v66;
@@ -2158,9 +2158,9 @@ LABEL_45:
   return v44;
 }
 
-- (id)updateExpressConfigLimitedTo:(id)a3 andActivate:(BOOL)a4 hasChanged:(BOOL *)a5 disableDPDEnter:(BOOL *)a6
+- (id)updateExpressConfigLimitedTo:(id)to andActivate:(BOOL)activate hasChanged:(BOOL *)changed disableDPDEnter:(BOOL *)enter
 {
-  v11 = a3;
+  toCopy = to;
   if (![(NFExpressConfig *)self isSEOperational])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2229,8 +2229,8 @@ LABEL_45:
     goto LABEL_275;
   }
 
-  v289 = a6;
-  v290 = a5;
+  enterCopy = enter;
+  changedCopy = changed;
   v14 = NFSharedSignpostLog();
   if (os_signpost_enabled(v14))
   {
@@ -2238,9 +2238,9 @@ LABEL_45:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "EXPRESS_UPDATE_ESE_APPLETS", "begin", buf, 2u);
   }
 
-  v300 = self;
-  v15 = [(NFExpressConfigESE *)self getSecureElementWrapperAndSetRouting];
-  if (!v15)
+  selfCopy = self;
+  getSecureElementWrapperAndSetRouting = [(NFExpressConfigESE *)self getSecureElementWrapperAndSetRouting];
+  if (!getSecureElementWrapperAndSetRouting)
   {
     v29 = [NSError alloc];
     v30 = [NSString stringWithUTF8String:"nfcd"];
@@ -2269,9 +2269,9 @@ LABEL_45:
     if (v39)
     {
       v40 = v39;
-      v41 = object_getClass(v300);
+      v41 = object_getClass(selfCopy);
       v42 = class_isMetaClass(v41);
-      v43 = object_getClassName(v300);
+      v43 = object_getClassName(selfCopy);
       v269 = sel_getName(v34);
       v44 = 45;
       if (v42)
@@ -2286,7 +2286,7 @@ LABEL_45:
     v45 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
-      v46 = object_getClass(v300);
+      v46 = object_getClass(selfCopy);
       if (class_isMetaClass(v46))
       {
         v47 = 43;
@@ -2297,7 +2297,7 @@ LABEL_45:
         v47 = 45;
       }
 
-      v48 = object_getClassName(v300);
+      v48 = object_getClassName(selfCopy);
       v49 = sel_getName(v38);
       *buf = 67109890;
       v330 = v47;
@@ -2311,7 +2311,7 @@ LABEL_45:
     }
 
     v25 = v37;
-    v15 = 0;
+    getSecureElementWrapperAndSetRouting = 0;
     goto LABEL_273;
   }
 
@@ -2328,7 +2328,7 @@ LABEL_45:
   }
 
   v50 = -2;
-  if (v11)
+  if (toCopy)
   {
     v50 = 0;
   }
@@ -2337,7 +2337,7 @@ LABEL_45:
   v51 = +[_NFHardwareManager sharedHardwareManager];
   v52 = [v51 nfcRadioEnabled:0 showUIPopup:0];
 
-  v293 = v11;
+  v293 = toCopy;
   if (!v52)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2345,9 +2345,9 @@ LABEL_45:
     if (v144)
     {
       v145 = v144;
-      v146 = object_getClass(v300);
+      v146 = object_getClass(selfCopy);
       v147 = class_isMetaClass(v146);
-      v148 = object_getClassName(v300);
+      v148 = object_getClassName(selfCopy);
       v277 = sel_getName(a2);
       v149 = 45;
       if (v147)
@@ -2362,7 +2362,7 @@ LABEL_45:
     v150 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v150, OS_LOG_TYPE_DEFAULT))
     {
-      v151 = object_getClass(v300);
+      v151 = object_getClass(selfCopy);
       if (class_isMetaClass(v151))
       {
         v152 = 43;
@@ -2373,7 +2373,7 @@ LABEL_45:
         v152 = 45;
       }
 
-      v153 = object_getClassName(v300);
+      v153 = object_getClassName(selfCopy);
       v154 = sel_getName(a2);
       *buf = 67109890;
       v330 = v152;
@@ -2388,20 +2388,20 @@ LABEL_45:
 
     v155 = +[NSMutableArray array];
     expressConfigUpdateRequired = 0;
-    v303 = 0;
+    nF_expressConfigHash = 0;
     v294 = 0;
 LABEL_158:
     v160 = v288 & 1;
-    if ((!v300 || !v300->super._expressConfigUpdateRequired) && v300->_effectivePassConfigHash == v303 && v300->_lastIsLegacyWalletBehaviour == v160)
+    if ((!selfCopy || !selfCopy->super._expressConfigUpdateRequired) && selfCopy->_effectivePassConfigHash == nF_expressConfigHash && selfCopy->_lastIsLegacyWalletBehaviour == v160)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v161 = NFLogGetLogger();
       if (v161)
       {
         v162 = v161;
-        v163 = object_getClass(v300);
+        v163 = object_getClass(selfCopy);
         v164 = class_isMetaClass(v163);
-        v165 = object_getClassName(v300);
+        v165 = object_getClassName(selfCopy);
         v278 = sel_getName(a2);
         v166 = 45;
         if (v164)
@@ -2419,7 +2419,7 @@ LABEL_158:
         goto LABEL_184;
       }
 
-      v168 = object_getClass(v300);
+      v168 = object_getClass(selfCopy);
       if (class_isMetaClass(v168))
       {
         v169 = 43;
@@ -2430,7 +2430,7 @@ LABEL_158:
         v169 = 45;
       }
 
-      v170 = object_getClassName(v300);
+      v170 = object_getClassName(selfCopy);
       v171 = sel_getName(a2);
       *buf = 67109890;
       v330 = v169;
@@ -2450,16 +2450,16 @@ LABEL_271:
       goto LABEL_272;
     }
 
-    if (!v300->super._expressConfigUpdateRequired && v300->_effectiveRestrictedPassIDListHash == v295 && v300->_lastIsLegacyWalletBehaviour == v160)
+    if (!selfCopy->super._expressConfigUpdateRequired && selfCopy->_effectiveRestrictedPassIDListHash == v295 && selfCopy->_lastIsLegacyWalletBehaviour == v160)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v172 = NFLogGetLogger();
       if (v172)
       {
         v173 = v172;
-        v174 = object_getClass(v300);
+        v174 = object_getClass(selfCopy);
         v175 = class_isMetaClass(v174);
-        v176 = object_getClassName(v300);
+        v176 = object_getClassName(selfCopy);
         v279 = sel_getName(a2);
         v177 = 45;
         if (v175)
@@ -2477,7 +2477,7 @@ LABEL_271:
         goto LABEL_184;
       }
 
-      v178 = object_getClass(v300);
+      v178 = object_getClass(selfCopy);
       if (class_isMetaClass(v178))
       {
         v179 = 43;
@@ -2488,7 +2488,7 @@ LABEL_271:
         v179 = 45;
       }
 
-      v180 = object_getClassName(v300);
+      v180 = object_getClassName(selfCopy);
       v181 = sel_getName(a2);
       *buf = 67109890;
       v330 = v179;
@@ -2511,7 +2511,7 @@ LABEL_253:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v244, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "EXPRESS_UPDATE_ESE_APPLETS", "configuring ATL", buf, 2u);
       }
 
-      [(NFExpressConfig *)v300 dumpConfig:v155 logLevel:6 prefix:@"Configuring"];
+      [(NFExpressConfig *)selfCopy dumpConfig:v155 logLevel:6 prefix:@"Configuring"];
       if (v294)
       {
         v245 = v160;
@@ -2520,9 +2520,9 @@ LABEL_253:
         if (v246)
         {
           v247 = v246;
-          v248 = object_getClass(v300);
+          v248 = object_getClass(selfCopy);
           v249 = class_isMetaClass(v248);
-          v267 = object_getClassName(v300);
+          v267 = object_getClassName(selfCopy);
           v283 = sel_getName(a2);
           v250 = 45;
           if (v249)
@@ -2537,7 +2537,7 @@ LABEL_253:
         v251 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v251, OS_LOG_TYPE_DEFAULT))
         {
-          v252 = object_getClass(v300);
+          v252 = object_getClass(selfCopy);
           if (class_isMetaClass(v252))
           {
             v253 = 43;
@@ -2548,7 +2548,7 @@ LABEL_253:
             v253 = 45;
           }
 
-          v254 = object_getClassName(v300);
+          v254 = object_getClassName(selfCopy);
           v255 = sel_getName(a2);
           *buf = 67110146;
           v330 = v253;
@@ -2566,7 +2566,7 @@ LABEL_253:
         v160 = v245;
       }
 
-      v256 = sub_100262E4C(v15, v155, v294, v160, v289);
+      v256 = sub_100262E4C(getSecureElementWrapperAndSetRouting, v155, v294, v160, enterCopy);
       v257 = NFSharedSignpostLog();
       if (os_signpost_enabled(v257))
       {
@@ -2576,9 +2576,9 @@ LABEL_253:
 
       if (v256)
       {
-        v300->_lastIsLegacyWalletBehaviour = v160;
-        v300->_effectivePassConfigHash = v303;
-        v300->_effectiveRestrictedPassIDListHash = v295;
+        selfCopy->_lastIsLegacyWalletBehaviour = v160;
+        selfCopy->_effectivePassConfigHash = nF_expressConfigHash;
+        selfCopy->_effectiveRestrictedPassIDListHash = v295;
         [NFExceptionsCALogger postAnalyticsExpressSetupFailureEvent:3 context:6 error:v256];
       }
 
@@ -2589,17 +2589,17 @@ LABEL_253:
     sela = a2;
     v299 = objc_autoreleasePoolPush();
     v182 = [NSMutableArray alloc];
-    v183 = [(NFExpressConfig *)v300 getExpressAidsForType:1];
+    v183 = [(NFExpressConfig *)selfCopy getExpressAidsForType:1];
     v184 = [v182 initWithArray:v183];
 
-    v185 = [(NFExpressConfig *)v300 getExpressAidsForType:5];
+    v185 = [(NFExpressConfig *)selfCopy getExpressAidsForType:5];
     [v184 addObjectsFromArray:v185];
 
-    v186 = [(NFExpressConfigESE *)v300 getSecureElementWrapperAndSetRouting];
+    getSecureElementWrapperAndSetRouting2 = [(NFExpressConfigESE *)selfCopy getSecureElementWrapperAndSetRouting];
     v297 = v155;
-    if (v186)
+    if (getSecureElementWrapperAndSetRouting2)
     {
-      v287 = v15;
+      v287 = getSecureElementWrapperAndSetRouting;
       v312 = 0u;
       v313 = 0u;
       v310 = 0u;
@@ -2623,7 +2623,7 @@ LABEL_253:
 
             v193 = *(*(&v310 + 1) + 8 * i);
             v194 = [NSData NF_dataWithHexString:v193];
-            v195 = sub_100257F24(v186, v194, 0);
+            v195 = sub_100257F24(getSecureElementWrapperAndSetRouting2, v194, 0);
 
             if (!v195)
             {
@@ -2632,9 +2632,9 @@ LABEL_253:
               if (v209)
               {
                 v210 = v209;
-                v211 = object_getClass(v300);
+                v211 = object_getClass(selfCopy);
                 v212 = class_isMetaClass(v211);
-                v265 = object_getClassName(v300);
+                v265 = object_getClassName(selfCopy);
                 v281 = sel_getName("_updateDriverExpressConfig");
                 v213 = 45;
                 if (v212)
@@ -2650,7 +2650,7 @@ LABEL_253:
               v184 = v292;
               if (os_log_type_enabled(v214, OS_LOG_TYPE_ERROR))
               {
-                v215 = object_getClass(v300);
+                v215 = object_getClass(selfCopy);
                 if (class_isMetaClass(v215))
                 {
                   v216 = 43;
@@ -2661,7 +2661,7 @@ LABEL_253:
                   v216 = 45;
                 }
 
-                v217 = object_getClassName(v300);
+                v217 = object_getClassName(selfCopy);
                 v218 = sel_getName("_updateDriverExpressConfig");
                 *v317 = 67110146;
                 v318 = v216;
@@ -2685,17 +2685,17 @@ LABEL_249:
               goto LABEL_250;
             }
 
-            v196 = [v195 supportedTypeFSystem];
-            if (v196 != 1 && v196 != 2)
+            supportedTypeFSystem = [v195 supportedTypeFSystem];
+            if (supportedTypeFSystem != 1 && supportedTypeFSystem != 2)
             {
               dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
               v235 = NFLogGetLogger();
               if (v235)
               {
                 v236 = v235;
-                v237 = object_getClass(v300);
+                v237 = object_getClass(selfCopy);
                 v238 = class_isMetaClass(v237);
-                v266 = object_getClassName(v300);
+                v266 = object_getClassName(selfCopy);
                 v282 = sel_getName("_updateDriverExpressConfig");
                 v239 = 45;
                 if (v238)
@@ -2711,7 +2711,7 @@ LABEL_249:
               v184 = v292;
               if (os_log_type_enabled(v214, OS_LOG_TYPE_ERROR))
               {
-                v240 = object_getClass(v300);
+                v240 = object_getClass(selfCopy);
                 if (class_isMetaClass(v240))
                 {
                   v241 = 43;
@@ -2722,7 +2722,7 @@ LABEL_249:
                   v241 = 45;
                 }
 
-                v242 = object_getClassName(v300);
+                v242 = object_getClassName(selfCopy);
                 v243 = sel_getName("_updateDriverExpressConfig");
                 *v317 = 67110146;
                 v318 = v241;
@@ -2741,7 +2741,7 @@ LABEL_249:
               goto LABEL_249;
             }
 
-            v190 = v196 | v190;
+            v190 = supportedTypeFSystem | v190;
           }
 
           v189 = [v187 countByEnumeratingWithState:&v310 objects:buf count:16];
@@ -2764,9 +2764,9 @@ LABEL_249:
       if (v220)
       {
         v221 = v220;
-        v222 = object_getClass(v300);
+        v222 = object_getClass(selfCopy);
         v223 = class_isMetaClass(v222);
-        v224 = object_getClassName(v300);
+        v224 = object_getClassName(selfCopy);
         v225 = sel_getName("_updateDriverExpressConfig");
         if ([v187 count])
         {
@@ -2793,7 +2793,7 @@ LABEL_249:
       v184 = v292;
       if (os_log_type_enabled(v228, OS_LOG_TYPE_DEFAULT))
       {
-        v229 = object_getClass(v300);
+        v229 = object_getClass(selfCopy);
         if (class_isMetaClass(v229))
         {
           v230 = 43;
@@ -2804,7 +2804,7 @@ LABEL_249:
           v230 = 45;
         }
 
-        v231 = object_getClassName(v300);
+        v231 = object_getClassName(selfCopy);
         v232 = sel_getName("_updateDriverExpressConfig");
         v233 = [v187 count];
         *v317 = 67110402;
@@ -2832,7 +2832,7 @@ LABEL_249:
         _os_log_impl(&_mh_execute_header, v228, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i has type F express: %{public}@  entryConditions: %02X", v317, 0x32u);
       }
 
-      v15 = v287;
+      getSecureElementWrapperAndSetRouting = v287;
       v160 = v288 & 1;
       v208 = v299;
       if (![v187 count]|| !v190)
@@ -2851,9 +2851,9 @@ LABEL_249:
       if (v198)
       {
         v199 = v198;
-        v200 = object_getClass(v300);
+        v200 = object_getClass(selfCopy);
         v201 = class_isMetaClass(v200);
-        v202 = object_getClassName(v300);
+        v202 = object_getClassName(selfCopy);
         v280 = sel_getName("_updateDriverExpressConfig");
         v203 = 45;
         if (v201)
@@ -2868,7 +2868,7 @@ LABEL_249:
       v187 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v187, OS_LOG_TYPE_ERROR))
       {
-        v204 = object_getClass(v300);
+        v204 = object_getClass(selfCopy);
         if (class_isMetaClass(v204))
         {
           v205 = 43;
@@ -2879,7 +2879,7 @@ LABEL_249:
           v205 = 45;
         }
 
-        v206 = object_getClassName(v300);
+        v206 = object_getClassName(selfCopy);
         v207 = sel_getName("_updateDriverExpressConfig");
         *buf = 67109890;
         v330 = v205;
@@ -2900,12 +2900,12 @@ LABEL_250:
 
 LABEL_251:
     objc_autoreleasePoolPop(v208);
-    v11 = v293;
+    toCopy = v293;
     a2 = sela;
     v155 = v297;
-    if (v300)
+    if (selfCopy)
     {
-      v300->super._expressConfigUpdateRequired = 0;
+      selfCopy->super._expressConfigUpdateRequired = 0;
     }
 
     goto LABEL_253;
@@ -2920,15 +2920,15 @@ LABEL_251:
 
   v298 = +[NSMutableOrderedSet orderedSet];
   v291 = objc_opt_new();
-  if (!v11)
+  if (!toCopy)
   {
     goto LABEL_43;
   }
 
-  v54 = v300;
-  if (v300)
+  v54 = selfCopy;
+  if (selfCopy)
   {
-    v54 = v300->super._passes;
+    v54 = selfCopy->super._passes;
   }
 
   v55 = v54;
@@ -2949,25 +2949,25 @@ LABEL_43:
   v309 = 0u;
   v306 = 0u;
   v307 = 0u;
-  v57 = v300;
-  v285 = a4;
-  if (v300)
+  v57 = selfCopy;
+  activateCopy = activate;
+  if (selfCopy)
   {
-    v57 = v300->super._passes;
+    v57 = selfCopy->super._passes;
   }
 
   sel = a2;
-  v286 = v15;
+  v286 = getSecureElementWrapperAndSetRouting;
   obj = v57;
   v302 = [obj countByEnumeratingWithState:&v306 objects:v314 count:16];
   if (!v302)
   {
-    v58 = v300;
+    v58 = selfCopy;
     goto LABEL_147;
   }
 
   v301 = *v307;
-  v58 = v300;
+  v58 = selfCopy;
   do
   {
     v59 = 0;
@@ -2981,7 +2981,7 @@ LABEL_43:
       v60 = *(*(&v306 + 1) + 8 * v59);
       v61 = [v60 objectForKeyedSubscript:@"appletIdentifier"];
       v62 = [v60 objectForKeyedSubscript:@"expressEnabled"];
-      v63 = [v62 BOOLValue];
+      bOOLValue = [v62 BOOLValue];
 
       v64 = [v60 objectForKeyedSubscript:@"passUniqueID"];
       v65 = sub_10000ADB0(v58, v61, 1, 0);
@@ -3021,11 +3021,11 @@ LABEL_43:
             v86 = 45;
           }
 
-          v87 = object_getClassName(v300);
+          v87 = object_getClassName(selfCopy);
           v88 = sel_getName(sel);
           *buf = 67110146;
           v330 = v86;
-          v58 = v300;
+          v58 = selfCopy;
           v331 = 2082;
           v332 = v87;
           v333 = 2082;
@@ -3097,7 +3097,7 @@ LABEL_43:
         goto LABEL_74;
       }
 
-      if (v63)
+      if (bOOLValue)
       {
         if ([v66 authTransientSupport])
         {
@@ -3110,18 +3110,18 @@ LABEL_43:
             v92 = class_isMetaClass(v91);
             v93 = object_getClassName(v58);
             v94 = sel_getName(sel);
-            v95 = [v66 identifier];
+            identifier = [v66 identifier];
             v272 = v94;
-            v11 = v293;
+            toCopy = v293;
             v96 = 45;
             if (v92)
             {
               v96 = 43;
             }
 
-            v90(4, "%c[%{public}s %{public}s]:%i Applet %{public}@ requires authorization and is invalid for express", v96, v93, v272, 878, v95);
+            v90(4, "%c[%{public}s %{public}s]:%i Applet %{public}@ requires authorization and is invalid for express", v96, v93, v272, 878, identifier);
 
-            v58 = v300;
+            v58 = selfCopy;
           }
 
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3141,10 +3141,10 @@ LABEL_43:
 
             v100 = object_getClassName(v58);
             v101 = sel_getName(sel);
-            v102 = [v66 identifier];
+            identifier2 = [v66 identifier];
             *buf = 67110146;
             v330 = v99;
-            v11 = v293;
+            toCopy = v293;
             v331 = 2082;
             v332 = v100;
             v333 = 2082;
@@ -3152,10 +3152,10 @@ LABEL_43:
             v335 = 1024;
             v336 = 878;
             v337 = 2114;
-            v338 = v102;
+            v338 = identifier2;
             _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Applet %{public}@ requires authorization and is invalid for express", buf, 0x2Cu);
 
-            v58 = v300;
+            v58 = selfCopy;
           }
 
           goto LABEL_75;
@@ -3180,7 +3180,7 @@ LABEL_43:
                 v137 = 43;
               }
 
-              v58 = v300;
+              v58 = selfCopy;
               v134(4, "%c[%{public}s %{public}s]:%i @applet %{public}@ is not personalized", v137, v264, v276, 887, v61);
             }
 
@@ -3199,11 +3199,11 @@ LABEL_43:
                 v140 = 45;
               }
 
-              v141 = object_getClassName(v300);
+              v141 = object_getClassName(selfCopy);
               v142 = sel_getName(sel);
               *buf = 67110146;
               v330 = v140;
-              v58 = v300;
+              v58 = selfCopy;
               v331 = 2082;
               v332 = v141;
               v333 = 2082;
@@ -3217,12 +3217,12 @@ LABEL_43:
           }
 
 LABEL_75:
-          if (([v11 containsObject:v64] & 1) == 0)
+          if (([toCopy containsObject:v64] & 1) == 0)
           {
             goto LABEL_110;
           }
 
-          if (v63)
+          if (bOOLValue)
           {
             [v294 addObject:v64];
             v295 ^= [v64 hash];
@@ -3245,7 +3245,7 @@ LABEL_100:
               v117 = 43;
             }
 
-            v58 = v300;
+            v58 = selfCopy;
             v114(4, "%c[%{public}s %{public}s]:%i Pass %{public}@ is not in express; ignore", v117, v262, v274, 896, v64);
           }
 
@@ -3264,11 +3264,11 @@ LABEL_100:
               v120 = 45;
             }
 
-            v121 = object_getClassName(v300);
+            v121 = object_getClassName(selfCopy);
             v122 = sel_getName(sel);
             *buf = 67110146;
             v330 = v120;
-            v58 = v300;
+            v58 = selfCopy;
             v331 = 2082;
             v332 = v121;
             v333 = 2082;
@@ -3298,7 +3298,7 @@ LABEL_100:
             v127 = 43;
           }
 
-          v58 = v300;
+          v58 = selfCopy;
           v124(4, "%c[%{public}s %{public}s]:%i @applet %{public}@ is in GP locked state", v127, v263, v275, 882, v61);
         }
 
@@ -3317,11 +3317,11 @@ LABEL_100:
             v130 = 45;
           }
 
-          v131 = object_getClassName(v300);
+          v131 = object_getClassName(selfCopy);
           v132 = sel_getName(sel);
           *buf = 67110146;
           v330 = v130;
-          v58 = v300;
+          v58 = selfCopy;
           v331 = 2082;
           v332 = v131;
           v333 = 2082;
@@ -3388,7 +3388,7 @@ LABEL_74:
         _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i @applet %{public}@ is not in express. ATL to handle this going forward", buf, 0x2Cu);
       }
 
-      if ([v11 containsObject:v64])
+      if ([toCopy containsObject:v64])
       {
         goto LABEL_100;
       }
@@ -3410,20 +3410,20 @@ LABEL_147:
   if ([v298 count])
   {
     [v58 removeAppletsFromConfig:v298];
-    if (v290)
+    if (changedCopy)
     {
-      *v290 = 1;
+      *changedCopy = 1;
     }
   }
 
-  v15 = v286;
+  getSecureElementWrapperAndSetRouting = v286;
   a2 = sel;
-  if (v285)
+  if (activateCopy)
   {
-    v158 = v300;
-    if (v300)
+    v158 = selfCopy;
+    if (selfCopy)
     {
-      v158 = v300->super._passes;
+      v158 = selfCopy->super._passes;
     }
 
     v159 = v158;
@@ -3434,10 +3434,10 @@ LABEL_147:
       [v155 removeObjectsInArray:v291];
     }
 
-    v303 = [v155 NF_expressConfigHash];
-    if (v300)
+    nF_expressConfigHash = [v155 NF_expressConfigHash];
+    if (selfCopy)
     {
-      expressConfigUpdateRequired = v300->super._expressConfigUpdateRequired;
+      expressConfigUpdateRequired = selfCopy->super._expressConfigUpdateRequired;
     }
 
     else
@@ -3467,14 +3467,14 @@ LABEL_275:
   return v28;
 }
 
-- (BOOL)hasUWBKeys:(id)a3
+- (BOOL)hasUWBKeys:(id)keys
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  keysCopy = keys;
+  v4 = [keysCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3485,7 +3485,7 @@ LABEL_275:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keysCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
@@ -3494,9 +3494,9 @@ LABEL_275:
         {
           v10 = v9;
           v11 = [v8 objectForKeyedSubscript:@"UWBExpressEnabled"];
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
 
-          if (v12)
+          if (bOOLValue)
           {
             v13 = 1;
             goto LABEL_12;
@@ -3504,7 +3504,7 @@ LABEL_275:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [keysCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;

@@ -1,7 +1,7 @@
 @interface PREditorLookViews
 - (NSArray)contentViews;
 - (PREditorLookViews)init;
-- (void)enumerateViewsUsingBlock:(id)a3;
+- (void)enumerateViewsUsingBlock:(id)block;
 @end
 
 @implementation PREditorLookViews
@@ -17,35 +17,35 @@
     backgroundView = v2->_backgroundView;
     v2->_backgroundView = v3;
 
-    v5 = [(UIView *)v2->_backgroundView layer];
-    [v5 setName:@"backgroundView"];
+    layer = [(UIView *)v2->_backgroundView layer];
+    [layer setName:@"backgroundView"];
 
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
     foregroundView = v2->_foregroundView;
     v2->_foregroundView = v6;
 
-    v8 = [(UIView *)v2->_foregroundView layer];
-    [v8 setName:@"foregroundView"];
+    layer2 = [(UIView *)v2->_foregroundView layer];
+    [layer2 setName:@"foregroundView"];
 
     v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
     floatingView = v2->_floatingView;
     v2->_floatingView = v9;
 
-    v11 = [(UIView *)v2->_floatingView layer];
-    [v11 setName:@"floatingView"];
+    layer3 = [(UIView *)v2->_floatingView layer];
+    [layer3 setName:@"floatingView"];
   }
 
   return v2;
 }
 
-- (void)enumerateViewsUsingBlock:(id)a3
+- (void)enumerateViewsUsingBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_foregroundView, 1);
-  (*v4)(v6, self->_floatingView, 2);
+  (*v4)(blockCopy, self->_foregroundView, 1);
+  (*v4)(blockCopy, self->_floatingView, 2);
 }
 
 - (NSArray)contentViews

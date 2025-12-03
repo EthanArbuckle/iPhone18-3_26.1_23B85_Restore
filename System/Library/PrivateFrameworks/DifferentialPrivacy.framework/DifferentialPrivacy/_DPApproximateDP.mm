@@ -1,49 +1,49 @@
 @interface _DPApproximateDP
-+ (BOOL)isValidDelta:(double)a3 error:(id *)a4;
-+ (BOOL)isValidEpsilon:(double)a3 error:(id *)a4;
-- (BOOL)exceed:(id)a3;
-- (_DPApproximateDP)initWithEpsilon:(double)a3 delta:(double)a4 error:(id *)a5;
++ (BOOL)isValidDelta:(double)delta error:(id *)error;
++ (BOOL)isValidEpsilon:(double)epsilon error:(id *)error;
+- (BOOL)exceed:(id)exceed;
+- (_DPApproximateDP)initWithEpsilon:(double)epsilon delta:(double)delta error:(id *)error;
 - (id)description;
 @end
 
 @implementation _DPApproximateDP
 
-- (_DPApproximateDP)initWithEpsilon:(double)a3 delta:(double)a4 error:(id *)a5
+- (_DPApproximateDP)initWithEpsilon:(double)epsilon delta:(double)delta error:(id *)error
 {
-  if ([_DPApproximateDP isValidEpsilon:"isValidEpsilon:error:" error:?]&& [_DPApproximateDP isValidDelta:a5 error:a4])
+  if ([_DPApproximateDP isValidEpsilon:"isValidEpsilon:error:" error:?]&& [_DPApproximateDP isValidDelta:error error:delta])
   {
     v12.receiver = self;
     v12.super_class = _DPApproximateDP;
     v9 = [(_DPApproximateDP *)&v12 init];
     if (v9)
     {
-      v9->_epsilon = a3;
-      v9->_delta = a4;
+      v9->_epsilon = epsilon;
+      v9->_delta = delta;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)exceed:(id)a3
+- (BOOL)exceed:(id)exceed
 {
-  v4 = a3;
+  exceedCopy = exceed;
   [(_DPApproximateDP *)self epsilon];
   v6 = v5;
-  [v4 epsilon];
+  [exceedCopy epsilon];
   if (v6 - v7 <= 0.00000001)
   {
     [(_DPApproximateDP *)self delta];
     v10 = v9;
-    [v4 delta];
+    [exceedCopy delta];
     v8 = v10 - v11 > 1.0e-20;
   }
 
@@ -55,16 +55,16 @@
   return v8;
 }
 
-+ (BOOL)isValidEpsilon:(double)a3 error:(id *)a4
++ (BOOL)isValidEpsilon:(double)epsilon error:(id *)error
 {
-  v5 = (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v6 = a3 < 0.0 && ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a3 >= 0.0)
+  v5 = (*&epsilon & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v6 = epsilon < 0.0 && ((*&epsilon & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (epsilon >= 0.0)
   {
     v5 = 0;
   }
 
-  v7 = (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v5;
+  v7 = (*&epsilon & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v5;
   if ((v7 | v6) != 1)
   {
     return 1;
@@ -77,18 +77,18 @@
     [_DPSemanticVersion initWithString:v8 error:v9];
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return 0;
 }
 
-+ (BOOL)isValidDelta:(double)a3 error:(id *)a4
++ (BOOL)isValidDelta:(double)delta error:(id *)error
 {
-  v4 = a3 <= 1.0 && a3 >= 0.0;
+  v4 = delta <= 1.0 && delta >= 0.0;
   if (!v4)
   {
     v6 = _DPPrivacyBudgetError(1, @"Approximate-DP delta must be not NAN, at least 0.0, and at most 1.0.");
@@ -98,10 +98,10 @@
       [_DPSemanticVersion initWithString:v6 error:v7];
     }
 
-    if (a4)
+    if (error)
     {
       v8 = v6;
-      *a4 = v6;
+      *error = v6;
     }
   }
 

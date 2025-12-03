@@ -1,13 +1,13 @@
 @interface SemanticStylesShaders
-- (SemanticStylesShaders)initWithMetalContext:(id)a3;
+- (SemanticStylesShaders)initWithMetalContext:(id)context;
 @end
 
 @implementation SemanticStylesShaders
 
-- (SemanticStylesShaders)initWithMetalContext:(id)a3
+- (SemanticStylesShaders)initWithMetalContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_29588B8C8(self);
 LABEL_16:
@@ -24,7 +24,7 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"ssCalculateLocalHistogramStats", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v5, @"ssCalculateLocalHistogramStats", 0);
   ssCalculateLocalHistogramStats = v6->_ssCalculateLocalHistogramStats;
   v6->_ssCalculateLocalHistogramStats = v7;
 
@@ -34,7 +34,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"ssCalculateGlobalHistogram", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v9, @"ssCalculateGlobalHistogram", 0);
   ssCalculateGlobalHistogram = v6->_ssCalculateGlobalHistogram;
   v6->_ssCalculateGlobalHistogram = v10;
 
@@ -44,7 +44,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v13 = objc_msgSend_computePipelineStateFor_constants_(v4, v12, @"ssCalculateGlobalStats", 0);
+  v13 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v12, @"ssCalculateGlobalStats", 0);
   ssCalculateGlobalStats = v6->_ssCalculateGlobalStats;
   v6->_ssCalculateGlobalStats = v13;
 
@@ -54,7 +54,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v16 = objc_msgSend_computePipelineStateFor_constants_(v4, v15, @"ssCreateGuide", 0);
+  v16 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v15, @"ssCreateGuide", 0);
   ssCreateGuide = v6->_ssCreateGuide;
   v6->_ssCreateGuide = v16;
 
@@ -64,7 +64,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v19 = objc_msgSend_computePipelineStateFor_constants_(v4, v18, @"ssRenderAdjustments", 0);
+  v19 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v18, @"ssRenderAdjustments", 0);
   ssRenderAdjustments = v6->_ssRenderAdjustments;
   v6->_ssRenderAdjustments = v19;
 

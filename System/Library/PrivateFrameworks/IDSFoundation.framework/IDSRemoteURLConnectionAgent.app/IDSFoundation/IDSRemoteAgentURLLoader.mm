@@ -1,6 +1,6 @@
 @interface IDSRemoteAgentURLLoader
 + (BOOL)shouldAssertWiFi;
-- (IDSRemoteAgentURLLoader)initWithURLRequest:(id)a3 completionBlock:(id)a4;
+- (IDSRemoteAgentURLLoader)initWithURLRequest:(id)request completionBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 - (void)load;
@@ -18,10 +18,10 @@
   return byte_100015660;
 }
 
-- (IDSRemoteAgentURLLoader)initWithURLRequest:(id)a3 completionBlock:(id)a4
+- (IDSRemoteAgentURLLoader)initWithURLRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = IDSRemoteAgentURLLoader;
   v8 = [(IDSRemoteAgentURLLoader *)&v21 init];
@@ -31,21 +31,21 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = requestCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Creating loader with request: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v20 = v6;
+      v20 = requestCopy;
       _IDSLogV();
     }
 
-    v10 = [v6 mutableCopy];
+    v10 = [requestCopy mutableCopy];
     request = v8->_request;
     v8->_request = v10;
 
-    v12 = [v7 copy];
+    v12 = [blockCopy copy];
     block = v8->_block;
     v8->_block = v12;
 
@@ -90,8 +90,8 @@
   [(IMRemoteURLConnection *)self->_remoteURLConnection setKeepAliveWifi:[(IDSRemoteAgentURLLoader *)self keepAliveWifi]];
   [(IMRemoteURLConnection *)self->_remoteURLConnection setKeepAliveCell:[(IDSRemoteAgentURLLoader *)self keepAliveCell]];
   v7 = self->_remoteURLConnection;
-  v8 = [(IDSRemoteAgentURLLoader *)self bundleIdentifierForDataUsage];
-  [(IMRemoteURLConnection *)v7 setBundleIdentifierForDataUsage:v8];
+  bundleIdentifierForDataUsage = [(IDSRemoteAgentURLLoader *)self bundleIdentifierForDataUsage];
+  [(IMRemoteURLConnection *)v7 setBundleIdentifierForDataUsage:bundleIdentifierForDataUsage];
 
   [(IMRemoteURLConnection *)self->_remoteURLConnection setForceCellularIfPossible:[(IDSRemoteAgentURLLoader *)self forceCellularIfPossible]];
   [(IMRemoteURLConnection *)self->_remoteURLConnection setRequireIDSHost:[(IDSRemoteAgentURLLoader *)self requireIDSHost]];
@@ -108,7 +108,7 @@
     *buf = 138412546;
     v9 = request;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelling URL request: %@  (%p)", buf, 0x16u);
   }
 

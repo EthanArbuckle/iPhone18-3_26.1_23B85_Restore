@@ -6,13 +6,13 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(HUColorWheelViewAccessibility *)self superview];
-  v3 = [v2 subviews];
+  superview = [(HUColorWheelViewAccessibility *)self superview];
+  subviews = [superview subviews];
 
-  v4 = [v3 axFilterObjectsUsingBlock:&__block_literal_global_4];
-  v5 = [v4 firstObject];
+  v4 = [subviews axFilterObjectsUsingBlock:&__block_literal_global_4];
+  firstObject = [v4 firstObject];
 
-  [v5 accessibilityActivationPoint];
+  [firstObject accessibilityActivationPoint];
   v7 = v6;
   v9 = v8;
 

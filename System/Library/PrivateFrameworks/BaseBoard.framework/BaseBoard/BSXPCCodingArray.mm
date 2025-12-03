@@ -1,24 +1,24 @@
 @interface BSXPCCodingArray
-- (BOOL)isEqual:(id)a3;
-- (BSXPCCodingArray)initWithArray:(id)a3;
-- (BSXPCCodingArray)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BSXPCCodingArray)initWithArray:(id)array;
+- (BSXPCCodingArray)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation BSXPCCodingArray
 
-- (BSXPCCodingArray)initWithArray:(id)a3
+- (BSXPCCodingArray)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = BSXPCCodingArray;
   v5 = [(BSXPCCodingArray *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     array = v5->_array;
     v5->_array = v6;
   }
@@ -26,13 +26,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = BSEqualArrays(self->_array, v4[1]);
+    v5 = BSEqualArrays(self->_array, equalCopy[1]);
   }
 
   else
@@ -43,15 +43,15 @@
   return v5;
 }
 
-- (BSXPCCodingArray)initWithXPCDictionary:(id)a3
+- (BSXPCCodingArray)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = BSXPCCodingArray;
   v5 = [(BSXPCCodingArray *)&v9 init];
   if (v5)
   {
-    v6 = BSCreateDeserializedArrayFromXPCDictionaryWithKey(v4, "items", &__block_literal_global_26);
+    v6 = BSCreateDeserializedArrayFromXPCDictionaryWithKey(dictionaryCopy, "items", &__block_literal_global_26);
     array = v5->_array;
     v5->_array = v6;
   }
@@ -61,10 +61,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BSXPCCodingArray *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSXPCCodingArray *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -75,21 +75,21 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSXPCCodingArray *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSXPCCodingArray *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSXPCCodingArray *)self succinctDescriptionBuilder];
-  [v5 appendArraySection:self->_array withName:0 multilinePrefix:v4 skipIfEmpty:1];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSXPCCodingArray *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendArraySection:self->_array withName:0 multilinePrefix:prefixCopy skipIfEmpty:1];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 @end

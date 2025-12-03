@@ -1,16 +1,16 @@
 @interface JavaUtilConcurrentCopyOnWriteArrayList_CowSubList
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
 - (BOOL)isEmpty;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
-- (JavaUtilConcurrentCopyOnWriteArrayList_CowSubList)subListWithInt:(int)a3 withInt:(int)a4;
-- (id)getWithInt:(int)a3;
-- (id)listIteratorWithInt:(int)a3;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
+- (JavaUtilConcurrentCopyOnWriteArrayList_CowSubList)subListWithInt:(int)int withInt:(int)withInt;
+- (id)getWithInt:(int)int;
+- (id)listIteratorWithInt:(int)int;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
 - (int)size;
 - (void)__javaClone;
 - (void)clear;
@@ -41,7 +41,7 @@
   return *(v2 + 16) == *(v2 + 20);
 }
 
-- (id)getWithInt:(int)a3
+- (id)getWithInt:(int)int
 {
   v3 = atomic_load(&self->slice_);
   v4 = atomic_load(&self->this$0_->elements_);
@@ -51,7 +51,7 @@
   }
 
   v6 = *(v4 + 8);
-  v7 = (v3[4] + a3);
+  v7 = (v3[4] + int);
   if (v7 < 0 || v7 >= v6)
   {
     IOSArray_throwOutOfBoundsWithMsg(v6, v7);
@@ -60,7 +60,7 @@
   return *(v4 + 24 + 8 * v7);
 }
 
-- (id)listIteratorWithInt:(int)a3
+- (id)listIteratorWithInt:(int)int
 {
   v3 = atomic_load(&self->slice_);
   v4 = atomic_load(&self->this$0_->elements_);
@@ -78,11 +78,11 @@
   *&v6->from_ = v8;
   v6->index_ = v8;
   result = v6;
-  *(result + 6) = *(v3 + 4) + a3;
+  *(result + 6) = *(v3 + 4) + int;
   return result;
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
   v3 = atomic_load(&self->slice_);
   v4 = atomic_load(&self->this$0_->elements_);
@@ -92,7 +92,7 @@
   }
 
   [v3 checkConcurrentModificationWithNSObjectArray:v4];
-  result = JavaUtilConcurrentCopyOnWriteArrayList_indexOfWithId_withNSObjectArray_withInt_withInt_(a3, v4, *(v3 + 16), *(v3 + 20));
+  result = JavaUtilConcurrentCopyOnWriteArrayList_indexOfWithId_withNSObjectArray_withInt_withInt_(id, v4, *(v3 + 16), *(v3 + 20));
   if (result != -1)
   {
     result -= *(v3 + 16);
@@ -101,7 +101,7 @@
   return result;
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   v3 = atomic_load(&self->slice_);
   v4 = atomic_load(&self->this$0_->elements_);
@@ -111,7 +111,7 @@
   }
 
   [v3 checkConcurrentModificationWithNSObjectArray:v4];
-  result = JavaUtilConcurrentCopyOnWriteArrayList_lastIndexOfWithId_withNSObjectArray_withInt_withInt_(a3, v4, v3[4], v3[5]);
+  result = JavaUtilConcurrentCopyOnWriteArrayList_lastIndexOfWithId_withNSObjectArray_withInt_withInt_(id, v4, v3[4], v3[5]);
   if (result != -1)
   {
     result -= v3[4];
@@ -120,7 +120,7 @@
   return result;
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   v3 = atomic_load(&self->slice_);
   v4 = atomic_load(&self->this$0_->elements_);
@@ -133,13 +133,13 @@
   v6 = v3[4];
   v7 = v3[5];
 
-  return JavaUtilConcurrentCopyOnWriteArrayList_containsAllWithJavaUtilCollection_withNSObjectArray_withInt_withInt_(a3, v4, v6, v7);
+  return JavaUtilConcurrentCopyOnWriteArrayList_containsAllWithJavaUtilCollection_withNSObjectArray_withInt_withInt_(collection, v4, v6, v7);
 }
 
-- (JavaUtilConcurrentCopyOnWriteArrayList_CowSubList)subListWithInt:(int)a3 withInt:(int)a4
+- (JavaUtilConcurrentCopyOnWriteArrayList_CowSubList)subListWithInt:(int)int withInt:(int)withInt
 {
   v7 = atomic_load(&self->slice_);
-  if (a3 < 0 || a3 > a4 || [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self size]< a4)
+  if (int < 0 || int > withInt || [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self size]< withInt)
   {
     [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self size];
     v20 = JreStrcat("$I$I$I", v13, v14, v15, v16, v17, v18, v19, @"from=");
@@ -156,7 +156,7 @@
   v9 = *(v7 + 8);
   v10 = *(v7 + 16);
   v11 = [JavaUtilConcurrentCopyOnWriteArrayList_CowSubList alloc];
-  JavaUtilConcurrentCopyOnWriteArrayList_CowSubList_initWithJavaUtilConcurrentCopyOnWriteArrayList_withNSObjectArray_withInt_withInt_(v11, v8, v9, v10 + a3, v10 + a4);
+  JavaUtilConcurrentCopyOnWriteArrayList_CowSubList_initWithJavaUtilConcurrentCopyOnWriteArrayList_withNSObjectArray_withInt_withInt_(v11, v8, v9, v10 + int, v10 + withInt);
 
   return v11;
 }
@@ -193,7 +193,7 @@
   objc_sync_exit(v3);
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   v5 = self->this$0_;
   objc_sync_enter(v5);
@@ -205,25 +205,25 @@
 
   v7 = *(v6 + 20);
   v8 = atomic_load(&self->slice_);
-  [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self addWithInt:(v7 - *(v8 + 16)) withId:a3];
+  [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self addWithInt:(v7 - *(v8 + 16)) withId:id];
   objc_sync_exit(v5);
   return 1;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
   v5 = self->this$0_;
   objc_sync_enter(v5);
-  LOBYTE(a3) = [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self addAllWithInt:[(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self size] withJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self addAllWithInt:[(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self size] withJavaUtilCollection:collection];
   objc_sync_exit(v5);
-  return a3;
+  return collection;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   v5 = self->this$0_;
   objc_sync_enter(v5);
-  v6 = [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self indexOfWithId:a3];
+  v6 = [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self indexOfWithId:id];
   if (v6 != -1)
   {
     [(JavaUtilConcurrentCopyOnWriteArrayList_CowSubList *)self removeWithInt:v6];
@@ -233,7 +233,7 @@
   return v6 != -1;
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   v5 = self->this$0_;
   objc_sync_enter(v5);
@@ -250,7 +250,7 @@
   v10 = atomic_load(p_slice);
   v11 = *(v10 + 16);
   v12 = atomic_load(p_slice);
-  v13 = sub_1002899CC(v9, a3, 0, v11, *(v12 + 20));
+  v13 = sub_1002899CC(v9, collection, 0, v11, *(v12 + 20));
   v14 = atomic_load(&self->this$0_->elements_);
   v15 = atomic_load(p_slice);
   v16 = *(v15 + 16);
@@ -265,7 +265,7 @@
   return v13 != 0;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   v5 = self->this$0_;
   objc_sync_enter(v5);
@@ -282,7 +282,7 @@
   v10 = atomic_load(p_slice);
   v11 = *(v10 + 16);
   v12 = atomic_load(p_slice);
-  v13 = sub_1002899CC(v9, a3, 1, v11, *(v12 + 20));
+  v13 = sub_1002899CC(v9, collection, 1, v11, *(v12 + 20));
   v14 = atomic_load(&self->this$0_->elements_);
   v15 = atomic_load(p_slice);
   v16 = *(v15 + 16);

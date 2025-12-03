@@ -1,68 +1,68 @@
 @interface AVAssetWriterInputWritingHelper
-- (AVAssetWriterInputWritingHelper)initWithConfigurationState:(id)a3 assetWriterTrack:(id)a4 error:(id *)a5;
-- (BOOL)_checkIfClientSetProResRAWRequiredMetadataReturningError:(id *)a3;
-- (BOOL)_checkProResRAWRequiredMetadataForPixelBufferReturningError:(id *)a3;
-- (BOOL)_checkProResRAWRequiredMetadataForSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4;
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4;
+- (AVAssetWriterInputWritingHelper)initWithConfigurationState:(id)state assetWriterTrack:(id)track error:(id *)error;
+- (BOOL)_checkIfClientSetProResRAWRequiredMetadataReturningError:(id *)error;
+- (BOOL)_checkProResRAWRequiredMetadataForPixelBufferReturningError:(id *)error;
+- (BOOL)_checkProResRAWRequiredMetadataForSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time;
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time;
 - (BOOL)canPerformMultiplePasses;
 - (BOOL)mediaDataRequesterShouldRequestMediaData;
-- (BOOL)prepareToFinishWritingReturningError:(id *)a3;
+- (BOOL)prepareToFinishWritingReturningError:(id *)error;
 - (__CVPixelBufferPool)pixelBufferPool;
-- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)a3;
-- (int64_t)appendCaption:(id)a3 error:(id *)a4;
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4;
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-- (void)_nudgeMediaDataRequesterIfAppropriate:(id)a3;
+- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)status;
+- (int64_t)appendCaption:(id)caption error:(id *)error;
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error;
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
+- (void)_nudgeMediaDataRequesterIfAppropriate:(id)appropriate;
 - (void)_startObservingReadyForMoreMediaDataKeyPath;
 - (void)_stopObservingReadyForMoreMediaDataKeyPath;
 - (void)beginPassIfAppropriate;
 - (void)dealloc;
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3;
-- (void)markAsFinishedAndTransitionCurrentHelper:(id)a3;
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry;
+- (void)markAsFinishedAndTransitionCurrentHelper:(id)helper;
 - (void)markCurrentPassAsFinished;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareToEndSession;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
 - (void)stopRequestingMediaData;
 @end
 
 @implementation AVAssetWriterInputWritingHelper
 
-- (AVAssetWriterInputWritingHelper)initWithConfigurationState:(id)a3 assetWriterTrack:(id)a4 error:(id *)a5
+- (AVAssetWriterInputWritingHelper)initWithConfigurationState:(id)state assetWriterTrack:(id)track error:(id *)error
 {
   v51.receiver = self;
   v51.super_class = AVAssetWriterInputWritingHelper;
-  v8 = [(AVAssetWriterInputHelper *)&v51 initWithConfigurationState:a3, a4, a5];
-  v9 = v8;
-  if (!a4)
+  error = [(AVAssetWriterInputHelper *)&v51 initWithConfigurationState:state, track, error];
+  v9 = error;
+  if (!track)
   {
-    v38 = v8;
+    v38 = error;
     v44 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v9 userInfo:{a2, @"invalid parameter not satisfying: %s", v39, v40, v41, v42, v43, "assetWriterTrack != nil"), 0}];
     objc_exception_throw(v44);
   }
 
-  if (v8)
+  if (error)
   {
-    v8->_assetWriterTrack = a4;
-    [a3 setTrackID:{objc_msgSend(a4, "trackID")}];
-    if (![a3 outputSettings])
+    error->_assetWriterTrack = track;
+    [state setTrackID:{objc_msgSend(track, "trackID")}];
+    if (![state outputSettings])
     {
-      if ([objc_msgSend(a3 "mediaType")])
+      if ([objc_msgSend(state "mediaType")])
       {
-        v10 = [a3 sourceFormatHint];
-        if (v10)
+        sourceFormatHint = [state sourceFormatHint];
+        if (sourceFormatHint)
         {
-          -[AVFigAssetWriterTrack setFormatDescriptions:](v9->_assetWriterTrack, "setFormatDescriptions:", [MEMORY[0x1E695DEC8] arrayWithObject:v10]);
+          -[AVFigAssetWriterTrack setFormatDescriptions:](v9->_assetWriterTrack, "setFormatDescriptions:", [MEMORY[0x1E695DEC8] arrayWithObject:sourceFormatHint]);
         }
       }
     }
 
-    v11 = [a3 metadataItems];
-    if (v11)
+    metadataItems = [state metadataItems];
+    if (metadataItems)
     {
-      v12 = v11;
-      if ([v11 count])
+      v12 = metadataItems;
+      if ([metadataItems count])
       {
         [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setFigMetadata:[AVMetadataItem _figMetadataPropertyFromMetadataItems:v12]];
         if ([+[AVMetadataItem metadataItemsFromArray:withStringValue:](AVMetadataItem metadataItemsFromArray:-[NSArray arrayByAddingObjectsFromArray:](+[AVMetadataItem metadataItemsFromArray:withKey:keySpace:](AVMetadataItem withStringValue:{"metadataItemsFromArray:withKey:keySpace:", v12, @"tagc", @"uiso", "arrayByAddingObjectsFromArray:", +[AVMetadataItem metadataItemsFromArray:withKey:keySpace:](AVMetadataItem, "metadataItemsFromArray:withKey:keySpace:", v12, @"tagc", @"udta", @"public.auxiliary-content", "count"}])
@@ -73,9 +73,9 @@
     }
 
     memset(&v50, 0, sizeof(v50));
-    if (a3)
+    if (state)
     {
-      [a3 transform];
+      [state transform];
     }
 
     v49 = v50;
@@ -87,13 +87,13 @@
       CFRelease(v13);
     }
 
-    v14 = [a3 mediaTimeScale];
-    if (v14)
+    mediaTimeScale = [state mediaTimeScale];
+    if (mediaTimeScale)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setMediaTimeScale:v14];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setMediaTimeScale:mediaTimeScale];
     }
 
-    [a3 naturalSize];
+    [state naturalSize];
     if (v15 != *MEMORY[0x1E695F060] || v16 != *(MEMORY[0x1E695F060] + 8))
     {
       DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(*&v15);
@@ -104,47 +104,47 @@
       }
     }
 
-    v18 = [a3 languageCode];
-    if (v18)
+    languageCode = [state languageCode];
+    if (languageCode)
     {
-      v19 = v18;
-      if ([v18 length])
+      v19 = languageCode;
+      if ([languageCode length])
       {
         [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setLanguageCode:v19];
       }
     }
 
-    v20 = [a3 extendedLanguageTag];
-    if (v20)
+    extendedLanguageTag = [state extendedLanguageTag];
+    if (extendedLanguageTag)
     {
-      v21 = v20;
-      if ([v20 length])
+      v21 = extendedLanguageTag;
+      if ([extendedLanguageTag length])
       {
         [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setExtendedLanguageTag:v21];
       }
     }
 
-    -[AVFigAssetWriterTrack setMarksOutputTrackAsEnabled:](v9->_assetWriterTrack, "setMarksOutputTrackAsEnabled:", [a3 marksOutputTrackAsEnabled]);
-    [a3 preferredVolume];
+    -[AVFigAssetWriterTrack setMarksOutputTrackAsEnabled:](v9->_assetWriterTrack, "setMarksOutputTrackAsEnabled:", [state marksOutputTrackAsEnabled]);
+    [state preferredVolume];
     [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setTrackVolume:?];
-    -[AVFigAssetWriterTrack setLayer:](v9->_assetWriterTrack, "setLayer:", [a3 layer]);
-    v22 = [a3 alternateGroupID];
-    if (v22)
+    -[AVFigAssetWriterTrack setLayer:](v9->_assetWriterTrack, "setLayer:", [state layer]);
+    alternateGroupID = [state alternateGroupID];
+    if (alternateGroupID)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setAlternateGroupID:v22];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setAlternateGroupID:alternateGroupID];
     }
 
-    v23 = [a3 provisionalAlternateGroupID];
-    if (v23)
+    provisionalAlternateGroupID = [state provisionalAlternateGroupID];
+    if (provisionalAlternateGroupID)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setProvisionalAlternateGroupID:v23];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setProvisionalAlternateGroupID:provisionalAlternateGroupID];
     }
 
     v47 = 0uLL;
     v48 = 0.0;
-    if (a3)
+    if (state)
     {
-      [a3 preferredMediaChunkDuration];
+      [state preferredMediaChunkDuration];
       if (BYTE12(v47))
       {
         assetWriterTrack = v9->_assetWriterTrack;
@@ -154,20 +154,20 @@
       }
     }
 
-    v25 = [a3 preferredMediaChunkAlignment];
-    if (v25)
+    preferredMediaChunkAlignment = [state preferredMediaChunkAlignment];
+    if (preferredMediaChunkAlignment)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setPreferredChunkAlignment:v25];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setPreferredChunkAlignment:preferredMediaChunkAlignment];
     }
 
-    v26 = [a3 preferredMediaChunkSize];
-    if (v26)
+    preferredMediaChunkSize = [state preferredMediaChunkSize];
+    if (preferredMediaChunkSize)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setPreferredChunkSize:v26];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setPreferredChunkSize:preferredMediaChunkSize];
     }
 
-    v27 = [a3 mediaType];
-    if (([v27 isEqualToString:@"meta"] & 1) != 0 || objc_msgSend(v27, "isEqualToString:", @"auxv"))
+    mediaType = [state mediaType];
+    if (([mediaType isEqualToString:@"meta"] & 1) != 0 || objc_msgSend(mediaType, "isEqualToString:", @"auxv"))
     {
       v28 = @"AVAssetWriterInputMediaDataLocationSparselyInterleavedWithMainMediaData";
     }
@@ -177,16 +177,16 @@
       v28 = @"AVAssetWriterInputMediaDataLocationInterleavedWithMainMediaData";
     }
 
-    v29 = [a3 mediaDataLocation];
-    if (([(__CFString *)v28 isEqualToString:v29]& 1) == 0)
+    mediaDataLocation = [state mediaDataLocation];
+    if (([(__CFString *)v28 isEqualToString:mediaDataLocation]& 1) == 0)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setMediaDataLocation:v29];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setMediaDataLocation:mediaDataLocation];
     }
 
-    v30 = [a3 sampleReferenceBaseURL];
-    if (v30)
+    sampleReferenceBaseURL = [state sampleReferenceBaseURL];
+    if (sampleReferenceBaseURL)
     {
-      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setSampleReferenceBaseURL:v30];
+      [(AVFigAssetWriterTrack *)v9->_assetWriterTrack setSampleReferenceBaseURL:sampleReferenceBaseURL];
     }
 
     v31 = [AVAssetWriterInputPassDescription alloc];
@@ -237,27 +237,27 @@
 
 - (BOOL)canPerformMultiplePasses
 {
-  v3 = [(AVAssetWriterInputHelper *)self performsMultiPassEncodingIfSupported];
-  if (v3)
+  performsMultiPassEncodingIfSupported = [(AVAssetWriterInputHelper *)self performsMultiPassEncodingIfSupported];
+  if (performsMultiPassEncodingIfSupported)
   {
-    v4 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+    _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
 
-    LOBYTE(v3) = [(AVFigAssetWriterTrack *)v4 encoderSupportsMultiPass];
+    LOBYTE(performsMultiPassEncodingIfSupported) = [(AVFigAssetWriterTrack *)_assetWriterTrack encoderSupportsMultiPass];
   }
 
-  return v3;
+  return performsMultiPassEncodingIfSupported;
 }
 
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry
 {
   v4 = AVTwoPartKeyPathMake(@"assetWriterTrack", @"aboveHighWaterLevel");
 
-  [a3 valueForKey:@"readyForMoreMediaData" dependsOnValueAtKeyPath:v4];
+  [registry valueForKey:@"readyForMoreMediaData" dependsOnValueAtKeyPath:v4];
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
-  if (!a3)
+  if (!queue)
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
@@ -265,13 +265,13 @@
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!block)
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
     v14 = "block != nil";
 LABEL_7:
-    v15 = [v12 exceptionWithName:v13 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v14), 0}];
+    v15 = [v12 exceptionWithName:v13 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", block, v4, v5, v6, v7, v14), 0}];
     objc_exception_throw(v15);
   }
 
@@ -287,8 +287,8 @@ LABEL_7:
   block[2] = __79__AVAssetWriterInputWritingHelper_requestMediaDataWhenReadyOnQueue_usingBlock___block_invoke;
   block[3] = &unk_1E7463830;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = queue;
+  block[6] = block;
   block[7] = &v26;
   dispatch_sync(mediaDataRequesterSerialQueue, block);
   v11 = v27[5];
@@ -358,17 +358,17 @@ uint64_t __58__AVAssetWriterInputWritingHelper_stopRequestingMediaData__block_in
   return result;
 }
 
-- (void)_nudgeMediaDataRequesterIfAppropriate:(id)a3
+- (void)_nudgeMediaDataRequesterIfAppropriate:(id)appropriate
 {
   if ([(AVAssetWriterInputWritingHelper *)self isReadyForMoreMediaData])
   {
-    v4 = [a3 requestQueue];
+    requestQueue = [appropriate requestQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__AVAssetWriterInputWritingHelper__nudgeMediaDataRequesterIfAppropriate___block_invoke;
     block[3] = &unk_1E7460C00;
-    block[4] = a3;
-    dispatch_async(v4, block);
+    block[4] = appropriate;
+    dispatch_async(requestQueue, block);
   }
 }
 
@@ -456,9 +456,9 @@ _BYTE *__77__AVAssetWriterInputWritingHelper__stopObservingReadyForMoreMediaData
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"AVAssetWriterInputWritingHelperNudgeMediaDataRequesterObservationContext")
+  if (context == @"AVAssetWriterInputWritingHelperNudgeMediaDataRequesterObservationContext")
   {
     v10 = 0;
     v11 = &v10;
@@ -486,7 +486,7 @@ _BYTE *__77__AVAssetWriterInputWritingHelper__stopObservingReadyForMoreMediaData
   {
     v8.receiver = self;
     v8.super_class = AVAssetWriterInputWritingHelper;
-    [(AVAssetWriterInputWritingHelper *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(AVAssetWriterInputWritingHelper *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -515,7 +515,7 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
   }
 }
 
-- (BOOL)_checkIfClientSetProResRAWRequiredMetadataReturningError:(id *)a3
+- (BOOL)_checkIfClientSetProResRAWRequiredMetadataReturningError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = [objc_msgSend(objc_msgSend(-[AVWeakReference referencedObject](-[AVAssetWriterInputHelper weakReferenceToAssetWriterInput](self "weakReferenceToAssetWriterInput")];
@@ -530,8 +530,8 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
   }
 
   v6 = v5;
-  v14 = a3;
-  v7 = 0;
+  errorCopy = error;
+  array = 0;
   v8 = *v16;
   do
   {
@@ -545,12 +545,12 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
       v10 = *(*(&v15 + 1) + 8 * i);
       if (![(NSArray *)[AVMetadataItem metadataItemsFromArray:? withKey:? keySpace:?]
       {
-        if (!v7)
+        if (!array)
         {
-          v7 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        [v7 addObject:v10];
+        [array addObject:v10];
       }
     }
 
@@ -558,26 +558,26 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
   }
 
   while (v6);
-  if (!v7)
+  if (!array)
   {
     return 1;
   }
 
-  if (!v14)
+  if (!errorCopy)
   {
     return 0;
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The required metadata for ProResRAW movie are not set. Missing movie level metadata keys {%@}.", v7];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The required metadata for ProResRAW movie are not set. Missing movie level metadata keys {%@}.", array];
   v19 = *MEMORY[0x1E696A278];
   v20 = v11;
   v12 = AVLocalizedError(@"AVFoundationErrorDomain", -11875, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1]);
   result = 0;
-  *v14 = v12;
+  *errorCopy = v12;
   return result;
 }
 
-- (BOOL)appendPixelBuffer:(__CVBuffer *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendPixelBuffer:(__CVBuffer *)buffer withPresentationTime:(id *)time
 {
   v21 = 0;
   if (![(AVAssetWriterInputWritingHelper *)self isReadyForMoreMediaData])
@@ -591,10 +591,10 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
 
   if (![(AVAssetWriterInputHelper *)self expectsMediaDataInRealTime]|| [(AVAssetWriterInputWritingHelper *)self _checkProResRAWRequiredMetadataForPixelBufferReturningError:&v21])
   {
-    v8 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
-    v19 = *&a4->var0;
-    var3 = a4->var3;
-    if ([(AVFigAssetWriterTrack *)v8 addPixelBuffer:a3 atPresentationTime:&v19 error:&v21])
+    _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+    v19 = *&time->var0;
+    var3 = time->var3;
+    if ([(AVFigAssetWriterTrack *)_assetWriterTrack addPixelBuffer:buffer atPresentationTime:&v19 error:&v21])
     {
       return 1;
     }
@@ -604,7 +604,7 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
   return 0;
 }
 
-- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)a3 withPresentationTime:(id *)a4
+- (BOOL)appendTaggedPixelBufferGroup:(OpaqueCMTaggedBufferGroup *)group withPresentationTime:(id *)time
 {
   if (![(AVAssetWriterInputWritingHelper *)self isReadyForMoreMediaData])
   {
@@ -616,10 +616,10 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
   }
 
   v22 = 0;
-  v8 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
-  v20 = *&a4->var0;
-  var3 = a4->var3;
-  v9 = [(AVFigAssetWriterTrack *)v8 addTaggedPixelBufferGroup:a3 atPresentationTime:&v20 error:&v22];
+  _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+  v20 = *&time->var0;
+  var3 = time->var3;
+  v9 = [(AVFigAssetWriterTrack *)_assetWriterTrack addTaggedPixelBufferGroup:group atPresentationTime:&v20 error:&v22];
   if (!v9)
   {
     [(AVAssetWriterInputHelper *)self transitionAssetWriterAndAllInputsToFailedStatusWithError:v22];
@@ -628,13 +628,13 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
   return v9;
 }
 
-- (int64_t)appendCaption:(id)a3 error:(id *)a4
+- (int64_t)appendCaption:(id)caption error:(id *)error
 {
   v9 = 0;
   if (![(AVAssetWriterInputWritingHelper *)self isReadyForMoreMediaData])
   {
     [AVAssetWriterInputWritingHelper appendCaption:? error:?];
-    if (!a4)
+    if (!error)
     {
       return 1;
     }
@@ -642,11 +642,11 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
     goto LABEL_7;
   }
 
-  v7 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+  _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([(AVFigAssetWriterTrack *)v7 addCaption:a3 error:&v9]& 1) != 0)
+    if (([(AVFigAssetWriterTrack *)_assetWriterTrack addCaption:caption error:&v9]& 1) != 0)
     {
       return 0;
     }
@@ -654,22 +654,22 @@ void *__82__AVAssetWriterInputWritingHelper_observeValueForKeyPath_ofObject_chan
     [(AVAssetWriterInputHelper *)self transitionAssetWriterAndAllInputsToFailedStatusWithError:v9];
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_7:
-    *a4 = v9;
+    *error = v9;
   }
 
   return 1;
 }
 
-- (int64_t)appendCaptionGroup:(id)a3 error:(id *)a4
+- (int64_t)appendCaptionGroup:(id)group error:(id *)error
 {
   v9 = 0;
   if (![(AVAssetWriterInputWritingHelper *)self isReadyForMoreMediaData])
   {
     [AVAssetWriterInputWritingHelper appendCaption:? error:?];
-    if (!a4)
+    if (!error)
     {
       return 1;
     }
@@ -677,11 +677,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+  _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([(AVFigAssetWriterTrack *)v7 addCaptionGroup:a3 error:&v9]& 1) != 0)
+    if (([(AVFigAssetWriterTrack *)_assetWriterTrack addCaptionGroup:group error:&v9]& 1) != 0)
     {
       return 0;
     }
@@ -689,10 +689,10 @@ LABEL_7:
     [(AVAssetWriterInputHelper *)self transitionAssetWriterAndAllInputsToFailedStatusWithError:v9];
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_7:
-    *a4 = v9;
+    *error = v9;
   }
 
   return 1;
@@ -700,65 +700,65 @@ LABEL_7:
 
 - (void)prepareToEndSession
 {
-  v2 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+  _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
 
-  [(AVFigAssetWriterTrack *)v2 prepareToEndSession];
+  [(AVFigAssetWriterTrack *)_assetWriterTrack prepareToEndSession];
 }
 
-- (BOOL)prepareToFinishWritingReturningError:(id *)a3
+- (BOOL)prepareToFinishWritingReturningError:(id *)error
 {
-  v4 = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
+  _assetWriterTrack = [(AVAssetWriterInputWritingHelper *)self _assetWriterTrack];
 
-  return [(AVFigAssetWriterTrack *)v4 markEndOfDataReturningError:a3];
+  return [(AVFigAssetWriterTrack *)_assetWriterTrack markEndOfDataReturningError:error];
 }
 
 - (void)markCurrentPassAsFinished
 {
-  v3 = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
+  referencedObject = [(AVWeakReference *)[(AVAssetWriterInputHelper *)self weakReferenceToAssetWriterInput] referencedObject];
   mediaDataRequester = self->_mediaDataRequester;
   if (mediaDataRequester)
   {
     [(AVAssetWriterInputWritingHelper *)self _stopObservingReadyForMoreMediaDataKeyPath];
     [(AVAssetWriterInputMediaDataRequester *)mediaDataRequester setDelegate:0];
     self->_mediaDataRequester = 0;
-    v5 = [(AVAssetWriterInputMediaDataRequester *)mediaDataRequester requestQueue];
+    requestQueue = [(AVAssetWriterInputMediaDataRequester *)mediaDataRequester requestQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__AVAssetWriterInputWritingHelper_markCurrentPassAsFinished__block_invoke;
     block[3] = &unk_1E7460C00;
     block[4] = mediaDataRequester;
-    dispatch_async(v5, block);
+    dispatch_async(requestQueue, block);
   }
 
   if ([(AVAssetWriterInputWritingHelper *)self canPerformMultiplePasses])
   {
     v6 = [[AVAssetWriterInputInterPassAnalysisHelper alloc] initWithWritingHelper:self];
-    [v3 _setHelper:v6];
+    [referencedObject _setHelper:v6];
     [(AVAssetWriterInputInterPassAnalysisHelper *)v6 startPassAnalysis];
   }
 
   else
   {
     v6 = [[AVAssetWriterInputNoMorePassesHelper alloc] initWithWritingHelper:self];
-    [v3 _setHelper:v6];
+    [referencedObject _setHelper:v6];
   }
 }
 
-- (void)markAsFinishedAndTransitionCurrentHelper:(id)a3
+- (void)markAsFinishedAndTransitionCurrentHelper:(id)helper
 {
   v4 = 0;
   if ([(AVFigAssetWriterTrack *)[(AVAssetWriterInputWritingHelper *)self _assetWriterTrack] markEndOfDataReturningError:&v4])
   {
-    [a3 transitionToAndReturnTerminalHelperWithTerminalStatus:2];
+    [helper transitionToAndReturnTerminalHelperWithTerminalStatus:2];
   }
 
   else
   {
-    [a3 transitionAssetWriterAndAllInputsToFailedStatusWithError:v4];
+    [helper transitionAssetWriterAndAllInputsToFailedStatusWithError:v4];
   }
 }
 
-- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)a3
+- (id)transitionToAndReturnTerminalHelperWithTerminalStatus:(int64_t)status
 {
   if (self->_mediaDataRequester)
   {
@@ -768,7 +768,7 @@ LABEL_7:
 
   v8.receiver = self;
   v8.super_class = AVAssetWriterInputWritingHelper;
-  v5 = [(AVAssetWriterInputHelper *)&v8 transitionToAndReturnTerminalHelperWithTerminalStatus:a3];
+  v5 = [(AVAssetWriterInputHelper *)&v8 transitionToAndReturnTerminalHelperWithTerminalStatus:status];
   v6 = v5;
   if (self->_mediaDataRequester)
   {
@@ -816,12 +816,12 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_checkProResRAWRequiredMetadataForSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (BOOL)_checkProResRAWRequiredMetadataForSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
-  v7 = [(AVAssetWriterInputHelper *)self outputSettings];
-  if (!v7 || (v8 = v7, ![(AVOutputSettings *)v7 willYieldCompressedSamples]))
+  outputSettings = [(AVAssetWriterInputHelper *)self outputSettings];
+  if (!outputSettings || (v8 = outputSettings, ![(AVOutputSettings *)outputSettings willYieldCompressedSamples]))
   {
-    FormatDescription = CMSampleBufferGetFormatDescription(a3);
+    FormatDescription = CMSampleBufferGetFormatDescription(buffer);
     if (FormatDescription)
     {
       CMFormatDescriptionGetMediaSubType(FormatDescription);
@@ -831,7 +831,7 @@ LABEL_7:
         p_didCheckProResRAWRequiredMetadata = &self->_didCheckProResRAWRequiredMetadata;
         if (!self->_didCheckProResRAWRequiredMetadata)
         {
-          v12 = [(AVAssetWriterInputWritingHelper *)self _checkIfClientSetProResRAWRequiredMetadataReturningError:a4];
+          v12 = [(AVAssetWriterInputWritingHelper *)self _checkIfClientSetProResRAWRequiredMetadataReturningError:error];
           if (!v12)
           {
             return v12;
@@ -864,7 +864,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([(AVAssetWriterInputWritingHelper *)self _checkIfClientSetProResRAWRequiredMetadataReturningError:a4])
+  if ([(AVAssetWriterInputWritingHelper *)self _checkIfClientSetProResRAWRequiredMetadataReturningError:error])
   {
     goto LABEL_20;
   }
@@ -873,12 +873,12 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)_checkProResRAWRequiredMetadataForPixelBufferReturningError:(id *)a3
+- (BOOL)_checkProResRAWRequiredMetadataForPixelBufferReturningError:(id *)error
 {
-  v5 = [(AVAssetWriterInputHelper *)self outputSettings];
-  if (v5 && (v6 = v5, [(AVOutputSettings *)v5 willYieldCompressedSamples]) && (([(AVOutputSettings *)v6 videoCodecType], OUTLINED_FUNCTION_2_6(), !v8) ? (v8 = v7 == 1634759272) : (v8 = 1), v8 && !self->_didCheckProResRAWRequiredMetadata))
+  outputSettings = [(AVAssetWriterInputHelper *)self outputSettings];
+  if (outputSettings && (v6 = outputSettings, [(AVOutputSettings *)outputSettings willYieldCompressedSamples]) && (([(AVOutputSettings *)v6 videoCodecType], OUTLINED_FUNCTION_2_6(), !v8) ? (v8 = v7 == 1634759272) : (v8 = 1), v8 && !self->_didCheckProResRAWRequiredMetadata))
   {
-    v9 = [(AVAssetWriterInputWritingHelper *)self _checkIfClientSetProResRAWRequiredMetadataReturningError:a3];
+    v9 = [(AVAssetWriterInputWritingHelper *)self _checkIfClientSetProResRAWRequiredMetadataReturningError:error];
     if (v9)
     {
       LOBYTE(v9) = 1;
@@ -894,14 +894,14 @@ LABEL_18:
   return v9;
 }
 
-- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (int64_t)appendSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
   v10 = 0;
   if ([(AVAssetWriterInputWritingHelper *)self isReadyForMoreMediaData])
   {
-    if ((!CMGetAttachment(a3, *MEMORY[0x1E6960530], 0) || (v7 = [objc_msgSend(objc_msgSend(-[AVWeakReference referencedObject](-[AVAssetWriterInputHelper weakReferenceToAssetWriterInput](self "weakReferenceToAssetWriterInput")]) != 0) && (!-[NSString isEqual:](-[AVAssetWriterInputHelper mediaType](self, "mediaType"), "isEqual:", @"vide") || !-[AVAssetWriterInputHelper expectsMediaDataInRealTime](self, "expectsMediaDataInRealTime") || (v7 = -[AVAssetWriterInputWritingHelper _checkProResRAWRequiredMetadataForSampleBuffer:error:](self, "_checkProResRAWRequiredMetadataForSampleBuffer:error:", a3, &v10)) != 0))
+    if ((!CMGetAttachment(buffer, *MEMORY[0x1E6960530], 0) || (v7 = [objc_msgSend(objc_msgSend(-[AVWeakReference referencedObject](-[AVAssetWriterInputHelper weakReferenceToAssetWriterInput](self "weakReferenceToAssetWriterInput")]) != 0) && (!-[NSString isEqual:](-[AVAssetWriterInputHelper mediaType](self, "mediaType"), "isEqual:", @"vide") || !-[AVAssetWriterInputHelper expectsMediaDataInRealTime](self, "expectsMediaDataInRealTime") || (v7 = -[AVAssetWriterInputWritingHelper _checkProResRAWRequiredMetadataForSampleBuffer:error:](self, "_checkProResRAWRequiredMetadataForSampleBuffer:error:", buffer, &v10)) != 0))
     {
-      v7 = [(AVFigAssetWriterTrack *)[(AVAssetWriterInputWritingHelper *)self _assetWriterTrack] addSampleBuffer:a3 error:&v10];
+      v7 = [(AVFigAssetWriterTrack *)[(AVAssetWriterInputWritingHelper *)self _assetWriterTrack] addSampleBuffer:buffer error:&v10];
     }
   }
 
@@ -912,9 +912,9 @@ LABEL_18:
     v10 = v8;
   }
 
-  if (a4 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
   return v7 ^ 1u;

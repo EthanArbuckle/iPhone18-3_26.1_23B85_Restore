@@ -1,15 +1,15 @@
 @interface TTRISeparator
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation TTRISeparator
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   TTRISeparator.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   TTRISeparator.intrinsicContentSize.getter();
   v7 = v6;
   v9 = v8;
@@ -58,15 +58,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TTRISeparator.layoutSubviews()();
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  TTRISeparator.backgroundColor.setter(a3);
+  colorCopy = color;
+  selfCopy = self;
+  TTRISeparator.backgroundColor.setter(color);
 }
 
 @end

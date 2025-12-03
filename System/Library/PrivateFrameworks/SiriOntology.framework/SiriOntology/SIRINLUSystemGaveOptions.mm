@@ -1,37 +1,37 @@
 @interface SIRINLUSystemGaveOptions
-- (SIRINLUSystemGaveOptions)initWithChoices:(id)a3;
-- (SIRINLUSystemGaveOptions)initWithCoder:(id)a3;
+- (SIRINLUSystemGaveOptions)initWithChoices:(id)choices;
+- (SIRINLUSystemGaveOptions)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUSystemGaveOptions
 
 - (id)description
 {
-  v3 = [(SIRINLUSystemGaveOptions *)self choices];
-  v4 = [SIRINLUPrintUtils indentArray:v3 numSpaces:4];
+  choices = [(SIRINLUSystemGaveOptions *)self choices];
+  v4 = [SIRINLUPrintUtils indentArray:choices numSpaces:4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(SIRINLUSystemGaveOptions *)self renderedText];
-  v7 = [v5 stringWithFormat:@"{SystemGaveOptions\n  choices:\n%@\n  renderedText: %@\n}", v4, v6];
+  renderedText = [(SIRINLUSystemGaveOptions *)self renderedText];
+  v7 = [v5 stringWithFormat:@"{SystemGaveOptions\n  choices:\n%@\n  renderedText: %@\n}", v4, renderedText];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLUSystemGaveOptions *)self choices];
-  [v4 encodeObject:v5 forKey:@"choices"];
+  coderCopy = coder;
+  choices = [(SIRINLUSystemGaveOptions *)self choices];
+  [coderCopy encodeObject:choices forKey:@"choices"];
 
-  v6 = [(SIRINLUSystemGaveOptions *)self renderedText];
-  [v4 encodeObject:v6 forKey:@"renderedText"];
+  renderedText = [(SIRINLUSystemGaveOptions *)self renderedText];
+  [coderCopy encodeObject:renderedText forKey:@"renderedText"];
 }
 
-- (SIRINLUSystemGaveOptions)initWithCoder:(id)a3
+- (SIRINLUSystemGaveOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SIRINLUSystemGaveOptions;
   v5 = [(SIRINLUSystemGaveOptions *)&v23 init];
@@ -49,11 +49,11 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v22 setWithObjects:{v21, v20, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"choices"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"choices"];
     choices = v5->_choices;
     v5->_choices = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renderedText"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renderedText"];
     renderedText = v5->renderedText;
     v5->renderedText = v17;
   }
@@ -61,16 +61,16 @@
   return v5;
 }
 
-- (SIRINLUSystemGaveOptions)initWithChoices:(id)a3
+- (SIRINLUSystemGaveOptions)initWithChoices:(id)choices
 {
-  v5 = a3;
+  choicesCopy = choices;
   v9.receiver = self;
   v9.super_class = SIRINLUSystemGaveOptions;
   v6 = [(SIRINLUSystemGaveOptions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_choices, a3);
+    objc_storeStrong(&v6->_choices, choices);
   }
 
   return v7;

@@ -1,20 +1,20 @@
 @interface HKWorkout
-+ (BOOL)_validateObjects:(id)a3 forClass:(Class)a4 error:(id *)a5;
-+ (BOOL)_workoutWithActivityType:(unint64_t)a3 acceptsSubActivityType:(unint64_t)a4;
++ (BOOL)_validateObjects:(id)objects forClass:(Class)class error:(id *)error;
++ (BOOL)_workoutWithActivityType:(unint64_t)type acceptsSubActivityType:(unint64_t)activityType;
 + (id)_allWorkoutActivityTypes;
 + (id)_allWorkoutTypeNames;
-+ (id)_statisticsFromTotalActiveEnergyBurned:(id)a3 totalBasalEnergyBurned:(id)a4 totalDistance:(id)a5 totalSwimmingStrokeCount:(id)a6 totalFlightsClimbed:(id)a7 workoutActivityType:(unint64_t)a8 startDate:(id)a9 endDate:(id)a10;
-+ (id)_stringFromWorkoutActivityType:(unint64_t)a3;
-+ (id)_workoutWithActivityType:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 workoutEvents:(id)a6 workoutActivities:(id)a7 duration:(double)a8 statistics:(id)a9 goalType:(unint64_t)a10 goal:(id)a11 device:(id)a12 metadata:(id)a13;
-+ (id)_workoutWithActivityType:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 workoutEvents:(id)a6 workoutActivities:(id)a7 duration:(double)a8 totalActiveEnergyBurned:(id)a9 totalBasalEnergyBurned:(id)a10 totalDistance:(id)a11 totalSwimmingStrokeCount:(id)a12 totalFlightsClimbed:(id)a13 goalType:(unint64_t)a14 goal:(id)a15 device:(id)a16 metadata:(id)a17;
-+ (unint64_t)_workoutActivityTypeFromString:(id)a3;
-- (BOOL)acceptsAssociationWithObject:(id)a3;
++ (id)_statisticsFromTotalActiveEnergyBurned:(id)burned totalBasalEnergyBurned:(id)energyBurned totalDistance:(id)distance totalSwimmingStrokeCount:(id)count totalFlightsClimbed:(id)climbed workoutActivityType:(unint64_t)type startDate:(id)date endDate:(id)self0;
++ (id)_stringFromWorkoutActivityType:(unint64_t)type;
++ (id)_workoutWithActivityType:(unint64_t)type startDate:(id)date endDate:(id)endDate workoutEvents:(id)events workoutActivities:(id)activities duration:(double)duration statistics:(id)statistics goalType:(unint64_t)self0 goal:(id)self1 device:(id)self2 metadata:(id)self3;
++ (id)_workoutWithActivityType:(unint64_t)type startDate:(id)date endDate:(id)endDate workoutEvents:(id)events workoutActivities:(id)activities duration:(double)duration totalActiveEnergyBurned:(id)burned totalBasalEnergyBurned:(id)self0 totalDistance:(id)self1 totalSwimmingStrokeCount:(id)self2 totalFlightsClimbed:(id)self3 goalType:(unint64_t)self4 goal:(id)self5 device:(id)self6 metadata:(id)self7;
++ (unint64_t)_workoutActivityTypeFromString:(id)string;
+- (BOOL)acceptsAssociationWithObject:(id)object;
 - (HKQuantity)_totalBasalEnergyBurned;
 - (HKQuantity)totalDistance;
 - (HKQuantity)totalEnergyBurned;
 - (HKQuantity)totalFlightsClimbed;
 - (HKQuantity)totalSwimmingStrokeCount;
-- (HKWorkout)initWithCoder:(id)a3;
+- (HKWorkout)initWithCoder:(id)coder;
 - (HKWorkoutActivityType)workoutActivityType;
 - (NSArray)workoutActivities;
 - (NSArray)workoutEvents;
@@ -22,7 +22,7 @@
 - (double)_goalInCanonicalUnit;
 - (double)_totalBasalEnergyBurnedInCanonicalUnit;
 - (double)_totalDistanceInCanonicalUnit;
-- (double)_totalDistanceIncludingAllTypesForUnit:(id)a3;
+- (double)_totalDistanceIncludingAllTypesForUnit:(id)unit;
 - (double)_totalEnergyBurnedInCanonicalUnit;
 - (double)_totalFlightsClimbedInCanonicalUnit;
 - (double)_totalSwimmingStrokeCountInCanonicalUnit;
@@ -30,21 +30,21 @@
 - (id)_detailedDescriptionComponents;
 - (id)_detailedDescriptionString;
 - (id)_routeSmoothingActivities;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)_validateWorkoutActivities:(id)a3 withConfiguration:(HKObjectValidationConfiguration)a4;
-- (id)_validateWorkoutEvents:(id)a3 withConfiguration:(HKObjectValidationConfiguration)a4;
-- (id)subObjectFromUUID:(id)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)_validateWorkoutActivities:(id)activities withConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)_validateWorkoutEvents:(id)events withConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)subObjectFromUUID:(id)d;
 - (int64_t)_activityMoveMode;
-- (void)_enumerateActiveTimePeriods:(id)a3;
-- (void)_enumerateTimePeriodsWithBlock:(id)a3;
-- (void)_setTotalBasalEnergyBurned:(id)a3;
-- (void)_setTotalDistance:(id)a3;
-- (void)_setTotalEnergyBurned:(id)a3;
-- (void)_setTotalFlightsClimbed:(id)a3;
-- (void)_setTotalSwimmingStrokeCount:(id)a3;
-- (void)_setUUID:(id)a3;
-- (void)_setWorkoutEvents:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateActiveTimePeriods:(id)periods;
+- (void)_enumerateTimePeriodsWithBlock:(id)block;
+- (void)_setTotalBasalEnergyBurned:(id)burned;
+- (void)_setTotalDistance:(id)distance;
+- (void)_setTotalEnergyBurned:(id)burned;
+- (void)_setTotalFlightsClimbed:(id)climbed;
+- (void)_setTotalSwimmingStrokeCount:(id)count;
+- (void)_setUUID:(id)d;
+- (void)_setWorkoutEvents:(id)events;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkout
@@ -127,18 +127,18 @@ LABEL_8:
 {
   v3 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierActiveEnergyBurned"];
   v4 = [(HKWorkoutActivity *)self->_primaryActivity statisticsForType:v3];
-  v5 = [v4 sumQuantity];
+  sumQuantity = [v4 sumQuantity];
 
-  return v5;
+  return sumQuantity;
 }
 
 - (HKQuantity)_totalBasalEnergyBurned
 {
   v3 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierBasalEnergyBurned"];
   v4 = [(HKWorkoutActivity *)self->_primaryActivity statisticsForType:v3];
-  v5 = [v4 sumQuantity];
+  sumQuantity = [v4 sumQuantity];
 
-  return v5;
+  return sumQuantity;
 }
 
 - (HKQuantity)totalDistance
@@ -147,33 +147,33 @@ LABEL_8:
   if (v3)
   {
     v4 = [(HKWorkoutActivity *)self->_primaryActivity statisticsForType:v3];
-    v5 = [v4 sumQuantity];
+    sumQuantity = [v4 sumQuantity];
   }
 
   else
   {
-    v5 = 0;
+    sumQuantity = 0;
   }
 
-  return v5;
+  return sumQuantity;
 }
 
 - (HKQuantity)totalSwimmingStrokeCount
 {
   v3 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierSwimmingStrokeCount"];
   v4 = [(HKWorkoutActivity *)self->_primaryActivity statisticsForType:v3];
-  v5 = [v4 sumQuantity];
+  sumQuantity = [v4 sumQuantity];
 
-  return v5;
+  return sumQuantity;
 }
 
 - (HKQuantity)totalFlightsClimbed
 {
   v3 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierFlightsClimbed"];
   v4 = [(HKWorkoutActivity *)self->_primaryActivity statisticsForType:v3];
-  v5 = [v4 sumQuantity];
+  sumQuantity = [v4 sumQuantity];
 
-  return v5;
+  return sumQuantity;
 }
 
 - (NSArray)workoutEvents
@@ -194,41 +194,41 @@ LABEL_8:
   return v5;
 }
 
-- (void)_enumerateTimePeriodsWithBlock:(id)a3
+- (void)_enumerateTimePeriodsWithBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v6 = [(HKWorkout *)self workoutEvents];
-  v7 = [v6 count] == 0;
+  workoutEvents = [(HKWorkout *)self workoutEvents];
+  v7 = [workoutEvents count] == 0;
 
   if (v7)
   {
-    v8 = [(HKSample *)self startDate];
-    v9 = [(HKSample *)self endDate];
+    startDate = [(HKSample *)self startDate];
+    endDate = [(HKSample *)self endDate];
     [(HKWorkout *)self duration];
     v11 = v10;
-    [v9 timeIntervalSinceDate:v8];
+    [endDate timeIntervalSinceDate:startDate];
     v13 = v12;
     if (v11 <= 0.00000011920929 || v12 - v11 <= 0.00000011920929)
     {
-      v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v8 endDate:v9];
+      v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate endDate:endDate];
       [v5 addObject:v16];
       v11 = v13;
-      v15 = v9;
+      v15 = endDate;
     }
 
     else
     {
       v14 = MEMORY[0x1E695DF00];
       [(HKWorkout *)self duration];
-      v15 = [v14 dateWithTimeInterval:v8 sinceDate:?];
+      v15 = [v14 dateWithTimeInterval:startDate sinceDate:?];
 
-      v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v8 endDate:v15];
+      v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate endDate:v15];
       [v5 addObject:v16];
     }
 
@@ -244,7 +244,7 @@ LABEL_8:
     v31 = v5;
     v32 = &v33;
     [(HKWorkout *)self _enumerateActiveTimePeriods:v30];
-    v8 = v31;
+    startDate = v31;
   }
 
   [(HKWorkout *)self duration];
@@ -254,8 +254,8 @@ LABEL_8:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = v5;
-    v22 = [v18 countByEnumeratingWithState:&v26 objects:v37 count:16];
+    endDate2 = v5;
+    v22 = [endDate2 countByEnumeratingWithState:&v26 objects:v37 count:16];
     if (v22)
     {
       v23 = *v27;
@@ -265,13 +265,13 @@ LABEL_8:
         {
           if (*v27 != v23)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(endDate2);
           }
 
-          v4[2](v4, *(*(&v26 + 1) + 8 * i));
+          blockCopy[2](blockCopy, *(*(&v26 + 1) + 8 * i));
         }
 
-        v22 = [v18 countByEnumeratingWithState:&v26 objects:v37 count:16];
+        v22 = [endDate2 countByEnumeratingWithState:&v26 objects:v37 count:16];
       }
 
       while (v22);
@@ -280,11 +280,11 @@ LABEL_8:
 
   else
   {
-    v18 = [(HKSample *)self endDate];
+    endDate2 = [(HKSample *)self endDate];
     [(HKWorkout *)self duration];
-    v20 = [v18 dateByAddingTimeInterval:-v19];
-    v21 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v20 endDate:v18];
-    (v4)[2](v4, v21);
+    v20 = [endDate2 dateByAddingTimeInterval:-v19];
+    v21 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v20 endDate:endDate2];
+    (blockCopy)[2](blockCopy, v21);
   }
 
   _Block_object_dispose(&v33, 8);
@@ -309,101 +309,101 @@ double __74__HKWorkout_HKWorkoutDataSourceUtilities___enumerateTimePeriodsWithBl
   return result;
 }
 
-+ (id)_workoutWithActivityType:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 workoutEvents:(id)a6 workoutActivities:(id)a7 duration:(double)a8 totalActiveEnergyBurned:(id)a9 totalBasalEnergyBurned:(id)a10 totalDistance:(id)a11 totalSwimmingStrokeCount:(id)a12 totalFlightsClimbed:(id)a13 goalType:(unint64_t)a14 goal:(id)a15 device:(id)a16 metadata:(id)a17
++ (id)_workoutWithActivityType:(unint64_t)type startDate:(id)date endDate:(id)endDate workoutEvents:(id)events workoutActivities:(id)activities duration:(double)duration totalActiveEnergyBurned:(id)burned totalBasalEnergyBurned:(id)self0 totalDistance:(id)self1 totalSwimmingStrokeCount:(id)self2 totalFlightsClimbed:(id)self3 goalType:(unint64_t)self4 goal:(id)self5 device:(id)self6 metadata:(id)self7
 {
-  v24 = a17;
-  v25 = a16;
-  v26 = a15;
-  v27 = a7;
-  v28 = a6;
-  v29 = a5;
-  v30 = a4;
-  v31 = [a1 _statisticsFromTotalActiveEnergyBurned:a9 totalBasalEnergyBurned:a10 totalDistance:a11 totalSwimmingStrokeCount:a12 totalFlightsClimbed:a13 workoutActivityType:a3 startDate:v30 endDate:v29];
-  v32 = [a1 _workoutWithActivityType:a3 startDate:v30 endDate:v29 workoutEvents:v28 workoutActivities:v27 duration:v31 statistics:a8 goalType:a14 goal:v26 device:v25 metadata:v24];
+  metadataCopy = metadata;
+  deviceCopy = device;
+  goalCopy = goal;
+  activitiesCopy = activities;
+  eventsCopy = events;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v31 = [self _statisticsFromTotalActiveEnergyBurned:burned totalBasalEnergyBurned:energyBurned totalDistance:distance totalSwimmingStrokeCount:count totalFlightsClimbed:climbed workoutActivityType:type startDate:dateCopy endDate:endDateCopy];
+  v32 = [self _workoutWithActivityType:type startDate:dateCopy endDate:endDateCopy workoutEvents:eventsCopy workoutActivities:activitiesCopy duration:v31 statistics:duration goalType:goalType goal:goalCopy device:deviceCopy metadata:metadataCopy];
 
   return v32;
 }
 
-+ (id)_statisticsFromTotalActiveEnergyBurned:(id)a3 totalBasalEnergyBurned:(id)a4 totalDistance:(id)a5 totalSwimmingStrokeCount:(id)a6 totalFlightsClimbed:(id)a7 workoutActivityType:(unint64_t)a8 startDate:(id)a9 endDate:(id)a10
++ (id)_statisticsFromTotalActiveEnergyBurned:(id)burned totalBasalEnergyBurned:(id)energyBurned totalDistance:(id)distance totalSwimmingStrokeCount:(id)count totalFlightsClimbed:(id)climbed workoutActivityType:(unint64_t)type startDate:(id)date endDate:(id)self0
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
+  burnedCopy = burned;
+  energyBurnedCopy = energyBurned;
+  distanceCopy = distance;
+  countCopy = count;
+  climbedCopy = climbed;
+  dateCopy = date;
+  endDateCopy = endDate;
   v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22 = off_1E7375000;
-  if (v14)
+  if (burnedCopy)
   {
     v23 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierActiveEnergyBurned"];
-    v24 = _HKStatisticsForTotal(v23, v14, v19, v20);
+    v24 = _HKStatisticsForTotal(v23, burnedCopy, dateCopy, endDateCopy);
     [v21 setObject:v24 forKeyedSubscript:v23];
 
     v22 = off_1E7375000;
   }
 
-  if (v15)
+  if (energyBurnedCopy)
   {
     v25 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierBasalEnergyBurned"];
-    v26 = _HKStatisticsForTotal(v25, v15, v19, v20);
+    v26 = _HKStatisticsForTotal(v25, energyBurnedCopy, dateCopy, endDateCopy);
     [v21 setObject:v26 forKeyedSubscript:v25];
 
     v22 = off_1E7375000;
   }
 
-  if (v16)
+  if (distanceCopy)
   {
-    v27 = _HKWorkoutDistanceTypeForActivityType(a8);
+    v27 = _HKWorkoutDistanceTypeForActivityType(type);
     v28 = v27;
     if (v27)
     {
-      v29 = _HKStatisticsForTotal(v27, v16, v19, v20);
+      v29 = _HKStatisticsForTotal(v27, distanceCopy, dateCopy, endDateCopy);
       [v21 setObject:v29 forKeyedSubscript:v28];
 
       v22 = off_1E7375000;
     }
   }
 
-  if (v17)
+  if (countCopy)
   {
     v30 = [(__objc2_class *)v22[120] quantityTypeForIdentifier:@"HKQuantityTypeIdentifierSwimmingStrokeCount"];
-    v31 = _HKStatisticsForTotal(v30, v17, v19, v20);
+    v31 = _HKStatisticsForTotal(v30, countCopy, dateCopy, endDateCopy);
     [v21 setObject:v31 forKeyedSubscript:v30];
 
     v22 = off_1E7375000;
   }
 
-  if (v18)
+  if (climbedCopy)
   {
     v32 = [(__objc2_class *)v22[120] quantityTypeForIdentifier:@"HKQuantityTypeIdentifierFlightsClimbed"];
-    v33 = _HKStatisticsForTotal(v32, v18, v19, v20);
+    v33 = _HKStatisticsForTotal(v32, climbedCopy, dateCopy, endDateCopy);
     [v21 setObject:v33 forKeyedSubscript:v32];
   }
 
   return v21;
 }
 
-+ (id)_workoutWithActivityType:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 workoutEvents:(id)a6 workoutActivities:(id)a7 duration:(double)a8 statistics:(id)a9 goalType:(unint64_t)a10 goal:(id)a11 device:(id)a12 metadata:(id)a13
++ (id)_workoutWithActivityType:(unint64_t)type startDate:(id)date endDate:(id)endDate workoutEvents:(id)events workoutActivities:(id)activities duration:(double)duration statistics:(id)statistics goalType:(unint64_t)self0 goal:(id)self1 device:(id)self2 metadata:(id)self3
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v23 = a11;
-  v41 = a12;
-  v24 = a13;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  activitiesCopy = activities;
+  statisticsCopy = statistics;
+  goalCopy = goal;
+  deviceCopy = device;
+  metadataCopy = metadata;
   v25 = +[HKObjectType workoutType];
-  if (v18)
+  if (dateCopy)
   {
-    [v18 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v27 = v26;
-    if (v19)
+    if (endDateCopy)
     {
 LABEL_3:
-      [v19 timeIntervalSinceReferenceDate];
+      [endDateCopy timeIntervalSinceReferenceDate];
       v29 = v28;
       goto LABEL_6;
     }
@@ -412,7 +412,7 @@ LABEL_3:
   else
   {
     v27 = 2.22507386e-308;
-    if (v19)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -424,24 +424,24 @@ LABEL_6:
   v42[1] = 3221225472;
   v42[2] = __138__HKWorkout__workoutWithActivityType_startDate_endDate_workoutEvents_workoutActivities_duration_statistics_goalType_goal_device_metadata___block_invoke;
   v42[3] = &unk_1E7384588;
-  v51 = a8;
-  v43 = v20;
-  v44 = v18;
-  v45 = v19;
-  v46 = v21;
-  v47 = v24;
-  v48 = v22;
-  v52 = a10;
-  v49 = v23;
-  v50 = a3;
-  v30 = v23;
-  v31 = v22;
-  v32 = v24;
-  v33 = v21;
-  v34 = v19;
-  v35 = v18;
-  v36 = v20;
-  v37 = [a1 _newSampleWithType:v25 startDate:v41 endDate:v32 device:v42 metadata:v27 config:v29];
+  durationCopy = duration;
+  v43 = eventsCopy;
+  v44 = dateCopy;
+  v45 = endDateCopy;
+  v46 = activitiesCopy;
+  v47 = metadataCopy;
+  v48 = statisticsCopy;
+  goalTypeCopy = goalType;
+  v49 = goalCopy;
+  typeCopy = type;
+  v30 = goalCopy;
+  v31 = statisticsCopy;
+  v32 = metadataCopy;
+  v33 = activitiesCopy;
+  v34 = endDateCopy;
+  v35 = dateCopy;
+  v36 = eventsCopy;
+  v37 = [self _newSampleWithType:v25 startDate:deviceCopy endDate:v32 device:v42 metadata:v27 config:v29];
 
   return v37;
 }
@@ -582,28 +582,28 @@ uint64_t __138__HKWorkout__workoutWithActivityType_startDate_endDate_workoutEven
   v26 = [(NSArray *)self->_subActivities hk_map:&__block_literal_global_101_1];
   v3 = objc_opt_class();
   workoutActivityType = self->_workoutActivityType;
-  v25 = [(HKSample *)self startDate];
-  v5 = [v25 copy];
-  v24 = [(HKSample *)self endDate];
-  v23 = [v24 copy];
+  startDate = [(HKSample *)self startDate];
+  v5 = [startDate copy];
+  endDate = [(HKSample *)self endDate];
+  v23 = [endDate copy];
   v21 = [(NSArray *)self->_workoutEvents copy];
   duration = self->_duration;
-  v20 = [(HKWorkoutActivity *)self->_primaryActivity allStatistics];
-  v7 = [(HKWorkout *)self _goalType];
+  allStatistics = [(HKWorkoutActivity *)self->_primaryActivity allStatistics];
+  _goalType = [(HKWorkout *)self _goalType];
   v8 = [(HKQuantity *)self->_goal copy];
-  v9 = [(HKObject *)self device];
-  v10 = [v9 copy];
-  v11 = [(HKObject *)self metadata];
-  v12 = [v11 copy];
-  v22 = [v3 _workoutWithActivityType:workoutActivityType startDate:v5 endDate:v23 workoutEvents:v21 workoutActivities:v26 duration:v20 statistics:duration goalType:v7 goal:v8 device:v10 metadata:v12];
+  device = [(HKObject *)self device];
+  v10 = [device copy];
+  metadata = [(HKObject *)self metadata];
+  v12 = [metadata copy];
+  v22 = [v3 _workoutWithActivityType:workoutActivityType startDate:v5 endDate:v23 workoutEvents:v21 workoutActivities:v26 duration:allStatistics statistics:duration goalType:_goalType goal:v8 device:v10 metadata:v12];
 
-  v13 = [(HKObject *)self sourceRevision];
-  v14 = [v13 copy];
+  sourceRevision = [(HKObject *)self sourceRevision];
+  v14 = [sourceRevision copy];
   [v22 _setSourceRevision:v14];
 
-  v15 = [(HKWorkout *)self _primaryActivity];
-  v16 = [v15 _deepCopy];
-  [v22 _setPrimaryActivity:v16];
+  _primaryActivity = [(HKWorkout *)self _primaryActivity];
+  _deepCopy = [_primaryActivity _deepCopy];
+  [v22 _setPrimaryActivity:_deepCopy];
 
   v17 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:self->_zonesByType copyItems:1];
   [v22 _setZonesByType:v17];
@@ -613,54 +613,54 @@ uint64_t __138__HKWorkout__workoutWithActivityType_startDate_endDate_workoutEven
   return v22;
 }
 
-+ (id)_stringFromWorkoutActivityType:(unint64_t)a3
++ (id)_stringFromWorkoutActivityType:(unint64_t)type
 {
-  v4 = [a1 _activityTypeMappings];
+  _activityTypeMappings = [self _activityTypeMappings];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__HKWorkout__stringFromWorkoutActivityType___block_invoke;
   v8[3] = &__block_descriptor_40_e35_B32__0__NSString_8__NSNumber_16_B24l;
-  v8[4] = a3;
-  v5 = [v4 keysOfEntriesPassingTest:v8];
+  v8[4] = type;
+  v5 = [_activityTypeMappings keysOfEntriesPassingTest:v8];
 
-  v6 = [v5 anyObject];
+  anyObject = [v5 anyObject];
 
-  return v6;
+  return anyObject;
 }
 
-+ (unint64_t)_workoutActivityTypeFromString:(id)a3
++ (unint64_t)_workoutActivityTypeFromString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 _activityTypeMappings];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  stringCopy = string;
+  _activityTypeMappings = [self _activityTypeMappings];
+  v6 = [_activityTypeMappings objectForKeyedSubscript:stringCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 + (id)_allWorkoutTypeNames
 {
-  v2 = [a1 _activityTypeMappings];
-  v3 = [v2 allKeys];
+  _activityTypeMappings = [self _activityTypeMappings];
+  allKeys = [_activityTypeMappings allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 + (id)_allWorkoutActivityTypes
 {
-  v2 = [a1 _activityTypeMappings];
-  v3 = [v2 allValues];
+  _activityTypeMappings = [self _activityTypeMappings];
+  allValues = [_activityTypeMappings allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSString)description
@@ -685,13 +685,13 @@ uint64_t __138__HKWorkout__workoutWithActivityType_startDate_endDate_workoutEven
   [v3 addObject:v6];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(HKSample *)self startDate];
-  v9 = [v7 stringWithFormat:@"startDate=%@", v8];
+  startDate = [(HKSample *)self startDate];
+  v9 = [v7 stringWithFormat:@"startDate=%@", startDate];
   [v3 addObject:v9];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(HKSample *)self endDate];
-  v12 = [v10 stringWithFormat:@"endDate=%@", v11];
+  endDate = [(HKSample *)self endDate];
+  v12 = [v10 stringWithFormat:@"endDate=%@", endDate];
   [v3 addObject:v12];
 
   v13 = MEMORY[0x1E696AEC0];
@@ -699,18 +699,18 @@ uint64_t __138__HKWorkout__workoutWithActivityType_startDate_endDate_workoutEven
   v15 = [v13 stringWithFormat:@"duration=%f", v14];
   [v3 addObject:v15];
 
-  v16 = [(HKWorkout *)self allStatistics];
+  allStatistics = [(HKWorkout *)self allStatistics];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __43__HKWorkout__detailedDescriptionComponents__block_invoke;
   v25 = &unk_1E73845F0;
   v17 = v3;
   v26 = v17;
-  [v16 enumerateKeysAndObjectsUsingBlock:&v22];
+  [allStatistics enumerateKeysAndObjectsUsingBlock:&v22];
 
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(HKObject *)self metadata];
-  v20 = [v18 stringWithFormat:@"metadata=%@", v19, v22, v23, v24, v25];
+  metadata = [(HKObject *)self metadata];
+  v20 = [v18 stringWithFormat:@"metadata=%@", metadata, v22, v23, v24, v25];
   [v17 addObject:v20];
 
   return v17;
@@ -772,26 +772,26 @@ LABEL_13:
 
 - (id)_detailedDescriptionString
 {
-  v2 = [(HKWorkout *)self _detailedDescriptionComponents];
-  v3 = [v2 componentsJoinedByString:{@", "}];
+  _detailedDescriptionComponents = [(HKWorkout *)self _detailedDescriptionComponents];
+  v3 = [_detailedDescriptionComponents componentsJoinedByString:{@", "}];
 
   return v3;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = configuration.var1;
+  var0 = configuration.var0;
   v57[1] = *MEMORY[0x1E69E9840];
   v55.receiver = self;
   v55.super_class = HKWorkout;
-  v7 = [(HKSample *)&v55 _validateWithConfiguration:?];
-  if (v7)
+  var1 = [(HKSample *)&v55 _validateWithConfiguration:?];
+  if (var1)
   {
     goto LABEL_2;
   }
 
-  v11 = [(HKSample *)self sampleType];
+  sampleType = [(HKSample *)self sampleType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -799,17 +799,17 @@ LABEL_13:
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = objc_opt_class();
-    v17 = [(HKSample *)self sampleType];
-    v8 = [v15 hk_errorForInvalidArgument:@"@" class:v16 selector:a2 format:{@"Invalid workout type %@", v17}];
+    sampleType2 = [(HKSample *)self sampleType];
+    var12 = [v15 hk_errorForInvalidArgument:@"@" class:v16 selector:a2 format:{@"Invalid workout type %@", sampleType2}];
 
     goto LABEL_3;
   }
 
-  v7 = [(HKWorkout *)self _validateWorkoutEvents:self->_workoutEvents withConfiguration:var0, var1];
-  if (v7 || ([(HKWorkout *)self _validateWorkoutActivities:self->_subActivities withConfiguration:var0, var1], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  var1 = [(HKWorkout *)self _validateWorkoutEvents:self->_workoutEvents withConfiguration:var0, var1];
+  if (var1 || ([(HKWorkout *)self _validateWorkoutActivities:self->_subActivities withConfiguration:var0, var1], (var1 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_2:
-    v8 = v7;
+    var12 = var1;
     goto LABEL_3;
   }
 
@@ -817,9 +817,9 @@ LABEL_2:
   {
     v57[0] = self->_primaryActivity;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:1];
-    v8 = [(HKWorkout *)self _validateWorkoutActivities:v13 withConfiguration:var0, var1];
+    var12 = [(HKWorkout *)self _validateWorkoutActivities:v13 withConfiguration:var0, var1];
 
-    if (v8)
+    if (var12)
     {
       goto LABEL_3;
     }
@@ -856,81 +856,81 @@ LABEL_2:
 
       v21 = *(*(&v51 + 1) + 8 * i);
       v22 = [(HKWorkoutActivity *)self->_primaryActivity statisticsForType:v21];
-      v23 = [v21 canonicalUnit];
-      v24 = [v22 sumQuantity];
-      if (v24)
+      canonicalUnit = [v21 canonicalUnit];
+      sumQuantity = [v22 sumQuantity];
+      if (sumQuantity)
       {
-        v25 = v24;
-        v26 = [v22 sumQuantity];
-        v27 = [v26 isCompatibleWithUnit:v23];
+        v25 = sumQuantity;
+        sumQuantity2 = [v22 sumQuantity];
+        v27 = [sumQuantity2 isCompatibleWithUnit:canonicalUnit];
 
         if ((v27 & 1) == 0)
         {
           v43 = MEMORY[0x1E696ABC0];
           v44 = objc_opt_class();
-          v45 = [v21 identifier];
-          v46 = [v22 sumQuantity];
-          v47 = v46;
+          identifier = [v21 identifier];
+          sumQuantity3 = [v22 sumQuantity];
+          v47 = sumQuantity3;
           v48 = @"Incompatible unit for %@ sum quantity, received %@";
 LABEL_36:
-          v8 = [v43 hk_errorForInvalidArgument:@"@" class:v44 selector:a2 format:{v48, v45, v46}];
+          var12 = [v43 hk_errorForInvalidArgument:@"@" class:v44 selector:a2 format:{v48, identifier, sumQuantity3}];
 
           goto LABEL_3;
         }
       }
 
-      v28 = [v22 averageQuantity];
-      if (v28)
+      averageQuantity = [v22 averageQuantity];
+      if (averageQuantity)
       {
-        v29 = v28;
-        v30 = [v22 averageQuantity];
-        v31 = [v30 isCompatibleWithUnit:v23];
+        v29 = averageQuantity;
+        averageQuantity2 = [v22 averageQuantity];
+        v31 = [averageQuantity2 isCompatibleWithUnit:canonicalUnit];
 
         if ((v31 & 1) == 0)
         {
           v43 = MEMORY[0x1E696ABC0];
           v44 = objc_opt_class();
-          v45 = [v21 identifier];
-          v46 = [v22 averageQuantity];
-          v47 = v46;
+          identifier = [v21 identifier];
+          sumQuantity3 = [v22 averageQuantity];
+          v47 = sumQuantity3;
           v48 = @"Incompatible unit for %@ average quantity, received %@";
           goto LABEL_36;
         }
       }
 
-      v32 = [v22 minimumQuantity];
-      if (v32)
+      minimumQuantity = [v22 minimumQuantity];
+      if (minimumQuantity)
       {
-        v33 = v32;
-        v34 = [v22 minimumQuantity];
-        v35 = [v34 isCompatibleWithUnit:v23];
+        v33 = minimumQuantity;
+        minimumQuantity2 = [v22 minimumQuantity];
+        v35 = [minimumQuantity2 isCompatibleWithUnit:canonicalUnit];
 
         if ((v35 & 1) == 0)
         {
           v43 = MEMORY[0x1E696ABC0];
           v44 = objc_opt_class();
-          v45 = [v21 identifier];
-          v46 = [v22 minimumQuantity];
-          v47 = v46;
+          identifier = [v21 identifier];
+          sumQuantity3 = [v22 minimumQuantity];
+          v47 = sumQuantity3;
           v48 = @"Incompatible unit for %@ minimum quantity, received %@";
           goto LABEL_36;
         }
       }
 
-      v36 = [v22 maximumQuantity];
-      if (v36)
+      maximumQuantity = [v22 maximumQuantity];
+      if (maximumQuantity)
       {
-        v37 = v36;
-        v38 = [v22 maximumQuantity];
-        v39 = [v38 isCompatibleWithUnit:v23];
+        v37 = maximumQuantity;
+        maximumQuantity2 = [v22 maximumQuantity];
+        v39 = [maximumQuantity2 isCompatibleWithUnit:canonicalUnit];
 
         if ((v39 & 1) == 0)
         {
           v43 = MEMORY[0x1E696ABC0];
           v44 = objc_opt_class();
-          v45 = [v21 identifier];
-          v46 = [v22 maximumQuantity];
-          v47 = v46;
+          identifier = [v21 identifier];
+          sumQuantity3 = [v22 maximumQuantity];
+          v47 = sumQuantity3;
           v48 = @"Incompatible unit for %@ maximum quantity, received %@";
           goto LABEL_36;
         }
@@ -953,31 +953,31 @@ LABEL_29:
     v40 = MEMORY[0x1E696ABC0];
     v41 = objc_opt_class();
     goal = self->_goal;
-    v7 = [v40 hk_errorForInvalidArgument:@"@" class:v41 selector:a2 format:{@"Incompatible goal (%@) for goal type %ld", goal, self->_goalType}];
+    var1 = [v40 hk_errorForInvalidArgument:@"@" class:v41 selector:a2 format:{@"Incompatible goal (%@) for goal type %ld", goal, self->_goalType}];
     goto LABEL_2;
   }
 
-  v8 = 0;
+  var12 = 0;
 LABEL_3:
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return var12;
 }
 
-- (id)_validateWorkoutEvents:(id)a3 withConfiguration:(HKObjectValidationConfiguration)a4
+- (id)_validateWorkoutEvents:(id)events withConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
+  var1 = configuration.var1;
+  var0 = configuration.var0;
+  eventsCopy = events;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__53;
   v21 = __Block_byref_object_dispose__53;
   v22 = 0;
-  v9 = [v8 firstObject];
-  v10 = v9;
-  if (v9 && [v9 type] == 2)
+  firstObject = [eventsCopy firstObject];
+  v10 = firstObject;
+  if (firstObject && [firstObject type] == 2)
   {
     v11 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"First event cannot be resume, workouts begin in the running state"}];
     v12 = v18[5];
@@ -998,7 +998,7 @@ LABEL_3:
   v15[5] = &v17;
   v15[8] = var1;
   v15[9] = a2;
-  [v8 enumerateObjectsUsingBlock:v15];
+  [eventsCopy enumerateObjectsUsingBlock:v15];
   v13 = v18[5];
   _Block_object_dispose(v16, 8);
 
@@ -1073,11 +1073,11 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)_validateWorkoutActivities:(id)a3 withConfiguration:(HKObjectValidationConfiguration)a4
+- (id)_validateWorkoutActivities:(id)activities withConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
+  var1 = configuration.var1;
+  var0 = configuration.var0;
+  activitiesCopy = activities;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1093,7 +1093,7 @@ LABEL_11:
   v11[4] = self;
   v11[5] = &v12;
   v11[8] = a2;
-  [v8 enumerateObjectsUsingBlock:v11];
+  [activitiesCopy enumerateObjectsUsingBlock:v11];
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
 
@@ -1155,45 +1155,45 @@ LABEL_11:
   *a4 = v9;
 }
 
-- (void)_setUUID:(id)a3
+- (void)_setUUID:(id)d
 {
   v5.receiver = self;
   v5.super_class = HKWorkout;
-  v4 = a3;
-  [(HKObject *)&v5 _setUUID:v4];
-  [(HKWorkoutActivity *)self->_primaryActivity _setUUID:v4, v5.receiver, v5.super_class];
+  dCopy = d;
+  [(HKObject *)&v5 _setUUID:dCopy];
+  [(HKWorkoutActivity *)self->_primaryActivity _setUUID:dCopy, v5.receiver, v5.super_class];
 }
 
-- (BOOL)acceptsAssociationWithObject:(id)a3
+- (BOOL)acceptsAssociationWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierWorkoutEffortScore"];
   v5 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierEstimatedWorkoutEffortScore"];
-  v6 = [v3 sampleType];
-  if ([v6 isEqual:v4])
+  sampleType = [objectCopy sampleType];
+  if ([sampleType isEqual:v4])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v3 sampleType];
-    v7 = [v8 isEqual:v5];
+    sampleType2 = [objectCopy sampleType];
+    v7 = [sampleType2 isEqual:v5];
   }
 
   return v7;
 }
 
-- (id)subObjectFromUUID:(id)a3
+- (id)subObjectFromUUID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(HKWorkout *)self _subActivities];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _subActivities = [(HKWorkout *)self _subActivities];
+  v6 = [_subActivities countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -1203,14 +1203,14 @@ LABEL_11:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_subActivities);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 UUID];
-        v11 = [v10 UUIDString];
-        v12 = [v4 UUIDString];
-        v13 = [v11 isEqualToString:v12];
+        uUID = [v9 UUID];
+        uUIDString = [uUID UUIDString];
+        uUIDString2 = [dCopy UUIDString];
+        v13 = [uUIDString isEqualToString:uUIDString2];
 
         if (v13)
         {
@@ -1219,7 +1219,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [_subActivities countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -1236,13 +1236,13 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)_validateObjects:(id)a3 forClass:(Class)a4 error:(id *)a5
++ (BOOL)_validateObjects:(id)objects forClass:(Class)class error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![v7 count])
+  objectsCopy = objects;
+  if (![objectsCopy count])
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"%@: %@ data cannot be nil or empty.", objc_opt_class(), a4}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"%@: %@ data cannot be nil or empty.", objc_opt_class(), class}];
     v24 = 0;
     goto LABEL_26;
   }
@@ -1251,7 +1251,7 @@ LABEL_11:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v7;
+  obj = objectsCopy;
   v8 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (!v8)
   {
@@ -1260,9 +1260,9 @@ LABEL_11:
   }
 
   v9 = v8;
-  v34 = a5;
+  errorCopy = error;
   v10 = *v39;
-  v35 = v7;
+  v35 = objectsCopy;
   v11 = off_1E7375000;
   while (2)
   {
@@ -1278,9 +1278,9 @@ LABEL_11:
       {
         v25 = MEMORY[0x1E696ABC0];
         v26 = objc_opt_class();
-        [v25 hk_assignError:v34 code:3 format:{@"%@: Invalid object of type %@. Expecting %@.", v26, objc_opt_class(), a4}];
+        [v25 hk_assignError:errorCopy code:3 format:{@"%@: Invalid object of type %@. Expecting %@.", v26, objc_opt_class(), class}];
         v23 = 0;
-        LOBYTE(a5) = 0;
+        LOBYTE(error) = 0;
         goto LABEL_24;
       }
 
@@ -1292,29 +1292,29 @@ LABEL_11:
       }
 
       v15 = v10;
-      v16 = a4;
+      classCopy = class;
       v17 = v11;
       v18 = v13;
       v19 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierWorkoutEffortScore"];
       v20 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierEstimatedWorkoutEffortScore"];
-      v21 = [v18 sampleType];
+      sampleType = [v18 sampleType];
       v37 = v19;
-      if ([v21 isEqual:v19])
+      if ([sampleType isEqual:v19])
       {
 
 LABEL_19:
-        a5 = MEMORY[0x1E696ABC0];
+        error = MEMORY[0x1E696ABC0];
         v27 = objc_opt_class();
-        v28 = [v18 sampleType];
-        v29 = [a5 hk_error:3 format:{@"%@: Sample of type %@ must be related to a workout", v27, v28}];
+        sampleType2 = [v18 sampleType];
+        v29 = [error hk_error:3 format:{@"%@: Sample of type %@ must be related to a workout", v27, sampleType2}];
         v30 = v29;
-        LOBYTE(a5) = v29 == 0;
+        LOBYTE(error) = v29 == 0;
         if (v29)
         {
-          if (v34)
+          if (errorCopy)
           {
             v31 = v29;
-            *v34 = v30;
+            *errorCopy = v30;
           }
 
           else
@@ -1325,12 +1325,12 @@ LABEL_19:
 
         v23 = 0;
 LABEL_24:
-        v7 = v35;
+        objectsCopy = v35;
         goto LABEL_25;
       }
 
-      a5 = [v18 sampleType];
-      v22 = [a5 isEqual:v20];
+      error = [v18 sampleType];
+      v22 = [error isEqual:v20];
 
       if (v22)
       {
@@ -1338,13 +1338,13 @@ LABEL_24:
       }
 
       v11 = v17;
-      a4 = v16;
+      class = classCopy;
       v10 = v15;
     }
 
     v9 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     v23 = 1;
-    v7 = v35;
+    objectsCopy = v35;
     if (v9)
     {
       continue;
@@ -1355,89 +1355,89 @@ LABEL_24:
 
 LABEL_25:
 
-  v24 = v23 | a5;
+  v24 = v23 | error;
 LABEL_26:
 
   v32 = *MEMORY[0x1E69E9840];
   return v24 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKWorkout;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_workoutActivityType forKey:{@"workoutActivityType", v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"duration" forKey:self->_duration];
-  [v4 encodeInteger:self->_goalType forKey:@"goalType"];
-  [v4 encodeObject:self->_goal forKey:@"goal"];
-  [v4 encodeObject:self->_workoutEvents forKey:@"workoutEvents"];
-  [v4 encodeObject:self->_subActivities forKey:@"subActivities"];
-  [v4 encodeObject:self->_primaryActivity forKey:@"primaryActivity"];
-  [v4 encodeObject:self->_zonesByType forKey:@"zonesByType"];
-  [v4 encodeObject:self->_workoutZonesByType forKey:@"workoutZonesByType"];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_workoutActivityType forKey:{@"workoutActivityType", v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+  [coderCopy encodeInteger:self->_goalType forKey:@"goalType"];
+  [coderCopy encodeObject:self->_goal forKey:@"goal"];
+  [coderCopy encodeObject:self->_workoutEvents forKey:@"workoutEvents"];
+  [coderCopy encodeObject:self->_subActivities forKey:@"subActivities"];
+  [coderCopy encodeObject:self->_primaryActivity forKey:@"primaryActivity"];
+  [coderCopy encodeObject:self->_zonesByType forKey:@"zonesByType"];
+  [coderCopy encodeObject:self->_workoutZonesByType forKey:@"workoutZonesByType"];
 }
 
-- (HKWorkout)initWithCoder:(id)a3
+- (HKWorkout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v57.receiver = self;
   v57.super_class = HKWorkout;
-  v5 = [(HKSample *)&v57 initWithCoder:v4];
+  v5 = [(HKSample *)&v57 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_workoutActivityType = [v4 decodeIntegerForKey:@"workoutActivityType"];
-    [v4 decodeDoubleForKey:@"duration"];
+    v5->_workoutActivityType = [coderCopy decodeIntegerForKey:@"workoutActivityType"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v5->_duration = v6;
-    v5->_goalType = [v4 decodeIntegerForKey:@"goalType"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"goal"];
+    v5->_goalType = [coderCopy decodeIntegerForKey:@"goalType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"goal"];
     goal = v5->_goal;
     v5->_goal = v7;
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"workoutEvents"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"workoutEvents"];
     workoutEvents = v5->_workoutEvents;
     v5->_workoutEvents = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"subActivities"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"subActivities"];
     subActivities = v5->_subActivities;
     v5->_subActivities = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryActivity"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryActivity"];
     primaryActivity = v5->_primaryActivity;
     v5->_primaryActivity = v19;
 
     if (!v5->_primaryActivity)
     {
       workoutActivityType = v5->_workoutActivityType;
-      v22 = [(HKObject *)v5 metadata];
-      v54 = _HKWorkoutConfigurationWithActivityTypeAndMetadata(workoutActivityType, v22);
+      metadata = [(HKObject *)v5 metadata];
+      v54 = _HKWorkoutConfigurationWithActivityTypeAndMetadata(workoutActivityType, metadata);
 
-      v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalEnergyBurned"];
-      v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalBasalEnergyBurned"];
-      v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalDistance"];
-      v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalSwimmingStrokeCount"];
-      v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalFlightsClimbed"];
+      v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalEnergyBurned"];
+      v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalBasalEnergyBurned"];
+      v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalDistance"];
+      v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalSwimmingStrokeCount"];
+      v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalFlightsClimbed"];
       v23 = objc_opt_class();
       v24 = v5->_workoutActivityType;
-      v25 = [(HKSample *)v5 startDate];
-      v26 = [(HKSample *)v5 endDate];
-      v27 = [v23 _statisticsFromTotalActiveEnergyBurned:v56 totalBasalEnergyBurned:v55 totalDistance:v53 totalSwimmingStrokeCount:v52 totalFlightsClimbed:v51 workoutActivityType:v24 startDate:v25 endDate:v26];
+      startDate = [(HKSample *)v5 startDate];
+      endDate = [(HKSample *)v5 endDate];
+      v27 = [v23 _statisticsFromTotalActiveEnergyBurned:v56 totalBasalEnergyBurned:v55 totalDistance:v53 totalSwimmingStrokeCount:v52 totalFlightsClimbed:v51 workoutActivityType:v24 startDate:startDate endDate:endDate];
 
       v28 = [HKWorkoutActivity alloc];
-      v29 = [(HKObject *)v5 UUID];
-      v30 = [(HKSample *)v5 startDate];
-      v31 = [(HKSample *)v5 endDate];
+      uUID = [(HKObject *)v5 UUID];
+      startDate2 = [(HKSample *)v5 startDate];
+      endDate2 = [(HKSample *)v5 endDate];
       v32 = v5->_workoutEvents;
       duration = v5->_duration;
-      v34 = [(HKObject *)v5 metadata];
-      v35 = [(HKWorkoutActivity *)v28 _initWithUUID:v29 workoutConfiguration:v54 startDate:v30 endDate:v31 workoutEvents:v32 startsPaused:0 duration:duration metadata:v34 statisticsPerType:v27];
+      metadata2 = [(HKObject *)v5 metadata];
+      v35 = [(HKWorkoutActivity *)v28 _initWithUUID:uUID workoutConfiguration:v54 startDate:startDate2 endDate:endDate2 workoutEvents:v32 startsPaused:0 duration:duration metadata:metadata2 statisticsPerType:v27];
       v36 = v5->_primaryActivity;
       v5->_primaryActivity = v35;
     }
@@ -1446,7 +1446,7 @@ LABEL_26:
     v38 = objc_opt_class();
     v39 = objc_opt_class();
     v40 = [v37 setWithObjects:{v38, v39, objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"zonesByType"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"zonesByType"];
     zonesByType = v5->_zonesByType;
     v5->_zonesByType = v41;
 
@@ -1455,7 +1455,7 @@ LABEL_26:
     v45 = objc_opt_class();
     v46 = objc_opt_class();
     v47 = [v43 setWithObjects:{v44, v45, v46, objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"workoutZonesByType"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"workoutZonesByType"];
     workoutZonesByType = v5->_workoutZonesByType;
     v5->_workoutZonesByType = v48;
   }
@@ -1463,9 +1463,9 @@ LABEL_26:
   return v5;
 }
 
-- (void)_setWorkoutEvents:(id)a3
+- (void)_setWorkoutEvents:(id)events
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_618];
+  v4 = [events sortedArrayUsingComparator:&__block_literal_global_618];
   workoutEvents = self->_workoutEvents;
   self->_workoutEvents = v4;
 
@@ -1482,69 +1482,69 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
   return v7;
 }
 
-- (void)_setTotalEnergyBurned:(id)a3
+- (void)_setTotalEnergyBurned:(id)burned
 {
-  v4 = a3;
+  burnedCopy = burned;
   v8 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierActiveEnergyBurned"];
-  v5 = [(HKSample *)self startDate];
-  v6 = [(HKSample *)self endDate];
-  v7 = _HKStatisticsForTotal(v8, v4, v5, v6);
+  startDate = [(HKSample *)self startDate];
+  endDate = [(HKSample *)self endDate];
+  v7 = _HKStatisticsForTotal(v8, burnedCopy, startDate, endDate);
 
   [(HKWorkoutActivity *)self->_primaryActivity _setStatistics:v7 forType:v8];
 }
 
-- (void)_setTotalBasalEnergyBurned:(id)a3
+- (void)_setTotalBasalEnergyBurned:(id)burned
 {
-  v4 = a3;
+  burnedCopy = burned;
   v8 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierBasalEnergyBurned"];
-  v5 = [(HKSample *)self startDate];
-  v6 = [(HKSample *)self endDate];
-  v7 = _HKStatisticsForTotal(v8, v4, v5, v6);
+  startDate = [(HKSample *)self startDate];
+  endDate = [(HKSample *)self endDate];
+  v7 = _HKStatisticsForTotal(v8, burnedCopy, startDate, endDate);
 
   [(HKWorkoutActivity *)self->_primaryActivity _setStatistics:v7 forType:v8];
 }
 
-- (void)_setTotalDistance:(id)a3
+- (void)_setTotalDistance:(id)distance
 {
-  v8 = a3;
+  distanceCopy = distance;
   v4 = _HKWorkoutDistanceTypeForActivityType([(HKWorkout *)self workoutActivityType]);
   if (v4)
   {
-    v5 = [(HKSample *)self startDate];
-    v6 = [(HKSample *)self endDate];
-    v7 = _HKStatisticsForTotal(v4, v8, v5, v6);
+    startDate = [(HKSample *)self startDate];
+    endDate = [(HKSample *)self endDate];
+    v7 = _HKStatisticsForTotal(v4, distanceCopy, startDate, endDate);
 
     [(HKWorkoutActivity *)self->_primaryActivity _setStatistics:v7 forType:v4];
   }
 }
 
-- (void)_setTotalSwimmingStrokeCount:(id)a3
+- (void)_setTotalSwimmingStrokeCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v8 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierSwimmingStrokeCount"];
-  v5 = [(HKSample *)self startDate];
-  v6 = [(HKSample *)self endDate];
-  v7 = _HKStatisticsForTotal(v8, v4, v5, v6);
+  startDate = [(HKSample *)self startDate];
+  endDate = [(HKSample *)self endDate];
+  v7 = _HKStatisticsForTotal(v8, countCopy, startDate, endDate);
 
   [(HKWorkoutActivity *)self->_primaryActivity _setStatistics:v7 forType:v8];
 }
 
-- (void)_setTotalFlightsClimbed:(id)a3
+- (void)_setTotalFlightsClimbed:(id)climbed
 {
-  v4 = a3;
+  climbedCopy = climbed;
   v8 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierFlightsClimbed"];
-  v5 = [(HKSample *)self startDate];
-  v6 = [(HKSample *)self endDate];
-  v7 = _HKStatisticsForTotal(v8, v4, v5, v6);
+  startDate = [(HKSample *)self startDate];
+  endDate = [(HKSample *)self endDate];
+  v7 = _HKStatisticsForTotal(v8, climbedCopy, startDate, endDate);
 
   [(HKWorkoutActivity *)self->_primaryActivity _setStatistics:v7 forType:v8];
 }
 
 - (double)_totalEnergyBurnedInCanonicalUnit
 {
-  v2 = [(HKWorkout *)self totalEnergyBurned];
+  totalEnergyBurned = [(HKWorkout *)self totalEnergyBurned];
   v3 = +[HKUnit kilocalorieUnit];
-  [v2 doubleValueForUnit:v3];
+  [totalEnergyBurned doubleValueForUnit:v3];
   v5 = v4;
 
   return v5;
@@ -1552,9 +1552,9 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 
 - (double)_totalBasalEnergyBurnedInCanonicalUnit
 {
-  v2 = [(HKWorkout *)self _totalBasalEnergyBurned];
+  _totalBasalEnergyBurned = [(HKWorkout *)self _totalBasalEnergyBurned];
   v3 = +[HKUnit kilocalorieUnit];
-  [v2 doubleValueForUnit:v3];
+  [_totalBasalEnergyBurned doubleValueForUnit:v3];
   v5 = v4;
 
   return v5;
@@ -1562,18 +1562,18 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 
 - (double)_totalDistanceInCanonicalUnit
 {
-  v2 = [(HKWorkout *)self totalDistance];
+  totalDistance = [(HKWorkout *)self totalDistance];
   v3 = [HKUnit meterUnitWithMetricPrefix:9];
-  [v2 doubleValueForUnit:v3];
+  [totalDistance doubleValueForUnit:v3];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_totalDistanceIncludingAllTypesForUnit:(id)a3
+- (double)_totalDistanceIncludingAllTypesForUnit:(id)unit
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  unitCopy = unit;
   v23[0] = @"HKQuantityTypeIdentifierDistanceCycling";
   v23[1] = @"HKQuantityTypeIdentifierDistanceWalkingRunning";
   v23[2] = @"HKQuantityTypeIdentifierDistanceSwimming";
@@ -1601,8 +1601,8 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 
         v11 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:*(*(&v18 + 1) + 8 * i), v18];
         v12 = [(HKWorkout *)self statisticsForType:v11];
-        v13 = [v12 sumQuantity];
-        [v13 doubleValueForUnit:v4];
+        sumQuantity = [v12 sumQuantity];
+        [sumQuantity doubleValueForUnit:unitCopy];
         v15 = v14;
 
         v9 = v9 + v15;
@@ -1625,9 +1625,9 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 
 - (double)_totalSwimmingStrokeCountInCanonicalUnit
 {
-  v2 = [(HKWorkout *)self totalSwimmingStrokeCount];
+  totalSwimmingStrokeCount = [(HKWorkout *)self totalSwimmingStrokeCount];
   v3 = +[HKUnit countUnit];
-  [v2 doubleValueForUnit:v3];
+  [totalSwimmingStrokeCount doubleValueForUnit:v3];
   v5 = v4;
 
   return v5;
@@ -1635,9 +1635,9 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 
 - (double)_totalFlightsClimbedInCanonicalUnit
 {
-  v2 = [(HKWorkout *)self totalFlightsClimbed];
+  totalFlightsClimbed = [(HKWorkout *)self totalFlightsClimbed];
   v3 = +[HKUnit countUnit];
-  [v2 doubleValueForUnit:v3];
+  [totalFlightsClimbed doubleValueForUnit:v3];
   v5 = v4;
 
   return v5;
@@ -1655,20 +1655,20 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 
 - (int64_t)_activityMoveMode
 {
-  v2 = [(HKObject *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"_HKPrivateWorkoutActivityMoveMode"];
+  metadata = [(HKObject *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"_HKPrivateWorkoutActivityMoveMode"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSArray)workoutActivities
@@ -1693,44 +1693,44 @@ uint64_t __31__HKWorkout__setWorkoutEvents___block_invoke(uint64_t a1, void *a2,
 - (id)_routeSmoothingActivities
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(HKWorkoutActivity *)self->_primaryActivity workoutConfiguration];
-  v4 = [v3 activityType];
+  workoutConfiguration = [(HKWorkoutActivity *)self->_primaryActivity workoutConfiguration];
+  activityType = [workoutConfiguration activityType];
 
-  if (v4 == 82)
+  if (activityType == 82)
   {
-    v5 = [(HKWorkout *)self workoutActivities];
+    workoutActivities = [(HKWorkout *)self workoutActivities];
   }
 
   else
   {
     v8[0] = self->_primaryActivity;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+    workoutActivities = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return workoutActivities;
 }
 
-- (void)_enumerateActiveTimePeriods:(id)a3
+- (void)_enumerateActiveTimePeriods:(id)periods
 {
-  v4 = a3;
-  v6 = [(HKSample *)self startDate];
-  v5 = [(HKSample *)self endDate];
-  _HKEnumerateActiveWorkoutIntervalsStartingPaused(v6, v5, self->_workoutEvents, 0, v4);
+  periodsCopy = periods;
+  startDate = [(HKSample *)self startDate];
+  endDate = [(HKSample *)self endDate];
+  _HKEnumerateActiveWorkoutIntervalsStartingPaused(startDate, endDate, self->_workoutEvents, 0, periodsCopy);
 }
 
-+ (BOOL)_workoutWithActivityType:(unint64_t)a3 acceptsSubActivityType:(unint64_t)a4
++ (BOOL)_workoutWithActivityType:(unint64_t)type acceptsSubActivityType:(unint64_t)activityType
 {
-  if (a3 != 82)
+  if (type != 82)
   {
-    return a3 == a4;
+    return type == activityType;
   }
 
   result = 1;
-  if (a4 - 37 > 0x2E || ((1 << (a4 - 37)) & 0x400000000201) == 0)
+  if (activityType - 37 > 0x2E || ((1 << (activityType - 37)) & 0x400000000201) == 0)
   {
-    return a4 == 13;
+    return activityType == 13;
   }
 
   return result;

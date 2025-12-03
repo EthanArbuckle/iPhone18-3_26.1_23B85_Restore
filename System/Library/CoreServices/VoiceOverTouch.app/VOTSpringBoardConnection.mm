@@ -4,11 +4,11 @@
 - (void)dealloc;
 - (void)informConnectionDied;
 - (void)restartConnection;
-- (void)sendProgrammaticAppSwitch:(BOOL)a3;
-- (void)setInPassthroughMode:(BOOL)a3;
-- (void)setScreenCurtainEnabled:(BOOL)a3;
-- (void)showElementLabelPanel:(BOOL)a3 currentLabel:(id)a4;
-- (void)showSpringBoardVOConfirmation:(BOOL)a3;
+- (void)sendProgrammaticAppSwitch:(BOOL)switch;
+- (void)setInPassthroughMode:(BOOL)mode;
+- (void)setScreenCurtainEnabled:(BOOL)enabled;
+- (void)showElementLabelPanel:(BOOL)panel currentLabel:(id)label;
+- (void)showSpringBoardVOConfirmation:(BOOL)confirmation;
 - (void)showSpringboardNoHomeButtonGestureAlert;
 @end
 
@@ -61,9 +61,9 @@
   {
     v4 = v3;
     v5 = +[AXSubsystemVoiceOver sharedInstance];
-    v6 = [v5 ignoreLogging];
+    ignoreLogging = [v5 ignoreLogging];
 
-    if ((v6 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v7 = +[AXSubsystemVoiceOver identifier];
       v8 = AXLoggerForFacility();
@@ -86,9 +86,9 @@
 
   v12 = sub_100115EB4(sp[0], 0x3A98u, &sp[1]);
   v13 = +[AXSubsystemVoiceOver sharedInstance];
-  v14 = [v13 ignoreLogging];
+  ignoreLogging2 = [v13 ignoreLogging];
 
-  if ((v14 & 1) == 0)
+  if ((ignoreLogging2 & 1) == 0)
   {
     v15 = +[AXSubsystemVoiceOver identifier];
     v16 = AXLoggerForFacility();
@@ -112,9 +112,9 @@
   if (v12 || !sp[1])
   {
     v21 = +[AXSubsystemVoiceOver sharedInstance];
-    v22 = [v21 ignoreLogging];
+    ignoreLogging3 = [v21 ignoreLogging];
 
-    if ((v22 & 1) == 0)
+    if ((ignoreLogging3 & 1) == 0)
     {
       v23 = +[AXSubsystemVoiceOver identifier];
       v24 = AXLoggerForFacility();
@@ -174,14 +174,14 @@
   }
 }
 
-- (void)showSpringBoardVOConfirmation:(BOOL)a3
+- (void)showSpringBoardVOConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     v3 = +[VOTElement systemAppApplication];
-    v4 = [v3 isSystemSleeping];
+    isSystemSleeping = [v3 isSystemSleeping];
 
-    if (v4)
+    if (isSystemSleeping)
     {
       v5 = AXLogSystemApp();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -211,41 +211,41 @@
   [v2 showAlert:12 withHandler:0];
 }
 
-- (void)sendProgrammaticAppSwitch:(BOOL)a3
+- (void)sendProgrammaticAppSwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   v4 = +[AXSpringBoardServer server];
-  v5 = [v4 isGuidedAccessActive];
+  isGuidedAccessActive = [v4 isGuidedAccessActive];
 
-  if ((v5 & 1) == 0)
+  if ((isGuidedAccessActive & 1) == 0)
   {
-    v6 = [objc_allocWithZone(NSNumber) initWithBool:v3];
+    v6 = [objc_allocWithZone(NSNumber) initWithBool:switchCopy];
     sub_10003CA18();
   }
 }
 
-- (void)showElementLabelPanel:(BOOL)a3 currentLabel:(id)a4
+- (void)showElementLabelPanel:(BOOL)panel currentLabel:(id)label
 {
   v4 = &kCFBooleanFalse;
-  if (a3)
+  if (panel)
   {
     v4 = &kCFBooleanTrue;
   }
 
-  v5 = [NSArray arrayWithObjects:*v4, a4, 0];
+  v5 = [NSArray arrayWithObjects:*v4, label, 0];
   sub_10003CA18();
 }
 
-- (void)setInPassthroughMode:(BOOL)a3
+- (void)setInPassthroughMode:(BOOL)mode
 {
-  [NSNumber numberWithBool:a3];
+  [NSNumber numberWithBool:mode];
 
   sub_10003CA18();
 }
 
-- (void)setScreenCurtainEnabled:(BOOL)a3
+- (void)setScreenCurtainEnabled:(BOOL)enabled
 {
-  [NSNumber numberWithBool:a3];
+  [NSNumber numberWithBool:enabled];
 
   sub_10003CA18();
 }

@@ -7,24 +7,24 @@
 - (void)_geocodeIfNecessary;
 - (void)_openMaps;
 - (void)_updateCoordinateLabel;
-- (void)_updateDegreesLabel:(BOOL)a3;
-- (void)_updateDirectionLabel:(BOOL)a3;
+- (void)_updateDegreesLabel:(BOOL)label;
+- (void)_updateDirectionLabel:(BOOL)label;
 - (void)_updatePlaceLabelLayout;
 - (void)_updatePlaceLabels;
-- (void)activateConstraintSetForFontSize:(double)a3;
+- (void)activateConstraintSetForFontSize:(double)size;
 - (void)addConstraints;
-- (void)configureForTestingWithOptions:(id)a3;
+- (void)configureForTestingWithOptions:(id)options;
 - (void)dealloc;
-- (void)localeDidChange:(id)a3;
-- (void)locationAuthorizationDidChange:(int)a3;
-- (void)preferredFontSizeDidChange:(id)a3;
-- (void)setSharedLocationManager:(id)a3;
-- (void)setUserLocation:(id)a3;
+- (void)localeDidChange:(id)change;
+- (void)locationAuthorizationDidChange:(int)change;
+- (void)preferredFontSizeDidChange:(id)change;
+- (void)setSharedLocationManager:(id)manager;
+- (void)setUserLocation:(id)location;
 - (void)startMotionManager;
 - (void)testCleanup;
 - (void)updateConsole;
-- (void)updateDisplay:(id)a3;
-- (void)userDefaultsChanged:(id)a3;
+- (void)updateDisplay:(id)display;
+- (void)userDefaultsChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
@@ -32,7 +32,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (MGGetBoolAnswer())
     {
@@ -126,8 +126,8 @@
   LODWORD(v18) = 1148846080;
   [(UIView *)self->_compassContainer setContentCompressionResistancePriority:1 forAxis:v18];
   [(UIView *)self->_compassContainer addSubview:self->_compassView];
-  v19 = [(CompassPageViewController *)self view];
-  [v19 addSubview:self->_compassContainer];
+  view = [(CompassPageViewController *)self view];
+  [view addSubview:self->_compassContainer];
 
   v20 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   labelContainer = self->_labelContainer;
@@ -140,8 +140,8 @@
   [(UIView *)self->_labelContainer setOpaque:1];
   [(UIView *)self->_labelContainer _setVisualAltitude:_UIVisualAltitudeFloatAboveSuperview * 1.5];
   [(UIView *)self->_labelContainer _setVisualAltitudeBias:1.0, 0.660000026];
-  v23 = [(CompassPageViewController *)self view];
-  [v23 addSubview:self->_labelContainer];
+  view2 = [(CompassPageViewController *)self view];
+  [view2 addSubview:self->_labelContainer];
 
   v24 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   degreesLabel = self->_degreesLabel;
@@ -273,22 +273,22 @@
   compassToTopLayoutGuide = self->_compassToTopLayoutGuide;
   self->_compassToTopLayoutGuide = v56;
 
-  v58 = [(CompassPageViewController *)self view];
-  [v58 addLayoutGuide:self->_compassToTopLayoutGuide];
+  view3 = [(CompassPageViewController *)self view];
+  [view3 addLayoutGuide:self->_compassToTopLayoutGuide];
 
   v59 = objc_alloc_init(UILayoutGuide);
   labelsToCompassLayoutGuide = self->_labelsToCompassLayoutGuide;
   self->_labelsToCompassLayoutGuide = v59;
 
-  v61 = [(CompassPageViewController *)self view];
-  [v61 addLayoutGuide:self->_labelsToCompassLayoutGuide];
+  view4 = [(CompassPageViewController *)self view];
+  [view4 addLayoutGuide:self->_labelsToCompassLayoutGuide];
 
   v62 = objc_alloc_init(UILayoutGuide);
   bottomToLabelsLayoutGuide = self->_bottomToLabelsLayoutGuide;
   self->_bottomToLabelsLayoutGuide = v62;
 
-  v64 = [(CompassPageViewController *)self view];
-  [v64 addLayoutGuide:self->_bottomToLabelsLayoutGuide];
+  view5 = [(CompassPageViewController *)self view];
+  [view5 addLayoutGuide:self->_bottomToLabelsLayoutGuide];
 
   v65 = +[GEOPlatform sharedPlatform];
   if ([v65 isInternalInstall])
@@ -322,13 +322,13 @@ LABEL_7:
     [(UILabel *)self->_consoleLabel setTextColor:v73];
 
     [(UILabel *)self->_consoleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v74 = [(CompassPageViewController *)self view];
-    [v74 addSubview:self->_consoleLabel];
+    view6 = [(CompassPageViewController *)self view];
+    [view6 addSubview:self->_consoleLabel];
   }
 
   else
   {
-    v74 = self->_consoleLabel;
+    view6 = self->_consoleLabel;
     self->_consoleLabel = 0;
   }
 
@@ -355,130 +355,130 @@ LABEL_7:
     self->_constraints = v3;
   }
 
-  v5 = [(UILayoutGuide *)self->_compassToTopLayoutGuide heightAnchor];
-  v6 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide heightAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  heightAnchor = [(UILayoutGuide *)self->_compassToTopLayoutGuide heightAnchor];
+  heightAnchor2 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide heightAnchor];
+  v7 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
 
   LODWORD(v8) = 1144750080;
   [v7 setPriority:v8];
   v74 = self->_constraints;
-  v109 = [(UIView *)self->_compassContainer leadingAnchor];
-  v110 = [(CompassPageViewController *)self view];
-  v108 = [v110 leadingAnchor];
-  v107 = [v109 constraintEqualToAnchor:v108];
+  leadingAnchor = [(UIView *)self->_compassContainer leadingAnchor];
+  view = [(CompassPageViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v107 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v112[0] = v107;
-  v105 = [(UIView *)self->_compassContainer widthAnchor];
-  v106 = [(CompassPageViewController *)self view];
-  v104 = [v106 widthAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  widthAnchor = [(UIView *)self->_compassContainer widthAnchor];
+  view2 = [(CompassPageViewController *)self view];
+  widthAnchor2 = [view2 widthAnchor];
+  v103 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v112[1] = v103;
-  v102 = [(CompassView *)self->_compassView widthAnchor];
-  v101 = [(UIView *)self->_compassContainer widthAnchor];
-  v100 = [v102 constraintEqualToAnchor:v101];
+  widthAnchor3 = [(CompassView *)self->_compassView widthAnchor];
+  widthAnchor4 = [(UIView *)self->_compassContainer widthAnchor];
+  v100 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v112[2] = v100;
-  v99 = [(CompassView *)self->_compassView topAnchor];
-  v98 = [(UIView *)self->_compassContainer topAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98];
+  topAnchor = [(CompassView *)self->_compassView topAnchor];
+  topAnchor2 = [(UIView *)self->_compassContainer topAnchor];
+  v97 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v112[3] = v97;
-  v96 = [(CompassView *)self->_compassView bottomAnchor];
-  v95 = [(UIView *)self->_compassContainer bottomAnchor];
-  v94 = [v96 constraintEqualToAnchor:v95];
+  bottomAnchor = [(CompassView *)self->_compassView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_compassContainer bottomAnchor];
+  v94 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v112[4] = v94;
-  v93 = [(CompassView *)self->_compassView heightAnchor];
-  v92 = [(CompassView *)self->_compassView widthAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92];
+  heightAnchor3 = [(CompassView *)self->_compassView heightAnchor];
+  widthAnchor5 = [(CompassView *)self->_compassView widthAnchor];
+  v91 = [heightAnchor3 constraintEqualToAnchor:widthAnchor5];
   v112[5] = v91;
-  v89 = [(UIView *)self->_labelContainer leadingAnchor];
-  v90 = [(CompassPageViewController *)self view];
-  v88 = [v90 leadingAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88];
+  leadingAnchor3 = [(UIView *)self->_labelContainer leadingAnchor];
+  view3 = [(CompassPageViewController *)self view];
+  leadingAnchor4 = [view3 leadingAnchor];
+  v87 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v112[6] = v87;
-  v85 = [(UIView *)self->_labelContainer widthAnchor];
-  v86 = [(CompassPageViewController *)self view];
-  v84 = [v86 widthAnchor];
-  v83 = [v85 constraintEqualToAnchor:v84];
+  widthAnchor6 = [(UIView *)self->_labelContainer widthAnchor];
+  view4 = [(CompassPageViewController *)self view];
+  widthAnchor7 = [view4 widthAnchor];
+  v83 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7];
   v112[7] = v83;
-  v81 = [(UILayoutGuide *)self->_compassToTopLayoutGuide topAnchor];
-  v82 = [(CompassPageViewController *)self view];
-  v80 = [v82 safeAreaLayoutGuide];
-  v79 = [v80 topAnchor];
-  v78 = [v81 constraintEqualToAnchor:v79];
+  topAnchor3 = [(UILayoutGuide *)self->_compassToTopLayoutGuide topAnchor];
+  view5 = [(CompassPageViewController *)self view];
+  safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v78 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v112[8] = v78;
-  v77 = [(UIView *)self->_compassContainer topAnchor];
-  v76 = [(UILayoutGuide *)self->_compassToTopLayoutGuide bottomAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76];
+  topAnchor5 = [(UIView *)self->_compassContainer topAnchor];
+  bottomAnchor3 = [(UILayoutGuide *)self->_compassToTopLayoutGuide bottomAnchor];
+  v75 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
   v112[9] = v75;
-  v73 = [(UILayoutGuide *)self->_labelsToCompassLayoutGuide topAnchor];
-  v72 = [(UIView *)self->_compassContainer bottomAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  topAnchor6 = [(UILayoutGuide *)self->_labelsToCompassLayoutGuide topAnchor];
+  bottomAnchor4 = [(UIView *)self->_compassContainer bottomAnchor];
+  v71 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
   v112[10] = v71;
-  v70 = [(UIView *)self->_labelContainer topAnchor];
-  v69 = [(UILayoutGuide *)self->_labelsToCompassLayoutGuide bottomAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  topAnchor7 = [(UIView *)self->_labelContainer topAnchor];
+  bottomAnchor5 = [(UILayoutGuide *)self->_labelsToCompassLayoutGuide bottomAnchor];
+  v68 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5];
   v112[11] = v68;
-  v67 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide topAnchor];
-  v66 = [(UIView *)self->_labelContainer bottomAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  topAnchor8 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide topAnchor];
+  bottomAnchor6 = [(UIView *)self->_labelContainer bottomAnchor];
+  v65 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6];
   v112[12] = v65;
-  v64 = [(CompassPageViewController *)self view];
-  v63 = [v64 safeAreaLayoutGuide];
-  v62 = [v63 bottomAnchor];
-  v61 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide bottomAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  view6 = [(CompassPageViewController *)self view];
+  safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+  bottomAnchor7 = [safeAreaLayoutGuide2 bottomAnchor];
+  bottomAnchor8 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide bottomAnchor];
+  v60 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v112[13] = v60;
-  v59 = [(UILayoutGuide *)self->_compassToTopLayoutGuide heightAnchor];
-  v58 = [(UILayoutGuide *)self->_labelsToCompassLayoutGuide heightAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  heightAnchor4 = [(UILayoutGuide *)self->_compassToTopLayoutGuide heightAnchor];
+  heightAnchor5 = [(UILayoutGuide *)self->_labelsToCompassLayoutGuide heightAnchor];
+  v57 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   v112[14] = v57;
-  v56 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide heightAnchor];
-  v55 = [v56 constraintGreaterThanOrEqualToConstant:40.0];
+  heightAnchor6 = [(UILayoutGuide *)self->_bottomToLabelsLayoutGuide heightAnchor];
+  v55 = [heightAnchor6 constraintGreaterThanOrEqualToConstant:40.0];
   v112[15] = v55;
   v111 = v7;
   v112[16] = v7;
-  v54 = [(UILabel *)self->_degreesLabel leadingAnchor];
-  v53 = [(UIView *)self->_labelContainer leadingAnchor];
-  v52 = [v54 constraintGreaterThanOrEqualToAnchor:v53];
+  leadingAnchor5 = [(UILabel *)self->_degreesLabel leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_labelContainer leadingAnchor];
+  v52 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
   v112[17] = v52;
-  v51 = [(UILabel *)self->_degreesSymbolLabel leadingAnchor];
-  v50 = [(UILabel *)self->_degreesLabel trailingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  leadingAnchor7 = [(UILabel *)self->_degreesSymbolLabel leadingAnchor];
+  trailingAnchor = [(UILabel *)self->_degreesLabel trailingAnchor];
+  v49 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor];
   v112[18] = v49;
-  v48 = [(UILabel *)self->_directionLabel leadingAnchor];
-  v47 = [(UILabel *)self->_degreesSymbolLabel trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47 constant:15.0];
+  leadingAnchor8 = [(UILabel *)self->_directionLabel leadingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_degreesSymbolLabel trailingAnchor];
+  v46 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor2 constant:15.0];
   v112[19] = v46;
-  v45 = [(CompassPageViewController *)self view];
-  v44 = [v45 trailingAnchor];
-  v43 = [(UILabel *)self->_directionLabel trailingAnchor];
-  v42 = [v44 constraintGreaterThanOrEqualToAnchor:v43];
+  view7 = [(CompassPageViewController *)self view];
+  trailingAnchor3 = [view7 trailingAnchor];
+  trailingAnchor4 = [(UILabel *)self->_directionLabel trailingAnchor];
+  v42 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
   v112[20] = v42;
-  v41 = [(UILabel *)self->_degreesSymbolLabel centerXAnchor];
-  v40 = [(UIView *)self->_labelContainer centerXAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  centerXAnchor = [(UILabel *)self->_degreesSymbolLabel centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_labelContainer centerXAnchor];
+  v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v112[21] = v39;
-  v38 = [(UILabel *)self->_degreesLabel topAnchor];
-  v37 = [(UIView *)self->_labelContainer topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  topAnchor9 = [(UILabel *)self->_degreesLabel topAnchor];
+  topAnchor10 = [(UIView *)self->_labelContainer topAnchor];
+  v36 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
   v112[22] = v36;
-  v35 = [(UILabel *)self->_degreesSymbolLabel firstBaselineAnchor];
-  v34 = [(UILabel *)self->_degreesLabel firstBaselineAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  firstBaselineAnchor = [(UILabel *)self->_degreesSymbolLabel firstBaselineAnchor];
+  firstBaselineAnchor2 = [(UILabel *)self->_degreesLabel firstBaselineAnchor];
+  v33 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v112[23] = v33;
-  v32 = [(UILabel *)self->_directionLabel firstBaselineAnchor];
-  v31 = [(UILabel *)self->_degreesLabel firstBaselineAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  firstBaselineAnchor3 = [(UILabel *)self->_directionLabel firstBaselineAnchor];
+  firstBaselineAnchor4 = [(UILabel *)self->_degreesLabel firstBaselineAnchor];
+  v30 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
   v112[24] = v30;
-  v29 = [(UIStackView *)self->_labelStackView widthAnchor];
-  v9 = [(UIView *)self->_labelContainer widthAnchor];
-  v10 = [v29 constraintEqualToAnchor:v9];
+  widthAnchor8 = [(UIStackView *)self->_labelStackView widthAnchor];
+  widthAnchor9 = [(UIView *)self->_labelContainer widthAnchor];
+  v10 = [widthAnchor8 constraintEqualToAnchor:widthAnchor9];
   v112[25] = v10;
-  v11 = [(UIStackView *)self->_labelStackView topAnchor];
-  v12 = [(UILabel *)self->_degreesLabel lastBaselineAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:33.0];
+  topAnchor11 = [(UIStackView *)self->_labelStackView topAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_degreesLabel lastBaselineAnchor];
+  v13 = [topAnchor11 constraintEqualToAnchor:lastBaselineAnchor constant:33.0];
   v112[26] = v13;
-  v14 = [(UIView *)self->_labelContainer bottomAnchor];
-  v15 = [(UIStackView *)self->_labelStackView bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor9 = [(UIView *)self->_labelContainer bottomAnchor];
+  bottomAnchor10 = [(UIStackView *)self->_labelStackView bottomAnchor];
+  v16 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v112[27] = v16;
   v17 = [NSArray arrayWithObjects:v112 count:28];
   [(NSMutableArray *)v74 addObjectsFromArray:v17];
@@ -487,16 +487,16 @@ LABEL_7:
   if (consoleLabel)
   {
     v19 = self->_constraints;
-    v20 = [(UILabel *)consoleLabel topAnchor];
-    v21 = [(CompassPageViewController *)self view];
-    v22 = [v21 safeAreaLayoutGuide];
-    v23 = [v22 topAnchor];
-    v24 = [v20 constraintEqualToAnchor:v23];
+    topAnchor12 = [(UILabel *)consoleLabel topAnchor];
+    view8 = [(CompassPageViewController *)self view];
+    safeAreaLayoutGuide3 = [view8 safeAreaLayoutGuide];
+    topAnchor13 = [safeAreaLayoutGuide3 topAnchor];
+    v24 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
     [(NSMutableArray *)v19 addObject:v24];
   }
 
-  v25 = [(CompassPageViewController *)self view];
-  [v25 addConstraints:self->_constraints];
+  view9 = [(CompassPageViewController *)self view];
+  [view9 addConstraints:self->_constraints];
 
   v26 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   [v26 pointSize];
@@ -527,13 +527,13 @@ LABEL_7:
   {
     objc_storeStrong(&self->_lastGeocodeLocation, userLocation);
     v4 = [[GEOLocation alloc] initWithCLLocation:self->_userLocation];
-    v5 = [v4 latLng];
-    [v5 setGtLog:1];
+    latLng = [v4 latLng];
+    [latLng setGtLog:1];
 
     v6 = +[GEOMapService sharedService];
     v7 = +[GEOMapService sharedService];
-    v8 = [v7 defaultTraits];
-    v9 = [v6 ticketForReverseGeocodeLocation:v4 traits:v8];
+    defaultTraits = [v7 defaultTraits];
+    v9 = [v6 ticketForReverseGeocodeLocation:v4 traits:defaultTraits];
 
     objc_initWeak(&location, self);
     v11[0] = _NSConcreteStackBlock;
@@ -561,9 +561,9 @@ LABEL_7:
 {
   [(UILabel *)self->_degreesLabel setHidden:0];
   [(UILabel *)self->_degreesSymbolLabel setHidden:0];
-  v3 = [(UILabel *)self->_placeLabel text];
+  text = [(UILabel *)self->_placeLabel text];
 
-  if (v3)
+  if (text)
   {
     v4 = !self->_hasCalibration;
   }
@@ -576,7 +576,7 @@ LABEL_7:
   [(UILabel *)self->_directionLabel setHidden:v4];
   placeLabel = self->_placeLabel;
 
-  [(UILabel *)placeLabel setHidden:v3 == 0];
+  [(UILabel *)placeLabel setHidden:text == 0];
 }
 
 - (void)_updateCoordinateLabel
@@ -617,10 +617,10 @@ LABEL_7:
       {
         v15 = +[NSLocale currentLocale];
         v16 = [v15 objectForKey:NSLocaleUsesMetricSystem];
-        v17 = [v16 BOOLValue];
+        bOOLValue = [v16 BOOLValue];
 
         v18 = v13 / 0.3048;
-        if (v17)
+        if (bOOLValue)
         {
           v18 = v13;
         }
@@ -665,8 +665,8 @@ LABEL_7:
   {
     [(CLLocation *)userLocation horizontalAccuracy];
     v5 = v4;
-    v6 = [(CLLocation *)self->_userLocation timestamp];
-    [v6 timeIntervalSinceNow];
+    timestamp = [(CLLocation *)self->_userLocation timestamp];
+    [timestamp timeIntervalSinceNow];
     v8 = [NSString stringWithFormat:@"± %.2fm %.0fs", v5, -v7];
   }
 
@@ -675,29 +675,29 @@ LABEL_7:
     v8 = @"No Location";
   }
 
-  v9 = [(CLLocationManager *)self->_sharedLocationManager heading];
+  heading = [(CLLocationManager *)self->_sharedLocationManager heading];
 
-  if (v9)
+  if (heading)
   {
-    v10 = [(CLLocationManager *)self->_sharedLocationManager heading];
-    v11 = [v10 shortDescription];
+    heading2 = [(CLLocationManager *)self->_sharedLocationManager heading];
+    shortDescription = [heading2 shortDescription];
 LABEL_13:
-    v16 = v11;
+    v16 = shortDescription;
 
     goto LABEL_14;
   }
 
-  v12 = [(CompassMotionManager *)self->_manager deviceMotion];
-  v13 = [v12 magneticFieldCalibrationLevel];
+  deviceMotion = [(CompassMotionManager *)self->_manager deviceMotion];
+  magneticFieldCalibrationLevel = [deviceMotion magneticFieldCalibrationLevel];
 
-  if (v13 != -1)
+  if (magneticFieldCalibrationLevel != -1)
   {
     v20 = 0u;
-    v14 = [(CompassMotionManager *)self->_manager deviceMotion];
-    v15 = v14;
-    if (v14)
+    deviceMotion2 = [(CompassMotionManager *)self->_manager deviceMotion];
+    v15 = deviceMotion2;
+    if (deviceMotion2)
     {
-      [v14 magneticField];
+      [deviceMotion2 magneticField];
     }
 
     else
@@ -705,8 +705,8 @@ LABEL_13:
       v20 = 0u;
     }
 
-    v10 = [(CompassMotionManager *)self->_manager deviceMotion];
-    v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d, (%.2f, %.2f, %.2f)µT", [v10 magneticFieldCalibrationLevel], v20, 0);
+    heading2 = [(CompassMotionManager *)self->_manager deviceMotion];
+    shortDescription = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d, (%.2f, %.2f, %.2f)µT", [heading2 magneticFieldCalibrationLevel], v20, 0);
     goto LABEL_13;
   }
 
@@ -734,9 +734,9 @@ LABEL_14:
 
   [(CLLocation *)self->_userLocation distanceFromLocation:?];
   v4 = v3;
-  v5 = [(CLLocation *)self->_userLocation timestamp];
-  v6 = [(CLLocation *)self->_lastGeocodeLocation timestamp];
-  [v5 timeIntervalSinceDate:v6];
+  timestamp = [(CLLocation *)self->_userLocation timestamp];
+  timestamp2 = [(CLLocation *)self->_lastGeocodeLocation timestamp];
+  [timestamp timeIntervalSinceDate:timestamp2];
   v8 = fabs(v7);
 
   if (v8 > 60.0 || v4 > 1000.0)
@@ -747,7 +747,7 @@ LABEL_4:
   }
 }
 
-- (void)preferredFontSizeDidChange:(id)a3
+- (void)preferredFontSizeDidChange:(id)change
 {
   v6 = sub_1000024B4();
   [v6 pointSize];
@@ -762,7 +762,7 @@ LABEL_4:
   [(CompassView *)self->_compassView layoutSubviews];
 }
 
-- (void)localeDidChange:(id)a3
+- (void)localeDidChange:(id)change
 {
   [(NSMutableDictionary *)self->_formattedDegreeText removeAllObjects];
   [(CompassPageViewController *)self _updateCoordinateLabel];
@@ -770,20 +770,20 @@ LABEL_4:
   [(CompassPageViewController *)self _updateHeadingLabels:1];
 }
 
-- (void)activateConstraintSetForFontSize:(double)a3
+- (void)activateConstraintSetForFontSize:(double)size
 {
-  if (a3 <= 21.0)
+  if (size <= 21.0)
   {
     altitudeLabel = self->_altitudeLabel;
   }
 
   else
   {
-    v4 = [(CompassPageViewController *)self view];
-    [v4 bounds];
+    view = [(CompassPageViewController *)self view];
+    [view bounds];
     v6 = v5;
-    v7 = [(CompassPageViewController *)self view];
-    [v7 bounds];
+    view2 = [(CompassPageViewController *)self view];
+    [view2 bounds];
     v9 = v6 / v8;
 
     altitudeLabel = self->_altitudeLabel;
@@ -815,7 +815,7 @@ LABEL_6:
   [(CompassPageViewController *)&v5 dealloc];
 }
 
-- (void)userDefaultsChanged:(id)a3
+- (void)userDefaultsChanged:(id)changed
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   self->_usesTrueNorth = [v4 BOOLForKey:@"kMagneticNorth"];
@@ -826,10 +826,10 @@ LABEL_6:
   self->_headingFilter = v5;
 }
 
-- (void)updateDisplay:(id)a3
+- (void)updateDisplay:(id)display
 {
-  v6 = [(CompassMotionManager *)self->_manager deviceMotion];
-  v4 = [v6 magneticFieldCalibrationLevel] != 0;
+  deviceMotion = [(CompassMotionManager *)self->_manager deviceMotion];
+  v4 = [deviceMotion magneticFieldCalibrationLevel] != 0;
   hasCalibration = self->_hasCalibration;
   if (hasCalibration != v4)
   {
@@ -837,33 +837,33 @@ LABEL_6:
     [(CompassPageViewController *)self _updatePlaceLabelLayout];
   }
 
-  [v6 heading];
+  [deviceMotion heading];
   [(CompassPageViewController *)self setCompassToAngle:hasCalibration != v4 force:?];
-  [v6 gravity];
+  [deviceMotion gravity];
   [(CompassPageViewController *)self setCrosshairLevelForData:?];
 }
 
-- (void)setSharedLocationManager:(id)a3
+- (void)setSharedLocationManager:(id)manager
 {
-  v5 = a3;
-  if (self->_sharedLocationManager != v5)
+  managerCopy = manager;
+  if (self->_sharedLocationManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sharedLocationManager, a3);
-    v5 = v6;
+    v6 = managerCopy;
+    objc_storeStrong(&self->_sharedLocationManager, manager);
+    managerCopy = v6;
   }
 }
 
-- (void)locationAuthorizationDidChange:(int)a3
+- (void)locationAuthorizationDidChange:(int)change
 {
-  self->_canUseLocation = (a3 - 3) < 0xFFFFFFFE;
+  self->_canUseLocation = (change - 3) < 0xFFFFFFFE;
   [(CompassMotionManager *)self->_manager stopDeviceMotionUpdates];
   [(CompassPageViewController *)self startMotionManager];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100007434;
   v5[3] = &unk_1000144B0;
-  v6 = a3;
+  changeCopy = change;
   v5[4] = self;
   dispatch_async(&_dispatch_main_q, v5);
 }
@@ -874,16 +874,16 @@ LABEL_6:
   [v2 setIdleTimerDisabled:0];
 }
 
-- (void)setUserLocation:(id)a3
+- (void)setUserLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   userLocation = self->_userLocation;
-  if (userLocation != v5)
+  if (userLocation != locationCopy)
   {
     self->_userLocation = 0;
-    v7 = v5;
+    v7 = locationCopy;
 
-    objc_storeStrong(&self->_userLocation, a3);
+    objc_storeStrong(&self->_userLocation, location);
     [(CompassPageViewController *)self _updateCoordinateLabel];
     if (v7 && userLocation)
     {
@@ -896,14 +896,14 @@ LABEL_6:
       [(CompassPageViewController *)self _updatePlaceLabels];
     }
 
-    v5 = v7;
+    locationCopy = v7;
   }
 }
 
-- (void)_updateDegreesLabel:(BOOL)a3
+- (void)_updateDegreesLabel:(BOOL)label
 {
   LODWORD(v3) = vcvtmd_s64_f64(self->_currentCompassAngle);
-  if (self->_currentDisplayHeading == v3 && !a3)
+  if (self->_currentDisplayHeading == v3 && !label)
   {
     return;
   }
@@ -947,7 +947,7 @@ LABEL_12:
   [(UILabel *)degreesSymbolLabel setText:v12];
 }
 
-- (void)_updateDirectionLabel:(BOOL)a3
+- (void)_updateDirectionLabel:(BOOL)label
 {
   v4 = StringWithLocationDirection(self->_currentCompassAngle);
   [(UILabel *)self->_directionLabel setText:v4];
@@ -979,7 +979,7 @@ LABEL_12:
   _Block_object_dispose(&v18, 8);
   v9 = [[v7 alloc] initForMapFrameWithCenter:{v4, v6}];
   [v9 setUserTrackingMode:2];
-  v10 = [v9 buildForWeb];
+  buildForWeb = [v9 buildForWeb];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -998,27 +998,27 @@ LABEL_12:
 
   v12 = v11;
   _Block_object_dispose(&v18, 8);
-  [v11 _openDefaultNavigationWithURL:v10 fromScene:0 completionHandler:0];
+  [v11 _openDefaultNavigationWithURL:buildForWeb fromScene:0 completionHandler:0];
 }
 
 - (void)_forceCalibration
 {
   v2 = +[GEOPlatform sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  if (v3)
+  if (isInternalInstall)
   {
 
     +[CUICalibration showCalibrationAlert];
   }
 }
 
-- (void)configureForTestingWithOptions:(id)a3
+- (void)configureForTestingWithOptions:(id)options
 {
   manager = self->_manager;
-  v5 = a3;
+  optionsCopy = options;
   [(CompassMotionManager *)manager setConfiguredForTesting:1];
-  LODWORD(manager) = [v5 shouldSetBearing];
+  LODWORD(manager) = [optionsCopy shouldSetBearing];
 
   if (manager)
   {

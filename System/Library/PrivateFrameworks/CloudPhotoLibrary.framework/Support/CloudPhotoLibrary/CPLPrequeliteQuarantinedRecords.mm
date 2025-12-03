@@ -1,13 +1,13 @@
 @interface CPLPrequeliteQuarantinedRecords
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
 - (BOOL)initializeStorage;
-- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)a3;
-- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)a3 removed:(BOOL *)a4 error:(id *)a5;
-- (BOOL)removeRelatedRecordsFromQuarantineWithError:(id *)a3;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)a3;
+- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)quarantined;
+- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)identifier removed:(BOOL *)removed error:(id *)error;
+- (BOOL)removeRelatedRecordsFromQuarantineWithError:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)identifier;
 - (unint64_t)countOfQuarantinedRecords;
-- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)a3;
+- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)identifier;
 @end
 
 @implementation CPLPrequeliteQuarantinedRecords
@@ -16,137 +16,137 @@
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteQuarantinedRecords;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"scopeIndex INTEGER NOT NULL error:localIdentifier TEXT NOT NULL, quarantineDate TIMESTAMP NOT NULL, class TEXT, related INTEGER, reason TEXT NOT NULL", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"scopeIndex INTEGER NOT NULL error:localIdentifier TEXT NOT NULL, quarantineDate TIMESTAMP NOT NULL, class TEXT, related INTEGER, reason TEXT NOT NULL", 0];
+    if (initializeStorage)
     {
-      LOBYTE(v3) = [(CPLPrequeliteStorage *)self createIndexWithName:@"localScopedIdentifier" withDefinition:@"localIdentifier unique:scopeIndex" error:1, 0];
+      LOBYTE(initializeStorage) = [(CPLPrequeliteStorage *)self createIndexWithName:@"localScopedIdentifier" withDefinition:@"localIdentifier unique:scopeIndex" error:1, 0];
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v16.receiver = self;
   v16.super_class = CPLPrequeliteQuarantinedRecords;
   if (![(CPLPrequeliteStorage *)&v16 upgradeStorageToVersion:?])
   {
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(pqStore2) = 0;
+    return pqStore2;
   }
 
-  LOBYTE(v5) = 1;
-  if (a3 > 62)
+  LOBYTE(pqStore2) = 1;
+  if (version > 62)
   {
-    if (a3 == 63)
+    if (version == 63)
     {
       if ([(CPLPrequeliteStorage *)self shouldUpgradeSchema])
       {
         sub_1001C5CB0(self, &v17);
-        LOBYTE(v5) = v17;
+        LOBYTE(pqStore2) = v17;
       }
 
-      return v5;
+      return pqStore2;
     }
 
-    if (a3 != 68)
+    if (version != 68)
     {
-      if (a3 != 93 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+      if (version != 93 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
       {
-        return v5;
+        return pqStore2;
       }
 
-      v7 = [(CPLPrequeliteStorage *)self pqStore];
-      v8 = [v7 pqlConnection];
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
-      v9 = [(CPLPrequeliteStorage *)self mainTable];
-      v10 = [v8 cplExecute:{@"ALTER TABLE %@ ADD COLUMN related INTEGER", v9}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      v10 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN related INTEGER", mainTable}];
 
       if (v10)
       {
-        LOBYTE(v5) = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"related" error:0];
+        LOBYTE(pqStore2) = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"related" error:0];
       }
 
       else
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(pqStore2) = 0;
       }
 
 LABEL_26:
 
-      return v5;
+      return pqStore2;
     }
 
-    v5 = [(CPLPrequeliteStorage *)self pqStore];
-    v8 = [v5 pqlConnection];
+    pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore2 pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    LODWORD(v5) = [v8 cplExecute:{@"UPDATE %@ SET class = CPLMasterChange WHERE reason = Asset has been quarantined", v12}];
+    mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+    LODWORD(pqStore2) = [pqlConnection cplExecute:{@"UPDATE %@ SET class = CPLMasterChange WHERE reason = Asset has been quarantined", mainTable2}];
 
-    if (!v5)
+    if (!pqStore2)
     {
       goto LABEL_26;
     }
 
-    v13 = [v8 changes];
-    if (v13 < 1)
+    changes = [pqlConnection changes];
+    if (changes < 1)
     {
       goto LABEL_26;
     }
 
-    v14 = v13;
-    v11 = [(CPLPrequeliteStorage *)self pqStore];
-    [v11 recordUpgradeEvent:{@"Fixed %lld quarantined record classes to CPLMasterChange", v14}];
+    v14 = changes;
+    pqStore3 = [(CPLPrequeliteStorage *)self pqStore];
+    [pqStore3 recordUpgradeEvent:{@"Fixed %lld quarantined record classes to CPLMasterChange", v14}];
 LABEL_24:
 
     goto LABEL_26;
   }
 
-  if (a3 == 24)
+  if (version == 24)
   {
-    v6 = [(CPLPrequeliteStorage *)self createStorage];
+    createStorage = [(CPLPrequeliteStorage *)self createStorage];
     goto LABEL_16;
   }
 
-  if (a3 == 38)
+  if (version == 38)
   {
     if (![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
     {
-      return v5;
+      return pqStore2;
     }
 
-    v5 = [(CPLPrequeliteStorage *)self pqStore];
-    v8 = [v5 pqlConnection];
+    pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore2 pqlConnection];
 
-    v11 = [(CPLPrequeliteStorage *)self mainTable];
-    LOBYTE(v5) = [v8 cplExecute:{@"ALTER TABLE %@ ADD COLUMN reason TEXT NOT NULL DEFAULT Unknown reason", v11}];
+    pqStore3 = [(CPLPrequeliteStorage *)self mainTable];
+    LOBYTE(pqStore2) = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN reason TEXT NOT NULL DEFAULT Unknown reason", pqStore3}];
     goto LABEL_24;
   }
 
-  if (a3 == 39 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+  if (version == 39 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
   {
-    v6 = [(CPLPrequeliteStorage *)self recreateMainTableWithCopyInstructions:@"scopeIndex oldFields:localIdentifier error:quarantineDate, class, reason", @"1, localIdentifier, quarantineDate, NULL, reason", 0];
+    createStorage = [(CPLPrequeliteStorage *)self recreateMainTableWithCopyInstructions:@"scopeIndex oldFields:localIdentifier error:quarantineDate, class, reason", @"1, localIdentifier, quarantineDate, NULL, reason", 0];
 LABEL_16:
-    LOBYTE(v5) = v6;
+    LOBYTE(pqStore2) = createStorage;
   }
 
-  return v5;
+  return pqStore2;
 }
 
-- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)a3 removed:(BOOL *)a4 error:(id *)a5
+- (BOOL)removeQuarantinedRecordWithScopedIdentifier:(id)identifier removed:(BOOL *)removed error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v8];
+  identifierCopy = identifier;
+  v9 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:identifierCopy];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopedIdentifier:v8];
-      *a5 = v10 = 0;
+      [CPLErrors invalidScopeErrorWithScopedIdentifier:identifierCopy];
+      *error = v10 = 0;
     }
 
     else
@@ -158,31 +158,31 @@ LABEL_16:
   else
   {
     v11 = v9;
-    v12 = [(CPLPrequeliteStorage *)self pqStore];
-    v13 = [v12 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v14 = [(CPLPrequeliteStorage *)self mainTable];
-    v15 = [v8 identifier];
-    v10 = [v13 cplExecute:{@"DELETE FROM %@ WHERE localIdentifier = %@ AND scopeIndex = %ld", v14, v15, v11}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v10 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE localIdentifier = %@ AND scopeIndex = %ld", mainTable, identifier, v11}];
 
     if (v10)
     {
-      *a4 = [v13 changes] > 0;
+      *removed = [pqlConnection changes] > 0;
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [v13 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
   return v10;
 }
 
-- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)a3
+- (BOOL)isRecordWithScopedIdentifierQuarantined:(id)quarantined
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v4];
+  quarantinedCopy = quarantined;
+  v5 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:quarantinedCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -191,20 +191,20 @@ LABEL_16:
   else
   {
     v7 = v5;
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [(CPLPrequeliteStorage *)self mainTable];
-    v10 = [v4 identifier];
-    v11 = [PQLFormatInjection formatInjection:@"localIdentifier = %@ AND scopeIndex = %ld", v10, v7];
-    v6 = [v8 table:v9 hasRecordsMatchingQuery:v11];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [quarantinedCopy identifier];
+    v11 = [PQLFormatInjection formatInjection:@"localIdentifier = %@ AND scopeIndex = %ld", identifier, v7];
+    v6 = [pqStore table:mainTable hasRecordsMatchingQuery:v11];
   }
 
   return v6;
 }
 
-- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)a3
+- (Class)classForQuarantinedRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(CPLPrequeliteStorage *)self scopeIndexForLocalScopedIdentifier:identifierCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -213,13 +213,13 @@ LABEL_16:
   else
   {
     v7 = v5;
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [v8 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
     v10 = objc_opt_class();
-    v11 = [(CPLPrequeliteStorage *)self mainTable];
-    v12 = [v4 identifier];
-    v13 = [v9 cplFetchObjectOfClass:v10 sql:{@"SELECT class FROM %@ WHERE localIdentifier = %@ AND scopeIndex = %ld", v11, v12, v7}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v13 = [pqlConnection cplFetchObjectOfClass:v10 sql:{@"SELECT class FROM %@ WHERE localIdentifier = %@ AND scopeIndex = %ld", mainTable, identifier, v7}];
 
     if (v13)
     {
@@ -237,76 +237,76 @@ LABEL_16:
 
 - (unint64_t)countOfQuarantinedRecords
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
-  v5 = [v3 tableCountOfRecords:v4];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v5 = [pqStore tableCountOfRecords:mainTable];
 
   return v5;
 }
 
-- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)a3
+- (unint64_t)countOfQuarantinedRecordsInScopeWithIdentifier:(id)identifier
 {
-  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a3];
+  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v6 = v4;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v9 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld", v6];
-  v10 = [v7 table:v8 countOfRecordsMatchingQuery:v9];
+  v10 = [pqStore table:mainTable countOfRecordsMatchingQuery:v9];
 
   return v10;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v12 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", v13, a3, a4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", mainTable, index, count}];
 
   if (v14)
   {
-    *a5 = [v12 changes];
+    *deletedCount = [pqlConnection changes];
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [v12 lastError];
+    *error = [pqlConnection lastError];
   }
 
   return v14;
 }
 
-- (BOOL)removeRelatedRecordsFromQuarantineWithError:(id *)a3
+- (BOOL)removeRelatedRecordsFromQuarantineWithError:(id *)error
 {
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v6 cplExecute:{@"DELETE FROM %@ WHERE related = 1", v7}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE related = 1", mainTable}];
 
   if (v8)
   {
-    if ([v6 changes] >= 1 && (_CPLSilentLogging & 1) == 0)
+    if ([pqlConnection changes] >= 1 && (_CPLSilentLogging & 1) == 0)
     {
       v9 = sub_10017DA04();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v12 = [v6 changes];
+        changes = [pqlConnection changes];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Removed %lu related records from quarantine", buf, 0xCu);
       }
     }
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [v6 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v8;

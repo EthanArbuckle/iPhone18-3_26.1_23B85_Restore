@@ -3,7 +3,7 @@
 - (UNCBlueListMonitor)init;
 - (UNCBlueListMonitorDelegate)delegate;
 - (void)_startMonitoring;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation UNCBlueListMonitor
@@ -20,9 +20,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v3 = [MEMORY[0x1E6997A60] userContext];
+  userContext = [MEMORY[0x1E6997A60] userContext];
   context = v2->_context;
-  v2->_context = v3;
+  v2->_context = userContext;
 
   if (v2->_context)
   {
@@ -58,8 +58,8 @@ LABEL_12:
 
     v16 = v13;
 
-    v17 = [v16 BOOLValue];
-    v2->_budgetExhausted = v17;
+    bOOLValue = [v16 BOOLValue];
+    v2->_budgetExhausted = bOOLValue;
     [(UNCBlueListMonitor *)v2 _startMonitoring];
     goto LABEL_12;
   }
@@ -78,28 +78,28 @@ LABEL_13:
 
 - (BOOL)shouldBoostOpportunisticTopicsToEnabled
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __61__UNCBlueListMonitor_shouldBoostOpportunisticTopicsToEnabled__block_invoke;
   v5[3] = &unk_1E85D6E48;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return (v2 & 1) == 0;
+  return (selfCopy & 1) == 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -107,8 +107,8 @@ LABEL_13:
   v7[2] = __34__UNCBlueListMonitor_setDelegate___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(queue, v7);
 }
 

@@ -1,32 +1,32 @@
 @interface LNFetchAppIntentStateConnectionOperation
-- (LNFetchAppIntentStateConnectionOperation)initWithConnectionInterface:(id)a3 appIntentIdentifiers:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchAppIntentStateConnectionOperation)initWithConnectionInterface:(id)interface appIntentIdentifiers:(id)identifiers queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchAppIntentStateConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchAppIntentStateConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchAppIntentStateConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchAppIntentStateConnectionOperation *)self results];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    results = [(LNFetchAppIntentStateConnectionOperation *)self results];
+    v7 = [(LNConnectionOperation *)self validatingResult:results error:errorCopy];
 
-    v8 = [(LNFetchAppIntentStateConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchAppIntentStateConnectionOperation *)self results];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchAppIntentStateConnectionOperation *)self completionHandler];
+    results2 = [(LNFetchAppIntentStateConnectionOperation *)self results];
+    (completionHandler2)[2](completionHandler2, results2, v7);
 
     [(LNFetchAppIntentStateConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchAppIntentStateConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -41,14 +41,14 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching intent state", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v5 = [(LNFetchAppIntentStateConnectionOperation *)self appIntentIdentifiers];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  appIntentIdentifiers = [(LNFetchAppIntentStateConnectionOperation *)self appIntentIdentifiers];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__LNFetchAppIntentStateConnectionOperation_start__block_invoke;
   v6[3] = &unk_1E74B16F8;
   v6[4] = self;
-  [v4 fetchStateForAppIntentIdentifiers:v5 completionHandler:v6];
+  [connectionInterface fetchStateForAppIntentIdentifiers:appIntentIdentifiers completionHandler:v6];
 }
 
 void __49__LNFetchAppIntentStateConnectionOperation_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -63,24 +63,24 @@ void __49__LNFetchAppIntentStateConnectionOperation_start__block_invoke(uint64_t
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchAppIntentStateConnectionOperation)initWithConnectionInterface:(id)a3 appIntentIdentifiers:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNFetchAppIntentStateConnectionOperation)initWithConnectionInterface:(id)interface appIntentIdentifiers:(id)identifiers queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  interfaceCopy = interface;
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v12)
+    if (identifiersCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"LNFetchAppIntentStateConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"appIntentIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchAppIntentStateConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"appIntentIdentifiers"}];
 
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -88,34 +88,34 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"LNFetchAppIntentStateConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchAppIntentStateConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
-  if (!v12)
+  if (!identifiersCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchAppIntentStateConnectionOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNFetchAppIntentStateConnectionOperation.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v24.receiver = self;
   v24.super_class = LNFetchAppIntentStateConnectionOperation;
-  v16 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:v15 connectionInterface:v11 priority:1 queue:v13 activity:&__block_literal_global_9412];
+  v16 = [(LNInterfaceConnectionOperation *)&v24 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_9412];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_appIntentIdentifiers, a4);
-    v17 = _Block_copy(v14);
+    objc_storeStrong(&v16->_appIntentIdentifiers, identifiers);
+    v17 = _Block_copy(handlerCopy);
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v17;
 

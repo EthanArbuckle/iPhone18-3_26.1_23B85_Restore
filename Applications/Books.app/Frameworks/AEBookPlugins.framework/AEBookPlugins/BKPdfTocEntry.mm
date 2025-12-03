@@ -1,41 +1,41 @@
 @interface BKPdfTocEntry
-- (BKPdfTocEntry)initWithTocParser:(id)a3 pdfDictionary:(CGPDFDictionary *)a4 forDocument:(CGPDFDocument *)a5 parent:(id)a6;
-- (BOOL)childDictionaryReferencesParent:(CGPDFDictionary *)a3;
-- (id)childAtIndex:(unint64_t)a3;
+- (BKPdfTocEntry)initWithTocParser:(id)parser pdfDictionary:(CGPDFDictionary *)dictionary forDocument:(CGPDFDocument *)document parent:(id)parent;
+- (BOOL)childDictionaryReferencesParent:(CGPDFDictionary *)parent;
+- (id)childAtIndex:(unint64_t)index;
 - (int64_t)_getDestination;
-- (unint64_t)_pageDictionaryToPageNumber:(CGPDFDictionary *)a3;
+- (unint64_t)_pageDictionaryToPageNumber:(CGPDFDictionary *)number;
 @end
 
 @implementation BKPdfTocEntry
 
-- (id)childAtIndex:(unint64_t)a3
+- (id)childAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_children count]<= a3)
+  if ([(NSMutableArray *)self->_children count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_children objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_children objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (BOOL)childDictionaryReferencesParent:(CGPDFDictionary *)a3
+- (BOOL)childDictionaryReferencesParent:(CGPDFDictionary *)parent
 {
-  v5 = [(BKPdfTocEntry *)self numberOfChildren];
-  if (v5)
+  numberOfChildren = [(BKPdfTocEntry *)self numberOfChildren];
+  if (numberOfChildren)
   {
-    v6 = v5;
+    v6 = numberOfChildren;
     v7 = 0;
     while (1)
     {
       v8 = [(BKPdfTocEntry *)self childAtIndex:v7];
-      v9 = [v8 dictionary];
+      dictionary = [v8 dictionary];
 
-      if (v9 == a3)
+      if (dictionary == parent)
       {
         return 1;
       }
@@ -50,53 +50,53 @@
   else
   {
 LABEL_5:
-    v10 = self;
+    selfCopy = self;
     do
     {
-      v11 = [(BKPdfTocEntry *)v10 dictionary];
-      v12 = v11 == a3;
-      if (v11 == a3)
+      dictionary2 = [(BKPdfTocEntry *)selfCopy dictionary];
+      v12 = dictionary2 == parent;
+      if (dictionary2 == parent)
       {
         break;
       }
 
-      v13 = [(BKPdfTocEntry *)v10 parent];
+      parent = [(BKPdfTocEntry *)selfCopy parent];
 
-      v10 = v13;
+      selfCopy = parent;
     }
 
-    while (v13);
+    while (parent);
   }
 
   return v12;
 }
 
-- (unint64_t)_pageDictionaryToPageNumber:(CGPDFDictionary *)a3
+- (unint64_t)_pageDictionaryToPageNumber:(CGPDFDictionary *)number
 {
-  v9 = a3;
-  v3 = [(BKPdfTocParser *)self->_tocParser pageDictionaryToPageNumber];
-  if (v3)
+  numberCopy = number;
+  pageDictionaryToPageNumber = [(BKPdfTocParser *)self->_tocParser pageDictionaryToPageNumber];
+  if (pageDictionaryToPageNumber)
   {
-    v4 = [[NSValue alloc] initWithBytes:&v9 objCType:"^v"];
-    v5 = [v3 objectForKey:v4];
+    v4 = [[NSValue alloc] initWithBytes:&numberCopy objCType:"^v"];
+    v5 = [pageDictionaryToPageNumber objectForKey:v4];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v7 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (int64_t)_getDestination
@@ -173,21 +173,21 @@ LABEL_6:
   return result;
 }
 
-- (BKPdfTocEntry)initWithTocParser:(id)a3 pdfDictionary:(CGPDFDictionary *)a4 forDocument:(CGPDFDocument *)a5 parent:(id)a6
+- (BKPdfTocEntry)initWithTocParser:(id)parser pdfDictionary:(CGPDFDictionary *)dictionary forDocument:(CGPDFDocument *)document parent:(id)parent
 {
-  v11 = a3;
-  v12 = a6;
+  parserCopy = parser;
+  parentCopy = parent;
   value = 0;
   v13 = [(BKPdfTocEntry *)self init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_tocParser, a3);
-    v14->_document = a5;
-    v14->_dictionary = a4;
-    objc_storeStrong(&v14->_parent, a6);
+    objc_storeStrong(&v13->_tocParser, parser);
+    v14->_document = document;
+    v14->_dictionary = dictionary;
+    objc_storeStrong(&v14->_parent, parent);
     v14->_pageNumber = 0x7FFFFFFFFFFFFFFFLL;
-    if (v12)
+    if (parentCopy)
     {
       if (CGPDFDictionaryGetString(v14->_dictionary, "Title", &value))
       {

@@ -1,11 +1,11 @@
 @interface STTextProcessing
-+ (id)stripDanglingPunctuationFromRecognitionText:(id)a3;
++ (id)stripDanglingPunctuationFromRecognitionText:(id)text;
 - (STTextProcessing)init;
 @end
 
 @implementation STTextProcessing
 
-+ (id)stripDanglingPunctuationFromRecognitionText:(id)a3
++ (id)stripDanglingPunctuationFromRecognitionText:(id)text
 {
   v3 = sub_26B5E13FC();
   v4 = *(v3 - 8);

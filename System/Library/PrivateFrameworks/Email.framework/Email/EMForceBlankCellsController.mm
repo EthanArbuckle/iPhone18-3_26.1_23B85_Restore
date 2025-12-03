@@ -2,7 +2,7 @@
 + (double)_maximumDelay;
 + (double)_minimumDelay;
 + (id)log;
-+ (void)blockForRandomDurationWithMessage:(id)a3;
++ (void)blockForRandomDurationWithMessage:(id)message;
 @end
 
 @implementation EMForceBlankCellsController
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __34__EMForceBlankCellsController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_14 != -1)
   {
     dispatch_once(&log_onceToken_14, block);
@@ -32,18 +32,18 @@ void __34__EMForceBlankCellsController_log__block_invoke(uint64_t a1)
   log_log_14 = v1;
 }
 
-+ (void)blockForRandomDurationWithMessage:(id)a3
++ (void)blockForRandomDurationWithMessage:(id)message
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = arc4random();
-  [a1 _blockRate];
+  [self _blockRate];
   v7 = v6;
   if (v5 / 4294967300.0 <= v6)
   {
-    [a1 _minimumDelay];
+    [self _minimumDelay];
     v10 = v9;
-    [a1 _maximumDelay];
+    [self _maximumDelay];
     v12 = v11;
     if (v10 > v11)
     {
@@ -65,7 +65,7 @@ void __34__EMForceBlankCellsController_log__block_invoke(uint64_t a1)
       v18 = 134218242;
       v19 = v16;
       v20 = 2112;
-      v21 = *&v4;
+      v21 = *&messageCopy;
       _os_log_impl(&dword_1C6655000, v15, OS_LOG_TYPE_DEFAULT, "Sleep for %.2fs (%@)", &v18, 0x16u);
     }
 
@@ -90,8 +90,8 @@ void __34__EMForceBlankCellsController_log__block_invoke(uint64_t a1)
 
 + (double)_minimumDelay
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 objectForKey:@"BlankCellMinimumBlockDuration"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults objectForKey:@"BlankCellMinimumBlockDuration"];
 
   if (v3)
   {
@@ -109,8 +109,8 @@ void __34__EMForceBlankCellsController_log__block_invoke(uint64_t a1)
 
 + (double)_maximumDelay
 {
-  v2 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v2 objectForKey:@"BlankCellMaximumBlockDuration"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults objectForKey:@"BlankCellMaximumBlockDuration"];
 
   if (v3)
   {

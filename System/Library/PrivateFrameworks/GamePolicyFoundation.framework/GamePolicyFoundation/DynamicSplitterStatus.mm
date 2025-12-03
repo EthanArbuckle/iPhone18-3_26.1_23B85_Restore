@@ -1,22 +1,22 @@
 @interface DynamicSplitterStatus
 - (_TtC20GamePolicyFoundation21DynamicSplitterStatus)init;
-- (_TtC20GamePolicyFoundation21DynamicSplitterStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC20GamePolicyFoundation21DynamicSplitterStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DynamicSplitterStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29EB45360(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29EB45360(coderCopy);
 }
 
-- (_TtC20GamePolicyFoundation21DynamicSplitterStatus)initWithCoder:(id)a3
+- (_TtC20GamePolicyFoundation21DynamicSplitterStatus)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_29EB45AFC(v3);
+  coderCopy = coder;
+  v4 = sub_29EB45AFC(coderCopy);
 
   return v4;
 }

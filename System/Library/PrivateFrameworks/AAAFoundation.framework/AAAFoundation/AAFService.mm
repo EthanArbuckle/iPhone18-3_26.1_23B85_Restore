@@ -1,6 +1,6 @@
 @interface AAFService
 - (AAFService)init;
-- (BOOL)shouldAcceptNewConnection:(id)a3;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
 - (void)_configureListener;
 - (void)startup;
 @end
@@ -20,9 +20,9 @@
   v3 = _AAFLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(AAFService *)self serviceName];
+    serviceName = [(AAFService *)self serviceName];
     v6 = 138412290;
-    v7 = v4;
+    v7 = serviceName;
     _os_log_impl(&dword_1C8644000, v3, OS_LOG_TYPE_DEFAULT, "Service: starting up xpc service - %@", &v6, 0xCu);
   }
 
@@ -32,12 +32,12 @@
 
 - (void)_configureListener
 {
-  v3 = [(AAFService *)self serviceName];
-  if (v3)
+  serviceName = [(AAFService *)self serviceName];
+  if (serviceName)
   {
     v4 = objc_alloc(MEMORY[0x1E696B0D8]);
-    v5 = [(AAFService *)self serviceName];
-    v6 = [v4 initWithMachServiceName:v5];
+    serviceName2 = [(AAFService *)self serviceName];
+    v6 = [v4 initWithMachServiceName:serviceName2];
     serviceListener = self->_serviceListener;
     self->_serviceListener = v6;
 
@@ -55,16 +55,16 @@
   }
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(AAFService *)self preConnectEntitlements];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  preConnectEntitlements = [(AAFService *)self preConnectEntitlements];
+  v6 = [preConnectEntitlements countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -76,11 +76,11 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(preConnectEntitlements);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v4 valueForEntitlement:v11];
+        v12 = [connectionCopy valueForEntitlement:v11];
         if (!v12 || ([v9 isEqual:v12] & 1) == 0)
         {
           v19 = _AAFLogSystem();
@@ -93,7 +93,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [preConnectEntitlements countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -103,27 +103,27 @@
     }
   }
 
-  v13 = [(AAFService *)self exportedProtocol];
+  exportedProtocol = [(AAFService *)self exportedProtocol];
 
-  if (!v13)
+  if (!exportedProtocol)
   {
-    v5 = _AAFLogSystem();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    preConnectEntitlements = _AAFLogSystem();
+    if (os_log_type_enabled(preConnectEntitlements, OS_LOG_TYPE_FAULT))
     {
-      [AAFService shouldAcceptNewConnection:v5];
+      [AAFService shouldAcceptNewConnection:preConnectEntitlements];
     }
 
     goto LABEL_16;
   }
 
   v14 = MEMORY[0x1E696B0D0];
-  v15 = [(AAFService *)self exportedProtocol];
-  v5 = [v14 interfaceWithProtocol:v15];
+  exportedProtocol2 = [(AAFService *)self exportedProtocol];
+  preConnectEntitlements = [v14 interfaceWithProtocol:exportedProtocol2];
 
-  [v4 setExportedInterface:v5];
-  v16 = [(AAFService *)self exportedObject];
+  [connectionCopy setExportedInterface:preConnectEntitlements];
+  exportedObject = [(AAFService *)self exportedObject];
 
-  if (!v16)
+  if (!exportedObject)
   {
     v22 = _AAFLogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -136,11 +136,11 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v17 = [(AAFService *)self exportedObject];
-  [v4 setExportedObject:v17];
+  exportedObject2 = [(AAFService *)self exportedObject];
+  [connectionCopy setExportedObject:exportedObject2];
 
-  [(AAFService *)self configureExportedInterface:v5];
-  [v4 resume];
+  [(AAFService *)self configureExportedInterface:preConnectEntitlements];
+  [connectionCopy resume];
   v18 = 1;
 LABEL_17:
 

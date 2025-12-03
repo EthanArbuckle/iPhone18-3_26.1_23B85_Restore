@@ -1,34 +1,34 @@
 @interface HKClinicalNoteSorter
-+ (int)sortOrderForType:(id)a3;
++ (int)sortOrderForType:(id)type;
 @end
 
 @implementation HKClinicalNoteSorter
 
-+ (int)sortOrderForType:(id)a3
++ (int)sortOrderForType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (*MEMORY[0x277CE1E08] == v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (*MEMORY[0x277CE1E08] == typeCopy)
   {
     v5 = 0;
   }
 
-  else if (*MEMORY[0x277CE1DA0] == v3)
+  else if (*MEMORY[0x277CE1DA0] == typeCopy)
   {
     v5 = 1;
   }
 
-  else if (*MEMORY[0x277CE1E50] == v3)
+  else if (*MEMORY[0x277CE1E50] == typeCopy)
   {
     v5 = 2;
   }
 
-  else if (*MEMORY[0x277CE1E20] == v3)
+  else if (*MEMORY[0x277CE1E20] == typeCopy)
   {
     v5 = 3;
   }
 
-  else if ([v3 conformsToType:*MEMORY[0x277CE1DB0]])
+  else if ([typeCopy conformsToType:*MEMORY[0x277CE1DB0]])
   {
     v5 = 4;
   }

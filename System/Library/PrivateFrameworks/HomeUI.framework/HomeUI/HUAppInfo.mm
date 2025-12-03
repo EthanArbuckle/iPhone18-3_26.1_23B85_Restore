@@ -1,11 +1,11 @@
 @interface HUAppInfo
 - (_TtC6HomeUI9HUAppInfo)init;
-- (_TtC6HomeUI9HUAppInfo)initWithBundleID:(id)a3 name:(id)a4;
+- (_TtC6HomeUI9HUAppInfo)initWithBundleID:(id)d name:(id)name;
 @end
 
 @implementation HUAppInfo
 
-- (_TtC6HomeUI9HUAppInfo)initWithBundleID:(id)a3 name:(id)a4
+- (_TtC6HomeUI9HUAppInfo)initWithBundleID:(id)d name:(id)name
 {
   ObjectType = swift_getObjectType();
   v6 = sub_20D567838();

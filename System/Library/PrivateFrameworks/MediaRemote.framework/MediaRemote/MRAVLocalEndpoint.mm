@@ -1,7 +1,7 @@
 @interface MRAVLocalEndpoint
 + (MRAVLocalEndpoint)sharedSystemAudioLocalEndpoint;
 + (id)sharedLocalEndpoint;
-+ (id)sharedLocalEndpointForRoutingContextWithUID:(id)a3;
++ (id)sharedLocalEndpointForRoutingContextWithUID:(id)d;
 - (BOOL)canModifyGroupMembership;
 - (BOOL)groupContainsDiscoverableGroupLeader;
 - (BOOL)isEligibleForHostingGroupSessionExcludingAcknowledgements;
@@ -9,42 +9,42 @@
 - (MRGroupSessionEligibilityMonitor)groupSessionEligibilityMonitor;
 - (id)groupLeader;
 - (id)groupSessionInfo;
-- (id)initWithOutputContext:(void *)a1;
-- (void)groupSessionMonitor:(id)a3 statusDidChangeFrom:(id)a4 to:(id)a5;
-- (void)handleActiveGroupSessionDidChangeNotification:(id)a3;
+- (id)initWithOutputContext:(void *)context;
+- (void)groupSessionMonitor:(id)monitor statusDidChangeFrom:(id)from to:(id)to;
+- (void)handleActiveGroupSessionDidChangeNotification:(id)notification;
 - (void)registerNotifications;
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRAVLocalEndpoint
 
 - (BOOL)groupContainsDiscoverableGroupLeader
 {
-  v2 = [(MRAVOutputContextEndpoint *)self deviceInfo];
-  v3 = [v2 groupContainsDiscoverableGroupLeader];
+  deviceInfo = [(MRAVOutputContextEndpoint *)self deviceInfo];
+  groupContainsDiscoverableGroupLeader = [deviceInfo groupContainsDiscoverableGroupLeader];
 
-  return v3;
+  return groupContainsDiscoverableGroupLeader;
 }
 
 - (void)registerNotifications
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 addObserver:a1 selector:sel_handleActiveGroupSessionDidChangeNotification_ name:@"MRActiveGroupSessionInfoDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleActiveGroupSessionDidChangeNotification_ name:@"MRActiveGroupSessionInfoDidChangeNotification" object:0];
   }
 }
 
 - (id)groupLeader
 {
-  v3 = [(MRAVOutputContextEndpoint *)self outputDevices];
-  v4 = [v3 msv_firstWhere:&__block_literal_global_21];
+  outputDevices = [(MRAVOutputContextEndpoint *)self outputDevices];
+  v4 = [outputDevices msv_firstWhere:&__block_literal_global_21];
 
   if (!v4)
   {
-    v5 = [(MRAVLocalEndpoint *)self audioDiscoverySession];
-    v6 = [v5 availableOutputDevices];
-    v4 = [v6 msv_firstWhere:&__block_literal_global_23];
+    audioDiscoverySession = [(MRAVLocalEndpoint *)self audioDiscoverySession];
+    availableOutputDevices = [audioDiscoverySession availableOutputDevices];
+    v4 = [availableOutputDevices msv_firstWhere:&__block_literal_global_23];
   }
 
   return v4;
@@ -68,9 +68,9 @@ BOOL __32__MRAVLocalEndpoint_groupLeader__block_invoke(uint64_t a1, void *a2)
 - (id)groupSessionInfo
 {
   v2 = +[MRGroupSessionRequestManager sharedManager];
-  v3 = [v2 groupSessionInfo];
-  v4 = v3;
-  if (v3 && [v3 isHosted])
+  groupSessionInfo = [v2 groupSessionInfo];
+  v4 = groupSessionInfo;
+  if (groupSessionInfo && [groupSessionInfo isHosted])
   {
     v5 = v4;
     goto LABEL_9;
@@ -79,10 +79,10 @@ BOOL __32__MRAVLocalEndpoint_groupLeader__block_invoke(uint64_t a1, void *a2)
   v6 = +[MRUserSettings currentSettings];
   if ([v6 groupSessionDelayedInitializationEnabled])
   {
-    v7 = [v2 eligibilityStatus];
-    v8 = [v7 isEligibleForHostingGroupSessionExcludingAcknowledgements];
+    eligibilityStatus = [v2 eligibilityStatus];
+    isEligibleForHostingGroupSessionExcludingAcknowledgements = [eligibilityStatus isEligibleForHostingGroupSessionExcludingAcknowledgements];
 
-    if (v8)
+    if (isEligibleForHostingGroupSessionExcludingAcknowledgements)
     {
       v9 = +[MRDeviceInfoRequest localDeviceInfo];
       v10 = [[MRGroupSessionToken alloc] initWithDeviceInfo:v9];
@@ -104,25 +104,25 @@ LABEL_9:
 
 - (BOOL)canModifyGroupMembership
 {
-  v2 = [(MRAVOutputContextEndpoint *)self deviceInfo];
-  if ([v2 supportsTwoHop])
+  deviceInfo = [(MRAVOutputContextEndpoint *)self deviceInfo];
+  if ([deviceInfo supportsTwoHop])
   {
     v3 = 1;
   }
 
   else
   {
-    if ([v2 isAirPlayActive])
+    if ([deviceInfo isAirPlayActive])
     {
-      v4 = [v2 parentGroupContainsDiscoverableGroupLeader];
+      parentGroupContainsDiscoverableGroupLeader = [deviceInfo parentGroupContainsDiscoverableGroupLeader];
     }
 
     else
     {
-      v4 = [v2 groupContainsDiscoverableGroupLeader];
+      parentGroupContainsDiscoverableGroupLeader = [deviceInfo groupContainsDiscoverableGroupLeader];
     }
 
-    v3 = v4;
+    v3 = parentGroupContainsDiscoverableGroupLeader;
   }
 
   return v3;
@@ -132,19 +132,19 @@ LABEL_9:
 {
   v2 = objc_opt_class();
   v3 = +[MRAVOutputContext sharedSystemAudioContext];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v2 sharedLocalEndpointForRoutingContextWithUID:v4];
+  uniqueIdentifier = [v3 uniqueIdentifier];
+  v5 = [v2 sharedLocalEndpointForRoutingContextWithUID:uniqueIdentifier];
 
   return v5;
 }
 
-+ (id)sharedLocalEndpointForRoutingContextWithUID:(id)a3
++ (id)sharedLocalEndpointForRoutingContextWithUID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
+  dCopy = d;
+  v4 = dCopy;
   if (sharedLocalEndpointForRoutingContextWithUID____once == -1)
   {
-    if (v3)
+    if (dCopy)
     {
       goto LABEL_6;
     }
@@ -160,11 +160,11 @@ LABEL_9:
   }
 
   v5 = +[MRAVOutputContext sharedAudioPresentationContext];
-  v6 = [v5 uniqueIdentifier];
+  uniqueIdentifier = [v5 uniqueIdentifier];
 
-  if (v6)
+  if (uniqueIdentifier)
   {
-    v4 = v6;
+    v4 = uniqueIdentifier;
   }
 
   else
@@ -314,11 +314,11 @@ void __42__MRAVLocalEndpoint_audioDiscoverySession__block_invoke()
 
 - (BOOL)isEligibleForHostingGroupSessionExcludingAcknowledgements
 {
-  v2 = [(MRAVLocalEndpoint *)self groupSessionEligibilityMonitor];
-  v3 = [v2 status];
-  v4 = [v3 isEligibleForHostingGroupSessionExcludingAcknowledgements];
+  groupSessionEligibilityMonitor = [(MRAVLocalEndpoint *)self groupSessionEligibilityMonitor];
+  status = [groupSessionEligibilityMonitor status];
+  isEligibleForHostingGroupSessionExcludingAcknowledgements = [status isEligibleForHostingGroupSessionExcludingAcknowledgements];
 
-  return v4;
+  return isEligibleForHostingGroupSessionExcludingAcknowledgements;
 }
 
 - (MRGroupSessionEligibilityMonitor)groupSessionEligibilityMonitor
@@ -341,18 +341,18 @@ void __51__MRAVLocalEndpoint_groupSessionEligibilityMonitor__block_invoke()
   groupSessionEligibilityMonitor___groupSessionEligibilityMonitor = v0;
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __69__MRAVLocalEndpoint_requestGroupSessionWithDetails_queue_completion___block_invoke;
   v15 = &unk_1E769B768;
-  v16 = v6;
-  v17 = v7;
-  v8 = v7;
-  v9 = v6;
+  v16 = queueCopy;
+  v17 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   v10 = MEMORY[0x1A58E3570](&v12);
   v11 = MRGetSharedService();
   [v11 requestGroupSessionWithCompletion:{v10, v12, v13, v14, v15}];
@@ -376,55 +376,55 @@ void __69__MRAVLocalEndpoint_requestGroupSessionWithDetails_queue_completion___b
   dispatch_async(v7, block);
 }
 
-- (void)groupSessionMonitor:(id)a3 statusDidChangeFrom:(id)a4 to:(id)a5
+- (void)groupSessionMonitor:(id)monitor statusDidChangeFrom:(id)from to:(id)to
 {
-  v7 = a5;
-  LODWORD(a4) = [a4 isEligibleForHostingGroupSessionExcludingAcknowledgements];
-  v8 = [v7 isEligibleForHostingGroupSessionExcludingAcknowledgements];
+  toCopy = to;
+  LODWORD(from) = [from isEligibleForHostingGroupSessionExcludingAcknowledgements];
+  isEligibleForHostingGroupSessionExcludingAcknowledgements = [toCopy isEligibleForHostingGroupSessionExcludingAcknowledgements];
 
-  if (a4 != v8)
+  if (from != isEligibleForHostingGroupSessionExcludingAcknowledgements)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MRAVEndpointGroupSessionHostingEligibilityDidChangeNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MRAVEndpointGroupSessionHostingEligibilityDidChangeNotification" object:self userInfo:0];
   }
 }
 
-- (void)handleActiveGroupSessionDidChangeNotification:(id)a3
+- (void)handleActiveGroupSessionDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v9 = [v5 mutableCopy];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo mutableCopy];
 
-  v6 = [(MRAVLocalEndpoint *)self groupSessionInfo];
-  [v9 setObject:v6 forKeyedSubscript:@"MRAVEndpointGroupSessionInfoUserInfoKey"];
+  groupSessionInfo = [(MRAVLocalEndpoint *)self groupSessionInfo];
+  [v9 setObject:groupSessionInfo forKeyedSubscript:@"MRAVEndpointGroupSessionInfoUserInfoKey"];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [v4 userInfo];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  userInfo2 = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MRAVEndpointGroupSessionInfoDidChangeNotification" object:self userInfo:v8];
+  [defaultCenter postNotificationName:@"MRAVEndpointGroupSessionInfoDidChangeNotification" object:self userInfo:userInfo2];
 }
 
-- (id)initWithOutputContext:(void *)a1
+- (id)initWithOutputContext:(void *)context
 {
-  v2 = a1;
-  if (a1)
+  contextCopy = context;
+  if (context)
   {
     v3 = a2;
     v4 = +[MRAVOutputDevice localDeviceUID];
-    v7.receiver = v2;
+    v7.receiver = contextCopy;
     v7.super_class = MRAVLocalEndpoint;
-    v2 = objc_msgSendSuper2(&v7, sel_initWithOutputContext_uniqueIdentifier_, v3, v4);
+    contextCopy = objc_msgSendSuper2(&v7, sel_initWithOutputContext_uniqueIdentifier_, v3, v4);
 
-    if (v2)
+    if (contextCopy)
     {
       v6 = +[MROrigin localOrigin];
-      [v2 setOrigin:v6];
+      [contextCopy setOrigin:v6];
 
-      [(MRAVLocalEndpoint *)v2 registerNotifications];
+      [(MRAVLocalEndpoint *)contextCopy registerNotifications];
     }
   }
 
-  return v2;
+  return contextCopy;
 }
 
 @end

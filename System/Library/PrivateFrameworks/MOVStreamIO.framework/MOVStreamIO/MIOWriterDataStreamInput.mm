@@ -1,8 +1,8 @@
 @interface MIOWriterDataStreamInput
-- (BOOL)appendMetadata:(id)a3 withTimeStamp:(id *)a4 error:(id *)a5;
-- (BOOL)superAppendMetadata:(id)a3;
+- (BOOL)appendMetadata:(id)metadata withTimeStamp:(id *)stamp error:(id *)error;
+- (BOOL)superAppendMetadata:(id)metadata;
 - (MIOWriterDataStreamInput)init;
-- (MIOWriterDataStreamInput)initWithStreamId:(id)a3 copyData:(BOOL)a4;
+- (MIOWriterDataStreamInput)initWithStreamId:(id)id copyData:(BOOL)data;
 @end
 
 @implementation MIOWriterDataStreamInput
@@ -16,41 +16,41 @@
   return 0;
 }
 
-- (MIOWriterDataStreamInput)initWithStreamId:(id)a3 copyData:(BOOL)a4
+- (MIOWriterDataStreamInput)initWithStreamId:(id)id copyData:(BOOL)data
 {
-  v4 = a4;
+  dataCopy = data;
   v6 = MEMORY[0x277CE6520];
-  v7 = a3;
-  v8 = [v6 createMIOMetadataStreamFormatDescription];
+  idCopy = id;
+  createMIOMetadataStreamFormatDescription = [v6 createMIOMetadataStreamFormatDescription];
   v11.receiver = self;
   v11.super_class = MIOWriterDataStreamInput;
-  v9 = [(MIOWriterMetadataStreamInput *)&v11 initWithStreamId:v7 format:v8];
+  v9 = [(MIOWriterMetadataStreamInput *)&v11 initWithStreamId:idCopy format:createMIOMetadataStreamFormatDescription];
 
-  if (v8)
+  if (createMIOMetadataStreamFormatDescription)
   {
-    CFRelease(v8);
+    CFRelease(createMIOMetadataStreamFormatDescription);
   }
 
   if (v9)
   {
-    [(MIOWriterDataStreamInput *)v9 setCopyData:v4];
+    [(MIOWriterDataStreamInput *)v9 setCopyData:dataCopy];
   }
 
   return v9;
 }
 
-- (BOOL)superAppendMetadata:(id)a3
+- (BOOL)superAppendMetadata:(id)metadata
 {
   v4.receiver = self;
   v4.super_class = MIOWriterDataStreamInput;
-  return [(MIOWriterMetadataStreamInput *)&v4 appendMetadata:a3];
+  return [(MIOWriterMetadataStreamInput *)&v4 appendMetadata:metadata];
 }
 
-- (BOOL)appendMetadata:(id)a3 withTimeStamp:(id *)a4 error:(id *)a5
+- (BOOL)appendMetadata:(id)metadata withTimeStamp:(id *)stamp error:(id *)error
 {
-  v8 = a3;
-  location = *a4;
-  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:a5])
+  metadataCopy = metadata;
+  location = *stamp;
+  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:error])
   {
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
@@ -58,14 +58,14 @@
     v14[2] = __63__MIOWriterDataStreamInput_appendMetadata_withTimeStamp_error___block_invoke;
     v14[3] = &unk_279848018;
     objc_copyWeak(&v16, &location);
-    v15 = v8;
-    v17 = *&a4->var0;
-    var3 = a4->var3;
+    v15 = metadataCopy;
+    v17 = *&stamp->var0;
+    var3 = stamp->var3;
     v9 = MEMORY[0x259C68980](v14);
-    v10 = [(MIOWriterStreamInput *)self threadingOption];
-    if (v10)
+    threadingOption = [(MIOWriterStreamInput *)self threadingOption];
+    if (threadingOption)
     {
-      if (v10 == 1)
+      if (threadingOption == 1)
       {
         LOBYTE(self) = v9[2](v9);
       }

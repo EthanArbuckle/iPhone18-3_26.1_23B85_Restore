@@ -1,10 +1,10 @@
 @interface ScreenshotServicesSettingsViewModel
-- (void)handleScreensChanged:(id)a3;
+- (void)handleScreensChanged:(id)changed;
 @end
 
 @implementation ScreenshotServicesSettingsViewModel
 
-- (void)handleScreensChanged:(id)a3
+- (void)handleScreensChanged:(id)changed
 {
   sub_98EC();
   sub_98DC();
@@ -14,7 +14,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  changedCopy = changed;
 
   sub_8D6C("Screens change detected.", sub_8190);
 }

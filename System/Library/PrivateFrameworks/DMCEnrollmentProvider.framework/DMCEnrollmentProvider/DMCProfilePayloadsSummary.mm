@@ -1,75 +1,75 @@
 @interface DMCProfilePayloadsSummary
-+ (BOOL)_isInstalledMDMProfile:(id)a3;
-+ (BOOL)_isMDMProfile:(id)a3;
-+ (id)_consentModelWithProfileName:(id)a3 consentString:(id)a4;
++ (BOOL)_isInstalledMDMProfile:(id)profile;
++ (BOOL)_isMDMProfile:(id)profile;
++ (id)_consentModelWithProfileName:(id)name consentString:(id)string;
 + (id)_installedManagedAppIDs;
-+ (id)_localizedPayloadSummaryByType:(id)a3;
-+ (id)_signedByStringFromProfile:(id)a3;
-+ (id)_sortedPayloads:(id)a3;
-+ (id)_warningTextFromPayload:(id)a3;
-+ (id)summaryForProfile:(id)a3 showManagedPayloads:(BOOL)a4 dataSource:(unint64_t)a5;
-+ (void)_addObjectsOfClass:(Class)a3 fromArray:(id)a4 toArray:(id)a5;
-- (DMCProfilePayloadsSummary)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)_localizedPayloadSummaryByType:(id)type;
++ (id)_signedByStringFromProfile:(id)profile;
++ (id)_sortedPayloads:(id)payloads;
++ (id)_warningTextFromPayload:(id)payload;
++ (id)summaryForProfile:(id)profile showManagedPayloads:(BOOL)payloads dataSource:(unint64_t)source;
++ (void)_addObjectsOfClass:(Class)class fromArray:(id)array toArray:(id)toArray;
+- (DMCProfilePayloadsSummary)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMCProfilePayloadsSummary
 
-+ (id)summaryForProfile:(id)a3 showManagedPayloads:(BOOL)a4 dataSource:(unint64_t)a5
++ (id)summaryForProfile:(id)profile showManagedPayloads:(BOOL)payloads dataSource:(unint64_t)source
 {
-  v5 = a4;
+  payloadsCopy = payloads;
   v218 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  profileCopy = profile;
   v7 = objc_opt_new();
   v175 = objc_opt_new();
-  if (v5)
+  if (payloadsCopy)
   {
-    [v6 managedPayloads];
+    [profileCopy managedPayloads];
   }
 
   else
   {
-    [v6 payloads];
+    [profileCopy payloads];
   }
   v8 = ;
 
   v156 = v8;
   [v175 addObjectsFromArray:v8];
-  v9 = [a1 _isMDMProfile:v6];
-  v10 = [a1 _isInstalledMDMProfile:v6];
+  v9 = [self _isMDMProfile:profileCopy];
+  v10 = [self _isInstalledMDMProfile:profileCopy];
   v11 = objc_opt_new();
   v12 = objc_opt_new();
-  v13 = [v6 payloadsOfKindOfClass:objc_opt_class()];
-  v14 = [v13 firstObject];
+  v13 = [profileCopy payloadsOfKindOfClass:objc_opt_class()];
+  firstObject = [v13 firstObject];
 
-  v15 = [v14 assignedManagedAppleID];
-  v16 = v15;
-  if (v15)
+  assignedManagedAppleID = [firstObject assignedManagedAppleID];
+  v16 = assignedManagedAppleID;
+  if (assignedManagedAppleID)
   {
-    v17 = v15;
+    managedAppleID = assignedManagedAppleID;
   }
 
   else
   {
-    v17 = [v14 managedAppleID];
+    managedAppleID = [firstObject managedAppleID];
   }
 
-  if ([v17 length])
+  if ([managedAppleID length])
   {
-    [v7 setManagedAppleID:v17];
+    [v7 setManagedAppleID:managedAppleID];
   }
 
   [v7 setFinalInstallationWarningStyle:v9];
   v163 = v7;
   v170 = v11;
-  v171 = v6;
+  v171 = profileCopy;
   v169 = v12;
-  v158 = v14;
-  v155 = v17;
-  if ((v10 & v5) == 1)
+  v158 = firstObject;
+  v155 = managedAppleID;
+  if ((v10 & payloadsCopy) == 1)
   {
     v181 = v9;
-    [a1 _installedManagedAppIDs];
+    [self _installedManagedAppIDs];
     v204 = 0u;
     v205 = 0u;
     v206 = 0u;
@@ -89,7 +89,7 @@
           }
 
           v23 = *(*(&v204 + 1) + 8 * i);
-          v24 = [[DMCApplicationProxy alloc] initWithBundleID:v23 dataSource:a5];
+          v24 = [[DMCApplicationProxy alloc] initWithBundleID:v23 dataSource:source];
           v25 = [[DMCPayloadViewModel alloc] initWithManagedApp:v24];
           [v170 addObject:v25];
           v26 = [[DMCManagedAppPayload alloc] initWithManagedAppID:v23 profile:v171];
@@ -115,8 +115,8 @@
     v203 = 0u;
     v200 = 0u;
     v201 = 0u;
-    v29 = [a1 _managedBooks];
-    v30 = [v29 countByEnumeratingWithState:&v200 objects:v214 count:16];
+    _managedBooks = [self _managedBooks];
+    v30 = [_managedBooks countByEnumeratingWithState:&v200 objects:v214 count:16];
     v9 = v181;
     if (v30)
     {
@@ -128,7 +128,7 @@
         {
           if (*v201 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(_managedBooks);
           }
 
           v34 = *(*(&v200 + 1) + 8 * j);
@@ -138,7 +138,7 @@
           [v175 addObject:v36];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v200 objects:v214 count:16];
+        v31 = [_managedBooks countByEnumeratingWithState:&v200 objects:v214 count:16];
       }
 
       while (v31);
@@ -194,7 +194,7 @@
     [v7 setManagedBookSections:0];
   }
 
-  v41 = [a1 _sortedPayloads:v175];
+  v41 = [self _sortedPayloads:v175];
   v42 = objc_alloc_init(MEMORY[0x277CCA940]);
   v196 = 0u;
   v197 = 0u;
@@ -315,8 +315,8 @@
                 if (v55)
                 {
                   v68 = *(v53 + 1400);
-                  v69 = [(DMCProfilePayloadSection *)v55 payloadViewModels];
-                  v70 = [v68 removeDuplicatesFromRestrictionPayloadViewModels:v69];
+                  payloadViewModels = [(DMCProfilePayloadSection *)v55 payloadViewModels];
+                  v70 = [v68 removeDuplicatesFromRestrictionPayloadViewModels:payloadViewModels];
 
                   v71 = [v70 mutableCopy];
                   [(DMCProfilePayloadSection *)v55 setPayloadViewModels:v71];
@@ -324,8 +324,8 @@
                   v67 = v55;
                 }
 
-                v72 = [(DMCProfilePayloadSection *)v67 payloadViewModels];
-                v48 = [v72 count];
+                payloadViewModels2 = [(DMCProfilePayloadSection *)v67 payloadViewModels];
+                v48 = [payloadViewModels2 count];
 
                 v51 = v166;
               }
@@ -353,7 +353,7 @@
                 [(DMCProfilePayloadSection *)v75 setSectionTitle:v76];
 
                 v67 = v75;
-                v77 = [a1 _warningTextFromPayload:v73];
+                v77 = [self _warningTextFromPayload:v73];
                 [(DMCProfilePayloadSection *)v75 setSectionFooter:v77];
 
                 [v177 addObject:v75];
@@ -392,8 +392,8 @@
           }
 
           v48 += [v178 count];
-          v81 = [(DMCProfilePayloadSection *)v49 payloadViewModels];
-          [v81 addObjectsFromArray:v178];
+          payloadViewModels3 = [(DMCProfilePayloadSection *)v49 payloadViewModels];
+          [payloadViewModels3 addObjectsFromArray:v178];
 
           v82 = v182;
           v180 = v66;
@@ -433,14 +433,14 @@
     {
       if (v84 == objc_opt_class())
       {
-        v89 = [(DMCProfilePayloadSection *)v49 payloadViewModels];
-        v90 = [DMCPayloadViewModel removeDuplicatesFromRestrictionPayloadViewModels:v89];
+        payloadViewModels4 = [(DMCProfilePayloadSection *)v49 payloadViewModels];
+        v90 = [DMCPayloadViewModel removeDuplicatesFromRestrictionPayloadViewModels:payloadViewModels4];
 
         v91 = [v90 mutableCopy];
         [(DMCProfilePayloadSection *)v49 setPayloadViewModels:v91];
 
-        v92 = [(DMCProfilePayloadSection *)v49 payloadViewModels];
-        v83 = [v92 count];
+        payloadViewModels5 = [(DMCProfilePayloadSection *)v49 payloadViewModels];
+        v83 = [payloadViewModels5 count];
 
         v88 = v84;
       }
@@ -450,7 +450,7 @@
       [v165 addObject:v94];
       v95 = [v93 localizedParenthesizedFormDescriptionForPayloadCount:{objc_msgSend(v164, "countForObject:", v93)}];
       [(DMCProfilePayloadSection *)v49 setSectionTitle:v95];
-      v96 = [a1 _warningTextFromPayload:v50];
+      v96 = [self _warningTextFromPayload:v50];
       [(DMCProfilePayloadSection *)v183 setSectionFooter:v96];
 
       [v177 addObject:v183];
@@ -479,15 +479,15 @@
     [v98 addObjectsFromArray:v177];
   }
 
-  if (a5 != 1)
+  if (source != 1)
   {
-    v99 = [v171 signerCertificates];
+    signerCertificates = [v171 signerCertificates];
     v100 = objc_opt_new();
     v188 = 0u;
     v189 = 0u;
     v190 = 0u;
     v191 = 0u;
-    v101 = v99;
+    v101 = signerCertificates;
     v102 = [v101 countByEnumeratingWithState:&v188 objects:v209 count:16];
     if (v102)
     {
@@ -503,8 +503,8 @@
           }
 
           v106 = *(*(&v188 + 1) + 8 * n);
-          v107 = [MEMORY[0x277CBEB68] null];
-          v108 = [v106 isEqual:v107];
+          null = [MEMORY[0x277CBEB68] null];
+          v108 = [v106 isEqual:null];
 
           if ((v108 & 1) == 0)
           {
@@ -538,16 +538,16 @@
     }
   }
 
-  v112 = [v87 localizedManagedProfileConsentTexts];
+  localizedManagedProfileConsentTexts = [v87 localizedManagedProfileConsentTexts];
   v113 = v157;
-  if ([v112 count])
+  if ([localizedManagedProfileConsentTexts count])
   {
     v114 = objc_opt_new();
     v184 = 0u;
     v185 = 0u;
     v186 = 0u;
     v187 = 0u;
-    v115 = v112;
+    v115 = localizedManagedProfileConsentTexts;
     v116 = [v115 countByEnumeratingWithState:&v184 objects:v208 count:16];
     if (v116)
     {
@@ -564,7 +564,7 @@
 
           v120 = *(*(&v184 + 1) + 8 * ii);
           v121 = [v115 objectForKeyedSubscript:v120];
-          v122 = [a1 _consentModelWithProfileName:v120 consentString:v121];
+          v122 = [self _consentModelWithProfileName:v120 consentString:v121];
 
           [v114 addObject:v122];
         }
@@ -593,9 +593,9 @@
       v126 = MEMORY[0x277CCACA8];
       v127 = DMCEnrollmentLocalizedString(@"DMC_CONSENT_NOTICES_%@");
       v128 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v115, "count")}];
-      v129 = [v126 stringWithFormat:v127, v128];
+      v128 = [v126 stringWithFormat:v127, v128];
 
-      v124 = v129;
+      v124 = v128;
     }
 
     v113 = v157;
@@ -610,24 +610,24 @@
 
   v134 = MEMORY[0x277CCACA8];
   v135 = DMCEnrollmentLocalizedString(@"DMC_SIGNED_BY");
-  v136 = [v134 stringWithFormat:@"%@ ", v135];
+  v135 = [v134 stringWithFormat:@"%@ ", v135];
 
-  v137 = [a1 _signedByStringFromProfile:v171];
-  v138 = [[DMCProfileInfoSection alloc] initWithSectionTitle:v136 footer:0 attributedText:v137];
+  v137 = [self _signedByStringFromProfile:v171];
+  v138 = [[DMCProfileInfoSection alloc] initWithSectionTitle:v135 footer:0 attributedText:v137];
   [v113 addObject:v138];
 
-  v139 = [v171 localizedConsentText];
-  v140 = [v139 length];
+  localizedConsentText = [v171 localizedConsentText];
+  v140 = [localizedConsentText length];
 
   if (v140)
   {
     v141 = MEMORY[0x277CCACA8];
     v142 = DMCEnrollmentLocalizedString(@"DMC_INSTALL_CONSENT_MESSAGE_FROM_%@");
-    v143 = [v141 stringWithFormat:v142, v130];
+    v130 = [v141 stringWithFormat:v142, v130];
 
     v144 = [DMCProfileInfoSection alloc];
-    v145 = [v171 localizedConsentText];
-    v146 = [(DMCProfileInfoSection *)v144 initWithSectionTitle:v143 footer:0 text:v145];
+    localizedConsentText2 = [v171 localizedConsentText];
+    v146 = [(DMCProfileInfoSection *)v144 initWithSectionTitle:v130 footer:0 text:localizedConsentText2];
     [v113 addObject:v146];
   }
 
@@ -681,16 +681,16 @@
   return v163;
 }
 
-+ (BOOL)_isInstalledMDMProfile:(id)a3
++ (BOOL)_isInstalledMDMProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 unverifiedInstalledMDMProfileIdentifier];
+  profileCopy = profile;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  unverifiedInstalledMDMProfileIdentifier = [mEMORY[0x277D262A0] unverifiedInstalledMDMProfileIdentifier];
 
-  if ([a1 _isMDMProfile:v4])
+  if ([self _isMDMProfile:profileCopy])
   {
-    v7 = [v4 identifier];
-    v8 = [v7 isEqualToString:v6];
+    identifier = [profileCopy identifier];
+    v8 = [identifier isEqualToString:unverifiedInstalledMDMProfileIdentifier];
   }
 
   else
@@ -701,20 +701,20 @@
   return v8;
 }
 
-+ (BOOL)_isMDMProfile:(id)a3
++ (BOOL)_isMDMProfile:(id)profile
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  profileCopy = profile;
+  if (profileCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 isMDMProfile];
+    isMDMProfile = [profileCopy isMDMProfile];
   }
 
   else
   {
-    v4 = 0;
+    isMDMProfile = 0;
   }
 
-  return v4;
+  return isMDMProfile;
 }
 
 + (id)_installedManagedAppIDs
@@ -724,7 +724,7 @@
   if ([v2 count])
   {
     v3 = objc_opt_new();
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -745,7 +745,7 @@
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([v4 applicationIsInstalled:{v10, v12}])
+          if ([defaultWorkspace applicationIsInstalled:{v10, v12}])
           {
             [v3 addObject:v10];
           }
@@ -766,11 +766,11 @@
   return v3;
 }
 
-+ (id)_sortedPayloads:(id)a3
++ (id)_sortedPayloads:(id)payloads
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  payloadsCopy = payloads;
+  if ([payloadsCopy count])
   {
     if (!_sortedPayloads__classSortOrder)
     {
@@ -810,8 +810,8 @@
       _sortedPayloads__classSortOrder = v13;
     }
 
-    v15 = [v4 mutableCopy];
-    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v15 = [payloadsCopy mutableCopy];
+    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(payloadsCopy, "count")}];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -831,7 +831,7 @@
             objc_enumerationMutation(v17);
           }
 
-          [a1 _addObjectsOfClass:*(*(&v49 + 1) + 8 * i) fromArray:v15 toArray:v16];
+          [self _addObjectsOfClass:*(*(&v49 + 1) + 8 * i) fromArray:v15 toArray:v16];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -845,7 +845,7 @@
       v22 = [v15 objectAtIndex:0];
       v23 = objc_opt_class();
 
-      [a1 _addObjectsOfClass:v23 fromArray:v15 toArray:v16];
+      [self _addObjectsOfClass:v23 fromArray:v15 toArray:v16];
     }
 
     v24 = [v16 copy];
@@ -853,53 +853,53 @@
 
   else
   {
-    v24 = v4;
+    v24 = payloadsCopy;
   }
 
   return v24;
 }
 
-+ (void)_addObjectsOfClass:(Class)a3 fromArray:(id)a4 toArray:(id)a5
++ (void)_addObjectsOfClass:(Class)class fromArray:(id)array toArray:(id)toArray
 {
-  v10 = a4;
-  v7 = a5;
-  if ([v10 count] && objc_msgSend(v10, "count"))
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  if ([arrayCopy count] && objc_msgSend(arrayCopy, "count"))
   {
     v8 = 0;
     do
     {
-      if (v8 >= [v10 count])
+      if (v8 >= [arrayCopy count])
       {
         break;
       }
 
-      v9 = [v10 objectAtIndex:v8];
-      if (objc_opt_isKindOfClass() & 1) == 0 || objc_opt_class() == a3 && (objc_opt_class(), (objc_opt_isKindOfClass()))
+      v9 = [arrayCopy objectAtIndex:v8];
+      if (objc_opt_isKindOfClass() & 1) == 0 || objc_opt_class() == class && (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
         ++v8;
       }
 
       else
       {
-        [v7 addObject:v9];
-        [v10 removeObjectAtIndex:v8];
+        [toArrayCopy addObject:v9];
+        [arrayCopy removeObjectAtIndex:v8];
       }
     }
 
-    while ([v10 count]);
+    while ([arrayCopy count]);
   }
 }
 
-+ (id)_localizedPayloadSummaryByType:(id)a3
++ (id)_localizedPayloadSummaryByType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  typeCopy = type;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(typeCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = typeCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   v7 = v5;
   if (!v6)
@@ -957,9 +957,9 @@ LABEL_18:
   return v4;
 }
 
-+ (id)_warningTextFromPayload:(id)a3
++ (id)_warningTextFromPayload:(id)payload
 {
-  v3 = [a3 installationWarnings];
+  installationWarnings = [payload installationWarnings];
   v4 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -967,7 +967,7 @@ LABEL_18:
   v9[3] = &unk_278EE7EF0;
   v10 = v4;
   v5 = v4;
-  [v3 enumerateObjectsUsingBlock:v9];
+  [installationWarnings enumerateObjectsUsingBlock:v9];
   if ([v5 length])
   {
     v6 = v5;
@@ -996,26 +996,26 @@ void __53__DMCProfilePayloadsSummary__warningTextFromPayload___block_invoke(uint
   [v5 appendString:v6];
 }
 
-+ (id)_signedByStringFromProfile:(id)a3
++ (id)_signedByStringFromProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [v3 signerSummary];
-  if (![(__CFString *)v4 length])
+  profileCopy = profile;
+  signerSummary = [profileCopy signerSummary];
+  if (![(__CFString *)signerSummary length])
   {
 
-    v4 = &stru_2859FB650;
+    signerSummary = &stru_2859FB650;
   }
 
   v5 = objc_opt_new();
-  if ([v3 isSigned])
+  if ([profileCopy isSigned])
   {
     v6 = objc_alloc(MEMORY[0x277CCA898]);
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ · ", v4];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ · ", signerSummary];
     v8 = [v6 initWithString:v7];
     [v5 appendAttributedString:v8];
   }
 
-  v9 = [DMCProfileViewModel trustTextForProfile:v3];
+  v9 = [DMCProfileViewModel trustTextForProfile:profileCopy];
   if (v9)
   {
     [v5 appendAttributedString:v9];
@@ -1024,13 +1024,13 @@ void __53__DMCProfilePayloadsSummary__warningTextFromPayload___block_invoke(uint
   return v5;
 }
 
-+ (id)_consentModelWithProfileName:(id)a3 consentString:(id)a4
++ (id)_consentModelWithProfileName:(id)name consentString:(id)string
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D26250];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithLocalizedString:0 localizedKey:v6];
+  stringCopy = string;
+  nameCopy = name;
+  v8 = [[v5 alloc] initWithLocalizedString:0 localizedKey:stringCopy];
 
   v9 = MEMORY[0x277D26258];
   v17[0] = v8;
@@ -1042,8 +1042,8 @@ void __53__DMCProfilePayloadsSummary__warningTextFromPayload___block_invoke(uint
 
   v13 = objc_opt_new();
   [v13 setType:5];
-  [v13 setTitle:v7];
-  [v13 setFriendlyName:v7];
+  [v13 setTitle:nameCopy];
+  [v13 setFriendlyName:nameCopy];
 
   [v13 setShowIcon:0];
   [v13 setHasDetails:1];
@@ -1054,99 +1054,99 @@ void __53__DMCProfilePayloadsSummary__warningTextFromPayload___block_invoke(uint
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DMCProfilePayloadsSummary *)self managedAppleID];
-  [v4 encodeObject:v5 forKey:@"managedAppleID"];
+  coderCopy = coder;
+  managedAppleID = [(DMCProfilePayloadsSummary *)self managedAppleID];
+  [coderCopy encodeObject:managedAppleID forKey:@"managedAppleID"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DMCProfilePayloadsSummary finalInstallationWarningStyle](self, "finalInstallationWarningStyle")}];
-  [v4 encodeObject:v6 forKey:@"finalInstallationWarningStyle"];
+  [coderCopy encodeObject:v6 forKey:@"finalInstallationWarningStyle"];
 
-  v7 = [(DMCProfilePayloadsSummary *)self accountSections];
-  [v4 encodeObject:v7 forKey:@"accountSections"];
+  accountSections = [(DMCProfilePayloadsSummary *)self accountSections];
+  [coderCopy encodeObject:accountSections forKey:@"accountSections"];
 
-  v8 = [(DMCProfilePayloadsSummary *)self managedAppSections];
-  [v4 encodeObject:v8 forKey:@"managedAppSections"];
+  managedAppSections = [(DMCProfilePayloadsSummary *)self managedAppSections];
+  [coderCopy encodeObject:managedAppSections forKey:@"managedAppSections"];
 
-  v9 = [(DMCProfilePayloadsSummary *)self managedBookSections];
-  [v4 encodeObject:v9 forKey:@"managedBookSections"];
+  managedBookSections = [(DMCProfilePayloadsSummary *)self managedBookSections];
+  [coderCopy encodeObject:managedBookSections forKey:@"managedBookSections"];
 
-  v10 = [(DMCProfilePayloadsSummary *)self moreDetailsSections];
-  [v4 encodeObject:v10 forKey:@"moreDetailsSections"];
+  moreDetailsSections = [(DMCProfilePayloadsSummary *)self moreDetailsSections];
+  [coderCopy encodeObject:moreDetailsSections forKey:@"moreDetailsSections"];
 
-  v11 = [(DMCProfilePayloadsSummary *)self restrictionSections];
-  [v4 encodeObject:v11 forKey:@"restrictionSections"];
+  restrictionSections = [(DMCProfilePayloadsSummary *)self restrictionSections];
+  [coderCopy encodeObject:restrictionSections forKey:@"restrictionSections"];
 
-  v12 = [(DMCProfilePayloadsSummary *)self byodInfoSections];
-  [v4 encodeObject:v12 forKey:@"byodInfoSections"];
+  byodInfoSections = [(DMCProfilePayloadsSummary *)self byodInfoSections];
+  [coderCopy encodeObject:byodInfoSections forKey:@"byodInfoSections"];
 
-  v13 = [(DMCProfilePayloadsSummary *)self payloadInfoSectionSummaries];
-  [v4 encodeObject:v13 forKey:@"payloadInfoSectionSummaries"];
+  payloadInfoSectionSummaries = [(DMCProfilePayloadsSummary *)self payloadInfoSectionSummaries];
+  [coderCopy encodeObject:payloadInfoSectionSummaries forKey:@"payloadInfoSectionSummaries"];
 }
 
-- (DMCProfilePayloadsSummary)initWithCoder:(id)a3
+- (DMCProfilePayloadsSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = DMCProfilePayloadsSummary;
   v5 = [(DMCProfilePayloadsSummary *)&v46 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"managedAppleID"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"managedAppleID"];
     managedAppleID = v5->_managedAppleID;
     v5->_managedAppleID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finalInstallationWarningStyle"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finalInstallationWarningStyle"];
     v5->_finalInstallationWarningStyle = [v9 integerValue];
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"accountSections"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"accountSections"];
     accountSections = v5->_accountSections;
     v5->_accountSections = v13;
 
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"managedAppSections"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"managedAppSections"];
     managedAppSections = v5->_managedAppSections;
     v5->_managedAppSections = v18;
 
     v20 = MEMORY[0x277CBEB98];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"managedBookSections"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"managedBookSections"];
     managedBookSections = v5->_managedBookSections;
     v5->_managedBookSections = v23;
 
     v25 = MEMORY[0x277CBEB98];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"moreDetailsSections"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"moreDetailsSections"];
     moreDetailsSections = v5->_moreDetailsSections;
     v5->_moreDetailsSections = v28;
 
     v30 = MEMORY[0x277CBEB98];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"restrictionSections"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"restrictionSections"];
     restrictionSections = v5->_restrictionSections;
     v5->_restrictionSections = v33;
 
     v35 = MEMORY[0x277CBEB98];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"byodInfoSections"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"byodInfoSections"];
     byodInfoSections = v5->_byodInfoSections;
     v5->_byodInfoSections = v38;
 
     v40 = MEMORY[0x277CBEB98];
     v41 = objc_opt_class();
     v42 = [v40 setWithObjects:{v41, objc_opt_class(), 0}];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"payloadInfoSectionSummaries"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"payloadInfoSectionSummaries"];
     payloadInfoSectionSummaries = v5->_payloadInfoSectionSummaries;
     v5->_payloadInfoSectionSummaries = v43;
   }

@@ -1,7 +1,7 @@
 @interface VCPDataDecompressor
 + (id)decompressor;
 - (VCPDataDecompressor)init;
-- (id)decompressData:(id)a3;
+- (id)decompressData:(id)data;
 @end
 
 @implementation VCPDataDecompressor
@@ -36,16 +36,16 @@
   return v2;
 }
 
-- (id)decompressData:(id)a3
+- (id)decompressData:(id)data
 {
   resultData = self->_resultData;
-  v5 = a3;
-  v6 = [(NSMutableData *)resultData mutableBytes];
+  dataCopy = data;
+  mutableBytes = [(NSMutableData *)resultData mutableBytes];
   v7 = [(NSMutableData *)self->_resultData length];
-  v8 = [v5 bytes];
-  v9 = [v5 length];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
 
-  v10 = compression_decode_buffer(v6, v7, v8, v9, [(NSMutableData *)self->_scratchData mutableBytes], COMPRESSION_ZLIB);
+  v10 = compression_decode_buffer(mutableBytes, v7, bytes, v9, [(NSMutableData *)self->_scratchData mutableBytes], COMPRESSION_ZLIB);
   if (v10)
   {
     v10 = [NSData dataWithBytesNoCopy:[(NSMutableData *)self->_resultData mutableBytes] length:v10 freeWhenDone:0];

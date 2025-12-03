@@ -1,18 +1,18 @@
 @interface FSTaskOption
-+ (id)option:(id)a3 value:(id)a4;
-+ (id)optionWithoutValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FSTaskOption)initWithCoder:(id)a3;
-- (FSTaskOption)initWithOption:(id)a3 value:(id)a4 hasValue:(BOOL)a5;
++ (id)option:(id)option value:(id)value;
++ (id)optionWithoutValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (FSTaskOption)initWithCoder:(id)coder;
+- (FSTaskOption)initWithOption:(id)option value:(id)value hasValue:(BOOL)hasValue;
 - (id)originalArgv;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSTaskOption
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,14 +20,14 @@
     objc_exception_throw(v4);
   }
 
-  [v5 encodeBool:self->_hasValue forKey:@"FSTaskOption.hasValue"];
-  [v5 encodeObject:self->_option forKey:@"FSTaskOption.opt"];
-  [v5 encodeObject:self->_optionValue forKey:@"FSTaskOption.val"];
+  [coderCopy encodeBool:self->_hasValue forKey:@"FSTaskOption.hasValue"];
+  [coderCopy encodeObject:self->_option forKey:@"FSTaskOption.opt"];
+  [coderCopy encodeObject:self->_optionValue forKey:@"FSTaskOption.val"];
 }
 
-- (FSTaskOption)initWithCoder:(id)a3
+- (FSTaskOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -35,17 +35,17 @@
     objc_exception_throw(v9);
   }
 
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSTaskOption.opt"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSTaskOption.val"];
-  v7 = -[FSTaskOption initWithOption:value:hasValue:](self, "initWithOption:value:hasValue:", v5, v6, [v4 decodeBoolForKey:@"FSTaskOption.hasValue"]);
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSTaskOption.opt"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSTaskOption.val"];
+  v7 = -[FSTaskOption initWithOption:value:hasValue:](self, "initWithOption:value:hasValue:", v5, v6, [coderCopy decodeBoolForKey:@"FSTaskOption.hasValue"]);
 
   return v7;
 }
 
-- (FSTaskOption)initWithOption:(id)a3 value:(id)a4 hasValue:(BOOL)a5
+- (FSTaskOption)initWithOption:(id)option value:(id)value hasValue:(BOOL)hasValue
 {
-  v8 = a3;
-  v9 = a4;
+  optionCopy = option;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = FSTaskOption;
   v10 = [(FSTaskOption *)&v17 init];
@@ -54,22 +54,22 @@
     goto LABEL_10;
   }
 
-  if (![v8 hasPrefix:@"-"])
+  if (![optionCopy hasPrefix:@"-"])
   {
-    v12 = v8;
+    v12 = optionCopy;
 LABEL_9:
-    v10->_hasValue = a5;
+    v10->_hasValue = hasValue;
     option = v10->_option;
     v10->_option = v12;
     v15 = v12;
 
-    objc_storeStrong(&v10->_optionValue, a4);
+    objc_storeStrong(&v10->_optionValue, value);
 LABEL_10:
     v13 = v10;
     goto LABEL_11;
   }
 
-  if ([v8 hasPrefix:@"--"])
+  if ([optionCopy hasPrefix:@"--"])
   {
     v11 = 2;
   }
@@ -79,7 +79,7 @@ LABEL_10:
     v11 = 1;
   }
 
-  v12 = [v8 substringFromIndex:v11];
+  v12 = [optionCopy substringFromIndex:v11];
   if ([(NSString *)v12 length])
   {
     goto LABEL_9;
@@ -91,46 +91,46 @@ LABEL_11:
   return v13;
 }
 
-+ (id)option:(id)a3 value:(id)a4
++ (id)option:(id)option value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithOption:v7 value:v6 hasValue:1];
+  valueCopy = value;
+  optionCopy = option;
+  v8 = [[self alloc] initWithOption:optionCopy value:valueCopy hasValue:1];
 
   return v8;
 }
 
-+ (id)optionWithoutValue:(id)a3
++ (id)optionWithoutValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithOption:v4 value:&stru_285DEFA28 hasValue:0];
+  valueCopy = value;
+  v5 = [[self alloc] initWithOption:valueCopy value:&stru_285DEFA28 hasValue:0];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_22;
   }
 
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11 = 0;
     goto LABEL_22;
   }
 
   v6 = v5;
-  v7 = [(FSTaskOption *)self option];
-  if (v7)
+  option = [(FSTaskOption *)self option];
+  if (option)
   {
-    v8 = [(FSTaskOption *)self option];
-    v9 = [(FSTaskOption *)v6 option];
-    v10 = [v8 isEqual:v9];
+    option2 = [(FSTaskOption *)self option];
+    option3 = [(FSTaskOption *)v6 option];
+    v10 = [option2 isEqual:option3];
   }
 
   else
@@ -138,27 +138,27 @@ LABEL_11:
     v10 = 0;
   }
 
-  v12 = [(FSTaskOption *)self optionValue];
-  if (v12 && ([(FSTaskOption *)v6 optionValue], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  optionValue = [(FSTaskOption *)self optionValue];
+  if (optionValue && ([(FSTaskOption *)v6 optionValue], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = [(FSTaskOption *)self optionValue];
-    if (v15)
+    optionValue2 = [(FSTaskOption *)self optionValue];
+    if (optionValue2)
     {
       v14 = 0;
     }
 
     else
     {
-      v16 = [(FSTaskOption *)v6 optionValue];
-      v14 = v16 == 0;
+      optionValue3 = [(FSTaskOption *)v6 optionValue];
+      v14 = optionValue3 == 0;
     }
 
-    if (!v12)
+    if (!optionValue)
     {
       goto LABEL_18;
     }
@@ -167,12 +167,12 @@ LABEL_11:
   }
 
 LABEL_18:
-  v17 = [(FSTaskOption *)self optionValue];
-  if (v17)
+  optionValue4 = [(FSTaskOption *)self optionValue];
+  if (optionValue4)
   {
-    v18 = [(FSTaskOption *)self optionValue];
-    v19 = [(FSTaskOption *)v6 optionValue];
-    v20 = [v18 isEqual:v19];
+    optionValue5 = [(FSTaskOption *)self optionValue];
+    optionValue6 = [(FSTaskOption *)v6 optionValue];
+    v20 = [optionValue5 isEqual:optionValue6];
   }
 
   else

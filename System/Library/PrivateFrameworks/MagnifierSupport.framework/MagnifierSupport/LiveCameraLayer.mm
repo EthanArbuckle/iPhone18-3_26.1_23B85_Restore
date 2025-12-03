@@ -1,6 +1,6 @@
 @interface LiveCameraLayer
 - (_TtC16MagnifierSupport15LiveCameraLayer)init;
-- (_TtC16MagnifierSupport15LiveCameraLayer)initWithLayer:(id)a3;
+- (_TtC16MagnifierSupport15LiveCameraLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DBDFF4(0);
 }
 
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC16MagnifierSupport15LiveCameraLayer)initWithLayer:(id)a3
+- (_TtC16MagnifierSupport15LiveCameraLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_257ED0160();

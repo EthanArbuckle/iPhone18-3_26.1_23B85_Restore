@@ -1,14 +1,14 @@
 @interface MapsAddressHandler
-- (id)syncKeyForAddress:(id)a3 kind:(id)a4;
+- (id)syncKeyForAddress:(id)address kind:(id)kind;
 @end
 
 @implementation MapsAddressHandler
 
-- (id)syncKeyForAddress:(id)a3 kind:(id)a4
+- (id)syncKeyForAddress:(id)address kind:(id)kind
 {
-  v4 = [a3 UTF8String];
-  v5 = strlen(v4);
-  CC_SHA1(v4, v5, md);
+  uTF8String = [address UTF8String];
+  v5 = strlen(uTF8String);
+  CC_SHA1(uTF8String, v5, md);
   v6 = +[NSMutableString string];
   for (i = 0; i != 20; ++i)
   {

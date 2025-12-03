@@ -1,22 +1,22 @@
 @interface BWDeepFusionInputBuffer
-- (BWDeepFusionInputBuffer)initWithBuffer:(__CVBuffer *)a3 type:(unint64_t)a4 captureFrameFlags:(unint64_t)a5 metadata:(id)a6 lscGainMap:(__CVBuffer *)a7 lscGainMapParameters:(id)a8;
+- (BWDeepFusionInputBuffer)initWithBuffer:(__CVBuffer *)buffer type:(unint64_t)type captureFrameFlags:(unint64_t)flags metadata:(id)metadata lscGainMap:(__CVBuffer *)map lscGainMapParameters:(id)parameters;
 - (void)dealloc;
 - (void)releasePixelBuffers;
 @end
 
 @implementation BWDeepFusionInputBuffer
 
-- (BWDeepFusionInputBuffer)initWithBuffer:(__CVBuffer *)a3 type:(unint64_t)a4 captureFrameFlags:(unint64_t)a5 metadata:(id)a6 lscGainMap:(__CVBuffer *)a7 lscGainMapParameters:(id)a8
+- (BWDeepFusionInputBuffer)initWithBuffer:(__CVBuffer *)buffer type:(unint64_t)type captureFrameFlags:(unint64_t)flags metadata:(id)metadata lscGainMap:(__CVBuffer *)map lscGainMapParameters:(id)parameters
 {
   v14 = [(BWDeepFusionInputBuffer *)self init];
   if (v14)
   {
-    v14->_buffer = CVPixelBufferRetain(a3);
-    v14->_type = a4;
-    v14->_captureFrameFlags = a5;
-    v14->_metadata = a6;
-    v14->_lscGainMap = CVPixelBufferRetain(a7);
-    v14->_lscGainMapParameters = a8;
+    v14->_buffer = CVPixelBufferRetain(buffer);
+    v14->_type = type;
+    v14->_captureFrameFlags = flags;
+    v14->_metadata = metadata;
+    v14->_lscGainMap = CVPixelBufferRetain(map);
+    v14->_lscGainMapParameters = parameters;
   }
 
   return v14;

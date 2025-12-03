@@ -7,13 +7,13 @@
 - (id)ls_resolvePlugInKitInfoPlistWithDictionary:()LSPluginSDKResolutionAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   if (![v4 count])
   {
     v6 = _LSDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(NSDictionary(LSPluginSDKResolutionAdditions) *)a1 ls_resolvePlugInKitInfoPlistWithDictionary:v4, v6];
+      [(NSDictionary(LSPluginSDKResolutionAdditions) *)self ls_resolvePlugInKitInfoPlistWithDictionary:v4, v6];
     }
   }
 

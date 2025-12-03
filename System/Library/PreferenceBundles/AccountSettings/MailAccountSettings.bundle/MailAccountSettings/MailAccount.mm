@@ -1,26 +1,26 @@
 @interface MailAccount
-+ (id)_accountDescriptionSpecifiersForExistingAccount:(BOOL)a3;
++ (id)_accountDescriptionSpecifiersForExistingAccount:(BOOL)account;
 + (id)_incomingSpecifiers;
-+ (id)advancedSpecifiers:(BOOL)a3;
-+ (id)advancedSpecifiersWithOptions:(unsigned int)a3;
-+ (id)copyShortFormForHost:(id)a3 descriptionPlaceholder:(id)a4 addressIsEditable:(BOOL)a5;
-+ (id)detailedSpecifiers:(BOOL)a3;
-+ (id)easySetupSpecifiersWithPlaceholderAddress:(id)a3 accountName:(id)a4;
++ (id)advancedSpecifiers:(BOOL)specifiers;
++ (id)advancedSpecifiersWithOptions:(unsigned int)options;
++ (id)copyShortFormForHost:(id)host descriptionPlaceholder:(id)placeholder addressIsEditable:(BOOL)editable;
++ (id)detailedSpecifiers:(BOOL)specifiers;
++ (id)easySetupSpecifiersWithPlaceholderAddress:(id)address accountName:(id)name;
 + (id)firstSetupSpecifiers;
-+ (id)primarySpecifiers:(BOOL)a3;
-+ (void)getRemoveOptionTitles:(id *)a3 values:(id *)a4 defaultValue:(id *)a5;
++ (id)primarySpecifiers:(BOOL)specifiers;
++ (void)getRemoveOptionTitles:(id *)titles values:(id *)values defaultValue:(id *)value;
 - (id)advancedSpecifiers;
 - (id)detailedSpecifiers;
 - (id)primarySpecifiers;
-- (id)valueForSettingsInAccountPropertiesForKey:(id)a3;
+- (id)valueForSettingsInAccountPropertiesForKey:(id)key;
 @end
 
 @implementation MailAccount
 
-+ (id)copyShortFormForHost:(id)a3 descriptionPlaceholder:(id)a4 addressIsEditable:(BOOL)a5
++ (id)copyShortFormForHost:(id)host descriptionPlaceholder:(id)placeholder addressIsEditable:(BOOL)editable
 {
-  v35 = a3;
-  v34 = a4;
+  hostCopy = host;
+  placeholderCopy = placeholder;
   v36 = [[NSMutableArray alloc] initWithCapacity:3];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"FULL_NAME" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -41,11 +41,11 @@
   [v16 setKeyboardType:7 autoCaps:0 autoCorrection:1];
   v17 = [NSBundle bundleForClass:objc_opt_class()];
   v18 = [v17 localizedStringForKey:@"EXAMPLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v19 = [v18 stringByAppendingFormat:@"@%@", v35];
-  [v16 setPlaceholder:v19];
+  hostCopy = [v18 stringByAppendingFormat:@"@%@", hostCopy];
+  [v16 setPlaceholder:hostCopy];
 
   [v16 setProperty:MFMailAccountUsername forKey:v13];
-  if (!a5)
+  if (!editable)
   {
     [v16 setProperty:@"NO" forKey:PSEnabledKey];
   }
@@ -53,13 +53,13 @@
   v20 = [[NSMutableDictionary alloc] initWithCapacity:3];
   [v20 setObject:@"YES" forKey:@"AccountPreferenceRequired"];
   [v20 setObject:kCFBooleanTrue forKey:@"disableForManagedAccounts"];
-  v21 = [a1 editableSuffix];
-  v22 = [v21 length];
+  editableSuffix = [self editableSuffix];
+  v22 = [editableSuffix length];
 
   if (v22)
   {
-    v23 = [a1 editableSuffix];
-    [v20 setObject:v23 forKey:@"UserEditableSuffix"];
+    editableSuffix2 = [self editableSuffix];
+    [v20 setObject:editableSuffix2 forKey:@"UserEditableSuffix"];
   }
 
   [v16 setUserInfo:v20];
@@ -91,7 +91,7 @@
     v30 = [PSTextFieldSpecifier preferenceSpecifierNamed:v32 target:0 set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
 
     [v30 setKeyboardType:0 autoCaps:2 autoCorrection:0];
-    [v30 setPlaceholder:v34];
+    [v30 setPlaceholder:placeholderCopy];
     [v30 setProperty:MFMailAccountDescription forKey:v13];
     [v36 addObject:v30];
   }
@@ -99,9 +99,9 @@
   return v36;
 }
 
-+ (id)_accountDescriptionSpecifiersForExistingAccount:(BOOL)a3
++ (id)_accountDescriptionSpecifiersForExistingAccount:(BOOL)account
 {
-  v3 = a3;
+  accountCopy = account;
   v24 = [NSMutableArray arrayWithCapacity:3];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"FULL_NAME" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -122,7 +122,7 @@
   v12 = [v11 localizedStringForKey:@"EMAIL_ADDRESS" value:&stru_B9FC8 table:@"AccountPreferences"];
   v13 = [PSTextFieldSpecifier preferenceSpecifierNamed:v12 target:0 set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
 
-  if (v3)
+  if (accountCopy)
   {
     [v13 setProperty:@"EXISTING_ACCOUNT_EMAIL" forKey:PSIDKey];
   }
@@ -221,24 +221,24 @@
   return v26;
 }
 
-+ (id)primarySpecifiers:(BOOL)a3
++ (id)primarySpecifiers:(BOOL)specifiers
 {
   v4 = +[NSMutableArray array];
-  if ([a1 setupIsAutomated])
+  if ([self setupIsAutomated])
   {
-    v5 = [a1 emailAddressHostPart];
-    v6 = [a1 descriptionPlaceholder];
-    v7 = [a1 copyShortFormForHost:v5 descriptionPlaceholder:v6 addressIsEditable:{objc_msgSend(a1, "addressIsEditable")}];
+    emailAddressHostPart = [self emailAddressHostPart];
+    descriptionPlaceholder = [self descriptionPlaceholder];
+    v7 = [self copyShortFormForHost:emailAddressHostPart descriptionPlaceholder:descriptionPlaceholder addressIsEditable:{objc_msgSend(self, "addressIsEditable")}];
     [v4 addObjectsFromArray:v7];
   }
 
   else
   {
-    v8 = [a1 _accountDescriptionSpecifiersForExistingAccount:1];
+    v8 = [self _accountDescriptionSpecifiersForExistingAccount:1];
     [v4 addObjectsFromArray:v8];
 
-    v5 = [a1 _incomingSpecifiers];
-    [v4 addObjectsFromArray:v5];
+    emailAddressHostPart = [self _incomingSpecifiers];
+    [v4 addObjectsFromArray:emailAddressHostPart];
   }
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
@@ -264,7 +264,7 @@
   return v3;
 }
 
-+ (void)getRemoveOptionTitles:(id *)a3 values:(id *)a4 defaultValue:(id *)a5
++ (void)getRemoveOptionTitles:(id *)titles values:(id *)values defaultValue:(id *)value
 {
   v17 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v17 localizedStringForKey:@"NEVER" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -277,30 +277,30 @@
   v18 = [NSArray arrayWithObjects:v6, v8, v10, v12, 0];
 
   v13 = [NSArray arrayWithObjects:@"-1", @"1", @"7", @"30", 0];
-  if (a3)
+  if (titles)
   {
-    *a3 = v18;
+    *titles = v18;
   }
 
-  if (a4)
+  if (values)
   {
     v14 = v13;
-    *a4 = v13;
+    *values = v13;
   }
 
-  if (a5)
+  if (value)
   {
-    *a5 = MFMailAccountNumberOfDaysToKeepTrashDefaultValue;
+    *value = MFMailAccountNumberOfDaysToKeepTrashDefaultValue;
   }
 }
 
-+ (id)advancedSpecifiersWithOptions:(unsigned int)a3
++ (id)advancedSpecifiersWithOptions:(unsigned int)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v86 = +[NSMutableArray array];
-  v4 = [a1 isSSLEditable];
-  v82 = v3;
-  if ((v3 & 0x20) != 0)
+  isSSLEditable = [self isSSLEditable];
+  v82 = optionsCopy;
+  if ((optionsCopy & 0x20) != 0)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"MOVE_DISCARDED_MESSAGES_INTO" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -312,7 +312,7 @@
     [v86 addObject:v7];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"DELETED_MAILBOX" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:a1 set:0 get:0 detail:0 cell:3 edit:0];
+    v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     v12 = PSValueKey;
     [v11 setProperty:&__kCFBooleanFalse forKey:PSValueKey];
@@ -323,7 +323,7 @@
     [v86 addObject:v11];
     v15 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"ARCHIVE_MAILBOX" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:a1 set:0 get:0 detail:0 cell:3 edit:0];
+    v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v17 setProperty:&__kCFBooleanTrue forKey:v12];
     [v17 setProperty:@"MFArchiveMessagesArchiveMailboxSpecifierID" forKey:v8];
@@ -341,7 +341,7 @@
     v88 = 0;
     v89 = 0;
     v87 = 0;
-    [a1 getRemoveOptionTitles:&v89 values:&v88 defaultValue:&v87];
+    [self getRemoveOptionTitles:&v89 values:&v88 defaultValue:&v87];
     v21 = v89;
     v22 = v88;
     v23 = v87;
@@ -351,18 +351,18 @@
     v27 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v21, @"titles", kCFBooleanFalse, @"disableForManagedAccounts", 0];
     v28 = _ConfigurePSSpecifier(v86, v25, 0, "setAccountProperty:withSpecifier:", "accountPropertyWithSpecifier:", 0, 0, v26, 2, 0, v27, MFMailAccountNumberOfDaysToKeepTrash, v22);
 
-    v29 = [v86 lastObject];
-    [v29 setProperty:v23 forKey:PSDefaultValueKey];
+    lastObject = [v86 lastObject];
+    [lastObject setProperty:v23 forKey:PSDefaultValueKey];
   }
 
-  if (((v82 & 3) != 0) | v4 & 1)
+  if (((v82 & 3) != 0) | isSSLEditable & 1)
   {
     v30 = [NSBundle bundleForClass:objc_opt_class()];
     v31 = [v30 localizedStringForKey:@"INCOMING_SETTINGS" value:&stru_B9FC8 table:@"AccountPreferences"];
     v32 = [PSSpecifier groupSpecifierWithName:v31];
     [v86 addObject:v32];
 
-    if (v4)
+    if (isSSLEditable)
     {
       v33 = [NSBundle bundleForClass:objc_opt_class()];
       v34 = [v33 localizedStringForKey:@"USE_SSL" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -465,7 +465,7 @@
   [v69 setValues:&off_C0530 titles:v84];
   v92[0] = @"ExistingMessageAccount";
   v92[1] = @"disableForManagedAccounts";
-  v93[0] = a1;
+  v93[0] = self;
   v93[1] = &__kCFBooleanFalse;
   v73 = [NSDictionary dictionaryWithObjects:v93 forKeys:v92 count:2];
   [v69 setUserInfo:v73];
@@ -481,7 +481,7 @@
   [v76 setValues:&off_C0530 titles:v84];
   v90[0] = @"ExistingMessageAccount";
   v90[1] = @"disableForManagedAccounts";
-  v91[0] = a1;
+  v91[0] = self;
   v91[1] = &__kCFBooleanFalse;
   v78 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:2];
   [v76 setUserInfo:v78];
@@ -491,9 +491,9 @@
   return v86;
 }
 
-+ (id)advancedSpecifiers:(BOOL)a3
++ (id)advancedSpecifiers:(BOOL)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v5 = qword_D6420;
   if (!qword_D6420)
   {
@@ -512,18 +512,18 @@
   v7 = qword_D6418;
   if (!qword_D6418)
   {
-    v8 = [a1 advancedSpecifiersOptions];
-    if (v3)
+    advancedSpecifiersOptions = [self advancedSpecifiersOptions];
+    if (specifiersCopy)
     {
-      v9 = v8 | 8;
+      v9 = advancedSpecifiersOptions | 8;
     }
 
     else
     {
-      v9 = v8;
+      v9 = advancedSpecifiersOptions;
     }
 
-    v10 = [a1 advancedSpecifiersWithOptions:v9];
+    v10 = [self advancedSpecifiersWithOptions:v9];
     v11 = qword_D6418;
     qword_D6418 = v10;
 
@@ -539,16 +539,16 @@
   v4 = [v3 specifierForID:managedExplanationText];
   if (v4)
   {
-    v5 = [(MailAccount *)self managedAccountFooterText];
-    [v4 setName:v5];
+    managedAccountFooterText = [(MailAccount *)self managedAccountFooterText];
+    [v4 setName:managedAccountFooterText];
   }
 
   return v3;
 }
 
-+ (id)detailedSpecifiers:(BOOL)a3
++ (id)detailedSpecifiers:(BOOL)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v5 = +[NSMutableArray array];
   v6 = +[PSSpecifier emptyGroupSpecifier];
   [v5 addObject:v6];
@@ -559,12 +559,12 @@
   v8 = [v7 localizedStringForKey:@"ENABLE_THIS_ACCOUNT" value:&stru_B9FC8 table:@"AccountPreferences"];
   v9 = _ConfigureBooleanPSSpecifier(v5, v8, 0, "setAccountProperty:withSpecifier:", "accountPropertyWithSpecifier:", 0, 0, 0, 6, 0, v31, @"MailAccountIsActive");
 
-  v32 = [a1 displayedAccountTypeString];
+  displayedAccountTypeString = [self displayedAccountTypeString];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"ACCOUNT_INFORMATION" value:&stru_B9FC8 table:@"AccountPreferences"];
 
   v30 = v11;
-  v29 = [[NSString alloc] initWithFormat:v11, v32];
+  v29 = [[NSString alloc] initWithFormat:v11, displayedAccountTypeString];
   v12 = [PSSpecifier groupSpecifierWithName:v29];
   v13 = PSIDKey;
   [v12 setProperty:@"RegionalAccountInformationKey" forKey:PSIDKey];
@@ -573,12 +573,12 @@
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"DEFAULT_EMAIL_EXPLANATION" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-    v16 = [NSString stringWithFormat:v15, v32];
+    v16 = [NSString stringWithFormat:v15, displayedAccountTypeString];
     [v12 setProperty:v16 forKey:PSFooterTextGroupKey];
   }
 
   [v5 addObject:v12];
-  v17 = [a1 primarySpecifiers:v3];
+  v17 = [self primarySpecifiers:specifiersCopy];
   [v5 addObjectsFromArray:v17];
 
   v18 = +[PSSpecifier emptyGroupSpecifier];
@@ -592,7 +592,7 @@
   [v22 setObject:kCFBooleanTrue forKey:@"disableForModificationRestrictions"];
   [v21 setUserInfo:v22];
   [v5 addObject:v21];
-  if (v3)
+  if (specifiersCopy)
   {
     v23 = 0;
     [v18 setProperty:managedExplanationText forKey:v13];
@@ -624,7 +624,7 @@
   v46 = +[NSMutableArray array];
   v38 = [objc_opt_class() detailedSpecifiers:{-[MailAccount isManaged](self, "isManaged")}];
   [v38 makeObjectsPerformSelector:? withObject:?];
-  v47 = [v38 objectEnumerator];
+  objectEnumerator = [v38 objectEnumerator];
   v45 = [(MailAccount *)self accountPropertyForKey:@"RegionalDisplayName"];
   v42 = [(MailAccount *)self accountPropertyForKey:@"PlaceholderAddress"];
   v2 = 0;
@@ -635,65 +635,65 @@
   v51 = PSFooterTextGroupKey;
   while (1)
   {
-    v50 = [v47 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v50)
+    if (!nextObject)
     {
       break;
     }
 
     v5 = [NSMutableDictionary alloc];
-    v6 = [v50 userInfo];
-    v49 = [v5 initWithDictionary:v6];
+    userInfo = [nextObject userInfo];
+    v49 = [v5 initWithDictionary:userInfo];
 
     [v49 setObject:self forKey:@"ExistingMessageAccount"];
-    [v50 setUserInfo:v49];
-    v7 = [v50 identifier];
-    LODWORD(v5) = [v7 isEqualToString:managedExplanationText];
+    [nextObject setUserInfo:v49];
+    identifier = [nextObject identifier];
+    LODWORD(v5) = [identifier isEqualToString:managedExplanationText];
 
     if (v5)
     {
-      v8 = [(MailAccount *)self managedAccountFooterText];
-      [v50 setProperty:v8 forKey:v51];
+      managedAccountFooterText = [(MailAccount *)self managedAccountFooterText];
+      [nextObject setProperty:managedAccountFooterText forKey:v51];
       goto LABEL_11;
     }
 
     if (v45)
     {
-      v9 = [v50 identifier];
-      v10 = [v9 isEqualToString:@"RegionalAccountInformationKey"];
+      identifier2 = [nextObject identifier];
+      v10 = [identifier2 isEqualToString:@"RegionalAccountInformationKey"];
 
       if (v10)
       {
         v11 = [NSBundle bundleForClass:objc_opt_class()];
-        v8 = [v11 localizedStringForKey:@"ACCOUNT_INFORMATION" value:&stru_B9FC8 table:@"AccountPreferences"];
+        managedAccountFooterText = [v11 localizedStringForKey:@"ACCOUNT_INFORMATION" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-        v12 = [NSString stringWithFormat:v8, v45];
-        [v50 setName:v12];
+        v12 = [NSString stringWithFormat:managedAccountFooterText, v45];
+        [nextObject setName:v12];
         goto LABEL_10;
       }
 
-      v13 = [v50 identifier];
-      v14 = [v13 isEqualToString:v43];
+      identifier3 = [nextObject identifier];
+      v14 = [identifier3 isEqualToString:v43];
 
       if (v14)
       {
         v15 = [NSBundle bundleForClass:objc_opt_class()];
-        v8 = [v15 localizedStringForKey:@"GENERIC_ACCOUNT_DESCRIPTION_PLACEHOLDER_FORMAT" value:&stru_B9FC8 table:@"AccountPreferences"];
+        managedAccountFooterText = [v15 localizedStringForKey:@"GENERIC_ACCOUNT_DESCRIPTION_PLACEHOLDER_FORMAT" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-        v12 = [NSString stringWithFormat:v8, v45];
-        [v50 setPlaceholder:v12];
+        v12 = [NSString stringWithFormat:managedAccountFooterText, v45];
+        [nextObject setPlaceholder:v12];
 LABEL_10:
 
 LABEL_11:
 LABEL_12:
-        [v46 addObject:v50];
+        [v46 addObject:nextObject];
         goto LABEL_13;
       }
     }
 
-    v16 = [v50 identifier];
-    v17 = [v16 isEqualToString:v44];
+    identifier4 = [nextObject identifier];
+    v17 = [identifier4 isEqualToString:v44];
 
     if (!v17)
     {
@@ -704,7 +704,7 @@ LABEL_12:
     {
       if (v42)
       {
-        [v50 setPlaceholder:v42];
+        [nextObject setPlaceholder:v42];
       }
 
       goto LABEL_12;
@@ -712,8 +712,8 @@ LABEL_12:
 
     [(MailAccount *)self invalidateEmailAliases];
     [(MailAccount *)self updateEmailAliasesIfNeeded];
-    v41 = [(MailAccount *)self emailAddressesAndAliases];
-    if ([v41 count] < 2)
+    emailAddressesAndAliases = [(MailAccount *)self emailAddressesAndAliases];
+    if ([emailAddressesAndAliases count] < 2)
     {
       v19 = [NSBundle bundleForClass:objc_opt_class()];
       v20 = [v19 localizedStringForKey:@"EMAIL_ADDRESS" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -743,8 +743,8 @@ LABEL_12:
             }
 
             v25 = *(*(&v56 + 1) + 8 * i);
-            v26 = [v25 identifier];
-            v27 = [v26 isEqualToString:@"RegionalAccountInformationKey"];
+            identifier5 = [v25 identifier];
+            v27 = [identifier5 isEqualToString:@"RegionalAccountInformationKey"];
 
             if (v27)
             {
@@ -761,14 +761,14 @@ LABEL_12:
 
     else
     {
-      v18 = [objc_opt_class() aliasSpecifiersForEmails:v41];
+      v18 = [objc_opt_class() aliasSpecifiersForEmails:emailAddressesAndAliases];
     }
 
     if (v18)
     {
       [v18 makeObjectsPerformSelector:"setTarget:" withObject:self];
       v40 = v18;
-      v28 = [(MailAccount *)self defaultEmailAddress];
+      defaultEmailAddress = [(MailAccount *)self defaultEmailAddress];
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
@@ -789,7 +789,7 @@ LABEL_12:
 
             v33 = *(*(&v52 + 1) + 8 * j);
             v34 = [v33 propertyForKey:v3];
-            v35 = [v34 isEqualToString:v28];
+            v35 = [v34 isEqualToString:defaultEmailAddress];
 
             if (v35)
             {
@@ -809,7 +809,7 @@ LABEL_12:
     }
 
 LABEL_13:
-    v2 = v50;
+    v2 = nextObject;
   }
 
   return v46;
@@ -818,21 +818,21 @@ LABEL_13:
 + (id)firstSetupSpecifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  if ([a1 setupIsAutomated])
+  if ([self setupIsAutomated])
   {
-    v4 = [a1 emailAddressHostPart];
-    v5 = [a1 descriptionPlaceholder];
-    v6 = [a1 copyShortFormForHost:v4 descriptionPlaceholder:v5 addressIsEditable:1];
+    emailAddressHostPart = [self emailAddressHostPart];
+    descriptionPlaceholder = [self descriptionPlaceholder];
+    v6 = [self copyShortFormForHost:emailAddressHostPart descriptionPlaceholder:descriptionPlaceholder addressIsEditable:1];
     [v3 addObjectsFromArray:v6];
 
-    v7 = [a1 helpTitle];
-    v8 = [a1 helpURL];
-    v9 = v8;
-    if (v7 && v8)
+    helpTitle = [self helpTitle];
+    helpURL = [self helpURL];
+    v9 = helpURL;
+    if (helpTitle && helpURL)
     {
       v10 = +[PSSpecifier emptyGroupSpecifier];
       [v10 setProperty:@"AccountLinkButtonView" forKey:PSFooterCellClassGroupKey];
-      [v10 setProperty:v7 forKey:@"accountLinkButtonTitle"];
+      [v10 setProperty:helpTitle forKey:@"accountLinkButtonTitle"];
       [v10 setProperty:v9 forKey:@"accountLinkButtonURL"];
       LODWORD(v11) = 1125515264;
       v12 = [NSNumber numberWithFloat:v11];
@@ -844,34 +844,34 @@ LABEL_13:
 
   else
   {
-    v4 = [NSArray arrayWithObjects:@"IMAP", @"POP", 0];
-    v5 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:"setChosenType:withSpecifier:" get:"chosenType:" detail:0 cell:9 edit:0];
-    [v5 setValues:v4];
-    [v3 addObject:v5];
+    emailAddressHostPart = [NSArray arrayWithObjects:@"IMAP", @"POP", 0];
+    descriptionPlaceholder = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:"setChosenType:withSpecifier:" get:"chosenType:" detail:0 cell:9 edit:0];
+    [descriptionPlaceholder setValues:emailAddressHostPart];
+    [v3 addObject:descriptionPlaceholder];
     v13 = +[PSSpecifier emptyGroupSpecifier];
     [v3 addObject:v13];
 
-    v14 = [a1 _accountDescriptionSpecifiersForExistingAccount:0];
+    v14 = [self _accountDescriptionSpecifiersForExistingAccount:0];
     [v3 addObjectsFromArray:v14];
 
-    v15 = [a1 _incomingSpecifiers];
-    [v3 addObjectsFromArray:v15];
+    _incomingSpecifiers = [self _incomingSpecifiers];
+    [v3 addObjectsFromArray:_incomingSpecifiers];
 
-    v7 = +[AccountPSOutgoingDetailController outgoingGroupSpecifiers];
-    [v3 addObjectsFromArray:v7];
+    helpTitle = +[AccountPSOutgoingDetailController outgoingGroupSpecifiers];
+    [v3 addObjectsFromArray:helpTitle];
   }
 
   return v3;
 }
 
-+ (id)easySetupSpecifiersWithPlaceholderAddress:(id)a3 accountName:(id)a4
++ (id)easySetupSpecifiersWithPlaceholderAddress:(id)address accountName:(id)name
 {
-  v29 = a3;
-  v30 = a4;
-  if (!v29)
+  addressCopy = address;
+  nameCopy = name;
+  if (!addressCopy)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v29 = [v5 localizedStringForKey:@"GENERIC_ADDRESS_PLACEHOLDER" value:&stru_B9FC8 table:@"AccountPreferences"];
+    addressCopy = [v5 localizedStringForKey:@"GENERIC_ADDRESS_PLACEHOLDER" value:&stru_B9FC8 table:@"AccountPreferences"];
   }
 
   v31 = +[NSMutableArray array];
@@ -892,7 +892,7 @@ LABEL_13:
   v14 = [PSTextFieldSpecifier preferenceSpecifierNamed:v13 target:0 set:"setAccountProperty:withSpecifier:" get:"accountPropertyWithSpecifier:" detail:0 cell:8 edit:0];
 
   [v14 setKeyboardType:7 autoCaps:0 autoCorrection:1];
-  [v14 setPlaceholder:v29];
+  [v14 setPlaceholder:addressCopy];
   [v14 setProperty:MailAccountEmailAddresses forKey:v11];
   v15 = [NSDictionary dictionaryWithObject:@"YES" forKey:@"AccountPreferenceRequired"];
   [v14 setUserInfo:v15];
@@ -914,11 +914,11 @@ LABEL_13:
   *&v18[OBJC_IVAR___PSSpecifier_cellType] = 12;
   [v31 addObject:v18];
   [NSBundle bundleForClass:objc_opt_class()];
-  if (v30)
+  if (nameCopy)
     v22 = {;
     v23 = [v22 localizedStringForKey:@"GENERIC_ACCOUNT_DESCRIPTION_PLACEHOLDER_FORMAT" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-    [NSString stringWithFormat:v23, v30];
+    [NSString stringWithFormat:v23, nameCopy];
   }
 
   else
@@ -939,14 +939,14 @@ LABEL_13:
   return v31;
 }
 
-- (id)valueForSettingsInAccountPropertiesForKey:(id)a3
+- (id)valueForSettingsInAccountPropertiesForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:MFMailAccountArchive])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:MFMailAccountArchive])
   {
-    v5 = [(MailAccount *)self shouldArchiveByDefault];
+    shouldArchiveByDefault = [(MailAccount *)self shouldArchiveByDefault];
     v6 = &__kCFBooleanFalse;
-    if (v5)
+    if (shouldArchiveByDefault)
     {
       v6 = &__kCFBooleanTrue;
     }
@@ -958,7 +958,7 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = MailAccount;
-    v7 = [(MailAccount *)&v10 valueForSettingsInAccountPropertiesForKey:v4];
+    v7 = [(MailAccount *)&v10 valueForSettingsInAccountPropertiesForKey:keyCopy];
   }
 
   v8 = v7;

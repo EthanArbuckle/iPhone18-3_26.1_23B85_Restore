@@ -14,8 +14,8 @@
   assetsdClient = self->_assetsdClient;
   if (!assetsdClient)
   {
-    v4 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-    v5 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:v4];
+    libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+    v5 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:libraryURL];
     v6 = self->_assetsdClient;
     self->_assetsdClient = v5;
 
@@ -96,13 +96,13 @@
 
 - (BOOL)_didRestoreFromMegaBackup
 {
-  v3 = [(MobileSlideShowDataMigrator *)self didRestoreFromCloudBackup];
-  if (v3)
+  didRestoreFromCloudBackup = [(MobileSlideShowDataMigrator *)self didRestoreFromCloudBackup];
+  if (didRestoreFromCloudBackup)
   {
     return ([(MobileSlideShowDataMigrator *)self userDataDisposition]>> 7) & 1;
   }
 
-  return v3;
+  return didRestoreFromCloudBackup;
 }
 
 - (BOOL)performMigration
@@ -127,10 +127,10 @@
     [(PLDataMigratorSupport *)self->_dataMigratorSupport removeInternalMemoriesRelatedSnapshotDirectory];
   }
 
-  v5 = [(PLDataMigratorSupport *)self->_dataMigratorSupport pathManager];
-  v6 = [v5 libraryURL];
+  pathManager = [(PLDataMigratorSupport *)self->_dataMigratorSupport pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  if ([MobileSlideShowLegacyMigrationSupport requiresLegacyMigrationForLibraryURL:v6])
+  if ([MobileSlideShowLegacyMigrationSupport requiresLegacyMigrationForLibraryURL:libraryURL])
   {
     v7 = PLMigrationGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -139,13 +139,13 @@
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Requires legacy migration", &v27, 2u);
     }
 
-    v8 = [[MobileSlideShowLegacyMigrationSupport alloc] initWithLibraryURL:v6];
-    v9 = [(MobileSlideShowLegacyMigrationSupport *)v8 performMigration];
+    v8 = [[MobileSlideShowLegacyMigrationSupport alloc] initWithLibraryURL:libraryURL];
+    performMigration = [(MobileSlideShowLegacyMigrationSupport *)v8 performMigration];
     v10 = PLMigrationGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"failed";
-      if (v9)
+      if (performMigration)
       {
         v11 = @"suceeded";
       }
@@ -158,7 +158,7 @@
 
   else
   {
-    LOBYTE(v9) = 1;
+    LOBYTE(performMigration) = 1;
   }
 
   if ([(MobileSlideShowDataMigrator *)self didRestoreFromBackup])
@@ -197,9 +197,9 @@
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Starting assetsd migration service requests for restore type: %{public}@ at QoS: %{public}@", &v27, 0x16u);
   }
 
-  v16 = [(MobileSlideShowDataMigrator *)self assetsdClient];
-  v17 = [v16 migrationClient];
-  [v17 cleanupModelForDataMigrationForRestoreType:v12];
+  assetsdClient = [(MobileSlideShowDataMigrator *)self assetsdClient];
+  migrationClient = [assetsdClient migrationClient];
+  [migrationClient cleanupModelForDataMigrationForRestoreType:v12];
 
   v18 = PLMigrationGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -214,9 +214,9 @@
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Sent cleanupModelForDataMigrationForRestoreType: %{public}@ at QoS: %{public}@", &v27, 0x16u);
   }
 
-  v21 = [(MobileSlideShowDataMigrator *)self assetsdClient];
-  v22 = [v21 migrationClient];
-  [v22 dataMigrationWillFinish];
+  assetsdClient2 = [(MobileSlideShowDataMigrator *)self assetsdClient];
+  migrationClient2 = [assetsdClient2 migrationClient];
+  [migrationClient2 dataMigrationWillFinish];
 
   v23 = PLMigrationGetLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -235,7 +235,7 @@
     _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "Migration complete", &v27, 2u);
   }
 
-  return v9;
+  return performMigration;
 }
 
 - (MobileSlideShowDataMigrator)init

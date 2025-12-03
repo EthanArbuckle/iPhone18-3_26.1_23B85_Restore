@@ -2,24 +2,24 @@
 - (NSDate)eventDate;
 - (NSString)eventType;
 - (NSString)pageContext;
-- (VUIDebugMetricsEvent)initWithEventDictionary:(id)a3 termCollater:(id)a4;
-- (id)_sortKeys:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (VUIDebugMetricsEvent)initWithEventDictionary:(id)dictionary termCollater:(id)collater;
+- (id)_sortKeys:(id)keys;
+- (id)objectForKeyedSubscript:(id)subscript;
 @end
 
 @implementation VUIDebugMetricsEvent
 
-- (VUIDebugMetricsEvent)initWithEventDictionary:(id)a3 termCollater:(id)a4
+- (VUIDebugMetricsEvent)initWithEventDictionary:(id)dictionary termCollater:(id)collater
 {
   v84[2] = *MEMORY[0x1E69E9840];
-  v67 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  collaterCopy = collater;
   v70.receiver = self;
   v70.super_class = VUIDebugMetricsEvent;
   v7 = [(VUIDebugMetricsEvent *)&v70 init];
   if (v7)
   {
-    v8 = [v67 copy];
+    v8 = [dictionaryCopy copy];
     rawData = v7->_rawData;
     v7->_rawData = v8;
 
@@ -29,12 +29,12 @@
 
     v60 = v12;
     v62 = [v12 valueForKey:@"metricsBase"];
-    v13 = [v6 primaryTerms];
-    v14 = [v13 valueForKey:@"page"];
+    primaryTerms = [collaterCopy primaryTerms];
+    v14 = [primaryTerms valueForKey:@"page"];
     v15 = [(VUIDebugMetricsEvent *)v7 _sortKeys:v14];
 
-    v16 = [(VUIDebugMetricsEvent *)v7 eventType];
-    v17 = [v16 isEqualToString:@"page"];
+    eventType = [(VUIDebugMetricsEvent *)v7 eventType];
+    v17 = [eventType isEqualToString:@"page"];
 
     if (v17)
     {
@@ -43,22 +43,22 @@
 
     else
     {
-      v19 = [v6 primaryTerms];
-      v20 = [(VUIDebugMetricsEvent *)v7 eventType];
-      v21 = [v19 valueForKey:v20];
+      primaryTerms2 = [collaterCopy primaryTerms];
+      eventType2 = [(VUIDebugMetricsEvent *)v7 eventType];
+      v21 = [primaryTerms2 valueForKey:eventType2];
 
       v18 = [(VUIDebugMetricsEvent *)v7 _sortKeys:v21];
-      v22 = [(VUIDebugMetricsEvent *)v7 eventType];
-      LODWORD(v20) = [v22 isEqualToString:@"pageRender"];
+      eventType3 = [(VUIDebugMetricsEvent *)v7 eventType];
+      LODWORD(eventType2) = [eventType3 isEqualToString:@"pageRender"];
 
-      if (v20)
+      if (eventType2)
       {
         v23 = [v21 mutableCopy];
         v68[0] = MEMORY[0x1E69E9820];
         v68[1] = 3221225472;
         v68[2] = __61__VUIDebugMetricsEvent_initWithEventDictionary_termCollater___block_invoke;
         v68[3] = &unk_1E8734D10;
-        v69 = v67;
+        v69 = dictionaryCopy;
         [v23 sortUsingComparator:v68];
         v24 = [v23 copy];
 
@@ -67,16 +67,16 @@
     }
 
     v66 = v10;
-    v25 = [v67 allKeys];
-    v26 = [v67 allKeys];
-    v27 = [v26 indexesOfObjectsPassingTest:&__block_literal_global_126];
-    v28 = [v25 objectsAtIndexes:v27];
+    allKeys = [dictionaryCopy allKeys];
+    allKeys2 = [dictionaryCopy allKeys];
+    v27 = [allKeys2 indexesOfObjectsPassingTest:&__block_literal_global_126];
+    v28 = [allKeys objectsAtIndexes:v27];
 
-    v29 = [v6 baseTerms];
-    v30 = [(VUIDebugMetricsEvent *)v7 _sortKeys:v29];
+    baseTerms = [collaterCopy baseTerms];
+    v30 = [(VUIDebugMetricsEvent *)v7 _sortKeys:baseTerms];
 
-    v31 = [v6 metricsKitTerms];
-    v32 = [(VUIDebugMetricsEvent *)v7 _sortKeys:v31];
+    metricsKitTerms = [collaterCopy metricsKitTerms];
+    v32 = [(VUIDebugMetricsEvent *)v7 _sortKeys:metricsKitTerms];
 
     v33 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v34 = v33;
@@ -94,33 +94,33 @@
     v59 = v32;
     [v34 addObjectsFromArray:v32];
     v35 = v62;
-    v36 = [v62 allKeys];
-    [v34 addObjectsFromArray:v36];
+    allKeys3 = [v62 allKeys];
+    [v34 addObjectsFromArray:allKeys3];
 
     v37 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v38 = [v67 allKeys];
-    [v37 addObjectsFromArray:v38];
+    allKeys4 = [dictionaryCopy allKeys];
+    [v37 addObjectsFromArray:allKeys4];
 
     [v37 minusSet:v34];
     v39 = MEMORY[0x1E695DFD8];
-    v40 = [v6 filteredTerms];
-    v41 = [v39 setWithArray:v40];
+    filteredTerms = [collaterCopy filteredTerms];
+    v41 = [v39 setWithArray:filteredTerms];
     [v37 minusSet:v41];
 
-    v42 = [v37 allObjects];
-    v61 = v42;
+    allObjects = [v37 allObjects];
+    v61 = allObjects;
     if (v18 && [(NSArray *)v18 count])
     {
       v83[0] = @"header";
-      v43 = [(VUIDebugMetricsEvent *)v7 eventType];
-      v44 = [v43 stringByAppendingString:@" fields"];
+      eventType4 = [(VUIDebugMetricsEvent *)v7 eventType];
+      v44 = [eventType4 stringByAppendingString:@" fields"];
       v83[1] = @"keys";
       v84[0] = v44;
       v84[1] = v18;
       v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:v83 count:2];
       [(NSArray *)v66 addObject:v45];
 
-      v42 = v61;
+      allObjects = v61;
       v35 = v62;
     }
 
@@ -134,12 +134,12 @@
       [(NSArray *)v66 addObject:v46];
     }
 
-    if ([v42 count])
+    if ([allObjects count])
     {
       v79[0] = 0x1F5DC6000;
       v79[1] = @"keys";
       v80[0] = @"uncategorized fields";
-      v80[1] = v42;
+      v80[1] = allObjects;
       v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:v79 count:2];
       [(NSArray *)v66 addObject:v47];
     }
@@ -169,8 +169,8 @@
       v73[0] = @"header";
       v73[1] = @"keys";
       v74[0] = @"bag metrics fields";
-      v50 = [v35 allKeys];
-      v74[1] = v50;
+      allKeys5 = [v35 allKeys];
+      v74[1] = allKeys5;
       v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
       [(NSArray *)v66 addObject:v51];
     }
@@ -254,16 +254,16 @@ uint64_t __61__VUIDebugMetricsEvent_initWithEventDictionary_termCollater___block
   return v3;
 }
 
-- (id)_sortKeys:(id)a3
+- (id)_sortKeys:(id)keys
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__VUIDebugMetricsEvent__sortKeys___block_invoke;
   v7[3] = &unk_1E872E280;
   v7[4] = self;
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:v7];
-  v5 = [v3 objectsAtIndexes:v4];
+  keysCopy = keys;
+  v4 = [keysCopy indexesOfObjectsPassingTest:v7];
+  v5 = [keysCopy objectsAtIndexes:v4];
 
   return v5;
 }
@@ -281,8 +281,8 @@ uint64_t __34__VUIDebugMetricsEvent__sortKeys___block_invoke(uint64_t a1, void *
 
 - (NSDate)eventDate
 {
-  v2 = [(VUIDebugMetricsEvent *)self rawData];
-  v3 = [v2 objectForKeyedSubscript:@"eventTime"];
+  rawData = [(VUIDebugMetricsEvent *)self rawData];
+  v3 = [rawData objectForKeyedSubscript:@"eventTime"];
 
   if (v3)
   {
@@ -301,28 +301,28 @@ uint64_t __34__VUIDebugMetricsEvent__sortKeys___block_invoke(uint64_t a1, void *
 
 - (NSString)eventType
 {
-  v2 = [(VUIDebugMetricsEvent *)self rawData];
-  v3 = [v2 objectForKeyedSubscript:@"eventType"];
+  rawData = [(VUIDebugMetricsEvent *)self rawData];
+  v3 = [rawData objectForKeyedSubscript:@"eventType"];
 
   return v3;
 }
 
 - (NSString)pageContext
 {
-  v2 = [(VUIDebugMetricsEvent *)self rawData];
-  v3 = [v2 objectForKeyedSubscript:@"pageContext"];
+  rawData = [(VUIDebugMetricsEvent *)self rawData];
+  v3 = [rawData objectForKeyedSubscript:@"pageContext"];
 
   return v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(VUIDebugMetricsEvent *)self rawData];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  rawData = [(VUIDebugMetricsEvent *)self rawData];
+  v6 = [rawData objectForKeyedSubscript:subscriptCopy];
 
-  LODWORD(v5) = [v4 containsString:@"Time"];
-  if (v5)
+  LODWORD(rawData) = [subscriptCopy containsString:@"Time"];
+  if (rawData)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -340,13 +340,13 @@ uint64_t __34__VUIDebugMetricsEvent__sortKeys___block_invoke(uint64_t a1, void *
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v6 stringValue];
+    stringValue = [v6 stringValue];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v13 = [v6 isEqual:v12];
+    null = [MEMORY[0x1E695DFB0] null];
+    v13 = [v6 isEqual:null];
 
     if (v13)
     {
@@ -354,10 +354,10 @@ uint64_t __34__VUIDebugMetricsEvent__sortKeys___block_invoke(uint64_t a1, void *
       goto LABEL_10;
     }
 
-    v11 = v6;
+    stringValue = v6;
   }
 
-  v10 = v11;
+  v10 = stringValue;
 LABEL_10:
 
   return v10;

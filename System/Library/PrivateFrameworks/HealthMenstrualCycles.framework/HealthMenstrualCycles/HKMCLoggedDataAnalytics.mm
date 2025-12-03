@@ -1,21 +1,21 @@
 @interface HKMCLoggedDataAnalytics
 + (BOOL)_isMetricEnabled;
 + (BOOL)shouldSubmit;
-+ (void)submitMetricForMethod:(id)a3 loggedDayIndex:(int64_t)a4 currentDayIndex:(int64_t)a5;
++ (void)submitMetricForMethod:(id)method loggedDayIndex:(int64_t)index currentDayIndex:(int64_t)dayIndex;
 @end
 
 @implementation HKMCLoggedDataAnalytics
 
 + (BOOL)shouldSubmit
 {
-  v3 = [a1 _isMetricEnabled];
-  if (v3)
+  _isMetricEnabled = [self _isMetricEnabled];
+  if (_isMetricEnabled)
   {
 
-    LOBYTE(v3) = [a1 _isAllowed];
+    LOBYTE(_isMetricEnabled) = [self _isAllowed];
   }
 
-  return v3;
+  return _isMetricEnabled;
 }
 
 + (BOOL)_isMetricEnabled
@@ -23,30 +23,30 @@
   v2 = +[HKMCLoggedDataMetric eventName];
   if (AnalyticsIsEventUsed())
   {
-    v3 = 1;
+    hkmc_analyticsDebugModeEnabled = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
-    v3 = [v4 hkmc_analyticsDebugModeEnabled];
+    hkmc_menstrualCyclesDefaults = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
+    hkmc_analyticsDebugModeEnabled = [hkmc_menstrualCyclesDefaults hkmc_analyticsDebugModeEnabled];
   }
 
-  return v3;
+  return hkmc_analyticsDebugModeEnabled;
 }
 
-+ (void)submitMetricForMethod:(id)a3 loggedDayIndex:(int64_t)a4 currentDayIndex:(int64_t)a5
++ (void)submitMetricForMethod:(id)method loggedDayIndex:(int64_t)index currentDayIndex:(int64_t)dayIndex
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([a1 shouldSubmit])
+  methodCopy = method;
+  if ([self shouldSubmit])
   {
-    v9 = [[HKMCLoggedDataMetric alloc] initWithMethod:v8];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5 - a4];
-    [(HKMCLoggedDataMetric *)v9 setDayIndexLoggingOffset:v10];
+    v9 = [[HKMCLoggedDataMetric alloc] initWithMethod:methodCopy];
+    index = [MEMORY[0x277CCABB0] numberWithInteger:dayIndex - index];
+    [(HKMCLoggedDataMetric *)v9 setDayIndexLoggingOffset:index];
 
     v11 = +[HKMCLoggedDataMetric eventName];
-    v12 = [(HKMCLoggedDataMetric *)v9 eventPayload];
+    eventPayload = [(HKMCLoggedDataMetric *)v9 eventPayload];
     AnalyticsSendEvent();
 
     _HKInitializeLogging();
@@ -80,8 +80,8 @@ LABEL_6:
     v19 = objc_opt_class();
     v20 = MEMORY[0x277CCABB0];
     v14 = v19;
-    v21 = [v20 numberWithBool:{objc_msgSend(a1, "_isMetricEnabled")}];
-    v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_isAllowed")}];
+    v21 = [v20 numberWithBool:{objc_msgSend(self, "_isMetricEnabled")}];
+    v22 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_isAllowed")}];
     v24 = 138543874;
     v25 = v19;
     v26 = 2114;

@@ -1,5 +1,5 @@
 @interface VUIMediaTagsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -10,13 +10,13 @@
 
 @implementation VUIMediaTagsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIImageView"];
-  [v3 validateClass:@"VUIImageView" hasProperty:@"image" withType:"@"];
-  [v3 validateClass:@"VUIMediaTagsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"VUIMediaTagsView" hasProperty:@"viewsMap" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIImageView"];
+  [validationsCopy validateClass:@"VUIImageView" hasProperty:@"image" withType:"@"];
+  [validationsCopy validateClass:@"VUIMediaTagsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"VUIMediaTagsView" hasProperty:@"viewsMap" withType:"@"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,13 +34,13 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v33;
-    v30 = v5;
+    v30 = allKeys;
     v31 = *MEMORY[0x29EDC7FA0];
     v9 = 0x29EDBA000uLL;
     do
@@ -49,7 +49,7 @@
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
@@ -92,10 +92,10 @@
             }
 
             v15 = v14;
-            v16 = [v14 accessibilityIdentifier];
+            accessibilityIdentifier = [v14 accessibilityIdentifier];
 
-            v17 = [MEMORY[0x29EDBDDF0] sharedInstance];
-            v18 = [v17 accessibilityLabelForID:v16];
+            mEMORY[0x29EDBDDF0] = [MEMORY[0x29EDBDDF0] sharedInstance];
+            v18 = [mEMORY[0x29EDBDDF0] accessibilityLabelForID:accessibilityIdentifier];
 
             [v13 setAccessibilityTraits:v31];
             if ([v11 isEqualToString:@"VUIMediaTagKeyCommonSenseImage"])
@@ -123,9 +123,9 @@ LABEL_42:
                 abort();
               }
 
-              v23 = [v22 text];
+              text = [v22 text];
               v24 = __UIAXStringForVariables();
-              [v22 setAccessibilityLabel:{v24, v23, @"__AXStringForVariablesSentinel"}];
+              [v22 setAccessibilityLabel:{v24, text, @"__AXStringForVariablesSentinel"}];
             }
 
             else
@@ -146,7 +146,7 @@ LABEL_42:
               [v27 setIsAccessibilityElement:v28];
             }
 
-            v5 = v30;
+            allKeys = v30;
             v9 = 0x29EDBA000;
 LABEL_38:
 
@@ -155,7 +155,7 @@ LABEL_38:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v7);
@@ -187,8 +187,8 @@ uint64_t __77__VUIMediaTagsViewAccessibility__accessibilityUpdateAccessibilityIn
 
 - (id)accessibilityLabel
 {
-  v2 = [(VUIMediaTagsViewAccessibility *)self subviews];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_389];
+  subviews = [(VUIMediaTagsViewAccessibility *)self subviews];
+  v3 = [subviews ax_filteredArrayUsingBlock:&__block_literal_global_389];
   v4 = AXLabelForElements();
 
   return v4;

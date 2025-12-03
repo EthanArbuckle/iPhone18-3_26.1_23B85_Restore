@@ -1,11 +1,11 @@
 @interface PSGTextualResponseSuggestion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextualSuggestion:(id)a3;
-- (PSGTextualResponseSuggestion)initWithCoder:(id)a3;
-- (PSGTextualResponseSuggestion)initWithText:(id)a3 category:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextualSuggestion:(id)suggestion;
+- (PSGTextualResponseSuggestion)initWithCoder:(id)coder;
+- (PSGTextualResponseSuggestion)initWithText:(id)text category:(id)category;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSGTextualResponseSuggestion
@@ -17,34 +17,34 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGTextualResponseSuggestion *)self isEqualToTextualSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PSGTextualResponseSuggestion *)self isEqualToTextualSuggestion:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTextualSuggestion:(id)a3
+- (BOOL)isEqualToTextualSuggestion:(id)suggestion
 {
-  v4 = a3;
-  if (!v4)
+  suggestionCopy = suggestion;
+  if (!suggestionCopy)
   {
     goto LABEL_4;
   }
 
   v5 = self->_responseText;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == suggestionCopy[1])
   {
   }
 
@@ -62,7 +62,7 @@ LABEL_4:
 
   v9 = self->_responseCategory;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == suggestionCopy[2])
   {
     v8 = 1;
   }
@@ -76,17 +76,17 @@ LABEL_10:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(NSString *)self->_responseText copyWithZone:a3];
+    v6 = [(NSString *)self->_responseText copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(NSString *)self->_responseCategory copyWithZone:a3];
+    v8 = [(NSString *)self->_responseCategory copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
   }
@@ -94,20 +94,20 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   responseText = self->_responseText;
-  v5 = a3;
-  [v5 encodeObject:responseText forKey:@"txt"];
-  [v5 encodeObject:self->_responseCategory forKey:@"cat"];
+  coderCopy = coder;
+  [coderCopy encodeObject:responseText forKey:@"txt"];
+  [coderCopy encodeObject:self->_responseCategory forKey:@"cat"];
 }
 
-- (PSGTextualResponseSuggestion)initWithCoder:(id)a3
+- (PSGTextualResponseSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"txt"];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"cat"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"txt"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"cat"];
 
   if (v6)
   {
@@ -121,30 +121,30 @@ LABEL_10:
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSGTextualResponseSuggestion *)self initWithText:v6 category:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (PSGTextualResponseSuggestion)initWithText:(id)a3 category:(id)a4
+- (PSGTextualResponseSuggestion)initWithText:(id)text category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  categoryCopy = category;
   v12.receiver = self;
   v12.super_class = PSGTextualResponseSuggestion;
   v9 = [(PSGTextualResponseSuggestion *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_responseText, a3);
-    objc_storeStrong(&v10->_responseCategory, a4);
+    objc_storeStrong(&v9->_responseText, text);
+    objc_storeStrong(&v10->_responseCategory, category);
   }
 
   return v10;

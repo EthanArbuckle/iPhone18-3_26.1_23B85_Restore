@@ -1,14 +1,14 @@
 @interface FigFaceObservation
-- (BOOL)isEqual:(id)a3;
-- (FigFaceObservation)initWithFaceObservation:(id)a3 faceID:(unint64_t)a4 time:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (FigFaceObservation)initWithFaceObservation:(id)observation faceID:(unint64_t)d time:(unint64_t)time;
 - (void)dealloc;
 @end
 
 @implementation FigFaceObservation
 
-- (FigFaceObservation)initWithFaceObservation:(id)a3 faceID:(unint64_t)a4 time:(unint64_t)a5
+- (FigFaceObservation)initWithFaceObservation:(id)observation faceID:(unint64_t)d time:(unint64_t)time
 {
-  if (!a3)
+  if (!observation)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"faceObservation must not be nil" userInfo:0]);
   }
@@ -18,10 +18,10 @@
   v8 = [(FigFaceObservation *)&v10 init];
   if (v8)
   {
-    v8->_faceObservation = a3;
-    v8->_faceID = a4;
+    v8->_faceObservation = observation;
+    v8->_faceID = d;
     v8->_faceTrackingRequest = [objc_alloc(getVNTrackObjectRequestClass()) initWithDetectedObjectObservation:v8->_faceObservation];
-    v8->_lastUpdatedTime = a5;
+    v8->_lastUpdatedTime = time;
   }
 
   return v8;
@@ -34,9 +34,9 @@
   [(FigFaceObservation *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -47,8 +47,8 @@
     return 0;
   }
 
-  v5 = [(FigFaceObservation *)self faceID];
-  return v5 == [a3 faceID];
+  faceID = [(FigFaceObservation *)self faceID];
+  return faceID == [equal faceID];
 }
 
 @end

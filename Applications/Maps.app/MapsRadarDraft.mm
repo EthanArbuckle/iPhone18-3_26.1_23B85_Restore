@@ -20,26 +20,26 @@
 - (NSURL)tapToRadarURL;
 - (RadarDraft)tapToRadarKitDraft;
 - (id)service;
-- (void)_launchTapToRadarKitWithDisplayReason:(id)a3;
+- (void)_launchTapToRadarKitWithDisplayReason:(id)reason;
 - (void)_launchURLScheme;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)addAttachment:(id)a3;
-- (void)addAttachments:(id)a3;
-- (void)addCollaborationContactHandle:(id)a3;
-- (void)addCollaborationContactHandles:(id)a3;
-- (void)addDeviceClass:(id)a3;
-- (void)addDeviceClasses:(id)a3;
-- (void)addDiagnosticExtensionID:(id)a3;
-- (void)addDiagnosticExtensionIDs:(id)a3;
-- (void)addDiagnosticExtensionKey:(id)a3 value:(id)a4;
-- (void)addDiagnosticExtensionParameters:(id)a3;
-- (void)addKeyword:(id)a3;
-- (void)addKeywords:(id)a3;
-- (void)addNote:(id)a3;
-- (void)addNotes:(id)a3;
-- (void)addScreenshot:(id)a3;
-- (void)addScreenshots:(id)a3;
-- (void)launchTTRWithDisplayReason:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)addAttachment:(id)attachment;
+- (void)addAttachments:(id)attachments;
+- (void)addCollaborationContactHandle:(id)handle;
+- (void)addCollaborationContactHandles:(id)handles;
+- (void)addDeviceClass:(id)class;
+- (void)addDeviceClasses:(id)classes;
+- (void)addDiagnosticExtensionID:(id)d;
+- (void)addDiagnosticExtensionIDs:(id)ds;
+- (void)addDiagnosticExtensionKey:(id)key value:(id)value;
+- (void)addDiagnosticExtensionParameters:(id)parameters;
+- (void)addKeyword:(id)keyword;
+- (void)addKeywords:(id)keywords;
+- (void)addNote:(id)note;
+- (void)addNotes:(id)notes;
+- (void)addScreenshot:(id)screenshot;
+- (void)addScreenshots:(id)screenshots;
+- (void)launchTTRWithDisplayReason:(id)reason;
 @end
 
 @implementation MapsRadarDraft
@@ -68,15 +68,15 @@
     _Block_object_dispose(&v44, 8);
     v5 = objc_alloc_init(v3);
     [v5 setIsUserInitiated:1];
-    v6 = [(MapsRadarDraft *)self title];
-    [v5 setTitle:v6];
+    title = [(MapsRadarDraft *)self title];
+    [v5 setTitle:title];
 
-    v7 = [(MapsRadarDraft *)self descriptionText];
-    [v5 setProblemDescription:v7];
+    descriptionText = [(MapsRadarDraft *)self descriptionText];
+    [v5 setProblemDescription:descriptionText];
 
-    v8 = [(MapsRadarDraft *)self component];
+    component = [(MapsRadarDraft *)self component];
 
-    if (v8)
+    if (component)
     {
       v44 = 0;
       v45 = &v44;
@@ -97,57 +97,57 @@
       v10 = v9;
       _Block_object_dispose(&v44, 8);
       v11 = [v9 alloc];
-      v12 = [(MapsRadarDraft *)self component];
-      v13 = [v12 name];
-      v14 = [(MapsRadarDraft *)self component];
-      v15 = [v14 version];
-      v16 = [(MapsRadarDraft *)self component];
-      v17 = [v16 ID];
-      v18 = [v11 initWithName:v13 version:v15 identifier:{objc_msgSend(v17, "integerValue")}];
+      component2 = [(MapsRadarDraft *)self component];
+      name = [component2 name];
+      component3 = [(MapsRadarDraft *)self component];
+      version = [component3 version];
+      component4 = [(MapsRadarDraft *)self component];
+      v17 = [component4 ID];
+      v18 = [v11 initWithName:name version:version identifier:{objc_msgSend(v17, "integerValue")}];
       [v5 setComponent:v18];
     }
 
     else
     {
-      v12 = +[NSBundle mainBundle];
-      v13 = [v12 bundleIdentifier];
-      [v5 setBundleID:v13];
+      component2 = +[NSBundle mainBundle];
+      name = [component2 bundleIdentifier];
+      [v5 setBundleID:name];
     }
 
-    v19 = [(MapsRadarDraft *)self classification];
-    if ((v19 - 1) >= 0xA)
+    classification = [(MapsRadarDraft *)self classification];
+    if ((classification - 1) >= 0xA)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = v19;
+      v20 = classification;
     }
 
     [v5 setClassification:v20];
-    v21 = [(MapsRadarDraft *)self reproducibility];
-    if ((v21 - 1) >= 6)
+    reproducibility = [(MapsRadarDraft *)self reproducibility];
+    if ((reproducibility - 1) >= 6)
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = v21;
+      v22 = reproducibility;
     }
 
     [v5 setReproducibility:v22];
-    v23 = [(MapsRadarDraft *)self temporaryAttachmentsFolderURL];
-    v48 = v23;
+    temporaryAttachmentsFolderURL = [(MapsRadarDraft *)self temporaryAttachmentsFolderURL];
+    v48 = temporaryAttachmentsFolderURL;
     v24 = [NSArray arrayWithObjects:&v48 count:1];
-    v25 = [(MapsRadarDraft *)self screenshots];
-    v26 = sub_100021DB0(v25, &stru_10162B4E0);
+    screenshots = [(MapsRadarDraft *)self screenshots];
+    v26 = sub_100021DB0(screenshots, &stru_10162B4E0);
     v27 = [v24 arrayByAddingObjectsFromArray:v26];
     [v5 setAttachments:v27];
 
-    v28 = [(MapsRadarDraft *)self keywords];
-    v29 = sub_100021DB0(v28, &stru_10162B500);
+    keywords = [(MapsRadarDraft *)self keywords];
+    v29 = sub_100021DB0(keywords, &stru_10162B500);
     [v5 setKeywords:v29];
 
     if ([(MapsRadarDraft *)self collectFullLogArchive])
@@ -161,16 +161,16 @@
     }
 
     [v5 setAutoDiagnostics:v30];
-    v31 = [(MapsRadarDraft *)self timeOfIssue];
-    [v5 setTimeOfIssue:v31];
+    timeOfIssue = [(MapsRadarDraft *)self timeOfIssue];
+    [v5 setTimeOfIssue:timeOfIssue];
 
     [v5 setDeleteOnAttach:1];
-    v32 = [(MapsRadarDraft *)self collaborationContactHandles];
-    [v5 setCollaborationContactHandles:v32];
+    collaborationContactHandles = [(MapsRadarDraft *)self collaborationContactHandles];
+    [v5 setCollaborationContactHandles:collaborationContactHandles];
 
-    v33 = [(MapsRadarDraft *)self deviceClasses];
-    LODWORD(v34) = [v33 containsObject:@"iPhone"];
-    if ([v33 containsObject:@"iPad"])
+    deviceClasses = [(MapsRadarDraft *)self deviceClasses];
+    LODWORD(v34) = [deviceClasses containsObject:@"iPhone"];
+    if ([deviceClasses containsObject:@"iPad"])
     {
       v34 = v34 | 2;
     }
@@ -180,27 +180,27 @@
       v34 = v34;
     }
 
-    if ([v33 containsObject:@"Watch"])
+    if ([deviceClasses containsObject:@"Watch"])
     {
       v34 |= 4uLL;
     }
 
-    if ([v33 containsObject:@"AppleTV"])
+    if ([deviceClasses containsObject:@"AppleTV"])
     {
       v34 |= 8uLL;
     }
 
-    if ([v33 containsObject:@"HomePod"])
+    if ([deviceClasses containsObject:@"HomePod"])
     {
       v34 |= 0x10uLL;
     }
 
-    if ([v33 containsObject:@"Mac"])
+    if ([deviceClasses containsObject:@"Mac"])
     {
       v34 |= 0x20uLL;
     }
 
-    if ([v33 containsObject:@"Vision"])
+    if ([deviceClasses containsObject:@"Vision"])
     {
       v35 = v34 | 0x40;
     }
@@ -214,11 +214,11 @@
 
     [v5 setShouldCaptureDumpDisplay:1];
     [v5 setShouldCaptureScreenshot:1];
-    v36 = [(MapsRadarDraft *)self diagnosticExtensionIDs];
-    [v5 setDiagnosticExtensionIDs:v36];
+    diagnosticExtensionIDs = [(MapsRadarDraft *)self diagnosticExtensionIDs];
+    [v5 setDiagnosticExtensionIDs:diagnosticExtensionIDs];
 
-    v37 = [(MapsRadarDraft *)self diagnosticExtensionParameters];
-    [v5 setDiagnosticExtensionParameters:v37];
+    diagnosticExtensionParameters = [(MapsRadarDraft *)self diagnosticExtensionParameters];
+    [v5 setDiagnosticExtensionParameters:diagnosticExtensionParameters];
   }
 
   else
@@ -231,16 +231,16 @@
 
 + (BOOL)isTapToRadarAuthorizedSync
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [v2 service];
-  v4 = [v3 serviceSettings];
-  qword_10195D938 = [v4 authorizationStatus];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  service = [selfCopy service];
+  serviceSettings = [service serviceSettings];
+  qword_10195D938 = [serviceSettings authorizationStatus];
 
-  LOBYTE(v3) = qword_10195D938 == 3;
-  objc_sync_exit(v2);
+  LOBYTE(service) = qword_10195D938 == 3;
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return service;
 }
 
 + (BOOL)isTapToRadarAuthorizedCached
@@ -249,16 +249,16 @@
   block[1] = 3221225472;
   block[2] = sub_100819B28;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195D930 != -1)
   {
     dispatch_once(&qword_10195D930, block);
   }
 
-  v3 = a1;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = qword_10195D938 == 3;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -288,11 +288,11 @@
   [v3 setHost:@"new"];
   v4 = objc_alloc_init(NSMutableArray);
   v5 = [NSURLQueryItem alloc];
-  v6 = [(MapsRadarDraft *)self title];
-  v7 = v6;
-  if (v6)
+  title = [(MapsRadarDraft *)self title];
+  v7 = title;
+  if (title)
   {
-    v8 = v6;
+    v8 = title;
   }
 
   else
@@ -303,28 +303,28 @@
   v9 = [v5 initWithName:@"Title" value:v8];
   [v4 addObject:v9];
 
-  v10 = [(MapsRadarDraft *)self descriptionText];
-  v11 = [v10 length];
+  descriptionText = [(MapsRadarDraft *)self descriptionText];
+  v11 = [descriptionText length];
 
   if (v11)
   {
     v12 = [NSURLQueryItem alloc];
-    v13 = [(MapsRadarDraft *)self descriptionText];
-    v14 = [v12 initWithName:@"Description" value:v13];
+    descriptionText2 = [(MapsRadarDraft *)self descriptionText];
+    v14 = [v12 initWithName:@"Description" value:descriptionText2];
     [v4 addObject:v14];
   }
 
   if ([(MapsRadarDraft *)self classification])
   {
-    v15 = [(MapsRadarDraft *)self classification];
-    if (v15 > 0xA)
+    classification = [(MapsRadarDraft *)self classification];
+    if (classification > 0xA)
     {
       v16 = @"Security";
     }
 
     else
     {
-      v16 = *(&off_10162C0D0 + v15);
+      v16 = *(&off_10162C0D0 + classification);
     }
 
     v17 = [[NSURLQueryItem alloc] initWithName:@"Classification" value:v16];
@@ -333,89 +333,89 @@
 
   if ([(MapsRadarDraft *)self reproducibility])
   {
-    v18 = [(MapsRadarDraft *)self reproducibility];
-    if (v18 > 6)
+    reproducibility = [(MapsRadarDraft *)self reproducibility];
+    if (reproducibility > 6)
     {
       v19 = @"Always";
     }
 
     else
     {
-      v19 = *(&off_10162C128 + v18);
+      v19 = *(&off_10162C128 + reproducibility);
     }
 
     v20 = [[NSURLQueryItem alloc] initWithName:@"Reproducibility" value:v19];
     [v4 addObject:v20];
   }
 
-  v21 = [(MapsRadarDraft *)self attachments];
-  v22 = [(MapsRadarDraft *)self screenshots];
-  v23 = [v22 count];
+  attachments = [(MapsRadarDraft *)self attachments];
+  screenshots = [(MapsRadarDraft *)self screenshots];
+  v23 = [screenshots count];
 
   if (v23)
   {
     v24 = [NSURLQueryItem alloc];
-    v25 = [(MapsRadarDraft *)self screenshots];
-    v26 = sub_100021DB0(v25, &stru_10162C050);
+    screenshots2 = [(MapsRadarDraft *)self screenshots];
+    v26 = sub_100021DB0(screenshots2, &stru_10162C050);
     v27 = [v26 componentsJoinedByString:{@", "}];
     v28 = [v24 initWithName:@"Screenshot" value:v27];
     [v4 addObject:v28];
   }
 
-  v29 = [(MapsRadarDraft *)self metadataAttachment];
-  if (v29)
+  metadataAttachment = [(MapsRadarDraft *)self metadataAttachment];
+  if (metadataAttachment)
   {
-    v30 = [v21 arrayByAddingObject:v29];
+    v30 = [attachments arrayByAddingObject:metadataAttachment];
 
-    v21 = v30;
+    attachments = v30;
   }
 
-  if ([v21 count])
+  if ([attachments count])
   {
     v31 = [NSURLQueryItem alloc];
-    v32 = [(MapsRadarDraft *)self temporaryAttachmentsFolderURL];
-    v33 = [v32 path];
-    v34 = [v31 initWithName:@"Attachments" value:v33];
+    temporaryAttachmentsFolderURL = [(MapsRadarDraft *)self temporaryAttachmentsFolderURL];
+    path = [temporaryAttachmentsFolderURL path];
+    v34 = [v31 initWithName:@"Attachments" value:path];
     [v4 addObject:v34];
   }
 
-  v35 = [(MapsRadarDraft *)self keywords];
-  v36 = [v35 count];
+  keywords = [(MapsRadarDraft *)self keywords];
+  v36 = [keywords count];
 
   if (v36)
   {
-    v37 = [(MapsRadarDraft *)self keywords];
-    v38 = sub_100021DB0(v37, &stru_10162C090);
+    keywords2 = [(MapsRadarDraft *)self keywords];
+    v38 = sub_100021DB0(keywords2, &stru_10162C090);
     v39 = [NSSet setWithArray:v38];
-    v40 = [v39 allObjects];
+    allObjects = [v39 allObjects];
 
     v41 = [NSURLQueryItem alloc];
-    v42 = [v40 componentsJoinedByString:{@", "}];
+    v42 = [allObjects componentsJoinedByString:{@", "}];
     v43 = [v41 initWithName:@"Keywords" value:v42];
     [v4 addObject:v43];
   }
 
-  v44 = [(MapsRadarDraft *)self component];
+  component = [(MapsRadarDraft *)self component];
 
-  if (v44)
+  if (component)
   {
     v45 = [NSURLQueryItem alloc];
-    v46 = [(MapsRadarDraft *)self component];
-    v47 = [v46 name];
-    v48 = [v45 initWithName:@"ComponentName" value:v47];
+    component2 = [(MapsRadarDraft *)self component];
+    name = [component2 name];
+    v48 = [v45 initWithName:@"ComponentName" value:name];
     [v4 addObject:v48];
 
     v49 = [NSURLQueryItem alloc];
-    v50 = [(MapsRadarDraft *)self component];
-    v51 = [v50 version];
-    v52 = [v49 initWithName:@"ComponentVersion" value:v51];
+    component3 = [(MapsRadarDraft *)self component];
+    version = [component3 version];
+    v52 = [v49 initWithName:@"ComponentVersion" value:version];
     [v4 addObject:v52];
 
     v53 = [NSURLQueryItem alloc];
-    v54 = [(MapsRadarDraft *)self component];
-    v55 = [v54 ID];
-    v56 = [v55 stringValue];
-    v57 = [v53 initWithName:@"ComponentID" value:v56];
+    component4 = [(MapsRadarDraft *)self component];
+    v55 = [component4 ID];
+    stringValue = [v55 stringValue];
+    v57 = [v53 initWithName:@"ComponentID" value:stringValue];
     [v4 addObject:v57];
   }
 
@@ -425,34 +425,34 @@
     [v4 addObject:v58];
   }
 
-  v59 = [(MapsRadarDraft *)self collaborationContactHandles];
-  v60 = [v59 count];
+  collaborationContactHandles = [(MapsRadarDraft *)self collaborationContactHandles];
+  v60 = [collaborationContactHandles count];
 
   if (v60)
   {
     v61 = [NSURLQueryItem alloc];
-    v62 = [(MapsRadarDraft *)self collaborationContactHandles];
-    v63 = [v62 componentsJoinedByString:{@", "}];
+    collaborationContactHandles2 = [(MapsRadarDraft *)self collaborationContactHandles];
+    v63 = [collaborationContactHandles2 componentsJoinedByString:{@", "}];
     v64 = [v61 initWithName:@"CollaborationContactHandles" value:v63];
     [v4 addObject:v64];
   }
 
-  v65 = [(MapsRadarDraft *)self deviceClasses];
-  v66 = [v65 count];
+  deviceClasses = [(MapsRadarDraft *)self deviceClasses];
+  v66 = [deviceClasses count];
 
   if (v66)
   {
     v67 = [NSURLQueryItem alloc];
-    v68 = [(MapsRadarDraft *)self deviceClasses];
-    v69 = [v68 componentsJoinedByString:{@", "}];
+    deviceClasses2 = [(MapsRadarDraft *)self deviceClasses];
+    v69 = [deviceClasses2 componentsJoinedByString:{@", "}];
     v70 = [v67 initWithName:@"DeviceClasses" value:v69];
     [v4 addObject:v70];
   }
 
   v71 = [NSURLQueryItem alloc];
   v72 = +[NSBundle mainBundle];
-  v73 = [v72 bundleIdentifier];
-  v74 = [v71 initWithName:@"BundleID" value:v73];
+  bundleIdentifier = [v72 bundleIdentifier];
+  v74 = [v71 initWithName:@"BundleID" value:bundleIdentifier];
   [v4 addObject:v74];
 
   v75 = [[NSURLQueryItem alloc] initWithName:@"DeleteOnAttach" value:@"1"];
@@ -462,8 +462,8 @@
   [v4 addObject:v76];
 
   v77 = [NSURLQueryItem alloc];
-  v78 = [(MapsRadarDraft *)self diagnosticExtensionIDs];
-  v79 = [v78 componentsJoinedByString:{@", "}];
+  diagnosticExtensionIDs = [(MapsRadarDraft *)self diagnosticExtensionIDs];
+  v79 = [diagnosticExtensionIDs componentsJoinedByString:{@", "}];
   v80 = [v77 initWithName:@"ExtensionIdentifiers" value:v79];
   [v4 addObject:v80];
 
@@ -474,8 +474,8 @@
 
   v81 = [NSURLQueryItem alloc];
   v82 = qword_10195DA30;
-  v83 = [(MapsRadarDraft *)self timeOfIssue];
-  v84 = [v82 stringFromDate:v83];
+  timeOfIssue = [(MapsRadarDraft *)self timeOfIssue];
+  v84 = [v82 stringFromDate:timeOfIssue];
   v85 = [v81 initWithName:@"TimeOfIssue" value:v84];
   [v4 addObject:v85];
 
@@ -485,12 +485,12 @@
   return v86;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v11 = a3;
-  v11[2](v11, @"title", self->_title);
-  v11[2](v11, @"notes", &self->_notes->super.isa);
-  v11[2](v11, @"component", &self->_component->super.isa);
+  blockCopy = block;
+  blockCopy[2](blockCopy, @"title", self->_title);
+  blockCopy[2](blockCopy, @"notes", &self->_notes->super.isa);
+  blockCopy[2](blockCopy, @"component", &self->_component->super.isa);
   classification = self->_classification;
   if (classification > 0xA)
   {
@@ -502,9 +502,9 @@
     v5 = *(&off_10164F2F0 + classification);
   }
 
-  v11[2](v11, @"classification", &v5->isa);
-  v11[2](v11, @"diagnostic extension ids", &self->_diagnosticExtensionIDs->super.isa);
-  v11[2](v11, @"diagnostic extension params", &self->_diagnosticExtensionParameters->super.isa);
+  blockCopy[2](blockCopy, @"classification", &v5->isa);
+  blockCopy[2](blockCopy, @"diagnostic extension ids", &self->_diagnosticExtensionIDs->super.isa);
+  blockCopy[2](blockCopy, @"diagnostic extension params", &self->_diagnosticExtensionParameters->super.isa);
   reproducibility = self->_reproducibility;
   if (reproducibility > 6)
   {
@@ -516,11 +516,11 @@
     v7 = *(&off_10164F348 + reproducibility);
   }
 
-  v11[2](v11, @"reproducibility", &v7->isa);
-  v11[2](v11, @"attachments", &self->_attachments->super.isa);
-  v11[2](v11, @"screenshots", &self->_screenshots->super.isa);
-  v11[2](v11, @"keywords", &self->_keywords->super.isa);
-  v11[2](v11, @"time of issue", &self->_timeOfIssue->super.isa);
+  blockCopy[2](blockCopy, @"reproducibility", &v7->isa);
+  blockCopy[2](blockCopy, @"attachments", &self->_attachments->super.isa);
+  blockCopy[2](blockCopy, @"screenshots", &self->_screenshots->super.isa);
+  blockCopy[2](blockCopy, @"keywords", &self->_keywords->super.isa);
+  blockCopy[2](blockCopy, @"time of issue", &self->_timeOfIssue->super.isa);
   if (self->_locationOfIssue)
   {
     locationOfIssue = self->_locationOfIssue;
@@ -531,7 +531,7 @@
     locationOfIssue = @"<Not collected>";
   }
 
-  v11[2](v11, @"location of issue", &locationOfIssue->super.isa);
+  blockCopy[2](blockCopy, @"location of issue", &locationOfIssue->super.isa);
   if (self->_collectFullLogArchive)
   {
     v9 = @"YES";
@@ -542,16 +542,16 @@
     v9 = @"NO";
   }
 
-  v11[2](v11, @"full log archive", &v9->isa);
-  v11[2](v11, @"collaboration contact handles", &self->_collaborationContactHandles->super.isa);
-  v11[2](v11, @"device classes", &self->_deviceClasses->super.isa);
-  v10 = [(NSURL *)self->_temporaryFolderURL path];
-  v11[2](v11, @"temporary folder", v10);
+  blockCopy[2](blockCopy, @"full log archive", &v9->isa);
+  blockCopy[2](blockCopy, @"collaboration contact handles", &self->_collaborationContactHandles->super.isa);
+  blockCopy[2](blockCopy, @"device classes", &self->_deviceClasses->super.isa);
+  path = [(NSURL *)self->_temporaryFolderURL path];
+  blockCopy[2](blockCopy, @"temporary folder", path);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C696A4;
@@ -559,8 +559,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarDraft *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarDraft *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -594,7 +594,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C698F4;
@@ -602,8 +602,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarDraft *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarDraft *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -637,8 +637,8 @@ LABEL_9:
 
 - (MapsRadarAttachment)metadataAttachment
 {
-  v2 = [(MapsRadarDraft *)self attachments];
-  v3 = [v2 sortedArrayUsingComparator:&stru_10164F270];
+  attachments = [(MapsRadarDraft *)self attachments];
+  v3 = [attachments sortedArrayUsingComparator:&stru_10164F270];
 
   if ([v3 count])
   {
@@ -661,10 +661,10 @@ LABEL_9:
   return v6;
 }
 
-- (void)addDiagnosticExtensionParameters:(id)a3
+- (void)addDiagnosticExtensionParameters:(id)parameters
 {
-  v4 = a3;
-  if (!v4)
+  parametersCopy = parameters;
+  if (!parametersCopy)
   {
     v8 = sub_10006D178();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -693,19 +693,19 @@ LABEL_9:
     }
   }
 
-  v5 = [(MapsRadarDraft *)self diagnosticExtensionParameters];
-  v6 = [v5 mutableCopy];
+  diagnosticExtensionParameters = [(MapsRadarDraft *)self diagnosticExtensionParameters];
+  v6 = [diagnosticExtensionParameters mutableCopy];
 
-  [v6 addEntriesFromDictionary:v4];
+  [v6 addEntriesFromDictionary:parametersCopy];
   v7 = [v6 copy];
   [(MapsRadarDraft *)self setDiagnosticExtensionParameters:v7];
 }
 
-- (void)addDiagnosticExtensionKey:(id)a3 value:(id)a4
+- (void)addDiagnosticExtensionKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  valueCopy = value;
+  if (!keyCopy)
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -734,7 +734,7 @@ LABEL_9:
     }
   }
 
-  if (!v7)
+  if (!valueCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -763,16 +763,16 @@ LABEL_9:
     }
   }
 
-  v15 = v6;
-  v16 = v7;
+  v15 = keyCopy;
+  v16 = valueCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   [(MapsRadarDraft *)self addDiagnosticExtensionParameters:v8];
 }
 
-- (void)addDiagnosticExtensionIDs:(id)a3
+- (void)addDiagnosticExtensionIDs:(id)ds
 {
-  v4 = a3;
-  if (!v4)
+  dsCopy = ds;
+  if (!dsCopy)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -801,15 +801,15 @@ LABEL_9:
     }
   }
 
-  v5 = [(MapsRadarDraft *)self diagnosticExtensionIDs];
-  v6 = [v5 arrayByAddingObjectsFromArray:v4];
+  diagnosticExtensionIDs = [(MapsRadarDraft *)self diagnosticExtensionIDs];
+  v6 = [diagnosticExtensionIDs arrayByAddingObjectsFromArray:dsCopy];
   [(MapsRadarDraft *)self setDiagnosticExtensionIDs:v6];
 }
 
-- (void)addDiagnosticExtensionID:(id)a3
+- (void)addDiagnosticExtensionID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -838,15 +838,15 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = dCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addDiagnosticExtensionIDs:v5];
 }
 
-- (void)addNotes:(id)a3
+- (void)addNotes:(id)notes
 {
-  v4 = a3;
-  if (!v4)
+  notesCopy = notes;
+  if (!notesCopy)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -875,15 +875,15 @@ LABEL_9:
     }
   }
 
-  v5 = [(MapsRadarDraft *)self notes];
-  v6 = [v5 arrayByAddingObjectsFromArray:v4];
+  notes = [(MapsRadarDraft *)self notes];
+  v6 = [notes arrayByAddingObjectsFromArray:notesCopy];
   [(MapsRadarDraft *)self setNotes:v6];
 }
 
-- (void)addNote:(id)a3
+- (void)addNote:(id)note
 {
-  v4 = a3;
-  if (!v4)
+  noteCopy = note;
+  if (!noteCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -912,15 +912,15 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = noteCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addNotes:v5];
 }
 
-- (void)addDeviceClasses:(id)a3
+- (void)addDeviceClasses:(id)classes
 {
-  v4 = a3;
-  if (!v4)
+  classesCopy = classes;
+  if (!classesCopy)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -949,15 +949,15 @@ LABEL_9:
     }
   }
 
-  v5 = [(MapsRadarDraft *)self deviceClasses];
-  v6 = [v5 arrayByAddingObjectsFromArray:v4];
+  deviceClasses = [(MapsRadarDraft *)self deviceClasses];
+  v6 = [deviceClasses arrayByAddingObjectsFromArray:classesCopy];
   [(MapsRadarDraft *)self setDeviceClasses:v6];
 }
 
-- (void)addDeviceClass:(id)a3
+- (void)addDeviceClass:(id)class
 {
-  v4 = a3;
-  if (!v4)
+  classCopy = class;
+  if (!classCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -986,15 +986,15 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = classCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addDeviceClasses:v5];
 }
 
-- (void)addCollaborationContactHandles:(id)a3
+- (void)addCollaborationContactHandles:(id)handles
 {
-  v4 = a3;
-  if (!v4)
+  handlesCopy = handles;
+  if (!handlesCopy)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1023,15 +1023,15 @@ LABEL_9:
     }
   }
 
-  v5 = [(MapsRadarDraft *)self collaborationContactHandles];
-  v6 = [v5 arrayByAddingObjectsFromArray:v4];
+  collaborationContactHandles = [(MapsRadarDraft *)self collaborationContactHandles];
+  v6 = [collaborationContactHandles arrayByAddingObjectsFromArray:handlesCopy];
   [(MapsRadarDraft *)self setCollaborationContactHandles:v6];
 }
 
-- (void)addCollaborationContactHandle:(id)a3
+- (void)addCollaborationContactHandle:(id)handle
 {
-  v4 = a3;
-  if (!v4)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1060,15 +1060,15 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = handleCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addCollaborationContactHandles:v5];
 }
 
-- (void)addKeywords:(id)a3
+- (void)addKeywords:(id)keywords
 {
-  v4 = a3;
-  if (!v4)
+  keywordsCopy = keywords;
+  if (!keywordsCopy)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1097,15 +1097,15 @@ LABEL_9:
     }
   }
 
-  v5 = [(MapsRadarDraft *)self keywords];
-  v6 = [v5 arrayByAddingObjectsFromArray:v4];
+  keywords = [(MapsRadarDraft *)self keywords];
+  v6 = [keywords arrayByAddingObjectsFromArray:keywordsCopy];
   [(MapsRadarDraft *)self setKeywords:v6];
 }
 
-- (void)addKeyword:(id)a3
+- (void)addKeyword:(id)keyword
 {
-  v4 = a3;
-  if (!v4)
+  keywordCopy = keyword;
+  if (!keywordCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1134,15 +1134,15 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = keywordCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addKeywords:v5];
 }
 
-- (void)addScreenshots:(id)a3
+- (void)addScreenshots:(id)screenshots
 {
-  v4 = a3;
-  if (!v4)
+  screenshotsCopy = screenshots;
+  if (!screenshotsCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1175,7 +1175,7 @@ LABEL_9:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = screenshotsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1199,15 +1199,15 @@ LABEL_9:
     while (v7);
   }
 
-  v10 = [(MapsRadarDraft *)self screenshots];
-  v11 = [v10 arrayByAddingObjectsFromArray:v5];
+  screenshots = [(MapsRadarDraft *)self screenshots];
+  v11 = [screenshots arrayByAddingObjectsFromArray:v5];
   [(MapsRadarDraft *)self setScreenshots:v11];
 }
 
-- (void)addScreenshot:(id)a3
+- (void)addScreenshot:(id)screenshot
 {
-  v4 = a3;
-  if (!v4)
+  screenshotCopy = screenshot;
+  if (!screenshotCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1236,15 +1236,15 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = screenshotCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addScreenshots:v5];
 }
 
-- (void)addAttachments:(id)a3
+- (void)addAttachments:(id)attachments
 {
-  v4 = a3;
-  if (!v4)
+  attachmentsCopy = attachments;
+  if (!attachmentsCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1277,7 +1277,7 @@ LABEL_9:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = attachmentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1301,15 +1301,15 @@ LABEL_9:
     while (v7);
   }
 
-  v10 = [(MapsRadarDraft *)self attachments];
-  v11 = [v10 arrayByAddingObjectsFromArray:v5];
+  attachments = [(MapsRadarDraft *)self attachments];
+  v11 = [attachments arrayByAddingObjectsFromArray:v5];
   [(MapsRadarDraft *)self setAttachments:v11];
 }
 
-- (void)addAttachment:(id)a3
+- (void)addAttachment:(id)attachment
 {
-  v4 = a3;
-  if (!v4)
+  attachmentCopy = attachment;
+  if (!attachmentCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1338,7 +1338,7 @@ LABEL_9:
     }
   }
 
-  v9 = v4;
+  v9 = attachmentCopy;
   v5 = [NSArray arrayWithObjects:&v9 count:1];
   [(MapsRadarDraft *)self addAttachments:v5];
 }
@@ -1508,15 +1508,15 @@ LABEL_9:
     v2->_timeOfIssue = v3;
 
     v5 = +[MKLocationManager sharedLocationManager];
-    v6 = [v5 lastLocation];
+    lastLocation = [v5 lastLocation];
     locationOfIssue = v2->_locationOfIssue;
-    v2->_locationOfIssue = v6;
+    v2->_locationOfIssue = lastLocation;
 
     v2->_collectFullLogArchive = GEOConfigGetBOOL();
     v8 = NSTemporaryDirectory();
     v9 = +[NSUUID UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v8 stringByAppendingPathComponent:v10];
+    uUIDString = [v9 UUIDString];
+    v11 = [v8 stringByAppendingPathComponent:uUIDString];
     v12 = [NSURL fileURLWithPath:v11];
     v13 = [v12 URLByAppendingPathComponent:@"MapsDiagnostics/"];
     temporaryFolderURL = v2->_temporaryFolderURL;
@@ -1532,12 +1532,12 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Will launch TTR via URL", buf, 0xCu);
   }
 
-  v4 = [(MapsRadarDraft *)self tapToRadarURL];
-  if (v4)
+  tapToRadarURL = [(MapsRadarDraft *)self tapToRadarURL];
+  if (tapToRadarURL)
   {
     objc_initWeak(buf, self);
     v10[0] = _NSConcreteStackBlock;
@@ -1545,7 +1545,7 @@ LABEL_9:
     v10[2] = sub_100D193A4;
     v10[3] = &unk_10165D288;
     objc_copyWeak(&v12, buf);
-    v11 = v4;
+    v11 = tapToRadarURL;
     [UIApplication _maps_unlockApplicationWithCompletion:v10];
 
     objc_destroyWeak(&v12);
@@ -1558,7 +1558,7 @@ LABEL_9:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v14 = "[MapsRadarDraft(TTR) _launchURLScheme]";
+      selfCopy2 = "[MapsRadarDraft(TTR) _launchURLScheme]";
       v15 = 2080;
       v16 = "MapsRadarDraft+TTR.m";
       v17 = 1024;
@@ -1575,7 +1575,7 @@ LABEL_9:
       {
         v7 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v14 = v7;
+        selfCopy2 = v7;
         v8 = v7;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
@@ -1585,20 +1585,20 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}p] Error creating TTR URL", buf, 0xCu);
     }
   }
 }
 
-- (void)_launchTapToRadarKitWithDisplayReason:(id)a3
+- (void)_launchTapToRadarKitWithDisplayReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = sub_100D19350();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v22 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Will launch TTR via TapToRadarKit", buf, 0xCu);
   }
 
@@ -1608,7 +1608,7 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v22 = "[MapsRadarDraft(TTR) _launchTapToRadarKitWithDisplayReason:]";
+      selfCopy2 = "[MapsRadarDraft(TTR) _launchTapToRadarKitWithDisplayReason:]";
       v23 = 2080;
       v24 = "MapsRadarDraft+TTR.m";
       v25 = 1024;
@@ -1625,7 +1625,7 @@ LABEL_9:
       {
         v10 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v22 = v10;
+        selfCopy2 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -1637,7 +1637,7 @@ LABEL_9:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v22 = "[MapsRadarDraft(TTR) _launchTapToRadarKitWithDisplayReason:]";
+      selfCopy2 = "[MapsRadarDraft(TTR) _launchTapToRadarKitWithDisplayReason:]";
       v23 = 2080;
       v24 = "MapsRadarDraft+TTR.m";
       v25 = 1024;
@@ -1654,23 +1654,23 @@ LABEL_9:
       {
         v13 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v22 = v13;
+        selfCopy2 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
   }
 
-  v6 = [(MapsRadarDraft *)self tapToRadarKitDraft];
-  if (v6)
+  tapToRadarKitDraft = [(MapsRadarDraft *)self tapToRadarKitDraft];
+  if (tapToRadarKitDraft)
   {
     objc_initWeak(buf, self);
-    v7 = [(MapsRadarDraft *)self service];
+    service = [(MapsRadarDraft *)self service];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100D1A06C;
     v19[3] = &unk_1016600B8;
     objc_copyWeak(&v20, buf);
-    [v7 createDraft:v6 forProcessNamed:@"Maps" withDisplayReason:v4 completionHandler:v19];
+    [service createDraft:tapToRadarKitDraft forProcessNamed:@"Maps" withDisplayReason:reasonCopy completionHandler:v19];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -1682,7 +1682,7 @@ LABEL_9:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v22 = "[MapsRadarDraft(TTR) _launchTapToRadarKitWithDisplayReason:]";
+      selfCopy2 = "[MapsRadarDraft(TTR) _launchTapToRadarKitWithDisplayReason:]";
       v23 = 2080;
       v24 = "MapsRadarDraft+TTR.m";
       v25 = 1024;
@@ -1699,7 +1699,7 @@ LABEL_9:
       {
         v16 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v22 = v16;
+        selfCopy2 = v16;
         v17 = v16;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
@@ -1709,7 +1709,7 @@ LABEL_9:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[%{public}p] Error creating TapToRadarKit draft", buf, 0xCu);
     }
   }
@@ -1735,17 +1735,17 @@ LABEL_9:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 shared];
+  shared = [v2 shared];
 
-  return v4;
+  return shared;
 }
 
-- (void)launchTTRWithDisplayReason:(id)a3
+- (void)launchTTRWithDisplayReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (GEOConfigGetBOOL())
   {
-    [(MapsRadarDraft *)self _launchTapToRadarKitWithDisplayReason:v4];
+    [(MapsRadarDraft *)self _launchTapToRadarKitWithDisplayReason:reasonCopy];
   }
 
   else

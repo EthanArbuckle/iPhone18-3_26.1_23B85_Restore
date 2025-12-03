@@ -1,6 +1,6 @@
 @interface IMActionOpenApp
 - (IMActionOpenApp)init;
-- (IMActionOpenApp)initWithUrl:(id)a3;
+- (IMActionOpenApp)initWithUrl:(id)url;
 - (NSString)url;
 - (id)dictionaryRepresentation;
 @end
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (IMActionOpenApp)initWithUrl:(id)a3
+- (IMActionOpenApp)initWithUrl:(id)url
 {
   v4 = sub_1A88C82E8();
   v5 = (self + OBJC_IVAR___IMActionOpenApp_url);
@@ -33,8 +33,8 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = 7107189;
   *(inited + 40) = 0xE300000000000000;
-  v4 = self;
-  v5 = [(IMActionOpenApp *)v4 url];
+  selfCopy = self;
+  v5 = [(IMActionOpenApp *)selfCopy url];
   v6 = sub_1A88C82E8();
   v8 = v7;
 

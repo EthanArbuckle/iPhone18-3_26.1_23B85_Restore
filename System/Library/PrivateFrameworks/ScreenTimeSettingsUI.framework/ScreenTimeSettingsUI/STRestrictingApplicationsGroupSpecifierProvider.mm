@@ -1,12 +1,12 @@
 @interface STRestrictingApplicationsGroupSpecifierProvider
 - (STRestrictingApplicationsGroupSpecifierProvider)init;
 - (id)getCurrentAuthorizationRecords;
-- (id)isFamilyControlsEnabled:(id)a3;
-- (int64_t)getAuthorizationStatusForRecordIdentifier:(id)a3 fromRecords:(id)a4;
+- (id)isFamilyControlsEnabled:(id)enabled;
+- (int64_t)getAuthorizationStatusForRecordIdentifier:(id)identifier fromRecords:(id)records;
 - (void)_updateAuthorizationRecords;
 - (void)_updateSpecifiersWithAuthorizationRecords;
 - (void)dealloc;
-- (void)setFamilyControlsEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setFamilyControlsEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation STRestrictingApplicationsGroupSpecifierProvider
@@ -98,33 +98,33 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
 
 - (void)_updateAuthorizationRecords
 {
-  v3 = [MEMORY[0x277D083D8] sharedCenter];
-  v4 = [v3 authorizationRecords];
+  mEMORY[0x277D083D8] = [MEMORY[0x277D083D8] sharedCenter];
+  authorizationRecords = [mEMORY[0x277D083D8] authorizationRecords];
   authorizationRecords = self->_authorizationRecords;
-  self->_authorizationRecords = v4;
+  self->_authorizationRecords = authorizationRecords;
 
-  v6 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__STRestrictingApplicationsGroupSpecifierProvider__updateAuthorizationRecords__block_invoke;
   v7[3] = &unk_279B7C998;
   v7[4] = self;
-  [v6 addOperationWithBlock:v7];
+  [mainQueue addOperationWithBlock:v7];
 }
 
 - (void)_updateSpecifiersWithAuthorizationRecords
 {
   v67 = *MEMORY[0x277D85DE8];
-  v3 = [(STRestrictingApplicationsGroupSpecifierProvider *)self getCurrentAuthorizationRecords];
-  if ([v3 count])
+  getCurrentAuthorizationRecords = [(STRestrictingApplicationsGroupSpecifierProvider *)self getCurrentAuthorizationRecords];
+  if ([getCurrentAuthorizationRecords count])
   {
     v4 = objc_opt_new();
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v41 = v3;
-    v5 = v3;
+    v41 = getCurrentAuthorizationRecords;
+    v5 = getCurrentAuthorizationRecords;
     v6 = [v5 countByEnumeratingWithState:&v59 objects:v66 count:16];
     if (v6)
     {
@@ -140,8 +140,8 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
           }
 
           v10 = *(*(&v59 + 1) + 8 * i);
-          v11 = [v10 recordIdentifier];
-          [v4 setObject:v10 forKeyedSubscript:v11];
+          recordIdentifier = [v10 recordIdentifier];
+          [v4 setObject:v10 forKeyedSubscript:recordIdentifier];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v59 objects:v66 count:16];
@@ -150,14 +150,14 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
       while (v7);
     }
 
-    v12 = self;
-    v13 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+    selfCopy = self;
+    mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
     v44 = objc_opt_new();
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v14 = v13;
+    v14 = mutableSpecifiers;
     v15 = [v14 countByEnumeratingWithState:&v55 objects:v65 count:16];
     if (v15)
     {
@@ -178,7 +178,7 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
 
           if (v21)
           {
-            [(STGroupSpecifierProvider *)v12 reloadSpecifier:v19 animated:1];
+            [(STGroupSpecifierProvider *)selfCopy reloadSpecifier:v19 animated:1];
             [v4 setObject:0 forKeyedSubscript:v20];
           }
 
@@ -194,7 +194,7 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
       while (v16);
     }
 
-    v46 = v12;
+    v46 = selfCopy;
 
     v53 = 0u;
     v54 = 0u;
@@ -247,18 +247,18 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
           }
 
           v30 = *(*(&v47 + 1) + 8 * m);
-          v31 = [v30 bundleIdentifier];
-          v32 = [v30 recordIdentifier];
-          v33 = [MEMORY[0x277D4B8C0] sharedCache];
-          v34 = [v33 appInfoForBundleIdentifier:v31];
-          v35 = [v34 displayName];
+          bundleIdentifier = [v30 bundleIdentifier];
+          recordIdentifier2 = [v30 recordIdentifier];
+          mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+          v34 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:bundleIdentifier];
+          displayName = [v34 displayName];
 
-          v36 = [MEMORY[0x277D4BD98] sharedCache];
-          v37 = [v36 imageForBundleIdentifier:v31];
+          mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+          v37 = [mEMORY[0x277D4BD98] imageForBundleIdentifier:bundleIdentifier];
 
-          v38 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v35 target:v46 set:sel_setFamilyControlsEnabled_forSpecifier_ get:sel_isFamilyControlsEnabled_ detail:0 cell:6 edit:{0, v40}];
+          v38 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:displayName target:v46 set:sel_setFamilyControlsEnabled_forSpecifier_ get:sel_isFamilyControlsEnabled_ detail:0 cell:6 edit:{0, v40}];
           [v38 setObject:v37 forKeyedSubscript:v43];
-          [v38 setObject:v32 forKeyedSubscript:@"RecordID"];
+          [v38 setObject:recordIdentifier2 forKeyedSubscript:@"RecordID"];
           [v14 addObject:v38];
         }
 
@@ -269,28 +269,28 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
     }
 
     -[STGroupSpecifierProvider setIsHidden:](v46, "setIsHidden:", [v14 count] == 0);
-    v3 = v41;
+    getCurrentAuthorizationRecords = v41;
   }
 
   else
   {
-    v39 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-    [v39 removeAllObjects];
+    mutableSpecifiers2 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+    [mutableSpecifiers2 removeAllObjects];
 
     [(STGroupSpecifierProvider *)self setIsHidden:1];
   }
 }
 
-- (int64_t)getAuthorizationStatusForRecordIdentifier:(id)a3 fromRecords:(id)a4
+- (int64_t)getAuthorizationStatusForRecordIdentifier:(id)identifier fromRecords:(id)records
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  recordsCopy = records;
+  v7 = [recordsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -301,23 +301,23 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 recordIdentifier];
-        v13 = [v12 UUIDString];
-        v14 = [v5 UUIDString];
-        v15 = [v13 isEqualToString:v14];
+        recordIdentifier = [v11 recordIdentifier];
+        uUIDString = [recordIdentifier UUIDString];
+        uUIDString2 = [identifierCopy UUIDString];
+        v15 = [uUIDString isEqualToString:uUIDString2];
 
         if (v15)
         {
-          v16 = [v11 status];
+          status = [v11 status];
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [recordsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -327,49 +327,49 @@ uint64_t __81__STRestrictingApplicationsGroupSpecifierProvider_getCurrentAuthori
     }
   }
 
-  v16 = 1;
+  status = 1;
 LABEL_11:
 
-  return v16;
+  return status;
 }
 
-- (void)setFamilyControlsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setFamilyControlsEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STRestrictingApplicationsGroupSpecifierProvider *)self getCurrentAuthorizationRecords];
-  v9 = [v7 objectForKeyedSubscript:@"RecordID"];
-  v10 = [(STRestrictingApplicationsGroupSpecifierProvider *)self getAuthorizationStatusForRecordIdentifier:v9 fromRecords:v8];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  getCurrentAuthorizationRecords = [(STRestrictingApplicationsGroupSpecifierProvider *)self getCurrentAuthorizationRecords];
+  v9 = [specifierCopy objectForKeyedSubscript:@"RecordID"];
+  v10 = [(STRestrictingApplicationsGroupSpecifierProvider *)self getAuthorizationStatusForRecordIdentifier:v9 fromRecords:getCurrentAuthorizationRecords];
 
-  if (([v6 BOOLValue] & 1) == 0 && v10 == 2)
+  if (([enabledCopy BOOLValue] & 1) == 0 && v10 == 2)
   {
-    v11 = [MEMORY[0x277D083D8] sharedCenter];
-    v12 = [v7 objectForKeyedSubscript:@"RecordID"];
+    mEMORY[0x277D083D8] = [MEMORY[0x277D083D8] sharedCenter];
+    v12 = [specifierCopy objectForKeyedSubscript:@"RecordID"];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __89__STRestrictingApplicationsGroupSpecifierProvider_setFamilyControlsEnabled_forSpecifier___block_invoke;
     v16[3] = &unk_279B7D7A8;
     v16[4] = self;
     v13 = &v17;
-    v17 = v7;
-    [v11 resetAuthorizationForRecordIdentifier:v12 completionHandler:v16];
+    v17 = specifierCopy;
+    [mEMORY[0x277D083D8] resetAuthorizationForRecordIdentifier:v12 completionHandler:v16];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if ([v6 BOOLValue] && v10 <= 1)
+  if ([enabledCopy BOOLValue] && v10 <= 1)
   {
-    v11 = [MEMORY[0x277D083D8] sharedCenter];
-    v12 = [v7 objectForKeyedSubscript:@"RecordID"];
+    mEMORY[0x277D083D8] = [MEMORY[0x277D083D8] sharedCenter];
+    v12 = [specifierCopy objectForKeyedSubscript:@"RecordID"];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __89__STRestrictingApplicationsGroupSpecifierProvider_setFamilyControlsEnabled_forSpecifier___block_invoke_29;
     v14[3] = &unk_279B7D7A8;
     v14[4] = self;
     v13 = &v15;
-    v15 = v7;
-    [v11 requestAuthorizationForRecordIdentifier:v12 completionHandler:v14];
+    v15 = specifierCopy;
+    [mEMORY[0x277D083D8] requestAuthorizationForRecordIdentifier:v12 completionHandler:v14];
     goto LABEL_7;
   }
 
@@ -422,13 +422,13 @@ void __89__STRestrictingApplicationsGroupSpecifierProvider_setFamilyControlsEnab
   }
 }
 
-- (id)isFamilyControlsEnabled:(id)a3
+- (id)isFamilyControlsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(STRestrictingApplicationsGroupSpecifierProvider *)self getCurrentAuthorizationRecords];
-  v6 = [v4 objectForKeyedSubscript:@"RecordID"];
+  enabledCopy = enabled;
+  getCurrentAuthorizationRecords = [(STRestrictingApplicationsGroupSpecifierProvider *)self getCurrentAuthorizationRecords];
+  v6 = [enabledCopy objectForKeyedSubscript:@"RecordID"];
 
-  if ([(STRestrictingApplicationsGroupSpecifierProvider *)self getAuthorizationStatusForRecordIdentifier:v6 fromRecords:v5]== 2)
+  if ([(STRestrictingApplicationsGroupSpecifierProvider *)self getAuthorizationStatusForRecordIdentifier:v6 fromRecords:getCurrentAuthorizationRecords]== 2)
   {
     v7 = MEMORY[0x277CBEC38];
   }

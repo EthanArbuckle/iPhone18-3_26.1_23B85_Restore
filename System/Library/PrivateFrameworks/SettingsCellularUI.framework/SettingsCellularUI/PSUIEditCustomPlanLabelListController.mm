@@ -17,8 +17,8 @@
   else
   {
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
-    v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v8 = [v6 initWithObjects:{v7, 0}];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    v8 = [v6 initWithObjects:{emptyGroupSpecifier, 0}];
 
     v9 = MEMORY[0x277D3FB40];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
@@ -50,8 +50,8 @@
 
 - (void)suspend
 {
-  v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = PSUIEditCustomPlanLabelListController;

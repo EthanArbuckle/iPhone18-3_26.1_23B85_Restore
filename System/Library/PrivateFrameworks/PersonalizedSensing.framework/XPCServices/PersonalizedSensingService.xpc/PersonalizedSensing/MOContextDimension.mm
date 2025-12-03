@@ -1,48 +1,48 @@
 @interface MOContextDimension
-- (BOOL)isEqual:(id)a3;
-- (MOContextDimension)initWithCoder:(id)a3;
-- (MOContextDimension)initWithContextDimensionMO:(id)a3;
-- (MOContextDimension)initWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOContextDimension)initWithCoder:(id)coder;
+- (MOContextDimension)initWithContextDimensionMO:(id)o;
+- (MOContextDimension)initWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextDimension
 
-- (MOContextDimension)initWithName:(id)a3
+- (MOContextDimension)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = MOContextDimension;
   v6 = [(MOContextDimension *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_queries forKey:@"queries"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_queries forKey:@"queries"];
 }
 
-- (MOContextDimension)initWithCoder:(id)a3
+- (MOContextDimension)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   v6 = [(MOContextDimension *)self initWithName:v5];
   if (v6)
   {
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"queries"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"queries"];
     queries = v6->_queries;
     v6->_queries = v9;
   }
@@ -57,17 +57,17 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [v5 isMemberOfClass:objc_opt_class()];
     name = self->_name;
-    v8 = [v5 name];
+    name = [v5 name];
 
-    LOBYTE(name) = [(NSString *)name isEqual:v8];
+    LOBYTE(name) = [(NSString *)name isEqual:name];
     v9 = v6 & name;
   }
 
@@ -79,34 +79,34 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextDimension alloc];
-  v5 = [(MOContextDimension *)self name];
-  v6 = [(MOContextDimension *)v4 initWithName:v5];
+  name = [(MOContextDimension *)self name];
+  v6 = [(MOContextDimension *)v4 initWithName:name];
 
-  v7 = [(MOContextDimension *)self queries];
-  [(MOContextDimension *)v6 setQueries:v7];
+  queries = [(MOContextDimension *)self queries];
+  [(MOContextDimension *)v6 setQueries:queries];
 
   return v6;
 }
 
-- (MOContextDimension)initWithContextDimensionMO:(id)a3
+- (MOContextDimension)initWithContextDimensionMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = [a3 name];
-    self = [(MOContextDimension *)self initWithName:v4];
+    name = [o name];
+    self = [(MOContextDimension *)self initWithName:name];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface VideosExtrasJSITunesStore
 - (UIViewController)formPresentationViewController;
-- (void)loadStoreURL:(id)a3 playOnLaunch:(id)a4;
+- (void)loadStoreURL:(id)l playOnLaunch:(id)launch;
 @end
 
 @implementation VideosExtrasJSITunesStore
 
-- (void)loadStoreURL:(id)a3 playOnLaunch:(id)a4
+- (void)loadStoreURL:(id)l playOnLaunch:(id)launch
 {
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:{a3, a4}];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:{l, launch}];
   if (v4)
   {
     v7 = v4;
     v5 = +[VUIInterfaceFactory sharedInstance];
-    v6 = [v5 openURLHandler];
+    openURLHandler = [v5 openURLHandler];
 
-    [v6 processItunesExtrasStoreLink:v7];
+    [openURLHandler processItunesExtrasStoreLink:v7];
     v4 = v7;
   }
 }

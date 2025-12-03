@@ -1,10 +1,10 @@
 @interface TipManager
-- (void)barCompressionStatusDidChange:(id)a3;
+- (void)barCompressionStatusDidChange:(id)change;
 @end
 
 @implementation TipManager
 
-- (void)barCompressionStatusDidChange:(id)a3
+- (void)barCompressionStatusDidChange:(id)change
 {
   v3 = sub_1D818E454();
   v4 = *(v3 - 8);

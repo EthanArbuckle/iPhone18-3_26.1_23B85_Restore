@@ -1,39 +1,39 @@
 @interface COMessagingRequest
 + (id)acceptableResponses;
-- (COMessagingRequest)initWithCoder:(id)a3;
-- (COMessagingRequest)initWithRequestID:(unsigned int)a3 requestType:(int64_t)a4 payload:(id)a5 payloadType:(id)a6 topic:(id)a7;
+- (COMessagingRequest)initWithCoder:(id)coder;
+- (COMessagingRequest)initWithRequestID:(unsigned int)d requestType:(int64_t)type payload:(id)payload payloadType:(id)payloadType topic:(id)topic;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMessagingRequest
 
-- (COMessagingRequest)initWithCoder:(id)a3
+- (COMessagingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = COMessagingRequest;
-  v5 = [(COMeshCommand *)&v19 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v19 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
   v5->_requestID = [v6 unsignedIntValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
   v5->_requestType = [v7 integerValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
   payload = v5->_payload;
   v5->_payload = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payloadType"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payloadType"];
   payloadType = v5->_payloadType;
   v5->_payloadType = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
   topic = v5->_topic;
   v5->_topic = v12;
 
@@ -61,26 +61,26 @@ LABEL_6:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = COMessagingRequest;
-  v4 = a3;
-  [(COMeshCommand *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMeshCommand *)&v10 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[COMessagingRequest requestID](self, "requestID", v10.receiver, v10.super_class)}];
-  [v4 encodeObject:v5 forKey:@"requestID"];
+  [coderCopy encodeObject:v5 forKey:@"requestID"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[COMessagingRequest requestType](self, "requestType")}];
-  [v4 encodeObject:v6 forKey:@"requestType"];
+  [coderCopy encodeObject:v6 forKey:@"requestType"];
 
-  v7 = [(COMessagingRequest *)self payload];
-  [v4 encodeObject:v7 forKey:@"payload"];
+  payload = [(COMessagingRequest *)self payload];
+  [coderCopy encodeObject:payload forKey:@"payload"];
 
-  v8 = [(COMessagingRequest *)self payloadType];
-  [v4 encodeObject:v8 forKey:@"payloadType"];
+  payloadType = [(COMessagingRequest *)self payloadType];
+  [coderCopy encodeObject:payloadType forKey:@"payloadType"];
 
-  v9 = [(COMessagingRequest *)self topic];
-  [v4 encodeObject:v9 forKey:@"topic"];
+  topic = [(COMessagingRequest *)self topic];
+  [coderCopy encodeObject:topic forKey:@"topic"];
 }
 
 + (id)acceptableResponses
@@ -90,22 +90,22 @@ LABEL_6:
   return v2;
 }
 
-- (COMessagingRequest)initWithRequestID:(unsigned int)a3 requestType:(int64_t)a4 payload:(id)a5 payloadType:(id)a6 topic:(id)a7
+- (COMessagingRequest)initWithRequestID:(unsigned int)d requestType:(int64_t)type payload:(id)payload payloadType:(id)payloadType topic:(id)topic
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  payloadCopy = payload;
+  payloadTypeCopy = payloadType;
+  topicCopy = topic;
   v19.receiver = self;
   v19.super_class = COMessagingRequest;
   v16 = [(COMeshCommand *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_requestID = a3;
-    v16->_requestType = a4;
-    objc_storeStrong(&v16->_payload, a5);
-    objc_storeStrong(&v17->_payloadType, a6);
-    objc_storeStrong(&v17->_topic, a7);
+    v16->_requestID = d;
+    v16->_requestType = type;
+    objc_storeStrong(&v16->_payload, payload);
+    objc_storeStrong(&v17->_payloadType, payloadType);
+    objc_storeStrong(&v17->_topic, topic);
   }
 
   return v17;

@@ -1,14 +1,14 @@
 @interface BCSNotificationServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation BCSNotificationServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31[8] = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.barcodesupport.allowNotifications"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.barcodesupport.allowNotifications"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 BOOLValue])
   {
@@ -48,24 +48,24 @@
     v19 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2853A8BA8];
     [v6 setInterface:v19 forSelector:sel_startNFCReaderWithDelegate_ argumentIndex:0 ofReply:0];
 
-    [v4 setExportedInterface:v6];
-    v20 = [[BCSNotificationService alloc] initWithConnection:v4];
-    [v4 setExportedObject:v20];
+    [connectionCopy setExportedInterface:v6];
+    v20 = [[BCSNotificationService alloc] initWithConnection:connectionCopy];
+    [connectionCopy setExportedObject:v20];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __69__BCSNotificationServiceDelegate_listener_shouldAcceptNewConnection___block_invoke;
     v27 = &unk_278CFE7E8;
     v28 = v20;
     v21 = v20;
-    [v4 setInvalidationHandler:&v24];
-    [v4 resume];
+    [connectionCopy setInvalidationHandler:&v24];
+    [connectionCopy resume];
   }
 
   else
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [BCSNotificationServiceDelegate listener:v4 shouldAcceptNewConnection:?];
+      [BCSNotificationServiceDelegate listener:connectionCopy shouldAcceptNewConnection:?];
     }
 
     v15 = 0;

@@ -1,84 +1,84 @@
 @interface UITableConstants_IOS
 + (id)sharedConstants;
-- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)a3 state:(id)a4 isHeader:(id)a5 cellStyle:(BOOL)a6 sidebarStyle:(int64_t)a7;
-- (BOOL)defaultLabelAllowsTighteningForTruncationForSidebar:(BOOL)a3 traitCollection:(id)a4;
-- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)a3 isHeader:(BOOL)a4;
-- (BOOL)shouldUseMonochromaticTreatmentForCellAccessorySystemType:(int64_t)a3 sidebarStyle:(int64_t)a4 cellConfigurationState:(id)a5 traitCollection:(id)a6;
-- (CGRect)defaultDeleteMinusRectForCell:(id)a3 inTableView:(id)a4;
-- (CGSize)defaultEditControlSizeForCell:(id)a3 inTableView:(id)a4;
-- (CGSize)defaultReorderControlSizeForCell:(id)a3 withAccessoryBaseColor:(id)a4;
-- (NSDirectionalEdgeInsets)defaultInsetGroupedHeaderLayoutMarginsForExtraProminentStyle:(BOOL)a3 outAxesPreservingSuperviewLayoutMargins:(unint64_t *)a4;
-- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)a3 cellStyle:(int64_t)a4 isSidebarStyle:(BOOL)a5 textLabelFont:(id)a6 rawLayoutMargins:(UIEdgeInsets)a7;
-- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)a3 isHeader:(BOOL)a4 isFirstSection:(BOOL)a5;
-- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)a3 inTableView:(id)a4;
+- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)collection state:(id)state isHeader:(id)header cellStyle:(BOOL)style sidebarStyle:(int64_t)sidebarStyle;
+- (BOOL)defaultLabelAllowsTighteningForTruncationForSidebar:(BOOL)sidebar traitCollection:(id)collection;
+- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)style isHeader:(BOOL)header;
+- (BOOL)shouldUseMonochromaticTreatmentForCellAccessorySystemType:(int64_t)type sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection;
+- (CGRect)defaultDeleteMinusRectForCell:(id)cell inTableView:(id)view;
+- (CGSize)defaultEditControlSizeForCell:(id)cell inTableView:(id)view;
+- (CGSize)defaultReorderControlSizeForCell:(id)cell withAccessoryBaseColor:(id)color;
+- (NSDirectionalEdgeInsets)defaultInsetGroupedHeaderLayoutMarginsForExtraProminentStyle:(BOOL)style outAxesPreservingSuperviewLayoutMargins:(unint64_t *)margins;
+- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)style cellStyle:(int64_t)cellStyle isSidebarStyle:(BOOL)sidebarStyle textLabelFont:(id)font rawLayoutMargins:(UIEdgeInsets)margins;
+- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)style isHeader:(BOOL)header isFirstSection:(BOOL)section;
+- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)cell inTableView:(id)view;
 - (UIEdgeInsets)defaultSidebarLayoutMarginsForElementsInsideSection;
 - (UIEdgeInsets)reorderControlHoverEffectInsets;
-- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5;
-- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)a3 cellConfigurationState:(int64_t)a4 traitCollection:(id)a5 floating:(id)a6;
-- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5;
-- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)a3 traitCollection:(id)a4;
-- (double)_defaultMarginWidthForTableView:(id)a3 canUseLayoutMargins:(BOOL)a4;
-- (double)defaultCellContentLeadingPaddingForSidebar:(BOOL)a3;
-- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)a3 isSidebarStyle:(BOOL)a4 isSwipedCell:(BOOL)a5 isHeaderFooter:(BOOL)a6 traitCollection:(id)a7;
+- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection;
+- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)style cellConfigurationState:(int64_t)state traitCollection:(id)collection floating:(id)floating;
+- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection;
+- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)state traitCollection:(id)collection;
+- (double)_defaultMarginWidthForTableView:(id)view canUseLayoutMargins:(BOOL)margins;
+- (double)defaultCellContentLeadingPaddingForSidebar:(BOOL)sidebar;
+- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)style isSidebarStyle:(BOOL)sidebarStyle isSwipedCell:(BOOL)cell isHeaderFooter:(BOOL)footer traitCollection:(id)collection;
 - (double)defaultContentAccessoryPadding;
-- (double)defaultContentEditPaddingForCell:(id)a3 inTableView:(id)a4;
-- (double)defaultContentReorderPaddingForCell:(id)a3 inTableView:(id)a4;
-- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)a3;
-- (double)defaultDisclosureLayoutWidthForView:(id)a3;
-- (double)defaultImageToTextPaddingForSidebar:(BOOL)a3;
-- (double)defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:(BOOL)a3 traitCollection:(id)a4;
-- (double)defaultImageViewSymbolImageLayoutHeightForTraitCollection:(id)a3;
-- (double)defaultIndentationWidthForSidebarStyle:(BOOL)a3;
-- (double)defaultInterAccessoryPaddingForCell:(id)a3 trailingAccessoryGroup:(BOOL)a4;
-- (double)defaultLabelMinimumScaleFactorForSidebar:(BOOL)a3 traitCollection:(id)a4;
-- (double)defaultLeadingCellMarginWidthForTableView:(id)a3;
-- (double)defaultRowHeightForTableView:(id)a3 cellStyle:(int64_t)a4;
-- (double)defaultSectionFooterHeightForTableView:(id)a3;
-- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)a3 screen:(id)a4;
-- (double)defaultSectionHeaderHeightForTableView:(id)a3;
-- (double)defaultSectionHeaderHeightForTableViewStyle:(int64_t)a3 screen:(id)a4;
-- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)a3;
-- (double)defaultTextToSubtitlePaddingForCellStyle:(int64_t)a3;
-- (double)interspaceBetweenInnerAccessoryIdentifier:(id)a3 outerAccessoryIdentifier:(id)a4 forCell:(id)a5 trailingAccessoryGroup:(BOOL)a6;
-- (double)minimumContentViewHeightForFont:(id)a3 traitCollection:(id)a4 isSidebarStyle:(BOOL)a5;
-- (id)_accessoryTintColorForAccessoryBaseColor:(id)a3;
+- (double)defaultContentEditPaddingForCell:(id)cell inTableView:(id)view;
+- (double)defaultContentReorderPaddingForCell:(id)cell inTableView:(id)view;
+- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)style;
+- (double)defaultDisclosureLayoutWidthForView:(id)view;
+- (double)defaultImageToTextPaddingForSidebar:(BOOL)sidebar;
+- (double)defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:(BOOL)sidebar traitCollection:(id)collection;
+- (double)defaultImageViewSymbolImageLayoutHeightForTraitCollection:(id)collection;
+- (double)defaultIndentationWidthForSidebarStyle:(BOOL)style;
+- (double)defaultInterAccessoryPaddingForCell:(id)cell trailingAccessoryGroup:(BOOL)group;
+- (double)defaultLabelMinimumScaleFactorForSidebar:(BOOL)sidebar traitCollection:(id)collection;
+- (double)defaultLeadingCellMarginWidthForTableView:(id)view;
+- (double)defaultRowHeightForTableView:(id)view cellStyle:(int64_t)style;
+- (double)defaultSectionFooterHeightForTableView:(id)view;
+- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)style screen:(id)screen;
+- (double)defaultSectionHeaderHeightForTableView:(id)view;
+- (double)defaultSectionHeaderHeightForTableViewStyle:(int64_t)style screen:(id)screen;
+- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)style;
+- (double)defaultTextToSubtitlePaddingForCellStyle:(int64_t)style;
+- (double)interspaceBetweenInnerAccessoryIdentifier:(id)identifier outerAccessoryIdentifier:(id)accessoryIdentifier forCell:(id)cell trailingAccessoryGroup:(BOOL)group;
+- (double)minimumContentViewHeightForFont:(id)font traitCollection:(id)collection isSidebarStyle:(BOOL)style;
+- (id)_accessoryTintColorForAccessoryBaseColor:(id)color;
 - (id)_defaultAccessoryTintColor;
-- (id)_defaultCircleDisclosureImageForTraitCollection:(id)a3;
-- (id)_defaultDisclosureImageForTraitCollection:(id)a3;
-- (id)_symbolImageNamed:(id)a3 withTextStyle:(id)a4 scale:(int64_t)a5;
-- (id)defaultAccessoryBackgroundColorForAccessorySystemType:(int64_t)a3 header:(BOOL)a4 sidebarStyle:(int64_t)a5 cellConfigurationState:(id)a6 traitCollection:(id)a7;
-- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)a3 header:(BOOL)a4 sidebarStyle:(int64_t)a5 cellConfigurationState:(id)a6 traitCollection:(id)a7 inheritedTintColor:(id)a8;
-- (id)defaultCheckmarkImageForCell:(id)a3;
-- (id)defaultDeleteImageForCell:(id)a3;
-- (id)defaultDeleteImageWithTintColor:(id)a3 backgroundColor:(id)a4;
-- (id)defaultDetailTextColorForCellStyle:(int64_t)a3 traitCollection:(id)a4 state:(id)a5;
-- (id)defaultDetailTextFontForCellStyle:(int64_t)a3;
-- (id)defaultDisclosureImageForCell:(id)a3 withAccessoryBaseColor:(id)a4;
-- (id)defaultFooterFontForTableViewStyle:(int64_t)a3;
-- (id)defaultFooterTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4;
-- (id)defaultHeaderFontForTableViewStyle:(int64_t)a3;
-- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4;
-- (id)defaultImageSymbolConfigurationForTraitCollection:(id)a3;
-- (id)defaultImageTintColorForState:(id)a3 traitCollection:(id)a4;
-- (id)defaultInsertImageForCell:(id)a3;
-- (id)defaultInsertImageWithTintColor:(id)a3 backgroundColor:(id)a4;
-- (id)defaultInsetGroupedHeaderFontForExtraProminentStyle:(BOOL)a3 secondaryText:(BOOL)a4;
-- (id)defaultMultiSelectBackgroundColorForCell:(id)a3 inTableView:(id)a4;
-- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 accessoryBaseColor:(id)a5;
-- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 checkmarkColor:(id)a5 backgroundColor:(id)a6;
-- (id)defaultOutlineDisclosureImageForView:(id)a3;
+- (id)_defaultCircleDisclosureImageForTraitCollection:(id)collection;
+- (id)_defaultDisclosureImageForTraitCollection:(id)collection;
+- (id)_symbolImageNamed:(id)named withTextStyle:(id)style scale:(int64_t)scale;
+- (id)defaultAccessoryBackgroundColorForAccessorySystemType:(int64_t)type header:(BOOL)header sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection;
+- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)type header:(BOOL)header sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection inheritedTintColor:(id)color;
+- (id)defaultCheckmarkImageForCell:(id)cell;
+- (id)defaultDeleteImageForCell:(id)cell;
+- (id)defaultDeleteImageWithTintColor:(id)color backgroundColor:(id)backgroundColor;
+- (id)defaultDetailTextColorForCellStyle:(int64_t)style traitCollection:(id)collection state:(id)state;
+- (id)defaultDetailTextFontForCellStyle:(int64_t)style;
+- (id)defaultDisclosureImageForCell:(id)cell withAccessoryBaseColor:(id)color;
+- (id)defaultFooterFontForTableViewStyle:(int64_t)style;
+- (id)defaultFooterTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused;
+- (id)defaultHeaderFontForTableViewStyle:(int64_t)style;
+- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused;
+- (id)defaultImageSymbolConfigurationForTraitCollection:(id)collection;
+- (id)defaultImageTintColorForState:(id)state traitCollection:(id)collection;
+- (id)defaultInsertImageForCell:(id)cell;
+- (id)defaultInsertImageWithTintColor:(id)color backgroundColor:(id)backgroundColor;
+- (id)defaultInsetGroupedHeaderFontForExtraProminentStyle:(BOOL)style secondaryText:(BOOL)text;
+- (id)defaultMultiSelectBackgroundColorForCell:(id)cell inTableView:(id)view;
+- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection accessoryBaseColor:(id)color;
+- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection checkmarkColor:(id)color backgroundColor:(id)backgroundColor;
+- (id)defaultOutlineDisclosureImageForView:(id)view;
 - (id)defaultPlainHeaderFooterFont;
-- (id)defaultPopUpMenuIndicatorImageForTraitCollection:(id)a3;
-- (id)defaultReorderControlImageForTraitCollection:(id)a3 withAccessoryBaseColor:(id)a4 isTracking:(BOOL)a5;
-- (id)defaultSidebarDetailTextLabelFontForCellStyle:(int64_t)a3;
+- (id)defaultPopUpMenuIndicatorImageForTraitCollection:(id)collection;
+- (id)defaultReorderControlImageForTraitCollection:(id)collection withAccessoryBaseColor:(id)color isTracking:(BOOL)tracking;
+- (id)defaultSidebarDetailTextLabelFontForCellStyle:(int64_t)style;
 - (id)defaultSidebarHeaderFont;
-- (id)defaultSidebarImageTintColorForTraitCollection:(id)a3 state:(id)a4 isHeader:(BOOL)a5 style:(int64_t)a6;
-- (id)defaultSidebarTextColorForTraitCollection:(id)a3 state:(id)a4 isHeader:(BOOL)a5 isSecondaryText:(BOOL)a6 style:(int64_t)a7;
-- (id)defaultTextColorForCellStyle:(int64_t)a3 traitCollection:(id)a4 tintColor:(id)a5 state:(id)a6;
-- (id)defaultTextLabelFontForCellStyle:(int64_t)a3;
-- (int64_t)defaultLabelNumberOfLinesForSidebar:(BOOL)a3 traitCollection:(id)a4;
-- (void)_applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:(int)a3 selected:(uint64_t)a4 sidebarStyle:(int)a5 selectionIsKey:(void *)a6 state:(void *)a7 traitCollection:;
-- (void)applyBoldSidebarStylingToContentProperties:(id *)a3 traitCollection:(id)a4;
+- (id)defaultSidebarImageTintColorForTraitCollection:(id)collection state:(id)state isHeader:(BOOL)header style:(int64_t)style;
+- (id)defaultSidebarTextColorForTraitCollection:(id)collection state:(id)state isHeader:(BOOL)header isSecondaryText:(BOOL)text style:(int64_t)style;
+- (id)defaultTextColorForCellStyle:(int64_t)style traitCollection:(id)collection tintColor:(id)color state:(id)state;
+- (id)defaultTextLabelFontForCellStyle:(int64_t)style;
+- (int64_t)defaultLabelNumberOfLinesForSidebar:(BOOL)sidebar traitCollection:(id)collection;
+- (void)_applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:(int)properties selected:(uint64_t)selected sidebarStyle:(int)style selectionIsKey:(void *)key state:(void *)state traitCollection:;
+- (void)applyBoldSidebarStylingToContentProperties:(id *)properties traitCollection:(id)collection;
 @end
 
 @implementation UITableConstants_IOS
@@ -126,15 +126,15 @@ LABEL_7:
 
 + (id)sharedConstants
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"UITableConstants_IOS.m" lineNumber:76 description:@"attempt to instantiate an instance of UITableConstants_IOS - use UITableConstants_Phone or _Pad instead"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITableConstants_IOS.m" lineNumber:76 description:@"attempt to instantiate an instance of UITableConstants_IOS - use UITableConstants_Phone or _Pad instead"];
 
   return 0;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5
+- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection
 {
-  v30 = a5;
+  collectionCopy = collection;
   v10 = a6;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
@@ -148,17 +148,17 @@ LABEL_7:
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault);
   if (_UISolariumSwipeActionsEnabled())
   {
-    v11 = [v30 isSwiped];
+    isSwiped = [collectionCopy isSwiped];
   }
 
   else
   {
-    v11 = 0;
+    isSwiped = 0;
   }
 
-  [(UITableConstants_IOS *)self defaultCellCornerRadiusForTableViewStyle:a4 isSidebarStyle:0 isSwipedCell:v11 isHeaderFooter:0 traitCollection:v10];
+  [(UITableConstants_IOS *)self defaultCellCornerRadiusForTableViewStyle:state isSidebarStyle:0 isSwipedCell:isSwiped isHeaderFooter:0 traitCollection:v10];
   retstr->var12 = v12;
-  v13 = [v30 cellDropState];
+  cellDropState = [collectionCopy cellDropState];
   v14 = v10;
   v15 = v14;
   if (v14)
@@ -188,10 +188,10 @@ LABEL_7:
     v17 = v16 == 1;
   }
 
-  v18 = [v30 isHighlighted];
-  if (v13 == 2)
+  isHighlighted = [collectionCopy isHighlighted];
+  if (cellDropState == 2)
   {
-    v19 = v18;
+    v19 = isHighlighted;
   }
 
   else
@@ -209,29 +209,29 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if ([v30 isFocused] && (objc_msgSend(v30, "isSelected") & v17 & 1) == 0)
+  if ([collectionCopy isFocused] && (objc_msgSend(collectionCopy, "isSelected") & v17 & 1) == 0)
   {
     retstr->var0 = 1;
     retstr->var6 = 28;
     goto LABEL_45;
   }
 
-  if (([v30 isHighlighted] & 1) == 0)
+  if (([collectionCopy isHighlighted] & 1) == 0)
   {
-    v21 = [v30 isSelected];
-    v22 = v13 == 2 ? 1 : v21;
+    isSelected = [collectionCopy isSelected];
+    v22 = cellDropState == 2 ? 1 : isSelected;
     if (v22 != 1)
     {
-      if (a4)
+      if (state)
       {
-        if (!_UISolariumSwipeActionsEnabled() || ![v30 isSwiped])
+        if (!_UISolariumSwipeActionsEnabled() || ![collectionCopy isSwiped])
         {
           v20 = +[UIColor tableCellGroupedBackgroundColor];
           goto LABEL_44;
         }
       }
 
-      else if (!_UISolariumSwipeActionsEnabled() || ![v30 isSwiped])
+      else if (!_UISolariumSwipeActionsEnabled() || ![collectionCopy isSwiped])
       {
         if ([v15 _hasGlassBackgroundStyle])
         {
@@ -259,7 +259,7 @@ LABEL_44:
 
   if (!v17)
   {
-    if (a4)
+    if (state)
     {
       +[UIColor tableCellGroupedSelectedBackgroundColor];
     }
@@ -275,7 +275,7 @@ LABEL_44:
 
   retstr->var0 = 1;
 LABEL_45:
-  if ([v30 isReordering])
+  if ([collectionCopy isReordering])
   {
     v24 = [UIBlurEffect effectWithBlurRadius:4.0];
     var2 = retstr->var2;
@@ -297,9 +297,9 @@ LABEL_45:
   return result;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5
+- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection
 {
-  v41 = a5;
+  collectionCopy = collection;
   v10 = a6;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
@@ -312,8 +312,8 @@ LABEL_45:
   retstr->var13.trailing = 0.0;
   [(UITableConstants_IOS *)self defaultCellCornerRadiusForTableViewStyle:1 isSidebarStyle:1 isHeaderFooter:0 traitCollection:v10, __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault).n128_f64[0]];
   retstr->var12 = v11;
-  v12 = [v41 cellDropState];
-  v13 = [v41 cellDropState];
+  cellDropState = [collectionCopy cellDropState];
+  cellDropState2 = [collectionCopy cellDropState];
   v14 = _UITableConstantsUseUIPSidebarMetrics();
   v15 = v10;
   v16 = v15;
@@ -342,7 +342,7 @@ LABEL_45:
 
     if (!dyld_program_sdk_at_least())
     {
-      v18 = a4 != 2;
+      v18 = state != 2;
     }
   }
 
@@ -351,37 +351,37 @@ LABEL_45:
     v18 = v17 == 1;
   }
 
-  if (![v41 isSelected])
+  if (![collectionCopy isSelected])
   {
 LABEL_14:
-    v19 = 0;
+    _usesAnyPlainListStyle = 0;
     goto LABEL_16;
   }
 
-  if ([v41 isEditing])
+  if ([collectionCopy isEditing])
   {
     if (dyld_program_sdk_at_least())
     {
-      v19 = [v41 _usesAnyPlainListStyle];
+      _usesAnyPlainListStyle = [collectionCopy _usesAnyPlainListStyle];
       goto LABEL_16;
     }
 
     goto LABEL_14;
   }
 
-  v19 = 1;
+  _usesAnyPlainListStyle = 1;
 LABEL_16:
-  if (v12 == 2)
+  if (cellDropState == 2)
   {
-    [(UITableConstants_IOS *)self _applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:v19 selected:a4 sidebarStyle:v18 selectionIsKey:v41 state:v16 traitCollection:?];
-    if ([v41 isHighlighted])
+    [(UITableConstants_IOS *)self _applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:_usesAnyPlainListStyle selected:state sidebarStyle:v18 selectionIsKey:collectionCopy state:v16 traitCollection:?];
+    if ([collectionCopy isHighlighted])
     {
       retstr->var6 = 7;
     }
 
-    v20 = [v41 isSelected];
-    v21 = v41;
-    if ((v20 & 1) == 0)
+    isSelected = [collectionCopy isSelected];
+    v21 = collectionCopy;
+    if ((isSelected & 1) == 0)
     {
       *&retstr->var13.top = xmmword_18A64B730;
       *&retstr->var13.bottom = xmmword_18A64B730;
@@ -390,28 +390,28 @@ LABEL_16:
     goto LABEL_37;
   }
 
-  if ([v41 isFocused] && (objc_msgSend(v41, "isSelected") & (v18 | v14) & 1) == 0)
+  if ([collectionCopy isFocused] && (objc_msgSend(collectionCopy, "isSelected") & (v18 | v14) & 1) == 0)
   {
     retstr->var0 = 1;
     retstr->var6 = 28;
-    v21 = v41;
+    v21 = collectionCopy;
     goto LABEL_37;
   }
 
-  v21 = v41;
-  if (!v19)
+  v21 = collectionCopy;
+  if (!_usesAnyPlainListStyle)
   {
     goto LABEL_37;
   }
 
-  v22 = v41;
+  v22 = collectionCopy;
   if (([v22 isDisabled] & 1) == 0)
   {
 
 LABEL_30:
-    if ((v13 != 1) | v14 & 1)
+    if ((cellDropState2 != 1) | v14 & 1)
     {
-      [(UITableConstants_IOS *)self _applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:1 selected:a4 sidebarStyle:v18 selectionIsKey:v22 state:v16 traitCollection:?];
+      [(UITableConstants_IOS *)self _applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:1 selected:state sidebarStyle:v18 selectionIsKey:v22 state:v16 traitCollection:?];
     }
 
     else
@@ -421,7 +421,7 @@ LABEL_30:
       retstr->var1 = v26;
 
       v28 = 8;
-      if (a4 != 2)
+      if (state != 2)
       {
         v28 = 3;
       }
@@ -432,9 +432,9 @@ LABEL_30:
     goto LABEL_35;
   }
 
-  v23 = [v22 isSwiped];
+  isSwiped = [v22 isSwiped];
 
-  if (v23)
+  if (isSwiped)
   {
     goto LABEL_30;
   }
@@ -444,15 +444,15 @@ LABEL_30:
   retstr->var1 = v24;
 
 LABEL_35:
-  v29 = [v22 isHighlighted];
-  v21 = v41;
-  if (v29)
+  isHighlighted = [v22 isHighlighted];
+  v21 = collectionCopy;
+  if (isHighlighted)
   {
     retstr->var6 = 7;
   }
 
 LABEL_37:
-  v30 = [v21 isSwiped];
+  isSwiped2 = [v21 isSwiped];
   if (retstr->var1)
   {
     v31 = 0;
@@ -460,7 +460,7 @@ LABEL_37:
 
   else
   {
-    v31 = v30;
+    v31 = isSwiped2;
   }
 
   if (v31 == 1 && !retstr->var0 && !retstr->var2)
@@ -470,7 +470,7 @@ LABEL_37:
     retstr->var1 = v32;
   }
 
-  if ([v41 isReordering])
+  if ([collectionCopy isReordering])
   {
     if (!retstr->var1 && !retstr->var0)
     {
@@ -494,12 +494,12 @@ LABEL_37:
 
   if (v14)
   {
-    v38 = v41;
+    v38 = collectionCopy;
     if ([v38 isDisabled])
     {
-      v39 = [v38 isSwiped];
+      isSwiped3 = [v38 isSwiped];
 
-      if ((v39 & 1) == 0)
+      if ((isSwiped3 & 1) == 0)
       {
         retstr->var6 = 3;
       }
@@ -513,11 +513,11 @@ LABEL_37:
   return result;
 }
 
-- (void)_applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:(int)a3 selected:(uint64_t)a4 sidebarStyle:(int)a5 selectionIsKey:(void *)a6 state:(void *)a7 traitCollection:
+- (void)_applySelectedOrDropTargetAppearanceToSidebarCellBackgroundProperties:(int)properties selected:(uint64_t)selected sidebarStyle:(int)style selectionIsKey:(void *)key state:(void *)state traitCollection:
 {
-  if (a1)
+  if (self)
   {
-    if ((_UITableConstantsUseUIPSidebarMetrics() & 1) != 0 && a4 != 3)
+    if ((_UITableConstantsUseUIPSidebarMetrics() & 1) != 0 && selected != 3)
     {
       if (_UISolariumEnabled())
       {
@@ -529,7 +529,7 @@ LABEL_37:
         goto LABEL_11;
       }
 
-      if ([a7 userInterfaceStyle] == 2)
+      if ([state userInterfaceStyle] == 2)
       {
         v18 = +[UIColor secondarySystemFillColor];
         v19 = 3;
@@ -545,7 +545,7 @@ LABEL_37:
       a2[1] = v18;
 
       *a2 = v19;
-      if (a3 && ([a6 isSwiped] & 1) == 0 && (objc_msgSend(a6, "_inMultiSelectGroup") & 1) == 0 && (objc_msgSend(a6, "isEditing") & 1) == 0)
+      if (properties && ([key isSwiped] & 1) == 0 && (objc_msgSend(key, "_inMultiSelectGroup") & 1) == 0 && (objc_msgSend(key, "isEditing") & 1) == 0)
       {
         a2[5] = 4;
       }
@@ -553,7 +553,7 @@ LABEL_37:
 
     else
     {
-      if (a5)
+      if (style)
       {
         v13 = 1;
 LABEL_11:
@@ -568,9 +568,9 @@ LABEL_11:
   }
 }
 
-- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)a3 traitCollection:(id)a4
+- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)state traitCollection:(id)collection
 {
-  v11 = a4;
+  collectionCopy = collection;
   v8 = a5;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
@@ -583,7 +583,7 @@ LABEL_11:
   retstr->var13.trailing = 0.0;
   [(UITableConstants_IOS *)self defaultCellCornerRadiusForTableViewStyle:1 isSidebarStyle:1 isHeaderFooter:1 traitCollection:v8, __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault).n128_f64[0]];
   retstr->var12 = v9;
-  if ([v11 isFocused])
+  if ([collectionCopy isFocused])
   {
     retstr->var0 = 1;
     retstr->var6 = 28;
@@ -592,7 +592,7 @@ LABEL_11:
   return result;
 }
 
-- (id)defaultMultiSelectBackgroundColorForCell:(id)a3 inTableView:(id)a4
+- (id)defaultMultiSelectBackgroundColorForCell:(id)cell inTableView:(id)view
 {
   if (dyld_program_sdk_at_least())
   {
@@ -608,15 +608,15 @@ LABEL_11:
   return v4;
 }
 
-- (double)defaultRowHeightForTableView:(id)a3 cellStyle:(int64_t)a4
+- (double)defaultRowHeightForTableView:(id)view cellStyle:(int64_t)style
 {
-  v6 = [off_1E70ECC18 preferredFontForTextStyle:{@"UICTFontTextStyleBody", a4}];
-  v7 = [a3 _scrollView];
-  v8 = [v7 traitCollection];
-  v9 = v8;
-  if (v8)
+  v6 = [off_1E70ECC18 preferredFontForTextStyle:{@"UICTFontTextStyleBody", style}];
+  _scrollView = [view _scrollView];
+  traitCollection = [_scrollView traitCollection];
+  v9 = traitCollection;
+  if (traitCollection)
   {
-    v10 = v8;
+    v10 = traitCollection;
   }
 
   else
@@ -632,9 +632,9 @@ LABEL_11:
   return v13;
 }
 
-- (double)defaultSectionHeaderHeightForTableViewStyle:(int64_t)a3 screen:(id)a4
+- (double)defaultSectionHeaderHeightForTableViewStyle:(int64_t)style screen:(id)screen
 {
-  if (a3)
+  if (style)
   {
     return 17.5;
   }
@@ -653,44 +653,44 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultSectionHeaderHeightForTableView:(id)a3
+- (double)defaultSectionHeaderHeightForTableView:(id)view
 {
-  v5 = [a3 _tableStyle];
-  v6 = [a3 _scrollView];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  [(UITableConstants_IOS *)self defaultSectionHeaderHeightForTableViewStyle:v5 screen:v8];
+  _tableStyle = [view _tableStyle];
+  _scrollView = [view _scrollView];
+  window = [_scrollView window];
+  screen = [window screen];
+  [(UITableConstants_IOS *)self defaultSectionHeaderHeightForTableViewStyle:_tableStyle screen:screen];
   v10 = v9;
 
   return v10;
 }
 
-- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)a3 screen:(id)a4
+- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)style screen:(id)screen
 {
-  if (a3)
+  if (style)
   {
     return 17.5;
   }
 
-  [(UITableConstants_IOS *)self defaultSectionHeaderHeightForTableViewStyle:0 screen:a4];
+  [(UITableConstants_IOS *)self defaultSectionHeaderHeightForTableViewStyle:0 screen:screen];
   return result;
 }
 
-- (double)defaultSectionFooterHeightForTableView:(id)a3
+- (double)defaultSectionFooterHeightForTableView:(id)view
 {
-  v5 = [a3 _tableStyle];
-  v6 = [a3 _scrollView];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  [(UITableConstants_IOS *)self defaultSectionFooterHeightForTableViewStyle:v5 screen:v8];
+  _tableStyle = [view _tableStyle];
+  _scrollView = [view _scrollView];
+  window = [_scrollView window];
+  screen = [window screen];
+  [(UITableConstants_IOS *)self defaultSectionFooterHeightForTableViewStyle:_tableStyle screen:screen];
   v10 = v9;
 
   return v10;
 }
 
-- (double)defaultImageToTextPaddingForSidebar:(BOOL)a3
+- (double)defaultImageToTextPaddingForSidebar:(BOOL)sidebar
 {
-  if (a3)
+  if (sidebar)
   {
     return 10.0;
   }
@@ -699,10 +699,10 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultTextToSubtitlePaddingForCellStyle:(int64_t)a3
+- (double)defaultTextToSubtitlePaddingForCellStyle:(int64_t)style
 {
   result = 0.0;
-  if (a3 != 3)
+  if (style != 3)
   {
     v4 = _UISolariumEnabled();
     result = 3.0;
@@ -715,16 +715,16 @@ LABEL_11:
   return result;
 }
 
-- (double)minimumContentViewHeightForFont:(id)a3 traitCollection:(id)a4 isSidebarStyle:(BOOL)a5
+- (double)minimumContentViewHeightForFont:(id)font traitCollection:(id)collection isSidebarStyle:(BOOL)style
 {
-  v7 = a3;
-  v8 = [a4 preferredContentSizeCategory];
-  v9 = _UIContentSizeCategoryMin(v8, @"UICTContentSizeCategoryXXXL");
+  fontCopy = font;
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  v9 = _UIContentSizeCategoryMin(preferredContentSizeCategory, @"UICTContentSizeCategoryXXXL");
 
   v10 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v9];
-  v11 = [v7 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v10];
+  v11 = [fontCopy _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v10];
 
-  if (a5 || !_UISolariumEnabled())
+  if (style || !_UISolariumEnabled())
   {
     [v11 _bodyLeading];
     v13 = v14 + v14;
@@ -739,7 +739,7 @@ LABEL_11:
   return v13;
 }
 
-- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)a3 inTableView:(id)a4
+- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)cell inTableView:(id)view
 {
   if (dyld_program_sdk_at_least())
   {
@@ -749,13 +749,13 @@ LABEL_11:
 
   else
   {
-    v8 = -[UITableConstants_IOS defaultTextLabelFontForCellStyle:](self, "defaultTextLabelFontForCellStyle:", [a3 _cellStyle]);
+    v8 = -[UITableConstants_IOS defaultTextLabelFontForCellStyle:](self, "defaultTextLabelFontForCellStyle:", [cell _cellStyle]);
   }
 
-  v9 = [a4 _tableStyle];
-  v10 = [a3 _cellStyle];
-  [a3 _rawLayoutMargins];
-  [(UITableConstants_IOS *)self defaultCellLayoutMarginsForTableStyle:v9 cellStyle:v10 isSidebarStyle:0 textLabelFont:v8 rawLayoutMargins:?];
+  _tableStyle = [view _tableStyle];
+  _cellStyle = [cell _cellStyle];
+  [cell _rawLayoutMargins];
+  [(UITableConstants_IOS *)self defaultCellLayoutMarginsForTableStyle:_tableStyle cellStyle:_cellStyle isSidebarStyle:0 textLabelFont:v8 rawLayoutMargins:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -772,16 +772,16 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)a3 cellStyle:(int64_t)a4 isSidebarStyle:(BOOL)a5 textLabelFont:(id)a6 rawLayoutMargins:(UIEdgeInsets)a7
+- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)style cellStyle:(int64_t)cellStyle isSidebarStyle:(BOOL)sidebarStyle textLabelFont:(id)font rawLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a7.right;
-  left = a7.left;
-  v11 = a6;
-  if (a5 || (v12 = 15.0, (_UISolariumEnabled() & 1) == 0))
+  right = margins.right;
+  left = margins.left;
+  fontCopy = font;
+  if (sidebarStyle || (v12 = 15.0, (_UISolariumEnabled() & 1) == 0))
   {
-    if (a4 != 3 || (v12 = 4.0, (dyld_program_sdk_at_least() & 1) == 0))
+    if (cellStyle != 3 || (v12 = 4.0, (dyld_program_sdk_at_least() & 1) == 0))
     {
-      [v11 lineHeight];
+      [fontCopy lineHeight];
       v12 = ceil(v13 * 0.5);
     }
   }
@@ -797,13 +797,13 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)a3 isHeader:(BOOL)a4 isFirstSection:(BOOL)a5
+- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)style isHeader:(BOOL)header isFirstSection:(BOOL)section
 {
-  v5 = a5;
-  v6 = a4;
+  sectionCopy = section;
+  headerCopy = header;
   if (_UISolariumEnabled())
   {
-    if (v6)
+    if (headerCopy)
     {
       v8 = 10.0;
     }
@@ -814,24 +814,24 @@ LABEL_11:
     }
 
     v9 = 8.0;
-    if (v6)
+    if (headerCopy)
     {
       v9 = 10.0;
     }
   }
 
-  else if (a3)
+  else if (style)
   {
     v10 = dyld_program_sdk_at_least();
     v9 = 8.0;
     v11 = 32.0;
-    if (!v5)
+    if (!sectionCopy)
     {
       v11 = 17.0;
     }
 
     v8 = 12.0;
-    if (v6)
+    if (headerCopy)
     {
       v8 = 6.0;
     }
@@ -867,7 +867,7 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultContentEditPaddingForCell:(id)a3 inTableView:(id)a4
+- (double)defaultContentEditPaddingForCell:(id)cell inTableView:(id)view
 {
   v4 = dyld_program_sdk_at_least();
   result = 9.0;
@@ -879,7 +879,7 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultContentReorderPaddingForCell:(id)a3 inTableView:(id)a4
+- (double)defaultContentReorderPaddingForCell:(id)cell inTableView:(id)view
 {
   v4 = dyld_program_sdk_at_least();
   result = 12.0;
@@ -903,10 +903,10 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultCellContentLeadingPaddingForSidebar:(BOOL)a3
+- (double)defaultCellContentLeadingPaddingForSidebar:(BOOL)sidebar
 {
   result = 16.0;
-  if (a3)
+  if (sidebar)
   {
     return 8.0;
   }
@@ -914,9 +914,9 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultInterAccessoryPaddingForCell:(id)a3 trailingAccessoryGroup:(BOOL)a4
+- (double)defaultInterAccessoryPaddingForCell:(id)cell trailingAccessoryGroup:(BOOL)group
 {
-  if (a4)
+  if (group)
   {
     [(UITableConstants_IOS *)self defaultCellContentTrailingPadding];
   }
@@ -929,9 +929,9 @@ LABEL_11:
   return result;
 }
 
-- (double)defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:(BOOL)a3 traitCollection:(id)a4
+- (double)defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:(BOOL)sidebar traitCollection:(id)collection
 {
-  if (a3)
+  if (sidebar)
   {
     v4 = 28.0;
   }
@@ -941,26 +941,26 @@ LABEL_11:
     v4 = 24.0;
   }
 
-  v5 = a4;
+  collectionCopy = collection;
   v6 = +[UIFontMetrics defaultMetrics];
-  [v6 scaledValueForValue:v5 compatibleWithTraitCollection:v4];
+  [v6 scaledValueForValue:collectionCopy compatibleWithTraitCollection:v4];
   v8 = v7;
 
   return v8;
 }
 
-- (double)defaultImageViewSymbolImageLayoutHeightForTraitCollection:(id)a3
+- (double)defaultImageViewSymbolImageLayoutHeightForTraitCollection:(id)collection
 {
-  v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleBody" compatibleWithTraitCollection:a3];
+  v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleBody" compatibleWithTraitCollection:collection];
   [v3 _bodyLeading];
   v5 = v4;
 
   return v5;
 }
 
-- (double)defaultDisclosureLayoutWidthForView:(id)a3
+- (double)defaultDisclosureLayoutWidthForView:(id)view
 {
-  v3 = [(UITableConstants_IOS *)self defaultOutlineDisclosureImageForView:a3];
+  v3 = [(UITableConstants_IOS *)self defaultOutlineDisclosureImageForView:view];
   [v3 size];
   v5 = v4;
   [v3 size];
@@ -972,14 +972,14 @@ LABEL_11:
   return v5;
 }
 
-- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)a3 isSidebarStyle:(BOOL)a4 isSwipedCell:(BOOL)a5 isHeaderFooter:(BOOL)a6 traitCollection:(id)a7
+- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)style isSidebarStyle:(BOOL)sidebarStyle isSwipedCell:(BOOL)cell isHeaderFooter:(BOOL)footer traitCollection:(id)collection
 {
-  v7 = a6;
-  v11 = a7;
-  v12 = v11;
-  if (a3)
+  footerCopy = footer;
+  collectionCopy = collection;
+  v12 = collectionCopy;
+  if (style)
   {
-    v13 = v7;
+    v13 = footerCopy;
   }
 
   else
@@ -987,15 +987,15 @@ LABEL_11:
     v13 = 0;
   }
 
-  if (a4 || a5 || (v14 = 0.0, v13))
+  if (sidebarStyle || cell || (v14 = 0.0, v13))
   {
-    v15 = [v11 userInterfaceIdiom];
-    if (v15 == 6)
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+    if (userInterfaceIdiom == 6)
     {
       v14 = 16.0;
     }
 
-    else if (v15 == 3)
+    else if (userInterfaceIdiom == 3)
     {
       v14 = 10.0;
     }
@@ -1014,28 +1014,28 @@ LABEL_11:
   return v14;
 }
 
-- (double)interspaceBetweenInnerAccessoryIdentifier:(id)a3 outerAccessoryIdentifier:(id)a4 forCell:(id)a5 trailingAccessoryGroup:(BOOL)a6
+- (double)interspaceBetweenInnerAccessoryIdentifier:(id)identifier outerAccessoryIdentifier:(id)accessoryIdentifier forCell:(id)cell trailingAccessoryGroup:(BOOL)group
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  groupCopy = group;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  cellCopy = cell;
   if (dyld_program_sdk_at_least())
   {
-    if (v10)
+    if (identifierCopy)
     {
-      if (v11)
+      if (accessoryIdentifierCopy)
       {
-        [(UITableConstants_IOS *)self defaultInterAccessoryPaddingForCell:v12 trailingAccessoryGroup:v6];
+        [(UITableConstants_IOS *)self defaultInterAccessoryPaddingForCell:cellCopy trailingAccessoryGroup:groupCopy];
 LABEL_15:
         v14 = v13;
         goto LABEL_20;
       }
 
-      [v12 _minimumCellAccessoryMargin];
+      [cellCopy _minimumCellAccessoryMargin];
       v16 = v15;
-      [v12 directionalLayoutMargins];
-      if (v6)
+      [cellCopy directionalLayoutMargins];
+      if (groupCopy)
       {
         v19 = v18;
       }
@@ -1051,7 +1051,7 @@ LABEL_15:
     else
     {
       v14 = 0.0;
-      if ((_UITableViewCellUsesLayoutMarginBasedContentPadding() & 1) == 0 && v6)
+      if ((_UITableViewCellUsesLayoutMarginBasedContentPadding() & 1) == 0 && groupCopy)
       {
         [(UITableConstants_IOS *)self defaultCellContentTrailingPadding];
         goto LABEL_15;
@@ -1062,13 +1062,13 @@ LABEL_15:
   else
   {
     v14 = 0.0;
-    if (([v10 isEqualToString:0x1EFB34170] & 1) == 0 && (objc_msgSend(v11, "isEqualToString:", 0x1EFB34170) & 1) == 0)
+    if (([identifierCopy isEqualToString:0x1EFB34170] & 1) == 0 && (objc_msgSend(accessoryIdentifierCopy, "isEqualToString:", 0x1EFB34170) & 1) == 0)
     {
-      if (v10)
+      if (identifierCopy)
       {
-        if (v11)
+        if (accessoryIdentifierCopy)
         {
-          if ([v11 isEqualToString:0x1EFB9F430])
+          if ([accessoryIdentifierCopy isEqualToString:0x1EFB9F430])
           {
             v14 = 16.0;
           }
@@ -1081,14 +1081,14 @@ LABEL_15:
 
         else
         {
-          [v12 _minimumCellAccessoryMargin];
+          [cellCopy _minimumCellAccessoryMargin];
           v22 = v21;
-          [v12 directionalLayoutMargins];
+          [cellCopy directionalLayoutMargins];
           v14 = fmax(v22, v23);
         }
       }
 
-      else if ((_UITableViewCellUsesLayoutMarginBasedContentPadding() & 1) == 0 && v6)
+      else if ((_UITableViewCellUsesLayoutMarginBasedContentPadding() & 1) == 0 && groupCopy)
       {
         [(UITableConstants_IOS *)self defaultContentAccessoryPadding];
         goto LABEL_15;
@@ -1101,10 +1101,10 @@ LABEL_20:
   return v14;
 }
 
-- (double)defaultIndentationWidthForSidebarStyle:(BOOL)a3
+- (double)defaultIndentationWidthForSidebarStyle:(BOOL)style
 {
   result = 10.0;
-  if (a3)
+  if (style)
   {
     return 20.0;
   }
@@ -1112,21 +1112,21 @@ LABEL_20:
   return result;
 }
 
-- (double)_defaultMarginWidthForTableView:(id)a3 canUseLayoutMargins:(BOOL)a4
+- (double)_defaultMarginWidthForTableView:(id)view canUseLayoutMargins:(BOOL)margins
 {
-  v4 = a4;
-  v6 = [a3 _scrollView];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  v9 = [a3 _scrollView];
-  [v9 bounds];
+  marginsCopy = margins;
+  _scrollView = [view _scrollView];
+  window = [_scrollView window];
+  screen = [window screen];
+  _scrollView2 = [view _scrollView];
+  [_scrollView2 bounds];
   v11 = v10;
-  v12 = v8;
+  v12 = screen;
   v13 = dyld_program_sdk_at_least();
-  v14 = v12;
+  mainScreen = v12;
   if (!v12)
   {
-    v14 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
   if (v13)
@@ -1139,14 +1139,14 @@ LABEL_20:
     v15 = 15.0;
   }
 
-  v16 = [v14 _wantsWideContentMargins];
+  _wantsWideContentMargins = [mainScreen _wantsWideContentMargins];
   v17 = 20.0;
   if (v11 <= 320.0)
   {
     v17 = 16.0;
   }
 
-  if (v16)
+  if (_wantsWideContentMargins)
   {
     v18 = v17;
   }
@@ -1156,32 +1156,32 @@ LABEL_20:
     v18 = v15;
   }
 
-  if (!v4)
+  if (!marginsCopy)
   {
     return v18;
   }
 
-  v19 = [a3 _scrollView];
-  [v19 directionalLayoutMargins];
+  _scrollView3 = [view _scrollView];
+  [_scrollView3 directionalLayoutMargins];
   v21 = v20;
 
   return fmax(v18, v21);
 }
 
-- (double)defaultLeadingCellMarginWidthForTableView:(id)a3
+- (double)defaultLeadingCellMarginWidthForTableView:(id)view
 {
-  v5 = [a3 _sectionContentInsetFollowsLayoutMargins] ^ 1;
+  v5 = [view _sectionContentInsetFollowsLayoutMargins] ^ 1;
 
-  [(UITableConstants_IOS *)self _defaultMarginWidthForTableView:a3 canUseLayoutMargins:v5];
+  [(UITableConstants_IOS *)self _defaultMarginWidthForTableView:view canUseLayoutMargins:v5];
   return result;
 }
 
-- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)a3 isHeader:(BOOL)a4
+- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)style isHeader:(BOOL)header
 {
-  v4 = a4;
+  headerCopy = header;
   v6 = _UISolariumEnabled();
-  v8 = a3 == 16 || (a3 - 1) < 2;
-  if (!v4)
+  v8 = style == 16 || (style - 1) < 2;
+  if (!headerCopy)
   {
     v8 = 0;
   }
@@ -1189,25 +1189,25 @@ LABEL_20:
   return (v6 & 1) == 0 && v8;
 }
 
-- (int64_t)defaultLabelNumberOfLinesForSidebar:(BOOL)a3 traitCollection:(id)a4
+- (int64_t)defaultLabelNumberOfLinesForSidebar:(BOOL)sidebar traitCollection:(id)collection
 {
-  if (!a3)
+  if (!sidebar)
   {
     return 0;
   }
 
-  v4 = [a4 preferredContentSizeCategory];
-  v5 = ~UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  v5 = ~UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return v5 & 1;
 }
 
-- (BOOL)defaultLabelAllowsTighteningForTruncationForSidebar:(BOOL)a3 traitCollection:(id)a4
+- (BOOL)defaultLabelAllowsTighteningForTruncationForSidebar:(BOOL)sidebar traitCollection:(id)collection
 {
-  if (a3)
+  if (sidebar)
   {
-    v4 = [a4 preferredContentSizeCategory];
-    v5 = !UIContentSizeCategoryIsAccessibilityCategory(v4);
+    preferredContentSizeCategory = [collection preferredContentSizeCategory];
+    v5 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
   else
@@ -1218,13 +1218,13 @@ LABEL_20:
   return v5;
 }
 
-- (double)defaultLabelMinimumScaleFactorForSidebar:(BOOL)a3 traitCollection:(id)a4
+- (double)defaultLabelMinimumScaleFactorForSidebar:(BOOL)sidebar traitCollection:(id)collection
 {
   result = 0.0;
-  if (a3)
+  if (sidebar)
   {
-    v5 = [a4 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+    preferredContentSizeCategory = [collection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     result = 0.9;
     if (IsAccessibilityCategory)
@@ -1236,23 +1236,23 @@ LABEL_20:
   return result;
 }
 
-- (id)defaultTextColorForCellStyle:(int64_t)a3 traitCollection:(id)a4 tintColor:(id)a5 state:(id)a6
+- (id)defaultTextColorForCellStyle:(int64_t)style traitCollection:(id)collection tintColor:(id)color state:(id)state
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (([v11 isDisabled] & 1) == 0)
+  collectionCopy = collection;
+  colorCopy = color;
+  stateCopy = state;
+  if (([stateCopy isDisabled] & 1) == 0)
   {
 
 LABEL_5:
-    if (_UITableUsesTintColorAsBackgroundColor(v11, v9, 0, 0))
+    if (_UITableUsesTintColorAsBackgroundColor(stateCopy, collectionCopy, 0, 0))
     {
       v13 = +[UIColor whiteColor];
     }
 
-    else if (a3 == 2 && v10)
+    else if (style == 2 && colorCopy)
     {
-      v13 = v10;
+      v13 = colorCopy;
     }
 
     else
@@ -1263,9 +1263,9 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v12 = [v11 isSwiped];
+  isSwiped = [stateCopy isSwiped];
 
-  if (v12)
+  if (isSwiped)
   {
     goto LABEL_5;
   }
@@ -1277,20 +1277,20 @@ LABEL_11:
   return v14;
 }
 
-- (void)applyBoldSidebarStylingToContentProperties:(id *)a3 traitCollection:(id)a4
+- (void)applyBoldSidebarStylingToContentProperties:(id *)properties traitCollection:(id)collection
 {
-  v12 = a4;
+  collectionCopy = collection;
   v5 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" weight:*off_1E70ECD20];
-  var0 = a3->var0;
-  a3->var0 = v5;
+  var0 = properties->var0;
+  properties->var0 = v5;
   v7 = v5;
 
-  v8 = [v12 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v8))
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    if (UIContentSizeCategoryCompareToCategory(v8, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
     {
-      if (UIContentSizeCategoryCompareToCategory(v8, &cfstr_Uictcontentsiz_9.isa) == NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa) == NSOrderedAscending)
       {
         v9 = 3;
       }
@@ -1313,15 +1313,15 @@ LABEL_11:
   }
 
   v10 = [UIImageSymbolConfiguration configurationWithFont:v7 scale:v9];
-  var5 = a3->var5;
-  a3->var5 = v10;
+  var5 = properties->var5;
+  properties->var5 = v10;
 }
 
-- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)a3 state:(id)a4 isHeader:(id)a5 cellStyle:(BOOL)a6 sidebarStyle:(int64_t)a7
+- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)collection state:(id)state isHeader:(id)header cellStyle:(BOOL)style sidebarStyle:(int64_t)sidebarStyle
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a5;
+  styleCopy = style;
+  stateCopy = state;
+  headerCopy = header;
   v16 = _UITableConstantsUseUIPSidebarMetrics();
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
@@ -1333,7 +1333,7 @@ LABEL_11:
   *&v17 = __copy_constructor_8_8_s0_s8_s16_s24_s32_s40_t48w56(retstr, &_UITableConstantsContentPropertiesDefault).n128_u64[0];
   if (v16)
   {
-    if (v10)
+    if (styleCopy)
     {
       [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" weight:*off_1E70ECD20];
     }
@@ -1346,7 +1346,7 @@ LABEL_11:
     var0 = retstr->var0;
     retstr->var0 = v18;
 
-    v21 = [(UITableConstants_IOS *)self defaultSidebarDetailTextLabelFontForCellStyle:a7];
+    v21 = [(UITableConstants_IOS *)self defaultSidebarDetailTextLabelFontForCellStyle:sidebarStyle];
     var1 = retstr->var1;
     retstr->var1 = v21;
 
@@ -1357,9 +1357,9 @@ LABEL_11:
     v81 = 0u;
     v79 = 0u;
     memset(v78, 0, sizeof(v78));
-    _UITableConstantsGetBackgroundProperties(self, v15, v14, v10, a8, v78);
+    _UITableConstantsGetBackgroundProperties(self, headerCopy, stateCopy, styleCopy, a8, v78);
     v23 = *&v78[0];
-    v24 = [(UITableConstants_IOS *)self defaultImageSymbolConfigurationForTraitCollection:v14];
+    v24 = [(UITableConstants_IOS *)self defaultImageSymbolConfigurationForTraitCollection:stateCopy];
     var5 = retstr->var5;
     retstr->var5 = v24;
 
@@ -1389,9 +1389,9 @@ LABEL_11:
     {
       if (v23 == 2)
       {
-        v26 = ([v14 _focusSystemState] - 1) <= 1 && _AXSFullKeyboardAccessEnabled() == 0;
-        v56 = [v15 isEditing];
-        if (((v56 | v26) & 1) != 0 && ![v15 isFocused])
+        v26 = ([stateCopy _focusSystemState] - 1) <= 1 && _AXSFullKeyboardAccessEnabled() == 0;
+        isEditing = [headerCopy isEditing];
+        if (((isEditing | v26) & 1) != 0 && ![headerCopy isFocused])
         {
           v72 = +[UIColor labelColor];
           v73 = retstr->var2;
@@ -1402,7 +1402,7 @@ LABEL_11:
           v75 = retstr->var3;
           retstr->var3 = v74;
 
-          if (!v56)
+          if (!isEditing)
           {
             v76 = +[UIColor labelColor];
             v77 = retstr->var4;
@@ -1410,19 +1410,19 @@ LABEL_11:
 
             retstr->var9 = 12;
 LABEL_38:
-            if (([v15 isEditing] & 1) == 0)
+            if (([headerCopy isEditing] & 1) == 0)
             {
 LABEL_39:
-              [(UITableConstants_IOS *)self applyBoldSidebarStylingToContentProperties:retstr traitCollection:v14];
+              [(UITableConstants_IOS *)self applyBoldSidebarStylingToContentProperties:retstr traitCollection:stateCopy];
             }
 
 LABEL_40:
-            v62 = v15;
+            v62 = headerCopy;
             if ([v62 isDisabled])
             {
-              v63 = [v62 isSwiped];
+              isSwiped = [v62 isSwiped];
 
-              if ((v63 & 1) == 0)
+              if ((isSwiped & 1) == 0)
               {
                 retstr->var6 = 0.5;
               }
@@ -1432,7 +1432,7 @@ LABEL_40:
             {
             }
 
-            if ([v62 isHighlighted] && objc_msgSend(v14, "userInterfaceIdiom") != 5)
+            if ([v62 isHighlighted] && objc_msgSend(stateCopy, "userInterfaceIdiom") != 5)
             {
               *&retstr->var7 = vdupq_n_s64(7uLL);
               retstr->var9 = 7;
@@ -1468,7 +1468,7 @@ LABEL_40:
       }
 
 LABEL_20:
-      if (v10)
+      if (styleCopy)
       {
         +[UIColor secondaryLabelColor];
       }
@@ -1488,7 +1488,7 @@ LABEL_20:
       v49 = retstr->var4;
       retstr->var4 = 0;
 
-      if (v23 != 4 || ([v15 isEditing] & 1) != 0)
+      if (v23 != 4 || ([headerCopy isEditing] & 1) != 0)
       {
         goto LABEL_40;
       }
@@ -1496,9 +1496,9 @@ LABEL_20:
       goto LABEL_39;
     }
 
-    v38 = ([v14 _focusSystemState] - 1) <= 1 && _AXSFullKeyboardAccessEnabled() == 0;
-    v50 = [v15 isEditing];
-    if (((v50 | v38) & 1) != 0 && ![v15 isFocused])
+    v38 = ([stateCopy _focusSystemState] - 1) <= 1 && _AXSFullKeyboardAccessEnabled() == 0;
+    isEditing2 = [headerCopy isEditing];
+    if (((isEditing2 | v38) & 1) != 0 && ![headerCopy isFocused])
     {
       v66 = +[UIColor labelColor];
       v67 = retstr->var2;
@@ -1509,7 +1509,7 @@ LABEL_20:
       v69 = retstr->var3;
       retstr->var3 = v68;
 
-      if (!v50)
+      if (!isEditing2)
       {
         v70 = +[UIColor labelColor];
         v71 = retstr->var4;
@@ -1517,7 +1517,7 @@ LABEL_20:
 
         retstr->var9 = 12;
 LABEL_31:
-        if (([v15 isEditing] & 1) == 0)
+        if (([headerCopy isEditing] & 1) == 0)
         {
           goto LABEL_39;
         }
@@ -1543,7 +1543,7 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (v10)
+  if (styleCopy)
   {
     [(UITableConstants_IOS *)self defaultSidebarHeaderFont];
   }
@@ -1556,27 +1556,27 @@ LABEL_31:
   v27 = retstr->var0;
   retstr->var0 = v19;
 
-  v28 = [(UITableConstants_IOS *)self defaultSidebarDetailTextLabelFontForCellStyle:a7];
+  v28 = [(UITableConstants_IOS *)self defaultSidebarDetailTextLabelFontForCellStyle:sidebarStyle];
   v29 = retstr->var1;
   retstr->var1 = v28;
 
-  v30 = [(UITableConstants_IOS *)self defaultSidebarTextColorForTraitCollection:v14 state:v15 isHeader:0 isSecondaryText:0 style:a8];
+  v30 = [(UITableConstants_IOS *)self defaultSidebarTextColorForTraitCollection:stateCopy state:headerCopy isHeader:0 isSecondaryText:0 style:a8];
   v31 = retstr->var2;
   retstr->var2 = v30;
 
-  v32 = [(UITableConstants_IOS *)self defaultSidebarTextColorForTraitCollection:v14 state:v15 isHeader:v10 isSecondaryText:1 style:a8];
+  v32 = [(UITableConstants_IOS *)self defaultSidebarTextColorForTraitCollection:stateCopy state:headerCopy isHeader:styleCopy isSecondaryText:1 style:a8];
   v33 = retstr->var3;
   retstr->var3 = v32;
 
-  v34 = [(UITableConstants_IOS *)self defaultSidebarImageTintColorForTraitCollection:v14 state:v15 isHeader:v10 style:a8];
+  v34 = [(UITableConstants_IOS *)self defaultSidebarImageTintColorForTraitCollection:stateCopy state:headerCopy isHeader:styleCopy style:a8];
   v35 = retstr->var4;
   retstr->var4 = v34;
 
-  v36 = [(UITableConstants_IOS *)self defaultImageSymbolConfigurationForTraitCollection:v14];
+  v36 = [(UITableConstants_IOS *)self defaultImageSymbolConfigurationForTraitCollection:stateCopy];
   v37 = retstr->var5;
   retstr->var5 = v36;
 
-  if ([v15 isHighlighted])
+  if ([headerCopy isHighlighted])
   {
     *&retstr->var7 = vdupq_n_s64(7uLL);
     retstr->var9 = 7;
@@ -1587,17 +1587,17 @@ LABEL_52:
   return result;
 }
 
-- (id)defaultSidebarTextColorForTraitCollection:(id)a3 state:(id)a4 isHeader:(BOOL)a5 isSecondaryText:(BOOL)a6 style:(int64_t)a7
+- (id)defaultSidebarTextColorForTraitCollection:(id)collection state:(id)state isHeader:(BOOL)header isSecondaryText:(BOOL)text style:(int64_t)style
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  if ([v13 isDisabled])
+  textCopy = text;
+  headerCopy = header;
+  collectionCopy = collection;
+  stateCopy = state;
+  if ([stateCopy isDisabled])
   {
-    v14 = [v13 isSwiped];
+    isSwiped = [stateCopy isSwiped];
 
-    if ((v14 & 1) == 0)
+    if ((isSwiped & 1) == 0)
     {
       v15 = +[UIColor quaternaryLabelColor];
       goto LABEL_22;
@@ -1610,7 +1610,7 @@ LABEL_52:
 
   v22 = 0;
   memset(v21, 0, sizeof(v21));
-  _UITableConstantsGetBackgroundProperties(self, v13, v12, v9, a7, v21);
+  _UITableConstantsGetBackgroundProperties(self, stateCopy, collectionCopy, headerCopy, style, v21);
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v19, v21);
   if (v20 > 0xC || ((1 << v20) & 0x1081) == 0)
   {
@@ -1628,9 +1628,9 @@ LABEL_52:
   if (v16 != 2)
   {
 LABEL_11:
-    if (a7 == 2 || ([v13 isEditing] & 1) != 0 || objc_msgSend(v13, "cellDropState") != 2)
+    if (style == 2 || ([stateCopy isEditing] & 1) != 0 || objc_msgSend(stateCopy, "cellDropState") != 2)
     {
-      if (v8)
+      if (textCopy)
       {
         +[UIColor secondaryLabelColor];
       }
@@ -1644,7 +1644,7 @@ LABEL_11:
     }
 
 LABEL_14:
-    if (v8)
+    if (textCopy)
     {
       [UIColor colorWithWhite:1.0 alpha:0.8];
     }
@@ -1667,16 +1667,16 @@ LABEL_22:
   return v15;
 }
 
-- (id)defaultSidebarImageTintColorForTraitCollection:(id)a3 state:(id)a4 isHeader:(BOOL)a5 style:(int64_t)a6
+- (id)defaultSidebarImageTintColorForTraitCollection:(id)collection state:(id)state isHeader:(BOOL)header style:(int64_t)style
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if ([v11 isDisabled])
+  headerCopy = header;
+  collectionCopy = collection;
+  stateCopy = state;
+  if ([stateCopy isDisabled])
   {
-    v12 = [v11 isSwiped];
+    isSwiped = [stateCopy isSwiped];
 
-    if ((v12 & 1) == 0)
+    if ((isSwiped & 1) == 0)
     {
       v13 = +[UIColor quaternaryLabelColor];
       goto LABEL_15;
@@ -1689,7 +1689,7 @@ LABEL_22:
 
   v19 = 0;
   memset(v18, 0, sizeof(v18));
-  _UITableConstantsGetBackgroundProperties(self, v11, v10, v7, a6, v18);
+  _UITableConstantsGetBackgroundProperties(self, stateCopy, collectionCopy, headerCopy, style, v18);
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v16, v18);
   if (v17 <= 0xC && ((1 << v17) & 0x1081) != 0)
   {
@@ -1706,7 +1706,7 @@ LABEL_22:
     __destructor_8_s8_s16_s24_s80(v16);
   }
 
-  if (a6 == 2 || ([v11 isEditing] & 1) != 0 || objc_msgSend(v11, "cellDropState") != 2)
+  if (style == 2 || ([stateCopy isEditing] & 1) != 0 || objc_msgSend(stateCopy, "cellDropState") != 2)
   {
     v13 = 0;
     goto LABEL_14;
@@ -1748,9 +1748,9 @@ LABEL_15:
   return v4;
 }
 
-- (id)defaultSidebarDetailTextLabelFontForCellStyle:(int64_t)a3
+- (id)defaultSidebarDetailTextLabelFontForCellStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(UITableConstants_IOS *)self defaultDetailTextFontForCellStyle:?];
   }
@@ -1764,9 +1764,9 @@ LABEL_15:
   return v3;
 }
 
-- (id)defaultInsetGroupedHeaderFontForExtraProminentStyle:(BOOL)a3 secondaryText:(BOOL)a4
+- (id)defaultInsetGroupedHeaderFontForExtraProminentStyle:(BOOL)style secondaryText:(BOOL)text
 {
-  if (a4)
+  if (text)
   {
     v4 = off_1E70ECC18;
     v5 = @"UICTFontTextStyleSubhead";
@@ -1775,7 +1775,7 @@ LABEL_15:
   else
   {
     v6 = UIFontTextStyleEmphasizedTitle2;
-    if (!a3)
+    if (!style)
     {
       v6 = UIFontTextStyleEmphasizedTitle3;
     }
@@ -1789,14 +1789,14 @@ LABEL_15:
   return v7;
 }
 
-- (NSDirectionalEdgeInsets)defaultInsetGroupedHeaderLayoutMarginsForExtraProminentStyle:(BOOL)a3 outAxesPreservingSuperviewLayoutMargins:(unint64_t *)a4
+- (NSDirectionalEdgeInsets)defaultInsetGroupedHeaderLayoutMarginsForExtraProminentStyle:(BOOL)style outAxesPreservingSuperviewLayoutMargins:(unint64_t *)margins
 {
-  v5 = a3;
+  styleCopy = style;
   if (_UISolariumEnabled())
   {
-    if (a4)
+    if (margins)
     {
-      *a4 = 1;
+      *margins = 1;
     }
 
     v6 = 3.0;
@@ -1806,12 +1806,12 @@ LABEL_15:
 
   else
   {
-    if (a4)
+    if (margins)
     {
-      *a4 = 0;
+      *margins = 0;
     }
 
-    if (v5)
+    if (styleCopy)
     {
       v8 = 10.0;
     }
@@ -1822,7 +1822,7 @@ LABEL_15:
     }
 
     v7 = 8.0;
-    if (v5)
+    if (styleCopy)
     {
       v7 = 9.0;
     }
@@ -1838,12 +1838,12 @@ LABEL_15:
   return result;
 }
 
-- (id)defaultTextLabelFontForCellStyle:(int64_t)a3
+- (id)defaultTextLabelFontForCellStyle:(int64_t)style
 {
   if (dyld_program_sdk_at_least())
   {
     v5 = &UIFontTextStyleFootnote;
-    if (a3 != 2)
+    if (style != 2)
     {
       v5 = &UIFontTextStyleBody;
     }
@@ -1853,22 +1853,22 @@ LABEL_15:
 
   else
   {
-    [(UITableConstants_IOS *)self defaultTextLabelFontSizeForCellStyle:a3];
+    [(UITableConstants_IOS *)self defaultTextLabelFontSizeForCellStyle:style];
     v6 = [off_1E70ECC18 systemFontOfSize:?];
   }
 
   return v6;
 }
 
-- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)a3
+- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)style
 {
   result = 18.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     result = 14.0;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     return 17.0;
   }
@@ -1876,23 +1876,23 @@ LABEL_15:
   return result;
 }
 
-- (id)defaultDetailTextColorForCellStyle:(int64_t)a3 traitCollection:(id)a4 state:(id)a5
+- (id)defaultDetailTextColorForCellStyle:(int64_t)style traitCollection:(id)collection state:(id)state
 {
-  v7 = a5;
-  if (_UITableUsesTintColorAsBackgroundColor(v7, a4, 0, 0))
+  stateCopy = state;
+  if (_UITableUsesTintColorAsBackgroundColor(stateCopy, collection, 0, 0))
   {
     v8 = +[UIColor whiteColor];
     goto LABEL_16;
   }
 
-  if (a3 == 1 || a3 == 3 && _UISolariumEnabled())
+  if (style == 1 || style == 3 && _UISolariumEnabled())
   {
-    v9 = v7;
+    v9 = stateCopy;
     if ([v9 isDisabled])
     {
-      v10 = [v9 isSwiped];
+      isSwiped = [v9 isSwiped];
 
-      if ((v10 & 1) == 0)
+      if ((isSwiped & 1) == 0)
       {
         v8 = +[UIColor quaternaryLabelColor];
         goto LABEL_16;
@@ -1908,12 +1908,12 @@ LABEL_15:
 
   else
   {
-    v11 = v7;
+    v11 = stateCopy;
     if ([v11 isDisabled])
     {
-      v12 = [v11 isSwiped];
+      isSwiped2 = [v11 isSwiped];
 
-      if ((v12 & 1) == 0)
+      if ((isSwiped2 & 1) == 0)
       {
         v8 = +[UIColor tertiaryLabelColor];
         goto LABEL_16;
@@ -1933,13 +1933,13 @@ LABEL_16:
   return v13;
 }
 
-- (id)defaultDetailTextFontForCellStyle:(int64_t)a3
+- (id)defaultDetailTextFontForCellStyle:(int64_t)style
 {
   if (!dyld_program_sdk_at_least())
   {
-    if ((a3 - 1) <= 2)
+    if ((style - 1) <= 2)
     {
-      [(UITableConstants_IOS *)self defaultDetailTextLabelFontSizeForCellStyle:a3];
+      [(UITableConstants_IOS *)self defaultDetailTextLabelFontSizeForCellStyle:style];
       v7 = [off_1E70ECC18 systemFontOfSize:?];
       goto LABEL_14;
     }
@@ -1947,7 +1947,7 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     v8 = _UISolariumEnabled();
     v5 = off_1E70ECC18;
@@ -1964,14 +1964,14 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = off_1E70ECC18;
     v6 = &UIFontTextStyleFootnote;
     goto LABEL_13;
   }
 
-  if (a3 != 1)
+  if (style != 1)
   {
 LABEL_8:
     v7 = 0;
@@ -1987,14 +1987,14 @@ LABEL_14:
   return v7;
 }
 
-- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)a3
+- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     return 17.0;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
     return 12.0;
   }
@@ -2003,18 +2003,18 @@ LABEL_14:
   return result;
 }
 
-- (id)defaultHeaderFontForTableViewStyle:(int64_t)a3
+- (id)defaultHeaderFontForTableViewStyle:(int64_t)style
 {
   if (_UISolariumEnabled())
   {
     v5 = off_1E70ECC18;
     v6 = UIFontTextStyleEmphasizedBody;
 LABEL_6:
-    v8 = [v5 preferredFontForTextStyle:*v6];
+    defaultPlainHeaderFooterFont = [v5 preferredFontForTextStyle:*v6];
     goto LABEL_9;
   }
 
-  if (a3)
+  if (style)
   {
     v7 = dyld_program_sdk_at_least();
     v5 = off_1E70ECC18;
@@ -2024,30 +2024,30 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v8 = [off_1E70ECC18 boldSystemFontOfSize:14.0];
+    defaultPlainHeaderFooterFont = [off_1E70ECC18 boldSystemFontOfSize:14.0];
   }
 
   else
   {
-    v8 = [(UITableConstants_IOS *)self defaultPlainHeaderFooterFont];
+    defaultPlainHeaderFooterFont = [(UITableConstants_IOS *)self defaultPlainHeaderFooterFont];
   }
 
 LABEL_9:
 
-  return v8;
+  return defaultPlainHeaderFooterFont;
 }
 
-- (id)defaultFooterFontForTableViewStyle:(int64_t)a3
+- (id)defaultFooterFontForTableViewStyle:(int64_t)style
 {
   if (_UISolariumEnabled())
   {
     v5 = off_1E70ECC18;
 LABEL_5:
-    v7 = [v5 preferredFontForTextStyle:@"UICTFontTextStyleShortFootnote"];
+    defaultPlainHeaderFooterFont = [v5 preferredFontForTextStyle:@"UICTFontTextStyleShortFootnote"];
     goto LABEL_8;
   }
 
-  if (a3)
+  if (style)
   {
     v6 = dyld_program_sdk_at_least();
     v5 = off_1E70ECC18;
@@ -2056,20 +2056,20 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v7 = [off_1E70ECC18 systemFontOfSize:14.0];
+    defaultPlainHeaderFooterFont = [off_1E70ECC18 systemFontOfSize:14.0];
   }
 
   else
   {
-    v7 = [(UITableConstants_IOS *)self defaultPlainHeaderFooterFont];
+    defaultPlainHeaderFooterFont = [(UITableConstants_IOS *)self defaultPlainHeaderFooterFont];
   }
 
 LABEL_8:
 
-  return v7;
+  return defaultPlainHeaderFooterFont;
 }
 
-- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4
+- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused
 {
   if (dyld_program_sdk_at_least())
   {
@@ -2078,7 +2078,7 @@ LABEL_8:
 
   else
   {
-    if (a3)
+    if (style)
     {
       +[UIColor _groupTableHeaderFooterTextColor];
     }
@@ -2093,7 +2093,7 @@ LABEL_8:
   return v5;
 }
 
-- (id)defaultFooterTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4
+- (id)defaultFooterTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused
 {
   if (dyld_program_sdk_at_least())
   {
@@ -2102,7 +2102,7 @@ LABEL_8:
 
   else
   {
-    if (a3)
+    if (style)
     {
       +[UIColor _groupTableHeaderFooterTextColor];
     }
@@ -2117,11 +2117,11 @@ LABEL_8:
   return v5;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)a3 cellConfigurationState:(int64_t)a4 traitCollection:(id)a5 floating:(id)a6
+- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)style cellConfigurationState:(int64_t)state traitCollection:(id)collection floating:(id)floating
 {
   v7 = a7;
-  v22 = a5;
-  v12 = a6;
+  collectionCopy = collection;
+  floatingCopy = floating;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
@@ -2131,9 +2131,9 @@ LABEL_8:
   *&retstr->var12 = 0u;
   *&retstr->var13.leading = 0u;
   retstr->var13.trailing = 0.0;
-  [(UITableConstants_IOS *)self defaultCellCornerRadiusForTableViewStyle:a4 isSidebarStyle:0 isHeaderFooter:1 traitCollection:v12, __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault).n128_f64[0]];
+  [(UITableConstants_IOS *)self defaultCellCornerRadiusForTableViewStyle:state isSidebarStyle:0 isHeaderFooter:1 traitCollection:floatingCopy, __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault).n128_f64[0]];
   retstr->var12 = v13;
-  if (a4)
+  if (state)
   {
     goto LABEL_2;
   }
@@ -2147,7 +2147,7 @@ LABEL_8:
       retstr->var2 = v17;
 
       var1 = objc_opt_self();
-      v19 = [v12 objectForTrait:var1];
+      v19 = [floatingCopy objectForTrait:var1];
       var3 = retstr->var3;
       retstr->var3 = v19;
 
@@ -2179,8 +2179,8 @@ LABEL_2:
   retstr->var1 = v21;
 LABEL_3:
 
-  v15 = [v22 isFocused] ^ 1;
-  if (!a4)
+  v15 = [collectionCopy isFocused] ^ 1;
+  if (!state)
   {
     LOBYTE(v15) = 1;
   }
@@ -2194,42 +2194,42 @@ LABEL_3:
   return result;
 }
 
-- (id)_accessoryTintColorForAccessoryBaseColor:(id)a3
+- (id)_accessoryTintColorForAccessoryBaseColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v3 = a3;
+    colorCopy = color;
   }
 
   else
   {
-    v3 = [(UITableConstants_IOS *)self _defaultAccessoryTintColor];
+    colorCopy = [(UITableConstants_IOS *)self _defaultAccessoryTintColor];
   }
 
-  return v3;
+  return colorCopy;
 }
 
-- (id)_symbolImageNamed:(id)a3 withTextStyle:(id)a4 scale:(int64_t)a5
+- (id)_symbolImageNamed:(id)named withTextStyle:(id)style scale:(int64_t)scale
 {
-  v7 = a3;
-  v8 = [UIImageSymbolConfiguration configurationWithTextStyle:a4 scale:a5];
-  v9 = [UIImage systemImageNamed:v7 withConfiguration:v8];
+  namedCopy = named;
+  v8 = [UIImageSymbolConfiguration configurationWithTextStyle:style scale:scale];
+  v9 = [UIImage systemImageNamed:namedCopy withConfiguration:v8];
 
   return v9;
 }
 
-- (id)_defaultDisclosureImageForTraitCollection:(id)a3
+- (id)_defaultDisclosureImageForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
+  collectionCopy = collection;
+  v6 = collectionCopy;
   v7 = _MergedGlobals_1304;
-  if (!_MergedGlobals_1304 || v5 && (!qword_1ED4A0FC8 || *(v5 + 13) != *(qword_1ED4A0FC8 + 104) || *(v5 + 15) != *(qword_1ED4A0FC8 + 120)))
+  if (!_MergedGlobals_1304 || collectionCopy && (!qword_1ED4A0FC8 || *(collectionCopy + 13) != *(qword_1ED4A0FC8 + 104) || *(collectionCopy + 15) != *(qword_1ED4A0FC8 + 120)))
   {
     v8 = [(UITableConstants_IOS *)self _symbolImageNamed:@"chevron.forward" withTextStyle:@"UICTFontTextStyleEmphasizedBody" scale:1];
     v9 = _MergedGlobals_1304;
     _MergedGlobals_1304 = v8;
 
-    objc_storeStrong(&qword_1ED4A0FC8, a3);
+    objc_storeStrong(&qword_1ED4A0FC8, collection);
     v7 = _MergedGlobals_1304;
   }
 
@@ -2238,19 +2238,19 @@ LABEL_3:
   return v7;
 }
 
-- (id)_defaultCircleDisclosureImageForTraitCollection:(id)a3
+- (id)_defaultCircleDisclosureImageForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
+  collectionCopy = collection;
+  v6 = collectionCopy;
   v7 = qword_1ED4A0FD0;
-  if (!qword_1ED4A0FD0 || v5 && (!qword_1ED4A0FD8 || v5[13] != *(qword_1ED4A0FD8 + 104) || v5[15] != *(qword_1ED4A0FD8 + 120)))
+  if (!qword_1ED4A0FD0 || collectionCopy && (!qword_1ED4A0FD8 || collectionCopy[13] != *(qword_1ED4A0FD8 + 104) || collectionCopy[15] != *(qword_1ED4A0FD8 + 120)))
   {
-    v8 = [v5 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v8))
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
-      if (UIContentSizeCategoryCompareToCategory(v8, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
       {
-        v11 = UIContentSizeCategoryCompareToCategory(v8, &cfstr_Uictcontentsiz_9.isa);
+        v11 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa);
         v9 = 2;
         if (v11 == NSOrderedAscending)
         {
@@ -2283,7 +2283,7 @@ LABEL_3:
     v13 = qword_1ED4A0FD0;
     qword_1ED4A0FD0 = v12;
 
-    objc_storeStrong(&qword_1ED4A0FD8, a3);
+    objc_storeStrong(&qword_1ED4A0FD8, collection);
     v7 = qword_1ED4A0FD0;
   }
 
@@ -2292,31 +2292,31 @@ LABEL_3:
   return v7;
 }
 
-- (id)defaultDisclosureImageForCell:(id)a3 withAccessoryBaseColor:(id)a4
+- (id)defaultDisclosureImageForCell:(id)cell withAccessoryBaseColor:(id)color
 {
-  v6 = a4;
-  v7 = [a3 traitCollection];
-  v8 = [(UITableConstants_IOS *)self _defaultDisclosureImageForTraitCollection:v7];
+  colorCopy = color;
+  traitCollection = [cell traitCollection];
+  v8 = [(UITableConstants_IOS *)self _defaultDisclosureImageForTraitCollection:traitCollection];
 
-  v9 = [(UITableConstants_IOS *)self _accessoryTintColorForAccessoryBaseColor:v6];
+  v9 = [(UITableConstants_IOS *)self _accessoryTintColorForAccessoryBaseColor:colorCopy];
 
   v10 = [v8 imageWithTintColor:v9 renderingMode:1];
 
   return v10;
 }
 
-- (id)defaultPopUpMenuIndicatorImageForTraitCollection:(id)a3
+- (id)defaultPopUpMenuIndicatorImageForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = v5;
+  collectionCopy = collection;
+  v6 = collectionCopy;
   v7 = qword_1ED4A0FE0;
-  if (!qword_1ED4A0FE0 || v5 && (!qword_1ED4A0FE8 || *(v5 + 13) != *(qword_1ED4A0FE8 + 104) || *(v5 + 15) != *(qword_1ED4A0FE8 + 120)))
+  if (!qword_1ED4A0FE0 || collectionCopy && (!qword_1ED4A0FE8 || *(collectionCopy + 13) != *(qword_1ED4A0FE8 + 104) || *(collectionCopy + 15) != *(qword_1ED4A0FE8 + 120)))
   {
     v8 = [(UITableConstants_IOS *)self _symbolImageNamed:@"chevron.up.chevron.down" withTextStyle:@"UICTFontTextStyleEmphasizedBody" scale:1];
     v9 = qword_1ED4A0FE0;
     qword_1ED4A0FE0 = v8;
 
-    objc_storeStrong(&qword_1ED4A0FE8, a3);
+    objc_storeStrong(&qword_1ED4A0FE8, collection);
     v7 = qword_1ED4A0FE0;
   }
 
@@ -2325,19 +2325,19 @@ LABEL_3:
   return v7;
 }
 
-- (id)defaultOutlineDisclosureImageForView:(id)a3
+- (id)defaultOutlineDisclosureImageForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (_AXSButtonShapesEnabled() || _AXSDifferentiateWithoutColorEnabled())
   {
-    v5 = [v4 traitCollection];
-    v6 = [(UITableConstants_IOS *)self _defaultCircleDisclosureImageForTraitCollection:v5];
+    traitCollection = [viewCopy traitCollection];
+    v6 = [(UITableConstants_IOS *)self _defaultCircleDisclosureImageForTraitCollection:traitCollection];
   }
 
   else
   {
-    v5 = [v4 traitCollection];
-    v6 = [(UITableConstants_IOS *)self _defaultDisclosureImageForTraitCollection:v5];
+    traitCollection = [viewCopy traitCollection];
+    v6 = [(UITableConstants_IOS *)self _defaultDisclosureImageForTraitCollection:traitCollection];
   }
 
   v7 = v6;
@@ -2345,15 +2345,15 @@ LABEL_3:
   return v7;
 }
 
-- (id)defaultCheckmarkImageForCell:(id)a3
+- (id)defaultCheckmarkImageForCell:(id)cell
 {
-  v4 = [a3 traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  traitCollection = [cell traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    if (UIContentSizeCategoryCompareToCategory(v5, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
     {
-      v8 = UIContentSizeCategoryCompareToCategory(v5, &cfstr_Uictcontentsiz_9.isa);
+      v8 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa);
       v6 = 2;
       if (v8 == NSOrderedAscending)
       {
@@ -2387,10 +2387,10 @@ LABEL_3:
   return v9;
 }
 
-- (CGSize)defaultEditControlSizeForCell:(id)a3 inTableView:(id)a4
+- (CGSize)defaultEditControlSizeForCell:(id)cell inTableView:(id)view
 {
-  v4 = [(UITableConstants_IOS *)self defaultDeleteImageForCell:a3, a4];
-  [v4 size];
+  view = [(UITableConstants_IOS *)self defaultDeleteImageForCell:cell, view];
+  [view size];
   v6 = v5;
   v8 = v7;
 
@@ -2401,7 +2401,7 @@ LABEL_3:
   return result;
 }
 
-- (CGRect)defaultDeleteMinusRectForCell:(id)a3 inTableView:(id)a4
+- (CGRect)defaultDeleteMinusRectForCell:(id)cell inTableView:(id)view
 {
   v4 = 8.0;
   v5 = 12.0;
@@ -2414,23 +2414,23 @@ LABEL_3:
   return result;
 }
 
-- (id)defaultDeleteImageForCell:(id)a3
+- (id)defaultDeleteImageForCell:(id)cell
 {
-  v4 = [a3 _editingControlTintColorForStyle:1];
+  v4 = [cell _editingControlTintColorForStyle:1];
   v5 = [(UITableConstants_IOS *)self defaultDeleteImageWithTintColor:v4 backgroundColor:0];
 
   return v5;
 }
 
-- (id)defaultDeleteImageWithTintColor:(id)a3 backgroundColor:(id)a4
+- (id)defaultDeleteImageWithTintColor:(id)color backgroundColor:(id)backgroundColor
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  if (colorCopy)
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = colorCopy;
+    v8 = backgroundColorCopy;
     if (v8)
     {
       v9 = v8;
@@ -2460,23 +2460,23 @@ LABEL_3:
   return v13;
 }
 
-- (id)defaultInsertImageForCell:(id)a3
+- (id)defaultInsertImageForCell:(id)cell
 {
-  v4 = [a3 _editingControlTintColorForStyle:2];
+  v4 = [cell _editingControlTintColorForStyle:2];
   v5 = [(UITableConstants_IOS *)self defaultInsertImageWithTintColor:v4 backgroundColor:0];
 
   return v5;
 }
 
-- (id)defaultInsertImageWithTintColor:(id)a3 backgroundColor:(id)a4
+- (id)defaultInsertImageWithTintColor:(id)color backgroundColor:(id)backgroundColor
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  if (colorCopy)
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = colorCopy;
+    v8 = backgroundColorCopy;
     if (v8)
     {
       v9 = v8;
@@ -2506,30 +2506,30 @@ LABEL_3:
   return v13;
 }
 
-- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 accessoryBaseColor:(id)a5
+- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection accessoryBaseColor:(id)color
 {
-  v6 = a5;
+  colorCopy = color;
   v7 = [UIImage systemImageNamed:@"circle"];
-  v8 = [(UITableConstants_IOS *)self _accessoryTintColorForAccessoryBaseColor:v6];
+  v8 = [(UITableConstants_IOS *)self _accessoryTintColorForAccessoryBaseColor:colorCopy];
 
   v9 = [v7 imageWithTintColor:v8 renderingMode:1];
 
   return v9;
 }
 
-- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 checkmarkColor:(id)a5 backgroundColor:(id)a6
+- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection checkmarkColor:(id)color backgroundColor:(id)backgroundColor
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (v9)
+  collectionCopy = collection;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  v11 = backgroundColorCopy;
+  if (colorCopy)
   {
-    if (v10)
+    if (backgroundColorCopy)
     {
-      v20 = v9;
-      v21 = v10;
+      v20 = colorCopy;
+      v21 = backgroundColorCopy;
       v12 = MEMORY[0x1E695DEC8];
       v13 = &v20;
       v14 = 2;
@@ -2537,7 +2537,7 @@ LABEL_3:
 
     else
     {
-      v19 = v9;
+      v19 = colorCopy;
       v12 = MEMORY[0x1E695DEC8];
       v13 = &v19;
       v14 = 1;
@@ -2556,11 +2556,11 @@ LABEL_3:
   return v15;
 }
 
-- (CGSize)defaultReorderControlSizeForCell:(id)a3 withAccessoryBaseColor:(id)a4
+- (CGSize)defaultReorderControlSizeForCell:(id)cell withAccessoryBaseColor:(id)color
 {
-  v6 = a4;
-  v7 = [a3 traitCollection];
-  v8 = [(UITableConstants_IOS *)self defaultReorderControlImageForTraitCollection:v7 withAccessoryBaseColor:v6 isTracking:0];
+  colorCopy = color;
+  traitCollection = [cell traitCollection];
+  v8 = [(UITableConstants_IOS *)self defaultReorderControlImageForTraitCollection:traitCollection withAccessoryBaseColor:colorCopy isTracking:0];
 
   [v8 size];
   v10 = v9;
@@ -2580,19 +2580,19 @@ LABEL_3:
   return result;
 }
 
-- (id)defaultReorderControlImageForTraitCollection:(id)a3 withAccessoryBaseColor:(id)a4 isTracking:(BOOL)a5
+- (id)defaultReorderControlImageForTraitCollection:(id)collection withAccessoryBaseColor:(id)color isTracking:(BOOL)tracking
 {
-  v8 = a3;
-  v9 = a4;
+  collectionCopy = collection;
+  colorCopy = color;
   v10 = qword_1ED4A0FF0;
-  if (!qword_1ED4A0FF0 || v8 && (!qword_1ED4A0FF8 || v8[13] != *(qword_1ED4A0FF8 + 104) || v8[15] != *(qword_1ED4A0FF8 + 120)))
+  if (!qword_1ED4A0FF0 || collectionCopy && (!qword_1ED4A0FF8 || collectionCopy[13] != *(qword_1ED4A0FF8 + 104) || collectionCopy[15] != *(qword_1ED4A0FF8 + 120)))
   {
-    v11 = [v8 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v11))
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
-      if (UIContentSizeCategoryCompareToCategory(v11, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
       {
-        if (UIContentSizeCategoryCompareToCategory(v11, &cfstr_Uictcontentsiz_9.isa) == NSOrderedAscending)
+        if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa) == NSOrderedAscending)
         {
           v12 = 3;
         }
@@ -2618,12 +2618,12 @@ LABEL_3:
     v14 = qword_1ED4A0FF0;
     qword_1ED4A0FF0 = v13;
 
-    objc_storeStrong(&qword_1ED4A0FF8, a3);
+    objc_storeStrong(&qword_1ED4A0FF8, collection);
     v10 = qword_1ED4A0FF0;
   }
 
   v15 = v10;
-  v16 = [(UITableConstants_IOS *)self _accessoryTintColorForAccessoryBaseColor:v9];
+  v16 = [(UITableConstants_IOS *)self _accessoryTintColorForAccessoryBaseColor:colorCopy];
   v17 = [v15 imageWithTintColor:v16 renderingMode:1];
 
   return v17;
@@ -2642,14 +2642,14 @@ LABEL_3:
   return result;
 }
 
-- (id)defaultImageSymbolConfigurationForTraitCollection:(id)a3
+- (id)defaultImageSymbolConfigurationForTraitCollection:(id)collection
 {
-  v3 = [a3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    if (UIContentSizeCategoryCompareToCategory(v3, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
     {
-      if (UIContentSizeCategoryCompareToCategory(v3, &cfstr_Uictcontentsiz_9.isa) == NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa) == NSOrderedAscending)
       {
         v4 = 3;
       }
@@ -2674,16 +2674,16 @@ LABEL_3:
   return [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleBody" scale:v4];
 }
 
-- (id)defaultImageTintColorForState:(id)a3 traitCollection:(id)a4
+- (id)defaultImageTintColorForState:(id)state traitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = _UITableUsesTintColorAsBackgroundColor(v5, a4, 0, 0);
-  v7 = v5;
+  stateCopy = state;
+  v6 = _UITableUsesTintColorAsBackgroundColor(stateCopy, collection, 0, 0);
+  v7 = stateCopy;
   if ([v7 isDisabled])
   {
-    v8 = [v7 isSwiped];
+    isSwiped = [v7 isSwiped];
 
-    if ((v8 & 1) == 0)
+    if ((isSwiped & 1) == 0)
     {
       v9 = +[UIColor tertiaryLabelColor];
       goto LABEL_8;
@@ -2709,15 +2709,15 @@ LABEL_8:
   return v9;
 }
 
-- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)a3 header:(BOOL)a4 sidebarStyle:(int64_t)a5 cellConfigurationState:(id)a6 traitCollection:(id)a7 inheritedTintColor:(id)a8
+- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)type header:(BOOL)header sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection inheritedTintColor:(id)color
 {
-  v11 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  headerCopy = header;
+  stateCopy = state;
+  collectionCopy = collection;
+  colorCopy = color;
   v28 = 0;
   memset(v27, 0, sizeof(v27));
-  _UITableConstantsGetBackgroundProperties(self, v15, v16, v11, a5, v27);
+  _UITableConstantsGetBackgroundProperties(self, stateCopy, collectionCopy, headerCopy, style, v27);
   __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(v25, v27);
   v18 = 0;
   if (v26 <= 0xC && ((1 << v26) & 0x1081) != 0)
@@ -2726,11 +2726,11 @@ LABEL_8:
   }
 
   __destructor_8_s8_s16_s24_s80(v25);
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 <= 7)
+    if (type <= 7)
     {
-      if (a3 != 6)
+      if (type != 6)
       {
         if (!v18)
         {
@@ -2744,7 +2744,7 @@ LABEL_8:
 
     else
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         if (!v18)
         {
@@ -2756,9 +2756,9 @@ LABEL_8:
         goto LABEL_28;
       }
 
-      if (a3 != 9)
+      if (type != 9)
       {
-        if (a3 != 10)
+        if (type != 10)
         {
           goto LABEL_32;
         }
@@ -2789,37 +2789,37 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       goto LABEL_26;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       goto LABEL_24;
     }
 
 LABEL_32:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"UITableConstants_IOS.m" lineNumber:1537 description:{@"Invalid _UICellAccessorySystemType value: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableConstants_IOS.m" lineNumber:1537 description:{@"Invalid _UICellAccessorySystemType value: %ld", type}];
 
     goto LABEL_33;
   }
 
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     goto LABEL_33;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       if (v18)
       {
-        v19 = v17;
+        v19 = colorCopy;
       }
 
       else
@@ -2848,20 +2848,20 @@ LABEL_34:
   return v22;
 }
 
-- (id)defaultAccessoryBackgroundColorForAccessorySystemType:(int64_t)a3 header:(BOOL)a4 sidebarStyle:(int64_t)a5 cellConfigurationState:(id)a6 traitCollection:(id)a7
+- (id)defaultAccessoryBackgroundColorForAccessorySystemType:(int64_t)type header:(BOOL)header sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection
 {
-  v10 = _UITableUsesTintColorAsBackgroundColor(a6, a7, a4, a5);
-  if (a3 > 0xA)
+  v10 = _UITableUsesTintColorAsBackgroundColor(state, collection, header, style);
+  if (type > 0xA)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UITableConstants_IOS.m" lineNumber:1567 description:{@"Invalid _UICellAccessorySystemType value: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITableConstants_IOS.m" lineNumber:1567 description:{@"Invalid _UICellAccessorySystemType value: %ld", type}];
 
 LABEL_3:
     v11 = 0;
     goto LABEL_4;
   }
 
-  if (a3 != 5 || !v10)
+  if (type != 5 || !v10)
   {
     goto LABEL_3;
   }
@@ -2872,21 +2872,21 @@ LABEL_4:
   return v11;
 }
 
-- (BOOL)shouldUseMonochromaticTreatmentForCellAccessorySystemType:(int64_t)a3 sidebarStyle:(int64_t)a4 cellConfigurationState:(id)a5 traitCollection:(id)a6
+- (BOOL)shouldUseMonochromaticTreatmentForCellAccessorySystemType:(int64_t)type sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection
 {
-  v8 = a5;
+  stateCopy = state;
   v9 = +[_UITraitMonochromaticTreatment _sidebarListAccessoriesMonochromaticTreatment];
   v10 = 0;
-  if ((a4 - 3) >= 0xFFFFFFFFFFFFFFFELL && v9)
+  if ((style - 3) >= 0xFFFFFFFFFFFFFFFELL && v9)
   {
-    v11 = [v8 isSelected];
-    v12 = 0x260u >> a3;
-    if (v11)
+    isSelected = [stateCopy isSelected];
+    v12 = 0x260u >> type;
+    if (isSelected)
     {
       LOBYTE(v12) = 0;
     }
 
-    if (a3 <= 9)
+    if (type <= 9)
     {
       v10 = v12;
     }

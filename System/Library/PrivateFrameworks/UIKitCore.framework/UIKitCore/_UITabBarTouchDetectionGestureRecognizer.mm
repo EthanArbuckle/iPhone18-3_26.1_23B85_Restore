@@ -1,32 +1,32 @@
 @interface _UITabBarTouchDetectionGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UITabBarTouchDetectionGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]== UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)self state:began]== UIGestureRecognizerStatePossible)
   {
 
     [(UIGestureRecognizer *)self setState:1];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]>= UIGestureRecognizerStateBegan)
+  if ([(UIGestureRecognizer *)self state:ended]>= UIGestureRecognizerStateBegan)
   {
 
     [(UIGestureRecognizer *)self setState:3];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]>= UIGestureRecognizerStateBegan)
+  if ([(UIGestureRecognizer *)self state:cancelled]>= UIGestureRecognizerStateBegan)
   {
 
     [(UIGestureRecognizer *)self setState:4];

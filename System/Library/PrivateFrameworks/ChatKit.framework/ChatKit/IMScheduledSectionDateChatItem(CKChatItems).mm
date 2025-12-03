@@ -8,8 +8,8 @@
 
 - (uint64_t)hash
 {
-  v1 = [a1 date];
-  v2 = [v1 hash];
+  date = [self date];
+  v2 = [date hash];
 
   return v2;
 }
@@ -17,10 +17,10 @@
 - (uint64_t)isEqualToScheduledDateChatItem:()CKChatItems
 {
   v4 = a3;
-  v5 = [a1 date];
-  v6 = [v4 date];
+  date = [self date];
+  date2 = [v4 date];
 
-  v7 = [v5 isEqualToDate:v6];
+  v7 = [date isEqualToDate:date2];
   return v7;
 }
 
@@ -30,7 +30,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 isEqualToScheduledDateChatItem:v4];
+    v5 = [self isEqualToScheduledDateChatItem:v4];
   }
 
   else

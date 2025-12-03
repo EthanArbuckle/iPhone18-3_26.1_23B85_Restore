@@ -1,14 +1,14 @@
 @interface IEExporter
-- (BOOL)exportFile:(id)a3 withExportFile:(id)a4 withFormat:(unint64_t)a5 withOptions:(id)a6;
+- (BOOL)exportFile:(id)file withExportFile:(id)exportFile withFormat:(unint64_t)format withOptions:(id)options;
 @end
 
 @implementation IEExporter
 
-- (BOOL)exportFile:(id)a3 withExportFile:(id)a4 withFormat:(unint64_t)a5 withOptions:(id)a6
+- (BOOL)exportFile:(id)file withExportFile:(id)exportFile withFormat:(unint64_t)format withOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  fileCopy = file;
+  exportFileCopy = exportFile;
+  optionsCopy = options;
   if ((atomic_load_explicit(&qword_280AF4ED8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4ED8))
   {
     _MergedGlobals_24 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");

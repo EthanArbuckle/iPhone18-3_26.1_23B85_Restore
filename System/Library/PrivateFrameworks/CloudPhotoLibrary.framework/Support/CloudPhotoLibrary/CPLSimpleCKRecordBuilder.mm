@@ -1,107 +1,107 @@
 @interface CPLSimpleCKRecordBuilder
-- (CPLSimpleCKRecordBuilder)initWithBaseCKRecord:(id)a3 scopeProvider:(id)a4 currentUserRecordID:(id)a5 targetMapping:(id)a6;
-- (id)_recordIDFromScopedIdentifier:(id)a3 cloudKitScope:(id *)a4 error:(id *)a5;
-- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)a3 cloudKitScope:(id *)a4 error:(id *)a5;
-- (void)requestRecordWithID:(id)a3 cloudKitScope:(id)a4 forKey:(id)a5 completionHandler:(id)a6;
-- (void)setCKReferenceWithScopedIdentifier:(id)a3 forKey:(id)a4 referenceAction:(unint64_t)a5;
+- (CPLSimpleCKRecordBuilder)initWithBaseCKRecord:(id)record scopeProvider:(id)provider currentUserRecordID:(id)d targetMapping:(id)mapping;
+- (id)_recordIDFromScopedIdentifier:(id)identifier cloudKitScope:(id *)scope error:(id *)error;
+- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)identifier cloudKitScope:(id *)scope error:(id *)error;
+- (void)requestRecordWithID:(id)d cloudKitScope:(id)scope forKey:(id)key completionHandler:(id)handler;
+- (void)setCKReferenceWithScopedIdentifier:(id)identifier forKey:(id)key referenceAction:(unint64_t)action;
 @end
 
 @implementation CPLSimpleCKRecordBuilder
 
-- (CPLSimpleCKRecordBuilder)initWithBaseCKRecord:(id)a3 scopeProvider:(id)a4 currentUserRecordID:(id)a5 targetMapping:(id)a6
+- (CPLSimpleCKRecordBuilder)initWithBaseCKRecord:(id)record scopeProvider:(id)provider currentUserRecordID:(id)d targetMapping:(id)mapping
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  recordCopy = record;
+  providerCopy = provider;
+  dCopy = d;
+  mappingCopy = mapping;
   v18.receiver = self;
   v18.super_class = CPLSimpleCKRecordBuilder;
   v15 = [(CPLSimpleCKRecordBuilder *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_ckRecord, a3);
-    objc_storeStrong(&v16->_scopeProvider, a4);
-    objc_storeStrong(&v16->_currentUserRecordID, a5);
-    objc_storeStrong(&v16->_targetMapping, a6);
+    objc_storeStrong(&v15->_ckRecord, record);
+    objc_storeStrong(&v16->_scopeProvider, provider);
+    objc_storeStrong(&v16->_currentUserRecordID, d);
+    objc_storeStrong(&v16->_targetMapping, mapping);
   }
 
   return v16;
 }
 
-- (id)_recordIDFromScopedIdentifier:(id)a3 cloudKitScope:(id *)a4 error:(id *)a5
+- (id)_recordIDFromScopedIdentifier:(id)identifier cloudKitScope:(id *)scope error:(id *)error
 {
-  v8 = a3;
+  identifierCopy = identifier;
   scopeProvider = self->_scopeProvider;
-  v10 = [v8 scopeIdentifier];
-  v11 = [(CPLCloudKitScopeProvider *)scopeProvider cloudKitScopeForScopeIdentifier:v10];
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v11 = [(CPLCloudKitScopeProvider *)scopeProvider cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
   if (v11)
   {
-    v12 = [v8 identifier];
-    a5 = [v11 recordIDWithRecordName:v12];
+    identifier = [identifierCopy identifier];
+    error = [v11 recordIDWithRecordName:identifier];
 
     v13 = v11;
-    *a4 = v11;
+    *scope = v11;
   }
 
-  else if (a5)
+  else if (error)
   {
-    v14 = [v8 scopeIdentifier];
-    *a5 = [CPLErrors cplErrorWithCode:2001 description:@"Can't find CloudKit scope for %@", v14];
+    scopeIdentifier2 = [identifierCopy scopeIdentifier];
+    *error = [CPLErrors cplErrorWithCode:2001 description:@"Can't find CloudKit scope for %@", scopeIdentifier2];
 
-    a5 = 0;
+    error = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)a3 cloudKitScope:(id *)a4 error:(id *)a5
+- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)identifier cloudKitScope:(id *)scope error:(id *)error
 {
-  v9 = a3;
-  v10 = [(CPLRecordTargetMapping *)self->_targetMapping targetForRecordWithScopedIdentifier:v9];
+  identifierCopy = identifier;
+  v10 = [(CPLRecordTargetMapping *)self->_targetMapping targetForRecordWithScopedIdentifier:identifierCopy];
   if (!v10)
   {
-    sub_1001983A4(a2, self, v9);
+    sub_1001983A4(a2, self, identifierCopy);
   }
 
   v11 = v10;
-  v12 = [v10 resourceScopedIdentifier];
-  v13 = [(CPLSimpleCKRecordBuilder *)self _recordIDFromScopedIdentifier:v12 cloudKitScope:a4 error:a5];
+  resourceScopedIdentifier = [v10 resourceScopedIdentifier];
+  v13 = [(CPLSimpleCKRecordBuilder *)self _recordIDFromScopedIdentifier:resourceScopedIdentifier cloudKitScope:scope error:error];
 
   return v13;
 }
 
-- (void)setCKReferenceWithScopedIdentifier:(id)a3 forKey:(id)a4 referenceAction:(unint64_t)a5
+- (void)setCKReferenceWithScopedIdentifier:(id)identifier forKey:(id)key referenceAction:(unint64_t)action
 {
-  v16 = a3;
-  if (v16)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = a4;
+    keyCopy = key;
     v9 = [CKRecordID alloc];
-    v10 = [v16 identifier];
-    v11 = [(CKRecord *)self->_ckRecord recordID];
-    v12 = [v11 zoneID];
-    v13 = [v9 initWithRecordName:v10 zoneID:v12];
+    identifier = [identifierCopy identifier];
+    recordID = [(CKRecord *)self->_ckRecord recordID];
+    zoneID = [recordID zoneID];
+    keyCopy2 = [v9 initWithRecordName:identifier zoneID:zoneID];
 
-    v14 = [[CKReference alloc] initWithRecordID:v13 action:a5];
-    [(CKRecord *)self->_ckRecord setObject:v14 forKey:v8];
+    v14 = [[CKReference alloc] initWithRecordID:keyCopy2 action:action];
+    [(CKRecord *)self->_ckRecord setObject:v14 forKey:keyCopy];
   }
 
   else
   {
     ckRecord = self->_ckRecord;
-    v13 = a4;
-    [(CKRecord *)ckRecord setObject:0 forKey:v13];
+    keyCopy2 = key;
+    [(CKRecord *)ckRecord setObject:0 forKey:keyCopy2];
   }
 }
 
-- (void)requestRecordWithID:(id)a3 cloudKitScope:(id)a4 forKey:(id)a5 completionHandler:(id)a6
+- (void)requestRecordWithID:(id)d cloudKitScope:(id)scope forKey:(id)key completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  scopeCopy = scope;
+  keyCopy = key;
+  handlerCopy = handler;
   v15 = +[NSAssertionHandler currentHandler];
   v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/CloudKit/CPLCKRecordBuilder.m"];
   v17 = NSStringFromSelector(a2);

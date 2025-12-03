@@ -4,7 +4,7 @@
 - (BOOL)signpostBacktracesEnabled;
 - (BOOL)signpostEnabled;
 - (BOOL)signpostPersisted;
-- (OSLogPreferencesCategory)initWithName:(id)a3 subsystem:(id)a4;
+- (OSLogPreferencesCategory)initWithName:(id)name subsystem:(id)subsystem;
 - (int64_t)defaultEnabledLevel;
 - (int64_t)defaultPersistedLevel;
 - (int64_t)effectiveEnabledLevel;
@@ -12,8 +12,8 @@
 - (int64_t)enabledLevel;
 - (int64_t)persistedLevel;
 - (void)reset;
-- (void)setEnabledLevel:(int64_t)a3;
-- (void)setPersistedLevel:(int64_t)a3;
+- (void)setEnabledLevel:(int64_t)level;
+- (void)setPersistedLevel:(int64_t)level;
 @end
 
 @implementation OSLogPreferencesCategory
@@ -22,100 +22,100 @@
 {
   if (![(OSLogPreferencesCategory *)self isLocked])
   {
-    v4 = [(OSLogPreferencesCategory *)self subsystem];
-    v3 = [(OSLogPreferencesCategory *)self name];
-    [v4 _resetCategory:v3];
+    subsystem = [(OSLogPreferencesCategory *)self subsystem];
+    name = [(OSLogPreferencesCategory *)self name];
+    [subsystem _resetCategory:name];
   }
 }
 
-- (void)setPersistedLevel:(int64_t)a3
+- (void)setPersistedLevel:(int64_t)level
 {
   if (![(OSLogPreferencesCategory *)self isLocked])
   {
-    v6 = [(OSLogPreferencesCategory *)self subsystem];
-    v5 = [(OSLogPreferencesCategory *)self name];
-    [v6 _setPersistedLevel:a3 forCategory:v5];
+    subsystem = [(OSLogPreferencesCategory *)self subsystem];
+    name = [(OSLogPreferencesCategory *)self name];
+    [subsystem _setPersistedLevel:level forCategory:name];
   }
 }
 
-- (void)setEnabledLevel:(int64_t)a3
+- (void)setEnabledLevel:(int64_t)level
 {
   if (![(OSLogPreferencesCategory *)self isLocked])
   {
-    v6 = [(OSLogPreferencesCategory *)self subsystem];
-    v5 = [(OSLogPreferencesCategory *)self name];
-    [v6 _setEnabledLevel:a3 forCategory:v5];
+    subsystem = [(OSLogPreferencesCategory *)self subsystem];
+    name = [(OSLogPreferencesCategory *)self name];
+    [subsystem _setEnabledLevel:level forCategory:name];
   }
 }
 
 - (BOOL)signpostAllowStreaming
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _signpostAllowStreamingForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _signpostAllowStreamingForCategory:name];
 
   return v5;
 }
 
 - (BOOL)signpostBacktracesEnabled
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _signpostBacktracesEnabledForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _signpostBacktracesEnabledForCategory:name];
 
   return v5;
 }
 
 - (BOOL)signpostPersisted
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _signpostPersistedForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _signpostPersistedForCategory:name];
 
   return v5;
 }
 
 - (BOOL)signpostEnabled
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _signpostEnabledForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _signpostEnabledForCategory:name];
 
   return v5;
 }
 
 - (int64_t)persistedLevel
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _persistedLevelForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _persistedLevelForCategory:name];
 
   return v5;
 }
 
 - (int64_t)enabledLevel
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _enabledLevelForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _enabledLevelForCategory:name];
 
   return v5;
 }
 
 - (int64_t)defaultPersistedLevel
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _defaultPersistedLevelForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _defaultPersistedLevelForCategory:name];
 
   return v5;
 }
 
 - (int64_t)defaultEnabledLevel
 {
-  v3 = [(OSLogPreferencesCategory *)self subsystem];
-  v4 = [(OSLogPreferencesCategory *)self name];
-  v5 = [v3 _defaultEnabledLevelForCategory:v4];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  name = [(OSLogPreferencesCategory *)self name];
+  v5 = [subsystem _defaultEnabledLevelForCategory:name];
 
   return v5;
 }
@@ -128,10 +128,10 @@
     result = [(OSLogPreferencesCategory *)self defaultPersistedLevel];
     if (result == 1)
     {
-      v4 = [(OSLogPreferencesCategory *)self subsystem];
-      v5 = [v4 effectivePersistedLevel];
+      subsystem = [(OSLogPreferencesCategory *)self subsystem];
+      effectivePersistedLevel = [subsystem effectivePersistedLevel];
 
-      return v5;
+      return effectivePersistedLevel;
     }
   }
 
@@ -146,10 +146,10 @@
     result = [(OSLogPreferencesCategory *)self defaultEnabledLevel];
     if (result == 1)
     {
-      v4 = [(OSLogPreferencesCategory *)self subsystem];
-      v5 = [v4 effectiveEnabledLevel];
+      subsystem = [(OSLogPreferencesCategory *)self subsystem];
+      effectiveEnabledLevel = [subsystem effectiveEnabledLevel];
 
-      return v5;
+      return effectiveEnabledLevel;
     }
   }
 
@@ -158,26 +158,26 @@
 
 - (BOOL)isLocked
 {
-  v2 = [(OSLogPreferencesCategory *)self subsystem];
-  v3 = [v2 isLocked];
+  subsystem = [(OSLogPreferencesCategory *)self subsystem];
+  isLocked = [subsystem isLocked];
 
-  return v3;
+  return isLocked;
 }
 
-- (OSLogPreferencesCategory)initWithName:(id)a3 subsystem:(id)a4
+- (OSLogPreferencesCategory)initWithName:(id)name subsystem:(id)subsystem
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  subsystemCopy = subsystem;
   v12.receiver = self;
   v12.super_class = OSLogPreferencesCategory;
   v8 = [(OSLogPreferencesCategory *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_subsystem, a4);
+    objc_storeStrong(&v8->_subsystem, subsystem);
   }
 
   return v8;

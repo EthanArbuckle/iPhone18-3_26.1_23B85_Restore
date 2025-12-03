@@ -1,25 +1,25 @@
 @interface SWErrorManager
-- (SWErrorManager)initWithMessageHandlerManager:(id)a3 timeoutManager:(id)a4 logger:(id)a5;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
-- (void)reportError:(id)a3;
+- (SWErrorManager)initWithMessageHandlerManager:(id)manager timeoutManager:(id)timeoutManager logger:(id)logger;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
+- (void)reportError:(id)error;
 @end
 
 @implementation SWErrorManager
 
-- (SWErrorManager)initWithMessageHandlerManager:(id)a3 timeoutManager:(id)a4 logger:(id)a5
+- (SWErrorManager)initWithMessageHandlerManager:(id)manager timeoutManager:(id)timeoutManager logger:(id)logger
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  timeoutManagerCopy = timeoutManager;
+  loggerCopy = logger;
   v18.receiver = self;
   v18.super_class = SWErrorManager;
   v11 = [(SWErrorManager *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_logger, a5);
+    objc_storeStrong(&v11->_logger, logger);
     v13 = [SWWeakMessageHandler handlerWithMessageHandler:v12];
-    [v8 addMessageHandler:v13 name:@"failed"];
+    [managerCopy addMessageHandler:v13 name:@"failed"];
 
     objc_initWeak(&location, v12);
     v15[0] = MEMORY[0x1E69E9820];
@@ -27,7 +27,7 @@
     v15[2] = __70__SWErrorManager_initWithMessageHandlerManager_timeoutManager_logger___block_invoke;
     v15[3] = &unk_1E84DB2B8;
     objc_copyWeak(&v16, &location);
-    [v9 onTimeout:v15];
+    [timeoutManagerCopy onTimeout:v15];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
@@ -42,28 +42,28 @@ void __70__SWErrorManager_initWithMessageHandlerManager_timeoutManager_logger___
   [WeakRetained reportError:v1];
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
-  v5 = a3;
-  v15 = v5;
-  if (v5 && [v5 code] != -999)
+  errorCopy = error;
+  v15 = errorCopy;
+  if (errorCopy && [errorCopy code] != -999)
   {
-    objc_storeStrong(&self->_error, a3);
-    v7 = [(SWErrorManager *)self block];
+    objc_storeStrong(&self->_error, error);
+    block = [(SWErrorManager *)self block];
 
-    if (v7)
+    if (block)
     {
-      v8 = [(SWErrorManager *)self block];
-      v9 = [(SWErrorManager *)self error];
-      (v8)[2](v8, v9);
+      block2 = [(SWErrorManager *)self block];
+      error = [(SWErrorManager *)self error];
+      (block2)[2](block2, error);
     }
 
     error = [(SWErrorManager *)self logger];
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v15 code];
-    v12 = [v15 localizedDescription];
-    v13 = [v15 underlyingErrors];
-    v14 = [v10 stringWithFormat:@"Error with code: %lu description: %@ underlyingErrors: %@", v11, v12, v13];
+    code = [v15 code];
+    localizedDescription = [v15 localizedDescription];
+    underlyingErrors = [v15 underlyingErrors];
+    v14 = [v10 stringWithFormat:@"Error with code: %lu description: %@ underlyingErrors: %@", code, localizedDescription, underlyingErrors];
     [error logError:v14];
   }
 
@@ -74,26 +74,26 @@ void __70__SWErrorManager_initWithMessageHandlerManager_timeoutManager_logger___
   }
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 body];
-  v7 = [v6 objectForKey:@"errorCode"];
+  messageCopy = message;
+  body = [messageCopy body];
+  v7 = [body objectForKey:@"errorCode"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = -1;
+    integerValue = -1;
   }
 
-  v9 = [v5 body];
-  v10 = [v9 objectForKey:@"error"];
+  body2 = [messageCopy body];
+  v10 = [body2 objectForKey:@"error"];
 
   if (v10)
   {
@@ -107,7 +107,7 @@ void __70__SWErrorManager_initWithMessageHandlerManager_timeoutManager_logger___
     v11 = 0;
   }
 
-  v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"web_content" code:v8 userInfo:v11];
+  v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"web_content" code:integerValue userInfo:v11];
   [(SWErrorManager *)self reportError:v12];
 
   v13 = *MEMORY[0x1E69E9840];

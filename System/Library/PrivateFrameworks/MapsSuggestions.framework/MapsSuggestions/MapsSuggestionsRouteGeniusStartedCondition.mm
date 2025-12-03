@@ -6,7 +6,7 @@
 
 - (BOOL)isTrue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C529D90C();
 
   return v4;

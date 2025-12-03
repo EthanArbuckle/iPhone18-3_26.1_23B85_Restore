@@ -1,24 +1,24 @@
 @interface THBodyTextWrapController
-- (id)floatingDrawableLayoutsForTarget:(id)a3;
-- (unint64_t)zOrderOfDrawable:(id)a3 forTarget:(id)a4;
+- (id)floatingDrawableLayoutsForTarget:(id)target;
+- (unint64_t)zOrderOfDrawable:(id)drawable forTarget:(id)target;
 @end
 
 @implementation THBodyTextWrapController
 
-- (id)floatingDrawableLayoutsForTarget:(id)a3
+- (id)floatingDrawableLayoutsForTarget:(id)target
 {
   objc_opt_class();
-  v3 = [TSUDynamicCast() pageLayout];
+  pageLayout = [TSUDynamicCast() pageLayout];
 
-  return [v3 floatingDrawableLayouts];
+  return [pageLayout floatingDrawableLayouts];
 }
 
-- (unint64_t)zOrderOfDrawable:(id)a3 forTarget:(id)a4
+- (unint64_t)zOrderOfDrawable:(id)drawable forTarget:(id)target
 {
   objc_opt_class();
   v5 = [objc_msgSend(objc_msgSend(TSUDynamicCast() "parent")];
 
-  return [v5 zOrderOfDrawable:a3];
+  return [v5 zOrderOfDrawable:drawable];
 }
 
 @end

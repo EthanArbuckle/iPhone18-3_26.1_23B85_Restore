@@ -1,6 +1,6 @@
 @interface HVConsumptionContext
 - (BOOL)shouldContinue;
-- (HVConsumptionContext)initWithContent:(id)a3 contentProtection:(id)a4 scheduledTaskShouldContinueBlock:(id)a5;
+- (HVConsumptionContext)initWithContent:(id)content contentProtection:(id)protection scheduledTaskShouldContinueBlock:(id)block;
 - (id)_parseHtmlContentIfAvailable;
 - (id)description;
 @end
@@ -35,8 +35,8 @@
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   content = self->_content;
   v5 = objc_opt_class();
-  v6 = [(BMIdentifiableContentEvent *)self->_content uniqueId];
-  v7 = [v3 initWithFormat:@"<HVConsumptionContext c:%@ u:%@ p:%@>", v5, v6, self->_contentProtection];
+  uniqueId = [(BMIdentifiableContentEvent *)self->_content uniqueId];
+  v7 = [v3 initWithFormat:@"<HVConsumptionContext c:%@ u:%@ p:%@>", v5, uniqueId, self->_contentProtection];
 
   return v7;
 }
@@ -48,10 +48,10 @@
   if (objc_opt_isKindOfClass())
   {
     v4 = self->_content;
-    v5 = [(BMIdentifiableContentEvent *)v4 htmlContent];
-    if (v5)
+    htmlContent = [(BMIdentifiableContentEvent *)v4 htmlContent];
+    if (htmlContent)
     {
-      v6 = [[HVHtmlParser alloc] initWithData:v5 encoding:4];
+      v6 = [[HVHtmlParser alloc] initWithData:htmlContent encoding:4];
     }
 
     else
@@ -63,14 +63,14 @@
         _os_log_impl(&dword_2321EC000, v8, OS_LOG_TYPE_DEFAULT, "HVConsumptionContext<BMMailContentEvent>: unable to fetch HTML content, will parse plaintext converted to HTML", v12, 2u);
       }
 
-      v9 = [(BMIdentifiableContentEvent *)v4 textContent];
-      v10 = v9;
-      if (!v9)
+      textContent = [(BMIdentifiableContentEvent *)v4 textContent];
+      v10 = textContent;
+      if (!textContent)
       {
-        v9 = &stru_28474C1D0;
+        textContent = &stru_28474C1D0;
       }
 
-      v11 = [(__CFString *)v9 mutableCopy];
+      v11 = [(__CFString *)textContent mutableCopy];
 
       [v11 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:2 range:{0, objc_msgSend(v11, "length")}];
       [v11 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:2 range:{0, objc_msgSend(v11, "length")}];
@@ -87,20 +87,20 @@
   return v6;
 }
 
-- (HVConsumptionContext)initWithContent:(id)a3 contentProtection:(id)a4 scheduledTaskShouldContinueBlock:(id)a5
+- (HVConsumptionContext)initWithContent:(id)content contentProtection:(id)protection scheduledTaskShouldContinueBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contentCopy = content;
+  protectionCopy = protection;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = HVConsumptionContext;
   v12 = [(HVConsumptionContext *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_content, a3);
-    objc_storeStrong(&v13->_contentProtection, a4);
-    v14 = MEMORY[0x238381E60](v11);
+    objc_storeStrong(&v12->_content, content);
+    objc_storeStrong(&v13->_contentProtection, protection);
+    v14 = MEMORY[0x238381E60](blockCopy);
     scheduledTaskShouldContinueBlock = v13->_scheduledTaskShouldContinueBlock;
     v13->_scheduledTaskShouldContinueBlock = v14;
 

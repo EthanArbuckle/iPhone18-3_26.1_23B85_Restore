@@ -1,27 +1,27 @@
 @interface TRIExperimentTaskSupport
-- (TRIExperimentTaskSupport)initWithExperimentDeployment:(id)a3;
+- (TRIExperimentTaskSupport)initWithExperimentDeployment:(id)deployment;
 - (id)dimensions;
 - (id)metrics;
 - (id)tags;
 - (id)trialSystemTelemetry;
-- (void)addDimension:(id)a3;
-- (void)addMetric:(id)a3;
-- (void)mergeTelemetry:(id)a3;
-- (void)setIdentifyTelemetryAsV1Rollout:(BOOL)a3;
+- (void)addDimension:(id)dimension;
+- (void)addMetric:(id)metric;
+- (void)mergeTelemetry:(id)telemetry;
+- (void)setIdentifyTelemetryAsV1Rollout:(BOOL)rollout;
 @end
 
 @implementation TRIExperimentTaskSupport
 
-- (TRIExperimentTaskSupport)initWithExperimentDeployment:(id)a3
+- (TRIExperimentTaskSupport)initWithExperimentDeployment:(id)deployment
 {
-  v5 = a3;
+  deploymentCopy = deployment;
   v16.receiver = self;
   v16.super_class = TRIExperimentTaskSupport;
   v6 = [(TRIExperimentTaskSupport *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_experimentDeployment, a3);
+    objc_storeStrong(&v6->_experimentDeployment, deployment);
     v8 = objc_opt_new();
     v9 = *(v8 + 8);
     *(v8 + 8) = 0;
@@ -45,10 +45,10 @@
 - (id)tags
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [(TRIExperimentDeployment *)self->_experimentDeployment taskTag];
-  v8[0] = v3;
-  v4 = [(TRIExperimentDeployment *)self->_experimentDeployment experimentId];
-  v8[1] = v4;
+  taskTag = [(TRIExperimentDeployment *)self->_experimentDeployment taskTag];
+  v8[0] = taskTag;
+  experimentId = [(TRIExperimentDeployment *)self->_experimentDeployment experimentId];
+  v8[1] = experimentId;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -56,27 +56,27 @@
   return v5;
 }
 
-- (void)setIdentifyTelemetryAsV1Rollout:(BOOL)a3
+- (void)setIdentifyTelemetryAsV1Rollout:(BOOL)rollout
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__TRIExperimentTaskSupport_setIdentifyTelemetryAsV1Rollout___block_invoke;
   v4[3] = &__block_descriptor_33_e45_v16__0__TRIExperimentTaskSupportGuardedData_8l;
-  v5 = a3;
+  rolloutCopy = rollout;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__TRIExperimentTaskSupport_addMetric___block_invoke;
   v7[3] = &unk_279DE4F50;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricCopy;
+  v6 = metricCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -98,16 +98,16 @@ uint64_t __38__TRIExperimentTaskSupport_addMetric___block_invoke(uint64_t a1, vo
   return [v3 addObject:v8];
 }
 
-- (void)addDimension:(id)a3
+- (void)addDimension:(id)dimension
 {
-  v4 = a3;
+  dimensionCopy = dimension;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__TRIExperimentTaskSupport_addDimension___block_invoke;
   v7[3] = &unk_279DE4F50;
-  v8 = v4;
-  v6 = v4;
+  v8 = dimensionCopy;
+  v6 = dimensionCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -129,16 +129,16 @@ uint64_t __41__TRIExperimentTaskSupport_addDimension___block_invoke(uint64_t a1,
   return [v3 addObject:v8];
 }
 
-- (void)mergeTelemetry:(id)a3
+- (void)mergeTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__TRIExperimentTaskSupport_mergeTelemetry___block_invoke;
   v7[3] = &unk_279DE4F50;
-  v8 = v4;
-  v6 = v4;
+  v8 = telemetryCopy;
+  v6 = telemetryCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 

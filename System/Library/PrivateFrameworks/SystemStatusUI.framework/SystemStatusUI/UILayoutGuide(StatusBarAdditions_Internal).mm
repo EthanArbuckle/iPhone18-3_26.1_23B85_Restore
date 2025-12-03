@@ -9,30 +9,30 @@
 
 - (void)_ui_removeFromParentLayoutItem
 {
-  v2 = [a1 owningView];
-  [v2 removeLayoutGuide:a1];
+  owningView = [self owningView];
+  [owningView removeLayoutGuide:self];
 }
 
 - (void)_ui_addSubLayoutItem:()StatusBarAdditions_Internal
 {
   v4 = a3;
-  v5 = [a1 owningView];
-  [v4 _ui_addToView:v5 atIndex:-1];
+  owningView = [self owningView];
+  [v4 _ui_addToView:owningView atIndex:-1];
 }
 
 - (void)_ui_insertSubLayoutItem:()StatusBarAdditions_Internal atIndex:
 {
   v6 = a3;
-  v7 = [a1 owningView];
-  [v6 _ui_addToView:v7 atIndex:a4];
+  owningView = [self owningView];
+  [v6 _ui_addToView:owningView atIndex:a4];
 }
 
 - (id)traitCollection
 {
-  v1 = [a1 _ui_view];
-  v2 = [v1 traitCollection];
+  _ui_view = [self _ui_view];
+  traitCollection = [_ui_view traitCollection];
 
-  return v2;
+  return traitCollection;
 }
 
 @end

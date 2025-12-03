@@ -1,28 +1,28 @@
 @interface RadioGetGenreTreeNodesRequest
-- (RadioGetGenreTreeNodesRequest)initWithParentNodeID:(unint64_t)a3;
-- (id)_genreTreeByApplyingResponse:(id)a3;
-- (void)startWithCachedCompletionHandler:(id)a3 networkCompletionHandler:(id)a4;
-- (void)startWithCompletionHandler:(id)a3;
+- (RadioGetGenreTreeNodesRequest)initWithParentNodeID:(unint64_t)d;
+- (id)_genreTreeByApplyingResponse:(id)response;
+- (void)startWithCachedCompletionHandler:(id)handler networkCompletionHandler:(id)completionHandler;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation RadioGetGenreTreeNodesRequest
 
-- (id)_genreTreeByApplyingResponse:(id)a3
+- (id)_genreTreeByApplyingResponse:(id)response
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 radio_decompressedBodyData];
-  if ([v4 length])
+  radio_decompressedBodyData = [response radio_decompressedBodyData];
+  if ([radio_decompressedBodyData length])
   {
     v15 = 0;
     v16 = 0;
-    v5 = [v4 propertyListForRadioResponseReturningError:&v16 unparsedResponseDictionary:&v15];
+    v5 = [radio_decompressedBodyData propertyListForRadioResponseReturningError:&v16 unparsedResponseDictionary:&v15];
     v6 = v16;
     v7 = v15;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [objc_opt_class() responseContentKey];
-      v9 = [v5 objectForKey:v8];
+      responseContentKey = [objc_opt_class() responseContentKey];
+      v9 = [v5 objectForKey:responseContentKey];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -45,7 +45,7 @@
         *buf = 138412546;
         v18 = v6;
         v19 = 2112;
-        v20 = v4;
+        v20 = radio_decompressedBodyData;
         _os_log_impl(&dword_261792000, metricsConfiguration, OS_LOG_TYPE_ERROR, "Error: Unable to deserialize genre tree response (%@), data: %@", buf, 0x16u);
       }
 
@@ -66,19 +66,19 @@
   return v9;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RadioRequest *)self requestContext];
+  handlerCopy = handler;
+  requestContext = [(RadioRequest *)self requestContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__RadioGetGenreTreeNodesRequest_startWithCompletionHandler___block_invoke;
   v8[3] = &unk_279AEABD8;
-  v9 = v5;
-  v10 = v4;
+  v9 = requestContext;
+  v10 = handlerCopy;
   v8[4] = self;
-  v6 = v5;
-  v7 = v4;
+  v6 = requestContext;
+  v7 = handlerCopy;
   [(RadioRequest *)self _loadRadioStoreBagWithCompletionHandler:v8];
 }
 
@@ -347,18 +347,18 @@ void __60__RadioGetGenreTreeNodesRequest_startWithCompletionHandler___block_invo
   [v3 postNotificationName:@"RadioRequestDidFinishNotification" object:a1[6]];
 }
 
-- (void)startWithCachedCompletionHandler:(id)a3 networkCompletionHandler:(id)a4
+- (void)startWithCachedCompletionHandler:(id)handler networkCompletionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __91__RadioGetGenreTreeNodesRequest_startWithCachedCompletionHandler_networkCompletionHandler___block_invoke;
   v10[3] = &unk_279AEAAC0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = handlerCopy;
+  v12 = completionHandlerCopy;
+  v8 = completionHandlerCopy;
+  v9 = handlerCopy;
   [(RadioGetGenreTreeNodesRequest *)self startWithCompletionHandler:v10];
 }
 
@@ -379,14 +379,14 @@ void __91__RadioGetGenreTreeNodesRequest_startWithCachedCompletionHandler_networ
   }
 }
 
-- (RadioGetGenreTreeNodesRequest)initWithParentNodeID:(unint64_t)a3
+- (RadioGetGenreTreeNodesRequest)initWithParentNodeID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = RadioGetGenreTreeNodesRequest;
   result = [(RadioRequest *)&v5 init];
   if (result)
   {
-    result->_parentNodeID = a3;
+    result->_parentNodeID = d;
   }
 
   return result;

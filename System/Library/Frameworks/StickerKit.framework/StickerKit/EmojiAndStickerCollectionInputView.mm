@@ -1,33 +1,33 @@
 @interface EmojiAndStickerCollectionInputView
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (_TtC10StickerKit34EmojiAndStickerCollectionInputView)initWithFrame:(CGRect)a3;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (_TtC10StickerKit34EmojiAndStickerCollectionInputView)initWithFrame:(CGRect)frame;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dataSourceDidUpdate;
-- (void)handleLongPressWithGestureRecognizer:(id)a3;
-- (void)handleTapWithGestureRecognizer:(id)a3;
+- (void)handleLongPressWithGestureRecognizer:(id)recognizer;
+- (void)handleTapWithGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
 - (void)permissionsDidChange;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)updateToCategory:(int64_t)a3;
-- (void)updateToIndexPath:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)updateToCategory:(int64_t)category;
+- (void)updateToIndexPath:(id)path;
 @end
 
 @implementation EmojiAndStickerCollectionInputView
 
 - (void)dataSourceDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A67468C();
 }
 
 - (void)permissionsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A674F00();
 }
 
@@ -49,73 +49,73 @@
   }
 }
 
-- (void)updateToCategory:(int64_t)a3
+- (void)updateToCategory:(int64_t)category
 {
-  v4 = self;
-  sub_19A6779D8(a3);
+  selfCopy = self;
+  sub_19A6779D8(category);
 }
 
-- (void)updateToIndexPath:(id)a3
+- (void)updateToIndexPath:(id)path
 {
   v4 = sub_19A7A9094();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A9024();
-  v8 = self;
+  selfCopy = self;
   sub_19A67827C(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_19A678E34(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_19A678E34(event, x, y);
 
   return v10;
 }
 
-- (_TtC10StickerKit34EmojiAndStickerCollectionInputView)initWithFrame:(CGRect)a3
+- (_TtC10StickerKit34EmojiAndStickerCollectionInputView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)handleTapWithGestureRecognizer:(id)a3
+- (void)handleTapWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
+  recognizerCopy = recognizer;
+  selfCopy = self;
   sub_19A6807C8();
 }
 
-- (void)handleLongPressWithGestureRecognizer:(id)a3
+- (void)handleLongPressWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A67BC54(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_19A67BC54(recognizerCopy);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_19A7A9094();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A9024();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_19A6802FC(v13, v11);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_19A6802FC(cellCopy, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v6 = sub_19A7A9094();
   v7 = *(v6 - 8);
@@ -127,7 +127,7 @@
   if (v10)
   {
     v11 = *(v10 + OBJC_IVAR____TtC10StickerKit25StickerCollectionViewCell_stickerView);
-    v12 = a4;
+    cellCopy = cell;
     v13 = v11;
     sub_19A6C4E6C();
   }
@@ -135,7 +135,7 @@
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
   v7 = sub_19A7A9094();
   v8 = *(v7 - 8);
@@ -150,7 +150,7 @@
   sub_19A7A9024();
   sub_19A7A9024();
   sub_19A7A9024();
-  v20 = self;
+  selfCopy = self;
   v21 = sub_19A7A9064();
   if (sub_19A670300(v21))
   {
@@ -188,7 +188,7 @@
   return v26;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v4 = sub_19A7A9094();
   v5 = *(v4 - 8);
@@ -199,24 +199,24 @@
   return 0;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A67C9A4(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_19A67C9A4(scrollCopy);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickerKit34EmojiAndStickerCollectionInputView_isDraggingInputView) = 1;
-  v3 = self;
+  selfCopy = self;
   sub_19A677EBC();
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_19A6808C4();
 }
 

@@ -1,15 +1,15 @@
 @interface ClickabilityDetection
 - (_TtC15UIUnderstanding21ClickabilityDetection)init;
-- (_TtC15UIUnderstanding21ClickabilityDetection)initWithClickable:(BOOL)a3 clickType:(int64_t)a4 confidence:(double)a5;
+- (_TtC15UIUnderstanding21ClickabilityDetection)initWithClickable:(BOOL)clickable clickType:(int64_t)type confidence:(double)confidence;
 @end
 
 @implementation ClickabilityDetection
 
-- (_TtC15UIUnderstanding21ClickabilityDetection)initWithClickable:(BOOL)a3 clickType:(int64_t)a4 confidence:(double)a5
+- (_TtC15UIUnderstanding21ClickabilityDetection)initWithClickable:(BOOL)clickable clickType:(int64_t)type confidence:(double)confidence
 {
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding21ClickabilityDetection_clickable) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding21ClickabilityDetection_clickType) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding21ClickabilityDetection_confidence) = a5;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding21ClickabilityDetection_clickable) = clickable;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding21ClickabilityDetection_clickType) = type;
+  *(&self->super.isa + OBJC_IVAR____TtC15UIUnderstanding21ClickabilityDetection_confidence) = confidence;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ClickabilityDetection();
   return [(ClickabilityDetection *)&v6 init];

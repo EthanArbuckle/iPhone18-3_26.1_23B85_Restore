@@ -1,53 +1,53 @@
 @interface _UIIndexPathIdentityTracker
 - (_UIIndexPathIdentityTracker)init;
-- (id)_mappingIdentifierForSanitizedIndexPath:(uint64_t)a1;
-- (id)currentIndexPathForIdentifier:(uint64_t)a1;
-- (id)identifierForIndexPath:(uint64_t)a1;
-- (id)initWithCollectionView:(id *)a1;
-- (id)initWithTableView:(id *)a1;
-- (void)_identifierBasedUpdateWithUpdateItems:(uint64_t)a1;
-- (void)_manuallyUpdateWithUpdateItems:(uint64_t)a1;
+- (id)_mappingIdentifierForSanitizedIndexPath:(uint64_t)path;
+- (id)currentIndexPathForIdentifier:(uint64_t)identifier;
+- (id)identifierForIndexPath:(uint64_t)path;
+- (id)initWithCollectionView:(id *)view;
+- (id)initWithTableView:(id *)view;
+- (void)_identifierBasedUpdateWithUpdateItems:(uint64_t)items;
+- (void)_manuallyUpdateWithUpdateItems:(uint64_t)items;
 - (void)reset;
-- (void)updateWithUpdateItems:(uint64_t)a1;
+- (void)updateWithUpdateItems:(uint64_t)items;
 @end
 
 @implementation _UIIndexPathIdentityTracker
 
 - (void)reset
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (*(a1 + 40))
+  if (*(self + 40))
   {
     goto LABEL_3;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
 
   if (WeakRetained)
   {
-    v3 = objc_loadWeakRetained((a1 + 8));
-    v9 = [v3 dataSource];
+    v3 = objc_loadWeakRetained((self + 8));
+    dataSource = [v3 dataSource];
   }
 
   else
   {
-    v4 = objc_loadWeakRetained((a1 + 16));
+    v4 = objc_loadWeakRetained((self + 16));
 
     if (!v4)
     {
 LABEL_3:
-      v9 = 0;
+      dataSource = 0;
 LABEL_10:
       v6 = 0;
       goto LABEL_11;
     }
 
-    v5 = objc_loadWeakRetained((a1 + 16));
-    v9 = [v5 dataSource];
+    v5 = objc_loadWeakRetained((self + 16));
+    dataSource = [v5 dataSource];
   }
 
   objc_opt_class();
@@ -56,53 +56,53 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = v9;
+  v6 = dataSource;
 LABEL_11:
-  objc_storeStrong((a1 + 24), v6);
-  v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v8 = *(a1 + 32);
-  *(a1 + 32) = v7;
+  objc_storeStrong((self + 24), v6);
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  v8 = *(self + 32);
+  *(self + 32) = strongToStrongObjectsMapTable;
 }
 
-- (id)initWithTableView:(id *)a1
+- (id)initWithTableView:(id *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v6.receiver = a1;
+    v6.receiver = view;
     v6.super_class = _UIIndexPathIdentityTracker;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    view = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
-      [(_UIIndexPathIdentityTracker *)a1 reset];
+      [(_UIIndexPathIdentityTracker *)view reset];
     }
   }
 
-  return a1;
+  return view;
 }
 
-- (id)initWithCollectionView:(id *)a1
+- (id)initWithCollectionView:(id *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v6.receiver = a1;
+    v6.receiver = view;
     v6.super_class = _UIIndexPathIdentityTracker;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    view = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 2, v3);
-      [(_UIIndexPathIdentityTracker *)a1 reset];
+      [(_UIIndexPathIdentityTracker *)view reset];
     }
   }
 
-  return a1;
+  return view;
 }
 
-- (id)_mappingIdentifierForSanitizedIndexPath:(uint64_t)a1
+- (id)_mappingIdentifierForSanitizedIndexPath:(uint64_t)path
 {
   v3 = a2;
   v4 = v3;
@@ -114,7 +114,7 @@ LABEL_11:
     v14 = __Block_byref_object_copy__157;
     v15 = __Block_byref_object_dispose__157;
     v16 = 0;
-    v6 = *(a1 + 32);
+    v6 = *(path + 32);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __71___UIIndexPathIdentityTracker__mappingIdentifierForSanitizedIndexPath___block_invoke;
@@ -135,15 +135,15 @@ LABEL_11:
   return v5;
 }
 
-- (id)identifierForIndexPath:(uint64_t)a1
+- (id)identifierForIndexPath:(uint64_t)path
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (path)
   {
     v5 = _sanitizedIndexPath(v3);
 
-    v6 = [(_UIIndexPathIdentityTracker *)a1 _mappingIdentifierForSanitizedIndexPath:v5];
+    v6 = [(_UIIndexPathIdentityTracker *)path _mappingIdentifierForSanitizedIndexPath:v5];
     if (v6)
     {
       v7 = v6;
@@ -152,7 +152,7 @@ LABEL_11:
 
     else
     {
-      v8 = *(a1 + 24);
+      v8 = *(path + 24);
       v9 = v5;
       v4 = v9;
       if (v8)
@@ -176,7 +176,7 @@ LABEL_11:
 
       v7 = v10;
 
-      [*(a1 + 32) setObject:v4 forKey:v7];
+      [*(path + 32) setObject:v4 forKey:v7];
     }
   }
 
@@ -188,56 +188,56 @@ LABEL_11:
   return v7;
 }
 
-- (id)currentIndexPathForIdentifier:(uint64_t)a1
+- (id)currentIndexPathForIdentifier:(uint64_t)identifier
 {
   v4 = 0;
-  if (a1 && a2)
+  if (identifier && a2)
   {
-    v4 = [*(a1 + 32) objectForKey:a2];
+    v4 = [*(identifier + 32) objectForKey:a2];
     v2 = vars8;
   }
 
   return v4;
 }
 
-- (void)_identifierBasedUpdateWithUpdateItems:(uint64_t)a1
+- (void)_identifierBasedUpdateWithUpdateItems:(uint64_t)items
 {
   v3 = a2;
-  if (a1)
+  if (items)
   {
-    if (!*(a1 + 24))
+    if (!*(items + 24))
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel__identifierBasedUpdateWithUpdateItems_ object:a1 file:@"_UIIndexPathIdentityTracker.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"_identityBasedDataSource != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__identifierBasedUpdateWithUpdateItems_ object:items file:@"_UIIndexPathIdentityTracker.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"_identityBasedDataSource != nil"}];
     }
 
-    v4 = [*(a1 + 32) copy];
+    v4 = [*(items + 32) copy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __69___UIIndexPathIdentityTracker__identifierBasedUpdateWithUpdateItems___block_invoke;
     v6[3] = &unk_1E711B2E8;
-    v6[4] = a1;
+    v6[4] = items;
     _enumerateMapTableKeysAndObjectsUsingBlock(v4, v6);
   }
 }
 
-- (void)_manuallyUpdateWithUpdateItems:(uint64_t)a1
+- (void)_manuallyUpdateWithUpdateItems:(uint64_t)items
 {
   v55 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (items)
   {
-    if (*(a1 + 24))
+    if (*(items + 24))
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:sel__manuallyUpdateWithUpdateItems_ object:a1 file:@"_UIIndexPathIdentityTracker.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"_identityBasedDataSource == nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__manuallyUpdateWithUpdateItems_ object:items file:@"_UIIndexPathIdentityTracker.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"_identityBasedDataSource == nil"}];
     }
 
-    if ([*(a1 + 32) count])
+    if ([*(items + 32) count])
     {
       v35 = objc_opt_new();
       v36 = objc_opt_new();
-      v34 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
@@ -261,11 +261,11 @@ LABEL_11:
           }
 
           v9 = *(*(&v48 + 1) + 8 * i);
-          v10 = [v9 indexPathBeforeUpdate];
-          v11 = _sanitizedIndexPath(v10);
+          indexPathBeforeUpdate = [v9 indexPathBeforeUpdate];
+          v11 = _sanitizedIndexPath(indexPathBeforeUpdate);
 
-          v12 = [v9 indexPathAfterUpdate];
-          v13 = _sanitizedIndexPath(v12);
+          indexPathAfterUpdate = [v9 indexPathAfterUpdate];
+          v13 = _sanitizedIndexPath(indexPathAfterUpdate);
 
           if (!v9 || (v14 = v9[10]) == 0)
           {
@@ -290,10 +290,10 @@ LABEL_16:
 
           [v35 addObject:v11];
           [v36 addObject:v13];
-          v17 = [(_UIIndexPathIdentityTracker *)a1 _mappingIdentifierForSanitizedIndexPath:v11];
+          v17 = [(_UIIndexPathIdentityTracker *)items _mappingIdentifierForSanitizedIndexPath:v11];
           if (v17)
           {
-            [v34 setObject:v13 forKey:v17];
+            [strongToStrongObjectsMapTable setObject:v13 forKey:v17];
           }
 
 LABEL_20:
@@ -311,8 +311,8 @@ LABEL_22:
           v47 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v18 = [v35 reverseObjectEnumerator];
-          v19 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
+          reverseObjectEnumerator = [v35 reverseObjectEnumerator];
+          v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v44 objects:v53 count:16];
           if (v19)
           {
             v20 = v19;
@@ -323,21 +323,21 @@ LABEL_22:
               {
                 if (*v45 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 v23 = *(*(&v44 + 1) + 8 * j);
-                v24 = [*(a1 + 32) copy];
+                v24 = [*(items + 32) copy];
                 v43[0] = MEMORY[0x1E69E9820];
                 v43[1] = 3221225472;
                 v43[2] = __62___UIIndexPathIdentityTracker__manuallyUpdateWithUpdateItems___block_invoke;
                 v43[3] = &unk_1E711B310;
                 v43[4] = v23;
-                v43[5] = a1;
+                v43[5] = items;
                 _enumerateMapTableKeysAndObjectsUsingBlock(v24, v43);
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v44 objects:v53 count:16];
+              v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v44 objects:v53 count:16];
             }
 
             while (v20);
@@ -363,13 +363,13 @@ LABEL_22:
                 }
 
                 v30 = *(*(&v39 + 1) + 8 * k);
-                v31 = [*(a1 + 32) copy];
+                v31 = [*(items + 32) copy];
                 v38[0] = MEMORY[0x1E69E9820];
                 v38[1] = 3221225472;
                 v38[2] = __62___UIIndexPathIdentityTracker__manuallyUpdateWithUpdateItems___block_invoke_2;
                 v38[3] = &unk_1E711B310;
                 v38[4] = v30;
-                v38[5] = a1;
+                v38[5] = items;
                 _enumerateMapTableKeysAndObjectsUsingBlock(v31, v38);
               }
 
@@ -383,8 +383,8 @@ LABEL_22:
           v37[1] = 3221225472;
           v37[2] = __62___UIIndexPathIdentityTracker__manuallyUpdateWithUpdateItems___block_invoke_3;
           v37[3] = &unk_1E711B2E8;
-          v37[4] = a1;
-          _enumerateMapTableKeysAndObjectsUsingBlock(v34, v37);
+          v37[4] = items;
+          _enumerateMapTableKeysAndObjectsUsingBlock(strongToStrongObjectsMapTable, v37);
 
           v3 = v33;
           break;
@@ -394,21 +394,21 @@ LABEL_22:
   }
 }
 
-- (void)updateWithUpdateItems:(uint64_t)a1
+- (void)updateWithUpdateItems:(uint64_t)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
     v5 = v3;
-    if (*(a1 + 24))
+    if (*(items + 24))
     {
-      [(_UIIndexPathIdentityTracker *)a1 _identifierBasedUpdateWithUpdateItems:v3];
+      [(_UIIndexPathIdentityTracker *)items _identifierBasedUpdateWithUpdateItems:v3];
     }
 
     else
     {
-      [(_UIIndexPathIdentityTracker *)a1 _manuallyUpdateWithUpdateItems:v3];
+      [(_UIIndexPathIdentityTracker *)items _manuallyUpdateWithUpdateItems:v3];
     }
 
     v4 = v5;

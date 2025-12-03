@@ -1,12 +1,12 @@
 @interface PBMasterInfo
 - (PBMasterInfo)init;
-- (id)slideLayoutForSlideHolder:(id)a3;
-- (id)slideLayoutForXmlLayoutId:(unsigned __int16)a3;
+- (id)slideLayoutForSlideHolder:(id)holder;
+- (id)slideLayoutForXmlLayoutId:(unsigned __int16)id;
 - (id)uniqueXmlSlideLayout;
 - (void)cacheSlideLayouts;
-- (void)cacheTargetLayoutType:(int)a3;
+- (void)cacheTargetLayoutType:(int)type;
 - (void)dealloc;
-- (void)setSlideLayout:(id)a3 forXmlLayoutId:(unsigned __int16)a4;
+- (void)setSlideLayout:(id)layout forXmlLayoutId:(unsigned __int16)id;
 @end
 
 @implementation PBMasterInfo
@@ -56,21 +56,21 @@
   [(PBMasterInfo *)&v5 dealloc];
 }
 
-- (void)cacheTargetLayoutType:(int)a3
+- (void)cacheTargetLayoutType:(int)type
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&type];
   if ([(NSMutableArray *)self->mTgtSlideLayoutArray indexOfObject:?]== 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->mTgtSlideLayoutArray addObject:v4];
   }
 }
 
-- (id)slideLayoutForSlideHolder:(id)a3
+- (id)slideLayoutForSlideHolder:(id)holder
 {
-  v4 = a3;
-  if (![(PBMasterInfo *)self useXmlBlobs]|| (([(ESDContainer *)v4 firstChildOfType:1058], v5 = objc_claimAutoreleasedReturnValue(), Atom = ESDAtomAccess<PptRoundTripContentMasterIdAtom>::extractAtom(v5, 0), v5, !Atom) || (v7 = Atom[12], v7 != [(PBMasterInfo *)self xmlMainMasterId]) || ([(PBMasterInfo *)self slideLayoutForXmlLayoutId:*(Atom + 26)], (v8 = objc_claimAutoreleasedReturnValue()) == 0)) && (([(ESDContainer *)v4 firstChildOfType:1053], v9 = objc_claimAutoreleasedReturnValue(), v10 = ESDAtomAccess<PptRoundTripCompositeMasterIdAtom>::extractAtom(v9, 0), v9, !v10) || (v11 = v10[12], v11 != [(PBMasterInfo *)self xmlMainMasterId]) || ([(PBMasterInfo *)self uniqueXmlSlideLayout], (v8 = objc_claimAutoreleasedReturnValue()) == 0)))
+  holderCopy = holder;
+  if (![(PBMasterInfo *)self useXmlBlobs]|| (([(ESDContainer *)holderCopy firstChildOfType:1058], v5 = objc_claimAutoreleasedReturnValue(), Atom = ESDAtomAccess<PptRoundTripContentMasterIdAtom>::extractAtom(v5, 0), v5, !Atom) || (v7 = Atom[12], v7 != [(PBMasterInfo *)self xmlMainMasterId]) || ([(PBMasterInfo *)self slideLayoutForXmlLayoutId:*(Atom + 26)], (v8 = objc_claimAutoreleasedReturnValue()) == 0)) && (([(ESDContainer *)holderCopy firstChildOfType:1053], v9 = objc_claimAutoreleasedReturnValue(), v10 = ESDAtomAccess<PptRoundTripCompositeMasterIdAtom>::extractAtom(v9, 0), v9, !v10) || (v11 = v10[12], v11 != [(PBMasterInfo *)self xmlMainMasterId]) || ([(PBMasterInfo *)self uniqueXmlSlideLayout], (v8 = objc_claimAutoreleasedReturnValue()) == 0)))
   {
-    v12 = pdSlideLayoutTypeForPptSlideHolder(v4);
+    v12 = pdSlideLayoutTypeForPptSlideHolder(holderCopy);
     mLayoutMap = self->mLayoutMap;
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
     v8 = [(NSDictionary *)mLayoutMap objectForKeyedSubscript:v14];
@@ -79,19 +79,19 @@
   return v8;
 }
 
-- (void)setSlideLayout:(id)a3 forXmlLayoutId:(unsigned __int16)a4
+- (void)setSlideLayout:(id)layout forXmlLayoutId:(unsigned __int16)id
 {
-  v4 = a4;
-  v8 = a3;
+  idCopy = id;
+  layoutCopy = layout;
   mXmlLayoutMap = self->mXmlLayoutMap;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v4];
-  [(NSMutableDictionary *)mXmlLayoutMap setObject:v8 forKeyedSubscript:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:idCopy];
+  [(NSMutableDictionary *)mXmlLayoutMap setObject:layoutCopy forKeyedSubscript:v7];
 }
 
-- (id)slideLayoutForXmlLayoutId:(unsigned __int16)a3
+- (id)slideLayoutForXmlLayoutId:(unsigned __int16)id
 {
   mXmlLayoutMap = self->mXmlLayoutMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:id];
   v5 = [(NSMutableDictionary *)mXmlLayoutMap objectForKeyedSubscript:v4];
 
   return v5;
@@ -99,10 +99,10 @@
 
 - (id)uniqueXmlSlideLayout
 {
-  v3 = [(NSMutableDictionary *)self->mXmlLayoutMap allKeys];
+  allKeys = [(NSMutableDictionary *)self->mXmlLayoutMap allKeys];
   mXmlLayoutMap = self->mXmlLayoutMap;
-  v5 = [v3 firstObject];
-  v6 = [(NSMutableDictionary *)mXmlLayoutMap objectForKeyedSubscript:v5];
+  firstObject = [allKeys firstObject];
+  v6 = [(NSMutableDictionary *)mXmlLayoutMap objectForKeyedSubscript:firstObject];
 
   return v6;
 }

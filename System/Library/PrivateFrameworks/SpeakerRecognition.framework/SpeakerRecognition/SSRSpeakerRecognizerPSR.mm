@@ -1,11 +1,11 @@
 @interface SSRSpeakerRecognizerPSR
 - (NSDictionary)lastScoreCard;
 - (SSRSpeakerRecognizerDelegate)delegate;
-- (SSRSpeakerRecognizerPSR)initWithContext:(id)a3 delegate:(id)a4;
-- (void)_initializeWithContext:(id)a3;
+- (SSRSpeakerRecognizerPSR)initWithContext:(id)context delegate:(id)delegate;
+- (void)_initializeWithContext:(id)context;
 - (void)dealloc;
-- (void)voiceRecognitionPSRAnalyzer:(id)a3 hasVoiceRecognitionInfo:(id)a4;
-- (void)voiceRecognitionPSRAnalyzerFinishedProcessing:(id)a3 withVoiceRecognitionInfo:(id)a4;
+- (void)voiceRecognitionPSRAnalyzer:(id)analyzer hasVoiceRecognitionInfo:(id)info;
+- (void)voiceRecognitionPSRAnalyzerFinishedProcessing:(id)processing withVoiceRecognitionInfo:(id)info;
 @end
 
 @implementation SSRSpeakerRecognizerPSR
@@ -17,11 +17,11 @@
   return WeakRetained;
 }
 
-- (void)voiceRecognitionPSRAnalyzerFinishedProcessing:(id)a3 withVoiceRecognitionInfo:(id)a4
+- (void)voiceRecognitionPSRAnalyzerFinishedProcessing:(id)processing withVoiceRecognitionInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"sessionId"];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:@"sessionId"];
   if (v6 && ![(NSString *)self->_sessionId isEqualToString:v6])
   {
     v24 = *MEMORY[0x277D015C8];
@@ -32,11 +32,11 @@
 
     spIdCtx = self->_spIdCtx;
     v8 = v24;
-    v26 = [(SSRSpeakerRecognitionContext *)spIdCtx sessionId];
+    sessionId = [(SSRSpeakerRecognitionContext *)spIdCtx sessionId];
     v27 = 136315650;
     v28 = "[SSRSpeakerRecognizerPSR voiceRecognitionPSRAnalyzerFinishedProcessing:withVoiceRecognitionInfo:]";
     v29 = 2114;
-    v30 = v26;
+    v30 = sessionId;
     v31 = 2114;
     v32 = v6;
     _os_log_impl(&dword_225E12000, v8, OS_LOG_TYPE_DEFAULT, "%s Discarded ScoreCard for mismatch session - {%{public}@, %{public}@}", &v27, 0x20u);
@@ -44,7 +44,7 @@
 
   else
   {
-    v7 = [v5 objectForKeyedSubscript:@"psrContext"];
+    v7 = [infoCopy objectForKeyedSubscript:@"psrContext"];
     v8 = [v7 mutableCopy];
 
     extraSamplesAtStart = self->_extraSamplesAtStart;
@@ -61,7 +61,7 @@
     v18 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
     [v8 setObject:v18 forKey:@"tdEndInMs"];
 
-    v19 = [v5 mutableCopy];
+    v19 = [infoCopy mutableCopy];
     [(NSDictionary *)v19 setObject:v8 forKey:@"psrContext"];
     lastSpeakerInfo = self->_lastSpeakerInfo;
     self->_lastSpeakerInfo = v19;
@@ -75,11 +75,11 @@ LABEL_5:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)voiceRecognitionPSRAnalyzer:(id)a3 hasVoiceRecognitionInfo:(id)a4
+- (void)voiceRecognitionPSRAnalyzer:(id)analyzer hasVoiceRecognitionInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"sessionId"];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:@"sessionId"];
   if (v6 && ![(NSString *)self->_sessionId isEqualToString:v6])
   {
     v24 = *MEMORY[0x277D015C8];
@@ -90,11 +90,11 @@ LABEL_5:
 
     spIdCtx = self->_spIdCtx;
     v8 = v24;
-    v26 = [(SSRSpeakerRecognitionContext *)spIdCtx sessionId];
+    sessionId = [(SSRSpeakerRecognitionContext *)spIdCtx sessionId];
     v27 = 136315650;
     v28 = "[SSRSpeakerRecognizerPSR voiceRecognitionPSRAnalyzer:hasVoiceRecognitionInfo:]";
     v29 = 2114;
-    v30 = v26;
+    v30 = sessionId;
     v31 = 2114;
     v32 = v6;
     _os_log_impl(&dword_225E12000, v8, OS_LOG_TYPE_DEFAULT, "%s Discarded ScoreCard for mismatch session - {%{public}@, %{public}@}", &v27, 0x20u);
@@ -102,7 +102,7 @@ LABEL_5:
 
   else
   {
-    v7 = [v5 objectForKeyedSubscript:@"psrContext"];
+    v7 = [infoCopy objectForKeyedSubscript:@"psrContext"];
     v8 = [v7 mutableCopy];
 
     extraSamplesAtStart = self->_extraSamplesAtStart;
@@ -119,7 +119,7 @@ LABEL_5:
     v18 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
     [v8 setObject:v18 forKey:@"tdEndInMs"];
 
-    v19 = [v5 mutableCopy];
+    v19 = [infoCopy mutableCopy];
     [(NSDictionary *)v19 setObject:v8 forKey:@"psrContext"];
     lastSpeakerInfo = self->_lastSpeakerInfo;
     self->_lastSpeakerInfo = v19;
@@ -135,9 +135,9 @@ LABEL_5:
 
 - (NSDictionary)lastScoreCard
 {
-  v3 = [(SSRSpeakerAnalyzerPSR *)self->_psrAnalyzer getVoiceRecognizerResults];
+  getVoiceRecognizerResults = [(SSRSpeakerAnalyzerPSR *)self->_psrAnalyzer getVoiceRecognizerResults];
   lastSpeakerInfo = self->_lastSpeakerInfo;
-  self->_lastSpeakerInfo = v3;
+  self->_lastSpeakerInfo = getVoiceRecognizerResults;
 
   v5 = self->_lastSpeakerInfo;
 
@@ -161,13 +161,13 @@ LABEL_5:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_initializeWithContext:(id)a3
+- (void)_initializeWithContext:(id)context
 {
-  v16 = a3;
-  objc_storeStrong(&self->_spIdCtx, a3);
-  v5 = [(SSRSpeakerRecognitionContext *)self->_spIdCtx sessionId];
+  contextCopy = context;
+  objc_storeStrong(&self->_spIdCtx, context);
+  sessionId = [(SSRSpeakerRecognitionContext *)self->_spIdCtx sessionId];
   sessionId = self->_sessionId;
-  self->_sessionId = v5;
+  self->_sessionId = sessionId;
 
   self->_numSamplesProcessed = 0;
   self->_processingEnded = 0;
@@ -179,12 +179,12 @@ LABEL_5:
 
   if (![(SSRSpeakerRecognitionContext *)self->_spIdCtx recognitionStyle])
   {
-    v9 = [(SSRSpeakerRecognitionContext *)self->_spIdCtx vtEventInfo];
-    v10 = [v9 objectForKeyedSubscript:@"extraSamplesAtStart"];
+    vtEventInfo = [(SSRSpeakerRecognitionContext *)self->_spIdCtx vtEventInfo];
+    v10 = [vtEventInfo objectForKeyedSubscript:@"extraSamplesAtStart"];
     [v10 floatValue];
     self->_extraSamplesAtStart = v11;
 
-    v12 = [v9 objectForKeyedSubscript:@"triggerEndSeconds"];
+    v12 = [vtEventInfo objectForKeyedSubscript:@"triggerEndSeconds"];
     [v12 floatValue];
     v14 = v13;
 
@@ -193,11 +193,11 @@ LABEL_5:
   }
 }
 
-- (SSRSpeakerRecognizerPSR)initWithContext:(id)a3 delegate:(id)a4
+- (SSRSpeakerRecognizerPSR)initWithContext:(id)context delegate:(id)delegate
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = SSRSpeakerRecognizerPSR;
   v9 = [(SSRSpeakerRecognizerPSR *)&v25 init];
@@ -208,14 +208,14 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if ([v7 recognitionStyle] && objc_msgSend(v7, "recognitionStyle") != 1 && objc_msgSend(v7, "recognitionStyle") != 2)
+  if ([contextCopy recognitionStyle] && objc_msgSend(contextCopy, "recognitionStyle") != 1 && objc_msgSend(contextCopy, "recognitionStyle") != 2)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:v9 file:@"SSRSpeakerRecognizerPSR.m" lineNumber:54 description:{@"Incorrect ctx for VTSpeakerRecognizer: %@", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v9 file:@"SSRSpeakerRecognizerPSR.m" lineNumber:54 description:{@"Incorrect ctx for VTSpeakerRecognizer: %@", contextCopy}];
   }
 
-  [(SSRSpeakerRecognizerPSR *)v9 _initializeWithContext:v7];
-  objc_storeWeak(&v9->_delegate, v8);
+  [(SSRSpeakerRecognizerPSR *)v9 _initializeWithContext:contextCopy];
+  objc_storeWeak(&v9->_delegate, delegateCopy);
   v10 = [[SSRSpeakerAnalyzerPSR alloc] initWithVoiceRecognitionContext:v9->_spIdCtx delegate:v9];
   psrAnalyzer = v9->_psrAnalyzer;
   v9->_psrAnalyzer = v10;
@@ -228,8 +228,8 @@ LABEL_9:
     if (v14)
     {
       v15 = v13;
-      v16 = +[SSRUtils stringForInvocationStyle:](SSRUtils, "stringForInvocationStyle:", [v7 recognitionStyle]);
-      v17 = [(SSRSpeakerRecognitionContext *)v9->_spIdCtx sessionId];
+      v16 = +[SSRUtils stringForInvocationStyle:](SSRUtils, "stringForInvocationStyle:", [contextCopy recognitionStyle]);
+      sessionId = [(SSRSpeakerRecognitionContext *)v9->_spIdCtx sessionId];
       extraSamplesAtStart = v9->_extraSamplesAtStart;
       vtEndInSampleCount = v9->_vtEndInSampleCount;
       [MEMORY[0x277D016E0] inputRecordingSampleRate];
@@ -238,7 +238,7 @@ LABEL_9:
       v28 = 2112;
       v29 = v16;
       v30 = 2112;
-      v31 = v17;
+      v31 = sessionId;
       v32 = 2048;
       v33 = extraSamplesAtStart;
       v34 = 2048;

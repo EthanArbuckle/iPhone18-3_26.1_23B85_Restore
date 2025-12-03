@@ -6,7 +6,7 @@
 
 - (id)stringByTrimmingNotesJunk
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   v2 = [v1 rangeOfString:@"*~*~*~*~*~*~*~*~*~*"];
   if (v2 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -15,10 +15,10 @@
 
   if (!stringByTrimmingNotesJunk_nonWhitespaceSet)
   {
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [v4 invertedSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
     v6 = stringByTrimmingNotesJunk_nonWhitespaceSet;
-    stringByTrimmingNotesJunk_nonWhitespaceSet = v5;
+    stringByTrimmingNotesJunk_nonWhitespaceSet = invertedSet;
   }
 
   v7 = [v1 rangeOfCharacterFromSet:?];

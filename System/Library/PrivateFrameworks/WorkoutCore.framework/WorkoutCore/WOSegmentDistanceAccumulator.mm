@@ -1,14 +1,14 @@
 @interface WOSegmentDistanceAccumulator
 - (WOSegmentDistanceAccumulator)init;
-- (void)updateDistance:(double)a3;
+- (void)updateDistance:(double)distance;
 @end
 
 @implementation WOSegmentDistanceAccumulator
 
-- (void)updateDistance:(double)a3
+- (void)updateDistance:(double)distance
 {
-  *(&self->super.super.isa + OBJC_IVAR___WOSegmentDistanceAccumulator_lastReceivedDistance) = a3;
-  v3 = self;
+  *(&self->super.super.isa + OBJC_IVAR___WOSegmentDistanceAccumulator_lastReceivedDistance) = distance;
+  selfCopy = self;
   SegmentDistanceAccumulator._updateInternalQuantity()();
 }
 
@@ -16,8 +16,8 @@
 {
   *(&self->super.super.isa + OBJC_IVAR___WOSegmentDistanceAccumulator_segmentStartDistance) = 0;
   v3 = OBJC_IVAR___WOSegmentDistanceAccumulator_distance;
-  v4 = [objc_opt_self() meterUnit];
-  v5 = [objc_opt_self() quantityWithUnit:v4 doubleValue:0.0];
+  meterUnit = [objc_opt_self() meterUnit];
+  v5 = [objc_opt_self() quantityWithUnit:meterUnit doubleValue:0.0];
 
   *(&self->super.super.isa + v3) = v5;
   *(&self->super.super.isa + OBJC_IVAR___WOSegmentDistanceAccumulator_lastReceivedDistance) = 0;

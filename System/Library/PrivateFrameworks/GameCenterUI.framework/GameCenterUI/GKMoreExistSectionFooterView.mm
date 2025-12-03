@@ -1,16 +1,16 @@
 @interface GKMoreExistSectionFooterView
-- (GKMoreExistSectionFooterView)initWithFrame:(CGRect)a3;
+- (GKMoreExistSectionFooterView)initWithFrame:(CGRect)frame;
 - (NSString)text;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation GKMoreExistSectionFooterView
 
-- (GKMoreExistSectionFooterView)initWithFrame:(CGRect)a3
+- (GKMoreExistSectionFooterView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = GKMoreExistSectionFooterView;
-  v3 = [(GKMoreExistSectionFooterView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKMoreExistSectionFooterView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,10 +22,10 @@
     [(GKLabel *)v4->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GKLabel *)v4->_label setBackgroundColor:0];
     [(GKLabel *)v4->_label setOpaque:0];
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v12 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v13 = *MEMORY[0x277D0C258] & (*MEMORY[0x277D0C8F0] ^ 1);
     }
@@ -48,20 +48,20 @@
 
 - (NSString)text
 {
-  v2 = [(GKLabel *)self->_label attributedText];
-  v3 = [v2 string];
+  attributedText = [(GKLabel *)self->_label attributedText];
+  string = [attributedText string];
 
-  return v3;
+  return string;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4 = MEMORY[0x277D0C8B0];
-  v5 = a3;
-  v6 = [v4 textStyle];
-  v8 = [v6 tableFooterStyle];
+  textCopy = text;
+  textStyle = [v4 textStyle];
+  tableFooterStyle = [textStyle tableFooterStyle];
 
-  v7 = [v5 _gkAttributedStringByApplyingStyle:v8];
+  v7 = [textCopy _gkAttributedStringByApplyingStyle:tableFooterStyle];
 
   [(GKLabel *)self->_label setAttributedText:v7];
 }

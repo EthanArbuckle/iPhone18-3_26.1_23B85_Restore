@@ -1,15 +1,15 @@
 @interface PUIAdSupportController
 - (BOOL)personalizedAdsAvailable;
 - (BOOL)personalizedAdsConsented;
-- (id)personalizedAdsEnabled:(id)a3;
+- (id)personalizedAdsEnabled:(id)enabled;
 - (id)personalizedAdsSwitchEnabled;
 - (id)specifiers;
 - (void)provideNavigationDonations;
-- (void)setPersonalizedAdsEnabled:(id)a3 specifier:(id)a4;
-- (void)userDidTapAdPreferences:(id)a3;
-- (void)userDidTapLearnMoreLink:(id)a3;
-- (void)userTransparencyViewControllerDidLoad:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setPersonalizedAdsEnabled:(id)enabled specifier:(id)specifier;
+- (void)userDidTapAdPreferences:(id)preferences;
+- (void)userDidTapLearnMoreLink:(id)link;
+- (void)userTransparencyViewControllerDidLoad:(id)load;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PUIAdSupportController
@@ -20,18 +20,18 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PUIAdSupportController *)self adTrackingTransparency];
+    adTrackingTransparency = [(PUIAdSupportController *)self adTrackingTransparency];
 
-    if (!v5)
+    if (!adTrackingTransparency)
     {
       v6 = objc_opt_new();
       [(PUIAdSupportController *)self setAdTrackingTransparency:v6];
     }
 
     v7 = objc_opt_new();
-    v8 = [(PUIAdSupportController *)self personalizedAdsAvailable];
+    personalizedAdsAvailable = [(PUIAdSupportController *)self personalizedAdsAvailable];
     v9 = MEMORY[0x277D3FF50];
-    if (v8)
+    if (personalizedAdsAvailable)
     {
       v10 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"AD_PRIVACY_HEADER"];
       v11 = PUI_LocalizedStringForAdSupport(@"AD_PRIVACY_FOOTER_LINK");
@@ -80,12 +80,12 @@
     }
 
     v28 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"PERSONALIZED_ADS_GROUP"];
-    v29 = [(PUIAdSupportController *)self adTrackingTransparency];
-    v30 = [v29 shouldShowPersonalizedAdsToggle];
+    adTrackingTransparency2 = [(PUIAdSupportController *)self adTrackingTransparency];
+    shouldShowPersonalizedAdsToggle = [adTrackingTransparency2 shouldShowPersonalizedAdsToggle];
 
     if ([(PUIAdSupportController *)self personalizedAdsAvailable])
     {
-      if (!v30)
+      if (!shouldShowPersonalizedAdsToggle)
       {
         v44 = PUI_LocalizedStringForAdSupport(@"PERSONALIZED_ADS_NO_CONSENT");
         [v28 setObject:v44 forKeyedSubscript:*MEMORY[0x277D3FF88]];
@@ -121,7 +121,7 @@
 
       [v28 setObject:@"userDidTapLearnMoreLink:" forKeyedSubscript:*v9];
       [v7 addObject:v28];
-      if (!v30)
+      if (!shouldShowPersonalizedAdsToggle)
       {
 LABEL_12:
         v45 = *(&self->super.super.super.super.super.isa + v3);
@@ -137,8 +137,8 @@ LABEL_12:
     v42 = [v40 preferenceSpecifierNamed:v41 target:self set:sel_setPersonalizedAdsEnabled_specifier_ get:sel_personalizedAdsEnabled_ detail:0 cell:6 edit:0];
 
     [v42 setIdentifier:@"PERSONALIZED_ADS"];
-    v43 = [(PUIAdSupportController *)self personalizedAdsSwitchEnabled];
-    [v42 setObject:v43 forKeyedSubscript:*MEMORY[0x277D3FF38]];
+    personalizedAdsSwitchEnabled = [(PUIAdSupportController *)self personalizedAdsSwitchEnabled];
+    [v42 setObject:personalizedAdsSwitchEnabled forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
     [v7 addObject:v42];
     goto LABEL_12;
@@ -149,7 +149,7 @@ LABEL_13:
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = _PUILoggingFacility();
@@ -160,13 +160,13 @@ LABEL_13:
     _os_log_impl(&dword_2657FE000, v4, OS_LOG_TYPE_DEFAULT, "%s: started querying ad support state.", buf, 0xCu);
   }
 
-  v5 = [(PUIAdSupportController *)self adTrackingTransparency];
+  adTrackingTransparency = [(PUIAdSupportController *)self adTrackingTransparency];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__PUIAdSupportController_viewDidAppear___block_invoke;
   v12[3] = &unk_279BA1878;
   v12[4] = self;
-  [v5 personalizedAdsAvailable:v12];
+  [adTrackingTransparency personalizedAdsAvailable:v12];
 
   v6 = _PUILoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -176,16 +176,16 @@ LABEL_13:
     _os_log_impl(&dword_2657FE000, v6, OS_LOG_TYPE_DEFAULT, "%s: checking if we have a PA consent related change.", buf, 0xCu);
   }
 
-  v7 = [(PUIAdSupportController *)self adTrackingTransparency];
-  v8 = [v7 shouldShowPersonalizedAdsToggle];
+  adTrackingTransparency2 = [(PUIAdSupportController *)self adTrackingTransparency];
+  shouldShowPersonalizedAdsToggle = [adTrackingTransparency2 shouldShowPersonalizedAdsToggle];
 
-  if (v8 != [(PUIAdSupportController *)self personalizedAdsConsented])
+  if (shouldShowPersonalizedAdsToggle != [(PUIAdSupportController *)self personalizedAdsConsented])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__PUIAdSupportController_viewDidAppear___block_invoke_63;
     block[3] = &unk_279BA1850;
-    v11 = v8;
+    v11 = shouldShowPersonalizedAdsToggle;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -247,15 +247,15 @@ uint64_t __40__PUIAdSupportController_viewDidAppear___block_invoke_63(uint64_t a
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"ADVERTISING" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"ADVERTISING" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -267,16 +267,16 @@ uint64_t __40__PUIAdSupportController_viewDidAppear___block_invoke_63(uint64_t a
 
 - (BOOL)personalizedAdsAvailable
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PUIPersonalizedAdsSupported"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PUIPersonalizedAdsSupported"];
 
   return v3;
 }
 
 - (BOOL)personalizedAdsConsented
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PUIPersonalizedAdsConsented"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PUIPersonalizedAdsConsented"];
 
   return v3;
 }
@@ -284,78 +284,78 @@ uint64_t __40__PUIAdSupportController_viewDidAppear___block_invoke_63(uint64_t a
 - (id)personalizedAdsSwitchEnabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PUIAdSupportController *)self adTrackingTransparency];
-  if ([v4 personalizedAdsSwitchEnabled])
+  adTrackingTransparency = [(PUIAdSupportController *)self adTrackingTransparency];
+  if ([adTrackingTransparency personalizedAdsSwitchEnabled])
   {
-    v5 = [(PUIAdSupportController *)self personalizedAdsAvailable];
+    personalizedAdsAvailable = [(PUIAdSupportController *)self personalizedAdsAvailable];
   }
 
   else
   {
-    v5 = 0;
+    personalizedAdsAvailable = 0;
   }
 
-  v6 = [v3 numberWithInt:v5];
+  v6 = [v3 numberWithInt:personalizedAdsAvailable];
 
   return v6;
 }
 
-- (id)personalizedAdsEnabled:(id)a3
+- (id)personalizedAdsEnabled:(id)enabled
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(PUIAdSupportController *)self adTrackingTransparency];
-  if ([v5 personalizedAds])
+  adTrackingTransparency = [(PUIAdSupportController *)self adTrackingTransparency];
+  if ([adTrackingTransparency personalizedAds])
   {
-    v6 = [(PUIAdSupportController *)self personalizedAdsAvailable];
+    personalizedAdsAvailable = [(PUIAdSupportController *)self personalizedAdsAvailable];
   }
 
   else
   {
-    v6 = 0;
+    personalizedAdsAvailable = 0;
   }
 
-  v7 = [v4 numberWithInt:v6];
+  v7 = [v4 numberWithInt:personalizedAdsAvailable];
 
   return v7;
 }
 
-- (void)setPersonalizedAdsEnabled:(id)a3 specifier:(id)a4
+- (void)setPersonalizedAdsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [v5 BOOLValue];
+  enabledCopy = enabled;
+  [enabledCopy BOOLValue];
   ADClientSetValueForScalarKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v7 = [(PUIAdSupportController *)self adTrackingTransparency];
-  [v7 setPersonalizedAds:v6];
+  adTrackingTransparency = [(PUIAdSupportController *)self adTrackingTransparency];
+  [adTrackingTransparency setPersonalizedAds:bOOLValue];
 }
 
-- (void)userDidTapLearnMoreLink:(id)a3
+- (void)userDidTapLearnMoreLink:(id)link
 {
   v4 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.advertising"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)userDidTapAdPreferences:(id)a3
+- (void)userDidTapAdPreferences:(id)preferences
 {
   v4 = [objc_alloc(MEMORY[0x277D73640]) initWithUserTransparencyDetails:0];
   [(PUIAdSupportController *)self setUserTransparencyController:v4];
 
-  v5 = [(PUIAdSupportController *)self userTransparencyController];
-  [v5 setDelegate:self];
+  userTransparencyController = [(PUIAdSupportController *)self userTransparencyController];
+  [userTransparencyController setDelegate:self];
 }
 
-- (void)userTransparencyViewControllerDidLoad:(id)a3
+- (void)userTransparencyViewControllerDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__PUIAdSupportController_userTransparencyViewControllerDidLoad___block_invoke;
   v6[3] = &unk_279BA10B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = loadCopy;
+  v5 = loadCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

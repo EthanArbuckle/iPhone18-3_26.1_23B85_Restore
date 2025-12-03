@@ -1,14 +1,14 @@
 @interface _ECMessageBodyConsumableNewline
-- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)a3;
+- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)accumulator;
 @end
 
 @implementation _ECMessageBodyConsumableNewline
 
-- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)a3
+- (id)copyConsumableNodesAndAppendInnerTextToStringAccumulator:(id)accumulator
 {
-  if (([a3 isFull] & 1) == 0)
+  if (([accumulator isFull] & 1) == 0)
   {
-    [a3 appendNewline];
+    [accumulator appendNewline];
   }
 
   return 0;

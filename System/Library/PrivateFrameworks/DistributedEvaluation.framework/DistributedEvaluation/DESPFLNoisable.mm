@@ -1,17 +1,17 @@
 @interface DESPFLNoisable
-- (BOOL)isEqual:(id)a3;
-- (double)dataAtIndex:(unint64_t)a3;
-- (float)data32AtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)dataAtIndex:(unint64_t)index;
+- (float)data32AtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIteration:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIteration:(BOOL)iteration;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DESPFLNoisable
@@ -25,9 +25,9 @@
   [(DESPFLNoisable *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIteration:(BOOL)a3
+- (void)setHasIteration:(BOOL)iteration
 {
-  if (a3)
+  if (iteration)
   {
     v3 = 2;
   }
@@ -55,36 +55,36 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (double)dataAtIndex:(unint64_t)a3
+- (double)dataAtIndex:(unint64_t)index
 {
   p_datas = &self->_datas;
   count = self->_datas.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_datas->list[a3];
+  return p_datas->list[index];
 }
 
-- (float)data32AtIndex:(unint64_t)a3
+- (float)data32AtIndex:(unint64_t)index
 {
   p_data32s = &self->_data32s;
   count = self->_data32s.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_data32s->list[a3];
+  return p_data32s->list[index];
 }
 
 - (id)description
@@ -93,32 +93,32 @@
   v8.receiver = self;
   v8.super_class = DESPFLNoisable;
   v4 = [(DESPFLNoisable *)&v8 description];
-  v5 = [(DESPFLNoisable *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DESPFLNoisable *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   recipeId = self->_recipeId;
   if (recipeId)
   {
-    [v3 setObject:recipeId forKey:@"recipe_id"];
+    [dictionary setObject:recipeId forKey:@"recipe_id"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_iteration];
-    [v3 setObject:v7 forKey:@"iteration"];
+    [dictionary setObject:v7 forKey:@"iteration"];
 
     has = self->_has;
   }
@@ -126,34 +126,34 @@
   if (has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_weight];
-    [v3 setObject:v8 forKey:@"weight"];
+    [dictionary setObject:v8 forKey:@"weight"];
   }
 
   v9 = PBRepeatedDoubleNSArray();
-  [v3 setObject:v9 forKey:@"data"];
+  [dictionary setObject:v9 forKey:@"data"];
 
   v10 = PBRepeatedFloatNSArray();
-  [v3 setObject:v10 forKey:@"data32"];
+  [dictionary setObject:v10 forKey:@"data32"];
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   dataTransport = self->_dataTransport;
   if (dataTransport)
   {
-    v13 = [(DESDataTransport *)dataTransport dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"data_transport"];
+    dictionaryRepresentation = [(DESDataTransport *)dataTransport dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"data_transport"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     version = self->_version;
@@ -228,43 +228,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[24] = self->_version;
-    *(v4 + 100) |= 4u;
+    toCopy[24] = self->_version;
+    *(toCopy + 100) |= 4u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_recipeId)
   {
-    [v4 setRecipeId:?];
-    v4 = v13;
+    [toCopy setRecipeId:?];
+    toCopy = v13;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[18] = self->_iteration;
-    *(v4 + 100) |= 2u;
+    toCopy[18] = self->_iteration;
+    *(toCopy + 100) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 7) = *&self->_weight;
-    *(v4 + 100) |= 1u;
+    *(toCopy + 7) = *&self->_weight;
+    *(toCopy + 100) |= 1u;
   }
 
   if ([(DESPFLNoisable *)self datasCount])
   {
     [v13 clearDatas];
-    v6 = [(DESPFLNoisable *)self datasCount];
-    if (v6)
+    datasCount = [(DESPFLNoisable *)self datasCount];
+    if (datasCount)
     {
-      v7 = v6;
+      v7 = datasCount;
       for (i = 0; i != v7; ++i)
       {
         [(DESPFLNoisable *)self dataAtIndex:i];
@@ -276,10 +276,10 @@
   if ([(DESPFLNoisable *)self data32sCount])
   {
     [v13 clearData32s];
-    v9 = [(DESPFLNoisable *)self data32sCount];
-    if (v9)
+    data32sCount = [(DESPFLNoisable *)self data32sCount];
+    if (data32sCount)
     {
-      v10 = v9;
+      v10 = data32sCount;
       for (j = 0; j != v10; ++j)
       {
         [(DESPFLNoisable *)self data32AtIndex:j];
@@ -301,9 +301,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -311,7 +311,7 @@
     *(v5 + 100) |= 4u;
   }
 
-  v7 = [(NSString *)self->_recipeId copyWithZone:a3];
+  v7 = [(NSString *)self->_recipeId copyWithZone:zone];
   v8 = *(v6 + 80);
   *(v6 + 80) = v7;
 
@@ -331,42 +331,42 @@
 
   PBRepeatedDoubleCopy();
   PBRepeatedFloatCopy();
-  v10 = [(NSString *)self->_uuid copyWithZone:a3];
+  v10 = [(NSString *)self->_uuid copyWithZone:zone];
   v11 = *(v6 + 88);
   *(v6 + 88) = v10;
 
-  v12 = [(DESDataTransport *)self->_dataTransport copyWithZone:a3];
+  v12 = [(DESDataTransport *)self->_dataTransport copyWithZone:zone];
   v13 = *(v6 + 64);
   *(v6 + 64) = v12;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = *(v4 + 100);
+  v6 = *(equalCopy + 100);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_version != *(v4 + 24))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_version != *(equalCopy + 24))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   recipeId = self->_recipeId;
-  if (recipeId | *(v4 + 10))
+  if (recipeId | *(equalCopy + 10))
   {
     if (![(NSString *)recipeId isEqual:?])
     {
@@ -378,29 +378,29 @@ LABEL_26:
     has = self->_has;
   }
 
-  v8 = *(v4 + 100);
+  v8 = *(equalCopy + 100);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_iteration != *(v4 + 18))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_iteration != *(equalCopy + 18))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if (has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_weight != *(v4 + 7))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_weight != *(equalCopy + 7))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_26;
   }
@@ -416,7 +416,7 @@ LABEL_26:
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 11))
+  if (uuid | *(equalCopy + 11))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -425,7 +425,7 @@ LABEL_26:
   }
 
   dataTransport = self->_dataTransport;
-  if (dataTransport | *(v4 + 8))
+  if (dataTransport | *(equalCopy + 8))
   {
     v11 = [(DESDataTransport *)dataTransport isEqual:?];
   }
@@ -506,40 +506,40 @@ LABEL_12:
   return v15 ^ [(DESDataTransport *)self->_dataTransport hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 100) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 100) & 4) != 0)
   {
-    self->_version = *(v4 + 24);
+    self->_version = *(fromCopy + 24);
     *&self->_has |= 4u;
   }
 
-  v15 = v4;
-  if (*(v4 + 10))
+  v15 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(DESPFLNoisable *)self setRecipeId:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(fromCopy + 100);
   if ((v5 & 2) != 0)
   {
-    self->_iteration = *(v4 + 18);
+    self->_iteration = *(fromCopy + 18);
     *&self->_has |= 2u;
-    v5 = *(v4 + 100);
+    v5 = *(fromCopy + 100);
   }
 
   if (v5)
   {
-    self->_weight = *(v4 + 7);
+    self->_weight = *(fromCopy + 7);
     *&self->_has |= 1u;
   }
 
-  v6 = [v4 datasCount];
-  if (v6)
+  datasCount = [fromCopy datasCount];
+  if (datasCount)
   {
-    v7 = v6;
+    v7 = datasCount;
     for (i = 0; i != v7; ++i)
     {
       [v15 dataAtIndex:i];
@@ -547,10 +547,10 @@ LABEL_12:
     }
   }
 
-  v9 = [v15 data32sCount];
-  if (v9)
+  data32sCount = [v15 data32sCount];
+  if (data32sCount)
   {
-    v10 = v9;
+    v10 = data32sCount;
     for (j = 0; j != v10; ++j)
     {
       [v15 data32AtIndex:j];

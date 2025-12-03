@@ -1,8 +1,8 @@
 @interface LSSEventQueue
 - (LSSEventQueue)init;
-- (os_unfair_lock_s)lightSourceForTime:(os_unfair_lock_s *)a1;
-- (void)intervalForTime:(double)a3@<D0>;
-- (void)schedule:(uint64_t)a1;
+- (os_unfair_lock_s)lightSourceForTime:(os_unfair_lock_s *)time;
+- (void)intervalForTime:(double)time@<D0>;
+- (void)schedule:(uint64_t)schedule;
 @end
 
 @implementation LSSEventQueue
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (void)schedule:(uint64_t)a1
+- (void)schedule:(uint64_t)schedule
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (schedule)
   {
-    os_unfair_lock_lock((a1 + 16));
-    [(LSSSampleBuffer *)*(a1 + 8) removeStartingAt:?];
-    v4 = *(a1 + 8);
+    os_unfair_lock_lock((schedule + 16));
+    [(LSSSampleBuffer *)*(schedule + 8) removeStartingAt:?];
+    v4 = *(schedule + 8);
     v5 = *(a2 + 48);
     v9[2] = *(a2 + 32);
     v9[3] = v5;
@@ -40,13 +40,13 @@
     v9[0] = *a2;
     v9[1] = v7;
     [(LSSSampleBuffer *)v4 append:v9];
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((schedule + 16));
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)intervalForTime:(double)a3@<D0>
+- (void)intervalForTime:(double)time@<D0>
 {
   v14 = *MEMORY[0x277D85DE8];
   a2[11] = 0u;
@@ -62,10 +62,10 @@
   a2[1] = 0u;
   a2[2] = 0u;
   *a2 = 0u;
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 16));
-    [(LSSSampleBuffer *)*(a1 + 8) intervalContaining:v13, a3];
+    os_unfair_lock_lock((self + 16));
+    [(LSSSampleBuffer *)*(self + 8) intervalContaining:v13, time];
     v6 = v13[11];
     a2[10] = v13[10];
     a2[11] = v6;
@@ -85,23 +85,23 @@
     v11 = v13[1];
     *a2 = v13[0];
     a2[1] = v11;
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((self + 16));
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (os_unfair_lock_s)lightSourceForTime:(os_unfair_lock_s *)a1
+- (os_unfair_lock_s)lightSourceForTime:(os_unfair_lock_s *)time
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!time)
   {
     goto LABEL_4;
   }
 
-  v3 = a1;
-  os_unfair_lock_lock(a1 + 4);
-  [(LSSSampleBuffer *)*&v3[2]._os_unfair_lock_opaque intervalContaining:a2];
+  timeCopy = time;
+  os_unfair_lock_lock(time + 4);
+  [(LSSSampleBuffer *)*&timeCopy[2]._os_unfair_lock_opaque intervalContaining:a2];
   v24 = v36;
   v25 = v37;
   v26 = v38;
@@ -116,7 +116,7 @@
   v19 = v31;
   v4 = v40;
   v5 = v41;
-  os_unfair_lock_unlock(v3 + 4);
+  os_unfair_lock_unlock(timeCopy + 4);
   if (v4)
   {
     v14 = 0u;
@@ -147,17 +147,17 @@
     v33 = v15;
     v28 = v10;
     v29 = v11;
-    a1 = [(LSSLightSource *)v6 initWithSample:&v28];
+    time = [(LSSLightSource *)v6 initWithSample:&v28];
 LABEL_4:
     v7 = *MEMORY[0x277D85DE8];
     goto LABEL_5;
   }
 
-  a1 = 0;
+  time = 0;
   v9 = *MEMORY[0x277D85DE8];
 LABEL_5:
 
-  return a1;
+  return time;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface ICContentFairPlayKeySession
 - (NSString)id;
 - (NSString)keyStoreFilePath;
-- (void)processKeyWith:(id)a3 completion:(id)a4;
+- (void)processKeyWith:(id)with completion:(id)completion;
 - (void)renewKey;
-- (void)setBypassCache:(BOOL)a3;
-- (void)setKeyResponseData:(id)a3;
-- (void)stopAndInvalidateKeysWithCompletion:(id)a3;
+- (void)setBypassCache:(BOOL)cache;
+- (void)setKeyResponseData:(id)data;
+- (void)stopAndInvalidateKeysWithCompletion:(id)completion;
 @end
 
 @implementation ICContentFairPlayKeySession
@@ -20,10 +20,10 @@
   return v4;
 }
 
-- (void)setBypassCache:(BOOL)a3
+- (void)setBypassCache:(BOOL)cache
 {
   swift_beginAccess();
-  *(self + 40) = a3;
+  *(self + 40) = cache;
 
   v5 = sub_1D8EAE518();
   [v5 setBypassCache_];
@@ -40,7 +40,7 @@
       v3 = v2;
 
       swift_unknownObjectRetain();
-      v4 = [v3 filePath];
+      filePath = [v3 filePath];
       sub_1D917820C();
 
       swift_unknownObjectRelease();
@@ -59,17 +59,17 @@
   return v2;
 }
 
-- (void)setKeyResponseData:(id)a3
+- (void)setKeyResponseData:(id)data
 {
   swift_beginAccess();
   v5 = *(self + 6);
-  *(self + 6) = a3;
-  v6 = a3;
+  *(self + 6) = data;
+  dataCopy = data;
 }
 
-- (void)processKeyWith:(id)a3 completion:(id)a4
+- (void)processKeyWith:(id)with completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = (self + OBJC_IVAR____TtC18PodcastsFoundation27ICContentFairPlayKeySession_pendingProcessCompletion);
@@ -77,7 +77,7 @@
   v10 = *(self + OBJC_IVAR____TtC18PodcastsFoundation27ICContentFairPlayKeySession_pendingProcessCompletion + 8);
   *v8 = sub_1D8E8B5C0;
   v8[1] = v7;
-  v11 = a3;
+  withCopy = with;
 
   sub_1D8D15664(v9);
 
@@ -91,9 +91,9 @@
   ICContentFairPlayKeySession.renewKey()();
 }
 
-- (void)stopAndInvalidateKeysWithCompletion:(id)a3
+- (void)stopAndInvalidateKeysWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
 

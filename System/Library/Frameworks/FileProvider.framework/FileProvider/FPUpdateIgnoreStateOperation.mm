@@ -1,35 +1,35 @@
 @interface FPUpdateIgnoreStateOperation
-- (FPUpdateIgnoreStateOperation)initWithItems:(id)a3 ignoreState:(BOOL)a4 action:(id)a5;
-- (id)replicateForItems:(id)a3;
+- (FPUpdateIgnoreStateOperation)initWithItems:(id)items ignoreState:(BOOL)state action:(id)action;
+- (id)replicateForItems:(id)items;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPUpdateIgnoreStateOperation
 
-- (id)replicateForItems:(id)a3
+- (id)replicateForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [FPUpdateIgnoreStateOperation alloc];
   ignoreState = self->_ignoreState;
-  v7 = [(FPActionOperation *)self action];
-  v8 = [(FPUpdateIgnoreStateOperation *)v5 initWithItems:v4 ignoreState:ignoreState action:v7];
+  action = [(FPActionOperation *)self action];
+  v8 = [(FPUpdateIgnoreStateOperation *)v5 initWithItems:itemsCopy ignoreState:ignoreState action:action];
 
   return v8;
 }
 
-- (FPUpdateIgnoreStateOperation)initWithItems:(id)a3 ignoreState:(BOOL)a4 action:(id)a5
+- (FPUpdateIgnoreStateOperation)initWithItems:(id)items ignoreState:(BOOL)state action:(id)action
 {
-  v9 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = FPUpdateIgnoreStateOperation;
-  v10 = [(FPActionOperation *)&v13 initWithItemsOfDifferentProviders:v9 action:a5];
+  v10 = [(FPActionOperation *)&v13 initWithItemsOfDifferentProviders:itemsCopy action:action];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_items, a3);
-    v11->_ignoreState = a4;
+    objc_storeStrong(&v10->_items, items);
+    v11->_ignoreState = state;
     [(FPActionOperation *)v11 setSetupRemoteOperationService:1];
   }
 
@@ -38,33 +38,33 @@
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
+  stitcher2 = [(FPActionOperation *)self stitcher];
   items = self->_items;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__FPUpdateIgnoreStateOperation_presendNotifications__block_invoke;
   v7[3] = &unk_1E793CA10;
   v7[4] = self;
-  [v4 transformItems:items handler:v7];
+  [stitcher2 transformItems:items handler:v7];
 
-  v6 = [(FPActionOperation *)self stitcher];
-  [v6 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
 - (void)actionMain
 {
   v3 = [(NSArray *)self->_items fp_map:&__block_literal_global_525];
-  v4 = [(FPActionOperation *)self remoteServiceProxy];
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
   ignoreState = self->_ignoreState;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__FPUpdateIgnoreStateOperation_actionMain__block_invoke_2;
   v6[3] = &unk_1E793C408;
   v6[4] = self;
-  [v4 updateIgnoreStateOfItemWithIdentifiers:v3 ignoreState:ignoreState completionHandler:v6];
+  [remoteServiceProxy updateIgnoreStateOfItemWithIdentifiers:v3 ignoreState:ignoreState completionHandler:v6];
 }
 
 void __42__FPUpdateIgnoreStateOperation_actionMain__block_invoke_2(uint64_t a1, void *a2, void *a3, void *a4)
@@ -112,16 +112,16 @@ LABEL_8:
   }
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPActionOperation *)self stitcher];
-  [v8 finishWithItems:v7 error:v6];
+  errorCopy = error;
+  resultCopy = result;
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItems:resultCopy error:errorCopy];
 
   v9.receiver = self;
   v9.super_class = FPUpdateIgnoreStateOperation;
-  [(FPActionOperation *)&v9 finishWithResult:v7 error:v6];
+  [(FPActionOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
 void __42__FPUpdateIgnoreStateOperation_actionMain__block_invoke_2_cold_1(uint64_t a1)

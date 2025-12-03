@@ -1,14 +1,14 @@
 @interface VCMediaDeviceErrorUtils
-+ (id)mediaDeviceErrorEvent:(int64_t)a3 errorPath:(id)a4 returnCode:(int64_t)a5 reason:(id)a6;
++ (id)mediaDeviceErrorEvent:(int64_t)event errorPath:(id)path returnCode:(int64_t)code reason:(id)reason;
 @end
 
 @implementation VCMediaDeviceErrorUtils
 
-+ (id)mediaDeviceErrorEvent:(int64_t)a3 errorPath:(id)a4 returnCode:(int64_t)a5 reason:(id)a6
++ (id)mediaDeviceErrorEvent:(int64_t)event errorPath:(id)path returnCode:(int64_t)code reason:(id)reason
 {
-  if (a3 == 1)
+  if (event == 1)
   {
-    return [MEMORY[0x1E696ABC0] AVConferenceServiceError:32028 detailedCode:1 returnCode:a5 filePath:a4 description:@"Media device state transition failed" reason:a6];
+    return [MEMORY[0x1E696ABC0] AVConferenceServiceError:32028 detailedCode:1 returnCode:code filePath:path description:@"Media device state transition failed" reason:reason];
   }
 
   else

@@ -1,24 +1,24 @@
 @interface SBHomeGestureToStashedFloatingSwitcherModifier
 - (CGRect)containerViewBounds;
-- (SBHomeGestureToStashedFloatingSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toFloatingConfiguration:(int64_t)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
+- (SBHomeGestureToStashedFloatingSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toFloatingConfiguration:(int64_t)configuration;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
 - (double)_tongueScale;
 - (unint64_t)slideOverTongueDirection;
 @end
 
 @implementation SBHomeGestureToStashedFloatingSwitcherModifier
 
-- (SBHomeGestureToStashedFloatingSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toFloatingConfiguration:(int64_t)a5
+- (SBHomeGestureToStashedFloatingSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toFloatingConfiguration:(int64_t)configuration
 {
-  v9 = a4;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBHomeGestureToStashedFloatingSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v13 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fromAppLayout, a4);
-    v11->_floatingConfiguration = a5;
+    objc_storeStrong(&v10->_fromAppLayout, layout);
+    v11->_floatingConfiguration = configuration;
   }
 
   return v11;
@@ -36,9 +36,9 @@
   [(SBHomeGestureToStashedFloatingSwitcherModifier *)self _tongueScale];
   v12 = v11;
   floatingConfiguration = self->_floatingConfiguration;
-  v14 = [(SBHomeGestureToStashedFloatingSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBHomeGestureToStashedFloatingSwitcherModifier *)self isRTLEnabled];
   v15 = 3;
-  if (v14)
+  if (isRTLEnabled)
   {
     v15 = 4;
   }
@@ -51,9 +51,9 @@
   else
   {
     v16 = self->_floatingConfiguration;
-    v17 = [(SBHomeGestureToStashedFloatingSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled2 = [(SBHomeGestureToStashedFloatingSwitcherModifier *)self isRTLEnabled];
     v18 = 3;
-    if (!v17)
+    if (!isRTLEnabled2)
     {
       v18 = 4;
     }
@@ -84,10 +84,10 @@
   return 180.0 / v2;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v4 = [(SBHomeGestureToStashedFloatingSwitcherModifier *)self medusaSettings];
-  [v4 cornerRadiusForFloatingApps];
+  medusaSettings = [(SBHomeGestureToStashedFloatingSwitcherModifier *)self medusaSettings];
+  [medusaSettings cornerRadiusForFloatingApps];
   [(SBHomeGestureToStashedFloatingSwitcherModifier *)self _tongueScale];
   SBRectCornerRadiiForRadius();
   v6 = v5;

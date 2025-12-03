@@ -1,14 +1,14 @@
 @interface RemoteUIController
-- (void)registerPartsInfoViewWithComponentsMap:(id)a3;
+- (void)registerPartsInfoViewWithComponentsMap:(id)map;
 @end
 
 @implementation RemoteUIController
 
-- (void)registerPartsInfoViewWithComponentsMap:(id)a3
+- (void)registerPartsInfoViewWithComponentsMap:(id)map
 {
   v4 = sub_10000DBAC();
   v5 = qword_10001DEB0;
-  v6 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();

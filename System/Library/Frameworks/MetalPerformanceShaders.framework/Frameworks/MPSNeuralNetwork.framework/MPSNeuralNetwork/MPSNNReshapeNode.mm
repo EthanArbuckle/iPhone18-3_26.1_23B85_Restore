@@ -7,7 +7,7 @@
 
 + (MPSNNReshapeNode)nodeWithSource:(MPSNNImageNode *)source resultWidth:(NSUInteger)resultWidth resultHeight:(NSUInteger)resultHeight resultFeatureChannels:(NSUInteger)resultFeatureChannels
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSource_resultWidth_resultHeight_resultFeatureChannels_(v10, v11, source, resultWidth, resultHeight, resultFeatureChannels, v12, v13);
 
   return v14;

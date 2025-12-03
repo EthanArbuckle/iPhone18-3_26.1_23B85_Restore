@@ -1,18 +1,18 @@
 @interface RTMotionActivityManagerNotificationActivity
-- (RTMotionActivityManagerNotificationActivity)initWithActivity:(id)a3;
+- (RTMotionActivityManagerNotificationActivity)initWithActivity:(id)activity;
 @end
 
 @implementation RTMotionActivityManagerNotificationActivity
 
-- (RTMotionActivityManagerNotificationActivity)initWithActivity:(id)a3
+- (RTMotionActivityManagerNotificationActivity)initWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = RTMotionActivityManagerNotificationActivity;
   v5 = [(RTNotification *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [activityCopy copy];
     activity = v5->_activity;
     v5->_activity = v6;
   }

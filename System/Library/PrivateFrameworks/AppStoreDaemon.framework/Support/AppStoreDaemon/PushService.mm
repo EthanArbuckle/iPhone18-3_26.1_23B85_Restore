@@ -1,13 +1,13 @@
 @interface PushService
 - (PushService)init;
-- (id)pushPayload:(id)a3 metricsOverlayForType:(id)a4;
-- (void)_handleAccountDidChangeNotification:(id)a3;
+- (id)pushPayload:(id)payload metricsOverlayForType:(id)type;
+- (void)_handleAccountDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)handleSandboxAccountDidChangeNotification:(id)a3;
-- (void)pushConnection:(id)a3 didReceiveRawMessage:(id)a4;
-- (void)pushConnection:(id)a3 didReceiveToken:(id)a4 forTopic:(unint64_t)a5;
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4;
-- (void)testFlightConsumer:(id)a3 didChangeStatus:(BOOL)a4;
+- (void)handleSandboxAccountDidChangeNotification:(id)notification;
+- (void)pushConnection:(id)connection didReceiveRawMessage:(id)message;
+- (void)pushConnection:(id)connection didReceiveToken:(id)token forTopic:(unint64_t)topic;
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request;
+- (void)testFlightConsumer:(id)consumer didChangeStatus:(BOOL)status;
 @end
 
 @implementation PushService
@@ -79,11 +79,11 @@
   [(PushService *)&v4 dealloc];
 }
 
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request
 {
-  v6 = a4;
-  v7 = [a3 actionType];
-  v8 = [v7 isEqualToString:AMSPushActionTypeBadging];
+  requestCopy = request;
+  actionType = [payload actionType];
+  v8 = [actionType isEqualToString:AMSPushActionTypeBadging];
 
   if (v8)
   {
@@ -92,23 +92,23 @@
     block[1] = 3221225472;
     block[2] = sub_10033742C;
     block[3] = &unk_10051AF98;
-    v11 = v6;
+    v11 = requestCopy;
     dispatch_async(dispatchQueue, block);
   }
 }
 
-- (id)pushPayload:(id)a3 metricsOverlayForType:(id)a4
+- (id)pushPayload:(id)payload metricsOverlayForType:(id)type
 {
-  v5 = a3;
-  v6 = [v5 actionType];
-  if ([v6 isEqualToString:AMSPushActionTypeRichNotification])
+  payloadCopy = payload;
+  actionType = [payloadCopy actionType];
+  if ([actionType isEqualToString:AMSPushActionTypeRichNotification])
   {
   }
 
   else
   {
-    v7 = [v5 actionType];
-    v8 = [v7 isEqualToString:AMSPushActionTypeGenericNotification];
+    actionType2 = [payloadCopy actionType];
+    v8 = [actionType2 isEqualToString:AMSPushActionTypeGenericNotification];
 
     if (!v8)
     {
@@ -123,10 +123,10 @@
   {
     v11 = v9;
     v12 = +[BagService appstoredService];
-    v13 = [v12 amsBag];
+    amsBag = [v12 amsBag];
 
-    v14 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v11 bagNamespace:@"APPSTORE_ENGAGEMENT" bag:v13];
-    v15 = [AMSMetricsIdentifierStore identifierForAccount:v11 bag:v13 bagNamespace:@"APPSTORE_ENGAGEMENT_CLIENT" keyName:@"clientId"];
+    v14 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v11 bagNamespace:@"APPSTORE_ENGAGEMENT" bag:amsBag];
+    v15 = [AMSMetricsIdentifierStore identifierForAccount:v11 bag:amsBag bagNamespace:@"APPSTORE_ENGAGEMENT_CLIENT" keyName:@"clientId"];
 
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -147,8 +147,8 @@
   v19 = [v18 mutableCopy];
 
   v20 = +[BagService appstoredService];
-  v21 = [v20 lastBag];
-  v22 = [v21 stringForKey:@"metrics/topics/APPSTORE_NOTIFICATIONS_TOPIC"];
+  lastBag = [v20 lastBag];
+  v22 = [lastBag stringForKey:@"metrics/topics/APPSTORE_NOTIFICATIONS_TOPIC"];
   v23 = v22;
   v24 = @"xp_ase_messaging/appstore_notifications";
   if (v22)
@@ -164,17 +164,17 @@ LABEL_10:
   return v19;
 }
 
-- (void)pushConnection:(id)a3 didReceiveRawMessage:(id)a4
+- (void)pushConnection:(id)connection didReceiveRawMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  connectionCopy = connection;
+  messageCopy = message;
+  v8 = messageCopy;
+  if (!messageCopy)
   {
     goto LABEL_7;
   }
 
-  v9 = v7[1];
+  v9 = messageCopy[1];
   switch(v9)
   {
     case 1:
@@ -187,14 +187,14 @@ LABEL_10:
       }
 
 LABEL_10:
-      sub_100337854(self, v8, v6);
+      sub_100337854(self, v8, connectionCopy);
       goto LABEL_11;
     case 3:
       goto LABEL_10;
     case 2:
       if (self)
       {
-        [(PushServiceTestFlightConsumer *)self->_testFlightConsumer pushConnection:v6 didReceiveRawMessage:v7];
+        [(PushServiceTestFlightConsumer *)self->_testFlightConsumer pushConnection:connectionCopy didReceiveRawMessage:messageCopy];
       }
 
       goto LABEL_11;
@@ -222,22 +222,22 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)pushConnection:(id)a3 didReceiveToken:(id)a4 forTopic:(unint64_t)a5
+- (void)pushConnection:(id)connection didReceiveToken:(id)token forTopic:(unint64_t)topic
 {
-  if (a5 == 2)
+  if (topic == 2)
   {
-    [(PushServiceTestFlightConsumer *)self->_testFlightConsumer pushConnection:a3 didReceiveToken:a4 forTopic:?];
+    [(PushServiceTestFlightConsumer *)self->_testFlightConsumer pushConnection:connection didReceiveToken:token forTopic:?];
   }
 }
 
-- (void)testFlightConsumer:(id)a3 didChangeStatus:(BOOL)a4
+- (void)testFlightConsumer:(id)consumer didChangeStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = @"disabled";
-    if (v4)
+    if (statusCopy)
     {
       v7 = @"enabled";
     }
@@ -247,9 +247,9 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "TestFlight push service consumer changed status to: %{public}@", &v9, 0xCu);
   }
 
-  sub_1001D33C8(self->_connection, v4);
+  sub_1001D33C8(self->_connection, statusCopy);
   connection = self->_connection;
-  if (v4)
+  if (statusCopy)
   {
     sub_1001D3AAC(connection, 2);
   }
@@ -260,31 +260,31 @@ LABEL_11:
   }
 }
 
-- (void)_handleAccountDidChangeNotification:(id)a3
+- (void)_handleAccountDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003382C8;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)handleSandboxAccountDidChangeNotification:(id)a3
+- (void)handleSandboxAccountDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003384B4;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

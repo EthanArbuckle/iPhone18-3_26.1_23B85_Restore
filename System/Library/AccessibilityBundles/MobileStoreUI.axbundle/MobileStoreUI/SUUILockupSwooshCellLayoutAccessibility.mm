@@ -1,17 +1,17 @@
 @interface SUUILockupSwooshCellLayoutAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SUUILockupSwooshCellLayoutAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"price" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"artistName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUILockupSwooshCellLayout" hasInstanceMethod:@"price" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

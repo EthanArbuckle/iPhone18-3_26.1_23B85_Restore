@@ -6,10 +6,10 @@
 
 - (id)containingBundleIdentifier
 {
-  v1 = [a1 appBundle];
-  v2 = [v1 bundleIdentifier];
+  appBundle = [self appBundle];
+  bundleIdentifier = [appBundle bundleIdentifier];
 
-  return v2;
+  return bundleIdentifier;
 }
 
 @end

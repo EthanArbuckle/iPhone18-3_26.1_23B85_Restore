@@ -1,17 +1,17 @@
 @interface SBDismissSiriSwitcherModifier
-- (id)_eventResponseForGestureModifierEvent:(id)a3;
-- (id)handleGestureEvent:(id)a3;
+- (id)_eventResponseForGestureModifierEvent:(id)event;
+- (id)handleGestureEvent:(id)event;
 @end
 
 @implementation SBDismissSiriSwitcherModifier
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBDismissSiriSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleGestureEvent:v4];
-  v6 = [(SBDismissSiriSwitcherModifier *)self _eventResponseForGestureModifierEvent:v4, v10.receiver, v10.super_class];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleGestureEvent:eventCopy];
+  v6 = [(SBDismissSiriSwitcherModifier *)self _eventResponseForGestureModifierEvent:eventCopy, v10.receiver, v10.super_class];
 
   if (v6)
   {
@@ -28,13 +28,13 @@
   return v8;
 }
 
-- (id)_eventResponseForGestureModifierEvent:(id)a3
+- (id)_eventResponseForGestureModifierEvent:(id)event
 {
-  v3 = a3;
-  [v3 translationInContainerView];
+  eventCopy = event;
+  [eventCopy translationInContainerView];
   v5 = v4;
   v7 = v6;
-  [v3 velocityInContainerView];
+  [eventCopy velocityInContainerView];
   v9 = v8;
   v11 = v10;
 

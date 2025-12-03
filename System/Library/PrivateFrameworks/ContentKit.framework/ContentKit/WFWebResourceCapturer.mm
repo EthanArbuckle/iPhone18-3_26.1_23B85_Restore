@@ -1,23 +1,23 @@
 @interface WFWebResourceCapturer
-+ (void)getImageRepresentationForWebResource:(id)a3 atSize:(CGSize)a4 coercionOptions:(id)a5 completionHandler:(id)a6;
-+ (void)getPasteboardRepresentationForWebResource:(id)a3 type:(id)a4 coercionOptions:(id)a5 completionHandler:(id)a6;
-+ (void)getPrintFormatterForWebResource:(id)a3 coercionOptions:(id)a4 completionHandler:(id)a5;
-- (void)generatePDFForWebResource:(id)a3 includeMargin:(BOOL)a4 coercionOptions:(id)a5 completionHandler:(id)a6;
++ (void)getImageRepresentationForWebResource:(id)resource atSize:(CGSize)size coercionOptions:(id)options completionHandler:(id)handler;
++ (void)getPasteboardRepresentationForWebResource:(id)resource type:(id)type coercionOptions:(id)options completionHandler:(id)handler;
++ (void)getPrintFormatterForWebResource:(id)resource coercionOptions:(id)options completionHandler:(id)handler;
+- (void)generatePDFForWebResource:(id)resource includeMargin:(BOOL)margin coercionOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation WFWebResourceCapturer
 
-- (void)generatePDFForWebResource:(id)a3 includeMargin:(BOOL)a4 coercionOptions:(id)a5 completionHandler:(id)a6
+- (void)generatePDFForWebResource:(id)resource includeMargin:(BOOL)margin coercionOptions:(id)options completionHandler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __99__WFWebResourceCapturer_generatePDFForWebResource_includeMargin_coercionOptions_completionHandler___block_invoke;
   v11[3] = &unk_278347478;
-  v12 = v9;
-  v13 = a4;
-  v10 = v9;
-  [WFWebResourceCapturer getPrintFormatterForWebResource:a3 coercionOptions:a5 completionHandler:v11];
+  v12 = handlerCopy;
+  marginCopy = margin;
+  v10 = handlerCopy;
+  [WFWebResourceCapturer getPrintFormatterForWebResource:resource coercionOptions:options completionHandler:v11];
 }
 
 void __99__WFWebResourceCapturer_generatePDFForWebResource_includeMargin_coercionOptions_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -39,18 +39,18 @@ void __99__WFWebResourceCapturer_generatePDFForWebResource_includeMargin_coercio
   }
 }
 
-+ (void)getImageRepresentationForWebResource:(id)a3 atSize:(CGSize)a4 coercionOptions:(id)a5 completionHandler:(id)a6
++ (void)getImageRepresentationForWebResource:(id)resource atSize:(CGSize)size coercionOptions:(id)options completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a6;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __103__WFWebResourceCapturer_getImageRepresentationForWebResource_atSize_coercionOptions_completionHandler___block_invoke;
   v12[3] = &unk_278347450;
-  v13 = v10;
-  v11 = v10;
-  [WFWKWebViewCapturer loadWebResource:a3 withSize:0 configuration:a5 coercionOptions:v12 completionHandler:width, height];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [WFWKWebViewCapturer loadWebResource:resource withSize:0 configuration:options coercionOptions:v12 completionHandler:width, height];
 }
 
 void __103__WFWebResourceCapturer_getImageRepresentationForWebResource_atSize_coercionOptions_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -94,12 +94,12 @@ void __103__WFWebResourceCapturer_getImageRepresentationForWebResource_atSize_co
   }
 }
 
-+ (void)getPrintFormatterForWebResource:(id)a3 coercionOptions:(id)a4 completionHandler:(id)a5
++ (void)getPrintFormatterForWebResource:(id)resource coercionOptions:(id)options completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
   v10 = getWFContentGraphLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -119,44 +119,44 @@ void __103__WFWebResourceCapturer_getImageRepresentationForWebResource_atSize_co
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v7 file];
-    v16 = [v15 wfType];
-    v17 = [v16 conformsToTypes:v14];
+    file = [resourceCopy file];
+    wfType = [file wfType];
+    v17 = [wfType conformsToTypes:v14];
 
     if (v17)
     {
-      v29 = v8;
-      v18 = [v15 fileURL];
+      v29 = optionsCopy;
+      fileURL = [file fileURL];
       v34 = *MEMORY[0x277CBE868];
       v19 = v34;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-      v21 = [v18 resourceValuesForKeys:v20 error:0];
+      v21 = [fileURL resourceValuesForKeys:v20 error:0];
       v22 = [v21 objectForKey:v19];
-      v23 = [v22 BOOLValue];
+      bOOLValue = [v22 BOOLValue];
 
-      if (v23)
+      if (bOOLValue)
       {
-        v33 = v15;
+        v33 = file;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-        v25 = [v15 filename];
+        filename = [file filename];
         v32 = 0;
-        v26 = WFCreateArchiveWithFiles(v24, v25, @"zip", &v32);
+        v26 = WFCreateArchiveWithFiles(v24, filename, @"zip", &v32);
         v27 = v32;
 
         if (!v26)
         {
-          (*(v9 + 2))(v9, 0, 0, v27);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0, v27);
 
-          v8 = v29;
+          optionsCopy = v29;
           goto LABEL_11;
         }
 
         v28 = [WFWebResource webResourceWithFile:v26];
 
-        v7 = v28;
+        resourceCopy = v28;
       }
 
-      v8 = v29;
+      optionsCopy = v29;
     }
   }
 
@@ -164,9 +164,9 @@ void __103__WFWebResourceCapturer_getImageRepresentationForWebResource_atSize_co
   v30[1] = 3221225472;
   v30[2] = __91__WFWebResourceCapturer_getPrintFormatterForWebResource_coercionOptions_completionHandler___block_invoke;
   v30[3] = &unk_278347450;
-  v31 = v9;
-  [WFWKWebViewCapturer loadWebResource:v7 withSize:0 configuration:v8 coercionOptions:v30 completionHandler:612.0, 792.0];
-  v15 = v31;
+  v31 = handlerCopy;
+  [WFWKWebViewCapturer loadWebResource:resourceCopy withSize:0 configuration:optionsCopy coercionOptions:v30 completionHandler:612.0, 792.0];
+  file = v31;
 LABEL_11:
 }
 
@@ -192,14 +192,14 @@ void __91__WFWebResourceCapturer_getPrintFormatterForWebResource_coercionOptions
   }
 }
 
-+ (void)getPasteboardRepresentationForWebResource:(id)a3 type:(id)a4 coercionOptions:(id)a5 completionHandler:(id)a6
++ (void)getPasteboardRepresentationForWebResource:(id)resource type:(id)type coercionOptions:(id)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  resourceCopy = resource;
+  typeCopy = type;
+  optionsCopy = options;
+  handlerCopy = handler;
   v13 = [MEMORY[0x277D79F68] typeFromPasteboardType:*MEMORY[0x277D7A7E8]];
-  if (![v10 conformsToType:v13])
+  if (![typeCopy conformsToType:v13])
   {
 
     goto LABEL_5;
@@ -216,12 +216,12 @@ LABEL_5:
     v27 = &unk_2783481A8;
     v15 = &v29;
     v16 = &v28;
-    v28 = v10;
-    v29 = v12;
+    v28 = typeCopy;
+    v29 = handlerCopy;
     v17 = *MEMORY[0x277CBF3A8];
     v18 = *(MEMORY[0x277CBF3A8] + 8);
-    v22 = v10;
-    v23 = v12;
+    v22 = typeCopy;
+    v23 = handlerCopy;
     v21 = &v24;
     goto LABEL_6;
   }
@@ -232,15 +232,15 @@ LABEL_5:
   v30[3] = &unk_2783481A8;
   v15 = &v32;
   v16 = &v31;
-  v31 = v10;
-  v32 = v12;
+  v31 = typeCopy;
+  v32 = handlerCopy;
   v17 = *MEMORY[0x277CBF3A8];
   v18 = *(MEMORY[0x277CBF3A8] + 8);
-  v19 = v10;
-  v20 = v12;
+  v19 = typeCopy;
+  v20 = handlerCopy;
   v21 = v30;
 LABEL_6:
-  [WFWKWebViewCapturer loadWebResource:v9 withSize:0 configuration:v11 coercionOptions:v21 completionHandler:v17, v18, v24, v25, v26, v27];
+  [WFWKWebViewCapturer loadWebResource:resourceCopy withSize:0 configuration:optionsCopy coercionOptions:v21 completionHandler:v17, v18, v24, v25, v26, v27];
 }
 
 void __106__WFWebResourceCapturer_getPasteboardRepresentationForWebResource_type_coercionOptions_completionHandler___block_invoke(uint64_t a1, void *a2)

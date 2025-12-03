@@ -26,16 +26,16 @@
   v16 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v1, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v1, *MEMORY[0x1E695E0C8]);
   }
 
   v3 = [objc_allocWithZone(NSMutableString) init];
-  objc_msgSend(v3, "appendFormat:", @"<%@ %p>(\n"), objc_opt_class(), a1;
+  objc_msgSend(v3, "appendFormat:", @"<%@ %p>(\n"), objc_opt_class(), self;
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v4 = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,7 +48,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -63,7 +63,7 @@
       }
 
       while (v5 != v8);
-      v5 = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v5 = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v5);
@@ -78,7 +78,7 @@
   v31 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0C8]);
   }
 
   if ([a3 allowsKeyedCoding])
@@ -86,13 +86,13 @@
     Class = object_getClass(a3);
     if (Class == NSKeyedArchiver)
     {
-      return [a3 _encodeArrayOfObjects:a1 forKey:@"NS.objects"];
+      return [a3 _encodeArrayOfObjects:self forKey:@"NS.objects"];
     }
 
     v8 = Class;
     if (Class == NSXPCEncoder)
     {
-      return [a3 _encodeArrayOfObjects:a1 forKey:@"NS.objects"];
+      return [a3 _encodeArrayOfObjects:self forKey:@"NS.objects"];
     }
 
     if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -113,7 +113,7 @@
     MethodImplementation = class_getMethodImplementation(v8, sel_encodeObject_forKey_);
     if (MethodImplementation == _MergedGlobals_91 || MethodImplementation == qword_1ED43F548)
     {
-      return [a3 _encodeArrayOfObjects:a1 forKey:@"NS.objects"];
+      return [a3 _encodeArrayOfObjects:self forKey:@"NS.objects"];
     }
 
     else
@@ -123,7 +123,7 @@ LABEL_12:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      result = [a1 countByEnumeratingWithState:&v22 objects:v21 count:16];
+      result = [self countByEnumeratingWithState:&v22 objects:v21 count:16];
       if (result)
       {
         v11 = result;
@@ -136,14 +136,14 @@ LABEL_12:
           {
             if (*v23 != v13)
             {
-              objc_enumerationMutation(a1);
+              objc_enumerationMutation(self);
             }
 
             [a3 encodeObject:*(*(&v22 + 1) + 8 * v14++) forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object.%ld", v12++)}];
           }
 
           while (v11 != v14);
-          result = [a1 countByEnumeratingWithState:&v22 objects:v21 count:16];
+          result = [self countByEnumeratingWithState:&v22 objects:v21 count:16];
           v11 = result;
         }
 
@@ -154,10 +154,10 @@ LABEL_12:
 
   else
   {
-    v15 = [a1 count];
+    v15 = [self count];
     if (v15 >> 29)
     {
-      return [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: array count (%lu) makes array too large to fit in non-keyed archive", _NSMethodExceptionProem(a1, a2), v15}];
+      return [a3 __failWithExceptionName:@"NSArchiverArchiveInconsistency" errorCode:4864 format:{@"%@: array count (%lu) makes array too large to fit in non-keyed archive", _NSMethodExceptionProem(self, a2), v15}];
     }
 
     else
@@ -168,7 +168,7 @@ LABEL_12:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      result = [a1 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      result = [self countByEnumeratingWithState:&v27 objects:v26 count:16];
       if (result)
       {
         v16 = result;
@@ -180,14 +180,14 @@ LABEL_12:
           {
             if (*v28 != v17)
             {
-              objc_enumerationMutation(a1);
+              objc_enumerationMutation(self);
             }
 
             [a3 encodeBycopyObject:*(*(&v27 + 1) + 8 * v18++)];
           }
 
           while (v16 != v18);
-          result = [a1 countByEnumeratingWithState:&v27 objects:v26 count:16];
+          result = [self countByEnumeratingWithState:&v27 objects:v26 count:16];
           v16 = result;
         }
 
@@ -222,7 +222,7 @@ LABEL_12:
       if (!v9)
       {
 LABEL_15:
-        v16 = [a1 initWithObjects:v12 count:{v9, v10}];
+        v16 = [self initWithObjects:v12 count:{v9, v10}];
         for (i = 8 * v9; i; i -= 8)
         {
           v18 = *&v12[i - 8];
@@ -252,10 +252,10 @@ LABEL_15:
     if (v6)
     {
 
-      return [a1 initWithArray:v6];
+      return [self initWithArray:v6];
     }
 
-    a1 = 0;
+    self = 0;
   }
 
   v19 = NSAllocateObjectArray(0x80uLL);
@@ -286,7 +286,7 @@ LABEL_25:
     v24 = [NSString stringWithFormat:@"NS.object.%ld", v21];
     if (![a3 containsValueForKey:v24])
     {
-      v16 = [a1 initWithObjects:v20 count:v21];
+      v16 = [self initWithObjects:v20 count:v21];
       goto LABEL_32;
     }
 
@@ -301,7 +301,7 @@ LABEL_25:
   }
 
   v28 = @"NSLocalizedDescription";
-  v29[0] = [NSString stringWithFormat:@"%@: array is too large to unarchive (%qd)", _NSMethodExceptionProem(a1, a2), v22];
+  v29[0] = [NSString stringWithFormat:@"%@: array is too large to unarchive (%qd)", _NSMethodExceptionProem(self, a2), v22];
   [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v29, &v28, 1))}];
 LABEL_31:
   v16 = 0;
@@ -313,13 +313,13 @@ LABEL_32:
 - (uint64_t)sortedArrayHint
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = 4 * [a1 count];
+  v2 = 4 * [self count];
   v3 = malloc_type_malloc(v2, 0x100004077774924uLL);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v4 = [self countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -332,14 +332,14 @@ LABEL_32:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         *v7++ = [*(*(&v11 + 1) + 8 * v8++) hash];
       }
 
       while (v5 != v8);
-      v5 = [a1 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [self countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v5);
@@ -352,31 +352,31 @@ LABEL_32:
 {
   if (!a3)
   {
-    v37 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: compare function pointer is NULL", _NSMethodExceptionProem(a1, a2)), 0}];
+    v37 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: compare function pointer is NULL", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v37);
   }
 
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v5, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v5, *MEMORY[0x1E695E0C8]);
   }
 
   v8 = [a5 length];
   v9 = v8 >> 2;
-  v10 = [(objc_class *)a1 count];
+  v10 = [(objc_class *)self count];
   v11 = NSAllocateObjectArray(2 * v10 + (v8 >> 2));
   bzero(v11, v8 & 0xFFFFFFFFFFFFFFFCLL);
   v12 = &v11[8 * (v8 >> 2)];
-  [(objc_class *)a1 getObjects:v12 range:0, v10];
+  [(objc_class *)self getObjects:v12 range:0, v10];
   v13 = (v8 & 0xFFFFFFFFFFFFFFFCLL) + 13;
   v14 = malloc_type_calloc(v13, 0x10uLL, 0x100004000313F17uLL);
-  v15 = [a5 bytes];
+  bytes = [a5 bytes];
   if (v8 >= 4)
   {
     v16 = 0;
     do
     {
-      v18 = *v15++;
+      v18 = *bytes++;
       v17 = v18;
       v19 = -8;
       v20 = v18;
@@ -480,35 +480,35 @@ LABEL_23:
 {
   if (!a3)
   {
-    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: compare selector is 0", _NSMethodExceptionProem(a1, a2)), 0}];
+    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: compare selector is 0", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v9);
   }
 
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0C8]);
   }
 
-  return [(objc_class *)a1 sortedArrayUsingFunction:_NSUseParamAsSortSelector context:a3 hint:a4];
+  return [(objc_class *)self sortedArrayUsingFunction:_NSUseParamAsSortSelector context:a3 hint:a4];
 }
 
 + (id)arrayWithContentsOfFile:()NSArray
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfFile:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfFile:a3];
 
   return v3;
 }
 
 + (id)arrayWithContentsOfURL:()NSArray
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfURL:a3];
+  v3 = [objc_allocWithZone(self) initWithContentsOfURL:a3];
 
   return v3;
 }
 
 + (id)arrayWithContentsOfURL:()NSArray error:
 {
-  v4 = [objc_allocWithZone(a1) initWithContentsOfURL:a3 error:a4];
+  v4 = [objc_allocWithZone(self) initWithContentsOfURL:a3 error:a4];
 
   return v4;
 }
@@ -635,7 +635,7 @@ LABEL_9:
 
 - (uint64_t)_stringToWrite
 {
-  v1 = [a1 descriptionWithLocale:0 indent:0];
+  v1 = [self descriptionWithLocale:0 indent:0];
   if ([v1 hasSuffix:@"\n"])
   {
     return v1;
@@ -648,11 +648,11 @@ LABEL_9:
 {
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0C8]);
   }
 
   v8 = objc_autoreleasePoolPush();
-  if (_NSIsPList(a1, 1, [MEMORY[0x1E695DFA8] set]) == 3)
+  if (_NSIsPList(self, 1, [MEMORY[0x1E695DFA8] set]) == 3)
   {
     if ((dyld_program_sdk_at_least() & 1) != 0 || ![objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")])
     {
@@ -661,7 +661,7 @@ LABEL_9:
 
     else
     {
-      v9 = [objc_msgSend(a1 "_stringToWrite")];
+      v9 = [objc_msgSend(self "_stringToWrite")];
     }
 
     v10 = v9;
@@ -681,7 +681,7 @@ LABEL_9:
   v13[1] = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0C8]);
     if (!a3)
     {
       return 0;
@@ -695,7 +695,7 @@ LABEL_9:
 
   v13[0] = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [NSPropertyListSerialization dataWithPropertyList:a1 format:100 options:0 error:v13];
+  v9 = [NSPropertyListSerialization dataWithPropertyList:self format:100 options:0 error:v13];
   if (v9 && [(NSData *)v9 writeToURL:a3 options:a4 error:v13])
   {
     objc_autoreleasePoolPop(v8);
@@ -713,12 +713,12 @@ LABEL_9:
   v14[1] = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v4, *MEMORY[0x1E695E0C8]);
+    (*MEMORY[0x1E695E100])(self, v4, *MEMORY[0x1E695E0C8]);
   }
 
   v14[0] = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [NSPropertyListSerialization dataWithPropertyList:a1 format:100 options:0 error:v14];
+  v9 = [NSPropertyListSerialization dataWithPropertyList:self format:100 options:0 error:v14];
   if (v9 && [(NSData *)v9 writeToURL:a3 options:1 error:v14])
   {
     objc_autoreleasePoolPop(v8);

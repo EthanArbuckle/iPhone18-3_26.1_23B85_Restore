@@ -1,5 +1,5 @@
 @interface CLSMemorySimilarityModel
-- (CLSMemorySimilarityModel)initWithSceneAnalysisVersion:(unint64_t)a3;
+- (CLSMemorySimilarityModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (void)setupVersion33;
 - (void)setupVersion80;
 - (void)setupVersion84;
@@ -31,7 +31,7 @@
   self->_semanticalSimilarityWithPersonDistanceThreshold = 0.8;
 }
 
-- (CLSMemorySimilarityModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSMemorySimilarityModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -40,17 +40,17 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x54)
+    if (version < 0x54)
     {
-      if (a3 < 0x50)
+      if (version < 0x50)
       {
-        if (a3 < 0x21)
+        if (version < 0x21)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);

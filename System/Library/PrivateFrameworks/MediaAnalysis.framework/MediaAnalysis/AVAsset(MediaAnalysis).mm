@@ -16,7 +16,7 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v1 = [a1 tracksWithMediaType:0];
+  v1 = [self tracksWithMediaType:0];
   v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
@@ -57,12 +57,12 @@ LABEL_11:
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a1 tracksWithMediaType:{v4, 0}];
+  v6 = [self tracksWithMediaType:{v4, 0}];
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -79,7 +79,7 @@ LABEL_11:
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 isEnabled])
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -89,14 +89,14 @@ LABEL_11:
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
 - (uint64_t)vcp_isMontage
 {
-  v2 = [a1 availableMetadataFormats];
+  availableMetadataFormats = [self availableMetadataFormats];
   v3 = *MEMORY[0x1E6987700];
-  v4 = [v2 containsObject:*MEMORY[0x1E6987700]];
+  v4 = [availableMetadataFormats containsObject:*MEMORY[0x1E6987700]];
 
   if (!v4)
   {
@@ -104,7 +104,7 @@ LABEL_11:
   }
 
   v5 = *MEMORY[0x1E69877D0];
-  v6 = [a1 metadataForFormat:v3];
+  v6 = [self metadataForFormat:v3];
   v7 = *MEMORY[0x1E6987850];
   v8 = [MEMORY[0x1E6987FE0] metadataItemsFromArray:v6 withKey:v5 keySpace:*MEMORY[0x1E6987850]];
   if (![v8 count])
@@ -121,10 +121,10 @@ LABEL_12:
     return 0;
   }
 
-  v10 = [v8 firstObject];
-  v11 = [v10 stringValue];
+  firstObject = [v8 firstObject];
+  stringValue = [firstObject stringValue];
 
-  if (([v11 isEqualToString:@"Memories"] & 1) == 0 && !objc_msgSend(v11, "isEqualToString:", @"iMovie"))
+  if (([stringValue isEqualToString:@"Memories"] & 1) == 0 && !objc_msgSend(stringValue, "isEqualToString:", @"iMovie"))
   {
 
     goto LABEL_12;
@@ -150,7 +150,7 @@ LABEL_12:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = [a1 tracksWithMediaType:*MEMORY[0x1E69875D0]];
+  obj = [self tracksWithMediaType:*MEMORY[0x1E69875D0]];
   v2 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (!v2)
   {
@@ -179,8 +179,8 @@ LABEL_30:
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v7 = [v6 formatDescriptions];
-      v8 = [v7 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      formatDescriptions = [v6 formatDescriptions];
+      v8 = [formatDescriptions countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v8)
       {
         v9 = *v35;
@@ -190,7 +190,7 @@ LABEL_30:
           {
             if (*v35 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(formatDescriptions);
             }
 
             v11 = CMMetadataFormatDescriptionGetIdentifiers(*(*(&v34 + 1) + 8 * j));
@@ -203,7 +203,7 @@ LABEL_30:
             }
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          v8 = [formatDescriptions countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v8)
           {
             continue;
@@ -227,7 +227,7 @@ LABEL_16:
   }
 
   v13 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v32 outputSettings:0];
-  v14 = [MEMORY[0x1E6987E78] assetReaderWithAsset:a1 error:0];
+  v14 = [MEMORY[0x1E6987E78] assetReaderWithAsset:self error:0];
   v15 = v14;
   if (v14)
   {
@@ -243,22 +243,22 @@ LABEL_16:
 
     do
     {
-      v16 = [v13 copyNextSampleBuffer];
-      v17 = v16;
-      if (!v16)
+      copyNextSampleBuffer = [v13 copyNextSampleBuffer];
+      v17 = copyNextSampleBuffer;
+      if (!copyNextSampleBuffer)
       {
         break;
       }
 
-      if (CMSampleBufferGetNumSamples(v16))
+      if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
       {
         v18 = [objc_alloc(MEMORY[0x1E6988160]) initWithSampleBuffer:v17];
         v19 = MEMORY[0x1E6987FE0];
-        v20 = [v18 items];
-        v21 = [v19 metadataItemsFromArray:v20 filteredByIdentifier:v4];
-        v22 = [v21 firstObject];
+        items = [v18 items];
+        v21 = [v19 metadataItemsFromArray:items filteredByIdentifier:v4];
+        firstObject = [v21 firstObject];
 
-        if (v22)
+        if (firstObject)
         {
           CMSampleBufferGetOutputPresentationTimeStamp(&v33, v17);
           value = v33.value;
@@ -287,7 +287,7 @@ LABEL_32:
 - (CFTypeRef)vcp_keyFrameWithMaxDimension:()MediaAnalysis
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:a1];
+  v6 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:self];
   [v6 setAppliesPreferredTrackTransform:1];
   if (a3)
   {
@@ -334,7 +334,7 @@ LABEL_32:
 - (CFTypeRef)vcp_frameAtTimeStamp:()MediaAnalysis withMaxDimension:
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:a1];
+  v8 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:self];
   [v8 setAppliesPreferredTrackTransform:0];
   [v8 setApertureMode:*MEMORY[0x1E6987358]];
   v9 = MEMORY[0x1E6960CC0];

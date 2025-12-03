@@ -6,7 +6,7 @@
 - (NSString)filledInfoButtonGlyphName;
 - (NSString)glyphName;
 - (NSString)infoButtonGlyphName;
-- (VKCVisualSearchResultInfo)initWithResultItem:(id)a3;
+- (VKCVisualSearchResultInfo)initWithResultItem:(id)item;
 - (id)_infoButtonGlyphName;
 - (int64_t)calcDomain;
 @end
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (VKCVisualSearchResultInfo)initWithResultItem:(id)a3
+- (VKCVisualSearchResultInfo)initWithResultItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = VKCVisualSearchResultInfo;
   v6 = [(VKCVisualSearchResultInfo *)&v8 init];
-  if (!v5)
+  if (!itemCopy)
   {
     [VKAssert handleFailedAssertWithCondition:"((item) != nil)" functionName:"[VKCVisualSearchResultInfo initWithResultItem:]" simulateCrash:0 showAlert:0 format:@"Expected non-nil value for '%s'", "item"];
   }
 
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
     v6->_domain = [(VKCVisualSearchResultInfo *)v6 calcDomain];
   }
 
@@ -43,13 +43,13 @@
 
 - (NSString)displayLabel
 {
-  v2 = [(VKCVisualSearchResultInfo *)self item];
-  v3 = [v2 domainInfo];
-  v4 = [v3 displayLabel];
-  v5 = v4;
-  if (v4)
+  item = [(VKCVisualSearchResultInfo *)self item];
+  domainInfo = [item domainInfo];
+  displayLabel = [domainInfo displayLabel];
+  v5 = displayLabel;
+  if (displayLabel)
   {
-    v6 = v4;
+    v6 = displayLabel;
   }
 
   else
@@ -64,13 +64,13 @@
 
 - (NSString)displayMessage
 {
-  v2 = [(VKCVisualSearchResultInfo *)self item];
-  v3 = [v2 domainInfo];
-  v4 = [v3 displayMessage];
-  v5 = v4;
-  if (v4)
+  item = [(VKCVisualSearchResultInfo *)self item];
+  domainInfo = [item domainInfo];
+  displayMessage = [domainInfo displayMessage];
+  v5 = displayMessage;
+  if (displayMessage)
   {
-    v6 = v4;
+    v6 = displayMessage;
   }
 
   else
@@ -85,13 +85,13 @@
 
 - (NSString)glyphName
 {
-  v2 = [(VKCVisualSearchResultInfo *)self item];
-  v3 = [v2 domainInfo];
-  v4 = [v3 glyphName];
-  v5 = v4;
-  if (v4)
+  item = [(VKCVisualSearchResultInfo *)self item];
+  domainInfo = [item domainInfo];
+  glyphName = [domainInfo glyphName];
+  v5 = glyphName;
+  if (glyphName)
   {
-    v6 = v4;
+    v6 = glyphName;
   }
 
   else
@@ -106,8 +106,8 @@
 
 - (CGRect)normalizedBoundingRect
 {
-  v2 = [(VKCVisualSearchResultInfo *)self item];
-  [v2 normalizedBoundingBox];
+  item = [(VKCVisualSearchResultInfo *)self item];
+  [item normalizedBoundingBox];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -140,12 +140,12 @@
       v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(VKCVisualSearchResultInfo *)self item];
-        v7 = [v6 domainInfo];
-        v8 = [v7 domain];
-        v9 = [v8 lastPathComponent];
+        item = [(VKCVisualSearchResultInfo *)self item];
+        domainInfo = [item domainInfo];
+        domain = [domainInfo domain];
+        lastPathComponent = [domain lastPathComponent];
         v11 = 138412290;
-        v12 = v9;
+        v12 = lastPathComponent;
         _os_log_impl(&dword_1B4335000, v5, OS_LOG_TYPE_DEFAULT, "Unable to find glyph for domain: %@", &v11, 0xCu);
       }
 
@@ -158,145 +158,145 @@
 
 - (id)_infoButtonGlyphName
 {
-  v2 = [(VKCVisualSearchResultInfo *)self domain];
-  if (v2 > 0x14)
+  domain = [(VKCVisualSearchResultInfo *)self domain];
+  if (domain > 0x14)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7BE5E20[v2];
+    return off_1E7BE5E20[domain];
   }
 }
 
 - (NSString)filledInfoButtonGlyphName
 {
-  v2 = [(VKCVisualSearchResultInfo *)self infoButtonGlyphName];
-  v3 = [v2 stringByAppendingString:@".fill"];
+  infoButtonGlyphName = [(VKCVisualSearchResultInfo *)self infoButtonGlyphName];
+  v3 = [infoButtonGlyphName stringByAppendingString:@".fill"];
 
   return v3;
 }
 
 - (int64_t)calcDomain
 {
-  v2 = [(VKCVisualSearchResultInfo *)self item];
-  v3 = [v2 domainInfo];
-  v4 = [v3 domain];
-  v5 = [v4 pathExtension];
+  item = [(VKCVisualSearchResultInfo *)self item];
+  domainInfo = [item domainInfo];
+  domain = [domainInfo domain];
+  pathExtension = [domain pathExtension];
 
-  if ([v5 isEqualToString:@"album"])
+  if ([pathExtension isEqualToString:@"album"])
   {
     goto LABEL_2;
   }
 
-  if ([v5 isEqualToString:@"art"])
+  if ([pathExtension isEqualToString:@"art"])
   {
     v6 = 2;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"birds"])
+  if ([pathExtension isEqualToString:@"birds"])
   {
     v6 = 5;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"book"])
+  if ([pathExtension isEqualToString:@"book"])
   {
     v6 = 6;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"cats"])
+  if ([pathExtension isEqualToString:@"cats"])
   {
     v6 = 7;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"dogs"])
+  if ([pathExtension isEqualToString:@"dogs"])
   {
     v6 = 8;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"food"])
+  if ([pathExtension isEqualToString:@"food"])
   {
     v6 = 9;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"insects"])
+  if ([pathExtension isEqualToString:@"insects"])
   {
     v6 = 10;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"landmark"])
+  if ([pathExtension isEqualToString:@"landmark"])
   {
     v6 = 11;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"mammals"])
+  if ([pathExtension isEqualToString:@"mammals"])
   {
     v6 = 12;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"naturalLandmark"])
+  if ([pathExtension isEqualToString:@"naturalLandmark"])
   {
     v6 = 13;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"nature"])
+  if ([pathExtension isEqualToString:@"nature"])
   {
     v6 = 14;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"reptiles"])
+  if ([pathExtension isEqualToString:@"reptiles"])
   {
     v6 = 15;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"sculpture"])
+  if ([pathExtension isEqualToString:@"sculpture"])
   {
     v6 = 16;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"skyline"])
+  if ([pathExtension isEqualToString:@"skyline"])
   {
     v6 = 17;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"storefront"])
+  if ([pathExtension isEqualToString:@"storefront"])
   {
     v6 = 18;
     goto LABEL_33;
   }
 
-  if ([v5 isEqualToString:@"album"])
+  if ([pathExtension isEqualToString:@"album"])
   {
 LABEL_2:
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"laundryCareSymbol"])
+  else if ([pathExtension isEqualToString:@"laundryCareSymbol"])
   {
     v6 = 19;
   }
 
-  else if ([v5 isEqualToString:@"brandLogoSymbol"])
+  else if ([pathExtension isEqualToString:@"brandLogoSymbol"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"autoSymbol"])
+  else if ([pathExtension isEqualToString:@"autoSymbol"])
   {
     v6 = 3;
   }

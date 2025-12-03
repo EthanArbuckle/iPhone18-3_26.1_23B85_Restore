@@ -1,18 +1,18 @@
 @interface BuddyDisplayZoomExecutor
-- (BOOL)commitIfNeededWithRelaunchURL:(id)a3 transitionWithScreenshot:(BOOL)a4;
+- (BOOL)commitIfNeededWithRelaunchURL:(id)l transitionWithScreenshot:(BOOL)screenshot;
 - (BOOL)requiresCommit;
-- (void)commitWithRelaunchURL:(id)a3 transitionWithScreenshot:(BOOL)a4;
-- (void)setPendingOption:(unint64_t)a3 chosenByUser:(BOOL)a4;
+- (void)commitWithRelaunchURL:(id)l transitionWithScreenshot:(BOOL)screenshot;
+- (void)setPendingOption:(unint64_t)option chosenByUser:(BOOL)user;
 @end
 
 @implementation BuddyDisplayZoomExecutor
 
-- (void)setPendingOption:(unint64_t)a3 chosenByUser:(BOOL)a4
+- (void)setPendingOption:(unint64_t)option chosenByUser:(BOOL)user
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  optionCopy = option;
+  userCopy = user;
   oslog = _BYLoggingFacility();
   v9 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -25,20 +25,20 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyDisplayZoomExecutor *)v14 setChosenByUser:v11];
+  [(BuddyDisplayZoomExecutor *)selfCopy setChosenByUser:userCopy];
   v4 = +[DBSDisplayZoomConfigurationController defaultController];
-  v5 = [v4 displayZoomModes];
+  displayZoomModes = [v4 displayZoomModes];
   v6 = DBSStringForDisplayZoomOption();
-  v7 = [v5 objectForKeyedSubscript:v6];
-  [(BuddyDisplayZoomExecutor *)v14 setPendingMode:v7];
+  v7 = [displayZoomModes objectForKeyedSubscript:v6];
+  [(BuddyDisplayZoomExecutor *)selfCopy setPendingMode:v7];
 }
 
 - (BOOL)requiresCommit
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyDisplayZoomExecutor *)self pendingMode];
-  v3 = v2 == 0;
+  pendingMode = [(BuddyDisplayZoomExecutor *)self pendingMode];
+  v3 = pendingMode == 0;
 
   if (v3)
   {
@@ -50,27 +50,27 @@
     v4 = +[DBSDisplayZoomConfigurationController defaultController];
     location[0] = [v4 currentDisplayZoomMode];
 
-    v5 = [location[0] displayZoomOption];
-    v6 = [(BuddyDisplayZoomExecutor *)v10 pendingMode];
-    v7 = [(DBSDisplayZoomMode *)v6 displayZoomOption];
+    displayZoomOption = [location[0] displayZoomOption];
+    pendingMode2 = [(BuddyDisplayZoomExecutor *)selfCopy pendingMode];
+    displayZoomOption2 = [(DBSDisplayZoomMode *)pendingMode2 displayZoomOption];
 
-    v11 = v5 != v7;
+    v11 = displayZoomOption != displayZoomOption2;
     objc_storeStrong(location, 0);
   }
 
   return v11;
 }
 
-- (BOOL)commitIfNeededWithRelaunchURL:(id)a3 transitionWithScreenshot:(BOOL)a4
+- (BOOL)commitIfNeededWithRelaunchURL:(id)l transitionWithScreenshot:(BOOL)screenshot
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  if ([(BuddyDisplayZoomExecutor *)v13 requiresCommit])
+  objc_storeStrong(location, l);
+  screenshotCopy = screenshot;
+  if ([(BuddyDisplayZoomExecutor *)selfCopy requiresCommit])
   {
-    [(BuddyDisplayZoomExecutor *)v13 commitWithRelaunchURL:location[0] transitionWithScreenshot:v11];
+    [(BuddyDisplayZoomExecutor *)selfCopy commitWithRelaunchURL:location[0] transitionWithScreenshot:screenshotCopy];
     v14 = 1;
   }
 
@@ -94,30 +94,30 @@
   return v14 & 1;
 }
 
-- (void)commitWithRelaunchURL:(id)a3 transitionWithScreenshot:(BOOL)a4
+- (void)commitWithRelaunchURL:(id)l transitionWithScreenshot:(BOOL)screenshot
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
-  if ([(BuddyDisplayZoomExecutor *)v22 chosenByUser])
+  objc_storeStrong(location, l);
+  screenshotCopy = screenshot;
+  if ([(BuddyDisplayZoomExecutor *)selfCopy chosenByUser])
   {
     v25 = @"choice";
-    v5 = [(BuddyDisplayZoomExecutor *)v22 pendingMode];
-    [(DBSDisplayZoomMode *)v5 displayZoomOption];
+    pendingMode = [(BuddyDisplayZoomExecutor *)selfCopy pendingMode];
+    [(DBSDisplayZoomMode *)pendingMode displayZoomOption];
     v6 = DBSStringForDisplayZoomOption();
     v26 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     AnalyticsSendEvent();
   }
 
-  v8 = [(BuddyDisplayZoomExecutor *)v22 willCommit];
+  willCommit = [(BuddyDisplayZoomExecutor *)selfCopy willCommit];
 
-  if (v8)
+  if (willCommit)
   {
-    v9 = [(BuddyDisplayZoomExecutor *)v22 willCommit];
-    v9[2](v9);
+    willCommit2 = [(BuddyDisplayZoomExecutor *)selfCopy willCommit];
+    willCommit2[2](willCommit2);
   }
 
   if (location[0])
@@ -126,8 +126,8 @@
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(BuddyDisplayZoomExecutor *)v22 pendingMode];
-      [(DBSDisplayZoomMode *)v10 displayZoomOption];
+      pendingMode2 = [(BuddyDisplayZoomExecutor *)selfCopy pendingMode];
+      [(DBSDisplayZoomMode *)pendingMode2 displayZoomOption];
       v17 = DBSStringForDisplayZoomOption();
       sub_100078180(buf, v17, location[0]);
       _os_log_impl(&_mh_execute_header, oslog, v18, "Committing Display Zoom mode %@ with relaunch URL %@...", buf, 0x16u);
@@ -144,8 +144,8 @@
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(BuddyDisplayZoomExecutor *)v22 pendingMode];
-      [(DBSDisplayZoomMode *)v11 displayZoomOption];
+      pendingMode3 = [(BuddyDisplayZoomExecutor *)selfCopy pendingMode];
+      [(DBSDisplayZoomMode *)pendingMode3 displayZoomOption];
       v14 = DBSStringForDisplayZoomOption();
       sub_10006AE18(v23, v14);
       _os_log_impl(&_mh_execute_header, v16, v15, "Committing Display Zoom mode %@...", v23, 0xCu);
@@ -157,8 +157,8 @@
   }
 
   v12 = +[DBSDisplayZoomConfigurationController defaultController];
-  v13 = [(BuddyDisplayZoomExecutor *)v22 pendingMode];
-  [v12 setDisplayZoomMode:v13 withRelaunchURL:location[0] transitionWithScreenshot:v20];
+  pendingMode4 = [(BuddyDisplayZoomExecutor *)selfCopy pendingMode];
+  [v12 setDisplayZoomMode:pendingMode4 withRelaunchURL:location[0] transitionWithScreenshot:screenshotCopy];
 
   objc_storeStrong(location, 0);
 }

@@ -8,15 +8,15 @@
 
 - (__CFString)_navigation_errorCodeAsString
 {
-  v1 = [a1 code];
-  if (v1 > 0x12)
+  code = [self code];
+  if (code > 0x12)
   {
     return @"MNErrorCode_MissingEntitlement";
   }
 
   else
   {
-    return off_1E842AB88[v1];
+    return off_1E842AB88[code];
   }
 }
 
@@ -28,9 +28,9 @@
   v6 = MNGetErrorsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v5 _navigation_errorCodeAsString];
+    _navigation_errorCodeAsString = [v5 _navigation_errorCodeAsString];
     v10 = 138412546;
-    v11 = v7;
+    v11 = _navigation_errorCodeAsString;
     v12 = 1024;
     v13 = v4;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_ERROR, "Navigation service error: %@ (%d)", &v10, 0x12u);
@@ -45,11 +45,11 @@
 {
   v7 = a4;
   v8 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = v9;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v10 = dictionary;
   if (v7)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A278]];
+    [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A278]];
   }
 
   if (v8)

@@ -1,24 +1,24 @@
 @interface SBAmbientChargerConnectionInfoProvider
-- (SBAmbientChargerConnectionInfoProvider)initWithDelegate:(id)a3;
+- (SBAmbientChargerConnectionInfoProvider)initWithDelegate:(id)delegate;
 - (SBAmbientChargerConnectionInfoProviderDelegate)delegate;
-- (void)_setCurrentConnectedChargerId:(id)a3;
-- (void)accessoryConnectionInfoProvider:(id)a3 accessoryEndpointAttached:(id)a4 transportType:(int)a5 protocol:(int)a6 properties:(id)a7 forConnection:(id)a8;
-- (void)accessoryConnectionInfoProvider:(id)a3 accessoryEndpointDetached:(id)a4 forConnection:(id)a5;
+- (void)_setCurrentConnectedChargerId:(id)id;
+- (void)accessoryConnectionInfoProvider:(id)provider accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
+- (void)accessoryConnectionInfoProvider:(id)provider accessoryEndpointDetached:(id)detached forConnection:(id)connection;
 - (void)dealloc;
 @end
 
 @implementation SBAmbientChargerConnectionInfoProvider
 
-- (SBAmbientChargerConnectionInfoProvider)initWithDelegate:(id)a3
+- (SBAmbientChargerConnectionInfoProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SBAmbientChargerConnectionInfoProvider;
   v5 = [(SBAmbientChargerConnectionInfoProvider *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[SBAccessoryConnectionInfoProvider sharedInstance];
     accessoryConnectionInfoProvider = v6->_accessoryConnectionInfoProvider;
     v6->_accessoryConnectionInfoProvider = v7;
@@ -37,36 +37,36 @@
   [(SBAmbientChargerConnectionInfoProvider *)&v3 dealloc];
 }
 
-- (void)accessoryConnectionInfoProvider:(id)a3 accessoryEndpointAttached:(id)a4 transportType:(int)a5 protocol:(int)a6 properties:(id)a7 forConnection:(id)a8
+- (void)accessoryConnectionInfoProvider:(id)provider accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = [(SBAccessoryConnectionInfoProvider *)self->_accessoryConnectionInfoProvider accessoryConnectionType:v16];
-  if (a5 == 12 && v17 == 4)
+  providerCopy = provider;
+  attachedCopy = attached;
+  propertiesCopy = properties;
+  connectionCopy = connection;
+  v17 = [(SBAccessoryConnectionInfoProvider *)self->_accessoryConnectionInfoProvider accessoryConnectionType:connectionCopy];
+  if (type == 12 && v17 == 4)
   {
-    if (self->_connectedChargerConnectionUUID && ([v16 isEqualToString:?] & 1) == 0)
+    if (self->_connectedChargerConnectionUUID && ([connectionCopy isEqualToString:?] & 1) == 0)
     {
       v18 = SBLogAmbientChargerConnection();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [SBAmbientChargerConnectionInfoProvider accessoryConnectionInfoProvider:v16 accessoryEndpointAttached:&self->_connectedChargerConnectionUUID transportType:v18 protocol:? properties:? forConnection:?];
+        [SBAmbientChargerConnectionInfoProvider accessoryConnectionInfoProvider:connectionCopy accessoryEndpointAttached:&self->_connectedChargerConnectionUUID transportType:v18 protocol:? properties:? forConnection:?];
       }
     }
 
-    if (![(NSString *)self->_connectedChargerConnectionUUID isEqualToString:v16])
+    if (![(NSString *)self->_connectedChargerConnectionUUID isEqualToString:connectionCopy])
     {
       v19 = SBLogAmbientChargerConnection();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v24 = v16;
+        v24 = connectionCopy;
         _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "Connected inductive charger with connection id %{public}@", buf, 0xCu);
       }
 
-      objc_storeStrong(&self->_connectedChargerConnectionUUID, a8);
+      objc_storeStrong(&self->_connectedChargerConnectionUUID, connection);
     }
 
     objc_initWeak(buf, self);
@@ -76,7 +76,7 @@
     v21[2] = __148__SBAmbientChargerConnectionInfoProvider_accessoryConnectionInfoProvider_accessoryEndpointAttached_transportType_protocol_properties_forConnection___block_invoke;
     v21[3] = &unk_2783B1DD8;
     objc_copyWeak(&v22, buf);
-    [(SBAccessoryConnectionInfoProvider *)accessoryConnectionInfoProvider accessoryInfoForEndpoint:v14 connection:v16 withReply:v21];
+    [(SBAccessoryConnectionInfoProvider *)accessoryConnectionInfoProvider accessoryInfoForEndpoint:attachedCopy connection:connectionCopy withReply:v21];
     objc_destroyWeak(&v22);
     objc_destroyWeak(buf);
   }
@@ -158,23 +158,23 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)accessoryConnectionInfoProvider:(id)a3 accessoryEndpointDetached:(id)a4 forConnection:(id)a5
+- (void)accessoryConnectionInfoProvider:(id)provider accessoryEndpointDetached:(id)detached forConnection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  if ([v6 isEqualToString:self->_connectedChargerConnectionUUID])
+  connectionCopy = connection;
+  if ([connectionCopy isEqualToString:self->_connectedChargerConnectionUUID])
   {
     v7 = SBLogAmbientChargerConnection();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = connectionCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Disconnected inductive charger with connection id %{public}@", &v12, 0xCu);
     }
 
-    v8 = [(SBAmbientChargerConnectionInfoProvider *)self delegate];
-    v9 = [(SBAmbientChargerConnectionInfoProvider *)self currentConnectedChargerId];
-    [v8 chargerConnectionInfoProvider:self didDisconnectChargerWithId:v9];
+    delegate = [(SBAmbientChargerConnectionInfoProvider *)self delegate];
+    currentConnectedChargerId = [(SBAmbientChargerConnectionInfoProvider *)self currentConnectedChargerId];
+    [delegate chargerConnectionInfoProvider:self didDisconnectChargerWithId:currentConnectedChargerId];
 
     connectedChargerConnectionUUID = self->_connectedChargerConnectionUUID;
     self->_connectedChargerConnectionUUID = 0;
@@ -184,24 +184,24 @@ LABEL_18:
   }
 }
 
-- (void)_setCurrentConnectedChargerId:(id)a3
+- (void)_setCurrentConnectedChargerId:(id)id
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   currentConnectedChargerId = self->_currentConnectedChargerId;
-  if (!currentConnectedChargerId || ![(NSString *)currentConnectedChargerId isEqualToString:v5])
+  if (!currentConnectedChargerId || ![(NSString *)currentConnectedChargerId isEqualToString:idCopy])
   {
     v7 = SBLogAmbientChargerConnection();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v5;
+      v10 = idCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Setting current connected inductive charger id %{public}@", &v9, 0xCu);
     }
 
-    objc_storeStrong(&self->_currentConnectedChargerId, a3);
-    v8 = [(SBAmbientChargerConnectionInfoProvider *)self delegate];
-    [v8 chargerConnectionInfoProvider:self didConnectChargerWithId:v5];
+    objc_storeStrong(&self->_currentConnectedChargerId, id);
+    delegate = [(SBAmbientChargerConnectionInfoProvider *)self delegate];
+    [delegate chargerConnectionInfoProvider:self didConnectChargerWithId:idCopy];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CRLPasteboardNativeDataProvider
 - (NSArray)promisedDataTypes;
 - (_TtC8Freeform31CRLPasteboardNativeDataProvider)init;
-- (id)fulfillPromisesForPasteboardType:(id)a3;
+- (id)fulfillPromisesForPasteboardType:(id)type;
 @end
 
 @implementation CRLPasteboardNativeDataProvider
 
 - (NSArray)promisedDataTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D3B45C();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -16,11 +16,11 @@
   return v3.super.isa;
 }
 
-- (id)fulfillPromisesForPasteboardType:(id)a3
+- (id)fulfillPromisesForPasteboardType:(id)type
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_100D3BC70(v4, v6);
   v10 = v9;
 

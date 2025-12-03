@@ -1,17 +1,17 @@
 @interface HDQuantitySampleOverlapProcessor
 - ($7E97422C0B66563CE51BF44A8D77708E)exportCurrentState;
-- (BOOL)fetchFinalOverlapSamplesWithErrorOut:(id *)a3 handler:(id)a4;
-- (BOOL)fetchOverlapProcessSamplesFrom:(id *)a3 setAnchorTime:(BOOL)a4 errorOut:(id *)a5 handler:(id)a6;
-- (HDQuantitySampleOverlapProcessor)initWithOverlapFunction:(unint64_t)a3;
-- (HDQuantitySampleOverlapProcessor)initWithState:(id *)a3;
+- (BOOL)fetchFinalOverlapSamplesWithErrorOut:(id *)out handler:(id)handler;
+- (BOOL)fetchOverlapProcessSamplesFrom:(id *)from setAnchorTime:(BOOL)time errorOut:(id *)out handler:(id)handler;
+- (HDQuantitySampleOverlapProcessor)initWithOverlapFunction:(unint64_t)function;
+- (HDQuantitySampleOverlapProcessor)initWithState:(id *)state;
 - (double)_overlapSampleToEdge:(double)result;
-- (int64_t)addSample:(id *)a3 outputSamples:(id)a4[8] error:(id *)a5;
-- (int64_t)finishWithRemainingSamples:(id)a3[8] error:(id *)a4;
+- (int64_t)addSample:(id *)sample outputSamples:(id)samples[8] error:(id *)error;
+- (int64_t)finishWithRemainingSamples:(id)samples[8] error:(id *)error;
 @end
 
 @implementation HDQuantitySampleOverlapProcessor
 
-- (HDQuantitySampleOverlapProcessor)initWithOverlapFunction:(unint64_t)a3
+- (HDQuantitySampleOverlapProcessor)initWithOverlapFunction:(unint64_t)function
 {
   v5.receiver = self;
   v5.super_class = HDQuantitySampleOverlapProcessor;
@@ -20,30 +20,30 @@
   {
     result->_anchorTime = 0.0;
     result->_workingSetCount = 0;
-    result->_overlapFunction = a3;
+    result->_overlapFunction = function;
     result->_loggedDuplicatedSample = 0;
   }
 
   return result;
 }
 
-- (HDQuantitySampleOverlapProcessor)initWithState:(id *)a3
+- (HDQuantitySampleOverlapProcessor)initWithState:(id *)state
 {
   v11.receiver = self;
   v11.super_class = HDQuantitySampleOverlapProcessor;
   result = [(HDQuantitySampleOverlapProcessor *)&v11 init];
   if (result)
   {
-    result->_overlapFunction = a3->var1;
-    result->_anchorTime = a3->var0;
-    var2 = a3->var2;
+    result->_overlapFunction = state->var1;
+    result->_anchorTime = state->var0;
+    var2 = state->var2;
     result->_workingSetCount = var2;
-    result->_loggedDuplicatedSample = a3->var3;
+    result->_loggedDuplicatedSample = state->var3;
     if (var2 >= 1)
     {
       v6 = 0;
       workingSet = result->_workingSet;
-      var4 = a3->var4;
+      var4 = state->var4;
       do
       {
         v9 = *&var4->var0;
@@ -56,7 +56,7 @@
         ++workingSet;
       }
 
-      while (v6 < a3->var2);
+      while (v6 < state->var2);
     }
   }
 
@@ -80,7 +80,7 @@
   return result;
 }
 
-- (int64_t)addSample:(id *)a3 outputSamples:(id)a4[8] error:(id *)a5
+- (int64_t)addSample:(id *)sample outputSamples:(id)samples[8] error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   workingSetCount = self->_workingSetCount;
@@ -90,10 +90,10 @@
   }
 
   v10 = (self + 40 * workingSetCount);
-  var0 = a3->var0;
-  var1 = a3->var1;
-  v14 = *v10 == a3->var0 && *(&self->_overlapFunction + 5 * workingSetCount) == var1 && v10[2] == a3->var2;
-  if (v14 && *(v10 + 24) == a3->var3)
+  var0 = sample->var0;
+  var1 = sample->var1;
+  v14 = *v10 == sample->var0 && *(&self->_overlapFunction + 5 * workingSetCount) == var1 && v10[2] == sample->var2;
+  if (v14 && *(v10 + 24) == sample->var3)
   {
     if (self->_loggedDuplicatedSample)
     {
@@ -131,15 +131,15 @@
       }
 
 LABEL_23:
-      a4->var0 = self->_anchorTime;
-      a4->var1 = endTime;
-      a4->var2 = self->_workingSet[0].sampleValue;
-      a4->var3 = self->_workingSet[0].shouldContributeToCount;
-      a4->var4 = self->_workingSet[0].sourceID;
-      self->_anchorTime = a3->var0;
-      v19 = *&a3->var0;
-      v20 = *&a3->var2;
-      self->_workingSet[0].sourceID = a3->var4;
+      samples->var0 = self->_anchorTime;
+      samples->var1 = endTime;
+      samples->var2 = self->_workingSet[0].sampleValue;
+      samples->var3 = self->_workingSet[0].shouldContributeToCount;
+      samples->var4 = self->_workingSet[0].sourceID;
+      self->_anchorTime = sample->var0;
+      v19 = *&sample->var0;
+      v20 = *&sample->var2;
+      self->_workingSet[0].sourceID = sample->var4;
       *&self->_workingSet[0].startTime = v19;
       *&self->_workingSet[0].sampleValue = v20;
       v21 = 1;
@@ -157,10 +157,10 @@ LABEL_23:
     v17 = [MEMORY[0x277CCA9B8] hk_error:130 description:@"Overlap processing exceeded working set size."];
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v18 = v17;
-        *a5 = v17;
+        *error = v17;
       }
 
       else
@@ -185,13 +185,13 @@ LABEL_23:
 LABEL_24:
   v22 = self + 40 * workingSetCount;
   self->_workingSetCount = workingSetCount + 1;
-  v23 = *&a3->var0;
-  v24 = *&a3->var2;
-  *(v22 + 9) = a3->var4;
+  v23 = *&sample->var0;
+  v24 = *&sample->var2;
+  *(v22 + 9) = sample->var4;
   *(v22 + 56) = v24;
   *(v22 + 40) = v23;
-  v25 = a3->var0;
-  if (self->_anchorTime >= a3->var0)
+  v25 = sample->var0;
+  if (self->_anchorTime >= sample->var0)
   {
 LABEL_36:
     v21 = 0;
@@ -207,17 +207,17 @@ LABEL_36:
     [(HDQuantitySampleOverlapProcessor *)&v34 _overlapSampleToEdge:v25];
     if (*(&v34 + 1) - *&v34 > 0.000001)
     {
-      v26 = &a4[v21++];
+      v26 = &samples[v21++];
       v27 = v35;
       *&v26->var0 = v34;
       *&v26->var2 = v27;
       v26->var4 = v36;
     }
 
-    v25 = a3->var0;
+    v25 = sample->var0;
   }
 
-  while (self->_anchorTime < a3->var0 && v21 < 8);
+  while (self->_anchorTime < sample->var0 && v21 < 8);
 LABEL_41:
   v32 = *MEMORY[0x277D85DE8];
   return v21;
@@ -298,9 +298,9 @@ LABEL_41:
     if (v15 >= 1.79769313e308)
     {
 LABEL_36:
-      *(a1 + 32) = 0;
-      *a1 = 0u;
-      *(a1 + 16) = 0u;
+      *(self + 32) = 0;
+      *self = 0u;
+      *(self + 16) = 0u;
     }
 
     else
@@ -331,12 +331,12 @@ LABEL_36:
         }
       }
 
-      *a1 = v4;
-      *(a1 + 8) = result;
-      *(a1 + 16) = v14;
-      *(a1 + 24) = 0;
-      *(a1 + 32) = v11;
-      *(a1 + 24) = v17 & 1;
+      *self = v4;
+      *(self + 8) = result;
+      *(self + 16) = v14;
+      *(self + 24) = 0;
+      *(self + 32) = v11;
+      *(self + 24) = v17 & 1;
     }
 
     if (v3 >= 1)
@@ -372,16 +372,16 @@ LABEL_36:
 
   else
   {
-    *(a1 + 32) = 0;
+    *(self + 32) = 0;
     result = 0.0;
-    *a1 = 0u;
-    *(a1 + 16) = 0u;
+    *self = 0u;
+    *(self + 16) = 0u;
   }
 
   return result;
 }
 
-- (int64_t)finishWithRemainingSamples:(id)a3[8] error:(id *)a4
+- (int64_t)finishWithRemainingSamples:(id)samples[8] error:(id *)error
 {
   if (self->_workingSetCount < 1)
   {
@@ -397,7 +397,7 @@ LABEL_36:
     [(HDQuantitySampleOverlapProcessor *)&v11 _overlapSampleToEdge:1.79769313e308];
     if (*(&v11 + 1) - *&v11 > 0.000001)
     {
-      v7 = &a3[v6++];
+      v7 = &samples[v6++];
       v8 = v12;
       *&v7->var0 = v11;
       *&v7->var2 = v8;
@@ -409,21 +409,21 @@ LABEL_36:
   return v6;
 }
 
-- (BOOL)fetchOverlapProcessSamplesFrom:(id *)a3 setAnchorTime:(BOOL)a4 errorOut:(id *)a5 handler:(id)a6
+- (BOOL)fetchOverlapProcessSamplesFrom:(id *)from setAnchorTime:(BOOL)time errorOut:(id *)out handler:(id)handler
 {
-  v7 = a4;
+  timeCopy = time;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (v7)
+  handlerCopy = handler;
+  if (timeCopy)
   {
-    [(HDQuantitySampleOverlapProcessor *)self resetAnchorTime:a3->var0];
+    [(HDQuantitySampleOverlapProcessor *)self resetAnchorTime:from->var0];
   }
 
   v24 = 0;
-  v11 = *&a3->var2;
-  v22[0] = *&a3->var0;
+  v11 = *&from->var2;
+  v22[0] = *&from->var0;
   v22[1] = v11;
-  var4 = a3->var4;
+  var4 = from->var4;
   v12 = [(HDQuantitySampleOverlapProcessor *)self addSample:v22 outputSamples:v25 error:&v24];
   v13 = v24;
   v14 = v13;
@@ -438,7 +438,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (!a5)
+    if (!out)
     {
 LABEL_11:
       _HKLogDroppedError();
@@ -447,12 +447,12 @@ LABEL_11:
 
 LABEL_8:
     v18 = v16;
-    *a5 = v16;
+    *out = v16;
     goto LABEL_12;
   }
 
   v21 = v13;
-  v15 = v10[2](v10, v12, v25, &v21);
+  v15 = handlerCopy[2](handlerCopy, v12, v25, &v21);
   v16 = v21;
 
   if ((v15 & 1) == 0)
@@ -463,7 +463,7 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    if (!a5)
+    if (!out)
     {
       goto LABEL_11;
     }
@@ -478,10 +478,10 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)fetchFinalOverlapSamplesWithErrorOut:(id *)a3 handler:(id)a4
+- (BOOL)fetchFinalOverlapSamplesWithErrorOut:(id *)out handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = 0;
   while (1)
   {
@@ -499,7 +499,7 @@ LABEL_13:
       v9 = v9;
       if (v9)
       {
-        if (a3)
+        if (out)
         {
           goto LABEL_10;
         }
@@ -515,7 +515,7 @@ LABEL_11:
     }
 
     v15 = v9;
-    v10 = v6[2](v6, v8, v17, &v15);
+    v10 = handlerCopy[2](handlerCopy, v8, v17, &v15);
     v7 = v15;
 
     if ((v10 & 1) == 0)
@@ -523,14 +523,14 @@ LABEL_11:
       v9 = v7;
       if (v9)
       {
-        if (!a3)
+        if (!out)
         {
           goto LABEL_7;
         }
 
 LABEL_10:
         v11 = v9;
-        *a3 = v9;
+        *out = v9;
       }
 
       goto LABEL_11;

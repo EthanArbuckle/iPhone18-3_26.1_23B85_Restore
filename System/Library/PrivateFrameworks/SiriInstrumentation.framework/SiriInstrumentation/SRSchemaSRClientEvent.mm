@@ -1,32 +1,32 @@
 @interface SRSchemaSRClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (SRSchemaSRClientEvent)initWithDictionary:(id)a3;
-- (SRSchemaSRClientEvent)initWithJSON:(id)a3;
+- (SRSchemaSRClientEvent)initWithDictionary:(id)dictionary;
+- (SRSchemaSRClientEvent)initWithJSON:(id)n;
 - (SRSchemaSRErrorChecked)errorChecked;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (int)componentName;
 - (void)deleteErrorChecked;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SRSchemaSRClientEvent
 
-- (SRSchemaSRClientEvent)initWithDictionary:(id)a3
+- (SRSchemaSRClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SRSchemaSRClientEvent;
   v5 = [(SRSchemaSRClientEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(SRSchemaSRClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorChecked"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorChecked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SRSchemaSRClientEvent)initWithJSON:(id)a3
+- (SRSchemaSRClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SRSchemaSRClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SRSchemaSRClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SRSchemaSRClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,72 +84,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_errorChecked)
   {
-    v4 = [(SRSchemaSRClientEvent *)self errorChecked];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    errorChecked = [(SRSchemaSRClientEvent *)self errorChecked];
+    dictionaryRepresentation = [errorChecked dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"errorChecked"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"errorChecked"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"errorChecked"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"errorChecked"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v7 = [(SRSchemaSRClientEvent *)self eventMetadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    eventMetadata = [(SRSchemaSRClientEvent *)self eventMetadata];
+    dictionaryRepresentation2 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"eventMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_13;
   }
 
-  v6 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SRSchemaSRClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SRSchemaSRClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SRSchemaSRClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SRSchemaSRClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -161,12 +161,12 @@
   {
   }
 
-  v6 = [(SRSchemaSRClientEvent *)self errorChecked];
-  v7 = [v4 errorChecked];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(SRSchemaSRClientEvent *)self errorChecked];
+  eventMetadata2 = [equalCopy errorChecked];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v13 = [(SRSchemaSRClientEvent *)self errorChecked];
-    if (!v13)
+    errorChecked = [(SRSchemaSRClientEvent *)self errorChecked];
+    if (!errorChecked)
     {
 
 LABEL_16:
@@ -174,10 +174,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(SRSchemaSRClientEvent *)self errorChecked];
-    v16 = [v4 errorChecked];
-    v17 = [v15 isEqual:v16];
+    v14 = errorChecked;
+    errorChecked2 = [(SRSchemaSRClientEvent *)self errorChecked];
+    errorChecked3 = [equalCopy errorChecked];
+    v17 = [errorChecked2 isEqual:errorChecked3];
 
     if (v17)
     {
@@ -197,22 +197,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SRSchemaSRClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SRSchemaSRClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SRSchemaSRClientEvent *)self eventMetadata];
+    eventMetadata2 = [(SRSchemaSRClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SRSchemaSRClientEvent *)self errorChecked];
+  errorChecked = [(SRSchemaSRClientEvent *)self errorChecked];
 
-  if (v6)
+  if (errorChecked)
   {
-    v7 = [(SRSchemaSRClientEvent *)self errorChecked];
+    errorChecked2 = [(SRSchemaSRClientEvent *)self errorChecked];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -255,26 +255,26 @@ LABEL_14:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SRSchemaSRClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(SRSchemaSRClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SRSchemaSRClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(SRSchemaSRClientEvent *)self errorChecked];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  errorChecked = [(SRSchemaSRClientEvent *)self errorChecked];
+  v10 = [errorChecked applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SRSchemaSRClientEvent *)self deleteErrorChecked];
   }
@@ -292,73 +292,73 @@ LABEL_14:
 
 - (int)componentName
 {
-  v3 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  v4 = [v3 srId];
+  eventMetadata = [(SRSchemaSRClientEvent *)self eventMetadata];
+  srId = [eventMetadata srId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (srId && ([srId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(srId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
-    LODWORD(v9) = 44;
+    LODWORD(value) = 44;
   }
 
   else
   {
-    v10 = [(SRSchemaSRClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(SRSchemaSRClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11 && ([v11 value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    if (requestId && ([requestId value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(requestId, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
-      LODWORD(v9) = 1;
-      v4 = v11;
+      LODWORD(value) = 1;
+      srId = requestId;
     }
 
     else
     {
-      v16 = [(SRSchemaSRClientEvent *)self eventMetadata];
-      v4 = [v16 subRequestId];
+      eventMetadata3 = [(SRSchemaSRClientEvent *)self eventMetadata];
+      srId = [eventMetadata3 subRequestId];
 
-      if (v4)
+      if (srId)
       {
-        v9 = [v4 value];
-        if (v9)
+        value = [srId value];
+        if (value)
         {
-          v17 = [v4 value];
-          v18 = [v17 length];
+          value2 = [srId value];
+          v18 = [value2 length];
 
           if (v18)
           {
-            LODWORD(v9) = 43;
+            LODWORD(value) = 43;
           }
 
           else
           {
-            LODWORD(v9) = 0;
+            LODWORD(value) = 0;
           }
         }
       }
 
       else
       {
-        LODWORD(v9) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
-  return v9;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v3 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  v4 = [v3 srId];
+  eventMetadata = [(SRSchemaSRClientEvent *)self eventMetadata];
+  srId = [eventMetadata srId];
 
-  if (v4)
+  if (srId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [srId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [srId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -367,42 +367,42 @@ LABEL_14:
     }
   }
 
-  v9 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(SRSchemaSRClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (v11)
+    value3 = [requestId value];
+    if (value3)
     {
-      v12 = v11;
-      v13 = [v10 value];
-      v14 = [v13 length];
+      v12 = value3;
+      value4 = [requestId value];
+      v14 = [value4 length];
 
       if (v14)
       {
-        v4 = v10;
+        srId = requestId;
 LABEL_11:
-        v16 = v4;
-        v4 = v16;
+        value5 = srId;
+        srId = value5;
         goto LABEL_13;
       }
     }
   }
 
-  v15 = [(SRSchemaSRClientEvent *)self eventMetadata];
-  v4 = [v15 subRequestId];
+  eventMetadata3 = [(SRSchemaSRClientEvent *)self eventMetadata];
+  srId = [eventMetadata3 subRequestId];
 
-  if (v4)
+  if (srId)
   {
-    v16 = [v4 value];
-    if (!v16)
+    value5 = [srId value];
+    if (!value5)
     {
       goto LABEL_13;
     }
 
-    v17 = [v4 value];
-    v18 = [v17 length];
+    value6 = [srId value];
+    v18 = [value6 length];
 
     if (v18)
     {
@@ -410,10 +410,10 @@ LABEL_11:
     }
   }
 
-  v16 = 0;
+  value5 = 0;
 LABEL_13:
 
-  return v16;
+  return value5;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
@@ -431,9 +431,9 @@ LABEL_13:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 2)
+  if (tag == 2)
   {
     return @"errorChecked";
   }

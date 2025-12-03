@@ -1,72 +1,72 @@
 @interface DMCHTTPLog
-+ (id)_logDirectoryForIdentifier:(id)a3;
-+ (void)_writeRequestLogToURL:(id)a3 request:(id)a4 response:(id)a5 responseData:(id)a6 responseError:(id)a7;
-+ (void)logHTTPDetailsForIdentifier:(id)a3 request:(id)a4 response:(id)a5 responseData:(id)a6 responseError:(id)a7;
-+ (void)logHTTPDetailsForIdentifier:(id)a3 request:(id)a4 response:(id)a5 responseURL:(id)a6 responseError:(id)a7;
++ (id)_logDirectoryForIdentifier:(id)identifier;
++ (void)_writeRequestLogToURL:(id)l request:(id)request response:(id)response responseData:(id)data responseError:(id)error;
++ (void)logHTTPDetailsForIdentifier:(id)identifier request:(id)request response:(id)response responseData:(id)data responseError:(id)error;
++ (void)logHTTPDetailsForIdentifier:(id)identifier request:(id)request response:(id)response responseURL:(id)l responseError:(id)error;
 @end
 
 @implementation DMCHTTPLog
 
-+ (void)logHTTPDetailsForIdentifier:(id)a3 request:(id)a4 response:(id)a5 responseData:(id)a6 responseError:(id)a7
++ (void)logHTTPDetailsForIdentifier:(id)identifier request:(id)request response:(id)response responseData:(id)data responseError:(id)error
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  requestCopy = request;
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
   if (+[DMCFeatureOverrides useHTTPLogging])
   {
-    v16 = [a1 _logDirectoryForIdentifier:v17];
+    v16 = [self _logDirectoryForIdentifier:identifierCopy];
     if (v16)
     {
-      [a1 _writeRequestLogToURL:v16 request:v12 response:v13 responseData:v14 responseError:v15];
+      [self _writeRequestLogToURL:v16 request:requestCopy response:responseCopy responseData:dataCopy responseError:errorCopy];
     }
   }
 }
 
-+ (void)logHTTPDetailsForIdentifier:(id)a3 request:(id)a4 response:(id)a5 responseURL:(id)a6 responseError:(id)a7
++ (void)logHTTPDetailsForIdentifier:(id)identifier request:(id)request response:(id)response responseURL:(id)l responseError:(id)error
 {
-  v20 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  requestCopy = request;
+  responseCopy = response;
+  lCopy = l;
+  errorCopy = error;
   if (+[DMCFeatureOverrides useHTTPLogging])
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v14 absoluteString];
-    v18 = [v16 stringWithFormat:@"Downloaded data to file: %@", v17];
+    absoluteString = [lCopy absoluteString];
+    v18 = [v16 stringWithFormat:@"Downloaded data to file: %@", absoluteString];
 
     v19 = [v18 dataUsingEncoding:4];
-    [a1 logHTTPDetailsForIdentifier:v20 request:v12 response:v13 responseData:v19 responseError:v15];
+    [self logHTTPDetailsForIdentifier:identifierCopy request:requestCopy response:responseCopy responseData:v19 responseError:errorCopy];
   }
 }
 
-+ (void)_writeRequestLogToURL:(id)a3 request:(id)a4 response:(id)a5 responseData:(id)a6 responseError:(id)a7
++ (void)_writeRequestLogToURL:(id)l request:(id)request response:(id)response responseData:(id)data responseError:(id)error
 {
   v95 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v79 = a5;
-  v78 = a6;
-  v80 = a7;
+  lCopy = l;
+  requestCopy = request;
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
   v13 = MEMORY[0x1E696AC80];
   v14 = objc_opt_new();
-  v15 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v16 = [v13 stringFromDate:v14 timeZone:v15 formatOptions:3955];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v16 = [v13 stringFromDate:v14 timeZone:localTimeZone formatOptions:3955];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = v12;
-  v19 = [v12 HTTPMethod];
-  v20 = [v17 stringWithFormat:@"%@-%@.txt", v16, v19];
+  v18 = requestCopy;
+  hTTPMethod = [requestCopy HTTPMethod];
+  v20 = [v17 stringWithFormat:@"%@-%@.txt", v16, hTTPMethod];
 
-  v81 = v11;
-  v21 = [v11 URLByAppendingPathComponent:v20 isDirectory:0];
+  v81 = lCopy;
+  v21 = [lCopy URLByAppendingPathComponent:v20 isDirectory:0];
   for (i = 1; ; ++i)
   {
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
-    v24 = [v21 path];
-    v25 = [v23 fileExistsAtPath:v24];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v21 path];
+    v25 = [defaultManager fileExistsAtPath:path];
 
     if (!v25 || (i - 1) > 0x63)
     {
@@ -74,18 +74,18 @@
     }
 
     v26 = MEMORY[0x1E696AEC0];
-    v27 = [v18 HTTPMethod];
-    v28 = [v26 stringWithFormat:@"%@-%@-%lu.txt", v16, v27, i];
+    hTTPMethod2 = [v18 HTTPMethod];
+    v28 = [v26 stringWithFormat:@"%@-%@-%lu.txt", v16, hTTPMethod2, i];
 
-    v29 = [v11 URLByAppendingPathComponent:v28 isDirectory:0];
+    v29 = [lCopy URLByAppendingPathComponent:v28 isDirectory:0];
 
     v21 = v29;
     v20 = v28;
   }
 
-  v30 = [MEMORY[0x1E696AC08] defaultManager];
-  v31 = [v21 path];
-  v32 = [v30 createFileAtPath:v31 contents:0 attributes:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  path2 = [v21 path];
+  v32 = [defaultManager2 createFileAtPath:path2 contents:0 attributes:0];
 
   if (v32)
   {
@@ -94,25 +94,25 @@
     v34 = v90;
     if (v33)
     {
-      v35 = [MEMORY[0x1E695DF70] array];
-      [v35 addObject:@"<<<<< Request"];
+      array = [MEMORY[0x1E695DF70] array];
+      [array addObject:@"<<<<< Request"];
       v75 = v34;
       v36 = MEMORY[0x1E696AEC0];
-      v37 = [v18 HTTPMethod];
+      hTTPMethod3 = [v18 HTTPMethod];
       [v18 URL];
       v38 = v77 = v33;
-      v39 = [v38 path];
-      v40 = [v36 stringWithFormat:@"%@ %@ HTTP/1.1", v37, v39];
-      [v35 addObject:v40];
+      path3 = [v38 path];
+      v40 = [v36 stringWithFormat:@"%@ %@ HTTP/1.1", hTTPMethod3, path3];
+      [array addObject:v40];
 
-      v41 = [v18 allHTTPHeaderFields];
+      allHTTPHeaderFields = [v18 allHTTPHeaderFields];
       v88[0] = MEMORY[0x1E69E9820];
       v88[1] = 3221225472;
       v88[2] = __80__DMCHTTPLog__writeRequestLogToURL_request_response_responseData_responseError___block_invoke;
       v88[3] = &unk_1E7ADCB20;
-      v42 = v35;
+      v42 = array;
       v89 = v42;
-      [v41 enumerateKeysAndObjectsUsingBlock:v88];
+      [allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:v88];
 
       [v42 addObject:@"\n"];
       v43 = [v42 componentsJoinedByString:@"\n"];
@@ -134,13 +134,13 @@
         }
       }
 
-      v47 = [v18 HTTPBody];
-      v48 = v79;
-      v76 = v47;
-      if (v47)
+      hTTPBody = [v18 HTTPBody];
+      v48 = responseCopy;
+      v76 = hTTPBody;
+      if (hTTPBody)
       {
         v86 = 0;
-        v49 = [v77 writeData:v47 error:&v86];
+        v49 = [v77 writeData:hTTPBody error:&v86];
         v50 = v86;
         v51 = v45;
         v45 = v50;
@@ -160,43 +160,43 @@
       }
 
       v73 = v45;
-      v53 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
 
-      [v53 addObject:@"\n>>>>> Response"];
-      if (v79)
+      [array2 addObject:@"\n>>>>> Response"];
+      if (responseCopy)
       {
         v54 = MEMORY[0x1E696AEC0];
-        v55 = [v79 statusCode];
-        v56 = [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(v79, "statusCode")}];
-        v57 = [v54 stringWithFormat:@"HTTP/1.1 %ld %@", v55, v56];
-        [v53 addObject:v57];
+        statusCode = [responseCopy statusCode];
+        v56 = [MEMORY[0x1E696AC68] localizedStringForStatusCode:{objc_msgSend(responseCopy, "statusCode")}];
+        v57 = [v54 stringWithFormat:@"HTTP/1.1 %ld %@", statusCode, v56];
+        [array2 addObject:v57];
 
-        v58 = [v79 allHeaderFields];
+        allHeaderFields = [responseCopy allHeaderFields];
         v84[0] = MEMORY[0x1E69E9820];
         v84[1] = 3221225472;
         v84[2] = __80__DMCHTTPLog__writeRequestLogToURL_request_response_responseData_responseError___block_invoke_37;
         v84[3] = &unk_1E7ADCB20;
-        v59 = v53;
+        v59 = array2;
         v85 = v59;
-        [v58 enumerateKeysAndObjectsUsingBlock:v84];
+        [allHeaderFields enumerateKeysAndObjectsUsingBlock:v84];
 
         [v59 addObject:@"\n"];
       }
 
-      else if (v80)
+      else if (errorCopy)
       {
-        [v53 addObject:@"--- Error ---"];
-        v64 = [v80 description];
-        [v53 addObject:v64];
+        [array2 addObject:@"--- Error ---"];
+        v64 = [errorCopy description];
+        [array2 addObject:v64];
       }
 
       else
       {
-        [v53 addObject:@"--- Unknown Error ---"];
+        [array2 addObject:@"--- Unknown Error ---"];
       }
 
-      v74 = v53;
-      v65 = [v53 componentsJoinedByString:@"\n"];
+      v74 = array2;
+      v65 = [array2 componentsJoinedByString:@"\n"];
       v66 = [v65 dataUsingEncoding:4];
       v83 = 0;
       v67 = [v77 writeData:v66 error:&v83];
@@ -215,12 +215,12 @@
         }
       }
 
-      v62 = v78;
-      if (v78)
+      v62 = dataCopy;
+      if (dataCopy)
       {
         v82 = 0;
         v33 = v77;
-        v70 = [v77 writeData:v78 error:&v82];
+        v70 = [v77 writeData:dataCopy error:&v82];
         v34 = v82;
 
         if ((v70 & 1) == 0)
@@ -258,17 +258,17 @@
         _os_log_impl(&dword_1B1630000, v63, OS_LOG_TYPE_ERROR, "Could not open HTTP request log file %@: %@", buf, 0x16u);
       }
 
-      v62 = v78;
-      v48 = v79;
+      v62 = dataCopy;
+      v48 = responseCopy;
     }
 
-    v61 = v80;
+    v61 = errorCopy;
   }
 
   else
   {
     v60 = *DMCLogObjects();
-    v61 = v80;
+    v61 = errorCopy;
     if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
@@ -277,8 +277,8 @@
     }
 
     v34 = 0;
-    v62 = v78;
-    v48 = v79;
+    v62 = dataCopy;
+    v48 = responseCopy;
   }
 
   v72 = *MEMORY[0x1E69E9840];
@@ -298,17 +298,17 @@ void __80__DMCHTTPLog__writeRequestLogToURL_request_response_responseData_respon
   [v3 addObject:v4];
 }
 
-+ (id)_logDirectoryForIdentifier:(id)a3
++ (id)_logDirectoryForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 fileURLWithPath:@"/tmp/DMCHTTPLogs"];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:1];
+  v6 = [v5 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v14 = 0;
-  v8 = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v14];
+  v8 = [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v14];
   v9 = v14;
 
   if (v8)

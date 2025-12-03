@@ -1,23 +1,23 @@
 @interface INSetLabeledSettingIntent
-- (INSetLabeledSettingIntent)initWithSettingMetadata:(id)a3 labeledValue:(id)a4 temporalEventTrigger:(id)a5;
+- (INSetLabeledSettingIntent)initWithSettingMetadata:(id)metadata labeledValue:(id)value temporalEventTrigger:(id)trigger;
 - (INSettingMetadata)settingMetadata;
 - (INTemporalEventTrigger)temporalEventTrigger;
 - (NSString)labeledValue;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setLabeledValue:(id)a3;
-- (void)setSettingMetadata:(id)a3;
-- (void)setTemporalEventTrigger:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setLabeledValue:(id)value;
+- (void)setSettingMetadata:(id)metadata;
+- (void)setTemporalEventTrigger:(id)trigger;
 @end
 
 @implementation INSetLabeledSettingIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetLabeledSettingIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetLabeledSettingIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -26,42 +26,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"settingMetadata";
-  v3 = [(INSetLabeledSettingIntent *)self settingMetadata];
-  v4 = v3;
-  if (!v3)
+  settingMetadata = [(INSetLabeledSettingIntent *)self settingMetadata];
+  null = settingMetadata;
+  if (!settingMetadata)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"labeledValue";
-  v5 = [(INSetLabeledSettingIntent *)self labeledValue];
-  v6 = v5;
-  if (!v5)
+  labeledValue = [(INSetLabeledSettingIntent *)self labeledValue];
+  null2 = labeledValue;
+  if (!labeledValue)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"temporalEventTrigger";
-  v7 = [(INSetLabeledSettingIntent *)self temporalEventTrigger];
-  v8 = v7;
-  if (!v7)
+  temporalEventTrigger = [(INSetLabeledSettingIntent *)self temporalEventTrigger];
+  null3 = temporalEventTrigger;
+  if (!temporalEventTrigger)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!temporalEventTrigger)
   {
   }
 
-  if (!v5)
+  if (!labeledValue)
   {
   }
 
-  if (!v3)
+  if (!settingMetadata)
   {
   }
 
@@ -70,99 +70,99 @@
   return v9;
 }
 
-- (void)setTemporalEventTrigger:(id)a3
+- (void)setTemporalEventTrigger:(id)trigger
 {
-  v4 = a3;
-  v6 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTemporalEventTrigger(v4);
+  triggerCopy = trigger;
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTemporalEventTrigger(triggerCopy);
 
-  [v6 setTemporalEventTrigger:v5];
+  [_typedBackingStore setTemporalEventTrigger:v5];
 }
 
 - (INTemporalEventTrigger)temporalEventTrigger
 {
-  v2 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  v3 = [v2 temporalEventTrigger];
-  v4 = INIntentSlotValueTransformFromTemporalEventTrigger(v3);
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  temporalEventTrigger = [_typedBackingStore temporalEventTrigger];
+  v4 = INIntentSlotValueTransformFromTemporalEventTrigger(temporalEventTrigger);
 
   return v4;
 }
 
-- (void)setLabeledValue:(id)a3
+- (void)setLabeledValue:(id)value
 {
-  v4 = a3;
-  v5 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  [v5 setLabeledValue:v4];
+  valueCopy = value;
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  [_typedBackingStore setLabeledValue:valueCopy];
 }
 
 - (NSString)labeledValue
 {
-  v2 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  v3 = [v2 labeledValue];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  labeledValue = [_typedBackingStore labeledValue];
+  v4 = [labeledValue copy];
 
   return v4;
 }
 
-- (void)setSettingMetadata:(id)a3
+- (void)setSettingMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToSettingMetadata(v4);
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToSettingMetadata(metadataCopy);
 
-  [v6 setSettingMetadata:v5];
+  [_typedBackingStore setSettingMetadata:v5];
 }
 
 - (INSettingMetadata)settingMetadata
 {
-  v2 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  v3 = [v2 settingMetadata];
-  v4 = INIntentSlotValueTransformFromSettingMetadata(v3);
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  settingMetadata = [_typedBackingStore settingMetadata];
+  v4 = INIntentSlotValueTransformFromSettingMetadata(settingMetadata);
 
   return v4;
 }
 
-- (INSetLabeledSettingIntent)initWithSettingMetadata:(id)a3 labeledValue:(id)a4 temporalEventTrigger:(id)a5
+- (INSetLabeledSettingIntent)initWithSettingMetadata:(id)metadata labeledValue:(id)value temporalEventTrigger:(id)trigger
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  valueCopy = value;
+  triggerCopy = trigger;
   v14.receiver = self;
   v14.super_class = INSetLabeledSettingIntent;
   v11 = [(INIntent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(INSetLabeledSettingIntent *)v11 setSettingMetadata:v8];
-    [(INSetLabeledSettingIntent *)v12 setLabeledValue:v9];
-    [(INSetLabeledSettingIntent *)v12 setTemporalEventTrigger:v10];
+    [(INSetLabeledSettingIntent *)v11 setSettingMetadata:metadataCopy];
+    [(INSetLabeledSettingIntent *)v12 setLabeledValue:valueCopy];
+    [(INSetLabeledSettingIntent *)v12 setTemporalEventTrigger:triggerCopy];
   }
 
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetLabeledSettingIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetLabeledSettingIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

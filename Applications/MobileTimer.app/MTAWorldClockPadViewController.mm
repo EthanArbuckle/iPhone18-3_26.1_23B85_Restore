@@ -2,36 +2,36 @@
 - (MTAWorldClockPadViewController)init;
 - (double)mapHeight;
 - (id)contentScrollView;
-- (void)addCityWithoutUserInteraction:(id)a3;
-- (void)addClock:(id)a3;
-- (void)addClockViewController:(id)a3 addCity:(id)a4;
-- (void)collectionView:(id)a3 didRemoveCity:(id)a4;
-- (void)dismissAddViewController:(id)a3;
-- (void)finishAddViewControllerDismissal:(BOOL)a3;
+- (void)addCityWithoutUserInteraction:(id)interaction;
+- (void)addClock:(id)clock;
+- (void)addClockViewController:(id)controller addCity:(id)city;
+- (void)collectionView:(id)view didRemoveCity:(id)city;
+- (void)dismissAddViewController:(id)controller;
+- (void)finishAddViewControllerDismissal:(BOOL)dismissal;
 - (void)handleApplicationDidEnterBackground;
 - (void)handleApplicationWillEnterForeground;
-- (void)handleContentSizeChange:(id)a3;
+- (void)handleContentSizeChange:(id)change;
 - (void)prepareStateForUrlLaunch;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)reloadState;
-- (void)removeCityWithoutUserInteraction:(id)a3;
-- (void)restoreIndexPath:(id)a3;
+- (void)removeCityWithoutUserInteraction:(id)interaction;
+- (void)restoreIndexPath:(id)path;
 - (void)saveState;
-- (void)scrollToCityAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)scrollToCityAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setupConstraints;
 - (void)showAddView;
 - (void)startUpdates;
 - (void)stopUpdates;
 - (void)toggleEditView;
-- (void)updateClocksForSize:(CGSize)a3 transitionCoordinator:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateClocksForSize:(CGSize)size transitionCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAWorldClockPadViewController
@@ -48,12 +48,12 @@
     [(MTAWorldClockPadViewController *)v2 setTitle:v4];
 
     v5 = [UIImage systemImageNamed:@"globe"];
-    v6 = [(MTAWorldClockPadViewController *)v2 tabBarItem];
-    [v6 setImage:v5];
+    tabBarItem = [(MTAWorldClockPadViewController *)v2 tabBarItem];
+    [tabBarItem setImage:v5];
 
     v2->_addedClockIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [(MTAWorldClockPadViewController *)v2 title];
-    v8 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.worldclock" title:v7];
+    title = [(MTAWorldClockPadViewController *)v2 title];
+    v8 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.worldclock" title:title];
     userActivity = v2->_userActivity;
     v2->_userActivity = v8;
 
@@ -74,8 +74,8 @@
     self->_addClockNavigationController = v3;
 
     [(UINavigationController *)self->_addClockNavigationController setModalPresentationStyle:2];
-    v5 = [(UINavigationController *)self->_addClockNavigationController presentationController];
-    [v5 setDelegate:self];
+    presentationController = [(UINavigationController *)self->_addClockNavigationController presentationController];
+    [presentationController setDelegate:self];
 
     [(MTAWorldClockPadViewController *)self presentViewController:self->_addClockNavigationController animated:1 completion:0];
     v6 = +[MTAStateStore shared];
@@ -84,7 +84,7 @@
   }
 }
 
-- (void)addClock:(id)a3
+- (void)addClock:(id)clock
 {
   [(MTAWorldClockPadViewController *)self setEditing:0];
 
@@ -101,17 +101,17 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v10.receiver = self;
   v10.super_class = MTAWorldClockPadViewController;
-  [(MTAWorldClockPadViewController *)&v10 setEditing:a3 animated:a4];
-  v6 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  [v6 setEditing:v4];
+  [(MTAWorldClockPadViewController *)&v10 setEditing:editing animated:animated];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  [collectionViewController setEditing:editingCopy];
 
   v7 = +[MTAStateStore shared];
-  if (v4)
+  if (editingCopy)
   {
     v8 = 5;
   }
@@ -125,17 +125,17 @@
   [v7 pushEvent:v9];
 }
 
-- (void)updateClocksForSize:(CGSize)a3 transitionCoordinator:(id)a4
+- (void)updateClocksForSize:(CGSize)size transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v31 = [v7 collectionView];
+  height = size.height;
+  width = size.width;
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  v8 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v9 = [v8 collectionViewLayout];
+  collectionViewController2 = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionViewLayout = [collectionViewController2 collectionViewLayout];
 
-  if (v31 && v9)
+  if (collectionView && collectionViewLayout)
   {
     if (width > height)
     {
@@ -147,12 +147,12 @@
       v10 = 2;
     }
 
-    v11 = [v9 rowsPerPage];
+    rowsPerPage = [collectionViewLayout rowsPerPage];
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v12 preferredContentSizeCategory];
 
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
-    v15 = UIContentSizeCategoryCompareToCategory(v13, UIContentSizeCategoryAccessibilityLarge);
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+    v15 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityLarge);
     if (IsAccessibilityCategory)
     {
       v16 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -190,51 +190,51 @@
       v21 = v20;
     }
 
-    v22 = [v9 columnsPerPage];
-    if (v11 != v10 || v22 != v21)
+    columnsPerPage = [collectionViewLayout columnsPerPage];
+    if (rowsPerPage != v10 || columnsPerPage != v21)
     {
-      [v9 setRowsPerPage:v10];
-      [v9 setColumnsPerPage:v21];
-      [v9 setScrollDirection:width > height];
+      [collectionViewLayout setRowsPerPage:v10];
+      [collectionViewLayout setColumnsPerPage:v21];
+      [collectionViewLayout setScrollDirection:width > height];
       if (width <= height)
       {
-        v29 = [(MTAWorldClockPadViewController *)self horizontalMapHeightConstraint];
-        [v29 setActive:0];
+        horizontalMapHeightConstraint = [(MTAWorldClockPadViewController *)self horizontalMapHeightConstraint];
+        [horizontalMapHeightConstraint setActive:0];
 
-        v25 = [(MTAWorldClockPadViewController *)self verticalMapHeightConstraint];
-        [v25 setActive:1];
+        verticalMapHeightConstraint = [(MTAWorldClockPadViewController *)self verticalMapHeightConstraint];
+        [verticalMapHeightConstraint setActive:1];
       }
 
       else
       {
-        v23 = [(MTAWorldClockPadViewController *)self verticalMapHeightConstraint];
-        [v23 setActive:0];
+        verticalMapHeightConstraint2 = [(MTAWorldClockPadViewController *)self verticalMapHeightConstraint];
+        [verticalMapHeightConstraint2 setActive:0];
 
-        v24 = [(MTAWorldClockPadViewController *)self horizontalMapHeightConstraint];
-        [v24 setActive:1];
+        horizontalMapHeightConstraint2 = [(MTAWorldClockPadViewController *)self horizontalMapHeightConstraint];
+        [horizontalMapHeightConstraint2 setActive:1];
 
-        v25 = [(MTAWorldClockPadViewController *)self collectionViewController];
-        [v25 cellHeight];
+        verticalMapHeightConstraint = [(MTAWorldClockPadViewController *)self collectionViewController];
+        [verticalMapHeightConstraint cellHeight];
         v27 = -v26;
-        v28 = [(MTAWorldClockPadViewController *)self horizontalMapHeightConstraint];
-        [v28 setConstant:v27];
+        horizontalMapHeightConstraint3 = [(MTAWorldClockPadViewController *)self horizontalMapHeightConstraint];
+        [horizontalMapHeightConstraint3 setConstant:v27];
       }
 
-      v30 = [v31 collectionViewLayout];
-      [v30 invalidateLayout];
+      collectionViewLayout2 = [collectionView collectionViewLayout];
+      [collectionViewLayout2 invalidateLayout];
 
-      [v31 setShowsHorizontalScrollIndicator:width > height];
-      [v31 setShowsVerticalScrollIndicator:width <= height];
+      [collectionView setShowsHorizontalScrollIndicator:width > height];
+      [collectionView setShowsVerticalScrollIndicator:width <= height];
     }
   }
 }
 
 - (id)contentScrollView
 {
-  v2 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v3 = [v2 contentScrollView];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  contentScrollView = [collectionViewController contentScrollView];
 
-  return v3;
+  return contentScrollView;
 }
 
 - (void)viewDidLoad
@@ -242,19 +242,19 @@
   v28.receiver = self;
   v28.super_class = MTAWorldClockPadViewController;
   [(MTAWorldClockPadViewController *)&v28 viewDidLoad];
-  v3 = [(MTAWorldClockPadViewController *)self editButtonItem];
-  [v3 setTarget:self];
+  editButtonItem = [(MTAWorldClockPadViewController *)self editButtonItem];
+  [editButtonItem setTarget:self];
 
-  v4 = [(MTAWorldClockPadViewController *)self editButtonItem];
-  [v4 setAction:"toggleEditView"];
+  editButtonItem2 = [(MTAWorldClockPadViewController *)self editButtonItem];
+  [editButtonItem2 setAction:"toggleEditView"];
 
-  v5 = [(MTAWorldClockPadViewController *)self editButtonItem];
-  v6 = [(MTAWorldClockPadViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  editButtonItem3 = [(MTAWorldClockPadViewController *)self editButtonItem];
+  navigationItem = [(MTAWorldClockPadViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:editButtonItem3];
 
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"addClock:"];
-  v8 = [(MTAWorldClockPadViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem2 = [(MTAWorldClockPadViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v7];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:self selector:"handleApplicationDidEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -266,134 +266,134 @@
   [v11 addObserver:self selector:"handleContentSizeChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
   v12 = +[UIColor mtui_backgroundColor];
-  v13 = [(MTAWorldClockPadViewController *)self view];
-  [v13 setBackgroundColor:v12];
+  view = [(MTAWorldClockPadViewController *)self view];
+  [view setBackgroundColor:v12];
 
   v14 = [MTAWorldClockCollectionViewController alloc];
   v15 = objc_opt_new();
   v16 = [(MTAWorldClockCollectionViewController *)v14 initWithCollectionViewLayout:v15];
   [(MTAWorldClockPadViewController *)self setCollectionViewController:v16];
 
-  v17 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  [v17 setDelegate:self];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  [collectionViewController setDelegate:self];
 
-  v18 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  [(MTAWorldClockPadViewController *)self addChildViewController:v18];
+  collectionViewController2 = [(MTAWorldClockPadViewController *)self collectionViewController];
+  [(MTAWorldClockPadViewController *)self addChildViewController:collectionViewController2];
 
-  v19 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v20 = [v19 view];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionViewController3 = [(MTAWorldClockPadViewController *)self collectionViewController];
+  view2 = [collectionViewController3 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(MTAWorldClockPadViewController *)self view];
-  v22 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v23 = [v22 view];
-  [v21 addSubview:v23];
+  view3 = [(MTAWorldClockPadViewController *)self view];
+  collectionViewController4 = [(MTAWorldClockPadViewController *)self collectionViewController];
+  view4 = [collectionViewController4 view];
+  [view3 addSubview:view4];
 
-  v24 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  [v24 didMoveToParentViewController:self];
+  collectionViewController5 = [(MTAWorldClockPadViewController *)self collectionViewController];
+  [collectionViewController5 didMoveToParentViewController:self];
 
   v25 = [[MTAWorldClockMapView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(MTAWorldClockPadViewController *)self setMapView:v25];
 
-  v26 = [(MTAWorldClockPadViewController *)self view];
-  v27 = [(MTAWorldClockPadViewController *)self mapView];
-  [v26 addSubview:v27];
+  view5 = [(MTAWorldClockPadViewController *)self view];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [view5 addSubview:mapView];
 
   [(MTAWorldClockPadViewController *)self setupConstraints];
 }
 
 - (void)setupConstraints
 {
-  v45 = [(MTAWorldClockPadViewController *)self mapView];
-  [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v4 = [v3 view];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  view = [collectionViewController view];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = objc_opt_new();
-  v6 = [v45 topAnchor];
-  v7 = [(MTAWorldClockPadViewController *)self view];
-  v8 = [v7 safeAreaLayoutGuide];
-  v9 = [v8 topAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  topAnchor = [mapView topAnchor];
+  view2 = [(MTAWorldClockPadViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v5 addObject:v10];
 
-  v11 = [v45 leadingAnchor];
-  v12 = [(MTAWorldClockPadViewController *)self view];
-  v13 = [v12 leadingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  leadingAnchor = [mapView leadingAnchor];
+  view3 = [(MTAWorldClockPadViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v5 addObject:v14];
 
-  v15 = [v45 trailingAnchor];
-  v16 = [(MTAWorldClockPadViewController *)self view];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  trailingAnchor = [mapView trailingAnchor];
+  view4 = [(MTAWorldClockPadViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v5 addObject:v18];
 
-  v19 = [v45 heightAnchor];
+  heightAnchor = [mapView heightAnchor];
   [(MTAWorldClockPadViewController *)self mapHeight];
-  v20 = [v19 constraintEqualToConstant:?];
+  v20 = [heightAnchor constraintEqualToConstant:?];
   [(MTAWorldClockPadViewController *)self setVerticalMapHeightConstraint:v20];
 
-  v21 = [v45 heightAnchor];
-  v22 = [(MTAWorldClockPadViewController *)self view];
-  v23 = [v22 safeAreaLayoutGuide];
-  v24 = [v23 heightAnchor];
-  v25 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  [v25 cellHeight];
-  v27 = [v21 constraintEqualToAnchor:v24 constant:-v26];
+  heightAnchor2 = [mapView heightAnchor];
+  view5 = [(MTAWorldClockPadViewController *)self view];
+  safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+  heightAnchor3 = [safeAreaLayoutGuide2 heightAnchor];
+  collectionViewController2 = [(MTAWorldClockPadViewController *)self collectionViewController];
+  [collectionViewController2 cellHeight];
+  v27 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 constant:-v26];
   [(MTAWorldClockPadViewController *)self setHorizontalMapHeightConstraint:v27];
 
-  v28 = [v4 leadingAnchor];
-  v29 = [(MTAWorldClockPadViewController *)self view];
-  v30 = [v29 leadingAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  leadingAnchor3 = [view leadingAnchor];
+  view6 = [(MTAWorldClockPadViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v5 addObject:v31];
 
-  v32 = [v4 trailingAnchor];
-  v33 = [(MTAWorldClockPadViewController *)self view];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  trailingAnchor3 = [view trailingAnchor];
+  view7 = [(MTAWorldClockPadViewController *)self view];
+  trailingAnchor4 = [view7 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v5 addObject:v35];
 
-  v36 = [v4 topAnchor];
-  v37 = [v45 bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  topAnchor3 = [view topAnchor];
+  bottomAnchor = [mapView bottomAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v5 addObject:v38];
 
-  v39 = [v4 bottomAnchor];
-  v40 = [(MTAWorldClockPadViewController *)self view];
-  v41 = [v40 safeAreaLayoutGuide];
-  v42 = [v41 bottomAnchor];
-  v43 = [v39 constraintEqualToAnchor:v42 constant:0.0];
+  bottomAnchor2 = [view bottomAnchor];
+  view8 = [(MTAWorldClockPadViewController *)self view];
+  safeAreaLayoutGuide3 = [view8 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide3 bottomAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:0.0];
   [(MTAWorldClockPadViewController *)self setCollectionBottomConstraint:v43];
 
-  v44 = [(MTAWorldClockPadViewController *)self collectionBottomConstraint];
-  [v5 addObject:v44];
+  collectionBottomConstraint = [(MTAWorldClockPadViewController *)self collectionBottomConstraint];
+  [v5 addObject:collectionBottomConstraint];
 
   [NSLayoutConstraint activateConstraints:v5];
 }
 
 - (double)mapHeight
 {
-  v3 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v4 = [v3 collectionViewLayout];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionViewLayout = [collectionViewController collectionViewLayout];
 
-  if ([v4 scrollDirection] == 1)
+  if ([collectionViewLayout scrollDirection] == 1)
   {
-    v5 = [(MTAWorldClockPadViewController *)self view];
-    v6 = [v5 safeAreaLayoutGuide];
-    [v6 layoutFrame];
+    view = [(MTAWorldClockPadViewController *)self view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     Height = CGRectGetHeight(v13);
-    v8 = [(MTAWorldClockPadViewController *)self collectionViewController];
-    [v8 cellHeight];
+    collectionViewController2 = [(MTAWorldClockPadViewController *)self collectionViewController];
+    [collectionViewController2 cellHeight];
     v10 = Height - v9;
   }
 
   else
   {
-    v5 = [(MTAWorldClockPadViewController *)self view];
-    [v5 bounds];
+    view = [(MTAWorldClockPadViewController *)self view];
+    [view bounds];
     [MTAWorldClockMapView mapHeightForWidth:CGRectGetWidth(v14)];
     v10 = v11;
   }
@@ -409,36 +409,36 @@
   if (!self->_initializedCurrentPage)
   {
     self->_initializedCurrentPage = 1;
-    v3 = [(MTAWorldClockPadViewController *)self collectionViewController];
-    v4 = [v3 collectionView];
+    collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+    collectionView = [collectionViewController collectionView];
 
-    [v4 contentSize];
+    [collectionView contentSize];
     if (v6 == CGSizeZero.width && v5 == CGSizeZero.height)
     {
-      v8 = [v4 collectionViewLayout];
-      [v8 invalidateLayout];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
 
-    v9 = [(MTAWorldClockPadViewController *)self view];
-    [v9 bounds];
+    view = [(MTAWorldClockPadViewController *)self view];
+    [view bounds];
     [(MTAWorldClockPadViewController *)self updateClocksForSize:0 transitionCoordinator:v10, v11];
   }
 }
 
 - (void)startUpdates
 {
-  v3 = [(MTAWorldClockPadViewController *)self mapView];
-  [v3 startUpdatingTime];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView startUpdatingTime];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v5 = [v4 collectionView];
-  v6 = [v5 visibleCells];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -450,7 +450,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v11 + 1) + 8 * v10) start];
@@ -458,7 +458,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -467,18 +467,18 @@
 
 - (void)stopUpdates
 {
-  v3 = [(MTAWorldClockPadViewController *)self mapView];
-  [v3 stopUpdatingTime];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView stopUpdatingTime];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v5 = [v4 collectionView];
-  v6 = [v5 visibleCells];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -490,7 +490,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v11 + 1) + 8 * v10) stop];
@@ -498,92 +498,92 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v17.receiver = self;
   v17.super_class = MTAWorldClockPadViewController;
-  [(MTAWorldClockPadViewController *)&v17 viewWillAppear:a3];
+  [(MTAWorldClockPadViewController *)&v17 viewWillAppear:appear];
   v4 = +[WorldClockManager sharedManager];
-  v5 = [v4 cities];
+  cities = [v4 cities];
 
-  if (!v5)
+  if (!cities)
   {
     [v4 loadCities];
   }
 
   if (self->_initializedCurrentPage)
   {
-    v6 = [(MTAWorldClockPadViewController *)self view];
-    [v6 bounds];
+    view = [(MTAWorldClockPadViewController *)self view];
+    [view bounds];
     [(MTAWorldClockPadViewController *)self updateClocksForSize:0 transitionCoordinator:v7, v8];
 
-    v9 = [(MTAWorldClockPadViewController *)self collectionViewController];
-    v10 = [v9 collectionView];
-    [v10 reloadData];
+    collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+    collectionView = [collectionViewController collectionView];
+    [collectionView reloadData];
   }
 
-  if (!v5 || self->_initializedCurrentPage)
+  if (!cities || self->_initializedCurrentPage)
   {
-    v11 = [(MTAWorldClockPadViewController *)self mapView];
-    v12 = [v4 cities];
-    [v11 setCities:v12];
+    mapView = [(MTAWorldClockPadViewController *)self mapView];
+    cities2 = [v4 cities];
+    [mapView setCities:cities2];
   }
 
   [(MTAWorldClockPadViewController *)self startUpdates];
-  v13 = [(MTAWorldClockPadViewController *)self deferAddedCity];
+  deferAddedCity = [(MTAWorldClockPadViewController *)self deferAddedCity];
 
-  if (v13)
+  if (deferAddedCity)
   {
-    v14 = [(MTAWorldClockPadViewController *)self deferAddedCity];
-    [(MTAWorldClockPadViewController *)self addCityWithoutUserInteraction:v14];
+    deferAddedCity2 = [(MTAWorldClockPadViewController *)self deferAddedCity];
+    [(MTAWorldClockPadViewController *)self addCityWithoutUserInteraction:deferAddedCity2];
 
     [(MTAWorldClockPadViewController *)self setDeferAddedCity:0];
   }
 
-  v15 = [(MTAWorldClockPadViewController *)self deferRemovedCity];
+  deferRemovedCity = [(MTAWorldClockPadViewController *)self deferRemovedCity];
 
-  if (v15)
+  if (deferRemovedCity)
   {
-    v16 = [(MTAWorldClockPadViewController *)self deferRemovedCity];
-    [(MTAWorldClockPadViewController *)self removeCityWithoutUserInteraction:v16];
+    deferRemovedCity2 = [(MTAWorldClockPadViewController *)self deferRemovedCity];
+    [(MTAWorldClockPadViewController *)self removeCityWithoutUserInteraction:deferRemovedCity2];
 
     [(MTAWorldClockPadViewController *)self setDeferRemovedCity:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = MTAWorldClockPadViewController;
-  [(MTAWorldClockPadViewController *)&v14 viewDidAppear:a3];
-  v4 = [(NSUserActivity *)self->_userActivity keywords];
-  v5 = v4;
-  if (!v4)
+  [(MTAWorldClockPadViewController *)&v14 viewDidAppear:appear];
+  keywords = [(NSUserActivity *)self->_userActivity keywords];
+  v5 = keywords;
+  if (!keywords)
   {
     v5 = +[NSSet set];
   }
 
   v6 = +[WorldClockManager sharedManager];
-  v7 = [v6 cities];
-  v8 = [v7 na_map:&stru_1000AD938];
+  cities = [v6 cities];
+  v8 = [cities na_map:&stru_1000AD938];
   v9 = [v5 setByAddingObjectsFromArray:v8];
   [(NSUserActivity *)self->_userActivity setKeywords:v9];
 
-  if (!v4)
+  if (!keywords)
   {
   }
 
   [(NSUserActivity *)self->_userActivity becomeCurrent];
-  v10 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v11 = [v10 collectionView];
-  [v11 flashScrollIndicators];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  [collectionView flashScrollIndicators];
 
   viewLoadedAction = self->_viewLoadedAction;
   if (viewLoadedAction)
@@ -594,40 +594,40 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(NSUserActivity *)self->_userActivity resignCurrent];
   [(MTAWorldClockPadViewController *)self stopUpdates];
   v5.receiver = self;
   v5.super_class = MTAWorldClockPadViewController;
-  [(MTAWorldClockPadViewController *)&v5 viewWillDisappear:v3];
+  [(MTAWorldClockPadViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v22.receiver = self;
   v22.super_class = MTAWorldClockPadViewController;
-  [(MTAWorldClockPadViewController *)&v22 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v9 = [v8 collectionView];
+  [(MTAWorldClockPadViewController *)&v22 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  v10 = [v9 indexPathsForVisibleItems];
-  v11 = [v10 sortedArrayUsingComparator:&stru_1000AD978];
-  v12 = [v11 firstObject];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  v11 = [indexPathsForVisibleItems sortedArrayUsingComparator:&stru_1000AD978];
+  firstObject = [v11 firstObject];
 
-  v13 = [(MTAWorldClockPadViewController *)self mapView];
-  [v13 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
 
-  v14 = [(MTAWorldClockPadViewController *)self view];
-  v15 = [v14 window];
+  view = [(MTAWorldClockPadViewController *)self view];
+  window = [view window];
 
-  if (v15 && width >= 668.0)
+  if (window && width >= 668.0)
   {
-    [(MTAWorldClockPadViewController *)self updateClocksForSize:v7 transitionCoordinator:width, height];
+    [(MTAWorldClockPadViewController *)self updateClocksForSize:coordinatorCopy transitionCoordinator:width, height];
   }
 
   v20[0] = _NSConcreteStackBlock;
@@ -635,36 +635,36 @@
   v20[2] = sub_1000071D0;
   v20[3] = &unk_1000AD9A0;
   v20[4] = self;
-  v21 = v12;
+  v21 = firstObject;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100007248;
   v18[3] = &unk_1000AD9C8;
-  v19 = v9;
-  v16 = v9;
-  v17 = v12;
-  [v7 animateAlongsideTransition:v20 completion:v18];
+  v19 = collectionView;
+  v16 = collectionView;
+  v17 = firstObject;
+  [coordinatorCopy animateAlongsideTransition:v20 completion:v18];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = MTAWorldClockPadViewController;
-  [(MTAWorldClockPadViewController *)&v12 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  v7 = [(MTAWorldClockPadViewController *)self traitCollection];
-  if ([v7 horizontalSizeClass] == 2)
+  [(MTAWorldClockPadViewController *)&v12 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  traitCollection = [(MTAWorldClockPadViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v8 = [v6 horizontalSizeClass];
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
 
-    if (v8 == 1)
+    if (horizontalSizeClass == 1)
     {
       if (self->_addClockNavigationController)
       {
-        v9 = [(MTAWorldClockPadViewController *)self presentedViewController];
+        presentedViewController = [(MTAWorldClockPadViewController *)self presentedViewController];
         addClockNavigationController = self->_addClockNavigationController;
 
-        if (v9 == addClockNavigationController)
+        if (presentedViewController == addClockNavigationController)
         {
           v11[0] = _NSConcreteStackBlock;
           v11[1] = 3221225472;
@@ -684,18 +684,18 @@
 
 - (void)handleApplicationWillEnterForeground
 {
-  v3 = [(MTAWorldClockPadViewController *)self mapView];
-  [v3 startUpdatingTime];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView startUpdatingTime];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v5 = [v4 collectionView];
-  v6 = [v5 visibleCells];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -707,7 +707,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v11 + 1) + 8 * v10) start];
@@ -715,7 +715,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -724,18 +724,18 @@
 
 - (void)handleApplicationDidEnterBackground
 {
-  v3 = [(MTAWorldClockPadViewController *)self mapView];
-  [v3 stopUpdatingTime];
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView stopUpdatingTime];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v5 = [v4 collectionView];
-  v6 = [v5 visibleCells];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -747,7 +747,7 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleCells);
         }
 
         [*(*(&v11 + 1) + 8 * v10) start];
@@ -755,31 +755,31 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)handleContentSizeChange:(id)a3
+- (void)handleContentSizeChange:(id)change
 {
-  v4 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  [v4 handleContentSizeChange];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  [collectionViewController handleContentSizeChange];
 
-  v5 = [(MTAWorldClockPadViewController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  view = [(MTAWorldClockPadViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)collectionView:(id)a3 didRemoveCity:(id)a4
+- (void)collectionView:(id)view didRemoveCity:(id)city
 {
-  v5 = a4;
-  v6 = [(MTAWorldClockPadViewController *)self mapView];
-  [v6 removeCity:v5];
+  cityCopy = city;
+  mapView = [(MTAWorldClockPadViewController *)self mapView];
+  [mapView removeCity:cityCopy];
 
   v7 = +[WorldClockManager sharedManager];
-  v8 = [v7 cities];
-  v9 = [v8 count];
+  cities = [v7 cities];
+  v9 = [cities count];
 
   if (!v9)
   {
@@ -788,24 +788,24 @@
   }
 }
 
-- (void)addCityWithoutUserInteraction:(id)a3
+- (void)addCityWithoutUserInteraction:(id)interaction
 {
-  [(MTAWorldClockPadViewController *)self addClockViewController:0 addCity:a3];
+  [(MTAWorldClockPadViewController *)self addClockViewController:0 addCity:interaction];
 
   [(MTAWorldClockPadViewController *)self dismissAddViewController:0];
 }
 
-- (void)addClockViewController:(id)a3 addCity:(id)a4
+- (void)addClockViewController:(id)controller addCity:(id)city
 {
-  v5 = a4;
+  cityCopy = city;
   v6 = +[WorldClockManager sharedManager];
-  v7 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v8 = [v7 collectionView];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  v9 = [v6 cities];
-  v10 = [v9 count];
+  cities = [v6 cities];
+  v10 = [cities count];
 
-  v11 = [v6 addCity:v5];
+  v11 = [v6 addCity:cityCopy];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
@@ -814,18 +814,18 @@
   else
   {
     v12 = [NSIndexPath indexPathForItem:v11 inSection:0];
-    v13 = [v6 cities];
-    v14 = [v13 count];
+    cities2 = [v6 cities];
+    v14 = [cities2 count];
 
     if (v10 != v14)
     {
       [v6 saveCities];
       v17 = v12;
       v15 = [NSArray arrayWithObjects:&v17 count:1];
-      [v8 insertItemsAtIndexPaths:v15];
+      [collectionView insertItemsAtIndexPaths:v15];
 
-      v16 = [v8 collectionViewLayout];
-      [v16 invalidateLayout];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
 
       [MTAnalytics incrementEventCount:kMTCAWorldClockAdds];
     }
@@ -834,22 +834,22 @@
   self->_addedClockIndex = v11;
 }
 
-- (void)removeCityWithoutUserInteraction:(id)a3
+- (void)removeCityWithoutUserInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = +[WorldClockManager sharedManager];
-  v6 = [v5 cities];
-  v7 = [v6 indexOfObject:v4];
+  cities = [v5 cities];
+  v7 = [cities indexOfObject:interactionCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(MTAWorldClockPadViewController *)self collectionViewController];
+    collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
     v8 = [NSIndexPath indexPathForRow:v7 inSection:0];
-    [v9 removeCityAtIndexPath:v8];
+    [collectionViewController removeCityAtIndexPath:v8];
   }
 }
 
-- (void)dismissAddViewController:(id)a3
+- (void)dismissAddViewController:(id)controller
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -861,25 +861,25 @@
   self->_addClockNavigationController = 0;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   [(MTAWorldClockPadViewController *)self finishAddViewControllerDismissal:1];
   addClockNavigationController = self->_addClockNavigationController;
   self->_addClockNavigationController = 0;
 }
 
-- (void)finishAddViewControllerDismissal:(BOOL)a3
+- (void)finishAddViewControllerDismissal:(BOOL)dismissal
 {
   addedClockIndex = self->_addedClockIndex;
   if (addedClockIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(MTAWorldClockPadViewController *)self scrollToCityAtIndex:addedClockIndex animated:1];
     v5 = +[WorldClockManager sharedManager];
-    v6 = [v5 cities];
-    v7 = [v6 objectAtIndexedSubscript:self->_addedClockIndex];
+    cities = [v5 cities];
+    v7 = [cities objectAtIndexedSubscript:self->_addedClockIndex];
 
-    v8 = [(MTAWorldClockPadViewController *)self mapView];
-    [v8 addCity:v7];
+    mapView = [(MTAWorldClockPadViewController *)self mapView];
+    [mapView addCity:v7];
 
     self->_addedClockIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -889,12 +889,12 @@
   [v10 pushEvent:v9];
 }
 
-- (void)scrollToCityAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollToCityAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v6 = [NSIndexPath indexPathForItem:a3 inSection:0];
-  [v7 scrollToPageContainingIndexPath:v6 animated:v4];
+  animatedCopy = animated;
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  v6 = [NSIndexPath indexPathForItem:index inSection:0];
+  [collectionViewController scrollToPageContainingIndexPath:v6 animated:animatedCopy];
 }
 
 - (void)reloadState
@@ -909,18 +909,18 @@
   [v2 saveCities];
 }
 
-- (void)restoreIndexPath:(id)a3
+- (void)restoreIndexPath:(id)path
 {
-  v15 = a3;
-  v4 = [v15 section];
-  v5 = [(MTAWorldClockPadViewController *)self collectionViewController];
-  v6 = [v5 collectionView];
-  if (v4 < [v6 numberOfSections])
+  pathCopy = path;
+  section = [pathCopy section];
+  collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  if (section < [collectionView numberOfSections])
   {
-    v7 = [v15 row];
-    v8 = [(MTAWorldClockPadViewController *)self collectionViewController];
-    v9 = [v8 collectionView];
-    v10 = [v9 numberOfItemsInSection:{objc_msgSend(v15, "section")}];
+    v7 = [pathCopy row];
+    collectionViewController2 = [(MTAWorldClockPadViewController *)self collectionViewController];
+    collectionView2 = [collectionViewController2 collectionView];
+    v10 = [collectionView2 numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
 
     if (v7 >= v10)
     {
@@ -930,9 +930,9 @@
     v11 = +[UIDevice currentDevice];
     v12 = [v11 orientation] - 3;
 
-    v5 = [(MTAWorldClockPadViewController *)self collectionViewController];
-    v13 = [v5 collectionView];
-    v6 = v13;
+    collectionViewController = [(MTAWorldClockPadViewController *)self collectionViewController];
+    collectionView3 = [collectionViewController collectionView];
+    collectionView = collectionView3;
     if (v12 >= 2)
     {
       v14 = 4;
@@ -943,7 +943,7 @@
       v14 = 32;
     }
 
-    [v13 scrollToItemAtIndexPath:v15 atScrollPosition:v14 animated:0];
+    [collectionView3 scrollToItemAtIndexPath:pathCopy atScrollPosition:v14 animated:0];
   }
 
 LABEL_8:

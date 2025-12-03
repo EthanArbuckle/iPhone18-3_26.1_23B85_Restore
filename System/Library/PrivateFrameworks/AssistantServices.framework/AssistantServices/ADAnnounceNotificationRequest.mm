@@ -1,7 +1,7 @@
 @interface ADAnnounceNotificationRequest
-- (ADAnnounceNotificationRequest)initWithNotification:(id)a3 appID:(id)a4 platform:(int64_t)a5 summaryDecision:(int64_t)a6 summary:(id)a7 completion:(id)a8;
+- (ADAnnounceNotificationRequest)initWithNotification:(id)notification appID:(id)d platform:(int64_t)platform summaryDecision:(int64_t)decision summary:(id)summary completion:(id)completion;
 - (BOOL)supportsImmediateBurstMode;
-- (int64_t)_announceNotificationRequestTypeForNotification:(id)a3 appID:(id)a4 platform:(int64_t)a5;
+- (int64_t)_announceNotificationRequestTypeForNotification:(id)notification appID:(id)d platform:(int64_t)platform;
 @end
 
 @implementation ADAnnounceNotificationRequest
@@ -28,10 +28,10 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v6 = [(ADAnnounceNotificationRequest *)self announcementType];
-  if (v6 <= 9)
+  announcementType = [(ADAnnounceNotificationRequest *)self announcementType];
+  if (announcementType <= 9)
   {
-    v4 = 0x3Au >> v6;
+    v4 = 0x3Au >> announcementType;
   }
 
   else
@@ -42,22 +42,22 @@ LABEL_3:
   return v4 & 1;
 }
 
-- (int64_t)_announceNotificationRequestTypeForNotification:(id)a3 appID:(id)a4 platform:(int64_t)a5
+- (int64_t)_announceNotificationRequestTypeForNotification:(id)notification appID:(id)d platform:(int64_t)platform
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 request];
-  v11 = [v10 content];
+  notificationCopy = notification;
+  dCopy = d;
+  request = [notificationCopy request];
+  content = [request content];
 
-  v12 = [v8 intentIdentifiers];
-  v13 = [AFSiriAnnouncementRequestCapabilityManager notificationAnnouncementTypeForNotificationFromApp:v9 withIntentIDs:v12 notificationContent:v11 onPlatform:a5];
+  intentIdentifiers = [notificationCopy intentIdentifiers];
+  v13 = [AFSiriAnnouncementRequestCapabilityManager notificationAnnouncementTypeForNotificationFromApp:dCopy withIntentIDs:intentIdentifiers notificationContent:content onPlatform:platform];
 
-  if (a5 != 2 && v13 != 3)
+  if (platform != 2 && v13 != 3)
   {
-    v14 = [APApplication applicationWithBundleIdentifier:v9];
-    v15 = [v14 isLocked];
+    v14 = [APApplication applicationWithBundleIdentifier:dCopy];
+    isLocked = [v14 isLocked];
 
-    if (v15)
+    if (isLocked)
     {
       v27 = 0;
       v28 = &v27;
@@ -77,21 +77,21 @@ LABEL_3:
 
       v17 = v16;
       _Block_object_dispose(&v27, 8);
-      v18 = [v16 currentNotificationSettingsCenter];
-      v19 = [v18 notificationSourceWithIdentifier:v9];
-      v20 = [v19 sourceSettings];
-      v21 = [v20 notificationSettings];
-      v22 = [v21 showPreviewsSetting];
+      currentNotificationSettingsCenter = [v16 currentNotificationSettingsCenter];
+      v19 = [currentNotificationSettingsCenter notificationSourceWithIdentifier:dCopy];
+      sourceSettings = [v19 sourceSettings];
+      notificationSettings = [sourceSettings notificationSettings];
+      showPreviewsSetting = [notificationSettings showPreviewsSetting];
       v23 = AFSiriLogContextConnection;
       v24 = os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT);
-      if (v22 == 2)
+      if (showPreviewsSetting == 2)
       {
         if (v24)
         {
           *buf = 136315394;
           *&buf[4] = "[ADAnnounceNotificationRequest _announceNotificationRequestTypeForNotification:appID:platform:]";
           *&buf[12] = 2112;
-          *&buf[14] = v9;
+          *&buf[14] = dCopy;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s Notification from locked app: %@ received, using generic notification announcement", buf, 0x16u);
         }
 
@@ -103,12 +103,12 @@ LABEL_3:
         *buf = 136315394;
         *&buf[4] = "[ADAnnounceNotificationRequest _announceNotificationRequestTypeForNotification:appID:platform:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = dCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s Notification from locked app: %@ received, but show previews is enabled", buf, 0x16u);
       }
     }
 
-    else if (![(NSString *)self->_appID hasPrefix:@"com.apple"]&& (sub_100216380(v9) & 1) == 0)
+    else if (![(NSString *)self->_appID hasPrefix:@"com.apple"]&& (sub_100216380(dCopy) & 1) == 0)
     {
       v25 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -116,7 +116,7 @@ LABEL_3:
         *buf = 136315394;
         *&buf[4] = "[ADAnnounceNotificationRequest _announceNotificationRequestTypeForNotification:appID:platform:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = dCopy;
         _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Siri TCC not enabled for app: %@ using generic notification announcement", buf, 0x16u);
       }
 
@@ -127,27 +127,27 @@ LABEL_3:
   return v13;
 }
 
-- (ADAnnounceNotificationRequest)initWithNotification:(id)a3 appID:(id)a4 platform:(int64_t)a5 summaryDecision:(int64_t)a6 summary:(id)a7 completion:(id)a8
+- (ADAnnounceNotificationRequest)initWithNotification:(id)notification appID:(id)d platform:(int64_t)platform summaryDecision:(int64_t)decision summary:(id)summary completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  notificationCopy = notification;
+  dCopy = d;
+  summaryCopy = summary;
   v23.receiver = self;
   v23.super_class = ADAnnounceNotificationRequest;
-  v18 = [(ADAnnouncementRequest *)&v23 initWithAnnouncementRequestType:1 platform:a5 completion:a8];
+  v18 = [(ADAnnouncementRequest *)&v23 initWithAnnouncementRequestType:1 platform:platform completion:completion];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_notification, a3);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_notification, notification);
+    v20 = [dCopy copy];
     appID = v19->_appID;
     v19->_appID = v20;
 
-    v19->_announcementType = [(ADAnnounceNotificationRequest *)v19 _announceNotificationRequestTypeForNotification:v15 appID:v16 platform:a5];
-    objc_storeStrong(&v19->_summary, a7);
-    v19->_summaryDecision = a6;
-    [(ADAnnouncementRequest *)v19 setRequiresOpportuneTime:a5 == 1];
-    if (a5 == 1)
+    v19->_announcementType = [(ADAnnounceNotificationRequest *)v19 _announceNotificationRequestTypeForNotification:notificationCopy appID:dCopy platform:platform];
+    objc_storeStrong(&v19->_summary, summary);
+    v19->_summaryDecision = decision;
+    [(ADAnnouncementRequest *)v19 setRequiresOpportuneTime:platform == 1];
+    if (platform == 1)
     {
       [(ADAnnouncementRequest *)v19 setRequestSupportsBargeIn:[(ADAnnounceNotificationRequest *)v19 _supportsBargeInForAnnounceNotificationType:v19->_announcementType]];
     }

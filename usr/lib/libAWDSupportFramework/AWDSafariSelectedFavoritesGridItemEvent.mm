@@ -1,31 +1,31 @@
 @interface AWDSafariSelectedFavoritesGridItemEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDisplayContext:(id)a3;
-- (int)StringAsSection:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsDisplayContext:(id)context;
+- (int)StringAsSection:(id)section;
+- (int)StringAsType:(id)type;
 - (int)displayContext;
 - (int)section;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDisplayContext:(BOOL)a3;
-- (void)setHasRow:(BOOL)a3;
-- (void)setHasSection:(BOOL)a3;
-- (void)setHasSectionIndex:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDisplayContext:(BOOL)context;
+- (void)setHasRow:(BOOL)row;
+- (void)setHasSection:(BOOL)section;
+- (void)setHasSectionIndex:(BOOL)index;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariSelectedFavoritesGridItemEvent
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRow:(BOOL)a3
+- (void)setHasRow:(BOOL)row
 {
-  if (a3)
+  if (row)
   {
     v3 = 2;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSectionIndex:(BOOL)a3
+- (void)setHasSectionIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -96,24 +96,24 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  if ([a3 isEqualToString:@"UNKNOWN_TYPE"])
+  if ([type isEqualToString:@"UNKNOWN_TYPE"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"BOOKMARK"])
+  if ([type isEqualToString:@"BOOKMARK"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"FOLDER"])
+  if ([type isEqualToString:@"FOLDER"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"BOOKMARKLET"])
+  if ([type isEqualToString:@"BOOKMARKLET"])
   {
     return 3;
   }
@@ -134,9 +134,9 @@
   }
 }
 
-- (void)setHasDisplayContext:(BOOL)a3
+- (void)setHasDisplayContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 16;
   }
@@ -149,16 +149,16 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsDisplayContext:(id)a3
+- (int)StringAsDisplayContext:(id)context
 {
-  if ([a3 isEqualToString:@"NEW_TAB_PAGE"])
+  if ([context isEqualToString:@"NEW_TAB_PAGE"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"FOCUSED_URL_FIELD"];
+    return [context isEqualToString:@"FOCUSED_URL_FIELD"];
   }
 }
 
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)setHasSection:(BOOL)a3
+- (void)setHasSection:(BOOL)section
 {
-  if (a3)
+  if (section)
   {
     v3 = 32;
   }
@@ -190,19 +190,19 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsSection:(id)a3
+- (int)StringAsSection:(id)section
 {
-  if ([a3 isEqualToString:@"FAVORITES"])
+  if ([section isEqualToString:@"FAVORITES"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"FREQUENTLY_VISITED"])
+  if ([section isEqualToString:@"FREQUENTLY_VISITED"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"OTHER_SECTION"])
+  if ([section isEqualToString:@"OTHER_SECTION"])
   {
     return 2;
   }
@@ -219,11 +219,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -242,7 +242,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_row), @"row"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_row), @"row"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -256,7 +256,7 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_itemsPerRow), @"itemsPerRow"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_itemsPerRow), @"itemsPerRow"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -270,7 +270,7 @@ LABEL_5:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sectionIndex), @"sectionIndex"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sectionIndex), @"sectionIndex"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -295,14 +295,14 @@ LABEL_13:
     v6 = off_29EE32DC0[type];
   }
 
-  [v3 setObject:v6 forKey:@"type"];
+  [dictionary setObject:v6 forKey:@"type"];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
 LABEL_7:
     if ((has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_23;
@@ -328,7 +328,7 @@ LABEL_17:
     v8 = @"NEW_TAB_PAGE";
   }
 
-  [v3 setObject:v8 forKey:@"displayContext"];
+  [dictionary setObject:v8 forKey:@"displayContext"];
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_23:
@@ -343,13 +343,13 @@ LABEL_23:
       v10 = off_29EE32DE0[section];
     }
 
-    [v3 setObject:v10 forKey:@"section"];
+    [dictionary setObject:v10 forKey:@"section"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -447,13 +447,13 @@ LABEL_15:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 52) |= 8u;
+    *(to + 4) = self->_timestamp;
+    *(to + 52) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -472,8 +472,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_row;
-  *(a3 + 52) |= 2u;
+  *(to + 2) = self->_row;
+  *(to + 52) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -487,8 +487,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 1) = self->_itemsPerRow;
-  *(a3 + 52) |= 1u;
+  *(to + 1) = self->_itemsPerRow;
+  *(to + 52) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -502,8 +502,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 3) = self->_sectionIndex;
-  *(a3 + 52) |= 4u;
+  *(to + 3) = self->_sectionIndex;
+  *(to + 52) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -517,8 +517,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 12) = self->_type;
-  *(a3 + 52) |= 0x40u;
+  *(to + 12) = self->_type;
+  *(to + 52) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -529,23 +529,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 11) = self->_section;
-    *(a3 + 52) |= 0x20u;
+    *(to + 11) = self->_section;
+    *(to + 52) |= 0x20u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 10) = self->_displayContext;
-  *(a3 + 52) |= 0x10u;
+  *(to + 10) = self->_displayContext;
+  *(to + 52) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -642,20 +642,20 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 52) & 8) == 0 || self->_timestamp != *(a3 + 4))
+      if ((*(equal + 52) & 8) == 0 || self->_timestamp != *(equal + 4))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 52) & 8) != 0)
+    else if ((*(equal + 52) & 8) != 0)
     {
 LABEL_36:
       LOBYTE(v5) = 0;
@@ -664,73 +664,73 @@ LABEL_36:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 52) & 2) == 0 || self->_row != *(a3 + 2))
+      if ((*(equal + 52) & 2) == 0 || self->_row != *(equal + 2))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 52) & 2) != 0)
+    else if ((*(equal + 52) & 2) != 0)
     {
       goto LABEL_36;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 52) & 1) == 0 || self->_itemsPerRow != *(a3 + 1))
+      if ((*(equal + 52) & 1) == 0 || self->_itemsPerRow != *(equal + 1))
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(a3 + 52))
+    else if (*(equal + 52))
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 52) & 4) == 0 || self->_sectionIndex != *(a3 + 3))
+      if ((*(equal + 52) & 4) == 0 || self->_sectionIndex != *(equal + 3))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 52) & 4) != 0)
+    else if ((*(equal + 52) & 4) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 52) & 0x40) == 0 || self->_type != *(a3 + 12))
+      if ((*(equal + 52) & 0x40) == 0 || self->_type != *(equal + 12))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 52) & 0x40) != 0)
+    else if ((*(equal + 52) & 0x40) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 52) & 0x10) == 0 || self->_displayContext != *(a3 + 10))
+      if ((*(equal + 52) & 0x10) == 0 || self->_displayContext != *(equal + 10))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 52) & 0x10) != 0)
+    else if ((*(equal + 52) & 0x10) != 0)
     {
       goto LABEL_36;
     }
 
-    LOBYTE(v5) = (*(a3 + 52) & 0x20) == 0;
+    LOBYTE(v5) = (*(equal + 52) & 0x20) == 0;
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 52) & 0x20) == 0 || self->_section != *(a3 + 11))
+      if ((*(equal + 52) & 0x20) == 0 || self->_section != *(equal + 11))
       {
         goto LABEL_36;
       }
@@ -838,14 +838,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 8) != 0)
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 8u;
-    v3 = *(a3 + 52);
+    v3 = *(from + 52);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -858,14 +858,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 52) & 2) == 0)
+  else if ((*(from + 52) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_row = *(a3 + 2);
+  self->_row = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -878,9 +878,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_itemsPerRow = *(a3 + 1);
+  self->_itemsPerRow = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -893,9 +893,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_sectionIndex = *(a3 + 3);
+  self->_sectionIndex = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x40) == 0)
   {
 LABEL_6:
@@ -908,9 +908,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_type = *(a3 + 12);
+  self->_type = *(from + 12);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 0x10) == 0)
   {
 LABEL_7:
@@ -920,15 +920,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_section = *(a3 + 11);
+    self->_section = *(from + 11);
     *&self->_has |= 0x20u;
     return;
   }
 
 LABEL_14:
-  self->_displayContext = *(a3 + 10);
+  self->_displayContext = *(from + 10);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 52) & 0x20) != 0)
+  if ((*(from + 52) & 0x20) != 0)
   {
     goto LABEL_15;
   }

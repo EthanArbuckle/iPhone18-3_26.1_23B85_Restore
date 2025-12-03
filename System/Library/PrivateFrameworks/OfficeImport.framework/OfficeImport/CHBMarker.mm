@@ -1,19 +1,19 @@
 @interface CHBMarker
-+ (id)readFrom:(const XlChartSeriesFormat *)a3 state:(id)a4;
-+ (int)chdMarkerStyleFromXlMarkerType:(int)a3;
-+ (int)xlMarkerStyleFromCHDMarkerType:(int)a3;
++ (id)readFrom:(const XlChartSeriesFormat *)from state:(id)state;
++ (int)chdMarkerStyleFromXlMarkerType:(int)type;
++ (int)xlMarkerStyleFromCHDMarkerType:(int)type;
 @end
 
 @implementation CHBMarker
 
-+ (id)readFrom:(const XlChartSeriesFormat *)a3 state:(id)a4
++ (id)readFrom:(const XlChartSeriesFormat *)from state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(CHDMarker);
-  if (a3)
+  if (from)
   {
-    var3 = a3->var3;
-    v8 = a3->var4 != 0;
+    var3 = from->var3;
+    v8 = from->var4 != 0;
   }
 
   else
@@ -22,7 +22,7 @@
     v8 = 0;
   }
 
-  v9 = [CHBGraphicProperties oadGraphicPropertiesFromXlMarkerStyle:var3 complex:v8 state:v5];
+  v9 = [CHBGraphicProperties oadGraphicPropertiesFromXlMarkerStyle:var3 complex:v8 state:stateCopy];
   [(CHDMarker *)v6 setGraphicProperties:v9];
 
   if (var3)
@@ -44,29 +44,29 @@
   return v6;
 }
 
-+ (int)chdMarkerStyleFromXlMarkerType:(int)a3
++ (int)chdMarkerStyleFromXlMarkerType:(int)type
 {
-  if ((a3 - 1) > 8)
+  if ((type - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FE500[a3 - 1];
+    return dword_25D6FE500[type - 1];
   }
 }
 
-+ (int)xlMarkerStyleFromCHDMarkerType:(int)a3
++ (int)xlMarkerStyleFromCHDMarkerType:(int)type
 {
-  if ((a3 - 1) > 9)
+  if ((type - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FE524[a3 - 1];
+    return dword_25D6FE524[type - 1];
   }
 }
 

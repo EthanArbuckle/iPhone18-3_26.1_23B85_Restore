@@ -1,81 +1,81 @@
 @interface IDSKeyTransparencyEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToKeyTransparencyEntry:(id)a3;
-- (IDSKeyTransparencyEntry)initWithPushToken:(id)a3 loggableData:(id)a4 signedData:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToKeyTransparencyEntry:(id)entry;
+- (IDSKeyTransparencyEntry)initWithPushToken:(id)token loggableData:(id)data signedData:(id)signedData;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSKeyTransparencyEntry
 
-- (IDSKeyTransparencyEntry)initWithPushToken:(id)a3 loggableData:(id)a4 signedData:(id)a5
+- (IDSKeyTransparencyEntry)initWithPushToken:(id)token loggableData:(id)data signedData:(id)signedData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tokenCopy = token;
+  dataCopy = data;
+  signedDataCopy = signedData;
   v15.receiver = self;
   v15.super_class = IDSKeyTransparencyEntry;
   v12 = [(IDSKeyTransparencyEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pushToken, a3);
-    objc_storeStrong(&v13->_loggableData, a4);
-    objc_storeStrong(&v13->_signedData, a5);
+    objc_storeStrong(&v12->_pushToken, token);
+    objc_storeStrong(&v13->_loggableData, data);
+    objc_storeStrong(&v13->_signedData, signedData);
   }
 
   return v13;
 }
 
-- (BOOL)isEqualToKeyTransparencyEntry:(id)a3
+- (BOOL)isEqualToKeyTransparencyEntry:(id)entry
 {
-  v6 = a3;
-  v7 = v6;
-  if (self == v6)
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (self == entryCopy)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if (v6)
+    if (entryCopy)
     {
-      v8 = [(IDSKeyTransparencyEntry *)self pushToken];
-      v9 = [(IDSKeyTransparencyEntry *)v7 pushToken];
-      if (v8 != v9)
+      pushToken = [(IDSKeyTransparencyEntry *)self pushToken];
+      pushToken2 = [(IDSKeyTransparencyEntry *)v7 pushToken];
+      if (pushToken != pushToken2)
       {
-        v10 = [(IDSKeyTransparencyEntry *)self pushToken];
-        v11 = [(IDSKeyTransparencyEntry *)v7 pushToken];
-        if (![v10 isEqual:v11])
+        pushToken3 = [(IDSKeyTransparencyEntry *)self pushToken];
+        pushToken4 = [(IDSKeyTransparencyEntry *)v7 pushToken];
+        if (![pushToken3 isEqual:pushToken4])
         {
           LOBYTE(v12) = 0;
           goto LABEL_22;
         }
 
-        v25 = v11;
-        v26 = v10;
+        v25 = pushToken4;
+        v26 = pushToken3;
       }
 
-      v13 = [(IDSKeyTransparencyEntry *)self loggableData];
-      v14 = [(IDSKeyTransparencyEntry *)v7 loggableData];
-      if (v13 == v14)
+      loggableData = [(IDSKeyTransparencyEntry *)self loggableData];
+      loggableData2 = [(IDSKeyTransparencyEntry *)v7 loggableData];
+      if (loggableData == loggableData2)
       {
         [(IDSKeyTransparencyEntry *)self signedData:v21];
       }
 
       else
       {
-        v15 = [(IDSKeyTransparencyEntry *)self loggableData];
-        v16 = [(IDSKeyTransparencyEntry *)v7 loggableData];
-        if (![v15 isEqual:v16])
+        loggableData3 = [(IDSKeyTransparencyEntry *)self loggableData];
+        loggableData4 = [(IDSKeyTransparencyEntry *)v7 loggableData];
+        if (![loggableData3 isEqual:loggableData4])
         {
           LOBYTE(v12) = 0;
 LABEL_20:
 
 LABEL_21:
-          v11 = v25;
-          v10 = v26;
-          if (v8 == v9)
+          pushToken4 = v25;
+          pushToken3 = v26;
+          if (pushToken == pushToken2)
           {
 LABEL_23:
 
@@ -87,15 +87,15 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        [(IDSKeyTransparencyEntry *)self signedData:v16];
+        [(IDSKeyTransparencyEntry *)self signedData:loggableData4];
       }
       v17 = ;
-      v18 = [(IDSKeyTransparencyEntry *)v7 signedData];
-      if (v17 == v18 || (-[IDSKeyTransparencyEntry signedData](self, "signedData"), v3 = objc_claimAutoreleasedReturnValue(), -[IDSKeyTransparencyEntry signedData](v7, "signedData"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      signedData = [(IDSKeyTransparencyEntry *)v7 signedData];
+      if (v17 == signedData || (-[IDSKeyTransparencyEntry signedData](self, "signedData"), v3 = objc_claimAutoreleasedReturnValue(), -[IDSKeyTransparencyEntry signedData](v7, "signedData"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v19 = [(IDSKeyTransparencyEntry *)self ktCapable];
-        v12 = v19 ^ [(IDSKeyTransparencyEntry *)v7 ktCapable]^ 1;
-        if (v17 == v18)
+        ktCapable = [(IDSKeyTransparencyEntry *)self ktCapable];
+        v12 = ktCapable ^ [(IDSKeyTransparencyEntry *)v7 ktCapable]^ 1;
+        if (v17 == signedData)
         {
           goto LABEL_19;
         }
@@ -107,9 +107,9 @@ LABEL_22:
       }
 
 LABEL_19:
-      v16 = v22;
-      v15 = v24;
-      if (v13 == v14)
+      loggableData4 = v22;
+      loggableData3 = v24;
+      if (loggableData == loggableData2)
       {
         goto LABEL_21;
       }
@@ -125,13 +125,13 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSKeyTransparencyEntry *)self isEqualToKeyTransparencyEntry:v4];
+    v5 = [(IDSKeyTransparencyEntry *)self isEqualToKeyTransparencyEntry:equalCopy];
   }
 
   else
@@ -144,12 +144,12 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSKeyTransparencyEntry *)self pushToken];
-  v4 = [v3 hash];
-  v5 = [(IDSKeyTransparencyEntry *)self loggableData];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSKeyTransparencyEntry *)self signedData];
-  v8 = [v7 hash];
+  pushToken = [(IDSKeyTransparencyEntry *)self pushToken];
+  v4 = [pushToken hash];
+  loggableData = [(IDSKeyTransparencyEntry *)self loggableData];
+  v6 = [loggableData hash] ^ v4;
+  signedData = [(IDSKeyTransparencyEntry *)self signedData];
+  v8 = [signedData hash];
 
   return v6 ^ v8;
 }
@@ -157,12 +157,12 @@ LABEL_24:
 - (id)description
 {
   v14 = objc_opt_class();
-  v15 = [(IDSKeyTransparencyEntry *)self pushToken];
-  v3 = [v15 debugDescription];
-  v4 = [(IDSKeyTransparencyEntry *)self loggableData];
-  v5 = [v4 length];
-  v6 = [(IDSKeyTransparencyEntry *)self signedData];
-  v7 = [v6 length];
+  pushToken = [(IDSKeyTransparencyEntry *)self pushToken];
+  v3 = [pushToken debugDescription];
+  loggableData = [(IDSKeyTransparencyEntry *)self loggableData];
+  v5 = [loggableData length];
+  signedData = [(IDSKeyTransparencyEntry *)self signedData];
+  v7 = [signedData length];
   if ([(IDSKeyTransparencyEntry *)self ktCapable])
   {
     v8 = @"YES";
@@ -173,10 +173,10 @@ LABEL_24:
     v8 = @"NO";
   }
 
-  v9 = [(IDSKeyTransparencyEntry *)self productName];
-  v10 = [(IDSKeyTransparencyEntry *)self buildVersion];
+  productName = [(IDSKeyTransparencyEntry *)self productName];
+  buildVersion = [(IDSKeyTransparencyEntry *)self buildVersion];
   v11 = [NSNumber numberWithLongLong:[(IDSKeyTransparencyEntry *)self transparencyVersion]];
-  v12 = [NSString stringWithFormat:@"<%@: %p pushToken: %@, loggableData.length: %lu, signedData.length:%lu, ktCapable: %@, productName: %@, buildVersion: %@, transparencyVersion: %@>", v14, self, v3, v5, v7, v8, v9, v10, v11];
+  v12 = [NSString stringWithFormat:@"<%@: %p pushToken: %@, loggableData.length: %lu, signedData.length:%lu, ktCapable: %@, productName: %@, buildVersion: %@, transparencyVersion: %@>", v14, self, v3, v5, v7, v8, productName, buildVersion, v11];
 
   return v12;
 }

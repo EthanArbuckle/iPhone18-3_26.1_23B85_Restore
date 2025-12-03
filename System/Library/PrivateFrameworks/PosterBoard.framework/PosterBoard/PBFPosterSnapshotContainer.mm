@@ -1,24 +1,24 @@
 @interface PBFPosterSnapshotContainer
-- (PBFPosterSnapshotContainer)initWithPosterSnapshot:(id)a3 imageBlockSet:(CGImageBlockSet *)a4;
+- (PBFPosterSnapshotContainer)initWithPosterSnapshot:(id)snapshot imageBlockSet:(CGImageBlockSet *)set;
 - (void)dealloc;
 @end
 
 @implementation PBFPosterSnapshotContainer
 
-- (PBFPosterSnapshotContainer)initWithPosterSnapshot:(id)a3 imageBlockSet:(CGImageBlockSet *)a4
+- (PBFPosterSnapshotContainer)initWithPosterSnapshot:(id)snapshot imageBlockSet:(CGImageBlockSet *)set
 {
-  v7 = a3;
+  snapshotCopy = snapshot;
   v11.receiver = self;
   v11.super_class = PBFPosterSnapshotContainer;
   v8 = [(PBFPosterSnapshotContainer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_posterSnapshot, a3);
-    if (a4)
+    objc_storeStrong(&v8->_posterSnapshot, snapshot);
+    if (set)
     {
       CGImageBlockSetRetain();
-      v9->_imageBlockSet = a4;
+      v9->_imageBlockSet = set;
     }
   }
 

@@ -1,22 +1,22 @@
 @interface CRLanguageResources
-+ (BOOL)isCharLMForLanguageAvailableInTextRecognition:(id)a3;
-+ (BOOL)isCustomWordsSupportedForLanguageIdentifier:(id)a3;
-+ (BOOL)isLanguageSupported:(id)a3;
-+ (CVNLPLanguageModel)createCVNLPCharacterLanguageModel:(id)a3;
-+ (_LXLexicon)createStaticLexicon:(id)a3;
-+ (void)createCharacterModel:(id)a3;
-+ (void)createWordLanguageModel:(id)a3 type:(int64_t)a4;
++ (BOOL)isCharLMForLanguageAvailableInTextRecognition:(id)recognition;
++ (BOOL)isCustomWordsSupportedForLanguageIdentifier:(id)identifier;
++ (BOOL)isLanguageSupported:(id)supported;
++ (CVNLPLanguageModel)createCVNLPCharacterLanguageModel:(id)model;
++ (_LXLexicon)createStaticLexicon:(id)lexicon;
++ (void)createCharacterModel:(id)model;
++ (void)createWordLanguageModel:(id)model type:(int64_t)type;
 - (BOOL)isCustomWordsSupported;
-- (CRLanguageResources)initWithLanguageIdentifier:(id)a3 type:(int64_t)a4;
-- (id)cvnlpLanguageResourceBundle:(id)a3 lmConfig:(id)a4;
+- (CRLanguageResources)initWithLanguageIdentifier:(id)identifier type:(int64_t)type;
+- (id)cvnlpLanguageResourceBundle:(id)bundle lmConfig:(id)config;
 - (void)dealloc;
 @end
 
 @implementation CRLanguageResources
 
-- (CRLanguageResources)initWithLanguageIdentifier:(id)a3 type:(int64_t)a4
+- (CRLanguageResources)initWithLanguageIdentifier:(id)identifier type:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = CRLanguageResources;
   v7 = [(CRLanguageResources *)&v25 init];
@@ -25,16 +25,16 @@
     goto LABEL_30;
   }
 
-  if ([objc_opt_class() isLanguageSupported:v6])
+  if ([objc_opt_class() isLanguageSupported:identifierCopy])
   {
-    if (([(__CFString *)v6 isEqualToString:@"yue-Hans"]& 1) != 0)
+    if (([(__CFString *)identifierCopy isEqualToString:@"yue-Hans"]& 1) != 0)
     {
       v8 = CRImageReaderLanguageZh_Hans;
     }
 
     else
     {
-      if (![(__CFString *)v6 isEqualToString:@"yue-Hant"])
+      if (![(__CFString *)identifierCopy isEqualToString:@"yue-Hant"])
       {
         goto LABEL_9;
       }
@@ -44,20 +44,20 @@
 
     v10 = *v8;
 
-    v6 = v10;
+    identifierCopy = v10;
 LABEL_9:
-    v11 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v6];
+    v11 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifierCopy];
     locale = v7->_locale;
     v7->_locale = v11;
 
     cvnlpLanguageResourceBundle = v7->__cvnlpLanguageResourceBundle;
     v7->__cvnlpLanguageResourceBundle = 0;
 
-    if ([CRImageReader languageIsChinese:v6])
+    if ([CRImageReader languageIsChinese:identifierCopy])
     {
       v14 = objc_opt_class();
-      v15 = [(NSLocale *)v7->_locale localeIdentifier];
-      v7->_cvnlpCharacterLanguageModel = [v14 createCVNLPCharacterLanguageModel:v15];
+      localeIdentifier = [(NSLocale *)v7->_locale localeIdentifier];
+      v7->_cvnlpCharacterLanguageModel = [v14 createCVNLPCharacterLanguageModel:localeIdentifier];
 
       v7->_lmCharacterLanguageModel = 0;
       v7->_wordTokenizer = 0;
@@ -69,11 +69,11 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v7->_cvnlpCharacterLanguageModel = 0;
       v7->_staticLexicon = 0;
-      if (![CRImageReader languageIsKorean:v6]&& ![CRImageReader languageIsJapanese:v6]&& ![CRImageReader languageIsThai:v6])
+      if (![CRImageReader languageIsKorean:identifierCopy]&& ![CRImageReader languageIsJapanese:identifierCopy]&& ![CRImageReader languageIsThai:identifierCopy])
       {
         v7->_wordLanguageModel = [objc_opt_class() createWordLanguageModel:v7->_locale type:2];
         v7->_wordTokenizer = LMStreamTokenizerCreate();
@@ -82,23 +82,23 @@ LABEL_30:
       }
 
       v18 = objc_opt_class();
-      v19 = [(NSLocale *)v7->_locale localeIdentifier];
-      v7->_lmCharacterLanguageModel = [v18 createCharacterModel:v19];
+      localeIdentifier2 = [(NSLocale *)v7->_locale localeIdentifier];
+      v7->_lmCharacterLanguageModel = [v18 createCharacterModel:localeIdentifier2];
 
       v7->_wordTokenizer = 0;
       goto LABEL_11;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v7->_lmCharacterLanguageModel = 0;
       v7->_staticLexicon = 0;
       v7->_wordLanguageModel = 0;
-      if (![CRImageReader languageIsVietnamese:v6])
+      if (![CRImageReader languageIsVietnamese:identifierCopy])
       {
         v16 = objc_opt_class();
-        v17 = [(NSLocale *)v7->_locale localeIdentifier];
-        v7->_cvnlpCharacterLanguageModel = [v16 createCVNLPCharacterLanguageModel:v17];
+        localeIdentifier3 = [(NSLocale *)v7->_locale localeIdentifier];
+        v7->_cvnlpCharacterLanguageModel = [v16 createCVNLPCharacterLanguageModel:localeIdentifier3];
 
 LABEL_29:
         v7->_wordTokenizer = 0;
@@ -108,12 +108,12 @@ LABEL_29:
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_30;
       }
 
-      if ([CRImageReader languageIsVietnamese:v6])
+      if ([CRImageReader languageIsVietnamese:identifierCopy])
       {
         v7->_lmCharacterLanguageModel = 0;
       }
@@ -121,11 +121,11 @@ LABEL_29:
       else
       {
         v20 = objc_opt_class();
-        v21 = [(NSLocale *)v7->_locale localeIdentifier];
-        v7->_lmCharacterLanguageModel = [v20 createCharacterModel:v21];
+        localeIdentifier4 = [(NSLocale *)v7->_locale localeIdentifier];
+        v7->_lmCharacterLanguageModel = [v20 createCharacterModel:localeIdentifier4];
       }
 
-      if ([CRImageReader languageIsKorean:v6]|| [CRImageReader languageIsJapanese:v6])
+      if ([CRImageReader languageIsKorean:identifierCopy]|| [CRImageReader languageIsJapanese:identifierCopy])
       {
         v7->_staticLexicon = 0;
         v7->_wordLanguageModel = 0;
@@ -134,8 +134,8 @@ LABEL_29:
       else
       {
         v22 = objc_opt_class();
-        v23 = [(NSLocale *)v7->_locale languageCode];
-        v7->_staticLexicon = [v22 createStaticLexicon:v23];
+        languageCode = [(NSLocale *)v7->_locale languageCode];
+        v7->_staticLexicon = [v22 createStaticLexicon:languageCode];
 
         v7->_wordLanguageModel = [objc_opt_class() createWordLanguageModel:v7->_locale type:0];
       }
@@ -151,17 +151,17 @@ LABEL_31:
   return v9;
 }
 
-+ (BOOL)isCustomWordsSupportedForLanguageIdentifier:(id)a3
++ (BOOL)isCustomWordsSupportedForLanguageIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([CRImageReader languageIsChinese:v3]|| [CRImageReader languageIsKorean:v3])
+  identifierCopy = identifier;
+  if ([CRImageReader languageIsChinese:identifierCopy]|| [CRImageReader languageIsKorean:identifierCopy])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = ![CRImageReader languageIsJapanese:v3];
+    v4 = ![CRImageReader languageIsJapanese:identifierCopy];
   }
 
   return v4;
@@ -170,20 +170,20 @@ LABEL_31:
 - (BOOL)isCustomWordsSupported
 {
   v3 = objc_opt_class();
-  v4 = [(CRLanguageResources *)self locale];
-  v5 = [v4 localeIdentifier];
-  LOBYTE(v3) = [v3 isCustomWordsSupportedForLanguageIdentifier:v5];
+  locale = [(CRLanguageResources *)self locale];
+  localeIdentifier = [locale localeIdentifier];
+  LOBYTE(v3) = [v3 isCustomWordsSupportedForLanguageIdentifier:localeIdentifier];
 
   return v3;
 }
 
-- (id)cvnlpLanguageResourceBundle:(id)a3 lmConfig:(id)a4
+- (id)cvnlpLanguageResourceBundle:(id)bundle lmConfig:(id)config
 {
-  v41 = a3;
-  v6 = a4;
-  v7 = [(CRLanguageResources *)self _cvnlpLanguageResourceBundle];
+  bundleCopy = bundle;
+  configCopy = config;
+  _cvnlpLanguageResourceBundle = [(CRLanguageResources *)self _cvnlpLanguageResourceBundle];
 
-  if (!v7)
+  if (!_cvnlpLanguageResourceBundle)
   {
     if ([(CRLanguageResources *)self staticLexicon])
     {
@@ -200,26 +200,26 @@ LABEL_31:
     }
 
     v11 = objc_opt_class();
-    v12 = [(CRLanguageResources *)self locale];
-    v13 = [v12 localeIdentifier];
-    LODWORD(v11) = [v11 isCustomWordsSupportedForLanguageIdentifier:v13];
+    locale = [(CRLanguageResources *)self locale];
+    localeIdentifier = [locale localeIdentifier];
+    LODWORD(v11) = [v11 isCustomWordsSupportedForLanguageIdentifier:localeIdentifier];
 
     if (v11)
     {
-      v14 = [v41 customWords];
+      customWords = [bundleCopy customWords];
 
-      if (v14)
+      if (customWords)
       {
-        v15 = [v41 customWords];
+        customWords2 = [bundleCopy customWords];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class()];
-          v17 = [v15 filteredArrayUsingPredicate:v16];
+          v17 = [customWords2 filteredArrayUsingPredicate:v16];
           if ([v17 count])
           {
-            v18 = [(CRLanguageResources *)self locale];
-            cf = [CRLanguageUtils createDynamicLexicon:v17 forLocale:v18 error:0];
+            locale2 = [(CRLanguageResources *)self locale];
+            cf = [CRLanguageUtils createDynamicLexicon:v17 forLocale:locale2 error:0];
 
             v19 = [objc_alloc(MEMORY[0x1E6991FE0]) initWithLexicon:cf];
             if (!v10)
@@ -252,8 +252,8 @@ LABEL_31:
     if (v10)
     {
       v22 = objc_alloc(MEMORY[0x1E6991FE8]);
-      v23 = [v6 lexiconWeight];
-      v24 = [v22 initWithLexicons:v10 decodingWeight:v23];
+      lexiconWeight = [configCopy lexiconWeight];
+      v24 = [v22 initWithLexicons:v10 decodingWeight:lexiconWeight];
     }
 
     else
@@ -264,10 +264,10 @@ LABEL_31:
     if ([(CRLanguageResources *)self lmCharacterLanguageModel])
     {
       v25 = objc_alloc(MEMORY[0x1E6991FD8]);
-      v26 = [(CRLanguageResources *)self lmCharacterLanguageModel];
-      v27 = [(CRLanguageResources *)self locale];
-      v28 = [v6 characterLMWeight];
-      v29 = [v25 initWithLMLanguageModel:v26 locale:v27 decodingWeight:v28];
+      lmCharacterLanguageModel = [(CRLanguageResources *)self lmCharacterLanguageModel];
+      locale3 = [(CRLanguageResources *)self locale];
+      characterLMWeight = [configCopy characterLMWeight];
+      v29 = [v25 initWithLMLanguageModel:lmCharacterLanguageModel locale:locale3 decodingWeight:characterLMWeight];
     }
 
     else
@@ -279,10 +279,10 @@ LABEL_31:
       }
 
       v30 = objc_alloc(MEMORY[0x1E6991FD8]);
-      v31 = [(CRLanguageResources *)self cvnlpCharacterLanguageModel];
-      v27 = [(CRLanguageResources *)self locale];
-      v28 = [v6 characterLMWeight];
-      v29 = [v30 initWithCVNLPLanguageModel:v31 locale:v27 decodingWeight:v28];
+      cvnlpCharacterLanguageModel = [(CRLanguageResources *)self cvnlpCharacterLanguageModel];
+      locale3 = [(CRLanguageResources *)self locale];
+      characterLMWeight = [configCopy characterLMWeight];
+      v29 = [v30 initWithCVNLPLanguageModel:cvnlpCharacterLanguageModel locale:locale3 decodingWeight:characterLMWeight];
     }
 
     v32 = v29;
@@ -291,10 +291,10 @@ LABEL_26:
     if ([(CRLanguageResources *)self wordLanguageModel])
     {
       v33 = objc_alloc(MEMORY[0x1E6991FD8]);
-      v34 = [(CRLanguageResources *)self wordLanguageModel];
-      v35 = [(CRLanguageResources *)self locale];
-      v36 = [v6 wordLMWeight];
-      v37 = [v33 initWithLMLanguageModel:v34 locale:v35 decodingWeight:v36];
+      wordLanguageModel = [(CRLanguageResources *)self wordLanguageModel];
+      locale4 = [(CRLanguageResources *)self locale];
+      wordLMWeight = [configCopy wordLMWeight];
+      v37 = [v33 initWithLMLanguageModel:wordLanguageModel locale:locale4 decodingWeight:wordLMWeight];
     }
 
     else
@@ -306,62 +306,62 @@ LABEL_26:
     [(CRLanguageResources *)self set_cvnlpLanguageResourceBundle:v38];
   }
 
-  v39 = [(CRLanguageResources *)self _cvnlpLanguageResourceBundle];
+  _cvnlpLanguageResourceBundle2 = [(CRLanguageResources *)self _cvnlpLanguageResourceBundle];
 
-  return v39;
+  return _cvnlpLanguageResourceBundle2;
 }
 
-+ (void)createCharacterModel:(id)a3
++ (void)createCharacterModel:(id)model
 {
   v41 = *MEMORY[0x1E69E9840];
-  v29 = a3;
+  modelCopy = model;
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:?];
-  v31 = [(NSLocale *)v3 languageCode];
-  v4 = [(NSLocale *)v3 countryCode];
-  v30 = [v4 uppercaseString];
+  languageCode = [(NSLocale *)v3 languageCode];
+  countryCode = [(NSLocale *)v3 countryCode];
+  uppercaseString = [countryCode uppercaseString];
 
-  if (![objc_opt_class() isCharLMForLanguageAvailableInTextRecognition:v31])
+  if (![objc_opt_class() isCharLMForLanguageAvailableInTextRecognition:languageCode])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = v3;
     v32 = v11;
     LDEnumerateAssetDataItems();
-    v12 = [(NSLocale *)v11 localeIdentifier];
-    v13 = [v5 objectForKey:v12];
+    localeIdentifier = [(NSLocale *)v11 localeIdentifier];
+    v13 = [dictionary objectForKey:localeIdentifier];
     v14 = v13 == 0;
 
     if (v14)
     {
-      v16 = [(NSLocale *)v11 languageCode];
-      v17 = [v5 objectForKey:v16];
+      languageCode2 = [(NSLocale *)v11 languageCode];
+      v17 = [dictionary objectForKey:languageCode2];
       v18 = v17 == 0;
 
       if (v18)
       {
-        v7 = 0;
+        languageCode3 = 0;
         v10 = 0;
         goto LABEL_14;
       }
 
-      v7 = [(NSLocale *)v11 languageCode];
-      v15 = [v5 objectForKey:v7];
+      languageCode3 = [(NSLocale *)v11 languageCode];
+      v15 = [dictionary objectForKey:languageCode3];
     }
 
     else
     {
-      v7 = [(NSLocale *)v11 localeIdentifier];
-      v15 = [v5 objectForKey:v7];
+      languageCode3 = [(NSLocale *)v11 localeIdentifier];
+      v15 = [dictionary objectForKey:languageCode3];
     }
 
     v10 = v15;
 LABEL_14:
 
-    v6 = v5;
+    v6 = dictionary;
     goto LABEL_15;
   }
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v31, v30];
-  v6 = [v5 stringByAppendingPathExtension:@"lm"];
+  dictionary = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", languageCode, uppercaseString];
+  v6 = [dictionary stringByAppendingPathExtension:@"lm"];
   bzero(v37, 0x400uLL);
   if (!pathForResource([v6 cStringUsingEncoding:4], 0, v37))
   {
@@ -373,13 +373,13 @@ LABEL_14:
       _os_log_impl(&dword_1B40D2000, v9, OS_LOG_TYPE_DEFAULT, "Resource path not found for '%@'. Character LM will be disabled.", buf, 0xCu);
     }
 
-    v7 = 0;
+    languageCode3 = 0;
     v10 = 0;
     goto LABEL_10;
   }
 
-  v7 = firstMatchingResourceForLocale(v3, &stru_1F2BB4348.isa, &cfstr_Lm.isa, v37);
-  if (v7)
+  languageCode3 = firstMatchingResourceForLocale(v3, &stru_1F2BB4348.isa, &cfstr_Lm.isa, v37);
+  if (languageCode3)
   {
     v8 = MEMORY[0x1E695DFF8];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v37];
@@ -394,21 +394,21 @@ LABEL_15:
 
   if (v10)
   {
-    v19 = [v10 path];
-    v20 = [v19 lastPathComponent];
-    v21 = [v20 stringByDeletingPathExtension];
+    path = [v10 path];
+    lastPathComponent = [path lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v22 = [v19 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
     v23 = *MEMORY[0x1E69ABF50];
     v33[0] = *MEMORY[0x1E69ABF90];
     v33[1] = v23;
-    v34[0] = v7;
+    v34[0] = languageCode3;
     v34[1] = MEMORY[0x1E695E110];
     v24 = *MEMORY[0x1E69ABF68];
     v33[2] = *MEMORY[0x1E69ABF70];
     v33[3] = v24;
-    v34[2] = v22;
-    v34[3] = v21;
+    v34[2] = stringByDeletingLastPathComponent;
+    v34[3] = stringByDeletingPathExtension;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:4];
     v26 = LMLanguageModelCreate();
     if (!v26)
@@ -417,7 +417,7 @@ LABEL_15:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *v37 = 138412290;
-        v38 = v7;
+        v38 = languageCode3;
         _os_log_impl(&dword_1B40D2000, v27, OS_LOG_TYPE_DEFAULT, "Unable to load character LM for language '%@'", v37, 0xCu);
       }
     }
@@ -425,14 +425,14 @@ LABEL_15:
 
   else
   {
-    v19 = CROSLogForCategory(0);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    path = CROSLogForCategory(0);
+    if (os_log_type_enabled(path, OS_LOG_TYPE_DEFAULT))
     {
       *v37 = 138412546;
-      v38 = v7;
+      v38 = languageCode3;
       v39 = 2112;
-      v40 = v29;
-      _os_log_impl(&dword_1B40D2000, v19, OS_LOG_TYPE_DEFAULT, "Resource not found for '%@'. Character LM will be disabled for locale '%@'", v37, 0x16u);
+      v40 = modelCopy;
+      _os_log_impl(&dword_1B40D2000, path, OS_LOG_TYPE_DEFAULT, "Resource not found for '%@'. Character LM will be disabled for locale '%@'", v37, 0x16u);
     }
 
     v26 = 0;
@@ -468,14 +468,14 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
   }
 }
 
-+ (_LXLexicon)createStaticLexicon:(id)a3
++ (_LXLexicon)createStaticLexicon:(id)lexicon
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lexiconCopy = lexicon;
   v4 = *MEMORY[0x1E69ABF50];
   v12[0] = *MEMORY[0x1E69ABF90];
   v12[1] = v4;
-  v13[0] = v3;
+  v13[0] = lexiconCopy;
   v13[1] = MEMORY[0x1E695E110];
   v5 = *MEMORY[0x1E69ABFE0];
   v12[2] = *MEMORY[0x1E69ABFA8];
@@ -490,7 +490,7 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v3;
+      v11 = lexiconCopy;
       _os_log_impl(&dword_1B40D2000, v8, OS_LOG_TYPE_DEFAULT, "Unable to load lexicon for language '%@'", buf, 0xCu);
     }
   }
@@ -498,23 +498,23 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
   return v7;
 }
 
-+ (void)createWordLanguageModel:(id)a3 type:(int64_t)a4
++ (void)createWordLanguageModel:(id)model type:(int64_t)type
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 localeIdentifier];
-  v7 = [v6 isEqualToString:@"en-US"];
+  modelCopy = model;
+  localeIdentifier = [modelCopy localeIdentifier];
+  v7 = [localeIdentifier isEqualToString:@"en-US"];
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v8 = [v5 localeIdentifier];
-    v7 = [CRImageReader languageIsChinese:v8];
+    localeIdentifier2 = [modelCopy localeIdentifier];
+    v7 = [CRImageReader languageIsChinese:localeIdentifier2];
   }
 
   v26[0] = *MEMORY[0x1E69ABF90];
-  v9 = [v5 localeIdentifier];
+  localeIdentifier3 = [modelCopy localeIdentifier];
   v10 = *MEMORY[0x1E69ABF50];
-  v27[0] = v9;
+  v27[0] = localeIdentifier3;
   v27[1] = MEMORY[0x1E695E110];
   v11 = *MEMORY[0x1E69ABFA8];
   v26[1] = v10;
@@ -525,16 +525,16 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
   v27[3] = &unk_1F2BF8608;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:4];
 
-  v14 = [MEMORY[0x1E6991FD8] pathForLanguageModelForLocale:v5 modelType:2 resourceType:1];
+  v14 = [MEMORY[0x1E6991FD8] pathForLanguageModelForLocale:modelCopy modelType:2 resourceType:1];
   if (v14)
   {
     v15 = [v13 mutableCopy];
-    v16 = [v14 lastPathComponent];
-    v17 = [v16 stringByDeletingPathExtension];
+    lastPathComponent = [v14 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v18 = [v14 stringByDeletingLastPathComponent];
-    [v15 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69ABF70]];
-    [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69ABF68]];
+    stringByDeletingLastPathComponent = [v14 stringByDeletingLastPathComponent];
+    [v15 setObject:stringByDeletingLastPathComponent forKeyedSubscript:*MEMORY[0x1E69ABF70]];
+    [v15 setObject:stringByDeletingPathExtension forKeyedSubscript:*MEMORY[0x1E69ABF68]];
     [v15 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69ABF58]];
     [v15 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69ABF80]];
     v19 = [v15 copy];
@@ -548,9 +548,9 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
     v21 = CROSLogForCategory(0);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v5 localeIdentifier];
+      localeIdentifier4 = [modelCopy localeIdentifier];
       v24 = 138412290;
-      v25 = v22;
+      v25 = localeIdentifier4;
       _os_log_impl(&dword_1B40D2000, v21, OS_LOG_TYPE_DEFAULT, "Unable to load language model for '%@'.", &v24, 0xCu);
     }
   }
@@ -558,14 +558,14 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
   return v20;
 }
 
-+ (CVNLPLanguageModel)createCVNLPCharacterLanguageModel:(id)a3
++ (CVNLPLanguageModel)createCVNLPCharacterLanguageModel:(id)model
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  modelCopy = model;
   v4 = *MEMORY[0x1E6992040];
   v12[0] = *MEMORY[0x1E6992038];
   v12[1] = v4;
-  v13[0] = v3;
+  v13[0] = modelCopy;
   v5 = [MEMORY[0x1E696AD98] numberWithInt:1];
   v13[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
@@ -577,7 +577,7 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = modelCopy;
       _os_log_impl(&dword_1B40D2000, v8, OS_LOG_TYPE_DEFAULT, "Unable to load language model for '%@'.", &v10, 0xCu);
     }
   }
@@ -585,15 +585,15 @@ void __44__CRLanguageResources_createCharacterModel___block_invoke(uint64_t a1, 
   return v7;
 }
 
-+ (BOOL)isLanguageSupported:(id)a3
++ (BOOL)isLanguageSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   if (qword_1ED9601C0 != -1)
   {
     dispatch_once(&qword_1ED9601C0, &__block_literal_global_21);
   }
 
-  v4 = [_MergedGlobals_27 containsObject:v3];
+  v4 = [_MergedGlobals_27 containsObject:supportedCopy];
 
   return v4;
 }
@@ -636,15 +636,15 @@ void __43__CRLanguageResources_isLanguageSupported___block_invoke()
   _MergedGlobals_27 = v0;
 }
 
-+ (BOOL)isCharLMForLanguageAvailableInTextRecognition:(id)a3
++ (BOOL)isCharLMForLanguageAvailableInTextRecognition:(id)recognition
 {
-  v3 = a3;
+  recognitionCopy = recognition;
   if (qword_1ED9601D0 != -1)
   {
     dispatch_once(&qword_1ED9601D0, &__block_literal_global_31_0);
   }
 
-  v4 = [qword_1ED9601C8 containsObject:v3];
+  v4 = [qword_1ED9601C8 containsObject:recognitionCopy];
 
   return v4;
 }

@@ -10,75 +10,75 @@
   v12 = a4;
   v13 = a3;
   v14 = objc_opt_new();
-  [a1 setDigestEngagementTrackingMetrics:v14];
+  [self setDigestEngagementTrackingMetrics:v14];
 
-  v15 = [a1 digestEngagementTrackingMetrics];
-  [v15 setSectionIdentifier:v12];
+  digestEngagementTrackingMetrics = [self digestEngagementTrackingMetrics];
+  [digestEngagementTrackingMetrics setSectionIdentifier:v12];
 
-  v16 = [a1 digestEngagementTrackingMetrics];
-  [v16 setSectionPosition:a5];
+  digestEngagementTrackingMetrics2 = [self digestEngagementTrackingMetrics];
+  [digestEngagementTrackingMetrics2 setSectionPosition:a5];
 
-  v17 = [a1 digestEngagementTrackingMetrics];
-  [v17 setSectionSize:a6];
+  digestEngagementTrackingMetrics3 = [self digestEngagementTrackingMetrics];
+  [digestEngagementTrackingMetrics3 setSectionSize:a6];
 
   v18 = MEMORY[0x277CBEB98];
-  v19 = [a1 uuid];
-  v20 = [v18 setWithObject:v19];
+  uuid = [self uuid];
+  v20 = [v18 setWithObject:uuid];
   v21 = [v13 resolutionsForNotifications:v20];
 
-  v22 = [a1 uuid];
-  v23 = [v21 objectForKeyedSubscript:v22];
+  uuid2 = [self uuid];
+  v23 = [v21 objectForKeyedSubscript:uuid2];
 
   if (v23)
   {
-    v24 = [v23 numExpansions];
-    v25 = [a1 digestEngagementTrackingMetrics];
-    [v25 setNumExpansions:v24];
+    numExpansions = [v23 numExpansions];
+    digestEngagementTrackingMetrics4 = [self digestEngagementTrackingMetrics];
+    [digestEngagementTrackingMetrics4 setNumExpansions:numExpansions];
 
     if (![v23 resolutionType])
     {
-      v26 = [v37 digestRemovedTimestamp];
-      if (!v26)
+      digestRemovedTimestamp = [v37 digestRemovedTimestamp];
+      if (!digestRemovedTimestamp)
       {
         goto LABEL_5;
       }
 
-      v27 = v26;
-      v28 = [v37 digestRemovedTimestamp];
-      v29 = [v23 resolutionTimestamp];
-      v30 = [v28 compare:v29];
+      v27 = digestRemovedTimestamp;
+      digestRemovedTimestamp2 = [v37 digestRemovedTimestamp];
+      resolutionTimestamp = [v23 resolutionTimestamp];
+      v30 = [digestRemovedTimestamp2 compare:resolutionTimestamp];
 
       if (v30 == -1)
       {
-        v36 = [a1 digestEngagementTrackingMetrics];
-        [v36 setNumEngagementsAfterExpiration:1];
+        digestEngagementTrackingMetrics5 = [self digestEngagementTrackingMetrics];
+        [digestEngagementTrackingMetrics5 setNumEngagementsAfterExpiration:1];
       }
 
       else
       {
 LABEL_5:
-        v31 = [v37 firstScheduledViewTimestamp];
-        if (!v31)
+        firstScheduledViewTimestamp = [v37 firstScheduledViewTimestamp];
+        if (!firstScheduledViewTimestamp)
         {
           goto LABEL_7;
         }
 
-        v32 = v31;
-        v33 = [v37 firstScheduledViewTimestamp];
-        v34 = [v23 resolutionTimestamp];
-        v35 = [v33 compare:v34];
+        v32 = firstScheduledViewTimestamp;
+        firstScheduledViewTimestamp2 = [v37 firstScheduledViewTimestamp];
+        resolutionTimestamp2 = [v23 resolutionTimestamp];
+        v35 = [firstScheduledViewTimestamp2 compare:resolutionTimestamp2];
 
         if (v35 == -1)
         {
-          v36 = [a1 digestEngagementTrackingMetrics];
-          [v36 setNumEngagementsInScheduled:1];
+          digestEngagementTrackingMetrics5 = [self digestEngagementTrackingMetrics];
+          [digestEngagementTrackingMetrics5 setNumEngagementsInScheduled:1];
         }
 
         else
         {
 LABEL_7:
-          v36 = [a1 digestEngagementTrackingMetrics];
-          [v36 setNumEngagementsInUpcoming:1];
+          digestEngagementTrackingMetrics5 = [self digestEngagementTrackingMetrics];
+          [digestEngagementTrackingMetrics5 setNumEngagementsInUpcoming:1];
         }
       }
     }

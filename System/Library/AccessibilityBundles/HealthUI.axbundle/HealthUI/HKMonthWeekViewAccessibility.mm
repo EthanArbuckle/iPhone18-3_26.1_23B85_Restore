@@ -1,16 +1,16 @@
 @interface HKMonthWeekViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation HKMonthWeekViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKCalendarWeekView" hasInstanceMethod:@"monthTitleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKMonthWeekView" isKindOfClass:@"HKCalendarWeekView"];
-  [v3 validateClass:@"_HKMonthTitleView" hasInstanceMethod:@"monthTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKCalendarWeekView" hasInstanceMethod:@"monthTitleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKMonthWeekView" isKindOfClass:@"HKCalendarWeekView"];
+  [validationsCopy validateClass:@"_HKMonthTitleView" hasInstanceMethod:@"monthTitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements

@@ -1,28 +1,28 @@
 @interface STKOneShotInputAlertViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 @end
 
 @implementation STKOneShotInputAlertViewController
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = STKOneShotInputAlertViewController;
-  v10 = [(STKBaseInputAlertViewController *)&v14 textField:a3 shouldChangeCharactersInRange:location replacementString:length, v9];
-  v11 = v10;
-  if (v9)
+  stringCopy = [(STKBaseInputAlertViewController *)&v14 textField:field shouldChangeCharactersInRange:location replacementString:length, stringCopy];
+  v11 = stringCopy;
+  if (stringCopy)
   {
-    if (v10)
+    if (stringCopy)
     {
       v11 = 1;
       if (!self->_sentResponse)
       {
         self->_sentResponse = 1;
-        v12 = [(STKBaseAlertViewController *)self sessionAction];
-        [v12 sendSuccessWithResponse:v9];
+        sessionAction = [(STKBaseAlertViewController *)self sessionAction];
+        [sessionAction sendSuccessWithResponse:stringCopy];
 
         [(STKBaseAlertViewController *)self dismiss];
         v11 = 0;

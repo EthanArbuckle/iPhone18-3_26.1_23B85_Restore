@@ -1,42 +1,42 @@
 @interface NMKeepLocalTransientState
-- (id)modelObjectsWithEnableState:(int64_t)a3 type:(int64_t)a4;
-- (void)_removeEnableStateForModelObject:(id)a3;
+- (id)modelObjectsWithEnableState:(int64_t)state type:(int64_t)type;
+- (void)_removeEnableStateForModelObject:(id)object;
 - (void)_removeExpiredEnabledStates;
-- (void)confirmEnableStateForModelObject:(id)a3 expirationBlock:(id)a4;
-- (void)removeEnableStateForModelObject:(id)a3;
-- (void)setEnableState:(int64_t)a3 forModelObject:(id)a4;
+- (void)confirmEnableStateForModelObject:(id)object expirationBlock:(id)block;
+- (void)removeEnableStateForModelObject:(id)object;
+- (void)setEnableState:(int64_t)state forModelObject:(id)object;
 @end
 
 @implementation NMKeepLocalTransientState
 
-- (id)modelObjectsWithEnableState:(int64_t)a3 type:(int64_t)a4
+- (id)modelObjectsWithEnableState:(int64_t)state type:(int64_t)type
 {
   modelObjects = self->_modelObjects;
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:state];
   v7 = [(NSMutableDictionary *)modelObjects objectForKeyedSubscript:v6];
-  v8 = [NSNumber numberWithInteger:a4];
+  v8 = [NSNumber numberWithInteger:type];
   v9 = [v7 objectForKeyedSubscript:v8];
   v10 = [v9 copy];
 
   return v10;
 }
 
-- (void)setEnableState:(int64_t)a3 forModelObject:(id)a4
+- (void)setEnableState:(int64_t)state forModelObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   v7 = sub_9AEC(13);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v31 = 134218242;
-    v32 = a3;
+    stateCopy = state;
     v33 = 2112;
-    v34 = v6;
+    v34 = objectCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "[KeepLocalTransientState] Setting enable state: %ld for model object: %@", &v31, 0x16u);
   }
 
-  [(NMKeepLocalTransientState *)self _removeEnableStateForModelObject:v6];
+  [(NMKeepLocalTransientState *)self _removeEnableStateForModelObject:objectCopy];
   modelObjects = self->_modelObjects;
-  v9 = [NSNumber numberWithInteger:a3];
+  v9 = [NSNumber numberWithInteger:state];
   v10 = [(NSMutableDictionary *)modelObjects objectForKeyedSubscript:v9];
   v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [objc_opt_class() genericObjectType]);
   v12 = [v10 objectForKeyedSubscript:v11];
@@ -44,7 +44,7 @@
   if (!v12)
   {
     v13 = self->_modelObjects;
-    v14 = [NSNumber numberWithInteger:a3];
+    v14 = [NSNumber numberWithInteger:state];
     v15 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:v14];
 
     if (!v15)
@@ -58,49 +58,49 @@
 
       v18 = +[NSMutableDictionary dictionary];
       v19 = self->_modelObjects;
-      v20 = [NSNumber numberWithInteger:a3];
+      v20 = [NSNumber numberWithInteger:state];
       [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
     }
 
     v21 = +[NSMutableSet set];
     v22 = self->_modelObjects;
-    v23 = [NSNumber numberWithInteger:a3];
+    v23 = [NSNumber numberWithInteger:state];
     v24 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v23];
     v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [objc_opt_class() genericObjectType]);
     [v24 setObject:v21 forKeyedSubscript:v25];
   }
 
   v26 = self->_modelObjects;
-  v27 = [NSNumber numberWithInteger:a3];
+  v27 = [NSNumber numberWithInteger:state];
   v28 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:v27];
   v29 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [objc_opt_class() genericObjectType]);
   v30 = [v28 objectForKeyedSubscript:v29];
-  [v30 addObject:v6];
+  [v30 addObject:objectCopy];
 }
 
-- (void)removeEnableStateForModelObject:(id)a3
+- (void)removeEnableStateForModelObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = sub_9AEC(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = objectCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[KeepLocalTransientState] Removing enable state for model object: %@", &v6, 0xCu);
   }
 
-  [(NMKeepLocalTransientState *)self _removeEnableStateForModelObject:v4];
+  [(NMKeepLocalTransientState *)self _removeEnableStateForModelObject:objectCopy];
 }
 
-- (void)confirmEnableStateForModelObject:(id)a3 expirationBlock:(id)a4
+- (void)confirmEnableStateForModelObject:(id)object expirationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  blockCopy = block;
   v8 = sub_9AEC(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = objectCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[KeepLocalTransientState] Confirming enable state for model object: %@", buf, 0xCu);
   }
 
@@ -116,7 +116,7 @@
 
   v12 = +[NSDate now];
   v13 = [v12 dateByAddingTimeInterval:15.0];
-  [(NSMapTable *)exirationDates setObject:v13 forKey:v6];
+  [(NSMapTable *)exirationDates setObject:v13 forKey:objectCopy];
 
   objc_initWeak(buf, self);
   v14 = dispatch_walltime(0, 15000000000);
@@ -125,17 +125,17 @@
   v16[2] = sub_185C;
   v16[3] = &unk_144E8;
   objc_copyWeak(&v18, buf);
-  v17 = v7;
-  v15 = v7;
+  v17 = blockCopy;
+  v15 = blockCopy;
   dispatch_after(v14, &_dispatch_main_q, v16);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);
 }
 
-- (void)_removeEnableStateForModelObject:(id)a3
+- (void)_removeEnableStateForModelObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -179,7 +179,7 @@
               v12 = *(*(&v18 + 1) + 8 * v11);
               v13 = [(NSMutableDictionary *)self->_modelObjects objectForKeyedSubscript:v6];
               v14 = [v13 objectForKeyedSubscript:v12];
-              [v14 removeObject:v4];
+              [v14 removeObject:objectCopy];
 
               v11 = v11 + 1;
             }
@@ -201,7 +201,7 @@
     while (v17);
   }
 
-  [(NSMapTable *)self->_exirationDates removeObjectForKey:v4];
+  [(NSMapTable *)self->_exirationDates removeObjectForKey:objectCopy];
 }
 
 - (void)_removeExpiredEnabledStates
@@ -258,7 +258,7 @@
               v22[2] = sub_1D74;
               v22[3] = &unk_14510;
               v23 = v20;
-              v24 = self;
+              selfCopy = self;
               v13 = [NSPredicate predicateWithBlock:v22];
               v14 = [v12 filteredSetUsingPredicate:v13];
               [v10 minusSet:v14];

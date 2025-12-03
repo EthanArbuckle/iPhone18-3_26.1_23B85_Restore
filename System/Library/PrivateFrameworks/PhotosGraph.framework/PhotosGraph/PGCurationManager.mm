@@ -1,85 +1,85 @@
 @interface PGCurationManager
-+ (BOOL)areAssetsInteresting:(id)a3 minimumNumberOfCuratedAssets:(unint64_t)a4 duration:(unint64_t)a5;
-+ (double)contentScoreForAssets:(id)a3;
-+ (id)_filterAssets:(id)a3 withPositiveLocations:(id)a4 negativeLocations:(id)a5 maximumDistance:(double)a6;
-+ (id)_filteredAssetsWithFaceFilter:(unint64_t)a3 forAssets:(id)a4;
++ (BOOL)areAssetsInteresting:(id)interesting minimumNumberOfCuratedAssets:(unint64_t)assets duration:(unint64_t)duration;
++ (double)contentScoreForAssets:(id)assets;
++ (id)_filterAssets:(id)assets withPositiveLocations:(id)locations negativeLocations:(id)negativeLocations maximumDistance:(double)distance;
++ (id)_filteredAssetsWithFaceFilter:(unint64_t)filter forAssets:(id)assets;
 + (id)assetPropertySetsForCuration;
 + (id)assetsBeautifier;
-+ (id)dedupedAssetsWithAssets:(id)a3;
++ (id)dedupedAssetsWithAssets:(id)assets;
 + (id)defaultAssetSortDescriptors;
-+ (id)dejunkAndDedupeItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forAreaNodes:(id)a5 withMaximumDistance:(double)a6;
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forCityNodes:(id)a5 withMaximumDistance:(double)a6;
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forLocationNodes:(id)a5 withMaximumDistance:(double)a6;
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forStateNodes:(id)a5 withMaximumDistance:(double)a6;
-+ (id)filterAssets:(id)a3 withLocation:(id)a4 maximumDistance:(double)a5;
-+ (id)filterAssets:(id)a3 withLocations:(id)a4 maximumDistance:(double)a5;
-+ (id)filteredAssetsFromAssets:(id)a3 withContextualAssetLocalIdentifiers:(id)a4 approximateTimeDistance:(double)a5;
-+ (id)representativeAssetsForAssetCollection:(id)a3 curationContext:(id)a4 progressBlock:(id)a5;
-+ (id)representativeAssetsForAssets:(id)a3 extendedCuratedAssets:(id)a4 progressBlock:(id)a5;
-+ (id)representativeAssetsForAssets:(id)a3 progressBlock:(id)a4;
-+ (id)sceneInfoWithAsset:(id)a3 curationSession:(id)a4;
-+ (id)summaryClusteringForDuration:(unint64_t)a3;
-+ (unint64_t)maximumNumberOfItemsForDuration:(unint64_t)a3 withTotalNumberOfItems:(unint64_t)a4 spanningNumberOfDays:(double)a5;
-+ (unint64_t)minimumNumberOfItemsForDuration:(unint64_t)a3 withMaximumNumberOfItems:(unint64_t)a4;
-- (BOOL)isAssetCollectionInteresting:(id)a3 curationContext:(id)a4;
-- (BOOL)isAssetFeederInteresting:(id)a3 withAlternateJunking:(BOOL)a4 smart:(BOOL)a5;
++ (id)dejunkAndDedupeItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forAreaNodes:(id)areaNodes withMaximumDistance:(double)distance;
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forCityNodes:(id)cityNodes withMaximumDistance:(double)distance;
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forLocationNodes:(id)locationNodes withMaximumDistance:(double)distance;
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forStateNodes:(id)stateNodes withMaximumDistance:(double)distance;
++ (id)filterAssets:(id)assets withLocation:(id)location maximumDistance:(double)distance;
++ (id)filterAssets:(id)assets withLocations:(id)locations maximumDistance:(double)distance;
++ (id)filteredAssetsFromAssets:(id)assets withContextualAssetLocalIdentifiers:(id)identifiers approximateTimeDistance:(double)distance;
++ (id)representativeAssetsForAssetCollection:(id)collection curationContext:(id)context progressBlock:(id)block;
++ (id)representativeAssetsForAssets:(id)assets extendedCuratedAssets:(id)curatedAssets progressBlock:(id)block;
++ (id)representativeAssetsForAssets:(id)assets progressBlock:(id)block;
++ (id)sceneInfoWithAsset:(id)asset curationSession:(id)session;
++ (id)summaryClusteringForDuration:(unint64_t)duration;
++ (unint64_t)maximumNumberOfItemsForDuration:(unint64_t)duration withTotalNumberOfItems:(unint64_t)items spanningNumberOfDays:(double)days;
++ (unint64_t)minimumNumberOfItemsForDuration:(unint64_t)duration withMaximumNumberOfItems:(unint64_t)items;
+- (BOOL)isAssetCollectionInteresting:(id)interesting curationContext:(id)context;
+- (BOOL)isAssetFeederInteresting:(id)interesting withAlternateJunking:(BOOL)junking smart:(BOOL)smart;
 - (PFSceneGeography)sceneGeography;
-- (PGCurationManager)initWithPhotoLibrary:(id)a3 cacheURL:(id)a4;
-- (double)contentScoreForAssetCollection:(id)a3 curationContext:(id)a4;
-- (double)contentScoreForAssetFeeder:(id)a3;
-- (id)_bestAssetInSummarizedAssets:(id)a3 forReferencePersonLocalIdentifiers:(id)a4;
-- (id)_bestAssetsInAssets:(id)a3 forReferencePersonLocalIdentifiers:(id)a4 minimumRatioOfReferencePersonsPerAsset:(double)a5 progressBlock:(id)a6;
-- (id)_contextualBestAssetInAssets:(id)a3;
-- (id)_curatedKeyAssetIdentifierForCollectionUUID:(id)a3 curatedAssetCollection:(id)a4 options:(id)a5 criteria:(id)a6 curatedKeyAsset:(id *)a7 curationContext:(id)a8;
-- (id)_extendedAssetsForCurationForAssets:(id)a3 matchingAssetsRange:(_NSRange)a4;
-- (id)_filteredAssetsForAssets:(id)a3 inMoments:(id)a4 keepFavorites:(BOOL)a5;
-- (id)_firstBestFacedAssetInAssetCluster:(id)a3 facesByAssetIdentifiers:(id)a4;
+- (PGCurationManager)initWithPhotoLibrary:(id)library cacheURL:(id)l;
+- (double)contentScoreForAssetCollection:(id)collection curationContext:(id)context;
+- (double)contentScoreForAssetFeeder:(id)feeder;
+- (id)_bestAssetInSummarizedAssets:(id)assets forReferencePersonLocalIdentifiers:(id)identifiers;
+- (id)_bestAssetsInAssets:(id)assets forReferencePersonLocalIdentifiers:(id)identifiers minimumRatioOfReferencePersonsPerAsset:(double)asset progressBlock:(id)block;
+- (id)_contextualBestAssetInAssets:(id)assets;
+- (id)_curatedKeyAssetIdentifierForCollectionUUID:(id)d curatedAssetCollection:(id)collection options:(id)options criteria:(id)criteria curatedKeyAsset:(id *)asset curationContext:(id)context;
+- (id)_extendedAssetsForCurationForAssets:(id)assets matchingAssetsRange:(_NSRange)range;
+- (id)_filteredAssetsForAssets:(id)assets inMoments:(id)moments keepFavorites:(BOOL)favorites;
+- (id)_firstBestFacedAssetInAssetCluster:(id)cluster facesByAssetIdentifiers:(id)identifiers;
 - (id)_libraryDateInterval;
-- (id)_timeBasedAssetClustersForAssets:(id)a3 maximumClusterCount:(unint64_t)a4;
-- (id)bestAssetForAssetFeeder:(id)a3 options:(id)a4;
-- (id)bestAssetForAssetFeeder:(id)a3 options:(id)a4 criteria:(id)a5;
-- (id)bestAssetInAssets:(id)a3 forReferencePersonLocalIdentifiers:(id)a4 requiredMinimumNumberOfReferencePersons:(unint64_t)a5 forMemories:(BOOL)a6 forSocialGroup:(BOOL)a7 allowGuestAsset:(BOOL)a8 wantsGoodSquareCropScore:(BOOL)a9;
-- (id)bestAssetInAssets:(id)a3 options:(id)a4;
-- (id)bestAssetsForAssetFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)criteriaForKeyAssetCurationWithAssetCollection:(id)a3 graph:(id)a4 options:(id)a5 curationContext:(id)a6;
-- (id)curatedAssetsForAssetCollection:(id)a3 duration:(unint64_t)a4 referencePersonLocalIdentifiers:(id)a5 curationContext:(id)a6 progressBlock:(id)a7;
-- (id)curatedAssetsForAssetCollection:(id)a3 options:(id)a4 curationContext:(id)a5 progressBlock:(id)a6;
-- (id)curatedAssetsForPersonLocalIdentifier:(id)a3 progressBlock:(id)a4;
-- (id)curatedKeyAssetForAssetCollection:(id)a3 curatedAssetCollection:(id)a4 options:(id)a5 criteria:(id)a6 curationContext:(id)a7;
-- (id)curatedKeyAssetForCollectionUUID:(id)a3 curatedAssetCollection:(id)a4 options:(id)a5 criteria:(id)a6 curationContext:(id)a7;
+- (id)_timeBasedAssetClustersForAssets:(id)assets maximumClusterCount:(unint64_t)count;
+- (id)bestAssetForAssetFeeder:(id)feeder options:(id)options;
+- (id)bestAssetForAssetFeeder:(id)feeder options:(id)options criteria:(id)criteria;
+- (id)bestAssetInAssets:(id)assets forReferencePersonLocalIdentifiers:(id)identifiers requiredMinimumNumberOfReferencePersons:(unint64_t)persons forMemories:(BOOL)memories forSocialGroup:(BOOL)group allowGuestAsset:(BOOL)asset wantsGoodSquareCropScore:(BOOL)score;
+- (id)bestAssetInAssets:(id)assets options:(id)options;
+- (id)bestAssetsForAssetFeeder:(id)feeder options:(id)options progressBlock:(id)block;
+- (id)criteriaForKeyAssetCurationWithAssetCollection:(id)collection graph:(id)graph options:(id)options curationContext:(id)context;
+- (id)curatedAssetsForAssetCollection:(id)collection duration:(unint64_t)duration referencePersonLocalIdentifiers:(id)identifiers curationContext:(id)context progressBlock:(id)block;
+- (id)curatedAssetsForAssetCollection:(id)collection options:(id)options curationContext:(id)context progressBlock:(id)block;
+- (id)curatedAssetsForPersonLocalIdentifier:(id)identifier progressBlock:(id)block;
+- (id)curatedKeyAssetForAssetCollection:(id)collection curatedAssetCollection:(id)assetCollection options:(id)options criteria:(id)criteria curationContext:(id)context;
+- (id)curatedKeyAssetForCollectionUUID:(id)d curatedAssetCollection:(id)collection options:(id)options criteria:(id)criteria curationContext:(id)context;
 - (id)defaultAssetFetchOptions;
 - (id)defaultAssetFetchOptionsForMemories;
 - (id)defaultAssetFetchOptionsForMemoriesWithoutPrefetch;
-- (id)dejunkAndDedupeAssetsInAssetCollection:(id)a3 options:(id)a4 curationContext:(id)a5 progressBlock:(id)a6;
-- (id)fetchAssetWithLocalIdentifier:(id)a3;
-- (id)fetchAssetsSortedByDateWithLocalIdentifiers:(id)a3;
-- (id)memoryCuratedAssetsForAssetCollection:(id)a3 duration:(unint64_t)a4 withContextualAssetLocalIdentifiers:(id)a5 minimumProportion:(double)a6 graph:(id)a7 curationContext:(id)a8 progressBlock:(id)a9;
-- (id)memoryCuratedAssetsForAssets:(id)a3 duration:(unint64_t)a4 withContextualAssetLocalIdentifiers:(id)a5 minimumProportion:(double)a6 graph:(id)a7 curationContext:(id)a8 progressBlock:(id)a9;
-- (unint64_t)optimalDurationForAssetCollection:(id)a3 duration:(unint64_t)a4 options:(id)a5 curationContext:(id)a6;
-- (void)invalidateCurationCacheForMomentUUIDs:(id)a3;
+- (id)dejunkAndDedupeAssetsInAssetCollection:(id)collection options:(id)options curationContext:(id)context progressBlock:(id)block;
+- (id)fetchAssetWithLocalIdentifier:(id)identifier;
+- (id)fetchAssetsSortedByDateWithLocalIdentifiers:(id)identifiers;
+- (id)memoryCuratedAssetsForAssetCollection:(id)collection duration:(unint64_t)duration withContextualAssetLocalIdentifiers:(id)identifiers minimumProportion:(double)proportion graph:(id)graph curationContext:(id)context progressBlock:(id)block;
+- (id)memoryCuratedAssetsForAssets:(id)assets duration:(unint64_t)duration withContextualAssetLocalIdentifiers:(id)identifiers minimumProportion:(double)proportion graph:(id)graph curationContext:(id)context progressBlock:(id)block;
+- (unint64_t)optimalDurationForAssetCollection:(id)collection duration:(unint64_t)duration options:(id)options curationContext:(id)context;
+- (void)invalidateCurationCacheForMomentUUIDs:(id)ds;
 @end
 
 @implementation PGCurationManager
 
-- (id)_curatedKeyAssetIdentifierForCollectionUUID:(id)a3 curatedAssetCollection:(id)a4 options:(id)a5 criteria:(id)a6 curatedKeyAsset:(id *)a7 curationContext:(id)a8
+- (id)_curatedKeyAssetIdentifierForCollectionUUID:(id)d curatedAssetCollection:(id)collection options:(id)options criteria:(id)criteria curatedKeyAsset:(id *)asset curationContext:(id)context
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (!v14)
+  dCopy = d;
+  collectionCopy = collection;
+  optionsCopy = options;
+  criteriaCopy = criteria;
+  contextCopy = context;
+  if (!dCopy)
   {
-    v25 = 0;
+    localIdentifier = 0;
     goto LABEL_37;
   }
 
-  v59 = v18;
-  v19 = [(PGCurationManager *)self curationLoggingConnection];
-  v20 = os_signpost_id_generate(v19);
-  v21 = v19;
+  v59 = contextCopy;
+  curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+  v20 = os_signpost_id_generate(curationLoggingConnection);
+  v21 = curationLoggingConnection;
   v22 = v21;
   v57 = v20 - 1;
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
@@ -91,53 +91,53 @@
   info = 0;
   mach_timebase_info(&info);
   v55 = mach_absolute_time();
-  if (!v16)
+  if (!optionsCopy)
   {
-    v16 = objc_alloc_init(PGKeyAssetCurationOptions);
+    optionsCopy = objc_alloc_init(PGKeyAssetCurationOptions);
   }
 
-  v23 = [(PGCurationCache *)self->_cache curatedKeyAssetIdentifierForCollectionUUID:v14 options:v16];
+  v23 = [(PGCurationCache *)self->_cache curatedKeyAssetIdentifierForCollectionUUID:dCopy options:optionsCopy];
   v24 = v23;
-  v58 = v17;
+  v58 = criteriaCopy;
   spid = v20;
   if (v23)
   {
-    if (!a7)
+    if (!asset)
     {
-      v28 = 0;
-      v25 = v23;
+      firstObject = 0;
+      localIdentifier = v23;
       goto LABEL_27;
     }
 
-    v56 = a7;
-    v25 = v23;
+    assetCopy2 = asset;
+    localIdentifier = v23;
 LABEL_10:
-    v67[0] = v25;
+    v67[0] = localIdentifier;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:1];
     v27 = [(PGCurationManager *)self fetchAssetsSortedByDateWithLocalIdentifiers:v26];
 
-    v28 = [v27 firstObject];
+    firstObject = [v27 firstObject];
 
 LABEL_26:
-    v38 = v28;
-    *v56 = v28;
+    v38 = firstObject;
+    *assetCopy2 = firstObject;
     goto LABEL_27;
   }
 
-  v56 = a7;
+  assetCopy2 = asset;
   context = objc_autoreleasePoolPush();
-  v29 = [v15 photoLibrary];
-  v30 = [v29 librarySpecificFetchOptions];
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v31 = +[PGCurationManager assetPropertySetsForCuration];
-  [v30 addFetchPropertySets:v31];
+  [librarySpecificFetchOptions addFetchPropertySets:v31];
 
   [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
-  v33 = v32 = v17;
+  v33 = v32 = criteriaCopy;
   [v33 setPersonsPrefetchMode:2];
   [v33 setFaceInformationPrefetchMode:2];
-  v34 = [v32 scenesTrait];
-  if ([v34 isActive])
+  scenesTrait = [v32 scenesTrait];
+  if ([scenesTrait isActive])
   {
     v35 = 2;
   }
@@ -149,40 +149,40 @@ LABEL_26:
 
   [v33 setScenesPrefetchMode:v35];
 
-  v53 = v15;
-  v51 = v30;
-  v36 = [MEMORY[0x277D27710] feederForAssetCollection:v15 options:v30 feederPrefetchOptions:v33 curationContext:v59];
-  v37 = [(PGKeyAssetCurationOptions *)v16 copy];
-  v28 = [(PGCurationManager *)self bestAssetForAssetFeeder:v36 options:v37 criteria:v32];
-  if (!v28)
+  v53 = collectionCopy;
+  v51 = librarySpecificFetchOptions;
+  v36 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:librarySpecificFetchOptions feederPrefetchOptions:v33 curationContext:v59];
+  v37 = [(PGKeyAssetCurationOptions *)optionsCopy copy];
+  firstObject = [(PGCurationManager *)self bestAssetForAssetFeeder:v36 options:v37 criteria:v32];
+  if (!firstObject)
   {
-    if ([v36 numberOfItems] && !-[PGKeyAssetCurationOptions useContextualCurationOnly](v16, "useContextualCurationOnly"))
+    if ([v36 numberOfItems] && !-[PGKeyAssetCurationOptions useContextualCurationOnly](optionsCopy, "useContextualCurationOnly"))
     {
-      v28 = [v36 itemAtIndex:0];
+      firstObject = [v36 itemAtIndex:0];
     }
 
     else
     {
-      v28 = 0;
+      firstObject = 0;
     }
   }
 
-  v25 = [v28 localIdentifier];
-  if (v28)
+  localIdentifier = [firstObject localIdentifier];
+  if (firstObject)
   {
-    [(PGCurationCache *)self->_cache setCuratedKeyAsset:v28 forCollectionUUID:v14 options:v16];
+    [(PGCurationCache *)self->_cache setCuratedKeyAsset:firstObject forCollectionUUID:dCopy options:optionsCopy];
   }
 
   objc_autoreleasePoolPop(context);
-  if (v56)
+  if (assetCopy2)
   {
-    v15 = v53;
-    if (!v25)
+    collectionCopy = v53;
+    if (!localIdentifier)
     {
       goto LABEL_27;
     }
 
-    if (v28)
+    if (firstObject)
     {
       goto LABEL_26;
     }
@@ -190,7 +190,7 @@ LABEL_26:
     goto LABEL_10;
   }
 
-  v15 = v53;
+  collectionCopy = v53;
 LABEL_27:
   v39 = mach_absolute_time();
   numer = info.numer;
@@ -230,19 +230,19 @@ LABEL_27:
     _os_log_impl(&dword_22F0FC000, v45, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", buf, 0x20u);
   }
 
-  v17 = v58;
-  v18 = v59;
+  criteriaCopy = v58;
+  contextCopy = v59;
 LABEL_37:
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return localIdentifier;
 }
 
-- (id)curatedKeyAssetForCollectionUUID:(id)a3 curatedAssetCollection:(id)a4 options:(id)a5 criteria:(id)a6 curationContext:(id)a7
+- (id)curatedKeyAssetForCollectionUUID:(id)d curatedAssetCollection:(id)collection options:(id)options criteria:(id)criteria curationContext:(id)context
 {
   v10 = 0;
-  v7 = [(PGCurationManager *)self _curatedKeyAssetIdentifierForCollectionUUID:a3 curatedAssetCollection:a4 options:a5 criteria:a6 curatedKeyAsset:&v10 curationContext:a7];
+  v7 = [(PGCurationManager *)self _curatedKeyAssetIdentifierForCollectionUUID:d curatedAssetCollection:collection options:options criteria:criteria curatedKeyAsset:&v10 curationContext:context];
   v8 = v10;
 
   return v8;
@@ -251,109 +251,109 @@ LABEL_37:
 - (id)defaultAssetFetchOptionsForMemoriesWithoutPrefetch
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PGCurationManager *)self photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGCurationManager *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7[0] = *MEMORY[0x277CD9AA8];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v3 setFetchPropertySets:v4];
+  [librarySpecificFetchOptions setFetchPropertySets:v4];
 
-  [v3 setWantsIncrementalChangeDetails:0];
-  [v3 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v5 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
 - (id)defaultAssetFetchOptionsForMemories
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v2 = [(PGCurationManager *)self defaultAssetFetchOptions];
-  [v2 setIncludeGuestAssets:1];
+  defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
+  [defaultAssetFetchOptions setIncludeGuestAssets:1];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"isFavorite" ascending:0];
   v8[0] = v3;
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  [v2 setSortDescriptors:v5];
+  [defaultAssetFetchOptions setSortDescriptors:v5];
 
-  [v2 setFetchLimit:5000];
+  [defaultAssetFetchOptions setFetchLimit:5000];
   v6 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return defaultAssetFetchOptions;
 }
 
 - (id)defaultAssetFetchOptions
 {
-  v2 = [(PGCurationManager *)self photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGCurationManager *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = +[PGCurationManager assetPropertySetsForCuration];
-  [v3 setFetchPropertySets:v4];
+  [librarySpecificFetchOptions setFetchPropertySets:v4];
 
-  [v3 setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-- (id)fetchAssetWithLocalIdentifier:(id)a3
+- (id)fetchAssetWithLocalIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(PGCurationManager *)self photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    identifierCopy = identifier;
+    photoLibrary = [(PGCurationManager *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v6 setFetchLimit:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v7 = MEMORY[0x277CD97A8];
-    v13[0] = v4;
+    v13[0] = identifierCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v9 = [v7 fetchAssetsWithLocalIdentifiers:v8 options:v6];
+    v9 = [v7 fetchAssetsWithLocalIdentifiers:v8 options:librarySpecificFetchOptions];
 
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)fetchAssetsSortedByDateWithLocalIdentifiers:(id)a3
+- (id)fetchAssetsSortedByDateWithLocalIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PGCurationManager *)self photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PGCurationManager *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v7 = [objc_opt_class() defaultAssetSortDescriptors];
-  [v6 setSortDescriptors:v7];
+  defaultAssetSortDescriptors = [objc_opt_class() defaultAssetSortDescriptors];
+  [librarySpecificFetchOptions setSortDescriptors:defaultAssetSortDescriptors];
 
-  v8 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v4 options:v6];
+  v8 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:identifiersCopy options:librarySpecificFetchOptions];
 
   return v8;
 }
 
-- (id)_extendedAssetsForCurationForAssets:(id)a3 matchingAssetsRange:(_NSRange)a4
+- (id)_extendedAssetsForCurationForAssets:(id)assets matchingAssetsRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 count];
+  assetsCopy = assets;
+  v8 = [assetsCopy count];
   if (location != -1)
   {
     v9 = v8;
     if (length >= 4)
     {
-      v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v7 copyItems:0];
-      v11 = [v10 subarrayWithRange:location, length];
-      v12 = [(PGCurationManager *)self curationLoggingConnection];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      curationLoggingConnection2 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:assetsCopy copyItems:0];
+      v11 = [curationLoggingConnection2 subarrayWithRange:location, length];
+      curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+      if (os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_INFO))
       {
         v20 = 134218240;
         v21 = length;
@@ -361,7 +361,7 @@ LABEL_37:
         v23 = v9;
         v13 = "Curated key asset with criteria: found assets range matching scenes %ld/%ld";
 LABEL_14:
-        _os_log_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_INFO, v13, &v20, 0x16u);
+        _os_log_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_INFO, v13, &v20, 0x16u);
         goto LABEL_15;
       }
 
@@ -385,14 +385,14 @@ LABEL_14:
 
       if (v17 < 4)
       {
-        v10 = [(PGCurationManager *)self curationLoggingConnection];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        curationLoggingConnection2 = [(PGCurationManager *)self curationLoggingConnection];
+        if (os_log_type_enabled(curationLoggingConnection2, OS_LOG_TYPE_INFO))
         {
           v20 = 134218240;
           v21 = v17;
           v22 = 2048;
           v23 = v9;
-          _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "Curated key asset with criteria: cannot use extended assets %ld/%ld", &v20, 0x16u);
+          _os_log_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_INFO, "Curated key asset with criteria: cannot use extended assets %ld/%ld", &v20, 0x16u);
         }
 
         v11 = 0;
@@ -404,10 +404,10 @@ LABEL_14:
         location = 0;
       }
 
-      v10 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v7 copyItems:0];
-      v11 = [v10 subarrayWithRange:location, v17];
-      v12 = [(PGCurationManager *)self curationLoggingConnection];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      curationLoggingConnection2 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:assetsCopy copyItems:0];
+      v11 = [curationLoggingConnection2 subarrayWithRange:location, v17];
+      curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+      if (os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_INFO))
       {
         v20 = 134218240;
         v21 = v17;
@@ -432,13 +432,13 @@ LABEL_18:
   return v11;
 }
 
-- (id)_contextualBestAssetInAssets:(id)a3
+- (id)_contextualBestAssetInAssets:(id)assets
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] == 1)
+  assetsCopy = assets;
+  if ([assetsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [assetsCopy firstObject];
   }
 
   else
@@ -447,12 +447,12 @@ LABEL_18:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v3;
+    v5 = assetsCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
-      v4 = 0;
+      firstObject = 0;
       v8 = *v20;
       v9 = -1.79769313e308;
       do
@@ -479,7 +479,7 @@ LABEL_18:
             v16 = v11;
 
             v9 = v15;
-            v4 = v16;
+            firstObject = v16;
           }
         }
 
@@ -491,54 +491,54 @@ LABEL_18:
 
     else
     {
-      v4 = 0;
+      firstObject = 0;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)bestAssetForAssetFeeder:(id)a3 options:(id)a4 criteria:(id)a5
+- (id)bestAssetForAssetFeeder:(id)feeder options:(id)options criteria:(id)criteria
 {
   v87 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v60 = a4;
-  v66 = a5;
-  v56 = v7;
-  v59 = [v7 allItems];
-  v57 = [v59 count];
+  feederCopy = feeder;
+  optionsCopy = options;
+  criteriaCopy = criteria;
+  v56 = feederCopy;
+  allItems = [feederCopy allItems];
+  v57 = [allItems count];
   if (!v57)
   {
     v24 = 0;
     goto LABEL_70;
   }
 
-  v8 = v60;
-  if (!v60)
+  v8 = optionsCopy;
+  if (!optionsCopy)
   {
     v8 = objc_alloc_init(PGKeyAssetCurationOptions);
   }
 
-  v60 = v8;
-  v9 = [v66 peopleTrait];
-  v55 = [v9 items];
+  optionsCopy = v8;
+  peopleTrait = [criteriaCopy peopleTrait];
+  items = [peopleTrait items];
 
-  if ([v55 count])
+  if ([items count])
   {
-    [(PGKeyAssetCurationOptions *)v60 setFocusOnPeople:1];
-    [(PGKeyAssetCurationOptions *)v60 setReferencePersonLocalIdentifiers:v55];
+    [(PGKeyAssetCurationOptions *)optionsCopy setFocusOnPeople:1];
+    [(PGKeyAssetCurationOptions *)optionsCopy setReferencePersonLocalIdentifiers:items];
   }
 
-  v10 = [(PGKeyAssetCurationOptions *)v60 isForMemories];
-  v11 = [(PGKeyAssetCurationOptions *)v60 allowGuestAsset];
-  if (!v66)
+  isForMemories = [(PGKeyAssetCurationOptions *)optionsCopy isForMemories];
+  allowGuestAsset = [(PGKeyAssetCurationOptions *)optionsCopy allowGuestAsset];
+  if (!criteriaCopy)
   {
     v25 = 0;
     v16 = -1;
     v17 = -1;
-    if (!v60)
+    if (!optionsCopy)
     {
       goto LABEL_55;
     }
@@ -546,15 +546,15 @@ LABEL_18:
     goto LABEL_56;
   }
 
-  v12 = v11;
-  v63 = [MEMORY[0x277CBEB18] array];
-  v62 = [MEMORY[0x277CBEB18] array];
-  v64 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  v12 = allowGuestAsset;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v59;
+  obj = allItems;
   v13 = [obj countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (v13)
   {
@@ -576,7 +576,7 @@ LABEL_18:
         v19 = *(*(&v76 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
         *buf = 0;
-        v21 = [v66 isPassingForAsset:v19 score:buf];
+        v21 = [criteriaCopy isPassingForAsset:v19 score:buf];
         if (*buf > 0.0)
         {
           v22 = v21;
@@ -590,17 +590,17 @@ LABEL_18:
         if (v22 == 1)
         {
           v23 = [MEMORY[0x277CCABB0] numberWithDouble:*buf];
-          [v64 setObject:v23 forKey:v19];
+          [strongToStrongObjectsMapTable setObject:v23 forKey:v19];
 
-          [v63 addObject:v19];
+          [array addObject:v19];
           if (v17 == -1)
           {
             v17 = v14;
           }
 
-          if (([v19 clsAvoidIfPossibleAsKeyItemForMemories:v10 allowGuestAsset:v12] & 1) == 0)
+          if (([v19 clsAvoidIfPossibleAsKeyItemForMemories:isForMemories allowGuestAsset:v12] & 1) == 0)
           {
-            [v62 addObject:v19];
+            [array2 addObject:v19];
           }
 
           v16 = v14;
@@ -625,22 +625,22 @@ LABEL_18:
     v17 = -1;
   }
 
-  if ([v62 count])
+  if ([array2 count])
   {
-    v26 = v62;
+    v26 = array2;
 
     v27 = v26;
   }
 
   else
   {
-    v27 = v63;
+    v27 = array;
   }
 
   v28 = v27;
   v29 = [v27 count];
-  v30 = [(PGCurationManager *)self curationLoggingConnection];
-  v31 = os_log_type_enabled(v30, OS_LOG_TYPE_INFO);
+  curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+  v31 = os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_INFO);
   if (!v29)
   {
     if (v31)
@@ -649,7 +649,7 @@ LABEL_18:
       *&buf[4] = 0;
       *&buf[12] = 2048;
       *&buf[14] = v57;
-      _os_log_impl(&dword_22F0FC000, v30, OS_LOG_TYPE_INFO, "Curated key asset with criteria: not enough matching assets %ld/%ld. Fallback to normal curation", buf, 0x16u);
+      _os_log_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_INFO, "Curated key asset with criteria: not enough matching assets %ld/%ld. Fallback to normal curation", buf, 0x16u);
     }
 
     goto LABEL_47;
@@ -661,21 +661,21 @@ LABEL_18:
     *&buf[4] = v29;
     *&buf[12] = 2048;
     *&buf[14] = v57;
-    _os_log_impl(&dword_22F0FC000, v30, OS_LOG_TYPE_INFO, "Curated key asset with criteria: matching assets with criteria %ld/%ld.", buf, 0x16u);
+    _os_log_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_INFO, "Curated key asset with criteria: matching assets with criteria %ld/%ld.", buf, 0x16u);
   }
 
-  v30 = [objc_opt_class() _filteredAssetsWithFaceFilter:objc_msgSend(v66 forAssets:{"faceFilter"), v28}];
-  if (![v30 count])
+  curationLoggingConnection = [objc_opt_class() _filteredAssetsWithFaceFilter:objc_msgSend(criteriaCopy forAssets:{"faceFilter"), v28}];
+  if (![curationLoggingConnection count])
   {
-    v44 = [(PGCurationManager *)self curationLoggingConnection];
-    if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
+    curationLoggingConnection2 = [(PGCurationManager *)self curationLoggingConnection];
+    if (os_log_type_enabled(curationLoggingConnection2, OS_LOG_TYPE_INFO))
     {
-      v45 = [v30 count];
+      v45 = [curationLoggingConnection count];
       *buf = 134218240;
       *&buf[4] = v45;
       *&buf[12] = 2048;
       *&buf[14] = v57;
-      _os_log_impl(&dword_22F0FC000, v44, OS_LOG_TYPE_INFO, "Curated key asset with criteria: not enough matching assets (with faces) %ld/%ld. Fallback to normal curation", buf, 0x16u);
+      _os_log_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_INFO, "Curated key asset with criteria: not enough matching assets (with faces) %ld/%ld. Fallback to normal curation", buf, 0x16u);
     }
 
 LABEL_47:
@@ -696,7 +696,7 @@ LABEL_47:
   v73[1] = 3221225472;
   v73[2] = __62__PGCurationManager_bestAssetForAssetFeeder_options_criteria___block_invoke;
   v73[3] = &unk_2788842D8;
-  v33 = v64;
+  v33 = strongToStrongObjectsMapTable;
   v74 = v33;
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
@@ -704,7 +704,7 @@ LABEL_47:
   v72[3] = &unk_278884300;
   v72[4] = buf;
   v72[5] = v75;
-  [v32 calculateStandardDeviationForItems:v30 valueBlock:v73 result:v72];
+  [v32 calculateStandardDeviationForItems:curationLoggingConnection valueBlock:v73 result:v72];
   v34 = MEMORY[0x277CCAC30];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
@@ -714,16 +714,16 @@ LABEL_47:
   v70 = buf;
   v71 = v75;
   v35 = [v34 predicateWithBlock:v68];
-  v36 = [v30 filteredArrayUsingPredicate:v35];
+  v36 = [curationLoggingConnection filteredArrayUsingPredicate:v35];
 
   v37 = [v36 count];
   v38 = [obj count];
-  [v66 minimumAssetsRatio];
+  [criteriaCopy minimumAssetsRatio];
   if (v37 / v38 >= v39 && v37 >= 2)
   {
     v25 = v36;
-    v41 = [(PGCurationManager *)self curationLoggingConnection];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
+    curationLoggingConnection3 = [(PGCurationManager *)self curationLoggingConnection];
+    if (os_log_type_enabled(curationLoggingConnection3, OS_LOG_TYPE_INFO))
     {
       v46 = [v25 count];
       *v80 = 134218240;
@@ -735,11 +735,11 @@ LABEL_47:
     }
   }
 
-  else if ([(PGKeyAssetCurationOptions *)v60 useContextualCurationOnly])
+  else if ([(PGKeyAssetCurationOptions *)optionsCopy useContextualCurationOnly])
   {
     v25 = v36;
-    v41 = [(PGCurationManager *)self curationLoggingConnection];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
+    curationLoggingConnection3 = [(PGCurationManager *)self curationLoggingConnection];
+    if (os_log_type_enabled(curationLoggingConnection3, OS_LOG_TYPE_INFO))
     {
       v42 = [v25 count];
       *v80 = 134218240;
@@ -748,15 +748,15 @@ LABEL_47:
       v83 = v57;
       v43 = "Curated key asset with criteria: using weakly filtered assets %ld/%ld";
 LABEL_52:
-      _os_log_impl(&dword_22F0FC000, v41, OS_LOG_TYPE_INFO, v43, v80, 0x16u);
+      _os_log_impl(&dword_22F0FC000, curationLoggingConnection3, OS_LOG_TYPE_INFO, v43, v80, 0x16u);
     }
   }
 
   else
   {
-    v25 = v30;
-    v41 = [(PGCurationManager *)self curationLoggingConnection];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
+    v25 = curationLoggingConnection;
+    curationLoggingConnection3 = [(PGCurationManager *)self curationLoggingConnection];
+    if (os_log_type_enabled(curationLoggingConnection3, OS_LOG_TYPE_INFO))
     {
       v47 = [v25 count];
       *v80 = 134218240;
@@ -772,10 +772,10 @@ LABEL_52:
   _Block_object_dispose(buf, 8);
 LABEL_54:
 
-  if (!v60)
+  if (!optionsCopy)
   {
 LABEL_55:
-    v60 = objc_alloc_init(PGKeyAssetCurationOptions);
+    optionsCopy = objc_alloc_init(PGKeyAssetCurationOptions);
   }
 
 LABEL_56:
@@ -794,40 +794,40 @@ LABEL_56:
     }
   }
 
-  if (![(PGKeyAssetCurationOptions *)v60 useContextualCurationOnly])
+  if (![(PGKeyAssetCurationOptions *)optionsCopy useContextualCurationOnly])
   {
-    [(PGKeyAssetCurationOptions *)v60 setPrefilterAssetsWithFaces:1];
-    v49 = [(PGCurationManager *)self _extendedAssetsForCurationForAssets:v59 matchingAssetsRange:v17, v16 - v17];
+    [(PGKeyAssetCurationOptions *)optionsCopy setPrefilterAssetsWithFaces:1];
+    v49 = [(PGCurationManager *)self _extendedAssetsForCurationForAssets:allItems matchingAssetsRange:v17, v16 - v17];
     v50 = [v49 count];
     if (v50)
     {
-      v51 = [(PGCurationManager *)self curationLoggingConnection];
-      if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
+      curationLoggingConnection4 = [(PGCurationManager *)self curationLoggingConnection];
+      if (os_log_type_enabled(curationLoggingConnection4, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
         *&buf[4] = v50;
         *&buf[12] = 2048;
         *&buf[14] = v57;
-        _os_log_impl(&dword_22F0FC000, v51, OS_LOG_TYPE_INFO, "Curated key asset with criteria: using extended assets for curation %ld/%ld", buf, 0x16u);
+        _os_log_impl(&dword_22F0FC000, curationLoggingConnection4, OS_LOG_TYPE_INFO, "Curated key asset with criteria: using extended assets for curation %ld/%ld", buf, 0x16u);
       }
 
-      [(PGKeyAssetCurationOptions *)v60 setUseSummarizer:v48[2](v48, v50)];
-      v24 = [(PGCurationManager *)self bestAssetInAssets:v49 options:v60];
+      [(PGKeyAssetCurationOptions *)optionsCopy setUseSummarizer:v48[2](v48, v50)];
+      v24 = [(PGCurationManager *)self bestAssetInAssets:v49 options:optionsCopy];
       if (v24)
       {
         goto LABEL_68;
       }
 
-      v52 = [(PGCurationManager *)self curationLoggingConnection];
-      if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
+      curationLoggingConnection5 = [(PGCurationManager *)self curationLoggingConnection];
+      if (os_log_type_enabled(curationLoggingConnection5, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v52, OS_LOG_TYPE_ERROR, "Curated key asset with criteria: didn't find key asset in extended assets. Fallback to default.", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, curationLoggingConnection5, OS_LOG_TYPE_ERROR, "Curated key asset with criteria: didn't find key asset in extended assets. Fallback to default.", buf, 2u);
       }
     }
 
-    [(PGKeyAssetCurationOptions *)v60 setUseSummarizer:v48[2](v48, v57)];
-    v24 = [(PGCurationManager *)self bestAssetInAssets:v59 options:v60];
+    [(PGKeyAssetCurationOptions *)optionsCopy setUseSummarizer:v48[2](v48, v57)];
+    v24 = [(PGCurationManager *)self bestAssetInAssets:allItems options:optionsCopy];
 LABEL_68:
 
     goto LABEL_69;
@@ -872,14 +872,14 @@ BOOL __62__PGCurationManager_bestAssetForAssetFeeder_options_criteria___block_in
   return v5 >= *(*(*(a1 + 40) + 8) + 24) + *(*(*(a1 + 48) + 8) + 24) * 0.5;
 }
 
-- (id)bestAssetForAssetFeeder:(id)a3 options:(id)a4
+- (id)bestAssetForAssetFeeder:(id)feeder options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 numberOfItems])
+  feederCopy = feeder;
+  optionsCopy = options;
+  if ([feederCopy numberOfItems])
   {
-    v8 = [v6 allItems];
-    v9 = [(PGCurationManager *)self bestAssetInAssets:v8 options:v7];
+    allItems = [feederCopy allItems];
+    v9 = [(PGCurationManager *)self bestAssetInAssets:allItems options:optionsCopy];
   }
 
   else
@@ -890,19 +890,19 @@ BOOL __62__PGCurationManager_bestAssetForAssetFeeder_options_criteria___block_in
   return v9;
 }
 
-- (id)_bestAssetInSummarizedAssets:(id)a3 forReferencePersonLocalIdentifiers:(id)a4
+- (id)_bestAssetInSummarizedAssets:(id)assets forReferencePersonLocalIdentifiers:(id)identifiers
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
+  firstObject = [assetsCopy firstObject];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v7 clsPersonAndPetLocalIdentifiers];
-  v10 = [v8 setWithArray:v9];
+  clsPersonAndPetLocalIdentifiers = [firstObject clsPersonAndPetLocalIdentifiers];
+  v10 = [v8 setWithArray:clsPersonAndPetLocalIdentifiers];
 
-  v11 = [v6 mutableCopy];
+  v11 = [identifiersCopy mutableCopy];
   [v11 intersectSet:v10];
-  if ([v6 isSubsetOfSet:v10])
+  if ([identifiersCopy isSubsetOfSet:v10])
   {
     goto LABEL_14;
   }
@@ -912,14 +912,14 @@ BOOL __62__PGCurationManager_bestAssetForAssetFeeder_options_criteria___block_in
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v13 = v5;
+  v13 = assetsCopy;
   v14 = [v13 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v14)
   {
     v15 = v14;
     v33 = v10;
-    v34 = v5;
-    v36 = v7;
+    v34 = assetsCopy;
+    v36 = firstObject;
     v35 = 0;
     v16 = *v38;
     v17 = 0.0;
@@ -935,11 +935,11 @@ BOOL __62__PGCurationManager_bestAssetForAssetFeeder_options_criteria___block_in
         }
 
         v21 = *(*(&v37 + 1) + 8 * i);
-        v11 = [v6 mutableCopy];
+        v11 = [identifiersCopy mutableCopy];
 
         v22 = MEMORY[0x277CBEB98];
-        v23 = [v21 clsPersonAndPetLocalIdentifiers];
-        v24 = [v22 setWithArray:v23];
+        clsPersonAndPetLocalIdentifiers2 = [v21 clsPersonAndPetLocalIdentifiers];
+        v24 = [v22 setWithArray:clsPersonAndPetLocalIdentifiers2];
         [v11 intersectSet:v24];
 
         v25 = [v11 count];
@@ -968,18 +968,18 @@ BOOL __62__PGCurationManager_bestAssetForAssetFeeder_options_criteria___block_in
     if (v35)
     {
       v10 = v33;
-      v5 = v34;
-      v7 = v36;
+      assetsCopy = v34;
+      firstObject = v36;
 LABEL_14:
-      v7 = v7;
-      v30 = v7;
+      firstObject = firstObject;
+      v30 = firstObject;
       goto LABEL_17;
     }
 
     v30 = 0;
     v10 = v33;
-    v5 = v34;
-    v7 = v36;
+    assetsCopy = v34;
+    firstObject = v36;
   }
 
   else
@@ -995,13 +995,13 @@ LABEL_17:
   return v30;
 }
 
-- (id)_bestAssetsInAssets:(id)a3 forReferencePersonLocalIdentifiers:(id)a4 minimumRatioOfReferencePersonsPerAsset:(double)a5 progressBlock:(id)a6
+- (id)_bestAssetsInAssets:(id)assets forReferencePersonLocalIdentifiers:(id)identifiers minimumRatioOfReferencePersonsPerAsset:(double)asset progressBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
   v11 = 0.0;
-  v40 = _Block_copy(a6);
+  v40 = _Block_copy(block);
   if (v40)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -1029,14 +1029,14 @@ LABEL_17:
   }
 
   v38 = objc_opt_new();
-  v14 = [v10 count];
-  v15 = [v9 count];
+  v14 = [identifiersCopy count];
+  v15 = [assetsCopy count];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v36 = v9;
-  obj = v9;
+  v36 = assetsCopy;
+  obj = assetsCopy;
   v16 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v16)
   {
@@ -1079,7 +1079,7 @@ LABEL_17:
               }
 
               v13 = MEMORY[0x277CBEBF8];
-              v9 = v36;
+              assetsCopy = v36;
               v33 = v38;
               goto LABEL_45;
             }
@@ -1088,23 +1088,23 @@ LABEL_17:
           }
         }
 
-        v24 = [v22 clsPersonAndPetLocalIdentifiers];
-        v25 = [v24 count];
-        if (v25 * a5 <= v20)
+        clsPersonAndPetLocalIdentifiers = [v22 clsPersonAndPetLocalIdentifiers];
+        v25 = [clsPersonAndPetLocalIdentifiers count];
+        if (v25 * asset <= v20)
         {
           v26 = v20;
         }
 
         else
         {
-          v26 = v25 * a5;
+          v26 = v25 * asset;
         }
 
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v27 = v24;
+        v27 = clsPersonAndPetLocalIdentifiers;
         v28 = [v27 countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v28)
         {
@@ -1120,7 +1120,7 @@ LABEL_17:
                 objc_enumerationMutation(v27);
               }
 
-              if ([v10 containsObject:*(*(&v41 + 1) + 8 * j)])
+              if ([identifiersCopy containsObject:*(*(&v41 + 1) + 8 * j)])
               {
                 if (++v30 >= v26)
                 {
@@ -1157,7 +1157,7 @@ LABEL_33:
   v33 = v38;
   if (v40 && CFAbsoluteTimeGetCurrent() - v11 >= 0.01 && (v49 = 0, v40[2](v40, &v49, 1.0), v49))
   {
-    v9 = v36;
+    assetsCopy = v36;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
@@ -1173,7 +1173,7 @@ LABEL_33:
   else
   {
     v13 = v38;
-    v9 = v36;
+    assetsCopy = v36;
   }
 
 LABEL_45:
@@ -1184,18 +1184,18 @@ LABEL_46:
   return v13;
 }
 
-- (id)bestAssetInAssets:(id)a3 forReferencePersonLocalIdentifiers:(id)a4 requiredMinimumNumberOfReferencePersons:(unint64_t)a5 forMemories:(BOOL)a6 forSocialGroup:(BOOL)a7 allowGuestAsset:(BOOL)a8 wantsGoodSquareCropScore:(BOOL)a9
+- (id)bestAssetInAssets:(id)assets forReferencePersonLocalIdentifiers:(id)identifiers requiredMinimumNumberOfReferencePersons:(unint64_t)persons forMemories:(BOOL)memories forSocialGroup:(BOOL)group allowGuestAsset:(BOOL)asset wantsGoodSquareCropScore:(BOOL)score
 {
-  v78 = a6;
-  v79 = a8;
-  v70 = a7;
+  memoriesCopy = memories;
+  assetCopy = asset;
+  groupCopy = group;
   v126 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v68 = a4;
-  v66 = v10;
-  if (![v10 count])
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
+  v66 = assetsCopy;
+  if (![assetsCopy count])
   {
-    v47 = 0;
+    firstObject = 0;
     goto LABEL_53;
   }
 
@@ -1205,8 +1205,8 @@ LABEL_46:
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  obj = v10;
-  v80 = [obj countByEnumeratingWithState:&v120 objects:v125 count:{16, v10}];
+  obj = assetsCopy;
+  v80 = [obj countByEnumeratingWithState:&v120 objects:v125 count:{16, assetsCopy}];
   if (v80)
   {
     v69 = 0;
@@ -1225,10 +1225,10 @@ LABEL_46:
         }
 
         v15 = *(*(&v120 + 1) + 8 * i);
-        v16 = [v15 clsAvoidIfPossibleAsKeyItemForMemories:v78 allowGuestAsset:v79];
-        if ((!v70 | v16))
+        v16 = [v15 clsAvoidIfPossibleAsKeyItemForMemories:memoriesCopy allowGuestAsset:assetCopy];
+        if ((!groupCopy | v16))
         {
-          LODWORD(v17) = v70 | v16;
+          LODWORD(v17) = groupCopy | v16;
         }
 
         else
@@ -1243,7 +1243,7 @@ LABEL_46:
           goto LABEL_16;
         }
 
-        if (a9)
+        if (score)
         {
           v20 = v18 != 0;
           [v15 clsSquareCropScore];
@@ -1274,15 +1274,15 @@ LABEL_16:
           v72 = 0;
         }
 
-        v25 = [v15 curationModel];
-        v26 = [v25 faceModel];
-        v27 = [v26 qualityNode];
-        [v27 operatingPoint];
+        curationModel = [v15 curationModel];
+        faceModel = [curationModel faceModel];
+        qualityNode = [faceModel qualityNode];
+        [qualityNode operatingPoint];
         v29 = v28;
 
-        [v25 faceSizeUpperLimit];
+        [curationModel faceSizeUpperLimit];
         v31 = v30;
-        [v25 faceSizeLowerLimit];
+        [curationModel faceSizeLowerLimit];
         v33 = v32;
         v115 = 0;
         v116 = 0;
@@ -1296,9 +1296,9 @@ LABEL_16:
         v109 = &v108;
         v110 = 0x2020000000;
         v111 = 0;
-        v34 = [v15 clsFaceInformationSummary];
-        v35 = [v34 faceInformationByPersonLocalIdentifier];
-        v74 = v34;
+        clsFaceInformationSummary = [v15 clsFaceInformationSummary];
+        faceInformationByPersonLocalIdentifier = [clsFaceInformationSummary faceInformationByPersonLocalIdentifier];
+        v74 = clsFaceInformationSummary;
         v36 = objc_alloc_init(MEMORY[0x277CBEB58]);
         v104 = 0;
         v105 = &v104;
@@ -1308,7 +1308,7 @@ LABEL_16:
         v94[1] = 3221225472;
         v94[2] = __182__PGCurationManager_bestAssetInAssets_forReferencePersonLocalIdentifiers_requiredMinimumNumberOfReferencePersons_forMemories_forSocialGroup_allowGuestAsset_wantsGoodSquareCropScore___block_invoke;
         v94[3] = &unk_278884288;
-        v37 = v68;
+        v37 = identifiersCopy;
         v101 = v29;
         v102 = v31;
         v103 = v33;
@@ -1319,7 +1319,7 @@ LABEL_16:
         v100 = &v108;
         v38 = v36;
         v96 = v38;
-        [v35 enumerateKeysAndObjectsUsingBlock:v94];
+        [faceInformationByPersonLocalIdentifier enumerateKeysAndObjectsUsingBlock:v94];
         v39 = v105[3];
         v40 = v39 * 0.5;
         if (v39 * 0.5 >= v33)
@@ -1341,7 +1341,7 @@ LABEL_16:
         v86[1] = 3221225472;
         v86[2] = __182__PGCurationManager_bestAssetInAssets_forReferencePersonLocalIdentifiers_requiredMinimumNumberOfReferencePersons_forMemories_forSocialGroup_allowGuestAsset_wantsGoodSquareCropScore___block_invoke_2;
         v86[3] = &unk_2788842B0;
-        v42 = v35;
+        v42 = faceInformationByPersonLocalIdentifier;
         v90 = v29;
         v91 = v31;
         v92 = v33;
@@ -1354,7 +1354,7 @@ LABEL_16:
         v44 = v117[3];
         v45 = v113[3] + (v43 - v44) * -0.25;
         v113[3] = v45;
-        if (v44 >= a5)
+        if (v44 >= persons)
         {
           if (((v17 | ~v11) & (v75 | ~v76) & (v72 | ~v69) & 1) == 0)
           {
@@ -1393,7 +1393,7 @@ LABEL_16:
 
   if ([v81 count] <= 1)
   {
-    v47 = [v81 firstObject];
+    firstObject = [v81 firstObject];
     goto LABEL_52;
   }
 
@@ -1402,7 +1402,7 @@ LABEL_16:
   v82 = 0u;
   v83 = 0u;
   v48 = v81;
-  v47 = 0;
+  firstObject = 0;
   v49 = [v48 countByEnumeratingWithState:&v82 objects:v124 count:16];
   if (!v49)
   {
@@ -1424,16 +1424,16 @@ LABEL_16:
       }
 
       v56 = *(*(&v82 + 1) + 8 * j);
-      v57 = [v56 isFavorite];
+      isFavorite = [v56 isFavorite];
       v58 = [v73 objectAtIndexedSubscript:v51];
       [v58 doubleValue];
       v60 = v59;
 
       [v56 overallAestheticScore];
       v62 = v61;
-      if ((v50 ^ v57))
+      if ((v50 ^ isFavorite))
       {
-        if (v57)
+        if (isFavorite)
         {
           goto LABEL_48;
         }
@@ -1444,8 +1444,8 @@ LABEL_16:
 LABEL_48:
         v63 = v56;
 
-        v47 = v63;
-        v50 = v57;
+        firstObject = v63;
+        v50 = isFavorite;
         v53 = v60;
         v54 = v62;
       }
@@ -1464,7 +1464,7 @@ LABEL_53:
 
   v64 = *MEMORY[0x277D85DE8];
 
-  return v47;
+  return firstObject;
 }
 
 void __182__PGCurationManager_bestAssetInAssets_forReferencePersonLocalIdentifiers_requiredMinimumNumberOfReferencePersons_forMemories_forSocialGroup_allowGuestAsset_wantsGoodSquareCropScore___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1568,16 +1568,16 @@ void __182__PGCurationManager_bestAssetInAssets_forReferencePersonLocalIdentifie
   *(*(*(a1 + 48) + 8) + 24) = v7 * v13 + *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (id)bestAssetInAssets:(id)a3 options:(id)a4
+- (id)bestAssetInAssets:(id)assets options:(id)options
 {
   v85 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 referencePersonLocalIdentifiers];
-  v9 = v8;
-  if (v8)
+  assetsCopy = assets;
+  optionsCopy = options;
+  referencePersonLocalIdentifiers = [optionsCopy referencePersonLocalIdentifiers];
+  v9 = referencePersonLocalIdentifiers;
+  if (referencePersonLocalIdentifiers)
   {
-    v10 = [v8 count] != 0;
+    v10 = [referencePersonLocalIdentifiers count] != 0;
   }
 
   else
@@ -1585,51 +1585,51 @@ void __182__PGCurationManager_bestAssetInAssets_forReferencePersonLocalIdentifie
     v10 = 0;
   }
 
-  v11 = [v7 isForMemories];
-  v12 = [v7 allowGuestAsset];
+  isForMemories = [optionsCopy isForMemories];
+  allowGuestAsset = [optionsCopy allowGuestAsset];
   v13 = objc_autoreleasePoolPush();
-  if (!v10 || ![v7 focusOnPeople])
+  if (!v10 || ![optionsCopy focusOnPeople])
   {
     goto LABEL_12;
   }
 
-  v14 = [(PGCurationManager *)self bestAssetInAssets:v6 forReferencePersonLocalIdentifiers:v9 minimumNumberOfCommonPeople:1 forKeyAsset:1 forMemories:v11 allowGuestAsset:v12];
-  v15 = [(PGCurationManager *)self curationLoggingConnection];
-  v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-  if (!v14)
+  firstObject2 = [(PGCurationManager *)self bestAssetInAssets:assetsCopy forReferencePersonLocalIdentifiers:v9 minimumNumberOfCommonPeople:1 forKeyAsset:1 forMemories:isForMemories allowGuestAsset:allowGuestAsset];
+  curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+  v16 = os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_INFO);
+  if (!firstObject2)
   {
     if (v16)
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "Curated key asset: didn't find key asset with reference people and focus on people.", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_INFO, "Curated key asset: didn't find key asset with reference people and focus on people.", buf, 2u);
     }
 
 LABEL_12:
     v73 = v9;
-    if ([v7 prefilterAssetsWithFaces])
+    if ([optionsCopy prefilterAssetsWithFaces])
     {
-      v17 = [objc_opt_class() _filteredAssetsWithFaceFilter:1 forAssets:v6];
+      v17 = [objc_opt_class() _filteredAssetsWithFaceFilter:1 forAssets:assetsCopy];
       v18 = [v17 count];
-      v19 = v18 / [v6 count];
-      [v7 prefilterAssetsWithFacesThreshold];
+      v19 = v18 / [assetsCopy count];
+      [optionsCopy prefilterAssetsWithFacesThreshold];
       v21 = v20;
-      v22 = [(PGCurationManager *)self curationLoggingConnection];
-      v23 = os_log_type_enabled(v22, OS_LOG_TYPE_INFO);
+      curationLoggingConnection2 = [(PGCurationManager *)self curationLoggingConnection];
+      v23 = os_log_type_enabled(curationLoggingConnection2, OS_LOG_TYPE_INFO);
       if (v19 >= v21)
       {
         if (v23)
         {
-          v55 = v7;
-          v56 = self;
+          v55 = optionsCopy;
+          selfCopy = self;
           v57 = [v17 count];
-          v58 = [v6 count];
+          v58 = [assetsCopy count];
           *buf = 134218240;
           v82 = v57;
-          self = v56;
-          v7 = v55;
+          self = selfCopy;
+          optionsCopy = v55;
           v83 = 2048;
           v84 = v58;
-          _os_log_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_INFO, "Curated key asset: prefiltered assets with faces %ld/%ld.", buf, 0x16u);
+          _os_log_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_INFO, "Curated key asset: prefiltered assets with faces %ld/%ld.", buf, 0x16u);
         }
 
         v28 = 0;
@@ -1639,13 +1639,13 @@ LABEL_12:
 LABEL_19:
           v30 = v17;
           v74 = v30;
-          v75 = v6;
-          v71 = v7;
+          v75 = assetsCopy;
+          v71 = optionsCopy;
           v72 = v13;
           v70 = __PAIR64__(v10, v29);
-          if ([v7 useSummarizer])
+          if ([optionsCopy useSummarizer])
           {
-            if ([v7 complete])
+            if ([optionsCopy complete])
             {
               v31 = 4;
             }
@@ -1655,54 +1655,54 @@ LABEL_19:
               v31 = 2;
             }
 
-            v32 = [objc_opt_class() summaryClusteringForDuration:v31];
-            v33 = [v32 performWithItems:v30 identifiersOfEligibleItems:0 maximumNumberOfItemsToElect:1 progressBlock:0];
-            v34 = v30;
+            curationLoggingConnection4 = [objc_opt_class() summaryClusteringForDuration:v31];
+            v33 = [curationLoggingConnection4 performWithItems:v30 identifiersOfEligibleItems:0 maximumNumberOfItemsToElect:1 progressBlock:0];
+            objects = v30;
             if ([v33 count])
             {
               v35 = v30;
-              v36 = [v33 firstObject];
-              v37 = [v36 cluster];
-              v34 = [v37 objects];
+              firstObject = [v33 firstObject];
+              cluster = [firstObject cluster];
+              objects = [cluster objects];
             }
 
-            v38 = [(PGCurationManager *)self curationLoggingConnection];
-            if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
+            curationLoggingConnection3 = [(PGCurationManager *)self curationLoggingConnection];
+            if (os_log_type_enabled(curationLoggingConnection3, OS_LOG_TYPE_INFO))
             {
-              v39 = [v34 count];
+              v39 = [objects count];
               v40 = [v74 count];
               *buf = 134218240;
               v82 = v39;
               v83 = 2048;
               v84 = v40;
-              _os_log_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_INFO, "Curated key asset: summarizer elected %ld/%ld assets.", buf, 0x16u);
+              _os_log_impl(&dword_22F0FC000, curationLoggingConnection3, OS_LOG_TYPE_INFO, "Curated key asset: summarizer elected %ld/%ld assets.", buf, 0x16u);
             }
 
-            v41 = self;
+            selfCopy3 = self;
           }
 
           else
           {
-            v32 = [(PGCurationManager *)self curationLoggingConnection];
-            v41 = self;
-            if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+            curationLoggingConnection4 = [(PGCurationManager *)self curationLoggingConnection];
+            selfCopy3 = self;
+            if (os_log_type_enabled(curationLoggingConnection4, OS_LOG_TYPE_INFO))
             {
               v42 = [v30 count];
               *buf = 134217984;
               v82 = v42;
-              _os_log_impl(&dword_22F0FC000, v32, OS_LOG_TYPE_INFO, "Curated key asset: not using summarizer. %ld assets remaining.", buf, 0xCu);
+              _os_log_impl(&dword_22F0FC000, curationLoggingConnection4, OS_LOG_TYPE_INFO, "Curated key asset: not using summarizer. %ld assets remaining.", buf, 0xCu);
             }
 
-            v34 = v30;
+            objects = v30;
           }
 
-          v43 = [MEMORY[0x277CBEB18] array];
-          v44 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           v76 = 0u;
           v77 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v45 = v34;
+          v45 = objects;
           v46 = [v45 countByEnumeratingWithState:&v76 objects:v80 count:16];
           if (v46)
           {
@@ -1718,14 +1718,14 @@ LABEL_19:
                 }
 
                 v50 = *(*(&v76 + 1) + 8 * i);
-                if ([v50 clsAvoidIfPossibleAsKeyItemForMemories:v11 allowGuestAsset:{v12, v70}])
+                if ([v50 clsAvoidIfPossibleAsKeyItemForMemories:isForMemories allowGuestAsset:{allowGuestAsset, v70}])
                 {
-                  v51 = v44;
+                  v51 = array2;
                 }
 
                 else
                 {
-                  v51 = v43;
+                  v51 = array;
                 }
 
                 [v51 addObject:v50];
@@ -1737,38 +1737,38 @@ LABEL_19:
             while (v47);
           }
 
-          v52 = v41;
-          v7 = v71;
+          v52 = selfCopy3;
+          optionsCopy = v71;
           if (HIDWORD(v70))
           {
             v9 = v73;
-            v53 = [(PGCurationManager *)v52 _bestAssetInSummarizedAssets:v43 forReferencePersonLocalIdentifiers:v73];
+            v53 = [(PGCurationManager *)v52 _bestAssetInSummarizedAssets:array forReferencePersonLocalIdentifiers:v73];
             if (v53)
             {
-              v14 = v53;
-              v54 = [(PGCurationManager *)v52 curationLoggingConnection];
-              if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
+              firstObject2 = v53;
+              curationLoggingConnection5 = [(PGCurationManager *)v52 curationLoggingConnection];
+              if (os_log_type_enabled(curationLoggingConnection5, OS_LOG_TYPE_INFO))
               {
                 *buf = 0;
-                _os_log_impl(&dword_22F0FC000, v54, OS_LOG_TYPE_INFO, "Curated key asset: found key asset with reference people in non video assets.", buf, 2u);
+                _os_log_impl(&dword_22F0FC000, curationLoggingConnection5, OS_LOG_TYPE_INFO, "Curated key asset: found key asset with reference people in non video assets.", buf, 2u);
               }
 
 LABEL_70:
-              v15 = v74;
-              v6 = v75;
+              curationLoggingConnection = v74;
+              assetsCopy = v75;
               v13 = v72;
               goto LABEL_71;
             }
 
-            v14 = [(PGCurationManager *)v52 _bestAssetInSummarizedAssets:v44 forReferencePersonLocalIdentifiers:v73];
-            v59 = [(PGCurationManager *)v52 curationLoggingConnection];
-            v60 = os_log_type_enabled(v59, OS_LOG_TYPE_INFO);
-            if (v14)
+            firstObject2 = [(PGCurationManager *)v52 _bestAssetInSummarizedAssets:array2 forReferencePersonLocalIdentifiers:v73];
+            curationLoggingConnection6 = [(PGCurationManager *)v52 curationLoggingConnection];
+            v60 = os_log_type_enabled(curationLoggingConnection6, OS_LOG_TYPE_INFO);
+            if (firstObject2)
             {
               if (v60)
               {
                 *buf = 0;
-                _os_log_impl(&dword_22F0FC000, v59, OS_LOG_TYPE_INFO, "Curated key asset: found key asset with reference people in video assets.", buf, 2u);
+                _os_log_impl(&dword_22F0FC000, curationLoggingConnection6, OS_LOG_TYPE_INFO, "Curated key asset: found key asset with reference people in video assets.", buf, 2u);
               }
 
               goto LABEL_70;
@@ -1777,21 +1777,21 @@ LABEL_70:
             if (v60)
             {
               *buf = 0;
-              _os_log_impl(&dword_22F0FC000, v59, OS_LOG_TYPE_INFO, "Curated key asset: didn't find common people. fallback to basic curation.", buf, 2u);
+              _os_log_impl(&dword_22F0FC000, curationLoggingConnection6, OS_LOG_TYPE_INFO, "Curated key asset: didn't find common people. fallback to basic curation.", buf, 2u);
             }
           }
 
-          v61 = [objc_opt_class() assetsBeautifier];
-          v62 = [v61 performWithItems:v43 maximumNumberOfItemsToChoose:1 progressBlock:0];
+          assetsBeautifier = [objc_opt_class() assetsBeautifier];
+          v62 = [assetsBeautifier performWithItems:array maximumNumberOfItemsToChoose:1 progressBlock:0];
           v63 = [v62 count];
-          v64 = [(PGCurationManager *)v52 curationLoggingConnection];
-          v65 = os_log_type_enabled(v64, OS_LOG_TYPE_INFO);
+          curationLoggingConnection7 = [(PGCurationManager *)v52 curationLoggingConnection];
+          v65 = os_log_type_enabled(curationLoggingConnection7, OS_LOG_TYPE_INFO);
           if (v63)
           {
             if (v65)
             {
               *buf = 0;
-              _os_log_impl(&dword_22F0FC000, v64, OS_LOG_TYPE_INFO, "Curated key asset: found key asset in non video assets.", buf, 2u);
+              _os_log_impl(&dword_22F0FC000, curationLoggingConnection7, OS_LOG_TYPE_INFO, "Curated key asset: found key asset in non video assets.", buf, 2u);
             }
           }
 
@@ -1800,18 +1800,18 @@ LABEL_70:
             if (v65)
             {
               *buf = 0;
-              _os_log_impl(&dword_22F0FC000, v64, OS_LOG_TYPE_INFO, "Curated key asset: didn't find key asset w/o videos. Trying to find asset in video assets.", buf, 2u);
+              _os_log_impl(&dword_22F0FC000, curationLoggingConnection7, OS_LOG_TYPE_INFO, "Curated key asset: didn't find key asset w/o videos. Trying to find asset in video assets.", buf, 2u);
             }
 
-            [v61 performWithItems:v44 maximumNumberOfItemsToChoose:1 progressBlock:0];
-            v62 = v64 = v62;
+            [assetsBeautifier performWithItems:array2 maximumNumberOfItemsToChoose:1 progressBlock:0];
+            v62 = curationLoggingConnection7 = v62;
           }
 
           v9 = v73;
 
-          v14 = [v62 firstObject];
+          firstObject2 = [v62 firstObject];
 
-          if (v14)
+          if (firstObject2)
           {
             v66 = 1;
           }
@@ -1823,39 +1823,39 @@ LABEL_70:
 
           if ((v66 & 1) == 0)
           {
-            v67 = [(PGCurationManager *)v52 curationLoggingConnection];
-            if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
+            curationLoggingConnection8 = [(PGCurationManager *)v52 curationLoggingConnection];
+            if (os_log_type_enabled(curationLoggingConnection8, OS_LOG_TYPE_INFO))
             {
               *buf = 0;
-              _os_log_impl(&dword_22F0FC000, v67, OS_LOG_TYPE_INFO, "Curated key asset: no key asset found when using pre-filtering. Trying again w/o prefiltering.", buf, 2u);
+              _os_log_impl(&dword_22F0FC000, curationLoggingConnection8, OS_LOG_TYPE_INFO, "Curated key asset: no key asset found when using pre-filtering. Trying again w/o prefiltering.", buf, 2u);
             }
 
             [v71 setPrefilterAssetsWithFaces:0];
-            v14 = [(PGCurationManager *)v52 bestAssetInAssets:v75 options:v71];
+            firstObject2 = [(PGCurationManager *)v52 bestAssetInAssets:v75 options:v71];
           }
 
           goto LABEL_70;
         }
 
 LABEL_18:
-        v17 = v6;
+        v17 = assetsCopy;
         v29 = v28;
         goto LABEL_19;
       }
 
       if (v23)
       {
-        v24 = v7;
-        v25 = self;
+        v24 = optionsCopy;
+        selfCopy4 = self;
         v26 = [v17 count];
-        v27 = [v6 count];
+        v27 = [assetsCopy count];
         *buf = 134218240;
         v82 = v26;
-        self = v25;
-        v7 = v24;
+        self = selfCopy4;
+        optionsCopy = v24;
         v83 = 2048;
         v84 = v27;
-        _os_log_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_INFO, "Curated key asset: not using prefiltered assets with faces (%ld/%ld).", buf, 0x16u);
+        _os_log_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_INFO, "Curated key asset: not using prefiltered assets with faces (%ld/%ld).", buf, 0x16u);
       }
     }
 
@@ -1866,7 +1866,7 @@ LABEL_18:
   if (v16)
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "Curated key asset: found key asset with reference people and focus on people.", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_INFO, "Curated key asset: found key asset with reference people and focus on people.", buf, 2u);
   }
 
 LABEL_71:
@@ -1874,32 +1874,32 @@ LABEL_71:
   objc_autoreleasePoolPop(v13);
   v68 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject2;
 }
 
-- (double)contentScoreForAssetFeeder:(id)a3
+- (double)contentScoreForAssetFeeder:(id)feeder
 {
-  v3 = a3;
+  feederCopy = feeder;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_opt_class();
-  v6 = [v3 allItems];
-  [v5 contentScoreForAssets:v6];
+  allItems = [feederCopy allItems];
+  [v5 contentScoreForAssets:allItems];
   v8 = v7;
 
   objc_autoreleasePoolPop(v4);
   return v8;
 }
 
-- (BOOL)isAssetFeederInteresting:(id)a3 withAlternateJunking:(BOOL)a4 smart:(BOOL)a5
+- (BOOL)isAssetFeederInteresting:(id)interesting withAlternateJunking:(BOOL)junking smart:(BOOL)smart
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 assetCollection];
-  if ([v7 numberOfItems])
+  interestingCopy = interesting;
+  assetCollection = [interestingCopy assetCollection];
+  if ([interestingCopy numberOfItems])
   {
-    v9 = [v7 allItems];
-    v10 = v9;
-    if (!a5)
+    allItems = [interestingCopy allItems];
+    v10 = allItems;
+    if (!smart)
     {
       v17 = +[PGUserDefaults minimumNumberOfCuratedAssetsForInterestingMoments];
       if (v17)
@@ -1916,17 +1916,17 @@ LABEL_71:
       goto LABEL_13;
     }
 
-    v11 = [v9 count];
+    v11 = [allItems count];
     [MEMORY[0x277D277C0] maximumScoreForItems:v10];
     v13 = v12;
-    [(PGCurationManager *)self contentScoreForAssetFeeder:v7];
+    [(PGCurationManager *)self contentScoreForAssetFeeder:interestingCopy];
     v15 = v14;
     if (v14 < (*MEMORY[0x277D3C778] + *MEMORY[0x277D3C768]) * 0.5)
     {
       goto LABEL_4;
     }
 
-    if (v13 > *MEMORY[0x277D3C760] || ([v7 hasBestScoringAssets] & 1) != 0)
+    if (v13 > *MEMORY[0x277D3C760] || ([interestingCopy hasBestScoringAssets] & 1) != 0)
     {
 LABEL_12:
       v16 = 1;
@@ -1940,14 +1940,14 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v21 = [v8 cls_universalEndDate];
-      v22 = [v8 cls_universalStartDate];
-      [v21 timeIntervalSinceDate:v22];
+      cls_universalEndDate = [assetCollection cls_universalEndDate];
+      cls_universalStartDate = [assetCollection cls_universalStartDate];
+      [cls_universalEndDate timeIntervalSinceDate:cls_universalStartDate];
       v24 = v23;
 
       if (v24 >= 60.0)
       {
-        if (v11 > 6 || [v7 hasPeople])
+        if (v11 > 6 || [interestingCopy hasPeople])
         {
           v54 = v11;
           v26 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:&__block_literal_global_329];
@@ -1974,24 +1974,24 @@ LABEL_12:
 
                 v28 = *(*(&v65 + 1) + 8 * i);
                 context = objc_autoreleasePoolPush();
-                v29 = [v28 objects];
-                v30 = [v29 firstObject];
+                objects = [v28 objects];
+                firstObject = [objects firstObject];
 
-                v31 = [v30 creationDate];
-                [v31 timeIntervalSince1970];
+                creationDate = [firstObject creationDate];
+                [creationDate timeIntervalSince1970];
                 v33 = v32;
 
-                v59 = v30;
-                v34 = [v30 creationDate];
-                [v34 timeIntervalSince1970];
+                v59 = firstObject;
+                creationDate2 = [firstObject creationDate];
+                [creationDate2 timeIntervalSince1970];
                 v36 = v35;
 
                 v63 = 0u;
                 v64 = 0u;
                 v61 = 0u;
                 v62 = 0u;
-                v37 = [v28 objects];
-                v38 = [v37 countByEnumeratingWithState:&v61 objects:v75 count:16];
+                objects2 = [v28 objects];
+                v38 = [objects2 countByEnumeratingWithState:&v61 objects:v75 count:16];
                 if (v38)
                 {
                   v39 = v38;
@@ -2002,11 +2002,11 @@ LABEL_12:
                     {
                       if (*v62 != v40)
                       {
-                        objc_enumerationMutation(v37);
+                        objc_enumerationMutation(objects2);
                       }
 
-                      v42 = [*(*(&v61 + 1) + 8 * j) creationDate];
-                      [v42 timeIntervalSince1970];
+                      creationDate3 = [*(*(&v61 + 1) + 8 * j) creationDate];
+                      [creationDate3 timeIntervalSince1970];
                       v44 = v43;
 
                       if (v44 < v33)
@@ -2020,7 +2020,7 @@ LABEL_12:
                       }
                     }
 
-                    v39 = [v37 countByEnumeratingWithState:&v61 objects:v75 count:16];
+                    v39 = [objects2 countByEnumeratingWithState:&v61 objects:v75 count:16];
                   }
 
                   while (v39);
@@ -2045,7 +2045,7 @@ LABEL_12:
                     v48 = 4;
                   }
 
-                  else if ([v7 hasPeople])
+                  else if ([interestingCopy hasPeople])
                   {
                     v48 = 2;
                   }
@@ -2056,7 +2056,7 @@ LABEL_12:
                   }
 
                   v47 = v55;
-                  v46 = [objc_opt_class() assetsBeautifier];
+                  assetsBeautifier = [objc_opt_class() assetsBeautifier];
                   v49 = [objc_opt_class() maximumNumberOfItemsForDuration:2 withTotalNumberOfItems:v54];
                   if (v49 >= v54)
                   {
@@ -2068,7 +2068,7 @@ LABEL_12:
                     v50 = v49;
                   }
 
-                  v51 = [v46 performWithItems:v10 maximumNumberOfItemsToChoose:v50 progressBlock:0];
+                  v51 = [assetsBeautifier performWithItems:v10 maximumNumberOfItemsToChoose:v50 progressBlock:0];
                   if ([v51 count] >= v48 && v50 * 0.3 <= objc_msgSend(v51, "count"))
                   {
                     v16 = 1;
@@ -2076,8 +2076,8 @@ LABEL_12:
 
                   else
                   {
-                    v52 = [(PGCurationManager *)self curationLoggingConnection];
-                    if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
+                    curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+                    if (os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_DEBUG))
                     {
                       v53 = [v51 count];
                       *buf = 134218498;
@@ -2085,8 +2085,8 @@ LABEL_12:
                       v71 = 2048;
                       v72 = v50;
                       v73 = 2112;
-                      v74 = v8;
-                      _os_log_debug_impl(&dword_22F0FC000, v52, OS_LOG_TYPE_DEBUG, "AssetCollection is not interesting: Not enough best assets from beautifier (%ld/%ld) for assetCollection %@", buf, 0x20u);
+                      v74 = assetCollection;
+                      _os_log_debug_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_DEBUG, "AssetCollection is not interesting: Not enough best assets from beautifier (%ld/%ld) for assetCollection %@", buf, 0x20u);
                     }
 
                     v16 = 0;
@@ -2106,12 +2106,12 @@ LABEL_12:
             }
           }
 
-          v46 = [(PGCurationManager *)self curationLoggingConnection];
-          if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
+          assetsBeautifier = [(PGCurationManager *)self curationLoggingConnection];
+          if (os_log_type_enabled(assetsBeautifier, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v70 = v8;
-            _os_log_debug_impl(&dword_22F0FC000, v46, OS_LOG_TYPE_DEBUG, "AssetCollection is not interesting: %@ sub-segments are too short", buf, 0xCu);
+            v70 = assetCollection;
+            _os_log_debug_impl(&dword_22F0FC000, assetsBeautifier, OS_LOG_TYPE_DEBUG, "AssetCollection is not interesting: %@ sub-segments are too short", buf, 0xCu);
           }
 
           v16 = 0;
@@ -2124,12 +2124,12 @@ LABEL_63:
 
       else
       {
-        v25 = [(PGCurationManager *)self curationLoggingConnection];
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+        curationLoggingConnection2 = [(PGCurationManager *)self curationLoggingConnection];
+        if (os_log_type_enabled(curationLoggingConnection2, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v70 = v8;
-          _os_log_debug_impl(&dword_22F0FC000, v25, OS_LOG_TYPE_DEBUG, "AssetCollection is not interesting: %@ is too short", buf, 0xCu);
+          v70 = assetCollection;
+          _os_log_debug_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_DEBUG, "AssetCollection is not interesting: %@ is too short", buf, 0xCu);
         }
       }
     }
@@ -2160,52 +2160,52 @@ double __73__PGCurationManager_isAssetFeederInteresting_withAlternateJunking_sma
   return v8;
 }
 
-- (void)invalidateCurationCacheForMomentUUIDs:(id)a3
+- (void)invalidateCurationCacheForMomentUUIDs:(id)ds
 {
   cache = self->_cache;
-  v4 = [a3 allObjects];
-  [(PGCurationCache *)cache invalidateCacheForMomentUUIDs:v4];
+  allObjects = [ds allObjects];
+  [(PGCurationCache *)cache invalidateCacheForMomentUUIDs:allObjects];
 }
 
-- (unint64_t)optimalDurationForAssetCollection:(id)a3 duration:(unint64_t)a4 options:(id)a5 curationContext:(id)a6
+- (unint64_t)optimalDurationForAssetCollection:(id)collection duration:(unint64_t)duration options:(id)options curationContext:(id)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 assetCollectionType];
-  if (v13 == 1)
+  collectionCopy = collection;
+  optionsCopy = options;
+  contextCopy = context;
+  assetCollectionType = [collectionCopy assetCollectionType];
+  if (assetCollectionType == 1)
   {
     goto LABEL_12;
   }
 
-  v14 = v13;
-  if (v13 == 2 && [v10 assetCollectionSubtype] != 200)
+  v14 = assetCollectionType;
+  if (assetCollectionType == 2 && [collectionCopy assetCollectionSubtype] != 200)
   {
     goto LABEL_12;
   }
 
-  if (v11)
+  if (optionsCopy)
   {
-    v15 = [v11 objectForKeyedSubscript:@"PHPhotosGraphOptionIsCompleteMoments"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"PHPhotosGraphOptionIsCompleteMoments"];
     v16 = v15;
     if (v15 && ([v15 BOOLValue] & 1) == 0)
     {
 
 LABEL_12:
-      v18 = 5;
-      if (a4 != 3)
+      durationCopy = 5;
+      if (duration != 3)
       {
-        v18 = a4;
+        durationCopy = duration;
       }
 
-      if (a4 == 2)
+      if (duration == 2)
       {
-        a4 = 4;
+        duration = 4;
       }
 
       else
       {
-        a4 = v18;
+        duration = durationCopy;
       }
 
       goto LABEL_17;
@@ -2217,13 +2217,13 @@ LABEL_12:
     v16 = 0;
   }
 
-  if (v14 != 3 && [v10 estimatedAssetCount] > 0x64)
+  if (v14 != 3 && [collectionCopy estimatedAssetCount] > 0x64)
   {
 
     goto LABEL_17;
   }
 
-  v17 = [(PGCurationManager *)self isAssetCollectionInteresting:v10 curationContext:v12];
+  v17 = [(PGCurationManager *)self isAssetCollectionInteresting:collectionCopy curationContext:contextCopy];
 
   if (!v17)
   {
@@ -2232,22 +2232,22 @@ LABEL_12:
 
 LABEL_17:
 
-  return a4;
+  return duration;
 }
 
-- (id)memoryCuratedAssetsForAssets:(id)a3 duration:(unint64_t)a4 withContextualAssetLocalIdentifiers:(id)a5 minimumProportion:(double)a6 graph:(id)a7 curationContext:(id)a8 progressBlock:(id)a9
+- (id)memoryCuratedAssetsForAssets:(id)assets duration:(unint64_t)duration withContextualAssetLocalIdentifiers:(id)identifiers minimumProportion:(double)proportion graph:(id)graph curationContext:(id)context progressBlock:(id)block
 {
   v162 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v107 = v16;
-  v104 = v18;
-  v105 = v19;
-  v106 = v20;
-  if (![v16 count])
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
+  contextCopy = context;
+  blockCopy = block;
+  v107 = assetsCopy;
+  v104 = graphCopy;
+  v105 = contextCopy;
+  v106 = blockCopy;
+  if (![assetsCopy count])
   {
     v23 = 0;
     goto LABEL_111;
@@ -2261,7 +2261,7 @@ LABEL_17:
   v149 = &v148;
   v150 = 0x2020000000;
   v151 = 0;
-  v117 = _Block_copy(v20);
+  v117 = _Block_copy(blockCopy);
   if (v117)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -2289,9 +2289,9 @@ LABEL_17:
     }
   }
 
-  v24 = [(PGCurationManager *)self curationLoggingConnection];
-  v25 = os_signpost_id_generate(v24);
-  v26 = v24;
+  curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+  v25 = os_signpost_id_generate(curationLoggingConnection);
+  v26 = curationLoggingConnection;
   v27 = v26;
   spid = v25;
   v95 = v25 - 1;
@@ -2306,7 +2306,7 @@ LABEL_17:
   info = 0;
   mach_timebase_info(&info);
   v28 = mach_absolute_time();
-  v103 = [v16 fetchedObjects];
+  fetchedObjects = [assetsCopy fetchedObjects];
   if (v117)
   {
     v29 = CFAbsoluteTimeGetCurrent();
@@ -2335,8 +2335,8 @@ LABEL_17:
   }
 
   v94 = v28;
-  v31 = +[PGCurationManager maximumNumberOfItemsForDuration:withTotalNumberOfItems:](PGCurationManager, "maximumNumberOfItemsForDuration:withTotalNumberOfItems:", a4, [v103 count]);
-  v96 = [PGCurationManager minimumNumberOfItemsForDuration:a4 withMaximumNumberOfItems:v31];
+  v31 = +[PGCurationManager maximumNumberOfItemsForDuration:withTotalNumberOfItems:](PGCurationManager, "maximumNumberOfItemsForDuration:withTotalNumberOfItems:", duration, [fetchedObjects count]);
+  v96 = [PGCurationManager minimumNumberOfItemsForDuration:duration withMaximumNumberOfItems:v31];
   v99 = v31;
   v102 = [MEMORY[0x277CBEB18] arrayWithCapacity:v31];
   v108 = +[PGCurationManager assetsBeautifier];
@@ -2352,7 +2352,7 @@ LABEL_17:
   v145 = 0x3F847AE147AE147BLL;
   v144 = &v152;
   v98 = v32;
-  v101 = [v32 performWithDataset:v103 progressBlock:v141];
+  v101 = [v32 performWithDataset:fetchedObjects progressBlock:v141];
   if (*(v153 + 24) == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2368,8 +2368,8 @@ LABEL_17:
     goto LABEL_108;
   }
 
-  v113 = [MEMORY[0x277CBEB18] array];
-  v112 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v139 = 0u;
   v140 = 0u;
   v137 = 0u;
@@ -2416,14 +2416,14 @@ LABEL_17:
           }
         }
 
-        v37 = [v34 objects];
-        v38 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v37, "count")}];
-        v39 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v37, "count")}];
+        objects = [v34 objects];
+        v38 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(objects, "count")}];
+        v39 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(objects, "count")}];
         v135 = 0u;
         v136 = 0u;
         v133 = 0u;
         v134 = 0u;
-        v40 = v37;
+        v40 = objects;
         v41 = [v40 countByEnumeratingWithState:&v133 objects:v160 count:16];
         if (v41)
         {
@@ -2441,8 +2441,8 @@ LABEL_17:
               [v44 clsContentScore];
               if (v45 > v33)
               {
-                v46 = [v44 localIdentifier];
-                v47 = [v17 containsObject:v46];
+                localIdentifier = [v44 localIdentifier];
+                v47 = [identifiersCopy containsObject:localIdentifier];
 
                 if (v47)
                 {
@@ -2466,8 +2466,8 @@ LABEL_17:
 
         if ([v38 count])
         {
-          [v112 addObject:v38];
-          [v113 addObject:v39];
+          [array2 addObject:v38];
+          [array addObject:v39];
         }
       }
 
@@ -2505,8 +2505,8 @@ LABEL_54:
     }
   }
 
-  [v113 sortUsingComparator:&__block_literal_global_316];
-  v115 = [MEMORY[0x277CBEB18] array];
+  [array sortUsingComparator:&__block_literal_global_316];
+  array3 = [MEMORY[0x277CBEB18] array];
   v51 = 0;
   v93 = 0;
   v52 = 0;
@@ -2516,7 +2516,7 @@ LABEL_54:
     v132 = 0u;
     v129 = 0u;
     v130 = 0u;
-    obja = v112;
+    obja = array2;
     v53 = [obja countByEnumeratingWithState:&v129 objects:v159 count:16];
     v54 = v93;
     if (!v53)
@@ -2588,17 +2588,17 @@ LABEL_104:
           goto LABEL_105;
         }
 
-        v62 = [v60 firstObject];
-        if (v62)
+        firstObject = [v60 firstObject];
+        if (firstObject)
         {
-          [v102 addObject:v62];
-          [v57 removeObject:v62];
+          [v102 addObject:firstObject];
+          [v57 removeObject:firstObject];
           ++v54;
         }
 
         else
         {
-          [v115 addObject:v57];
+          [array3 addObject:v57];
         }
 
         if (v54 >= v99 - v92)
@@ -2618,9 +2618,9 @@ LABEL_104:
 
 LABEL_72:
 
-    [obja removeObjectsInArray:v115];
-    [v115 removeAllObjects];
-    v63 = vcvtmd_u64_f64(v54 / a6 - v54);
+    [obja removeObjectsInArray:array3];
+    [array3 removeAllObjects];
+    v63 = vcvtmd_u64_f64(v54 / proportion - v54);
     if (v99 - v54 >= v63)
     {
       v64 = v63;
@@ -2631,11 +2631,11 @@ LABEL_72:
       v64 = v99 - v54;
     }
 
-    v65 = [v113 count];
+    v65 = [array count];
     v51 = v92;
     while (v52 < v65 && v51 < v64)
     {
-      v66 = [v113 objectAtIndexedSubscript:v52];
+      v66 = [array objectAtIndexedSubscript:v52];
       v119[0] = MEMORY[0x277D85DD0];
       v119[1] = 3221225472;
       v119[2] = __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withContextualAssetLocalIdentifiers_minimumProportion_graph_curationContext_progressBlock___block_invoke_318;
@@ -2645,7 +2645,7 @@ LABEL_72:
       v123 = 0x3F847AE147AE147BLL;
       v122 = &v152;
       v67 = [v108 performWithItems:v66 maximumNumberOfItemsToChoose:1 progressBlock:v119];
-      v68 = [v67 firstObject];
+      firstObject2 = [v67 firstObject];
 
       v69 = *(v153 + 24);
       if (v69 == 1)
@@ -2663,16 +2663,16 @@ LABEL_72:
 
       else
       {
-        if (v68)
+        if (firstObject2)
         {
-          [v102 addObject:v68];
-          [v66 removeObject:v68];
+          [v102 addObject:firstObject2];
+          [v66 removeObject:firstObject2];
           ++v51;
         }
 
         else
         {
-          [v115 addObject:v66];
+          [array3 addObject:v66];
         }
 
         ++v52;
@@ -2689,8 +2689,8 @@ LABEL_72:
       v52 = 0;
     }
 
-    [v113 removeObjectsInArray:v115];
-    [v115 removeAllObjects];
+    [array removeObjectsInArray:array3];
+    [array3 removeAllObjects];
     v71 = v54 == v93;
     v93 = v54;
     if (v71)
@@ -2705,7 +2705,7 @@ LABEL_72:
 
   if (v117 && (v72 = CFAbsoluteTimeGetCurrent(), v72 - v149[3] >= 0.01) && (v149[3] = v72, v146 = 0, v111[2](v111, &v146, 0.5), v73 = *(v153 + 24) | v146, *(v153 + 24) = v73, (v73 & 1) != 0))
   {
-    v74 = v115;
+    v74 = array3;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
@@ -2747,9 +2747,9 @@ LABEL_72:
     }
 
     v86 = objc_alloc(MEMORY[0x277CD98D0]);
-    v87 = [v107 photoLibrary];
-    v88 = [v107 fetchPropertySets];
-    v89 = [v86 initWithObjects:v80 photoLibrary:v87 fetchType:0 fetchPropertySets:v88 identifier:0 registerIfNeeded:0];
+    photoLibrary = [v107 photoLibrary];
+    fetchPropertySets = [v107 fetchPropertySets];
+    v89 = [v86 initWithObjects:v80 photoLibrary:photoLibrary fetchType:0 fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
     if (v117 && (v90 = CFAbsoluteTimeGetCurrent(), v90 - v149[3] >= 0.01) && (v149[3] = v90, v146 = 0, v111[2](v111, &v146, 1.0), v91 = *(v153 + 24) | v146, *(v153 + 24) = v91, (v91 & 1) != 0))
     {
@@ -2771,7 +2771,7 @@ LABEL_72:
     }
 
 LABEL_105:
-    v74 = v115;
+    v74 = array3;
   }
 
 LABEL_107:
@@ -2862,31 +2862,31 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
   }
 }
 
-- (id)memoryCuratedAssetsForAssetCollection:(id)a3 duration:(unint64_t)a4 withContextualAssetLocalIdentifiers:(id)a5 minimumProportion:(double)a6 graph:(id)a7 curationContext:(id)a8 progressBlock:(id)a9
+- (id)memoryCuratedAssetsForAssetCollection:(id)collection duration:(unint64_t)duration withContextualAssetLocalIdentifiers:(id)identifiers minimumProportion:(double)proportion graph:(id)graph curationContext:(id)context progressBlock:(id)block
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a5;
-  v20 = a3;
-  v21 = [(PGCurationManager *)self defaultAssetFetchOptions];
+  blockCopy = block;
+  contextCopy = context;
+  graphCopy = graph;
+  identifiersCopy = identifiers;
+  collectionCopy = collection;
+  defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
   v22 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:2];
-  v23 = [MEMORY[0x277D27710] feederForAssetCollection:v20 options:v21 feederPrefetchOptions:v22 curationContext:v17];
+  v23 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:defaultAssetFetchOptions feederPrefetchOptions:v22 curationContext:contextCopy];
 
-  v24 = [v23 assetFetchResult];
-  v25 = [(PGCurationManager *)self memoryCuratedAssetsForAssets:v24 duration:a4 withContextualAssetLocalIdentifiers:v19 minimumProportion:v18 graph:v17 curationContext:v16 progressBlock:a6];
+  assetFetchResult = [v23 assetFetchResult];
+  v25 = [(PGCurationManager *)self memoryCuratedAssetsForAssets:assetFetchResult duration:duration withContextualAssetLocalIdentifiers:identifiersCopy minimumProportion:graphCopy graph:contextCopy curationContext:blockCopy progressBlock:proportion];
 
   return v25;
 }
 
-- (id)curatedAssetsForAssetCollection:(id)a3 duration:(unint64_t)a4 referencePersonLocalIdentifiers:(id)a5 curationContext:(id)a6 progressBlock:(id)a7
+- (id)curatedAssetsForAssetCollection:(id)collection duration:(unint64_t)duration referencePersonLocalIdentifiers:(id)identifiers curationContext:(id)context progressBlock:(id)block
 {
   v104 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v70 = a5;
-  v71 = a6;
-  v13 = a7;
-  v14 = _Block_copy(v13);
+  collectionCopy = collection;
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  blockCopy = block;
+  v14 = _Block_copy(blockCopy);
   v97 = 0;
   v98 = &v97;
   v99 = 0x2020000000;
@@ -2895,12 +2895,12 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
   v94 = &v93;
   v95 = 0x2020000000;
   v96 = 0;
-  v68 = v13;
+  v68 = blockCopy;
   if (!v14 || (v15 = CFAbsoluteTimeGetCurrent(), v15 - v94[3] < 0.01) || (v94[3] = v15, LOBYTE(info.numer) = 0, (v14)[2](v14, &info, 0.0), v16 = *(v98 + 24) | LOBYTE(info.numer), *(v98 + 24) = v16, (v16 & 1) == 0))
   {
-    v18 = [(PGCurationManager *)self curationLoggingConnection];
-    v19 = os_signpost_id_generate(v18);
-    v20 = v18;
+    curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+    v19 = os_signpost_id_generate(curationLoggingConnection);
+    v20 = curationLoggingConnection;
     v21 = v20;
     v63 = v19 - 1;
     spid = v19;
@@ -2915,12 +2915,12 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
     info = 0;
     mach_timebase_info(&info);
     v62 = mach_absolute_time();
-    v22 = [(PGCurationManager *)self defaultAssetFetchOptions];
+    defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
     v23 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
     [v23 setPersonsPrefetchMode:2];
     [v23 setFaceInformationPrefetchMode:2];
-    v69 = [MEMORY[0x277D27710] feederForAssetCollection:v12 options:v22 feederPrefetchOptions:v23 curationContext:v71];
-    v66 = v22;
+    v69 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:defaultAssetFetchOptions feederPrefetchOptions:v23 curationContext:contextCopy];
+    v66 = defaultAssetFetchOptions;
     if (v14)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -2948,7 +2948,7 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
       }
     }
 
-    v26 = [v69 allItems];
+    allItems = [v69 allItems];
     if (v14)
     {
       v27 = CFAbsoluteTimeGetCurrent();
@@ -2976,8 +2976,8 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
       }
     }
 
-    v29 = [objc_opt_class() maximumNumberOfItemsForDuration:a4 withTotalNumberOfItems:{objc_msgSend(v26, "count")}];
-    v30 = [objc_opt_class() minimumNumberOfItemsForDuration:a4 withMaximumNumberOfItems:v29];
+    v29 = [objc_opt_class() maximumNumberOfItemsForDuration:duration withTotalNumberOfItems:{objc_msgSend(allItems, "count")}];
+    v30 = [objc_opt_class() minimumNumberOfItemsForDuration:duration withMaximumNumberOfItems:v29];
     v86[0] = MEMORY[0x277D85DD0];
     v86[1] = 3221225472;
     v86[2] = __124__PGCurationManager_curatedAssetsForAssetCollection_duration_referencePersonLocalIdentifiers_curationContext_progressBlock___block_invoke;
@@ -2987,7 +2987,7 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
     v88 = &v93;
     v89 = &v97;
     v90 = 0x3F847AE147AE147BLL;
-    v65 = [(PGCurationManager *)self _bestAssetsInAssets:v26 forReferencePersonLocalIdentifiers:v70 minimumRatioOfReferencePersonsPerAsset:v86 progressBlock:0.0];
+    v65 = [(PGCurationManager *)self _bestAssetsInAssets:allItems forReferencePersonLocalIdentifiers:identifiersCopy minimumRatioOfReferencePersonsPerAsset:v86 progressBlock:0.0];
     if (*(v98 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3003,18 +3003,18 @@ uint64_t __149__PGCurationManager_memoryCuratedAssetsForAssets_duration_withCont
       goto LABEL_63;
     }
 
-    v32 = [objc_opt_class() assetsBeautifier];
+    assetsBeautifier = [objc_opt_class() assetsBeautifier];
     v81[0] = MEMORY[0x277D85DD0];
     v81[1] = 3221225472;
     v81[2] = __124__PGCurationManager_curatedAssetsForAssetCollection_duration_referencePersonLocalIdentifiers_curationContext_progressBlock___block_invoke_302;
     v81[3] = &unk_27888A188;
     v60 = v31;
-    v61 = v32;
+    v61 = assetsBeautifier;
     v82 = v60;
     v83 = &v93;
     v84 = &v97;
     v85 = 0x3F847AE147AE147BLL;
-    v33 = [v32 performWithItems:v65 maximumNumberOfItemsToChoose:v29 progressBlock:v81];
+    v33 = [assetsBeautifier performWithItems:v65 maximumNumberOfItemsToChoose:v29 progressBlock:v81];
     v34 = v33;
     if (*(v98 + 24) == 1)
     {
@@ -3046,7 +3046,7 @@ LABEL_29:
       v78 = &v93;
       v79 = &v97;
       v80 = 0x3F847AE147AE147BLL;
-      v37 = [v61 performWithItems:v26 maximumNumberOfItemsToChoose:v30 progressBlock:v76];
+      v37 = [v61 performWithItems:allItems maximumNumberOfItemsToChoose:v30 progressBlock:v76];
       v38 = v37;
       v39 = *(v98 + 24);
       if (v39 == 1)
@@ -3064,7 +3064,7 @@ LABEL_29:
       else
       {
         v58 = *(v98 + 24);
-        v59 = v12;
+        v59 = collectionCopy;
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
@@ -3103,12 +3103,12 @@ LABEL_36:
           }
         }
 
-        v12 = v59;
+        collectionCopy = v59;
         LOBYTE(v39) = v58;
         v38 = v57;
-        v44 = [v36 allObjects];
+        allObjects = [v36 allObjects];
 
-        v34 = v44;
+        v34 = allObjects;
       }
 
       if ((v39 & 1) == 0)
@@ -3270,27 +3270,27 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
   return v7;
 }
 
-- (BOOL)isAssetCollectionInteresting:(id)a3 curationContext:(id)a4
+- (BOOL)isAssetCollectionInteresting:(id)interesting curationContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PGCurationManager *)self defaultAssetFetchOptions];
+  contextCopy = context;
+  interestingCopy = interesting;
+  defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
   v9 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
   [v9 setFaceInformationPrefetchMode:2];
-  v10 = [MEMORY[0x277D27710] feederForAssetCollection:v7 options:v8 feederPrefetchOptions:v9 curationContext:v6];
+  v10 = [MEMORY[0x277D27710] feederForAssetCollection:interestingCopy options:defaultAssetFetchOptions feederPrefetchOptions:v9 curationContext:contextCopy];
 
   LOBYTE(self) = [(PGCurationManager *)self isAssetFeederInteresting:v10 withAlternateJunking:0 smart:0];
   return self;
 }
 
-- (double)contentScoreForAssetCollection:(id)a3 curationContext:(id)a4
+- (double)contentScoreForAssetCollection:(id)collection curationContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PGCurationManager *)self defaultAssetFetchOptions];
+  contextCopy = context;
+  collectionCopy = collection;
+  defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
   v9 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
   [v9 setPersonsPrefetchMode:0];
-  v10 = [MEMORY[0x277D27710] feederForAssetCollection:v7 options:v8 feederPrefetchOptions:v9 curationContext:v6];
+  v10 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:defaultAssetFetchOptions feederPrefetchOptions:v9 curationContext:contextCopy];
 
   [(PGCurationManager *)self contentScoreForAssetFeeder:v10];
   v12 = v11;
@@ -3298,37 +3298,37 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
   return v12;
 }
 
-- (id)criteriaForKeyAssetCurationWithAssetCollection:(id)a3 graph:(id)a4 options:(id)a5 curationContext:(id)a6
+- (id)criteriaForKeyAssetCurationWithAssetCollection:(id)collection graph:(id)graph options:(id)options curationContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 assetCollectionType] == 3)
+  collectionCopy = collection;
+  graphCopy = graph;
+  optionsCopy = options;
+  contextCopy = context;
+  if ([collectionCopy assetCollectionType] == 3)
   {
-    v14 = [v11 momentNodeForMoment:v10];
+    v14 = [graphCopy momentNodeForMoment:collectionCopy];
     if (v14)
     {
-      v15 = [v11 bestMeaningLabelForMeaningfulEvent:v14];
+      v15 = [graphCopy bestMeaningLabelForMeaningfulEvent:v14];
       if (v15)
       {
         curationCriteriaFactory = self->_curationCriteriaFactory;
-        v17 = [v14 enrichableEvent];
-        v18 = [(PGCurationCriteriaFactory *)curationCriteriaFactory curationCriteriaWithCollection:v17 meaningLabel:v15 inGraph:v11 client:1];
+        enrichableEvent = [v14 enrichableEvent];
+        v18 = [(PGCurationCriteriaFactory *)curationCriteriaFactory curationCriteriaWithCollection:enrichableEvent meaningLabel:v15 inGraph:graphCopy client:1];
       }
 
-      else if ([v12 allowContextualTrip] && objc_msgSend(v14, "isTrip"))
+      else if ([optionsCopy allowContextualTrip] && objc_msgSend(v14, "isTrip"))
       {
         v20 = self->_curationCriteriaFactory;
-        v17 = [v14 enrichableEvent];
-        v18 = [(PGCurationCriteriaFactory *)v20 tripCurationCriteriaWithCollection:v17 client:1];
+        enrichableEvent = [v14 enrichableEvent];
+        v18 = [(PGCurationCriteriaFactory *)v20 tripCurationCriteriaWithCollection:enrichableEvent client:1];
       }
 
       else
       {
         v21 = self->_curationCriteriaFactory;
-        v17 = [v14 enrichableEvent];
-        v18 = [(PGCurationCriteriaFactory *)v21 petCurationCriteriaWithCollection:v17 client:1 curationContext:v13];
+        enrichableEvent = [v14 enrichableEvent];
+        v18 = [(PGCurationCriteriaFactory *)v21 petCurationCriteriaWithCollection:enrichableEvent client:1 curationContext:contextCopy];
       }
 
       v19 = v18;
@@ -3348,38 +3348,38 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
   return v19;
 }
 
-- (id)dejunkAndDedupeAssetsInAssetCollection:(id)a3 options:(id)a4 curationContext:(id)a5 progressBlock:(id)a6
+- (id)dejunkAndDedupeAssetsInAssetCollection:(id)collection options:(id)options curationContext:(id)context progressBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  collectionCopy = collection;
+  optionsCopy = options;
+  contextCopy = context;
+  blockCopy = block;
   v14 = _os_activity_create(&dword_22F0FC000, "Dejunk and Dedup Assets", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v22.opaque[0] = 0;
   v22.opaque[1] = 0;
   os_activity_scope_enter(v14, &v22);
-  v15 = [(PGCurationManager *)self defaultAssetFetchOptions];
+  defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
   v16 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
   [v16 setPersonsPrefetchMode:0];
   [v16 setFaceInformationPrefetchMode:2];
-  v17 = [MEMORY[0x277D27710] feederForAssetCollection:v10 options:v15 feederPrefetchOptions:v16 curationContext:v12];
+  v17 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:defaultAssetFetchOptions feederPrefetchOptions:v16 curationContext:contextCopy];
   v18 = objc_opt_class();
-  v19 = [v17 allItems];
-  v20 = [v18 dejunkAndDedupeItems:v19 options:v11 debugInfo:0 progressBlock:v13];
+  allItems = [v17 allItems];
+  v20 = [v18 dejunkAndDedupeItems:allItems options:optionsCopy debugInfo:0 progressBlock:blockCopy];
 
   os_activity_scope_leave(&v22);
 
   return v20;
 }
 
-- (id)curatedAssetsForAssetCollection:(id)a3 options:(id)a4 curationContext:(id)a5 progressBlock:(id)a6
+- (id)curatedAssetsForAssetCollection:(id)collection options:(id)options curationContext:(id)context progressBlock:(id)block
 {
   v75 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v56 = a5;
-  v55 = a6;
-  v12 = _Block_copy(v55);
+  collectionCopy = collection;
+  optionsCopy = options;
+  contextCopy = context;
+  blockCopy = block;
+  v12 = _Block_copy(blockCopy);
   v69 = 0;
   v70 = &v69;
   v71 = 0x2020000000;
@@ -3395,9 +3395,9 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
     state.opaque[1] = 0;
     v54 = v16;
     os_activity_scope_enter(v16, &state);
-    v17 = [(PGCurationManager *)self curationLoggingConnection];
-    v18 = os_signpost_id_generate(v17);
-    v19 = v17;
+    curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+    v18 = os_signpost_id_generate(curationLoggingConnection);
+    v19 = curationLoggingConnection;
     v20 = v19;
     spid = v18;
     v21 = v18 - 1;
@@ -3410,7 +3410,7 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
     info = 0;
     mach_timebase_info(&info);
     v52 = mach_absolute_time();
-    v22 = [(PGCurationCache *)self->_cache curatedAssetIdentifiersForMoment:v10 options:v11];
+    v22 = [(PGCurationCache *)self->_cache curatedAssetIdentifiersForMoment:collectionCopy options:optionsCopy];
     if (v12 && (v23 = CFAbsoluteTimeGetCurrent(), v23 - v66[3] >= 0.01) && (v66[3] = v23, v62 = 0, (*(v12 + 2))(v12, &v62, 0.5), v24 = *(v70 + 24) | v62, *(v70 + 24) = v24, (v24 & 1) != 0))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3422,7 +3422,7 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
         _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
       }
 
-      v25 = 0;
+      fetchedObjects = 0;
     }
 
     else
@@ -3430,22 +3430,22 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
       if (v22)
       {
         v26 = [(PGCurationManager *)self fetchAssetsSortedByDateWithLocalIdentifiers:v22];
-        v25 = [v26 fetchedObjects];
+        fetchedObjects = [v26 fetchedObjects];
 
-        v27 = [(PGCurationManager *)self curationLoggingConnection];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+        curationLoggingConnection2 = [(PGCurationManager *)self curationLoggingConnection];
+        if (os_log_type_enabled(curationLoggingConnection2, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *v74 = v10;
-          _os_log_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_INFO, "Curated Assets: Cache Hit for assetCollection: %@", buf, 0xCu);
+          *v74 = collectionCopy;
+          _os_log_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_INFO, "Curated Assets: Cache Hit for assetCollection: %@", buf, 0xCu);
         }
       }
 
       else
       {
-        v50 = [(PGCurationManager *)self defaultAssetFetchOptions];
+        defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
         v28 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
-        if ([v11 includesAllFaces])
+        if ([optionsCopy includesAllFaces])
         {
           v29 = 2;
         }
@@ -3457,7 +3457,7 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
 
         [v28 setPersonsPrefetchMode:v29];
         [v28 setFaceInformationPrefetchMode:2];
-        v51 = [MEMORY[0x277D27710] feederForAssetCollection:v10 options:v50 feederPrefetchOptions:v28 curationContext:v56];
+        v51 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:defaultAssetFetchOptions feederPrefetchOptions:v28 curationContext:contextCopy];
         v57[0] = MEMORY[0x277D85DD0];
         v57[1] = 3221225472;
         v57[2] = __91__PGCurationManager_curatedAssetsForAssetCollection_options_curationContext_progressBlock___block_invoke;
@@ -3467,8 +3467,8 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
         v59 = &v65;
         v60 = &v69;
         v61 = 0x3F847AE147AE147BLL;
-        v31 = [(PGCurationManager *)self bestAssetsForAssetFeeder:v51 options:v11 progressBlock:v57];
-        v25 = v31;
+        v31 = [(PGCurationManager *)self bestAssetsForAssetFeeder:v51 options:optionsCopy progressBlock:v57];
+        fetchedObjects = v31;
         if (*(v70 + 24) == 1)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3487,13 +3487,13 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
         {
           if (![v31 count])
           {
-            v48 = [v51 allItems];
+            allItems = [v51 allItems];
 
-            v25 = v48;
+            fetchedObjects = allItems;
           }
 
           v47 = objc_alloc_init(PGKeyAssetCurationOptions);
-          v46 = [(PGCurationCache *)self->_cache curatedKeyAssetIdentifierForMoment:v10 options:?];
+          v46 = [(PGCurationCache *)self->_cache curatedKeyAssetIdentifierForMoment:collectionCopy options:?];
           v49 = [(PGCurationManager *)self fetchAssetWithLocalIdentifier:?];
           if (v12 && (Current = CFAbsoluteTimeGetCurrent(), Current - v66[3] >= 0.01) && (v66[3] = Current, v62 = 0, (*(v30 + 2))(v30, &v62, 0.5), v34 = *(v70 + 24) | v62, *(v70 + 24) = v34, (v34 & 1) != 0))
           {
@@ -3511,15 +3511,15 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
 
           else
           {
-            if (v49 && ([v25 containsObject:?] & 1) == 0)
+            if (v49 && ([fetchedObjects containsObject:?] & 1) == 0)
             {
-              v45 = [v25 arrayByAddingObject:v49];
+              v45 = [fetchedObjects arrayByAddingObject:v49];
 
-              v35 = [objc_opt_class() defaultAssetSortDescriptors];
-              v25 = [v45 sortedArrayUsingDescriptors:v35];
+              defaultAssetSortDescriptors = [objc_opt_class() defaultAssetSortDescriptors];
+              fetchedObjects = [v45 sortedArrayUsingDescriptors:defaultAssetSortDescriptors];
             }
 
-            [(PGCurationCache *)self->_cache setCuratedAssets:v25 forMoment:v10 options:v11];
+            [(PGCurationCache *)self->_cache setCuratedAssets:fetchedObjects forMoment:collectionCopy options:optionsCopy];
             v32 = 1;
           }
         }
@@ -3552,8 +3552,8 @@ uint64_t __124__PGCurationManager_curatedAssetsForAssetCollection_duration_refer
 
       if (!v12 || (v41 = CFAbsoluteTimeGetCurrent(), v41 - v66[3] < 0.01) || (v66[3] = v41, v62 = 0, (*(v12 + 2))(v12, &v62, 1.0), v42 = *(v70 + 24) | v62, *(v70 + 24) = v42, (v42 & 1) == 0))
       {
-        v25 = v25;
-        v15 = v25;
+        fetchedObjects = fetchedObjects;
+        v15 = fetchedObjects;
         goto LABEL_53;
       }
 
@@ -3613,29 +3613,29 @@ void __91__PGCurationManager_curatedAssetsForAssetCollection_options_curationCon
   }
 }
 
-- (id)bestAssetsForAssetFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)bestAssetsForAssetFeeder:(id)feeder options:(id)options progressBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  optionsCopy = options;
+  feederCopy = feeder;
   v11 = objc_alloc_init(PGCurator_PHAsset);
   [(PGCurator *)v11 setLoggingConnection:self->_curationLoggingConnection];
-  v12 = [(PGCurator_PHAsset *)v11 bestAssetsForFeeder:v10 options:v9 debugInfo:0 progressBlock:v8];
+  v12 = [(PGCurator_PHAsset *)v11 bestAssetsForFeeder:feederCopy options:optionsCopy debugInfo:0 progressBlock:blockCopy];
 
   return v12;
 }
 
-- (id)curatedKeyAssetForAssetCollection:(id)a3 curatedAssetCollection:(id)a4 options:(id)a5 criteria:(id)a6 curationContext:(id)a7
+- (id)curatedKeyAssetForAssetCollection:(id)collection curatedAssetCollection:(id)assetCollection options:(id)options criteria:(id)criteria curationContext:(id)context
 {
   v62 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v54 = a7;
-  v16 = [(PGCurationManager *)self curationLoggingConnection];
-  v17 = os_signpost_id_generate(v16);
-  v18 = v16;
+  collectionCopy = collection;
+  assetCollectionCopy = assetCollection;
+  optionsCopy = options;
+  criteriaCopy = criteria;
+  contextCopy = context;
+  curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+  v17 = os_signpost_id_generate(curationLoggingConnection);
+  v18 = curationLoggingConnection;
   v19 = v18;
   v20 = v17 - 1;
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
@@ -3647,27 +3647,27 @@ void __91__PGCurationManager_curatedAssetsForAssetCollection_options_curationCon
   info = 0;
   mach_timebase_info(&info);
   v51 = mach_absolute_time();
-  if (v13)
+  if (assetCollectionCopy)
   {
-    v21 = v13;
+    v21 = assetCollectionCopy;
   }
 
   else
   {
-    v21 = v12;
+    v21 = collectionCopy;
   }
 
   v53 = v21;
-  if (!v14)
+  if (!optionsCopy)
   {
-    v14 = objc_alloc_init(PGKeyAssetCurationOptions);
+    optionsCopy = objc_alloc_init(PGKeyAssetCurationOptions);
   }
 
-  v52 = v15;
-  if (v15)
+  v52 = criteriaCopy;
+  if (criteriaCopy)
   {
-    v22 = [v12 uuid];
-    v23 = [(PGCurationManager *)self curatedKeyAssetForCollectionUUID:v22 curatedAssetCollection:v53 options:v14 criteria:v15 curationContext:v54];
+    uuid = [collectionCopy uuid];
+    v23 = [(PGCurationManager *)self curatedKeyAssetForCollectionUUID:uuid curatedAssetCollection:v53 options:optionsCopy criteria:criteriaCopy curationContext:contextCopy];
 
     if (v23)
     {
@@ -3699,24 +3699,24 @@ void __91__PGCurationManager_curatedAssetsForAssetCollection_options_curationCon
     }
   }
 
-  v50 = v13;
-  v29 = [(PGCurationCache *)self->_cache curatedKeyAssetIdentifierForMoment:v12 options:v14];
+  v50 = assetCollectionCopy;
+  v29 = [(PGCurationCache *)self->_cache curatedKeyAssetIdentifierForMoment:collectionCopy options:optionsCopy];
   if (v29)
   {
     v23 = [(PGCurationManager *)self fetchAssetWithLocalIdentifier:v29];
     goto LABEL_22;
   }
 
-  v31 = [(PGCurationManager *)self defaultAssetFetchOptions];
+  defaultAssetFetchOptions = [(PGCurationManager *)self defaultAssetFetchOptions];
   v32 = v53;
   v33 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:1];
   [v33 setPersonsPrefetchMode:2];
   [v33 setFaceInformationPrefetchMode:2];
   [v33 setScenesPrefetchMode:2];
   v48 = v32;
-  v49 = v31;
-  v34 = [MEMORY[0x277D27710] feederForAssetCollection:v32 options:v31 feederPrefetchOptions:v33 curationContext:v54];
-  v35 = [(PGCurationManager *)self bestAssetForAssetFeeder:v34 options:v14];
+  v49 = defaultAssetFetchOptions;
+  v34 = [MEMORY[0x277D27710] feederForAssetCollection:v32 options:defaultAssetFetchOptions feederPrefetchOptions:v33 curationContext:contextCopy];
+  v35 = [(PGCurationManager *)self bestAssetForAssetFeeder:v34 options:optionsCopy];
   if (v35)
   {
     v23 = v35;
@@ -3737,7 +3737,7 @@ void __91__PGCurationManager_curatedAssetsForAssetCollection_options_curationCon
     }
   }
 
-  [(PGCurationCache *)self->_cache setCuratedKeyAsset:v23 forMoment:v12 options:v14];
+  [(PGCurationCache *)self->_cache setCuratedKeyAsset:v23 forMoment:collectionCopy options:optionsCopy];
 LABEL_21:
 
 LABEL_22:
@@ -3779,7 +3779,7 @@ LABEL_22:
     _os_log_impl(&dword_22F0FC000, v42, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", buf, 0x20u);
   }
 
-  v13 = v50;
+  assetCollectionCopy = v50;
 LABEL_32:
 
   v46 = *MEMORY[0x277D85DE8];
@@ -3789,33 +3789,33 @@ LABEL_32:
 
 - (PFSceneGeography)sceneGeography
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_sceneGeography)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sceneGeography)
   {
     v3 = objc_alloc_init(MEMORY[0x277D3B4C0]);
-    sceneGeography = v2->_sceneGeography;
-    v2->_sceneGeography = v3;
+    sceneGeography = selfCopy->_sceneGeography;
+    selfCopy->_sceneGeography = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_sceneGeography;
+  v5 = selfCopy->_sceneGeography;
 
   return v5;
 }
 
-- (PGCurationManager)initWithPhotoLibrary:(id)a3 cacheURL:(id)a4
+- (PGCurationManager)initWithPhotoLibrary:(id)library cacheURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = PGCurationManager;
   v9 = [(PGCurationManager *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
+    objc_storeStrong(&v9->_photoLibrary, library);
     v11 = os_log_create("com.apple.PhotosGraph", "curation");
     curationLoggingConnection = v10->_curationLoggingConnection;
     v10->_curationLoggingConnection = v11;
@@ -3825,7 +3825,7 @@ LABEL_32:
     v10->_curationCriteriaFactory = v13;
 
     v15 = [PGCurationCache alloc];
-    v16 = [(CLSDBCache *)PGCurationCache urlWithParentURL:v8];
+    v16 = [(CLSDBCache *)PGCurationCache urlWithParentURL:lCopy];
     v17 = [(CLSDBCache *)v15 initWithURL:v16];
     cache = v10->_cache;
     v10->_cache = v17;
@@ -3834,16 +3834,16 @@ LABEL_32:
   return v10;
 }
 
-+ (id)filteredAssetsFromAssets:(id)a3 withContextualAssetLocalIdentifiers:(id)a4 approximateTimeDistance:(double)a5
++ (id)filteredAssetsFromAssets:(id)assets withContextualAssetLocalIdentifiers:(id)identifiers approximateTimeDistance:(double)distance
 {
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  assetsCopy = assets;
+  identifiersCopy = identifiers;
   v10 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:&__block_literal_global_338_40727];
-  [v10 setMaximumDistance:a5];
+  [v10 setMaximumDistance:distance];
   [v10 setMinimumNumberOfObjects:2];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier IN %@", v9];
-  v12 = [v8 filteredArrayUsingPredicate:v11];
+  identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier IN %@", identifiersCopy];
+  v12 = [assetsCopy filteredArrayUsingPredicate:identifiersCopy];
   v13 = [v12 mutableCopy];
 
   v53 = v13;
@@ -3854,10 +3854,10 @@ LABEL_32:
   }
 
   v49 = v10;
-  v50 = v9;
-  v47 = [a1 defaultAssetSortDescriptors];
-  v48 = v8;
-  v51 = [v8 sortedArrayUsingDescriptors:?];
+  v50 = identifiersCopy;
+  defaultAssetSortDescriptors = [self defaultAssetSortDescriptors];
+  v48 = assetsCopy;
+  v51 = [assetsCopy sortedArrayUsingDescriptors:?];
   v54 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v14, "count")}];
   v65 = 0u;
   v66 = 0u;
@@ -3887,8 +3887,8 @@ LABEL_32:
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v19 = [v18 objects];
-      v20 = [v19 countByEnumeratingWithState:&v61 objects:v70 count:16];
+      objects = [v18 objects];
+      v20 = [objects countByEnumeratingWithState:&v61 objects:v70 count:16];
       if (!v20)
       {
         v23 = 0;
@@ -3906,34 +3906,34 @@ LABEL_32:
         {
           if (*v62 != v24)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(objects);
           }
 
-          v26 = [*(*(&v61 + 1) + 8 * j) cls_universalDate];
-          if (!v23 || [v23 compare:v26] == 1)
+          cls_universalDate = [*(*(&v61 + 1) + 8 * j) cls_universalDate];
+          if (!v23 || [v23 compare:cls_universalDate] == 1)
           {
-            v27 = v26;
+            v27 = cls_universalDate;
 
             v23 = v27;
           }
 
-          if (!v22 || [v22 compare:v26] == -1)
+          if (!v22 || [v22 compare:cls_universalDate] == -1)
           {
-            v28 = v26;
+            v28 = cls_universalDate;
 
             v22 = v28;
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v61 objects:v70 count:16];
+        v21 = [objects countByEnumeratingWithState:&v61 objects:v70 count:16];
       }
 
       while (v21);
 
       if (v23)
       {
-        v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 endDate:v22];
-        [v54 addObject:v19];
+        objects = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 endDate:v22];
+        [v54 addObject:objects];
 LABEL_23:
       }
     }
@@ -3946,7 +3946,7 @@ LABEL_26:
 
   v29 = v54;
   v10 = v49;
-  v9 = v50;
+  identifiersCopy = v50;
   v14 = v52;
   if ([v54 count])
   {
@@ -3974,9 +3974,9 @@ LABEL_26:
           }
 
           v37 = *(*(&v57 + 1) + 8 * v36);
-          v38 = [v37 cls_universalDate];
+          cls_universalDate2 = [v37 cls_universalDate];
           v39 = [v29 objectAtIndexedSubscript:v34];
-          v40 = [v39 containsDate:v38];
+          v40 = [v39 containsDate:cls_universalDate2];
 
           if (v40)
           {
@@ -3990,7 +3990,7 @@ LABEL_26:
 LABEL_42:
 
               v10 = v49;
-              v9 = v50;
+              identifiersCopy = v50;
               v14 = v52;
               v29 = v54;
               goto LABEL_43;
@@ -3999,8 +3999,8 @@ LABEL_42:
             while (1)
             {
               v41 = [v54 objectAtIndexedSubscript:v34];
-              v42 = [v41 endDate];
-              v43 = [v42 compare:v38];
+              endDate = [v41 endDate];
+              v43 = [endDate compare:cls_universalDate2];
 
               if (v43 != -1)
               {
@@ -4023,7 +4023,7 @@ LABEL_42:
         v44 = [v31 countByEnumeratingWithState:&v57 objects:v69 count:16];
         v33 = v44;
         v10 = v49;
-        v9 = v50;
+        identifiersCopy = v50;
       }
 
       while (v44);
@@ -4032,7 +4032,7 @@ LABEL_42:
 LABEL_43:
   }
 
-  v8 = v48;
+  assetsCopy = v48;
 LABEL_45:
 
   v45 = *MEMORY[0x277D85DE8];
@@ -4049,13 +4049,13 @@ void __106__PGCurationManager_filteredAssetsFromAssets_withContextualAssetLocalI
   [v5 timeIntervalSinceDate:v6];
 }
 
-+ (id)_filteredAssetsWithFaceFilter:(unint64_t)a3 forAssets:(id)a4
++ (id)_filteredAssetsWithFaceFilter:(unint64_t)filter forAssets:(id)assets
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  assetsCopy = assets;
+  v6 = assetsCopy;
+  if (filter)
   {
-    if ([v5 count])
+    if ([assetsCopy count])
     {
       v11[0] = 0;
       v11[1] = v11;
@@ -4066,7 +4066,7 @@ void __106__PGCurationManager_filteredAssetsFromAssets_withContextualAssetLocalI
       v10[2] = __61__PGCurationManager__filteredAssetsWithFaceFilter_forAssets___block_invoke;
       v10[3] = &unk_278884260;
       v10[4] = v11;
-      v10[5] = a3;
+      v10[5] = filter;
       v7 = [MEMORY[0x277CCAC30] predicateWithBlock:v10];
       v8 = [v6 filteredArrayUsingPredicate:v7];
 
@@ -4081,7 +4081,7 @@ void __106__PGCurationManager_filteredAssetsFromAssets_withContextualAssetLocalI
 
   else
   {
-    v8 = v5;
+    v8 = assetsCopy;
   }
 
   return v8;
@@ -4127,13 +4127,13 @@ uint64_t __61__PGCurationManager__filteredAssetsWithFaceFilter_forAssets___block
   return v8;
 }
 
-+ (unint64_t)minimumNumberOfItemsForDuration:(unint64_t)a3 withMaximumNumberOfItems:(unint64_t)a4
++ (unint64_t)minimumNumberOfItemsForDuration:(unint64_t)duration withMaximumNumberOfItems:(unint64_t)items
 {
-  v4 = vcvtad_u64_f64(a4 * 0.3);
-  v5 = 4;
-  if (a4 < 4)
+  v4 = vcvtad_u64_f64(items * 0.3);
+  itemsCopy = 4;
+  if (items < 4)
   {
-    v5 = a4;
+    itemsCopy = items;
   }
 
   if (v4 >= 4)
@@ -4143,64 +4143,64 @@ uint64_t __61__PGCurationManager__filteredAssetsWithFaceFilter_forAssets___block
 
   else
   {
-    return v5;
+    return itemsCopy;
   }
 }
 
-+ (unint64_t)maximumNumberOfItemsForDuration:(unint64_t)a3 withTotalNumberOfItems:(unint64_t)a4 spanningNumberOfDays:(double)a5
++ (unint64_t)maximumNumberOfItemsForDuration:(unint64_t)duration withTotalNumberOfItems:(unint64_t)items spanningNumberOfDays:(double)days
 {
-  if (a3 == 1)
+  if (duration == 1)
   {
-    v8 = 9;
+    itemsCopy5 = 9;
   }
 
-  else if (a3 == 2)
+  else if (duration == 2)
   {
 LABEL_3:
-    v6 = a4;
+    itemsCopy4 = items;
     v7 = 0.8;
 LABEL_4:
-    v8 = pow(v6, v7);
-    v9 = v8 >= 0x50;
+    itemsCopy5 = pow(itemsCopy4, v7);
+    v9 = itemsCopy5 >= 0x50;
     v10 = 80;
 LABEL_5:
     if (v9)
     {
-      v8 = v10;
+      itemsCopy5 = v10;
     }
 
-    v11 = v8 > 6;
+    v11 = itemsCopy5 > 6;
     v12 = 6;
 LABEL_9:
     if (!v11)
     {
-      v8 = v12;
+      itemsCopy5 = v12;
     }
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x14)
+  else if ((duration & 0xFFFFFFFFFFFFFFFELL) == 0x14)
   {
-    v8 = a4;
-    if (a4 >= 0x15)
+    itemsCopy5 = items;
+    if (items >= 0x15)
     {
-      v8 = fmin((pow(a4 / 20.0, 0.148) + -1.0) * 135.135135 + 20.0, 80.0);
+      itemsCopy5 = fmin((pow(items / 20.0, 0.148) + -1.0) * 135.135135 + 20.0, 80.0);
     }
   }
 
   else
   {
-    v8 = a4;
-    switch(a3)
+    itemsCopy5 = items;
+    switch(duration)
     {
       case 3uLL:
       case 5uLL:
-        v8 = pow(a4, 0.827129859);
-        if (v8 >= 0xC0)
+        itemsCopy5 = pow(items, 0.827129859);
+        if (itemsCopy5 >= 0xC0)
         {
-          v8 = 192;
+          itemsCopy5 = 192;
         }
 
-        v11 = v8 > 0xC;
+        v11 = itemsCopy5 > 0xC;
         v12 = 12;
         goto LABEL_9;
       case 4uLL:
@@ -4209,89 +4209,89 @@ LABEL_9:
       case 0x10uLL:
         break;
       case 7uLL:
-        v14 = a4 >= 0x50;
-        v8 = 80;
+        v14 = items >= 0x50;
+        itemsCopy5 = 80;
         goto LABEL_29;
       case 8uLL:
       case 0xFuLL:
-        v14 = a4 >= 4;
-        v8 = 4;
+        v14 = items >= 4;
+        itemsCopy5 = 4;
         goto LABEL_29;
       case 9uLL:
       case 0xAuLL:
-        v14 = a4 >= 0x100;
-        v8 = 256;
+        v14 = items >= 0x100;
+        itemsCopy5 = 256;
         goto LABEL_29;
       case 0xBuLL:
-        v6 = a4;
+        itemsCopy4 = items;
         v7 = 0.915306674;
         goto LABEL_4;
       case 0xCuLL:
       case 0xDuLL:
-        v14 = a4 >= 7;
-        v8 = 7;
+        v14 = items >= 7;
+        itemsCopy5 = 7;
 LABEL_29:
         if (!v14)
         {
-          v8 = a4;
+          itemsCopy5 = items;
         }
 
         break;
       case 0xEuLL:
-        v15 = fmin(a5, 15.0) * 60.0 / 15.0 + 20.0;
+        v15 = fmin(days, 15.0) * 60.0 / 15.0 + 20.0;
         v16 = log((v15 + -20.0) / 60.0 * -0.233333333 + 0.333333333);
         v17 = log(v15 / ((v15 + -20.0) / 60.0 * -0.233333333 + 0.333333333));
-        v8 = pow(a4, v16 / v17 + 1.0);
+        itemsCopy5 = pow(items, v16 / v17 + 1.0);
         v10 = v15;
-        v9 = v8 >= v15;
+        v9 = itemsCopy5 >= v15;
         goto LABEL_5;
       default:
         v18 = +[PGLogging sharedLogging];
-        v19 = [v18 loggingConnection];
+        loggingConnection = [v18 loggingConnection];
 
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *v20 = 0;
-          _os_log_error_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_ERROR, "Unsupported PGDuration", v20, 2u);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported PGDuration", v20, 2u);
         }
 
-        v8 = 0;
+        itemsCopy5 = 0;
         break;
     }
   }
 
-  if (v8 >= a4)
+  if (itemsCopy5 >= items)
   {
-    return a4;
+    return items;
   }
 
   else
   {
-    return v8;
+    return itemsCopy5;
   }
 }
 
 + (id)assetsBeautifier
 {
-  v2 = [MEMORY[0x277D27670] beautifier];
-  [v2 setEnableStatisticalSampling:1];
-  [v2 setEnableNetworkAccess:0];
-  [v2 setEnableIntermediateNaturalClustering:1];
-  [v2 setEnableFinalNaturalClustering:1];
-  [v2 setEnableFinalTimeClustering:1];
-  [v2 setUsesKMeans:1];
+  beautifier = [MEMORY[0x277D27670] beautifier];
+  [beautifier setEnableStatisticalSampling:1];
+  [beautifier setEnableNetworkAccess:0];
+  [beautifier setEnableIntermediateNaturalClustering:1];
+  [beautifier setEnableFinalNaturalClustering:1];
+  [beautifier setEnableFinalTimeClustering:1];
+  [beautifier setUsesKMeans:1];
 
-  return v2;
+  return beautifier;
 }
 
-+ (id)summaryClusteringForDuration:(unint64_t)a3
++ (id)summaryClusteringForDuration:(unint64_t)duration
 {
   v4 = objc_opt_new();
   [v4 setOptimalDayDistributionThreshold:30.0];
   [v4 setTimeSpanDensityAverageNumberOfObjects:300];
   [v4 setEnableDensityClusteringLocationsDistance:1];
   [v4 setDensityClusteringLocationsDistanceUnit:2000];
-  switch(a3)
+  switch(duration)
   {
     case 1uLL:
       [v4 setDiffuseDensityClusteringMaximumDistance:10800.0];
@@ -4459,12 +4459,12 @@ LABEL_31:
       break;
     default:
       v21 = +[PGLogging sharedLogging];
-      v22 = [v21 loggingConnection];
+      loggingConnection = [v21 loggingConnection];
 
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *v28 = 0;
-        _os_log_error_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_ERROR, "Unsupported PGDuration", v28, 2u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported PGDuration", v28, 2u);
       }
 
       break;
@@ -4473,13 +4473,13 @@ LABEL_31:
   return v4;
 }
 
-+ (BOOL)areAssetsInteresting:(id)a3 minimumNumberOfCuratedAssets:(unint64_t)a4 duration:(unint64_t)a5
++ (BOOL)areAssetsInteresting:(id)interesting minimumNumberOfCuratedAssets:(unint64_t)assets duration:(unint64_t)duration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 count];
-  v10 = [a1 assetsBeautifier];
-  v11 = [a1 maximumNumberOfItemsForDuration:a5 withTotalNumberOfItems:v9];
+  interestingCopy = interesting;
+  v9 = [interestingCopy count];
+  assetsBeautifier = [self assetsBeautifier];
+  v11 = [self maximumNumberOfItemsForDuration:duration withTotalNumberOfItems:v9];
   if (v11 >= v9)
   {
     v12 = v9;
@@ -4490,9 +4490,9 @@ LABEL_31:
     v12 = v11;
   }
 
-  v13 = [v10 performWithItems:v8 maximumNumberOfItemsToChoose:v12 progressBlock:0];
+  v13 = [assetsBeautifier performWithItems:interestingCopy maximumNumberOfItemsToChoose:v12 progressBlock:0];
 
-  if ([v13 count] >= a4 && v12 * 0.3 <= objc_msgSend(v13, "count"))
+  if ([v13 count] >= assets && v12 * 0.3 <= objc_msgSend(v13, "count"))
   {
     v14 = 1;
   }
@@ -4515,16 +4515,16 @@ LABEL_31:
   return v14;
 }
 
-+ (double)contentScoreForAssets:(id)a3
++ (double)contentScoreForAssets:(id)assets
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  assetsCopy = assets;
+  v4 = [assetsCopy count];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -4603,28 +4603,28 @@ LABEL_31:
   return (v13 / v20 + (v24 + 1.0) * 0.5) * 0.5;
 }
 
-+ (id)dedupedAssetsWithAssets:(id)a3
++ (id)dedupedAssetsWithAssets:(id)assets
 {
-  v3 = a3;
-  v4 = [objc_opt_class() assetsBeautifier];
-  v5 = [v4 deduplicateItems:v3 debugInfo:0];
+  assetsCopy = assets;
+  assetsBeautifier = [objc_opt_class() assetsBeautifier];
+  v5 = [assetsBeautifier deduplicateItems:assetsCopy debugInfo:0];
 
   return v5;
 }
 
-+ (id)representativeAssetsForAssets:(id)a3 extendedCuratedAssets:(id)a4 progressBlock:(id)a5
++ (id)representativeAssetsForAssets:(id)assets extendedCuratedAssets:(id)curatedAssets progressBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count] > 0x200)
+  assetsCopy = assets;
+  curatedAssetsCopy = curatedAssets;
+  blockCopy = block;
+  if ([curatedAssetsCopy count] > 0x200)
   {
-    v11 = [a1 representativeAssetsForAssets:v8 progressBlock:v10];
+    v11 = [self representativeAssetsForAssets:assetsCopy progressBlock:blockCopy];
   }
 
   else
   {
-    v11 = v9;
+    v11 = curatedAssetsCopy;
   }
 
   v12 = v11;
@@ -4632,13 +4632,13 @@ LABEL_31:
   return v12;
 }
 
-+ (id)representativeAssetsForAssetCollection:(id)a3 curationContext:(id)a4 progressBlock:(id)a5
++ (id)representativeAssetsForAssetCollection:(id)collection curationContext:(id)context progressBlock:(id)block
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  collectionCopy = collection;
+  contextCopy = context;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -4649,24 +4649,24 @@ LABEL_31:
   v42 = 0;
   if (!v11 || (v12 = CFAbsoluteTimeGetCurrent(), v12 - v40[3] < 0.01) || (v40[3] = v12, v38 = 0, (*(v11 + 2))(v11, &v38, 0.0), v13 = *(v44 + 24) | v38, *(v44 + 24) = v13, (v13 & 1) == 0))
   {
-    v15 = [v8 photoLibrary];
-    v16 = [v15 librarySpecificFetchOptions];
+    photoLibrary = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v17 = *MEMORY[0x277CD9B08];
     v47[0] = *MEMORY[0x277CD9AA8];
     v47[1] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
-    [v16 setFetchPropertySets:v18];
+    [librarySpecificFetchOptions setFetchPropertySets:v18];
 
     v19 = [MEMORY[0x277D276B8] feederPrefetchOptionsWithDefaultMode:0];
     [v19 setPersonsPrefetchMode:0];
-    v20 = [MEMORY[0x277D27710] feederForAssetCollection:v8 options:v16 feederPrefetchOptions:v19 curationContext:v9];
+    v20 = [MEMORY[0x277D27710] feederForAssetCollection:collectionCopy options:librarySpecificFetchOptions feederPrefetchOptions:v19 curationContext:contextCopy];
     if ([v20 numberOfItems])
     {
       if (!v11 || (v21 = CFAbsoluteTimeGetCurrent(), v21 - v40[3] < 0.01) || (v40[3] = v21, v38 = 0, (*(v11 + 2))(v11, &v38, 0.5), v22 = *(v44 + 24) | v38, *(v44 + 24) = v22, (v22 & 1) == 0))
       {
-        v24 = [v20 allItems];
-        if ([v24 count] > 0x200)
+        allItems = [v20 allItems];
+        if ([allItems count] > 0x200)
         {
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
@@ -4677,7 +4677,7 @@ LABEL_31:
           v35 = &v39;
           v36 = &v43;
           v37 = 0x3F847AE147AE147BLL;
-          v28 = [a1 representativeAssetsForAssets:v24 progressBlock:v33];
+          v28 = [self representativeAssetsForAssets:allItems progressBlock:v33];
           if (v11 && (Current = CFAbsoluteTimeGetCurrent(), Current - v40[3] >= 0.01) && (v40[3] = Current, v38 = 0, (*(v27 + 2))(v27, &v38, 1.0), v30 = *(v44 + 24) | v38, *(v44 + 24) = v30, (v30 & 1) != 0))
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4700,7 +4700,7 @@ LABEL_31:
 
         else
         {
-          v14 = v24;
+          v14 = allItems;
         }
 
         goto LABEL_31;
@@ -4794,12 +4794,12 @@ void __90__PGCurationManager_representativeAssetsForAssetCollection_curationCont
   }
 }
 
-+ (id)representativeAssetsForAssets:(id)a3 progressBlock:(id)a4
++ (id)representativeAssetsForAssets:(id)assets progressBlock:(id)block
 {
   v70 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  assetsCopy = assets;
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -4808,7 +4808,7 @@ void __90__PGCurationManager_representativeAssetsForAssetCollection_curationCont
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
-  v40 = v6;
+  v40 = blockCopy;
   if (v7 && (v8 = CFAbsoluteTimeGetCurrent(), v8 - v57[3] >= 0.01) && (v57[3] = v8, v55 = 0, (*(v7 + 2))(v7, &v55, 0.0), v9 = *(v61 + 24) | v55, *(v61 + 24) = v9, (v9 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4826,7 +4826,7 @@ void __90__PGCurationManager_representativeAssetsForAssetCollection_curationCont
   else
   {
     context = objc_autoreleasePoolPush();
-    v11 = [a1 summaryClusteringForDuration:6];
+    v11 = [self summaryClusteringForDuration:6];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __65__PGCurationManager_representativeAssetsForAssets_progressBlock___block_invoke;
@@ -4837,7 +4837,7 @@ void __90__PGCurationManager_representativeAssetsForAssetCollection_curationCont
     v53 = &v60;
     v54 = 0x3F847AE147AE147BLL;
     v38 = v11;
-    v13 = [v11 densityClustersWithItems:v41 progressBlock:v50];
+    v13 = [v11 densityClustersWithItems:assetsCopy progressBlock:v50];
     v14 = v13;
     if (*(v61 + 24) == 1)
     {
@@ -4885,9 +4885,9 @@ void __90__PGCurationManager_representativeAssetsForAssetCollection_curationCont
                 objc_enumerationMutation(v18);
               }
 
-              v22 = [*(*(&v46 + 1) + 8 * i) objects];
-              v23 = [v22 firstObject];
-              [v17 addObject:v23];
+              objects = [*(*(&v46 + 1) + 8 * i) objects];
+              firstObject = [objects firstObject];
+              [v17 addObject:firstObject];
             }
 
             v19 = [v18 countByEnumeratingWithState:&v46 objects:v65 count:16];
@@ -5012,18 +5012,18 @@ void __65__PGCurationManager_representativeAssetsForAssets_progressBlock___block
   }
 }
 
-+ (id)sceneInfoWithAsset:(id)a3 curationSession:(id)a4
++ (id)sceneInfoWithAsset:(id)asset curationSession:(id)session
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v17[0] = a3;
+  v17[0] = asset;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a4;
-  v7 = a3;
+  sessionCopy = session;
+  assetCopy = asset;
   v8 = [v5 arrayWithObjects:v17 count:1];
-  [v6 prepareAssets:v8];
+  [sessionCopy prepareAssets:v8];
 
-  v9 = [v7 clsSceneClassifications];
-  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  clsSceneClassifications = [assetCopy clsSceneClassifications];
+  v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(clsSceneClassifications, "count")}];
   v11 = MEMORY[0x277D3C7A0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -5031,7 +5031,7 @@ void __65__PGCurationManager_representativeAssetsForAssets_progressBlock___block
   v15[3] = &unk_278884F80;
   v12 = v10;
   v16 = v12;
-  [v11 enumerateSignalsFromAsset:v7 fullHierarchyName:0 usingBlock:v15];
+  [v11 enumerateSignalsFromAsset:assetCopy fullHierarchyName:0 usingBlock:v15];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -5045,28 +5045,28 @@ void __56__PGCurationManager_sceneInfoWithAsset_curationSession___block_invoke(u
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-+ (id)dejunkAndDedupeItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
++ (id)dejunkAndDedupeItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = _Block_copy(a6);
+  itemsCopy = items;
+  optionsCopy = options;
+  infoCopy = info;
+  v13 = _Block_copy(block);
   v14 = 0.0;
   if (!v13 || (v15 = CFAbsoluteTimeGetCurrent(), v15 < 0.01))
   {
 LABEL_8:
-    if (v12)
+    if (infoCopy)
     {
-      [v12 setAgent:@"Dejunk and Dedupe"];
-      [v12 setStage:@"Initial"];
-      v17 = [MEMORY[0x277D3AC38] clusterWithObjects:v10];
+      [infoCopy setAgent:@"Dejunk and Dedupe"];
+      [infoCopy setStage:@"Initial"];
+      v17 = [MEMORY[0x277D3AC38] clusterWithObjects:itemsCopy];
       v33 = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-      [v12 setClusters:v18 withReason:@"DejunkAndDeduper"];
+      [infoCopy setClusters:v18 withReason:@"DejunkAndDeduper"];
     }
 
-    v19 = [a1 assetsBeautifier];
+    assetsBeautifier = [self assetsBeautifier];
     if (v13)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -5093,11 +5093,11 @@ LABEL_8:
       }
     }
 
-    v21 = [v11 objectForKeyedSubscript:@"dedupingDuration"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"dedupingDuration"];
 
     if (v21)
     {
-      v22 = [v11 objectForKeyedSubscript:@"dedupingDuration"];
+      v22 = [optionsCopy objectForKeyedSubscript:@"dedupingDuration"];
       [v22 doubleValue];
       v24 = v23;
     }
@@ -5107,20 +5107,20 @@ LABEL_8:
       v24 = 60.0;
     }
 
-    v25 = [v11 objectForKeyedSubscript:@"dedupingSimilarity"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"dedupingSimilarity"];
 
     if (v25)
     {
-      v26 = [v11 objectForKeyedSubscript:@"dedupingSimilarity"];
-      v27 = [v26 integerValue];
+      v26 = [optionsCopy objectForKeyedSubscript:@"dedupingSimilarity"];
+      integerValue = [v26 integerValue];
     }
 
     else
     {
-      v27 = 2;
+      integerValue = 2;
     }
 
-    v28 = [v19 deduplicateItems:v10 withDuration:v27 andSimilarity:v12 debugInfo:v24];
+    v28 = [assetsBeautifier deduplicateItems:itemsCopy withDuration:integerValue andSimilarity:infoCopy debugInfo:v24];
     if ([v28 count])
     {
       if (!v13)
@@ -5131,7 +5131,7 @@ LABEL_8:
 
     else
     {
-      v29 = v10;
+      v29 = itemsCopy;
 
       v28 = v29;
       if (!v13)
@@ -5240,28 +5240,28 @@ LABEL_35:
   return v10;
 }
 
-- (id)_filteredAssetsForAssets:(id)a3 inMoments:(id)a4 keepFavorites:(BOOL)a5
+- (id)_filteredAssetsForAssets:(id)assets inMoments:(id)moments keepFavorites:(BOOL)favorites
 {
-  v5 = a5;
+  favoritesCopy = favorites;
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v34 = [MEMORY[0x277CBEB18] array];
-  v9 = [v8 count];
-  v10 = [v8 firstObject];
-  v11 = [v10 startDate];
-  [v11 timeIntervalSinceReferenceDate];
+  assetsCopy = assets;
+  momentsCopy = moments;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [momentsCopy count];
+  firstObject = [momentsCopy firstObject];
+  startDate = [firstObject startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v13 = v12;
 
-  v14 = [v10 endDate];
-  [v14 timeIntervalSinceReferenceDate];
+  endDate = [firstObject endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v16 = v15;
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v7;
+  obj = assetsCopy;
   v17 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v17)
   {
@@ -5278,7 +5278,7 @@ LABEL_35:
         }
 
         v22 = *(*(&v36 + 1) + 8 * i);
-        if (v5)
+        if (favoritesCopy)
         {
           if ([*(*(&v36 + 1) + 8 * i) isFavorite])
           {
@@ -5291,8 +5291,8 @@ LABEL_35:
           }
         }
 
-        v23 = [v22 creationDate];
-        [v23 timeIntervalSinceReferenceDate];
+        creationDate = [v22 creationDate];
+        [creationDate timeIntervalSinceReferenceDate];
         v25 = v24;
 
         if (v25 < v13)
@@ -5305,7 +5305,7 @@ LABEL_35:
           if (++v19 >= v9)
           {
 LABEL_15:
-            if (!v5)
+            if (!favoritesCopy)
             {
               goto LABEL_24;
             }
@@ -5315,15 +5315,15 @@ LABEL_15:
 
           while (1)
           {
-            v26 = v10;
-            v10 = [v8 objectAtIndexedSubscript:v19];
+            v26 = firstObject;
+            firstObject = [momentsCopy objectAtIndexedSubscript:v19];
 
-            v27 = [v10 startDate];
-            [v27 timeIntervalSinceReferenceDate];
+            startDate2 = [firstObject startDate];
+            [startDate2 timeIntervalSinceReferenceDate];
             v13 = v28;
 
-            v29 = [v10 endDate];
-            [v29 timeIntervalSinceReferenceDate];
+            endDate2 = [firstObject endDate];
+            [endDate2 timeIntervalSinceReferenceDate];
             v16 = v30;
 
             if (v16 >= v25)
@@ -5342,7 +5342,7 @@ LABEL_15:
         if (v25 >= v13 && v25 <= v16)
         {
 LABEL_21:
-          [v34 addObject:v22];
+          [array addObject:v22];
           continue;
         }
       }
@@ -5357,46 +5357,46 @@ LABEL_24:
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v34;
+  return array;
 }
 
 - (id)_libraryDateInterval
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v2 = [(PGCurationManager *)self photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PGCurationManager *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v4 = *MEMORY[0x277CD9B08];
   v22[0] = *MEMORY[0x277CD9AA8];
   v22[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-  [v3 setFetchPropertySets:v5];
+  [librarySpecificFetchOptions setFetchPropertySets:v5];
 
-  [v3 setFetchLimit:1];
-  [v3 setIncludeAssetSourceTypes:5];
+  [librarySpecificFetchOptions setFetchLimit:1];
+  [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v21 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-  [v3 setSortDescriptors:v7];
+  [librarySpecificFetchOptions setSortDescriptors:v7];
 
-  v8 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v3];
-  v9 = [v8 firstObject];
+  v8 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
+  firstObject = [v8 firstObject];
 
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v20 = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-  [v3 setSortDescriptors:v11];
+  [librarySpecificFetchOptions setSortDescriptors:v11];
 
-  v12 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v3];
-  v13 = [v12 firstObject];
+  v12 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
+  firstObject2 = [v12 firstObject];
 
-  v14 = [v9 creationDate];
-  v15 = [v13 creationDate];
-  v16 = v15;
+  creationDate = [firstObject creationDate];
+  creationDate2 = [firstObject2 creationDate];
+  v16 = creationDate2;
   v17 = 0;
-  if (v14 && v15)
+  if (creationDate && creationDate2)
   {
-    v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v14 endDate:v15];
+    v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:creationDate endDate:creationDate2];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -5404,15 +5404,15 @@ LABEL_24:
   return v17;
 }
 
-- (id)_firstBestFacedAssetInAssetCluster:(id)a3 facesByAssetIdentifiers:(id)a4
+- (id)_firstBestFacedAssetInAssetCluster:(id)cluster facesByAssetIdentifiers:(id)identifiers
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] == 1)
+  clusterCopy = cluster;
+  identifiersCopy = identifiers;
+  if ([clusterCopy count] == 1)
   {
-    v7 = [v5 firstObject];
-    [v7 curationScore];
+    firstObject = [clusterCopy firstObject];
+    [firstObject curationScore];
     if (v8 == *MEMORY[0x277D3C778])
     {
       v9 = 0;
@@ -5420,7 +5420,7 @@ LABEL_24:
 
     else
     {
-      v9 = v7;
+      v9 = firstObject;
     }
 
     v10 = v9;
@@ -5432,8 +5432,8 @@ LABEL_24:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = v5;
-    v11 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    firstObject = clusterCopy;
+    v11 = [firstObject countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v11)
     {
       v12 = v11;
@@ -5447,15 +5447,15 @@ LABEL_24:
         {
           if (*v30 != v13)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(firstObject);
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
           [v17 curationScore];
           if (v18 != v14)
           {
-            v19 = [v17 localIdentifier];
-            v20 = [v6 objectForKeyedSubscript:v19];
+            localIdentifier = [v17 localIdentifier];
+            v20 = [identifiersCopy objectForKeyedSubscript:localIdentifier];
             memset(v28, 0, sizeof(v28));
             if ([v20 countByEnumeratingWithState:v28 objects:v33 count:16])
             {
@@ -5491,7 +5491,7 @@ LABEL_24:
           }
         }
 
-        v12 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v12 = [firstObject countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v12);
@@ -5510,31 +5510,31 @@ LABEL_26:
   return v10;
 }
 
-- (id)_timeBasedAssetClustersForAssets:(id)a3 maximumClusterCount:(unint64_t)a4
+- (id)_timeBasedAssetClustersForAssets:(id)assets maximumClusterCount:(unint64_t)count
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a4];
-  v9 = [(PGCurationManager *)self _libraryDateInterval];
-  if (!v9)
+  assetsCopy = assets;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:count];
+  _libraryDateInterval = [(PGCurationManager *)self _libraryDateInterval];
+  if (!_libraryDateInterval)
   {
     v42 = MEMORY[0x277CBEBF8];
     goto LABEL_49;
   }
 
-  [v7 addObject:v9];
-  v51 = v9;
-  v52 = v6;
-  [v8 setObject:v6 forKeyedSubscript:v9];
-  if ([v7 count] >= a4)
+  [v7 addObject:_libraryDateInterval];
+  v51 = _libraryDateInterval;
+  v52 = assetsCopy;
+  [v8 setObject:assetsCopy forKeyedSubscript:_libraryDateInterval];
+  if ([v7 count] >= count)
   {
     goto LABEL_40;
   }
 
   v10 = 0;
   v54 = v7;
-  v55 = a4;
+  countCopy = count;
   do
   {
     if (v10 == [v7 count])
@@ -5556,8 +5556,8 @@ LABEL_26:
     {
       v13 = v12 - 1;
       v14 = [v7 objectAtIndexedSubscript:v12 - 1];
-      v15 = [v14 startDate];
-      v16 = [v14 endDate];
+      startDate = [v14 startDate];
+      endDate = [v14 endDate];
       [v14 duration];
       v18 = v17;
       v63 = [v8 objectForKeyedSubscript:v14];
@@ -5580,12 +5580,12 @@ LABEL_34:
     v62 = v12;
     v60 = v12 - 1;
     v19 = v18 * 0.5;
-    v57 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v15 duration:v19];
-    v56 = [v15 dateByAddingTimeInterval:v19 + 2.22044605e-16];
-    v58 = v16;
-    v20 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v56 endDate:v16];
-    v59 = v15;
-    [v15 timeIntervalSinceReferenceDate];
+    v57 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate duration:v19];
+    v56 = [startDate dateByAddingTimeInterval:v19 + 2.22044605e-16];
+    v58 = endDate;
+    v20 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v56 endDate:endDate];
+    v59 = startDate;
+    [startDate timeIntervalSinceReferenceDate];
     v22 = v21;
     v68 = 0u;
     v69 = 0u;
@@ -5625,8 +5625,8 @@ LABEL_26:
           objc_enumerationMutation(v23);
         }
 
-        v32 = [*(*(&v68 + 1) + 8 * v30) creationDate];
-        [v32 timeIntervalSinceReferenceDate];
+        creationDate = [*(*(&v68 + 1) + 8 * v30) creationDate];
+        [creationDate timeIntervalSinceReferenceDate];
         v34 = v33;
 
         if (v34 > v28)
@@ -5677,7 +5677,7 @@ LABEL_20:
 LABEL_30:
         [v7 setObject:v20 atIndexedSubscript:v13];
         [v8 setObject:v23 forKeyedSubscript:v20];
-        v15 = v59;
+        startDate = v59;
         v36 = v57;
         v37 = v7;
         v25 = v20;
@@ -5692,7 +5692,7 @@ LABEL_28:
     if (v27 == v35)
     {
       [v8 setObject:v23 forKeyedSubscript:v57];
-      v15 = v59;
+      startDate = v59;
       v37 = v7;
     }
 
@@ -5706,7 +5706,7 @@ LABEL_28:
       v39 = [v23 subarrayWithRange:{v27, objc_msgSend(v23, "count") - v27}];
       [v8 setObject:v39 forKeyedSubscript:v25];
 
-      v15 = v59;
+      startDate = v59;
     }
 
 LABEL_32:
@@ -5714,10 +5714,10 @@ LABEL_32:
     v7 = v37;
     v40 = [v37 count];
 
-    a4 = v55;
-    if (v40 < v55)
+    count = countCopy;
+    if (v40 < countCopy)
     {
-      v16 = v58;
+      endDate = v58;
       v10 = v61;
       v12 = v62;
       goto LABEL_34;
@@ -5728,7 +5728,7 @@ LABEL_39:
     objc_autoreleasePoolPop(context);
   }
 
-  while ([v7 count] < a4);
+  while ([v7 count] < count);
 LABEL_40:
   v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v64 = 0u;
@@ -5760,8 +5760,8 @@ LABEL_40:
     while (v45);
   }
 
-  v9 = v51;
-  v6 = v52;
+  _libraryDateInterval = v51;
+  assetsCopy = v52;
 LABEL_49:
 
   v49 = *MEMORY[0x277D85DE8];
@@ -5769,11 +5769,11 @@ LABEL_49:
   return v42;
 }
 
-- (id)curatedAssetsForPersonLocalIdentifier:(id)a3 progressBlock:(id)a4
+- (id)curatedAssetsForPersonLocalIdentifier:(id)identifier progressBlock:(id)block
 {
   v343 = *MEMORY[0x277D85DE8];
-  v258 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v318 = 0;
   v319 = &v318;
   v320 = 0x2020000000;
@@ -5782,8 +5782,8 @@ LABEL_49:
   v315 = &v314;
   v316 = 0x2020000000;
   v317 = 0;
-  v262 = _Block_copy(v5);
-  v246 = v5;
+  v262 = _Block_copy(blockCopy);
+  v246 = blockCopy;
   if (!v262 || (v6 = CFAbsoluteTimeGetCurrent(), v6 - v315[3] < 0.01) || (v315[3] = v6, LOBYTE(state.opaque[0]) = 0, (v262)[2](v262, &state, 0.0), v7 = *(v319 + 24) | LOBYTE(state.opaque[0]), *(v319 + 24) = v7, (v7 & 1) == 0))
   {
     v9 = _os_activity_create(&dword_22F0FC000, "Curated Assets for people", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -5792,16 +5792,16 @@ LABEL_49:
     os_activity_scope_enter(v9, &state);
     [(PGCurationManager *)self photoLibrary];
     v254 = v244 = v9;
-    v10 = [v254 librarySpecificFetchOptions];
-    [v10 setIncludedDetectionTypes:&unk_284486030];
-    v253 = v10;
+    librarySpecificFetchOptions = [v254 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_284486030];
+    v253 = librarySpecificFetchOptions;
     v11 = MEMORY[0x277CD9938];
-    v340 = v258;
+    v340 = identifierCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v340 count:1];
     v13 = [v11 fetchPersonsWithLocalIdentifiers:v12 options:v253];
-    v259 = [v13 firstObject];
+    firstObject = [v13 firstObject];
 
-    if (!v259)
+    if (!firstObject)
     {
       v8 = MEMORY[0x277CBEBF8];
 LABEL_267:
@@ -5810,13 +5810,13 @@ LABEL_267:
       goto LABEL_268;
     }
 
-    v260 = [v254 librarySpecificFetchOptions];
+    librarySpecificFetchOptions2 = [v254 librarySpecificFetchOptions];
     v339 = *MEMORY[0x277CD9A78];
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v339 count:1];
-    [v260 setFetchPropertySets:v14];
+    [librarySpecificFetchOptions2 setFetchPropertySets:v14];
 
     v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"highlightBeingExtendedAssets != nil"];
-    [v260 setInternalPredicate:v15];
+    [librarySpecificFetchOptions2 setInternalPredicate:v15];
 
     v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"dateCreated" ascending:1];
     v338[0] = v16;
@@ -5826,9 +5826,9 @@ LABEL_267:
     v338[2] = v18;
     v243 = [MEMORY[0x277CBEA60] arrayWithObjects:v338 count:3];
 
-    [v260 setInternalSortDescriptors:v243];
-    v19 = [MEMORY[0x277CD97A8] fetchAssetsForPerson:v259 options:v260];
-    v261 = [v19 fetchedObjects];
+    [librarySpecificFetchOptions2 setInternalSortDescriptors:v243];
+    v19 = [MEMORY[0x277CD97A8] fetchAssetsForPerson:firstObject options:librarySpecificFetchOptions2];
+    fetchedObjects = [v19 fetchedObjects];
     v238 = v19;
     if (v262)
     {
@@ -5859,7 +5859,7 @@ LABEL_19:
       }
     }
 
-    v23 = [v261 count];
+    v23 = [fetchedObjects count];
     if (!v23)
     {
       v8 = MEMORY[0x277CBEBF8];
@@ -5899,14 +5899,14 @@ LABEL_266:
 
     v234 = [objc_opt_class() maximumNumberOfItemsForDuration:4 withTotalNumberOfItems:v23];
     v222 = [objc_opt_class() minimumNumberOfItemsForDuration:4 withMaximumNumberOfItems:v234];
-    v265 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     for (i = 0; i != v23; ++i)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = [v261 objectAtIndexedSubscript:i];
+      v28 = [fetchedObjects objectAtIndexedSubscript:i];
       if ([v28 isFavorite])
       {
-        [v265 addObject:v28];
+        [array addObject:v28];
       }
 
       objc_autoreleasePoolPop(v27);
@@ -5953,8 +5953,8 @@ LABEL_266:
     [v34 setPredicate:v35];
     v236 = v34;
 
-    v36 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:v261 withType:3 options:v34];
-    v37 = [v36 fetchedObjects];
+    v36 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:fetchedObjects withType:3 options:v34];
+    fetchedObjects2 = [v36 fetchedObjects];
 
     if (v262)
     {
@@ -5987,25 +5987,25 @@ LABEL_266:
     [v40 setSortDescriptors:v237];
     v229 = v40;
     v41 = MEMORY[0x277CD97B8];
-    v42 = [v261 firstObject];
-    v336[0] = v42;
-    v43 = [v261 lastObject];
-    v336[1] = v43;
+    firstObject2 = [fetchedObjects firstObject];
+    v336[0] = firstObject2;
+    lastObject = [fetchedObjects lastObject];
+    v336[1] = lastObject;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v336 count:2];
     v228 = [v41 fetchAssetCollectionsContainingAssets:v44 withType:3 options:v229];
 
-    v233 = [v228 firstObject];
-    v232 = [v228 lastObject];
-    v45 = [v37 count];
+    firstObject3 = [v228 firstObject];
+    lastObject2 = [v228 lastObject];
+    v45 = [fetchedObjects2 count];
     if (!v45)
     {
       goto LABEL_45;
     }
 
-    v46 = [v37 firstObject];
-    v47 = [v46 localIdentifier];
-    v48 = [v233 localIdentifier];
-    v49 = [v47 isEqualToString:v48];
+    firstObject4 = [fetchedObjects2 firstObject];
+    localIdentifier = [firstObject4 localIdentifier];
+    localIdentifier2 = [firstObject3 localIdentifier];
+    v49 = [localIdentifier isEqualToString:localIdentifier2];
 
     if (v49)
     {
@@ -6025,16 +6025,16 @@ LABEL_266:
       v50 = v45;
     }
 
-    v52 = [v37 lastObject];
-    v53 = [v52 localIdentifier];
-    v54 = [v232 localIdentifier];
-    v55 = [v53 isEqualToString:v54];
+    lastObject3 = [fetchedObjects2 lastObject];
+    localIdentifier3 = [lastObject3 localIdentifier];
+    localIdentifier4 = [lastObject2 localIdentifier];
+    v55 = [localIdentifier3 isEqualToString:localIdentifier4];
 
     v56 = v50 - (v55 & 1);
     if (v45 == v56)
     {
 LABEL_45:
-      v231 = v37;
+      v231 = fetchedObjects2;
 LABEL_51:
       if (v262)
       {
@@ -6063,29 +6063,29 @@ LABEL_51:
         }
       }
 
-      v59 = [(PGCurationManager *)self _filteredAssetsForAssets:v261 inMoments:v231 keepFavorites:1];
+      v59 = [(PGCurationManager *)self _filteredAssetsForAssets:fetchedObjects inMoments:v231 keepFavorites:1];
       v226 = [v59 mutableCopy];
 
-      v60 = [v233 cls_universalEndDate];
-      [v60 timeIntervalSinceReferenceDate];
+      cls_universalEndDate = [firstObject3 cls_universalEndDate];
+      [cls_universalEndDate timeIntervalSinceReferenceDate];
       v62 = v61;
 
-      v63 = [v232 cls_universalStartDate];
-      [v63 timeIntervalSinceReferenceDate];
+      cls_universalStartDate = [lastObject2 cls_universalStartDate];
+      [cls_universalStartDate timeIntervalSinceReferenceDate];
       v65 = v64;
 
-      v247 = [MEMORY[0x277CBEB18] array];
-      v263 = [v265 count];
-      v248 = [MEMORY[0x277CBEB18] array];
-      v225 = [v265 firstObject];
-      if (v225 && ([v225 creationDate], v66 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v66, "timeIntervalSinceReferenceDate"), v68 = v67 > v62, v66, !v68))
+      array2 = [MEMORY[0x277CBEB18] array];
+      v263 = [array count];
+      array3 = [MEMORY[0x277CBEB18] array];
+      firstObject5 = [array firstObject];
+      if (firstObject5 && ([firstObject5 creationDate], v66 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v66, "timeIntervalSinceReferenceDate"), v68 = v67 > v62, v66, !v68))
       {
-        [v248 addObject:v225];
+        [array3 addObject:firstObject5];
         v311 = 0u;
         v310 = 0u;
         v309 = 0u;
         v308 = 0u;
-        v69 = v265;
+        v69 = array;
         v77 = [v69 countByEnumeratingWithState:&v308 objects:v335 count:16];
         if (v77)
         {
@@ -6100,8 +6100,8 @@ LABEL_70:
             }
 
             v80 = *(*(&v308 + 1) + 8 * v79);
-            v81 = [v80 creationDate];
-            [v81 timeIntervalSinceReferenceDate];
+            creationDate = [v80 creationDate];
+            [creationDate timeIntervalSinceReferenceDate];
             v83 = v82 > v62;
 
             if (v83)
@@ -6109,7 +6109,7 @@ LABEL_70:
               break;
             }
 
-            [v247 addObject:v80];
+            [array2 addObject:v80];
             if (v77 == ++v79)
             {
               v77 = [v69 countByEnumeratingWithState:&v308 objects:v335 count:16];
@@ -6130,7 +6130,7 @@ LABEL_70:
         v307 = 0u;
         v304 = 0u;
         v305 = 0u;
-        v69 = v261;
+        v69 = fetchedObjects;
         v70 = [v69 countByEnumeratingWithState:&v304 objects:v334 count:16];
         if (v70)
         {
@@ -6145,8 +6145,8 @@ LABEL_61:
             }
 
             v73 = *(*(&v304 + 1) + 8 * v72);
-            v74 = [v73 creationDate];
-            [v74 timeIntervalSinceReferenceDate];
+            creationDate2 = [v73 creationDate];
+            [creationDate2 timeIntervalSinceReferenceDate];
             v76 = v75 > v62;
 
             if (v76)
@@ -6154,7 +6154,7 @@ LABEL_61:
               break;
             }
 
-            [v248 addObject:v73];
+            [array3 addObject:v73];
             if (v70 == ++v72)
             {
               v70 = [v69 countByEnumeratingWithState:&v304 objects:v334 count:16];
@@ -6196,17 +6196,17 @@ LABEL_61:
         }
       }
 
-      v245 = [MEMORY[0x277CBEB18] array];
-      v227 = [v265 lastObject];
-      if (v227 && ([v227 creationDate], v86 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v86, "timeIntervalSinceReferenceDate"), v88 = v87 < v65, v86, !v88))
+      array4 = [MEMORY[0x277CBEB18] array];
+      lastObject4 = [array lastObject];
+      if (lastObject4 && ([lastObject4 creationDate], v86 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v86, "timeIntervalSinceReferenceDate"), v88 = v87 < v65, v86, !v88))
       {
-        [v245 addObject:v227];
+        [array4 addObject:lastObject4];
         v302 = 0u;
         v303 = 0u;
         v300 = 0u;
         v301 = 0u;
-        v89 = [v265 reverseObjectEnumerator];
-        v97 = [v89 countByEnumeratingWithState:&v300 objects:v333 count:16];
+        reverseObjectEnumerator = [array reverseObjectEnumerator];
+        v97 = [reverseObjectEnumerator countByEnumeratingWithState:&v300 objects:v333 count:16];
         if (v97)
         {
           v98 = *v301;
@@ -6216,12 +6216,12 @@ LABEL_95:
           {
             if (*v301 != v98)
             {
-              objc_enumerationMutation(v89);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v100 = *(*(&v300 + 1) + 8 * v99);
-            v101 = [v100 creationDate];
-            [v101 timeIntervalSinceReferenceDate];
+            creationDate3 = [v100 creationDate];
+            [creationDate3 timeIntervalSinceReferenceDate];
             v103 = v102 < v62;
 
             if (v103)
@@ -6229,10 +6229,10 @@ LABEL_95:
               break;
             }
 
-            [v247 addObject:v100];
+            [array2 addObject:v100];
             if (v97 == ++v99)
             {
-              v97 = [v89 countByEnumeratingWithState:&v300 objects:v333 count:16];
+              v97 = [reverseObjectEnumerator countByEnumeratingWithState:&v300 objects:v333 count:16];
               if (v97)
               {
                 goto LABEL_95;
@@ -6250,8 +6250,8 @@ LABEL_95:
         v299 = 0u;
         v296 = 0u;
         v297 = 0u;
-        v89 = [v261 reverseObjectEnumerator];
-        v90 = [v89 countByEnumeratingWithState:&v296 objects:v332 count:16];
+        reverseObjectEnumerator = [fetchedObjects reverseObjectEnumerator];
+        v90 = [reverseObjectEnumerator countByEnumeratingWithState:&v296 objects:v332 count:16];
         if (v90)
         {
           v91 = *v297;
@@ -6261,12 +6261,12 @@ LABEL_86:
           {
             if (*v297 != v91)
             {
-              objc_enumerationMutation(v89);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v93 = *(*(&v296 + 1) + 8 * v92);
-            v94 = [v93 creationDate];
-            [v94 timeIntervalSinceReferenceDate];
+            creationDate4 = [v93 creationDate];
+            [creationDate4 timeIntervalSinceReferenceDate];
             v96 = v95 < v65;
 
             if (v96)
@@ -6274,10 +6274,10 @@ LABEL_86:
               break;
             }
 
-            [v245 addObject:v93];
+            [array4 addObject:v93];
             if (v90 == ++v92)
             {
-              v90 = [v89 countByEnumeratingWithState:&v296 objects:v332 count:16];
+              v90 = [reverseObjectEnumerator countByEnumeratingWithState:&v296 objects:v332 count:16];
               if (v90)
               {
                 goto LABEL_86;
@@ -6289,9 +6289,9 @@ LABEL_86:
         }
       }
 
-      if ([v247 count])
+      if ([array2 count])
       {
-        [v226 removeObjectsInArray:v247];
+        [v226 removeObjectsInArray:array2];
       }
 
       if (v262)
@@ -6359,7 +6359,7 @@ LABEL_86:
         }
       }
 
-      v242 = [MEMORY[0x277CBEB18] array];
+      array5 = [MEMORY[0x277CBEB18] array];
       v230 = [MEMORY[0x277CD9880] fetchOptionsWithPhotoLibrary:v254 orObject:0];
       v331 = *MEMORY[0x277CD9BC8];
       v109 = [MEMORY[0x277CBEA60] arrayWithObjects:&v331 count:1];
@@ -6367,25 +6367,25 @@ LABEL_86:
 
       [v230 setIncludedDetectionTypes:&unk_284486048];
       v110 = MEMORY[0x277CCAC30];
-      v111 = [v259 objectID];
-      v112 = [v110 predicateWithFormat:@"%K = %@", @"personForFace", v111];
-      [v230 setInternalPredicate:v112];
+      objectID = [firstObject objectID];
+      v111 = [v110 predicateWithFormat:@"%K = %@", @"personForFace", objectID];
+      [v230 setInternalPredicate:v111];
 
-      v113 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:v261 options:v230];
-      v221 = [(PGCurationManager *)self _firstBestFacedAssetInAssetCluster:v248 facesByAssetIdentifiers:v113];
+      v113 = [MEMORY[0x277CD9868] fetchFacesGroupedByAssetLocalIdentifierForAssets:fetchedObjects options:v230];
+      v221 = [(PGCurationManager *)self _firstBestFacedAssetInAssetCluster:array3 facesByAssetIdentifiers:v113];
       if (v221)
       {
-        [v242 addObject:?];
+        [array5 addObject:?];
       }
 
       else
       {
-        v114 = [(PGCurationManager *)self curationLoggingConnection];
-        if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
+        curationLoggingConnection = [(PGCurationManager *)self curationLoggingConnection];
+        if (os_log_type_enabled(curationLoggingConnection, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *v342 = v248;
-          _os_log_impl(&dword_22F0FC000, v114, OS_LOG_TYPE_INFO, "nil asset from first asset cluster: %@", buf, 0xCu);
+          *v342 = array3;
+          _os_log_impl(&dword_22F0FC000, curationLoggingConnection, OS_LOG_TYPE_INFO, "nil asset from first asset cluster: %@", buf, 0xCu);
         }
       }
 
@@ -6420,7 +6420,7 @@ LABEL_261:
 LABEL_262:
 LABEL_263:
 
-            v37 = v231;
+            fetchedObjects2 = v231;
 LABEL_264:
 
 LABEL_265:
@@ -6534,8 +6534,8 @@ LABEL_178:
                     [v142 curationScore];
                     if (v143 != v119)
                     {
-                      v144 = [v142 localIdentifier];
-                      v145 = [v113 objectForKeyedSubscript:v144];
+                      localIdentifier5 = [v142 localIdentifier];
+                      v145 = [v113 objectForKeyedSubscript:localIdentifier5];
                       memset(v287, 0, sizeof(v287));
                       v146 = v145;
                       if ([v146 countByEnumeratingWithState:v287 objects:v328 count:16])
@@ -6543,7 +6543,7 @@ LABEL_178:
                         [**(&v287[0] + 1) size];
                         if (v147 >= 0.1 && v147 <= 0.7)
                         {
-                          [v242 addObject:v142];
+                          [array5 addObject:v142];
 
                           goto LABEL_161;
                         }
@@ -6564,18 +6564,18 @@ LABEL_178:
 
             else
             {
-              v124 = [v121 firstObject];
-              v125 = [v124 creationDate];
-              [v125 timeIntervalSinceReferenceDate];
+              firstObject6 = [v121 firstObject];
+              creationDate5 = [firstObject6 creationDate];
+              [creationDate5 timeIntervalSinceReferenceDate];
               v127 = v126;
 
               v128 = 0;
               while (1)
               {
-                v129 = [v265 objectAtIndexedSubscript:v118];
+                v129 = [array objectAtIndexedSubscript:v118];
 
-                v130 = [v129 creationDate];
-                [v130 timeIntervalSinceReferenceDate];
+                creationDate6 = [v129 creationDate];
+                [creationDate6 timeIntervalSinceReferenceDate];
                 v132 = v131;
 
                 if (v132 >= v127)
@@ -6599,9 +6599,9 @@ LABEL_143:
                 goto LABEL_143;
               }
 
-              v133 = [v121 lastObject];
-              v134 = [v133 creationDate];
-              [v134 timeIntervalSinceReferenceDate];
+              lastObject5 = [v121 lastObject];
+              creationDate7 = [lastObject5 creationDate];
+              [creationDate7 timeIntervalSinceReferenceDate];
               v136 = v132 > v135;
 
               if (v136)
@@ -6609,7 +6609,7 @@ LABEL_143:
                 goto LABEL_143;
               }
 
-              [v242 addObject:v129];
+              [array5 addObject:v129];
             }
 
 LABEL_161:
@@ -6649,25 +6649,25 @@ LABEL_161:
         }
       }
 
-      v152 = [(PGCurationManager *)self _firstBestFacedAssetInAssetCluster:v245 facesByAssetIdentifiers:v113];
+      v152 = [(PGCurationManager *)self _firstBestFacedAssetInAssetCluster:array4 facesByAssetIdentifiers:v113];
       if (v152)
       {
-        [v242 addObject:v152];
+        [array5 addObject:v152];
       }
 
       else
       {
-        v157 = [(PGCurationManager *)self curationLoggingConnection];
-        if (os_log_type_enabled(v157, OS_LOG_TYPE_INFO))
+        curationLoggingConnection2 = [(PGCurationManager *)self curationLoggingConnection];
+        if (os_log_type_enabled(curationLoggingConnection2, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *v342 = v245;
-          _os_log_impl(&dword_22F0FC000, v157, OS_LOG_TYPE_INFO, "nil asset from last asset cluster: %@", buf, 0xCu);
+          *v342 = array4;
+          _os_log_impl(&dword_22F0FC000, curationLoggingConnection2, OS_LOG_TYPE_INFO, "nil asset from last asset cluster: %@", buf, 0xCu);
         }
       }
 
       v220 = v152;
-      v158 = v242;
+      v158 = array5;
       if (v262 && (v159 = CFAbsoluteTimeGetCurrent(), v159 - v315[3] >= 0.01) && (v315[3] = v159, v312 = 0, v262[2](v262, &v312, 0.5), v160 = *(v319 + 24) | v312, *(v319 + 24) = v160, (v160 & 1) != 0))
       {
         v161 = MEMORY[0x277D86220];
@@ -6699,7 +6699,7 @@ LABEL_161:
           v284 = &v314;
           v286 = 0x3F847AE147AE147BLL;
           v285 = &v318;
-          v223 = [v163 performWithDataset:v261 progressBlock:v282];
+          v223 = [v163 performWithDataset:fetchedObjects progressBlock:v282];
           v219 = v163;
           if (*(v319 + 24) == 1)
           {
@@ -6737,9 +6737,9 @@ LABEL_161:
                     objc_enumerationMutation(v168);
                   }
 
-                  v172 = [*(*(&v278 + 1) + 8 * m) objects];
-                  v173 = [v172 firstObject];
-                  [v264 addObject:v173];
+                  objects = [*(*(&v278 + 1) + 8 * m) objects];
+                  firstObject7 = [objects firstObject];
+                  [v264 addObject:firstObject7];
                 }
 
                 v169 = [v168 countByEnumeratingWithState:&v278 objects:v327 count:16];
@@ -6755,7 +6755,7 @@ LABEL_161:
 
             v165 = [MEMORY[0x277CBEB98] setWithArray:v256];
             v252 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSObject count](v165, "count")}];
-            v176 = [MEMORY[0x277CBEB18] array];
+            array6 = [MEMORY[0x277CBEB18] array];
             v276 = 0u;
             v277 = 0u;
             v274 = 0u;
@@ -6777,7 +6777,7 @@ LABEL_161:
                   v181 = *(*(&v274 + 1) + 8 * n);
                   if (([v165 containsObject:v181]& 1) == 0)
                   {
-                    [v176 addObject:v181];
+                    [array6 addObject:v181];
                   }
                 }
 
@@ -6807,7 +6807,7 @@ LABEL_161:
 
             else
             {
-              v186 = [MEMORY[0x277CBEB18] array];
+              array7 = [MEMORY[0x277CBEB18] array];
               v187 = [MEMORY[0x277CBEB98] setWithArray:v177];
               v272 = 0u;
               v273 = 0u;
@@ -6830,7 +6830,7 @@ LABEL_161:
                     v192 = *(*(&v270 + 1) + 8 * ii);
                     if (([v187 containsObject:v192] & 1) == 0)
                     {
-                      [v186 addObject:v192];
+                      [array7 addObject:v192];
                     }
                   }
 
@@ -6844,7 +6844,7 @@ LABEL_161:
               v269 = 0u;
               v266 = 0u;
               v267 = 0u;
-              obja = v186;
+              obja = array7;
               v250 = [obja countByEnumeratingWithState:&v266 objects:v323 count:16];
               if (v250)
               {
@@ -6859,26 +6859,26 @@ LABEL_227:
                   }
 
                   v194 = *(*(&v266 + 1) + 8 * v193);
-                  if (![v176 count])
+                  if (![array6 count])
                   {
                     break;
                   }
 
-                  v195 = [v176 indexOfObject:v194 inSortedRange:0 options:objc_msgSend(v176 usingComparator:{"count"), 1024, &__block_literal_global_43624}];
-                  v257 = [v194 creationDate];
+                  v195 = [array6 indexOfObject:v194 inSortedRange:0 options:objc_msgSend(array6 usingComparator:{"count"), 1024, &__block_literal_global_43624}];
+                  creationDate8 = [v194 creationDate];
                   if (v195)
                   {
                     v196 = v195 - 1;
-                    if (v195 != [v176 count])
+                    if (v195 != [array6 count])
                     {
-                      v235 = [v176 objectAtIndexedSubscript:v195 - 1];
-                      v197 = [v235 creationDate];
-                      [v257 timeIntervalSinceDate:v197];
+                      v235 = [array6 objectAtIndexedSubscript:v195 - 1];
+                      creationDate9 = [v235 creationDate];
+                      [creationDate8 timeIntervalSinceDate:creationDate9];
                       v199 = v198;
 
-                      v200 = [v176 objectAtIndexedSubscript:v195];
-                      v201 = [v200 creationDate];
-                      [v201 timeIntervalSinceDate:v257];
+                      v200 = [array6 objectAtIndexedSubscript:v195];
+                      creationDate10 = [v200 creationDate];
+                      [creationDate10 timeIntervalSinceDate:creationDate8];
                       v203 = v202;
 
                       if (v199 >= v203)
@@ -6893,8 +6893,8 @@ LABEL_227:
                     v196 = 0;
                   }
 
-                  v204 = [v176 objectAtIndexedSubscript:v196];
-                  [v176 removeObjectAtIndex:v196];
+                  v204 = [array6 objectAtIndexedSubscript:v196];
+                  [array6 removeObjectAtIndex:v196];
                   [v252 addObject:v204];
 
                   if (v250 == ++v193)
@@ -6983,9 +6983,9 @@ LABEL_258:
     v231 = MEMORY[0x277CBEBF8];
     if (v56 && v56 + v51 <= v45)
     {
-      v231 = [v37 subarrayWithRange:v51];
+      v231 = [fetchedObjects2 subarrayWithRange:v51];
 
-      v37 = v231;
+      fetchedObjects2 = v231;
     }
 
 LABEL_50:
@@ -7041,18 +7041,18 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
   return v7;
 }
 
-+ (id)_filterAssets:(id)a3 withPositiveLocations:(id)a4 negativeLocations:(id)a5 maximumDistance:(double)a6
++ (id)_filterAssets:(id)assets withPositiveLocations:(id)locations negativeLocations:(id)negativeLocations maximumDistance:(double)distance
 {
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v35 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  locationsCopy = locations;
+  negativeLocationsCopy = negativeLocations;
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v9;
+  obj = assetsCopy;
   v11 = [obj countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v11)
   {
@@ -7068,14 +7068,14 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
         }
 
         v15 = *(*(&v44 + 1) + 8 * i);
-        v16 = [v15 location];
-        if (v16)
+        location = [v15 location];
+        if (location)
         {
           v42 = 0u;
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v17 = v35;
+          v17 = locationsCopy;
           v18 = [v17 countByEnumeratingWithState:&v40 objects:v49 count:16];
           if (v18)
           {
@@ -7091,7 +7091,7 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
                   objc_enumerationMutation(v17);
                 }
 
-                [v16 distanceFromLocation:*(*(&v40 + 1) + 8 * j)];
+                [location distanceFromLocation:*(*(&v40 + 1) + 8 * j)];
                 if (v23 < v21)
                 {
                   v21 = v23;
@@ -7113,7 +7113,7 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v24 = v10;
+          v24 = negativeLocationsCopy;
           v25 = [v24 countByEnumeratingWithState:&v36 objects:v48 count:16];
           if (v25)
           {
@@ -7129,7 +7129,7 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
                   objc_enumerationMutation(v24);
                 }
 
-                [v16 distanceFromLocation:*(*(&v36 + 1) + 8 * k)];
+                [location distanceFromLocation:*(*(&v36 + 1) + 8 * k)];
                 if (v30 < v28)
                 {
                   v28 = v30;
@@ -7147,7 +7147,7 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
             v28 = 1.79769313e308;
           }
 
-          if (v21 < a6 && v21 <= v28)
+          if (v21 < distance && v21 <= v28)
           {
             [v33 addObject:v15];
           }
@@ -7165,97 +7165,97 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
   return v33;
 }
 
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forLocationNodes:(id)a5 withMaximumDistance:(double)a6
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forLocationNodes:(id)locationNodes withMaximumDistance:(double)distance
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a4 addressNodes];
-  v13 = [v10 addressNodes];
+  locationNodesCopy = locationNodes;
+  assetsCopy = assets;
+  addressNodes = [nodes addressNodes];
+  addressNodes2 = [locationNodesCopy addressNodes];
 
-  v14 = [v12 collectionByIntersecting:v13];
-  v15 = [v12 collectionBySubtracting:v13];
-  v16 = [v14 locations];
-  v17 = [v15 locations];
-  v18 = [a1 _filterAssets:v11 withPositiveLocations:v16 negativeLocations:v17 maximumDistance:a6];
+  v14 = [addressNodes collectionByIntersecting:addressNodes2];
+  v15 = [addressNodes collectionBySubtracting:addressNodes2];
+  locations = [v14 locations];
+  locations2 = [v15 locations];
+  v18 = [self _filterAssets:assetsCopy withPositiveLocations:locations negativeLocations:locations2 maximumDistance:distance];
 
   return v18;
 }
 
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forStateNodes:(id)a5 withMaximumDistance:(double)a6
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forStateNodes:(id)stateNodes withMaximumDistance:(double)distance
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a4 addressNodes];
-  v13 = [v10 addressNodes];
+  stateNodesCopy = stateNodes;
+  assetsCopy = assets;
+  addressNodes = [nodes addressNodes];
+  addressNodes2 = [stateNodesCopy addressNodes];
 
-  v14 = [v12 collectionByIntersecting:v13];
-  v15 = [v12 collectionBySubtracting:v13];
-  v16 = [v14 locations];
-  v17 = [v15 locations];
-  v18 = [a1 _filterAssets:v11 withPositiveLocations:v16 negativeLocations:v17 maximumDistance:a6];
+  v14 = [addressNodes collectionByIntersecting:addressNodes2];
+  v15 = [addressNodes collectionBySubtracting:addressNodes2];
+  locations = [v14 locations];
+  locations2 = [v15 locations];
+  v18 = [self _filterAssets:assetsCopy withPositiveLocations:locations negativeLocations:locations2 maximumDistance:distance];
 
   return v18;
 }
 
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forAreaNodes:(id)a5 withMaximumDistance:(double)a6
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forAreaNodes:(id)areaNodes withMaximumDistance:(double)distance
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a4 addressNodes];
-  v13 = [v10 addressNodes];
+  areaNodesCopy = areaNodes;
+  assetsCopy = assets;
+  addressNodes = [nodes addressNodes];
+  addressNodes2 = [areaNodesCopy addressNodes];
 
-  v14 = [v12 collectionByIntersecting:v13];
-  v15 = [v12 collectionBySubtracting:v13];
-  v16 = [v14 locations];
-  v17 = [v15 locations];
-  v18 = [a1 _filterAssets:v11 withPositiveLocations:v16 negativeLocations:v17 maximumDistance:a6];
+  v14 = [addressNodes collectionByIntersecting:addressNodes2];
+  v15 = [addressNodes collectionBySubtracting:addressNodes2];
+  locations = [v14 locations];
+  locations2 = [v15 locations];
+  v18 = [self _filterAssets:assetsCopy withPositiveLocations:locations negativeLocations:locations2 maximumDistance:distance];
 
   return v18;
 }
 
-+ (id)filterAssets:(id)a3 inMomentNodes:(id)a4 forCityNodes:(id)a5 withMaximumDistance:(double)a6
++ (id)filterAssets:(id)assets inMomentNodes:(id)nodes forCityNodes:(id)cityNodes withMaximumDistance:(double)distance
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a4 addressNodes];
-  v13 = [v10 addressNodes];
+  cityNodesCopy = cityNodes;
+  assetsCopy = assets;
+  addressNodes = [nodes addressNodes];
+  addressNodes2 = [cityNodesCopy addressNodes];
 
-  v14 = [v12 collectionByIntersecting:v13];
-  v15 = [v12 collectionBySubtracting:v13];
-  v16 = [v14 locations];
-  v17 = [v15 locations];
-  v18 = [a1 _filterAssets:v11 withPositiveLocations:v16 negativeLocations:v17 maximumDistance:a6];
+  v14 = [addressNodes collectionByIntersecting:addressNodes2];
+  v15 = [addressNodes collectionBySubtracting:addressNodes2];
+  locations = [v14 locations];
+  locations2 = [v15 locations];
+  v18 = [self _filterAssets:assetsCopy withPositiveLocations:locations negativeLocations:locations2 maximumDistance:distance];
 
   return v18;
 }
 
-+ (id)filterAssets:(id)a3 withLocation:(id)a4 maximumDistance:(double)a5
++ (id)filterAssets:(id)assets withLocation:(id)location maximumDistance:(double)distance
 {
   v16 = *MEMORY[0x277D85DE8];
-  v15 = a4;
+  locationCopy = location;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v15 count:1];
+  locationCopy2 = location;
+  assetsCopy = assets;
+  v11 = [v8 arrayWithObjects:&locationCopy count:1];
 
-  v12 = [a1 filterAssets:v10 withLocations:v11 maximumDistance:{a5, v15, v16}];
+  v12 = [self filterAssets:assetsCopy withLocations:v11 maximumDistance:{distance, locationCopy, v16}];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)filterAssets:(id)a3 withLocations:(id)a4 maximumDistance:(double)a5
++ (id)filterAssets:(id)assets withLocations:(id)locations maximumDistance:(double)distance
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  locationsCopy = locations;
   v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v7;
+  obj = assetsCopy;
   v9 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v9)
   {
@@ -7271,14 +7271,14 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 location];
-        if (v14)
+        location = [v13 location];
+        if (location)
         {
           v27 = 0u;
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v15 = v8;
+          v15 = locationsCopy;
           v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v16)
           {
@@ -7293,8 +7293,8 @@ uint64_t __81__PGCurationManager_People__curatedAssetsForPersonLocalIdentifier_p
                   objc_enumerationMutation(v15);
                 }
 
-                [v14 distanceFromLocation:*(*(&v25 + 1) + 8 * j)];
-                if (v20 < a5)
+                [location distanceFromLocation:*(*(&v25 + 1) + 8 * j)];
+                if (v20 < distance)
                 {
                   [v23 addObject:v13];
                   goto LABEL_17;

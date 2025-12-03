@@ -1,30 +1,30 @@
 @interface PIRetouchCompositeNode
 - (NURenderNode)inputNode;
 - (PIRetouchCacheNode)retouchNode;
-- (PIRetouchCompositeNode)initWithScale:(id)a3 sampleMode:(int64_t)a4 input:(id)a5 retouch:(id)a6;
-- (PIRetouchCompositeNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PIRetouchCompositeNode)initWithScale:(id)scale sampleMode:(int64_t)mode input:(id)input retouch:(id)retouch;
+- (PIRetouchCompositeNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIRetouchCompositeNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PIRetouchCompositeNode *)self retouchNode];
-  v6 = [v5 outputImage:a3];
+  retouchNode = [(PIRetouchCompositeNode *)self retouchNode];
+  v6 = [retouchNode outputImage:image];
   if (!v6)
   {
     v14 = 0;
     goto LABEL_23;
   }
 
-  v7 = [v5 outputImageGeometry:a3];
+  v7 = [retouchNode outputImageGeometry:image];
   if (v7)
   {
-    v8 = [(PIRetouchCompositeNode *)self inputNode];
-    v9 = [v8 outputImage:a3];
+    inputNode = [(PIRetouchCompositeNode *)self inputNode];
+    v9 = [inputNode outputImage:image];
     if (!v9)
     {
       v14 = 0;
@@ -33,7 +33,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v56 = [v8 outputImageGeometry:a3];
+    v56 = [inputNode outputImageGeometry:image];
     if (!v56)
     {
       v14 = 0;
@@ -57,12 +57,12 @@ LABEL_19:
       v55 = *&v22;
       v24 = COERCE_DOUBLE([v56 scaledSize]);
       v26 = v25;
-      v27 = [v5 outputRegion];
+      outputRegion = [retouchNode outputRegion];
       v69.a = 0.0;
       v69.b = 0.0;
       v69.c = v55;
       v69.d = v54;
-      v53 = [v27 regionByFlippingInRect:&v69];
+      v53 = [outputRegion regionByFlippingInRect:&v69];
 
       v28 = [v53 regionByScalingBy:0 withRounding:{v13, v13}];
       v69.a = 0.0;
@@ -71,8 +71,8 @@ LABEL_19:
       v69.d = v26;
       v29 = [v28 regionByClippingToRect:&v69];
 
-      v30 = [v5 padding];
-      v31 = vcvtpd_s64_f64(v13 * v30);
+      padding = [retouchNode padding];
+      v31 = vcvtpd_s64_f64(v13 * padding);
       v69.a = 0.0;
       v69.b = 0.0;
       v69.c = v24;
@@ -92,7 +92,7 @@ LABEL_19:
       v57[3] = &unk_1E82AA3C0;
       v62 = v52;
       v63 = v51;
-      v64 = v30;
+      v64 = padding;
       v6 = v6;
       v58 = v6;
       v34 = v50;
@@ -139,8 +139,8 @@ LABEL_19:
               v45 = dispatch_get_specific(*v39);
               v46 = MEMORY[0x1E696AF00];
               v47 = v45;
-              v48 = [v46 callStackSymbols];
-              v49 = [v48 componentsJoinedByString:@"\n"];
+              callStackSymbols = [v46 callStackSymbols];
+              v49 = [callStackSymbols componentsJoinedByString:@"\n"];
               LODWORD(v69.a) = 138543618;
               *(&v69.a + 4) = v45;
               WORD2(v69.b) = 2114;
@@ -151,8 +151,8 @@ LABEL_19:
 
           else if (v42)
           {
-            v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v44 = [v43 componentsJoinedByString:@"\n"];
+            callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v44 = [callStackSymbols2 componentsJoinedByString:@"\n"];
             LODWORD(v69.a) = 138543362;
             *(&v69.a + 4) = v44;
             _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v69, 0xCu);
@@ -165,9 +165,9 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v19 = [v6 imageBySamplingNearest];
+      imageBySamplingNearest = [v6 imageBySamplingNearest];
 
-      v6 = v19;
+      v6 = imageBySamplingNearest;
     }
 
     else if (sampleMode != 2)
@@ -283,11 +283,11 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = PIRetouchCompositeNode;
-  v7 = [(NURenderNode *)&v9 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v9 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   *(v7 + 168) = self->_scale;
   *(v7 + 184) = self->_sampleMode;
 
@@ -296,27 +296,27 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
 
 - (PIRetouchCacheNode)retouchNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
 - (NURenderNode)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FA48]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FA48]];
 
   return v3;
 }
 
-- (PIRetouchCompositeNode)initWithScale:(id)a3 sampleMode:(int64_t)a4 input:(id)a5 retouch:(id)a6
+- (PIRetouchCompositeNode)initWithScale:(id)scale sampleMode:(int64_t)mode input:(id)input retouch:(id)retouch
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
+  inputCopy = input;
+  retouchCopy = retouch;
   if ((NUScaleIsValid() & 1) == 0)
   {
     v20 = NUAssertLogger_6588();
@@ -328,7 +328,7 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_6588();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -336,11 +336,11 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
     {
       if (v25)
       {
-        v33 = dispatch_get_specific(*v22);
+        v33 = dispatch_get_specific(*callStackSymbols);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v22 = [v34 callStackSymbols];
-        v36 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v33;
         v49 = 2114;
@@ -351,10 +351,10 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v48 = v22;
+      v48 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -362,7 +362,7 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!mode)
   {
     v27 = NUAssertLogger_6588();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -373,7 +373,7 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v29 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_6588();
     v30 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -381,8 +381,8 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
     {
       if (v30)
       {
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v32 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v48 = v32;
         _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -394,11 +394,11 @@ void __41__PIRetouchCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
 LABEL_17:
     if (v30)
     {
-      v37 = dispatch_get_specific(*v22);
+      v37 = dispatch_get_specific(*callStackSymbols);
       v38 = MEMORY[0x1E696AF00];
       v39 = v37;
-      v40 = [v38 callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v38 callStackSymbols];
+      v41 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v48 = v37;
       v49 = 2114;
@@ -415,7 +415,7 @@ LABEL_19:
   v13 = NUScaleToString();
   v46[0] = v13;
   v45[1] = @"sampleMode";
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v45[2] = @"__dominantInputSettingsKey";
   v15 = *MEMORY[0x1E695FA48];
   v46[1] = v14;
@@ -424,24 +424,24 @@ LABEL_19:
 
   v43[0] = *MEMORY[0x1E695FAB0];
   v43[1] = v15;
-  v44[0] = v12;
-  v44[1] = v11;
+  v44[0] = retouchCopy;
+  v44[1] = inputCopy;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:2];
   v42.receiver = self;
   v42.super_class = PIRetouchCompositeNode;
   v18 = [(NURenderNode *)&v42 initWithSettings:v16 inputs:v17];
   v18->_scale.numerator = var0;
   v18->_scale.denominator = var1;
-  v18->_sampleMode = a4;
+  v18->_sampleMode = mode;
 
   return v18;
 }
 
-- (PIRetouchCompositeNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIRetouchCompositeNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -480,8 +480,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -508,8 +508,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

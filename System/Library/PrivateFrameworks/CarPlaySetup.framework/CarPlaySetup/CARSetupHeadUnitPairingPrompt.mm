@@ -1,11 +1,11 @@
 @interface CARSetupHeadUnitPairingPrompt
 - (BOOL)wantsToPresentHeadUnitPairing;
-- (CARSetupHeadUnitPairingPrompt)initWithKeyIdentifier:(id)a3;
+- (CARSetupHeadUnitPairingPrompt)initWithKeyIdentifier:(id)identifier;
 - (CARSetupHeadUnitPairingPromptDelegate)delegate;
 - (id)headUnitPairingPromptViewController;
-- (void)_servicePerform:(id)a3;
+- (void)_servicePerform:(id)perform;
 - (void)_setupConnection;
-- (void)_synchronous_servicePerform:(id)a3;
+- (void)_synchronous_servicePerform:(id)perform;
 - (void)dealloc;
 - (void)invalidate;
 - (void)presentHeadUnitPairingPrompt;
@@ -13,16 +13,16 @@
 
 @implementation CARSetupHeadUnitPairingPrompt
 
-- (CARSetupHeadUnitPairingPrompt)initWithKeyIdentifier:(id)a3
+- (CARSetupHeadUnitPairingPrompt)initWithKeyIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CARSetupHeadUnitPairingPrompt;
   v6 = [(CARSetupHeadUnitPairingPrompt *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyIdentifier, a3);
+    objc_storeStrong(&v6->_keyIdentifier, identifier);
     [(CARSetupHeadUnitPairingPrompt *)v7 _setupConnection];
   }
 
@@ -190,8 +190,8 @@ void __61__CARSetupHeadUnitPairingPrompt_presentHeadUnitPairingPrompt__block_inv
 
 - (void)invalidate
 {
-  v3 = [(CARSetupHeadUnitPairingPrompt *)self connection];
-  [v3 invalidate];
+  connection = [(CARSetupHeadUnitPairingPrompt *)self connection];
+  [connection invalidate];
 
   [(CARSetupHeadUnitPairingPrompt *)self setConnection:0];
 }
@@ -245,13 +245,13 @@ void __49__CARSetupHeadUnitPairingPrompt__setupConnection__block_invoke_66(uint6
   [WeakRetained invalidate];
 }
 
-- (void)_servicePerform:(id)a3
+- (void)_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CARSetupHeadUnitPairingPrompt *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+  performCopy = perform;
+  connection = [(CARSetupHeadUnitPairingPrompt *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
 void __49__CARSetupHeadUnitPairingPrompt__servicePerform___block_invoke(uint64_t a1, void *a2)
@@ -264,13 +264,13 @@ void __49__CARSetupHeadUnitPairingPrompt__servicePerform___block_invoke(uint64_t
   }
 }
 
-- (void)_synchronous_servicePerform:(id)a3
+- (void)_synchronous_servicePerform:(id)perform
 {
-  v4 = a3;
-  v5 = [(CARSetupHeadUnitPairingPrompt *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_69];
+  performCopy = perform;
+  connection = [(CARSetupHeadUnitPairingPrompt *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_69];
 
-  v4[2](v4, v6);
+  performCopy[2](performCopy, v6);
 }
 
 void __61__CARSetupHeadUnitPairingPrompt__synchronous_servicePerform___block_invoke(uint64_t a1, void *a2)

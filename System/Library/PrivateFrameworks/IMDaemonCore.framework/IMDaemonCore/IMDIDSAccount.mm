@@ -1,23 +1,23 @@
 @interface IMDIDSAccount
 - (BOOL)canMakeDowngradeRoutingChecks;
 - (BOOL)multiplePhoneNumbersTiedToAccount;
-- (IMDIDSAccount)initWithAccountID:(id)a3 defaults:(id)a4 service:(id)a5 idsAccount:(id)a6;
+- (IMDIDSAccount)initWithAccountID:(id)d defaults:(id)defaults service:(id)service idsAccount:(id)account;
 - (id)accountDefaults;
 - (id)description;
-- (void)writeAccountDefaults:(id)a3;
+- (void)writeAccountDefaults:(id)defaults;
 @end
 
 @implementation IMDIDSAccount
 
 - (id)accountDefaults
 {
-  v3 = [(IDSAccount *)self->_idsAccount accountInfo];
-  v4 = [v3 mutableCopy];
+  accountInfo = [(IDSAccount *)self->_idsAccount accountInfo];
+  v4 = [accountInfo mutableCopy];
 
   v5 = *MEMORY[0x277D18AB0];
   v6 = [v4 objectForKey:*MEMORY[0x277D18AB0]];
-  v7 = [(IMDAccount *)self service];
-  v8 = [v7 imdAccountLoginFromIDSAccountWithType:-[IDSAccount accountType](self->_idsAccount login:{"accountType"), v6}];
+  service = [(IMDAccount *)self service];
+  v8 = [service imdAccountLoginFromIDSAccountWithType:-[IDSAccount accountType](self->_idsAccount login:{"accountType"), v6}];
 
   [v4 setObject:v8 forKey:v5];
 
@@ -27,54 +27,54 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMDAccount *)self accountID];
-  v5 = [(IMDIDSAccount *)self idsAccount];
-  v6 = [v3 stringWithFormat:@"<IMDIDSAccount:%p, ID:%@, idsAccount:%@ >", self, v4, v5];
+  accountID = [(IMDAccount *)self accountID];
+  idsAccount = [(IMDIDSAccount *)self idsAccount];
+  v6 = [v3 stringWithFormat:@"<IMDIDSAccount:%p, ID:%@, idsAccount:%@ >", self, accountID, idsAccount];
 
   return v6;
 }
 
-- (IMDIDSAccount)initWithAccountID:(id)a3 defaults:(id)a4 service:(id)a5 idsAccount:(id)a6
+- (IMDIDSAccount)initWithAccountID:(id)d defaults:(id)defaults service:(id)service idsAccount:(id)account
 {
-  v11 = a6;
+  accountCopy = account;
   v15.receiver = self;
   v15.super_class = IMDIDSAccount;
-  v12 = [(IMDAccount *)&v15 initWithAccountID:a3 defaults:a4 service:a5];
+  v12 = [(IMDAccount *)&v15 initWithAccountID:d defaults:defaults service:service];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_idsAccount, a6);
+    objc_storeStrong(&v12->_idsAccount, account);
   }
 
   return v13;
 }
 
-- (void)writeAccountDefaults:(id)a3
+- (void)writeAccountDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   if ([(IDSAccount *)self->_idsAccount accountType]!= 2)
   {
-    v5 = [(IMDAccount *)self service];
-    v6 = [v5 canManageRegistration];
+    service = [(IMDAccount *)self service];
+    canManageRegistration = [service canManageRegistration];
 
-    if (v6)
+    if (canManageRegistration)
     {
-      v7 = [MEMORY[0x277D19298] registration];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+      registration = [MEMORY[0x277D19298] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
       {
         sub_22B7D9C74();
       }
 
-      if ([v4 count])
+      if ([defaultsCopy count])
       {
-        v8 = [v4 mutableCopy];
+        v8 = [defaultsCopy mutableCopy];
         v9 = *MEMORY[0x277D19420];
         v10 = [v8 objectForKey:*MEMORY[0x277D19420]];
         if (v10)
         {
           v11 = v10;
-          v12 = [MEMORY[0x277D19298] registration];
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+          registration2 = [MEMORY[0x277D19298] registration];
+          if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEBUG))
           {
             sub_22B7D9CF8();
           }
@@ -84,8 +84,8 @@
           if ([v13 length])
           {
             [v8 setObject:v13 forKey:v9];
-            v14 = [MEMORY[0x277D19298] registration];
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+            registration3 = [MEMORY[0x277D19298] registration];
+            if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEBUG))
             {
               sub_22B7D9D60();
             }
@@ -94,8 +94,8 @@
           else
           {
             [v8 removeObjectForKey:v9];
-            v14 = [MEMORY[0x277D19298] registration];
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+            registration3 = [MEMORY[0x277D19298] registration];
+            if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEBUG))
             {
               sub_22B7D9DC8();
             }
@@ -115,8 +115,8 @@
 
 - (BOOL)canMakeDowngradeRoutingChecks
 {
-  v2 = [(IMDIDSAccount *)self idsAccount];
-  v3 = [v2 accountType] == 0;
+  idsAccount = [(IMDIDSAccount *)self idsAccount];
+  v3 = [idsAccount accountType] == 0;
 
   return v3;
 }
@@ -128,10 +128,10 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v2 = [(IMDIDSAccount *)self idsAccount];
-  v3 = [v2 devices];
+  idsAccount = [(IMDIDSAccount *)self idsAccount];
+  devices = [idsAccount devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v4 = [devices countByEnumeratingWithState:&v26 objects:v31 count:16];
   v5 = v4 != 0;
   if (v4)
   {
@@ -144,11 +144,11 @@
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
-        v10 = [*(*(&v26 + 1) + 8 * i) linkedUserURIs];
-        v11 = [v10 count];
+        linkedUserURIs = [*(*(&v26 + 1) + 8 * i) linkedUserURIs];
+        v11 = [linkedUserURIs count];
 
         if (((v11 != 0) & v7) != 0)
         {
@@ -158,7 +158,7 @@
         v7 |= v11 != 0;
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v6 = [devices countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v6)
       {
         continue;
@@ -174,9 +174,9 @@
       v22 = 0u;
       v23 = 0u;
       v12 = +[IMDAccountController sharedInstance];
-      v3 = [v12 accounts];
+      devices = [v12 accounts];
 
-      v13 = [v3 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v13 = [devices countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (!v13)
       {
 LABEL_19:
@@ -192,17 +192,17 @@ LABEL_12:
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v17 = *(*(&v22 + 1) + 8 * v16);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v17 idsAccount];
-          v19 = [v18 accountType];
+          idsAccount2 = [v17 idsAccount];
+          accountType = [idsAccount2 accountType];
 
-          if (!v19)
+          if (!accountType)
           {
             break;
           }
@@ -210,7 +210,7 @@ LABEL_12:
 
         if (v14 == ++v16)
         {
-          v14 = [v3 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v14 = [devices countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v14)
           {
             goto LABEL_12;

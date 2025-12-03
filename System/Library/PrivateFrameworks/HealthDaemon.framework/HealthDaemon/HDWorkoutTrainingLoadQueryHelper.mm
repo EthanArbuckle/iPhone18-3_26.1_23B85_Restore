@@ -1,56 +1,56 @@
 @interface HDWorkoutTrainingLoadQueryHelper
-- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)a3 options:(int64_t)a4 anchorDate:(id)a5 intervalComponents:(id)a6 profile:(id)a7;
-- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)a3 options:(int64_t)a4 profile:(id)a5;
-- (id)_calculatorWithIntervalCollection:(id)a3;
-- (id)_trainingLoadFromStatistics:(id)a3 count:(int64_t)a4;
-- (void)fetchTrainingLoadCollectionWithCompletion:(id)a3;
-- (void)fetchTrainingLoadWithCompletion:(id)a3;
+- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)filter options:(int64_t)options anchorDate:(id)date intervalComponents:(id)components profile:(id)profile;
+- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)filter options:(int64_t)options profile:(id)profile;
+- (id)_calculatorWithIntervalCollection:(id)collection;
+- (id)_trainingLoadFromStatistics:(id)statistics count:(int64_t)count;
+- (void)fetchTrainingLoadCollectionWithCompletion:(id)completion;
+- (void)fetchTrainingLoadWithCompletion:(id)completion;
 @end
 
 @implementation HDWorkoutTrainingLoadQueryHelper
 
-- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)a3 options:(int64_t)a4 profile:(id)a5
+- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)filter options:(int64_t)options profile:(id)profile
 {
-  v8 = a3;
-  v9 = a5;
+  filterCopy = filter;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = HDWorkoutTrainingLoadQueryHelper;
   v10 = [(HDWorkoutTrainingLoadQueryHelper *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_profile, v9);
-    v12 = [v8 copy];
+    objc_storeWeak(&v10->_profile, profileCopy);
+    v12 = [filterCopy copy];
     filter = v11->_filter;
     v11->_filter = v12;
 
-    v11->_options = a4;
+    v11->_options = options;
   }
 
   return v11;
 }
 
-- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)a3 options:(int64_t)a4 anchorDate:(id)a5 intervalComponents:(id)a6 profile:(id)a7
+- (HDWorkoutTrainingLoadQueryHelper)initWithFilter:(id)filter options:(int64_t)options anchorDate:(id)date intervalComponents:(id)components profile:(id)profile
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [a5 copy];
+  profileCopy = profile;
+  componentsCopy = components;
+  filterCopy = filter;
+  v15 = [date copy];
   anchorDate = self->_anchorDate;
   self->_anchorDate = v15;
 
-  v17 = [v13 copy];
+  v17 = [componentsCopy copy];
   intervalComponents = self->_intervalComponents;
   self->_intervalComponents = v17;
 
-  v19 = [(HDWorkoutTrainingLoadQueryHelper *)self initWithFilter:v14 options:a4 profile:v12];
+  v19 = [(HDWorkoutTrainingLoadQueryHelper *)self initWithFilter:filterCopy options:options profile:profileCopy];
   return v19;
 }
 
-- (void)fetchTrainingLoadWithCompletion:(id)a3
+- (void)fetchTrainingLoadWithCompletion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDWorkoutTrainingLoadQueryHelper *)self _calculatorWithIntervalCollection:0];
   v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -62,8 +62,8 @@
   v39[3] = &unk_27861BFD0;
   v9 = v5;
   v40 = v9;
-  v41 = self;
-  v10 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v33 = v7;
   v42 = v33;
   v11 = v6;
@@ -71,8 +71,8 @@
   if ([(HDWorkoutTrainingLoadDataSource *)dataSource samplesForCalculatorWithHandler:v39])
   {
     v31 = v9;
-    v32 = v4;
-    v29 = [v9 currentStatistics];
+    v32 = completionCopy;
+    currentStatistics = [v9 currentStatistics];
     v30 = v11;
     v35 = 0u;
     v36 = 0u;
@@ -94,10 +94,10 @@
           }
 
           v17 = *(*(&v35 + 1) + 8 * i);
-          v18 = [v12 objectForKeyedSubscript:{v17, v29}];
-          v19 = [v18 currentStatistics];
+          v18 = [v12 objectForKeyedSubscript:{v17, currentStatistics}];
+          currentStatistics2 = [v18 currentStatistics];
           v20 = [v33 objectForKeyedSubscript:v17];
-          v21 = -[HDWorkoutTrainingLoadQueryHelper _trainingLoadFromStatistics:count:](v10, "_trainingLoadFromStatistics:count:", v19, [v20 count]);
+          v21 = -[HDWorkoutTrainingLoadQueryHelper _trainingLoadFromStatistics:count:](selfCopy2, "_trainingLoadFromStatistics:count:", currentStatistics2, [v20 count]);
 
           v22 = [v34 objectForKeyedSubscript:v17];
 
@@ -113,24 +113,24 @@
       while (v14);
     }
 
-    if ([v29 dataCount])
+    if ([currentStatistics dataCount])
     {
       v23 = objc_alloc(MEMORY[0x277CCDCC8]);
-      v24 = -[HDWorkoutTrainingLoadQueryHelper _trainingLoadFromStatistics:count:](v10, "_trainingLoadFromStatistics:count:", v29, [v29 dataCount]);
+      v24 = -[HDWorkoutTrainingLoadQueryHelper _trainingLoadFromStatistics:count:](selfCopy2, "_trainingLoadFromStatistics:count:", currentStatistics, [currentStatistics dataCount]);
       v25 = [v23 initWithTotalTrainingLoad:v24 trainingloadByActivityType:v34];
 
-      v4 = v32;
+      completionCopy = v32;
     }
 
     else
     {
       _HKInitializeLogging();
       v27 = *MEMORY[0x277CCC330];
-      v4 = v32;
+      completionCopy = v32;
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v46 = v10;
+        selfCopy3 = selfCopy2;
         _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_INFO, "%{public}@: No training load to return", buf, 0xCu);
       }
 
@@ -139,7 +139,7 @@
 
     v11 = v30;
     v9 = v31;
-    v4[2](v4, v25, 0);
+    completionCopy[2](completionCopy, v25, 0);
   }
 
   else
@@ -149,13 +149,13 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v46 = self;
+      selfCopy3 = self;
       v47 = 2114;
       v48 = 0;
       _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "%{public}@: Failed querying training load with error : %{public}@", buf, 0x16u);
     }
 
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -256,10 +256,10 @@ uint64_t __68__HDWorkoutTrainingLoadQueryHelper_fetchTrainingLoadWithCompletion_
   return v4;
 }
 
-- (void)fetchTrainingLoadCollectionWithCompletion:(id)a3
+- (void)fetchTrainingLoadCollectionWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x277CCDD78]) initWithAnchorDate:self->_anchorDate intervalComponents:self->_intervalComponents];
   v6 = [(HDWorkoutTrainingLoadQueryHelper *)self _calculatorWithIntervalCollection:v5];
   v31 = 0;
@@ -285,7 +285,7 @@ uint64_t __68__HDWorkoutTrainingLoadQueryHelper_fetchTrainingLoadWithCompletion_
   v23 = &unk_27861C070;
   v11 = v6;
   v24 = v11;
-  v25 = self;
+  selfCopy = self;
   v12 = v7;
   v26 = v12;
   v13 = v8;
@@ -301,7 +301,7 @@ uint64_t __68__HDWorkoutTrainingLoadQueryHelper_fetchTrainingLoadWithCompletion_
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v38 = self;
+      selfCopy2 = self;
       v39 = 2114;
       v40 = 0;
       _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Failed querying training load with error : %{public}@", buf, 0x16u);
@@ -318,9 +318,9 @@ LABEL_6:
   }
 
   v16 = objc_alloc(MEMORY[0x277CCDCB8]);
-  v17 = [v16 initWithTotalTrainingLoadCollection:v32[5] collectionByActivityType:{v15, v20, v21, v22, v23, v24, v25, v26, v27, v28}];
+  v17 = [v16 initWithTotalTrainingLoadCollection:v32[5] collectionByActivityType:{v15, v20, v21, v22, v23, v24, selfCopy, v26, v27, v28}];
 LABEL_7:
-  v4[2](v4, v17, 0);
+  completionCopy[2](completionCopy, v17, 0);
 
   _Block_object_dispose(&v31, 8);
   v19 = *MEMORY[0x277D85DE8];
@@ -513,12 +513,12 @@ void __78__HDWorkoutTrainingLoadQueryHelper_fetchTrainingLoadCollectionWithCompl
   [v14 setObject:v13 forKeyedSubscript:v15];
 }
 
-- (id)_trainingLoadFromStatistics:(id)a3 count:(int64_t)a4
+- (id)_trainingLoadFromStatistics:(id)statistics count:(int64_t)count
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 sumQuantity];
-  [v7 _value];
+  statisticsCopy = statistics;
+  sumQuantity = [statisticsCopy sumQuantity];
+  [sumQuantity _value];
   v9 = v8;
 
   if (v9 == 0.0)
@@ -528,37 +528,37 @@ void __78__HDWorkoutTrainingLoadQueryHelper_fetchTrainingLoadCollectionWithCompl
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
     {
       v20 = 138543362;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_INFO, "%{public}@: No training load. Returning 0 value ", &v20, 0xCu);
     }
   }
 
   v11 = objc_alloc(MEMORY[0x277CCA970]);
-  v12 = [v6 startDate];
-  v13 = [v6 endDate];
-  v14 = [v11 initWithStartDate:v12 endDate:v13];
+  startDate = [statisticsCopy startDate];
+  endDate = [statisticsCopy endDate];
+  v14 = [v11 initWithStartDate:startDate endDate:endDate];
 
   v15 = objc_alloc(MEMORY[0x277CCDCA0]);
-  v16 = [v6 sumQuantity];
+  sumQuantity2 = [statisticsCopy sumQuantity];
 
-  v17 = [v15 initWithQuantity:v16 dateInterval:v14 count:a4];
+  v17 = [v15 initWithQuantity:sumQuantity2 dateInterval:v14 count:count];
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (id)_calculatorWithIntervalCollection:(id)a3
+- (id)_calculatorWithIntervalCollection:(id)collection
 {
   v4 = MEMORY[0x277CCD830];
   v5 = *MEMORY[0x277CCCCD8];
-  v6 = a3;
+  collectionCopy = collection;
   v7 = [v4 quantityTypeForIdentifier:v5];
-  v8 = [MEMORY[0x277CCDAB0] appleEffortScoreUnit];
-  v9 = [MEMORY[0x277CCDAB0] secondUnit];
-  v10 = [v8 unitMultipliedByUnit:v9];
+  appleEffortScoreUnit = [MEMORY[0x277CCDAB0] appleEffortScoreUnit];
+  secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+  v10 = [appleEffortScoreUnit unitMultipliedByUnit:secondUnit];
   v11 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:v7 aggregationStyle:0 canonicalUnit:v10 shouldUseUnderlyingTypeForStatistics:0];
 
-  v12 = [HDStatisticsCollectionCalculator calculatorForQuantityType:v11 intervalCollection:v6 options:16 mergeStrategy:0 computationMethod:0];
+  v12 = [HDStatisticsCollectionCalculator calculatorForQuantityType:v11 intervalCollection:collectionCopy options:16 mergeStrategy:0 computationMethod:0];
 
   v13 = [HDStatisticsCollectionCalculatorDefaultSourceOrderProvider alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profile);

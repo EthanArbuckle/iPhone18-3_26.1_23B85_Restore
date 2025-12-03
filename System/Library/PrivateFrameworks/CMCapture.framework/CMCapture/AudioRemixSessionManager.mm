@@ -1,17 +1,17 @@
 @interface AudioRemixSessionManager
-- (AudioRemixSessionManager)initWithNodeMetadataOutput:(id)a3;
-- (int)_handleSessionCreated:(id)a3;
-- (int)_handleSubscriberCompletedFromCancellation:(BOOL)a3;
-- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)a3 andEndingPTS:(id *)a4;
+- (AudioRemixSessionManager)initWithNodeMetadataOutput:(id)output;
+- (int)_handleSessionCreated:(id)created;
+- (int)_handleSubscriberCompletedFromCancellation:(BOOL)cancellation;
+- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)s andEndingPTS:(id *)tS;
 - (int)startNewSessionBlocking;
 - (void)abortSessionIfNeeded;
 - (void)dealloc;
-- (void)submitAudioBuffer:(id)a3;
+- (void)submitAudioBuffer:(id)buffer;
 @end
 
 @implementation AudioRemixSessionManager
 
-- (AudioRemixSessionManager)initWithNodeMetadataOutput:(id)a3
+- (AudioRemixSessionManager)initWithNodeMetadataOutput:(id)output
 {
   v7.receiver = self;
   v7.super_class = AudioRemixSessionManager;
@@ -22,7 +22,7 @@
     v4->_workQueue = dispatch_queue_create("com.apple.cameracapture.audioremixanalysis.application", v5);
     v4->_subscriber = 0;
     v4->_session = 0;
-    v4->_nodeMetadataOutput = a3;
+    v4->_nodeMetadataOutput = output;
     v4->_sampleRate = 0.0;
     v4->_channelCount = 0;
   }
@@ -30,13 +30,13 @@
   return v4;
 }
 
-- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)a3 andEndingPTS:(id *)a4
+- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)s andEndingPTS:(id *)tS
 {
   subscriber = self->_subscriber;
   if (subscriber)
   {
-    v7 = *a3;
-    v6 = *a4;
+    v7 = *s;
+    v6 = *tS;
     return [(AudioRemixSubscriber *)subscriber finishAndGetResultsBlockingWithStartingPTS:&v7 andEndingPTS:&v6];
   }
 
@@ -159,9 +159,9 @@ intptr_t __51__AudioRemixSessionManager_startNewSessionBlocking__block_invoke(ui
   }
 }
 
-- (int)_handleSubscriberCompletedFromCancellation:(BOOL)a3
+- (int)_handleSubscriberCompletedFromCancellation:(BOOL)cancellation
 {
-  if (!a3)
+  if (!cancellation)
   {
     return 0;
   }
@@ -172,7 +172,7 @@ intptr_t __51__AudioRemixSessionManager_startNewSessionBlocking__block_invoke(ui
   return v6;
 }
 
-- (int)_handleSessionCreated:(id)a3
+- (int)_handleSessionCreated:(id)created
 {
   v9 = 0;
   v10 = &v9;
@@ -188,7 +188,7 @@ intptr_t __51__AudioRemixSessionManager_startNewSessionBlocking__block_invoke(ui
   block[1] = 3221225472;
   block[2] = __50__AudioRemixSessionManager__handleSessionCreated___block_invoke;
   block[3] = &unk_1E79907B0;
-  block[5] = a3;
+  block[5] = created;
   block[6] = &v9;
   block[4] = self;
   dispatch_sync(workQueue, block);
@@ -260,9 +260,9 @@ uint64_t __50__AudioRemixSessionManager__handleSessionCreated___block_invoke_2(u
   return result;
 }
 
-- (void)submitAudioBuffer:(id)a3
+- (void)submitAudioBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
     [(SNMovieRemixSession *)self->_session yieldBuffer:?];
   }

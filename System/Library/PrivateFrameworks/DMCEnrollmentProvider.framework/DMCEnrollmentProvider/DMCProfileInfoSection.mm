@@ -1,31 +1,31 @@
 @interface DMCProfileInfoSection
-- (DMCProfileInfoSection)initWithCoder:(id)a3;
-- (DMCProfileInfoSection)initWithSectionTitle:(id)a3 footer:(id)a4 attributedText:(id)a5;
-- (DMCProfileInfoSection)initWithSectionTitle:(id)a3 footer:(id)a4 text:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (DMCProfileInfoSection)initWithCoder:(id)coder;
+- (DMCProfileInfoSection)initWithSectionTitle:(id)title footer:(id)footer attributedText:(id)text;
+- (DMCProfileInfoSection)initWithSectionTitle:(id)title footer:(id)footer text:(id)text;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMCProfileInfoSection
 
-- (DMCProfileInfoSection)initWithSectionTitle:(id)a3 footer:(id)a4 text:(id)a5
+- (DMCProfileInfoSection)initWithSectionTitle:(id)title footer:(id)footer text:(id)text
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  footerCopy = footer;
+  textCopy = text;
   v19.receiver = self;
   v19.super_class = DMCProfileInfoSection;
   v11 = [(DMCProfileInfoSection *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     sectionTitle = v11->_sectionTitle;
     v11->_sectionTitle = v12;
 
-    v14 = [v9 copy];
+    v14 = [footerCopy copy];
     sectionFooter = v11->_sectionFooter;
     v11->_sectionFooter = v14;
 
-    v16 = [v10 copy];
+    v16 = [textCopy copy];
     sectionText = v11->_sectionText;
     v11->_sectionText = v16;
   }
@@ -33,17 +33,17 @@
   return v11;
 }
 
-- (DMCProfileInfoSection)initWithSectionTitle:(id)a3 footer:(id)a4 attributedText:(id)a5
+- (DMCProfileInfoSection)initWithSectionTitle:(id)title footer:(id)footer attributedText:(id)text
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 string];
-  v12 = [(DMCProfileInfoSection *)self initWithSectionTitle:v10 footer:v9 text:v11];
+  textCopy = text;
+  footerCopy = footer;
+  titleCopy = title;
+  string = [textCopy string];
+  v12 = [(DMCProfileInfoSection *)self initWithSectionTitle:titleCopy footer:footerCopy text:string];
 
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [textCopy copy];
     sectionAttributedText = v12->_sectionAttributedText;
     v12->_sectionAttributedText = v13;
   }
@@ -51,47 +51,47 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DMCProfileInfoSection *)self sectionTitle];
-  [v4 encodeObject:v5 forKey:@"sectionTitle"];
+  coderCopy = coder;
+  sectionTitle = [(DMCProfileInfoSection *)self sectionTitle];
+  [coderCopy encodeObject:sectionTitle forKey:@"sectionTitle"];
 
-  v6 = [(DMCProfileInfoSection *)self sectionFooter];
-  [v4 encodeObject:v6 forKey:@"sectionFooter"];
+  sectionFooter = [(DMCProfileInfoSection *)self sectionFooter];
+  [coderCopy encodeObject:sectionFooter forKey:@"sectionFooter"];
 
-  v7 = [(DMCProfileInfoSection *)self sectionText];
-  [v4 encodeObject:v7 forKey:@"sectionText"];
+  sectionText = [(DMCProfileInfoSection *)self sectionText];
+  [coderCopy encodeObject:sectionText forKey:@"sectionText"];
 
-  v8 = [(DMCProfileInfoSection *)self sectionAttributedText];
-  [v4 encodeObject:v8 forKey:@"sectionAttributedText"];
+  sectionAttributedText = [(DMCProfileInfoSection *)self sectionAttributedText];
+  [coderCopy encodeObject:sectionAttributedText forKey:@"sectionAttributedText"];
 }
 
-- (DMCProfileInfoSection)initWithCoder:(id)a3
+- (DMCProfileInfoSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = DMCProfileInfoSection;
   v5 = [(DMCProfileInfoSection *)&v19 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"sectionTitle"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"sectionTitle"];
     sectionTitle = v5->_sectionTitle;
     v5->_sectionTitle = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"sectionFooter"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"sectionFooter"];
     sectionFooter = v5->_sectionFooter;
     v5->_sectionFooter = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"sectionText"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"sectionText"];
     sectionText = v5->_sectionText;
     v5->_sectionText = v13;
 
     v15 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"sectionAttributedText"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"sectionAttributedText"];
     sectionAttributedText = v5->_sectionAttributedText;
     v5->_sectionAttributedText = v16;
   }

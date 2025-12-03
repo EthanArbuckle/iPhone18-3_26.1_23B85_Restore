@@ -1,15 +1,15 @@
 @interface CharacteristicReadWriteLogEventObserver
 - (_TtC19HomeKitDaemonLegacy39CharacteristicReadWriteLogEventObserver)init;
-- (void)observeEvent:(id)a3;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation CharacteristicReadWriteLogEventObserver
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_25322DC78(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_25322DC78(eventCopy);
 }
 
 - (_TtC19HomeKitDaemonLegacy39CharacteristicReadWriteLogEventObserver)init

@@ -1,19 +1,19 @@
 @interface SFTextSearchMatchesCounter
-- (BOOL)canSkipCountingMatchesForQueryString:(id)a3 wordMatchMethod:(int64_t)a4;
+- (BOOL)canSkipCountingMatchesForQueryString:(id)string wordMatchMethod:(int64_t)method;
 - (BOOL)searchTookTooLong;
 - (NSOrderedSet)allFoundRanges;
-- (SFTextSearchMatchesCounter)initWithQueryString:(id)a3 completionHandler:(id)a4;
+- (SFTextSearchMatchesCounter)initWithQueryString:(id)string completionHandler:(id)handler;
 - (void)finishedSearching;
-- (void)foundRange:(id)a3 forSearchString:(id)a4 inDocument:(id)a5;
-- (void)invalidateFoundRange:(id)a3 inDocument:(id)a4;
+- (void)foundRange:(id)range forSearchString:(id)string inDocument:(id)document;
+- (void)invalidateFoundRange:(id)range inDocument:(id)document;
 @end
 
 @implementation SFTextSearchMatchesCounter
 
-- (SFTextSearchMatchesCounter)initWithQueryString:(id)a3 completionHandler:(id)a4
+- (SFTextSearchMatchesCounter)initWithQueryString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = SFTextSearchMatchesCounter;
   v8 = [(SFTextSearchMatchesCounter *)&v19 init];
@@ -23,15 +23,15 @@
     startDateOfSearch = v8->_startDateOfSearch;
     v8->_startDateOfSearch = v9;
 
-    v11 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     allFoundRanges = v8->_allFoundRanges;
-    v8->_allFoundRanges = v11;
+    v8->_allFoundRanges = orderedSet;
 
-    v13 = _Block_copy(v7);
+    v13 = _Block_copy(handlerCopy);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v13;
 
-    v15 = [v6 copy];
+    v15 = [stringCopy copy];
     queryString = v8->_queryString;
     v8->_queryString = v15;
 
@@ -42,17 +42,17 @@
   return v8;
 }
 
-- (BOOL)canSkipCountingMatchesForQueryString:(id)a3 wordMatchMethod:(int64_t)a4
+- (BOOL)canSkipCountingMatchesForQueryString:(id)string wordMatchMethod:(int64_t)method
 {
-  v6 = a3;
-  if (a4 == 2 || self->_valid || [(NSMutableOrderedSet *)self->_allFoundRanges count])
+  stringCopy = string;
+  if (method == 2 || self->_valid || [(NSMutableOrderedSet *)self->_allFoundRanges count])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v6 hasPrefix:self->_queryString];
+    v7 = [stringCopy hasPrefix:self->_queryString];
   }
 
   return v7;
@@ -77,19 +77,19 @@
   return v2;
 }
 
-- (void)foundRange:(id)a3 forSearchString:(id)a4 inDocument:(id)a5
+- (void)foundRange:(id)range forSearchString:(id)string inDocument:(id)document
 {
   if (self->_valid)
   {
-    [(NSMutableOrderedSet *)self->_allFoundRanges addObject:a3, a4, a5];
+    [(NSMutableOrderedSet *)self->_allFoundRanges addObject:range, string, document];
   }
 }
 
-- (void)invalidateFoundRange:(id)a3 inDocument:(id)a4
+- (void)invalidateFoundRange:(id)range inDocument:(id)document
 {
   if (self->_valid)
   {
-    [(NSMutableOrderedSet *)self->_allFoundRanges removeObject:a3, a4];
+    [(NSMutableOrderedSet *)self->_allFoundRanges removeObject:range, document];
   }
 }
 
@@ -101,9 +101,9 @@
 
   if (self->_valid)
   {
-    v5 = [(SFTextSearchMatchesCounter *)self searchTookTooLong];
+    searchTookTooLong = [(SFTextSearchMatchesCounter *)self searchTookTooLong];
     completionHandler = self->_completionHandler;
-    if (v5)
+    if (searchTookTooLong)
     {
       v7 = 0x7FFFFFFFFFFFFFFFLL;
     }

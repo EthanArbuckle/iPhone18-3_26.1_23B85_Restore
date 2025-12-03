@@ -1,23 +1,23 @@
 @interface SIRINLUEXTERNALCDMNluRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPreviousTurnInputs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPreviousTurnInputs:(id)inputs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALCDMNluRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (requestId)
   {
     if (v6)
@@ -32,7 +32,7 @@
   }
 
   currentTurnInput = self->_currentTurnInput;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (currentTurnInput)
   {
     if (v8)
@@ -50,7 +50,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 2);
+  v9 = *(fromCopy + 2);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -84,13 +84,13 @@
   return v4 ^ [(NSMutableArray *)self->_previousTurnInputs hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | v4[3])) || -[SIRINLUEXTERNALRequestID isEqual:](requestId, "isEqual:")) && ((currentTurnInput = self->_currentTurnInput, !(currentTurnInput | v4[1])) || -[SIRINLUEXTERNALTurnInput isEqual:](currentTurnInput, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | equalCopy[3])) || -[SIRINLUEXTERNALRequestID isEqual:](requestId, "isEqual:")) && ((currentTurnInput = self->_currentTurnInput, !(currentTurnInput | equalCopy[1])) || -[SIRINLUEXTERNALTurnInput isEqual:](currentTurnInput, "isEqual:")))
   {
     previousTurnInputs = self->_previousTurnInputs;
-    if (previousTurnInputs | v4[2])
+    if (previousTurnInputs | equalCopy[2])
     {
       v8 = [(NSMutableArray *)previousTurnInputs isEqual:?];
     }
@@ -109,15 +109,15 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALRequestID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALRequestID *)self->_requestId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(SIRINLUEXTERNALTurnInput *)self->_currentTurnInput copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALTurnInput *)self->_currentTurnInput copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -141,7 +141,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addPreviousTurnInputs:v15];
 
         ++v14;
@@ -158,39 +158,39 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v8 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if (self->_currentTurnInput)
   {
-    [v8 setCurrentTurnInput:?];
+    [toCopy setCurrentTurnInput:?];
   }
 
   if ([(SIRINLUEXTERNALCDMNluRequest *)self previousTurnInputsCount])
   {
-    [v8 clearPreviousTurnInputs];
-    v4 = [(SIRINLUEXTERNALCDMNluRequest *)self previousTurnInputsCount];
-    if (v4)
+    [toCopy clearPreviousTurnInputs];
+    previousTurnInputsCount = [(SIRINLUEXTERNALCDMNluRequest *)self previousTurnInputsCount];
+    if (previousTurnInputsCount)
     {
-      v5 = v4;
+      v5 = previousTurnInputsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALCDMNluRequest *)self previousTurnInputsAtIndex:i];
-        [v8 addPreviousTurnInputs:v7];
+        [toCopy addPreviousTurnInputs:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
@@ -239,19 +239,19 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALRequestID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALRequestID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   currentTurnInput = self->_currentTurnInput;
   if (currentTurnInput)
   {
-    v7 = [(SIRINLUEXTERNALTurnInput *)currentTurnInput dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"current_turn_input"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALTurnInput *)currentTurnInput dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"current_turn_input"];
   }
 
   if ([(NSMutableArray *)self->_previousTurnInputs count])
@@ -276,8 +276,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -286,12 +286,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"previous_turn_inputs"];
+    [dictionary setObject:v8 forKey:@"previous_turn_inputs"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -300,28 +300,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALCDMNluRequest;
   v4 = [(SIRINLUEXTERNALCDMNluRequest *)&v8 description];
-  v5 = [(SIRINLUEXTERNALCDMNluRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALCDMNluRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addPreviousTurnInputs:(id)a3
+- (void)addPreviousTurnInputs:(id)inputs
 {
-  v4 = a3;
+  inputsCopy = inputs;
   previousTurnInputs = self->_previousTurnInputs;
-  v8 = v4;
+  v8 = inputsCopy;
   if (!previousTurnInputs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_previousTurnInputs;
     self->_previousTurnInputs = v6;
 
-    v4 = v8;
+    inputsCopy = v8;
     previousTurnInputs = self->_previousTurnInputs;
   }
 
-  [(NSMutableArray *)previousTurnInputs addObject:v4];
+  [(NSMutableArray *)previousTurnInputs addObject:inputsCopy];
 }
 
 @end

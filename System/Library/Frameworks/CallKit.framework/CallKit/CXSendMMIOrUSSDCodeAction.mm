@@ -1,8 +1,8 @@
 @interface CXSendMMIOrUSSDCodeAction
-- (CXSendMMIOrUSSDCodeAction)initWithCoder:(id)a3;
+- (CXSendMMIOrUSSDCodeAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSendMMIOrUSSDCodeAction
@@ -11,51 +11,51 @@
 {
   v7.receiver = self;
   v7.super_class = CXSendMMIOrUSSDCodeAction;
-  v3 = [(CXAction *)&v7 customDescription];
-  v4 = [(CXSendMMIOrUSSDCodeAction *)self code];
-  [v3 appendFormat:@" code=%@", v4];
+  customDescription = [(CXAction *)&v7 customDescription];
+  code = [(CXSendMMIOrUSSDCodeAction *)self code];
+  [customDescription appendFormat:@" code=%@", code];
 
-  [v3 appendFormat:@" ttyType=%ld", -[CXSendMMIOrUSSDCodeAction ttyType](self, "ttyType")];
-  v5 = [(CXSendMMIOrUSSDCodeAction *)self senderIdentityUUID];
-  [v3 appendFormat:@" senderIdentityUUID=%@", v5];
+  [customDescription appendFormat:@" ttyType=%ld", -[CXSendMMIOrUSSDCodeAction ttyType](self, "ttyType")];
+  senderIdentityUUID = [(CXSendMMIOrUSSDCodeAction *)self senderIdentityUUID];
+  [customDescription appendFormat:@" senderIdentityUUID=%@", senderIdentityUUID];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CXSendMMIOrUSSDCodeAction;
-  v6 = a3;
-  [(CXAction *)&v9 updateCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXAction *)&v9 updateCopy:copyCopy withZone:zone];
   v7 = [(CXSendMMIOrUSSDCodeAction *)self code:v9.receiver];
-  [v6 setCode:v7];
+  [copyCopy setCode:v7];
 
-  [v6 setTtyType:{-[CXSendMMIOrUSSDCodeAction ttyType](self, "ttyType")}];
-  v8 = [(CXSendMMIOrUSSDCodeAction *)self senderIdentityUUID];
-  [v6 setSenderIdentityUUID:v8];
+  [copyCopy setTtyType:{-[CXSendMMIOrUSSDCodeAction ttyType](self, "ttyType")}];
+  senderIdentityUUID = [(CXSendMMIOrUSSDCodeAction *)self senderIdentityUUID];
+  [copyCopy setSenderIdentityUUID:senderIdentityUUID];
 }
 
-- (CXSendMMIOrUSSDCodeAction)initWithCoder:(id)a3
+- (CXSendMMIOrUSSDCodeAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CXSendMMIOrUSSDCodeAction;
-  v5 = [(CXAction *)&v16 initWithCoder:v4];
+  v5 = [(CXAction *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_code);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     code = v5->_code;
     v5->_code = v8;
 
     v10 = NSStringFromSelector(sel_ttyType);
-    v5->_ttyType = [v4 decodeIntegerForKey:v10];
+    v5->_ttyType = [coderCopy decodeIntegerForKey:v10];
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_senderIdentityUUID);
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     senderIdentityUUID = v5->_senderIdentityUUID;
     v5->_senderIdentityUUID = v13;
   }
@@ -63,23 +63,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CXSendMMIOrUSSDCodeAction;
-  v4 = a3;
-  [(CXAction *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXAction *)&v11 encodeWithCoder:coderCopy];
   v5 = [(CXSendMMIOrUSSDCodeAction *)self code:v11.receiver];
   v6 = NSStringFromSelector(sel_code);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(CXSendMMIOrUSSDCodeAction *)self ttyType];
+  ttyType = [(CXSendMMIOrUSSDCodeAction *)self ttyType];
   v8 = NSStringFromSelector(sel_ttyType);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:ttyType forKey:v8];
 
-  v9 = [(CXSendMMIOrUSSDCodeAction *)self senderIdentityUUID];
+  senderIdentityUUID = [(CXSendMMIOrUSSDCodeAction *)self senderIdentityUUID];
   v10 = NSStringFromSelector(sel_senderIdentityUUID);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:senderIdentityUUID forKey:v10];
 }
 
 @end

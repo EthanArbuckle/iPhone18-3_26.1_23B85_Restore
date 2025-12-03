@@ -1,6 +1,6 @@
 @interface MCMCodeSignInfo
-- (MCMCodeSignInfo)initWithAuditToken:(id *)a3;
-- (MCMCodeSignInfo)initWithURL:(id)a3 error:(unint64_t *)a4;
+- (MCMCodeSignInfo)initWithAuditToken:(id *)token;
+- (MCMCodeSignInfo)initWithURL:(id)l error:(unint64_t *)error;
 - (NSDictionary)entitlements;
 - (NSString)identifier;
 - (unsigned)platform;
@@ -32,16 +32,16 @@
   return result;
 }
 
-- (MCMCodeSignInfo)initWithAuditToken:(id *)a3
+- (MCMCodeSignInfo)initWithAuditToken:(id *)token
 {
   v28 = *MEMORY[0x1E69E9840];
 
-  v4 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v4 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v4;
   pid = container_audit_token_get_pid();
-  v6 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v6 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v6;
   v7 = container_audit_token_copy_codesign_identifier();
   __s = v7;
@@ -65,8 +65,8 @@
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v7];
   free(v8);
   memset_s(&__s, 8uLL, 0, 8uLL);
-  v10 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v10 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v10;
   v11 = container_audit_token_copy_entitlement();
   if (!v11)
@@ -107,8 +107,8 @@ LABEL_16:
   }
 
   v14 = v13;
-  v15 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v15 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v15;
   platform = container_audit_token_get_platform();
   v25.receiver = 0;
@@ -129,15 +129,15 @@ LABEL_17:
   return v22;
 }
 
-- (MCMCodeSignInfo)initWithURL:(id)a3 error:(unint64_t *)a4
+- (MCMCodeSignInfo)initWithURL:(id)l error:(unint64_t *)error
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = MCMCodeSignInfo;
 
-  if (a4)
+  if (error)
   {
-    *a4 = 72;
+    *error = 72;
   }
 
   v5 = *MEMORY[0x1E69E9840];

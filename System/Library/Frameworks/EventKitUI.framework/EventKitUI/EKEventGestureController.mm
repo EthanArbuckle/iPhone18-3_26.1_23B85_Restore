@@ -1,122 +1,122 @@
 @interface EKEventGestureController
-+ (id)_captureImageOfOccurrenceView:(id)a3 withFrameOfOpaqueContent:(CGRect)a4;
-- (BOOL)__timedDelegateBeginEditingSessionAtPoint:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)_beginEditingSessionAtPoint:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)_beginNewDragFromOffStateWithPoint:(CGPoint)a3;
-- (BOOL)_calendarCanAcceptManagedData:(id)a3;
++ (id)_captureImageOfOccurrenceView:(id)view withFrameOfOpaqueContent:(CGRect)content;
+- (BOOL)__timedDelegateBeginEditingSessionAtPoint:(CGPoint)point withEvent:(id)event;
+- (BOOL)_beginEditingSessionAtPoint:(CGPoint)point withEvent:(id)event;
+- (BOOL)_beginNewDragFromOffStateWithPoint:(CGPoint)point;
+- (BOOL)_calendarCanAcceptManagedData:(id)data;
 - (BOOL)_flingOrCancelDraggingViewIfNeeded;
-- (BOOL)_isPointInCancelRegion:(CGPoint)a3;
-- (BOOL)_setDraggingState:(int)a3 withPoint:(CGPoint)a4 event:(id)a5 context:(id)a6;
-- (BOOL)canProposeNewTime:(id)a3;
+- (BOOL)_isPointInCancelRegion:(CGPoint)region;
+- (BOOL)_setDraggingState:(int)state withPoint:(CGPoint)point event:(id)event context:(id)context;
+- (BOOL)canProposeNewTime:(id)time;
 - (BOOL)dragGestureInProgress;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)splitMultiDays;
-- (CGPoint)_computeOriginAtTouchPoint:(CGPoint)a3 forDate:(double)a4 isAllDay:(BOOL)a5 allowXOffset:(BOOL)a6 allowFloorAtRegionBottom:(BOOL)a7;
+- (CGPoint)_computeOriginAtTouchPoint:(CGPoint)point forDate:(double)date isAllDay:(BOOL)day allowXOffset:(BOOL)offset allowFloorAtRegionBottom:(BOOL)bottom;
 - (CGPoint)_estimateFinalDropOriginForTimedDelegate;
 - (CGPoint)firstTouchPoint;
 - (CGPoint)latestTouchPoint;
 - (CGPoint)touchOffset;
-- (CGRect)_calculateFrameForDraggingViewIncludingTravelTime:(BOOL)a3;
+- (CGRect)_calculateFrameForDraggingViewIncludingTravelTime:(BOOL)time;
 - (EKCalendarDate)occurrenceDate;
-- (EKEventGestureController)initWithView:(id)a3;
+- (EKEventGestureController)initWithView:(id)view;
 - (EKEventGestureControllerDelegate)delegate;
 - (EKEventGestureControllerUntimedDelegate)untimedDelegate;
-- (double)_Debug_HoursSinceStartOfDay:(double)a3;
-- (double)_alignedYOriginForAllDayOccurrence:(id)a3 atPoint:(CGPoint)a4 floorAtAllDayRegionBottom:(BOOL)a5;
+- (double)_Debug_HoursSinceStartOfDay:(double)day;
+- (double)_alignedYOriginForAllDayOccurrence:(id)occurrence atPoint:(CGPoint)point floorAtAllDayRegionBottom:(BOOL)bottom;
 - (double)_allDayBottomPadding;
 - (double)_cancelRegionMargin;
-- (double)_capOccurrenceViewYOrigin:(double)a3 ignoreTopInsets:(BOOL)a4;
-- (double)_computeHeightForOccurrenceViewOfDuration:(double)a3 event:(id)a4 allDay:(BOOL)a5;
+- (double)_capOccurrenceViewYOrigin:(double)origin ignoreTopInsets:(BOOL)insets;
+- (double)_computeHeightForOccurrenceViewOfDuration:(double)duration event:(id)event allDay:(BOOL)day;
 - (double)_computeWidthForOccurrenceView;
 - (double)_minimumDuration;
-- (double)defaultDurationForEvent:(id)a3;
+- (double)defaultDurationForEvent:(id)event;
 - (id)_acceptedExternalTypes;
 - (id)_acceptedFileExternalTypes;
 - (id)_acceptedTypes;
 - (id)_captureImageOfDraggingView;
 - (id)_clippingPathForDraggingView;
-- (id)_createNewEventIfNeededAtPoint:(CGPoint)a3;
-- (id)_createTemporaryView:(id)a3 animated:(BOOL)a4;
-- (id)_debugStringForDraggingState:(int)a3;
-- (id)_eventToUseAtInteractionStart:(CGPoint)a3 outOccurrenceView:(id *)a4;
-- (id)_findFirstCalendar:(id)a3;
-- (id)_findLocalDragItemInSession:(id)a3;
-- (id)_getEventUsingDropSession:(id)a3;
+- (id)_createNewEventIfNeededAtPoint:(CGPoint)point;
+- (id)_createTemporaryView:(id)view animated:(BOOL)animated;
+- (id)_debugStringForDraggingState:(int)state;
+- (id)_eventToUseAtInteractionStart:(CGPoint)start outOccurrenceView:(id *)view;
+- (id)_findFirstCalendar:(id)calendar;
+- (id)_findLocalDragItemInSession:(id)session;
+- (id)_getEventUsingDropSession:(id)session;
 - (id)_viewForTracking;
 - (id)currentlySelectedOccurrenceViewSource;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)originalStartDateForEvent:(id)a3 includingTravel:(BOOL)a4;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (int64_t)_occurrenceDateIndexWithEvent:(id)a3 occurrenceDate:(id)a4;
-- (unint64_t)_dropOperationGivenDropSession:(id)a3;
-- (void)_adjustNewEventDates:(id)a3 withPoint:(CGPoint)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)originalStartDateForEvent:(id)event includingTravel:(BOOL)travel;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (int64_t)_occurrenceDateIndexWithEvent:(id)event occurrenceDate:(id)date;
+- (unint64_t)_dropOperationGivenDropSession:(id)session;
+- (void)_adjustNewEventDates:(id)dates withPoint:(CGPoint)point;
 - (void)_animateInNewEvent;
 - (void)_cancel;
-- (void)_cleanUpAllStateWithTouchPoint:(CGPoint)a3 commit:(BOOL)a4;
+- (void)_cleanUpAllStateWithTouchPoint:(CGPoint)point commit:(BOOL)commit;
 - (void)_cleanUpForcedStart;
 - (void)_commit;
 - (void)_commitUntimed;
-- (void)_createAndSetUpDraggingViewWithTouchPoint:(CGPoint)a3 event:(id)a4 ignoreOffsets:(BOOL)a5 showEditMenu:(BOOL)a6;
-- (void)_disableSystemPreviewForDrag:(id)a3;
-- (void)_dismissCurrentICSPreviewControllerAnimated:(BOOL)a3;
+- (void)_createAndSetUpDraggingViewWithTouchPoint:(CGPoint)point event:(id)event ignoreOffsets:(BOOL)offsets showEditMenu:(BOOL)menu;
+- (void)_disableSystemPreviewForDrag:(id)drag;
+- (void)_dismissCurrentICSPreviewControllerAnimated:(BOOL)animated;
 - (void)_dragFailedToStart;
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3;
-- (void)_enableSystemPreviewForDrag:(id)a3;
-- (void)_extractFileFromSession:(id)a3;
-- (void)_handleImportingICSData:(id)a3 intoEventStore:(id)a4;
-- (void)_handleLongPressResponseForOldAPI:(id)a3;
-- (void)_handleShowingEventWithUniqueId:(id)a3 date:(id)a4 eventStore:(id)a5;
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging;
+- (void)_enableSystemPreviewForDrag:(id)drag;
+- (void)_extractFileFromSession:(id)session;
+- (void)_handleImportingICSData:(id)data intoEventStore:(id)store;
+- (void)_handleLongPressResponseForOldAPI:(id)i;
+- (void)_handleShowingEventWithUniqueId:(id)id date:(id)date eventStore:(id)store;
 - (void)_installScrollTimer;
-- (void)_longPress:(id)a3;
-- (void)_manageFeedbackForStateChangeFrom:(int)a3 to:(int)a4;
-- (void)_multiSelect:(id)a3;
+- (void)_longPress:(id)press;
+- (void)_manageFeedbackForStateChangeFrom:(int)from to:(int)to;
+- (void)_multiSelect:(id)select;
 - (void)_presentICSPreviewControllerIfNeeded;
 - (void)_removeScrollTimer;
-- (void)_returnDraggingViewToLastCommittedPositionFromTouchPoint:(CGPoint)a3;
-- (void)_scrollTimerFired:(id)a3;
-- (void)_setEventCalendar:(id)a3 useManagedCalendar:(BOOL)a4;
-- (void)_setLocalDraggingViewHidden:(BOOL)a3;
-- (void)_setToLocalDraggingImageForDrag:(id)a3;
-- (void)_setToSystemDraggingImageForDrag:(id)a3;
-- (void)_setTouchOffsetsFromPoint:(CGPoint)a3 fixedToCenter:(BOOL)a4;
-- (void)_setUpAfterForcedStartFromPoint:(CGPoint)a3;
-- (void)_setUpInitialTouchPointsWithPoint:(CGPoint)a3;
-- (void)_setupEvent:(id)a3 withImportData:(id)a4;
-- (void)_tapGesture:(id)a3;
+- (void)_returnDraggingViewToLastCommittedPositionFromTouchPoint:(CGPoint)point;
+- (void)_scrollTimerFired:(id)fired;
+- (void)_setEventCalendar:(id)calendar useManagedCalendar:(BOOL)managedCalendar;
+- (void)_setLocalDraggingViewHidden:(BOOL)hidden;
+- (void)_setToLocalDraggingImageForDrag:(id)drag;
+- (void)_setToSystemDraggingImageForDrag:(id)drag;
+- (void)_setTouchOffsetsFromPoint:(CGPoint)point fixedToCenter:(BOOL)center;
+- (void)_setUpAfterForcedStartFromPoint:(CGPoint)point;
+- (void)_setUpInitialTouchPointsWithPoint:(CGPoint)point;
+- (void)_setupEvent:(id)event withImportData:(id)data;
+- (void)_tapGesture:(id)gesture;
 - (void)_update;
 - (void)_updateFlingToCancelParameters;
-- (void)_updateHorizontalDragLockForPoint:(CGPoint)a3;
-- (void)_updatePositionOfEditingMenuForView:(id)a3;
+- (void)_updateHorizontalDragLockForPoint:(CGPoint)point;
+- (void)_updatePositionOfEditingMenuForView:(id)view;
 - (void)_updateSnappingTypeForCurrentDrag;
-- (void)_writeDraggingChangesToOccurrenceWithTouchPoint:(CGPoint)a3;
+- (void)_writeDraggingChangesToOccurrenceWithTouchPoint:(CGPoint)point;
 - (void)attemptDisplayReviewPrompt;
 - (void)dealloc;
-- (void)didCrossDragBoundary:(int)a3;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
-- (void)endForcedStart:(BOOL)a3;
+- (void)didCrossDragBoundary:(int)boundary;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
+- (void)endForcedStart:(BOOL)start;
 - (void)endForcedStartAndUndim;
-- (void)forceStartWithOccurrence:(id)a3 occurrenceDate:(id)a4 shouldUpdateViewSource:(BOOL)a5 shouldUpdateOrigin:(BOOL)a6 shouldPresentEditMenu:(BOOL)a7;
-- (void)icsPreviewControllerImportDidFail:(id)a3;
-- (void)icsPreviewControllerImportDidImportEvents:(id)a3;
-- (void)icsPreviewControllerWantsDismissal:(id)a3;
+- (void)forceStartWithOccurrence:(id)occurrence occurrenceDate:(id)date shouldUpdateViewSource:(BOOL)source shouldUpdateOrigin:(BOOL)origin shouldPresentEditMenu:(BOOL)menu;
+- (void)icsPreviewControllerImportDidFail:(id)fail;
+- (void)icsPreviewControllerImportDidImportEvents:(id)events;
+- (void)icsPreviewControllerWantsDismissal:(id)dismissal;
 - (void)invalidate;
-- (void)liftUpOccurrenceForEditingEvent:(id)a3;
-- (void)promptUserForProposeNewTime:(id)a3 forEvent:(id)a4 whenFinished:(id)a5;
-- (void)promptUserForRecurrenceActionOnOccurrence:(id)a3 whenFinished:(id)a4;
+- (void)liftUpOccurrenceForEditingEvent:(id)event;
+- (void)promptUserForProposeNewTime:(id)time forEvent:(id)event whenFinished:(id)finished;
+- (void)promptUserForRecurrenceActionOnOccurrence:(id)occurrence whenFinished:(id)finished;
 - (void)removeDraggedOccurrence;
-- (void)setCommitBlocked:(BOOL)a3;
-- (void)updateDraggingOccurrenceForced:(BOOL)a3 animated:(BOOL)a4;
+- (void)setCommitBlocked:(BOOL)blocked;
+- (void)updateDraggingOccurrenceForced:(BOOL)forced animated:(BOOL)animated;
 - (void)updateDraggingOccurrenceFrame;
 - (void)updateDraggingOccurrenceFrameFromSource;
 - (void)updateDraggingOccurrenceOrigin;
@@ -137,40 +137,40 @@
   }
 }
 
-- (EKEventGestureController)initWithView:(id)a3
+- (EKEventGestureController)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v23.receiver = self;
   v23.super_class = EKEventGestureController;
   v5 = [(EKEventGestureController *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_targetView, v4);
+    objc_storeWeak(&v5->_targetView, viewCopy);
     v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v6 action:sel__tapGesture_];
     tapGestureRecognizer = v6->_tapGestureRecognizer;
     v6->_tapGestureRecognizer = v7;
 
     [(UITapGestureRecognizer *)v6->_tapGestureRecognizer setCancelsTouchesInView:0];
-    [v4 addGestureRecognizer:v6->_tapGestureRecognizer];
+    [viewCopy addGestureRecognizer:v6->_tapGestureRecognizer];
     v9 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v6 action:sel__longPress_];
     draggingGestureRecognizer = v6->_draggingGestureRecognizer;
     v6->_draggingGestureRecognizer = v9;
 
     [(UILongPressGestureRecognizer *)v6->_draggingGestureRecognizer setDelaysTouchesBegan:0];
     [(UILongPressGestureRecognizer *)v6->_draggingGestureRecognizer setDelegate:v6];
-    [v4 addGestureRecognizer:v6->_draggingGestureRecognizer];
+    [viewCopy addGestureRecognizer:v6->_draggingGestureRecognizer];
     v11 = [objc_alloc(MEMORY[0x1E69DC9B8]) initWithDelegate:v6];
     dropInteraction = v6->_dropInteraction;
     v6->_dropInteraction = v11;
 
-    [v4 addInteraction:v6->_dropInteraction];
+    [viewCopy addInteraction:v6->_dropInteraction];
     v13 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v6];
     dragInteraction = v6->_dragInteraction;
     v6->_dragInteraction = v13;
 
     [(UIDragInteraction *)v6->_dragInteraction setEnabled:1];
-    [v4 addInteraction:v6->_dragInteraction];
+    [viewCopy addInteraction:v6->_dragInteraction];
     v6->_currentDropDataOwnerCache = 0;
     [(UIDragInteraction *)v6->_dragInteraction _setPointerLiftDelay:0.25];
     [(UIDragInteraction *)v6->_dragInteraction _setAllowsPointerDragBeforeLiftDelay:0];
@@ -180,7 +180,7 @@
 
     [(UITapGestureRecognizer *)v6->_multiSelectGestureRecognizer setAllowedTouchTypes:&unk_1F4F32308];
     [(UITapGestureRecognizer *)v6->_multiSelectGestureRecognizer setDelegate:v6];
-    [v4 addGestureRecognizer:v6->_multiSelectGestureRecognizer];
+    [viewCopy addGestureRecognizer:v6->_multiSelectGestureRecognizer];
     v17 = MEMORY[0x1E696AEC0];
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[EKEventGestureController hash](v6, "hash")}];
     v19 = [v17 stringWithFormat:@"%@", v18];
@@ -220,33 +220,33 @@
   }
 
   [(EKEventGestureController *)self _removeScrollTimer];
-  v3 = [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_draggingGestureRecognizer];
+  view = [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer view];
+  [view removeGestureRecognizer:self->_draggingGestureRecognizer];
 
   [(EKEventGestureController *)self setDelegate:0];
   [(EKEventGestureController *)self setUntimedDelegate:0];
   [(EKEventGestureController *)self setEvent:0];
-  v4 = [(UIDropInteraction *)self->_dropInteraction view];
-  [v4 removeInteraction:self->_dropInteraction];
+  view2 = [(UIDropInteraction *)self->_dropInteraction view];
+  [view2 removeInteraction:self->_dropInteraction];
 
   dropInteraction = self->_dropInteraction;
   self->_dropInteraction = 0;
 
-  v6 = [(UIDragInteraction *)self->_dragInteraction view];
-  [v6 removeInteraction:self->_dragInteraction];
+  view3 = [(UIDragInteraction *)self->_dragInteraction view];
+  [view3 removeInteraction:self->_dragInteraction];
 
   dragInteraction = self->_dragInteraction;
   self->_dragInteraction = 0;
 }
 
-- (void)updateDraggingOccurrenceForced:(BOOL)a3 animated:(BOOL)a4
+- (void)updateDraggingOccurrenceForced:(BOOL)forced animated:(BOOL)animated
 {
   draggingView = self->_draggingView;
   if (draggingView)
   {
-    v6 = a4;
-    v26 = [(EKDayOccurrenceView *)draggingView occurrence];
-    if (a3 || [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 3 && [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 5 && [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state])
+    animatedCopy = animated;
+    occurrence = [(EKDayOccurrenceView *)draggingView occurrence];
+    if (forced || [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 3 && [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 5 && [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state])
     {
       if ((-[UILongPressGestureRecognizer state](self->_draggingGestureRecognizer, "state") == 1 || -[UILongPressGestureRecognizer state](self->_draggingGestureRecognizer, "state") == 2 || -[EKEventGestureController dragGestureInProgress](self, "dragGestureInProgress")) && (-[EKDayOccurrenceView superview](self->_draggingView, "superview"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_loadWeakRetained(&self->_delegate), [v9 occurrenceViewSuperviewForEventGestureController:self], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v8 == v10))
       {
@@ -260,61 +260,61 @@
         v14 = v13;
         v16 = v15;
         v18 = v17;
-        v19 = [(EKEvent *)self->_event changingAllDayPropertyIsAllowed];
-        if (v19)
+        changingAllDayPropertyIsAllowed = [(EKEvent *)self->_event changingAllDayPropertyIsAllowed];
+        if (changingAllDayPropertyIsAllowed)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          [WeakRetained eventGestureController:self adjustDraggingView:self->_draggingView forAllDay:{objc_msgSend(v26, "isAllDay")}];
+          [WeakRetained eventGestureController:self adjustDraggingView:self->_draggingView forAllDay:{objc_msgSend(occurrence, "isAllDay")}];
         }
 
-        if (v6)
+        if (animatedCopy)
         {
-          -[EKDayOccurrenceView animateToFrame:isAllDay:beginFromCurrentState:whenFinished:](self->_draggingView, "animateToFrame:isAllDay:beginFromCurrentState:whenFinished:", [v26 isAllDay], 0, 0, v12, v14, v16, v18);
+          -[EKDayOccurrenceView animateToFrame:isAllDay:beginFromCurrentState:whenFinished:](self->_draggingView, "animateToFrame:isAllDay:beginFromCurrentState:whenFinished:", [occurrence isAllDay], 0, 0, v12, v14, v16, v18);
         }
 
         else
         {
           [(EKDayOccurrenceView *)self->_draggingView setFrame:v12, v14, v16, v18];
-          if (v19)
+          if (changingAllDayPropertyIsAllowed)
           {
-            -[EKDayOccurrenceView setAllDay:](self->_draggingView, "setAllDay:", [v26 isAllDay]);
+            -[EKDayOccurrenceView setAllDay:](self->_draggingView, "setAllDay:", [occurrence isAllDay]);
             [(EKDayOccurrenceView *)self->_draggingView requestContentIfNeeded:16 completion:0];
           }
 
-          -[EKDayOccurrenceView setDrawsResizeHandles:](self->_draggingView, "setDrawsResizeHandles:", [v26 isAllDay] ^ 1);
+          -[EKDayOccurrenceView setDrawsResizeHandles:](self->_draggingView, "setDrawsResizeHandles:", [occurrence isAllDay] ^ 1);
         }
 
         v21 = objc_loadWeakRetained(&self->_delegate);
-        v22 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
-        v23 = [v26 startDate];
-        [v23 timeIntervalSinceReferenceDate];
-        [v21 eventGestureController:self didCommitOccurrence:v22 toDate:objc_msgSend(v26 isAllDay:"isAllDay") span:{0, v24}];
+        occurrence2 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+        startDate = [occurrence startDate];
+        [startDate timeIntervalSinceReferenceDate];
+        [v21 eventGestureController:self didCommitOccurrence:occurrence2 toDate:objc_msgSend(occurrence isAllDay:"isAllDay") span:{0, v24}];
 
         if ([(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 1)
         {
           v25 = objc_loadWeakRetained(&self->_delegate);
-          [v25 eventGestureController:self addViewToScroller:self->_draggingView isAllDay:{objc_msgSend(v26, "isAllDay")}];
+          [v25 eventGestureController:self addViewToScroller:self->_draggingView isAllDay:{objc_msgSend(occurrence, "isAllDay")}];
         }
       }
     }
   }
 }
 
-- (CGRect)_calculateFrameForDraggingViewIncludingTravelTime:(BOOL)a3
+- (CGRect)_calculateFrameForDraggingViewIncludingTravelTime:(BOOL)time
 {
   draggingView = self->_draggingView;
   if (draggingView)
   {
-    v6 = [(EKDayOccurrenceView *)draggingView occurrence];
-    v7 = v6;
-    if (a3)
+    occurrence = [(EKDayOccurrenceView *)draggingView occurrence];
+    v7 = occurrence;
+    if (time)
     {
-      [v6 startDateIncludingTravel];
+      [occurrence startDateIncludingTravel];
     }
 
     else
     {
-      [v6 startDate];
+      [occurrence startDate];
     }
     v12 = ;
     [v12 timeIntervalSinceReferenceDate];
@@ -338,14 +338,14 @@
       if (touchOffsetDays >= 1 && touchOffsetDays + 1 == [v7 daySpan])
       {
         v24 = MEMORY[0x1E69930C8];
-        v25 = [v7 endDateUnadjustedForLegacyClients];
-        v26 = [v7 timeZone];
-        v27 = [v24 calendarDateWithDate:v25 timeZone:v26];
+        endDateUnadjustedForLegacyClients = [v7 endDateUnadjustedForLegacyClients];
+        timeZone = [v7 timeZone];
+        v27 = [v24 calendarDateWithDate:endDateUnadjustedForLegacyClients timeZone:timeZone];
 
         [v27 absoluteTime];
         v29 = v28;
-        v30 = [v27 calendarDateForDay];
-        [v30 absoluteTime];
+        calendarDateForDay = [v27 calendarDateForDay];
+        [calendarDateForDay absoluteTime];
         v22 = v29 - v31;
       }
     }
@@ -360,12 +360,12 @@
     v36 = objc_loadWeakRetained(&self->_delegate);
     v37 = [v36 occurrenceViewSuperviewForEventGestureController:self];
 
-    v38 = [(EKDayOccurrenceView *)self->_draggingView superview];
+    superview = [(EKDayOccurrenceView *)self->_draggingView superview];
 
-    if (v38 != v37)
+    if (superview != v37)
     {
-      v39 = [(EKDayOccurrenceView *)self->_draggingView superview];
-      [v37 convertRect:v39 toView:{v8, v9, v10, v11}];
+      superview2 = [(EKDayOccurrenceView *)self->_draggingView superview];
+      [v37 convertRect:superview2 toView:{v8, v9, v10, v11}];
       v8 = v40;
       v9 = v41;
       v10 = v42;
@@ -419,28 +419,28 @@
   [(EKEventGestureController *)self setEvent:0];
 }
 
-- (void)promptUserForRecurrenceActionOnOccurrence:(id)a3 whenFinished:(id)a4
+- (void)promptUserForRecurrenceActionOnOccurrence:(id)occurrence whenFinished:(id)finished
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKEventGestureController *)self delegate];
+  occurrenceCopy = occurrence;
+  finishedCopy = finished;
+  delegate = [(EKEventGestureController *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(EKEventGestureController *)self delegate];
-    v10 = [v9 currentPresentationController];
+    delegate2 = [(EKEventGestureController *)self delegate];
+    currentPresentationController = [delegate2 currentPresentationController];
 LABEL_5:
-    v11 = v10;
+    untimedDelegate = currentPresentationController;
 
     goto LABEL_6;
   }
 
-  v11 = [(EKEventGestureController *)self untimedDelegate];
+  untimedDelegate = [(EKEventGestureController *)self untimedDelegate];
 
-  if (v11)
+  if (untimedDelegate)
   {
-    v9 = [(EKEventGestureController *)self untimedDelegate];
-    v10 = [v9 eventGestureControllerCurrentPresentationController:self];
+    delegate2 = [(EKEventGestureController *)self untimedDelegate];
+    currentPresentationController = [delegate2 eventGestureControllerCurrentPresentationController:self];
     goto LABEL_5;
   }
 
@@ -450,9 +450,9 @@ LABEL_6:
   v15[2] = __83__EKEventGestureController_promptUserForRecurrenceActionOnOccurrence_whenFinished___block_invoke;
   v15[3] = &unk_1E8442B40;
   v15[4] = self;
-  v16 = v7;
-  v12 = v7;
-  v13 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:2 viewController:v11 barButtonItem:0 forEvent:v6 withCompletionHandler:v15];
+  v16 = finishedCopy;
+  v12 = finishedCopy;
+  v13 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:2 viewController:untimedDelegate barButtonItem:0 forEvent:occurrenceCopy withCompletionHandler:v15];
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v13;
 }
@@ -468,26 +468,26 @@ void __83__EKEventGestureController_promptUserForRecurrenceActionOnOccurrence_wh
   }
 }
 
-- (void)promptUserForProposeNewTime:(id)a3 forEvent:(id)a4 whenFinished:(id)a5
+- (void)promptUserForProposeNewTime:(id)time forEvent:(id)event whenFinished:(id)finished
 {
-  v32 = a5;
-  v7 = a4;
-  v8 = a3;
-  v35 = [v7 organizer];
-  v33 = [MEMORY[0x1E6966A88] participantForSortingWithEKParticipant:v35];
+  finishedCopy = finished;
+  eventCopy = event;
+  timeCopy = time;
+  organizer = [eventCopy organizer];
+  v33 = [MEMORY[0x1E6966A88] participantForSortingWithEKParticipant:organizer];
   v9 = EventKitUIBundle();
   v10 = [v9 localizedStringForKey:@"Propose a new time?" value:&stru_1F4EF6790 table:0];
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = EventKitUIBundle();
   v13 = [v12 localizedStringForKey:@"Ask %@ to move “%@” to %@ at %@" value:&stru_1F4EF6790 table:0];
-  v14 = [v33 displayName];
-  v15 = [v7 title];
+  displayName = [v33 displayName];
+  title = [eventCopy title];
 
-  v16 = [v8 localizedRelativeDateStringShortened:0 lowercase:1];
-  v17 = [v8 timeStringAlwaysIncludeMinutes:0];
+  v16 = [timeCopy localizedRelativeDateStringShortened:0 lowercase:1];
+  v17 = [timeCopy timeStringAlwaysIncludeMinutes:0];
 
-  v18 = [v11 localizedStringWithFormat:v13, v14, v15, v16, v17];
+  v18 = [v11 localizedStringWithFormat:v13, displayName, title, v16, v17];
 
   v19 = EventKitUIBundle();
   v20 = [v19 localizedStringForKey:@"Cancel - prompt user for propose new time" value:@"Cancel" table:0];
@@ -501,7 +501,7 @@ void __83__EKEventGestureController_promptUserForRecurrenceActionOnOccurrence_wh
   v38[1] = 3221225472;
   v38[2] = __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whenFinished___block_invoke;
   v38[3] = &unk_1E8442288;
-  v25 = v32;
+  v25 = finishedCopy;
   v39 = v25;
   v26 = [v24 actionWithTitle:v20 style:1 handler:v38];
   [v23 addAction:v26];
@@ -516,9 +516,9 @@ void __83__EKEventGestureController_promptUserForRecurrenceActionOnOccurrence_wh
   v29 = [v27 actionWithTitle:v22 style:0 handler:v36];
   [v23 addAction:v29];
 
-  v30 = [(EKEventGestureController *)self delegate];
-  v31 = [v30 currentPresentationController];
-  [v31 presentViewController:v23 animated:1 completion:0];
+  delegate = [(EKEventGestureController *)self delegate];
+  currentPresentationController = [delegate currentPresentationController];
+  [currentPresentationController presentViewController:v23 animated:1 completion:0];
 }
 
 uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whenFinished___block_invoke(uint64_t a1)
@@ -543,20 +543,20 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   multiSelectGestureRecognizer = self->_multiSelectGestureRecognizer;
-  v6 = multiSelectGestureRecognizer != v4 || ([(UITapGestureRecognizer *)multiSelectGestureRecognizer modifierFlags]& 0x120000) != 0;
+  v6 = multiSelectGestureRecognizer != beginCopy || ([(UITapGestureRecognizer *)multiSelectGestureRecognizer modifierFlags]& 0x120000) != 0;
 
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (![a3 state])
+  touchCopy = touch;
+  if (![recognizer state])
   {
     p_untimedDelegate = &self->_untimedDelegate;
     WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
@@ -573,7 +573,7 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        [v6 locationInView:v12];
+        [touchCopy locationInView:v12];
         v57.x = v21;
         v57.y = v22;
         v60.origin.x = v14;
@@ -602,7 +602,7 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    [v6 locationInView:self->_draggingView];
+    [touchCopy locationInView:self->_draggingView];
     v58.x = v31;
     v58.y = v32;
     v61.origin.x = v24;
@@ -614,8 +614,8 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v34 = [(EKDayOccurrenceView *)self->_draggingView arrayOfResizeHandles];
-    v35 = [v34 countByEnumeratingWithState:&v51 objects:v55 count:16];
+    arrayOfResizeHandles = [(EKDayOccurrenceView *)self->_draggingView arrayOfResizeHandles];
+    v35 = [arrayOfResizeHandles countByEnumeratingWithState:&v51 objects:v55 count:16];
     if (v35)
     {
       v36 = v35;
@@ -626,7 +626,7 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
         {
           if (*v52 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(arrayOfResizeHandles);
           }
 
           if (v33)
@@ -642,7 +642,7 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
             v43 = v42;
             v45 = v44;
             v47 = v46;
-            [v6 locationInView:v39];
+            [touchCopy locationInView:v39];
             v59.x = v48;
             v59.y = v49;
             v62.origin.x = v41;
@@ -653,7 +653,7 @@ uint64_t __78__EKEventGestureController_promptUserForProposeNewTime_forEvent_whe
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v51 objects:v55 count:16];
+        v36 = [arrayOfResizeHandles countByEnumeratingWithState:&v51 objects:v55 count:16];
       }
 
       while (v36);
@@ -684,8 +684,8 @@ LABEL_24:
   [(EKEventGestureController *)self _calculateFrameForDraggingViewIncludingTravelTime:1];
   v4 = v3;
   v6 = v5;
-  v7 = [(EKEventGestureController *)self draggingView];
-  [v7 frame];
+  draggingView = [(EKEventGestureController *)self draggingView];
+  [draggingView frame];
   v9 = v8;
   v11 = v10;
 
@@ -697,52 +697,52 @@ LABEL_24:
 - (void)updateDraggingOccurrenceFrameFromSource
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(EKEventGestureController *)self draggingViewSource];
-  v5 = [v4 occurrence];
-  v6 = [(EKEventGestureController *)self draggingViewSource];
-  v7 = [v6 occurrenceDate];
-  v27 = [WeakRetained eventGestureController:self occurrenceViewForOccurrence:v5 occurrenceDate:v7];
+  draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
+  occurrence = [draggingViewSource occurrence];
+  draggingViewSource2 = [(EKEventGestureController *)self draggingViewSource];
+  occurrenceDate = [draggingViewSource2 occurrenceDate];
+  v27 = [WeakRetained eventGestureController:self occurrenceViewForOccurrence:occurrence occurrenceDate:occurrenceDate];
 
   v8 = v27;
   if (v27)
   {
     [(EKEventGestureController *)self setDraggingViewSource:v27];
-    v9 = [(EKEventGestureController *)self draggingViewSource];
-    [v9 frame];
+    draggingViewSource3 = [(EKEventGestureController *)self draggingViewSource];
+    [draggingViewSource3 frame];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(EKEventGestureController *)self draggingViewSource];
-    v15 = [v14 superview];
-    v16 = [(EKEventGestureController *)self draggingViewSource];
-    [v16 frame];
+    draggingViewSource4 = [(EKEventGestureController *)self draggingViewSource];
+    superview = [draggingViewSource4 superview];
+    draggingViewSource5 = [(EKEventGestureController *)self draggingViewSource];
+    [draggingViewSource5 frame];
     v18 = v17;
     v20 = v19;
-    v21 = [(EKDayOccurrenceView *)self->_draggingView superview];
-    [v15 convertPoint:v21 toView:{v18, v20}];
+    superview2 = [(EKDayOccurrenceView *)self->_draggingView superview];
+    [superview convertPoint:superview2 toView:{v18, v20}];
     v23 = v22;
     v25 = v24;
 
-    v26 = [(EKEventGestureController *)self draggingView];
-    [v26 setFrame:{v23, v25, v11, v13}];
+    draggingView = [(EKEventGestureController *)self draggingView];
+    [draggingView setFrame:{v23, v25, v11, v13}];
 
     v8 = v27;
   }
 }
 
-- (int64_t)_occurrenceDateIndexWithEvent:(id)a3 occurrenceDate:(id)a4
+- (int64_t)_occurrenceDateIndexWithEvent:(id)event occurrenceDate:(id)date
 {
-  v5 = a4;
-  v6 = [a3 startCalendarDate];
-  v7 = [v5 differenceInDays:v6];
+  dateCopy = date;
+  startCalendarDate = [event startCalendarDate];
+  v7 = [dateCopy differenceInDays:startCalendarDate];
 
   return v7;
 }
 
-- (void)forceStartWithOccurrence:(id)a3 occurrenceDate:(id)a4 shouldUpdateViewSource:(BOOL)a5 shouldUpdateOrigin:(BOOL)a6 shouldPresentEditMenu:(BOOL)a7
+- (void)forceStartWithOccurrence:(id)occurrence occurrenceDate:(id)date shouldUpdateViewSource:(BOOL)source shouldUpdateOrigin:(BOOL)origin shouldPresentEditMenu:(BOOL)menu
 {
-  v13 = a3;
-  v14 = a4;
+  occurrenceCopy = occurrence;
+  dateCopy = date;
   if (!self->_isDragging && ![(EKEventGestureController *)self dragGestureInProgress]&& !self->_forcedStart)
   {
     v15 = MEMORY[0x1E69DD250];
@@ -751,12 +751,12 @@ LABEL_24:
     v16[2] = __132__EKEventGestureController_forceStartWithOccurrence_occurrenceDate_shouldUpdateViewSource_shouldUpdateOrigin_shouldPresentEditMenu___block_invoke;
     v16[3] = &unk_1E8442B68;
     v20 = a2;
-    v17 = v13;
-    v18 = self;
-    v19 = v14;
-    v21 = a5;
-    v22 = a7;
-    v23 = a6;
+    v17 = occurrenceCopy;
+    selfCopy = self;
+    v19 = dateCopy;
+    sourceCopy = source;
+    menuCopy = menu;
+    originCopy = origin;
     [v15 performWithoutAnimation:v16];
   }
 }
@@ -953,9 +953,9 @@ LABEL_12:
   [(EKEventGestureController *)self endForcedStart:0];
 }
 
-- (void)endForcedStart:(BOOL)a3
+- (void)endForcedStart:(BOOL)start
 {
-  if ((a3 || [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 1 && [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 2) && (self->_forcedStart || self->_currentDraggingState || self->_pendingDraggingState != 3))
+  if ((start || [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 1 && [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer state]!= 2) && (self->_forcedStart || self->_currentDraggingState || self->_pendingDraggingState != 3))
   {
     [(EKEventGestureController *)self _cleanUpForcedStart];
     [(EKEventGestureController *)self removeDraggedOccurrence];
@@ -966,14 +966,14 @@ LABEL_12:
   }
 }
 
-- (void)liftUpOccurrenceForEditingEvent:(id)a3
+- (void)liftUpOccurrenceForEditingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ((self->_currentDraggingState | 2) == 2)
   {
-    v5 = v4;
-    [(EKEventGestureController *)self forceStartWithOccurrence:v4 occurrenceDate:0 shouldUpdateViewSource:0 shouldUpdateOrigin:0 shouldPresentEditMenu:0];
-    v4 = v5;
+    v5 = eventCopy;
+    [(EKEventGestureController *)self forceStartWithOccurrence:eventCopy occurrenceDate:0 shouldUpdateViewSource:0 shouldUpdateOrigin:0 shouldPresentEditMenu:0];
+    eventCopy = v5;
     self->_currentDraggingState = 2;
   }
 }
@@ -1000,12 +1000,12 @@ LABEL_12:
   self->_commitOffsetDays = 0;
 }
 
-- (void)_tapGesture:(id)a3
+- (void)_tapGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained touchTrackingViewForEventGestureController:self];
-  [v4 locationInView:v6];
+  [gestureCopy locationInView:v6];
   v8 = v7;
   v10 = v9;
 
@@ -1017,8 +1017,8 @@ LABEL_12:
     v13 = objc_alloc(MEMORY[0x1E69DD250]);
     [v12 frameOfOpaqueContent];
     v14 = [v13 initWithFrame:?];
-    v15 = [v14 layer];
-    [v15 setCornerRadius:4.0];
+    layer = [v14 layer];
+    [layer setCornerRadius:4.0];
 
     v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
     [v14 setBackgroundColor:v16];
@@ -1047,16 +1047,16 @@ void __40__EKEventGestureController__tapGesture___block_invoke(uint64_t a1)
   [*(a1 + 32) setBackgroundColor:v2];
 }
 
-- (void)_multiSelect:(id)a3
+- (void)_multiSelect:(id)select
 {
-  v4 = a3;
+  selectCopy = select;
   WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_untimedDelegate);
-    v7 = [(EKEventGestureController *)self _viewForTracking];
-    [v4 locationInView:v7];
+    _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+    [selectCopy locationInView:_viewForTracking];
     v9 = v8;
     v11 = v10;
 
@@ -1068,32 +1068,32 @@ void __40__EKEventGestureController__tapGesture___block_invoke(uint64_t a1)
       goto LABEL_6;
     }
 
-    v13 = objc_loadWeakRetained(&self->_untimedDelegate);
-    [v13 eventGestureController:self toggleSelectionOfEvent:v21];
+    delegate = objc_loadWeakRetained(&self->_untimedDelegate);
+    [delegate eventGestureController:self toggleSelectionOfEvent:v21];
   }
 
   else
   {
     v14 = objc_loadWeakRetained(&self->_delegate);
     v15 = [v14 touchTrackingViewForEventGestureController:self];
-    [v4 locationInView:v15];
+    [selectCopy locationInView:v15];
     v17 = v16;
     v19 = v18;
 
     v21 = [v14 eventGestureController:self occurrenceViewAtPoint:0 ignoreSelectedCopyView:{v17, v19}];
 
-    v13 = [(EKEventGestureController *)self delegate];
-    v20 = [v21 occurrence];
-    [v13 eventGestureController:self didSingleTapOccurrence:v20 shouldExtendSelection:1];
+    delegate = [(EKEventGestureController *)self delegate];
+    occurrence = [v21 occurrence];
+    [delegate eventGestureController:self didSingleTapOccurrence:occurrence shouldExtendSelection:1];
   }
 
   v12 = v21;
 LABEL_6:
 }
 
-- (void)_longPress:(id)a3
+- (void)_longPress:(id)press
 {
-  v18 = a3;
+  pressCopy = press;
   if (![(EKEventGestureController *)self _shouldUseSystemAPIForDrag]|| self->_currentDraggingState == 2 && (v4 = objc_loadWeakRetained(&self->_delegate), v4, v4))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1124,12 +1124,12 @@ LABEL_6:
       }
     }
 
-    v14 = [(EKEventGestureController *)self _viewForTracking];
-    if ([v18 state] == 1 && (v15 = objc_loadWeakRetained(&self->_delegate)) != 0 && (currentDraggingState = self->_currentDraggingState, v15, currentDraggingState == 2))
+    _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+    if ([pressCopy state] == 1 && (v15 = objc_loadWeakRetained(&self->_delegate)) != 0 && (currentDraggingState = self->_currentDraggingState, v15, currentDraggingState == 2))
     {
-      [v18 locationInView:self->_draggingView];
+      [pressCopy locationInView:self->_draggingView];
       v17 = [(EKDayOccurrenceView *)self->_draggingView dragTypeFromPoint:?]& 0xFFFFFFFD;
-      [v18 locationInView:v14];
+      [pressCopy locationInView:_viewForTracking];
       if (v17)
       {
         [(EKEventGestureController *)self _setTouchOffsetsFromPoint:0 fixedToCenter:?];
@@ -1145,39 +1145,39 @@ LABEL_6:
 
     else if (![(EKEventGestureController *)self _shouldUseSystemAPIForDrag]&& (self->_currentDraggingState & 0xFFFFFFFE) == 2)
     {
-      [(EKEventGestureController *)self _handleLongPressResponseForOldAPI:v18];
+      [(EKEventGestureController *)self _handleLongPressResponseForOldAPI:pressCopy];
     }
   }
 
 LABEL_20:
 }
 
-- (void)_handleLongPressResponseForOldAPI:(id)a3
+- (void)_handleLongPressResponseForOldAPI:(id)i
 {
-  v15 = a3;
-  v4 = [(EKEventGestureController *)self _viewForTracking];
-  [v15 locationInView:v4];
+  iCopy = i;
+  _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+  [iCopy locationInView:_viewForTracking];
   v6 = v5;
   v8 = v7;
-  v9 = [v15 state];
-  if ((v9 - 4) < 2)
+  state = [iCopy state];
+  if ((state - 4) < 2)
   {
     [(EKEventGestureController *)self _setDraggingState:4 withPoint:self->_event event:v6, v8];
     goto LABEL_7;
   }
 
-  if (v9 == 3)
+  if (state == 3)
   {
 LABEL_7:
     [(EKEventGestureController *)self _setDraggingState:2 withPoint:self->_event event:v6, v8];
     goto LABEL_8;
   }
 
-  if (v9 == 2)
+  if (state == 2)
   {
     [(EKEventGestureController *)self _installScrollTimer];
     self->_previousTouchPoint = self->_latestTouchPoint;
-    [v15 locationInView:v4];
+    [iCopy locationInView:_viewForTracking];
     self->_latestTouchPoint.x = v10;
     self->_latestTouchPoint.y = v11;
     WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
@@ -1218,13 +1218,13 @@ LABEL_8:
   }
 }
 
-- (void)setCommitBlocked:(BOOL)a3
+- (void)setCommitBlocked:(BOOL)blocked
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_commitBlocked != a3)
+  if (self->_commitBlocked != blocked)
   {
-    self->_commitBlocked = a3;
-    if (!a3 && self->_needsCommit)
+    self->_commitBlocked = blocked;
+    if (!blocked && self->_needsCommit)
     {
       WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
 
@@ -1261,9 +1261,9 @@ LABEL_8:
           {
             v12 = MEMORY[0x1E696AF00];
             v13 = v11;
-            v14 = [v12 callStackSymbols];
+            callStackSymbols = [v12 callStackSymbols];
             v15 = 138412290;
-            v16 = v14;
+            v16 = callStackSymbols;
             _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_INFO, "Callstack: %@", &v15, 0xCu);
           }
 
@@ -1283,8 +1283,8 @@ LABEL_8:
     scrollTimer = self->_scrollTimer;
     self->_scrollTimer = v3;
 
-    v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v5 addTimer:self->_scrollTimer forMode:*MEMORY[0x1E695D918]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->_scrollTimer forMode:*MEMORY[0x1E695D918]];
 
     self->_firstContactOfDraggingViewTop = -1.0;
     self->_hasStartedScrolling = 0;
@@ -1301,7 +1301,7 @@ LABEL_8:
   self->_consecutivePageTurnCount = 0;
 }
 
-- (void)_scrollTimerFired:(id)a3
+- (void)_scrollTimerFired:(id)fired
 {
   WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
 
@@ -1458,8 +1458,8 @@ LABEL_30:
     if (currentDragType == 2)
     {
       v56 = objc_loadWeakRetained(&self->_delegate);
-      v57 = [(EKEvent *)self->_event startDate];
-      [v57 timeIntervalSinceReferenceDate];
+      startDate = [(EKEvent *)self->_event startDate];
+      [startDate timeIntervalSinceReferenceDate];
       [v56 eventGestureController:self pointAtDate:-[EKEvent isAllDay](self->_event isAllDay:{"isAllDay"), v58}];
       v60 = v59;
 
@@ -1474,8 +1474,8 @@ LABEL_30:
     else
     {
       v50 = objc_loadWeakRetained(&self->_delegate);
-      v51 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
-      [v51 timeIntervalSinceReferenceDate];
+      endDateUnadjustedForLegacyClients = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
+      [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
       [v50 eventGestureController:self pointAtDate:-[EKEvent isAllDay](self->_event isAllDay:{"isAllDay"), v52}];
       v54 = v53;
 
@@ -1505,9 +1505,9 @@ LABEL_30:
       v64 = objc_loadWeakRetained(&self->_delegate);
       v65 = [v64 touchTrackingViewForEventGestureController:self];
 
-      v66 = [(EKDayOccurrenceView *)self->_draggingView superview];
+      superview = [(EKDayOccurrenceView *)self->_draggingView superview];
       [(EKDayOccurrenceView *)self->_draggingView frame];
-      [v66 convertRect:v65 toView:?];
+      [superview convertRect:v65 toView:?];
       v63 = v67;
 
       v68 = objc_loadWeakRetained(&self->_delegate);
@@ -1556,25 +1556,25 @@ LABEL_68:
 {
   if (self->_currentDraggingState == 2)
   {
-    v4 = 0;
+    draggingViewSource = 0;
   }
 
   else
   {
-    v4 = [(EKEventGestureController *)self draggingViewSource];
+    draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
   }
 
-  return v4;
+  return draggingViewSource;
 }
 
-- (BOOL)_setDraggingState:(int)a3 withPoint:(CGPoint)a4 event:(id)a5 context:(id)a6
+- (BOOL)_setDraggingState:(int)state withPoint:(CGPoint)point event:(id)event context:(id)context
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = *&a3;
+  y = point.y;
+  x = point.x;
+  v9 = *&state;
   v43 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
+  eventCopy = event;
+  contextCopy = context;
   currentDraggingState = self->_currentDraggingState;
   if (currentDraggingState == v9)
   {
@@ -1658,12 +1658,12 @@ LABEL_37:
         goto LABEL_37;
       }
 
-      [(EKEventGestureController *)self _beginEditingSessionAtPoint:v11 withEvent:x, y];
+      [(EKEventGestureController *)self _beginEditingSessionAtPoint:eventCopy withEvent:x, y];
     }
 
     else
     {
-      [(EKEventGestureController *)self _beginEditingSessionAtPoint:v11 withEvent:x, y];
+      [(EKEventGestureController *)self _beginEditingSessionAtPoint:eventCopy withEvent:x, y];
       if (!self->_draggingView)
       {
         WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
@@ -1671,7 +1671,7 @@ LABEL_37:
         if (WeakRetained)
         {
           v32 = objc_loadWeakRetained(&self->_untimedDelegate);
-          v33 = [v32 eventGestureController:self setUpAtPoint:v11 withOccurrence:0 forceNewEvent:{x, y}];
+          v33 = [v32 eventGestureController:self setUpAtPoint:eventCopy withOccurrence:0 forceNewEvent:{x, y}];
           event = self->_event;
           self->_event = v33;
         }
@@ -1682,7 +1682,7 @@ LABEL_37:
 
           if (v36)
           {
-            [(EKEventGestureController *)self _createAndSetUpDraggingViewWithTouchPoint:v11 event:1 ignoreOffsets:1 showEditMenu:x, y];
+            [(EKEventGestureController *)self _createAndSetUpDraggingViewWithTouchPoint:eventCopy event:1 ignoreOffsets:1 showEditMenu:x, y];
           }
         }
       }
@@ -1702,12 +1702,12 @@ LABEL_37:
       if (v15)
       {
         v16 = objc_loadWeakRetained(&self->_untimedDelegate);
-        v17 = [v16 eventGestureController:self setUpAtPoint:v11 withOccurrence:1 forceNewEvent:{x, y}];
+        v17 = [v16 eventGestureController:self setUpAtPoint:eventCopy withOccurrence:1 forceNewEvent:{x, y}];
         v18 = self->_event;
         self->_event = v17;
 
-        v19 = [(EKEvent *)self->_event isNew];
-        if (v12 && v19 && [v12 isManaged])
+        isNew = [(EKEvent *)self->_event isNew];
+        if (contextCopy && isNew && [contextCopy isManaged])
         {
           [(EKEventGestureController *)self _setEventCalendar:self->_event useManagedCalendar:1];
           v20 = objc_loadWeakRetained(&self->_untimedDelegate);
@@ -1721,7 +1721,7 @@ LABEL_37:
 
         if (v35)
         {
-          [(EKEventGestureController *)self _createAndSetUpDraggingViewWithTouchPoint:v11 event:1 ignoreOffsets:0 showEditMenu:x, y];
+          [(EKEventGestureController *)self _createAndSetUpDraggingViewWithTouchPoint:eventCopy event:1 ignoreOffsets:0 showEditMenu:x, y];
         }
       }
 
@@ -1777,7 +1777,7 @@ LABEL_52:
   if (queuedDraggingState != -1)
   {
     self->_queuedDraggingState = -1;
-    v14 = [(EKEventGestureController *)self _setDraggingState:queuedDraggingState withPoint:v11 event:x, y];
+    v14 = [(EKEventGestureController *)self _setDraggingState:queuedDraggingState withPoint:eventCopy event:x, y];
   }
 
 LABEL_54:
@@ -1785,26 +1785,26 @@ LABEL_54:
   return v14;
 }
 
-- (id)_debugStringForDraggingState:(int)a3
+- (id)_debugStringForDraggingState:(int)state
 {
-  if (a3 >= 5)
+  if (state >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Dragging state UNKNOWN (%d)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Dragging state UNKNOWN (%d)", *&state];
   }
 
   else
   {
-    v4 = off_1E8442DF8[a3];
+    v4 = off_1E8442DF8[state];
   }
 
   return v4;
 }
 
-- (void)_manageFeedbackForStateChangeFrom:(int)a3 to:(int)a4
+- (void)_manageFeedbackForStateChangeFrom:(int)from to:(int)to
 {
-  if ((a3 & 0xFFFFFFFD) != 0 || a4 != 3)
+  if ((from & 0xFFFFFFFD) != 0 || to != 3)
   {
-    if ((a3 & 0xFFFFFFFD) == 1 && a4 == 2)
+    if ((from & 0xFFFFFFFD) == 1 && to == 2)
     {
       [(_UIDragSnappingFeedbackGenerator *)self->_dragSnappingFeedback draggedObjectLanded];
       [(_UIDragSnappingFeedbackGenerator *)self->_dragSnappingFeedback userInteractionEnded];
@@ -1834,18 +1834,18 @@ LABEL_54:
   }
 }
 
-- (void)didCrossDragBoundary:(int)a3
+- (void)didCrossDragBoundary:(int)boundary
 {
-  if (a3 == 2)
+  if (boundary == 2)
   {
     [(_UIDragSnappingFeedbackGenerator *)self->_dragSnappingFeedback dropTargetUpdated];
   }
 }
 
-- (BOOL)_beginNewDragFromOffStateWithPoint:(CGPoint)a3
+- (BOOL)_beginNewDragFromOffStateWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EKEventGestureController *)self _setUpInitialTouchPointsWithPoint:?];
   if (!self->_forcedStart)
   {
@@ -1886,10 +1886,10 @@ LABEL_9:
   return v6;
 }
 
-- (void)_setUpInitialTouchPointsWithPoint:(CGPoint)a3
+- (void)_setUpInitialTouchPointsWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_firstTouchTime = CFAbsoluteTimeGetCurrent();
   self->_latestTouchPoint.x = x;
   self->_latestTouchPoint.y = y;
@@ -1902,11 +1902,11 @@ LABEL_9:
   [(EKEventGestureController *)self _updateSnappingTypeForCurrentDrag];
 }
 
-- (void)_cleanUpAllStateWithTouchPoint:(CGPoint)a3 commit:(BOOL)a4
+- (void)_cleanUpAllStateWithTouchPoint:(CGPoint)point commit:(BOOL)commit
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  commitCopy = commit;
+  y = point.y;
+  x = point.x;
   [(EKEventGestureController *)self _removeScrollTimer];
   self->_isDragging = 0;
   self->_latestTouchPoint.x = x;
@@ -1917,7 +1917,7 @@ LABEL_9:
   self->_event = 0;
 
   WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
-  if (!v4)
+  if (!commitCopy)
   {
     if (WeakRetained)
     {
@@ -1969,10 +1969,10 @@ LABEL_12:
   [(EKEventGestureController *)self removeDraggedOccurrence];
 }
 
-- (id)_createNewEventIfNeededAtPoint:(CGPoint)a3
+- (id)_createNewEventIfNeededAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = [WeakRetained eventGestureController:self occurrenceViewAtPoint:1 ignoreSelectedCopyView:{x, y}];
   [(EKEventGestureController *)self setDraggingViewSource:v7];
@@ -1983,9 +1983,9 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  v9 = [(EKEventGestureController *)self draggingViewSource];
+  draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
 
-  if (v9)
+  if (draggingViewSource)
   {
     event = self->_event;
 LABEL_4:
@@ -2007,23 +2007,23 @@ LABEL_5:
   return v10;
 }
 
-- (void)_adjustNewEventDates:(id)a3 withPoint:(CGPoint)a4
+- (void)_adjustNewEventDates:(id)dates withPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  datesCopy = dates;
   v8 = 1.0;
-  if (([v7 isAllDay] & 1) == 0)
+  if (([datesCopy isAllDay] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E6992FB0] shared];
-    [v9 defaultEventDuration];
+    mEMORY[0x1E6992FB0] = [MEMORY[0x1E6992FB0] shared];
+    [mEMORY[0x1E6992FB0] defaultEventDuration];
     v8 = v10;
   }
 
-  -[EKEventGestureController _computeHeightForOccurrenceViewOfDuration:event:allDay:](self, "_computeHeightForOccurrenceViewOfDuration:event:allDay:", v7, [v7 isAllDay], v8);
+  -[EKEventGestureController _computeHeightForOccurrenceViewOfDuration:event:allDay:](self, "_computeHeightForOccurrenceViewOfDuration:event:allDay:", datesCopy, [datesCopy isAllDay], v8);
   v12 = y + v11 * -0.5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([v7 isAllDay])
+  if ([datesCopy isAllDay])
   {
     v14 = y;
   }
@@ -2037,84 +2037,84 @@ LABEL_5:
   v16 = v15;
 
   v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v16];
-  [v7 setStartDate:v18];
+  [datesCopy setStartDate:v18];
   v17 = [v18 dateByAddingTimeInterval:v8];
-  [v7 setEndDateUnadjustedForLegacyClients:v17];
+  [datesCopy setEndDateUnadjustedForLegacyClients:v17];
 }
 
-- (void)_createAndSetUpDraggingViewWithTouchPoint:(CGPoint)a3 event:(id)a4 ignoreOffsets:(BOOL)a5 showEditMenu:(BOOL)a6
+- (void)_createAndSetUpDraggingViewWithTouchPoint:(CGPoint)point event:(id)event ignoreOffsets:(BOOL)offsets showEditMenu:(BOOL)menu
 {
-  v6 = a6;
-  v7 = a5;
-  y = a3.y;
-  x = a3.x;
-  v45 = a4;
+  menuCopy = menu;
+  offsetsCopy = offsets;
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [WeakRetained eventGestureController:self occurrenceViewAtPoint:1 ignoreSelectedCopyView:{x, y}];
-  if (v45)
+  draggingViewSource = [WeakRetained eventGestureController:self occurrenceViewAtPoint:1 ignoreSelectedCopyView:{x, y}];
+  if (eventCopy)
   {
 
-    if (v12)
+    if (draggingViewSource)
     {
-      [(EKEventGestureController *)self setDraggingViewSource:v12];
+      [(EKEventGestureController *)self setDraggingViewSource:draggingViewSource];
     }
 
     else
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      v14 = [v13 eventGestureController:self occurrenceViewForOccurrence:v45 occurrenceDate:0];
+      v14 = [v13 eventGestureController:self occurrenceViewForOccurrence:eventCopy occurrenceDate:0];
       [(EKEventGestureController *)self setDraggingViewSource:v14];
     }
   }
 
   else
   {
-    [(EKEventGestureController *)self setDraggingViewSource:v12];
+    [(EKEventGestureController *)self setDraggingViewSource:draggingViewSource];
 
-    v12 = [(EKEventGestureController *)self draggingViewSource];
-    v45 = [v12 occurrence];
+    draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
+    eventCopy = [draggingViewSource occurrence];
   }
 
   if (!self->_draggingView)
   {
-    v15 = [(EKEventGestureController *)self _createTemporaryView:v45 animated:0];
+    v15 = [(EKEventGestureController *)self _createTemporaryView:eventCopy animated:0];
     draggingView = self->_draggingView;
     self->_draggingView = v15;
 
-    if (v6)
+    if (menuCopy)
     {
       [(EKEventGestureController *)self _updatePositionOfEditingMenuForView:self->_draggingView];
     }
   }
 
-  [(EKEventGestureController *)self _setTouchOffsetsFromPoint:v7 fixedToCenter:x, y];
-  v17 = [(EKEventGestureController *)self draggingViewSource];
-  v18 = [v17 occurrence];
+  [(EKEventGestureController *)self _setTouchOffsetsFromPoint:offsetsCopy fixedToCenter:x, y];
+  draggingViewSource2 = [(EKEventGestureController *)self draggingViewSource];
+  occurrence = [draggingViewSource2 occurrence];
 
-  if (v18)
+  if (occurrence)
   {
-    v19 = [(EKEventGestureController *)self draggingViewSource];
-    [v19 travelTimeSubviewHeightInPoints];
+    draggingViewSource3 = [(EKEventGestureController *)self draggingViewSource];
+    [draggingViewSource3 travelTimeSubviewHeightInPoints];
     [(EKDayOccurrenceView *)self->_draggingView setTravelTimeSubviewHeightInPoints:?];
 
     [(EKDayOccurrenceView *)self->_draggingView frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(EKEventGestureController *)self draggingViewSource];
-    [v26 frame];
+    draggingViewSource4 = [(EKEventGestureController *)self draggingViewSource];
+    [draggingViewSource4 frame];
     v28 = v27;
 
     if (self->_pendingDraggingState != 1)
     {
-      v29 = [(EKEventGestureController *)self draggingViewSource];
-      v30 = [v29 superview];
-      v31 = [(EKEventGestureController *)self draggingViewSource];
-      [v31 frame];
+      draggingViewSource5 = [(EKEventGestureController *)self draggingViewSource];
+      superview = [draggingViewSource5 superview];
+      draggingViewSource6 = [(EKEventGestureController *)self draggingViewSource];
+      [draggingViewSource6 frame];
       v33 = v32;
       v35 = v34;
-      v36 = [(EKDayOccurrenceView *)self->_draggingView superview];
-      [v30 convertPoint:v36 toView:{v33, v35}];
+      superview2 = [(EKDayOccurrenceView *)self->_draggingView superview];
+      [superview convertPoint:superview2 toView:{v33, v35}];
       v23 = v37;
     }
 
@@ -2123,17 +2123,17 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (([v45 isAllDay] & 1) == 0)
+  if (([eventCopy isAllDay] & 1) == 0)
   {
-    [v45 travelTime];
+    [eventCopy travelTime];
     if (v38 > 0.01)
     {
-      [v45 travelTime];
+      [eventCopy travelTime];
       [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:0 event:0 allDay:?];
       [(EKDayOccurrenceView *)self->_draggingView setTravelTimeSubviewHeightInPoints:?];
     }
 
-    [v45 duration];
+    [eventCopy duration];
     [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:0 event:0 allDay:?];
     v40 = v39;
     [(EKDayOccurrenceView *)self->_draggingView frame];
@@ -2153,11 +2153,11 @@ LABEL_17:
   }
 }
 
-- (BOOL)_beginEditingSessionAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)_beginEditingSessionAtPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
   if (!self->_currentDraggingState)
   {
     [(EKEventGestureController *)self _setUpInitialTouchPointsWithPoint:x, y];
@@ -2170,7 +2170,7 @@ LABEL_17:
     if (self->_currentDraggingState != 1)
     {
       v9 = objc_loadWeakRetained(&self->_untimedDelegate);
-      v10 = [v9 eventGestureController:self setUpAtPoint:v7 withOccurrence:0 forceNewEvent:{self->_latestTouchPoint.x, self->_latestTouchPoint.y}];
+      v10 = [v9 eventGestureController:self setUpAtPoint:eventCopy withOccurrence:0 forceNewEvent:{self->_latestTouchPoint.x, self->_latestTouchPoint.y}];
       event = self->_event;
       self->_event = v10;
     }
@@ -2184,7 +2184,7 @@ LABEL_17:
 
     if (v13)
     {
-      v12 = [(EKEventGestureController *)self __timedDelegateBeginEditingSessionAtPoint:v7 withEvent:self->_latestTouchPoint.x, self->_latestTouchPoint.y];
+      v12 = [(EKEventGestureController *)self __timedDelegateBeginEditingSessionAtPoint:eventCopy withEvent:self->_latestTouchPoint.x, self->_latestTouchPoint.y];
     }
 
     else
@@ -2196,23 +2196,23 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)canProposeNewTime:(id)a3
+- (BOOL)canProposeNewTime:(id)time
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 allowsProposedTimeModifications])
+  timeCopy = time;
+  if ([timeCopy allowsProposedTimeModifications])
   {
-    if ([v3 serverSupportedProposeNewTime])
+    if ([timeCopy serverSupportedProposeNewTime])
     {
       v4 = 1;
     }
 
     else
     {
-      v5 = [v3 organizer];
-      v8[0] = v5;
+      organizer = [timeCopy organizer];
+      v8[0] = organizer;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-      v4 = [EKUIEmailCompositionManager canShowViewControllerForEvent:v3 withParticipantRecipients:v6];
+      v4 = [EKUIEmailCompositionManager canShowViewControllerForEvent:timeCopy withParticipantRecipients:v6];
     }
   }
 
@@ -2224,15 +2224,15 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)__timedDelegateBeginEditingSessionAtPoint:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)__timedDelegateBeginEditingSessionAtPoint:(CGPoint)point withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  eventCopy = event;
   self->_currentDragType = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = [WeakRetained eventGestureController:self occurrenceViewAtPoint:1 ignoreSelectedCopyView:{x, y}];
-  if (v7)
+  if (eventCopy)
   {
 
     if (v9)
@@ -2243,7 +2243,7 @@ LABEL_17:
     else
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      v11 = [v10 eventGestureController:self occurrenceViewForOccurrence:v7 occurrenceDate:0];
+      v11 = [v10 eventGestureController:self occurrenceViewForOccurrence:eventCopy occurrenceDate:0];
       [(EKEventGestureController *)self setDraggingViewSource:v11];
     }
   }
@@ -2255,17 +2255,17 @@ LABEL_17:
     v9 = WeakRetained;
   }
 
-  v12 = [(EKEventGestureController *)self draggingViewSource];
-  v13 = [v12 occurrence];
+  draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
+  occurrence = [draggingViewSource occurrence];
 
-  if (!v13)
+  if (!occurrence)
   {
     goto LABEL_11;
   }
 
-  v14 = [(EKEventGestureController *)self canProposeNewTime:v13];
-  v15 = [v13 isEditable] | v14;
-  if (![v13 isReminderIntegrationEvent])
+  v14 = [(EKEventGestureController *)self canProposeNewTime:occurrence];
+  v15 = [occurrence isEditable] | v14;
+  if (![occurrence isReminderIntegrationEvent])
   {
     if ((v15 & 1) == 0)
     {
@@ -2273,15 +2273,15 @@ LABEL_17:
     }
 
 LABEL_11:
-    if (v7 || (-[EKEventGestureController draggingViewSource](self, "draggingViewSource"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7) && (-[EKEventGestureController draggingViewSource](self, "draggingViewSource"), v19 = objc_claimAutoreleasedReturnValue(), [v19 occurrence], v7 = objc_claimAutoreleasedReturnValue(), v19, v7))
+    if (eventCopy || (-[EKEventGestureController draggingViewSource](self, "draggingViewSource"), eventCopy = objc_claimAutoreleasedReturnValue(), eventCopy, eventCopy) && (-[EKEventGestureController draggingViewSource](self, "draggingViewSource"), v19 = objc_claimAutoreleasedReturnValue(), [v19 occurrence], eventCopy = objc_claimAutoreleasedReturnValue(), v19, eventCopy))
     {
-      if (![v7 isNew])
+      if (![eventCopy isNew])
       {
 LABEL_31:
-        [(EKEventGestureController *)self setEvent:v7];
+        [(EKEventGestureController *)self setEvent:eventCopy];
         v33 = objc_loadWeakRetained(&self->_delegate);
-        v34 = [v7 startDate];
-        [v34 timeIntervalSinceReferenceDate];
+        startDate = [eventCopy startDate];
+        [startDate timeIntervalSinceReferenceDate];
         [v33 eventGestureController:self didSetUpAtDate:-[EKDayOccurrenceView isAllDay](self->_draggingView isAllDay:{"isAllDay"), v35}];
 
         v17 = 1;
@@ -2296,12 +2296,12 @@ LABEL_31:
       v18 = 1;
     }
 
-    v20 = [(EKEventGestureController *)self draggingViewSource];
-    if (v20)
+    draggingViewSource2 = [(EKEventGestureController *)self draggingViewSource];
+    if (draggingViewSource2)
     {
-      v21 = [(EKEventGestureController *)self draggingViewSource];
-      v22 = [v21 occurrence];
-      self->_isNewEvent = v22 == 0;
+      draggingViewSource3 = [(EKEventGestureController *)self draggingViewSource];
+      occurrence2 = [draggingViewSource3 occurrence];
+      self->_isNewEvent = occurrence2 == 0;
     }
 
     else
@@ -2311,8 +2311,8 @@ LABEL_31:
 
     if (v18)
     {
-      v23 = [(EKEventGestureController *)self draggingViewSource];
-      v24 = v23 == 0;
+      draggingViewSource4 = [(EKEventGestureController *)self draggingViewSource];
+      v24 = draggingViewSource4 == 0;
     }
 
     else
@@ -2320,7 +2320,7 @@ LABEL_31:
       v24 = 0;
     }
 
-    v25 = [(EKEventGestureController *)self draggingViewSource];
+    draggingViewSource5 = [(EKEventGestureController *)self draggingViewSource];
 
     if (v24)
     {
@@ -2330,17 +2330,17 @@ LABEL_31:
       v28 = objc_loadWeakRetained(&self->_delegate);
       [v27 setAllDay:{objc_msgSend(v28, "eventGestureController:isAllDayAtPoint:requireInsistence:", self, 0, self->_firstTouchPoint.x, self->_firstTouchPoint.y)}];
 
-      v7 = v27;
+      eventCopy = v27;
     }
 
-    if (!v25)
+    if (!draggingViewSource5)
     {
-      [(EKEventGestureController *)self _adjustNewEventDates:v7 withPoint:x, y];
+      [(EKEventGestureController *)self _adjustNewEventDates:eventCopy withPoint:x, y];
       if (self->_currentDraggingState != 1)
       {
         currentDay = self->_currentDay;
-        v30 = [v7 startCalendarDate];
-        v31 = [(EKCalendarDate *)currentDay differenceInDays:v30];
+        startCalendarDate = [eventCopy startCalendarDate];
+        v31 = [(EKCalendarDate *)currentDay differenceInDays:startCalendarDate];
 
         if ([(EKEventGestureController *)self splitMultiDays])
         {
@@ -2360,14 +2360,14 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if ([v13 CUIK_reminderShouldBeEditable] & v15)
+  if ([occurrence CUIK_reminderShouldBeEditable] & v15)
   {
     goto LABEL_11;
   }
 
 LABEL_9:
-  v16 = [(EKEventGestureController *)self draggingViewSource];
-  CalPlopViewWithScaleFactorAndCompletion(v16, 0, 1.0);
+  draggingViewSource6 = [(EKEventGestureController *)self draggingViewSource];
+  CalPlopViewWithScaleFactorAndCompletion(draggingViewSource6, 0, 1.0);
 
   [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer setState:4];
   [(EKEventGestureController *)self _cleanUpAllStateWithTouchPoint:0 commit:x, y];
@@ -2377,10 +2377,10 @@ LABEL_32:
   return v17;
 }
 
-- (void)_writeDraggingChangesToOccurrenceWithTouchPoint:(CGPoint)a3
+- (void)_writeDraggingChangesToOccurrenceWithTouchPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EKEventGestureController *)self _removeScrollTimer];
   self->_isDragging = 0;
   self->_latestTouchPoint.x = x;
@@ -2406,10 +2406,10 @@ LABEL_32:
   }
 }
 
-- (void)_returnDraggingViewToLastCommittedPositionFromTouchPoint:(CGPoint)a3
+- (void)_returnDraggingViewToLastCommittedPositionFromTouchPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EKEventGestureController *)self _removeScrollTimer];
   self->_isDragging = 0;
   self->_latestTouchPoint.x = x;
@@ -2499,22 +2499,22 @@ LABEL_32:
   self->_previousTouchVelocity = v4;
 }
 
-- (void)_setEventCalendar:(id)a3 useManagedCalendar:(BOOL)a4
+- (void)_setEventCalendar:(id)calendar useManagedCalendar:(BOOL)managedCalendar
 {
-  v4 = a4;
+  managedCalendarCopy = managedCalendar;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  calendarCopy = calendar;
+  v7 = calendarCopy;
+  if (managedCalendarCopy)
   {
-    v8 = [v6 eventStore];
-    v9 = [v8 defaultCalendarForNewEvents];
-    v10 = [v9 isManaged];
+    eventStore = [calendarCopy eventStore];
+    defaultCalendarForNewEvents = [eventStore defaultCalendarForNewEvents];
+    isManaged = [defaultCalendarForNewEvents isManaged];
 
-    if (v10)
+    if (isManaged)
     {
-      v11 = [v8 defaultCalendarForNewEvents];
-      if (!v11)
+      defaultCalendarForNewEvents2 = [eventStore defaultCalendarForNewEvents];
+      if (!defaultCalendarForNewEvents2)
       {
         goto LABEL_16;
       }
@@ -2522,12 +2522,12 @@ LABEL_32:
 
     else
     {
-      v12 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v13 = [v8 calendarsForEntityType:{0, 0}];
+      v13 = [eventStore calendarsForEntityType:{0, 0}];
       v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v14)
       {
@@ -2545,7 +2545,7 @@ LABEL_32:
             v18 = *(*(&v19 + 1) + 8 * i);
             if ([(EKEventGestureController *)self _calendarCanAcceptManagedData:v18])
             {
-              [v12 addObject:v18];
+              [array addObject:v18];
             }
           }
 
@@ -2555,33 +2555,33 @@ LABEL_32:
         while (v15);
       }
 
-      v11 = [(EKEventGestureController *)self _findFirstCalendar:v12];
+      defaultCalendarForNewEvents2 = [(EKEventGestureController *)self _findFirstCalendar:array];
 
-      if (!v11)
+      if (!defaultCalendarForNewEvents2)
       {
         goto LABEL_16;
       }
     }
 
-    [v7 setCalendar:v11];
+    [v7 setCalendar:defaultCalendarForNewEvents2];
 LABEL_16:
   }
 }
 
-- (id)_findFirstCalendar:(id)a3
+- (id)_findFirstCalendar:(id)calendar
 {
-  v3 = [a3 sortedArrayUsingFunction:MEMORY[0x1E69932D0] context:0];
-  v4 = [v3 firstObject];
+  v3 = [calendar sortedArrayUsingFunction:MEMORY[0x1E69932D0] context:0];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (BOOL)_calendarCanAcceptManagedData:(id)a3
+- (BOOL)_calendarCanAcceptManagedData:(id)data
 {
-  v3 = a3;
-  if ([v3 isManaged] && objc_msgSend(v3, "allowsContentModifications"))
+  dataCopy = data;
+  if ([dataCopy isManaged] && objc_msgSend(dataCopy, "allowsContentModifications"))
   {
-    v4 = [v3 isSubscribed] ^ 1;
+    v4 = [dataCopy isSubscribed] ^ 1;
   }
 
   else
@@ -2595,17 +2595,17 @@ LABEL_16:
 - (id)_acceptedTypes
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithObject:@"com.apple.eventkit.internal"];
-  v4 = [(EKEventGestureController *)self _acceptedExternalTypes];
-  [v3 addObjectsFromArray:v4];
+  _acceptedExternalTypes = [(EKEventGestureController *)self _acceptedExternalTypes];
+  [v3 addObjectsFromArray:_acceptedExternalTypes];
 
   return v3;
 }
 
 - (id)_acceptedExternalTypes
 {
-  v3 = [(EKEventGestureController *)self _acceptedNonFileExternalTypes];
-  v4 = [(EKEventGestureController *)self _acceptedFileExternalTypes];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  _acceptedNonFileExternalTypes = [(EKEventGestureController *)self _acceptedNonFileExternalTypes];
+  _acceptedFileExternalTypes = [(EKEventGestureController *)self _acceptedFileExternalTypes];
+  v5 = [_acceptedNonFileExternalTypes arrayByAddingObjectsFromArray:_acceptedFileExternalTypes];
 
   return v5;
 }
@@ -2613,51 +2613,51 @@ LABEL_16:
 - (id)_acceptedFileExternalTypes
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v2 = [*MEMORY[0x1E6982D60] identifier];
-  v6[0] = v2;
-  v3 = [*MEMORY[0x1E6982F30] identifier];
-  v6[1] = v3;
+  identifier = [*MEMORY[0x1E6982D60] identifier];
+  v6[0] = identifier;
+  identifier2 = [*MEMORY[0x1E6982F30] identifier];
+  v6[1] = identifier2;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
 
   return v4;
 }
 
-- (id)_getEventUsingDropSession:(id)a3
+- (id)_getEventUsingDropSession:(id)session
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 items];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
-  if (v6)
+  items = [sessionCopy items];
+  localObject2 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
+  if (localObject2)
   {
     v7 = *v23;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != localObject2; i = i + 1)
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v9 localObject];
+        localObject = [v9 localObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v6 = [v9 localObject];
+          localObject2 = [v9 localObject];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
-      if (v6)
+      localObject2 = [items countByEnumeratingWithState:&v22 objects:v26 count:16];
+      if (localObject2)
       {
         continue;
       }
@@ -2668,51 +2668,51 @@ LABEL_16:
 
 LABEL_11:
 
-  v12 = [(EKEventGestureController *)self _acceptedExternalTypes];
-  v13 = [v4 hasItemsConformingToTypeIdentifiers:v12];
+  _acceptedExternalTypes = [(EKEventGestureController *)self _acceptedExternalTypes];
+  v13 = [sessionCopy hasItemsConformingToTypeIdentifiers:_acceptedExternalTypes];
 
-  if (!v6 && v13)
+  if (!localObject2 && v13)
   {
-    v14 = [(EKEventGestureController *)self delegate];
+    delegate = [(EKEventGestureController *)self delegate];
 
-    if (v14)
+    if (delegate)
     {
-      v15 = [(EKEventGestureController *)self _viewForTracking];
-      [v4 locationInView:v15];
+      _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+      [sessionCopy locationInView:_viewForTracking];
       v17 = v16;
       v19 = v18;
 
-      v20 = [(EKEventGestureController *)self delegate];
-      v6 = [v20 createEventForEventGestureController:self];
+      delegate2 = [(EKEventGestureController *)self delegate];
+      localObject2 = [delegate2 createEventForEventGestureController:self];
 
-      [(EKEventGestureController *)self _adjustNewEventDates:v6 withPoint:v17, v19];
-      if ([EventImportData isSessionManaged:v4])
+      [(EKEventGestureController *)self _adjustNewEventDates:localObject2 withPoint:v17, v19];
+      if ([EventImportData isSessionManaged:sessionCopy])
       {
-        [(EKEventGestureController *)self _setEventCalendar:v6 useManagedCalendar:1];
+        [(EKEventGestureController *)self _setEventCalendar:localObject2 useManagedCalendar:1];
       }
     }
 
     else
     {
-      v6 = 0;
+      localObject2 = 0;
     }
 
     self->_isNewEvent = 1;
   }
 
-  return v6;
+  return localObject2;
 }
 
-- (unint64_t)_dropOperationGivenDropSession:(id)a3
+- (unint64_t)_dropOperationGivenDropSession:(id)session
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 items];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  items = [sessionCopy items];
+  v6 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2724,10 +2724,10 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * v9) localObject];
+        localObject = [*(*(&v16 + 1) + 8 * v9) localObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2742,7 +2742,7 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -2752,8 +2752,8 @@ LABEL_11:
     }
   }
 
-  v12 = [(EKEventGestureController *)self _acceptedExternalTypes];
-  v13 = [v4 hasItemsConformingToTypeIdentifiers:v12];
+  _acceptedExternalTypes = [(EKEventGestureController *)self _acceptedExternalTypes];
+  v13 = [sessionCopy hasItemsConformingToTypeIdentifiers:_acceptedExternalTypes];
 
   if (v13)
   {
@@ -2770,32 +2770,32 @@ LABEL_13:
   return v14;
 }
 
-- (void)_setupEvent:(id)a3 withImportData:(id)a4
+- (void)_setupEvent:(id)event withImportData:(id)data
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v6 title];
-  [v12 setTitle:v7];
+  eventCopy = event;
+  dataCopy = data;
+  title = [dataCopy title];
+  [eventCopy setTitle:title];
 
-  v8 = [v6 URL];
-  [v12 setURL:v8];
+  v8 = [dataCopy URL];
+  [eventCopy setURL:v8];
 
-  v9 = [v6 notes];
-  [v12 setNotes:v9];
+  notes = [dataCopy notes];
+  [eventCopy setNotes:notes];
 
-  -[EKEventGestureController _setEventCalendar:useManagedCalendar:](self, "_setEventCalendar:useManagedCalendar:", v12, [v6 prefersManagedCalendar]);
-  v10 = [v6 structuredLocation];
+  -[EKEventGestureController _setEventCalendar:useManagedCalendar:](self, "_setEventCalendar:useManagedCalendar:", eventCopy, [dataCopy prefersManagedCalendar]);
+  structuredLocation = [dataCopy structuredLocation];
 
-  if (v10)
+  if (structuredLocation)
   {
-    v11 = [v6 structuredLocation];
-    [v12 setStructuredLocation:v11];
+    structuredLocation2 = [dataCopy structuredLocation];
+    [eventCopy setStructuredLocation:structuredLocation2];
   }
 }
 
-- (void)_handleShowingEventWithUniqueId:(id)a3 date:(id)a4 eventStore:(id)a5
+- (void)_handleShowingEventWithUniqueId:(id)id date:(id)date eventStore:(id)store
 {
-  v13 = [a5 eventWithUniqueId:a3 occurrenceDate:a4];
+  v13 = [store eventWithUniqueId:id occurrenceDate:date];
   if (v13)
   {
     p_untimedDelegate = &self->_untimedDelegate;
@@ -2809,19 +2809,19 @@ LABEL_13:
   }
 }
 
-- (void)_handleImportingICSData:(id)a3 intoEventStore:(id)a4
+- (void)_handleImportingICSData:(id)data intoEventStore:(id)store
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [[EKICSPreviewController alloc] initWithData:v6 eventStore:v9];
+  storeCopy = store;
+  dataCopy = data;
+  v7 = [[EKICSPreviewController alloc] initWithData:dataCopy eventStore:storeCopy];
 
   [(EKICSPreviewController *)v7 setAllowsImport:1];
   [(EKICSPreviewController *)v7 setPreviewDelegate:self];
   [(EKICSPreviewController *)v7 setCancelButtonWithTarget:self action:sel__icsPreviewControllerCancelButtonPressed];
-  v8 = [(EKICSPreviewController *)v7 singleExistingEventUniqueID];
-  if (v8)
+  singleExistingEventUniqueID = [(EKICSPreviewController *)v7 singleExistingEventUniqueID];
+  if (singleExistingEventUniqueID)
   {
-    [(EKEventGestureController *)self _handleShowingEventWithUniqueId:v8 date:0 eventStore:v9];
+    [(EKEventGestureController *)self _handleShowingEventWithUniqueId:singleExistingEventUniqueID date:0 eventStore:storeCopy];
   }
 
   else
@@ -2836,11 +2836,11 @@ LABEL_13:
   currentICSPreviewController = self->_currentICSPreviewController;
   if (currentICSPreviewController)
   {
-    v4 = [(EKICSPreviewController *)currentICSPreviewController viewController];
-    v5 = [v4 view];
-    v6 = [v5 superview];
+    viewController = [(EKICSPreviewController *)currentICSPreviewController viewController];
+    view = [viewController view];
+    superview = [view superview];
 
-    if (!v6)
+    if (!superview)
     {
       p_untimedDelegate = &self->_untimedDelegate;
       WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
@@ -2848,43 +2848,43 @@ LABEL_13:
       if (WeakRetained || (p_untimedDelegate = &self->_delegate, v9 = objc_loadWeakRetained(&self->_delegate), v9, v9))
       {
         v11 = objc_loadWeakRetained(p_untimedDelegate);
-        v10 = [(EKICSPreviewController *)self->_currentICSPreviewController viewController];
-        [v11 eventGestureController:self requestsPresentationOfViewController:v10];
+        viewController2 = [(EKICSPreviewController *)self->_currentICSPreviewController viewController];
+        [v11 eventGestureController:self requestsPresentationOfViewController:viewController2];
       }
     }
   }
 }
 
-- (void)icsPreviewControllerWantsDismissal:(id)a3
+- (void)icsPreviewControllerWantsDismissal:(id)dismissal
 {
-  if (self->_currentICSPreviewController == a3)
+  if (self->_currentICSPreviewController == dismissal)
   {
     [(EKEventGestureController *)self _dismissCurrentICSPreviewControllerAnimated:1];
   }
 }
 
-- (void)icsPreviewControllerImportDidFail:(id)a3
+- (void)icsPreviewControllerImportDidFail:(id)fail
 {
-  if (self->_currentICSPreviewController == a3)
+  if (self->_currentICSPreviewController == fail)
   {
     [(EKEventGestureController *)self _dismissCurrentICSPreviewControllerAnimated:1];
   }
 }
 
-- (void)icsPreviewControllerImportDidImportEvents:(id)a3
+- (void)icsPreviewControllerImportDidImportEvents:(id)events
 {
-  if (self->_currentICSPreviewController == a3)
+  if (self->_currentICSPreviewController == events)
   {
     [(EKEventGestureController *)self _dismissCurrentICSPreviewControllerAnimated:1];
   }
 }
 
-- (void)_dismissCurrentICSPreviewControllerAnimated:(BOOL)a3
+- (void)_dismissCurrentICSPreviewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(EKICSPreviewController *)self->_currentICSPreviewController viewController];
-  v6 = [v5 presentingViewController];
-  [v6 dismissViewControllerAnimated:v3 completion:0];
+  animatedCopy = animated;
+  viewController = [(EKICSPreviewController *)self->_currentICSPreviewController viewController];
+  presentingViewController = [viewController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
 
   currentICSPreviewController = self->_currentICSPreviewController;
   self->_currentICSPreviewController = 0;
@@ -2902,40 +2902,40 @@ LABEL_13:
   }
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v5 = a4;
-  v6 = [(EKEventGestureController *)self _acceptedTypes];
-  v7 = [v5 hasItemsConformingToTypeIdentifiers:v6];
+  sessionCopy = session;
+  _acceptedTypes = [(EKEventGestureController *)self _acceptedTypes];
+  v7 = [sessionCopy hasItemsConformingToTypeIdentifiers:_acceptedTypes];
 
   return v7;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  enterCopy = enter;
   self->_waitingForDragToInitialize = 0;
   currentDraggingState = self->_currentDraggingState;
   if (currentDraggingState == 4)
   {
-    v16 = [(EKEventGestureController *)self _viewForTracking];
-    [v7 locationInView:v16];
+    _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+    [enterCopy locationInView:_viewForTracking];
     [(EKEventGestureController *)self _setDraggingState:3 withPoint:self->_event event:?];
     [(EKEventGestureController *)self _updateFlingToCancelParameters];
   }
 
   else if (!currentDraggingState)
   {
-    if (([(EKEventGestureController *)self _dropOperationGivenDropSession:v7]& 0xFFFFFFFFFFFFFFFELL) == 2)
+    if (([(EKEventGestureController *)self _dropOperationGivenDropSession:enterCopy]& 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v9 = [(EKEventGestureController *)self _getEventUsingDropSession:v7];
-      v10 = [(EKEventGestureController *)self _viewForTracking];
-      [v7 locationInView:v10];
+      v9 = [(EKEventGestureController *)self _getEventUsingDropSession:enterCopy];
+      _viewForTracking2 = [(EKEventGestureController *)self _viewForTracking];
+      [enterCopy locationInView:_viewForTracking2];
       v12 = v11;
       v14 = v13;
       objc_storeStrong(&self->_event, v9);
-      if ([EventImportData isSessionManaged:v7])
+      if ([EventImportData isSessionManaged:enterCopy])
       {
         v15 = objc_alloc_init(DraggingContext);
         [(DraggingContext *)v15 setIsManaged:1];
@@ -2948,11 +2948,11 @@ LABEL_13:
 
       [(EKEventGestureController *)self _setDraggingState:1 withPoint:v9 event:v15 context:v12, v14];
       [(EKEventGestureController *)self _updateFlingToCancelParameters];
-      v20 = [(EKEventGestureController *)self _dropSessionRequiresExternalDataExtraction:v7];
+      v20 = [(EKEventGestureController *)self _dropSessionRequiresExternalDataExtraction:enterCopy];
 
       if (v20)
       {
-        v17 = self;
+        selfCopy2 = self;
         v18 = 1;
         goto LABEL_8;
       }
@@ -2969,22 +2969,22 @@ LABEL_13:
     }
   }
 
-  [(EKEventGestureController *)self _disableSystemPreviewForDrag:v7];
-  v17 = self;
+  [(EKEventGestureController *)self _disableSystemPreviewForDrag:enterCopy];
+  selfCopy2 = self;
   v18 = 0;
 LABEL_8:
-  [(EKEventGestureController *)v17 _setLocalDraggingViewHidden:v18];
+  [(EKEventGestureController *)selfCopy2 _setLocalDraggingViewHidden:v18];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  updateCopy = update;
   if ((self->_currentDraggingState | 2) == 3)
   {
-    v8 = [(EKEventGestureController *)self _viewForTracking];
-    [v7 locationInView:v8];
+    _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+    [updateCopy locationInView:_viewForTracking];
     v10 = v9;
     v12 = v11;
     [(EKEventGestureController *)self _installScrollTimer];
@@ -3012,7 +3012,7 @@ LABEL_8:
     [(EKEventGestureController *)self _updateFlingToCancelParameters];
     if (self->_isNewEvent)
     {
-      v19 = [(EKEventGestureController *)self _dropOperationGivenDropSession:v7];
+      v19 = [(EKEventGestureController *)self _dropOperationGivenDropSession:updateCopy];
 
       if (v19 != 3)
       {
@@ -3024,7 +3024,7 @@ LABEL_8:
     {
     }
 
-    if ([v7 allowsMoveOperation])
+    if ([updateCopy allowsMoveOperation])
     {
       v19 = 3;
     }
@@ -3054,7 +3054,7 @@ LABEL_8:
 LABEL_16:
   if (self->_currentDraggingState == 3)
   {
-    [(EKEventGestureController *)self _setToSystemDraggingImageForDrag:v7];
+    [(EKEventGestureController *)self _setToSystemDraggingImageForDrag:updateCopy];
   }
 
   v21 = [objc_alloc(MEMORY[0x1E69DC9C0]) initWithDropOperation:v19];
@@ -3064,22 +3064,22 @@ LABEL_16:
   return v21;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v6 = a4;
-  v5 = [(EKEventGestureController *)self _viewForTracking];
-  [v6 locationInView:v5];
+  exitCopy = exit;
+  _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+  [exitCopy locationInView:_viewForTracking];
   [(EKEventGestureController *)self _setDraggingState:4 * (self->_currentDraggingState != 1) withPoint:0 event:?];
   [(EKEventGestureController *)self _updateFlingToCancelParameters];
-  [(EKEventGestureController *)self _enableSystemPreviewForDrag:v6];
+  [(EKEventGestureController *)self _enableSystemPreviewForDrag:exitCopy];
   [(EKEventGestureController *)self _setLocalDraggingViewHidden:1];
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [(EKEventGestureController *)self _viewForTracking];
-  [v5 locationInView:v6];
+  dropCopy = drop;
+  _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+  [dropCopy locationInView:_viewForTracking];
   self->_latestTouchPoint.x = v7;
   self->_latestTouchPoint.y = v8;
   if (self->_currentDraggingState != 1)
@@ -3090,13 +3090,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(EKEventGestureController *)self _dropSessionRequiresExternalDataExtraction:v5];
+  v9 = [(EKEventGestureController *)self _dropSessionRequiresExternalDataExtraction:dropCopy];
   event = self->_event;
   if (!v9)
   {
     if (!event)
     {
-      v15 = [(EKEventGestureController *)self _getEventUsingDropSession:v5];
+      v15 = [(EKEventGestureController *)self _getEventUsingDropSession:dropCopy];
       v16 = self->_event;
       self->_event = v15;
     }
@@ -3106,13 +3106,13 @@ LABEL_9:
 
   if (!event)
   {
-    v11 = [(EKEventGestureController *)self _getEventUsingDropSession:v5];
+    v11 = [(EKEventGestureController *)self _getEventUsingDropSession:dropCopy];
     v12 = self->_event;
     self->_event = v11;
   }
 
-  v13 = [(EKEventGestureController *)self _acceptedNonFileExternalTypes];
-  v14 = [v5 hasItemsConformingToTypeIdentifiers:v13];
+  _acceptedNonFileExternalTypes = [(EKEventGestureController *)self _acceptedNonFileExternalTypes];
+  v14 = [dropCopy hasItemsConformingToTypeIdentifiers:_acceptedNonFileExternalTypes];
 
   if (v14)
   {
@@ -3122,17 +3122,17 @@ LABEL_9:
     v19[2] = __56__EKEventGestureController_dropInteraction_performDrop___block_invoke;
     v19[3] = &unk_1E8442B90;
     v19[4] = self;
-    [EventImportData extractEventImportDataFromDropSession:v5 completionBlock:v19];
+    [EventImportData extractEventImportDataFromDropSession:dropCopy completionBlock:v19];
   }
 
   else
   {
-    v17 = [(EKEventGestureController *)self _acceptedFileExternalTypes];
-    v18 = [v5 hasItemsConformingToTypeIdentifiers:v17];
+    _acceptedFileExternalTypes = [(EKEventGestureController *)self _acceptedFileExternalTypes];
+    v18 = [dropCopy hasItemsConformingToTypeIdentifiers:_acceptedFileExternalTypes];
 
     if (v18)
     {
-      [(EKEventGestureController *)self _extractFileFromSession:v5];
+      [(EKEventGestureController *)self _extractFileFromSession:dropCopy];
     }
   }
 
@@ -3212,21 +3212,21 @@ void __56__EKEventGestureController_dropInteraction_performDrop___block_invoke_2
   }
 }
 
-- (void)_extractFileFromSession:(id)a3
+- (void)_extractFileFromSession:(id)session
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   self->_dragCompletionPending = 1;
-  v25 = self;
-  v30 = [(EKEventGestureController *)self _acceptedFileExternalTypes];
-  v28 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  _acceptedFileExternalTypes = [(EKEventGestureController *)self _acceptedFileExternalTypes];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v26 = v4;
-  obj = [v4 items];
+  v26 = sessionCopy;
+  obj = [sessionCopy items];
   v31 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v31)
   {
@@ -3245,7 +3245,7 @@ void __56__EKEventGestureController_dropInteraction_performDrop___block_invoke_2
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v8 = v30;
+        v8 = _acceptedFileExternalTypes;
         v9 = [v8 countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v9)
         {
@@ -3261,13 +3261,13 @@ void __56__EKEventGestureController_dropInteraction_performDrop___block_invoke_2
               }
 
               v13 = *(*(&v37 + 1) + 8 * j);
-              v14 = [v7 itemProvider];
-              v15 = [v14 hasItemConformingToTypeIdentifier:v13];
+              itemProvider = [v7 itemProvider];
+              v15 = [itemProvider hasItemConformingToTypeIdentifier:v13];
 
               if (v15)
               {
-                [v28 addObject:v7];
-                [v5 addObject:v13];
+                [array addObject:v7];
+                [array2 addObject:v13];
                 goto LABEL_16;
               }
             }
@@ -3292,9 +3292,9 @@ LABEL_16:
   }
 
   v16 = dispatch_group_create();
-  v17 = v28;
-  v18 = v5;
-  if ([v28 count])
+  v17 = array;
+  v18 = array2;
+  if ([array count])
   {
     v19 = 0;
     do
@@ -3302,29 +3302,29 @@ LABEL_16:
       v20 = [v17 objectAtIndexedSubscript:v19];
       v21 = [v18 objectAtIndexedSubscript:v19];
       dispatch_group_enter(v16);
-      v22 = [v20 itemProvider];
+      itemProvider2 = [v20 itemProvider];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __52__EKEventGestureController__extractFileFromSession___block_invoke;
       v34[3] = &unk_1E8442BB8;
-      v34[4] = v25;
+      v34[4] = selfCopy;
       v35 = v21;
       v36 = v16;
       v23 = v21;
-      v24 = [v22 loadFileRepresentationForTypeIdentifier:v23 completionHandler:v34];
+      v24 = [itemProvider2 loadFileRepresentationForTypeIdentifier:v23 completionHandler:v34];
 
-      v17 = v28;
+      v17 = array;
       ++v19;
     }
 
-    while (v19 < [v28 count]);
+    while (v19 < [array count]);
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__EKEventGestureController__extractFileFromSession___block_invoke_137;
   block[3] = &unk_1E84407B0;
-  block[4] = v25;
+  block[4] = selfCopy;
   v33 = 0;
   dispatch_group_notify(v16, MEMORY[0x1E69E96A0], block);
 }
@@ -3367,7 +3367,7 @@ uint64_t __52__EKEventGestureController__extractFileFromSession___block_invoke_1
   return [v2 _updateFlingToCancelParameters];
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
   self->_dropAnimationInProgress = 1;
   v5[0] = MEMORY[0x1E69E9820];
@@ -3375,20 +3375,20 @@ uint64_t __52__EKEventGestureController__extractFileFromSession___block_invoke_1
   v5[2] = __77__EKEventGestureController_dropInteraction_item_willAnimateDropWithAnimator___block_invoke;
   v5[3] = &unk_1E843F4F8;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, item}];
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v7 = a5;
-  if ([EventImportData itemContainsCalendarICSData:a4])
+  defaultCopy = default;
+  if ([EventImportData itemContainsCalendarICSData:item])
   {
     v8 = 0;
     goto LABEL_14;
   }
 
-  v9 = [(EKEventGestureController *)self _captureImageOfDraggingView];
-  v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
+  _captureImageOfDraggingView = [(EKEventGestureController *)self _captureImageOfDraggingView];
+  v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_captureImageOfDraggingView];
   WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate);
 
   if (WeakRetained)
@@ -3413,7 +3413,7 @@ uint64_t __52__EKEventGestureController__extractFileFromSession___block_invoke_1
 
   if (v10)
   {
-    v14 = [(EKDayOccurrenceView *)v13 superview];
+    superview = [(EKDayOccurrenceView *)v13 superview];
     v15 = objc_loadWeakRetained(&self->_untimedDelegate);
 
     if (v15)
@@ -3425,8 +3425,8 @@ uint64_t __52__EKEventGestureController__extractFileFromSession___block_invoke_1
       v22 = v21;
       v24 = v23;
 
-      v25 = [(EKEventGestureController *)self _viewForTracking];
-      [v14 convertRect:v25 fromView:{v18, v20, v22, v24}];
+      _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+      [superview convertRect:_viewForTracking fromView:{v18, v20, v22, v24}];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -3443,7 +3443,7 @@ uint64_t __52__EKEventGestureController__extractFileFromSession___block_invoke_1
       v29 = v37;
     }
 
-    v38 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:v14 center:{v27 + v31 * 0.5, v29 + v33 * 0.5}];
+    v38 = [objc_alloc(MEMORY[0x1E69DC9A8]) initWithContainer:superview center:{v27 + v31 * 0.5, v29 + v33 * 0.5}];
     v39 = objc_alloc(MEMORY[0x1E69DD068]);
     v40 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
     v8 = [v39 initWithView:v10 parameters:v40 target:v38];
@@ -3452,7 +3452,7 @@ uint64_t __52__EKEventGestureController__extractFileFromSession___block_invoke_1
   }
 
 LABEL_10:
-  v8 = v7;
+  v8 = defaultCopy;
 LABEL_13:
 
 LABEL_14:
@@ -3500,10 +3500,10 @@ LABEL_14:
   return result;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v13 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  endCopy = end;
   self->_currentDropDataOwnerCache = 0;
   if (!self->_dragCompletionPending)
   {
@@ -3511,8 +3511,8 @@ LABEL_14:
     if (currentDraggingState == 1)
     {
 LABEL_5:
-      v8 = [(EKEventGestureController *)self _viewForTracking];
-      [v6 locationInView:v8];
+      _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+      [endCopy locationInView:_viewForTracking];
       v10 = v9;
       v12 = v11;
       [(EKEventGestureController *)self _updateFlingToCancelParameters];
@@ -3537,7 +3537,7 @@ LABEL_5:
 LABEL_7:
 }
 
-- (int64_t)_dropInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dropInteraction:(id)interaction dataOwnerForSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
   result = self->_currentDropDataOwnerCache;
@@ -3589,28 +3589,28 @@ LABEL_12:
   return result;
 }
 
-- (void)_disableSystemPreviewForDrag:(id)a3
+- (void)_disableSystemPreviewForDrag:(id)drag
 {
-  v3 = [(EKEventGestureController *)self _findLocalDragItemInSession:a3];
+  v3 = [(EKEventGestureController *)self _findLocalDragItemInSession:drag];
   [v3 setPreviewProvider:&__block_literal_global_68];
 }
 
-- (void)_enableSystemPreviewForDrag:(id)a3
+- (void)_enableSystemPreviewForDrag:(id)drag
 {
-  v3 = [(EKEventGestureController *)self _findLocalDragItemInSession:a3];
+  v3 = [(EKEventGestureController *)self _findLocalDragItemInSession:drag];
   [v3 setPreviewProvider:0];
 }
 
-- (void)_setToSystemDraggingImageForDrag:(id)a3
+- (void)_setToSystemDraggingImageForDrag:(id)drag
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4;
+  dragCopy = drag;
+  v5 = dragCopy;
+  localDragSession = dragCopy;
   if (self->_needToSetSystemDragPreview)
   {
-    v6 = [v4 localDragSession];
+    localDragSession = [dragCopy localDragSession];
 
-    v7 = [(EKEventGestureController *)self _findLocalDragItemInSession:v6];
+    v7 = [(EKEventGestureController *)self _findLocalDragItemInSession:localDragSession];
     v8 = self->_event;
     if (v8 || ([v7 localObject], v14 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v14, (isKindOfClass & 1) != 0) && (objc_msgSend(v7, "localObject"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
@@ -3654,42 +3654,42 @@ id __61__EKEventGestureController__setToSystemDraggingImageForDrag___block_invok
   return v3;
 }
 
-- (void)_setLocalDraggingViewHidden:(BOOL)a3
+- (void)_setLocalDraggingViewHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   draggingView = self->_draggingView;
   if (draggingView)
   {
-    [(EKDayOccurrenceView *)draggingView setHidden:a3];
-    [(EKDayOccurrenceView *)self->_draggingView setDrawsResizeHandles:v3 ^ 1];
+    [(EKDayOccurrenceView *)draggingView setHidden:hidden];
+    [(EKDayOccurrenceView *)self->_draggingView setDrawsResizeHandles:hiddenCopy ^ 1];
   }
 
-  v6 = [(EKEventGestureController *)self untimedDelegate];
+  untimedDelegate = [(EKEventGestureController *)self untimedDelegate];
 
-  if (v6)
+  if (untimedDelegate)
   {
-    v7 = [(EKEventGestureController *)self untimedDelegate];
-    [v7 eventGestureController:self setDraggingViewHidden:v3];
+    untimedDelegate2 = [(EKEventGestureController *)self untimedDelegate];
+    [untimedDelegate2 eventGestureController:self setDraggingViewHidden:hiddenCopy];
   }
 }
 
-- (void)_setToLocalDraggingImageForDrag:(id)a3
+- (void)_setToLocalDraggingImageForDrag:(id)drag
 {
-  v4 = a3;
+  dragCopy = drag;
   if (self->_currentDragType == 1 || (WeakRetained = objc_loadWeakRetained(&self->_untimedDelegate), WeakRetained, WeakRetained))
   {
-    v6 = [(EKEventGestureController *)self _findLocalDragItemInSession:v4];
-    v7 = [(EKEventGestureController *)self _captureImageOfDraggingView];
-    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
-    v9 = [(EKEventGestureController *)self _clippingPathForDraggingView];
+    v6 = [(EKEventGestureController *)self _findLocalDragItemInSession:dragCopy];
+    _captureImageOfDraggingView = [(EKEventGestureController *)self _captureImageOfDraggingView];
+    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_captureImageOfDraggingView];
+    _clippingPathForDraggingView = [(EKEventGestureController *)self _clippingPathForDraggingView];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__EKEventGestureController__setToLocalDraggingImageForDrag___block_invoke;
     v12[3] = &unk_1E8442C00;
-    v13 = v9;
+    v13 = _clippingPathForDraggingView;
     v14 = v8;
     v10 = v8;
-    v11 = v9;
+    v11 = _clippingPathForDraggingView;
     [v6 setPreviewProvider:v12];
   }
 }
@@ -3739,25 +3739,25 @@ id __60__EKEventGestureController__setToLocalDraggingImageForDrag___block_invoke
   return draggingView;
 }
 
-+ (id)_captureImageOfOccurrenceView:(id)a3 withFrameOfOpaqueContent:(CGRect)a4
++ (id)_captureImageOfOccurrenceView:(id)view withFrameOfOpaqueContent:(CGRect)content
 {
-  v4 = a3;
-  [v4 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 isHidden];
-  [v4 setNeedsDisplay];
-  [v4 setHidden:0];
-  [v4 layoutIfNeeded];
+  isHidden = [viewCopy isHidden];
+  [viewCopy setNeedsDisplay];
+  [viewCopy setHidden:0];
+  [viewCopy layoutIfNeeded];
   v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{v6, v8}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__EKEventGestureController__captureImageOfOccurrenceView_withFrameOfOpaqueContent___block_invoke;
   v14[3] = &unk_1E8442C28;
-  v15 = v4;
-  v11 = v4;
+  v15 = viewCopy;
+  v11 = viewCopy;
   v12 = [v10 imageWithActions:v14];
-  [v11 setHidden:v9];
+  [v11 setHidden:isHidden];
 
   return v12;
 }
@@ -3772,15 +3772,15 @@ void __83__EKEventGestureController__captureImageOfOccurrenceView_withFrameOfOpa
   [v5 renderInContext:v4];
 }
 
-- (id)_findLocalDragItemInSession:(id)a3
+- (id)_findLocalDragItemInSession:(id)session
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a3 items];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  items = [session items];
+  v5 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3791,28 +3791,28 @@ void __83__EKEventGestureController__captureImageOfOccurrenceView_withFrameOfOpa
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 localObject];
+        localObject = [v9 localObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v12 = [v9 localObject];
-          v13 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
-          v14 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+          localObject2 = [v9 localObject];
+          occurrence = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+          occurrence2 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
 
-          if (!v14)
+          if (!occurrence2)
           {
             v15 = self->_event;
 
-            v13 = v15;
+            occurrence = v15;
           }
 
-          if (([v12 isEqual:v13] & 1) != 0 || !v13)
+          if (([localObject2 isEqual:occurrence] & 1) != 0 || !occurrence)
           {
             v16 = v9;
 
@@ -3821,7 +3821,7 @@ void __83__EKEventGestureController__captureImageOfOccurrenceView_withFrameOfOpa
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -3837,10 +3837,10 @@ LABEL_16:
   return v16;
 }
 
-- (id)_eventToUseAtInteractionStart:(CGPoint)a3 outOccurrenceView:(id *)a4
+- (id)_eventToUseAtInteractionStart:(CGPoint)start outOccurrenceView:(id *)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = start.y;
+  x = start.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -3862,25 +3862,25 @@ LABEL_16:
     {
       if (!v12)
       {
-        v18 = [(EKEventGestureController *)self _createNewEventIfNeededAtPoint:x, y];
+        occurrence = [(EKEventGestureController *)self _createNewEventIfNeededAtPoint:x, y];
         goto LABEL_19;
       }
 
-      v16 = [v12 occurrences];
-      v17 = [v16 count];
+      occurrences = [v12 occurrences];
+      v17 = [occurrences count];
 
       if (v17 < 2)
       {
         v20 = v12;
-        *a4 = v12;
-        v18 = [v20 occurrence];
+        *view = v12;
+        occurrence = [v20 occurrence];
         if (self->_currentDraggingState != 2)
         {
           goto LABEL_19;
         }
 
-        v21 = [(EKEventGestureController *)self _viewForTracking];
-        [v12 convertPoint:v21 fromView:{x, y}];
+        _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+        [v12 convertPoint:_viewForTracking fromView:{x, y}];
         v23 = v22;
         v25 = v24;
 
@@ -3896,7 +3896,7 @@ LABEL_16:
       }
     }
 
-    v18 = 0;
+    occurrence = 0;
 LABEL_19:
 
     goto LABEL_20;
@@ -3906,22 +3906,22 @@ LABEL_19:
 
   if (!v19)
   {
-    v18 = 0;
+    occurrence = 0;
     goto LABEL_21;
   }
 
   v10 = objc_loadWeakRetained(&self->_untimedDelegate);
-  v18 = [(EKDayOccurrenceView *)v10 eventGestureController:self eventToStartInteractionWithAtPoint:x, y];
+  occurrence = [(EKDayOccurrenceView *)v10 eventGestureController:self eventToStartInteractionWithAtPoint:x, y];
 LABEL_20:
 
 LABEL_21:
 
-  return v18;
+  return occurrence;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if ([(EKEventGestureController *)self dragGestureInProgress]|| self->_dragInitiationLocked)
   {
     goto LABEL_3;
@@ -3964,8 +3964,8 @@ LABEL_3:
   }
 
 LABEL_13:
-  v17 = [(EKEventGestureController *)self _viewForTracking];
-  [v5 locationInView:v17];
+  _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+  [sessionCopy locationInView:_viewForTracking];
   v19 = v18;
   v21 = v20;
 
@@ -4033,41 +4033,41 @@ LABEL_22:
 
       if (([v22 isNew] & 1) == 0)
       {
-        v37 = [v22 title];
-        v38 = [v37 length];
+        title = [v22 title];
+        v38 = [title length];
 
         if (v38)
         {
-          v39 = [MEMORY[0x1E69933E0] sharedGenerator];
-          v40 = [v39 textRepresentationForEvent:v22 withTextFormat:0 showURI:0];
+          mEMORY[0x1E69933E0] = [MEMORY[0x1E69933E0] sharedGenerator];
+          v40 = [mEMORY[0x1E69933E0] textRepresentationForEvent:v22 withTextFormat:0 showURI:0];
 
-          v41 = [*MEMORY[0x1E6983060] identifier];
+          identifier = [*MEMORY[0x1E6983060] identifier];
           v66[0] = MEMORY[0x1E69E9820];
           v66[1] = 3221225472;
           v66[2] = __69__EKEventGestureController_dragInteraction_itemsForBeginningSession___block_invoke_4;
           v66[3] = &unk_1E8442C70;
           v42 = v40;
           v67 = v42;
-          [v24 registerDataRepresentationForTypeIdentifier:v41 visibility:0 loadHandler:v66];
+          [v24 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v66];
 
-          v43 = [*MEMORY[0x1E6983058] identifier];
+          identifier2 = [*MEMORY[0x1E6983058] identifier];
           v64[0] = MEMORY[0x1E69E9820];
           v64[1] = 3221225472;
           v64[2] = __69__EKEventGestureController_dragInteraction_itemsForBeginningSession___block_invoke_5;
           v64[3] = &unk_1E8442C70;
           v65 = v42;
           v44 = v42;
-          [v24 registerDataRepresentationForTypeIdentifier:v43 visibility:0 loadHandler:v64];
+          [v24 registerDataRepresentationForTypeIdentifier:identifier2 visibility:0 loadHandler:v64];
         }
       }
 
 LABEL_27:
-      v45 = [v22 title];
-      v46 = [v45 length];
+      title2 = [v22 title];
+      v46 = [title2 length];
 
       if (v46)
       {
-        v47 = [v22 title];
+        title3 = [v22 title];
       }
 
       else
@@ -4077,11 +4077,11 @@ LABEL_27:
           goto LABEL_32;
         }
 
-        v47 = +[EKEventEditor defaultTitleForCalendarItem];
+        title3 = +[EKEventEditor defaultTitleForCalendarItem];
       }
 
-      v48 = v47;
-      [v24 setSuggestedName:v47];
+      v48 = title3;
+      [v24 setSuggestedName:title3];
 
 LABEL_32:
       v49 = [objc_alloc(MEMORY[0x1E69DC990]) initWithItemProvider:v24];
@@ -4098,8 +4098,8 @@ LABEL_32:
 
       [v49 set_managementState:v57];
       objc_storeStrong(&self->_event, v22);
-      v58 = [v23 occurrenceDate];
-      self->_occurrenceDateIndex = [(EKEventGestureController *)self _occurrenceDateIndexWithEvent:v22 occurrenceDate:v58];
+      occurrenceDate = [v23 occurrenceDate];
+      self->_occurrenceDateIndex = [(EKEventGestureController *)self _occurrenceDateIndexWithEvent:v22 occurrenceDate:occurrenceDate];
 
       v6 = [MEMORY[0x1E695DEC8] arrayWithObject:v49];
 
@@ -4139,8 +4139,8 @@ LABEL_46:
   }
 
   v60 = objc_loadWeakRetained(&self->_delegate);
-  v61 = [v23 occurrenceDate];
-  v24 = [v60 eventGestureController:self occurrenceViewForOccurrence:v22 occurrenceDate:v61];
+  occurrenceDate2 = [v23 occurrenceDate];
+  v24 = [v60 eventGestureController:self occurrenceViewForOccurrence:v22 occurrenceDate:occurrenceDate2];
 
   if (!v24)
   {
@@ -4219,21 +4219,21 @@ id __69__EKEventGestureController_dragInteraction_itemsForBeginningSession___blo
 
 - (EKCalendarDate)occurrenceDate
 {
-  v3 = [(EKEvent *)self->_event startCalendarDate];
-  v4 = [v3 calendarDateByAddingDays:self->_occurrenceDateIndex];
+  startCalendarDate = [(EKEvent *)self->_event startCalendarDate];
+  v4 = [startCalendarDate calendarDateByAddingDays:self->_occurrenceDateIndex];
 
   return v4;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!self->_draggingView || ![(EKEventGestureController *)self _isTouchFromDragSessionInResizeHandles:v10])
+  interactionCopy = interaction;
+  itemCopy = item;
+  sessionCopy = session;
+  if (!self->_draggingView || ![(EKEventGestureController *)self _isTouchFromDragSessionInResizeHandles:sessionCopy])
   {
-    v11 = [(EKEventGestureController *)self _viewForTracking];
-    [v10 locationInView:v11];
+    _viewForTracking = [(EKEventGestureController *)self _viewForTracking];
+    [sessionCopy locationInView:_viewForTracking];
     [(EKEventGestureController *)self _setDraggingState:3 withPoint:0 event:?];
     [(EKEventGestureController *)self _updateFlingToCancelParameters];
   }
@@ -4243,13 +4243,13 @@ id __69__EKEventGestureController_dragInteraction_itemsForBeginningSession___blo
   return 0;
 }
 
-- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)a3
+- (void)_dragInteractionDidCancelLiftWithoutDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   if (self->_waitingForDragToInitialize)
   {
-    v7 = v4;
-    if (!self->_draggingView || self->_currentDragType == 1 || (-[EKEventGestureController _viewForTracking](self, "_viewForTracking"), v5 = objc_claimAutoreleasedReturnValue(), [v5 convertPoint:self->_draggingView toView:{self->_latestTouchPoint.x, self->_latestTouchPoint.y}], v6 = -[EKDayOccurrenceView dragTypeFromPoint:](self->_draggingView, "dragTypeFromPoint:") & 0xFFFFFFFD, v5, v4 = v7, v6))
+    v7 = draggingCopy;
+    if (!self->_draggingView || self->_currentDragType == 1 || (-[EKEventGestureController _viewForTracking](self, "_viewForTracking"), v5 = objc_claimAutoreleasedReturnValue(), [v5 convertPoint:self->_draggingView toView:{self->_latestTouchPoint.x, self->_latestTouchPoint.y}], v6 = -[EKDayOccurrenceView dragTypeFromPoint:](self->_draggingView, "dragTypeFromPoint:") & 0xFFFFFFFD, v5, draggingCopy = v7, v6))
     {
       if (self->_currentDraggingState == 3)
       {
@@ -4264,28 +4264,28 @@ id __69__EKEventGestureController_dragInteraction_itemsForBeginningSession___blo
         [(EKEventGestureController *)self _dragFailedToStart];
       }
 
-      v4 = v7;
+      draggingCopy = v7;
     }
 
     self->_waitingForDragToInitialize = 0;
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v8 = a3;
-  v7 = a4;
-  if (self->_waitingForDragToInitialize && (!self->_draggingView || ![(EKEventGestureController *)self _isTouchFromDragSessionInResizeHandles:v7]))
+  interactionCopy = interaction;
+  sessionCopy = session;
+  if (self->_waitingForDragToInitialize && (!self->_draggingView || ![(EKEventGestureController *)self _isTouchFromDragSessionInResizeHandles:sessionCopy]))
   {
     [(EKEventGestureController *)self _setLocalDraggingViewHidden:0];
     [(EKEventGestureController *)self _setDraggingState:2 withPoint:0 event:self->_latestTouchPoint.x, self->_latestTouchPoint.y];
   }
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v4 = [(EKEventGestureController *)self _findLocalDragItemInSession:a4];
-  v5 = [v4 localObject];
+  v4 = [(EKEventGestureController *)self _findLocalDragItemInSession:session];
+  localObject = [v4 localObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4294,19 +4294,19 @@ id __69__EKEventGestureController_dragInteraction_itemsForBeginningSession___blo
     goto LABEL_6;
   }
 
-  v7 = [v4 localObject];
-  v8 = [v7 calendar];
-  if (!v8)
+  localObject2 = [v4 localObject];
+  calendar = [localObject2 calendar];
+  if (!calendar)
   {
 
     goto LABEL_6;
   }
 
-  v9 = v8;
-  v10 = [v7 calendar];
-  v11 = [v10 isManaged];
+  v9 = calendar;
+  calendar2 = [localObject2 calendar];
+  isManaged = [calendar2 isManaged];
 
-  if ((v11 & 1) == 0)
+  if ((isManaged & 1) == 0)
   {
 LABEL_6:
     v12 = 1;
@@ -4319,33 +4319,33 @@ LABEL_7:
   return v12;
 }
 
-- (id)originalStartDateForEvent:(id)a3 includingTravel:(BOOL)a4
+- (id)originalStartDateForEvent:(id)event includingTravel:(BOOL)travel
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(EKEventGestureController *)self draggingViewSource];
-  v8 = [v7 isProposedTime];
+  travelCopy = travel;
+  eventCopy = event;
+  draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
+  isProposedTime = [draggingViewSource isProposedTime];
 
-  if (v8)
+  if (isProposedTime)
   {
-    v9 = [v6 proposedStartDate];
+    proposedStartDate = [eventCopy proposedStartDate];
   }
 
   else
   {
-    if (v4)
+    if (travelCopy)
     {
-      [v6 startDateIncludingTravel];
+      [eventCopy startDateIncludingTravel];
     }
 
     else
     {
-      [v6 startDate];
+      [eventCopy startDate];
     }
-    v9 = ;
+    proposedStartDate = ;
   }
 
-  v10 = v9;
+  v10 = proposedStartDate;
 
   return v10;
 }
@@ -4357,11 +4357,11 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(EKEventGestureController *)self delegate];
+  delegate = [(EKEventGestureController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(EKEventGestureController *)self delegate];
-    v5 = [v4 eventGestureControllerShouldSplitMultiDayAllDayEvents:self];
+    delegate2 = [(EKEventGestureController *)self delegate];
+    v5 = [delegate2 eventGestureControllerShouldSplitMultiDayAllDayEvents:self];
   }
 
   else
@@ -4372,32 +4372,32 @@ LABEL_7:
   return v5;
 }
 
-- (id)_createTemporaryView:(id)a3 animated:(BOOL)a4
+- (id)_createTemporaryView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(EKEventGestureController *)self originalStartDateForEvent:v6 includingTravel:1];
+  animatedCopy = animated;
+  viewCopy = view;
+  v7 = [(EKEventGestureController *)self originalStartDateForEvent:viewCopy includingTravel:1];
   [v7 timeIntervalSinceReferenceDate];
   v9 = v8;
 
-  v10 = [v6 isAllDay];
+  isAllDay = [viewCopy isAllDay];
   v11 = MEMORY[0x1E69930C8];
-  v12 = [v6 eventStore];
-  v13 = [v12 timeZone];
-  v14 = [v11 calendarDateWithAbsoluteTime:v13 timeZone:v9];
-  v15 = [v14 calendarDateForDay];
+  eventStore = [viewCopy eventStore];
+  timeZone = [eventStore timeZone];
+  v14 = [v11 calendarDateWithAbsoluteTime:timeZone timeZone:v9];
+  calendarDateForDay = [v14 calendarDateForDay];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained eventGestureController:self dateAtPoint:{self->_firstTouchPoint.x, self->_firstTouchPoint.y}];
   v18 = v17;
 
   v19 = MEMORY[0x1E69930C8];
-  v20 = [v6 eventStore];
-  v21 = [v20 timeZone];
-  v22 = [v19 calendarDateWithAbsoluteTime:v21 timeZone:v18];
-  v23 = [v22 calendarDateForDay];
+  eventStore2 = [viewCopy eventStore];
+  timeZone2 = [eventStore2 timeZone];
+  v22 = [v19 calendarDateWithAbsoluteTime:timeZone2 timeZone:v18];
+  calendarDateForDay2 = [v22 calendarDateForDay];
   currentDay = self->_currentDay;
-  self->_currentDay = v23;
+  self->_currentDay = calendarDateForDay2;
 
   if (self->_currentDraggingState == 1 || self->_pendingDraggingState == 1)
   {
@@ -4406,27 +4406,27 @@ LABEL_7:
     v9 = v18;
   }
 
-  else if (-[EKEventGestureController splitMultiDays](self, "splitMultiDays") && [v6 isAllDay])
+  else if (-[EKEventGestureController splitMultiDays](self, "splitMultiDays") && [viewCopy isAllDay])
   {
     v58 = objc_loadWeakRetained(&self->_delegate);
     [v58 eventGestureController:self dateAtPoint:{self->_latestTouchPoint.x, self->_latestTouchPoint.y}];
     v60 = v59;
 
     v61 = MEMORY[0x1E69930C8];
-    v62 = [v6 eventStore];
-    v63 = [v62 timeZone];
-    v64 = [v61 calendarDateWithAbsoluteTime:v63 timeZone:v60];
-    v65 = [v64 calendarDateForDay];
+    eventStore3 = [viewCopy eventStore];
+    timeZone3 = [eventStore3 timeZone];
+    v64 = [v61 calendarDateWithAbsoluteTime:timeZone3 timeZone:v60];
+    calendarDateForDay3 = [v64 calendarDateForDay];
 
-    [v65 absoluteTime];
+    [calendarDateForDay3 absoluteTime];
     v9 = v66;
     self->_touchOffsetDays = 0;
-    self->_commitOffsetDays = [v65 differenceInDays:v15];
+    self->_commitOffsetDays = [calendarDateForDay3 differenceInDays:calendarDateForDay];
   }
 
   else
   {
-    self->_touchOffsetDays = [(EKCalendarDate *)self->_currentDay differenceInDays:v15];
+    self->_touchOffsetDays = [(EKCalendarDate *)self->_currentDay differenceInDays:calendarDateForDay];
     self->_commitOffsetDays = 0;
     if ([(EKEvent *)self->_event isAllDay])
     {
@@ -4436,26 +4436,26 @@ LABEL_7:
   }
 
   v25 = objc_loadWeakRetained(&self->_delegate);
-  [v25 eventGestureController:self pointAtDate:objc_msgSend(v6 isAllDay:{"isAllDay"), v9}];
+  [v25 eventGestureController:self pointAtDate:objc_msgSend(viewCopy isAllDay:{"isAllDay"), v9}];
   v27 = v26;
   v29 = v28;
 
-  [v6 durationIncludingTravel];
+  [viewCopy durationIncludingTravel];
   v31 = fmin(v30, 86400.0);
-  if (([v6 isAllDay] & 1) == 0)
+  if (([viewCopy isAllDay] & 1) == 0)
   {
     touchOffsetDays = self->_touchOffsetDays;
-    if (touchOffsetDays >= 1 && touchOffsetDays + 1 == [v6 daySpan])
+    if (touchOffsetDays >= 1 && touchOffsetDays + 1 == [viewCopy daySpan])
     {
       v33 = MEMORY[0x1E69930C8];
-      v34 = [v6 endDateUnadjustedForLegacyClients];
-      v35 = [v6 timeZone];
-      v36 = [v33 calendarDateWithDate:v34 timeZone:v35];
+      endDateUnadjustedForLegacyClients = [viewCopy endDateUnadjustedForLegacyClients];
+      timeZone4 = [viewCopy timeZone];
+      v36 = [v33 calendarDateWithDate:endDateUnadjustedForLegacyClients timeZone:timeZone4];
 
       [v36 absoluteTime];
       v38 = v37;
-      v39 = [v36 calendarDateForDay];
-      [v39 absoluteTime];
+      calendarDateForDay4 = [v36 calendarDateForDay];
+      [calendarDateForDay4 absoluteTime];
       v31 = v38 - v40;
     }
   }
@@ -4464,14 +4464,14 @@ LABEL_7:
   v42 = [v41 createOccurrenceViewForEventGestureController:self];
 
   [v42 setSelected:1];
-  v43 = [(EKEventGestureController *)self draggingViewSource];
-  [v42 setIsProposedTime:{objc_msgSend(v43, "isProposedTime")}];
+  draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
+  [v42 setIsProposedTime:{objc_msgSend(draggingViewSource, "isProposedTime")}];
 
-  [v42 setOccurrence:v6];
-  v44 = [(EKEventGestureController *)self draggingViewSource];
-  v45 = [v44 occurrenceDate];
-  v46 = [v6 startCalendarDate];
-  [v42 setOccurrenceDateIndex:{objc_msgSend(v45, "differenceInDays:", v46)}];
+  [v42 setOccurrence:viewCopy];
+  draggingViewSource2 = [(EKEventGestureController *)self draggingViewSource];
+  occurrenceDate = [draggingViewSource2 occurrenceDate];
+  startCalendarDate = [viewCopy startCalendarDate];
+  [v42 setOccurrenceDateIndex:{objc_msgSend(occurrenceDate, "differenceInDays:", startCalendarDate)}];
 
   [v42 setPointerInteractionDisabled:1];
   [(EKDayOccurrenceView *)self->_draggingViewSource margin];
@@ -4479,37 +4479,37 @@ LABEL_7:
   [(EKDayOccurrenceView *)self->_draggingViewSource padding];
   [v42 setPadding:?];
   [(EKEventGestureController *)self _computeWidthForOccurrenceView];
-  [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:self->_event event:v10 allDay:v31];
-  [(EKEventGestureController *)self _computeOriginAtTouchPoint:v10 forDate:0 isAllDay:1 allowXOffset:v27 allowFloorAtRegionBottom:v29, v9];
+  [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:self->_event event:isAllDay allDay:v31];
+  [(EKEventGestureController *)self _computeOriginAtTouchPoint:isAllDay forDate:0 isAllDay:1 allowXOffset:v27 allowFloorAtRegionBottom:v29, v9];
   [v42 setFrame:?];
   v47 = objc_loadWeakRetained(&self->_delegate);
   v48 = [v47 occurrenceViewSuperviewForEventGestureController:self];
 
   [v48 addSubview:v42];
-  [v42 setAllDay:v10];
+  [v42 setAllDay:isAllDay];
   [v42 setHasPrecedingDuration:{-[EKDayOccurrenceView hasPrecedingDuration](self->_draggingViewSource, "hasPrecedingDuration")}];
   [v42 setHasTrailingDuration:{-[EKDayOccurrenceView hasTrailingDuration](self->_draggingViewSource, "hasTrailingDuration")}];
   [v42 setMultiAllDayRoundCorners:1];
   v49 = DraggedEventShadowColor();
-  v50 = [v42 layer];
-  [v50 setShadowColor:v49];
+  layer = [v42 layer];
+  [layer setShadowColor:v49];
 
-  v51 = [v42 layer];
+  layer2 = [v42 layer];
   LODWORD(v52) = 1043878380;
-  [v51 setShadowOpacity:v52];
+  [layer2 setShadowOpacity:v52];
 
-  v53 = [v42 layer];
-  [v53 setShadowRadius:10.0];
+  layer3 = [v42 layer];
+  [layer3 setShadowRadius:10.0];
 
-  v54 = [v42 layer];
-  [v54 setShadowOffset:{0.0, 9.0}];
+  layer4 = [v42 layer];
+  [layer4 setShadowOffset:{0.0, 9.0}];
 
   v55 = objc_loadWeakRetained(&self->_delegate);
-  v56 = [(EKEventGestureController *)self event];
-  [v55 eventGestureController:self adjustDraggingView:v42 forAllDay:{objc_msgSend(v56, "isAllDay")}];
+  event = [(EKEventGestureController *)self event];
+  [v55 eventGestureController:self adjustDraggingView:v42 forAllDay:{objc_msgSend(event, "isAllDay")}];
 
   [v42 requestContentIfNeeded:16 completion:0];
-  if (v4)
+  if (animatedCopy)
   {
     [(EKEventGestureController *)self _animateInNewEvent];
   }
@@ -4522,11 +4522,11 @@ LABEL_7:
   return v42;
 }
 
-- (void)_updatePositionOfEditingMenuForView:(id)a3
+- (void)_updatePositionOfEditingMenuForView:(id)view
 {
   if (!self->_isNewEvent)
   {
-    [a3 presentEditingMenuFromGestureController:self];
+    [view presentEditingMenuFromGestureController:self];
   }
 }
 
@@ -4561,18 +4561,18 @@ LABEL_7:
   }
 }
 
-- (void)_setTouchOffsetsFromPoint:(CGPoint)a3 fixedToCenter:(BOOL)a4
+- (void)_setTouchOffsetsFromPoint:(CGPoint)point fixedToCenter:(BOOL)center
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v34 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
-  v8 = [(EKDayOccurrenceView *)self->_draggingView occurrenceDate];
+  centerCopy = center;
+  y = point.y;
+  x = point.x;
+  occurrence = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+  occurrenceDate = [(EKDayOccurrenceView *)self->_draggingView occurrenceDate];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained touchTrackingViewForEventGestureController:self];
 
   [v10 convertPoint:self->_draggingView toView:{x, y}];
-  if (v4)
+  if (centerCopy)
   {
     [(EKDayOccurrenceView *)self->_draggingView bounds];
     v14 = v13 * 0.5;
@@ -4593,10 +4593,10 @@ LABEL_7:
   self->_currentDragType = [(EKDayOccurrenceView *)self->_draggingView dragTypeFromPoint:v18, v20];
   self->_touchOffset.x = v18;
   self->_touchOffset.y = v20;
-  v21 = [v34 startCalendarDate];
-  v22 = [v21 calendarDateForDay];
+  startCalendarDate = [occurrence startCalendarDate];
+  calendarDateForDay = [startCalendarDate calendarDateForDay];
 
-  if (v4)
+  if (centerCopy)
   {
     v23 = 0;
   }
@@ -4605,13 +4605,13 @@ LABEL_7:
   {
     if ([(EKEventGestureController *)self splitMultiDays])
     {
-      v23 = [v8 differenceInDays:v22];
+      v23 = [occurrenceDate differenceInDays:calendarDateForDay];
       self->_touchOffsetDays = 0;
       v24 = 184;
       goto LABEL_10;
     }
 
-    v23 = [(EKCalendarDate *)self->_currentDay differenceInDays:v22];
+    v23 = [(EKCalendarDate *)self->_currentDay differenceInDays:calendarDateForDay];
   }
 
   v24 = 176;
@@ -4622,30 +4622,30 @@ LABEL_10:
   self->_dateAtFirstTouchPoint = v26;
 
   v27 = MEMORY[0x1E69930C8];
-  v28 = [v34 endDateUnadjustedForLegacyClients];
-  v29 = [v34 eventStore];
-  v30 = [v29 timeZone];
-  v31 = [v27 calendarDateWithDate:v28 timeZone:v30];
-  v32 = [v31 calendarDateForDay];
+  endDateUnadjustedForLegacyClients = [occurrence endDateUnadjustedForLegacyClients];
+  eventStore = [occurrence eventStore];
+  timeZone = [eventStore timeZone];
+  v31 = [v27 calendarDateWithDate:endDateUnadjustedForLegacyClients timeZone:timeZone];
+  calendarDateForDay2 = [v31 calendarDateForDay];
 
-  if ([v34 isAllDay])
+  if ([occurrence isAllDay])
   {
     LOBYTE(v33) = 0;
   }
 
   else
   {
-    v33 = [v22 isEqual:v32] ^ 1;
+    v33 = [calendarDateForDay isEqual:calendarDateForDay2] ^ 1;
   }
 
   self->_isMultiDayTimedEvent = v33;
   [(EKEventGestureController *)self _updateSnappingTypeForCurrentDrag];
 }
 
-- (void)_setUpAfterForcedStartFromPoint:(CGPoint)a3
+- (void)_setUpAfterForcedStartFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_draggingView = &self->_draggingView;
   draggingView = self->_draggingView;
   if (!draggingView || !self->_event)
@@ -4669,8 +4669,8 @@ LABEL_10:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(EKDayOccurrenceView *)*p_draggingView layer];
-    [v19 setContentsCenter:{v12, v14, v16, v18}];
+    layer = [(EKDayOccurrenceView *)*p_draggingView layer];
+    [layer setContentsCenter:{v12, v14, v16, v18}];
   }
 
   if (!self->_isMultiDayTimedEvent || !self->_touchOffsetDays)
@@ -4712,19 +4712,19 @@ LABEL_10:
 
 - (void)_update
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CalendarEventGestures.m" lineNumber:2849 description:{@"Gesture controller tried to update, but with no view to drag"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CalendarEventGestures.m" lineNumber:2849 description:{@"Gesture controller tried to update, but with no view to drag"}];
 }
 
 - (void)_commit
 {
   if ([(EKEventGestureController *)self _flingOrCancelDraggingViewIfNeeded])
   {
-    v129 = [(EKCalendarDate *)self->_currentDay timeZone];
-    v4 = [MEMORY[0x1E69930C8] calendarDateWithAbsoluteTime:v129 timeZone:self->_dateAtFirstTouchPoint];
-    v5 = [v4 calendarDateForDay];
+    timeZone = [(EKCalendarDate *)self->_currentDay timeZone];
+    v4 = [MEMORY[0x1E69930C8] calendarDateWithAbsoluteTime:timeZone timeZone:self->_dateAtFirstTouchPoint];
+    calendarDateForDay = [v4 calendarDateForDay];
     currentDay = self->_currentDay;
-    self->_currentDay = v5;
+    self->_currentDay = calendarDateForDay;
 
     [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer setState:3];
 LABEL_3:
@@ -4746,17 +4746,17 @@ LABEL_3:
       [(UILongPressGestureRecognizer *)self->_draggingGestureRecognizer setState:0];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       draggingView = self->_draggingView;
-      v62 = [(EKEventGestureController *)self event];
-      [WeakRetained eventGestureController:self addViewToScroller:draggingView isAllDay:{objc_msgSend(v62, "isAllDay")}];
+      event = [(EKEventGestureController *)self event];
+      [WeakRetained eventGestureController:self addViewToScroller:draggingView isAllDay:{objc_msgSend(event, "isAllDay")}];
 
-      v129 = objc_loadWeakRetained(&self->_delegate);
-      v63 = [(EKEventGestureController *)self event];
-      [v129 eventGestureController:self didSingleTapOccurrence:v63 shouldExtendSelection:0];
+      timeZone = objc_loadWeakRetained(&self->_delegate);
+      event2 = [(EKEventGestureController *)self event];
+      [timeZone eventGestureController:self didSingleTapOccurrence:event2 shouldExtendSelection:0];
 
       goto LABEL_3;
     }
 
-    v8 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+    occurrence = [(EKDayOccurrenceView *)self->_draggingView occurrence];
     v9 = 88;
     if (self->_currentDragType == 1)
     {
@@ -4808,8 +4808,8 @@ LABEL_3:
         v146 = 0;
         v145 = 0;
         v147 = 0;
-        v30 = [v8 eventStore];
-        v31 = [v30 timeZone];
+        eventStore = [occurrence eventStore];
+        timeZone2 = [eventStore timeZone];
         v143 = 0;
         v144 = v29;
         CalAbsoluteTimeAddGregorianUnits();
@@ -4817,11 +4817,11 @@ LABEL_3:
 
 LABEL_29:
         v34 = MEMORY[0x1E69930C8];
-        v35 = [v8 eventStore];
-        v36 = [v35 timeZone];
-        v37 = [v34 calendarDateWithAbsoluteTime:v36 timeZone:v33];
-        v38 = [v37 calendarDateForDay];
-        [v38 absoluteTime];
+        eventStore2 = [occurrence eventStore];
+        timeZone3 = [eventStore2 timeZone];
+        v37 = [v34 calendarDateWithAbsoluteTime:timeZone3 timeZone:v33];
+        calendarDateForDay2 = [v37 calendarDateForDay];
+        [calendarDateForDay2 absoluteTime];
         v40 = v39;
 
         goto LABEL_32;
@@ -4831,17 +4831,17 @@ LABEL_29:
       [v41 eventGestureController:self dateAtPoint:{self->_latestTouchPoint.x, self->_latestTouchPoint.y}];
       v43 = v42;
 
-      v44 = [v8 startDate];
-      [v44 timeIntervalSinceReferenceDate];
+      startDate = [occurrence startDate];
+      [startDate timeIntervalSinceReferenceDate];
       v46 = v45 + v43 - self->_dateAtFirstTouchPoint;
     }
 
-    v40 = CalSnapDateTo15MinuteOr5MinuteInterval(v8, [(EKEventGestureController *)self currentDragSnappingType], v46);
+    v40 = CalSnapDateTo15MinuteOr5MinuteInterval(occurrence, [(EKEventGestureController *)self currentDragSnappingType], v46);
 LABEL_32:
-    [v8 duration];
+    [occurrence duration];
     v48 = v47;
-    v49 = [v8 endDateUnadjustedForLegacyClients];
-    [v49 timeIntervalSinceReferenceDate];
+    endDateUnadjustedForLegacyClients = [occurrence endDateUnadjustedForLegacyClients];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
     v51 = v50;
 
     currentDragType = self->_currentDragType;
@@ -4850,16 +4850,16 @@ LABEL_32:
       if (currentDragType == 1)
       {
         v53 = v25 - v27;
-        if (v22 | (([v8 isAllDay] & 1) == 0))
+        if (v22 | (([occurrence isAllDay] & 1) == 0))
         {
-          v54 = [v8 isAllDay];
+          isAllDay = [occurrence isAllDay];
           v55 = 86399.0;
           if (!v22)
           {
             v55 = v48;
           }
 
-          if (!v54)
+          if (!isAllDay)
           {
             v48 = v55;
           }
@@ -4867,7 +4867,7 @@ LABEL_32:
 
         else
         {
-          [(EKEventGestureController *)self defaultDurationForEvent:v8];
+          [(EKEventGestureController *)self defaultDurationForEvent:occurrence];
           v48 = v78;
         }
 
@@ -4885,7 +4885,7 @@ LABEL_32:
         [v69 eventGestureController:self dateAtPoint:{self->_firstTouchPoint.x, v68}];
         v71 = v70;
 
-        v72 = CalSnapDateTo15MinuteOr5MinuteInterval(v8, [(EKEventGestureController *)self currentDragSnappingType], v71);
+        v72 = CalSnapDateTo15MinuteOr5MinuteInterval(occurrence, [(EKEventGestureController *)self currentDragSnappingType], v71);
         if (v72 > v40)
         {
           v48 = v48 + v72 - v51;
@@ -4897,8 +4897,8 @@ LABEL_32:
           }
         }
 
-        v75 = [v8 startDate];
-        [v75 timeIntervalSinceReferenceDate];
+        startDate2 = [occurrence startDate];
+        [startDate2 timeIntervalSinceReferenceDate];
         v58 = v76;
 
         [(EKEvent *)self->_event travelTime];
@@ -4935,8 +4935,8 @@ LABEL_32:
       v83 = v82;
       v85 = v84;
       v87 = v86;
-      v88 = [(EKDayOccurrenceView *)self->_draggingView layer];
-      [v88 setContentsCenter:{v81, v83, v85, v87}];
+      layer = [(EKDayOccurrenceView *)self->_draggingView layer];
+      [layer setContentsCenter:{v81, v83, v85, v87}];
 
       [(EKDayOccurrenceView *)self->_draggingView setNeedsDisplay];
     }
@@ -4945,33 +4945,33 @@ LABEL_32:
     if (![(EKEvent *)self->_event isAllDay])
     {
       v90 = self->_touchOffsetDays;
-      if (v90 >= 1 && v90 + 1 == [v8 daySpan])
+      if (v90 >= 1 && v90 + 1 == [occurrence daySpan])
       {
         v91 = MEMORY[0x1E69930C8];
-        v92 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
-        v93 = [(EKEvent *)self->_event timeZone];
-        v94 = [v91 calendarDateWithDate:v92 timeZone:v93];
+        endDateUnadjustedForLegacyClients2 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
+        timeZone4 = [(EKEvent *)self->_event timeZone];
+        v94 = [v91 calendarDateWithDate:endDateUnadjustedForLegacyClients2 timeZone:timeZone4];
 
         [v94 absoluteTime];
         v96 = v95;
-        v97 = [v94 calendarDateForDay];
-        [v97 absoluteTime];
+        calendarDateForDay3 = [v94 calendarDateForDay];
+        [calendarDateForDay3 absoluteTime];
         v89 = v96 - v98;
       }
     }
 
     [(EKEventGestureController *)self _computeWidthForOccurrenceView];
     v100 = v99;
-    [v8 travelTime];
+    [occurrence travelTime];
     v101 = 0.0;
     if (v102 > 0.0)
     {
       [(EKEvent *)self->_event travelTime];
-      [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:v8 event:v22 allDay:?];
+      [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:occurrence event:v22 allDay:?];
       v101 = v103;
     }
 
-    [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:v8 event:v22 allDay:v89];
+    [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:occurrence event:v22 allDay:v89];
     v105 = v104;
     [(EKDayOccurrenceView *)self->_draggingViewSource enoughHeightForOneLine];
     if (v105 >= v106)
@@ -4987,53 +4987,53 @@ LABEL_32:
     [(EKEventGestureController *)self _computeOriginAtTouchPoint:v22 forDate:0 isAllDay:1 allowXOffset:self->_latestTouchPoint.x allowFloorAtRegionBottom:self->_latestTouchPoint.y, CalSnapDateTo15MinuteOr5MinuteInterval(self->_event, [(EKEventGestureController *)self currentDragSnappingType], v53)];
     v109 = v108;
     v111 = v110;
-    v112 = [(EKEventGestureController *)self draggingViewSource];
-    [v112 travelTimeSubviewHeightInPoints];
+    draggingViewSource = [(EKEventGestureController *)self draggingViewSource];
+    [draggingViewSource travelTimeSubviewHeightInPoints];
     [(EKDayOccurrenceView *)self->_draggingView setTravelTimeSubviewHeightInPoints:?];
 
-    [v8 setAllDay:v22];
+    [occurrence setAllDay:v22];
     v113 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v58];
-    v114 = [v8 startDate];
-    if ([v113 isEqualToDate:v114])
+    startDate3 = [occurrence startDate];
+    if ([v113 isEqualToDate:startDate3])
     {
 
-      v115 = [(EKEventGestureController *)self draggingViewSource];
-      -[EKDayOccurrenceView setIsProposedTime:](self->_draggingView, "setIsProposedTime:", [v115 isProposedTime]);
+      draggingViewSource2 = [(EKEventGestureController *)self draggingViewSource];
+      -[EKDayOccurrenceView setIsProposedTime:](self->_draggingView, "setIsProposedTime:", [draggingViewSource2 isProposedTime]);
 
       [(EKDayOccurrenceView *)self->_draggingView requestContentIfNeeded:16 completion:0];
     }
 
     else
     {
-      v116 = [v8 isEditable];
+      isEditable = [occurrence isEditable];
 
-      v117 = [(EKEventGestureController *)self draggingViewSource];
-      -[EKDayOccurrenceView setIsProposedTime:](self->_draggingView, "setIsProposedTime:", [v117 isProposedTime] & 1u | ((v116 & 1) == 0));
+      draggingViewSource3 = [(EKEventGestureController *)self draggingViewSource];
+      -[EKDayOccurrenceView setIsProposedTime:](self->_draggingView, "setIsProposedTime:", [draggingViewSource3 isProposedTime] & 1u | ((isEditable & 1) == 0));
 
       [(EKDayOccurrenceView *)self->_draggingView requestContentIfNeeded:16 completion:0];
-      if ((v116 & 1) == 0)
+      if ((isEditable & 1) == 0)
       {
-        v128 = [v8 serverSupportedProposeNewTime];
+        serverSupportedProposeNewTime = [occurrence serverSupportedProposeNewTime];
         v139[0] = MEMORY[0x1E69E9820];
         v139[1] = 3221225472;
         v139[2] = __35__EKEventGestureController__commit__block_invoke;
         v139[3] = &unk_1E8442CC0;
         v139[4] = self;
-        v140 = v8;
+        v140 = occurrence;
         v141 = v113;
-        v142 = v128;
-        [(EKEventGestureController *)self promptUserForProposeNewTime:v141 forEvent:v8 whenFinished:v139];
+        v142 = serverSupportedProposeNewTime;
+        [(EKEventGestureController *)self promptUserForProposeNewTime:v141 forEvent:occurrence whenFinished:v139];
 
         goto LABEL_67;
       }
     }
 
     v118 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v58];
-    [v8 setStartDate:v118];
+    [occurrence setStartDate:v118];
 
-    v119 = [v8 startDate];
-    v120 = [v119 dateByAddingTimeInterval:v48];
-    [v8 setEndDateUnadjustedForLegacyClients:v120];
+    startDate4 = [occurrence startDate];
+    v120 = [startDate4 dateByAddingTimeInterval:v48];
+    [occurrence setEndDateUnadjustedForLegacyClients:v120];
 
     v121 = self->_dragSnappingFeedback;
     dragSnappingFeedback = self->_dragSnappingFeedback;
@@ -5057,12 +5057,12 @@ LABEL_32:
     v130[3] = &unk_1E8442D10;
     v135 = v123;
     v131 = v121;
-    v132 = self;
-    v133 = v8;
+    selfCopy = self;
+    v133 = occurrence;
     v136 = forcedStart;
     v134 = v40;
     v137 = v22;
-    v126 = v8;
+    v126 = occurrence;
     v127 = v121;
     [v125 animateWithDuration:4 delay:v138 options:v130 animations:0.1 completion:0.0];
 
@@ -5070,8 +5070,8 @@ LABEL_67:
     return;
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"CalendarEventGestures.m" lineNumber:3028 description:{@"Gesture controller tried to commit, but with no view to drag. Cancelling instead."}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CalendarEventGestures.m" lineNumber:3028 description:{@"Gesture controller tried to commit, but with no view to drag. Cancelling instead."}];
 
   [(EKEventGestureController *)self _cancel];
 }
@@ -5429,10 +5429,10 @@ void __35__EKEventGestureController__commit__block_invoke_3(uint64_t a1, char a2
   v4 = v3;
   if (v3 == 0.0)
   {
-    v5 = [(EKEventGestureController *)self event];
-    v6 = [v5 isNew];
+    event = [(EKEventGestureController *)self event];
+    isNew = [event isNew];
 
-    if (v6)
+    if (isNew)
     {
       [(EKEventGestureController *)self removeDraggedOccurrence];
     }
@@ -5481,31 +5481,31 @@ void __35__EKEventGestureController__commit__block_invoke_3(uint64_t a1, char a2
     return 0;
   }
 
-  v11 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+  occurrence = [(EKDayOccurrenceView *)self->_draggingView occurrence];
   [(EKEvent *)self->_event duration];
   v13 = v12;
   v14 = MEMORY[0x1E69930C8];
   dateAtFirstTouchPoint = self->_dateAtFirstTouchPoint;
-  v16 = [v11 eventStore];
-  v17 = [v16 timeZone];
-  v18 = [v14 calendarDateWithAbsoluteTime:v17 timeZone:dateAtFirstTouchPoint];
+  eventStore = [occurrence eventStore];
+  timeZone = [eventStore timeZone];
+  v18 = [v14 calendarDateWithAbsoluteTime:timeZone timeZone:dateAtFirstTouchPoint];
 
   if (self->_touchOffsetDays <= 0)
   {
-    v19 = [v11 startDate];
-    [v19 timeIntervalSinceReferenceDate];
+    startDate = [occurrence startDate];
+    [startDate timeIntervalSinceReferenceDate];
   }
 
   else
   {
-    v19 = [v18 calendarDateForDay];
-    [v19 absoluteTime];
+    startDate = [v18 calendarDateForDay];
+    [startDate absoluteTime];
   }
 
   v21 = v20;
   v22 = fmin(v13, 86400.0);
 
-  -[EKEventGestureController _computeOriginAtTouchPoint:forDate:isAllDay:allowXOffset:allowFloorAtRegionBottom:](self, "_computeOriginAtTouchPoint:forDate:isAllDay:allowXOffset:allowFloorAtRegionBottom:", [v11 isAllDay], 0, 0, self->_firstTouchPoint.x, self->_firstTouchPoint.y, v21);
+  -[EKEventGestureController _computeOriginAtTouchPoint:forDate:isAllDay:allowXOffset:allowFloorAtRegionBottom:](self, "_computeOriginAtTouchPoint:forDate:isAllDay:allowXOffset:allowFloorAtRegionBottom:", [occurrence isAllDay], 0, 0, self->_firstTouchPoint.x, self->_firstTouchPoint.y, v21);
   v24 = v23;
   v26 = v25;
   if (self->_currentDragType == 1)
@@ -5538,26 +5538,26 @@ void __35__EKEventGestureController__commit__block_invoke_3(uint64_t a1, char a2
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained eventGestureController:self dateAtPoint:{self->_firstTouchPoint.x, self->_firstTouchPoint.y}];
     v40 = v39;
-    v41 = [v11 eventStore];
-    v42 = [v41 timeZone];
-    v43 = [v37 calendarDateWithAbsoluteTime:v42 timeZone:v40];
+    eventStore2 = [occurrence eventStore];
+    timeZone2 = [eventStore2 timeZone];
+    v43 = [v37 calendarDateWithAbsoluteTime:timeZone2 timeZone:v40];
 
-    v44 = [v18 calendarDateForDay];
-    v45 = [v43 calendarDateForDay];
-    v46 = [v44 isEqual:v45];
+    calendarDateForDay = [v18 calendarDateForDay];
+    calendarDateForDay2 = [v43 calendarDateForDay];
+    v46 = [calendarDateForDay isEqual:calendarDateForDay2];
 
     v47 = objc_loadWeakRetained(&self->_delegate);
-    LOBYTE(v45) = objc_opt_respondsToSelector();
+    LOBYTE(calendarDateForDay2) = objc_opt_respondsToSelector();
 
-    if (v45)
+    if (calendarDateForDay2)
     {
       v48 = objc_loadWeakRetained(&self->_delegate);
-      v49 = [v48 eventGestureController:self shouldFadeOccurrenceAfterFling:v11];
+      v49 = [v48 eventGestureController:self shouldFadeOccurrenceAfterFling:occurrence];
     }
 
     else if (v46)
     {
-      if ([v11 isNew])
+      if ([occurrence isNew])
       {
         v49 = !self->_forcedStart;
       }
@@ -5620,22 +5620,22 @@ void __35__EKEventGestureController__commit__block_invoke_3(uint64_t a1, char a2
       if (![(EKEvent *)self->_event isAllDay])
       {
         touchOffsetDays = self->_touchOffsetDays;
-        if (touchOffsetDays >= 1 && touchOffsetDays + 1 == [v11 daySpan])
+        if (touchOffsetDays >= 1 && touchOffsetDays + 1 == [occurrence daySpan])
         {
           v67 = MEMORY[0x1E69930C8];
-          v68 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
-          v69 = [(EKEvent *)self->_event timeZone];
-          v70 = [v67 calendarDateWithDate:v68 timeZone:v69];
+          endDateUnadjustedForLegacyClients = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
+          timeZone3 = [(EKEvent *)self->_event timeZone];
+          v70 = [v67 calendarDateWithDate:endDateUnadjustedForLegacyClients timeZone:timeZone3];
 
           [v70 absoluteTime];
           v72 = v71;
-          v73 = [v70 calendarDateForDay];
-          [v73 absoluteTime];
+          calendarDateForDay3 = [v70 calendarDateForDay];
+          [calendarDateForDay3 absoluteTime];
           v22 = v72 - v74;
         }
       }
 
-      -[EKEventGestureController _computeHeightForOccurrenceViewOfDuration:event:allDay:](self, "_computeHeightForOccurrenceViewOfDuration:event:allDay:", v11, [v11 isAllDay], v22);
+      -[EKEventGestureController _computeHeightForOccurrenceViewOfDuration:event:allDay:](self, "_computeHeightForOccurrenceViewOfDuration:event:allDay:", occurrence, [occurrence isAllDay], v22);
       v76 = v75;
       v77 = v123;
       v78 = v123[5] + v62 * -0.2 * v64.__sinval * v65;
@@ -5714,7 +5714,7 @@ void __35__EKEventGestureController__commit__block_invoke_3(uint64_t a1, char a2
       v109 = v87;
       v110 = v88;
       v115 = v9;
-      v104 = v11;
+      v104 = occurrence;
       v111 = v24;
       v112 = v94;
       v113 = v93;
@@ -5731,16 +5731,16 @@ void __35__EKEventGestureController__commit__block_invoke_3(uint64_t a1, char a2
   {
     [(EKDayOccurrenceView *)self->_draggingView frame];
     v51 = v50;
-    -[EKEventGestureController _computeHeightForOccurrenceViewOfDuration:event:allDay:](self, "_computeHeightForOccurrenceViewOfDuration:event:allDay:", v11, [v11 isAllDay], v22);
+    -[EKEventGestureController _computeHeightForOccurrenceViewOfDuration:event:allDay:](self, "_computeHeightForOccurrenceViewOfDuration:event:allDay:", occurrence, [occurrence isAllDay], v22);
     v53 = v52;
     draggingView = self->_draggingView;
-    v55 = [v11 isAllDay];
+    isAllDay = [occurrence isAllDay];
     v128[0] = MEMORY[0x1E69E9820];
     v128[1] = 3221225472;
     v128[2] = __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__block_invoke;
     v128[3] = &unk_1E843EC60;
     v128[4] = self;
-    [(EKDayOccurrenceView *)draggingView animateToFrame:v55 isAllDay:0 beginFromCurrentState:v128 whenFinished:v24, v26, v51, v53];
+    [(EKDayOccurrenceView *)draggingView animateToFrame:isAllDay isAllDay:0 beginFromCurrentState:v128 whenFinished:v24, v26, v51, v53];
   }
 
   return 1;
@@ -5851,23 +5851,23 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
   return result;
 }
 
-- (double)_alignedYOriginForAllDayOccurrence:(id)a3 atPoint:(CGPoint)a4 floorAtAllDayRegionBottom:(BOOL)a5
+- (double)_alignedYOriginForAllDayOccurrence:(id)occurrence atPoint:(CGPoint)point floorAtAllDayRegionBottom:(BOOL)bottom
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  bottomCopy = bottom;
+  y = point.y;
+  x = point.x;
+  occurrenceCopy = occurrence;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained eventGestureController:self yPositionPerhapsMatchingAllDayOccurrence:v9 atPoint:{x, y}];
+  [WeakRetained eventGestureController:self yPositionPerhapsMatchingAllDayOccurrence:occurrenceCopy atPoint:{x, y}];
   v12 = v11;
 
-  if (v5)
+  if (bottomCopy)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
     [v13 timedRegionOriginForEventGestureController:self];
     v15 = v14;
 
-    [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:v9 event:1 allDay:3600.0];
+    [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:occurrenceCopy event:1 allDay:3600.0];
     v17 = v16;
     v18 = v12 + v16;
     [(EKEventGestureController *)self _allDayBottomPadding];
@@ -5881,9 +5881,9 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
   return v12;
 }
 
-- (double)_capOccurrenceViewYOrigin:(double)a3 ignoreTopInsets:(BOOL)a4
+- (double)_capOccurrenceViewYOrigin:(double)origin ignoreTopInsets:(BOOL)insets
 {
-  if (!a4)
+  if (!insets)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
@@ -5894,9 +5894,9 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
       [v8 trackingAreaMinimumYPosition];
       v10 = v9;
 
-      if (v10 > a3)
+      if (v10 > origin)
       {
-        a3 = v10;
+        origin = v10;
       }
     }
   }
@@ -5909,22 +5909,22 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
   v14 = v13;
   [v12 frame];
   v16 = round(v15 - v14);
-  if (a3 >= v16)
+  if (origin >= v16)
   {
-    a3 = v16;
+    origin = v16;
   }
 
-  return a3;
+  return origin;
 }
 
-- (void)_updateHorizontalDragLockForPoint:(CGPoint)a3
+- (void)_updateHorizontalDragLockForPoint:(CGPoint)point
 {
   y = self->_firstTouchPoint.y;
-  if (vabdd_f64(a3.y, y) <= 20.0)
+  if (vabdd_f64(point.y, y) <= 20.0)
   {
     if (!self->_dragLockDisabled)
     {
-      self->_horizontalDragLocked = atan(fabs((a3.y - y) / (a3.x - self->_firstTouchPoint.x))) < 0.174532925;
+      self->_horizontalDragLocked = atan(fabs((point.y - y) / (point.x - self->_firstTouchPoint.x))) < 0.174532925;
     }
   }
 
@@ -5938,16 +5938,16 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
 {
   if ([(EKEvent *)self->_event isAllDay]&& ![(EKEventGestureController *)self splitMultiDays])
   {
-    v3 = [(EKEvent *)self->_event daySpan];
+    daySpan = [(EKEvent *)self->_event daySpan];
   }
 
   else
   {
-    v3 = 1;
+    daySpan = 1;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained eventGestureController:self widthForOccurrenceViewOfDays:v3];
+  [WeakRetained eventGestureController:self widthForOccurrenceViewOfDays:daySpan];
   v6 = v5;
 
   [(EKDayOccurrenceView *)self->_draggingView margin];
@@ -5956,13 +5956,13 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
   return v8 - v9;
 }
 
-- (double)_computeHeightForOccurrenceViewOfDuration:(double)a3 event:(id)a4 allDay:(BOOL)a5
+- (double)_computeHeightForOccurrenceViewOfDuration:(double)duration event:(id)event allDay:(BOOL)day
 {
-  v5 = a5;
+  dayCopy = day;
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (v5)
+  eventCopy = event;
+  v9 = eventCopy;
+  if (dayCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = [WeakRetained eventGestureController:self occurrenceViewForOccurrence:v9 occurrenceDate:0];
@@ -5974,10 +5974,10 @@ uint64_t __62__EKEventGestureController__flingOrCancelDraggingViewIfNeeded__bloc
 
   else
   {
-    if (![v8 isIntegrationEvent])
+    if (![eventCopy isIntegrationEvent])
     {
       v17 = objc_loadWeakRetained(&self->_delegate);
-      [v17 eventGestureController:self heightForOccurrenceViewOfDuration:a3];
+      [v17 eventGestureController:self heightForOccurrenceViewOfDuration:duration];
       v19 = v18;
 
       [(EKDayOccurrenceView *)self->_draggingView margin];
@@ -5998,11 +5998,11 @@ LABEL_7:
   return v14;
 }
 
-- (double)defaultDurationForEvent:(id)a3
+- (double)defaultDurationForEvent:(id)event
 {
-  v3 = [a3 allowsNonzeroDuration];
+  allowsNonzeroDuration = [event allowsNonzeroDuration];
   result = 3600.0;
-  if (!v3)
+  if (!allowsNonzeroDuration)
   {
     return 0.0;
   }
@@ -6010,13 +6010,13 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)_computeOriginAtTouchPoint:(CGPoint)a3 forDate:(double)a4 isAllDay:(BOOL)a5 allowXOffset:(BOOL)a6 allowFloorAtRegionBottom:(BOOL)a7
+- (CGPoint)_computeOriginAtTouchPoint:(CGPoint)point forDate:(double)date isAllDay:(BOOL)day allowXOffset:(BOOL)offset allowFloorAtRegionBottom:(BOOL)bottom
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
+  bottomCopy = bottom;
+  offsetCopy = offset;
+  dayCopy = day;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v15 = [WeakRetained occurrenceViewSuperviewForEventGestureController:self];
 
@@ -6029,7 +6029,7 @@ LABEL_7:
   v21 = v20;
 
   v22 = objc_loadWeakRetained(&self->_delegate);
-  [v22 eventGestureController:self pointAtDate:v9 isAllDay:a4];
+  [v22 eventGestureController:self pointAtDate:dayCopy isAllDay:date];
   v25 = CalRoundPointToScreenScale(v23, v24);
   v27 = v26;
 
@@ -6042,12 +6042,12 @@ LABEL_7:
     v19 = v30 ^ 1;
   }
 
-  v31 = [(EKDayOccurrenceView *)self->_draggingView occurrence];
-  if (v9)
+  occurrence = [(EKDayOccurrenceView *)self->_draggingView occurrence];
+  if (dayCopy)
   {
-    [(EKEventGestureController *)self _alignedYOriginForAllDayOccurrence:self->_event atPoint:v7 floorAtAllDayRegionBottom:x, y];
+    [(EKEventGestureController *)self _alignedYOriginForAllDayOccurrence:self->_event atPoint:bottomCopy floorAtAllDayRegionBottom:x, y];
     v27 = v32;
-    if (v8 && !(v19 & 1 | (([v31 isAllDay] & 1) == 0)))
+    if (offsetCopy && !(v19 & 1 | (([occurrence isAllDay] & 1) == 0)))
     {
       touchOffsetDays = self->_touchOffsetDays;
     }
@@ -6082,26 +6082,26 @@ LABEL_7:
       v27 = self->_firstTouchPoint.y - self->_touchOffset.y;
     }
 
-    if (v7)
+    if (bottomCopy)
     {
       [(EKEventGestureController *)self _capOccurrenceViewYOrigin:1 ignoreTopInsets:v27];
       v27 = v35;
     }
 
-    if (self->_touchOffsetDays >= 1 && ([v31 isAllDay] & 1) == 0)
+    if (self->_touchOffsetDays >= 1 && ([occurrence isAllDay] & 1) == 0)
     {
       v36 = objc_loadWeakRetained(&self->_delegate);
       [v36 eventGestureController:self dateAtPoint:{x, y}];
       v38 = v37;
 
       v39 = MEMORY[0x1E69930C8];
-      v40 = [(EKEvent *)self->_event eventStore];
-      v41 = [v40 timeZone];
-      v42 = [v39 calendarDateWithAbsoluteTime:v41 timeZone:v38];
-      v43 = [v42 calendarDateForDay];
+      eventStore = [(EKEvent *)self->_event eventStore];
+      timeZone = [eventStore timeZone];
+      v42 = [v39 calendarDateWithAbsoluteTime:timeZone timeZone:v38];
+      calendarDateForDay = [v42 calendarDateForDay];
 
       v44 = objc_loadWeakRetained(&self->_delegate);
-      [v43 absoluteTime];
+      [calendarDateForDay absoluteTime];
       [v44 eventGestureController:self pointAtDate:0 isAllDay:?];
       v25 = CalRoundPointToScreenScale(v45, v46);
     }
@@ -6116,7 +6116,7 @@ LABEL_20:
       v51 = objc_loadWeakRetained(&self->_delegate);
       v52 = [v51 eventGestureController:self isAllDayAtPoint:-[EKDayOccurrenceView isAllDay](self->_draggingView requireInsistence:{"isAllDay") ^ 1, self->_firstTouchPoint.x, self->_firstTouchPoint.y}];
 
-      if (v52 != v9)
+      if (v52 != dayCopy)
       {
         [(EKEvent *)self->_event duration];
         v54 = fmin(v53, 86400.0);
@@ -6126,14 +6126,14 @@ LABEL_20:
           if (v55 >= 1 && v55 + 1 == [(EKEvent *)self->_event daySpan])
           {
             v56 = MEMORY[0x1E69930C8];
-            v57 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
-            v58 = [(EKEvent *)self->_event timeZone];
-            v59 = [v56 calendarDateWithDate:v57 timeZone:v58];
+            endDateUnadjustedForLegacyClients = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
+            timeZone2 = [(EKEvent *)self->_event timeZone];
+            v59 = [v56 calendarDateWithDate:endDateUnadjustedForLegacyClients timeZone:timeZone2];
 
             [v59 absoluteTime];
             v61 = v60;
-            v62 = [v59 calendarDateForDay];
-            [v62 absoluteTime];
+            calendarDateForDay2 = [v59 calendarDateForDay];
+            [calendarDateForDay2 absoluteTime];
             v54 = v61 - v63;
           }
         }
@@ -6150,7 +6150,7 @@ LABEL_20:
           [(EKEvent *)self->_event duration];
         }
 
-        [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:self->_event event:v9 allDay:?];
+        [(EKEventGestureController *)self _computeHeightForOccurrenceViewOfDuration:self->_event event:dayCopy allDay:?];
         v50 = v50 * (v67 / v65);
       }
 
@@ -6158,7 +6158,7 @@ LABEL_20:
     }
 
     v66 = 1;
-    if (!v8)
+    if (!offsetCopy)
     {
       goto LABEL_42;
     }
@@ -6167,7 +6167,7 @@ LABEL_20:
   else
   {
     v66 = 0;
-    if (!v8)
+    if (!offsetCopy)
     {
       goto LABEL_42;
     }
@@ -6191,7 +6191,7 @@ LABEL_20:
 
     v25 = v25 + v81 * v83;
 
-    if (!v9)
+    if (!dayCopy)
     {
       goto LABEL_43;
     }
@@ -6201,7 +6201,7 @@ LABEL_20:
 
   v25 = x - self->_touchOffset.x;
 LABEL_42:
-  if (!v9)
+  if (!dayCopy)
   {
 LABEL_43:
     [(EKDayOccurrenceView *)self->_draggingView margin];
@@ -6236,30 +6236,30 @@ LABEL_44:
   return result;
 }
 
-- (BOOL)_isPointInCancelRegion:(CGPoint)a3
+- (BOOL)_isPointInCancelRegion:(CGPoint)region
 {
-  y = a3.y;
-  v4 = self;
+  y = region.y;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained touchTrackingViewForEventGestureController:v4];
+  v6 = [WeakRetained touchTrackingViewForEventGestureController:selfCopy];
 
   [v6 frame];
   v8 = v7;
-  [(EKEventGestureController *)v4 _cancelRegionMargin];
-  LOBYTE(v4) = y > v9 + v8;
+  [(EKEventGestureController *)selfCopy _cancelRegionMargin];
+  LOBYTE(selfCopy) = y > v9 + v8;
 
-  return v4;
+  return selfCopy;
 }
 
-- (double)_Debug_HoursSinceStartOfDay:(double)a3
+- (double)_Debug_HoursSinceStartOfDay:(double)day
 {
   v4 = MEMORY[0x1E69930C8];
-  v5 = [(EKEvent *)self->_event eventStore];
-  v6 = [v5 timeZone];
-  v7 = [v4 calendarDateWithAbsoluteTime:v6 timeZone:a3];
-  v8 = [v7 calendarDateForDay];
-  [v8 absoluteTime];
-  v10 = (a3 - v9) / 3600.0;
+  eventStore = [(EKEvent *)self->_event eventStore];
+  timeZone = [eventStore timeZone];
+  v7 = [v4 calendarDateWithAbsoluteTime:timeZone timeZone:day];
+  calendarDateForDay = [v7 calendarDateForDay];
+  [calendarDateForDay absoluteTime];
+  v10 = (day - v9) / 3600.0;
 
   return v10;
 }
@@ -6267,8 +6267,8 @@ LABEL_44:
 - (void)_updateSnappingTypeForCurrentDrag
 {
   self->_snappingTypeForCurrentDrag = 0;
-  v3 = [MEMORY[0x1E6992FB0] shared];
-  [v3 defaultEventDuration];
+  mEMORY[0x1E6992FB0] = [MEMORY[0x1E6992FB0] shared];
+  [mEMORY[0x1E6992FB0] defaultEventDuration];
   v5 = v4;
 
   if (fabs(v5 + -3300.0) >= 2.22044605e-16 && fabs(v5 + -3000.0) >= 2.22044605e-16)

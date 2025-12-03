@@ -1,15 +1,15 @@
 @interface ASDTIOA2Control
-+ (id)controlWithDictionary:(id)a3 owningDevice:(id)a4;
++ (id)controlWithDictionary:(id)dictionary owningDevice:(id)device;
 @end
 
 @implementation ASDTIOA2Control
 
-+ (id)controlWithDictionary:(id)a3 owningDevice:(id)a4
++ (id)controlWithDictionary:(id)dictionary owningDevice:(id)device
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  dictionaryCopy = dictionary;
+  deviceCopy = device;
+  v7 = dictionaryCopy;
   v8 = v7;
   if (v7)
   {
@@ -30,7 +30,7 @@
   }
 
   v11 = [v8 objectForKeyedSubscript:@"control ID"];
-  v12 = [v11 unsignedIntValue];
+  unsignedIntValue = [v11 unsignedIntValue];
 
   ControlInfo_Class = ASDT::IOA2UserClient::GetControlInfo_Class(&cf, v13);
   ControlInfo_BaseClass = ASDT::IOA2UserClient::GetControlInfo_BaseClass(&cf, v15);
@@ -41,7 +41,7 @@
   {
     if (ControlInfo_BaseClass == 1651273579)
     {
-      v25 = [[ASDTIOA2BlockControl alloc] initWithIOA2Device:v6 userClientID:v12 isSettable:Only ^ 1u forElement:ControlInfo_Element inScope:ControlInfo_Scope objectClassID:ControlInfo_Class];
+      v25 = [[ASDTIOA2BlockControl alloc] initWithIOA2Device:deviceCopy userClientID:unsignedIntValue isSettable:Only ^ 1u forElement:ControlInfo_Element inScope:ControlInfo_Scope objectClassID:ControlInfo_Class];
       goto LABEL_39;
     }
 
@@ -52,7 +52,7 @@
 
     v24 = off_278CE8970;
 LABEL_18:
-    v25 = [objc_alloc(*v24) initWithIOA2Device:v6 userClientID:v12 isSettable:Only ^ 1u forElement:ControlInfo_Element inScope:ControlInfo_Scope objectClassID:ControlInfo_Class dictionary:v8];
+    v25 = [objc_alloc(*v24) initWithIOA2Device:deviceCopy userClientID:unsignedIntValue isSettable:Only ^ 1u forElement:ControlInfo_Element inScope:ControlInfo_Scope objectClassID:ControlInfo_Class dictionary:v8];
     goto LABEL_39;
   }
 
@@ -92,12 +92,12 @@ LABEL_18:
         {
           v23 = off_278CE8978;
 LABEL_38:
-          v25 = [objc_alloc(*v23) initWithIOA2Device:v6 userClientID:v12 isSettable:Only ^ 1u element:ControlInfo_Element scope:ControlInfo_Scope dictionary:v8];
+          v25 = [objc_alloc(*v23) initWithIOA2Device:deviceCopy userClientID:unsignedIntValue isSettable:Only ^ 1u element:ControlInfo_Element scope:ControlInfo_Scope dictionary:v8];
           goto LABEL_39;
         }
       }
 
-      v25 = [[ASDTIOA2BooleanControl alloc] initWithIOA2Device:v6 userClientID:v12 isSettable:Only ^ 1u element:ControlInfo_Element scope:ControlInfo_Scope objectClassID:ControlInfo_Class dictionary:v8];
+      v25 = [[ASDTIOA2BooleanControl alloc] initWithIOA2Device:deviceCopy userClientID:unsignedIntValue isSettable:Only ^ 1u element:ControlInfo_Element scope:ControlInfo_Scope objectClassID:ControlInfo_Class dictionary:v8];
 LABEL_39:
       v31 = v25;
       goto LABEL_40;

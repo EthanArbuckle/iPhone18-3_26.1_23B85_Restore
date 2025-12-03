@@ -1,14 +1,14 @@
 @interface _DKDiskSubsystemIdentifier
-+ (id)withDiskSubsystem:(id)a3;
++ (id)withDiskSubsystem:(id)subsystem;
 @end
 
 @implementation _DKDiskSubsystemIdentifier
 
-+ (id)withDiskSubsystem:(id)a3
++ (id)withDiskSubsystem:(id)subsystem
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  subsystemCopy = subsystem;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:subsystemCopy type:type];
 
   return v6;
 }

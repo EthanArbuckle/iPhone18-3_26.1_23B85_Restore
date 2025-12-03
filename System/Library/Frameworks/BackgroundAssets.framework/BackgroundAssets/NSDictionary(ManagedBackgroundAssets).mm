@@ -7,10 +7,10 @@
 
 - (uint64_t)infoDictionaryHasManagedAssetPacks
 {
-  v2 = [a1 objectForKey:@"BAHasManagedAssetPacks"];
-  if ([a1 infoDictionaryUsesAppleHosting])
+  v2 = [self objectForKey:@"BAHasManagedAssetPacks"];
+  if ([self infoDictionaryUsesAppleHosting])
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
   else
@@ -18,33 +18,33 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 BOOLValue];
+      bOOLValue = [v2 BOOLValue];
     }
 
     else
     {
-      v3 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)infoDictionaryUsesAppleHosting
 {
-  v1 = [a1 objectForKey:@"BAUsesAppleHosting"];
+  v1 = [self objectForKey:@"BAUsesAppleHosting"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

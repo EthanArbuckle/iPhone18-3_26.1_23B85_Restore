@@ -1,22 +1,22 @@
 @interface STAppLimitWarningUserNotificationContext
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)setLimitDisplayName:(id)a3 timeLeft:(double)a4;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)setLimitDisplayName:(id)name timeLeft:(double)left;
 @end
 
 @implementation STAppLimitWarningUserNotificationContext
 
-- (void)setLimitDisplayName:(id)a3 timeLeft:(double)a4
+- (void)setLimitDisplayName:(id)name timeLeft:(double)left
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v7 = objc_opt_new();
     [v7 setAllowedUnits:64];
     [v7 setUnitsStyle:3];
-    v8 = [v7 stringFromTimeInterval:a4];
+    v8 = [v7 stringFromTimeInterval:left];
     v11[0] = v8;
-    v11[1] = v6;
+    v11[1] = nameCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
     [(STUserNotificationContext *)self setLocalizedUserNotificationBodyArguments:v9];
   }
@@ -29,21 +29,21 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__STAppLimitWarningUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STAppLimitWarningUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

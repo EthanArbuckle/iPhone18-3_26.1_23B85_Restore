@@ -1,12 +1,12 @@
 @interface TSgPTPUnicastUDPv4PtPPort
-- (TSgPTPUnicastUDPv4PtPPort)initWithImplDC:(id)a3;
+- (TSgPTPUnicastUDPv4PtPPort)initWithImplDC:(id)c;
 @end
 
 @implementation TSgPTPUnicastUDPv4PtPPort
 
-- (TSgPTPUnicastUDPv4PtPPort)initWithImplDC:(id)a3
+- (TSgPTPUnicastUDPv4PtPPort)initWithImplDC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -18,10 +18,10 @@
 
   v9.receiver = self;
   v9.super_class = TSgPTPUnicastUDPv4PtPPort;
-  v5 = [(TSgPTPFDPtPPort *)&v9 initWithImplDC:v4];
+  v5 = [(TSgPTPFDPtPPort *)&v9 initWithImplDC:cCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = cCopy;
     impl = v5->_impl;
     v5->_impl = v6;
 LABEL_4:

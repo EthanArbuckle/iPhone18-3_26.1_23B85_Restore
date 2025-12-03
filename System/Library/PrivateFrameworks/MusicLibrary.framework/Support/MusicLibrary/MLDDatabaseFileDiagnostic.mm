@@ -1,5 +1,5 @@
 @interface MLDDatabaseFileDiagnostic
-- (MLDDatabaseFileDiagnostic)initWithDatabasePath:(id)a3;
+- (MLDDatabaseFileDiagnostic)initWithDatabasePath:(id)path;
 - (id)description;
 @end
 
@@ -14,15 +14,15 @@
   return v5;
 }
 
-- (MLDDatabaseFileDiagnostic)initWithDatabasePath:(id)a3
+- (MLDDatabaseFileDiagnostic)initWithDatabasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = MLDDatabaseFileDiagnostic;
   v5 = [(MLDDatabaseFileDiagnostic *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     databasePath = v5->_databasePath;
     v5->_databasePath = v6;
 

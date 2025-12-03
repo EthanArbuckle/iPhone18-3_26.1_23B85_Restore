@@ -1,26 +1,26 @@
 @interface WFLinkActionPlacemarkParameterDefinition
-- (WFLinkActionPlacemarkParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)addressForPlacemark:(id)a3;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)localizedTitleForLinkValue:(id)a3;
-- (id)nameForPlacemark:(id)a3;
+- (WFLinkActionPlacemarkParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)addressForPlacemark:(id)placemark;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)localizedTitleForLinkValue:(id)value;
+- (id)nameForPlacemark:(id)placemark;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9;
+- (id)parameterStateFromLinkValue:(id)value;
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionPlacemarkParameterDefinition
 
-- (id)addressForPlacemark:(id)a3
+- (id)addressForPlacemark:(id)placemark
 {
-  v3 = a3;
-  v4 = [v3 formattedAddressLines];
-  v5 = [v4 count];
+  placemarkCopy = placemark;
+  formattedAddressLines = [placemarkCopy formattedAddressLines];
+  v5 = [formattedAddressLines count];
 
   if (v5)
   {
-    v6 = [v3 formattedAddressLines];
-    v7 = [v6 firstObject];
+    formattedAddressLines2 = [placemarkCopy formattedAddressLines];
+    firstObject = [formattedAddressLines2 firstObject];
   }
 
   else
@@ -43,77 +43,77 @@
 
     v9 = v8;
     _Block_object_dispose(&v13, 8);
-    v6 = [v3 postalAddress];
-    v7 = [v8 singleLineStringFromPostalAddress:v6 addCountryName:0];
+    formattedAddressLines2 = [placemarkCopy postalAddress];
+    firstObject = [v8 singleLineStringFromPostalAddress:formattedAddressLines2 addCountryName:0];
   }
 
-  v10 = v7;
+  v10 = firstObject;
 
   return v10;
 }
 
-- (id)nameForPlacemark:(id)a3
+- (id)nameForPlacemark:(id)placemark
 {
-  v4 = a3;
-  v5 = [v4 name];
+  placemarkCopy = placemark;
+  name = [placemarkCopy name];
 
-  if (v5)
+  if (name)
   {
-    [v4 name];
+    [placemarkCopy name];
   }
 
   else
   {
-    [(WFLinkActionPlacemarkParameterDefinition *)self addressForPlacemark:v4];
+    [(WFLinkActionPlacemarkParameterDefinition *)self addressForPlacemark:placemarkCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
   v4 = *MEMORY[0x1E69AC550];
-  v5 = a3;
+  valueCopy = value;
   v6 = [(WFLinkActionParameterDefinition *)self integerForTypeSpecificMetadataKey:v4 defaultValue:0];
-  v7 = [v5 value];
+  value = [valueCopy value];
 
   if (v6 == 2)
   {
-    v8 = [v7 locality];
+    locality = [value locality];
   }
 
   else
   {
     if (v6 == 1)
     {
-      [(WFLinkActionPlacemarkParameterDefinition *)self addressForPlacemark:v7];
+      [(WFLinkActionPlacemarkParameterDefinition *)self addressForPlacemark:value];
     }
 
     else
     {
-      [(WFLinkActionPlacemarkParameterDefinition *)self nameForPlacemark:v7];
+      [(WFLinkActionPlacemarkParameterDefinition *)self nameForPlacemark:value];
     }
-    v8 = ;
+    locality = ;
   }
 
-  v9 = v8;
+  v9 = locality;
 
   return v9;
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (v4)
+  value = [value value];
+  if (value)
   {
-    v5 = [(WFLinkActionParameterDefinition *)self valueType];
-    v6 = [v5 objectIsMemberOfType:v4];
+    valueType = [(WFLinkActionParameterDefinition *)self valueType];
+    v6 = [valueType objectIsMemberOfType:value];
 
     if (v6)
     {
-      v7 = v4;
+      v7 = value;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -137,13 +137,13 @@
     v13 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v17 = 136315650;
       v18 = "[WFLinkActionPlacemarkParameterDefinition parameterStateFromLinkValue:]";
       v19 = 2114;
-      v20 = v4;
+      v20 = value;
       v21 = 2114;
-      v22 = v14;
+      v22 = valueType2;
     }
   }
 
@@ -155,19 +155,19 @@ LABEL_11:
   return v12;
 }
 
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = v19;
-  if (v14)
+  valueCopy = value;
+  stateCopy = state;
+  requestorCopy = requestor;
+  actionCopy = action;
+  keyCopy = key;
+  handlerCopy = handler;
+  v20 = handlerCopy;
+  if (valueCopy)
   {
-    v21 = v14;
+    v21 = valueCopy;
     objc_opt_class();
     v22 = objc_opt_isKindOfClass() & 1;
     if (v22)
@@ -230,7 +230,7 @@ LABEL_11:
 
   else
   {
-    (*(v19 + 2))(v19, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -255,16 +255,16 @@ void __176__WFLinkActionPlacemarkParameterDefinition_getLinkValueFromProcessedPa
   }
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stateCopy = state;
+  actionCopy = action;
+  if (stateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = stateCopy;
     }
 
     else
@@ -279,15 +279,15 @@ void __176__WFLinkActionPlacemarkParameterDefinition_getLinkValueFromProcessedPa
   }
 
   v9 = v8;
-  v10 = [v9 value];
-  v11 = [v10 placemark];
+  value = [v9 value];
+  placemark = [value placemark];
 
-  if (v11)
+  if (placemark)
   {
     v12 = objc_alloc(MEMORY[0x1E695FC20]);
-    v13 = [v9 value];
-    v14 = [v13 placemark];
-    v15 = [v12 initWithPlacemark:v14];
+    value2 = [v9 value];
+    placemark2 = [value2 placemark];
+    v15 = [v12 initWithPlacemark:placemark2];
 
     v16 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v15];
   }
@@ -310,20 +310,20 @@ void __176__WFLinkActionPlacemarkParameterDefinition_getLinkValueFromProcessedPa
 
   v7.receiver = self;
   v7.super_class = WFLinkActionPlacemarkParameterDefinition;
-  v4 = [(WFLinkActionParameterDefinition *)&v7 parameterDefinitionDictionary];
-  v5 = [v4 definitionByAddingEntriesInDictionary:v3];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v7 parameterDefinitionDictionary];
+  v5 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v3];
 
   return v5;
 }
 
-- (WFLinkActionPlacemarkParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionPlacemarkParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC938];
-  v5 = a3;
-  v6 = [v4 placemarkValueType];
+  metadataCopy = metadata;
+  placemarkValueType = [v4 placemarkValueType];
   v9.receiver = self;
   v9.super_class = WFLinkActionPlacemarkParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:placemarkValueType parameterMetadata:metadataCopy];
 
   return v7;
 }

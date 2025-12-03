@@ -1,22 +1,22 @@
 @interface VCTransport
 + (VCTransport)sharedInstance;
-- (BOOL)ipPortStillExists:(tagIPPORT *)a3 requiresWifi:(BOOL)a4;
+- (BOOL)ipPortStillExists:(tagIPPORT *)exists requiresWifi:(BOOL)wifi;
 - (VCTransport)init;
-- (id)getRemoteCIDForDstIPPort:(tagIPPORT *)a3 callID:(unsigned int)a4;
-- (int)detailedErrorCodeForConnectionWithCallID:(unsigned int)a3;
-- (int)getConnectionDataForCallID:(unsigned int)a3 version:(unsigned __int8)a4 useCompressedData:(BOOL)a5 pConnectionData:(void *)a6 connectDataSizeInBytes:(int *)a7 relayDictionary:(__CFDictionary *)a8 interfaceUpdate:(BOOL)a9 nonCellularCandidateTimeout:(double)a10;
-- (int)sendData:(id)a3 localCallID:(unsigned int)a4 remoteCallID:(unsigned int)a5 encrypted:(BOOL)a6 OFTType:(int)a7;
-- (int)sendUDPPacketReliableEncrypted:(id)a3 localIPPort:(tagIPPORT *)a4 destinationIPPort:(tagIPPORT *)a5 oftType:(int)a6;
-- (int)startConnectionCheckForCallID:(unsigned int)a3 remoteConnectionDataBlob:(id)a4 relayDictionary:(id)a5 iceTimeout:(double)a6 securityIdentity:(__SecIdentity *)a7 skeState:(SKEStateOpaque *)a8 usedRelay:(int *)a9;
-- (int)updateInterfaceList:(unsigned int)a3 shouldFilterCellInterface:(BOOL)a4 isUpdateNeeded:(int *)a5;
+- (id)getRemoteCIDForDstIPPort:(tagIPPORT *)port callID:(unsigned int)d;
+- (int)detailedErrorCodeForConnectionWithCallID:(unsigned int)d;
+- (int)getConnectionDataForCallID:(unsigned int)d version:(unsigned __int8)version useCompressedData:(BOOL)data pConnectionData:(void *)connectionData connectDataSizeInBytes:(int *)bytes relayDictionary:(__CFDictionary *)dictionary interfaceUpdate:(BOOL)update nonCellularCandidateTimeout:(double)self0;
+- (int)sendData:(id)data localCallID:(unsigned int)d remoteCallID:(unsigned int)iD encrypted:(BOOL)encrypted OFTType:(int)type;
+- (int)sendUDPPacketReliableEncrypted:(id)encrypted localIPPort:(tagIPPORT *)port destinationIPPort:(tagIPPORT *)pPort oftType:(int)type;
+- (int)startConnectionCheckForCallID:(unsigned int)d remoteConnectionDataBlob:(id)blob relayDictionary:(id)dictionary iceTimeout:(double)timeout securityIdentity:(__SecIdentity *)identity skeState:(SKEStateOpaque *)state usedRelay:(int *)relay;
+- (int)updateInterfaceList:(unsigned int)list shouldFilterCellInterface:(BOOL)interface isUpdateNeeded:(int *)needed;
 - (void)dealloc;
-- (void)iceConnectedForCallID:(unsigned int)a3 result:(tagCONNRESULT *)a4 didReceivePacket:(int)a5 useRelay:(int)a6 secretKey:(__CFData *)a7 skeResult:(int)a8;
-- (void)iceNewCandidatesForCallID:(unsigned int)a3 blob:(char *)a4 size:(int)a5 newCandidateVersion:(unsigned __int16)a6;
-- (void)iceRemoveIPPort:(tagIPPORT *)a3 forCallID:(unsigned int)a4 isLocalInterface:(BOOL)a5;
-- (void)iceShouldNominateNewCandidate:(tagCANDIDATEPAIR *)a3 forCallID:(unsigned int)a4 interfaceMask:(int)a5 nominated:(int *)a6 demote:(int *)a7 connectionPriority:(int *)a8 replaceOnly:(int *)a9;
-- (void)receivedDataPacket:(char *)a3 length:(int)a4 forCallID:(unsigned int)a5 encrypted:(BOOL)a6 OFTType:(int)a7;
-- (void)registerDataReceivedHandler:(id)a3 forCallID:(unsigned int)a4;
-- (void)registerICEBlockForCallID:(unsigned int)a3 connectedBlock:(id)a4 newCandidatesBlock:(id)a5 newNominationBlock:(id)a6 removeIPPortBlock:(id)a7;
+- (void)iceConnectedForCallID:(unsigned int)d result:(tagCONNRESULT *)result didReceivePacket:(int)packet useRelay:(int)relay secretKey:(__CFData *)key skeResult:(int)skeResult;
+- (void)iceNewCandidatesForCallID:(unsigned int)d blob:(char *)blob size:(int)size newCandidateVersion:(unsigned __int16)version;
+- (void)iceRemoveIPPort:(tagIPPORT *)port forCallID:(unsigned int)d isLocalInterface:(BOOL)interface;
+- (void)iceShouldNominateNewCandidate:(tagCANDIDATEPAIR *)candidate forCallID:(unsigned int)d interfaceMask:(int)mask nominated:(int *)nominated demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only;
+- (void)receivedDataPacket:(char *)packet length:(int)length forCallID:(unsigned int)d encrypted:(BOOL)encrypted OFTType:(int)type;
+- (void)registerDataReceivedHandler:(id)handler forCallID:(unsigned int)d;
+- (void)registerICEBlockForCallID:(unsigned int)d connectedBlock:(id)block newCandidatesBlock:(id)candidatesBlock newNominationBlock:(id)nominationBlock removeIPPortBlock:(id)portBlock;
 @end
 
 @implementation VCTransport
@@ -75,7 +75,7 @@
   return Weak;
 }
 
-- (void)registerICEBlockForCallID:(unsigned int)a3 connectedBlock:(id)a4 newCandidatesBlock:(id)a5 newNominationBlock:(id)a6 removeIPPortBlock:(id)a7
+- (void)registerICEBlockForCallID:(unsigned int)d connectedBlock:(id)block newCandidatesBlock:(id)candidatesBlock newNominationBlock:(id)nominationBlock removeIPPortBlock:(id)portBlock
 {
   v10 = *MEMORY[0x1E69E9840];
   delegateQueue = self->delegateQueue;
@@ -83,12 +83,12 @@
   block[1] = 3221225472;
   block[2] = __112__VCTransport_registerICEBlockForCallID_connectedBlock_newCandidatesBlock_newNominationBlock_removeIPPortBlock___block_invoke;
   block[3] = &unk_1E85FA0A8;
-  v9 = a3;
-  block[6] = a5;
-  block[7] = a6;
-  block[8] = a7;
+  dCopy = d;
+  block[6] = candidatesBlock;
+  block[7] = nominationBlock;
+  block[8] = portBlock;
   block[4] = self;
-  block[5] = a4;
+  block[5] = block;
   dispatch_async(delegateQueue, block);
 }
 
@@ -138,27 +138,27 @@ void __112__VCTransport_registerICEBlockForCallID_connectedBlock_newCandidatesBl
   }
 }
 
-- (int)updateInterfaceList:(unsigned int)a3 shouldFilterCellInterface:(BOOL)a4 isUpdateNeeded:(int *)a5
+- (int)updateInterfaceList:(unsigned int)list shouldFilterCellInterface:(BOOL)interface isUpdateNeeded:(int *)needed
 {
-  v6 = a4;
-  v7 = *&a3;
+  interfaceCopy = interface;
+  v7 = *&list;
   v10[2] = *MEMORY[0x1E69E9840];
   v10[0] = 0xAAAAAAAAAAAAAAAALL;
   v10[1] = 0xAAAAAAAAAAAAAAAALL;
   [+[VideoConferenceManager defaultVideoConferenceManager](VideoConferenceManager "defaultVideoConferenceManager")];
   objc_sync_enter(self);
-  LODWORD(a5) = TPUpdateInterfaceList(self->tpHandle, v7, a5, v6, v10);
+  LODWORD(needed) = TPUpdateInterfaceList(self->tpHandle, v7, needed, interfaceCopy, v10);
   objc_sync_exit(self);
-  return a5;
+  return needed;
 }
 
-- (void)iceConnectedForCallID:(unsigned int)a3 result:(tagCONNRESULT *)a4 didReceivePacket:(int)a5 useRelay:(int)a6 secretKey:(__CFData *)a7 skeResult:(int)a8
+- (void)iceConnectedForCallID:(unsigned int)d result:(tagCONNRESULT *)result didReceivePacket:(int)packet useRelay:(int)relay secretKey:(__CFData *)key skeResult:(int)skeResult
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (result)
   {
     v15 = malloc_type_calloc(1uLL, 0x140uLL, 0x1020040A6FBA1A4uLL);
-    memcpy(v15, a4, 0x140uLL);
+    memcpy(v15, result, 0x140uLL);
   }
 
   else
@@ -173,11 +173,11 @@ void __112__VCTransport_registerICEBlockForCallID_connectedBlock_newCandidatesBl
   v17[3] = &unk_1E85F7FD0;
   v17[4] = self;
   v17[5] = v15;
-  v18 = a3;
-  v19 = a5;
-  v17[6] = a7;
-  v20 = a6;
-  v21 = a8;
+  dCopy = d;
+  packetCopy = packet;
+  v17[6] = key;
+  relayCopy = relay;
+  skeResultCopy = skeResult;
   dispatch_async(delegateQueue, v17);
 }
 
@@ -194,19 +194,19 @@ void __90__VCTransport_iceConnectedForCallID_result_didReceivePacket_useRelay_se
   free(v3);
 }
 
-- (void)iceNewCandidatesForCallID:(unsigned int)a3 blob:(char *)a4 size:(int)a5 newCandidateVersion:(unsigned __int16)a6
+- (void)iceNewCandidatesForCallID:(unsigned int)d blob:(char *)blob size:(int)size newCandidateVersion:(unsigned __int16)version
 {
   v14 = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E695DEF0] dataWithBytes:a4 length:a5];
+  v9 = [MEMORY[0x1E695DEF0] dataWithBytes:blob length:size];
   delegateQueue = self->delegateQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__VCTransport_iceNewCandidatesForCallID_blob_size_newCandidateVersion___block_invoke;
   v11[3] = &unk_1E85F8C50;
-  v12 = a3;
+  dCopy = d;
   v11[4] = self;
   v11[5] = v9;
-  v13 = a6;
+  versionCopy = version;
   dispatch_async(delegateQueue, v11);
 }
 
@@ -223,7 +223,7 @@ uint64_t __71__VCTransport_iceNewCandidatesForCallID_blob_size_newCandidateVersi
   return result;
 }
 
-- (void)iceShouldNominateNewCandidate:(tagCANDIDATEPAIR *)a3 forCallID:(unsigned int)a4 interfaceMask:(int)a5 nominated:(int *)a6 demote:(int *)a7 connectionPriority:(int *)a8 replaceOnly:(int *)a9
+- (void)iceShouldNominateNewCandidate:(tagCANDIDATEPAIR *)candidate forCallID:(unsigned int)d interfaceMask:(int)mask nominated:(int *)nominated demote:(int *)demote connectionPriority:(int *)priority replaceOnly:(int *)only
 {
   v13 = *MEMORY[0x1E69E9840];
   delegateQueue = self->delegateQueue;
@@ -232,13 +232,13 @@ uint64_t __71__VCTransport_iceNewCandidatesForCallID_blob_size_newCandidateVersi
   v10[2] = __117__VCTransport_iceShouldNominateNewCandidate_forCallID_interfaceMask_nominated_demote_connectionPriority_replaceOnly___block_invoke;
   v10[3] = &unk_1E85F7F08;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = a4;
-  v12 = a5;
-  v10[6] = a6;
-  v10[7] = a7;
-  v10[8] = a8;
-  v10[9] = a9;
+  v10[5] = candidate;
+  dCopy = d;
+  maskCopy = mask;
+  v10[6] = nominated;
+  v10[7] = demote;
+  v10[8] = priority;
+  v10[9] = only;
   dispatch_sync(delegateQueue, v10);
 }
 
@@ -270,26 +270,26 @@ void __117__VCTransport_iceShouldNominateNewCandidate_forCallID_interfaceMask_no
   }
 }
 
-- (void)iceRemoveIPPort:(tagIPPORT *)a3 forCallID:(unsigned int)a4 isLocalInterface:(BOOL)a5
+- (void)iceRemoveIPPort:(tagIPPORT *)port forCallID:(unsigned int)d isLocalInterface:(BOOL)interface
 {
   v14 = *MEMORY[0x1E69E9840];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x4810000000;
   v10[3] = &unk_1DBF04739;
-  v5 = *&a3->szIfName[12];
-  v11 = *&a3->iFlags;
+  v5 = *&port->szIfName[12];
+  v11 = *&port->iFlags;
   v12 = v5;
-  v13 = *&a3->IP.abIPv6[12];
+  v13 = *&port->IP.abIPv6[12];
   delegateQueue = self->delegateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__VCTransport_iceRemoveIPPort_forCallID_isLocalInterface___block_invoke;
   block[3] = &unk_1E85FA0D0;
-  v8 = a4;
+  dCopy = d;
   block[4] = self;
   block[5] = v10;
-  v9 = a5;
+  interfaceCopy = interface;
   dispatch_async(delegateQueue, block);
   _Block_object_dispose(v10, 8);
 }
@@ -322,7 +322,7 @@ void __58__VCTransport_iceRemoveIPPort_forCallID_isLocalInterface___block_invoke
   }
 }
 
-- (void)registerDataReceivedHandler:(id)a3 forCallID:(unsigned int)a4
+- (void)registerDataReceivedHandler:(id)handler forCallID:(unsigned int)d
 {
   v7 = *MEMORY[0x1E69E9840];
   dataReceivedHandlerQueue = self->dataReceivedHandlerQueue;
@@ -331,8 +331,8 @@ void __58__VCTransport_iceRemoveIPPort_forCallID_isLocalInterface___block_invoke
   v5[2] = __53__VCTransport_registerDataReceivedHandler_forCallID___block_invoke;
   v5[3] = &unk_1E85FA0F8;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
+  v5[5] = handler;
+  dCopy = d;
   dispatch_async(dataReceivedHandlerQueue, v5);
 }
 
@@ -356,10 +356,10 @@ void __53__VCTransport_registerDataReceivedHandler_forCallID___block_invoke(uint
   }
 }
 
-- (void)receivedDataPacket:(char *)a3 length:(int)a4 forCallID:(unsigned int)a5 encrypted:(BOOL)a6 OFTType:(int)a7
+- (void)receivedDataPacket:(char *)packet length:(int)length forCallID:(unsigned int)d encrypted:(BOOL)encrypted OFTType:(int)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:a4];
+  v11 = [MEMORY[0x1E695DEF0] dataWithBytes:packet length:length];
   dataReceivedHandlerQueue = self->dataReceivedHandlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -367,9 +367,9 @@ void __53__VCTransport_registerDataReceivedHandler_forCallID___block_invoke(uint
   block[3] = &unk_1E85F63A0;
   block[4] = self;
   block[5] = v11;
-  v16 = a6;
-  v14 = a5;
-  v15 = a7;
+  encryptedCopy = encrypted;
+  dCopy = d;
+  typeCopy = type;
   dispatch_async(dataReceivedHandlerQueue, block);
 }
 
@@ -386,7 +386,7 @@ uint64_t __69__VCTransport_receivedDataPacket_length_forCallID_encrypted_OFTType
   return result;
 }
 
-- (id)getRemoteCIDForDstIPPort:(tagIPPORT *)a3 callID:(unsigned int)a4
+- (id)getRemoteCIDForDstIPPort:(tagIPPORT *)port callID:(unsigned int)d
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -401,19 +401,19 @@ uint64_t __69__VCTransport_receivedDataPacket_length_forCallID_encrypted_OFTType
   }
 }
 
-- (int)getConnectionDataForCallID:(unsigned int)a3 version:(unsigned __int8)a4 useCompressedData:(BOOL)a5 pConnectionData:(void *)a6 connectDataSizeInBytes:(int *)a7 relayDictionary:(__CFDictionary *)a8 interfaceUpdate:(BOOL)a9 nonCellularCandidateTimeout:(double)a10
+- (int)getConnectionDataForCallID:(unsigned int)d version:(unsigned __int8)version useCompressedData:(BOOL)data pConnectionData:(void *)connectionData connectDataSizeInBytes:(int *)bytes relayDictionary:(__CFDictionary *)dictionary interfaceUpdate:(BOOL)update nonCellularCandidateTimeout:(double)self0
 {
-  v13 = a5;
-  v14 = a4;
+  dataCopy = data;
+  versionCopy = version;
   v19[2] = *MEMORY[0x1E69E9840];
   v19[0] = 0xAAAAAAAAAAAAAAAALL;
   v19[1] = 0xAAAAAAAAAAAAAAAALL;
   [+[VideoConferenceManager defaultVideoConferenceManager](VideoConferenceManager "defaultVideoConferenceManager")];
-  LODWORD(v18) = a9;
-  return TPGetConnectionData(self->tpHandle, v14, a3, v13, a6, a7, 1, 0, "static", 0, a8, v18, v19);
+  LODWORD(v18) = update;
+  return TPGetConnectionData(self->tpHandle, versionCopy, d, dataCopy, connectionData, bytes, 1, 0, "static", 0, dictionary, v18, v19);
 }
 
-- (int)detailedErrorCodeForConnectionWithCallID:(unsigned int)a3
+- (int)detailedErrorCodeForConnectionWithCallID:(unsigned int)d
 {
   if (TPGetConnErrorCode() >= 0)
   {
@@ -426,41 +426,41 @@ uint64_t __69__VCTransport_receivedDataPacket_length_forCallID_encrypted_OFTType
   }
 }
 
-- (int)startConnectionCheckForCallID:(unsigned int)a3 remoteConnectionDataBlob:(id)a4 relayDictionary:(id)a5 iceTimeout:(double)a6 securityIdentity:(__SecIdentity *)a7 skeState:(SKEStateOpaque *)a8 usedRelay:(int *)a9
+- (int)startConnectionCheckForCallID:(unsigned int)d remoteConnectionDataBlob:(id)blob relayDictionary:(id)dictionary iceTimeout:(double)timeout securityIdentity:(__SecIdentity *)identity skeState:(SKEStateOpaque *)state usedRelay:(int *)relay
 {
-  v14 = *&a3;
-  v16 = [a4 length];
+  v14 = *&d;
+  v16 = [blob length];
   v17 = malloc_type_malloc(v16, 0x100004077774924uLL);
-  [a4 getBytes:v17 length:v16];
-  LODWORD(a9) = TPStartConnectionCheck(a6, self->tpHandle, v14, v17, v16, 0, a5, a9, a7);
+  [blob getBytes:v17 length:v16];
+  LODWORD(relay) = TPStartConnectionCheck(timeout, self->tpHandle, v14, v17, v16, 0, dictionary, relay, identity);
   free(v17);
-  return a9;
+  return relay;
 }
 
-- (BOOL)ipPortStillExists:(tagIPPORT *)a3 requiresWifi:(BOOL)a4
+- (BOOL)ipPortStillExists:(tagIPPORT *)exists requiresWifi:(BOOL)wifi
 {
   v6 = *MEMORY[0x1E69E9840];
   v5 = 0;
-  TPGetInterfaceStillExists(self->tpHandle, a3, &v5);
+  TPGetInterfaceStillExists(self->tpHandle, exists, &v5);
   return v5 != 0;
 }
 
-- (int)sendUDPPacketReliableEncrypted:(id)a3 localIPPort:(tagIPPORT *)a4 destinationIPPort:(tagIPPORT *)a5 oftType:(int)a6
+- (int)sendUDPPacketReliableEncrypted:(id)encrypted localIPPort:(tagIPPORT *)port destinationIPPort:(tagIPPORT *)pPort oftType:(int)type
 {
   tpHandle = self->tpHandle;
-  v11 = [a3 bytes];
-  v12 = [a3 length];
+  bytes = [encrypted bytes];
+  v12 = [encrypted length];
 
-  return TPSendUDPPacketARPL(tpHandle, v11, v12, a4, &a5->iFlags, a6, 1, 1);
+  return TPSendUDPPacketARPL(tpHandle, bytes, v12, port, &pPort->iFlags, type, 1, 1);
 }
 
-- (int)sendData:(id)a3 localCallID:(unsigned int)a4 remoteCallID:(unsigned int)a5 encrypted:(BOOL)a6 OFTType:(int)a7
+- (int)sendData:(id)data localCallID:(unsigned int)d remoteCallID:(unsigned int)iD encrypted:(BOOL)encrypted OFTType:(int)type
 {
   tpHandle = self->tpHandle;
-  v13 = [a3 bytes];
-  v14 = [a3 length];
+  bytes = [data bytes];
+  v14 = [data length];
 
-  return TPSendUDPDataPacket(tpHandle, v13, v14, a4, a5, a6, a7);
+  return TPSendUDPDataPacket(tpHandle, bytes, v14, d, iD, encrypted, type);
 }
 
 @end

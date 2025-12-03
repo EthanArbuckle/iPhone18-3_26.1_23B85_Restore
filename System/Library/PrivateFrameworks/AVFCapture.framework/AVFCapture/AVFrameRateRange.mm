@@ -1,7 +1,7 @@
 @interface AVFrameRateRange
-+ (AVFrameRateRange)frameRateRangeWithMinRate:(int)a3 maxFrameRate:(int)a4;
-- (AVFrameRateRange)initWithMinFrameRate:(int)a3 maxFrameRate:(int)a4;
-- (BOOL)isEqual:(id)a3;
++ (AVFrameRateRange)frameRateRangeWithMinRate:(int)rate maxFrameRate:(int)frameRate;
+- (AVFrameRateRange)initWithMinFrameRate:(int)rate maxFrameRate:(int)frameRate;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)dealloc;
 @end
@@ -22,9 +22,9 @@
   return [v3 stringWithFormat:@"<%@: %p %d - %d>", NSStringFromClass(v4), self, self->_internal->minFrameRate, self->_internal->maxFrameRate];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
     return v7;
@@ -32,15 +32,15 @@
 
   v11 = v3;
   v12 = v4;
-  v7 = [a3 isMemberOfClass:objc_opt_class()];
+  v7 = [equal isMemberOfClass:objc_opt_class()];
   if (!v7)
   {
     return v7;
   }
 
-  if (a3)
+  if (equal)
   {
-    [a3 maxFrameDuration];
+    [equal maxFrameDuration];
     if (self)
     {
 LABEL_5:
@@ -67,7 +67,7 @@ LABEL_16:
     return v7;
   }
 
-  if (!a3)
+  if (!equal)
   {
     memset(&time1, 0, sizeof(time1));
     if (self)
@@ -80,7 +80,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [a3 minFrameDuration];
+  [equal minFrameDuration];
   if (!self)
   {
     goto LABEL_14;
@@ -98,14 +98,14 @@ LABEL_15:
   return v7;
 }
 
-+ (AVFrameRateRange)frameRateRangeWithMinRate:(int)a3 maxFrameRate:(int)a4
++ (AVFrameRateRange)frameRateRangeWithMinRate:(int)rate maxFrameRate:(int)frameRate
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithMinFrameRate:*&a3 maxFrameRate:*&a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithMinFrameRate:*&rate maxFrameRate:*&frameRate];
 
   return v4;
 }
 
-- (AVFrameRateRange)initWithMinFrameRate:(int)a3 maxFrameRate:(int)a4
+- (AVFrameRateRange)initWithMinFrameRate:(int)rate maxFrameRate:(int)frameRate
 {
   v9.receiver = self;
   v9.super_class = AVFrameRateRange;
@@ -116,8 +116,8 @@ LABEL_15:
     v6->_internal = v7;
     if (v7)
     {
-      v7->minFrameRate = a3;
-      v6->_internal->maxFrameRate = a4;
+      v7->minFrameRate = rate;
+      v6->_internal->maxFrameRate = frameRate;
     }
 
     else

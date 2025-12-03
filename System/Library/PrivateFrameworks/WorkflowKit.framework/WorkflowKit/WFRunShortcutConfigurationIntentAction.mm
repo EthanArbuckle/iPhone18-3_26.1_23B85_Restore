@@ -1,62 +1,62 @@
 @interface WFRunShortcutConfigurationIntentAction
 - (id)parameterOverrides;
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4;
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values;
 @end
 
 @implementation WFRunShortcutConfigurationIntentAction
 
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 valueForKey:@"shortcut"];
+  intentCopy = intent;
+  v5 = [intentCopy valueForKey:@"shortcut"];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 identifier];
+      identifier = [v5 identifier];
       v7 = +[WFDatabase defaultDatabase];
       v8 = v7;
       if (!v7)
       {
-        v9 = getWFWidgetLogObject();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        firstObject = getWFWidgetLogObject();
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315138;
           v24 = "[WFRunShortcutConfigurationIntentAction serializedParametersForDonatedIntent:allowDroppingUnconfigurableValues:]";
-          _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Failed to get database return empty serialized parameters for WFRunShortcutConfigurationIntentAction", buf, 0xCu);
+          _os_log_impl(&dword_1CA256000, firstObject, OS_LOG_TYPE_ERROR, "%s Failed to get database return empty serialized parameters for WFRunShortcutConfigurationIntentAction", buf, 0xCu);
         }
 
         v14 = 0;
         goto LABEL_25;
       }
 
-      if (v6)
+      if (identifier)
       {
-        v9 = [v7 referenceForWorkflowID:v6 includingTombstones:0];
-        if (v9)
+        firstObject = [v7 referenceForWorkflowID:identifier includingTombstones:0];
+        if (firstObject)
         {
 LABEL_6:
-          v10 = [objc_alloc(MEMORY[0x1E69E0A10]) initWithWorkflow:v9 shortcutsMetadata:0];
-          v11 = [v10 asLNValue];
-          v12 = v11;
-          if (v11)
+          v10 = [objc_alloc(MEMORY[0x1E69E0A10]) initWithWorkflow:firstObject shortcutsMetadata:0];
+          asLNValue = [v10 asLNValue];
+          v12 = asLNValue;
+          if (asLNValue)
           {
-            v13 = [v11 wfSerializedRepresentation];
+            wfSerializedRepresentation = [asLNValue wfSerializedRepresentation];
             v21 = @"shortcut";
-            v22 = v13;
+            v22 = wfSerializedRepresentation;
             v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
           }
 
           else
           {
-            v13 = getWFWidgetLogObject();
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+            wfSerializedRepresentation = getWFWidgetLogObject();
+            if (os_log_type_enabled(wfSerializedRepresentation, OS_LOG_TYPE_ERROR))
             {
               *buf = 136315138;
               v24 = "[WFRunShortcutConfigurationIntentAction serializedParametersForDonatedIntent:allowDroppingUnconfigurableValues:]";
-              _os_log_impl(&dword_1CA256000, v13, OS_LOG_TYPE_ERROR, "%s Could not create value from system workflow action", buf, 0xCu);
+              _os_log_impl(&dword_1CA256000, wfSerializedRepresentation, OS_LOG_TYPE_ERROR, "%s Could not create value from system workflow action", buf, 0xCu);
             }
 
             v14 = 0;
@@ -82,10 +82,10 @@ LABEL_25:
         v16 = [objc_alloc(MEMORY[0x1E69E0E18]) initWithLocation:0];
         [v16 setResultsLimit:1];
         v17 = [v8 sortedWorkflowsWithQuery:v16];
-        v18 = [v17 descriptors];
-        v9 = [v18 firstObject];
+        descriptors = [v17 descriptors];
+        firstObject = [descriptors firstObject];
 
-        if (v9)
+        if (firstObject)
         {
           goto LABEL_6;
         }
@@ -110,7 +110,7 @@ LABEL_25:
     *buf = 136315394;
     v24 = "[WFRunShortcutConfigurationIntentAction serializedParametersForDonatedIntent:allowDroppingUnconfigurableValues:]";
     v25 = 2112;
-    v26 = v4;
+    v26 = intentCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_ERROR, "%s Did not find shortcut object on WFRunShortcutConfigurationIntentAction: %@", buf, 0x16u);
   }
 
@@ -127,8 +127,8 @@ LABEL_26:
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = WFRunShortcutConfigurationIntentAction;
-  v2 = [(WFOverridableLinkAction *)&v9 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v9 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
 
   v10 = @"Class";
   v4 = objc_opt_class();

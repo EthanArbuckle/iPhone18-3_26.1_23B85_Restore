@@ -1,35 +1,35 @@
 @interface LAUIRadialPingView
-- (LAUIRadialPingView)initWithFrame:(CGRect)a3;
+- (LAUIRadialPingView)initWithFrame:(CGRect)frame;
 - (id).cxx_construct;
-- (void)_attachExpandAnimationToContainer:(blur_container *)a3 withDelay:(double)a4;
-- (void)_attachPulseAnimationWithDelay:(double)a3;
+- (void)_attachExpandAnimationToContainer:(blur_container *)container withDelay:(double)delay;
+- (void)_attachPulseAnimationWithDelay:(double)delay;
 - (void)_endExpand;
-- (void)_setExpand:(BOOL)a3 forBlurAtIndex:(unint64_t)a4 withDelay:(double)a5;
-- (void)_setPulse:(BOOL)a3 withDelay:(double)a4;
-- (void)_startExpandWithDelay:(double)a3;
-- (void)_updateAnimatingAnimated:(BOOL)a3;
-- (void)_updateExpandForBlurAtIndex:(unint64_t)a3 withDelay:(double)a4;
+- (void)_setExpand:(BOOL)expand forBlurAtIndex:(unint64_t)index withDelay:(double)delay;
+- (void)_setPulse:(BOOL)pulse withDelay:(double)delay;
+- (void)_startExpandWithDelay:(double)delay;
+- (void)_updateAnimatingAnimated:(BOOL)animated;
+- (void)_updateExpandForBlurAtIndex:(unint64_t)index withDelay:(double)delay;
 - (void)_updateViewsWithColor;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)initWithFrame:;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
+- (void)setAnimating:(BOOL)animating;
 - (void)tintColorDidChange;
 @end
 
 @implementation LAUIRadialPingView
 
-- (LAUIRadialPingView)initWithFrame:(CGRect)a3
+- (LAUIRadialPingView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = LAUIRadialPingView;
-  v3 = [(LAUIRadialPingView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LAUIRadialPingView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     color = v3->_color;
-    v3->_color = v4;
+    v3->_color = whiteColor;
 
     v6 = objc_alloc(MEMORY[0x277D75D18]);
     v7 = MEMORY[0x277CBF3A0];
@@ -69,12 +69,12 @@
 - (void)initWithFrame:
 {
   v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
-  v7 = [v6 layer];
+  layer = [v6 layer];
   CATransform3DMakeScale(&v9, 0.001, 0.001, 1.0);
-  [v7 setTransform:&v9];
+  [layer setTransform:&v9];
 
   [v6 setAlpha:a3];
-  [**a1 addSubview:v6];
+  [**self addSubview:v6];
   v8 = *a2;
   *a2 = v6;
 }
@@ -91,11 +91,11 @@
   v7.receiver = self;
   v7.super_class = LAUIRadialPingView;
   [(LAUIRadialPingView *)&v7 tintColorDidChange];
-  v3 = [(LAUIRadialPingView *)self tintColor];
+  tintColor = [(LAUIRadialPingView *)self tintColor];
   color = self->_color;
-  if (color != v3 && (!v3 || !color || ([(UIColor *)color isEqual:v3]& 1) == 0))
+  if (color != tintColor && (!tintColor || !color || ([(UIColor *)color isEqual:tintColor]& 1) == 0))
   {
-    v5 = [(UIColor *)v3 copy];
+    v5 = [(UIColor *)tintColor copy];
     v6 = self->_color;
     self->_color = v5;
 
@@ -110,16 +110,16 @@
   [(LAUIRadialPingView *)&v8 didMoveToWindow];
   if (self->_animating)
   {
-    v3 = [(LAUIRadialPingView *)self window];
+    window = [(LAUIRadialPingView *)self window];
 
-    if (v3)
+    if (window)
     {
       if (self->_animating_dirty)
       {
-        v4 = self;
+        selfCopy2 = self;
         v5 = 1;
 LABEL_9:
-        [(LAUIRadialPingView *)v4 _updateAnimatingAnimated:v5];
+        [(LAUIRadialPingView *)selfCopy2 _updateAnimatingAnimated:v5];
         return;
       }
 
@@ -141,7 +141,7 @@ LABEL_9:
       while (v7);
       if (self->_animating_dirty)
       {
-        v4 = self;
+        selfCopy2 = self;
         v5 = 0;
         goto LABEL_9;
       }
@@ -187,8 +187,8 @@ LABEL_9:
   if (!CGRectEqualToRect(v38, v42))
   {
     [(UIView *)self->_container setBounds:v10, v11, v9, v9];
-    v12 = [(UIView *)self->_container layer];
-    [v12 setCornerRadius:v9 * 0.5];
+    layer = [(UIView *)self->_container layer];
+    [layer setCornerRadius:v9 * 0.5];
   }
 
   [(UIView *)self->_container center];
@@ -215,8 +215,8 @@ LABEL_9:
   if (!CGRectEqualToRect(v41, v43))
   {
     [(UIView *)self->_primary setBounds:v10, v11, v9, v9];
-    v18 = [(UIView *)self->_primary layer];
-    [v18 setCornerRadius:v9 * 0.5];
+    layer2 = [(UIView *)self->_primary layer];
+    [layer2 setCornerRadius:v9 * 0.5];
   }
 
   [(UIView *)self->_primary center];
@@ -231,8 +231,8 @@ LABEL_9:
   do
   {
     v25 = p_blurs->__elems_[v22].view;
-    v26 = [(UIImageView *)v25 layer];
-    [v26 bounds];
+    layer3 = [(UIImageView *)v25 layer];
+    [layer3 bounds];
     if (v28 >= v27)
     {
       v29 = v27;
@@ -244,7 +244,7 @@ LABEL_9:
     }
 
     CATransform3DMakeScale(&v35, v24 * (v29 / 1000.0) * 0.001, v24 * (v29 / 1000.0) * 0.001, 1.0);
-    [v26 setTransform:&v35];
+    [layer3 setTransform:&v35];
 
     v30 = v25;
     [(UIImageView *)v30 center];
@@ -263,10 +263,10 @@ LABEL_9:
 {
   v13 = a2;
   v5 = MEMORY[0x277D755B8];
-  v6 = [**a1 pathForResource:a3 ofType:@"png"];
+  v6 = [**self pathForResource:a3 ofType:@"png"];
   v7 = [v5 imageWithContentsOfFile:v6];
 
-  if (**(a1 + 8))
+  if (**(self + 8))
   {
     v8 = [v7 _flatImageWithColor:?];
 
@@ -280,12 +280,12 @@ LABEL_9:
   [v13 setBounds:{v9, v10, v11, v12}];
 }
 
-- (void)_setPulse:(BOOL)a3 withDelay:(double)a4
+- (void)_setPulse:(BOOL)pulse withDelay:(double)delay
 {
-  if (a3)
+  if (pulse)
   {
-    v6 = [(LAUIRadialPingView *)self window];
-    v7 = v6 != 0;
+    window = [(LAUIRadialPingView *)self window];
+    v7 = window != 0;
   }
 
   else
@@ -304,7 +304,7 @@ LABEL_9:
       if (!key)
       {
 
-        [(LAUIRadialPingView *)self _attachPulseAnimationWithDelay:a4];
+        [(LAUIRadialPingView *)self _attachPulseAnimationWithDelay:delay];
       }
     }
 
@@ -346,19 +346,19 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_attachPulseAnimationWithDelay:(double)a3
+- (void)_attachPulseAnimationWithDelay:(double)delay
 {
   v18[2] = *MEMORY[0x277D85DE8];
   p_pulse = &self->_pulse;
   if (!self->_pulse._key)
   {
-    v6 = [(LAUIRadialPingView *)self window];
+    window = [(LAUIRadialPingView *)self window];
 
-    if (v6)
+    if (window)
     {
       v7 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform.scale.xy"];
       [(CAAnimation *)v7 setBeginTimeMode:*MEMORY[0x277CDA080]];
-      [(CAAnimation *)v7 setBeginTime:a3];
+      [(CAAnimation *)v7 setBeginTime:delay];
       [(CAAnimation *)v7 setAdditive:1];
       [(CAAnimation *)v7 setDuration:2.0];
       [(CAAnimation *)v7 setCalculationMode:*MEMORY[0x277CDA058]];
@@ -378,18 +378,18 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
       [(CAAnimation *)v7 setTimingFunctions:v16];
 
-      v17 = [(UIView *)self->_container layer];
-      LAUI_CA_utilities::periodic_animation_state::attach_animation(p_pulse, v17, v7, &cfstr_Pulse.isa);
+      layer = [(UIView *)self->_container layer];
+      LAUI_CA_utilities::periodic_animation_state::attach_animation(p_pulse, layer, v7, &cfstr_Pulse.isa);
     }
   }
 }
 
-- (void)_setExpand:(BOOL)a3 forBlurAtIndex:(unint64_t)a4 withDelay:(double)a5
+- (void)_setExpand:(BOOL)expand forBlurAtIndex:(unint64_t)index withDelay:(double)delay
 {
-  if (a3)
+  if (expand)
   {
-    v8 = [(LAUIRadialPingView *)self window];
-    v9 = v8 != 0;
+    window = [(LAUIRadialPingView *)self window];
+    v9 = window != 0;
   }
 
   else
@@ -397,30 +397,30 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
     v9 = 0;
   }
 
-  if (a4 >= 2)
+  if (index >= 2)
   {
     [LAUIRadialPingView _setExpand:forBlurAtIndex:withDelay:];
   }
 
-  v10 = &self->_blurs.__elems_[a4];
+  v10 = &self->_blurs.__elems_[index];
   enabled = v10->pulse.enabled;
   p_pulse = &v10->pulse;
   if (enabled != v9)
   {
     p_pulse->enabled = v9;
 
-    [(LAUIRadialPingView *)self _updateExpandForBlurAtIndex:a4 withDelay:a5];
+    [(LAUIRadialPingView *)self _updateExpandForBlurAtIndex:index withDelay:delay];
   }
 }
 
-- (void)_updateExpandForBlurAtIndex:(unint64_t)a3 withDelay:(double)a4
+- (void)_updateExpandForBlurAtIndex:(unint64_t)index withDelay:(double)delay
 {
-  if (a3 >= 2)
+  if (index >= 2)
   {
     [LAUIRadialPingView _updateExpandForBlurAtIndex:withDelay:];
   }
 
-  v6 = &self->_blurs.__elems_[a3];
+  v6 = &self->_blurs.__elems_[index];
   p_pulse = &v6->pulse;
   if (v6->pulse.enabled)
   {
@@ -428,7 +428,7 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
     if (!v6->pulse._key)
     {
 
-      [(LAUIRadialPingView *)self _attachExpandAnimationToContainer:v6 withDelay:a4];
+      [(LAUIRadialPingView *)self _attachExpandAnimationToContainer:v6 withDelay:delay];
     }
   }
 
@@ -436,10 +436,10 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
   {
     v8 = LAUI_CA_utilities::periodic_animation_state::elapsed_duration(p_pulse);
     LAUI_CA_utilities::periodic_animation_state::detach_animation(p_pulse);
-    v9 = [(UIImageView *)v6->view layer];
-    v10 = [v9 presentationLayer];
-    v11 = v10;
-    if (v8 <= 0.0 || v10 == 0)
+    layer = [(UIImageView *)v6->view layer];
+    presentationLayer = [layer presentationLayer];
+    v11 = presentationLayer;
+    if (v8 <= 0.0 || presentationLayer == 0)
     {
       [(UIImageView *)v6->view setHidden:1];
     }
@@ -464,9 +464,9 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
       v43 = 0u;
       location = 0u;
       v41 = 0u;
-      if (v9)
+      if (layer)
       {
-        [v9 transform];
+        [layer transform];
       }
 
       v15 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform"];
@@ -499,7 +499,7 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
       [v14 addObject:v15];
       [v11 opacity];
       v21 = v20;
-      [v9 opacity];
+      [layer opacity];
       v23 = v22;
       v24 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
       [v24 setBeginTimeMode:v16];
@@ -517,12 +517,12 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
       [v24 setToValue:v29];
 
       [v14 addObject:v24];
-      v30 = [MEMORY[0x277CD9E00] animation];
-      [(CAAnimation *)v30 setBeginTimeMode:v16];
-      [(CAAnimation *)v30 setFillMode:*MEMORY[0x277CDA228]];
-      [(CAAnimation *)v30 setBeginTime:a4];
-      [(CAAnimation *)v30 setDuration:0.25];
-      [(CAAnimation *)v30 setAnimations:v14];
+      animation = [MEMORY[0x277CD9E00] animation];
+      [(CAAnimation *)animation setBeginTimeMode:v16];
+      [(CAAnimation *)animation setFillMode:*MEMORY[0x277CDA228]];
+      [(CAAnimation *)animation setBeginTime:delay];
+      [(CAAnimation *)animation setDuration:0.25];
+      [(CAAnimation *)animation setAnimations:v14];
       objc_initWeak(&location, self);
       animating_counter = self->_animating_counter;
       v34[0] = MEMORY[0x277D85DD0];
@@ -531,15 +531,15 @@ void __42__LAUIRadialPingView__setPulse_withDelay___block_invoke(uint64_t a1)
       v34[3] = &__block_descriptor_56_ea8_32c73_ZTSKZ60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay__E3__5_e8_v12__0B8l;
       objc_copyWeak(&to, &location);
       BYTE8(to) = animating_counter;
-      v32 = v9;
+      v32 = layer;
       *&v49 = v32;
       objc_copyWeak(&v35, &to);
       v36 = BYTE8(to);
       v37 = v49;
-      [(CAAnimation *)v30 laui_setDidStopHandler:v34];
+      [(CAAnimation *)animation laui_setDidStopHandler:v34];
 
       objc_destroyWeak(&to);
-      v33 = LAUILayerAddAdditiveAnimation(v32, 0, v30);
+      v33 = LAUILayerAddAdditiveAnimation(v32, 0, animation);
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(&location);
@@ -563,16 +563,16 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
   }
 }
 
-- (void)_attachExpandAnimationToContainer:(blur_container *)a3 withDelay:(double)a4
+- (void)_attachExpandAnimationToContainer:(blur_container *)container withDelay:(double)delay
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  if (!a3->pulse._key)
+  if (!container->pulse._key)
   {
-    v6 = [(LAUIRadialPingView *)self window];
+    window = [(LAUIRadialPingView *)self window];
 
-    if (v6)
+    if (window)
     {
-      v39 = [(UIImageView *)a3->view layer];
+      layer = [(UIImageView *)container->view layer];
       v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
       v8 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform"];
       v9 = *MEMORY[0x277CDA080];
@@ -604,7 +604,7 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
       [v8 setTimingFunction:v21];
 
       [v7 addObject:v8];
-      [(CALayer *)v39 opacity];
+      [(CALayer *)layer opacity];
       v23 = v22;
       v24 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"opacity"];
       [v24 setBeginTimeMode:v9];
@@ -636,26 +636,26 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
       [v24 setTimingFunctions:v36];
 
       [v7 addObject:v24];
-      v37 = [MEMORY[0x277CD9E00] animation];
-      [(CAAnimation *)v37 setBeginTimeMode:v9];
-      [(CAAnimation *)v37 setBeginTime:a4];
-      [(CAAnimation *)v37 setDuration:2.0];
+      animation = [MEMORY[0x277CD9E00] animation];
+      [(CAAnimation *)animation setBeginTimeMode:v9];
+      [(CAAnimation *)animation setBeginTime:delay];
+      [(CAAnimation *)animation setDuration:2.0];
       LODWORD(v38) = 2139095039;
-      [(CAAnimation *)v37 setRepeatCount:v38];
-      [(CAAnimation *)v37 setAnimations:v7];
-      LAUI_CA_utilities::periodic_animation_state::attach_animation(&a3->pulse, v39, v37, &cfstr_Expand.isa);
+      [(CAAnimation *)animation setRepeatCount:v38];
+      [(CAAnimation *)animation setAnimations:v7];
+      LAUI_CA_utilities::periodic_animation_state::attach_animation(&container->pulse, layer, animation, &cfstr_Expand.isa);
     }
   }
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    v4 = [(LAUIRadialPingView *)self window];
+    self->_animating = animating;
+    window = [(LAUIRadialPingView *)self window];
 
-    if (self->_animating && v4 == 0)
+    if (self->_animating && window == 0)
     {
       self->_animating_dirty = 1;
     }
@@ -663,18 +663,18 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
     else
     {
 
-      [(LAUIRadialPingView *)self _updateAnimatingAnimated:v4 != 0];
+      [(LAUIRadialPingView *)self _updateAnimatingAnimated:window != 0];
     }
   }
 }
 
-- (void)_updateAnimatingAnimated:(BOOL)a3
+- (void)_updateAnimatingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_animating_dirty = 0;
   v5 = self->_animating_counter + 1;
   self->_animating_counter = v5;
-  v6 = [(UIView *)self->_primary layer];
+  layer = [(UIView *)self->_primary layer];
   animating = self->_animating;
   v8 = 0.001;
   if (self->_animating)
@@ -684,22 +684,22 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
 
   memset(&v26, 0, sizeof(v26));
   CATransform3DMakeScale(&v26, v8, v8, 1.0);
-  [v6 removeAnimationForKey:@"transform"];
+  [layer removeAnimationForKey:@"transform"];
   v25 = v26;
-  [v6 setTransform:&v25];
+  [layer setTransform:&v25];
   v9 = !animating;
-  if (v3)
+  if (animatedCopy)
   {
-    v10 = [v6 presentationLayer];
-    v11 = v10;
-    if (v10)
+    presentationLayer = [layer presentationLayer];
+    v11 = presentationLayer;
+    if (presentationLayer)
     {
-      v12 = v10;
+      v12 = presentationLayer;
     }
 
     else
     {
-      v12 = v6;
+      v12 = layer;
     }
 
     v13 = v12;
@@ -732,7 +732,7 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
     objc_initWeak(&location, self);
     if (self->_animating)
     {
-      [v6 setHidden:v9];
+      [layer setHidden:v9];
       [(LAUIRadialPingView *)self _startExpandWithDelay:0.135];
     }
 
@@ -746,7 +746,7 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
       objc_copyWeak(&to, &location);
       LOBYTE(to.m12) = v5;
       BYTE1(to.m12) = v9;
-      *&to.m13 = v6;
+      *&to.m13 = layer;
       objc_copyWeak(&v20, &to);
       m12_low = LOWORD(to.m12);
       v22 = *&to.m13;
@@ -756,13 +756,13 @@ void __60__LAUIRadialPingView__updateExpandForBlurAtIndex_withDelay___block_invo
       objc_destroyWeak(&v20);
     }
 
-    [v6 addAnimation:v14 forKey:@"transform"];
+    [layer addAnimation:v14 forKey:@"transform"];
     objc_destroyWeak(&location);
   }
 
   else
   {
-    [v6 setHidden:!animating];
+    [layer setHidden:!animating];
     if (self->_animating)
     {
       [(LAUIRadialPingView *)self _startExpandWithDelay:0.0];
@@ -784,12 +784,12 @@ void __47__LAUIRadialPingView__updateAnimatingAnimated___block_invoke(uint64_t a
   }
 }
 
-- (void)_startExpandWithDelay:(double)a3
+- (void)_startExpandWithDelay:(double)delay
 {
-  [(LAUIRadialPingView *)self _setPulse:1 withDelay:a3 + 0.115];
-  [(LAUIRadialPingView *)self _setExpand:1 forBlurAtIndex:0 withDelay:a3];
+  [(LAUIRadialPingView *)self _setPulse:1 withDelay:delay + 0.115];
+  [(LAUIRadialPingView *)self _setExpand:1 forBlurAtIndex:0 withDelay:delay];
 
-  [(LAUIRadialPingView *)self _setExpand:1 forBlurAtIndex:1 withDelay:a3 + 0.265];
+  [(LAUIRadialPingView *)self _setExpand:1 forBlurAtIndex:1 withDelay:delay + 0.265];
 }
 
 - (void)_endExpand

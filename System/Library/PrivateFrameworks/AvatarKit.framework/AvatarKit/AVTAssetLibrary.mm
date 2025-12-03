@@ -1,6 +1,6 @@
 @interface AVTAssetLibrary
 + (id)sharedAssetLibrary;
-- (id)assetWithType:(int64_t)a3 identifier:(id)a4;
+- (id)assetWithType:(int64_t)type identifier:(id)identifier;
 - (void)reload;
 @end
 
@@ -71,16 +71,16 @@ uint64_t __37__AVTAssetLibrary_sharedAssetLibrary__block_invoke()
   return [v2 reload];
 }
 
-- (id)assetWithType:(int64_t)a3 identifier:(id)a4
+- (id)assetWithType:(int64_t)type identifier:(id)identifier
 {
-  if (a3 == 42)
+  if (type == 42)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_assetsByName[a3] objectForKeyedSubscript:a4, v4];
+    v6 = [(NSMutableDictionary *)self->_assetsByName[type] objectForKeyedSubscript:identifier, v4];
   }
 
   return v6;

@@ -1,40 +1,40 @@
 @interface _HKSampleComparisonFilter
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)acceptsDataObject:(id)a3;
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)acceptsDataObject:(id)object;
 - (void)configureInMemoryFilter;
 @end
 
 @implementation _HKSampleComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"startDate"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"offsetFromStartDate"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"startDate"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"offsetFromStartDate"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"endDate"];
+    v4 = [pathCopy isEqualToString:@"endDate"];
   }
 
   return v4;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
   return [v3 setWithObjects:{v4, objc_opt_class(), 0}];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -42,36 +42,36 @@
   return [v3 setWithObject:v4];
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v5 = a4;
-  if ([v5 isEqualToString:@"offsetFromStartDate"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"offsetFromStartDate"])
   {
-    v6 = a3 == 3;
+    v6 = type == 3;
   }
 
   else
   {
-    v6 = [_HKComparisonFilter isAllowedPredicateOperatorType:a3 forKeyPath:v5];
+    v6 = [_HKComparisonFilter isAllowedPredicateOperatorType:type forKeyPath:pathCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v12.receiver = a1;
+  typesCopy = types;
+  pathCopy = path;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS____HKSampleComparisonFilter;
-  if (!objc_msgSendSuper2(&v12, sel_areValidTypes_forKeyPath_error_, v8, v9, a5))
+  if (!objc_msgSendSuper2(&v12, sel_areValidTypes_forKeyPath_error_, typesCopy, pathCopy, error))
   {
     goto LABEL_6;
   }
 
-  if ([v9 isEqualToString:@"offsetFromStartDate"] && objc_msgSend(v8, "count") != 1)
+  if ([pathCopy isEqualToString:@"offsetFromStartDate"] && objc_msgSend(typesCopy, "count") != 1)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"expected 1 sample type but got %ld %@", objc_msgSend(v8, "count"), v8}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"expected 1 sample type but got %ld %@", objc_msgSend(typesCopy, "count"), typesCopy}];
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
@@ -83,32 +83,32 @@ LABEL_7:
   return v10;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"startDate"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"startDate"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"offsetFromStartDate"])
+  else if ([pathCopy isEqualToString:@"offsetFromStartDate"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"endDate"])
+  else if ([pathCopy isEqualToString:@"endDate"])
   {
     v6 = 2;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKSampleComparisonFilter.m" lineNumber:151 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKSampleComparisonFilter.m" lineNumber:151 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKSampleComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
@@ -119,30 +119,30 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = _HKSampleComparisonFilter;
   [(_HKComparisonFilter *)&v8 configureInMemoryFilter];
-  v3 = [(_HKComparisonFilter *)self value];
-  [v3 timeIntervalSinceReferenceDate];
+  value = [(_HKComparisonFilter *)self value];
+  [value timeIntervalSinceReferenceDate];
   self->_comparisonTime = v4;
 
-  v5 = [(_HKComparisonFilter *)self dataTypes];
-  v6 = [v5 anyObject];
+  dataTypes = [(_HKComparisonFilter *)self dataTypes];
+  anyObject = [dataTypes anyObject];
   anySampleType = self->_anySampleType;
-  self->_anySampleType = v6;
+  self->_anySampleType = anyObject;
 }
 
-- (BOOL)acceptsDataObject:(id)a3
+- (BOOL)acceptsDataObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_HKComparisonFilter *)self keyPathIntegerValue];
+    v5 = objectCopy;
+    keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
     [v5 _startTimestamp];
     v8 = v7;
     [v5 _endTimestamp];
     v10 = v9;
 
-    v11 = _AcceptsDataObject(v6, self->_anySampleType, [(_HKComparisonFilter *)self operatorType], v8, v10, self->_comparisonTime);
+    v11 = _AcceptsDataObject(keyPathIntegerValue, self->_anySampleType, [(_HKComparisonFilter *)self operatorType], v8, v10, self->_comparisonTime);
   }
 
   else

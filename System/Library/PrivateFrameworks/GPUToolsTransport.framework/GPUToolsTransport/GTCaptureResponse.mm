@@ -1,7 +1,7 @@
 @interface GTCaptureResponse
 - (GTCaptureResponse)init;
-- (GTCaptureResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTCaptureResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTCaptureResponse
@@ -21,21 +21,21 @@
   return v3;
 }
 
-- (GTCaptureResponse)initWithCoder:(id)a3
+- (GTCaptureResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GTCaptureResponse;
   v5 = [(GTCaptureResponse *)&v12 init];
   if (v5)
   {
-    v5->_version.value = [v4 decodeInt64ForKey:@"version"];
-    v5->_requestID = [v4 decodeInt64ForKey:@"requestID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v5->_version.value = [coderCopy decodeInt64ForKey:@"version"];
+    v5->_requestID = [coderCopy decodeInt64ForKey:@"requestID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v8;
 
@@ -45,14 +45,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInt64:version.value forKey:@"version"];
-  [v5 encodeInt64:self->_requestID forKey:@"requestID"];
-  [v5 encodeObject:self->_data forKey:@"data"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:version.value forKey:@"version"];
+  [coderCopy encodeInt64:self->_requestID forKey:@"requestID"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
 @end

@@ -11,7 +11,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = dispatch_queue_attr_make_initially_inactive(0);
     v5 = dispatch_queue_attr_make_with_qos_class(v4, QOS_CLASS_BACKGROUND, 0);
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __49__SPSearchFeedbackSender_updateFeedbackListeners__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(sFeedbackQueue, block);
 }
 
@@ -216,7 +216,7 @@ uint64_t __50__SPSearchFeedbackSender__gatherFeedbackListeners__block_invoke()
   block[1] = 3221225472;
   block[2] = __43__SPSearchFeedbackSender_feedbackListeners__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (feedbackListeners_onceToken != -1)
   {
     dispatch_once(&feedbackListeners_onceToken, block);

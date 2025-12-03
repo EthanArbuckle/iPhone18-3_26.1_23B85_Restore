@@ -1,66 +1,66 @@
 @interface STUsageDetailsViewModelCoordinator
 + (NSNumber)defaultUsageReportTypeForLocalUser;
 + (NSString)defaultDeviceIdentifierForLocalUser;
-+ (id)defaultDeviceIdentifierForChild:(id)a3;
-+ (id)defaultUsageReportTypeForChild:(id)a3;
-+ (void)setDefaultDeviceIdentifier:(id)a3 childDSID:(id)a4;
-+ (void)setDefaultDeviceIdentifierForLocalUser:(id)a3;
-+ (void)setDefaultUsageReportType:(id)a3 childDSID:(id)a4;
-+ (void)setDefaultUsageReportTypeForLocalUser:(id)a3;
-- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)a3 organizationIdentifier:(id)a4 userDSID:(id)a5 devices:(id)a6 selectedDeviceIdentifier:(id)a7 selectedUsageReportType:(id)a8 usageContext:(int64_t)a9;
-- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)a3 organizationIdentifier:(id)a4 userDSID:(id)a5 devices:(id)a6 selectedDeviceIdentifier:(id)a7 selectedUsageReportType:(id)a8 usageContext:(int64_t)a9 managedObjectContext:(id)a10;
-- (id)_usageBlocksWithUser:(id)a3 device:(id)a4 error:(id *)a5;
-- (id)_usageItemsWithUsageBlocks:(id)a3 lastUpdatedDate:(id *)a4 firstPickupByWeekdayByWeek:(id)a5 referenceDate:(id)a6 usageContext:(int64_t)a7;
-- (id)initForLocalDeviceWithPersistenceController:(id)a3 selectedUsageReportType:(id)a4 usageContext:(int64_t)a5 managedObjectContext:(id)a6;
-- (void)_didFinishRefreshingWithError:(id)a3 completionHandler:(id)a4;
-- (void)_downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:(id)a3;
-- (void)_loadAllHistoricalDeviceActivityForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 selectedItemDisplayName:(id)a5 selectedDay:(unint64_t)a6 selectedWeek:(unint64_t)a7 hadUsageData:(BOOL)a8 referenceDate:(id)a9 completionHandler:(id)a10;
-- (void)_loadAllHistoricalUsageWithUsageBlocks:(id)a3 selectedItemDisplayName:(id)a4 selectedDay:(unint64_t)a5 selectedWeek:(unint64_t)a6 hadUsageData:(BOOL)a7 referenceDate:(id)a8 completionHandler:(id)a9;
-- (void)_loadLastWeekDeviceActivityForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 selectedItemDisplayName:(id)a5 referenceDate:(id)a6 completionHandler:(id)a7;
-- (void)_loadLastWeekUsageWithUsageBlocks:(id)a3 selectedItemDisplayName:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6;
-- (void)_loadTodayDeviceActivityForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 selectedItemDisplayName:(id)a5 referenceDate:(id)a6 completionHandler:(id)a7;
-- (void)_loadTodayUsageWithUsageBlocks:(id)a3 selectedItemDisplayName:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6;
-- (void)_refreshLegacyUsageDataWithCompletionHandler:(id)a3;
++ (id)defaultDeviceIdentifierForChild:(id)child;
++ (id)defaultUsageReportTypeForChild:(id)child;
++ (void)setDefaultDeviceIdentifier:(id)identifier childDSID:(id)d;
++ (void)setDefaultDeviceIdentifierForLocalUser:(id)user;
++ (void)setDefaultUsageReportType:(id)type childDSID:(id)d;
++ (void)setDefaultUsageReportTypeForLocalUser:(id)user;
+- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)controller organizationIdentifier:(id)identifier userDSID:(id)d devices:(id)devices selectedDeviceIdentifier:(id)deviceIdentifier selectedUsageReportType:(id)type usageContext:(int64_t)context;
+- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)controller organizationIdentifier:(id)identifier userDSID:(id)d devices:(id)devices selectedDeviceIdentifier:(id)deviceIdentifier selectedUsageReportType:(id)type usageContext:(int64_t)context managedObjectContext:(id)self0;
+- (id)_usageBlocksWithUser:(id)user device:(id)device error:(id *)error;
+- (id)_usageItemsWithUsageBlocks:(id)blocks lastUpdatedDate:(id *)date firstPickupByWeekdayByWeek:(id)week referenceDate:(id)referenceDate usageContext:(int64_t)context;
+- (id)initForLocalDeviceWithPersistenceController:(id)controller selectedUsageReportType:(id)type usageContext:(int64_t)context managedObjectContext:(id)objectContext;
+- (void)_didFinishRefreshingWithError:(id)error completionHandler:(id)handler;
+- (void)_downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:(id)handler;
+- (void)_loadAllHistoricalDeviceActivityForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier selectedItemDisplayName:(id)name selectedDay:(unint64_t)day selectedWeek:(unint64_t)week hadUsageData:(BOOL)data referenceDate:(id)date completionHandler:(id)self0;
+- (void)_loadAllHistoricalUsageWithUsageBlocks:(id)blocks selectedItemDisplayName:(id)name selectedDay:(unint64_t)day selectedWeek:(unint64_t)week hadUsageData:(BOOL)data referenceDate:(id)date completionHandler:(id)handler;
+- (void)_loadLastWeekDeviceActivityForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler;
+- (void)_loadLastWeekUsageWithUsageBlocks:(id)blocks selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler;
+- (void)_loadTodayDeviceActivityForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler;
+- (void)_loadTodayUsageWithUsageBlocks:(id)blocks selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler;
+- (void)_refreshLegacyUsageDataWithCompletionHandler:(id)handler;
 - (void)_refreshUsageDataAndReschedule;
-- (void)_refreshUsageDataWithCompletion:(id)a3;
-- (void)_unbouncedLoadViewModelWithCompletionHandler:(id)a3;
-- (void)_updateWeekAndDayReportsWithUsageItems:(id)a3 weekStartDate:(id)a4 lastUpdatedDate:(id)a5 referenceDate:(id)a6 selectedItemDisplayName:(id)a7 isSelectedWeek:(BOOL)a8 selectedDay:(unint64_t)a9 weekUsageReports:(id)a10 dayUsageReports:(id)a11 dayUsageReportByWeekdays:(id)a12 firstPickupByWeekdayByWeek:(id)a13;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
+- (void)_refreshUsageDataWithCompletion:(id)completion;
+- (void)_unbouncedLoadViewModelWithCompletionHandler:(id)handler;
+- (void)_updateWeekAndDayReportsWithUsageItems:(id)items weekStartDate:(id)date lastUpdatedDate:(id)updatedDate referenceDate:(id)referenceDate selectedItemDisplayName:(id)name isSelectedWeek:(BOOL)week selectedDay:(unint64_t)day weekUsageReports:(id)self0 dayUsageReports:(id)self1 dayUsageReportByWeekdays:(id)self2 firstPickupByWeekdayByWeek:(id)self3;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
 - (void)dealloc;
-- (void)debouncer:(id)a3 didDebounce:(id)a4;
-- (void)loadViewModelWithCompletionHandler:(id)a3;
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce;
+- (void)loadViewModelWithCompletionHandler:(id)handler;
 - (void)scheduleRefreshUsageData;
-- (void)setSelectedDeviceIdentifier:(id)a3;
+- (void)setSelectedDeviceIdentifier:(id)identifier;
 - (void)stopRefreshingUsageData;
 @end
 
 @implementation STUsageDetailsViewModelCoordinator
 
-- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)a3 organizationIdentifier:(id)a4 userDSID:(id)a5 devices:(id)a6 selectedDeviceIdentifier:(id)a7 selectedUsageReportType:(id)a8 usageContext:(int64_t)a9
+- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)controller organizationIdentifier:(id)identifier userDSID:(id)d devices:(id)devices selectedDeviceIdentifier:(id)deviceIdentifier selectedUsageReportType:(id)type usageContext:(int64_t)context
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  dCopy = d;
+  devicesCopy = devices;
+  deviceIdentifierCopy = deviceIdentifier;
+  typeCopy = type;
   v56.receiver = self;
   v56.super_class = STUsageDetailsViewModelCoordinator;
   v22 = [(STUsageDetailsViewModelCoordinator *)&v56 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_persistenceController, a3);
-    v24 = [v17 copy];
+    objc_storeStrong(&v22->_persistenceController, controller);
+    v24 = [identifierCopy copy];
     organizationIdentifier = v23->_organizationIdentifier;
     v23->_organizationIdentifier = v24;
 
-    v26 = [v18 copy];
+    v26 = [dCopy copy];
     userDSID = v23->_userDSID;
     v23->_userDSID = v26;
 
-    v28 = [v19 copy];
+    v28 = [devicesCopy copy];
     devices = v23->_devices;
     v23->_devices = v28;
 
@@ -68,18 +68,18 @@
     viewModel = v23->_viewModel;
     v23->_viewModel = v30;
 
-    v32 = [v20 copy];
+    v32 = [deviceIdentifierCopy copy];
     selectedDeviceIdentifier = v23->_selectedDeviceIdentifier;
     v23->_selectedDeviceIdentifier = v32;
 
-    v23->_usageContext = a9;
-    v50 = v16;
-    if (a9 == 2)
+    v23->_usageContext = context;
+    v50 = controllerCopy;
+    if (context == 2)
     {
       [(STUsageDetailsViewModel *)v23->_viewModel setSelectedWeek:1];
     }
 
-    else if (a9 == 1 || !a9 && [v21 integerValue] == 1)
+    else if (context == 1 || !context && [typeCopy integerValue] == 1)
     {
       [(STUsageDetailsViewModel *)v23->_viewModel selectToday];
     }
@@ -93,24 +93,24 @@
     v23->_viewModelRefreshDebouncer = v36;
 
     [(STDebouncer *)v23->_viewModelRefreshDebouncer setDelegate:v23];
-    v38 = [MEMORY[0x277D4BAC8] fetchRequest];
+    fetchRequest = [MEMORY[0x277D4BAC8] fetchRequest];
     v39 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"requestedDate" ascending:1];
     v57[0] = v39;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
-    [v38 setSortDescriptors:v40];
+    [fetchRequest setSortDescriptors:v40];
 
     v41 = objc_alloc(MEMORY[0x277CBE430]);
-    v42 = [(STPersistenceControllerProtocol *)v23->_persistenceController viewContext];
-    v43 = [v41 initWithFetchRequest:v38 managedObjectContext:v42 sectionNameKeyPath:0 cacheName:0];
+    viewContext = [(STPersistenceControllerProtocol *)v23->_persistenceController viewContext];
+    v43 = [v41 initWithFetchRequest:fetchRequest managedObjectContext:viewContext sectionNameKeyPath:0 cacheName:0];
     usageFetchedResultsController = v23->_usageFetchedResultsController;
     v23->_usageFetchedResultsController = v43;
 
     [(NSFetchedResultsController *)v23->_usageFetchedResultsController setDelegate:v23];
     v45 = v23->_usageFetchedResultsController;
     v55 = 0;
-    LOBYTE(v42) = [(NSFetchedResultsController *)v45 performFetch:&v55];
+    LOBYTE(viewContext) = [(NSFetchedResultsController *)v45 performFetch:&v55];
     v46 = v55;
-    if ((v42 & 1) == 0)
+    if ((viewContext & 1) == 0)
     {
       v47 = +[STUILog usage];
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -134,7 +134,7 @@
     v53 = v23;
     [(STUsageDetailsViewModelCoordinator *)v53 loadViewModelWithCompletionHandler:v52];
 
-    v16 = v51;
+    controllerCopy = v51;
   }
 
   return v23;
@@ -155,33 +155,33 @@ uint64_t __170__STUsageDetailsViewModelCoordinator_initWithPersistenceController
   return [*(a1 + 32) setRefreshing:0];
 }
 
-- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)a3 organizationIdentifier:(id)a4 userDSID:(id)a5 devices:(id)a6 selectedDeviceIdentifier:(id)a7 selectedUsageReportType:(id)a8 usageContext:(int64_t)a9 managedObjectContext:(id)a10
+- (STUsageDetailsViewModelCoordinator)initWithPersistenceController:(id)controller organizationIdentifier:(id)identifier userDSID:(id)d devices:(id)devices selectedDeviceIdentifier:(id)deviceIdentifier selectedUsageReportType:(id)type usageContext:(int64_t)context managedObjectContext:(id)self0
 {
-  objc_storeStrong(&self->_moc, a10);
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(STUsageDetailsViewModelCoordinator *)self initWithPersistenceController:v22 organizationIdentifier:v21 userDSID:v20 devices:v19 selectedDeviceIdentifier:v18 selectedUsageReportType:v17 usageContext:a9];
+  objc_storeStrong(&self->_moc, objectContext);
+  typeCopy = type;
+  deviceIdentifierCopy = deviceIdentifier;
+  devicesCopy = devices;
+  dCopy = d;
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  v23 = [(STUsageDetailsViewModelCoordinator *)self initWithPersistenceController:controllerCopy organizationIdentifier:identifierCopy userDSID:dCopy devices:devicesCopy selectedDeviceIdentifier:deviceIdentifierCopy selectedUsageReportType:typeCopy usageContext:context];
 
   return v23;
 }
 
-- (id)initForLocalDeviceWithPersistenceController:(id)a3 selectedUsageReportType:(id)a4 usageContext:(int64_t)a5 managedObjectContext:(id)a6
+- (id)initForLocalDeviceWithPersistenceController:(id)controller selectedUsageReportType:(id)type usageContext:(int64_t)context managedObjectContext:(id)objectContext
 {
   v42 = *MEMORY[0x277D85DE8];
   v35 = 0;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  objectContextCopy = objectContext;
+  typeCopy = type;
+  controllerCopy = controller;
   v13 = [_TtC20ScreenTimeSettingsUI13DeviceDetails detailsForUserWithAltDSID:0 error:&v35];
   v14 = v35;
   if (!v13)
   {
-    v16 = +[STUILog usage];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    userNotifications = +[STUILog usage];
+    if (os_log_type_enabled(userNotifications, OS_LOG_TYPE_ERROR))
     {
       [STUsageDetailsViewModelCoordinator initForLocalDeviceWithPersistenceController:selectedUsageReportType:usageContext:managedObjectContext:];
     }
@@ -192,101 +192,101 @@ uint64_t __170__STUsageDetailsViewModelCoordinator_initWithPersistenceController
   v15 = [v13 indexOfObjectPassingTest:&__block_literal_global_24];
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = [MEMORY[0x277D4BA00] userNotifications];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    userNotifications = [MEMORY[0x277D4BA00] userNotifications];
+    if (os_log_type_enabled(userNotifications, OS_LOG_TYPE_ERROR))
     {
       [STUsageDetailsViewModelCoordinator initForLocalDeviceWithPersistenceController:selectedUsageReportType:usageContext:managedObjectContext:];
     }
 
 LABEL_7:
-    v17 = 0;
+    identifier = 0;
     v18 = 0;
     goto LABEL_11;
   }
 
-  v30 = v11;
+  v30 = typeCopy;
   v31 = v14;
-  v32 = self;
-  v33 = v10;
-  v34 = a5;
-  v16 = [v13 objectAtIndexedSubscript:v15];
-  v17 = [v16 identifier];
-  v19 = [v16 coreDuetIdentifier];
+  selfCopy = self;
+  v33 = objectContextCopy;
+  contextCopy = context;
+  userNotifications = [v13 objectAtIndexedSubscript:v15];
+  identifier = [userNotifications identifier];
+  coreDuetIdentifier = [userNotifications coreDuetIdentifier];
   v20 = +[STUILog usage];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v16 name];
+    name = [userNotifications name];
     *buf = 138543874;
-    v37 = v19;
+    v37 = coreDuetIdentifier;
     v38 = 2114;
-    v39 = v17;
+    v39 = identifier;
     v40 = 2114;
-    v41 = v21;
+    v41 = name;
     _os_log_impl(&dword_264BA2000, v20, OS_LOG_TYPE_DEFAULT, "initForLocalDeviceWithPersistenceController Local Device Found:  %{public}@ %{public}@ %{public}@", buf, 0x20u);
   }
 
   v22 = [STUIDevice alloc];
-  v23 = [v16 name];
-  v24 = [v16 platform];
-  v25 = [v16 isLocalDevice];
-  v26 = [v16 lastUpdatedDate];
-  v27 = [(STUIDevice *)v22 initWithName:v23 identifier:v17 coreDuetIdentifier:v19 platform:v24 hasDeviceActivity:1 isLocalDevice:v25 lastFamilyCheckinDate:v26];
+  name2 = [userNotifications name];
+  platform = [userNotifications platform];
+  isLocalDevice = [userNotifications isLocalDevice];
+  lastUpdatedDate = [userNotifications lastUpdatedDate];
+  v27 = [(STUIDevice *)v22 initWithName:name2 identifier:identifier coreDuetIdentifier:coreDuetIdentifier platform:platform hasDeviceActivity:1 isLocalDevice:isLocalDevice lastFamilyCheckinDate:lastUpdatedDate];
 
   v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   [v18 addObject:v27];
 
-  v10 = v33;
-  a5 = v34;
+  objectContextCopy = v33;
+  context = contextCopy;
   v14 = v31;
-  self = v32;
-  v11 = v30;
+  self = selfCopy;
+  typeCopy = v30;
 LABEL_11:
 
-  v28 = [(STUsageDetailsViewModelCoordinator *)self initWithPersistenceController:v12 organizationIdentifier:*MEMORY[0x277D4BC50] userDSID:&unk_28769D628 devices:v18 selectedDeviceIdentifier:v17 selectedUsageReportType:v11 usageContext:a5 managedObjectContext:v10];
+  v28 = [(STUsageDetailsViewModelCoordinator *)self initWithPersistenceController:controllerCopy organizationIdentifier:*MEMORY[0x277D4BC50] userDSID:&unk_28769D628 devices:v18 selectedDeviceIdentifier:identifier selectedUsageReportType:typeCopy usageContext:context managedObjectContext:objectContextCopy];
   return v28;
 }
 
 - (void)dealloc
 {
-  v3 = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
-  [v3 invalidate];
+  usageDataRefreshTimer = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
+  [usageDataRefreshTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = STUsageDetailsViewModelCoordinator;
   [(STUsageDetailsViewModelCoordinator *)&v4 dealloc];
 }
 
-- (void)setSelectedDeviceIdentifier:(id)a3
+- (void)setSelectedDeviceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   selectedDeviceIdentifier = self->_selectedDeviceIdentifier;
-  if (selectedDeviceIdentifier != v5)
+  if (selectedDeviceIdentifier != identifierCopy)
   {
-    v7 = v5;
-    if (!v5 || (selectedDeviceIdentifier = [selectedDeviceIdentifier isEqualToString:v5], v5 = v7, (selectedDeviceIdentifier & 1) == 0))
+    v7 = identifierCopy;
+    if (!identifierCopy || (selectedDeviceIdentifier = [selectedDeviceIdentifier isEqualToString:identifierCopy], identifierCopy = v7, (selectedDeviceIdentifier & 1) == 0))
     {
-      objc_storeStrong(&self->_selectedDeviceIdentifier, a3);
+      objc_storeStrong(&self->_selectedDeviceIdentifier, identifier);
       [(STUsageDetailsViewModelCoordinator *)self _updateUsageFetchedResultsController];
       selectedDeviceIdentifier = [(STUsageDetailsViewModelCoordinator *)self loadViewModelWithCompletionHandler:0];
-      v5 = v7;
+      identifierCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](selectedDeviceIdentifier, v5);
+  MEMORY[0x2821F96F8](selectedDeviceIdentifier, identifierCopy);
 }
 
 - (void)stopRefreshingUsageData
 {
-  v3 = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
-  [v3 invalidate];
+  usageDataRefreshTimer = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
+  [usageDataRefreshTimer invalidate];
 
   [(STUsageDetailsViewModelCoordinator *)self setUsageDataRefreshTimer:0];
 }
 
 - (void)scheduleRefreshUsageData
 {
-  v3 = [(STUsageDetailsViewModelCoordinator *)self lastUsageDataRefreshTime];
-  v8 = [v3 dateByAddingTimeInterval:60.0];
+  lastUsageDataRefreshTime = [(STUsageDetailsViewModelCoordinator *)self lastUsageDataRefreshTime];
+  v8 = [lastUsageDataRefreshTime dateByAddingTimeInterval:60.0];
 
   [v8 timeIntervalSinceNow];
   if (v4 <= 0.0)
@@ -297,8 +297,8 @@ LABEL_11:
   else
   {
     v5 = v4;
-    v6 = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
-    [v6 invalidate];
+    usageDataRefreshTimer = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
+    [usageDataRefreshTimer invalidate];
 
     [(STUsageDetailsViewModelCoordinator *)self setUsageDataRefreshTimer:0];
     v7 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__refreshUsageDataAndReschedule selector:0 userInfo:0 repeats:v5];
@@ -308,8 +308,8 @@ LABEL_11:
 
 - (void)_refreshUsageDataAndReschedule
 {
-  v3 = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
-  [v3 invalidate];
+  usageDataRefreshTimer = [(STUsageDetailsViewModelCoordinator *)self usageDataRefreshTimer];
+  [usageDataRefreshTimer invalidate];
 
   [(STUsageDetailsViewModelCoordinator *)self setUsageDataRefreshTimer:0];
   v4 = +[STUILog usage];
@@ -323,16 +323,16 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_264BA2000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "Usage refresh", "", &buf, 2u);
   }
 
-  v8 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__STUsageDetailsViewModelCoordinator__refreshUsageDataAndReschedule__block_invoke;
   v13[3] = &unk_279B7C998;
   v13[4] = self;
-  [v8 addOperationWithBlock:v13];
+  [mainQueue addOperationWithBlock:v13];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"WillRefreshUsageNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WillRefreshUsageNotification" object:0];
 
   objc_initWeak(&buf, self);
   v10[0] = MEMORY[0x277D85DD0];
@@ -367,13 +367,13 @@ void __68__STUsageDetailsViewModelCoordinator__refreshUsageDataAndReschedule__bl
   }
 }
 
-- (void)_refreshUsageDataWithCompletion:(id)a3
+- (void)_refreshUsageDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(STUsageDetailsViewModelCoordinator *)self organizationIdentifier];
-    v6 = [v5 isEqualToString:*MEMORY[0x277D4BC50]];
+    organizationIdentifier = [(STUsageDetailsViewModelCoordinator *)self organizationIdentifier];
+    v6 = [organizationIdentifier isEqualToString:*MEMORY[0x277D4BC50]];
 
     if (v6)
     {
@@ -385,25 +385,25 @@ void __68__STUsageDetailsViewModelCoordinator__refreshUsageDataAndReschedule__bl
       }
 
       v8 = MEMORY[0x277D4B998];
-      v9 = [(STUsageDetailsViewModelCoordinator *)self lastUsageDataRefreshTime];
+      lastUsageDataRefreshTime = [(STUsageDetailsViewModelCoordinator *)self lastUsageDataRefreshTime];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __70__STUsageDetailsViewModelCoordinator__refreshUsageDataWithCompletion___block_invoke;
       v10[3] = &unk_279B7D690;
       v10[4] = self;
-      v11 = v4;
-      [v8 refreshAndUploadLocalDataSinceDate:v9 completionHandler:v10];
+      v11 = completionCopy;
+      [v8 refreshAndUploadLocalDataSinceDate:lastUsageDataRefreshTime completionHandler:v10];
     }
 
     else
     {
-      [(STUsageDetailsViewModelCoordinator *)self _downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:v4];
+      [(STUsageDetailsViewModelCoordinator *)self _downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:completionCopy];
     }
   }
 
   else
   {
-    [(STUsageDetailsViewModelCoordinator *)self _refreshLegacyUsageDataWithCompletionHandler:v4];
+    [(STUsageDetailsViewModelCoordinator *)self _refreshLegacyUsageDataWithCompletionHandler:completionCopy];
   }
 }
 
@@ -422,9 +422,9 @@ void __70__STUsageDetailsViewModelCoordinator__refreshUsageDataWithCompletion___
   [*(a1 + 32) _downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)_downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:(id)a3
+- (void)_downloadRemoteDeviceActivityDataAndRefreshLegacyUsageDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STUILog usage];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -433,15 +433,15 @@ void __70__STUsageDetailsViewModelCoordinator__refreshUsageDataWithCompletion___
   }
 
   [MEMORY[0x277D4B998] downloadRemoteData];
-  [(STUsageDetailsViewModelCoordinator *)self _refreshLegacyUsageDataWithCompletionHandler:v4];
+  [(STUsageDetailsViewModelCoordinator *)self _refreshLegacyUsageDataWithCompletionHandler:handlerCopy];
 }
 
-- (void)_refreshLegacyUsageDataWithCompletionHandler:(id)a3
+- (void)_refreshLegacyUsageDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STUsageDetailsViewModelCoordinator *)self currentUsageRequestObjectID];
+  handlerCopy = handler;
+  currentUsageRequestObjectID = [(STUsageDetailsViewModelCoordinator *)self currentUsageRequestObjectID];
 
-  if (v5)
+  if (currentUsageRequestObjectID)
   {
     v6 = +[STUILog usage];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -453,17 +453,17 @@ void __70__STUsageDetailsViewModelCoordinator__refreshUsageDataWithCompletion___
 
   else
   {
-    v7 = [(STUsageDetailsViewModelCoordinator *)self userDSID];
-    v8 = [(STUsageDetailsViewModelCoordinator *)self persistenceController];
+    userDSID = [(STUsageDetailsViewModelCoordinator *)self userDSID];
+    persistenceController = [(STUsageDetailsViewModelCoordinator *)self persistenceController];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __83__STUsageDetailsViewModelCoordinator__refreshLegacyUsageDataWithCompletionHandler___block_invoke;
     v9[3] = &unk_279B7D550;
-    v10 = v7;
-    v11 = self;
-    v12 = v4;
-    v6 = v7;
-    [v8 performBackgroundTask:v9];
+    v10 = userDSID;
+    selfCopy = self;
+    v12 = handlerCopy;
+    v6 = userDSID;
+    [persistenceController performBackgroundTask:v9];
   }
 }
 
@@ -613,21 +613,21 @@ LABEL_9:
 LABEL_32:
 }
 
-- (void)_didFinishRefreshingWithError:(id)a3 completionHandler:(id)a4
+- (void)_didFinishRefreshingWithError:(id)error completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCABD8] mainQueue];
+  errorCopy = error;
+  handlerCopy = handler;
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__STUsageDetailsViewModelCoordinator__didFinishRefreshingWithError_completionHandler___block_invoke;
   v11[3] = &unk_279B7E618;
-  v12 = v6;
-  v13 = v7;
+  v12 = errorCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 addOperationWithBlock:v11];
+  v9 = errorCopy;
+  v10 = handlerCopy;
+  [mainQueue addOperationWithBlock:v11];
 }
 
 uint64_t __86__STUsageDetailsViewModelCoordinator__didFinishRefreshingWithError_completionHandler___block_invoke(uint64_t a1)
@@ -647,79 +647,79 @@ uint64_t __86__STUsageDetailsViewModelCoordinator__didFinishRefreshingWithError_
 + (NSString)defaultDeviceIdentifierForLocalUser
 {
   v2 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  v3 = [v2 deviceIdentifierForLocalUser];
+  deviceIdentifierForLocalUser = [v2 deviceIdentifierForLocalUser];
 
-  return v3;
+  return deviceIdentifierForLocalUser;
 }
 
-+ (void)setDefaultDeviceIdentifierForLocalUser:(id)a3
++ (void)setDefaultDeviceIdentifierForLocalUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  [v4 setDeviceIdentifierForLocalUser:v3];
+  [v4 setDeviceIdentifierForLocalUser:userCopy];
 }
 
 + (NSNumber)defaultUsageReportTypeForLocalUser
 {
   v2 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  v3 = [v2 usageReportTypeForLocalUser];
+  usageReportTypeForLocalUser = [v2 usageReportTypeForLocalUser];
 
-  return v3;
+  return usageReportTypeForLocalUser;
 }
 
-+ (void)setDefaultUsageReportTypeForLocalUser:(id)a3
++ (void)setDefaultUsageReportTypeForLocalUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  [v4 setUsageReportTypeForLocalUser:v3];
+  [v4 setUsageReportTypeForLocalUser:userCopy];
 }
 
-+ (id)defaultDeviceIdentifierForChild:(id)a3
++ (id)defaultDeviceIdentifierForChild:(id)child
 {
-  v3 = a3;
+  childCopy = child;
   v4 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  v5 = [v4 deviceIdentifierForChildUserDSID:v3];
+  v5 = [v4 deviceIdentifierForChildUserDSID:childCopy];
 
   return v5;
 }
 
-+ (void)setDefaultDeviceIdentifier:(id)a3 childDSID:(id)a4
++ (void)setDefaultDeviceIdentifier:(id)identifier childDSID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   v7 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  [v7 setDeviceIdentifierTo:v6 forChildUserDSID:v5];
+  [v7 setDeviceIdentifierTo:identifierCopy forChildUserDSID:dCopy];
 }
 
-+ (id)defaultUsageReportTypeForChild:(id)a3
++ (id)defaultUsageReportTypeForChild:(id)child
 {
-  v3 = a3;
+  childCopy = child;
   v4 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  v5 = [v4 usageReportTypeForChildUserDSID:v3];
+  v5 = [v4 usageReportTypeForChildUserDSID:childCopy];
 
   return v5;
 }
 
-+ (void)setDefaultUsageReportType:(id)a3 childDSID:(id)a4
++ (void)setDefaultUsageReportType:(id)type childDSID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  typeCopy = type;
   v7 = +[_TtC20ScreenTimeSettingsUI23STUsageDetailsSelection shared];
-  [v7 setUsageReportTypeTo:v6 forChildUserDSID:v5];
+  [v7 setUsageReportTypeTo:typeCopy forChildUserDSID:dCopy];
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v8 = a4;
-  v9 = [(STUsageDetailsViewModelCoordinator *)self currentUsageRequestObjectID];
-  v10 = [v8 objectID];
-  v11 = [v9 isEqual:v10];
+  objectCopy = object;
+  currentUsageRequestObjectID = [(STUsageDetailsViewModelCoordinator *)self currentUsageRequestObjectID];
+  objectID = [objectCopy objectID];
+  v11 = [currentUsageRequestObjectID isEqual:objectID];
 
   if (v11)
   {
-    v12 = [v8 acknowledgedDate];
+    acknowledgedDate = [objectCopy acknowledgedDate];
 
-    if (v12)
+    if (acknowledgedDate)
     {
       v13 = +[STUILog usage];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -752,13 +752,13 @@ uint64_t __104__STUsageDetailsViewModelCoordinator_controller_didChangeObject_at
   return [*(a1 + 32) setCurrentUsageRequestObjectID:0];
 }
 
-- (void)debouncer:(id)a3 didDebounce:(id)a4
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STUsageDetailsViewModelCoordinator *)self viewModelRefreshDebouncer];
+  debouncerCopy = debouncer;
+  debounceCopy = debounce;
+  viewModelRefreshDebouncer = [(STUsageDetailsViewModelCoordinator *)self viewModelRefreshDebouncer];
 
-  if (v8 == v6)
+  if (viewModelRefreshDebouncer == debouncerCopy)
   {
     v9 = +[STUILog usage];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -818,47 +818,47 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
   }
 }
 
-- (id)_usageBlocksWithUser:(id)a3 device:(id)a4 error:(id *)a5
+- (id)_usageBlocksWithUser:(id)user device:(id)device error:(id *)error
 {
   v23[3] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCAC30];
-  v8 = a4;
-  v9 = [v7 predicateWithFormat:@"%K == %@", @"usage.user", a3];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"usage.device", v8];
+  deviceCopy = device;
+  user = [v7 predicateWithFormat:@"%K == %@", @"usage.user", user];
+  deviceCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"usage.device", deviceCopy];
 
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %lld", @"durationInMinutes", 60];
-  v12 = [MEMORY[0x277D4BAC0] fetchRequest];
+  fetchRequest = [MEMORY[0x277D4BAC0] fetchRequest];
   v13 = MEMORY[0x277CCA920];
-  v23[0] = v9;
-  v23[1] = v10;
+  v23[0] = user;
+  v23[1] = deviceCopy;
   v23[2] = v11;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
   v15 = [v13 andPredicateWithSubpredicates:v14];
-  [v12 setPredicate:v15];
+  [fetchRequest setPredicate:v15];
 
   v22[0] = @"countedItems";
   v22[1] = @"categories";
   v22[2] = @"categories.timedItems";
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
-  [v12 setRelationshipKeyPathsForPrefetching:v16];
+  [fetchRequest setRelationshipKeyPathsForPrefetching:v16];
 
   v17 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
   v21 = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-  [v12 setSortDescriptors:v18];
+  [fetchRequest setSortDescriptors:v18];
 
-  [v12 setReturnsObjectsAsFaults:0];
-  v19 = [v12 execute:a5];
+  [fetchRequest setReturnsObjectsAsFaults:0];
+  v19 = [fetchRequest execute:error];
 
   return v19;
 }
 
-- (id)_usageItemsWithUsageBlocks:(id)a3 lastUpdatedDate:(id *)a4 firstPickupByWeekdayByWeek:(id)a5 referenceDate:(id)a6 usageContext:(int64_t)a7
+- (id)_usageItemsWithUsageBlocks:(id)blocks lastUpdatedDate:(id *)date firstPickupByWeekdayByWeek:(id)week referenceDate:(id)referenceDate usageContext:(int64_t)context
 {
   v143 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v88 = a5;
-  v10 = a6;
+  blocksCopy = blocks;
+  weekCopy = week;
+  referenceDateCopy = referenceDate;
   v11 = objc_opt_new();
   v90 = +[_TtC20ScreenTimeSettingsUI12UsageDetails screenTimeUsageItemIdentifier];
   v116 = +[_TtC20ScreenTimeSettingsUI12UsageDetails appUsageItemIdentifier];
@@ -880,12 +880,12 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
 
   v120 = v14;
 
-  v87 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v15 = v9;
+  v15 = blocksCopy;
   v91 = [v15 countByEnumeratingWithState:&v133 objects:v142 count:16];
   if (v91)
   {
@@ -902,7 +902,7 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
     v113 = *MEMORY[0x277CF9618];
     v115 = v11;
     v105 = v15;
-    v106 = v10;
+    v106 = referenceDateCopy;
     do
     {
       v17 = 0;
@@ -917,20 +917,20 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
 
         v92 = v17;
         v19 = *(*(&v133 + 1) + 8 * v17);
-        v117 = [v19 startDate];
-        if (a7 != 1)
+        startDate = [v19 startDate];
+        if (context != 1)
         {
-          v20 = [v19 firstPickupDate];
-          if (v20)
+          firstPickupDate = [v19 firstPickupDate];
+          if (firstPickupDate)
           {
             v110 = v19;
-            v21 = [v87 components:8704 fromDate:v20];
+            v21 = [currentCalendar components:8704 fromDate:firstPickupDate];
             v22 = [*(v16 + 2992) numberWithInteger:{objc_msgSend(v21, "weekOfYear")}];
-            v23 = [v88 objectForKeyedSubscript:v22];
+            v23 = [weekCopy objectForKeyedSubscript:v22];
             if (!v23)
             {
               v23 = objc_opt_new();
-              [v88 setObject:v23 forKeyedSubscript:v22];
+              [weekCopy setObject:v23 forKeyedSubscript:v22];
             }
 
             v24 = [*(v16 + 2992) numberWithInteger:{objc_msgSend(v21, "weekday")}];
@@ -938,7 +938,7 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
 
             if (!v25)
             {
-              [v23 setObject:v20 forKeyedSubscript:v24];
+              [v23 setObject:firstPickupDate forKeyedSubscript:v24];
             }
 
             v19 = v110;
@@ -949,18 +949,18 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
         [v26 setItemType:1];
         [v26 setIdentifier:v90];
         [v26 setTimePeriod:0];
-        [v26 setStartDate:v117];
+        [v26 setStartDate:startDate];
         v27 = [*(v16 + 2992) numberWithLongLong:{objc_msgSend(v19, "screenTimeInSeconds")}];
         [v26 setTotalUsage:v27];
 
         [v11 addObject:v26];
-        if (a7 != 1)
+        if (context != 1)
         {
           v28 = objc_opt_new();
           [v28 setItemType:6];
           [v28 setIdentifier:v102];
           [v28 setTimePeriod:0];
-          [v28 setStartDate:v117];
+          [v28 setStartDate:startDate];
           v29 = [*(v16 + 2992) numberWithLongLong:{objc_msgSend(v19, "numberOfPickupsWithoutApplicationUsage")}];
           [v28 setTotalUsage:v29];
 
@@ -970,8 +970,8 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
           v129 = 0u;
           v130 = 0u;
           v111 = v19;
-          v30 = [v19 countedItems];
-          v31 = [v30 countByEnumeratingWithState:&v129 objects:v141 count:16];
+          countedItems = [v19 countedItems];
+          v31 = [countedItems countByEnumeratingWithState:&v129 objects:v141 count:16];
           if (!v31)
           {
             goto LABEL_46;
@@ -987,21 +987,21 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
             {
               if (*v130 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(countedItems);
               }
 
               v35 = *(*(&v129 + 1) + 8 * v34);
-              v36 = [v35 bundleIdentifier];
-              if (v36)
+              bundleIdentifier = [v35 bundleIdentifier];
+              if (bundleIdentifier)
               {
-                if ([v120 containsObject:v36] & 1) != 0 || (objc_msgSend(v36, "hasPrefix:", v100))
+                if ([v120 containsObject:bundleIdentifier] & 1) != 0 || (objc_msgSend(bundleIdentifier, "hasPrefix:", v100))
                 {
                   v37 = 0;
                 }
 
                 else
                 {
-                  v37 = [v36 hasPrefix:v97] ^ 1;
+                  v37 = [bundleIdentifier hasPrefix:v97] ^ 1;
                 }
 
                 if ([v35 numberOfNotifications] < 1)
@@ -1023,13 +1023,13 @@ void __60__STUsageDetailsViewModelCoordinator_debouncer_didDebounce___block_invo
                   [v38 setItemType:5];
                   if (v37)
                   {
-                    if ([v36 hasPrefix:v98])
+                    if ([bundleIdentifier hasPrefix:v98])
                     {
                       v39 = v95;
                       goto LABEL_39;
                     }
 
-                    if ([v36 hasPrefix:v96])
+                    if ([bundleIdentifier hasPrefix:v96])
                     {
                       v39 = v94;
 LABEL_39:
@@ -1037,7 +1037,7 @@ LABEL_39:
                       [v38 setIdentifier:v43];
 
                       v44 = objc_alloc(MEMORY[0x277D4BAD0]);
-                      v45 = [v35 usageTrusted];
+                      usageTrusted = [v35 usageTrusted];
                       v46 = v44;
                       v47 = v39;
                       v32 = v118;
@@ -1045,20 +1045,20 @@ LABEL_39:
 
                     else
                     {
-                      v48 = [v101 stringByAppendingFormat:@"-%@", v36];
+                      v48 = [v101 stringByAppendingFormat:@"-%@", bundleIdentifier];
                       [v38 setIdentifier:v48];
 
                       v49 = objc_alloc(MEMORY[0x277D4BAD0]);
-                      v45 = [v35 usageTrusted];
+                      usageTrusted = [v35 usageTrusted];
                       v46 = v49;
-                      v47 = v36;
+                      v47 = bundleIdentifier;
                     }
 
-                    v50 = [v46 initWithIdentifier:v47 usageTrusted:v45];
+                    v50 = [v46 initWithIdentifier:v47 usageTrusted:usageTrusted];
                     [v38 setTrustIdentifier:v50];
 
                     [v38 setTimePeriod:0];
-                    [v38 setStartDate:v117];
+                    [v38 setStartDate:startDate];
                     v51 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v35, "numberOfNotifications")}];
                     [v38 setTotalUsage:v51];
 
@@ -1069,15 +1069,15 @@ LABEL_39:
                     }
 
 LABEL_42:
-                    v41 = [v102 stringByAppendingFormat:@"-%@", v36];
+                    v41 = [v102 stringByAppendingFormat:@"-%@", bundleIdentifier];
                     v52 = objc_opt_new();
                     [v52 setItemType:6];
                     [v52 setIdentifier:v41];
-                    v53 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:v36 usageTrusted:{objc_msgSend(v35, "usageTrusted")}];
+                    v53 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:bundleIdentifier usageTrusted:{objc_msgSend(v35, "usageTrusted")}];
                     [v52 setTrustIdentifier:v53];
 
                     [v52 setTimePeriod:0];
-                    [v52 setStartDate:v117];
+                    [v52 setStartDate:startDate];
                     v54 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v35, "numberOfPickups")}];
                     [v52 setTotalUsage:v54];
 
@@ -1090,7 +1090,7 @@ LABEL_43:
 
                   [v38 setIdentifier:v101];
                   [v38 setTimePeriod:0];
-                  [v38 setStartDate:v117];
+                  [v38 setStartDate:startDate];
                   v40 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v35, "numberOfNotifications")}];
                   [v38 setTotalUsage:v40];
 
@@ -1105,7 +1105,7 @@ LABEL_43:
                 [v41 setItemType:6];
                 [v41 setIdentifier:v102];
                 [v41 setTimePeriod:0];
-                [v41 setStartDate:v117];
+                [v41 setStartDate:startDate];
                 v42 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v35, "numberOfPickups")}];
                 [v41 setTotalUsage:v42];
 
@@ -1119,7 +1119,7 @@ LABEL_44:
             }
 
             while (v32 != v34);
-            v32 = [v30 countByEnumeratingWithState:&v129 objects:v141 count:16];
+            v32 = [countedItems countByEnumeratingWithState:&v129 objects:v141 count:16];
             if (!v32)
             {
 LABEL_46:
@@ -1154,12 +1154,12 @@ LABEL_46:
             }
 
             v56 = *(*(&v125 + 1) + 8 * i);
-            v57 = [v56 identifier];
-            if (([v57 isEqualToString:v107] & 1) != 0 || objc_msgSend(v57, "isEqualToString:", v103))
+            identifier = [v56 identifier];
+            if (([identifier isEqualToString:v107] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", v103))
             {
 
 LABEL_55:
-              if ([v57 isEqualToString:v113])
+              if ([identifier isEqualToString:v113])
               {
                 goto LABEL_75;
               }
@@ -1169,7 +1169,7 @@ LABEL_55:
               goto LABEL_59;
             }
 
-            v58 = [v57 isEqualToString:v113];
+            v58 = [identifier isEqualToString:v113];
 
             if (v58)
             {
@@ -1177,18 +1177,18 @@ LABEL_55:
             }
 
             v112 = i;
-            [v99 stringByAppendingFormat:@"-%@", v57];
-            v57 = v59 = v57;
+            [v99 stringByAppendingFormat:@"-%@", identifier];
+            identifier = v59 = identifier;
             v60 = objc_opt_new();
             [v60 setItemType:3];
-            [v60 setIdentifier:v57];
+            [v60 setIdentifier:identifier];
             v61 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:v59 usageTrusted:1];
             [v60 setTrustIdentifier:v61];
 
             v119 = v59;
             [v60 setCategoryIdentifier:v59];
             [v60 setTimePeriod:0];
-            [v60 setStartDate:v117];
+            [v60 setStartDate:startDate];
             v62 = [*(v16 + 2992) numberWithLongLong:{objc_msgSend(v56, "totalTimeInSeconds")}];
             [v60 setTotalUsage:v62];
 
@@ -1199,8 +1199,8 @@ LABEL_59:
             v124 = 0u;
             v121 = 0u;
             v122 = 0u;
-            v63 = [v56 timedItems];
-            v64 = [v63 countByEnumeratingWithState:&v121 objects:v139 count:16];
+            timedItems = [v56 timedItems];
+            v64 = [timedItems countByEnumeratingWithState:&v121 objects:v139 count:16];
             if (!v64)
             {
               goto LABEL_74;
@@ -1214,21 +1214,21 @@ LABEL_59:
               {
                 if (*v122 != v66)
                 {
-                  objc_enumerationMutation(v63);
+                  objc_enumerationMutation(timedItems);
                 }
 
                 v68 = *(*(&v121 + 1) + 8 * j);
-                v69 = [v68 bundleIdentifier];
-                if (!v69)
+                bundleIdentifier2 = [v68 bundleIdentifier];
+                if (!bundleIdentifier2)
                 {
-                  v71 = [v68 domain];
-                  v70 = v71;
-                  if (!v71)
+                  domain = [v68 domain];
+                  v70 = domain;
+                  if (!domain)
                   {
                     goto LABEL_72;
                   }
 
-                  v72 = [v114 stringByAppendingFormat:@"-%@", v71];
+                  v72 = [v114 stringByAppendingFormat:@"-%@", domain];
                   v73 = objc_opt_new();
                   [v73 setItemType:4];
                   [v73 setIdentifier:v72];
@@ -1237,30 +1237,30 @@ LABEL_59:
 
                   [v73 setCategoryIdentifier:v119];
                   [v73 setTimePeriod:0];
-                  [v73 setStartDate:v117];
+                  [v73 setStartDate:startDate];
                   v75 = MEMORY[0x277CCABB0];
-                  v76 = [v68 totalTimeInSeconds];
+                  totalTimeInSeconds = [v68 totalTimeInSeconds];
                   v77 = v75;
                   v11 = v115;
-                  v78 = [v77 numberWithLongLong:v76];
+                  v78 = [v77 numberWithLongLong:totalTimeInSeconds];
                   [v73 setTotalUsage:v78];
 
                   [v115 addObject:v73];
                   goto LABEL_71;
                 }
 
-                if (![v120 containsObject:v69])
+                if (![v120 containsObject:bundleIdentifier2])
                 {
-                  v70 = [v116 stringByAppendingFormat:@"-%@", v69];
+                  v70 = [v116 stringByAppendingFormat:@"-%@", bundleIdentifier2];
                   v72 = objc_opt_new();
                   [v72 setItemType:2];
                   [v72 setIdentifier:v70];
-                  v79 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:v69 usageTrusted:{objc_msgSend(v68, "usageTrusted")}];
+                  v79 = [objc_alloc(MEMORY[0x277D4BAD0]) initWithIdentifier:bundleIdentifier2 usageTrusted:{objc_msgSend(v68, "usageTrusted")}];
                   [v72 setTrustIdentifier:v79];
 
                   [v72 setCategoryIdentifier:v119];
                   [v72 setTimePeriod:0];
-                  [v72 setStartDate:v117];
+                  [v72 setStartDate:startDate];
                   v80 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v68, "totalTimeInSeconds")}];
                   [v72 setTotalUsage:v80];
 
@@ -1274,24 +1274,24 @@ LABEL_71:
                 if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v138 = v69;
+                  v138 = bundleIdentifier2;
                   _os_log_debug_impl(&dword_264BA2000, v70, OS_LOG_TYPE_DEBUG, "Skipping timed item for system app %@", buf, 0xCu);
                 }
 
 LABEL_72:
               }
 
-              v65 = [v63 countByEnumeratingWithState:&v121 objects:v139 count:16];
+              v65 = [timedItems countByEnumeratingWithState:&v121 objects:v139 count:16];
             }
 
             while (v65);
 LABEL_74:
 
             v15 = v105;
-            v10 = v106;
+            referenceDateCopy = v106;
             v16 = 0x277CCA000;
             i = v112;
-            v57 = v119;
+            identifier = v119;
 LABEL_75:
           }
 
@@ -1311,38 +1311,38 @@ LABEL_77:
     while (v91);
   }
 
-  if (a4)
+  if (date)
   {
-    v81 = [v15 firstObject];
-    v82 = [v81 usage];
-    v83 = [v82 lastUpdatedDate];
-    v84 = v83;
-    if (!v83)
+    firstObject = [v15 firstObject];
+    usage = [firstObject usage];
+    lastUpdatedDate = [usage lastUpdatedDate];
+    v84 = lastUpdatedDate;
+    if (!lastUpdatedDate)
     {
-      v83 = v10;
+      lastUpdatedDate = referenceDateCopy;
     }
 
-    *a4 = v83;
+    *date = lastUpdatedDate;
   }
 
   return v11;
 }
 
-- (void)loadViewModelWithCompletionHandler:(id)a3
+- (void)loadViewModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STUILog usage];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STUsageDetailsViewModelCoordinator loadViewModelWithCompletionHandler:];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v6 = self->_loadViewModelCompletions;
     objc_sync_enter(v6);
     loadViewModelCompletions = self->_loadViewModelCompletions;
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(handlerCopy);
     [(NSMutableArray *)loadViewModelCompletions addObject:v8];
 
     objc_sync_exit(v6);
@@ -1351,44 +1351,44 @@ LABEL_77:
   [(STDebouncer *)self->_viewModelRefreshDebouncer bounce:0];
 }
 
-- (void)_unbouncedLoadViewModelWithCompletionHandler:(id)a3
+- (void)_unbouncedLoadViewModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STUILog usage];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STUsageDetailsViewModelCoordinator _unbouncedLoadViewModelWithCompletionHandler:];
   }
 
-  v6 = [(STUsageDetailsViewModelCoordinator *)self userDSID];
+  userDSID = [(STUsageDetailsViewModelCoordinator *)self userDSID];
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__7;
   v24[4] = __Block_byref_object_dispose__7;
-  v25 = [(STUsageDetailsViewModelCoordinator *)self selectedDeviceIdentifier];
-  v7 = [(STUsageDetailsViewModelCoordinator *)self viewModel];
-  v8 = [v7 hasUsageData];
-  v9 = [v7 selectedWeek];
-  v10 = [v7 selectedDay];
-  v11 = [(STUsageDetailsViewModelCoordinator *)self persistenceController];
-  v12 = [v11 newBackgroundContext];
+  selectedDeviceIdentifier = [(STUsageDetailsViewModelCoordinator *)self selectedDeviceIdentifier];
+  viewModel = [(STUsageDetailsViewModelCoordinator *)self viewModel];
+  hasUsageData = [viewModel hasUsageData];
+  selectedWeek = [viewModel selectedWeek];
+  selectedDay = [viewModel selectedDay];
+  persistenceController = [(STUsageDetailsViewModelCoordinator *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__STUsageDetailsViewModelCoordinator__unbouncedLoadViewModelWithCompletionHandler___block_invoke;
   v16[3] = &unk_279B7E6B0;
   v16[4] = self;
-  v13 = v6;
+  v13 = userDSID;
   v17 = v13;
-  v14 = v4;
+  v14 = handlerCopy;
   v19 = v14;
   v20 = v24;
-  v15 = v12;
+  v15 = newBackgroundContext;
   v18 = v15;
-  v21 = v10;
-  v22 = v9;
-  v23 = v8;
+  v21 = selectedDay;
+  v22 = selectedWeek;
+  v23 = hasUsageData;
   [v15 performBlock:v16];
 
   _Block_object_dispose(v24, 8);
@@ -2076,29 +2076,29 @@ void __83__STUsageDetailsViewModelCoordinator__unbouncedLoadViewModelWithComplet
   [v2 setHasAggregateUsageData:*(a1 + 49)];
 }
 
-- (void)_loadTodayUsageWithUsageBlocks:(id)a3 selectedItemDisplayName:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6
+- (void)_loadTodayUsageWithUsageBlocks:(id)blocks selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler
 {
-  v30 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  dateCopy = date;
+  nameCopy = name;
+  blocksCopy = blocks;
   v36 = 0;
   v29 = objc_opt_new();
-  v13 = [(STUsageDetailsViewModelCoordinator *)self _usageItemsWithUsageBlocks:v12 lastUpdatedDate:&v36 firstPickupByWeekdayByWeek:v29 referenceDate:v10 usageContext:1];
+  v13 = [(STUsageDetailsViewModelCoordinator *)self _usageItemsWithUsageBlocks:blocksCopy lastUpdatedDate:&v36 firstPickupByWeekdayByWeek:v29 referenceDate:dateCopy usageContext:1];
 
   v14 = v36;
-  v15 = [MEMORY[0x277CBEA80] currentCalendar];
-  v16 = [v15 startOfDayForDate:v10];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v16 = [currentCalendar startOfDayForDate:dateCopy];
 
-  v17 = [v15 component:512 fromDate:v16];
+  v17 = [currentCalendar component:512 fromDate:v16];
   v18 = [STUsageReport alloc];
   v19 = [v29 objectForKeyedSubscript:&unk_28769D640];
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
   v21 = [v19 objectForKeyedSubscript:v20];
   v22 = [(STUsageReport *)v18 initWithReportType:1 startDate:v16 lastUpdatedDate:v14 firstPickup:v21 usageItems:v13];
 
-  [(STUsageReport *)v22 setDisplayName:v11];
-  v23 = [MEMORY[0x277CCABD8] mainQueue];
+  [(STUsageReport *)v22 setDisplayName:nameCopy];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __125__STUsageDetailsViewModelCoordinator__loadTodayUsageWithUsageBlocks_selectedItemDisplayName_referenceDate_completionHandler___block_invoke;
@@ -2107,12 +2107,12 @@ void __83__STUsageDetailsViewModelCoordinator__unbouncedLoadViewModelWithComplet
   v32 = v14;
   v33 = v13;
   v34 = v22;
-  v35 = v30;
-  v24 = v30;
+  v35 = handlerCopy;
+  v24 = handlerCopy;
   v25 = v22;
   v26 = v13;
   v27 = v14;
-  [v23 addOperationWithBlock:v31];
+  [mainQueue addOperationWithBlock:v31];
 }
 
 void __125__STUsageDetailsViewModelCoordinator__loadTodayUsageWithUsageBlocks_selectedItemDisplayName_referenceDate_completionHandler___block_invoke(uint64_t a1)
@@ -2135,19 +2135,19 @@ void __125__STUsageDetailsViewModelCoordinator__loadTodayUsageWithUsageBlocks_se
   }
 }
 
-- (void)_loadTodayDeviceActivityForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 selectedItemDisplayName:(id)a5 referenceDate:(id)a6 completionHandler:(id)a7
+- (void)_loadTodayDeviceActivityForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v13 = MEMORY[0x277CBEA80];
-  v14 = a6;
-  v44 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v13 currentCalendar];
-  v18 = [v17 startOfDayForDate:v14];
-  v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:v14];
+  dateCopy = date;
+  nameCopy = name;
+  identifierCopy = identifier;
+  dCopy = d;
+  currentCalendar = [v13 currentCalendar];
+  v18 = [currentCalendar startOfDayForDate:dateCopy];
+  v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:dateCopy];
   v49 = 0;
-  v20 = [_TtC20ScreenTimeSettingsUI12UsageDetails detailsForUserWithAltDSID:v16 deviceActivityIdentifier:v15 dateInterval:v19 referenceDate:v14 usageContext:1 error:&v49];
+  v20 = [_TtC20ScreenTimeSettingsUI12UsageDetails detailsForUserWithAltDSID:dCopy deviceActivityIdentifier:identifierCopy dateInterval:v19 referenceDate:dateCopy usageContext:1 error:&v49];
 
   v21 = v49;
   if (!v20)
@@ -2161,23 +2161,23 @@ void __125__STUsageDetailsViewModelCoordinator__loadTodayUsageWithUsageBlocks_se
 
   v42 = v19;
   v43 = v21;
-  v23 = [v17 component:512 fromDate:{v18, self}];
+  v23 = [currentCalendar component:512 fromDate:{v18, self}];
   v24 = [STUsageReport alloc];
-  v25 = [v20 lastUpdatedDate];
-  v26 = [v20 firstPickupByWeekdayByWeek];
-  v27 = [v26 objectForKeyedSubscript:&unk_28769D640];
+  lastUpdatedDate = [v20 lastUpdatedDate];
+  firstPickupByWeekdayByWeek = [v20 firstPickupByWeekdayByWeek];
+  v27 = [firstPickupByWeekdayByWeek objectForKeyedSubscript:&unk_28769D640];
   [MEMORY[0x277CCABB0] numberWithInteger:v23];
   v28 = v18;
-  v30 = v29 = v12;
+  v30 = v29 = handlerCopy;
   [v27 objectForKeyedSubscript:v30];
-  v31 = v41 = v17;
-  v32 = [v20 usageItems];
+  v31 = v41 = currentCalendar;
+  usageItems = [v20 usageItems];
   v33 = v24;
   v34 = v28;
-  v35 = [(STUsageReport *)v33 initWithReportType:1 startDate:v28 lastUpdatedDate:v25 firstPickup:v31 usageItems:v32];
+  v35 = [(STUsageReport *)v33 initWithReportType:1 startDate:v28 lastUpdatedDate:lastUpdatedDate firstPickup:v31 usageItems:usageItems];
 
-  [(STUsageReport *)v35 setDisplayName:v44];
-  v36 = [MEMORY[0x277CCABD8] mainQueue];
+  [(STUsageReport *)v35 setDisplayName:nameCopy];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __162__STUsageDetailsViewModelCoordinator__loadTodayDeviceActivityForUserWithAltDSID_deviceActivityIdentifier_selectedItemDisplayName_referenceDate_completionHandler___block_invoke;
@@ -2189,7 +2189,7 @@ void __125__STUsageDetailsViewModelCoordinator__loadTodayUsageWithUsageBlocks_se
   v37 = v29;
   v38 = v35;
   v39 = v20;
-  [v36 addOperationWithBlock:v45];
+  [mainQueue addOperationWithBlock:v45];
 }
 
 void __162__STUsageDetailsViewModelCoordinator__loadTodayDeviceActivityForUserWithAltDSID_deviceActivityIdentifier_selectedItemDisplayName_referenceDate_completionHandler___block_invoke(uint64_t a1)
@@ -2216,29 +2216,29 @@ void __162__STUsageDetailsViewModelCoordinator__loadTodayDeviceActivityForUserWi
   }
 }
 
-- (void)_loadLastWeekUsageWithUsageBlocks:(id)a3 selectedItemDisplayName:(id)a4 referenceDate:(id)a5 completionHandler:(id)a6
+- (void)_loadLastWeekUsageWithUsageBlocks:(id)blocks selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler
 {
-  v30 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  dateCopy = date;
+  nameCopy = name;
+  blocksCopy = blocks;
   v13 = objc_opt_new();
   v36 = 0;
-  v14 = [(STUsageDetailsViewModelCoordinator *)self _usageItemsWithUsageBlocks:v12 lastUpdatedDate:&v36 firstPickupByWeekdayByWeek:v13 referenceDate:v10 usageContext:2];
+  v14 = [(STUsageDetailsViewModelCoordinator *)self _usageItemsWithUsageBlocks:blocksCopy lastUpdatedDate:&v36 firstPickupByWeekdayByWeek:v13 referenceDate:dateCopy usageContext:2];
 
   v15 = v36;
-  v16 = [MEMORY[0x277CBEA80] currentCalendar];
-  v17 = [v16 firstWeekday];
-  v18 = [v16 nextDateAfterDate:v10 matchingUnit:512 value:v17 options:260];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  firstWeekday = [currentCalendar firstWeekday];
+  v18 = [currentCalendar nextDateAfterDate:dateCopy matchingUnit:512 value:firstWeekday options:260];
 
   v19 = [STUsageReport alloc];
   v20 = [v13 objectForKeyedSubscript:&unk_28769D658];
-  v21 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
+  v21 = [MEMORY[0x277CCABB0] numberWithInteger:firstWeekday];
   v22 = [v20 objectForKeyedSubscript:v21];
   v23 = [(STUsageReport *)v19 initWithReportType:0 startDate:v18 lastUpdatedDate:v15 firstPickup:v22 usageItems:v14];
 
-  [(STUsageReport *)v23 setDisplayName:v11];
-  v24 = [MEMORY[0x277CCABD8] mainQueue];
+  [(STUsageReport *)v23 setDisplayName:nameCopy];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __128__STUsageDetailsViewModelCoordinator__loadLastWeekUsageWithUsageBlocks_selectedItemDisplayName_referenceDate_completionHandler___block_invoke;
@@ -2247,12 +2247,12 @@ void __162__STUsageDetailsViewModelCoordinator__loadTodayDeviceActivityForUserWi
   v32 = v15;
   v33 = v14;
   v34 = v23;
-  v35 = v30;
-  v25 = v30;
+  v35 = handlerCopy;
+  v25 = handlerCopy;
   v26 = v23;
   v27 = v14;
   v28 = v15;
-  [v24 addOperationWithBlock:v31];
+  [mainQueue addOperationWithBlock:v31];
 }
 
 void __128__STUsageDetailsViewModelCoordinator__loadLastWeekUsageWithUsageBlocks_selectedItemDisplayName_referenceDate_completionHandler___block_invoke(uint64_t a1)
@@ -2275,69 +2275,69 @@ void __128__STUsageDetailsViewModelCoordinator__loadLastWeekUsageWithUsageBlocks
   }
 }
 
-- (void)_loadLastWeekDeviceActivityForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 selectedItemDisplayName:(id)a5 referenceDate:(id)a6 completionHandler:(id)a7
+- (void)_loadLastWeekDeviceActivityForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier selectedItemDisplayName:(id)name referenceDate:(id)date completionHandler:(id)handler
 {
-  v46 = a7;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CBEA80];
-  v13 = a6;
-  v45 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 currentCalendar];
-  v17 = [v16 firstWeekday];
-  v18 = [v16 nextDateAfterDate:v13 matchingUnit:512 value:v17 options:260];
-  v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:v13];
+  dateCopy = date;
+  nameCopy = name;
+  identifierCopy = identifier;
+  dCopy = d;
+  currentCalendar = [v12 currentCalendar];
+  firstWeekday = [currentCalendar firstWeekday];
+  v18 = [currentCalendar nextDateAfterDate:dateCopy matchingUnit:512 value:firstWeekday options:260];
+  v19 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:dateCopy];
   v52 = 0;
-  v20 = [_TtC20ScreenTimeSettingsUI12UsageDetails detailsForUserWithAltDSID:v15 deviceActivityIdentifier:v14 dateInterval:v19 referenceDate:v13 usageContext:2 error:&v52];
+  v20 = [_TtC20ScreenTimeSettingsUI12UsageDetails detailsForUserWithAltDSID:dCopy deviceActivityIdentifier:identifierCopy dateInterval:v19 referenceDate:dateCopy usageContext:2 error:&v52];
 
   v21 = v52;
   if (!v20)
   {
     v22 = v19;
     v23 = v18;
-    v24 = v16;
+    v24 = currentCalendar;
     v25 = +[STUILog usage];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       [STUsageDetailsViewModelCoordinator _loadLastWeekDeviceActivityForUserWithAltDSID:deviceActivityIdentifier:selectedItemDisplayName:referenceDate:completionHandler:];
     }
 
-    v16 = v24;
+    currentCalendar = v24;
     v18 = v23;
     v19 = v22;
   }
 
   v43 = v19;
-  v44 = v16;
+  v44 = currentCalendar;
   v26 = [STUsageReport alloc];
-  v27 = [v20 lastUpdatedDate];
-  v28 = [v20 firstPickupByWeekdayByWeek];
-  v29 = [v28 objectForKeyedSubscript:&unk_28769D658];
-  v30 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
+  lastUpdatedDate = [v20 lastUpdatedDate];
+  firstPickupByWeekdayByWeek = [v20 firstPickupByWeekdayByWeek];
+  v29 = [firstPickupByWeekdayByWeek objectForKeyedSubscript:&unk_28769D658];
+  v30 = [MEMORY[0x277CCABB0] numberWithInteger:firstWeekday];
   v31 = [v29 objectForKeyedSubscript:v30];
-  v32 = [v20 usageItems];
+  usageItems = [v20 usageItems];
   v33 = v18;
   v42 = v18;
-  v34 = self;
-  v35 = v32;
-  v36 = [(STUsageReport *)v26 initWithReportType:0 startDate:v33 lastUpdatedDate:v27 firstPickup:v31 usageItems:v32];
+  selfCopy = self;
+  v35 = usageItems;
+  v36 = [(STUsageReport *)v26 initWithReportType:0 startDate:v33 lastUpdatedDate:lastUpdatedDate firstPickup:v31 usageItems:usageItems];
 
-  [(STUsageReport *)v36 setDisplayName:v45];
-  v37 = [MEMORY[0x277CCABD8] mainQueue];
+  [(STUsageReport *)v36 setDisplayName:nameCopy];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __165__STUsageDetailsViewModelCoordinator__loadLastWeekDeviceActivityForUserWithAltDSID_deviceActivityIdentifier_selectedItemDisplayName_referenceDate_completionHandler___block_invoke;
   v47[3] = &unk_279B7E700;
-  v47[4] = v34;
+  v47[4] = selfCopy;
   v48 = v20;
   v50 = v21;
-  v51 = v46;
+  v51 = handlerCopy;
   v49 = v36;
   v38 = v21;
-  v39 = v46;
+  v39 = handlerCopy;
   v40 = v36;
   v41 = v20;
-  [v37 addOperationWithBlock:v47];
+  [mainQueue addOperationWithBlock:v47];
 }
 
 void __165__STUsageDetailsViewModelCoordinator__loadLastWeekDeviceActivityForUserWithAltDSID_deviceActivityIdentifier_selectedItemDisplayName_referenceDate_completionHandler___block_invoke(uint64_t a1)
@@ -2364,12 +2364,12 @@ void __165__STUsageDetailsViewModelCoordinator__loadLastWeekDeviceActivityForUse
   }
 }
 
-- (void)_loadAllHistoricalUsageWithUsageBlocks:(id)a3 selectedItemDisplayName:(id)a4 selectedDay:(unint64_t)a5 selectedWeek:(unint64_t)a6 hadUsageData:(BOOL)a7 referenceDate:(id)a8 completionHandler:(id)a9
+- (void)_loadAllHistoricalUsageWithUsageBlocks:(id)blocks selectedItemDisplayName:(id)name selectedDay:(unint64_t)day selectedWeek:(unint64_t)week hadUsageData:(BOOL)data referenceDate:(id)date completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v38 = a8;
-  v15 = a9;
+  blocksCopy = blocks;
+  nameCopy = name;
+  dateCopy = date;
+  handlerCopy = handler;
   v65[0] = 0;
   v65[1] = v65;
   v65[2] = 0x3032000000;
@@ -2379,7 +2379,7 @@ void __165__STUsageDetailsViewModelCoordinator__loadLastWeekDeviceActivityForUse
   v16 = objc_opt_new();
   v17 = objc_opt_new();
   v37 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (day == 0x7FFFFFFFFFFFFFFFLL)
   {
     v18 = 0;
   }
@@ -2389,32 +2389,32 @@ void __165__STUsageDetailsViewModelCoordinator__loadLastWeekDeviceActivityForUse
     v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
   }
 
-  v19 = v14;
-  v36 = v15;
+  v19 = nameCopy;
+  v36 = handlerCopy;
   v20 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-  v21 = [v13 firstObject];
-  v22 = [v21 startDate];
+  firstObject = [blocksCopy firstObject];
+  startDate = [firstObject startDate];
 
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageBlocks_selectedItemDisplayName_selectedDay_selectedWeek_hadUsageData_referenceDate_completionHandler___block_invoke;
   v50[3] = &unk_279B7E728;
-  v62 = a6;
-  v64 = a7;
-  v35 = v13;
+  weekCopy = week;
+  dataCopy = data;
+  v35 = blocksCopy;
   v51 = v35;
-  v52 = self;
+  selfCopy = self;
   v61 = v65;
   v23 = v17;
   v53 = v23;
-  v24 = v38;
+  v24 = dateCopy;
   v54 = v24;
   v39 = v19;
   v55 = v39;
-  v63 = a5;
+  dayCopy = day;
   v25 = v16;
   v56 = v25;
-  v26 = v22;
+  v26 = startDate;
   v57 = v26;
   v27 = v37;
   v58 = v27;
@@ -2423,23 +2423,23 @@ void __165__STUsageDetailsViewModelCoordinator__loadLastWeekDeviceActivityForUse
   v29 = v20;
   v60 = v29;
   [STUsageDetailsViewModel _enumerateWeeklyReportStartDatesWithReferenceDate:v24 ascending:0 block:v50];
-  v30 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageBlocks_selectedItemDisplayName_selectedDay_selectedWeek_hadUsageData_referenceDate_completionHandler___block_invoke_2;
   v42[3] = &unk_279B7E750;
   v31 = v25;
   v43 = v31;
-  v44 = self;
+  selfCopy2 = self;
   v48 = v65;
   v32 = v29;
   v45 = v32;
   v33 = v27;
   v46 = v33;
-  v49 = a6;
+  weekCopy2 = week;
   v34 = v36;
   v47 = v34;
-  [v30 addOperationWithBlock:v42];
+  [mainQueue addOperationWithBlock:v42];
 
   _Block_object_dispose(v65, 8);
 }
@@ -2564,13 +2564,13 @@ void __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageB
   }
 }
 
-- (void)_loadAllHistoricalDeviceActivityForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 selectedItemDisplayName:(id)a5 selectedDay:(unint64_t)a6 selectedWeek:(unint64_t)a7 hadUsageData:(BOOL)a8 referenceDate:(id)a9 completionHandler:(id)a10
+- (void)_loadAllHistoricalDeviceActivityForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier selectedItemDisplayName:(id)name selectedDay:(unint64_t)day selectedWeek:(unint64_t)week hadUsageData:(BOOL)data referenceDate:(id)date completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v34 = a5;
-  v17 = a9;
-  v18 = a10;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dateCopy = date;
+  handlerCopy = handler;
   v70[0] = 0;
   v70[1] = v70;
   v70[2] = 0x3032000000;
@@ -2585,7 +2585,7 @@ void __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageB
   v69 = objc_opt_new();
   v33 = objc_opt_new();
   v32 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (day == 0x7FFFFFFFFFFFFFFFLL)
   {
     v31 = 0;
   }
@@ -2603,8 +2603,8 @@ void __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageB
   v66 = __Block_byref_object_dispose__7;
   v67 = 0;
   obj = 0;
-  v29 = v15;
-  v19 = [_TtC20ScreenTimeSettingsUI12UsageDetails earliestUsageDateForUserWithAltDSID:v15 deviceActivityIdentifier:v16 error:&obj];
+  v29 = dCopy;
+  v19 = [_TtC20ScreenTimeSettingsUI12UsageDetails earliestUsageDateForUserWithAltDSID:dCopy deviceActivityIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v67, obj);
   if (v19)
   {
@@ -2612,15 +2612,15 @@ void __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageB
     v44[1] = 3221225472;
     v44[2] = __208__STUsageDetailsViewModelCoordinator__loadAllHistoricalDeviceActivityForUserWithAltDSID_deviceActivityIdentifier_selectedItemDisplayName_selectedDay_selectedWeek_hadUsageData_referenceDate_completionHandler___block_invoke;
     v44[3] = &unk_279B7E778;
-    v58 = a7;
-    v60 = a8;
-    v45 = v17;
+    weekCopy = week;
+    dataCopy = data;
+    v45 = dateCopy;
     v46 = v29;
     v55 = &v62;
-    v47 = v16;
-    v48 = self;
-    v49 = v34;
-    v59 = a6;
+    v47 = identifierCopy;
+    selfCopy = self;
+    v49 = nameCopy;
+    dayCopy = day;
     v20 = v33;
     v50 = v20;
     v51 = v19;
@@ -2632,20 +2632,20 @@ void __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageB
     v22 = v30;
     v54 = v22;
     [STUsageDetailsViewModel _enumerateWeeklyReportStartDatesWithReferenceDate:v45 ascending:0 block:v44];
-    v23 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __208__STUsageDetailsViewModelCoordinator__loadAllHistoricalDeviceActivityForUserWithAltDSID_deviceActivityIdentifier_selectedItemDisplayName_selectedDay_selectedWeek_hadUsageData_referenceDate_completionHandler___block_invoke_262;
     v35[3] = &unk_279B7E7A0;
     v36 = v20;
-    v37 = self;
+    selfCopy2 = self;
     v41 = v70;
     v38 = v22;
     v39 = v21;
-    v43 = a7;
-    v40 = v18;
+    weekCopy2 = week;
+    v40 = handlerCopy;
     v42 = &v62;
-    [v23 addOperationWithBlock:v35];
+    [mainQueue addOperationWithBlock:v35];
 
     v24 = v45;
   }
@@ -2653,7 +2653,7 @@ void __171__STUsageDetailsViewModelCoordinator__loadAllHistoricalUsageWithUsageB
   else
   {
     v25 = v63[5];
-    v26 = v18;
+    v26 = handlerCopy;
     v27 = v25;
     if (v26)
     {
@@ -2843,25 +2843,25 @@ void __208__STUsageDetailsViewModelCoordinator__loadAllHistoricalDeviceActivityF
   }
 }
 
-- (void)_updateWeekAndDayReportsWithUsageItems:(id)a3 weekStartDate:(id)a4 lastUpdatedDate:(id)a5 referenceDate:(id)a6 selectedItemDisplayName:(id)a7 isSelectedWeek:(BOOL)a8 selectedDay:(unint64_t)a9 weekUsageReports:(id)a10 dayUsageReports:(id)a11 dayUsageReportByWeekdays:(id)a12 firstPickupByWeekdayByWeek:(id)a13
+- (void)_updateWeekAndDayReportsWithUsageItems:(id)items weekStartDate:(id)date lastUpdatedDate:(id)updatedDate referenceDate:(id)referenceDate selectedItemDisplayName:(id)name isSelectedWeek:(BOOL)week selectedDay:(unint64_t)day weekUsageReports:(id)self0 dayUsageReports:(id)self1 dayUsageReportByWeekdays:(id)self2 firstPickupByWeekdayByWeek:(id)self3
 {
-  v45 = a8;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v41 = a6;
-  v20 = a7;
-  v37 = a11;
-  v39 = a13;
-  v21 = a12;
-  v22 = a10;
-  v23 = [[STUsageReport alloc] initWithReportType:0 startDate:v18 lastUpdatedDate:v19 firstPickup:0 usageItems:v17];
-  v38 = v20;
-  [(STUsageReport *)v23 setDisplayName:v20];
-  [v22 addObject:v23];
+  weekCopy = week;
+  itemsCopy = items;
+  dateCopy = date;
+  updatedDateCopy = updatedDate;
+  referenceDateCopy = referenceDate;
+  nameCopy = name;
+  usageReportsCopy = usageReports;
+  byWeekCopy = byWeek;
+  weekdaysCopy = weekdays;
+  reportsCopy = reports;
+  v23 = [[STUsageReport alloc] initWithReportType:0 startDate:dateCopy lastUpdatedDate:updatedDateCopy firstPickup:0 usageItems:itemsCopy];
+  v38 = nameCopy;
+  [(STUsageReport *)v23 setDisplayName:nameCopy];
+  [reportsCopy addObject:v23];
 
-  v24 = [MEMORY[0x277CCABD8] mainQueue];
-  if (v45)
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  if (weekCopy)
   {
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
@@ -2869,12 +2869,12 @@ void __208__STUsageDetailsViewModelCoordinator__loadAllHistoricalDeviceActivityF
     v60[3] = &unk_279B7CAE0;
     v60[4] = self;
     v61 = v23;
-    [v24 addOperationWithBlock:v60];
+    [mainQueue addOperationWithBlock:v60];
   }
 
   v42 = v23;
-  v40 = v21;
-  if (v21)
+  v40 = weekdaysCopy;
+  if (weekdaysCopy)
   {
     v25 = objc_opt_new();
   }
@@ -2885,35 +2885,35 @@ void __208__STUsageDetailsViewModelCoordinator__loadAllHistoricalDeviceActivityF
   }
 
   v26 = MEMORY[0x277CCABB0];
-  v27 = [MEMORY[0x277CBEA80] currentCalendar];
-  v28 = [v26 numberWithInteger:{objc_msgSend(v27, "component:fromDate:", 0x2000, v18)}];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v28 = [v26 numberWithInteger:{objc_msgSend(currentCalendar, "component:fromDate:", 0x2000, dateCopy)}];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __257__STUsageDetailsViewModelCoordinator__updateWeekAndDayReportsWithUsageItems_weekStartDate_lastUpdatedDate_referenceDate_selectedItemDisplayName_isSelectedWeek_selectedDay_weekUsageReports_dayUsageReports_dayUsageReportByWeekdays_firstPickupByWeekdayByWeek___block_invoke_2;
   v47[3] = &unk_279B7E7C8;
-  v48 = v41;
-  v49 = v19;
-  v50 = v39;
+  v48 = referenceDateCopy;
+  v49 = updatedDateCopy;
+  v50 = byWeekCopy;
   v51 = v28;
-  v52 = v17;
+  v52 = itemsCopy;
   v53 = v38;
   v57 = v25;
   v58 = v36;
-  v59 = v45;
-  v54 = v37;
-  v55 = v24;
-  v56 = self;
+  v59 = weekCopy;
+  v54 = usageReportsCopy;
+  v55 = mainQueue;
+  selfCopy = self;
   v29 = v25;
-  v46 = v24;
-  v30 = v37;
+  v46 = mainQueue;
+  v30 = usageReportsCopy;
   v44 = v38;
-  v31 = v17;
+  v31 = itemsCopy;
   v32 = v28;
-  v33 = v39;
-  v34 = v19;
-  v35 = v41;
-  [STUsageDetailsViewModel _enumerateDayReportStartDatesWithStartOfWeek:v18 ascending:1 block:v47];
+  v33 = byWeekCopy;
+  v34 = updatedDateCopy;
+  v35 = referenceDateCopy;
+  [STUsageDetailsViewModel _enumerateDayReportStartDatesWithStartOfWeek:dateCopy ascending:1 block:v47];
   [v40 addObject:v29];
 }
 

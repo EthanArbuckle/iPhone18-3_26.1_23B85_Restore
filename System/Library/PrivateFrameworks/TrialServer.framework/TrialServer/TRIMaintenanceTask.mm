@@ -1,24 +1,24 @@
 @interface TRIMaintenanceTask
-+ (id)parseFromData:(id)a3;
++ (id)parseFromData:(id)data;
 + (id)task;
-- (BOOL)_cleanupLocalTempStorageWithPaths:(id)a3;
-- (BOOL)_cleanupTreatmentWithTreatmentId:(id)a3 paths:(id)a4;
-- (BOOL)_cleanupUnusedContentWithContext:(id)a3 nextTasks:(id)a4;
+- (BOOL)_cleanupLocalTempStorageWithPaths:(id)paths;
+- (BOOL)_cleanupTreatmentWithTreatmentId:(id)id paths:(id)paths;
+- (BOOL)_cleanupUnusedContentWithContext:(id)context nextTasks:(id)tasks;
 - (TRIMaintenanceTask)init;
-- (TRIMaintenanceTask)initWithCoder:(id)a3;
+- (TRIMaintenanceTask)initWithCoder:(id)coder;
 - (id)_asPersistedTask;
 - (id)dimensions;
 - (id)metrics;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (id)trialSystemTelemetry;
-- (void)_handleExpiredExperimentsWithExperimentDatabase:(id)a3 nextTasks:(id)a4;
-- (void)_handleOrphanedNamespacesWithNamespaceDatabase:(id)a3 nextTasks:(id)a4;
-- (void)_synchronizePushService:(id)a3 usingRolloutDatabase:(id)a4 experimentDatabase:(id)a5;
-- (void)addDimension:(id)a3;
-- (void)addMetric:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeTelemetry:(id)a3;
+- (void)_handleExpiredExperimentsWithExperimentDatabase:(id)database nextTasks:(id)tasks;
+- (void)_handleOrphanedNamespacesWithNamespaceDatabase:(id)database nextTasks:(id)tasks;
+- (void)_synchronizePushService:(id)service usingRolloutDatabase:(id)database experimentDatabase:(id)experimentDatabase;
+- (void)addDimension:(id)dimension;
+- (void)addMetric:(id)metric;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeTelemetry:(id)telemetry;
 @end
 
 @implementation TRIMaintenanceTask
@@ -40,9 +40,9 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     channelCleanupQueue = v2->_channelCleanupQueue;
     v2->_channelCleanupQueue = v7;
 
@@ -67,15 +67,15 @@
   return v2;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v104[12] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v59 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v7 = objc_opt_new();
-  v65 = self;
-  v8 = [(TRIBaseTask *)self stateProvider];
-  v9 = [v8 activeActivityDescriptorGrantingCapability:24];
+  selfCopy = self;
+  stateProvider = [(TRIBaseTask *)self stateProvider];
+  v9 = [stateProvider activeActivityDescriptorGrantingCapability:24];
 
   v97 = 0;
   v98 = &v97;
@@ -87,8 +87,8 @@
   v94[1] = 3221225472;
   v94[2] = __52__TRIMaintenanceTask_runUsingContext_withTaskQueue___block_invoke;
   v94[3] = &unk_279DE0080;
-  v94[4] = v65;
-  v11 = v6;
+  v94[4] = selfCopy;
+  v11 = contextCopy;
   v95 = v11;
   v12 = v7;
   v96 = v12;
@@ -99,7 +99,7 @@
   v91[1] = 3221225472;
   v91[2] = __52__TRIMaintenanceTask_runUsingContext_withTaskQueue___block_invoke_2;
   v91[3] = &unk_279DE0080;
-  v91[4] = v65;
+  v91[4] = selfCopy;
   v14 = v11;
   v92 = v14;
   v15 = v12;
@@ -112,7 +112,7 @@
   v87[2] = __52__TRIMaintenanceTask_runUsingContext_withTaskQueue___block_invoke_3;
   v87[3] = &unk_279DE4BD8;
   v90 = &v97;
-  v87[4] = v65;
+  v87[4] = selfCopy;
   v17 = v14;
   v88 = v17;
   v60 = v15;
@@ -124,7 +124,7 @@
   v85[1] = 3221225472;
   v85[2] = __52__TRIMaintenanceTask_runUsingContext_withTaskQueue___block_invoke_4;
   v85[3] = &unk_279DDF7A0;
-  v85[4] = v65;
+  v85[4] = selfCopy;
   v19 = v17;
   v86 = v19;
   v62 = [(TRIMaintenanceSubTask *)v18 initWithName:@"Synchronise push connections" subtaskBlock:v85];
@@ -217,21 +217,21 @@
         v46 = *(*(&v67 + 1) + 8 * i);
         if (v9)
         {
-          v47 = [v9 shouldDefer];
-          v48 = v47[2]();
+          shouldDefer = [v9 shouldDefer];
+          v48 = shouldDefer[2]();
 
           if (v48)
           {
             v54 = TRILogCategory_Server();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
             {
-              v55 = [v46 name];
+              name = [v46 name];
               *buf = 138412290;
-              v102 = v55;
+              v102 = name;
               _os_log_impl(&dword_26F567000, v54, OS_LOG_TYPE_DEFAULT, "Deferral requested during maintenance task before running subtask: %@", buf, 0xCu);
             }
 
-            v65->wasDeferred = 1;
+            selfCopy->wasDeferred = 1;
             v53 = v61;
 
             goto LABEL_19;
@@ -241,14 +241,14 @@
         v49 = TRILogCategory_Server();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
         {
-          v50 = [v46 name];
+          name2 = [v46 name];
           *buf = 138412290;
-          v102 = v50;
+          v102 = name2;
           _os_log_impl(&dword_26F567000, v49, OS_LOG_TYPE_DEFAULT, "Beginning maintenance subtask: %@", buf, 0xCu);
         }
 
-        v51 = [v46 block];
-        v51[2]();
+        block = [v46 block];
+        block[2]();
       }
 
       v43 = [v42 countByEnumeratingWithState:&v67 objects:v103 count:16];
@@ -393,11 +393,11 @@ uint64_t __52__TRIMaintenanceTask_runUsingContext_withTaskQueue___block_invoke_5
   return result;
 }
 
-- (void)_handleExpiredExperimentsWithExperimentDatabase:(id)a3 nextTasks:(id)a4
+- (void)_handleExpiredExperimentsWithExperimentDatabase:(id)database nextTasks:(id)tasks
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  tasksCopy = tasks;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -406,10 +406,10 @@ uint64_t __52__TRIMaintenanceTask_runUsingContext_withTaskQueue___block_invoke_5
   v14 = 3221225472;
   v15 = __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_nextTasks___block_invoke;
   v16 = &unk_279DE19B0;
-  v8 = v7;
+  v8 = tasksCopy;
   v17 = v8;
   v18 = &v19;
-  [v6 enumerateExperimentRecordsWithBlock:&v13];
+  [databaseCopy enumerateExperimentRecordsWithBlock:&v13];
   v9 = TRILogCategory_Server();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -457,28 +457,28 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_cleanupTreatmentWithTreatmentId:(id)a3 paths:(id)a4
+- (BOOL)_cleanupTreatmentWithTreatmentId:(id)id paths:(id)paths
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  pathsCopy = paths;
   v7 = TRILogCategory_Server();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = idCopy;
     _os_log_impl(&dword_26F567000, v7, OS_LOG_TYPE_DEFAULT, "Removing treatment %@.", &v13, 0xCu);
   }
 
-  v8 = [[TRIClientTreatmentStorage alloc] initWithPaths:v6];
-  v9 = [(TRIClientTreatmentStorage *)v8 removeTreatmentWithTreatmentId:v5];
+  v8 = [[TRIClientTreatmentStorage alloc] initWithPaths:pathsCopy];
+  v9 = [(TRIClientTreatmentStorage *)v8 removeTreatmentWithTreatmentId:idCopy];
   if (!v9)
   {
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = idCopy;
       _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, "Could not remove treatment %@.", &v13, 0xCu);
     }
   }
@@ -487,18 +487,18 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   return v9;
 }
 
-- (BOOL)_cleanupUnusedContentWithContext:(id)a3 nextTasks:(id)a4
+- (BOOL)_cleanupUnusedContentWithContext:(id)context nextTasks:(id)tasks
 {
   v165 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v126 = a4;
+  contextCopy = context;
+  tasksCopy = tasks;
   v7 = [TRINamespaceResolverStorage alloc];
-  v8 = [v6 paths];
-  v9 = [(TRINamespaceResolverStorage *)v7 initWithPaths:v8];
+  paths = [contextCopy paths];
+  v9 = [(TRINamespaceResolverStorage *)v7 initWithPaths:paths];
 
   v159 = 0;
-  v10 = [(TRINamespaceResolverStorage *)v9 removeUnreferencedRolloutDeploymentsWithServerContext:v6 removedCount:&v159];
-  v130 = v6;
+  v10 = [(TRINamespaceResolverStorage *)v9 removeUnreferencedRolloutDeploymentsWithServerContext:contextCopy removedCount:&v159];
+  v130 = contextCopy;
   if (v10)
   {
     v11 = TRILogCategory_Server();
@@ -511,7 +511,7 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   }
 
   v159 = 0;
-  v12 = [(TRINamespaceResolverStorage *)v9 removeUnreferencedExperimentDeploymentsWithServerContext:v6 removedCount:&v159];
+  v12 = [(TRINamespaceResolverStorage *)v9 removeUnreferencedExperimentDeploymentsWithServerContext:contextCopy removedCount:&v159];
   if (v12)
   {
     v13 = TRILogCategory_Server();
@@ -541,8 +541,8 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
 
   v18 = [TRIFactorPackSetStorage alloc];
   v19 = v130;
-  v20 = [v130 paths];
-  v21 = [(TRIFactorPackSetStorage *)v18 initWithPaths:v20];
+  paths2 = [v130 paths];
+  v21 = [(TRIFactorPackSetStorage *)v18 initWithPaths:paths2];
 
   v159 = 0;
   v22 = [(TRIFactorPackSetStorage *)v21 removeUnreferencedFactorPackSetsWithServerContext:v130 removedCount:&v159];
@@ -562,8 +562,8 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   v24 = v17 & v22;
 
   v25 = [TRIFactorPackStorage alloc];
-  v26 = [v19 paths];
-  v27 = [(TRIFactorPackStorage *)v25 initWithPaths:v26];
+  paths3 = [v19 paths];
+  v27 = [(TRIFactorPackStorage *)v25 initWithPaths:paths3];
 
   v159 = 0;
   v28 = [(TRIFactorPackStorage *)v27 removeUnreferencedFactorPacksWithRemovedCount:&v159];
@@ -584,8 +584,8 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   if (self->_isFlatbufferWriteEnabled)
   {
     v31 = [TRIFBFactorPackStorage alloc];
-    v32 = [v19 paths];
-    v33 = [(TRIFBFactorPackStorage *)v31 initWithPaths:v32];
+    paths4 = [v19 paths];
+    v33 = [(TRIFBFactorPackStorage *)v31 initWithPaths:paths4];
 
     v158 = 0;
     v34 = [(TRIFBFactorPackStorage *)v33 removeUnreferencedFactorLevelsWithRemovedCount:&v158];
@@ -628,8 +628,8 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   }
 
   v38 = [TRINamespaceDescriptorSetStorage alloc];
-  v39 = [v19 paths];
-  v40 = [(TRINamespaceDescriptorSetStorage *)v38 initWithPaths:v39];
+  paths5 = [v19 paths];
+  v40 = [(TRINamespaceDescriptorSetStorage *)v38 initWithPaths:paths5];
 
   v41 = v130;
   v159 = 0;
@@ -648,8 +648,8 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   }
 
   v44 = [TRIClientTreatmentStorage alloc];
-  v45 = [v41 paths];
-  v46 = [(TRIClientTreatmentStorage *)v44 initWithPaths:v45];
+  paths6 = [v41 paths];
+  v46 = [(TRIClientTreatmentStorage *)v44 initWithPaths:paths6];
 
   v159 = 0;
   v47 = [(TRIClientTreatmentStorage *)v46 removeUnreferencedTreatmentsWithRemovedCount:&v159];
@@ -665,14 +665,14 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
   }
 
   v49 = objc_opt_new();
-  v50 = [v130 contentTracker];
+  contentTracker = [v130 contentTracker];
   v156[0] = MEMORY[0x277D85DD0];
   v156[1] = 3221225472;
   v156[2] = __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block_invoke;
   v156[3] = &unk_279DE4C00;
   v51 = v49;
   v157 = v51;
-  v52 = v47 & v42 & [v50 enumerateTrackedItemsWithBlock:v156] & v30;
+  v52 = v47 & v42 & [contentTracker enumerateTrackedItemsWithBlock:v156] & v30;
 
   v154 = 0u;
   v155 = 0u;
@@ -708,21 +708,21 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
       if (v60)
       {
         v52 = v52 & (v60 != 0);
-        v62 = [v60 type];
-        if (v62 == 2)
+        type = [v60 type];
+        if (type == 2)
         {
-          v63 = [v61 rollout];
-          if (!v63)
+          rollout = [v61 rollout];
+          if (!rollout)
           {
-            v85 = [MEMORY[0x277CCA890] currentHandler];
-            [v85 handleFailureInMethod:v125 object:self file:@"TRIMaintenanceTask.m" lineNumber:622 description:{@"Invalid parameter not satisfying: %@", @"rolloutDeployment"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:v125 object:self file:@"TRIMaintenanceTask.m" lineNumber:622 description:{@"Invalid parameter not satisfying: %@", @"rolloutDeployment"}];
           }
 
-          v74 = [v56 contentTracker];
-          [v74 clearRefsWithContentIdentifier:v58];
+          contentTracker2 = [v56 contentTracker];
+          [contentTracker2 clearRefsWithContentIdentifier:v58];
 
-          v75 = [v56 rolloutDatabase];
-          v76 = [v75 removeRecordWithDeployment:v63 usingRefCounting:1];
+          rolloutDatabase = [v56 rolloutDatabase];
+          v76 = [rolloutDatabase removeRecordWithDeployment:rollout usingRefCounting:1];
 
           v77 = v76 == 0;
           v56 = v130;
@@ -735,22 +735,22 @@ void __80__TRIMaintenanceTask__handleExpiredExperimentsWithExperimentDatabase_ne
           goto LABEL_77;
         }
 
-        if (v62 == 1)
+        if (type == 1)
         {
-          v63 = [v61 treatment];
-          if (!v63)
+          rollout = [v61 treatment];
+          if (!rollout)
           {
-            v84 = [MEMORY[0x277CCA890] currentHandler];
-            [v84 handleFailureInMethod:v125 object:self file:@"TRIMaintenanceTask.m" lineNumber:602 description:{@"Invalid parameter not satisfying: %@", @"desc"}];
+            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler2 handleFailureInMethod:v125 object:self file:@"TRIMaintenanceTask.m" lineNumber:602 description:{@"Invalid parameter not satisfying: %@", @"desc"}];
 
             v53 = v128;
           }
 
-          v70 = [v56 paths];
-          if (v70)
+          paths7 = [v56 paths];
+          if (paths7)
           {
-            v71 = [v63 treatmentId];
-            v72 = [(TRIMaintenanceTask *)self _cleanupTreatmentWithTreatmentId:v71 paths:v70];
+            treatmentId = [rollout treatmentId];
+            v72 = [(TRIMaintenanceTask *)self _cleanupTreatmentWithTreatmentId:treatmentId paths:paths7];
 
             if (!v72)
             {
@@ -770,10 +770,10 @@ LABEL_73:
             v78 = TRILogCategory_Server();
             if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
             {
-              v79 = [v63 container];
-              v80 = [v79 identifier];
+              container = [rollout container];
+              identifier = [container identifier];
               *buf = 138543362;
-              *v162 = v80;
+              *v162 = identifier;
               _os_log_impl(&dword_26F567000, v78, OS_LOG_TYPE_DEFAULT, "Not removing treatment from missing app container: %{public}@", buf, 0xCu);
             }
 
@@ -781,37 +781,37 @@ LABEL_73:
           }
 
           v56 = v130;
-          v81 = [v130 contentTracker];
-          [v81 clearRefsWithContentIdentifier:v58];
+          contentTracker3 = [v130 contentTracker];
+          [contentTracker3 clearRefsWithContentIdentifier:v58];
 
           v73 = 1;
           goto LABEL_73;
         }
 
-        if (v62)
+        if (type)
         {
           goto LABEL_78;
         }
 
-        v63 = [v61 experiment];
-        if (!v63)
+        rollout = [v61 experiment];
+        if (!rollout)
         {
-          v86 = [MEMORY[0x277CCA890] currentHandler];
-          [v86 handleFailureInMethod:v125 object:self file:@"TRIMaintenanceTask.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment"}];
+          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler3 handleFailureInMethod:v125 object:self file:@"TRIMaintenanceTask.m" lineNumber:558 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment"}];
         }
 
-        v64 = [v56 experimentDatabase];
-        v65 = [v64 experimentRecordWithExperimentDeployment:v63];
+        experimentDatabase = [v56 experimentDatabase];
+        v65 = [experimentDatabase experimentRecordWithExperimentDeployment:rollout];
 
         if (v65)
         {
           if ([v65 status] != 4 || objc_msgSend(v65, "isExpiredExperiment"))
           {
-            v66 = [v56 contentTracker];
-            [v66 clearRefsWithContentIdentifier:v58];
+            contentTracker4 = [v56 contentTracker];
+            [contentTracker4 clearRefsWithContentIdentifier:v58];
 
-            v67 = [v56 experimentDatabase];
-            v68 = [v67 removeExperimentRecordWithExperimentDeployment:v63];
+            experimentDatabase2 = [v56 experimentDatabase];
+            v68 = [experimentDatabase2 removeExperimentRecordWithExperimentDeployment:rollout];
 
             if (!v68)
             {
@@ -819,22 +819,22 @@ LABEL_73:
             }
           }
 
-          v69 = [v56 limitedCarryManager];
-          [v69 removeProfileForExperiment:v63];
+          limitedCarryManager = [v56 limitedCarryManager];
+          [limitedCarryManager removeProfileForExperiment:rollout];
         }
 
         else
         {
-          v69 = TRILogCategory_Server();
-          if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+          limitedCarryManager = TRILogCategory_Server();
+          if (os_log_type_enabled(limitedCarryManager, OS_LOG_TYPE_ERROR))
           {
-            v82 = [v63 experimentId];
-            v83 = [v63 deploymentId];
+            experimentId = [rollout experimentId];
+            deploymentId = [rollout deploymentId];
             *buf = 138543618;
-            *v162 = v82;
+            *v162 = experimentId;
             *&v162[8] = 1024;
-            v163 = v83;
-            _os_log_error_impl(&dword_26F567000, v69, OS_LOG_TYPE_ERROR, "Could not find experiment record for experiment deployment with experiment id: %{public}@ & deployment id:  %d", buf, 0x12u);
+            v163 = deploymentId;
+            _os_log_error_impl(&dword_26F567000, limitedCarryManager, OS_LOG_TYPE_ERROR, "Could not find experiment record for experiment deployment with experiment id: %{public}@ & deployment id:  %d", buf, 0x12u);
           }
         }
 
@@ -844,8 +844,8 @@ LABEL_73:
 
       else
       {
-        v63 = [v56 contentTracker];
-        [v63 clearRefsWithContentIdentifier:v58];
+        rollout = [v56 contentTracker];
+        [rollout clearRefsWithContentIdentifier:v58];
         v52 = 0;
       }
 
@@ -862,8 +862,8 @@ LABEL_78:
 LABEL_82:
 
   v87 = [TRIAssetStoreDatabase alloc];
-  v88 = [v56 paths];
-  v132 = [(TRIAssetStoreDatabase *)v87 initWithPaths:v88 storageManagement:0];
+  paths8 = [v56 paths];
+  v132 = [(TRIAssetStoreDatabase *)v87 initWithPaths:paths8 storageManagement:0];
 
   v89 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v150[0] = MEMORY[0x277D85DD0];
@@ -880,7 +880,7 @@ LABEL_82:
 
   v95 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v96 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v97 = [v92 rolloutDatabase];
+  rolloutDatabase2 = [v92 rolloutDatabase];
   v145[0] = MEMORY[0x277D85DD0];
   v145[1] = 3221225472;
   v145[2] = __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block_invoke_2;
@@ -893,24 +893,24 @@ LABEL_82:
   v99 = v96;
   v100 = v90;
   v101 = v94;
-  [v97 enumerateActiveRecordsUsingTransaction:0 block:v145];
+  [rolloutDatabase2 enumerateActiveRecordsUsingTransaction:0 block:v145];
 
   v102 = [TRIFactorPackSetStorage alloc];
-  v103 = [v92 paths];
-  v104 = [(TRIFactorPackSetStorage *)v102 initWithPaths:v103];
+  paths9 = [v92 paths];
+  v104 = [(TRIFactorPackSetStorage *)v102 initWithPaths:paths9];
 
   v142[0] = MEMORY[0x277D85DD0];
   v142[1] = 3221225472;
   v142[2] = __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block_invoke_155;
   v142[3] = &unk_279DE4C78;
-  v105 = v126;
+  v105 = tasksCopy;
   v143 = v105;
   v144 = v104;
   v106 = v104;
   [v99 enumerateObjectsUsingBlock:v142];
   v107 = [TRIFactorPackStorage alloc];
-  v108 = [v92 paths];
-  v109 = [(TRIFactorPackStorage *)v107 initWithPaths:v108];
+  paths10 = [v92 paths];
+  v109 = [(TRIFactorPackStorage *)v107 initWithPaths:paths10];
 
   v140[0] = MEMORY[0x277D85DD0];
   v140[1] = 3221225472;
@@ -921,10 +921,10 @@ LABEL_82:
   [v98 enumerateKeysAndObjectsUsingBlock:v140];
 
   v111 = objc_opt_new();
-  v112 = [v92 paths];
-  [v111 addObject:v112];
+  paths11 = [v92 paths];
+  [v111 addObject:paths11];
 
-  v113 = [v92 namespaceDatabase];
+  namespaceDatabase = [v92 namespaceDatabase];
   v137[0] = MEMORY[0x277D85DD0];
   v137[1] = 3221225472;
   v137[2] = __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block_invoke_161;
@@ -933,7 +933,7 @@ LABEL_82:
   v138 = v114;
   v115 = v111;
   v139 = v115;
-  v116 = v52 & [v113 enumerateDynamicNamespaceRecordsWithBlock:v137];
+  v116 = v52 & [namespaceDatabase enumerateDynamicNamespaceRecordsWithBlock:v137];
 
   v135 = 0u;
   v136 = 0u;
@@ -1231,10 +1231,10 @@ void __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleOrphanedNamespacesWithNamespaceDatabase:(id)a3 nextTasks:(id)a4
+- (void)_handleOrphanedNamespacesWithNamespaceDatabase:(id)database nextTasks:(id)tasks
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_new();
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -1242,7 +1242,7 @@ void __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block
   v30[3] = &unk_279DDF748;
   v6 = v5;
   v31 = v6;
-  [v4 enumerateDynamicNamespaceRecordsWithBlock:v30];
+  [databaseCopy enumerateDynamicNamespaceRecordsWithBlock:v30];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1264,8 +1264,8 @@ void __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v4 removeDynamicNamespaceRecordWithNamespaceName:v14];
+        name = [v13 name];
+        v15 = [databaseCopy removeDynamicNamespaceRecordWithNamespaceName:name];
 
         v16 = TRILogCategory_Server();
         v17 = v16;
@@ -1273,13 +1273,13 @@ void __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v13 name];
-            v19 = [v13 appContainer];
-            v20 = [v19 identifier];
+            name2 = [v13 name];
+            appContainer = [v13 appContainer];
+            identifier = [appContainer identifier];
             *buf = 138543618;
-            v33 = v18;
+            v33 = name2;
             v34 = 2114;
-            v35 = v20;
+            v35 = identifier;
             _os_log_impl(&dword_26F567000, v17, OS_LOG_TYPE_DEFAULT, "removed dynamic namespace %{public}@ registered to app container %{public}@", buf, 0x16u);
           }
 
@@ -1290,9 +1290,9 @@ void __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v21 = [v13 name];
+            name3 = [v13 name];
             *buf = 138543362;
-            v33 = v21;
+            v33 = name3;
             _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "Unable to deregister namespace %{public}@", buf, 0xCu);
           }
         }
@@ -1312,9 +1312,9 @@ void __65__TRIMaintenanceTask__cleanupUnusedContentWithContext_nextTasks___block
   v22 = TRILogCategory_Server();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(TRIBaseTask *)self taskName];
+    taskName = [(TRIBaseTask *)self taskName];
     *buf = 138543618;
-    v33 = v23;
+    v33 = taskName;
     v34 = 1024;
     LODWORD(v35) = v10;
     _os_log_impl(&dword_26F567000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ deregistered %u dynamic namespaces", buf, 0x12u);
@@ -1334,19 +1334,19 @@ void __79__TRIMaintenanceTask__handleOrphanedNamespacesWithNamespaceDatabase_nex
   }
 }
 
-- (BOOL)_cleanupLocalTempStorageWithPaths:(id)a3
+- (BOOL)_cleanupLocalTempStorageWithPaths:(id)paths
 {
-  v3 = [a3 localTempDir];
-  v4 = [TRITempDirScopeGuard ifUnreferencedCleanupPath:v3];
+  localTempDir = [paths localTempDir];
+  v4 = [TRITempDirScopeGuard ifUnreferencedCleanupPath:localTempDir];
 
   return v4;
 }
 
-- (void)_synchronizePushService:(id)a3 usingRolloutDatabase:(id)a4 experimentDatabase:(id)a5
+- (void)_synchronizePushService:(id)service usingRolloutDatabase:(id)database experimentDatabase:(id)experimentDatabase
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  serviceCopy = service;
+  experimentDatabaseCopy = experimentDatabase;
+  databaseCopy = database;
   v11 = objc_opt_new();
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -1354,7 +1354,7 @@ void __79__TRIMaintenanceTask__handleOrphanedNamespacesWithNamespaceDatabase_nex
   v25[3] = &unk_279DE0700;
   v12 = v11;
   v26 = v12;
-  [v10 enumerateActiveRecordsUsingTransaction:0 block:v25];
+  [databaseCopy enumerateActiveRecordsUsingTransaction:0 block:v25];
 
   v13 = objc_opt_new();
   v23[0] = MEMORY[0x277D85DD0];
@@ -1363,19 +1363,19 @@ void __79__TRIMaintenanceTask__handleOrphanedNamespacesWithNamespaceDatabase_nex
   v23[3] = &unk_279DE0728;
   v14 = v13;
   v24 = v14;
-  [v9 enumerateActiveExperimentRecordsWithBlock:v23];
+  [experimentDatabaseCopy enumerateActiveExperimentRecordsWithBlock:v23];
 
   channelCleanupQueue = self->_channelCleanupQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__TRIMaintenanceTask__synchronizePushService_usingRolloutDatabase_experimentDatabase___block_invoke_3;
   block[3] = &unk_279DE0080;
-  v20 = v8;
+  v20 = serviceCopy;
   v21 = v12;
   v22 = v14;
   v16 = v14;
   v17 = v12;
-  v18 = v8;
+  v18 = serviceCopy;
   dispatch_async(channelCleanupQueue, block);
 }
 
@@ -1394,16 +1394,16 @@ void __86__TRIMaintenanceTask__synchronizePushService_usingRolloutDatabase_exper
   [v2 addObject:v3];
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__TRIMaintenanceTask_addMetric___block_invoke;
   v7[3] = &unk_279DE4CC8;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricCopy;
+  v6 = metricCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -1425,16 +1425,16 @@ uint64_t __32__TRIMaintenanceTask_addMetric___block_invoke(uint64_t a1, void *a2
   return [v3 addObject:v8];
 }
 
-- (void)addDimension:(id)a3
+- (void)addDimension:(id)dimension
 {
-  v4 = a3;
+  dimensionCopy = dimension;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__TRIMaintenanceTask_addDimension___block_invoke;
   v7[3] = &unk_279DE4CC8;
-  v8 = v4;
-  v6 = v4;
+  v8 = dimensionCopy;
+  v6 = dimensionCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -1456,16 +1456,16 @@ uint64_t __35__TRIMaintenanceTask_addDimension___block_invoke(uint64_t a1, void 
   return [v3 addObject:v8];
 }
 
-- (void)mergeTelemetry:(id)a3
+- (void)mergeTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__TRIMaintenanceTask_mergeTelemetry___block_invoke;
   v7[3] = &unk_279DE4CC8;
-  v8 = v4;
-  v6 = v4;
+  v8 = telemetryCopy;
+  v6 = telemetryCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -1591,40 +1591,40 @@ uint64_t __42__TRIMaintenanceTask_trialSystemTelemetry__block_invoke(uint64_t re
 
 - (id)serialize
 {
-  v4 = [(TRIMaintenanceTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIMaintenanceTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIMaintenanceTask.m" lineNumber:869 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIMaintenanceTask.m" lineNumber:869 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
   v10 = 0;
-  v3 = [(TRIPBMessage *)TRIMaintenancePersistedTask parseFromData:a3 error:&v10];
+  v3 = [(TRIPBMessage *)TRIMaintenancePersistedTask parseFromData:data error:&v10];
   v4 = v10;
   if (v3)
   {
     v5 = objc_opt_new();
     if ([v3 hasRetryCount])
     {
-      v6 = [v3 retryCount];
+      retryCount = [v3 retryCount];
     }
 
     else
     {
-      v6 = 0;
+      retryCount = 0;
     }
 
-    [v5 setRetryCount:v6];
+    [v5 setRetryCount:retryCount];
   }
 
   else
@@ -1645,15 +1645,15 @@ uint64_t __42__TRIMaintenanceTask_trialSystemTelemetry__block_invoke(uint64_t re
   return v5;
 }
 
-- (TRIMaintenanceTask)initWithCoder:(id)a3
+- (TRIMaintenanceTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIMaintenanceTask;
   v5 = [(TRIMaintenanceTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -1673,18 +1673,18 @@ uint64_t __42__TRIMaintenanceTask_trialSystemTelemetry__block_invoke(uint64_t re
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIMaintenanceTask.m" lineNumber:887 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIMaintenanceTask.m" lineNumber:887 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIMaintenanceTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIMaintenanceTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

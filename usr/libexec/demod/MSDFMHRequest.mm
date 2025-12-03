@@ -3,7 +3,7 @@
 - (MSDFMHRequest)init;
 - (id)getPostData;
 - (id)getUrl;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDFMHRequest
@@ -34,8 +34,8 @@
     return 0;
   }
 
-  v3 = [(MSDFMHRequest *)self bundleInfo];
-  v4 = v3 != 0;
+  bundleInfo = [(MSDFMHRequest *)self bundleInfo];
+  v4 = bundleInfo != 0;
 
   return v4;
 }
@@ -45,37 +45,37 @@
   if ([(MSDFMHRequest *)self isValid])
   {
     v3 = objc_opt_new();
-    v4 = [(MSDFMHRequest *)self storeId];
+    storeId = [(MSDFMHRequest *)self storeId];
 
-    if (v4)
+    if (storeId)
     {
-      v5 = [(MSDFMHRequest *)self storeId];
-      [v3 setObject:v5 forKey:@"store_id"];
+      storeId2 = [(MSDFMHRequest *)self storeId];
+      [v3 setObject:storeId2 forKey:@"store_id"];
     }
 
-    v6 = [(MSDFMHRequest *)self bundleInfo];
-    v7 = [v6 count];
+    bundleInfo = [(MSDFMHRequest *)self bundleInfo];
+    v7 = [bundleInfo count];
 
     if (v7)
     {
-      v8 = [(MSDFMHRequest *)self bundleInfo];
-      [v3 setObject:v8 forKey:@"bundle_info"];
+      bundleInfo2 = [(MSDFMHRequest *)self bundleInfo];
+      [v3 setObject:bundleInfo2 forKey:@"bundle_info"];
     }
 
-    v9 = [(MSDFMHRequest *)self countryCode];
+    countryCode = [(MSDFMHRequest *)self countryCode];
 
-    if (v9)
+    if (countryCode)
     {
-      v10 = [(MSDFMHRequest *)self countryCode];
-      [v3 setObject:v10 forKey:@"country"];
+      countryCode2 = [(MSDFMHRequest *)self countryCode];
+      [v3 setObject:countryCode2 forKey:@"country"];
     }
 
-    v11 = [(MSDFMHRequest *)self language];
+    language = [(MSDFMHRequest *)self language];
 
-    if (v11)
+    if (language)
     {
-      v12 = [(MSDFMHRequest *)self language];
-      [v3 setObject:v12 forKey:@"language"];
+      language2 = [(MSDFMHRequest *)self language];
+      [v3 setObject:language2 forKey:@"language"];
     }
 
     v13 = sub_100063A54();
@@ -86,53 +86,53 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "FMH payload: %{public}@", &v16, 0xCu);
     }
 
-    v14 = [v3 convertToNSData];
+    convertToNSData = [v3 convertToNSData];
   }
 
   else
   {
-    v14 = 0;
+    convertToNSData = 0;
   }
 
-  return v14;
+  return convertToNSData;
 }
 
 - (id)getUrl
 {
-  v3 = [(MSDFMHRequest *)self logicSync];
-  v4 = [(MSDCommandServerRequest *)self deviceUDID];
-  v5 = v4;
-  if (v3)
+  logicSync = [(MSDFMHRequest *)self logicSync];
+  deviceUDID = [(MSDCommandServerRequest *)self deviceUDID];
+  v5 = deviceUDID;
+  if (logicSync)
   {
-    v6 = [(MSDFMHRequest *)self offlineDuration];
-    v7 = [NSString stringWithFormat:@"/api/device/%@/%@/hub?duration=%@", @"4", v5, v6];
+    offlineDuration = [(MSDFMHRequest *)self offlineDuration];
+    v7 = [NSString stringWithFormat:@"/api/device/%@/%@/hub?duration=%@", @"4", v5, offlineDuration];
   }
 
   else
   {
-    v7 = [NSString stringWithFormat:@"/api/device/%@/%@/hub", @"4", v4];
+    v7 = [NSString stringWithFormat:@"/api/device/%@/%@/hub", @"4", deviceUDID];
   }
 
   return v7;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v20.receiver = self;
   v20.super_class = MSDFMHRequest;
-  v8 = [(MSDServerRequest *)&v20 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v20 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v12 = 0;
     v11 = 0;
     goto LABEL_21;
   }
 
-  v10 = [v7 objectForKey:@"statusCode"];
+  v10 = [payloadCopy objectForKey:@"statusCode"];
   if (!v10)
   {
     v16 = sub_100063A54();
@@ -160,15 +160,15 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v12 = [v7 objectForKey:@"retryAfter"];
+  v12 = [payloadCopy objectForKey:@"retryAfter"];
   if ([v11 intValue] == 202)
   {
     [v8 setRetryAfter:v12];
     goto LABEL_10;
   }
 
-  v19 = v6;
-  v13 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v19];
+  v19 = errorCopy;
+  v13 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v19];
   v14 = v19;
 
   if (v13)
@@ -176,17 +176,17 @@ LABEL_19:
     [v8 setFmhDict:v13];
 
 LABEL_9:
-    v6 = v14;
+    errorCopy = v14;
     goto LABEL_10;
   }
 
-  v6 = v14;
+  errorCopy = v14;
 LABEL_21:
-  v17 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v17)
+  if (!error2)
   {
-    v18 = v6;
+    v18 = errorCopy;
     sub_1000C1424(&v18, 3727744512, @"Unexpected server response.");
     v14 = v18;
 

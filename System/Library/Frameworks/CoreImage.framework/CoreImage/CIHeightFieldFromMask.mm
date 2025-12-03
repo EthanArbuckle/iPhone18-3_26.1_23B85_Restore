@@ -20,12 +20,12 @@
     }
 
     while (v4 >= 1.0);
-    v8 = [(CIHeightFieldFromMask *)self _CIResetalpha];
+    _CIResetalpha = [(CIHeightFieldFromMask *)self _CIResetalpha];
     [(CIImage *)self->inputImage extent];
     v9 = self->inputImage;
     v14[0] = inputImage;
     v14[1] = v9;
-    return [v8 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 2), v10, v11, v12, v13}];
+    return [_CIResetalpha applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 2), v10, v11, v12, v13}];
   }
 
   else

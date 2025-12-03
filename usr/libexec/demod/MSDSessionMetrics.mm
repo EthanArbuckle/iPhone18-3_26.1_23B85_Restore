@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (MSDSessionMetrics)init;
 - (void)dealloc;
-- (void)extractAndUploadTimingData:(id)a3 forServerType:(id)a4;
-- (void)saveToFile:(id)a3;
-- (void)saveTransactionMetric:(id)a3;
+- (void)extractAndUploadTimingData:(id)data forServerType:(id)type;
+- (void)saveToFile:(id)file;
+- (void)saveTransactionMetric:(id)metric;
 - (void)synchronizeFile;
 @end
 
@@ -38,37 +38,37 @@
   return v2;
 }
 
-- (void)extractAndUploadTimingData:(id)a3 forServerType:(id)a4
+- (void)extractAndUploadTimingData:(id)data forServerType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MSDSessionTimingData alloc] initWithData:v6 forServerType:v5];
+  typeCopy = type;
+  dataCopy = data;
+  v7 = [[MSDSessionTimingData alloc] initWithData:dataCopy forServerType:typeCopy];
 
   [(MSDSessionTimingData *)v7 uploadTimingData];
 }
 
-- (void)saveTransactionMetric:(id)a3
+- (void)saveTransactionMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   if ([(MSDSessionMetrics *)self isInternalBuild])
   {
-    v5 = [(MSDSessionMetrics *)self workQueue];
+    workQueue = [(MSDSessionMetrics *)self workQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100022D4C;
     v6[3] = &unk_10016A258;
-    v7 = v4;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = metricCopy;
+    selfCopy = self;
+    dispatch_async(workQueue, v6);
   }
 }
 
-- (void)saveToFile:(id)a3
+- (void)saveToFile:(id)file
 {
-  v4 = a3;
-  v5 = [(MSDSessionMetrics *)self fileHandle];
+  fileCopy = file;
+  fileHandle = [(MSDSessionMetrics *)self fileHandle];
 
-  if (!v5)
+  if (!fileHandle)
   {
     v6 = objc_alloc_init(NSDateFormatter);
     [v6 setDateFormat:@"dd-MM-yyyy_HH:mm"];
@@ -91,26 +91,26 @@
     [(MSDSessionMetrics *)self setFileHandle:v14];
   }
 
-  v15 = [(MSDSessionMetrics *)self fileHandle];
-  [v15 seekToEndOfFile];
+  fileHandle2 = [(MSDSessionMetrics *)self fileHandle];
+  [fileHandle2 seekToEndOfFile];
 
-  v16 = [(MSDSessionMetrics *)self fileHandle];
-  [v4 saveToFile:v16];
+  fileHandle3 = [(MSDSessionMetrics *)self fileHandle];
+  [fileCopy saveToFile:fileHandle3];
 }
 
 - (void)synchronizeFile
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MSDSessionMetrics *)obj fileHandle];
+  fileHandle = [(MSDSessionMetrics *)obj fileHandle];
 
-  if (v2)
+  if (fileHandle)
   {
-    v3 = [(MSDSessionMetrics *)obj fileHandle];
-    [v3 synchronizeFile];
+    fileHandle2 = [(MSDSessionMetrics *)obj fileHandle];
+    [fileHandle2 synchronizeFile];
 
-    v4 = [(MSDSessionMetrics *)obj fileHandle];
-    [v4 closeFile];
+    fileHandle3 = [(MSDSessionMetrics *)obj fileHandle];
+    [fileHandle3 closeFile];
 
     [(MSDSessionMetrics *)obj setFileHandle:0];
   }

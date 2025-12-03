@@ -1,12 +1,12 @@
 @interface TSWPRuleOffset
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver;
 + (id)ruleOffset;
-+ (id)ruleOffsetWithDX:(double)a3 dY:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)ruleOffsetWithDX:(double)x dY:(double)y;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)pointValue;
 - (CGSize)sizeValue;
-- (TSWPRuleOffset)initWithDX:(double)a3 dY:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPRuleOffset)initWithDX:(double)x dY:(double)y;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,38 +19,38 @@
   return v2;
 }
 
-+ (id)ruleOffsetWithDX:(double)a3 dY:(double)a4
++ (id)ruleOffsetWithDX:(double)x dY:(double)y
 {
   v6 = objc_alloc(objc_opt_class());
-  v9 = objc_msgSend_initWithDX_dY_(v6, v7, v8, a3, a4);
+  v9 = objc_msgSend_initWithDX_dY_(v6, v7, v8, x, y);
 
   return v9;
 }
 
-- (TSWPRuleOffset)initWithDX:(double)a3 dY:(double)a4
+- (TSWPRuleOffset)initWithDX:(double)x dY:(double)y
 {
   v7.receiver = self;
   v7.super_class = TSWPRuleOffset;
   result = [(TSWPRuleOffset *)&v7 init];
   if (result)
   {
-    result->_dX = a3;
-    result->_dY = a4;
+    result->_dX = x;
+    result->_dY = y;
   }
 
   return result;
 }
 
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSWPRuleOffset alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy);
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   dX = self->_dX;
@@ -59,9 +59,9 @@
   return objc_msgSend_initWithDX_dY_(v4, v5, v6, dX, dY);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v8 = v5;

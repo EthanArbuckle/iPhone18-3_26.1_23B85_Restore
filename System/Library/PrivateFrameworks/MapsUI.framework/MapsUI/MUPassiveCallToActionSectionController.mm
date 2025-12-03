@@ -18,8 +18,8 @@
       goto LABEL_5;
     }
 
-    v4 = [(MUCallToActionSectionController *)self callToActionDelegate];
-    v5 = [v4 suggestionViewForCallToActionSectionController:self];
+    callToActionDelegate = [(MUCallToActionSectionController *)self callToActionDelegate];
+    v5 = [callToActionDelegate suggestionViewForCallToActionSectionController:self];
     v6 = self->_suggestionView;
     self->_suggestionView = v5;
 
@@ -47,29 +47,29 @@ LABEL_5:
 
 - (void)updateSuggestionView
 {
-  v3 = [(MUCallToActionSectionController *)self callToActionDelegate];
-  obj = [v3 suggestionViewForCallToActionSectionController:self];
+  callToActionDelegate = [(MUCallToActionSectionController *)self callToActionDelegate];
+  obj = [callToActionDelegate suggestionViewForCallToActionSectionController:self];
 
   if (obj != self->_suggestionView)
   {
     [(MUPassiveCallToActionSectionController *)self _unloadContent];
     objc_storeStrong(&self->_suggestionView, obj);
     [(MUPassiveCallToActionSectionController *)self _loadContentIfNeeded];
-    v4 = [(MUPlaceSectionController *)self delegate];
-    [v4 placeSectionControllerDidUpdateContent:self];
+    delegate = [(MUPlaceSectionController *)self delegate];
+    [delegate placeSectionControllerDidUpdateContent:self];
   }
 }
 
 - (BOOL)hasContent
 {
-  v3 = [(MUPlaceSectionController *)self personalizedSuggestionsArbiterDelegate];
+  personalizedSuggestionsArbiterDelegate = [(MUPlaceSectionController *)self personalizedSuggestionsArbiterDelegate];
 
-  if (v3)
+  if (personalizedSuggestionsArbiterDelegate)
   {
-    v4 = [(MUPlaceSectionController *)self personalizedSuggestionsArbiterDelegate];
-    v5 = [v4 shouldShowPlaceCallToActionSection];
+    personalizedSuggestionsArbiterDelegate2 = [(MUPlaceSectionController *)self personalizedSuggestionsArbiterDelegate];
+    shouldShowPlaceCallToActionSection = [personalizedSuggestionsArbiterDelegate2 shouldShowPlaceCallToActionSection];
 
-    return v5;
+    return shouldShowPlaceCallToActionSection;
   }
 
   else

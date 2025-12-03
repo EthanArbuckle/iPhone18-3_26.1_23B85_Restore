@@ -1,30 +1,30 @@
 @interface HMPlainTextDocument
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (HMPlainTextDocument)initWithCoder:(id)a3;
-- (HMPlainTextDocument)initWithData:(id)a3 error:(id *)a4;
-- (HMPlainTextDocument)initWithString:(id)a3;
-- (HMPlainTextDocument)initWithURL:(id)a3 error:(id *)a4;
-- (HMPlainTextDocument)initWithURL:(id)a3 fileManager:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMPlainTextDocument)initWithCoder:(id)coder;
+- (HMPlainTextDocument)initWithData:(id)data error:(id *)error;
+- (HMPlainTextDocument)initWithString:(id)string;
+- (HMPlainTextDocument)initWithURL:(id)l error:(id *)error;
+- (HMPlainTextDocument)initWithURL:(id)l fileManager:(id)manager error:(id *)error;
 - (NSAttributedString)attributedString;
 - (NSString)stringValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMPlainTextDocument
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMPlainTextDocument *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"HM.stringValue"];
+  coderCopy = coder;
+  stringValue = [(HMPlainTextDocument *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"HM.stringValue"];
 }
 
-- (HMPlainTextDocument)initWithCoder:(id)a3
+- (HMPlainTextDocument)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.stringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.stringValue"];
 
   v6 = [(HMPlainTextDocument *)self initWithString:v5];
   return v6;
@@ -190,16 +190,16 @@ LABEL_15:
 
 - (NSString)stringValue
 {
-  v2 = [(HMPlainTextDocument *)self document];
-  v3 = [v2 stringValue];
+  document = [(HMPlainTextDocument *)self document];
+  stringValue = [document stringValue];
 
-  return v3;
+  return stringValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -209,7 +209,7 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -220,9 +220,9 @@ LABEL_15:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMPlainTextDocument *)self document];
-      v8 = [(HMPlainTextDocument *)v6 document];
-      v9 = [v7 isEqual:v8];
+      document = [(HMPlainTextDocument *)self document];
+      document2 = [(HMPlainTextDocument *)v6 document];
+      v9 = [document isEqual:document2];
     }
 
     else
@@ -236,20 +236,20 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(HMPlainTextDocument *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(HMPlainTextDocument *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
-- (HMPlainTextDocument)initWithURL:(id)a3 fileManager:(id)a4 error:(id *)a5
+- (HMPlainTextDocument)initWithURL:(id)l fileManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = HMPlainTextDocument;
   v10 = [(HMPlainTextDocument *)&v15 init];
-  if (v10 && (v11 = [[_HMDocument alloc] initWithURL:v8 fileManager:v9 error:a5], document = v10->_document, v10->_document = v11, document, !v10->_document))
+  if (v10 && (v11 = [[_HMDocument alloc] initWithURL:lCopy fileManager:managerCopy error:error], document = v10->_document, v10->_document = v11, document, !v10->_document))
   {
     v13 = 0;
   }
@@ -262,23 +262,23 @@ LABEL_15:
   return v13;
 }
 
-- (HMPlainTextDocument)initWithURL:(id)a3 error:(id *)a4
+- (HMPlainTextDocument)initWithURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x1E696AC08];
-  v7 = a3;
-  v8 = [v6 defaultManager];
-  v9 = [(HMPlainTextDocument *)self initWithURL:v7 fileManager:v8 error:a4];
+  lCopy = l;
+  defaultManager = [v6 defaultManager];
+  v9 = [(HMPlainTextDocument *)self initWithURL:lCopy fileManager:defaultManager error:error];
 
   return v9;
 }
 
-- (HMPlainTextDocument)initWithData:(id)a3 error:(id *)a4
+- (HMPlainTextDocument)initWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = HMPlainTextDocument;
   v7 = [(HMPlainTextDocument *)&v12 init];
-  if (v7 && (v8 = [[_HMDocument alloc] initWithData:v6 error:a4], document = v7->_document, v7->_document = v8, document, !v7->_document))
+  if (v7 && (v8 = [[_HMDocument alloc] initWithData:dataCopy error:error], document = v7->_document, v7->_document = v8, document, !v7->_document))
   {
     v10 = 0;
   }
@@ -291,13 +291,13 @@ LABEL_15:
   return v10;
 }
 
-- (HMPlainTextDocument)initWithString:(id)a3
+- (HMPlainTextDocument)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = HMPlainTextDocument;
   v5 = [(HMPlainTextDocument *)&v10 init];
-  if (v5 && (v6 = [[_HMDocument alloc] initWithString:v4], document = v5->_document, v5->_document = v6, document, !v5->_document))
+  if (v5 && (v6 = [[_HMDocument alloc] initWithString:stringCopy], document = v5->_document, v5->_document = v6, document, !v5->_document))
   {
     v8 = 0;
   }

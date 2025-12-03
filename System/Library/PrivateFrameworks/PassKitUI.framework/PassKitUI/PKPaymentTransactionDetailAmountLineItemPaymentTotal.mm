@@ -1,17 +1,17 @@
 @interface PKPaymentTransactionDetailAmountLineItemPaymentTotal
-- (PKPaymentTransactionDetailAmountLineItemPaymentTotal)initWithAmount:(id)a3;
+- (PKPaymentTransactionDetailAmountLineItemPaymentTotal)initWithAmount:(id)amount;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemPaymentTotal
 
-- (PKPaymentTransactionDetailAmountLineItemPaymentTotal)initWithAmount:(id)a3
+- (PKPaymentTransactionDetailAmountLineItemPaymentTotal)initWithAmount:(id)amount
 {
-  v4 = a3;
-  v5 = [v4 amount];
-  v6 = [v5 pk_absoluteValue];
-  v7 = [v4 currency];
+  amountCopy = amount;
+  amount = [amountCopy amount];
+  pk_absoluteValue = [amount pk_absoluteValue];
+  currency = [amountCopy currency];
 
-  v8 = PKCurrencyAmountCreate(v6, v7);
+  v8 = PKCurrencyAmountCreate(pk_absoluteValue, currency);
 
   v16.receiver = self;
   v16.super_class = PKPaymentTransactionDetailAmountLineItemPaymentTotal;
@@ -22,8 +22,8 @@
     label = v9->_label;
     v9->_label = v10;
 
-    v12 = [v8 formattedStringValue];
-    v13 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, v12);
+    formattedStringValue = [v8 formattedStringValue];
+    v13 = PKLocalizedPaymentString(&cfstr_AmountFormatRe.isa, &stru_1F3BD5BF0.isa, formattedStringValue);
     value = v9->_value;
     v9->_value = v13;
   }

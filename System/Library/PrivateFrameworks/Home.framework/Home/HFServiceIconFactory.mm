@@ -1,27 +1,27 @@
 @interface HFServiceIconFactory
-+ (id)_iconSetForServiceType:(id)a3 serviceSubtype:(id)a4 fallbackToPlaceholderIcon:(BOOL)a5;
-+ (id)_multiSubtypeIconSetForServiceType:(id)a3 serviceSubtype:(id)a4;
-+ (id)_replacementIdentifierForIconIdentifier:(id)a3;
-+ (id)allIconDescriptorsForService:(id)a3;
-+ (id)allIconDescriptorsForServiceType:(id)a3 serviceSubtype:(id)a4;
-+ (id)defaultIconDescriptorForService:(id)a3;
-+ (id)defaultSymbolIconIdentifierForServiceType:(id)a3;
-+ (id)displayIconDescriptorFromIconDescriptor:(id)a3 symbolName:(id)a4;
-+ (id)iconDescriptorForAccessory:(id)a3;
-+ (id)iconDescriptorForAccessoryCategory:(id)a3;
-+ (id)iconDescriptorForAccessoryCategoryOrServiceType:(id)a3 matterDeviceType:(id)a4;
-+ (id)iconDescriptorWithIdentifier:(id)a3 forService:(id)a4;
-+ (id)iconDescriptorWithIdentifier:(id)a3 forServiceType:(id)a4 serviceSubtype:(id)a5;
-+ (id)iconModifiersForService:(id)a3;
-+ (id)overrideIconDescriptorForMultiServiceAccessory:(id)a3 iconDescriptor:(id)a4;
++ (id)_iconSetForServiceType:(id)type serviceSubtype:(id)subtype fallbackToPlaceholderIcon:(BOOL)icon;
++ (id)_multiSubtypeIconSetForServiceType:(id)type serviceSubtype:(id)subtype;
++ (id)_replacementIdentifierForIconIdentifier:(id)identifier;
++ (id)allIconDescriptorsForService:(id)service;
++ (id)allIconDescriptorsForServiceType:(id)type serviceSubtype:(id)subtype;
++ (id)defaultIconDescriptorForService:(id)service;
++ (id)defaultSymbolIconIdentifierForServiceType:(id)type;
++ (id)displayIconDescriptorFromIconDescriptor:(id)descriptor symbolName:(id)name;
++ (id)iconDescriptorForAccessory:(id)accessory;
++ (id)iconDescriptorForAccessoryCategory:(id)category;
++ (id)iconDescriptorForAccessoryCategoryOrServiceType:(id)type matterDeviceType:(id)deviceType;
++ (id)iconDescriptorWithIdentifier:(id)identifier forService:(id)service;
++ (id)iconDescriptorWithIdentifier:(id)identifier forServiceType:(id)type serviceSubtype:(id)subtype;
++ (id)iconModifiersForService:(id)service;
++ (id)overrideIconDescriptorForMultiServiceAccessory:(id)accessory iconDescriptor:(id)descriptor;
 @end
 
 @implementation HFServiceIconFactory
 
-+ (id)_multiSubtypeIconSetForServiceType:(id)a3 serviceSubtype:(id)a4
++ (id)_multiSubtypeIconSetForServiceType:(id)type serviceSubtype:(id)subtype
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  subtypeCopy = subtype;
   if (_MergedGlobals_219 != -1)
   {
     dispatch_once(&_MergedGlobals_219, &__block_literal_global_23);
@@ -29,13 +29,13 @@
 
   v7 = qword_280E02BC8;
   v8 = v7;
-  if (v5 && ([v7 objectForKeyedSubscript:v5], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (typeCopy && ([v7 objectForKeyedSubscript:typeCopy], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     v11 = *MEMORY[0x277CD0DB8];
-    if (v6)
+    if (subtypeCopy)
     {
-      v12 = v6;
+      v12 = subtypeCopy;
     }
 
     else
@@ -51,7 +51,7 @@
 
     else
     {
-      v16 = [MEMORY[0x277CD1D90] localizedDescriptionForServiceType:v5];
+      v16 = [MEMORY[0x277CD1D90] localizedDescriptionForServiceType:typeCopy];
       NSLog(&cfstr_ServiceTypeIsM.isa, v16);
 
       v14 = 0;
@@ -101,21 +101,21 @@ void __74__HFServiceIconFactory__multiSubtypeIconSetForServiceType_serviceSubtyp
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_iconSetForServiceType:(id)a3 serviceSubtype:(id)a4 fallbackToPlaceholderIcon:(BOOL)a5
++ (id)_iconSetForServiceType:(id)type serviceSubtype:(id)subtype fallbackToPlaceholderIcon:(BOOL)icon
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  iconCopy = icon;
+  typeCopy = type;
+  subtypeCopy = subtype;
   if (qword_280E02BD8 != -1)
   {
     dispatch_once(&qword_280E02BD8, &__block_literal_global_31_0);
   }
 
-  v10 = [a1 _multiSubtypeIconSetForServiceType:v8 serviceSubtype:v9];
+  v10 = [self _multiSubtypeIconSetForServiceType:typeCopy serviceSubtype:subtypeCopy];
   if (!v10)
   {
-    v10 = [qword_280E02BD0 objectForKeyedSubscript:v8];
-    if (!v10 && v5)
+    v10 = [qword_280E02BD0 objectForKeyedSubscript:typeCopy];
+    if (!v10 && iconCopy)
     {
       v10 = +[HFServiceIconSet placeholderIconSet];
     }
@@ -332,16 +332,16 @@ void __88__HFServiceIconFactory__iconSetForServiceType_serviceSubtype_fallbackTo
   v52 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultSymbolIconIdentifierForServiceType:(id)a3
++ (id)defaultSymbolIconIdentifierForServiceType:(id)type
 {
   v3 = qword_280E02BE8;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&qword_280E02BE8, &__block_literal_global_33);
   }
 
-  v5 = [qword_280E02BE0 objectForKeyedSubscript:v4];
+  v5 = [qword_280E02BE0 objectForKeyedSubscript:typeCopy];
 
   return v5;
 }
@@ -436,87 +436,87 @@ void __66__HFServiceIconFactory_defaultSymbolIconIdentifierForServiceType___bloc
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultIconDescriptorForService:(id)a3
++ (id)defaultIconDescriptorForService:(id)service
 {
-  v4 = a3;
-  if ([v4 hf_isTelevision])
+  serviceCopy = service;
+  if ([serviceCopy hf_isTelevision])
   {
-    v5 = [v4 accessory];
-    v6 = [HFServiceIconFactory iconDescriptorForAccessory:v5];
+    accessory = [serviceCopy accessory];
+    v6 = [HFServiceIconFactory iconDescriptorForAccessory:accessory];
   }
 
   else
   {
-    v5 = [v4 hf_effectiveServiceType];
-    v7 = [v4 serviceSubtype];
-    v6 = [a1 defaultIconDescriptorForServiceType:v5 serviceSubtype:v7];
+    accessory = [serviceCopy hf_effectiveServiceType];
+    serviceSubtype = [serviceCopy serviceSubtype];
+    v6 = [self defaultIconDescriptorForServiceType:accessory serviceSubtype:serviceSubtype];
   }
 
   return v6;
 }
 
-+ (id)iconDescriptorWithIdentifier:(id)a3 forService:(id)a4
++ (id)iconDescriptorWithIdentifier:(id)identifier forService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 hf_effectiveServiceType];
-  v9 = [v6 serviceSubtype];
+  serviceCopy = service;
+  identifierCopy = identifier;
+  hf_effectiveServiceType = [serviceCopy hf_effectiveServiceType];
+  serviceSubtype = [serviceCopy serviceSubtype];
 
-  v10 = [a1 iconDescriptorWithIdentifier:v7 forServiceType:v8 serviceSubtype:v9];
+  v10 = [self iconDescriptorWithIdentifier:identifierCopy forServiceType:hf_effectiveServiceType serviceSubtype:serviceSubtype];
 
   return v10;
 }
 
-+ (id)iconDescriptorWithIdentifier:(id)a3 forServiceType:(id)a4 serviceSubtype:(id)a5
++ (id)iconDescriptorWithIdentifier:(id)identifier forServiceType:(id)type serviceSubtype:(id)subtype
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _replacementIdentifierForIconIdentifier:v8];
+  identifierCopy = identifier;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  v11 = [self _replacementIdentifierForIconIdentifier:identifierCopy];
   if (v11)
   {
     v12 = HFLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v8;
+      v24 = identifierCopy;
       v25 = 2112;
       v26 = v11;
       _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "Replacing deprecated icon identifier %@ with %@", buf, 0x16u);
     }
 
     v13 = v11;
-    v8 = v13;
+    identifierCopy = v13;
   }
 
-  v14 = [a1 allIconDescriptorsForServiceType:v9 serviceSubtype:v10];
+  v14 = [self allIconDescriptorsForServiceType:typeCopy serviceSubtype:subtypeCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_serviceSubtype___block_invoke;
   v21[3] = &unk_277DF4AE8;
-  v15 = v8;
+  v15 = identifierCopy;
   v22 = v15;
-  v16 = [v14 na_firstObjectPassingTest:v21];
+  defaultIcon = [v14 na_firstObjectPassingTest:v21];
 
-  if (!v16)
+  if (!defaultIcon)
   {
-    v17 = [a1 defaultIconDescriptorForServiceType:v9 serviceSubtype:v10];
+    v17 = [self defaultIconDescriptorForServiceType:typeCopy serviceSubtype:subtypeCopy];
     if (v17)
     {
-      v16 = v17;
+      defaultIcon = v17;
     }
 
     else
     {
       v18 = +[HFServiceIconSet placeholderIconSet];
-      v16 = [v18 defaultIcon];
+      defaultIcon = [v18 defaultIcon];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return defaultIcon;
 }
 
 uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_serviceSubtype___block_invoke(uint64_t a1, void *a2)
@@ -527,33 +527,33 @@ uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_
   return v4;
 }
 
-+ (id)allIconDescriptorsForService:(id)a3
++ (id)allIconDescriptorsForService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 hf_effectiveServiceType];
-  v6 = [v4 serviceSubtype];
+  serviceCopy = service;
+  hf_effectiveServiceType = [serviceCopy hf_effectiveServiceType];
+  serviceSubtype = [serviceCopy serviceSubtype];
 
-  v7 = [a1 allIconDescriptorsForServiceType:v5 serviceSubtype:v6];
+  v7 = [self allIconDescriptorsForServiceType:hf_effectiveServiceType serviceSubtype:serviceSubtype];
 
   return v7;
 }
 
-+ (id)allIconDescriptorsForServiceType:(id)a3 serviceSubtype:(id)a4
++ (id)allIconDescriptorsForServiceType:(id)type serviceSubtype:(id)subtype
 {
-  v4 = [a1 _iconSetForServiceType:a3 serviceSubtype:a4 fallbackToPlaceholderIcon:1];
-  v5 = [v4 allIcons];
+  v4 = [self _iconSetForServiceType:type serviceSubtype:subtype fallbackToPlaceholderIcon:1];
+  allIcons = [v4 allIcons];
 
-  return v5;
+  return allIcons;
 }
 
-+ (id)overrideIconDescriptorForMultiServiceAccessory:(id)a3 iconDescriptor:(id)a4
++ (id)overrideIconDescriptorForMultiServiceAccessory:(id)accessory iconDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hf_isMultiServiceAccessory])
+  accessoryCopy = accessory;
+  descriptorCopy = descriptor;
+  if ([accessoryCopy hf_isMultiServiceAccessory])
   {
     objc_opt_class();
-    v7 = v6;
+    v7 = descriptorCopy;
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -568,33 +568,33 @@ uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_
 
     if (v9)
     {
-      if ([v5 hf_isCeilingFanWithLight])
+      if ([accessoryCopy hf_isCeilingFanWithLight])
       {
-        v10 = [v7 identifier];
-        v11 = [v10 isEqualToString:@"HFCAPackageIconIdentifierCeilingFanWithLight"];
+        identifier = [v7 identifier];
+        v11 = [identifier isEqualToString:@"HFCAPackageIconIdentifierCeilingFanWithLight"];
 
         if ((v11 & 1) == 0)
         {
           v12 = [HFCAPackageIconDescriptor alloc];
-          v13 = [v9 state];
-          v14 = [v9 iconModifiers];
-          v15 = [(HFCAPackageIconDescriptor *)v12 initWithPackageIdentifier:@"HFCAPackageIconIdentifierCeilingFanWithLight" state:v13 modifiers:v14];
+          state = [v9 state];
+          iconModifiers = [v9 iconModifiers];
+          v15 = [(HFCAPackageIconDescriptor *)v12 initWithPackageIdentifier:@"HFCAPackageIconIdentifierCeilingFanWithLight" state:state modifiers:iconModifiers];
 
           v7 = v15;
         }
       }
 
-      if ([v5 hf_isPowerStrip])
+      if ([accessoryCopy hf_isPowerStrip])
       {
-        v16 = [v7 identifier];
-        v17 = [v16 isEqualToString:@"HFCAPackageIconIdentifierPowerStrip"];
+        identifier2 = [v7 identifier];
+        v17 = [identifier2 isEqualToString:@"HFCAPackageIconIdentifierPowerStrip"];
 
         if ((v17 & 1) == 0)
         {
           v18 = [HFCAPackageIconDescriptor alloc];
-          v19 = [v9 state];
-          v20 = [v9 iconModifiers];
-          v21 = [(HFCAPackageIconDescriptor *)v18 initWithPackageIdentifier:@"HFCAPackageIconIdentifierPowerStrip" state:v19 modifiers:v20];
+          state2 = [v9 state];
+          iconModifiers2 = [v9 iconModifiers];
+          v21 = [(HFCAPackageIconDescriptor *)v18 initWithPackageIdentifier:@"HFCAPackageIconIdentifierPowerStrip" state:state2 modifiers:iconModifiers2];
 
           v7 = v21;
         }
@@ -606,35 +606,35 @@ uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_
 
   else
   {
-    v22 = v6;
+    v22 = descriptorCopy;
   }
 
   return v22;
 }
 
-+ (id)iconDescriptorForAccessory:(id)a3
++ (id)iconDescriptorForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 hf_categoryOrPrimaryServiceType];
-  v6 = [a1 iconDescriptorForAccessoryCategoryOrServiceType:v5];
+  accessoryCopy = accessory;
+  hf_categoryOrPrimaryServiceType = [accessoryCopy hf_categoryOrPrimaryServiceType];
+  v6 = [self iconDescriptorForAccessoryCategoryOrServiceType:hf_categoryOrPrimaryServiceType];
 
-  v7 = [HFServiceIconFactory overrideIconDescriptorForMultiServiceAccessory:v4 iconDescriptor:v6];
+  v7 = [HFServiceIconFactory overrideIconDescriptorForMultiServiceAccessory:accessoryCopy iconDescriptor:v6];
 
   return v7;
 }
 
-+ (id)iconDescriptorForAccessoryCategory:(id)a3
++ (id)iconDescriptorForAccessoryCategory:(id)category
 {
-  v4 = [a3 categoryType];
-  v5 = [a1 iconDescriptorForAccessoryCategoryOrServiceType:v4];
+  categoryType = [category categoryType];
+  v5 = [self iconDescriptorForAccessoryCategoryOrServiceType:categoryType];
 
   return v5;
 }
 
-+ (id)iconDescriptorForAccessoryCategoryOrServiceType:(id)a3 matterDeviceType:(id)a4
++ (id)iconDescriptorForAccessoryCategoryOrServiceType:(id)type matterDeviceType:(id)deviceType
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  deviceTypeCopy = deviceType;
   if (qword_280E02BF0 != -1)
   {
     dispatch_once(&qword_280E02BF0, &__block_literal_global_127_0);
@@ -665,9 +665,9 @@ uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_
   }
 
   v12 = qword_280E02C38;
-  if (v6)
+  if (typeCopy)
   {
-    v13 = [HFServiceIconFactory _defaultIconDescriptorForServiceType:v6 serviceSubtype:0 fallbackToPlaceholderIcon:0];
+    v13 = [HFServiceIconFactory _defaultIconDescriptorForServiceType:typeCopy serviceSubtype:0 fallbackToPlaceholderIcon:0];
     if (v13)
     {
       v14 = v13;
@@ -677,9 +677,9 @@ uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_
 
   v49 = v12;
   v15 = *MEMORY[0x277CCE8C8];
-  if (v6)
+  if (typeCopy)
   {
-    v15 = v6;
+    v15 = typeCopy;
   }
 
   v16 = v15;
@@ -701,47 +701,47 @@ uint64_t __83__HFServiceIconFactory_iconDescriptorWithIdentifier_forServiceType_
 
   v19 = [[HFCAPackageIconDescriptor alloc] initWithPackageIdentifier:@"HFCAPackageIconIdentifierGenericSensor"];
   [HFServiceIconSet setWithDefaultIcon:v19];
-  v46 = v6;
+  v46 = typeCopy;
   v20 = v16;
   v21 = v17;
   v22 = v9;
-  v23 = a1;
+  selfCopy = self;
   v24 = v10;
   v25 = v8;
-  v27 = v26 = v7;
+  v27 = v26 = deviceTypeCopy;
 
-  v28 = [v27 defaultIcon];
+  defaultIcon = [v27 defaultIcon];
 
-  v7 = v26;
+  deviceTypeCopy = v26;
   v8 = v25;
   v10 = v24;
-  a1 = v23;
+  self = selfCopy;
   v9 = v22;
   v17 = v21;
   v16 = v20;
-  v6 = v46;
-  if (!v28)
+  typeCopy = v46;
+  if (!defaultIcon)
   {
 LABEL_57:
     v29 = [v8 objectForKeyedSubscript:v16];
-    if (!v29 || (v30 = v29, [a1 defaultIconDescriptorForServiceType:v29 serviceSubtype:0], v28 = objc_claimAutoreleasedReturnValue(), v30, !v28))
+    if (!v29 || (v30 = v29, [self defaultIconDescriptorForServiceType:v29 serviceSubtype:0], defaultIcon = objc_claimAutoreleasedReturnValue(), v30, !defaultIcon))
     {
       v31 = [v10 objectForKeyedSubscript:v16];
       v32 = v31;
       if (!v31)
       {
         v11 = v48;
-        if (!v7)
+        if (!deviceTypeCopy)
         {
 LABEL_49:
           v18 = [[HFImageIconDescriptor alloc] initWithImageIdentifier:@"HFImageIconIdentifierGeneric"];
 LABEL_50:
-          v28 = v18;
+          defaultIcon = v18;
           goto LABEL_51;
         }
 
         objc_opt_class();
-        v34 = v7;
+        v34 = deviceTypeCopy;
         if (objc_opt_isKindOfClass())
         {
           v35 = v34;
@@ -752,24 +752,24 @@ LABEL_50:
           v35 = 0;
         }
 
-        v28 = v35;
+        defaultIcon = v35;
 
-        v47 = v28;
-        if (v28)
+        v47 = defaultIcon;
+        if (defaultIcon)
         {
-          v28 = [(HFImageIconDescriptor *)v28 deviceType];
+          defaultIcon = [(HFImageIconDescriptor *)defaultIcon deviceType];
 
           v11 = v48;
-          if (v28)
+          if (defaultIcon)
           {
-            v36 = [(HFImageIconDescriptor *)v47 deviceType];
-            v45 = [v48 objectForKeyedSubscript:v36];
+            deviceType = [(HFImageIconDescriptor *)v47 deviceType];
+            v45 = [v48 objectForKeyedSubscript:deviceType];
 
             v37 = v45;
             if (v45)
             {
-              v38 = [(HFImageIconDescriptor *)v47 deviceType];
-              v44 = [v49 objectForKeyedSubscript:v38];
+              deviceType2 = [(HFImageIconDescriptor *)v47 deviceType];
+              v44 = [v49 objectForKeyedSubscript:deviceType2];
 
               if (v44)
               {
@@ -783,14 +783,14 @@ LABEL_50:
 
               v41 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v45 configuration:v39];
               v42 = v39;
-              v28 = v41;
+              defaultIcon = v41;
 
               v37 = v45;
             }
 
             else
             {
-              v28 = 0;
+              defaultIcon = 0;
             }
           }
         }
@@ -801,7 +801,7 @@ LABEL_50:
         }
 
 LABEL_48:
-        if (v28)
+        if (defaultIcon)
         {
           goto LABEL_51;
         }
@@ -811,22 +811,22 @@ LABEL_48:
 
       if ([v31 isEqualToString:@"point.3.filled.connected.trianglepath.dotted"])
       {
-        v33 = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
+        configurationPreferringMulticolor = [MEMORY[0x277D755D0] configurationPreferringMulticolor];
       }
 
       else
       {
         if (([v16 isEqualToString:*MEMORY[0x277CCE870]] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", *MEMORY[0x277CCE8B0]) & 1) == 0 && !objc_msgSend(v16, "isEqualToString:", *MEMORY[0x277CCE900]))
         {
-          v28 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v32];
+          defaultIcon = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v32];
           goto LABEL_40;
         }
 
-        v33 = +[HFMediaHelper mediaContainerSymbolConfiguration];
+        configurationPreferringMulticolor = +[HFMediaHelper mediaContainerSymbolConfiguration];
       }
 
-      v40 = v33;
-      v28 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v32 configuration:v33];
+      v40 = configurationPreferringMulticolor;
+      defaultIcon = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v32 configuration:configurationPreferringMulticolor];
 
 LABEL_40:
       v11 = v48;
@@ -836,7 +836,7 @@ LABEL_40:
 
   v11 = v48;
 LABEL_51:
-  v14 = v28;
+  v14 = defaultIcon;
 
   v12 = v49;
 LABEL_52:
@@ -1010,86 +1010,86 @@ void __89__HFServiceIconFactory_iconDescriptorForAccessoryCategoryOrServiceType_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)iconModifiersForService:(id)a3
++ (id)iconModifiersForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = objc_opt_new();
-  v5 = [v3 characteristics];
-  v6 = [v5 na_map:&__block_literal_global_162];
+  characteristics = [serviceCopy characteristics];
+  v6 = [characteristics na_map:&__block_literal_global_162];
 
   v7 = *MEMORY[0x277CCF8D8];
   if ([v6 containsObject:*MEMORY[0x277CCF8D8]])
   {
-    v8 = [v3 hf_characteristicOfType:v7];
+    v8 = [serviceCopy hf_characteristicOfType:v7];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 metadata];
-      v11 = [v9 value];
-      v12 = [v10 hf_percentageForCharacteristicValue:v11];
+      metadata = [v8 metadata];
+      value = [v9 value];
+      v12 = [metadata hf_percentageForCharacteristicValue:value];
       [v4 setObject:v12 forKeyedSubscript:@"HFIconModifierHue"];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
-      [v4 setObject:v10 forKeyedSubscript:@"HFIconModifierHue"];
+      metadata = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
+      [v4 setObject:metadata forKeyedSubscript:@"HFIconModifierHue"];
     }
   }
 
   v13 = *MEMORY[0x277CCFA30];
   if ([v6 containsObject:*MEMORY[0x277CCFA30]])
   {
-    v14 = [v3 hf_characteristicOfType:v13];
+    v14 = [serviceCopy hf_characteristicOfType:v13];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 metadata];
-      v17 = [v15 value];
-      v18 = [v16 hf_percentageForCharacteristicValue:v17];
+      metadata2 = [v14 metadata];
+      value2 = [v15 value];
+      v18 = [metadata2 hf_percentageForCharacteristicValue:value2];
       [v4 setObject:v18 forKeyedSubscript:@"HFIconModifierSaturation"];
     }
 
     else
     {
-      v16 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
-      [v4 setObject:v16 forKeyedSubscript:@"HFIconModifierSaturation"];
+      metadata2 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
+      [v4 setObject:metadata2 forKeyedSubscript:@"HFIconModifierSaturation"];
     }
   }
 
   v19 = *MEMORY[0x277CCF788];
   if ([v6 containsObject:*MEMORY[0x277CCF788]])
   {
-    v20 = [v3 hf_characteristicOfType:v19];
-    v21 = [v20 metadata];
-    v22 = [v20 value];
-    v23 = [v21 hf_percentageForCharacteristicValue:v22];
+    v20 = [serviceCopy hf_characteristicOfType:v19];
+    metadata3 = [v20 metadata];
+    value3 = [v20 value];
+    v23 = [metadata3 hf_percentageForCharacteristicValue:value3];
     [v4 setObject:v23 forKeyedSubscript:@"HFIconModifierBrightness"];
   }
 
   v24 = *MEMORY[0x277CCF7D8];
   if ([v6 containsObject:*MEMORY[0x277CCF7D8]])
   {
-    v25 = [v3 hf_characteristicOfType:v24];
-    v26 = [v25 metadata];
-    v27 = [v25 value];
-    v28 = [v26 hf_percentageForCharacteristicValue:v27];
+    v25 = [serviceCopy hf_characteristicOfType:v24];
+    metadata4 = [v25 metadata];
+    value4 = [v25 value];
+    v28 = [metadata4 hf_percentageForCharacteristicValue:value4];
     [v4 setObject:v28 forKeyedSubscript:@"HFIconModifierColorTemperature"];
   }
 
   return v4;
 }
 
-+ (id)_replacementIdentifierForIconIdentifier:(id)a3
++ (id)_replacementIdentifierForIconIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (qword_280E02C40 != -1)
   {
     dispatch_once(&qword_280E02C40, &__block_literal_global_166_0);
   }
 
   v4 = qword_280E02C48;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
@@ -1227,12 +1227,12 @@ void __64__HFServiceIconFactory__replacementIdentifierForIconIdentifier___block_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)displayIconDescriptorFromIconDescriptor:(id)a3 symbolName:(id)a4
++ (id)displayIconDescriptorFromIconDescriptor:(id)descriptor symbolName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  descriptorCopy = descriptor;
+  nameCopy = name;
   objc_opt_class();
-  v7 = v5;
+  v7 = descriptorCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -1248,18 +1248,18 @@ void __64__HFServiceIconFactory__replacementIdentifierForIconIdentifier___block_
   if (v9)
   {
     v10 = [HFCAPackageIconDescriptor alloc];
-    v11 = [(HFImageIconDescriptor *)v9 packageIdentifier];
-    v12 = [(HFCAPackageIconDescriptor *)v10 initWithPackageIdentifier:v11 state:HFCAPackageStateDisplay];
+    packageIdentifier = [(HFImageIconDescriptor *)v9 packageIdentifier];
+    v12 = [(HFCAPackageIconDescriptor *)v10 initWithPackageIdentifier:packageIdentifier state:HFCAPackageStateDisplay];
   }
 
   else
   {
-    if (![v6 length])
+    if (![nameCopy length])
     {
       goto LABEL_15;
     }
 
-    v11 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76A20]];
+    packageIdentifier = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76A20]];
     objc_opt_class();
     v13 = v7;
     if (objc_opt_isKindOfClass())
@@ -1274,19 +1274,19 @@ void __64__HFServiceIconFactory__replacementIdentifierForIconIdentifier___block_
 
     v7 = v14;
 
-    v15 = [(HFImageIconDescriptor *)v7 imageSymbolConfiguration];
-    if (v15)
+    imageSymbolConfiguration = [(HFImageIconDescriptor *)v7 imageSymbolConfiguration];
+    if (imageSymbolConfiguration)
     {
-      v16 = v15;
-      v17 = [v15 configurationByApplyingConfiguration:v11];
+      v16 = imageSymbolConfiguration;
+      v17 = [imageSymbolConfiguration configurationByApplyingConfiguration:packageIdentifier];
     }
 
     else
     {
-      v17 = v11;
+      v17 = packageIdentifier;
     }
 
-    v12 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v6 configuration:v17];
+    v12 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:nameCopy configuration:v17];
   }
 
   v7 = v12;

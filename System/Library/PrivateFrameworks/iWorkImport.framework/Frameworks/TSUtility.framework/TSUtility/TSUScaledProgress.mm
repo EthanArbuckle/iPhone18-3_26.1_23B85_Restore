@@ -3,13 +3,13 @@
 - (TSUProgress)progress;
 - (TSUScaledProgress)init;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (id)initForSubclass;
 - (void)p_addProgressObserverToProgressInQueue;
 - (void)p_removeProgressObserverFromProgressInQueue;
-- (void)removeProgressObserver:(id)a3;
-- (void)setMaxValue:(double)a3;
-- (void)setProgress:(id)a3;
+- (void)removeProgressObserver:(id)observer;
+- (void)setMaxValue:(double)value;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation TSUScaledProgress
@@ -18,21 +18,21 @@
 {
   v8.receiver = self;
   v8.super_class = TSUScaledProgress;
-  v2 = [(TSUProgress *)&v8 initForSubclass];
-  if (v2)
+  initForSubclass = [(TSUProgress *)&v8 initForSubclass];
+  if (initForSubclass)
   {
     v3 = objc_alloc_init(TSUScaledProgressStorage);
-    storage = v2->_storage;
-    v2->_storage = v3;
+    storage = initForSubclass->_storage;
+    initForSubclass->_storage = v3;
 
     v5 = dispatch_queue_create("com.apple.tangier.TSUScaledProgress", 0);
-    progressQueue = v2->_progressQueue;
-    v2->_progressQueue = v5;
+    progressQueue = initForSubclass->_progressQueue;
+    initForSubclass->_progressQueue = v5;
 
-    [(TSUScaledProgressStorage *)v2->_storage setMaxValue:1.0];
+    [(TSUScaledProgressStorage *)initForSubclass->_storage setMaxValue:1.0];
   }
 
-  return v2;
+  return initForSubclass;
 }
 
 - (id)initForSubclass
@@ -73,27 +73,27 @@
   return v3;
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   progressQueue = self->_progressQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_277092E40;
   v7[3] = &unk_27A702450;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = progressCopy;
+  v6 = progressCopy;
   dispatch_async(progressQueue, v7);
 }
 
 - (double)value
 {
-  v3 = [(TSUScaledProgress *)self progress];
-  v4 = v3;
-  if (v3)
+  progress = [(TSUScaledProgress *)self progress];
+  v4 = progress;
+  if (progress)
   {
-    [v3 value];
+    [progress value];
     v6 = v5;
     [v4 maxValue];
     v8 = v6 / v7;
@@ -109,35 +109,35 @@
   return v10;
 }
 
-- (void)setMaxValue:(double)a3
+- (void)setMaxValue:(double)value
 {
-  [(TSUScaledProgressStorage *)self->_storage setMaxValue:a3];
+  [(TSUScaledProgressStorage *)self->_storage setMaxValue:value];
 
   [(TSUProgress *)self protected_progressDidChange];
 }
 
 - (BOOL)isIndeterminate
 {
-  v2 = [(TSUScaledProgress *)self progress];
-  v3 = v2;
-  if (v2)
+  progress = [(TSUScaledProgress *)self progress];
+  v3 = progress;
+  if (progress)
   {
-    v4 = [v2 isIndeterminate];
+    isIndeterminate = [progress isIndeterminate];
   }
 
   else
   {
-    v4 = 1;
+    isIndeterminate = 1;
   }
 
-  return v4;
+  return isIndeterminate;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v10.receiver = self;
   v10.super_class = TSUScaledProgress;
-  v6 = [(TSUProgress *)&v10 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(TSUProgress *)&v10 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   progressQueue = self->_progressQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -149,11 +149,11 @@
   return v6;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = TSUScaledProgress;
-  [(TSUProgress *)&v6 removeProgressObserver:a3];
+  [(TSUProgress *)&v6 removeProgressObserver:observer];
   progressQueue = self->_progressQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

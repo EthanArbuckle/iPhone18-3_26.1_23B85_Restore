@@ -1,44 +1,44 @@
 @interface TAVehicleCategoryLogic
-+ (id)accumulatedTAVehicleCategoryHistoryFromGeoNavigationNotificationInTAStore:(id)a3 since:(id)a4 to:(id)a5;
-+ (id)accumulatedTAVehicleCategoryHistoryFromVehicleStateNotificationInTAStore:(id)a3 since:(id)a4 to:(id)a5;
-+ (id)extractPrivateVehicleHintsFromTAStore:(id)a3 since:(id)a4 to:(id)a5;
++ (id)accumulatedTAVehicleCategoryHistoryFromGeoNavigationNotificationInTAStore:(id)store since:(id)since to:(id)to;
++ (id)accumulatedTAVehicleCategoryHistoryFromVehicleStateNotificationInTAStore:(id)store since:(id)since to:(id)to;
++ (id)extractPrivateVehicleHintsFromTAStore:(id)store since:(id)since to:(id)to;
 @end
 
 @implementation TAVehicleCategoryLogic
 
-+ (id)accumulatedTAVehicleCategoryHistoryFromVehicleStateNotificationInTAStore:(id)a3 since:(id)a4 to:(id)a5
++ (id)accumulatedTAVehicleCategoryHistoryFromVehicleStateNotificationInTAStore:(id)store since:(id)since to:(id)to
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9 && ([v8 earlierDate:v9], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, (v12 & 1) != 0))
+  storeCopy = store;
+  sinceCopy = since;
+  toCopy = to;
+  v10 = toCopy;
+  if (sinceCopy && toCopy && ([sinceCopy earlierDate:toCopy], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", sinceCopy), v11, (v12 & 1) != 0))
   {
     v41 = v10;
-    v13 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:v8 endDate:v10];
+    v13 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:sinceCopy endDate:v10];
     v14 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v13 startDate];
-      v17 = [v13 endDate];
+      startDate = [v13 startDate];
+      endDate = [v13 endDate];
       *buf = 138478083;
-      v51 = v16;
+      v51 = startDate;
       v52 = 2113;
-      v53 = v17;
+      v53 = endDate;
       _os_log_impl(&dword_26F2E2000, v15, OS_LOG_TYPE_DEFAULT, "#TAVehicleCategoryLogic Time Duration of Interest: Start Date - %{private}@ End Date - %{private}@", buf, 0x16u);
     }
 
-    v42 = v8;
-    v43 = v7;
-    v18 = [v7 eventBuffer];
-    v19 = [v18 getAllTAEventsOf:objc_opt_class()];
+    v42 = sinceCopy;
+    v43 = storeCopy;
+    eventBuffer = [storeCopy eventBuffer];
+    v19 = [eventBuffer getAllTAEventsOf:objc_opt_class()];
 
     v44 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v20 = [TAVehicleCategory alloc];
-    v21 = [v13 startDate];
-    v22 = [(TAVehicleCategory *)v20 initWithVehicleCategoryType:0 andDate:v21];
+    startDate2 = [v13 startDate];
+    v22 = [(TAVehicleCategory *)v20 initWithVehicleCategoryType:0 andDate:startDate2];
 
     v47 = 0u;
     v48 = 0u;
@@ -60,33 +60,33 @@
           }
 
           v28 = *(*(&v45 + 1) + 8 * i);
-          v29 = [v28 getDate];
-          v30 = [v13 startDate];
-          v31 = [v29 compare:v30];
+          getDate = [v28 getDate];
+          startDate3 = [v13 startDate];
+          v31 = [getDate compare:startDate3];
 
           if (v31 == -1)
           {
             v36 = [TAVehicleCategory alloc];
             v37 = [TAVehicleCategory speculateTAVehicleCategoryTypeFromVehicleStateNotification:v28];
-            v35 = [v13 startDate];
-            v38 = [(TAVehicleCategory *)v36 initWithVehicleCategoryType:v37 andDate:v35];
+            startDate4 = [v13 startDate];
+            v38 = [(TAVehicleCategory *)v36 initWithVehicleCategoryType:v37 andDate:startDate4];
 
             v22 = v38;
           }
 
           else
           {
-            v32 = [v28 getDate];
-            v33 = [v13 endDate];
-            v34 = [v32 compare:v33];
+            getDate2 = [v28 getDate];
+            endDate2 = [v13 endDate];
+            v34 = [getDate2 compare:endDate2];
 
             if (v34 == 1)
             {
               continue;
             }
 
-            v35 = [[TAVehicleCategory alloc] initWithTAVehicularStateNotification:v28];
-            [v44 addObject:v35];
+            startDate4 = [[TAVehicleCategory alloc] initWithTAVehicularStateNotification:v28];
+            [v44 addObject:startDate4];
           }
         }
 
@@ -97,8 +97,8 @@
     }
 
     [v44 insertObject:v22 atIndex:0];
-    v8 = v42;
-    v7 = v43;
+    sinceCopy = v42;
+    storeCopy = v43;
     v10 = v41;
   }
 
@@ -112,41 +112,41 @@
   return v44;
 }
 
-+ (id)accumulatedTAVehicleCategoryHistoryFromGeoNavigationNotificationInTAStore:(id)a3 since:(id)a4 to:(id)a5
++ (id)accumulatedTAVehicleCategoryHistoryFromGeoNavigationNotificationInTAStore:(id)store since:(id)since to:(id)to
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 earlierDate:v9];
-  v11 = [v10 isEqual:v8];
+  storeCopy = store;
+  sinceCopy = since;
+  toCopy = to;
+  v10 = [sinceCopy earlierDate:toCopy];
+  v11 = [v10 isEqual:sinceCopy];
 
   if (v11)
   {
-    v40 = v9;
-    v12 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:v8 endDate:v9];
+    v40 = toCopy;
+    v12 = [MEMORY[0x277CCA970] createIntervalSafelyWithStartDate:sinceCopy endDate:toCopy];
     v13 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v12 startDate];
-      v16 = [v12 endDate];
+      startDate = [v12 startDate];
+      endDate = [v12 endDate];
       *buf = 138478083;
-      v50 = v15;
+      v50 = startDate;
       v51 = 2113;
-      v52 = v16;
+      v52 = endDate;
       _os_log_impl(&dword_26F2E2000, v14, OS_LOG_TYPE_DEFAULT, "#TAVehicleCategoryLogic Time Duration of Interest: Start Date - %{private}@ End Date - %{private}@", buf, 0x16u);
     }
 
-    v41 = v8;
-    v42 = v7;
-    v17 = [v7 eventBuffer];
-    v18 = [v17 getAllTAEventsOf:objc_opt_class()];
+    v41 = sinceCopy;
+    v42 = storeCopy;
+    eventBuffer = [storeCopy eventBuffer];
+    v18 = [eventBuffer getAllTAEventsOf:objc_opt_class()];
 
     v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = [TAVehicleCategory alloc];
-    v20 = [v12 startDate];
-    v21 = [(TAVehicleCategory *)v19 initWithVehicleCategoryType:0 andDate:v20];
+    startDate2 = [v12 startDate];
+    v21 = [(TAVehicleCategory *)v19 initWithVehicleCategoryType:0 andDate:startDate2];
 
     v46 = 0u;
     v47 = 0u;
@@ -168,33 +168,33 @@
           }
 
           v27 = *(*(&v44 + 1) + 8 * i);
-          v28 = [v27 getDate];
-          v29 = [v12 startDate];
-          v30 = [v28 compare:v29];
+          getDate = [v27 getDate];
+          startDate3 = [v12 startDate];
+          v30 = [getDate compare:startDate3];
 
           if (v30 == -1)
           {
             v35 = [TAVehicleCategory alloc];
             v36 = [TAVehicleCategory speculateTAVehicleCategoryTypeFromGeoNavigationNotification:v27];
-            v34 = [v12 startDate];
-            v37 = [(TAVehicleCategory *)v35 initWithVehicleCategoryType:v36 andDate:v34];
+            startDate4 = [v12 startDate];
+            v37 = [(TAVehicleCategory *)v35 initWithVehicleCategoryType:v36 andDate:startDate4];
 
             v21 = v37;
           }
 
           else
           {
-            v31 = [v27 getDate];
-            v32 = [v12 endDate];
-            v33 = [v31 compare:v32];
+            getDate2 = [v27 getDate];
+            endDate2 = [v12 endDate];
+            v33 = [getDate2 compare:endDate2];
 
             if (v33 == 1)
             {
               continue;
             }
 
-            v34 = [[TAVehicleCategory alloc] initWithTAGeoNavigationNotification:v27];
-            [v43 addObject:v34];
+            startDate4 = [[TAVehicleCategory alloc] initWithTAGeoNavigationNotification:v27];
+            [v43 addObject:startDate4];
           }
         }
 
@@ -205,9 +205,9 @@
     }
 
     [v43 insertObject:v21 atIndex:0];
-    v8 = v41;
-    v7 = v42;
-    v9 = v40;
+    sinceCopy = v41;
+    storeCopy = v42;
+    toCopy = v40;
   }
 
   else
@@ -220,13 +220,13 @@
   return v43;
 }
 
-+ (id)extractPrivateVehicleHintsFromTAStore:(id)a3 since:(id)a4 to:(id)a5
++ (id)extractPrivateVehicleHintsFromTAStore:(id)store since:(id)since to:(id)to
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  storeCopy = store;
+  sinceCopy = since;
+  toCopy = to;
   v10 = [MEMORY[0x277CBEB58] set];
-  v11 = [TAVehicleCategoryLogic accumulatedTAVehicleCategoryHistoryFromVehicleStateNotificationInTAStore:v7 since:v8 to:v9];
+  v11 = [TAVehicleCategoryLogic accumulatedTAVehicleCategoryHistoryFromVehicleStateNotificationInTAStore:storeCopy since:sinceCopy to:toCopy];
   v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global];
   v13 = [v11 filteredArrayUsingPredicate:v12];
   if ([v13 count])
@@ -235,7 +235,7 @@
     [v10 addObject:v14];
   }
 
-  v15 = [TAVehicleCategoryLogic accumulatedTAVehicleCategoryHistoryFromGeoNavigationNotificationInTAStore:v7 since:v8 to:v9];
+  v15 = [TAVehicleCategoryLogic accumulatedTAVehicleCategoryHistoryFromGeoNavigationNotificationInTAStore:storeCopy since:sinceCopy to:toCopy];
 
   v16 = [v15 filteredArrayUsingPredicate:v12];
 

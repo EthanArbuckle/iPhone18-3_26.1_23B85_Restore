@@ -1,78 +1,78 @@
 @interface CNiOSABPreferredChannelContactPredicate
-- (BOOL)isEqual:(id)a3;
-- (CNiOSABPreferredChannelContactPredicate)initWithCoder:(id)a3;
-- (CNiOSABPreferredChannelContactPredicate)initWithPreferredChannel:(id)a3 limitOne:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (CNiOSABPreferredChannelContactPredicate)initWithCoder:(id)coder;
+- (CNiOSABPreferredChannelContactPredicate)initWithPreferredChannel:(id)channel limitOne:(BOOL)one;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABPreferredChannelContactPredicate
 
-- (CNiOSABPreferredChannelContactPredicate)initWithPreferredChannel:(id)a3 limitOne:(BOOL)a4
+- (CNiOSABPreferredChannelContactPredicate)initWithPreferredChannel:(id)channel limitOne:(BOOL)one
 {
-  v6 = a3;
+  channelCopy = channel;
   v12.receiver = self;
   v12.super_class = CNiOSABPreferredChannelContactPredicate;
   v7 = [(CNPredicate *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [channelCopy copy];
     preferredChannel = v7->_preferredChannel;
     v7->_preferredChannel = v8;
 
-    v7->_limitOne = a4;
+    v7->_limitOne = one;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (CNiOSABPreferredChannelContactPredicate)initWithCoder:(id)a3
+- (CNiOSABPreferredChannelContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABPreferredChannelContactPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredChannel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredChannel"];
     v7 = [v6 copy];
     preferredChannel = v5->_preferredChannel;
     v5->_preferredChannel = v7;
 
-    v5->_limitOne = [v4 decodeBoolForKey:@"_limitOne"];
+    v5->_limitOne = [coderCopy decodeBoolForKey:@"_limitOne"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABPreferredChannelContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_preferredChannel forKey:{@"_preferredChannel", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_limitOne forKey:@"_limitOne"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_preferredChannel forKey:{@"_preferredChannel", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_limitOne forKey:@"_limitOne"];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = self;
+  requestCopy = request;
+  environmentCopy = environment;
+  selfCopy = self;
   v12 = CNUnimplementedMethodException();
   objc_exception_throw(v12);
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
   v6 = MEMORY[0x1E698A130];
-  v7 = [(CNiOSABPreferredChannelContactPredicate *)self preferredChannel:a3];
+  v7 = [(CNiOSABPreferredChannelContactPredicate *)self preferredChannel:book];
   v8 = [v6 predicateForContactsMatchingPreferredChannel:v7 limitOne:{-[CNiOSABPreferredChannelContactPredicate limitOne](self, "limitOne")}];
 
   return v8;
@@ -83,33 +83,33 @@
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingPreferredChannel:]"];
   v5 = [v3 appendName:@"limitOne" BOOLValue:{-[CNiOSABPreferredChannelContactPredicate limitOne](self, "limitOne")}];
-  v6 = [(CNiOSABPreferredChannelContactPredicate *)self preferredChannel];
-  v7 = [v3 appendName:@"preferredChannel" BOOLValue:v6 != 0];
+  preferredChannel = [(CNiOSABPreferredChannelContactPredicate *)self preferredChannel];
+  v7 = [v3 appendName:@"preferredChannel" BOOLValue:preferredChannel != 0];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__CNiOSABPreferredChannelContactPredicate_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __51__CNiOSABPreferredChannelContactPredicate_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }

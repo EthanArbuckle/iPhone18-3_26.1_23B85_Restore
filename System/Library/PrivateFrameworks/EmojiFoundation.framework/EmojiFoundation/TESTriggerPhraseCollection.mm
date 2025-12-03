@@ -1,34 +1,34 @@
 @interface TESTriggerPhraseCollection
-- (BOOL)_shouldRecompileTrie:(id)a3;
-- (TESTriggerPhraseCollection)initWithLocale:(id)a3;
+- (BOOL)_shouldRecompileTrie:(id)trie;
+- (TESTriggerPhraseCollection)initWithLocale:(id)locale;
 - (id).cxx_construct;
 - (id)_dispatchQueue;
 - (id)_trieBlobURL;
 - (void)_buildAndLoadTrie;
 - (void)_loadTrie;
 - (void)dealloc;
-- (void)enumerateMatchStringsInString:(id)a3 searchRange:(_NSRange)a4 usingBlock:(id)a5;
+- (void)enumerateMatchStringsInString:(id)string searchRange:(_NSRange)range usingBlock:(id)block;
 - (void)waitForSync;
 @end
 
 @implementation TESTriggerPhraseCollection
 
-- (TESTriggerPhraseCollection)initWithLocale:(id)a3
+- (TESTriggerPhraseCollection)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v15.receiver = self;
   v15.super_class = TESTriggerPhraseCollection;
   v5 = [(TESTriggerPhraseCollection *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     v7 = *(v5 + 13);
     *(v5 + 13) = v6;
 
     v8 = [TESTriggerPhraseLoader alloc];
-    v9 = [(TESTriggerPhraseCollection *)v5 locale];
-    v10 = [v9 localeIdentifier];
-    v11 = [(TESTriggerPhraseLoader *)v8 initWithLocaleIdentifier:v10];
+    locale = [(TESTriggerPhraseCollection *)v5 locale];
+    localeIdentifier = [locale localeIdentifier];
+    v11 = [(TESTriggerPhraseLoader *)v8 initWithLocaleIdentifier:localeIdentifier];
     v12 = *(v5 + 14);
     *(v5 + 14) = v11;
 
@@ -78,18 +78,18 @@ uint64_t __44__TESTriggerPhraseCollection__dispatchQueue__block_invoke()
   [(TESTriggerPhraseCollection *)&v4 dealloc];
 }
 
-- (void)enumerateMatchStringsInString:(id)a3 searchRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateMatchStringsInString:(id)string searchRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v26 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  blockCopy = block;
   std::mutex::lock((self + 40));
   if (*(self + 1))
   {
-    v28 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v27 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    v10 = [v9 length];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    v10 = [stringCopy length];
     if (v10 >= length)
     {
       v11 = length;
@@ -100,7 +100,7 @@ uint64_t __44__TESTriggerPhraseCollection__dispatchQueue__block_invoke()
       v11 = v10;
     }
 
-    if (location < [v9 length])
+    if (location < [stringCopy length])
     {
       v34 = 0;
       memset(&v33, 0, sizeof(v33));
@@ -119,8 +119,8 @@ LABEL_34:
               goto LABEL_35;
             }
 
-            v13 = [(TESTriggerPhraseCollection *)self locale];
-            v14 = [v9 getLowercaseCharacterAt:v12 locale:v13];
+            locale = [(TESTriggerPhraseCollection *)self locale];
+            v14 = [stringCopy getLowercaseCharacterAt:v12 locale:locale];
 
             v15 = [v14 length];
             size = HIBYTE(v33.__r_.__value_.__r.__words[2]);
@@ -183,8 +183,8 @@ LABEL_33:
 
           else
           {
-            v21 = [v9 characterAtIndex:v12 + 1];
-            if ([v28 characterIsMember:v21])
+            v21 = [stringCopy characterAtIndex:v12 + 1];
+            if ([whitespaceAndNewlineCharacterSet characterIsMember:v21])
             {
               v20 = 1;
               if (!location)
@@ -195,7 +195,7 @@ LABEL_33:
 
             else
             {
-              v20 = [v27 characterIsMember:v21];
+              v20 = [punctuationCharacterSet characterIsMember:v21];
               if (!location)
               {
                 goto LABEL_28;
@@ -203,10 +203,10 @@ LABEL_33:
             }
           }
 
-          v22 = [v9 characterAtIndex:location - 1];
-          if (([v28 characterIsMember:v22] & 1) == 0)
+          v22 = [stringCopy characterAtIndex:location - 1];
+          if (([whitespaceAndNewlineCharacterSet characterIsMember:v22] & 1) == 0)
           {
-            v23 = [v27 characterIsMember:v22];
+            v23 = [punctuationCharacterSet characterIsMember:v22];
             goto LABEL_30;
           }
 
@@ -223,7 +223,7 @@ LABEL_30:
             goto LABEL_33;
           }
 
-          v26[2](v26, location, v12 - location + 1, v29, &v34);
+          blockCopy[2](blockCopy, location, v12 - location + 1, v29, &v34);
           if (!v34)
           {
             goto LABEL_33;
@@ -265,13 +265,13 @@ LABEL_35:
 
 - (void)waitForSync
 {
-  v3 = [(TESTriggerPhraseCollection *)self _dispatchQueue];
+  _dispatchQueue = [(TESTriggerPhraseCollection *)self _dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__TESTriggerPhraseCollection_waitForSync__block_invoke;
   block[3] = &unk_1E7A5F990;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_dispatchQueue, block);
 }
 
 void __41__TESTriggerPhraseCollection_waitForSync__block_invoke(uint64_t a1)
@@ -290,30 +290,30 @@ void __41__TESTriggerPhraseCollection_waitForSync__block_invoke(uint64_t a1)
 - (id)_trieBlobURL
 {
   v3 = CEM::copyLibraryKeyboardDirectoryURL(self);
-  v4 = [(TESTriggerPhraseCollection *)self locale];
-  v5 = [v4 languageCode];
+  locale = [(TESTriggerPhraseCollection *)self locale];
+  languageCode = [locale languageCode];
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TextEffectPhrases_%@.dat", v5];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TextEffectPhrases_%@.dat", languageCode];
   v7 = [(__CFURL *)v3 URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (BOOL)_shouldRecompileTrie:(id)a3
+- (BOOL)_shouldRecompileTrie:(id)trie
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DEF0] SHA224ChecksumSize];
-  v6 = [v4 subdataWithRange:{0, v5}];
-  v7 = [(TESTriggerPhraseCollection *)self triggerPhraseLoader];
-  v8 = [v7 plistPath];
+  trieCopy = trie;
+  sHA224ChecksumSize = [MEMORY[0x1E695DEF0] SHA224ChecksumSize];
+  v6 = [trieCopy subdataWithRange:{0, sHA224ChecksumSize}];
+  triggerPhraseLoader = [(TESTriggerPhraseCollection *)self triggerPhraseLoader];
+  plistPath = [triggerPhraseLoader plistPath];
 
-  if (v8)
+  if (plistPath)
   {
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8];
+    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:plistPath];
     v10 = v9;
     if (v9 && (v11 = [v9 length], v11 >= objc_msgSend(MEMORY[0x1E695DEF0], "SHA224ChecksumSize")))
     {
-      v13 = [v10 subdataWithRange:{0, v5}];
+      v13 = [v10 subdataWithRange:{0, sHA224ChecksumSize}];
       v12 = [v6 isEqualToData:v13] ^ 1;
     }
 
@@ -335,19 +335,19 @@ void __41__TESTriggerPhraseCollection_waitForSync__block_invoke(uint64_t a1)
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AF04E000, a2, OS_LOG_TYPE_ERROR, "Failed to open file for serialized trie: %{public}@", &v2, 0xCu);
 }
 
 - (void)_buildAndLoadTrie
 {
-  v3 = [(TESTriggerPhraseCollection *)self _dispatchQueue];
+  _dispatchQueue = [(TESTriggerPhraseCollection *)self _dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__TESTriggerPhraseCollection__buildAndLoadTrie__block_invoke;
   block[3] = &unk_1E7A5F990;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_dispatchQueue, block);
 }
 
 void __47__TESTriggerPhraseCollection__buildAndLoadTrie__block_invoke(uint64_t a1)

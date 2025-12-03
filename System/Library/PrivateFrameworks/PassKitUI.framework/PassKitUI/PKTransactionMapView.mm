@@ -1,26 +1,26 @@
 @interface PKTransactionMapView
-- ($0EA7EFFD5C9A8626BF46133D7244B340)_mapRectForTransaction:(id)a3;
-- (PKTransactionMapView)initWithFrame:(CGRect)a3;
-- (id)_annotationsForTransaction:(id)a3;
+- ($0EA7EFFD5C9A8626BF46133D7244B340)_mapRectForTransaction:(id)transaction;
+- (PKTransactionMapView)initWithFrame:(CGRect)frame;
+- (id)_annotationsForTransaction:(id)transaction;
 - (id)_locationShifter;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_centerMapAnimated:(BOOL)a3;
-- (void)_createAnnotationsForTransaction:(id)a3;
-- (void)_shiftLocationIfNeeded:(id)a3 completion:(id)a4;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_centerMapAnimated:(BOOL)animated;
+- (void)_createAnnotationsForTransaction:(id)transaction;
+- (void)_shiftLocationIfNeeded:(id)needed completion:(id)completion;
 - (void)_updateLocations;
 - (void)layoutSubviews;
-- (void)setMerchant:(id)a3;
-- (void)setTransaction:(id)a3;
-- (void)setUsesDarkAppearance:(BOOL)a3;
+- (void)setMerchant:(id)merchant;
+- (void)setTransaction:(id)transaction;
+- (void)setUsesDarkAppearance:(BOOL)appearance;
 @end
 
 @implementation PKTransactionMapView
 
-- (PKTransactionMapView)initWithFrame:(CGRect)a3
+- (PKTransactionMapView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKTransactionMapView;
-  v3 = [(PKTransactionMapView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKTransactionMapView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E696F2C0]);
@@ -32,8 +32,8 @@
     [(MKMapView *)v3->_internalMapView setMapType:0];
     [(MKMapView *)v3->_internalMapView setShowsBuildings:1];
     v7 = v3->_internalMapView;
-    v8 = [MEMORY[0x1E696F350] filterIncludingAllCategories];
-    [(MKMapView *)v7 setPointOfInterestFilter:v8];
+    filterIncludingAllCategories = [MEMORY[0x1E696F350] filterIncludingAllCategories];
+    [(MKMapView *)v7 setPointOfInterestFilter:filterIncludingAllCategories];
 
     [(MKMapView *)v3->_internalMapView setDelegate:v3];
     [(MKMapView *)v3->_internalMapView setShowsAttribution:0];
@@ -65,56 +65,56 @@
   }
 }
 
-- (void)setTransaction:(id)a3
+- (void)setTransaction:(id)transaction
 {
-  v5 = a3;
-  if (self->_transaction != v5)
+  transactionCopy = transaction;
+  if (self->_transaction != transactionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_transaction, a3);
-    v6 = [(MKMapView *)self->_internalMapView annotations];
-    if ([v6 count])
+    v7 = transactionCopy;
+    objc_storeStrong(&self->_transaction, transaction);
+    annotations = [(MKMapView *)self->_internalMapView annotations];
+    if ([annotations count])
     {
-      [(MKMapView *)self->_internalMapView removeAnnotations:v6];
+      [(MKMapView *)self->_internalMapView removeAnnotations:annotations];
     }
 
     [(PKTransactionMapView *)self _updateLocations];
 
-    v5 = v7;
+    transactionCopy = v7;
   }
 }
 
-- (void)setMerchant:(id)a3
+- (void)setMerchant:(id)merchant
 {
-  v5 = a3;
-  if (self->_merchant != v5)
+  merchantCopy = merchant;
+  if (self->_merchant != merchantCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_merchant, a3);
-    v6 = [(MKMapView *)self->_internalMapView annotations];
-    if ([v6 count])
+    v7 = merchantCopy;
+    objc_storeStrong(&self->_merchant, merchant);
+    annotations = [(MKMapView *)self->_internalMapView annotations];
+    if ([annotations count])
     {
-      [(MKMapView *)self->_internalMapView removeAnnotations:v6];
+      [(MKMapView *)self->_internalMapView removeAnnotations:annotations];
     }
 
     [(PKTransactionMapView *)self _updateLocations];
 
-    v5 = v7;
+    merchantCopy = v7;
   }
 }
 
-- (void)setUsesDarkAppearance:(BOOL)a3
+- (void)setUsesDarkAppearance:(BOOL)appearance
 {
-  if (self->_usesDarkAppearance == !a3)
+  if (self->_usesDarkAppearance == !appearance)
   {
-    self->_usesDarkAppearance = a3;
+    self->_usesDarkAppearance = appearance;
     [(MKMapView *)self->_internalMapView _setShowsNightMode:?];
   }
 }
 
-- (void)_createAnnotationsForTransaction:(id)a3
+- (void)_createAnnotationsForTransaction:(id)transaction
 {
-  v4 = [(PKTransactionMapView *)self _annotationsForTransaction:a3];
+  v4 = [(PKTransactionMapView *)self _annotationsForTransaction:transaction];
   if ([v4 count])
   {
     [(MKMapView *)self->_internalMapView addAnnotations:v4];
@@ -123,9 +123,9 @@
   [(PKTransactionMapView *)self _centerMapAnimated:1];
 }
 
-- (void)_centerMapAnimated:(BOOL)a3
+- (void)_centerMapAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   p_lastLaidBounds = &self->_lastLaidBounds;
   [(PKTransactionMapView *)self bounds];
   p_lastLaidBounds->origin.x = v6;
@@ -135,22 +135,22 @@
   [(PKTransactionMapView *)self _mapRectForTransaction:self->_transaction];
   internalMapView = self->_internalMapView;
 
-  [(MKMapView *)internalMapView setVisibleMapRect:v3 animated:?];
+  [(MKMapView *)internalMapView setVisibleMapRect:animatedCopy animated:?];
 }
 
-- (id)_annotationsForTransaction:(id)a3
+- (id)_annotationsForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  transactionCopy = transaction;
+  v5 = transactionCopy;
+  if (!transactionCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     goto LABEL_7;
   }
 
-  v6 = [v4 transactionType];
+  transactionType = [transactionCopy transactionType];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v6 != 2)
+  if (transactionType != 2)
   {
 LABEL_7:
     if (!self->_preferredLocation)
@@ -163,37 +163,37 @@ LABEL_7:
     [v9 setCoordinate:?];
     if (self->_showsMerchantName)
     {
-      v10 = [v5 merchant];
-      merchant = v10;
-      if (!v10)
+      merchant = [v5 merchant];
+      merchant = merchant;
+      if (!merchant)
       {
         merchant = self->_merchant;
       }
 
       v12 = merchant;
 
-      v13 = [(PKMerchant *)v12 displayName];
+      displayName = [(PKMerchant *)v12 displayName];
       if (([(PKMerchant *)v12 shouldIgnoreMapsMatches]& 1) == 0)
       {
-        v14 = [(PKMerchant *)v12 mapsMerchant];
-        v15 = [v14 name];
-        v16 = v15;
-        if (v15)
+        mapsMerchant = [(PKMerchant *)v12 mapsMerchant];
+        name = [mapsMerchant name];
+        v16 = name;
+        if (name)
         {
-          v17 = v15;
+          v17 = name;
         }
 
         else
         {
-          v17 = v13;
+          v17 = displayName;
         }
 
         v18 = v17;
 
-        v13 = v18;
+        displayName = v18;
       }
 
-      [v9 setTitle:v13];
+      [v9 setTitle:displayName];
     }
 
     goto LABEL_19;
@@ -230,11 +230,11 @@ LABEL_20:
   return v19;
 }
 
-- ($0EA7EFFD5C9A8626BF46133D7244B340)_mapRectForTransaction:(id)a3
+- ($0EA7EFFD5C9A8626BF46133D7244B340)_mapRectForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 transactionType] != 2)
+  transactionCopy = transaction;
+  v5 = transactionCopy;
+  if (!transactionCopy || [transactionCopy transactionType] != 2)
   {
     goto LABEL_7;
   }
@@ -262,10 +262,10 @@ LABEL_7:
     }
 
 LABEL_11:
-    v23 = [(CLLocation *)v22 coordinate];
+    coordinate = [(CLLocation *)v22 coordinate];
     v25 = v24;
     v27 = v26;
-    v28 = MEMORY[0x1BFB41750](v23) * 300.0;
+    v28 = MEMORY[0x1BFB41750](coordinate) * 300.0;
     v36.latitude = v25;
     v36.longitude = v27;
     v29 = MKMapPointForCoordinate(v36);
@@ -289,7 +289,7 @@ LABEL_11:
   v9 = MKMapPointForCoordinate(v35);
   [(CLLocation *)self->_startStationLocation coordinate];
   v11 = v10;
-  v12 = [(CLLocation *)self->_endStationLocation coordinate];
+  coordinate2 = [(CLLocation *)self->_endStationLocation coordinate];
   [(PKTransactionMapView *)self bounds:fmin(y];
   _MKMapRectThatFits();
   v15 = v14;
@@ -316,17 +316,17 @@ LABEL_12:
   v37[2] = 0x3032000000;
   v37[3] = __Block_byref_object_copy__7;
   v37[4] = __Block_byref_object_dispose__7;
-  v3 = [(PKPaymentTransaction *)self->_transaction preferredLocation];
-  v4 = v3;
-  if (v3)
+  preferredLocation = [(PKPaymentTransaction *)self->_transaction preferredLocation];
+  v4 = preferredLocation;
+  if (preferredLocation)
   {
-    v38 = v3;
+    location = preferredLocation;
   }
 
   else
   {
-    v5 = [(PKMerchant *)self->_merchant mapsMerchant];
-    v38 = [v5 location];
+    mapsMerchant = [(PKMerchant *)self->_merchant mapsMerchant];
+    location = [mapsMerchant location];
   }
 
   v31 = 0;
@@ -334,14 +334,14 @@ LABEL_12:
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__7;
   v35 = __Block_byref_object_dispose__7;
-  v36 = [(PKPaymentTransaction *)self->_transaction startStationLocation];
+  startStationLocation = [(PKPaymentTransaction *)self->_transaction startStationLocation];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__7;
   v29 = __Block_byref_object_dispose__7;
-  v30 = [(PKPaymentTransaction *)self->_transaction endStationLocation];
-  v6 = [(PKPaymentTransaction *)self->_transaction transactionType];
+  endStationLocation = [(PKPaymentTransaction *)self->_transaction endStationLocation];
+  transactionType = [(PKPaymentTransaction *)self->_transaction transactionType];
   v7 = objc_alloc_init(MEMORY[0x1E69B8658]);
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -352,54 +352,54 @@ LABEL_12:
   v22 = v8;
   objc_copyWeak(&v23, &location);
   v9 = _Block_copy(aBlock);
-  if (v6 == 2)
+  if (transactionType == 2)
   {
-    v10 = [(PKPaymentTransaction *)self->_transaction startStationLocation];
-    if (v10)
+    startStationLocation2 = [(PKPaymentTransaction *)self->_transaction startStationLocation];
+    if (startStationLocation2)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __40__PKTransactionMapView__updateLocations__block_invoke_4;
       v20[3] = &unk_1E8015008;
       v20[4] = &v31;
-      v9[2](v9, v10, v20);
+      v9[2](v9, startStationLocation2, v20);
     }
 
-    v11 = [(PKPaymentTransaction *)self->_transaction endStationLocation];
+    endStationLocation2 = [(PKPaymentTransaction *)self->_transaction endStationLocation];
 
-    if (v11)
+    if (endStationLocation2)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __40__PKTransactionMapView__updateLocations__block_invoke_5;
       v19[3] = &unk_1E8015008;
       v19[4] = &v25;
-      v9[2](v9, v11, v19);
+      v9[2](v9, endStationLocation2, v19);
     }
   }
 
   else
   {
-    v11 = 0;
+    endStationLocation2 = 0;
   }
 
   if (!v32[5] && !v26[5])
   {
-    v12 = [(PKPaymentTransaction *)self->_transaction preferredLocation];
+    preferredLocation2 = [(PKPaymentTransaction *)self->_transaction preferredLocation];
 
-    v11 = v12;
-    if (v12 || (-[PKMerchant mapsMerchant](self->_merchant, "mapsMerchant"), v13 = objc_claimAutoreleasedReturnValue(), [v13 location], v11 = objc_claimAutoreleasedReturnValue(), v13, v11))
+    endStationLocation2 = preferredLocation2;
+    if (preferredLocation2 || (-[PKMerchant mapsMerchant](self->_merchant, "mapsMerchant"), v13 = objc_claimAutoreleasedReturnValue(), [v13 location], endStationLocation2 = objc_claimAutoreleasedReturnValue(), v13, endStationLocation2))
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __40__PKTransactionMapView__updateLocations__block_invoke_6;
       v18[3] = &unk_1E8015008;
       v18[4] = v37;
-      v9[2](v9, v11, v18);
+      v9[2](v9, endStationLocation2, v18);
     }
   }
 
-  v14 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __40__PKTransactionMapView__updateLocations__block_invoke_7;
@@ -408,7 +408,7 @@ LABEL_12:
   v16[4] = v37;
   v16[5] = &v31;
   v16[6] = &v25;
-  v15 = [v8 evaluateWithInput:v14 completion:v16];
+  v15 = [v8 evaluateWithInput:null completion:v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v23);
@@ -515,27 +515,27 @@ uint64_t __40__PKTransactionMapView__updateLocations__block_invoke_8(void *a1)
   return [v2 _createAnnotationsForTransaction:v3];
 }
 
-- (void)_shiftLocationIfNeeded:(id)a3 completion:(id)a4
+- (void)_shiftLocationIfNeeded:(id)needed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  neededCopy = needed;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && [MEMORY[0x1E696F470] isLocationShiftRequiredForLocation:v6])
+    if (neededCopy && [MEMORY[0x1E696F470] isLocationShiftRequiredForLocation:neededCopy])
     {
-      v8 = [(PKTransactionMapView *)self _locationShifter];
+      _locationShifter = [(PKTransactionMapView *)self _locationShifter];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __58__PKTransactionMapView__shiftLocationIfNeeded_completion___block_invoke;
       v9[3] = &unk_1E8015080;
-      v11 = v7;
-      v10 = v6;
-      [v8 shiftLocation:v10 withCompletionHandler:v9];
+      v11 = completionCopy;
+      v10 = neededCopy;
+      [_locationShifter shiftLocation:v10 withCompletionHandler:v9];
     }
 
     else
     {
-      (*(v7 + 2))(v7, v6);
+      (*(completionCopy + 2))(completionCopy, neededCopy);
     }
   }
 }
@@ -578,16 +578,16 @@ void __58__PKTransactionMapView__shiftLocationIfNeeded_completion___block_invoke
   return locationShifter;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
   v5 = MEMORY[0x1E696F2C8];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithAnnotation:v6 reuseIdentifier:0];
+  annotationCopy = annotation;
+  v7 = [[v5 alloc] initWithAnnotation:annotationCopy reuseIdentifier:0];
 
   [v7 sizeToFit];
-  v8 = [(PKPaymentTransaction *)self->_transaction merchant];
-  merchant = v8;
-  if (!v8)
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  merchant = merchant;
+  if (!merchant)
   {
     merchant = self->_merchant;
   }

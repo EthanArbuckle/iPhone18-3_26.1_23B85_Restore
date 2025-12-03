@@ -1,22 +1,22 @@
 @interface SKUIDefaultSettingDescriptionView
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (UIEdgeInsets)_paddingForStyle:(id)a3;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (UIEdgeInsets)_paddingForStyle:(id)style;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
 - (BOOL)hasDisclosureChevron;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBackgroundColor:(id)a3;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIDefaultSettingDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  descriptionCopy = description;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -29,20 +29,20 @@
     }
   }
 
-  v17 = [v7 viewElement];
-  v18 = [v17 lockupViewType];
+  viewElement = [descriptionCopy viewElement];
+  lockupViewType = [viewElement lockupViewType];
   v19 = off_2781F6800;
-  if (v18 != 8)
+  if (lockupViewType != 8)
   {
     v19 = off_2781F6378;
   }
 
-  v20 = [(__objc2_class *)*v19 prefetchResourcesForViewElement:v17 reason:a4 context:v8];
+  v20 = [(__objc2_class *)*v19 prefetchResourcesForViewElement:viewElement reason:reason context:contextCopy];
 
   return v20;
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -63,10 +63,10 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  descriptionCopy = description;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -79,21 +79,21 @@
     }
   }
 
-  v17 = [v7 viewElement];
-  v18 = [v17 lockupViewType];
+  viewElement = [descriptionCopy viewElement];
+  lockupViewType = [viewElement lockupViewType];
   v19 = off_2781F6800;
-  if (v18 != 8)
+  if (lockupViewType != 8)
   {
     v19 = off_2781F6378;
   }
 
-  [(__objc2_class *)*v19 requestLayoutForViewElement:v17 width:v8 context:a4];
+  [(__objc2_class *)*v19 requestLayoutForViewElement:viewElement width:contextCopy context:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -106,19 +106,19 @@
     }
   }
 
-  v18 = [v8 viewElement];
-  v19 = [v18 lockupViewType];
+  viewElement = [descriptionCopy viewElement];
+  lockupViewType = [viewElement lockupViewType];
   v20 = off_2781F6800;
-  if (v19 != 8)
+  if (lockupViewType != 8)
   {
     v20 = off_2781F6378;
   }
 
-  [(__objc2_class *)*v20 sizeThatFitsWidth:v18 viewElement:v9 context:a3];
+  [(__objc2_class *)*v20 sizeThatFitsWidth:viewElement viewElement:contextCopy context:width];
   v22 = v21;
   v24 = v23;
-  v25 = [v18 style];
-  [a1 _paddingForStyle:v25];
+  style = [viewElement style];
+  [self _paddingForStyle:style];
   v28 = v24 + v26 + v27;
 
   v29 = v22;
@@ -145,10 +145,10 @@
   return self->_hasDisclosureChevron;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  descriptionCopy = description;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -161,7 +161,7 @@
     }
   }
 
-  v18 = [v8 viewElement];
+  viewElement = [descriptionCopy viewElement];
   viewReuseView = self->_viewReuseView;
   if (!viewReuseView)
   {
@@ -177,21 +177,21 @@
   v32 = 3221225472;
   v33 = __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_context___block_invoke;
   v34 = &unk_2781F95C8;
-  v35 = v18;
-  v36 = self;
-  v38 = a4;
-  v37 = v9;
-  v22 = v9;
-  v23 = v18;
+  v35 = viewElement;
+  selfCopy = self;
+  widthCopy = width;
+  v37 = contextCopy;
+  v22 = contextCopy;
+  v23 = viewElement;
   [(SKUIViewReuseView *)viewReuseView modifyUsingBlock:&v31];
-  v24 = [v23 style];
-  [objc_opt_class() _paddingForStyle:v24];
+  style = [v23 style];
+  [objc_opt_class() _paddingForStyle:style];
   self->_padding.top = v25;
   self->_padding.left = v26;
   self->_padding.bottom = v27;
   self->_padding.right = v28;
-  v29 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIDefaultSettingDescriptionView *)self setBackgroundColor:v29];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SKUIDefaultSettingDescriptionView *)self setBackgroundColor:clearColor];
 
   v30 = [v23 firstChildForElementType:29];
   self->_hasDisclosureChevron = v30 != 0;
@@ -221,11 +221,11 @@ void __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_
   *(v10 + 480) = v9;
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -240,7 +240,7 @@ void __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_
 
   if ([(UIView *)self->_viewElementView conformsToProtocol:&unk_2828E62D0])
   {
-    v19 = [(UIView *)self->_viewElementView setImage:v8 forArtworkRequest:v9 context:v10];
+    v19 = [(UIView *)self->_viewElementView setImage:imageCopy forArtworkRequest:requestCopy context:contextCopy];
   }
 
   else
@@ -268,8 +268,8 @@ void __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_
   v27.receiver = self;
   v27.super_class = SKUIDefaultSettingDescriptionView;
   [(SKUIDefaultSettingDescriptionView *)&v27 layoutSubviews];
-  v11 = [MEMORY[0x277D75128] sharedApplication];
-  v12 = [v11 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   [(SKUIDefaultSettingDescriptionView *)self bounds];
   v14 = v13;
@@ -277,7 +277,7 @@ void __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_
   v18 = v17;
   v20 = v19;
   [(SKUISettingDescriptionView *)self layoutMargins];
-  if (v12)
+  if (userInterfaceLayoutDirection)
   {
     v23 = v22;
   }
@@ -287,7 +287,7 @@ void __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_
     v23 = v21;
   }
 
-  if (v12)
+  if (userInterfaceLayoutDirection)
   {
     v24 = v21;
   }
@@ -312,19 +312,19 @@ void __80__SKUIDefaultSettingDescriptionView_reloadWithSettingDescription_width_
   [(UIView *)viewElementView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = SKUIDefaultSettingDescriptionView;
-  v4 = a3;
-  [(SKUIDefaultSettingDescriptionView *)&v5 setBackgroundColor:v4];
-  [(UIView *)self->_viewElementView setBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(SKUIDefaultSettingDescriptionView *)&v5 setBackgroundColor:colorCopy];
+  [(UIView *)self->_viewElementView setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-+ (UIEdgeInsets)_paddingForStyle:(id)a3
++ (UIEdgeInsets)_paddingForStyle:(id)style
 {
   v7 = 0;
-  v3 = SKUIViewElementPaddingForStyle(a3, &v7);
+  v3 = SKUIViewElementPaddingForStyle(style, &v7);
   if ((v7 & 1) == 0)
   {
     v3 = *MEMORY[0x277D768C8];

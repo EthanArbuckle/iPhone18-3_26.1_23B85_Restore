@@ -1,15 +1,15 @@
 @interface HDStateOfMindEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (id)_PredicateForProperty:(void *)a3 matchingValues:(uint64_t)a4 inEntityClass:;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (id)_PredicateForProperty:(void *)property matchingValues:(uint64_t)values inEntityClass:;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)predicateForDomain:(int64_t)a3;
-+ (id)predicateForDomains:(id)a3;
-+ (id)predicateForLabel:(int64_t)a3;
-+ (id)predicateForLabels:(id)a3;
-+ (id)predicateForReflectiveInterval:(int64_t)a3 equals:(BOOL)a4;
-+ (id)predicateForValence:(double)a3 comparisonType:(int64_t)a4;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)predicateForDomain:(int64_t)domain;
++ (id)predicateForDomains:(id)domains;
++ (id)predicateForLabel:(int64_t)label;
++ (id)predicateForLabels:(id)labels;
++ (id)predicateForReflectiveInterval:(int64_t)interval equals:(BOOL)equals;
++ (id)predicateForValence:(double)valence comparisonType:(int64_t)type;
 + (id)privateSubEntities;
 @end
 
@@ -39,32 +39,32 @@
   return v2;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDStateOfMindEntity.m" lineNumber:81 description:{@"Subclasses must override %s", "+[HDStateOfMindEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDStateOfMindEntity.m" lineNumber:81 description:{@"Subclasses must override %s", "+[HDStateOfMindEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v25[4] = a1;
+  v25[4] = self;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke_2;
   v22[3] = &unk_278613038;
-  v23 = v14;
-  v24 = v12;
-  v16 = v12;
-  v17 = v14;
-  if ([v13 executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey_4 error:a7 SQLGenerator:v25 bindingHandler:v22 enumerationHandler:0])
+  v23 = dCopy;
+  v24 = objectCopy;
+  v16 = objectCopy;
+  v17 = dCopy;
+  if ([databaseCopy executeCachedStatementForKey:&insertDataObject_withProvenance_inDatabase_persistentID_error__insertKey_4 error:error SQLGenerator:v25 bindingHandler:v22 enumerationHandler:0])
   {
     v18 = v17;
   }
@@ -110,40 +110,40 @@ void __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persis
   }
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addStateOfMindLogs:a3];
+    [collection addStateOfMindLogs:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDStateOfMindEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDStateOfMindEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)predicateForValence:(double)a3 comparisonType:(int64_t)a4
++ (id)predicateForValence:(double)valence comparisonType:(int64_t)type
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v6 = [MEMORY[0x277D10B18] predicateWithProperty:@"valence" value:v5 comparisonType:a4];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:valence];
+  v6 = [MEMORY[0x277D10B18] predicateWithProperty:@"valence" value:v5 comparisonType:type];
 
   return v6;
 }
 
-+ (id)predicateForReflectiveInterval:(int64_t)a3 equals:(BOOL)a4
++ (id)predicateForReflectiveInterval:(int64_t)interval equals:(BOOL)equals
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  if (v4)
+  equalsCopy = equals;
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:interval];
+  if (equalsCopy)
   {
     v6 = 1;
   }
@@ -158,10 +158,10 @@ void __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persis
   return v7;
 }
 
-+ (id)predicateForLabel:(int64_t)a3
++ (id)predicateForLabel:(int64_t)label
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithInteger:label];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v5 = [HDStateOfMindEntity predicateForLabels:v4];
@@ -171,24 +171,24 @@ void __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persis
   return v5;
 }
 
-+ (id)predicateForLabels:(id)a3
++ (id)predicateForLabels:(id)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v4 = objc_opt_class();
-  v5 = [HDStateOfMindEntity _PredicateForProperty:v3 matchingValues:v4 inEntityClass:?];
+  v5 = [HDStateOfMindEntity _PredicateForProperty:labelsCopy matchingValues:v4 inEntityClass:?];
 
   return v5;
 }
 
-+ (id)_PredicateForProperty:(void *)a3 matchingValues:(uint64_t)a4 inEntityClass:
++ (id)_PredicateForProperty:(void *)property matchingValues:(uint64_t)values inEntityClass:
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  propertyCopy = property;
   v7 = a2;
   objc_opt_self();
   v8 = objc_alloc_init(MEMORY[0x277D10B80]);
-  [v8 setEntityClass:a4];
-  v9 = [MEMORY[0x277D10B28] containsPredicateWithProperty:v7 values:v6];
+  [v8 setEntityClass:values];
+  v9 = [MEMORY[0x277D10B28] containsPredicateWithProperty:v7 values:propertyCopy];
 
   [v8 setPredicate:v9];
   v10 = MEMORY[0x277D10B18];
@@ -201,10 +201,10 @@ void __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persis
   return v12;
 }
 
-+ (id)predicateForDomain:(int64_t)a3
++ (id)predicateForDomain:(int64_t)domain
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithInteger:domain];
   v8[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v5 = [HDStateOfMindEntity predicateForDomains:v4];
@@ -214,11 +214,11 @@ void __85__HDStateOfMindEntity_insertDataObject_withProvenance_inDatabase_persis
   return v5;
 }
 
-+ (id)predicateForDomains:(id)a3
++ (id)predicateForDomains:(id)domains
 {
-  v3 = a3;
+  domainsCopy = domains;
   v4 = objc_opt_class();
-  v5 = [HDStateOfMindEntity _PredicateForProperty:v3 matchingValues:v4 inEntityClass:?];
+  v5 = [HDStateOfMindEntity _PredicateForProperty:domainsCopy matchingValues:v4 inEntityClass:?];
 
   return v5;
 }

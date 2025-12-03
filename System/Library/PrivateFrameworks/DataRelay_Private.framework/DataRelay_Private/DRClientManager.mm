@@ -1,14 +1,14 @@
 @interface DRClientManager
 - (DRClientManager)init;
 - (NSArray)availableServers;
-- (id)addAvailableDataTypes:(unint64_t)a3 device:(id)a4 wxAddress:(id)a5;
-- (id)addAvailableDataTypesFromPairedCompanion:(unint64_t)a3 wxAddress:(id)a4;
-- (id)identifierFromOptions:(id)a3;
-- (id)removeAvailableDataTypes:(unint64_t)a3 device:(id)a4 wxAddress:(id)a5;
-- (id)removeAvailableDataTypesFromPairedCompanion:(unint64_t)a3 wxAddress:(id)a4;
-- (unint64_t)dataTypesForPeer:(unint64_t)a3 model:(id)a4 majorVersion:(int64_t)a5 minorVersion:(int64_t)a6;
+- (id)addAvailableDataTypes:(unint64_t)types device:(id)device wxAddress:(id)address;
+- (id)addAvailableDataTypesFromPairedCompanion:(unint64_t)companion wxAddress:(id)address;
+- (id)identifierFromOptions:(id)options;
+- (id)removeAvailableDataTypes:(unint64_t)types device:(id)device wxAddress:(id)address;
+- (id)removeAvailableDataTypesFromPairedCompanion:(unint64_t)companion wxAddress:(id)address;
+- (unint64_t)dataTypesForPeer:(unint64_t)peer model:(id)model majorVersion:(int64_t)version minorVersion:(int64_t)minorVersion;
 - (void)setupRapport;
-- (void)wxAddressChanged:(id)a3 wxAddress:(id)a4;
+- (void)wxAddressChanged:(id)changed wxAddress:(id)address;
 @end
 
 @implementation DRClientManager
@@ -26,20 +26,20 @@
   return v2;
 }
 
-- (unint64_t)dataTypesForPeer:(unint64_t)a3 model:(id)a4 majorVersion:(int64_t)a5 minorVersion:(int64_t)a6
+- (unint64_t)dataTypesForPeer:(unint64_t)peer model:(id)model majorVersion:(int64_t)version minorVersion:(int64_t)minorVersion
 {
-  v8 = a4;
-  if ([v8 hasPrefix:@"Watch"])
+  modelCopy = model;
+  if ([modelCopy hasPrefix:@"Watch"])
   {
-    if (a5 > 11)
+    if (version > 11)
     {
       goto LABEL_12;
     }
   }
 
-  else if (([v8 hasPrefix:@"iPhone"] & 1) != 0 || objc_msgSend(v8, "hasPrefix:", @"iPad") || objc_msgSend(v8, "hasPrefix:", @"AppleTV"))
+  else if (([modelCopy hasPrefix:@"iPhone"] & 1) != 0 || objc_msgSend(modelCopy, "hasPrefix:", @"iPad") || objc_msgSend(modelCopy, "hasPrefix:", @"AppleTV"))
   {
-    if (a5 > 18)
+    if (version > 18)
     {
       goto LABEL_12;
     }
@@ -47,8 +47,8 @@
 
   else
   {
-    v10 = [v8 containsString:@"Mac"];
-    if (a5 >= 16 && (v10 & 1) != 0)
+    v10 = [modelCopy containsString:@"Mac"];
+    if (version >= 16 && (v10 & 1) != 0)
     {
       goto LABEL_12;
     }
@@ -59,22 +59,22 @@
     [DRClientManager dataTypesForPeer:model:majorVersion:minorVersion:];
   }
 
-  a3 = 0;
+  peer = 0;
 LABEL_12:
 
-  return a3;
+  return peer;
 }
 
-- (id)addAvailableDataTypes:(unint64_t)a3 device:(id)a4 wxAddress:(id)a5
+- (id)addAvailableDataTypes:(unint64_t)types device:(id)device wxAddress:(id)address
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 modelIdentifier];
-  if (v8)
+  deviceCopy = device;
+  addressCopy = address;
+  modelIdentifier = [deviceCopy modelIdentifier];
+  if (deviceCopy)
   {
-    [v8 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     v11 = v20;
-    [v8 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     v12 = v18;
   }
 
@@ -90,24 +90,24 @@ LABEL_12:
     v17 = 0;
   }
 
-  v13 = [(DRClientManager *)self dataTypesForPeer:a3 model:v10 majorVersion:v11 minorVersion:v12, v17, v18, v19, v20, v21, v22];
+  v13 = [(DRClientManager *)self dataTypesForPeer:types model:modelIdentifier majorVersion:v11 minorVersion:v12, v17, v18, v19, v20, v21, v22];
 
-  v14 = [v8 uniqueID];
-  v15 = [(DRClientManager *)self addAvailableDataTypes:v14 dataTypes:v13 wxAddress:v9 fromServer:0];
+  uniqueID = [deviceCopy uniqueID];
+  v15 = [(DRClientManager *)self addAvailableDataTypes:uniqueID dataTypes:v13 wxAddress:addressCopy fromServer:0];
 
   return v15;
 }
 
-- (id)removeAvailableDataTypes:(unint64_t)a3 device:(id)a4 wxAddress:(id)a5
+- (id)removeAvailableDataTypes:(unint64_t)types device:(id)device wxAddress:(id)address
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 modelIdentifier];
-  if (v8)
+  deviceCopy = device;
+  addressCopy = address;
+  modelIdentifier = [deviceCopy modelIdentifier];
+  if (deviceCopy)
   {
-    [v8 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     v11 = v20;
-    [v8 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     v12 = v18;
   }
 
@@ -123,58 +123,58 @@ LABEL_12:
     v17 = 0;
   }
 
-  v13 = [(DRClientManager *)self dataTypesForPeer:a3 model:v10 majorVersion:v11 minorVersion:v12, v17, v18, v19, v20, v21, v22];
+  v13 = [(DRClientManager *)self dataTypesForPeer:types model:modelIdentifier majorVersion:v11 minorVersion:v12, v17, v18, v19, v20, v21, v22];
 
-  v14 = [v8 uniqueID];
-  v15 = [(DRClientManager *)self removeAvailableDataTypes:v14 dataTypes:v13 wxAddress:v9 fromServer:0];
+  uniqueID = [deviceCopy uniqueID];
+  v15 = [(DRClientManager *)self removeAvailableDataTypes:uniqueID dataTypes:v13 wxAddress:addressCopy fromServer:0];
 
   return v15;
 }
 
-- (id)addAvailableDataTypesFromPairedCompanion:(unint64_t)a3 wxAddress:(id)a4
+- (id)addAvailableDataTypesFromPairedCompanion:(unint64_t)companion wxAddress:(id)address
 {
   v6 = MEMORY[0x277D2BCF8];
-  v7 = a4;
-  v8 = [v6 sharedInstance];
-  v9 = [v8 getActivePairedDevice];
+  addressCopy = address;
+  sharedInstance = [v6 sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  v10 = [v9 valueForProperty:*MEMORY[0x277D2BC20]];
+  v10 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC20]];
   v11 = [v10 componentsSeparatedByString:@"."];
   v12 = [v11 objectAtIndex:0];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
   v14 = [v10 componentsSeparatedByString:@"."];
   v15 = [v14 objectAtIndex:1];
-  v16 = [v15 integerValue];
+  integerValue2 = [v15 integerValue];
 
-  v17 = [v9 valueForProperty:*MEMORY[0x277D2BBC0]];
-  v18 = [(DRClientManager *)self dataTypesForPeer:a3 model:v17 majorVersion:v13 minorVersion:v16];
+  v17 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
+  v18 = [(DRClientManager *)self dataTypesForPeer:companion model:v17 majorVersion:integerValue minorVersion:integerValue2];
 
-  v19 = [(DRClientManager *)self addAvailableDataTypes:@"RPDestinationIdentifierPairedCompanion" dataTypes:v18 wxAddress:v7 fromServer:0];
+  v19 = [(DRClientManager *)self addAvailableDataTypes:@"RPDestinationIdentifierPairedCompanion" dataTypes:v18 wxAddress:addressCopy fromServer:0];
 
   return v19;
 }
 
-- (id)removeAvailableDataTypesFromPairedCompanion:(unint64_t)a3 wxAddress:(id)a4
+- (id)removeAvailableDataTypesFromPairedCompanion:(unint64_t)companion wxAddress:(id)address
 {
   v6 = MEMORY[0x277D2BCF8];
-  v7 = a4;
-  v8 = [v6 sharedInstance];
-  v9 = [v8 getActivePairedDevice];
+  addressCopy = address;
+  sharedInstance = [v6 sharedInstance];
+  getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-  v10 = [v9 valueForProperty:*MEMORY[0x277D2BC20]];
+  v10 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC20]];
   v11 = [v10 componentsSeparatedByString:@"."];
   v12 = [v11 objectAtIndex:0];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
   v14 = [v10 componentsSeparatedByString:@"."];
   v15 = [v14 objectAtIndex:1];
-  v16 = [v15 integerValue];
+  integerValue2 = [v15 integerValue];
 
-  v17 = [v9 valueForProperty:*MEMORY[0x277D2BBC0]];
-  v18 = [(DRClientManager *)self dataTypesForPeer:a3 model:v17 majorVersion:v13 minorVersion:v16];
+  v17 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
+  v18 = [(DRClientManager *)self dataTypesForPeer:companion model:v17 majorVersion:integerValue minorVersion:integerValue2];
 
-  v19 = [(DRClientManager *)self removeAvailableDataTypes:@"RPDestinationIdentifierPairedCompanion" dataTypes:v18 wxAddress:v7 fromServer:0];
+  v19 = [(DRClientManager *)self removeAvailableDataTypes:@"RPDestinationIdentifierPairedCompanion" dataTypes:v18 wxAddress:addressCopy fromServer:0];
 
   return v19;
 }
@@ -255,14 +255,14 @@ void __75__DRClientManager_removeAvailableDataTypes_dataTypes_wxAddress_fromServ
   }
 }
 
-- (void)wxAddressChanged:(id)a3 wxAddress:(id)a4
+- (void)wxAddressChanged:(id)changed wxAddress:(id)address
 {
-  v8 = a4;
-  v6 = [(NSMutableDictionary *)self->_serverDictionary objectForKeyedSubscript:a3];
+  addressCopy = address;
+  v6 = [(NSMutableDictionary *)self->_serverDictionary objectForKeyedSubscript:changed];
   v7 = v6;
   if (v6)
   {
-    [v6 setWxAddress:v8];
+    [v6 setWxAddress:addressCopy];
   }
 
   else if (gLogCategory_DRClientManager <= 90 && (gLogCategory_DRClientManager != -1 || _LogCategory_Initialize()))
@@ -271,10 +271,10 @@ void __75__DRClientManager_removeAvailableDataTypes_dataTypes_wxAddress_fromServ
   }
 }
 
-- (id)identifierFromOptions:(id)a3
+- (id)identifierFromOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D44270]];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D44270]];
   v5 = [v4 isEqual:&unk_285B1CA20];
 
   if (v5)
@@ -292,7 +292,7 @@ void __75__DRClientManager_removeAvailableDataTypes_dataTypes_wxAddress_fromServ
       v9 = MEMORY[0x277D442A8];
     }
 
-    v6 = [v3 objectForKeyedSubscript:*v9];
+    v6 = [optionsCopy objectForKeyedSubscript:*v9];
   }
 
   return v6;
@@ -413,15 +413,15 @@ uint64_t __31__DRClientManager_setupRapport__block_invoke_4(uint64_t a1, void *a
 {
   if ([(NSMutableDictionary *)self->_serverDictionary count])
   {
-    v3 = [(NSMutableDictionary *)self->_serverDictionary allValues];
+    allValues = [(NSMutableDictionary *)self->_serverDictionary allValues];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  return v3;
+  return allValues;
 }
 
 void __31__DRClientManager_setupRapport__block_invoke_4_cold_1(void *a1)

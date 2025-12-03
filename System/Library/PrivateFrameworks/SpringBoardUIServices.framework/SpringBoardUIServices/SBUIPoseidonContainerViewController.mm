@@ -1,42 +1,42 @@
 @interface SBUIPoseidonContainerViewController
 - (BOOL)coachingActive;
-- (SBUIPoseidonContainerViewController)initWithAuthenticationInformationProvider:(id)a3;
+- (SBUIPoseidonContainerViewController)initWithAuthenticationInformationProvider:(id)provider;
 - (SBUIPoseidonContainerViewControllerDelegate)delegate;
 - (SBUIPoseidonContainerViewControllerLockStatusProvider)authenticationInformationProvider;
 - (id)_poseidonIconView;
-- (void)_setCounterTransformForOrientation:(int64_t)a3;
-- (void)_setLocalTransformForOrientation:(int64_t)a3;
+- (void)_setCounterTransformForOrientation:(int64_t)orientation;
+- (void)_setLocalTransformForOrientation:(int64_t)orientation;
 - (void)_updateRotation;
-- (void)fillRestToOpenWithDuration:(double)a3;
+- (void)fillRestToOpenWithDuration:(double)duration;
 - (void)loadView;
-- (void)poseidonIconViewCoachingStateDidChange:(id)a3;
+- (void)poseidonIconViewCoachingStateDidChange:(id)change;
 - (void)resetRestToOpen;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setBioLockout:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setResignActive:(BOOL)a3;
-- (void)setScreenOn:(BOOL)a3;
-- (void)setTestPoseidonIconView:(id)a3;
-- (void)showCoaching:(BOOL)a3;
-- (void)startRestToOpenCoaching:(BOOL)a3 withCompletion:(id)a4;
-- (void)updateContainsFirstRowIcons:(BOOL)a3;
-- (void)updateSidebarComplicationFrame:(CGRect)a3;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setBioLockout:(BOOL)lockout;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setResignActive:(BOOL)active;
+- (void)setScreenOn:(BOOL)on;
+- (void)setTestPoseidonIconView:(id)view;
+- (void)showCoaching:(BOOL)coaching;
+- (void)startRestToOpenCoaching:(BOOL)coaching withCompletion:(id)completion;
+- (void)updateContainsFirstRowIcons:(BOOL)icons;
+- (void)updateSidebarComplicationFrame:(CGRect)frame;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBUIPoseidonContainerViewController
 
-- (SBUIPoseidonContainerViewController)initWithAuthenticationInformationProvider:(id)a3
+- (SBUIPoseidonContainerViewController)initWithAuthenticationInformationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = SBUIPoseidonContainerViewController;
   v5 = [(SBUIPoseidonContainerViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SBUIPoseidonContainerViewController *)v5 setAuthenticationInformationProvider:v4];
+    [(SBUIPoseidonContainerViewController *)v5 setAuthenticationInformationProvider:providerCopy];
   }
 
   return v6;
@@ -58,19 +58,19 @@
   [(SBUIPoseidonContainerViewController *)self _updateRotation];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = SBUIPoseidonContainerViewController;
-  v7 = a4;
-  [(SBUIPoseidonContainerViewController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  v9 = v8;
-  if (v8)
+  coordinatorCopy = coordinator;
+  [(SBUIPoseidonContainerViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  v9 = _poseidonIconView;
+  if (_poseidonIconView)
   {
-    [v8 transform];
+    [_poseidonIconView transform];
   }
 
   else
@@ -93,37 +93,37 @@
   CGAffineTransformRotate(&v14, &v13, 1.0e-13);
   [v9 setLocalTransform:&v14];
   v10 = SBFWindowForViewControllerTransition();
-  v11 = [v10 _toWindowOrientation];
+  _toWindowOrientation = [v10 _toWindowOrientation];
 
-  [(SBUIPoseidonContainerViewController *)self _setLocalTransformForOrientation:v11];
+  [(SBUIPoseidonContainerViewController *)self _setLocalTransformForOrientation:_toWindowOrientation];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__SBUIPoseidonContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v12[3] = &unk_1E789EBF0;
   v12[4] = self;
-  v12[5] = v11;
-  [v7 animateAlongsideTransition:v12 completion:0];
+  v12[5] = _toWindowOrientation;
+  [coordinatorCopy animateAlongsideTransition:v12 completion:0];
 }
 
-- (void)_setCounterTransformForOrientation:(int64_t)a3
+- (void)_setCounterTransformForOrientation:(int64_t)orientation
 {
-  v3 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
   SBTransformFromOrientationToOrientation();
-  [v3 setTransform:&v4];
+  [_poseidonIconView setTransform:&v4];
 }
 
-- (void)_setLocalTransformForOrientation:(int64_t)a3
+- (void)_setLocalTransformForOrientation:(int64_t)orientation
 {
-  v4 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  if (a3 > 2)
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  if (orientation > 2)
   {
-    if (a3 == 3)
+    if (orientation == 3)
     {
       v6 = 1.57079633;
       goto LABEL_10;
     }
 
-    if (a3 == 4)
+    if (orientation == 4)
     {
       v6 = -1.57079633;
 LABEL_10:
@@ -134,18 +134,18 @@ LABEL_10:
 
   else
   {
-    if (a3 < 2)
+    if (orientation < 2)
     {
       v5 = *(MEMORY[0x1E695EFD0] + 16);
       *&v7.a = *MEMORY[0x1E695EFD0];
       *&v7.c = v5;
       *&v7.tx = *(MEMORY[0x1E695EFD0] + 32);
 LABEL_11:
-      [v4 setLocalTransform:&v7];
+      [_poseidonIconView setLocalTransform:&v7];
       goto LABEL_12;
     }
 
-    if (a3 == 2)
+    if (orientation == 2)
     {
       v6 = -3.14159265;
       goto LABEL_10;
@@ -155,25 +155,25 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v5 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-    [v5 setLegibilitySettings:self->_legibilitySettings];
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+    [_poseidonIconView setLegibilitySettings:self->_legibilitySettings];
   }
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  if (self->_authenticated != a3)
+  if (self->_authenticated != authenticated)
   {
     block[7] = v3;
     block[8] = v4;
-    self->_authenticated = a3;
-    if (a3)
+    self->_authenticated = authenticated;
+    if (authenticated)
     {
       [(SBUIPoseidonContainerViewController *)self setBioLockout:0];
       if (self->_fingerOffSinceWake)
@@ -202,13 +202,13 @@ LABEL_12:
   }
 }
 
-- (void)setScreenOn:(BOOL)a3
+- (void)setScreenOn:(BOOL)on
 {
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    v4 = a3;
-    self->_screenOn = a3;
-    if (a3)
+    onCopy = on;
+    self->_screenOn = on;
+    if (on)
     {
       [(SBUIPoseidonContainerViewController *)self _updateRotation];
     }
@@ -220,28 +220,28 @@ LABEL_12:
       [(SBUIPoseidonContainerViewController *)self setUnlockSource:0];
     }
 
-    [(SBUIPoseidonContainerViewController *)self showCoaching:v4];
+    [(SBUIPoseidonContainerViewController *)self showCoaching:onCopy];
   }
 }
 
-- (void)setBioLockout:(BOOL)a3
+- (void)setBioLockout:(BOOL)lockout
 {
-  if (self->_bioLockout != a3)
+  if (self->_bioLockout != lockout)
   {
-    self->_bioLockout = a3;
-    if (a3)
+    self->_bioLockout = lockout;
+    if (lockout)
     {
       [(SBUIPoseidonContainerViewController *)self showCoaching:0];
     }
   }
 }
 
-- (void)setResignActive:(BOOL)a3
+- (void)setResignActive:(BOOL)active
 {
-  if (self->_resignActive != a3)
+  if (self->_resignActive != active)
   {
-    self->_resignActive = a3;
-    if (a3)
+    self->_resignActive = active;
+    if (active)
     {
       [(SBUIPoseidonContainerViewController *)self showCoaching:0];
 
@@ -256,42 +256,42 @@ LABEL_12:
   }
 }
 
-- (void)startRestToOpenCoaching:(BOOL)a3 withCompletion:(id)a4
+- (void)startRestToOpenCoaching:(BOOL)coaching withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBUIPoseidonContainerViewController *)self delegate];
-  if (v4 && (-[SBUIPoseidonContainerViewController authenticationInformationProvider](self, "authenticationInformationProvider"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isBiometricLockedOut], v8, (v9 & 1) == 0))
+  coachingCopy = coaching;
+  completionCopy = completion;
+  delegate = [(SBUIPoseidonContainerViewController *)self delegate];
+  if (coachingCopy && (-[SBUIPoseidonContainerViewController authenticationInformationProvider](self, "authenticationInformationProvider"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isBiometricLockedOut], v8, (v9 & 1) == 0))
   {
-    v11 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-    v12 = [v11 state];
+    _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+    state = [_poseidonIconView state];
 
-    if (v12 == 2)
+    if (state == 2)
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      v13 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+      _poseidonIconView2 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __78__SBUIPoseidonContainerViewController_startRestToOpenCoaching_withCompletion___block_invoke;
       v14[3] = &unk_1E789EC18;
-      v15 = v7;
-      v16 = self;
-      v17 = v6;
-      [v13 setState:2 forIdleTimeout:0 withCompletion:v14];
+      v15 = delegate;
+      selfCopy = self;
+      v17 = completionCopy;
+      [_poseidonIconView2 setState:2 forIdleTimeout:0 withCompletion:v14];
     }
   }
 
   else
   {
-    v10 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-    [v10 setState:0];
+    _poseidonIconView3 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+    [_poseidonIconView3 setState:0];
   }
 }
 
@@ -309,72 +309,72 @@ uint64_t __78__SBUIPoseidonContainerViewController_startRestToOpenCoaching_withC
   return result;
 }
 
-- (void)fillRestToOpenWithDuration:(double)a3
+- (void)fillRestToOpenWithDuration:(double)duration
 {
-  v4 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  [v4 fillRestToOpenWithDuration:a3];
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  [_poseidonIconView fillRestToOpenWithDuration:duration];
 }
 
 - (void)resetRestToOpen
 {
-  v2 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  [v2 resetRestToOpen];
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  [_poseidonIconView resetRestToOpen];
 }
 
-- (void)updateContainsFirstRowIcons:(BOOL)a3
+- (void)updateContainsFirstRowIcons:(BOOL)icons
 {
-  v3 = a3;
-  v4 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  [v4 setContainsFirstRowIcons:v3];
+  iconsCopy = icons;
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  [_poseidonIconView setContainsFirstRowIcons:iconsCopy];
 }
 
-- (void)updateSidebarComplicationFrame:(CGRect)a3
+- (void)updateSidebarComplicationFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  [v7 setSidebarFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  [_poseidonIconView setSidebarFrame:{x, y, width, height}];
 }
 
 - (BOOL)coachingActive
 {
-  v2 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-  v3 = [v2 state] != 0;
+  _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+  v3 = [_poseidonIconView state] != 0;
 
   return v3;
 }
 
-- (void)showCoaching:(BOOL)a3
+- (void)showCoaching:(BOOL)coaching
 {
-  if (!a3)
+  if (!coaching)
   {
-    v6 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-    v7 = [v6 state];
+    _poseidonIconView = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+    state = [_poseidonIconView state];
 
-    if (v7 == 2)
+    if (state == 2)
     {
       return;
     }
 
-    v8 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-    [v8 setState:0];
+    _poseidonIconView2 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+    [_poseidonIconView2 setState:0];
     goto LABEL_9;
   }
 
-  v4 = [(SBUIPoseidonContainerViewController *)self authenticationInformationProvider];
+  authenticationInformationProvider = [(SBUIPoseidonContainerViewController *)self authenticationInformationProvider];
   if (!self->_authenticated)
   {
-    v8 = v4;
-    if (([v4 isBiometricLockedOut] & 1) == 0 && objc_msgSend(v8, "hasBiometricAuthenticationCapabilityEnabled") && !self->_resignActive)
+    _poseidonIconView2 = authenticationInformationProvider;
+    if (([authenticationInformationProvider isBiometricLockedOut] & 1) == 0 && objc_msgSend(_poseidonIconView2, "hasBiometricAuthenticationCapabilityEnabled") && !self->_resignActive)
     {
-      v5 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
-      [v5 setState:1];
+      _poseidonIconView3 = [(SBUIPoseidonContainerViewController *)self _poseidonIconView];
+      [_poseidonIconView3 setState:1];
     }
 
 LABEL_9:
-    v4 = v8;
+    authenticationInformationProvider = _poseidonIconView2;
   }
 }
 
@@ -383,39 +383,39 @@ LABEL_9:
   testPoseidonIconView = self->_testPoseidonIconView;
   if (testPoseidonIconView)
   {
-    v3 = testPoseidonIconView;
+    view = testPoseidonIconView;
   }
 
   else
   {
-    v3 = [(SBUIPoseidonContainerViewController *)self view];
+    view = [(SBUIPoseidonContainerViewController *)self view];
   }
 
-  return v3;
+  return view;
 }
 
 - (void)_updateRotation
 {
-  v3 = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
-  [(SBUIPoseidonContainerViewController *)self _setCounterTransformForOrientation:v3];
+  activeInterfaceOrientation = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
+  [(SBUIPoseidonContainerViewController *)self _setCounterTransformForOrientation:activeInterfaceOrientation];
 
-  [(SBUIPoseidonContainerViewController *)self _setLocalTransformForOrientation:v3];
+  [(SBUIPoseidonContainerViewController *)self _setLocalTransformForOrientation:activeInterfaceOrientation];
 }
 
-- (void)poseidonIconViewCoachingStateDidChange:(id)a3
+- (void)poseidonIconViewCoachingStateDidChange:(id)change
 {
-  v4 = [(SBUIPoseidonContainerViewController *)self delegate];
-  [v4 poseidonContainerViewControllerCoachingStateDidChange:self];
+  delegate = [(SBUIPoseidonContainerViewController *)self delegate];
+  [delegate poseidonContainerViewControllerCoachingStateDidChange:self];
 }
 
-- (void)setTestPoseidonIconView:(id)a3
+- (void)setTestPoseidonIconView:(id)view
 {
-  v5 = a3;
-  if (self->_testPoseidonIconView != v5)
+  viewCopy = view;
+  if (self->_testPoseidonIconView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_testPoseidonIconView, a3);
-    v5 = v6;
+    v6 = viewCopy;
+    objc_storeStrong(&self->_testPoseidonIconView, view);
+    viewCopy = v6;
   }
 }
 

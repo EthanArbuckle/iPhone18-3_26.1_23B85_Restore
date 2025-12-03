@@ -1,21 +1,21 @@
 @interface UIDebuggingInformationHierarchyLineView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation UIDebuggingInformationHierarchyLineView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v7.receiver = self;
   v7.super_class = UIDebuggingInformationHierarchyLineView;
-  [(UICollectionReusableView *)&v7 applyLayoutAttributes:v4];
+  [(UICollectionReusableView *)&v7 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 lineColor];
+    lineColor = [attributesCopy lineColor];
     lineColor = self->_lineColor;
-    self->_lineColor = v5;
+    self->_lineColor = lineColor;
   }
 }
 

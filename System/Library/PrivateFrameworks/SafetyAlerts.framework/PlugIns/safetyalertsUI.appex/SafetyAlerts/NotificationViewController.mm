@@ -3,45 +3,45 @@
 - (UILabel)attribution;
 - (UIStackView)mainStackView;
 - (UIView)mapViewHolder;
-- (void)didReceiveNotification:(id)a3;
-- (void)renderLegendBgWithContext:(CGContext *)a3 color:(CGColor *)a4 topLeftX:(double)a5 topLeftY:(double)a6 width:(double)a7 height:(double)a8;
-- (void)submitMetricsInfoToDaemonForUid:(const char *)a3 tapTimestampSeconds:(double)a4 snapshotTimestampSeconds:(double)a5;
+- (void)didReceiveNotification:(id)notification;
+- (void)renderLegendBgWithContext:(CGContext *)context color:(CGColor *)color topLeftX:(double)x topLeftY:(double)y width:(double)width height:(double)height;
+- (void)submitMetricsInfoToDaemonForUid:(const char *)uid tapTimestampSeconds:(double)seconds snapshotTimestampSeconds:(double)timestampSeconds;
 - (void)viewDidLoad;
 @end
 
 @implementation NotificationViewController
 
-- (void)renderLegendBgWithContext:(CGContext *)a3 color:(CGColor *)a4 topLeftX:(double)a5 topLeftY:(double)a6 width:(double)a7 height:(double)a8
+- (void)renderLegendBgWithContext:(CGContext *)context color:(CGColor *)color topLeftX:(double)x topLeftY:(double)y width:(double)width height:(double)height
 {
-  v10 = a8 + 2.0;
-  v14.origin.x = a5 - (a8 + 2.0) * 0.5;
-  v14.origin.y = a6 - (a8 + 2.0) * 0.5;
-  v14.size.width = (a8 + 2.0 + a7);
-  v14.size.height = (a8 + 2.0 + a8);
+  v10 = height + 2.0;
+  v14.origin.x = x - (height + 2.0) * 0.5;
+  v14.origin.y = y - (height + 2.0) * 0.5;
+  v14.size.width = (height + 2.0 + width);
+  v14.size.height = (height + 2.0 + height);
   v11 = CGPathCreateWithRoundedRect(v14, v10, v10, 0);
-  v12 = [UIColor colorWithCGColor:a4];
+  v12 = [UIColor colorWithCGColor:color];
   [v12 setFill];
 
-  CGContextAddPath(a3, v11);
+  CGContextAddPath(context, v11);
 
-  CGContextFillPath(a3);
+  CGContextFillPath(context);
 }
 
-- (void)submitMetricsInfoToDaemonForUid:(const char *)a3 tapTimestampSeconds:(double)a4 snapshotTimestampSeconds:(double)a5
+- (void)submitMetricsInfoToDaemonForUid:(const char *)uid tapTimestampSeconds:(double)seconds snapshotTimestampSeconds:(double)timestampSeconds
 {
-  if (a3)
+  if (uid)
   {
     v8 = objc_alloc_init(NSMutableDictionary);
     if (v8)
     {
       SADeviceTime::getCurrentTime(&v19);
-      v9 = [NSString stringWithUTF8String:a3];
+      v9 = [NSString stringWithUTF8String:uid];
       [v8 setObject:v9 forKey:@"UID"];
 
-      v10 = [NSNumber numberWithDouble:a4];
+      v10 = [NSNumber numberWithDouble:seconds];
       [v8 setObject:v10 forKey:@"userTappedSeconds"];
 
-      v11 = [NSNumber numberWithDouble:a5];
+      v11 = [NSNumber numberWithDouble:timestampSeconds];
       [v8 setObject:v11 forKey:@"snapshotSeconds"];
 
       v12 = +[SafetyAlerts sharedInterface];
@@ -54,11 +54,11 @@
         v20 = 2082;
         v21 = "";
         v22 = 2081;
-        v23 = a3;
+        uidCopy = uid;
         v24 = 2049;
-        v25 = a4;
+        secondsCopy = seconds;
         v26 = 2049;
-        v27 = a5;
+        timestampSecondsCopy = timestampSeconds;
         v14 = "{msg%{public}.0s:#saNotificationExtension,sentMetricsToDaemon, uid:%{private, location:escape_only}s, tapTimestampSeconds:%{private}.1f, snapshotTimestampSeconds:%{private}.1f}";
         v15 = v13;
         v16 = 48;
@@ -102,9 +102,9 @@ LABEL_9:
   [(NotificationViewController *)&v2 viewDidLoad];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = SALogObjectGeneral;
   if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
   {
@@ -112,22 +112,22 @@ LABEL_9:
     *&buf[8] = 2082;
     *&buf[10] = "";
     *&buf[18] = 2117;
-    *&buf[20] = v3;
+    *&buf[20] = notificationCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#saNotificationExtension,didReceiveNotification, notification:%{sensitive, location:escape_only}@}", buf, 0x1Cu);
   }
 
   SADeviceTime::getCurrentTime(buf);
   v5 = *buf;
-  v6 = [v3 request];
-  v7 = [v6 content];
+  request = [notificationCopy request];
+  content = [request content];
   v78 = v5;
-  v79 = [v7 attachments];
+  attachments = [content attachments];
 
-  v8 = [v3 request];
-  v9 = [v8 content];
-  v10 = [v9 userInfo];
+  request2 = [notificationCopy request];
+  content2 = [request2 content];
+  userInfo = [content2 userInfo];
 
-  v11 = v10;
+  v11 = userInfo;
   v12 = [v11 objectForKey:@"userLat"];
   v13 = -1000.0;
   if (v12)
@@ -203,38 +203,38 @@ LABEL_9:
   v30 = [v11 objectForKey:@"displayEpicenter"];
   if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v77 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
   }
 
   else
   {
-    v77 = 0;
+    bOOLValue = 0;
   }
 
   v31 = [v11 objectForKey:@"lineShadeStrongShakingArea"];
   if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v76 = [v31 BOOLValue];
+    bOOLValue2 = [v31 BOOLValue];
   }
 
   else
   {
-    v76 = 0;
+    bOOLValue2 = 0;
   }
 
   v32 = [v11 objectForKey:@"uid"];
   if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v33 = v32;
-    v34 = [v32 UTF8String];
+    uTF8String = [v32 UTF8String];
   }
 
   else
   {
-    v34 = 0;
+    uTF8String = 0;
   }
 
-  v35 = strlen(v34);
+  v35 = strlen(uTF8String);
   if (v35 >= 0x7FFFFFFFFFFFFFF8)
   {
     sub_100003654();
@@ -249,7 +249,7 @@ LABEL_9:
   HIBYTE(v107) = v35;
   if (v35)
   {
-    memmove(&__dst, v34, v35);
+    memmove(&__dst, uTF8String, v35);
   }
 
   *(&__dst + v36) = 0;
@@ -300,8 +300,8 @@ LABEL_9:
         }
       }
 
-      v47 = [(NotificationViewController *)self traitCollection];
-      v48 = [v47 userInterfaceStyle] == 2;
+      traitCollection = [(NotificationViewController *)self traitCollection];
+      v48 = [traitCollection userInterfaceStyle] == 2;
 
       if (v48)
       {
@@ -387,12 +387,12 @@ LABEL_9:
       v84 = v50;
       v85 = v70;
       v86 = v52;
-      v100 = v76;
+      v100 = bOOLValue2;
       v87 = v13;
       v88 = v16;
       v89 = v74;
       v90 = GenericRGB;
-      v101 = v77;
+      v101 = bOOLValue;
       v91 = v73;
       v92 = v72;
       v81[4] = self;
@@ -413,8 +413,8 @@ LABEL_9:
       v98 = v78;
       [v64 startWithCompletionHandler:v81];
       v66 = [v11 objectForKey:@"attribution"];
-      v67 = [(NotificationViewController *)self attribution];
-      [v67 setText:v66];
+      attribution = [(NotificationViewController *)self attribution];
+      [attribution setText:v66];
 
       if (SHIBYTE(v97) < 0)
       {

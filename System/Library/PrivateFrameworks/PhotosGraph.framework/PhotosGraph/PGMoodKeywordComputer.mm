@@ -1,30 +1,30 @@
 @interface PGMoodKeywordComputer
-- (BOOL)_isCrowdedForMomentNodes:(id)a3;
+- (BOOL)_isCrowdedForMomentNodes:(id)nodes;
 - (NSArray)keywordsRegions;
 - (NSOrderedSet)orderedKeywords;
-- (id)_bestSocialGroupNodesInGraph:(id)a3;
-- (id)_celebratedHolidayKeywordsForMomentNodes:(id)a3 inGraph:(id)a4;
-- (id)_familyOrPartnerPersonNodesInGraph:(id)a3;
-- (id)_gatheringAndFamilyKeywordsForTriggeredMemory:(id)a3 isMeaningfulEventHoliday:(BOOL)a4 inGraph:(id)a5;
-- (id)_keywordsSortedByPriority:(id)a3;
-- (id)_locationTripKeywordsForMomentNodes:(id)a3 locationHelper:(id)a4;
-- (id)_lunarNewYearHolidayNodesInGraph:(id)a3;
-- (id)_natureMomentNodesInGraph:(id)a3;
-- (id)_shortTripTypeNodeCollectionInGraph:(id)a3;
-- (id)moodKeywordsForTriggeredMemory:(id)a3 suggestedMood:(unint64_t)a4 inGraph:(id)a5 locationHelper:(id)a6;
+- (id)_bestSocialGroupNodesInGraph:(id)graph;
+- (id)_celebratedHolidayKeywordsForMomentNodes:(id)nodes inGraph:(id)graph;
+- (id)_familyOrPartnerPersonNodesInGraph:(id)graph;
+- (id)_gatheringAndFamilyKeywordsForTriggeredMemory:(id)memory isMeaningfulEventHoliday:(BOOL)holiday inGraph:(id)graph;
+- (id)_keywordsSortedByPriority:(id)priority;
+- (id)_locationTripKeywordsForMomentNodes:(id)nodes locationHelper:(id)helper;
+- (id)_lunarNewYearHolidayNodesInGraph:(id)graph;
+- (id)_natureMomentNodesInGraph:(id)graph;
+- (id)_shortTripTypeNodeCollectionInGraph:(id)graph;
+- (id)moodKeywordsForTriggeredMemory:(id)memory suggestedMood:(unint64_t)mood inGraph:(id)graph locationHelper:(id)helper;
 @end
 
 @implementation PGMoodKeywordComputer
 
-- (id)_natureMomentNodesInGraph:(id)a3
+- (id)_natureMomentNodesInGraph:(id)graph
 {
   natureMomentNodes = self->_natureMomentNodes;
   if (!natureMomentNodes)
   {
-    v5 = [PGGraphROINodeCollection roiNodesOfType:4 inGraph:a3];
-    v6 = [v5 momentNodes];
+    v5 = [PGGraphROINodeCollection roiNodesOfType:4 inGraph:graph];
+    momentNodes = [v5 momentNodes];
     v7 = self->_natureMomentNodes;
-    self->_natureMomentNodes = v6;
+    self->_natureMomentNodes = momentNodes;
 
     natureMomentNodes = self->_natureMomentNodes;
   }
@@ -32,15 +32,15 @@
   return natureMomentNodes;
 }
 
-- (id)_familyOrPartnerPersonNodesInGraph:(id)a3
+- (id)_familyOrPartnerPersonNodesInGraph:(id)graph
 {
   familyOrPartnerPersonNodes = self->_familyOrPartnerPersonNodes;
   if (!familyOrPartnerPersonNodes)
   {
-    v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:a3];
-    v6 = [v5 partnerPersonNodes];
-    v7 = [v5 familyPersonNodes];
-    v8 = [v6 collectionByFormingUnionWith:v7];
+    v5 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graph];
+    partnerPersonNodes = [v5 partnerPersonNodes];
+    familyPersonNodes = [v5 familyPersonNodes];
+    v8 = [partnerPersonNodes collectionByFormingUnionWith:familyPersonNodes];
     v9 = self->_familyOrPartnerPersonNodes;
     self->_familyOrPartnerPersonNodes = v8;
 
@@ -50,20 +50,20 @@
   return familyOrPartnerPersonNodes;
 }
 
-- (id)_gatheringAndFamilyKeywordsForTriggeredMemory:(id)a3 isMeaningfulEventHoliday:(BOOL)a4 inGraph:(id)a5
+- (id)_gatheringAndFamilyKeywordsForTriggeredMemory:(id)memory isMeaningfulEventHoliday:(BOOL)holiday inGraph:(id)graph
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 triggerTypes];
-  v11 = [v10 containsIndex:3];
+  holidayCopy = holiday;
+  memoryCopy = memory;
+  graphCopy = graph;
+  triggerTypes = [memoryCopy triggerTypes];
+  v11 = [triggerTypes containsIndex:3];
 
-  if (v11 && [v8 memoryCategory] != 6 && objc_msgSend(v8, "memoryCategory") != 5)
+  if (v11 && [memoryCopy memoryCategory] != 6 && objc_msgSend(memoryCopy, "memoryCategory") != 5)
   {
-    v20 = [v8 memoryMomentNodes];
-    v13 = [v20 personNodes];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    personNodes = [memoryMomentNodes personNodes];
 
-    v15 = [v13 count];
+    v15 = [personNodes count];
     if (v15)
     {
       goto LABEL_10;
@@ -74,10 +74,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = [v8 memoryFeatureNodes];
-  v13 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v12];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  personNodes = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
-  v14 = [v13 count];
+  v14 = [personNodes count];
   if (!v14)
   {
     goto LABEL_12;
@@ -86,9 +86,9 @@ LABEL_12:
   v15 = v14;
   if ((v11 & 1) == 0)
   {
-    v16 = [(PGMoodKeywordComputer *)self _bestSocialGroupNodesInGraph:v9];
-    v17 = [v13 socialGroupNodes];
-    v18 = [v16 intersectsCollection:v17];
+    v16 = [(PGMoodKeywordComputer *)self _bestSocialGroupNodesInGraph:graphCopy];
+    socialGroupNodes = [personNodes socialGroupNodes];
+    v18 = [v16 intersectsCollection:socialGroupNodes];
 
     if (!v18)
     {
@@ -99,13 +99,13 @@ LABEL_12:
   }
 
 LABEL_10:
-  if (v15 <= 2 && v6)
+  if (v15 <= 2 && holidayCopy)
   {
     goto LABEL_12;
   }
 
-  v24 = [(PGMoodKeywordComputer *)self _familyOrPartnerPersonNodesInGraph:v9];
-  v25 = [v24 collectionByIntersecting:v13];
+  v24 = [(PGMoodKeywordComputer *)self _familyOrPartnerPersonNodesInGraph:graphCopy];
+  v25 = [v24 collectionByIntersecting:personNodes];
   v26 = [v25 count];
 
   v21 = MEMORY[0x277CBEB98];
@@ -124,17 +124,17 @@ LABEL_15:
   return v19;
 }
 
-- (id)_celebratedHolidayKeywordsForMomentNodes:(id)a3 inGraph:(id)a4
+- (id)_celebratedHolidayKeywordsForMomentNodes:(id)nodes inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = [(PGMoodKeywordComputer *)self _lunarNewYearHolidayNodesInGraph:a4];
-  v8 = [v6 celebratedHolidayNodes];
+  nodesCopy = nodes;
+  v7 = [(PGMoodKeywordComputer *)self _lunarNewYearHolidayNodesInGraph:graph];
+  celebratedHolidayNodes = [nodesCopy celebratedHolidayNodes];
 
-  if ([v8 count])
+  if ([celebratedHolidayNodes count])
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v10 = [v7 intersectsCollection:v8];
-    v11 = [v8 collectionBySubtracting:v7];
+    v10 = [v7 intersectsCollection:celebratedHolidayNodes];
+    v11 = [celebratedHolidayNodes collectionBySubtracting:v7];
     v12 = [v11 count];
 
     if (v10 && !v12)
@@ -151,12 +151,12 @@ LABEL_15:
   return v9;
 }
 
-- (id)_lunarNewYearHolidayNodesInGraph:(id)a3
+- (id)_lunarNewYearHolidayNodesInGraph:(id)graph
 {
   lunarNewYearHolidayNodes = self->_lunarNewYearHolidayNodes;
   if (!lunarNewYearHolidayNodes)
   {
-    v5 = [PGGraphHolidayNodeCollection holidayNodesWithNames:&unk_284485688 inGraph:a3];
+    v5 = [PGGraphHolidayNodeCollection holidayNodesWithNames:&unk_284485688 inGraph:graph];
     v6 = self->_lunarNewYearHolidayNodes;
     self->_lunarNewYearHolidayNodes = v5;
 
@@ -166,17 +166,17 @@ LABEL_15:
   return lunarNewYearHolidayNodes;
 }
 
-- (id)_locationTripKeywordsForMomentNodes:(id)a3 locationHelper:(id)a4
+- (id)_locationTripKeywordsForMomentNodes:(id)nodes locationHelper:(id)helper
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  helperCopy = helper;
   v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v35 = objc_alloc_init(MEMORY[0x277CCA940]);
-  v33 = v6;
-  v8 = [v6 temporaryArray];
-  v31 = v7;
-  v9 = [v7 relevantAddressNodesForMomentNodes:v8 applyDensestCloseLocationNode:0];
+  v33 = nodesCopy;
+  temporaryArray = [nodesCopy temporaryArray];
+  v31 = helperCopy;
+  v9 = [helperCopy relevantAddressNodesForMomentNodes:temporaryArray applyDensestCloseLocationNode:0];
 
   v46 = 0u;
   v47 = 0u;
@@ -202,8 +202,8 @@ LABEL_15:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v15 = [(PGMoodKeywordComputer *)self keywordsRegions];
-        v16 = [v15 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        keywordsRegions = [(PGMoodKeywordComputer *)self keywordsRegions];
+        v16 = [keywordsRegions countByEnumeratingWithState:&v40 objects:v49 count:16];
         if (v16)
         {
           v17 = v16;
@@ -214,21 +214,21 @@ LABEL_15:
             {
               if (*v41 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(keywordsRegions);
               }
 
               v20 = *(*(&v40 + 1) + 8 * j);
               [v14 coordinate];
               if ([v20 containsCoordinate:?])
               {
-                v21 = [v20 identifier];
-                [v35 addObject:v21];
+                identifier = [v20 identifier];
+                [v35 addObject:identifier];
 
                 goto LABEL_16;
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v40 objects:v49 count:16];
+            v17 = [keywordsRegions countByEnumeratingWithState:&v40 objects:v49 count:16];
             if (v17)
             {
               continue;
@@ -319,12 +319,12 @@ LABEL_16:
   return keywordsRegions;
 }
 
-- (id)_shortTripTypeNodeCollectionInGraph:(id)a3
+- (id)_shortTripTypeNodeCollectionInGraph:(id)graph
 {
   shortTripTypeNodeCollection = self->_shortTripTypeNodeCollection;
   if (!shortTripTypeNodeCollection)
   {
-    v5 = [PGGraphHighlightTypeNodeCollection shortTripTypeNodesInGraph:a3];
+    v5 = [PGGraphHighlightTypeNodeCollection shortTripTypeNodesInGraph:graph];
     v6 = self->_shortTripTypeNodeCollection;
     self->_shortTripTypeNodeCollection = v5;
 
@@ -334,15 +334,15 @@ LABEL_16:
   return shortTripTypeNodeCollection;
 }
 
-- (id)_bestSocialGroupNodesInGraph:(id)a3
+- (id)_bestSocialGroupNodesInGraph:(id)graph
 {
   bestSocialGroupNodes = self->_bestSocialGroupNodes;
   if (!bestSocialGroupNodes)
   {
-    v5 = a3;
+    graphCopy = graph;
     v6 = [PGGraphSocialGroupNodeCollection alloc];
-    v7 = [v5 bestSocialGroupNodes];
-    v8 = [(MAElementCollection *)v6 initWithArray:v7 graph:v5];
+    bestSocialGroupNodes = [graphCopy bestSocialGroupNodes];
+    v8 = [(MAElementCollection *)v6 initWithArray:bestSocialGroupNodes graph:graphCopy];
 
     v9 = self->_bestSocialGroupNodes;
     self->_bestSocialGroupNodes = v8;
@@ -353,30 +353,30 @@ LABEL_16:
   return bestSocialGroupNodes;
 }
 
-- (BOOL)_isCrowdedForMomentNodes:(id)a3
+- (BOOL)_isCrowdedForMomentNodes:(id)nodes
 {
-  v3 = [a3 subsetWithTotalNumberOfPersonsGreaterThanOrEqualTo:11];
+  v3 = [nodes subsetWithTotalNumberOfPersonsGreaterThanOrEqualTo:11];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (id)_keywordsSortedByPriority:(id)a3
+- (id)_keywordsSortedByPriority:(id)priority
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGMoodKeywordComputer *)self orderedKeywords];
+  priorityCopy = priority;
+  orderedKeywords = [(PGMoodKeywordComputer *)self orderedKeywords];
   v6 = MEMORY[0x277CCAC98];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51__PGMoodKeywordComputer__keywordsSortedByPriority___block_invoke;
   v13[3] = &unk_278889330;
-  v14 = v5;
-  v7 = v5;
+  v14 = orderedKeywords;
+  v7 = orderedKeywords;
   v8 = [v6 sortDescriptorWithKey:0 ascending:1 comparator:v13];
   v15[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v10 = [v4 sortedArrayUsingDescriptors:v9];
+  v10 = [priorityCopy sortedArrayUsingDescriptors:v9];
 
   v11 = *MEMORY[0x277D85DE8];
 
@@ -440,33 +440,33 @@ uint64_t __51__PGMoodKeywordComputer__keywordsSortedByPriority___block_invoke(ui
   return orderedKeywords;
 }
 
-- (id)moodKeywordsForTriggeredMemory:(id)a3 suggestedMood:(unint64_t)a4 inGraph:(id)a5 locationHelper:(id)a6
+- (id)moodKeywordsForTriggeredMemory:(id)memory suggestedMood:(unint64_t)mood inGraph:(id)graph locationHelper:(id)helper
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ((v8 & 0x3EF) == 0)
+  moodCopy = mood;
+  memoryCopy = memory;
+  graphCopy = graph;
+  helperCopy = helper;
+  if ((moodCopy & 0x3EF) == 0)
   {
     v19 = MEMORY[0x277CBEBF8];
     goto LABEL_79;
   }
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v14 = [v10 memoryMomentNodes];
-  v50 = [v10 memoryFeatureNodes];
-  v15 = [v10 memoryCategory];
-  v51 = PGMemorySourceTypeFromCategory(v15) - 1;
-  v16 = [v14 frequentLocationNodes];
-  v17 = [(PGMoodKeywordComputer *)v16 count];
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  memoryCategory = [memoryCopy memoryCategory];
+  v51 = PGMemorySourceTypeFromCategory(memoryCategory) - 1;
+  frequentLocationNodes = [memoryMomentNodes frequentLocationNodes];
+  v17 = [(PGMoodKeywordComputer *)frequentLocationNodes count];
 
-  v49 = v11;
-  if (v15 == 10 || v15 == 28)
+  v49 = graphCopy;
+  if (memoryCategory == 10 || memoryCategory == 28)
   {
     [v13 addObject:@"Pets"];
   }
 
-  else if (v15 == 11)
+  else if (memoryCategory == 11)
   {
     [v13 addObject:@"Babies"];
     v48 = 0;
@@ -474,88 +474,88 @@ uint64_t __51__PGMoodKeywordComputer__keywordsSortedByPriority___block_invoke(ui
     goto LABEL_34;
   }
 
-  v18 = v15 == 16;
-  if ((v15 & 0xFFFFFFFFFFFFFFFELL) == 0x10)
+  v18 = memoryCategory == 16;
+  if ((memoryCategory & 0xFFFFFFFFFFFFFFFELL) == 0x10)
   {
-    v45 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v50];
-    v16 = [v45 meaningLabels];
-    if ([(PGMoodKeywordComputer *)v16 containsObject:@"SportEvent"])
+    v45 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
+    frequentLocationNodes = [v45 meaningLabels];
+    if ([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"SportEvent"])
     {
       [v13 addObject:@"Sports"];
     }
 
-    if ([(PGMoodKeywordComputer *)v16 containsObject:@"Anniversary"])
+    if ([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"Anniversary"])
     {
       [v13 addObject:@"Anniversary"];
     }
 
-    if ([(PGMoodKeywordComputer *)v16 containsObject:@"Wedding"])
+    if ([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"Wedding"])
     {
       [v13 addObject:@"Wedding"];
     }
 
-    if (([(PGMoodKeywordComputer *)v16 containsObject:@"NightOut"]& 1) != 0 || [(PGMoodKeywordComputer *)v16 containsObject:@"Performance"])
+    if (([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"NightOut"]& 1) != 0 || [(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"Performance"])
     {
       [v13 addObject:@"Party"];
     }
 
-    if ([(PGMoodKeywordComputer *)v16 containsObject:@"Birthday"])
+    if ([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"Birthday"])
     {
       [v13 addObject:@"Birthday"];
     }
 
     if (!v17)
     {
-      if ([(PGMoodKeywordComputer *)v16 containsObject:@"Beaching"])
+      if ([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"Beaching"])
       {
         [v13 addObject:@"Beach"];
       }
 
-      if ([(PGMoodKeywordComputer *)v16 containsObject:@"Hiking"]&& ![(PGMoodKeywordComputer *)self _isCrowdedForMomentNodes:v14])
+      if ([(PGMoodKeywordComputer *)frequentLocationNodes containsObject:@"Hiking"]&& ![(PGMoodKeywordComputer *)self _isCrowdedForMomentNodes:memoryMomentNodes])
       {
         [v13 addObject:@"Nature"];
       }
     }
 
     v46 = v17;
-    v20 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:v50];
+    v20 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:memoryFeatureNodes];
     v21 = [v20 count];
     v48 = v21 != 0;
 
     if (v21)
     {
-      v44 = self;
-      v22 = [v14 dateNodes];
-      v23 = [v22 seasonNodes];
-      v24 = [v23 names];
-      v25 = [v24 containsObject:@"Winter"];
+      selfCopy = self;
+      dateNodes = [memoryMomentNodes dateNodes];
+      seasonNodes = [dateNodes seasonNodes];
+      names = [seasonNodes names];
+      v25 = [names containsObject:@"Winter"];
 
       if (v25)
       {
         [v13 addObject:@"Winter Holiday"];
       }
 
-      self = v44;
-      v26 = [(PGMoodKeywordComputer *)v44 _celebratedHolidayKeywordsForMomentNodes:v14 inGraph:v49];
+      self = selfCopy;
+      v26 = [(PGMoodKeywordComputer *)selfCopy _celebratedHolidayKeywordsForMomentNodes:memoryMomentNodes inGraph:v49];
       [v13 unionSet:v26];
     }
 
-    v18 = v15 == 16;
+    v18 = memoryCategory == 16;
     v17 = v46;
   }
 
   else
   {
-    if (v15 == 19)
+    if (memoryCategory == 19)
     {
       [(PGMoodKeywordComputer *)self _shortTripTypeNodeCollectionInGraph:v49];
       v27 = v47 = v17;
-      v28 = [(PGGraphNodeCollection *)PGGraphHighlightGroupNodeCollection subsetInCollection:v50];
+      v28 = [(PGGraphNodeCollection *)PGGraphHighlightGroupNodeCollection subsetInCollection:memoryFeatureNodes];
       [v28 typeNodes];
-      v29 = v16 = self;
+      v29 = frequentLocationNodes = self;
       v18 = [v29 intersectsCollection:v27];
 
-      self = v16;
+      self = frequentLocationNodes;
       v17 = v47;
     }
 
@@ -563,8 +563,8 @@ uint64_t __51__PGMoodKeywordComputer__keywordsSortedByPriority___block_invoke(ui
   }
 
 LABEL_34:
-  v30 = [v14 count];
-  v33 = (v15 == 14 || v51 < 2) && v17 == 0;
+  v30 = [memoryMomentNodes count];
+  v33 = (memoryCategory == 14 || v51 < 2) && v17 == 0;
   if (v30 == 1)
   {
     if (!v33)
@@ -580,24 +580,24 @@ LABEL_34:
   {
     if ((v18 & 1) == 0)
     {
-      v16 = [(MAElementCollection *)[PGGraphPOINodeCollection alloc] initWithGraph:v49];
+      frequentLocationNodes = [(MAElementCollection *)[PGGraphPOINodeCollection alloc] initWithGraph:v49];
       v18 = 0;
       goto LABEL_50;
     }
 
 LABEL_48:
-    v16 = [v14 poiNodes];
+    frequentLocationNodes = [memoryMomentNodes poiNodes];
     v18 = 1;
 LABEL_50:
-    if (![(PGMoodKeywordComputer *)v16 count])
+    if (![(PGMoodKeywordComputer *)frequentLocationNodes count])
     {
-      v34 = v12;
+      v34 = helperCopy;
       v35 = [(PGMoodKeywordComputer *)self _natureMomentNodesInGraph:v49];
-      if ([v35 intersectsCollection:v14])
+      if ([v35 intersectsCollection:memoryMomentNodes])
       {
-        v36 = [(PGMoodKeywordComputer *)self _isCrowdedForMomentNodes:v14];
+        v36 = [(PGMoodKeywordComputer *)self _isCrowdedForMomentNodes:memoryMomentNodes];
 
-        v12 = v34;
+        helperCopy = v34;
         if (!v36)
         {
           [v13 addObject:@"Nature"];
@@ -607,17 +607,17 @@ LABEL_50:
       else
       {
 
-        v12 = v34;
+        helperCopy = v34;
       }
     }
   }
 
 LABEL_56:
-  if (v15 == 15 || v51 <= 1)
+  if (memoryCategory == 15 || v51 <= 1)
   {
     v37 = [PGSpecialPOIResolver alloc];
-    v38 = [v14 temporaryArray];
-    v16 = [(PGSpecialPOIResolver *)v37 initWithMomentNodes:v38];
+    temporaryArray = [memoryMomentNodes temporaryArray];
+    frequentLocationNodes = [(PGSpecialPOIResolver *)v37 initWithMomentNodes:temporaryArray];
 
     if (v18)
     {
@@ -629,46 +629,46 @@ LABEL_56:
       v39 = 0.9;
     }
 
-    if ([(PGMoodKeywordComputer *)v16 momentsContainSpecialPOI:1 withMomentRatio:v39])
+    if ([(PGMoodKeywordComputer *)frequentLocationNodes momentsContainSpecialPOI:1 withMomentRatio:v39])
     {
       [v13 addObject:@"Disney"];
     }
 
-    if ([(PGMoodKeywordComputer *)v16 momentsContainSpecialPOI:2 withMomentRatio:v39])
+    if ([(PGMoodKeywordComputer *)frequentLocationNodes momentsContainSpecialPOI:2 withMomentRatio:v39])
     {
       [v13 addObject:@"Universal"];
     }
   }
 
   v40 = 1;
-  if ((v15 - 5) >= 2)
+  if ((memoryCategory - 5) >= 2)
   {
-    v11 = v49;
-    if (v15 != 219)
+    graphCopy = v49;
+    if (memoryCategory != 219)
     {
-      v16 = [v10 triggerTypes];
-      v40 = [(PGMoodKeywordComputer *)v16 containsIndex:3]| v48;
+      frequentLocationNodes = [memoryCopy triggerTypes];
+      v40 = [(PGMoodKeywordComputer *)frequentLocationNodes containsIndex:3]| v48;
     }
   }
 
   else
   {
-    v11 = v49;
+    graphCopy = v49;
   }
 
-  if ((v15 - 5) >= 2 && v15 != 219)
+  if ((memoryCategory - 5) >= 2 && memoryCategory != 219)
   {
   }
 
   if (v40)
   {
-    v41 = [(PGMoodKeywordComputer *)self _gatheringAndFamilyKeywordsForTriggeredMemory:v10 isMeaningfulEventHoliday:v48 inGraph:v11];
+    v41 = [(PGMoodKeywordComputer *)self _gatheringAndFamilyKeywordsForTriggeredMemory:memoryCopy isMeaningfulEventHoliday:v48 inGraph:graphCopy];
     [v13 unionSet:v41];
   }
 
-  if ((v15 - 12) < 3 || v51 <= 1)
+  if ((memoryCategory - 12) < 3 || v51 <= 1)
   {
-    v42 = [(PGMoodKeywordComputer *)self _locationTripKeywordsForMomentNodes:v14 locationHelper:v12];
+    v42 = [(PGMoodKeywordComputer *)self _locationTripKeywordsForMomentNodes:memoryMomentNodes locationHelper:helperCopy];
     [v13 unionSet:v42];
   }
 

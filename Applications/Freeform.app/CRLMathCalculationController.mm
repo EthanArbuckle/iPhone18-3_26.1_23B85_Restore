@@ -1,14 +1,14 @@
 @interface CRLMathCalculationController
-- (id)resultForExpressionWithUUID:(id)a3 locale:(id)a4;
+- (id)resultForExpressionWithUUID:(id)d locale:(id)locale;
 - (int64_t)pkMathRecognitionViewControllerSolvingStyle;
 - (uint64_t)mathHintsMode;
 - (void)dealloc;
-- (void)insertPKExpressionWithPkExpression:(id)a3;
+- (void)insertPKExpressionWithPkExpression:(id)expression;
 - (void)resumeSolving;
 - (void)suspendSolving;
 - (void)updateCalculateDocument;
-- (void)updateSingleDrawingSortIndexForFor:(id)a3 to:(double)a4;
-- (void)updateStrokeGroupFor:(id)a3 strokeGroupId:(id)a4;
+- (void)updateSingleDrawingSortIndexForFor:(id)for to:(double)to;
+- (void)updateStrokeGroupFor:(id)for strokeGroupId:(id)id;
 @end
 
 @implementation CRLMathCalculationController
@@ -16,7 +16,7 @@
 - (void)dealloc
 {
   v3 = *(self + OBJC_IVAR____TtC8Freeform28CRLMathCalculationController_mathHintsUserDefaultsObserver);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     v5 = v3;
@@ -28,26 +28,26 @@
   [(CRLMathCalculationController *)&v6 dealloc];
 }
 
-- (void)updateSingleDrawingSortIndexForFor:(id)a3 to:(double)a4
+- (void)updateSingleDrawingSortIndexForFor:(id)for to:(double)to
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
-  sub_100A84964(v9, a4);
+  selfCopy = self;
+  sub_100A84964(v9, to);
 
   (*(v7 + 8))(v9, v6);
 }
 
 - (void)updateCalculateDocument
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A84F54();
 }
 
-- (id)resultForExpressionWithUUID:(id)a3 locale:(id)a4
+- (id)resultForExpressionWithUUID:(id)d locale:(id)locale
 {
   v5 = type metadata accessor for Locale();
   v6 = *(v5 - 8);
@@ -59,7 +59,7 @@
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   static Locale._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = self;
+  selfCopy = self;
   CRLMathCalculationController.resultForExpressionWithUUID(_:locale:)(v12, v8);
   v15 = v14;
 
@@ -80,7 +80,7 @@
 
 - (int64_t)pkMathRecognitionViewControllerSolvingStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [CRLMathCalculationController mathHintsMode]_0();
   if (v3 >= 4)
   {
@@ -100,33 +100,33 @@
 
 - (void)suspendSolving
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A8664C(1);
 }
 
 - (void)resumeSolving
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A8664C(0);
 }
 
-- (void)insertPKExpressionWithPkExpression:(id)a3
+- (void)insertPKExpressionWithPkExpression:(id)expression
 {
-  v4 = a3;
-  v5 = self;
-  sub_100A86B1C(v4);
+  expressionCopy = expression;
+  selfCopy = self;
+  sub_100A86B1C(expressionCopy);
 }
 
-- (void)updateStrokeGroupFor:(id)a3 strokeGroupId:(id)a4
+- (void)updateStrokeGroupFor:(id)for strokeGroupId:(id)id
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a4;
-  v11 = self;
-  sub_100A875CC(v9, a4);
+  idCopy = id;
+  selfCopy = self;
+  sub_100A875CC(v9, id);
 
   (*(v7 + 8))(v9, v6);
 }
@@ -166,8 +166,8 @@
     return 3;
   }
 
-  v4 = [objc_opt_self() standardUserDefaults];
-  v5 = [v4 integerForKey:@"CRLMathRecognitionMode"];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
+  v5 = [standardUserDefaults integerForKey:@"CRLMathRecognitionMode"];
 
   if (v5 >= 4)
   {

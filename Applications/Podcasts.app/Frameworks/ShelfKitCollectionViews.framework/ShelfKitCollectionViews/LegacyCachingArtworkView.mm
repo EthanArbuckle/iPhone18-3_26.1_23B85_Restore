@@ -1,7 +1,7 @@
 @interface LegacyCachingArtworkView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_TtC23ShelfKitCollectionViews24LegacyCachingArtworkView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews24LegacyCachingArtworkView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LegacyCachingArtworkView
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews24LegacyCachingArtworkView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews24LegacyCachingArtworkView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

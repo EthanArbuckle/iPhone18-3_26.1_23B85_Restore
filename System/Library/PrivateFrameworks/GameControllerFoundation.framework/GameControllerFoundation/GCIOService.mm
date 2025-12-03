@@ -1,17 +1,17 @@
 @interface GCIOService
-+ (id)addMatchingNotification:(id)a3 type:(const char *)a4 matching:(id)a5 handler:(id)a6;
-- (IOCFPlugInInterfaceStruct)createCFPlugInInterface:(__CFUUID *)a3 score:(int *)a4 error:(id *)a5;
-- (id)addInterestNotification:(id)a3 type:(const char *)a4 handler:(id)a5;
++ (id)addMatchingNotification:(id)notification type:(const char *)type matching:(id)matching handler:(id)handler;
+- (IOCFPlugInInterfaceStruct)createCFPlugInInterface:(__CFUUID *)interface score:(int *)score error:(id *)error;
+- (id)addInterestNotification:(id)notification type:(const char *)type handler:(id)handler;
 @end
 
 @implementation GCIOService
 
-+ (id)addMatchingNotification:(id)a3 type:(const char *)a4 matching:(id)a5 handler:(id)a6
++ (id)addMatchingNotification:(id)notification type:(const char *)type matching:(id)matching handler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  notificationCopy = notification;
+  matchingCopy = matching;
+  handlerCopy = handler;
   notification = 0;
   v37 = 0;
   v38 = &v37;
@@ -24,19 +24,19 @@
   v34[2] = __61__GCIOService_addMatchingNotification_type_matching_handler___block_invoke;
   v34[3] = &unk_1E8414828;
   v36 = &v37;
-  v12 = v11;
+  v12 = handlerCopy;
   v35 = v12;
   v13 = [v34 copy];
-  v14 = v9;
-  v15 = [v9 port];
-  v16 = v10;
-  v17 = IOServiceAddMatchingNotification(v15, a4, v16, __IOServiceMatchingCallback, v13, &notification);
+  v14 = notificationCopy;
+  port = [notificationCopy port];
+  v16 = matchingCopy;
+  v17 = IOServiceAddMatchingNotification(port, type, v16, __IOServiceMatchingCallback, v13, &notification);
   if (v17)
   {
     v20 = _gc_log_iokit();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [GCIOService addMatchingNotification:a4 type:v17 matching:v20 handler:?];
+      [GCIOService addMatchingNotification:type type:v17 matching:v20 handler:?];
     }
 
     v24 = 0;
@@ -54,8 +54,8 @@
     if (v38[5])
     {
       IOObjectRelease(notification);
-      v22 = [v9 queue];
-      dispatch_async(v22, v13);
+      queue = [notificationCopy queue];
+      dispatch_async(queue, v13);
 
       v23 = [GCDisposable alloc];
       v29[0] = MEMORY[0x1E69E9820];
@@ -63,7 +63,7 @@
       v29[2] = __61__GCIOService_addMatchingNotification_type_matching_handler___block_invoke_7;
       v29[3] = &unk_1E8414878;
       v32 = &v37;
-      v30 = v9;
+      v30 = notificationCopy;
       v31 = v13;
       v24 = [(GCDisposable *)v23 initWithCleanupHandler:v29];
 
@@ -75,8 +75,8 @@
       v25 = _gc_log_iokit();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v28 = [v20 localizedFailureReason];
-        [GCIOService addMatchingNotification:a4 type:v28 matching:buf handler:v25];
+        localizedFailureReason = [v20 localizedFailureReason];
+        [GCIOService addMatchingNotification:type type:localizedFailureReason matching:buf handler:v25];
       }
 
       v24 = 0;
@@ -114,15 +114,15 @@ void __61__GCIOService_addMatchingNotification_type_matching_handler___block_inv
   dispatch_async(v4, block);
 }
 
-- (id)addInterestNotification:(id)a3 type:(const char *)a4 handler:(id)a5
+- (id)addInterestNotification:(id)notification type:(const char *)type handler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  notificationCopy = notification;
   notification = 0;
-  v9 = [a5 copy];
-  v10 = [v8 port];
-  v11 = [(GCIOObject *)self port];
-  v12 = IOServiceAddInterestNotification(v10, v11, a4, __IOServiceNotificationCallback, v9, &notification);
+  v9 = [handler copy];
+  port = [notificationCopy port];
+  port2 = [(GCIOObject *)self port];
+  v12 = IOServiceAddInterestNotification(port, port2, type, __IOServiceNotificationCallback, v9, &notification);
   if (v12)
   {
     v18 = v12;
@@ -130,9 +130,9 @@ void __61__GCIOService_addMatchingNotification_type_matching_handler___block_inv
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v25 = self;
+      selfCopy = self;
       v26 = 2082;
-      v27 = a4;
+      typeCopy = type;
       v28 = 1024;
       v29 = v18;
       _os_log_error_impl(&dword_1D2C3B000, v15, OS_LOG_TYPE_ERROR, "%@ Error registering interest notification for '%{public}s': %{mach.errno}d", buf, 0x1Cu);
@@ -148,8 +148,8 @@ void __61__GCIOService_addMatchingNotification_type_matching_handler___block_inv
     v19[1] = 3221225472;
     v19[2] = __52__GCIOService_addInterestNotification_type_handler___block_invoke;
     v19[3] = &unk_1E84148A0;
-    v22 = notification;
-    v20 = v8;
+    notificationCopy2 = notification;
+    v20 = notificationCopy;
     v21 = v9;
     v14 = [(GCDisposable *)v13 initWithCleanupHandler:v19];
 
@@ -173,17 +173,17 @@ void __52__GCIOService_addInterestNotification_type_handler___block_invoke(uint6
   dispatch_async(v2, block);
 }
 
-- (IOCFPlugInInterfaceStruct)createCFPlugInInterface:(__CFUUID *)a3 score:(int *)a4 error:(id *)a5
+- (IOCFPlugInInterfaceStruct)createCFPlugInInterface:(__CFUUID *)interface score:(int *)score error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
   theScore = 0;
   theInterface = 0;
-  v8 = [(GCIOObject *)self port];
+  port = [(GCIOObject *)self port];
   v9 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu);
-  v10 = IOCreatePlugInInterfaceForService(v8, a3, v9, &theInterface, &theScore);
+  v10 = IOCreatePlugInInterfaceForService(port, interface, v9, &theInterface, &theScore);
   if (v10)
   {
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = *MEMORY[0x1E696A5A0];
@@ -191,7 +191,7 @@ void __52__GCIOService_addInterestNotification_type_handler___block_invoke(uint6
       v19 = *MEMORY[0x1E696A580];
       v20[0] = @"CFPlugIn instantiation failed.";
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a5 = [v13 errorWithDomain:v14 code:v15 userInfo:v16];
+      *error = [v13 errorWithDomain:v14 code:v15 userInfo:v16];
     }
 
     result = 0;
@@ -199,9 +199,9 @@ void __52__GCIOService_addInterestNotification_type_handler___block_invoke(uint6
 
   else
   {
-    if (a4)
+    if (score)
     {
-      *a4 = theScore;
+      *score = theScore;
     }
 
     result = theInterface;

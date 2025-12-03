@@ -1,9 +1,9 @@
 @interface BRNotificationQueue
 - (BRNotificationQueue)init;
-- (void)_filterIndex:(id)a3;
-- (void)addDequeueCallback:(id)a3;
-- (void)addNotification:(id)a3 asDead:(BOOL)a4;
-- (void)dequeue:(unint64_t)a3 block:(id)a4;
+- (void)_filterIndex:(id)index;
+- (void)addDequeueCallback:(id)callback;
+- (void)addNotification:(id)notification asDead:(BOOL)dead;
+- (void)dequeue:(unint64_t)dequeue block:(id)block;
 - (void)processDequeueCallbacks;
 - (void)removeAllObjects;
 @end
@@ -44,22 +44,22 @@
   return v2;
 }
 
-- (void)addNotification:(id)a3 asDead:(BOOL)a4
+- (void)addNotification:(id)notification asDead:(BOOL)dead
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 fileObjectID];
-  if (v7)
+  deadCopy = dead;
+  notificationCopy = notification;
+  fileObjectID = [notificationCopy fileObjectID];
+  if (fileObjectID)
   {
-    v8 = [(NSMutableDictionary *)self->_index objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_index objectForKey:fileObjectID];
     if (v8)
     {
       v9 = v8;
       v10 = -[NSMutableArray objectAtIndex:](self->_array, "objectAtIndex:", [v8 unsignedIntegerValue] - self->_dequeued);
-      if ([v10 canMerge:v6])
+      if ([v10 canMerge:notificationCopy])
       {
-        [v10 merge:v6];
-        if (v4)
+        [v10 merge:notificationCopy];
+        if (deadCopy)
         {
           [v10 markDead];
         }
@@ -67,13 +67,13 @@
         goto LABEL_12;
       }
 
-      if (!v4)
+      if (!deadCopy)
       {
 LABEL_11:
-        [(NSMutableArray *)self->_array addObject:v6];
+        [(NSMutableArray *)self->_array addObject:notificationCopy];
         index = self->_index;
         v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{self->_dequeued + -[NSMutableArray count](self->_array, "count") - 1}];
-        [(NSMutableDictionary *)index setObject:v15 forKey:v7];
+        [(NSMutableDictionary *)index setObject:v15 forKey:fileObjectID];
 
         v9 = 0;
 LABEL_12:
@@ -85,16 +85,16 @@ LABEL_12:
     else
     {
       v10 = 0;
-      if (!v4)
+      if (!deadCopy)
       {
         goto LABEL_11;
       }
     }
 
-    v13 = [v6 copy];
+    v13 = [notificationCopy copy];
 
     [v13 markDead];
-    v6 = v13;
+    notificationCopy = v13;
     goto LABEL_11;
   }
 
@@ -102,7 +102,7 @@ LABEL_12:
   v12 = brc_default_log(0, 0);
   if (os_log_type_enabled(v12, 0x90u))
   {
-    [(BRNotificationQueue *)v6 addNotification:v11 asDead:v12];
+    [(BRNotificationQueue *)notificationCopy addNotification:v11 asDead:v12];
   }
 
 LABEL_13:
@@ -171,10 +171,10 @@ LABEL_11:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDequeueCallback:(id)a3
+- (void)addDequeueCallback:(id)callback
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   if ([(NSMutableArray *)self->_array count]|| self->_dequeuedNotificationCount)
   {
     dequeued = self->_dequeued;
@@ -186,7 +186,7 @@ LABEL_11:
     v19 = &unk_1E7A16C80;
     v21[1] = (v6 + dequeued);
     objc_copyWeak(v21, &location);
-    v20 = v4;
+    v20 = callbackCopy;
     v7 = MEMORY[0x1B26FEA90](&v16);
     v8 = brc_bread_crumbs("[BRNotificationQueue addDequeueCallback:]", 122);
     v9 = brc_default_log(1, 0);
@@ -195,7 +195,7 @@ LABEL_11:
       *buf = 134218498;
       v24 = v7;
       v25 = 2112;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2112;
       v28 = v8;
       _os_log_debug_impl(&dword_1AE2A9000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Delaying callback %p in %@%@", buf, 0x20u);
@@ -215,17 +215,17 @@ LABEL_11:
     v14 = brc_default_log(1, 0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = MEMORY[0x1B26FEA90](v4);
+      v15 = MEMORY[0x1B26FEA90](callbackCopy);
       *buf = 134218498;
       v24 = v15;
       v25 = 2112;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2112;
       v28 = v13;
       _os_log_debug_impl(&dword_1AE2A9000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] Firing callback %p right away in %@%@", buf, 0x20u);
     }
 
-    v4[2](v4);
+    callbackCopy[2](callbackCopy);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -265,12 +265,12 @@ BOOL __42__BRNotificationQueue_addDequeueCallback___block_invoke(uint64_t a1, un
   return result;
 }
 
-- (void)_filterIndex:(id)a3
+- (void)_filterIndex:(id)index
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indexCopy = index;
   v5 = [(NSMutableArray *)self->_array count];
-  if ([v4 count] >= v5)
+  if ([indexCopy count] >= v5)
   {
     [(NSMutableDictionary *)self->_index removeAllObjects];
     if (v5)
@@ -280,8 +280,8 @@ BOOL __42__BRNotificationQueue_addDequeueCallback___block_invoke(uint64_t a1, un
         v16 = [(NSMutableArray *)self->_array objectAtIndex:i];
         index = self->_index;
         v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i + self->_dequeued];
-        v19 = [v16 fileObjectID];
-        [(NSMutableDictionary *)index setObject:v18 forKey:v19];
+        fileObjectID = [v16 fileObjectID];
+        [(NSMutableDictionary *)index setObject:v18 forKey:fileObjectID];
       }
     }
   }
@@ -292,7 +292,7 @@ BOOL __42__BRNotificationQueue_addDequeueCallback___block_invoke(uint64_t a1, un
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = indexCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -308,16 +308,16 @@ BOOL __42__BRNotificationQueue_addDequeueCallback___block_invoke(uint64_t a1, un
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v21 + 1) + 8 * v10) fileObjectID];
-          if (v11)
+          fileObjectID2 = [*(*(&v21 + 1) + 8 * v10) fileObjectID];
+          if (fileObjectID2)
           {
-            v12 = [(NSMutableDictionary *)self->_index objectForKey:v11];
-            v13 = [v12 unsignedIntegerValue];
+            v12 = [(NSMutableDictionary *)self->_index objectForKey:fileObjectID2];
+            unsignedIntegerValue = [v12 unsignedIntegerValue];
             dequeued = self->_dequeued;
 
-            if (v13 < dequeued)
+            if (unsignedIntegerValue < dequeued)
             {
-              [(NSMutableDictionary *)self->_index removeObjectForKey:v11];
+              [(NSMutableDictionary *)self->_index removeObjectForKey:fileObjectID2];
             }
           }
 
@@ -335,16 +335,16 @@ BOOL __42__BRNotificationQueue_addDequeueCallback___block_invoke(uint64_t a1, un
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dequeue:(unint64_t)a3 block:(id)a4
+- (void)dequeue:(unint64_t)dequeue block:(id)block
 {
-  v11 = a4;
+  blockCopy = block;
   v6 = [(NSMutableArray *)self->_array count];
   if (v6)
   {
-    if (v6 <= a3)
+    if (v6 <= dequeue)
     {
       self->_dequeued += v6;
-      v8 = self->_array;
+      dequeue = self->_array;
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:128];
       array = self->_array;
       self->_array = v9;
@@ -353,20 +353,20 @@ BOOL __42__BRNotificationQueue_addDequeueCallback___block_invoke(uint64_t a1, un
     else
     {
       v7 = objc_autoreleasePoolPush();
-      self->_dequeued += a3;
-      v8 = [(NSMutableArray *)self->_array subarrayWithRange:0, a3];
-      [(NSMutableArray *)self->_array removeObjectsInRange:0, a3];
+      self->_dequeued += dequeue;
+      dequeue = [(NSMutableArray *)self->_array subarrayWithRange:0, dequeue];
+      [(NSMutableArray *)self->_array removeObjectsInRange:0, dequeue];
       objc_autoreleasePoolPop(v7);
     }
 
-    [(BRNotificationQueue *)self _filterIndex:v8];
-    self->_dequeuedNotificationCount += [(NSMutableArray *)v8 count];
-    v11[2](v11, v8);
+    [(BRNotificationQueue *)self _filterIndex:dequeue];
+    self->_dequeuedNotificationCount += [(NSMutableArray *)dequeue count];
+    blockCopy[2](blockCopy, dequeue);
   }
 
   else
   {
-    v11[2](v11, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 

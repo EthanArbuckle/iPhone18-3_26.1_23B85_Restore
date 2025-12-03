@@ -1,5 +1,5 @@
 @interface NSAtomicStoreCacheNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSAtomicStoreCacheNode)initWithObjectID:(NSManagedObjectID *)moid;
 - (id)valueForKey:(NSString *)key;
 - (void)dealloc;
@@ -39,7 +39,7 @@
   [(NSAtomicStoreCacheNode *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -48,7 +48,7 @@
   }
 
   objectID = self->_objectID;
-  v8 = *(a3 + 1);
+  v8 = *(equal + 1);
 
   return [(NSManagedObjectID *)objectID isEqual:v8];
 }
@@ -65,24 +65,24 @@
 
 - (id)valueForKey:(NSString *)key
 {
-  v5 = [(NSManagedObjectID *)self->_objectID entity];
-  if (v5)
+  entity = [(NSManagedObjectID *)self->_objectID entity];
+  if (entity)
   {
-    v5 = v5->_propertyMapping;
+    entity = entity->_propertyMapping;
   }
 
-  if ([(NSEntityDescription *)v5 indexForKey:key]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSEntityDescription *)entity indexForKey:key]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return [(NSAtomicStoreCacheNode *)&v10 valueForKey:key, v9.receiver, v9.super_class, self, NSAtomicStoreCacheNode];
   }
 
-  v7 = [(NSManagedObjectID *)self->_objectID entity];
-  if (v7)
+  entity2 = [(NSManagedObjectID *)self->_objectID entity];
+  if (entity2)
   {
-    v7 = [(NSDictionary *)[(NSEntityDescription *)v7 propertiesByName] objectForKey:key];
+    entity2 = [(NSDictionary *)[(NSEntityDescription *)entity2 propertiesByName] objectForKey:key];
   }
 
-  if ([(NSEntityDescription *)v7 isTransient])
+  if ([(NSEntityDescription *)entity2 isTransient])
   {
     return [(NSAtomicStoreCacheNode *)&v9 valueForKey:key, self, NSAtomicStoreCacheNode, v10.receiver, v10.super_class];
   }
@@ -94,13 +94,13 @@
 
 - (void)setValue:(id)value forKey:(NSString *)key
 {
-  v7 = [(NSManagedObjectID *)self->_objectID entity];
-  if (v7)
+  entity = [(NSManagedObjectID *)self->_objectID entity];
+  if (entity)
   {
-    v7 = v7->_propertyMapping;
+    entity = entity->_propertyMapping;
   }
 
-  if ([(NSEntityDescription *)v7 indexForKey:key]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSEntityDescription *)entity indexForKey:key]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v9.receiver = self;
     v9.super_class = NSAtomicStoreCacheNode;

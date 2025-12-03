@@ -1,5 +1,5 @@
 @interface VCPHuman
-+ (unint64_t)flagsFromKeypoints:(id)a3 withMinConfidence:(float)a4;
++ (unint64_t)flagsFromKeypoints:(id)keypoints withMinConfidence:(float)confidence;
 - (CGRect)bounds;
 - (VCPHuman)init;
 @end
@@ -31,9 +31,9 @@
   return v3;
 }
 
-+ (unint64_t)flagsFromKeypoints:(id)a3 withMinConfidence:(float)a4
++ (unint64_t)flagsFromKeypoints:(id)keypoints withMinConfidence:(float)confidence
 {
-  v5 = a3;
+  keypointsCopy = keypoints;
   v6 = 0;
   v7 = 0;
   v8 = 0;
@@ -41,9 +41,9 @@
   v10 = 0;
   v11 = 0;
   v12 = -13;
-  while ([v5 count] > v6)
+  while ([keypointsCopy count] > v6)
   {
-    v13 = [v5 objectAtIndexedSubscript:v6];
+    v13 = [keypointsCopy objectAtIndexedSubscript:v6];
     v14 = [v13 count];
 
     if (v14 != 3)
@@ -51,12 +51,12 @@
       goto LABEL_25;
     }
 
-    v15 = [v5 objectAtIndexedSubscript:v6];
+    v15 = [keypointsCopy objectAtIndexedSubscript:v6];
     v16 = [v15 objectAtIndexedSubscript:2];
     [v16 floatValue];
     v18 = v17;
 
-    if (v18 > a4)
+    if (v18 > confidence)
     {
       if (v6 > 4)
       {

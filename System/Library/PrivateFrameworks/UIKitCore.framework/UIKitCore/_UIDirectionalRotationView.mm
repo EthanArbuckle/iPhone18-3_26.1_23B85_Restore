@@ -1,40 +1,40 @@
 @interface _UIDirectionalRotationView
 - (BOOL)isCounterTransformView;
 - (BOOL)isInverseTransformView;
-- (void)setCounterTransformView:(BOOL)a3;
-- (void)setInverseTransformView:(BOOL)a3;
+- (void)setCounterTransformView:(BOOL)view;
+- (void)setInverseTransformView:(BOOL)view;
 @end
 
 @implementation _UIDirectionalRotationView
 
 - (BOOL)isCounterTransformView
 {
-  v2 = [(_UIDirectionalRotationView *)self drLayer];
-  v3 = [v2 isCounterTransformLayer];
+  drLayer = [(_UIDirectionalRotationView *)self drLayer];
+  isCounterTransformLayer = [drLayer isCounterTransformLayer];
 
-  return v3;
+  return isCounterTransformLayer;
 }
 
 - (BOOL)isInverseTransformView
 {
-  v2 = [(_UIDirectionalRotationView *)self drLayer];
-  v3 = [v2 isInverseTransformLayer];
+  drLayer = [(_UIDirectionalRotationView *)self drLayer];
+  isInverseTransformLayer = [drLayer isInverseTransformLayer];
 
-  return v3;
+  return isInverseTransformLayer;
 }
 
-- (void)setCounterTransformView:(BOOL)a3
+- (void)setCounterTransformView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(_UIDirectionalRotationView *)self drLayer];
-  [v4 setCounterTransformLayer:v3];
+  viewCopy = view;
+  drLayer = [(_UIDirectionalRotationView *)self drLayer];
+  [drLayer setCounterTransformLayer:viewCopy];
 }
 
-- (void)setInverseTransformView:(BOOL)a3
+- (void)setInverseTransformView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(_UIDirectionalRotationView *)self drLayer];
-  [v4 setInverseTransformLayer:v3];
+  viewCopy = view;
+  drLayer = [(_UIDirectionalRotationView *)self drLayer];
+  [drLayer setInverseTransformLayer:viewCopy];
 }
 
 @end

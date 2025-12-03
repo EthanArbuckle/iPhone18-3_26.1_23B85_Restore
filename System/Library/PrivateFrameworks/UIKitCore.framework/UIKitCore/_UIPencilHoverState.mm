@@ -1,11 +1,11 @@
 @interface _UIPencilHoverState
-+ (void)_hoverStateFromHoverPose:(uint64_t)a1;
++ (void)_hoverStateFromHoverPose:(uint64_t)pose;
 - (_UIPencilHoverState)init;
 @end
 
 @implementation _UIPencilHoverState
 
-+ (void)_hoverStateFromHoverPose:(uint64_t)a1
++ (void)_hoverStateFromHoverPose:(uint64_t)pose
 {
   objc_opt_self();
   if (a2)
@@ -52,8 +52,8 @@ LABEL_7:
 
 - (_UIPencilHoverState)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:337 description:{@"%s: init is not allowed on %@", "-[_UIPencilHoverState init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:337 description:{@"%s: init is not allowed on %@", "-[_UIPencilHoverState init]", objc_opt_class()}];
 
   return 0;
 }

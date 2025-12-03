@@ -1,7 +1,7 @@
 @interface REBundleCache
 + (id)sharedInstance;
 - (REBundleCache)init;
-- (id)bundleAtPath:(id)a3;
+- (id)bundleAtPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -50,20 +50,20 @@ uint64_t __31__REBundleCache_sharedInstance__block_invoke()
   [(REBundleCache *)&v2 dealloc];
 }
 
-- (id)bundleAtPath:(id)a3
+- (id)bundleAtPath:(id)path
 {
-  v4 = [a3 stringByStandardizingPath];
-  if (v4)
+  stringByStandardizingPath = [path stringByStandardizingPath];
+  if (stringByStandardizingPath)
   {
-    v5 = [(REConcurrentDictionary *)self->_cachedBundles objectForKeyedSubscript:v4];
+    v5 = [(REConcurrentDictionary *)self->_cachedBundles objectForKeyedSubscript:stringByStandardizingPath];
     if (!v5)
     {
-      v5 = [MEMORY[0x277CCA8D8] bundleWithPath:v4];
+      v5 = [MEMORY[0x277CCA8D8] bundleWithPath:stringByStandardizingPath];
       v6 = [v5 objectForInfoDictionaryKey:@"NSPrincipalClass"];
       if (v6)
       {
         [v5 load];
-        [(REConcurrentDictionary *)self->_cachedBundles setObject:v5 forKeyedSubscript:v4];
+        [(REConcurrentDictionary *)self->_cachedBundles setObject:v5 forKeyedSubscript:stringByStandardizingPath];
       }
 
       else
@@ -71,7 +71,7 @@ uint64_t __31__REBundleCache_sharedInstance__block_invoke()
         v7 = RELogForDomain(0);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          [(REBundleCache *)v4 bundleAtPath:v7];
+          [(REBundleCache *)stringByStandardizingPath bundleAtPath:v7];
         }
       }
     }

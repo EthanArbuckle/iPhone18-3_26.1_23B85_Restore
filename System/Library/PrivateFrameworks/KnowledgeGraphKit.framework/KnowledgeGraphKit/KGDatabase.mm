@@ -1,161 +1,161 @@
 @interface KGDatabase
-+ (BOOL)copyFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (BOOL)destroyAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)emptyDatabaseExistsAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)migrateFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (void)deleteClosedDatabaseFilesAtStoreURL:(id)a3;
++ (BOOL)copyFromURL:(id)l toURL:(id)rL error:(id *)error;
++ (BOOL)destroyAtURL:(id)l error:(id *)error;
++ (BOOL)emptyDatabaseExistsAtURL:(id)l error:(id *)error;
++ (BOOL)migrateFromURL:(id)l toURL:(id)rL error:(id *)error;
++ (void)deleteClosedDatabaseFilesAtStoreURL:(id)l;
 + (void)initialize;
-- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)a3;
-- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)a3 propertyName:(id)a4;
-- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)a3;
-- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)a3 propertyName:(id)a4;
-- (AttributeValueCursor)tombstoneEdgeAttributeValueCursorWithIdentifiers:(id)a3;
-- (AttributeValueCursor)tombstoneNodeAttributeValueCursorWithIdentifiers:(id)a3;
-- (BOOL)addEdges:(id)a3 error:(id *)a4;
-- (BOOL)addNodes:(id)a3 error:(id *)a4;
-- (BOOL)appendNodeIdentifiersOfEdgesWithIdentifiers:(id)a3 sourceNodeIdentifiers:(id)a4 targetNodeIdentifiers:(id)a5 error:(id *)a6;
-- (BOOL)beginTransactionWithError:(id *)a3;
-- (BOOL)commitTransactionWithError:(id *)a3;
-- (BOOL)copyToURL:(id)a3 error:(id *)a4;
+- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)identifiers;
+- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)identifiers propertyName:(id)name;
+- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)identifiers;
+- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)identifiers propertyName:(id)name;
+- (AttributeValueCursor)tombstoneEdgeAttributeValueCursorWithIdentifiers:(id)identifiers;
+- (AttributeValueCursor)tombstoneNodeAttributeValueCursorWithIdentifiers:(id)identifiers;
+- (BOOL)addEdges:(id)edges error:(id *)error;
+- (BOOL)addNodes:(id)nodes error:(id *)error;
+- (BOOL)appendNodeIdentifiersOfEdgesWithIdentifiers:(id)identifiers sourceNodeIdentifiers:(id)nodeIdentifiers targetNodeIdentifiers:(id)targetNodeIdentifiers error:(id *)error;
+- (BOOL)beginTransactionWithError:(id *)error;
+- (BOOL)commitTransactionWithError:(id *)error;
+- (BOOL)copyToURL:(id)l error:(id *)error;
 - (BOOL)isReadOnly;
-- (BOOL)labelIdentifiers:(void *)a3 forLabels:(id)a4 foundAll:(BOOL *)a5 error:(id *)a6;
-- (BOOL)removeEdge:(unint64_t)a3 error:(id *)a4;
-- (BOOL)removeEdges:(id)a3 error:(id *)a4;
-- (BOOL)removeNode:(unint64_t)a3 error:(id *)a4;
-- (BOOL)removeNodes:(id)a3 error:(id *)a4;
-- (BOOL)rollbackTransactionWithError:(id *)a3;
-- (BOOL)setEdgeProperties:(id)a3 forIdentifier:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setNodeProperties:(id)a3 forIdentifier:(unint64_t)a4 error:(id *)a5;
-- (Bitmap)upsertLabels:(SEL)a3 error:(id)a4;
-- (EdgeCursor)edgeCursorWithIdentifiers:(id)a3;
-- (EdgeCursor)tombstoneEdgeCursorWithIdentifiers:(id)a3;
-- (KGDatabase)initWithURL:(id)a3;
+- (BOOL)labelIdentifiers:(void *)identifiers forLabels:(id)labels foundAll:(BOOL *)all error:(id *)error;
+- (BOOL)removeEdge:(unint64_t)edge error:(id *)error;
+- (BOOL)removeEdges:(id)edges error:(id *)error;
+- (BOOL)removeNode:(unint64_t)node error:(id *)error;
+- (BOOL)removeNodes:(id)nodes error:(id *)error;
+- (BOOL)rollbackTransactionWithError:(id *)error;
+- (BOOL)setEdgeProperties:(id)properties forIdentifier:(unint64_t)identifier error:(id *)error;
+- (BOOL)setNodeProperties:(id)properties forIdentifier:(unint64_t)identifier error:(id *)error;
+- (Bitmap)upsertLabels:(SEL)labels error:(id)error;
+- (EdgeCursor)edgeCursorWithIdentifiers:(id)identifiers;
+- (EdgeCursor)tombstoneEdgeCursorWithIdentifiers:(id)identifiers;
+- (KGDatabase)initWithURL:(id)l;
 - (NSUUID)graphIdentifier;
-- (NodeCursor)nodeCursorWithIdentifiers:(id)a3;
-- (NodeCursor)tombstoneNodeCursorWithIdentifiers:(id)a3;
-- (id)allEdgesForEdgeTable:(const void *)a3 withError:(id *)a4;
-- (id)allNodeIdentifiersOfEdgesWithIdentifiers:(id)a3 error:(id *)a4;
-- (id)allNodesForTable:(const void *)a3 error:(id *)a4;
-- (id)edgeIdentifiersForNodeIdentifier:(unint64_t)a3 error:(id *)a4;
-- (id)edgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7;
-- (id)edgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6;
-- (id)edgeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5;
-- (id)edgeIdentifiersSortedByPropertyForName:(id)a3 dataType:(int64_t)a4 ascending:(BOOL)a5 limit:(int64_t)a6 edgeIdentifiers:(id)a7 error:(id *)a8;
-- (id)edgeIdentifiersWithLabels:(id)a3 direction:(unint64_t)a4 forNodeIdentifier:(unint64_t)a5 error:(id *)a6;
+- (NodeCursor)nodeCursorWithIdentifiers:(id)identifiers;
+- (NodeCursor)tombstoneNodeCursorWithIdentifiers:(id)identifiers;
+- (id)allEdgesForEdgeTable:(const void *)table withError:(id *)error;
+- (id)allNodeIdentifiersOfEdgesWithIdentifiers:(id)identifiers error:(id *)error;
+- (id)allNodesForTable:(const void *)table error:(id *)error;
+- (id)edgeIdentifiersForNodeIdentifier:(unint64_t)identifier error:(id *)error;
+- (id)edgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error;
+- (id)edgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error;
+- (id)edgeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error;
+- (id)edgeIdentifiersSortedByPropertyForName:(id)name dataType:(int64_t)type ascending:(BOOL)ascending limit:(int64_t)limit edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)edgeIdentifiersWithLabels:(id)labels direction:(unint64_t)direction forNodeIdentifier:(unint64_t)identifier error:(id *)error;
 - (id)edgeLabels;
-- (id)elementIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 valueTable:(const void *)a7 rowCount:(unint64_t)a8 error:(id *)a9;
-- (id)elementIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 valueTable:(const void *)a6 rowCount:(unint64_t)a7 error:(id *)a8;
-- (id)elementIdentifiersForPropertyName:(id)a3 values:(id)a4 valueTable:(const void *)a5 rowCount:(unint64_t)a6 error:(id *)a7;
-- (id)filterEdgeIdentifiersBetween:(id)a3 targetNodeIdentifiers:(id)a4 filterEdgeIdentifiers:(id)a5 error:(id *)a6;
-- (id)filterEdgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 edgeIdentifiers:(id)a7 error:(id *)a8;
-- (id)filterEdgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterEdgeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterElementIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 elementIdentifiers:(id)a7 valueTable:(const void *)a8 rowCount:(unint64_t)a9 error:(id *)a10;
-- (id)filterElementIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 elementIdentifiers:(id)a6 valueTable:(const void *)a7 rowCount:(unint64_t)a8 error:(id *)a9;
-- (id)filterElementIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 elementIdentifiers:(id)a6 valueTable:(const void *)a7 rowCount:(unint64_t)a8 error:(id *)a9;
-- (id)filterInEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5;
-- (id)filterNodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 nodeIdentifiers:(id)a7 error:(id *)a8;
-- (id)filterNodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterNodeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterOutEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5;
-- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 edgeIdentifiers:(id)a7 error:(id *)a8;
-- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 nodeIdentifiers:(id)a7 error:(id *)a8;
-- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7;
-- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7;
-- (id)inEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 error:(id *)a4;
-- (id)intersectionOfEdgesForEdgeTable:(const void *)a3 withLabels:(id)a4 filterEdgeIdentifiers:(id)a5 overrideIndex:(BOOL)a6 error:(id *)a7;
-- (id)intersectionOfEdgesWithLabels:(id)a3 error:(id *)a4;
-- (id)intersectionOfEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5;
-- (id)intersectionOfNodesForNodeTable:(const void *)a3 withLabels:(id)a4 filterNodeIdentifiers:(id)a5 overrideIndex:(BOOL)a6 error:(id *)a7;
-- (id)intersectionOfNodesWithLabels:(id)a3 error:(id *)a4;
-- (id)intersectionOfNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5;
-- (id)intersectionOfTombstoneEdgesWithLabels:(id)a3 error:(id *)a4;
-- (id)intersectionOfTombstoneEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5;
-- (id)intersectionOfTombstoneNodesWithLabels:(id)a3 error:(id *)a4;
-- (id)intersectionOfTombstoneNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5;
-- (id)labelIdentifierForLabelName:(id)a3 error:(id *)a4;
-- (id)labelNameForLabelIdentifier:(unint64_t)a3;
-- (id)labelsOfEdgesForIdentifiers:(id)a3;
-- (id)labelsOfNodesForIdentifiers:(id)a3;
-- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeDirection:(unint64_t)a4 edgeFilter:(id)a5 error:(id *)a6;
-- (id)neighborNodesOfNodesForIdentifiers:(id)a3 throughEdgesForIdentifiers:(id)a4 direction:(unint64_t)a5 error:(id *)a6;
-- (id)neighborNodesOfNodesForIdentifiers:(id)a3 throughEdgesWithLabels:(id)a4 direction:(unint64_t)a5 error:(id *)a6;
-- (id)noIndexIntersectionOfEdgesWithLabels:(id)a3 error:(id *)a4;
-- (id)noIndexIntersectionOfNodesWithLabels:(id)a3 error:(id *)a4;
-- (id)nodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7;
-- (id)nodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6;
-- (id)nodeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5;
-- (id)nodeIdentifiersSortedByPropertyForName:(id)a3 dataType:(int64_t)a4 ascending:(BOOL)a5 limit:(int64_t)a6 nodeIdentifiers:(id)a7 error:(id *)a8;
-- (id)nodeIdentifiersWhereNoEdgesWithError:(id *)a3;
-- (id)nodeIdentifiersWhereNoInEdgesWithError:(id *)a3;
-- (id)nodeIdentifiersWhereNoOutEdgesWithError:(id *)a3;
+- (id)elementIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error;
+- (id)elementIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error;
+- (id)elementIdentifiersForPropertyName:(id)name values:(id)values valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error;
+- (id)filterEdgeIdentifiersBetween:(id)between targetNodeIdentifiers:(id)identifiers filterEdgeIdentifiers:(id)edgeIdentifiers error:(id *)error;
+- (id)filterEdgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterEdgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterEdgeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterElementIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator elementIdentifiers:(id)identifiers valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)self0;
+- (id)filterElementIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator elementIdentifiers:(id)identifiers valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error;
+- (id)filterElementIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator elementIdentifiers:(id)identifiers valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error;
+- (id)filterInEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers filterEdgeIdentifiers:(id)edgeIdentifiers error:(id *)error;
+- (id)filterNodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterNodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterNodeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterOutEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers filterEdgeIdentifiers:(id)edgeIdentifiers error:(id *)error;
+- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)inEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers error:(id *)error;
+- (id)intersectionOfEdgesForEdgeTable:(const void *)table withLabels:(id)labels filterEdgeIdentifiers:(id)identifiers overrideIndex:(BOOL)index error:(id *)error;
+- (id)intersectionOfEdgesWithLabels:(id)labels error:(id *)error;
+- (id)intersectionOfEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)intersectionOfNodesForNodeTable:(const void *)table withLabels:(id)labels filterNodeIdentifiers:(id)identifiers overrideIndex:(BOOL)index error:(id *)error;
+- (id)intersectionOfNodesWithLabels:(id)labels error:(id *)error;
+- (id)intersectionOfNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)intersectionOfTombstoneEdgesWithLabels:(id)labels error:(id *)error;
+- (id)intersectionOfTombstoneEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)intersectionOfTombstoneNodesWithLabels:(id)labels error:(id *)error;
+- (id)intersectionOfTombstoneNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)labelIdentifierForLabelName:(id)name error:(id *)error;
+- (id)labelNameForLabelIdentifier:(unint64_t)identifier;
+- (id)labelsOfEdgesForIdentifiers:(id)identifiers;
+- (id)labelsOfNodesForIdentifiers:(id)identifiers;
+- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeDirection:(unint64_t)direction edgeFilter:(id)filter error:(id *)error;
+- (id)neighborNodesOfNodesForIdentifiers:(id)identifiers throughEdgesForIdentifiers:(id)forIdentifiers direction:(unint64_t)direction error:(id *)error;
+- (id)neighborNodesOfNodesForIdentifiers:(id)identifiers throughEdgesWithLabels:(id)labels direction:(unint64_t)direction error:(id *)error;
+- (id)noIndexIntersectionOfEdgesWithLabels:(id)labels error:(id *)error;
+- (id)noIndexIntersectionOfNodesWithLabels:(id)labels error:(id *)error;
+- (id)nodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error;
+- (id)nodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error;
+- (id)nodeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error;
+- (id)nodeIdentifiersSortedByPropertyForName:(id)name dataType:(int64_t)type ascending:(BOOL)ascending limit:(int64_t)limit nodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)nodeIdentifiersWhereNoEdgesWithError:(id *)error;
+- (id)nodeIdentifiersWhereNoInEdgesWithError:(id *)error;
+- (id)nodeIdentifiersWhereNoOutEdgesWithError:(id *)error;
 - (id)nodeLabels;
-- (id)openModeDescription:(unint64_t)a3;
-- (id)outEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 error:(id *)a4;
-- (id)propertyNameForAttrIdentifier:(unint64_t)a3;
-- (id)propertyValueForCursor:(void *)a3;
-- (id)tombstoneEdgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7;
-- (id)tombstoneEdgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6;
-- (id)tombstoneEdgeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5;
-- (id)tombstoneNodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7;
-- (id)tombstoneNodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6;
-- (id)tombstoneNodeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5;
-- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeDirection:(unint64_t)a4 edgeFilter:(id)a5 error:(id *)a6;
-- (id)unionOfEdgesForEdgeTable:(const void *)a3 withLabels:(id)a4 filterEdgeIdentifiers:(id)a5 error:(id *)a6;
-- (id)unionOfEdgesWithLabels:(id)a3 error:(id *)a4;
-- (id)unionOfEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5;
-- (id)unionOfNodesForNodeTable:(const void *)a3 withLabels:(id)a4 filterNodeIdentifiers:(id)a5 error:(id *)a6;
-- (id)unionOfNodesWithLabels:(id)a3 error:(id *)a4;
-- (id)unionOfNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5;
-- (id)unionOfTombstoneEdgesWithLabels:(id)a3 error:(id *)a4;
-- (id)unionOfTombstoneEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5;
-- (id)unionOfTombstoneNodesWithLabels:(id)a3 error:(id *)a4;
-- (id)unionOfTombstoneNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5;
-- (int)degasEdgeDirectionFromKG:(unint64_t)a3;
-- (shared_ptr<degas::Predicate>)degasPredicateForAllLabels:(void *)a3 elementType:(int)a4;
-- (shared_ptr<degas::Predicate>)degasPredicateForAnyLabels:(void *)a3 elementType:(int)a4;
-- (shared_ptr<degas::Predicate>)degasPredicateFromValue:(id)a3 comparator:(unint64_t)a4 attrId:(unint64_t)a5 elementType:(int)a6;
-- (shared_ptr<degas::Predicate>)degasPredicateFromValueArray:(id)a3 attrId:(unint64_t)a4 elementType:(int)a5;
-- (shared_ptr<degas::Predicate>)degasRangePredicateFromValue1:(id)a3 value2:(id)a4 comparator:(unint64_t)a5 attrId:(unint64_t)a6 elementType:(int)a7;
+- (id)openModeDescription:(unint64_t)description;
+- (id)outEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers error:(id *)error;
+- (id)propertyNameForAttrIdentifier:(unint64_t)identifier;
+- (id)propertyValueForCursor:(void *)cursor;
+- (id)tombstoneEdgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error;
+- (id)tombstoneEdgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error;
+- (id)tombstoneEdgeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error;
+- (id)tombstoneNodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error;
+- (id)tombstoneNodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error;
+- (id)tombstoneNodeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error;
+- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeDirection:(unint64_t)direction edgeFilter:(id)filter error:(id *)error;
+- (id)unionOfEdgesForEdgeTable:(const void *)table withLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)unionOfEdgesWithLabels:(id)labels error:(id *)error;
+- (id)unionOfEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)unionOfNodesForNodeTable:(const void *)table withLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)unionOfNodesWithLabels:(id)labels error:(id *)error;
+- (id)unionOfNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error;
+- (id)unionOfTombstoneEdgesWithLabels:(id)labels error:(id *)error;
+- (id)unionOfTombstoneEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error;
+- (id)unionOfTombstoneNodesWithLabels:(id)labels error:(id *)error;
+- (id)unionOfTombstoneNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error;
+- (int)degasEdgeDirectionFromKG:(unint64_t)g;
+- (shared_ptr<degas::Predicate>)degasPredicateForAllLabels:(void *)labels elementType:(int)type;
+- (shared_ptr<degas::Predicate>)degasPredicateForAnyLabels:(void *)labels elementType:(int)type;
+- (shared_ptr<degas::Predicate>)degasPredicateFromValue:(id)value comparator:(unint64_t)comparator attrId:(unint64_t)id elementType:(int)type;
+- (shared_ptr<degas::Predicate>)degasPredicateFromValueArray:(id)array attrId:(unint64_t)id elementType:(int)type;
+- (shared_ptr<degas::Predicate>)degasRangePredicateFromValue1:(id)value1 value2:(id)value2 comparator:(unint64_t)comparator attrId:(unint64_t)id elementType:(int)type;
 - (uint64_t)transactionChangesAfterTransactionId:limit:block:;
-- (unint64_t)addEdgeWithLabels:(id)a3 properties:(id)a4 sourceNodeIdentifier:(unint64_t)a5 targetNodeIdentifier:(unint64_t)a6 error:(id *)a7;
-- (unint64_t)addNodeWithLabels:(id)a3 properties:(id)a4 error:(id *)a5;
-- (unint64_t)attributeIdentifierForPropertyName:(id)a3 error:(id *)a4;
+- (unint64_t)addEdgeWithLabels:(id)labels properties:(id)properties sourceNodeIdentifier:(unint64_t)identifier targetNodeIdentifier:(unint64_t)nodeIdentifier error:(id *)error;
+- (unint64_t)addNodeWithLabels:(id)labels properties:(id)properties error:(id *)error;
+- (unint64_t)attributeIdentifierForPropertyName:(id)name error:(id *)error;
 - (unint64_t)graphVersion;
-- (unint64_t)insertNewLabel:(id)a3 error:(id *)a4;
-- (unint64_t)insertNewProperty:(id)a3 error:(id *)a4;
-- (unint64_t)upsertLabel:(id)a3 error:(id *)a4;
-- (void)_enumerateEdgeTableWithEdgeCursor:(void *)a3 block:(id)a4;
-- (void)_enumerateEdgesWithEdgeCursor:(void *)a3 propertiesCursor:(void *)a4 block:(id)a5;
-- (void)_enumerateNodeTableWithNodeCursor:(void *)a3 block:(id)a4;
-- (void)_enumerateNodesWithNodeCursor:(void *)a3 propertiesCursor:(void *)a4 block:(id)a5;
-- (void)_enumeratePropertiesForCursor:(void *)a3 block:(id)a4;
-- (void)_enumeratePropertiesWithCursor:(void *)a3 withBlock:(id)a4;
+- (unint64_t)insertNewLabel:(id)label error:(id *)error;
+- (unint64_t)insertNewProperty:(id)property error:(id *)error;
+- (unint64_t)upsertLabel:(id)label error:(id *)error;
+- (void)_enumerateEdgeTableWithEdgeCursor:(void *)cursor block:(id)block;
+- (void)_enumerateEdgesWithEdgeCursor:(void *)cursor propertiesCursor:(void *)propertiesCursor block:(id)block;
+- (void)_enumerateNodeTableWithNodeCursor:(void *)cursor block:(id)block;
+- (void)_enumerateNodesWithNodeCursor:(void *)cursor propertiesCursor:(void *)propertiesCursor block:(id)block;
+- (void)_enumeratePropertiesForCursor:(void *)cursor block:(id)block;
+- (void)_enumeratePropertiesWithCursor:(void *)cursor withBlock:(id)block;
 - (void)close;
 - (void)dealloc;
-- (void)distributeValuesByType:(id)a3 toIntegerValues:(id)a4 floatValues:(id)a5 stringValues:(id)a6;
-- (void)enumerateEdgesWithIdentifiers:(id)a3 block:(id)a4;
-- (void)enumerateNodesWithIdentifiers:(id)a3 block:(id)a4;
-- (void)enumeratePropertyValuesForEdgesWithIdentifiers:(id)a3 propertyName:(id)a4 withBlock:(id)a5;
-- (void)enumeratePropertyValuesForNodesWithIdentifiers:(id)a3 propertyName:(id)a4 withBlock:(id)a5;
-- (void)enumerateSourceAndTargetIdentifiersWithEdgeIdentifiers:(id)a3 block:(id)a4;
-- (void)enumerateTombstoneEdgesWithIdentifiers:(id)a3 block:(id)a4;
-- (void)enumerateTombstoneNodesWithIdentifiers:(id)a3 block:(id)a4;
-- (void)setFatalError:(id)a3;
-- (void)setGraphVersion:(unint64_t)a3;
-- (void)transactionChangesAfterTransactionId:(unint64_t)a3 limit:(int64_t)a4 block:(id)a5;
+- (void)distributeValuesByType:(id)type toIntegerValues:(id)values floatValues:(id)floatValues stringValues:(id)stringValues;
+- (void)enumerateEdgesWithIdentifiers:(id)identifiers block:(id)block;
+- (void)enumerateNodesWithIdentifiers:(id)identifiers block:(id)block;
+- (void)enumeratePropertyValuesForEdgesWithIdentifiers:(id)identifiers propertyName:(id)name withBlock:(id)block;
+- (void)enumeratePropertyValuesForNodesWithIdentifiers:(id)identifiers propertyName:(id)name withBlock:(id)block;
+- (void)enumerateSourceAndTargetIdentifiersWithEdgeIdentifiers:(id)identifiers block:(id)block;
+- (void)enumerateTombstoneEdgesWithIdentifiers:(id)identifiers block:(id)block;
+- (void)enumerateTombstoneNodesWithIdentifiers:(id)identifiers block:(id)block;
+- (void)setFatalError:(id)error;
+- (void)setGraphVersion:(unint64_t)version;
+- (void)transactionChangesAfterTransactionId:(unint64_t)id limit:(int64_t)limit block:(id)block;
 - (void)transactionChangesAfterTransactionId:limit:block:;
 @end
 
 @implementation KGDatabase
 
-- (BOOL)rollbackTransactionWithError:(id *)a3
+- (BOOL)rollbackTransactionWithError:(id *)error
 {
   v5 = degas::Database::rollbackTransaction(self->_database);
   [(KGDatabaseNameCache *)self->_nameCache unloadCache];
-  if (a3 && v5)
+  if (error && v5)
   {
     if ((v5 - 2) > 9)
     {
@@ -167,20 +167,20 @@
       v6 = qword_255972CE0[v5 - 2];
     }
 
-    *a3 = kg_errorWithCode(v6);
+    *error = kg_errorWithCode(v6);
   }
 
   [(KGDatabaseNameCache *)self->_nameCache transactionEnd];
   return v5 == 0;
 }
 
-- (BOOL)commitTransactionWithError:(id *)a3
+- (BOOL)commitTransactionWithError:(id *)error
 {
   v5 = degas::Database::commitTransaction(self->_database);
   if (v5)
   {
     [(KGDatabaseNameCache *)self->_nameCache unloadCache];
-    if (a3)
+    if (error)
     {
       if ((v5 - 2) > 9)
       {
@@ -192,7 +192,7 @@
         v6 = qword_255972CE0[v5 - 2];
       }
 
-      *a3 = kg_errorWithCode(v6);
+      *error = kg_errorWithCode(v6);
     }
   }
 
@@ -200,11 +200,11 @@
   return v5 == 0;
 }
 
-- (BOOL)beginTransactionWithError:(id *)a3
+- (BOOL)beginTransactionWithError:(id *)error
 {
   v5 = degas::Database::beginTransaction(self->_database);
   v6 = v5;
-  if (a3 && v5)
+  if (error && v5)
   {
     if ((v5 - 2) > 9)
     {
@@ -216,7 +216,7 @@
       v7 = qword_255972CE0[v5 - 2];
     }
 
-    *a3 = kg_errorWithCode(v7);
+    *error = kg_errorWithCode(v7);
   }
 
   if (*(self->_database + 33) == 1)
@@ -229,16 +229,16 @@
   return v6 == 0;
 }
 
-- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeDirection:(unint64_t)a4 edgeFilter:(id)a5 error:(id *)a6
+- (id)transitiveClosureNeighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeDirection:(unint64_t)direction edgeFilter:(id)filter error:(id *)error
 {
-  v10 = a3;
-  [(KGDatabase *)self degasPredicateFromKGFilter:a5 elementType:2];
+  identifiersCopy = identifiers;
+  [(KGDatabase *)self degasPredicateFromKGFilter:filter elementType:2];
   degas::NeighborQuery::NeighborQuery(&v18, &v20, self->_database);
   *v17 = 0u;
-  v11 = degas::NeighborQuery::transitiveClosureNeighbors(&v18, [v10 bitmap], -[KGDatabase degasEdgeDirectionFromKG:](self, "degasEdgeDirectionFromKG:", a4), &v15);
+  v11 = degas::NeighborQuery::transitiveClosureNeighbors(&v18, [identifiersCopy bitmap], -[KGDatabase degasEdgeDirectionFromKG:](self, "degasEdgeDirectionFromKG:", direction), &v15);
   if (v11)
   {
-    if (a6)
+    if (error)
     {
       if ((v11 - 2) > 9)
       {
@@ -251,7 +251,7 @@
       }
 
       kg_errorWithCode(v12);
-      *a6 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -280,16 +280,16 @@
   return v13;
 }
 
-- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)a3 edgeDirection:(unint64_t)a4 edgeFilter:(id)a5 error:(id *)a6
+- (id)neighborNodeIdentifiersWithStartNodeIdentifiers:(id)identifiers edgeDirection:(unint64_t)direction edgeFilter:(id)filter error:(id *)error
 {
-  v10 = a3;
-  [(KGDatabase *)self degasPredicateFromKGFilter:a5 elementType:2];
+  identifiersCopy = identifiers;
+  [(KGDatabase *)self degasPredicateFromKGFilter:filter elementType:2];
   degas::NeighborQuery::NeighborQuery(&v18, &v20, self->_database);
   *v17 = 0u;
-  v11 = degas::NeighborQuery::neighbors(&v18, [v10 bitmap], -[KGDatabase degasEdgeDirectionFromKG:](self, "degasEdgeDirectionFromKG:", a4), &v15);
+  v11 = degas::NeighborQuery::neighbors(&v18, [identifiersCopy bitmap], -[KGDatabase degasEdgeDirectionFromKG:](self, "degasEdgeDirectionFromKG:", direction), &v15);
   if (v11)
   {
-    if (a6)
+    if (error)
     {
       if ((v11 - 2) > 9)
       {
@@ -302,7 +302,7 @@
       }
 
       kg_errorWithCode(v12);
-      *a6 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -502,14 +502,14 @@ LABEL_34:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (shared_ptr<degas::Predicate>)degasPredicateForAnyLabels:(void *)a3 elementType:(int)a4
+- (shared_ptr<degas::Predicate>)degasPredicateForAnyLabels:(void *)labels elementType:(int)type
 {
   v5 = v4;
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         operator new();
       }
@@ -528,7 +528,7 @@ LABEL_34:
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 2:
         operator new();
@@ -546,14 +546,14 @@ LABEL_34:
   return result;
 }
 
-- (shared_ptr<degas::Predicate>)degasPredicateForAllLabels:(void *)a3 elementType:(int)a4
+- (shared_ptr<degas::Predicate>)degasPredicateForAllLabels:(void *)labels elementType:(int)type
 {
   v5 = v4;
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         operator new();
       }
@@ -572,7 +572,7 @@ LABEL_34:
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 2:
         operator new();
@@ -590,57 +590,57 @@ LABEL_34:
   return result;
 }
 
-- (shared_ptr<degas::Predicate>)degasRangePredicateFromValue1:(id)a3 value2:(id)a4 comparator:(unint64_t)a5 attrId:(unint64_t)a6 elementType:(int)a7
+- (shared_ptr<degas::Predicate>)degasRangePredicateFromValue1:(id)value1 value2:(id)value2 comparator:(unint64_t)comparator attrId:(unint64_t)id elementType:(int)type
 {
   v11 = v7;
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  value1Copy = value1;
+  value2Copy = value2;
   v27 = 0u;
   memset(v28, 0, 25);
-  v14 = [v12 kgPropertyType];
-  if (v14 == [v13 kgPropertyType])
+  kgPropertyType = [value1Copy kgPropertyType];
+  if (kgPropertyType == [value2Copy kgPropertyType])
   {
-    if ((a7 - 1) >= 4)
+    if ((type - 1) >= 4)
     {
       abort();
     }
 
     database = self->_database;
-    v16 = qword_255972938[a7 - 1];
-    rowCountForElementType(a7, database);
-    if (v14 > 1)
+    v16 = qword_255972938[type - 1];
+    rowCountForElementType(type, database);
+    if (kgPropertyType > 1)
     {
-      if (v14 == 2)
+      if (kgPropertyType == 2)
       {
-        v21 = v12;
-        v22 = v13;
+        v21 = value1Copy;
+        v22 = value2Copy;
         operator new();
       }
 
-      if (v14 == 3)
+      if (kgPropertyType == 3)
       {
-        v23 = v12;
-        v24 = v13;
+        v23 = value1Copy;
+        v24 = value2Copy;
         stringNSToStd(buf, v23);
         stringNSToStd(__p, v24);
         operator new();
       }
 
-      if (v14 != 4)
+      if (kgPropertyType != 4)
       {
         goto LABEL_10;
       }
 
 LABEL_13:
-      v12;
-      v20 = v13;
+      value1Copy;
+      v20 = value2Copy;
       operator new();
     }
 
-    if (v14)
+    if (kgPropertyType)
     {
-      if (v14 != 1)
+      if (kgPropertyType != 1)
       {
         goto LABEL_10;
       }
@@ -652,7 +652,7 @@ LABEL_13:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf[0]) = 138412290;
-      *(buf + 4) = v12;
+      *(buf + 4) = value1Copy;
       _os_log_error_impl(&dword_255870000, v25, OS_LOG_TYPE_ERROR, "unable to interpret value <%@> as valid property value", buf, 0xCu);
     }
   }
@@ -675,31 +675,31 @@ LABEL_10:
   return result;
 }
 
-- (shared_ptr<degas::Predicate>)degasPredicateFromValue:(id)a3 comparator:(unint64_t)a4 attrId:(unint64_t)a5 elementType:(int)a6
+- (shared_ptr<degas::Predicate>)degasPredicateFromValue:(id)value comparator:(unint64_t)comparator attrId:(unint64_t)id elementType:(int)type
 {
   v9 = v6;
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [v10 kgPropertyType];
-  if ((a6 - 1) >= 4)
+  valueCopy = value;
+  kgPropertyType = [valueCopy kgPropertyType];
+  if ((type - 1) >= 4)
   {
     abort();
   }
 
-  v12 = v11;
-  v13 = qword_255972938[a6 - 1];
-  rowCountForElementType(a6, self->_database);
+  v12 = kgPropertyType;
+  v13 = qword_255972938[type - 1];
+  rowCountForElementType(type, self->_database);
   if (v12 > 1)
   {
     if (v12 == 2)
     {
-      [v10 doubleValue];
+      [valueCopy doubleValue];
       operator new();
     }
 
     if (v12 == 3)
     {
-      stringNSToStd(buf, v10);
+      stringNSToStd(buf, valueCopy);
       operator new();
     }
 
@@ -709,7 +709,7 @@ LABEL_10:
     }
 
 LABEL_9:
-    [v10 longLongValue];
+    [valueCopy longLongValue];
     operator new();
   }
 
@@ -727,7 +727,7 @@ LABEL_9:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf[0]) = 138412290;
-    *(buf + 4) = v10;
+    *(buf + 4) = valueCopy;
     _os_log_error_impl(&dword_255870000, v14, OS_LOG_TYPE_ERROR, "unable to interpret value <%@> as valid property value", buf, 0xCu);
   }
 
@@ -741,23 +741,23 @@ LABEL_15:
   return result;
 }
 
-- (shared_ptr<degas::Predicate>)degasPredicateFromValueArray:(id)a3 attrId:(unint64_t)a4 elementType:(int)a5
+- (shared_ptr<degas::Predicate>)degasPredicateFromValueArray:(id)array attrId:(unint64_t)id elementType:(int)type
 {
   v8 = v5;
   v60 = *MEMORY[0x277D85DE8];
-  v31 = a3;
+  arrayCopy = array;
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [KGDatabase distributeValuesByType:"distributeValuesByType:toIntegerValues:floatValues:stringValues:" toIntegerValues:v31 floatValues:v33 stringValues:?];
+  [KGDatabase distributeValuesByType:"distributeValuesByType:toIntegerValues:floatValues:stringValues:" toIntegerValues:arrayCopy floatValues:v33 stringValues:?];
   v30 = v8;
-  if ((a5 - 1) >= 4)
+  if ((type - 1) >= 4)
   {
     abort();
   }
 
-  v9 = qword_255972938[a5 - 1];
-  rowCountForElementType(a5, self->_database);
+  v9 = qword_255972938[type - 1];
+  rowCountForElementType(type, self->_database);
   v53 = 0;
   v54 = 0;
   v55 = 0;
@@ -927,16 +927,16 @@ LABEL_15:
   return result;
 }
 
-- (id)neighborNodesOfNodesForIdentifiers:(id)a3 throughEdgesForIdentifiers:(id)a4 direction:(unint64_t)a5 error:(id *)a6
+- (id)neighborNodesOfNodesForIdentifiers:(id)identifiers throughEdgesForIdentifiers:(id)forIdentifiers direction:(unint64_t)direction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  identifiersCopy = identifiers;
+  forIdentifiersCopy = forIdentifiers;
   v16 = 0u;
   memset(v17, 0, 25);
-  v12 = degas::Database::nodeNeighborsViaEdges(self->_database, [v10 bitmap], objc_msgSend(v11, "bitmap"), &v16, -[KGDatabase degasEdgeDirectionFromKG:](self, "degasEdgeDirectionFromKG:", a5));
+  v12 = degas::Database::nodeNeighborsViaEdges(self->_database, [identifiersCopy bitmap], objc_msgSend(forIdentifiersCopy, "bitmap"), &v16, -[KGDatabase degasEdgeDirectionFromKG:](self, "degasEdgeDirectionFromKG:", direction));
   if (v12)
   {
-    if (a6)
+    if (error)
     {
       if ((v12 - 2) > 9)
       {
@@ -949,7 +949,7 @@ LABEL_15:
       }
 
       kg_errorWithCode(v13);
-      *a6 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -969,23 +969,23 @@ LABEL_15:
   return v14;
 }
 
-- (id)neighborNodesOfNodesForIdentifiers:(id)a3 throughEdgesWithLabels:(id)a4 direction:(unint64_t)a5 error:(id *)a6
+- (id)neighborNodesOfNodesForIdentifiers:(id)identifiers throughEdgesWithLabels:(id)labels direction:(unint64_t)direction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(KGDatabase *)self degasEdgeDirectionFromKG:a5];
+  identifiersCopy = identifiers;
+  labelsCopy = labels;
+  v12 = [(KGDatabase *)self degasEdgeDirectionFromKG:direction];
   v20 = 0u;
   memset(v21, 0, 25);
   v19 = 1;
-  [(KGDatabase *)self labelIdentifiers:&v20 forLabels:v11 foundAll:&v19 error:0];
+  [(KGDatabase *)self labelIdentifiers:&v20 forLabels:labelsCopy foundAll:&v19 error:0];
   if (v19)
   {
     v17 = 0u;
     memset(v18, 0, 25);
-    v13 = degas::Database::nodeNeighbors(self->_database, [v10 bitmap], &v17, &v20, v12);
+    v13 = degas::Database::nodeNeighbors(self->_database, [identifiersCopy bitmap], &v17, &v20, v12);
     if (v13)
     {
-      if (a6)
+      if (error)
       {
         if ((v13 - 2) > 9)
         {
@@ -998,7 +998,7 @@ LABEL_15:
         }
 
         kg_errorWithCode(v14);
-        *a6 = v15 = 0;
+        *error = v15 = 0;
       }
 
       else
@@ -1027,12 +1027,12 @@ LABEL_15:
   return v15;
 }
 
-- (id)edgeIdentifiersWithLabels:(id)a3 direction:(unint64_t)a4 forNodeIdentifier:(unint64_t)a5 error:(id *)a6
+- (id)edgeIdentifiersWithLabels:(id)labels direction:(unint64_t)direction forNodeIdentifier:(unint64_t)identifier error:(id *)error
 {
-  [(KGDatabase *)self intersectionOfEdgesWithLabels:a3 error:a6];
+  [(KGDatabase *)self intersectionOfEdgesWithLabels:labels error:error];
   if (objc_claimAutoreleasedReturnValue())
   {
-    [(KGDatabase *)self degasEdgeDirectionFromKG:a4];
+    [(KGDatabase *)self degasEdgeDirectionFromKG:direction];
     database = self->_database;
     degas::Database::edgesOfNode();
   }
@@ -1040,7 +1040,7 @@ LABEL_15:
   return 0;
 }
 
-- (id)edgeIdentifiersForNodeIdentifier:(unint64_t)a3 error:(id *)a4
+- (id)edgeIdentifiersForNodeIdentifier:(unint64_t)identifier error:(id *)error
 {
   v6 = 0u;
   memset(v7, 0, sizeof(v7));
@@ -1048,12 +1048,12 @@ LABEL_15:
   degas::Database::edgesOfNode();
 }
 
-- (id)allNodeIdentifiersOfEdgesWithIdentifiers:(id)a3 error:(id *)a4
+- (id)allNodeIdentifiersOfEdgesWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v8 = 0u;
   memset(v9, 0, 25);
-  degas::Database::appendAllNodesForEdges(self->_database, [v5 bitmap], &v8);
+  degas::Database::appendAllNodesForEdges(self->_database, [identifiersCopy bitmap], &v8);
   v6 = [[KGElementIdentifierSet alloc] initWithBitmap:&v8];
   v10 = v9;
   std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](&v10);
@@ -1061,105 +1061,105 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)appendNodeIdentifiersOfEdgesWithIdentifiers:(id)a3 sourceNodeIdentifiers:(id)a4 targetNodeIdentifiers:(id)a5 error:(id *)a6
+- (BOOL)appendNodeIdentifiersOfEdgesWithIdentifiers:(id)identifiers sourceNodeIdentifiers:(id)nodeIdentifiers targetNodeIdentifiers:(id)targetNodeIdentifiers error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10 | v11)
+  identifiersCopy = identifiers;
+  nodeIdentifiersCopy = nodeIdentifiers;
+  targetNodeIdentifiersCopy = targetNodeIdentifiers;
+  v12 = targetNodeIdentifiersCopy;
+  if (nodeIdentifiersCopy | targetNodeIdentifiersCopy)
   {
     database = self->_database;
-    if (v10)
+    if (nodeIdentifiersCopy)
     {
-      if (v11)
+      if (targetNodeIdentifiersCopy)
       {
-        degas::Database::appendSourceAndTargetNodesForEdges(database, [v9 bitmap], objc_msgSend(v10, "mutableBitmap"), objc_msgSend(v11, "mutableBitmap"));
+        degas::Database::appendSourceAndTargetNodesForEdges(database, [identifiersCopy bitmap], objc_msgSend(nodeIdentifiersCopy, "mutableBitmap"), objc_msgSend(targetNodeIdentifiersCopy, "mutableBitmap"));
       }
 
       else
       {
-        degas::Database::appendSourceNodesForEdges(database, [v9 bitmap], objc_msgSend(v10, "mutableBitmap"));
+        degas::Database::appendSourceNodesForEdges(database, [identifiersCopy bitmap], objc_msgSend(nodeIdentifiersCopy, "mutableBitmap"));
       }
     }
 
     else
     {
-      degas::Database::appendTargetNodesForEdges(database, [v9 bitmap], objc_msgSend(v11, "mutableBitmap"));
+      degas::Database::appendTargetNodesForEdges(database, [identifiersCopy bitmap], objc_msgSend(targetNodeIdentifiersCopy, "mutableBitmap"));
     }
   }
 
   return 1;
 }
 
-- (id)filterEdgeIdentifiersBetween:(id)a3 targetNodeIdentifiers:(id)a4 filterEdgeIdentifiers:(id)a5 error:(id *)a6
+- (id)filterEdgeIdentifiersBetween:(id)between targetNodeIdentifiers:(id)identifiers filterEdgeIdentifiers:(id)edgeIdentifiers error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  betweenCopy = between;
+  identifiersCopy = identifiers;
+  edgeIdentifiersCopy = edgeIdentifiers;
   memset(v14, 0, 41);
   database = self->_database;
-  if (v11)
+  if (edgeIdentifiersCopy)
   {
-    degas::Database::filterEdgesBetweenNodes(database, [v9 bitmap], objc_msgSend(v10, "bitmap"), objc_msgSend(v11, "bitmap"), v14);
+    degas::Database::filterEdgesBetweenNodes(database, [betweenCopy bitmap], objc_msgSend(identifiersCopy, "bitmap"), objc_msgSend(edgeIdentifiersCopy, "bitmap"), v14);
   }
 
-  degas::Database::edgesBetweenNodes(database, [v9 bitmap], objc_msgSend(v10, "bitmap"), v14);
+  degas::Database::edgesBetweenNodes(database, [betweenCopy bitmap], objc_msgSend(identifiersCopy, "bitmap"), v14);
 }
 
-- (id)filterInEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5
+- (id)filterInEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers filterEdgeIdentifiers:(id)edgeIdentifiers error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  edgeIdentifiersCopy = edgeIdentifiers;
   v11 = 0u;
   memset(v12, 0, 25);
   database = self->_database;
-  [v7 bitmap];
-  [v8 bitmap];
+  [identifiersCopy bitmap];
+  [edgeIdentifiersCopy bitmap];
   degas::Database::filterEdgesOfNodes();
 }
 
-- (id)filterOutEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5
+- (id)filterOutEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers filterEdgeIdentifiers:(id)edgeIdentifiers error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  edgeIdentifiersCopy = edgeIdentifiers;
   v11 = 0u;
   memset(v12, 0, 25);
   database = self->_database;
-  [v7 bitmap];
-  [v8 bitmap];
+  [identifiersCopy bitmap];
+  [edgeIdentifiersCopy bitmap];
   degas::Database::filterEdgesOfNodes();
 }
 
-- (id)inEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 error:(id *)a4
+- (id)inEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v8 = 0u;
   memset(v9, 0, 25);
   database = self->_database;
-  [v5 bitmap];
+  [identifiersCopy bitmap];
   degas::Database::edgesOfNodes();
 }
 
-- (id)outEdgeIdentifiersOfNodesWithIdentifiers:(id)a3 error:(id *)a4
+- (id)outEdgeIdentifiersOfNodesWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v8 = 0u;
   memset(v9, 0, 25);
   database = self->_database;
-  [v5 bitmap];
+  [identifiersCopy bitmap];
   degas::Database::edgesOfNodes();
 }
 
-- (void)transactionChangesAfterTransactionId:(unint64_t)a3 limit:(int64_t)a4 block:(id)a5
+- (void)transactionChangesAfterTransactionId:(unint64_t)id limit:(int64_t)limit block:(id)block
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  blockCopy = block;
   database = self->_database;
   v11[0] = &unk_2867A90D8;
-  v11[1] = &v10;
+  v11[1] = &blockCopy;
   v11[3] = v11;
-  degas::Database::enumerateTransactionChangesAfterTransactionId(database, a3, v8, v11);
+  degas::Database::enumerateTransactionChangesAfterTransactionId(database, id, v8, v11);
   std::__function::__value_func<void ()(unsigned long long,degas::Database::TransactionChanges const&)>::~__value_func[abi:ne200100](v11);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1182,48 +1182,48 @@ LABEL_15:
   v8 = [[KGElementIdentifierSet alloc] initWithBitmap:a3 + 144];
   v9 = [[KGElementIdentifierSet alloc] initWithBitmap:a3 + 192];
   v10 = [[KGElementIdentifierSet alloc] initWithBitmap:a3 + 240];
-  (*(**(a1 + 8) + 16))();
+  (*(**(self + 8) + 16))();
 }
 
-- (id)unionOfTombstoneEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5
+- (id)unionOfTombstoneEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 864 withLabels:a3 filterEdgeIdentifiers:a4 error:a5];
+  v5 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 864 withLabels:labels filterEdgeIdentifiers:identifiers error:error];
 
   return v5;
 }
 
-- (id)unionOfTombstoneEdgesWithLabels:(id)a3 error:(id *)a4
+- (id)unionOfTombstoneEdgesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 864 withLabels:a3 filterEdgeIdentifiers:0 error:a4];
+  v4 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 864 withLabels:labels filterEdgeIdentifiers:0 error:error];
 
   return v4;
 }
 
-- (id)unionOfEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5
+- (id)unionOfEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 248 withLabels:a3 filterEdgeIdentifiers:a4 error:a5];
+  v5 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 248 withLabels:labels filterEdgeIdentifiers:identifiers error:error];
 
   return v5;
 }
 
-- (id)unionOfEdgesWithLabels:(id)a3 error:(id *)a4
+- (id)unionOfEdgesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 248 withLabels:a3 filterEdgeIdentifiers:0 error:a4];
+  v4 = [(KGDatabase *)self unionOfEdgesForEdgeTable:self->_database + 248 withLabels:labels filterEdgeIdentifiers:0 error:error];
 
   return v4;
 }
 
-- (id)unionOfEdgesForEdgeTable:(const void *)a3 withLabels:(id)a4 filterEdgeIdentifiers:(id)a5 error:(id *)a6
+- (id)unionOfEdgesForEdgeTable:(const void *)table withLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  labelsCopy = labels;
+  identifiersCopy = identifiers;
   v26 = 0u;
   memset(v27, 0, 25);
   memset(&v25, 0, 41);
-  [(KGDatabase *)self labelIdentifiers:&v25 forLabels:v10 foundAll:0 error:0];
-  if (v25._bitSets.__begin_ == v25._bitSets.__end_ || (database = self->_database, v24[0] = a3, v24[1] = database, (v14 = degas::EdgeLabelQuery::edgesForAnyLabels(v24, &v25, &v26)) == 0))
+  [(KGDatabase *)self labelIdentifiers:&v25 forLabels:labelsCopy foundAll:0 error:0];
+  if (v25._bitSets.__begin_ == v25._bitSets.__end_ || (database = self->_database, v24[0] = table, v24[1] = database, (v14 = degas::EdgeLabelQuery::edgesForAnyLabels(v24, &v25, &v26)) == 0))
   {
-    if (v11)
+    if (identifiersCopy)
     {
       v16 = v26;
       if (v26 == 0xFFFFFFFFLL)
@@ -1276,14 +1276,14 @@ LABEL_15:
 
       if (v16)
       {
-        degas::Bitmap::intersectWith<degas::Bitmap>(&v26, [v11 bitmap]);
+        degas::Bitmap::intersectWith<degas::Bitmap>(&v26, [identifiersCopy bitmap]);
       }
     }
 
     v22 = [[KGElementIdentifierSet alloc] initWithBitmap:&v26];
   }
 
-  else if (a6)
+  else if (error)
   {
     if ((v14 - 2) > 9)
     {
@@ -1296,7 +1296,7 @@ LABEL_15:
     }
 
     kg_errorWithCode(v15);
-    *a6 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -1312,54 +1312,54 @@ LABEL_15:
   return v22;
 }
 
-- (id)intersectionOfTombstoneEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5
+- (id)intersectionOfTombstoneEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 864 withLabels:a3 filterEdgeIdentifiers:a4 overrideIndex:0 error:a5];
+  v5 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 864 withLabels:labels filterEdgeIdentifiers:identifiers overrideIndex:0 error:error];
 
   return v5;
 }
 
-- (id)intersectionOfTombstoneEdgesWithLabels:(id)a3 error:(id *)a4
+- (id)intersectionOfTombstoneEdgesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 864 withLabels:a3 filterEdgeIdentifiers:0 overrideIndex:0 error:a4];
+  v4 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 864 withLabels:labels filterEdgeIdentifiers:0 overrideIndex:0 error:error];
 
   return v4;
 }
 
-- (id)intersectionOfEdgesWithLabels:(id)a3 filterEdgeIdentifiers:(id)a4 error:(id *)a5
+- (id)intersectionOfEdgesWithLabels:(id)labels filterEdgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 248 withLabels:a3 filterEdgeIdentifiers:a4 overrideIndex:0 error:a5];
+  v5 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 248 withLabels:labels filterEdgeIdentifiers:identifiers overrideIndex:0 error:error];
 
   return v5;
 }
 
-- (id)noIndexIntersectionOfEdgesWithLabels:(id)a3 error:(id *)a4
+- (id)noIndexIntersectionOfEdgesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 248 withLabels:a3 filterEdgeIdentifiers:0 overrideIndex:1 error:a4];
+  v4 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 248 withLabels:labels filterEdgeIdentifiers:0 overrideIndex:1 error:error];
 
   return v4;
 }
 
-- (id)intersectionOfEdgesWithLabels:(id)a3 error:(id *)a4
+- (id)intersectionOfEdgesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 248 withLabels:a3 filterEdgeIdentifiers:0 overrideIndex:0 error:a4];
+  v4 = [(KGDatabase *)self intersectionOfEdgesForEdgeTable:self->_database + 248 withLabels:labels filterEdgeIdentifiers:0 overrideIndex:0 error:error];
 
   return v4;
 }
 
-- (id)intersectionOfEdgesForEdgeTable:(const void *)a3 withLabels:(id)a4 filterEdgeIdentifiers:(id)a5 overrideIndex:(BOOL)a6 error:(id *)a7
+- (id)intersectionOfEdgesForEdgeTable:(const void *)table withLabels:(id)labels filterEdgeIdentifiers:(id)identifiers overrideIndex:(BOOL)index error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  labelsCopy = labels;
+  identifiersCopy = identifiers;
   v30 = 0u;
   memset(v31, 0, 25);
   v28 = 0u;
   memset(v29, 0, 25);
   v27 = 1;
-  [(KGDatabase *)self labelIdentifiers:&v28 forLabels:v12 foundAll:&v27 error:0];
-  if (v27 == 1 && (database = self->_database, v26[0] = a3, v26[1] = database, (v16 = degas::EdgeLabelQuery::edgesForAllLabels(v26, &v28, &v30, a6)) != 0))
+  [(KGDatabase *)self labelIdentifiers:&v28 forLabels:labelsCopy foundAll:&v27 error:0];
+  if (v27 == 1 && (database = self->_database, v26[0] = table, v26[1] = database, (v16 = degas::EdgeLabelQuery::edgesForAllLabels(v26, &v28, &v30, index)) != 0))
   {
-    if (a7)
+    if (error)
     {
       if ((v16 - 2) > 9)
       {
@@ -1372,7 +1372,7 @@ LABEL_15:
       }
 
       kg_errorWithCode(v17);
-      *a7 = v24 = 0;
+      *error = v24 = 0;
     }
 
     else
@@ -1383,7 +1383,7 @@ LABEL_15:
 
   else
   {
-    if (v13)
+    if (identifiersCopy)
     {
       v18 = v30;
       if (v30 == 0xFFFFFFFFLL)
@@ -1436,7 +1436,7 @@ LABEL_15:
 
       if (v18)
       {
-        degas::Bitmap::intersectWith<degas::Bitmap>(&v30, [v13 bitmap]);
+        degas::Bitmap::intersectWith<degas::Bitmap>(&v30, [identifiersCopy bitmap]);
       }
     }
 
@@ -1451,17 +1451,17 @@ LABEL_15:
   return v24;
 }
 
-- (id)allEdgesForEdgeTable:(const void *)a3 withError:(id *)a4
+- (id)allEdgesForEdgeTable:(const void *)table withError:(id *)error
 {
   v11 = 0u;
   memset(v12, 0, 25);
   database = self->_database;
-  v10[0] = a3;
+  v10[0] = table;
   v10[1] = database;
   v6 = degas::EdgeLabelQuery::allEdges(v10, &v11);
   if (v6)
   {
-    if (a4)
+    if (error)
     {
       if ((v6 - 2) > 9)
       {
@@ -1474,7 +1474,7 @@ LABEL_15:
       }
 
       kg_errorWithCode(v7);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -1494,19 +1494,19 @@ LABEL_15:
   return v8;
 }
 
-- (id)edgeIdentifiersSortedByPropertyForName:(id)a3 dataType:(int64_t)a4 ascending:(BOOL)a5 limit:(int64_t)a6 edgeIdentifiers:(id)a7 error:(id *)a8
+- (id)edgeIdentifiersSortedByPropertyForName:(id)name dataType:(int64_t)type ascending:(BOOL)ascending limit:(int64_t)limit edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a7;
+  ascendingCopy = ascending;
+  nameCopy = name;
+  identifiersCopy = identifiers;
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v17 = [(KGDatabase *)self attributeIdentifierForPropertyName:v14 error:a8];
-  if (a4 <= 1)
+  v17 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
+  if (type <= 1)
   {
-    if (!a4)
+    if (!type)
     {
       v26 = 6;
-      if (a8)
+      if (error)
       {
         goto LABEL_13;
       }
@@ -1514,7 +1514,7 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    if (a4 != 1)
+    if (type != 1)
     {
 LABEL_15:
       v28 = v16;
@@ -1524,41 +1524,41 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 2:
       database = self->_database;
-      v23 = [v15 bitmap];
+      bitmap = [identifiersCopy bitmap];
       v20 = v31;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending_limit_edgeIdentifiers_error___block_invoke_2;
       v31[3] = &unk_2797FEA80;
       v31[4] = v16;
-      v21 = degas::Database::sortEdgesByRealAttribute(database, v17, v11, a6, v23, v31);
+      v21 = degas::Database::sortEdgesByRealAttribute(database, v17, ascendingCopy, limit, bitmap, v31);
       break;
     case 3:
       v24 = self->_database;
-      v25 = [v15 bitmap];
+      bitmap2 = [identifiersCopy bitmap];
       v20 = v30;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending_limit_edgeIdentifiers_error___block_invoke_3;
       v30[3] = &unk_2797FEAA8;
       v30[4] = v16;
-      v21 = degas::Database::sortEdgesByStringAttribute(v24, v17, v11, a6, v25, v30);
+      v21 = degas::Database::sortEdgesByStringAttribute(v24, v17, ascendingCopy, limit, bitmap2, v30);
       break;
     case 4:
 LABEL_8:
       v18 = self->_database;
-      v19 = [v15 bitmap];
+      bitmap3 = [identifiersCopy bitmap];
       v20 = v32;
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending_limit_edgeIdentifiers_error___block_invoke;
       v32[3] = &unk_2797FEA58;
       v32[4] = v16;
-      v21 = degas::Database::sortEdgesByIntAttribute(v18, v17, v11, a6, v19, v32);
+      v21 = degas::Database::sortEdgesByIntAttribute(v18, v17, ascendingCopy, limit, bitmap3, v32);
       break;
     default:
       goto LABEL_15;
@@ -1571,7 +1571,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (a8)
+  if (error)
   {
 LABEL_13:
     if ((v26 - 2) > 9)
@@ -1585,7 +1585,7 @@ LABEL_13:
     }
 
     kg_errorWithCode(v27);
-    *a8 = v28 = 0;
+    *error = v28 = 0;
     goto LABEL_20;
   }
 
@@ -1617,146 +1617,146 @@ void __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending
   [v2 addObject:?];
 }
 
-- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 edgeIdentifiers:(id)a7 error:(id *)a8
+- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v8 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:a3 rangeValue1:a4 rangeValue2:a5 comparator:a6 elementIdentifiers:a7 valueTable:self->_database + 1088 rowCount:1000 error:a8];
+  v8 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:name rangeValue1:value1 rangeValue2:value2 comparator:comparator elementIdentifiers:identifiers valueTable:self->_database + 1088 rowCount:1000 error:error];
 
   return v8;
 }
 
-- (id)filterEdgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 edgeIdentifiers:(id)a7 error:(id *)a8
+- (id)filterEdgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:v14 rangeValue1:v15 rangeValue2:v16 comparator:a6 elementIdentifiers:v17 valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:a8];
+  nameCopy = name;
+  value1Copy = value1;
+  value2Copy = value2;
+  identifiersCopy = identifiers;
+  v18 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:nameCopy rangeValue1:value1Copy rangeValue2:value2Copy comparator:comparator elementIdentifiers:identifiersCopy valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:error];
 
   return v18;
 }
 
-- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:a3 values:a4 comparator:a5 elementIdentifiers:a6 valueTable:self->_database + 1088 rowCount:1000 error:a7];
+  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:name values:values comparator:comparator elementIdentifiers:identifiers valueTable:self->_database + 1088 rowCount:1000 error:error];
 
   return v7;
 }
 
-- (id)filterEdgeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterEdgeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:v12 values:v13 comparator:a5 elementIdentifiers:v14 valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:a7];
+  nameCopy = name;
+  valuesCopy = values;
+  identifiersCopy = identifiers;
+  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:nameCopy values:valuesCopy comparator:comparator elementIdentifiers:identifiersCopy valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:error];
 
   return v15;
 }
 
-- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterTombstoneEdgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:a3 value:a4 comparator:a5 elementIdentifiers:a6 valueTable:self->_database + 1088 rowCount:1000 error:a7];
+  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:name value:value comparator:comparator elementIdentifiers:identifiers valueTable:self->_database + 1088 rowCount:1000 error:error];
 
   return v7;
 }
 
-- (id)filterEdgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 edgeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterEdgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator edgeIdentifiers:(id)identifiers error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:v12 value:v13 comparator:a5 elementIdentifiers:v14 valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:a7];
+  nameCopy = name;
+  valueCopy = value;
+  identifiersCopy = identifiers;
+  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:nameCopy value:valueCopy comparator:comparator elementIdentifiers:identifiersCopy valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:error];
 
   return v15;
 }
 
-- (id)tombstoneEdgeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5
+- (id)tombstoneEdgeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error
 {
-  v5 = [(KGDatabase *)self elementIdentifiersForPropertyName:a3 values:a4 valueTable:self->_database + 1088 rowCount:1000 error:a5];
+  v5 = [(KGDatabase *)self elementIdentifiersForPropertyName:name values:values valueTable:self->_database + 1088 rowCount:1000 error:error];
 
   return v5;
 }
 
-- (id)edgeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5
+- (id)edgeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(KGDatabase *)self elementIdentifiersForPropertyName:v8 values:v9 valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:a5];
+  nameCopy = name;
+  valuesCopy = values;
+  v10 = [(KGDatabase *)self elementIdentifiersForPropertyName:nameCopy values:valuesCopy valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:error];
 
   return v10;
 }
 
-- (id)tombstoneEdgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7
+- (id)tombstoneEdgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error
 {
-  v7 = [(KGDatabase *)self elementIdentifiersForPropertyName:a3 rangeValue1:a4 rangeValue2:a5 comparator:a6 valueTable:self->_database + 1088 rowCount:1000 error:a7];
+  v7 = [(KGDatabase *)self elementIdentifiersForPropertyName:name rangeValue1:value1 rangeValue2:value2 comparator:comparator valueTable:self->_database + 1088 rowCount:1000 error:error];
 
   return v7;
 }
 
-- (id)edgeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7
+- (id)edgeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(KGDatabase *)self elementIdentifiersForPropertyName:v12 rangeValue1:v13 rangeValue2:v14 comparator:a6 valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:a7];
+  nameCopy = name;
+  value1Copy = value1;
+  value2Copy = value2;
+  v15 = [(KGDatabase *)self elementIdentifiersForPropertyName:nameCopy rangeValue1:value1Copy rangeValue2:value2Copy comparator:comparator valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:error];
 
   return v15;
 }
 
-- (id)tombstoneEdgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6
+- (id)tombstoneEdgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error
 {
-  v6 = [(KGDatabase *)self elementIdentifiersForPropertyName:a3 value:a4 comparator:a5 valueTable:self->_database + 1088 rowCount:1000 error:a6];
+  v6 = [(KGDatabase *)self elementIdentifiersForPropertyName:name value:value comparator:comparator valueTable:self->_database + 1088 rowCount:1000 error:error];
 
   return v6;
 }
 
-- (id)edgeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6
+- (id)edgeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(KGDatabase *)self elementIdentifiersForPropertyName:v10 value:v11 comparator:a5 valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:a6];
+  nameCopy = name;
+  valueCopy = value;
+  v12 = [(KGDatabase *)self elementIdentifiersForPropertyName:nameCopy value:valueCopy comparator:comparator valueTable:self->_database + 528 rowCount:degas::Database::edgeCount(self->_database) error:error];
 
   return v12;
 }
 
-- (id)unionOfTombstoneNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5
+- (id)unionOfTombstoneNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 808 withLabels:a3 filterNodeIdentifiers:a4 error:a5];
+  v5 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 808 withLabels:labels filterNodeIdentifiers:identifiers error:error];
 
   return v5;
 }
 
-- (id)unionOfTombstoneNodesWithLabels:(id)a3 error:(id *)a4
+- (id)unionOfTombstoneNodesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 808 withLabels:a3 filterNodeIdentifiers:0 error:a4];
+  v4 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 808 withLabels:labels filterNodeIdentifiers:0 error:error];
 
   return v4;
 }
 
-- (id)unionOfNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5
+- (id)unionOfNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 192 withLabels:a3 filterNodeIdentifiers:a4 error:a5];
+  v5 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 192 withLabels:labels filterNodeIdentifiers:identifiers error:error];
 
   return v5;
 }
 
-- (id)unionOfNodesWithLabels:(id)a3 error:(id *)a4
+- (id)unionOfNodesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 192 withLabels:a3 filterNodeIdentifiers:0 error:a4];
+  v4 = [(KGDatabase *)self unionOfNodesForNodeTable:self->_database + 192 withLabels:labels filterNodeIdentifiers:0 error:error];
 
   return v4;
 }
 
-- (id)unionOfNodesForNodeTable:(const void *)a3 withLabels:(id)a4 filterNodeIdentifiers:(id)a5 error:(id *)a6
+- (id)unionOfNodesForNodeTable:(const void *)table withLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  labelsCopy = labels;
+  identifiersCopy = identifiers;
   v26 = 0u;
   memset(v27, 0, 25);
   memset(&v25, 0, 41);
-  [(KGDatabase *)self labelIdentifiers:&v25 forLabels:v10 foundAll:0 error:0];
-  if (v25._bitSets.__begin_ == v25._bitSets.__end_ || (database = self->_database, v24[0] = a3, v24[1] = database, (v14 = degas::NodeLabelQuery::nodesForAnyLabels(v24, &v25, &v26)) == 0))
+  [(KGDatabase *)self labelIdentifiers:&v25 forLabels:labelsCopy foundAll:0 error:0];
+  if (v25._bitSets.__begin_ == v25._bitSets.__end_ || (database = self->_database, v24[0] = table, v24[1] = database, (v14 = degas::NodeLabelQuery::nodesForAnyLabels(v24, &v25, &v26)) == 0))
   {
-    if (v11)
+    if (identifiersCopy)
     {
       v16 = v26;
       if (v26 == 0xFFFFFFFFLL)
@@ -1809,14 +1809,14 @@ void __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending
 
       if (v16)
       {
-        degas::Bitmap::intersectWith<degas::Bitmap>(&v26, [v11 bitmap]);
+        degas::Bitmap::intersectWith<degas::Bitmap>(&v26, [identifiersCopy bitmap]);
       }
     }
 
     v22 = [[KGElementIdentifierSet alloc] initWithBitmap:&v26];
   }
 
-  else if (a6)
+  else if (error)
   {
     if ((v14 - 2) > 9)
     {
@@ -1829,7 +1829,7 @@ void __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending
     }
 
     kg_errorWithCode(v15);
-    *a6 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -1845,51 +1845,51 @@ void __100__KGDatabase_edgeIdentifiersSortedByPropertyForName_dataType_ascending
   return v22;
 }
 
-- (id)intersectionOfTombstoneNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5
+- (id)intersectionOfTombstoneNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 808 withLabels:a3 filterNodeIdentifiers:a4 overrideIndex:0 error:a5];
+  v5 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 808 withLabels:labels filterNodeIdentifiers:identifiers overrideIndex:0 error:error];
 
   return v5;
 }
 
-- (id)intersectionOfTombstoneNodesWithLabels:(id)a3 error:(id *)a4
+- (id)intersectionOfTombstoneNodesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 808 withLabels:a3 filterNodeIdentifiers:0 overrideIndex:0 error:a4];
+  v4 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 808 withLabels:labels filterNodeIdentifiers:0 overrideIndex:0 error:error];
 
   return v4;
 }
 
-- (id)intersectionOfNodesWithLabels:(id)a3 filterNodeIdentifiers:(id)a4 error:(id *)a5
+- (id)intersectionOfNodesWithLabels:(id)labels filterNodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 192 withLabels:a3 filterNodeIdentifiers:a4 overrideIndex:0 error:a5];
+  v5 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 192 withLabels:labels filterNodeIdentifiers:identifiers overrideIndex:0 error:error];
 
   return v5;
 }
 
-- (id)noIndexIntersectionOfNodesWithLabels:(id)a3 error:(id *)a4
+- (id)noIndexIntersectionOfNodesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 192 withLabels:a3 filterNodeIdentifiers:0 overrideIndex:1 error:a4];
+  v4 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 192 withLabels:labels filterNodeIdentifiers:0 overrideIndex:1 error:error];
 
   return v4;
 }
 
-- (id)intersectionOfNodesWithLabels:(id)a3 error:(id *)a4
+- (id)intersectionOfNodesWithLabels:(id)labels error:(id *)error
 {
-  v4 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 192 withLabels:a3 filterNodeIdentifiers:0 overrideIndex:0 error:a4];
+  v4 = [(KGDatabase *)self intersectionOfNodesForNodeTable:self->_database + 192 withLabels:labels filterNodeIdentifiers:0 overrideIndex:0 error:error];
 
   return v4;
 }
 
-- (id)intersectionOfNodesForNodeTable:(const void *)a3 withLabels:(id)a4 filterNodeIdentifiers:(id)a5 overrideIndex:(BOOL)a6 error:(id *)a7
+- (id)intersectionOfNodesForNodeTable:(const void *)table withLabels:(id)labels filterNodeIdentifiers:(id)identifiers overrideIndex:(BOOL)index error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
+  labelsCopy = labels;
+  identifiersCopy = identifiers;
   v30 = 0u;
   memset(v31, 0, 25);
   v28 = 0u;
   memset(v29, 0, 25);
   v27 = 1;
-  if (![(KGDatabase *)self labelIdentifiers:&v28 forLabels:v12 foundAll:&v27 error:a7])
+  if (![(KGDatabase *)self labelIdentifiers:&v28 forLabels:labelsCopy foundAll:&v27 error:error])
   {
 LABEL_7:
     v18 = 0;
@@ -1899,12 +1899,12 @@ LABEL_7:
   if (v27 == 1)
   {
     database = self->_database;
-    v26[0] = a3;
+    v26[0] = table;
     v26[1] = database;
-    v16 = degas::NodeLabelQuery::nodesForAllLabels(v26, &v28, &v30, a6);
+    v16 = degas::NodeLabelQuery::nodesForAllLabels(v26, &v28, &v30, index);
     if (v16)
     {
-      if (a7)
+      if (error)
       {
         if ((v16 - 2) > 9)
         {
@@ -1917,7 +1917,7 @@ LABEL_7:
         }
 
         kg_errorWithCode(v17);
-        *a7 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_26;
       }
 
@@ -1925,7 +1925,7 @@ LABEL_7:
     }
   }
 
-  if (v13)
+  if (identifiersCopy)
   {
     v19 = v30;
     if (v30 == 0xFFFFFFFFLL)
@@ -1978,7 +1978,7 @@ LABEL_7:
 
     if (v19)
     {
-      degas::Bitmap::intersectWith<degas::Bitmap>(&v30, [v13 bitmap]);
+      degas::Bitmap::intersectWith<degas::Bitmap>(&v30, [identifiersCopy bitmap]);
     }
   }
 
@@ -1992,7 +1992,7 @@ LABEL_26:
   return v18;
 }
 
-- (id)nodeIdentifiersWhereNoOutEdgesWithError:(id *)a3
+- (id)nodeIdentifiersWhereNoOutEdgesWithError:(id *)error
 {
   v5 = degas::NodeCursor::NodeCursor(v14);
   degas::NodeCursor::setForNoOutEdges(v5, (self->_database + 192));
@@ -2016,7 +2016,7 @@ LABEL_26:
     v9 = [[KGElementIdentifierSet alloc] initWithBitmap:&v12];
   }
 
-  else if (a3)
+  else if (error)
   {
     if (v8 > 9)
     {
@@ -2029,7 +2029,7 @@ LABEL_26:
     }
 
     kg_errorWithCode(v10);
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -2044,7 +2044,7 @@ LABEL_26:
   return v9;
 }
 
-- (id)nodeIdentifiersWhereNoInEdgesWithError:(id *)a3
+- (id)nodeIdentifiersWhereNoInEdgesWithError:(id *)error
 {
   v5 = degas::NodeCursor::NodeCursor(v14);
   degas::NodeCursor::setForNoInEdges(v5, (self->_database + 192));
@@ -2068,7 +2068,7 @@ LABEL_26:
     v9 = [[KGElementIdentifierSet alloc] initWithBitmap:&v12];
   }
 
-  else if (a3)
+  else if (error)
   {
     if (v8 > 9)
     {
@@ -2081,7 +2081,7 @@ LABEL_26:
     }
 
     kg_errorWithCode(v10);
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -2096,7 +2096,7 @@ LABEL_26:
   return v9;
 }
 
-- (id)nodeIdentifiersWhereNoEdgesWithError:(id *)a3
+- (id)nodeIdentifiersWhereNoEdgesWithError:(id *)error
 {
   v5 = degas::NodeCursor::NodeCursor(v14);
   degas::NodeCursor::setForNoEdges(v5, (self->_database + 192));
@@ -2120,7 +2120,7 @@ LABEL_26:
     v9 = [[KGElementIdentifierSet alloc] initWithBitmap:&v12];
   }
 
-  else if (a3)
+  else if (error)
   {
     if (v8 > 9)
     {
@@ -2133,7 +2133,7 @@ LABEL_26:
     }
 
     kg_errorWithCode(v10);
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -2148,17 +2148,17 @@ LABEL_26:
   return v9;
 }
 
-- (id)allNodesForTable:(const void *)a3 error:(id *)a4
+- (id)allNodesForTable:(const void *)table error:(id *)error
 {
   v11 = 0u;
   memset(v12, 0, 25);
   database = self->_database;
-  v10[0] = a3;
+  v10[0] = table;
   v10[1] = database;
   v6 = degas::NodeLabelQuery::allNodes(v10, &v11);
   if (v6)
   {
-    if (a4)
+    if (error)
     {
       if ((v6 - 2) > 9)
       {
@@ -2171,7 +2171,7 @@ LABEL_26:
       }
 
       kg_errorWithCode(v7);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -2191,19 +2191,19 @@ LABEL_26:
   return v8;
 }
 
-- (id)nodeIdentifiersSortedByPropertyForName:(id)a3 dataType:(int64_t)a4 ascending:(BOOL)a5 limit:(int64_t)a6 nodeIdentifiers:(id)a7 error:(id *)a8
+- (id)nodeIdentifiersSortedByPropertyForName:(id)name dataType:(int64_t)type ascending:(BOOL)ascending limit:(int64_t)limit nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a7;
+  ascendingCopy = ascending;
+  nameCopy = name;
+  identifiersCopy = identifiers;
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v17 = [(KGDatabase *)self attributeIdentifierForPropertyName:v14 error:a8];
-  if (a4 <= 1)
+  v17 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
+  if (type <= 1)
   {
-    if (!a4)
+    if (!type)
     {
       v26 = 6;
-      if (a8)
+      if (error)
       {
         goto LABEL_13;
       }
@@ -2211,7 +2211,7 @@ LABEL_26:
       goto LABEL_19;
     }
 
-    if (a4 != 1)
+    if (type != 1)
     {
 LABEL_15:
       v28 = v16;
@@ -2221,41 +2221,41 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 2:
       database = self->_database;
-      v23 = [v15 bitmap];
+      bitmap = [identifiersCopy bitmap];
       v20 = v31;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __100__KGDatabase_nodeIdentifiersSortedByPropertyForName_dataType_ascending_limit_nodeIdentifiers_error___block_invoke_2;
       v31[3] = &unk_2797FEA80;
       v31[4] = v16;
-      v21 = degas::Database::sortNodesByRealAttribute(database, v17, v11, a6, v23, v31);
+      v21 = degas::Database::sortNodesByRealAttribute(database, v17, ascendingCopy, limit, bitmap, v31);
       break;
     case 3:
       v24 = self->_database;
-      v25 = [v15 bitmap];
+      bitmap2 = [identifiersCopy bitmap];
       v20 = v30;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __100__KGDatabase_nodeIdentifiersSortedByPropertyForName_dataType_ascending_limit_nodeIdentifiers_error___block_invoke_3;
       v30[3] = &unk_2797FEAA8;
       v30[4] = v16;
-      v21 = degas::Database::sortNodesByStringAttribute(v24, v17, v11, a6, v25, v30);
+      v21 = degas::Database::sortNodesByStringAttribute(v24, v17, ascendingCopy, limit, bitmap2, v30);
       break;
     case 4:
 LABEL_8:
       v18 = self->_database;
-      v19 = [v15 bitmap];
+      bitmap3 = [identifiersCopy bitmap];
       v20 = v32;
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __100__KGDatabase_nodeIdentifiersSortedByPropertyForName_dataType_ascending_limit_nodeIdentifiers_error___block_invoke;
       v32[3] = &unk_2797FEA58;
       v32[4] = v16;
-      v21 = degas::Database::sortNodesByIntAttribute(v18, v17, v11, a6, v19, v32);
+      v21 = degas::Database::sortNodesByIntAttribute(v18, v17, ascendingCopy, limit, bitmap3, v32);
       break;
     default:
       goto LABEL_15;
@@ -2268,7 +2268,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (a8)
+  if (error)
   {
 LABEL_13:
     if ((v26 - 2) > 9)
@@ -2282,7 +2282,7 @@ LABEL_13:
     }
 
     kg_errorWithCode(v27);
-    *a8 = v28 = 0;
+    *error = v28 = 0;
     goto LABEL_20;
   }
 
@@ -2314,32 +2314,32 @@ void __100__KGDatabase_nodeIdentifiersSortedByPropertyForName_dataType_ascending
   [v2 addObject:?];
 }
 
-- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 nodeIdentifiers:(id)a7 error:(id *)a8
+- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v8 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:a3 rangeValue1:a4 rangeValue2:a5 comparator:a6 elementIdentifiers:a7 valueTable:self->_database + 1032 rowCount:1000 error:a8];
+  v8 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:name rangeValue1:value1 rangeValue2:value2 comparator:comparator elementIdentifiers:identifiers valueTable:self->_database + 1032 rowCount:1000 error:error];
 
   return v8;
 }
 
-- (id)filterNodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 nodeIdentifiers:(id)a7 error:(id *)a8
+- (id)filterNodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:v14 rangeValue1:v15 rangeValue2:v16 comparator:a6 elementIdentifiers:v17 valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:a8];
+  nameCopy = name;
+  value1Copy = value1;
+  value2Copy = value2;
+  identifiersCopy = identifiers;
+  v18 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:nameCopy rangeValue1:value1Copy rangeValue2:value2Copy comparator:comparator elementIdentifiers:identifiersCopy valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:error];
 
   return v18;
 }
 
-- (id)filterElementIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 elementIdentifiers:(id)a7 valueTable:(const void *)a8 rowCount:(unint64_t)a9 error:(id *)a10
+- (id)filterElementIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator elementIdentifiers:(id)identifiers valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)self0
 {
   v49 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = [(KGDatabase *)self attributeIdentifierForPropertyName:v16 error:a10];
+  nameCopy = name;
+  value1Copy = value1;
+  value2Copy = value2;
+  identifiersCopy = identifiers;
+  v20 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
   if (!v20)
   {
     v22 = objc_alloc_init(KGElementIdentifierSet);
@@ -2348,32 +2348,32 @@ void __100__KGDatabase_nodeIdentifiersSortedByPropertyForName_dataType_ascending
 
   v45 = 0u;
   memset(v46, 0, 25);
-  v21 = [v17 kgPropertyType];
-  if (v21 == [v18 kgPropertyType])
+  kgPropertyType = [value1Copy kgPropertyType];
+  if (kgPropertyType == [value2Copy kgPropertyType])
   {
-    if (a6 >= 9)
+    if (comparator >= 9)
     {
-      LODWORD(a6) = 1;
+      LODWORD(comparator) = 1;
     }
 
-    v44[0] = a8;
-    v44[1] = a9;
-    if (v21 <= 1)
+    v44[0] = table;
+    v44[1] = count;
+    if (kgPropertyType <= 1)
     {
-      if (!v21)
+      if (!kgPropertyType)
       {
         v35 = KGLoggingConnection();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          *&buf[4] = v17;
+          *&buf[4] = value1Copy;
           _os_log_error_impl(&dword_255870000, v35, OS_LOG_TYPE_ERROR, "unable to interpret value <%@> as valid property value", buf, 0xCu);
         }
 
         goto LABEL_32;
       }
 
-      if (v21 != 1)
+      if (kgPropertyType != 1)
       {
         goto LABEL_32;
       }
@@ -2381,40 +2381,40 @@ void __100__KGDatabase_nodeIdentifiersSortedByPropertyForName_dataType_ascending
 
     else
     {
-      if (v21 == 2)
+      if (kgPropertyType == 2)
       {
-        v27 = v17;
-        v28 = v18;
+        v27 = value1Copy;
+        v28 = value2Copy;
         [v27 doubleValue];
         v30 = v29;
         [v28 doubleValue];
-        if (v19)
+        if (identifiersCopy)
         {
-          v26 = degas::AttributeQuery::filterElementsForAttributeValueRange(v44, v20, a6, [v19 bitmap], &v45, v30, v31);
+          v26 = degas::AttributeQuery::filterElementsForAttributeValueRange(v44, v20, comparator, [identifiersCopy bitmap], &v45, v30, v31);
         }
 
         else
         {
-          v26 = degas::AttributeQuery::elementsForAttributeValueRange(v44, v20, a6, &v45, v30, v31);
+          v26 = degas::AttributeQuery::elementsForAttributeValueRange(v44, v20, comparator, &v45, v30, v31);
         }
 
         goto LABEL_28;
       }
 
-      if (v21 == 3)
+      if (kgPropertyType == 3)
       {
-        v32 = v17;
-        v33 = v18;
+        v32 = value1Copy;
+        v33 = value2Copy;
         stringNSToStd(buf, v32);
         stringNSToStd(__p, v33);
-        if (v19)
+        if (identifiersCopy)
         {
-          v34 = degas::AttributeQuery::filterElementsForAttributeValueRange(v44, v20, buf, __p, a6, [v19 bitmap], &v45);
+          v34 = degas::AttributeQuery::filterElementsForAttributeValueRange(v44, v20, buf, __p, comparator, [identifiersCopy bitmap], &v45);
         }
 
         else
         {
-          v34 = degas::AttributeQuery::elementsForAttributeValueRange(v44, v20, buf, __p, a6, &v45);
+          v34 = degas::AttributeQuery::elementsForAttributeValueRange(v44, v20, buf, __p, comparator, &v45);
         }
 
         v36 = v34;
@@ -2441,7 +2441,7 @@ LABEL_33:
             goto LABEL_46;
           }
 
-          if (a10)
+          if (error)
           {
             if (v37 > 9)
             {
@@ -2467,22 +2467,22 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      if (v21 != 4)
+      if (kgPropertyType != 4)
       {
         goto LABEL_32;
       }
     }
 
-    v24 = v17;
-    v25 = v18;
-    if (v19)
+    v24 = value1Copy;
+    v25 = value2Copy;
+    if (identifiersCopy)
     {
-      v26 = degas::AttributeQuery::filterElementsForAttributeValueRange(v44, v20, [v24 longLongValue], objc_msgSend(v25, "longLongValue"), a6, objc_msgSend(v19, "bitmap"), &v45);
+      v26 = degas::AttributeQuery::filterElementsForAttributeValueRange(v44, v20, [v24 longLongValue], objc_msgSend(v25, "longLongValue"), comparator, objc_msgSend(identifiersCopy, "bitmap"), &v45);
     }
 
     else
     {
-      v26 = degas::AttributeQuery::elementsForAttributeValueRange(v44, v20, [v24 longLongValue], objc_msgSend(v25, "longLongValue"), a6, &v45);
+      v26 = degas::AttributeQuery::elementsForAttributeValueRange(v44, v20, [v24 longLongValue], objc_msgSend(v25, "longLongValue"), comparator, &v45);
     }
 
 LABEL_28:
@@ -2494,13 +2494,13 @@ LABEL_28:
   {
     *buf = 0;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "selecting in a range with mismatched types", buf, 2u);
-    if (!a10)
+    if (!error)
     {
       goto LABEL_45;
     }
   }
 
-  else if (!a10)
+  else if (!error)
   {
     goto LABEL_45;
   }
@@ -2508,7 +2508,7 @@ LABEL_28:
   v23 = kg_errorWithCode(5004);
 LABEL_14:
   v22 = 0;
-  *a10 = v23;
+  *error = v23;
 LABEL_46:
   *buf = v46;
   std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](buf);
@@ -2519,39 +2519,39 @@ LABEL_47:
   return v22;
 }
 
-- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:a3 values:a4 comparator:a5 elementIdentifiers:a6 valueTable:self->_database + 1032 rowCount:1000 error:a7];
+  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:name values:values comparator:comparator elementIdentifiers:identifiers valueTable:self->_database + 1032 rowCount:1000 error:error];
 
   return v7;
 }
 
-- (id)filterNodeIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterNodeIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:v12 values:v13 comparator:a5 elementIdentifiers:v14 valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:a7];
+  nameCopy = name;
+  valuesCopy = values;
+  identifiersCopy = identifiers;
+  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:nameCopy values:valuesCopy comparator:comparator elementIdentifiers:identifiersCopy valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:error];
 
   return v15;
 }
 
-- (id)filterElementIdentifiersForPropertyName:(id)a3 values:(id)a4 comparator:(unint64_t)a5 elementIdentifiers:(id)a6 valueTable:(const void *)a7 rowCount:(unint64_t)a8 error:(id *)a9
+- (id)filterElementIdentifiersForPropertyName:(id)name values:(id)values comparator:(unint64_t)comparator elementIdentifiers:(id)identifiers valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v25 = a4;
-  v15 = a6;
-  if ([(KGDatabase *)self attributeIdentifierForPropertyName:v14 error:a9])
+  nameCopy = name;
+  valuesCopy = values;
+  identifiersCopy = identifiers;
+  if ([(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error])
   {
     v27 = 0u;
     memset(v28, 0, 25);
     v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [KGDatabase distributeValuesByType:"distributeValuesByType:toIntegerValues:floatValues:stringValues:" toIntegerValues:v25 floatValues:v24 stringValues:?];
-    v26[0] = a7;
-    v26[1] = a8;
+    [KGDatabase distributeValuesByType:"distributeValuesByType:toIntegerValues:floatValues:stringValues:" toIntegerValues:valuesCopy floatValues:v24 stringValues:?];
+    v26[0] = table;
+    v26[1] = count;
     v16 = [v23 count];
     if (v16)
     {
@@ -2601,35 +2601,35 @@ LABEL_47:
   return v17;
 }
 
-- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterTombstoneNodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:a3 value:a4 comparator:a5 elementIdentifiers:a6 valueTable:self->_database + 1032 rowCount:1000 error:a7];
+  v7 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:name value:value comparator:comparator elementIdentifiers:identifiers valueTable:self->_database + 1032 rowCount:1000 error:error];
 
   return v7;
 }
 
-- (id)filterNodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 nodeIdentifiers:(id)a6 error:(id *)a7
+- (id)filterNodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator nodeIdentifiers:(id)identifiers error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:v12 value:v13 comparator:a5 elementIdentifiers:v14 valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:a7];
+  nameCopy = name;
+  valueCopy = value;
+  identifiersCopy = identifiers;
+  v15 = [(KGDatabase *)self filterElementIdentifiersForPropertyName:nameCopy value:valueCopy comparator:comparator elementIdentifiers:identifiersCopy valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:error];
 
   return v15;
 }
 
-- (id)filterElementIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 elementIdentifiers:(id)a6 valueTable:(const void *)a7 rowCount:(unint64_t)a8 error:(id *)a9
+- (id)filterElementIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator elementIdentifiers:(id)identifiers valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if (a5 == 8)
+  nameCopy = name;
+  valueCopy = value;
+  identifiersCopy = identifiers;
+  if (comparator == 8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(KGDatabase *)self filterNodeIdentifiersForPropertyName:v15 values:v16 comparator:8 nodeIdentifiers:v17 error:a9];
+      v18 = [(KGDatabase *)self filterNodeIdentifiersForPropertyName:nameCopy values:valueCopy comparator:8 nodeIdentifiers:identifiersCopy error:error];
     }
 
     else
@@ -2638,7 +2638,7 @@ LABEL_47:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v16;
+        *&buf[4] = valueCopy;
         _os_log_error_impl(&dword_255870000, v21, OS_LOG_TYPE_ERROR, "Case insensitive In expects an array of values, not %@", buf, 0xCu);
       }
 
@@ -2648,7 +2648,7 @@ LABEL_47:
     goto LABEL_16;
   }
 
-  v19 = [(KGDatabase *)self attributeIdentifierForPropertyName:v15 error:a9];
+  v19 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
   if (!v19)
   {
     v18 = objc_alloc_init(KGElementIdentifierSet);
@@ -2659,30 +2659,30 @@ LABEL_16:
 
   *buf = 0u;
   memset(v39, 0, 25);
-  v20 = [v16 kgPropertyType];
-  if (a5 >= 9)
+  kgPropertyType = [valueCopy kgPropertyType];
+  if (comparator >= 9)
   {
-    LODWORD(a5) = 1;
+    LODWORD(comparator) = 1;
   }
 
-  v34 = a7;
-  v35 = a8;
-  if (v20 <= 1)
+  tableCopy = table;
+  countCopy = count;
+  if (kgPropertyType <= 1)
   {
-    if (!v20)
+    if (!kgPropertyType)
     {
       v27 = KGLoggingConnection();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *__p = 138412290;
-        *&__p[4] = v16;
+        *&__p[4] = valueCopy;
         _os_log_error_impl(&dword_255870000, v27, OS_LOG_TYPE_ERROR, "unable to interpret value <%@> as valid property value", __p, 0xCu);
       }
 
       goto LABEL_34;
     }
 
-    if (v20 != 1)
+    if (kgPropertyType != 1)
     {
 LABEL_34:
       v30 = objc_alloc_init(KGElementIdentifierSet);
@@ -2692,39 +2692,39 @@ LABEL_34:
     goto LABEL_19;
   }
 
-  if (v20 == 2)
+  if (kgPropertyType == 2)
   {
-    [v16 doubleValue];
-    if (v17)
+    [valueCopy doubleValue];
+    if (identifiersCopy)
     {
-      v24 = degas::AttributeQuery::filterElementsForAttributeValue(&v34, v19, a5, [v17 bitmap], buf, v25);
+      v24 = degas::AttributeQuery::filterElementsForAttributeValue(&tableCopy, v19, comparator, [identifiersCopy bitmap], buf, v25);
     }
 
     else
     {
-      v24 = degas::AttributeQuery::elementsForAttributeValue(&v34, v19, a5, buf, v25);
+      v24 = degas::AttributeQuery::elementsForAttributeValue(&tableCopy, v19, comparator, buf, v25);
     }
 
     goto LABEL_30;
   }
 
-  if (v20 != 3)
+  if (kgPropertyType != 3)
   {
-    if (v20 != 4)
+    if (kgPropertyType != 4)
     {
       goto LABEL_34;
     }
 
 LABEL_19:
-    v23 = v16;
-    if (v17)
+    v23 = valueCopy;
+    if (identifiersCopy)
     {
-      v24 = degas::AttributeQuery::filterElementsForAttributeValue(&v34, v19, [v23 longLongValue], a5, objc_msgSend(v17, "bitmap"), buf);
+      v24 = degas::AttributeQuery::filterElementsForAttributeValue(&tableCopy, v19, [v23 longLongValue], comparator, objc_msgSend(identifiersCopy, "bitmap"), buf);
     }
 
     else
     {
-      v24 = degas::AttributeQuery::elementsForAttributeValue(&v34, v19, [v23 longLongValue], a5, buf);
+      v24 = degas::AttributeQuery::elementsForAttributeValue(&tableCopy, v19, [v23 longLongValue], comparator, buf);
     }
 
 LABEL_30:
@@ -2732,15 +2732,15 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  stringNSToStd(__p, v16);
-  if (v17)
+  stringNSToStd(__p, valueCopy);
+  if (identifiersCopy)
   {
-    v26 = degas::AttributeQuery::filterElementsForAttributeValue(&v34, v19, __p, a5, [v17 bitmap], buf);
+    v26 = degas::AttributeQuery::filterElementsForAttributeValue(&tableCopy, v19, __p, comparator, [identifiersCopy bitmap], buf);
   }
 
   else
   {
-    v26 = degas::AttributeQuery::elementsForAttributeValue(&v34, v19, __p, a5, buf);
+    v26 = degas::AttributeQuery::elementsForAttributeValue(&tableCopy, v19, __p, comparator, buf);
   }
 
   v28 = v26;
@@ -2759,7 +2759,7 @@ LABEL_31:
 
   if (v28)
   {
-    if (a9)
+    if (error)
     {
       if (v29 > 9)
       {
@@ -2772,7 +2772,7 @@ LABEL_31:
       }
 
       kg_errorWithCode(v33);
-      *a9 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -2796,29 +2796,29 @@ LABEL_37:
   return v22;
 }
 
-- (id)tombstoneNodeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5
+- (id)tombstoneNodeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error
 {
-  v5 = [(KGDatabase *)self elementIdentifiersForPropertyName:a3 values:a4 valueTable:self->_database + 1032 rowCount:0 error:a5];
+  v5 = [(KGDatabase *)self elementIdentifiersForPropertyName:name values:values valueTable:self->_database + 1032 rowCount:0 error:error];
 
   return v5;
 }
 
-- (id)nodeIdentifiersForPropertyName:(id)a3 values:(id)a4 error:(id *)a5
+- (id)nodeIdentifiersForPropertyName:(id)name values:(id)values error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(KGDatabase *)self elementIdentifiersForPropertyName:v8 values:v9 valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:a5];
+  nameCopy = name;
+  valuesCopy = values;
+  v10 = [(KGDatabase *)self elementIdentifiersForPropertyName:nameCopy values:valuesCopy valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:error];
 
   return v10;
 }
 
-- (id)elementIdentifiersForPropertyName:(id)a3 values:(id)a4 valueTable:(const void *)a5 rowCount:(unint64_t)a6 error:(id *)a7
+- (id)elementIdentifiersForPropertyName:(id)name values:(id)values valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error
 {
   v81 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v62 = a4;
-  v59 = v12;
-  v13 = [(KGDatabase *)self attributeIdentifierForPropertyName:v12 error:a7];
+  nameCopy = name;
+  valuesCopy = values;
+  v59 = nameCopy;
+  v13 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
   if (!v13)
   {
     v29 = objc_alloc_init(KGElementIdentifierSet);
@@ -2830,15 +2830,15 @@ LABEL_37:
   v60 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v58 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [KGDatabase distributeValuesByType:"distributeValuesByType:toIntegerValues:floatValues:stringValues:" toIntegerValues:v62 floatValues:v61 stringValues:?];
-  v75[0] = a5;
-  v75[1] = a6;
+  [KGDatabase distributeValuesByType:"distributeValuesByType:toIntegerValues:floatValues:stringValues:" toIntegerValues:valuesCopy floatValues:v61 stringValues:?];
+  v75[0] = table;
+  v75[1] = count;
   v14 = [v60 count];
   v57 = v13;
   if (v14)
   {
-    v56 = a7;
-    v54 = a5;
+    errorCopy = error;
+    tableCopy = table;
     v55 = &v53;
     v53 = v14;
     MEMORY[0x28223BE20](v14);
@@ -2887,9 +2887,9 @@ LABEL_37:
       while (v19);
     }
 
-    a7 = v56;
+    error = errorCopy;
     v26 = v53;
-    v27 = degas::implElementsForAttributeValues<char const*>(v57, v16, v53, 1, &v76, v54);
+    v27 = degas::implElementsForAttributeValues<char const*>(v57, v16, v53, 1, &v76, tableCopy);
     do
     {
       free(*v16);
@@ -2900,7 +2900,7 @@ LABEL_37:
     while (v26);
     if ((v27 & 0xFFFFFFFD) != 0)
     {
-      if (a7)
+      if (error)
       {
         if ((v27 - 2) > 9)
         {
@@ -2913,7 +2913,7 @@ LABEL_37:
         }
 
 LABEL_48:
-        *a7 = kg_errorWithCode(v28);
+        *error = kg_errorWithCode(v28);
         goto LABEL_49;
       }
 
@@ -2958,7 +2958,7 @@ LABEL_48:
     v39 = degas::AttributeQuery::elementsForAttributeValues(v75, v57, v33, v31, 1, &v76);
     if ((v39 & 0xFFFFFFFD) != 0)
     {
-      if (a7)
+      if (error)
       {
         if ((v39 - 2) > 9)
         {
@@ -3017,7 +3017,7 @@ LABEL_49:
     v50 = degas::AttributeQuery::elementsForAttributeValues(v75, v57, v43, v41, 1, &v76);
     if ((v50 & 0xFFFFFFFD) != 0)
     {
-      if (a7)
+      if (error)
       {
         if ((v50 - 2) > 9)
         {
@@ -3048,18 +3048,18 @@ LABEL_51:
   return v29;
 }
 
-- (void)distributeValuesByType:(id)a3 toIntegerValues:(id)a4 floatValues:(id)a5 stringValues:(id)a6
+- (void)distributeValuesByType:(id)type toIntegerValues:(id)values floatValues:(id)floatValues stringValues:(id)stringValues
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  valuesCopy = values;
+  floatValuesCopy = floatValues;
+  stringValuesCopy = stringValues;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v9;
+  v13 = typeCopy;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v14)
   {
@@ -3076,19 +3076,19 @@ LABEL_51:
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = [v18 kgPropertyType];
-        if (v19 <= 1)
+        kgPropertyType = [v18 kgPropertyType];
+        if (kgPropertyType <= 1)
         {
-          if (v19)
+          if (kgPropertyType)
           {
-            if (v19 != 1)
+            if (kgPropertyType != 1)
             {
               continue;
             }
 
 LABEL_13:
             v20 = v18;
-            [v10 addObject:v20];
+            [valuesCopy addObject:v20];
           }
 
           else
@@ -3107,15 +3107,15 @@ LABEL_18:
           continue;
         }
 
-        switch(v19)
+        switch(kgPropertyType)
         {
           case 2:
             v20 = v18;
-            [v11 addObject:v20];
+            [floatValuesCopy addObject:v20];
             goto LABEL_18;
           case 3:
             v20 = v18;
-            [v12 addObject:v20];
+            [stringValuesCopy addObject:v20];
             goto LABEL_18;
           case 4:
             goto LABEL_13;
@@ -3131,30 +3131,30 @@ LABEL_18:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tombstoneNodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7
+- (id)tombstoneNodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error
 {
-  v7 = [(KGDatabase *)self elementIdentifiersForPropertyName:a3 rangeValue1:a4 rangeValue2:a5 comparator:a6 valueTable:self->_database + 1032 rowCount:0 error:a7];
+  v7 = [(KGDatabase *)self elementIdentifiersForPropertyName:name rangeValue1:value1 rangeValue2:value2 comparator:comparator valueTable:self->_database + 1032 rowCount:0 error:error];
 
   return v7;
 }
 
-- (id)nodeIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 error:(id *)a7
+- (id)nodeIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(KGDatabase *)self elementIdentifiersForPropertyName:v12 rangeValue1:v13 rangeValue2:v14 comparator:a6 valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:a7];
+  nameCopy = name;
+  value1Copy = value1;
+  value2Copy = value2;
+  v15 = [(KGDatabase *)self elementIdentifiersForPropertyName:nameCopy rangeValue1:value1Copy rangeValue2:value2Copy comparator:comparator valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:error];
 
   return v15;
 }
 
-- (id)elementIdentifiersForPropertyName:(id)a3 rangeValue1:(id)a4 rangeValue2:(id)a5 comparator:(unint64_t)a6 valueTable:(const void *)a7 rowCount:(unint64_t)a8 error:(id *)a9
+- (id)elementIdentifiersForPropertyName:(id)name rangeValue1:(id)value1 rangeValue2:(id)value2 comparator:(unint64_t)comparator valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = [(KGDatabase *)self attributeIdentifierForPropertyName:v15 error:a9];
+  nameCopy = name;
+  value1Copy = value1;
+  value2Copy = value2;
+  v18 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
   if (!v18)
   {
     v20 = objc_alloc_init(KGElementIdentifierSet);
@@ -3163,32 +3163,32 @@ LABEL_18:
 
   v40 = 0u;
   memset(v41, 0, 25);
-  v19 = [v16 kgPropertyType];
-  if (v19 == [v17 kgPropertyType])
+  kgPropertyType = [value1Copy kgPropertyType];
+  if (kgPropertyType == [value2Copy kgPropertyType])
   {
-    if (a6 >= 9)
+    if (comparator >= 9)
     {
-      LODWORD(a6) = 1;
+      LODWORD(comparator) = 1;
     }
 
-    v39[0] = a7;
-    v39[1] = a8;
-    if (v19 <= 1)
+    v39[0] = table;
+    v39[1] = count;
+    if (kgPropertyType <= 1)
     {
-      if (!v19)
+      if (!kgPropertyType)
       {
         v34 = KGLoggingConnection();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          *&buf[4] = v16;
+          *&buf[4] = value1Copy;
           _os_log_error_impl(&dword_255870000, v34, OS_LOG_TYPE_ERROR, "unable to interpret value <%@> as valid property value", buf, 0xCu);
         }
 
         goto LABEL_33;
       }
 
-      if (v19 != 1)
+      if (kgPropertyType != 1)
       {
         goto LABEL_33;
       }
@@ -3196,24 +3196,24 @@ LABEL_18:
 
     else
     {
-      if (v19 == 2)
+      if (kgPropertyType == 2)
       {
-        v23 = v16;
-        v24 = v17;
+        v23 = value1Copy;
+        v24 = value2Copy;
         [v23 doubleValue];
         v26 = v25;
         [v24 doubleValue];
-        v22 = degas::AttributeQuery::elementsForAttributeValueRange(v39, v18, a6, &v40, v26, v27);
+        v22 = degas::AttributeQuery::elementsForAttributeValueRange(v39, v18, comparator, &v40, v26, v27);
         goto LABEL_19;
       }
 
-      if (v19 == 3)
+      if (kgPropertyType == 3)
       {
-        v32 = v16;
-        v33 = v17;
+        v32 = value1Copy;
+        v33 = value2Copy;
         stringNSToStd(buf, v32);
         stringNSToStd(__p, v33);
-        v28 = degas::AttributeQuery::elementsForAttributeValueRange(v39, v18, buf, __p, a6, &v40);
+        v28 = degas::AttributeQuery::elementsForAttributeValueRange(v39, v18, buf, __p, comparator, &v40);
         if (v38 < 0)
         {
           operator delete(__p[0]);
@@ -3237,7 +3237,7 @@ LABEL_34:
             goto LABEL_39;
           }
 
-          if (a9)
+          if (error)
           {
             if (v29 > 9)
             {
@@ -3263,13 +3263,13 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if (v19 != 4)
+      if (kgPropertyType != 4)
       {
         goto LABEL_33;
       }
     }
 
-    v22 = degas::AttributeQuery::elementsForAttributeValueRange(v39, v18, [v16 longLongValue], objc_msgSend(v17, "longLongValue"), a6, &v40);
+    v22 = degas::AttributeQuery::elementsForAttributeValueRange(v39, v18, [value1Copy longLongValue], objc_msgSend(value2Copy, "longLongValue"), comparator, &v40);
 LABEL_19:
     v28 = v22;
     goto LABEL_20;
@@ -3279,13 +3279,13 @@ LABEL_19:
   {
     *buf = 0;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "selecting in a range with mismatched types", buf, 2u);
-    if (!a9)
+    if (!error)
     {
       goto LABEL_38;
     }
   }
 
-  else if (!a9)
+  else if (!error)
   {
     goto LABEL_38;
   }
@@ -3293,7 +3293,7 @@ LABEL_19:
   v21 = kg_errorWithCode(5004);
 LABEL_14:
   v20 = 0;
-  *a9 = v21;
+  *error = v21;
 LABEL_39:
   *buf = v41;
   std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](buf);
@@ -3304,28 +3304,28 @@ LABEL_40:
   return v20;
 }
 
-- (id)tombstoneNodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6
+- (id)tombstoneNodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error
 {
-  v6 = [(KGDatabase *)self elementIdentifiersForPropertyName:a3 value:a4 comparator:a5 valueTable:self->_database + 1032 rowCount:0 error:a6];
+  v6 = [(KGDatabase *)self elementIdentifiersForPropertyName:name value:value comparator:comparator valueTable:self->_database + 1032 rowCount:0 error:error];
 
   return v6;
 }
 
-- (id)nodeIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 error:(id *)a6
+- (id)nodeIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(KGDatabase *)self elementIdentifiersForPropertyName:v10 value:v11 comparator:a5 valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:a6];
+  nameCopy = name;
+  valueCopy = value;
+  v12 = [(KGDatabase *)self elementIdentifiersForPropertyName:nameCopy value:valueCopy comparator:comparator valueTable:self->_database + 472 rowCount:degas::Database::nodeCount(self->_database) error:error];
 
   return v12;
 }
 
-- (id)elementIdentifiersForPropertyName:(id)a3 value:(id)a4 comparator:(unint64_t)a5 valueTable:(const void *)a6 rowCount:(unint64_t)a7 error:(id *)a8
+- (id)elementIdentifiersForPropertyName:(id)name value:(id)value comparator:(unint64_t)comparator valueTable:(const void *)table rowCount:(unint64_t)count error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = [(KGDatabase *)self attributeIdentifierForPropertyName:v14 error:a8];
+  nameCopy = name;
+  valueCopy = value;
+  v16 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:error];
   if (!v16)
   {
     v19 = objc_alloc_init(KGElementIdentifierSet);
@@ -3334,30 +3334,30 @@ LABEL_40:
 
   v30 = 0u;
   memset(v31, 0, 25);
-  v17 = [v15 kgPropertyType];
-  if (a5 >= 9)
+  kgPropertyType = [valueCopy kgPropertyType];
+  if (comparator >= 9)
   {
-    LODWORD(a5) = 1;
+    LODWORD(comparator) = 1;
   }
 
-  v28 = a6;
-  v29 = a7;
-  if (v17 <= 1)
+  tableCopy = table;
+  countCopy = count;
+  if (kgPropertyType <= 1)
   {
-    if (!v17)
+    if (!kgPropertyType)
     {
       v25 = KGLoggingConnection();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *__p = 138412290;
-        *&__p[4] = v15;
+        *&__p[4] = valueCopy;
         _os_log_error_impl(&dword_255870000, v25, OS_LOG_TYPE_ERROR, "unable to interpret value <%@> as valid property value", __p, 0xCu);
       }
 
       goto LABEL_26;
     }
 
-    if (v17 == 1)
+    if (kgPropertyType == 1)
     {
       goto LABEL_8;
     }
@@ -3365,19 +3365,19 @@ LABEL_40:
     goto LABEL_26;
   }
 
-  if (v17 == 2)
+  if (kgPropertyType == 2)
   {
-    [v15 doubleValue];
-    v18 = degas::AttributeQuery::elementsForAttributeValue(&v28, v16, a5, &v30, v20);
+    [valueCopy doubleValue];
+    v18 = degas::AttributeQuery::elementsForAttributeValue(&tableCopy, v16, comparator, &v30, v20);
     goto LABEL_14;
   }
 
-  if (v17 != 3)
+  if (kgPropertyType != 3)
   {
-    if (v17 == 4)
+    if (kgPropertyType == 4)
     {
 LABEL_8:
-      v18 = degas::AttributeQuery::elementsForAttributeValue(&v28, v16, [v15 longLongValue], a5, &v30);
+      v18 = degas::AttributeQuery::elementsForAttributeValue(&tableCopy, v16, [valueCopy longLongValue], comparator, &v30);
 LABEL_14:
       v21 = v18;
       goto LABEL_15;
@@ -3388,8 +3388,8 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  stringNSToStd(__p, v15);
-  v21 = degas::AttributeQuery::elementsForAttributeValue(&v28, v16, __p, a5, &v30);
+  stringNSToStd(__p, valueCopy);
+  v21 = degas::AttributeQuery::elementsForAttributeValue(&tableCopy, v16, __p, comparator, &v30);
   if (v33 < 0)
   {
     operator delete(*__p);
@@ -3405,7 +3405,7 @@ LABEL_15:
 
   if (v21)
   {
-    if (a8)
+    if (error)
     {
       if (v22 > 9)
       {
@@ -3418,7 +3418,7 @@ LABEL_15:
       }
 
       kg_errorWithCode(v24);
-      *a8 = v19 = 0;
+      *error = v19 = 0;
     }
 
     else
@@ -3442,12 +3442,12 @@ LABEL_29:
   return v19;
 }
 
-- (BOOL)removeEdges:(id)a3 error:(id *)a4
+- (BOOL)removeEdges:(id)edges error:(id *)error
 {
-  v6 = a3;
-  v7 = degas::Database::removeEdges(self->_database, [v6 bitmap]);
+  edgesCopy = edges;
+  v7 = degas::Database::removeEdges(self->_database, [edgesCopy bitmap]);
   v8 = v7;
-  if (a4 && v7)
+  if (error && v7)
   {
     if ((v7 - 2) > 9)
     {
@@ -3459,18 +3459,18 @@ LABEL_29:
       v9 = qword_255972CE0[v7 - 2];
     }
 
-    *a4 = kg_errorWithCode(v9);
+    *error = kg_errorWithCode(v9);
   }
 
   return v8 == 0;
 }
 
-- (BOOL)removeNodes:(id)a3 error:(id *)a4
+- (BOOL)removeNodes:(id)nodes error:(id *)error
 {
-  v6 = a3;
-  v7 = degas::Database::removeNodes(self->_database, [v6 bitmap]);
+  nodesCopy = nodes;
+  v7 = degas::Database::removeNodes(self->_database, [nodesCopy bitmap]);
   v8 = v7;
-  if (a4 && v7)
+  if (error && v7)
   {
     if ((v7 - 2) > 9)
     {
@@ -3482,17 +3482,17 @@ LABEL_29:
       v9 = qword_255972CE0[v7 - 2];
     }
 
-    *a4 = kg_errorWithCode(v9);
+    *error = kg_errorWithCode(v9);
   }
 
   return v8 == 0;
 }
 
-- (BOOL)removeEdge:(unint64_t)a3 error:(id *)a4
+- (BOOL)removeEdge:(unint64_t)edge error:(id *)error
 {
-  v5 = degas::Database::removeEdge(self->_database, a3, 0);
+  v5 = degas::Database::removeEdge(self->_database, edge, 0);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
     if ((v5 - 2) > 9)
     {
@@ -3504,17 +3504,17 @@ LABEL_29:
       v7 = qword_255972CE0[v5 - 2];
     }
 
-    *a4 = kg_errorWithCode(v7);
+    *error = kg_errorWithCode(v7);
   }
 
   return v6 == 0;
 }
 
-- (BOOL)removeNode:(unint64_t)a3 error:(id *)a4
+- (BOOL)removeNode:(unint64_t)node error:(id *)error
 {
-  v5 = degas::Database::removeNode(self->_database, a3);
+  v5 = degas::Database::removeNode(self->_database, node);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
     if ((v5 - 2) > 9)
     {
@@ -3526,20 +3526,20 @@ LABEL_29:
       v7 = qword_255972CE0[v5 - 2];
     }
 
-    *a4 = kg_errorWithCode(v7);
+    *error = kg_errorWithCode(v7);
   }
 
   return v6 == 0;
 }
 
-- (unint64_t)addEdgeWithLabels:(id)a3 properties:(id)a4 sourceNodeIdentifier:(unint64_t)a5 targetNodeIdentifier:(unint64_t)a6 error:(id *)a7
+- (unint64_t)addEdgeWithLabels:(id)labels properties:(id)properties sourceNodeIdentifier:(unint64_t)identifier targetNodeIdentifier:(unint64_t)nodeIdentifier error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  labelsCopy = labels;
+  propertiesCopy = properties;
   memset(v33, 0, 25);
   v32 = 0u;
-  if (![v12 count])
+  if (![labelsCopy count])
   {
     v15 = 0;
     v14 = 0;
@@ -3555,8 +3555,8 @@ LABEL_5:
     memset(v28, 0, sizeof(v28));
     std::vector<degas::BitsetPtr>::__init_with_size[abi:ne200100]<degas::BitsetPtr*,degas::BitsetPtr*>(v28 + 8, *(&v24 + 1), v25, (v25 - *(&v24 + 1)) >> 4);
     v29 = v26;
-    v30 = a5;
-    v31 = a6;
+    identifierCopy = identifier;
+    nodeIdentifierCopy = nodeIdentifier;
     *buf = &v24 + 8;
     std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](buf);
     inserted = degas::Database::insertEdge(self->_database, v27);
@@ -3570,7 +3570,7 @@ LABEL_5:
         _os_log_error_impl(&dword_255870000, v18, OS_LOG_TYPE_ERROR, "Error adding edge for identifier %llu", buf, 0xCu);
       }
 
-      if (a7)
+      if (error)
       {
         if ((inserted - 2) > 9)
         {
@@ -3582,11 +3582,11 @@ LABEL_5:
           v19 = qword_255972CE0[inserted - 2];
         }
 
-        *a7 = kg_errorWithCode(v19);
+        *error = kg_errorWithCode(v19);
       }
     }
 
-    else if (!v13 || [(KGDatabase *)self setEdgeProperties:v13 forIdentifier:v27[0] error:a7])
+    else if (!propertiesCopy || [(KGDatabase *)self setEdgeProperties:propertiesCopy forIdentifier:v27[0] error:error])
     {
       v20 = v27[0];
 LABEL_18:
@@ -3599,7 +3599,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  [(KGDatabase *)self upsertLabels:v12 error:a7];
+  [(KGDatabase *)self upsertLabels:labelsCopy error:error];
   degas::Bitmap::operator=(&v32, v27);
   *buf = v28;
   std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](buf);
@@ -3620,7 +3620,7 @@ LABEL_19:
   return v20;
 }
 
-- (BOOL)addEdges:(id)a3 error:(id *)a4
+- (BOOL)addEdges:(id)edges error:(id *)error
 {
   v84 = *MEMORY[0x277D85DE8];
   v69 = 0;
@@ -3629,7 +3629,7 @@ LABEL_19:
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = a3;
+  obj = edges;
   v4 = [obj countByEnumeratingWithState:&v65 objects:v83 count:16];
   if (v4)
   {
@@ -3646,8 +3646,8 @@ LABEL_19:
         v6 = *(*(&v65 + 1) + 8 * i);
         v63 = 0u;
         memset(v64, 0, 25);
-        v7 = [v6 labels];
-        v8 = [v7 count] == 0;
+        labels = [v6 labels];
+        v8 = [labels count] == 0;
 
         if (v8)
         {
@@ -3657,8 +3657,8 @@ LABEL_19:
 
         else
         {
-          v9 = [v6 labels];
-          [(KGDatabase *)self upsertLabels:v9 error:a4];
+          labels2 = [v6 labels];
+          [(KGDatabase *)self upsertLabels:labels2 error:error];
           degas::Bitmap::operator=(&v63, buf);
           v71 = &v59;
           std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](&v71);
@@ -3679,18 +3679,18 @@ LABEL_19:
         v56 = 0u;
         std::vector<degas::BitsetPtr>::__init_with_size[abi:ne200100]<degas::BitsetPtr*,degas::BitsetPtr*>(&v55 + 8, v10, v11, (v11 - v10) >> 4);
         v57 = BYTE8(v64[1]);
-        v12 = [v6 sourceNode];
-        v13 = [v12 identifier];
-        v14 = [v6 targetNode];
-        v15 = [v14 identifier];
+        sourceNode = [v6 sourceNode];
+        identifier = [sourceNode identifier];
+        targetNode = [v6 targetNode];
+        identifier2 = [targetNode identifier];
         *buf = 0;
         *&buf[8] = v54;
         v59 = 0u;
         v60 = 0u;
         std::vector<degas::BitsetPtr>::__init_with_size[abi:ne200100]<degas::BitsetPtr*,degas::BitsetPtr*>(&v59 + 8, *(&v55 + 1), v56, (v56 - *(&v55 + 1)) >> 4);
         v61 = v57;
-        *&v62 = v13;
-        *(&v62 + 1) = v15;
+        *&v62 = identifier;
+        *(&v62 + 1) = identifier2;
 
         v71 = &v55 + 1;
         std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](&v71);
@@ -3825,7 +3825,7 @@ LABEL_19:
       _os_log_error_impl(&dword_255870000, v30, OS_LOG_TYPE_ERROR, "Error adding edges", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       if ((inserted - 2) > 9)
       {
@@ -3838,7 +3838,7 @@ LABEL_19:
       }
 
       kg_errorWithCode(v31);
-      *a4 = v32 = 0;
+      *error = v32 = 0;
     }
 
     else
@@ -3874,11 +3874,11 @@ LABEL_34:
           v41 = *(*(&v50 + 1) + 8 * v39);
           v42 = v69[v40];
           [v41 resolveIdentifier:v42];
-          v43 = [v41 properties];
-          v44 = [v43 mutableCopy];
+          properties = [v41 properties];
+          v44 = [properties mutableCopy];
 
           [v44 setObject:0 forKeyedSubscript:@"__weight"];
-          LOBYTE(v42) = [(KGDatabase *)self setEdgeProperties:v44 forIdentifier:v42 error:a4];
+          LOBYTE(v42) = [(KGDatabase *)self setEdgeProperties:v44 forIdentifier:v42 error:error];
 
           if ((v42 & 1) == 0)
           {
@@ -3913,9 +3913,9 @@ LABEL_46:
   return v32;
 }
 
-- (BOOL)setEdgeProperties:(id)a3 forIdentifier:(unint64_t)a4 error:(id *)a5
+- (BOOL)setEdgeProperties:(id)properties forIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v8 = a3;
+  propertiesCopy = properties;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x6012000000;
@@ -3934,7 +3934,7 @@ LABEL_46:
   v19 = __Block_byref_object_copy__123;
   v20 = __Block_byref_object_dispose__124;
   v21 = 0;
-  v9 = (*(*(self->_database + 52) + 24))(self->_database + 416, a4);
+  v9 = (*(*(self->_database + 52) + 24))(self->_database + 416, identifier);
   *(v23 + 6) = v9;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -3944,10 +3944,10 @@ LABEL_46:
   v15[5] = &v16;
   v15[6] = &v22;
   v15[7] = v26;
-  v15[8] = a4;
-  [v8 enumerateKeysAndObjectsUsingBlock:v15];
+  v15[8] = identifier;
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v15];
   v10 = *(v23 + 6);
-  if (a5 && v10)
+  if (error && v10)
   {
     v11 = v17[5];
     if (v11)
@@ -3970,7 +3970,7 @@ LABEL_46:
       v12 = kg_errorWithCode(v13);
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   _Block_object_dispose(&v16, 8);
@@ -4060,16 +4060,16 @@ LABEL_16:
 LABEL_18:
 }
 
-- (unint64_t)addNodeWithLabels:(id)a3 properties:(id)a4 error:(id *)a5
+- (unint64_t)addNodeWithLabels:(id)labels properties:(id)properties error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  labelsCopy = labels;
+  propertiesCopy = properties;
   v26 = 0u;
   memset(v27, 0, 25);
-  if ([v8 count])
+  if ([labelsCopy count])
   {
-    [(KGDatabase *)self upsertLabels:v8 error:a5];
+    [(KGDatabase *)self upsertLabels:labelsCopy error:error];
     degas::Bitmap::operator=(&v26, v23);
     *buf = v24;
     std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](buf);
@@ -4114,7 +4114,7 @@ LABEL_18:
       _os_log_error_impl(&dword_255870000, v14, OS_LOG_TYPE_ERROR, "Error adding node for identifier %llu", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       if ((inserted - 2) > 9)
       {
@@ -4126,13 +4126,13 @@ LABEL_18:
         v15 = qword_255972CE0[inserted - 2];
       }
 
-      *a5 = kg_errorWithCode(v15);
+      *error = kg_errorWithCode(v15);
     }
 
     v16 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  else if ([(KGDatabase *)self setNodeProperties:v9 forIdentifier:v23[0] error:a5])
+  else if ([(KGDatabase *)self setNodeProperties:propertiesCopy forIdentifier:v23[0] error:error])
   {
     v16 = v23[0];
   }
@@ -4152,7 +4152,7 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)addNodes:(id)a3 error:(id *)a4
+- (BOOL)addNodes:(id)nodes error:(id *)error
 {
   v80 = *MEMORY[0x277D85DE8];
   v65 = 0;
@@ -4161,7 +4161,7 @@ LABEL_19:
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = a3;
+  obj = nodes;
   v4 = [obj countByEnumeratingWithState:&v61 objects:v79 count:16];
   if (v4)
   {
@@ -4180,8 +4180,8 @@ LABEL_19:
         v7 = *(*(&v61 + 1) + 8 * i);
         v59 = 0u;
         memset(v60, 0, 25);
-        v8 = [v7 labels];
-        v9 = [v8 count] == 0;
+        labels = [v7 labels];
+        v9 = [labels count] == 0;
 
         if (v9)
         {
@@ -4191,8 +4191,8 @@ LABEL_19:
 
         else
         {
-          v10 = [v7 labels];
-          [(KGDatabase *)self upsertLabels:v10 error:a4];
+          labels2 = [v7 labels];
+          [(KGDatabase *)self upsertLabels:labels2 error:error];
           degas::Bitmap::operator=(&v59, buf);
           v67 = &v56;
           std::vector<degas::BitsetPtr>::__destroy_vector::operator()[abi:ne200100](&v67);
@@ -4350,7 +4350,7 @@ LABEL_19:
       _os_log_error_impl(&dword_255870000, v27, OS_LOG_TYPE_ERROR, "Error adding nodes", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       if ((inserted - 2) > 9)
       {
@@ -4363,7 +4363,7 @@ LABEL_19:
       }
 
       kg_errorWithCode(v28);
-      *a4 = v29 = 0;
+      *error = v29 = 0;
     }
 
     else
@@ -4399,8 +4399,8 @@ LABEL_34:
           v38 = *(*(&v47 + 1) + 8 * v36);
           v39 = v65[v37];
           [v38 resolveIdentifier:v39];
-          v40 = [v38 properties];
-          LOBYTE(v39) = [(KGDatabase *)self setNodeProperties:v40 forIdentifier:v39 error:a4];
+          properties = [v38 properties];
+          LOBYTE(v39) = [(KGDatabase *)self setNodeProperties:properties forIdentifier:v39 error:error];
 
           if ((v39 & 1) == 0)
           {
@@ -4435,9 +4435,9 @@ LABEL_46:
   return v29;
 }
 
-- (BOOL)setNodeProperties:(id)a3 forIdentifier:(unint64_t)a4 error:(id *)a5
+- (BOOL)setNodeProperties:(id)properties forIdentifier:(unint64_t)identifier error:(id *)error
 {
-  v8 = a3;
+  propertiesCopy = properties;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x6012000000;
@@ -4456,7 +4456,7 @@ LABEL_46:
   v18 = __Block_byref_object_copy__123;
   v19 = __Block_byref_object_dispose__124;
   v20 = 0;
-  (*(*(self->_database + 45) + 24))(self->_database + 360, a4);
+  (*(*(self->_database + 45) + 24))(self->_database + 360, identifier);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__KGDatabase_setNodeProperties_forIdentifier_error___block_invoke;
@@ -4465,10 +4465,10 @@ LABEL_46:
   v14[5] = &v21;
   v14[6] = &v15;
   v14[7] = v25;
-  v14[8] = a4;
-  [v8 enumerateKeysAndObjectsUsingBlock:v14];
+  v14[8] = identifier;
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v14];
   v9 = *(v22 + 6);
-  if (a5 && v9)
+  if (error && v9)
   {
     v10 = v16[5];
     if (v10)
@@ -4491,7 +4491,7 @@ LABEL_46:
       v11 = kg_errorWithCode(v12);
     }
 
-    *a5 = v11;
+    *error = v11;
   }
 
   _Block_object_dispose(&v15, 8);
@@ -4581,13 +4581,13 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)_enumeratePropertiesWithCursor:(void *)a3 withBlock:(id)a4
+- (void)_enumeratePropertiesWithCursor:(void *)cursor withBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v18 = 0;
-  while (degas::Statement::next(*a3) == 1)
+  while (degas::Statement::next(*cursor) == 1)
   {
-    v6 = sqlite3_column_int64(**a3, 5);
+    v6 = sqlite3_column_int64(**cursor, 5);
     if (v6 > 2)
     {
       if (v6 == 3)
@@ -4595,7 +4595,7 @@ LABEL_18:
         __p[0] = 0;
         __p[1] = 0;
         v17 = 0;
-        degas::Statement::stringColumnValue(*a3, 4, __p);
+        degas::Statement::stringColumnValue(*cursor, 4, __p);
         v11 = objc_alloc(MEMORY[0x277CCACA8]);
         if (v17 >= 0)
         {
@@ -4609,8 +4609,8 @@ LABEL_18:
 
         v13 = [v11 initWithUTF8String:v12];
         v14 = [[KGStringPropertyValue alloc] initWithValue:v13];
-        v15 = sqlite3_column_int64(**a3, 0);
-        v5[2](v5, v15, v14, &v18);
+        v15 = sqlite3_column_int64(**cursor, 0);
+        blockCopy[2](blockCopy, v15, v14, &v18);
 
         if (SHIBYTE(v17) < 0)
         {
@@ -4622,9 +4622,9 @@ LABEL_18:
 
       if (v6 == 4)
       {
-        v7 = [[KGUInt64PropertyValue alloc] initWithValue:sqlite3_column_int64(**a3, 2)];
-        v9 = sqlite3_column_int64(**a3, 0);
-        v5[2](v5, v9, v7, &v18);
+        v7 = [[KGUInt64PropertyValue alloc] initWithValue:sqlite3_column_int64(**cursor, 2)];
+        v9 = sqlite3_column_int64(**cursor, 0);
+        blockCopy[2](blockCopy, v9, v7, &v18);
         goto LABEL_11;
       }
     }
@@ -4633,17 +4633,17 @@ LABEL_18:
     {
       if (v6 == 1)
       {
-        v7 = [[KGInt64PropertyValue alloc] initWithValue:sqlite3_column_int64(**a3, 2)];
-        v10 = sqlite3_column_int64(**a3, 0);
-        v5[2](v5, v10, v7, &v18);
+        v7 = [[KGInt64PropertyValue alloc] initWithValue:sqlite3_column_int64(**cursor, 2)];
+        v10 = sqlite3_column_int64(**cursor, 0);
+        blockCopy[2](blockCopy, v10, v7, &v18);
         goto LABEL_11;
       }
 
       if (v6 == 2)
       {
-        v7 = [[KGDoublePropertyValue alloc] initWithValue:sqlite3_column_double(**a3, 3)];
-        v8 = sqlite3_column_int64(**a3, 0);
-        v5[2](v5, v8, v7, &v18);
+        v7 = [[KGDoublePropertyValue alloc] initWithValue:sqlite3_column_double(**cursor, 3)];
+        v8 = sqlite3_column_int64(**cursor, 0);
+        blockCopy[2](blockCopy, v8, v7, &v18);
 LABEL_11:
       }
     }
@@ -4656,20 +4656,20 @@ LABEL_12:
   }
 }
 
-- (void)_enumeratePropertiesForCursor:(void *)a3 block:(id)a4
+- (void)_enumeratePropertiesForCursor:(void *)cursor block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = 0;
   v8 = 0;
   v14 = 0;
-  while (degas::Statement::next(*a3) == 1)
+  while (degas::Statement::next(*cursor) == 1)
   {
-    v9 = sqlite3_column_int64(**a3, 0);
+    v9 = sqlite3_column_int64(**cursor, 0);
     if (v9 != v8)
     {
       if (v7)
       {
-        v6[2](v6, v8, v7, &v14);
+        blockCopy[2](blockCopy, v8, v7, &v14);
       }
 
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -4678,8 +4678,8 @@ LABEL_12:
       v8 = v9;
     }
 
-    v11 = sqlite3_column_int64(**a3, 1);
-    v12 = [(KGDatabase *)self propertyValueForCursor:a3];
+    v11 = sqlite3_column_int64(**cursor, 1);
+    v12 = [(KGDatabase *)self propertyValueForCursor:cursor];
     if (v12)
     {
       v13 = [(KGDatabase *)self propertyNameForAttrIdentifier:v11];
@@ -4692,13 +4692,13 @@ LABEL_12:
 
   if (v7)
   {
-    v6[2](v6, v8, v7, &v14);
+    blockCopy[2](blockCopy, v8, v7, &v14);
   }
 }
 
-- (id)propertyValueForCursor:(void *)a3
+- (id)propertyValueForCursor:(void *)cursor
 {
-  v4 = sqlite3_column_int64(**a3, 5);
+  v4 = sqlite3_column_int64(**cursor, 5);
   v5 = 0;
   if (v4 <= 1)
   {
@@ -4709,7 +4709,7 @@ LABEL_12:
         goto LABEL_20;
       }
 
-      v6 = sqlite3_column_int64(**a3, 2);
+      v6 = sqlite3_column_int64(**cursor, 2);
       v7 = KGInt64PropertyValue;
       goto LABEL_9;
     }
@@ -4728,7 +4728,7 @@ LABEL_12:
   {
     if (v4 == 2)
     {
-      v8 = [[KGDoublePropertyValue alloc] initWithValue:sqlite3_column_double(**a3, 3)];
+      v8 = [[KGDoublePropertyValue alloc] initWithValue:sqlite3_column_double(**cursor, 3)];
       goto LABEL_11;
     }
 
@@ -4739,7 +4739,7 @@ LABEL_12:
         goto LABEL_20;
       }
 
-      v6 = sqlite3_column_int64(**a3, 2);
+      v6 = sqlite3_column_int64(**cursor, 2);
       v7 = KGUInt64PropertyValue;
 LABEL_9:
       v8 = [[v7 alloc] initWithValue:v6];
@@ -4751,7 +4751,7 @@ LABEL_11:
     __p[0] = 0;
     __p[1] = 0;
     v15 = 0;
-    degas::Statement::stringColumnValue(*a3, 4, __p);
+    degas::Statement::stringColumnValue(*cursor, 4, __p);
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
     if (v15 >= 0)
     {
@@ -4777,9 +4777,9 @@ LABEL_20:
   return v5;
 }
 
-- (void)_enumerateEdgesWithEdgeCursor:(void *)a3 propertiesCursor:(void *)a4 block:(id)a5
+- (void)_enumerateEdgesWithEdgeCursor:(void *)cursor propertiesCursor:(void *)propertiesCursor block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4797,13 +4797,13 @@ LABEL_20:
   v12[2] = __67__KGDatabase__enumerateEdgesWithEdgeCursor_propertiesCursor_block___block_invoke;
   v12[3] = &unk_2797FE990;
   v12[4] = self;
-  v17 = a3;
-  v9 = v8;
+  cursorCopy = cursor;
+  v9 = blockCopy;
   v13 = v9;
   v14 = &v19;
   v15 = v18;
   v16 = &v23;
-  [(KGDatabase *)self _enumeratePropertiesForCursor:a4 block:v12];
+  [(KGDatabase *)self _enumeratePropertiesForCursor:propertiesCursor block:v12];
   if ((v20[3] & 1) == 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -4811,7 +4811,7 @@ LABEL_20:
     v10[2] = __67__KGDatabase__enumerateEdgesWithEdgeCursor_propertiesCursor_block___block_invoke_3;
     v10[3] = &unk_2797FEA08;
     v11 = v9;
-    [(KGDatabase *)self _enumerateEdgeTableWithEdgeCursor:a3 block:v10];
+    [(KGDatabase *)self _enumerateEdgeTableWithEdgeCursor:cursor block:v10];
   }
 
   objc_autoreleasePoolPop(v24[3]);
@@ -4873,9 +4873,9 @@ void __67__KGDatabase__enumerateEdgesWithEdgeCursor_propertiesCursor_block___blo
   *a6 = v11;
 }
 
-- (void)_enumerateNodesWithNodeCursor:(void *)a3 propertiesCursor:(void *)a4 block:(id)a5
+- (void)_enumerateNodesWithNodeCursor:(void *)cursor propertiesCursor:(void *)propertiesCursor block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -4893,13 +4893,13 @@ void __67__KGDatabase__enumerateEdgesWithEdgeCursor_propertiesCursor_block___blo
   v12[2] = __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___block_invoke;
   v12[3] = &unk_2797FE990;
   v12[4] = self;
-  v17 = a3;
-  v9 = v8;
+  cursorCopy = cursor;
+  v9 = blockCopy;
   v13 = v9;
   v14 = &v19;
   v15 = v18;
   v16 = &v23;
-  [(KGDatabase *)self _enumeratePropertiesForCursor:a4 block:v12];
+  [(KGDatabase *)self _enumeratePropertiesForCursor:propertiesCursor block:v12];
   if ((v20[3] & 1) == 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -4907,7 +4907,7 @@ void __67__KGDatabase__enumerateEdgesWithEdgeCursor_propertiesCursor_block___blo
     v10[2] = __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___block_invoke_3;
     v10[3] = &unk_2797FE9B8;
     v11 = v9;
-    [(KGDatabase *)self _enumerateNodeTableWithNodeCursor:a3 block:v10];
+    [(KGDatabase *)self _enumerateNodeTableWithNodeCursor:cursor block:v10];
   }
 
   objc_autoreleasePoolPop(v24[3]);
@@ -4969,22 +4969,22 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   *a4 = v9;
 }
 
-- (void)_enumerateEdgeTableWithEdgeCursor:(void *)a3 block:(id)a4
+- (void)_enumerateEdgeTableWithEdgeCursor:(void *)cursor block:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v25 = a4;
+  blockCopy = block;
   v33 = 0;
   do
   {
-    if (degas::Statement::next(*a3) != 1)
+    if (degas::Statement::next(*cursor) != 1)
     {
       break;
     }
 
-    v6 = sqlite3_column_int64(**a3, 0);
+    v6 = sqlite3_column_int64(**cursor, 0);
     v31 = 0u;
     memset(v32, 0, 25);
-    degas::Statement::bitmapColumnValue(*a3, 1, &v31);
+    degas::Statement::bitmapColumnValue(*cursor, 1, &v31);
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     degas::Bitmap::begin(&v31, &v28);
     v8 = v32[1];
@@ -5059,11 +5059,11 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
       degas::Bitmap::iterator::operator++(&v28);
     }
 
-    v16 = sqlite3_column_int64(**a3, 2);
-    v17 = sqlite3_column_int64(**a3, 3);
+    v16 = sqlite3_column_int64(**cursor, 2);
+    v17 = sqlite3_column_int64(**cursor, 3);
     if ([(KGDatabase *)self noFatalError])
     {
-      v25[2](v25, v6, v7, v16, v17, &v33);
+      blockCopy[2](blockCopy, v6, v7, v16, v17, &v33);
     }
 
     v18 = v33;
@@ -5077,22 +5077,22 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumeratePropertyValuesForEdgesWithIdentifiers:(id)a3 propertyName:(id)a4 withBlock:(id)a5
+- (void)enumeratePropertyValuesForEdgesWithIdentifiers:(id)identifiers propertyName:(id)name withBlock:(id)block
 {
-  v8 = a5;
-  [(KGDatabase *)self edgeAttributeValueCursorWithIdentifiers:a3 propertyName:a4];
-  [(KGDatabase *)self _enumeratePropertiesWithCursor:v9 withBlock:v8];
+  blockCopy = block;
+  [(KGDatabase *)self edgeAttributeValueCursorWithIdentifiers:identifiers propertyName:name];
+  [(KGDatabase *)self _enumeratePropertiesWithCursor:v9 withBlock:blockCopy];
   degas::Cursor::~Cursor(v9);
 }
 
-- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)a3 propertyName:(id)a4
+- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)identifiers propertyName:(id)name
 {
   v7 = v4;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  nameCopy = name;
   v19 = 0;
-  v10 = [(KGDatabase *)self attributeIdentifierForPropertyName:v9 error:&v19];
+  v10 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:&v19];
   v11 = v19;
   v12 = v11;
   if (!v10 && v11)
@@ -5101,14 +5101,14 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v9;
+      v21 = nameCopy;
       v22 = 2112;
       v23 = v12;
       _os_log_error_impl(&dword_255870000, v13, OS_LOG_TYPE_ERROR, "error looking up attribute by property name %@, error=%@", buf, 0x16u);
     }
   }
 
-  v14 = degas::AttributeValueTable::prepareStatementToReadByBitmapAndAttrIdIdentifier((self->_database + 416), [v8 bitmap], v10);
+  v14 = degas::AttributeValueTable::prepareStatementToReadByBitmapAndAttrIdIdentifier((self->_database + 416), [identifiersCopy bitmap], v10);
   v15 = v14[1];
   *v7 = *v14;
   v7[1] = v15;
@@ -5123,14 +5123,14 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (AttributeValueCursor)tombstoneEdgeAttributeValueCursorWithIdentifiers:(id)a3
+- (AttributeValueCursor)tombstoneEdgeAttributeValueCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  identifiersCopy = identifiers;
+  v11 = identifiersCopy;
+  if (identifiersCopy)
   {
-    if ([v6 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
       degas::AttributeValueCursor::AttributeValueCursor(v5, [v11 firstElement], (self->_database + 976));
     }
@@ -5158,14 +5158,14 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)a3
+- (AttributeValueCursor)edgeAttributeValueCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  identifiersCopy = identifiers;
+  v11 = identifiersCopy;
+  if (identifiersCopy)
   {
-    if ([v6 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
       degas::AttributeValueCursor::AttributeValueCursor(v5, [v11 firstElement], (self->_database + 416));
     }
@@ -5193,21 +5193,21 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (EdgeCursor)tombstoneEdgeCursorWithIdentifiers:(id)a3
+- (EdgeCursor)tombstoneEdgeCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v8 = a3;
+  identifiersCopy = identifiers;
   degas::EdgeCursor::EdgeCursor(v5);
-  if (v8)
+  if (identifiersCopy)
   {
-    if ([v8 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
-      degas::EdgeCursor::setForIdentifier(v5, [v8 firstElement], (self->_database + 864));
+      degas::EdgeCursor::setForIdentifier(v5, [identifiersCopy firstElement], (self->_database + 864));
     }
 
     else
     {
-      degas::EdgeCursor::setForIdentifiers(v5, [v8 bitmap], (self->_database + 864));
+      degas::EdgeCursor::setForIdentifiers(v5, [identifiersCopy bitmap], (self->_database + 864));
     }
   }
 
@@ -5221,21 +5221,21 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (EdgeCursor)edgeCursorWithIdentifiers:(id)a3
+- (EdgeCursor)edgeCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v8 = a3;
+  identifiersCopy = identifiers;
   degas::EdgeCursor::EdgeCursor(v5);
-  if (v8)
+  if (identifiersCopy)
   {
-    if ([v8 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
-      degas::EdgeCursor::setForIdentifier(v5, [v8 firstElement], (self->_database + 248));
+      degas::EdgeCursor::setForIdentifier(v5, [identifiersCopy firstElement], (self->_database + 248));
     }
 
     else
     {
-      degas::EdgeCursor::setForIdentifiers(v5, [v8 bitmap], (self->_database + 248));
+      degas::EdgeCursor::setForIdentifiers(v5, [identifiersCopy bitmap], (self->_database + 248));
     }
   }
 
@@ -5249,24 +5249,24 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (void)_enumerateNodeTableWithNodeCursor:(void *)a3 block:(id)a4
+- (void)_enumerateNodeTableWithNodeCursor:(void *)cursor block:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v25 = a4;
+  blockCopy = block;
   v33 = 0;
   *&v6 = 134219522;
   v24 = v6;
   do
   {
-    if (degas::Statement::next(*a3) != 1)
+    if (degas::Statement::next(*cursor) != 1)
     {
       break;
     }
 
-    v7 = sqlite3_column_int64(**a3, 0);
+    v7 = sqlite3_column_int64(**cursor, 0);
     v31 = 0u;
     memset(v32, 0, 25);
-    degas::Statement::bitmapColumnValue(*a3, 1, &v31);
+    degas::Statement::bitmapColumnValue(*cursor, 1, &v31);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     degas::Bitmap::begin(&v31, &v28);
     v9 = v32[1];
@@ -5343,7 +5343,7 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
 
     if ([(KGDatabase *)self noFatalError])
     {
-      v25[2](v25, v7, v8, &v33);
+      blockCopy[2](blockCopy, v7, v8, &v33);
     }
 
     v17 = v33;
@@ -5357,22 +5357,22 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumeratePropertyValuesForNodesWithIdentifiers:(id)a3 propertyName:(id)a4 withBlock:(id)a5
+- (void)enumeratePropertyValuesForNodesWithIdentifiers:(id)identifiers propertyName:(id)name withBlock:(id)block
 {
-  v8 = a5;
-  [(KGDatabase *)self nodeAttributeValueCursorWithIdentifiers:a3 propertyName:a4];
-  [(KGDatabase *)self _enumeratePropertiesWithCursor:v9 withBlock:v8];
+  blockCopy = block;
+  [(KGDatabase *)self nodeAttributeValueCursorWithIdentifiers:identifiers propertyName:name];
+  [(KGDatabase *)self _enumeratePropertiesWithCursor:v9 withBlock:blockCopy];
   degas::Cursor::~Cursor(v9);
 }
 
-- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)a3 propertyName:(id)a4
+- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)identifiers propertyName:(id)name
 {
   v7 = v4;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  nameCopy = name;
   v19 = 0;
-  v10 = [(KGDatabase *)self attributeIdentifierForPropertyName:v9 error:&v19];
+  v10 = [(KGDatabase *)self attributeIdentifierForPropertyName:nameCopy error:&v19];
   v11 = v19;
   v12 = v11;
   if (!v10 && v11)
@@ -5381,14 +5381,14 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v9;
+      v21 = nameCopy;
       v22 = 2112;
       v23 = v12;
       _os_log_error_impl(&dword_255870000, v13, OS_LOG_TYPE_ERROR, "error looking up attribute by property name %@, error=%@", buf, 0x16u);
     }
   }
 
-  v14 = degas::AttributeValueTable::prepareStatementToReadByBitmapAndAttrIdIdentifier((self->_database + 360), [v8 bitmap], v10);
+  v14 = degas::AttributeValueTable::prepareStatementToReadByBitmapAndAttrIdIdentifier((self->_database + 360), [identifiersCopy bitmap], v10);
   v15 = v14[1];
   *v7 = *v14;
   v7[1] = v15;
@@ -5403,14 +5403,14 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (AttributeValueCursor)tombstoneNodeAttributeValueCursorWithIdentifiers:(id)a3
+- (AttributeValueCursor)tombstoneNodeAttributeValueCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  identifiersCopy = identifiers;
+  v11 = identifiersCopy;
+  if (identifiersCopy)
   {
-    if ([v6 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
       degas::AttributeValueCursor::AttributeValueCursor(v5, [v11 firstElement], (self->_database + 920));
     }
@@ -5438,14 +5438,14 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)a3
+- (AttributeValueCursor)nodeAttributeValueCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  identifiersCopy = identifiers;
+  v11 = identifiersCopy;
+  if (identifiersCopy)
   {
-    if ([v6 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
       degas::AttributeValueCursor::AttributeValueCursor(v5, [v11 firstElement], (self->_database + 360));
     }
@@ -5473,21 +5473,21 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (NodeCursor)tombstoneNodeCursorWithIdentifiers:(id)a3
+- (NodeCursor)tombstoneNodeCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v8 = a3;
+  identifiersCopy = identifiers;
   degas::NodeCursor::NodeCursor(v5);
-  if (v8)
+  if (identifiersCopy)
   {
-    if ([v8 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
-      degas::NodeCursor::setForIdentifier(v5, [v8 firstElement], (self->_database + 808));
+      degas::NodeCursor::setForIdentifier(v5, [identifiersCopy firstElement], (self->_database + 808));
     }
 
     else
     {
-      degas::NodeCursor::setForIdentifiers(v5, [v8 bitmap], (self->_database + 808));
+      degas::NodeCursor::setForIdentifiers(v5, [identifiersCopy bitmap], (self->_database + 808));
     }
   }
 
@@ -5501,21 +5501,21 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (NodeCursor)nodeCursorWithIdentifiers:(id)a3
+- (NodeCursor)nodeCursorWithIdentifiers:(id)identifiers
 {
   v5 = v3;
-  v8 = a3;
+  identifiersCopy = identifiers;
   degas::NodeCursor::NodeCursor(v5);
-  if (v8)
+  if (identifiersCopy)
   {
-    if ([v8 count] == 1)
+    if ([identifiersCopy count] == 1)
     {
-      degas::NodeCursor::setForIdentifier(v5, [v8 firstElement], (self->_database + 192));
+      degas::NodeCursor::setForIdentifier(v5, [identifiersCopy firstElement], (self->_database + 192));
     }
 
     else
     {
-      degas::NodeCursor::setForIdentifiers(v5, [v8 bitmap], (self->_database + 192));
+      degas::NodeCursor::setForIdentifiers(v5, [identifiersCopy bitmap], (self->_database + 192));
     }
   }
 
@@ -5529,10 +5529,10 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
   return result;
 }
 
-- (void)enumerateSourceAndTargetIdentifiersWithEdgeIdentifiers:(id)a3 block:(id)a4
+- (void)enumerateSourceAndTargetIdentifiersWithEdgeIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a4;
-  [(KGDatabase *)self edgeCursorWithIdentifiers:a3];
+  blockCopy = block;
+  [(KGDatabase *)self edgeCursorWithIdentifiers:identifiers];
   v10 = 0;
   do
   {
@@ -5544,68 +5544,68 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
     v7 = sqlite3_column_int64(*v11, 0);
     v8 = sqlite3_column_int64(*v11, 2);
     v9 = sqlite3_column_int64(*v11, 3);
-    v6[2](v6, v7, v8, v9, &v10);
+    blockCopy[2](blockCopy, v7, v8, v9, &v10);
   }
 
   while ((v10 & 1) == 0);
   degas::Cursor::~Cursor(&v11);
 }
 
-- (void)enumerateTombstoneEdgesWithIdentifiers:(id)a3 block:(id)a4
+- (void)enumerateTombstoneEdgesWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  [(KGDatabase *)self tombstoneEdgeCursorWithIdentifiers:v6];
-  [(KGDatabase *)self tombstoneEdgeAttributeValueCursorWithIdentifiers:v6];
-  [(KGDatabase *)self _enumerateEdgesWithEdgeCursor:v9 propertiesCursor:v8 block:v7];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  [(KGDatabase *)self tombstoneEdgeCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self tombstoneEdgeAttributeValueCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self _enumerateEdgesWithEdgeCursor:v9 propertiesCursor:v8 block:blockCopy];
   degas::Cursor::~Cursor(v8);
   degas::Cursor::~Cursor(v9);
 }
 
-- (void)enumerateTombstoneNodesWithIdentifiers:(id)a3 block:(id)a4
+- (void)enumerateTombstoneNodesWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  [(KGDatabase *)self tombstoneNodeCursorWithIdentifiers:v6];
-  [(KGDatabase *)self tombstoneNodeAttributeValueCursorWithIdentifiers:v6];
-  [(KGDatabase *)self _enumerateNodesWithNodeCursor:v9 propertiesCursor:v8 block:v7];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  [(KGDatabase *)self tombstoneNodeCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self tombstoneNodeAttributeValueCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self _enumerateNodesWithNodeCursor:v9 propertiesCursor:v8 block:blockCopy];
   degas::Cursor::~Cursor(v8);
   degas::Cursor::~Cursor(v9);
 }
 
-- (void)enumerateEdgesWithIdentifiers:(id)a3 block:(id)a4
+- (void)enumerateEdgesWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  [(KGDatabase *)self edgeCursorWithIdentifiers:v6];
-  [(KGDatabase *)self edgeAttributeValueCursorWithIdentifiers:v6];
-  [(KGDatabase *)self _enumerateEdgesWithEdgeCursor:v9 propertiesCursor:v8 block:v7];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  [(KGDatabase *)self edgeCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self edgeAttributeValueCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self _enumerateEdgesWithEdgeCursor:v9 propertiesCursor:v8 block:blockCopy];
   degas::Cursor::~Cursor(v8);
   degas::Cursor::~Cursor(v9);
 }
 
-- (void)enumerateNodesWithIdentifiers:(id)a3 block:(id)a4
+- (void)enumerateNodesWithIdentifiers:(id)identifiers block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  [(KGDatabase *)self nodeCursorWithIdentifiers:v6];
-  [(KGDatabase *)self nodeAttributeValueCursorWithIdentifiers:v6];
-  [(KGDatabase *)self _enumerateNodesWithNodeCursor:v9 propertiesCursor:v8 block:v7];
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  [(KGDatabase *)self nodeCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self nodeAttributeValueCursorWithIdentifiers:identifiersCopy];
+  [(KGDatabase *)self _enumerateNodesWithNodeCursor:v9 propertiesCursor:v8 block:blockCopy];
   degas::Cursor::~Cursor(v8);
   degas::Cursor::~Cursor(v9);
 }
 
-- (int)degasEdgeDirectionFromKG:(unint64_t)a3
+- (int)degasEdgeDirectionFromKG:(unint64_t)g
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 - 1 >= 3)
+  if (g - 1 >= 3)
   {
-    v4 = a3;
+    gCopy = g;
     v5 = KGLoggingConnection();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = v4;
+      v7[1] = gCopy;
       _os_log_error_impl(&dword_255870000, v5, OS_LOG_TYPE_ERROR, "invalid edge direction: %d", v7, 8u);
     }
 
@@ -5614,44 +5614,44 @@ void __67__KGDatabase__enumerateNodesWithNodeCursor_propertiesCursor_block___blo
 
   else
   {
-    result = 3 - a3;
+    result = 3 - g;
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)propertyNameForAttrIdentifier:(unint64_t)a3
+- (id)propertyNameForAttrIdentifier:(unint64_t)identifier
 {
   nameCache = self->_nameCache;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
   v6 = [(KGDatabaseNameCache *)nameCache propertyNameForIdentifier:v5 database:self];
 
   return v6;
 }
 
-- (unint64_t)attributeIdentifierForPropertyName:(id)a3 error:(id *)a4
+- (unint64_t)attributeIdentifierForPropertyName:(id)name error:(id *)error
 {
-  v4 = [(KGDatabaseNameCache *)self->_nameCache attrIdentifierForPropertyName:a3 database:self updating:1 error:a4];
+  v4 = [(KGDatabaseNameCache *)self->_nameCache attrIdentifierForPropertyName:name database:self updating:1 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)insertNewProperty:(id)a3 error:(id *)a4
+- (unint64_t)insertNewProperty:(id)property error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  stringNSToStd(__p, v5);
+  propertyCopy = property;
+  stringNSToStd(__p, propertyCopy);
   database = self->_database;
   if (*(database + 32))
   {
@@ -5670,7 +5670,7 @@ LABEL_7:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v5;
+        *&buf[4] = propertyCopy;
         _os_log_error_impl(&dword_255870000, v8, OS_LOG_TYPE_ERROR, "failed to create new attribute %@", buf, 0xCu);
       }
     }
@@ -5702,8 +5702,8 @@ LABEL_8:
     if (v3 == 2)
     {
       v5 = objc_alloc_init(MEMORY[0x277CCAD78]);
-      v6 = [v5 UUIDString];
-      stringNSToStd(__p, v6);
+      uUIDString = [v5 UUIDString];
+      stringNSToStd(__p, uUIDString);
       database = self->_database;
       if ((database[32] & 1) == 0)
       {
@@ -5718,12 +5718,12 @@ LABEL_8:
 
     else
     {
-      v6 = KGLoggingConnection();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      uUIDString = KGLoggingConnection();
+      if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_ERROR))
       {
         LODWORD(__p[0]) = 67109120;
         HIDWORD(__p[0]) = v4;
-        _os_log_error_impl(&dword_255870000, v6, OS_LOG_TYPE_ERROR, "failed reading graph identifier metadata rc=%d", __p, 8u);
+        _os_log_error_impl(&dword_255870000, uUIDString, OS_LOG_TYPE_ERROR, "failed reading graph identifier metadata rc=%d", __p, 8u);
       }
 
       v5 = 0;
@@ -5742,8 +5742,8 @@ LABEL_8:
       v8 = v11[0];
     }
 
-    v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
-    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
+    uUIDString = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
+    v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:uUIDString];
   }
 
   if (SHIBYTE(v12) < 0)
@@ -5756,12 +5756,12 @@ LABEL_8:
   return v5;
 }
 
-- (void)setGraphVersion:(unint64_t)a3
+- (void)setGraphVersion:(unint64_t)version
 {
   database = self->_database;
   if ((database[32] & 1) == 0)
   {
-    degas::MetadataTable::insertOrUpdate((database + 136), 1, a3);
+    degas::MetadataTable::insertOrUpdate((database + 136), 1, version);
   }
 }
 
@@ -5797,13 +5797,13 @@ LABEL_8:
   return result;
 }
 
-- (id)labelsOfEdgesForIdentifiers:(id)a3
+- (id)labelsOfEdgesForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0u;
   memset(v13, 0, 25);
   degas::EdgeCursor::EdgeCursor(v11);
-  degas::EdgeCursor::setForIdentifiers(v11, [v4 bitmap], (self->_database + 248));
+  degas::EdgeCursor::setForIdentifiers(v11, [identifiersCopy bitmap], (self->_database + 248));
   while (degas::Statement::next(v11[0]) == 1)
   {
     v9 = 0u;
@@ -5840,13 +5840,13 @@ LABEL_8:
   return v5;
 }
 
-- (id)labelsOfNodesForIdentifiers:(id)a3
+- (id)labelsOfNodesForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0u;
   memset(v13, 0, 25);
   degas::NodeCursor::NodeCursor(v11);
-  degas::NodeCursor::setForIdentifiers(v11, [v4 bitmap], (self->_database + 192));
+  degas::NodeCursor::setForIdentifiers(v11, [identifiersCopy bitmap], (self->_database + 192));
   while (degas::Statement::next(v11[0]) == 1)
   {
     v9 = 0u;
@@ -5991,36 +5991,36 @@ LABEL_8:
   return v3;
 }
 
-- (id)labelIdentifierForLabelName:(id)a3 error:(id *)a4
+- (id)labelIdentifierForLabelName:(id)name error:(id *)error
 {
-  v4 = [(KGDatabaseNameCache *)self->_nameCache labelIdentifierForName:a3 database:self updating:0 error:a4];
+  v4 = [(KGDatabaseNameCache *)self->_nameCache labelIdentifierForName:name database:self updating:0 error:error];
 
   return v4;
 }
 
-- (id)labelNameForLabelIdentifier:(unint64_t)a3
+- (id)labelNameForLabelIdentifier:(unint64_t)identifier
 {
   nameCache = self->_nameCache;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:identifier];
   v6 = [(KGDatabaseNameCache *)nameCache labelNameForIdentifier:v5 database:self];
 
   return v6;
 }
 
-- (BOOL)labelIdentifiers:(void *)a3 forLabels:(id)a4 foundAll:(BOOL *)a5 error:(id *)a6
+- (BOOL)labelIdentifiers:(void *)identifiers forLabels:(id)labels foundAll:(BOOL *)all error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = [(KGDatabase *)self isReadOnly];
+  labelsCopy = labels;
+  isReadOnly = [(KGDatabase *)self isReadOnly];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v9;
+  v11 = labelsCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
-    v21 = v9;
+    v21 = labelsCopy;
     v13 = *v24;
     v14 = 1;
     while (2)
@@ -6032,20 +6032,20 @@ LABEL_8:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [(KGDatabaseNameCache *)self->_nameCache labelIdentifierForName:*(*(&v23 + 1) + 8 * i) database:self updating:!v10 error:a6, v21];
+        v16 = [(KGDatabaseNameCache *)self->_nameCache labelIdentifierForName:*(*(&v23 + 1) + 8 * i) database:self updating:!isReadOnly error:error, v21];
         v17 = v16;
         if (v16)
         {
-          degas::Bitmap::setBit(a3, [v16 unsignedIntegerValue]);
+          degas::Bitmap::setBit(identifiers, [v16 unsignedIntegerValue]);
         }
 
         else
         {
-          if (!v10)
+          if (!isReadOnly)
           {
-            if (a5)
+            if (all)
             {
-              *a5 = 0;
+              *all = 0;
             }
 
             v18 = 0;
@@ -6071,9 +6071,9 @@ LABEL_8:
     v14 = 1;
   }
 
-  if (a5)
+  if (all)
   {
-    *a5 = v14 & 1;
+    *all = v14 & 1;
   }
 
   v18 = 1;
@@ -6083,10 +6083,10 @@ LABEL_20:
   return v18;
 }
 
-- (Bitmap)upsertLabels:(SEL)a3 error:(id)a4
+- (Bitmap)upsertLabels:(SEL)labels error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  errorCopy = error;
   *&retstr->_bitCount = 0u;
   *&retstr->_bitSets.__begin_ = 0u;
   *(&retstr->_bitSets.__end_ + 1) = 0u;
@@ -6094,7 +6094,7 @@ LABEL_20:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v8;
+  v9 = errorCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -6135,29 +6135,29 @@ LABEL_11:
   return result;
 }
 
-- (unint64_t)upsertLabel:(id)a3 error:(id *)a4
+- (unint64_t)upsertLabel:(id)label error:(id *)error
 {
-  v4 = [(KGDatabaseNameCache *)self->_nameCache labelIdentifierForName:a3 database:self updating:1 error:a4];
+  v4 = [(KGDatabaseNameCache *)self->_nameCache labelIdentifierForName:label database:self updating:1 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)insertNewLabel:(id)a3 error:(id *)a4
+- (unint64_t)insertNewLabel:(id)label error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  labelCopy = label;
   v14 = 0;
-  stringNSToStd(__p, v5);
+  stringNSToStd(__p, labelCopy);
   v6 = degas::Database::addLabel(self->_database, &v14, __p);
   if (v6)
   {
@@ -6167,7 +6167,7 @@ LABEL_11:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = labelCopy;
         _os_log_debug_impl(&dword_255870000, v7, OS_LOG_TYPE_DEBUG, "duplicate label:%@ already exists in database", buf, 0xCu);
       }
     }
@@ -6178,7 +6178,7 @@ LABEL_11:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v16 = v5;
+        v16 = labelCopy;
         _os_log_error_impl(&dword_255870000, v8, OS_LOG_TYPE_ERROR, "failed to create new label %@", buf, 0xCu);
       }
 
@@ -6196,19 +6196,19 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)copyToURL:(id)a3 error:(id *)a4
+- (BOOL)copyToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (![v6 isEqual:self->_url])
+  lCopy = l;
+  if (![lCopy isEqual:self->_url])
   {
     database = self->_database;
-    std::string::basic_string[abi:ne200100]<0>(__p, [v6 fileSystemRepresentation]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [lCopy fileSystemRepresentation]);
     degas::Database::copyDatabase(database, __p);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = kg_errorWithCode(5003);
+    *error = kg_errorWithCode(5003);
   }
 
   return 0;
@@ -6240,19 +6240,19 @@ LABEL_11:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)openModeDescription:(unint64_t)a3
+- (id)openModeDescription:(unint64_t)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v5 = v4;
-  if (v3)
+  if (descriptionCopy)
   {
     v6 = @"read-only";
   }
 
   else
   {
-    if ((v3 & 2) == 0)
+    if ((descriptionCopy & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -6262,24 +6262,24 @@ LABEL_11:
 
   [v4 appendString:v6];
 LABEL_6:
-  if ((v3 & 4) != 0)
+  if ((descriptionCopy & 4) != 0)
   {
     [v5 appendString:@" create"];
   }
 
-  if ((v3 & 0x40) != 0)
+  if ((descriptionCopy & 0x40) != 0)
   {
     v7 = @" protection class A";
   }
 
-  else if ((v3 & 0x20) != 0)
+  else if ((descriptionCopy & 0x20) != 0)
   {
     v7 = @" protection class B";
   }
 
   else
   {
-    if ((v3 & 0x10) == 0)
+    if ((descriptionCopy & 0x10) == 0)
     {
       goto LABEL_15;
     }
@@ -6289,12 +6289,12 @@ LABEL_6:
 
   [v5 appendString:v7];
 LABEL_15:
-  if ((v3 & 0x80) != 0)
+  if ((descriptionCopy & 0x80) != 0)
   {
     [v5 appendString:@" (track changes)"];
   }
 
-  if ((v3 & 0x10000) != 0)
+  if ((descriptionCopy & 0x10000) != 0)
   {
     [v5 appendString:@" (test mode - should fail)"];
   }
@@ -6318,15 +6318,15 @@ LABEL_15:
   return v3 & 1;
 }
 
-- (void)setFatalError:(id)a3
+- (void)setFatalError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   self->_databaseStatus = 0;
   if ((*(self->_database + 32) & 1) == 0)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [errorCopy UTF8String]);
     degas::Database::setDatabaseFatalProblem(self->_database, __p);
     if (v9 < 0)
     {
@@ -6357,16 +6357,16 @@ LABEL_15:
   [(KGDatabase *)&v2 dealloc];
 }
 
-- (KGDatabase)initWithURL:(id)a3
+- (KGDatabase)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = KGDatabase;
   v6 = [(KGDatabase *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = objc_alloc_init(KGDatabaseNameCache);
     nameCache = v7->_nameCache;
     v7->_nameCache = v8;
@@ -6377,29 +6377,29 @@ LABEL_15:
   return v7;
 }
 
-+ (void)deleteClosedDatabaseFilesAtStoreURL:(id)a3
++ (void)deleteClosedDatabaseFilesAtStoreURL:(id)l
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  if ([v4 fileExistsAtPath:v5])
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  if ([defaultManager fileExistsAtPath:path])
   {
     v17 = 0;
-    v6 = [v4 removeItemAtPath:v5 error:&v17];
+    v6 = [defaultManager removeItemAtPath:path error:&v17];
     v7 = v17;
     if (v6)
     {
-      v8 = [v5 stringByAppendingString:@"-wal"];
+      v8 = [path stringByAppendingString:@"-wal"];
       v16 = v7;
-      v9 = [v4 removeItemAtPath:v8 error:&v16];
+      v9 = [defaultManager removeItemAtPath:v8 error:&v16];
       v10 = v16;
 
       if (v9)
       {
-        v11 = [v5 stringByAppendingString:@"-shm"];
+        v11 = [path stringByAppendingString:@"-shm"];
         v15 = v10;
-        v12 = [v4 removeItemAtPath:v11 error:&v15];
+        v12 = [defaultManager removeItemAtPath:v11 error:&v15];
         v7 = v15;
 
         if (v12)
@@ -6433,17 +6433,17 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)migrateFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)migrateFromURL:(id)l toURL:(id)rL error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[KGGraphLockFile alloc] initWithDatabaseURL:v7];
+  lCopy = l;
+  rLCopy = rL;
+  v8 = [[KGGraphLockFile alloc] initWithDatabaseURL:rLCopy];
   if ([(KGGraphLockFile *)v8 lock])
   {
-    std::string::basic_string[abi:ne200100]<0>(buf, [v6 fileSystemRepresentation]);
-    v9 = v7;
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v7 fileSystemRepresentation]);
+    std::string::basic_string[abi:ne200100]<0>(buf, [lCopy fileSystemRepresentation]);
+    v9 = rLCopy;
+    std::string::basic_string[abi:ne200100]<0>(&__p, [rLCopy fileSystemRepresentation]);
     degas::Database::copyDatabaseFromTo(buf);
   }
 
@@ -6451,7 +6451,7 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *&buf[4] = v7;
+    *&buf[4] = rLCopy;
     _os_log_error_impl(&dword_255870000, v10, OS_LOG_TYPE_ERROR, "unable to clobber database as it is already open, possibly in another process: path=%@", buf, 0xCu);
   }
 
@@ -6459,12 +6459,12 @@ LABEL_11:
   return 0;
 }
 
-+ (BOOL)copyFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)copyFromURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   degas::Database::Database(v15);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v7 fileSystemRepresentation]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [lCopy fileSystemRepresentation]);
   Only = degas::Database::openReadOnly(v15, __p);
   v10 = Only;
   if ((v14 & 0x80000000) == 0)
@@ -6475,7 +6475,7 @@ LABEL_11:
     }
 
 LABEL_7:
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 fileSystemRepresentation]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [rLCopy fileSystemRepresentation]);
     degas::Database::backupDatabase(v15, __p);
   }
 
@@ -6486,7 +6486,7 @@ LABEL_7:
   }
 
 LABEL_3:
-  if (a5)
+  if (error)
   {
     if ((v10 - 2) > 9)
     {
@@ -6498,7 +6498,7 @@ LABEL_3:
       v11 = qword_255972CE0[v10 - 2];
     }
 
-    *a5 = kg_errorWithCode(v11);
+    *error = kg_errorWithCode(v11);
   }
 
   degas::Database::~Database(v15);
@@ -6506,10 +6506,10 @@ LABEL_3:
   return 0;
 }
 
-+ (BOOL)emptyDatabaseExistsAtURL:(id)a3 error:(id *)a4
++ (BOOL)emptyDatabaseExistsAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v5 fileSystemRepresentation]);
+  lCopy = l;
+  std::string::basic_string[abi:ne200100]<0>(__p, [lCopy fileSystemRepresentation]);
   isEmptyDatabaseAtPath = degas::Database::isEmptyDatabaseAtPath(__p);
   if (v11 < 0)
   {
@@ -6517,7 +6517,7 @@ LABEL_3:
   }
 
   v7 = isEmptyDatabaseAtPath - 2;
-  if (isEmptyDatabaseAtPath != 2 && a4 && isEmptyDatabaseAtPath != 1)
+  if (isEmptyDatabaseAtPath != 2 && error && isEmptyDatabaseAtPath != 1)
   {
     if (v7 > 9)
     {
@@ -6529,20 +6529,20 @@ LABEL_3:
       v8 = qword_255972CE0[v7];
     }
 
-    *a4 = kg_errorWithCode(v8);
+    *error = kg_errorWithCode(v8);
   }
 
   return isEmptyDatabaseAtPath == 2;
 }
 
-+ (BOOL)destroyAtURL:(id)a3 error:(id *)a4
++ (BOOL)destroyAtURL:(id)l error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v6 fileExistsAtPath:v5])
+  lCopy = l;
+  path = [lCopy path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:path])
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v4 fileSystemRepresentation]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [lCopy fileSystemRepresentation]);
     degas::Database::truncateDatabaseAtPath(__p);
   }
 
@@ -6551,8 +6551,8 @@ LABEL_3:
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"com.apple.knowledgegraph.explainmode"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"com.apple.knowledgegraph.explainmode"];
 
   if (v3 == 1)
   {
@@ -6574,8 +6574,8 @@ LABEL_3:
   *v5 = 1;
   *v4 = 0;
 LABEL_6:
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 integerForKey:@"com.apple.knowledgegraph.querylogging"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults2 integerForKey:@"com.apple.knowledgegraph.querylogging"];
 
   if (v7 == 1)
   {
@@ -6594,32 +6594,32 @@ LABEL_6:
 
   *v8 = 1;
 LABEL_11:
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 BOOLForKey:@"com.apple.knowledgegraph.instrumentedtraversal"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults3 BOOLForKey:@"com.apple.knowledgegraph.instrumentedtraversal"];
 
   if (v10)
   {
     degas::sInstrumentTraversal = 1;
   }
 
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v12 = [v11 BOOLForKey:@"com.apple.knowledgegraph.insertlabeltracking"];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v12 = [standardUserDefaults4 BOOLForKey:@"com.apple.knowledgegraph.insertlabeltracking"];
 
   if (v12)
   {
     degas::sDatabaseInsertLabelTracking = 1;
   }
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v14 = [v13 BOOLForKey:@"com.apple.knowledgegraph.labelreferencechecking"];
+  standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v14 = [standardUserDefaults5 BOOLForKey:@"com.apple.knowledgegraph.labelreferencechecking"];
 
   if (v14)
   {
     degas::sDatabaseLabelReferenceChecking = 1;
   }
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v16 = [v15 BOOLForKey:@"com.apple.knowledgegraph.databaseopenstackcapture"];
+  standardUserDefaults6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v16 = [standardUserDefaults6 BOOLForKey:@"com.apple.knowledgegraph.databaseopenstackcapture"];
 
   if (v16)
   {

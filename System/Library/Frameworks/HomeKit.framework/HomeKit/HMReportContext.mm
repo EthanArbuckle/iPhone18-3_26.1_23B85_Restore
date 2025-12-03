@@ -1,43 +1,43 @@
 @interface HMReportContext
-+ (id)reportContextWithDomain:(id)a3 requestInfo:(id)a4 timeout:(double)a5;
-- (HMReportContext)initWithReportDomain:(id)a3 requestInfo:(id)a4 timeout:(double)a5;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
++ (id)reportContextWithDomain:(id)domain requestInfo:(id)info timeout:(double)timeout;
+- (HMReportContext)initWithReportDomain:(id)domain requestInfo:(id)info timeout:(double)timeout;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMReportContext
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableReportContext allocWithZone:a3];
-  v5 = [(HMReportContext *)self reportDomain];
-  v6 = [(HMReportContext *)self requestInfo];
+  v4 = [HMMutableReportContext allocWithZone:zone];
+  reportDomain = [(HMReportContext *)self reportDomain];
+  requestInfo = [(HMReportContext *)self requestInfo];
   [(HMReportContext *)self reportTimeout];
-  v7 = [(HMReportContext *)v4 initWithReportDomain:v5 requestInfo:v6 timeout:?];
+  v7 = [(HMReportContext *)v4 initWithReportDomain:reportDomain requestInfo:requestInfo timeout:?];
 
   return v7;
 }
 
-+ (id)reportContextWithDomain:(id)a3 requestInfo:(id)a4 timeout:(double)a5
++ (id)reportContextWithDomain:(id)domain requestInfo:(id)info timeout:(double)timeout
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HMReportContext alloc] initWithReportDomain:v8 requestInfo:v7 timeout:a5];
+  infoCopy = info;
+  domainCopy = domain;
+  v9 = [[HMReportContext alloc] initWithReportDomain:domainCopy requestInfo:infoCopy timeout:timeout];
 
   return v9;
 }
 
-- (HMReportContext)initWithReportDomain:(id)a3 requestInfo:(id)a4 timeout:(double)a5
+- (HMReportContext)initWithReportDomain:(id)domain requestInfo:(id)info timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  domainCopy = domain;
+  infoCopy = info;
+  if (!domainCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = infoCopy;
+  if (!infoCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -50,7 +50,7 @@ LABEL_7:
   v11 = [(HMReportContext *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [domainCopy copy];
     reportDomain = v11->_reportDomain;
     v11->_reportDomain = v12;
 
@@ -58,7 +58,7 @@ LABEL_7:
     requestInfo = v11->_requestInfo;
     v11->_requestInfo = v14;
 
-    v11->_reportTimeout = a5;
+    v11->_reportTimeout = timeout;
   }
 
   return v11;

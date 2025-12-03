@@ -1,12 +1,12 @@
 @interface ANFSceneActivityBridge
-- (void)performOnSceneDidDisconnect:(id)a3;
+- (void)performOnSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation ANFSceneActivityBridge
 
-- (void)performOnSceneDidDisconnect:(id)a3
+- (void)performOnSceneDidDisconnect:(id)disconnect
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(disconnect);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();

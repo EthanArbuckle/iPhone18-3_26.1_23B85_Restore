@@ -76,8 +76,8 @@
     while (v42);
   }
 
-  v18 = [v7 allKeys];
-  v19 = [a1 tu_contactsByContactHandleForContactHandles:v18 keyDescriptors:v34 error:a5];
+  allKeys = [v7 allKeys];
+  v19 = [self tu_contactsByContactHandleForContactHandles:allKeys keyDescriptors:v34 error:a5];
 
   if (v19)
   {
@@ -86,8 +86,8 @@
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v36 = [v19 allKeys];
-    v41 = [v36 countByEnumeratingWithState:&v48 objects:v61 count:16];
+    allKeys2 = [v19 allKeys];
+    v41 = [allKeys2 countByEnumeratingWithState:&v48 objects:v61 count:16];
     if (v41)
     {
       v39 = *v49;
@@ -98,7 +98,7 @@
         {
           if (*v49 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(allKeys2);
           }
 
           v43 = v21;
@@ -141,7 +141,7 @@
         }
 
         while (v43 + 1 != v41);
-        v41 = [v36 countByEnumeratingWithState:&v48 objects:v61 count:16];
+        v41 = [allKeys2 countByEnumeratingWithState:&v48 objects:v61 count:16];
       }
 
       while (v41);

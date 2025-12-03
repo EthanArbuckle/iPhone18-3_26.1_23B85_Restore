@@ -1,14 +1,14 @@
 @interface SMHandoffMetricsManager
 - (SMHandoffMetricsManager)init;
-- (void)addMetricErrorCode:(int64_t)a3;
-- (void)addMetricErrorDomain:(id)a3;
-- (void)addMetricForLatencyEligibilityChecks:(double)a3;
-- (void)addMetricForLatencyFetchActiveSessionDetailsCK:(double)a3;
-- (void)addMetricForLatencyHandoffCriteria:(double)a3;
-- (void)addMetricForLatencyHandoffEndToEnd:(double)a3;
-- (void)addMetricForLatencyWriteActiveSessionDetailsCK:(double)a3;
-- (void)addMetricHandoffReason:(int64_t)a3;
-- (void)addMetricSucceeded:(BOOL)a3;
+- (void)addMetricErrorCode:(int64_t)code;
+- (void)addMetricErrorDomain:(id)domain;
+- (void)addMetricForLatencyEligibilityChecks:(double)checks;
+- (void)addMetricForLatencyFetchActiveSessionDetailsCK:(double)k;
+- (void)addMetricForLatencyHandoffCriteria:(double)criteria;
+- (void)addMetricForLatencyHandoffEndToEnd:(double)end;
+- (void)addMetricForLatencyWriteActiveSessionDetailsCK:(double)k;
+- (void)addMetricHandoffReason:(int64_t)reason;
+- (void)addMetricSucceeded:(BOOL)succeeded;
 - (void)resetMetrics;
 @end
 
@@ -23,88 +23,88 @@
   return v2;
 }
 
-- (void)addMetricHandoffReason:(int64_t)a3
+- (void)addMetricHandoffReason:(int64_t)reason
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(RTMetric *)self metrics];
-  [v4 setObject:v5 forKeyedSubscript:@"handoffReason"];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:reason];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v5 forKeyedSubscript:@"handoffReason"];
 }
 
-- (void)addMetricErrorCode:(int64_t)a3
+- (void)addMetricErrorCode:(int64_t)code
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithLong:a3];
-  v4 = [(RTMetric *)self metrics];
-  [v4 setObject:v5 forKeyedSubscript:@"errorCodeForDomain"];
+  v5 = [MEMORY[0x277CCABB0] numberWithLong:code];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v5 forKeyedSubscript:@"errorCodeForDomain"];
 }
 
-- (void)addMetricErrorDomain:(id)a3
+- (void)addMetricErrorDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(RTMetric *)self metrics];
-  [v5 setObject:v4 forKeyedSubscript:@"errorDomain"];
+  domainCopy = domain;
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:domainCopy forKeyedSubscript:@"errorDomain"];
 }
 
-- (void)addMetricForLatencyEligibilityChecks:(double)a3
+- (void)addMetricForLatencyEligibilityChecks:(double)checks
 {
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(a3)];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(checks)];
   v8 = [v5 binForNumber:v6 bins:&unk_2845A09E0];
 
-  v7 = [(RTMetric *)self metrics];
-  [v7 setObject:v8 forKeyedSubscript:@"latencyEligibilityChecks"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v8 forKeyedSubscript:@"latencyEligibilityChecks"];
 }
 
-- (void)addMetricForLatencyFetchActiveSessionDetailsCK:(double)a3
+- (void)addMetricForLatencyFetchActiveSessionDetailsCK:(double)k
 {
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(a3)];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(k)];
   v8 = [v5 binForNumber:v6 bins:&unk_2845A09F8];
 
-  v7 = [(RTMetric *)self metrics];
-  [v7 setObject:v8 forKeyedSubscript:@"latencyFetchActiveSessionDetailsCK"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v8 forKeyedSubscript:@"latencyFetchActiveSessionDetailsCK"];
 }
 
-- (void)addMetricForLatencyHandoffCriteria:(double)a3
+- (void)addMetricForLatencyHandoffCriteria:(double)criteria
 {
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(a3)];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(criteria)];
   v8 = [v5 binForNumber:v6 bins:&unk_2845A0A10];
 
-  v7 = [(RTMetric *)self metrics];
-  [v7 setObject:v8 forKeyedSubscript:@"latencyHandoffCriteria"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v8 forKeyedSubscript:@"latencyHandoffCriteria"];
 }
 
-- (void)addMetricForLatencyHandoffEndToEnd:(double)a3
+- (void)addMetricForLatencyHandoffEndToEnd:(double)end
 {
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(a3)];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(end)];
   v8 = [v5 binForNumber:v6 bins:&unk_2845A0A28];
 
-  v7 = [(RTMetric *)self metrics];
-  [v7 setObject:v8 forKeyedSubscript:@"latencyHandoffEndToEnd"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v8 forKeyedSubscript:@"latencyHandoffEndToEnd"];
 }
 
-- (void)addMetricForLatencyWriteActiveSessionDetailsCK:(double)a3
+- (void)addMetricForLatencyWriteActiveSessionDetailsCK:(double)k
 {
   v5 = objc_opt_class();
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(a3)];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:round(k)];
   v8 = [v5 binForNumber:v6 bins:&unk_2845A0A40];
 
-  v7 = [(RTMetric *)self metrics];
-  [v7 setObject:v8 forKeyedSubscript:@"latencyWriteActiveSessionDetailsCK"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v8 forKeyedSubscript:@"latencyWriteActiveSessionDetailsCK"];
 }
 
-- (void)addMetricSucceeded:(BOOL)a3
+- (void)addMetricSucceeded:(BOOL)succeeded
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v4 = [(RTMetric *)self metrics];
-  [v4 setObject:v5 forKeyedSubscript:@"succeeded"];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:succeeded];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v5 forKeyedSubscript:@"succeeded"];
 }
 
 - (void)resetMetrics
 {
-  v3 = [(RTMetric *)self metrics];
-  [v3 setObject:&unk_28459C510 forKeyedSubscript:@"handoffReason"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:&unk_28459C510 forKeyedSubscript:@"handoffReason"];
 
   [(SMHandoffMetricsManager *)self addMetricErrorCode:0];
   [(SMHandoffMetricsManager *)self addMetricErrorDomain:@"Unknown"];

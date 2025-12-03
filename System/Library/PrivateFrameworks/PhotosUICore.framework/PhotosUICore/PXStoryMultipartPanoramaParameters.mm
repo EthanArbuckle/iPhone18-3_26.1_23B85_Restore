@@ -3,7 +3,7 @@
 - ($866B42654C4E0A70DB412B2E3EB7CC63)normalizedKenBurnsEffectParameters;
 - ($D23540E3B197441F7781E3353E3BC035)transitionInfo;
 - (PXStoryMultipartPanoramaParameters)init;
-- (PXStoryMultipartPanoramaParameters)initWithNormalizedKenBurnsEffectParameters:(id *)a3 partDurationInfo:(id *)a4 transitionInfo:(id *)a5;
+- (PXStoryMultipartPanoramaParameters)initWithNormalizedKenBurnsEffectParameters:(id *)parameters partDurationInfo:(id *)info transitionInfo:(id *)transitionInfo;
 @end
 
 @implementation PXStoryMultipartPanoramaParameters
@@ -46,38 +46,38 @@
   return self;
 }
 
-- (PXStoryMultipartPanoramaParameters)initWithNormalizedKenBurnsEffectParameters:(id *)a3 partDurationInfo:(id *)a4 transitionInfo:(id *)a5
+- (PXStoryMultipartPanoramaParameters)initWithNormalizedKenBurnsEffectParameters:(id *)parameters partDurationInfo:(id *)info transitionInfo:(id *)transitionInfo
 {
   v20.receiver = self;
   v20.super_class = PXStoryMultipartPanoramaParameters;
   result = [(PXStoryMultipartPanoramaParameters *)&v20 init];
   if (result)
   {
-    v9 = *&a3->var0.var0.c;
-    *&result->_transitionInfo.var1.scaleRelativeFactor = *&a3->var0.var0.a;
+    v9 = *&parameters->var0.var0.c;
+    *&result->_transitionInfo.var1.scaleRelativeFactor = *&parameters->var0.var0.a;
     *&result->_normalizedKenBurnsEffectParameters.s.t.b = v9;
-    v10 = *&a3->var0.var0.tx;
-    v11 = *&a3->var1.var0.a;
-    v12 = *&a3->var1.var0.tx;
-    *&result->_normalizedKenBurnsEffectParameters.t.t.b = *&a3->var1.var0.c;
+    v10 = *&parameters->var0.var0.tx;
+    v11 = *&parameters->var1.var0.a;
+    v12 = *&parameters->var1.var0.tx;
+    *&result->_normalizedKenBurnsEffectParameters.t.t.b = *&parameters->var1.var0.c;
     *&result->_normalizedKenBurnsEffectParameters.t.t.d = v12;
     *&result->_normalizedKenBurnsEffectParameters.s.t.d = v10;
     *&result->_normalizedKenBurnsEffectParameters.s.t.ty = v11;
-    v13 = *&a4->var3.var1;
-    v15 = *&a4->var2.var0;
-    v14 = *&a4->var2.var3;
-    *&result->_partDurationInfo.preferredCue.time.value = *&a4->var3.var0.var1;
+    v13 = *&info->var3.var1;
+    v15 = *&info->var2.var0;
+    v14 = *&info->var2.var3;
+    *&result->_partDurationInfo.preferredCue.time.value = *&info->var3.var0.var1;
     *&result->_partDurationInfo.preferredCue.time.epoch = v13;
     *&result->_partDurationInfo.preferredDuration.epoch = v15;
     *&result->_partDurationInfo.maximumDuration.timescale = v14;
-    v16 = *&a4->var0.var0;
-    v17 = *&a4->var1.var1;
-    *&result->_partDurationInfo.minimumDuration.timescale = *&a4->var0.var3;
+    v16 = *&info->var0.var0;
+    v17 = *&info->var1.var1;
+    *&result->_partDurationInfo.minimumDuration.timescale = *&info->var0.var3;
     *&result->_partDurationInfo.preferredDuration.value = v17;
     *&result->_normalizedKenBurnsEffectParameters.t.t.ty = v16;
-    v18 = *&a5->var0;
-    v19 = *&a5->var2.var1;
-    *&result->_transitionInfo.fallbackFromTransitionKind = *&a5->var3;
+    v18 = *&transitionInfo->var0;
+    v19 = *&transitionInfo->var2.var1;
+    *&result->_transitionInfo.fallbackFromTransitionKind = *&transitionInfo->var3;
     *&result->_transitionInfo.duration.timescale = v19;
     *&result->_transitionInfo.orderOutTransition = v18;
   }
@@ -87,8 +87,8 @@
 
 - (PXStoryMultipartPanoramaParameters)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMultipartPanoramaParameters.m" lineNumber:17 description:{@"%s is not available as initializer", "-[PXStoryMultipartPanoramaParameters init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMultipartPanoramaParameters.m" lineNumber:17 description:{@"%s is not available as initializer", "-[PXStoryMultipartPanoramaParameters init]"}];
 
   abort();
 }

@@ -1,15 +1,15 @@
 @interface NSData
-+ (NSData)dataWithHexString:(id)a3;
++ (NSData)dataWithHexString:(id)string;
 - (id)hexStringRepresentation;
 @end
 
 @implementation NSData
 
-+ (NSData)dataWithHexString:(id)a3
++ (NSData)dataWithHexString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v10 = 0;
-  if ([v3 length])
+  if ([stringCopy length])
   {
     sub_1000C9D60();
 LABEL_12:
@@ -17,13 +17,13 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v4 = malloc_type_malloc([v3 length] >> 1, 0x36DAEAFEuLL);
+  v4 = malloc_type_malloc([stringCopy length] >> 1, 0x36DAEAFEuLL);
   if (v4)
   {
-    if (![v3 length])
+    if (![stringCopy length])
     {
 LABEL_7:
-      v4 = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", v4, [v3 length] >> 1, 1);
+      v4 = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", v4, [stringCopy length] >> 1, 1);
       goto LABEL_8;
     }
 
@@ -31,8 +31,8 @@ LABEL_7:
     v6 = v4;
     while (1)
     {
-      __str[0] = [v3 characterAtIndex:v5];
-      __str[1] = [v3 characterAtIndex:v5 + 1];
+      __str[0] = [stringCopy characterAtIndex:v5];
+      __str[1] = [stringCopy characterAtIndex:v5 + 1];
       v8 = 0;
       *v6 = strtol(__str, &v8, 16);
       if (v8 != &v10)
@@ -42,7 +42,7 @@ LABEL_7:
 
       ++v6;
       v5 += 2;
-      if (v5 >= [v3 length])
+      if (v5 >= [stringCopy length])
       {
         goto LABEL_7;
       }
@@ -52,7 +52,7 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  sub_1000C9EB8(v3);
+  sub_1000C9EB8(stringCopy);
 LABEL_8:
 
   return v4;
@@ -62,10 +62,10 @@ LABEL_8:
 {
   v3 = [(NSData *)self length];
   v4 = [NSMutableString stringWithCapacity:2 * v3];
-  v5 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if (v3)
   {
-    v6 = v5;
+    v6 = bytes;
     do
     {
       v7 = *v6++;

@@ -1,10 +1,10 @@
 @interface _PXSnapshottableImageView
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
 @end
 
 @implementation _PXSnapshottableImageView
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
   v5.receiver = self;
   v5.super_class = _PXSnapshottableImageView;

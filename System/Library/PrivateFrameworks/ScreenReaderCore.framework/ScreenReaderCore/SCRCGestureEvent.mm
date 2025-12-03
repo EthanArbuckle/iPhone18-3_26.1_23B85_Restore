@@ -3,20 +3,20 @@
 - (CGPoint)balancedLocation;
 - (CGPoint)magneticLocation;
 - (CGRect)fingerFrame;
-- (SCRCGestureEvent)initWithDeviceIdentifier:(unint64_t)a3;
+- (SCRCGestureEvent)initWithDeviceIdentifier:(unint64_t)identifier;
 - (id)description;
-- (id)fingerWithIdentifier:(unint64_t)a3;
-- (id)fingerWithoutIdentifier:(unint64_t)a3;
+- (id)fingerWithIdentifier:(unint64_t)identifier;
+- (id)fingerWithoutIdentifier:(unint64_t)identifier;
 - (id)fingers;
-- (void)addFingerWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5;
-- (void)addStylusWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5 altitude:(double)a6 azimuth:(double)a7;
+- (void)addFingerWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure;
+- (void)addStylusWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure altitude:(double)altitude azimuth:(double)azimuth;
 - (void)dealloc;
-- (void)removeFingerWithIdentifier:(unint64_t)a3;
+- (void)removeFingerWithIdentifier:(unint64_t)identifier;
 @end
 
 @implementation SCRCGestureEvent
 
-- (SCRCGestureEvent)initWithDeviceIdentifier:(unint64_t)a3
+- (SCRCGestureEvent)initWithDeviceIdentifier:(unint64_t)identifier
 {
   v6.receiver = self;
   v6.super_class = SCRCGestureEvent;
@@ -24,7 +24,7 @@
   if (v4)
   {
     v4->_time = CFAbsoluteTimeGetCurrent();
-    v4->_deviceIdentifier = a3;
+    v4->_deviceIdentifier = identifier;
   }
 
   return v4;
@@ -72,35 +72,35 @@
   return v6;
 }
 
-- (void)addFingerWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5
+- (void)addFingerWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure
 {
   if (self->_fingerCount <= 7)
   {
-    self->_averageLocation = vaddq_f64(a4, self->_averageLocation);
-    v6 = [[SCRCGestureFinger alloc] initWithIdentifier:a3 location:a4.x pressure:a4.y, a5];
+    self->_averageLocation = vaddq_f64(location, self->_averageLocation);
+    pressure = [[SCRCGestureFinger alloc] initWithIdentifier:identifier location:location.x pressure:location.y, pressure];
     v7 = &self->super.isa + self->_fingerCount;
     v8 = v7[2];
-    v7[2] = v6;
+    v7[2] = pressure;
 
     ++self->_fingerCount;
   }
 }
 
-- (void)addStylusWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5 altitude:(double)a6 azimuth:(double)a7
+- (void)addStylusWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure altitude:(double)altitude azimuth:(double)azimuth
 {
   if (self->_fingerCount <= 7)
   {
-    self->_averageLocation = vaddq_f64(a4, self->_averageLocation);
-    v8 = [[SCRCGestureStylus alloc] initWithIdentifier:a3 location:a4.x pressure:a4.y altitude:a5 azimuth:a6, a7];
+    self->_averageLocation = vaddq_f64(location, self->_averageLocation);
+    azimuth = [[SCRCGestureStylus alloc] initWithIdentifier:identifier location:location.x pressure:location.y altitude:pressure azimuth:altitude, azimuth];
     v9 = &self->super.isa + self->_fingerCount;
     v10 = v9[2];
-    v9[2] = v8;
+    v9[2] = azimuth;
 
     ++self->_fingerCount;
   }
 }
 
-- (void)removeFingerWithIdentifier:(unint64_t)a3
+- (void)removeFingerWithIdentifier:(unint64_t)identifier
 {
   fingerCount = self->_fingerCount;
   self->_averageLocation = *MEMORY[0x277CBF348];
@@ -113,7 +113,7 @@
     {
       v9 = finger[v6];
       v10 = v9;
-      if (*&v10->f64[1] == a3)
+      if (*&v10->f64[1] == identifier)
       {
         --fingerCount;
         v11 = finger[v6];
@@ -145,13 +145,13 @@
   self->_fingerCount = fingerCount;
 }
 
-- (id)fingerWithIdentifier:(unint64_t)a3
+- (id)fingerWithIdentifier:(unint64_t)identifier
 {
   fingerCount = self->_fingerCount;
   if (fingerCount)
   {
     finger = self->_finger;
-    while ((*finger)->_identifier != a3)
+    while ((*finger)->_identifier != identifier)
     {
       ++finger;
       if (!--fingerCount)
@@ -173,13 +173,13 @@ LABEL_10:
   return v6;
 }
 
-- (id)fingerWithoutIdentifier:(unint64_t)a3
+- (id)fingerWithoutIdentifier:(unint64_t)identifier
 {
   fingerCount = self->_fingerCount;
   if (fingerCount)
   {
     finger = self->_finger;
-    while ((*finger)->_identifier == a3)
+    while ((*finger)->_identifier == identifier)
     {
       ++finger;
       if (!--fingerCount)
@@ -203,19 +203,19 @@ LABEL_10:
 
 - (id)fingers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->_fingerCount)
   {
     v4 = 0;
     do
     {
-      [v3 addObject:self->_finger[v4++]];
+      [array addObject:self->_finger[v4++]];
     }
 
     while (self->_fingerCount > v4);
   }
 
-  v5 = [v3 copy];
+  v5 = [array copy];
 
   return v5;
 }

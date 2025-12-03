@@ -1,14 +1,14 @@
 @interface PLFetchRequest
-+ (id)pl_importantFetchNameForFetchRequest:(id)a3;
++ (id)pl_importantFetchNameForFetchRequest:(id)request;
 @end
 
 @implementation PLFetchRequest
 
-+ (id)pl_importantFetchNameForFetchRequest:(id)a3
++ (id)pl_importantFetchNameForFetchRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
-  v4 = v3;
+  v4 = requestCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -23,15 +23,15 @@
 
   if (v6)
   {
-    v7 = [v6 pl_importantFetchName];
+    pl_importantFetchName = [v6 pl_importantFetchName];
   }
 
   else
   {
-    v7 = 0;
+    pl_importantFetchName = 0;
   }
 
-  return v7;
+  return pl_importantFetchName;
 }
 
 @end

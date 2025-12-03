@@ -1,11 +1,11 @@
 @interface ATXModeAutomationSuggestionTester
 + (id)sharedInstance;
 - (ATXModeAutomationSuggestionTester)init;
-- (id)_stringForActivityType:(unint64_t)a3;
-- (void)_sendNotificationWithContent:(id)a3;
-- (void)activitySuggestionClient:(id)a3 didSuggestActivity:(id)a4;
-- (void)activitySuggestionClient:(id)a3 didSuggestConfiguredActivity:(id)a4;
-- (void)activitySuggestionClient:(id)a3 didSuggestSettingUpActivity:(id)a4;
+- (id)_stringForActivityType:(unint64_t)type;
+- (void)_sendNotificationWithContent:(id)content;
+- (void)activitySuggestionClient:(id)client didSuggestActivity:(id)activity;
+- (void)activitySuggestionClient:(id)client didSuggestConfiguredActivity:(id)activity;
+- (void)activitySuggestionClient:(id)client didSuggestSettingUpActivity:(id)activity;
 - (void)dealloc;
 @end
 
@@ -97,29 +97,29 @@ void __41__ATXModeAutomationSuggestionTester_init__block_invoke(uint64_t a1, int
   [(ATXModeAutomationSuggestionTester *)&v3 dealloc];
 }
 
-- (id)_stringForActivityType:(unint64_t)a3
+- (id)_stringForActivityType:(unint64_t)type
 {
-  if (a3 > 0xF)
+  if (type > 0xF)
   {
     return 0;
   }
 
   else
   {
-    return off_2785998D8[a3];
+    return off_2785998D8[type];
   }
 }
 
-- (void)activitySuggestionClient:(id)a3 didSuggestConfiguredActivity:(id)a4
+- (void)activitySuggestionClient:(id)client didSuggestConfiguredActivity:(id)activity
 {
-  v9 = a4;
+  activityCopy = activity;
   v5 = objc_opt_new();
-  if (v9)
+  if (activityCopy)
   {
     [v5 setTitle:@"Activity Inferred: Enter Configured Activity"];
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    v7 = [v9 uuidString];
-    v8 = [v6 initWithFormat:@"The configured activity (%@) was inferred", v7];
+    uuidString = [activityCopy uuidString];
+    v8 = [v6 initWithFormat:@"The configured activity (%@) was inferred", uuidString];
     [v5 setBody:v8];
   }
 
@@ -132,14 +132,14 @@ void __41__ATXModeAutomationSuggestionTester_init__block_invoke(uint64_t a1, int
   [(ATXModeAutomationSuggestionTester *)self _sendNotificationWithContent:v5];
 }
 
-- (void)activitySuggestionClient:(id)a3 didSuggestSettingUpActivity:(id)a4
+- (void)activitySuggestionClient:(id)client didSuggestSettingUpActivity:(id)activity
 {
-  v7 = a4;
+  activityCopy = activity;
   v5 = objc_opt_new();
-  if (v7)
+  if (activityCopy)
   {
     [v5 setTitle:@"Activity Inferred: Activity Set-Up Suggestion"];
-    v6 = -[ATXModeAutomationSuggestionTester _stringForActivityType:](self, "_stringForActivityType:", [v7 activityType]);
+    v6 = -[ATXModeAutomationSuggestionTester _stringForActivityType:](self, "_stringForActivityType:", [activityCopy activityType]);
     [v5 setBody:v6];
   }
 
@@ -152,11 +152,11 @@ void __41__ATXModeAutomationSuggestionTester_init__block_invoke(uint64_t a1, int
   [(ATXModeAutomationSuggestionTester *)self _sendNotificationWithContent:v5];
 }
 
-- (void)activitySuggestionClient:(id)a3 didSuggestActivity:(id)a4
+- (void)activitySuggestionClient:(id)client didSuggestActivity:(id)activity
 {
-  v6 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (!a4)
+  if (!activity)
   {
     v7 = __atxlog_handle_modes();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -166,15 +166,15 @@ void __41__ATXModeAutomationSuggestionTester_init__block_invoke(uint64_t a1, int
 
     v8 = objc_opt_new();
     [v8 setTitle:@"Activity Ended"];
-    v9 = [v6 previousSuggestion];
-    v10 = v9;
-    if (v9)
+    previousSuggestion = [clientCopy previousSuggestion];
+    v10 = previousSuggestion;
+    if (previousSuggestion)
     {
-      v11 = [v9 modeUUID];
-      v12 = v11;
-      if (v11)
+      modeUUID = [previousSuggestion modeUUID];
+      v12 = modeUUID;
+      if (modeUUID)
       {
-        v13 = v11;
+        v13 = modeUUID;
       }
 
       else
@@ -193,21 +193,21 @@ void __41__ATXModeAutomationSuggestionTester_init__block_invoke(uint64_t a1, int
   }
 }
 
-- (void)_sendNotificationWithContent:(id)a3
+- (void)_sendNotificationWithContent:(id)content
 {
-  v10 = a3;
-  v4 = [v10 body];
+  contentCopy = content;
+  body = [contentCopy body];
 
-  if (v4)
+  if (body)
   {
-    [v10 setCategoryIdentifier:@"modes.automation"];
+    [contentCopy setCategoryIdentifier:@"modes.automation"];
     if (self->_notificationCenter)
     {
       v5 = [MEMORY[0x277CE2020] triggerWithTimeInterval:0 repeats:1.0];
       v6 = MEMORY[0x277CE1FC0];
-      v7 = [MEMORY[0x277CCAD78] UUID];
-      v8 = [v7 UUIDString];
-      v9 = [v6 requestWithIdentifier:v8 content:v10 trigger:v5];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v9 = [v6 requestWithIdentifier:uUIDString content:contentCopy trigger:v5];
 
       [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v9 withCompletionHandler:&__block_literal_global_102_0];
     }

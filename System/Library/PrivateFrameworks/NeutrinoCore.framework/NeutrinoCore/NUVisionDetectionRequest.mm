@@ -1,19 +1,19 @@
 @interface NUVisionDetectionRequest
-+ (void)warmUpRequests:(id)a3;
++ (void)warmUpRequests:(id)requests;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
-- (id)submitGenericSynchronous:(id *)a3;
+- (id)submitGenericSynchronous:(id *)synchronous;
 - (void)_commonInit;
 @end
 
 @implementation NUVisionDetectionRequest
 
-- (id)submitGenericSynchronous:(id *)a3
+- (id)submitGenericSynchronous:(id *)synchronous
 {
   v5.receiver = self;
   v5.super_class = NUVisionDetectionRequest;
-  v3 = [(NURenderRequest *)&v5 submitGenericSynchronous:a3];
+  v3 = [(NURenderRequest *)&v5 submitGenericSynchronous:synchronous];
 
   return v3;
 }
@@ -30,13 +30,13 @@
   v7.receiver = self;
   v7.super_class = NUVisionDetectionRequest;
   v3 = [(NURenderRequest *)&v7 description];
-  v4 = [(NUVisionDetectionRequest *)self scalePolicy];
-  v5 = [v3 stringByAppendingFormat:@" Scale Policy: %@", v4];
+  scalePolicy = [(NUVisionDetectionRequest *)self scalePolicy];
+  v5 = [v3 stringByAppendingFormat:@" Scale Policy: %@", scalePolicy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NUVisionDetectionRequest;
@@ -45,7 +45,7 @@
   if (v5)
   {
     objc_storeStrong(v5 + 20, self->_scalePolicy);
-    v7 = [(NSArray *)self->_visionRequests copyWithZone:a3];
+    v7 = [(NSArray *)self->_visionRequests copyWithZone:zone];
     v8 = v6[21];
     v6[21] = v7;
   }
@@ -68,15 +68,15 @@
   [(NURenderRequest *)self setSampleMode:2];
 }
 
-+ (void)warmUpRequests:(id)a3
++ (void)warmUpRequests:(id)requests
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestsCopy = requests;
   v4 = +[NUFactory sharedFactory];
-  v5 = [v4 visionSession];
+  visionSession = [v4 visionSession];
 
   v8 = 0;
-  LOBYTE(v4) = [v5 prepareForPerformingRequests:v3 error:&v8];
+  LOBYTE(v4) = [visionSession prepareForPerformingRequests:requestsCopy error:&v8];
 
   v6 = v8;
   if ((v4 & 1) == 0)

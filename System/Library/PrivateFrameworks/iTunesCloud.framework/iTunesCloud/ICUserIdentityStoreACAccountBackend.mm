@@ -1,38 +1,38 @@
 @interface ICUserIdentityStoreACAccountBackend
-- (BOOL)disableLockerAccountDSID:(id)a3 error:(id *)a4;
-- (BOOL)replaceIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5;
-- (BOOL)setIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5;
-- (BOOL)setLocalStoreAccountProperties:(id)a3 error:(id *)a4;
-- (BOOL)updateActiveAccountDSID:(id)a3 error:(id *)a4;
-- (BOOL)updateActiveLockerAccountDSID:(id)a3 error:(id *)a4;
+- (BOOL)disableLockerAccountDSID:(id)d error:(id *)error;
+- (BOOL)replaceIdentityProperties:(id)properties forDSID:(id)d error:(id *)error;
+- (BOOL)setIdentityProperties:(id)properties forDSID:(id)d error:(id *)error;
+- (BOOL)setLocalStoreAccountProperties:(id)properties error:(id *)error;
+- (BOOL)updateActiveAccountDSID:(id)d error:(id *)error;
+- (BOOL)updateActiveLockerAccountDSID:(id)d error:(id *)error;
 - (ICUserIdentityStoreACAccountBackend)init;
 - (ICUserIdentityStoreBackendDelegate)delegate;
-- (id)_newLocalStoreAccountPropertiesFromAccount:(id)a3;
-- (id)_newUserIdentityPropertiesForAccount:(id)a3;
-- (id)_userIdentityPropertiesForAccount:(id)a3;
-- (id)accountDSIDForAltDSID:(id)a3 error:(id *)a4;
-- (id)activeAccountDSIDWithError:(id *)a3;
-- (id)activeLockerAccountDSIDWithError:(id *)a3;
-- (id)allManageableStoreAccountDSIDsWithError:(id *)a3;
-- (id)allStoreAccountDSIDsWithError:(id *)a3;
-- (id)allStoreAccountsWithError:(id *)a3;
-- (id)defaultMediaAccountDSIDWithError:(id *)a3;
-- (id)identityPropertiesForDSID:(id)a3 error:(id *)a4;
-- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)a3;
-- (id)localStoreAccountPropertiesWithError:(id *)a3;
-- (id)localStoreAccountWithError:(id *)a3;
-- (id)storeAccountForDSID:(id)a3 error:(id *)a4;
-- (id)verificationContextForAccountEstablishmentWithError:(id *)a3;
-- (id)verificationContextForDSID:(id)a3 error:(id *)a4;
-- (void)_applyIdentityProperties:(id)a3 toAccount:(id)a4;
-- (void)_applyLocalStoreAccountProperties:(id)a3 toAccount:(id)a4;
+- (id)_newLocalStoreAccountPropertiesFromAccount:(id)account;
+- (id)_newUserIdentityPropertiesForAccount:(id)account;
+- (id)_userIdentityPropertiesForAccount:(id)account;
+- (id)accountDSIDForAltDSID:(id)d error:(id *)error;
+- (id)activeAccountDSIDWithError:(id *)error;
+- (id)activeLockerAccountDSIDWithError:(id *)error;
+- (id)allManageableStoreAccountDSIDsWithError:(id *)error;
+- (id)allStoreAccountDSIDsWithError:(id *)error;
+- (id)allStoreAccountsWithError:(id *)error;
+- (id)defaultMediaAccountDSIDWithError:(id *)error;
+- (id)identityPropertiesForDSID:(id)d error:(id *)error;
+- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)error;
+- (id)localStoreAccountPropertiesWithError:(id *)error;
+- (id)localStoreAccountWithError:(id *)error;
+- (id)storeAccountForDSID:(id)d error:(id *)error;
+- (id)verificationContextForAccountEstablishmentWithError:(id *)error;
+- (id)verificationContextForDSID:(id)d error:(id *)error;
+- (void)_applyIdentityProperties:(id)properties toAccount:(id)account;
+- (void)_applyLocalStoreAccountProperties:(id)properties toAccount:(id)account;
 - (void)_notifyDelegateOfBackendChange;
 - (void)_synchronize;
-- (void)monitoredAccountStore:(id)a3 didAddAccount:(id)a4;
-- (void)monitoredAccountStore:(id)a3 didChangeCredentialsForAccount:(id)a4;
-- (void)monitoredAccountStore:(id)a3 didRemoveAccount:(id)a4;
-- (void)monitoredAccountStore:(id)a3 didUpdateAccount:(id)a4;
-- (void)removeIdentityForDSID:(id)a3 completion:(id)a4;
+- (void)monitoredAccountStore:(id)store didAddAccount:(id)account;
+- (void)monitoredAccountStore:(id)store didChangeCredentialsForAccount:(id)account;
+- (void)monitoredAccountStore:(id)store didRemoveAccount:(id)account;
+- (void)monitoredAccountStore:(id)store didUpdateAccount:(id)account;
+- (void)removeIdentityForDSID:(id)d completion:(id)completion;
 - (void)synchronize;
 @end
 
@@ -159,7 +159,7 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Synchronizing with account store", buf, 0xCu);
   }
 
@@ -182,7 +182,7 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
     if (os_log_type_enabled(&v10->super.super, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v9;
       _os_log_impl(&dword_1B4491000, &v10->super.super, OS_LOG_TYPE_ERROR, "%{public}@ Failed to initialize active account, error=%{public}@", buf, 0x16u);
@@ -191,9 +191,9 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [v8 ic_DSID];
+    ic_DSID = [v8 ic_DSID];
     v10 = self->_activeAccountDSID;
-    self->_activeAccountDSID = v11;
+    self->_activeAccountDSID = ic_DSID;
   }
 
   v12 = self->_monitoredAccountStore;
@@ -210,7 +210,7 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v14;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Failed to initialize primary apple account, error=%{public}@", buf, 0x16u);
@@ -225,64 +225,64 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (id)_newUserIdentityPropertiesForAccount:(id)a3
+- (id)_newUserIdentityPropertiesForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(ICMutableUserIdentityProperties);
-  v5 = [v3 ic_altDSID];
-  [(ICMutableUserIdentityProperties *)v4 setAlternateDSID:v5];
+  ic_altDSID = [accountCopy ic_altDSID];
+  [(ICMutableUserIdentityProperties *)v4 setAlternateDSID:ic_altDSID];
 
-  v6 = [v3 ic_DSID];
-  [(ICMutableUserIdentityProperties *)v4 setDSID:v6];
+  ic_DSID = [accountCopy ic_DSID];
+  [(ICMutableUserIdentityProperties *)v4 setDSID:ic_DSID];
 
-  v7 = [v3 ic_firstName];
-  [(ICMutableUserIdentityProperties *)v4 setFirstName:v7];
+  ic_firstName = [accountCopy ic_firstName];
+  [(ICMutableUserIdentityProperties *)v4 setFirstName:ic_firstName];
 
-  v8 = [v3 ic_lastName];
-  [(ICMutableUserIdentityProperties *)v4 setLastName:v8];
+  ic_lastName = [accountCopy ic_lastName];
+  [(ICMutableUserIdentityProperties *)v4 setLastName:ic_lastName];
 
-  -[ICMutableUserIdentityProperties setManagedAppleID:](v4, "setManagedAppleID:", [v3 ic_isManagedAppleID]);
-  -[ICMutableUserIdentityProperties setSandboxed:](v4, "setSandboxed:", [v3 ic_isSandboxed]);
-  v9 = [v3 ic_storefront];
-  [(ICMutableUserIdentityProperties *)v4 setStorefrontIdentifier:v9];
+  -[ICMutableUserIdentityProperties setManagedAppleID:](v4, "setManagedAppleID:", [accountCopy ic_isManagedAppleID]);
+  -[ICMutableUserIdentityProperties setSandboxed:](v4, "setSandboxed:", [accountCopy ic_isSandboxed]);
+  ic_storefront = [accountCopy ic_storefront];
+  [(ICMutableUserIdentityProperties *)v4 setStorefrontIdentifier:ic_storefront];
 
-  -[ICMutableUserIdentityProperties setSubscriptionStatusEnabled:](v4, "setSubscriptionStatusEnabled:", [v3 ic_isSubscriptionStatusEnabled]);
-  v10 = [v3 username];
-  [(ICMutableUserIdentityProperties *)v4 setUsername:v10];
+  -[ICMutableUserIdentityProperties setSubscriptionStatusEnabled:](v4, "setSubscriptionStatusEnabled:", [accountCopy ic_isSubscriptionStatusEnabled]);
+  username = [accountCopy username];
+  [(ICMutableUserIdentityProperties *)v4 setUsername:username];
 
-  v11 = [v3 ic_ageVerificationExpirationDate];
-  [(ICMutableUserIdentityProperties *)v4 setAgeVerificationExpirationDate:v11];
+  ic_ageVerificationExpirationDate = [accountCopy ic_ageVerificationExpirationDate];
+  [(ICMutableUserIdentityProperties *)v4 setAgeVerificationExpirationDate:ic_ageVerificationExpirationDate];
 
-  v12 = [v3 ic_mergeWithCloudLibraryPreference];
-  [(ICMutableUserIdentityProperties *)v4 setMergeToCloudLibraryPreference:v12];
+  ic_mergeWithCloudLibraryPreference = [accountCopy ic_mergeWithCloudLibraryPreference];
+  [(ICMutableUserIdentityProperties *)v4 setMergeToCloudLibraryPreference:ic_mergeWithCloudLibraryPreference];
 
-  v13 = [v3 ic_homeUserIdentifiers];
-  [(ICMutableUserIdentityProperties *)v4 setHomeUserIdentifiers:v13];
+  ic_homeUserIdentifiers = [accountCopy ic_homeUserIdentifiers];
+  [(ICMutableUserIdentityProperties *)v4 setHomeUserIdentifiers:ic_homeUserIdentifiers];
 
-  v14 = [v3 ic_cloudLibraryStateReason];
-  [(ICMutableUserIdentityProperties *)v4 setCloudLibraryStateReason:v14];
+  ic_cloudLibraryStateReason = [accountCopy ic_cloudLibraryStateReason];
+  [(ICMutableUserIdentityProperties *)v4 setCloudLibraryStateReason:ic_cloudLibraryStateReason];
 
-  v15 = [v3 ic_privateListeningEnabled];
-  [(ICMutableUserIdentityProperties *)v4 setPrivateListeningEnabled:v15];
+  ic_privateListeningEnabled = [accountCopy ic_privateListeningEnabled];
+  [(ICMutableUserIdentityProperties *)v4 setPrivateListeningEnabled:ic_privateListeningEnabled];
 
-  -[ICMutableUserIdentityProperties setActiveLocker:](v4, "setActiveLocker:", [v3 ic_isActiveLockerAccount]);
-  -[ICMutableUserIdentityProperties setActive:](v4, "setActive:", [v3 ic_isActive]);
-  v16 = [v3 ic_privateListeningEnabledForHomeUsers];
-  [(ICMutableUserIdentityProperties *)v4 setPrivateListeningEnabledForHomeUsers:v16];
+  -[ICMutableUserIdentityProperties setActiveLocker:](v4, "setActiveLocker:", [accountCopy ic_isActiveLockerAccount]);
+  -[ICMutableUserIdentityProperties setActive:](v4, "setActive:", [accountCopy ic_isActive]);
+  ic_privateListeningEnabledForHomeUsers = [accountCopy ic_privateListeningEnabledForHomeUsers];
+  [(ICMutableUserIdentityProperties *)v4 setPrivateListeningEnabledForHomeUsers:ic_privateListeningEnabledForHomeUsers];
 
-  v17 = [v3 ic_privacyAcknowledgementVersions];
-  [(ICMutableUserIdentityProperties *)v4 setPrivacyAcknowledgementVersions:v17];
+  ic_privacyAcknowledgementVersions = [accountCopy ic_privacyAcknowledgementVersions];
+  [(ICMutableUserIdentityProperties *)v4 setPrivacyAcknowledgementVersions:ic_privacyAcknowledgementVersions];
 
-  -[ICMutableUserIdentityProperties setU18MinorAccount:](v4, "setU18MinorAccount:", [v3 ic_isU18MinorAccount]);
-  v18 = [v3 accountType];
-  v19 = [v18 identifier];
-  v20 = [v19 isEqualToString:*MEMORY[0x1E69597F8]];
+  -[ICMutableUserIdentityProperties setU18MinorAccount:](v4, "setU18MinorAccount:", [accountCopy ic_isU18MinorAccount]);
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v20 = [identifier isEqualToString:*MEMORY[0x1E69597F8]];
 
   if (v20)
   {
-    -[ICMutableUserIdentityProperties setCloudBackupEnabled:](v4, "setCloudBackupEnabled:", [v3 ic_isCloudBackupEnabled]);
-    v21 = [v3 aa_personID];
-    [(ICMutableUserIdentityProperties *)v4 setICloudPersonID:v21];
+    -[ICMutableUserIdentityProperties setCloudBackupEnabled:](v4, "setCloudBackupEnabled:", [accountCopy ic_isCloudBackupEnabled]);
+    aa_personID = [accountCopy aa_personID];
+    [(ICMutableUserIdentityProperties *)v4 setICloudPersonID:aa_personID];
   }
 
   v22 = [(ICMutableUserIdentityProperties *)v4 copy];
@@ -290,14 +290,14 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
   return v22;
 }
 
-- (id)_userIdentityPropertiesForAccount:(id)a3
+- (id)_userIdentityPropertiesForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_identityPropertiesCache objectForKey:v5];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_identityPropertiesCache objectForKey:identifier];
   if (!v6)
   {
-    v6 = [(ICUserIdentityStoreACAccountBackend *)self _newUserIdentityPropertiesForAccount:v4];
+    v6 = [(ICUserIdentityStoreACAccountBackend *)self _newUserIdentityPropertiesForAccount:accountCopy];
     identityPropertiesCache = self->_identityPropertiesCache;
     if (!identityPropertiesCache)
     {
@@ -308,21 +308,21 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
       identityPropertiesCache = self->_identityPropertiesCache;
     }
 
-    [(NSMutableDictionary *)identityPropertiesCache setObject:v6 forKey:v5];
+    [(NSMutableDictionary *)identityPropertiesCache setObject:v6 forKey:identifier];
   }
 
   return v6;
 }
 
-- (id)_newLocalStoreAccountPropertiesFromAccount:(id)a3
+- (id)_newLocalStoreAccountPropertiesFromAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(ICMutableLocalStoreAccountProperties);
-  v5 = [v3 ic_storefront];
+  ic_storefront = [accountCopy ic_storefront];
 
-  if (v5)
+  if (ic_storefront)
   {
-    v6 = v5;
+    v6 = ic_storefront;
   }
 
   else
@@ -336,49 +336,49 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)_applyLocalStoreAccountProperties:(id)a3 toAccount:(id)a4
+- (void)_applyLocalStoreAccountProperties:(id)properties toAccount:(id)account
 {
-  v5 = a4;
-  v6 = [a3 storefrontIdentifier];
-  [v5 ic_setStorefront:v6];
+  accountCopy = account;
+  storefrontIdentifier = [properties storefrontIdentifier];
+  [accountCopy ic_setStorefront:storefrontIdentifier];
 }
 
-- (void)_applyIdentityProperties:(id)a3 toAccount:(id)a4
+- (void)_applyIdentityProperties:(id)properties toAccount:(id)account
 {
-  v16 = a4;
-  v5 = a3;
-  v6 = [v5 alternateDSID];
-  [v16 ic_setAltDSID:v6];
+  accountCopy = account;
+  propertiesCopy = properties;
+  alternateDSID = [propertiesCopy alternateDSID];
+  [accountCopy ic_setAltDSID:alternateDSID];
 
-  v7 = [v5 DSID];
-  [v16 ic_setDSID:v7];
+  dSID = [propertiesCopy DSID];
+  [accountCopy ic_setDSID:dSID];
 
-  v8 = [v5 firstName];
-  [v16 ic_setFirstName:v8];
+  firstName = [propertiesCopy firstName];
+  [accountCopy ic_setFirstName:firstName];
 
-  v9 = [v5 lastName];
-  [v16 ic_setLastName:v9];
+  lastName = [propertiesCopy lastName];
+  [accountCopy ic_setLastName:lastName];
 
-  [v16 ic_setManagedAppleID:{objc_msgSend(v5, "isManagedAppleID")}];
-  [v16 ic_setSandboxed:{objc_msgSend(v5, "isSandboxed")}];
-  v10 = [v5 storefrontIdentifier];
-  [v16 ic_setStorefront:v10];
+  [accountCopy ic_setManagedAppleID:{objc_msgSend(propertiesCopy, "isManagedAppleID")}];
+  [accountCopy ic_setSandboxed:{objc_msgSend(propertiesCopy, "isSandboxed")}];
+  storefrontIdentifier = [propertiesCopy storefrontIdentifier];
+  [accountCopy ic_setStorefront:storefrontIdentifier];
 
-  [v16 ic_setSubscriptionStatusEnabled:{objc_msgSend(v5, "isSubscriptionStatusEnabled")}];
-  v11 = [v5 username];
-  [v16 setUsername:v11];
+  [accountCopy ic_setSubscriptionStatusEnabled:{objc_msgSend(propertiesCopy, "isSubscriptionStatusEnabled")}];
+  username = [propertiesCopy username];
+  [accountCopy setUsername:username];
 
-  v12 = [v5 mergeToCloudLibraryPreference];
-  [v16 ic_setMergeWithCloudLibraryPreference:v12];
+  mergeToCloudLibraryPreference = [propertiesCopy mergeToCloudLibraryPreference];
+  [accountCopy ic_setMergeWithCloudLibraryPreference:mergeToCloudLibraryPreference];
 
-  v13 = [v5 cloudLibraryStateReason];
-  [v16 ic_setCloudLibraryStateReason:v13];
+  cloudLibraryStateReason = [propertiesCopy cloudLibraryStateReason];
+  [accountCopy ic_setCloudLibraryStateReason:cloudLibraryStateReason];
 
-  v14 = [v5 privateListeningEnabled];
-  [v16 ic_setPrivateListeningEnabled:v14];
+  privateListeningEnabled = [propertiesCopy privateListeningEnabled];
+  [accountCopy ic_setPrivateListeningEnabled:privateListeningEnabled];
 
-  v15 = [v5 isActiveLocker];
-  [v16 ic_setActiveLockerAccount:v15];
+  isActiveLocker = [propertiesCopy isActiveLocker];
+  [accountCopy ic_setActiveLockerAccount:isActiveLocker];
 }
 
 - (void)_notifyDelegateOfBackendChange
@@ -390,22 +390,22 @@ void __43__ICUserIdentityStoreACAccountBackend_init__block_invoke(uint64_t a1)
   v6[2] = __69__ICUserIdentityStoreACAccountBackend__notifyDelegateOfBackendChange__block_invoke;
   v6[3] = &unk_1E7BFA078;
   v7 = WeakRetained;
-  v8 = self;
+  selfCopy = self;
   v5 = WeakRetained;
   dispatch_async(callbackQueue, v6);
 }
 
-- (void)monitoredAccountStore:(id)a3 didChangeCredentialsForAccount:(id)a4
+- (void)monitoredAccountStore:(id)store didChangeCredentialsForAccount:(id)account
 {
-  v5 = a4;
+  accountCopy = account;
   accountStoreDelegateQueue = self->_accountStoreDelegateQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __92__ICUserIdentityStoreACAccountBackend_monitoredAccountStore_didChangeCredentialsForAccount___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = accountCopy;
+  v7 = accountCopy;
   dispatch_async(accountStoreDelegateQueue, v8);
 }
 
@@ -475,17 +475,17 @@ void __92__ICUserIdentityStoreACAccountBackend_monitoredAccountStore_didChangeCr
   os_unfair_lock_unlock((*(a1 + 32) + 56));
 }
 
-- (void)monitoredAccountStore:(id)a3 didRemoveAccount:(id)a4
+- (void)monitoredAccountStore:(id)store didRemoveAccount:(id)account
 {
-  v5 = a4;
+  accountCopy = account;
   accountStoreDelegateQueue = self->_accountStoreDelegateQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__ICUserIdentityStoreACAccountBackend_monitoredAccountStore_didRemoveAccount___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = accountCopy;
+  v7 = accountCopy;
   dispatch_async(accountStoreDelegateQueue, v8);
 }
 
@@ -649,17 +649,17 @@ LABEL_26:
   os_unfair_lock_unlock((*(a1 + 32) + 56));
 }
 
-- (void)monitoredAccountStore:(id)a3 didUpdateAccount:(id)a4
+- (void)monitoredAccountStore:(id)store didUpdateAccount:(id)account
 {
-  v5 = a4;
+  accountCopy = account;
   accountStoreDelegateQueue = self->_accountStoreDelegateQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__ICUserIdentityStoreACAccountBackend_monitoredAccountStore_didUpdateAccount___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = accountCopy;
+  v7 = accountCopy;
   dispatch_async(accountStoreDelegateQueue, v8);
 }
 
@@ -988,17 +988,17 @@ LABEL_66:
   os_unfair_lock_unlock((*(a1 + 32) + 56));
 }
 
-- (void)monitoredAccountStore:(id)a3 didAddAccount:(id)a4
+- (void)monitoredAccountStore:(id)store didAddAccount:(id)account
 {
-  v5 = a4;
+  accountCopy = account;
   accountStoreDelegateQueue = self->_accountStoreDelegateQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__ICUserIdentityStoreACAccountBackend_monitoredAccountStore_didAddAccount___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = accountCopy;
+  v7 = accountCopy;
   dispatch_async(accountStoreDelegateQueue, v8);
 }
 
@@ -1084,10 +1084,10 @@ LABEL_19:
   os_unfair_lock_unlock((*(a1 + 32) + 56));
 }
 
-- (id)storeAccountForDSID:(id)a3 error:(id *)a4
+- (id)storeAccountForDSID:(id)d error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v28 = 0;
@@ -1107,7 +1107,7 @@ LABEL_19:
     {
       v13 = v12;
       v14 = *v25;
-      v22 = a4;
+      errorCopy = error;
       while (2)
       {
         for (i = 0; i != v13; ++i)
@@ -1118,18 +1118,18 @@ LABEL_19:
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 ic_DSID];
-          v18 = v17;
-          if (v17 == v6)
+          ic_DSID = [v16 ic_DSID];
+          v18 = ic_DSID;
+          if (ic_DSID == dCopy)
           {
 
 LABEL_14:
             v10 = v16;
-            a4 = v22;
+            error = errorCopy;
             goto LABEL_15;
           }
 
-          v19 = [v17 isEqual:v6];
+          v19 = [ic_DSID isEqual:dCopy];
 
           if (v19)
           {
@@ -1139,7 +1139,7 @@ LABEL_14:
 
         v13 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
         v10 = 0;
-        a4 = v22;
+        error = errorCopy;
         if (v13)
         {
           continue;
@@ -1160,16 +1160,16 @@ LABEL_15:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v20 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v10;
 }
 
-- (id)localStoreAccountWithError:(id *)a3
+- (id)localStoreAccountWithError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -1220,16 +1220,16 @@ LABEL_12:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v13 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v8;
 }
 
-- (id)allStoreAccountsWithError:(id *)a3
+- (id)allStoreAccountsWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
@@ -1239,16 +1239,16 @@ LABEL_12:
   v8 = [v6 copy];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v9 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v8;
 }
 
-- (id)allManageableStoreAccountDSIDsWithError:(id *)a3
+- (id)allManageableStoreAccountDSIDsWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -1282,8 +1282,8 @@ LABEL_12:
           v14 = *(*(&v19 + 1) + 8 * i);
           if ([v14 ic_isManageable])
           {
-            v15 = [v14 ic_DSID];
-            [v8 addObject:v15];
+            ic_DSID = [v14 ic_DSID];
+            [v8 addObject:ic_DSID];
           }
         }
 
@@ -1295,10 +1295,10 @@ LABEL_12:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v16 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v17 = [v8 copy];
@@ -1306,7 +1306,7 @@ LABEL_12:
   return v17;
 }
 
-- (id)allStoreAccountDSIDsWithError:(id *)a3
+- (id)allStoreAccountDSIDsWithError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -1317,7 +1317,7 @@ LABEL_12:
   v8 = 0;
   if (!v7)
   {
-    v22 = a3;
+    errorCopy = error;
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
     v23 = 0u;
     v24 = 0u;
@@ -1340,13 +1340,13 @@ LABEL_12:
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 ic_DSID];
-          v16 = [v15 unsignedLongLongValue];
+          ic_DSID = [v14 ic_DSID];
+          unsignedLongLongValue = [ic_DSID unsignedLongLongValue];
 
-          if (v16)
+          if (unsignedLongLongValue)
           {
-            v17 = [v14 ic_DSID];
-            [v8 addObject:v17];
+            ic_DSID2 = [v14 ic_DSID];
+            [v8 addObject:ic_DSID2];
           }
         }
 
@@ -1357,14 +1357,14 @@ LABEL_12:
     }
 
     v6 = v21;
-    a3 = v22;
+    error = errorCopy;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v18 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v19 = [v8 copy];
@@ -1372,9 +1372,9 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)setLocalStoreAccountProperties:(id)a3 error:(id *)a4
+- (BOOL)setLocalStoreAccountProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
+  propertiesCopy = properties;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v15 = 0;
@@ -1382,7 +1382,7 @@ LABEL_12:
   v9 = v15;
   if (v8)
   {
-    [(ICUserIdentityStoreACAccountBackend *)self _applyLocalStoreAccountProperties:v6 toAccount:v8];
+    [(ICUserIdentityStoreACAccountBackend *)self _applyLocalStoreAccountProperties:propertiesCopy toAccount:v8];
     v10 = self->_monitoredAccountStore;
     v14 = v9;
     [(ICMonitoredAccountStore *)v10 saveAccount:v8 error:&v14];
@@ -1392,16 +1392,16 @@ LABEL_12:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v9 == 0;
 }
 
-- (id)localStoreAccountPropertiesWithError:(id *)a3
+- (id)localStoreAccountPropertiesWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
@@ -1419,16 +1419,16 @@ LABEL_12:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v9 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v8;
 }
 
-- (id)verificationContextForAccountEstablishmentWithError:(id *)a3
+- (id)verificationContextForAccountEstablishmentWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
@@ -1439,27 +1439,27 @@ LABEL_12:
   if (!v7)
   {
     v9 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v6];
-    v10 = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
-    v8 = [ICUserVerificationContext contextWithACAccount:v9 accountStore:v10];
+    acAccountStore = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
+    v8 = [ICUserVerificationContext contextWithACAccount:v9 accountStore:acAccountStore];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v11 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v8;
 }
 
-- (id)verificationContextForDSID:(id)a3 error:(id *)a4
+- (id)verificationContextForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v15 = 0;
-  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v6 error:&v15];
+  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v15];
 
   v9 = v15;
   if (!(v9 | v8))
@@ -1474,31 +1474,31 @@ LABEL_12:
 
   else
   {
-    v11 = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
-    v10 = [ICUserVerificationContext contextWithACAccount:v8 accountStore:v11];
+    acAccountStore = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
+    v10 = [ICUserVerificationContext contextWithACAccount:v8 accountStore:acAccountStore];
 
     v12 = [(ICUserIdentityStoreACAccountBackend *)self _userIdentityPropertiesForAccount:v8];
     [v10 setIdentityProperties:v12];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v13 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v10;
 }
 
-- (BOOL)setIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5
+- (BOOL)setIdentityProperties:(id)properties forDSID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v20 = 0;
-  v11 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v9 error:&v20];
+  v11 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v20];
 
   v12 = v20;
   if (!(v12 | v11))
@@ -1508,7 +1508,7 @@ LABEL_12:
 
   if (!v12)
   {
-    [(ICUserIdentityStoreACAccountBackend *)self _applyIdentityProperties:v8 toAccount:v11];
+    [(ICUserIdentityStoreACAccountBackend *)self _applyIdentityProperties:propertiesCopy toAccount:v11];
     v13 = self->_monitoredAccountStore;
     v19 = 0;
     [(ICMonitoredAccountStore *)v13 saveAccount:v11 error:&v19];
@@ -1516,32 +1516,32 @@ LABEL_12:
     if (!v12)
     {
       identityPropertiesCache = self->_identityPropertiesCache;
-      v15 = [v8 copy];
-      v16 = [v11 identifier];
-      [(NSMutableDictionary *)identityPropertiesCache setObject:v15 forKey:v16];
+      v15 = [propertiesCopy copy];
+      identifier = [v11 identifier];
+      [(NSMutableDictionary *)identityPropertiesCache setObject:v15 forKey:identifier];
 
       v12 = 0;
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a5)
+  if (error)
   {
     v17 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (BOOL)replaceIdentityProperties:(id)a3 forDSID:(id)a4 error:(id *)a5
+- (BOOL)replaceIdentityProperties:(id)properties forDSID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  propertiesCopy = properties;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v20 = 0;
-  v11 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v9 error:&v20];
+  v11 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v20];
 
   v12 = v20;
   if (!(v12 | v11))
@@ -1551,7 +1551,7 @@ LABEL_12:
 
   if (!v12)
   {
-    [(ICUserIdentityStoreACAccountBackend *)self _applyIdentityProperties:v8 toAccount:v11];
+    [(ICUserIdentityStoreACAccountBackend *)self _applyIdentityProperties:propertiesCopy toAccount:v11];
     v13 = self->_monitoredAccountStore;
     v19 = 0;
     [(ICMonitoredAccountStore *)v13 saveAccount:v11 error:&v19];
@@ -1559,44 +1559,44 @@ LABEL_12:
     if (!v12)
     {
       identityPropertiesCache = self->_identityPropertiesCache;
-      v15 = [v8 copy];
-      v16 = [v11 identifier];
-      [(NSMutableDictionary *)identityPropertiesCache setObject:v15 forKey:v16];
+      v15 = [propertiesCopy copy];
+      identifier = [v11 identifier];
+      [(NSMutableDictionary *)identityPropertiesCache setObject:v15 forKey:identifier];
 
       v12 = 0;
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a5)
+  if (error)
   {
     v17 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (void)removeIdentityForDSID:(id)a3 completion:(id)a4
+- (void)removeIdentityForDSID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v22 = 0;
-  v9 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v7 error:&v22];
+  v9 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v22];
 
   v10 = v22;
   if (v10)
   {
-    if (v6)
+    if (completionCopy)
     {
       callbackQueue = self->_callbackQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __72__ICUserIdentityStoreACAccountBackend_removeIdentityForDSID_completion___block_invoke;
       block[3] = &unk_1E7BF9EC8;
-      v21 = v6;
+      v21 = completionCopy;
       v20 = v10;
       dispatch_async(callbackQueue, block);
 
@@ -1609,27 +1609,27 @@ LABEL_8:
   {
     if (v9)
     {
-      v13 = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
+      acAccountStore = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __72__ICUserIdentityStoreACAccountBackend_removeIdentityForDSID_completion___block_invoke_3;
       v15[3] = &unk_1E7BF98C0;
       v15[4] = self;
-      v16 = v6;
-      [v13 removeAccount:v9 withCompletionHandler:v15];
+      v16 = completionCopy;
+      [acAccountStore removeAccount:v9 withCompletionHandler:v15];
 
       v12 = v16;
       goto LABEL_8;
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v14 = self->_callbackQueue;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __72__ICUserIdentityStoreACAccountBackend_removeIdentityForDSID_completion___block_invoke_2;
       v17[3] = &unk_1E7BF9D20;
-      v18 = v6;
+      v18 = completionCopy;
       dispatch_async(v14, v17);
       v12 = v18;
       goto LABEL_8;
@@ -1661,7 +1661,7 @@ void __72__ICUserIdentityStoreACAccountBackend_removeIdentityForDSID_completion_
   os_unfair_lock_unlock((*(a1 + 32) + 56));
 }
 
-- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)a3
+- (id)identityPropertiesForPrimaryICloudAccountWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
@@ -1686,22 +1686,22 @@ void __72__ICUserIdentityStoreACAccountBackend_removeIdentityForDSID_completion_
   v9 = 0;
 LABEL_6:
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v10 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   return v9;
 }
 
-- (id)identityPropertiesForDSID:(id)a3 error:(id *)a4
+- (id)identityPropertiesForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v14 = 0;
-  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v6 error:&v14];
+  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v14];
 
   v9 = v14;
   if (v9 | v8)
@@ -1722,29 +1722,29 @@ LABEL_6:
   v11 = 0;
 LABEL_6:
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v12 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (BOOL)disableLockerAccountDSID:(id)a3 error:(id *)a4
+- (BOOL)disableLockerAccountDSID:(id)d error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"ICUserIdentityStoreACAccountBackend.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"accountDSID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICUserIdentityStoreACAccountBackend.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"accountDSID != nil"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v20 = 0;
-  v9 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v7 error:&v20];
+  v9 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v20];
   v10 = v20;
   v11 = v10;
   if (v9)
@@ -1765,9 +1765,9 @@ LABEL_6:
   v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = ICCreateLoggableValueForDSID(v7);
+    v13 = ICCreateLoggableValueForDSID(dCopy);
     *buf = 138543874;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v13;
     v25 = 2114;
@@ -1778,9 +1778,9 @@ LABEL_6:
   if (!v11)
   {
 LABEL_11:
-    v14 = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
+    acAccountStore = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
     v19 = 0;
-    v15 = [v14 ic_disableActiveLockerAccount:v9 error:&v19];
+    v15 = [acAccountStore ic_disableActiveLockerAccount:v9 error:&v19];
     v11 = v19;
 
     if (v15)
@@ -1791,35 +1791,35 @@ LABEL_11:
 
 LABEL_13:
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v16 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v11 == 0;
 }
 
-- (BOOL)updateActiveLockerAccountDSID:(id)a3 error:(id *)a4
+- (BOOL)updateActiveLockerAccountDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v16 = 0;
-  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v6 error:&v16];
+  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v16];
 
   v9 = v16;
   v10 = v9;
-  if (v6 && !v9 && !v8)
+  if (dCopy && !v9 && !v8)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7401 userInfo:0];
   }
 
   if (!v10)
   {
-    v11 = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
+    acAccountStore = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
     v15 = 0;
-    v12 = [v11 ic_setActiveLockerAccount:v8 error:&v15];
+    v12 = [acAccountStore ic_setActiveLockerAccount:v8 error:&v15];
     v10 = v15;
 
     if (v12)
@@ -1829,79 +1829,79 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v13 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v10 == 0;
 }
 
-- (id)defaultMediaAccountDSIDWithError:(id *)a3
+- (id)defaultMediaAccountDSIDWithError:(id *)error
 {
   v7 = 0;
   v4 = [(ICUserIdentityStoreACAccountBackend *)self activeAccountDSIDWithError:&v7];
   v5 = v7;
-  if (a3)
+  if (error)
   {
     v5 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
   return v4;
 }
 
-- (id)accountDSIDForAltDSID:(id)a3 error:(id *)a4
+- (id)accountDSIDForAltDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v13 = 0;
-  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForAltDSID:v6 error:&v13];
+  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForAltDSID:dCopy error:&v13];
 
   v9 = v13;
-  v10 = [v8 ic_DSID];
+  ic_DSID = [v8 ic_DSID];
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
-  return v10;
+  return ic_DSID;
 }
 
-- (id)activeLockerAccountDSIDWithError:(id *)a3
+- (id)activeLockerAccountDSIDWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v11 = 0;
   v6 = [(ICMonitoredAccountStore *)monitoredAccountStore activeStoreAccountWithError:&v11];
   v7 = v11;
-  v8 = 0;
+  ic_DSID = 0;
   if ([v6 ic_isActiveLockerAccount])
   {
-    v8 = [v6 ic_DSID];
+    ic_DSID = [v6 ic_DSID];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v9 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
-  return v8;
+  return ic_DSID;
 }
 
-- (BOOL)updateActiveAccountDSID:(id)a3 error:(id *)a4
+- (BOOL)updateActiveAccountDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v15 = 0;
-  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:v6 error:&v15];
+  v8 = [(ICMonitoredAccountStore *)monitoredAccountStore storeAccountForDSID:dCopy error:&v15];
 
   v9 = v15;
   if (!(v9 | v8))
@@ -1911,9 +1911,9 @@ LABEL_13:
 
   if (!v9)
   {
-    v10 = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
+    acAccountStore = [(ICMonitoredAccountStore *)self->_monitoredAccountStore acAccountStore];
     v14 = 0;
-    v11 = [v10 ic_setActiveStoreAccount:v8 error:&v14];
+    v11 = [acAccountStore ic_setActiveStoreAccount:v8 error:&v14];
     v9 = v14;
 
     if (v11)
@@ -1923,31 +1923,31 @@ LABEL_13:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v9 == 0;
 }
 
-- (id)activeAccountDSIDWithError:(id *)a3
+- (id)activeAccountDSIDWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   monitoredAccountStore = self->_monitoredAccountStore;
   v11 = 0;
   v6 = [(ICMonitoredAccountStore *)monitoredAccountStore activeStoreAccountWithError:&v11];
   v7 = v11;
-  v8 = [v6 ic_DSID];
+  ic_DSID = [v6 ic_DSID];
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v9 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
-  return v8;
+  return ic_DSID;
 }
 
 @end

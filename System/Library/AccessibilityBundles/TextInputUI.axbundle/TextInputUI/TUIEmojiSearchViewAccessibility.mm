@@ -1,5 +1,5 @@
 @interface TUIEmojiSearchViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axInstallAccessibilityLabels;
 - (void)addButtons;
@@ -8,13 +8,13 @@
 
 @implementation TUIEmojiSearchViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TUIEmojiSearchView" hasInstanceMethod:@"addButtons" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TUIEmojiSearchView" hasInstanceVariable:@"_searchTextField" withType:"TUIEmojiSearchTextField"];
-  [v3 validateClass:@"_UIScenePresentationView"];
-  [v3 validateClass:@"TUIEmojiSearchView" hasInstanceMethod:@"updatePlaceholder" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TUIEmojiSearchView" hasInstanceMethod:@"addButtons" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TUIEmojiSearchView" hasInstanceVariable:@"_searchTextField" withType:"TUIEmojiSearchTextField"];
+  [validationsCopy validateClass:@"_UIScenePresentationView"];
+  [validationsCopy validateClass:@"TUIEmojiSearchView" hasInstanceMethod:@"updatePlaceholder" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

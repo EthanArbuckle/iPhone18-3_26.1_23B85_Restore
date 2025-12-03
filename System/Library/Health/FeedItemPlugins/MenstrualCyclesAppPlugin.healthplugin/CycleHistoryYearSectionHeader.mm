@@ -1,13 +1,13 @@
 @interface CycleHistoryYearSectionHeader
-- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithReuseIdentifier:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation CycleHistoryYearSectionHeader
 
-- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithReuseIdentifier:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -21,7 +21,7 @@
   return sub_29DEB7120(v3, v4);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin29CycleHistoryYearSectionHeader_yearLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];

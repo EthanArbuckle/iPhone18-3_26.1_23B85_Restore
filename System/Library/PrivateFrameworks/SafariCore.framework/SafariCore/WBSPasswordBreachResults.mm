@@ -1,10 +1,10 @@
 @interface WBSPasswordBreachResults
-- (WBSPasswordBreachResults)initWithContext:(id)a3;
+- (WBSPasswordBreachResults)initWithContext:(id)context;
 - (id)recentlyBreachedResultRecords;
-- (id)resultRecordsForQueries:(id)a3;
+- (id)resultRecordsForQueries:(id)queries;
 - (void)_restoreResultsFromPersistentStoreIfNecessary;
 - (void)_saveResultsToPersistentStore;
-- (void)addResultRecords:(id)a3;
+- (void)addResultRecords:(id)records;
 - (void)clearAllResultsSynchronously;
 - (void)clearRecentlyBreachedResultRecords;
 - (void)markAllCompromisedResultRecordsAsRecentlyBreached;
@@ -12,9 +12,9 @@
 
 @implementation WBSPasswordBreachResults
 
-- (WBSPasswordBreachResults)initWithContext:(id)a3
+- (WBSPasswordBreachResults)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = WBSPasswordBreachResults;
   v6 = [(WBSPasswordBreachResults *)&v10 init];
@@ -22,17 +22,17 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)resultRecordsForQueries:(id)a3
+- (id)resultRecordsForQueries:(id)queries
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queriesCopy = queries;
   os_unfair_lock_lock(&self->_lock);
   [(WBSPasswordBreachResults *)self _restoreResultsFromPersistentStoreIfNecessary];
   v22 = [MEMORY[0x1E695DF00] now];
@@ -41,7 +41,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = queriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v7)
   {
@@ -63,26 +63,26 @@
       }
 
       v11 = *(*(&v23 + 1) + 8 * i);
-      v12 = [v11 persistentIdentifier];
-      v13 = [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier objectForKeyedSubscript:v12];
+      persistentIdentifier = [v11 persistentIdentifier];
+      v13 = [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier objectForKeyedSubscript:persistentIdentifier];
       if (v13)
       {
         v14 = v13;
-        v15 = [(WBSPasswordBreachResultRecord *)v13 dateLastModified];
-        v16 = [v11 dateLastModified];
-        v17 = [v15 compare:v16];
+        dateLastModified = [(WBSPasswordBreachResultRecord *)v13 dateLastModified];
+        dateLastModified2 = [v11 dateLastModified];
+        v17 = [dateLastModified compare:dateLastModified2];
 
         if (v17 != -1)
         {
           goto LABEL_10;
         }
 
-        [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier setObject:0 forKeyedSubscript:v12];
+        [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier setObject:0 forKeyedSubscript:persistentIdentifier];
 
         v20 = 1;
       }
 
-      v14 = [[WBSPasswordBreachResultRecord alloc] initWithPersistentIdentifier:v12 result:0 dateLastModified:v22];
+      v14 = [[WBSPasswordBreachResultRecord alloc] initWithPersistentIdentifier:persistentIdentifier result:0 dateLastModified:v22];
 LABEL_10:
       [v5 addObject:v14];
     }
@@ -106,20 +106,20 @@ LABEL_15:
   return v5;
 }
 
-- (void)addResultRecords:(id)a3
+- (void)addResultRecords:(id)records
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   os_unfair_lock_lock(&self->_lock);
   [(WBSPasswordBreachResults *)self _restoreResultsFromPersistentStoreIfNecessary];
-  v5 = [(WBSPasswordBreachContext *)self->_context configuration];
-  v6 = [v5 verboseSensitiveLoggingEnabled];
+  configuration = [(WBSPasswordBreachContext *)self->_context configuration];
+  verboseSensitiveLoggingEnabled = [configuration verboseSensitiveLoggingEnabled];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v4;
+  v7 = recordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v8)
   {
@@ -137,25 +137,25 @@ LABEL_15:
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 result];
-        v15 = [v13 persistentIdentifier];
-        v16 = [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier objectForKeyedSubscript:v15];
-        [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier setObject:v13 forKeyedSubscript:v15];
-        if ([v16 result] == 1 && (v14 & 0xFFFFFFFFFFFFFFFELL) == 2)
+        result = [v13 result];
+        persistentIdentifier = [v13 persistentIdentifier];
+        v16 = [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier objectForKeyedSubscript:persistentIdentifier];
+        [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier setObject:v13 forKeyedSubscript:persistentIdentifier];
+        if ([v16 result] == 1 && (result & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          [(NSMutableSet *)self->_recentlyBreachedPersistentIdentifiers addObject:v15];
+          [(NSMutableSet *)self->_recentlyBreachedPersistentIdentifiers addObject:persistentIdentifier];
         }
 
-        if (v6)
+        if (verboseSensitiveLoggingEnabled)
         {
-          if (v14 > 3)
+          if (result > 3)
           {
             v18 = 0;
           }
 
           else
           {
-            v18 = off_1E7CF33B8[v14];
+            v18 = off_1E7CF33B8[result];
           }
 
           v19 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
@@ -163,7 +163,7 @@ LABEL_15:
           {
             v23 = MEMORY[0x1E696AEC0];
             log = v19;
-            v20 = [v23 safari_stringAsHexWithData:v15];
+            v20 = [v23 safari_stringAsHexWithData:persistentIdentifier];
             *buf = v22;
             v30 = v20;
             v31 = 2117;
@@ -285,8 +285,8 @@ void __77__WBSPasswordBreachResults_markAllCompromisedResultRecordsAsRecentlyBre
   [(NSMutableSet *)self->_recentlyBreachedPersistentIdentifiers removeAllObjects];
   [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier removeAllObjects];
   [(WBSPasswordBreachResults *)self _saveResultsToPersistentStore];
-  v3 = [(WBSPasswordBreachContext *)self->_context store];
-  [v3 saveStoreSynchronously];
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  [store saveStoreSynchronously];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -294,13 +294,13 @@ void __77__WBSPasswordBreachResults_markAllCompromisedResultRecordsAsRecentlyBre
 - (void)_saveResultsToPersistentStore
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v6 = [(WBSPasswordBreachContext *)self->_context store];
-  v3 = [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier allValues];
-  v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_43];
+  store = [(WBSPasswordBreachContext *)self->_context store];
+  allValues = [(NSMutableDictionary *)self->_resultRecordsByPersistentIdentifier allValues];
+  v4 = [allValues safari_mapObjectsUsingBlock:&__block_literal_global_43];
 
-  [v6 setResultRecords:v4];
-  v5 = [(NSMutableSet *)self->_recentlyBreachedPersistentIdentifiers allObjects];
-  [v6 setRecentlyBreachedPersistentIdentifiers:v5];
+  [store setResultRecords:v4];
+  allObjects = [(NSMutableSet *)self->_recentlyBreachedPersistentIdentifiers allObjects];
+  [store setRecentlyBreachedPersistentIdentifiers:allObjects];
 }
 
 - (void)_restoreResultsFromPersistentStoreIfNecessary

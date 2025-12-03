@@ -1,8 +1,8 @@
 @interface WLKURLBagUtilities
 + (BOOL)isFullTVAppEnabled;
 + (id)isFullTVAppEnabledCachedValue;
-+ (void)isFullTVAppEnabledWithCompletion:(id)a3;
-+ (void)isFullTVAppEnabledwithCompletion:(id)a3;
++ (void)isFullTVAppEnabledWithCompletion:(id)completion;
++ (void)isFullTVAppEnabledwithCompletion:(id)completion;
 @end
 
 @implementation WLKURLBagUtilities
@@ -30,16 +30,16 @@
   return v3;
 }
 
-+ (void)isFullTVAppEnabledwithCompletion:(id)a3
++ (void)isFullTVAppEnabledwithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__WLKURLBagUtilities_isFullTVAppEnabledwithCompletion___block_invoke;
   v6[3] = &unk_279E5EA68;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 isFullTVAppEnabledWithCompletion:v6];
 }
 
@@ -54,20 +54,20 @@ uint64_t __55__WLKURLBagUtilities_isFullTVAppEnabledwithCompletion___block_invok
   return result;
 }
 
-+ (void)isFullTVAppEnabledWithCompletion:(id)a3
++ (void)isFullTVAppEnabledWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = WLKTVAppEnabledOverride();
   v5 = v4;
   if (v4)
   {
     NSLog(&cfstr_Isfulltvappena.isa, [v4 BOOLValue]);
-    v6 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-    [v6 setBool:objc_msgSend(v5 forKey:{"BOOLValue"), @"lastKnownTVAppEnabledValue"}];
+    wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+    [wlk_userDefaults setBool:objc_msgSend(v5 forKey:{"BOOLValue"), @"lastKnownTVAppEnabledValue"}];
 
-    if (v3)
+    if (completionCopy)
     {
-      v3[2](v3, [v5 BOOLValue], 0);
+      completionCopy[2](completionCopy, [v5 BOOLValue], 0);
     }
   }
 
@@ -78,7 +78,7 @@ uint64_t __55__WLKURLBagUtilities_isFullTVAppEnabledwithCompletion___block_invok
     block[1] = 3221225472;
     block[2] = __55__WLKURLBagUtilities_isFullTVAppEnabledWithCompletion___block_invoke;
     block[3] = &unk_279E5EA90;
-    v9 = v3;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -146,8 +146,8 @@ LABEL_11:
 
 + (id)isFullTVAppEnabledCachedValue
 {
-  v2 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  v3 = [v2 objectForKey:@"lastKnownTVAppEnabledValue"];
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  v3 = [wlk_userDefaults objectForKey:@"lastKnownTVAppEnabledValue"];
 
   return v3;
 }

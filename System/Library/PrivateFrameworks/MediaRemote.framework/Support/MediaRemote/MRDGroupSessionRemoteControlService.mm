@@ -1,18 +1,18 @@
 @interface MRDGroupSessionRemoteControlService
-- (MRDGroupSessionRemoteControlService)initWithGroupSessionManager:(id)a3 delegate:(id)a4;
+- (MRDGroupSessionRemoteControlService)initWithGroupSessionManager:(id)manager delegate:(id)delegate;
 - (MRDGroupSessionRemoteControlServiceDelegate)delegate;
 - (void)dealloc;
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4;
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4;
-- (void)session:(id)a3 didUpdateParticipants:(id)a4;
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session;
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session;
+- (void)session:(id)session didUpdateParticipants:(id)participants;
 @end
 
 @implementation MRDGroupSessionRemoteControlService
 
-- (MRDGroupSessionRemoteControlService)initWithGroupSessionManager:(id)a3 delegate:(id)a4
+- (MRDGroupSessionRemoteControlService)initWithGroupSessionManager:(id)manager delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = MRDGroupSessionRemoteControlService;
   v8 = [(MRDGroupSessionRemoteControlService *)&v14 init];
@@ -20,12 +20,12 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = +[NSMapTable weakToStrongObjectsMapTable];
     connections = v9->_connections;
     v9->_connections = v10;
 
-    [v6 addObserver:v9];
+    [managerCopy addObserver:v9];
     v12 = _MRLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionRemoteControlService] <%@> Dealloc", buf, 0xCu);
   }
 
@@ -53,50 +53,50 @@
   [(MRDGroupSessionRemoteControlService *)&v4 dealloc];
 }
 
-- (void)manager:(id)a3 didStartHostedGroupSession:(id)a4
+- (void)manager:(id)manager didStartHostedGroupSession:(id)session
 {
-  v7 = a4;
-  v5 = [(MRDGroupSessionRemoteControlService *)self connections];
+  sessionCopy = session;
+  connections = [(MRDGroupSessionRemoteControlService *)self connections];
   v6 = +[NSMapTable strongToStrongObjectsMapTable];
-  [v5 setObject:v6 forKey:v7];
+  [connections setObject:v6 forKey:sessionCopy];
 
-  [v7 addObserver:self];
+  [sessionCopy addObserver:self];
 }
 
-- (void)manager:(id)a3 didEndHostedGroupSession:(id)a4
+- (void)manager:(id)manager didEndHostedGroupSession:(id)session
 {
-  v6 = a4;
-  v5 = [(MRDGroupSessionRemoteControlService *)self connections];
-  [v5 removeObjectForKey:v6];
+  sessionCopy = session;
+  connections = [(MRDGroupSessionRemoteControlService *)self connections];
+  [connections removeObjectForKey:sessionCopy];
 
-  [v6 removeObserver:self];
+  [sessionCopy removeObserver:self];
 }
 
-- (void)session:(id)a3 didUpdateParticipants:(id)a4
+- (void)session:(id)session didUpdateParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 msv_compactMap:&stru_1004BAC28];
-  v54 = v7;
-  v9 = [v7 msv_compactMap:&stru_1004BAC48];
+  sessionCopy = session;
+  participantsCopy = participants;
+  v8 = [participantsCopy msv_compactMap:&stru_1004BAC28];
+  v54 = participantsCopy;
+  v9 = [participantsCopy msv_compactMap:&stru_1004BAC48];
   v49 = v8;
   v10 = [NSMutableSet setWithArray:v8];
   v48 = v9;
   v11 = [NSMutableSet setWithArray:v9];
-  v12 = [v6 leader];
-  v13 = [v12 identifier];
-  [v10 removeObject:v13];
+  leader = [sessionCopy leader];
+  identifier = [leader identifier];
+  [v10 removeObject:identifier];
 
-  v14 = [v6 leader];
-  v15 = [v14 identifier];
+  leader2 = [sessionCopy leader];
+  identifier2 = [leader2 identifier];
   v46 = v11;
-  [v11 removeObject:v15];
+  [v11 removeObject:identifier2];
 
-  v16 = [(MRDGroupSessionRemoteControlService *)self connections];
-  v17 = [v16 objectForKey:v6];
-  v18 = [v17 keyEnumerator];
-  v19 = [v18 allObjects];
-  v20 = [NSMutableSet setWithArray:v19];
+  connections = [(MRDGroupSessionRemoteControlService *)self connections];
+  v17 = [connections objectForKey:sessionCopy];
+  keyEnumerator = [v17 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v20 = [NSMutableSet setWithArray:allObjects];
 
   v50 = [v10 mutableCopy];
   [v50 minusSet:v20];
@@ -133,13 +133,13 @@
         }
 
         v28 = [[NSError alloc] initWithMRError:104 description:@"Participant removed"];
-        v29 = [(MRDGroupSessionRemoteControlService *)self connections];
-        v30 = [v29 objectForKey:v6];
+        connections2 = [(MRDGroupSessionRemoteControlService *)self connections];
+        v30 = [connections2 objectForKey:sessionCopy];
         v31 = [v30 objectForKey:v26];
         [v31 closeWithError:v28];
 
-        v32 = [(MRDGroupSessionRemoteControlService *)self connections];
-        v33 = [v32 objectForKey:v6];
+        connections3 = [(MRDGroupSessionRemoteControlService *)self connections];
+        v33 = [connections3 objectForKey:sessionCopy];
         [v33 removeObjectForKey:v26];
       }
 
@@ -179,15 +179,15 @@
         if (v38)
         {
           v39 = [MRDGroupSessionTransportConnection alloc];
-          v40 = [v38 identifier];
-          v41 = [(MRDGroupSessionTransportConnection *)v39 initWithGroupSession:v6 participantIdentifier:v40];
+          identifier3 = [v38 identifier];
+          v41 = [(MRDGroupSessionTransportConnection *)v39 initWithGroupSession:sessionCopy participantIdentifier:identifier3];
 
-          v42 = [(MRDGroupSessionRemoteControlService *)self connections];
-          v43 = [v42 objectForKey:v6];
+          connections4 = [(MRDGroupSessionRemoteControlService *)self connections];
+          v43 = [connections4 objectForKey:sessionCopy];
           [v43 setObject:v41 forKey:v37];
 
-          v44 = [(MRDGroupSessionRemoteControlService *)self delegate];
-          [v44 groupSessionRemoteControlService:self didAcceptConnection:v41];
+          delegate = [(MRDGroupSessionRemoteControlService *)self delegate];
+          [delegate groupSessionRemoteControlService:self didAcceptConnection:v41];
         }
 
         else
@@ -198,7 +198,7 @@
             *buf = 138412546;
             v65 = v37;
             v66 = 2112;
-            v67 = v6;
+            v67 = sessionCopy;
             _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "[MRDGroupSessionRemoteControlService] Could not find added participant with identifier: %@ on session: %@", buf, 0x16u);
           }
         }

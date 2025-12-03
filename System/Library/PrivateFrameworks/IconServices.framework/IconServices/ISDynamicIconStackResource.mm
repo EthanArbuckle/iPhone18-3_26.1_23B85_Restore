@@ -1,26 +1,26 @@
 @interface ISDynamicIconStackResource
-- (ISDynamicIconStackResource)initWithTypeIdentifier:(id)a3 layerGroups:(id)a4;
-- (id)_compositingDescriptorWithSize:(CGSize)a3 scale:(double)a4;
-- (id)baseIconStackForSize:(CGSize)a3 scale:(double)a4;
-- (id)iconStackForSize:(CGSize)a3 scale:(double)a4;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
-- (id)layerDataForSize:(CGSize)a3 scale:(double)a4;
+- (ISDynamicIconStackResource)initWithTypeIdentifier:(id)identifier layerGroups:(id)groups;
+- (id)_compositingDescriptorWithSize:(CGSize)size scale:(double)scale;
+- (id)baseIconStackForSize:(CGSize)size scale:(double)scale;
+- (id)iconStackForSize:(CGSize)size scale:(double)scale;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
+- (id)layerDataForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISDynamicIconStackResource
 
-- (ISDynamicIconStackResource)initWithTypeIdentifier:(id)a3 layerGroups:(id)a4
+- (ISDynamicIconStackResource)initWithTypeIdentifier:(id)identifier layerGroups:(id)groups
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  groupsCopy = groups;
   v18.receiver = self;
   v18.super_class = ISDynamicIconStackResource;
   v9 = [(ISDynamicIconStackResource *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_typeIdentifier, a3);
-    objc_storeStrong(&v10->_layerGroups, a4);
+    objc_storeStrong(&v9->_typeIdentifier, identifier);
+    objc_storeStrong(&v10->_layerGroups, groups);
     objc_initWeak(&location, v10);
     v11 = [ISICRCompositor alloc];
     v15[0] = MEMORY[0x1E69E9820];
@@ -47,23 +47,23 @@ id __65__ISDynamicIconStackResource_initWithTypeIdentifier_layerGroups___block_i
   return v8;
 }
 
-- (id)baseIconStackForSize:(CGSize)a3 scale:(double)a4
+- (id)baseIconStackForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v38 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E69636B0];
-  v9 = [(ISDynamicIconStackResource *)self typeIdentifier];
-  v10 = [v8 typeRecordWithIdentifier:v9];
+  typeIdentifier = [(ISDynamicIconStackResource *)self typeIdentifier];
+  v10 = [v8 typeRecordWithIdentifier:typeIdentifier];
 
   if (!v10)
   {
     v14 = _ISDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v29 = [(ISDynamicIconStackResource *)self typeIdentifier];
+      typeIdentifier2 = [(ISDynamicIconStackResource *)self typeIdentifier];
       v36 = 138412290;
-      v37 = v29;
+      v37 = typeIdentifier2;
       v30 = "No record exists for type: '%@'";
 LABEL_11:
       _os_log_impl(&dword_1A77B8000, v14, OS_LOG_TYPE_INFO, v30, &v36, 0xCu);
@@ -79,9 +79,9 @@ LABEL_12:
     v14 = _ISDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v29 = [(ISDynamicIconStackResource *)self typeIdentifier];
+      typeIdentifier2 = [(ISDynamicIconStackResource *)self typeIdentifier];
       v36 = 138412290;
-      v37 = v29;
+      v37 = typeIdentifier2;
       v30 = "'%@' cannot provide icon resources";
       goto LABEL_11;
     }
@@ -89,45 +89,45 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = [v10 declaringBundleRecord];
-  v12 = [v11 URL];
-  v13 = [v10 iconDictionary];
-  v14 = [ISResourceProvider resourceWithBundleURL:v12 iconDictionary:v13 options:4];
+  declaringBundleRecord = [v10 declaringBundleRecord];
+  v12 = [declaringBundleRecord URL];
+  iconDictionary = [v10 iconDictionary];
+  v14 = [ISResourceProvider resourceWithBundleURL:v12 iconDictionary:iconDictionary options:4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
-    v16 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setAppearance:](v15, "setAppearance:", [v16 appearance]);
+    compositingDescriptor = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setAppearance:](v15, "setAppearance:", [compositingDescriptor appearance]);
 
-    v17 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setAppearanceVariant:](v15, "setAppearanceVariant:", [v17 appearanceVariant]);
+    compositingDescriptor2 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setAppearanceVariant:](v15, "setAppearanceVariant:", [compositingDescriptor2 appearanceVariant]);
 
-    v18 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    v19 = [v18 tintColor];
-    [v15 setTintColor:v19];
+    compositingDescriptor3 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    tintColor = [compositingDescriptor3 tintColor];
+    [v15 setTintColor:tintColor];
 
-    v20 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setBackground:](v15, "setBackground:", [v20 background]);
+    compositingDescriptor4 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setBackground:](v15, "setBackground:", [compositingDescriptor4 background]);
 
-    v21 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setShouldApplyMask:](v15, "setShouldApplyMask:", [v21 shouldApplyMask]);
+    compositingDescriptor5 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setShouldApplyMask:](v15, "setShouldApplyMask:", [compositingDescriptor5 shouldApplyMask]);
 
-    v22 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setLanguageDirection:](v15, "setLanguageDirection:", [v22 languageDirection]);
+    compositingDescriptor6 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setLanguageDirection:](v15, "setLanguageDirection:", [compositingDescriptor6 languageDirection]);
 
-    v23 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setPlatformStyle:](v15, "setPlatformStyle:", [v23 platformStyle]);
+    compositingDescriptor7 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setPlatformStyle:](v15, "setPlatformStyle:", [compositingDescriptor7 platformStyle]);
 
-    v24 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    -[NSObject setShape:](v15, "setShape:", [v24 shape]);
+    compositingDescriptor8 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    -[NSObject setShape:](v15, "setShape:", [compositingDescriptor8 shape]);
 
-    v25 = [v15 iconStackForSize:width scale:height, a4];
-    v26 = v25;
-    if (v25)
+    scale = [v15 iconStackForSize:width scale:height, scale];
+    v26 = scale;
+    if (scale)
     {
-      v27 = v25;
+      v27 = scale;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -142,9 +142,9 @@ LABEL_12:
       v32 = _ISDefaultLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
-        v33 = [(ISDynamicIconStackResource *)self typeIdentifier];
+        typeIdentifier3 = [(ISDynamicIconStackResource *)self typeIdentifier];
         v36 = 138412290;
-        v37 = v33;
+        v37 = typeIdentifier3;
         _os_log_impl(&dword_1A77B8000, v32, OS_LOG_TYPE_INFO, "Failed to retrieve base icon stack resource for '%@'", &v36, 0xCu);
       }
 
@@ -157,9 +157,9 @@ LABEL_12:
     v15 = _ISDefaultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v31 = [(ISDynamicIconStackResource *)self typeIdentifier];
+      typeIdentifier4 = [(ISDynamicIconStackResource *)self typeIdentifier];
       v36 = 138412290;
-      v37 = v31;
+      v37 = typeIdentifier4;
       _os_log_impl(&dword_1A77B8000, v15, OS_LOG_TYPE_INFO, "Failed to find base icon stack resource for '%@'", &v36, 0xCu);
     }
 
@@ -172,10 +172,10 @@ LABEL_21:
   return v27;
 }
 
-- (id)iconStackForSize:(CGSize)a3 scale:(double)a4
+- (id)iconStackForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v47 = *MEMORY[0x1E69E9840];
   v8 = [ISDynamicIconStackResource baseIconStackForSize:"baseIconStackForSize:scale:" scale:?];
   v9 = v8;
@@ -185,20 +185,20 @@ LABEL_21:
     v11 = v10;
     [v9 size];
     v13 = v12;
-    v14 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    if ([v14 appearanceVariant] == 2)
+    compositingDescriptor = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    if ([compositingDescriptor appearanceVariant] == 2)
     {
     }
 
     else
     {
-      v16 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-      v17 = [v16 appearanceVariant];
+      compositingDescriptor2 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+      appearanceVariant = [compositingDescriptor2 appearanceVariant];
 
-      if (v17 != 3)
+      if (appearanceVariant != 3)
       {
-        v33 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-        if ([v33 appearanceVariant])
+        compositingDescriptor3 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+        if ([compositingDescriptor3 appearanceVariant])
         {
 
           v18 = 0;
@@ -206,8 +206,8 @@ LABEL_21:
 
         else
         {
-          v34 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-          v18 = [v34 appearance] == 1;
+          compositingDescriptor4 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+          v18 = [compositingDescriptor4 appearance] == 1;
         }
 
         goto LABEL_9;
@@ -241,8 +241,8 @@ LABEL_9:
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v24 = [v22 layers];
-          v25 = [v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          layers = [v22 layers];
+          v25 = [layers countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v25)
           {
             v26 = v25;
@@ -253,17 +253,17 @@ LABEL_9:
               {
                 if (*v38 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(layers);
                 }
 
-                v29 = [*(*(&v37 + 1) + 8 * j) cuiLayerImageForAppearance:v18 size:width scale:height frame:{a4, 0.0, 0.0, v11, v13}];
+                v29 = [*(*(&v37 + 1) + 8 * j) cuiLayerImageForAppearance:v18 size:width scale:height frame:{scale, 0.0, 0.0, v11, v13}];
                 if (v29)
                 {
                   [v23 addLayer:v29];
                 }
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v26 = [layers countByEnumeratingWithState:&v37 objects:v45 count:16];
             }
 
             while (v26);
@@ -294,16 +294,16 @@ LABEL_26:
   return v9;
 }
 
-- (id)_compositingDescriptorWithSize:(CGSize)a3 scale:(double)a4
+- (id)_compositingDescriptorWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+  height = size.height;
+  width = size.width;
+  compositingDescriptor = [(ISDynamicIconStackResource *)self compositingDescriptor];
 
-  if (v8)
+  if (compositingDescriptor)
   {
-    v9 = [(ISDynamicIconStackResource *)self compositingDescriptor];
-    v10 = [v9 copy];
+    compositingDescriptor2 = [(ISDynamicIconStackResource *)self compositingDescriptor];
+    v10 = [compositingDescriptor2 copy];
   }
 
   else
@@ -318,25 +318,25 @@ LABEL_26:
   }
 
   [(ISCompositingDescriptor *)v10 setSize:width, height];
-  [(ISCompositingDescriptor *)v10 setScale:a4];
+  [(ISCompositingDescriptor *)v10 setScale:scale];
 
   return v10;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  v5 = [(ISDynamicIconStackResource *)self _compositingDescriptorWithSize:a3.width scale:a3.height, a4];
-  v6 = [(ISDynamicIconStackResource *)self icrCompositor];
-  v7 = [v6 imageForCompositingDescriptor:v5];
+  scale = [(ISDynamicIconStackResource *)self _compositingDescriptorWithSize:size.width scale:size.height, scale];
+  icrCompositor = [(ISDynamicIconStackResource *)self icrCompositor];
+  v7 = [icrCompositor imageForCompositingDescriptor:scale];
 
   return v7;
 }
 
-- (id)layerDataForSize:(CGSize)a3 scale:(double)a4
+- (id)layerDataForSize:(CGSize)size scale:(double)scale
 {
-  v5 = [(ISDynamicIconStackResource *)self _compositingDescriptorWithSize:a3.width scale:a3.height, a4];
-  v6 = [(ISDynamicIconStackResource *)self icrCompositor];
-  v7 = [v6 layerDataForCompositingDescriptor:v5];
+  scale = [(ISDynamicIconStackResource *)self _compositingDescriptorWithSize:size.width scale:size.height, scale];
+  icrCompositor = [(ISDynamicIconStackResource *)self icrCompositor];
+  v7 = [icrCompositor layerDataForCompositingDescriptor:scale];
 
   return v7;
 }

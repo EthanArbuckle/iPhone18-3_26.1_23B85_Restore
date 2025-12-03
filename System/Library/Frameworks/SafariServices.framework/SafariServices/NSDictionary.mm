@@ -1,15 +1,15 @@
 @interface NSDictionary
-- (id)safari_applicationManifestForKey:(void *)a1;
-- (id)safari_colorForKey:(void *)a1;
+- (id)safari_applicationManifestForKey:(void *)key;
+- (id)safari_colorForKey:(void *)key;
 @end
 
 @implementation NSDictionary
 
-- (id)safari_applicationManifestForKey:(void *)a1
+- (id)safari_applicationManifestForKey:(void *)key
 {
-  if (a1)
+  if (key)
   {
-    v2 = [a1 objectForKeyedSubscript:a2];
+    v2 = [key objectForKeyedSubscript:a2];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (id)safari_colorForKey:(void *)a1
+- (id)safari_colorForKey:(void *)key
 {
-  if (a1)
+  if (key)
   {
-    v2 = [a1 objectForKeyedSubscript:a2];
+    v2 = [key objectForKeyedSubscript:a2];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

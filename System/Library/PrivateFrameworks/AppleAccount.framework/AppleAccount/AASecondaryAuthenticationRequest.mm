@@ -1,19 +1,19 @@
 @interface AASecondaryAuthenticationRequest
-- (AASecondaryAuthenticationRequest)initWithDSID:(id)a3 primaryToken:(id)a4;
+- (AASecondaryAuthenticationRequest)initWithDSID:(id)d primaryToken:(id)token;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AASecondaryAuthenticationRequest
 
-- (AASecondaryAuthenticationRequest)initWithDSID:(id)a3 primaryToken:(id)a4
+- (AASecondaryAuthenticationRequest)initWithDSID:(id)d primaryToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  dCopy = d;
+  tokenCopy = token;
+  v10 = tokenCopy;
+  if (dCopy)
   {
-    if (v9)
+    if (tokenCopy)
     {
       goto LABEL_3;
     }
@@ -36,8 +36,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_primaryToken, a4);
-    objc_storeStrong(&v12->_dsid, a3);
+    objc_storeStrong(&v11->_primaryToken, token);
+    objc_storeStrong(&v12->_dsid, d);
   }
 
   return v12;
@@ -46,17 +46,17 @@ LABEL_3:
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 secondaryAuthenticationURL];
+  secondaryAuthenticationURL = [v2 secondaryAuthenticationURL];
 
-  return v3;
+  return secondaryAuthenticationURL;
 }
 
 - (id)urlRequest
 {
   v12.receiver = self;
   v12.super_class = AASecondaryAuthenticationRequest;
-  v3 = [(AARequest *)&v12 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v12 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   dsid = self->_dsid;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", dsid, self->_primaryToken];

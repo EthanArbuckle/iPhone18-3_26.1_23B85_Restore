@@ -1,17 +1,17 @@
 @interface SBSStatusBarStyleOverridesCoordinator
 - (SBSStatusBarStyleOverridesCoordinatorDelegate)delegate;
 - (unint64_t)styleOverrides;
-- (void)setDelegate:(id)a3;
-- (void)setRegisteredStyleOverrides:(unint64_t)a3 reply:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)setRegisteredStyleOverrides:(unint64_t)overrides reply:(id)reply;
 @end
 
 @implementation SBSStatusBarStyleOverridesCoordinator
 
-- (void)setRegisteredStyleOverrides:(unint64_t)a3 reply:(id)a4
+- (void)setRegisteredStyleOverrides:(unint64_t)overrides reply:(id)reply
 {
   v4.receiver = self;
   v4.super_class = SBSStatusBarStyleOverridesCoordinator;
-  [(SBSBackgroundActivityCoordinator *)&v4 setRegisteredStyleOverrides:a3 reply:a4];
+  [(SBSBackgroundActivityCoordinator *)&v4 setRegisteredStyleOverrides:overrides reply:reply];
 }
 
 - (unint64_t)styleOverrides
@@ -21,20 +21,20 @@
   return [(SBSBackgroundActivityCoordinator *)&v3 styleOverrides];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = SBSStatusBarStyleOverridesCoordinator;
-  [(SBSBackgroundActivityCoordinator *)&v3 setDelegate:a3];
+  [(SBSBackgroundActivityCoordinator *)&v3 setDelegate:delegate];
 }
 
 - (SBSStatusBarStyleOverridesCoordinatorDelegate)delegate
 {
   v4.receiver = self;
   v4.super_class = SBSStatusBarStyleOverridesCoordinator;
-  v2 = [(SBSBackgroundActivityCoordinator *)&v4 delegate];
+  delegate = [(SBSBackgroundActivityCoordinator *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 @end

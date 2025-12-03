@@ -1,42 +1,42 @@
 @interface AUPasscodeCodecConfiguration
-- (AUPasscodeCodecConfiguration)initWithAlgorithmName:(id)a3;
-- (AUPasscodeCodecConfiguration)initWithCoder:(id)a3;
-- (AUPasscodeCodecConfiguration)initWithCommandLineArgs:(id)a3;
+- (AUPasscodeCodecConfiguration)initWithAlgorithmName:(id)name;
+- (AUPasscodeCodecConfiguration)initWithCoder:(id)coder;
+- (AUPasscodeCodecConfiguration)initWithCommandLineArgs:(id)args;
 - (id)commandLineOptions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AUPasscodeCodecConfiguration
 
-- (AUPasscodeCodecConfiguration)initWithAlgorithmName:(id)a3
+- (AUPasscodeCodecConfiguration)initWithAlgorithmName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = AUPasscodeCodecConfiguration;
   v6 = [(AUPasscodeCodecConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_algorithmName, a3);
+    objc_storeStrong(&v6->_algorithmName, name);
     [(AUPasscodeCodecConfiguration *)v7 __setDefaultValues];
   }
 
   return v7;
 }
 
-- (AUPasscodeCodecConfiguration)initWithCoder:(id)a3
+- (AUPasscodeCodecConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AUPasscodeCodecConfiguration;
   v5 = [(AUPasscodeCodecConfiguration *)&v9 init];
   if (v5)
   {
-    v5->_payloadLengthBytes = [v4 decodeIntegerForKey:@"payLen"];
-    v5->_sampleRate = [v4 decodeIntegerForKey:@"samplerate"];
-    v5->_numChannels = [v4 decodeIntegerForKey:@"chans"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"algoName"];
+    v5->_payloadLengthBytes = [coderCopy decodeIntegerForKey:@"payLen"];
+    v5->_sampleRate = [coderCopy decodeIntegerForKey:@"samplerate"];
+    v5->_numChannels = [coderCopy decodeIntegerForKey:@"chans"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"algoName"];
     algorithmName = v5->_algorithmName;
     v5->_algorithmName = v6;
   }
@@ -44,14 +44,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payloadLengthBytes = self->_payloadLengthBytes;
-  v5 = a3;
-  [v5 encodeInteger:payloadLengthBytes forKey:@"payLen"];
-  [v5 encodeInteger:self->_sampleRate forKey:@"samplerate"];
-  [v5 encodeInteger:self->_numChannels forKey:@"chans"];
-  [v5 encodeObject:self->_algorithmName forKey:@"algoName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:payloadLengthBytes forKey:@"payLen"];
+  [coderCopy encodeInteger:self->_sampleRate forKey:@"samplerate"];
+  [coderCopy encodeInteger:self->_numChannels forKey:@"chans"];
+  [coderCopy encodeObject:self->_algorithmName forKey:@"algoName"];
 }
 
 - (id)commandLineOptions
@@ -69,9 +69,9 @@
   return v5;
 }
 
-- (AUPasscodeCodecConfiguration)initWithCommandLineArgs:(id)a3
+- (AUPasscodeCodecConfiguration)initWithCommandLineArgs:(id)args
 {
-  v4 = a3;
+  argsCopy = args;
   v27.receiver = self;
   v27.super_class = AUPasscodeCodecConfiguration;
   v5 = [(AUPasscodeCodecConfiguration *)&v27 init];
@@ -85,8 +85,8 @@
   v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v7 setNumberStyle:1];
   v26 = objc_alloc_init(AUPasscodeCodecCapability);
-  v8 = [v4 count];
-  if (![v4 count])
+  v8 = [argsCopy count];
+  if (![argsCopy count])
   {
 LABEL_21:
 
@@ -98,7 +98,7 @@ LABEL_22:
   v9 = 0;
   while (1)
   {
-    v10 = [v4 objectAtIndex:v9];
+    v10 = [argsCopy objectAtIndex:v9];
     if ([v10 isEqualToString:@"-fs"])
     {
       v11 = v8 == 0;
@@ -111,13 +111,13 @@ LABEL_22:
 
     if (!v11)
     {
-      v14 = [v4 objectAtIndex:++v9];
+      v14 = [argsCopy objectAtIndex:++v9];
       v15 = [v7 numberFromString:v14];
       v6->_sampleRate = [v15 unsignedIntegerValue];
 
-      v16 = [(AUPasscodeCodecCapability *)v26 supportedSampleRates];
+      supportedSampleRates = [(AUPasscodeCodecCapability *)v26 supportedSampleRates];
       v17 = [MEMORY[0x277CCABB0] numberWithInteger:v6->_sampleRate];
-      v18 = [v16 containsObject:v17];
+      v18 = [supportedSampleRates containsObject:v17];
 
       if (!v18)
       {
@@ -129,7 +129,7 @@ LABEL_22:
 
     if ([v10 isEqualToString:@"-ps"] && v8)
     {
-      v12 = [v4 objectAtIndex:++v9];
+      v12 = [argsCopy objectAtIndex:++v9];
       v13 = [v7 numberFromString:v12];
       v6->_payloadLengthBytes = [v13 unsignedIntegerValue];
 
@@ -141,13 +141,13 @@ LABEL_22:
       goto LABEL_14;
     }
 
-    v19 = [v4 objectAtIndex:++v9];
+    v19 = [argsCopy objectAtIndex:++v9];
     v20 = [v7 numberFromString:v19];
     v6->_numChannels = [v20 unsignedIntegerValue];
 
     numChannels = v6->_numChannels;
-    v22 = [(AUPasscodeCodecCapability *)v26 numChannelRange];
-    if (numChannels < v22 || numChannels - v22 >= v23)
+    numChannelRange = [(AUPasscodeCodecCapability *)v26 numChannelRange];
+    if (numChannels < numChannelRange || numChannels - numChannelRange >= v23)
     {
       break;
     }
@@ -157,7 +157,7 @@ LABEL_13:
 LABEL_14:
     --v8;
 
-    if (++v9 >= [v4 count])
+    if (++v9 >= [argsCopy count])
     {
       goto LABEL_21;
     }
@@ -169,14 +169,14 @@ LABEL_23:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AUPasscodeCodecConfiguration allocWithZone:?]];
   [(AUPasscodeCodecConfiguration *)v4 setPayloadLengthBytes:[(AUPasscodeCodecConfiguration *)self payloadLengthBytes]];
   [(AUPasscodeCodecConfiguration *)v4 setSampleRate:[(AUPasscodeCodecConfiguration *)self sampleRate]];
   [(AUPasscodeCodecConfiguration *)v4 setNumChannels:[(AUPasscodeCodecConfiguration *)self numChannels]];
-  v5 = [(AUPasscodeCodecConfiguration *)self algorithmName];
-  v6 = [v5 copy];
+  algorithmName = [(AUPasscodeCodecConfiguration *)self algorithmName];
+  v6 = [algorithmName copy];
   [(AUPasscodeCodecConfiguration *)v4 setAlgorithmName:v6];
 
   return v4;

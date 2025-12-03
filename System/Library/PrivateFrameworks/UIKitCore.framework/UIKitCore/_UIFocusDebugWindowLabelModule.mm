@@ -1,17 +1,17 @@
 @interface _UIFocusDebugWindowLabelModule
-- (_UIFocusDebugWindowLabelModule)initWithFrame:(CGRect)a3;
+- (_UIFocusDebugWindowLabelModule)initWithFrame:(CGRect)frame;
 - (id)updatedLabelContent;
 - (void)update;
 @end
 
 @implementation _UIFocusDebugWindowLabelModule
 
-- (_UIFocusDebugWindowLabelModule)initWithFrame:(CGRect)a3
+- (_UIFocusDebugWindowLabelModule)initWithFrame:(CGRect)frame
 {
   v25[4] = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = _UIFocusDebugWindowLabelModule;
-  v3 = [(UIView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -30,21 +30,21 @@
 
     [(UIView *)v3 addSubview:v8];
     v18 = MEMORY[0x1E69977A0];
-    v23 = [(UIView *)v8 leadingAnchor];
-    v22 = [(UIView *)v3 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22 constant:4.0];
+    leadingAnchor = [(UIView *)v8 leadingAnchor];
+    leadingAnchor2 = [(UIView *)v3 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
     v25[0] = v21;
-    v20 = [(UIView *)v8 trailingAnchor];
-    v19 = [(UIView *)v3 trailingAnchor];
-    v9 = [v20 constraintEqualToAnchor:v19 constant:-4.0];
+    trailingAnchor = [(UIView *)v8 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v3 trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
     v25[1] = v9;
-    v10 = [(UIView *)v8 topAnchor];
-    v11 = [(UIView *)v3 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:4.0];
+    topAnchor = [(UIView *)v8 topAnchor];
+    topAnchor2 = [(UIView *)v3 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     v25[2] = v12;
-    v13 = [(UIView *)v8 bottomAnchor];
-    v14 = [(UIView *)v3 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:-4.0];
+    bottomAnchor = [(UIView *)v8 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v3 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
     v25[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
     [v18 activateConstraints:v16];
@@ -66,8 +66,8 @@
 
 - (void)update
 {
-  v3 = [(_UIFocusDebugWindowLabelModule *)self updatedLabelContent];
-  [(UILabel *)self->_content setText:v3];
+  updatedLabelContent = [(_UIFocusDebugWindowLabelModule *)self updatedLabelContent];
+  [(UILabel *)self->_content setText:updatedLabelContent];
 }
 
 @end

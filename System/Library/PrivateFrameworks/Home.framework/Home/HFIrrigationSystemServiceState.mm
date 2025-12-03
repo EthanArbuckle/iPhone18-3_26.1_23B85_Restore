@@ -1,7 +1,7 @@
 @interface HFIrrigationSystemServiceState
 + (id)requiredCharacteristicTypes;
-+ (unint64_t)_typeForActiveState:(BOOL)a3 usageState:(int64_t)a4 programMode:(int64_t)a5;
-- (HFIrrigationSystemServiceState)initWithBatchReadResponse:(id)a3;
++ (unint64_t)_typeForActiveState:(BOOL)state usageState:(int64_t)usageState programMode:(int64_t)mode;
+- (HFIrrigationSystemServiceState)initWithBatchReadResponse:(id)response;
 - (id)stateTypeIdentifier;
 - (int64_t)primaryState;
 - (int64_t)priority;
@@ -37,45 +37,45 @@ void __61__HFIrrigationSystemServiceState_requiredCharacteristicTypes__block_inv
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)_typeForActiveState:(BOOL)a3 usageState:(int64_t)a4 programMode:(int64_t)a5
++ (unint64_t)_typeForActiveState:(BOOL)state usageState:(int64_t)usageState programMode:(int64_t)mode
 {
-  if (!a4)
+  if (!usageState)
   {
     goto LABEL_6;
   }
 
-  if (a4 != 1)
+  if (usageState != 1)
   {
     return result;
   }
 
-  if (a5 < 3)
+  if (mode < 3)
   {
-    return qword_20DD975F0[a5];
+    return qword_20DD975F0[mode];
   }
 
 LABEL_6:
-  if (a3)
+  if (state)
   {
-    return a5 != 0;
+    return mode != 0;
   }
 
   return 0;
 }
 
-- (HFIrrigationSystemServiceState)initWithBatchReadResponse:(id)a3
+- (HFIrrigationSystemServiceState)initWithBatchReadResponse:(id)response
 {
   v4 = *MEMORY[0x277CCF748];
   v5 = MEMORY[0x277CBEB98];
   v6 = *MEMORY[0x277CD0E80];
-  v7 = a3;
+  responseCopy = response;
   v8 = [v5 setWithObject:v6];
-  v9 = [v7 responseForCharacteristicType:v4 inServicesOfTypes:v8];
+  v9 = [responseCopy responseForCharacteristicType:v4 inServicesOfTypes:v8];
   v10 = [v9 valueWithExpectedClass:objc_opt_class()];
 
   v11 = *MEMORY[0x277CCF9F8];
   v12 = [MEMORY[0x277CBEB98] setWithObject:v6];
-  v13 = [v7 responseForCharacteristicType:v11 inServicesOfTypes:v12];
+  v13 = [responseCopy responseForCharacteristicType:v11 inServicesOfTypes:v12];
   v14 = [v13 valueWithExpectedClass:objc_opt_class()];
 
   v15 = *MEMORY[0x277CCF908];
@@ -85,11 +85,11 @@ LABEL_6:
   }
 
   v16 = qword_280E026D8;
-  v17 = [v7 responseForCharacteristicType:v15 inServicesOfTypes:v16];
+  v17 = [responseCopy responseForCharacteristicType:v15 inServicesOfTypes:v16];
 
   v18 = [v17 valueWithExpectedClass:objc_opt_class()];
 
-  v19 = 0;
+  selfCopy = 0;
   if (v10 && v18 && v14)
   {
     v22.receiver = self;
@@ -101,10 +101,10 @@ LABEL_6:
     }
 
     self = v20;
-    v19 = self;
+    selfCopy = self;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 void __60__HFIrrigationSystemServiceState_initWithBatchReadResponse___block_invoke_2()
@@ -124,15 +124,15 @@ void __60__HFIrrigationSystemServiceState_initWithBatchReadResponse___block_invo
 
 - (id)stateTypeIdentifier
 {
-  v2 = [(HFIrrigationSystemServiceState *)self type];
-  if (v2 - 1 > 2)
+  type = [(HFIrrigationSystemServiceState *)self type];
+  if (type - 1 > 2)
   {
     return @"Off";
   }
 
   else
   {
-    return off_277DFEBD0[v2 - 1];
+    return off_277DFEBD0[type - 1];
   }
 }
 

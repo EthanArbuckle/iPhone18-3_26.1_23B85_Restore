@@ -1,7 +1,7 @@
 @interface MCDNSProxyPayloadHandler
-+ (id)internalErrorWithUnderlyingError:(id)a3;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (MCDNSProxyPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4;
++ (id)internalErrorWithUnderlyingError:(id)error;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (MCDNSProxyPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -9,48 +9,48 @@
 
 @implementation MCDNSProxyPayloadHandler
 
-- (MCDNSProxyPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCDNSProxyPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = MCDNSProxyPayloadHandler;
-  v7 = [(MCNewPayloadHandler *)&v11 initWithPayload:a3 profileHandler:v6];
+  v7 = [(MCNewPayloadHandler *)&v11 initWithPayload:payload profileHandler:handlerCopy];
   if (v7)
   {
-    v8 = [v6 profile];
+    profile = [handlerCopy profile];
     profile = v7->_profile;
-    v7->_profile = v8;
+    v7->_profile = profile;
   }
 
   return v7;
 }
 
-+ (id)internalErrorWithUnderlyingError:(id)a3
++ (id)internalErrorWithUnderlyingError:(id)error
 {
   v3 = MCDNSProxyErrorDomain;
-  v4 = a3;
+  errorCopy = error;
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:51000 descriptionArray:v5 underlyingError:v4 errorType:MCErrorTypeFatal, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:51000 descriptionArray:v5 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
 
   return v6;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a4;
-  v10 = [(MCNewPayloadHandler *)self payload];
-  v11 = [v10 type];
-  v12 = [v10 dnsProxyUUID];
-  if (v12)
+  optionsCopy = options;
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
+  dnsProxyUUID = [payload dnsProxyUUID];
+  if (dnsProxyUUID)
   {
 
     goto LABEL_7;
   }
 
   v13 = +[MDMConfiguration sharedConfiguration];
-  v14 = [v13 isUserEnrollment];
+  isUserEnrollment = [v13 isUserEnrollment];
 
-  if (!v14)
+  if (!isUserEnrollment)
   {
 LABEL_7:
     v18 = MCNEProfileIngestionHandlerClassForPayload();
@@ -61,10 +61,10 @@ LABEL_7:
 
     if (([v18 lockConfigurations] & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
         [objc_opt_class() internalError];
-        *a6 = v17 = 0;
+        *error = v17 = 0;
       }
 
       else
@@ -75,42 +75,42 @@ LABEL_7:
       goto LABEL_37;
     }
 
-    v41 = v9;
+    v41 = optionsCopy;
     [v18 loadConfigurationsForceReloadFromDisk];
-    v19 = [v10 configurationDictionary];
-    v20 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:v19];
+    configurationDictionary = [payload configurationDictionary];
+    v20 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:configurationDictionary];
 
     if (!v20)
     {
       sub_1000C2010(a2, self);
     }
 
-    [v18 createConfigurationFromPayload:v20 payloadType:v11];
-    v21 = [v18 ingestedConfiguration];
-    if (v21)
+    [v18 createConfigurationFromPayload:v20 payloadType:type];
+    ingestedConfiguration = [v18 ingestedConfiguration];
+    if (ingestedConfiguration)
     {
-      v22 = [v10 UUID];
-      v23 = [v10 organization];
-      [v21 setPayloadInfoCommon:v22 payloadOrganization:v23];
+      uUID = [payload UUID];
+      organization = [payload organization];
+      [ingestedConfiguration setPayloadInfoCommon:uUID payloadOrganization:organization];
 
-      v24 = [v10 dnsProxyUUID];
-      if (!v24 || (v25 = v24, [v10 dnsProxyUUID], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v21, "setPerAppUUID:andSafariDomains:", v26, 0), v26, v25, (v27 & 1) != 0))
+      dnsProxyUUID2 = [payload dnsProxyUUID];
+      if (!dnsProxyUUID2 || (v25 = dnsProxyUUID2, [payload dnsProxyUUID], v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(ingestedConfiguration, "setPerAppUUID:andSafariDomains:", v26, 0), v26, v25, (v27 & 1) != 0))
       {
         v28 = objc_alloc_init(NSMutableDictionary);
-        v29 = [(MCProfile *)self->_profile UUID];
+        uUID2 = [(MCProfile *)self->_profile UUID];
 
-        if (v29)
+        if (uUID2)
         {
-          v30 = [(MCProfile *)self->_profile UUID];
-          [v28 setObject:v30 forKeyedSubscript:kMCPayloadUUIDKey];
+          uUID3 = [(MCProfile *)self->_profile UUID];
+          [v28 setObject:uUID3 forKeyedSubscript:kMCPayloadUUIDKey];
         }
 
-        v31 = [(MCProfile *)self->_profile identifier];
+        identifier = [(MCProfile *)self->_profile identifier];
 
-        if (v31)
+        if (identifier)
         {
-          v32 = [(MCProfile *)self->_profile identifier];
-          [v28 setObject:v32 forKeyedSubscript:kMCPayloadIdentifierKey];
+          identifier2 = [(MCProfile *)self->_profile identifier];
+          [v28 setObject:identifier2 forKeyedSubscript:kMCPayloadIdentifierKey];
         }
 
         if (v41)
@@ -118,17 +118,17 @@ LABEL_7:
           [v28 addEntriesFromDictionary:?];
         }
 
-        [v21 setProfileInfo:v28];
+        [ingestedConfiguration setProfileInfo:v28];
         [v18 updateDefaultAfterAddingConfiguration];
-        v33 = [v21 getConfigurationIdentifier];
-        [v10 setPersistentResourceID:v33];
+        getConfigurationIdentifier = [ingestedConfiguration getConfigurationIdentifier];
+        [payload setPersistentResourceID:getConfigurationIdentifier];
 
         v42 = 0;
         v17 = [v18 saveIngestedConfiguration:&v42];
         v34 = v42;
-        if (a6 && (v17 & 1) == 0)
+        if (error && (v17 & 1) == 0)
         {
-          *a6 = [objc_opt_class() internalErrorWithUnderlyingError:v34];
+          *error = [objc_opt_class() internalErrorWithUnderlyingError:v34];
         }
 
         [v18 unlockConfigurations];
@@ -143,21 +143,21 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Could not configure DNS proxy UUID", buf, 2u);
       }
 
-      if (a6)
+      if (error)
       {
         v36 = MCDNSProxyErrorDomain;
-        v37 = [(MCNewPayloadHandler *)self payload];
-        v38 = [v37 displayName];
+        payload2 = [(MCNewPayloadHandler *)self payload];
+        displayName = [payload2 displayName];
         v39 = MCErrorArray();
-        *a6 = [NSError MCErrorWithDomain:v36 code:51001 descriptionArray:v39 errorType:MCErrorTypeFatal, v38, 0];
+        *error = [NSError MCErrorWithDomain:v36 code:51001 descriptionArray:v39 errorType:MCErrorTypeFatal, displayName, 0];
       }
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [objc_opt_class() internalError];
+        *error = [objc_opt_class() internalError];
       }
 
       [v18 unlockConfigurations];
@@ -165,17 +165,17 @@ LABEL_7:
 
     v17 = 0;
 LABEL_36:
-    v9 = v41;
+    optionsCopy = v41;
 
 LABEL_37:
     goto LABEL_38;
   }
 
-  if (a6)
+  if (error)
   {
     v15 = MCDNSProxyErrorDomain;
     v16 = MCErrorArray();
-    *a6 = [NSError MCErrorWithDomain:v15 code:51002 descriptionArray:v16 errorType:MCErrorTypeFatal, 0];
+    *error = [NSError MCErrorWithDomain:v15 code:51002 descriptionArray:v16 errorType:MCErrorTypeFatal, 0];
   }
 
   v17 = 0;
@@ -186,16 +186,16 @@ LABEL_38:
 
 - (void)setAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 type];
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v7 = [v6 persistentResourceID];
-    v8 = [v5 setAsideConfigurationName:v7 unsetAside:0];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    v8 = [v5 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
     [v5 unlockConfigurations];
   }
@@ -213,16 +213,16 @@ LABEL_38:
 
 - (void)unsetAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 type];
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v7 = [v6 persistentResourceID];
-    v8 = [v5 setAsideConfigurationName:v7 unsetAside:0];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    v8 = [v5 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
     [v5 unlockConfigurations];
   }
@@ -240,19 +240,19 @@ LABEL_38:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v5 type];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  type = [payload2 type];
   v7 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v7 lockConfigurations])
   {
     [v7 loadConfigurationsForceReloadFromDisk];
-    if (v4)
+    if (persistentResourceID)
     {
-      [v7 removeConfigurationWithIdentifier:v4];
+      [v7 removeConfigurationWithIdentifier:persistentResourceID];
     }
 
     else

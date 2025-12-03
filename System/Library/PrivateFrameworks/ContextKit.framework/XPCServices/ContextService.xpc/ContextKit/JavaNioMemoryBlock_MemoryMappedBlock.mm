@@ -1,15 +1,15 @@
 @interface JavaNioMemoryBlock_MemoryMappedBlock
-- (JavaNioMemoryBlock_MemoryMappedBlock)initWithLong:(int64_t)a3 withLong:(int64_t)a4;
+- (JavaNioMemoryBlock_MemoryMappedBlock)initWithLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)dealloc;
 - (void)free;
 @end
 
 @implementation JavaNioMemoryBlock_MemoryMappedBlock
 
-- (JavaNioMemoryBlock_MemoryMappedBlock)initWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (JavaNioMemoryBlock_MemoryMappedBlock)initWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  self->super.address_ = a3;
-  self->super.size_ = a4;
+  self->super.address_ = long;
+  self->super.size_ = withLong;
   return self;
 }
 

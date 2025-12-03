@@ -1,17 +1,17 @@
 @interface PKTextInputFeedbackRect
-+ (PKTextInputFeedbackRect)rectWithFrame:(CGFloat)a3;
++ (PKTextInputFeedbackRect)rectWithFrame:(CGFloat)frame;
 - (CGRect)rect;
 @end
 
 @implementation PKTextInputFeedbackRect
 
-+ (PKTextInputFeedbackRect)rectWithFrame:(CGFloat)a3
++ (PKTextInputFeedbackRect)rectWithFrame:(CGFloat)frame
 {
   objc_opt_self();
   v8 = objc_alloc_init(PKTextInputFeedbackRect);
-  v8->_rect.origin.x = a1;
+  v8->_rect.origin.x = self;
   v8->_rect.origin.y = a2;
-  v8->_rect.size.width = a3;
+  v8->_rect.size.width = frame;
   v8->_rect.size.height = a4;
 
   return v8;

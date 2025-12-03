@@ -1,76 +1,76 @@
 @interface PKRecognitionQueryController
-- (id)drawingQueryWithIdentifier:(id *)a1;
-- (id)initWithRecognitionSessionManager:(id *)a1;
-- (id)setupAndStartQuery:(uint64_t)a1;
-- (id)visibleStrokesQueryWithIdentifier:(id *)a1;
+- (id)drawingQueryWithIdentifier:(id *)identifier;
+- (id)initWithRecognitionSessionManager:(id *)manager;
+- (id)setupAndStartQuery:(uint64_t)query;
+- (id)visibleStrokesQueryWithIdentifier:(id *)identifier;
 - (uint64_t)clearDrawingQueries;
 - (uint64_t)clearVisibleStrokesQueries;
-- (void)_cleanupQuery:(uint64_t)a1;
-- (void)removeQueryWithIdentifier:(id *)a1;
-- (void)setMathPreferredUpdatesInterval:(double)a3;
-- (void)setSuffixes:(void *)a3 forQueryWithIdentifier:;
+- (void)_cleanupQuery:(uint64_t)query;
+- (void)removeQueryWithIdentifier:(id *)identifier;
+- (void)setMathPreferredUpdatesInterval:(double)interval;
+- (void)setSuffixes:(void *)suffixes forQueryWithIdentifier:;
 - (void)setupDrawingQueriesIfNecessary;
 - (void)setupVisibleStrokesQueries;
-- (void)updateQueriesIfNecessaryWithState:(id *)a1;
+- (void)updateQueriesIfNecessaryWithState:(id *)state;
 @end
 
 @implementation PKRecognitionQueryController
 
-- (id)initWithRecognitionSessionManager:(id *)a1
+- (id)initWithRecognitionSessionManager:(id *)manager
 {
   v3 = a2;
-  if (a1)
+  if (manager)
   {
-    v13.receiver = a1;
+    v13.receiver = manager;
     v13.super_class = PKRecognitionQueryController;
-    a1 = objc_msgSendSuper2(&v13, sel_init);
-    if (a1)
+    manager = objc_msgSendSuper2(&v13, sel_init);
+    if (manager)
     {
       v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v5 = a1[2];
-      a1[2] = v4;
+      v5 = manager[2];
+      manager[2] = v4;
 
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v7 = a1[3];
-      a1[3] = v6;
+      v7 = manager[3];
+      manager[3] = v6;
 
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v9 = a1[4];
-      a1[4] = v8;
+      v9 = manager[4];
+      manager[4] = v8;
 
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v11 = a1[5];
-      a1[5] = v10;
+      v11 = manager[5];
+      manager[5] = v10;
 
-      objc_storeWeak(a1 + 6, v3);
+      objc_storeWeak(manager + 6, v3);
     }
   }
 
-  return a1;
+  return manager;
 }
 
-- (void)removeQueryWithIdentifier:(id *)a1
+- (void)removeQueryWithIdentifier:(id *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    v3 = a1[2];
+    v3 = identifier[2];
     v6 = a2;
     v4 = [v3 objectForKey:v6];
-    [(PKRecognitionQueryController *)a1 _cleanupQuery:v4];
+    [(PKRecognitionQueryController *)identifier _cleanupQuery:v4];
 
-    v5 = [a1[3] objectForKey:v6];
-    [(PKRecognitionQueryController *)a1 _cleanupQuery:v5];
+    v5 = [identifier[3] objectForKey:v6];
+    [(PKRecognitionQueryController *)identifier _cleanupQuery:v5];
 
-    [a1[4] removeObjectForKey:v6];
-    [a1[2] removeObjectForKey:v6];
-    [a1[3] removeObjectForKey:v6];
-    [a1[5] removeObjectForKey:v6];
+    [identifier[4] removeObjectForKey:v6];
+    [identifier[2] removeObjectForKey:v6];
+    [identifier[3] removeObjectForKey:v6];
+    [identifier[5] removeObjectForKey:v6];
   }
 }
 
-- (void)_cleanupQuery:(uint64_t)a1
+- (void)_cleanupQuery:(uint64_t)query
 {
-  if (a1)
+  if (query)
   {
     v2 = a2;
     [v2 pause];
@@ -79,38 +79,38 @@
   }
 }
 
-- (id)visibleStrokesQueryWithIdentifier:(id *)a1
+- (id)visibleStrokesQueryWithIdentifier:(id *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    a1 = [a1[3] objectForKey:a2];
+    identifier = [identifier[3] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return identifier;
 }
 
-- (id)drawingQueryWithIdentifier:(id *)a1
+- (id)drawingQueryWithIdentifier:(id *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    a1 = [a1[2] objectForKey:a2];
+    identifier = [identifier[2] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return identifier;
 }
 
-- (void)updateQueriesIfNecessaryWithState:(id *)a1
+- (void)updateQueriesIfNecessaryWithState:(id *)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (state)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    obj = [a1[4] allKeys];
+    obj = [state[4] allKeys];
     v3 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v3)
     {
@@ -130,27 +130,27 @@
         }
 
         v7 = *(*(&v16 + 1) + 8 * v6);
-        v8 = [a1[4] objectForKey:v7];
+        v8 = [state[4] objectForKey:v7];
         if (a2 == 3)
         {
-          v9 = [a1[2] objectForKey:v7];
+          v9 = [state[2] objectForKey:v7];
 
-          v10 = a1 + 2;
+          v10 = state + 2;
           if (v9)
           {
             goto LABEL_10;
           }
 
 LABEL_9:
-          v11 = [(PKRecognitionQueryController *)a1 setupAndStartQuery:v8];
+          v11 = [(PKRecognitionQueryController *)state setupAndStartQuery:v8];
           [*v10 setObject:v11 forKeyedSubscript:v7];
 
           goto LABEL_10;
         }
 
-        v12 = [a1[3] objectForKey:v7];
+        v12 = [state[3] objectForKey:v7];
 
-        v10 = a1 + 3;
+        v10 = state + 3;
         if (!v12)
         {
           goto LABEL_9;
@@ -173,18 +173,18 @@ LABEL_15:
   }
 }
 
-- (id)setupAndStartQuery:(uint64_t)a1
+- (id)setupAndStartQuery:(uint64_t)query
 {
-  if (a1)
+  if (query)
   {
     v3 = [a2 alloc];
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((query + 48));
     v5 = [v3 initWithRecognitionSessionManager:WeakRetained];
 
-    v6 = objc_loadWeakRetained((a1 + 48));
+    v6 = objc_loadWeakRetained((query + 48));
     [v5 setDelegate:v6];
 
-    if (*(a1 + 8) != 0.0)
+    if (*(query + 8) != 0.0)
     {
       [v5 setMathPreferredUpdatesInterval:?];
     }
@@ -203,16 +203,16 @@ LABEL_15:
 - (void)setupVisibleStrokesQueries
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(PKRecognitionQueryController *)a1 clearVisibleStrokesQueries];
-    [(PKRecognitionQueryController *)a1 clearDrawingQueries];
+    [(PKRecognitionQueryController *)self clearVisibleStrokesQueries];
+    [(PKRecognitionQueryController *)self clearDrawingQueries];
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v2 = [*(a1 + 32) allKeys];
-    v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allKeys = [*(self + 32) allKeys];
+    v3 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v3)
     {
       v4 = v3;
@@ -223,15 +223,15 @@ LABEL_15:
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allKeys);
           }
 
           v7 = *(*(&v9 + 1) + 8 * i);
-          v8 = -[PKRecognitionQueryController setupAndStartQuery:](a1, [*(a1 + 32) objectForKeyedSubscript:v7]);
-          [*(a1 + 24) setObject:v8 forKey:v7];
+          v8 = -[PKRecognitionQueryController setupAndStartQuery:](self, [*(self + 32) objectForKeyedSubscript:v7]);
+          [*(self + 24) setObject:v8 forKey:v7];
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v4);
@@ -242,14 +242,14 @@ LABEL_15:
 - (void)setupDrawingQueriesIfNecessary
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v2 = [a1[4] allKeys];
-    v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allKeys = [self[4] allKeys];
+    v3 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v3)
     {
       v4 = v3;
@@ -260,27 +260,27 @@ LABEL_15:
         {
           if (*v13 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allKeys);
           }
 
           v7 = *(*(&v12 + 1) + 8 * i);
-          v8 = [a1[4] objectForKeyedSubscript:v7];
-          v9 = [a1[2] objectForKey:v7];
+          v8 = [self[4] objectForKeyedSubscript:v7];
+          v9 = [self[2] objectForKey:v7];
 
           if (!v9)
           {
-            v10 = [(PKRecognitionQueryController *)a1 setupAndStartQuery:v8];
-            [a1[2] setObject:v10 forKey:v7];
+            v10 = [(PKRecognitionQueryController *)self setupAndStartQuery:v8];
+            [self[2] setObject:v10 forKey:v7];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v11 = [a1[5] objectForKeyedSubscript:v7];
+              v11 = [self[5] objectForKeyedSubscript:v7];
               [v10 setValidSuffixes:v11];
             }
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v4 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v4);
@@ -288,17 +288,17 @@ LABEL_15:
   }
 }
 
-- (void)setMathPreferredUpdatesInterval:(double)a3
+- (void)setMathPreferredUpdatesInterval:(double)interval
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    a1[1] = a3;
+    self[1] = interval;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [objc_getProperty(a1 a2];
+    v5 = [objc_getProperty(self a2];
     v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
@@ -314,7 +314,7 @@ LABEL_15:
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v20 + 1) + 8 * v9++) setMathPreferredUpdatesInterval:a3];
+          [*(*(&v20 + 1) + 8 * v9++) setMathPreferredUpdatesInterval:interval];
         }
 
         while (v7 != v9);
@@ -328,7 +328,7 @@ LABEL_15:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [objc_getProperty(a1 v10];
+    v11 = [objc_getProperty(self v10];
     v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
@@ -344,7 +344,7 @@ LABEL_15:
             objc_enumerationMutation(v11);
           }
 
-          [*(*(&v16 + 1) + 8 * v15++) setMathPreferredUpdatesInterval:a3];
+          [*(*(&v16 + 1) + 8 * v15++) setMathPreferredUpdatesInterval:interval];
         }
 
         while (v13 != v15);
@@ -366,8 +366,8 @@ LABEL_15:
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v2 = [*(result + 24) allValues];
-    v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    allValues = [*(result + 24) allValues];
+    v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v3)
     {
       v4 = v3;
@@ -379,14 +379,14 @@ LABEL_15:
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allValues);
           }
 
           [(PKRecognitionQueryController *)v1 _cleanupQuery:?];
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       }
 
       while (v4);
@@ -408,8 +408,8 @@ LABEL_15:
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v2 = [*(result + 16) allValues];
-    v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    allValues = [*(result + 16) allValues];
+    v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v3)
     {
       v4 = v3;
@@ -421,14 +421,14 @@ LABEL_15:
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allValues);
           }
 
           [(PKRecognitionQueryController *)v1 _cleanupQuery:?];
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       }
 
       while (v4);
@@ -440,16 +440,16 @@ LABEL_15:
   return result;
 }
 
-- (void)setSuffixes:(void *)a3 forQueryWithIdentifier:
+- (void)setSuffixes:(void *)suffixes forQueryWithIdentifier:
 {
   v10 = a2;
-  v5 = a3;
-  if (a1)
+  suffixesCopy = suffixes;
+  if (self)
   {
-    v6 = [*(a1 + 40) objectForKeyedSubscript:v5];
+    v6 = [*(self + 40) objectForKeyedSubscript:suffixesCopy];
     if (v6 == v10)
     {
-      v7 = [*(a1 + 40) objectForKeyedSubscript:v5];
+      v7 = [*(self + 40) objectForKeyedSubscript:suffixesCopy];
       v8 = [v10 isEqualToSet:v7];
 
       if (v8)
@@ -462,8 +462,8 @@ LABEL_15:
     {
     }
 
-    [*(a1 + 40) setObject:v10 forKeyedSubscript:v5];
-    v9 = [*(a1 + 16) objectForKey:v5];
+    [*(self + 40) setObject:v10 forKeyedSubscript:suffixesCopy];
+    v9 = [*(self + 16) objectForKey:suffixesCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,12 +1,12 @@
 @interface SFSuggestedUserProvider
 + (id)sharedProvider;
 - (SFSuggestedUserProvider)init;
-- (id)_allCachedSuggestedUsersWithType:(int64_t)a3;
-- (id)_cachedSuggestedUsersWithType:(int64_t)a3 matchingText:(id)a4 limit:(unint64_t)a5;
-- (void)_accountStoreChangedNotification:(id)a3;
-- (void)_getSuggestedUsersFromSavedAccounts:(id)a3 suggestedEmails:(id *)a4 suggestedNonEmails:(id *)a5;
-- (void)suggestedUsersOfType:(int64_t)a3 matchingText:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)suggestedUsersPrioritizingExistingUsersForURL:(id)a3 matchingText:(id)a4 limitForUsersNotFromURL:(unint64_t)a5 completionHandler:(id)a6;
+- (id)_allCachedSuggestedUsersWithType:(int64_t)type;
+- (id)_cachedSuggestedUsersWithType:(int64_t)type matchingText:(id)text limit:(unint64_t)limit;
+- (void)_accountStoreChangedNotification:(id)notification;
+- (void)_getSuggestedUsersFromSavedAccounts:(id)accounts suggestedEmails:(id *)emails suggestedNonEmails:(id *)nonEmails;
+- (void)suggestedUsersOfType:(int64_t)type matchingText:(id)text limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)suggestedUsersPrioritizingExistingUsersForURL:(id)l matchingText:(id)text limitForUsersNotFromURL:(unint64_t)rL completionHandler:(id)handler;
 @end
 
 @implementation SFSuggestedUserProvider
@@ -45,8 +45,8 @@ uint64_t __41__SFSuggestedUserProvider_sharedProvider__block_invoke()
     queue = v2->_queue;
     v2->_queue = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel__accountStoreChangedNotification_ name:*MEMORY[0x277D49D78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accountStoreChangedNotification_ name:*MEMORY[0x277D49D78] object:0];
 
     v10 = v2;
   }
@@ -54,7 +54,7 @@ uint64_t __41__SFSuggestedUserProvider_sharedProvider__block_invoke()
   return v2;
 }
 
-- (void)_accountStoreChangedNotification:(id)a3
+- (void)_accountStoreChangedNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -76,17 +76,17 @@ void __60__SFSuggestedUserProvider__accountStoreChangedNotification___block_invo
   *(v4 + 24) = 0;
 }
 
-- (id)_allCachedSuggestedUsersWithType:(int64_t)a3
+- (id)_allCachedSuggestedUsersWithType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       suggestedNonEmails = self->_suggestedNonEmails;
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       suggestedNonEmails = self->_suggestedEmails;
 LABEL_6:
@@ -101,11 +101,11 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v5 = v6;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
   if (self->_suggestedEmails)
   {
-    [(NSArray *)v6 addObjectsFromArray:?];
+    [(NSArray *)array addObjectsFromArray:?];
   }
 
   if (self->_suggestedNonEmails)
@@ -119,28 +119,28 @@ LABEL_15:
   return v5;
 }
 
-- (id)_cachedSuggestedUsersWithType:(int64_t)a3 matchingText:(id)a4 limit:(unint64_t)a5
+- (id)_cachedSuggestedUsersWithType:(int64_t)type matchingText:(id)text limit:(unint64_t)limit
 {
-  v8 = a4;
-  v9 = [(SFSuggestedUserProvider *)self _allCachedSuggestedUsersWithType:a3];
-  if ([v8 length])
+  textCopy = text;
+  v9 = [(SFSuggestedUserProvider *)self _allCachedSuggestedUsersWithType:type];
+  if ([textCopy length])
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __76__SFSuggestedUserProvider__cachedSuggestedUsersWithType_matchingText_limit___block_invoke;
     v13[3] = &unk_279B62208;
-    v14 = v8;
+    v14 = textCopy;
     v10 = [v9 safari_filterObjectsUsingBlock:v13];
 
     v9 = v10;
   }
 
-  if ([v9 count] < a5)
+  if ([v9 count] < limit)
   {
-    a5 = [v9 count];
+    limit = [v9 count];
   }
 
-  v11 = [v9 subarrayWithRange:{0, a5}];
+  v11 = [v9 subarrayWithRange:{0, limit}];
 
   return v11;
 }
@@ -161,11 +161,11 @@ uint64_t __76__SFSuggestedUserProvider__cachedSuggestedUsersWithType_matchingTex
   return v4;
 }
 
-- (void)suggestedUsersOfType:(int64_t)a3 matchingText:(id)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)suggestedUsersOfType:(int64_t)type matchingText:(id)text limit:(unint64_t)limit completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  textCopy = text;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -173,10 +173,10 @@ uint64_t __76__SFSuggestedUserProvider__cachedSuggestedUsersWithType_matchingTex
     block[2] = __85__SFSuggestedUserProvider_suggestedUsersOfType_matchingText_limit_completionHandler___block_invoke;
     block[3] = &unk_279B62230;
     block[4] = self;
-    v16 = a3;
-    v14 = v10;
-    v17 = a5;
-    v15 = v11;
+    typeCopy = type;
+    v14 = textCopy;
+    limitCopy = limit;
+    v15 = handlerCopy;
     dispatch_async(queue, block);
   }
 }
@@ -216,11 +216,11 @@ void __85__SFSuggestedUserProvider_suggestedUsersOfType_matchingText_limit_compl
   }
 }
 
-- (void)suggestedUsersPrioritizingExistingUsersForURL:(id)a3 matchingText:(id)a4 limitForUsersNotFromURL:(unint64_t)a5 completionHandler:(id)a6
+- (void)suggestedUsersPrioritizingExistingUsersForURL:(id)l matchingText:(id)text limitForUsersNotFromURL:(unint64_t)rL completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  textCopy = text;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -228,11 +228,11 @@ void __85__SFSuggestedUserProvider_suggestedUsersOfType_matchingText_limit_compl
   v29 = __Block_byref_object_dispose__2;
   v30 = 0;
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v14 = [MEMORY[0x277D49B40] criteriaForExactFQDNPasswordMatchesOfURL:v10];
-  v15 = [objc_alloc(MEMORY[0x277D49B70]) initWithString:v11 matchingType:0];
+  v14 = [MEMORY[0x277D49B40] criteriaForExactFQDNPasswordMatchesOfURL:lCopy];
+  v15 = [objc_alloc(MEMORY[0x277D49B70]) initWithString:textCopy matchingType:0];
   [v14 setUserNameQuery:v15];
 
-  v16 = [MEMORY[0x277D49B58] sharedStore];
+  mEMORY[0x277D49B58] = [MEMORY[0x277D49B58] sharedStore];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __128__SFSuggestedUserProvider_suggestedUsersPrioritizingExistingUsersForURL_matchingText_limitForUsersNotFromURL_completionHandler___block_invoke;
@@ -240,23 +240,23 @@ void __85__SFSuggestedUserProvider_suggestedUsersOfType_matchingText_limit_compl
   v24 = &v25;
   v17 = v13;
   v23 = v17;
-  [v16 getSavedAccountsMatchingCriteria:v14 withSynchronousCompletionHandler:v22];
+  [mEMORY[0x277D49B58] getSavedAccountsMatchingCriteria:v14 withSynchronousCompletionHandler:v22];
 
-  if ([v11 length] || !objc_msgSend(v26[5], "count"))
+  if ([textCopy length] || !objc_msgSend(v26[5], "count"))
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __128__SFSuggestedUserProvider_suggestedUsersPrioritizingExistingUsersForURL_matchingText_limitForUsersNotFromURL_completionHandler___block_invoke_3;
     v18[3] = &unk_279B62280;
     v19 = v17;
-    v20 = v12;
+    v20 = handlerCopy;
     v21 = &v25;
-    [(SFSuggestedUserProvider *)self suggestedUsersOfType:0 matchingText:v11 limit:a5 completionHandler:v18];
+    [(SFSuggestedUserProvider *)self suggestedUsersOfType:0 matchingText:textCopy limit:rL completionHandler:v18];
   }
 
   else
   {
-    (*(v12 + 2))(v12, v26[5]);
+    (*(handlerCopy + 2))(handlerCopy, v26[5]);
   }
 
   _Block_object_dispose(&v25, 8);
@@ -315,28 +315,28 @@ uint64_t __128__SFSuggestedUserProvider_suggestedUsersPrioritizingExistingUsersF
   return v2 ^ 1;
 }
 
-- (void)_getSuggestedUsersFromSavedAccounts:(id)a3 suggestedEmails:(id *)a4 suggestedNonEmails:(id *)a5
+- (void)_getSuggestedUsersFromSavedAccounts:(id)accounts suggestedEmails:(id *)emails suggestedNonEmails:(id *)nonEmails
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accountsCopy = accounts;
   v6 = [MEMORY[0x277CBEB58] set];
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __98__SFSuggestedUserProvider__getSuggestedUsersFromSavedAccounts_suggestedEmails_suggestedNonEmails___block_invoke;
   aBlock[3] = &unk_279B622A8;
-  v24 = v8;
+  v24 = dictionary;
   v32 = v24;
-  v23 = v9;
+  v23 = dictionary2;
   v33 = v23;
   v10 = _Block_copy(aBlock);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = v5;
+  v11 = accountsCopy;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v34 count:16];
   if (v12)
   {
@@ -352,10 +352,10 @@ uint64_t __128__SFSuggestedUserProvider_suggestedUsersPrioritizingExistingUsersF
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [v16 user];
-        if ([v17 length] && (objc_msgSend(v16, "userIsNeverSaveMarker") & 1) == 0)
+        user = [v16 user];
+        if ([user length] && (objc_msgSend(v16, "userIsNeverSaveMarker") & 1) == 0)
         {
-          if ([v6 containsObject:v17] & 1) != 0 || (objc_msgSend(v7, "containsObject:", v17) & 1) == 0 && (objc_msgSend(v17, "safari_looksLikeEmailAddress"))
+          if ([v6 containsObject:user] & 1) != 0 || (objc_msgSend(v7, "containsObject:", user) & 1) == 0 && (objc_msgSend(user, "safari_looksLikeEmailAddress"))
           {
             v18 = v6;
             v19 = 1;
@@ -367,8 +367,8 @@ uint64_t __128__SFSuggestedUserProvider_suggestedUsersPrioritizingExistingUsersF
             v19 = 2;
           }
 
-          [v18 addObject:v17];
-          v10[2](v10, v19, v17);
+          [v18 addObject:user];
+          v10[2](v10, v19, user);
         }
       }
 
@@ -378,11 +378,11 @@ uint64_t __128__SFSuggestedUserProvider_suggestedUsersPrioritizingExistingUsersF
     while (v13);
   }
 
-  v20 = [v24 allValues];
-  *a4 = [v20 sortedArrayUsingSelector:sel_compare_];
+  allValues = [v24 allValues];
+  *emails = [allValues sortedArrayUsingSelector:sel_compare_];
 
-  v21 = [v23 allValues];
-  *a5 = [v21 sortedArrayUsingSelector:sel_compare_];
+  allValues2 = [v23 allValues];
+  *nonEmails = [allValues2 sortedArrayUsingSelector:sel_compare_];
 
   v22 = *MEMORY[0x277D85DE8];
 }

@@ -1,27 +1,27 @@
 @interface MNTraceBookmarkRecorder
-- (MNTraceBookmarkRecorder)initWithTrace:(id)a3;
-- (void)recordBookmarkAtTime:(double)a3 withScreenshotData:(id)a4 completionHandler:(id)a5;
+- (MNTraceBookmarkRecorder)initWithTrace:(id)trace;
+- (void)recordBookmarkAtTime:(double)time withScreenshotData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation MNTraceBookmarkRecorder
 
-- (void)recordBookmarkAtTime:(double)a3 withScreenshotData:(id)a4 completionHandler:(id)a5
+- (void)recordBookmarkAtTime:(double)time withScreenshotData:(id)data completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MNTrace *)self->_trace writeGroup];
-  v11 = [(MNTrace *)self->_trace writeQueue];
+  dataCopy = data;
+  handlerCopy = handler;
+  writeGroup = [(MNTrace *)self->_trace writeGroup];
+  writeQueue = [(MNTrace *)self->_trace writeQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__MNTraceBookmarkRecorder_recordBookmarkAtTime_withScreenshotData_completionHandler___block_invoke;
   v14[3] = &unk_1E842EF28;
-  v15 = v8;
-  v16 = self;
-  v18 = a3;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  dispatch_group_async(v10, v11, v14);
+  v15 = dataCopy;
+  selfCopy = self;
+  timeCopy = time;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dataCopy;
+  dispatch_group_async(writeGroup, writeQueue, v14);
 }
 
 void __85__MNTraceBookmarkRecorder_recordBookmarkAtTime_withScreenshotData_completionHandler___block_invoke(uint64_t a1)
@@ -137,16 +137,16 @@ uint64_t __85__MNTraceBookmarkRecorder_recordBookmarkAtTime_withScreenshotData_c
   return result;
 }
 
-- (MNTraceBookmarkRecorder)initWithTrace:(id)a3
+- (MNTraceBookmarkRecorder)initWithTrace:(id)trace
 {
-  v5 = a3;
+  traceCopy = trace;
   v10.receiver = self;
   v10.super_class = MNTraceBookmarkRecorder;
   v6 = [(MNTraceBookmarkRecorder *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trace, a3);
+    objc_storeStrong(&v6->_trace, trace);
     v8 = v7;
   }
 

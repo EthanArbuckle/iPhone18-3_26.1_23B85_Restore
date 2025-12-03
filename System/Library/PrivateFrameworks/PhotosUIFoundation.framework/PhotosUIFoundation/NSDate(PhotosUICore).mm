@@ -15,8 +15,8 @@
   v7 = a4;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSDate+PhotosUIFoundation.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDate+PhotosUIFoundation.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
   }
 
   if (a3 > 31)
@@ -52,15 +52,15 @@
         break;
       default:
 LABEL_22:
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSCalendarUnit _CalendarUnitMaskForCalendarUnit(NSCalendarUnit)"];
-        [v13 handleFailureInFunction:v14 file:@"NSDate+PhotosUIFoundation.m" lineNumber:102 description:@"Code which should be unreachable has been reached"];
+        [currentHandler2 handleFailureInFunction:v14 file:@"NSDate+PhotosUIFoundation.m" lineNumber:102 description:@"Code which should be unreachable has been reached"];
 
         abort();
     }
   }
 
-  v9 = [v7 components:v8 fromDate:a1];
+  v9 = [v7 components:v8 fromDate:self];
   if (v9)
   {
     v10 = [v7 dateFromComponents:v9];
@@ -84,10 +84,10 @@ LABEL_22:
     v9 = [v8 earlierDate:v7];
     v10 = [v8 laterDate:v7];
 
-    [a1 timeIntervalSinceDate:v9];
+    [self timeIntervalSinceDate:v9];
     if (v11 >= 0.0)
     {
-      [a1 timeIntervalSinceDate:v10];
+      [self timeIntervalSinceDate:v10];
       v4 = v12 <= 0.0;
     }
 
@@ -107,7 +107,7 @@ LABEL_22:
     return 0;
   }
 
-  [a1 timeIntervalSinceDate:?];
+  [self timeIntervalSinceDate:?];
   return v5 <= a2 && v5 >= 0.0;
 }
 
@@ -116,16 +116,16 @@ LABEL_22:
   v5 = a3;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"NSDate+PhotosUIFoundation.m" lineNumber:23 description:@"date cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDate+PhotosUIFoundation.m" lineNumber:23 description:@"date cannot be nil"];
   }
 
-  [a1 timeIntervalSinceDate:v5];
+  [self timeIntervalSinceDate:v5];
   v7 = v6;
   if (v6 < 0.0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSDate+PhotosUIFoundation.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"timeInterval >= 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSDate+PhotosUIFoundation.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"timeInterval >= 0"}];
   }
 
   v8 = v7 / 31557600.0;
@@ -138,8 +138,8 @@ LABEL_22:
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 isDate:a1 inSameDayAsDate:v5];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar isDate:self inSameDayAsDate:v5];
 
   return v7;
 }
@@ -153,17 +153,17 @@ LABEL_22:
     if (a3)
     {
       v8 = *a3;
-      v9 = [v7 startDate];
-      v10 = v9;
+      startDate = [v7 startDate];
+      v10 = startDate;
       if (v8)
       {
-        v11 = [v8 earlierDate:v9];
+        v11 = [v8 earlierDate:startDate];
         *a3 = v11;
       }
 
       else
       {
-        v12 = v9;
+        v12 = startDate;
         *a3 = v10;
       }
 
@@ -173,17 +173,17 @@ LABEL_22:
     if (a4)
     {
       v13 = *a4;
-      v14 = [v7 endDate];
-      v15 = v14;
+      endDate = [v7 endDate];
+      v15 = endDate;
       if (v13)
       {
-        v16 = [v13 laterDate:v14];
+        v16 = [v13 laterDate:endDate];
         *a4 = v16;
       }
 
       else
       {
-        v17 = v14;
+        v17 = endDate;
         *a4 = v15;
       }
 

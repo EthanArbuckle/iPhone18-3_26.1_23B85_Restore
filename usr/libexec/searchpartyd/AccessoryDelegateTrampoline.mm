@@ -1,14 +1,14 @@
 @interface AccessoryDelegateTrampoline
 - (_TtC12searchpartydP33_8DF307D51982B56654A13C398BADC9D727AccessoryDelegateTrampoline)init;
-- (void)accessoryConnectionDetached:(id)a3;
-- (void)accessoryConnectionInfoPropertyChanged:(id)a3 properties:(id)a4;
+- (void)accessoryConnectionDetached:(id)detached;
+- (void)accessoryConnectionInfoPropertyChanged:(id)changed properties:(id)properties;
 @end
 
 @implementation AccessoryDelegateTrampoline
 
-- (void)accessoryConnectionDetached:(id)a3
+- (void)accessoryConnectionDetached:(id)detached
 {
-  if (a3)
+  if (detached)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -20,18 +20,18 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1008D528C(v4, v6);
 }
 
-- (void)accessoryConnectionInfoPropertyChanged:(id)a3 properties:(id)a4
+- (void)accessoryConnectionInfoPropertyChanged:(id)changed properties:(id)properties
 {
-  v4 = a4;
-  if (a3)
+  propertiesCopy = properties;
+  if (changed)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
-    if (!v4)
+    if (!propertiesCopy)
     {
       goto LABEL_4;
     }
@@ -41,15 +41,15 @@
 
   v6 = 0;
   v8 = 0;
-  if (a4)
+  if (properties)
   {
 LABEL_3:
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    propertiesCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v9 = self;
-  sub_1008D5888(v6, v8, v4);
+  selfCopy = self;
+  sub_1008D5888(v6, v8, propertiesCopy);
 }
 
 - (_TtC12searchpartydP33_8DF307D51982B56654A13C398BADC9D727AccessoryDelegateTrampoline)init

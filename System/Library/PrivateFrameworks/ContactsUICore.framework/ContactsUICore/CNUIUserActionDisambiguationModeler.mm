@@ -1,23 +1,23 @@
 @interface CNUIUserActionDisambiguationModeler
-- (BOOL)hasDefaultAppForActionType:(id)a3;
+- (BOOL)hasDefaultAppForActionType:(id)type;
 - (CNUIUserActionDisambiguationModeler)init;
-- (CNUIUserActionDisambiguationModeler)initWithDiscoveringEnvironment:(id)a3;
-- (CNUIUserActionDisambiguationModeler)initWithTargetDiscoveringHelper:(id)a3 rankingHelper:(id)a4 defaultActionFetcher:(id)a5 discoveringEnvironment:(id)a6;
-- (id)_discoverActionsForContact:(id)a3 actionType:(id)a4;
+- (CNUIUserActionDisambiguationModeler)initWithDiscoveringEnvironment:(id)environment;
+- (CNUIUserActionDisambiguationModeler)initWithTargetDiscoveringHelper:(id)helper rankingHelper:(id)rankingHelper defaultActionFetcher:(id)fetcher discoveringEnvironment:(id)environment;
+- (id)_discoverActionsForContact:(id)contact actionType:(id)type;
 - (id)defaultActionChangedObservable;
-- (id)defaultActionFromActions:(id)a3;
-- (id)defaultAppsScorerForActionType:(id)a3;
-- (id)discoverActionsForContact:(id)a3 actionType:(id)a4;
-- (id)modelsWithActionType:(id)a3 defaultAction:(id)a4 actions:(id)a5 recentActions:(id)a6 sorts:(BOOL)a7 throttles:(BOOL)a8;
-- (id)modelsWithContact:(id)a3 actionType:(id)a4 defaultActionItem:(id)a5;
-- (id)recentActionsFromActions:(id)a3;
+- (id)defaultActionFromActions:(id)actions;
+- (id)defaultAppsScorerForActionType:(id)type;
+- (id)discoverActionsForContact:(id)contact actionType:(id)type;
+- (id)modelsWithActionType:(id)type defaultAction:(id)action actions:(id)actions recentActions:(id)recentActions sorts:(BOOL)sorts throttles:(BOOL)throttles;
+- (id)modelsWithContact:(id)contact actionType:(id)type defaultActionItem:(id)item;
+- (id)recentActionsFromActions:(id)actions;
 - (id)schedulerProvider;
-- (id)sortActionsOnModel:(id)a3 actionType:(id)a4;
-- (id)targetsChangedObservableForActionType:(id)a3;
-- (id)thirdPartyActionsForContactProperty:(id)a3;
-- (id)thirdPartyTargetsForActionTypes:(id)a3;
+- (id)sortActionsOnModel:(id)model actionType:(id)type;
+- (id)targetsChangedObservableForActionType:(id)type;
+- (id)thirdPartyActionsForContactProperty:(id)property;
+- (id)thirdPartyTargetsForActionTypes:(id)types;
 - (void)emptyDefaultAppsCaches;
-- (void)setContactStore:(id)a3;
+- (void)setContactStore:(id)store;
 @end
 
 @implementation CNUIUserActionDisambiguationModeler
@@ -30,80 +30,80 @@
   return v4;
 }
 
-- (CNUIUserActionDisambiguationModeler)initWithDiscoveringEnvironment:(id)a3
+- (CNUIUserActionDisambiguationModeler)initWithDiscoveringEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = objc_alloc_init(CNUIUserActionRanking);
-  v6 = [v4 targetDiscoveringHelper];
-  v7 = [v4 defaultUserActionFetcher];
-  v8 = [(CNUIUserActionDisambiguationModeler *)self initWithTargetDiscoveringHelper:v6 rankingHelper:v5 defaultActionFetcher:v7 discoveringEnvironment:v4];
+  targetDiscoveringHelper = [environmentCopy targetDiscoveringHelper];
+  defaultUserActionFetcher = [environmentCopy defaultUserActionFetcher];
+  v8 = [(CNUIUserActionDisambiguationModeler *)self initWithTargetDiscoveringHelper:targetDiscoveringHelper rankingHelper:v5 defaultActionFetcher:defaultUserActionFetcher discoveringEnvironment:environmentCopy];
 
   return v8;
 }
 
-- (CNUIUserActionDisambiguationModeler)initWithTargetDiscoveringHelper:(id)a3 rankingHelper:(id)a4 defaultActionFetcher:(id)a5 discoveringEnvironment:(id)a6
+- (CNUIUserActionDisambiguationModeler)initWithTargetDiscoveringHelper:(id)helper rankingHelper:(id)rankingHelper defaultActionFetcher:(id)fetcher discoveringEnvironment:(id)environment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  helperCopy = helper;
+  rankingHelperCopy = rankingHelper;
+  fetcherCopy = fetcher;
+  environmentCopy = environment;
   v19.receiver = self;
   v19.super_class = CNUIUserActionDisambiguationModeler;
   v15 = [(CNUIUserActionDisambiguationModeler *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_targetDiscoveringHelper, a3);
-    objc_storeStrong(&v16->_rankingHelper, a4);
-    objc_storeStrong(&v16->_defaultActionFetcher, a5);
-    objc_storeStrong(&v16->_discoveringEnvironment, a6);
+    objc_storeStrong(&v15->_targetDiscoveringHelper, helper);
+    objc_storeStrong(&v16->_rankingHelper, rankingHelper);
+    objc_storeStrong(&v16->_defaultActionFetcher, fetcher);
+    objc_storeStrong(&v16->_discoveringEnvironment, environment);
     v17 = v16;
   }
 
   return v16;
 }
 
-- (void)setContactStore:(id)a3
+- (void)setContactStore:(id)store
 {
-  v4 = a3;
-  v7 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v5 = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
-  v6 = [v7 copyWithContactStore:v4 schedulerProvider:v5];
+  storeCopy = store;
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  schedulerProvider = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
+  v6 = [discoveringEnvironment copyWithContactStore:storeCopy schedulerProvider:schedulerProvider];
 
   [(CNUIUserActionDisambiguationModeler *)self setDiscoveringEnvironment:v6];
 }
 
 - (id)schedulerProvider
 {
-  v2 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v3 = [v2 schedulerProvider];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  schedulerProvider = [discoveringEnvironment schedulerProvider];
 
-  return v3;
+  return schedulerProvider;
 }
 
-- (id)modelsWithContact:(id)a3 actionType:(id)a4 defaultActionItem:(id)a5
+- (id)modelsWithContact:(id)contact actionType:(id)type defaultActionItem:(id)item
 {
   v70[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
-  v12 = [(CNUIUserActionDisambiguationModeler *)self discoverActionsForContact:v8 actionType:v9];
+  contactCopy = contact;
+  typeCopy = type;
+  itemCopy = item;
+  schedulerProvider = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
+  v12 = [(CNUIUserActionDisambiguationModeler *)self discoverActionsForContact:contactCopy actionType:typeCopy];
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __86__CNUIUserActionDisambiguationModeler_modelsWithContact_actionType_defaultActionItem___block_invoke;
   v67[3] = &unk_1E76E9D28;
-  v53 = v8;
+  v53 = contactCopy;
   v68 = v53;
-  v13 = v9;
+  v13 = typeCopy;
   v69 = v13;
   v14 = [v12 doOnNext:v67];
 
-  v15 = [v11 backgroundScheduler];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v52 = v14;
-  v16 = [v14 subscribeOn:v15];
+  v16 = [v14 subscribeOn:backgroundScheduler];
 
-  v17 = [(CNReplaySubject *)[CNDiscoveredUserActionReplaySubject alloc] initWithCapacity:1 schedulerProvider:v11];
+  v17 = [(CNReplaySubject *)[CNDiscoveredUserActionReplaySubject alloc] initWithCapacity:1 schedulerProvider:schedulerProvider];
   v51 = [v16 subscribe:v17];
   if ((*(*MEMORY[0x1E6996558] + 16))())
   {
@@ -118,7 +118,7 @@
 
   else
   {
-    v47 = [MEMORY[0x1E6996798] observableWithResult:v10];
+    v47 = [MEMORY[0x1E6996798] observableWithResult:itemCopy];
   }
 
   v19 = [(CNUIUserActionDisambiguationModeler *)self recentActionsFromActions:v17];
@@ -130,15 +130,15 @@
   v64 = v20;
   v21 = [v19 doOnNext:v63];
 
-  v22 = [MEMORY[0x1E6996798] observableWithResult:v10];
+  v22 = [MEMORY[0x1E6996798] observableWithResult:itemCopy];
   [MEMORY[0x1E6996798] observableWithResult:MEMORY[0x1E695E0F0]];
-  v23 = v50 = v10;
+  v23 = v50 = itemCopy;
   v24 = [(CNUIUserActionDisambiguationModeler *)self modelsWithActionType:v20 defaultAction:v22 actions:v17 recentActions:v23 sorts:0 throttles:0];
   v49 = [v24 take:1];
 
-  v25 = [(CNReplaySubject *)[CNFirstRawActionsModelReplaySubject alloc] initWithCapacity:1 schedulerProvider:v11];
-  v26 = [v11 backgroundScheduler];
-  v27 = [v49 subscribeOn:v26];
+  v25 = [(CNReplaySubject *)[CNFirstRawActionsModelReplaySubject alloc] initWithCapacity:1 schedulerProvider:schedulerProvider];
+  backgroundScheduler2 = [schedulerProvider backgroundScheduler];
+  v27 = [v49 subscribeOn:backgroundScheduler2];
   v28 = [v27 subscribe:v25];
 
   v29 = MEMORY[0x1E6996798];
@@ -167,10 +167,10 @@
   v70[1] = v25;
   v70[2] = v31;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:3];
-  v37 = [v35 merge:v36 schedulerProvider:v11];
+  v37 = [v35 merge:v36 schedulerProvider:schedulerProvider];
 
-  v38 = [v11 backgroundScheduler];
-  v39 = [v37 subscribeOn:v38];
+  backgroundScheduler3 = [schedulerProvider backgroundScheduler];
+  v39 = [v37 subscribeOn:backgroundScheduler3];
 
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
@@ -270,30 +270,30 @@ uint64_t __86__CNUIUserActionDisambiguationModeler_modelsWithContact_actionType_
   return [v2 cancel];
 }
 
-- (id)targetsChangedObservableForActionType:(id)a3
+- (id)targetsChangedObservableForActionType:(id)type
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v6 = [v5 highLatencySchedulerProvider];
+  typeCopy = type;
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  highLatencySchedulerProvider = [discoveringEnvironment highLatencySchedulerProvider];
 
-  v7 = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
-  v8 = [v7 observableForTargetsChangedForActionType:v4 schedulerProvider:v6];
-  v9 = [v6 backgroundScheduler];
-  v10 = [v8 subscribeOn:v9];
+  targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
+  v8 = [targetDiscoveringHelper observableForTargetsChangedForActionType:typeCopy schedulerProvider:highLatencySchedulerProvider];
+  backgroundScheduler = [highLatencySchedulerProvider backgroundScheduler];
+  v10 = [v8 subscribeOn:backgroundScheduler];
 
-  v11 = [v10 throttle:v6 schedulerProvider:0.5];
+  v11 = [v10 throttle:highLatencySchedulerProvider schedulerProvider:0.5];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __77__CNUIUserActionDisambiguationModeler_targetsChangedObservableForActionType___block_invoke;
   v18[3] = &unk_1E76E9768;
-  v19 = v4;
-  v12 = v4;
+  v19 = typeCopy;
+  v12 = typeCopy;
   v13 = [v11 doOnNext:v18];
 
-  v14 = [MEMORY[0x1E695DFB0] null];
-  v20[0] = v14;
+  null = [MEMORY[0x1E695DFB0] null];
+  v20[0] = null;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v16 = [v13 startWith:v15];
 
@@ -309,40 +309,40 @@ void __77__CNUIUserActionDisambiguationModeler_targetsChangedObservableForAction
   }
 }
 
-- (id)discoverActionsForContact:(id)a3 actionType:(id)a4
+- (id)discoverActionsForContact:(id)contact actionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  typeCopy = type;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(CNUIUserActionDisambiguationModeler *)self _discoverActionsForContact:v6 actionType:v7];
+  v9 = [(CNUIUserActionDisambiguationModeler *)self _discoverActionsForContact:contactCopy actionType:typeCopy];
   objc_autoreleasePoolPop(v8);
 
   return v9;
 }
 
-- (id)_discoverActionsForContact:(id)a3 actionType:(id)a4
+- (id)_discoverActionsForContact:(id)contact actionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
-  v9 = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
-  v10 = [v9 targetsForActionType:v7];
+  contactCopy = contact;
+  typeCopy = type;
+  schedulerProvider = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
+  targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
+  v10 = [targetDiscoveringHelper targetsForActionType:typeCopy];
   v11 = MEMORY[0x1E695E0F0];
   v12 = [v10 scan:&__block_literal_global_64 seed:MEMORY[0x1E695E0F0]];
 
-  v13 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __77__CNUIUserActionDisambiguationModeler__discoverActionsForContact_actionType___block_invoke_2;
   v26[3] = &unk_1E76E9E38;
-  v14 = v7;
+  v14 = typeCopy;
   v27 = v14;
-  v28 = v6;
-  v29 = v13;
-  v30 = v8;
-  v15 = v8;
-  v16 = v13;
-  v17 = v6;
+  v28 = contactCopy;
+  v29 = discoveringEnvironment;
+  v30 = schedulerProvider;
+  v15 = schedulerProvider;
+  v16 = discoveringEnvironment;
+  v17 = contactCopy;
   v18 = [v12 switchMap:v26 schedulerProvider:v15];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -436,18 +436,18 @@ void __77__CNUIUserActionDisambiguationModeler__discoverActionsForContact_action
 - (id)defaultActionChangedObservable
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v4 = [v3 highLatencySchedulerProvider];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  highLatencySchedulerProvider = [discoveringEnvironment highLatencySchedulerProvider];
 
-  v5 = [(CNUIUserActionDisambiguationModeler *)self defaultActionFetcher];
-  v6 = [v5 observableForDefaultActionsChanged];
-  v7 = [v4 backgroundScheduler];
-  v8 = [v6 subscribeOn:v7];
+  defaultActionFetcher = [(CNUIUserActionDisambiguationModeler *)self defaultActionFetcher];
+  observableForDefaultActionsChanged = [defaultActionFetcher observableForDefaultActionsChanged];
+  backgroundScheduler = [highLatencySchedulerProvider backgroundScheduler];
+  v8 = [observableForDefaultActionsChanged subscribeOn:backgroundScheduler];
 
   v9 = [v8 doOnNext:&__block_literal_global_31_0];
 
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v14[0] = v10;
+  null = [MEMORY[0x1E695DFB0] null];
+  v14[0] = null;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v12 = [v9 startWith:v11];
 
@@ -463,17 +463,17 @@ void __69__CNUIUserActionDisambiguationModeler_defaultActionChangedObservable__b
   }
 }
 
-- (id)defaultActionFromActions:(id)a3
+- (id)defaultActionFromActions:(id)actions
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNUIUserActionDisambiguationModeler *)self defaultActionFetcher];
-  v6 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v7 = [v6 highLatencySchedulerProvider];
-  v8 = [v5 defaultActionItemForActionItems:v4 schedulerProvider:v7];
+  actionsCopy = actions;
+  defaultActionFetcher = [(CNUIUserActionDisambiguationModeler *)self defaultActionFetcher];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  highLatencySchedulerProvider = [discoveringEnvironment highLatencySchedulerProvider];
+  v8 = [defaultActionFetcher defaultActionItemForActionItems:actionsCopy schedulerProvider:highLatencySchedulerProvider];
 
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v14[0] = v9;
+  null = [MEMORY[0x1E695DFB0] null];
+  v14[0] = null;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v11 = [v8 startWith:v10];
 
@@ -502,13 +502,13 @@ id __64__CNUIUserActionDisambiguationModeler_defaultActionFromActions___block_in
   return v5;
 }
 
-- (id)recentActionsFromActions:(id)a3
+- (id)recentActionsFromActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionDisambiguationModeler *)self rankingHelper];
-  v6 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v7 = [v6 highLatencySchedulerProvider];
-  v8 = [v5 selectRecentActionItems:v4 schedulerProvider:v7];
+  actionsCopy = actions;
+  rankingHelper = [(CNUIUserActionDisambiguationModeler *)self rankingHelper];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  highLatencySchedulerProvider = [discoveringEnvironment highLatencySchedulerProvider];
+  v8 = [rankingHelper selectRecentActionItems:actionsCopy schedulerProvider:highLatencySchedulerProvider];
 
   v9 = [v8 doOnNext:&__block_literal_global_36_0];
 
@@ -525,26 +525,26 @@ void __64__CNUIUserActionDisambiguationModeler_recentActionsFromActions___block_
   }
 }
 
-- (id)modelsWithActionType:(id)a3 defaultAction:(id)a4 actions:(id)a5 recentActions:(id)a6 sorts:(BOOL)a7 throttles:(BOOL)a8
+- (id)modelsWithActionType:(id)type defaultAction:(id)action actions:(id)actions recentActions:(id)recentActions sorts:(BOOL)sorts throttles:(BOOL)throttles
 {
-  v9 = a7;
+  sortsCopy = sorts;
   v33[3] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  typeCopy = type;
+  actionCopy = action;
+  actionsCopy = actions;
+  recentActionsCopy = recentActions;
   v18 = MEMORY[0x1E6996798];
-  v33[0] = v15;
-  v33[1] = v16;
-  v33[2] = v17;
+  v33[0] = actionCopy;
+  v33[1] = actionsCopy;
+  v33[2] = recentActionsCopy;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
-  v20 = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
-  v21 = [v18 combineLatest:v19 schedulerProvider:v20];
+  schedulerProvider = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
+  v21 = [v18 combineLatest:v19 schedulerProvider:schedulerProvider];
 
-  if (a8)
+  if (throttles)
   {
-    v22 = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
-    v23 = [v21 throttle:v22 schedulerProvider:0.1];
+    schedulerProvider2 = [(CNUIUserActionDisambiguationModeler *)self schedulerProvider];
+    v23 = [v21 throttle:schedulerProvider2 schedulerProvider:0.1];
   }
 
   else
@@ -557,10 +557,10 @@ void __64__CNUIUserActionDisambiguationModeler_recentActionsFromActions___block_
   v31[2] = __112__CNUIUserActionDisambiguationModeler_modelsWithActionType_defaultAction_actions_recentActions_sorts_throttles___block_invoke;
   v31[3] = &unk_1E76E9E80;
   v31[4] = self;
-  v24 = v14;
+  v24 = typeCopy;
   v32 = v24;
   v25 = [v23 map:v31];
-  if (v9)
+  if (sortsCopy)
   {
     v29 = MEMORY[0x1E69E9820];
     v30 = v24;
@@ -589,21 +589,21 @@ id __112__CNUIUserActionDisambiguationModeler_modelsWithActionType_defaultAction
   return v10;
 }
 
-- (id)sortActionsOnModel:(id)a3 actionType:(id)a4
+- (id)sortActionsOnModel:(id)model actionType:(id)type
 {
-  v6 = a3;
-  v7 = [(CNUIUserActionDisambiguationModeler *)self defaultAppsScorerForActionType:a4];
-  v8 = [(CNUIUserActionDisambiguationModeler *)self rankingHelper];
-  v9 = [v6 actions];
-  v10 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v11 = [v10 highLatencySchedulerProvider];
-  v12 = [v8 sortActionItems:v9 schedulerProvider:v11 defaultAppsScorer:v7];
+  modelCopy = model;
+  v7 = [(CNUIUserActionDisambiguationModeler *)self defaultAppsScorerForActionType:type];
+  rankingHelper = [(CNUIUserActionDisambiguationModeler *)self rankingHelper];
+  actions = [modelCopy actions];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  highLatencySchedulerProvider = [discoveringEnvironment highLatencySchedulerProvider];
+  v12 = [rankingHelper sortActionItems:actions schedulerProvider:highLatencySchedulerProvider defaultAppsScorer:v7];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __69__CNUIUserActionDisambiguationModeler_sortActionsOnModel_actionType___block_invoke;
   v24[3] = &unk_1E76E9210;
-  v13 = v6;
+  v13 = modelCopy;
   v25 = v13;
   v14 = [v12 flatMap:v24];
   v19 = MEMORY[0x1E69E9820];
@@ -639,80 +639,80 @@ uint64_t __69__CNUIUserActionDisambiguationModeler_sortActionsOnModel_actionType
   return [v3 futureWithResult:v4];
 }
 
-- (BOOL)hasDefaultAppForActionType:(id)a3
+- (BOOL)hasDefaultAppForActionType:(id)type
 {
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x1E695C150]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695C1B8]))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:*MEMORY[0x1E695C150]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E695C1B8]))
   {
-    v5 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-    v6 = [v5 callProviderManager];
-    v7 = [v6 hasDefaultCallProvider];
+    discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+    callProviderManager = [discoveringEnvironment callProviderManager];
+    hasDefaultCallProvider = [callProviderManager hasDefaultCallProvider];
   }
 
   else
   {
-    v7 = 1;
+    hasDefaultCallProvider = 1;
   }
 
-  return v7;
+  return hasDefaultCallProvider;
 }
 
-- (id)defaultAppsScorerForActionType:(id)a3
+- (id)defaultAppsScorerForActionType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E695C178]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C178]])
   {
-    v5 = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
-    v6 = [v5 defaultMessagingAppsBundleIdentifierScorer];
+    targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
+    defaultMessagingAppsBundleIdentifierScorer = [targetDiscoveringHelper defaultMessagingAppsBundleIdentifierScorer];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E695C150]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C150]])
   {
-    v5 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-    v7 = [v5 callProviderManager];
-    v8 = [v7 defaultCallingAppsBundleIdentifierScorer];
+    targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+    callProviderManager = [targetDiscoveringHelper callProviderManager];
+    defaultCallingAppsBundleIdentifierScorer = [callProviderManager defaultCallingAppsBundleIdentifierScorer];
 LABEL_7:
-    v6 = v8;
+    defaultMessagingAppsBundleIdentifierScorer = defaultCallingAppsBundleIdentifierScorer;
 
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E695C1B8]])
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C1B8]])
   {
-    v5 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-    v7 = [v5 callProviderManager];
-    v8 = [v7 defaultVideoAppsBundleIdentifierScorer];
+    targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+    callProviderManager = [targetDiscoveringHelper callProviderManager];
+    defaultCallingAppsBundleIdentifierScorer = [callProviderManager defaultVideoAppsBundleIdentifierScorer];
     goto LABEL_7;
   }
 
-  v6 = 0;
+  defaultMessagingAppsBundleIdentifierScorer = 0;
 LABEL_9:
 
+  return defaultMessagingAppsBundleIdentifierScorer;
+}
+
+- (id)thirdPartyTargetsForActionTypes:(id)types
+{
+  typesCopy = types;
+  targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
+  v6 = [targetDiscoveringHelper thirdPartyTargetsForActionTypes:typesCopy];
+
   return v6;
 }
 
-- (id)thirdPartyTargetsForActionTypes:(id)a3
+- (id)thirdPartyActionsForContactProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
-  v6 = [v5 thirdPartyTargetsForActionTypes:v4];
-
-  return v6;
-}
-
-- (id)thirdPartyActionsForContactProperty:(id)a3
-{
-  v4 = a3;
+  propertyCopy = property;
   if (thirdPartyActionsForContactProperty__cn_once_token_13 != -1)
   {
     [CNUIUserActionDisambiguationModeler thirdPartyActionsForContactProperty:];
   }
 
   v5 = thirdPartyActionsForContactProperty__cn_once_object_13;
-  v6 = [v4 key];
+  v6 = [propertyCopy key];
   v7 = [v5 containsObject:v6];
 
   if (v7)
@@ -723,23 +723,23 @@ LABEL_9:
     v25 = __Block_byref_object_copy__6;
     v26 = __Block_byref_object_dispose__6;
     v27 = 0;
-    v8 = [v4 value];
-    v9 = [v8 bundleIdentifiers];
+    value = [propertyCopy value];
+    bundleIdentifiers = [value bundleIdentifiers];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __75__CNUIUserActionDisambiguationModeler_thirdPartyActionsForContactProperty___block_invoke_49;
     v21[3] = &unk_1E76E9ED0;
     v21[4] = self;
     v21[5] = &v22;
-    [v9 enumerateObjectsUsingBlock:v21];
+    [bundleIdentifiers enumerateObjectsUsingBlock:v21];
 
     v10 = v23[5];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __75__CNUIUserActionDisambiguationModeler_thirdPartyActionsForContactProperty___block_invoke_2;
     v18 = &unk_1E76E9EF8;
-    v19 = v4;
-    v20 = self;
+    v19 = propertyCopy;
+    selfCopy = self;
     v11 = [v10 _cn_flatMap:&v15];
     if (v11)
     {
@@ -831,12 +831,12 @@ id __75__CNUIUserActionDisambiguationModeler_thirdPartyActionsForContactProperty
 
 - (void)emptyDefaultAppsCaches
 {
-  v3 = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
-  [v3 emptyDefaultAppsCaches];
+  targetDiscoveringHelper = [(CNUIUserActionDisambiguationModeler *)self targetDiscoveringHelper];
+  [targetDiscoveringHelper emptyDefaultAppsCaches];
 
-  v5 = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
-  v4 = [v5 callProviderManager];
-  [v4 emptyDefaultAppsCaches];
+  discoveringEnvironment = [(CNUIUserActionDisambiguationModeler *)self discoveringEnvironment];
+  callProviderManager = [discoveringEnvironment callProviderManager];
+  [callProviderManager emptyDefaultAppsCaches];
 }
 
 void __86__CNUIUserActionDisambiguationModeler_modelsWithContact_actionType_defaultActionItem___block_invoke_cold_1()

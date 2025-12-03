@@ -1,12 +1,12 @@
 @interface SCMLAnalysisConfiguration
-- (SCMLAnalysisConfiguration)initWithOptions:(id)a3;
+- (SCMLAnalysisConfiguration)initWithOptions:(id)options;
 @end
 
 @implementation SCMLAnalysisConfiguration
 
-- (SCMLAnalysisConfiguration)initWithOptions:(id)a3
+- (SCMLAnalysisConfiguration)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = SCMLAnalysisConfiguration;
   v5 = [(SCMLAnalysisConfiguration *)&v10 init];
@@ -14,11 +14,11 @@
   if (v5)
   {
     v5->_deviceType = 0;
-    v7 = [v4 objectForKeyedSubscript:@"SCMLAnalysisConfigurationDeviceType"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"SCMLAnalysisConfigurationDeviceType"];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"SCMLAnalysisConfigurationDeviceType"];
+      v8 = [optionsCopy objectForKeyedSubscript:@"SCMLAnalysisConfigurationDeviceType"];
       v6->_deviceType = [v8 unsignedIntValue];
     }
   }

@@ -1,17 +1,17 @@
 @interface BAApplicationInfo
-+ (BOOL)applicationForIdentifierAllowsBackgroundActivity:(id)a3;
++ (BOOL)applicationForIdentifierAllowsBackgroundActivity:(id)activity;
 + (id)classesForSerialization;
 + (id)extensionContainingApplicationList;
-- (BAApplicationInfo)initWithCoder:(id)a3;
-- (BAApplicationInfo)initWithIdentifier:(id)a3 applicationTeamIdentifier:(id)a4;
-- (BOOL)_consumeAllowanceShouldStopWithAdditionalBytes:(unint64_t)a3 downloadNecessity:(int64_t)a4 isManifest:(BOOL)a5;
+- (BAApplicationInfo)initWithCoder:(id)coder;
+- (BAApplicationInfo)initWithIdentifier:(id)identifier applicationTeamIdentifier:(id)teamIdentifier;
+- (BOOL)_consumeAllowanceShouldStopWithAdditionalBytes:(unint64_t)bytes downloadNecessity:(int64_t)necessity isManifest:(BOOL)manifest;
 - (BOOL)allowsBackgroundActivity;
 - (BOOL)awaitingNetworkConsent;
 - (BOOL)hasManagedAssetPacks;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)receivedInstalledNotification;
 - (BOOL)receivedInstallingNotification;
-- (BOOL)setAwaitingNetworkConsent:(BOOL)a3;
+- (BOOL)setAwaitingNetworkConsent:(BOOL)consent;
 - (BOOL)shouldDoPeriodicCheck;
 - (BOOL)userForceQuitApp;
 - (BOOL)usesAppleHosting;
@@ -21,58 +21,58 @@
 - (double)extensionRuntime;
 - (id)applicationSecurityGroups;
 - (id)debugDescription;
-- (id)extensionIdentityWithParentAppRecordPtr:(id *)a3;
+- (id)extensionIdentityWithParentAppRecordPtr:(id *)ptr;
 - (int64_t)applicationExtensionState;
 - (int64_t)applicationState;
 - (int64_t)installSource;
-- (unint64_t)_remainingDownloadAllowanceWithNecessity:(int64_t)a3 isManifest:(BOOL)a4;
-- (void)_debugConsumeTime:(double)a3;
-- (void)_populateAllowedDomainInfoWithArray:(id)a3;
+- (unint64_t)_remainingDownloadAllowanceWithNecessity:(int64_t)necessity isManifest:(BOOL)manifest;
+- (void)_debugConsumeTime:(double)time;
+- (void)_populateAllowedDomainInfoWithArray:(id)array;
 - (void)applicationInstalled;
-- (void)applicationInstallingWithUpdateInstall:(BOOL)a3;
+- (void)applicationInstallingWithUpdateInstall:(BOOL)install;
 - (void)applicationLaunched;
-- (void)applicationPrepareWithDescriptor:(id)a3;
-- (void)determineInstallSourceIfUnsetFromAuditToken:(id *)a3;
+- (void)applicationPrepareWithDescriptor:(id)descriptor;
+- (void)determineInstallSourceIfUnsetFromAuditToken:(id *)token;
 - (void)donePeriodicCheck;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)extensionExited;
-- (void)performAfterNetworkConsentProvided:(id)a3 queue:(id)a4;
+- (void)performAfterNetworkConsentProvided:(id)provided queue:(id)queue;
 - (void)resetExtensionRuntime;
-- (void)setAllowedDownloadDomainWildcards:(id)a3;
-- (void)setAllowedDownloadDomains:(id)a3;
-- (void)setApplicationExtensionState:(int64_t)a3;
-- (void)setApplicationState:(int64_t)a3;
-- (void)setHasManagedAssetPacks:(BOOL)a3;
-- (void)setInstallSource:(int64_t)a3;
-- (void)setPersistentIdentifier:(id)a3;
-- (void)setReceivedInstalledNotification:(BOOL)a3;
-- (void)setReceivedInstallingNotification:(BOOL)a3;
-- (void)setUserForceQuitApp:(BOOL)a3;
-- (void)setUsesAppleHosting:(BOOL)a3;
-- (void)updateApplicationWithInfoDictionary:(id)a3 applicationRecord:(id)a4 overrides:(id)a5;
+- (void)setAllowedDownloadDomainWildcards:(id)wildcards;
+- (void)setAllowedDownloadDomains:(id)domains;
+- (void)setApplicationExtensionState:(int64_t)state;
+- (void)setApplicationState:(int64_t)state;
+- (void)setHasManagedAssetPacks:(BOOL)packs;
+- (void)setInstallSource:(int64_t)source;
+- (void)setPersistentIdentifier:(id)identifier;
+- (void)setReceivedInstalledNotification:(BOOL)notification;
+- (void)setReceivedInstallingNotification:(BOOL)notification;
+- (void)setUserForceQuitApp:(BOOL)app;
+- (void)setUsesAppleHosting:(BOOL)hosting;
+- (void)updateApplicationWithInfoDictionary:(id)dictionary applicationRecord:(id)record overrides:(id)overrides;
 - (void)willLaunchExtension;
 @end
 
 @implementation BAApplicationInfo
 
-+ (BOOL)applicationForIdentifierAllowsBackgroundActivity:(id)a3
++ (BOOL)applicationForIdentifierAllowsBackgroundActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   if (qword_100089CB0 != -1)
   {
     sub_10004BCF0();
   }
 
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v4 isLowPowerModeEnabled];
 
-  if (v5)
+  if (isLowPowerModeEnabled)
   {
     v6 = sub_1000104FC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v3;
+      v14 = activityCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Denying background activity for %{public}@ because device is in low power mode.", &v13, 0xCu);
     }
 
@@ -85,7 +85,7 @@
     if (([v6 isAutomaticAppUpdatesAllowed]& 1) != 0)
     {
       v8 = [qword_100089CA8 objectForKey:@"KeepAppsUpToDateAppList"];
-      v9 = [v8 objectForKey:v3];
+      v9 = [v8 objectForKey:activityCopy];
       v10 = v9;
       if (v9 && ([v9 BOOLValue] & 1) == 0)
       {
@@ -93,7 +93,7 @@
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 138543362;
-          v14 = v3;
+          v14 = activityCopy;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Denying background activity for %{public}@ because background app refresh for this app is disabled.", &v13, 0xCu);
         }
 
@@ -112,7 +112,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v3;
+        v14 = activityCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Denying background activity for %{public}@ because background app refresh is globally disabled.", &v13, 0xCu);
       }
 
@@ -164,30 +164,30 @@
         }
 
         v9 = *(*(&v27 + 1) + 8 * v8);
-        v10 = [v9 containingBundleRecord];
+        containingBundleRecord = [v9 containingBundleRecord];
         v11 = v5[361];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v10 bundleIdentifier];
-          if (v12)
+          bundleIdentifier = [containingBundleRecord bundleIdentifier];
+          if (bundleIdentifier)
           {
             v13 = [v9 entitlementNamed:p_inst_meths[107] ofClass:objc_opt_class()];
             v14 = [NSBundle alloc];
-            v15 = [v10 URL];
+            v15 = [containingBundleRecord URL];
             v16 = [v14 _initUniqueWithURL:v15];
 
-            v17 = [v16 infoDictionary];
-            v18 = [[BAApplicationInfo alloc] initWithIdentifier:v12 applicationTeamIdentifier:v13];
+            infoDictionary = [v16 infoDictionary];
+            v18 = [[BAApplicationInfo alloc] initWithIdentifier:bundleIdentifier applicationTeamIdentifier:v13];
             if (v18)
             {
               [v24 addObject:v18];
-              if (v17)
+              if (infoDictionary)
               {
-                [BAApplicationConfigurationOverrides overridesForAppBundleIdentifier:v12];
+                [BAApplicationConfigurationOverrides overridesForAppBundleIdentifier:bundleIdentifier];
                 v19 = v5;
                 v21 = v20 = v2;
-                [(BAApplicationInfo *)v18 updateApplicationWithInfoDictionary:v17 applicationRecord:v10 overrides:v21];
+                [(BAApplicationInfo *)v18 updateApplicationWithInfoDictionary:infoDictionary applicationRecord:containingBundleRecord overrides:v21];
 
                 v2 = v20;
                 v5 = v19;
@@ -213,10 +213,10 @@
   return v24;
 }
 
-- (BAApplicationInfo)initWithIdentifier:(id)a3 applicationTeamIdentifier:(id)a4
+- (BAApplicationInfo)initWithIdentifier:(id)identifier applicationTeamIdentifier:(id)teamIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
   v28.receiver = self;
   v28.super_class = BAApplicationInfo;
   v8 = [(BAApplicationInfo *)&v28 init];
@@ -225,7 +225,7 @@
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     v26 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"identifier can not be nil" userInfo:0];
     [v26 raise];
@@ -235,8 +235,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [v6 _baassets_validUTI];
-  v10 = [v9 isEqualToString:v6];
+  _baassets_validUTI = [identifierCopy _baassets_validUTI];
+  v10 = [_baassets_validUTI isEqualToString:identifierCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -252,14 +252,14 @@ LABEL_9:
   v11 = objc_alloc_init(NSRecursiveLock);
   [(BAApplicationInfo *)v8 setAppInfoRecursiveLock:v11];
 
-  v12 = [(BAApplicationInfo *)v8 appInfoRecursiveLock];
-  v13 = [NSString stringWithFormat:@"%@ App Info Recursive Lock", v6];
-  [v12 setName:v13];
+  appInfoRecursiveLock = [(BAApplicationInfo *)v8 appInfoRecursiveLock];
+  identifierCopy = [NSString stringWithFormat:@"%@ App Info Recursive Lock", identifierCopy];
+  [appInfoRecursiveLock setName:identifierCopy];
 
-  v14 = [(BAApplicationInfo *)v8 appInfoRecursiveLock];
-  [v14 lock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)v8 appInfoRecursiveLock];
+  [appInfoRecursiveLock2 lock];
 
-  [(BAApplicationInfo *)v8 setApplicationIdentifier:v6];
+  [(BAApplicationInfo *)v8 setApplicationIdentifier:identifierCopy];
   [(BAApplicationInfo *)v8 setOptionalAmountDownloaded:0];
   [(BAApplicationInfo *)v8 setEssentialAmountDownloaded:0];
   [(BAApplicationInfo *)v8 setOptionalAssetDownloadAllowance:0];
@@ -269,7 +269,7 @@ LABEL_9:
   [(BAApplicationInfo *)v8 setReceivedInstallingNotification:0];
   [(BAApplicationInfo *)v8 setReceivedInstalledNotification:0];
   [(BAApplicationInfo *)v8 setHasLaunchedApplication:0];
-  [(BAApplicationInfo *)v8 setApplicationTeamIdentifier:v7];
+  [(BAApplicationInfo *)v8 setApplicationTeamIdentifier:teamIdentifierCopy];
   [(BAApplicationInfo *)v8 setInstallSource:0];
   v15 = [NSMutableArray arrayWithCapacity:10];
   [(BAApplicationInfo *)v8 setExtensionRuntimeEvents:v15];
@@ -296,8 +296,8 @@ LABEL_9:
   v8->_blocksAwaitingNetworkConsent = v22;
 
   *&v8->_hasManagedAssetPacks = 0;
-  v24 = [(BAApplicationInfo *)v8 appInfoRecursiveLock];
-  [v24 unlock];
+  appInfoRecursiveLock3 = [(BAApplicationInfo *)v8 appInfoRecursiveLock];
+  [appInfoRecursiveLock3 unlock];
 
 LABEL_5:
   v25 = v8;
@@ -306,9 +306,9 @@ LABEL_10:
   return v25;
 }
 
-- (BAApplicationInfo)initWithCoder:(id)a3
+- (BAApplicationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = BAApplicationInfo;
   v5 = [(BAApplicationInfo *)&v44 init];
@@ -319,19 +319,19 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_alloc_init(NSRecursiveLock);
   [(BAApplicationInfo *)v5 setAppInfoRecursiveLock:v7];
 
-  v8 = [(BAApplicationInfo *)v5 appInfoRecursiveLock];
-  [v8 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)v5 appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:off_100089368[0]];
   [(BAApplicationInfo *)v5 setApplicationIdentifier:v9];
 
-  v10 = [(BAApplicationInfo *)v5 applicationIdentifier];
+  applicationIdentifier = [(BAApplicationInfo *)v5 applicationIdentifier];
 
-  if (v10)
+  if (applicationIdentifier)
   {
     v11 = objc_alloc_init(NSMutableArray);
     allowedDownloadDomains = v5->_allowedDownloadDomains;
@@ -476,8 +476,8 @@ LABEL_20:
         v41 = [v6 decodeObjectOfClasses:v40 forKey:off_1000893F0[0]];
 
         [(BAApplicationInfo *)v5 _populateAllowedDomainInfoWithArray:v41];
-        v42 = [(BAApplicationInfo *)v5 appInfoRecursiveLock];
-        [v42 unlock];
+        appInfoRecursiveLock2 = [(BAApplicationInfo *)v5 appInfoRecursiveLock];
+        [appInfoRecursiveLock2 unlock];
 
         goto LABEL_37;
       }
@@ -492,8 +492,8 @@ LABEL_20:
     goto LABEL_12;
   }
 
-  v27 = [(BAApplicationInfo *)v5 appInfoRecursiveLock];
-  [v27 unlock];
+  appInfoRecursiveLock3 = [(BAApplicationInfo *)v5 appInfoRecursiveLock];
+  [appInfoRecursiveLock3 unlock];
 
   v28 = 0;
 LABEL_38:
@@ -501,83 +501,83 @@ LABEL_38:
   return v28;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v29 = a3;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 lock];
+  coderCopy = coder;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v5 = [(BAApplicationInfo *)self applicationIdentifier];
-  [v29 encodeObject:v5 forKey:off_100089368[0]];
+  applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
+  [coderCopy encodeObject:applicationIdentifier forKey:off_100089368[0]];
 
   v6 = [NSNumber numberWithUnsignedLongLong:[(BAApplicationInfo *)self optionalAmountDownloaded]];
-  [v29 encodeObject:v6 forKey:off_100089390[0]];
+  [coderCopy encodeObject:v6 forKey:off_100089390[0]];
 
   v7 = [NSNumber numberWithUnsignedLongLong:[(BAApplicationInfo *)self essentialAmountDownloaded]];
-  [v29 encodeObject:v7 forKey:off_100089388[0]];
+  [coderCopy encodeObject:v7 forKey:off_100089388[0]];
 
   v8 = [NSNumber numberWithUnsignedLongLong:[(BAApplicationInfo *)self optionalAssetDownloadAllowance]];
-  [v29 encodeObject:v8 forKey:off_1000893A8[0]];
+  [coderCopy encodeObject:v8 forKey:off_1000893A8[0]];
 
   v9 = [NSNumber numberWithUnsignedLongLong:[(BAApplicationInfo *)self essentialAssetDownloadAllowance]];
-  [v29 encodeObject:v9 forKey:off_1000893A0[0]];
+  [coderCopy encodeObject:v9 forKey:off_1000893A0[0]];
 
-  v10 = [(BAApplicationInfo *)self permittedForInitialBackgroundActivity];
-  [v29 encodeBool:v10 forKey:off_1000893B0[0]];
-  v11 = [(BAApplicationInfo *)self initialBackgroundCellularPolicy];
-  [v29 encodeInteger:v11 forKey:off_1000893B8[0]];
-  v12 = [(BAApplicationInfo *)self receivedInstallingNotification];
-  [v29 encodeBool:v12 forKey:off_1000893C0[0]];
-  v13 = [(BAApplicationInfo *)self receivedInstalledNotification];
-  [v29 encodeBool:v13 forKey:off_1000893C8[0]];
-  v14 = [(BAApplicationInfo *)self hasLaunchedApplication];
-  [v29 encodeBool:v14 forKey:off_1000893D0[0]];
-  v15 = [(BAApplicationInfo *)self lastApplicationLaunchTime];
-  [v29 encodeObject:v15 forKey:off_1000893D8[0]];
+  permittedForInitialBackgroundActivity = [(BAApplicationInfo *)self permittedForInitialBackgroundActivity];
+  [coderCopy encodeBool:permittedForInitialBackgroundActivity forKey:off_1000893B0[0]];
+  initialBackgroundCellularPolicy = [(BAApplicationInfo *)self initialBackgroundCellularPolicy];
+  [coderCopy encodeInteger:initialBackgroundCellularPolicy forKey:off_1000893B8[0]];
+  receivedInstallingNotification = [(BAApplicationInfo *)self receivedInstallingNotification];
+  [coderCopy encodeBool:receivedInstallingNotification forKey:off_1000893C0[0]];
+  receivedInstalledNotification = [(BAApplicationInfo *)self receivedInstalledNotification];
+  [coderCopy encodeBool:receivedInstalledNotification forKey:off_1000893C8[0]];
+  hasLaunchedApplication = [(BAApplicationInfo *)self hasLaunchedApplication];
+  [coderCopy encodeBool:hasLaunchedApplication forKey:off_1000893D0[0]];
+  lastApplicationLaunchTime = [(BAApplicationInfo *)self lastApplicationLaunchTime];
+  [coderCopy encodeObject:lastApplicationLaunchTime forKey:off_1000893D8[0]];
 
-  v16 = [(BAApplicationInfo *)self userForceQuitApp];
-  [v29 encodeBool:v16 forKey:off_1000893E0[0]];
-  v17 = [(BAApplicationInfo *)self lastPeriodicCheckTime];
-  [v29 encodeObject:v17 forKey:off_1000893E8[0]];
+  userForceQuitApp = [(BAApplicationInfo *)self userForceQuitApp];
+  [coderCopy encodeBool:userForceQuitApp forKey:off_1000893E0[0]];
+  lastPeriodicCheckTime = [(BAApplicationInfo *)self lastPeriodicCheckTime];
+  [coderCopy encodeObject:lastPeriodicCheckTime forKey:off_1000893E8[0]];
 
-  v18 = [(BAApplicationInfo *)self applicationTeamIdentifier];
+  applicationTeamIdentifier = [(BAApplicationInfo *)self applicationTeamIdentifier];
 
-  if (v18)
+  if (applicationTeamIdentifier)
   {
-    v19 = [(BAApplicationInfo *)self applicationTeamIdentifier];
-    [v29 encodeObject:v19 forKey:off_100089370[0]];
+    applicationTeamIdentifier2 = [(BAApplicationInfo *)self applicationTeamIdentifier];
+    [coderCopy encodeObject:applicationTeamIdentifier2 forKey:off_100089370[0]];
   }
 
-  v20 = [(BAApplicationInfo *)self persistentIdentifier];
+  persistentIdentifier = [(BAApplicationInfo *)self persistentIdentifier];
 
-  if (v20)
+  if (persistentIdentifier)
   {
-    v21 = [(BAApplicationInfo *)self persistentIdentifier];
-    [v29 encodeObject:v21 forKey:off_100089378[0]];
+    persistentIdentifier2 = [(BAApplicationInfo *)self persistentIdentifier];
+    [coderCopy encodeObject:persistentIdentifier2 forKey:off_100089378[0]];
   }
 
-  v22 = [(BAApplicationInfo *)self _serializableAllowedDomainInfo];
-  [v29 encodeObject:v22 forKey:off_1000893F0[0]];
-  v23 = [(BAApplicationInfo *)self manifestURL];
-  [v29 encodeObject:v23 forKey:off_1000893F8[0]];
+  _serializableAllowedDomainInfo = [(BAApplicationInfo *)self _serializableAllowedDomainInfo];
+  [coderCopy encodeObject:_serializableAllowedDomainInfo forKey:off_1000893F0[0]];
+  manifestURL = [(BAApplicationInfo *)self manifestURL];
+  [coderCopy encodeObject:manifestURL forKey:off_1000893F8[0]];
 
-  v24 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-  [v29 encodeObject:v24 forKey:@"extensionRuntimeEvents"];
+  extensionRuntimeEvents = [(BAApplicationInfo *)self extensionRuntimeEvents];
+  [coderCopy encodeObject:extensionRuntimeEvents forKey:@"extensionRuntimeEvents"];
 
-  v25 = [(BAApplicationInfo *)self installSource];
-  [v29 encodeInteger:v25 forKey:off_100089400[0]];
-  v26 = [(BAApplicationInfo *)self hasManagedAssetPacks];
-  [v29 encodeBool:v26 forKey:off_100089408[0]];
-  v27 = [(BAApplicationInfo *)self usesAppleHosting];
-  [v29 encodeBool:v27 forKey:off_100089410];
-  v28 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v28 unlock];
+  installSource = [(BAApplicationInfo *)self installSource];
+  [coderCopy encodeInteger:installSource forKey:off_100089400[0]];
+  hasManagedAssetPacks = [(BAApplicationInfo *)self hasManagedAssetPacks];
+  [coderCopy encodeBool:hasManagedAssetPacks forKey:off_100089408[0]];
+  usesAppleHosting = [(BAApplicationInfo *)self usesAppleHosting];
+  [coderCopy encodeBool:usesAppleHosting forKey:off_100089410];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -587,9 +587,9 @@ LABEL_38:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BAApplicationInfo *)self applicationIdentifier];
-      v6 = [(BAApplicationInfo *)v4 applicationIdentifier];
-      v7 = [v5 isEqualToString:v6];
+      applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
+      applicationIdentifier2 = [(BAApplicationInfo *)equalCopy applicationIdentifier];
+      v7 = [applicationIdentifier isEqualToString:applicationIdentifier2];
     }
 
     else
@@ -603,297 +603,297 @@ LABEL_38:
 
 - (int64_t)applicationState
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   applicationState = self->_applicationState;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return applicationState;
 }
 
-- (void)setApplicationState:(int64_t)a3
+- (void)setApplicationState:(int64_t)state
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_applicationState = a3;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  self->_applicationState = state;
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     [(BAApplicationInfo *)self applicationLaunched];
   }
 
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (int64_t)applicationExtensionState
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   applicationExtensionState = self->_applicationExtensionState;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return applicationExtensionState;
 }
 
-- (void)setApplicationExtensionState:(int64_t)a3
+- (void)setApplicationExtensionState:(int64_t)state
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_applicationExtensionState = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_applicationExtensionState = state;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (BOOL)userForceQuitApp
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  LOBYTE(v3) = self->_userForceQuitApp;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 unlock];
+  LOBYTE(appInfoRecursiveLock) = self->_userForceQuitApp;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  return v3;
+  return appInfoRecursiveLock;
 }
 
-- (void)setUserForceQuitApp:(BOOL)a3
+- (void)setUserForceQuitApp:(BOOL)app
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_userForceQuitApp = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_userForceQuitApp = app;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (int64_t)installSource
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   installSource = self->_installSource;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return installSource;
 }
 
-- (void)setInstallSource:(int64_t)a3
+- (void)setInstallSource:(int64_t)source
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_installSource = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_installSource = source;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
-- (void)determineInstallSourceIfUnsetFromAuditToken:(id *)a3
+- (void)determineInstallSourceIfUnsetFromAuditToken:(id *)token
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   if (!self->_installSource)
   {
-    v6 = [(BAApplicationInfo *)self applicationIdentifier];
-    v7 = *&a3->var0[4];
-    v9[0] = *a3->var0;
+    applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
+    v7 = *&token->var0[4];
+    v9[0] = *token->var0;
     v9[1] = v7;
-    self->_installSource = [BAInstallationSourceUtilities installationSourceFromAuditToken:v9 applicationIdentifier:v6];
+    self->_installSource = [BAInstallationSourceUtilities installationSourceFromAuditToken:v9 applicationIdentifier:applicationIdentifier];
   }
 
-  v8 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v8 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (NSMutableArray)allowedDownloadDomains
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v4 = [(NSMutableArray *)self->_allowedDownloadDomains copy];
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return v4;
 }
 
-- (void)setAllowedDownloadDomains:(id)a3
+- (void)setAllowedDownloadDomains:(id)domains
 {
-  v4 = a3;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  domainsCopy = domains;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v6 = [NSMutableArray arrayWithArray:v4];
+  v6 = [NSMutableArray arrayWithArray:domainsCopy];
 
   allowedDownloadDomains = self->_allowedDownloadDomains;
   self->_allowedDownloadDomains = v6;
 
-  v8 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v8 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (NSMutableArray)allowedDownloadDomainWildcards
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v4 = [(NSMutableArray *)self->_allowedDownloadDomainWildcards copy];
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return v4;
 }
 
-- (void)setAllowedDownloadDomainWildcards:(id)a3
+- (void)setAllowedDownloadDomainWildcards:(id)wildcards
 {
-  v4 = a3;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  wildcardsCopy = wildcards;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v6 = [NSMutableArray arrayWithArray:v4];
+  v6 = [NSMutableArray arrayWithArray:wildcardsCopy];
 
   allowedDownloadDomainWildcards = self->_allowedDownloadDomainWildcards;
   self->_allowedDownloadDomainWildcards = v6;
 
-  v8 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v8 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
-- (void)applicationPrepareWithDescriptor:(id)a3
+- (void)applicationPrepareWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  descriptorCopy = descriptor;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  [v4 clientType];
+  [descriptorCopy clientType];
   [(BAApplicationInfo *)self setPermittedForInitialBackgroundActivity:sub_100016294()];
-  v6 = [v4 cellularPolicy];
+  cellularPolicy = [descriptorCopy cellularPolicy];
 
-  [(BAApplicationInfo *)self setInitialBackgroundCellularPolicy:v6];
+  [(BAApplicationInfo *)self setInitialBackgroundCellularPolicy:cellularPolicy];
   v7 = sub_1000104FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(BAApplicationInfo *)self applicationIdentifier];
-    v9 = [(BAApplicationInfo *)self permittedForInitialBackgroundActivity];
+    applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
+    permittedForInitialBackgroundActivity = [(BAApplicationInfo *)self permittedForInitialBackgroundActivity];
     v10 = @"NO";
-    if (v9)
+    if (permittedForInitialBackgroundActivity)
     {
       v10 = @"YES";
     }
 
     v12 = 138543618;
-    v13 = v8;
+    v13 = applicationIdentifier;
     v14 = 2114;
     v15 = v10;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Preparing app using descriptor for: %{public}@. Permitted for initial background activity: %{public}@", &v12, 0x16u);
   }
 
   [(BAApplicationInfo *)self setReceivedInstalledNotification:0];
-  v11 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v11 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (BOOL)receivedInstalledNotification
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  LOBYTE(v3) = self->_receivedInstalledNotification;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 unlock];
+  LOBYTE(appInfoRecursiveLock) = self->_receivedInstalledNotification;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  return v3;
+  return appInfoRecursiveLock;
 }
 
-- (void)setReceivedInstalledNotification:(BOOL)a3
+- (void)setReceivedInstalledNotification:(BOOL)notification
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_receivedInstalledNotification = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_receivedInstalledNotification = notification;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (BOOL)receivedInstallingNotification
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  LOBYTE(v3) = self->_receivedInstallingNotification;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 unlock];
+  LOBYTE(appInfoRecursiveLock) = self->_receivedInstallingNotification;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  return v3;
+  return appInfoRecursiveLock;
 }
 
-- (void)setReceivedInstallingNotification:(BOOL)a3
+- (void)setReceivedInstallingNotification:(BOOL)notification
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_receivedInstallingNotification = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_receivedInstallingNotification = notification;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (BOOL)awaitingNetworkConsent
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  LOBYTE(v3) = self->_awaitingNetworkConsent;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 unlock];
+  LOBYTE(appInfoRecursiveLock) = self->_awaitingNetworkConsent;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  return v3;
+  return appInfoRecursiveLock;
 }
 
-- (BOOL)setAwaitingNetworkConsent:(BOOL)a3
+- (BOOL)setAwaitingNetworkConsent:(BOOL)consent
 {
-  v3 = a3;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  consentCopy = consent;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   awaitingNetworkConsent = self->_awaitingNetworkConsent;
-  if (awaitingNetworkConsent == v3)
+  if (awaitingNetworkConsent == consentCopy)
   {
-    v11 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [v11 unlock];
+    appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [appInfoRecursiveLock2 unlock];
   }
 
   else
   {
     v7 = sub_1000104FC();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (consentCopy)
     {
       if (v8)
       {
-        v9 = [(BAApplicationInfo *)self applicationIdentifier];
+        applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
         v15 = 138543362;
-        v16 = v9;
+        v16 = applicationIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "App awaiting network consent: %{public}@", &v15, 0xCu);
       }
 
       v10 = 0;
-      self->_awaitingNetworkConsent = v3;
+      self->_awaitingNetworkConsent = consentCopy;
     }
 
     else
     {
       if (v8)
       {
-        v12 = [(BAApplicationInfo *)self applicationIdentifier];
+        applicationIdentifier2 = [(BAApplicationInfo *)self applicationIdentifier];
         v15 = 138543362;
-        v16 = v12;
+        v16 = applicationIdentifier2;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "App no longer awaiting network consent: %{public}@", &v15, 0xCu);
       }
 
@@ -902,8 +902,8 @@ LABEL_38:
       [(NSMutableDictionary *)self->_blocksAwaitingNetworkConsent removeAllObjects];
     }
 
-    v13 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [v13 unlock];
+    appInfoRecursiveLock3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [appInfoRecursiveLock3 unlock];
 
     if (v10)
     {
@@ -911,93 +911,93 @@ LABEL_38:
     }
   }
 
-  return awaitingNetworkConsent != v3;
+  return awaitingNetworkConsent != consentCopy;
 }
 
-- (void)setPersistentIdentifier:(id)a3
+- (void)setPersistentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  identifierCopy = identifier;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   persistentIdentifier = self->_persistentIdentifier;
-  self->_persistentIdentifier = v4;
+  self->_persistentIdentifier = identifierCopy;
 
-  v7 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v7 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (NSData)persistentIdentifier
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v4 = self->_persistentIdentifier;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return v4;
 }
 
-- (void)setHasManagedAssetPacks:(BOOL)a3
+- (void)setHasManagedAssetPacks:(BOOL)packs
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_hasManagedAssetPacks = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_hasManagedAssetPacks = packs;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (BOOL)hasManagedAssetPacks
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  LOBYTE(v3) = self->_hasManagedAssetPacks;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 unlock];
+  LOBYTE(appInfoRecursiveLock) = self->_hasManagedAssetPacks;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  return v3;
+  return appInfoRecursiveLock;
 }
 
-- (void)setUsesAppleHosting:(BOOL)a3
+- (void)setUsesAppleHosting:(BOOL)hosting
 {
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  self->_usesAppleHosting = a3;
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  self->_usesAppleHosting = hosting;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (BOOL)usesAppleHosting
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  LOBYTE(v3) = self->_usesAppleHosting;
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 unlock];
+  LOBYTE(appInfoRecursiveLock) = self->_usesAppleHosting;
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  return v3;
+  return appInfoRecursiveLock;
 }
 
-- (void)applicationInstallingWithUpdateInstall:(BOOL)a3
+- (void)applicationInstallingWithUpdateInstall:(BOOL)install
 {
-  v3 = a3;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  installCopy = install;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v6 = sub_1000104FC();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (installCopy)
   {
     if (v7)
     {
-      v8 = [(BAApplicationInfo *)self applicationIdentifier];
+      applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
       v11 = 138543362;
-      v12 = v8;
+      v12 = applicationIdentifier;
       v9 = "Application is updating: %{public}@";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v9, &v11, 0xCu);
@@ -1006,9 +1006,9 @@ LABEL_6:
 
   else if (v7)
   {
-    v8 = [(BAApplicationInfo *)self applicationIdentifier];
+    applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
     v11 = 138543362;
-    v12 = v8;
+    v12 = applicationIdentifier;
     v9 = "Application is installing: %{public}@";
     goto LABEL_6;
   }
@@ -1019,38 +1019,38 @@ LABEL_6:
   [(BAApplicationInfo *)self setOptionalAmountDownloaded:0];
   [(BAApplicationInfo *)self setEssentialAmountDownloaded:0];
   [(BAApplicationInfo *)self resetExtensionRuntime];
-  v10 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v10 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (void)applicationInstalled
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v4 = sub_1000104FC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(BAApplicationInfo *)self applicationIdentifier];
+    applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
     v7 = 138543362;
-    v8 = v5;
+    v8 = applicationIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Application installed to final location: %{public}@", &v7, 0xCu);
   }
 
   [(BAApplicationInfo *)self setReceivedInstallingNotification:1];
   [(BAApplicationInfo *)self setReceivedInstalledNotification:1];
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
-- (void)updateApplicationWithInfoDictionary:(id)a3 applicationRecord:(id)a4 overrides:(id)a5
+- (void)updateApplicationWithInfoDictionary:(id)dictionary applicationRecord:(id)record overrides:(id)overrides
 {
-  v8 = a3;
-  v52 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKey:@"BAInitialDownloadRestrictions"];
-  -[BAApplicationInfo setHasManagedAssetPacks:](self, "setHasManagedAssetPacks:", [v8 infoDictionaryHasManagedAssetPacks]);
-  -[BAApplicationInfo setUsesAppleHosting:](self, "setUsesAppleHosting:", [v8 infoDictionaryUsesAppleHosting]);
+  dictionaryCopy = dictionary;
+  recordCopy = record;
+  overridesCopy = overrides;
+  v10 = [dictionaryCopy objectForKey:@"BAInitialDownloadRestrictions"];
+  -[BAApplicationInfo setHasManagedAssetPacks:](self, "setHasManagedAssetPacks:", [dictionaryCopy infoDictionaryHasManagedAssetPacks]);
+  -[BAApplicationInfo setUsesAppleHosting:](self, "setUsesAppleHosting:", [dictionaryCopy infoDictionaryUsesAppleHosting]);
   if (v10)
   {
     v11 = [v10 objectForKey:@"BADownloadDomainAllowList"];
@@ -1063,31 +1063,31 @@ LABEL_6:
     v14 = sub_1000104FC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(BAApplicationInfo *)self applicationIdentifier];
+      applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
       *buf = 138543362;
-      v55 = v15;
+      v55 = applicationIdentifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "The application with the identifier “%{public}@” is configured to use Apple hosting.", buf, 0xCu);
     }
 
-    v16 = [BADevelopmentOverrides URLForApplicationRecord:v52];
-    v17 = [v16 host];
+    v16 = [BADevelopmentOverrides URLForApplicationRecord:recordCopy];
+    host = [v16 host];
 
-    if (v17)
+    if (host)
     {
       v18 = sub_1000104FC();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(BAApplicationInfo *)self applicationIdentifier];
+        applicationIdentifier2 = [(BAApplicationInfo *)self applicationIdentifier];
         *buf = 138543618;
         v55 = v16;
         v56 = 2114;
-        v57 = v19;
+        v57 = applicationIdentifier2;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Using the development-override URL “%{public}@” for the application with the identifier “%{public}@”…", buf, 0x16u);
       }
 
       v53[0] = @"*.apple.com";
-      v20 = [v16 host];
-      v53[1] = v20;
+      host2 = [v16 host];
+      v53[1] = host2;
       v11 = [NSArray arrayWithObjects:v53 count:2];
     }
 
@@ -1107,22 +1107,22 @@ LABEL_6:
     v11 = 0;
   }
 
-  v21 = [v8 objectForKey:@"BAManifestURL"];
+  v21 = [dictionaryCopy objectForKey:@"BAManifestURL"];
   if (os_variant_has_internal_content())
   {
     v51 = v10;
-    v22 = [v9 essentialDownloadAllowance];
+    essentialDownloadAllowance = [overridesCopy essentialDownloadAllowance];
 
-    if (v22)
+    if (essentialDownloadAllowance)
     {
       v23 = sub_1000104FC();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(BAApplicationInfo *)self applicationIdentifier];
-        [v9 essentialDownloadAllowance];
+        applicationIdentifier3 = [(BAApplicationInfo *)self applicationIdentifier];
+        [overridesCopy essentialDownloadAllowance];
         v26 = v25 = v11;
         *buf = 138543618;
-        v55 = v24;
+        v55 = applicationIdentifier3;
         v56 = 2114;
         v57 = v26;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Essential download allowance for %{public}@ overridden to %{public}@", buf, 0x16u);
@@ -1130,23 +1130,23 @@ LABEL_6:
         v11 = v25;
       }
 
-      v27 = [v9 essentialDownloadAllowance];
+      essentialDownloadAllowance2 = [overridesCopy essentialDownloadAllowance];
 
-      v12 = v27;
+      v12 = essentialDownloadAllowance2;
     }
 
-    v28 = [v9 downloadAllowance];
+    downloadAllowance = [overridesCopy downloadAllowance];
 
-    if (v28)
+    if (downloadAllowance)
     {
       v29 = sub_1000104FC();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(BAApplicationInfo *)self applicationIdentifier];
-        [v9 downloadAllowance];
+        applicationIdentifier4 = [(BAApplicationInfo *)self applicationIdentifier];
+        [overridesCopy downloadAllowance];
         v32 = v31 = v11;
         *buf = 138543618;
-        v55 = v30;
+        v55 = applicationIdentifier4;
         v56 = 2114;
         v57 = v32;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Download allowance for %{public}@ overridden to %{public}@", buf, 0x16u);
@@ -1154,23 +1154,23 @@ LABEL_6:
         v11 = v31;
       }
 
-      v33 = [v9 downloadAllowance];
+      downloadAllowance2 = [overridesCopy downloadAllowance];
 
-      v13 = v33;
+      v13 = downloadAllowance2;
     }
 
-    v34 = [v9 manifestURL];
+    manifestURL = [overridesCopy manifestURL];
 
-    if (v34)
+    if (manifestURL)
     {
       v35 = sub_1000104FC();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [(BAApplicationInfo *)self applicationIdentifier];
-        [v9 manifestURL];
+        applicationIdentifier5 = [(BAApplicationInfo *)self applicationIdentifier];
+        [overridesCopy manifestURL];
         v38 = v37 = v11;
         *buf = 138543618;
-        v55 = v36;
+        v55 = applicationIdentifier5;
         v56 = 2114;
         v57 = v38;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Manifest URL overridden for %{public}@ to %{public}@", buf, 0x16u);
@@ -1178,24 +1178,24 @@ LABEL_6:
         v11 = v37;
       }
 
-      v39 = [v9 manifestURL];
+      manifestURL2 = [overridesCopy manifestURL];
 
-      v21 = v39;
+      v21 = manifestURL2;
     }
 
-    v40 = [v9 domainAllowlist];
+    domainAllowlist = [overridesCopy domainAllowlist];
 
-    if (v40)
+    if (domainAllowlist)
     {
       v41 = sub_1000104FC();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [(BAApplicationInfo *)self applicationIdentifier];
-        [v9 domainAllowlist];
+        applicationIdentifier6 = [(BAApplicationInfo *)self applicationIdentifier];
+        [overridesCopy domainAllowlist];
         v43 = v50 = v11;
         v44 = [v43 componentsJoinedByString:{@", "}];
         *buf = 138543618;
-        v55 = v42;
+        v55 = applicationIdentifier6;
         v56 = 2114;
         v57 = v44;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Domain allowlist for %{public}@ overridden to %{public}@", buf, 0x16u);
@@ -1203,20 +1203,20 @@ LABEL_6:
         v11 = v50;
       }
 
-      v45 = [v9 domainAllowlist];
+      domainAllowlist2 = [overridesCopy domainAllowlist];
 
-      v11 = v45;
+      v11 = domainAllowlist2;
     }
 
     v10 = v51;
   }
 
-  v46 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v46 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   [(BAApplicationInfo *)self _populateAllowedDomainInfoWithArray:v11];
-  v47 = [v52 persistentIdentifier];
-  [(BAApplicationInfo *)self setPersistentIdentifier:v47];
+  persistentIdentifier = [recordCopy persistentIdentifier];
+  [(BAApplicationInfo *)self setPersistentIdentifier:persistentIdentifier];
 
   -[BAApplicationInfo setOptionalAssetDownloadAllowance:](self, "setOptionalAssetDownloadAllowance:", [v13 unsignedLongLongValue]);
   -[BAApplicationInfo setEssentialAssetDownloadAllowance:](self, "setEssentialAssetDownloadAllowance:", [v12 unsignedLongLongValue]);
@@ -1227,24 +1227,24 @@ LABEL_6:
     [(BAApplicationInfo *)self setManifestURL:v48];
   }
 
-  v49 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v49 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
-- (id)extensionIdentityWithParentAppRecordPtr:(id *)a3
+- (id)extensionIdentityWithParentAppRecordPtr:(id *)ptr
 {
-  v4 = self;
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 lock];
+  selfCopy = self;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v6 = [(BAApplicationInfo *)v4 applicationIdentifier];
-  v7 = [v6 copy];
+  applicationIdentifier = [(BAApplicationInfo *)selfCopy applicationIdentifier];
+  v7 = [applicationIdentifier copy];
 
-  LODWORD(v6) = [(BAApplicationInfo *)v4 receivedInstalledNotification];
-  v8 = [(BAApplicationInfo *)v4 appInfoRecursiveLock];
-  [v8 unlock];
+  LODWORD(applicationIdentifier) = [(BAApplicationInfo *)selfCopy receivedInstalledNotification];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)selfCopy appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
-  v9 = [objc_opt_class() extensionPointQueriesWithPostProcessing:v6 ^ 1];
+  v9 = [objc_opt_class() extensionPointQueriesWithPostProcessing:applicationIdentifier ^ 1];
   [_EXQueryController executeQueries:v9];
   v41 = 0u;
   v42 = 0u;
@@ -1254,7 +1254,7 @@ LABEL_6:
   if (v11)
   {
     v12 = v11;
-    v38 = a3;
+    ptrCopy = ptr;
     v39 = v9;
     v13 = 0;
     v14 = *v42;
@@ -1271,30 +1271,30 @@ LABEL_6:
         }
 
         v17 = *(*(&v41 + 1) + 8 * v15);
-        v18 = [v17 bundleIdentifier];
-        v19 = [v18 hasPrefix:v7];
+        bundleIdentifier = [v17 bundleIdentifier];
+        v19 = [bundleIdentifier hasPrefix:v7];
 
         if (v19)
         {
           v13 = v17;
 
-          v20 = [(BAApplicationInfo *)v4 persistentIdentifier];
-          v21 = [v13 containingBundleRecord];
-          v22 = v21;
-          if (v20)
+          persistentIdentifier = [(BAApplicationInfo *)selfCopy persistentIdentifier];
+          containingBundleRecord = [v13 containingBundleRecord];
+          v22 = containingBundleRecord;
+          if (persistentIdentifier)
           {
-            if (v21)
+            if (containingBundleRecord)
             {
-              [v21 persistentIdentifier];
+              [containingBundleRecord persistentIdentifier];
               v23 = v14;
-              v24 = v4;
+              v24 = selfCopy;
               v25 = v7;
               v27 = v26 = v10;
               v28 = _LSPersistentIdentifierCompare();
 
               v10 = v26;
               v7 = v25;
-              v4 = v24;
+              selfCopy = v24;
               v14 = v23;
               v12 = v40;
               if (v28 == 100)
@@ -1308,18 +1308,18 @@ LABEL_6:
                 }
 
 LABEL_19:
-                v31 = [v29 containingBundleRecord];
-                if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+                containingBundleRecord2 = [v29 containingBundleRecord];
+                if (containingBundleRecord2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
-                  v32 = [v31 bundleIdentifier];
-                  v33 = [v32 isEqualToString:v7];
+                  bundleIdentifier2 = [containingBundleRecord2 bundleIdentifier];
+                  v33 = [bundleIdentifier2 isEqualToString:v7];
 
                   if (v33)
                   {
-                    if (v38)
+                    if (ptrCopy)
                     {
-                      v34 = v31;
-                      *v38 = v31;
+                      v34 = containingBundleRecord2;
+                      *ptrCopy = containingBundleRecord2;
                     }
 
                     v35 = v29;
@@ -1329,7 +1329,7 @@ LABEL_19:
                   v36 = sub_100010584();
                   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
                   {
-                    sub_10004BD8C(v31, v7, v36);
+                    sub_10004BD8C(containingBundleRecord2, v7, v36);
                   }
                 }
 
@@ -1406,11 +1406,11 @@ LABEL_33:
 
 - (id)applicationSecurityGroups
 {
-  v2 = [(BAApplicationInfo *)self extensionIdentity];
-  v3 = v2;
-  if (v2)
+  extensionIdentity = [(BAApplicationInfo *)self extensionIdentity];
+  v3 = extensionIdentity;
+  if (extensionIdentity)
   {
-    v4 = [v2 containingBundleRecord];
+    containingBundleRecord = [extensionIdentity containingBundleRecord];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1422,51 +1422,51 @@ LABEL_33:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v7 groupContainerURLs];
-        v9 = [v8 allKeys];
+        groupContainerURLs = [v7 groupContainerURLs];
+        allKeys = [groupContainerURLs allKeys];
 
-        v10 = [v4 groupContainerURLs];
-        v11 = [v10 allKeys];
+        groupContainerURLs2 = [containingBundleRecord groupContainerURLs];
+        allKeys2 = [groupContainerURLs2 allKeys];
 
-        if (v9 && v11)
+        if (allKeys && allKeys2)
         {
-          v12 = [NSSet setWithArray:v9];
-          v13 = [NSSet setWithArray:v11];
+          v12 = [NSSet setWithArray:allKeys];
+          v13 = [NSSet setWithArray:allKeys2];
           v14 = [v13 mutableCopy];
 
           [v14 intersectSet:v12];
-          v15 = [v14 allObjects];
+          allObjects = [v14 allObjects];
         }
 
         else
         {
-          v15 = +[NSArray array];
+          allObjects = +[NSArray array];
         }
       }
 
       else
       {
-        v15 = +[NSArray array];
+        allObjects = +[NSArray array];
       }
     }
 
     else
     {
-      v15 = +[NSArray array];
+      allObjects = +[NSArray array];
     }
   }
 
   else
   {
-    v15 = +[NSArray array];
+    allObjects = +[NSArray array];
   }
 
-  return v15;
+  return allObjects;
 }
 
-- (unint64_t)_remainingDownloadAllowanceWithNecessity:(int64_t)a3 isManifest:(BOOL)a4
+- (unint64_t)_remainingDownloadAllowanceWithNecessity:(int64_t)necessity isManifest:(BOOL)manifest
 {
-  if (a4)
+  if (manifest)
   {
     v5 = [(BAApplicationInfo *)self _remainingDownloadAllowanceWithNecessity:0 isManifest:0];
     return [(BAApplicationInfo *)self _remainingDownloadAllowanceWithNecessity:1 isManifest:0]+ v5;
@@ -1474,43 +1474,43 @@ LABEL_33:
 
   else
   {
-    if (a3 == 1)
+    if (necessity == 1)
     {
-      v7 = [(BAApplicationInfo *)self essentialAssetDownloadAllowance];
-      if (v7 < [(BAApplicationInfo *)self essentialAmountDownloaded])
+      essentialAssetDownloadAllowance = [(BAApplicationInfo *)self essentialAssetDownloadAllowance];
+      if (essentialAssetDownloadAllowance < [(BAApplicationInfo *)self essentialAmountDownloaded])
       {
         [(BAApplicationInfo *)self setEssentialAmountDownloaded:[(BAApplicationInfo *)self essentialAssetDownloadAllowance]];
       }
 
-      v8 = [(BAApplicationInfo *)self essentialAssetDownloadAllowance];
-      v9 = [(BAApplicationInfo *)self essentialAmountDownloaded];
+      essentialAssetDownloadAllowance2 = [(BAApplicationInfo *)self essentialAssetDownloadAllowance];
+      essentialAmountDownloaded = [(BAApplicationInfo *)self essentialAmountDownloaded];
     }
 
     else
     {
-      v10 = [(BAApplicationInfo *)self optionalAssetDownloadAllowance];
-      if (v10 < [(BAApplicationInfo *)self optionalAmountDownloaded])
+      optionalAssetDownloadAllowance = [(BAApplicationInfo *)self optionalAssetDownloadAllowance];
+      if (optionalAssetDownloadAllowance < [(BAApplicationInfo *)self optionalAmountDownloaded])
       {
         [(BAApplicationInfo *)self setOptionalAmountDownloaded:[(BAApplicationInfo *)self optionalAssetDownloadAllowance]];
       }
 
-      v8 = [(BAApplicationInfo *)self optionalAssetDownloadAllowance];
-      v9 = [(BAApplicationInfo *)self optionalAmountDownloaded];
+      essentialAssetDownloadAllowance2 = [(BAApplicationInfo *)self optionalAssetDownloadAllowance];
+      essentialAmountDownloaded = [(BAApplicationInfo *)self optionalAmountDownloaded];
     }
 
-    return v8 - v9;
+    return essentialAssetDownloadAllowance2 - essentialAmountDownloaded;
   }
 }
 
-- (BOOL)_consumeAllowanceShouldStopWithAdditionalBytes:(unint64_t)a3 downloadNecessity:(int64_t)a4 isManifest:(BOOL)a5
+- (BOOL)_consumeAllowanceShouldStopWithAdditionalBytes:(unint64_t)bytes downloadNecessity:(int64_t)necessity isManifest:(BOOL)manifest
 {
-  v5 = a5;
-  v9 = [(BAApplicationInfo *)self _remainingDownloadAllowanceWithNecessity:a4 isManifest:0];
-  if (a4 != 1)
+  manifestCopy = manifest;
+  v9 = [(BAApplicationInfo *)self _remainingDownloadAllowanceWithNecessity:necessity isManifest:0];
+  if (necessity != 1)
   {
-    if (v9 > a3)
+    if (v9 > bytes)
     {
-      [(BAApplicationInfo *)self setOptionalAmountDownloaded:[(BAApplicationInfo *)self optionalAmountDownloaded]+ a3];
+      [(BAApplicationInfo *)self setOptionalAmountDownloaded:[(BAApplicationInfo *)self optionalAmountDownloaded]+ bytes];
       return 0;
     }
 
@@ -1518,37 +1518,37 @@ LABEL_33:
     return 1;
   }
 
-  if (v9 > a3)
+  if (v9 > bytes)
   {
-    [(BAApplicationInfo *)self setEssentialAmountDownloaded:[(BAApplicationInfo *)self essentialAmountDownloaded]+ a3];
+    [(BAApplicationInfo *)self setEssentialAmountDownloaded:[(BAApplicationInfo *)self essentialAmountDownloaded]+ bytes];
     return 0;
   }
 
-  if (!v5)
+  if (!manifestCopy)
   {
     [(BAApplicationInfo *)self setEssentialAmountDownloaded:[(BAApplicationInfo *)self essentialAssetDownloadAllowance]];
     return 1;
   }
 
-  return [(BAApplicationInfo *)self _consumeAllowanceShouldStopWithAdditionalBytes:a3 downloadNecessity:0 isManifest:1];
+  return [(BAApplicationInfo *)self _consumeAllowanceShouldStopWithAdditionalBytes:bytes downloadNecessity:0 isManifest:1];
 }
 
 - (BOOL)allowsBackgroundActivity
 {
-  v4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v4 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v5 = [(BAApplicationInfo *)self hasLaunchedApplication];
-  if ((v5 & 1) != 0 || ![(BAApplicationInfo *)self permittedForInitialBackgroundActivity])
+  hasLaunchedApplication = [(BAApplicationInfo *)self hasLaunchedApplication];
+  if ((hasLaunchedApplication & 1) != 0 || ![(BAApplicationInfo *)self permittedForInitialBackgroundActivity])
   {
     if ([(BAApplicationInfo *)self userForceQuitApp])
     {
       v7 = sub_1000104FC();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(BAApplicationInfo *)self applicationIdentifier];
+        applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
         v13 = 138543362;
-        v14 = v8;
+        v14 = applicationIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Background activity denied for (%{public}@) because the app was terminated by the user.", &v13, 0xCu);
       }
 
@@ -1568,26 +1568,26 @@ LABEL_33:
     v2 = 1;
   }
 
-  v9 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v9 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   if (v6)
   {
-    if (v5)
+    if (hasLaunchedApplication)
     {
-      v10 = [(BAApplicationInfo *)self applicationIdentifier];
-      v2 = [BAApplicationInfo applicationForIdentifierAllowsBackgroundActivity:v10];
+      applicationIdentifier2 = [(BAApplicationInfo *)self applicationIdentifier];
+      v2 = [BAApplicationInfo applicationForIdentifierAllowsBackgroundActivity:applicationIdentifier2];
     }
 
     else
     {
-      v10 = sub_1000104FC();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      applicationIdentifier2 = sub_1000104FC();
+      if (os_log_type_enabled(applicationIdentifier2, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(BAApplicationInfo *)self applicationIdentifier];
+        applicationIdentifier3 = [(BAApplicationInfo *)self applicationIdentifier];
         v13 = 138543362;
-        v14 = v11;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Background activity denied for (%{public}@) because the user has not launched the app.", &v13, 0xCu);
+        v14 = applicationIdentifier3;
+        _os_log_impl(&_mh_execute_header, applicationIdentifier2, OS_LOG_TYPE_DEFAULT, "Background activity denied for (%{public}@) because the user has not launched the app.", &v13, 0xCu);
       }
 
       v2 = 0;
@@ -1599,14 +1599,14 @@ LABEL_33:
 
 - (BOOL)shouldDoPeriodicCheck
 {
-  v3 = [(BAApplicationInfo *)self lastPeriodicCheckTime];
-  v4 = [(BAApplicationInfo *)self lastApplicationLaunchTime];
+  lastPeriodicCheckTime = [(BAApplicationInfo *)self lastPeriodicCheckTime];
+  lastApplicationLaunchTime = [(BAApplicationInfo *)self lastApplicationLaunchTime];
   if (![(BAApplicationInfo *)self hasLaunchedApplication]|| ![(BAApplicationInfo *)self allowsBackgroundActivity])
   {
     goto LABEL_8;
   }
 
-  [v4 timeIntervalSinceNow];
+  [lastApplicationLaunchTime timeIntervalSinceNow];
   if (v5 <= -604800.0)
   {
     if (v5 > -2419200.0)
@@ -1622,7 +1622,7 @@ LABEL_8:
 
   v6 = 86400.0;
 LABEL_7:
-  [v3 timeIntervalSinceNow];
+  [lastPeriodicCheckTime timeIntervalSinceNow];
   v8 = v6 <= -v7;
 LABEL_9:
 
@@ -1631,18 +1631,18 @@ LABEL_9:
 
 - (double)extensionRuntime
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v4 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  extensionRuntimeEvents = [(BAApplicationInfo *)self extensionRuntimeEvents];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [extensionRuntimeEvents count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  extensionRuntimeEvents2 = [(BAApplicationInfo *)self extensionRuntimeEvents];
+  v7 = [extensionRuntimeEvents2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1654,7 +1654,7 @@ LABEL_9:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(extensionRuntimeEvents2);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -1670,7 +1670,7 @@ LABEL_9:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [extensionRuntimeEvents2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -1681,77 +1681,77 @@ LABEL_9:
     v10 = 0.0;
   }
 
-  v14 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-  [v14 removeObjectsInArray:v5];
+  extensionRuntimeEvents3 = [(BAApplicationInfo *)self extensionRuntimeEvents];
+  [extensionRuntimeEvents3 removeObjectsInArray:v5];
 
-  v15 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v15 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return v10;
 }
 
 - (void)resetExtensionRuntime
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v4 = sub_1000104FC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(BAApplicationInfo *)self applicationIdentifier];
+    applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
     v8 = 138543362;
-    v9 = v5;
+    v9 = applicationIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Resetting extension runtime for: %{public}@", &v8, 0xCu);
   }
 
-  v6 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-  [v6 removeAllObjects];
+  extensionRuntimeEvents = [(BAApplicationInfo *)self extensionRuntimeEvents];
+  [extensionRuntimeEvents removeAllObjects];
 
-  v7 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v7 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (void)willLaunchExtension
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v4 = [(BAApplicationInfo *)self currentRuntime];
+  currentRuntime = [(BAApplicationInfo *)self currentRuntime];
 
-  if (v4)
+  if (currentRuntime)
   {
     [(BAApplicationInfo *)self extensionExited];
   }
 
   v7 = objc_alloc_init(BAExtensionRuntime);
-  v5 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-  [v5 addObject:v7];
+  extensionRuntimeEvents = [(BAApplicationInfo *)self extensionRuntimeEvents];
+  [extensionRuntimeEvents addObject:v7];
 
   [(BAApplicationInfo *)self setCurrentRuntime:v7];
-  v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v6 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (void)extensionExited
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v4 = [(BAApplicationInfo *)self currentRuntime];
+  currentRuntime = [(BAApplicationInfo *)self currentRuntime];
 
-  if (v4)
+  if (currentRuntime)
   {
-    v5 = [(BAApplicationInfo *)self currentRuntime];
-    [v5 extensionExited];
+    currentRuntime2 = [(BAApplicationInfo *)self currentRuntime];
+    [currentRuntime2 extensionExited];
 
     v6 = sub_1000104FC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(BAApplicationInfo *)self applicationIdentifier];
-      v8 = [(BAApplicationInfo *)self currentRuntime];
-      [v8 elapsedTime];
+      applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
+      currentRuntime3 = [(BAApplicationInfo *)self currentRuntime];
+      [currentRuntime3 elapsedTime];
       v11 = 138543618;
-      v12 = v7;
+      v12 = applicationIdentifier;
       v13 = 2050;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Extension for app identifier %{public}@ ran for %{public}.1f seconds.", &v11, 0x16u);
@@ -1760,26 +1760,26 @@ LABEL_9:
     [(BAApplicationInfo *)self setCurrentRuntime:0];
   }
 
-  v10 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v10 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (void)donePeriodicCheck
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   v4 = +[NSDate date];
   [(BAApplicationInfo *)self setLastPeriodicCheckTime:v4];
 
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
 - (void)applicationLaunched
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   if ((self->_applicationState & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
@@ -1791,28 +1791,28 @@ LABEL_9:
   [(BAApplicationInfo *)self setLastApplicationLaunchTime:v4];
 
   [(BAApplicationInfo *)self setUserForceQuitApp:0];
-  v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v5 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 }
 
-- (void)performAfterNetworkConsentProvided:(id)a3 queue:(id)a4
+- (void)performAfterNetworkConsentProvided:(id)provided queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v8 lock];
+  providedCopy = provided;
+  queueCopy = queue;
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
   if (!self->_awaitingNetworkConsent)
   {
-    v16 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [v16 unlock];
+    appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [appInfoRecursiveLock2 unlock];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002F1C4;
     block[3] = &unk_100079838;
-    v18 = v6;
-    dispatch_async(v7, block);
+    v18 = providedCopy;
+    dispatch_async(queueCopy, block);
 
     v14 = v18;
 LABEL_6:
@@ -1820,26 +1820,26 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [(BAApplicationInfo *)self blocksAwaitingNetworkConsent];
-  v10 = objc_retainBlock(v6);
-  [v9 setObject:v7 forKey:v10];
+  blocksAwaitingNetworkConsent = [(BAApplicationInfo *)self blocksAwaitingNetworkConsent];
+  v10 = objc_retainBlock(providedCopy);
+  [blocksAwaitingNetworkConsent setObject:queueCopy forKey:v10];
 
-  v11 = [(BAApplicationInfo *)self blocksAwaitingNetworkConsent];
-  v12 = [v11 count];
+  blocksAwaitingNetworkConsent2 = [(BAApplicationInfo *)self blocksAwaitingNetworkConsent];
+  v12 = [blocksAwaitingNetworkConsent2 count];
 
-  v13 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v13 unlock];
+  appInfoRecursiveLock3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock3 unlock];
 
   if (v12)
   {
     v14 = sub_1000104FC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(BAApplicationInfo *)self applicationIdentifier];
+      applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
       *buf = 134218242;
       v20 = v12;
       v21 = 2114;
-      v22 = v15;
+      v22 = applicationIdentifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "There are %lu blocks enqueued awaiting network for identifier: %{public}@", buf, 0x16u);
     }
 
@@ -1849,39 +1849,39 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_debugConsumeTime:(double)a3
+- (void)_debugConsumeTime:(double)time
 {
-  v11 = [NSDate dateWithTimeIntervalSinceNow:-a3];
-  if (a3 <= 0.0)
+  v11 = [NSDate dateWithTimeIntervalSinceNow:-time];
+  if (time <= 0.0)
   {
-    v9 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [v9 lock];
+    appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [appInfoRecursiveLock lock];
 
-    v10 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-    [v10 removeAllObjects];
+    extensionRuntimeEvents = [(BAApplicationInfo *)self extensionRuntimeEvents];
+    [extensionRuntimeEvents removeAllObjects];
 
-    v5 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [(BAExtensionRuntime *)v5 unlock];
+    appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [(BAExtensionRuntime *)appInfoRecursiveLock2 unlock];
   }
 
   else
   {
-    v5 = [[BAExtensionRuntime alloc] initWithStartDate:v11];
-    [(BAExtensionRuntime *)v5 extensionExited];
-    v6 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [v6 lock];
+    appInfoRecursiveLock2 = [[BAExtensionRuntime alloc] initWithStartDate:v11];
+    [(BAExtensionRuntime *)appInfoRecursiveLock2 extensionExited];
+    appInfoRecursiveLock3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [appInfoRecursiveLock3 lock];
 
-    v7 = [(BAApplicationInfo *)self extensionRuntimeEvents];
-    [v7 addObject:v5];
+    extensionRuntimeEvents2 = [(BAApplicationInfo *)self extensionRuntimeEvents];
+    [extensionRuntimeEvents2 addObject:appInfoRecursiveLock2];
 
-    v8 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-    [v8 unlock];
+    appInfoRecursiveLock4 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+    [appInfoRecursiveLock4 unlock];
   }
 }
 
-- (void)_populateAllowedDomainInfoWithArray:(id)a3
+- (void)_populateAllowedDomainInfoWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   p_allowedDownloadDomainWildcards = &self->_allowedDownloadDomainWildcards;
   [(NSMutableArray *)self->_allowedDownloadDomainWildcards removeAllObjects];
   allowedDownloadDomains = self->_allowedDownloadDomains;
@@ -1891,7 +1891,7 @@ LABEL_7:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v4;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -1909,23 +1909,23 @@ LABEL_7:
         v13 = *(*(&v18 + 1) + 8 * i);
         if (![v13 hasPrefix:{@"*", v18}])
         {
-          v15 = [v13 _baassets_validUTI];
+          _baassets_validUTI = [v13 _baassets_validUTI];
           v17 = p_allowedDownloadDomains;
-          if (!v15)
+          if (!_baassets_validUTI)
           {
             goto LABEL_12;
           }
 
 LABEL_11:
-          [*v17 addObject:v15];
+          [*v17 addObject:_baassets_validUTI];
           goto LABEL_12;
         }
 
-        v14 = [v13 _baassets_validUTIWithWildcard];
-        v15 = v14;
-        if (v14)
+        _baassets_validUTIWithWildcard = [v13 _baassets_validUTIWithWildcard];
+        _baassets_validUTI = _baassets_validUTIWithWildcard;
+        if (_baassets_validUTIWithWildcard)
         {
-          v16 = [v14 length];
+          v16 = [_baassets_validUTIWithWildcard length];
           v17 = p_allowedDownloadDomainWildcards;
           if (v16 > 1)
           {
@@ -1945,14 +1945,14 @@ LABEL_12:
 
 - (id)debugDescription
 {
-  v3 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v3 lock];
+  appInfoRecursiveLock = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock lock];
 
-  v4 = [(BAApplicationInfo *)self applicationIdentifier];
-  v18 = [(BAApplicationInfo *)self optionalAssetDownloadAllowance];
-  v17 = [(BAApplicationInfo *)self essentialAssetDownloadAllowance];
-  v5 = [(BAApplicationInfo *)self optionalAmountDownloaded];
-  v6 = [(BAApplicationInfo *)self essentialAmountDownloaded];
+  applicationIdentifier = [(BAApplicationInfo *)self applicationIdentifier];
+  optionalAssetDownloadAllowance = [(BAApplicationInfo *)self optionalAssetDownloadAllowance];
+  essentialAssetDownloadAllowance = [(BAApplicationInfo *)self essentialAssetDownloadAllowance];
+  optionalAmountDownloaded = [(BAApplicationInfo *)self optionalAmountDownloaded];
+  essentialAmountDownloaded = [(BAApplicationInfo *)self essentialAmountDownloaded];
   v7 = @"YES";
   if ([(BAApplicationInfo *)self receivedInstallingNotification])
   {
@@ -1974,19 +1974,19 @@ LABEL_12:
     v9 = @"NO";
   }
 
-  v10 = [(BAApplicationInfo *)self _serializableAllowedDomainInfo];
-  v11 = [(BAApplicationInfo *)self lastPeriodicCheckTime];
+  _serializableAllowedDomainInfo = [(BAApplicationInfo *)self _serializableAllowedDomainInfo];
+  lastPeriodicCheckTime = [(BAApplicationInfo *)self lastPeriodicCheckTime];
   if (![(BAApplicationInfo *)self hasLaunchedApplication])
   {
     v7 = @"NO";
   }
 
-  v12 = [(BAApplicationInfo *)self lastApplicationLaunchTime];
+  lastApplicationLaunchTime = [(BAApplicationInfo *)self lastApplicationLaunchTime];
   [(BAApplicationInfo *)self extensionRuntime];
-  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", CFSTR("Application Identifier: %@\nInitial (Optional Download Allowance: %llu\nInitial (Essential Download Allowance: %llu\nAmount Downloaded (Optional): %llu\nAmount Downloaded (Essential): %llu\nReceived Installing Notification: %@\nReceived Installed Notification: %@\nAllowed Domains: %@\nLast Check Time: %@\nApp Has Been Launched: %@\nLast Launch Time: %@\nExtension Runtime In Last 24h: %lf"), v4, v18, v17, v5, v6, v8, v9, v10, v11, v7, v12, v13);
+  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", CFSTR("Application Identifier: %@\nInitial (Optional Download Allowance: %llu\nInitial (Essential Download Allowance: %llu\nAmount Downloaded (Optional): %llu\nAmount Downloaded (Essential): %llu\nReceived Installing Notification: %@\nReceived Installed Notification: %@\nAllowed Domains: %@\nLast Check Time: %@\nApp Has Been Launched: %@\nLast Launch Time: %@\nExtension Runtime In Last 24h: %lf"), applicationIdentifier, optionalAssetDownloadAllowance, essentialAssetDownloadAllowance, optionalAmountDownloaded, essentialAmountDownloaded, v8, v9, _serializableAllowedDomainInfo, lastPeriodicCheckTime, v7, lastApplicationLaunchTime, v13);
 
-  v15 = [(BAApplicationInfo *)self appInfoRecursiveLock];
-  [v15 unlock];
+  appInfoRecursiveLock2 = [(BAApplicationInfo *)self appInfoRecursiveLock];
+  [appInfoRecursiveLock2 unlock];
 
   return v14;
 }

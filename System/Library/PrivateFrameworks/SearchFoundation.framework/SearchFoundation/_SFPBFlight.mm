@@ -1,67 +1,67 @@
 @interface _SFPBFlight
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBFlight)initWithDictionary:(id)a3;
-- (_SFPBFlight)initWithFacade:(id)a3;
-- (_SFPBFlight)initWithJSON:(id)a3;
+- (_SFPBFlight)initWithDictionary:(id)dictionary;
+- (_SFPBFlight)initWithFacade:(id)facade;
+- (_SFPBFlight)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLegs:(id)a3;
-- (void)setCarrierCode:(id)a3;
-- (void)setCarrierName:(id)a3;
-- (void)setCarrierPhoneNumber:(id)a3;
-- (void)setCarrierWebsite:(id)a3;
-- (void)setFlightID:(id)a3;
-- (void)setFlightNumber:(id)a3;
-- (void)setLegs:(id)a3;
-- (void)setOperatorCarrierCode:(id)a3;
-- (void)setOperatorFlightNumber:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLegs:(id)legs;
+- (void)setCarrierCode:(id)code;
+- (void)setCarrierName:(id)name;
+- (void)setCarrierPhoneNumber:(id)number;
+- (void)setCarrierWebsite:(id)website;
+- (void)setFlightID:(id)d;
+- (void)setFlightNumber:(id)number;
+- (void)setLegs:(id)legs;
+- (void)setOperatorCarrierCode:(id)code;
+- (void)setOperatorFlightNumber:(id)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBFlight
 
-- (_SFPBFlight)initWithFacade:(id)a3
+- (_SFPBFlight)initWithFacade:(id)facade
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBFlight *)self init];
   if (v5)
   {
-    v6 = [v4 flightID];
+    flightID = [facadeCopy flightID];
 
-    if (v6)
+    if (flightID)
     {
-      v7 = [v4 flightID];
-      [(_SFPBFlight *)v5 setFlightID:v7];
+      flightID2 = [facadeCopy flightID];
+      [(_SFPBFlight *)v5 setFlightID:flightID2];
     }
 
-    v8 = [v4 carrierCode];
+    carrierCode = [facadeCopy carrierCode];
 
-    if (v8)
+    if (carrierCode)
     {
-      v9 = [v4 carrierCode];
-      [(_SFPBFlight *)v5 setCarrierCode:v9];
+      carrierCode2 = [facadeCopy carrierCode];
+      [(_SFPBFlight *)v5 setCarrierCode:carrierCode2];
     }
 
-    v10 = [v4 carrierName];
+    carrierName = [facadeCopy carrierName];
 
-    if (v10)
+    if (carrierName)
     {
-      v11 = [v4 carrierName];
-      [(_SFPBFlight *)v5 setCarrierName:v11];
+      carrierName2 = [facadeCopy carrierName];
+      [(_SFPBFlight *)v5 setCarrierName:carrierName2];
     }
 
-    v12 = [v4 flightNumber];
+    flightNumber = [facadeCopy flightNumber];
 
-    if (v12)
+    if (flightNumber)
     {
-      v13 = [v4 flightNumber];
-      [(_SFPBFlight *)v5 setFlightNumber:v13];
+      flightNumber2 = [facadeCopy flightNumber];
+      [(_SFPBFlight *)v5 setFlightNumber:flightNumber2];
     }
 
-    v14 = [v4 legs];
-    if (v14)
+    legs = [facadeCopy legs];
+    if (legs)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -75,8 +75,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [v4 legs];
-    v17 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    legs2 = [facadeCopy legs];
+    v17 = [legs2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v17)
     {
       v18 = v17;
@@ -87,7 +87,7 @@
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(legs2);
           }
 
           v21 = [[_SFPBFlightLeg alloc] initWithFacade:*(*(&v33 + 1) + 8 * i)];
@@ -97,43 +97,43 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v18 = [legs2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v18);
     }
 
     [(_SFPBFlight *)v5 setLegs:v15];
-    v22 = [v4 operatorCarrierCode];
+    operatorCarrierCode = [facadeCopy operatorCarrierCode];
 
-    if (v22)
+    if (operatorCarrierCode)
     {
-      v23 = [v4 operatorCarrierCode];
-      [(_SFPBFlight *)v5 setOperatorCarrierCode:v23];
+      operatorCarrierCode2 = [facadeCopy operatorCarrierCode];
+      [(_SFPBFlight *)v5 setOperatorCarrierCode:operatorCarrierCode2];
     }
 
-    v24 = [v4 operatorFlightNumber];
+    operatorFlightNumber = [facadeCopy operatorFlightNumber];
 
-    if (v24)
+    if (operatorFlightNumber)
     {
-      v25 = [v4 operatorFlightNumber];
-      [(_SFPBFlight *)v5 setOperatorFlightNumber:v25];
+      operatorFlightNumber2 = [facadeCopy operatorFlightNumber];
+      [(_SFPBFlight *)v5 setOperatorFlightNumber:operatorFlightNumber2];
     }
 
-    v26 = [v4 carrierPhoneNumber];
+    carrierPhoneNumber = [facadeCopy carrierPhoneNumber];
 
-    if (v26)
+    if (carrierPhoneNumber)
     {
-      v27 = [v4 carrierPhoneNumber];
-      [(_SFPBFlight *)v5 setCarrierPhoneNumber:v27];
+      carrierPhoneNumber2 = [facadeCopy carrierPhoneNumber];
+      [(_SFPBFlight *)v5 setCarrierPhoneNumber:carrierPhoneNumber2];
     }
 
-    v28 = [v4 carrierWebsite];
+    carrierWebsite = [facadeCopy carrierWebsite];
 
-    if (v28)
+    if (carrierWebsite)
     {
-      v29 = [v4 carrierWebsite];
-      [(_SFPBFlight *)v5 setCarrierWebsite:v29];
+      carrierWebsite2 = [facadeCopy carrierWebsite];
+      [(_SFPBFlight *)v5 setCarrierWebsite:carrierWebsite2];
     }
 
     v30 = v5;
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (_SFPBFlight)initWithDictionary:(id)a3
+- (_SFPBFlight)initWithDictionary:(id)dictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v41.receiver = self;
   v41.super_class = _SFPBFlight;
   v5 = [(_SFPBFlight *)&v41 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"flightID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"flightID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,7 +160,7 @@
       [(_SFPBFlight *)v5 setFlightID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"carrierCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"carrierCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,7 +168,7 @@
       [(_SFPBFlight *)v5 setCarrierCode:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"carrierName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"carrierName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -177,7 +177,7 @@
     }
 
     v36 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"flightNumber"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"flightNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -186,7 +186,7 @@
     }
 
     v35 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"legs"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"legs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -227,7 +227,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:{@"operatorCarrierCode", v33, v34}];
+    v22 = [dictionaryCopy objectForKeyedSubscript:{@"operatorCarrierCode", v33, v34}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -235,7 +235,7 @@
       [(_SFPBFlight *)v5 setOperatorCarrierCode:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"operatorFlightNumber"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"operatorFlightNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,7 +243,7 @@
       [(_SFPBFlight *)v5 setOperatorFlightNumber:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"carrierPhoneNumber"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"carrierPhoneNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -251,7 +251,7 @@
       [(_SFPBFlight *)v5 setCarrierPhoneNumber:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"carrierWebsite"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"carrierWebsite"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -266,30 +266,30 @@
   return v5;
 }
 
-- (_SFPBFlight)initWithJSON:(id)a3
+- (_SFPBFlight)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBFlight *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBFlight *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBFlight *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -303,52 +303,52 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_carrierCode)
   {
-    v4 = [(_SFPBFlight *)self carrierCode];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"carrierCode"];
+    carrierCode = [(_SFPBFlight *)self carrierCode];
+    v5 = [carrierCode copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"carrierCode"];
   }
 
   if (self->_carrierName)
   {
-    v6 = [(_SFPBFlight *)self carrierName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"carrierName"];
+    carrierName = [(_SFPBFlight *)self carrierName];
+    v7 = [carrierName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"carrierName"];
   }
 
   if (self->_carrierPhoneNumber)
   {
-    v8 = [(_SFPBFlight *)self carrierPhoneNumber];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"carrierPhoneNumber"];
+    carrierPhoneNumber = [(_SFPBFlight *)self carrierPhoneNumber];
+    v9 = [carrierPhoneNumber copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"carrierPhoneNumber"];
   }
 
   if (self->_carrierWebsite)
   {
-    v10 = [(_SFPBFlight *)self carrierWebsite];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"carrierWebsite"];
+    carrierWebsite = [(_SFPBFlight *)self carrierWebsite];
+    v11 = [carrierWebsite copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"carrierWebsite"];
   }
 
   if (self->_flightID)
   {
-    v12 = [(_SFPBFlight *)self flightID];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"flightID"];
+    flightID = [(_SFPBFlight *)self flightID];
+    v13 = [flightID copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"flightID"];
   }
 
   if (self->_flightNumber)
   {
-    v14 = [(_SFPBFlight *)self flightNumber];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"flightNumber"];
+    flightNumber = [(_SFPBFlight *)self flightNumber];
+    v15 = [flightNumber copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"flightNumber"];
   }
 
   if ([(NSArray *)self->_legs count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -368,16 +368,16 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          if (v22)
+          dictionaryRepresentation = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v16 addObject:v22];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            [v16 addObject:v23];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -387,26 +387,26 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"legs"];
+    [dictionary setObject:array forKeyedSubscript:@"legs"];
   }
 
   if (self->_operatorCarrierCode)
   {
-    v24 = [(_SFPBFlight *)self operatorCarrierCode];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"operatorCarrierCode"];
+    operatorCarrierCode = [(_SFPBFlight *)self operatorCarrierCode];
+    v25 = [operatorCarrierCode copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"operatorCarrierCode"];
   }
 
   if (self->_operatorFlightNumber)
   {
-    v26 = [(_SFPBFlight *)self operatorFlightNumber];
-    v27 = [v26 copy];
-    [v3 setObject:v27 forKeyedSubscript:@"operatorFlightNumber"];
+    operatorFlightNumber = [(_SFPBFlight *)self operatorFlightNumber];
+    v27 = [operatorFlightNumber copy];
+    [dictionary setObject:v27 forKeyedSubscript:@"operatorFlightNumber"];
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -422,28 +422,28 @@
   return v9 ^ v10 ^ [(NSString *)self->_carrierWebsite hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = [(_SFPBFlight *)self flightID];
-  v6 = [v4 flightID];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self flightID];
+  flightID2 = [equalCopy flightID];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v7 = [(_SFPBFlight *)self flightID];
-  if (v7)
+  flightID3 = [(_SFPBFlight *)self flightID];
+  if (flightID3)
   {
-    v8 = v7;
-    v9 = [(_SFPBFlight *)self flightID];
-    v10 = [v4 flightID];
-    v11 = [v9 isEqual:v10];
+    v8 = flightID3;
+    flightID4 = [(_SFPBFlight *)self flightID];
+    flightID5 = [equalCopy flightID];
+    v11 = [flightID4 isEqual:flightID5];
 
     if (!v11)
     {
@@ -455,20 +455,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self carrierCode];
-  v6 = [v4 carrierCode];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self carrierCode];
+  flightID2 = [equalCopy carrierCode];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v12 = [(_SFPBFlight *)self carrierCode];
-  if (v12)
+  carrierCode = [(_SFPBFlight *)self carrierCode];
+  if (carrierCode)
   {
-    v13 = v12;
-    v14 = [(_SFPBFlight *)self carrierCode];
-    v15 = [v4 carrierCode];
-    v16 = [v14 isEqual:v15];
+    v13 = carrierCode;
+    carrierCode2 = [(_SFPBFlight *)self carrierCode];
+    carrierCode3 = [equalCopy carrierCode];
+    v16 = [carrierCode2 isEqual:carrierCode3];
 
     if (!v16)
     {
@@ -480,20 +480,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self carrierName];
-  v6 = [v4 carrierName];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self carrierName];
+  flightID2 = [equalCopy carrierName];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v17 = [(_SFPBFlight *)self carrierName];
-  if (v17)
+  carrierName = [(_SFPBFlight *)self carrierName];
+  if (carrierName)
   {
-    v18 = v17;
-    v19 = [(_SFPBFlight *)self carrierName];
-    v20 = [v4 carrierName];
-    v21 = [v19 isEqual:v20];
+    v18 = carrierName;
+    carrierName2 = [(_SFPBFlight *)self carrierName];
+    carrierName3 = [equalCopy carrierName];
+    v21 = [carrierName2 isEqual:carrierName3];
 
     if (!v21)
     {
@@ -505,20 +505,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self flightNumber];
-  v6 = [v4 flightNumber];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self flightNumber];
+  flightID2 = [equalCopy flightNumber];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v22 = [(_SFPBFlight *)self flightNumber];
-  if (v22)
+  flightNumber = [(_SFPBFlight *)self flightNumber];
+  if (flightNumber)
   {
-    v23 = v22;
-    v24 = [(_SFPBFlight *)self flightNumber];
-    v25 = [v4 flightNumber];
-    v26 = [v24 isEqual:v25];
+    v23 = flightNumber;
+    flightNumber2 = [(_SFPBFlight *)self flightNumber];
+    flightNumber3 = [equalCopy flightNumber];
+    v26 = [flightNumber2 isEqual:flightNumber3];
 
     if (!v26)
     {
@@ -530,20 +530,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self legs];
-  v6 = [v4 legs];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self legs];
+  flightID2 = [equalCopy legs];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v27 = [(_SFPBFlight *)self legs];
-  if (v27)
+  legs = [(_SFPBFlight *)self legs];
+  if (legs)
   {
-    v28 = v27;
-    v29 = [(_SFPBFlight *)self legs];
-    v30 = [v4 legs];
-    v31 = [v29 isEqual:v30];
+    v28 = legs;
+    legs2 = [(_SFPBFlight *)self legs];
+    legs3 = [equalCopy legs];
+    v31 = [legs2 isEqual:legs3];
 
     if (!v31)
     {
@@ -555,20 +555,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self operatorCarrierCode];
-  v6 = [v4 operatorCarrierCode];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self operatorCarrierCode];
+  flightID2 = [equalCopy operatorCarrierCode];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v32 = [(_SFPBFlight *)self operatorCarrierCode];
-  if (v32)
+  operatorCarrierCode = [(_SFPBFlight *)self operatorCarrierCode];
+  if (operatorCarrierCode)
   {
-    v33 = v32;
-    v34 = [(_SFPBFlight *)self operatorCarrierCode];
-    v35 = [v4 operatorCarrierCode];
-    v36 = [v34 isEqual:v35];
+    v33 = operatorCarrierCode;
+    operatorCarrierCode2 = [(_SFPBFlight *)self operatorCarrierCode];
+    operatorCarrierCode3 = [equalCopy operatorCarrierCode];
+    v36 = [operatorCarrierCode2 isEqual:operatorCarrierCode3];
 
     if (!v36)
     {
@@ -580,20 +580,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self operatorFlightNumber];
-  v6 = [v4 operatorFlightNumber];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self operatorFlightNumber];
+  flightID2 = [equalCopy operatorFlightNumber];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v37 = [(_SFPBFlight *)self operatorFlightNumber];
-  if (v37)
+  operatorFlightNumber = [(_SFPBFlight *)self operatorFlightNumber];
+  if (operatorFlightNumber)
   {
-    v38 = v37;
-    v39 = [(_SFPBFlight *)self operatorFlightNumber];
-    v40 = [v4 operatorFlightNumber];
-    v41 = [v39 isEqual:v40];
+    v38 = operatorFlightNumber;
+    operatorFlightNumber2 = [(_SFPBFlight *)self operatorFlightNumber];
+    operatorFlightNumber3 = [equalCopy operatorFlightNumber];
+    v41 = [operatorFlightNumber2 isEqual:operatorFlightNumber3];
 
     if (!v41)
     {
@@ -605,20 +605,20 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self carrierPhoneNumber];
-  v6 = [v4 carrierPhoneNumber];
-  if ((v5 != 0) == (v6 == 0))
+  flightID = [(_SFPBFlight *)self carrierPhoneNumber];
+  flightID2 = [equalCopy carrierPhoneNumber];
+  if ((flightID != 0) == (flightID2 == 0))
   {
     goto LABEL_46;
   }
 
-  v42 = [(_SFPBFlight *)self carrierPhoneNumber];
-  if (v42)
+  carrierPhoneNumber = [(_SFPBFlight *)self carrierPhoneNumber];
+  if (carrierPhoneNumber)
   {
-    v43 = v42;
-    v44 = [(_SFPBFlight *)self carrierPhoneNumber];
-    v45 = [v4 carrierPhoneNumber];
-    v46 = [v44 isEqual:v45];
+    v43 = carrierPhoneNumber;
+    carrierPhoneNumber2 = [(_SFPBFlight *)self carrierPhoneNumber];
+    carrierPhoneNumber3 = [equalCopy carrierPhoneNumber];
+    v46 = [carrierPhoneNumber2 isEqual:carrierPhoneNumber3];
 
     if (!v46)
     {
@@ -630,12 +630,12 @@
   {
   }
 
-  v5 = [(_SFPBFlight *)self carrierWebsite];
-  v6 = [v4 carrierWebsite];
-  if ((v5 != 0) != (v6 == 0))
+  flightID = [(_SFPBFlight *)self carrierWebsite];
+  flightID2 = [equalCopy carrierWebsite];
+  if ((flightID != 0) != (flightID2 == 0))
   {
-    v47 = [(_SFPBFlight *)self carrierWebsite];
-    if (!v47)
+    carrierWebsite = [(_SFPBFlight *)self carrierWebsite];
+    if (!carrierWebsite)
     {
 
 LABEL_50:
@@ -643,10 +643,10 @@ LABEL_50:
       goto LABEL_48;
     }
 
-    v48 = v47;
-    v49 = [(_SFPBFlight *)self carrierWebsite];
-    v50 = [v4 carrierWebsite];
-    v51 = [v49 isEqual:v50];
+    v48 = carrierWebsite;
+    carrierWebsite2 = [(_SFPBFlight *)self carrierWebsite];
+    carrierWebsite3 = [equalCopy carrierWebsite];
+    v51 = [carrierWebsite2 isEqual:carrierWebsite3];
 
     if (v51)
     {
@@ -666,40 +666,40 @@ LABEL_48:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBFlight *)self flightID];
-  if (v5)
+  toCopy = to;
+  flightID = [(_SFPBFlight *)self flightID];
+  if (flightID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBFlight *)self carrierCode];
-  if (v6)
+  carrierCode = [(_SFPBFlight *)self carrierCode];
+  if (carrierCode)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBFlight *)self carrierName];
-  if (v7)
+  carrierName = [(_SFPBFlight *)self carrierName];
+  if (carrierName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBFlight *)self flightNumber];
-  if (v8)
+  flightNumber = [(_SFPBFlight *)self flightNumber];
+  if (flightNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBFlight *)self legs];
+  legs = [(_SFPBFlight *)self legs];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [legs countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -711,7 +711,7 @@ LABEL_48:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(legs);
         }
 
         v14 = *(*(&v20 + 1) + 8 * v13);
@@ -720,32 +720,32 @@ LABEL_48:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [legs countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(_SFPBFlight *)self operatorCarrierCode];
-  if (v15)
+  operatorCarrierCode = [(_SFPBFlight *)self operatorCarrierCode];
+  if (operatorCarrierCode)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_SFPBFlight *)self operatorFlightNumber];
-  if (v16)
+  operatorFlightNumber = [(_SFPBFlight *)self operatorFlightNumber];
+  if (operatorFlightNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_SFPBFlight *)self carrierPhoneNumber];
-  if (v17)
+  carrierPhoneNumber = [(_SFPBFlight *)self carrierPhoneNumber];
+  if (carrierPhoneNumber)
   {
     PBDataWriterWriteStringField();
   }
 
-  v18 = [(_SFPBFlight *)self carrierWebsite];
-  if (v18)
+  carrierWebsite = [(_SFPBFlight *)self carrierWebsite];
+  if (carrierWebsite)
   {
     PBDataWriterWriteStringField();
   }
@@ -753,99 +753,99 @@ LABEL_48:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCarrierWebsite:(id)a3
+- (void)setCarrierWebsite:(id)website
 {
-  v4 = [a3 copy];
+  v4 = [website copy];
   carrierWebsite = self->_carrierWebsite;
   self->_carrierWebsite = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCarrierPhoneNumber:(id)a3
+- (void)setCarrierPhoneNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   carrierPhoneNumber = self->_carrierPhoneNumber;
   self->_carrierPhoneNumber = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOperatorFlightNumber:(id)a3
+- (void)setOperatorFlightNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   operatorFlightNumber = self->_operatorFlightNumber;
   self->_operatorFlightNumber = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOperatorCarrierCode:(id)a3
+- (void)setOperatorCarrierCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   operatorCarrierCode = self->_operatorCarrierCode;
   self->_operatorCarrierCode = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addLegs:(id)a3
+- (void)addLegs:(id)legs
 {
-  v4 = a3;
+  legsCopy = legs;
   legs = self->_legs;
-  v8 = v4;
+  v8 = legsCopy;
   if (!legs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_legs;
-    self->_legs = v6;
+    self->_legs = array;
 
-    v4 = v8;
+    legsCopy = v8;
     legs = self->_legs;
   }
 
-  [(NSArray *)legs addObject:v4];
+  [(NSArray *)legs addObject:legsCopy];
 }
 
-- (void)setLegs:(id)a3
+- (void)setLegs:(id)legs
 {
-  v4 = [a3 copy];
+  v4 = [legs copy];
   legs = self->_legs;
   self->_legs = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFlightNumber:(id)a3
+- (void)setFlightNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   flightNumber = self->_flightNumber;
   self->_flightNumber = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCarrierName:(id)a3
+- (void)setCarrierName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   carrierName = self->_carrierName;
   self->_carrierName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCarrierCode:(id)a3
+- (void)setCarrierCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   carrierCode = self->_carrierCode;
   self->_carrierCode = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFlightID:(id)a3
+- (void)setFlightID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   flightID = self->_flightID;
   self->_flightID = v4;
 

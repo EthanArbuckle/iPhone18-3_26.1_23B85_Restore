@@ -1,42 +1,42 @@
 @interface CAMImageAnalysisButton
 - (CAMImageAnalysisButtonDelegate)delegate;
-- (void)_setContextMenuDisplayed:(BOOL)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)_setContextMenuDisplayed:(BOOL)displayed;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation CAMImageAnalysisButton
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
   [(CAMImageAnalysisButton *)self _setContextMenuDisplayed:1];
   v11.receiver = self;
   v11.super_class = CAMImageAnalysisButton;
-  [(CAMImageAnalysisButton *)&v11 contextMenuInteraction:v10 willDisplayMenuForConfiguration:v9 animator:v8];
+  [(CAMImageAnalysisButton *)&v11 contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
   [(CAMImageAnalysisButton *)self _setContextMenuDisplayed:0];
   v11.receiver = self;
   v11.super_class = CAMImageAnalysisButton;
-  [(CAMImageAnalysisButton *)&v11 contextMenuInteraction:v10 willEndForConfiguration:v9 animator:v8];
+  [(CAMImageAnalysisButton *)&v11 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (void)_setContextMenuDisplayed:(BOOL)a3
+- (void)_setContextMenuDisplayed:(BOOL)displayed
 {
-  if (self->_contextMenuDisplayed != a3)
+  if (self->_contextMenuDisplayed != displayed)
   {
-    v4 = a3;
-    self->_contextMenuDisplayed = a3;
-    v6 = [(CAMImageAnalysisButton *)self delegate];
-    [v6 imageAnalysisButton:self didChangeContextMenuDisplayed:v4];
+    displayedCopy = displayed;
+    self->_contextMenuDisplayed = displayed;
+    delegate = [(CAMImageAnalysisButton *)self delegate];
+    [delegate imageAnalysisButton:self didChangeContextMenuDisplayed:displayedCopy];
   }
 }
 

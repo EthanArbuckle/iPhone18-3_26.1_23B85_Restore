@@ -1,26 +1,26 @@
 @interface OITSUShallowCopyPair
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OITSUShallowCopyPair
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [OITSUShallowCopyPair allocWithZone:a3];
-  v5 = [(OITSUPair *)self first];
-  v6 = [(OITSUPair *)self second];
+  v4 = [OITSUShallowCopyPair allocWithZone:zone];
+  first = [(OITSUPair *)self first];
+  second = [(OITSUPair *)self second];
 
-  return [(OITSUPair *)v4 initWithFirst:v5 second:v6];
+  return [(OITSUPair *)v4 initWithFirst:first second:second];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [OITSUMutableShallowCopyPair allocWithZone:a3];
-  v5 = [(OITSUPair *)self first];
-  v6 = [(OITSUPair *)self second];
+  v4 = [OITSUMutableShallowCopyPair allocWithZone:zone];
+  first = [(OITSUPair *)self first];
+  second = [(OITSUPair *)self second];
 
-  return [(OITSUPair *)v4 initWithFirst:v5 second:v6];
+  return [(OITSUPair *)v4 initWithFirst:first second:second];
 }
 
 @end

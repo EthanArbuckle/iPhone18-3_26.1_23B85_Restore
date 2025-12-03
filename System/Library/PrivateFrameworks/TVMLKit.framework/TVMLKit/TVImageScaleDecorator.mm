@@ -1,28 +1,28 @@
 @interface TVImageScaleDecorator
-- (BOOL)isEqual:(id)a3;
-- (BOOL)needsAlphaForImage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)needsAlphaForImage:(id)image;
 - (CGSize)_scaleToSizeAdjustedForUpscaling;
 - (CGSize)scaleToSize;
 - (TVCornerRadii)cornerRadii;
-- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)a3 cropToFit:(BOOL)a4;
-- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)a3 scaleMode:(int64_t)a4;
+- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)size cropToFit:(BOOL)fit;
+- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)size scaleMode:(int64_t)mode;
 - (UIEdgeInsets)_paddingAdjustedForUpscaling;
 - (UIEdgeInsets)padding;
 - (double)_focusedSizeIncreaseFactor;
-- (id)_imageFixedForRotation:(id)a3;
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5;
+- (id)_imageFixedForRotation:(id)rotation;
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit;
 - (id)decoratorIdentifier;
 - (unint64_t)hash;
-- (void)_applyCornerMaskForRect:(CGRect)a3 toContext:(CGContext *)a4;
-- (void)setCropToFit:(BOOL)a3;
+- (void)_applyCornerMaskForRect:(CGRect)rect toContext:(CGContext *)context;
+- (void)setCropToFit:(BOOL)fit;
 @end
 
 @implementation TVImageScaleDecorator
 
-- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)a3 scaleMode:(int64_t)a4
+- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)size scaleMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = TVImageScaleDecorator;
   result = [(TVImageScaleDecorator *)&v8 init];
@@ -30,7 +30,7 @@
   {
     result->_scaleToSize.width = width;
     result->_scaleToSize.height = height;
-    result->_scaleMode = a4;
+    result->_scaleMode = mode;
     *&result->_cornerRadii.topLeft = TVCornerRadiiZero;
     *&result->_cornerRadii.bottomLeft = *&qword_26CE880D8;
     result->_preservesAlpha = 1;
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)a3 cropToFit:(BOOL)a4
+- (TVImageScaleDecorator)initWithScaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
-  if (a4)
+  if (fit)
   {
     v4 = 3;
   }
@@ -51,17 +51,17 @@
     v4 = 1;
   }
 
-  return [(TVImageScaleDecorator *)self initWithScaleToSize:v4 scaleMode:a3.width, a3.height];
+  return [(TVImageScaleDecorator *)self initWithScaleToSize:v4 scaleMode:size.width, size.height];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 scaleMode] == 2 && -[TVImageScaleDecorator scaleMode](self, "scaleMode") == 2)
+  equalCopy = equal;
+  if ([equalCopy scaleMode] == 2 && -[TVImageScaleDecorator scaleMode](self, "scaleMode") == 2)
   {
-    v5 = [v4 bgColor];
-    v6 = [(TVImageScaleDecorator *)self bgColor];
-    v7 = v5 == v6;
+    bgColor = [equalCopy bgColor];
+    bgColor2 = [(TVImageScaleDecorator *)self bgColor];
+    v7 = bgColor == bgColor2;
   }
 
   else
@@ -69,7 +69,7 @@
     v7 = 1;
   }
 
-  [v4 cornerRadii];
+  [equalCopy cornerRadii];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -88,19 +88,19 @@
 
   v45.receiver = self;
   v45.super_class = TVImageScaleDecorator;
-  if (![(TVImageDecorator *)&v45 isEqual:v4])
+  if (![(TVImageDecorator *)&v45 isEqual:equalCopy])
   {
     goto LABEL_20;
   }
 
-  [v4 scaleToSize];
+  [equalCopy scaleToSize];
   v22 = v21;
   v24 = v23;
   [(TVImageScaleDecorator *)self scaleToSize];
   v26 = 0;
   if (v22 == v27 && v24 == v25)
   {
-    [v4 padding];
+    [equalCopy padding];
     v29 = v28;
     v31 = v30;
     v33 = v32;
@@ -109,10 +109,10 @@
     v26 = 0;
     if (v31 == v39 && v29 == v36 && v35 == v38 && v33 == v37)
     {
-      v40 = [v4 scaleMode];
-      if (v40 == [(TVImageScaleDecorator *)self scaleMode])
+      scaleMode = [equalCopy scaleMode];
+      if (scaleMode == [(TVImageScaleDecorator *)self scaleMode])
       {
-        [v4 focusedSizeIncrease];
+        [equalCopy focusedSizeIncrease];
         v42 = v41;
         [(TVImageScaleDecorator *)self focusedSizeIncrease];
         if (v42 == v43)
@@ -142,10 +142,10 @@ LABEL_21:
   return v4;
 }
 
-- (void)setCropToFit:(BOOL)a3
+- (void)setCropToFit:(BOOL)fit
 {
   v3 = 3;
-  if (!a3)
+  if (!fit)
   {
     v3 = 1;
   }
@@ -155,7 +155,7 @@ LABEL_21:
 
 - (id)decoratorIdentifier
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   width = self->_scaleToSize.width;
   if (width != 0.0)
   {
@@ -164,19 +164,19 @@ LABEL_21:
     {
       v6 = width;
       v7 = height;
-      v8 = [MEMORY[0x277D759A0] mainScreen];
-      [v8 scale];
-      [v3 appendFormat:@"%dx%d_%.0f", v6, v7, v9];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
+      [string appendFormat:@"%dx%d_%.0f", v6, v7, v9];
 
       if (!self->_preservesAlpha)
       {
-        [v3 appendString:@"_noAlpha"];
+        [string appendString:@"_noAlpha"];
       }
 
       scaleMode = self->_scaleMode;
       if (scaleMode == 2)
       {
-        [v3 appendString:@"_fitBB"];
+        [string appendString:@"_fitBB"];
         bgColor = self->_bgColor;
         if (bgColor)
         {
@@ -190,7 +190,7 @@ LABEL_21:
           LODWORD(v14) = vcvtad_u64_f64(v40 * 255.0);
           LODWORD(v15) = vcvtad_u64_f64(v39 * 255.0);
           v16 = v38;
-          [v3 appendFormat:@"(%02X%02X%02X%.1f)", v13, v14, v15, v16];
+          [string appendFormat:@"(%02X%02X%02X%.1f)", v13, v14, v15, v16];
         }
       }
 
@@ -211,7 +211,7 @@ LABEL_21:
           v11 = @"_fill";
         }
 
-        [v3 appendString:v11];
+        [string appendString:v11];
       }
     }
   }
@@ -223,7 +223,7 @@ LABEL_13:
     topRight = self->_cornerRadii.topRight;
     bottomLeft = self->_cornerRadii.bottomLeft;
     bottomRight = self->_cornerRadii.bottomRight;
-    [v3 appendFormat:@"_br(%.f, %.f, %.f, %.f)", topLeft, topRight, bottomLeft, bottomRight];
+    [string appendFormat:@"_br(%.f, %.f, %.f, %.f)", topLeft, topRight, bottomLeft, bottomRight];
   }
 
   [(TVImageScaleDecorator *)self padding];
@@ -242,12 +242,12 @@ LABEL_13:
     v32 = v31;
     [(TVImageScaleDecorator *)self padding];
     v34 = v33;
-    [v3 appendFormat:@"_pad(%.f, %.f, %.f, %.f)", *&v27, *&v29, *&v32, v34];
+    [string appendFormat:@"_pad(%.f, %.f, %.f, %.f)", *&v27, *&v29, *&v32, v34];
   }
 
-  if ([v3 length])
+  if ([string length])
   {
-    v35 = v3;
+    v35 = string;
   }
 
   else
@@ -260,12 +260,12 @@ LABEL_13:
   return v35;
 }
 
-- (id)decorate:(id)a3 scaledWithSize:(CGSize)a4 croppedToFit:(BOOL)a5
+- (id)decorate:(id)decorate scaledWithSize:(CGSize)size croppedToFit:(BOOL)fit
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  decorateCopy = decorate;
   [(TVImageScaleDecorator *)self _scaleToSizeAdjustedForUpscaling];
   v11 = v10;
   v13 = v12;
@@ -273,13 +273,13 @@ LABEL_13:
   if (v11 != *MEMORY[0x277CBF3A8] || v13 != *(MEMORY[0x277CBF3A8] + 8))
   {
     v21 = v11 == width && v13 == height;
-    if (!v21 || ((v22 = self->_scaleMode, v22 == 3) ? (v23 = !v5) : (v23 = 0), !v23 ? (v24 = v22 == 2) : (v24 = 1), !v24 ? (v25 = v22 == 4) : (v25 = 1), v25 || (v71.f64[0] = v14, v71.f64[1] = v15, v72.f64[0] = v16, v72.f64[1] = v18, (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(v71, *MEMORY[0x277D768C8]), vceqq_f64(v72, *(MEMORY[0x277D768C8] + 16)))))) & 1) != 0)))
+    if (!v21 || ((v22 = self->_scaleMode, v22 == 3) ? (v23 = !fitCopy) : (v23 = 0), !v23 ? (v24 = v22 == 2) : (v24 = 1), !v24 ? (v25 = v22 == 4) : (v25 = 1), v25 || (v71.f64[0] = v14, v71.f64[1] = v15, v72.f64[0] = v16, v72.f64[1] = v18, (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(v71, *MEMORY[0x277D768C8]), vceqq_f64(v72, *(MEMORY[0x277D768C8] + 16)))))) & 1) != 0)))
     {
       v83 = v15;
       v84 = v14;
       v86 = v11;
-      v26 = [v9 orientation] >= 2 && objc_msgSend(v9, "orientation") < 9;
-      [v9 pixelBounds];
+      v26 = [decorateCopy orientation] >= 2 && objc_msgSend(decorateCopy, "orientation") < 9;
+      [decorateCopy pixelBounds];
       v28 = v27;
       v30 = v29;
       v31 = MEMORY[0x277CBF3A0];
@@ -288,10 +288,10 @@ LABEL_13:
       v33 = v84;
       if (v26)
       {
-        v35 = [v9 orientation];
+        orientation = [decorateCopy orientation];
         v34 = v83;
         v33 = v84;
-        if (v35 <= 4)
+        if (orientation <= 4)
         {
           v36 = v30;
         }
@@ -301,7 +301,7 @@ LABEL_13:
           v36 = v28;
         }
 
-        if (v35 > 4)
+        if (orientation > 4)
         {
           v28 = v30;
         }
@@ -348,10 +348,10 @@ LABEL_44:
           v61 = v114.origin.y;
           v62 = v114.size.width;
           v63 = v114.size.height;
-          v64 = +[TVGraphicsImageRenderer formatWithCGImage:](TVGraphicsImageRenderer, "formatWithCGImage:", [v9 image]);
-          v65 = [(TVImageScaleDecorator *)self needsAlphaForImage:v9];
-          v66 = [(TVImageScaleDecorator *)self bgColor];
-          v67 = v66;
+          v64 = +[TVGraphicsImageRenderer formatWithCGImage:](TVGraphicsImageRenderer, "formatWithCGImage:", [decorateCopy image]);
+          v65 = [(TVImageScaleDecorator *)self needsAlphaForImage:decorateCopy];
+          bgColor = [(TVImageScaleDecorator *)self bgColor];
+          v67 = bgColor;
           if (v65)
           {
             v68 = 1;
@@ -360,7 +360,7 @@ LABEL_44:
           else
           {
             v68 = 0;
-            if (self->_scaleMode == 2 && v66)
+            if (self->_scaleMode == 2 && bgColor)
             {
               v105 = 0.0;
               [(UIColor *)self->_bgColor getRed:0 green:0 blue:0 alpha:&v105];
@@ -383,7 +383,7 @@ LABEL_44:
           v100 = y;
           v101 = v58;
           v102 = v59;
-          v94 = v9;
+          v94 = decorateCopy;
           v104 = v26;
           v69 = [TVGraphicsImageRenderer imageWithSize:v64 format:v93 actions:v62, v63];
           v70 = +[TVImage imageWithCGImageRef:preserveAlpha:](TVImage, "imageWithCGImageRef:preserveAlpha:", [v69 CGImage], v68);
@@ -466,15 +466,15 @@ LABEL_43:
 
   if ((objc_opt_respondsToSelector() & 1) == 0 && [TVCornerUtilities radiiIsZero:self->_cornerRadii.topLeft, self->_cornerRadii.topRight, self->_cornerRadii.bottomLeft, self->_cornerRadii.bottomRight])
   {
-    v70 = v9;
+    v70 = decorateCopy;
     goto LABEL_59;
   }
 
-  [v9 pixelBounds];
+  [decorateCopy pixelBounds];
   v74 = v73;
   v76 = v75;
-  v64 = +[TVGraphicsImageRenderer formatWithCGImage:](TVGraphicsImageRenderer, "formatWithCGImage:", [v9 image]);
-  v77 = [(TVImageScaleDecorator *)self needsAlphaForImage:v9];
+  v64 = +[TVGraphicsImageRenderer formatWithCGImage:](TVGraphicsImageRenderer, "formatWithCGImage:", [decorateCopy image]);
+  v77 = [(TVImageScaleDecorator *)self needsAlphaForImage:decorateCopy];
   [v64 setOpaque:v77 ^ 1];
   [v64 setScale:1.0];
   v87[0] = MEMORY[0x277D85DD0];
@@ -486,7 +486,7 @@ LABEL_43:
   v87[4] = self;
   v91 = v74;
   v92 = v76;
-  v88 = v9;
+  v88 = decorateCopy;
   v78 = [TVGraphicsImageRenderer imageWithSize:v64 format:v87 actions:v74, v76];
   v79 = v78;
   if (v78)
@@ -559,13 +559,13 @@ void __62__TVImageScaleDecorator_decorate_scaledWithSize_croppedToFit___block_in
 
 - (double)_focusedSizeIncreaseFactor
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 2)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 2)
   {
-    v4 = [(TVImageScaleDecorator *)self centerGrowth];
+    centerGrowth = [(TVImageScaleDecorator *)self centerGrowth];
 
     result = 1.0;
-    if (!v4)
+    if (!centerGrowth)
     {
       [(TVImageScaleDecorator *)self _scaleToSizeAdjustedForUpscaling];
       v7 = v6;
@@ -583,12 +583,12 @@ void __62__TVImageScaleDecorator_decorate_scaledWithSize_croppedToFit___block_in
   return result;
 }
 
-- (BOOL)needsAlphaForImage:(id)a3
+- (BOOL)needsAlphaForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(TVImageScaleDecorator *)self preservesAlpha])
   {
-    if ([v4 hasAlpha])
+    if ([imageCopy hasAlpha])
     {
       LOBYTE(v5) = 1;
     }
@@ -608,22 +608,22 @@ void __62__TVImageScaleDecorator_decorate_scaledWithSize_croppedToFit___block_in
   return v5;
 }
 
-- (id)_imageFixedForRotation:(id)a3
+- (id)_imageFixedForRotation:(id)rotation
 {
-  v3 = a3;
-  v4 = +[TVGraphicsImageRenderer formatWithCGImage:](TVGraphicsImageRenderer, "formatWithCGImage:", [v3 image]);
-  [v4 setOpaque:{objc_msgSend(v3, "hasAlpha") ^ 1}];
+  rotationCopy = rotation;
+  v4 = +[TVGraphicsImageRenderer formatWithCGImage:](TVGraphicsImageRenderer, "formatWithCGImage:", [rotationCopy image]);
+  [v4 setOpaque:{objc_msgSend(rotationCopy, "hasAlpha") ^ 1}];
   [v4 setScale:1.0];
-  v5 = [v3 orientation];
-  [v3 pixelBounds];
+  orientation = [rotationCopy orientation];
+  [rotationCopy pixelBounds];
   v7 = v6;
   v9 = v8;
-  [v3 pixelBounds];
+  [rotationCopy pixelBounds];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __48__TVImageScaleDecorator__imageFixedForRotation___block_invoke;
   v17[3] = &unk_279D6E590;
-  if (v5 <= 4)
+  if (orientation <= 4)
   {
     v12 = v10;
   }
@@ -633,7 +633,7 @@ void __62__TVImageScaleDecorator_decorate_scaledWithSize_croppedToFit___block_in
     v12 = v9;
   }
 
-  if (v5 <= 4)
+  if (orientation <= 4)
   {
     v13 = v11;
   }
@@ -645,11 +645,11 @@ void __62__TVImageScaleDecorator_decorate_scaledWithSize_croppedToFit___block_in
 
   v19 = v12;
   v20 = v13;
-  v21 = v5;
+  v21 = orientation;
   v22 = v7;
   v23 = v9;
-  v18 = v3;
-  v14 = v3;
+  v18 = rotationCopy;
+  v14 = rotationCopy;
   v15 = [TVGraphicsImageRenderer imageWithSize:v4 format:v17 actions:v12, v13];
 
   return v15;
@@ -810,12 +810,12 @@ LABEL_17:
   return result;
 }
 
-- (void)_applyCornerMaskForRect:(CGRect)a3 toContext:(CGContext *)a4
+- (void)_applyCornerMaskForRect:(CGRect)rect toContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TVImageScaleDecorator *)self _focusedSizeIncreaseFactor];
   v10 = v9;
   [(TVImageScaleDecorator *)self cornerRadii];
@@ -825,11 +825,11 @@ LABEL_17:
   v18 = v17;
   if (![TVCornerUtilities radiiIsZero:?])
   {
-    v19 = [TVCornerUtilities createPathForRadii:[(TVImageScaleDecorator *)self cornerContinuous] inRect:v10 * v12 isContinuous:v10 * v14, v10 * v16, v10 * v18, x, y, width, height];
-    CGContextAddPath(a4, v19);
-    CGPathRelease(v19);
+    height = [TVCornerUtilities createPathForRadii:[(TVImageScaleDecorator *)self cornerContinuous] inRect:v10 * v12 isContinuous:v10 * v14, v10 * v16, v10 * v18, x, y, width, height];
+    CGContextAddPath(context, height);
+    CGPathRelease(height);
 
-    CGContextClip(a4);
+    CGContextClip(context);
   }
 }
 

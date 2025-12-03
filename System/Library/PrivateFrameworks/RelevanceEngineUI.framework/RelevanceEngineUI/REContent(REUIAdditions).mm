@@ -11,26 +11,26 @@
 
 - (id)summaryTextProvider
 {
-  v2 = [a1 objectForKey:@"REUISummaryTextProviderKey"];
+  v2 = [self objectForKey:@"REUISummaryTextProviderKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    description1TextProvider = v2;
   }
 
   else
   {
-    v3 = [a1 description1TextProvider];
+    description1TextProvider = [self description1TextProvider];
   }
 
-  v4 = v3;
+  v4 = description1TextProvider;
 
   return v4;
 }
 
 - (id)summaryImageProvider
 {
-  v1 = [a1 objectForKey:@"REUISummaryImageProviderKey"];
+  v1 = [self objectForKey:@"REUISummaryImageProviderKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -47,7 +47,7 @@
 
 - (id)circularTempate
 {
-  v1 = [a1 objectForKey:@"REUICircularTemplateKey"];
+  v1 = [self objectForKey:@"REUICircularTemplateKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,13 +68,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 setObject:v4 forKey:@"REUICircularTemplateKey"];
+    [self setObject:v4 forKey:@"REUICircularTemplateKey"];
   }
 }
 
 - (id)gaugeProvider
 {
-  v1 = [a1 objectForKey:@"REUIGaugeProviderKey"];
+  v1 = [self objectForKey:@"REUIGaugeProviderKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -95,7 +95,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 setObject:v4 forKey:@"REUIGaugeProviderKey"];
+    [self setObject:v4 forKey:@"REUIGaugeProviderKey"];
   }
 }
 

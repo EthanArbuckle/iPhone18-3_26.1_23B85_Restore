@@ -1,27 +1,27 @@
 @interface CKDClonedFileCache
-- (CKDClonedFileCache)initWithCacheDirectory:(id)a3 limit:(unint64_t)a4;
+- (CKDClonedFileCache)initWithCacheDirectory:(id)directory limit:(unint64_t)limit;
 - (id)cacheEntries;
-- (id)cloneFileDescriptor:(int)a3 filename:(id)a4 error:(id *)a5;
-- (id)cloneMMCSItem:(id)a3 error:(id *)a4;
-- (id)filenameForMMCSItem:(id)a3;
+- (id)cloneFileDescriptor:(int)descriptor filename:(id)filename error:(id *)error;
+- (id)cloneMMCSItem:(id)item error:(id *)error;
+- (id)filenameForMMCSItem:(id)item;
 - (void)prune;
 @end
 
 @implementation CKDClonedFileCache
 
-- (CKDClonedFileCache)initWithCacheDirectory:(id)a3 limit:(unint64_t)a4
+- (CKDClonedFileCache)initWithCacheDirectory:(id)directory limit:(unint64_t)limit
 {
-  v6 = a3;
+  directoryCopy = directory;
   v17.receiver = self;
   v17.super_class = CKDClonedFileCache;
   v9 = [(CKDClonedFileCache *)&v17 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(directoryCopy, v7, v8);
     cacheDirectory = v9->_cacheDirectory;
     v9->_cacheDirectory = v10;
 
-    v9->_entryLimit = a4;
+    v9->_entryLimit = limit;
     v14 = objc_msgSend_cacheEntries(v9, v12, v13);
     entries = v9->_entries;
     v9->_entries = v14;
@@ -44,7 +44,7 @@
   v11 = objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(v4, v10, v6, v9, 3, 0);
 
   v12 = objc_alloc(MEMORY[0x277CBEB18]);
-  v50 = self;
+  selfCopy = self;
   v51 = objc_msgSend_initWithCapacity_(v12, v13, self->_entryLimit);
   v54 = 0u;
   v55 = 0u;
@@ -104,7 +104,7 @@
       v40 = objc_msgSend_objectAtIndex_(v51, v39, j);
       v42 = objc_msgSend_objectAtIndex_(v40, v41, 1);
       objc_msgSend_replaceObjectAtIndex_withObject_(v51, v43, j, v42);
-      v45 = objc_msgSend_URLByAppendingPathComponent_(v50->_cacheDirectory, v44, v42);
+      v45 = objc_msgSend_URLByAppendingPathComponent_(selfCopy->_cacheDirectory, v44, v42);
       objc_msgSend_CKMarkFilePurgeable_(v45, v46, 0);
 
       objc_autoreleasePoolPop(v38);
@@ -138,19 +138,19 @@
   }
 }
 
-- (id)cloneFileDescriptor:(int)a3 filename:(id)a4 error:(id *)a5
+- (id)cloneFileDescriptor:(int)descriptor filename:(id)filename error:(id *)error
 {
-  v9 = a4;
+  filenameCopy = filename;
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = -10;
   while (1)
   {
-    if (v9)
+    if (filenameCopy)
     {
       v14 = v10;
-      v10 = v9;
+      v10 = filenameCopy;
     }
 
     else
@@ -164,7 +164,7 @@
     v19 = objc_msgSend_URLByAppendingPathComponent_(self->_cacheDirectory, v18, v10);
 
     v22 = objc_msgSend_fileSystemRepresentation(v19, v20, v21);
-    if (!fclonefileat(a3, -1, v22, 0))
+    if (!fclonefileat(descriptor, -1, v22, 0))
     {
       break;
     }
@@ -180,7 +180,7 @@
       goto LABEL_17;
     }
 
-    if (v9)
+    if (filenameCopy)
     {
       unlink(v22);
       v11 = 1;
@@ -214,27 +214,27 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (a5 && !v19 && v25)
+  if (error && !v19 && v25)
   {
     v38 = v25;
-    *a5 = v25;
+    *error = v25;
   }
 
   return v19;
 }
 
-- (id)filenameForMMCSItem:(id)a3
+- (id)filenameForMMCSItem:(id)item
 {
-  v3 = a3;
-  v6 = objc_msgSend_recordID(v3, v4, v5);
+  itemCopy = item;
+  v6 = objc_msgSend_recordID(itemCopy, v4, v5);
   v9 = objc_msgSend_recordName(v6, v7, v8);
 
-  v12 = objc_msgSend_recordKey(v3, v10, v11);
+  v12 = objc_msgSend_recordKey(itemCopy, v10, v11);
   v13 = objc_alloc_init(MEMORY[0x277CCAB68]);
   objc_msgSend_appendString_(v13, v14, v9);
   objc_msgSend_appendString_(v13, v15, @"_");
   objc_msgSend_appendString_(v13, v16, v12);
-  v19 = objc_msgSend_asset(v3, v17, v18);
+  v19 = objc_msgSend_asset(itemCopy, v17, v18);
   v22 = v19;
   if (v19)
   {
@@ -245,12 +245,12 @@ LABEL_18:
     }
   }
 
-  if (objc_msgSend_isPackageManifest(v3, v20, v21))
+  if (objc_msgSend_isPackageManifest(itemCopy, v20, v21))
   {
     objc_msgSend_appendString_(v13, v24, @"_m");
   }
 
-  v26 = objc_msgSend_packageIndex(v3, v24, v25);
+  v26 = objc_msgSend_packageIndex(itemCopy, v24, v25);
   if (v26 != -1)
   {
     objc_msgSend_appendFormat_(v13, v27, @"_p:%ld", v26);
@@ -262,10 +262,10 @@ LABEL_18:
   return v13;
 }
 
-- (id)cloneMMCSItem:(id)a3 error:(id *)a4
+- (id)cloneMMCSItem:(id)item error:(id *)error
 {
-  v6 = a3;
-  v9 = objc_msgSend_fileHandle(v6, v7, v8);
+  itemCopy = item;
+  v9 = objc_msgSend_fileHandle(itemCopy, v7, v8);
   if (v9)
   {
     v12 = v9;
@@ -276,14 +276,14 @@ LABEL_18:
   else
   {
     v27 = 0;
-    v16 = objc_msgSend_openWithError_(v6, v10, &v27);
+    v16 = objc_msgSend_openWithError_(itemCopy, v10, &v27);
     v13 = v27;
     v12 = objc_msgSend_fileHandle(v16, v17, v18);
 
     if (!v12)
     {
       v24 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -295,10 +295,10 @@ LABEL_18:
   }
 
   v21 = v14;
-  v22 = objc_msgSend_filenameForMMCSItem_(self, v15, v6);
-  v24 = objc_msgSend_cloneFileDescriptor_filename_error_(self, v23, v21, v22, a4);
+  v22 = objc_msgSend_filenameForMMCSItem_(self, v15, itemCopy);
+  v24 = objc_msgSend_cloneFileDescriptor_filename_error_(self, v23, v21, v22, error);
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -307,7 +307,7 @@ LABEL_6:
   if (!v24 && v13)
   {
     v25 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_9:

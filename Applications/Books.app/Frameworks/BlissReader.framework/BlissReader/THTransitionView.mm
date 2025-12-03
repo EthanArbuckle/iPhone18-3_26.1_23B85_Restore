@@ -1,7 +1,7 @@
 @interface THTransitionView
 - (void)beginTransition;
 - (void)dealloc;
-- (void)transitionDidFinishShouldRemoveFromSuperview:(BOOL)a3;
+- (void)transitionDidFinishShouldRemoveFromSuperview:(BOOL)superview;
 @end
 
 @implementation THTransitionView
@@ -16,23 +16,23 @@
 - (void)beginTransition
 {
   [(THTransitionViewDelegate *)[(THTransitionView *)self delegate] transitionWillBegin:self];
-  v3 = [(THTransitionView *)self window];
+  window = [(THTransitionView *)self window];
 
-  [v3 setUserInteractionEnabled:0];
+  [window setUserInteractionEnabled:0];
 }
 
-- (void)transitionDidFinishShouldRemoveFromSuperview:(BOOL)a3
+- (void)transitionDidFinishShouldRemoveFromSuperview:(BOOL)superview
 {
-  v3 = a3;
+  superviewCopy = superview;
   [-[THTransitionView window](self "window")];
-  if (v3)
+  if (superviewCopy)
   {
     [(THTransitionView *)self removeFromSuperview];
   }
 
-  v5 = [(THTransitionView *)self delegate];
+  delegate = [(THTransitionView *)self delegate];
 
-  [(THTransitionViewDelegate *)v5 transitionDidFinish:self];
+  [(THTransitionViewDelegate *)delegate transitionDidFinish:self];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface IRRuleInspection
-- (IRRuleInspection)initWithRuleName:(id)a3 evaluation:(id)a4;
+- (IRRuleInspection)initWithRuleName:(id)name evaluation:(id)evaluation;
 @end
 
 @implementation IRRuleInspection
 
-- (IRRuleInspection)initWithRuleName:(id)a3 evaluation:(id)a4
+- (IRRuleInspection)initWithRuleName:(id)name evaluation:(id)evaluation
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  evaluationCopy = evaluation;
   v11.receiver = self;
   v11.super_class = IRRuleInspection;
   v8 = [(IRRuleInspection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(IRRuleInspection *)v8 setRuleName:v6];
-    [(IRRuleInspection *)v9 setEvaluation:v7];
+    [(IRRuleInspection *)v8 setRuleName:nameCopy];
+    [(IRRuleInspection *)v9 setEvaluation:evaluationCopy];
   }
 
   return v9;

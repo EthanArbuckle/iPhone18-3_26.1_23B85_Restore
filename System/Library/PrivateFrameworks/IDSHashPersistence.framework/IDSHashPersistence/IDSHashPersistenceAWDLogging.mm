@@ -1,7 +1,7 @@
 @interface IDSHashPersistenceAWDLogging
 + (id)sharedInstance;
 - (IDSHashPersistenceAWDLogging)init;
-- (void)_submitAWDMetric:(id)a3 withContainer:(id)a4;
+- (void)_submitAWDMetric:(id)metric withContainer:(id)container;
 - (void)dealloc;
 - (void)duplicateMessageEncounted;
 @end
@@ -54,13 +54,13 @@
   [(IDSHashPersistenceAWDLogging *)&v4 dealloc];
 }
 
-- (void)_submitAWDMetric:(id)a3 withContainer:(id)a4
+- (void)_submitAWDMetric:(id)metric withContainer:(id)container
 {
-  if (a3 && a4)
+  if (metric && container)
   {
-    v6 = a4;
-    [v6 setMetric:a3];
-    [self->_AWDServerConnection submitMetric:v6];
+    containerCopy = container;
+    [containerCopy setMetric:metric];
+    [self->_AWDServerConnection submitMetric:containerCopy];
   }
 }
 
@@ -71,15 +71,15 @@
   v8 = 3221225472;
   v9 = sub_254738174;
   v10 = &unk_279782230;
-  v11 = self;
+  selfCopy = self;
   v3 = queue;
   v4 = &v7;
   if (v3)
   {
     v5 = [IDSHashPersistenceAWDLogging sharedInstance:v7];
-    v6 = [v5 shouldSubmit];
+    shouldSubmit = [v5 shouldSubmit];
 
-    if (v6)
+    if (shouldSubmit)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;

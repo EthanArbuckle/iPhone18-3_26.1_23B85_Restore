@@ -1,10 +1,10 @@
 @interface ESAlignmentState
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ESAlignmentState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ESAlignmentState allocWithZone:?]];
   [(ESAlignmentState *)v4 setNumberOfInsertions:[(ESAlignmentState *)self numberOfInsertions]];

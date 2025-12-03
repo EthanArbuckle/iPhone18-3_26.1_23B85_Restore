@@ -1,93 +1,93 @@
 @interface TSTPencilAnnotationOwner
 - (TSCECalculationEngine)calculationEngine;
 - (TSKUIDStruct)ownerUID;
-- (TSTPencilAnnotationOwner)initWithArchive:(const void *)a3 unarchiver:(id)a4 forTableModel:(id)a5;
-- (TSTPencilAnnotationOwner)initWithTableModel:(id)a3;
-- (TSTPencilAnnotationOwner)initWithTableModel:(id)a3 ownerUID:(TSKUIDStruct)a4 annotations:(id)a5 formulaStore:(id)a6;
+- (TSTPencilAnnotationOwner)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forTableModel:(id)model;
+- (TSTPencilAnnotationOwner)initWithTableModel:(id)model;
+- (TSTPencilAnnotationOwner)initWithTableModel:(id)model ownerUID:(TSKUIDStruct)d annotations:(id)annotations formulaStore:(id)store;
 - (TSTTableModel)tableModel;
-- (TSUCellRect)cellRangeForAnnotation:(id)a3;
-- (id)_annotationsForIndexes:(id)a3;
-- (id)_annotationsInRows:(id)a3;
-- (id)_annotationsIntersectingButNotContainingBaseCellRegion:(id)a3;
-- (id)_indexesContainedByRegion:(id)a3;
-- (id)_indexesForRange:(TSUModelCellRect)a3 startingOnly:(BOOL)a4;
-- (id)_indexesForRows:(id)a3;
-- (id)_indexesIntersectingButNotContainingBaseCellRegion:(id)a3;
-- (id)annotationsContainedByRegion:(id)a3;
-- (id)annotationsStartingInRange:(TSUModelCellRect)a3;
-- (id)removeAnnotation:(id)a3;
-- (id)removeAnnotationAtIndex:(unint64_t)a3;
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4;
-- (unint64_t)addAnnotation:(id)a3 withAnchorRange:(TSUCellRect)a4;
+- (TSUCellRect)cellRangeForAnnotation:(id)annotation;
+- (id)_annotationsForIndexes:(id)indexes;
+- (id)_annotationsInRows:(id)rows;
+- (id)_annotationsIntersectingButNotContainingBaseCellRegion:(id)region;
+- (id)_indexesContainedByRegion:(id)region;
+- (id)_indexesForRange:(TSUModelCellRect)range startingOnly:(BOOL)only;
+- (id)_indexesForRows:(id)rows;
+- (id)_indexesIntersectingButNotContainingBaseCellRegion:(id)region;
+- (id)annotationsContainedByRegion:(id)region;
+- (id)annotationsStartingInRange:(TSUModelCellRect)range;
+- (id)removeAnnotation:(id)annotation;
+- (id)removeAnnotationAtIndex:(unint64_t)index;
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d;
+- (unint64_t)addAnnotation:(id)annotation withAnchorRange:(TSUCellRect)range;
 - (unint64_t)count;
-- (unint64_t)indexOfAnnotation:(id)a3;
+- (unint64_t)indexOfAnnotation:(id)annotation;
 - (unint64_t)markForRollback;
-- (void)_enumerateAnnotationsAndFormulasWithIndexes:(id)a3 block:(id)a4;
-- (void)_enumerateIndexesIntersectingRegion:(id)a3 block:(id)a4;
-- (void)addAnnotation:(id)a3 withFormula:(id)a4 atIndex:(unint64_t)a5;
-- (void)addAnnotation:(id)a3 withFormulaObject:(id)a4 atIndex:(unint64_t)a5;
-- (void)enumerateAnnotationsAndFormulasContainedInRegion:(id)a3 withBlock:(id)a4;
-- (void)enumerateAnnotationsAndFormulasInRange:(TSUModelCellRect)a3 withBlock:(id)a4;
-- (void)enumerateAnnotationsWithBlock:(id)a3;
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3;
+- (void)_enumerateAnnotationsAndFormulasWithIndexes:(id)indexes block:(id)block;
+- (void)_enumerateIndexesIntersectingRegion:(id)region block:(id)block;
+- (void)addAnnotation:(id)annotation withFormula:(id)formula atIndex:(unint64_t)index;
+- (void)addAnnotation:(id)annotation withFormulaObject:(id)object atIndex:(unint64_t)index;
+- (void)enumerateAnnotationsAndFormulasContainedInRegion:(id)region withBlock:(id)block;
+- (void)enumerateAnnotationsAndFormulasInRange:(TSUModelCellRect)range withBlock:(id)block;
+- (void)enumerateAnnotationsWithBlock:(id)block;
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map;
 - (void)removeAllAnnotations;
-- (void)removeAnnotations:(id)a3;
-- (void)rollbackToMark:(unint64_t)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setOwnerUID:(TSKUIDStruct)a3;
+- (void)removeAnnotations:(id)annotations;
+- (void)rollbackToMark:(unint64_t)mark;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setOwnerUID:(TSKUIDStruct)d;
 - (void)unregisterFromCalcEngine;
 @end
 
 @implementation TSTPencilAnnotationOwner
 
-- (TSTPencilAnnotationOwner)initWithTableModel:(id)a3
+- (TSTPencilAnnotationOwner)initWithTableModel:(id)model
 {
-  v4 = a3;
-  *&v27 = objc_msgSend_tableUID(v4, v5, v6, v7, v8);
+  modelCopy = model;
+  *&v27 = objc_msgSend_tableUID(modelCopy, v5, v6, v7, v8);
   *(&v27 + 1) = v9;
   v13 = sub_2212C4930(&v27, 0xA, v10, v11, v12);
   v15 = v14;
   v19 = objc_msgSend_array(MEMORY[0x277D81330], v14, v16, v17, v18);
   v20 = [TSTFormulaStore alloc];
   v23 = objc_msgSend_initWithOwnerUID_(v20, v21, v13, v15, v22);
-  v25 = objc_msgSend_initWithTableModel_ownerUID_annotations_formulaStore_(self, v24, v4, v13, v15, v19, v23);
+  v25 = objc_msgSend_initWithTableModel_ownerUID_annotations_formulaStore_(self, v24, modelCopy, v13, v15, v19, v23);
 
   return v25;
 }
 
-- (TSTPencilAnnotationOwner)initWithTableModel:(id)a3 ownerUID:(TSKUIDStruct)a4 annotations:(id)a5 formulaStore:(id)a6
+- (TSTPencilAnnotationOwner)initWithTableModel:(id)model ownerUID:(TSKUIDStruct)d annotations:(id)annotations formulaStore:(id)store
 {
-  upper = a4._upper;
-  lower = a4._lower;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  upper = d._upper;
+  lower = d._lower;
+  modelCopy = model;
+  annotationsCopy = annotations;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = TSTPencilAnnotationOwner;
   v14 = [(TSTPencilAnnotationOwner *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_tableModel, v11);
+    objc_storeWeak(&v14->_tableModel, modelCopy);
     v15->_ownerUID._lower = lower;
     v15->_ownerUID._upper = upper;
-    objc_storeStrong(&v15->_annotations, a5);
-    objc_storeStrong(&v15->_formulaStore, a6);
+    objc_storeStrong(&v15->_annotations, annotations);
+    objc_storeStrong(&v15->_formulaStore, store);
   }
 
   return v15;
 }
 
-- (void)setOwnerUID:(TSKUIDStruct)a3
+- (void)setOwnerUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
+  upper = d._upper;
+  lower = d._lower;
   if (TSTPencilCat_init_token != -1)
   {
     sub_2216F78C0();
   }
 
-  v7 = objc_msgSend_tableModel(self, a2, a3._lower, a3._upper, v3);
+  v7 = objc_msgSend_tableModel(self, a2, d._lower, d._upper, v3);
   objc_msgSend_willModify(v7, v8, v9, v10, v11);
 
   self->_ownerUID._lower = lower;
@@ -100,16 +100,16 @@
   }
 }
 
-- (int)registerWithCalcEngine:(id)a3 baseOwnerUID:(const TSKUIDStruct *)a4
+- (int)registerWithCalcEngine:(id)engine baseOwnerUID:(const TSKUIDStruct *)d
 {
-  v6 = a3;
-  objc_storeWeak(&self->_calculationEngine, v6);
+  engineCopy = engine;
+  objc_storeWeak(&self->_calculationEngine, engineCopy);
   v11 = objc_msgSend_formulaStore(self, v7, v8, v9, v10);
-  objc_msgSend_setCalcEngine_(v11, v12, v6, v13, v14);
+  objc_msgSend_setCalcEngine_(v11, v12, engineCopy, v13, v14);
 
   WeakRetained = objc_loadWeakRetained(&self->_calculationEngine);
   v20 = objc_msgSend_ownerUID(self, v16, v17, v18, v19);
-  v22 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(WeakRetained, v21, v20, v21, self, 0, a4->_lower, a4->_upper, 10);
+  v22 = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(WeakRetained, v21, v20, v21, self, 0, d->_lower, d->_upper, 10);
 
   v27 = objc_msgSend_formulaStore(self, v23, v24, v25, v26);
 
@@ -150,11 +150,11 @@
   objc_storeWeak(&self->_calculationEngine, 0);
 }
 
-- (unint64_t)addAnnotation:(id)a3 withAnchorRange:(TSUCellRect)a4
+- (unint64_t)addAnnotation:(id)annotation withAnchorRange:(TSUCellRect)range
 {
-  size = a4.size;
-  origin = a4.origin;
-  v7 = a3;
+  size = range.size;
+  origin = range.origin;
+  annotationCopy = annotation;
   v12 = objc_msgSend_formulaStore(self, v8, v9, v10, v11);
   Index = objc_msgSend_reserveNextIndex(v12, v13, v14, v15, v16);
 
@@ -164,16 +164,16 @@
   v36[1] = v32;
   v33 = objc_msgSend_createFormulaObjectForRange_atIndex_tableUID_(v22, v32, origin, size, Index, v36);
 
-  objc_msgSend_addAnnotation_withFormulaObject_atIndex_(self, v34, v7, v33, Index);
+  objc_msgSend_addAnnotation_withFormulaObject_atIndex_(self, v34, annotationCopy, v33, Index);
   return Index;
 }
 
-- (void)addAnnotation:(id)a3 withFormula:(id)a4 atIndex:(unint64_t)a5
+- (void)addAnnotation:(id)annotation withFormula:(id)formula atIndex:(unint64_t)index
 {
-  v52 = a3;
-  v8 = a4;
+  annotationCopy = annotation;
+  formulaCopy = formula;
   v13 = objc_msgSend_annotations(self, v9, v10, v11, v12);
-  hasObjectForKey = objc_msgSend_hasObjectForKey_(v13, v14, a5, v15, v16);
+  hasObjectForKey = objc_msgSend_hasObjectForKey_(v13, v14, index, v15, v16);
 
   if (hasObjectForKey)
   {
@@ -189,10 +189,10 @@
   objc_msgSend_willModify(v33, v34, v35, v36, v37);
 
   v42 = objc_msgSend_formulaStore(self, v38, v39, v40, v41);
-  objc_msgSend_setFormulaObject_atIndex_(v42, v43, v8, a5, v44);
+  objc_msgSend_setFormulaObject_atIndex_(v42, v43, formulaCopy, index, v44);
 
   v49 = objc_msgSend_annotations(self, v45, v46, v47, v48);
-  objc_msgSend_setObject_atIndexedSubscript_(v49, v50, v52, a5, v51);
+  objc_msgSend_setObject_atIndexedSubscript_(v49, v50, annotationCopy, index, v51);
 
   if (TSTPencilCat_init_token != -1)
   {
@@ -200,12 +200,12 @@
   }
 }
 
-- (void)addAnnotation:(id)a3 withFormulaObject:(id)a4 atIndex:(unint64_t)a5
+- (void)addAnnotation:(id)annotation withFormulaObject:(id)object atIndex:(unint64_t)index
 {
-  v52 = a3;
-  v8 = a4;
+  annotationCopy = annotation;
+  objectCopy = object;
   v13 = objc_msgSend_annotations(self, v9, v10, v11, v12);
-  hasObjectForKey = objc_msgSend_hasObjectForKey_(v13, v14, a5, v15, v16);
+  hasObjectForKey = objc_msgSend_hasObjectForKey_(v13, v14, index, v15, v16);
 
   if (hasObjectForKey)
   {
@@ -221,10 +221,10 @@
   objc_msgSend_willModify(v33, v34, v35, v36, v37);
 
   v42 = objc_msgSend_formulaStore(self, v38, v39, v40, v41);
-  objc_msgSend_setFormulaObject_atIndex_(v42, v43, v8, a5, v44);
+  objc_msgSend_setFormulaObject_atIndex_(v42, v43, objectCopy, index, v44);
 
   v49 = objc_msgSend_annotations(self, v45, v46, v47, v48);
-  objc_msgSend_setObject_atIndexedSubscript_(v49, v50, v52, a5, v51);
+  objc_msgSend_setObject_atIndexedSubscript_(v49, v50, annotationCopy, index, v51);
 
   if (TSTPencilCat_init_token != -1)
   {
@@ -232,9 +232,9 @@
   }
 }
 
-- (id)removeAnnotation:(id)a3
+- (id)removeAnnotation:(id)annotation
 {
-  v6 = objc_msgSend_indexOfAnnotation_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_indexOfAnnotation_(self, a2, annotation, v3, v4);
   v11 = objc_msgSend_formulaStore(self, v7, v8, v9, v10);
   v15 = objc_msgSend_formulaObjectAtIndex_(v11, v12, v6, v13, v14);
 
@@ -290,15 +290,15 @@
   objc_msgSend_enumerateAnnotationsWithBlock_(self, a2, v4, v2, v3);
 }
 
-- (void)removeAnnotations:(id)a3
+- (void)removeAnnotations:(id)annotations
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v13, v17, 16);
+  annotationsCopy = annotations;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(annotationsCopy, v5, &v13, v17, 16);
   if (v9)
   {
     v10 = *v14;
@@ -309,32 +309,32 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         v12 = objc_msgSend_removeAnnotation_(self, v6, *(*(&v13 + 1) + 8 * v11++), v7, v8, v13);
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v6, &v13, v17, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(annotationsCopy, v6, &v13, v17, 16);
     }
 
     while (v9);
   }
 }
 
-- (id)removeAnnotationAtIndex:(unint64_t)a3
+- (id)removeAnnotationAtIndex:(unint64_t)index
 {
-  v7 = objc_msgSend_annotations(self, a2, a3, v3, v4);
-  v11 = objc_msgSend_objectAtIndexedSubscript_(v7, v8, a3, v9, v10);
+  v7 = objc_msgSend_annotations(self, a2, index, v3, v4);
+  v11 = objc_msgSend_objectAtIndexedSubscript_(v7, v8, index, v9, v10);
 
   if (!v11)
   {
     TSUSetCrashReporterInfo();
     v17 = MEMORY[0x277D81150];
-    v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSTPencilAnnotationOwner removeAnnotationAtIndex:]", v19, v20, "[TSTPencilAnnotationOwner removeAnnotationAtIndex:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTPencilAnnotationOwner.mm", 183, a3);
+    v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSTPencilAnnotationOwner removeAnnotationAtIndex:]", v19, v20, "[TSTPencilAnnotationOwner removeAnnotationAtIndex:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTPencilAnnotationOwner.mm", 183, index);
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTPencilAnnotationOwner.mm", v23, v24);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v26, v21, v25, 183, 1, "Attempting to remove annotation at bad index %tu!", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v26, v21, v25, 183, 1, "Attempting to remove annotation at bad index %tu!", index);
 
     TSUCrashBreakpoint();
     abort();
@@ -345,12 +345,12 @@
   return v15;
 }
 
-- (TSUCellRect)cellRangeForAnnotation:(id)a3
+- (TSUCellRect)cellRangeForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v12 = objc_msgSend_indexOfAnnotation_(self, v5, v4, v6, v7);
+  annotationCopy = annotation;
+  v12 = objc_msgSend_indexOfAnnotation_(self, v5, annotationCopy, v6, v7);
   origin = 0x7FFF7FFFFFFFLL;
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend_annotations(self, v8, v9, v10, v11), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectAtIndexedSubscript_(v14, v15, v12, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v18, v14, v18 == v4))
+  if (v12 != 0x7FFFFFFFFFFFFFFFLL && (objc_msgSend_annotations(self, v8, v9, v10, v11), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectAtIndexedSubscript_(v14, v15, v12, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v18, v14, v18 == annotationCopy))
   {
     v26 = objc_msgSend_formulaStore(self, v19, v20, v21, v22);
     v29 = objc_msgSend_rangeFromFormulaAtIndex_useBoundingRange_(v26, v27, v12, 0, v28);
@@ -415,9 +415,9 @@
   return v10;
 }
 
-- (void)enumerateAnnotationsWithBlock:(id)a3
+- (void)enumerateAnnotationsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (objc_msgSend_count(self->_annotations, v5, v6, v7, v8))
   {
     v13 = objc_msgSend_tableModel(self, v9, v10, v11, v12);
@@ -440,15 +440,15 @@
     v39[3] = &unk_278464598;
     v35 = v18;
     v40 = v35;
-    v41 = v4;
+    v41 = blockCopy;
     objc_msgSend_foreach_(v34, v36, v39, v37, v38);
   }
 }
 
-- (void)_enumerateAnnotationsAndFormulasWithIndexes:(id)a3 block:(id)a4
+- (void)_enumerateAnnotationsAndFormulasWithIndexes:(id)indexes block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  indexesCopy = indexes;
+  blockCopy = block;
   v12 = objc_msgSend_tableModel(self, v8, v9, v10, v11);
   v17 = objc_msgSend_tableInfo(v12, v13, v14, v15, v16);
 
@@ -463,36 +463,36 @@
   v29 = v17;
   v37 = v29;
   v38 = v27;
-  v30 = v7;
+  v30 = blockCopy;
   v39 = v30;
   v31 = v27;
-  objc_msgSend_enumerateIndexesUsingBlock_(v6, v32, v35, v33, v34);
+  objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v32, v35, v33, v34);
 }
 
-- (void)enumerateAnnotationsAndFormulasInRange:(TSUModelCellRect)a3 withBlock:(id)a4
+- (void)enumerateAnnotationsAndFormulasInRange:(TSUModelCellRect)range withBlock:(id)block
 {
-  size = a3.var0.size;
-  origin = a3.var0.origin;
-  v11 = a4;
+  size = range.var0.size;
+  origin = range.var0.origin;
+  blockCopy = block;
   v8 = objc_msgSend__indexesForRange_startingOnly_(self, v7, origin, size, 0);
-  objc_msgSend__enumerateAnnotationsAndFormulasWithIndexes_block_(self, v9, v8, v11, v10);
+  objc_msgSend__enumerateAnnotationsAndFormulasWithIndexes_block_(self, v9, v8, blockCopy, v10);
 }
 
-- (void)enumerateAnnotationsAndFormulasContainedInRegion:(id)a3 withBlock:(id)a4
+- (void)enumerateAnnotationsAndFormulasContainedInRegion:(id)region withBlock:(id)block
 {
-  v12 = a4;
-  v9 = objc_msgSend__indexesContainedByRegion_(self, v6, a3, v7, v8);
-  objc_msgSend__enumerateAnnotationsAndFormulasWithIndexes_block_(self, v10, v9, v12, v11);
+  blockCopy = block;
+  v9 = objc_msgSend__indexesContainedByRegion_(self, v6, region, v7, v8);
+  objc_msgSend__enumerateAnnotationsAndFormulasWithIndexes_block_(self, v10, v9, blockCopy, v11);
 }
 
-- (unint64_t)indexOfAnnotation:(id)a3
+- (unint64_t)indexOfAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0x7FFFFFFFFFFFFFFFLL;
-  v9 = objc_msgSend_uuid(v4, v5, v6, v7, v8);
+  v9 = objc_msgSend_uuid(annotationCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_annotations(self, v10, v11, v12, v13);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -509,9 +509,9 @@
   return v19;
 }
 
-- (id)_annotationsForIndexes:(id)a3
+- (id)_annotationsForIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v9 = objc_msgSend_tableModel(self, v5, v6, v7, v8);
   v14 = objc_msgSend_tableInfo(v9, v10, v11, v12, v13);
 
@@ -527,17 +527,17 @@
   v39 = v26;
   v27 = v24;
   v40 = v27;
-  objc_msgSend_enumerateIndexesUsingBlock_(v4, v28, v37, v29, v30);
+  objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v28, v37, v29, v30);
   v35 = objc_msgSend_copy(v27, v31, v32, v33, v34);
 
   return v35;
 }
 
-- (id)annotationsStartingInRange:(TSUModelCellRect)a3
+- (id)annotationsStartingInRange:(TSUModelCellRect)range
 {
-  size = a3.var0.size;
-  origin = a3.var0.origin;
-  if (objc_msgSend_count(self->_annotations, a2, *&a3.var0.origin, *&a3.var0.size, v3))
+  size = range.var0.size;
+  origin = range.var0.origin;
+  if (objc_msgSend_count(self->_annotations, a2, *&range.var0.origin, *&range.var0.size, v3))
   {
     v11 = objc_msgSend__indexesForRange_startingOnly_(self, v7, origin, size, 1);
     v15 = objc_msgSend__annotationsForIndexes_(self, v12, v11, v13, v14);
@@ -551,12 +551,12 @@
   return v15;
 }
 
-- (id)_annotationsInRows:(id)a3
+- (id)_annotationsInRows:(id)rows
 {
-  v4 = a3;
-  if (objc_msgSend_count(self->_annotations, v5, v6, v7, v8) && objc_msgSend_count(v4, v9, v10, v11, v12))
+  rowsCopy = rows;
+  if (objc_msgSend_count(self->_annotations, v5, v6, v7, v8) && objc_msgSend_count(rowsCopy, v9, v10, v11, v12))
   {
-    v13 = objc_msgSend__indexesForRows_(self, v9, v4, v11, v12);
+    v13 = objc_msgSend__indexesForRows_(self, v9, rowsCopy, v11, v12);
     v17 = objc_msgSend__annotationsForIndexes_(self, v14, v13, v15, v16);
   }
 
@@ -568,13 +568,13 @@
   return v17;
 }
 
-- (id)annotationsContainedByRegion:(id)a3
+- (id)annotationsContainedByRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v9 = objc_msgSend_count(self->_annotations, v5, v6, v7, v8);
-  if (v4 && v9 && !objc_msgSend_isEmpty(v4, v10, v11, v12, v13))
+  if (regionCopy && v9 && !objc_msgSend_isEmpty(regionCopy, v10, v11, v12, v13))
   {
-    v15 = objc_msgSend__indexesContainedByRegion_(self, v10, v4, v12, v13);
+    v15 = objc_msgSend__indexesContainedByRegion_(self, v10, regionCopy, v12, v13);
     v14 = objc_msgSend__annotationsForIndexes_(self, v16, v15, v17, v18);
   }
 
@@ -586,13 +586,13 @@
   return v14;
 }
 
-- (id)_annotationsIntersectingButNotContainingBaseCellRegion:(id)a3
+- (id)_annotationsIntersectingButNotContainingBaseCellRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v9 = objc_msgSend_count(self->_annotations, v5, v6, v7, v8);
-  if (v4 && v9 && !objc_msgSend_isEmpty(v4, v10, v11, v12, v13))
+  if (regionCopy && v9 && !objc_msgSend_isEmpty(regionCopy, v10, v11, v12, v13))
   {
-    v15 = objc_msgSend__indexesIntersectingButNotContainingBaseCellRegion_(self, v10, v4, v12, v13);
+    v15 = objc_msgSend__indexesIntersectingButNotContainingBaseCellRegion_(self, v10, regionCopy, v12, v13);
     v14 = objc_msgSend__annotationsForIndexes_(self, v16, v15, v17, v18);
   }
 
@@ -604,11 +604,11 @@
   return v14;
 }
 
-- (id)_indexesForRange:(TSUModelCellRect)a3 startingOnly:(BOOL)a4
+- (id)_indexesForRange:(TSUModelCellRect)range startingOnly:(BOOL)only
 {
-  v4 = a4;
-  var0 = a3.var0;
-  if (objc_msgSend_count(self->_annotations, a2, *&a3.var0.origin, *&a3.var0.size, a4))
+  onlyCopy = only;
+  var0 = range.var0;
+  if (objc_msgSend_count(self->_annotations, a2, *&range.var0.origin, *&range.var0.size, only))
   {
     v10 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v6, v7, v8, v9);
     v15 = objc_msgSend_tableModel(self, v11, v12, v13, v14);
@@ -669,7 +669,7 @@
         do
         {
           v78 = objc_msgSend_indexFromCoord_(TSTFormulaStore, v30, v75, v32, v33);
-          if (!v4 || (objc_msgSend_formulaStore(self, v30, v77, v32, v33), v79 = objc_claimAutoreleasedReturnValue(), v82 = objc_msgSend_rangeFromFormulaAtIndex_useBoundingRange_(v79, v80, v78, 0, v81), v84 = v83, v79, v87.origin = v82, v87.size = v84, (TSUCellRect::isSpanning(&v87) & 1) != 0) || (v85 = v82, (TSUCellRect::contains(&var0, v85) & 1) != 0))
+          if (!onlyCopy || (objc_msgSend_formulaStore(self, v30, v77, v32, v33), v79 = objc_claimAutoreleasedReturnValue(), v82 = objc_msgSend_rangeFromFormulaAtIndex_useBoundingRange_(v79, v80, v78, 0, v81), v84 = v83, v79, v87.origin = v82, v87.size = v84, (TSUCellRect::isSpanning(&v87) & 1) != 0) || (v85 = v82, (TSUCellRect::contains(&var0, v85) & 1) != 0))
           {
             objc_msgSend_addIndex_(v10, v30, v78, v32, v33);
           }
@@ -699,10 +699,10 @@
   return v74;
 }
 
-- (id)_indexesForRows:(id)a3
+- (id)_indexesForRows:(id)rows
 {
-  v4 = a3;
-  if (objc_msgSend_count(self->_annotations, v5, v6, v7, v8) && objc_msgSend_count(v4, v9, v10, v11, v12))
+  rowsCopy = rows;
+  if (objc_msgSend_count(self->_annotations, v5, v6, v7, v8) && objc_msgSend_count(rowsCopy, v9, v10, v11, v12))
   {
     v13 = objc_msgSend_tableModel(self, v9, v10, v11, v12);
 
@@ -754,7 +754,7 @@
     v89 = v53;
     v84 = v73;
     v85 = &v91;
-    objc_msgSend_enumerateRangesUsingBlock_(v4, v74, v83, v75, v76);
+    objc_msgSend_enumerateRangesUsingBlock_(rowsCopy, v74, v83, v75, v76);
     v81 = objc_msgSend_copy(v92[5], v77, v78, v79, v80);
 
     _Block_object_dispose(&v91, 8);
@@ -768,12 +768,12 @@
   return v81;
 }
 
-- (void)_enumerateIndexesIntersectingRegion:(id)a3 block:(id)a4
+- (void)_enumerateIndexesIntersectingRegion:(id)region block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  blockCopy = block;
   v12 = objc_msgSend_count(self->_annotations, v8, v9, v10, v11);
-  if (v6 && v12 && (objc_msgSend_isEmpty(v6, v13, v14, v15, v16) & 1) == 0)
+  if (regionCopy && v12 && (objc_msgSend_isEmpty(regionCopy, v13, v14, v15, v16) & 1) == 0)
   {
     v21 = objc_msgSend_tableModel(self, v17, v18, v19, v20);
 
@@ -805,7 +805,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
     }
 
-    v70 = v6;
+    v70 = regionCopy;
     v75 = objc_msgSend_tableModel(self, v71, v72, v73, v74);
     v80 = objc_msgSend_mergeOwner(v75, v76, v77, v78, v79);
 
@@ -826,17 +826,17 @@
     v101 = v49;
     v102 = v51;
     v95 = v88;
-    v96 = self;
-    v98 = v7;
+    selfCopy = self;
+    v98 = blockCopy;
     v89 = v70;
     v97 = v89;
     objc_msgSend_enumerateCellRangesUsingBlock_(v89, v90, v94, v91, v92);
   }
 }
 
-- (id)_indexesContainedByRegion:(id)a3
+- (id)_indexesContainedByRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -848,23 +848,23 @@
   v17[2] = sub_2213D7CA0;
   v17[3] = &unk_278464688;
   v17[4] = &v18;
-  objc_msgSend__enumerateIndexesIntersectingRegion_block_(self, v9, v4, v17, v10);
+  objc_msgSend__enumerateIndexesIntersectingRegion_block_(self, v9, regionCopy, v17, v10);
   v15 = objc_msgSend_copy(v19[5], v11, v12, v13, v14);
   _Block_object_dispose(&v18, 8);
 
   return v15;
 }
 
-- (id)_indexesIntersectingButNotContainingBaseCellRegion:(id)a3
+- (id)_indexesIntersectingButNotContainingBaseCellRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = sub_2213D74A4;
   v27 = sub_2213D74B4;
   v28 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v5, v6, v7, v8);
-  v13 = objc_msgSend_boundingCellRange(v4, v9, v10, v11, v12);
+  v13 = objc_msgSend_boundingCellRange(regionCopy, v9, v10, v11, v12);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = sub_2213D7E94;
@@ -872,18 +872,18 @@
   v22[5] = v13;
   v22[6] = v14;
   v22[4] = &v23;
-  objc_msgSend__enumerateIndexesIntersectingRegion_block_(self, v14, v4, v22, v15);
+  objc_msgSend__enumerateIndexesIntersectingRegion_block_(self, v14, regionCopy, v22, v15);
   v20 = objc_msgSend_copy(v24[5], v16, v17, v18, v19);
   _Block_object_dispose(&v23, 8);
 
   return v20;
 }
 
-- (void)remapTableUIDsInFormulasWithMap:(const void *)a3
+- (void)remapTableUIDsInFormulasWithMap:(const void *)map
 {
-  v33 = objc_msgSend_ownerUID(self, a2, a3, v3, v4);
+  v33 = objc_msgSend_ownerUID(self, a2, map, v3, v4);
   v34 = v7;
-  v8 = sub_221119F90(a3, &v33);
+  v8 = sub_221119F90(map, &v33);
   if (v8)
   {
     v13 = v8[4];
@@ -914,34 +914,34 @@
   return v10;
 }
 
-- (void)rollbackToMark:(unint64_t)a3
+- (void)rollbackToMark:(unint64_t)mark
 {
   WeakRetained = objc_loadWeakRetained(&self->_tableModel);
   objc_msgSend_willModify(WeakRetained, v5, v6, v7, v8);
 
   v17 = objc_msgSend_formulaStore(self, v9, v10, v11, v12);
-  objc_msgSend_rollbackToMark_(v17, v13, a3, v14, v15);
+  objc_msgSend_rollbackToMark_(v17, v13, mark, v14, v15);
 }
 
-- (TSTPencilAnnotationOwner)initWithArchive:(const void *)a3 unarchiver:(id)a4 forTableModel:(id)a5
+- (TSTPencilAnnotationOwner)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forTableModel:(id)model
 {
-  v48 = a4;
-  v8 = a5;
+  unarchiverCopy = unarchiver;
+  modelCopy = model;
   v9 = TSKUIDStruct::loadFromMessage();
   v11 = v10;
   v54 = v9;
   v55 = v10;
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(archive + 16) & 2) != 0)
   {
     v20 = [TSTFormulaStore alloc];
-    if (*(a3 + 7))
+    if (*(archive + 7))
     {
-      v15 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v20, v21, &v54, *(a3 + 7), v48, v48);
+      v15 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v20, v21, &v54, *(archive + 7), unarchiverCopy, unarchiverCopy);
     }
 
     else
     {
-      v15 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v20, v21, &v54, &TST::_FormulaStoreArchive_default_instance_, v48, v48);
+      v15 = objc_msgSend_initWithOwnerUID_archive_unarchiver_(v20, v21, &v54, &TST::_FormulaStoreArchive_default_instance_, unarchiverCopy, unarchiverCopy);
     }
   }
 
@@ -952,8 +952,8 @@
   }
 
   v22 = v15;
-  v23 = objc_msgSend_array(MEMORY[0x277D81330], v16, v17, v18, v19, v48);
-  v24 = *(a3 + 8);
+  v23 = objc_msgSend_array(MEMORY[0x277D81330], v16, v17, v18, v19, unarchiverCopy);
+  v24 = *(archive + 8);
   if (objc_msgSend_formulaCount(v22, v25, v26, v27, v28) != v24)
   {
     v32 = MEMORY[0x277D81150];
@@ -972,53 +972,53 @@
     v50[3] = &unk_278464700;
     v51 = v22;
     v52 = v23;
-    v53 = v8;
+    v53 = modelCopy;
     v43 = v49;
     v44 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v43, v45, a3 + 24, v44, 0, v50);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v43, v45, archive + 24, v44, 0, v50);
   }
 
-  v46 = objc_msgSend_initWithTableModel_ownerUID_annotations_formulaStore_(self, v29, v8, v54, v55, v23, v22);
+  v46 = objc_msgSend_initWithTableModel_ownerUID_annotations_formulaStore_(self, v29, modelCopy, v54, v55, v23, v22);
 
   return v46;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 6);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 6);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = MEMORY[0x223DA0300](v8);
-    *(a3 + 6) = v7;
+    *(archive + 6) = v7;
   }
 
   TSKUIDStruct::saveToMessage(&self->_ownerUID, v7);
   formulaStore = self->_formulaStore;
   if (formulaStore)
   {
-    *(a3 + 4) |= 2u;
-    v12 = *(a3 + 7);
+    *(archive + 4) |= 2u;
+    v12 = *(archive + 7);
     if (!v12)
     {
-      v13 = *(a3 + 1);
+      v13 = *(archive + 1);
       if (v13)
       {
         v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v12 = google::protobuf::Arena::CreateMaybeMessage<TST::FormulaStoreArchive>(v13);
-      *(a3 + 7) = v12;
+      *(archive + 7) = v12;
     }
 
-    objc_msgSend_saveToArchive_archiver_(formulaStore, v9, v12, v6, v10);
+    objc_msgSend_saveToArchive_archiver_(formulaStore, v9, v12, archiverCopy, v10);
   }
 
   annotations = self->_annotations;
@@ -1026,9 +1026,9 @@
   v25 = 3221225472;
   v26 = sub_2213D87D4;
   v27 = &unk_278464728;
-  v15 = v6;
+  v15 = archiverCopy;
   v28 = v15;
-  v29 = a3;
+  archiveCopy = archive;
   objc_msgSend_foreach_(annotations, v16, &v24, v17, v18);
   if (objc_msgSend_count(self->_annotations, v19, v20, v21, v22, v24, v25, v26, v27))
   {

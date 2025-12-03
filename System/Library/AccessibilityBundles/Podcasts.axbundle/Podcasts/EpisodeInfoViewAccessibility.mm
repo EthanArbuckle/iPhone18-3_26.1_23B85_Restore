@@ -1,20 +1,20 @@
 @interface EpisodeInfoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityLabelForPlaybackState:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityLabelForPlaybackState:(BOOL)state;
 - (id)accessibilityLabel;
 @end
 
 @implementation EpisodeInfoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityEyebrowLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityFooterLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasSwiftField:@"eyebrowBuilder" withSwiftType:"Optional<EyebrowBuilder>"];
-  [v3 validateClass:@"PodcastsFoundation.EyebrowBuilder" hasSwiftField:@"episode" withSwiftType:"EyebrowBuilderSource"];
-  [v3 validateClass:@"ShelfKit.LibraryEpisodeLockup" hasSwiftField:@"isExplicit" withSwiftType:"Bool"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityEyebrowLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityFooterLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasSwiftField:@"eyebrowBuilder" withSwiftType:"Optional<EyebrowBuilder>"];
+  [validationsCopy validateClass:@"PodcastsFoundation.EyebrowBuilder" hasSwiftField:@"episode" withSwiftType:"EyebrowBuilderSource"];
+  [validationsCopy validateClass:@"ShelfKit.LibraryEpisodeLockup" hasSwiftField:@"isExplicit" withSwiftType:"Bool"];
 }
 
 - (id)accessibilityLabel
@@ -41,9 +41,9 @@
   return v9;
 }
 
-- (id)_accessibilityLabelForPlaybackState:(BOOL)a3
+- (id)_accessibilityLabelForPlaybackState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = @"now.playing";
   }

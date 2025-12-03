@@ -1,99 +1,99 @@
 @interface BCSAlertController
 - (BCSAlertControllerDelegate)delegate;
-- (id)_createHeaderViewControllerWithAction:(id)a3;
-- (id)_createHeaderViewControllerWithAppIdentifier:(id)a3;
-- (id)_createPreviewControllerForDataDetectionActionPickerItem:(id)a3;
-- (id)_createPreviewControllerWithText:(id)a3;
+- (id)_createHeaderViewControllerWithAction:(id)action;
+- (id)_createHeaderViewControllerWithAppIdentifier:(id)identifier;
+- (id)_createPreviewControllerForDataDetectionActionPickerItem:(id)item;
+- (id)_createPreviewControllerWithText:(id)text;
 - (id)_createSeparatorView;
-- (void)_addActionForHandlingAlertDismissal:(id)a3;
-- (void)_configurePopoverPresentationControllerForAlertController:(id)a3 fromViewController:(id)a4;
-- (void)showActionPickerViewForAction:(id)a3 fromViewController:(id)a4;
-- (void)showErrorExplanationForAction:(id)a3 error:(id)a4 fromViewController:(id)a5;
-- (void)showFirstTimePromptToOpenApp:(id)a3 fromViewController:(id)a4;
-- (void)showICloudSignInPromptWithTitle:(id)a3 message:(id)a4 fromViewController:(id)a5;
-- (void)showInvalidDataAlertForAction:(id)a3 fromViewController:(id)a4;
+- (void)_addActionForHandlingAlertDismissal:(id)dismissal;
+- (void)_configurePopoverPresentationControllerForAlertController:(id)controller fromViewController:(id)viewController;
+- (void)showActionPickerViewForAction:(id)action fromViewController:(id)controller;
+- (void)showErrorExplanationForAction:(id)action error:(id)error fromViewController:(id)controller;
+- (void)showFirstTimePromptToOpenApp:(id)app fromViewController:(id)controller;
+- (void)showICloudSignInPromptWithTitle:(id)title message:(id)message fromViewController:(id)controller;
+- (void)showInvalidDataAlertForAction:(id)action fromViewController:(id)controller;
 @end
 
 @implementation BCSAlertController
 
-- (id)_createHeaderViewControllerWithAction:(id)a3
+- (id)_createHeaderViewControllerWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 defaultActionTargetApplicationBundleIdentifier];
-  if ([(__CFString *)v5 isEqualToString:@"com.apple.mobilesafari"])
+  actionCopy = action;
+  defaultActionTargetApplicationBundleIdentifier = [actionCopy defaultActionTargetApplicationBundleIdentifier];
+  if ([(__CFString *)defaultActionTargetApplicationBundleIdentifier isEqualToString:@"com.apple.mobilesafari"])
   {
-    v6 = [v4 urlThatCanBeOpened];
+    urlThatCanBeOpened = [actionCopy urlThatCanBeOpened];
 
-    if (!v6)
+    if (!urlThatCanBeOpened)
     {
 
-      v5 = @"com.apple.barcodescanner.text-only";
+      defaultActionTargetApplicationBundleIdentifier = @"com.apple.barcodescanner.text-only";
     }
   }
 
-  v7 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:v5];
+  v7 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:defaultActionTargetApplicationBundleIdentifier];
 
   return v7;
 }
 
-- (id)_createHeaderViewControllerWithAppIdentifier:(id)a3
+- (id)_createHeaderViewControllerWithAppIdentifier:(id)identifier
 {
   v72[12] = *MEMORY[0x277D85DE8];
-  v62 = a3;
+  identifierCopy = identifier;
   v59 = objc_alloc_init(MEMORY[0x277D75D28]);
-  v66 = [v59 view];
+  view = [v59 view];
   v61 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if ([v62 isEqualToString:@"com.apple.barcodescanner.icloud"])
+  if ([identifierCopy isEqualToString:@"com.apple.barcodescanner.icloud"])
   {
     v4 = [MEMORY[0x277D755B8] imageNamed:@"iCloud" inBundle:v61];
     v64 = [v4 _applicationIconImageForFormat:0 precomposed:1];
 
-    v63 = _BCSLocalizedString();
+    uppercaseString = _BCSLocalizedString();
     goto LABEL_28;
   }
 
-  if ([v62 isEqualToString:@"com.apple.barcodescanner.invalid-data.qr"])
+  if ([identifierCopy isEqualToString:@"com.apple.barcodescanner.invalid-data.qr"])
   {
     goto LABEL_4;
   }
 
-  if ([v62 isEqualToString:@"com.apple.barcodescanner.invalid-data.appclip"])
+  if ([identifierCopy isEqualToString:@"com.apple.barcodescanner.invalid-data.appclip"])
   {
     v6 = [MEMORY[0x277D755B8] imageNamed:@"Viewfinder-20" inBundle:v61];
     v64 = [v6 _applicationIconImageForFormat:0 precomposed:1];
 
-    v63 = _BCSLocalizedString();
+    uppercaseString = _BCSLocalizedString();
   }
 
   else
   {
-    if ([v62 isEqualToString:@"com.apple.barcodescanner.text-only"])
+    if ([identifierCopy isEqualToString:@"com.apple.barcodescanner.text-only"])
     {
 LABEL_4:
       v5 = [MEMORY[0x277D755B8] imageNamed:@"QRCode-20" inBundle:v61];
       v64 = [v5 _applicationIconImageForFormat:0 precomposed:1];
 
-      v63 = _BCSLocalizedString();
+      uppercaseString = _BCSLocalizedString();
       goto LABEL_28;
     }
 
-    if ([v62 isEqualToString:@"com.apple.barcodescanner.wifi"])
+    if ([identifierCopy isEqualToString:@"com.apple.barcodescanner.wifi"])
     {
       v7 = [MEMORY[0x277D755B8] imageNamed:@"Wi-Fi-20" inBundle:v61];
       v64 = [v7 _applicationIconImageForFormat:0 precomposed:1];
 
       MGGetBoolAnswer();
-      v63 = _BCSLocalizedString();
+      uppercaseString = _BCSLocalizedString();
     }
 
     else
     {
-      v8 = [getLSApplicationProxyClass() applicationProxyForIdentifier:v62];
+      v8 = [getLSApplicationProxyClass() applicationProxyForIdentifier:identifierCopy];
       v9 = *&screenScale_scale;
       if (*&screenScale_scale == 0.0)
       {
-        v10 = [MEMORY[0x277D759A0] mainScreen];
-        [v10 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         screenScale_scale = v11;
 
         v9 = *&screenScale_scale;
@@ -163,8 +163,8 @@ LABEL_4:
         v64 = 0;
       }
 
-      v17 = [v8 localizedName];
-      v63 = [v17 uppercaseString];
+      localizedName = [v8 localizedName];
+      uppercaseString = [localizedName uppercaseString];
     }
   }
 
@@ -174,68 +174,68 @@ LABEL_28:
     v18 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v64];
     [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v18 setAccessibilityIgnoresInvertColors:1];
-    [v66 addSubview:v18];
-    if ([v63 length])
+    [view addSubview:v18];
+    if ([uppercaseString length])
     {
       v65 = objc_alloc_init(MEMORY[0x277D756B8]);
       v19 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
       [v65 setFont:v19];
 
-      [v65 setText:v63];
-      v20 = [MEMORY[0x277D75348] grayColor];
-      [v65 setTextColor:v20];
+      [v65 setText:uppercaseString];
+      grayColor = [MEMORY[0x277D75348] grayColor];
+      [v65 setTextColor:grayColor];
 
       [v65 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v65 setAdjustsFontSizeToFitWidth:1];
-      [v66 addSubview:v65];
-      v60 = [(BCSAlertController *)self _createSeparatorView];
-      [v66 addSubview:v60];
+      [view addSubview:v65];
+      _createSeparatorView = [(BCSAlertController *)self _createSeparatorView];
+      [view addSubview:_createSeparatorView];
       v33 = MEMORY[0x277CCAAD0];
-      v58 = [v18 leadingAnchor];
-      v57 = [v66 leadingAnchor];
-      v56 = [v58 constraintEqualToAnchor:v57 constant:16.0];
+      leadingAnchor = [v18 leadingAnchor];
+      leadingAnchor2 = [view leadingAnchor];
+      v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
       v72[0] = v56;
-      v55 = [v18 centerYAnchor];
-      v54 = [v66 centerYAnchor];
-      v53 = [v55 constraintEqualToAnchor:v54];
+      centerYAnchor = [v18 centerYAnchor];
+      centerYAnchor2 = [view centerYAnchor];
+      v53 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v72[1] = v53;
-      v52 = [v18 heightAnchor];
-      v51 = [v52 constraintEqualToConstant:20.0];
+      heightAnchor = [v18 heightAnchor];
+      v51 = [heightAnchor constraintEqualToConstant:20.0];
       v72[2] = v51;
-      v50 = [v18 widthAnchor];
-      v49 = [v18 heightAnchor];
-      v48 = [v50 constraintEqualToAnchor:v49];
+      widthAnchor = [v18 widthAnchor];
+      heightAnchor2 = [v18 heightAnchor];
+      v48 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
       v72[3] = v48;
-      v47 = [v65 leadingAnchor];
-      v46 = [v18 trailingAnchor];
-      v45 = [v47 constraintEqualToAnchor:v46 constant:8.0];
+      leadingAnchor3 = [v65 leadingAnchor];
+      trailingAnchor = [v18 trailingAnchor];
+      v45 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
       v72[4] = v45;
-      v44 = [v65 trailingAnchor];
-      v43 = [v66 trailingAnchor];
-      v42 = [v44 constraintLessThanOrEqualToAnchor:v43];
+      trailingAnchor2 = [v65 trailingAnchor];
+      trailingAnchor3 = [view trailingAnchor];
+      v42 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
       v72[5] = v42;
-      v41 = [v65 centerYAnchor];
-      v40 = [v66 centerYAnchor];
-      v39 = [v41 constraintEqualToAnchor:v40];
+      centerYAnchor3 = [v65 centerYAnchor];
+      centerYAnchor4 = [view centerYAnchor];
+      v39 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v72[6] = v39;
-      v38 = [v66 heightAnchor];
-      v37 = [v38 constraintEqualToConstant:52.0];
+      heightAnchor3 = [view heightAnchor];
+      v37 = [heightAnchor3 constraintEqualToConstant:52.0];
       v72[7] = v37;
-      v36 = [v60 leadingAnchor];
-      v35 = [v66 leadingAnchor];
-      v34 = [v36 constraintEqualToAnchor:v35];
+      leadingAnchor4 = [_createSeparatorView leadingAnchor];
+      leadingAnchor5 = [view leadingAnchor];
+      v34 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
       v72[8] = v34;
-      v21 = [v60 trailingAnchor];
-      v22 = [v66 trailingAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      trailingAnchor4 = [_createSeparatorView trailingAnchor];
+      trailingAnchor5 = [view trailingAnchor];
+      v23 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
       v72[9] = v23;
-      v24 = [v60 bottomAnchor];
-      v25 = [v66 bottomAnchor];
-      v26 = [v24 constraintEqualToAnchor:v25];
+      bottomAnchor = [_createSeparatorView bottomAnchor];
+      bottomAnchor2 = [view bottomAnchor];
+      v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v72[10] = v26;
-      v27 = [v60 heightAnchor];
+      heightAnchor4 = [_createSeparatorView heightAnchor];
       _bcs_pixelLength();
-      v28 = [v27 constraintEqualToConstant:?];
+      v28 = [heightAnchor4 constraintEqualToConstant:?];
       v72[11] = v28;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:12];
       [v33 activateConstraints:v29];
@@ -264,26 +264,26 @@ LABEL_28:
   v2 = [MEMORY[0x277D75210] effectWithStyle:1200];
   v3 = [MEMORY[0x277D75D00] _effectForBlurEffect:v2 vibrancyStyle:120];
   v4 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v3];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  v6 = [v4 contentView];
-  [v6 setBackgroundColor:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  contentView = [v4 contentView];
+  [contentView setBackgroundColor:whiteColor];
 
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   return v4;
 }
 
-- (id)_createPreviewControllerWithText:(id)a3
+- (id)_createPreviewControllerWithText:(id)text
 {
   v50[9] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D75D28];
-  v5 = a3;
+  textCopy = text;
   v27 = objc_alloc_init(v4);
-  v6 = [v27 view];
-  v7 = [(BCSAlertController *)self _createSeparatorView];
-  [v6 addSubview:?];
+  view = [v27 view];
+  _createSeparatorView = [(BCSAlertController *)self _createSeparatorView];
+  [view addSubview:?];
   v8 = objc_alloc_init(MEMORY[0x277D75C40]);
-  [v8 setText:v5];
+  [v8 setText:textCopy];
 
   v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
   [v8 setFont:v9];
@@ -291,63 +291,63 @@ LABEL_28:
   [v8 setDataDetectorTypes:-1];
   [v8 setEditable:0];
   [v8 setScrollEnabled:0];
-  v10 = [v8 textContainer];
-  [v10 setLineBreakMode:4];
+  textContainer = [v8 textContainer];
+  [textContainer setLineBreakMode:4];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = MEMORY[0x277CBEB38];
-  v13 = [v8 linkTextAttributes];
-  v14 = [v12 dictionaryWithDictionary:v13];
+  linkTextAttributes = [v8 linkTextAttributes];
+  v14 = [v12 dictionaryWithDictionary:linkTextAttributes];
 
-  v15 = [MEMORY[0x277D75348] blueColor];
+  blueColor = [MEMORY[0x277D75348] blueColor];
   v49 = v14;
-  [v14 setValue:v15 forKey:*MEMORY[0x277D740C0]];
+  [v14 setValue:blueColor forKey:*MEMORY[0x277D740C0]];
 
   [v14 setValue:&unk_2853A1120 forKey:*MEMORY[0x277D741F0]];
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v14];
   [v8 setLinkTextAttributes:v16];
 
-  [v6 addSubview:v8];
+  [view addSubview:v8];
   v36 = MEMORY[0x277CCAAD0];
-  v48 = [v7 heightAnchor];
+  heightAnchor = [_createSeparatorView heightAnchor];
   _bcs_pixelLength();
-  v47 = [v48 constraintEqualToConstant:?];
+  v47 = [heightAnchor constraintEqualToConstant:?];
   v50[0] = v47;
-  v46 = [v7 leadingAnchor];
-  v44 = [v6 leadingAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44];
+  leadingAnchor = [_createSeparatorView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v50[1] = v43;
-  v45 = v7;
-  v42 = [v7 trailingAnchor];
-  v41 = [v6 trailingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  v45 = _createSeparatorView;
+  trailingAnchor = [_createSeparatorView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v50[2] = v40;
-  v39 = [v7 topAnchor];
-  v38 = [v6 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  topAnchor = [_createSeparatorView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v50[3] = v37;
-  v35 = [v8 centerXAnchor];
-  v34 = [v6 centerXAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  centerXAnchor = [v8 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v50[4] = v33;
-  v32 = [v8 leadingAnchor];
-  v31 = [v6 leadingAnchor];
-  v30 = [v32 constraintGreaterThanOrEqualToAnchor:v31 constant:20.0];
+  leadingAnchor3 = [v8 leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v30 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:20.0];
   v50[5] = v30;
-  v29 = [v8 trailingAnchor];
-  v28 = [v6 trailingAnchor];
-  v17 = [v29 constraintLessThanOrEqualToAnchor:v28 constant:-20.0];
+  trailingAnchor3 = [v8 trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v17 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-20.0];
   v50[6] = v17;
-  v18 = [v8 topAnchor];
-  v19 = [v6 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:10.0];
+  topAnchor3 = [v8 topAnchor];
+  topAnchor4 = [view topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
   v50[7] = v20;
-  v21 = [v8 bottomAnchor];
-  v22 = [v6 bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:-10.0];
+  bottomAnchor = [v8 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v50[8] = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:9];
   [v36 activateConstraints:v24];
@@ -357,17 +357,17 @@ LABEL_28:
   return v27;
 }
 
-- (id)_createPreviewControllerForDataDetectionActionPickerItem:(id)a3
+- (id)_createPreviewControllerForDataDetectionActionPickerItem:(id)item
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 icsString];
-  if ([v4 length])
+  itemCopy = item;
+  icsString = [itemCopy icsString];
+  if ([icsString length])
   {
     v5 = objc_alloc_init(MEMORY[0x277CC5A40]);
     v25[0] = @"ICS";
     v25[1] = @"NotificationStyle";
-    v26[0] = v4;
+    v26[0] = icsString;
     v26[1] = MEMORY[0x277CBEC38];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
     v7 = v5;
@@ -396,10 +396,10 @@ LABEL_28:
 
     v10 = v9(v7, 0, v8);
 
-    v11 = [v10 startDate];
+    startDate = [v10 startDate];
     v12 = objc_alloc(MEMORY[0x277CC5B68]);
-    v13 = [v10 endDate];
-    v14 = [v12 initWithDate:v11 event:v10 overriddenEventStartDate:v11 overriddenEventEndDate:v13];
+    endDate = [v10 endDate];
+    v14 = [v12 initWithDate:startDate event:v10 overriddenEventStartDate:startDate overriddenEventEndDate:endDate];
 
     v19 = 0;
     v15 = [v7 removeEvent:v10 span:0 error:&v19];
@@ -420,26 +420,26 @@ LABEL_28:
   return v14;
 }
 
-- (void)_configurePopoverPresentationControllerForAlertController:(id)a3 fromViewController:(id)a4
+- (void)_configurePopoverPresentationControllerForAlertController:(id)controller fromViewController:(id)viewController
 {
-  v20 = a4;
-  v5 = [a3 popoverPresentationController];
-  v6 = [v20 view];
-  if ([v20 conformsToProtocol:&unk_2853B3C08])
+  viewControllerCopy = viewController;
+  popoverPresentationController = [controller popoverPresentationController];
+  view = [viewControllerCopy view];
+  if ([viewControllerCopy conformsToProtocol:&unk_2853B3C08])
   {
-    v7 = [v20 popoverAnchorView];
-    v8 = v7;
-    if (v7)
+    popoverAnchorView = [viewControllerCopy popoverAnchorView];
+    v8 = popoverAnchorView;
+    if (popoverAnchorView)
     {
-      v9 = v7;
+      v9 = popoverAnchorView;
     }
 
     else
     {
-      v9 = v6;
+      v9 = view;
     }
 
-    [v5 setSourceView:v9];
+    [popoverPresentationController setSourceView:v9];
     if (v8)
     {
       [v8 bounds];
@@ -454,23 +454,23 @@ LABEL_28:
 
   else
   {
-    [v5 setSourceView:v6];
+    [popoverPresentationController setSourceView:view];
   }
 
-  [v6 center];
+  [view center];
   v11 = v18;
-  [v6 size];
+  [view size];
   v13 = v19;
   v15 = 0.0;
   v17 = 0.0;
 LABEL_9:
-  [v5 setSourceRect:{v11, v13, v15, v17}];
-  [v5 setPermittedArrowDirections:0];
+  [popoverPresentationController setSourceRect:{v11, v13, v15, v17}];
+  [popoverPresentationController setPermittedArrowDirections:0];
 }
 
-- (void)_addActionForHandlingAlertDismissal:(id)a3
+- (void)_addActionForHandlingAlertDismissal:(id)dismissal
 {
-  v4 = a3;
+  dismissalCopy = dismissal;
   if (_bcs_deviceIsPad())
   {
     v5 = MEMORY[0x277D750F8];
@@ -481,7 +481,7 @@ LABEL_9:
     v8[3] = &unk_278D02130;
     v8[4] = self;
     v7 = [v5 actionWithTitle:v6 style:1 handler:v8];
-    [v4 addAction:v7];
+    [dismissalCopy addAction:v7];
   }
 }
 
@@ -491,17 +491,17 @@ void __58__BCSAlertController__addActionForHandlingAlertDismissal___block_invoke
   [WeakRetained alertControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)showActionPickerViewForAction:(id)a3 fromViewController:(id)a4
+- (void)showActionPickerViewForAction:(id)action fromViewController:(id)controller
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  actionCopy = action;
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (controllerCopy)
   {
-    v8 = [v6 presentedViewController];
+    presentedViewController = [controllerCopy presentedViewController];
 
-    if (v8)
+    if (presentedViewController)
     {
       v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
       if (v9)
@@ -512,8 +512,8 @@ void __58__BCSAlertController__addActionForHandlingAlertDismissal___block_invoke
       goto LABEL_31;
     }
 
-    v25 = [v5 actionPickerItems];
-    if (![v25 count])
+    actionPickerItems = [actionCopy actionPickerItems];
+    if (![actionPickerItems count])
     {
 LABEL_30:
 
@@ -522,39 +522,39 @@ LABEL_30:
 
     v49 = objc_alloc_init(MEMORY[0x277D75110]);
     [v49 setPreferredStyle:0];
-    v26 = [(BCSAlertController *)self _createHeaderViewControllerWithAction:v5];
-    v27 = [v25 firstObject];
+    v26 = [(BCSAlertController *)self _createHeaderViewControllerWithAction:actionCopy];
+    firstObject = [actionPickerItems firstObject];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(BCSAlertController *)self _createPreviewControllerForDataDetectionActionPickerItem:v27], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(BCSAlertController *)self _createPreviewControllerForDataDetectionActionPickerItem:firstObject], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v29 = v28;
-      v30 = 0;
+      extraPreviewText = 0;
     }
 
     else
     {
-      if ([v5 conformsToProtocol:&unk_2853A31C0])
+      if ([actionCopy conformsToProtocol:&unk_2853A31C0])
       {
-        v30 = [v5 extraPreviewText];
+        extraPreviewText = [actionCopy extraPreviewText];
       }
 
       else
       {
-        v30 = 0;
+        extraPreviewText = 0;
       }
 
-      if (![v30 length])
+      if (![extraPreviewText length])
       {
         v44 = 0;
-        v45 = v30;
+        v45 = extraPreviewText;
         goto LABEL_20;
       }
 
-      v29 = [(BCSAlertController *)self _createPreviewControllerWithText:v30];
+      v29 = [(BCSAlertController *)self _createPreviewControllerWithText:extraPreviewText];
     }
 
     v44 = v29;
-    v45 = v30;
+    v45 = extraPreviewText;
     if (v29 && v26)
     {
       [v49 _setHeaderContentViewController:v26];
@@ -566,8 +566,8 @@ LABEL_22:
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v47 = v25;
-      obj = v25;
+      v47 = actionPickerItems;
+      obj = actionPickerItems;
       v33 = [obj countByEnumeratingWithState:&v61 objects:v65 count:16];
       if (v33)
       {
@@ -583,13 +583,13 @@ LABEL_22:
             }
 
             v37 = *(*(&v61 + 1) + 8 * i);
-            v38 = [v37 label];
+            label = [v37 label];
             v57[0] = MEMORY[0x277D85DD0];
             v57[1] = 3221225472;
             v57[2] = __71__BCSAlertController_showActionPickerViewForAction_fromViewController___block_invoke;
             v57[3] = &unk_278D01D30;
             v58 = WeakRetained;
-            v59 = self;
+            selfCopy = self;
             v60 = v37;
             v54[0] = MEMORY[0x277D85DD0];
             v54[1] = 3221225472;
@@ -597,7 +597,7 @@ LABEL_22:
             v54[3] = &unk_278D02158;
             v55 = v58;
             v56 = v37;
-            [v49 _addActionWithTitle:v38 style:0 handler:v57 shouldDismissHandler:v54];
+            [v49 _addActionWithTitle:label style:0 handler:v57 shouldDismissHandler:v54];
           }
 
           v34 = [obj countByEnumeratingWithState:&v61 objects:v65 count:16];
@@ -613,7 +613,7 @@ LABEL_22:
       v51[2] = __71__BCSAlertController_showActionPickerViewForAction_fromViewController___block_invoke_3;
       v51[3] = &unk_278D02180;
       v52 = WeakRetained;
-      v53 = self;
+      selfCopy2 = self;
       v41 = WeakRetained;
       v42 = [v39 actionWithTitle:v40 style:1 handler:v51];
       [v49 addAction:v42];
@@ -621,7 +621,7 @@ LABEL_22:
       [(BCSAlertController *)self _configurePopoverPresentationControllerForAlertController:v49 fromViewController:v7];
       [v7 presentViewController:v49 animated:1 completion:0];
 
-      v25 = v47;
+      actionPickerItems = v47;
       goto LABEL_30;
     }
 
@@ -629,8 +629,8 @@ LABEL_20:
     if (v26)
     {
       [v49 _setHeaderContentViewController:v26];
-      v31 = [v5 localizedDefaultActionDescription];
-      [v49 setMessage:v31];
+      localizedDefaultActionDescription = [actionCopy localizedDefaultActionDescription];
+      [v49 setMessage:localizedDefaultActionDescription];
     }
 
     goto LABEL_22;
@@ -684,17 +684,17 @@ void *__71__BCSAlertController_showActionPickerViewForAction_fromViewController_
   return result;
 }
 
-- (void)showFirstTimePromptToOpenApp:(id)a3 fromViewController:(id)a4
+- (void)showFirstTimePromptToOpenApp:(id)app fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  appCopy = app;
+  controllerCopy = controller;
+  if ([appCopy length])
   {
-    if (v7)
+    if (controllerCopy)
     {
-      v8 = [v7 presentedViewController];
+      presentedViewController = [controllerCopy presentedViewController];
 
-      if (v8)
+      if (presentedViewController)
       {
         v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
         if (v9)
@@ -707,13 +707,13 @@ void *__71__BCSAlertController_showActionPickerViewForAction_fromViewController_
       {
         v33 = objc_alloc_init(MEMORY[0x277D75110]);
         [v33 setPreferredStyle:0];
-        v45 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:v6];
+        v45 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:appCopy];
         [v33 _setHeaderContentViewController:v45];
-        v44 = [getLSApplicationProxyClass() applicationProxyForIdentifier:v6];
+        v44 = [getLSApplicationProxyClass() applicationProxyForIdentifier:appCopy];
         v34 = MEMORY[0x277CCACA8];
         v35 = _BCSLocalizedString();
-        v36 = [v44 localizedName];
-        v37 = [v34 stringWithFormat:v35, v36];
+        localizedName = [v44 localizedName];
+        v37 = [v34 stringWithFormat:v35, localizedName];
         [v33 setMessage:v37];
 
         v38 = MEMORY[0x277D750F8];
@@ -737,8 +737,8 @@ void *__71__BCSAlertController_showActionPickerViewForAction_fromViewController_
         [v33 addAction:v43];
 
         [(BCSAlertController *)self _addActionForHandlingAlertDismissal:v33];
-        [(BCSAlertController *)self _configurePopoverPresentationControllerForAlertController:v33 fromViewController:v7];
-        [v7 presentViewController:v33 animated:1 completion:0];
+        [(BCSAlertController *)self _configurePopoverPresentationControllerForAlertController:v33 fromViewController:controllerCopy];
+        [controllerCopy presentViewController:v33 animated:1 completion:0];
       }
     }
 
@@ -774,17 +774,17 @@ void __70__BCSAlertController_showFirstTimePromptToOpenApp_fromViewController___
   [WeakRetained alertControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)showICloudSignInPromptWithTitle:(id)a3 message:(id)a4 fromViewController:(id)a5
+- (void)showICloudSignInPromptWithTitle:(id)title message:(id)message fromViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  titleCopy = title;
+  messageCopy = message;
+  controllerCopy = controller;
+  v11 = controllerCopy;
+  if (controllerCopy)
   {
-    v12 = [v10 presentedViewController];
+    presentedViewController = [controllerCopy presentedViewController];
 
-    if (v12)
+    if (presentedViewController)
     {
       v13 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
       if (v13)
@@ -800,7 +800,7 @@ void __70__BCSAlertController_showFirstTimePromptToOpenApp_fromViewController___
       v30 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:@"com.apple.barcodescanner.icloud"];
       [v29 _setHeaderContentViewController:v30];
 
-      [v29 setMessage:v9];
+      [v29 setMessage:messageCopy];
       v31 = MEMORY[0x277D750F8];
       v32 = _BCSLocalizedString();
       v38[0] = MEMORY[0x277D85DD0];
@@ -849,16 +849,16 @@ void __81__BCSAlertController_showICloudSignInPromptWithTitle_message_fromViewCo
   [WeakRetained alertControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)showInvalidDataAlertForAction:(id)a3 fromViewController:(id)a4
+- (void)showInvalidDataAlertForAction:(id)action fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  actionCopy = action;
+  controllerCopy = controller;
+  v8 = controllerCopy;
+  if (controllerCopy)
   {
-    v9 = [v7 presentedViewController];
+    presentedViewController = [controllerCopy presentedViewController];
 
-    if (v9)
+    if (presentedViewController)
     {
       v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
       if (v10)
@@ -871,7 +871,7 @@ void __81__BCSAlertController_showICloudSignInPromptWithTitle_message_fromViewCo
     {
       v26 = objc_alloc_init(MEMORY[0x277D75110]);
       [v26 setPreferredStyle:0];
-      if ([v6 codeType] == 3)
+      if ([actionCopy codeType] == 3)
       {
         v27 = @"com.apple.barcodescanner.invalid-data.appclip";
       }
@@ -884,8 +884,8 @@ void __81__BCSAlertController_showICloudSignInPromptWithTitle_message_fromViewCo
       v28 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:v27];
       [v26 _setHeaderContentViewController:v28];
 
-      v29 = [v6 localizedDefaultActionDescription];
-      [v26 setMessage:v29];
+      localizedDefaultActionDescription = [actionCopy localizedDefaultActionDescription];
+      [v26 setMessage:localizedDefaultActionDescription];
 
       v30 = MEMORY[0x277D750F8];
       v31 = _BCSLocalizedString();
@@ -918,17 +918,17 @@ void __71__BCSAlertController_showInvalidDataAlertForAction_fromViewController__
   [WeakRetained alertControllerDidCancel:*(a1 + 32)];
 }
 
-- (void)showErrorExplanationForAction:(id)a3 error:(id)a4 fromViewController:(id)a5
+- (void)showErrorExplanationForAction:(id)action error:(id)error fromViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  actionCopy = action;
+  errorCopy = error;
+  controllerCopy = controller;
+  v11 = controllerCopy;
+  if (controllerCopy)
   {
-    v12 = [v10 presentedViewController];
+    presentedViewController = [controllerCopy presentedViewController];
 
-    if (v12)
+    if (presentedViewController)
     {
       v13 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
       if (v13)
@@ -939,25 +939,25 @@ void __71__BCSAlertController_showInvalidDataAlertForAction_fromViewController__
 
     else
     {
-      v29 = [v9 domain];
-      v30 = [v29 isEqualToString:*MEMORY[0x277CF0AE0]];
+      domain = [errorCopy domain];
+      v30 = [domain isEqualToString:*MEMORY[0x277CF0AE0]];
 
       if (v30)
       {
         WeakRetained = objc_alloc_init(MEMORY[0x277D75110]);
         [WeakRetained setPreferredStyle:0];
-        v32 = [v9 localizedDescription];
-        v33 = [v8 defaultActionTargetApplicationBundleIdentifier];
-        if (!-[__CFString length](v33, "length") && [v8 conformsToProtocol:&unk_2853A31C0] && objc_msgSend(v8, "isWiFiAction"))
+        localizedDescription = [errorCopy localizedDescription];
+        defaultActionTargetApplicationBundleIdentifier = [actionCopy defaultActionTargetApplicationBundleIdentifier];
+        if (!-[__CFString length](defaultActionTargetApplicationBundleIdentifier, "length") && [actionCopy conformsToProtocol:&unk_2853A31C0] && objc_msgSend(actionCopy, "isWiFiAction"))
         {
 
-          v33 = @"com.apple.barcodescanner.wifi";
+          defaultActionTargetApplicationBundleIdentifier = @"com.apple.barcodescanner.wifi";
         }
 
-        v34 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:v33];
+        v34 = [(BCSAlertController *)self _createHeaderViewControllerWithAppIdentifier:defaultActionTargetApplicationBundleIdentifier];
         [WeakRetained _setHeaderContentViewController:v34];
 
-        [WeakRetained setMessage:v32];
+        [WeakRetained setMessage:localizedDescription];
         v35 = MEMORY[0x277D750F8];
         v36 = _BCSLocalizedString();
         v38[0] = MEMORY[0x277D85DD0];

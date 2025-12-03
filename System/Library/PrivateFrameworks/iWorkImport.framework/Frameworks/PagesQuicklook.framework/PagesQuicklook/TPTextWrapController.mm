@@ -1,49 +1,49 @@
 @interface TPTextWrapController
-- (BOOL)checkForUnobstructedSpan:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5;
-- (BOOL)p_shouldTextFlowAroundWrappable:(id)a3 inTarget:(id)a4 inColumn:(id)a5;
+- (BOOL)checkForUnobstructedSpan:(CGRect)span wrappableAttachments:(id)attachments userInfo:(id)info;
+- (BOOL)p_shouldTextFlowAroundWrappable:(id)wrappable inTarget:(id)target inColumn:(id)column;
 - (TPDocumentRoot)documentRoot;
-- (TPTextWrapController)initWithDocumentRoot:(id)a3;
-- (double)nextUnobstructedSpanStartingAt:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5;
-- (id)beginWrappingToColumn:(id)a3 columnTransformFromWP:(CGAffineTransform *)a4 target:(id)a5 hasWrappables:(BOOL *)a6;
-- (id)p_groupInfoContainingWrappable:(id)a3;
-- (id)p_wrapDrawables:(id)a3 userInfo:(id)a4;
-- (void)p_splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrappable:(id)a5 cookie:(id)a6 skipHint:(double *)a7;
-- (void)setUpCanvasToWrapSpaceAffineTransformation:(CGAffineTransform *)a3;
-- (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 canvasCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9;
+- (TPTextWrapController)initWithDocumentRoot:(id)root;
+- (double)nextUnobstructedSpanStartingAt:(CGRect)at wrappableAttachments:(id)attachments userInfo:(id)info;
+- (id)beginWrappingToColumn:(id)column columnTransformFromWP:(CGAffineTransform *)p target:(id)target hasWrappables:(BOOL *)wrappables;
+- (id)p_groupInfoContainingWrappable:(id)wrappable;
+- (id)p_wrapDrawables:(id)drawables userInfo:(id)info;
+- (void)p_splitLine:(CGRect)line lineSegmentRects:(id)rects wrappable:(id)wrappable cookie:(id)cookie skipHint:(double *)hint;
+- (void)setUpCanvasToWrapSpaceAffineTransformation:(CGAffineTransform *)transformation;
+- (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics canvasCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info;
 @end
 
 @implementation TPTextWrapController
 
-- (TPTextWrapController)initWithDocumentRoot:(id)a3
+- (TPTextWrapController)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v8.receiver = self;
   v8.super_class = TPTextWrapController;
   v5 = [(TPTextWrapController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_documentRoot, v4);
+    objc_storeWeak(&v5->_documentRoot, rootCopy);
   }
 
   return v6;
 }
 
-- (id)beginWrappingToColumn:(id)a3 columnTransformFromWP:(CGAffineTransform *)a4 target:(id)a5 hasWrappables:(BOOL *)a6
+- (id)beginWrappingToColumn:(id)column columnTransformFromWP:(CGAffineTransform *)p target:(id)target hasWrappables:(BOOL *)wrappables
 {
   v119 = *MEMORY[0x277D85DE8];
-  v100 = a3;
-  v101 = a5;
+  columnCopy = column;
+  targetCopy = target;
   v9 = [TPTextWrapCookie alloc];
-  v15 = objc_msgSend_initWithColumn_targetLayout_(v9, v10, v11, v12, v13, v14, v100, v101);
+  v15 = objc_msgSend_initWithColumn_targetLayout_(v9, v10, v11, v12, v13, v14, columnCopy, targetCopy);
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v106 = objc_msgSend_drawablesZOrder(WeakRetained, v17, v18, v19, v20, v21);
 
-  v27 = objc_msgSend_storage(v100, v22, v23, v24, v25, v26);
+  v27 = objc_msgSend_storage(columnCopy, v22, v23, v24, v25, v26);
   v33 = objc_msgSend_zOrderOfDrawable_(v106, v28, v29, v30, v31, v32, v27);
 
   objc_opt_class();
-  v39 = objc_msgSend_pageLayout(v101, v34, v35, v36, v37, v38);
+  v39 = objc_msgSend_pageLayout(targetCopy, v34, v35, v36, v37, v38);
   v40 = TSUDynamicCast();
 
   v115 = 0u;
@@ -78,7 +78,7 @@
           if (v66)
           {
             objc_msgSend_addFloatingWrappable_(v15, v65, v67, v68, v69, v70, v66, &unk_28853CDB0);
-            *a6 = 1;
+            *wrappables = 1;
           }
 
           v97 = &unk_288510D20;
@@ -106,7 +106,7 @@
                   }
 
                   objc_msgSend_addFloatingWrappable_(v15, v83, v85, v86, v87, v88, *(*(&v109 + 1) + 8 * i));
-                  *a6 = 1;
+                  *wrappables = 1;
                 }
 
                 v84 = objc_msgSend_countByEnumeratingWithState_objects_count_(v77, v83, v85, v86, v87, v88, &v109, v117, 16);
@@ -131,26 +131,26 @@
     while (v51);
   }
 
-  v92 = *&a4->c;
-  v107[0] = *&a4->a;
+  v92 = *&p->c;
+  v107[0] = *&p->a;
   v107[1] = v92;
-  v108 = *&a4->tx;
+  v108 = *&p->tx;
   objc_msgSend_setUpCanvasToWrapSpaceAffineTransformation_(v98, v93, v108, v92, v94, v95, v107);
 
   return v15;
 }
 
-- (void)setUpCanvasToWrapSpaceAffineTransformation:(CGAffineTransform *)a3
+- (void)setUpCanvasToWrapSpaceAffineTransformation:(CGAffineTransform *)transformation
 {
-  v4 = *&a3->a;
-  v5 = *&a3->c;
-  *&self->_wrapSpaceToCanvasSpace.tx = *&a3->tx;
+  v4 = *&transformation->a;
+  v5 = *&transformation->c;
+  *&self->_wrapSpaceToCanvasSpace.tx = *&transformation->tx;
   *&self->_wrapSpaceToCanvasSpace.c = v5;
   *&self->_wrapSpaceToCanvasSpace.a = v4;
-  v6 = *&a3->c;
-  *&v8.a = *&a3->a;
+  v6 = *&transformation->c;
+  *&v8.a = *&transformation->a;
   *&v8.c = v6;
-  *&v8.tx = *&a3->tx;
+  *&v8.tx = *&transformation->tx;
   CGAffineTransformInvert(&v9, &v8);
   v7 = *&v9.c;
   *&self->_canvasSpaceToWrapSpace.a = *&v9.a;
@@ -158,9 +158,9 @@
   *&self->_canvasSpaceToWrapSpace.tx = *&v9.tx;
 }
 
-- (id)p_groupInfoContainingWrappable:(id)a3
+- (id)p_groupInfoContainingWrappable:(id)wrappable
 {
-  v7 = objc_msgSend_info(a3, a2, v3, v4, v5, v6);
+  v7 = objc_msgSend_info(wrappable, a2, v3, v4, v5, v6);
   v13 = objc_msgSend_parentInfo(v7, v8, v9, v10, v11, v12);
 
   if (v13)
@@ -190,16 +190,16 @@ LABEL_6:
   return v13;
 }
 
-- (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 canvasCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9
+- (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics canvasCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info
 {
-  y = a3.origin.y;
-  height = a3.size.height;
-  x = a3.origin.x;
-  width = a3.size.width;
+  y = line.origin.y;
+  height = line.size.height;
+  x = line.origin.x;
+  width = line.size.width;
   v390 = *MEMORY[0x277D85DE8];
-  v357 = a4;
-  v354 = a5;
-  v353 = a9;
+  rectsCopy = rects;
+  attachmentsCopy = attachments;
+  infoCopy = info;
   objc_opt_class();
   v373 = TSUDynamicCast();
   v360 = objc_msgSend_column(v373, v12, v13, v14, v15, v16);
@@ -224,7 +224,7 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v58, v59, v60, v61, v62);
   }
 
-  if (objc_msgSend_count(v357, v22, v23, v24, v25, v26))
+  if (objc_msgSend_count(rectsCopy, v22, v23, v24, v25, v26))
   {
     v68 = MEMORY[0x277D81150];
     v69 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v63, v64, v65, v66, v67, "[TPTextWrapController splitLine:lineSegmentRects:wrappableAttachments:ignoreFloatingGraphics:canvasCausedWrap:skipHint:userInfo:]");
@@ -234,10 +234,10 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v81, v82, v83, v84, v85);
   }
 
-  objc_msgSend_makeEmpty(v357, v63, v64, v65, v66, v67);
-  if (a8)
+  objc_msgSend_makeEmpty(rectsCopy, v63, v64, v65, v66, v67);
+  if (hint)
   {
-    *a8 = 1.0;
+    *hint = 1.0;
   }
 
   objc_msgSend_frameBounds(v360, v86, v87, v88, v89, v90);
@@ -250,7 +250,7 @@ LABEL_6:
   v93 = v392.origin.y;
   v94 = v392.size.width;
   v95 = v392.size.height;
-  v96 = v357;
+  v96 = rectsCopy;
   v393.origin.x = x;
   v393.size.width = width;
   v393.origin.y = y;
@@ -301,16 +301,16 @@ LABEL_6:
       v365 = objc_msgSend_horizontalIntersectionsOfRectList_withRectList_minWidth_(MEMORY[0x277D80F88], v127, v126, v128, v129, v130, v96, v120);
     }
 
-    v131 = objc_msgSend_floatingWrappables(v353, v109, v110, v111, v112, v113);
+    v131 = objc_msgSend_floatingWrappables(infoCopy, v109, v110, v111, v112, v113);
     v356 = v131;
-    if (objc_msgSend_count(v354, v132, v133, v134, v135, v136))
+    if (objc_msgSend_count(attachmentsCopy, v132, v133, v134, v135, v136))
     {
       v131 = objc_msgSend_mutableCopy(v131, v137, v138, v139, v140, v141);
       v384 = 0u;
       v385 = 0u;
       v382 = 0u;
       v383 = 0u;
-      obj = v354;
+      obj = attachmentsCopy;
       v147 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v142, v143, v144, v145, v146, &v382, v389, 16);
       if (v147)
       {
@@ -346,7 +346,7 @@ LABEL_6:
               v379 = 0u;
               v174 = objc_msgSend_descendentWrappables(v168, v169, 0, v170, v171, v172, &unk_288510D20);
               v175 = v119;
-              v176 = a8;
+              hintCopy = hint;
               v183 = objc_msgSend_countByEnumeratingWithState_objects_count_(v174, v177, v178, v179, v180, v181, &v378, v388, 16);
               if (v183)
               {
@@ -369,7 +369,7 @@ LABEL_6:
                 while (v183);
               }
 
-              a8 = v176;
+              hint = hintCopy;
               v119 = v175;
             }
           }
@@ -391,7 +391,7 @@ LABEL_6:
     {
       v370 = *v375;
       v196 = &v386;
-      if (!a8)
+      if (!hint)
       {
         v196 = 0;
       }
@@ -493,14 +493,14 @@ LABEL_6:
             goto LABEL_105;
           }
 
-          if (a7 && (objc_msgSend_indexOfObject_(v356, v270, v271, v272, v273, v274, v198) != 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend_isHTMLWrap(v198, v270, v271, v272, v273, v274) & 1) == 0))
+          if (wrap && (objc_msgSend_indexOfObject_(v356, v270, v271, v272, v273, v274, v198) != 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend_isHTMLWrap(v198, v270, v271, v272, v273, v274) & 1) == 0))
           {
-            *a7 = 1;
+            *wrap = 1;
           }
 
           if (v217 == 2)
           {
-            if (a8)
+            if (hint)
             {
               v397.origin.x = v266;
               v397.origin.y = v267;
@@ -512,13 +512,13 @@ LABEL_6:
               v398.origin.y = y;
               v398.size.height = height;
               v271.n128_f64[0] = ceil(MaxY - CGRectGetMinY(v398));
-              v272.n128_f64[0] = *a8;
-              if (*a8 >= v271.n128_f64[0])
+              v272.n128_f64[0] = *hint;
+              if (*hint >= v271.n128_f64[0])
               {
-                v271.n128_f64[0] = *a8;
+                v271.n128_f64[0] = *hint;
               }
 
-              *a8 = v271.n128_f64[0];
+              *hint = v271.n128_f64[0];
             }
 
             goto LABEL_104;
@@ -690,16 +690,16 @@ LABEL_6:
           v272.n128_f64[0] = y;
           v274.n128_f64[0] = height;
           objc_msgSend_p_splitLine_lineSegmentRects_wrappable_cookie_skipHint_(self, v270, v271, v272, v273, v274, v199, v198, v373, v351);
-          if (a8)
+          if (hint)
           {
-            v278.n128_f64[0] = *a8;
+            v278.n128_f64[0] = *hint;
             v279.n128_u64[0] = *&v386.a;
-            if (*a8 < v386.a)
+            if (*hint < v386.a)
             {
               v278.n128_f64[0] = v386.a;
             }
 
-            *a8 = v278.n128_f64[0];
+            *hint = v278.n128_f64[0];
           }
 
           if (!objc_msgSend_count(v199, v277, v278, v279, v280, v281))
@@ -834,22 +834,22 @@ LABEL_114:
   }
 }
 
-- (id)p_wrapDrawables:(id)a3 userInfo:(id)a4
+- (id)p_wrapDrawables:(id)drawables userInfo:(id)info
 {
   v92 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v81 = a4;
-  v78 = v5;
-  if (objc_msgSend_count(v5, v6, v7, v8, v9, v10))
+  drawablesCopy = drawables;
+  infoCopy = info;
+  v78 = drawablesCopy;
+  if (objc_msgSend_count(drawablesCopy, v6, v7, v8, v9, v10))
   {
-    v16 = objc_msgSend_floatingWrappables(v81, v11, v12, v13, v14, v15);
+    v16 = objc_msgSend_floatingWrappables(infoCopy, v11, v12, v13, v14, v15);
     v22 = objc_msgSend_mutableCopy(v16, v17, v18, v19, v20, v21);
 
     v88 = 0u;
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    obj = v5;
+    obj = drawablesCopy;
     v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v23, v24, v25, v26, v27, &v86, v91, 16);
     if (v29)
     {
@@ -864,7 +864,7 @@ LABEL_114:
           }
 
           v35 = *(*(&v86 + 1) + 8 * i);
-          v36 = objc_msgSend_target(v81, v28, v30, v31, v32, v33, v77);
+          v36 = objc_msgSend_target(infoCopy, v28, v30, v31, v32, v33, v77);
           v42 = objc_msgSend_validatedLayoutForAnchoredDrawable_(v36, v37, v38, v39, v40, v41, v35);
 
           v43 = TSUProtocolCast();
@@ -921,23 +921,23 @@ LABEL_114:
 
   else
   {
-    v22 = objc_msgSend_floatingWrappables(v81, v11, v12, v13, v14, v15);
+    v22 = objc_msgSend_floatingWrappables(infoCopy, v11, v12, v13, v14, v15);
   }
 
   return v22;
 }
 
-- (double)nextUnobstructedSpanStartingAt:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5
+- (double)nextUnobstructedSpanStartingAt:(CGRect)at wrappableAttachments:(id)attachments userInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = at.size.height;
+  width = at.size.width;
+  y = at.origin.y;
+  x = at.origin.x;
   v229 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v222 = objc_msgSend_target(v12, v13, v14, v15, v16, v17);
-  v23 = objc_msgSend_p_wrapDrawables_userInfo_(self, v18, v19, v20, v21, v22, v11, v12);
+  attachmentsCopy = attachments;
+  infoCopy = info;
+  v222 = objc_msgSend_target(infoCopy, v13, v14, v15, v16, v17);
+  v23 = objc_msgSend_p_wrapDrawables_userInfo_(self, v18, v19, v20, v21, v22, attachmentsCopy, infoCopy);
   v24 = MEMORY[0x277CBEB18];
   v221 = v23;
   v30 = objc_msgSend_count(v23, v25, v26, v27, v28, v29);
@@ -956,7 +956,7 @@ LABEL_114:
   v44 = v231.origin.y;
   v45 = v231.size.width;
   v46 = v231.size.height;
-  v48 = objc_msgSend_column(v12, v47, v231.origin, *&v231.origin.y, v231.size, *&v231.size.height);
+  v48 = objc_msgSend_column(infoCopy, v47, v231.origin, *&v231.origin.y, v231.size, *&v231.size.height);
   v217 = *&v46;
   v218 = *&v45;
   v219 = *&v44;
@@ -1107,9 +1107,9 @@ LABEL_19:
     v162 = 0.0;
     v163 = 0.0;
     ty = self->_wrapSpaceToCanvasSpace.ty;
-    if (v12)
+    if (infoCopy)
     {
-      objc_msgSend_targetInverseTransformInRoot(v12, v153, v154, v155, v156, v157);
+      objc_msgSend_targetInverseTransformInRoot(infoCopy, v153, v154, v155, v156, v157);
       v163 = v227.b;
       v162 = v227.d;
       v161 = v227.ty;
@@ -1177,17 +1177,17 @@ LABEL_36:
   return v174;
 }
 
-- (BOOL)checkForUnobstructedSpan:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5
+- (BOOL)checkForUnobstructedSpan:(CGRect)span wrappableAttachments:(id)attachments userInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = span.size.height;
+  width = span.size.width;
+  y = span.origin.y;
+  x = span.origin.x;
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v18 = objc_msgSend_target(v12, v13, v14, v15, v16, v17);
-  v24 = objc_msgSend_p_wrapDrawables_userInfo_(self, v19, v20, v21, v22, v23, v11, v12);
+  attachmentsCopy = attachments;
+  infoCopy = info;
+  v18 = objc_msgSend_target(infoCopy, v13, v14, v15, v16, v17);
+  v24 = objc_msgSend_p_wrapDrawables_userInfo_(self, v19, v20, v21, v22, v23, attachmentsCopy, infoCopy);
   if (objc_msgSend_count(v24, v25, v26, v27, v28, v29))
   {
     v31.n128_f64[0] = x;
@@ -1211,7 +1211,7 @@ LABEL_36:
     v40 = v24;
     v47 = objc_msgSend_countByEnumeratingWithState_objects_count_(v40, v41, v42, v43, v44, v45, &v65, v70, 16);
     v63 = v18;
-    v64 = v11;
+    v64 = attachmentsCopy;
     if (v47)
     {
       v52 = *v66;
@@ -1276,7 +1276,7 @@ LABEL_4:
     }
 
     v18 = v63;
-    v11 = v64;
+    attachmentsCopy = v64;
   }
 
   else
@@ -1287,14 +1287,14 @@ LABEL_4:
   return v53 & 1;
 }
 
-- (BOOL)p_shouldTextFlowAroundWrappable:(id)a3 inTarget:(id)a4 inColumn:(id)a5
+- (BOOL)p_shouldTextFlowAroundWrappable:(id)wrappable inTarget:(id)target inColumn:(id)column
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ((objc_msgSend_hasAlpha(v8, v11, v12, v13, v14, v15) & 1) == 0)
+  wrappableCopy = wrappable;
+  targetCopy = target;
+  columnCopy = column;
+  if ((objc_msgSend_hasAlpha(wrappableCopy, v11, v12, v13, v14, v15) & 1) == 0)
   {
-    objc_msgSend_boundsInRoot(v8, v16, v17, v18, v19, v20);
+    objc_msgSend_boundsInRoot(wrappableCopy, v16, v17, v18, v19, v20);
     v22 = *&self->_canvasSpaceToWrapSpace.c;
     *&recta[1] = *&self->_canvasSpaceToWrapSpace.a;
     *&recta[3] = v22;
@@ -1306,8 +1306,8 @@ LABEL_4:
     recta[0] = *&v48.origin.x;
     v26.n128_f64[0] = CGRectGetWidth(v48);
     v44 = v26.n128_f64[0];
-    objc_msgSend_frameBounds(v10, v27, v26, v28, v29, v30);
-    objc_msgSend_rectInRoot_(v9, v31, v32, v33, v34, v35);
+    objc_msgSend_frameBounds(columnCopy, v27, v26, v28, v29, v30);
+    objc_msgSend_rectInRoot_(targetCopy, v31, v32, v33, v34, v35);
     v36 = *&self->_canvasSpaceToWrapSpace.c;
     *&recta[1] = *&self->_canvasSpaceToWrapSpace.a;
     *&recta[3] = v36;
@@ -1355,22 +1355,22 @@ LABEL_6:
   return v21;
 }
 
-- (void)p_splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrappable:(id)a5 cookie:(id)a6 skipHint:(double *)a7
+- (void)p_splitLine:(CGRect)line lineSegmentRects:(id)rects wrappable:(id)wrappable cookie:(id)cookie skipHint:(double *)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a5;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  rectsCopy = rects;
+  wrappableCopy = wrappable;
   v17 = *&self->_canvasSpaceToWrapSpace.c;
   *&v36.a = *&self->_canvasSpaceToWrapSpace.a;
   *&v36.c = v17;
   *&v36.tx = *&self->_canvasSpaceToWrapSpace.tx;
-  v22 = objc_msgSend_transformedWrapSegmentsForWrappable_canvasSpaceToWrapSpaceTransform_(a6, v18, *&v36.tx, v17, v19, v20, v16, &v36);
+  v22 = objc_msgSend_transformedWrapSegmentsForWrappable_canvasSpaceToWrapSpaceTransform_(cookie, v18, *&v36.tx, v17, v19, v20, wrappableCopy, &v36);
   if (!v22)
   {
-    objc_msgSend_frameInRoot(v16, v21, v23, v24, v25, v26);
+    objc_msgSend_frameInRoot(wrappableCopy, v21, v23, v24, v25, v26);
     v27 = *&self->_canvasSpaceToWrapSpace.c;
     *&v36.a = *&self->_canvasSpaceToWrapSpace.a;
     *&v36.c = v27;
@@ -1385,7 +1385,7 @@ LABEL_6:
   v24.n128_f64[0] = y;
   v25.n128_f64[0] = width;
   v26.n128_f64[0] = height;
-  objc_msgSend_splitLine_lineSegmentRects_wrapSegments_type_skipHint_(MEMORY[0x277D80F88], v21, v23, v24, v25, v26, v15, v22, 1, a7);
+  objc_msgSend_splitLine_lineSegmentRects_wrapSegments_type_skipHint_(MEMORY[0x277D80F88], v21, v23, v24, v25, v26, rectsCopy, v22, 1, hint);
 }
 
 - (TPDocumentRoot)documentRoot

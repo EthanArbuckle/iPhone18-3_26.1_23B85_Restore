@@ -1,12 +1,12 @@
 @interface CalDefaultDictionary
-- (CalDefaultDictionary)initWithDefaultClass:(Class)a3;
-- (id)_mutableCopyOfFinalDictionaryWithZone:(_NSZone *)a3 isDeepCopy:(BOOL)a4;
-- (id)objectForKey:(id)a3;
+- (CalDefaultDictionary)initWithDefaultClass:(Class)class;
+- (id)_mutableCopyOfFinalDictionaryWithZone:(_NSZone *)zone isDeepCopy:(BOOL)copy;
+- (id)objectForKey:(id)key;
 @end
 
 @implementation CalDefaultDictionary
 
-- (CalDefaultDictionary)initWithDefaultClass:(Class)a3
+- (CalDefaultDictionary)initWithDefaultClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = CalDefaultDictionary;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_defaultClass = a3;
+    v4->_defaultClass = class;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     dict = v5->_dict;
     v5->_dict = v6;
@@ -23,34 +23,34 @@
   return v5;
 }
 
-- (id)_mutableCopyOfFinalDictionaryWithZone:(_NSZone *)a3 isDeepCopy:(BOOL)a4
+- (id)_mutableCopyOfFinalDictionaryWithZone:(_NSZone *)zone isDeepCopy:(BOOL)copy
 {
-  if (a4)
+  if (copy)
   {
-    v5 = [(CalDefaultDictionary *)self finalDictionary];
-    v6 = [v5 CalMutableRecursiveCopy];
+    finalDictionary = [(CalDefaultDictionary *)self finalDictionary];
+    calMutableRecursiveCopy = [finalDictionary CalMutableRecursiveCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF90] allocWithZone:a3];
-    v5 = [(CalDefaultDictionary *)self finalDictionary];
-    v6 = [v7 initWithDictionary:v5];
+    v7 = [MEMORY[0x1E695DF90] allocWithZone:zone];
+    finalDictionary = [(CalDefaultDictionary *)self finalDictionary];
+    calMutableRecursiveCopy = [v7 initWithDictionary:finalDictionary];
   }
 
-  v8 = v6;
+  v8 = calMutableRecursiveCopy;
 
   return v8;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_dict objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_dict objectForKey:keyCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(self->_defaultClass);
-    [(NSMutableDictionary *)self->_dict setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_dict setObject:v5 forKey:keyCopy];
   }
 
   return v5;

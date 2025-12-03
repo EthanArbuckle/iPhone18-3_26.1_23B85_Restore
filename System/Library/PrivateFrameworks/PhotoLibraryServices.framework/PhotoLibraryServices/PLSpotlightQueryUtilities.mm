@@ -1,37 +1,37 @@
 @interface PLSpotlightQueryUtilities
-+ (id)countAssetsQueryStringForLibraryIdentifier:(int64_t)a3;
-+ (id)searchQueryForLibrary:(id)a3 queryString:(id)a4;
-+ (id)searchQueryForLibraryIdentifier:(int64_t)a3 pathManager:(id)a4 queryString:(id)a5;
-+ (void)countForSearchQuery:(id)a3 timedDispatchGroup:(id)a4 completion:(id)a5;
++ (id)countAssetsQueryStringForLibraryIdentifier:(int64_t)identifier;
++ (id)searchQueryForLibrary:(id)library queryString:(id)string;
++ (id)searchQueryForLibraryIdentifier:(int64_t)identifier pathManager:(id)manager queryString:(id)string;
++ (void)countForSearchQuery:(id)query timedDispatchGroup:(id)group completion:(id)completion;
 @end
 
 @implementation PLSpotlightQueryUtilities
 
-+ (void)countForSearchQuery:(id)a3 timedDispatchGroup:(id)a4 completion:(id)a5
++ (void)countForSearchQuery:(id)query timedDispatchGroup:(id)group completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 enterWithName:@"CSSearchQuery"];
+  queryCopy = query;
+  completionCopy = completion;
+  groupCopy = group;
+  v10 = [groupCopy enterWithName:@"CSSearchQuery"];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __79__PLSpotlightQueryUtilities_countForSearchQuery_timedDispatchGroup_completion___block_invoke;
   v19[3] = &unk_1E7575FA8;
   v11 = v10;
   v20 = v11;
-  [v7 setCompletionHandler:v19];
-  [v7 start];
+  [queryCopy setCompletionHandler:v19];
+  [queryCopy start];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__PLSpotlightQueryUtilities_countForSearchQuery_timedDispatchGroup_completion___block_invoke_2;
   v15[3] = &unk_1E7576F38;
   v16 = v11;
-  v17 = v7;
-  v18 = v8;
-  v12 = v8;
-  v13 = v7;
+  v17 = queryCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queryCopy;
   v14 = v11;
-  [v9 notify:v15];
+  [groupCopy notify:v15];
 }
 
 void __79__PLSpotlightQueryUtilities_countForSearchQuery_timedDispatchGroup_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -75,59 +75,59 @@ void __79__PLSpotlightQueryUtilities_countForSearchQuery_timedDispatchGroup_comp
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)searchQueryForLibraryIdentifier:(int64_t)a3 pathManager:(id)a4 queryString:(id)a5
++ (id)searchQueryForLibraryIdentifier:(int64_t)identifier pathManager:(id)manager queryString:(id)string
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  managerCopy = manager;
+  stringCopy = string;
   v9 = objc_alloc_init(MEMORY[0x1E6964E70]);
   [v9 setDisableBlockingOnIndex:1];
-  if (a3 <= 1)
+  if (identifier <= 1)
   {
     v14[0] = *MEMORY[0x1E69BFF18];
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     [v9 setBundleIDs:v10];
   }
 
-  if ([PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:a3])
+  if ([PLSpotlightDonationUtilities shouldUseSpotlightPrivateIndexForLibraryIdentifier:identifier])
   {
-    v11 = [v7 spotlightSearchIndexPath];
-    v12 = [objc_alloc(MEMORY[0x1E6964E30]) initWithPath:v11 queryString:v8 context:v9];
+    spotlightSearchIndexPath = [managerCopy spotlightSearchIndexPath];
+    v12 = [objc_alloc(MEMORY[0x1E6964E30]) initWithPath:spotlightSearchIndexPath queryString:stringCopy context:v9];
   }
 
   else
   {
-    v12 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v8 queryContext:v9];
+    v12 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:stringCopy queryContext:v9];
   }
 
   return v12;
 }
 
-+ (id)searchQueryForLibrary:(id)a3 queryString:(id)a4
++ (id)searchQueryForLibrary:(id)library queryString:(id)string
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 libraryServicesManager];
+  stringCopy = string;
+  libraryCopy = library;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
 
-  if (!v9)
+  if (!libraryServicesManager)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLSpotlightQueryUtilities.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"library.libraryServicesManager != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSpotlightQueryUtilities.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"library.libraryServicesManager != nil"}];
   }
 
-  v10 = [v8 libraryServicesManager];
-  v11 = [v10 wellKnownPhotoLibraryIdentifier];
-  v12 = [v8 pathManager];
+  libraryServicesManager2 = [libraryCopy libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
+  pathManager = [libraryCopy pathManager];
 
-  v13 = [a1 searchQueryForLibraryIdentifier:v11 pathManager:v12 queryString:v7];
+  v13 = [self searchQueryForLibraryIdentifier:wellKnownPhotoLibraryIdentifier pathManager:pathManager queryString:stringCopy];
 
   return v13;
 }
 
-+ (id)countAssetsQueryStringForLibraryIdentifier:(int64_t)a3
++ (id)countAssetsQueryStringForLibraryIdentifier:(int64_t)identifier
 {
-  v3 = a3 == 3;
-  if (a3 == 3)
+  v3 = identifier == 3;
+  if (identifier == 3)
   {
     v4 = @"%@ > 0 && %@ > 0";
   }

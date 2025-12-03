@@ -1,17 +1,17 @@
 @interface RadioShowCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation RadioShowCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"overlayTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"overlaySubtitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"overlayTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.RadioShowCell" hasInstanceMethod:@"overlaySubtitle" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

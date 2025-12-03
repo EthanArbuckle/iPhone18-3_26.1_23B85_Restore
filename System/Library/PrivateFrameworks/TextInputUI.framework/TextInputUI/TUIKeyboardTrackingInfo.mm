@@ -1,12 +1,12 @@
 @interface TUIKeyboardTrackingInfo
-+ (CGSize)estimatedSizeForTrackingType:(int64_t)a3;
-- (CGSize)sizeForTrackingType:(int64_t)a3;
-- (UIOffset)offsetForTrackingType:(int64_t)a3;
++ (CGSize)estimatedSizeForTrackingType:(int64_t)type;
+- (CGSize)sizeForTrackingType:(int64_t)type;
+- (UIOffset)offsetForTrackingType:(int64_t)type;
 @end
 
 @implementation TUIKeyboardTrackingInfo
 
-+ (CGSize)estimatedSizeForTrackingType:(int64_t)a3
++ (CGSize)estimatedSizeForTrackingType:(int64_t)type
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (UIOffset)offsetForTrackingType:(int64_t)a3
+- (UIOffset)offsetForTrackingType:(int64_t)type
 {
   v3 = *MEMORY[0x1E69DE258];
   v4 = *(MEMORY[0x1E69DE258] + 8);
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (CGSize)sizeForTrackingType:(int64_t)a3
+- (CGSize)sizeForTrackingType:(int64_t)type
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);

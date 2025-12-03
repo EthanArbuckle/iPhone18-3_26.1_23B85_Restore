@@ -1,7 +1,7 @@
 @interface PXCuratedLibrarySettings
 + (PXCuratedLibrarySettings)sharedInstance;
 + (id)settingsControllerModule;
-- (BOOL)allowsModularLayoutForZoomLevel:(int64_t)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 layoutStyle:(unint64_t)a6;
+- (BOOL)allowsModularLayoutForZoomLevel:(int64_t)level sizeClass:(int64_t)class orientation:(int64_t)orientation layoutStyle:(unint64_t)style;
 - (id)acceptableLargeHeroPredicate;
 - (void)setDefaultValues;
 @end
@@ -12,8 +12,8 @@
 {
   v5.receiver = self;
   v5.super_class = PXCuratedLibrarySettings;
-  v3 = [(PTSettings *)&v5 setDefaultValues];
-  if (MEMORY[0x1A590D320](v3) && [MEMORY[0x1E69DD000] instancesRespondToSelector:sel_tabBarMinimizeBehavior])
+  setDefaultValues = [(PTSettings *)&v5 setDefaultValues];
+  if (MEMORY[0x1A590D320](setDefaultValues) && [MEMORY[0x1E69DD000] instancesRespondToSelector:sel_tabBarMinimizeBehavior])
   {
     v4 = [MEMORY[0x1E69DCFF0] instancesRespondToSelector:sel__isMinimized];
   }
@@ -549,7 +549,7 @@ void __42__PXCuratedLibrarySettings_sharedInstance__block_invoke()
   v181 = [MEMORY[0x1E695DEC8] arrayWithObjects:v331 count:2];
   v220 = [v178 sectionWithRows:v181 title:@"Debug"];
 
-  v226 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v182 = MEMORY[0x1E69C6638];
   v183 = MEMORY[0x1E69C66A8];
   v238 = NSStringFromSelector(sel_enableTabBarAccessoryControls);
@@ -579,7 +579,7 @@ void __42__PXCuratedLibrarySettings_sharedInstance__block_invoke()
   v330[19] = v250;
   v330[20] = v244;
   v330[21] = v220;
-  v330[22] = v226;
+  v330[22] = px_restoreDefaultsSection;
   v186 = [MEMORY[0x1E695DEC8] arrayWithObjects:v330 count:23];
   v187 = [v182 moduleWithTitle:@"Curated Library" contents:v186];
 
@@ -641,19 +641,19 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)allowsModularLayoutForZoomLevel:(int64_t)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 layoutStyle:(unint64_t)a6
+- (BOOL)allowsModularLayoutForZoomLevel:(int64_t)level sizeClass:(int64_t)class orientation:(int64_t)orientation layoutStyle:(unint64_t)style
 {
-  if ((a3 - 1) > 1)
+  if ((level - 1) > 1)
   {
     return 0;
   }
 
-  if (a4 == 2 || a4 == 1 && a5 == 2)
+  if (class == 2 || class == 1 && orientation == 2)
   {
     return 1;
   }
 
-  return a3 == 2 && a6 == 1;
+  return level == 2 && style == 1;
 }
 
 - (id)acceptableLargeHeroPredicate

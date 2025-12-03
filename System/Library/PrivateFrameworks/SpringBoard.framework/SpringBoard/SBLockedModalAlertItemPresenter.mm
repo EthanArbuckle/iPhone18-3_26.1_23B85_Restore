@@ -1,24 +1,24 @@
 @interface SBLockedModalAlertItemPresenter
-- (SBLockedModalAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)a3 windowSceneManager:(id)a4;
+- (SBLockedModalAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)presenter windowSceneManager:(id)manager;
 - (id)lockScreenActionContext;
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)windowSceneDidConnect:(id)a3 withSharedModalAlertItemPresenter:(id)a4;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)windowSceneDidConnect:(id)connect withSharedModalAlertItemPresenter:(id)presenter;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBLockedModalAlertItemPresenter
 
 - (id)lockScreenActionContext
 {
-  v2 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
-  v3 = [v2 resolvedSharedModalAlertItemPresenterForAlertItem:0];
-  v4 = [v3 currentlyPresentedAlertItem];
+  windowSceneResolver = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+  v3 = [windowSceneResolver resolvedSharedModalAlertItemPresenterForAlertItem:0];
+  currentlyPresentedAlertItem = [v3 currentlyPresentedAlertItem];
 
-  if (v4)
+  if (currentlyPresentedAlertItem)
   {
     v5 = +[SBLockScreenActionContextFactory sharedInstance];
-    v6 = [v5 lockScreenActionContextForAlertItem:v4];
+    v6 = [v5 lockScreenActionContextForAlertItem:currentlyPresentedAlertItem];
   }
 
   else
@@ -29,16 +29,16 @@
   return v6;
 }
 
-- (SBLockedModalAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)a3 windowSceneManager:(id)a4
+- (SBLockedModalAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)presenter windowSceneManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SBLockedModalAlertItemPresenter;
   v8 = [(SBLockedModalAlertItemPresenter *)&v12 init];
   if (v8)
   {
-    v9 = [[SBAlertItemPresenterWindowSceneResolver alloc] initWithSharedModalAlertItemPresenter:v6 windowSceneManager:v7];
+    v9 = [[SBAlertItemPresenterWindowSceneResolver alloc] initWithSharedModalAlertItemPresenter:presenterCopy windowSceneManager:managerCopy];
     windowSceneResolver = v8->_windowSceneResolver;
     v8->_windowSceneResolver = v9;
   }
@@ -46,17 +46,17 @@
   return v8;
 }
 
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
   v10 = +[SBLockScreenManager sharedInstance];
   [v10 setBiometricAutoUnlockingDisabled:1 forReason:@"SBDisableMesaReasonModalAlertItem"];
 
-  if ([v8 wakeDisplay] && (objc_msgSend(v8, "_didEverActivate") & 1) == 0)
+  if ([itemCopy wakeDisplay] && (objc_msgSend(itemCopy, "_didEverActivate") & 1) == 0)
   {
     v11 = +[SBLockScreenManager sharedInstance];
     v20 = @"SBUIUnlockOptionsTurnOnScreenFirstKey";
@@ -67,45 +67,45 @@
   }
 
   v14 = +[SBLockScreenManager sharedInstance];
-  v15 = [v14 isUILocked];
+  isUILocked = [v14 isUILocked];
 
-  v16 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
-  v17 = [v16 resolvedSharedModalAlertItemPresenterForAlertItem:v8];
+  windowSceneResolver = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+  v17 = [windowSceneResolver resolvedSharedModalAlertItemPresenterForAlertItem:itemCopy];
 
-  [v17 presentAlertItem:v8 isLocked:v15 animated:v6 completion:v9];
-  if ([v8 dismissesOverlaysOnLockScreen])
+  [v17 presentAlertItem:itemCopy isLocked:isUILocked animated:animatedCopy completion:completionCopy];
+  if ([itemCopy dismissesOverlaysOnLockScreen])
   {
-    v18 = [v17 windowScene];
-    v19 = [v18 controlCenterController];
+    windowScene = [v17 windowScene];
+    controlCenterController = [windowScene controlCenterController];
 
-    if ([v19 isVisible])
+    if ([controlCenterController isVisible])
     {
-      [v19 dismissAnimated:1];
+      [controlCenterController dismissAnimated:1];
     }
   }
 }
 
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v10 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
-  v11 = [v10 resolvedSharedModalAlertItemPresenterForAlertItem:v9];
-  [v11 dismissAlertItem:v9 animated:v5 completion:v8];
+  windowSceneResolver = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+  v11 = [windowSceneResolver resolvedSharedModalAlertItemPresenterForAlertItem:itemCopy];
+  [v11 dismissAlertItem:itemCopy animated:animatedCopy completion:completionCopy];
 
   v12 = +[SBLockScreenManager sharedInstance];
   [v12 setBiometricAutoUnlockingDisabled:0 forReason:@"SBDisableMesaReasonModalAlertItem"];
 }
 
-- (void)windowSceneDidConnect:(id)a3 withSharedModalAlertItemPresenter:(id)a4
+- (void)windowSceneDidConnect:(id)connect withSharedModalAlertItemPresenter:(id)presenter
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  connectCopy = connect;
+  presenterCopy = presenter;
+  if (connectCopy)
   {
-    if (v7)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -114,7 +114,7 @@
   else
   {
     [SBLockedModalAlertItemPresenter windowSceneDidConnect:a2 withSharedModalAlertItemPresenter:self];
-    if (v7)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -122,32 +122,32 @@
 
   [SBLockedModalAlertItemPresenter windowSceneDidConnect:a2 withSharedModalAlertItemPresenter:self];
 LABEL_3:
-  v8 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+  windowSceneResolver = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
 
-  if (v8)
+  if (windowSceneResolver)
   {
-    v9 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
-    [v9 windowSceneDidConnect:v10 withSharedModalAlertItemPresenter:v7];
+    windowSceneResolver2 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+    [windowSceneResolver2 windowSceneDidConnect:connectCopy withSharedModalAlertItemPresenter:presenterCopy];
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v8 = a3;
-  if (!v8)
+  disconnectCopy = disconnect;
+  if (!disconnectCopy)
   {
     [(SBLockedModalAlertItemPresenter *)a2 windowSceneDidDisconnect:?];
   }
 
-  v5 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+  windowSceneResolver = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
 
-  v6 = v8;
-  if (v5)
+  v6 = disconnectCopy;
+  if (windowSceneResolver)
   {
-    v7 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
-    [v7 windowSceneDidDisconnect:v8];
+    windowSceneResolver2 = [(SBLockedModalAlertItemPresenter *)self windowSceneResolver];
+    [windowSceneResolver2 windowSceneDidDisconnect:disconnectCopy];
 
-    v6 = v8;
+    v6 = disconnectCopy;
   }
 }
 

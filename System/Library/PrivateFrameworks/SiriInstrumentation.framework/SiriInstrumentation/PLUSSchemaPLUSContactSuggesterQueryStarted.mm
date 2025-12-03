@@ -1,26 +1,26 @@
 @interface PLUSSchemaPLUSContactSuggesterQueryStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactSuggesterQueryStarted
 
-- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PLUSSchemaPLUSContactSuggesterQueryStarted;
   v5 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoPersonQuery"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoPersonQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PLUSSchemaPLUSContactSuggesterQueryStarted *)v5 setUsoPersonQuery:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"domain"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactSuggesterQueryStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,7 +77,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self domain]- 1;
@@ -91,28 +91,28 @@
       v5 = off_1E78E0600[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"domain"];
+    [dictionary setObject:v5 forKeyedSubscript:@"domain"];
   }
 
   if (self->_usoPersonQuery)
   {
-    v6 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    usoPersonQuery = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
+    dictionaryRepresentation = [usoPersonQuery dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"usoPersonQuery"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"usoPersonQuery"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"usoPersonQuery"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"usoPersonQuery"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -131,18 +131,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
-  v6 = [v4 usoPersonQuery];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  usoPersonQuery = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
+  usoPersonQuery2 = [equalCopy usoPersonQuery];
+  v7 = usoPersonQuery2;
+  if ((usoPersonQuery != 0) == (usoPersonQuery2 == 0))
   {
 
 LABEL_12:
@@ -150,13 +150,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
-  if (v8)
+  usoPersonQuery3 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
+  if (usoPersonQuery3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
-    v11 = [v4 usoPersonQuery];
-    v12 = [v10 isEqual:v11];
+    v9 = usoPersonQuery3;
+    usoPersonQuery4 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
+    usoPersonQuery5 = [equalCopy usoPersonQuery];
+    v12 = [usoPersonQuery4 isEqual:usoPersonQuery5];
 
     if (!v12)
     {
@@ -168,7 +168,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -176,7 +176,7 @@ LABEL_12:
   if (*&self->_has)
   {
     domain = self->_domain;
-    if (domain != [v4 domain])
+    if (domain != [equalCopy domain])
     {
       goto LABEL_12;
     }
@@ -188,14 +188,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
+  toCopy = to;
+  usoPersonQuery = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
 
-  if (v4)
+  if (usoPersonQuery)
   {
-    v5 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
+    usoPersonQuery2 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery];
     PBDataWriterWriteSubmessage();
   }
 
@@ -205,17 +205,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSContactSuggesterQueryStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self usoPersonQuery:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PLUSSchemaPLUSContactSuggesterQueryStarted *)self deleteUsoPersonQuery];
   }

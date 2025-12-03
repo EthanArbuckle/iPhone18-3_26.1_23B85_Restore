@@ -1,24 +1,24 @@
 @interface SFAddToHomeScreenRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (SFAddToHomeScreenRemoteViewControllerDelegate)delegate;
-- (void)serviceViewControllerDidFinishWithResult:(BOOL)a3;
+- (void)serviceViewControllerDidFinishWithResult:(BOOL)result;
 @end
 
 @implementation SFAddToHomeScreenRemoteViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"SFAddToHomeScreenServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"SFAddToHomeScreenServiceViewController" fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)serviceViewControllerDidFinishWithResult:(BOOL)a3
+- (void)serviceViewControllerDidFinishWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self didFinishWithResult:v3];
+  [WeakRetained remoteViewController:self didFinishWithResult:resultCopy];
 }
 
 - (SFAddToHomeScreenRemoteViewControllerDelegate)delegate

@@ -1,60 +1,60 @@
 @interface AMUIPosterCategorySwitcherItem
-+ (id)itemWithConfiguration:(void *)a3 delegate:;
-- (AMUIPosterCategorySwitcherItem)initWithConfiguration:(id)a3 delegate:(id)a4;
-- (BOOL)posterViewControllerHasInlineAuthenticated:(id)a3;
-- (BOOL)posterViewControllerIsAuthenticated:(id)a3;
++ (id)itemWithConfiguration:(void *)configuration delegate:;
+- (AMUIPosterCategorySwitcherItem)initWithConfiguration:(id)configuration delegate:(id)delegate;
+- (BOOL)posterViewControllerHasInlineAuthenticated:(id)authenticated;
+- (BOOL)posterViewControllerIsAuthenticated:(id)authenticated;
 - (NSObject)identifier;
 - (UIView)itemView;
 - (id)delegate;
 - (id)posterView;
-- (id)posterViewControllerRequestExtensionInstanceIdentifier:(id)a3;
+- (id)posterViewControllerRequestExtensionInstanceIdentifier:(id)identifier;
 - (id)titleLabelView;
 - (uint64_t)configuration;
-- (uint64_t)setConfiguration:(uint64_t)a1;
-- (void)_noteWindowWillRotate:(id)a3;
+- (uint64_t)setConfiguration:(uint64_t)configuration;
+- (void)_noteWindowWillRotate:(id)rotate;
 - (void)_updateClipping;
-- (void)_updateLabelConstraintsForInterfaceOrientation:(int64_t)a3;
+- (void)_updateLabelConstraintsForInterfaceOrientation:(int64_t)orientation;
 - (void)_updateTitleLabelVisibility;
 - (void)dealloc;
 - (void)invalidate;
 - (void)noteTransitionDidBegin;
 - (void)posterViewController;
-- (void)posterViewController:(id)a3 didRequestInlineAuthenticationWithUnlockDestination:(id)a4;
-- (void)posterViewController:(id)a3 relinquishExtensionInstanceIdentifier:(id)a4;
-- (void)setTitleLabelVisible:(char)a3 onTopEdge:;
-- (void)switcher:(id)a3 didMoveToWindow:(id)a4;
-- (void)switcher:(id)a3 updateItemForPresentationProgress:(double)a4;
-- (void)switcher:(id)a3 willMoveToWindow:(id)a4;
-- (void)switcherItemDidAppear:(id)a3;
-- (void)switcherItemDidDisappear:(id)a3;
-- (void)switcherItemWillAppear:(id)a3;
-- (void)switcherItemWillDisappear:(id)a3;
+- (void)posterViewController:(id)controller didRequestInlineAuthenticationWithUnlockDestination:(id)destination;
+- (void)posterViewController:(id)controller relinquishExtensionInstanceIdentifier:(id)identifier;
+- (void)setTitleLabelVisible:(char)visible onTopEdge:;
+- (void)switcher:(id)switcher didMoveToWindow:(id)window;
+- (void)switcher:(id)switcher updateItemForPresentationProgress:(double)progress;
+- (void)switcher:(id)switcher willMoveToWindow:(id)window;
+- (void)switcherItemDidAppear:(id)appear;
+- (void)switcherItemDidDisappear:(id)disappear;
+- (void)switcherItemWillAppear:(id)appear;
+- (void)switcherItemWillDisappear:(id)disappear;
 @end
 
 @implementation AMUIPosterCategorySwitcherItem
 
-+ (id)itemWithConfiguration:(void *)a3 delegate:
++ (id)itemWithConfiguration:(void *)configuration delegate:
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = a2;
-  v6 = [objc_alloc(objc_opt_self()) initWithConfiguration:v5 delegate:v4];
+  v6 = [objc_alloc(objc_opt_self()) initWithConfiguration:v5 delegate:configurationCopy];
 
   return v6;
 }
 
-- (AMUIPosterCategorySwitcherItem)initWithConfiguration:(id)a3 delegate:(id)a4
+- (AMUIPosterCategorySwitcherItem)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = AMUIPosterCategorySwitcherItem;
   v9 = [(AMUIPosterCategorySwitcherItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
+    objc_storeStrong(&v9->_configuration, configuration);
     v10->_appearState = 0;
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
@@ -188,23 +188,23 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
   self->_posterViewController = 0;
 }
 
-- (void)switcherItemWillAppear:(id)a3
+- (void)switcherItemWillAppear:(id)appear
 {
   self->_appearState = 1;
-  v4 = a3;
-  v7 = [(AMUIPosterCategorySwitcherItem *)self itemView];
-  v5 = [v4 traitCollection];
+  appearCopy = appear;
+  itemView = [(AMUIPosterCategorySwitcherItem *)self itemView];
+  traitCollection = [appearCopy traitCollection];
 
-  [v5 displayCornerRadius];
-  [v7 _setContinuousCornerRadius:?];
+  [traitCollection displayCornerRadius];
+  [itemView _setContinuousCornerRadius:?];
 
-  v6 = [v7 window];
-  -[AMUIPosterCategorySwitcherItem _updateLabelConstraintsForInterfaceOrientation:](self, "_updateLabelConstraintsForInterfaceOrientation:", [v6 _windowInterfaceOrientation]);
+  window = [itemView window];
+  -[AMUIPosterCategorySwitcherItem _updateLabelConstraintsForInterfaceOrientation:](self, "_updateLabelConstraintsForInterfaceOrientation:", [window _windowInterfaceOrientation]);
   [(AMUIPosterCategorySwitcherItem *)self _updateClipping];
   [(AMUIPosterCategorySwitcherItem *)self _updateContentMode];
 }
 
-- (void)switcherItemWillDisappear:(id)a3
+- (void)switcherItemWillDisappear:(id)disappear
 {
   self->_appearState = 3;
   [(AMUIPosterCategorySwitcherItem *)self _updateClipping];
@@ -212,7 +212,7 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
   [(AMUIPosterCategorySwitcherItem *)self _updateContentMode];
 }
 
-- (void)switcherItemDidDisappear:(id)a3
+- (void)switcherItemDidDisappear:(id)disappear
 {
   self->_appearState = 0;
   [(AMUIPosterCategorySwitcherItem *)self _updateClipping];
@@ -220,54 +220,54 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
   [(AMUIPosterCategorySwitcherItem *)self _updateContentMode];
 }
 
-- (void)switcher:(id)a3 willMoveToWindow:(id)a4
+- (void)switcher:(id)switcher willMoveToWindow:(id)window
 {
-  v5 = [a4 _windowInterfaceOrientation];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  [(AMUIPosterCategorySwitcherItem *)self _updateLabelConstraintsForInterfaceOrientation:v5];
+  [(AMUIPosterCategorySwitcherItem *)self _updateLabelConstraintsForInterfaceOrientation:_windowInterfaceOrientation];
 }
 
-- (void)switcher:(id)a3 didMoveToWindow:(id)a4
+- (void)switcher:(id)switcher didMoveToWindow:(id)window
 {
-  v5 = [a4 _windowInterfaceOrientation];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  [(AMUIPosterCategorySwitcherItem *)self _updateLabelConstraintsForInterfaceOrientation:v5];
+  [(AMUIPosterCategorySwitcherItem *)self _updateLabelConstraintsForInterfaceOrientation:_windowInterfaceOrientation];
 }
 
-- (void)posterViewController:(id)a3 relinquishExtensionInstanceIdentifier:(id)a4
+- (void)posterViewController:(id)controller relinquishExtensionInstanceIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_lastInstanceIdentifier, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_lastInstanceIdentifier, identifier);
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained posterCategorySwitcherItem:self relinquishInstanceIdentifier:v6];
+  [WeakRetained posterCategorySwitcherItem:self relinquishInstanceIdentifier:identifierCopy];
 }
 
 - (void)_updateClipping
 {
   v2 = (self->_appearState & 0xFFFFFFFD) == 1;
-  v3 = [(AMUIPosterCategorySwitcherItem *)self itemView];
-  [v3 setClipsToBounds:v2];
+  itemView = [(AMUIPosterCategorySwitcherItem *)self itemView];
+  [itemView setClipsToBounds:v2];
 }
 
-- (void)_updateLabelConstraintsForInterfaceOrientation:(int64_t)a3
+- (void)_updateLabelConstraintsForInterfaceOrientation:(int64_t)orientation
 {
-  v4 = a3 == 3;
-  [(NSLayoutConstraint *)self->_labelLeftConstraint setActive:a3 != 3];
+  v4 = orientation == 3;
+  [(NSLayoutConstraint *)self->_labelLeftConstraint setActive:orientation != 3];
   labelRightConstraint = self->_labelRightConstraint;
 
   [(NSLayoutConstraint *)labelRightConstraint setActive:v4];
 }
 
-- (void)_noteWindowWillRotate:(id)a3
+- (void)_noteWindowWillRotate:(id)rotate
 {
-  v13 = a3;
-  v4 = [v13 object];
-  v5 = [(UIView *)self->_itemView window];
+  rotateCopy = rotate;
+  object = [rotateCopy object];
+  window = [(UIView *)self->_itemView window];
 
-  if (v4 == v5)
+  if (object == window)
   {
-    v6 = [v13 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D772C0]];
+    userInfo = [rotateCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D772C0]];
     v8 = objc_opt_class();
     v9 = v7;
     if (v8)
@@ -290,8 +290,8 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
 
     v11 = v10;
 
-    v12 = [v11 integerValue];
-    [(AMUIPosterCategorySwitcherItem *)self _updateLabelConstraintsForInterfaceOrientation:v12];
+    integerValue = [v11 integerValue];
+    [(AMUIPosterCategorySwitcherItem *)self _updateLabelConstraintsForInterfaceOrientation:integerValue];
   }
 }
 
@@ -305,20 +305,20 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (uint64_t)setConfiguration:(uint64_t)a1
+- (uint64_t)setConfiguration:(uint64_t)configuration
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (configuration)
   {
-    v6 = *(a1 + 88);
+    v6 = *(configuration + 88);
     v8 = v5;
     v4 = BSEqualObjects();
     v5 = v8;
     if ((v4 & 1) == 0)
     {
-      objc_storeStrong((a1 + 88), a2);
-      v4 = [*(a1 + 96) updatePosterConfiguration:*(a1 + 88) withAnimationSettings:0];
+      objc_storeStrong((configuration + 88), a2);
+      v4 = [*(configuration + 96) updatePosterConfiguration:*(configuration + 88) withAnimationSettings:0];
       v5 = v8;
     }
   }
@@ -328,78 +328,78 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
 
 - (void)posterViewController
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[12];
+    selfCopy = self;
+    v3 = self[12];
     if (!v3)
     {
       v4 = objc_alloc_init(AMUIPosterViewController);
-      v5 = v2[12];
-      v2[12] = v4;
+      v5 = selfCopy[12];
+      selfCopy[12] = v4;
 
-      [v2[12] setDelegate:v2];
-      [v2[12] setChromeOrientationPolicy:2];
-      [v2[12] updatePosterConfiguration:v2[11] withAnimationSettings:0];
-      [v2 _updateContentMode];
-      v3 = v2[12];
+      [selfCopy[12] setDelegate:selfCopy];
+      [selfCopy[12] setChromeOrientationPolicy:2];
+      [selfCopy[12] updatePosterConfiguration:selfCopy[11] withAnimationSettings:0];
+      [selfCopy _updateContentMode];
+      v3 = selfCopy[12];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)noteTransitionDidBegin
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1[1] window];
-    [a1 _updateLabelConstraintsForInterfaceOrientation:{objc_msgSend(v2, "_windowInterfaceOrientation")}];
+    window = [self[1] window];
+    [self _updateLabelConstraintsForInterfaceOrientation:{objc_msgSend(window, "_windowInterfaceOrientation")}];
   }
 }
 
-- (void)setTitleLabelVisible:(char)a3 onTopEdge:
+- (void)setTitleLabelVisible:(char)visible onTopEdge:
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 80) = a2;
-    *(a1 + 81) = a3;
-    return [a1 _updateTitleLabelVisibility];
+    *(self + 80) = a2;
+    *(self + 81) = visible;
+    return [self _updateTitleLabelVisibility];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)titleLabelView
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 itemView];
-    a1 = v2[13];
+    selfCopy = self;
+    itemView = [self itemView];
+    self = selfCopy[13];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)posterView
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(AMUIPosterCategorySwitcherItem *)a1 posterViewController];
-    v2 = [v1 view];
+    posterViewController = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
+    view = [posterViewController view];
   }
 
   else
   {
-    v2 = 0;
+    view = 0;
   }
 
-  return v2;
+  return view;
 }
 
 - (NSObject)identifier
@@ -414,23 +414,23 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
 
 - (UIView)itemView
 {
-  v3 = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
-  v4 = [v3 view];
+  posterViewController = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
+  view = [posterViewController view];
 
   if (!self->_itemView)
   {
     goto LABEL_5;
   }
 
-  v5 = [v4 superview];
+  superview = [view superview];
   itemView = self->_itemView;
 
-  if (v5 != itemView)
+  if (superview != itemView)
   {
     [(UIView *)self->_itemView bounds];
-    [v4 setFrame:?];
-    [v4 setAutoresizingMask:18];
-    [(UIView *)self->_itemView addSubview:v4];
+    [view setFrame:?];
+    [view setAutoresizingMask:18];
+    [(UIView *)self->_itemView addSubview:view];
   }
 
   v7 = self->_itemView;
@@ -438,10 +438,10 @@ void __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke_2(uint64_t a1)
   {
 LABEL_5:
     v8 = objc_alloc(MEMORY[0x277D75D18]);
-    [v4 bounds];
+    [view bounds];
     v9 = [v8 initWithFrame:?];
-    [v4 setAutoresizingMask:18];
-    [(UIView *)v9 addSubview:v4];
+    [view setAutoresizingMask:18];
+    [(UIView *)v9 addSubview:view];
     if ([AMUIDataLayerViewController dataLayoutForConfiguration:self->_configuration]== 1)
     {
       if (!self->_loadingQueue)
@@ -456,25 +456,25 @@ LABEL_5:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v15 = [WeakRetained posterCategorySwitcherItemPrototypeSettings:self];
 
-      v16 = [v15 useFallbackTitleAndSymbol];
+      useFallbackTitleAndSymbol = [v15 useFallbackTitleAndSymbol];
       v17 = self->_loadingQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __42__AMUIPosterCategorySwitcherItem_itemView__block_invoke;
       block[3] = &unk_278C767E8;
       v25 = v13;
-      v28 = v16;
+      v28 = useFallbackTitleAndSymbol;
       v26 = v9;
-      v27 = self;
+      selfCopy = self;
       v18 = v13;
       dispatch_async(v17, block);
     }
 
-    v19 = [v4 layer];
-    [v19 setAllowsGroupOpacity:1];
+    layer = [view layer];
+    [layer setAllowsGroupOpacity:1];
 
-    v20 = [(UIView *)v9 layer];
-    [v20 setAllowsGroupOpacity:1];
+    layer2 = [(UIView *)v9 layer];
+    [layer2 setAllowsGroupOpacity:1];
 
     v21 = self->_itemView;
     self->_itemView = v9;
@@ -498,27 +498,27 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)switcherItemDidAppear:(id)a3
+- (void)switcherItemDidAppear:(id)appear
 {
   self->_appearState = 2;
-  v4 = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
-  [v4 setAppearanceTransitionProgress:1.0];
+  posterViewController = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
+  [posterViewController setAppearanceTransitionProgress:1.0];
 
   [(AMUIPosterCategorySwitcherItem *)self _updateClipping];
 
   [(AMUIPosterCategorySwitcherItem *)self _updateContentMode];
 }
 
-- (void)switcher:(id)a3 updateItemForPresentationProgress:(double)a4
+- (void)switcher:(id)switcher updateItemForPresentationProgress:(double)progress
 {
-  self->_presentationProgress = a4;
-  v6 = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
-  [v6 setAppearanceTransitionProgress:a4];
+  self->_presentationProgress = progress;
+  posterViewController = [(AMUIPosterCategorySwitcherItem *)self posterViewController];
+  [posterViewController setAppearanceTransitionProgress:progress];
 
   [(AMUIPosterCategorySwitcherItem *)self _updateContentMode];
 }
 
-- (id)posterViewControllerRequestExtensionInstanceIdentifier:(id)a3
+- (id)posterViewControllerRequestExtensionInstanceIdentifier:(id)identifier
 {
   if (self)
   {
@@ -539,7 +539,7 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)posterViewControllerIsAuthenticated:(id)a3
+- (BOOL)posterViewControllerIsAuthenticated:(id)authenticated
 {
   if (self)
   {
@@ -556,9 +556,9 @@ LABEL_5:
   return v4;
 }
 
-- (void)posterViewController:(id)a3 didRequestInlineAuthenticationWithUnlockDestination:(id)a4
+- (void)posterViewController:(id)controller didRequestInlineAuthenticationWithUnlockDestination:(id)destination
 {
-  v6 = a4;
+  destinationCopy = destination;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -572,7 +572,7 @@ LABEL_5:
   [OUTLINED_FUNCTION_0_4() posterCategorySwitcherItem:? didRequestInlineAuthenticationWithUnlockDestination:?];
 }
 
-- (BOOL)posterViewControllerHasInlineAuthenticated:(id)a3
+- (BOOL)posterViewControllerHasInlineAuthenticated:(id)authenticated
 {
   if (self)
   {
@@ -591,8 +591,8 @@ LABEL_5:
 
 - (void)_updateTitleLabelVisibility
 {
-  v3 = [(AMUIPosterCategorySwitcherItem *)&self->super.isa titleLabelView];
-  [v3 setHidden:!self->_titleLabelVisible];
+  titleLabelView = [(AMUIPosterCategorySwitcherItem *)&self->super.isa titleLabelView];
+  [titleLabelView setHidden:!self->_titleLabelVisible];
   [(NSLayoutConstraint *)self->_labelTopConstraint setActive:self->_titleLabelOnTopEdge];
   [(NSLayoutConstraint *)self->_labelBottomConstraint setActive:!self->_titleLabelOnTopEdge];
 }

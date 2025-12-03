@@ -1,12 +1,12 @@
 @interface PKRemoteFlightShareComposeViewController
 - (PKFlightShareComposeViewControllerDelegate)delegate;
-- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)result;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation PKRemoteFlightShareComposeViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -17,15 +17,15 @@
   }
 }
 
-- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)a3
+- (void)flightShareComposeViewControllerDidFinishWithResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 flightShareComposeViewControllerDidFinishWithResult:v3];
+    [v6 flightShareComposeViewControllerDidFinishWithResult:resultCopy];
   }
 }
 

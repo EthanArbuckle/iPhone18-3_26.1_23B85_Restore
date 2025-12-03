@@ -1,18 +1,18 @@
 @interface _GCMFiControllerProfile
-+ (BOOL)determineAccelerometerSupportWithServiceInfo:(id)a3;
-+ (BOOL)determineGyroSupportWithServiceInfo:(id)a3;
-+ (BOOL)logicalDevice:(id)a3 getSystemButtonName:(id *)a4 sfSymbolName:(id *)a5 needsMFiCompatibility:(BOOL *)a6;
-+ (BOOL)match:(id)a3;
-+ (BOOL)physicalDeviceSupportsMotion:(id)a3;
-+ (BOOL)physicalDeviceUsesACHomeForMenu:(id)a3;
++ (BOOL)determineAccelerometerSupportWithServiceInfo:(id)info;
++ (BOOL)determineGyroSupportWithServiceInfo:(id)info;
++ (BOOL)logicalDevice:(id)device getSystemButtonName:(id *)name sfSymbolName:(id *)symbolName needsMFiCompatibility:(BOOL *)compatibility;
++ (BOOL)match:(id)match;
++ (BOOL)physicalDeviceSupportsMotion:(id)motion;
++ (BOOL)physicalDeviceUsesACHomeForMenu:(id)menu;
 + (_GCPhysicalDeviceManager)deviceManager;
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
-+ (id)logicalDevice:(id)a3 makeControllerMotionWithIdentifier:(id)a4;
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileWithIdentifier:(id)a4;
-+ (void)determineCapabilitiesWithServiceInfo:(id)a3 initInfo:(id *)a4;
-+ (void)physicalDevice:(id)a3 setIndicatedPlayerIndex:(int64_t)a4;
-+ (void)populateInitInfo:(id *)a3 forLogicalDevice:(id)a4;
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings;
++ (id)logicalDevice:(id)device makeControllerMotionWithIdentifier:(id)identifier;
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings;
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileWithIdentifier:(id)identifier;
++ (void)determineCapabilitiesWithServiceInfo:(id)info initInfo:(id *)initInfo;
++ (void)physicalDevice:(id)device setIndicatedPlayerIndex:(int64_t)index;
++ (void)populateInitInfo:(id *)info forLogicalDevice:(id)device;
 @end
 
 @implementation _GCMFiControllerProfile
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __40___GCMFiControllerProfile_deviceManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deviceManager_onceToken_1 != -1)
   {
     dispatch_once(&deviceManager_onceToken_1, block);
@@ -34,25 +34,25 @@
   return v2;
 }
 
-+ (BOOL)match:(id)a3
++ (BOOL)match:(id)match
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, "MFiControllerCapabilities");
+  matchCopy = match;
+  v4 = objc_getAssociatedObject(matchCopy, "MFiControllerCapabilities");
   if (v4)
   {
     v5 = v4;
 LABEL_4:
-    v6 = [(_GCMFiControllerCapabilites *)v5 isExtendedGamepad];
-    v7 = [(_GCMFiControllerCapabilites *)v5 isStandardGamepad];
-    v8 = v7;
-    if ((v6 & 1) == 0 && !v7)
+    isExtendedGamepad = [(_GCMFiControllerCapabilites *)v5 isExtendedGamepad];
+    isStandardGamepad = [(_GCMFiControllerCapabilites *)v5 isStandardGamepad];
+    v8 = isStandardGamepad;
+    if ((isExtendedGamepad & 1) == 0 && !isStandardGamepad)
     {
       goto LABEL_6;
     }
 
-    v10 = [v3 numberPropertyForKey:@"Authenticated"];
-    if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (-[NSObject BOOLValue](v10, "BOOLValue") & 1) != 0 || (isDeviceParentAuthenticated([v3 service]) & 1) != 0)
+    v10 = [matchCopy numberPropertyForKey:@"Authenticated"];
+    if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (-[NSObject BOOLValue](v10, "BOOLValue") & 1) != 0 || (isDeviceParentAuthenticated([matchCopy service]) & 1) != 0)
     {
       v11 = 1;
     }
@@ -60,13 +60,13 @@ LABEL_4:
     else
     {
       v12 = GCBypassMFiAuthentication();
-      v13 = [v3 stringPropertyForKey:@"Product"];
+      v13 = [matchCopy stringPropertyForKey:@"Product"];
       isInternalBuild = gc_isInternalBuild();
       if (!v12)
       {
         if (isInternalBuild)
         {
-          [(_GCMFiControllerProfile *)v13 match:v3];
+          [(_GCMFiControllerProfile *)v13 match:matchCopy];
         }
 
         v9 = 0;
@@ -75,13 +75,13 @@ LABEL_4:
 
       if (isInternalBuild)
       {
-        [(_GCMFiControllerProfile *)v13 match:v3];
+        [(_GCMFiControllerProfile *)v13 match:matchCopy];
       }
 
       v11 = 0;
     }
 
-    objc_setAssociatedObject(v3, "MFiControllerCapabilities", v5, 0x301);
+    objc_setAssociatedObject(matchCopy, "MFiControllerCapabilities", v5, 0x301);
     if (!gc_isInternalBuild())
     {
       v9 = 1;
@@ -107,7 +107,7 @@ LABEL_4:
         v18 = " standard";
       }
 
-      if (v6)
+      if (isExtendedGamepad)
       {
         v19 = " extended";
       }
@@ -117,15 +117,15 @@ LABEL_4:
         v19 = v18;
       }
 
-      v20 = [v3 name];
+      name = [matchCopy name];
       v21 = 136316162;
       v22 = v17;
       v23 = 2080;
       v24 = v19;
       v25 = 2112;
-      v26 = v3;
+      v26 = matchCopy;
       v27 = 2112;
-      v28 = v20;
+      v28 = name;
       v29 = 2114;
       v30 = v5;
       _os_log_impl(&dword_1D2CD5000, v10, OS_LOG_TYPE_DEFAULT, "Matched%s%s MFi game controller %@ '%@' %{public}@", &v21, 0x34u);
@@ -137,7 +137,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v5 = [[_GCMFiControllerCapabilites alloc] initWithServiceInfo:v3];
+  v5 = [[_GCMFiControllerCapabilites alloc] initWithServiceInfo:matchCopy];
   if (v5)
   {
     goto LABEL_4;
@@ -151,34 +151,34 @@ LABEL_22:
   return v9;
 }
 
-+ (BOOL)physicalDeviceSupportsMotion:(id)a3
++ (BOOL)physicalDeviceSupportsMotion:(id)motion
 {
-  v4 = [a3 serviceInfo];
-  LOBYTE(a1) = [a1 determineAccelerometerSupportWithServiceInfo:v4];
+  serviceInfo = [motion serviceInfo];
+  LOBYTE(self) = [self determineAccelerometerSupportWithServiceInfo:serviceInfo];
 
-  return a1;
+  return self;
 }
 
-+ (void)physicalDevice:(id)a3 setIndicatedPlayerIndex:(int64_t)a4
++ (void)physicalDevice:(id)device setIndicatedPlayerIndex:(int64_t)index
 {
-  v5 = [a3 serviceInfo];
-  v6 = [v5 service];
+  serviceInfo = [device serviceInfo];
+  service = [serviceInfo service];
 
-  if (v6)
+  if (service)
   {
 
-    GC_IOHIDSetLEDs(v6, a4);
+    GC_IOHIDSetLEDs(service, index);
   }
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileWithIdentifier:(id)a4
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  identifierCopy = identifier;
   memset(v10, 0, 512);
   GCExtendedGamepadInitInfoMake(v10);
-  [_GCMFiControllerProfile populateInitInfo:v10 forLogicalDevice:v5];
-  v7 = [[GCExtendedGamepad alloc] initWithIdentifier:v6 info:v10];
+  [_GCMFiControllerProfile populateInitInfo:v10 forLogicalDevice:deviceCopy];
+  v7 = [[GCExtendedGamepad alloc] initWithIdentifier:identifierCopy info:v10];
   for (i = 0; i != 1584; i += 72)
   {
     __destructor_8_s0_s48_s56_s64(v10 + i);
@@ -187,53 +187,53 @@ LABEL_22:
   return v7;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerMotionWithIdentifier:(id)a4
++ (id)logicalDevice:(id)device makeControllerMotionWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[GCMotion alloc] initWithIdentifier:v6];
+  identifierCopy = identifier;
+  deviceCopy = device;
+  v8 = [[GCMotion alloc] initWithIdentifier:identifierCopy];
 
-  v9 = [v7 underlyingDevice];
+  underlyingDevice = [deviceCopy underlyingDevice];
 
-  v10 = [v9 serviceInfo];
-  -[GCMotion _setHasRotationRate:](v8, "_setHasRotationRate:", [a1 determineGyroSupportWithServiceInfo:v10]);
+  serviceInfo = [underlyingDevice serviceInfo];
+  -[GCMotion _setHasRotationRate:](v8, "_setHasRotationRate:", [self determineGyroSupportWithServiceInfo:serviceInfo]);
 
   [(GCMotion *)v8 _setHasAttitude:0];
 
   return v8;
 }
 
-+ (void)populateInitInfo:(id *)a3 forLogicalDevice:(id)a4
++ (void)populateInitInfo:(id *)info forLogicalDevice:(id)device
 {
-  a3->var0[5].var2 = 0;
-  a3->var0[6].var2 = 0;
-  a3->var0[9].var2 = 0;
-  a3->var0[10].var2 = 0;
-  a3->var0[11].var1 = 0;
-  a3->var0[12].var1 = 0;
-  a3->var0[13].var1 = 0;
-  a3->var0[14].var1 = 0;
-  a3->var0[15].var1 = 0;
-  a3->var0[16].var1 = 0;
-  a3->var0[17].var1 = 0;
-  a3->var0[18].var1 = 0;
-  a3->var0[19].var1 = 0;
-  a3->var0[20].var1 = 0;
-  a3->var0[21].var1 = 0;
-  a3->var0[0].var2 = 1;
-  v6 = [a4 underlyingDevice];
-  v5 = [v6 serviceInfo];
-  [_GCMFiControllerProfile determineCapabilitiesWithServiceInfo:v5 initInfo:a3];
+  info->var0[5].var2 = 0;
+  info->var0[6].var2 = 0;
+  info->var0[9].var2 = 0;
+  info->var0[10].var2 = 0;
+  info->var0[11].var1 = 0;
+  info->var0[12].var1 = 0;
+  info->var0[13].var1 = 0;
+  info->var0[14].var1 = 0;
+  info->var0[15].var1 = 0;
+  info->var0[16].var1 = 0;
+  info->var0[17].var1 = 0;
+  info->var0[18].var1 = 0;
+  info->var0[19].var1 = 0;
+  info->var0[20].var1 = 0;
+  info->var0[21].var1 = 0;
+  info->var0[0].var2 = 1;
+  underlyingDevice = [device underlyingDevice];
+  serviceInfo = [underlyingDevice serviceInfo];
+  [_GCMFiControllerProfile determineCapabilitiesWithServiceInfo:serviceInfo initInfo:info];
 }
 
-+ (void)determineCapabilitiesWithServiceInfo:(id)a3 initInfo:(id *)a4
++ (void)determineCapabilitiesWithServiceInfo:(id)info initInfo:(id *)initInfo
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [a3 service];
-  v5 = IOHIDServiceClientCopyProperty(v4, @"GameControllerPointer");
+  service = [info service];
+  v5 = IOHIDServiceClientCopyProperty(service, @"GameControllerPointer");
   if (v5)
   {
-    obj = v4;
+    obj = service;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -255,23 +255,23 @@ LABEL_22:
 
           v11 = *(*(&v40 + 1) + 8 * i);
           v12 = [v11 objectForKeyedSubscript:{@"UsagePage", obj}];
-          v13 = [v12 intValue];
+          intValue = [v12 intValue];
 
           v14 = [v11 objectForKeyedSubscript:@"Usage"];
-          v15 = [v14 intValue];
+          intValue2 = [v14 intValue];
 
           v17 = __73___GCMFiControllerProfile_determineCapabilitiesWithServiceInfo_initInfo___block_invoke(v16, v11);
           v18 = v17;
-          if (v13 == 9)
+          if (intValue == 9)
           {
-            v19 = &a4->var0[__73___GCMFiControllerProfile_determineCapabilitiesWithServiceInfo_initInfo___block_invoke_2(v17, v15)];
+            v19 = &initInfo->var0[__73___GCMFiControllerProfile_determineCapabilitiesWithServiceInfo_initInfo___block_invoke_2(v17, intValue2)];
             v19->var2 = v18;
             v19->var1 = 1;
           }
 
-          else if (v13 == 1 && (v15 & 0xFFFFFFFC) == 0x90)
+          else if (intValue == 1 && (intValue2 & 0xFFFFFFFC) == 0x90)
           {
-            a4->var0[0].var2 &= v17;
+            initInfo->var0[0].var2 &= v17;
           }
         }
 
@@ -281,10 +281,10 @@ LABEL_22:
       while (v8);
     }
 
-    v4 = obj;
+    service = obj;
   }
 
-  v20 = IOHIDServiceClientCopyProperty(v4, @"Keyboard");
+  v20 = IOHIDServiceClientCopyProperty(service, @"Keyboard");
   if (v20)
   {
     v36 = 0u;
@@ -308,42 +308,42 @@ LABEL_22:
 
           v25 = *(*(&v36 + 1) + 8 * j);
           v26 = [v25 objectForKeyedSubscript:@"UsagePage"];
-          v27 = [v26 intValue];
+          intValue3 = [v26 intValue];
 
           v28 = [v25 objectForKeyedSubscript:@"Usage"];
-          v29 = [v28 intValue];
+          intValue4 = [v28 intValue];
 
           v31 = __73___GCMFiControllerProfile_determineCapabilitiesWithServiceInfo_initInfo___block_invoke(v30, v25);
-          if (v27 == 12)
+          if (intValue3 == 12)
           {
-            if (v29 <= 515)
+            if (intValue4 <= 515)
             {
-              if (v29 == 101)
+              if (intValue4 == 101)
               {
-                a4->var2 = 1;
+                initInfo->var2 = 1;
               }
 
-              else if (v29 == 178)
+              else if (intValue4 == 178)
               {
-                a4->var1 = 1;
+                initInfo->var1 = 1;
               }
             }
 
             else
             {
-              switch(v29)
+              switch(intValue4)
               {
                 case 516:
-                  a4->var0[14].var2 = v31;
-                  a4->var0[14].var1 = 1;
+                  initInfo->var0[14].var2 = v31;
+                  initInfo->var0[14].var1 = 1;
                   break;
                 case 547:
-                  a4->var0[13].var2 = v31;
-                  a4->var0[13].var1 = 1;
+                  initInfo->var0[13].var2 = v31;
+                  initInfo->var0[13].var1 = 1;
                   break;
                 case 521:
-                  a4->var0[15].var2 = v31;
-                  a4->var0[15].var1 = 1;
+                  initInfo->var0[15].var2 = v31;
+                  initInfo->var0[15].var1 = 1;
                   break;
               }
             }
@@ -360,10 +360,10 @@ LABEL_22:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)determineAccelerometerSupportWithServiceInfo:(id)a3
++ (BOOL)determineAccelerometerSupportWithServiceInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"Accel" ofClass:objc_opt_class()];
+  infoCopy = info;
+  v4 = [infoCopy propertyForKey:@"Accel" ofClass:objc_opt_class()];
 
   if (v4)
   {
@@ -379,10 +379,10 @@ LABEL_22:
   return v6;
 }
 
-+ (BOOL)determineGyroSupportWithServiceInfo:(id)a3
++ (BOOL)determineGyroSupportWithServiceInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"Gyro" ofClass:objc_opt_class()];
+  infoCopy = info;
+  v4 = [infoCopy propertyForKey:@"Gyro" ofClass:objc_opt_class()];
 
   if (v4)
   {
@@ -398,14 +398,14 @@ LABEL_22:
   return v6;
 }
 
-+ (BOOL)physicalDeviceUsesACHomeForMenu:(id)a3
++ (BOOL)physicalDeviceUsesACHomeForMenu:(id)menu
 {
-  v3 = [a3 serviceInfo];
-  v4 = [(GCHIDServiceInfo *)v3 mfiControllerCapabilities];
+  serviceInfo = [menu serviceInfo];
+  mfiControllerCapabilities = [(GCHIDServiceInfo *)serviceInfo mfiControllerCapabilities];
 
-  if (([(_GCMFiControllerCapabilites *)v4 home]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities home]& 1) != 0)
   {
-    v5 = [(_GCMFiControllerCapabilites *)v4 menu]^ 1;
+    v5 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities menu]^ 1;
   }
 
   else
@@ -416,38 +416,38 @@ LABEL_22:
   return v5 & 1;
 }
 
-+ (BOOL)logicalDevice:(id)a3 getSystemButtonName:(id *)a4 sfSymbolName:(id *)a5 needsMFiCompatibility:(BOOL *)a6
++ (BOOL)logicalDevice:(id)device getSystemButtonName:(id *)name sfSymbolName:(id *)symbolName needsMFiCompatibility:(BOOL *)compatibility
 {
-  v8 = [a3 underlyingDevice];
-  v9 = [v8 serviceInfo];
-  v10 = [(GCHIDServiceInfo *)v9 mfiControllerCapabilities];
+  underlyingDevice = [device underlyingDevice];
+  serviceInfo = [underlyingDevice serviceInfo];
+  mfiControllerCapabilities = [(GCHIDServiceInfo *)serviceInfo mfiControllerCapabilities];
 
-  v11 = [(_GCMFiControllerCapabilites *)v10 home];
-  if (v11)
+  home = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities home];
+  if (home)
   {
-    *a4 = *MEMORY[0x1E69A0348];
-    *a5 = @"house.circle";
+    *name = *MEMORY[0x1E69A0348];
+    *symbolName = @"house.circle";
   }
 
-  return v11 & 1;
+  return home & 1;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 underlyingDevice];
-  v11 = [v10 serviceInfo];
-  v12 = [(GCHIDServiceInfo *)v11 mfiControllerCapabilities];
+  identifierCopy = identifier;
+  bindingsCopy = bindings;
+  underlyingDevice = [device underlyingDevice];
+  serviceInfo = [underlyingDevice serviceInfo];
+  mfiControllerCapabilities = [(GCHIDServiceInfo *)serviceInfo mfiControllerCapabilities];
 
-  if (([(_GCMFiControllerCapabilites *)v12 isExtendedGamepad]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities isExtendedGamepad]& 1) != 0)
   {
     v13 = 0;
     goto LABEL_53;
   }
 
   v14 = objc_opt_new();
-  if (([(_GCMFiControllerCapabilites *)v12 a]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities a]& 1) != 0)
   {
     v15 = [GCDeviceButtonInputDescription alloc];
     v16 = [MEMORY[0x1E695DFD8] set];
@@ -459,7 +459,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v18);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 b]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities b]& 1) != 0)
   {
     v19 = [GCDeviceButtonInputDescription alloc];
     v20 = [MEMORY[0x1E695DFD8] set];
@@ -471,7 +471,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v22);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 x]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities x]& 1) != 0)
   {
     v23 = [GCDeviceButtonInputDescription alloc];
     v24 = [MEMORY[0x1E695DFD8] set];
@@ -483,7 +483,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v26);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 y]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities y]& 1) != 0)
   {
     v27 = [GCDeviceButtonInputDescription alloc];
     v28 = [MEMORY[0x1E695DFD8] set];
@@ -495,7 +495,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v30);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 l1]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l1]& 1) != 0)
   {
     v31 = [GCDeviceButtonInputDescription alloc];
     v32 = [MEMORY[0x1E695DFD8] set];
@@ -507,7 +507,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v34);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 r1]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r1]& 1) != 0)
   {
     v35 = [GCDeviceButtonInputDescription alloc];
     v36 = [MEMORY[0x1E695DFD8] set];
@@ -519,7 +519,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v38);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 l2]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l2]& 1) != 0)
   {
     v39 = [GCDeviceButtonInputDescription alloc];
     v40 = [MEMORY[0x1E695DFD8] set];
@@ -531,7 +531,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v42);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 r2]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r2]& 1) != 0)
   {
     v43 = [GCDeviceButtonInputDescription alloc];
     v44 = [MEMORY[0x1E695DFD8] set];
@@ -543,7 +543,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v46);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 l3]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l3]& 1) != 0)
   {
     v47 = [GCDeviceButtonInputDescription alloc];
     v48 = [MEMORY[0x1E695DFD8] set];
@@ -555,7 +555,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v50);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 r3]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r3]& 1) != 0)
   {
     v51 = [GCDeviceButtonInputDescription alloc];
     v52 = [MEMORY[0x1E695DFD8] set];
@@ -567,7 +567,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v54);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 l4]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l4]& 1) != 0)
   {
     v55 = [GCDeviceButtonInputDescription alloc];
     v56 = [MEMORY[0x1E695DFD8] set];
@@ -579,7 +579,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v58);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 r4]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r4]& 1) != 0)
   {
     v59 = [GCDeviceButtonInputDescription alloc];
     v60 = [MEMORY[0x1E695DFD8] set];
@@ -591,7 +591,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v62);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 m1]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m1]& 1) != 0)
   {
     v63 = [GCDeviceButtonInputDescription alloc];
     v64 = [MEMORY[0x1E695DFD8] setWithObject:@"Paddle 1"];
@@ -603,7 +603,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v66);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 m2]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m2]& 1) != 0)
   {
     v67 = [GCDeviceButtonInputDescription alloc];
     v68 = [MEMORY[0x1E695DFD8] setWithObject:@"Paddle 3"];
@@ -615,7 +615,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v70);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 m3]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m3]& 1) != 0)
   {
     v71 = [GCDeviceButtonInputDescription alloc];
     v72 = [MEMORY[0x1E695DFD8] setWithObject:@"Paddle 2"];
@@ -627,7 +627,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v74);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 m4]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m4]& 1) != 0)
   {
     v75 = [GCDeviceButtonInputDescription alloc];
     v76 = [MEMORY[0x1E695DFD8] setWithObject:@"Paddle 4"];
@@ -639,7 +639,7 @@ LABEL_22:
     OUTLINED_FUNCTION_6_5(v78);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 home]& 1) != 0 && ([(_GCMFiControllerCapabilites *)v12 menu]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities home]& 1) != 0 && ([(_GCMFiControllerCapabilites *)mfiControllerCapabilities menu]& 1) != 0)
   {
     v79 = [GCDeviceButtonInputDescription alloc];
     v80 = [MEMORY[0x1E695DFD8] set];
@@ -663,13 +663,13 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 home]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities home]& 1) != 0)
   {
     goto LABEL_39;
   }
 
 LABEL_40:
-  if (([(_GCMFiControllerCapabilites *)v12 options]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities options]& 1) != 0)
   {
     v87 = [GCDeviceButtonInputDescription alloc];
     v88 = [MEMORY[0x1E695DFD8] set];
@@ -681,7 +681,7 @@ LABEL_40:
     OUTLINED_FUNCTION_6_5(v90);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 record]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities record]& 1) != 0)
   {
     v91 = [GCDeviceButtonInputDescription alloc];
     v92 = [MEMORY[0x1E695DFD8] set];
@@ -693,7 +693,7 @@ LABEL_40:
     OUTLINED_FUNCTION_6_5(v94);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 dpad]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities dpad]& 1) != 0)
   {
     v95 = [GCDeviceDirectionPadDescription alloc];
     v96 = [MEMORY[0x1E695DFD8] set];
@@ -705,7 +705,7 @@ LABEL_40:
     OUTLINED_FUNCTION_17_0(v98);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 leftThumbstick]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities leftThumbstick]& 1) != 0)
   {
     v99 = [GCDeviceDirectionPadDescription alloc];
     v100 = [MEMORY[0x1E695DFD8] set];
@@ -714,7 +714,7 @@ LABEL_40:
     OUTLINED_FUNCTION_17_0(v102);
   }
 
-  if (([(_GCMFiControllerCapabilites *)v12 rightThumbstick]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities rightThumbstick]& 1) != 0)
   {
     v103 = [GCDeviceDirectionPadDescription alloc];
     v104 = [MEMORY[0x1E695DFD8] set];
@@ -723,35 +723,35 @@ LABEL_40:
     OUTLINED_FUNCTION_17_0(v106);
   }
 
-  v107 = [(_GCMFiControllerCapabilites *)v12 isExtendedGamepad];
+  isExtendedGamepad = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities isExtendedGamepad];
   v108 = off_1E84182A8;
-  if (!v107)
+  if (!isExtendedGamepad)
   {
     v108 = off_1E84182B0;
   }
 
-  v13 = [objc_alloc(*v108) initWithIdentifier:v8 elements:v14 bindings:v9];
+  v13 = [objc_alloc(*v108) initWithIdentifier:identifierCopy elements:v14 bindings:bindingsCopy];
 
 LABEL_53:
 
   return v13;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v73 = a5;
-  v72 = a4;
-  v74 = [a3 underlyingDevice];
-  v9 = [v74 serviceInfo];
-  v10 = [(GCHIDServiceInfo *)v9 mfiControllerCapabilities];
+  bindingsCopy = bindings;
+  identifierCopy = identifier;
+  underlyingDevice = [device underlyingDevice];
+  serviceInfo = [underlyingDevice serviceInfo];
+  mfiControllerCapabilities = [(GCHIDServiceInfo *)serviceInfo mfiControllerCapabilities];
 
   v11 = objc_opt_new();
-  v12 = [(_GCMFiControllerCapabilites *)v10 home];
+  home = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities home];
   v13 = 0x1E69A0000uLL;
   v14 = 0x1E69A0000uLL;
   v15 = MEMORY[0x1E69A0380];
-  if ((v12 & 1) != 0 && ([(_GCMFiControllerCapabilites *)v10 menu]& 1) != 0)
+  if ((home & 1) != 0 && ([(_GCMFiControllerCapabilites *)mfiControllerCapabilities menu]& 1) != 0)
   {
     v5 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.home"];
     [MEMORY[0x1E695DFD8] setWithObject:@"Button Home"];
@@ -763,8 +763,8 @@ LABEL_53:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v16 = [(_GCMFiControllerCapabilites *)v10 home];
-    OUTLINED_FUNCTION_7_4(v16);
+    home2 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities home];
+    OUTLINED_FUNCTION_7_4(home2);
     [v5 setEventPressedValueField:22];
     v6 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.menu"];
     v13 = 0x1E69A0000uLL;
@@ -776,7 +776,7 @@ LABEL_53:
     [v6 setSymbol:v18];
 
     v14 = 0x1E69A0000;
-    [v6 setAnalog:(-[_GCMFiControllerCapabilites menu](v10) & 0x100) == 0];
+    [v6 setAnalog:(-[_GCMFiControllerCapabilites menu](mfiControllerCapabilities) & 0x100) == 0];
     [v6 setEventPressedValueField:23];
     [v11 addObject:v6];
     OUTLINED_FUNCTION_13_1();
@@ -784,7 +784,7 @@ LABEL_53:
 
   else
   {
-    if (([(_GCMFiControllerCapabilites *)v10 home]& 1) == 0)
+    if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities home]& 1) == 0)
     {
       goto LABEL_7;
     }
@@ -799,15 +799,15 @@ LABEL_53:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v19 = [(_GCMFiControllerCapabilites *)v10 home];
-    OUTLINED_FUNCTION_7_4(v19);
+    home3 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities home];
+    OUTLINED_FUNCTION_7_4(home3);
     [v5 setEventPressedValueField:22];
     OUTLINED_FUNCTION_13_1();
   }
 
 LABEL_7:
   v20 = 0x1E695D000uLL;
-  if (([(_GCMFiControllerCapabilites *)v10 options]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities options]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.options"];
     objc_claimAutoreleasedReturnValue();
@@ -820,13 +820,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v21 = [(_GCMFiControllerCapabilites *)v10 options];
-    OUTLINED_FUNCTION_7_4(v21);
+    options = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities options];
+    OUTLINED_FUNCTION_7_4(options);
     [v5 setEventPressedValueField:24];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 record]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities record]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.share"];
     objc_claimAutoreleasedReturnValue();
@@ -843,7 +843,7 @@ LABEL_7:
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 a]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities a]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.a"];
     objc_claimAutoreleasedReturnValue();
@@ -856,13 +856,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v22 = [(_GCMFiControllerCapabilites *)v10 a];
+    v22 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities a];
     OUTLINED_FUNCTION_7_4(v22);
     [v5 setEventPressedValueField:4];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 b]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities b]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.b"];
     objc_claimAutoreleasedReturnValue();
@@ -875,13 +875,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v23 = [(_GCMFiControllerCapabilites *)v10 b];
+    v23 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities b];
     OUTLINED_FUNCTION_7_4(v23);
     [v5 setEventPressedValueField:5];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 x]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities x]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.x"];
     objc_claimAutoreleasedReturnValue();
@@ -894,13 +894,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v24 = [(_GCMFiControllerCapabilites *)v10 x];
+    v24 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities x];
     OUTLINED_FUNCTION_7_4(v24);
     [v5 setEventPressedValueField:6];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 y]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities y]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.y"];
     objc_claimAutoreleasedReturnValue();
@@ -913,13 +913,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v25 = [(_GCMFiControllerCapabilites *)v10 y];
+    v25 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities y];
     OUTLINED_FUNCTION_7_4(v25);
     [v5 setEventPressedValueField:7];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 l1]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l1]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.left.shoulder"];
     objc_claimAutoreleasedReturnValue();
@@ -932,13 +932,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v26 = [(_GCMFiControllerCapabilites *)v10 l1];
+    v26 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities l1];
     OUTLINED_FUNCTION_7_4(v26);
     [v5 setEventPressedValueField:8];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 r1]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r1]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.right.shoulder"];
     objc_claimAutoreleasedReturnValue();
@@ -951,13 +951,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v27 = [(_GCMFiControllerCapabilites *)v10 r1];
+    v27 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities r1];
     OUTLINED_FUNCTION_7_4(v27);
     [v5 setEventPressedValueField:9];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 l2]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l2]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.left.trigger"];
     objc_claimAutoreleasedReturnValue();
@@ -970,13 +970,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v28 = [(_GCMFiControllerCapabilites *)v10 l2];
+    v28 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities l2];
     OUTLINED_FUNCTION_7_4(v28);
     [v5 setEventPressedValueField:18];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 r2]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r2]& 1) != 0)
   {
     [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.right.trigger"];
     objc_claimAutoreleasedReturnValue();
@@ -989,14 +989,14 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v29 = [(_GCMFiControllerCapabilites *)v10 r2];
+    v29 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities r2];
     OUTLINED_FUNCTION_7_4(v29);
     [v5 setEventPressedValueField:19];
     OUTLINED_FUNCTION_13_1();
   }
 
   v30 = 0x1E69A0000uLL;
-  if (([(_GCMFiControllerCapabilites *)v10 dpad]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities dpad]& 1) != 0)
   {
     [MEMORY[0x1E69A06A8] descriptionWithIdentifier:@"dpad"];
     objc_claimAutoreleasedReturnValue();
@@ -1009,8 +1009,8 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_15() setSymbol:?];
 
-    v32 = [(_GCMFiControllerCapabilites *)v10 dpad];
-    OUTLINED_FUNCTION_7_4(v32);
+    dpad = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities dpad];
+    OUTLINED_FUNCTION_7_4(dpad);
     [v5 setEventUpValueField:0];
     [v5 setEventDownValueField:1];
     [v5 setEventLeftValueField:2];
@@ -1019,9 +1019,9 @@ LABEL_7:
   }
 
   v33 = 0x1E69A0000uLL;
-  if (([(_GCMFiControllerCapabilites *)v10 leftThumbstick]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities leftThumbstick]& 1) != 0)
   {
-    if (([(_GCMFiControllerCapabilites *)v10 l3]& 1) != 0)
+    if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l3]& 1) != 0)
     {
       [MEMORY[0x1E69A06A0] descriptionWithIdentifier:@"stick.left"];
       objc_claimAutoreleasedReturnValue();
@@ -1043,9 +1043,9 @@ LABEL_7:
       v34 = MEMORY[0x1E69A06B8];
       [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
       objc_claimAutoreleasedReturnValue();
-      v35 = [OUTLINED_FUNCTION_11_4() localizedName];
-      v36 = [0x1E69A0000 symbol];
-      v37 = [v34 sourceWithElementAliases:0x1E69A0000uLL localizedName:v35 symbol:v36 direction:10];
+      localizedName = [OUTLINED_FUNCTION_11_4() localizedName];
+      symbol = [0x1E69A0000 symbol];
+      v37 = [v34 sourceWithElementAliases:0x1E69A0000uLL localizedName:localizedName symbol:symbol direction:10];
       v88[0] = v37;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:1];
       objc_claimAutoreleasedReturnValue();
@@ -1151,9 +1151,9 @@ LABEL_7:
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 rightThumbstick]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities rightThumbstick]& 1) != 0)
   {
-    if (([(_GCMFiControllerCapabilites *)v10 r3]& 1) != 0)
+    if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r3]& 1) != 0)
     {
       [MEMORY[0x1E69A06A0] descriptionWithIdentifier:@"stick.right"];
       objc_claimAutoreleasedReturnValue();
@@ -1286,7 +1286,7 @@ LABEL_7:
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 l4]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities l4]& 1) != 0)
   {
     [*(v13 + 1680) descriptionWithIdentifier:@"button.left.bumper"];
     objc_claimAutoreleasedReturnValue();
@@ -1299,13 +1299,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_4_7() setSymbol:?];
 
-    v62 = [(_GCMFiControllerCapabilites *)v10 l4];
+    v62 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities l4];
     OUTLINED_FUNCTION_7_4(v62);
     [0x1E69A0000 setEventPressedValueField:41];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 r4]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities r4]& 1) != 0)
   {
     [*(v13 + 1680) descriptionWithIdentifier:@"button.right.bumper"];
     objc_claimAutoreleasedReturnValue();
@@ -1318,13 +1318,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_4_7() setSymbol:?];
 
-    v63 = [(_GCMFiControllerCapabilites *)v10 r4];
+    v63 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities r4];
     OUTLINED_FUNCTION_7_4(v63);
     [0x1E69A0000 setEventPressedValueField:42];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 m1]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m1]& 1) != 0)
   {
     [*(v13 + 1680) descriptionWithIdentifier:@"button.right.bottom.primary"];
     objc_claimAutoreleasedReturnValue();
@@ -1337,13 +1337,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_4_7() setSymbol:?];
 
-    v64 = [(_GCMFiControllerCapabilites *)v10 m1];
+    v64 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities m1];
     OUTLINED_FUNCTION_7_4(v64);
     [0x1E69A0000 setEventPressedValueField:45];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 m2]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m2]& 1) != 0)
   {
     [*(v13 + 1680) descriptionWithIdentifier:@"button.left.bottom.primary"];
     objc_claimAutoreleasedReturnValue();
@@ -1356,13 +1356,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_4_7() setSymbol:?];
 
-    v65 = [(_GCMFiControllerCapabilites *)v10 m2];
+    v65 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities m2];
     OUTLINED_FUNCTION_7_4(v65);
     [0x1E69A0000 setEventPressedValueField:43];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 m3]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m3]& 1) != 0)
   {
     [*(v13 + 1680) descriptionWithIdentifier:@"button.right.bottom.secondary"];
     objc_claimAutoreleasedReturnValue();
@@ -1375,13 +1375,13 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_4_7() setSymbol:?];
 
-    v66 = [(_GCMFiControllerCapabilites *)v10 m3];
+    v66 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities m3];
     OUTLINED_FUNCTION_7_4(v66);
     [0x1E69A0000 setEventPressedValueField:46];
     OUTLINED_FUNCTION_13_1();
   }
 
-  if (([(_GCMFiControllerCapabilites *)v10 m4]& 1) != 0)
+  if (([(_GCMFiControllerCapabilites *)mfiControllerCapabilities m4]& 1) != 0)
   {
     [*(v13 + 1680) descriptionWithIdentifier:@"button.left.bottom.secondary"];
     objc_claimAutoreleasedReturnValue();
@@ -1394,7 +1394,7 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_4_7() setSymbol:?];
 
-    v67 = [(_GCMFiControllerCapabilites *)v10 m4];
+    v67 = [(_GCMFiControllerCapabilites *)mfiControllerCapabilities m4];
     OUTLINED_FUNCTION_7_4(v67);
     [0x1E69A0000 setEventPressedValueField:44];
     OUTLINED_FUNCTION_13_1();
@@ -1402,7 +1402,7 @@ LABEL_7:
 
   v68 = objc_opt_new();
   [v68 setElements:v11];
-  v69 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v72 controllerInputs:v68 bindings:v73];
+  v69 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:identifierCopy controllerInputs:v68 bindings:bindingsCopy];
 
   v70 = *MEMORY[0x1E69E9840];
 

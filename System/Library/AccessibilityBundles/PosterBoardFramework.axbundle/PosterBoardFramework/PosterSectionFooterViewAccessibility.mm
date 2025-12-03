@@ -1,5 +1,5 @@
 @interface PosterSectionFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,12 +7,12 @@
 
 @implementation PosterSectionFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.PosterSectionFooterView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PosterBoard.PosterSectionFooterView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"PosterBoard.PosterSectionFooterView" hasSwiftField:@"titleLabel" withSwiftType:"Optional<UILabel>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionFooterView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionFooterView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionFooterView" hasSwiftField:@"titleLabel" withSwiftType:"Optional<UILabel>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

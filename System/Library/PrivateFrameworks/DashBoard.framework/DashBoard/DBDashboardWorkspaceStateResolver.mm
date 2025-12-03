@@ -1,7 +1,7 @@
 @interface DBDashboardWorkspaceStateResolver
 - (DBAppPolicyProviding)policyProvider;
-- (DBDashboardWorkspaceStateResolver)initWithPolicyProvider:(id)a3;
-- (id)computeNewStateFromState:(id)a3 andRequest:(id)a4;
+- (DBDashboardWorkspaceStateResolver)initWithPolicyProvider:(id)provider;
+- (id)computeNewStateFromState:(id)state andRequest:(id)request;
 @end
 
 @implementation DBDashboardWorkspaceStateResolver
@@ -13,30 +13,30 @@
   return WeakRetained;
 }
 
-- (DBDashboardWorkspaceStateResolver)initWithPolicyProvider:(id)a3
+- (DBDashboardWorkspaceStateResolver)initWithPolicyProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = DBDashboardWorkspaceStateResolver;
   v5 = [(DBDashboardWorkspaceStateResolver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_policyProvider, v4);
+    objc_storeWeak(&v5->_policyProvider, providerCopy);
   }
 
   return v6;
 }
 
-- (id)computeNewStateFromState:(id)a3 andRequest:(id)a4
+- (id)computeNewStateFromState:(id)state andRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
+  stateCopy = state;
+  requestCopy = request;
+  v8 = [stateCopy mutableCopy];
   v34 = objc_alloc_init(DBDashboardWorkspaceStateResolution);
   [(DBDashboardWorkspaceStateResolution *)v34 setState:v8];
-  v9 = [v6 baseEntity];
-  v10 = [v6 stackedEntity];
+  baseEntity = [stateCopy baseEntity];
+  stackedEntity = [stateCopy stackedEntity];
   v67 = 0;
   v68 = &v67;
   v69 = 0x3032000000;
@@ -67,8 +67,8 @@
   v46 = __Block_byref_object_copy__1;
   v47 = __Block_byref_object_dispose__1;
   v48 = 0;
-  v33 = v7;
-  v11 = [v7 changeItems];
+  v33 = requestCopy;
+  changeItems = [requestCopy changeItems];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __73__DBDashboardWorkspaceStateResolver_computeNewStateFromState_andRequest___block_invoke;
@@ -77,22 +77,22 @@
   v38 = &v43;
   v39 = &v67;
   v40 = &v55;
-  v12 = v9;
+  v12 = baseEntity;
   v36 = v12;
   v41 = &v61;
-  v13 = v10;
+  v13 = stackedEntity;
   v37 = v13;
   v42 = &v49;
-  [v11 enumerateObjectsUsingBlock:v35];
+  [changeItems enumerateObjectsUsingBlock:v35];
 
   v14 = v68[5];
   if (v14)
   {
     if (v62[5])
     {
-      v15 = [v14 identifier];
-      v16 = [v62[5] identifier];
-      v17 = [v15 isEqualToString:v16];
+      identifier = [v14 identifier];
+      identifier2 = [v62[5] identifier];
+      v17 = [identifier isEqualToString:identifier2];
 
       if (v17)
       {
@@ -110,9 +110,9 @@
   {
     if (v50[5])
     {
-      v21 = [v20 identifier];
-      v22 = [v50[5] identifier];
-      v23 = [v21 isEqualToString:v22];
+      identifier3 = [v20 identifier];
+      identifier4 = [v50[5] identifier];
+      v23 = [identifier3 isEqualToString:identifier4];
 
       if (v23)
       {
@@ -129,8 +129,8 @@
   {
     v26 = +[DBDashboardHomescreenEntity entity];
 
-    v27 = [v62[5] _sr_associatedChangeItem];
-    [v26 _setSR_associatedChangeItem:v27];
+    _sr_associatedChangeItem = [v62[5] _sr_associatedChangeItem];
+    [v26 _setSR_associatedChangeItem:_sr_associatedChangeItem];
   }
 
   else

@@ -1,11 +1,11 @@
 @interface TTCRVectorMultiTimestamp
-- (TTCRVectorMultiTimestamp)initWithCapacity:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TTCRVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TTCRVectorMultiTimestamp
 
-- (TTCRVectorMultiTimestamp)initWithCapacity:(unint64_t)a3
+- (TTCRVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity
 {
   for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
   {
@@ -20,7 +20,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TTCRVectorMultiTimestamp);
   [(TTVectorMultiTimestamp *)v4 mergeWithTimestamp:self];

@@ -1,14 +1,14 @@
 @interface VKAnnotationTrackingCameraController
 - (BOOL)isAnimating;
 - (BOOL)shouldForceZoomToFit;
-- (VKAnnotationTrackingCameraController)initWithMapDataAccess:(MapDataAccess *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6;
+- (VKAnnotationTrackingCameraController)initWithMapDataAccess:(MapDataAccess *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pauseAnimation;
 - (void)resumeAnimation;
-- (void)setBehavior:(id *)a3;
-- (void)setGesturing:(BOOL)a3;
-- (void)startTrackingAnnotation:(id)a3 trackHeading:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6 timingFunction:(id)a7;
+- (void)setBehavior:(id *)behavior;
+- (void)setGesturing:(BOOL)gesturing;
+- (void)startTrackingAnnotation:(id)annotation trackHeading:(BOOL)heading animated:(BOOL)animated duration:(double)duration timingFunction:(id)function;
 - (void)stopTrackingAnnotation;
 - (void)updateFramerate;
 @end
@@ -29,25 +29,25 @@
   v3 = *(&self->_hasUserSpecifiedZoomLevel + 1);
   if ((v3 & 0x10) != 0 || (v3 & 4) != 0 && [(VKAnimation *)self->_currentHeadingAnimation running])
   {
-    v4 = [(VKCameraController *)self runLoopController];
+    runLoopController = [(VKCameraController *)self runLoopController];
   }
 
   else
   {
-    v5 = [(VKAnimation *)self->_currentAnimation running];
-    v4 = [(VKCameraController *)self runLoopController];
-    if (v5)
+    running = [(VKAnimation *)self->_currentAnimation running];
+    runLoopController = [(VKCameraController *)self runLoopController];
+    if (running)
     {
-      v6 = [(VKCameraController *)self baseDisplayRate];
+      baseDisplayRate = [(VKCameraController *)self baseDisplayRate];
       goto LABEL_8;
     }
   }
 
-  v6 = [(VKCameraController *)self maxDisplayRate];
+  baseDisplayRate = [(VKCameraController *)self maxDisplayRate];
 LABEL_8:
-  v4->var1 = v6;
+  runLoopController->var1 = baseDisplayRate;
 
-  md::RunLoopController::_updateDisplayRate(v4, v7, v8, v9);
+  md::RunLoopController::_updateDisplayRate(runLoopController, v7, v8, v9);
 }
 
 - (BOOL)shouldForceZoomToFit
@@ -157,22 +157,22 @@ LABEL_8:
   }
 }
 
-- (void)setBehavior:(id *)a3
+- (void)setBehavior:(id *)behavior
 {
-  v3 = *&a3->var2;
-  *&self->_behavior.shouldZoomToFit = *&a3->var0;
+  v3 = *&behavior->var2;
+  *&self->_behavior.shouldZoomToFit = *&behavior->var0;
   *&self->_behavior.shouldPreserveUserSpecifiedZoomLevel = v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   annotation = self->_annotation;
-  if (annotation == v11)
+  if (annotation == objectCopy)
   {
-    if ([v10 isEqualToString:@"coordinate"])
+    if ([pathCopy isEqualToString:@"coordinate"])
     {
       v14 = -1.0;
       if ((*(&self->_hasUserSpecifiedZoomLevel + 1) & 0x400) != 0)
@@ -188,9 +188,9 @@ LABEL_5:
     annotation = self->_annotation;
   }
 
-  if (annotation == v11)
+  if (annotation == objectCopy)
   {
-    if ([v10 isEqualToString:@"accuracy"])
+    if ([pathCopy isEqualToString:@"accuracy"])
     {
       v14 = -1.0;
       if ((*(&self->_hasUserSpecifiedZoomLevel + 1) & 0x400) != 0)
@@ -204,7 +204,7 @@ LABEL_5:
     annotation = self->_annotation;
   }
 
-  if (annotation == v11 && [v10 isEqualToString:@"heading"])
+  if (annotation == objectCopy && [pathCopy isEqualToString:@"heading"])
   {
     if ((*(&self->_hasUserSpecifiedZoomLevel + 1) & 0x800) != 0)
     {
@@ -223,17 +223,17 @@ LABEL_5:
   {
     v16.receiver = self;
     v16.super_class = VKAnnotationTrackingCameraController;
-    [(VKAnnotationTrackingCameraController *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VKAnnotationTrackingCameraController *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_18:
 }
 
-- (void)setGesturing:(BOOL)a3
+- (void)setGesturing:(BOOL)gesturing
 {
   v4.receiver = self;
   v4.super_class = VKAnnotationTrackingCameraController;
-  [(VKCameraController *)&v4 setGesturing:a3];
+  [(VKCameraController *)&v4 setGesturing:gesturing];
   if ([(VKCameraController *)self isGesturing])
   {
     [(VKAnnotationTrackingCameraController *)self pauseAnimation];
@@ -245,15 +245,15 @@ LABEL_18:
   }
 }
 
-- (void)startTrackingAnnotation:(id)a3 trackHeading:(BOOL)a4 animated:(BOOL)a5 duration:(double)a6 timingFunction:(id)a7
+- (void)startTrackingAnnotation:(id)annotation trackHeading:(BOOL)heading animated:(BOOL)animated duration:(double)duration timingFunction:(id)function
 {
-  v9 = a5;
-  v10 = a4;
-  v27 = a3;
-  v13 = a7;
-  if (self->_annotation == v27)
+  animatedCopy = animated;
+  headingCopy = heading;
+  annotationCopy = annotation;
+  functionCopy = function;
+  if (self->_annotation == annotationCopy)
   {
-    if (!v27)
+    if (!annotationCopy)
     {
       goto LABEL_36;
     }
@@ -262,9 +262,9 @@ LABEL_18:
   }
 
   [(VKAnnotationTrackingCameraController *)self stopTrackingAnnotation];
-  if (v27)
+  if (annotationCopy)
   {
-    objc_storeStrong(&self->_annotation, a3);
+    objc_storeStrong(&self->_annotation, annotation);
     if (objc_opt_respondsToSelector())
     {
       v14 = 128;
@@ -326,25 +326,25 @@ LABEL_18:
       [(VKTrackableAnnotation *)self->_annotation addObserver:self forKeyPath:@"accuracy" options:0 context:0];
     }
 
-    v19 = [(VKCameraController *)self cameraDelegate];
-    v20 = [v19 mapLayerPresentationForAnnotation:self->_annotation];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    v20 = [cameraDelegate mapLayerPresentationForAnnotation:self->_annotation];
     annotationPresentation = self->_annotationPresentation;
     self->_annotationPresentation = v20;
 
     [(VKTrackableAnnotationPresentation *)self->_annotationPresentation setTracking:1];
 LABEL_22:
-    v22 = -1.0;
-    if (a6 > 0.0)
+    durationCopy = -1.0;
+    if (duration > 0.0)
     {
-      v22 = a6;
+      durationCopy = duration;
     }
 
-    [(VKAnnotationTrackingCameraController *)self _goToAnnotationAnimated:v9 duration:v13 timingFunction:1 isInitial:v22];
+    [(VKAnnotationTrackingCameraController *)self _goToAnnotationAnimated:animatedCopy duration:functionCopy timingFunction:1 isInitial:durationCopy];
   }
 
   if (self->_annotation)
   {
-    if (((((*(&self->_hasUserSpecifiedZoomLevel + 1) & 4) == 0) ^ v10) & 1) == 0)
+    if (((((*(&self->_hasUserSpecifiedZoomLevel + 1) & 4) == 0) ^ headingCopy) & 1) == 0)
     {
       [(VKAnimation *)self->_currentHeadingAnimation stop];
       currentHeadingAnimation = self->_currentHeadingAnimation;
@@ -352,7 +352,7 @@ LABEL_22:
 
       if ((*(&self->_hasUserSpecifiedZoomLevel + 1) & 0x200) != 0)
       {
-        if (v10)
+        if (headingCopy)
         {
           v24 = 4;
         }
@@ -364,16 +364,16 @@ LABEL_22:
 
         *(&self->_hasUserSpecifiedZoomLevel + 1) = *(&self->_hasUserSpecifiedZoomLevel + 1) & 0xFFFB | v24;
         annotation = self->_annotation;
-        if (v10)
+        if (headingCopy)
         {
           [(VKTrackableAnnotation *)annotation addObserver:self forKeyPath:@"heading" options:0 context:0];
-          v26 = 0.4;
-          if (a6 > 0.0)
+          durationCopy2 = 0.4;
+          if (duration > 0.0)
           {
-            v26 = a6;
+            durationCopy2 = duration;
           }
 
-          [(VKAnnotationTrackingCameraController *)self _rotateToHeadingAnimated:v9 duration:v26];
+          [(VKAnnotationTrackingCameraController *)self _rotateToHeadingAnimated:animatedCopy duration:durationCopy2];
         }
 
         else
@@ -421,11 +421,11 @@ LABEL_36:
   [(VKAnnotationTrackingCameraController *)&v6 dealloc];
 }
 
-- (VKAnnotationTrackingCameraController)initWithMapDataAccess:(MapDataAccess *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6
+- (VKAnnotationTrackingCameraController)initWithMapDataAccess:(MapDataAccess *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate
 {
   v10.receiver = self;
   v10.super_class = VKAnnotationTrackingCameraController;
-  v6 = [(VKCameraController *)&v10 initWithMapDataAccess:a3 animationRunner:a4 runLoopController:a5 cameraDelegate:a6];
+  v6 = [(VKCameraController *)&v10 initWithMapDataAccess:access animationRunner:runner runLoopController:controller cameraDelegate:delegate];
   v7 = v6;
   if (v6)
   {

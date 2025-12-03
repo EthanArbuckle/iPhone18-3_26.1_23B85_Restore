@@ -1,82 +1,82 @@
 @interface CPSBannerView
-- (CPSBannerView)initWithBannerItem:(id)a3;
-- (void)applicationIconImageWithCompletion:(id)a3;
-- (void)updateBannerWithBannerItem:(id)a3;
+- (CPSBannerView)initWithBannerItem:(id)item;
+- (void)applicationIconImageWithCompletion:(id)completion;
+- (void)updateBannerWithBannerItem:(id)item;
 @end
 
 @implementation CPSBannerView
 
-- (CPSBannerView)initWithBannerItem:(id)a3
+- (CPSBannerView)initWithBannerItem:(id)item
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v16;
-  v16 = 0;
+  objc_storeStrong(location, item);
+  v3 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v3;
   v14.super_class = CPSBannerView;
-  v16 = [(CPSBannerView *)&v14 init];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(CPSBannerView *)&v14 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v16->_bannerItem, location[0]);
+    objc_storeStrong(&selfCopy->_bannerItem, location[0]);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_USER_INTERACTIVE, 0);
     *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.carplaysupport.CPSBannerView-%p", v4, v16];
-    v5 = v12;
-    v6 = [v12 UTF8String];
-    v7 = dispatch_queue_create(v6, v13);
-    iconImageQueue = v16->_iconImageQueue;
-    v16->_iconImageQueue = v7;
+    selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.carplaysupport.CPSBannerView-%p", v4, selfCopy];
+    v5 = selfCopy;
+    uTF8String = [selfCopy UTF8String];
+    v7 = dispatch_queue_create(uTF8String, v13);
+    iconImageQueue = selfCopy->_iconImageQueue;
+    selfCopy->_iconImageQueue = v7;
     MEMORY[0x277D82BD8](iconImageQueue);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](selfCopy);
     objc_storeStrong(&v13, 0);
   }
 
-  v10 = MEMORY[0x277D82BE0](v16);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (void)updateBannerWithBannerItem:(id)a3
+- (void)updateBannerWithBannerItem:(id)item
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSBannerView *)v4 setBannerItem:location[0]];
+  objc_storeStrong(location, item);
+  [(CPSBannerView *)selfCopy setBannerItem:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)applicationIconImageWithCompletion:(id)a3
+- (void)applicationIconImageWithCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v23 = 0;
-  v10 = [(CPSBannerView *)v25 traitCollection];
-  v22 = [v10 objectForTrait:objc_opt_class()];
-  *&v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  traitCollection = [(CPSBannerView *)selfCopy traitCollection];
+  v22 = [traitCollection objectForTrait:objc_opt_class()];
+  *&v3 = MEMORY[0x277D82BD8](traitCollection).n128_u64[0];
   if (v22)
   {
-    v9 = [(CPSBannerView *)v25 traitCollection];
-    v21 = [v9 userInterfaceStyle] == 2;
-    v23 = [v22 iconServicesAppearanceUsingDarkInterfaceStyle:{v21, MEMORY[0x277D82BD8](v9).n128_f64[0]}];
+    traitCollection2 = [(CPSBannerView *)selfCopy traitCollection];
+    v21 = [traitCollection2 userInterfaceStyle] == 2;
+    v23 = [v22 iconServicesAppearanceUsingDarkInterfaceStyle:{v21, MEMORY[0x277D82BD8](traitCollection2).n128_f64[0]}];
   }
 
   v20 = [MEMORY[0x277D1B1C8] imageDescriptorNamed:{*MEMORY[0x277D1B208], v3}];
   [v20 setAppearance:v23];
   v5 = objc_alloc(MEMORY[0x277D1B1A8]);
-  v7 = [(CPSBannerView *)v25 bannerItem];
-  v6 = [(CPSBannerItem *)v7 bundleIdentifier];
+  bannerItem = [(CPSBannerView *)selfCopy bannerItem];
+  bundleIdentifier = [(CPSBannerItem *)bannerItem bundleIdentifier];
   v19 = [v5 initWithBundleIdentifier:?];
-  MEMORY[0x277D82BD8](v6);
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  queue = [(CPSBannerView *)v25 iconImageQueue];
+  MEMORY[0x277D82BD8](bundleIdentifier);
+  *&v4 = MEMORY[0x277D82BD8](bannerItem).n128_u64[0];
+  queue = [(CPSBannerView *)selfCopy iconImageQueue];
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;

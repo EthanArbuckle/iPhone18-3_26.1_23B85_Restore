@@ -1,19 +1,19 @@
 @interface SRTrialParameter
-- (SRTrialParameter)initWithParameter:(id)a3;
+- (SRTrialParameter)initWithParameter:(id)parameter;
 - (id)description;
 @end
 
 @implementation SRTrialParameter
 
-- (SRTrialParameter)initWithParameter:(id)a3
+- (SRTrialParameter)initWithParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   v9.receiver = self;
   v9.super_class = SRTrialParameter;
   v5 = [(SRTrialParameter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [parameterCopy copy];
     parameter = v5->_parameter;
     v5->_parameter = v6;
 

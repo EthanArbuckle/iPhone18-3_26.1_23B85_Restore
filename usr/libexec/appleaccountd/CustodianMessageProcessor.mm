@@ -1,17 +1,17 @@
 @interface CustodianMessageProcessor
 - (_TtC13appleaccountd25CustodianMessageProcessor)init;
-- (void)messageService:(id)a3 didReceiveMessage:(id)a4 fromID:(id)a5 sentToHandleUri:(id)a6;
+- (void)messageService:(id)service didReceiveMessage:(id)message fromID:(id)d sentToHandleUri:(id)uri;
 @end
 
 @implementation CustodianMessageProcessor
 
-- (void)messageService:(id)a3 didReceiveMessage:(id)a4 fromID:(id)a5 sentToHandleUri:(id)a6
+- (void)messageService:(id)service didReceiveMessage:(id)message fromID:(id)d sentToHandleUri:(id)uri
 {
   swift_unknownObjectRetain();
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v19 = self;
+  messageCopy = message;
+  dCopy = d;
+  uriCopy = uri;
+  selfCopy = self;
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 

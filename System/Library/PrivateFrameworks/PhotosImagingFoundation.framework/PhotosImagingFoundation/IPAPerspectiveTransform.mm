@@ -1,6 +1,6 @@
 @interface IPAPerspectiveTransform
-- (IPAPerspectiveTransform)initWithInputGeometry:(id)a3 intrinsicGeometry:(id)a4 projectionTransform:(const Matrix4d *)a5 viewingTransform:(const Matrix4d *)a6;
-- (Vector2d)mapVector:(Vector2d)a3;
+- (IPAPerspectiveTransform)initWithInputGeometry:(id)geometry intrinsicGeometry:(id)intrinsicGeometry projectionTransform:(const Matrix4d *)transform viewingTransform:(const Matrix4d *)viewingTransform;
+- (Vector2d)mapVector:(Vector2d)vector;
 - (id)inverseTransform;
 @end
 
@@ -55,21 +55,21 @@ LABEL_9:
 
   v12 = [IPAPerspectiveTransform alloc];
   intrinsicGeometry = self->_intrinsicGeometry;
-  v14 = [(IPAImageTransform *)self inputGeometry];
-  v15 = [(IPAPerspectiveTransform *)v12 initWithInputGeometry:intrinsicGeometry intrinsicGeometry:v14 projectionTransform:v19 viewingTransform:v18];
+  inputGeometry = [(IPAImageTransform *)self inputGeometry];
+  v15 = [(IPAPerspectiveTransform *)v12 initWithInputGeometry:intrinsicGeometry intrinsicGeometry:inputGeometry projectionTransform:v19 viewingTransform:v18];
 
   v15->_isInverse = !self->_isInverse;
 
   return v15;
 }
 
-- (Vector2d)mapVector:(Vector2d)a3
+- (Vector2d)mapVector:(Vector2d)vector
 {
   if (self->_isInverse)
   {
-    v53 = a3;
+    vectorCopy = vector;
     v54 = xmmword_25E5E03C0;
-    v4.n128_f64[0] = PA::operator*(self->_viewingTransform.m, &v53.X);
+    v4.n128_f64[0] = PA::operator*(self->_viewingTransform.m, &vectorCopy.X);
     v4.n128_u64[1] = v5;
     v50 = v4;
     PA::Matrix4d::MultiplyWithProject(self->_projectionTransform.m, v4, -1.0);
@@ -80,8 +80,8 @@ LABEL_9:
     v51 = v10;
     v47 = v11;
     v13 = v12;
-    v14 = [(IPAImageTransform *)self inputGeometry];
-    v15 = [v14 conformsToProtocol:&unk_28704C380];
+    inputGeometry = [(IPAImageTransform *)self inputGeometry];
+    v15 = [inputGeometry conformsToProtocol:&unk_28704C380];
 
     if ((v15 & 1) == 0)
     {
@@ -90,19 +90,19 @@ LABEL_9:
       _Unwind_Resume(v46);
     }
 
-    v16 = [(IPAImageTransform *)self inputGeometry];
-    v17 = v16;
+    inputGeometry2 = [(IPAImageTransform *)self inputGeometry];
+    v17 = inputGeometry2;
     v18 = 0.0;
     v19 = 0.0;
     v20 = 0.0;
     v21 = 0.0;
     Y = 0.0;
     X = 0.0;
-    if (v16)
+    if (inputGeometry2)
     {
-      [v16 imageQuad];
-      X = v53.X;
-      Y = v53.Y;
+      [inputGeometry2 imageQuad];
+      X = vectorCopy.X;
+      Y = vectorCopy.Y;
       v20 = *(&v54 + 1);
       v21 = *&v54;
       v19 = v55;
@@ -144,13 +144,13 @@ LABEL_9:
 
   else
   {
-    v40 = a3.Y;
-    PA::Matrix4d::MultiplyWithProject(self->_projectionTransform.m, a3, 0.0);
-    v53.X = v41;
-    v53.Y = v42;
+    v40 = vector.Y;
+    PA::Matrix4d::MultiplyWithProject(self->_projectionTransform.m, vector, 0.0);
+    vectorCopy.X = v41;
+    vectorCopy.Y = v42;
     *&v54 = v43;
     *(&v54 + 1) = 0x3FF0000000000000;
-    v44 = PA::operator*(self->_viewingTransform.m, &v53.X);
+    v44 = PA::operator*(self->_viewingTransform.m, &vectorCopy.X);
   }
 
   result.Y = v45;
@@ -158,44 +158,44 @@ LABEL_9:
   return result;
 }
 
-- (IPAPerspectiveTransform)initWithInputGeometry:(id)a3 intrinsicGeometry:(id)a4 projectionTransform:(const Matrix4d *)a5 viewingTransform:(const Matrix4d *)a6
+- (IPAPerspectiveTransform)initWithInputGeometry:(id)geometry intrinsicGeometry:(id)intrinsicGeometry projectionTransform:(const Matrix4d *)transform viewingTransform:(const Matrix4d *)viewingTransform
 {
-  v11 = a4;
+  intrinsicGeometryCopy = intrinsicGeometry;
   v27.receiver = self;
   v27.super_class = IPAPerspectiveTransform;
-  v12 = [(IPAImageTransform *)&v27 initWithInputGeometry:a3 intrinsicGeometry:v11];
+  v12 = [(IPAImageTransform *)&v27 initWithInputGeometry:geometry intrinsicGeometry:intrinsicGeometryCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = *&a5->m[6];
-    v16 = *a5->m;
-    v15 = *&a5->m[2];
-    *(v12 + 56) = *&a5->m[4];
+    v14 = *&transform->m[6];
+    v16 = *transform->m;
+    v15 = *&transform->m[2];
+    *(v12 + 56) = *&transform->m[4];
     *(v12 + 72) = v14;
     *(v12 + 24) = v16;
     *(v12 + 40) = v15;
-    v17 = *&a5->m[14];
-    v19 = *&a5->m[8];
-    v18 = *&a5->m[10];
-    *(v12 + 120) = *&a5->m[12];
+    v17 = *&transform->m[14];
+    v19 = *&transform->m[8];
+    v18 = *&transform->m[10];
+    *(v12 + 120) = *&transform->m[12];
     *(v12 + 136) = v17;
     *(v12 + 88) = v19;
     *(v12 + 104) = v18;
-    v20 = *&a6->m[6];
-    v22 = *a6->m;
-    v21 = *&a6->m[2];
-    *(v12 + 184) = *&a6->m[4];
+    v20 = *&viewingTransform->m[6];
+    v22 = *viewingTransform->m;
+    v21 = *&viewingTransform->m[2];
+    *(v12 + 184) = *&viewingTransform->m[4];
     *(v12 + 200) = v20;
     *(v12 + 152) = v22;
     *(v12 + 168) = v21;
-    v23 = *&a6->m[14];
-    v25 = *&a6->m[8];
-    v24 = *&a6->m[10];
-    *(v12 + 248) = *&a6->m[12];
+    v23 = *&viewingTransform->m[14];
+    v25 = *&viewingTransform->m[8];
+    v24 = *&viewingTransform->m[10];
+    *(v12 + 248) = *&viewingTransform->m[12];
     *(v12 + 264) = v23;
     *(v12 + 216) = v25;
     *(v12 + 232) = v24;
-    objc_storeStrong(v12 + 35, a4);
+    objc_storeStrong(v12 + 35, intrinsicGeometry);
   }
 
   return v13;

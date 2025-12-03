@@ -6,16 +6,16 @@
 
 - (BOOL)isExactMatchRule
 {
-  if ([a1 type])
+  if ([self type])
   {
     return 0;
   }
 
-  v3 = [a1 triggerCondition];
-  if ([v3 comparisonType])
+  triggerCondition = [self triggerCondition];
+  if ([triggerCondition comparisonType])
   {
-    v4 = [a1 triggerCondition];
-    v2 = [v4 comparisonType] == 1;
+    triggerCondition2 = [self triggerCondition];
+    v2 = [triggerCondition2 comparisonType] == 1;
   }
 
   else

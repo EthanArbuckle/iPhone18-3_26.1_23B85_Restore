@@ -1,8 +1,8 @@
 @interface SCATScanTimeoutPickerViewController
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation SCATScanTimeoutPickerViewController
@@ -10,16 +10,16 @@
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScanTimeoutEnabled];
+  assistiveTouchScanTimeoutEnabled = [v2 assistiveTouchScanTimeoutEnabled];
 
-  return v3;
+  return assistiveTouchScanTimeoutEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchScanTimeoutEnabled:v3];
+  [v4 setAssistiveTouchScanTimeoutEnabled:userCopy];
 }
 
 - (double)numericalPreferenceValue
@@ -31,10 +31,10 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchScanTimeout:a3];
+  [v4 setAssistiveTouchScanTimeout:user];
 }
 
 @end

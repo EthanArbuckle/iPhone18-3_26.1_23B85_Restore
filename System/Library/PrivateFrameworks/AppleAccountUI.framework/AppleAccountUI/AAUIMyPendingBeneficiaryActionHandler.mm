@@ -4,23 +4,23 @@
 - (void)_checkMessageEligibility;
 - (void)_dismiss;
 - (void)_dismissAndNavigateToDateOfBirthSettings;
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_showAlertWithTitle:(id)title message:(id)message;
 - (void)_showIncompatibleDeviceAlert;
 - (void)_showPrintPreview;
 - (void)_showSetupCompleteWithShareTypePrint;
 - (void)_startInviteMessageFlow;
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4;
-- (void)inheritanceDidSelectSharingOption:(unint64_t)a3;
-- (void)inviteMessageFlowDidFinish:(id)a3;
-- (void)inviteMessageWasSent:(id)a3 completion:(id)a4;
+- (void)doPrimaryAction:(id)action specifier:(id)specifier;
+- (void)inheritanceDidSelectSharingOption:(unint64_t)option;
+- (void)inviteMessageFlowDidFinish:(id)finish;
+- (void)inviteMessageWasSent:(id)sent completion:(id)completion;
 @end
 
 @implementation AAUIMyPendingBeneficiaryActionHandler
 
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4
+- (void)doPrimaryAction:(id)action specifier:(id)specifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  actionCopy = action;
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,11 +32,11 @@
   }
 
   v9 = [AAUIInheritanceShareAccessKeyOptionsViewController alloc];
-  v10 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v11 = [v10 firstName];
-  v12 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v13 = [v12 handle];
-  v14 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)v9 initWithBeneficiaryName:v11 handle:v13];
+  contact = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  firstName = [contact firstName];
+  contact2 = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  handle = [contact2 handle];
+  v14 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)v9 initWithBeneficiaryName:firstName handle:handle];
   shareAccessKeyOptionsViewController = self->_shareAccessKeyOptionsViewController;
   self->_shareAccessKeyOptionsViewController = v14;
 
@@ -45,27 +45,27 @@
   if (+[AAUIFeatureFlags isSolariumEnabled])
   {
     [(AAUIOBTableWelcomeController *)self->_shareAccessKeyOptionsViewController setDelegate:self];
-    v16 = [(AAUIOBTableWelcomeController *)self->_shareAccessKeyOptionsViewController primaryButton];
-    [v16 setHidden:1];
+    primaryButton = [(AAUIOBTableWelcomeController *)self->_shareAccessKeyOptionsViewController primaryButton];
+    [primaryButton setHidden:1];
   }
 
   v17 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_shareAccessKeyOptionsViewController];
   navigationController = self->_navigationController;
   self->_navigationController = v17;
 
-  v19 = [v5 navigationController];
+  navigationController = [actionCopy navigationController];
 
-  [v19 presentViewController:self->_navigationController animated:1 completion:0];
+  [navigationController presentViewController:self->_navigationController animated:1 completion:0];
 }
 
-- (void)inheritanceDidSelectSharingOption:(unint64_t)a3
+- (void)inheritanceDidSelectSharingOption:(unint64_t)option
 {
-  if (a3 == 1)
+  if (option == 1)
   {
     [(AAUIMyPendingBeneficiaryActionHandler *)self _showPrintPreview];
   }
 
-  else if (!a3)
+  else if (!option)
   {
     [(AAUIMyPendingBeneficiaryActionHandler *)self _startInviteMessageFlow];
   }
@@ -76,14 +76,14 @@
   v3 = objc_opt_new();
   v4 = [objc_alloc(MEMORY[0x1E698B900]) initWithCapabilityType:2];
   objc_initWeak(&location, self);
-  v5 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v6 = [v5 handle];
+  contact = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  handle = [contact handle];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__AAUIMyPendingBeneficiaryActionHandler__checkMessageEligibility__block_invoke;
   v7[3] = &unk_1E820C530;
   objc_copyWeak(&v8, &location);
-  [v3 isRecipient:v6 capableOf:v4 completion:v7];
+  [v3 isRecipient:handle capableOf:v4 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -143,9 +143,9 @@ uint64_t __65__AAUIMyPendingBeneficiaryActionHandler__checkMessageEligibility__b
 - (void)_startInviteMessageFlow
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [a1 contact];
+  contact = [self contact];
   v4[0] = 67109120;
-  v4[1] = [v3 isFamilyMember];
+  v4[1] = [contact isFamilyMember];
   _os_log_debug_impl(&dword_1C5355000, a2, OS_LOG_TYPE_DEBUG, "LCInvite: Initialing LC Invite Message view based on receiver isFamilyMember: %d", v4, 8u);
 }
 
@@ -163,33 +163,33 @@ uint64_t __65__AAUIMyPendingBeneficiaryActionHandler__checkMessageEligibility__b
   }
 
   v6 = [AAUIInheritanceAccessKeyPDFGenerator alloc];
-  v7 = [(AAUIMyPendingBeneficiaryActionHandler *)self _appleAccount];
-  v8 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v9 = [(AAUIInheritanceAccessKeyPDFGenerator *)v6 initWithAppleAccount:v7 localContactInfo:v8];
+  _appleAccount = [(AAUIMyPendingBeneficiaryActionHandler *)self _appleAccount];
+  contact = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  v9 = [(AAUIInheritanceAccessKeyPDFGenerator *)v6 initWithAppleAccount:_appleAccount localContactInfo:contact];
 
-  v10 = [(AAUIInheritanceAccessKeyPDFGenerator *)v9 createPDFDocumentData];
-  if ([MEMORY[0x1E69C5A18] canPrintData:v10])
+  createPDFDocumentData = [(AAUIInheritanceAccessKeyPDFGenerator *)v9 createPDFDocumentData];
+  if ([MEMORY[0x1E69C5A18] canPrintData:createPDFDocumentData])
   {
-    v11 = [MEMORY[0x1E69C5A10] printInfo];
+    printInfo = [MEMORY[0x1E69C5A10] printInfo];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-    v14 = [v13 firstName];
-    v15 = [MEMORY[0x1E698B9B0] printAccessKeyDocumentTitle];
-    v16 = [v12 stringWithFormat:@"%@ - %@", v14, v15];
-    [v11 setJobName:v16];
+    contact2 = [(AAUIMyBeneficiaryActionHandler *)self contact];
+    firstName = [contact2 firstName];
+    printAccessKeyDocumentTitle = [MEMORY[0x1E698B9B0] printAccessKeyDocumentTitle];
+    v16 = [v12 stringWithFormat:@"%@ - %@", firstName, printAccessKeyDocumentTitle];
+    [printInfo setJobName:v16];
 
-    [v11 setOrientation:0];
-    [v11 setOutputType:2];
-    v17 = [MEMORY[0x1E69C5A18] sharedPrintController];
-    [v17 setPrintInfo:v11];
-    [v17 setShowsNumberOfCopies:1];
-    [v17 setPrintingItem:v10];
+    [printInfo setOrientation:0];
+    [printInfo setOutputType:2];
+    mEMORY[0x1E69C5A18] = [MEMORY[0x1E69C5A18] sharedPrintController];
+    [mEMORY[0x1E69C5A18] setPrintInfo:printInfo];
+    [mEMORY[0x1E69C5A18] setShowsNumberOfCopies:1];
+    [mEMORY[0x1E69C5A18] setPrintingItem:createPDFDocumentData];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __58__AAUIMyPendingBeneficiaryActionHandler__showPrintPreview__block_invoke;
     v18[3] = &unk_1E820C558;
     v18[4] = self;
-    [v17 presentAnimated:1 completionHandler:v18];
+    [mEMORY[0x1E69C5A18] presentAnimated:1 completionHandler:v18];
   }
 }
 
@@ -275,19 +275,19 @@ uint64_t __58__AAUIMyPendingBeneficiaryActionHandler__showPrintPreview__block_in
 - (void)_showSetupCompleteWithShareTypePrint
 {
   v3 = [AAUIOBInheritanceSetupCompleteViewModel alloc];
-  v4 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v5 = [v4 displayName];
-  v10 = [(AAUIOBInheritanceSetupCompleteViewModel *)v3 initWithBeneficiaryName:v5 accessKeyShareType:1];
+  contact = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  displayName = [contact displayName];
+  v10 = [(AAUIOBInheritanceSetupCompleteViewModel *)v3 initWithBeneficiaryName:displayName accessKeyShareType:1];
 
   v6 = [[AAUIOBWelcomeController alloc] initWithViewModel:v10];
-  v7 = [(AAUIOBWelcomeController *)v6 primaryButton];
-  [v7 addTarget:self action:sel__dismiss forControlEvents:64];
+  primaryButton = [(AAUIOBWelcomeController *)v6 primaryButton];
+  [primaryButton addTarget:self action:sel__dismiss forControlEvents:64];
 
-  v8 = [(AAUIOBWelcomeController *)v6 secondaryButton];
-  [v8 addTarget:self action:sel__dismissAndNavigateToDateOfBirthSettings forControlEvents:64];
+  secondaryButton = [(AAUIOBWelcomeController *)v6 secondaryButton];
+  [secondaryButton addTarget:self action:sel__dismissAndNavigateToDateOfBirthSettings forControlEvents:64];
 
-  v9 = [(OBBaseWelcomeController *)v6 navigationItem];
-  [v9 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)v6 navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   [(UINavigationController *)self->_navigationController aaui_showViewController:v6 sender:0];
 }
@@ -300,9 +300,9 @@ uint64_t __58__AAUIMyPendingBeneficiaryActionHandler__showPrintPreview__block_in
   v6 = MEMORY[0x1E696AEC0];
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"ALERT_BENEFICIARY_INELIGIBLE_MESSAGE" value:&stru_1F447F790 table:@"Localizable"];
-  v9 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v10 = [v9 firstName];
-  v11 = [v6 stringWithFormat:v8, v10];
+  contact = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  firstName = [contact firstName];
+  v11 = [v6 stringWithFormat:v8, firstName];
   v12 = [v3 alertWithTitle:v5 message:v11];
 
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -325,10 +325,10 @@ uint64_t __58__AAUIMyPendingBeneficiaryActionHandler__showPrintPreview__block_in
   [(UINavigationController *)self->_navigationController presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)inviteMessageFlowDidFinish:(id)a3
+- (void)inviteMessageFlowDidFinish:(id)finish
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  finishCopy = finish;
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -339,15 +339,15 @@ uint64_t __58__AAUIMyPendingBeneficiaryActionHandler__showPrintPreview__block_in
     _os_log_impl(&dword_1C5355000, v4, OS_LOG_TYPE_DEFAULT, "%@ : Resend Invite flow did finish", &v8, 0xCu);
   }
 
-  v7 = [v3 navigationController];
+  navigationController = [finishCopy navigationController];
 
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)inviteMessageWasSent:(id)a3 completion:(id)a4
+- (void)inviteMessageWasSent:(id)sent completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  completionCopy = completion;
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -359,16 +359,16 @@ uint64_t __58__AAUIMyPendingBeneficiaryActionHandler__showPrintPreview__block_in
   }
 
   v9 = objc_opt_new();
-  v10 = [(AAUIMyBeneficiaryActionHandler *)self contact];
-  v11 = [v10 inheritanceContactInfo];
+  contact = [(AAUIMyBeneficiaryActionHandler *)self contact];
+  inheritanceContactInfo = [contact inheritanceContactInfo];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__AAUIMyPendingBeneficiaryActionHandler_inviteMessageWasSent_completion___block_invoke;
   v13[3] = &unk_1E820C580;
   v13[4] = self;
-  v14 = v5;
-  v12 = v5;
-  [v9 sendInvitationToContact:v11 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [v9 sendInvitationToContact:inheritanceContactInfo completion:v13];
 }
 
 void __73__AAUIMyPendingBeneficiaryActionHandler_inviteMessageWasSent_completion___block_invoke(uint64_t a1, void *a2)
@@ -410,16 +410,16 @@ uint64_t __73__AAUIMyPendingBeneficiaryActionHandler_inviteMessageWasSent_comple
 
 - (id)_appleAccount
 {
-  v2 = [(AAUIMyBeneficiaryActionHandler *)self accountManager];
-  v3 = [v2 accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accountManager = [(AAUIMyBeneficiaryActionHandler *)self accountManager];
+  accounts = [accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   return v4;
 }
 
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4
+- (void)_showAlertWithTitle:(id)title message:(id)message
 {
-  v8 = [MEMORY[0x1E69DC650] alertWithTitle:a3 message:a4];
+  v8 = [MEMORY[0x1E69DC650] alertWithTitle:title message:message];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"OK" value:&stru_1F447F790 table:@"Localizable"];
 

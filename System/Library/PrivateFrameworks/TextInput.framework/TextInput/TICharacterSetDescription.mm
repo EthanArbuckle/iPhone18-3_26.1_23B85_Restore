@@ -1,15 +1,15 @@
 @interface TICharacterSetDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSCharacterSet)characterSet;
-- (TICharacterSetDescription)initWithBase:(int64_t)a3 additionalCharacters:(id)a4 removedCharacters:(id)a5 inverted:(BOOL)a6;
-- (TICharacterSetDescription)initWithCoder:(id)a3;
-- (id)awakeAfterUsingCoder:(id)a3;
+- (TICharacterSetDescription)initWithBase:(int64_t)base additionalCharacters:(id)characters removedCharacters:(id)removedCharacters inverted:(BOOL)inverted;
+- (TICharacterSetDescription)initWithCoder:(id)coder;
+- (id)awakeAfterUsingCoder:(id)coder;
 - (id)description;
 - (id)invertedSetDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newCharacterSetFromDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TICharacterSetDescription
@@ -18,11 +18,11 @@
 {
   v3 = 257 * [(TICharacterSetDescription *)self baseIdentifier];
   v4 = 257 * (v3 + [(TICharacterSetDescription *)self inverted]);
-  v5 = [(TICharacterSetDescription *)self charactersAddedToBase];
-  v6 = v4 + [v5 hash];
+  charactersAddedToBase = [(TICharacterSetDescription *)self charactersAddedToBase];
+  v6 = v4 + [charactersAddedToBase hash];
 
-  v7 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-  v8 = [v7 hash];
+  charactersRemovedFromBase = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+  v8 = [charactersRemovedFromBase hash];
 
   return v8 + 257 * v6;
 }
@@ -32,9 +32,9 @@
   characterSet = self->_characterSet;
   if (!characterSet)
   {
-    v4 = [(TICharacterSetDescription *)self newCharacterSetFromDescription];
+    newCharacterSetFromDescription = [(TICharacterSetDescription *)self newCharacterSetFromDescription];
     v5 = self->_characterSet;
-    self->_characterSet = v4;
+    self->_characterSet = newCharacterSetFromDescription;
 
     characterSet = self->_characterSet;
   }
@@ -54,35 +54,35 @@
     v3 = 0;
   }
 
-  v4 = [(TICharacterSetDescription *)self charactersAddedToBase];
+  charactersAddedToBase = [(TICharacterSetDescription *)self charactersAddedToBase];
 
-  if (v4)
+  if (charactersAddedToBase)
   {
     if (v3)
     {
-      v5 = [v3 mutableCopy];
-      v6 = [(TICharacterSetDescription *)self charactersAddedToBase];
-      [v5 addCharactersInString:v6];
+      charactersAddedToBase3 = [v3 mutableCopy];
+      charactersAddedToBase2 = [(TICharacterSetDescription *)self charactersAddedToBase];
+      [charactersAddedToBase3 addCharactersInString:charactersAddedToBase2];
 
-      v7 = [v5 copy];
+      v7 = [charactersAddedToBase3 copy];
       v3 = v7;
     }
 
     else
     {
       v8 = MEMORY[0x1E696AB08];
-      v5 = [(TICharacterSetDescription *)self charactersAddedToBase];
-      v3 = [v8 characterSetWithCharactersInString:v5];
+      charactersAddedToBase3 = [(TICharacterSetDescription *)self charactersAddedToBase];
+      v3 = [v8 characterSetWithCharactersInString:charactersAddedToBase3];
     }
   }
 
-  v9 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+  charactersRemovedFromBase = [(TICharacterSetDescription *)self charactersRemovedFromBase];
 
-  if (v9)
+  if (charactersRemovedFromBase)
   {
     v10 = [v3 mutableCopy];
-    v11 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-    [v10 removeCharactersInString:v11];
+    charactersRemovedFromBase2 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+    [v10 removeCharactersInString:charactersRemovedFromBase2];
 
     v12 = [v10 copy];
     v3 = v12;
@@ -90,22 +90,22 @@
 
   if ([(TICharacterSetDescription *)self inverted])
   {
-    v13 = [v3 invertedSet];
-    v14 = v13;
-    if (v13)
+    invertedSet = [v3 invertedSet];
+    v14 = invertedSet;
+    if (invertedSet)
     {
-      v15 = v13;
+      invertedSet2 = invertedSet;
     }
 
     else
     {
       v16 = [MEMORY[0x1E696AB08] characterSetWithRange:{0, 0}];
-      v15 = [v16 invertedSet];
+      invertedSet2 = [v16 invertedSet];
 
       v3 = v16;
     }
 
-    return v15;
+    return invertedSet2;
   }
 
   return v3;
@@ -114,21 +114,21 @@
 - (id)invertedSetDescription
 {
   v3 = [TICharacterSetDescription alloc];
-  v4 = [(TICharacterSetDescription *)self baseIdentifier];
-  v5 = [(TICharacterSetDescription *)self charactersAddedToBase];
-  v6 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-  v7 = [(TICharacterSetDescription *)v3 initWithBase:v4 additionalCharacters:v5 removedCharacters:v6 inverted:[(TICharacterSetDescription *)self inverted]^ 1];
+  baseIdentifier = [(TICharacterSetDescription *)self baseIdentifier];
+  charactersAddedToBase = [(TICharacterSetDescription *)self charactersAddedToBase];
+  charactersRemovedFromBase = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+  v7 = [(TICharacterSetDescription *)v3 initWithBase:baseIdentifier additionalCharacters:charactersAddedToBase removedCharacters:charactersRemovedFromBase inverted:[(TICharacterSetDescription *)self inverted]^ 1];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TIMutableCharacterSetDescription allocWithZone:a3];
-  v5 = [(TICharacterSetDescription *)self baseIdentifier];
-  v6 = [(TICharacterSetDescription *)self charactersAddedToBase];
-  v7 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-  v8 = [(TICharacterSetDescription *)v4 initWithBase:v5 additionalCharacters:v6 removedCharacters:v7 inverted:[(TICharacterSetDescription *)self inverted]];
+  v4 = [TIMutableCharacterSetDescription allocWithZone:zone];
+  baseIdentifier = [(TICharacterSetDescription *)self baseIdentifier];
+  charactersAddedToBase = [(TICharacterSetDescription *)self charactersAddedToBase];
+  charactersRemovedFromBase = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+  v8 = [(TICharacterSetDescription *)v4 initWithBase:baseIdentifier additionalCharacters:charactersAddedToBase removedCharacters:charactersRemovedFromBase inverted:[(TICharacterSetDescription *)self inverted]];
 
   return v8;
 }
@@ -149,13 +149,13 @@
 
   if ([(TICharacterSetDescription *)self baseIdentifier])
   {
-    v8 = [(TICharacterSetDescription *)self baseIdentifier];
-    if (v8 == 3)
+    baseIdentifier = [(TICharacterSetDescription *)self baseIdentifier];
+    if (baseIdentifier == 3)
     {
       v9 = sel_whitespaceAndNewlineCharacterSet;
     }
 
-    else if (v8 == 10)
+    else if (baseIdentifier == 10)
     {
       v9 = sel_alphanumericCharacterSet;
     }
@@ -169,20 +169,20 @@
     [v5 appendFormat:@", base: %@", v10];
   }
 
-  v11 = [(TICharacterSetDescription *)self charactersAddedToBase];
+  charactersAddedToBase = [(TICharacterSetDescription *)self charactersAddedToBase];
 
-  if (v11)
+  if (charactersAddedToBase)
   {
-    v12 = [(TICharacterSetDescription *)self charactersAddedToBase];
-    [v5 appendFormat:@", characters: <%@>", v12];
+    charactersAddedToBase2 = [(TICharacterSetDescription *)self charactersAddedToBase];
+    [v5 appendFormat:@", characters: <%@>", charactersAddedToBase2];
   }
 
-  v13 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+  charactersRemovedFromBase = [(TICharacterSetDescription *)self charactersRemovedFromBase];
 
-  if (v13)
+  if (charactersRemovedFromBase)
   {
-    v14 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-    [v5 appendFormat:@", without: <%@>", v14];
+    charactersRemovedFromBase2 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+    [v5 appendFormat:@", without: <%@>", charactersRemovedFromBase2];
   }
 
   if ([(TICharacterSetDescription *)self inverted])
@@ -195,56 +195,56 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     v14 = 0;
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(TICharacterSetDescription *)self baseIdentifier];
-  if (v6 != [v5 baseIdentifier])
+  v5 = equalCopy;
+  baseIdentifier = [(TICharacterSetDescription *)self baseIdentifier];
+  if (baseIdentifier != [v5 baseIdentifier])
   {
     goto LABEL_6;
   }
 
-  v7 = [(TICharacterSetDescription *)self inverted];
-  if (v7 != [v5 inverted])
+  inverted = [(TICharacterSetDescription *)self inverted];
+  if (inverted != [v5 inverted])
   {
     goto LABEL_6;
   }
 
-  v8 = [(TICharacterSetDescription *)self charactersAddedToBase];
-  v9 = [v5 charactersAddedToBase];
-  v10 = v9;
-  if (v8 == v9)
+  charactersAddedToBase = [(TICharacterSetDescription *)self charactersAddedToBase];
+  charactersAddedToBase2 = [v5 charactersAddedToBase];
+  v10 = charactersAddedToBase2;
+  if (charactersAddedToBase == charactersAddedToBase2)
   {
 
     goto LABEL_11;
   }
 
-  v11 = [(TICharacterSetDescription *)self charactersAddedToBase];
-  v12 = [v5 charactersAddedToBase];
-  v13 = [v11 isEqualToString:v12];
+  charactersAddedToBase3 = [(TICharacterSetDescription *)self charactersAddedToBase];
+  charactersAddedToBase4 = [v5 charactersAddedToBase];
+  v13 = [charactersAddedToBase3 isEqualToString:charactersAddedToBase4];
 
   if (v13)
   {
 LABEL_11:
-    v16 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-    v17 = [v5 charactersRemovedFromBase];
-    if (v16 == v17)
+    charactersRemovedFromBase = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+    charactersRemovedFromBase2 = [v5 charactersRemovedFromBase];
+    if (charactersRemovedFromBase == charactersRemovedFromBase2)
     {
       v14 = 1;
     }
 
     else
     {
-      v18 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
-      v19 = [v5 charactersRemovedFromBase];
-      v14 = [v18 isEqualToString:v19];
+      charactersRemovedFromBase3 = [(TICharacterSetDescription *)self charactersRemovedFromBase];
+      charactersRemovedFromBase4 = [v5 charactersRemovedFromBase];
+      v14 = [charactersRemovedFromBase3 isEqualToString:charactersRemovedFromBase4];
     }
 
     goto LABEL_7;
@@ -258,7 +258,7 @@ LABEL_9:
   return v14;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
   if (([(TICharacterSetDescription *)self isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
@@ -269,11 +269,11 @@ LABEL_9:
 
     v4 = awakeAfterUsingCoder____decodedInstances;
     objc_sync_enter(v4);
-    v5 = [awakeAfterUsingCoder____decodedInstances member:self];
-    if (!v5)
+    selfCopy2 = [awakeAfterUsingCoder____decodedInstances member:self];
+    if (!selfCopy2)
     {
       [awakeAfterUsingCoder____decodedInstances addObject:self];
-      v5 = self;
+      selfCopy2 = self;
     }
 
     objc_sync_exit(v4);
@@ -281,10 +281,10 @@ LABEL_9:
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  return v5;
+  return selfCopy2;
 }
 
 uint64_t __50__TICharacterSetDescription_awakeAfterUsingCoder___block_invoke()
@@ -294,83 +294,83 @@ uint64_t __50__TICharacterSetDescription_awakeAfterUsingCoder___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   baseIdentifier = self->_baseIdentifier;
-  v8 = v4;
+  v8 = coderCopy;
   if (baseIdentifier)
   {
-    [v4 encodeInteger:baseIdentifier forKey:@"baseIdentifier"];
-    v4 = v8;
+    [coderCopy encodeInteger:baseIdentifier forKey:@"baseIdentifier"];
+    coderCopy = v8;
   }
 
   charactersAddedToBase = self->_charactersAddedToBase;
   if (charactersAddedToBase)
   {
     [v8 encodeObject:charactersAddedToBase forKey:@"charactersAddedToBase"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   charactersRemovedFromBase = self->_charactersRemovedFromBase;
   if (charactersRemovedFromBase)
   {
     [v8 encodeObject:charactersRemovedFromBase forKey:@"charactersRemovedFromBase"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_inverted)
   {
     [v8 encodeBool:1 forKey:@"inverted"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (TICharacterSetDescription)initWithCoder:(id)a3
+- (TICharacterSetDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TICharacterSetDescription;
   v5 = [(TICharacterSetDescription *)&v13 init];
   if (v5)
   {
-    v5->_baseIdentifier = [v4 decodeIntegerForKey:@"baseIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"charactersAddedToBase"];
+    v5->_baseIdentifier = [coderCopy decodeIntegerForKey:@"baseIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"charactersAddedToBase"];
     v7 = [v6 copy];
     charactersAddedToBase = v5->_charactersAddedToBase;
     v5->_charactersAddedToBase = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"charactersRemovedFromBase"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"charactersRemovedFromBase"];
     v10 = [v9 copy];
     charactersRemovedFromBase = v5->_charactersRemovedFromBase;
     v5->_charactersRemovedFromBase = v10;
 
-    v5->_inverted = [v4 decodeBoolForKey:@"inverted"];
+    v5->_inverted = [coderCopy decodeBoolForKey:@"inverted"];
   }
 
   return v5;
 }
 
-- (TICharacterSetDescription)initWithBase:(int64_t)a3 additionalCharacters:(id)a4 removedCharacters:(id)a5 inverted:(BOOL)a6
+- (TICharacterSetDescription)initWithBase:(int64_t)base additionalCharacters:(id)characters removedCharacters:(id)removedCharacters inverted:(BOOL)inverted
 {
-  v10 = a4;
-  v11 = a5;
+  charactersCopy = characters;
+  removedCharactersCopy = removedCharacters;
   v19.receiver = self;
   v19.super_class = TICharacterSetDescription;
   v12 = [(TICharacterSetDescription *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_baseIdentifier = a3;
-    v14 = [v10 copy];
+    v12->_baseIdentifier = base;
+    v14 = [charactersCopy copy];
     charactersAddedToBase = v13->_charactersAddedToBase;
     v13->_charactersAddedToBase = v14;
 
-    v16 = [v11 copy];
+    v16 = [removedCharactersCopy copy];
     charactersRemovedFromBase = v13->_charactersRemovedFromBase;
     v13->_charactersRemovedFromBase = v16;
 
-    v13->_inverted = a6;
+    v13->_inverted = inverted;
   }
 
   return v13;

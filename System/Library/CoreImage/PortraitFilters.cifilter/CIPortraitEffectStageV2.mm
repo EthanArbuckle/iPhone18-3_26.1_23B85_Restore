@@ -232,7 +232,7 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   inputDisparity = self->super.super.super.inputDisparity;
   if (inputDisparity && (v4 = [(CIImage *)inputDisparity depthData]) != 0 && [(AVDepthData *)v4 depthDataAccuracy]== &dword_0 + 1)
   {
@@ -241,34 +241,34 @@
 
   else
   {
-    [(NSNumber *)v2->inputUseAbsoluteDisparity BOOLValue];
+    [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue];
     v5 = 0;
   }
 
   p_info = &@"kernel vec4 _pf_eyeBrightenSoftlight (__sample uCb, __sample m, float str) \n { \n float g = .75*(1.0-dot(uCb.rgb, vec3(.333333))); \n vec4 uCf = vec4(g, g, g, 1.0); \n vec4 D = compare(uCb-0.25, ((16.0*uCb-12.0)*uCb+4.0)*uCb, sqrt(uCb)); \n vec4 Ct = clamp(uCb + (2.0*uCf-1.0) * compare(uCf - 0.5, uCb*(1.0-uCb), D-uCb), 0.0, 1.0); \n vec4 bright = Ct; \n uCf.rgb = mix(uCb.rgb, bright.rgb, m.r); \n uCf.rgb = mix(uCb.rgb, uCf.rgb, str); \n return uCf; \n }".info;
-  v280.receiver = v2;
+  v280.receiver = selfCopy;
   v280.super_class = CIPortraitEffectStageV2;
   result = [(CIPortraitEffectContourV2 *)&v280 outputImage];
   v8 = result;
-  p_isa = &v2->super.super.super.super.super.isa;
-  if (v2->super.super.super.inputMatte)
+  p_isa = &selfCopy->super.super.super.super.super.isa;
+  if (selfCopy->super.super.super.inputMatte)
   {
     v257 = v5;
     v9 = [CIImage imageWithColor:[CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0]];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v10 = [(CIImage *)v9 imageByCroppingToRect:?];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v12 = v11;
     v261 = v12;
-    [(CIImage *)v2->super.super.super.inputMatte extent];
+    [(CIImage *)selfCopy->super.super.super.inputMatte extent];
     v14 = v13;
     v259 = v14;
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v16 = v15;
     v260 = v16;
-    [(CIImage *)v2->super.super.super.inputMatte extent];
+    [(CIImage *)selfCopy->super.super.super.inputMatte extent];
     v18 = v17;
-    inputFaceLandmarkArray = v2->super.super.super.inputFaceLandmarkArray;
+    inputFaceLandmarkArray = selfCopy->super.super.super.inputFaceLandmarkArray;
     v264 = v8;
     v271 = v10;
     if (inputFaceLandmarkArray)
@@ -280,7 +280,7 @@
         v279 = 0u;
         v276 = 0u;
         v277 = 0u;
-        obj = v2->super.super.super.inputFaceLandmarkArray;
+        obj = selfCopy->super.super.super.inputFaceLandmarkArray;
         v20 = [(NSArray *)obj countByEnumeratingWithState:&v276 objects:v317 count:16];
         if (v20)
         {
@@ -372,7 +372,7 @@
                 v50 = sin(v41 + v41);
                 v51 = [CIVector vectorWithX:(v49.__cosval * v49.__cosval) / ((v47 + v47) * v47) + (v49.__sinval * v49.__sinval) / ((*&v46 + *&v46) * *&v46) Y:(v50 / (*&v46 * 4.0 * *&v46) - v50 / (v47 * 4.0 * v47)) Z:(v49.__sinval * v49.__sinval) / ((v47 + v47) * v47) + (v49.__cosval * v49.__cosval) / ((*&v46 + *&v46) * *&v46) W:0.7];
                 v52 = [CIVector vectorWithX:v269 Y:v268];
-                v53 = [p_isa _faceVignette];
+                _faceVignette = [p_isa _faceVignette];
                 v20 = v266;
                 [p_isa[9] extent];
                 v316[0] = v264;
@@ -380,7 +380,7 @@
                 ++v21;
                 v316[2] = v52;
                 v316[3] = v51;
-                v271 = [v53 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v316, 4), v54, v55, v56, v57}];
+                v271 = [_faceVignette applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v316, 4), v54, v55, v56, v57}];
 
                 v22 = v34;
                 v23 = v262;
@@ -395,7 +395,7 @@
 
           while (v20);
           LODWORD(v20) = v21 > 0;
-          v2 = p_isa;
+          selfCopy = p_isa;
           p_info = (@"kernel vec4 _pf_eyeBrightenSoftlight (__sample uCb, __sample m, float str) \n { \n float g = .75*(1.0-dot(uCb.rgb, vec3(.333333))); \n vec4 uCf = vec4(g, g, g, 1.0); \n vec4 D = compare(uCb-0.25, ((16.0*uCb-12.0)*uCb+4.0)*uCb, sqrt(uCb)); \n vec4 Ct = clamp(uCb + (2.0*uCf-1.0) * compare(uCf - 0.5, uCb*(1.0-uCb), D-uCb), 0.0, 1.0); \n vec4 bright = Ct; \n uCf.rgb = mix(uCb.rgb, bright.rgb, m.r); \n uCf.rgb = mix(uCb.rgb, uCf.rgb, str); \n return uCf; \n }" + 8);
         }
 
@@ -422,19 +422,19 @@
 
     v142 = v261 / v259;
     v143 = p_info[298];
-    v275.receiver = v2;
+    v275.receiver = selfCopy;
     v275.super_class = v143;
     v144 = v260 / v18;
     v145 = [(CIPortraitEffectLightV2 *)&v275 getRefinedMatteMode:&off_7A8C0];
-    if (v2->super.super.super.inputSpillCorrectedRatioImage || (-[NSNumber floatValue](v2->super.super.super.inputGenerateSpillMatte, "floatValue"), v146 > 0.0) || ([v145 floatValue], v147 > 0.0))
+    if (selfCopy->super.super.super.inputSpillCorrectedRatioImage || (-[NSNumber floatValue](selfCopy->super.super.super.inputGenerateSpillMatte, "floatValue"), v146 > 0.0) || ([v145 floatValue], v147 > 0.0))
     {
-      inputMatte = v2->super.super.super.inputMatte;
-      [(NSNumber *)v2->super.super.super.inputGenerateSpillMatte floatValue];
+      inputMatte = selfCopy->super.super.super.inputMatte;
+      [(NSNumber *)selfCopy->super.super.super.inputGenerateSpillMatte floatValue];
       if (v149 <= 0.0 && ([v145 floatValue], v150 <= 0.0))
       {
-        if (v2->super.super.super.inputSpillCorrectedRatioImage)
+        if (selfCopy->super.super.super.inputSpillCorrectedRatioImage)
         {
-          inputSpillCorrectedRatioImage = v2->super.super.super.inputSpillCorrectedRatioImage;
+          inputSpillCorrectedRatioImage = selfCopy->super.super.super.inputSpillCorrectedRatioImage;
         }
 
         else
@@ -449,10 +449,10 @@
       {
         v151 = [CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
         v152 = p_info[298];
-        v274.receiver = v2;
+        v274.receiver = selfCopy;
         v274.super_class = v152;
         v153 = [(CIPortraitEffectLightV2 *)&v274 getRenderSpillCache:&off_7A140];
-        v154 = v2->super.super.super.inputMatte;
+        v154 = selfCopy->super.super.super.inputMatte;
         v314[0] = @"inputMatte";
         v314[1] = @"bgColor";
         v315[0] = v154;
@@ -463,10 +463,10 @@
         inputSpillCorrectedRatioImage = [v264 imageByApplyingFilter:@"CIPortraitEffectSpillCorrection" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v315, v314, 3)}];
       }
 
-      v157 = [(CIPortraitEffectStageV2 *)v2 _getRefinedMatte];
+      _getRefinedMatte = [(CIPortraitEffectStageV2 *)selfCopy _getRefinedMatte];
       [(CIImage *)inputSpillCorrectedRatioImage extent];
       v313 = inputSpillCorrectedRatioImage;
-      v162 = [v157 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v313, 1), v158, v159, v160, v161}];
+      v162 = [_getRefinedMatte applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v313, 1), v158, v159, v160, v161}];
       v163 = [objc_msgSend(v162 "imageByClampingToExtent")];
       [v162 extent];
       v164 = [v163 imageByCroppingToRect:?];
@@ -481,16 +481,16 @@
       [v155 extent];
       if (v168 != v169)
       {
-        v170 = [v165 imageByClampingToExtent];
+        imageByClampingToExtent = [v165 imageByClampingToExtent];
         CGAffineTransformMakeScale(&v273, v142, v144);
-        v171 = [v170 imageByApplyingTransform:&v273];
+        v171 = [imageByClampingToExtent imageByApplyingTransform:&v273];
         [v155 extent];
         v165 = [v171 imageByCroppingToRect:?];
         CGAffineTransformMakeScale(&v273, v142, v144);
         v166 = [v166 imageByApplyingTransform:&v273];
       }
 
-      v172 = [(CIPortraitEffectStageV2 *)v2 _applyRefinedMatte];
+      _applyRefinedMatte = [(CIPortraitEffectStageV2 *)selfCopy _applyRefinedMatte];
       [v155 extent];
       v174 = v173;
       v176 = v175;
@@ -500,7 +500,7 @@
       v308[1] = v165;
       v308[2] = v166;
       v181 = [NSArray arrayWithObjects:v308 count:3];
-      v182 = v172;
+      v182 = _applyRefinedMatte;
       v183 = v174;
       v184 = v176;
       v185 = v178;
@@ -509,10 +509,10 @@
 
     else
     {
-      v270 = [(CIPortraitEffectStageV2 *)v2 thresholdMatte];
-      v207 = [(CIImage *)v2->super.super.super.inputMatte imageByClampingToExtent];
+      thresholdMatte = [(CIPortraitEffectStageV2 *)selfCopy thresholdMatte];
+      imageByClampingToExtent2 = [(CIImage *)selfCopy->super.super.super.inputMatte imageByClampingToExtent];
       CGAffineTransformMakeScale(&v273, 0.5, 0.5);
-      v208 = [(CIImage *)v207 imageByApplyingTransform:&v273];
+      v208 = [(CIImage *)imageByClampingToExtent2 imageByApplyingTransform:&v273];
       v209 = [CIColorKernel PFKernelWithString:@"kernel vec4 _pf_red(__sample s) { return s.xxxw; }"];
       [(CIImage *)v208 extent];
       v211 = v210;
@@ -524,9 +524,9 @@
       v305 = kCIKernelOutputFormat;
       v306 = [NSNumber numberWithInt:kCIFormatR8];
       v219 = [v209 applyWithExtent:v218 arguments:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary options:{"dictionaryWithObjects:forKeys:count:", &v306, &v305, 1), v211, v213, v215, v217}];
-      [(NSNumber *)v2->super.super.super.inputScale floatValue];
+      [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
       v221 = v220 * 5.0;
-      [(NSNumber *)v2->super.super.super.inputScale floatValue];
+      [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
       v223 = *&v222;
       if ((v257 & 1) != 0 || [p_isa[31] BOOLValue])
       {
@@ -557,18 +557,18 @@
         *&v225 = v224;
         v304[1] = [NSNumber numberWithFloat:v225];
         v226 = [objc_msgSend(v219 imageByApplyingFilter:@"CIMotionBlur" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v304, v303, 2)), "imageByApplyingGaussianBlurWithSigma:", v223}];
-        v2 = p_isa;
+        selfCopy = p_isa;
       }
 
       else
       {
-        v2 = p_isa;
+        selfCopy = p_isa;
         [p_isa[18] floatValue];
         v226 = [v219 imageByApplyingGaussianBlurWithSigma:v227 * 8.0];
       }
 
       v301 = @"inputRadius";
-      [(NSNumber *)v2->super.super.super.inputScale floatValue];
+      [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
       v302 = [NSNumber numberWithDouble:v228 * -3.0];
       v229 = [v219 imageByApplyingFilter:@"CICheapMorphology" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v302, &v301, 1)}];
       v299 = @"inputBackgroundImage";
@@ -578,12 +578,12 @@
       v231 = [v226 imageByApplyingTransform:&v273];
       CGAffineTransformMakeScale(&v273, 2.0, 2.0);
       v232 = [v230 imageByApplyingTransform:&v273];
-      [(CIImage *)v2->super.super.super.inputMatte extent];
-      v298[0] = v207;
+      [(CIImage *)selfCopy->super.super.super.inputMatte extent];
+      v298[0] = imageByClampingToExtent2;
       v298[1] = v231;
       v298[2] = &off_7A120;
       v298[3] = &off_7A160;
-      v237 = [v270 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v298, 4), v233, v234, v235, v236}];
+      v237 = [thresholdMatte applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v298, 4), v233, v234, v235, v236}];
       CGAffineTransformMakeScale(&v273, v142, v144);
       v238 = [v237 imageByApplyingTransform:&v273];
       [v264 extent];
@@ -592,12 +592,12 @@
       v240 = [v232 imageByApplyingTransform:&v273];
       [v264 extent];
       v241 = [v240 imageByCroppingToRect:?];
-      v242 = [(CIPortraitEffectStageV2 *)v2 thresholdAndApplyMatte];
+      thresholdAndApplyMatte = [(CIPortraitEffectStageV2 *)selfCopy thresholdAndApplyMatte];
       v243 = 0.5;
       v244 = 0.100000001;
       v245 = 1059481190;
       v246 = 2.20000005;
-      if ((v257 & 1) == 0 && ![(NSNumber *)v2->inputUseAbsoluteDisparity BOOLValue])
+      if ((v257 & 1) == 0 && ![(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
       {
         v244 = 0.0;
         v246 = 1.75;
@@ -618,7 +618,7 @@
       LODWORD(v248) = v245;
       v297[4] = [NSNumber numberWithFloat:v248];
       v181 = [NSArray arrayWithObjects:v297 count:5];
-      v182 = v242;
+      v182 = thresholdAndApplyMatte;
       v183 = v249;
       v184 = v251;
       v185 = v253;
@@ -626,9 +626,9 @@
     }
 
     v187 = [v182 applyWithExtent:v181 arguments:{v183, v184, v185, v186}];
-    [(NSNumber *)v2->inputSharpenRadius floatValue];
+    [(NSNumber *)selfCopy->inputSharpenRadius floatValue];
     v189 = v188;
-    [(NSNumber *)v2->super.super.super.inputScale floatValue];
+    [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
     *&v191 = v189 * v190;
     v296[0] = &off_79E40;
     v295[0] = @"inputSharpness";
@@ -637,8 +637,8 @@
     v192 = [v187 imageByApplyingFilter:@"CISharpenLuminance" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v296, v295, 2)}];
     if (v20)
     {
-      v193 = [(CIPortraitEffectStageV2 *)v2 _applyVignetteStage];
-      [(CIImage *)v2->super.super.super.inputImage extent];
+      _applyVignetteStage = [(CIPortraitEffectStageV2 *)selfCopy _applyVignetteStage];
+      [(CIImage *)selfCopy->super.super.super.inputImage extent];
       v195 = v194;
       v197 = v196;
       v199 = v198;
@@ -647,12 +647,12 @@
       v294[1] = v271;
       LODWORD(v194) = 1061997773;
       v294[2] = [NSNumber numberWithFloat:v194];
-      v192 = [v193 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v294, 3), v195, v197, v199, v201}];
+      v192 = [_applyVignetteStage applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v294, 3), v195, v197, v199, v201}];
     }
 
-    [(NSNumber *)v2->super.super.super.inputScale floatValue];
+    [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
     v203 = v202;
-    [(NSNumber *)v2->inputGrainAmount floatValue];
+    [(NSNumber *)selfCopy->inputGrainAmount floatValue];
     *&v205 = v203 * v204;
     v292[0] = @"inputAmount";
     v206 = [NSNumber numberWithFloat:v205];
@@ -664,16 +664,16 @@
     return [v141 imageByApplyingFilter:@"CIPhotoGrain" withInputParameters:v140];
   }
 
-  if (v2->super.super.super.inputBlurMap)
+  if (selfCopy->super.super.super.inputBlurMap)
   {
     v258 = v5;
     v58 = [CIImage imageWithColor:[CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0]];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v59 = [(CIImage *)v58 imageByCroppingToRect:?];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v60 = 0.5;
     v62 = v61 * 0.5;
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v64 = v63 * 0.5;
     v65 = v62;
     v66 = v65 * 0.3;
@@ -681,22 +681,22 @@
     v68 = v64 * 0.3;
     v69 = [CIVector vectorWithX:1.0 / ((v66 + v66) * v66) + 0.0 / ((v68 + v68) * v68) Y:0.0 / (v68 * 4.0 * v68) - 0.0 / (v66 * 4.0 * v66) Z:0.0 / ((v66 + v66) * v66) + 1.0 / ((v68 + v68) * v68) W:0.7];
     v70 = [CIVector vectorWithX:v65 Y:v67];
-    v71 = [(CIPortraitEffectStageV2 *)v2 _faceVignette];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    _faceVignette2 = [(CIPortraitEffectStageV2 *)selfCopy _faceVignette];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v291[0] = v8;
     v291[1] = v59;
     v291[2] = v70;
     v291[3] = v69;
-    v272 = [v71 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v291, 4), v72, v73, v74, v75}];
-    inputBlurMap = v2->super.super.super.inputBlurMap;
-    v77 = [(CIPortraitEffectStageV2 *)v2 _CIPrepareBlackDepth];
-    [(CIImage *)v2->super.super.super.inputBlurMap extent];
+    v272 = [_faceVignette2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v291, 4), v72, v73, v74, v75}];
+    inputBlurMap = selfCopy->super.super.super.inputBlurMap;
+    _CIPrepareBlackDepth = [(CIPortraitEffectStageV2 *)selfCopy _CIPrepareBlackDepth];
+    [(CIImage *)selfCopy->super.super.super.inputBlurMap extent];
     v290[0] = inputBlurMap;
     v290[1] = &off_79DE0;
-    v82 = [objc_msgSend(v77 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v290, 2), v78, v79, v80, v81), "imageByClampingToExtent"}];
+    v82 = [objc_msgSend(_CIPrepareBlackDepth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v290, 2), v78, v79, v80, v81), "imageByClampingToExtent"}];
     CGAffineTransformMakeScale(&v273, 0.5, 0.5);
     v83 = [v82 imageByApplyingTransform:&v273];
-    [(NSNumber *)v2->super.super.super.inputScale floatValue];
+    [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
     v85 = [v83 imageByApplyingGaussianBlurWithSigma:v84 * 8.0];
     v86 = [v83 imageByApplyingFilter:@"CICheapMorphology" withInputParameters:&off_7DD38];
     v288 = @"inputBackgroundImage";
@@ -706,21 +706,21 @@
     v88 = [v85 imageByApplyingTransform:&v273];
     CGAffineTransformMakeScale(&v273, 2.0, 2.0);
     v89 = [v87 imageByApplyingTransform:&v273];
-    v90 = [(CIPortraitEffectStageV2 *)v2 thresholdMatte];
+    thresholdMatte2 = [(CIPortraitEffectStageV2 *)selfCopy thresholdMatte];
     [v82 extent];
     v287[0] = v82;
     v287[1] = v88;
     v287[2] = &off_7A120;
     v287[3] = &off_7A160;
-    v95 = [v90 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v287, 4), v91, v92, v93, v94}];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    v95 = [thresholdMatte2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v287, 4), v91, v92, v93, v94}];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     *&v65 = v96;
-    [(CIImage *)v2->super.super.super.inputBlurMap extent];
+    [(CIImage *)selfCopy->super.super.super.inputBlurMap extent];
     v98 = v97;
     *&v65 = *&v65 / v98;
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     *&v67 = v99;
-    [(CIImage *)v2->super.super.super.inputBlurMap extent];
+    [(CIImage *)selfCopy->super.super.super.inputBlurMap extent];
     v101 = v100;
     v102 = *&v65;
     v103 = (*&v67 / v101);
@@ -732,11 +732,11 @@
     v106 = [v89 imageByApplyingTransform:&v273];
     [v8 extent];
     v107 = [v106 imageByCroppingToRect:?];
-    v108 = [(CIPortraitEffectStageV2 *)v2 thresholdAndApplyMatte];
+    thresholdAndApplyMatte2 = [(CIPortraitEffectStageV2 *)selfCopy thresholdAndApplyMatte];
     v109 = 2.20000005;
     v110 = 1059481190;
     v111 = 0.100000001;
-    if ((v258 & 1) == 0 && ![(NSNumber *)v2->inputUseAbsoluteDisparity BOOLValue])
+    if ((v258 & 1) == 0 && ![(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
     {
       v109 = 1.75;
       v111 = 0.0;
@@ -756,18 +756,18 @@
     v286[3] = v112;
     LODWORD(v113) = v110;
     v286[4] = [NSNumber numberWithFloat:v113];
-    v121 = [v108 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v286, 5), v114, v116, v118, v120}];
-    [(NSNumber *)v2->inputSharpenRadius floatValue];
+    v121 = [thresholdAndApplyMatte2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v286, 5), v114, v116, v118, v120}];
+    [(NSNumber *)selfCopy->inputSharpenRadius floatValue];
     LODWORD(v114) = v122;
-    [(NSNumber *)v2->super.super.super.inputScale floatValue];
+    [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
     *&v124 = *&v114 * v123;
     v284[0] = @"inputSharpness";
     v284[1] = @"inputRadius";
     v285[0] = &off_79E40;
     v285[1] = [NSNumber numberWithFloat:v124];
     v125 = [v121 imageByApplyingFilter:@"CISharpenLuminance" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v285, v284, 2)}];
-    v126 = [(CIPortraitEffectStageV2 *)v2 _applyVignetteStage];
-    [(CIImage *)v2->super.super.super.inputImage extent];
+    _applyVignetteStage2 = [(CIPortraitEffectStageV2 *)selfCopy _applyVignetteStage];
+    [(CIImage *)selfCopy->super.super.super.inputImage extent];
     v128 = v127;
     v130 = v129;
     v132 = v131;
@@ -776,10 +776,10 @@
     v283[1] = v272;
     LODWORD(v127) = 1061997773;
     v283[2] = [NSNumber numberWithFloat:v127];
-    v135 = [v126 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v283, 3), v128, v130, v132, v134}];
-    [(NSNumber *)v2->super.super.super.inputScale floatValue];
+    v135 = [_applyVignetteStage2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v283, 3), v128, v130, v132, v134}];
+    [(NSNumber *)selfCopy->super.super.super.inputScale floatValue];
     LODWORD(v128) = v136;
-    [(NSNumber *)v2->inputGrainAmount floatValue];
+    [(NSNumber *)selfCopy->inputGrainAmount floatValue];
     *&v138 = *&v128 * v137;
     v281[0] = @"inputAmount";
     v139 = [NSNumber numberWithFloat:v138];

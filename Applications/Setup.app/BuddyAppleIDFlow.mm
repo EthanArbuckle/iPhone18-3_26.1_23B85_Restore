@@ -3,21 +3,21 @@
 - (BOOL)controllerNeedsToRun;
 - (id)_accountToUpdate;
 - (id)firstItem;
-- (void)_determineAccountToRepair:(id)a3;
-- (void)_fetchRequiresTermsAcceptanceForAccount:(id)a3 completion:(id)a4;
-- (void)_startSilentEscrowRecordRepairIfNecessaryWithAccount:(id)a3 completion:(id)a4;
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)_determineAccountToRepair:(id)repair;
+- (void)_fetchRequiresTermsAcceptanceForAccount:(id)account completion:(id)completion;
+- (void)_startSilentEscrowRecordRepairIfNecessaryWithAccount:(id)account completion:(id)completion;
+- (void)flowItemDone:(id)done nextItemClass:(Class)class;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyAppleIDFlow
 
 - (BOOL)controllerNeedsToRun
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyAppleIDFlow *)self capabilities];
-  v3 = [(BYCapabilities *)v2 canShowAppleIDScreen]^ 1;
+  capabilities = [(BuddyAppleIDFlow *)self capabilities];
+  v3 = [(BYCapabilities *)capabilities canShowAppleIDScreen]^ 1;
 
   if (v3)
   {
@@ -37,21 +37,21 @@
 
   else
   {
-    v6 = [(BuddyAppleIDFlow *)v43 networkProvider];
+    networkProvider = [(BuddyAppleIDFlow *)selfCopy networkProvider];
     v38 = 0;
-    v7 = 0;
-    if (![(BuddyNetworkProvider *)v6 networkReachable])
+    userSkippedWiFi = 0;
+    if (![(BuddyNetworkProvider *)networkProvider networkReachable])
     {
-      v39 = [(BuddyAppleIDFlow *)v43 miscState];
+      miscState = [(BuddyAppleIDFlow *)selfCopy miscState];
       v38 = 1;
-      v7 = [(BuddyMiscState *)v39 userSkippedWiFi];
+      userSkippedWiFi = [(BuddyMiscState *)miscState userSkippedWiFi];
     }
 
     if (v38)
     {
     }
 
-    if (v7)
+    if (userSkippedWiFi)
     {
       v37 = _BYLoggingFacility();
       v36 = OS_LOG_TYPE_DEFAULT;
@@ -90,29 +90,29 @@
 
       else
       {
-        v14 = [(BuddyAppleIDFlow *)v43 featureFlags];
+        featureFlags = [(BuddyAppleIDFlow *)selfCopy featureFlags];
         v30 = 0;
         v28 = 0;
         v26 = 0;
         v24 = 0;
         v22 = 0;
         v15 = 0;
-        if (([(BuddyFeatureFlags *)v14 isAgeAttestationPhase1Enabled]& 1) != 0)
+        if (([(BuddyFeatureFlags *)featureFlags isAgeAttestationPhase1Enabled]& 1) != 0)
         {
           v31 = +[BuddyAccountTools sharedBuddyAccountTools];
           v30 = 1;
           v29 = +[BuddyAccountTools sharedBuddyAccountTools];
           v28 = 1;
-          v27 = [v29 protoAccount];
+          protoAccount = [v29 protoAccount];
           v26 = 1;
           v25 = [v31 ageRangeForAccount:?];
           v24 = 1;
           v15 = 0;
           if ([v25 isChild])
           {
-            v23 = [(BuddyAppleIDFlow *)v43 setupMethod];
+            setupMethod = [(BuddyAppleIDFlow *)selfCopy setupMethod];
             v22 = 1;
-            v15 = [v23 intendedDataTransferMethod] == 0;
+            v15 = [setupMethod intendedDataTransferMethod] == 0;
           }
         }
 
@@ -161,19 +161,19 @@
   }
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   if (location[0])
   {
     v3 = +[ACAccountStore defaultStore];
-    v4 = [v3 aa_primaryAppleAccount];
-    v5 = [v4 aa_isManagedAppleID];
+    aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+    aa_isManagedAppleID = [aa_primaryAppleAccount aa_isManagedAppleID];
 
-    if (v5)
+    if (aa_isManagedAppleID)
     {
       (*(location[0] + 2))(location[0], 0);
       v17 = 1;
@@ -182,22 +182,22 @@
     else
     {
       v6 = +[BuddyAccountTools sharedBuddyAccountTools];
-      v16 = [v6 primaryAccount];
+      primaryAccount = [v6 primaryAccount];
 
-      v7 = v19;
+      v7 = selfCopy;
       v8 = _NSConcreteStackBlock;
       v9 = -1073741824;
       v10 = 0;
       v11 = sub_1001E2128;
       v12 = &unk_10032EC20;
-      v13 = v19;
-      v14 = v16;
+      v13 = selfCopy;
+      v14 = primaryAccount;
       v15 = location[0];
-      [(BuddyAppleIDFlow *)v7 _fetchRequiresTermsAcceptanceForAccount:v16 completion:&v8];
+      [(BuddyAppleIDFlow *)v7 _fetchRequiresTermsAcceptanceForAccount:primaryAccount completion:&v8];
       objc_storeStrong(&v15, 0);
       objc_storeStrong(&v14, 0);
       objc_storeStrong(&v13, 0);
-      objc_storeStrong(&v16, 0);
+      objc_storeStrong(&primaryAccount, 0);
       v17 = 0;
     }
   }
@@ -212,24 +212,24 @@
 
 - (id)firstItem
 {
-  v47 = self;
+  selfCopy = self;
   v46 = a2;
-  v2 = [(BuddyAppleIDFlow *)self miscState];
-  v3 = [(BuddyMiscState *)v2 migrationManager];
-  v4 = [(BuddyTargetDeviceMigrationManager *)v3 willMigrate];
+  miscState = [(BuddyAppleIDFlow *)self miscState];
+  migrationManager = [(BuddyMiscState *)miscState migrationManager];
+  willMigrate = [(BuddyTargetDeviceMigrationManager *)migrationManager willMigrate];
 
-  v45 = v4 & 1;
+  v45 = willMigrate & 1;
   location = 0;
-  v5 = [(BuddyAppleIDFlow *)v47 accountToRepair];
-  v6 = 0;
-  if (v5)
+  accountToRepair = [(BuddyAppleIDFlow *)selfCopy accountToRepair];
+  performAuthKitRepair = 0;
+  if (accountToRepair)
   {
-    v7 = v5;
-    v6 = [(BuddyAppleIDFlow *)v47 performAuthKitRepair];
-    v5 = v7;
+    v7 = accountToRepair;
+    performAuthKitRepair = [(BuddyAppleIDFlow *)selfCopy performAuthKitRepair];
+    accountToRepair = v7;
   }
 
-  if (v6)
+  if (performAuthKitRepair)
   {
     oslog = _BYLoggingFacility();
     v42 = OS_LOG_TYPE_DEFAULT;
@@ -249,9 +249,9 @@
 
   else
   {
-    v12 = [(BuddyAppleIDFlow *)v47 accountToRepair];
+    accountToRepair2 = [(BuddyAppleIDFlow *)selfCopy accountToRepair];
 
-    if (v12)
+    if (accountToRepair2)
     {
       v40 = _BYLoggingFacility();
       v39 = OS_LOG_TYPE_DEFAULT;
@@ -265,17 +265,17 @@
 
       objc_storeStrong(&v40, 0);
       v15 = [BuddyAppleIDHostController alloc];
-      v16 = [(BuddyAppleIDFlow *)v47 accountToRepair];
-      v17 = [(BuddyAppleIDHostController *)v15 initWithAccount:v16];
+      accountToRepair3 = [(BuddyAppleIDFlow *)selfCopy accountToRepair];
+      v17 = [(BuddyAppleIDHostController *)v15 initWithAccount:accountToRepair3];
       v18 = location;
       location = v17;
     }
 
     else
     {
-      v19 = [(BuddyAppleIDFlow *)v47 accountForSecurityUpgrade];
+      accountForSecurityUpgrade = [(BuddyAppleIDFlow *)selfCopy accountForSecurityUpgrade];
 
-      if (v19)
+      if (accountForSecurityUpgrade)
       {
         v37 = _BYLoggingFacility();
         v36 = OS_LOG_TYPE_DEFAULT;
@@ -289,8 +289,8 @@
 
         objc_storeStrong(&v37, 0);
         v22 = [BuddyAppleIDHostController alloc];
-        v23 = [(BuddyAppleIDFlow *)v47 accountForSecurityUpgrade];
-        v24 = [(BuddyAppleIDHostController *)v22 initWithAccount:v23 mode:2];
+        accountForSecurityUpgrade2 = [(BuddyAppleIDFlow *)selfCopy accountForSecurityUpgrade];
+        v24 = [(BuddyAppleIDHostController *)v22 initWithAccount:accountForSecurityUpgrade2 mode:2];
         v25 = location;
         location = v24;
       }
@@ -298,13 +298,13 @@
       else if ((v45 & 1) == 0)
       {
         obj = [[BuddyAppleIDHostController alloc] initWithAccount:0];
-        v26 = [(BuddyAppleIDFlow *)v47 existingAccountUsername];
-        v27 = [(NSString *)v26 length];
+        existingAccountUsername = [(BuddyAppleIDFlow *)selfCopy existingAccountUsername];
+        v27 = [(NSString *)existingAccountUsername length];
 
         if (v27)
         {
-          v28 = [(BuddyAppleIDFlow *)v47 existingAccountUsername];
-          [obj setExistingAccountUsername:v28 accountType:{-[BuddyAppleIDFlow existingAccountType](v47, "existingAccountType")}];
+          existingAccountUsername2 = [(BuddyAppleIDFlow *)selfCopy existingAccountUsername];
+          [obj setExistingAccountUsername:existingAccountUsername2 accountType:{-[BuddyAppleIDFlow existingAccountType](selfCopy, "existingAccountType")}];
         }
 
         objc_storeStrong(&location, obj);
@@ -313,14 +313,14 @@
     }
   }
 
-  [(BuddyAppleIDFlow *)v47 configureFlowItem:location];
+  [(BuddyAppleIDFlow *)selfCopy configureFlowItem:location];
   v32 = 0;
   v29 = 0;
   if (location)
   {
-    v33 = [(BuddyAppleIDFlow *)v47 starter];
+    starter = [(BuddyAppleIDFlow *)selfCopy starter];
     v32 = 1;
-    v29 = [v33 controllerNeedsToRunForClass:objc_opt_class()];
+    v29 = [starter controllerNeedsToRunForClass:objc_opt_class()];
   }
 
   if (v32)
@@ -343,28 +343,28 @@
   return v30;
 }
 
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4
+- (void)flowItemDone:(id)done nextItemClass:(Class)class
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, done);
+  classCopy = class;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = 0;
+  ranSilentUpdateProperties = 0;
   if (isKindOfClass)
   {
-    v6 = [location[0] ranSilentUpdateProperties];
+    ranSilentUpdateProperties = [location[0] ranSilentUpdateProperties];
   }
 
-  v16 = v6 & 1;
-  if (v17 || (v16 & 1) == 0)
+  v16 = ranSilentUpdateProperties & 1;
+  if (classCopy || (v16 & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v19;
+      v10 = selfCopy;
       v11 = location[0];
       v12 = objc_opt_class();
       v14.receiver = v10;
@@ -374,15 +374,15 @@
 
     else
     {
-      v13.receiver = v19;
+      v13.receiver = selfCopy;
       v13.super_class = BuddyAppleIDFlow;
-      [(BuddyAppleIDFlow *)&v13 flowItemDone:location[0] nextItemClass:v17];
+      [(BuddyAppleIDFlow *)&v13 flowItemDone:location[0] nextItemClass:classCopy];
     }
   }
 
   else
   {
-    v7 = v19;
+    v7 = selfCopy;
     v8 = location[0];
     v9 = objc_opt_class();
     v15.receiver = v7;
@@ -398,20 +398,20 @@
   v5[0] = objc_opt_class();
   v5[1] = objc_opt_class();
   v5[2] = objc_opt_class();
-  return [NSArray arrayWithObjects:v5 count:3, a2, a1];
+  return [NSArray arrayWithObjects:v5 count:3, a2, self];
 }
 
-- (void)_fetchRequiresTermsAcceptanceForAccount:(id)a3 completion:(id)a4
+- (void)_fetchRequiresTermsAcceptanceForAccount:(id)account completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, completion);
   if (location[0])
   {
-    v5 = [location[0] aa_altDSID];
+    aa_altDSID = [location[0] aa_altDSID];
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
@@ -419,7 +419,7 @@
     v10 = &unk_10032EC48;
     v11 = location[0];
     v12 = v13;
-    [SecureBackup getAcceptedTermsForAltDSID:v5 reply:&v6];
+    [SecureBackup getAcceptedTermsForAltDSID:aa_altDSID reply:&v6];
 
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v11, 0);
@@ -434,14 +434,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_startSilentEscrowRecordRepairIfNecessaryWithAccount:(id)a3 completion:(id)a4
+- (void)_startSilentEscrowRecordRepairIfNecessaryWithAccount:(id)account completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v5 = +[CDPAccount sharedInstance];
   v6 = [(CDPAccount *)v5 primaryAccountNeedsEscrowRecordRepair]^ 1;
 
@@ -468,8 +468,8 @@
 
   else
   {
-    v9 = [location[0] aa_altDSID];
-    v23 = [CDPContext contextForAccountWithAltDSID:v9];
+    aa_altDSID = [location[0] aa_altDSID];
+    v23 = [CDPContext contextForAccountWithAltDSID:aa_altDSID];
 
     [v23 set_useSecureBackupCachedPassphrase:1];
     [v23 set_disableAsyncSecureBackupEnrollment:1];
@@ -479,8 +479,8 @@
       v21 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v23 altDSID];
-        sub_10006AE18(v31, v10);
+        altDSID = [v23 altDSID];
+        sub_10006AE18(v31, altDSID);
         _os_log_impl(&_mh_execute_header, v22, v21, "Attempting to start silent escrow record repair for account with altDSID (%@)", v31, 0xCu);
       }
 
@@ -524,23 +524,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_determineAccountToRepair:(id)a3
+- (void)_determineAccountToRepair:(id)repair
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, repair);
   v3 = +[BuddyAccountTools sharedBuddyAccountTools];
-  v16 = [v3 primaryAccount];
+  primaryAccount = [v3 primaryAccount];
 
-  if (v16)
+  if (primaryAccount)
   {
-    v4 = [v16 aa_repairState];
-    v5 = [v4 unsignedIntegerValue];
+    aa_repairState = [primaryAccount aa_repairState];
+    unsignedIntegerValue = [aa_repairState unsignedIntegerValue];
 
-    if (v5 == 1)
+    if (unsignedIntegerValue == 1)
     {
-      if ([(BuddyAppleIDFlow *)v18 requiresTermsAcceptanceForPrimaryAccount])
+      if ([(BuddyAppleIDFlow *)selfCopy requiresTermsAcceptanceForPrimaryAccount])
       {
         v12 = _BYLoggingFacility();
         v11 = OS_LOG_TYPE_DEFAULT;
@@ -553,7 +553,7 @@
         }
 
         objc_storeStrong(&v12, 0);
-        (*(location[0] + 2))(location[0], v16, 0);
+        (*(location[0] + 2))(location[0], primaryAccount, 0);
       }
     }
 
@@ -570,7 +570,7 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      (*(location[0] + 2))(location[0], v16, 1);
+      (*(location[0] + 2))(location[0], primaryAccount, 1);
     }
   }
 
@@ -579,16 +579,16 @@
     (*(location[0] + 2))(location[0], 0, 0);
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&primaryAccount, 0);
   objc_storeStrong(location, 0);
 }
 
 - (id)_accountToUpdate
 {
   v2 = [AKAccountManager sharedInstance:a2];
-  v3 = [(AKAccountManager *)v2 accountEligibleForUpdate];
+  accountEligibleForUpdate = [(AKAccountManager *)v2 accountEligibleForUpdate];
 
-  return v3;
+  return accountEligibleForUpdate;
 }
 
 @end

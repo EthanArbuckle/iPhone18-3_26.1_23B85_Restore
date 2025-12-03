@@ -7,11 +7,11 @@
 
 - (void)cancel
 {
-  v3 = [(WFCloudKitWebServiceTask *)self dataTask];
-  [v3 cancel];
+  dataTask = [(WFCloudKitWebServiceTask *)self dataTask];
+  [dataTask cancel];
 
-  v4 = [(WFCloudKitWebServiceTask *)self operationQueue];
-  [v4 cancelAllOperations];
+  operationQueue = [(WFCloudKitWebServiceTask *)self operationQueue];
+  [operationQueue cancelAllOperations];
 
   v5.receiver = self;
   v5.super_class = WFCloudKitWebServiceTask;

@@ -1,16 +1,16 @@
 @interface VCEmulatedNetworkElement
-- (VCEmulatedNetworkElement)initWithPolicies:(id)a3;
-- (int)write:(id)a3;
-- (void)connectFrom:(id)a3;
-- (void)connectTo:(id)a3;
+- (VCEmulatedNetworkElement)initWithPolicies:(id)policies;
+- (int)write:(id)write;
+- (void)connectFrom:(id)from;
+- (void)connectTo:(id)to;
 - (void)dealloc;
 - (void)drainAndReleasePackets;
-- (void)runUntilTime:(double)a3;
+- (void)runUntilTime:(double)time;
 @end
 
 @implementation VCEmulatedNetworkElement
 
-- (VCEmulatedNetworkElement)initWithPolicies:(id)a3
+- (VCEmulatedNetworkElement)initWithPolicies:(id)policies
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -35,7 +35,7 @@
 
     else
     {
-      v4->_policies = a3;
+      v4->_policies = policies;
     }
   }
 
@@ -72,9 +72,9 @@
   }
 }
 
-- (int)write:(id)a3
+- (int)write:(id)write
 {
-  result = CMSimpleQueueEnqueue(self->_networkElementQueue, a3);
+  result = CMSimpleQueueEnqueue(self->_networkElementQueue, write);
   if (result)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -92,7 +92,7 @@
   return result;
 }
 
-- (void)runUntilTime:(double)a3
+- (void)runUntilTime:(double)time
 {
   if (CMSimpleQueueGetCount(self->_networkElementQueue) >= 1)
   {
@@ -110,10 +110,10 @@
   }
 }
 
-- (void)connectTo:(id)a3
+- (void)connectTo:(id)to
 {
   v3[5] = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (to == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -131,15 +131,15 @@
     v3[1] = 3221225472;
     v3[2] = __38__VCEmulatedNetworkElement_connectTo___block_invoke;
     v3[3] = &unk_1E85F5C30;
-    v3[4] = a3;
+    v3[4] = to;
     [(VCEmulatedNetworkElement *)self setProcessCompleteHandler:v3];
   }
 }
 
-- (void)connectFrom:(id)a3
+- (void)connectFrom:(id)from
 {
   v3[5] = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (from == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -158,7 +158,7 @@
     v3[2] = __40__VCEmulatedNetworkElement_connectFrom___block_invoke;
     v3[3] = &unk_1E85F5C30;
     v3[4] = self;
-    [a3 setProcessCompleteHandler:v3];
+    [from setProcessCompleteHandler:v3];
   }
 }
 

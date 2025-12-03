@@ -2,9 +2,9 @@
 - (VCConnectionHealthMonitor)init;
 - (unsigned)generateStatsBlob;
 - (void)dealloc;
-- (void)processPeerStatsBlob:(unsigned int)a3;
-- (void)resetConnectionStats:(BOOL)a3;
-- (void)resetHistory:(ConnectionStatsHistory *)a3;
+- (void)processPeerStatsBlob:(unsigned int)blob;
+- (void)resetConnectionStats:(BOOL)stats;
+- (void)resetHistory:(ConnectionStatsHistory *)history;
 @end
 
 @implementation VCConnectionHealthMonitor
@@ -86,10 +86,10 @@
   return v5 | v4 | v6 | v7;
 }
 
-- (void)processPeerStatsBlob:(unsigned int)a3
+- (void)processPeerStatsBlob:(unsigned int)blob
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = bswap32(a3);
+  v4 = bswap32(blob);
   v5 = HIBYTE(v4);
   pthread_rwlock_wrlock(&self->_peerStateRWLock);
   if (HIBYTE(v4) != self->_peerStatsHistory.latestConnectionStatsIndex)
@@ -181,9 +181,9 @@
   pthread_rwlock_unlock(&self->_peerStateRWLock);
 }
 
-- (void)resetConnectionStats:(BOOL)a3
+- (void)resetConnectionStats:(BOOL)stats
 {
-  if (a3)
+  if (stats)
   {
     v4 = 304;
   }
@@ -193,7 +193,7 @@
     v4 = 40;
   }
 
-  if (a3)
+  if (stats)
   {
     v5 = 9;
   }
@@ -209,14 +209,14 @@
   pthread_rwlock_unlock((self + v4));
 }
 
-- (void)resetHistory:(ConnectionStatsHistory *)a3
+- (void)resetHistory:(ConnectionStatsHistory *)history
 {
-  a3->totalPacketsReceived[4] = 0;
-  *a3->totalPacketsReceived = 0;
-  *&a3->connectionStats[0][0] = 0;
-  *&a3->connectionStats[1][3] = 0;
-  *&a3->connectionStatsRatio[0][0] = 0;
-  *&a3->connectionStatsRatio[1][3] = 0;
+  history->totalPacketsReceived[4] = 0;
+  *history->totalPacketsReceived = 0;
+  *&history->connectionStats[0][0] = 0;
+  *&history->connectionStats[1][3] = 0;
+  *&history->connectionStatsRatio[0][0] = 0;
+  *&history->connectionStatsRatio[1][3] = 0;
 }
 
 @end

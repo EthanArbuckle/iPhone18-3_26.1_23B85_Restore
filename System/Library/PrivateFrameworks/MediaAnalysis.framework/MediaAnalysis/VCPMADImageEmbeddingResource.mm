@@ -1,7 +1,7 @@
 @interface VCPMADImageEmbeddingResource
-+ (id)sharedResourceForRevision:(unint64_t)a3;
++ (id)sharedResourceForRevision:(unint64_t)revision;
 - (VCPImageBackboneAnalyzer)imageBackbone;
-- (VCPMADImageEmbeddingResource)initWithRevision:(unint64_t)a3;
+- (VCPMADImageEmbeddingResource)initWithRevision:(unint64_t)revision;
 - (int64_t)activeCost;
 - (int64_t)inactiveCost;
 - (void)purge;
@@ -9,7 +9,7 @@
 
 @implementation VCPMADImageEmbeddingResource
 
-- (VCPMADImageEmbeddingResource)initWithRevision:(unint64_t)a3
+- (VCPMADImageEmbeddingResource)initWithRevision:(unint64_t)revision
 {
   v9.receiver = self;
   v9.super_class = VCPMADImageEmbeddingResource;
@@ -21,26 +21,26 @@
     queue = v4->_queue;
     v4->_queue = v6;
 
-    v4->_version = a3;
+    v4->_version = revision;
   }
 
   return v4;
 }
 
-+ (id)sharedResourceForRevision:(unint64_t)a3
++ (id)sharedResourceForRevision:(unint64_t)revision
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
-  v7 = [v6 stringValue];
-  v8 = [NSString stringWithFormat:@"%@_%@", v5, v7];
+  v6 = [NSNumber numberWithUnsignedInteger:revision];
+  stringValue = [v6 stringValue];
+  v8 = [NSString stringWithFormat:@"%@_%@", v5, stringValue];
 
   v9 = +[VCPSharedInstanceManager sharedManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001AD1AC;
   v12[3] = &unk_100288738;
-  v12[4] = a3;
+  v12[4] = revision;
   v10 = [v9 sharedInstanceWithIdentifier:v8 andCreationBlock:v12];
 
   return v10;

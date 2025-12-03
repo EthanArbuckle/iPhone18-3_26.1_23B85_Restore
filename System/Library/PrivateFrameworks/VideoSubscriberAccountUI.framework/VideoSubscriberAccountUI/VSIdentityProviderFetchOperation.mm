@@ -1,7 +1,7 @@
 @interface VSIdentityProviderFetchOperation
 - (VSIdentityProviderFetchOperation)init;
-- (VSIdentityProviderFetchOperation)initWithIdentityProviderID:(id)a3;
-- (VSIdentityProviderFetchOperation)initWithIdentityProviderUniqueID:(id)a3;
+- (VSIdentityProviderFetchOperation)initWithIdentityProviderID:(id)d;
+- (VSIdentityProviderFetchOperation)initWithIdentityProviderUniqueID:(id)d;
 - (id)_fetchAllOperation;
 - (void)cancel;
 - (void)executionDidBegin;
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (VSIdentityProviderFetchOperation)initWithIdentityProviderID:(id)a3
+- (VSIdentityProviderFetchOperation)initWithIdentityProviderID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProviderID parameter must not be nil."];
   }
@@ -34,7 +34,7 @@
   if (v5)
   {
     commonInit_2(v5);
-    v7 = [v4 copy];
+    v7 = [dCopy copy];
     identityProviderID = v6->_identityProviderID;
     v6->_identityProviderID = v7;
   }
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (VSIdentityProviderFetchOperation)initWithIdentityProviderUniqueID:(id)a3
+- (VSIdentityProviderFetchOperation)initWithIdentityProviderUniqueID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProviderUniqueID parameter must not be nil."];
   }
@@ -57,7 +57,7 @@
   if (v6)
   {
     commonInit_2(v6);
-    objc_storeStrong(&v7->_identityProviderUniqueID, a3);
+    objc_storeStrong(&v7->_identityProviderUniqueID, d);
   }
 
   return v7;
@@ -65,16 +65,16 @@
 
 - (id)_fetchAllOperation
 {
-  v3 = [(VSIdentityProviderFetchOperation *)self fetchFromStoreOnly];
+  fetchFromStoreOnly = [(VSIdentityProviderFetchOperation *)self fetchFromStoreOnly];
   v4 = off_279E187F0;
-  if (!v3)
+  if (!fetchFromStoreOnly)
   {
     v4 = off_279E187F8;
   }
 
   v5 = objc_alloc_init(*v4);
-  v6 = [(VSIdentityProviderFetchOperation *)self auditToken];
-  [v5 setAuditToken:v6];
+  auditToken = [(VSIdentityProviderFetchOperation *)self auditToken];
+  [v5 setAuditToken:auditToken];
 
   if (!v5)
   {
@@ -86,9 +86,9 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSIdentityProviderFetchOperation *)self privateQueue];
-  v4 = [(VSIdentityProviderFetchOperation *)self _fetchAllOperation];
-  [v3 addOperation:v4];
+  privateQueue = [(VSIdentityProviderFetchOperation *)self privateQueue];
+  _fetchAllOperation = [(VSIdentityProviderFetchOperation *)self _fetchAllOperation];
+  [privateQueue addOperation:_fetchAllOperation];
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CCA8C8];
   v8 = MEMORY[0x277D85DD0];
@@ -96,12 +96,12 @@
   v10 = __53__VSIdentityProviderFetchOperation_executionDidBegin__block_invoke;
   v11 = &unk_279E196C0;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = _fetchAllOperation;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   v7 = [v5 blockOperationWithBlock:&v8];
   [v7 addDependency:{v6, v8, v9, v10, v11}];
-  [v3 addOperation:v7];
+  [privateQueue addOperation:v7];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -237,8 +237,8 @@ void __53__VSIdentityProviderFetchOperation_executionDidBegin__block_invoke_3(ui
   v4.receiver = self;
   v4.super_class = VSIdentityProviderFetchOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSIdentityProviderFetchOperation *)self privateQueue];
-  [v3 cancelAllOperations];
+  privateQueue = [(VSIdentityProviderFetchOperation *)self privateQueue];
+  [privateQueue cancelAllOperations];
 
   [(VSAsyncOperation *)self finishExecutionIfPossible];
 }

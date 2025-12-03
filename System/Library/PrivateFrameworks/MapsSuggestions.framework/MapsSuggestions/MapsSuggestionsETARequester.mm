@@ -1,24 +1,24 @@
 @interface MapsSuggestionsETARequester
-- (BOOL)ETAsFromLocation:(id)a3 toEntries:(id)a4 completion:(id)a5;
-- (BOOL)_requestWaypointForCurrentLocation:(uint64_t)a1;
-- (BOOL)transportTypeFromLocation:(id)a3 toEntry:(id)a4 completion:(id)a5;
-- (MapsSuggestionsETARequester)initWithNetworkRequester:(id)a3 transportModePredictor:(id)a4 requirements:(id)a5;
+- (BOOL)ETAsFromLocation:(id)location toEntries:(id)entries completion:(id)completion;
+- (BOOL)_requestWaypointForCurrentLocation:(uint64_t)location;
+- (BOOL)transportTypeFromLocation:(id)location toEntry:(id)entry completion:(id)completion;
+- (MapsSuggestionsETARequester)initWithNetworkRequester:(id)requester transportModePredictor:(id)predictor requirements:(id)requirements;
 - (NSString)uniqueName;
-- (uint64_t)_determineTransportTypeFromOrigin:(void *)a3 toEntry:(void *)a4 completion:;
-- (uint64_t)_keepExistingWaypointsForEntries:(uint64_t)a1;
-- (uint64_t)_requestETAsToEntries:(void *)a3 completion:;
-- (uint64_t)_requestWaypointsForEntries:(uint64_t)a1;
-- (void)forceTransportType:(int)a3;
-- (void)setAutomobileOptions:(id)a3;
+- (uint64_t)_determineTransportTypeFromOrigin:(void *)origin toEntry:(void *)entry completion:;
+- (uint64_t)_keepExistingWaypointsForEntries:(uint64_t)entries;
+- (uint64_t)_requestETAsToEntries:(void *)entries completion:;
+- (uint64_t)_requestWaypointsForEntries:(uint64_t)entries;
+- (void)forceTransportType:(int)type;
+- (void)setAutomobileOptions:(id)options;
 @end
 
 @implementation MapsSuggestionsETARequester
 
-- (MapsSuggestionsETARequester)initWithNetworkRequester:(id)a3 transportModePredictor:(id)a4 requirements:(id)a5
+- (MapsSuggestionsETARequester)initWithNetworkRequester:(id)requester transportModePredictor:(id)predictor requirements:(id)requirements
 {
-  v9 = a3;
-  objc_initWeak(&location, a4);
-  v10 = a5;
+  requesterCopy = requester;
+  objc_initWeak(&location, predictor);
+  requirementsCopy = requirements;
   v28.receiver = self;
   v28.super_class = MapsSuggestionsETARequester;
   v11 = [(MapsSuggestionsETARequester *)&v28 init];
@@ -30,8 +30,8 @@
     v11->_queue = v13;
 
     v11->_forcedTransportMode = 4;
-    objc_storeStrong(&v11->_networkRequester, a3);
-    objc_storeStrong(&v11->_etaRequirements, a5);
+    objc_storeStrong(&v11->_networkRequester, requester);
+    objc_storeStrong(&v11->_etaRequirements, requirements);
     v15 = objc_alloc_init(MEMORY[0x1E696AD10]);
     waypointsLock = v11->_waypointsLock;
     v11->_waypointsLock = v15;
@@ -48,9 +48,9 @@
     v11->_automobileOptions = v19;
 
     v21 = v11->_automobileOptions;
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    v23 = [v22 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-    v24 = [v23 path];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v23 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
+    path = [v23 path];
     AppBooleanValueWithContainer = _CFPreferencesGetAppBooleanValueWithContainer();
 
     if (AppBooleanValueWithContainer)
@@ -70,9 +70,9 @@
   return v11;
 }
 
-- (void)setAutomobileOptions:(id)a3
+- (void)setAutomobileOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -80,8 +80,8 @@
   block[2] = __52__MapsSuggestionsETARequester_setAutomobileOptions___block_invoke;
   block[3] = &unk_1E81F4F48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -115,13 +115,13 @@ void __52__MapsSuggestionsETARequester_setAutomobileOptions___block_invoke(uint6
   }
 }
 
-- (BOOL)ETAsFromLocation:(id)a3 toEntries:(id)a4 completion:(id)a5
+- (BOOL)ETAsFromLocation:(id)location toEntries:(id)entries completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  locationCopy = location;
+  entriesCopy = entries;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -146,7 +146,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!locationCopy)
   {
     v22 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -166,7 +166,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v11 = [v9 count];
+  v11 = [entriesCopy count];
   v12 = GEOFindOrCreateLog();
   v13 = v12;
   if (!v11)
@@ -189,9 +189,9 @@ LABEL_15:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(MapsSuggestionsETARequester *)self uniqueName];
+    uniqueName = [(MapsSuggestionsETARequester *)self uniqueName];
     *buf = 138412546;
-    v32 = v14;
+    v32 = uniqueName;
     v33 = 2080;
     *v34 = "ETAsFromLocation";
     _os_log_impl(&dword_1C5126000, v13, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -204,8 +204,8 @@ LABEL_15:
     _os_signpost_emit_with_name_impl(&dword_1C5126000, v15, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ETAsFromLocation", "", buf, 2u);
   }
 
-  v16 = [v8 copy];
-  v17 = [v9 copy];
+  v16 = [locationCopy copy];
+  v17 = [entriesCopy copy];
   objc_initWeak(buf, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -214,8 +214,8 @@ LABEL_15:
   block[3] = &unk_1E81F4F98;
   objc_copyWeak(&v30, buf);
   v26 = v16;
-  v28 = self;
-  v29 = v10;
+  selfCopy = self;
+  v29 = completionCopy;
   v27 = v17;
   v19 = v17;
   v20 = v16;
@@ -304,22 +304,22 @@ LABEL_8:
 LABEL_5:
 }
 
-- (uint64_t)_requestWaypointsForEntries:(uint64_t)a1
+- (uint64_t)_requestWaypointsForEntries:(uint64_t)entries
 {
   v43 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v27 = v3;
-  if (a1)
+  if (entries)
   {
     if (v3)
     {
-      dispatch_assert_queue_V2(*(a1 + 8));
+      dispatch_assert_queue_V2(*(entries + 8));
       v4 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
-        v5 = [a1 uniqueName];
+        uniqueName = [entries uniqueName];
         *buf = 138412546;
-        *&buf[4] = v5;
+        *&buf[4] = uniqueName;
         v41 = 2080;
         v42 = "_requestWaypointsForEntries";
         _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -333,7 +333,7 @@ LABEL_5:
       }
 
       group = dispatch_group_create();
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, entries);
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -356,13 +356,13 @@ LABEL_5:
             if ([v10 BOOLeanForKey:@"MapsSuggestionsNeedsETATrackingKey"])
             {
               v11 = MapsSuggestionsDestinationKey(v10);
-              [*(a1 + 64) lock];
-              v12 = [*(a1 + 56) objectForKeyedSubscript:v11];
-              [*(a1 + 64) unlock];
+              [*(entries + 64) lock];
+              v12 = [*(entries + 56) objectForKeyedSubscript:v11];
+              [*(entries + 64) unlock];
               if (!v12)
               {
                 dispatch_group_enter(group);
-                v13 = *(a1 + 16);
+                v13 = *(entries + 16);
                 v30[0] = MEMORY[0x1E69E9820];
                 v30[1] = 3221225472;
                 v30[2] = __59__MapsSuggestionsETARequester__requestWaypointsForEntries___block_invoke;
@@ -411,9 +411,9 @@ LABEL_5:
         v21 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v22 = [a1 uniqueName];
+          uniqueName2 = [entries uniqueName];
           *buf = 138412546;
-          *&buf[4] = v22;
+          *&buf[4] = uniqueName2;
           v41 = 2080;
           v42 = "_requestWaypointsForEntries";
           _os_log_impl(&dword_1C5126000, v21, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -425,9 +425,9 @@ LABEL_5:
         v21 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [a1 uniqueName];
+          uniqueName3 = [entries uniqueName];
           *buf = 138412546;
-          *&buf[4] = v24;
+          *&buf[4] = uniqueName3;
           v41 = 2080;
           v42 = "_requestWaypointsForEntries";
           _os_log_impl(&dword_1C5126000, v21, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -502,27 +502,27 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
   }
 }
 
-- (uint64_t)_requestETAsToEntries:(void *)a3 completion:
+- (uint64_t)_requestETAsToEntries:(void *)entries completion:
 {
   v65 = *MEMORY[0x1E69E9840];
   v36 = a2;
-  v5 = a3;
-  v37 = v5;
-  if (a1)
+  entriesCopy = entries;
+  v37 = entriesCopy;
+  if (self)
   {
-    if (v5)
+    if (entriesCopy)
     {
-      dispatch_assert_queue_V2(*(a1 + 8));
+      dispatch_assert_queue_V2(*(self + 8));
       v6 = objc_alloc(MEMORY[0x1E69A1B90]);
-      v7 = [*(a1 + 80) data];
-      v39 = [v6 initWithData:v7];
+      data = [*(self + 80) data];
+      v39 = [v6 initWithData:data];
 
       v8 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [a1 uniqueName];
+        uniqueName = [self uniqueName];
         *buf = 138412546;
-        *&buf[4] = v9;
+        *&buf[4] = uniqueName;
         *&buf[12] = 2080;
         *&buf[14] = "_requestETAs";
         _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -535,14 +535,14 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
         _os_signpost_emit_with_name_impl(&dword_1C5126000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_requestETAs", "", buf, 2u);
       }
 
-      if (*(a1 + 48))
+      if (*(self + 48))
       {
-        [*(a1 + 64) lock];
-        v11 = [*(a1 + 56) count];
-        [*(a1 + 64) unlock];
+        [*(self + 64) lock];
+        v11 = [*(self + 56) count];
+        [*(self + 64) unlock];
         if (v11)
         {
-          objc_initWeak(&location, a1);
+          objc_initWeak(&location, self);
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
@@ -569,16 +569,16 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
                 }
 
                 v16 = *(*(&v51 + 1) + 8 * i);
-                [*(a1 + 64) lock];
-                v17 = *(a1 + 56);
+                [*(self + 64) lock];
+                v17 = *(self + 56);
                 v18 = MapsSuggestionsDestinationKey(v16);
                 v19 = [v17 objectForKeyedSubscript:v18];
 
-                [*(a1 + 64) unlock];
+                [*(self + 64) unlock];
                 if (v19)
                 {
                   dispatch_group_enter(v12);
-                  v20 = *(a1 + 40);
+                  v20 = *(self + 40);
                   v44[0] = MEMORY[0x1E69E9820];
                   v44[1] = 3221225472;
                   v44[2] = __64__MapsSuggestionsETARequester__requestETAsToEntries_completion___block_invoke;
@@ -590,12 +590,12 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
                   v46 = v19;
                   v47 = v39;
                   v48 = v16;
-                  if (([(MapsSuggestionsETARequester *)a1 _determineTransportTypeFromOrigin:v20 toEntry:v16 completion:v44]& 1) == 0)
+                  if (([(MapsSuggestionsETARequester *)self _determineTransportTypeFromOrigin:v20 toEntry:v16 completion:v44]& 1) == 0)
                   {
                     v22 = GEOFindOrCreateLog();
                     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
                     {
-                      v23 = *(a1 + 40);
+                      v23 = *(self + 40);
                       *v56 = 138412546;
                       v57 = v23;
                       v58 = 2112;
@@ -616,7 +616,7 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
             while (v13);
           }
 
-          v24 = *(a1 + 8);
+          v24 = *(self + 8);
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __64__MapsSuggestionsETARequester__requestETAsToEntries_completion___block_invoke_178;
@@ -639,9 +639,9 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
           v32 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v33 = [a1 uniqueName];
+            uniqueName2 = [self uniqueName];
             *buf = 138412546;
-            *&buf[4] = v33;
+            *&buf[4] = uniqueName2;
             *&buf[12] = 2080;
             *&buf[14] = "_requestETAs";
             _os_log_impl(&dword_1C5126000, v32, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -670,9 +670,9 @@ void __69__MapsSuggestionsETARequester_ETAsFromLocation_toEntries_completion___b
         v28 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
-          v29 = [a1 uniqueName];
+          uniqueName3 = [self uniqueName];
           *buf = 138412546;
-          *&buf[4] = v29;
+          *&buf[4] = uniqueName3;
           *&buf[12] = 2080;
           *&buf[14] = "_requestETAs";
           _os_log_impl(&dword_1C5126000, v28, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s FAIL", buf, 0x16u);
@@ -761,19 +761,19 @@ void __59__MapsSuggestionsETARequester__requestWaypointsForEntries___block_invok
   }
 }
 
-- (BOOL)transportTypeFromLocation:(id)a3 toEntry:(id)a4 completion:(id)a5
+- (BOOL)transportTypeFromLocation:(id)location toEntry:(id)entry completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  locationCopy = location;
+  entryCopy = entry;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8)
+    if (locationCopy)
     {
-      if (v9)
+      if (entryCopy)
       {
-        v13 = [(MapsSuggestionsETARequester *)self _determineTransportTypeFromOrigin:v8 toEntry:v9 completion:v10];
+        v13 = [(MapsSuggestionsETARequester *)self _determineTransportTypeFromOrigin:locationCopy toEntry:entryCopy completion:completionCopy];
         goto LABEL_12;
       }
 
@@ -1286,7 +1286,7 @@ void __64__MapsSuggestionsETARequester__requestETAsToEntries_completion___block_
   }
 }
 
-- (void)forceTransportType:(int)a3
+- (void)forceTransportType:(int)type
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1294,16 +1294,16 @@ void __64__MapsSuggestionsETARequester__requestETAsToEntries_completion___block_
   v4[2] = __50__MapsSuggestionsETARequester_forceTransportType___block_invoke;
   v4[3] = &unk_1E81F5100;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_sync(queue, v4);
 }
 
-- (BOOL)_requestWaypointForCurrentLocation:(uint64_t)a1
+- (BOOL)_requestWaypointForCurrentLocation:(uint64_t)location
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!location)
   {
     goto LABEL_13;
   }
@@ -1324,8 +1324,8 @@ void __64__MapsSuggestionsETARequester__requestETAsToEntries_completion___block_
     goto LABEL_13;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  if (*(a1 + 48) && ([v4 isEqual:*(a1 + 40)] & 1) != 0)
+  dispatch_assert_queue_V2(*(location + 8));
+  if (*(location + 48) && ([v4 isEqual:*(location + 40)] & 1) != 0)
   {
     v5 = 1;
     goto LABEL_14;
@@ -1344,34 +1344,34 @@ LABEL_13:
   [v4 coordinate];
   v9 = v8;
   v10 = [v4 copy];
-  v11 = *(a1 + 40);
-  *(a1 + 40) = v10;
+  v11 = *(location + 40);
+  *(location + 40) = v10;
 
   v12 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithGEOCoordinate:{v7, v9}];
   v5 = v12 != 0;
   if (v12)
   {
     v13 = [objc_alloc(MEMORY[0x1E69A1CC8]) initWithLocation:v12 isCurrentLocation:1];
-    v14 = *(a1 + 48);
-    *(a1 + 48) = v13;
+    v14 = *(location + 48);
+    *(location + 48) = v13;
   }
 
 LABEL_14:
   return v5;
 }
 
-- (uint64_t)_keepExistingWaypointsForEntries:(uint64_t)a1
+- (uint64_t)_keepExistingWaypointsForEntries:(uint64_t)entries
 {
   v34 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v22 = v3;
-  if (a1)
+  if (entries)
   {
     v4 = v3;
-    [*(a1 + 64) lock];
-    v5 = *(a1 + 56);
-    v21 = a1;
-    [*(a1 + 64) unlock];
+    [*(entries + 64) lock];
+    v5 = *(entries + 56);
+    entriesCopy = entries;
+    [*(entries + 64) unlock];
     v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
     v25 = 0u;
     v26 = 0u;
@@ -1410,11 +1410,11 @@ LABEL_14:
               v16 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
               {
-                v17 = [v15 allKeys];
+                allKeys = [v15 allKeys];
                 *buf = 138412546;
                 v30 = v12;
                 v31 = 2112;
-                v32 = v17;
+                v32 = allKeys;
                 _os_log_impl(&dword_1C5126000, v16, OS_LOG_TYPE_DEBUG, "No existing waypoint for entry: %@. Existing waypoint identifiers: %@", buf, 0x16u);
               }
 
@@ -1436,12 +1436,12 @@ LABEL_14:
       v9 = 0;
     }
 
-    [*(v21 + 64) lock];
-    v18 = *(v21 + 56);
-    *(v21 + 56) = v24;
+    [*(entriesCopy + 64) lock];
+    v18 = *(entriesCopy + 56);
+    *(entriesCopy + 56) = v24;
     v19 = v24;
 
-    [*(v21 + 64) unlock];
+    [*(entriesCopy + 64) unlock];
   }
 
   else
@@ -1452,20 +1452,20 @@ LABEL_14:
   return v9 & 1;
 }
 
-- (uint64_t)_determineTransportTypeFromOrigin:(void *)a3 toEntry:(void *)a4 completion:
+- (uint64_t)_determineTransportTypeFromOrigin:(void *)origin toEntry:(void *)entry completion:
 {
   v127 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  originCopy = origin;
+  entryCopy = entry;
+  if (!self)
   {
     goto LABEL_28;
   }
 
   v10 = GEOFindOrCreateLog();
   v11 = v10;
-  if (!v9)
+  if (!entryCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1485,7 +1485,7 @@ LABEL_14:
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [a1 uniqueName];
+    uniqueName = [self uniqueName];
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_1_0();
     _os_log_impl(v13, v14, v15, v16, v17, 0x16u);
@@ -1499,12 +1499,12 @@ LABEL_14:
     _os_signpost_emit_with_name_impl(v19, v18, OS_SIGNPOST_INTERVAL_BEGIN, v20, v21, v22, buf, 2u);
   }
 
-  if (!v7 || !v8)
+  if (!v7 || !originCopy)
   {
     v29 = GEOFindOrCreateLog();
     if (OUTLINED_FUNCTION_5_0(v29))
     {
-      v30 = [a1 uniqueName];
+      uniqueName2 = [self uniqueName];
       OUTLINED_FUNCTION_0();
       OUTLINED_FUNCTION_1_0();
       _os_log_impl(v31, v32, v33, v34, v35, 0x16u);
@@ -1520,19 +1520,19 @@ LABEL_14:
     goto LABEL_26;
   }
 
-  if ([v8 type] != 11)
+  if ([originCopy type] != 11)
   {
-    if (*(a1 + 72) != 4)
+    if (*(self + 72) != 4)
     {
       v59 = [MEMORY[0x1E696AD98] numberWithInt:?];
-      [v8 setNumber:v59 forKey:@"MapsSuggestionsTransportTypeKey"];
+      [originCopy setNumber:v59 forKey:@"MapsSuggestionsTransportTypeKey"];
 
       v60 = OUTLINED_FUNCTION_6_0();
       v61(v60);
       v62 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_5_0(v62))
       {
-        v63 = *(a1 + 72);
+        v63 = *(self + 72);
         *buf = 67109120;
         LODWORD(v120) = v63;
         OUTLINED_FUNCTION_1_0();
@@ -1542,7 +1542,7 @@ LABEL_14:
       v69 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_5_0(v69))
       {
-        v70 = [a1 uniqueName];
+        uniqueName3 = [self uniqueName];
         OUTLINED_FUNCTION_0();
         OUTLINED_FUNCTION_1_0();
         _os_log_impl(v71, v72, v73, v74, v75, 0x16u);
@@ -1567,7 +1567,7 @@ LABEL_14:
       v84 = GEOFindOrCreateLog();
       if (OUTLINED_FUNCTION_5_0(v84))
       {
-        v85 = [a1 uniqueName];
+        uniqueName4 = [self uniqueName];
         OUTLINED_FUNCTION_0();
         OUTLINED_FUNCTION_1_0();
         _os_log_impl(v86, v87, v88, v89, v90, 0x16u);
@@ -1585,20 +1585,20 @@ LABEL_14:
     else
     {
       v49 = *&v48;
-      if ([v8 containsKey:@"MapsSuggestionsLatitudeKey"] && (objc_msgSend(v8, "containsKey:", @"MapsSuggestionsLongitudeKey") & 1) != 0)
+      if ([originCopy containsKey:@"MapsSuggestionsLatitudeKey"] && (objc_msgSend(originCopy, "containsKey:", @"MapsSuggestionsLongitudeKey") & 1) != 0)
       {
-        v50 = [v8 numberForKey:@"MapsSuggestionsLatitudeKey"];
+        v50 = [originCopy numberForKey:@"MapsSuggestionsLatitudeKey"];
         [v50 doubleValue];
         v52 = v51;
-        v53 = [v8 numberForKey:@"MapsSuggestionsLongitudeKey"];
+        v53 = [originCopy numberForKey:@"MapsSuggestionsLongitudeKey"];
         [v53 doubleValue];
         v55 = v54;
 
         if (fabs(v55) <= 180.0 && fabs(v52) <= 90.0)
         {
           v56 = dispatch_group_create();
-          objc_initWeak(buf, a1);
-          v57 = *(a1 + 8);
+          objc_initWeak(buf, self);
+          v57 = *(self + 8);
           block = MEMORY[0x1E69E9820];
           v107 = 3221225472;
           v108 = __84__MapsSuggestionsETARequester__determineTransportTypeFromOrigin_toEntry_completion___block_invoke;
@@ -1608,8 +1608,8 @@ LABEL_14:
           v116 = v49;
           v117 = *&v52;
           v118 = *&v55;
-          v110 = v8;
-          v113 = v9;
+          v110 = originCopy;
+          v113 = entryCopy;
           v111 = v56;
           v112 = v7;
           v58 = v56;
@@ -1623,7 +1623,7 @@ LABEL_14:
         v98 = GEOFindOrCreateLog();
         if (OUTLINED_FUNCTION_5_0(v98))
         {
-          v99 = [a1 uniqueName];
+          uniqueName5 = [self uniqueName];
           OUTLINED_FUNCTION_0();
           OUTLINED_FUNCTION_1_0();
           _os_log_impl(v100, v101, v102, v103, v104, 0x16u);
@@ -1643,7 +1643,7 @@ LABEL_14:
         v91 = GEOFindOrCreateLog();
         if (OUTLINED_FUNCTION_5_0(v91))
         {
-          v92 = [a1 uniqueName];
+          uniqueName6 = [self uniqueName];
           OUTLINED_FUNCTION_0();
           OUTLINED_FUNCTION_1_0();
           _os_log_impl(v93, v94, v95, v96, v97, 0x16u);
@@ -1669,7 +1669,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (([v8 containsKey:@"MapsSuggestionsTransportTypeKey"] & 1) == 0)
+  if (([originCopy containsKey:@"MapsSuggestionsTransportTypeKey"] & 1) == 0)
   {
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1678,7 +1678,7 @@ LABEL_28:
       _os_log_impl(&dword_1C5126000, v23, OS_LOG_TYPE_ERROR, "Resume Route should always have a transport type key, falling back to Automobile", buf, 2u);
     }
 
-    [v8 setNumber:&unk_1F4470E10 forKey:@"MapsSuggestionsTransportTypeKey"];
+    [originCopy setNumber:&unk_1F4470E10 forKey:@"MapsSuggestionsTransportTypeKey"];
   }
 
   v24 = GEOFindOrCreateLog();
@@ -1688,7 +1688,7 @@ LABEL_28:
     _os_log_impl(&dword_1C5126000, v24, OS_LOG_TYPE_DEBUG, "Entry type is resume route, using the transport type key.", buf, 2u);
   }
 
-  v25 = [v8 numberForKey:@"MapsSuggestionsTransportTypeKey"];
+  v25 = [originCopy numberForKey:@"MapsSuggestionsTransportTypeKey"];
   [v25 intValue];
   v26 = OUTLINED_FUNCTION_6_0();
   v27(v26);

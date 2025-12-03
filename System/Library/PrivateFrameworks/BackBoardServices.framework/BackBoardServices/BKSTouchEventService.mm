@@ -1,16 +1,16 @@
 @interface BKSTouchEventService
 + (BKSTouchEventService)sharedInstance;
 - (BKSTouchEventService)init;
-- (id)addAuthenticationSpecifications:(id)a3 forReason:(id)a4;
-- (id)excludeEventsFromSenders:(id)a3 fromHitTestingToContextIDs:(id)a4;
-- (id)registerSceneHostSettings:(id)a3 forCAContextID:(unsigned int)a4;
-- (id)setContextIDs:(id)a3 forHitTestContextCategory:(int64_t)a4;
+- (id)addAuthenticationSpecifications:(id)specifications forReason:(id)reason;
+- (id)excludeEventsFromSenders:(id)senders fromHitTestingToContextIDs:(id)ds;
+- (id)registerSceneHostSettings:(id)settings forCAContextID:(unsigned int)d;
+- (id)setContextIDs:(id)ds forHitTestContextCategory:(int64_t)category;
 - (void)_connectToService;
 - (void)_repostAllRegistrations;
-- (void)_updateRegistration:(uint64_t)a1;
+- (void)_updateRegistration:(uint64_t)registration;
 - (void)_updateServerHitTestCategoryContextIDs;
 - (void)_updateServerHitTestFilterParameters;
-- (void)addTouchAuthenticationSpecifications:(id)a3 forReason:(id)a4;
+- (void)addTouchAuthenticationSpecifications:(id)specifications forReason:(id)reason;
 @end
 
 @implementation BKSTouchEventService
@@ -65,18 +65,18 @@
       v9 = BKLogTouchEvents();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v6 remoteTarget];
+        remoteTarget = [v6 remoteTarget];
         *buf = 138543362;
-        v17 = v14;
+        v17 = remoteTarget;
         _os_log_debug_impl(&dword_186345000, v9, OS_LOG_TYPE_DEBUG, "server remote target %{public}@", buf, 0xCu);
       }
 
-      v10 = [v6 remoteTarget];
+      remoteTarget2 = [v6 remoteTarget];
 
-      if (!v10)
+      if (!remoteTarget2)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"BKSTouchEventService.m" lineNumber:435 description:@"we must have a remote target"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"BKSTouchEventService.m" lineNumber:435 description:@"we must have a remote target"];
       }
     }
 
@@ -96,14 +96,14 @@
   }
 }
 
-- (void)_updateRegistration:(uint64_t)a1
+- (void)_updateRegistration:(uint64_t)registration
 {
   v3 = a2;
-  if (a1)
+  if (registration)
   {
     v15 = v3;
-    [a1 _connectToService];
-    os_unfair_lock_lock((a1 + 32));
+    [registration _connectToService];
+    os_unfair_lock_lock((registration + 32));
     if (v15)
     {
       v4 = *(v15 + 2);
@@ -115,13 +115,13 @@
     }
 
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-    if (*(a1 + 24))
+    if (*(registration + 24))
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(registration + 24);
+      *(registration + 24) = v6;
 
-      v8 = *(a1 + 24);
+      v8 = *(registration + 24);
     }
 
     else
@@ -133,7 +133,7 @@
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-      v10 = *(a1 + 24);
+      v10 = *(registration + 24);
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
       [v10 setObject:v9 forKey:v11];
     }
@@ -151,9 +151,9 @@
     }
 
     v13 = v12;
-    os_unfair_lock_unlock((a1 + 32));
-    v14 = [*(a1 + 8) remoteTarget];
-    [v14 setSceneHostSettings:v13 forContextID:v5];
+    os_unfair_lock_unlock((registration + 32));
+    remoteTarget = [*(registration + 8) remoteTarget];
+    [remoteTarget setSceneHostSettings:v13 forContextID:v5];
 
     v3 = v15;
   }
@@ -237,13 +237,13 @@ void __41__BKSTouchEventService__connectToService__block_invoke_191()
   v5 = v3;
   [(NSMutableDictionary *)registrationLock_registrationsByContextID enumerateKeysAndObjectsUsingBlock:v10];
   os_unfair_lock_unlock(&self->_registrationLock);
-  v6 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__BKSTouchEventService__repostAllRegistrations__block_invoke_2;
   v8[3] = &unk_1E6F47908;
-  v9 = v6;
-  v7 = v6;
+  v9 = remoteTarget;
+  v7 = remoteTarget;
   [v5 enumerateKeysAndObjectsUsingBlock:v8];
 }
 
@@ -269,28 +269,28 @@ void __47__BKSTouchEventService__repostAllRegistrations__block_invoke(uint64_t a
 - (void)_updateServerHitTestCategoryContextIDs
 {
   [(BKSTouchEventService *)self _connectToService];
-  v6 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
-  v3 = [(BSCompoundAssertion *)self->_contextIDsForAXZoom orderedContext];
-  v4 = [v3 array];
-  v5 = [v4 bs_flatten];
-  [v6 setContextIDs:v5 forHitTestContextCategory:&unk_1EF56BF28];
+  remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+  orderedContext = [(BSCompoundAssertion *)self->_contextIDsForAXZoom orderedContext];
+  array = [orderedContext array];
+  bs_flatten = [array bs_flatten];
+  [remoteTarget setContextIDs:bs_flatten forHitTestContextCategory:&unk_1EF56BF28];
 }
 
 - (void)_updateServerHitTestFilterParameters
 {
   [(BKSTouchEventService *)self _connectToService];
-  v5 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
-  v3 = [(BSCompoundAssertion *)self->_hitTestFilterParameters orderedContext];
-  v4 = [v3 array];
-  [v5 setHitTestFilterParameters:v4];
+  remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+  orderedContext = [(BSCompoundAssertion *)self->_hitTestFilterParameters orderedContext];
+  array = [orderedContext array];
+  [remoteTarget setHitTestFilterParameters:array];
 }
 
-- (id)excludeEventsFromSenders:(id)a3 fromHitTestingToContextIDs:(id)a4
+- (id)excludeEventsFromSenders:(id)senders fromHitTestingToContextIDs:(id)ds
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  sendersCopy = senders;
+  dsCopy = ds;
+  if (![sendersCopy count])
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[senders count] > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -303,7 +303,7 @@ void __47__BKSTouchEventService__repostAllRegistrations__block_invoke(uint64_t a
       v28 = 2114;
       v29 = v18;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2114;
       v33 = @"BKSTouchEventService.m";
       v34 = 1024;
@@ -319,7 +319,7 @@ void __47__BKSTouchEventService__repostAllRegistrations__block_invoke(uint64_t a
     JUMPOUT(0x1863B5CF8);
   }
 
-  if (![v8 count])
+  if (![dsCopy count])
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[contextIDs count] > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -332,7 +332,7 @@ void __47__BKSTouchEventService__repostAllRegistrations__block_invoke(uint64_t a
       v28 = 2114;
       v29 = v22;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2114;
       v33 = @"BKSTouchEventService.m";
       v34 = 1024;
@@ -352,10 +352,10 @@ void __47__BKSTouchEventService__repostAllRegistrations__block_invoke(uint64_t a
   v23[1] = 3221225472;
   v23[2] = __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContextIDs___block_invoke;
   v23[3] = &unk_1E6F478B8;
-  v24 = v7;
-  v25 = v8;
-  v9 = v8;
-  v10 = v7;
+  v24 = sendersCopy;
+  v25 = dsCopy;
+  v9 = dsCopy;
+  v10 = sendersCopy;
   v11 = [BKSTouchHitTestFilterParameters build:v23];
   v12 = [(BSCompoundAssertion *)self->_hitTestFilterParameters acquireForReason:@"AX maybe" withContext:v11];
 
@@ -372,11 +372,11 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
   [v4 setContextIDs:*(a1 + 40)];
 }
 
-- (id)setContextIDs:(id)a3 forHitTestContextCategory:(int64_t)a4
+- (id)setContextIDs:(id)ds forHitTestContextCategory:(int64_t)category
 {
   v70 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dsCopy = ds;
+  if (!dsCopy)
   {
     v27 = MEMORY[0x1E696AEC0];
     v28 = objc_opt_class();
@@ -393,7 +393,7 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
       v60 = 2114;
       v61 = v33;
       v62 = 2048;
-      v63 = self;
+      selfCopy5 = self;
       v64 = 2114;
       v65 = @"BKSTouchEventService.m";
       v66 = 1024;
@@ -409,18 +409,18 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
     JUMPOUT(0x1863B6228);
   }
 
-  v8 = v7;
+  v8 = dsCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v34 = MEMORY[0x1E696AEC0];
-    v35 = [v8 classForCoder];
-    if (!v35)
+    classForCoder = [v8 classForCoder];
+    if (!classForCoder)
     {
-      v35 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v36 = NSStringFromClass(v35);
+    v36 = NSStringFromClass(classForCoder);
     v37 = objc_opt_class();
     v38 = NSStringFromClass(v37);
     v39 = [v34 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"contextIDs", v36, v38];
@@ -435,7 +435,7 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
       v60 = 2114;
       v61 = v42;
       v62 = 2048;
-      v63 = self;
+      selfCopy5 = self;
       v64 = 2114;
       v65 = @"BKSTouchEventService.m";
       v66 = 1024;
@@ -464,7 +464,7 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
       v60 = 2114;
       v61 = v46;
       v62 = 2048;
-      v63 = self;
+      selfCopy5 = self;
       v64 = 2114;
       v65 = @"BKSTouchEventService.m";
       v66 = 1024;
@@ -522,8 +522,8 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
 
         v18 = v17;
 
-        v19 = [v18 unsignedIntValue];
-        if (!v19)
+        unsignedIntValue = [v18 unsignedIntValue];
+        if (!unsignedIntValue)
         {
           v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"contextID must be a number greater than zero"];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -536,7 +536,7 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
             v60 = 2114;
             v61 = v26;
             v62 = 2048;
-            v63 = self;
+            selfCopy5 = self;
             v64 = 2114;
             v65 = @"BKSTouchEventService.m";
             v66 = 1024;
@@ -559,10 +559,10 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
     while (v11);
   }
 
-  if (a4 != 1)
+  if (category != 1)
   {
     v47 = MEMORY[0x1E696AEC0];
-    v48 = NSStringFromBKSTouchHitTestContextCategory(a4);
+    v48 = NSStringFromBKSTouchHitTestContextCategory(category);
     v49 = [v47 stringWithFormat:@"invalid category %@", v48];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -575,7 +575,7 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
       v60 = 2114;
       v61 = v52;
       v62 = 2048;
-      v63 = self;
+      selfCopy5 = self;
       v64 = 2114;
       v65 = @"BKSTouchEventService.m";
       v66 = 1024;
@@ -598,13 +598,13 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
   return v20;
 }
 
-- (id)registerSceneHostSettings:(id)a3 forCAContextID:(unsigned int)a4
+- (id)registerSceneHostSettings:(id)settings forCAContextID:(unsigned int)d
 {
-  v7 = a3;
+  settingsCopy = settings;
   [(BKSTouchEventService *)self _connectToService];
   v8 = [BKSSceneHostRegistration alloc];
-  v9 = v7;
-  v10 = self;
+  v9 = settingsCopy;
+  selfCopy = self;
   if (v8)
   {
     v13.receiver = v8;
@@ -614,31 +614,31 @@ void __76__BKSTouchEventService_excludeEventsFromSenders_fromHitTestingToContext
     if (v11)
     {
       objc_storeStrong(v11 + 2, self);
-      objc_storeStrong(&v8->_sceneHostSettings, a3);
-      v8->_contextID = a4;
+      objc_storeStrong(&v8->_sceneHostSettings, settings);
+      v8->_contextID = d;
     }
   }
 
-  [(BKSTouchEventService *)v10 _updateRegistration:v8];
+  [(BKSTouchEventService *)selfCopy _updateRegistration:v8];
 
   return v8;
 }
 
-- (id)addAuthenticationSpecifications:(id)a3 forReason:(id)a4
+- (id)addAuthenticationSpecifications:(id)specifications forReason:(id)reason
 {
-  v4 = [a3 bs_secureEncoded];
+  bs_secureEncoded = [specifications bs_secureEncoded];
   v5 = _BKSServerPortHelper("com.apple.backboard.hid.services", BKSHIDServerPort, &BKSHIDServerMachPort, _InvalidateHIDServicesPort);
-  _BKSHIDTouchAddAuthenticationSpecifications(v5, [v4 bs_bytesForMIG], objc_msgSend(v4, "bs_lengthForMIG"));
+  _BKSHIDTouchAddAuthenticationSpecifications(v5, [bs_secureEncoded bs_bytesForMIG], objc_msgSend(bs_secureEncoded, "bs_lengthForMIG"));
   v6 = objc_alloc_init(_BKSLocallyOwnedTouchAuthenticationAssertion);
 
   return v6;
 }
 
-- (void)addTouchAuthenticationSpecifications:(id)a3 forReason:(id)a4
+- (void)addTouchAuthenticationSpecifications:(id)specifications forReason:(id)reason
 {
-  v5 = [a3 bs_secureEncoded];
+  bs_secureEncoded = [specifications bs_secureEncoded];
   v4 = _BKSServerPortHelper("com.apple.backboard.hid.services", BKSHIDServerPort, &BKSHIDServerMachPort, _InvalidateHIDServicesPort);
-  _BKSHIDTouchAddAuthenticationSpecifications(v4, [v5 bs_bytesForMIG], objc_msgSend(v5, "bs_lengthForMIG"));
+  _BKSHIDTouchAddAuthenticationSpecifications(v4, [bs_secureEncoded bs_bytesForMIG], objc_msgSend(bs_secureEncoded, "bs_lengthForMIG"));
 }
 
 - (BKSTouchEventService)init

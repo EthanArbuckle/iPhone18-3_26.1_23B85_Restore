@@ -1,39 +1,39 @@
 @interface NTKCParmesanPhotosEditor
-- (BOOL)_assetExistsInEditor:(id)a3;
-- (BOOL)_ensureUserOverrideSessionIsLoadedForPhotoAtIndex:(int64_t)a3;
-- (BOOL)addAssetsFromAssetList:(id)a3;
-- (BOOL)addAssetsFromAssetList:(id)a3 maxPhotosCount:(unint64_t)a4;
-- (BOOL)addAssetsFromUIImagePicker:(id)a3;
-- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)a3;
-- (BOOL)savePreview:(id)a3 forPhotoAtIndex:(int64_t)a4;
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3;
+- (BOOL)_assetExistsInEditor:(id)editor;
+- (BOOL)_ensureUserOverrideSessionIsLoadedForPhotoAtIndex:(int64_t)index;
+- (BOOL)addAssetsFromAssetList:(id)list;
+- (BOOL)addAssetsFromAssetList:(id)list maxPhotosCount:(unint64_t)count;
+- (BOOL)addAssetsFromUIImagePicker:(id)picker;
+- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)index;
+- (BOOL)savePreview:(id)preview forPhotoAtIndex:(int64_t)index;
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index;
 - (NSArray)imageIdentifiers;
-- (NTKCParmesanPhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4;
-- (id)_fetchAssetsForNewPhotos:(id)a3;
-- (id)_makeLayoutForEditedAsset:(id)a3 userOverride:(id)a4;
-- (id)replaceAssetAtIndex:(int64_t)a3 withAsset:(id)a4;
-- (void)_copyOrTranscodeAssetWithIds:(id)a3 to:(id)a4 shouldPurgeOriginalData:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)_generateOverrideLayersForEditedAsset:(id)a3 dstDir:(id)a4;
-- (void)_readResourceDirectoryPhotosFrom:(id)a3;
-- (void)_reinitializeWithImageList:(id)a3 andResourceDirectory:(id)a4;
-- (void)deletePhotoAtIndex:(int64_t)a3;
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
-- (void)previewOfLibraryPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)purgeResourcesForPreviewAtIndex:(int64_t)a3;
-- (void)resetCropOfPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)setImageOrder:(id)a3;
-- (void)thumbnailInfoForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
+- (NTKCParmesanPhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device;
+- (id)_fetchAssetsForNewPhotos:(id)photos;
+- (id)_makeLayoutForEditedAsset:(id)asset userOverride:(id)override;
+- (id)replaceAssetAtIndex:(int64_t)index withAsset:(id)asset;
+- (void)_copyOrTranscodeAssetWithIds:(id)ids to:(id)to shouldPurgeOriginalData:(BOOL)data progress:(id)progress completion:(id)completion;
+- (void)_generateOverrideLayersForEditedAsset:(id)asset dstDir:(id)dir;
+- (void)_readResourceDirectoryPhotosFrom:(id)from;
+- (void)_reinitializeWithImageList:(id)list andResourceDirectory:(id)directory;
+- (void)deletePhotoAtIndex:(int64_t)index;
+- (void)finalizeWithProgress:(id)progress completion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (void)previewOfLibraryPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)purgeResourcesForPreviewAtIndex:(int64_t)index;
+- (void)resetCropOfPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)setImageOrder:(id)order;
+- (void)thumbnailInfoForPhotoAtIndex:(int64_t)index completion:(id)completion;
 @end
 
 @implementation NTKCParmesanPhotosEditor
 
-- (NTKCParmesanPhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4
+- (NTKCParmesanPhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device
 {
   v23.receiver = self;
   v23.super_class = NTKCParmesanPhotosEditor;
-  v4 = [(NTKCompanionResourceDirectoryEditor *)&v23 initWithResourceDirectory:a3 forDevice:a4];
+  v4 = [(NTKCompanionResourceDirectoryEditor *)&v23 initWithResourceDirectory:directory forDevice:device];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v8 = objc_msgSend_logObject(NTKParmesanFaceBundle, v5, v6, v7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -87,7 +87,7 @@
   aBlock[3] = &unk_278BA6E88;
   v35 = v13;
   aBlock[4] = self;
-  v14 = v4;
+  v14 = completionCopy;
   v34 = v14;
   v15 = _Block_copy(aBlock);
   if (objc_msgSend_state(self, v16, v17, v18) && objc_msgSend_state(self, v19, v20, v21) < 3)
@@ -129,10 +129,10 @@
 LABEL_12:
 }
 
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4
+- (void)finalizeWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = objc_msgSend_logObject(NTKParmesanFaceBundle, v8, v9, v10);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -149,7 +149,7 @@ LABEL_12:
       v32[2] = sub_23BF22460;
       v32[3] = &unk_278BA6EF8;
       v32[4] = self;
-      v33 = v7;
+      v33 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v32);
       v21 = v33;
     }
@@ -161,7 +161,7 @@ LABEL_12:
       aBlock[2] = sub_23BF224BC;
       aBlock[3] = &unk_278BA6F20;
       aBlock[4] = self;
-      v31 = v7;
+      v31 = completionCopy;
       v22 = _Block_copy(aBlock);
       objc_msgSend_setState_(self, v23, 4, v24);
       v25 = dispatch_get_global_queue(2, 0);
@@ -171,7 +171,7 @@ LABEL_12:
       v27[3] = &unk_278BA6FC0;
       v27[4] = self;
       v28 = v22;
-      v29 = v6;
+      v29 = progressCopy;
       v26 = v22;
       dispatch_async(v25, v27);
 
@@ -185,7 +185,7 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_23BF2244C;
     block[3] = &unk_278BA6B68;
-    v35 = v7;
+    v35 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v21 = v35;
   }
@@ -198,42 +198,42 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)addAssetsFromUIImagePicker:(id)a3
+- (BOOL)addAssetsFromUIImagePicker:(id)picker
 {
-  v4 = self;
-  v5 = objc_msgSend__fetchAssetsForNewPhotos_(self, a2, a3, v3);
+  selfCopy = self;
+  v5 = objc_msgSend__fetchAssetsForNewPhotos_(self, a2, picker, v3);
   v6 = NTKMaxParmesanPhotos();
-  LOBYTE(v4) = objc_msgSend_addAssetsFromAssetList_maxPhotosCount_(v4, v7, v5, v6);
+  LOBYTE(selfCopy) = objc_msgSend_addAssetsFromAssetList_maxPhotosCount_(selfCopy, v7, v5, v6);
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)addAssetsFromAssetList:(id)a3
+- (BOOL)addAssetsFromAssetList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = NTKMaxParmesanPhotos();
-  LOBYTE(self) = objc_msgSend_addAssetsFromAssetList_maxPhotosCount_(self, v6, v4, v5);
+  LOBYTE(self) = objc_msgSend_addAssetsFromAssetList_maxPhotosCount_(self, v6, listCopy, v5);
 
   return self;
 }
 
-- (BOOL)addAssetsFromAssetList:(id)a3 maxPhotosCount:(unint64_t)a4
+- (BOOL)addAssetsFromAssetList:(id)list maxPhotosCount:(unint64_t)count
 {
   v120 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!objc_msgSend_state(self, v7, v8, v9) || objc_msgSend_state(self, v10, v11, v12) > 2 || (v16 = objc_msgSend_photosCount(self, v13, v14, v15), objc_msgSend_count(v6, v17, v18, v19) + v16 > a4))
+  listCopy = list;
+  if (!objc_msgSend_state(self, v7, v8, v9) || objc_msgSend_state(self, v10, v11, v12) > 2 || (v16 = objc_msgSend_photosCount(self, v13, v14, v15), objc_msgSend_count(listCopy, v17, v18, v19) + v16 > count))
   {
     v23 = 0;
     goto LABEL_5;
   }
 
   v109 = objc_msgSend_firstObject(self->_orderList, v20, v21, v22);
-  v110 = v6;
+  v110 = listCopy;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v6;
+  obj = listCopy;
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v25, &v113, v119, 16);
   if (!v26)
   {
@@ -347,27 +347,27 @@ LABEL_28:
   objc_msgSend_setState_(self, v105, 2, v107);
 
   v23 = 1;
-  v6 = v110;
+  listCopy = v110;
 LABEL_5:
 
   return v23;
 }
 
-- (void)deletePhotoAtIndex:(int64_t)a3
+- (void)deletePhotoAtIndex:(int64_t)index
 {
   v60 = *MEMORY[0x277D85DE8];
-  if (!objc_msgSend_state(self, a2, a3, v3))
+  if (!objc_msgSend_state(self, a2, index, v3))
   {
     return;
   }
 
   v9 = objc_msgSend_state(self, v6, v7, v8);
-  if (a3 < 0 || v9 > 2 || objc_msgSend_count(self->_orderList, v10, v11, v12) <= a3)
+  if (index < 0 || v9 > 2 || objc_msgSend_count(self->_orderList, v10, v11, v12) <= index)
   {
     return;
   }
 
-  v15 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v13, a3, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v13, index, v14);
   objc_msgSend_removeObject_(self->_orderList, v16, v15, v17);
   v20 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v18, v15, v19);
   if (objc_msgSend_isInResourceDirectory(v20, v21, v22, v23))
@@ -380,7 +380,7 @@ LABEL_5:
       *v59 = 138412546;
       *&v59[4] = v35;
       *&v59[12] = 2048;
-      *&v59[14] = a3;
+      *&v59[14] = index;
       v36 = "deletePhotoAtIndex: deleting existing photo %@ at index %ld";
 LABEL_10:
       _os_log_impl(&dword_23BF0C000, v27, OS_LOG_TYPE_DEFAULT, v36, v59, 0x16u);
@@ -402,14 +402,14 @@ LABEL_10:
       *v59 = 138412546;
       *&v59[4] = v35;
       *&v59[12] = 2048;
-      *&v59[14] = a3;
+      *&v59[14] = index;
       v36 = "deletePhotoAtIndex: deleting new asset id %@ at index %ld";
       goto LABEL_10;
     }
   }
 
   objc_msgSend_removeObjectForKey_(self->_assets, v54, v15, v55);
-  if (self->_userOverrideSessionIndex == a3)
+  if (self->_userOverrideSessionIndex == index)
   {
     self->_userOverrideSessionIndex = -1;
     userOverrideSession = self->_userOverrideSession;
@@ -418,46 +418,46 @@ LABEL_10:
 
   if (self->_galleryPreviewIsValid)
   {
-    self->_galleryPreviewIsValid = a3 != 0;
+    self->_galleryPreviewIsValid = index != 0;
   }
 
   objc_msgSend_setState_(self, v56, 2, v57, *v59, *&v59[16]);
 }
 
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_state(self, a2, a3, a4))
+  if (objc_msgSend_state(self, a2, index, toIndex))
   {
     v10 = objc_msgSend_state(self, v7, v8, v9);
-    if ((a3 & 0x8000000000000000) == 0 && v10 <= 2)
+    if ((index & 0x8000000000000000) == 0 && v10 <= 2)
     {
       v14 = objc_msgSend_count(self->_orderList, v11, v12, v13);
-      if ((a4 & 0x8000000000000000) == 0 && v14 > a3 && objc_msgSend_count(self->_orderList, v15, v16, v17) > a4)
+      if ((toIndex & 0x8000000000000000) == 0 && v14 > index && objc_msgSend_count(self->_orderList, v15, v16, v17) > toIndex)
       {
-        v20 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v18, a3, v19);
+        v20 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v18, index, v19);
         v24 = objc_msgSend_logObject(NTKParmesanFaceBundle, v21, v22, v23);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v33 = 134218240;
-          v34 = a3;
+          indexCopy = index;
           v35 = 2048;
-          v36 = a4;
+          toIndexCopy = toIndex;
           _os_log_impl(&dword_23BF0C000, v24, OS_LOG_TYPE_DEFAULT, "movePhotoAtIndex: moving photo from index %ld to index %ld", &v33, 0x16u);
         }
 
-        objc_msgSend_removeObjectAtIndex_(self->_orderList, v25, a3, v26);
-        objc_msgSend_insertObject_atIndex_(self->_orderList, v27, v20, a4);
-        if (self->_userOverrideSessionIndex == a3)
+        objc_msgSend_removeObjectAtIndex_(self->_orderList, v25, index, v26);
+        objc_msgSend_insertObject_atIndex_(self->_orderList, v27, v20, toIndex);
+        if (self->_userOverrideSessionIndex == index)
         {
-          self->_userOverrideSessionIndex = a4;
+          self->_userOverrideSessionIndex = toIndex;
         }
 
         if (self->_galleryPreviewIsValid)
         {
-          if (a3)
+          if (index)
           {
-            v30 = a4 == 0;
+            v30 = toIndex == 0;
           }
 
           else
@@ -465,7 +465,7 @@ LABEL_10:
             v30 = 1;
           }
 
-          v32 = !v30 || a3 == a4;
+          v32 = !v30 || index == toIndex;
           self->_galleryPreviewIsValid = v32;
         }
 
@@ -475,19 +475,19 @@ LABEL_10:
   }
 }
 
-- (BOOL)_assetExistsInEditor:(id)a3
+- (BOOL)_assetExistsInEditor:(id)editor
 {
-  v5 = objc_msgSend__key(a3, a2, a3, v3);
+  v5 = objc_msgSend__key(editor, a2, editor, v3);
   v8 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v6, v5, v7);
   LOBYTE(self) = v8 != 0;
 
   return self;
 }
 
-- (id)replaceAssetAtIndex:(int64_t)a3 withAsset:(id)a4
+- (id)replaceAssetAtIndex:(int64_t)index withAsset:(id)asset
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  assetCopy = asset;
   if (!objc_msgSend_state(self, v7, v8, v9) || objc_msgSend_state(self, v10, v11, v12) >= 3)
   {
     objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v10, @"com.apple.parmesan.editor", 1, 0);
@@ -495,19 +495,19 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (a3 < 0 || objc_msgSend_count(self->_orderList, v10, v13, v14) <= a3)
+  if (index < 0 || objc_msgSend_count(self->_orderList, v10, v13, v14) <= index)
   {
     v20 = objc_msgSend_logObject(NTKParmesanFaceBundle, v10, v13, v14);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_23BFF77AC(a3, v20);
+      sub_23BFF77AC(index, v20);
     }
 
     objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v21, @"com.apple.parmesan.editor", 2, 0);
     goto LABEL_13;
   }
 
-  if (objc_msgSend__assetExistsInEditor_(self, v10, v6, v14))
+  if (objc_msgSend__assetExistsInEditor_(self, v10, assetCopy, v14))
   {
     v18 = objc_msgSend_logObject(NTKParmesanFaceBundle, v15, v16, v17);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -520,26 +520,26 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  objc_msgSend_deletePhotoAtIndex_(self, v15, a3, v17);
-  v34[0] = v6;
+  objc_msgSend_deletePhotoAtIndex_(self, v15, index, v17);
+  v34[0] = assetCopy;
   v25 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v24, v34, 1);
   objc_msgSend_addAssetsFromAssetList_(self, v26, v25, v27);
 
   v31 = objc_msgSend_photosCount(self, v28, v29, v30);
-  objc_msgSend_movePhotoAtIndex_toIndex_(self, v32, v31 - 1, a3);
+  objc_msgSend_movePhotoAtIndex_toIndex_(self, v32, v31 - 1, index);
   v22 = 0;
 LABEL_14:
 
   return v22;
 }
 
-- (void)setImageOrder:(id)a3
+- (void)setImageOrder:(id)order
 {
-  v31 = a3;
+  orderCopy = order;
   if (objc_msgSend_state(self, v4, v5, v6) && objc_msgSend_state(self, v7, v8, v9) <= 2)
   {
     v13 = objc_msgSend_firstObject(self->_orderList, v10, v11, v12);
-    v17 = objc_msgSend_firstObject(v31, v14, v15, v16);
+    v17 = objc_msgSend_firstObject(orderCopy, v14, v15, v16);
     v20 = v17;
     v21 = (v13 | v17) == 0;
     if (v13)
@@ -567,9 +567,9 @@ LABEL_14:
       self->_galleryPreviewIsValid = (v21 | isEqualToString) & 1;
     }
 
-    if ((objc_msgSend_isEqualToArray_(self->_orderList, v18, v31, v19) & 1) == 0)
+    if ((objc_msgSend_isEqualToArray_(self->_orderList, v18, orderCopy, v19) & 1) == 0)
     {
-      v27 = objc_msgSend_mutableCopy(v31, v24, v25, v26);
+      v27 = objc_msgSend_mutableCopy(orderCopy, v24, v25, v26);
       orderList = self->_orderList;
       self->_orderList = v27;
 
@@ -578,24 +578,24 @@ LABEL_14:
   }
 }
 
-- (void)thumbnailInfoForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)thumbnailInfoForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_23BF239B8;
   aBlock[3] = &unk_278BA7010;
-  v7 = v6;
+  v7 = completionCopy;
   v88 = v7;
   v11 = _Block_copy(aBlock);
-  if (a3 < 0 || objc_msgSend_count(self->_orderList, v8, v9, v10) <= a3)
+  if (index < 0 || objc_msgSend_count(self->_orderList, v8, v9, v10) <= index)
   {
     (*(v11 + 2))(v11, 0, 0, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24));
   }
 
   else
   {
-    v14 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v12, a3, v13);
+    v14 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v12, index, v13);
     v17 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v15, v14, v16);
     v18 = MEMORY[0x277CCABB0];
     EditedUserOverride = objc_msgSend_lastEditedUserOverride(v17, v19, v20, v21);
@@ -684,14 +684,14 @@ LABEL_14:
   }
 }
 
-- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)a3
+- (BOOL)canChangeOriginalCropOfPhotoAtIndex:(int64_t)index
 {
-  if (a3 < 0 || objc_msgSend_count(self->_orderList, a2, a3, v3) <= a3)
+  if (index < 0 || objc_msgSend_count(self->_orderList, a2, index, v3) <= index)
   {
     return 0;
   }
 
-  v8 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v6, a3, v7);
+  v8 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v6, index, v7);
   v11 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v9, v8, v10);
   v15 = objc_msgSend_phAsset(v11, v12, v13, v14);
   v16 = v15 != 0;
@@ -699,40 +699,40 @@ LABEL_14:
   return v16;
 }
 
-- (void)previewOfLibraryPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)previewOfLibraryPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23BF23E48;
   block[3] = &unk_278BA70A8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
-- (void)resetCropOfPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)resetCropOfPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23BF2424C;
   block[3] = &unk_278BA70A8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index
 {
   v4 = 1.0;
-  if (a3 < 0)
+  if (index < 0)
   {
     v9 = 1.0;
   }
@@ -740,9 +740,9 @@ LABEL_14:
   else
   {
     v9 = 1.0;
-    if (objc_msgSend_count(self->_orderList, a2, a3, v3) > a3)
+    if (objc_msgSend_count(self->_orderList, a2, index, v3) > index)
     {
-      v10 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v7, a3, v8);
+      v10 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v7, index, v8);
       v13 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v11, v10, v12);
       v17 = objc_msgSend_phAsset(v13, v14, v15, v16);
 
@@ -783,15 +783,15 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)savePreview:(id)a3 forPhotoAtIndex:(int64_t)a4
+- (BOOL)savePreview:(id)preview forPhotoAtIndex:(int64_t)index
 {
   v134 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  previewCopy = preview;
   v10 = objc_msgSend_logObject(NTKParmesanFaceBundle, v7, v8, v9);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(v133.a) = 134217984;
-    *(&v133.a + 4) = a4;
+    *(&v133.a + 4) = index;
     _os_log_impl(&dword_23BF0C000, v10, OS_LOG_TYPE_DEFAULT, "savePreview:%ld", &v133, 0xCu);
   }
 
@@ -802,12 +802,12 @@ LABEL_14:
 
   v17 = objc_msgSend_state(self, v14, v15, v16);
   v21 = 0;
-  if (a4 < 0 || v17 > 2)
+  if (index < 0 || v17 > 2)
   {
     goto LABEL_20;
   }
 
-  if (objc_msgSend_count(self->_orderList, v18, v19, v20) <= a4 || !objc_msgSend_canChangeOriginalCropOfPhotoAtIndex_(self, v22, a4, v23))
+  if (objc_msgSend_count(self->_orderList, v18, v19, v20) <= index || !objc_msgSend_canChangeOriginalCropOfPhotoAtIndex_(self, v22, index, v23))
   {
 LABEL_19:
     v21 = 0;
@@ -820,9 +820,9 @@ LABEL_19:
     sub_23BFF78C8();
   }
 
-  v30 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v28, a4, v29);
+  v30 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v28, index, v29);
   v33 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v31, v30, v32);
-  v37 = objc_msgSend_crop(v6, v34, v35, v36);
+  v37 = objc_msgSend_crop(previewCopy, v34, v35, v36);
   objc_msgSend_cgRect(v37, v38, v39, v40);
   v42 = v41;
   v44 = v43;
@@ -862,7 +862,7 @@ LABEL_19:
   v83 = fmax(v82, 0.0);
   v84 = objc_msgSend_currentOverride(self->_userOverrideSession, v77, v78, v79);
   v88 = objc_msgSend_timeLayout(v84, v85, v86, v87);
-  v92 = objc_msgSend_timeLayout(v6, v89, v90, v91);
+  v92 = objc_msgSend_timeLayout(previewCopy, v89, v90, v91);
 
   objc_msgSend_crop(v84, v93, v94, v95);
   if (CLKRectEqualsRect())
@@ -884,10 +884,10 @@ LABEL_19:
   {
     v99 = objc_alloc_init(NTKParmesanLayoutUserOverride);
     objc_msgSend_setCrop_(v99, v100, v101, v102, v81, v83, width, height);
-    v106 = objc_msgSend_timeLayout(v6, v103, v104, v105);
+    v106 = objc_msgSend_timeLayout(previewCopy, v103, v104, v105);
     objc_msgSend_setTimeLayout_(v99, v107, v106, v108);
 
-    v112 = objc_msgSend_useDepthEffect(v6, v109, v110, v111);
+    v112 = objc_msgSend_useDepthEffect(previewCopy, v109, v110, v111);
     objc_msgSend_setUseDepthEffect_(v99, v113, v112, v114);
     objc_msgSend_addUserOverride_(v33, v115, v99, v116);
     scaledImageCache = self->_scaledImageCache;
@@ -898,10 +898,10 @@ LABEL_19:
     v128 = v99 == 0;
   }
 
-  objc_msgSend_purgeResourcesForPreviewAtIndex_(self, v96, a4, v97);
+  objc_msgSend_purgeResourcesForPreviewAtIndex_(self, v96, index, v97);
   if (self->_galleryPreviewIsValid)
   {
-    if (a4)
+    if (index)
     {
       v132 = 1;
     }
@@ -922,18 +922,18 @@ LABEL_20:
   return v21;
 }
 
-- (void)purgeResourcesForPreviewAtIndex:(int64_t)a3
+- (void)purgeResourcesForPreviewAtIndex:(int64_t)index
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_logObject(NTKParmesanFaceBundle, a2, a3, v3);
+  v6 = objc_msgSend_logObject(NTKParmesanFaceBundle, a2, index, v3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_23BF0C000, v6, OS_LOG_TYPE_DEFAULT, "purgeResourcesForPreviewAtIndex: %ld", &v8, 0xCu);
   }
 
-  if (self->_userOverrideSessionIndex == a3)
+  if (self->_userOverrideSessionIndex == index)
   {
     self->_userOverrideSessionIndex = -1;
     userOverrideSession = self->_userOverrideSession;
@@ -941,13 +941,13 @@ LABEL_20:
   }
 }
 
-- (void)_readResourceDirectoryPhotosFrom:(id)a3
+- (void)_readResourceDirectoryPhotosFrom:(id)from
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v81 = objc_opt_new();
-  v79 = v4;
-  objc_msgSend_readerForResourceDirectory_(NTKParmesanAssetReader, v5, v4, v6);
+  v79 = fromCopy;
+  objc_msgSend_readerForResourceDirectory_(NTKParmesanAssetReader, v5, fromCopy, v6);
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
@@ -1061,16 +1061,16 @@ LABEL_20:
   }
 }
 
-- (id)_fetchAssetsForNewPhotos:(id)a3
+- (id)_fetchAssetsForNewPhotos:(id)photos
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  photosCopy = photos;
   v4 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v3;
+  v5 = photosCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v38, v42, 16);
   if (v7)
   {
@@ -1131,12 +1131,12 @@ LABEL_20:
   return v35;
 }
 
-- (void)_copyOrTranscodeAssetWithIds:(id)a3 to:(id)a4 shouldPurgeOriginalData:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)_copyOrTranscodeAssetWithIds:(id)ids to:(id)to shouldPurgeOriginalData:(BOOL)data progress:(id)progress completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  idsCopy = ids;
+  toCopy = to;
+  progressCopy = progress;
+  completionCopy = completion;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1154,33 +1154,33 @@ LABEL_20:
   v25[2] = sub_23BF254E4;
   v25[3] = &unk_278BA70D0;
   v25[4] = self;
-  v20 = v13;
+  v20 = toCopy;
   v26 = v20;
-  v21 = v12;
+  v21 = idsCopy;
   v27 = v21;
-  v22 = v14;
-  v30 = a5;
+  v22 = progressCopy;
+  dataCopy = data;
   v28 = v22;
   v29 = &v31;
   objc_msgSend_enumerateObjectsUsingBlock_(v21, v23, v25, v24);
   v22[2](v22, 1.0);
-  v15[2](v15, v32[5]);
+  completionCopy[2](completionCopy, v32[5]);
 
   _Block_object_dispose(&v31, 8);
 }
 
-- (void)_reinitializeWithImageList:(id)a3 andResourceDirectory:(id)a4
+- (void)_reinitializeWithImageList:(id)list andResourceDirectory:(id)directory
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v37 = a4;
+  listCopy = list;
+  directoryCopy = directory;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = listCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v38, v42, 16);
   if (v10)
   {
@@ -1196,7 +1196,7 @@ LABEL_20:
           objc_enumerationMutation(obj);
         }
 
-        v15 = objc_msgSend_decodeFromDictionary_inResourceDirectory_(NTKParmesanAsset, v11, *(*(&v38 + 1) + 8 * v14), v37);
+        v15 = objc_msgSend_decodeFromDictionary_inResourceDirectory_(NTKParmesanAsset, v11, *(*(&v38 + 1) + 8 * v14), directoryCopy);
         v19 = objc_msgSend__key(v15, v16, v17, v18);
         v22 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v20, v19, v21);
         v26 = objc_msgSend_phAsset(v22, v23, v24, v25);
@@ -1224,21 +1224,21 @@ LABEL_20:
   self->_assets = v7;
 }
 
-- (BOOL)_ensureUserOverrideSessionIsLoadedForPhotoAtIndex:(int64_t)a3
+- (BOOL)_ensureUserOverrideSessionIsLoadedForPhotoAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
 
-  if (objc_msgSend_count(self->_orderList, a2, a3, v3) > a3)
+  if (objc_msgSend_count(self->_orderList, a2, index, v3) > index)
   {
-    if (self->_userOverrideSession && self->_userOverrideSessionIndex == a3)
+    if (self->_userOverrideSession && self->_userOverrideSessionIndex == index)
     {
       return 1;
     }
 
-    v9 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v6, a3, v7);
+    v9 = objc_msgSend_objectAtIndexedSubscript_(self->_orderList, v6, index, v7);
     v12 = objc_msgSend_objectForKeyedSubscript_(self->_assets, v10, v9, v11);
     v16 = objc_msgSend_phAsset(v12, v13, v14, v15);
 
@@ -1249,7 +1249,7 @@ LABEL_20:
       userOverrideSession = self->_userOverrideSession;
       self->_userOverrideSession = v20;
 
-      self->_userOverrideSessionIndex = a3;
+      self->_userOverrideSessionIndex = index;
       return self->_userOverrideSession != 0;
     }
   }
@@ -1257,24 +1257,24 @@ LABEL_20:
   return 0;
 }
 
-- (void)_generateOverrideLayersForEditedAsset:(id)a3 dstDir:(id)a4
+- (void)_generateOverrideLayersForEditedAsset:(id)asset dstDir:(id)dir
 {
   v107 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v100 = a4;
-  v9 = objc_msgSend_userOverrides(v5, v6, v7, v8);
+  assetCopy = asset;
+  dirCopy = dir;
+  v9 = objc_msgSend_userOverrides(assetCopy, v6, v7, v8);
   v13 = objc_msgSend_count(v9, v10, v11, v12);
 
   if (v13)
   {
-    v17 = objc_msgSend_phAsset(v5, v14, v15, v16);
+    v17 = objc_msgSend_phAsset(assetCopy, v14, v15, v16);
     v99 = objc_msgSend_ntk_getFullSizePHAssetData(v17, v18, v19, v20);
     sub_23BF2AF68(v99);
-    v24 = objc_msgSend_fullSizeMaskData(v5, v21, v22, v23);
+    v24 = objc_msgSend_fullSizeMaskData(assetCopy, v21, v22, v23);
 
     if (v24)
     {
-      v28 = objc_msgSend_fullSizeMaskData(v5, v25, v26, v27);
+      v28 = objc_msgSend_fullSizeMaskData(assetCopy, v25, v26, v27);
       image = sub_23BF2B03C(v28);
     }
 
@@ -1287,8 +1287,8 @@ LABEL_20:
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v95 = v5;
-    v29 = objc_msgSend_userOverrides(v5, v25, v26, v27);
+    v95 = assetCopy;
+    v29 = objc_msgSend_userOverrides(assetCopy, v25, v26, v27);
     v33 = objc_msgSend_allValues(v29, v30, v31, v32);
 
     obj = v33;
@@ -1318,7 +1318,7 @@ LABEL_20:
             HIWORD(buf.c) = 2112;
             *&buf.d = v46;
             LOWORD(buf.tx) = 2112;
-            *(&buf.tx + 2) = v100;
+            *(&buf.tx + 2) = dirCopy;
             _os_log_impl(&dword_23BF0C000, v42, OS_LOG_TYPE_DEFAULT, "%s: Generating user override layout for %@, asset %@, dstDir %@", &buf, 0x2Au);
           }
 
@@ -1340,7 +1340,7 @@ LABEL_20:
           objc_msgSend_pfcTimePosition(v72, v73, v74, v75);
           v79 = objc_msgSend_timeLayout(v41, v76, v77, v78);
           objc_msgSend_normalizedTimeRectWithoutComplications(v79, v80, v81, v82);
-          v85 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v83, v100, v84);
+          v85 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v83, dirCopy, v84);
           v86 = MEMORY[0x277CD97A8];
           v90 = objc_msgSend_localIdentifier(v17, v87, v88, v89);
           v93 = objc_msgSend_uuidFromLocalIdentifier_(v86, v91, v90, v92);
@@ -1354,28 +1354,28 @@ LABEL_20:
     }
 
     CGImageRelease(image);
-    v5 = v95;
+    assetCopy = v95;
   }
 }
 
-- (id)_makeLayoutForEditedAsset:(id)a3 userOverride:(id)a4
+- (id)_makeLayoutForEditedAsset:(id)asset userOverride:(id)override
 {
-  v5 = a4;
+  overrideCopy = override;
   v6 = MEMORY[0x277CD97A8];
-  v10 = objc_msgSend_phAsset(a3, v7, v8, v9);
+  v10 = objc_msgSend_phAsset(asset, v7, v8, v9);
   v14 = objc_msgSend_localIdentifier(v10, v11, v12, v13);
   v17 = objc_msgSend_uuidFromLocalIdentifier_(v6, v15, v14, v16);
 
   v18 = MEMORY[0x277CCACA8];
-  v22 = objc_msgSend_timeLayout(v5, v19, v20, v21);
+  v22 = objc_msgSend_timeLayout(overrideCopy, v19, v20, v21);
   v26 = objc_msgSend_pfcTimePosition(v22, v23, v24, v25);
   v27 = sub_23BF2672C(v26);
   v30 = objc_msgSend_stringWithFormat_(v18, v28, @"base_%s_%@.heic", v29, v27, v17);
 
-  if (objc_msgSend_useDepthEffect(v5, v31, v32, v33))
+  if (objc_msgSend_useDepthEffect(overrideCopy, v31, v32, v33))
   {
     v37 = MEMORY[0x277CCACA8];
-    v38 = objc_msgSend_timeLayout(v5, v34, v35, v36);
+    v38 = objc_msgSend_timeLayout(overrideCopy, v34, v35, v36);
     v42 = objc_msgSend_pfcTimePosition(v38, v39, v40, v41);
     v43 = sub_23BF2672C(v42);
     v46 = objc_msgSend_stringWithFormat_(v37, v44, @"mask_%s_%@.png", v45, v43, v17);
@@ -1390,10 +1390,10 @@ LABEL_20:
   }
 
   v50 = [NTKParmesanCrop alloc];
-  objc_msgSend_crop(v5, v51, v52, v53);
+  objc_msgSend_crop(overrideCopy, v51, v52, v53);
   v57 = objc_msgSend_initWithRect_(v50, v54, v55, v56);
   v58 = [NTKParmesanAssetLayout alloc];
-  v62 = objc_msgSend_timeLayout(v5, v59, v60, v61);
+  v62 = objc_msgSend_timeLayout(overrideCopy, v59, v60, v61);
   v64 = objc_msgSend_initWithOriginalCrop_baseImageName_mask_timeLayout_colorAnalysis_imageAOTBrightness_userEdited_(v58, v63, v57, v30, v49, v62, 0, 1, 0.0);
 
   return v64;

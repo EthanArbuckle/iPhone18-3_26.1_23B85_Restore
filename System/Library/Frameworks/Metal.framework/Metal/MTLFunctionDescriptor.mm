@@ -1,18 +1,18 @@
 @interface MTLFunctionDescriptor
-+ (MTLFunctionDescriptor)allocWithZone:(_NSZone *)a3;
++ (MTLFunctionDescriptor)allocWithZone:(_NSZone *)zone;
 + (MTLFunctionDescriptor)functionDescriptor;
-- ($2772B1D07D29A72E8557B2574C0AE5C1)hashStableWithFunction:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
+- ($2772B1D07D29A72E8557B2574C0AE5C1)hashStableWithFunction:(SEL)function;
+- (BOOL)isEqual:(id)equal;
 - (MTLFunctionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)setBinaryArchives:(NSArray *)binaryArchives;
 - (void)setConstantValues:(MTLFunctionConstantValues *)constantValues;
 - (void)setName:(NSString *)name;
-- (void)setPluginData:(id)a3;
-- (void)setPrivateFunctions:(id)a3;
+- (void)setPluginData:(id)data;
+- (void)setPrivateFunctions:(id)functions;
 - (void)setSpecializedName:(NSString *)specializedName;
 @end
 
@@ -47,21 +47,21 @@
   return v2;
 }
 
-+ (MTLFunctionDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLFunctionDescriptor)allocWithZone:(_NSZone *)zone
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MTLFunctionDescriptor;
-  return objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    *(v5 + 8) = [(NSString *)self->_private.name copyWithZone:a3];
-    *(v5 + 16) = [(NSString *)self->_private.specializedName copyWithZone:a3];
-    v6 = [(MTLFunctionConstantValues *)self->_private.constantValues copyWithZone:a3];
+    *(v5 + 8) = [(NSString *)self->_private.name copyWithZone:zone];
+    *(v5 + 16) = [(NSString *)self->_private.specializedName copyWithZone:zone];
+    v6 = [(MTLFunctionConstantValues *)self->_private.constantValues copyWithZone:zone];
     *(v5 + 24) = self->_private.options;
     *(v5 + 32) = v6;
     *(v5 + 40) = [(NSArray *)self->_private.binaryArchives copy];
@@ -139,13 +139,13 @@
   }
 }
 
-- (void)setPrivateFunctions:(id)a3
+- (void)setPrivateFunctions:(id)functions
 {
   privateFunctions = self->_private.privateFunctions;
-  if (privateFunctions != a3)
+  if (privateFunctions != functions)
   {
 
-    self->_private.privateFunctions = [a3 copy];
+    self->_private.privateFunctions = [functions copy];
   }
 }
 
@@ -174,7 +174,7 @@
   return _MTLHashState(v6, 0x38uLL);
 }
 
-- ($2772B1D07D29A72E8557B2574C0AE5C1)hashStableWithFunction:(SEL)a3
+- ($2772B1D07D29A72E8557B2574C0AE5C1)hashStableWithFunction:(SEL)function
 {
   v22 = *MEMORY[0x1E69E9840];
   bzero(data, 0x10uLL);
@@ -234,41 +234,41 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
     return v6;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   name = self->_private.name;
-  if (name == *(a3 + 1) || (v6 = [(NSString *)name isEqual:?]) != 0)
+  if (name == *(equal + 1) || (v6 = [(NSString *)name isEqual:?]) != 0)
   {
     specializedName = self->_private.specializedName;
-    if (specializedName == *(a3 + 2) || (v6 = [(NSString *)specializedName isEqual:?]) != 0)
+    if (specializedName == *(equal + 2) || (v6 = [(NSString *)specializedName isEqual:?]) != 0)
     {
       constantValues = self->_private.constantValues;
-      if (constantValues == *(a3 + 4) || (v6 = [(MTLFunctionConstantValues *)constantValues isEqual:?]) != 0)
+      if (constantValues == *(equal + 4) || (v6 = [(MTLFunctionConstantValues *)constantValues isEqual:?]) != 0)
       {
-        if (self->_private.options != *(a3 + 3))
+        if (self->_private.options != *(equal + 3))
         {
           goto LABEL_3;
         }
 
-        v6 = MTLCompareArray(self->_private.binaryArchives, *(a3 + 5), 1, 0);
+        v6 = MTLCompareArray(self->_private.binaryArchives, *(equal + 5), 1, 0);
         if (!v6)
         {
           return v6;
         }
 
-        if (self->_private.applyFunctionConstants != *(a3 + 48))
+        if (self->_private.applyFunctionConstants != *(equal + 48))
         {
 LABEL_3:
           LOBYTE(v6) = 0;
@@ -276,7 +276,7 @@ LABEL_3:
         }
 
         privateFunctions = self->_private.privateFunctions;
-        v11 = *(a3 + 7);
+        v11 = *(equal + 7);
 
         LOBYTE(v6) = MTLCompareArray(privateFunctions, v11, 1, 1);
       }
@@ -286,10 +286,10 @@ LABEL_3:
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v16[18] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = MTLFunctionDescriptor;
@@ -352,13 +352,13 @@ LABEL_3:
   return result;
 }
 
-- (void)setPluginData:(id)a3
+- (void)setPluginData:(id)data
 {
   pluginData = self->_pluginData;
-  if (pluginData != a3)
+  if (pluginData != data)
   {
 
-    self->_pluginData = [a3 copy];
+    self->_pluginData = [data copy];
   }
 }
 

@@ -7,22 +7,22 @@
 - (BOOL)shouldEngageDemoCEC;
 - (BOOL)shouldReevaluateEngagement;
 - (PowerUIDemoCECManager)init;
-- (PowerUIDemoCECManager)initWithContextStore:(id)a3;
-- (double)systemLoadEmissionSavings:(int64_t)a3;
+- (PowerUIDemoCECManager)initWithContextStore:(id)store;
+- (double)systemLoadEmissionSavings:(int64_t)savings;
 - (double)totalWallEnergyOverSession;
-- (id)chargeHistoryAnalytics:(BOOL)a3;
-- (id)dateDictionaryFromDefaults:(id)a3;
+- (id)chargeHistoryAnalytics:(BOOL)analytics;
+- (id)dateDictionaryFromDefaults:(id)defaults;
 - (id)sessionEndCECAnalytics;
 - (void)checkPluggedInState;
 - (void)clearAnalytics;
 - (void)evaluateShouldChargeNow;
-- (void)handleCallback:(id)a3;
+- (void)handleCallback:(id)callback;
 - (void)handleDisengagement;
 - (void)handleEmergencyCharge;
 - (void)handleEngagement;
 - (void)handleIsEnabledChange;
-- (void)handlePauseChargingAboveMaxSOC:(int64_t)a3;
-- (void)handlePowerUICECStateChange:(unint64_t)a3 withHandler:(id)a4;
+- (void)handlePauseChargingAboveMaxSOC:(int64_t)c;
+- (void)handlePowerUICECStateChange:(unint64_t)change withHandler:(id)handler;
 - (void)loadState;
 - (void)loadStateFromDefaults;
 - (void)monitorBatteryNotifications;
@@ -32,17 +32,17 @@
 - (void)recordAnalytics;
 - (void)recordStartWallEnergyAccum;
 - (void)recordSystemLoadAccum;
-- (void)registerAnalyticsTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5;
+- (void)registerAnalyticsTimer:(id)timer afterTime:(double)time withInterval:(double)interval;
 - (void)registerCleanSegmentTimer;
-- (void)registerCleanSegmentTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5;
-- (void)registerReevaluateEngagementTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5;
-- (void)registerUnpluggedTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5;
+- (void)registerCleanSegmentTimer:(id)timer afterTime:(double)time withInterval:(double)interval;
+- (void)registerReevaluateEngagementTimer:(id)timer afterTime:(double)time withInterval:(double)interval;
+- (void)registerUnpluggedTimer:(id)timer afterTime:(double)time withInterval:(double)interval;
 - (void)resetState;
-- (void)setEnabledState:(BOOL)a3;
+- (void)setEnabledState:(BOOL)state;
 - (void)startSessionTimers;
 - (void)startSystemLoadAccumTimer;
-- (void)unregisterTimer:(id)a3;
-- (void)updatePhaseFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (void)unregisterTimer:(id)timer;
+- (void)updatePhaseFrom:(unint64_t)from to:(unint64_t)to;
 @end
 
 @implementation PowerUIDemoCECManager
@@ -93,16 +93,16 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
 
 - (PowerUIDemoCECManager)init
 {
-  v3 = [MEMORY[0x277CFE318] userContext];
-  v4 = [(PowerUIDemoCECManager *)self initWithContextStore:v3];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  v4 = [(PowerUIDemoCECManager *)self initWithContextStore:userContext];
 
   return v4;
 }
 
-- (PowerUIDemoCECManager)initWithContextStore:(id)a3
+- (PowerUIDemoCECManager)initWithContextStore:(id)store
 {
   v56[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storeCopy = store;
   v54.receiver = self;
   v54.super_class = PowerUIDemoCECManager;
   v6 = [(PowerUIDemoCECManager *)&v54 init];
@@ -133,7 +133,7 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
     v14 = *(v6 + 20);
     *(v6 + 20) = v13;
 
-    objc_storeStrong(v6 + 4, a3);
+    objc_storeStrong(v6 + 4, store);
     v15 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.powerui.democec"];
     v16 = *(v6 + 8);
     *(v6 + 8) = v15;
@@ -315,22 +315,22 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
 
   if (v21)
   {
-    v22 = [v21 intValue];
+    intValue = [v21 intValue];
   }
 
   else
   {
-    v22 = 0;
+    intValue = 0;
   }
 
-  self->_requeryForecastTries = v22;
+  self->_requeryForecastTries = intValue;
   v23 = [(NSUserDefaults *)self->_defaults objectForKey:@"currentState"];
 
   if (v23)
   {
-    v24 = [v23 unsignedIntegerValue];
-    self->_currentState = v24;
-    self->_isDemoCECEnabled = v24 == 1;
+    unsignedIntegerValue = [v23 unsignedIntegerValue];
+    self->_currentState = unsignedIntegerValue;
+    self->_isDemoCECEnabled = unsignedIntegerValue == 1;
   }
 
   log = self->_log;
@@ -348,7 +348,7 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
     v34 = self->_lastEngagementCheckDate;
     pluggedInBatteryLevel = self->_pluggedInBatteryLevel;
     requeryForecastTries = self->_requeryForecastTries;
-    v36 = [(PowerUICECGridDataManager *)self->_gridDataManager engagementDecisionReason];
+    engagementDecisionReason = [(PowerUICECGridDataManager *)self->_gridDataManager engagementDecisionReason];
     *buf = 138414594;
     v41 = v28;
     v42 = 2112;
@@ -368,7 +368,7 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
     v56 = 2048;
     v57 = requeryForecastTries;
     v58 = 2048;
-    v59 = v36;
+    v59 = engagementDecisionReason;
     _os_log_impl(&dword_21B766000, v39, OS_LOG_TYPE_DEFAULT, "DemoCECManager Loaded state from defaults. Current phase: %@, current state: %@, isDemoCECEnabled %@, lastPluggedInDate %@, lastUnpluggedDate %@, pauseChargingCheckDate %@, pluggedInBatteryLevel %ld, lastEngagementCheckDate %@, requeryForecastTries %ld, engagementDecisionReason %lu", buf, 0x66u);
   }
 
@@ -458,60 +458,60 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
   }
 }
 
-- (void)registerCleanSegmentTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5
+- (void)registerCleanSegmentTimer:(id)timer afterTime:(double)time withInterval:(double)interval
 {
-  v8 = a3;
+  timerCopy = timer;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    [PowerUIDemoCECManager registerCleanSegmentTimer:a4 afterTime:? withInterval:?];
+    [PowerUIDemoCECManager registerCleanSegmentTimer:time afterTime:? withInterval:?];
   }
 
-  v10 = a5 * 1000000000.0;
-  if (a5 == 1.84467441e19)
+  v10 = interval * 1000000000.0;
+  if (interval == 1.84467441e19)
   {
     v10 = 1.84467441e19;
   }
 
   v11 = v10;
-  v12 = dispatch_walltime(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v8, v12, v11, 0xDF8475800uLL);
+  v12 = dispatch_walltime(0, (time * 1000000000.0));
+  dispatch_source_set_timer(timerCopy, v12, v11, 0xDF8475800uLL);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__PowerUIDemoCECManager_registerCleanSegmentTimer_afterTime_withInterval___block_invoke;
   block[3] = &unk_2782D3EA8;
-  v16 = v8;
+  v16 = timerCopy;
   v13 = registerCleanSegmentTimer_afterTime_withInterval__timerToken;
-  v14 = v8;
+  v14 = timerCopy;
   if (v13 != -1)
   {
     dispatch_once(&registerCleanSegmentTimer_afterTime_withInterval__timerToken, block);
   }
 }
 
-- (void)registerReevaluateEngagementTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5
+- (void)registerReevaluateEngagementTimer:(id)timer afterTime:(double)time withInterval:(double)interval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  timerCopy = timer;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v17 = a4 / 60.0;
+    v17 = time / 60.0;
     v18 = 2048;
-    v19 = a5 / 60.0;
+    v19 = interval / 60.0;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Registering timer to re-evaluate engagement in the current session for waitTime: %.0f minutes and interval: %.0f minutes", buf, 0x16u);
   }
 
-  v10 = dispatch_walltime(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v8, v10, (a5 * 1000000000.0), 0xDF8475800uLL);
+  v10 = dispatch_walltime(0, (time * 1000000000.0));
+  dispatch_source_set_timer(timerCopy, v10, (interval * 1000000000.0), 0xDF8475800uLL);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__PowerUIDemoCECManager_registerReevaluateEngagementTimer_afterTime_withInterval___block_invoke;
   block[3] = &unk_2782D3EA8;
-  v15 = v8;
+  v15 = timerCopy;
   v11 = registerReevaluateEngagementTimer_afterTime_withInterval__timerToken;
-  v12 = v8;
+  v12 = timerCopy;
   if (v11 != -1)
   {
     dispatch_once(&registerReevaluateEngagementTimer_afterTime_withInterval__timerToken, block);
@@ -520,29 +520,29 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerAnalyticsTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5
+- (void)registerAnalyticsTimer:(id)timer afterTime:(double)time withInterval:(double)interval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  timerCopy = timer;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v17 = a4 / 60.0;
+    v17 = time / 60.0;
     v18 = 2048;
-    v19 = a5 / 60.0;
+    v19 = interval / 60.0;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Registering analytics timer for waitTime: %.0f minutes and interval: %.0f minutes", buf, 0x16u);
   }
 
-  v10 = dispatch_walltime(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v8, v10, (a5 * 1000000000.0), 0xDF8475800uLL);
+  v10 = dispatch_walltime(0, (time * 1000000000.0));
+  dispatch_source_set_timer(timerCopy, v10, (interval * 1000000000.0), 0xDF8475800uLL);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__PowerUIDemoCECManager_registerAnalyticsTimer_afterTime_withInterval___block_invoke;
   block[3] = &unk_2782D3EA8;
-  v15 = v8;
+  v15 = timerCopy;
   v11 = registerAnalyticsTimer_afterTime_withInterval__timerToken;
-  v12 = v8;
+  v12 = timerCopy;
   if (v11 != -1)
   {
     dispatch_once(&registerAnalyticsTimer_afterTime_withInterval__timerToken, block);
@@ -551,29 +551,29 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerUnpluggedTimer:(id)a3 afterTime:(double)a4 withInterval:(double)a5
+- (void)registerUnpluggedTimer:(id)timer afterTime:(double)time withInterval:(double)interval
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  timerCopy = timer;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v17 = a4 / 60.0;
+    v17 = time / 60.0;
     v18 = 2048;
-    v19 = a5 / 60.0;
+    v19 = interval / 60.0;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Registering unplugged check timer for waitTime: %.0f minutes and interval: %.0f minutes", buf, 0x16u);
   }
 
-  v10 = dispatch_walltime(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v8, v10, (a5 * 1000000000.0), 0xDF8475800uLL);
+  v10 = dispatch_walltime(0, (time * 1000000000.0));
+  dispatch_source_set_timer(timerCopy, v10, (interval * 1000000000.0), 0xDF8475800uLL);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__PowerUIDemoCECManager_registerUnpluggedTimer_afterTime_withInterval___block_invoke;
   block[3] = &unk_2782D3EA8;
-  v15 = v8;
+  v15 = timerCopy;
   v11 = registerUnpluggedTimer_afterTime_withInterval__timerToken;
-  v12 = v8;
+  v12 = timerCopy;
   if (v11 != -1)
   {
     dispatch_once(&registerUnpluggedTimer_afterTime_withInterval__timerToken, block);
@@ -582,15 +582,15 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterTimer:(id)a3
+- (void)unregisterTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     [PowerUIDemoCECManager unregisterTimer:];
   }
 
-  dispatch_source_set_timer(v4, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+  dispatch_source_set_timer(timerCopy, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
 - (BOOL)shouldEngageDemoCEC
@@ -621,22 +621,22 @@ void __32__PowerUIDemoCECManager_manager__block_invoke()
 
   else
   {
-    v6 = [(PowerUICECGridDataManager *)self->_gridDataManager balancingAuthorityName];
-    v7 = [(PowerUICECGridDataManager *)self->_gridDataManager engagementDecisionReason];
+    balancingAuthorityName = [(PowerUICECGridDataManager *)self->_gridDataManager balancingAuthorityName];
+    engagementDecisionReason = [(PowerUICECGridDataManager *)self->_gridDataManager engagementDecisionReason];
     v8 = self->_log;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218242;
-      v15 = v7;
+      v15 = engagementDecisionReason;
       v16 = 2112;
-      v17 = v6;
+      v17 = balancingAuthorityName;
       _os_log_impl(&dword_21B766000, v8, OS_LOG_TYPE_DEFAULT, "Evaluated and decided not to engage: no forecast available or not enough variation in grid. (engagementDecisionReason: %lu, balancingAuthority: %@)", &v14, 0x16u);
     }
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastEngagementCheckDate = self->_lastEngagementCheckDate;
-  self->_lastEngagementCheckDate = v9;
+  self->_lastEngagementCheckDate = date;
 
   defaults = self->_defaults;
   [(NSDate *)self->_lastEngagementCheckDate timeIntervalSinceReferenceDate];
@@ -710,27 +710,27 @@ LABEL_13:
 - (BOOL)evaluateEngagement
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUIDemoCECManager *)self shouldEngageDemoCEC];
+  shouldEngageDemoCEC = [(PowerUIDemoCECManager *)self shouldEngageDemoCEC];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = shouldEngageDemoCEC;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Should engage %d", v7, 8u);
   }
 
-  [(PowerUIDemoCECManager *)self recordEngagementEvaluation:v3];
+  [(PowerUIDemoCECManager *)self recordEngagementEvaluation:shouldEngageDemoCEC];
   [(PowerUIDemoCECManager *)self recordStartWallEnergyAccum];
-  if (v3)
+  if (shouldEngageDemoCEC)
   {
     [(PowerUIDemoCECManager *)self recordSystemLoadAccum];
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return shouldEngageDemoCEC;
 }
 
-- (void)updatePhaseFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)updatePhaseFrom:(unint64_t)from to:(unint64_t)to
 {
   v31 = *MEMORY[0x277D85DE8];
   v7 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
@@ -741,15 +741,15 @@ LABEL_13:
     phaseDescriptions = self->_phaseDescriptions;
     v11 = MEMORY[0x277CCABB0];
     v12 = log;
-    v13 = [v11 numberWithUnsignedInteger:a3];
+    v13 = [v11 numberWithUnsignedInteger:from];
     v14 = [(NSDictionary *)phaseDescriptions objectForKeyedSubscript:v13];
     v15 = self->_phaseDescriptions;
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:to];
     v17 = [(NSDictionary *)v15 objectForKeyedSubscript:v16];
     v19 = 134219266;
-    v20 = a3;
+    fromCopy = from;
     v21 = 2048;
-    v22 = a4;
+    toCopy = to;
     v23 = 2112;
     v24 = v14;
     v25 = 2112;
@@ -761,8 +761,8 @@ LABEL_13:
     _os_log_impl(&dword_21B766000, v12, OS_LOG_TYPE_DEFAULT, "Demo CEC Phase update from %lu to %lu (%@ --> %@); BatteryLevel %ld, PluggedIn %d", &v19, 0x3Au);
   }
 
-  self->_currentPhase = a4;
-  [(NSUserDefaults *)self->_defaults setInteger:a4 forKey:@"currentPhase"];
+  self->_currentPhase = to;
+  [(NSUserDefaults *)self->_defaults setInteger:to forKey:@"currentPhase"];
   if (self->_currentPhase != 20)
   {
     [(PowerUIChargingController *)self->_chargingController clearChargeLimitForLimitType:4];
@@ -806,7 +806,7 @@ LABEL_13:
   [(PowerUIDemoCECManager *)self unregisterTimer:self->_timer];
 }
 
-- (void)handlePauseChargingAboveMaxSOC:(int64_t)a3
+- (void)handlePauseChargingAboveMaxSOC:(int64_t)c
 {
   v19 = *MEMORY[0x277D85DE8];
   log = self->_log;
@@ -818,7 +818,7 @@ LABEL_13:
   }
 
   isChargingPaused = self->_isChargingPaused;
-  [(PowerUIChargingController *)self->_chargingController setChargeLimitTo:a3 forLimitType:4];
+  [(PowerUIChargingController *)self->_chargingController setChargeLimitTo:c forLimitType:4];
   self->_isChargingPaused = 1;
   if (!isChargingPaused)
   {
@@ -839,15 +839,15 @@ LABEL_13:
     v12 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
     if ([(PowerUIDemoCECManager *)self isEngaged])
     {
-      v13 = [(PowerUICECGridDataManager *)self->_gridDataManager shouldChargeNow];
+      shouldChargeNow = [(PowerUICECGridDataManager *)self->_gridDataManager shouldChargeNow];
     }
 
     else
     {
-      v13 = 0;
+      shouldChargeNow = 0;
     }
 
-    [(PowerUIDemoCECManager *)self recordChargingStateChange:!self->_isChargingPaused atBatteryLevel:v12 duringCleanInterval:v13];
+    [(PowerUIDemoCECManager *)self recordChargingStateChange:!self->_isChargingPaused atBatteryLevel:v12 duringCleanInterval:shouldChargeNow];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -893,30 +893,30 @@ LABEL_13:
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
-  v4 = a1;
+  selfCopy = self;
   v5 = [v3 numberWithBool:a2 & 1];
   OUTLINED_FUNCTION_3_0(&dword_21B766000, v6, v7, "Charging state changed: %@", v8, v9, v10, v11, 2u);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCallback:(id)a3
+- (void)handleCallback:(id)callback
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
   v6 = [PowerUISmartChargeUtilities isPluggedInWithContext:self->_context];
-  v7 = [(PowerUICECGridDataManager *)self->_gridDataManager engagementDecisionReason];
+  engagementDecisionReason = [(PowerUICECGridDataManager *)self->_gridDataManager engagementDecisionReason];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     currentPhase = self->_currentPhase;
     *v47 = 138413314;
-    *&v47[4] = v4;
+    *&v47[4] = callbackCopy;
     *&v47[12] = 2048;
     *&v47[14] = currentPhase;
     *&v47[22] = 2048;
-    v48 = v7;
+    v48 = engagementDecisionReason;
     v49 = 2048;
     v50 = v5;
     v51 = 1024;
@@ -924,7 +924,7 @@ LABEL_13:
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Evaluating phase. Trigger: %@ (CurrentPhase %lu engagementDecisionReason %lu batteryLevel %ld, isPluggedIn %d)", v47, 0x30u);
   }
 
-  v10 = [v4 isEqualToString:@"Query forecast timer"];
+  v10 = [callbackCopy isEqualToString:@"Query forecast timer"];
   v11 = self->_currentPhase;
   if (v11 > 19)
   {
@@ -1016,10 +1016,10 @@ LABEL_32:
         goto LABEL_105;
       }
 
-      v32 = [(PowerUIDemoCECManager *)self evaluateEngagement];
+      evaluateEngagement = [(PowerUIDemoCECManager *)self evaluateEngagement];
       v25 = self->_log;
       v33 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-      if (v32)
+      if (evaluateEngagement)
       {
         if (v33)
         {
@@ -1051,9 +1051,9 @@ LABEL_32:
         _os_log_impl(&dword_21B766000, v20, OS_LOG_TYPE_DEFAULT, "Charged to acceptable limit (= batteryLevel %ld >= kEmergencyChargeSocEndThreshold = %ld). Ending emergency charge.", v47, 0x16u);
       }
 
-      v22 = [(PowerUIDemoCECManager *)self isWithinEngagedSession];
+      isWithinEngagedSession = [(PowerUIDemoCECManager *)self isWithinEngagedSession];
       v23 = self->_log;
-      if (v22)
+      if (isWithinEngagedSession)
       {
         if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEFAULT))
         {
@@ -1068,10 +1068,10 @@ LABEL_32:
           goto LABEL_105;
         }
 
-        v24 = [(PowerUIDemoCECManager *)self evaluateEngagement];
+        evaluateEngagement2 = [(PowerUIDemoCECManager *)self evaluateEngagement];
         v25 = self->_log;
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-        if (v24)
+        if (evaluateEngagement2)
         {
           if (v26)
           {
@@ -1103,10 +1103,10 @@ LABEL_104:
       }
 
       [(PowerUIDemoCECManager *)self clearAnalytics];
-      v41 = [(PowerUIDemoCECManager *)self evaluateEngagement];
+      evaluateEngagement3 = [(PowerUIDemoCECManager *)self evaluateEngagement];
       v25 = self->_log;
       v42 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-      if (v41)
+      if (evaluateEngagement3)
       {
         if (v42)
         {
@@ -1134,7 +1134,7 @@ LABEL_103:
   {
     if (v11 == 10)
     {
-      if (v7 == 1)
+      if (engagementDecisionReason == 1)
       {
         v12 = v10;
       }
@@ -1150,8 +1150,8 @@ LABEL_103:
         {
           gridDataManager = self->_gridDataManager;
           ++self->_requeryForecastTries;
-          v14 = [(PowerUICECGridDataManager *)gridDataManager engagementDecisionReason];
-          if (v14 != 1)
+          engagementDecisionReason2 = [(PowerUICECGridDataManager *)gridDataManager engagementDecisionReason];
+          if (engagementDecisionReason2 != 1)
           {
             goto LABEL_15;
           }
@@ -1175,7 +1175,7 @@ LABEL_15:
               *v47 = 134218240;
               *&v47[4] = v18;
               *&v47[12] = 1024;
-              *&v47[14] = v14 == 1;
+              *&v47[14] = engagementDecisionReason2 == 1;
               _os_log_impl(&dword_21B766000, v17, OS_LOG_TYPE_DEFAULT, "No longer re-querying forecast. requeryForecastTries: %ld , stillMissingForecast: %d", v47, 0x12u);
             }
 
@@ -1257,10 +1257,10 @@ LABEL_82:
     goto LABEL_82;
   }
 
-  v27 = [(PowerUIDemoCECManager *)self evaluateEngagement];
+  evaluateEngagement4 = [(PowerUIDemoCECManager *)self evaluateEngagement];
   v28 = self->_log;
   v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-  if (v27)
+  if (evaluateEngagement4)
   {
     if (v29)
     {
@@ -1305,10 +1305,10 @@ LABEL_71:
     }
 
 LABEL_72:
-    v39 = self;
+    selfCopy2 = self;
     v40 = 50;
 LABEL_100:
-    [(PowerUIDemoCECManager *)v39 handlePauseChargingAboveMaxSOC:v40, *v47, *&v47[8]];
+    [(PowerUIDemoCECManager *)selfCopy2 handlePauseChargingAboveMaxSOC:v40, *v47, *&v47[8]];
     goto LABEL_105;
   }
 
@@ -1338,7 +1338,7 @@ LABEL_98:
     }
 
 LABEL_99:
-    v39 = self;
+    selfCopy2 = self;
     v40 = 90;
     goto LABEL_100;
   }
@@ -1356,16 +1356,16 @@ LABEL_105:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePowerUICECStateChange:(unint64_t)a3 withHandler:(id)a4
+- (void)handlePowerUICECStateChange:(unint64_t)change withHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = log;
-    v10 = [v8 numberWithUnsignedInteger:a3];
+    v10 = [v8 numberWithUnsignedInteger:change];
     *buf = 138412290;
     v18 = v10;
     _os_log_impl(&dword_21B766000, v9, OS_LOG_TYPE_DEFAULT, "Demo CEC State: %@", buf, 0xCu);
@@ -1376,10 +1376,10 @@ LABEL_105:
   block[1] = 3221225472;
   block[2] = __65__PowerUIDemoCECManager_handlePowerUICECStateChange_withHandler___block_invoke;
   block[3] = &unk_2782D4378;
-  v15 = v6;
-  v16 = a3;
+  v15 = handlerCopy;
+  changeCopy = change;
   block[4] = self;
-  v12 = v6;
+  v12 = handlerCopy;
   dispatch_async(queue, block);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1435,15 +1435,15 @@ void __65__PowerUIDemoCECManager_handlePowerUICECStateChange_withHandler___block
 
 - (void)monitorDemoCecIsEnabledChange
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
   v4 = *MEMORY[0x277D29548];
-  v5 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__PowerUIDemoCECManager_monitorDemoCecIsEnabledChange__block_invoke;
   v7[3] = &unk_2782D43A0;
   v7[4] = self;
-  v6 = [v3 addObserverForName:v4 object:0 queue:v5 usingBlock:v7];
+  v6 = [defaultCenter addObserverForName:v4 object:0 queue:mainQueue usingBlock:v7];
 }
 
 void __54__PowerUIDemoCECManager_monitorDemoCecIsEnabledChange__block_invoke(uint64_t a1)
@@ -1471,23 +1471,23 @@ void __54__PowerUIDemoCECManager_monitorDemoCecIsEnabledChange__block_invoke(uin
 {
   v25[3] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CFE360];
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v5 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v6 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  keyPathForBatteryLevel2 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
   v7 = MEMORY[0x277CBEC38];
-  v8 = [v3 predicateForKeyPath:v4 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value <= %@", v5, MEMORY[0x277CBEC38], v6, &unk_282D4E308];
+  v8 = [v3 predicateForKeyPath:keyPathForBatteryLevel withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value <= %@", keyPathForBatteryStateDataDictionary, MEMORY[0x277CBEC38], keyPathForBatteryLevel2, &unk_282D4E308];
 
   v9 = MEMORY[0x277CFE360];
-  v10 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v11 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v12 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v13 = [v9 predicateForKeyPath:v10 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value = %@", v11, v7, v12, &unk_282D4E320];
+  keyPathForBatteryLevel3 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  keyPathForBatteryStateDataDictionary2 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  keyPathForBatteryLevel4 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  v13 = [v9 predicateForKeyPath:keyPathForBatteryLevel3 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value = %@", keyPathForBatteryStateDataDictionary2, v7, keyPathForBatteryLevel4, &unk_282D4E320];
 
   v14 = MEMORY[0x277CFE360];
-  v15 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v16 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v17 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v18 = [v14 predicateForKeyPath:v15 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value >= %@", v16, v7, v17, &unk_282D4E338];
+  keyPathForBatteryLevel5 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  keyPathForBatteryStateDataDictionary3 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  keyPathForBatteryLevel6 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  v18 = [v14 predicateForKeyPath:keyPathForBatteryLevel5 withFormat:@"SELF.%@.value.externalConnected = %@ AND SELF.%@.value >= %@", keyPathForBatteryStateDataDictionary3, v7, keyPathForBatteryLevel6, &unk_282D4E338];
 
   v19 = MEMORY[0x277CFE360];
   v25[0] = v8;
@@ -1522,8 +1522,8 @@ void __58__PowerUIDemoCECManager_monitorBatteryStateOfChargeChange__block_invoke
 - (void)monitorPluggedInChange
 {
   v3 = MEMORY[0x277CFE360];
-  v4 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
-  v5 = [v3 predicateForChangeAtKeyPath:v4];
+  keyPathForPluginStatus = [MEMORY[0x277CFE338] keyPathForPluginStatus];
+  v5 = [v3 predicateForChangeAtKeyPath:keyPathForPluginStatus];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1685,9 +1685,9 @@ LABEL_18:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnabledState:(BOOL)a3
+- (void)setEnabledState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     self->_currentState = 1;
     self->_isDemoCECEnabled = 1;
@@ -1729,8 +1729,8 @@ LABEL_18:
 - (void)handleIsEnabledChange
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUIDemoCECManager *)self isEnabled];
-  if (self->_isDemoCECEnabled == v3)
+  isEnabled = [(PowerUIDemoCECManager *)self isEnabled];
+  if (self->_isDemoCECEnabled == isEnabled)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -1747,8 +1747,8 @@ LABEL_18:
 
   else
   {
-    v9 = v3;
-    [(PowerUIDemoCECManager *)self setEnabledState:v3];
+    v9 = isEnabled;
+    [(PowerUIDemoCECManager *)self setEnabledState:isEnabled];
     v10 = self->_log;
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
     if (v9)
@@ -1783,22 +1783,22 @@ LABEL_18:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     log = self->_log;
-    v5 = 0;
+    bOOLValue = 0;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Engagement result missing. Assuming device was not in an active engaged session.", v8, 2u);
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)recordSystemLoadAccum
@@ -1832,15 +1832,15 @@ LABEL_18:
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 mutableCopy];
+      dictionary = [v10 mutableCopy];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v13 = v12;
+    v13 = dictionary;
     v14 = [(PowerUICECGridDataManager *)self->_gridDataManager startTimeCurrentIntervalWithinForecastHorizon:28800.0];
     if (v14)
     {
@@ -1966,12 +1966,12 @@ LABEL_18:
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
         }
 
         else
         {
-          v13 = 0;
+          bOOLValue = 0;
         }
 
         v15 = self->_log;
@@ -1982,7 +1982,7 @@ LABEL_18:
           v20 = 2112;
           v21 = v6;
           v22 = 1024;
-          v23 = v13;
+          v23 = bOOLValue;
           v24 = 2048;
           v25 = -1;
           _os_log_error_impl(&dword_21B766000, v15, OS_LOG_TYPE_ERROR, "Total wall energy computed over the session was negative (start value: %@. end value: %@. The device may have been restarted (deviceWasRestarted: %d), or the accumulator may have exceeded the 64-bit max. Returning %ld.", &v18, 0x26u);
@@ -2006,11 +2006,11 @@ LABEL_18:
   return v7;
 }
 
-- (id)dateDictionaryFromDefaults:(id)a3
+- (id)dateDictionaryFromDefaults:(id)defaults
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [(NSUserDefaults *)self->_defaults objectForKey:a3];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  v4 = [(NSUserDefaults *)self->_defaults objectForKey:defaults];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -2039,7 +2039,7 @@ LABEL_18:
         if (v14)
         {
           v15 = [v6 objectForKeyedSubscript:v12];
-          [v5 setObject:v15 forKeyedSubscript:v14];
+          [dictionary setObject:v15 forKeyedSubscript:v14];
         }
 
         else
@@ -2062,10 +2062,10 @@ LABEL_18:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (double)systemLoadEmissionSavings:(int64_t)a3
+- (double)systemLoadEmissionSavings:(int64_t)savings
 {
   v67[1] = *MEMORY[0x277D85DE8];
   v5 = [(PowerUIDemoCECManager *)self dateDictionaryFromDefaults:@"demoCecSysLoadTimeline"];
@@ -2092,8 +2092,8 @@ LABEL_18:
 
   if (v11 && [v11 count])
   {
-    v12 = [v56 allKeys];
-    v13 = [v12 mutableCopy];
+    allKeys = [v56 allKeys];
+    v13 = [allKeys mutableCopy];
 
     v14 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1];
     v67[0] = v14;
@@ -2101,8 +2101,8 @@ LABEL_18:
     [v13 sortUsingDescriptors:v15];
 
     v16 = [PowerUICECGridDataForecastEntry alloc];
-    v17 = [v13 lastObject];
-    v18 = [(PowerUICECGridDataForecastEntry *)v16 initWithDate:v17 forecastValue:&unk_282D4E368];
+    lastObject = [v13 lastObject];
+    v18 = [(PowerUICECGridDataForecastEntry *)v16 initWithDate:lastObject forecastValue:&unk_282D4E368];
 
     [v11 addObject:v18];
     v19 = 0.0;
@@ -2112,8 +2112,8 @@ LABEL_18:
       v49 = v18;
       v50 = v14;
       v51 = v13;
-      v52 = a3;
-      v55 = self;
+      savingsCopy = savings;
+      selfCopy = self;
       v53 = v7;
       v54 = v6;
       v21 = 0;
@@ -2125,14 +2125,14 @@ LABEL_18:
       {
         v26 = v24;
         v27 = v23;
-        v28 = [v11 objectAtIndexedSubscript:{v21, v49, v50, v51, v52, v53, v54}];
+        v28 = [v11 objectAtIndexedSubscript:{v21, v49, v50, v51, savingsCopy, v53, v54}];
         v21 = v25;
         v29 = [v11 objectAtIndexedSubscript:v25];
-        v30 = [v28 forecastDate];
-        v24 = [v56 objectForKeyedSubscript:v30];
+        forecastDate = [v28 forecastDate];
+        v24 = [v56 objectForKeyedSubscript:forecastDate];
 
-        v31 = [v29 forecastDate];
-        v23 = [v56 objectForKeyedSubscript:v31];
+        forecastDate2 = [v29 forecastDate];
+        v23 = [v56 objectForKeyedSubscript:forecastDate2];
 
         if (v24 && v23)
         {
@@ -2140,27 +2140,27 @@ LABEL_18:
           v33 = v32;
           [v24 doubleValue];
           v35 = v33 - v34;
-          v36 = [v28 forecastValue];
+          forecastValue = [v28 forecastValue];
 
           if (v35 >= 0.0)
           {
-            [v36 doubleValue];
+            [forecastValue doubleValue];
             v20 = v20 + v35 / 3600000000.0 * v45;
             v19 = v19 + v35;
           }
 
           else
           {
-            log = v55->_log;
+            log = selfCopy->_log;
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
             {
               v38 = log;
-              v39 = [v28 forecastDate];
-              v40 = [v29 forecastDate];
+              forecastDate3 = [v28 forecastDate];
+              forecastDate4 = [v29 forecastDate];
               *buf = 138413314;
-              v58 = v39;
+              v58 = forecastDate3;
               v59 = 2112;
-              v60 = v40;
+              v60 = forecastDate4;
               v61 = 2112;
               v62 = v24;
               v63 = 2112;
@@ -2171,21 +2171,21 @@ LABEL_18:
             }
           }
 
-          v22 = v36;
+          v22 = forecastValue;
         }
 
         else
         {
-          v41 = v55->_log;
+          v41 = selfCopy->_log;
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
             v42 = v41;
-            v43 = [v28 forecastDate];
-            v44 = [v29 forecastDate];
+            forecastDate5 = [v28 forecastDate];
+            forecastDate6 = [v29 forecastDate];
             *buf = 138412546;
-            v58 = v43;
+            v58 = forecastDate5;
             v59 = 2112;
-            v60 = v44;
+            v60 = forecastDate6;
             _os_log_impl(&dword_21B766000, v42, OS_LOG_TYPE_DEFAULT, "Missing system load values for either the start or end of the interval (%@ - %@). Unable to compute the load over the interval. Not using this hour's (load x emissions) in the savings computation.", buf, 0x16u);
           }
         }
@@ -2198,12 +2198,12 @@ LABEL_18:
       v7 = v53;
       v6 = v54;
       v13 = v51;
-      a3 = v52;
+      savings = savingsCopy;
       v18 = v49;
       v14 = v50;
     }
 
-    v46 = v20 + v19 / -3600000000.0 * a3;
+    v46 = v20 + v19 / -3600000000.0 * savings;
   }
 
   else
@@ -2219,9 +2219,9 @@ LABEL_18:
   return v46;
 }
 
-- (id)chargeHistoryAnalytics:(BOOL)a3
+- (id)chargeHistoryAnalytics:(BOOL)analytics
 {
-  v3 = a3;
+  analyticsCopy = analytics;
   v124 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:&unk_282D4EDB8];
   v6 = +[PowerUICECGridDataManager sharedInstance];
@@ -2261,14 +2261,14 @@ LABEL_18:
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   [v5 setObject:v15 forKeyedSubscript:@"totalWallEnergy"];
 
-  if (!v3)
+  if (!analyticsCopy)
   {
     goto LABEL_76;
   }
 
   v89 = v5;
   v16 = [(NSUserDefaults *)self->_defaults objectForKey:@"demoCecChargingStatusTimeline"];
-  v96 = self;
+  selfCopy = self;
   v17 = self->_log;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -2277,13 +2277,13 @@ LABEL_18:
     _os_log_impl(&dword_21B766000, v17, OS_LOG_TYPE_DEFAULT, "Charging history timeline %@", buf, 0xCu);
   }
 
-  v18 = [v16 allKeys];
-  v19 = [MEMORY[0x277CBEB18] array];
+  allKeys = [v16 allKeys];
+  array = [MEMORY[0x277CBEB18] array];
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v20 = v18;
+  v20 = allKeys;
   v21 = [v20 countByEnumeratingWithState:&v111 objects:v119 count:16];
   if (v21)
   {
@@ -2304,12 +2304,12 @@ LABEL_18:
 
         if (v27)
         {
-          [v19 addObject:v27];
+          [array addObject:v27];
         }
 
         else
         {
-          v28 = v96->_log;
+          v28 = selfCopy->_log;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
             [(PowerUIDemoCECManager *)&v109 chargeHistoryAnalytics:v110, v28];
@@ -2326,9 +2326,9 @@ LABEL_18:
   v87 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1];
   v118 = v87;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v118 count:1];
-  v30 = [v19 sortedArrayUsingDescriptors:v29];
+  v30 = [array sortedArrayUsingDescriptors:v29];
 
-  v31 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
@@ -2348,8 +2348,8 @@ LABEL_18:
           objc_enumerationMutation(v32);
         }
 
-        v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "indexOfObject:", *(*(&v105 + 1) + 8 * j))}];
-        [v31 addObject:v37];
+        v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(array, "indexOfObject:", *(*(&v105 + 1) + 8 * j))}];
+        [array2 addObject:v37];
       }
 
       v34 = [v32 countByEnumeratingWithState:&v105 objects:v117 count:16];
@@ -2358,12 +2358,12 @@ LABEL_18:
     while (v34);
   }
 
-  v38 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v39 = v31;
+  v39 = array2;
   v40 = [v39 countByEnumeratingWithState:&v101 objects:v116 count:16];
   if (v40)
   {
@@ -2379,7 +2379,7 @@ LABEL_18:
         }
 
         v44 = [v20 objectAtIndex:{objc_msgSend(*(*(&v101 + 1) + 8 * k), "integerValue")}];
-        [v38 addObject:v44];
+        [array3 addObject:v44];
       }
 
       v41 = [v39 countByEnumeratingWithState:&v101 objects:v116 count:16];
@@ -2390,12 +2390,12 @@ LABEL_18:
 
   v92 = v32;
 
-  v45 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v46 = v38;
+  v46 = array3;
   v47 = [v46 countByEnumeratingWithState:&v97 objects:v115 count:16];
   if (v47)
   {
@@ -2411,7 +2411,7 @@ LABEL_18:
         }
 
         v51 = [v16 objectForKey:*(*(&v97 + 1) + 8 * m)];
-        [v45 addObject:v51];
+        [array4 addObject:v51];
       }
 
       v48 = [v46 countByEnumeratingWithState:&v97 objects:v115 count:16];
@@ -2447,7 +2447,7 @@ LABEL_18:
     v62 = v59;
     v63 = [v61 objectAtIndexedSubscript:{v53, v86}];
 
-    v95 = [v45 objectAtIndexedSubscript:v53];
+    v95 = [array4 objectAtIndexedSubscript:v53];
 
     if (!v60)
     {
@@ -2466,18 +2466,18 @@ LABEL_18:
     }
 
     v67 = [v95 objectForKey:@"chargingStateIsCharging"];
-    v91 = [v67 BOOLValue];
+    bOOLValue = [v67 BOOLValue];
 
-    if (v91)
+    if (bOOLValue)
     {
       goto LABEL_52;
     }
 
     v56 = v56 + v65;
     v68 = [v94 objectForKey:@"wasCleanInterval"];
-    v69 = [v68 BOOLValue];
+    bOOLValue2 = [v68 BOOLValue];
 
-    if (!v69)
+    if (!bOOLValue2)
     {
       v57 = v57 + v65;
     }
@@ -2495,7 +2495,7 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v72 = v96->_log;
+    v72 = selfCopy->_log;
     v63 = v93;
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
     {
@@ -2525,7 +2525,7 @@ LABEL_53:
 
   v53 = v88;
 LABEL_62:
-  v74 = v96->_log;
+  v74 = selfCopy->_log;
   if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
   {
     [PowerUIDemoCECManager chargeHistoryAnalytics:v74];
@@ -2542,7 +2542,7 @@ LABEL_64:
 
   else
   {
-    v77 = v96->_log;
+    v77 = selfCopy->_log;
     v76 = -1;
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
     {
@@ -2556,13 +2556,13 @@ LABEL_64:
   [v89 setObject:v78 forKeyedSubscript:@"chargingEmissions"];
 
   v79 = MEMORY[0x277CCABB0];
-  [(PowerUIDemoCECManager *)v96 systemLoadEmissionSavings:v76];
+  [(PowerUIDemoCECManager *)selfCopy systemLoadEmissionSavings:v76];
   v80 = [v79 numberWithDouble:?];
   [v89 setObject:v80 forKeyedSubscript:@"emissionsSavingsFromSysLoad"];
 
   if (v13 == -1.0 || v76 == -1 || v8 == -1.0)
   {
-    v83 = v96->_log;
+    v83 = selfCopy->_log;
     v82 = v54;
     if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
     {
@@ -2591,26 +2591,26 @@ LABEL_76:
 
 - (id)sessionEndCECAnalytics
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(PowerUIDemoCECManager *)self isWithinEngagedSession];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-  [v3 setObject:v5 forKeyedSubscript:@"engaged"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  isWithinEngagedSession = [(PowerUIDemoCECManager *)self isWithinEngagedSession];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:isWithinEngagedSession];
+  [dictionary setObject:v5 forKeyedSubscript:@"engaged"];
 
-  if (!v4)
+  if (!isWithinEngagedSession)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PowerUICECGridDataManager engagementDecisionReason](self->_gridDataManager, "engagementDecisionReason")}];
-    [v3 setObject:v6 forKeyedSubscript:@"notEngagedReason"];
+    [dictionary setObject:v6 forKeyedSubscript:@"notEngagedReason"];
   }
 
-  v7 = [(PowerUICECGridDataManager *)self->_gridDataManager balancingAuthorityName];
-  [v3 setObject:v7 forKeyedSubscript:@"balancingAuthority"];
+  balancingAuthorityName = [(PowerUICECGridDataManager *)self->_gridDataManager balancingAuthorityName];
+  [dictionary setObject:balancingAuthorityName forKeyedSubscript:@"balancingAuthority"];
 
   lastEngagementCheckDate = self->_lastEngagementCheckDate;
   if (lastEngagementCheckDate)
   {
     [(NSDate *)lastEngagementCheckDate timeIntervalSinceNow];
     v10 = [MEMORY[0x277CCABB0] numberWithInt:(v9 / -60.0)];
-    [v3 setObject:v10 forKeyedSubscript:@"sessionLength"];
+    [dictionary setObject:v10 forKeyedSubscript:@"sessionLength"];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -2622,30 +2622,30 @@ LABEL_76:
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v13 = 0;
+    bOOLValue = 0;
   }
 
-  v14 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-  [v3 setObject:v14 forKeyedSubscript:@"deviceWasRestarted"];
+  v14 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+  [dictionary setObject:v14 forKeyedSubscript:@"deviceWasRestarted"];
 
-  v15 = [(PowerUIDemoCECManager *)self chargeHistoryAnalytics:v4];
-  [v3 addEntriesFromDictionary:v15];
+  v15 = [(PowerUIDemoCECManager *)self chargeHistoryAnalytics:isWithinEngagedSession];
+  [dictionary addEntriesFromDictionary:v15];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)recordAnalytics
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUIDemoCECManager *)self sessionEndCECAnalytics];
-  if ([v3 count])
+  sessionEndCECAnalytics = [(PowerUIDemoCECManager *)self sessionEndCECAnalytics];
+  if ([sessionEndCECAnalytics count])
   {
-    v6 = v3;
+    v6 = sessionEndCECAnalytics;
     AnalyticsSendEventLazy();
   }
 
@@ -2653,7 +2653,7 @@ LABEL_76:
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v3;
+    v8 = sessionEndCECAnalytics;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Reported Demo CEC metrics to CoreAnalytics %@", buf, 0xCu);
   }
 

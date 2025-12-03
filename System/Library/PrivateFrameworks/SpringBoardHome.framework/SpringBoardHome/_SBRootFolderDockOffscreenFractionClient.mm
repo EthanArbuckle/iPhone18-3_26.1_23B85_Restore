@@ -1,27 +1,27 @@
 @interface _SBRootFolderDockOffscreenFractionClient
-- (_SBRootFolderDockOffscreenFractionClient)initWithFolderView:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBRootFolderDockOffscreenFractionClient)initWithFolderView:(id)view reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDockOffscreenFraction:(double)a3;
+- (void)setDockOffscreenFraction:(double)fraction;
 @end
 
 @implementation _SBRootFolderDockOffscreenFractionClient
 
-- (_SBRootFolderDockOffscreenFractionClient)initWithFolderView:(id)a3 reason:(id)a4
+- (_SBRootFolderDockOffscreenFractionClient)initWithFolderView:(id)view reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = _SBRootFolderDockOffscreenFractionClient;
   v9 = [(_SBRootFolderDockOffscreenFractionClient *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_folderView, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_folderView, view);
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
   }
@@ -57,53 +57,53 @@
   [(_SBRootFolderDockOffscreenFractionClient *)&v6 dealloc];
 }
 
-- (void)setDockOffscreenFraction:(double)a3
+- (void)setDockOffscreenFraction:(double)fraction
 {
   [(_SBRootFolderDockOffscreenFractionClient *)self desiredOffscreenFraction];
-  if (v5 != a3)
+  if (v5 != fraction)
   {
-    v6 = [(_SBRootFolderDockOffscreenFractionClient *)self folderView];
-    [(_SBRootFolderDockOffscreenFractionClient *)self setDesiredOffscreenFraction:a3];
-    [v6 clientDidChangeDockOffScreenFraction:self];
+    folderView = [(_SBRootFolderDockOffscreenFractionClient *)self folderView];
+    [(_SBRootFolderDockOffscreenFractionClient *)self setDesiredOffscreenFraction:fraction];
+    [folderView clientDidChangeDockOffScreenFraction:self];
   }
 }
 
 - (void)invalidate
 {
-  v3 = [(_SBRootFolderDockOffscreenFractionClient *)self folderView];
-  [v3 removeDockOffscreenFractionClient:self];
+  folderView = [(_SBRootFolderDockOffscreenFractionClient *)self folderView];
+  [folderView removeDockOffscreenFractionClient:self];
 
   [(_SBRootFolderDockOffscreenFractionClient *)self setFolderView:0];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_SBRootFolderDockOffscreenFractionClient *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBRootFolderDockOffscreenFractionClient *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBRootFolderDockOffscreenFractionClient *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBRootFolderDockOffscreenFractionClient *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBRootFolderDockOffscreenFractionClient *)self succinctDescriptionBuilder];
-  v5 = [(_SBRootFolderDockOffscreenFractionClient *)self reason];
-  v6 = [v4 appendObject:v5 withName:@"reason"];
+  succinctDescriptionBuilder = [(_SBRootFolderDockOffscreenFractionClient *)self succinctDescriptionBuilder];
+  reason = [(_SBRootFolderDockOffscreenFractionClient *)self reason];
+  v6 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
   [(_SBRootFolderDockOffscreenFractionClient *)self desiredOffscreenFraction];
-  v7 = [v4 appendFloat:@"desiredOffscreenFraction" withName:?];
-  v8 = [(_SBRootFolderDockOffscreenFractionClient *)self folderView];
-  v9 = [v4 appendPointer:v8 withName:@"folderView"];
+  v7 = [succinctDescriptionBuilder appendFloat:@"desiredOffscreenFraction" withName:?];
+  folderView = [(_SBRootFolderDockOffscreenFractionClient *)self folderView];
+  v9 = [succinctDescriptionBuilder appendPointer:folderView withName:@"folderView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

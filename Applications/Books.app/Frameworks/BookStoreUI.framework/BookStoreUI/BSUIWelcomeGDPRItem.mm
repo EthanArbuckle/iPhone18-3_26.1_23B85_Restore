@@ -1,6 +1,6 @@
 @interface BSUIWelcomeGDPRItem
 - (BOOL)welcomeScreenShouldShow;
-- (id)welcomeScreenViewControllerWithCompletion:(id)a3;
+- (id)welcomeScreenViewControllerWithCompletion:(id)completion;
 - (void)welcomeScreenViewControllerDidDismiss;
 @end
 
@@ -20,9 +20,9 @@
   if ((v7 & 1) == 0)
   {
     v8 = +[BUAccountsProvider sharedProvider];
-    v9 = [v8 activeStoreAccount];
+    activeStoreAccount = [v8 activeStoreAccount];
 
-    if (v9)
+    if (activeStoreAccount)
     {
       if (qword_3CA748 != -1)
       {
@@ -48,16 +48,16 @@
   return (v3 ^ 1) & (v5 | v7);
 }
 
-- (id)welcomeScreenViewControllerWithCompletion:(id)a3
+- (id)welcomeScreenViewControllerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = [BSUIWelcomeGDPRViewController alloc];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_173D4;
   v8[3] = &unk_386C58;
-  v9 = v3;
-  v5 = v3;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = [(BSUIWelcomeGDPRViewController *)v4 initWithCompletion:v8];
 
   return v6;
@@ -69,8 +69,8 @@
   v3 = BUOnboardingBooksBundleID();
   v5 = [v2 initWithPrivacyIdentifier:v3];
 
-  v4 = [v5 acknowledgePrivacy];
-  [v4 addFinishBlock:&stru_387650];
+  acknowledgePrivacy = [v5 acknowledgePrivacy];
+  [acknowledgePrivacy addFinishBlock:&stru_387650];
 }
 
 @end

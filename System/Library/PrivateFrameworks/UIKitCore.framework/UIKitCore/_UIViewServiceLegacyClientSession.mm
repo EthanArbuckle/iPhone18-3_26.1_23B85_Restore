@@ -1,19 +1,19 @@
 @interface _UIViewServiceLegacyClientSession
-+ (id)sessionWithConnection:(id)a3 manager:(id)a4;
++ (id)sessionWithConnection:(id)connection manager:(id)manager;
 + (void)initialize;
-- (void)_invalidateUnconditionallyThen:(id)a3;
+- (void)_invalidateUnconditionallyThen:(id)then;
 - (void)_objc_initiateDealloc;
 - (void)_registerSessionForDefaultDeputies;
 - (void)dealloc;
-- (void)registerDeputyClass:(Class)a3 withConnectionHandler:(id)a4;
-- (void)setTerminationHandler:(id)a3;
+- (void)registerDeputyClass:(Class)class withConnectionHandler:(id)handler;
+- (void)setTerminationHandler:(id)handler;
 @end
 
 @implementation _UIViewServiceLegacyClientSession
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _class_setCustomDeallocInitiation();
@@ -22,28 +22,28 @@
 
 - (void)_objc_initiateDealloc
 {
-  v3 = [(_UIAsyncInvocation *)self->_invalidationInvocation invoke];
+  invoke = [(_UIAsyncInvocation *)self->_invalidationInvocation invoke];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58___UIViewServiceLegacyClientSession__objc_initiateDealloc__block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0ls32l8;
   v4[4] = self;
-  [v3 whenCompleteDo:v4];
+  [invoke whenCompleteDo:v4];
 }
 
-+ (id)sessionWithConnection:(id)a3 manager:(id)a4
++ (id)sessionWithConnection:(id)connection manager:(id)manager
 {
   _UIApplicationIsExtension();
-  v7 = objc_alloc_init(a1);
+  v7 = objc_alloc_init(self);
   *(v7 + 7) = objc_alloc_init(MEMORY[0x1E696AFB0]);
   v8 = objc_alloc_init(_UIViewServiceDeputyManager);
   *(v7 + 4) = v8;
   [(_UIViewServiceDeputyManager *)v8 setDelegate:v7];
-  v9 = a3;
-  *(v7 + 2) = v9;
-  [v9 setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1F016E010)}];
+  connectionCopy = connection;
+  *(v7 + 2) = connectionCopy;
+  [connectionCopy setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1F016E010)}];
   [*(v7 + 2) setExportedObject:*(v7 + 4)];
-  *(v7 + 3) = a4;
+  *(v7 + 3) = manager;
   v10 = [objc_msgSend(objc_msgSend(UIApp "_workspace")];
   *(v7 + 1) = v10;
   dispatch_retain(v10);
@@ -109,7 +109,7 @@
   [(_UIViewServiceLegacyClientSession *)&v3 dealloc];
 }
 
-- (void)setTerminationHandler:(id)a3
+- (void)setTerminationHandler:(id)handler
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -117,23 +117,23 @@
   v4[2] = __59___UIViewServiceLegacyClientSession_setTerminationHandler___block_invoke;
   v4[3] = &unk_1E7101DB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(queue, v4);
 }
 
-- (void)_invalidateUnconditionallyThen:(id)a3
+- (void)_invalidateUnconditionallyThen:(id)then
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68___UIViewServiceLegacyClientSession__invalidateUnconditionallyThen___block_invoke;
   v4[3] = &unk_1E7128A60;
-  v4[4] = a3;
+  v4[4] = then;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
 
-- (void)registerDeputyClass:(Class)a3 withConnectionHandler:(id)a4
+- (void)registerDeputyClass:(Class)class withConnectionHandler:(id)handler
 {
   v7 = [_UIWeakReference weakReferenceWrappingObject:self];
   deputyManager = self->_deputyManager;
@@ -143,8 +143,8 @@
   v9[3] = &unk_1E7128A88;
   v9[4] = v7;
   v9[5] = self;
-  v9[6] = a4;
-  [(_UIViewServiceDeputyManager *)deputyManager registerDeputyClass:a3 withConnectionHandler:v9];
+  v9[6] = handler;
+  [(_UIViewServiceDeputyManager *)deputyManager registerDeputyClass:class withConnectionHandler:v9];
 }
 
 @end

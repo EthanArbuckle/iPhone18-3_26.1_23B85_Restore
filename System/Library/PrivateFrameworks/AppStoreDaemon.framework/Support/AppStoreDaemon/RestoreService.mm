@@ -1,8 +1,8 @@
 @interface RestoreService
 - (RestoreService)init;
-- (void)clearFollowupsForAccountID:(id)a3 replyHandler:(id)a4;
-- (void)estimateTotalDownloadSizeWithReplyHandler:(id)a3;
-- (void)prioritizeBundleIDs:(id)a3 userInitiated:(BOOL)a4 replyHandler:(id)a5;
+- (void)clearFollowupsForAccountID:(id)d replyHandler:(id)handler;
+- (void)estimateTotalDownloadSizeWithReplyHandler:(id)handler;
+- (void)prioritizeBundleIDs:(id)ds userInitiated:(BOOL)initiated replyHandler:(id)handler;
 @end
 
 @implementation RestoreService
@@ -42,50 +42,50 @@
   return self;
 }
 
-- (void)clearFollowupsForAccountID:(id)a3 replyHandler:(id)a4
+- (void)clearFollowupsForAccountID:(id)d replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100284348;
   v11[3] = &unk_10051B2D0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_sync(queue, v11);
 }
 
-- (void)estimateTotalDownloadSizeWithReplyHandler:(id)a3
+- (void)estimateTotalDownloadSizeWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002844C8;
   v7[3] = &unk_10051B2D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)prioritizeBundleIDs:(id)a3 userInitiated:(BOOL)a4 replyHandler:(id)a5
+- (void)prioritizeBundleIDs:(id)ds userInitiated:(BOOL)initiated replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100284768;
   block[3] = &unk_10051FAA0;
-  v16 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  initiatedCopy = initiated;
+  v14 = dsCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dsCopy;
   dispatch_sync(queue, block);
 }
 

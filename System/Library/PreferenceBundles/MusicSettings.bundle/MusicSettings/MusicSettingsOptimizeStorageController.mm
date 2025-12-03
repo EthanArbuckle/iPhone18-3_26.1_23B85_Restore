@@ -2,18 +2,18 @@
 + (id)_minimumStorageOption;
 + (id)_supportedStorageOptions;
 + (id)optimizeStorageStateDescription;
-+ (void)_setMinimumStorageOption:(id)a3;
++ (void)_setMinimumStorageOption:(id)option;
 - (MusicSettingsOptimizeStorageController)init;
 - (id)minimumStorageGroupFooterText;
-- (id)minimumStorageTierDescriptionForSpecifier:(id)a3;
-- (id)minimumStorageTierEnabledForSpecifier:(id)a3;
-- (id)minimumStorageTierIconImageForSpecifier:(id)a3;
-- (id)minimumStorageTierLabelForSpecifier:(id)a3;
+- (id)minimumStorageTierDescriptionForSpecifier:(id)specifier;
+- (id)minimumStorageTierEnabledForSpecifier:(id)specifier;
+- (id)minimumStorageTierIconImageForSpecifier:(id)specifier;
+- (id)minimumStorageTierLabelForSpecifier:(id)specifier;
 - (id)optimizeStorageGroupFooterText;
 - (id)spacerImage;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation MusicSettingsOptimizeStorageController
@@ -21,36 +21,36 @@
 + (id)optimizeStorageStateDescription
 {
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"OptimizeStorage", @"com.apple.Music", 0);
-  v4 = [a1 _minimumStorageOption];
-  v5 = v4;
+  _minimumStorageOption = [self _minimumStorageOption];
+  v5 = _minimumStorageOption;
   if (AppBooleanValue)
   {
-    if (!v4)
+    if (!_minimumStorageOption)
     {
       v5 = [NSBundle bundleForClass:objc_opt_class()];
       v10 = [v5 localizedStringForKey:@"ON" value:&stru_25A88 table:@"MusicSettingsOptimizeStorage"];
       goto LABEL_12;
     }
 
-    v6 = [a1 _supportedStorageOptions];
-    if (([v6 containsObject:v5] & 1) == 0)
+    _supportedStorageOptions = [self _supportedStorageOptions];
+    if (([_supportedStorageOptions containsObject:v5] & 1) == 0)
     {
-      v7 = [v5 longLongValue];
-      v8 = [v6 lastObject];
-      v9 = [v8 longLongValue];
+      longLongValue = [v5 longLongValue];
+      lastObject = [_supportedStorageOptions lastObject];
+      longLongValue2 = [lastObject longLongValue];
 
-      if (v7 <= v9)
+      if (longLongValue <= longLongValue2)
       {
-        [v6 firstObject];
+        [_supportedStorageOptions firstObject];
       }
 
       else
       {
-        [v6 lastObject];
+        [_supportedStorageOptions lastObject];
       }
       v11 = ;
 
-      [a1 _setMinimumStorageOption:v11];
+      [self _setMinimumStorageOption:v11];
       v5 = v11;
     }
 
@@ -62,8 +62,8 @@
 
   else
   {
-    v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v6 localizedStringForKey:@"OFF" value:&stru_25A88 table:@"MusicSettingsOptimizeStorage"];
+    _supportedStorageOptions = [NSBundle bundleForClass:objc_opt_class()];
+    v10 = [_supportedStorageOptions localizedStringForKey:@"OFF" value:&stru_25A88 table:@"MusicSettingsOptimizeStorage"];
   }
 
 LABEL_12:
@@ -93,8 +93,8 @@ LABEL_12:
 
     [(NSByteCountFormatter *)v2->_formatter setCountStyle:3];
     [(NSByteCountFormatter *)v2->_formatter setAllowedUnits:8];
-    v11 = [objc_opt_class() _supportedStorageOptions];
-    v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v11 count]);
+    _supportedStorageOptions = [objc_opt_class() _supportedStorageOptions];
+    v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [_supportedStorageOptions count]);
     [v12 setObject:&__NSDictionary0__struct forKeyedSubscript:@"com.apple.Music:MinimumStorageTier0"];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -102,7 +102,7 @@ LABEL_12:
     v18[3] = &unk_24F48;
     v13 = v12;
     v19 = v13;
-    [v11 enumerateObjectsUsingBlock:v18];
+    [_supportedStorageOptions enumerateObjectsUsingBlock:v18];
     storageTierSpecifierID = v2->_storageTierSpecifierID;
     v2->_storageTierSpecifierID = v13;
     v15 = v13;
@@ -114,21 +114,21 @@ LABEL_12:
   return v2;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = MusicSettingsOptimizeStorageController;
-  [(MusicSettingsOptimizeStorageController *)&v7 setPreferenceValue:a3 specifier:a4];
+  [(MusicSettingsOptimizeStorageController *)&v7 setPreferenceValue:value specifier:specifier];
   WeakRetained = objc_loadWeakRetained(&self->MusicSettingsListViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v6 = [(MusicSettingsOptimizeStorageController *)self specifier];
-  [WeakRetained reloadSpecifier:v6];
+  specifier = [(MusicSettingsOptimizeStorageController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 }
 
-- (id)minimumStorageTierLabelForSpecifier:(id)a3
+- (id)minimumStorageTierLabelForSpecifier:(id)specifier
 {
   storageTierSpecifierID = self->_storageTierSpecifierID;
-  v5 = [a3 identifier];
-  v6 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:v5];
+  identifier = [specifier identifier];
+  v6 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:identifier];
   v7 = [v6 objectForKeyedSubscript:@"capacity"];
 
   v8 = -[NSByteCountFormatter stringFromByteCount:](self->_formatter, "stringFromByteCount:", [v7 unsignedLongLongValue] << 30);
@@ -136,11 +136,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)minimumStorageTierEnabledForSpecifier:(id)a3
+- (id)minimumStorageTierEnabledForSpecifier:(id)specifier
 {
   storageTierSpecifierID = self->_storageTierSpecifierID;
-  v4 = [a3 identifier];
-  v5 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:v4];
+  identifier = [specifier identifier];
+  v5 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:identifier];
   if (v5)
   {
     v6 = &__kCFBooleanTrue;
@@ -156,25 +156,25 @@ LABEL_12:
   return v6;
 }
 
-- (id)minimumStorageTierIconImageForSpecifier:(id)a3
+- (id)minimumStorageTierIconImageForSpecifier:(id)specifier
 {
   storageTierSpecifierID = self->_storageTierSpecifierID;
-  v5 = [a3 identifier];
-  v6 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:v5];
+  identifier = [specifier identifier];
+  v6 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:identifier];
   v7 = [v6 objectForKeyedSubscript:@"capacity"];
 
-  v8 = [objc_opt_class() _minimumStorageOption];
-  if (v7 | v8 && ![v7 isEqual:v8])
+  _minimumStorageOption = [objc_opt_class() _minimumStorageOption];
+  if (v7 | _minimumStorageOption && ![v7 isEqual:_minimumStorageOption])
   {
-    v9 = [(MusicSettingsOptimizeStorageController *)self spacerImage];
+    spacerImage = [(MusicSettingsOptimizeStorageController *)self spacerImage];
   }
 
   else
   {
-    v9 = self->_checkmarkImage;
+    spacerImage = self->_checkmarkImage;
   }
 
-  v10 = v9;
+  v10 = spacerImage;
 
   return v10;
 }
@@ -197,8 +197,8 @@ LABEL_12:
 
 - (id)minimumStorageGroupFooterText
 {
-  v3 = [objc_opt_class() _minimumStorageOption];
-  if (v3)
+  _minimumStorageOption = [objc_opt_class() _minimumStorageOption];
+  if (_minimumStorageOption)
   {
     v4 = MGGetSInt32Answer();
     v5 = @"MINIMUM_STORAGE_SUMMARY_FORMAT_IPHONE";
@@ -224,7 +224,7 @@ LABEL_12:
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:v6 value:&stru_25A88 table:@"MusicSettingsOptimizeStorage"];
-    v9 = -[NSByteCountFormatter stringFromByteCount:](self->_formatter, "stringFromByteCount:", [v3 unsignedLongLongValue] << 30);
+    v9 = -[NSByteCountFormatter stringFromByteCount:](self->_formatter, "stringFromByteCount:", [_minimumStorageOption unsignedLongLongValue] << 30);
     v10 = [NSString stringWithFormat:v8, v9];
   }
 
@@ -266,11 +266,11 @@ LABEL_12:
   return v6;
 }
 
-- (id)minimumStorageTierDescriptionForSpecifier:(id)a3
+- (id)minimumStorageTierDescriptionForSpecifier:(id)specifier
 {
   storageTierSpecifierID = self->_storageTierSpecifierID;
-  v4 = [a3 identifier];
-  v5 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:v4];
+  identifier = [specifier identifier];
+  v5 = [(NSDictionary *)storageTierSpecifierID objectForKeyedSubscript:identifier];
   v6 = [v5 objectForKeyedSubscript:@"capacity"];
 
   if (v6)
@@ -289,17 +289,17 @@ LABEL_12:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = MusicSettingsOptimizeStorageController;
-  v6 = a4;
-  v7 = [(MusicSettingsOptimizeStorageController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(MusicSettingsOptimizeStorageController *)self specifierAtIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(MusicSettingsOptimizeStorageController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(MusicSettingsOptimizeStorageController *)self specifierAtIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   storageTierSpecifierID = self->_storageTierSpecifierID;
-  v10 = [v8 identifier];
-  v11 = [(NSDictionary *)storageTierSpecifierID objectForKey:v10];
+  identifier = [v8 identifier];
+  v11 = [(NSDictionary *)storageTierSpecifierID objectForKey:identifier];
 
   if (v11)
   {
@@ -309,37 +309,37 @@ LABEL_12:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = MusicSettingsOptimizeStorageController;
-  [(MusicSettingsOptimizeStorageController *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(MusicSettingsOptimizeStorageController *)self specifierAtIndexPath:v7];
+  [(MusicSettingsOptimizeStorageController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(MusicSettingsOptimizeStorageController *)self specifierAtIndexPath:pathCopy];
   storageTierSpecifierID = self->_storageTierSpecifierID;
-  v10 = [v8 identifier];
-  v11 = [(NSDictionary *)storageTierSpecifierID objectForKey:v10];
+  identifier = [v8 identifier];
+  v11 = [(NSDictionary *)storageTierSpecifierID objectForKey:identifier];
 
   if (v11)
   {
     v12 = self->_storageTierSpecifierID;
-    v13 = [v8 identifier];
-    v14 = [(NSDictionary *)v12 objectForKeyedSubscript:v13];
+    identifier2 = [v8 identifier];
+    v14 = [(NSDictionary *)v12 objectForKeyedSubscript:identifier2];
     v15 = [v14 objectForKeyedSubscript:@"capacity"];
 
     [objc_opt_class() _setMinimumStorageOption:v15];
     WeakRetained = objc_loadWeakRetained(&self->MusicSettingsListViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
-    v17 = [(MusicSettingsOptimizeStorageController *)self specifier];
-    [WeakRetained reloadSpecifier:v17];
+    specifier = [(MusicSettingsOptimizeStorageController *)self specifier];
+    [WeakRetained reloadSpecifier:specifier];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_64A4;
     v18[3] = &unk_24EA8;
     v18[4] = self;
-    v19 = v6;
-    v20 = v7;
+    v19 = viewCopy;
+    v20 = pathCopy;
     [UIView performWithoutAnimation:v18];
   }
 }
@@ -351,13 +351,13 @@ LABEL_12:
   return v2;
 }
 
-+ (void)_setMinimumStorageOption:(id)a3
++ (void)_setMinimumStorageOption:(id)option
 {
-  v3 = a3;
-  CFPreferencesSetAppValue(@"MinimumStorageOption", v3, @"com.apple.Music");
-  v4 = [v3 unsignedLongLongValue];
+  optionCopy = option;
+  CFPreferencesSetAppValue(@"MinimumStorageOption", optionCopy, @"com.apple.Music");
+  unsignedLongLongValue = [optionCopy unsignedLongLongValue];
 
-  CFPreferencesSetAppValue(@"MinimumStorageSize", [NSNumber numberWithUnsignedLongLong:v4 << 30], @"com.apple.Music");
+  CFPreferencesSetAppValue(@"MinimumStorageSize", [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue << 30], @"com.apple.Music");
 
   CFPreferencesAppSynchronize(@"com.apple.Music");
 }

@@ -1,10 +1,10 @@
 @interface UASharedPasteboardIRManager
 + (id)sharedIRManager;
 - (UASharedPasteboardIRManager)init;
-- (id)converterForType:(id)a3;
+- (id)converterForType:(id)type;
 - (id)registeredConverters;
 - (void)initializeConverters;
-- (void)registerIRHandlerClass:(Class)a3 forType:(id)a4;
+- (void)registerIRHandlerClass:(Class)class forType:(id)type;
 @end
 
 @implementation UASharedPasteboardIRManager
@@ -59,27 +59,27 @@ void __46__UASharedPasteboardIRManager_sharedIRManager__block_invoke()
 
 - (id)registeredConverters
 {
-  v2 = [(UASharedPasteboardIRManager *)self lookupTable];
-  v3 = [v2 copy];
+  lookupTable = [(UASharedPasteboardIRManager *)self lookupTable];
+  v3 = [lookupTable copy];
 
   return v3;
 }
 
-- (void)registerIRHandlerClass:(Class)a3 forType:(id)a4
+- (void)registerIRHandlerClass:(Class)class forType:(id)type
 {
-  v7 = a4;
-  if ([(objc_class *)a3 conformsToProtocol:&unk_283A646A0])
+  typeCopy = type;
+  if ([(objc_class *)class conformsToProtocol:&unk_283A646A0])
   {
-    v6 = [(UASharedPasteboardIRManager *)self lookupTable];
-    [v6 setObject:a3 forKey:v7];
+    lookupTable = [(UASharedPasteboardIRManager *)self lookupTable];
+    [lookupTable setObject:class forKey:typeCopy];
   }
 }
 
-- (id)converterForType:(id)a3
+- (id)converterForType:(id)type
 {
-  v4 = a3;
-  v5 = [(UASharedPasteboardIRManager *)self lookupTable];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  lookupTable = [(UASharedPasteboardIRManager *)self lookupTable];
+  v6 = [lookupTable objectForKey:typeCopy];
 
   if (v6)
   {

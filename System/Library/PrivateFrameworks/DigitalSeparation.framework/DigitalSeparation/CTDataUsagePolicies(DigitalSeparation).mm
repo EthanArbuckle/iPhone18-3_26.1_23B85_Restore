@@ -16,17 +16,17 @@
   }
 
   v7 = [DSSourceDescriptor sourceDescriptorForSource:v6];
-  v8 = [v7 dataUsageBundleIdentifier];
-  if (v8)
+  dataUsageBundleIdentifier = [v7 dataUsageBundleIdentifier];
+  if (dataUsageBundleIdentifier)
   {
     v9 = ([v7 requiresWifi] & 1) != 0 || objc_msgSend(v5, "wifi") != 0;
     v13 = ([v7 requiresCellular] & 1) != 0 || objc_msgSend(v5, "cellular") != 0;
-    v14 = [v5 bundleId];
-    if ([v14 isEqualToString:v8] && objc_msgSend(v5, "wifi") == v9)
+    bundleId = [v5 bundleId];
+    if ([bundleId isEqualToString:dataUsageBundleIdentifier] && objc_msgSend(v5, "wifi") == v9)
     {
-      v15 = [v5 cellular];
+      cellular = [v5 cellular];
 
-      if (v15 == v13)
+      if (cellular == v13)
       {
         v11 = DSLogCTDataUsagePolicies();
         if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -35,7 +35,7 @@
         }
 
         v18 = 138543362;
-        v19 = v8;
+        v19 = dataUsageBundleIdentifier;
         v12 = "Data usage policy for %{public}@ is already configured";
         goto LABEL_8;
       }
@@ -45,7 +45,7 @@
     {
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CC3658]) init:v8 withCellularPolicy:v13 wifiPolicy:v9 isManaged:objc_msgSend(v5 andIsRestricted:{"isManaged"), objc_msgSend(v5, "isRestricted")}];
+    v10 = [objc_alloc(MEMORY[0x277CC3658]) init:dataUsageBundleIdentifier withCellularPolicy:v13 wifiPolicy:v9 isManaged:objc_msgSend(v5 andIsRestricted:{"isManaged"), objc_msgSend(v5, "isRestricted")}];
     goto LABEL_21;
   }
 

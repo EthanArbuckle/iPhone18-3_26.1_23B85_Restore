@@ -1,6 +1,6 @@
 @interface HealthKitCloudRestoreStatusProvider
 - (_TtC31FitnessIntelligenceSnapshotting35HealthKitCloudRestoreStatusProvider)init;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
 @end
 
 @implementation HealthKitCloudRestoreStatusProvider
@@ -13,12 +13,12 @@
   return result;
 }
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
-  v5 = a3;
-  v6 = a4;
+  updatedCopy = updated;
+  statusCopy = status;
 
-  sub_20CD61CEC(v6);
+  sub_20CD61CEC(statusCopy);
 }
 
 @end

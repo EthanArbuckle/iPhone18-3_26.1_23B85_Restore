@@ -1,13 +1,13 @@
 @interface ListUserWordsController
 - (BOOL)_shouldHideIndex;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_mainContentView;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
 - (void)_hideSearchBar;
 - (void)_showSearchBar;
 - (void)addUserWord;
@@ -16,11 +16,11 @@
 - (void)inlineUserDictionaryDoneEditing;
 - (void)loadView;
 - (void)reloadSections;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)userWordDidUpdate:(id)a3;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)userWordDidUpdate:(id)update;
 - (void)viewDidLoad;
-- (void)willPresentSearchController:(id)a3;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation ListUserWordsController
@@ -64,11 +64,11 @@
       [(UISearchController *)self->_searchController setHidesNavigationBarDuringPresentation:0];
     }
 
-    v12 = [(UISearchController *)self->_searchController searchBar];
-    [(UISearchBar *)v12 setPlaceholder:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"SEARCH_LOCAL_PLACEHOLDER", &stru_49C80, @"Keyboard"]];
-    [(UISearchBar *)v12 setAutoresizingMask:2];
-    [(UISearchBar *)v12 setAutocorrectionType:1];
-    [(UISearchBar *)v12 setDelegate:self];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [(UISearchBar *)searchBar setPlaceholder:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"SEARCH_LOCAL_PLACEHOLDER", &stru_49C80, @"Keyboard"]];
+    [(UISearchBar *)searchBar setAutoresizingMask:2];
+    [(UISearchBar *)searchBar setAutocorrectionType:1];
+    [(UISearchBar *)searchBar setDelegate:self];
     [-[ListUserWordsController navigationItem](self "navigationItem")];
     v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"addUserWord"];
     v14[0] = v13;
@@ -83,10 +83,10 @@
 
 - (void)loadView
 {
-  v3 = [(ListUserWordsController *)self _mainContentView];
-  self->_contentView = v3;
+  _mainContentView = [(ListUserWordsController *)self _mainContentView];
+  self->_contentView = _mainContentView;
 
-  [(ListUserWordsController *)self setView:v3];
+  [(ListUserWordsController *)self setView:_mainContentView];
 }
 
 - (void)reloadSections
@@ -108,12 +108,12 @@
     while (v6);
   }
 
-  v8 = [(TIUserWordsManager *)[(ListUserWordsController *)self dictionaryController] entries];
+  entries = [(TIUserWordsManager *)[(ListUserWordsController *)self dictionaryController] entries];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [(NSArray *)entries countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -124,13 +124,13 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(entries);
         }
 
         [objc_msgSend(v5 objectAtIndex:{-[UILocalizedIndexedCollation sectionForObject:collationStringSelector:](v3, "sectionForObject:collationStringSelector:", *(*(&v17 + 1) + 8 * i), "shortcutForSorting")), "addObject:", *(*(&v17 + 1) + 8 * i)}];
       }
 
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [(NSArray *)entries countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -251,10 +251,10 @@ LABEL_22:
 
 - (BOOL)_shouldHideIndex
 {
-  v3 = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
+  userInterfaceIdiom = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
   v4 = [(ListUserWordsController *)self numberOfSectionsInTableView:[(ListUserWordsController *)self tableView]];
   v5 = 15;
-  if (v3 == UIUserInterfaceIdiomPad)
+  if (userInterfaceIdiom == UIUserInterfaceIdiomPad)
   {
     v5 = 20;
   }
@@ -262,9 +262,9 @@ LABEL_22:
   return v4 < v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     if ([(ListUserWordsController *)self isEditing])
     {
@@ -277,7 +277,7 @@ LABEL_22:
     }
 
     self->_restoreEditing = v8;
-    [a3 deselectRowAtIndexPath:a5 animated:1];
+    [view deselectRowAtIndexPath:path animated:1];
     v9 = [-[NSArray objectAtIndex:](-[ListUserWordsController sections](self "sections")];
     [(TIUserWordsManager *)[(ListUserWordsController *)self dictionaryController] addEntries:0 removeEntries:[NSArray withCompletionHandler:"arrayWithObjects:count:" arrayWithObjects:1 count:?], &stru_48EC8];
     self->_manualEditing = 0;
@@ -288,31 +288,31 @@ LABEL_22:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  [view deselectRowAtIndexPath:path animated:1];
   v6 = -[EditUserWordController initWithUserWord:]([EditUserWordController alloc], "initWithUserWord:", [-[NSArray objectAtIndex:](-[ListUserWordsController sections](self "sections")]);
   [(EditUserWordController *)v6 setDictionaryController:[(ListUserWordsController *)self dictionaryController]];
   [(ListUserWordsController *)self showController:v6];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(ListUserWordsController *)self sections];
+  sections = [(ListUserWordsController *)self sections];
 
-  return [(NSArray *)v3 count];
+  return [(NSArray *)sections count];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)[(ListUserWordsController *)self sections] objectAtIndex:a4];
+  v4 = [(NSArray *)[(ListUserWordsController *)self sections] objectAtIndex:section];
 
   return [v4 count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"kCellIdentifier"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"kCellIdentifier"];
   if (!v6)
   {
     v6 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"kCellIdentifier"];
@@ -325,50 +325,50 @@ LABEL_22:
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   result = [-[NSArray objectAtIndex:](-[ListUserWordsController sections](self sections];
   if (result)
   {
-    v7 = [(UILocalizedIndexedCollation *)[(ListUserWordsController *)self collation] sectionTitles];
+    sectionTitles = [(UILocalizedIndexedCollation *)[(ListUserWordsController *)self collation] sectionTitles];
 
-    return [(NSArray *)v7 objectAtIndex:a4];
+    return [(NSArray *)sectionTitles objectAtIndex:section];
   }
 
   return result;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   if (-[ListUserWordsController _shouldHideIndex](self, "_shouldHideIndex") || ![-[NSArray objectAtIndex:](-[ListUserWordsController sections](self "sections")])
   {
     return 0.0;
   }
 
-  [a3 sectionHeaderHeight];
+  [view sectionHeaderHeight];
   return result;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   if ([(ListUserWordsController *)self _shouldHideIndex])
   {
     return 0;
   }
 
-  v5 = [(ListUserWordsController *)self collation];
+  collation = [(ListUserWordsController *)self collation];
 
-  return [(UILocalizedIndexedCollation *)v5 sectionIndexTitles];
+  return [(UILocalizedIndexedCollation *)collation sectionIndexTitles];
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  if ([(ListUserWordsController *)self _shouldHideIndex:a3])
+  if ([(ListUserWordsController *)self _shouldHideIndex:view])
   {
     return 0;
   }
 
-  v8 = [(UILocalizedIndexedCollation *)[(ListUserWordsController *)self collation] sectionForSectionIndexTitleAtIndex:a5];
+  v8 = [(UILocalizedIndexedCollation *)[(ListUserWordsController *)self collation] sectionForSectionIndexTitleAtIndex:index];
   v9 = [(NSArray *)[(ListUserWordsController *)self sections] count];
   if (v8 < 0)
   {
@@ -406,14 +406,14 @@ LABEL_8:
     return v7;
   }
 
-  v14 = [(ListUserWordsController *)self collation];
+  collation = [(ListUserWordsController *)self collation];
 
-  return [(UILocalizedIndexedCollation *)v14 sectionForSectionIndexTitleAtIndex:a5];
+  return [(UILocalizedIndexedCollation *)collation sectionForSectionIndexTitleAtIndex:index];
 }
 
-- (void)userWordDidUpdate:(id)a3
+- (void)userWordDidUpdate:(id)update
 {
-  v4 = [objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(update "userInfo")];
 
   [(ListUserWordsController *)self setCurrentShortcut:v4];
 }
@@ -427,12 +427,12 @@ LABEL_8:
 
 - (void)inlineUserDictionaryDoneEditing
 {
-  v2 = [(ListUserWordsController *)self navigationController];
+  navigationController = [(ListUserWordsController *)self navigationController];
 
-  [v2 popViewControllerAnimated:1];
+  [navigationController popViewControllerAnimated:1];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   [(ListUserWordsController *)self setSearchNavControllerChanges:0];
 
@@ -443,9 +443,9 @@ LABEL_8:
 {
   [(UISearchBar *)[(UISearchController *)self->_searchController searchBar] frame];
   [(UISearchBar *)[(UISearchController *)self->_searchController searchBar] setFrame:v5.origin.x - CGRectGetWidth(v5), v5.origin.y, v5.size.width, v5.size.height];
-  v3 = [(UISearchController *)self->_searchController searchBar];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
 
-  [(UISearchBar *)v3 resignFirstResponder];
+  [(UISearchBar *)searchBar resignFirstResponder];
 }
 
 - (void)_showSearchBar

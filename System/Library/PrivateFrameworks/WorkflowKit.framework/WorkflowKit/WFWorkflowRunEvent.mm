@@ -1,83 +1,83 @@
 @interface WFWorkflowRunEvent
-- (WFWorkflowRunEvent)initWithCoder:(id)a3;
-- (WFWorkflowRunEvent)initWithIdentifier:(id)a3 workflow:(id)a4 source:(id)a5 date:(id)a6 triggerID:(id)a7 outcome:(int64_t)a8;
-- (void)encodeWithCoder:(id)a3;
+- (WFWorkflowRunEvent)initWithCoder:(id)coder;
+- (WFWorkflowRunEvent)initWithIdentifier:(id)identifier workflow:(id)workflow source:(id)source date:(id)date triggerID:(id)d outcome:(int64_t)outcome;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowRunEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = WFWorkflowRunEvent;
-  v4 = a3;
-  [(WFWorkflowRunEvent *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowRunEvent *)&v9 encodeWithCoder:coderCopy];
   v5 = [(WFWorkflowRunEvent *)self workflow:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"workflow"];
+  [coderCopy encodeObject:v5 forKey:@"workflow"];
 
-  v6 = [(WFWorkflowRunEvent *)self source];
-  [v4 encodeObject:v6 forKey:@"source"];
+  source = [(WFWorkflowRunEvent *)self source];
+  [coderCopy encodeObject:source forKey:@"source"];
 
-  v7 = [(WFWorkflowRunEvent *)self date];
-  [v4 encodeObject:v7 forKey:@"date"];
+  date = [(WFWorkflowRunEvent *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  v8 = [(WFWorkflowRunEvent *)self triggerID];
-  [v4 encodeObject:v8 forKey:@"triggerID"];
+  triggerID = [(WFWorkflowRunEvent *)self triggerID];
+  [coderCopy encodeObject:triggerID forKey:@"triggerID"];
 
-  [v4 encodeInteger:-[WFWorkflowRunEvent outcome](self forKey:{"outcome"), @"outcome"}];
+  [coderCopy encodeInteger:-[WFWorkflowRunEvent outcome](self forKey:{"outcome"), @"outcome"}];
 }
 
-- (WFWorkflowRunEvent)initWithCoder:(id)a3
+- (WFWorkflowRunEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WFWorkflowRunEvent;
-  v5 = [(WFWorkflowRunEvent *)&v16 initWithCoder:v4];
+  v5 = [(WFWorkflowRunEvent *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"workflow"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"workflow"];
     workflow = v5->_workflow;
     v5->_workflow = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     source = v5->_source;
     v5->_source = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"triggerID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"triggerID"];
     triggerID = v5->_triggerID;
     v5->_triggerID = v12;
 
-    v5->_outcome = [v4 decodeIntegerForKey:@"outcome"];
+    v5->_outcome = [coderCopy decodeIntegerForKey:@"outcome"];
     v14 = v5;
   }
 
   return v5;
 }
 
-- (WFWorkflowRunEvent)initWithIdentifier:(id)a3 workflow:(id)a4 source:(id)a5 date:(id)a6 triggerID:(id)a7 outcome:(int64_t)a8
+- (WFWorkflowRunEvent)initWithIdentifier:(id)identifier workflow:(id)workflow source:(id)source date:(id)date triggerID:(id)d outcome:(int64_t)outcome
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  workflowCopy = workflow;
+  sourceCopy = source;
+  dateCopy = date;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = WFWorkflowRunEvent;
-  v19 = [(WFWorkflowRunEvent *)&v25 initWithIdentifier:a3 objectType:5];
+  v19 = [(WFWorkflowRunEvent *)&v25 initWithIdentifier:identifier objectType:5];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_workflow, a4);
-    objc_storeStrong(&v20->_source, a5);
-    objc_storeStrong(&v20->_date, a6);
-    v21 = [v18 copy];
+    objc_storeStrong(&v19->_workflow, workflow);
+    objc_storeStrong(&v20->_source, source);
+    objc_storeStrong(&v20->_date, date);
+    v21 = [dCopy copy];
     triggerID = v20->_triggerID;
     v20->_triggerID = v21;
 
-    v20->_outcome = a8;
+    v20->_outcome = outcome;
     v23 = v20;
   }
 

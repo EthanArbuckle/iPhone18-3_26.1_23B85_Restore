@@ -26,9 +26,9 @@
 
 - (void)CR_toStdString
 {
-  v6 = [a1 UUIDString];
-  v3 = [v6 UTF8String];
-  v4 = strlen(v3);
+  uUIDString = [self UUIDString];
+  uTF8String = [uUIDString UTF8String];
+  v4 = strlen(uTF8String);
   if (v4 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -43,7 +43,7 @@
   a2[23] = v4;
   if (v4)
   {
-    memmove(a2, v3, v4);
+    memmove(a2, uTF8String, v4);
   }
 
   a2[v5] = 0;

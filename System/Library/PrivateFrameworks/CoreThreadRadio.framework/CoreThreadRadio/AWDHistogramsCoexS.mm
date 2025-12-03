@@ -1,19 +1,19 @@
 @interface AWDHistogramsCoexS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)coexAbortsDueToGrantRevokesHistogramAtIndex:(unint64_t)a3;
-- (unsigned)coexRxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)a3;
-- (unsigned)coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)a3;
-- (unsigned)coexTotalGrantTimeHistogramAtIndex:(unint64_t)a3;
-- (unsigned)coexTxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)a3;
-- (unsigned)coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)coexAbortsDueToGrantRevokesHistogramAtIndex:(unint64_t)index;
+- (unsigned)coexRxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)index;
+- (unsigned)coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)index;
+- (unsigned)coexTotalGrantTimeHistogramAtIndex:(unint64_t)index;
+- (unsigned)coexTxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)index;
+- (unsigned)coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDHistogramsCoexS
@@ -31,88 +31,88 @@
   [(AWDHistogramsCoexS *)&v3 dealloc];
 }
 
-- (unsigned)coexTotalGrantTimeHistogramAtIndex:(unint64_t)a3
+- (unsigned)coexTotalGrantTimeHistogramAtIndex:(unint64_t)index
 {
   p_coexTotalGrantTimeHistograms = &self->_coexTotalGrantTimeHistograms;
   count = self->_coexTotalGrantTimeHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coexTotalGrantTimeHistograms->list[a3];
+  return p_coexTotalGrantTimeHistograms->list[index];
 }
 
-- (unsigned)coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)a3
+- (unsigned)coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)index
 {
   p_coexTxUnsolicitedGrantDutyCycleHistograms = &self->_coexTxUnsolicitedGrantDutyCycleHistograms;
   count = self->_coexTxUnsolicitedGrantDutyCycleHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coexTxUnsolicitedGrantDutyCycleHistograms->list[a3];
+  return p_coexTxUnsolicitedGrantDutyCycleHistograms->list[index];
 }
 
-- (unsigned)coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)a3
+- (unsigned)coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:(unint64_t)index
 {
   p_coexRxUnsolicitedGrantDutyCycleHistograms = &self->_coexRxUnsolicitedGrantDutyCycleHistograms;
   count = self->_coexRxUnsolicitedGrantDutyCycleHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coexRxUnsolicitedGrantDutyCycleHistograms->list[a3];
+  return p_coexRxUnsolicitedGrantDutyCycleHistograms->list[index];
 }
 
-- (unsigned)coexTxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)a3
+- (unsigned)coexTxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)index
 {
   p_coexTxTotalGrantDutyCycleHistograms = &self->_coexTxTotalGrantDutyCycleHistograms;
   count = self->_coexTxTotalGrantDutyCycleHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coexTxTotalGrantDutyCycleHistograms->list[a3];
+  return p_coexTxTotalGrantDutyCycleHistograms->list[index];
 }
 
-- (unsigned)coexRxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)a3
+- (unsigned)coexRxTotalGrantDutyCycleHistogramAtIndex:(unint64_t)index
 {
   p_coexRxTotalGrantDutyCycleHistograms = &self->_coexRxTotalGrantDutyCycleHistograms;
   count = self->_coexRxTotalGrantDutyCycleHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coexRxTotalGrantDutyCycleHistograms->list[a3];
+  return p_coexRxTotalGrantDutyCycleHistograms->list[index];
 }
 
-- (unsigned)coexAbortsDueToGrantRevokesHistogramAtIndex:(unint64_t)a3
+- (unsigned)coexAbortsDueToGrantRevokesHistogramAtIndex:(unint64_t)index
 {
   p_coexAbortsDueToGrantRevokesHistograms = &self->_coexAbortsDueToGrantRevokesHistograms;
   count = self->_coexAbortsDueToGrantRevokesHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_coexAbortsDueToGrantRevokesHistograms->list[a3];
+  return p_coexAbortsDueToGrantRevokesHistograms->list[index];
 }
 
 - (id)description
@@ -120,8 +120,8 @@
   v7.receiver = self;
   v7.super_class = AWDHistogramsCoexS;
   v3 = [(AWDHistogramsCoexS *)&v7 description];
-  v4 = [(AWDHistogramsCoexS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDHistogramsCoexS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -150,10 +150,10 @@
   return v2;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_coexTotalGrantTimeHistograms.count)
   {
     v5 = 0;
@@ -161,7 +161,7 @@
     {
       v6 = self->_coexTotalGrantTimeHistograms.list[v5];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v5;
     }
 
@@ -175,7 +175,7 @@
     {
       v8 = self->_coexTxUnsolicitedGrantDutyCycleHistograms.list[v7];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v7;
     }
 
@@ -189,7 +189,7 @@
     {
       v10 = self->_coexRxUnsolicitedGrantDutyCycleHistograms.list[v9];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v9;
     }
 
@@ -203,7 +203,7 @@
     {
       v12 = self->_coexTxTotalGrantDutyCycleHistograms.list[v11];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v11;
     }
 
@@ -217,7 +217,7 @@
     {
       v14 = self->_coexRxTotalGrantDutyCycleHistograms.list[v13];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v13;
     }
 
@@ -232,7 +232,7 @@
     {
       v17 = p_coexAbortsDueToGrantRevokesHistograms->list[v16];
       PBDataWriterWriteUint32Field();
-      v4 = v18;
+      toCopy = v18;
       ++v16;
     }
 
@@ -240,97 +240,97 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v22 = a3;
+  toCopy = to;
   if ([(AWDHistogramsCoexS *)self coexTotalGrantTimeHistogramsCount])
   {
-    [v22 clearCoexTotalGrantTimeHistograms];
-    v4 = [(AWDHistogramsCoexS *)self coexTotalGrantTimeHistogramsCount];
-    if (v4)
+    [toCopy clearCoexTotalGrantTimeHistograms];
+    coexTotalGrantTimeHistogramsCount = [(AWDHistogramsCoexS *)self coexTotalGrantTimeHistogramsCount];
+    if (coexTotalGrantTimeHistogramsCount)
     {
-      v5 = v4;
+      v5 = coexTotalGrantTimeHistogramsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v22 addCoexTotalGrantTimeHistogram:{-[AWDHistogramsCoexS coexTotalGrantTimeHistogramAtIndex:](self, "coexTotalGrantTimeHistogramAtIndex:", i)}];
+        [toCopy addCoexTotalGrantTimeHistogram:{-[AWDHistogramsCoexS coexTotalGrantTimeHistogramAtIndex:](self, "coexTotalGrantTimeHistogramAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDHistogramsCoexS *)self coexTxUnsolicitedGrantDutyCycleHistogramsCount])
   {
-    [v22 clearCoexTxUnsolicitedGrantDutyCycleHistograms];
-    v7 = [(AWDHistogramsCoexS *)self coexTxUnsolicitedGrantDutyCycleHistogramsCount];
-    if (v7)
+    [toCopy clearCoexTxUnsolicitedGrantDutyCycleHistograms];
+    coexTxUnsolicitedGrantDutyCycleHistogramsCount = [(AWDHistogramsCoexS *)self coexTxUnsolicitedGrantDutyCycleHistogramsCount];
+    if (coexTxUnsolicitedGrantDutyCycleHistogramsCount)
     {
-      v8 = v7;
+      v8 = coexTxUnsolicitedGrantDutyCycleHistogramsCount;
       for (j = 0; j != v8; ++j)
       {
-        [v22 addCoexTxUnsolicitedGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:](self, "coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:", j)}];
+        [toCopy addCoexTxUnsolicitedGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:](self, "coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDHistogramsCoexS *)self coexRxUnsolicitedGrantDutyCycleHistogramsCount])
   {
-    [v22 clearCoexRxUnsolicitedGrantDutyCycleHistograms];
-    v10 = [(AWDHistogramsCoexS *)self coexRxUnsolicitedGrantDutyCycleHistogramsCount];
-    if (v10)
+    [toCopy clearCoexRxUnsolicitedGrantDutyCycleHistograms];
+    coexRxUnsolicitedGrantDutyCycleHistogramsCount = [(AWDHistogramsCoexS *)self coexRxUnsolicitedGrantDutyCycleHistogramsCount];
+    if (coexRxUnsolicitedGrantDutyCycleHistogramsCount)
     {
-      v11 = v10;
+      v11 = coexRxUnsolicitedGrantDutyCycleHistogramsCount;
       for (k = 0; k != v11; ++k)
       {
-        [v22 addCoexRxUnsolicitedGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:](self, "coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:", k)}];
+        [toCopy addCoexRxUnsolicitedGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:](self, "coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDHistogramsCoexS *)self coexTxTotalGrantDutyCycleHistogramsCount])
   {
-    [v22 clearCoexTxTotalGrantDutyCycleHistograms];
-    v13 = [(AWDHistogramsCoexS *)self coexTxTotalGrantDutyCycleHistogramsCount];
-    if (v13)
+    [toCopy clearCoexTxTotalGrantDutyCycleHistograms];
+    coexTxTotalGrantDutyCycleHistogramsCount = [(AWDHistogramsCoexS *)self coexTxTotalGrantDutyCycleHistogramsCount];
+    if (coexTxTotalGrantDutyCycleHistogramsCount)
     {
-      v14 = v13;
+      v14 = coexTxTotalGrantDutyCycleHistogramsCount;
       for (m = 0; m != v14; ++m)
       {
-        [v22 addCoexTxTotalGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexTxTotalGrantDutyCycleHistogramAtIndex:](self, "coexTxTotalGrantDutyCycleHistogramAtIndex:", m)}];
+        [toCopy addCoexTxTotalGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexTxTotalGrantDutyCycleHistogramAtIndex:](self, "coexTxTotalGrantDutyCycleHistogramAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDHistogramsCoexS *)self coexRxTotalGrantDutyCycleHistogramsCount])
   {
-    [v22 clearCoexRxTotalGrantDutyCycleHistograms];
-    v16 = [(AWDHistogramsCoexS *)self coexRxTotalGrantDutyCycleHistogramsCount];
-    if (v16)
+    [toCopy clearCoexRxTotalGrantDutyCycleHistograms];
+    coexRxTotalGrantDutyCycleHistogramsCount = [(AWDHistogramsCoexS *)self coexRxTotalGrantDutyCycleHistogramsCount];
+    if (coexRxTotalGrantDutyCycleHistogramsCount)
     {
-      v17 = v16;
+      v17 = coexRxTotalGrantDutyCycleHistogramsCount;
       for (n = 0; n != v17; ++n)
       {
-        [v22 addCoexRxTotalGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexRxTotalGrantDutyCycleHistogramAtIndex:](self, "coexRxTotalGrantDutyCycleHistogramAtIndex:", n)}];
+        [toCopy addCoexRxTotalGrantDutyCycleHistogram:{-[AWDHistogramsCoexS coexRxTotalGrantDutyCycleHistogramAtIndex:](self, "coexRxTotalGrantDutyCycleHistogramAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDHistogramsCoexS *)self coexAbortsDueToGrantRevokesHistogramsCount])
   {
-    [v22 clearCoexAbortsDueToGrantRevokesHistograms];
-    v19 = [(AWDHistogramsCoexS *)self coexAbortsDueToGrantRevokesHistogramsCount];
-    if (v19)
+    [toCopy clearCoexAbortsDueToGrantRevokesHistograms];
+    coexAbortsDueToGrantRevokesHistogramsCount = [(AWDHistogramsCoexS *)self coexAbortsDueToGrantRevokesHistogramsCount];
+    if (coexAbortsDueToGrantRevokesHistogramsCount)
     {
-      v20 = v19;
+      v20 = coexAbortsDueToGrantRevokesHistogramsCount;
       for (ii = 0; ii != v20; ++ii)
       {
-        [v22 addCoexAbortsDueToGrantRevokesHistogram:{-[AWDHistogramsCoexS coexAbortsDueToGrantRevokesHistogramAtIndex:](self, "coexAbortsDueToGrantRevokesHistogramAtIndex:", ii)}];
+        [toCopy addCoexAbortsDueToGrantRevokesHistogram:{-[AWDHistogramsCoexS coexAbortsDueToGrantRevokesHistogramAtIndex:](self, "coexAbortsDueToGrantRevokesHistogramAtIndex:", ii)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
   PBRepeatedUInt32Copy();
@@ -340,10 +340,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()] && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual())
   {
     IsEqual = PBRepeatedUInt32IsEqual();
 
@@ -367,66 +367,66 @@
   return v5 ^ v6 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v22 = a3;
-  v4 = [v22 coexTotalGrantTimeHistogramsCount];
-  if (v4)
+  fromCopy = from;
+  coexTotalGrantTimeHistogramsCount = [fromCopy coexTotalGrantTimeHistogramsCount];
+  if (coexTotalGrantTimeHistogramsCount)
   {
-    v5 = v4;
+    v5 = coexTotalGrantTimeHistogramsCount;
     for (i = 0; i != v5; ++i)
     {
-      -[AWDHistogramsCoexS addCoexTotalGrantTimeHistogram:](self, "addCoexTotalGrantTimeHistogram:", [v22 coexTotalGrantTimeHistogramAtIndex:i]);
+      -[AWDHistogramsCoexS addCoexTotalGrantTimeHistogram:](self, "addCoexTotalGrantTimeHistogram:", [fromCopy coexTotalGrantTimeHistogramAtIndex:i]);
     }
   }
 
-  v7 = [v22 coexTxUnsolicitedGrantDutyCycleHistogramsCount];
-  if (v7)
+  coexTxUnsolicitedGrantDutyCycleHistogramsCount = [fromCopy coexTxUnsolicitedGrantDutyCycleHistogramsCount];
+  if (coexTxUnsolicitedGrantDutyCycleHistogramsCount)
   {
-    v8 = v7;
+    v8 = coexTxUnsolicitedGrantDutyCycleHistogramsCount;
     for (j = 0; j != v8; ++j)
     {
-      -[AWDHistogramsCoexS addCoexTxUnsolicitedGrantDutyCycleHistogram:](self, "addCoexTxUnsolicitedGrantDutyCycleHistogram:", [v22 coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:j]);
+      -[AWDHistogramsCoexS addCoexTxUnsolicitedGrantDutyCycleHistogram:](self, "addCoexTxUnsolicitedGrantDutyCycleHistogram:", [fromCopy coexTxUnsolicitedGrantDutyCycleHistogramAtIndex:j]);
     }
   }
 
-  v10 = [v22 coexRxUnsolicitedGrantDutyCycleHistogramsCount];
-  if (v10)
+  coexRxUnsolicitedGrantDutyCycleHistogramsCount = [fromCopy coexRxUnsolicitedGrantDutyCycleHistogramsCount];
+  if (coexRxUnsolicitedGrantDutyCycleHistogramsCount)
   {
-    v11 = v10;
+    v11 = coexRxUnsolicitedGrantDutyCycleHistogramsCount;
     for (k = 0; k != v11; ++k)
     {
-      -[AWDHistogramsCoexS addCoexRxUnsolicitedGrantDutyCycleHistogram:](self, "addCoexRxUnsolicitedGrantDutyCycleHistogram:", [v22 coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:k]);
+      -[AWDHistogramsCoexS addCoexRxUnsolicitedGrantDutyCycleHistogram:](self, "addCoexRxUnsolicitedGrantDutyCycleHistogram:", [fromCopy coexRxUnsolicitedGrantDutyCycleHistogramAtIndex:k]);
     }
   }
 
-  v13 = [v22 coexTxTotalGrantDutyCycleHistogramsCount];
-  if (v13)
+  coexTxTotalGrantDutyCycleHistogramsCount = [fromCopy coexTxTotalGrantDutyCycleHistogramsCount];
+  if (coexTxTotalGrantDutyCycleHistogramsCount)
   {
-    v14 = v13;
+    v14 = coexTxTotalGrantDutyCycleHistogramsCount;
     for (m = 0; m != v14; ++m)
     {
-      -[AWDHistogramsCoexS addCoexTxTotalGrantDutyCycleHistogram:](self, "addCoexTxTotalGrantDutyCycleHistogram:", [v22 coexTxTotalGrantDutyCycleHistogramAtIndex:m]);
+      -[AWDHistogramsCoexS addCoexTxTotalGrantDutyCycleHistogram:](self, "addCoexTxTotalGrantDutyCycleHistogram:", [fromCopy coexTxTotalGrantDutyCycleHistogramAtIndex:m]);
     }
   }
 
-  v16 = [v22 coexRxTotalGrantDutyCycleHistogramsCount];
-  if (v16)
+  coexRxTotalGrantDutyCycleHistogramsCount = [fromCopy coexRxTotalGrantDutyCycleHistogramsCount];
+  if (coexRxTotalGrantDutyCycleHistogramsCount)
   {
-    v17 = v16;
+    v17 = coexRxTotalGrantDutyCycleHistogramsCount;
     for (n = 0; n != v17; ++n)
     {
-      -[AWDHistogramsCoexS addCoexRxTotalGrantDutyCycleHistogram:](self, "addCoexRxTotalGrantDutyCycleHistogram:", [v22 coexRxTotalGrantDutyCycleHistogramAtIndex:n]);
+      -[AWDHistogramsCoexS addCoexRxTotalGrantDutyCycleHistogram:](self, "addCoexRxTotalGrantDutyCycleHistogram:", [fromCopy coexRxTotalGrantDutyCycleHistogramAtIndex:n]);
     }
   }
 
-  v19 = [v22 coexAbortsDueToGrantRevokesHistogramsCount];
-  if (v19)
+  coexAbortsDueToGrantRevokesHistogramsCount = [fromCopy coexAbortsDueToGrantRevokesHistogramsCount];
+  if (coexAbortsDueToGrantRevokesHistogramsCount)
   {
-    v20 = v19;
+    v20 = coexAbortsDueToGrantRevokesHistogramsCount;
     for (ii = 0; ii != v20; ++ii)
     {
-      -[AWDHistogramsCoexS addCoexAbortsDueToGrantRevokesHistogram:](self, "addCoexAbortsDueToGrantRevokesHistogram:", [v22 coexAbortsDueToGrantRevokesHistogramAtIndex:ii]);
+      -[AWDHistogramsCoexS addCoexAbortsDueToGrantRevokesHistogram:](self, "addCoexAbortsDueToGrantRevokesHistogram:", [fromCopy coexAbortsDueToGrantRevokesHistogramAtIndex:ii]);
     }
   }
 }

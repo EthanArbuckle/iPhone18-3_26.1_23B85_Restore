@@ -1,22 +1,22 @@
 @interface WAImageView
 - (CGSize)_imageSize;
-- (CGSize)_imageSizeForWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WAImageView)initWithFrame:(CGRect)a3;
-- (id)colorShiftImage:(id)a3;
-- (id)invertImage:(id)a3;
+- (CGSize)_imageSizeForWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WAImageView)initWithFrame:(CGRect)frame;
+- (id)colorShiftImage:(id)image;
+- (id)invertImage:(id)image;
 - (void)invertImage;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation WAImageView
 
-- (WAImageView)initWithFrame:(CGRect)a3
+- (WAImageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = WAImageView;
-  v3 = [(WAImageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WAImageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,9 +31,9 @@
   return v4;
 }
 
-- (CGSize)_imageSizeForWidth:(double)a3
+- (CGSize)_imageSizeForWidth:(double)width
 {
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -50,8 +50,8 @@
       [v8 scale];
       v10 = v9;
 
-      v11 = a3 / width;
-      if (width < v10 * a3)
+      v11 = width / width;
+      if (width < v10 * width)
       {
         v11 = 1.0 / v10;
       }
@@ -61,17 +61,17 @@
     }
   }
 
-  v12 = width;
+  widthCopy = width;
   v13 = height;
   result.height = v13;
-  result.width = v12;
+  result.width = widthCopy;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(WAImageView *)self _imageSizeForWidth:a3.width - SiriUIPlatterStyle[32] - SiriUIPlatterStyle[34]];
+  width = fits.width;
+  [(WAImageView *)self _imageSizeForWidth:fits.width - SiriUIPlatterStyle[32] - SiriUIPlatterStyle[34]];
   v5 = v4 + 8.0;
   v6 = width;
   result.height = v5;
@@ -89,14 +89,14 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v9 = a3;
+  imageCopy = image;
   [(UIImageView *)self->_imageView setImage:?];
   if ([(WAImageView *)self shouldInvert])
   {
-    objc_storeStrong(&self->_regularImage, a3);
-    v5 = [(WAImageView *)self invertImage:v9];
+    objc_storeStrong(&self->_regularImage, image);
+    v5 = [(WAImageView *)self invertImage:imageCopy];
     invertedImage = self->_invertedImage;
     self->_invertedImage = v5;
 
@@ -136,11 +136,11 @@
   [(UIImageView *)self->_imageView setFrame:v3, 8.0, v5, v6];
 }
 
-- (id)invertImage:(id)a3
+- (id)invertImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = [CIContext contextWithOptions:0];
-  v5 = [[CIImage alloc] initWithCGImage:{objc_msgSend(v3, "CGImage")}];
+  v5 = [[CIImage alloc] initWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
   v6 = [CIFilter filterWithName:@"CIColorInvert"];
   [v6 setValue:v5 forKey:kCIInputImageKey];
   v7 = [v6 valueForKey:kCIOutputImageKey];
@@ -152,17 +152,17 @@
   {
     v10 = v9;
 
-    v3 = v10;
+    imageCopy = v10;
   }
 
-  return v3;
+  return imageCopy;
 }
 
-- (id)colorShiftImage:(id)a3
+- (id)colorShiftImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = [CIContext contextWithOptions:0];
-  v5 = [[CIImage alloc] initWithCGImage:{objc_msgSend(v3, "CGImage")}];
+  v5 = [[CIImage alloc] initWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
   v6 = [CIFilter filterWithName:@"CIHueAdjust"];
   [v6 setDefaults];
   [v6 setValue:v5 forKey:kCIInputImageKey];
@@ -179,10 +179,10 @@
   {
     v12 = v11;
 
-    v3 = v12;
+    imageCopy = v12;
   }
 
-  return v3;
+  return imageCopy;
 }
 
 @end

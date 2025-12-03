@@ -1,7 +1,7 @@
 @interface PISegmentationGatingRange
-- (PISegmentationGatingRange)initWithMin:(double)a3 max:(double)a4 manualMin:(double)a5 manualMax:(double)a6 depthMin:(double)a7 depthMax:(double)a8;
+- (PISegmentationGatingRange)initWithMin:(double)min max:(double)max manualMin:(double)manualMin manualMax:(double)manualMax depthMin:(double)depthMin depthMax:(double)depthMax;
 - (id)description;
-- (id)withLenience:(double)a3;
+- (id)withLenience:(double)lenience;
 @end
 
 @implementation PISegmentationGatingRange
@@ -24,24 +24,24 @@
   return [v3 stringWithFormat:@"<%@: %p; min = %.2f, max = %.2f, manualMin = %.2f, manualMax = %.2f, depthMin = %.2f, depthMax = %.2f>", v4, self, v6, v8, v10, v12, v14, v15];
 }
 
-- (id)withLenience:(double)a3
+- (id)withLenience:(double)lenience
 {
-  v3 = [[PISegmentationGatingRange alloc] initWithMin:a3 * 0.0 + (1.0 - a3) * self->_min max:a3 + (1.0 - a3) * self->_max manualMin:a3 * 0.0 + (1.0 - a3) * self->_manualMin manualMax:a3 + (1.0 - a3) * self->_manualMax depthMin:a3 * 0.0 + (1.0 - a3) * self->_depthMin depthMax:a3 + (1.0 - a3) * self->_depthMax];
+  v3 = [[PISegmentationGatingRange alloc] initWithMin:lenience * 0.0 + (1.0 - lenience) * self->_min max:lenience + (1.0 - lenience) * self->_max manualMin:lenience * 0.0 + (1.0 - lenience) * self->_manualMin manualMax:lenience + (1.0 - lenience) * self->_manualMax depthMin:lenience * 0.0 + (1.0 - lenience) * self->_depthMin depthMax:lenience + (1.0 - lenience) * self->_depthMax];
 
   return v3;
 }
 
-- (PISegmentationGatingRange)initWithMin:(double)a3 max:(double)a4 manualMin:(double)a5 manualMax:(double)a6 depthMin:(double)a7 depthMax:(double)a8
+- (PISegmentationGatingRange)initWithMin:(double)min max:(double)max manualMin:(double)manualMin manualMax:(double)manualMax depthMin:(double)depthMin depthMax:(double)depthMax
 {
   v15.receiver = self;
   v15.super_class = PISegmentationGatingRange;
   result = [(PISegmentationGatingRange *)&v15 init];
-  result->_min = a3;
-  result->_max = a4;
-  result->_manualMin = a5;
-  result->_manualMax = a6;
-  result->_depthMin = a7;
-  result->_depthMax = a8;
+  result->_min = min;
+  result->_max = max;
+  result->_manualMin = manualMin;
+  result->_manualMax = manualMax;
+  result->_depthMin = depthMin;
+  result->_depthMax = depthMax;
   return result;
 }
 

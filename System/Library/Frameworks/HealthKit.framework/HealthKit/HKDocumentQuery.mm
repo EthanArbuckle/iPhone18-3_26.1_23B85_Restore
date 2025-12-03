@@ -1,9 +1,9 @@
 @interface HKDocumentQuery
 - (HKDocumentQuery)initWithDocumentType:(HKDocumentType *)documentType predicate:(NSPredicate *)predicate limit:(NSUInteger)limit sortDescriptors:(NSArray *)sortDescriptors includeDocumentData:(BOOL)includeDocumentData resultsHandler:(void *)resultsHandler;
-- (void)client_deliverDocument:(id)a3 query:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)client_deliverDocument:(id)document query:(id)query;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
@@ -33,21 +33,21 @@
   return v17;
 }
 
-- (void)client_deliverDocument:(id)a3 query:(id)a4
+- (void)client_deliverDocument:(id)document query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  documentCopy = document;
+  queryCopy = query;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__HKDocumentQuery_client_deliverDocument_query___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = documentCopy;
+  v13 = queryCopy;
+  v9 = queryCopy;
+  v10 = documentCopy;
+  dispatch_async(queue, block);
 }
 
 void __48__HKDocumentQuery_client_deliverDocument_query___block_invoke(void *a1)
@@ -111,15 +111,15 @@ void __48__HKDocumentQuery_client_deliverDocument_query___block_invoke_2(uint64_
   }
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKDocumentQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setSortDescriptors:{self->_sortDescriptors, v5.receiver, v5.super_class}];
-  [v4 setLimit:self->_limit];
-  [v4 setIncludeDocumentData:self->_includeDocumentData];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setSortDescriptors:{self->_sortDescriptors, v5.receiver, v5.super_class}];
+  [configurationCopy setLimit:self->_limit];
+  [configurationCopy setIncludeDocumentData:self->_includeDocumentData];
 }
 
 - (void)queue_validate
@@ -127,7 +127,7 @@ void __48__HKDocumentQuery_client_deliverDocument_query___block_invoke_2(uint64_
   v8.receiver = self;
   v8.super_class = HKDocumentQuery;
   [(HKQuery *)&v8 queue_validate];
-  v3 = [(HKQuery *)self objectType];
+  objectType = [(HKQuery *)self objectType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -135,8 +135,8 @@ void __48__HKDocumentQuery_client_deliverDocument_query___block_invoke_2(uint64_
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
-    v7 = [(HKQuery *)self objectType];
-    [v5 raise:v6 format:{@"%@ is not an instance of %@", v7, objc_opt_class()}];
+    objectType2 = [(HKQuery *)self objectType];
+    [v5 raise:v6 format:{@"%@ is not an instance of %@", objectType2, objc_opt_class()}];
   }
 
   if (!self->_resultsHandler)
@@ -145,30 +145,30 @@ void __48__HKDocumentQuery_client_deliverDocument_query___block_invoke_2(uint64_
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKDocumentQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_resultsHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__HKDocumentQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 

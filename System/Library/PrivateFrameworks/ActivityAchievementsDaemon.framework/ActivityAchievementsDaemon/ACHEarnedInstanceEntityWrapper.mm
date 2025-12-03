@@ -1,124 +1,124 @@
 @interface ACHEarnedInstanceEntityWrapper
 - (ACHEarnedInstanceEntitySyncedEarnedInstancesObserver)syncedEarnedInstancesObserver;
-- (ACHEarnedInstanceEntityWrapper)initWithProfile:(id)a3;
-- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)a3 provenance:(int64_t)a4;
-- (BOOL)removeAllEarnedInstancesWithError:(id *)a3;
-- (BOOL)removeEarnedInstances:(id)a3 error:(id *)a4;
-- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4;
+- (ACHEarnedInstanceEntityWrapper)initWithProfile:(id)profile;
+- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)instances provenance:(int64_t)provenance;
+- (BOOL)removeAllEarnedInstancesWithError:(id *)error;
+- (BOOL)removeEarnedInstances:(id)instances error:(id *)error;
+- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)name error:(id *)error;
 - (HDProfile)profile;
-- (id)allEarnedInstancesWithError:(id *)a3;
-- (id)earnedInstancesForDateComponents:(id)a3 error:(id *)a4;
-- (id)earnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4;
-- (id)insertEarnedInstances:(id)a3 provenance:(int64_t)a4 databaseContext:(id)a5 error:(id *)a6;
-- (void)setSyncedEarnedInstancesObserver:(id)a3;
+- (id)allEarnedInstancesWithError:(id *)error;
+- (id)earnedInstancesForDateComponents:(id)components error:(id *)error;
+- (id)earnedInstancesForTemplateUniqueName:(id)name error:(id *)error;
+- (id)insertEarnedInstances:(id)instances provenance:(int64_t)provenance databaseContext:(id)context error:(id *)error;
+- (void)setSyncedEarnedInstancesObserver:(id)observer;
 @end
 
 @implementation ACHEarnedInstanceEntityWrapper
 
-- (ACHEarnedInstanceEntityWrapper)initWithProfile:(id)a3
+- (ACHEarnedInstanceEntityWrapper)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = ACHEarnedInstanceEntityWrapper;
   v5 = [(ACHEarnedInstanceEntityWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)setSyncedEarnedInstancesObserver:(id)a3
+- (void)setSyncedEarnedInstancesObserver:(id)observer
 {
-  v4 = objc_storeWeak(&self->_syncedEarnedInstancesObserver, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_syncedEarnedInstancesObserver, observer);
+  if (observer)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  [ACHEarnedInstanceEntity setSyncedEarnedInstancesObserver:v5];
+  [ACHEarnedInstanceEntity setSyncedEarnedInstancesObserver:selfCopy];
 }
 
-- (id)insertEarnedInstances:(id)a3 provenance:(int64_t)a4 databaseContext:(id)a5 error:(id *)a6
+- (id)insertEarnedInstances:(id)instances provenance:(int64_t)provenance databaseContext:(id)context error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  v13 = [ACHEarnedInstanceEntity insertEarnedInstances:v11 provenance:a4 useLegacySyncIdentity:0 profile:v12 databaseContext:v10 error:a6];
+  contextCopy = context;
+  instancesCopy = instances;
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  v13 = [ACHEarnedInstanceEntity insertEarnedInstances:instancesCopy provenance:provenance useLegacySyncIdentity:0 profile:profile databaseContext:contextCopy error:error];
 
   return v13;
 }
 
-- (BOOL)removeEarnedInstances:(id)a3 error:(id *)a4
+- (BOOL)removeEarnedInstances:(id)instances error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  LOBYTE(a4) = [ACHEarnedInstanceEntity removeEarnedInstances:v6 profile:v7 error:a4];
+  instancesCopy = instances;
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  LOBYTE(error) = [ACHEarnedInstanceEntity removeEarnedInstances:instancesCopy profile:profile error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)allEarnedInstancesWithError:(id *)a3
+- (id)allEarnedInstancesWithError:(id *)error
 {
-  v4 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  v5 = [ACHEarnedInstanceEntity allEarnedInstancesWithProfile:v4 error:a3];
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  v5 = [ACHEarnedInstanceEntity allEarnedInstancesWithProfile:profile error:error];
 
   return v5;
 }
 
-- (id)earnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4
+- (id)earnedInstancesForTemplateUniqueName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  v8 = [ACHEarnedInstanceEntity earnedInstancesForTemplateUniqueName:v6 profile:v7 error:a4];
+  nameCopy = name;
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  v8 = [ACHEarnedInstanceEntity earnedInstancesForTemplateUniqueName:nameCopy profile:profile error:error];
 
   return v8;
 }
 
-- (id)earnedInstancesForDateComponents:(id)a3 error:(id *)a4
+- (id)earnedInstancesForDateComponents:(id)components error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  v8 = [ACHEarnedInstanceEntity earnedInstancesForDateComponents:v6 profile:v7 error:a4];
+  componentsCopy = components;
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  v8 = [ACHEarnedInstanceEntity earnedInstancesForDateComponents:componentsCopy profile:profile error:error];
 
   return v8;
 }
 
-- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)a3 error:(id *)a4
+- (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  LOBYTE(a4) = [ACHEarnedInstanceEntity removeEarnedInstancesForTemplateUniqueName:v6 profile:v7 error:a4];
+  nameCopy = name;
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  LOBYTE(error) = [ACHEarnedInstanceEntity removeEarnedInstancesForTemplateUniqueName:nameCopy profile:profile error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)removeAllEarnedInstancesWithError:(id *)a3
+- (BOOL)removeAllEarnedInstancesWithError:(id *)error
 {
-  v4 = [(ACHEarnedInstanceEntityWrapper *)self profile];
-  LOBYTE(a3) = [ACHEarnedInstanceEntity removeAllEarnedInstancesWithProfile:v4 error:a3];
+  profile = [(ACHEarnedInstanceEntityWrapper *)self profile];
+  LOBYTE(error) = [ACHEarnedInstanceEntity removeAllEarnedInstancesWithProfile:profile error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)a3 provenance:(int64_t)a4
+- (BOOL)earnedInstanceEntityDidReceiveSyncedEarnedInstances:(id)instances provenance:(int64_t)provenance
 {
-  v6 = a3;
+  instancesCopy = instances;
   v7 = ACHLogSync();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ACHEarnedInstanceEntityWrapper earnedInstanceEntityDidReceiveSyncedEarnedInstances:v7 provenance:?];
   }
 
-  v8 = [(ACHEarnedInstanceEntityWrapper *)self syncedEarnedInstancesObserver];
-  v9 = [v8 earnedInstanceEntityDidReceiveSyncedEarnedInstances:v6 provenance:a4];
+  syncedEarnedInstancesObserver = [(ACHEarnedInstanceEntityWrapper *)self syncedEarnedInstancesObserver];
+  v9 = [syncedEarnedInstancesObserver earnedInstanceEntityDidReceiveSyncedEarnedInstances:instancesCopy provenance:provenance];
 
   return v9;
 }

@@ -1,13 +1,13 @@
 @interface MFDataHolder
 + (id)dataHolder;
-+ (id)dataHolderWithData:(id)a3;
++ (id)dataHolderWithData:(id)data;
 - (MFDataHolder)init;
-- (MFDataHolder)initWithData:(id)a3;
+- (MFDataHolder)initWithData:(id)data;
 - (id)data;
-- (unint64_t)numberOfNewlinesNeedingConversion:(BOOL)a3;
-- (void)addData:(id)a3;
-- (void)enumerateByteRangesUsingBlock:(id)a3;
-- (void)enumerateConvertingNewlinesUsingBlock:(id)a3;
+- (unint64_t)numberOfNewlinesNeedingConversion:(BOOL)conversion;
+- (void)addData:(id)data;
+- (void)enumerateByteRangesUsingBlock:(id)block;
+- (void)enumerateConvertingNewlinesUsingBlock:(id)block;
 @end
 
 @implementation MFDataHolder
@@ -36,32 +36,32 @@
   return v2;
 }
 
-+ (id)dataHolderWithData:(id)a3
++ (id)dataHolderWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[self alloc] initWithData:dataCopy];
 
   return v5;
 }
 
-- (MFDataHolder)initWithData:(id)a3
+- (MFDataHolder)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(MFDataHolder *)self init];
   v6 = v5;
   if (v5)
   {
-    [(MFDataHolder *)v5 addData:v4];
+    [(MFDataHolder *)v5 addData:dataCopy];
   }
 
   return v6;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(NSMutableArray *)self->_datas addObject:?];
-  self->_length += [v4 length];
+  self->_length += [dataCopy length];
 }
 
 - (id)data
@@ -106,9 +106,9 @@
     goto LABEL_18;
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = MFDataGetDataPath();
-  v6 = [v4 mf_makeUniqueFileInDirectory:v5];
+  v6 = [defaultManager mf_makeUniqueFileInDirectory:v5];
 
   v7 = open([(NSMutableArray *)v6 fileSystemRepresentation], 1537, 438);
   v8 = v7;
@@ -162,10 +162,10 @@ ssize_t __20__MFDataHolder_data__block_invoke(uint64_t a1, const void *a2, int a
   return result;
 }
 
-- (void)enumerateByteRangesUsingBlock:(id)a3
+- (void)enumerateByteRangesUsingBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -185,7 +185,7 @@ ssize_t __20__MFDataHolder_data__block_invoke(uint64_t a1, const void *a2, int a
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) enumerateByteRangesUsingBlock:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v8++) enumerateByteRangesUsingBlock:{blockCopy, v10}];
       }
 
       while (v6 != v8);
@@ -198,7 +198,7 @@ ssize_t __20__MFDataHolder_data__block_invoke(uint64_t a1, const void *a2, int a
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)numberOfNewlinesNeedingConversion:(BOOL)a3
+- (unint64_t)numberOfNewlinesNeedingConversion:(BOOL)conversion
 {
   v11[0] = 0;
   v11[1] = v11;
@@ -214,7 +214,7 @@ ssize_t __20__MFDataHolder_data__block_invoke(uint64_t a1, const void *a2, int a
   v5[3] = &unk_1E8454F10;
   v5[4] = &v7;
   v5[5] = v11;
-  v6 = a3;
+  conversionCopy = conversion;
   [(MFDataHolder *)self enumerateConvertingNewlinesUsingBlock:v5];
   v3 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -237,9 +237,9 @@ uint64_t __50__MFDataHolder_numberOfNewlinesNeedingConversion___block_invoke(uin
   return 1;
 }
 
-- (void)enumerateConvertingNewlinesUsingBlock:(id)a3
+- (void)enumerateConvertingNewlinesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -260,8 +260,8 @@ uint64_t __50__MFDataHolder_numberOfNewlinesNeedingConversion___block_invoke(uin
   v9 = v14;
   v10 = v11;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MFDataHolder *)self enumerateDatasUsingBlock:v6];
 
   _Block_object_dispose(v11, 8);

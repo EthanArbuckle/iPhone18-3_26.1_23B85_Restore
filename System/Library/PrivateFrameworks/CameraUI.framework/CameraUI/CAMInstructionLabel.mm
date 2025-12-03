@@ -1,8 +1,8 @@
 @interface CAMInstructionLabel
-- (CAMInstructionLabel)initWithFrame:(CGRect)a3;
+- (CAMInstructionLabel)initWithFrame:(CGRect)frame;
 - (CAMInstructionLabelDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_textInsets;
 - (id)_textAttributes;
 - (void)_preferredContentSizeCategoryDidChange;
@@ -10,21 +10,21 @@
 - (void)_updateLabel;
 - (void)_updateLayerCornerRadius;
 - (void)layoutSubviews;
-- (void)setStyle:(int64_t)a3;
-- (void)setText:(id)a3;
+- (void)setStyle:(int64_t)style;
+- (void)setText:(id)text;
 @end
 
 @implementation CAMInstructionLabel
 
 - (void)_updateLabel
 {
-  v3 = [(CAMInstructionLabel *)self _label];
-  v4 = [(CAMInstructionLabel *)self _attributedText];
-  [v3 setAttributedText:v4];
+  _label = [(CAMInstructionLabel *)self _label];
+  _attributedText = [(CAMInstructionLabel *)self _attributedText];
+  [_label setAttributedText:_attributedText];
 
   [(CAMInstructionLabel *)self setNeedsLayout];
-  v5 = [(CAMInstructionLabel *)self delegate];
-  [v5 instructionLabelDidChangeIntrinsicContentSize:self];
+  delegate = [(CAMInstructionLabel *)self delegate];
+  [delegate instructionLabelDidChangeIntrinsicContentSize:self];
 }
 
 - (CAMInstructionLabelDelegate)delegate
@@ -37,10 +37,10 @@
 - (id)_textAttributes
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CAMInstructionLabel *)self _textColor];
-  v5 = [(CAMInstructionLabel *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  [CAMChromeViewSpec regularFontSizeForContentSize:v6];
+  _textColor = [(CAMInstructionLabel *)self _textColor];
+  traitCollection = [(CAMInstructionLabel *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [CAMChromeViewSpec regularFontSizeForContentSize:preferredContentSizeCategory];
   v8 = v7;
 
   v9 = [CAMFont cameraFontOfSize:v8];
@@ -48,11 +48,11 @@
   [v10 setAlignment:1];
   [v10 setLineBreakMode:0];
   [v10 setLineBreakStrategy:0xFFFFLL];
-  v11 = [(CAMInstructionLabel *)self text];
-  LODWORD(v6) = [CAMFont isExtraLongCharacterSet:v11];
+  text = [(CAMInstructionLabel *)self text];
+  LODWORD(preferredContentSizeCategory) = [CAMFont isExtraLongCharacterSet:text];
 
   v12 = 1.39999998;
-  if (!v6)
+  if (!preferredContentSizeCategory)
   {
     v12 = 1.0;
   }
@@ -64,7 +64,7 @@
 
   [v13 setShadowOffset:{0.0, 0.0}];
   [v13 setShadowBlurRadius:3.0];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [v3 setObject:_textColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
   [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB648]];
   [v3 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69DB688]];
   [v3 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69DB6A8]];
@@ -84,18 +84,18 @@
   v30 = v9;
   if ([(CAMInstructionLabel *)self _wantsPrefixActivityIndicatorView])
   {
-    v10 = [(CAMInstructionLabel *)self _activityIndicatorView];
+    _activityIndicatorView = [(CAMInstructionLabel *)self _activityIndicatorView];
 
-    if (!v10)
+    if (!_activityIndicatorView)
     {
       v11 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       [(CAMInstructionLabel *)self set_activityIndicatorView:v11];
 
-      v12 = [(CAMInstructionLabel *)self _activityIndicatorView];
-      [v12 startAnimating];
+      _activityIndicatorView2 = [(CAMInstructionLabel *)self _activityIndicatorView];
+      [_activityIndicatorView2 startAnimating];
 
-      v13 = [(CAMInstructionLabel *)self _activityIndicatorView];
-      [(CAMInstructionLabel *)self addSubview:v13];
+      _activityIndicatorView3 = [(CAMInstructionLabel *)self _activityIndicatorView];
+      [(CAMInstructionLabel *)self addSubview:_activityIndicatorView3];
     }
   }
 
@@ -138,12 +138,12 @@
   [(CAMInstructionLabel *)self _updateLayerCornerRadius];
 }
 
-- (CAMInstructionLabel)initWithFrame:(CGRect)a3
+- (CAMInstructionLabel)initWithFrame:(CGRect)frame
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CAMInstructionLabel;
-  v3 = [(CAMInstructionLabel *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMInstructionLabel *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -170,15 +170,15 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   text = self->_text;
-  if (text != v4)
+  if (text != textCopy)
   {
-    v8 = v4;
-    text = [text isEqualToString:v4];
-    v4 = v8;
+    v8 = textCopy;
+    text = [text isEqualToString:textCopy];
+    textCopy = v8;
     if ((text & 1) == 0)
     {
       v6 = [v8 copy];
@@ -186,40 +186,40 @@
       self->_text = v6;
 
       text = [(CAMInstructionLabel *)self _updateAttributedText];
-      v4 = v8;
+      textCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](text, v4);
+  MEMORY[0x1EEE66BB8](text, textCopy);
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(CAMInstructionLabel *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CAMInstructionLabel *)self _attributedText];
+  height = fits.height;
+  width = fits.width;
+  _attributedText = [(CAMInstructionLabel *)self _attributedText];
   [(CAMInstructionLabel *)self _textInsets];
   if (width <= 0.0 || height <= 0.0)
   {
-    [v6 size];
+    [_attributedText size];
   }
 
   else
   {
     v11 = width - v8 - v10;
     v12 = height - v7 - v9;
-    v13 = [(CAMInstructionLabel *)self traitCollection];
-    v14 = [v13 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v14);
+    traitCollection = [(CAMInstructionLabel *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -228,7 +228,7 @@
 
     else
     {
-      [v6 boundingRectWithSize:1 options:0 context:{v11, v12}];
+      [_attributedText boundingRectWithSize:1 options:0 context:{v11, v12}];
     }
   }
 
@@ -280,16 +280,16 @@ void __37__CAMInstructionLabel_layoutSubviews__block_invoke(uint64_t a1)
 
 - (void)_updateAttributedText
 {
-  v3 = [(CAMInstructionLabel *)self text];
-  if (v3)
+  text = [(CAMInstructionLabel *)self text];
+  if (text)
   {
-    v4 = [(CAMInstructionLabel *)self _textAttributes];
-    v16 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3];
-    v5 = [(CAMInstructionLabel *)self _symbolPrefixName];
-    v6 = [(CAMInstructionLabel *)self _symbolSuffixName];
-    if ([v5 length])
+    _textAttributes = [(CAMInstructionLabel *)self _textAttributes];
+    v16 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:text];
+    _symbolPrefixName = [(CAMInstructionLabel *)self _symbolPrefixName];
+    _symbolSuffixName = [(CAMInstructionLabel *)self _symbolSuffixName];
+    if ([_symbolPrefixName length])
     {
-      v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5];
+      v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:_symbolPrefixName];
       if (v7)
       {
         v8 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v7];
@@ -301,9 +301,9 @@ void __37__CAMInstructionLabel_layoutSubviews__block_invoke(uint64_t a1)
       }
     }
 
-    if ([v6 length])
+    if ([_symbolSuffixName length])
     {
-      v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:v6];
+      v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:_symbolSuffixName];
       if (v11)
       {
         v12 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v11];
@@ -315,7 +315,7 @@ void __37__CAMInstructionLabel_layoutSubviews__block_invoke(uint64_t a1)
       }
     }
 
-    [v16 addAttributes:v4 range:{0, objc_msgSend(v16, "length")}];
+    [v16 addAttributes:_textAttributes range:{0, objc_msgSend(v16, "length")}];
 
     v15 = v16;
   }
@@ -334,20 +334,20 @@ void __37__CAMInstructionLabel_layoutSubviews__block_invoke(uint64_t a1)
 {
   [(CAMInstructionLabel *)self _defaultCornerRadius];
   v4 = v3;
-  v5 = [(CAMInstructionLabel *)self style];
-  if (v5 == 2)
+  style = [(CAMInstructionLabel *)self style];
+  if (style == 2)
   {
     [(CAMInstructionLabel *)self bounds];
     v4 = v6 * 0.5;
   }
 
-  else if (v5 == 1)
+  else if (style == 1)
   {
     v4 = 5.0;
   }
 
-  v7 = [(CAMInstructionLabel *)self layer];
-  [v7 setCornerRadius:v4];
+  layer = [(CAMInstructionLabel *)self layer];
+  [layer setCornerRadius:v4];
 }
 
 - (UIEdgeInsets)_textInsets

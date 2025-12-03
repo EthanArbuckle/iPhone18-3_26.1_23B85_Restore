@@ -1,6 +1,6 @@
 @interface WKWebViewInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)_didFinishNavigation:(void *)a3;
+- (void)_didFinishNavigation:(void *)navigation;
 - (void)_didStartProvisionalLoadForMainFrame;
 - (void)layoutSubviews;
 @end
@@ -19,12 +19,12 @@
   v3 = objc_retainBlock(v14);
   if (_AXSInvertColorsEnabled())
   {
-    v4 = self;
-    v5 = [(WKWebViewInvertColorsAccessibility *)v4 window];
-    v6 = [v5 traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    selfCopy = self;
+    window = [(WKWebViewInvertColorsAccessibility *)selfCopy window];
+    traitCollection = [window traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v7 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
       v13[0] = 0;
       v13[1] = v13;
@@ -36,7 +36,7 @@
       v9[3] = &unk_44900;
       v11 = v13;
       objc_copyWeak(&v12, &location);
-      v9[4] = v4;
+      v9[4] = selfCopy;
       v10 = v3;
       v8 = objc_retainBlock(v9);
       (v8[2])();
@@ -83,11 +83,11 @@
   [(WKWebViewInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
-- (void)_didFinishNavigation:(void *)a3
+- (void)_didFinishNavigation:(void *)navigation
 {
   v5.receiver = self;
   v5.super_class = WKWebViewInvertColorsAccessibility;
-  [(WKWebViewInvertColorsAccessibility *)&v5 _didFinishNavigation:a3];
+  [(WKWebViewInvertColorsAccessibility *)&v5 _didFinishNavigation:navigation];
   v4 = AXLogInvertColors();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {

@@ -33,16 +33,16 @@
     v5 = [_gkMaskImageWithProgress_isDetail__sMaskCache objectForKey:v8];
     if (!v5)
     {
-      [a1 size];
+      [self size];
       v11 = v10;
       v13 = v12;
-      [a1 scale];
+      [self scale];
       v15 = v14;
       v31.width = v11;
       v31.height = v13;
       UIGraphicsBeginImageContextWithOptions(v31, 0, v15);
-      v16 = [MEMORY[0x277D75348] blackColor];
-      [v16 set];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [blackColor set];
 
       v17 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, v11, v13}];
       [v17 fill];
@@ -57,11 +57,11 @@
       height = v33.size.height;
       if (a2 <= 0.01)
       {
-        v24 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v33.origin.x, v33.origin.y, v33.size.width, v33.size.height}];
-        [v24 fillWithBlendMode:16 alpha:1.0];
-        v26 = [a1 _gkQuestionMarkImage];
-        [v26 size];
-        [v26 drawInRect:{round(x + (width - v27) * 0.5), round(y + (height - v28) * 0.5), v27}];
+        bezierPath = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v33.origin.x, v33.origin.y, v33.size.width, v33.size.height}];
+        [bezierPath fillWithBlendMode:16 alpha:1.0];
+        _gkQuestionMarkImage = [self _gkQuestionMarkImage];
+        [_gkQuestionMarkImage size];
+        [_gkQuestionMarkImage drawInRect:{round(x + (width - v27) * 0.5), round(y + (height - v28) * 0.5), v27}];
       }
 
       else
@@ -72,14 +72,14 @@
         v34.size.width = width;
         v34.size.height = height;
         MidY = CGRectGetMidY(v34);
-        v24 = [MEMORY[0x277D75208] bezierPath];
-        [v24 moveToPoint:{MidX, MidY}];
+        bezierPath = [MEMORY[0x277D75208] bezierPath];
+        [bezierPath moveToPoint:{MidX, MidY}];
         v25 = width * 0.5;
-        [v24 addLineToPoint:{MidX, MidY - v25}];
-        [v24 addArcWithCenter:0 radius:MidX startAngle:MidY endAngle:v25 clockwise:{-1.57079633, (a2 + a2) * 3.14159265 + -1.57079633}];
-        [v24 addLineToPoint:{MidX, MidY}];
-        [v24 closePath];
-        [v24 fillWithBlendMode:16 alpha:1.0];
+        [bezierPath addLineToPoint:{MidX, MidY - v25}];
+        [bezierPath addArcWithCenter:0 radius:MidX startAngle:MidY endAngle:v25 clockwise:{-1.57079633, (a2 + a2) * 3.14159265 + -1.57079633}];
+        [bezierPath addLineToPoint:{MidX, MidY}];
+        [bezierPath closePath];
+        [bezierPath fillWithBlendMode:16 alpha:1.0];
       }
 
       v5 = UIGraphicsGetImageFromCurrentImageContext();
@@ -100,11 +100,11 @@
 
 - (id)_gkImageWithProgress:()GKAchievementProgress achievement:isDetail:
 {
-  v7 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = selfCopy;
   if (a2 <= 0.999)
   {
-    [v7 size];
+    [selfCopy size];
     v10 = v9;
     v12 = v11;
     v13 = [v8 _gkMaskImageWithProgress:a5 isDetail:a2];
@@ -117,19 +117,19 @@
     CGContextSaveGState(CurrentContext);
     CGContextTranslateCTM(CurrentContext, 0.0, v12);
     CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-    v17 = [v13 CGImage];
+    cGImage = [v13 CGImage];
     v23.origin.x = 0.0;
     v23.origin.y = 0.0;
     v23.size.width = v10;
     v23.size.height = v12;
-    CGContextClipToMask(CurrentContext, v23, v17);
-    v18 = [v8 CGImage];
+    CGContextClipToMask(CurrentContext, v23, cGImage);
+    cGImage2 = [v8 CGImage];
 
     v24.origin.x = 0.0;
     v24.origin.y = 0.0;
     v24.size.width = v10;
     v24.size.height = v12;
-    CGContextDrawImage(CurrentContext, v24, v18);
+    CGContextDrawImage(CurrentContext, v24, cGImage2);
     v19 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
     [v19 set];
 

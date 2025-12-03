@@ -1,27 +1,27 @@
 @interface CRLHandwritingRecognitionStatusHelper
-- (CRLHandwritingRecognitionStatusHelper)initWithFreehandDrawingLayouts:(id)a3 andConsolidatedDrawing:(id)a4;
+- (CRLHandwritingRecognitionStatusHelper)initWithFreehandDrawingLayouts:(id)layouts andConsolidatedDrawing:(id)drawing;
 - (CRLHandwritingRecognitionStatusHelperDelegate)delegate;
 - (OS_dispatch_queue)recognitionQueue;
-- (id)debugDataAndReturnError:(id *)a3;
+- (id)debugDataAndReturnError:(id *)error;
 - (id)debugString;
-- (id)p_bodyStringForString:(id)a3;
-- (id)p_headlineStringForString:(id)a3;
-- (id)p_idStringForDrawing:(id)a3;
-- (id)p_recognitionStatusStringsForDrawing:(id)a3;
-- (id)p_titleStringForString:(id)a3;
+- (id)p_bodyStringForString:(id)string;
+- (id)p_headlineStringForString:(id)string;
+- (id)p_idStringForDrawing:(id)drawing;
+- (id)p_recognitionStatusStringsForDrawing:(id)drawing;
+- (id)p_titleStringForString:(id)string;
 - (void)copyDebugStringToPasteboard;
-- (void)debugDataAfterWaitingForRecognitionWithCompletion:(id)a3;
-- (void)p_appendAttributedTextForDrawing:(id)a3 drawingResults:(id)a4 to:(id)a5;
+- (void)debugDataAfterWaitingForRecognitionWithCompletion:(id)completion;
+- (void)p_appendAttributedTextForDrawing:(id)drawing drawingResults:(id)results to:(id)to;
 - (void)refresh;
-- (void)refreshWithHandler:(id)a3;
+- (void)refreshWithHandler:(id)handler;
 @end
 
 @implementation CRLHandwritingRecognitionStatusHelper
 
-- (CRLHandwritingRecognitionStatusHelper)initWithFreehandDrawingLayouts:(id)a3 andConsolidatedDrawing:(id)a4
+- (CRLHandwritingRecognitionStatusHelper)initWithFreehandDrawingLayouts:(id)layouts andConsolidatedDrawing:(id)drawing
 {
-  v6 = a3;
-  v7 = a4;
+  layoutsCopy = layouts;
+  drawingCopy = drawing;
   v22.receiver = self;
   v22.super_class = CRLHandwritingRecognitionStatusHelper;
   v8 = [(CRLHandwritingRecognitionStatusHelper *)&v22 init];
@@ -32,7 +32,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = layoutsCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v11)
     {
@@ -48,10 +48,10 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * v14) pkRecognitionController];
-          v16 = [v15 drawing];
+          pkRecognitionController = [*(*(&v18 + 1) + 8 * v14) pkRecognitionController];
+          drawing = [pkRecognitionController drawing];
 
-          [v9 crl_addNonNilObject:v16];
+          [v9 crl_addNonNilObject:drawing];
           v14 = v14 + 1;
         }
 
@@ -63,7 +63,7 @@
     }
 
     [(CRLHandwritingRecognitionStatusHelper *)v8 setDrawings:v9];
-    [(CRLHandwritingRecognitionStatusHelper *)v8 setConsolidatedDrawing:v7];
+    [(CRLHandwritingRecognitionStatusHelper *)v8 setConsolidatedDrawing:drawingCopy];
     [(CRLHandwritingRecognitionStatusHelper *)v8 setRefreshCount:0];
   }
 
@@ -90,8 +90,8 @@
 {
   v3 = objc_alloc_init(NSMutableAttributedString);
   context = objc_autoreleasePoolPush();
-  v4 = [(CRLHandwritingRecognitionStatusHelper *)self recognitionStatusStrings];
-  v5 = [v4 mutableCopy];
+  recognitionStatusStrings = [(CRLHandwritingRecognitionStatusHelper *)self recognitionStatusStrings];
+  v5 = [recognitionStatusStrings mutableCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"CRLPKDrawingCombinedStatus"];
   if (v6)
@@ -100,8 +100,8 @@
     [v5 removeObjectForKey:@"CRLPKDrawingCombinedStatus"];
   }
 
-  v7 = [v5 allKeys];
-  v8 = [v7 sortedArrayUsingSelector:"compare:"];
+  allKeys = [v5 allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v21 = 0u;
   v22 = 0u;
@@ -139,28 +139,28 @@
   return v16;
 }
 
-- (id)debugDataAndReturnError:(id *)a3
+- (id)debugDataAndReturnError:(id *)error
 {
-  v4 = [(CRLHandwritingRecognitionStatusHelper *)self debugString];
-  v5 = [v4 length];
+  debugString = [(CRLHandwritingRecognitionStatusHelper *)self debugString];
+  v5 = [debugString length];
   v9 = NSDocumentTypeDocumentAttribute;
   v10 = NSRTFTextDocumentType;
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v7 = [v4 dataFromRange:0 documentAttributes:v5 error:{v6, a3}];
+  v7 = [debugString dataFromRange:0 documentAttributes:v5 error:{v6, error}];
 
   return v7;
 }
 
-- (void)debugDataAfterWaitingForRecognitionWithCompletion:(id)a3
+- (void)debugDataAfterWaitingForRecognitionWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1002E8FE8;
   v4[3] = &unk_1018539E0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CRLHandwritingRecognitionStatusHelper *)v5 refreshWithHandler:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(CRLHandwritingRecognitionStatusHelper *)selfCopy refreshWithHandler:v4];
 }
 
 - (void)copyDebugStringToPasteboard
@@ -174,8 +174,8 @@
     [v4 clearContents];
 
     v5 = +[CRLPasteboard generalPasteboard];
-    v6 = [UTTypeRTF identifier];
-    v10 = v6;
+    identifier = [UTTypeRTF identifier];
+    v10 = identifier;
     v11 = v2;
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v12 = v7;
@@ -184,12 +184,12 @@
   }
 }
 
-- (void)p_appendAttributedTextForDrawing:(id)a3 drawingResults:(id)a4 to:(id)a5
+- (void)p_appendAttributedTextForDrawing:(id)drawing drawingResults:(id)results to:(id)to
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CRLHandwritingRecognitionStatusHelper *)self p_titleStringForString:a3];
-  [v9 appendAttributedString:v10];
+  resultsCopy = results;
+  toCopy = to;
+  v10 = [(CRLHandwritingRecognitionStatusHelper *)self p_titleStringForString:drawing];
+  [toCopy appendAttributedString:v10];
 
   v25 = 0u;
   v26 = 0u;
@@ -212,20 +212,20 @@
         }
 
         v16 = *(*(&v23 + 1) + 8 * v15);
-        v17 = [v8 allKeys];
-        v18 = [v17 containsObject:v16];
+        allKeys = [resultsCopy allKeys];
+        v18 = [allKeys containsObject:v16];
 
         if (v18)
         {
           v19 = [(CRLHandwritingRecognitionStatusHelper *)self p_headlineStringForString:v16];
-          [v9 appendAttributedString:v19];
+          [toCopy appendAttributedString:v19];
 
-          v20 = [v8 objectForKeyedSubscript:v16];
+          v20 = [resultsCopy objectForKeyedSubscript:v16];
           v21 = [(CRLHandwritingRecognitionStatusHelper *)self p_bodyStringForString:v20];
-          [v9 appendAttributedString:v21];
+          [toCopy appendAttributedString:v21];
 
           v22 = [(CRLHandwritingRecognitionStatusHelper *)self p_bodyStringForString:@"\n"];
-          [v9 appendAttributedString:v22];
+          [toCopy appendAttributedString:v22];
         }
 
         v15 = v15 + 1;
@@ -239,48 +239,48 @@
   }
 }
 
-- (id)p_titleStringForString:(id)a3
+- (id)p_titleStringForString:(id)string
 {
   v10 = NSFontAttributeName;
-  v3 = a3;
+  stringCopy = string;
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
   v11 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 
   v6 = [NSAttributedString alloc];
-  v7 = [v3 stringByAppendingString:@"\n"];
+  v7 = [stringCopy stringByAppendingString:@"\n"];
 
   v8 = [v6 initWithString:v7 attributes:v5];
 
   return v8;
 }
 
-- (id)p_headlineStringForString:(id)a3
+- (id)p_headlineStringForString:(id)string
 {
   v10 = NSFontAttributeName;
-  v3 = a3;
+  stringCopy = string;
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
   v11 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 
   v6 = [NSAttributedString alloc];
-  v7 = [v3 stringByAppendingString:@"\n"];
+  v7 = [stringCopy stringByAppendingString:@"\n"];
 
   v8 = [v6 initWithString:v7 attributes:v5];
 
   return v8;
 }
 
-- (id)p_bodyStringForString:(id)a3
+- (id)p_bodyStringForString:(id)string
 {
   v10 = NSFontAttributeName;
-  v3 = a3;
+  stringCopy = string;
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   v11 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 
   v6 = [NSAttributedString alloc];
-  v7 = [v3 stringByAppendingString:@"\n"];
+  v7 = [stringCopy stringByAppendingString:@"\n"];
 
   v8 = [v6 initWithString:v7 attributes:v5];
 
@@ -297,27 +297,27 @@
   [(CRLHandwritingRecognitionStatusHelper *)self refreshWithHandler:v2];
 }
 
-- (void)refreshWithHandler:(id)a3
+- (void)refreshWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CRLHandwritingRecognitionStatusHelper *)self consolidatedDrawing];
+  handlerCopy = handler;
+  consolidatedDrawing = [(CRLHandwritingRecognitionStatusHelper *)self consolidatedDrawing];
 
-  if (v5)
+  if (consolidatedDrawing)
   {
-    v6 = [(CRLHandwritingRecognitionStatusHelper *)self consolidatedDrawing];
-    [v6 setRecognitionEnabled:1];
+    consolidatedDrawing2 = [(CRLHandwritingRecognitionStatusHelper *)self consolidatedDrawing];
+    [consolidatedDrawing2 setRecognitionEnabled:1];
 
-    v7 = [(CRLHandwritingRecognitionStatusHelper *)self consolidatedDrawing];
-    v8 = [v7 visualizationManager];
-    [v8 setRecognitionStatusReportingEnabled:1];
+    consolidatedDrawing3 = [(CRLHandwritingRecognitionStatusHelper *)self consolidatedDrawing];
+    visualizationManager = [consolidatedDrawing3 visualizationManager];
+    [visualizationManager setRecognitionStatusReportingEnabled:1];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(CRLHandwritingRecognitionStatusHelper *)self drawings];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  drawings = [(CRLHandwritingRecognitionStatusHelper *)self drawings];
+  v10 = [drawings countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -328,49 +328,49 @@
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(drawings);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
         [v14 setRecognitionEnabled:1];
-        v15 = [v14 visualizationManager];
-        [v15 setRecognitionStatusReportingEnabled:1];
+        visualizationManager2 = [v14 visualizationManager];
+        [visualizationManager2 setRecognitionStatusReportingEnabled:1];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [drawings countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
   }
 
-  v16 = [(CRLHandwritingRecognitionStatusHelper *)self drawings];
-  v17 = [v16 copy];
+  drawings2 = [(CRLHandwritingRecognitionStatusHelper *)self drawings];
+  v17 = [drawings2 copy];
 
-  v18 = [(CRLHandwritingRecognitionStatusHelper *)self recognitionQueue];
+  recognitionQueue = [(CRLHandwritingRecognitionStatusHelper *)self recognitionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002E99C4;
   block[3] = &unk_101842CD8;
   block[4] = self;
   v22 = v17;
-  v23 = v4;
-  v19 = v4;
+  v23 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v17;
-  dispatch_async(v18, block);
+  dispatch_async(recognitionQueue, block);
 }
 
-- (id)p_idStringForDrawing:(id)a3
+- (id)p_idStringForDrawing:(id)drawing
 {
-  v3 = [a3 uuid];
-  v4 = [NSString localizedStringWithFormat:@"%@", v3];
+  uuid = [drawing uuid];
+  v4 = [NSString localizedStringWithFormat:@"%@", uuid];
 
   return v4;
 }
 
-- (id)p_recognitionStatusStringsForDrawing:(id)a3
+- (id)p_recognitionStatusStringsForDrawing:(id)drawing
 {
-  v3 = a3;
-  if (!v3)
+  drawingCopy = drawing;
+  if (!drawingCopy)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -400,8 +400,8 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:222 isFatal:0 description:"invalid nil value for '%{public}s'", "drawing"];
   }
 
-  v21 = v3;
-  v9 = [v3 visualizationManager];
+  v21 = drawingCopy;
+  visualizationManager = [drawingCopy visualizationManager];
   v10 = +[NSMutableDictionary dictionary];
   v22 = 0u;
   v23 = 0u;
@@ -424,7 +424,7 @@
 
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = [PKVisualizationManager localizedNameForRecognitionStatusKey:v16];
-        v18 = [v9 valueForRecognitionStatusKey:v16];
+        v18 = [visualizationManager valueForRecognitionStatusKey:v16];
         if (v18)
         {
           if (v17)

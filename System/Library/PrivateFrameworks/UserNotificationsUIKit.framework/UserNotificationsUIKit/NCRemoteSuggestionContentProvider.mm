@@ -1,19 +1,19 @@
 @interface NCRemoteSuggestionContentProvider
-- (NCRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7;
+- (NCRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid;
 @end
 
 @implementation NCRemoteSuggestionContentProvider
 
-- (NCRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7
+- (NCRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid
 {
-  v13 = a7;
+  uuidCopy = uuid;
   v17.receiver = self;
   v17.super_class = NCRemoteSuggestionContentProvider;
-  v14 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:a3 bundleDisplayName:a4 managementDelegate:a5 suggestionDelegate:a6];
+  v14 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:request bundleDisplayName:name managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_uuid, a7);
+    objc_storeStrong(&v14->_uuid, uuid);
   }
 
   return v15;

@@ -1,47 +1,47 @@
 @interface TSDShapeRep
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5;
-- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)a3;
-- (BOOL)canDrawWithOtherShapeRep:(id)a3;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context;
+- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)children;
+- (BOOL)canDrawWithOtherShapeRep:(id)rep;
 - (BOOL)isInvisible;
 - (BOOL)isMoreOptimalToDrawWithOtherShapeRepsIfPossible;
 - (BOOL)isNormalShapeInsideFreehandDrawing;
-- (BOOL)p_beginApplyOpacity:(CGContext *)a3 forDrawingInOneStep:(BOOL)a4;
+- (BOOL)p_beginApplyOpacity:(CGContext *)opacity forDrawingInOneStep:(BOOL)step;
 - (BOOL)p_drawsSelfInOneStep;
 - (BOOL)p_hasFreehandDrawingBrushStroke;
-- (BOOL)p_shouldDrawStrokeWide:(id)a3;
-- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)a3;
+- (BOOL)p_shouldDrawStrokeWide:(id)wide;
+- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)playback;
 - (CGRect)clipRect;
 - (CGRect)frameInUnscaledCanvas;
-- (CGRect)strokeBoundsWithOptions:(unint64_t)a3 fallbackBounds:(CGRect)a4;
+- (CGRect)strokeBoundsWithOptions:(unint64_t)options fallbackBounds:(CGRect)bounds;
 - (TSDShapeInfo)shapeInfo;
 - (TSDShapeLayout)shapeLayout;
-- (TSDShapeRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDShapeRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)opacity;
 - (double)strokeEnd;
-- (id)colorBehindLayer:(id)a3;
-- (id)imageOfStroke:(CGRect *)a3;
-- (id)p_brushStrokeFromStroke:(id)a3;
+- (id)colorBehindLayer:(id)layer;
+- (id)imageOfStroke:(CGRect *)stroke;
+- (id)p_brushStrokeFromStroke:(id)stroke;
 - (id)p_drawingPlaybackSession;
-- (id)p_strokeForRenderingIncludingPlaybackFromStroke:(id)a3;
-- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)a3;
+- (id)p_strokeForRenderingIncludingPlaybackFromStroke:(id)stroke;
+- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)stroke;
 - (void)dealloc;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test;
 - (void)dynamicOverrideDidChange;
-- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 usingPathOverride:(id)a7 patternOffsetsBySubpathOverride:(id)a8 transparencyLayersBySubpath:(id)a9;
-- (void)p_drawLineEndForHead:(BOOL)a3 withDelta:(CGPoint)a4 andStroke:(id)a5 inContext:(CGContext *)a6 useFastDrawing:(BOOL)a7;
-- (void)p_endApplyOpacity:(CGContext *)a3 apply:(BOOL)a4;
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
-- (void)setTextureAttributes:(id)a3 textureBounds:(CGRect)a4;
+- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity usingPathOverride:(id)override patternOffsetsBySubpathOverride:(id)subpathOverride transparencyLayersBySubpath:(id)subpath;
+- (void)p_drawLineEndForHead:(BOOL)head withDelta:(CGPoint)delta andStroke:(id)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)p_endApplyOpacity:(CGContext *)opacity apply:(BOOL)apply;
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
+- (void)setTextureAttributes:(id)attributes textureBounds:(CGRect)bounds;
 @end
 
 @implementation TSDShapeRep
 
-- (TSDShapeRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDShapeRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v14.receiver = self;
   v14.super_class = TSDShapeRep;
-  v4 = [(TSDRep *)&v14 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v14 initWithLayout:layout canvas:canvas];
   v7 = v4;
   if (v4)
   {
@@ -120,16 +120,16 @@
   return CGRectInset(v3, -1.0, -1.0);
 }
 
-- (BOOL)p_beginApplyOpacity:(CGContext *)a3 forDrawingInOneStep:(BOOL)a4
+- (BOOL)p_beginApplyOpacity:(CGContext *)opacity forDrawingInOneStep:(BOOL)step
 {
-  objc_msgSend_opacity(self, a2, a3);
+  objc_msgSend_opacity(self, a2, opacity);
   if (v7 >= 1.0)
   {
     return 0;
   }
 
-  CGContextSetAlpha(a3, v7);
-  if (a4)
+  CGContextSetAlpha(opacity, v7);
+  if (step)
   {
     return 0;
   }
@@ -155,7 +155,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
     }
 
-    CGContextBeginTransparencyLayer(a3, 0);
+    CGContextBeginTransparencyLayer(opacity, 0);
   }
 
   else
@@ -164,21 +164,21 @@
     v26.origin.y = y;
     v26.size.width = width;
     v26.size.height = height;
-    CGContextBeginTransparencyLayerWithRect(a3, v26, 0);
+    CGContextBeginTransparencyLayerWithRect(opacity, v26, 0);
   }
 
   return 1;
 }
 
-- (void)p_endApplyOpacity:(CGContext *)a3 apply:(BOOL)a4
+- (void)p_endApplyOpacity:(CGContext *)opacity apply:(BOOL)apply
 {
-  if (a4)
+  if (apply)
   {
-    CGContextEndTransparencyLayer(a3);
+    CGContextEndTransparencyLayer(opacity);
   }
 }
 
-- (id)colorBehindLayer:(id)a3
+- (id)colorBehindLayer:(id)layer
 {
   objc_opt_class();
   v6 = objc_msgSend_shapeLayout(self, v4, v5);
@@ -198,9 +198,9 @@
   return v15;
 }
 
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   v9 = objc_msgSend_childReps(self, v7, v8);
   v12 = objc_msgSend_count(v9, v10, v11);
 
@@ -210,7 +210,7 @@
     v24[1] = 3221225472;
     v24[2] = sub_276672F30;
     v24[3] = &unk_27A6CC740;
-    v13 = v6;
+    v13 = testCopy;
     v24[4] = self;
     v25 = v13;
     v14 = MEMORY[0x277C9C8B0](v24);
@@ -221,81 +221,81 @@
     v22[4] = self;
     v23 = v13;
     v15 = MEMORY[0x277C9C8B0](v22);
-    CGContextSaveGState(a3);
-    v17 = objc_msgSend_p_beginApplyOpacity_forDrawingInOneStep_(self, v16, a3, 0);
+    CGContextSaveGState(context);
+    v17 = objc_msgSend_p_beginApplyOpacity_forDrawingInOneStep_(self, v16, context, 0);
     v21.receiver = self;
     v21.super_class = TSDShapeRep;
-    [(TSDRep *)&v21 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v14];
-    objc_msgSend_p_endApplyOpacity_apply_(self, v18, a3, v17);
-    CGContextRestoreGState(a3);
+    [(TSDRep *)&v21 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:v14];
+    objc_msgSend_p_endApplyOpacity_apply_(self, v18, context, v17);
+    CGContextRestoreGState(context);
     v20.receiver = self;
     v20.super_class = TSDShapeRep;
-    [(TSDRep *)&v20 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v15];
+    [(TSDRep *)&v20 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:v15];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = TSDShapeRep;
-    [(TSDRep *)&v19 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v6];
+    [(TSDRep *)&v19 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:testCopy];
   }
 }
 
-- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
   v4.receiver = self;
   v4.super_class = TSDShapeRep;
-  [(TSDRep *)&v4 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:a4];
+  [(TSDRep *)&v4 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:test];
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test
 {
-  v9 = a8;
-  v11 = a6;
-  v13 = a4;
-  v21 = a9;
-  if (!objc_msgSend_isInvisible(self, v16, v17) || !v11 && (objc_msgSend_opacity(self, v18, v19), v20 == 0.0))
+  childrenCopy = children;
+  opacityCopy = opacity;
+  contentCopy = content;
+  testCopy = test;
+  if (!objc_msgSend_isInvisible(self, v16, v17) || !opacityCopy && (objc_msgSend_opacity(self, v18, v19), v20 == 0.0))
   {
-    objc_msgSend_p_drawInContext_withContent_strokeDrawOptions_withOpacity_(self, v18, a3, v13, a5, v11);
+    objc_msgSend_p_drawInContext_withContent_strokeDrawOptions_withOpacity_(self, v18, effects, contentCopy, options, opacityCopy);
   }
 
-  if (v9 && (LOBYTE(self->mOriginalAliasedAlignmentFrameInLayerFrame.size.height) != 1 || !a7))
+  if (childrenCopy && (LOBYTE(self->mOriginalAliasedAlignmentFrameInLayerFrame.size.height) != 1 || !only))
   {
-    if (v11)
+    if (opacityCopy)
     {
-      objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self, v18, a3, v21);
+      objc_msgSend_recursivelyDrawChildrenInContext_keepingChildrenPassingTest_(self, v18, effects, testCopy);
     }
 
     else
     {
-      objc_msgSend_p_drawChildrenWithoutOpacityInContext_keepingChildrenPassingTest_(self, v18, a3, v21);
+      objc_msgSend_p_drawChildrenWithoutOpacityInContext_keepingChildrenPassingTest_(self, v18, effects, testCopy);
     }
   }
 }
 
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 usingPathOverride:(id)a7 patternOffsetsBySubpathOverride:(id)a8 transparencyLayersBySubpath:(id)a9
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity usingPathOverride:(id)override patternOffsetsBySubpathOverride:(id)subpathOverride transparencyLayersBySubpath:(id)subpath
 {
-  v10 = a6;
-  v317 = a4;
+  opacityCopy = opacity;
+  contentCopy = content;
   v326[1] = *MEMORY[0x277D85DE8];
-  v14 = a7;
-  v15 = a8;
-  v319 = a9;
+  overrideCopy = override;
+  subpathOverrideCopy = subpathOverride;
+  subpathCopy = subpath;
   BYTE4(self->mLastDynamicInvalidRect.size.height) = 0;
   v18 = objc_msgSend_canvas(self, v16, v17);
   shouldSuppressBackgrounds = objc_msgSend_shouldSuppressBackgrounds(v18, v19, v20);
 
-  c = a3;
+  c = context;
   v316 = shouldSuppressBackgrounds;
-  if (shouldSuppressBackgrounds != TSDCGContextHasBackgroundsSuppressed(a3))
+  if (shouldSuppressBackgrounds != TSDCGContextHasBackgroundsSuppressed(context))
   {
     v24 = MEMORY[0x277D81150];
-    v25 = v15;
+    v25 = subpathOverrideCopy;
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSDShapeRep p_drawInContext:withContent:strokeDrawOptions:withOpacity:usingPathOverride:patternOffsetsBySubpathOverride:transparencyLayersBySubpath:]");
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShapeRep.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v24, v29, v26, v28, 415, 0, "Canvas and CGContext disagree about whether we are suppressing backgrounds");
 
-    v15 = v25;
+    subpathOverrideCopy = v25;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31);
   }
 
@@ -305,10 +305,10 @@
   if (objc_msgSend_containsElementsOtherThanMoveAndClose(v38, v39, v40))
   {
 
-    if ((a5 & 3) != 0 || (a5 & 4) != 0 || v317)
+    if ((options & 3) != 0 || (options & 4) != 0 || contentCopy)
     {
       CGContextSaveGState(c);
-      if (v10)
+      if (opacityCopy)
       {
         v43 = objc_msgSend_p_drawsSelfInOneStep(self, v41, v42);
         v305 = objc_msgSend_p_beginApplyOpacity_forDrawingInOneStep_(self, v44, c, v43);
@@ -339,11 +339,11 @@
         v62 = 0;
       }
 
-      v308 = v14;
+      v308 = overrideCopy;
       v309 = v62;
-      if (v14)
+      if (overrideCopy)
       {
-        v310 = objc_msgSend_copy(v14, v65, v66);
+        v310 = objc_msgSend_copy(overrideCopy, v65, v66);
       }
 
       else
@@ -374,20 +374,20 @@ LABEL_18:
             if (objc_opt_isKindOfClass())
             {
               objc_msgSend_shapeInfo(self, v89, v90);
-              v301 = a5;
+              optionsCopy = options;
               v91 = v35;
               v92 = v32;
-              v93 = v10;
-              v95 = v94 = v15;
+              v93 = opacityCopy;
+              v95 = v94 = subpathOverrideCopy;
               v98 = objc_msgSend_pathSource(v95, v96, v97);
               isCurveContinuous = objc_msgSend_isCurveContinuous(v98, v99, v100);
 
               v84 = v311;
-              v15 = v94;
-              v10 = v93;
+              subpathOverrideCopy = v94;
+              opacityCopy = v93;
               v32 = v92;
               v35 = v91;
-              a5 = v301;
+              options = optionsCopy;
 
               v81 = v312;
               if (isCurveContinuous)
@@ -444,7 +444,7 @@ LABEL_18:
             shouldRender = objc_msgSend_shouldRender(v120, v121, v122);
             v125 = shouldRender;
             v315 = 0;
-            if ((a5 & 1) != 0 && shouldRender)
+            if ((options & 1) != 0 && shouldRender)
             {
               v126 = [TSDFrameRep alloc];
               v315 = objc_msgSend_initWithTSDFrame_(v126, v127, v123);
@@ -458,13 +458,13 @@ LABEL_18:
           }
 
           v306 = v123;
-          if (v317)
+          if (contentCopy)
           {
-            v303 = v15;
+            v303 = subpathOverrideCopy;
             if (v315 && objc_msgSend_hasMask(v123, v121, v122))
             {
               v128 = v123;
-              v129 = a5;
+              optionsCopy3 = options;
               CGContextSaveGState(c);
               objc_msgSend_pathBoundsWithoutStroke(v35, v130, v131);
               objc_msgSend_coverageRect_(v128, v132, v133);
@@ -475,7 +475,7 @@ LABEL_18:
 
             else
             {
-              v129 = a5;
+              optionsCopy3 = options;
               v136 = 0;
             }
 
@@ -517,8 +517,8 @@ LABEL_18:
               CGContextRestoreGState(c);
             }
 
-            v15 = v303;
-            a5 = v129;
+            subpathOverrideCopy = v303;
+            options = optionsCopy3;
           }
 
           if (v84)
@@ -531,18 +531,18 @@ LABEL_18:
             v173 = 0;
           }
 
-          if ((a5 & 7) == 0 || ((v173 | v125) & 1) == 0)
+          if ((options & 7) == 0 || ((v173 | v125) & 1) == 0)
           {
-            v14 = v308;
+            overrideCopy = v308;
             v174 = v309;
             goto LABEL_60;
           }
 
           if (v315)
           {
-            v14 = v308;
+            overrideCopy = v308;
             v174 = v309;
-            if (a5)
+            if (options)
             {
               objc_msgSend_pathBoundsWithoutStroke(v35, v121, v122);
               v176 = v175;
@@ -557,7 +557,7 @@ LABEL_18:
 
 LABEL_60:
             v185 = v310;
-            if (!v10)
+            if (!opacityCopy)
             {
 LABEL_62:
               CGContextRestoreGState(c);
@@ -573,16 +573,16 @@ LABEL_61:
           v174 = v309;
           if (!v173)
           {
-            v14 = v308;
+            overrideCopy = v308;
             goto LABEL_60;
           }
 
-          if ((a5 & 1) == 0 || !v304)
+          if ((options & 1) == 0 || !v304)
           {
             v318 = 0;
-            if ((a5 & 1) == 0)
+            if ((options & 1) == 0)
             {
-              v210 = a5;
+              optionsCopy4 = options;
               v84 = v311;
               goto LABEL_108;
             }
@@ -595,7 +595,7 @@ LABEL_61:
             v190 = v189;
 
             v191 = 0;
-            if (v190 < 1.0 && (a5 & 8) == 0)
+            if (v190 < 1.0 && (options & 8) == 0)
             {
               CGContextSaveGState(c);
               v192 = v311;
@@ -644,8 +644,8 @@ LABEL_61:
           v211 = v81;
           v212 = objc_msgSend_p_strokeForRenderingIncludingPlaybackFromStroke_(self, v121, v81, v299);
 
-          v302 = a5;
-          if ((a5 & 8) != 0)
+          optionsCopy5 = options;
+          if ((options & 8) != 0)
           {
             v214 = objc_msgSend_p_brushStrokeFromStroke_(self, v213, v212);
 
@@ -690,9 +690,9 @@ LABEL_61:
 
 LABEL_87:
           v174 = v309;
-          if (v15)
+          if (subpathOverrideCopy)
           {
-            v235 = v15;
+            v235 = subpathOverrideCopy;
           }
 
           objc_opt_class();
@@ -704,10 +704,10 @@ LABEL_87:
             objc_msgSend_setStrokeEnd_(v239, v242, v243);
             if (objc_msgSend_p_hasFreehandDrawingBrushStroke(self, v244, v245))
             {
-              objc_msgSend_setTransparencyLayersBySubpath_(v239, v246, v319);
-              if (v15)
+              objc_msgSend_setTransparencyLayersBySubpath_(v239, v246, subpathCopy);
+              if (subpathOverrideCopy)
               {
-                objc_msgSend_setPatternOffsetsBySubpath_(v239, v247, v15);
+                objc_msgSend_setPatternOffsetsBySubpath_(v239, v247, subpathOverrideCopy);
               }
 
               else
@@ -720,21 +720,21 @@ LABEL_87:
                 v272 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v271, v326, 1);
                 objc_msgSend_setPatternOffsetsBySubpath_(v239, v273, v272);
 
-                v15 = 0;
+                subpathOverrideCopy = 0;
               }
             }
 
-            v210 = v302;
+            optionsCopy4 = optionsCopy5;
             v274 = v310;
             v277 = objc_msgSend_CGPath(v274, v275, v276);
-            objc_msgSend_paintPath_wantsInteriorStroke_inContext_useFastDrawing_parameterized_shouldReverseDrawOrder_withLayoutOptions_(v238, v278, v277, 0, c, 0, (v302 >> 3) & 1, (v302 >> 4) & 1, v239);
+            objc_msgSend_paintPath_wantsInteriorStroke_inContext_useFastDrawing_parameterized_shouldReverseDrawOrder_withLayoutOptions_(v238, v278, v277, 0, c, 0, (optionsCopy5 >> 3) & 1, (optionsCopy5 >> 4) & 1, v239);
 
             v174 = v309;
           }
 
           else
           {
-            if (v319)
+            if (subpathCopy)
             {
               v249 = MEMORY[0x277D81150];
               v250 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v236, "[TSDShapeRep p_drawInContext:withContent:strokeDrawOptions:withOpacity:usingPathOverride:patternOffsetsBySubpathOverride:transparencyLayersBySubpath:]");
@@ -770,10 +770,10 @@ LABEL_87:
               v263 = v262;
             }
 
-            v210 = v302;
+            optionsCopy4 = optionsCopy5;
             v310 = v263;
             v285 = objc_msgSend_CGPath(v310, v283, v284);
-            objc_msgSend_paintPath_wantsInteriorStroke_inContext_useFastDrawing_parameterized_shouldReverseDrawOrder_(v314, v286, v285, 0, c, 0, (v302 >> 3) & 1, (v302 >> 4) & 1);
+            objc_msgSend_paintPath_wantsInteriorStroke_inContext_useFastDrawing_parameterized_shouldReverseDrawOrder_(v314, v286, v285, 0, c, 0, (optionsCopy5 >> 3) & 1, (optionsCopy5 >> 4) & 1);
           }
 
           CGContextRestoreGState(c);
@@ -798,12 +798,12 @@ LABEL_108:
             CGContextSetStrokeColorWithColor(c, v293);
             v296 = objc_msgSend_CGColor(v290, v294, v295);
             CGContextSetFillColorWithColor(c, v296);
-            if ((v210 & 2) != 0 && v81)
+            if ((optionsCopy4 & 2) != 0 && v81)
             {
               objc_msgSend_p_drawLineEndForHead_withDelta_andStroke_inContext_useFastDrawing_(self, v297, 1, v84, c, 0, v324);
             }
 
-            if ((v210 & 4) != 0 && v81)
+            if ((optionsCopy4 & 4) != 0 && v81)
             {
               objc_msgSend_p_drawLineEndForHead_withDelta_andStroke_inContext_useFastDrawing_(self, v297, 0, v84, c, 0, v325);
             }
@@ -817,8 +817,8 @@ LABEL_108:
             CGContextRestoreGState(c);
           }
 
-          v14 = v308;
-          if (!v10)
+          overrideCopy = v308;
+          if (!opacityCopy)
           {
             goto LABEL_62;
           }
@@ -843,14 +843,14 @@ LABEL_108:
 LABEL_63:
 }
 
-- (CGRect)strokeBoundsWithOptions:(unint64_t)a3 fallbackBounds:(CGRect)a4
+- (CGRect)strokeBoundsWithOptions:(unint64_t)options fallbackBounds:(CGRect)bounds
 {
-  v5 = objc_msgSend_shapeLayout(self, a2, a3, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v5 = objc_msgSend_shapeLayout(self, a2, options, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
   v6 = *(MEMORY[0x277CBF2C0] + 16);
   v20[0] = *MEMORY[0x277CBF2C0];
   v20[1] = v6;
   v20[2] = *(MEMORY[0x277CBF2C0] + 32);
-  objc_msgSend_shapeFrameWithTransform_strokeDrawOptions_(v5, v7, v20, a3);
+  objc_msgSend_shapeFrameWithTransform_strokeDrawOptions_(v5, v7, v20, options);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -867,13 +867,13 @@ LABEL_63:
   return result;
 }
 
-- (id)imageOfStroke:(CGRect *)a3
+- (id)imageOfStroke:(CGRect *)stroke
 {
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
-  v9 = objc_msgSend_layout(self, a2, a3);
+  v9 = objc_msgSend_layout(self, a2, stroke);
   v12 = objc_msgSend_stroke(v9, v10, v11);
 
   if (v12 && objc_msgSend_shouldRender(v12, v13, v14))
@@ -902,10 +902,10 @@ LABEL_63:
     v25 = 0;
   }
 
-  a3->origin.x = v5;
-  a3->origin.y = v6;
-  a3->size.width = v7;
-  a3->size.height = v8;
+  stroke->origin.x = v5;
+  stroke->origin.y = v6;
+  stroke->size.width = v7;
+  stroke->size.height = v8;
 
   return v25;
 }
@@ -966,10 +966,10 @@ LABEL_63:
   return isKindOfClass & 1;
 }
 
-- (BOOL)canDrawWithOtherShapeRep:(id)a3
+- (BOOL)canDrawWithOtherShapeRep:(id)rep
 {
-  v4 = a3;
-  if ((objc_msgSend_isPartiallyAnimated(self, v5, v6) & 1) == 0 && (objc_msgSend_isPartiallyAnimated(v4, v7, v8) & 1) == 0)
+  repCopy = rep;
+  if ((objc_msgSend_isPartiallyAnimated(self, v5, v6) & 1) == 0 && (objc_msgSend_isPartiallyAnimated(repCopy, v7, v8) & 1) == 0)
   {
     v13 = objc_msgSend_childReps(self, v9, v10);
     if (objc_msgSend_count(v13, v14, v15))
@@ -979,7 +979,7 @@ LABEL_63:
 
     else
     {
-      v18 = objc_msgSend_childReps(v4, v16, v17);
+      v18 = objc_msgSend_childReps(repCopy, v16, v17);
       v21 = objc_msgSend_count(v18, v19, v20);
 
       if (v21)
@@ -989,7 +989,7 @@ LABEL_63:
 
       objc_msgSend_opacity(self, v22, v23);
       v25 = v24;
-      objc_msgSend_opacity(v4, v26, v27);
+      objc_msgSend_opacity(repCopy, v26, v27);
       if (v25 != v30 && vabdd_f64(v25, v30) >= fabs(v30 * 0.000000999999997))
       {
         goto LABEL_3;
@@ -1001,14 +1001,14 @@ LABEL_63:
         goto LABEL_3;
       }
 
-      objc_msgSend_strokeEnd(v4, v31, v32);
+      objc_msgSend_strokeEnd(repCopy, v31, v32);
       if (v36 < 1.0)
       {
         goto LABEL_3;
       }
 
       v13 = objc_msgSend_shapeLayout(self, v34, v35);
-      v39 = objc_msgSend_shapeLayout(v4, v37, v38);
+      v39 = objc_msgSend_shapeLayout(repCopy, v37, v38);
       v44 = objc_msgSend_fill(v13, v40, v41);
       if (v44)
       {
@@ -1091,23 +1091,23 @@ LABEL_4:
   return v6;
 }
 
-- (void)setTextureAttributes:(id)a3 textureBounds:(CGRect)a4
+- (void)setTextureAttributes:(id)attributes textureBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  attributesCopy = attributes;
   v64.receiver = self;
   v64.super_class = TSDShapeRep;
-  [(TSDStyledRep *)&v64 setTextureAttributes:v9 textureBounds:x, y, width, height];
-  objc_msgSend_setObjectType_(v9, v10, 1);
+  [(TSDStyledRep *)&v64 setTextureAttributes:attributesCopy textureBounds:x, y, width, height];
+  objc_msgSend_setObjectType_(attributesCopy, v10, 1);
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v13 = objc_msgSend_visibleTextures(v9, v11, v12);
+  v13 = objc_msgSend_visibleTextures(attributesCopy, v11, v12);
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v60, v65, 16);
   if (v15)
   {
@@ -1185,14 +1185,14 @@ LABEL_4:
   }
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v12 = objc_msgSend_shapeInfo(v7, v10, v11);
-  v15 = objc_msgSend_shapeInfo(v8, v13, v14);
-  v17 = objc_msgSend_mixingTypeWithObject_context_(v12, v16, v15, v9);
+  objectCopy = object;
+  incomingObjectCopy = incomingObject;
+  contextCopy = context;
+  v12 = objc_msgSend_shapeInfo(objectCopy, v10, v11);
+  v15 = objc_msgSend_shapeInfo(incomingObjectCopy, v13, v14);
+  v17 = objc_msgSend_mixingTypeWithObject_context_(v12, v16, v15, contextCopy);
 
   v20 = 0.0;
   if (v17 != 1)
@@ -1207,11 +1207,11 @@ LABEL_4:
       v21 = 0.0;
     }
 
-    v22 = objc_msgSend_shapeInfo(v7, v18, v19);
+    v22 = objc_msgSend_shapeInfo(objectCopy, v18, v19);
     v25 = objc_msgSend_pathSource(v22, v23, v24);
-    v28 = objc_msgSend_shapeInfo(v8, v26, v27);
+    v28 = objc_msgSend_shapeInfo(incomingObjectCopy, v26, v27);
     v31 = objc_msgSend_pathSource(v28, v29, v30);
-    v32 = TSDMixingTypeWithObjects(v25, v31, v9);
+    v32 = TSDMixingTypeWithObjects(v25, v31, contextCopy);
 
     if (v32 <= 2)
     {
@@ -1251,9 +1251,9 @@ LABEL_4:
     }
 
     v42 = v21 + v20 * 3.0;
-    v43 = objc_msgSend_shapeInfo(v7, v33, v34);
+    v43 = objc_msgSend_shapeInfo(objectCopy, v33, v34);
     v46 = objc_msgSend_style(v43, v44, v45);
-    v49 = objc_msgSend_shapeInfo(v8, v47, v48);
+    v49 = objc_msgSend_shapeInfo(incomingObjectCopy, v47, v48);
     v52 = objc_msgSend_style(v49, v50, v51);
     isEqual = objc_msgSend_isEqual_(v46, v53, v52);
 
@@ -1269,14 +1269,14 @@ LABEL_4:
   return v20;
 }
 
-- (void)p_drawLineEndForHead:(BOOL)a3 withDelta:(CGPoint)a4 andStroke:(id)a5 inContext:(CGContext *)a6 useFastDrawing:(BOOL)a7
+- (void)p_drawLineEndForHead:(BOOL)head withDelta:(CGPoint)delta andStroke:(id)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  v7 = a7;
-  v9 = a3;
-  v44 = a5;
+  drawingCopy = drawing;
+  headCopy = head;
+  strokeCopy = stroke;
   v13 = objc_msgSend_shapeLayout(self, v11, v12);
   v16 = v13;
-  if (v9)
+  if (headCopy)
   {
     v17 = objc_msgSend_strokeHeadLineEnd(v13, v14, v15);
     if (!v17)
@@ -1311,13 +1311,13 @@ LABEL_4:
   objc_msgSend_scaleForStrokeWidth_(v20, v39, v40);
   v42 = v41;
 
-  objc_msgSend_paintLineEnd_atPoint_atAngle_withScale_inContext_useFastDrawing_(v44, v43, v20, a6, v7, v31, v33, v29, v42);
+  objc_msgSend_paintLineEnd_atPoint_atAngle_withScale_inContext_useFastDrawing_(strokeCopy, v43, v20, context, drawingCopy, v31, v33, v29, v42);
 LABEL_7:
 }
 
-- (BOOL)p_shouldDrawStrokeWide:(id)a3
+- (BOOL)p_shouldDrawStrokeWide:(id)wide
 {
-  v4 = objc_msgSend_color(a3, a2, a3);
+  v4 = objc_msgSend_color(wide, a2, wide);
   if (objc_msgSend_colorRGBSpace(v4, v5, v6) == 1)
   {
     v9 = objc_msgSend_canvas(self, v7, v8);
@@ -1332,9 +1332,9 @@ LABEL_7:
   return IsWideGamut;
 }
 
-- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)a3
+- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)stroke
 {
-  if (objc_msgSend_p_shouldDrawStrokeWide_(self, a2, a3))
+  if (objc_msgSend_p_shouldDrawStrokeWide_(self, a2, stroke))
   {
     return 35;
   }
@@ -1398,14 +1398,14 @@ LABEL_7:
   return isEqualToString;
 }
 
-- (id)p_brushStrokeFromStroke:(id)a3
+- (id)p_brushStrokeFromStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (!v6)
   {
-    v7 = objc_msgSend_cap(v3, v4, v5);
+    v7 = objc_msgSend_cap(strokeCopy, v4, v5);
     v8 = off_27A6CCD58;
     if (v7 != 1)
     {
@@ -1414,13 +1414,13 @@ LABEL_7:
 
     v9 = *v8;
     v10 = [TSDBrushStroke alloc];
-    v13 = objc_msgSend_color(v3, v11, v12);
-    objc_msgSend_width(v3, v14, v15);
+    v13 = objc_msgSend_color(strokeCopy, v11, v12);
+    objc_msgSend_width(strokeCopy, v14, v15);
     v17 = v16;
-    v20 = objc_msgSend_cap(v3, v18, v19);
-    v23 = objc_msgSend_join(v3, v21, v22);
-    v26 = objc_msgSend_pattern(v3, v24, v25);
-    objc_msgSend_miterLimit(v3, v27, v28);
+    v20 = objc_msgSend_cap(strokeCopy, v18, v19);
+    v23 = objc_msgSend_join(strokeCopy, v21, v22);
+    v26 = objc_msgSend_pattern(strokeCopy, v24, v25);
+    objc_msgSend_miterLimit(strokeCopy, v27, v28);
     v6 = objc_msgSend_initWithName_color_width_cap_join_pattern_miterLimit_(v10, v29, v9, v13, v20, v23, v26, v17, v30);
   }
 
@@ -1512,10 +1512,10 @@ LABEL_22:
   return v31;
 }
 
-- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)a3
+- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)children
 {
-  v3 = a3;
-  if (!objc_msgSend_p_drawsSelfInOneStep(self, a2, a3))
+  childrenCopy = children;
+  if (!objc_msgSend_p_drawsSelfInOneStep(self, a2, children))
   {
     return 0;
   }
@@ -1533,7 +1533,7 @@ LABEL_22:
 
   else
   {
-    v15 = !v3;
+    v15 = !childrenCopy;
   }
 
   if (!v15)
@@ -1603,12 +1603,12 @@ LABEL_14:
   }
 }
 
-- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)a3
+- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)playback
 {
-  v4 = a3;
+  playbackCopy = playback;
   if ((self->mAvailableToCommitPointRange.length & 3) == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    objc_msgSend_width(v4, v5, v6);
+    objc_msgSend_width(playbackCopy, v5, v6);
     v9 = v8;
     v12 = objc_msgSend_canvas(self, v10, v11);
     objc_msgSend_viewScale(v12, v13, v14);
@@ -1623,13 +1623,13 @@ LABEL_14:
   return v7;
 }
 
-- (id)p_strokeForRenderingIncludingPlaybackFromStroke:(id)a3
+- (id)p_strokeForRenderingIncludingPlaybackFromStroke:(id)stroke
 {
-  v4 = a3;
-  v7 = v4;
-  if (objc_msgSend_p_shouldUpgradeStrokeForPlayback_(self, v5, v4))
+  strokeCopy = stroke;
+  v7 = strokeCopy;
+  if (objc_msgSend_p_shouldUpgradeStrokeForPlayback_(self, v5, strokeCopy))
   {
-    v7 = objc_msgSend_p_brushStrokeFromStroke_(self, v6, v4);
+    v7 = objc_msgSend_p_brushStrokeFromStroke_(self, v6, strokeCopy);
   }
 
   return v7;

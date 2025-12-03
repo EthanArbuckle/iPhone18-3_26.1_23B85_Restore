@@ -1,13 +1,13 @@
 @interface NTKBellonaComplicationView
-+ (id)viewForComplicationType:(unint64_t)a3;
++ (id)viewForComplicationType:(unint64_t)type;
 @end
 
 @implementation NTKBellonaComplicationView
 
-+ (id)viewForComplicationType:(unint64_t)a3
++ (id)viewForComplicationType:(unint64_t)type
 {
   v4 = objc_alloc_init(NTKBellonaComplicationBackgroundView);
-  if (a3 > 1)
+  if (type > 1)
   {
     v5 = 0;
   }

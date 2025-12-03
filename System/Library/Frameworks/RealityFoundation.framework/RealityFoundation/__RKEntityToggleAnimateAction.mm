@@ -1,10 +1,10 @@
 @interface __RKEntityToggleAnimateAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityToggleAnimateAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   swift_beginAccess();
   v4 = *self->super.super.targetEntity;

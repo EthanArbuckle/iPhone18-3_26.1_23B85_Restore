@@ -1,15 +1,15 @@
 @interface OADOrientedBounds
-+ (BOOL)directionCloserToVerticalThanToHorizontal:(float)a3;
-+ (OADOrientedBounds)orientedBoundsWithBounds:(CGRect)a3 rotation:(float)a4 flipX:(BOOL)a5 flipY:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOrientedBounds:(id)a3;
++ (BOOL)directionCloserToVerticalThanToHorizontal:(float)horizontal;
++ (OADOrientedBounds)orientedBoundsWithBounds:(CGRect)bounds rotation:(float)rotation flipX:(BOOL)x flipY:(BOOL)y;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOrientedBounds:(id)bounds;
 - (CGRect)boundingBox;
 - (CGRect)bounds;
 - (CGSize)boundingBoxSize;
-- (OADOrientedBounds)initWithBounds:(CGRect)a3 rotation:(float)a4 flipX:(BOOL)a5 flipY:(BOOL)a6;
+- (OADOrientedBounds)initWithBounds:(CGRect)bounds rotation:(float)rotation flipX:(BOOL)x flipY:(BOOL)y;
 - (id)description;
-- (void)setFlipY:(BOOL)a3;
-- (void)setOrientedBounds:(id)a3;
+- (void)setFlipY:(BOOL)y;
+- (void)setOrientedBounds:(id)bounds;
 @end
 
 @implementation OADOrientedBounds
@@ -27,13 +27,13 @@
   return result;
 }
 
-- (OADOrientedBounds)initWithBounds:(CGRect)a3 rotation:(float)a4 flipX:(BOOL)a5 flipY:(BOOL)a6
+- (OADOrientedBounds)initWithBounds:(CGRect)bounds rotation:(float)rotation flipX:(BOOL)x flipY:(BOOL)y
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  yCopy = y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v15.receiver = self;
   v15.super_class = OADOrientedBounds;
   result = [(OADOrientedBounds *)&v15 init];
@@ -43,8 +43,8 @@
     result->mBounds.origin.y = y;
     result->mBounds.size.width = width;
     result->mBounds.size.height = height;
-    result->mRotation = a4;
-    if (v6)
+    result->mRotation = rotation;
+    if (yCopy)
     {
       v14 = 2;
     }
@@ -54,44 +54,44 @@
       v14 = 0;
     }
 
-    *(result + 44) = v14 | a5 | *(result + 44) & 0xFC;
+    *(result + 44) = v14 | x | *(result + 44) & 0xFC;
     *&result->mModeX = 0;
   }
 
   return result;
 }
 
-+ (OADOrientedBounds)orientedBoundsWithBounds:(CGRect)a3 rotation:(float)a4 flipX:(BOOL)a5 flipY:(BOOL)a6
++ (OADOrientedBounds)orientedBoundsWithBounds:(CGRect)bounds rotation:(float)rotation flipX:(BOOL)x flipY:(BOOL)y
 {
-  v6 = a6;
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  yCopy = y;
+  xCopy = x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v13 = [OADOrientedBounds alloc];
-  *&v14 = a4;
-  v15 = [(OADOrientedBounds *)v13 initWithBounds:v7 rotation:v6 flipX:x flipY:y, width, height, v14];
+  *&v14 = rotation;
+  v15 = [(OADOrientedBounds *)v13 initWithBounds:xCopy rotation:yCopy flipX:x flipY:y, width, height, v14];
 
   return v15;
 }
 
-- (void)setOrientedBounds:(id)a3
+- (void)setOrientedBounds:(id)bounds
 {
-  v3 = *(a3 + 8);
-  self->mBounds.size = *(a3 + 24);
+  v3 = *(bounds + 8);
+  self->mBounds.size = *(bounds + 24);
   self->mBounds.origin = v3;
-  self->mRotation = *(a3 + 10);
-  v4 = *(self + 44) & 0xFE | *(a3 + 44) & 1;
+  self->mRotation = *(bounds + 10);
+  v4 = *(self + 44) & 0xFE | *(bounds + 44) & 1;
   *(self + 44) = v4;
-  *(self + 44) = v4 & 0xFD | *(a3 + 44) & 2;
-  self->mModeX = *(a3 + 12);
-  self->mModeY = *(a3 + 13);
+  *(self + 44) = v4 & 0xFD | *(bounds + 44) & 2;
+  self->mModeX = *(bounds + 12);
+  self->mModeY = *(bounds + 13);
 }
 
-- (void)setFlipY:(BOOL)a3
+- (void)setFlipY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 2;
   }
@@ -137,18 +137,18 @@
   return result;
 }
 
-- (BOOL)isEqualToOrientedBounds:(id)a3
+- (BOOL)isEqualToOrientedBounds:(id)bounds
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 && CGRectEqualToRect(self->mBounds, *(v4 + 8)) && self->mRotation == v5[10] && ((*(v5 + 44) ^ *(self + 44)) & 3) == 0 && self->mModeX == *(v5 + 12) && self->mModeY == *(v5 + 13);
+  boundsCopy = bounds;
+  v5 = boundsCopy;
+  v6 = boundsCopy && CGRectEqualToRect(self->mBounds, *(boundsCopy + 8)) && self->mRotation == v5[10] && ((*(v5 + 44) ^ *(self + 44)) & 3) == 0 && self->mModeX == *(v5 + 12) && self->mModeY == *(v5 + 13);
 
   return v6;
 }
 
-+ (BOOL)directionCloserToVerticalThanToHorizontal:(float)a3
++ (BOOL)directionCloserToVerticalThanToHorizontal:(float)horizontal
 {
-  v3 = vcvts_n_s32_f32(a3, 0x10uLL);
+  v3 = vcvts_n_s32_f32(horizontal, 0x10uLL);
   if ((v3 & 0x80000000) != 0)
   {
     v3 += 23592960 * ((95443718 * (-v3 >> 19)) >> 32) + 23592960;
@@ -157,13 +157,13 @@
   return ((95443718 * ((v3 + 2949120) >> 17)) >> 32) & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     x = self->mBounds.origin.x;
     y = self->mBounds.origin.y;
     width = self->mBounds.size.width;
@@ -179,8 +179,8 @@
     v23.size.height = height;
     if (CGRectEqualToRect(v23, v24) && (-[OADOrientedBounds rotation](self, "rotation"), v15 = v14, [v5 rotation], v15 == v16) && (v17 = -[OADOrientedBounds flipX](self, "flipX"), v17 == objc_msgSend(v5, "flipX")) && (v18 = -[OADOrientedBounds flipY](self, "flipY"), v18 == objc_msgSend(v5, "flipY")) && (v19 = -[OADOrientedBounds xMode](self, "xMode"), v19 == objc_msgSend(v5, "xMode")))
     {
-      v20 = [(OADOrientedBounds *)self yMode];
-      v21 = v20 == [v5 yMode];
+      yMode = [(OADOrientedBounds *)self yMode];
+      v21 = yMode == [v5 yMode];
     }
 
     else

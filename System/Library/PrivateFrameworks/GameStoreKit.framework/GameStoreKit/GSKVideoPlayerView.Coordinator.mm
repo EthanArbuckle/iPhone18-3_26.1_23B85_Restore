@@ -1,15 +1,15 @@
 @interface GSKVideoPlayerView.Coordinator
 - (_TtCV12GameStoreKit18GSKVideoPlayerView11Coordinator)init;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation GSKVideoPlayerView.Coordinator
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v7 = swift_allocObject();
-  *(v7 + 16) = a3;
+  *(v7 + 16) = controller;
   *(v7 + 24) = self;
   v13[4] = sub_24E87CF8C;
   v13[5] = v7;
@@ -18,24 +18,24 @@
   v13[2] = sub_24E87CA8C;
   v13[3] = &block_descriptor_17_0;
   v8 = _Block_copy(v13);
-  v9 = a3;
-  v10 = self;
-  v11 = v9;
-  v12 = v10;
+  controllerCopy = controller;
+  selfCopy = self;
+  v11 = controllerCopy;
+  v12 = selfCopy;
   swift_unknownObjectRetain();
 
-  [a4 animateAlongsideTransition:0 completion:v8];
+  [coordinator animateAlongsideTransition:0 completion:v8];
 
   swift_unknownObjectRelease();
   _Block_release(v8);
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_24E87CC0C(v6, a4);
+  selfCopy = self;
+  sub_24E87CC0C(controllerCopy, coordinator);
 
   swift_unknownObjectRelease();
 }

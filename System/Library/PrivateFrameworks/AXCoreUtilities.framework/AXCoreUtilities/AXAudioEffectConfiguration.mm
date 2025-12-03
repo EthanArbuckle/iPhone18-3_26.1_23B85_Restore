@@ -2,20 +2,20 @@
 - (BOOL)enabled;
 - (NSString)effectName;
 - (NSUUID)identifier;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEffectName:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)set_identifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEffectName:(id)name;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIdentifier:(id)identifier;
+- (void)set_identifier:(id)set_identifier;
 @end
 
 @implementation AXAudioEffectConfiguration
 
-- (void)set_identifier:(id)a3
+- (void)set_identifier:(id)set_identifier
 {
   v4 = *(self + OBJC_IVAR___AXAudioEffectConfiguration__identifier);
-  *(self + OBJC_IVAR___AXAudioEffectConfiguration__identifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AXAudioEffectConfiguration__identifier) = set_identifier;
+  set_identifierCopy = set_identifier;
 }
 
 - (NSUUID)identifier
@@ -25,8 +25,8 @@
   v5 = *(v4 + 64);
   MEMORY[0x1EEE9AC00](v3, v6);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
-  v10 = [(AXAudioEffectConfiguration *)v9 _identifier];
+  selfCopy = self;
+  _identifier = [(AXAudioEffectConfiguration *)selfCopy _identifier];
   sub_19166B1A8();
 
   v11 = sub_19166B188();
@@ -35,7 +35,7 @@
   return v11;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_19166B1C8();
   v5 = *(v4 - 8);
@@ -43,9 +43,9 @@
   MEMORY[0x1EEE9AC00](v4, v7);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19166B1A8();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_19166B188();
-  [(AXAudioEffectConfiguration *)v10 set_identifier:v11];
+  [(AXAudioEffectConfiguration *)selfCopy set_identifier:v11];
 
   (*(v5 + 8))(v9, v4);
 }
@@ -62,7 +62,7 @@
   return v5;
 }
 
-- (void)setEffectName:(id)a3
+- (void)setEffectName:(id)name
 {
   v4 = sub_19166B748();
   v6 = v5;
@@ -80,18 +80,18 @@
   return *(self + v3);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___AXAudioEffectConfiguration_enabled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = enabled;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AXAudioEffectConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AXAudioEffectConfiguration.encode(with:)(coderCopy);
 }
 
 @end

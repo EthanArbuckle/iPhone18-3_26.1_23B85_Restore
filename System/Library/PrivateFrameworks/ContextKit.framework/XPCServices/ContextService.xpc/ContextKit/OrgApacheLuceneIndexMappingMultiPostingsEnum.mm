@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneIndexMappingMultiPostingsEnum
 - (id)getPayload;
-- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum:(id)a3;
+- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum:(id)enum;
 - (int)endOffset;
 - (int)freq;
 - (int)nextDoc;
@@ -12,19 +12,19 @@
 
 @implementation OrgApacheLuceneIndexMappingMultiPostingsEnum
 
-- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum:(id)a3
+- (id)resetWithOrgApacheLuceneIndexMultiPostingsEnum:(id)enum
 {
-  if (!a3)
+  if (!enum)
   {
     JreThrowNullPointerException();
   }
 
-  self->numSubs_ = [a3 getNumSubs];
-  JreStrongAssign(&self->subs_, [a3 getSubs]);
+  self->numSubs_ = [enum getNumSubs];
+  JreStrongAssign(&self->subs_, [enum getSubs]);
   self->upto_ = -1;
   self->doc_ = -1;
   JreStrongAssign(&self->current_, 0);
-  JreStrongAssign(&self->multiDocsAndPositionsEnum_, a3);
+  JreStrongAssign(&self->multiDocsAndPositionsEnum_, enum);
   return self;
 }
 
@@ -50,15 +50,15 @@
     }
 
 LABEL_19:
-    v20 = [(OrgApacheLuceneIndexPostingsEnum *)current nextDoc];
-    if (v20 == 0x7FFFFFFF)
+    nextDoc = [(OrgApacheLuceneIndexPostingsEnum *)current nextDoc];
+    if (nextDoc == 0x7FFFFFFF)
     {
       JreStrongAssign(&self->current_, 0);
     }
 
     else
     {
-      v21 = v20;
+      v21 = nextDoc;
       currentMap = self->currentMap_;
       if (!currentMap)
       {

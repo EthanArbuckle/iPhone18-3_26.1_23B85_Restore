@@ -7,14 +7,14 @@
 - (void)beginPageWithBounds:(CGRect)bounds pageInfo:(NSDictionary *)pageInfo;
 - (void)setDestinationWithName:(NSString *)name forRect:(CGRect)rect;
 - (void)setURL:(NSURL *)url forRect:(CGRect)rect;
-- (void)updateAuxInfo:(id)a3;
+- (void)updateAuxInfo:(id)info;
 @end
 
 @implementation UIGraphicsPDFRendererContext
 
-- (void)updateAuxInfo:(id)a3
+- (void)updateAuxInfo:(id)info
 {
-  v14 = a3;
+  infoCopy = info;
   ContextStack = GetContextStack(0);
   if (*ContextStack >= 1)
   {
@@ -24,17 +24,17 @@
       v5 = v4[3];
       if (v5)
       {
-        [v14 documentBounds];
+        [infoCopy documentBounds];
         *v5 = v6;
         *(v5 + 8) = v7;
         *(v5 + 16) = v8;
         *(v5 + 24) = v9;
-        [v14 pageBounds];
+        [infoCopy pageBounds];
         *(v5 + 32) = v10;
         *(v5 + 40) = v11;
         *(v5 + 48) = v12;
         *(v5 + 56) = v13;
-        *(v5 + 64) = [v14 inPage];
+        *(v5 + 64) = [infoCopy inPage];
       }
     }
   }
@@ -42,8 +42,8 @@
 
 - (void)beginPage
 {
-  v3 = [(UIGraphicsRendererContext *)self format];
-  [v3 bounds];
+  format = [(UIGraphicsRendererContext *)self format];
+  [format bounds];
   [(UIGraphicsPDFRendererContext *)self beginPageWithBounds:MEMORY[0x1E695E0F8] pageInfo:?];
 }
 
@@ -51,17 +51,17 @@
 {
   v34 = bounds;
   v5 = pageInfo;
-  v6 = [(UIGraphicsRendererContext *)self format];
-  v7 = [(UIGraphicsRendererContext *)self CGContext];
+  format = [(UIGraphicsRendererContext *)self format];
+  cGContext = [(UIGraphicsRendererContext *)self CGContext];
   if ([(UIGraphicsPDFRendererContext *)self inPage])
   {
-    CGPDFContextEndPage(v7);
+    CGPDFContextEndPage(cGContext);
   }
 
-  v8 = [v6 documentInfo];
+  documentInfo = [format documentInfo];
   *&v31.a = &v34;
   v9 = *MEMORY[0x1E695F390];
-  v10 = [v8 objectForKey:{*MEMORY[0x1E695F390], &v34}];
+  v10 = [documentInfo objectForKey:{*MEMORY[0x1E695F390], &v34}];
   v11 = v10;
   if (v10)
   {
@@ -131,9 +131,9 @@ LABEL_13:
   }
 
 LABEL_14:
-  CGPDFContextBeginPage(v7, v5);
-  CGContextTranslateCTM(v7, 0.0, ty);
-  CGContextScaleCTM(v7, 1.0, -1.0);
+  CGPDFContextBeginPage(cGContext, v5);
+  CGContextTranslateCTM(cGContext, 0.0, ty);
+  CGContextScaleCTM(cGContext, 1.0, -1.0);
   CGAffineTransformMakeScale(&v31, 1.0, -1.0);
   CGContextSetBaseCTM();
   [(UIGraphicsPDFRendererContext *)self updateAuxInfo:self];
@@ -165,12 +165,12 @@ LABEL_14:
   y = rect.origin.y;
   x = rect.origin.x;
   urla = url;
-  v9 = [(UIGraphicsRendererContext *)self CGContext];
+  cGContext = [(UIGraphicsRendererContext *)self CGContext];
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  CGPDFContextSetURLForRect(v9, urla, v12);
+  CGPDFContextSetURLForRect(cGContext, urla, v12);
 }
 
 - (void)addDestinationWithName:(NSString *)name atPoint:(CGPoint)point
@@ -178,10 +178,10 @@ LABEL_14:
   y = point.y;
   x = point.x;
   namea = name;
-  v7 = [(UIGraphicsRendererContext *)self CGContext];
+  cGContext = [(UIGraphicsRendererContext *)self CGContext];
   v10.x = x;
   v10.y = y;
-  CGPDFContextAddDestinationAtPoint(v7, namea, v10);
+  CGPDFContextAddDestinationAtPoint(cGContext, namea, v10);
 }
 
 - (void)setDestinationWithName:(NSString *)name forRect:(CGRect)rect
@@ -191,12 +191,12 @@ LABEL_14:
   y = rect.origin.y;
   x = rect.origin.x;
   namea = name;
-  v9 = [(UIGraphicsRendererContext *)self CGContext];
+  cGContext = [(UIGraphicsRendererContext *)self CGContext];
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  CGPDFContextSetDestinationForRect(v9, namea, v12);
+  CGPDFContextSetDestinationForRect(cGContext, namea, v12);
 }
 
 - (CGRect)documentBounds

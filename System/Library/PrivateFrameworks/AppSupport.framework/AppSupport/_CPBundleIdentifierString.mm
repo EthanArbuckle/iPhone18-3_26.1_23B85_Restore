@@ -1,22 +1,22 @@
 @interface _CPBundleIdentifierString
-- (id)_initWithExecutablePath:(id)a3;
+- (id)_initWithExecutablePath:(id)path;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
 - (void)_loadBundleIdentifierOrProcessName;
 - (void)dealloc;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation _CPBundleIdentifierString
 
-- (id)_initWithExecutablePath:(id)a3
+- (id)_initWithExecutablePath:(id)path
 {
   v6.receiver = self;
   v6.super_class = _CPBundleIdentifierString;
   v4 = [(_CPBundleIdentifierString *)&v6 init];
   if (v4)
   {
-    v4->_executablePath = a3;
+    v4->_executablePath = path;
   }
 
   return v4;
@@ -74,22 +74,22 @@
   return [(NSString *)bundleIdentifierOrProcessName length];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   [(_CPBundleIdentifierString *)self _loadBundleIdentifierOrProcessName];
   bundleIdentifierOrProcessName = self->_bundleIdentifierOrProcessName;
 
-  return [(NSString *)bundleIdentifierOrProcessName characterAtIndex:a3];
+  return [(NSString *)bundleIdentifierOrProcessName characterAtIndex:index];
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(_CPBundleIdentifierString *)self _loadBundleIdentifierOrProcessName];
   bundleIdentifierOrProcessName = self->_bundleIdentifierOrProcessName;
 
-  [(NSString *)bundleIdentifierOrProcessName getCharacters:a3 range:location, length];
+  [(NSString *)bundleIdentifierOrProcessName getCharacters:characters range:location, length];
 }
 
 @end

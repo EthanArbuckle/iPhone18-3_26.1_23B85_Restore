@@ -1,30 +1,30 @@
 @interface HDDismissedPregnancyLactationInteractionInsertOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithCoder:(id)a3;
-- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithDismissedPregnancyLactationInteractions:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithCoder:(id)coder;
+- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithDismissedPregnancyLactationInteractions:(id)interactions;
 @end
 
 @implementation HDDismissedPregnancyLactationInteractionInsertOperation
 
-- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithDismissedPregnancyLactationInteractions:(id)a3
+- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithDismissedPregnancyLactationInteractions:(id)interactions
 {
-  v5 = a3;
+  interactionsCopy = interactions;
   v9.receiver = self;
   v9.super_class = HDDismissedPregnancyLactationInteractionInsertOperation;
   v6 = [(HDDismissedPregnancyLactationInteractionInsertOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dismissedInteractions, a3);
+    objc_storeStrong(&v6->_dismissedInteractions, interactions);
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  transactionCopy = transaction;
   if ([(NSArray *)self->_dismissedInteractions count])
   {
     v18 = 0u;
@@ -46,7 +46,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if (![HDDismissedPregnancyLactationInteractionEntity _insertDismissedPregnancyLactationInteraction:v7 transaction:a5 error:?])
+          if (![HDDismissedPregnancyLactationInteractionEntity _insertDismissedPregnancyLactationInteraction:transactionCopy transaction:error error:?])
           {
             v13 = 0;
             goto LABEL_12;
@@ -76,16 +76,16 @@ LABEL_12:
   return v13;
 }
 
-- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithCoder:(id)a3
+- (HDDismissedPregnancyLactationInteractionInsertOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HDDismissedPregnancyLactationInteractionInsertOperation;
   v5 = [(HDDismissedPregnancyLactationInteractionInsertOperation *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"dismissed_pregnancy_lactation_interactions"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"dismissed_pregnancy_lactation_interactions"];
     dismissedInteractions = v5->_dismissedInteractions;
     v5->_dismissedInteractions = v7;
   }

@@ -1,41 +1,41 @@
 @interface ATXEngagementRecordManager
 + (ATXEngagementRecordManager)sharedInstance;
 - (ATXEngagementRecordManager)init;
-- (ATXEngagementRecordManager)initWithCacheDirectory:(id)a3;
-- (BOOL)_writeData:(id)a3;
-- (BOOL)hasEngagedWithExecutable:(id)a3 engagedExecutables:(id)a4;
-- (BOOL)hasEngagedWithExecutable:(id)a3 engagementRecordType:(unint64_t)a4;
-- (BOOL)hasEngagedWithSuggestion:(id)a3 engagedExecutables:(id)a4;
-- (BOOL)hasEngagedWithSuggestion:(id)a3 engagementRecordType:(unint64_t)a4;
-- (BOOL)hasReferenceForSuggestion:(id)a3;
+- (ATXEngagementRecordManager)initWithCacheDirectory:(id)directory;
+- (BOOL)_writeData:(id)data;
+- (BOOL)hasEngagedWithExecutable:(id)executable engagedExecutables:(id)executables;
+- (BOOL)hasEngagedWithExecutable:(id)executable engagementRecordType:(unint64_t)type;
+- (BOOL)hasEngagedWithSuggestion:(id)suggestion engagedExecutables:(id)executables;
+- (BOOL)hasEngagedWithSuggestion:(id)suggestion engagementRecordType:(unint64_t)type;
+- (BOOL)hasReferenceForSuggestion:(id)suggestion;
 - (NSString)description;
 - (id)_engagedEntriesNoSync;
-- (id)_engagedEntriesNoSyncOfType:(unint64_t)a3 queryOptions:(unint64_t)a4;
-- (id)_identifiersFromEntries:(id)a3;
+- (id)_engagedEntriesNoSyncOfType:(unint64_t)type queryOptions:(unint64_t)options;
+- (id)_identifiersFromEntries:(id)entries;
 - (id)_readData;
-- (id)engagedExecutablesOfType:(unint64_t)a3 queryOptions:(unint64_t)a4;
+- (id)engagedExecutablesOfType:(unint64_t)type queryOptions:(unint64_t)options;
 - (id)jsonDict;
-- (unint64_t)_referenceCountForExecutable:(id)a3;
-- (void)_addEngagedExcutableNoSync:(id)a3 clientModelId:(id)a4 type:(unint64_t)a5;
-- (void)_addEngagedSuggestionNoSync:(id)a3 type:(unint64_t)a4;
-- (void)_addHiddenSuggestionNoSync:(id)a3 duration:(double)a4 engagementRecordType:(unint64_t)a5;
+- (unint64_t)_referenceCountForExecutable:(id)executable;
+- (void)_addEngagedExcutableNoSync:(id)sync clientModelId:(id)id type:(unint64_t)type;
+- (void)_addEngagedSuggestionNoSync:(id)sync type:(unint64_t)type;
+- (void)_addHiddenSuggestionNoSync:(id)sync duration:(double)duration engagementRecordType:(unint64_t)type;
 - (void)_engagedEntriesNoSync;
-- (void)_filterOutExplicitEngagementsThatShouldNotClearOnEngagement:(id)a3;
-- (void)_logDidAddEntryToBiomeStream:(id)a3;
+- (void)_filterOutExplicitEngagementsThatShouldNotClearOnEngagement:(id)engagement;
+- (void)_logDidAddEntryToBiomeStream:(id)stream;
 - (void)_readData;
 - (void)_removeEngagedSuggestionsIfPossibleNoSync;
-- (void)_removeEngagementsOnQueuePassingTest:(id)a3;
-- (void)_serializeAndWriteNoSyncSet:(id)a3;
-- (void)addEngagedExecutable:(id)a3 clientModelId:(id)a4 engagementRecordType:(unint64_t)a5;
-- (void)addEngagedSuggestion:(id)a3 engagementRecordType:(unint64_t)a4;
-- (void)addHiddenSuggestion:(id)a3 duration:(double)a4 engagementRecordType:(unint64_t)a5;
-- (void)fetchEngagedEntriesWithCompletionHandler:(id)a3;
-- (void)removeAllEngagementsForSuggestion:(id)a3;
-- (void)removeAllEngagementsOfRecordType:(unint64_t)a3;
-- (void)removeAllEngagementsWithCompletion:(id)a3;
-- (void)removeEngagementForExecutableIdentifier:(id)a3 recordType:(unint64_t)a4 abortingRemovalIfEngagementDateIsLaterThanDate:(id)a5;
-- (void)removeEngagementForSuggestion:(id)a3 recordType:(unint64_t)a4;
-- (void)updateForClientModelCacheUpdate:(id)a3 clientModelId:(id)a4;
+- (void)_removeEngagementsOnQueuePassingTest:(id)test;
+- (void)_serializeAndWriteNoSyncSet:(id)set;
+- (void)addEngagedExecutable:(id)executable clientModelId:(id)id engagementRecordType:(unint64_t)type;
+- (void)addEngagedSuggestion:(id)suggestion engagementRecordType:(unint64_t)type;
+- (void)addHiddenSuggestion:(id)suggestion duration:(double)duration engagementRecordType:(unint64_t)type;
+- (void)fetchEngagedEntriesWithCompletionHandler:(id)handler;
+- (void)removeAllEngagementsForSuggestion:(id)suggestion;
+- (void)removeAllEngagementsOfRecordType:(unint64_t)type;
+- (void)removeAllEngagementsWithCompletion:(id)completion;
+- (void)removeEngagementForExecutableIdentifier:(id)identifier recordType:(unint64_t)type abortingRemovalIfEngagementDateIsLaterThanDate:(id)date;
+- (void)removeEngagementForSuggestion:(id)suggestion recordType:(unint64_t)type;
+- (void)updateForClientModelCacheUpdate:(id)update clientModelId:(id)id;
 @end
 
 @implementation ATXEngagementRecordManager
@@ -199,8 +199,8 @@ uint64_t __51__ATXEngagementRecordManager__engagedEntriesNoSync__block_invoke(ui
 
 - (ATXEngagementRecordManager)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-  v4 = [(ATXEngagementRecordManager *)self initWithCacheDirectory:v3];
+  appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+  v4 = [(ATXEngagementRecordManager *)self initWithCacheDirectory:appPredictionCacheDirectory];
 
   return v4;
 }
@@ -251,9 +251,9 @@ LABEL_3:
   return v4;
 }
 
-- (ATXEngagementRecordManager)initWithCacheDirectory:(id)a3
+- (ATXEngagementRecordManager)initWithCacheDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v18.receiver = self;
   v18.super_class = ATXEngagementRecordManager;
   v5 = [(ATXEngagementRecordManager *)&v18 init];
@@ -261,19 +261,19 @@ LABEL_3:
   if (v5)
   {
     v5->_minDurationForTrackedReferencesToStayAround = 900.0;
-    v7 = [v4 stringByAppendingPathComponent:@"ATXEngagementRecords.pb"];
+    v7 = [directoryCopy stringByAppendingPathComponent:@"ATXEngagementRecords.pb"];
     path = v6->_path;
     v6->_path = v7;
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v10 UTF8String];
+    uTF8String = [v10 UTF8String];
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v6->_queue;
     v6->_queue = v13;
 
-    v15 = [[ATXExecutableReferenceManager alloc] initWithCacheDirectory:v4 minDurationForTrackedReferencesToStayAround:v6->_minDurationForTrackedReferencesToStayAround];
+    v15 = [[ATXExecutableReferenceManager alloc] initWithCacheDirectory:directoryCopy minDurationForTrackedReferencesToStayAround:v6->_minDurationForTrackedReferencesToStayAround];
     referenceManager = v6->_referenceManager;
     v6->_referenceManager = v15;
   }
@@ -370,20 +370,20 @@ void __38__ATXEngagementRecordManager_jsonDict__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateForClientModelCacheUpdate:(id)a3 clientModelId:(id)a4
+- (void)updateForClientModelCacheUpdate:(id)update clientModelId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  idCopy = id;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__ATXEngagementRecordManager_updateForClientModelCacheUpdate_clientModelId___block_invoke;
   block[3] = &unk_1E80C1728;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = idCopy;
+  selfCopy = self;
+  v14 = updateCopy;
+  v9 = updateCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -455,9 +455,9 @@ LABEL_6:
   return [v5 _removeEngagedSuggestionsIfPossibleNoSync];
 }
 
-- (BOOL)hasEngagedWithSuggestion:(id)a3 engagementRecordType:(unint64_t)a4
+- (BOOL)hasEngagedWithSuggestion:(id)suggestion engagementRecordType:(unint64_t)type
 {
-  v6 = a3;
+  suggestionCopy = suggestion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -468,10 +468,10 @@ LABEL_6:
   v10[2] = __76__ATXEngagementRecordManager_hasEngagedWithSuggestion_engagementRecordType___block_invoke;
   v10[3] = &unk_1E80C2D20;
   v12 = &v14;
-  v13 = a4;
+  typeCopy = type;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = suggestionCopy;
+  v8 = suggestionCopy;
   dispatch_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -507,19 +507,19 @@ void __76__ATXEngagementRecordManager_hasEngagedWithSuggestion_engagementRecordT
   *(*(*(a1 + 48) + 8) + 24) = [v2 hasEngagedWithSuggestion:v3 engagedExecutables:v4];
 }
 
-- (BOOL)hasEngagedWithSuggestion:(id)a3 engagedExecutables:(id)a4
+- (BOOL)hasEngagedWithSuggestion:(id)suggestion engagedExecutables:(id)executables
 {
-  v5 = a3;
-  v6 = a4;
+  suggestionCopy = suggestion;
+  executablesCopy = executables;
   v7 = ATXAllowedEngagementRecordManagerClasses();
-  v8 = [v5 executableSpecification];
-  v9 = [v8 executableClassString];
-  v10 = [v7 containsObject:v9];
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableClassString = [executableSpecification executableClassString];
+  v10 = [v7 containsObject:executableClassString];
 
   if (v10)
   {
-    v11 = ATXExecutableIdentifierForSuggestion(v5);
-    v12 = [v6 containsObject:v11];
+    v11 = ATXExecutableIdentifierForSuggestion(suggestionCopy);
+    v12 = [executablesCopy containsObject:v11];
   }
 
   else
@@ -530,9 +530,9 @@ void __76__ATXEngagementRecordManager_hasEngagedWithSuggestion_engagementRecordT
   return v12;
 }
 
-- (BOOL)hasEngagedWithExecutable:(id)a3 engagementRecordType:(unint64_t)a4
+- (BOOL)hasEngagedWithExecutable:(id)executable engagementRecordType:(unint64_t)type
 {
-  v6 = a3;
+  executableCopy = executable;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -543,10 +543,10 @@ void __76__ATXEngagementRecordManager_hasEngagedWithSuggestion_engagementRecordT
   v10[2] = __76__ATXEngagementRecordManager_hasEngagedWithExecutable_engagementRecordType___block_invoke;
   v10[3] = &unk_1E80C2D20;
   v12 = &v14;
-  v13 = a4;
+  typeCopy = type;
   v10[4] = self;
-  v11 = v6;
-  v8 = v6;
+  v11 = executableCopy;
+  v8 = executableCopy;
   dispatch_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -580,17 +580,17 @@ void __76__ATXEngagementRecordManager_hasEngagedWithExecutable_engagementRecordT
   *(*(*(a1 + 48) + 8) + 24) = [*(a1 + 32) hasEngagedWithExecutable:*(a1 + 40) engagedExecutables:v2];
 }
 
-- (BOOL)hasEngagedWithExecutable:(id)a3 engagedExecutables:(id)a4
+- (BOOL)hasEngagedWithExecutable:(id)executable engagedExecutables:(id)executables
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ATXExecutableIdentifier alloc] initWithString:v6];
+  executablesCopy = executables;
+  executableCopy = executable;
+  v7 = [[ATXExecutableIdentifier alloc] initWithString:executableCopy];
 
-  LOBYTE(v6) = [v5 containsObject:v7];
-  return v6;
+  LOBYTE(executableCopy) = [executablesCopy containsObject:v7];
+  return executableCopy;
 }
 
-- (void)_filterOutExplicitEngagementsThatShouldNotClearOnEngagement:(id)a3
+- (void)_filterOutExplicitEngagementsThatShouldNotClearOnEngagement:(id)engagement
 {
   v3 = MEMORY[0x1E696AE18];
   v6[0] = MEMORY[0x1E69E9820];
@@ -598,9 +598,9 @@ void __76__ATXEngagementRecordManager_hasEngagedWithExecutable_engagementRecordT
   v6[2] = __90__ATXEngagementRecordManager__filterOutExplicitEngagementsThatShouldNotClearOnEngagement___block_invoke;
   v6[3] = &unk_1E80C2D48;
   v6[4] = self;
-  v4 = a3;
+  engagementCopy = engagement;
   v5 = [v3 predicateWithBlock:v6];
-  [v4 filterUsingPredicate:v5];
+  [engagementCopy filterUsingPredicate:v5];
 }
 
 uint64_t __90__ATXEngagementRecordManager__filterOutExplicitEngagementsThatShouldNotClearOnEngagement___block_invoke(uint64_t a1, void *a2)
@@ -621,7 +621,7 @@ uint64_t __90__ATXEngagementRecordManager__filterOutExplicitEngagementsThatShoul
   return v4;
 }
 
-- (id)engagedExecutablesOfType:(unint64_t)a3 queryOptions:(unint64_t)a4
+- (id)engagedExecutablesOfType:(unint64_t)type queryOptions:(unint64_t)options
 {
   v8 = 0;
   v9 = &v8;
@@ -636,8 +636,8 @@ uint64_t __90__ATXEngagementRecordManager__filterOutExplicitEngagementsThatShoul
   v7[3] = &unk_1E80C2D70;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = type;
+  v7[7] = options;
   dispatch_sync(queue, v7);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -670,18 +670,18 @@ void __68__ATXEngagementRecordManager_engagedExecutablesOfType_queryOptions___bl
   *(v4 + 40) = v3;
 }
 
-- (void)addEngagedSuggestion:(id)a3 engagementRecordType:(unint64_t)a4
+- (void)addEngagedSuggestion:(id)suggestion engagementRecordType:(unint64_t)type
 {
-  v6 = a3;
+  suggestionCopy = suggestion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__ATXEngagementRecordManager_addEngagedSuggestion_engagementRecordType___block_invoke;
   block[3] = &unk_1E80C2D98;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = suggestionCopy;
+  typeCopy = type;
+  v8 = suggestionCopy;
   dispatch_async(queue, block);
 }
 
@@ -695,11 +695,11 @@ uint64_t __72__ATXEngagementRecordManager_addEngagedSuggestion_engagementRecordT
   return [v2 _addEngagedSuggestionNoSync:v3 type:v4];
 }
 
-- (void)addEngagedExecutable:(id)a3 clientModelId:(id)a4 engagementRecordType:(unint64_t)a5
+- (void)addEngagedExecutable:(id)executable clientModelId:(id)id engagementRecordType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length])
+  executableCopy = executable;
+  idCopy = id;
+  if ([executableCopy length])
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -707,9 +707,9 @@ uint64_t __72__ATXEngagementRecordManager_addEngagedSuggestion_engagementRecordT
     v12[2] = __86__ATXEngagementRecordManager_addEngagedExecutable_clientModelId_engagementRecordType___block_invoke;
     v12[3] = &unk_1E80C2DC0;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = a5;
+    v13 = executableCopy;
+    v14 = idCopy;
+    typeCopy = type;
     dispatch_async(queue, v12);
   }
 
@@ -718,7 +718,7 @@ uint64_t __72__ATXEngagementRecordManager_addEngagedSuggestion_engagementRecordT
     v11 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      [ATXEngagementRecordManager addEngagedExecutable:a5 clientModelId:v11 engagementRecordType:?];
+      [ATXEngagementRecordManager addEngagedExecutable:type clientModelId:v11 engagementRecordType:?];
     }
   }
 }
@@ -731,31 +731,31 @@ void __86__ATXEngagementRecordManager_addEngagedExecutable_clientModelId_engagem
   [*(a1 + 32) _addEngagedExcutableNoSync:v2 clientModelId:*(a1 + 48) type:*(a1 + 56)];
 }
 
-- (void)addHiddenSuggestion:(id)a3 duration:(double)a4 engagementRecordType:(unint64_t)a5
+- (void)addHiddenSuggestion:(id)suggestion duration:(double)duration engagementRecordType:(unint64_t)type
 {
-  v8 = a3;
+  suggestionCopy = suggestion;
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__ATXEngagementRecordManager_addHiddenSuggestion_duration_engagementRecordType___block_invoke;
   v11[3] = &unk_1E80C16D8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = suggestionCopy;
+  durationCopy = duration;
+  typeCopy = type;
+  v10 = suggestionCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)removeEngagementForSuggestion:(id)a3 recordType:(unint64_t)a4
+- (void)removeEngagementForSuggestion:(id)suggestion recordType:(unint64_t)type
 {
-  v6 = ATXExecutableIdentifierForSuggestion(a3);
+  v6 = ATXExecutableIdentifierForSuggestion(suggestion);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__ATXEngagementRecordManager_removeEngagementForSuggestion_recordType___block_invoke;
   v8[3] = &unk_1E80C2E10;
   v9 = v6;
-  v10 = a4;
+  typeCopy = type;
   v7 = v6;
   [(ATXEngagementRecordManager *)self _removeEngagementsOnQueuePassingTest:v8];
 }
@@ -777,9 +777,9 @@ BOOL __71__ATXEngagementRecordManager_removeEngagementForSuggestion_recordType__
   return v5;
 }
 
-- (void)removeAllEngagementsForSuggestion:(id)a3
+- (void)removeAllEngagementsForSuggestion:(id)suggestion
 {
-  v4 = ATXExecutableIdentifierForSuggestion(a3);
+  v4 = ATXExecutableIdentifierForSuggestion(suggestion);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__ATXEngagementRecordManager_removeAllEngagementsForSuggestion___block_invoke;
@@ -797,34 +797,34 @@ uint64_t __64__ATXEngagementRecordManager_removeAllEngagementsForSuggestion___bl
   return v4;
 }
 
-- (void)removeAllEngagementsOfRecordType:(unint64_t)a3
+- (void)removeAllEngagementsOfRecordType:(unint64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __63__ATXEngagementRecordManager_removeAllEngagementsOfRecordType___block_invoke;
   v3[3] = &__block_descriptor_40_e34_B16__0__ATXEngagementRecordEntry_8l;
-  v3[4] = a3;
+  v3[4] = type;
   [(ATXEngagementRecordManager *)self _removeEngagementsOnQueuePassingTest:v3];
 }
 
-- (void)removeEngagementForExecutableIdentifier:(id)a3 recordType:(unint64_t)a4 abortingRemovalIfEngagementDateIsLaterThanDate:(id)a5
+- (void)removeEngagementForExecutableIdentifier:(id)identifier recordType:(unint64_t)type abortingRemovalIfEngagementDateIsLaterThanDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v9 = [MEMORY[0x1E695DF00] distantFuture];
+    dateCopy = [MEMORY[0x1E695DF00] distantFuture];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __128__ATXEngagementRecordManager_removeEngagementForExecutableIdentifier_recordType_abortingRemovalIfEngagementDateIsLaterThanDate___block_invoke;
   v12[3] = &unk_1E80C2E80;
-  v14 = v9;
-  v15 = a4;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = dateCopy;
+  typeCopy = type;
+  v13 = identifierCopy;
+  v10 = dateCopy;
+  v11 = identifierCopy;
   [(ATXEngagementRecordManager *)self _removeEngagementsOnQueuePassingTest:v12];
 }
 
@@ -890,17 +890,17 @@ LABEL_8:
   return v14;
 }
 
-- (void)_removeEngagementsOnQueuePassingTest:(id)a3
+- (void)_removeEngagementsOnQueuePassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__ATXEngagementRecordManager__removeEngagementsOnQueuePassingTest___block_invoke;
   v7[3] = &unk_1E80C0D78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = testCopy;
+  v6 = testCopy;
   dispatch_async(queue, v7);
 }
 
@@ -952,17 +952,17 @@ void __67__ATXEngagementRecordManager__removeEngagementsOnQueuePassingTest___blo
   }
 }
 
-- (void)removeAllEngagementsWithCompletion:(id)a3
+- (void)removeAllEngagementsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__ATXEngagementRecordManager_removeAllEngagementsWithCompletion___block_invoke;
   v7[3] = &unk_1E80C0D78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -977,24 +977,24 @@ uint64_t __65__ATXEngagementRecordManager_removeAllEngagementsWithCompletion___b
   return v4();
 }
 
-- (BOOL)hasReferenceForSuggestion:(id)a3
+- (BOOL)hasReferenceForSuggestion:(id)suggestion
 {
-  v4 = ATXExecutableIdentifierForSuggestion(a3);
+  v4 = ATXExecutableIdentifierForSuggestion(suggestion);
   LOBYTE(self) = [(ATXEngagementRecordManager *)self _referenceCountForExecutable:v4]!= 0;
 
   return self;
 }
 
-- (id)_identifiersFromEntries:(id)a3
+- (id)_identifiersFromEntries:(id)entries
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entriesCopy = entries;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = entriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1009,8 +1009,8 @@ uint64_t __65__ATXEngagementRecordManager_removeAllEngagementsWithCompletion___b
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) executable];
-        [v4 addObject:v10];
+        executable = [*(*(&v12 + 1) + 8 * i) executable];
+        [v4 addObject:executable];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1022,9 +1022,9 @@ uint64_t __65__ATXEngagementRecordManager_removeAllEngagementsWithCompletion___b
   return v4;
 }
 
-- (id)_engagedEntriesNoSyncOfType:(unint64_t)a3 queryOptions:(unint64_t)a4
+- (id)_engagedEntriesNoSyncOfType:(unint64_t)type queryOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v25 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   v7 = objc_opt_new();
@@ -1032,9 +1032,9 @@ uint64_t __65__ATXEngagementRecordManager_removeAllEngagementsWithCompletion___b
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = self;
-  v8 = [(ATXEngagementRecordManager *)self _engagedEntriesNoSync];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  _engagedEntriesNoSync = [(ATXEngagementRecordManager *)self _engagedEntriesNoSync];
+  v9 = [_engagedEntriesNoSync countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1045,21 +1045,21 @@ uint64_t __65__ATXEngagementRecordManager_removeAllEngagementsWithCompletion___b
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_engagedEntriesNoSync);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        if (([v13 engagementRecordType] & a3) != 0)
+        if (([v13 engagementRecordType] & type) != 0)
         {
-          if (v4)
+          if (optionsCopy)
           {
-            if ((v4 & 2) == 0 || [v13 engagementRecordType] == a3)
+            if ((optionsCopy & 2) == 0 || [v13 engagementRecordType] == type)
             {
-              referenceManager = v19->_referenceManager;
-              v15 = [v13 executable];
-              LOBYTE(referenceManager) = [(ATXExecutableReferenceManager *)referenceManager isExecutableHidden:v15];
+              referenceManager = selfCopy->_referenceManager;
+              executable = [v13 executable];
+              LOBYTE(referenceManager) = [(ATXExecutableReferenceManager *)referenceManager isExecutableHidden:executable];
 
-              if (referenceManager & 1) != 0 || (v16 = v19->_referenceManager, [v13 executable], v17 = objc_claimAutoreleasedReturnValue(), LOBYTE(v16) = -[ATXExecutableReferenceManager canExecutableClearOnEngagement:](v16, "canExecutableClearOnEngagement:", v17), v17, (v16))
+              if (referenceManager & 1) != 0 || (v16 = selfCopy->_referenceManager, [v13 executable], v17 = objc_claimAutoreleasedReturnValue(), LOBYTE(v16) = -[ATXExecutableReferenceManager canExecutableClearOnEngagement:](v16, "canExecutableClearOnEngagement:", v17), v17, (v16))
               {
 LABEL_15:
                 [v7 addObject:v13];
@@ -1068,14 +1068,14 @@ LABEL_15:
             }
           }
 
-          else if ((v4 & 2) == 0 || [v13 engagementRecordType] == a3)
+          else if ((optionsCopy & 2) == 0 || [v13 engagementRecordType] == type)
           {
             goto LABEL_15;
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [_engagedEntriesNoSync countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -1084,17 +1084,17 @@ LABEL_15:
   return v7;
 }
 
-- (void)fetchEngagedEntriesWithCompletionHandler:(id)a3
+- (void)fetchEngagedEntriesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__ATXEngagementRecordManager_fetchEngagedEntriesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E80C2008;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1105,23 +1105,23 @@ void __71__ATXEngagementRecordManager_fetchEngagedEntriesWithCompletionHandler__
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_addEngagedSuggestionNoSync:(id)a3 type:(unint64_t)a4
+- (void)_addEngagedSuggestionNoSync:(id)sync type:(unint64_t)type
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  syncCopy = sync;
   dispatch_assert_queue_V2(self->_queue);
   v7 = ATXAllowedEngagementRecordManagerClasses();
-  v8 = [v6 executableSpecification];
-  v9 = [v8 executableClassString];
-  v10 = [v7 containsObject:v9];
+  executableSpecification = [syncCopy executableSpecification];
+  executableClassString = [executableSpecification executableClassString];
+  v10 = [v7 containsObject:executableClassString];
 
   if (v10)
   {
-    v11 = ATXExecutableIdentifierForSuggestion(v6);
-    v12 = [v6 clientModelSpecification];
-    v13 = [v12 clientModelId];
+    v11 = ATXExecutableIdentifierForSuggestion(syncCopy);
+    clientModelSpecification = [syncCopy clientModelSpecification];
+    clientModelId = [clientModelSpecification clientModelId];
 
-    [(ATXEngagementRecordManager *)self _addEngagedExcutableNoSync:v11 clientModelId:v13 type:a4];
+    [(ATXEngagementRecordManager *)self _addEngagedExcutableNoSync:v11 clientModelId:clientModelId type:type];
     v14 = __atxlog_handle_default();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1130,40 +1130,40 @@ void __71__ATXEngagementRecordManager_fetchEngagedEntriesWithCompletionHandler__
       v20 = 138412546;
       v21 = v16;
       v22 = 2112;
-      v23 = v6;
+      v23 = syncCopy;
       _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEFAULT, "%@ - adding engaged suggestion to engagement record manager: %@", &v20, 0x16u);
     }
 
-    if (a4 == 4)
+    if (type == 4)
     {
       v17 = __atxlog_handle_home_screen();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v6 executableSpecification];
-        v19 = [v18 executableIdentifier];
+        executableSpecification2 = [syncCopy executableSpecification];
+        executableIdentifier = [executableSpecification2 executableIdentifier];
         v20 = 138412290;
-        v21 = v19;
+        v21 = executableIdentifier;
         _os_log_impl(&dword_1BF549000, v17, OS_LOG_TYPE_DEFAULT, "EngagementRecordManager: adding inferred engagement for suggestion with executable spec ID %@", &v20, 0xCu);
       }
     }
   }
 }
 
-- (void)_addEngagedExcutableNoSync:(id)a3 clientModelId:(id)a4 type:(unint64_t)a5
+- (void)_addEngagedExcutableNoSync:(id)sync clientModelId:(id)id type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  syncCopy = sync;
+  idCopy = id;
   referenceManager = self->_referenceManager;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__ATXEngagementRecordManager__addEngagedExcutableNoSync_clientModelId_type___block_invoke;
   v13[3] = &unk_1E80C2DC0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = syncCopy;
+  v15 = idCopy;
+  typeCopy = type;
+  v11 = idCopy;
+  v12 = syncCopy;
   [(ATXExecutableReferenceManager *)referenceManager performBatchUpdateOfReferencesWithBlock:v13];
 }
 
@@ -1182,30 +1182,30 @@ void __76__ATXEngagementRecordManager__addEngagedExcutableNoSync_clientModelId_t
   [*(a1 + 32) _logDidAddEntryToBiomeStream:v5];
 }
 
-- (void)_addHiddenSuggestionNoSync:(id)a3 duration:(double)a4 engagementRecordType:(unint64_t)a5
+- (void)_addHiddenSuggestionNoSync:(id)sync duration:(double)duration engagementRecordType:(unint64_t)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  syncCopy = sync;
   dispatch_assert_queue_V2(self->_queue);
   v9 = ATXAllowedEngagementRecordManagerClasses();
-  v10 = [v8 executableSpecification];
-  v11 = [v10 executableClassString];
-  v12 = [v9 containsObject:v11];
+  executableSpecification = [syncCopy executableSpecification];
+  executableClassString = [executableSpecification executableClassString];
+  v12 = [v9 containsObject:executableClassString];
 
   if (v12)
   {
-    v13 = ATXExecutableIdentifierForSuggestion(v8);
+    v13 = ATXExecutableIdentifierForSuggestion(syncCopy);
     referenceManager = self->_referenceManager;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __87__ATXEngagementRecordManager__addHiddenSuggestionNoSync_duration_engagementRecordType___block_invoke;
     v20[3] = &unk_1E80C2EA8;
-    v23 = a4;
+    durationCopy = duration;
     v20[4] = self;
     v21 = v13;
-    v15 = v8;
+    v15 = syncCopy;
     v22 = v15;
-    v24 = a5;
+    typeCopy = type;
     v16 = v13;
     [(ATXExecutableReferenceManager *)referenceManager performBatchUpdateOfReferencesWithBlock:v20];
     v17 = __atxlog_handle_default();
@@ -1249,10 +1249,10 @@ void __87__ATXEngagementRecordManager__addHiddenSuggestionNoSync_duration_engage
   [*(a1 + 32) _logDidAddEntryToBiomeStream:v12];
 }
 
-- (void)_logDidAddEntryToBiomeStream:(id)a3
+- (void)_logDidAddEntryToBiomeStream:(id)stream
 {
   queue = self->_queue;
-  v5 = a3;
+  streamCopy = stream;
   dispatch_assert_queue_V2(queue);
   if (!self->_eventStream)
   {
@@ -1262,25 +1262,25 @@ void __87__ATXEngagementRecordManager__addHiddenSuggestionNoSync_duration_engage
   }
 
   referenceManager = self->_referenceManager;
-  v9 = [v5 executable];
-  v14 = [(ATXExecutableReferenceManager *)referenceManager clientModelIdsForExecutable:v9];
+  executable = [streamCopy executable];
+  v14 = [(ATXExecutableReferenceManager *)referenceManager clientModelIdsForExecutable:executable];
 
   v10 = [ATXERMEvent alloc];
   v11 = objc_opt_new();
-  v12 = [(ATXERMEvent *)v10 initWithEventDate:v11 eventType:1 recordEntry:v5 clientModelIds:v14];
+  v12 = [(ATXERMEvent *)v10 initWithEventDate:v11 eventType:1 recordEntry:streamCopy clientModelIds:v14];
 
-  v13 = [(ATXBiomeERMStream *)self->_eventStream source];
-  [v13 sendEvent:v12];
+  source = [(ATXBiomeERMStream *)self->_eventStream source];
+  [source sendEvent:v12];
 }
 
-- (void)_serializeAndWriteNoSyncSet:(id)a3
+- (void)_serializeAndWriteNoSyncSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   v14 = 0;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v14];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:setCopy requiringSecureCoding:1 error:&v14];
   v8 = v14;
   objc_autoreleasePoolPop(v6);
   if (v7)
@@ -1314,10 +1314,10 @@ void __87__ATXEngagementRecordManager__addHiddenSuggestionNoSync_duration_engage
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)_writeData:(id)a3
+- (BOOL)_writeData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = open([(NSString *)self->_path fileSystemRepresentation], 514, 384);
   if (v5 == -1)
   {
@@ -1351,9 +1351,9 @@ void __87__ATXEngagementRecordManager__addHiddenSuggestionNoSync_duration_engage
   return v7;
 }
 
-- (unint64_t)_referenceCountForExecutable:(id)a3
+- (unint64_t)_referenceCountForExecutable:(id)executable
 {
-  v4 = a3;
+  executableCopy = executable;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1363,10 +1363,10 @@ void __87__ATXEngagementRecordManager__addHiddenSuggestionNoSync_duration_engage
   block[1] = 3221225472;
   block[2] = __59__ATXEngagementRecordManager__referenceCountForExecutable___block_invoke;
   block[3] = &unk_1E80C2ED0;
-  v10 = v4;
+  v10 = executableCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = executableCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -1393,7 +1393,7 @@ uint64_t __59__ATXEngagementRecordManager__referenceCountForExecutable___block_i
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "Unable to get recent suggestions: %@", &v2, 0xCu);
 }
 

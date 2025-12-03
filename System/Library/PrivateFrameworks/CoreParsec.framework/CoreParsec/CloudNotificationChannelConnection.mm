@@ -1,54 +1,54 @@
 @interface CloudNotificationChannelConnection
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation CloudNotificationChannelConnection
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = a4;
-  if (a4)
+  tokenCopy = token;
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = v4;
-    v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    connectionCopy = connection;
+    selfCopy = self;
+    v8 = tokenCopy;
+    tokenCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
   else
   {
-    v12 = a3;
-    v11 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v10 = 0xF000000000000000;
   }
 
-  sub_1000778DC(v11, v4, v10);
-  sub_100014A2C(v4, v10);
+  sub_1000778DC(selfCopy2, tokenCopy, v10);
+  sub_100014A2C(tokenCopy, v10);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100077BC8(v8, a4);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  sub_100077BC8(selfCopy, message);
 }
 
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures
 {
-  v4 = a4;
-  if (a4)
+  failuresCopy = failures;
+  if (failures)
   {
     sub_100078E68();
-    v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    failuresCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100078678(v9, v8, v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_100078678(v9, selfCopy, failuresCopy);
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface BSServiceManager
-+ (id)_sharedInstanceCreatingIfNecessary:(uint64_t)a1;
++ (id)_sharedInstanceCreatingIfNecessary:(uint64_t)necessary;
 + (id)debugDescription;
 + (id)sharedInstance;
 + (id)sharedInstanceIfCreated;
-+ (void)validateDynamicConfiguration:(void *)a3 withDebugInfo:;
++ (void)validateDynamicConfiguration:(void *)configuration withDebugInfo:;
 - (BSServiceManager)init;
-- (id)_lock_registerDomain:(uint64_t)a1;
-- (id)activateManualDomain:(uint64_t)a1;
+- (id)_lock_registerDomain:(uint64_t)domain;
+- (id)activateManualDomain:(uint64_t)domain;
 - (id)debugDescription;
-- (id)domainWithIdentifier:(uint64_t)a1;
-- (id)registerDynamicConfiguration:(uint64_t)a1;
-- (id)viewServiceConfigurationRegisteringIfNecessary:(uint64_t)a1;
+- (id)domainWithIdentifier:(uint64_t)identifier;
+- (id)registerDynamicConfiguration:(uint64_t)configuration;
+- (id)viewServiceConfigurationRegisteringIfNecessary:(uint64_t)necessary;
 - (os_unfair_lock_s)extendAutomaticBootstrapCompletion;
 - (void)activateViewServiceConfiguration;
 - (void)dealloc;
@@ -36,22 +36,22 @@
 - (void)activateViewServiceConfiguration
 {
   v65 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_24;
   }
 
-  v42 = [(BSServiceManager *)a1 viewServiceConfigurationRegisteringIfNecessary:?];
-  v2 = [v42 domains];
-  v3 = [v2 count];
+  v42 = [(BSServiceManager *)self viewServiceConfigurationRegisteringIfNecessary:?];
+  domains = [v42 domains];
+  v3 = [domains count];
   if (!v3)
   {
     goto LABEL_23;
   }
 
   v4 = [MEMORY[0x1E695DFA8] setWithCapacity:v3];
-  os_unfair_lock_lock((a1 + 56));
-  if (*(a1 + 73) == 1)
+  os_unfair_lock_lock((self + 56));
+  if (*(self + 73) == 1)
   {
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call before invalidation"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@
       v55 = 2114;
       v56 = v32;
       v57 = 2048;
-      v58 = a1;
+      selfCopy3 = self;
       v59 = 2114;
       v60 = @"BSServiceManager.m";
       v61 = 1024;
@@ -85,7 +85,7 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v5 = v2;
+  v5 = domains;
   v6 = [v5 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v6)
   {
@@ -100,15 +100,15 @@
         }
 
         v9 = *(*(&v47 + 1) + 8 * i);
-        v10 = *(a1 + 48);
-        v11 = [v9 identifier];
-        v12 = [v10 objectForKey:v11];
+        v10 = *(self + 48);
+        identifier = [v9 identifier];
+        v12 = [v10 objectForKey:identifier];
 
         if (!v12)
         {
           v22 = MEMORY[0x1E696AEC0];
-          v23 = [v9 identifier];
-          v24 = [v22 stringWithFormat:@"attempt to activate unknown domain %@", v23];
+          identifier2 = [v9 identifier];
+          v24 = [v22 stringWithFormat:@"attempt to activate unknown domain %@", identifier2];
 
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -120,7 +120,7 @@
             v55 = 2114;
             v56 = v27;
             v57 = 2048;
-            v58 = a1;
+            selfCopy3 = self;
             v59 = 2114;
             v60 = @"BSServiceManager.m";
             v61 = 1024;
@@ -146,7 +146,7 @@
     while (v6);
   }
 
-  os_unfair_lock_unlock((a1 + 56));
+  os_unfair_lock_unlock((self + 56));
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -194,7 +194,7 @@ LABEL_33:
           v55 = 2114;
           v56 = v40;
           v57 = 2048;
-          v58 = a1;
+          selfCopy3 = self;
           v59 = 2114;
           v60 = @"BSServiceManager.m";
           v61 = 1024;
@@ -212,7 +212,7 @@ LABEL_36:
         JUMPOUT(0x19A82BEC4);
       }
 
-      v20 = [(BSServiceDomain *)v17 _activate];
+      _activate = [(BSServiceDomain *)v17 _activate];
     }
 
     v14 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -226,7 +226,7 @@ LABEL_24:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_sharedInstanceCreatingIfNecessary:(uint64_t)a1
++ (id)_sharedInstanceCreatingIfNecessary:(uint64_t)necessary
 {
   v139 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -298,13 +298,13 @@ LABEL_24:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v42 = MEMORY[0x1E696AEC0];
-      v43 = [v110 classForCoder];
-      if (!v43)
+      classForCoder = [v110 classForCoder];
+      if (!classForCoder)
       {
-        v43 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v44 = NSStringFromClass(v43);
+      v44 = NSStringFromClass(classForCoder);
       v45 = objc_opt_class();
       v46 = NSStringFromClass(v45);
       v47 = [v42 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"RBSService", v44, v46];
@@ -375,13 +375,13 @@ LABEL_24:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v60 = MEMORY[0x1E696AEC0];
-      v61 = [v9 classForCoder];
-      if (!v61)
+      classForCoder2 = [v9 classForCoder];
+      if (!classForCoder2)
       {
-        v61 = objc_opt_class();
+        classForCoder2 = objc_opt_class();
       }
 
-      v62 = NSStringFromClass(v61);
+      v62 = NSStringFromClass(classForCoder2);
       v63 = objc_opt_class();
       v64 = NSStringFromClass(v63);
       v65 = [v60 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"uiMuxer", v62, v64];
@@ -452,13 +452,13 @@ LABEL_24:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v78 = MEMORY[0x1E696AEC0];
-      v79 = [v10 classForCoder];
-      if (!v79)
+      classForCoder3 = [v10 classForCoder];
+      if (!classForCoder3)
       {
-        v79 = objc_opt_class();
+        classForCoder3 = objc_opt_class();
       }
 
-      v80 = NSStringFromClass(v79);
+      v80 = NSStringFromClass(classForCoder3);
       v81 = objc_opt_class();
       v82 = NSStringFromClass(v81);
       v83 = [v78 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"dfMuxer", v80, v82];
@@ -529,16 +529,16 @@ LABEL_24:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v96 = MEMORY[0x1E696AEC0];
-      v97 = [v11 classForCoder];
-      if (!v97)
+      classForCoder4 = [v11 classForCoder];
+      if (!classForCoder4)
       {
-        v97 = objc_opt_class();
+        classForCoder4 = objc_opt_class();
       }
 
-      v98 = NSStringFromClass(v97);
+      v98 = NSStringFromClass(classForCoder4);
       v99 = objc_opt_class();
       v100 = NSStringFromClass(v99);
-      v101 = [v96 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"bootstrapConfiguration", v98, v100];
+      v100 = [v96 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"bootstrapConfiguration", v98, v100];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -556,12 +556,12 @@ LABEL_24:
         v135 = 1024;
         v136 = 116;
         v137 = 2114;
-        v138 = v101;
+        v138 = v100;
         _os_log_error_impl(&dword_19A821000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
       }
 
-      v105 = v101;
-      [v101 UTF8String];
+      v105 = v100;
+      [v100 UTF8String];
       _bs_set_crash_log_message();
       __break(0);
       JUMPOUT(0x19A85B8ECLL);
@@ -585,7 +585,7 @@ LABEL_24:
       }
 
       v106 = v14;
-      v15 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v16 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v106, "count")}];
       v17 = v13[6];
       v13[6] = v16;
@@ -611,12 +611,12 @@ LABEL_24:
             v21 = *(*(&v121 + 1) + 8 * i);
             v22 = [[BSServiceDomain alloc] _initWithSpecification:v21];
             v23 = v13[6];
-            v24 = [v21 identifier];
-            [v23 setObject:v22 forKey:v24];
+            identifier = [v21 identifier];
+            [v23 setObject:v22 forKey:identifier];
 
             if (!v21 || (v21[9] | 4) == 4)
             {
-              [v15 addObject:v22];
+              [array addObject:v22];
             }
           }
 
@@ -630,7 +630,7 @@ LABEL_24:
       v120 = 0u;
       v117 = 0u;
       v118 = 0u;
-      v25 = v15;
+      v25 = array;
       v26 = [v25 countByEnumeratingWithState:&v117 objects:v126 count:16];
       if (v26)
       {
@@ -644,7 +644,7 @@ LABEL_24:
               objc_enumerationMutation(v25);
             }
 
-            v29 = [(BSServiceDomain *)*(*(&v117 + 1) + 8 * j) _activate];
+            _activate = [(BSServiceDomain *)*(*(&v117 + 1) + 8 * j) _activate];
           }
 
           v26 = [v25 countByEnumeratingWithState:&v117 objects:v126 count:16];
@@ -694,7 +694,7 @@ LABEL_35:
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceManager.m";
     v18 = 1024;
@@ -807,7 +807,7 @@ LABEL_9:
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceManager.m";
       v19 = 1024;
@@ -837,28 +837,28 @@ LABEL_9:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 debugDescription];
+    build = [v3 debugDescription];
   }
 
   else
   {
     v6 = [MEMORY[0x1E698E680] builderWithClass:objc_opt_class()];
     [v6 setUseDebugDescription:1];
-    v7 = [v6 activeMultilinePrefix];
+    activeMultilinePrefix = [v6 activeMultilinePrefix];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __36__BSServiceManager_debugDescription__block_invoke;
     v10[3] = &unk_1E75205D0;
     v8 = v6;
     v11 = v8;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v7 block:v10];
+    [v8 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
 
-    v5 = [v8 build];
+    build = [v8 build];
   }
 
   objc_autoreleasePoolPop(v2);
 
-  return v5;
+  return build;
 }
 
 void __36__BSServiceManager_debugDescription__block_invoke(uint64_t a1)
@@ -878,20 +878,20 @@ void __36__BSServiceManager_debugDescription__block_invoke(uint64_t a1)
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   os_unfair_lock_lock(&self->_lock);
-  v22 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   lock_identifierToDomain = self->_lock_identifierToDomain;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __36__BSServiceManager_debugDescription__block_invoke;
   v35[3] = &unk_1E7520C30;
   v35[4] = self;
-  v7 = v22;
+  v7 = array;
   v36 = v7;
-  v8 = v4;
+  v8 = array2;
   v37 = v8;
-  v9 = v5;
+  v9 = array3;
   v38 = v9;
   [(NSMutableDictionary *)lock_identifierToDomain enumerateKeysAndObjectsUsingBlock:v35];
   [v7 sortUsingComparator:&__block_literal_global_83];
@@ -909,9 +909,9 @@ void __36__BSServiceManager_debugDescription__block_invoke(uint64_t a1)
   v32 = v12;
   v13 = v9;
   v33 = v13;
-  v34 = self;
+  selfCopy = self;
   v14 = [v10 modifyProem:v29];
-  v15 = [v10 activeMultilinePrefix];
+  activeMultilinePrefix = [v10 activeMultilinePrefix];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __36__BSServiceManager_debugDescription__block_invoke_4;
@@ -924,13 +924,13 @@ void __36__BSServiceManager_debugDescription__block_invoke(uint64_t a1)
   v26 = v18;
   v19 = v13;
   v27 = v19;
-  v28 = self;
-  [v16 appendBodySectionWithName:0 multilinePrefix:v15 block:v23];
+  selfCopy2 = self;
+  [v16 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v23];
 
   os_unfair_lock_unlock(&self->_lock);
-  v20 = [v16 build];
+  build = [v16 build];
 
-  return v20;
+  return build;
 }
 
 void __36__BSServiceManager_debugDescription__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1198,14 +1198,14 @@ void __36__BSServiceManager_debugDescription__block_invoke_8(uint64_t a1)
   v9 = [v6 appendObject:v8 withName:@"default"];
 }
 
-- (id)domainWithIdentifier:(uint64_t)a1
+- (id)domainWithIdentifier:(uint64_t)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    os_unfair_lock_lock((a1 + 56));
-    v4 = [*(a1 + 48) objectForKey:v3];
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_lock((identifier + 56));
+    v4 = [*(identifier + 48) objectForKey:v3];
+    os_unfair_lock_unlock((identifier + 56));
   }
 
   else
@@ -1219,12 +1219,12 @@ void __36__BSServiceManager_debugDescription__block_invoke_8(uint64_t a1)
 - (os_unfair_lock_s)extendAutomaticBootstrapCompletion
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     BSDispatchQueueAssertMain();
-    os_unfair_lock_lock(v1 + 14);
-    if (LOBYTE(v1[18]._os_unfair_lock_opaque) == 1)
+    os_unfair_lock_lock(selfCopy + 14);
+    if (LOBYTE(selfCopy[18]._os_unfair_lock_opaque) == 1)
     {
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call before automatic bootstrapping would complete without extensions"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1237,7 +1237,7 @@ void __36__BSServiceManager_debugDescription__block_invoke_8(uint64_t a1)
         v18 = 2114;
         v19 = v8;
         v20 = 2048;
-        v21 = v1;
+        v21 = selfCopy;
         v22 = 2114;
         v23 = @"BSServiceManager.m";
         v24 = 1024;
@@ -1254,7 +1254,7 @@ void __36__BSServiceManager_debugDescription__block_invoke_8(uint64_t a1)
       JUMPOUT(0x19A85D680);
     }
 
-    if (BYTE1(v1[18]._os_unfair_lock_opaque) == 1)
+    if (BYTE1(selfCopy[18]._os_unfair_lock_opaque) == 1)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call before invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1267,7 +1267,7 @@ void __36__BSServiceManager_debugDescription__block_invoke_8(uint64_t a1)
         v18 = 2114;
         v19 = v13;
         v20 = 2048;
-        v21 = v1;
+        v21 = selfCopy;
         v22 = 2114;
         v23 = @"BSServiceManager.m";
         v24 = 1024;
@@ -1284,21 +1284,21 @@ void __36__BSServiceManager_debugDescription__block_invoke_8(uint64_t a1)
       JUMPOUT(0x19A85D778);
     }
 
-    ++*&v1[16]._os_unfair_lock_opaque;
-    os_unfair_lock_unlock(v1 + 14);
+    ++*&selfCopy[16]._os_unfair_lock_opaque;
+    os_unfair_lock_unlock(selfCopy + 14);
     v2 = objc_alloc(MEMORY[0x1E698E778]);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __54__BSServiceManager_extendAutomaticBootstrapCompletion__block_invoke;
     v15[3] = &unk_1E7520CC8;
-    v15[4] = v1;
+    v15[4] = selfCopy;
     v15[5] = sel_extendAutomaticBootstrapCompletion;
-    a1 = [v2 initWithIdentifier:@"com.apple.boardservices.bootstrap" forReason:@"extend" invalidationBlock:v15];
+    self = [v2 initWithIdentifier:@"com.apple.boardservices.bootstrap" forReason:@"extend" invalidationBlock:v15];
   }
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 void __54__BSServiceManager_extendAutomaticBootstrapCompletion__block_invoke(uint64_t a1, void *a2)
@@ -1399,12 +1399,12 @@ LABEL_5:
   }
 }
 
-- (id)_lock_registerDomain:(uint64_t)a1
+- (id)_lock_registerDomain:(uint64_t)domain
 {
   v43 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  os_unfair_lock_assert_owner((a1 + 56));
-  if (*(a1 + 73) == 1)
+  os_unfair_lock_assert_owner((domain + 56));
+  if (*(domain + 73) == 1)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call before invalidation"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1417,7 +1417,7 @@ LABEL_5:
       v33 = 2114;
       v34 = v15;
       v35 = 2048;
-      v36 = a1;
+      domainCopy3 = domain;
       v37 = 2114;
       v38 = @"BSServiceManager.m";
       v39 = 1024;
@@ -1447,7 +1447,7 @@ LABEL_5:
       v33 = 2114;
       v34 = v20;
       v35 = 2048;
-      v36 = a1;
+      domainCopy3 = domain;
       v37 = 2114;
       v38 = @"BSServiceManager.m";
       v39 = 1024;
@@ -1464,16 +1464,16 @@ LABEL_5:
     JUMPOUT(0x19A85DEE8);
   }
 
-  v4 = *(a1 + 48);
-  v5 = [v3 identifier];
-  v6 = [v4 objectForKey:v5];
+  v4 = *(domain + 48);
+  identifier = [v3 identifier];
+  v6 = [v4 objectForKey:identifier];
 
   if (v6)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v23 = *(a1 + 48);
-    v24 = [v3 identifier];
-    v25 = [v23 objectForKey:v24];
+    v23 = *(domain + 48);
+    identifier2 = [v3 identifier];
+    v25 = [v23 objectForKey:identifier2];
     v26 = [v22 stringWithFormat:@"connot register dynamic domain due to identifier collision : new=%@ existing=%@", v3, v25];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1486,7 +1486,7 @@ LABEL_5:
       v33 = 2114;
       v34 = v29;
       v35 = 2048;
-      v36 = a1;
+      domainCopy3 = domain;
       v37 = 2114;
       v38 = @"BSServiceManager.m";
       v39 = 1024;
@@ -1504,26 +1504,26 @@ LABEL_5:
   }
 
   v7 = [[BSServiceDomain alloc] _initWithSpecification:v3];
-  v8 = *(a1 + 48);
-  v9 = [v3 identifier];
-  [v8 setObject:v7 forKey:v9];
+  v8 = *(domain + 48);
+  identifier3 = [v3 identifier];
+  [v8 setObject:v7 forKey:identifier3];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (void)validateDynamicConfiguration:(void *)a3 withDebugInfo:
++ (void)validateDynamicConfiguration:(void *)configuration withDebugInfo:
 {
   v51 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v33 = a3;
+  configurationCopy = configuration;
   v5 = objc_opt_self();
-  v6 = [v4 domains];
-  if (![v6 count])
+  domains = [v4 domains];
+  if (![domains count])
   {
-    v27 = v33;
-    if (!v33)
+    v27 = configurationCopy;
+    if (!configurationCopy)
     {
       v27 = v4;
     }
@@ -1560,7 +1560,7 @@ LABEL_5:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v6;
+  v7 = domains;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
@@ -1575,13 +1575,13 @@ LABEL_5:
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 machName];
-        v13 = v12 == 0;
+        machName = [v11 machName];
+        v13 = machName == 0;
 
         if (!v13)
         {
-          v15 = v33;
-          if (!v33)
+          v15 = configurationCopy;
+          if (!configurationCopy)
           {
             v15 = v11;
           }
@@ -1616,8 +1616,8 @@ LABEL_5:
 
         if (!v11 || v11[9] != 3)
         {
-          v21 = v33;
-          if (!v33)
+          v21 = configurationCopy;
+          if (!configurationCopy)
           {
             v21 = v11;
           }
@@ -1660,21 +1660,21 @@ LABEL_5:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)registerDynamicConfiguration:(uint64_t)a1
+- (id)registerDynamicConfiguration:(uint64_t)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
     [BSServiceManager validateDynamicConfiguration:v3 withDebugInfo:0];
-    v4 = [v3 domains];
-    os_unfair_lock_lock((a1 + 56));
-    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+    domains = [v3 domains];
+    os_unfair_lock_lock((configuration + 56));
+    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(domains, "count")}];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = domains;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -1689,11 +1689,11 @@ LABEL_5:
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
-          v11 = [(BSServiceManager *)a1 _lock_registerDomain:v10];
+          v11 = [(BSServiceManager *)configuration _lock_registerDomain:v10];
           [v5 addObject:v11];
-          v12 = *(a1 + 48);
-          v13 = [v10 identifier];
-          [v12 setObject:v11 forKey:v13];
+          v12 = *(configuration + 48);
+          identifier = [v10 identifier];
+          [v12 setObject:v11 forKey:identifier];
         }
 
         v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1702,22 +1702,22 @@ LABEL_5:
       while (v7);
     }
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((configuration + 56));
     v14 = objc_alloc(MEMORY[0x1E698E778]);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __49__BSServiceManager_registerDynamicConfiguration___block_invoke;
     v18[3] = &unk_1E7520CF0;
-    v18[4] = a1;
+    v18[4] = configuration;
     v15 = v5;
     v19 = v15;
     v20 = sel_registerDynamicConfiguration_;
-    a1 = [v14 initWithIdentifier:@"com.apple.boardservices.register" forReason:@"dynamic" invalidationBlock:v18];
+    configuration = [v14 initWithIdentifier:@"com.apple.boardservices.register" forReason:@"dynamic" invalidationBlock:v18];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return configuration;
 }
 
 void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t a1, void *a2)
@@ -1818,12 +1818,12 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)activateManualDomain:(uint64_t)a1
+- (id)activateManualDomain:(uint64_t)domain
 {
   v64 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (domain)
   {
     v5 = v3;
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -1840,7 +1840,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
         v54 = 2114;
         v55 = v25;
         v56 = 2048;
-        v57 = a1;
+        domainCopy8 = domain;
         v58 = 2114;
         v59 = @"BSServiceManager.m";
         v60 = 1024;
@@ -1870,7 +1870,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
         v54 = 2114;
         v55 = v30;
         v56 = 2048;
-        v57 = a1;
+        domainCopy8 = domain;
         v58 = 2114;
         v59 = @"BSServiceManager.m";
         v60 = 1024;
@@ -1887,8 +1887,8 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
       JUMPOUT(0x19A85F19CLL);
     }
 
-    os_unfair_lock_lock((a1 + 56));
-    if (*(a1 + 73) == 1)
+    os_unfair_lock_lock((domain + 56));
+    if (*(domain + 73) == 1)
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must call before invalidation"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1901,7 +1901,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
         v54 = 2114;
         v55 = v35;
         v56 = 2048;
-        v57 = a1;
+        domainCopy8 = domain;
         v58 = 2114;
         v59 = @"BSServiceManager.m";
         v60 = 1024;
@@ -1918,7 +1918,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
       JUMPOUT(0x19A85F294);
     }
 
-    v6 = [*(a1 + 48) objectForKey:v5];
+    v6 = [*(domain + 48) objectForKey:v5];
     v7 = v6;
     if (!v6)
     {
@@ -1933,7 +1933,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
         v54 = 2114;
         v55 = v40;
         v56 = 2048;
-        v57 = a1;
+        domainCopy8 = domain;
         v58 = 2114;
         v59 = @"BSServiceManager.m";
         v60 = 1024;
@@ -1970,7 +1970,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
             v54 = 2114;
             v55 = v50;
             v56 = 2048;
-            v57 = a1;
+            domainCopy8 = domain;
             v58 = 2114;
             v59 = @"BSServiceManager.m";
             v60 = 1024;
@@ -2000,7 +2000,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
             v54 = 2114;
             v55 = v18;
             v56 = 2048;
-            v57 = a1;
+            domainCopy8 = domain;
             v58 = 2114;
             v59 = @"BSServiceManager.m";
             v60 = 1024;
@@ -2022,7 +2022,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
 
       if (v9 == 1)
       {
-        if (*(a1 + 72) == 1)
+        if (*(domain + 72) == 1)
         {
           v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"manual bootstrap must occur before automatic bootstrapping would complete without extensions"];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -2035,7 +2035,7 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
             v54 = 2114;
             v55 = v13;
             v56 = 2048;
-            v57 = a1;
+            domainCopy8 = domain;
             v58 = 2114;
             v59 = @"BSServiceManager.m";
             v60 = 1024;
@@ -2058,8 +2058,8 @@ void __49__BSServiceManager_registerDynamicConfiguration___block_invoke(uint64_t
       if (v9)
       {
 LABEL_19:
-        os_unfair_lock_unlock((a1 + 56));
-        a1 = [(BSServiceDomain *)v7 _activate];
+        os_unfair_lock_unlock((domain + 56));
+        domain = [(BSServiceDomain *)v7 _activate];
 
         goto LABEL_20;
       }
@@ -2076,7 +2076,7 @@ LABEL_19:
       v54 = 2114;
       v55 = v45;
       v56 = 2048;
-      v57 = a1;
+      domainCopy8 = domain;
       v58 = 2114;
       v59 = @"BSServiceManager.m";
       v60 = 1024;
@@ -2097,16 +2097,16 @@ LABEL_20:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return domain;
 }
 
-- (id)viewServiceConfigurationRegisteringIfNecessary:(uint64_t)a1
+- (id)viewServiceConfigurationRegisteringIfNecessary:(uint64_t)necessary
 {
   v52 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (necessary)
   {
-    os_unfair_lock_lock((a1 + 56));
-    v4 = *(a1 + 40);
+    os_unfair_lock_lock((necessary + 56));
+    v4 = *(necessary + 40);
     if (v4)
     {
       v5 = 1;
@@ -2132,7 +2132,7 @@ LABEL_20:
           v42 = 2114;
           v43 = v28;
           v44 = 2048;
-          v45 = a1;
+          necessaryCopy3 = necessary;
           v46 = 2114;
           v47 = @"BSServiceManager.m";
           v48 = 1024;
@@ -2150,15 +2150,15 @@ LABEL_20:
       }
 
       v6 = objc_opt_new();
-      v7 = [v6 domainsDictionary];
-      v8 = [BSServicesConfiguration _configOfService:v7 withViewServiceDomainsDictionary:?];
-      v9 = *(a1 + 40);
-      *(a1 + 40) = v8;
+      domainsDictionary = [v6 domainsDictionary];
+      v8 = [BSServicesConfiguration _configOfService:domainsDictionary withViewServiceDomainsDictionary:?];
+      v9 = *(necessary + 40);
+      *(necessary + 40) = v8;
 
       v10 = v8;
       if (!v10)
       {
-        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid viewServiceConfiguration returned for %@", v7];
+        v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid viewServiceConfiguration returned for %@", domainsDictionary];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           v31 = NSStringFromSelector(sel_viewServiceConfigurationRegisteringIfNecessary_);
@@ -2169,7 +2169,7 @@ LABEL_20:
           v42 = 2114;
           v43 = v33;
           v44 = 2048;
-          v45 = a1;
+          necessaryCopy3 = necessary;
           v46 = 2114;
           v47 = @"BSServiceManager.m";
           v48 = 1024;
@@ -2187,14 +2187,14 @@ LABEL_20:
       }
 
       v4 = v10;
-      v11 = [v10 domains];
-      if ([v11 count])
+      domains = [v10 domains];
+      if ([domains count])
       {
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v12 = v11;
+        v12 = domains;
         v13 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
         if (v13)
         {
@@ -2222,7 +2222,7 @@ LABEL_20:
                   v42 = 2114;
                   v43 = v23;
                   v44 = 2048;
-                  v45 = a1;
+                  necessaryCopy3 = necessary;
                   v46 = 2114;
                   v47 = @"BSServiceManager.m";
                   v48 = 1024;
@@ -2239,7 +2239,7 @@ LABEL_20:
                 JUMPOUT(0x19A85F9B0);
               }
 
-              v17 = [(BSServiceManager *)a1 _lock_registerDomain:v16];
+              v17 = [(BSServiceManager *)necessary _lock_registerDomain:v16];
             }
 
             v13 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -2250,7 +2250,7 @@ LABEL_20:
       }
     }
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((necessary + 56));
   }
 
   else
@@ -2265,12 +2265,12 @@ LABEL_20:
 
 - (void)enforceXPCServiceListenerRegistration
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 56));
-    [*(a1 + 48) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_216];
+    os_unfair_lock_lock((self + 56));
+    [*(self + 48) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_216];
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((self + 56));
   }
 }
 

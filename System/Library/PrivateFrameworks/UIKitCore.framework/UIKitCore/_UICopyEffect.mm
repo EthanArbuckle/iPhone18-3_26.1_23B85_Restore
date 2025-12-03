@@ -1,20 +1,20 @@
 @interface _UICopyEffect
-+ (id)copyEffectWithCaptureGroup:(id)a3;
++ (id)copyEffectWithCaptureGroup:(id)group;
 - (id)description;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UICopyEffect
 
-+ (id)copyEffectWithCaptureGroup:(id)a3
++ (id)copyEffectWithCaptureGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
     v5 = objc_opt_new();
-    [v4 setDisableInPlaceFiltering:1];
-    objc_storeStrong(v5 + 1, a3);
+    [groupCopy setDisableInPlaceFiltering:1];
+    objc_storeStrong(v5 + 1, group);
   }
 
   else
@@ -25,19 +25,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UICopyEffect.m" lineNumber:38 description:@"_UICopyEffect is not codable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UICopyEffect.m" lineNumber:38 description:@"_UICopyEffect is not codable"];
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v7 = objc_opt_new();
   [v7 setRequirements:2];
   [v7 setCaptureGroup:self->_captureGroup];
-  [v6 addUnderlay:v7];
+  [descriptorCopy addUnderlay:v7];
 }
 
 - (id)description

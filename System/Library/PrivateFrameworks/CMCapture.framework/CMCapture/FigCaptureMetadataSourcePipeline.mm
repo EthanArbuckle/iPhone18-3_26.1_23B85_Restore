@@ -1,11 +1,11 @@
 @interface FigCaptureMetadataSourcePipeline
-- (uint64_t)_buildMetadataSourcePipeline:(void *)a3 graph:;
+- (uint64_t)_buildMetadataSourcePipeline:(void *)pipeline graph:;
 - (uint64_t)appendSampleBuffer:(uint64_t)result;
 - (uint64_t)output;
 - (uint64_t)setMasterClock:(uint64_t)result;
 - (uint64_t)sourceFormatDescription;
 - (void)dealloc;
-- (void)initWithConfiguration:(void *)a3 graph:(uint64_t)a4 name:(_DWORD *)a5 errorOut:;
+- (void)initWithConfiguration:(void *)configuration graph:(uint64_t)graph name:(_DWORD *)name errorOut:;
 @end
 
 @implementation FigCaptureMetadataSourcePipeline
@@ -17,22 +17,22 @@
   [(FigCaptureSourcePipeline *)&v3 dealloc];
 }
 
-- (void)initWithConfiguration:(void *)a3 graph:(uint64_t)a4 name:(_DWORD *)a5 errorOut:
+- (void)initWithConfiguration:(void *)configuration graph:(uint64_t)graph name:(_DWORD *)name errorOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = FigCaptureMetadataSourcePipeline;
-  v8 = objc_msgSendSuper2(&v13, sel_initWithGraph_name_sourceID_, a3, a4, [objc_msgSend(a2 "sourceConfiguration")]);
+  v8 = objc_msgSendSuper2(&v13, sel_initWithGraph_name_sourceID_, configuration, graph, [objc_msgSend(a2 "sourceConfiguration")]);
   v9 = v8;
   if (v8)
   {
     if (a2)
     {
-      v10 = [(FigCaptureMetadataSourcePipeline *)v8 _buildMetadataSourcePipeline:a2 graph:a3];
+      v10 = [(FigCaptureMetadataSourcePipeline *)v8 _buildMetadataSourcePipeline:a2 graph:configuration];
       if (!v10)
       {
         return v9;
@@ -51,9 +51,9 @@
       v12 = 0;
     }
 
-    if (a5)
+    if (name)
     {
-      *a5 = v12;
+      *name = v12;
     }
 
     return 0;
@@ -62,7 +62,7 @@
   return v9;
 }
 
-- (uint64_t)_buildMetadataSourcePipeline:(void *)a3 graph:
+- (uint64_t)_buildMetadataSourcePipeline:(void *)pipeline graph:
 {
   if (result)
   {
@@ -87,7 +87,7 @@
             [v5[6] setSourceClock:{objc_msgSend(v5[5], "clock")}];
           }
 
-          if ([a3 connectOutput:objc_msgSend(v5[5] toInput:"output") pipelineStage:{objc_msgSend(v5[6], "input"), 0}])
+          if ([pipeline connectOutput:objc_msgSend(v5[5] toInput:"output") pipelineStage:{objc_msgSend(v5[6], "input"), 0}])
           {
             goto LABEL_8;
           }
@@ -146,7 +146,7 @@ LABEL_11:
 
 - (uint64_t)sourceFormatDescription
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -157,7 +157,7 @@ LABEL_11:
     return 0;
   }
 
-  v2 = *(a1 + 40);
+  v2 = *(self + 40);
 
   return [v2 formatDescription];
 }

@@ -2,14 +2,14 @@
 - (APJourneySettings)journeySettings;
 - (APMetricHTTPDelivery)init;
 - (BOOL)_shouldReturnFakeResponse;
-- (id)_hashAndSavePayloadForInternalTesting:(id)a3 signature:(id)a4;
-- (id)_serverURLForPurpose:(id)a3;
-- (id)buildMetricDeliveryRequestFromData:(id)a3 toChannel:(id)a4 billing:(id)a5 signing:(id)a6 failIfSignatureIsNotAvailable:(BOOL)a7 error:(id *)a8;
-- (id)sendHTTPDeliveryRequest:(id)a3 error:(id *)a4;
-- (id)sendPayload:(id)a3 error:(id *)a4;
-- (void)observeClientError:(int64_t)a3;
+- (id)_hashAndSavePayloadForInternalTesting:(id)testing signature:(id)signature;
+- (id)_serverURLForPurpose:(id)purpose;
+- (id)buildMetricDeliveryRequestFromData:(id)data toChannel:(id)channel billing:(id)billing signing:(id)signing failIfSignatureIsNotAvailable:(BOOL)available error:(id *)error;
+- (id)sendHTTPDeliveryRequest:(id)request error:(id *)error;
+- (id)sendPayload:(id)payload error:(id *)error;
+- (void)observeClientError:(int64_t)error;
 - (void)observeClientTimeout;
-- (void)observerServerResponse:(int64_t)a3;
+- (void)observerServerResponse:(int64_t)response;
 @end
 
 @implementation APMetricHTTPDelivery
@@ -53,9 +53,9 @@
 - (BOOL)_shouldReturnFakeResponse
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isRunningTests];
+  isRunningTests = [v2 isRunningTests];
 
-  if (v3)
+  if (isRunningTests)
   {
     v4 = APLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -66,32 +66,32 @@
     }
   }
 
-  return v3;
+  return isRunningTests;
 }
 
-- (id)buildMetricDeliveryRequestFromData:(id)a3 toChannel:(id)a4 billing:(id)a5 signing:(id)a6 failIfSignatureIsNotAvailable:(BOOL)a7 error:(id *)a8
+- (id)buildMetricDeliveryRequestFromData:(id)data toChannel:(id)channel billing:(id)billing signing:(id)signing failIfSignatureIsNotAvailable:(BOOL)available error:(id *)error
 {
-  v9 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  availableCopy = available;
+  signingCopy = signing;
+  billingCopy = billing;
+  channelCopy = channel;
+  dataCopy = data;
   v18 = objc_alloc_init(APMetricHTTPDeliveryRequest);
-  [(APMetricHTTPDeliveryRequest *)v18 setData:v17];
+  [(APMetricHTTPDeliveryRequest *)v18 setData:dataCopy];
 
-  [(APMetricHTTPDeliveryRequest *)v18 setBilling:v15];
-  v19 = [v16 destination];
+  [(APMetricHTTPDeliveryRequest *)v18 setBilling:billingCopy];
+  destination = [channelCopy destination];
 
-  [(APMetricHTTPDeliveryRequest *)v18 setDestination:v19];
-  if (!v14)
+  [(APMetricHTTPDeliveryRequest *)v18 setDestination:destination];
+  if (!signingCopy)
   {
     v21 = 0;
 LABEL_15:
-    v29 = [(APMetricHTTPDelivery *)self diary];
-    [v29 recordFailure];
+    diary = [(APMetricHTTPDelivery *)self diary];
+    [diary recordFailure];
 
     v20 = 0;
-    if (v9)
+    if (availableCopy)
     {
       goto LABEL_9;
     }
@@ -102,9 +102,9 @@ LABEL_16:
       v30 = [NSUserDefaults alloc];
       v31 = [v30 initWithSuiteName:APDefaultsBundleID];
       v32 = [v31 objectForKey:@"APMetricDelivery.disableSigning"];
-      v33 = [v32 BOOLValue];
+      bOOLValue = [v32 BOOLValue];
 
-      if (+[APSystemInternal isAppleInternalInstall]&& v33)
+      if (+[APSystemInternal isAppleInternalInstall]&& bOOLValue)
       {
         v45[0] = @"Content-Type";
         v45[1] = @"X-Apple-BridgeTest";
@@ -136,15 +136,15 @@ LABEL_22:
   }
 
   v42 = 0;
-  v20 = [(APMetricHTTPDeliveryRequest *)v18 buildSignatureUsingSigning:v14 error:&v42];
+  v20 = [(APMetricHTTPDeliveryRequest *)v18 buildSignatureUsingSigning:signingCopy error:&v42];
   v21 = v42;
   if (!v20)
   {
     goto LABEL_15;
   }
 
-  v22 = [(APMetricHTTPDelivery *)self diary];
-  [v22 recordSuccess];
+  diary2 = [(APMetricHTTPDelivery *)self diary];
+  [diary2 recordSuccess];
 
   v23 = [v20 length];
   if (v21)
@@ -157,7 +157,7 @@ LABEL_22:
     v24 = v23 == 0;
   }
 
-  if (!v24 || !v9)
+  if (!v24 || !availableCopy)
   {
     goto LABEL_16;
   }
@@ -175,7 +175,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "[%{private}@] Failed to get a signature for Journey Server request: %{public}@", buf, 0x16u);
   }
 
-  if (a8)
+  if (error)
   {
     if (v21)
     {
@@ -189,10 +189,10 @@ LABEL_9:
       v28 = 0;
     }
 
-    *a8 = [NSError errorWithDomain:@"APMetricHTTPDeliveryDomain" code:8898 userInfo:v28];
+    *error = [NSError errorWithDomain:@"APMetricHTTPDeliveryDomain" code:8898 userInfo:v28];
   }
 
-  if ([v14 isReady])
+  if ([signingCopy isReady])
   {
     if (qword_1004E6D40 == -1)
     {
@@ -209,7 +209,7 @@ LABEL_9:
     v40[1] = 3221225472;
     v40[2] = sub_100328DEC;
     v40[3] = &unk_1004790A8;
-    v41 = v14;
+    v41 = signingCopy;
     if (qword_1004E6D48 != -1)
     {
       dispatch_once(&qword_1004E6D48, v40);
@@ -222,16 +222,16 @@ LABEL_32:
   return v38;
 }
 
-- (id)_serverURLForPurpose:(id)a3
+- (id)_serverURLForPurpose:(id)purpose
 {
-  v4 = a3;
-  v5 = [(APMetricHTTPDelivery *)self journeySettings];
-  v6 = [v4 value];
-  v7 = [v6 isEqualToString:@"ECRouter"];
+  purposeCopy = purpose;
+  journeySettings = [(APMetricHTTPDelivery *)self journeySettings];
+  value = [purposeCopy value];
+  v7 = [value isEqualToString:@"ECRouter"];
 
   if (v7)
   {
-    v8 = [v5 eCServerURL];
+    eCServerURL = [journeySettings eCServerURL];
   }
 
   else
@@ -240,24 +240,24 @@ LABEL_32:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = purposeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Unexpected destination (%@)", &v11, 0xCu);
     }
 
-    v8 = 0;
+    eCServerURL = 0;
   }
 
-  return v8;
+  return eCServerURL;
 }
 
-- (id)sendPayload:(id)a3 error:(id *)a4
+- (id)sendPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   if ([(APMetricHTTPDelivery *)self _shouldReturnFakeResponse])
   {
-    v7 = [v6 channel];
-    v8 = [v7 destination];
-    v9 = [(APMetricHTTPDelivery *)self _serverURLForPurpose:v8];
+    channel = [payloadCopy channel];
+    destination = [channel destination];
+    v9 = [(APMetricHTTPDelivery *)self _serverURLForPurpose:destination];
 
     v10 = [[NSHTTPURLResponse alloc] initWithURL:v9 statusCode:200 HTTPVersion:0 headerFields:0];
 LABEL_8:
@@ -265,33 +265,33 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [v6 batchesData];
-  v12 = [v6 channel];
-  v13 = [v6 billing];
+  batchesData = [payloadCopy batchesData];
+  channel2 = [payloadCopy channel];
+  billing = [payloadCopy billing];
   v14 = +[APSigningAuthorityPoolManagerWrapper sharedInstance];
-  v9 = [(APMetricHTTPDelivery *)self buildMetricDeliveryRequestFromData:v11 toChannel:v12 billing:v13 signing:v14 failIfSignatureIsNotAvailable:1 error:a4];
+  v9 = [(APMetricHTTPDelivery *)self buildMetricDeliveryRequestFromData:batchesData toChannel:channel2 billing:billing signing:v14 failIfSignatureIsNotAvailable:1 error:error];
 
-  v15 = [v6 batchInfos];
-  [v9 setBatchInfos:v15];
+  batchInfos = [payloadCopy batchInfos];
+  [v9 setBatchInfos:batchInfos];
 
-  v16 = [v6 fakeNetworkResponse];
-  if (v16)
+  fakeNetworkResponse = [payloadCopy fakeNetworkResponse];
+  if (fakeNetworkResponse)
   {
-    v17 = v16;
+    v17 = fakeNetworkResponse;
     v18 = +[APSystemInternal isAppleInternalInstall];
 
     if (v18)
     {
-      v19 = [v6 fakeNetworkResponse];
-      v20 = [v9 headers];
-      v21 = [v19 addFakeResponseHeadersToHeaders:v20];
+      fakeNetworkResponse2 = [payloadCopy fakeNetworkResponse];
+      headers = [v9 headers];
+      v21 = [fakeNetworkResponse2 addFakeResponseHeadersToHeaders:headers];
       [v9 setHeaders:v21];
     }
   }
 
   if (v9)
   {
-    v10 = [(APMetricHTTPDelivery *)self sendHTTPDeliveryRequest:v9 error:a4];
+    v10 = [(APMetricHTTPDelivery *)self sendHTTPDeliveryRequest:v9 error:error];
     goto LABEL_8;
   }
 
@@ -301,18 +301,18 @@ LABEL_9:
   return v22;
 }
 
-- (id)sendHTTPDeliveryRequest:(id)a3 error:(id *)a4
+- (id)sendHTTPDeliveryRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 signature];
-  v8 = [v7 length];
+  requestCopy = request;
+  signature = [requestCopy signature];
+  v8 = [signature length];
 
   if (v8)
   {
-    v9 = [v6 destination];
-    v10 = [(APMetricHTTPDelivery *)self _serverURLForPurpose:v9];
+    destination = [requestCopy destination];
+    v10 = [(APMetricHTTPDelivery *)self _serverURLForPurpose:destination];
 
-    v36 = a4;
+    errorCopy = error;
     if (+[APSystemInternal isAppleInternalInstall])
     {
       v11 = [NSUserDefaults alloc];
@@ -334,9 +334,9 @@ LABEL_9:
     v17 = v16;
 
     v18 = +[APNetworkClient sharedAPNetworkClient];
-    v19 = [v6 billing];
+    billing = [requestCopy billing];
     v38 = v18;
-    v20 = [v18 temporarySessionForClient:v19];
+    v20 = [v18 temporarySessionForClient:billing];
 
     *buf = 0;
     v49 = buf;
@@ -347,14 +347,14 @@ LABEL_9:
     v21 = dispatch_group_create();
     dispatch_group_enter(v21);
     v22 = dispatch_get_global_queue(9, 0);
-    v23 = [v6 batchInfos];
+    batchInfos = [requestCopy batchInfos];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100329638;
     block[3] = &unk_10047E4C8;
     block[4] = self;
-    v41 = v6;
-    v24 = v23;
+    v41 = requestCopy;
+    v24 = batchInfos;
     v42 = v24;
     v37 = v20;
     v43 = v37;
@@ -381,23 +381,23 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "We timed out waiting for the metric data to be sent to the server!", v39, 2u);
       }
 
-      v15 = 0;
+      uRLResponse = 0;
     }
 
     else
     {
-      v15 = [*(v49 + 5) URLResponse];
-      v31 = [*(v49 + 5) responseError];
-      v30 = v31;
-      if (v36)
+      uRLResponse = [*(v49 + 5) URLResponse];
+      responseError = [*(v49 + 5) responseError];
+      v30 = responseError;
+      if (errorCopy)
       {
-        v32 = v31;
-        *v36 = v30;
+        v32 = responseError;
+        *errorCopy = v30;
       }
 
-      if (v15)
+      if (uRLResponse)
       {
-        -[APMetricHTTPDelivery observerServerResponse:](self, "observerServerResponse:", [v15 statusCode]);
+        -[APMetricHTTPDelivery observerServerResponse:](self, "observerServerResponse:", [uRLResponse statusCode]);
       }
 
       else if (v30)
@@ -428,56 +428,56 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Missing signature.", buf, 2u);
     }
 
-    v15 = 0;
+    uRLResponse = 0;
   }
 
-  return v15;
+  return uRLResponse;
 }
 
-- (void)observerServerResponse:(int64_t)a3
+- (void)observerServerResponse:(int64_t)response
 {
-  if ((a3 - 200) > 0x63)
+  if ((response - 200) > 0x63)
   {
-    if ((a3 - 400) > 0x63)
+    if ((response - 400) > 0x63)
     {
-      if ((a3 - 500) > 0x63)
+      if ((response - 500) > 0x63)
       {
         return;
       }
 
-      v3 = [(APMetricHTTPDelivery *)self o11y];
-      v5 = v3;
+      o11y = [(APMetricHTTPDelivery *)self o11y];
+      o11y2 = o11y;
       v4 = 1;
     }
 
     else
     {
-      v3 = [(APMetricHTTPDelivery *)self o11y];
-      v5 = v3;
+      o11y = [(APMetricHTTPDelivery *)self o11y];
+      o11y2 = o11y;
       v4 = 0;
     }
 
-    [v3 recordFailure:v4];
+    [o11y recordFailure:v4];
   }
 
   else
   {
-    v5 = [(APMetricHTTPDelivery *)self o11y];
-    [v5 recordSuccess];
+    o11y2 = [(APMetricHTTPDelivery *)self o11y];
+    [o11y2 recordSuccess];
   }
 }
 
-- (void)observeClientError:(int64_t)a3
+- (void)observeClientError:(int64_t)error
 {
-  v4 = [(APMetricHTTPDelivery *)self o11y];
-  v7 = v4;
+  o11y = [(APMetricHTTPDelivery *)self o11y];
+  v7 = o11y;
   v5 = 4;
-  if (a3 == -1009)
+  if (error == -1009)
   {
     v5 = 2;
   }
 
-  if (a3 == -1001)
+  if (error == -1001)
   {
     v6 = 3;
   }
@@ -487,19 +487,19 @@ LABEL_9:
     v6 = v5;
   }
 
-  [v4 recordFailure:v6];
+  [o11y recordFailure:v6];
 }
 
 - (void)observeClientTimeout
 {
-  v2 = [(APMetricHTTPDelivery *)self o11y];
-  [v2 recordFailure:3];
+  o11y = [(APMetricHTTPDelivery *)self o11y];
+  [o11y recordFailure:3];
 }
 
-- (id)_hashAndSavePayloadForInternalTesting:(id)a3 signature:(id)a4
+- (id)_hashAndSavePayloadForInternalTesting:(id)testing signature:(id)signature
 {
-  v5 = a3;
-  v6 = a4;
+  testingCopy = testing;
+  signatureCopy = signature;
   if (!+[APSystemInternal isAppleInternalInstall])
   {
     goto LABEL_21;
@@ -511,16 +511,16 @@ LABEL_9:
   {
 
 LABEL_21:
-    v11 = 0;
+    asHexString = 0;
     goto LABEL_22;
   }
 
   v9 = [@"/tmp/com.apple.ap.promotedcontentd" stringByAppendingPathComponent:@"EC"];
-  v10 = [v5 sha256];
-  v11 = [v10 asHexString];
+  sha256 = [testingCopy sha256];
+  asHexString = [sha256 asHexString];
 
-  v12 = [v9 stringByAppendingPathComponent:v11];
-  v13 = [v9 stringByAppendingPathComponent:v11];
+  v12 = [v9 stringByAppendingPathComponent:asHexString];
+  v13 = [v9 stringByAppendingPathComponent:asHexString];
   v14 = [v13 stringByAppendingPathExtension:@"sig"];
 
   v15 = +[NSFileManager defaultManager];
@@ -533,9 +533,9 @@ LABEL_21:
     v18 = APLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v17 localizedDescription];
+      localizedDescription = [v17 localizedDescription];
       *buf = 138543362;
-      v39 = v19;
+      v39 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "error creating directory %{public}@", buf, 0xCu);
     }
   }
@@ -550,7 +550,7 @@ LABEL_21:
   }
 
   v36 = v17;
-  v23 = [v5 writeToFile:v12 options:1 error:&v36];
+  v23 = [testingCopy writeToFile:v12 options:1 error:&v36];
   v24 = v36;
 
   if ((v23 & 1) == 0)
@@ -558,9 +558,9 @@ LABEL_21:
     v25 = APLogForCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v24 localizedDescription];
+      localizedDescription2 = [v24 localizedDescription];
       *buf = 138543362;
-      v39 = v26;
+      v39 = localizedDescription2;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "error writing to payload to file %{public}@", buf, 0xCu);
     }
   }
@@ -575,7 +575,7 @@ LABEL_21:
   }
 
   v35 = v24;
-  v30 = [v6 writeToFile:v14 atomically:1 encoding:4 error:&v35];
+  v30 = [signatureCopy writeToFile:v14 atomically:1 encoding:4 error:&v35];
   v31 = v35;
 
   if ((v30 & 1) == 0)
@@ -583,16 +583,16 @@ LABEL_21:
     v32 = APLogForCategory();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = [v31 localizedDescription];
+      localizedDescription3 = [v31 localizedDescription];
       *buf = 138543362;
-      v39 = v33;
+      v39 = localizedDescription3;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "error writing to signature to file %{public}@", buf, 0xCu);
     }
   }
 
 LABEL_22:
 
-  return v11;
+  return asHexString;
 }
 
 @end

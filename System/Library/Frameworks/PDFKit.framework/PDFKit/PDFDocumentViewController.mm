@@ -1,68 +1,68 @@
 @interface PDFDocumentViewController
-- (CGPoint)_convertPoint:(CGPoint)a3 fromPDFPageViewController:(id)a4;
-- (CGPoint)_convertPoint:(CGPoint)a3 toPDFPageViewController:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromPage:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toPage:(id)a4;
-- (PDFDocumentViewController)initWithPDFView:(id)a3 pageIndex:(unint64_t)a4 navigationOrientation:(int64_t)a5 withRenderingProperties:(id)a6 andOptions:(id)a7;
+- (CGPoint)_convertPoint:(CGPoint)point fromPDFPageViewController:(id)controller;
+- (CGPoint)_convertPoint:(CGPoint)point toPDFPageViewController:(id)controller;
+- (CGPoint)convertPoint:(CGPoint)point fromPage:(id)page;
+- (CGPoint)convertPoint:(CGPoint)point toPage:(id)page;
+- (PDFDocumentViewController)initWithPDFView:(id)view pageIndex:(unint64_t)index navigationOrientation:(int64_t)orientation withRenderingProperties:(id)properties andOptions:(id)options;
 - (double)autoScaleFactor;
 - (double)scaleFactor;
-- (id)_pageViewController:(id)a3 nextViewController:(int)a4 forViewController:(id)a5;
-- (id)_pageViewControllerCreate:(unint64_t)a3;
-- (id)backgroundImageForPage:(id)a3 withQuality:(int *)a4;
+- (id)_pageViewController:(id)controller nextViewController:(int)viewController forViewController:(id)forViewController;
+- (id)_pageViewControllerCreate:(unint64_t)create;
+- (id)backgroundImageForPage:(id)page withQuality:(int *)quality;
 - (id)currentPage;
 - (id)document;
-- (id)findPageViewControllerForPageIndex:(int64_t)a3;
-- (id)pageForPoint:(CGPoint)a3 nearest:(BOOL)a4;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)findPageViewControllerForPageIndex:(int64_t)index;
+- (id)pageForPoint:(CGPoint)point nearest:(BOOL)nearest;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (id)pageViews;
 - (id)scrollView;
 - (id)selection;
-- (void)_loadDocument:(unint64_t)a3;
-- (void)_setupDocument:(unint64_t)a3;
-- (void)_updateCurrentPageViewController:(id)a3;
+- (void)_loadDocument:(unint64_t)document;
+- (void)_setupDocument:(unint64_t)document;
+- (void)_updateCurrentPageViewController:(id)controller;
 - (void)dealloc;
-- (void)didInsertPage:(id)a3 atIndex:(unint64_t)a4;
-- (void)didRemovePage:(id)a3 atIndex:(unint64_t)a4;
-- (void)goToPage:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
-- (void)recieveBackgroundImage:(id)a3 atBackgroundQuality:(int)a4 forPage:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAutoScales:(BOOL)a3;
-- (void)setMinScaleFactor:(double)a3 withMaxScaleFactor:(double)a4;
-- (void)setScaleFactor:(double)a3;
-- (void)setScrollViewScrollEnabled:(BOOL)a3;
-- (void)setSelection:(id)a3;
+- (void)didInsertPage:(id)page atIndex:(unint64_t)index;
+- (void)didRemovePage:(id)page atIndex:(unint64_t)index;
+- (void)goToPage:(id)page direction:(int64_t)direction animated:(BOOL)animated;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
+- (void)recieveBackgroundImage:(id)image atBackgroundQuality:(int)quality forPage:(id)page;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAutoScales:(BOOL)scales;
+- (void)setMinScaleFactor:(double)factor withMaxScaleFactor:(double)scaleFactor;
+- (void)setScaleFactor:(double)factor;
+- (void)setScrollViewScrollEnabled:(BOOL)enabled;
+- (void)setSelection:(id)selection;
 - (void)updateScrollViews;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PDFDocumentViewController
 
-- (PDFDocumentViewController)initWithPDFView:(id)a3 pageIndex:(unint64_t)a4 navigationOrientation:(int64_t)a5 withRenderingProperties:(id)a6 andOptions:(id)a7
+- (PDFDocumentViewController)initWithPDFView:(id)view pageIndex:(unint64_t)index navigationOrientation:(int64_t)orientation withRenderingProperties:(id)properties andOptions:(id)options
 {
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  viewCopy = view;
+  propertiesCopy = properties;
+  optionsCopy = options;
   v40.receiver = self;
   v40.super_class = PDFDocumentViewController;
-  v15 = [(PDFDocumentViewController *)&v40 initWithTransitionStyle:1 navigationOrientation:a5 options:v14];
+  v15 = [(PDFDocumentViewController *)&v40 initWithTransitionStyle:1 navigationOrientation:orientation options:optionsCopy];
   if (v15)
   {
-    v35 = v14;
+    v35 = optionsCopy;
     v16 = objc_alloc_init(PDFDocumentViewControllerPrivate);
     v17 = v15->_private;
     v15->_private = v16;
 
-    objc_storeWeak(&v15->_private->pdfView, v12);
-    objc_storeStrong(&v15->_private->renderingProperties, a6);
+    objc_storeWeak(&v15->_private->pdfView, viewCopy);
+    objc_storeStrong(&v15->_private->renderingProperties, properties);
     v15->_private->minScale = 0.25;
     v15->_private->maxScale = 5.0;
     v15->_private->displaysRTL = 0;
-    v18 = [[PDFPageBackgroundManager alloc] initWithDelegate:v15 andRenderingProperties:v13];
+    v18 = [[PDFPageBackgroundManager alloc] initWithDelegate:v15 andRenderingProperties:propertiesCopy];
     v19 = v15->_private;
     pageBackgroundManager = v19->pageBackgroundManager;
     v19->pageBackgroundManager = v18;
@@ -75,15 +75,15 @@
 
     [(PDFDocumentViewController *)v15 setDelegate:v15];
     [(PDFDocumentViewController *)v15 setDataSource:v15];
-    [(PDFDocumentViewController *)v15 _setupDocument:a4];
+    [(PDFDocumentViewController *)v15 _setupDocument:index];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v24 = [(PDFDocumentViewController *)v15 view];
-    v25 = [v24 subviews];
+    view = [(PDFDocumentViewController *)v15 view];
+    subviews = [view subviews];
 
-    v26 = [v25 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    v26 = [subviews countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v26)
     {
       v27 = v26;
@@ -95,7 +95,7 @@
         {
           if (*v37 != v29)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(subviews);
           }
 
           v31 = *(*(&v36 + 1) + 8 * i);
@@ -108,7 +108,7 @@
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v27 = [subviews countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v27);
@@ -122,10 +122,10 @@
     [v28 _setAutoScrollEnabled:0];
     objc_storeWeak(&v15->_private->scrollView, v28);
     [v28 setDelegate:v15];
-    v33 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v33 addObserver:v15 selector:sel__documentChanged name:@"PDFViewChangedDocument" object:v12];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__documentChanged name:@"PDFViewChangedDocument" object:viewCopy];
 
-    v14 = v35;
+    optionsCopy = v35;
   }
 
   return v15;
@@ -134,8 +134,8 @@
 - (void)dealloc
 {
   [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager cancel];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PDFDocumentViewController;
@@ -146,12 +146,12 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PDFDocumentViewController *)self viewControllers];
+  viewControllers = [(PDFDocumentViewController *)self viewControllers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -162,20 +162,20 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 pageView];
+        pageView = [v9 pageView];
 
-        if (v10)
+        if (pageView)
         {
-          v11 = [v9 pageView];
-          [v3 addObject:v11];
+          pageView2 = [v9 pageView];
+          [v3 addObject:pageView2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -184,14 +184,14 @@
   return v3;
 }
 
-- (void)goToPage:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5
+- (void)goToPage:(id)page direction:(int64_t)direction animated:(BOOL)animated
 {
-  v20 = a5;
+  animatedCopy = animated;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v8 = [WeakRetained document];
-  v9 = [v8 indexForPage:v6];
+  document = [WeakRetained document];
+  v9 = [document indexForPage:pageCopy];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -214,8 +214,8 @@ LABEL_4:
         }
 
         v14 = *(*(&v24 + 1) + 8 * v13);
-        v15 = [v14 PDFPage];
-        v16 = v15 == v6;
+        pDFPage = [v14 PDFPage];
+        v16 = pDFPage == pageCopy;
 
         if (v16)
         {
@@ -258,7 +258,7 @@ LABEL_13:
     v21[3] = &unk_1E81513D8;
     objc_copyWeak(v22, &location);
     v22[1] = v9;
-    [(PDFDocumentViewController *)self setViewControllers:v18 direction:a4 animated:v20 completion:v21];
+    [(PDFDocumentViewController *)self setViewControllers:v18 direction:direction animated:animatedCopy completion:v21];
 
     [(PDFDocumentViewController *)self _updateCurrentPageViewController:v17];
     objc_destroyWeak(v22);
@@ -289,21 +289,21 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
 - (id)currentPage
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
-  v3 = [WeakRetained PDFPage];
+  pDFPage = [WeakRetained PDFPage];
 
-  return v3;
+  return pDFPage;
 }
 
-- (void)setAutoScales:(BOOL)a3
+- (void)setAutoScales:(BOOL)scales
 {
-  v3 = a3;
+  scalesCopy = scales;
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFDocumentViewController *)self viewControllers];
+  viewControllers = [(PDFDocumentViewController *)self viewControllers];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -315,14 +315,14 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setAutoScales:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setAutoScales:scalesCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -338,17 +338,17 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
   return v4;
 }
 
-- (void)setMinScaleFactor:(double)a3 withMaxScaleFactor:(double)a4
+- (void)setMinScaleFactor:(double)factor withMaxScaleFactor:(double)scaleFactor
 {
   v16 = *MEMORY[0x1E69E9840];
-  self->_private->minScale = a3;
-  self->_private->maxScale = a4;
-  v6 = [(PDFDocumentViewController *)self viewControllers];
+  self->_private->minScale = factor;
+  self->_private->maxScale = scaleFactor;
+  viewControllers = [(PDFDocumentViewController *)self viewControllers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -360,29 +360,29 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setMinScaleFactor:a3 withMaxScaleFactor:a4];
+        [*(*(&v11 + 1) + 8 * v10++) setMinScaleFactor:factor withMaxScaleFactor:scaleFactor];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFDocumentViewController *)self viewControllers];
+  viewControllers = [(PDFDocumentViewController *)self viewControllers];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -394,14 +394,14 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setScaleFactor:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setScaleFactor:factor];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -417,16 +417,16 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
   return v4;
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PDFDocumentViewController *)self viewControllers];
+  selectionCopy = selection;
+  viewControllers = [(PDFDocumentViewController *)self viewControllers];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -438,14 +438,14 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setSelection:v4];
+        [*(*(&v10 + 1) + 8 * v9++) setSelection:selectionCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -455,16 +455,16 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
 - (id)selection
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
-  v3 = [WeakRetained selection];
+  selection = [WeakRetained selection];
 
-  return v3;
+  return selection;
 }
 
-- (void)setScrollViewScrollEnabled:(BOOL)a3
+- (void)setScrollViewScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_private->scrollView);
-  [WeakRetained setScrollEnabled:v3];
+  [WeakRetained setScrollEnabled:enabledCopy];
 }
 
 - (id)scrollView
@@ -478,20 +478,20 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
 {
   v20 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v4 = [WeakRetained showsScrollIndicators];
+  showsScrollIndicators = [WeakRetained showsScrollIndicators];
 
-  v5 = [(PDFDocumentViewController *)self scrollView];
-  [v5 setShowsVerticalScrollIndicator:v4];
+  scrollView = [(PDFDocumentViewController *)self scrollView];
+  [scrollView setShowsVerticalScrollIndicator:showsScrollIndicators];
 
-  v6 = [(PDFDocumentViewController *)self scrollView];
-  [v6 setShowsHorizontalScrollIndicator:v4];
+  scrollView2 = [(PDFDocumentViewController *)self scrollView];
+  [scrollView2 setShowsHorizontalScrollIndicator:showsScrollIndicators];
 
-  v7 = [(PDFDocumentViewController *)self viewControllers];
+  viewControllers = [(PDFDocumentViewController *)self viewControllers];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [viewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -502,29 +502,29 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(viewControllers);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 scrollView];
-        [v13 setShowsVerticalScrollIndicator:v4];
+        scrollView3 = [v12 scrollView];
+        [scrollView3 setShowsVerticalScrollIndicator:showsScrollIndicators];
 
-        v14 = [v12 scrollView];
-        [v14 setShowsHorizontalScrollIndicator:v4];
+        scrollView4 = [v12 scrollView];
+        [scrollView4 setShowsHorizontalScrollIndicator:showsScrollIndicators];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [viewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (id)pageForPoint:(CGPoint)a3 nearest:(BOOL)a4
+- (id)pageForPoint:(CGPoint)point nearest:(BOOL)nearest
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  nearestCopy = nearest;
+  y = point.y;
+  x = point.x;
   v53 = *MEMORY[0x1E69E9840];
   [(PDFDocumentViewController *)self viewControllers];
   v48 = 0u;
@@ -549,14 +549,14 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
         }
 
         v14 = *(*(&v48 + 1) + 8 * i);
-        v15 = [v14 pageView];
-        v16 = [v14 PDFPage];
+        pageView = [v14 pageView];
+        pDFPage = [v14 PDFPage];
         WeakRetained = objc_loadWeakRetained(*(&self->super.super.super.super.isa + *(v12 + 3864)) + 1);
-        v18 = PDFRectToCGRect([v16 boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}]);
+        v18 = PDFRectToCGRect([pDFPage boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}]);
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        [(PDFDocumentViewController *)self convertPoint:v16 toPage:x, y];
+        [(PDFDocumentViewController *)self convertPoint:pDFPage toPage:x, y];
         v55.x = PDFPointToCGPoint(v25, v26);
         v55.y = v27;
         v56.origin.x = v18;
@@ -570,15 +570,15 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
           goto LABEL_17;
         }
 
-        if (v4)
+        if (nearestCopy)
         {
           v28 = v10;
-          v29 = v4;
+          v29 = nearestCopy;
           v30 = v7;
           v31 = v12;
-          v32 = [(PDFDocumentViewController *)self view];
-          [v15 bounds];
-          v33 = PDFRectToCGRect([v32 convertRect:v15 fromView:?]);
+          view = [(PDFDocumentViewController *)self view];
+          [pageView bounds];
+          v33 = PDFRectToCGRect([view convertRect:pageView fromView:?]);
           v35 = v34;
           v37 = v36;
           v39 = v38;
@@ -596,7 +596,7 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
           v42 = (y - MidY) * (y - MidY) + v40 * v40;
           if (v42 < v11)
           {
-            v43 = v16;
+            v43 = pDFPage;
 
             v46 = v43;
             v11 = v42;
@@ -604,7 +604,7 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
 
           v12 = v31;
           v7 = v30;
-          v4 = v29;
+          nearestCopy = v29;
           v10 = v28;
         }
       }
@@ -625,22 +625,22 @@ void __57__PDFDocumentViewController_goToPage_direction_animated___block_invoke(
   }
 
   v44 = v46;
-  v16 = v44;
+  pDFPage = v44;
 LABEL_17:
 
-  return v16;
+  return pDFPage;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toPage:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toPage:(id)page
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
-  v9 = [WeakRetained PDFPage];
+  pDFPage = [WeakRetained PDFPage];
 
-  if (v9 == v7)
+  if (pDFPage == pageCopy)
   {
     [(PDFDocumentViewController *)self _convertPoint:WeakRetained toPDFPageViewController:x, y];
     v17 = v21;
@@ -669,9 +669,9 @@ LABEL_17:
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 PDFPage];
+          pDFPage2 = [v15 PDFPage];
 
-          if (v16 == v7)
+          if (pDFPage2 == pageCopy)
           {
             [(PDFDocumentViewController *)self _convertPoint:v15 toPDFPageViewController:x, y];
             v17 = v19;
@@ -704,25 +704,25 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 toPDFPageViewController:(id)a4
+- (CGPoint)_convertPoint:(CGPoint)point toPDFPageViewController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
   v8 = PDFPointToCGPoint(x, y);
   v10 = v9;
-  v11 = [v7 PDFPage];
-  v12 = [v7 pageView];
+  pDFPage = [controllerCopy PDFPage];
+  pageView = [controllerCopy pageView];
 
-  v13 = [(PDFDocumentViewController *)self view];
-  [v13 convertPoint:v12 toView:{v8, v10}];
+  view = [(PDFDocumentViewController *)self view];
+  [view convertPoint:pageView toView:{v8, v10}];
   v47 = v14;
   v16 = v15;
 
-  [v12 bounds];
+  [pageView bounds];
   v45 = v17 - v16;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [v11 boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
+  [pDFPage boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
   v43 = v19;
   v44 = v20;
   v22 = v21;
@@ -734,12 +734,12 @@ LABEL_13:
   v27 = *(MEMORY[0x1E695EFD0] + 24);
   v30 = *(MEMORY[0x1E695EFD0] + 32);
   v29 = *(MEMORY[0x1E695EFD0] + 40);
-  v31 = [v11 rotation];
+  rotation = [pDFPage rotation];
   v32.f64[0] = v47;
   v32.f64[1] = v45;
-  if (v31 > 179)
+  if (rotation > 179)
   {
-    if (v31 == 180)
+    if (rotation == 180)
     {
       v46 = v32;
       v37 = PDFDegToRad(180.0);
@@ -756,7 +756,7 @@ LABEL_13:
       goto LABEL_10;
     }
 
-    if (v31 == 270)
+    if (rotation == 270)
     {
       v46 = v32;
       v36 = PDFDegToRad(270.0);
@@ -776,7 +776,7 @@ LABEL_13:
 
   else
   {
-    if (!v31)
+    if (!rotation)
     {
       v48.a = v26;
       v48.b = v25;
@@ -790,7 +790,7 @@ LABEL_13:
       goto LABEL_10;
     }
 
-    if (v31 == 90)
+    if (rotation == 90)
     {
       v46 = v32;
       v33 = PDFDegToRad(90.0);
@@ -820,16 +820,16 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromPage:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromPage:(id)page
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
-  v9 = [WeakRetained PDFPage];
+  pDFPage = [WeakRetained PDFPage];
 
-  if (v9 == v7)
+  if (pDFPage == pageCopy)
   {
     [(PDFDocumentViewController *)self _convertPoint:WeakRetained fromPDFPageViewController:x, y];
     v17 = v21;
@@ -858,9 +858,9 @@ LABEL_10:
           }
 
           v15 = *(*(&v25 + 1) + 8 * i);
-          v16 = [v15 PDFPage];
+          pDFPage2 = [v15 PDFPage];
 
-          if (v16 == v7)
+          if (pDFPage2 == pageCopy)
           {
             [(PDFDocumentViewController *)self _convertPoint:v15 fromPDFPageViewController:x, y];
             v17 = v19;
@@ -893,22 +893,22 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)_convertPoint:(CGPoint)a3 fromPDFPageViewController:(id)a4
+- (CGPoint)_convertPoint:(CGPoint)point fromPDFPageViewController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
   v45 = PDFPointToCGPoint(x, y);
   v46 = v8;
-  v9 = [v7 PDFPage];
+  pDFPage = [controllerCopy PDFPage];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  [v9 boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
+  [pDFPage boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [v9 rotation];
+  rotation = [pDFPage rotation];
   v20 = *(MEMORY[0x1E695EFD0] + 8);
   v22 = *(MEMORY[0x1E695EFD0] + 16);
   v21 = *(MEMORY[0x1E695EFD0] + 24);
@@ -917,9 +917,9 @@ LABEL_13:
   v25.f64[0] = v45;
   v25.f64[1] = v46;
   v47 = v25;
-  if (v19 > 179)
+  if (rotation > 179)
   {
-    if (v19 == 180)
+    if (rotation == 180)
     {
       v48.a = *MEMORY[0x1E695EFD0];
       v48.b = v20;
@@ -936,7 +936,7 @@ LABEL_13:
       goto LABEL_10;
     }
 
-    if (v19 == 270)
+    if (rotation == 270)
     {
       v48.a = *MEMORY[0x1E695EFD0];
       v48.b = v20;
@@ -956,7 +956,7 @@ LABEL_13:
 
   else
   {
-    if (!v19)
+    if (!rotation)
     {
       v48.a = *MEMORY[0x1E695EFD0];
       v48.b = v20;
@@ -970,7 +970,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v19 == 90)
+    if (rotation == 90)
     {
       v48.a = *MEMORY[0x1E695EFD0];
       v48.b = v20;
@@ -996,11 +996,11 @@ LABEL_10:
   }
 
 LABEL_12:
-  v30 = [v7 pageView];
-  [v30 bounds];
+  pageView = [controllerCopy pageView];
+  [pageView bounds];
   v32 = v31 - v47.f64[1];
-  v33 = [(PDFDocumentViewController *)self view];
-  [v33 convertPoint:v30 fromView:{v47.f64[0], v32}];
+  view = [(PDFDocumentViewController *)self view];
+  [view convertPoint:pageView fromView:{v47.f64[0], v32}];
   v35 = v34;
   v37 = v36;
 
@@ -1014,35 +1014,35 @@ LABEL_12:
   return result;
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
-  v8 = [a4 firstObject];
-  [(PDFDocumentViewController *)self _updateCurrentPageViewController:v8];
+  firstObject = [controllers firstObject];
+  [(PDFDocumentViewController *)self _updateCurrentPageViewController:firstObject];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"PDFViewVisiblePagesChanged" object:WeakRetained];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFViewVisiblePagesChanged" object:WeakRetained];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"PDFTextSelectionMenuWillChangeScrollPosition" object:WeakRetained];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"PDFTextSelectionMenuWillChangeScrollPosition" object:WeakRetained];
 
   os_unfair_lock_lock(&self->_private->weakPageViewControllersLock);
-  [(NSHashTable *)self->_private->weakPageViewControllers addObject:v8];
+  [(NSHashTable *)self->_private->weakPageViewControllers addObject:firstObject];
   os_unfair_lock_unlock(&self->_private->weakPageViewControllersLock);
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v7 = a4;
+  animatingCopy = animating;
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  controllersCopy = controllers;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  if (a6)
+  if (completed)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v9;
+    v11 = controllersCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v12)
     {
@@ -1058,8 +1058,8 @@ LABEL_12:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v26 + 1) + 8 * v15) pageView];
-          [v16 clearTiles];
+          pageView = [*(*(&v26 + 1) + 8 * v15) pageView];
+          [pageView clearTiles];
 
           ++v15;
         }
@@ -1076,32 +1076,32 @@ LABEL_12:
 
   else
   {
-    v17 = [v9 firstObject];
-    [(PDFDocumentViewController *)self _updateCurrentPageViewController:v17];
+    firstObject = [controllersCopy firstObject];
+    [(PDFDocumentViewController *)self _updateCurrentPageViewController:firstObject];
   }
 
-  if (v7)
+  if (animatingCopy)
   {
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 postNotificationName:@"PDFTextSelectionMenuDidChangeScrollPosition" object:WeakRetained];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFTextSelectionMenuDidChangeScrollPosition" object:WeakRetained];
   }
 
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v19 postNotificationName:@"PDFViewVisiblePagesChanged" object:WeakRetained];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"PDFViewVisiblePagesChanged" object:WeakRetained];
 
-  v20 = [WeakRetained document];
-  v21 = [(PDFDocumentViewController *)self currentPage];
-  v22 = [v20 indexForPage:v21];
+  document = [WeakRetained document];
+  currentPage = [(PDFDocumentViewController *)self currentPage];
+  v22 = [document indexForPage:currentPage];
 
-  v23 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
   v30 = @"pageIndex";
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v22];
   v31 = v24;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-  [v23 postNotificationName:@"PDFDocumentViewControllerChangedPage" object:WeakRetained userInfo:v25];
+  [defaultCenter3 postNotificationName:@"PDFDocumentViewControllerChangedPage" object:WeakRetained userInfo:v25];
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
   if (self->_private->displaysRTL)
   {
@@ -1113,10 +1113,10 @@ LABEL_12:
     v5 = 0xFFFFFFFFLL;
   }
 
-  return [(PDFDocumentViewController *)self _pageViewController:a3 nextViewController:v5 forViewController:a4];
+  return [(PDFDocumentViewController *)self _pageViewController:controller nextViewController:v5 forViewController:viewController];
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
   if (self->_private->displaysRTL)
   {
@@ -1128,15 +1128,15 @@ LABEL_12:
     v5 = 1;
   }
 
-  return [(PDFDocumentViewController *)self _pageViewController:a3 nextViewController:v5 forViewController:a4];
+  return [(PDFDocumentViewController *)self _pageViewController:controller nextViewController:v5 forViewController:viewController];
 }
 
 - (id)document
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v3 = [WeakRetained document];
+  document = [WeakRetained document];
 
-  return v3;
+  return document;
 }
 
 - (void)viewWillLayoutSubviews
@@ -1146,16 +1146,16 @@ LABEL_12:
   v14.super_class = PDFDocumentViewController;
   [(PDFDocumentViewController *)&v14 viewWillLayoutSubviews];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v4 = [WeakRetained autoScales];
+  autoScales = [WeakRetained autoScales];
 
-  if (v4)
+  if (autoScales)
   {
-    v5 = [(PDFDocumentViewController *)self viewControllers];
+    viewControllers = [(PDFDocumentViewController *)self viewControllers];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1167,14 +1167,14 @@ LABEL_12:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(viewControllers);
           }
 
           [*(*(&v10 + 1) + 8 * v9++) enforceAutoScaleFactor];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [viewControllers countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v7);
@@ -1182,43 +1182,43 @@ LABEL_12:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
-  v3 = [WeakRetained pageView];
-  [v3 setNeedsTilesUpdate];
+  pageView = [WeakRetained pageView];
+  [pageView setNeedsTilesUpdate];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
-  v3 = [WeakRetained pageView];
-  [v3 setNeedsTilesUpdate];
+  pageView = [WeakRetained pageView];
+  [pageView setNeedsTilesUpdate];
 }
 
-- (void)_setupDocument:(unint64_t)a3
+- (void)_setupDocument:(unint64_t)document
 {
-  v5 = [(PDFDocumentViewController *)self document];
-  if (v5)
+  document = [(PDFDocumentViewController *)self document];
+  if (document)
   {
-    v7 = v5;
-    if ([v5 isLocked])
+    v7 = document;
+    if ([document isLocked])
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 addObserver:self selector:sel__documentWasUnlocked name:@"PDFDocumentDidUnlock" object:v7];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__documentWasUnlocked name:@"PDFDocumentDidUnlock" object:v7];
     }
 
     else if ([v7 pageCount])
     {
-      [(PDFDocumentViewController *)self _loadDocument:a3];
+      [(PDFDocumentViewController *)self _loadDocument:document];
     }
 
     [v7 setPageChangeDelegate:self];
-    v5 = v7;
+    document = v7;
   }
 }
 
-- (void)_loadDocument:(unint64_t)a3
+- (void)_loadDocument:(unint64_t)document
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5 = [(PDFDocumentViewController *)self _pageViewControllerCreate:?];
@@ -1228,21 +1228,21 @@ LABEL_12:
   [(PDFDocumentViewController *)self setViewControllers:v6 direction:0 animated:0 completion:0];
 
   [(NSHashTable *)self->_private->weakPageViewControllers addObject:v5];
-  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager updateActivePageIndex:a3];
+  [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager updateActivePageIndex:document];
 }
 
-- (id)_pageViewController:(id)a3 nextViewController:(int)a4 forViewController:(id)a5
+- (id)_pageViewController:(id)controller nextViewController:(int)viewController forViewController:(id)forViewController
 {
   v7 = self->_private;
-  v8 = a5;
+  forViewControllerCopy = forViewController;
   WeakRetained = objc_loadWeakRetained(&v7->pdfView);
-  v10 = [v8 PDFPage];
+  pDFPage = [forViewControllerCopy PDFPage];
 
-  v11 = [WeakRetained document];
-  v12 = [v11 pageCount];
+  document = [WeakRetained document];
+  pageCount = [document pageCount];
   v13 = 0;
-  v14 = [v11 indexForPage:v10] + a4;
-  if (v14 >= 0 && v14 < v12)
+  v14 = [document indexForPage:pDFPage] + viewController;
+  if (v14 >= 0 && v14 < pageCount)
   {
     v13 = [(PDFDocumentViewController *)self findPageViewControllerForPageIndex:v14];
     if (!v13)
@@ -1254,7 +1254,7 @@ LABEL_12:
   return v13;
 }
 
-- (id)_pageViewControllerCreate:(unint64_t)a3
+- (id)_pageViewControllerCreate:(unint64_t)create
 {
   v5 = objc_alloc_init(PDFPageViewController);
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
@@ -1262,21 +1262,21 @@ LABEL_12:
   [(PDFPageViewController *)v5 setPDFView:WeakRetained];
   [WeakRetained pageBreakMargins];
   [(PDFPageViewController *)v5 setPageBreakMargins:?];
-  v7 = [WeakRetained document];
-  v8 = [v7 pageAtIndex:a3];
+  document = [WeakRetained document];
+  v8 = [document pageAtIndex:create];
   [(PDFPageViewController *)v5 setPDFPage:v8];
 
-  v9 = [WeakRetained showsScrollIndicators];
-  v10 = [(PDFPageViewController *)v5 scrollView];
-  [v10 setShowsVerticalScrollIndicator:v9];
+  showsScrollIndicators = [WeakRetained showsScrollIndicators];
+  scrollView = [(PDFPageViewController *)v5 scrollView];
+  [scrollView setShowsVerticalScrollIndicator:showsScrollIndicators];
 
-  v11 = [(PDFPageViewController *)v5 scrollView];
-  [v11 setShowsHorizontalScrollIndicator:v9];
+  scrollView2 = [(PDFPageViewController *)v5 scrollView];
+  [scrollView2 setShowsHorizontalScrollIndicator:showsScrollIndicators];
 
   [(PDFPageViewController *)v5 setMinScaleFactor:self->_private->minScale withMaxScaleFactor:self->_private->maxScale];
   v15 = 0;
-  v12 = [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager backgroundImageForPageIndex:a3 withFoundQuality:&v15];
-  if (v12 || ([(PDFPageBackgroundManager *)self->_private->pageBackgroundManager forceUpdateActivePageIndex:a3 withMaxDuration:0.0166666667], [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager backgroundImageForPageIndex:a3 withFoundQuality:&v15], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  v12 = [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager backgroundImageForPageIndex:create withFoundQuality:&v15];
+  if (v12 || ([(PDFPageBackgroundManager *)self->_private->pageBackgroundManager forceUpdateActivePageIndex:create withMaxDuration:0.0166666667], [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager backgroundImageForPageIndex:create withFoundQuality:&v15], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
     [(PDFPageViewController *)v5 setBackgroundImage:v12 atBackgroundQuality:v15];
@@ -1285,7 +1285,7 @@ LABEL_12:
   return v5;
 }
 
-- (id)findPageViewControllerForPageIndex:(int64_t)a3
+- (id)findPageViewControllerForPageIndex:(int64_t)index
 {
   v24 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
@@ -1309,15 +1309,15 @@ LABEL_12:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 PDFPage];
-        if (v11)
+        pDFPage = [v10 PDFPage];
+        if (pDFPage)
         {
-          v12 = v11;
-          v13 = [WeakRetained document];
-          v14 = [v10 PDFPage];
-          v15 = [v13 indexForPage:v14];
+          v12 = pDFPage;
+          document = [WeakRetained document];
+          pDFPage2 = [v10 PDFPage];
+          v15 = [document indexForPage:pDFPage2];
 
-          if (v15 == a3)
+          if (v15 == index)
           {
             v16 = v10;
             goto LABEL_12;
@@ -1341,18 +1341,18 @@ LABEL_12:
   return v16;
 }
 
-- (void)_updateCurrentPageViewController:(id)a3
+- (void)_updateCurrentPageViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v6 = v4;
+  v6 = controllerCopy;
   objc_storeWeak(&self->_private->activePageView, v6);
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"PDFViewChangedPage" object:WeakRetained];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFViewChangedPage" object:WeakRetained];
 
-  v8 = [WeakRetained document];
-  v9 = [v6 PDFPage];
-  v10 = [v8 indexForPage:v9];
+  document = [WeakRetained document];
+  pDFPage = [v6 PDFPage];
+  v10 = [document indexForPage:pDFPage];
 
   v13 = 0;
   v11 = [(PDFPageBackgroundManager *)self->_private->pageBackgroundManager backgroundImageForPageIndex:v10 withFoundQuality:&v13];
@@ -1361,14 +1361,14 @@ LABEL_12:
     [v6 setBackgroundImage:v11 atBackgroundQuality:v13];
   }
 
-  v12 = [v6 pageView];
-  [v12 setNeedsTilesUpdate];
+  pageView = [v6 pageView];
+  [pageView setNeedsTilesUpdate];
 }
 
-- (id)backgroundImageForPage:(id)a3 withQuality:(int *)a4
+- (id)backgroundImageForPage:(id)page withQuality:(int *)quality
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pageCopy = page;
   os_unfair_lock_lock(&self->_private->weakPageViewControllersLock);
   v22 = 0u;
   v23 = 0u;
@@ -1379,7 +1379,7 @@ LABEL_12:
   if (v8)
   {
     v9 = v8;
-    v19 = a4;
+    qualityCopy = quality;
     v10 = *v21;
     while (2)
     {
@@ -1390,20 +1390,20 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v20 + 1) + 8 * i) pageView];
-        v13 = v12;
-        if (v12)
+        pageView = [*(*(&v20 + 1) + 8 * i) pageView];
+        v13 = pageView;
+        if (pageView)
         {
-          v14 = [v12 page];
-          v15 = v14;
-          if (v14 == v6)
+          page = [pageView page];
+          v15 = page;
+          if (page == pageCopy)
           {
-            v16 = [v13 hasBackgroundImage];
+            hasBackgroundImage = [v13 hasBackgroundImage];
 
-            if (v16)
+            if (hasBackgroundImage)
             {
-              *v19 = [v13 backgroundImageQuality];
-              v17 = [v13 backgroundImage];
+              *qualityCopy = [v13 backgroundImageQuality];
+              backgroundImage = [v13 backgroundImage];
 
               goto LABEL_14;
             }
@@ -1425,26 +1425,26 @@ LABEL_12:
     }
   }
 
-  v17 = 0;
+  backgroundImage = 0;
 LABEL_14:
 
   os_unfair_lock_unlock(&self->_private->weakPageViewControllersLock);
 
-  return v17;
+  return backgroundImage;
 }
 
-- (void)recieveBackgroundImage:(id)a3 atBackgroundQuality:(int)a4 forPage:(id)a5
+- (void)recieveBackgroundImage:(id)image atBackgroundQuality:(int)quality forPage:(id)page
 {
-  v6 = *&a4;
+  v6 = *&quality;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  imageCopy = image;
+  pageCopy = page;
   os_unfair_lock_lock(&self->_private->weakPageViewControllersLock);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v18 = self;
+  selfCopy = self;
   v10 = self->_private->weakPageViewControllers;
   v11 = [(NSHashTable *)v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
@@ -1461,15 +1461,15 @@ LABEL_14:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * v14) pageView];
-        v16 = v15;
-        if (v15)
+        pageView = [*(*(&v19 + 1) + 8 * v14) pageView];
+        v16 = pageView;
+        if (pageView)
         {
-          v17 = [v15 page];
+          page = [pageView page];
 
-          if (v17 == v9)
+          if (page == pageCopy)
           {
-            [v16 setBackgroundImage:v8 atBackgroundQuality:v6];
+            [v16 setBackgroundImage:imageCopy atBackgroundQuality:v6];
           }
         }
 
@@ -1483,10 +1483,10 @@ LABEL_14:
     while (v12);
   }
 
-  os_unfair_lock_unlock(&v18->_private->weakPageViewControllersLock);
+  os_unfair_lock_unlock(&selfCopy->_private->weakPageViewControllersLock);
 }
 
-- (void)didInsertPage:(id)a3 atIndex:(unint64_t)a4
+- (void)didInsertPage:(id)page atIndex:(unint64_t)index
 {
   v8[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_private->activePageView);
@@ -1499,22 +1499,22 @@ LABEL_14:
   }
 }
 
-- (void)didRemovePage:(id)a3 atIndex:(unint64_t)a4
+- (void)didRemovePage:(id)page atIndex:(unint64_t)index
 {
-  v9 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
   v7 = objc_loadWeakRetained(&self->_private->activePageView);
   if (v7)
   {
-    v8 = [WeakRetained document];
-    if ([v8 pageCount] > a4)
+    document = [WeakRetained document];
+    if ([document pageCount] > index)
     {
-      [v8 pageAtIndex:a4];
+      [document pageAtIndex:index];
     }
 
-    if (v9)
+    if (pageCopy)
     {
-      [(PDFDocumentViewController *)self goToPage:v9 direction:0 animated:1];
+      [(PDFDocumentViewController *)self goToPage:pageCopy direction:0 animated:1];
     }
   }
 }

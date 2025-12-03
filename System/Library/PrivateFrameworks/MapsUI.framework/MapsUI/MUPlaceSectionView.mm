@@ -1,24 +1,24 @@
 @interface MUPlaceSectionView
-+ (id)insetButtonSectionViewforContentView:(id)a3;
-+ (id)insetPlatterSectionViewForContentView:(id)a3 sectionHeaderViewModel:(id)a4 sectionFooterViewModel:(id)a5;
-+ (id)insetTextSectionViewForContentView:(id)a3 sectionHeaderViewModel:(id)a4 sectionFooterViewModel:(id)a5;
-- (MUPlaceSectionView)initWithStyle:(int64_t)a3 alwaysHideSeparators:(BOOL)a4 sectionHeaderViewModel:(id)a5 sectionFooterViewModel:(id)a6;
++ (id)insetButtonSectionViewforContentView:(id)view;
++ (id)insetPlatterSectionViewForContentView:(id)view sectionHeaderViewModel:(id)model sectionFooterViewModel:(id)viewModel;
++ (id)insetTextSectionViewForContentView:(id)view sectionHeaderViewModel:(id)model sectionFooterViewModel:(id)viewModel;
+- (MUPlaceSectionView)initWithStyle:(int64_t)style alwaysHideSeparators:(BOOL)separators sectionHeaderViewModel:(id)model sectionFooterViewModel:(id)viewModel;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateForContentSizeChange;
-- (void)attachViewToContentView:(id)a3;
-- (void)configureWithSectionController:(id)a3;
-- (void)setApplyVerticalSpacingBetweenHeaderAndContent:(BOOL)a3;
-- (void)setHeaderAXIdentifierWithBaseString:(id)a3;
+- (void)attachViewToContentView:(id)view;
+- (void)configureWithSectionController:(id)controller;
+- (void)setApplyVerticalSpacingBetweenHeaderAndContent:(BOOL)content;
+- (void)setHeaderAXIdentifierWithBaseString:(id)string;
 @end
 
 @implementation MUPlaceSectionView
 
-- (void)setApplyVerticalSpacingBetweenHeaderAndContent:(BOOL)a3
+- (void)setApplyVerticalSpacingBetweenHeaderAndContent:(BOOL)content
 {
-  self->_applyVerticalSpacingBetweenHeaderAndContent = a3;
+  self->_applyVerticalSpacingBetweenHeaderAndContent = content;
   v3 = 0.0;
-  if (a3)
+  if (content)
   {
     v3 = -10.0;
   }
@@ -26,45 +26,45 @@
   [(NSLayoutConstraint *)self->_headerContentSpacingConstraint setConstant:v3];
 }
 
-- (void)setHeaderAXIdentifierWithBaseString:(id)a3
+- (void)setHeaderAXIdentifierWithBaseString:(id)string
 {
-  v4 = [a3 stringByAppendingString:@"Header"];
+  v4 = [string stringByAppendingString:@"Header"];
   [(MUPlaceSectionHeaderView *)self->_headerView setAccessibilityIdentifier:v4];
 }
 
 - (void)_updateForContentSizeChange
 {
-  v3 = [(MUPlaceSectionFooterViewModel *)self->_footerViewModel attributedText];
-  [(MULinkView *)self->_footerView setAttributedText:v3];
+  attributedText = [(MUPlaceSectionFooterViewModel *)self->_footerViewModel attributedText];
+  [(MULinkView *)self->_footerView setAttributedText:attributedText];
 }
 
-- (void)attachViewToContentView:(id)a3
+- (void)attachViewToContentView:(id)view
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(MUPlaceSectionView *)self addSubview:v4];
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(MUPlaceSectionView *)self addSubview:viewCopy];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setAccessibilityIdentifier:v6];
+  [viewCopy setAccessibilityIdentifier:v6];
 
   v18 = MEMORY[0x1E696ACD8];
-  v21 = [v4 leadingAnchor];
-  v20 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v22[0] = v19;
-  v7 = [v4 trailingAnchor];
-  v8 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v22[1] = v9;
-  v10 = [v4 topAnchor];
-  v11 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[2] = v12;
-  v13 = [v4 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v14 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v18 activateConstraints:v16];
@@ -106,23 +106,23 @@
     }
 
     v49 = v3;
-    v8 = [(MUPlaceSectionHeaderView *)self->_headerView bottomAnchor];
-    v9 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:v7];
+    bottomAnchor = [(MUPlaceSectionHeaderView *)self->_headerView bottomAnchor];
+    topAnchor = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:v7];
     headerContentSpacingConstraint = self->_headerContentSpacingConstraint;
     self->_headerContentSpacingConstraint = v10;
 
-    v12 = [(MUPlaceSectionHeaderView *)self->_headerView leadingAnchor];
-    v47 = [(MUPlaceSectionView *)self leadingAnchor];
-    v45 = [v12 constraintEqualToAnchor:v47 constant:20.0];
+    leadingAnchor = [(MUPlaceSectionHeaderView *)self->_headerView leadingAnchor];
+    leadingAnchor2 = [(MUPlaceSectionView *)self leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v55[0] = v45;
-    v13 = [(MUPlaceSectionHeaderView *)self->_headerView topAnchor];
-    v14 = [(MUPlaceSectionView *)self topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor2 = [(MUPlaceSectionHeaderView *)self->_headerView topAnchor];
+    topAnchor3 = [(MUPlaceSectionView *)self topAnchor];
+    v15 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v55[1] = v15;
-    v16 = [(MUPlaceSectionHeaderView *)self->_headerView trailingAnchor];
-    v17 = [(MUPlaceSectionView *)self trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:-20.0];
+    trailingAnchor = [(MUPlaceSectionHeaderView *)self->_headerView trailingAnchor];
+    trailingAnchor2 = [(MUPlaceSectionView *)self trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
     v19 = self->_headerContentSpacingConstraint;
     v55[2] = v18;
     v55[3] = v19;
@@ -134,59 +134,59 @@
 
   else
   {
-    v21 = [(MUPlaceSectionView *)self topAnchor];
-    v22 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    topAnchor4 = [(MUPlaceSectionView *)self topAnchor];
+    topAnchor5 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v23 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v3 addObject:v23];
   }
 
-  v24 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-  v25 = [(MUPlaceSectionView *)self leadingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25 constant:v6];
+  leadingAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+  leadingAnchor4 = [(MUPlaceSectionView *)self leadingAnchor];
+  v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v6];
   v54[0] = v26;
-  v27 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-  v28 = [(MUPlaceSectionView *)self trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:-v6];
+  trailingAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+  trailingAnchor4 = [(MUPlaceSectionView *)self trailingAnchor];
+  v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v6];
   v54[1] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
   [v3 addObjectsFromArray:v30];
 
   footerView = self->_footerView;
-  v32 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
   if (footerView)
   {
-    v51 = [(MULinkView *)self->_footerView topAnchor];
-    v48 = [v32 constraintEqualToAnchor:v51 constant:-0.0];
+    topAnchor6 = [(MULinkView *)self->_footerView topAnchor];
+    v48 = [bottomAnchor2 constraintEqualToAnchor:topAnchor6 constant:-0.0];
     v52[0] = v48;
-    v33 = [(MULinkView *)self->_footerView leadingAnchor];
-    v50 = [(MUPlaceSectionView *)self leadingAnchor];
-    v46 = [v33 constraintEqualToAnchor:v50 constant:20.0];
+    leadingAnchor5 = [(MULinkView *)self->_footerView leadingAnchor];
+    leadingAnchor6 = [(MUPlaceSectionView *)self leadingAnchor];
+    v46 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:20.0];
     v52[1] = v46;
     [(MULinkView *)self->_footerView trailingAnchor];
     v35 = v34 = v3;
-    v36 = [(MUPlaceSectionView *)self trailingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:-20.0];
+    trailingAnchor5 = [(MUPlaceSectionView *)self trailingAnchor];
+    v37 = [v35 constraintEqualToAnchor:trailingAnchor5 constant:-20.0];
     v52[2] = v37;
-    v38 = [(MULinkView *)self->_footerView bottomAnchor];
-    v39 = [(MUPlaceSectionView *)self bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor3 = [(MULinkView *)self->_footerView bottomAnchor];
+    bottomAnchor4 = [(MUPlaceSectionView *)self bottomAnchor];
+    v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v52[3] = v40;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
     [v34 addObjectsFromArray:v41];
 
     v42 = v48;
-    v43 = v51;
+    bottomAnchor5 = topAnchor6;
 
     v3 = v34;
   }
 
   else
   {
-    v43 = [(MUPlaceSectionView *)self bottomAnchor];
-    v42 = [v32 constraintEqualToAnchor:v43];
+    bottomAnchor5 = [(MUPlaceSectionView *)self bottomAnchor];
+    v42 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor5];
     v53 = v42;
-    v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-    [v3 addObjectsFromArray:v33];
+    leadingAnchor5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
+    [v3 addObjectsFromArray:leadingAnchor5];
   }
 
   [MEMORY[0x1E696ACD8] activateConstraints:v3];
@@ -230,12 +230,12 @@
         if (style != 1)
         {
 LABEL_11:
-          v11 = [(MUPlaceSectionFooterViewModel *)self->_footerViewModel attributedText];
-          [(MULinkView *)self->_footerView setAttributedText:v11];
+          attributedText = [(MUPlaceSectionFooterViewModel *)self->_footerViewModel attributedText];
+          [(MULinkView *)self->_footerView setAttributedText:attributedText];
 
-          v12 = [(MUPlaceSectionFooterViewModel *)self->_footerViewModel actionBlock];
+          actionBlock = [(MUPlaceSectionFooterViewModel *)self->_footerViewModel actionBlock];
 
-          if (v12)
+          if (actionBlock)
           {
             objc_initWeak(&location, self);
             v13 = self->_footerView;
@@ -280,11 +280,11 @@ void __36__MUPlaceSectionView__setupSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (MUPlaceSectionView)initWithStyle:(int64_t)a3 alwaysHideSeparators:(BOOL)a4 sectionHeaderViewModel:(id)a5 sectionFooterViewModel:(id)a6
+- (MUPlaceSectionView)initWithStyle:(int64_t)style alwaysHideSeparators:(BOOL)separators sectionHeaderViewModel:(id)model sectionFooterViewModel:(id)viewModel
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  modelCopy = model;
+  viewModelCopy = viewModel;
   v19.receiver = self;
   v19.super_class = MUPlaceSectionView;
   v12 = [(MUPlaceSectionView *)&v19 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -292,9 +292,9 @@ void __36__MUPlaceSectionView__setupSubviews__block_invoke(uint64_t a1)
   if (v12)
   {
     v12->_applyVerticalSpacingBetweenHeaderAndContent = 1;
-    objc_storeStrong(&v12->_headerViewModel, a5);
-    objc_storeStrong(&v13->_footerViewModel, a6);
-    v13->_style = a3;
+    objc_storeStrong(&v12->_headerViewModel, model);
+    objc_storeStrong(&v13->_footerViewModel, viewModel);
+    v13->_style = style;
     [(MUPlaceSectionView *)v13 _setupSubviews];
     [(MUPlaceSectionView *)v13 _setupConstraints];
     v14 = objc_opt_self();
@@ -307,7 +307,7 @@ void __36__MUPlaceSectionView__setupSubviews__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (void)configureWithSectionController:(id)a3
+- (void)configureWithSectionController:(id)controller
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -322,36 +322,36 @@ void __36__MUPlaceSectionView__setupSubviews__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)insetButtonSectionViewforContentView:(id)a3
++ (id)insetButtonSectionViewforContentView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [[MUPlaceSectionView alloc] initWithStyle:2 sectionHeaderViewModel:0 sectionFooterViewModel:0];
-  [(MUPlaceSectionView *)v4 attachViewToContentView:v3];
+  [(MUPlaceSectionView *)v4 attachViewToContentView:viewCopy];
 
   return v4;
 }
 
-+ (id)insetPlatterSectionViewForContentView:(id)a3 sectionHeaderViewModel:(id)a4 sectionFooterViewModel:(id)a5
++ (id)insetPlatterSectionViewForContentView:(id)view sectionHeaderViewModel:(id)model sectionFooterViewModel:(id)viewModel
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MUPlaceSectionView alloc] initWithStyle:2 sectionHeaderViewModel:v8 sectionFooterViewModel:v7];
+  viewModelCopy = viewModel;
+  modelCopy = model;
+  viewCopy = view;
+  v10 = [[MUPlaceSectionView alloc] initWithStyle:2 sectionHeaderViewModel:modelCopy sectionFooterViewModel:viewModelCopy];
 
-  v11 = [[MUPlatterView alloc] initWithContentView:v9];
+  v11 = [[MUPlatterView alloc] initWithContentView:viewCopy];
   [(MUPlaceSectionView *)v10 attachViewToContentView:v11];
 
   return v10;
 }
 
-+ (id)insetTextSectionViewForContentView:(id)a3 sectionHeaderViewModel:(id)a4 sectionFooterViewModel:(id)a5
++ (id)insetTextSectionViewForContentView:(id)view sectionHeaderViewModel:(id)model sectionFooterViewModel:(id)viewModel
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MUPlaceSectionView alloc] initWithStyle:1 sectionHeaderViewModel:v8 sectionFooterViewModel:v7];
+  viewModelCopy = viewModel;
+  modelCopy = model;
+  viewCopy = view;
+  v10 = [[MUPlaceSectionView alloc] initWithStyle:1 sectionHeaderViewModel:modelCopy sectionFooterViewModel:viewModelCopy];
 
-  [(MUPlaceSectionView *)v10 attachViewToContentView:v9];
+  [(MUPlaceSectionView *)v10 attachViewToContentView:viewCopy];
 
   return v10;
 }

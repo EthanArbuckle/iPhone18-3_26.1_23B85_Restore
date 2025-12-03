@@ -1,31 +1,31 @@
 @interface PDURLSessionProxyStartedUp
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyStartedUp
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_version = v4[4];
+    self->_version = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(PDURLSessionProxyStartedUp *)self setLaunchUUID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -44,24 +44,24 @@
   return [(NSString *)self->_launchUUID hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -69,7 +69,7 @@ LABEL_9:
   }
 
   launchUUID = self->_launchUUID;
-  if (launchUUID | *(v4 + 1))
+  if (launchUUID | *(equalCopy + 1))
   {
     v7 = [(NSString *)launchUUID isEqual:?];
   }
@@ -84,9 +84,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -94,56 +94,56 @@ LABEL_10:
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSString *)self->_launchUUID copyWithZone:a3];
+  v7 = [(NSString *)self->_launchUUID copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_version;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_launchUUID)
   {
-    v5 = v4;
-    [v4 setLaunchUUID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setLaunchUUID:?];
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_launchUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -154,18 +154,18 @@ LABEL_10:
       while (1)
       {
         v26 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v26 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v26 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v26 & 0x7F) << v6;
@@ -183,9 +183,9 @@ LABEL_10:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -206,18 +206,18 @@ LABEL_15:
         while (1)
         {
           v27 = 0;
-          v17 = [a3 position] + 1;
-          if (v17 >= [a3 position] && (v18 = objc_msgSend(a3, "position") + 1, v18 <= objc_msgSend(a3, "length")))
+          v17 = [from position] + 1;
+          if (v17 >= [from position] && (v18 = objc_msgSend(from, "position") + 1, v18 <= objc_msgSend(from, "length")))
           {
-            v19 = [a3 data];
-            [v19 getBytes:&v27 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v27 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v16 |= (v27 & 0x7F) << v14;
@@ -235,7 +235,7 @@ LABEL_15:
           }
         }
 
-        v20 = [a3 hasError] ? 0 : v16;
+        v20 = [from hasError] ? 0 : v16;
 LABEL_34:
         self->_version = v20;
       }
@@ -249,13 +249,13 @@ LABEL_34:
         }
       }
 
-      v24 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v24 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v23) = [a3 hasError] ^ 1;
+  LOBYTE(v23) = [from hasError] ^ 1;
   return v23;
 }
 
@@ -282,8 +282,8 @@ LABEL_34:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyStartedUp;
   v3 = [(PDURLSessionProxyStartedUp *)&v7 description];
-  v4 = [(PDURLSessionProxyStartedUp *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyStartedUp *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

@@ -1,24 +1,24 @@
 @interface _SFPBLocalImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBLocalImage)initWithDictionary:(id)a3;
-- (_SFPBLocalImage)initWithFacade:(id)a3;
-- (_SFPBLocalImage)initWithJSON:(id)a3;
+- (_SFPBLocalImage)initWithDictionary:(id)dictionary;
+- (_SFPBLocalImage)initWithFacade:(id)facade;
+- (_SFPBLocalImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBLocalImage
 
-- (_SFPBLocalImage)initWithFacade:(id)a3
+- (_SFPBLocalImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBLocalImage *)self init];
   if (v5)
   {
-    if ([v4 hasLocalImageType])
+    if ([facadeCopy hasLocalImageType])
     {
-      -[_SFPBLocalImage setLocalImageType:](v5, "setLocalImageType:", [v4 localImageType]);
+      -[_SFPBLocalImage setLocalImageType:](v5, "setLocalImageType:", [facadeCopy localImageType]);
     }
 
     v6 = v5;
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (_SFPBLocalImage)initWithDictionary:(id)a3
+- (_SFPBLocalImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBLocalImage;
   v5 = [(_SFPBLocalImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"localImageType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"localImageType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (_SFPBLocalImage)initWithJSON:(id)a3
+- (_SFPBLocalImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBLocalImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBLocalImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBLocalImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,33 +84,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_localImageType)
   {
-    v4 = [(_SFPBLocalImage *)self localImageType];
-    if (v4 >= 5)
+    localImageType = [(_SFPBLocalImage *)self localImageType];
+    if (localImageType >= 5)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", localImageType];
     }
 
     else
     {
-      v5 = off_1E7ACE448[v4];
+      v5 = off_1E7ACE448[localImageType];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"localImageType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"localImageType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     localImageType = self->_localImageType;
-    v6 = localImageType == [v4 localImageType];
+    v6 = localImageType == [equalCopy localImageType];
   }
 
   else
@@ -121,9 +121,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBLocalImage *)self localImageType])
   {
     PBDataWriterWriteInt32Field();

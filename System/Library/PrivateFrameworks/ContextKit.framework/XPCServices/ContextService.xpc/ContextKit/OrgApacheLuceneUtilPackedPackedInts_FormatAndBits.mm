@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_FormatAndBits
-- (OrgApacheLuceneUtilPackedPackedInts_FormatAndBits)initWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneUtilPackedPackedInts_FormatAndBits)initWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum:(id)enum withInt:(int)int;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_FormatAndBits
 
-- (OrgApacheLuceneUtilPackedPackedInts_FormatAndBits)initWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneUtilPackedPackedInts_FormatAndBits)initWithOrgApacheLuceneUtilPackedPackedInts_FormatEnum:(id)enum withInt:(int)int
 {
-  JreStrongAssign(&self->format_, a3);
-  self->bitsPerValue_ = a4;
+  JreStrongAssign(&self->format_, enum);
+  self->bitsPerValue_ = int;
   return self;
 }
 

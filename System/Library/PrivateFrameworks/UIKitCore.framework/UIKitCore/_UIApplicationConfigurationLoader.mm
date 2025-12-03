@@ -30,8 +30,8 @@
 
 - (UISApplicationInitializationContext)applicationInitializationContext
 {
-  v2 = [(_UIApplicationConfigurationLoader *)self _loadInitializationContext];
-  if (!v2)
+  _loadInitializationContext = [(_UIApplicationConfigurationLoader *)self _loadInitializationContext];
+  if (!_loadInitializationContext)
   {
     if (qword_1ED49EC70 != -1)
     {
@@ -49,7 +49,7 @@
     }
   }
 
-  return v2;
+  return _loadInitializationContext;
 }
 
 + (_UIApplicationConfigurationLoader)sharedLoader
@@ -68,7 +68,7 @@
 {
   if ([(_UIApplicationConfigurationLoader *)self usesLocalInitializationContext])
   {
-    v3 = [(_UIApplicationConfigurationLoader *)self _loadInitializationContext];
+    _loadInitializationContext = [(_UIApplicationConfigurationLoader *)self _loadInitializationContext];
   }
 
   else if (!self->_hasRequestedPreload)
@@ -97,8 +97,8 @@
     return 1;
   }
 
-  v4 = [(_UIApplicationConfigurationLoader *)self _appInitializationContextFactoryClass];
-  v3 = v4 != 0;
+  _appInitializationContextFactoryClass = [(_UIApplicationConfigurationLoader *)self _appInitializationContextFactoryClass];
+  v3 = _appInitializationContextFactoryClass != 0;
 
   return v3;
 }
@@ -134,8 +134,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIApplicationConfigurationLoader.m" lineNumber:75 description:@"This is a singleton that should never be deallocated"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIApplicationConfigurationLoader.m" lineNumber:75 description:@"This is a singleton that should never be deallocated"];
 
   v5.receiver = self;
   v5.super_class = _UIApplicationConfigurationLoader;

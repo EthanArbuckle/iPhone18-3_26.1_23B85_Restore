@@ -2,10 +2,10 @@
 + (id)sharedManager;
 - (MFAAPairingManager)init;
 - (id)_init;
-- (void)addPairingWithToken:(id)a3 completionHandler:(id)a4;
-- (void)generatePairingTokenWithCompletionHandler:(id)a3;
-- (void)removePairingWithToken:(id)a3 completionHandler:(id)a4;
-- (void)verifyPairingWithToken:(id)a3 completionHandler:(id)a4;
+- (void)addPairingWithToken:(id)token completionHandler:(id)handler;
+- (void)generatePairingTokenWithCompletionHandler:(id)handler;
+- (void)removePairingWithToken:(id)token completionHandler:(id)handler;
+- (void)verifyPairingWithToken:(id)token completionHandler:(id)handler;
 @end
 
 @implementation MFAAPairingManager
@@ -75,10 +75,10 @@
   return v6;
 }
 
-- (void)generatePairingTokenWithCompletionHandler:(id)a3
+- (void)generatePairingTokenWithCompletionHandler:(id)handler
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 4;
@@ -111,10 +111,10 @@
     _os_log_impl(&dword_25627E000, v6, OS_LOG_TYPE_DEFAULT, "Generating pairing token...", v12, 2u);
   }
 
-  v7 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v12[0] = 0xAAAAAAAAAAAAAAAALL;
   v12[1] = 0xAAAAAAAAAAAAAAAALL;
-  [v7 getUUIDBytes:v12];
+  [uUID getUUIDBytes:v12];
   v8 = [MEMORY[0x277CBEB28] dataWithBytes:v12 length:16];
   if ([v8 length] <= 0x3F)
   {
@@ -139,18 +139,18 @@
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(MFAAPairingManager *)v7 generatePairingTokenWithCompletionHandler:v8, v9];
+    [(MFAAPairingManager *)uUID generatePairingTokenWithCompletionHandler:v8, v9];
   }
 
-  v3[2](v3, v8, 0);
+  handlerCopy[2](handlerCopy, v8, 0);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPairingWithToken:(id)a3 completionHandler:(id)a4
+- (void)addPairingWithToken:(id)token completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -179,11 +179,11 @@
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 length];
+    v11 = [tokenCopy length];
     v12 = "YES";
     *buf = 138478339;
-    v22 = v6;
-    if (!v7)
+    v22 = tokenCopy;
+    if (!handlerCopy)
     {
       v12 = "NO";
     }
@@ -195,22 +195,22 @@
     _os_log_impl(&dword_25627E000, v10, OS_LOG_TYPE_DEFAULT, "Adding pairing with token... (pairingToken: %{private}@, pairingToken.length: %lu, completion: %s)", buf, 0x20u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v13 = [(MFAAPairingManager *)self xpcConnection];
+    xpcConnection = [(MFAAPairingManager *)self xpcConnection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __60__MFAAPairingManager_addPairingWithToken_completionHandler___block_invoke;
     v19[3] = &unk_279831188;
-    v14 = v7;
+    v14 = handlerCopy;
     v20 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v19];
+    v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __60__MFAAPairingManager_addPairingWithToken_completionHandler___block_invoke_34;
     v17[3] = &unk_279831188;
     v18 = v14;
-    [v15 addPairingWithToken:v6 withReply:v17];
+    [v15 addPairingWithToken:tokenCopy withReply:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -255,11 +255,11 @@ void __60__MFAAPairingManager_addPairingWithToken_completionHandler___block_invo
   (*(v7 + 16))(v7, v8);
 }
 
-- (void)removePairingWithToken:(id)a3 completionHandler:(id)a4
+- (void)removePairingWithToken:(id)token completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -288,11 +288,11 @@ void __60__MFAAPairingManager_addPairingWithToken_completionHandler___block_invo
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 length];
+    v11 = [tokenCopy length];
     v12 = "YES";
     *buf = 138478339;
-    v22 = v6;
-    if (!v7)
+    v22 = tokenCopy;
+    if (!handlerCopy)
     {
       v12 = "NO";
     }
@@ -304,22 +304,22 @@ void __60__MFAAPairingManager_addPairingWithToken_completionHandler___block_invo
     _os_log_impl(&dword_25627E000, v10, OS_LOG_TYPE_DEFAULT, "Removing pairing with token... (pairingToken: %{private}@, pairingToken.length: %lu, completion: %s)", buf, 0x20u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v13 = [(MFAAPairingManager *)self xpcConnection];
+    xpcConnection = [(MFAAPairingManager *)self xpcConnection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __63__MFAAPairingManager_removePairingWithToken_completionHandler___block_invoke;
     v19[3] = &unk_279831188;
-    v14 = v7;
+    v14 = handlerCopy;
     v20 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v19];
+    v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __63__MFAAPairingManager_removePairingWithToken_completionHandler___block_invoke_35;
     v17[3] = &unk_279831188;
     v18 = v14;
-    [v15 removePairingWithToken:v6 withReply:v17];
+    [v15 removePairingWithToken:tokenCopy withReply:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -364,11 +364,11 @@ void __63__MFAAPairingManager_removePairingWithToken_completionHandler___block_i
   (*(v7 + 16))(v7, v8);
 }
 
-- (void)verifyPairingWithToken:(id)a3 completionHandler:(id)a4
+- (void)verifyPairingWithToken:(id)token completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 4;
@@ -397,11 +397,11 @@ void __63__MFAAPairingManager_removePairingWithToken_completionHandler___block_i
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 length];
+    v11 = [tokenCopy length];
     v12 = "YES";
     *buf = 138478339;
-    v22 = v6;
-    if (!v7)
+    v22 = tokenCopy;
+    if (!handlerCopy)
     {
       v12 = "NO";
     }
@@ -413,22 +413,22 @@ void __63__MFAAPairingManager_removePairingWithToken_completionHandler___block_i
     _os_log_impl(&dword_25627E000, v10, OS_LOG_TYPE_DEFAULT, "Verifying pairing with token... (pairingToken: %{private}@, pairingToken.length: %lu, completion: %s)", buf, 0x20u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v13 = [(MFAAPairingManager *)self xpcConnection];
+    xpcConnection = [(MFAAPairingManager *)self xpcConnection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __63__MFAAPairingManager_verifyPairingWithToken_completionHandler___block_invoke;
     v19[3] = &unk_279831188;
-    v14 = v7;
+    v14 = handlerCopy;
     v20 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v19];
+    v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __63__MFAAPairingManager_verifyPairingWithToken_completionHandler___block_invoke_36;
     v17[3] = &unk_279831A28;
     v18 = v14;
-    [v15 verifyPairingWithToken:v6 withReply:v17];
+    [v15 verifyPairingWithToken:tokenCopy withReply:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -479,7 +479,7 @@ void __63__MFAAPairingManager_verifyPairingWithToken_completionHandler___block_i
   block[1] = 3221225472;
   block[2] = __35__MFAAPairingManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_0 != -1)
   {
     dispatch_once(&sharedManager_once_0, block);

@@ -1,14 +1,14 @@
 @interface EKMapSearchCompletionResolver
-+ (id)resolveMapSearchCompletion:(id)a3 withCompletionHander:(id)a4;
++ (id)resolveMapSearchCompletion:(id)completion withCompletionHander:(id)hander;
 @end
 
 @implementation EKMapSearchCompletionResolver
 
-+ (id)resolveMapSearchCompletion:(id)a3 withCompletionHander:(id)a4
++ (id)resolveMapSearchCompletion:(id)completion withCompletionHander:(id)hander
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[EKMapSearchCompletionResolverRequest alloc] initWithMapSearchCompletion:v6 completionHandler:v5];
+  handerCopy = hander;
+  completionCopy = completion;
+  v7 = [[EKMapSearchCompletionResolverRequest alloc] initWithMapSearchCompletion:completionCopy completionHandler:handerCopy];
 
   [(EKMapSearchCompletionResolverRequest *)v7 beginResolution];
 

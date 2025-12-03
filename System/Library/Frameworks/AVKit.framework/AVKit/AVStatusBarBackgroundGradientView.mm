@@ -1,7 +1,7 @@
 @interface AVStatusBarBackgroundGradientView
 - (double)alpha;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation AVStatusBarBackgroundGradientView
@@ -17,16 +17,16 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AVStatusBarBackgroundGradientView *)self gradientView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  gradientView = [(AVStatusBarBackgroundGradientView *)self gradientView];
+  [gradientView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (a3 <= 0.0)
+  if (alpha <= 0.0)
   {
-    v10 = [(AVStatusBarBackgroundGradientView *)self layer];
-    [v10 setEnabled:0];
+    layer = [(AVStatusBarBackgroundGradientView *)self layer];
+    [layer setEnabled:0];
 
     [(AVStatusBarBackgroundGradientView *)self setHidden:1];
   }
@@ -34,31 +34,31 @@
   else
   {
     [(AVStatusBarBackgroundGradientView *)self setHidden:0];
-    v5 = [(AVStatusBarBackgroundGradientView *)self layer];
-    [v5 setEnabled:1];
+    layer2 = [(AVStatusBarBackgroundGradientView *)self layer];
+    [layer2 setEnabled:1];
 
-    v6 = [(AVStatusBarBackgroundGradientView *)self gradientView];
+    gradientView = [(AVStatusBarBackgroundGradientView *)self gradientView];
 
-    if (!v6)
+    if (!gradientView)
     {
       v7 = [AVStatusBarBackgroundGradientViewSubview alloc];
       [(AVStatusBarBackgroundGradientView *)self bounds];
       v8 = [(AVStatusBarBackgroundGradientViewSubview *)v7 initWithFrame:?];
       [(AVStatusBarBackgroundGradientView *)self setGradientView:v8];
 
-      v9 = [(AVStatusBarBackgroundGradientView *)self gradientView];
-      [(AVStatusBarBackgroundGradientView *)self addSubview:v9];
+      gradientView2 = [(AVStatusBarBackgroundGradientView *)self gradientView];
+      [(AVStatusBarBackgroundGradientView *)self addSubview:gradientView2];
     }
 
-    v11 = [(AVStatusBarBackgroundGradientView *)self gradientView];
-    [v11 setAlpha:a3];
+    gradientView3 = [(AVStatusBarBackgroundGradientView *)self gradientView];
+    [gradientView3 setAlpha:alpha];
   }
 }
 
 - (double)alpha
 {
-  v2 = [(AVStatusBarBackgroundGradientView *)self gradientView];
-  [v2 alpha];
+  gradientView = [(AVStatusBarBackgroundGradientView *)self gradientView];
+  [gradientView alpha];
   v4 = v3;
 
   return v4;

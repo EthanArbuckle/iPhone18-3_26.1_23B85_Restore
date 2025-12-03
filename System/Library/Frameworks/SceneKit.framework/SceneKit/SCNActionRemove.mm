@@ -1,12 +1,12 @@
 @interface SCNActionRemove
 + (id)removeFromParentNode;
 - (SCNActionRemove)init;
-- (SCNActionRemove)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionRemove)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SCNActionRemove
@@ -24,25 +24,25 @@
   return result;
 }
 
-- (SCNActionRemove)initWithCoder:(id)a3
+- (SCNActionRemove)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SCNActionRemove;
   v4 = [(SCNAction *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_hasFired = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_hasFired", "BOOLValue"}];
+    v4->_hasFired = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_hasFired", "BOOLValue"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionRemove;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_hasFired), @"_hasFired"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_hasFired), @"_hasFired"}];
 }
 
 + (id)removeFromParentNode
@@ -52,27 +52,27 @@
   return v2;
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = SCNActionRemove;
-  [(SCNAction *)&v5 willStartWithTarget:a3 atTime:a4];
+  [(SCNAction *)&v5 willStartWithTarget:target atTime:time];
   self->_hasFired = 0;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
   if (!self->_hasFired)
   {
-    [(SCNAction *)self setFinished:1, a4];
-    v6 = a3;
-    [a3 removeFromParentNode];
+    [(SCNAction *)self setFinished:1, time];
+    targetCopy = target;
+    [target removeFromParentNode];
 
-    v7 = a3;
+    targetCopy2 = target;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = +[SCNActionRemove removeFromParentNode];
 

@@ -1,35 +1,35 @@
 @interface WFShortcutsFileLocation
-+ (BOOL)canRepresentURL:(id)a3 item:(id)a4 parentItems:(id)a5;
++ (BOOL)canRepresentURL:(id)l item:(id)item parentItems:(id)items;
 + (id)locationAtRootDirectory;
-+ (id)subpathFromURL:(id)a3 item:(id)a4;
-- (id)resolveLocationWithError:(id *)a3;
++ (id)subpathFromURL:(id)l item:(id)item;
+- (id)resolveLocationWithError:(id *)error;
 @end
 
 @implementation WFShortcutsFileLocation
 
-- (id)resolveLocationWithError:(id *)a3
+- (id)resolveLocationWithError:(id *)error
 {
   v4 = [WFFileStorageUtilities documentsDirectoryWithError:0];
-  v5 = [(WFFileLocation *)self relativeSubpath];
-  v6 = [v4 URLByAppendingPathComponent:v5];
+  relativeSubpath = [(WFFileLocation *)self relativeSubpath];
+  v6 = [v4 URLByAppendingPathComponent:relativeSubpath];
 
   return v6;
 }
 
-+ (id)subpathFromURL:(id)a3 item:(id)a4
++ (id)subpathFromURL:(id)l item:(id)item
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [WFFileStorageUtilities documentsDirectoryWithError:0];
-  v6 = [v4 wf_relativePathFromURL:v5];
+  v6 = [lCopy wf_relativePathFromURL:v5];
 
   return v6;
 }
 
-+ (BOOL)canRepresentURL:(id)a3 item:(id)a4 parentItems:(id)a5
++ (BOOL)canRepresentURL:(id)l item:(id)item parentItems:(id)items
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [WFFileStorageUtilities documentsDirectoryWithError:0];
-  v7 = [v5 wf_relationshipToDirectoryAtURL:v6];
+  v7 = [lCopy wf_relationshipToDirectoryAtURL:v6];
 
   return v7 < 2;
 }

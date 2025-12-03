@@ -1,24 +1,24 @@
 @interface SINetworkConfiguration
-- (SINetworkConfiguration)initWithEventName:(id)a3;
-- (SINetworkConfiguration)initWithResources:(id)a3 eventName:(id)a4;
+- (SINetworkConfiguration)initWithEventName:(id)name;
+- (SINetworkConfiguration)initWithResources:(id)resources eventName:(id)name;
 - (id)description;
 @end
 
 @implementation SINetworkConfiguration
 
-- (SINetworkConfiguration)initWithEventName:(id)a3
+- (SINetworkConfiguration)initWithEventName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(SINetworkResources);
-  v6 = [(SINetworkConfiguration *)self initWithResources:v5 eventName:v4];
+  v6 = [(SINetworkConfiguration *)self initWithResources:v5 eventName:nameCopy];
 
   return v6;
 }
 
-- (SINetworkConfiguration)initWithResources:(id)a3 eventName:(id)a4
+- (SINetworkConfiguration)initWithResources:(id)resources eventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  resourcesCopy = resources;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = SINetworkConfiguration;
   v8 = [(SINetworkConfiguration *)&v19 init];
@@ -41,7 +41,7 @@
     v9->_consumeDepth = 0;
     v9->_isReplay = 0;
     v9->_coreAnalyticTimeInterval = 600;
-    v9->_coreAnalyticEventName = v7;
+    v9->_coreAnalyticEventName = nameCopy;
     defaultVisualLoggerName = v9->_defaultVisualLoggerName;
     v9->_defaultVisualLoggerName = @"default";
 
@@ -52,7 +52,7 @@
     v9->_engineType = 1;
     v9->_runByE5RT = 1;
     v9->_blendChannelWidthHeight = 0;
-    [(SINetworkConfiguration *)v9 setResources:v6];
+    [(SINetworkConfiguration *)v9 setResources:resourcesCopy];
     v17 = v9;
   }
 

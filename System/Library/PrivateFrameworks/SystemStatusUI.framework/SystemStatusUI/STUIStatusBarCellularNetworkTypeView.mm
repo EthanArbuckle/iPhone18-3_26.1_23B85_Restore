@@ -1,20 +1,20 @@
 @interface STUIStatusBarCellularNetworkTypeView
-- (STUIStatusBarCellularNetworkTypeView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarCellularNetworkTypeView)initWithFrame:(CGRect)frame;
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
-- (void)_animateUpdateToText:(id)a3 prefixLength:(int64_t)a4 styleAttributes:(id)a5 attributedText:(id)a6 type:(int64_t)a7;
-- (void)setAttributedText:(id)a3 prefixLength:(int64_t)a4 forType:(int64_t)a5 animated:(BOOL)a6;
-- (void)setFixedWidth:(double)a3;
-- (void)setText:(id)a3 prefixLength:(int64_t)a4 withStyleAttributes:(id)a5 forType:(int64_t)a6 animated:(BOOL)a7;
+- (void)_animateUpdateToText:(id)text prefixLength:(int64_t)length styleAttributes:(id)attributes attributedText:(id)attributedText type:(int64_t)type;
+- (void)setAttributedText:(id)text prefixLength:(int64_t)length forType:(int64_t)type animated:(BOOL)animated;
+- (void)setFixedWidth:(double)width;
+- (void)setText:(id)text prefixLength:(int64_t)length withStyleAttributes:(id)attributes forType:(int64_t)type animated:(BOOL)animated;
 @end
 
 @implementation STUIStatusBarCellularNetworkTypeView
 
-- (STUIStatusBarCellularNetworkTypeView)initWithFrame:(CGRect)a3
+- (STUIStatusBarCellularNetworkTypeView)initWithFrame:(CGRect)frame
 {
   v55[12] = *MEMORY[0x277D85DE8];
   v54.receiver = self;
   v54.super_class = STUIStatusBarCellularNetworkTypeView;
-  v3 = [(STUIStatusBarCellularNetworkTypeView *)&v54 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarCellularNetworkTypeView *)&v54 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(MEMORY[0x277D756D0]);
   [(STUIStatusBarCellularNetworkTypeView *)v3 addLayoutGuide:?];
   v5 = [STUIStatusBarStringView alloc];
@@ -46,56 +46,56 @@
   [(UIVectorLabel *)v3->_accessoryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIVectorLabel *)v3->_accessoryLabel setHidden:1];
   [(STUIStatusBarCellularNetworkTypeView *)v3 addSubview:v3->_accessoryLabel];
-  v14 = [(STUIStatusBarCellularNetworkTypeView *)v3 widthAnchor];
-  v15 = [v14 constraintEqualToConstant:0.0];
+  widthAnchor = [(STUIStatusBarCellularNetworkTypeView *)v3 widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:0.0];
   widthConstraint = v3->_widthConstraint;
   v3->_widthConstraint = v15;
 
-  v53 = [v4 leadingAnchor];
-  v52 = [(STUIStatusBarStringView *)v3->_stringView leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [(STUIStatusBarStringView *)v3->_stringView leadingAnchor];
+  v51 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v55[0] = v51;
-  v50 = [v4 trailingAnchor];
-  v49 = [(STUIStatusBarStringView *)v3->_stringView trailingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  trailingAnchor = [v4 trailingAnchor];
+  trailingAnchor2 = [(STUIStatusBarStringView *)v3->_stringView trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v55[1] = v48;
-  v47 = [v4 topAnchor];
-  v46 = [(STUIStatusBarStringView *)v3->_stringView topAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [(STUIStatusBarStringView *)v3->_stringView topAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[2] = v45;
-  v44 = [v4 bottomAnchor];
-  v43 = [(STUIStatusBarStringView *)v3->_stringView bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [(STUIStatusBarStringView *)v3->_stringView bottomAnchor];
+  v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v55[3] = v42;
-  v41 = [v4 leadingAnchor];
-  v39 = [(UIVectorLabel *)v3->_prefixLabel leadingAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39];
+  leadingAnchor3 = [v4 leadingAnchor];
+  leadingAnchor4 = [(UIVectorLabel *)v3->_prefixLabel leadingAnchor];
+  v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v55[4] = v38;
-  v37 = [(UIVectorLabel *)v3->_prefixLabel trailingAnchor];
-  v36 = [(UIVectorLabel *)v3->_accessoryLabel leadingAnchor];
-  v34 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor3 = [(UIVectorLabel *)v3->_prefixLabel trailingAnchor];
+  leadingAnchor5 = [(UIVectorLabel *)v3->_accessoryLabel leadingAnchor];
+  v34 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
   v55[5] = v34;
-  v33 = [(STUIStatusBarStringView *)v3->_stringView lastBaselineAnchor];
-  v32 = [(UIVectorLabel *)v3->_prefixLabel lastBaselineAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  lastBaselineAnchor = [(STUIStatusBarStringView *)v3->_stringView lastBaselineAnchor];
+  lastBaselineAnchor2 = [(UIVectorLabel *)v3->_prefixLabel lastBaselineAnchor];
+  v31 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   v55[6] = v31;
-  v30 = [(STUIStatusBarStringView *)v3->_stringView lastBaselineAnchor];
-  v29 = [(UIVectorLabel *)v3->_accessoryLabel lastBaselineAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  lastBaselineAnchor3 = [(STUIStatusBarStringView *)v3->_stringView lastBaselineAnchor];
+  lastBaselineAnchor4 = [(UIVectorLabel *)v3->_accessoryLabel lastBaselineAnchor];
+  v28 = [lastBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor4];
   v55[7] = v28;
   v17 = v4;
-  v18 = [v4 centerXAnchor];
-  v19 = [(STUIStatusBarCellularNetworkTypeView *)v3 centerXAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  centerXAnchor = [v4 centerXAnchor];
+  centerXAnchor2 = [(STUIStatusBarCellularNetworkTypeView *)v3 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v55[8] = v20;
-  v21 = [(STUIStatusBarCellularNetworkTypeView *)v3 topAnchor];
+  topAnchor3 = [(STUIStatusBarCellularNetworkTypeView *)v3 topAnchor];
   v35 = v17;
-  v22 = [v17 topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  topAnchor4 = [v17 topAnchor];
+  v23 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v55[9] = v23;
-  v24 = [(STUIStatusBarCellularNetworkTypeView *)v3 bottomAnchor];
-  v25 = [v17 bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  bottomAnchor3 = [(STUIStatusBarCellularNetworkTypeView *)v3 bottomAnchor];
+  bottomAnchor4 = [v17 bottomAnchor];
+  v26 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v55[10] = v26;
   v55[11] = v3->_widthConstraint;
   v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:12];
@@ -104,21 +104,21 @@
   return v3;
 }
 
-- (void)setFixedWidth:(double)a3
+- (void)setFixedWidth:(double)width
 {
-  v5 = [(STUIStatusBarCellularNetworkTypeView *)self widthConstraint];
-  [v5 constant];
-  v7 = vabdd_f64(a3, v6);
+  widthConstraint = [(STUIStatusBarCellularNetworkTypeView *)self widthConstraint];
+  [widthConstraint constant];
+  v7 = vabdd_f64(width, v6);
 
   if (v7 > 0.00000011920929)
   {
-    if (a3 <= 0.0 || (-[STUIStatusBarCellularNetworkTypeView widthConstraint](self, "widthConstraint"), v8 = objc_claimAutoreleasedReturnValue(), [v8 constant], v10 = v9, v8, v10 <= 0.0))
+    if (width <= 0.0 || (-[STUIStatusBarCellularNetworkTypeView widthConstraint](self, "widthConstraint"), v8 = objc_claimAutoreleasedReturnValue(), [v8 constant], v10 = v9, v8, v10 <= 0.0))
     {
-      v12 = [(STUIStatusBarCellularNetworkTypeView *)self widthConstraint];
-      [v12 setConstant:a3];
+      widthConstraint2 = [(STUIStatusBarCellularNetworkTypeView *)self widthConstraint];
+      [widthConstraint2 setConstant:width];
 
-      v13 = [(STUIStatusBarCellularNetworkTypeView *)self superview];
-      [v13 layoutSubviews];
+      superview = [(STUIStatusBarCellularNetworkTypeView *)self superview];
+      [superview layoutSubviews];
     }
 
     else
@@ -129,7 +129,7 @@
       v14[2] = __54__STUIStatusBarCellularNetworkTypeView_setFixedWidth___block_invoke;
       v14[3] = &unk_279D38628;
       v14[4] = self;
-      *&v14[5] = a3;
+      *&v14[5] = width;
       [v11 _performBlockAfterCATransactionCommits:v14];
     }
   }
@@ -155,25 +155,25 @@ void __54__STUIStatusBarCellularNetworkTypeView_setFixedWidth___block_invoke_2(u
   [v1 layoutSubviews];
 }
 
-- (void)_animateUpdateToText:(id)a3 prefixLength:(int64_t)a4 styleAttributes:(id)a5 attributedText:(id)a6 type:(int64_t)a7
+- (void)_animateUpdateToText:(id)text prefixLength:(int64_t)length styleAttributes:(id)attributes attributedText:(id)attributedText type:(int64_t)type
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  textCopy = text;
+  attributesCopy = attributes;
+  attributedTextCopy = attributedText;
   v15 = MEMORY[0x277D75D18];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __110__STUIStatusBarCellularNetworkTypeView__animateUpdateToText_prefixLength_styleAttributes_attributedText_type___block_invoke;
   v31[3] = &unk_279D38AE8;
-  v16 = a4 != 0x7FFFFFFFFFFFFFFFLL;
+  v16 = length != 0x7FFFFFFFFFFFFFFFLL;
   v31[4] = self;
-  v36 = a4 != 0x7FFFFFFFFFFFFFFFLL;
-  v17 = v12;
+  v36 = length != 0x7FFFFFFFFFFFFFFFLL;
+  v17 = textCopy;
   v32 = v17;
-  v35 = a4;
-  v18 = v14;
+  lengthCopy = length;
+  v18 = attributedTextCopy;
   v33 = v18;
-  v19 = v13;
+  v19 = attributesCopy;
   v34 = v19;
   [v15 performWithoutAnimation:v31];
   objc_initWeak(&location, self);
@@ -190,7 +190,7 @@ void __54__STUIStatusBarCellularNetworkTypeView_setFixedWidth___block_invoke_2(u
   v23 = v19;
   v29 = v16;
   v27 = v23;
-  v28[1] = a7;
+  v28[1] = type;
   [v20 _performBlockAfterCATransactionCommits:v24];
 
   objc_destroyWeak(v28);
@@ -316,36 +316,36 @@ void __110__STUIStatusBarCellularNetworkTypeView__animateUpdateToText_prefixLeng
   }
 }
 
-- (void)setAttributedText:(id)a3 prefixLength:(int64_t)a4 forType:(int64_t)a5 animated:(BOOL)a6
+- (void)setAttributedText:(id)text prefixLength:(int64_t)length forType:(int64_t)type animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v33[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if (v6 && !self->_animatingUpdate)
+  textCopy = text;
+  v11 = textCopy;
+  if (animatedCopy && !self->_animatingUpdate)
   {
     self->_animatingUpdate = 1;
-    v28 = [v10 string];
-    [(STUIStatusBarCellularNetworkTypeView *)self _animateUpdateToText:v28 prefixLength:a4 styleAttributes:0 attributedText:v11 type:a5];
+    string = [textCopy string];
+    [(STUIStatusBarCellularNetworkTypeView *)self _animateUpdateToText:string prefixLength:length styleAttributes:0 attributedText:v11 type:type];
   }
 
   else
   {
-    v31 = a5;
-    [(STUIStatusBarStringView *)self->_stringView setAttributedText:v10];
+    typeCopy = type;
+    [(STUIStatusBarStringView *)self->_stringView setAttributedText:textCopy];
     [(UIVectorLabel *)self->_prefixLabel setHidden:1];
     [(UIVectorLabel *)self->_accessoryLabel setHidden:1];
     [(STUIStatusBarStringView *)self->_stringView setAlpha:1.0];
-    v12 = [v11 string];
-    v13 = v12;
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    string2 = [v11 string];
+    v13 = string2;
+    if (length == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = v12;
+      v14 = string2;
     }
 
     else
     {
-      v14 = [v12 substringToIndex:a4];
+      v14 = [string2 substringToIndex:length];
     }
 
     v15 = [v11 attributesAtIndex:0 effectiveRange:0];
@@ -367,13 +367,13 @@ void __110__STUIStatusBarCellularNetworkTypeView__animateUpdateToText_prefixLeng
     [(UIVectorLabel *)self->_prefixLabel _setAttributedText:v22];
 
     [(UIVectorLabel *)self->_prefixLabel setNeedsLayout];
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (length != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v23 = [v11 string];
-      v24 = [v23 substringFromIndex:a4];
+      string3 = [v11 string];
+      v24 = [string3 substringFromIndex:length];
       [(UIVectorLabel *)self->_accessoryLabel setText:v24];
 
-      v25 = [v11 attributesAtIndex:a4 effectiveRange:0];
+      v25 = [v11 attributesAtIndex:length effectiveRange:0];
       v26 = [v25 objectForKeyedSubscript:v16];
       [(UIVectorLabel *)self->_accessoryLabel setFont:v26];
 
@@ -383,44 +383,44 @@ void __110__STUIStatusBarCellularNetworkTypeView__animateUpdateToText_prefixLeng
       [(UIVectorLabel *)self->_accessoryLabel setNeedsLayout];
     }
 
-    self->_type = v31;
+    self->_type = typeCopy;
     self->_animatingUpdate = 0;
   }
 }
 
-- (void)setText:(id)a3 prefixLength:(int64_t)a4 withStyleAttributes:(id)a5 forType:(int64_t)a6 animated:(BOOL)a7
+- (void)setText:(id)text prefixLength:(int64_t)length withStyleAttributes:(id)attributes forType:(int64_t)type animated:(BOOL)animated
 {
-  v7 = a7;
+  animatedCopy = animated;
   v27[3] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  if (v7 && !self->_animatingUpdate)
+  textCopy = text;
+  attributesCopy = attributes;
+  if (animatedCopy && !self->_animatingUpdate)
   {
     self->_animatingUpdate = 1;
-    [(STUIStatusBarCellularNetworkTypeView *)self _animateUpdateToText:v12 prefixLength:a4 styleAttributes:v13 attributedText:0 type:a6];
+    [(STUIStatusBarCellularNetworkTypeView *)self _animateUpdateToText:textCopy prefixLength:length styleAttributes:attributesCopy attributedText:0 type:type];
   }
 
   else
   {
-    [(STUIStatusBarStringView *)self->_stringView setText:v12];
-    [(STUIStatusBarStringView *)self->_stringView applyStyleAttributes:v13];
+    [(STUIStatusBarStringView *)self->_stringView setText:textCopy];
+    [(STUIStatusBarStringView *)self->_stringView applyStyleAttributes:attributesCopy];
     [(UIVectorLabel *)self->_prefixLabel setHidden:1];
     [(UIVectorLabel *)self->_accessoryLabel setHidden:1];
     [(STUIStatusBarStringView *)self->_stringView setAlpha:1.0];
-    v23 = v12;
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    v23 = textCopy;
+    if (length == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = v12;
+      v14 = textCopy;
     }
 
     else
     {
-      v14 = [v12 substringToIndex:a4];
+      v14 = [textCopy substringToIndex:length];
     }
 
     v15 = v14;
-    v16 = [v13 fontForStyle:{-[STUIStatusBarStringView fontStyle](self->_stringView, "fontStyle", v23)}];
-    v17 = [v13 textColor];
+    v16 = [attributesCopy fontForStyle:{-[STUIStatusBarStringView fontStyle](self->_stringView, "fontStyle", v23)}];
+    textColor = [attributesCopy textColor];
     v18 = objc_alloc(MEMORY[0x277CCA898]);
     v19 = *MEMORY[0x277D740A8];
     v26[0] = *MEMORY[0x277D740D0];
@@ -428,25 +428,25 @@ void __110__STUIStatusBarCellularNetworkTypeView__animateUpdateToText_prefixLeng
     v27[0] = &unk_287D1B350;
     v27[1] = v16;
     v26[2] = *MEMORY[0x277D740C0];
-    v27[2] = v17;
+    v27[2] = textColor;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
     v25 = v15;
     v21 = [v18 initWithString:v15 attributes:v20];
     [(UIVectorLabel *)self->_prefixLabel _setAttributedText:v21];
 
     [(UIVectorLabel *)self->_prefixLabel setNeedsLayout];
-    v12 = v24;
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    textCopy = v24;
+    if (length != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v22 = [v24 substringFromIndex:a4];
+      v22 = [v24 substringFromIndex:length];
       [(UIVectorLabel *)self->_accessoryLabel setText:v22];
 
       [(UIVectorLabel *)self->_accessoryLabel setFont:v16];
-      [(UIVectorLabel *)self->_accessoryLabel setTextColor:v17];
+      [(UIVectorLabel *)self->_accessoryLabel setTextColor:textColor];
       [(UIVectorLabel *)self->_accessoryLabel setNeedsLayout];
     }
 
-    self->_type = a6;
+    self->_type = type;
     self->_animatingUpdate = 0;
   }
 }
@@ -454,8 +454,8 @@ void __110__STUIStatusBarCellularNetworkTypeView__animateUpdateToText_prefixLeng
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation
 {
   v3 = objc_alloc(MEMORY[0x277D750B0]);
-  v4 = [(STUIStatusBarStringView *)self->_stringView text];
-  v5 = [v3 initWithTitle:v4 image:0 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  text = [(STUIStatusBarStringView *)self->_stringView text];
+  v5 = [v3 initWithTitle:text image:0 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   return v5;
 }

@@ -1,21 +1,21 @@
 @interface SUUISlideshowItemViewController
-- (SUUISlideshowItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SUUISlideshowItemViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SUUISlideshowItemViewControllerDelegate)delegate;
 - (id)_newLoadingView;
-- (void)_pinchGestureAction:(id)a3;
+- (void)_pinchGestureAction:(id)action;
 - (void)dealloc;
-- (void)setItemImage:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setItemImage:(id)image;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation SUUISlideshowItemViewController
 
-- (SUUISlideshowItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUUISlideshowItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = SUUISlideshowItemViewController;
-  v4 = [(SUUISlideshowItemViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(SUUISlideshowItemViewController *)&v11 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -27,8 +27,8 @@
     [(SUUISlideshowImageScrollView *)v5->_imageScrollView setDelegate:v5];
     [(SUUISlideshowImageScrollView *)v5->_imageScrollView setAutoresizingMask:18];
     v8 = v5->_imageScrollView;
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(SUUISlideshowImageScrollView *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUISlideshowImageScrollView *)v8 setBackgroundColor:clearColor];
 
     v5->_zoomingGestureThresholdBroken = 0;
     v5->_lastContentOffset = *MEMORY[0x277CBF348];
@@ -51,29 +51,29 @@
   v11.receiver = self;
   v11.super_class = SUUISlideshowItemViewController;
   [(SUUISlideshowItemViewController *)&v11 viewDidLoad];
-  v3 = [(SUUISlideshowItemViewController *)self view];
+  view = [(SUUISlideshowItemViewController *)self view];
   imageScrollView = self->_imageScrollView;
-  [v3 bounds];
+  [view bounds];
   [(SUUISlideshowImageScrollView *)imageScrollView setFrame:?];
-  [v3 addSubview:self->_imageScrollView];
-  v5 = [(SUUISlideshowItemViewController *)self itemImage];
+  [view addSubview:self->_imageScrollView];
+  itemImage = [(SUUISlideshowItemViewController *)self itemImage];
 
-  if (!v5)
+  if (!itemImage)
   {
     loadingView = self->_loadingView;
     if (!loadingView)
     {
-      v7 = [(SUUISlideshowItemViewController *)self _newLoadingView];
+      _newLoadingView = [(SUUISlideshowItemViewController *)self _newLoadingView];
       v8 = self->_loadingView;
-      self->_loadingView = v7;
+      self->_loadingView = _newLoadingView;
 
       v9 = self->_loadingView;
-      [v3 center];
+      [view center];
       [(UIView *)v9 setCenter:?];
       loadingView = self->_loadingView;
     }
 
-    [v3 addSubview:loadingView];
+    [view addSubview:loadingView];
   }
 
   v10 = [objc_alloc(MEMORY[0x277D75848]) initWithTarget:self action:sel__pinchGestureAction_];
@@ -81,19 +81,19 @@
   [(SUUISlideshowImageScrollView *)self->_imageScrollView addGestureRecognizer:v10];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SUUISlideshowItemViewController;
-  [(SUUISlideshowItemViewController *)&v4 viewDidDisappear:a3];
+  [(SUUISlideshowItemViewController *)&v4 viewDidDisappear:disappear];
   [(SUUISlideshowImageScrollView *)self->_imageScrollView resetZoomScale];
 }
 
-- (void)setItemImage:(id)a3
+- (void)setItemImage:(id)image
 {
   [(SUUISlideshowImageScrollView *)self->_imageScrollView setImage:?];
   loadingView = self->_loadingView;
-  if (a3)
+  if (image)
   {
     if (!loadingView)
     {
@@ -109,22 +109,22 @@
   {
     if (!loadingView)
     {
-      v7 = [(SUUISlideshowItemViewController *)self _newLoadingView];
+      _newLoadingView = [(SUUISlideshowItemViewController *)self _newLoadingView];
       v8 = self->_loadingView;
-      self->_loadingView = v7;
+      self->_loadingView = _newLoadingView;
     }
 
-    v9 = [(SUUISlideshowItemViewController *)self view];
-    [(UIView *)v9 addSubview:self->_loadingView];
-    v6 = v9;
+    view = [(SUUISlideshowItemViewController *)self view];
+    [(UIView *)view addSubview:self->_loadingView];
+    v6 = view;
   }
 }
 
 - (id)_newLoadingView
 {
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:1];
   [v3 addSubview:v5];
@@ -143,14 +143,14 @@
   v8 = ;
   [v6 setText:v8];
 
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v6 setTextColor:v9];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v6 setTextColor:whiteColor];
 
   v10 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
   [v6 setFont:v10];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v11];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:clearColor2];
 
   [v6 sizeToFit];
   [v5 bounds];
@@ -192,15 +192,15 @@
   return v3;
 }
 
-- (void)_pinchGestureAction:(id)a3
+- (void)_pinchGestureAction:(id)action
 {
-  v12 = a3;
+  actionCopy = action;
   [(SUUISlideshowImageScrollView *)self->_imageScrollView contentOffset];
   self->_lastContentOffset.x = v4;
   self->_lastContentOffset.y = v5;
   [(SUUISlideshowImageScrollView *)self->_imageScrollView zoomScale];
   self->_lastZoomScale = v6;
-  if ([v12 state] == 1)
+  if ([actionCopy state] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained slideshowItemViewControllerDidBeginPinchGesture:self];
@@ -209,7 +209,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v12 state] == 2)
+  if ([actionCopy state] == 2)
   {
     [(SUUISlideshowImageScrollView *)self->_imageScrollView zoomScale];
     v9 = v8;

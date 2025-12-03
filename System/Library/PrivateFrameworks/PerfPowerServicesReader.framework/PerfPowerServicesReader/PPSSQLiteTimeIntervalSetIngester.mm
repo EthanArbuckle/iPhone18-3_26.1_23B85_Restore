@@ -1,29 +1,29 @@
 @interface PPSSQLiteTimeIntervalSetIngester
-+ (id)_filterIntervalSet:(id)a3 withTimeInterval:(id)a4;
-+ (id)_stringForSourceName:(id)a3 metrics:(id)a4 predicate:(id)a5;
-- (PPSSQLiteTimeIntervalSetIngester)initWithFilepath:(id)a3;
-- (id)_computeIntervalSetForRequest:(id)a3 outError:(id *)a4;
-- (id)_computeIntervalSetMapForRequest:(id)a3 outError:(id *)a4;
-- (id)filterIntervalSet:(id)a3 withTimeFilter:(id)a4;
-- (id)filterIntervalSetMap:(id)a3 withTimeFilter:(id)a4;
-- (id)parseDataForRequest:(id)a3 outError:(id *)a4;
-- (id)responseForKey:(id)a3 withinTimeWindow:(id)a4;
-- (void)removeResponseForKey:(id)a3;
-- (void)setResponse:(id)a3 forKey:(id)a4 timeWindow:(id)a5;
++ (id)_filterIntervalSet:(id)set withTimeInterval:(id)interval;
++ (id)_stringForSourceName:(id)name metrics:(id)metrics predicate:(id)predicate;
+- (PPSSQLiteTimeIntervalSetIngester)initWithFilepath:(id)filepath;
+- (id)_computeIntervalSetForRequest:(id)request outError:(id *)error;
+- (id)_computeIntervalSetMapForRequest:(id)request outError:(id *)error;
+- (id)filterIntervalSet:(id)set withTimeFilter:(id)filter;
+- (id)filterIntervalSetMap:(id)map withTimeFilter:(id)filter;
+- (id)parseDataForRequest:(id)request outError:(id *)error;
+- (id)responseForKey:(id)key withinTimeWindow:(id)window;
+- (void)removeResponseForKey:(id)key;
+- (void)setResponse:(id)response forKey:(id)key timeWindow:(id)window;
 @end
 
 @implementation PPSSQLiteTimeIntervalSetIngester
 
-- (PPSSQLiteTimeIntervalSetIngester)initWithFilepath:(id)a3
+- (PPSSQLiteTimeIntervalSetIngester)initWithFilepath:(id)filepath
 {
-  v5 = a3;
+  filepathCopy = filepath;
   v11.receiver = self;
   v11.super_class = PPSSQLiteTimeIntervalSetIngester;
   v6 = [(PPSSQLiteTimeIntervalSetIngester *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filepath, a3);
+    objc_storeStrong(&v6->_filepath, filepath);
     v8 = objc_opt_new();
     responseCache = v7->_responseCache;
     v7->_responseCache = v8;
@@ -32,43 +32,43 @@
   return v7;
 }
 
-- (void)removeResponseForKey:(id)a3
+- (void)removeResponseForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PPSSQLiteTimeIntervalSetIngester *)self responseCache];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  responseCache = [(PPSSQLiteTimeIntervalSetIngester *)self responseCache];
+  [responseCache removeObjectForKey:keyCopy];
 }
 
-- (id)responseForKey:(id)a3 withinTimeWindow:(id)a4
+- (id)responseForKey:(id)key withinTimeWindow:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PPSSQLiteTimeIntervalSetIngester *)self responseCache];
-  v9 = [v8 objectForKey:v7];
+  windowCopy = window;
+  keyCopy = key;
+  responseCache = [(PPSSQLiteTimeIntervalSetIngester *)self responseCache];
+  v9 = [responseCache objectForKey:keyCopy];
 
   if (!v9)
   {
-    v10 = 0;
+    firstObject = 0;
     goto LABEL_11;
   }
 
-  v10 = [v9 firstObject];
-  v11 = [v9 lastObject];
-  v12 = [MEMORY[0x277CBEB68] null];
+  firstObject = [v9 firstObject];
+  lastObject = [v9 lastObject];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v11 == v12)
+  if (lastObject == null)
   {
     goto LABEL_11;
   }
 
-  v13 = [v9 lastObject];
-  if (v13)
+  lastObject2 = [v9 lastObject];
+  if (lastObject2)
   {
-    v14 = [v6 startDate];
-    if ([v13 containsDate:v14])
+    startDate = [windowCopy startDate];
+    if ([lastObject2 containsDate:startDate])
     {
-      v15 = [v6 endDate];
-      v16 = [v13 containsDate:v15];
+      endDate = [windowCopy endDate];
+      v16 = [lastObject2 containsDate:endDate];
 
       if (v16)
       {
@@ -80,83 +80,83 @@
     {
     }
 
-    v10 = 0;
+    firstObject = 0;
   }
 
 LABEL_10:
 
 LABEL_11:
 
-  return v10;
+  return firstObject;
 }
 
-- (void)setResponse:(id)a3 forKey:(id)a4 timeWindow:(id)a5
+- (void)setResponse:(id)response forKey:(id)key timeWindow:(id)window
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15[0] = v8;
-  v11 = v10;
-  if (!v10)
+  responseCopy = response;
+  keyCopy = key;
+  windowCopy = window;
+  v15[0] = responseCopy;
+  null = windowCopy;
+  if (!windowCopy)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v15[1] = v11;
+  v15[1] = null;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  if (!v10)
+  if (!windowCopy)
   {
   }
 
-  v13 = [(PPSSQLiteTimeIntervalSetIngester *)self responseCache];
-  [v13 setObject:v12 forKey:v9];
+  responseCache = [(PPSSQLiteTimeIntervalSetIngester *)self responseCache];
+  [responseCache setObject:v12 forKey:keyCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseDataForRequest:(id)a3 outError:(id *)a4
+- (id)parseDataForRequest:(id)request outError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 dimensions];
-  v8 = [v7 count];
+  requestCopy = request;
+  dimensions = [requestCopy dimensions];
+  v8 = [dimensions count];
 
   if (v8)
   {
-    [(PPSSQLiteTimeIntervalSetIngester *)self _computeIntervalSetMapForRequest:v6 outError:a4];
+    [(PPSSQLiteTimeIntervalSetIngester *)self _computeIntervalSetMapForRequest:requestCopy outError:error];
   }
 
   else
   {
-    [(PPSSQLiteTimeIntervalSetIngester *)self _computeIntervalSetForRequest:v6 outError:a4];
+    [(PPSSQLiteTimeIntervalSetIngester *)self _computeIntervalSetForRequest:requestCopy outError:error];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)_computeIntervalSetMapForRequest:(id)a3 outError:(id *)a4
+- (id)_computeIntervalSetMapForRequest:(id)request outError:(id *)error
 {
   v91 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 subsystem];
-  v7 = [v5 category];
-  v8 = [v5 metrics];
-  v9 = [v8 allObjects];
-  v10 = [v9 mutableCopy];
+  requestCopy = request;
+  subsystem = [requestCopy subsystem];
+  category = [requestCopy category];
+  metrics = [requestCopy metrics];
+  allObjects = [metrics allObjects];
+  v10 = [allObjects mutableCopy];
 
-  v11 = [v5 timeFilter];
-  v12 = [v5 valueFilter];
-  v13 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
-  v14 = [PPSOffDeviceIngesterUtilities dataSourceForFilepath:v13 subsystem:v6 category:v7];
+  timeFilter = [requestCopy timeFilter];
+  valueFilter = [requestCopy valueFilter];
+  filepath = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+  v14 = [PPSOffDeviceIngesterUtilities dataSourceForFilepath:filepath subsystem:subsystem category:category];
 
   v77 = v14;
-  v73 = v12;
-  v15 = [objc_opt_class() _stringForSourceName:v14 metrics:v10 predicate:v12];
-  v81 = v11;
+  v73 = valueFilter;
+  v15 = [objc_opt_class() _stringForSourceName:v14 metrics:v10 predicate:valueFilter];
+  v81 = timeFilter;
   if ([(PPSSQLiteTimeIntervalSetIngester *)self shouldUseCache])
   {
-    v80 = [(PPSSQLiteTimeIntervalSetIngester *)self responseForKey:v15 withinTimeWindow:v11];
+    v80 = [(PPSSQLiteTimeIntervalSetIngester *)self responseForKey:v15 withinTimeWindow:timeFilter];
   }
 
   else
@@ -164,39 +164,39 @@ LABEL_11:
     v80 = 0;
   }
 
-  v16 = [v10 firstObject];
-  if (v16)
+  firstObject = [v10 firstObject];
+  if (firstObject)
   {
-    v17 = [v10 firstObject];
+    firstObject2 = [v10 firstObject];
   }
 
   else
   {
-    v17 = @"timestamp";
+    firstObject2 = @"timestamp";
   }
 
-  v18 = v17;
+  v18 = firstObject2;
 
-  v19 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
-  v76 = v6;
-  v78 = [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:v19 subsystem:v6 category:v7 metricName:v18];
+  filepath2 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+  v76 = subsystem;
+  v78 = [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:filepath2 subsystem:subsystem category:category metricName:v18];
 
   context = objc_autoreleasePoolPush();
-  v20 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
-  v21 = [PPSDataIngesterRegistry dataIngesterForFilepath:v20 requestType:0];
+  filepath3 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+  v21 = [PPSDataIngesterRegistry dataIngesterForFilepath:filepath3 requestType:0];
 
   v74 = v10;
-  v75 = v7;
+  v75 = category;
   v72 = v15;
   v79 = v18;
   if (v81)
   {
-    v22 = [v81 startDate];
-    [v22 timeIntervalSince1970];
+    startDate = [v81 startDate];
+    [startDate timeIntervalSince1970];
     v24 = v23 + -10800.0;
 
-    v25 = [v81 endDate];
-    [v25 timeIntervalSince1970];
+    endDate = [v81 endDate];
+    [endDate timeIntervalSince1970];
     v27 = v26 + 10800.0;
 
     v28 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v24];
@@ -210,17 +210,17 @@ LABEL_11:
   }
 
   v31 = MEMORY[0x277CBEB98];
-  v32 = [v5 metrics];
-  v33 = [v32 allObjects];
-  v34 = [v31 setWithArray:v33];
+  metrics2 = [requestCopy metrics];
+  allObjects2 = [metrics2 allObjects];
+  v34 = [v31 setWithArray:allObjects2];
   v35 = [v34 mutableCopy];
 
   v86 = 0u;
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v36 = [v5 dimensions];
-  v37 = [v36 countByEnumeratingWithState:&v84 objects:v90 count:16];
+  dimensions = [requestCopy dimensions];
+  v37 = [dimensions countByEnumeratingWithState:&v84 objects:v90 count:16];
   if (v37)
   {
     v38 = v37;
@@ -231,37 +231,37 @@ LABEL_11:
       {
         if (*v85 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(dimensions);
         }
 
-        v41 = [*(*(&v84 + 1) + 8 * i) groupBy];
-        [v35 addObject:v41];
+        groupBy = [*(*(&v84 + 1) + 8 * i) groupBy];
+        [v35 addObject:groupBy];
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v84 objects:v90 count:16];
+      v38 = [dimensions countByEnumeratingWithState:&v84 objects:v90 count:16];
     }
 
     while (v38);
   }
 
   v42 = [PPSTimeSeriesRequest alloc];
-  v43 = [v5 predicate];
+  predicate = [requestCopy predicate];
   v68 = v30;
-  v44 = [(PPSTimeSeriesRequest *)v42 initWithMetrics:v35 predicate:v43 timeFilter:v30];
+  v44 = [(PPSTimeSeriesRequest *)v42 initWithMetrics:v35 predicate:predicate timeFilter:v30];
 
-  v45 = [v21 shouldUseCache];
+  shouldUseCache = [v21 shouldUseCache];
   [v21 setShouldUseCache:0];
-  v46 = [v21 parseDataForRequest:v44 outError:a4];
-  [v21 setShouldUseCache:v45];
-  if (*a4)
+  v46 = [v21 parseDataForRequest:v44 outError:error];
+  [v21 setShouldUseCache:shouldUseCache];
+  if (*error)
   {
     v47 = 0;
   }
 
   else
   {
-    v48 = [v5 dimensions];
-    v49 = [v48 count];
+    dimensions2 = [requestCopy dimensions];
+    v49 = [dimensions2 count];
     v47 = v49 != 0;
 
     if (v49)
@@ -286,9 +286,9 @@ LABEL_11:
         v79 = v50;
       }
 
-      v55 = [v5 dimensions];
+      dimensions3 = [requestCopy dimensions];
       v54 = v67;
-      v56 = [(PPSTimeIntervalSetGenerator *)v67 intervalSetMapForTimeSeries:v46 withGroupingDimensions:v55 withIntervalStartCheckBlock:0 intervalEndCheckBlock:0 payloadBlock:v70 coalescePolicy:0];
+      v56 = [(PPSTimeIntervalSetGenerator *)v67 intervalSetMapForTimeSeries:v46 withGroupingDimensions:dimensions3 withIntervalStartCheckBlock:0 intervalEndCheckBlock:0 payloadBlock:v70 coalescePolicy:0];
 
       if (v81)
       {
@@ -306,7 +306,7 @@ LABEL_11:
       v88 = *MEMORY[0x277CCA470];
       v89 = @"No grouping dimensions provided for interval set map request.";
       v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-      *a4 = [v52 errorWithDomain:@"com.apple.PerfPowerServicesReader" code:0 userInfo:v53];
+      *error = [v52 errorWithDomain:@"com.apple.PerfPowerServicesReader" code:0 userInfo:v53];
       v54 = v53;
     }
   }
@@ -381,31 +381,31 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
   return v14;
 }
 
-- (id)_computeIntervalSetForRequest:(id)a3 outError:(id *)a4
+- (id)_computeIntervalSetForRequest:(id)request outError:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 subsystem];
-  v7 = [v5 category];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@:%@", @"QueryExecution", v6, v7];
+  requestCopy = request;
+  subsystem = [requestCopy subsystem];
+  category = [requestCopy category];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@:%@", @"QueryExecution", subsystem, category];
   v9 = +[PPSPerformanceProfiler sharedInstance];
   [v9 startProfilingForPhase:v8];
 
-  v10 = [v5 metrics];
-  v11 = [v10 allObjects];
+  metrics = [requestCopy metrics];
+  allObjects = [metrics allObjects];
 
-  v12 = [v5 timeFilter];
-  v13 = [v5 valueFilter];
-  v14 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
-  v15 = [PPSOffDeviceIngesterUtilities dataSourceForFilepath:v14 subsystem:v6 category:v7];
+  timeFilter = [requestCopy timeFilter];
+  valueFilter = [requestCopy valueFilter];
+  filepath = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+  v15 = [PPSOffDeviceIngesterUtilities dataSourceForFilepath:filepath subsystem:subsystem category:category];
 
   v60 = v15;
-  v61 = v13;
-  v62 = v11;
-  v16 = [objc_opt_class() _stringForSourceName:v15 metrics:v11 predicate:v13];
-  if ([(PPSSQLiteTimeIntervalSetIngester *)self shouldUseCache]&& ([(PPSSQLiteTimeIntervalSetIngester *)self responseForKey:v16 withinTimeWindow:v12], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  v61 = valueFilter;
+  v62 = allObjects;
+  v16 = [objc_opt_class() _stringForSourceName:v15 metrics:allObjects predicate:valueFilter];
+  if ([(PPSSQLiteTimeIntervalSetIngester *)self shouldUseCache]&& ([(PPSSQLiteTimeIntervalSetIngester *)self responseForKey:v16 withinTimeWindow:timeFilter], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
-    v19 = [(PPSSQLiteTimeIntervalSetIngester *)self filterIntervalSet:v17 withTimeFilter:v12];
+    v19 = [(PPSSQLiteTimeIntervalSetIngester *)self filterIntervalSet:v17 withTimeFilter:timeFilter];
     v20 = v62;
   }
 
@@ -413,20 +413,20 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
   {
     v54 = v16;
     context = objc_autoreleasePoolPush();
-    v21 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
-    v22 = [PPSDataIngesterRegistry dataIngesterForFilepath:v21 requestType:0];
+    filepath2 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+    v22 = [PPSDataIngesterRegistry dataIngesterForFilepath:filepath2 requestType:0];
 
-    v56 = v7;
-    v57 = v6;
+    v56 = category;
+    v57 = subsystem;
     v55 = v8;
-    if (v12)
+    if (timeFilter)
     {
-      v23 = [v12 startDate];
-      [v23 timeIntervalSince1970];
+      startDate = [timeFilter startDate];
+      [startDate timeIntervalSince1970];
       v25 = v24 + -10800.0;
 
-      v26 = [v12 endDate];
-      [v26 timeIntervalSince1970];
+      endDate = [timeFilter endDate];
+      [endDate timeIntervalSince1970];
       v28 = v27 + 10800.0;
 
       v29 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v25];
@@ -440,40 +440,40 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
     }
 
     v32 = [PPSTimeSeriesRequest alloc];
-    v33 = [v5 metrics];
-    v34 = [v5 predicate];
+    metrics2 = [requestCopy metrics];
+    predicate = [requestCopy predicate];
     v52 = v31;
-    v35 = [(PPSTimeSeriesRequest *)v32 initWithMetrics:v33 predicate:v34 timeFilter:v31];
+    v35 = [(PPSTimeSeriesRequest *)v32 initWithMetrics:metrics2 predicate:predicate timeFilter:v31];
 
-    v36 = [v22 shouldUseCache];
+    shouldUseCache = [v22 shouldUseCache];
     [v22 setShouldUseCache:0];
     v51 = v35;
-    v37 = [v22 parseDataForRequest:v35 outError:a4];
-    [v22 setShouldUseCache:v36];
-    v38 = *a4;
-    if (*a4)
+    v37 = [v22 parseDataForRequest:v35 outError:error];
+    [v22 setShouldUseCache:shouldUseCache];
+    v38 = *error;
+    if (*error)
     {
       v18 = 0;
     }
 
     else
     {
-      v39 = [v62 firstObject];
-      if (v39)
+      firstObject = [v62 firstObject];
+      if (firstObject)
       {
-        v40 = [v62 firstObject];
+        firstObject2 = [v62 firstObject];
       }
 
       else
       {
-        v40 = @"timestamp";
+        firstObject2 = @"timestamp";
       }
 
-      v41 = v40;
+      v41 = firstObject2;
 
-      v42 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+      filepath3 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
       v59 = v41;
-      v43 = [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:v42 subsystem:v57 category:v56 metricName:v41];
+      v43 = [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:filepath3 subsystem:v57 category:v56 metricName:v41];
 
       v50 = v43;
       v44 = [[PPSTimeIntervalSetGenerator alloc] initWithDispatcher:self->_dispatcher settings:0 directionality:[PPSDataIngesterCommonUtilities directionalityForMetricDefinition:v43]];
@@ -482,7 +482,7 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
       v66 = 0x3032000000;
       v67 = __Block_byref_object_copy__4;
       v68 = __Block_byref_object_dispose__4;
-      v69 = [v62 firstObject];
+      firstObject3 = [v62 firstObject];
       if (v65[5])
       {
         v63[0] = MEMORY[0x277D85DD0];
@@ -500,9 +500,9 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
 
       v46 = v44;
       v18 = [(PPSTimeIntervalSetGenerator *)v44 intervalSetForTimeSeries:v37 withIntervalStartCheckBlock:0 intervalEndCheckBlock:0 payloadBlock:v45 coalescePolicy:0];
-      if (v12)
+      if (timeFilter)
       {
-        v47 = [(PPSSQLiteTimeIntervalSetIngester *)self filterIntervalSet:v18 withTimeFilter:v12];
+        v47 = [(PPSSQLiteTimeIntervalSetIngester *)self filterIntervalSet:v18 withTimeFilter:timeFilter];
 
         v18 = v47;
       }
@@ -516,8 +516,8 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
     if (v38)
     {
       v19 = 0;
-      v7 = v56;
-      v6 = v57;
+      category = v56;
+      subsystem = v57;
       v16 = v54;
       v8 = v55;
     }
@@ -528,7 +528,7 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
       v8 = v55;
       if (v18 && [(PPSSQLiteTimeIntervalSetIngester *)self shouldUseCache])
       {
-        [(PPSSQLiteTimeIntervalSetIngester *)self setResponse:v18 forKey:v54 timeWindow:v12];
+        [(PPSSQLiteTimeIntervalSetIngester *)self setResponse:v18 forKey:v54 timeWindow:timeFilter];
       }
 
       v48 = +[PPSPerformanceProfiler sharedInstance];
@@ -536,8 +536,8 @@ id __78__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetMapForRequest_outEr
 
       v18 = v18;
       v19 = v18;
-      v7 = v56;
-      v6 = v57;
+      category = v56;
+      subsystem = v57;
     }
   }
 
@@ -581,18 +581,18 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
   return v14;
 }
 
-+ (id)_filterIntervalSet:(id)a3 withTimeInterval:(id)a4
++ (id)_filterIntervalSet:(id)set withTimeInterval:(id)interval
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
-  if (v21)
+  setCopy = set;
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[PPSTimeIntervalSet alloc] initWithTimeInterval:v21];
-      v7 = [v5 intersectionFromIntervalSet:v6];
+      v6 = [[PPSTimeIntervalSet alloc] initWithTimeInterval:intervalCopy];
+      v7 = [setCopy intersectionFromIntervalSet:v6];
     }
 
     else
@@ -600,13 +600,13 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+        v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(setCopy, "count")}];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v20 = v5;
-        v8 = v5;
+        v20 = setCopy;
+        v8 = setCopy;
         v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
@@ -625,7 +625,7 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
               v14 = objc_autoreleasePoolPush();
               v15 = objc_opt_class();
               v16 = [v8 objectForKeyedSubscript:v13];
-              v17 = [v15 _filterIntervalSet:v16 withTimeInterval:v21];
+              v17 = [v15 _filterIntervalSet:v16 withTimeInterval:intervalCopy];
 
               [v7 setObject:v17 forKeyedSubscript:v13];
               objc_autoreleasePoolPop(v14);
@@ -637,7 +637,7 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
           while (v10);
         }
 
-        v5 = v20;
+        setCopy = v20;
       }
 
       else
@@ -649,7 +649,7 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
 
   else
   {
-    v7 = v5;
+    v7 = setCopy;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -657,17 +657,17 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
   return v7;
 }
 
-+ (id)_stringForSourceName:(id)a3 metrics:(id)a4 predicate:(id)a5
++ (id)_stringForSourceName:(id)name metrics:(id)metrics predicate:(id)predicate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  metricsCopy = metrics;
+  predicateCopy = predicate;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [metricsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -679,13 +679,13 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(metricsCopy);
         }
 
         v12 ^= (v12 << 6) + 2654435769u + (v12 >> 2) + [*(*(&v19 + 1) + 8 * i) hash];
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [metricsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
@@ -696,44 +696,44 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
     v12 = 0;
   }
 
-  v15 = [v9 hash];
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@::%lu", v7, ((v12 << 6) + 2654435769u + (v12 >> 2) + v15) ^ v12];
+  v15 = [predicateCopy hash];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@::%lu", nameCopy, ((v12 << 6) + 2654435769u + (v12 >> 2) + v15) ^ v12];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)filterIntervalSet:(id)a3 withTimeFilter:(id)a4
+- (id)filterIntervalSet:(id)set withTimeFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  setCopy = set;
+  filterCopy = filter;
+  v8 = filterCopy;
+  if (setCopy)
   {
-    if (v7)
+    if (filterCopy)
     {
-      v9 = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
-      v10 = [PPSTimestampConverterRegistry converterForFilepath:v9];
+      filepath = [(PPSSQLiteTimeIntervalSetIngester *)self filepath];
+      v10 = [PPSTimestampConverterRegistry converterForFilepath:filepath];
 
-      v11 = [v8 startDate];
-      [v11 timeIntervalSince1970];
+      startDate = [v8 startDate];
+      [startDate timeIntervalSince1970];
       v13 = v12;
 
       [v10 monotonicTimeFromEpochTime:v13];
       v15 = v14;
-      v16 = [v8 endDate];
-      [v16 timeIntervalSince1970];
+      endDate = [v8 endDate];
+      [endDate timeIntervalSince1970];
       v18 = v17;
 
       [v10 monotonicTimeFromEpochTime:v18];
       v20 = [[PPSTimeInterval alloc] initWithStartTimestamp:0 endTimestamp:v15 payload:v19];
-      v21 = [objc_opt_class() _filterIntervalSet:v6 withTimeInterval:v20];
+      v21 = [objc_opt_class() _filterIntervalSet:setCopy withTimeInterval:v20];
     }
 
     else
     {
-      v21 = v6;
+      v21 = setCopy;
     }
   }
 
@@ -745,29 +745,29 @@ id __75__PPSSQLiteTimeIntervalSetIngester__computeIntervalSetForRequest_outError
   return v21;
 }
 
-- (id)filterIntervalSetMap:(id)a3 withTimeFilter:(id)a4
+- (id)filterIntervalSetMap:(id)map withTimeFilter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  mapCopy = map;
+  filterCopy = filter;
+  if (mapCopy)
   {
-    v8 = [v6 mutableCopy];
-    if ([v6 count] >= 1)
+    v8 = [mapCopy mutableCopy];
+    if ([mapCopy count] >= 1)
     {
       v9 = 0;
       do
       {
-        v10 = [v6 allKeys];
-        v11 = [v10 objectAtIndexedSubscript:v9];
+        allKeys = [mapCopy allKeys];
+        v11 = [allKeys objectAtIndexedSubscript:v9];
 
-        v12 = [v6 objectForKeyedSubscript:v11];
-        v13 = [(PPSSQLiteTimeIntervalSetIngester *)self filterIntervalSet:v12 withTimeFilter:v7];
+        v12 = [mapCopy objectForKeyedSubscript:v11];
+        v13 = [(PPSSQLiteTimeIntervalSetIngester *)self filterIntervalSet:v12 withTimeFilter:filterCopy];
         [v8 setObject:v13 forKeyedSubscript:v11];
 
         ++v9;
       }
 
-      while (v9 < [v6 count]);
+      while (v9 < [mapCopy count]);
     }
   }
 

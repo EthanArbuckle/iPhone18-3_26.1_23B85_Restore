@@ -1,32 +1,32 @@
 @interface NTKProtoFacePigmentSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addCollectionBySlots:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCollectionBySlots:(id)slots;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NTKProtoFacePigmentSet
 
-- (void)addCollectionBySlots:(id)a3
+- (void)addCollectionBySlots:(id)slots
 {
-  v4 = a3;
+  slotsCopy = slots;
   collectionBySlots = self->_collectionBySlots;
-  v8 = v4;
+  v8 = slotsCopy;
   if (!collectionBySlots)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_collectionBySlots;
     self->_collectionBySlots = v6;
 
-    v4 = v8;
+    slotsCopy = v8;
     collectionBySlots = self->_collectionBySlots;
   }
 
-  [(NSMutableArray *)collectionBySlots addObject:v4];
+  [(NSMutableArray *)collectionBySlots addObject:slotsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = NTKProtoFacePigmentSet;
   v4 = [(NTKProtoFacePigmentSet *)&v8 description];
-  v5 = [(NTKProtoFacePigmentSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NTKProtoFacePigmentSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   if ([(NSMutableArray *)self->_collectionBySlots count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -90,10 +90,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -131,35 +131,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_domain)
   {
-    [v8 setDomain:?];
+    [toCopy setDomain:?];
   }
 
   if ([(NTKProtoFacePigmentSet *)self collectionBySlotsCount])
   {
-    [v8 clearCollectionBySlots];
-    v4 = [(NTKProtoFacePigmentSet *)self collectionBySlotsCount];
-    if (v4)
+    [toCopy clearCollectionBySlots];
+    collectionBySlotsCount = [(NTKProtoFacePigmentSet *)self collectionBySlotsCount];
+    if (collectionBySlotsCount)
     {
-      v5 = v4;
+      v5 = collectionBySlotsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NTKProtoFacePigmentSet *)self collectionBySlotsAtIndex:i];
-        [v8 addCollectionBySlots:v7];
+        [toCopy addCollectionBySlots:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addCollectionBySlots:v13];
 
         ++v12;
@@ -199,13 +199,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[2])) || -[NSString isEqual:](domain, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[2])) || -[NSString isEqual:](domain, "isEqual:")))
   {
     collectionBySlots = self->_collectionBySlots;
-    if (collectionBySlots | v4[1])
+    if (collectionBySlots | equalCopy[1])
     {
       v7 = [(NSMutableArray *)collectionBySlots isEqual:?];
     }
@@ -224,11 +224,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(NTKProtoFacePigmentSet *)self setDomain:?];
   }
@@ -237,7 +237,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

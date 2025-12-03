@@ -1,25 +1,25 @@
 @interface PKPeerPaymentUpdatedTermsViewController
-- (PKPeerPaymentUpdatedTermsViewController)initWithPassUniqueID:(id)a3;
+- (PKPeerPaymentUpdatedTermsViewController)initWithPassUniqueID:(id)d;
 - (PKPeerPaymentUpdatedTermsViewControllerDelegate)delegate;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)showSpinner:(BOOL)a3;
+- (void)showSpinner:(BOOL)spinner;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentUpdatedTermsViewController
 
-- (PKPeerPaymentUpdatedTermsViewController)initWithPassUniqueID:(id)a3
+- (PKPeerPaymentUpdatedTermsViewController)initWithPassUniqueID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = PKPeerPaymentUpdatedTermsViewController;
   v6 = [(PKExplanationViewController *)&v10 initWithContext:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uniqueID, a3);
+    objc_storeStrong(&v6->_uniqueID, d);
     [(PKExplanationViewController *)v7 setShowCancelButton:1];
     [(PKExplanationViewController *)v7 setExplanationViewControllerDelegate:v7];
     v8 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:2];
@@ -43,7 +43,7 @@
   v7[2] = __51__PKPeerPaymentUpdatedTermsViewController_loadView__block_invoke;
   v7[3] = &unk_1E8010AB0;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
   [(PKPassSnapshotter *)v4 snapshotWithUniqueID:uniqueID size:4087 suppressedContent:v7 completion:257.0, 157.0];
 }
@@ -78,51 +78,51 @@ void __51__PKPeerPaymentUpdatedTermsViewController_loadView__block_invoke_2(uint
   v8.receiver = self;
   v8.super_class = PKPeerPaymentUpdatedTermsViewController;
   [(PKExplanationViewController *)&v8 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentSet_5.isa);
-  [v3 setTitleText:v4];
+  [explanationView setTitleText:v4];
 
   v5 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTer.isa);
-  [v3 setBodyText:v5];
+  [explanationView setBodyText:v5];
 
-  [v3 setShowPrivacyView:1];
-  [v3 setDelegate:self];
-  [v3 setTopMargin:12.0];
-  v6 = [v3 dockView];
-  v7 = [v6 footerView];
+  [explanationView setShowPrivacyView:1];
+  [explanationView setDelegate:self];
+  [explanationView setTopMargin:12.0];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
 
-  [v7 setSetUpLaterButton:0];
+  [footerView setSetUpLaterButton:0];
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained peerPaymentUpdatedTermsViewController:self didSelectContinue:0];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained peerPaymentUpdatedTermsViewController:self didSelectContinue:1];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v11 = [v5 dockView];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
 
-  v6 = [v11 primaryButton];
-  [v6 setShowSpinner:v3];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:spinnerCopy];
 
-  [v11 setButtonsEnabled:v3 ^ 1];
-  v7 = [(PKPeerPaymentUpdatedTermsViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3 ^ 1];
+  [dockView setButtonsEnabled:spinnerCopy ^ 1];
+  navigationItem = [(PKPeerPaymentUpdatedTermsViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:spinnerCopy ^ 1];
 
-  v9 = [(PKPeerPaymentUpdatedTermsViewController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setEnabled:v3 ^ 1];
+  navigationItem2 = [(PKPeerPaymentUpdatedTermsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:spinnerCopy ^ 1];
 }
 
 - (PKPeerPaymentUpdatedTermsViewControllerDelegate)delegate

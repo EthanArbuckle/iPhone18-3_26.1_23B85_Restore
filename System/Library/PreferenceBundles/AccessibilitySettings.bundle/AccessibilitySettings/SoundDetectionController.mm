@@ -5,24 +5,24 @@
 - (id)numberOfEnabledDetectors;
 - (id)soundDetectionEnabled;
 - (id)specifiers;
-- (void)_enableSoundDetection:(BOOL)a3;
-- (void)_internalSettingsPressed:(id)a3;
-- (void)_navigateToDataCollectionView:(id)a3;
+- (void)_enableSoundDetection:(BOOL)detection;
+- (void)_internalSettingsPressed:(id)pressed;
+- (void)_navigateToDataCollectionView:(id)view;
 - (void)_reloadSettings;
 - (void)_showHeySiriConfirmationAlert;
 - (void)_showInternalDataCollectionAlert;
-- (void)_updateAssetStatusCell:(int64_t)a3 error:(id)a4 downloaded:(int64_t)a5 expected:(int64_t)a6;
+- (void)_updateAssetStatusCell:(int64_t)cell error:(id)error downloaded:(int64_t)downloaded expected:(int64_t)expected;
 - (void)dealloc;
-- (void)detectorStore:(id)a3 didFinishRefreshingDetectors:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)detectorStore:(id)a3 totalSizeExpected:(int64_t)a4 downloadProgressTotalWritten:(int64_t)a5 remainingTimeExpected:(double)a6 isStalled:(BOOL)a7;
-- (void)detectorsReadyForDetectorStore:(id)a3;
-- (void)optOutCustomSoundRecognition:(id)a3;
-- (void)setSoundDetectionEnabled:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateDetectorSpecifiersAnimated:(BOOL)a3;
+- (void)detectorStore:(id)store didFinishRefreshingDetectors:(id)detectors wasSuccessful:(BOOL)successful error:(id)error;
+- (void)detectorStore:(id)store totalSizeExpected:(int64_t)expected downloadProgressTotalWritten:(int64_t)written remainingTimeExpected:(double)timeExpected isStalled:(BOOL)stalled;
+- (void)detectorsReadyForDetectorStore:(id)store;
+- (void)optOutCustomSoundRecognition:(id)recognition;
+- (void)setSoundDetectionEnabled:(id)enabled;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateDetectorSpecifiersAnimated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SoundDetectionController
@@ -103,22 +103,22 @@ void __32__SoundDetectionController_init__block_invoke_3(uint64_t a1)
 
   if (AXIsInternalInstall())
   {
-    v5 = [(SoundDetectionController *)self navigationItem];
-    v6 = [(SoundDetectionController *)self _internalSettingsButton];
-    [v5 setRightBarButtonItem:v6];
+    navigationItem = [(SoundDetectionController *)self navigationItem];
+    _internalSettingsButton = [(SoundDetectionController *)self _internalSettingsButton];
+    [navigationItem setRightBarButtonItem:_internalSettingsButton];
   }
 
-  v7 = [(SoundDetectionController *)self table];
+  table = [(SoundDetectionController *)self table];
   v8 = objc_opt_class();
   v9 = +[AXAssetStatusInfoCell cellReuseIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [table registerClass:v8 forCellReuseIdentifier:v9];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SoundDetectionController;
-  [(AccessibilitySettingsBaseController *)&v6 viewWillAppear:a3];
+  [(AccessibilitySettingsBaseController *)&v6 viewWillAppear:appear];
   v4 = +[AXSDDetectorStore sharedInstance];
   [v4 addObserver:self];
 
@@ -130,19 +130,19 @@ void __32__SoundDetectionController_init__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = SoundDetectionController;
-  [(SoundDetectionController *)&v3 viewWillDisappear:a3];
+  [(SoundDetectionController *)&v3 viewWillDisappear:disappear];
 }
 
 - (BOOL)_isFeatureEnabled
 {
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 soundDetectionEnabled];
+  soundDetectionEnabled = [v2 soundDetectionEnabled];
 
-  return v3;
+  return soundDetectionEnabled;
 }
 
 - (id)specifiers
@@ -223,18 +223,18 @@ void __32__SoundDetectionController_init__block_invoke_3(uint64_t a1)
     goto LABEL_16;
   }
 
-  v23 = [(SoundDetectionController *)self assetsReady];
+  assetsReady = [(SoundDetectionController *)self assetsReady];
 
-  if (!v23)
+  if (!assetsReady)
   {
     goto LABEL_17;
   }
 
-  v24 = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
-  [v5 addObject:v24];
+  soundDetectorsGroupSpecifier = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
+  [v5 addObject:soundDetectorsGroupSpecifier];
 
-  v25 = [(SoundDetectionController *)self soundDetectorsSpecifier];
-  [v5 addObject:v25];
+  soundDetectorsSpecifier = [(SoundDetectionController *)self soundDetectorsSpecifier];
+  [v5 addObject:soundDetectorsSpecifier];
 
   if (!AXIsInternalInstall())
   {
@@ -243,25 +243,25 @@ void __32__SoundDetectionController_init__block_invoke_3(uint64_t a1)
 
   if ((+[AXSDSoundDetectionController isEnrolledInDataCollection]& 1) == 0)
   {
-    v26 = [(SoundDetectionController *)self enrollSpecifier];
+    enrollSpecifier = [(SoundDetectionController *)self enrollSpecifier];
 
-    if (v26)
+    if (enrollSpecifier)
     {
-      v27 = [(SoundDetectionController *)self enrollSpecifier];
+      enrollSpecifier2 = [(SoundDetectionController *)self enrollSpecifier];
 LABEL_15:
-      v21 = v27;
-      [v5 addObject:v27];
+      v21 = enrollSpecifier2;
+      [v5 addObject:enrollSpecifier2];
 LABEL_16:
 
       goto LABEL_17;
     }
   }
 
-  v28 = [(SoundDetectionController *)self historySpecifier];
+  historySpecifier = [(SoundDetectionController *)self historySpecifier];
 
-  if (v28)
+  if (historySpecifier)
   {
-    v27 = [(SoundDetectionController *)self historySpecifier];
+    enrollSpecifier2 = [(SoundDetectionController *)self historySpecifier];
     goto LABEL_15;
   }
 
@@ -302,27 +302,27 @@ LABEL_20:
   return v3;
 }
 
-- (void)setSoundDetectionEnabled:(id)a3
+- (void)setSoundDetectionEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSDSettings sharedInstance];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
-    v7 = [v5 soundDetectionState];
+    soundDetectionState = [v5 soundDetectionState];
 
     v8 = +[AXSDSettings sharedInstance];
-    v9 = [v8 enabledSoundDetectionTypes];
-    v10 = [v9 count];
+    enabledSoundDetectionTypes = [v8 enabledSoundDetectionTypes];
+    v10 = [enabledSoundDetectionTypes count];
     v11 = +[AXSDSettings sharedInstance];
-    v12 = [v11 enabledKShotDetectorIdentifiers];
-    v13 = [v12 count];
+    enabledKShotDetectorIdentifiers = [v11 enabledKShotDetectorIdentifiers];
+    v13 = [enabledKShotDetectorIdentifiers count];
 
     v14 = +[VTPreferences sharedPreferences];
-    v15 = [v14 voiceTriggerEnabled];
+    voiceTriggerEnabled = [v14 voiceTriggerEnabled];
 
     v16 = AXDeviceSupportsConcurrentHPLPMics();
-    if (!(v10 + v13) || v7 == &dword_0 + 2 || !v15 || (v16 & 1) != 0)
+    if (!(v10 + v13) || soundDetectionState == &dword_0 + 2 || !voiceTriggerEnabled || (v16 & 1) != 0)
     {
       [(SoundDetectionController *)self _enableSoundDetection:v10 != -v13];
     }
@@ -341,12 +341,12 @@ LABEL_20:
   [(SoundDetectionController *)self updateDetectorSpecifiersAnimated:1];
 }
 
-- (void)_enableSoundDetection:(BOOL)a3
+- (void)_enableSoundDetection:(BOOL)detection
 {
-  v3 = a3;
+  detectionCopy = detection;
   v5 = +[AXSDSettings sharedInstance];
   v6 = v5;
-  if (v3)
+  if (detectionCopy)
   {
     v7 = 2;
   }
@@ -365,26 +365,26 @@ LABEL_20:
   }
 }
 
-- (void)updateDetectorSpecifiersAnimated:(BOOL)a3
+- (void)updateDetectorSpecifiersAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SoundDetectionController *)self specifiers];
+  animatedCopy = animated;
+  specifiers = [(SoundDetectionController *)self specifiers];
   v6 = +[AXSDSettings sharedInstance];
   if ([v6 soundDetectionEnabled])
   {
-    v7 = [(SoundDetectionController *)self assetsReady];
+    assetsReady = [(SoundDetectionController *)self assetsReady];
   }
 
   else
   {
-    v7 = 0;
+    assetsReady = 0;
   }
 
   v8 = [NSMutableArray alloc];
-  v9 = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
-  v22[0] = v9;
-  v10 = [(SoundDetectionController *)self soundDetectorsSpecifier];
-  v22[1] = v10;
+  soundDetectorsGroupSpecifier = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
+  v22[0] = soundDetectorsGroupSpecifier;
+  soundDetectorsSpecifier = [(SoundDetectionController *)self soundDetectorsSpecifier];
+  v22[1] = soundDetectorsSpecifier;
   v11 = [NSArray arrayWithObjects:v22 count:2];
   v12 = [v8 initWithArray:v11];
 
@@ -403,36 +403,36 @@ LABEL_20:
     [v12 addObject:v13];
   }
 
-  v14 = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
-  if (v14)
+  soundDetectorsGroupSpecifier2 = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
+  if (soundDetectorsGroupSpecifier2)
   {
-    v15 = v14;
-    v16 = [(SoundDetectionController *)self soundDetectorsSpecifier];
+    v15 = soundDetectorsGroupSpecifier2;
+    soundDetectorsSpecifier2 = [(SoundDetectionController *)self soundDetectorsSpecifier];
 
-    if (v16)
+    if (soundDetectorsSpecifier2)
     {
       [(SoundDetectionController *)self beginUpdates];
-      if (v7)
+      if (assetsReady)
       {
-        v17 = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
-        v18 = [v5 containsObject:v17];
+        soundDetectorsGroupSpecifier3 = [(SoundDetectionController *)self soundDetectorsGroupSpecifier];
+        v18 = [specifiers containsObject:soundDetectorsGroupSpecifier3];
 
         if ((v18 & 1) == 0)
         {
-          [(SoundDetectionController *)self insertContiguousSpecifiers:v12 afterSpecifierID:@"Downloading" animated:v3];
+          [(SoundDetectionController *)self insertContiguousSpecifiers:v12 afterSpecifierID:@"Downloading" animated:animatedCopy];
         }
       }
 
       else
       {
-        [(SoundDetectionController *)self removeContiguousSpecifiers:v12 animated:v3];
+        [(SoundDetectionController *)self removeContiguousSpecifiers:v12 animated:animatedCopy];
       }
 
       [(SoundDetectionController *)self endUpdates];
     }
   }
 
-  if (v7)
+  if (assetsReady)
   {
     v19 = [[AXUIClient alloc] initWithIdentifier:@"AXAssetClient-sounddetectionmodule" serviceBundleName:@"AXAssetAndDataServer"];
     v20 = +[AXAccessQueue mainAccessQueue];
@@ -489,17 +489,17 @@ void __61__SoundDetectionController_updateDetectorSpecifiersAnimated___block_inv
 - (id)numberOfEnabledDetectors
 {
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 enabledSoundDetectionTypes];
+  enabledSoundDetectionTypes = [v2 enabledSoundDetectionTypes];
 
   v4 = +[AXSDSettings sharedInstance];
-  v5 = [v4 enabledSoundDetectionTypes];
-  v6 = [v5 count];
+  enabledSoundDetectionTypes2 = [v4 enabledSoundDetectionTypes];
+  v6 = [enabledSoundDetectionTypes2 count];
 
-  v7 = &v6[-[v3 containsObject:AXSDSoundDetectionTypeApplianceBeeps]];
-  v8 = &v7[-[v3 containsObject:AXSDSoundDetectionTypeApplianceBuzzes]];
+  v7 = &v6[-[enabledSoundDetectionTypes containsObject:AXSDSoundDetectionTypeApplianceBeeps]];
+  v8 = &v7[-[enabledSoundDetectionTypes containsObject:AXSDSoundDetectionTypeApplianceBuzzes]];
   v9 = +[AXSDSettings sharedInstance];
-  v10 = [v9 enabledKShotDetectorIdentifiers];
-  v11 = [v10 count] + v8;
+  enabledKShotDetectorIdentifiers = [v9 enabledKShotDetectorIdentifiers];
+  v11 = [enabledKShotDetectorIdentifiers count] + v8;
 
   if (v11)
   {
@@ -515,7 +515,7 @@ void __61__SoundDetectionController_updateDetectorSpecifiersAnimated___block_inv
   return v12;
 }
 
-- (void)optOutCustomSoundRecognition:(id)a3
+- (void)optOutCustomSoundRecognition:(id)recognition
 {
   v4 = settingsLocString(@"OPT_OUT_SECURE_INTENT_CUSTOM_SOUND_TITLE", @"Accessibility-MedinaPreBoard");
   v5 = AXLocStringKeyForModel();
@@ -551,7 +551,7 @@ void __57__SoundDetectionController_optOutCustomSoundRecognition___block_invoke_
   }
 }
 
-- (void)_navigateToDataCollectionView:(id)a3
+- (void)_navigateToDataCollectionView:(id)view
 {
   v4 = [NSURL URLWithString:@"prefs:root=INTERNAL_SETTINGS&path=Accessibility/DataCollectionStudies/SoundDetection"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -573,27 +573,27 @@ void __57__SoundDetectionController_optOutCustomSoundRecognition___block_invoke_
   [(AccessibilitySettingsBaseController *)&v6 dealloc];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = [(SoundDetectionController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(SoundDetectionController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:PSIDKey];
   v9 = [v8 isEqualToString:@"Downloading"];
 
   if (v9)
   {
-    [v10 setAccessibilityTraits:UIAccessibilityTraitStaticText];
+    [cellCopy setAccessibilityTraits:UIAccessibilityTraitStaticText];
   }
 }
 
 - (void)_reloadSettings
 {
   v3 = +[AXSDDetectorStore sharedInstance];
-  v4 = [v3 hasInProgressDownloads];
+  hasInProgressDownloads = [v3 hasInProgressDownloads];
 
   if ([(SoundDetectionController *)self _isFeatureEnabled]&& ![(SoundDetectionController *)self assetsReady])
   {
-    if (v4)
+    if (hasInProgressDownloads)
     {
       goto LABEL_9;
     }
@@ -603,7 +603,7 @@ void __57__SoundDetectionController_optOutCustomSoundRecognition___block_invoke_
     goto LABEL_8;
   }
 
-  if (![(SoundDetectionController *)self _isFeatureEnabled]&& ((v4 ^ 1) & 1) == 0)
+  if (![(SoundDetectionController *)self _isFeatureEnabled]&& ((hasInProgressDownloads ^ 1) & 1) == 0)
   {
     v5 = +[AXSDDetectorStore sharedInstance];
     [v5 stopDownloadOfDetectors];
@@ -625,7 +625,7 @@ LABEL_9:
   return v4;
 }
 
-- (void)_internalSettingsPressed:(id)a3
+- (void)_internalSettingsPressed:(id)pressed
 {
   v4 = [NSURL URLWithString:@"prefs:root=INTERNAL_SETTINGS&path=Accessibility/Assets"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -687,31 +687,31 @@ void __60__SoundDetectionController__showInternalDataCollectionAlert__block_invo
   [WeakRetained _navigateToDataCollectionView:0];
 }
 
-- (void)_updateAssetStatusCell:(int64_t)a3 error:(id)a4 downloaded:(int64_t)a5 expected:(int64_t)a6
+- (void)_updateAssetStatusCell:(int64_t)cell error:(id)error downloaded:(int64_t)downloaded expected:(int64_t)expected
 {
   assetStatusSpecifier = self->_assetStatusSpecifier;
-  v11 = a4;
-  [(PSSpecifier *)assetStatusSpecifier setAx_assetState:a3];
+  errorCopy = error;
+  [(PSSpecifier *)assetStatusSpecifier setAx_assetState:cell];
   [(PSSpecifier *)self->_assetStatusSpecifier setAx_asset:0];
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetError:v11];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetError:errorCopy];
 
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesReceived:a5];
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesExpected:a6];
-  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetUnarchivedFileSize:a6];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesReceived:downloaded];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetDownloadBytesExpected:expected];
+  [(PSSpecifier *)self->_assetStatusSpecifier setAx_assetUnarchivedFileSize:expected];
   v12 = self->_assetStatusSpecifier;
 
   [(SoundDetectionController *)self reloadSpecifier:v12];
 }
 
-- (void)detectorsReadyForDetectorStore:(id)a3
+- (void)detectorsReadyForDetectorStore:(id)store
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __59__SoundDetectionController_detectorsReadyForDetectorStore___block_invoke;
   v4[3] = &unk_255538;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  storeCopy = store;
+  v3 = storeCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -735,12 +735,12 @@ void __59__SoundDetectionController_detectorsReadyForDetectorStore___block_invok
   [*(a1 + 32) _reloadSettings];
 }
 
-- (void)detectorStore:(id)a3 didFinishRefreshingDetectors:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)detectorStore:(id)store didFinishRefreshingDetectors:(id)detectors wasSuccessful:(BOOL)successful error:(id)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  successfulCopy = successful;
+  storeCopy = store;
+  detectorsCopy = detectors;
+  errorCopy = error;
   v13 = AXLogUltron();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -749,11 +749,11 @@ void __59__SoundDetectionController_detectorsReadyForDetectorStore___block_invok
     *buf = 138413058;
     v24 = v16;
     v25 = 2048;
-    v26 = [v11 count];
+    v26 = [detectorsCopy count];
     v27 = 1024;
-    v28 = v7;
+    v28 = successfulCopy;
     v29 = 2112;
-    v30 = v12;
+    v30 = errorCopy;
     _os_log_debug_impl(&dword_0, v13, OS_LOG_TYPE_DEBUG, "[%@]: did finish refreshing detectors: %lu - was successful: %d - error: %@", buf, 0x26u);
   }
 
@@ -761,12 +761,12 @@ void __59__SoundDetectionController_detectorsReadyForDetectorStore___block_invok
   v18[1] = 3221225472;
   v18[2] = __91__SoundDetectionController_detectorStore_didFinishRefreshingDetectors_wasSuccessful_error___block_invoke;
   v18[3] = &unk_257AD0;
-  v22 = v7;
-  v19 = v10;
-  v20 = self;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
+  v22 = successfulCopy;
+  v19 = storeCopy;
+  selfCopy = self;
+  v21 = errorCopy;
+  v14 = errorCopy;
+  v15 = storeCopy;
   dispatch_async(&_dispatch_main_q, v18);
 }
 
@@ -860,22 +860,22 @@ LABEL_19:
   return [*v3 _updateAssetStatusCell:1 error:0 downloaded:0 expected:v2];
 }
 
-- (void)detectorStore:(id)a3 totalSizeExpected:(int64_t)a4 downloadProgressTotalWritten:(int64_t)a5 remainingTimeExpected:(double)a6 isStalled:(BOOL)a7
+- (void)detectorStore:(id)store totalSizeExpected:(int64_t)expected downloadProgressTotalWritten:(int64_t)written remainingTimeExpected:(double)timeExpected isStalled:(BOOL)stalled
 {
   v11 = AXLogUltron();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [SoundDetectionController detectorStore:a4 totalSizeExpected:a5 downloadProgressTotalWritten:v11 remainingTimeExpected:? isStalled:?];
+    [SoundDetectionController detectorStore:expected totalSizeExpected:written downloadProgressTotalWritten:v11 remainingTimeExpected:? isStalled:?];
   }
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __121__SoundDetectionController_detectorStore_totalSizeExpected_downloadProgressTotalWritten_remainingTimeExpected_isStalled___block_invoke;
   v12[3] = &unk_257AF8;
-  v12[5] = a5;
-  v12[6] = a4;
+  v12[5] = written;
+  v12[6] = expected;
   v12[4] = self;
-  v13 = a7;
+  stalledCopy = stalled;
   dispatch_async(&_dispatch_main_q, v12);
 }
 

@@ -1,10 +1,10 @@
 @interface AEAssessmentModeRestrictionEnforcerProxy
-- (AEAssessmentModeRestrictionEnforcerProxy)initWithMachServiceName:(id)a3 queue:(id)a4;
+- (AEAssessmentModeRestrictionEnforcerProxy)initWithMachServiceName:(id)name queue:(id)queue;
 - (void)dealloc;
 - (void)invalidate;
 - (void)proxy;
-- (void)shouldBeginRestrictingForAssessmentModeWithCompletion:(id)a3;
-- (void)shouldEndRestrictingForAssessmentModeWithCompletion:(id)a3;
+- (void)shouldBeginRestrictingForAssessmentModeWithCompletion:(id)completion;
+- (void)shouldEndRestrictingForAssessmentModeWithCompletion:(id)completion;
 @end
 
 @implementation AEAssessmentModeRestrictionEnforcerProxy
@@ -17,18 +17,18 @@
   [(AEAssessmentModeRestrictionEnforcerProxy *)&v3 dealloc];
 }
 
-- (AEAssessmentModeRestrictionEnforcerProxy)initWithMachServiceName:(id)a3 queue:(id)a4
+- (AEAssessmentModeRestrictionEnforcerProxy)initWithMachServiceName:(id)name queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = AEAssessmentModeRestrictionEnforcerProxy;
   v9 = [(AEAssessmentModeRestrictionEnforcerProxy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_machServiceName, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_machServiceName, name);
+    objc_storeStrong(&v10->_queue, queue);
   }
 
   return v10;
@@ -38,38 +38,38 @@
 {
   if (self->_proxy)
   {
-    v3 = [(AEAssessmentModeRestrictionEnforcerProxy *)&self->super.isa proxy];
-    [v3 invalidate];
+    proxy = [(AEAssessmentModeRestrictionEnforcerProxy *)&self->super.isa proxy];
+    [proxy invalidate];
   }
 }
 
 - (void)proxy
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (!v3)
     {
       v4 = [[AEMachServiceXPCConnectionOrigin alloc] initWithMachServiceName:4096 options:?];
       v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284EFA8C0];
       v6 = [[AEXPCProxy alloc] initWithOrigin:v4 interface:v5];
-      v7 = v2[3];
-      v2[3] = v6;
+      v7 = selfCopy[3];
+      selfCopy[3] = v6;
 
-      v3 = v2[3];
+      v3 = selfCopy[3];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)shouldBeginRestrictingForAssessmentModeWithCompletion:(id)a3
+- (void)shouldBeginRestrictingForAssessmentModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
     queue = self->_queue;
@@ -113,9 +113,9 @@ void __98__AEAssessmentModeRestrictionEnforcerProxy_shouldBeginRestrictingForAss
   OUTLINED_FUNCTION_3_0(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)shouldEndRestrictingForAssessmentModeWithCompletion:(id)a3
+- (void)shouldEndRestrictingForAssessmentModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
     queue = self->_queue;

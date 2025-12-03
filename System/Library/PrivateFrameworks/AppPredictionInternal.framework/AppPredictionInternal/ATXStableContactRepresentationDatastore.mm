@@ -1,59 +1,59 @@
 @interface ATXStableContactRepresentationDatastore
-- (ATXStableContactRepresentationDatastore)initWithContactStore:(id)a3;
-- (ATXStableContactRepresentationDatastore)initWithStableContactRepresentationDatabase:(id)a3 contactStore:(id)a4;
-- (id)cnContactForCnContactId:(id)a3 rawIdentifier:(id)a4;
-- (id)refreshCnContactIdsGivenContactEntities:(id)a3;
-- (id)stableContactRepresentationForCnContactId:(id)a3 rawIdentifier:(id)a4;
-- (id)stableContactRepresentationForStableContactIdentifier:(id)a3;
-- (id)updateAndGetStableContactIdentifier:(id)a3 rawIdentifier:(id)a4;
+- (ATXStableContactRepresentationDatastore)initWithContactStore:(id)store;
+- (ATXStableContactRepresentationDatastore)initWithStableContactRepresentationDatabase:(id)database contactStore:(id)store;
+- (id)cnContactForCnContactId:(id)id rawIdentifier:(id)identifier;
+- (id)refreshCnContactIdsGivenContactEntities:(id)entities;
+- (id)stableContactRepresentationForCnContactId:(id)id rawIdentifier:(id)identifier;
+- (id)stableContactRepresentationForStableContactIdentifier:(id)identifier;
+- (id)updateAndGetStableContactIdentifier:(id)identifier rawIdentifier:(id)rawIdentifier;
 @end
 
 @implementation ATXStableContactRepresentationDatastore
 
-- (ATXStableContactRepresentationDatastore)initWithContactStore:(id)a3
+- (ATXStableContactRepresentationDatastore)initWithContactStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_new();
-  v6 = [(ATXStableContactRepresentationDatastore *)self initWithStableContactRepresentationDatabase:v5 contactStore:v4];
+  v6 = [(ATXStableContactRepresentationDatastore *)self initWithStableContactRepresentationDatabase:v5 contactStore:storeCopy];
 
   return v6;
 }
 
-- (ATXStableContactRepresentationDatastore)initWithStableContactRepresentationDatabase:(id)a3 contactStore:(id)a4
+- (ATXStableContactRepresentationDatastore)initWithStableContactRepresentationDatabase:(id)database contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ATXStableContactRepresentationDatastore;
   v9 = [(ATXStableContactRepresentationDatastore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stableContactRepresentationDatabase, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_stableContactRepresentationDatabase, database);
+    objc_storeStrong(&v10->_contactStore, store);
   }
 
   return v10;
 }
 
-- (id)cnContactForCnContactId:(id)a3 rawIdentifier:(id)a4
+- (id)cnContactForCnContactId:(id)id rawIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = *MEMORY[0x277CBD098];
   v16 = *MEMORY[0x277CBD018];
   v17 = v7;
   v18 = *MEMORY[0x277CBCFC0];
   v8 = MEMORY[0x277CBEA60];
-  v9 = a3;
+  idCopy = id;
   v10 = [v8 arrayWithObjects:&v16 count:3];
   v11 = objc_alloc(MEMORY[0x277D3A088]);
   v12 = [v11 initWithContactStore:self->_contactStore keysToFetch:{v10, v16, v17, v18, v19}];
-  v13 = [v12 contactWithIdentifier:v9];
+  v13 = [v12 contactWithIdentifier:idCopy];
 
-  if (v6 && !v13)
+  if (identifierCopy && !v13)
   {
-    v13 = [v12 resolveContactIfPossibleFromContactIdentifierString:v6 pickFirstOfMultiple:1];
+    v13 = [v12 resolveContactIfPossibleFromContactIdentifierString:identifierCopy pickFirstOfMultiple:1];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -61,14 +61,14 @@
   return v13;
 }
 
-- (id)updateAndGetStableContactIdentifier:(id)a3 rawIdentifier:(id)a4
+- (id)updateAndGetStableContactIdentifier:(id)identifier rawIdentifier:(id)rawIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXStableContactRepresentationDatastore *)self stableContactIdentifierWithCnContactId:v6];
+  identifierCopy = identifier;
+  rawIdentifierCopy = rawIdentifier;
+  v8 = [(ATXStableContactRepresentationDatastore *)self stableContactIdentifierWithCnContactId:identifierCopy];
   if (!v8)
   {
-    v11 = [(ATXStableContactRepresentationDatastore *)self cnContactForCnContactId:v6 rawIdentifier:v7];
+    v11 = [(ATXStableContactRepresentationDatastore *)self cnContactForCnContactId:identifierCopy rawIdentifier:rawIdentifierCopy];
     v12 = v11;
     if (!v11)
     {
@@ -76,11 +76,11 @@
       goto LABEL_15;
     }
 
-    v13 = [v11 phoneNumbers];
-    v14 = [v13 _pas_mappedArrayWithTransform:&__block_literal_global_63];
+    phoneNumbers = [v11 phoneNumbers];
+    v14 = [phoneNumbers _pas_mappedArrayWithTransform:&__block_literal_global_63];
 
-    v15 = [v12 emailAddresses];
-    v16 = [v15 _pas_mappedArrayWithTransform:&__block_literal_global_20_0];
+    emailAddresses = [v12 emailAddresses];
+    v16 = [emailAddresses _pas_mappedArrayWithTransform:&__block_literal_global_20_0];
 
     if (v14 && [v14 count])
     {
@@ -100,13 +100,13 @@
     }
 
     v19 = [v18 sortedArrayUsingComparator:v17];
-    v20 = [v19 firstObject];
-    v21 = [v20 hash];
+    firstObject = [v19 firstObject];
+    v21 = [firstObject hash];
 
     if (v21)
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v21];
-      [(ATXStableContactRepresentationDatastore *)self insertCnContactIdToStableContactIdentifierWithCnContactId:v6 stableContactIdentifier:v9];
+      [(ATXStableContactRepresentationDatastore *)self insertCnContactIdToStableContactIdentifierWithCnContactId:identifierCopy stableContactIdentifier:v9];
 LABEL_13:
 
 LABEL_15:
@@ -117,7 +117,7 @@ LABEL_15:
 
       else
       {
-        v22 = v6;
+        v22 = identifierCopy;
       }
 
       v10 = v22;
@@ -173,14 +173,14 @@ id __93__ATXStableContactRepresentationDatastore_updateAndGetStableContactIdenti
   return v4;
 }
 
-- (id)stableContactRepresentationForCnContactId:(id)a3 rawIdentifier:(id)a4
+- (id)stableContactRepresentationForCnContactId:(id)id rawIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  idCopy = id;
+  identifierCopy = identifier;
+  if (idCopy)
   {
-    v8 = [(ATXStableContactRepresentationDatastore *)self updateAndGetStableContactIdentifier:v6 rawIdentifier:v7];
-    v9 = [[ATXStableContactRepresentation alloc] initWithStableContactIdentifier:v8 cnContactId:v6 rawIdentifier:v7];
+    v8 = [(ATXStableContactRepresentationDatastore *)self updateAndGetStableContactIdentifier:idCopy rawIdentifier:identifierCopy];
+    v9 = [[ATXStableContactRepresentation alloc] initWithStableContactIdentifier:v8 cnContactId:idCopy rawIdentifier:identifierCopy];
   }
 
   else
@@ -198,13 +198,13 @@ id __93__ATXStableContactRepresentationDatastore_updateAndGetStableContactIdenti
   return v9;
 }
 
-- (id)stableContactRepresentationForStableContactIdentifier:(id)a3
+- (id)stableContactRepresentationForStableContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(ATXStableContactRepresentationDatastore *)self cnContactIdWithStableContactIdentifier:v4];
-    v6 = [[ATXStableContactRepresentation alloc] initWithStableContactIdentifier:v4 cnContactId:v5 rawIdentifier:0];
+    v5 = [(ATXStableContactRepresentationDatastore *)self cnContactIdWithStableContactIdentifier:identifierCopy];
+    v6 = [[ATXStableContactRepresentation alloc] initWithStableContactIdentifier:identifierCopy cnContactId:v5 rawIdentifier:0];
   }
 
   else
@@ -222,10 +222,10 @@ id __93__ATXStableContactRepresentationDatastore_updateAndGetStableContactIdenti
   return v6;
 }
 
-- (id)refreshCnContactIdsGivenContactEntities:(id)a3
+- (id)refreshCnContactIdsGivenContactEntities:(id)entities
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = objc_opt_new();
   contactStore = self->_contactStore;
   v7 = objc_alloc(MEMORY[0x277CBDA70]);
@@ -240,7 +240,7 @@ id __93__ATXStableContactRepresentationDatastore_updateAndGetStableContactIdenti
   v27[2] = __83__ATXStableContactRepresentationDatastore_refreshCnContactIdsGivenContactEntities___block_invoke;
   v27[3] = &unk_278599BD8;
   v27[4] = self;
-  v11 = v4;
+  v11 = entitiesCopy;
   v28 = v11;
   v12 = v5;
   v29 = v12;

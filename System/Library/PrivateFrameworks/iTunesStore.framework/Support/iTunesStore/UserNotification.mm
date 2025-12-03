@@ -1,23 +1,23 @@
 @interface UserNotification
-- (UserNotification)initWithDictionary:(__CFDictionary *)a3 options:(unint64_t)a4 completionBlock:(id)a5;
+- (UserNotification)initWithDictionary:(__CFDictionary *)dictionary options:(unint64_t)options completionBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 - (void)show;
-- (void)updateWithDictionary:(__CFDictionary *)a3 options:(unint64_t)a4;
+- (void)updateWithDictionary:(__CFDictionary *)dictionary options:(unint64_t)options;
 @end
 
 @implementation UserNotification
 
-- (UserNotification)initWithDictionary:(__CFDictionary *)a3 options:(unint64_t)a4 completionBlock:(id)a5
+- (UserNotification)initWithDictionary:(__CFDictionary *)dictionary options:(unint64_t)options completionBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = UserNotification;
   v8 = [(UserNotification *)&v10 init];
   if (v8)
   {
-    v8->_completionBlock = [a5 copy];
-    v8->_notificationDictionary = CFDictionaryCreateCopy(0, a3);
-    v8->_notificationOptions = a4;
+    v8->_completionBlock = [block copy];
+    v8->_notificationDictionary = CFDictionaryCreateCopy(0, dictionary);
+    v8->_notificationOptions = options;
   }
 
   return v8;
@@ -84,17 +84,17 @@
   }
 }
 
-- (void)updateWithDictionary:(__CFDictionary *)a3 options:(unint64_t)a4
+- (void)updateWithDictionary:(__CFDictionary *)dictionary options:(unint64_t)options
 {
   if (self->_userNotification)
   {
     CFRelease(self->_notificationDictionary);
-    Copy = CFDictionaryCreateCopy(0, a3);
+    Copy = CFDictionaryCreateCopy(0, dictionary);
     self->_notificationDictionary = Copy;
-    self->_notificationOptions = a4;
+    self->_notificationOptions = options;
     userNotification = self->_userNotification;
 
-    CFUserNotificationUpdate(userNotification, 0.0, a4, Copy);
+    CFUserNotificationUpdate(userNotification, 0.0, options, Copy);
   }
 }
 

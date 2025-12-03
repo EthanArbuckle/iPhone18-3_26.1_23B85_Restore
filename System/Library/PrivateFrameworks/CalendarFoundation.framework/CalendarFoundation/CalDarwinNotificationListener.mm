@@ -1,10 +1,10 @@
 @interface CalDarwinNotificationListener
 - (BOOL)_addObserver;
 - (BOOL)_removeObserver;
-- (CalDarwinNotificationListener)initWithNotificationName:(id)a3 callback:(id)a4 queue:(id)a5;
+- (CalDarwinNotificationListener)initWithNotificationName:(id)name callback:(id)callback queue:(id)queue;
 - (id)description;
 - (void)_addObserver;
-- (void)_notificationWithNameReceived:(id)a3;
+- (void)_notificationWithNameReceived:(id)received;
 - (void)_removeObserver;
 - (void)activate;
 - (void)deactivate;
@@ -13,34 +13,34 @@
 
 @implementation CalDarwinNotificationListener
 
-- (CalDarwinNotificationListener)initWithNotificationName:(id)a3 callback:(id)a4 queue:(id)a5
+- (CalDarwinNotificationListener)initWithNotificationName:(id)name callback:(id)callback queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  callbackCopy = callback;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = CalDarwinNotificationListener;
   v12 = [(CalDarwinNotificationListener *)&v30 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_notificationName, a3);
-    v14 = _Block_copy(v10);
+    objc_storeStrong(&v12->_notificationName, name);
+    v14 = _Block_copy(callbackCopy);
     callback = v13->_callback;
     v13->_callback = v14;
 
     v16 = objc_opt_class();
     v17 = CalGenerateQualifiedIdentifierWithClassAndSubdomain(v16, @"work");
-    v18 = [v17 UTF8String];
+    uTF8String = [v17 UTF8String];
 
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     workQueue = v13->_workQueue;
     v13->_workQueue = v20;
 
-    if (v11)
+    if (queueCopy)
     {
-      v22 = v11;
+      v22 = queueCopy;
       callbackQueue = v13->_callbackQueue;
       v13->_callbackQueue = v22;
     }
@@ -49,10 +49,10 @@
     {
       v24 = objc_opt_class();
       v25 = CalGenerateQualifiedIdentifierWithClassAndSubdomain(v24, @"callback");
-      v26 = [v25 UTF8String];
+      uTF8String2 = [v25 UTF8String];
 
       callbackQueue = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v27 = dispatch_queue_create(v26, callbackQueue);
+      v27 = dispatch_queue_create(uTF8String2, callbackQueue);
       v28 = v13->_callbackQueue;
       v13->_callbackQueue = v27;
     }
@@ -77,24 +77,24 @@
   v4 = [(CalDarwinNotificationListener *)&v9 description];
   v5 = [(CalDescriptionBuilder *)v3 initWithSuperclassDescription:v4];
 
-  v6 = [(CalDarwinNotificationListener *)self notificationName];
-  [(CalDescriptionBuilder *)v5 setKey:@"notificationName" withString:v6];
+  notificationName = [(CalDarwinNotificationListener *)self notificationName];
+  [(CalDescriptionBuilder *)v5 setKey:@"notificationName" withString:notificationName];
 
   [(CalDescriptionBuilder *)v5 setKey:@"listening" withBoolean:[(CalDarwinNotificationListener *)self listening]];
-  v7 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v7;
+  return build;
 }
 
 - (void)activate
 {
-  v3 = [(CalDarwinNotificationListener *)self workQueue];
+  workQueue = [(CalDarwinNotificationListener *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__CalDarwinNotificationListener_activate__block_invoke;
   block[3] = &unk_1E7EC66B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 void __41__CalDarwinNotificationListener_activate__block_invoke(uint64_t a1)
@@ -123,13 +123,13 @@ void __41__CalDarwinNotificationListener_activate__block_invoke(uint64_t a1)
 
 - (void)deactivate
 {
-  v3 = [(CalDarwinNotificationListener *)self workQueue];
+  workQueue = [(CalDarwinNotificationListener *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CalDarwinNotificationListener_deactivate__block_invoke;
   block[3] = &unk_1E7EC66B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(workQueue, block);
 }
 
 void __43__CalDarwinNotificationListener_deactivate__block_invoke(uint64_t a1)
@@ -159,22 +159,22 @@ void __43__CalDarwinNotificationListener_deactivate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_notificationWithNameReceived:(id)a3
+- (void)_notificationWithNameReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = +[CalFoundationLogSubsystem defaultCategory];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CalDarwinNotificationListener _notificationWithNameReceived:];
   }
 
-  v6 = [(CalDarwinNotificationListener *)self workQueue];
+  workQueue = [(CalDarwinNotificationListener *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__CalDarwinNotificationListener__notificationWithNameReceived___block_invoke;
   block[3] = &unk_1E7EC66B0;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(workQueue, block);
 }
 
 void __63__CalDarwinNotificationListener__notificationWithNameReceived___block_invoke(uint64_t a1)
@@ -197,11 +197,11 @@ void __63__CalDarwinNotificationListener__notificationWithNameReceived___block_i
 
 - (BOOL)_addObserver
 {
-  v3 = [(CalDarwinNotificationListener *)self notificationName];
-  if (v3)
+  notificationName = [(CalDarwinNotificationListener *)self notificationName];
+  if (notificationName)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, self, CalDarwinNotificationListener_ObservationCallback, v3, 0, 1024);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, self, CalDarwinNotificationListener_ObservationCallback, notificationName, 0, 1024);
   }
 
   else
@@ -213,16 +213,16 @@ void __63__CalDarwinNotificationListener__notificationWithNameReceived___block_i
     }
   }
 
-  return v3 != 0;
+  return notificationName != 0;
 }
 
 - (BOOL)_removeObserver
 {
-  v3 = [(CalDarwinNotificationListener *)self notificationName];
-  if (v3)
+  notificationName = [(CalDarwinNotificationListener *)self notificationName];
+  if (notificationName)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v3, 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, notificationName, 0);
   }
 
   else
@@ -234,7 +234,7 @@ void __63__CalDarwinNotificationListener__notificationWithNameReceived___block_i
     }
   }
 
-  return v3 != 0;
+  return notificationName != 0;
 }
 
 void __41__CalDarwinNotificationListener_activate__block_invoke_cold_1(uint64_t *a1)

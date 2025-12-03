@@ -1,25 +1,25 @@
 @interface BSUIOrientationTransformWrapperView
-- (BSUIOrientationTransformWrapperView)initWithFrame:(CGRect)a3;
-- (CGAffineTransform)convertTransformFromContainerInterfaceOrientationToContentInterfaceOrientation:(SEL)a3;
-- (CGAffineTransform)convertTransformFromContentInterfaceOrientationToContainerInterfaceOrientation:(SEL)a3;
-- (CGPoint)convertPointFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGPoint)a3;
-- (CGPoint)convertPointFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGPoint)a3;
-- (CGRect)convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGRect)a3;
-- (CGRect)convertRectFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGRect)a3;
+- (BSUIOrientationTransformWrapperView)initWithFrame:(CGRect)frame;
+- (CGAffineTransform)convertTransformFromContainerInterfaceOrientationToContentInterfaceOrientation:(SEL)orientation;
+- (CGAffineTransform)convertTransformFromContentInterfaceOrientationToContainerInterfaceOrientation:(SEL)orientation;
+- (CGPoint)convertPointFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGPoint)orientation;
+- (CGPoint)convertPointFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGPoint)orientation;
+- (CGRect)convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGRect)orientation;
+- (CGRect)convertRectFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGRect)orientation;
 - (CGSize)_referenceContainerSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)description;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateGeometry;
-- (void)addContentView:(id)a3;
-- (void)addHitTestView:(id)a3;
+- (void)addContentView:(id)view;
+- (void)addHitTestView:(id)view;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setContentOrientation:(int64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSize:(CGSize)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setContentOrientation:(int64_t)orientation;
+- (void)setFrame:(CGRect)frame;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation BSUIOrientationTransformWrapperView
@@ -88,8 +88,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v20 = [(_BSUIOrientationTransformedContentView *)self->_transformedView subviews];
-  v21 = [v20 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  subviews = [(_BSUIOrientationTransformedContentView *)self->_transformedView subviews];
+  v21 = [subviews countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v21)
   {
     v22 = *v25;
@@ -100,14 +100,14 @@
       {
         if (*v25 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v24 + 1) + 8 * v23++) setFrame:{v7, v8, Height, Width}];
       }
 
       while (v21 != v23);
-      v21 = [v20 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v21 = [subviews countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v21);
@@ -122,11 +122,11 @@
   [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
 }
 
-- (BSUIOrientationTransformWrapperView)initWithFrame:(CGRect)a3
+- (BSUIOrientationTransformWrapperView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BSUIOrientationTransformWrapperView;
-  v3 = [(BSUIOrientationTransformWrapperView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIOrientationTransformWrapperView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -150,44 +150,44 @@
   v3 = BSInterfaceOrientationDescription();
   v4 = [v2 appendObject:v3 withName:@"container"];
 
-  v5 = [v2 appendSuper];
-  v6 = [v2 build];
+  appendSuper = [v2 appendSuper];
+  build = [v2 build];
 
-  return v6;
+  return build;
 }
 
-- (void)setContentOrientation:(int64_t)a3
+- (void)setContentOrientation:(int64_t)orientation
 {
-  if (self->_contentOrientation != a3)
+  if (self->_contentOrientation != orientation)
   {
-    self->_contentOrientation = a3;
+    self->_contentOrientation = orientation;
     [(_BSUIOrientationTransformedContentView *)self->_transformedView setContentOrientation:?];
 
     [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
   }
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
-  if (self->_containerOrientation != a3)
+  if (self->_containerOrientation != orientation)
   {
-    self->_containerOrientation = a3;
+    self->_containerOrientation = orientation;
     [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
   }
 }
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_BSUIOrientationTransformedContentView *)self->_transformedView addSubview:?];
   [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
 }
 
-- (void)addHitTestView:(id)a3
+- (void)addHitTestView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   hitTestViews = self->_hitTestViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!hitTestViews)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -195,10 +195,10 @@
     self->_hitTestViews = v6;
 
     hitTestViews = self->_hitTestViews;
-    v4 = v8;
+    viewCopy = v8;
   }
 
-  [(NSMutableArray *)hitTestViews addObject:v4];
+  [(NSMutableArray *)hitTestViews addObject:viewCopy];
 }
 
 - (CGSize)_referenceContainerSize
@@ -206,8 +206,8 @@
   [(BSUIOrientationTransformWrapperView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
-  if ((v7 - 3) >= 2)
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  if ((containerOrientation - 3) >= 2)
   {
     v8 = v4;
   }
@@ -217,7 +217,7 @@
     v8 = v6;
   }
 
-  if ((v7 - 3) >= 2)
+  if ((containerOrientation - 3) >= 2)
   {
     v9 = v6;
   }
@@ -232,37 +232,37 @@
   return result;
 }
 
-- (CGPoint)convertPointFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGPoint)a3
+- (CGPoint)convertPointFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
+  y = orientation.y;
+  x = orientation.x;
   [(BSUIOrientationTransformWrapperView *)self _referenceContainerSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
-  v11 = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  contentOrientation = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
   v12.n128_f64[0] = x;
   v13.n128_f64[0] = y;
   v14.n128_u64[0] = v7;
   v15.n128_u64[0] = v9;
 
-  MEMORY[0x1EEE4E3C0](v10, v11, v12, v13, v14, v15);
+  MEMORY[0x1EEE4E3C0](containerOrientation, contentOrientation, v12, v13, v14, v15);
   result.y = v17;
   result.x = v16;
   return result;
 }
 
-- (CGRect)convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGRect)a3
+- (CGRect)convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:(CGRect)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = orientation.size.height;
+  width = orientation.size.width;
+  y = orientation.origin.y;
+  x = orientation.origin.x;
   [(BSUIOrientationTransformWrapperView *)self _referenceContainerSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
-  v13 = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  contentOrientation = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
   v14.n128_f64[0] = x;
   v15.n128_f64[0] = y;
   v16.n128_f64[0] = width;
@@ -270,7 +270,7 @@
   v18.n128_u64[0] = v9;
   v19.n128_u64[0] = v11;
 
-  MEMORY[0x1EEE4E3C8](v12, v13, v14, v15, v16, v17, v18, v19);
+  MEMORY[0x1EEE4E3C8](containerOrientation, contentOrientation, v14, v15, v16, v17, v18, v19);
   result.size.height = v23;
   result.size.width = v22;
   result.origin.y = v21;
@@ -278,18 +278,18 @@
   return result;
 }
 
-- (CGAffineTransform)convertTransformFromContainerInterfaceOrientationToContentInterfaceOrientation:(SEL)a3
+- (CGAffineTransform)convertTransformFromContainerInterfaceOrientationToContentInterfaceOrientation:(SEL)orientation
 {
   v7 = *&a4->c;
   *&retstr->a = *&a4->a;
   *&retstr->c = v7;
   *&retstr->tx = *&a4->tx;
-  v8 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
   result = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
-  if (v8 != result)
+  if (containerOrientation != result)
   {
     memset(&v14, 0, sizeof(v14));
-    _BSUITransformFromOrientationToOrientation(v8, result, &v14);
+    _BSUITransformFromOrientationToOrientation(containerOrientation, result, &v14);
     v13 = v14;
     CGAffineTransformInvert(&t2, &v13);
     v10 = *&a4->c;
@@ -304,37 +304,37 @@
   return result;
 }
 
-- (CGPoint)convertPointFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGPoint)a3
+- (CGPoint)convertPointFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
+  y = orientation.y;
+  x = orientation.x;
   [(BSUIOrientationTransformWrapperView *)self _referenceContainerSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
-  v11 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  contentOrientation = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
   v12.n128_f64[0] = x;
   v13.n128_f64[0] = y;
   v14.n128_u64[0] = v7;
   v15.n128_u64[0] = v9;
 
-  MEMORY[0x1EEE4E3C0](v10, v11, v12, v13, v14, v15);
+  MEMORY[0x1EEE4E3C0](contentOrientation, containerOrientation, v12, v13, v14, v15);
   result.y = v17;
   result.x = v16;
   return result;
 }
 
-- (CGRect)convertRectFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGRect)a3
+- (CGRect)convertRectFromContentInterfaceOrientationToContainerInterfaceOrientation:(CGRect)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = orientation.size.height;
+  width = orientation.size.width;
+  y = orientation.origin.y;
+  x = orientation.origin.x;
   [(BSUIOrientationTransformWrapperView *)self _referenceContainerSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
-  v13 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  contentOrientation = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
   v14.n128_f64[0] = x;
   v15.n128_f64[0] = y;
   v16.n128_f64[0] = width;
@@ -342,7 +342,7 @@
   v18.n128_u64[0] = v9;
   v19.n128_u64[0] = v11;
 
-  MEMORY[0x1EEE4E3C8](v12, v13, v14, v15, v16, v17, v18, v19);
+  MEMORY[0x1EEE4E3C8](contentOrientation, containerOrientation, v14, v15, v16, v17, v18, v19);
   result.size.height = v23;
   result.size.width = v22;
   result.origin.y = v21;
@@ -350,18 +350,18 @@
   return result;
 }
 
-- (CGAffineTransform)convertTransformFromContentInterfaceOrientationToContainerInterfaceOrientation:(SEL)a3
+- (CGAffineTransform)convertTransformFromContentInterfaceOrientationToContainerInterfaceOrientation:(SEL)orientation
 {
   v7 = *&a4->c;
   *&retstr->a = *&a4->a;
   *&retstr->c = v7;
   *&retstr->tx = *&a4->tx;
-  v8 = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
+  containerOrientation = [(BSUIOrientationTransformWrapperView *)self containerOrientation];
   result = [(BSUIOrientationTransformWrapperView *)self contentOrientation];
-  if (v8 != result)
+  if (containerOrientation != result)
   {
     memset(&v15, 0, sizeof(v15));
-    _BSUITransformFromOrientationToOrientation(v8, result, &v15);
+    _BSUITransformFromOrientationToOrientation(containerOrientation, result, &v15);
     t2 = v15;
     CGAffineTransformInvert(&v14, &t2);
     v10 = *&a4->c;
@@ -376,12 +376,12 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = BSUIOrientationTransformWrapperView;
-  v5 = [(BSUIOrientationTransformWrapperView *)&v18 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(BSUIOrientationTransformWrapperView *)&v18 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self || v5 == self->_transformedView)
   {
@@ -436,16 +436,16 @@ LABEL_16:
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_transformedView)
   {
-    [(_BSUIOrientationTransformedContentView *)self->_transformedView frame:a3.width];
+    [(_BSUIOrientationTransformedContentView *)self->_transformedView frame:fits.width];
   }
 
   else
   {
-    [(BSUIOrientationTransformWrapperView *)self bounds:a3.width];
+    [(BSUIOrientationTransformWrapperView *)self bounds:fits.width];
   }
 
   v5 = v3;
@@ -455,35 +455,35 @@ LABEL_16:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = BSUIOrientationTransformWrapperView;
-  [(BSUIOrientationTransformWrapperView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BSUIOrientationTransformWrapperView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = BSUIOrientationTransformWrapperView;
-  [(BSUIOrientationTransformWrapperView *)&v4 setSize:a3.width, a3.height];
+  [(BSUIOrientationTransformWrapperView *)&v4 setSize:size.width, size.height];
   [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = BSUIOrientationTransformWrapperView;
-  [(BSUIOrientationTransformWrapperView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BSUIOrientationTransformWrapperView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = BSUIOrientationTransformWrapperView;
-  [(BSUIOrientationTransformWrapperView *)&v4 setCenter:a3.x, a3.y];
+  [(BSUIOrientationTransformWrapperView *)&v4 setCenter:center.x, center.y];
   [(BSUIOrientationTransformWrapperView *)self _updateGeometry];
 }
 

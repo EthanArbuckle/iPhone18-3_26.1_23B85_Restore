@@ -1,28 +1,28 @@
 @interface NFCNDEFMessage
-+ (BOOL)_validateRecords:(id)a3 fromOriginal:(id)a4;
++ (BOOL)_validateRecords:(id)records fromOriginal:(id)original;
 + (NFCNDEFMessage)ndefMessageWithData:(NSData *)data;
-+ (id)_getPayloadsFromNDEFRecords:(id)a3;
-- (NFCNDEFMessage)initWithCoder:(id)a3;
++ (id)_getPayloadsFromNDEFRecords:(id)records;
+- (NFCNDEFMessage)initWithCoder:(id)coder;
 - (NFCNDEFMessage)initWithEmptyNdefMessage;
 - (NFCNDEFMessage)initWithNDEFRecords:(NSArray *)records;
-- (NFCNDEFMessage)initWithNFNdefMessage:(id)a3;
+- (NFCNDEFMessage)initWithNFNdefMessage:(id)message;
 - (NSUInteger)length;
-- (id)_getURLsFromNDEFMessage:(id)a3;
-- (id)_initWithRecords:(id)a3;
+- (id)_getURLsFromNDEFMessage:(id)message;
+- (id)_initWithRecords:(id)records;
 - (id)asData;
 @end
 
 @implementation NFCNDEFMessage
 
-- (NFCNDEFMessage)initWithCoder:(id)a3
+- (NFCNDEFMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NFCNDEFMessage;
   v5 = [(NFCNDEFMessage *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277D82B58] coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"records"];
+    v6 = [MEMORY[0x277D82B58] coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"records"];
     records = v5->_records;
     v5->_records = v6;
   }
@@ -36,10 +36,10 @@
   v5 = records;
   if (![(NSArray *)v5 count])
   {
-    v30 = [(NFCNDEFMessage *)self initWithEmptyNdefMessage];
+    initWithEmptyNdefMessage = [(NFCNDEFMessage *)self initWithEmptyNdefMessage];
 LABEL_23:
-    self = v30;
-    v29 = self;
+    self = initWithEmptyNdefMessage;
+    selfCopy = self;
     goto LABEL_24;
   }
 
@@ -53,13 +53,13 @@ LABEL_23:
   {
 
 LABEL_22:
-    v30 = [(NFCNDEFMessage *)self _initWithRecords:v6];
+    initWithEmptyNdefMessage = [(NFCNDEFMessage *)self _initWithRecords:v6];
     goto LABEL_23;
   }
 
   v8 = v7;
   v34 = a2;
-  v35 = self;
+  selfCopy2 = self;
   v36 = v5;
   v9 = 0;
   v10 = *v38;
@@ -73,12 +73,12 @@ LABEL_22:
       }
 
       v12 = *(*(&v37 + 1) + 8 * i);
-      v13 = [v12 type];
-      v14 = [v13 length];
-      v15 = [v12 identifier];
-      v16 = [v15 length];
-      v17 = [v12 payload];
-      v9 += v14 + v16 + [v17 length];
+      type = [v12 type];
+      v14 = [type length];
+      identifier = [v12 identifier];
+      v16 = [identifier length];
+      payload = [v12 payload];
+      v9 += v14 + v16 + [payload length];
     }
 
     v8 = [(NSArray *)v6 countByEnumeratingWithState:&v37 objects:v49 count:16];
@@ -86,7 +86,7 @@ LABEL_22:
 
   while (v8);
 
-  self = v35;
+  self = selfCopy2;
   v5 = v36;
   if (v9 <= 0x20000)
   {
@@ -97,9 +97,9 @@ LABEL_22:
   if (Logger)
   {
     v19 = Logger;
-    Class = object_getClass(v35);
+    Class = object_getClass(selfCopy2);
     isMetaClass = class_isMetaClass(Class);
-    ClassName = object_getClassName(v35);
+    ClassName = object_getClassName(selfCopy2);
     Name = sel_getName(v34);
     v23 = 45;
     if (isMetaClass)
@@ -113,7 +113,7 @@ LABEL_22:
   v24 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v25 = object_getClass(v35);
+    v25 = object_getClass(selfCopy2);
     if (class_isMetaClass(v25))
     {
       v26 = 43;
@@ -124,7 +124,7 @@ LABEL_22:
       v26 = 45;
     }
 
-    v27 = object_getClassName(v35);
+    v27 = object_getClassName(selfCopy2);
     v28 = sel_getName(v34);
     *buf = 67109890;
     v42 = v26;
@@ -137,22 +137,22 @@ LABEL_22:
     _os_log_impl(&dword_23728C000, v24, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Total size of all NDEF records exceeds the size limit", buf, 0x22u);
   }
 
-  v29 = 0;
+  selfCopy = 0;
 LABEL_24:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy;
 }
 
-- (id)_initWithRecords:(id)a3
+- (id)_initWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v9.receiver = self;
   v9.super_class = NFCNDEFMessage;
   v5 = [(NFCNDEFMessage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [recordsCopy copy];
     records = v5->_records;
     v5->_records = v6;
   }
@@ -160,17 +160,17 @@ LABEL_24:
   return v5;
 }
 
-- (NFCNDEFMessage)initWithNFNdefMessage:(id)a3
+- (NFCNDEFMessage)initWithNFNdefMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v22 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = v3;
-  obj = [v3 records];
+  v19 = messageCopy;
+  obj = [messageCopy records];
   v4 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
@@ -187,11 +187,11 @@ LABEL_24:
 
         v8 = *(*(&v23 + 1) + 8 * i);
         v9 = [NFCNDEFPayload alloc];
-        v10 = [v8 typeNameFormat];
-        v11 = [v8 type];
-        v12 = [v8 identifier];
-        v13 = [v8 payload];
-        v14 = [(NFCNDEFPayload *)v9 initWithFormatType:v10 type:v11 identifier:v12 payload:v13 chunkSize:0];
+        typeNameFormat = [v8 typeNameFormat];
+        type = [v8 type];
+        identifier = [v8 identifier];
+        payload = [v8 payload];
+        v14 = [(NFCNDEFPayload *)v9 initWithFormatType:typeNameFormat type:type identifier:identifier payload:payload chunkSize:0];
 
         if (v14)
         {
@@ -207,14 +207,14 @@ LABEL_24:
 
   if ([v22 count])
   {
-    v15 = [(NFCNDEFMessage *)self _initWithRecords:v22];
-    v16 = v15;
+    selfCopy = [(NFCNDEFMessage *)self _initWithRecords:v22];
+    v16 = selfCopy;
   }
 
   else
   {
     v16 = 0;
-    v15 = self;
+    selfCopy = self;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -241,11 +241,11 @@ LABEL_24:
   v6 = data;
   v7 = data;
   v8 = [v5 recordsFromBytes:-[NSData bytes](v7 length:{"bytes"), -[NSData length](v7, "length")}];
-  LOBYTE(v5) = [a1 _validateRecords:v8 fromOriginal:v7];
+  LOBYTE(v5) = [self _validateRecords:v8 fromOriginal:v7];
 
   if (v5)
   {
-    v9 = [a1 _getPayloadsFromNDEFRecords:v8];
+    v9 = [self _getPayloadsFromNDEFRecords:v8];
     v10 = [NFCNDEFMessage alloc];
   }
 
@@ -287,16 +287,16 @@ LABEL_24:
         v8 = *(*(&v20 + 1) + 8 * i);
         v19 = 0;
         v9 = MEMORY[0x277D82B68];
-        v10 = [v8 typeNameFormat];
-        v11 = [v8 type];
-        v12 = [v8 identifier];
-        v13 = [v8 payload];
-        v14 = [v9 recordsWithTNF:v10 type:v11 identifier:v12 payload:v13 chunkSize:objc_msgSend(v8 outError:{"chunkSize"), &v19}];
+        typeNameFormat = [v8 typeNameFormat];
+        type = [v8 type];
+        identifier = [v8 identifier];
+        payload = [v8 payload];
+        v14 = [v9 recordsWithTNF:typeNameFormat type:type identifier:identifier payload:payload chunkSize:objc_msgSend(v8 outError:{"chunkSize"), &v19}];
 
         if (v19)
         {
 
-          v15 = 0;
+          asData = 0;
           goto LABEL_11;
         }
 
@@ -313,40 +313,40 @@ LABEL_24:
     }
   }
 
-  v15 = [v3 asData];
+  asData = [v3 asData];
 LABEL_11:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return asData;
 }
 
 - (NSUInteger)length
 {
-  v2 = [(NFCNDEFMessage *)self asData];
-  v3 = [v2 length];
+  asData = [(NFCNDEFMessage *)self asData];
+  v3 = [asData length];
 
   return v3;
 }
 
-+ (BOOL)_validateRecords:(id)a3 fromOriginal:(id)a4
++ (BOOL)_validateRecords:(id)records fromOriginal:(id)original
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 length];
+  recordsCopy = records;
+  originalCopy = original;
+  v7 = [originalCopy length];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v5;
+  obj = recordsCopy;
   v33 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v33)
   {
     v8 = 0;
     v34 = v7 - 2;
     v35 = *v37;
-    v31 = v6;
+    v31 = originalCopy;
     v32 = v7 - 1;
     v29 = v7 - 4;
     while (2)
@@ -364,12 +364,12 @@ LABEL_11:
         }
 
         v10 = *(*(&v36 + 1) + 8 * i);
-        v11 = [v6 subdataWithRange:{v8, 2}];
-        v12 = [v11 bytes];
-        v13 = *v12;
-        v14 = v12[1];
+        v11 = [originalCopy subdataWithRange:{v8, 2}];
+        bytes = [v11 bytes];
+        v13 = *bytes;
+        v14 = bytes[1];
         v15 = v8 + 2;
-        if ((*v12 & 0x10) != 0)
+        if ((*bytes & 0x10) != 0)
         {
           if (v32 < v15)
           {
@@ -382,7 +382,7 @@ LABEL_28:
             goto LABEL_29;
           }
 
-          v16 = [v6 subdataWithRange:?];
+          v16 = [originalCopy subdataWithRange:?];
 
           v17 = *[v16 bytes];
           v18 = 3;
@@ -395,7 +395,7 @@ LABEL_28:
             goto LABEL_23;
           }
 
-          v16 = [v6 subdataWithRange:?];
+          v16 = [originalCopy subdataWithRange:?];
 
           v17 = bswap32(*[v16 bytes]);
           v18 = 6;
@@ -409,7 +409,7 @@ LABEL_28:
             goto LABEL_27;
           }
 
-          v21 = [v6 subdataWithRange:{v19, 1}];
+          v21 = [originalCopy subdataWithRange:{v19, 1}];
 
           v20 = *[v21 bytes];
           ++v19;
@@ -421,24 +421,24 @@ LABEL_28:
           v20 = 0;
         }
 
-        v22 = [v10 type];
-        if ([v22 length] != v14)
+        type = [v10 type];
+        if ([type length] != v14)
         {
           goto LABEL_25;
         }
 
-        v23 = [v10 payload];
-        if ([v23 length] != v17)
+        payload = [v10 payload];
+        if ([payload length] != v17)
         {
 
 LABEL_25:
 LABEL_26:
-          v6 = v31;
+          originalCopy = v31;
           goto LABEL_27;
         }
 
-        v24 = [v10 identifier];
-        v25 = [v24 length];
+        identifier = [v10 identifier];
+        v25 = [identifier length];
 
         if (v25 != v20)
         {
@@ -447,7 +447,7 @@ LABEL_26:
 
         v8 = v17 + v14 + v20 + v19;
 
-        v6 = v31;
+        originalCopy = v31;
       }
 
       v26 = 1;
@@ -472,16 +472,16 @@ LABEL_29:
   return v26;
 }
 
-+ (id)_getPayloadsFromNDEFRecords:(id)a3
++ (id)_getPayloadsFromNDEFRecords:(id)records
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordsCopy = records;
   v38 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v3;
+  obj = recordsCopy;
   v41 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   v4 = 0;
   if (!v41)
@@ -493,7 +493,7 @@ LABEL_29:
 
   v37 = 0;
   LOBYTE(v5) = 0;
-  v6 = 0;
+  messageEnd = 0;
   v7 = 0;
   v8 = 0;
   v9 = 0;
@@ -512,7 +512,7 @@ LABEL_29:
       if (v5)
       {
         LODWORD(v5) = 1;
-        if (v6)
+        if (messageEnd)
         {
           goto LABEL_8;
         }
@@ -521,63 +521,63 @@ LABEL_29:
       else
       {
         LODWORD(v5) = [*(*(&v43 + 1) + 8 * v10) messageBegin];
-        if (v6)
+        if (messageEnd)
         {
 LABEL_8:
-          v6 = 1;
+          messageEnd = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v11 messageEnd];
+      messageEnd = [v11 messageEnd];
 LABEL_11:
-      v12 = [v11 chunked];
-      if (v12)
+      chunked = [v11 chunked];
+      if (chunked)
       {
         v42 = v5;
         v5 = v7;
-        v13 = [v11 typeNameFormat];
-        v14 = v13;
+        typeNameFormat = [v11 typeNameFormat];
+        v14 = typeNameFormat;
         if (v9)
         {
-          if (v13 != 6)
+          if (typeNameFormat != 6)
           {
             goto LABEL_21;
           }
 
-          v15 = [v11 identifier];
-          if ([v15 length])
+          identifier = [v11 identifier];
+          if ([identifier length])
           {
             goto LABEL_20;
           }
 
-          v16 = [v11 type];
-          v17 = [v16 length];
+          type = [v11 type];
+          v17 = [type length];
 
           if (v17)
           {
             goto LABEL_21;
           }
 
-          v18 = [v11 payload];
+          payload = [v11 payload];
           v7 = v5;
-          [(NFCNDEFPayload *)v5 appendData:v18];
+          [(NFCNDEFPayload *)v5 appendData:payload];
         }
 
         else
         {
-          v19 = [v11 type];
+          type2 = [v11 type];
 
-          v20 = [v11 identifier];
+          identifier2 = [v11 identifier];
 
           v21 = objc_alloc(MEMORY[0x277CBEB28]);
-          v18 = [v11 payload];
-          v22 = [v21 initWithData:v18];
+          payload = [v11 payload];
+          v22 = [v21 initWithData:payload];
 
-          v4 = v19;
+          v4 = type2;
           v37 = v14;
           v23 = v22;
-          v8 = v20;
+          v8 = identifier2;
           v7 = v23;
         }
       }
@@ -588,13 +588,13 @@ LABEL_11:
         {
 
           v24 = [NFCNDEFPayload alloc];
-          v25 = [v11 typeNameFormat];
-          v26 = [v11 type];
-          v27 = [v11 identifier];
-          v28 = [v11 payload];
-          v18 = [(NFCNDEFPayload *)v24 initWithFormatType:v25 type:v26 identifier:v27 payload:v28 chunkSize:0];
+          typeNameFormat2 = [v11 typeNameFormat];
+          type3 = [v11 type];
+          identifier3 = [v11 identifier];
+          payload2 = [v11 payload];
+          payload = [(NFCNDEFPayload *)v24 initWithFormatType:typeNameFormat2 type:type3 identifier:identifier3 payload:payload2 chunkSize:0];
 
-          [v38 addObject:v18];
+          [v38 addObject:payload];
           v4 = 0;
           v7 = 0;
           v8 = 0;
@@ -608,8 +608,8 @@ LABEL_11:
           goto LABEL_21;
         }
 
-        v15 = [v11 identifier];
-        if ([v15 length])
+        identifier = [v11 identifier];
+        if ([identifier length])
         {
 LABEL_20:
 
@@ -622,16 +622,16 @@ LABEL_21:
           goto LABEL_27;
         }
 
-        v29 = [v11 type];
-        v30 = [v29 length];
+        type4 = [v11 type];
+        v30 = [type4 length];
 
         if (v30)
         {
           goto LABEL_21;
         }
 
-        v31 = [v11 payload];
-        [(NFCNDEFPayload *)v5 appendData:v31];
+        payload3 = [v11 payload];
+        [(NFCNDEFPayload *)v5 appendData:payload3];
 
         if ([(NFCNDEFPayload *)v5 length])
         {
@@ -641,15 +641,15 @@ LABEL_21:
 
         v4 = 0;
         v8 = 0;
-        v18 = v5;
+        payload = v5;
         v7 = 0;
       }
 
       LODWORD(v5) = v42;
 LABEL_25:
 
-      v9 = v12;
-      if (v5 && (v6 & 1) != 0)
+      v9 = chunked;
+      if (v5 && (messageEnd & 1) != 0)
       {
         goto LABEL_36;
       }
@@ -671,17 +671,17 @@ LABEL_36:
   return v38;
 }
 
-- (id)_getURLsFromNDEFMessage:(id)a3
+- (id)_getURLsFromNDEFMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 records];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  records = [messageCopy records];
+  v6 = [records countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -692,17 +692,17 @@ LABEL_36:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(records);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) wellKnownTypeURIPayload];
-        if (v10)
+        wellKnownTypeURIPayload = [*(*(&v13 + 1) + 8 * i) wellKnownTypeURIPayload];
+        if (wellKnownTypeURIPayload)
         {
-          [v4 addObject:v10];
+          [v4 addObject:wellKnownTypeURIPayload];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [records countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

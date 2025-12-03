@@ -1,21 +1,21 @@
 @interface CKAbstractReviewTableViewCell
-- (CKAbstractReviewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKAbstractReviewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)mainText;
 - (NSString)subheadingText;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setMainText:(id)a3;
-- (void)setSize:(unint64_t)a3;
-- (void)setSubheadingText:(id)a3;
+- (void)setMainText:(id)text;
+- (void)setSize:(unint64_t)size;
+- (void)setSubheadingText:(id)text;
 @end
 
 @implementation CKAbstractReviewTableViewCell
 
-- (CKAbstractReviewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKAbstractReviewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v28.receiver = self;
   v28.super_class = CKAbstractReviewTableViewCell;
-  v4 = [(CKAbstractReviewTableViewCell *)&v28 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKAbstractReviewTableViewCell *)&v28 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -31,11 +31,11 @@
     [(UILabel *)v4->_nameLabel setFont:v12];
 
     [(UILabel *)v4->_nameLabel setNumberOfLines:1];
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v4->_nameLabel setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v4->_nameLabel setTextColor:labelColor];
 
-    v14 = [(CKAbstractReviewTableViewCell *)v4 contentView];
-    [v14 addSubview:v4->_nameLabel];
+    contentView = [(CKAbstractReviewTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_nameLabel];
 
     v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     lastModifiedLabel = v4->_lastModifiedLabel;
@@ -45,11 +45,11 @@
     [(UILabel *)v4->_lastModifiedLabel setFont:v17];
 
     [(UILabel *)v4->_lastModifiedLabel setNumberOfLines:1];
-    v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_lastModifiedLabel setTextColor:v18];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_lastModifiedLabel setTextColor:secondaryLabelColor];
 
-    v19 = [(CKAbstractReviewTableViewCell *)v4 contentView];
-    [v19 addSubview:v4->_lastModifiedLabel];
+    contentView2 = [(CKAbstractReviewTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_lastModifiedLabel];
 
     v20 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v6, v7, v8, v9}];
     sizeLabel = v4->_sizeLabel;
@@ -60,15 +60,15 @@
     [(UILabel *)v4->_sizeLabel setFont:v22];
 
     [(UILabel *)v4->_sizeLabel setNumberOfLines:1];
-    v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_sizeLabel setTextColor:v23];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_sizeLabel setTextColor:secondaryLabelColor2];
 
-    v24 = [(CKAbstractReviewTableViewCell *)v4 contentView];
-    [v24 addSubview:v4->_sizeLabel];
+    contentView3 = [(CKAbstractReviewTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_sizeLabel];
 
-    v25 = [(CKAbstractReviewTableViewCell *)v4 contentView];
-    v26 = [(CKAbstractReviewTableViewCell *)v4 leftHandSideView];
-    [v25 addSubview:v26];
+    contentView4 = [(CKAbstractReviewTableViewCell *)v4 contentView];
+    leftHandSideView = [(CKAbstractReviewTableViewCell *)v4 leftHandSideView];
+    [contentView4 addSubview:leftHandSideView];
   }
 
   return v4;
@@ -83,42 +83,42 @@
   [(CKAbstractReviewTableViewCell *)self setSize:0];
 }
 
-- (void)setMainText:(id)a3
+- (void)setMainText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKAbstractReviewTableViewCell *)self nameLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  nameLabel = [(CKAbstractReviewTableViewCell *)self nameLabel];
+  [nameLabel setText:textCopy];
 }
 
 - (NSString)mainText
 {
-  v2 = [(CKAbstractReviewTableViewCell *)self nameLabel];
-  v3 = [v2 text];
+  nameLabel = [(CKAbstractReviewTableViewCell *)self nameLabel];
+  text = [nameLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSubheadingText:(id)a3
+- (void)setSubheadingText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  lastModifiedLabel = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
+  [lastModifiedLabel setText:textCopy];
 }
 
 - (NSString)subheadingText
 {
-  v2 = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
-  v3 = [v2 text];
+  lastModifiedLabel = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
+  text = [lastModifiedLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSize:(unint64_t)a3
+- (void)setSize:(unint64_t)size
 {
-  self->_size = a3;
-  if (a3)
+  self->_size = size;
+  if (size)
   {
-    v5 = [MEMORY[0x1E696AAF0] stringFromByteCount:a3 countStyle:0];
+    v5 = [MEMORY[0x1E696AAF0] stringFromByteCount:size countStyle:0];
   }
 
   else
@@ -126,8 +126,8 @@
     v5 = 0;
   }
 
-  v4 = [(CKAbstractReviewTableViewCell *)self sizeLabel];
-  [v4 setText:v5];
+  sizeLabel = [(CKAbstractReviewTableViewCell *)self sizeLabel];
+  [sizeLabel setText:v5];
 
   [(CKAbstractReviewTableViewCell *)self setNeedsLayout];
 }
@@ -142,78 +142,78 @@
   v6 = v5;
   [objc_opt_class() requestedHeight];
   v8 = (v7 - v6) * 0.5;
-  v9 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
-  [v9 setFrame:{15.0, v8, v4, v6}];
+  leftHandSideView = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
+  [leftHandSideView setFrame:{15.0, v8, v4, v6}];
 
-  v10 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v10 frame];
+  contentView = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView frame];
   v12 = (v11 + -15.0) * 0.5;
-  v13 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v13 frame];
+  contentView2 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView2 frame];
   v15 = v14;
 
-  v16 = [(CKAbstractReviewTableViewCell *)self sizeLabel];
-  [v16 sizeThatFits:{v12, v15}];
+  sizeLabel = [(CKAbstractReviewTableViewCell *)self sizeLabel];
+  [sizeLabel sizeThatFits:{v12, v15}];
   v18 = v17;
   v20 = v19;
 
-  v21 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v21 frame];
+  contentView3 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView3 frame];
   v23 = v22 + -15.0 - v18;
-  v24 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v24 frame];
+  contentView4 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView4 frame];
   v26 = (v25 - v20) * 0.5;
-  v27 = [(CKAbstractReviewTableViewCell *)self sizeLabel];
-  [v27 setFrame:{v23, v26, fmin(v18, v12), v20}];
+  sizeLabel2 = [(CKAbstractReviewTableViewCell *)self sizeLabel];
+  [sizeLabel2 setFrame:{v23, v26, fmin(v18, v12), v20}];
 
-  v28 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v28 frame];
+  contentView5 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView5 frame];
   v30 = v29;
-  v31 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
-  [v31 frame];
+  leftHandSideView2 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
+  [leftHandSideView2 frame];
   v33 = v30 - v32 + -15.0 + -20.0 - v18 + -15.0;
-  v34 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v34 frame];
+  contentView6 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView6 frame];
   v36 = v35 * 0.5;
 
-  v37 = [(CKAbstractReviewTableViewCell *)self subheadingText];
-  v38 = [v37 length];
+  subheadingText = [(CKAbstractReviewTableViewCell *)self subheadingText];
+  v38 = [subheadingText length];
 
-  v39 = [(CKAbstractReviewTableViewCell *)self nameLabel];
-  [v39 sizeThatFits:{v33, v36}];
+  nameLabel = [(CKAbstractReviewTableViewCell *)self nameLabel];
+  [nameLabel sizeThatFits:{v33, v36}];
   v41 = v40;
   v43 = v42;
 
-  v44 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
-  [v44 frame];
+  leftHandSideView3 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
+  [leftHandSideView3 frame];
   v45 = CGRectGetMaxX(v65) + 10.0;
-  v46 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v46 frame];
+  contentView7 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView7 frame];
   v48 = v47;
   v49 = fmin(v33, v41);
-  v50 = [(CKAbstractReviewTableViewCell *)self nameLabel];
-  v51 = v50;
+  nameLabel2 = [(CKAbstractReviewTableViewCell *)self nameLabel];
+  v51 = nameLabel2;
   v52 = v48 * 0.5 - v43;
   if (!v38)
   {
     v52 = (v48 - v43) * 0.5;
   }
 
-  [v50 setFrame:{v45, v52, v49, v43}];
+  [nameLabel2 setFrame:{v45, v52, v49, v43}];
 
-  v53 = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
-  [v53 sizeThatFits:{v33, v36}];
+  lastModifiedLabel = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
+  [lastModifiedLabel sizeThatFits:{v33, v36}];
   v55 = v54;
   v57 = v56;
 
-  v58 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
-  [v58 frame];
+  leftHandSideView4 = [(CKAbstractReviewTableViewCell *)self leftHandSideView];
+  [leftHandSideView4 frame];
   v59 = CGRectGetMaxX(v66) + 10.0;
-  v60 = [(CKAbstractReviewTableViewCell *)self contentView];
-  [v60 frame];
+  contentView8 = [(CKAbstractReviewTableViewCell *)self contentView];
+  [contentView8 frame];
   v62 = v61 * 0.5;
-  v63 = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
-  [v63 setFrame:{v59, v62, fmin(v33, v55), v57}];
+  lastModifiedLabel2 = [(CKAbstractReviewTableViewCell *)self lastModifiedLabel];
+  [lastModifiedLabel2 setFrame:{v59, v62, fmin(v33, v55), v57}];
 }
 
 @end

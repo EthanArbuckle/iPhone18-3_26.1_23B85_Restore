@@ -1,14 +1,14 @@
 @interface SGMIBiomeReducedMessageEvents
 - (SGMIBiomeReducedMessageEvents)init;
-- (SGMIBiomeReducedMessageEvents)initWithScrolledToEnd:(BOOL)a3 messageViewMaxDwellTime:(double)a4 messageViewTotalDwellTime:(double)a5 messageViewCount:(unsigned int)a6 timeBeforeViewStartSinceAvailable:(double)a7 numberOfMailsViewedBeforeSinceAvailable:(unsigned int)a8 userReplied:(BOOL)a9 replyDraftStarted:(BOOL)a10 forwardDraftStarted:(BOOL)a11 numberOfUnreadMessageAtFirstViewTime:(unsigned int)a12 numberOfMoreRecentUnreadMessageAtFirstViewTime:(unsigned int)a13 markedAsRead:(BOOL)a14 markedAsUnread:(BOOL)a15 markedAsJunk:(BOOL)a16 mailGotFlagged:(BOOL)a17 linkClicked:(BOOL)a18;
+- (SGMIBiomeReducedMessageEvents)initWithScrolledToEnd:(BOOL)end messageViewMaxDwellTime:(double)time messageViewTotalDwellTime:(double)dwellTime messageViewCount:(unsigned int)count timeBeforeViewStartSinceAvailable:(double)available numberOfMailsViewedBeforeSinceAvailable:(unsigned int)sinceAvailable userReplied:(BOOL)replied replyDraftStarted:(BOOL)self0 forwardDraftStarted:(BOOL)self1 numberOfUnreadMessageAtFirstViewTime:(unsigned int)self2 numberOfMoreRecentUnreadMessageAtFirstViewTime:(unsigned int)self3 markedAsRead:(BOOL)self4 markedAsUnread:(BOOL)self5 markedAsJunk:(BOOL)self6 mailGotFlagged:(BOOL)self7 linkClicked:(BOOL)self8;
 - (double)messageAvailableTime;
 - (void)incrementNumberOfMoreRecentUnreadMessageAtFirstViewTime;
-- (void)updateWithAppLaunchAtTime:(double)a3;
-- (void)updateWithEvent:(id)a3 eventTimestamp:(double)a4;
-- (void)updateWithMessageMovedEventWithPayload:(id)a3;
-- (void)updateWithReadChangedEventWithPayload:(id)a3;
-- (void)updateWithViewEndWithPayload:(id)a3;
-- (void)updateWithViewStartAtTime:(double)a3 unreadMessageCount:(unsigned int)a4;
+- (void)updateWithAppLaunchAtTime:(double)time;
+- (void)updateWithEvent:(id)event eventTimestamp:(double)timestamp;
+- (void)updateWithMessageMovedEventWithPayload:(id)payload;
+- (void)updateWithReadChangedEventWithPayload:(id)payload;
+- (void)updateWithViewEndWithPayload:(id)payload;
+- (void)updateWithViewStartAtTime:(double)time unreadMessageCount:(unsigned int)count;
 @end
 
 @implementation SGMIBiomeReducedMessageEvents
@@ -36,21 +36,21 @@
   return result;
 }
 
-- (void)updateWithEvent:(id)a3 eventTimestamp:(double)a4
+- (void)updateWithEvent:(id)event eventTimestamp:(double)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eventCopy = event;
   v6 = sgLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v5 eventName];
+    eventName = [eventCopy eventName];
     v18 = 138412290;
-    v19 = v17;
+    v19 = eventName;
     _os_log_debug_impl(&dword_231E60000, v6, OS_LOG_TYPE_DEBUG, "Processing event with eventName: %@", &v18, 0xCu);
   }
 
-  v7 = [v5 eventName];
-  v8 = [v7 isEqualToString:@"reply_sent"];
+  eventName2 = [eventCopy eventName];
+  v8 = [eventName2 isEqualToString:@"reply_sent"];
 
   if (v8)
   {
@@ -60,8 +60,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [v5 eventName];
-  v11 = [v10 isEqualToString:@"reply_draft_started"];
+  eventName3 = [eventCopy eventName];
+  v11 = [eventName3 isEqualToString:@"reply_draft_started"];
 
   if (v11)
   {
@@ -69,8 +69,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v12 = [v5 eventName];
-  v13 = [v12 isEqualToString:@"forward_draft_started"];
+  eventName4 = [eventCopy eventName];
+  v13 = [eventName4 isEqualToString:@"forward_draft_started"];
 
   if (v13)
   {
@@ -78,8 +78,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v14 = [v5 eventName];
-  v15 = [v14 isEqualToString:@"link_clicked"];
+  eventName5 = [eventCopy eventName];
+  v15 = [eventName5 isEqualToString:@"link_clicked"];
 
   if (v15)
   {
@@ -92,27 +92,27 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithMessageMovedEventWithPayload:(id)a3
+- (void)updateWithMessageMovedEventWithPayload:(id)payload
 {
-  v7 = a3;
-  v4 = [v7 objectForKeyedSubscript:@"mailbox_type"];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"mailbox_type"];
 
-  v5 = v7;
+  v5 = payloadCopy;
   if (v4)
   {
-    v6 = [v7 objectForKeyedSubscript:@"mailbox_type"];
+    v6 = [payloadCopy objectForKeyedSubscript:@"mailbox_type"];
     if ([v6 intValue] == 1)
     {
       self->_markedAsJunk = 1;
     }
 
-    v5 = v7;
+    v5 = payloadCopy;
   }
 }
 
-- (void)updateWithReadChangedEventWithPayload:(id)a3
+- (void)updateWithReadChangedEventWithPayload:(id)payload
 {
-  v7 = [a3 objectForKeyedSubscript:@"value"];
+  v7 = [payload objectForKeyedSubscript:@"value"];
   if (![v7 intValue])
   {
     v6 = 11;
@@ -130,17 +130,17 @@ LABEL_6:
   }
 }
 
-- (void)updateWithViewEndWithPayload:(id)a3
+- (void)updateWithViewEndWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"scrolled_to_end"];
+  payloadCopy = payload;
+  v5 = [payloadCopy objectForKeyedSubscript:@"scrolled_to_end"];
 
   if (v5)
   {
     self->_scrolledToEnd = 1;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"duration"];
+  v9 = [payloadCopy objectForKeyedSubscript:@"duration"];
 
   [v9 doubleValue];
   if (v6 > self->_messageViewMaxDwellTime)
@@ -153,51 +153,51 @@ LABEL_6:
   self->_messageViewTotalDwellTime = v8 + self->_messageViewTotalDwellTime;
 }
 
-- (void)updateWithViewStartAtTime:(double)a3 unreadMessageCount:(unsigned int)a4
+- (void)updateWithViewStartAtTime:(double)time unreadMessageCount:(unsigned int)count
 {
   messageViewCount = self->_messageViewCount;
   if (!messageViewCount)
   {
     [(SGMIBiomeReducedMessageEvents *)self messageAvailableTime];
-    self->_timeBeforeViewStartSinceAvailable = a3 - v8;
-    self->_numberOfUnreadMessageAtFirstViewTime = a4;
+    self->_timeBeforeViewStartSinceAvailable = time - v8;
+    self->_numberOfUnreadMessageAtFirstViewTime = count;
     messageViewCount = self->_messageViewCount;
   }
 
   self->_messageViewCount = messageViewCount + 1;
 }
 
-- (void)updateWithAppLaunchAtTime:(double)a3
+- (void)updateWithAppLaunchAtTime:(double)time
 {
   if (self->_messageFetchTime > 0.0 && self->_firstAppLaunchFollowingFetch < 0.0)
   {
-    self->_firstAppLaunchFollowingFetch = a3;
+    self->_firstAppLaunchFollowingFetch = time;
   }
 }
 
-- (SGMIBiomeReducedMessageEvents)initWithScrolledToEnd:(BOOL)a3 messageViewMaxDwellTime:(double)a4 messageViewTotalDwellTime:(double)a5 messageViewCount:(unsigned int)a6 timeBeforeViewStartSinceAvailable:(double)a7 numberOfMailsViewedBeforeSinceAvailable:(unsigned int)a8 userReplied:(BOOL)a9 replyDraftStarted:(BOOL)a10 forwardDraftStarted:(BOOL)a11 numberOfUnreadMessageAtFirstViewTime:(unsigned int)a12 numberOfMoreRecentUnreadMessageAtFirstViewTime:(unsigned int)a13 markedAsRead:(BOOL)a14 markedAsUnread:(BOOL)a15 markedAsJunk:(BOOL)a16 mailGotFlagged:(BOOL)a17 linkClicked:(BOOL)a18
+- (SGMIBiomeReducedMessageEvents)initWithScrolledToEnd:(BOOL)end messageViewMaxDwellTime:(double)time messageViewTotalDwellTime:(double)dwellTime messageViewCount:(unsigned int)count timeBeforeViewStartSinceAvailable:(double)available numberOfMailsViewedBeforeSinceAvailable:(unsigned int)sinceAvailable userReplied:(BOOL)replied replyDraftStarted:(BOOL)self0 forwardDraftStarted:(BOOL)self1 numberOfUnreadMessageAtFirstViewTime:(unsigned int)self2 numberOfMoreRecentUnreadMessageAtFirstViewTime:(unsigned int)self3 markedAsRead:(BOOL)self4 markedAsUnread:(BOOL)self5 markedAsJunk:(BOOL)self6 mailGotFlagged:(BOOL)self7 linkClicked:(BOOL)self8
 {
   v33.receiver = self;
   v33.super_class = SGMIBiomeReducedMessageEvents;
   result = [(SGMIBiomeReducedMessageEvents *)&v33 init];
   if (result)
   {
-    result->_scrolledToEnd = a3;
-    result->_messageViewMaxDwellTime = a4;
-    result->_messageViewTotalDwellTime = a5;
-    result->_timeBeforeViewStartSinceAvailable = a7;
-    result->_numberOfMailsViewedBeforeSinceAvailable = a8;
-    result->_messageViewCount = a6;
-    result->_userReplied = a9;
-    result->_replyDraftStarted = a10;
-    result->_forwardDraftStarted = a11;
-    result->_numberOfUnreadMessageAtFirstViewTime = a12;
-    result->_numberOfMoreRecentUnreadMessageAtFirstViewTime = a13;
-    result->_markedAsRead = a14;
-    result->_markedAsUnread = a15;
-    result->_markedAsJunk = a16;
-    result->_mailGotFlagged = a17;
-    result->_linkClicked = a18;
+    result->_scrolledToEnd = end;
+    result->_messageViewMaxDwellTime = time;
+    result->_messageViewTotalDwellTime = dwellTime;
+    result->_timeBeforeViewStartSinceAvailable = available;
+    result->_numberOfMailsViewedBeforeSinceAvailable = sinceAvailable;
+    result->_messageViewCount = count;
+    result->_userReplied = replied;
+    result->_replyDraftStarted = started;
+    result->_forwardDraftStarted = draftStarted;
+    result->_numberOfUnreadMessageAtFirstViewTime = viewTime;
+    result->_numberOfMoreRecentUnreadMessageAtFirstViewTime = firstViewTime;
+    result->_markedAsRead = read;
+    result->_markedAsUnread = unread;
+    result->_markedAsJunk = junk;
+    result->_mailGotFlagged = flagged;
+    result->_linkClicked = clicked;
     __asm { FMOV            V0.2D, #-1.0 }
 
     *&result->_firstAppLaunchFollowingFetch = _Q0;

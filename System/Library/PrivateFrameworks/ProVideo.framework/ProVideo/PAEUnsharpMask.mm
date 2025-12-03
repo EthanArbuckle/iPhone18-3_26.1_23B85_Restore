@@ -1,19 +1,19 @@
 @interface PAEUnsharpMask
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEUnsharpMask)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEUnsharpMask)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 @end
 
 @implementation PAEUnsharpMask
 
-- (PAEUnsharpMask)initWithAPIManager:(id)a3
+- (PAEUnsharpMask)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEUnsharpMask;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -24,12 +24,12 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"MayRemapTime", v4, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 1), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
-  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:a4];
+  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:error];
   v15 = 0.0;
   v14 = 0;
-  if ([v7 getFloatValue:&v15 fromParm:2 atFxTime:a3.var1] && (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v14, 6, a3.var1) & 1) != 0)
+  if ([v7 getFloatValue:&v15 fromParm:2 atFxTime:time.var1] && (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v14, 6, time.var1) & 1) != 0)
   {
     if (v15 == 0.0)
     {
@@ -46,12 +46,12 @@
     return [v9 dictionaryWithObjectsAndKeys:{v10, @"PixelTransformSupport", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", (v14 & 1) == 0), @"SupportsLargeRenderScale", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = objc_opt_class();
     v13 = [(PAEFilterDefaultBase *)self getParamErrorFor:NSStringFromClass(v12)];
     result = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -82,7 +82,7 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -102,18 +102,18 @@
   }
 
   v12 = v10;
-  if ([a4 imageType] != 3)
+  if ([input imageType] != 3)
   {
     return 0;
   }
 
   v70 = 0.0;
-  [v9 getFloatValue:&v70 fromParm:2 atFxTime:a5->var0.var1];
+  [v9 getFloatValue:&v70 fromParm:2 atFxTime:info->var0.var1];
   if (v70 == 0.0)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -121,7 +121,7 @@
       v57[0] = 0;
     }
 
-    [a3 setHeliumRef:v57];
+    [output setHeliumRef:v57];
     if (v57[0])
     {
       (*(**v57 + 24))(*v57);
@@ -130,8 +130,8 @@
 
   else
   {
-    v14 = [v12 versionAtCreation];
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
+    versionAtCreation = [v12 versionAtCreation];
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
     v15 = v68;
     v16 = v69;
     if (v68 <= v69)
@@ -145,23 +145,23 @@
     }
 
     v67 = 0.0;
-    [v9 getFloatValue:&v67 fromParm:1 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v67 fromParm:1 atFxTime:info->var0.var1];
     v67 = v17 * v67;
     v66 = 0.0;
-    [v9 getFloatValue:&v66 fromParm:3 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v66 fromParm:3 atFxTime:info->var0.var1];
     v65 = 0.0;
-    [v9 getFloatValue:&v65 fromParm:4 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v65 fromParm:4 atFxTime:info->var0.var1];
     v18 = v15 / v17;
     v65 = v18 * (v65 * 0.01);
     v64 = 0.0;
-    [v9 getFloatValue:&v64 fromParm:5 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v64 fromParm:5 atFxTime:info->var0.var1];
     v19 = v16 / v17;
     v64 = v19 * (v64 * 0.01);
     v63 = 0;
-    [v9 getBoolValue:&v63 fromParm:6 atFxTime:a5->var0.var1];
-    if (a4)
+    [v9 getBoolValue:&v63 fromParm:6 atFxTime:info->var0.var1];
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
       v60 = v62;
       if (v62)
       {
@@ -175,7 +175,7 @@
       v60 = 0;
     }
 
-    [(PAESharedDefaultBase *)self smear:&v60 fromImage:a4 toImage:a4];
+    [(PAESharedDefaultBase *)self smear:&v60 fromImage:input toImage:input];
     if (v60)
     {
       (*(*v60 + 24))(v60);
@@ -196,8 +196,8 @@
       v24 = v64;
       v23 = v65;
       v25 = v69;
-      v26 = [a4 width];
-      v27 = [a4 height];
+      width = [input width];
+      height = [input height];
       v28 = v21;
       v29 = v22 * v23 / v18;
       *v57[0].f32 = xmmword_2603429B0;
@@ -205,7 +205,7 @@
       v30 = v25 * v24 / v19;
       v52 = xmmword_2603429B0;
       v59 = xmmword_2603429C0;
-      HEquirectGaussianBlur::init(v20, v26, v27, v57, &v55, &v52, &v59, v28, v29, v30);
+      HEquirectGaussianBlur::init(v20, width, height, v57, &v55, &v52, &v59, v28, v29, v30);
       (*(*v20 + 120))(v20, 0, v62);
       (*(*v20 + 16))(v20);
       (*(*v20 + 24))(v20);
@@ -218,7 +218,7 @@
       v31 = v67;
       v32 = v65;
       v33 = v64;
-      HGaussianBlur::init(v20, v31, v32, v33, v14 == 0, 0, 0);
+      HGaussianBlur::init(v20, v31, v32, v33, versionAtCreation == 0, 0, 0);
       (*(*v20 + 120))(v20, 0, v62);
       (*(*v20 + 16))(v20);
       (*(*v20 + 24))(v20);
@@ -226,7 +226,7 @@
 
     *&v59 = v20;
     (*(*v20 + 16))(v20);
-    [(PAESharedDefaultBase *)self crop:&v59 fromImage:a4 toImage:a3];
+    [(PAESharedDefaultBase *)self crop:&v59 fromImage:input toImage:output];
     v34 = HGObject::operator new(0x1A0uLL);
     HgcUnsharpMask::HgcUnsharpMask(v34);
     v58 = v34;
@@ -236,7 +236,7 @@
     (*(*v58 + 96))(v58, 0, v35, 0.0, 0.0, 0.0);
     v36 = v66;
     (*(*v58 + 96))(v58, 1, v36, 0.0, 0.0, 0.0);
-    if (!v14)
+    if (!versionAtCreation)
     {
       v51 = HGObject::operator new(0x1C0uLL);
       HGColorClamp::HGColorClamp(v51);
@@ -244,13 +244,13 @@
 
     if (v63 == 1)
     {
-      [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
-      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-      v37 = [a4 width];
+      [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
+      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+      width2 = [input width];
       v38 = *&v55;
-      v39 = [a4 height];
-      v40 = ceil(fabs(v38) * v37);
-      v41 = ceil(fabs(v56) * v39);
+      height2 = [input height];
+      v40 = ceil(fabs(v38) * width2);
+      v41 = ceil(fabs(v56) * height2);
       *&v52 = v40 * -0.5;
       *(&v52 + 1) = v41 * -0.5;
       v53 = v40;
@@ -280,7 +280,7 @@
       (*(*v50 + 24))(v50);
     }
 
-    [a3 setHeliumRef:&v58];
+    [output setHeliumRef:&v58];
     if (v58)
     {
       (*(*v58 + 24))(v58);
@@ -306,15 +306,15 @@
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

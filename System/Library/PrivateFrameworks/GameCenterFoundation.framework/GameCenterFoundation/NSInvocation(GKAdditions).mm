@@ -14,9 +14,9 @@
 
 - (uint64_t)_gkHasReplyBlock
 {
-  v1 = [a1 methodSignature];
+  methodSignature = [self methodSignature];
 
-  return [v1 _gkHasReplyBlock];
+  return [methodSignature _gkHasReplyBlock];
 }
 
 @end

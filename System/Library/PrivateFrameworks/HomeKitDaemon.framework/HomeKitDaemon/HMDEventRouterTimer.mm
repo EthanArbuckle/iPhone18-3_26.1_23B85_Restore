@@ -1,58 +1,58 @@
 @interface HMDEventRouterTimer
-- (HMDEventRouterTimer)initWithQueue:(id)a3 interval:(double)a4 timerFireHandler:(id)a5;
+- (HMDEventRouterTimer)initWithQueue:(id)queue interval:(double)interval timerFireHandler:(id)handler;
 - (double)timeInterval;
 - (void)resume;
 - (void)suspend;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDEventRouterTimer
 
 - (double)timeInterval
 {
-  v2 = [(HMDEventRouterTimer *)self timer];
-  [v2 timeInterval];
+  timer = [(HMDEventRouterTimer *)self timer];
+  [timer timeInterval];
   v4 = v3;
 
   return v4;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v3 = [(HMDEventRouterTimer *)self timerFireHandler];
-  v3[2]();
+  timerFireHandler = [(HMDEventRouterTimer *)self timerFireHandler];
+  timerFireHandler[2]();
 }
 
 - (void)suspend
 {
-  v2 = [(HMDEventRouterTimer *)self timer];
-  [v2 suspend];
+  timer = [(HMDEventRouterTimer *)self timer];
+  [timer suspend];
 }
 
 - (void)resume
 {
-  v2 = [(HMDEventRouterTimer *)self timer];
-  [v2 resume];
+  timer = [(HMDEventRouterTimer *)self timer];
+  [timer resume];
 }
 
-- (HMDEventRouterTimer)initWithQueue:(id)a3 interval:(double)a4 timerFireHandler:(id)a5
+- (HMDEventRouterTimer)initWithQueue:(id)queue interval:(double)interval timerFireHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = HMDEventRouterTimer;
   v10 = [(HMDEventRouterTimer *)&v16 init];
   if (v10)
   {
-    v11 = _Block_copy(v9);
+    v11 = _Block_copy(handlerCopy);
     timerFireHandler = v10->_timerFireHandler;
     v10->_timerFireHandler = v11;
 
-    v13 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:8 options:a4];
+    v13 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:8 options:interval];
     timer = v10->_timer;
     v10->_timer = v13;
 
-    [(HMFTimer *)v10->_timer setDelegateQueue:v8];
+    [(HMFTimer *)v10->_timer setDelegateQueue:queueCopy];
     [(HMFTimer *)v10->_timer setDelegate:v10];
   }
 

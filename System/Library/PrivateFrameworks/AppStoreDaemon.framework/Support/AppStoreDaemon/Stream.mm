@@ -4,7 +4,7 @@
 - (StreamDelegate)delegate;
 - (unint64_t)streamStatus;
 - (void)open;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation Stream
@@ -67,17 +67,17 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002BAFF8;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   sub_100379C5C(lock, v7);
 }
 

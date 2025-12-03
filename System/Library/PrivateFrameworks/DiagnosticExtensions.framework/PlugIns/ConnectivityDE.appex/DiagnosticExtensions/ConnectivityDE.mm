@@ -1,10 +1,10 @@
 @interface ConnectivityDE
-- (BOOL)isClientCollectionSupported:(unint64_t)a3;
-- (id)attachmentsForParameters:(id)a3;
-- (id)createConnectivityDESummaryFile:(unint64_t)a3;
+- (BOOL)isClientCollectionSupported:(unint64_t)supported;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)createConnectivityDESummaryFile:(unint64_t)file;
 - (id)getOutputDirectoryForCurrentSession;
-- (unint64_t)getCDFClientOverrideFlags:(unint64_t)a3;
-- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)a3 params:(id)a4;
+- (unint64_t)getCDFClientOverrideFlags:(unint64_t)flags;
+- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)flags params:(id)params;
 @end
 
 @implementation ConnectivityDE
@@ -12,8 +12,8 @@
 - (id)getOutputDirectoryForCurrentSession
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
-  v4 = [@"/private/var/tmp/ConnectivityDE" stringByAppendingFormat:@"/%@", v3];
+  uUIDString = [v2 UUIDString];
+  v4 = [@"/private/var/tmp/ConnectivityDE" stringByAppendingFormat:@"/%@", uUIDString];
 
   v5 = [NSURL fileURLWithPath:v4 isDirectory:1];
   v6 = +[NSFileManager defaultManager];
@@ -43,17 +43,17 @@
   return v9;
 }
 
-- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)a3 params:(id)a4
+- (unint64_t)getCDFSubsystemCollectionFlags:(unint64_t)flags params:(id)params
 {
-  v5 = a4;
-  v6 = v5;
+  paramsCopy = params;
+  v6 = paramsCopy;
   v7 = 0;
   v8 = 14;
-  if (a3 && a3 != 4)
+  if (flags && flags != 4)
   {
-    if (a3 == 2)
+    if (flags == 2)
     {
-      v9 = [v5 valueForKey:@"Domain"];
+      v9 = [paramsCopy valueForKey:@"Domain"];
       if (v9)
       {
         v7 = v9;
@@ -93,9 +93,9 @@ LABEL_13:
   return v8;
 }
 
-- (unint64_t)getCDFClientOverrideFlags:(unint64_t)a3
+- (unint64_t)getCDFClientOverrideFlags:(unint64_t)flags
 {
-  if (a3 == 4)
+  if (flags == 4)
   {
     return 259;
   }
@@ -106,9 +106,9 @@ LABEL_13:
   }
 }
 
-- (id)createConnectivityDESummaryFile:(unint64_t)a3
+- (id)createConnectivityDESummaryFile:(unint64_t)file
 {
-  if (a3 != 4)
+  if (file != 4)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -136,8 +136,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v4 = [(ConnectivityDE *)self getOutputDirectoryForCurrentSession];
-  if (!v4)
+  getOutputDirectoryForCurrentSession = [(ConnectivityDE *)self getOutputDirectoryForCurrentSession];
+  if (!getOutputDirectoryForCurrentSession)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -155,8 +155,8 @@ LABEL_18:
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [v4 stringByAppendingPathComponent:@"Log Collection Summary.txt"];
+  v5 = getOutputDirectoryForCurrentSession;
+  v6 = [getOutputDirectoryForCurrentSession stringByAppendingPathComponent:@"Log Collection Summary.txt"];
   v15 = 0;
   v7 = [@"No errors found. Expected files: 0. Collected files: 0." writeToFile:v6 atomically:1 encoding:4 error:&v15];
   v8 = v15;
@@ -208,21 +208,21 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)isClientCollectionSupported:(unint64_t)a3
+- (BOOL)isClientCollectionSupported:(unint64_t)supported
 {
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 bundleIdentifier];
-  [v5 cStringUsingEncoding:4];
+  bundleIdentifier = [v4 bundleIdentifier];
+  [bundleIdentifier cStringUsingEncoding:4];
 
   v6 = (os_variant_has_internal_diagnostics() & 1) != 0 || os_variant_has_internal_content();
-  return a3 == 4 || v6;
+  return supported == 4 || v6;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v34 = +[NSMutableArray array];
-  v5 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -242,25 +242,25 @@ LABEL_34:
     goto LABEL_21;
   }
 
-  v7 = [v6 unsignedLongValue];
-  if (![(ConnectivityDE *)self isClientCollectionSupported:v7])
+  unsignedLongValue = [v6 unsignedLongValue];
+  if (![(ConnectivityDE *)self isClientCollectionSupported:unsignedLongValue])
   {
     sub_1000017B4(buf);
     goto LABEL_34;
   }
 
-  v8 = [(ConnectivityDE *)self getOutputDirectoryForCurrentSession];
-  if (!v8)
+  getOutputDirectoryForCurrentSession = [(ConnectivityDE *)self getOutputDirectoryForCurrentSession];
+  if (!getOutputDirectoryForCurrentSession)
   {
     sub_1000019B0(buf);
     goto LABEL_34;
   }
 
-  v9 = v8;
-  v10 = [(ConnectivityDE *)self getCDFSubsystemCollectionFlags:v7 params:v4];
+  v9 = getOutputDirectoryForCurrentSession;
+  v10 = [(ConnectivityDE *)self getCDFSubsystemCollectionFlags:unsignedLongValue params:parametersCopy];
   if (v10)
   {
-    [(ConnectivityDE *)self getCDFClientOverrideFlags:v7];
+    [(ConnectivityDE *)self getCDFClientOverrideFlags:unsignedLongValue];
     v39 = 0;
     v11 = collectSubsystemLogsForClient();
     v12 = 0;
@@ -270,9 +270,9 @@ LABEL_34:
       v28 = v9;
       v29 = v12;
       v30 = v6;
-      v31 = self;
+      selfCopy = self;
       v32 = v5;
-      v33 = v4;
+      v33 = parametersCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -293,11 +293,11 @@ LABEL_34:
             }
 
             v18 = *(*(&v35 + 1) + 8 * i);
-            v19 = [v18 path];
-            v20 = [v18 name];
-            v21 = [v18 date];
+            path = [v18 path];
+            name = [v18 name];
+            date = [v18 date];
             v22 = [v18 size];
-            v23 = [DEAttachmentItem attachmentWithPath:v19 withDisplayName:v20 modificationDate:v21 andFilesize:v22];
+            v23 = [DEAttachmentItem attachmentWithPath:path withDisplayName:name modificationDate:date andFilesize:v22];
 
             if (v23)
             {
@@ -307,11 +307,11 @@ LABEL_34:
 
             else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = [v18 name];
+              name2 = [v18 name];
               *buf = 136315394;
               *&buf[4] = "[ConnectivityDE attachmentsForParameters:]";
               v42 = 2114;
-              v43 = v24;
+              v43 = name2;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "CDE: %s: failed to create attachment for file %{public}@", buf, 0x16u);
             }
           }
@@ -323,9 +323,9 @@ LABEL_34:
       }
 
       v5 = v32;
-      v4 = v33;
+      parametersCopy = v33;
       v6 = v30;
-      self = v31;
+      self = selfCopy;
       v10 = v29;
     }
 

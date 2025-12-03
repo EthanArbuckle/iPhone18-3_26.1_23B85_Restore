@@ -1,16 +1,16 @@
 @interface SFUnifiedBarItemPlatterView
-- (SFUnifiedBarItemPlatterView)initWithFrame:(CGRect)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
+- (SFUnifiedBarItemPlatterView)initWithFrame:(CGRect)frame;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
 @end
 
 @implementation SFUnifiedBarItemPlatterView
 
-- (SFUnifiedBarItemPlatterView)initWithFrame:(CGRect)a3
+- (SFUnifiedBarItemPlatterView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SFUnifiedBarItemPlatterView;
-  v3 = [(SFUnifiedBarItemPlatterView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBarItemPlatterView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD298]);
@@ -27,20 +27,20 @@
   return v3;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SFUnifiedBarItemPlatterView;
   [(SFUnifiedBarItemPlatterView *)&v5 _setContinuousCornerRadius:?];
-  [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:a3];
+  [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:radius];
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SFUnifiedBarItemPlatterView;
   [(SFUnifiedBarItemPlatterView *)&v5 _setCornerRadius:?];
-  [(UIVisualEffectView *)self->_effectView _setCornerRadius:a3];
+  [(UIVisualEffectView *)self->_effectView _setCornerRadius:radius];
 }
 
 @end

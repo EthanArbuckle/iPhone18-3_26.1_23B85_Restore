@@ -1,65 +1,65 @@
 @interface HDOntologyBackingStore
-+ (id)_ontologyURLWithBaseURL:(uint64_t)a1;
-+ (id)unitTesting_ontologyBackingStoreForDaemon:(id)a3 baseURL:(id)a4;
-+ (uint64_t)_deleteUnderlyingDatabaseWithURL:(uint64_t)a3 error:;
++ (id)_ontologyURLWithBaseURL:(uint64_t)l;
++ (id)unitTesting_ontologyBackingStoreForDaemon:(id)daemon baseURL:(id)l;
++ (uint64_t)_deleteUnderlyingDatabaseWithURL:(uint64_t)l error:;
 - (BOOL)isAvailable;
-- (BOOL)obliterateWithReason:(id)a3 error:(id *)a4;
+- (BOOL)obliterateWithReason:(id)reason error:(id *)error;
 - (HDDaemon)daemon;
 - (HDOntologyBackingStore)init;
-- (HDOntologyBackingStore)initWithDaemon:(id)a3;
-- (id)_checkOutDatabaseConnectionForWrite:(uint64_t)a3 error:;
-- (id)_graphDatabaseConnectionWithError:(id *)a1;
-- (id)_initWithDaemon:(id)a3 baseURL:(id)a4;
-- (id)checkOutProtectedResourceWithAssertion:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (id)newConnectionForPool:(id)a3 error:(id *)a4;
-- (id)requestProtectedResourceAccessAssertionForOwnerIdentifier:(id)a3 error:(id *)a4;
+- (HDOntologyBackingStore)initWithDaemon:(id)daemon;
+- (id)_checkOutDatabaseConnectionForWrite:(uint64_t)write error:;
+- (id)_graphDatabaseConnectionWithError:(id *)error;
+- (id)_initWithDaemon:(id)daemon baseURL:(id)l;
+- (id)checkOutProtectedResourceWithAssertion:(id)assertion transaction:(id)transaction error:(id *)error;
+- (id)newConnectionForPool:(id)pool error:(id *)error;
+- (id)requestProtectedResourceAccessAssertionForOwnerIdentifier:(id)identifier error:(id *)error;
 - (id)sizeOfUnderlyingDatabaseInBytes;
 - (uint64_t)_allowedToOpenDatabaseWithError:(uint64_t)result;
-- (uint64_t)_ontologyIsAvailableWithError:(uint64_t)a1;
-- (uint64_t)_performOntologyTransactionWithProfile:(void *)a3 databaseTransaction:(uint64_t)a4 write:(void *)a5 error:(void *)a6 transactionHandler:;
-- (uint64_t)_performOutermostTransactionForWrite:(void *)a3 profile:(void *)a4 databaseTransaction:(void *)a5 threadDictionary:(uint64_t)a6 error:(void *)a7 transactionHandler:;
-- (uint64_t)_performPrimitiveTransactionForWrite:(void *)a3 profile:(void *)a4 databaseTransaction:(uint64_t)a5 error:(void *)a6 transactionHandler:;
-- (void)_availabilityLock_handleNewAvailability:(uint64_t)a1;
+- (uint64_t)_ontologyIsAvailableWithError:(uint64_t)error;
+- (uint64_t)_performOntologyTransactionWithProfile:(void *)profile databaseTransaction:(uint64_t)transaction write:(void *)write error:(void *)error transactionHandler:;
+- (uint64_t)_performOutermostTransactionForWrite:(void *)write profile:(void *)profile databaseTransaction:(void *)transaction threadDictionary:(uint64_t)dictionary error:(void *)error transactionHandler:;
+- (uint64_t)_performPrimitiveTransactionForWrite:(void *)write profile:(void *)profile databaseTransaction:(uint64_t)transaction error:(void *)error transactionHandler:;
+- (void)_availabilityLock_handleNewAvailability:(uint64_t)availability;
 - (void)_flushConnectionsAndWait;
-- (void)_primeDatabaseConnectionCacheForOwner:(uint64_t)a1;
-- (void)_queue_contentProtectionStateChanged:(uint64_t)a1 previousState:(uint64_t)a2;
+- (void)_primeDatabaseConnectionCacheForOwner:(uint64_t)owner;
+- (void)_queue_contentProtectionStateChanged:(uint64_t)changed previousState:(uint64_t)state;
 - (void)_queue_flushDatabaseConnectionsIfNecessary;
 - (void)_updateAvailability;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
 - (void)close;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
-- (void)daemonReady:(id)a3;
-- (void)databasePool:(id)a3 didFlushConnections:(id)a4;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
+- (void)daemonReady:(id)ready;
+- (void)databasePool:(id)pool didFlushConnections:(id)connections;
 - (void)invalidate;
-- (void)obliterateWithReason:(id)a3;
+- (void)obliterateWithReason:(id)reason;
 @end
 
 @implementation HDOntologyBackingStore
 
 - (void)_queue_flushDatabaseConnectionsIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    os_unfair_lock_lock((a1 + 40));
-    v2 = *(a1 + 48);
-    os_unfair_lock_unlock((a1 + 40));
-    if (v2 == 2 && ([*(a1 + 88) hasActiveAssertionForIdentifier:@"OntologyDatabaseAccessibility"] & 1) == 0)
+    dispatch_assert_queue_V2(*(self + 24));
+    os_unfair_lock_lock((self + 40));
+    v2 = *(self + 48);
+    os_unfair_lock_unlock((self + 40));
+    if (v2 == 2 && ([*(self + 88) hasActiveAssertionForIdentifier:@"OntologyDatabaseAccessibility"] & 1) == 0)
     {
-      v3 = [*(a1 + 64) flush];
+      flush = [*(self + 64) flush];
     }
   }
 }
 
 - (void)_updateAvailability
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 10);
+    os_unfair_lock_lock(self + 10);
     v3 = 0;
-    v2 = [(HDOntologyBackingStore *)a1 _ontologyIsAvailableWithError:?];
-    [(HDOntologyBackingStore *)a1 _availabilityLock_handleNewAvailability:v2];
-    os_unfair_lock_unlock(a1 + 10);
+    v2 = [(HDOntologyBackingStore *)self _ontologyIsAvailableWithError:?];
+    [(HDOntologyBackingStore *)self _availabilityLock_handleNewAvailability:v2];
+    os_unfair_lock_unlock(self + 10);
   }
 }
 
@@ -73,27 +73,27 @@
   return 0;
 }
 
-- (HDOntologyBackingStore)initWithDaemon:(id)a3
+- (HDOntologyBackingStore)initWithDaemon:(id)daemon
 {
-  v4 = a3;
-  v5 = [v4 healthDirectoryURL];
-  v6 = [(HDOntologyBackingStore *)self _initWithDaemon:v4 baseURL:v5];
+  daemonCopy = daemon;
+  healthDirectoryURL = [daemonCopy healthDirectoryURL];
+  v6 = [(HDOntologyBackingStore *)self _initWithDaemon:daemonCopy baseURL:healthDirectoryURL];
 
   return v6;
 }
 
-- (id)_initWithDaemon:(id)a3 baseURL:(id)a4
+- (id)_initWithDaemon:(id)daemon baseURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  daemonCopy = daemon;
+  lCopy = l;
   v37.receiver = self;
   v37.super_class = HDOntologyBackingStore;
   v8 = [(HDOntologyBackingStore *)&v37 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_daemon, v6);
-    v10 = [HDOntologyBackingStore _ontologyURLWithBaseURL:v7];
+    objc_storeWeak(&v8->_daemon, daemonCopy);
+    v10 = [HDOntologyBackingStore _ontologyURLWithBaseURL:lCopy];
     ontologyURL = v9->_ontologyURL;
     v9->_ontologyURL = v10;
 
@@ -120,8 +120,8 @@
 
     v23 = objc_alloc(MEMORY[0x277D10AF0]);
     WeakRetained = objc_loadWeakRetained(&v9->_daemon);
-    v25 = [WeakRetained behavior];
-    v26 = [v23 initWithConcurrentReaderLimit:2 behavior:v25 debugIdentifier:@"ontology" delegate:v9];
+    behavior = [WeakRetained behavior];
+    v26 = [v23 initWithConcurrentReaderLimit:2 behavior:behavior debugIdentifier:@"ontology" delegate:v9];
     databaseConnectionPool = v9->_databaseConnectionPool;
     v9->_databaseConnectionPool = v26;
 
@@ -148,7 +148,7 @@
   return v9;
 }
 
-+ (id)_ontologyURLWithBaseURL:(uint64_t)a1
++ (id)_ontologyURLWithBaseURL:(uint64_t)l
 {
   v2 = a2;
   objc_opt_self();
@@ -167,10 +167,10 @@
   return available;
 }
 
-- (void)obliterateWithReason:(id)a3
+- (void)obliterateWithReason:(id)reason
 {
   v7 = 0;
-  v4 = [(HDOntologyBackingStore *)self obliterateWithReason:a3 error:&v7];
+  v4 = [(HDOntologyBackingStore *)self obliterateWithReason:reason error:&v7];
   v5 = v7;
   if (!v4)
   {
@@ -183,31 +183,31 @@
   }
 }
 
-- (BOOL)obliterateWithReason:(id)a3 error:(id *)a4
+- (BOOL)obliterateWithReason:(id)reason error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDDatabaseConnectionPool *)self->_databaseConnectionPool flush];
+  reasonCopy = reason;
+  flush = [(HDDatabaseConnectionPool *)self->_databaseConnectionPool flush];
   [(NSConditionLock *)self->_activeDatabaseConnectionLock lockWhenCondition:0];
   _HKInitializeLogging();
   v8 = HKLogHealthOntology();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = reasonCopy;
     _os_log_impl(&dword_2514A1000, v8, OS_LOG_TYPE_DEFAULT, "Obliterate %{public}@ for %{public}@", &v12, 0x16u);
   }
 
-  v9 = [HDOntologyBackingStore _deleteUnderlyingDatabaseWithURL:a4 error:?];
+  v9 = [HDOntologyBackingStore _deleteUnderlyingDatabaseWithURL:error error:?];
   [(NSConditionLock *)self->_activeDatabaseConnectionLock unlock];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-+ (uint64_t)_deleteUnderlyingDatabaseWithURL:(uint64_t)a3 error:
++ (uint64_t)_deleteUnderlyingDatabaseWithURL:(uint64_t)l error:
 {
   v4 = a2;
   objc_opt_self();
@@ -216,8 +216,8 @@
   if ((v6 & 1) == 0)
   {
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [v4 path];
-    [v7 hk_assignError:a3 code:102 format:{@"Unable to remove underlying database at '%@'", v8}];
+    path = [v4 path];
+    [v7 hk_assignError:l code:102 format:{@"Unable to remove underlying database at '%@'", path}];
   }
 
   return v6;
@@ -226,15 +226,15 @@
 - (id)sizeOfUnderlyingDatabaseInBytes
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v3 = [(NSURL *)self->_ontologyURL lastPathComponent];
-  v4 = [(NSURL *)self->_ontologyURL URLByDeletingLastPathComponent];
+  lastPathComponent = [(NSURL *)self->_ontologyURL lastPathComponent];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_ontologyURL URLByDeletingLastPathComponent];
   v38[0] = self->_ontologyURL;
-  v5 = [v3 stringByAppendingString:@"-wal"];
-  v6 = [v4 URLByAppendingPathComponent:v5];
+  v5 = [lastPathComponent stringByAppendingString:@"-wal"];
+  v6 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v5];
   v38[1] = v6;
-  v25 = v3;
-  v7 = [v3 stringByAppendingString:@"-shm"];
-  v8 = [v4 URLByAppendingPathComponent:v7];
+  v25 = lastPathComponent;
+  v7 = [lastPathComponent stringByAppendingString:@"-shm"];
+  v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v7];
   v38[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
 
@@ -269,11 +269,11 @@
           v20 = HKLogHealthOntology();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v16 path];
+            path = [v16 path];
             *buf = 138543874;
-            v32 = self;
+            selfCopy = self;
             v33 = 2114;
-            v34 = v24;
+            v34 = path;
             v35 = 2114;
             v36 = v19;
             _os_log_error_impl(&dword_2514A1000, v20, OS_LOG_TYPE_ERROR, "%{public}@: error getting size of %{public}@: %{public}@", buf, 0x20u);
@@ -309,18 +309,18 @@ LABEL_16:
   return v21;
 }
 
-+ (id)unitTesting_ontologyBackingStoreForDaemon:(id)a3 baseURL:(id)a4
++ (id)unitTesting_ontologyBackingStoreForDaemon:(id)daemon baseURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithDaemon:v7 baseURL:v6];
+  lCopy = l;
+  daemonCopy = daemon;
+  v8 = [[self alloc] _initWithDaemon:daemonCopy baseURL:lCopy];
 
   return v8;
 }
 
-- (id)requestProtectedResourceAccessAssertionForOwnerIdentifier:(id)a3 error:(id *)a4
+- (id)requestProtectedResourceAccessAssertionForOwnerIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -346,7 +346,7 @@ LABEL_16:
   v17 = &v32;
   v18 = &v20;
   v19 = &v26;
-  v8 = v6;
+  v8 = identifierCopy;
   v16 = v8;
   dispatch_sync(queue, block);
   v9 = v27[5];
@@ -367,10 +367,10 @@ LABEL_16:
     v12 = v11;
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v13 = v11;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -437,73 +437,73 @@ void __90__HDOntologyBackingStore_requestProtectedResourceAccessAssertionForOwne
   }
 }
 
-- (id)checkOutProtectedResourceWithAssertion:(id)a3 transaction:(id)a4 error:(id *)a5
+- (id)checkOutProtectedResourceWithAssertion:(id)assertion transaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  if (([(HDAssertionManager *)self->_protectedResourceAssertionManager hasActiveAssertion:v7]& 1) != 0)
+  assertionCopy = assertion;
+  if (([(HDAssertionManager *)self->_protectedResourceAssertionManager hasActiveAssertion:assertionCopy]& 1) != 0)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v9 = MEMORY[0x277CCA9B8];
-    v10 = [(HDOntologyBackingStore *)self protectedResourceIdentifier];
-    [v9 hk_assignError:a5 code:3 format:{@"Unable to check out protected resource /'%@/' with assertion %@", v10, v7}];
+    protectedResourceIdentifier = [(HDOntologyBackingStore *)self protectedResourceIdentifier];
+    [v9 hk_assignError:error code:3 format:{@"Unable to check out protected resource /'%@/' with assertion %@", protectedResourceIdentifier, assertionCopy}];
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   dispatch_assert_queue_V2(self->_queue);
 
   [(HDOntologyBackingStore *)self _queue_flushDatabaseConnectionsIfNecessary];
 }
 
-- (id)newConnectionForPool:(id)a3 error:(id *)a4
+- (id)newConnectionForPool:(id)pool error:(id *)error
 {
-  if (![(HDOntologyBackingStore *)self _allowedToOpenDatabaseWithError:a4])
+  if (![(HDOntologyBackingStore *)self _allowedToOpenDatabaseWithError:error])
   {
     return 0;
   }
 
   [(NSConditionLock *)self->_activeDatabaseConnectionLock lock];
-  v6 = [(HDOntologyBackingStore *)&self->super.isa _graphDatabaseConnectionWithError:a4];
+  v6 = [(HDOntologyBackingStore *)&self->super.isa _graphDatabaseConnectionWithError:error];
   [(NSMutableSet *)self->_activeDatabaseConnections hk_addNonNilObject:v6];
   [(NSConditionLock *)self->_activeDatabaseConnectionLock unlockWithCondition:[(NSMutableSet *)self->_activeDatabaseConnections count]!= 0];
   return v6;
 }
 
-- (uint64_t)_performOutermostTransactionForWrite:(void *)a3 profile:(void *)a4 databaseTransaction:(void *)a5 threadDictionary:(uint64_t)a6 error:(void *)a7 transactionHandler:
+- (uint64_t)_performOutermostTransactionForWrite:(void *)write profile:(void *)profile databaseTransaction:(void *)transaction threadDictionary:(uint64_t)dictionary error:(void *)error transactionHandler:
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (a1)
+  writeCopy = write;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  errorCopy = error;
+  if (self)
   {
-    v17 = [(HDOntologyBackingStore *)a1 _checkOutDatabaseConnectionForWrite:a2 error:a6];
+    v17 = [(HDOntologyBackingStore *)self _checkOutDatabaseConnectionForWrite:a2 error:dictionary];
     if (v17)
     {
       v21 = MEMORY[0x277D85DD0];
       v22 = 3221225472;
       v23 = __133__HDOntologyBackingStore__performOutermostTransactionForWrite_profile_databaseTransaction_threadDictionary_error_transactionHandler___block_invoke;
       v24 = &unk_2796BA168;
-      v25 = v13;
-      v26 = v14;
+      v25 = writeCopy;
+      v26 = profileCopy;
       v30 = a2;
-      v18 = v15;
+      v18 = transactionCopy;
       v27 = v18;
-      v28 = a1;
-      v29 = v16;
-      v19 = [v17 performTransactionWithError:a6 write:a2 block:&v21];
+      selfCopy = self;
+      v29 = errorCopy;
+      v19 = [v17 performTransactionWithError:dictionary write:a2 block:&v21];
 
-      [v18 removeObjectForKey:{*(a1 + 32), v21, v22, v23, v24}];
-      [*(a1 + 64) checkInConnection:v17 flushImmediately:0];
+      [v18 removeObjectForKey:{*(self + 32), v21, v22, v23, v24}];
+      [*(self + 64) checkInConnection:v17 flushImmediately:0];
     }
 
     else
@@ -538,30 +538,30 @@ uint64_t __133__HDOntologyBackingStore__performOutermostTransactionForWrite_prof
   return WeakRetained;
 }
 
-- (uint64_t)_performOntologyTransactionWithProfile:(void *)a3 databaseTransaction:(uint64_t)a4 write:(void *)a5 error:(void *)a6 transactionHandler:
+- (uint64_t)_performOntologyTransactionWithProfile:(void *)profile databaseTransaction:(uint64_t)transaction write:(void *)write error:(void *)error transactionHandler:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a6;
-  if (!a1)
+  profileCopy = profile;
+  errorCopy = error;
+  if (!self)
   {
     v15 = 0;
     goto LABEL_6;
   }
 
-  v14 = [v12 ontologyDatabase];
-  if (v14)
+  ontologyDatabase = [profileCopy ontologyDatabase];
+  if (ontologyDatabase)
   {
-    if ([(HDOntologyBackingStore *)a1 _allowedToOpenDatabaseWithError:a5])
+    if ([(HDOntologyBackingStore *)self _allowedToOpenDatabaseWithError:write])
     {
-      v15 = [(HDOntologyBackingStore *)a1 _performPrimitiveTransactionForWrite:a4 profile:v11 databaseTransaction:v12 error:a5 transactionHandler:v13];
+      v15 = [(HDOntologyBackingStore *)self _performPrimitiveTransactionForWrite:transaction profile:v11 databaseTransaction:profileCopy error:write transactionHandler:errorCopy];
       goto LABEL_5;
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:{@"Ontology database is nil for transaction %@", v12}];
+    [MEMORY[0x277CCA9B8] hk_assignError:write code:3 format:{@"Ontology database is nil for transaction %@", profileCopy}];
   }
 
   v15 = 0;
@@ -585,10 +585,10 @@ LABEL_6:
 
 - (void)_flushConnectionsAndWait
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 64) flush];
-    dispatch_group_wait(v1, 0xFFFFFFFFFFFFFFFFLL);
+    flush = [*(self + 64) flush];
+    dispatch_group_wait(flush, 0xFFFFFFFFFFFFFFFFLL);
   }
 }
 
@@ -618,45 +618,45 @@ LABEL_5:
   [(HDOntologyBackingStore *)self _updateAvailability];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v5 = [WeakRetained contentProtectionManager];
-  [v5 addContentProtectionObserver:self withQueue:self->_queue];
+  contentProtectionManager = [WeakRetained contentProtectionManager];
+  [contentProtectionManager addContentProtectionObserver:self withQueue:self->_queue];
 
   v6 = objc_loadWeakRetained(&self->_daemon);
-  v7 = [v6 contentProtectionManager];
-  -[HDOntologyBackingStore _queue_contentProtectionStateChanged:previousState:](self, [v7 observedState]);
+  contentProtectionManager2 = [v6 contentProtectionManager];
+  -[HDOntologyBackingStore _queue_contentProtectionStateChanged:previousState:](self, [contentProtectionManager2 observedState]);
 
   [(HDOntologyBackingStore *)self _updateAvailability];
 }
 
-- (void)_queue_contentProtectionStateChanged:(uint64_t)a1 previousState:(uint64_t)a2
+- (void)_queue_contentProtectionStateChanged:(uint64_t)changed previousState:(uint64_t)state
 {
-  if (a1)
+  if (changed)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    os_unfair_lock_lock((a1 + 40));
-    *(a1 + 48) = a2;
+    dispatch_assert_queue_V2(*(changed + 24));
+    os_unfair_lock_lock((changed + 40));
+    *(changed + 48) = state;
 
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((changed + 40));
   }
 }
 
-- (void)_primeDatabaseConnectionCacheForOwner:(uint64_t)a1
+- (void)_primeDatabaseConnectionCacheForOwner:(uint64_t)owner
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (owner)
   {
-    v4 = *(a1 + 64);
+    v4 = *(owner + 64);
     v9 = 0;
     v5 = [v4 checkOutConnectionWithOptions:10 error:&v9];
     v6 = v9;
     if (v5)
     {
-      [*(a1 + 64) checkInConnection:v5 flushImmediately:0];
+      [*(owner + 64) checkInConnection:v5 flushImmediately:0];
     }
 
     else
@@ -677,11 +677,11 @@ LABEL_5:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_queue);
   os_unfair_lock_lock(&self->_availabilityLock);
-  self->_observedContentProtectionState = a3;
+  self->_observedContentProtectionState = changed;
   os_unfair_lock_unlock(&self->_availabilityLock);
   [(HDOntologyBackingStore *)self _queue_flushDatabaseConnectionsIfNecessary];
 
@@ -701,21 +701,21 @@ LABEL_5:
     else
     {
       WeakRetained = objc_loadWeakRetained((result + 96));
-      v5 = [WeakRetained contentProtectionManager];
-      v6 = [v5 deviceUnlockedSinceBoot];
+      contentProtectionManager = [WeakRetained contentProtectionManager];
+      deviceUnlockedSinceBoot = [contentProtectionManager deviceUnlockedSinceBoot];
 
-      if (v6)
+      if (deviceUnlockedSinceBoot)
       {
         return 1;
       }
 
-      v7 = [MEMORY[0x277CCA9B8] hk_databaseInaccessibleBeforeFirstUnlockError];
-      if (v7)
+      hk_databaseInaccessibleBeforeFirstUnlockError = [MEMORY[0x277CCA9B8] hk_databaseInaccessibleBeforeFirstUnlockError];
+      if (hk_databaseInaccessibleBeforeFirstUnlockError)
       {
         if (a2)
         {
-          v8 = v7;
-          *a2 = v7;
+          v8 = hk_databaseInaccessibleBeforeFirstUnlockError;
+          *a2 = hk_databaseInaccessibleBeforeFirstUnlockError;
         }
 
         else
@@ -731,24 +731,24 @@ LABEL_5:
   return result;
 }
 
-- (id)_graphDatabaseConnectionWithError:(id *)a1
+- (id)_graphDatabaseConnectionWithError:(id *)error
 {
-  if (a1)
+  if (error)
   {
-    v4 = a1;
-    WeakRetained = objc_loadWeakRetained(a1 + 12);
-    v6 = [WeakRetained contentProtectionManager];
-    v7 = [v6 observedState];
+    errorCopy = error;
+    WeakRetained = objc_loadWeakRetained(error + 12);
+    contentProtectionManager = [WeakRetained contentProtectionManager];
+    observedState = [contentProtectionManager observedState];
 
-    if (v7 == 2)
+    if (observedState == 2)
     {
-      v8 = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
-      if (v8)
+      hk_protectedDataInaccessibilityError = [MEMORY[0x277CCA9B8] hk_protectedDataInaccessibilityError];
+      if (hk_protectedDataInaccessibilityError)
       {
         if (a2)
         {
-          v9 = v8;
-          *a2 = v8;
+          v9 = hk_protectedDataInaccessibilityError;
+          *a2 = hk_protectedDataInaccessibilityError;
         }
 
         else
@@ -757,30 +757,30 @@ LABEL_5:
         }
       }
 
-      a1 = 0;
+      error = 0;
     }
 
     else
     {
-      a1 = [HDSimpleGraphDatabase graphDatabaseWithURL:v4[1] error:a2];
+      error = [HDSimpleGraphDatabase graphDatabaseWithURL:errorCopy[1] error:a2];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return error;
 }
 
-- (void)databasePool:(id)a3 didFlushConnections:(id)a4
+- (void)databasePool:(id)pool didFlushConnections:(id)connections
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionsCopy = connections;
   [(NSConditionLock *)self->_activeDatabaseConnectionLock lock];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = connectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -812,16 +812,16 @@ LABEL_5:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_ontologyIsAvailableWithError:(uint64_t)a1
+- (uint64_t)_ontologyIsAvailableWithError:(uint64_t)error
 {
-  v2 = a1;
-  if (a1)
+  errorCopy = error;
+  if (error)
   {
-    if ([(HDOntologyBackingStore *)a1 _allowedToOpenDatabaseWithError:a2])
+    if ([(HDOntologyBackingStore *)error _allowedToOpenDatabaseWithError:a2])
     {
-      WeakRetained = objc_loadWeakRetained((v2 + 96));
-      v4 = [WeakRetained contentProtectionManager];
-      v2 = [v4 observedState] != 2 || objc_msgSend(*(v2 + 64), "count") > 0;
+      WeakRetained = objc_loadWeakRetained((errorCopy + 96));
+      contentProtectionManager = [WeakRetained contentProtectionManager];
+      errorCopy = [contentProtectionManager observedState] != 2 || objc_msgSend(*(errorCopy + 64), "count") > 0;
     }
 
     else
@@ -830,28 +830,28 @@ LABEL_5:
     }
   }
 
-  return v2;
+  return errorCopy;
 }
 
-- (uint64_t)_performPrimitiveTransactionForWrite:(void *)a3 profile:(void *)a4 databaseTransaction:(uint64_t)a5 error:(void *)a6 transactionHandler:
+- (uint64_t)_performPrimitiveTransactionForWrite:(void *)write profile:(void *)profile databaseTransaction:(uint64_t)transaction error:(void *)error transactionHandler:
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!a1)
+  writeCopy = write;
+  profileCopy = profile;
+  errorCopy = error;
+  if (!self)
   {
     v18 = 0;
     goto LABEL_10;
   }
 
-  v14 = [MEMORY[0x277CCACC8] currentThread];
-  v15 = [v14 threadDictionary];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v16 = [v15 objectForKeyedSubscript:*(a1 + 32)];
+  v16 = [threadDictionary objectForKeyedSubscript:*(self + 32)];
   v17 = v16;
   if (!v16)
   {
-    v19 = [(HDOntologyBackingStore *)a1 _performOutermostTransactionForWrite:a2 profile:v11 databaseTransaction:v12 threadDictionary:v15 error:a5 transactionHandler:v13];
+    v19 = [(HDOntologyBackingStore *)self _performOutermostTransactionForWrite:a2 profile:writeCopy databaseTransaction:profileCopy threadDictionary:threadDictionary error:transaction transactionHandler:errorCopy];
 LABEL_8:
     v18 = v19;
     goto LABEL_9;
@@ -859,11 +859,11 @@ LABEL_8:
 
   if (([v16 isWriteTransaction] & 1) != 0 || !a2)
   {
-    v19 = (*(v13 + 2))(v13, v17, a5);
+    v19 = (*(errorCopy + 2))(errorCopy, v17, transaction);
     goto LABEL_8;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a5 code:131 format:@"Cannot perform an ontology write transaction nested inside a read transaction"];
+  [MEMORY[0x277CCA9B8] hk_assignError:transaction code:131 format:@"Cannot perform an ontology write transaction nested inside a read transaction"];
   v18 = 0;
 LABEL_9:
 
@@ -871,17 +871,17 @@ LABEL_10:
   return v18;
 }
 
-- (id)_checkOutDatabaseConnectionForWrite:(uint64_t)a3 error:
+- (id)_checkOutDatabaseConnectionForWrite:(uint64_t)write error:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a1;
+    selfCopy = self;
     v6 = a2;
-    WeakRetained = objc_loadWeakRetained(a1 + 12);
-    v8 = [WeakRetained contentProtectionManager];
-    v9 = [v8 isProtectedDataAvailable];
+    WeakRetained = objc_loadWeakRetained(self + 12);
+    contentProtectionManager = [WeakRetained contentProtectionManager];
+    isProtectedDataAvailable = [contentProtectionManager isProtectedDataAvailable];
 
-    if (v9)
+    if (isProtectedDataAvailable)
     {
       v10 = v6;
     }
@@ -891,27 +891,27 @@ LABEL_10:
       v10 = v6 | 4;
     }
 
-    a1 = [v5[8] checkOutConnectionWithOptions:v10 error:a3];
+    self = [selfCopy[8] checkOutConnectionWithOptions:v10 error:write];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_availabilityLock_handleNewAvailability:(uint64_t)a1
+- (void)_availabilityLock_handleNewAvailability:(uint64_t)availability
 {
-  if (a1)
+  if (availability)
   {
-    os_unfair_lock_assert_owner((a1 + 40));
-    if (*(a1 + 44) != a2)
+    os_unfair_lock_assert_owner((availability + 40));
+    if (*(availability + 44) != a2)
     {
-      *(a1 + 44) = a2;
-      v4 = *(a1 + 56);
+      *(availability + 44) = a2;
+      v4 = *(availability + 56);
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __66__HDOntologyBackingStore__availabilityLock_handleNewAvailability___block_invoke;
       v5[3] = &unk_2796BA190;
-      v5[4] = a1;
+      v5[4] = availability;
       [v4 notifyObservers:v5];
     }
   }

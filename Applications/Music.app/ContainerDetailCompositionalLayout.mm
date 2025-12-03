@@ -1,31 +1,31 @@
 @interface ContainerDetailCompositionalLayout
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithCoder:(id)a3;
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)a3;
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5;
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithCoder:(id)coder;
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)section;
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration;
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation ContainerDetailCompositionalLayout
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
   v10 = type metadata accessor for ContainerDetailCompositionalLayout();
-  v14.receiver = v8;
+  v14.receiver = selfCopy;
   v14.super_class = v10;
   v11 = [(ContainerDetailCompositionalLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
-  v12 = *(&v8->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
+  v12 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
   if (v12)
   {
 
@@ -38,13 +38,13 @@
   return v11;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_1006A79E8(x, y, width, height);
 
   if (v8)
@@ -61,7 +61,7 @@
   return v9.super.isa;
 }
 
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)a3
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)section
 {
   v5 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
   v6 = type metadata accessor for ContainerDetailCompositionalLayout();
@@ -69,10 +69,10 @@
   v5[1] = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(ContainerDetailCompositionalLayout *)&v8 initWithSection:a3];
+  return [(ContainerDetailCompositionalLayout *)&v8 initWithSection:section];
 }
 
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
   v8 = type metadata accessor for ContainerDetailCompositionalLayout();
@@ -80,12 +80,12 @@
   v7[1] = 0;
   v10.receiver = self;
   v10.super_class = v8;
-  return [(ContainerDetailCompositionalLayout *)&v10 initWithSection:a3 configuration:a4];
+  return [(ContainerDetailCompositionalLayout *)&v10 initWithSection:section configuration:configuration];
 }
 
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
@@ -107,9 +107,9 @@
   return v8;
 }
 
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
@@ -122,25 +122,25 @@
   aBlock[2] = sub_1005A63A8;
   aBlock[3] = &unk_1010BA768;
   v9 = _Block_copy(aBlock);
-  v10 = a4;
+  configurationCopy = configuration;
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for ContainerDetailCompositionalLayout();
-  v11 = [(ContainerDetailCompositionalLayout *)&v13 initWithSectionProvider:v9 configuration:v10];
+  v11 = [(ContainerDetailCompositionalLayout *)&v13 initWithSectionProvider:v9 configuration:configurationCopy];
 
   _Block_release(v9);
   return v11;
 }
 
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithCoder:(id)a3
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC5Music34ContainerDetailCompositionalLayout_willLayoutAttributes);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ContainerDetailCompositionalLayout();
-  v5 = a3;
-  v6 = [(ContainerDetailCompositionalLayout *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ContainerDetailCompositionalLayout *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -149,9 +149,9 @@
   return v6;
 }
 
-- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5
+- (_TtC5Music34ContainerDetailCompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration
 {
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(provider);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -164,8 +164,8 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  return sub_1006A80C0(a3, v7, v8, a5);
+  sectionCopy = section;
+  return sub_1006A80C0(section, v7, v8, configuration);
 }
 
 @end

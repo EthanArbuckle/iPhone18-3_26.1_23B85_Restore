@@ -1,10 +1,10 @@
 @interface StickerBrowserViewController
 - (_TtC25ActivityMessagesExtension28StickerBrowserViewController)init;
-- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithCoder:(id)a3;
-- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithStickerSize:(int64_t)a3;
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4;
-- (int64_t)numberOfStickersInStickerBrowserView:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithCoder:(id)coder;
+- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithStickerSize:(int64_t)size;
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index;
+- (int64_t)numberOfStickersInStickerBrowserView:(id)view;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StickerBrowserViewController
@@ -20,38 +20,38 @@
   return v3;
 }
 
-- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithCoder:(id)a3
+- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithCoder:(id)coder
 {
   result = sub_10000FD1C();
   __break(1u);
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10000F148(a3);
+  selfCopy = self;
+  sub_10000F148(appear);
 }
 
-- (int64_t)numberOfStickersInStickerBrowserView:(id)a3
+- (int64_t)numberOfStickersInStickerBrowserView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   v6 = sub_10000F428();
 
   return v6;
 }
 
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10000F5F0(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10000F5F0(index);
 
   return v8;
 }
 
-- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithStickerSize:(int64_t)a3
+- (_TtC25ActivityMessagesExtension28StickerBrowserViewController)initWithStickerSize:(int64_t)size
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

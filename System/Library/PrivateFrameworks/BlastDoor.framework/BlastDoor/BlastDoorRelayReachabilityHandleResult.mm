@@ -74,7 +74,7 @@
   else
   {
     memcpy(v9, __src, sizeof(v9));
-    v5 = self;
+    selfCopy = self;
     sub_213FB2E54(__dst, &v8, &qword_27C908800, &qword_2146F51D8);
     MBDBrandInfo.dictionaryRepresentation.getter();
     v6 = sub_2146D9468();
@@ -89,7 +89,7 @@
 
 - (BlastDoorMBDBrandLogo)brandLogo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214573B48();
 
   return v3;

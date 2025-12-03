@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneSearchMultiTermQuery_$1
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3 withOrgApacheLuceneSearchMultiTermQuery:(id)a4;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader withOrgApacheLuceneSearchMultiTermQuery:(id)query;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQuery_$1
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3 withOrgApacheLuceneSearchMultiTermQuery:(id)a4
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader withOrgApacheLuceneSearchMultiTermQuery:(id)query
 {
-  v5 = new_OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_initWithOrgApacheLuceneSearchMultiTermQuery_(a4);
-  if (!a4)
+  v5 = new_OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_initWithOrgApacheLuceneSearchMultiTermQuery_(query);
+  if (!query)
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  [a4 getBoost];
+  [query getBoost];
   [(OrgApacheLuceneSearchQuery *)v6 setBoostWithFloat:?];
   return v6;
 }

@@ -1,15 +1,15 @@
 @interface PKPaymentCreateVehicleShareRequest
-- (PKPaymentCreateVehicleShareRequest)initWithSubcredentialIdentifier:(id)a3 shareValidationType:(unint64_t)a4 shareValidationContainers:(id)a5;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentCreateVehicleShareRequest)initWithSubcredentialIdentifier:(id)identifier shareValidationType:(unint64_t)type shareValidationContainers:(id)containers;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 - (id)requestBody;
 @end
 
 @implementation PKPaymentCreateVehicleShareRequest
 
-- (PKPaymentCreateVehicleShareRequest)initWithSubcredentialIdentifier:(id)a3 shareValidationType:(unint64_t)a4 shareValidationContainers:(id)a5
+- (PKPaymentCreateVehicleShareRequest)initWithSubcredentialIdentifier:(id)identifier shareValidationType:(unint64_t)type shareValidationContainers:(id)containers
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  containersCopy = containers;
   v18.receiver = self;
   v18.super_class = PKPaymentCreateVehicleShareRequest;
   v11 = [(PKOverlayableWebServiceRequest *)&v18 init];
@@ -19,9 +19,9 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v11->_subcredentialIdentifier, a3);
-  v12->_shareValidationType = a4;
-  objc_storeStrong(&v12->_remoteShareValidationContainers, a5);
+  objc_storeStrong(&v11->_subcredentialIdentifier, identifier);
+  v12->_shareValidationType = type;
+  objc_storeStrong(&v12->_remoteShareValidationContainers, containers);
   if (!v12->_subcredentialIdentifier)
   {
     v14 = PKLogFacilityTypeGetObject(0x17uLL);
@@ -59,24 +59,24 @@ LABEL_11:
   return v13;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v18[0] = @"devices";
-  v18[1] = a4;
+  v18[1] = identifier;
   v18[2] = @"sharing";
   v18[3] = @"vehicleKeyShare";
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
   v12 = [v8 arrayWithObjects:v18 count:4];
 
-  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 endpointComponents:v12 queryParameters:0 appleAccountInformation:v9];
+  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v13 setHTTPMethod:@"POST"];
-  v14 = [(PKPaymentCreateVehicleShareRequest *)self requestBody];
-  v15 = [objc_opt_class() _HTTPBodyWithDictionary:v14];
+  requestBody = [(PKPaymentCreateVehicleShareRequest *)self requestBody];
+  v15 = [objc_opt_class() _HTTPBodyWithDictionary:requestBody];
   [v13 setHTTPBody:v15];
 
   v16 = [v13 copy];

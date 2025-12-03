@@ -1,17 +1,17 @@
 @interface PXComposeRecipientDataSourceManager
 - (NSDictionary)diagnosticDictionary;
 - (PXComposeRecipientDataSourceManager)init;
-- (PXComposeRecipientDataSourceManager)initWithPeopleSuggestionsDataSourceManager:(id)a3 sourceType:(int64_t)a4;
+- (PXComposeRecipientDataSourceManager)initWithPeopleSuggestionsDataSourceManager:(id)manager sourceType:(int64_t)type;
 - (PXComposeRecipientDataSourceManagerDelegate)delegate;
 - (id)_composeRecipientsFromCurrentPeopleSuggestionsDataSource;
 - (id)_createComposeRecipientDataSourceFromCurrentState;
 - (int64_t)_lastValidComposeRecipientIndex;
-- (void)_addComposeRecipients:(id)a3;
-- (void)_replaceComposeRecipientAtIndex:(int64_t)a3 withComposeRecipient:(id)a4;
-- (void)addRecipients:(id)a3;
-- (void)deleteComposeRecipientAtIndex:(unint64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)replaceComposeRecipientAtIndex:(unint64_t)a3 withNewComposeRecipient:(id)a4;
+- (void)_addComposeRecipients:(id)recipients;
+- (void)_replaceComposeRecipientAtIndex:(int64_t)index withComposeRecipient:(id)recipient;
+- (void)addRecipients:(id)recipients;
+- (void)deleteComposeRecipientAtIndex:(unint64_t)index;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)replaceComposeRecipientAtIndex:(unint64_t)index withNewComposeRecipient:(id)recipient;
 @end
 
 @implementation PXComposeRecipientDataSourceManager
@@ -23,50 +23,50 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  if ((a4 & 1) != 0 && PXPeopleSuggestionManagerObservationContext == a5)
+  if ((change & 1) != 0 && PXPeopleSuggestionManagerObservationContext == context)
   {
-    v6 = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSource];
-    v7 = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSourceManager];
-    v8 = [v7 dataSource];
+    peopleSuggestionsDataSource = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSource];
+    peopleSuggestionsDataSourceManager = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSourceManager];
+    dataSource = [peopleSuggestionsDataSourceManager dataSource];
 
-    v9 = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSourceManager];
-    v10 = [v9 changeHistory];
-    v11 = [v10 changeDetailsFromDataSourceIdentifier:objc_msgSend(v6 toDataSourceIdentifier:{"identifier"), objc_msgSend(v8, "identifier")}];
+    peopleSuggestionsDataSourceManager2 = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSourceManager];
+    changeHistory = [peopleSuggestionsDataSourceManager2 changeHistory];
+    v11 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(peopleSuggestionsDataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource, "identifier")}];
 
     if ([v11 count] == 1)
     {
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
     }
 
     else
     {
-      v12 = 0;
+      firstObject = 0;
     }
 
-    v13 = [v12 itemChangesInSection:0];
-    [(PXComposeRecipientDataSourceManager *)self setPeopleSuggestionsDataSource:v8];
-    v14 = [v6 numberOfItemsInSection:0];
-    v15 = [v8 numberOfItemsInSection:0];
-    v16 = [v13 insertedIndexes];
-    v40 = [v13 changedIndexes];
-    v17 = !v14 && ([v16 count] || v15 >= 1) && -[PXComposeRecipientDataSourceManager sourceType](self, "sourceType") == 0;
-    v18 = v40;
-    v19 = [v40 count];
+    v13 = [firstObject itemChangesInSection:0];
+    [(PXComposeRecipientDataSourceManager *)self setPeopleSuggestionsDataSource:dataSource];
+    v14 = [peopleSuggestionsDataSource numberOfItemsInSection:0];
+    v15 = [dataSource numberOfItemsInSection:0];
+    insertedIndexes = [v13 insertedIndexes];
+    changedIndexes = [v13 changedIndexes];
+    v17 = !v14 && ([insertedIndexes count] || v15 >= 1) && -[PXComposeRecipientDataSourceManager sourceType](self, "sourceType") == 0;
+    v18 = changedIndexes;
+    v19 = [changedIndexes count];
     if (!v17 && !v19)
     {
       goto LABEL_35;
     }
 
-    v37 = v16;
-    v38 = v12;
+    v37 = insertedIndexes;
+    v38 = firstObject;
     if (v17)
     {
       v35 = v11;
-      v36 = v6;
-      v20 = [MEMORY[0x1E695DF70] array];
+      v36 = peopleSuggestionsDataSource;
+      array = [MEMORY[0x1E695DF70] array];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
@@ -87,15 +87,15 @@
             }
 
             v26 = *(*(&v45 + 1) + 8 * i);
-            v27 = [v26 personSuggestion];
+            personSuggestion = [v26 personSuggestion];
 
-            if (v27)
+            if (personSuggestion)
             {
-              v28 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v28 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:343 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient.personSuggestion == nil"}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:343 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient.personSuggestion == nil"}];
             }
 
-            [v20 addObject:v26];
+            [array addObject:v26];
           }
 
           v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -106,26 +106,26 @@
 
       [(NSMutableSet *)self->_recipients removeAllObjects];
       [(NSMutableArray *)self->_composeRecipients removeAllObjects];
-      v29 = [(PXComposeRecipientDataSourceManager *)self _composeRecipientsFromCurrentPeopleSuggestionsDataSource];
-      v30 = [v29 arrayByAddingObjectsFromArray:v20];
-      if ([v30 count])
+      _composeRecipientsFromCurrentPeopleSuggestionsDataSource = [(PXComposeRecipientDataSourceManager *)self _composeRecipientsFromCurrentPeopleSuggestionsDataSource];
+      _createComposeRecipientDataSourceFromCurrentState = [_composeRecipientsFromCurrentPeopleSuggestionsDataSource arrayByAddingObjectsFromArray:array];
+      if ([_createComposeRecipientDataSourceFromCurrentState count])
       {
-        [(PXComposeRecipientDataSourceManager *)self _addComposeRecipients:v30];
+        [(PXComposeRecipientDataSourceManager *)self _addComposeRecipients:_createComposeRecipientDataSourceFromCurrentState];
       }
 
-      -[PXComposeRecipientDataSourceManager setNumberOfPeopleSuggested:](self, "setNumberOfPeopleSuggested:", [v29 count]);
+      -[PXComposeRecipientDataSourceManager setNumberOfPeopleSuggested:](self, "setNumberOfPeopleSuggested:", [_composeRecipientsFromCurrentPeopleSuggestionsDataSource count]);
       v11 = v35;
-      v6 = v36;
+      peopleSuggestionsDataSource = v36;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E696AD50] indexSet];
-      v29 = [MEMORY[0x1E696AD50] indexSet];
+      array = [MEMORY[0x1E696AD50] indexSet];
+      _composeRecipientsFromCurrentPeopleSuggestionsDataSource = [MEMORY[0x1E696AD50] indexSet];
       if (!v13 || ([v13 hasIncrementalChanges] & 1) == 0)
       {
-        v31 = [(PXComposeRecipientDataSourceManager *)self _composeRecipientsFromCurrentPeopleSuggestionsDataSource];
-        v18 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v31, "count")}];
+        _composeRecipientsFromCurrentPeopleSuggestionsDataSource2 = [(PXComposeRecipientDataSourceManager *)self _composeRecipientsFromCurrentPeopleSuggestionsDataSource];
+        v18 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(_composeRecipientsFromCurrentPeopleSuggestionsDataSource2, "count")}];
       }
 
       if ([v18 count])
@@ -134,21 +134,21 @@
         v41[1] = 3221225472;
         v41[2] = __68__PXComposeRecipientDataSourceManager_observable_didChange_context___block_invoke;
         v41[3] = &unk_1E774C1B0;
-        v42 = v8;
-        v43 = self;
-        v44 = v20;
+        v42 = dataSource;
+        selfCopy = self;
+        v44 = array;
         [v18 enumerateIndexesUsingBlock:v41];
       }
 
-      if (![v20 count] && !objc_msgSend(v29, "count"))
+      if (![array count] && !objc_msgSend(_composeRecipientsFromCurrentPeopleSuggestionsDataSource, "count"))
       {
         goto LABEL_34;
       }
 
-      v40 = v18;
-      v30 = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
-      [(PXComposeRecipientDataSourceManager *)self setDataSource:v30];
-      v32 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:v29 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v20];
+      changedIndexes = v18;
+      _createComposeRecipientDataSourceFromCurrentState = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
+      [(PXComposeRecipientDataSourceManager *)self setDataSource:_createComposeRecipientDataSourceFromCurrentState];
+      v32 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:_composeRecipientsFromCurrentPeopleSuggestionsDataSource insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:array];
       [(PXComposeRecipientDataSourceManager *)self delegate];
       v34 = v33 = v11;
       [v34 composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v32];
@@ -156,11 +156,11 @@
       v11 = v33;
     }
 
-    v18 = v40;
+    v18 = changedIndexes;
 LABEL_34:
 
-    v16 = v37;
-    v12 = v38;
+    insertedIndexes = v37;
+    firstObject = v38;
 LABEL_35:
   }
 }
@@ -188,14 +188,14 @@ void __68__PXComposeRecipientDataSourceManager_observable_didChange_context___bl
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PXComposeRecipientDataSourceManager *)self sourceType];
+  sourceType = [(PXComposeRecipientDataSourceManager *)self sourceType];
   v5 = @"PXPeopleSuggestionsSourceTypeNone";
-  if (v4 == 1)
+  if (sourceType == 1)
   {
     v5 = @"PXPeopleSuggestionsSourceTypePhotosGraph";
   }
 
-  if (v4 == 2)
+  if (sourceType == 2)
   {
     v6 = @"PXPeopleSuggestionsSourceTypePreviewSuggestion";
   }
@@ -209,9 +209,9 @@ void __68__PXComposeRecipientDataSourceManager_observable_didChange_context___bl
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PXComposeRecipientDataSourceManager numberOfPeopleSuggested](self, "numberOfPeopleSuggested")}];
   [v3 setObject:v7 forKeyedSubscript:@"Number Of People Suggested"];
 
-  v8 = [(PXComposeRecipientDataSourceManager *)self dataSource];
-  v9 = [v8 composeRecipients];
-  v10 = [v9 count];
+  dataSource = [(PXComposeRecipientDataSourceManager *)self dataSource];
+  composeRecipients = [dataSource composeRecipients];
+  v10 = [composeRecipients count];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
   [v3 setObject:v11 forKeyedSubscript:@"Total Recipients Count"];
@@ -221,10 +221,10 @@ void __68__PXComposeRecipientDataSourceManager_observable_didChange_context___bl
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(PXComposeRecipientDataSourceManager *)self dataSource];
-  v14 = [v13 composeRecipients];
+  dataSource2 = [(PXComposeRecipientDataSourceManager *)self dataSource];
+  composeRecipients2 = [dataSource2 composeRecipients];
 
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v15 = [composeRecipients2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -235,17 +235,17 @@ void __68__PXComposeRecipientDataSourceManager_observable_didChange_context___bl
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(composeRecipients2);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * i) diagnosticDictionary];
-        if (v19)
+        diagnosticDictionary = [*(*(&v21 + 1) + 8 * i) diagnosticDictionary];
+        if (diagnosticDictionary)
         {
-          [v12 addObject:v19];
+          [v12 addObject:diagnosticDictionary];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [composeRecipients2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);
@@ -256,51 +256,51 @@ void __68__PXComposeRecipientDataSourceManager_observable_didChange_context___bl
   return v3;
 }
 
-- (void)_replaceComposeRecipientAtIndex:(int64_t)a3 withComposeRecipient:(id)a4
+- (void)_replaceComposeRecipientAtIndex:(int64_t)index withComposeRecipient:(id)recipient
 {
-  v11 = a4;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  recipientCopy = recipient;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"index != NSNotFound"}];
   }
 
-  v7 = [(NSMutableArray *)self->_composeRecipients objectAtIndexedSubscript:a3];
-  v8 = [v7 recipient];
-  v9 = [v11 recipient];
-  if (v8)
+  v7 = [(NSMutableArray *)self->_composeRecipients objectAtIndexedSubscript:index];
+  recipient = [v7 recipient];
+  recipient2 = [recipientCopy recipient];
+  if (recipient)
   {
-    [(NSMutableSet *)self->_recipients removeObject:v8];
+    [(NSMutableSet *)self->_recipients removeObject:recipient];
   }
 
-  [(NSMutableArray *)self->_composeRecipients replaceObjectAtIndex:a3 withObject:v11];
-  if (v9)
+  [(NSMutableArray *)self->_composeRecipients replaceObjectAtIndex:index withObject:recipientCopy];
+  if (recipient2)
   {
-    [(NSMutableSet *)self->_recipients addObject:v9];
+    [(NSMutableSet *)self->_recipients addObject:recipient2];
   }
 }
 
-- (void)_addComposeRecipients:(id)a3
+- (void)_addComposeRecipients:(id)recipients
 {
-  v5 = a3;
-  if (![v5 count])
+  recipientsCopy = recipients;
+  if (![recipientsCopy count])
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"composeRecipients.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"composeRecipients.count > 0"}];
   }
 
-  v6 = [(PXComposeRecipientDataSourceManager *)self _lastValidComposeRecipientIndex];
+  _lastValidComposeRecipientIndex = [(PXComposeRecipientDataSourceManager *)self _lastValidComposeRecipientIndex];
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  if (_lastValidComposeRecipientIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [(NSMutableArray *)self->_composeRecipients count];
   }
 
   else
   {
-    v7 = v6 + 1;
+    v7 = _lastValidComposeRecipientIndex + 1;
   }
 
   v14[3] = v7;
@@ -312,12 +312,12 @@ void __68__PXComposeRecipientDataSourceManager_observable_didChange_context___bl
   v13[4] = self;
   v13[5] = v14;
   v13[6] = a2;
-  [v5 enumerateObjectsUsingBlock:v13];
-  v9 = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
-  [(PXComposeRecipientDataSourceManager *)self setDataSource:v9];
+  [recipientsCopy enumerateObjectsUsingBlock:v13];
+  _createComposeRecipientDataSourceFromCurrentState = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
+  [(PXComposeRecipientDataSourceManager *)self setDataSource:_createComposeRecipientDataSourceFromCurrentState];
   v10 = [off_1E7721450 changeDetailsFromArray:v8 toArray:self->_composeRecipients changedObjects:MEMORY[0x1E695E0F0]];
-  v11 = [(PXComposeRecipientDataSourceManager *)self delegate];
-  [v11 composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v10];
+  delegate = [(PXComposeRecipientDataSourceManager *)self delegate];
+  [delegate composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v10];
 
   _Block_object_dispose(v14, 8);
 }
@@ -388,24 +388,24 @@ void __70__PXComposeRecipientDataSourceManager__lastValidComposeRecipientIndex__
 
 - (id)_composeRecipientsFromCurrentPeopleSuggestionsDataSource
 {
-  v3 = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSource];
-  v4 = [MEMORY[0x1E695DF70] array];
+  peopleSuggestionsDataSource = [(PXComposeRecipientDataSourceManager *)self peopleSuggestionsDataSource];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [(NSMutableSet *)self->_recipients mutableCopy];
-  v6 = [v3 identifier];
+  identifier = [peopleSuggestionsDataSource identifier];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__PXComposeRecipientDataSourceManager__composeRecipientsFromCurrentPeopleSuggestionsDataSource__block_invoke;
   v14[3] = &unk_1E7743210;
-  v15 = v3;
+  v15 = peopleSuggestionsDataSource;
   v16 = v5;
-  v7 = v4;
+  v7 = array;
   v17 = v7;
-  v13[0] = v6;
+  v13[0] = identifier;
   v13[1] = 0;
   v13[2] = 0;
   v13[3] = 0x7FFFFFFFFFFFFFFFLL;
   v8 = v5;
-  v9 = v3;
+  v9 = peopleSuggestionsDataSource;
   [v9 enumerateItemIndexPathsStartingAtIndexPath:v13 reverseDirection:0 usingBlock:v14];
   v10 = v17;
   v11 = v7;
@@ -442,50 +442,50 @@ LABEL_4:
   return v2;
 }
 
-- (void)replaceComposeRecipientAtIndex:(unint64_t)a3 withNewComposeRecipient:(id)a4
+- (void)replaceComposeRecipientAtIndex:(unint64_t)index withNewComposeRecipient:(id)recipient
 {
-  v14 = a4;
-  v6 = [(NSMutableArray *)self->_composeRecipients objectAtIndexedSubscript:a3];
-  v7 = [v6 recipient];
-  if (v7)
+  recipientCopy = recipient;
+  v6 = [(NSMutableArray *)self->_composeRecipients objectAtIndexedSubscript:index];
+  recipient = [v6 recipient];
+  if (recipient)
   {
-    [(NSMutableSet *)self->_recipients removeObject:v7];
+    [(NSMutableSet *)self->_recipients removeObject:recipient];
     recipients = self->_recipients;
-    v9 = [v14 recipient];
-    [(NSMutableSet *)recipients addObject:v9];
+    recipient2 = [recipientCopy recipient];
+    [(NSMutableSet *)recipients addObject:recipient2];
   }
 
   v10 = [(NSMutableArray *)self->_composeRecipients copy];
-  [(NSMutableArray *)self->_composeRecipients replaceObjectAtIndex:a3 withObject:v14];
-  v11 = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
-  [(PXComposeRecipientDataSourceManager *)self setDataSource:v11];
+  [(NSMutableArray *)self->_composeRecipients replaceObjectAtIndex:index withObject:recipientCopy];
+  _createComposeRecipientDataSourceFromCurrentState = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
+  [(PXComposeRecipientDataSourceManager *)self setDataSource:_createComposeRecipientDataSourceFromCurrentState];
   v12 = [off_1E7721450 changeDetailsFromArray:v10 toArray:self->_composeRecipients changedObjects:MEMORY[0x1E695E0F0]];
-  v13 = [(PXComposeRecipientDataSourceManager *)self delegate];
-  [v13 composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v12];
+  delegate = [(PXComposeRecipientDataSourceManager *)self delegate];
+  [delegate composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v12];
 }
 
-- (void)deleteComposeRecipientAtIndex:(unint64_t)a3
+- (void)deleteComposeRecipientAtIndex:(unint64_t)index
 {
   v10 = [(NSMutableArray *)self->_composeRecipients objectAtIndexedSubscript:?];
-  v5 = [v10 recipient];
-  if (v5)
+  recipient = [v10 recipient];
+  if (recipient)
   {
-    [(NSMutableSet *)self->_recipients removeObject:v5];
+    [(NSMutableSet *)self->_recipients removeObject:recipient];
   }
 
   v6 = [(NSMutableArray *)self->_composeRecipients copy];
-  [(NSMutableArray *)self->_composeRecipients removeObjectAtIndex:a3];
-  v7 = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
-  [(PXComposeRecipientDataSourceManager *)self setDataSource:v7];
+  [(NSMutableArray *)self->_composeRecipients removeObjectAtIndex:index];
+  _createComposeRecipientDataSourceFromCurrentState = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
+  [(PXComposeRecipientDataSourceManager *)self setDataSource:_createComposeRecipientDataSourceFromCurrentState];
   v8 = [off_1E7721450 changeDetailsFromArray:v6 toArray:self->_composeRecipients changedObjects:MEMORY[0x1E695E0F0]];
-  v9 = [(PXComposeRecipientDataSourceManager *)self delegate];
-  [v9 composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v8];
+  delegate = [(PXComposeRecipientDataSourceManager *)self delegate];
+  [delegate composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v8];
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientsCopy = recipients;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v6 = [(NSMutableSet *)self->_recipients mutableCopy];
@@ -493,7 +493,7 @@ LABEL_4:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = recipientsCopy;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -513,8 +513,8 @@ LABEL_4:
         v13 = [[PXComposeRecipient alloc] initWithRecipient:v11];
         if (v12)
         {
-          v14 = [(PXComposeRecipientDataSourceManager *)self dataSource];
-          v15 = [v14 indexOfComposeRecipientForRecipient:v11];
+          dataSource = [(PXComposeRecipientDataSourceManager *)self dataSource];
+          v15 = [dataSource indexOfComposeRecipientForRecipient:v11];
 
           if (v15 != 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -543,52 +543,52 @@ LABEL_4:
 
   if ([v19 count])
   {
-    v16 = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
-    [(PXComposeRecipientDataSourceManager *)self setDataSource:v16];
+    _createComposeRecipientDataSourceFromCurrentState = [(PXComposeRecipientDataSourceManager *)self _createComposeRecipientDataSourceFromCurrentState];
+    [(PXComposeRecipientDataSourceManager *)self setDataSource:_createComposeRecipientDataSourceFromCurrentState];
     v17 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v19];
-    v18 = [(PXComposeRecipientDataSourceManager *)self delegate];
-    [v18 composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v17];
+    delegate = [(PXComposeRecipientDataSourceManager *)self delegate];
+    [delegate composeRecipientDataSourceManager:self didUpdateDataSourceWithChangeDetails:v17];
   }
 }
 
-- (PXComposeRecipientDataSourceManager)initWithPeopleSuggestionsDataSourceManager:(id)a3 sourceType:(int64_t)a4
+- (PXComposeRecipientDataSourceManager)initWithPeopleSuggestionsDataSourceManager:(id)manager sourceType:(int64_t)type
 {
-  v8 = a3;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = PXComposeRecipientDataSourceManager;
   v9 = [(PXComposeRecipientDataSourceManager *)&v21 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     composeRecipients = v9->_composeRecipients;
-    v9->_composeRecipients = v10;
+    v9->_composeRecipients = array;
 
     v12 = [MEMORY[0x1E695DFA8] set];
     recipients = v9->_recipients;
     v9->_recipients = v12;
 
-    objc_storeStrong(&v9->_peopleSuggestionsDataSourceManager, a3);
+    objc_storeStrong(&v9->_peopleSuggestionsDataSourceManager, manager);
     [(PXSectionedDataSourceManager *)v9->_peopleSuggestionsDataSourceManager registerChangeObserver:v9 context:PXPeopleSuggestionManagerObservationContext];
-    if ((v8 == 0) != (a4 == 0))
+    if ((managerCopy == 0) != (type == 0))
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v9 file:@"PXComposeRecipientDataSourceManager.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"(peopleSuggestionsDataSourceManager == nil && sourceType == PXPeopleSuggestionsSourceTypeNone) || (peopleSuggestionsDataSourceManager != nil && sourceType != PXPeopleSuggestionsSourceTypeNone)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"PXComposeRecipientDataSourceManager.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"(peopleSuggestionsDataSourceManager == nil && sourceType == PXPeopleSuggestionsSourceTypeNone) || (peopleSuggestionsDataSourceManager != nil && sourceType != PXPeopleSuggestionsSourceTypeNone)"}];
     }
 
-    v9->_sourceType = a4;
-    v14 = [(PXSectionedDataSourceManager *)v9->_peopleSuggestionsDataSourceManager dataSource];
+    v9->_sourceType = type;
+    dataSource = [(PXSectionedDataSourceManager *)v9->_peopleSuggestionsDataSourceManager dataSource];
     peopleSuggestionsDataSource = v9->_peopleSuggestionsDataSource;
-    v9->_peopleSuggestionsDataSource = v14;
+    v9->_peopleSuggestionsDataSource = dataSource;
 
-    v16 = [(PXComposeRecipientDataSourceManager *)v9 _createComposeRecipientDataSourceFromCurrentState];
+    _createComposeRecipientDataSourceFromCurrentState = [(PXComposeRecipientDataSourceManager *)v9 _createComposeRecipientDataSourceFromCurrentState];
     dataSource = v9->_dataSource;
-    v9->_dataSource = v16;
+    v9->_dataSource = _createComposeRecipientDataSourceFromCurrentState;
 
-    v18 = [(PXComposeRecipientDataSourceManager *)v9 _composeRecipientsFromCurrentPeopleSuggestionsDataSource];
-    v9->_numberOfPeopleSuggested = [v18 count];
-    if ([v18 count])
+    _composeRecipientsFromCurrentPeopleSuggestionsDataSource = [(PXComposeRecipientDataSourceManager *)v9 _composeRecipientsFromCurrentPeopleSuggestionsDataSource];
+    v9->_numberOfPeopleSuggested = [_composeRecipientsFromCurrentPeopleSuggestionsDataSource count];
+    if ([_composeRecipientsFromCurrentPeopleSuggestionsDataSource count])
     {
-      [(PXComposeRecipientDataSourceManager *)v9 _addComposeRecipients:v18];
+      [(PXComposeRecipientDataSourceManager *)v9 _addComposeRecipients:_composeRecipientsFromCurrentPeopleSuggestionsDataSource];
     }
   }
 
@@ -597,8 +597,8 @@ LABEL_4:
 
 - (PXComposeRecipientDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:92 description:{@"%s is not available as initializer", "-[PXComposeRecipientDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientDataSourceManager.m" lineNumber:92 description:{@"%s is not available as initializer", "-[PXComposeRecipientDataSourceManager init]"}];
 
   abort();
 }

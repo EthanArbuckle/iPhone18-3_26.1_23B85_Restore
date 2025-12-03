@@ -1,17 +1,17 @@
 @interface DevicePasscodePromptOperation
-- (DevicePasscodePromptOperation)initWithTitle:(id)a3 message:(id)a4;
+- (DevicePasscodePromptOperation)initWithTitle:(id)title message:(id)message;
 - (id)tokenBlock;
 - (int64_t)_keyboardType;
 - (void)run;
-- (void)setTokenBlock:(id)a3;
+- (void)setTokenBlock:(id)block;
 @end
 
 @implementation DevicePasscodePromptOperation
 
-- (DevicePasscodePromptOperation)initWithTitle:(id)a3 message:(id)a4
+- (DevicePasscodePromptOperation)initWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v25.receiver = self;
   v25.super_class = DevicePasscodePromptOperation;
   v8 = [(DevicePasscodePromptOperation *)&v25 init];
@@ -21,11 +21,11 @@
     dialog = v8->_dialog;
     v8->_dialog = v9;
 
-    [(ISDialog *)v8->_dialog setMessage:v7];
-    [(ISDialog *)v8->_dialog setTitle:v6];
+    [(ISDialog *)v8->_dialog setMessage:messageCopy];
+    [(ISDialog *)v8->_dialog setTitle:titleCopy];
     v22 = [NSArray alloc];
-    v23 = v7;
-    v24 = v6;
+    v23 = messageCopy;
+    v24 = titleCopy;
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"PASSCODE_CANCEL" value:&stru_10033CC30 table:@"Mesa"];
     v13 = [ISDialogButton buttonWithTitle:v12];
@@ -44,20 +44,20 @@
     v20 = [NSArray arrayWithObjects:&v26 count:1];
     [(ISDialog *)v19 setTextFields:v20];
 
-    v6 = v24;
-    v7 = v23;
+    titleCopy = v24;
+    messageCopy = v23;
   }
 
   return v8;
 }
 
-- (void)setTokenBlock:(id)a3
+- (void)setTokenBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(DevicePasscodePromptOperation *)self lock];
-  if (self->_tokenBlock != v6)
+  if (self->_tokenBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     tokenBlock = self->_tokenBlock;
     self->_tokenBlock = v4;
   }
@@ -117,21 +117,21 @@
     v12 = v28;
     if (v15)
     {
-      v16 = [v14 selectedButton];
-      if (v16)
+      selectedButton = [v14 selectedButton];
+      if (selectedButton)
       {
-        v26 = v16;
-        v17 = [(ISDialog *)self->_dialog buttons];
-        v18 = [v17 indexOfObjectIdenticalTo:v26];
+        v26 = selectedButton;
+        buttons = [(ISDialog *)self->_dialog buttons];
+        v18 = [buttons indexOfObjectIdenticalTo:v26];
 
         if (v18)
         {
-          v19 = [v14 textFieldValues];
-          if ([v19 count] == 1)
+          textFieldValues = [v14 textFieldValues];
+          if ([textFieldValues count] == 1)
           {
-            v20 = [v19 objectAtIndex:0];
-            v21 = [v20 UTF8String];
-            v31[3] = v21;
+            v20 = [textFieldValues objectAtIndex:0];
+            uTF8String = [v20 UTF8String];
+            v31[3] = uTF8String;
 
             v13 = 3;
           }
@@ -147,7 +147,7 @@
           v13 = 0;
         }
 
-        v16 = v26;
+        selectedButton = v26;
       }
 
       else
@@ -188,11 +188,11 @@
 
   [(DevicePasscodePromptOperation *)self setError:v12];
   [(DevicePasscodePromptOperation *)self setSuccess:v13 == 1];
-  v24 = [(DevicePasscodePromptOperation *)self tokenBlock];
-  v25 = v24;
-  if (v24)
+  tokenBlock = [(DevicePasscodePromptOperation *)self tokenBlock];
+  v25 = tokenBlock;
+  if (tokenBlock)
   {
-    (*(v24 + 16))(v24, v13, v22, v12);
+    (*(tokenBlock + 16))(tokenBlock, v13, v22, v12);
   }
 
   _Block_object_dispose(&v30, 8);
@@ -200,8 +200,8 @@
 
 - (int64_t)_keyboardType
 {
-  v2 = [ISWeakLinkedClassForString() sharedConnection];
-  v3 = 4 * ([v2 unlockScreenType] < 2);
+  iSWeakLinkedClassForString() = [ISWeakLinkedClassForString() sharedConnection];
+  v3 = 4 * ([iSWeakLinkedClassForString() unlockScreenType] < 2);
 
   return v3;
 }

@@ -1,39 +1,39 @@
 @interface TTKDefaultContinuousPathGenerator
-+ (id)pathGeneratorWithAttributes:(id)a3;
-- (CGPoint)addPoint:(CGPoint)a3 andPoint:(CGPoint)a4;
-- (CGPoint)scalarMultiplyPoint:(CGPoint)a3 by:(double)a4;
-- (CGPoint)subtractPoint:(CGPoint)a3 byPoint:(CGPoint)a4;
-- (CGPoint)targetDeviatedNormallyFromPoint:(CGPoint)a3 withKeyWidth:(double)a4;
-- (TTKDefaultContinuousPathGenerator)initWithParams:(id)a3;
++ (id)pathGeneratorWithAttributes:(id)attributes;
+- (CGPoint)addPoint:(CGPoint)point andPoint:(CGPoint)andPoint;
+- (CGPoint)scalarMultiplyPoint:(CGPoint)point by:(double)by;
+- (CGPoint)subtractPoint:(CGPoint)point byPoint:(CGPoint)byPoint;
+- (CGPoint)targetDeviatedNormallyFromPoint:(CGPoint)point withKeyWidth:(double)width;
+- (TTKDefaultContinuousPathGenerator)initWithParams:(id)params;
 - (double)randomNumberFromNormalDistribution;
-- (id)boxPoint:(CGPoint)a3;
-- (id)generateAngularTiming:(id)a3;
-- (id)generateEquidistantTiming:(id)a3;
-- (id)generateInflections:(id)a3;
-- (id)generateKeyCentersFromKeys:(id)a3 string:(id)a4 layout:(id)a5;
-- (id)generateKeysFromString:(id)a3 layout:(id)a4;
-- (id)generatePathFromString:(id)a3 layout:(id)a4;
-- (id)generatePathFromString:(id)a3 timestamp:(double)a4 duration:(double)a5 layout:(id)a6;
-- (id)generatePathFromString:(id)a3 timestamp:(double)a4 layout:(id)a5;
-- (id)generateTimingArray:(id)a3;
+- (id)boxPoint:(CGPoint)point;
+- (id)generateAngularTiming:(id)timing;
+- (id)generateEquidistantTiming:(id)timing;
+- (id)generateInflections:(id)inflections;
+- (id)generateKeyCentersFromKeys:(id)keys string:(id)string layout:(id)layout;
+- (id)generateKeysFromString:(id)string layout:(id)layout;
+- (id)generatePathFromString:(id)string layout:(id)layout;
+- (id)generatePathFromString:(id)string timestamp:(double)timestamp duration:(double)duration layout:(id)layout;
+- (id)generatePathFromString:(id)string timestamp:(double)timestamp layout:(id)layout;
+- (id)generateTimingArray:(id)array;
 - (void)dealloc;
-- (void)setRandomNumberSeed:(unsigned int)a3;
+- (void)setRandomNumberSeed:(unsigned int)seed;
 @end
 
 @implementation TTKDefaultContinuousPathGenerator
 
-- (id)generateEquidistantTiming:(id)a3
+- (id)generateEquidistantTiming:(id)timing
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 objectAtIndexedSubscript:0];
+  timingCopy = timing;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [timingCopy objectAtIndexedSubscript:0];
   [v6 getValue:&v20];
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  [v7 addObject:&unk_287ED49E8];
-  for (i = 1; i < [v4 count]; ++i)
+  array2 = [MEMORY[0x277CBEB18] array];
+  [array2 addObject:&unk_287ED49E8];
+  for (i = 1; i < [timingCopy count]; ++i)
   {
-    v9 = [v4 objectAtIndexedSubscript:i];
+    v9 = [timingCopy objectAtIndexedSubscript:i];
     [v9 getValue:&v19];
 
     [(TTKDefaultContinuousPathGenerator *)self distanceBetween:v20 andPoint:v19];
@@ -48,7 +48,7 @@
         v15 = v14 * v13;
         *&v15 = v15;
         v16 = [MEMORY[0x277CCABB0] numberWithFloat:v15];
-        [v7 addObject:v16];
+        [array2 addObject:v16];
 
         ++v13;
         --v12;
@@ -57,43 +57,43 @@
       while (v12);
     }
 
-    v17 = [v7 copy];
-    [v5 addObject:v17];
+    v17 = [array2 copy];
+    [array addObject:v17];
 
-    [v7 removeAllObjects];
+    [array2 removeAllObjects];
     v20 = v19;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)generateAngularTiming:(id)a3
+- (id)generateAngularTiming:(id)timing
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  timingCopy = timing;
+  array = [MEMORY[0x277CBEB18] array];
   [(TTKDefaultContinuousPathGenerator *)self velocity];
   v50 = v6;
   timeDelta = self->_timeDelta;
-  v8 = [v4 objectAtIndexedSubscript:0];
+  v8 = [timingCopy objectAtIndexedSubscript:0];
   [v8 getValue:v57];
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  [v9 addObject:&unk_287ED49E8];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [array2 addObject:&unk_287ED49E8];
   v10 = ceil(2.0 / timeDelta);
   v11 = 1;
   v12 = 1.0;
   v13 = v10;
-  while (v11 < [v4 count])
+  while (v11 < [timingCopy count])
   {
-    v14 = [v4 objectAtIndexedSubscript:v11];
+    v14 = [timingCopy objectAtIndexedSubscript:v11];
     [v14 getValue:&v56];
 
     [(TTKDefaultContinuousPathGenerator *)self distanceBetween:*v57 andPoint:v56];
     v16 = v15;
     v18 = v10;
-    if (v11 < [v4 count] - 1)
+    if (v11 < [timingCopy count] - 1)
     {
-      v19 = [v4 objectAtIndexedSubscript:v11 + 1];
+      v19 = [timingCopy objectAtIndexedSubscript:v11 + 1];
       [v19 getValue:&v54];
 
       v20 = *&v56 - v57[0];
@@ -130,7 +130,7 @@
       v34 = v33 / v16;
       *&v34 = v33 / v16;
       v35 = [MEMORY[0x277CCABB0] numberWithFloat:{v34, v17}];
-      [v9 addObject:v35];
+      [array2 addObject:v35];
 
       if (vabdd_f64(v33, v16) < v12)
       {
@@ -221,15 +221,15 @@
       }
     }
 
-    v48 = [v9 copy];
-    [v5 addObject:v48];
+    v48 = [array2 copy];
+    [array addObject:v48];
 
-    [v9 removeAllObjects];
+    [array2 removeAllObjects];
     *v57 = v56;
     ++v11;
   }
 
-  return v5;
+  return array;
 }
 
 double __59__TTKDefaultContinuousPathGenerator_generateAngularTiming___block_invoke(uint64_t a1, double a2, double a3, double a4, long double a5)
@@ -287,28 +287,28 @@ double __59__TTKDefaultContinuousPathGenerator_generateAngularTiming___block_inv
   return v7;
 }
 
-- (id)generateTimingArray:(id)a3
+- (id)generateTimingArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if ([(NSString *)self->_touchTimingAlgorithm isEqualToString:@"ANGULAR"])
   {
-    [(TTKDefaultContinuousPathGenerator *)self generateAngularTiming:v4];
+    [(TTKDefaultContinuousPathGenerator *)self generateAngularTiming:arrayCopy];
   }
 
   else
   {
-    [(TTKDefaultContinuousPathGenerator *)self generateEquidistantTiming:v4];
+    [(TTKDefaultContinuousPathGenerator *)self generateEquidistantTiming:arrayCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)generateInflections:(id)a3
+- (id)generateInflections:(id)inflections
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 objectAtIndex:0];
+  inflectionsCopy = inflections;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [inflectionsCopy objectAtIndex:0];
   [v6 frame];
   v64 = v7;
   [v6 frame];
@@ -318,9 +318,9 @@ double __59__TTKDefaultContinuousPathGenerator_generateAngularTiming___block_inv
   v10 = v9;
   v12 = v11;
   v13 = [(TTKDefaultContinuousPathGenerator *)self boxPoint:?];
-  [v5 addObject:v13];
+  [array addObject:v13];
 
-  v14 = [v4 count];
+  v14 = [inflectionsCopy count];
   v15 = v14;
   if (v14 >= 2)
   {
@@ -328,11 +328,11 @@ double __59__TTKDefaultContinuousPathGenerator_generateAngularTiming___block_inv
     v17 = 1;
     while (1)
     {
-      v18 = [v4 objectAtIndex:v17];
+      v18 = [inflectionsCopy objectAtIndex:v17];
       [v18 center];
       v20 = v19;
       v22 = v21;
-      v23 = [v4 objectAtIndex:v17 - 1];
+      v23 = [inflectionsCopy objectAtIndex:v17 - 1];
       [v23 center];
       v25 = v24;
       v27 = v26;
@@ -344,8 +344,8 @@ double __59__TTKDefaultContinuousPathGenerator_generateAngularTiming___block_inv
 
       if ([(TTKDefaultContinuousPathGenerator *)self canHandleDoubleLetter])
       {
-        v61 = [v5 lastObject];
-        [v5 addObject:v61];
+        lastObject = [array lastObject];
+        [array addObject:lastObject];
 LABEL_28:
       }
 
@@ -358,14 +358,14 @@ LABEL_28:
     v29 = v17 + 1;
     if (v17 + 1 < v15)
     {
-      v30 = [v4 objectAtIndex:v17 + 1];
+      v30 = [inflectionsCopy objectAtIndex:v17 + 1];
       [v30 center];
       v32 = v31;
       v34 = v33;
 
       if (v22 == v27 && v22 == v34 && (v25 < v20 && v20 < v32 || v25 > v20 && v20 > v32))
       {
-        v35 = [v4 objectAtIndex:v17 + 1];
+        v35 = [inflectionsCopy objectAtIndex:v17 + 1];
 
         [v35 center];
         v18 = v35;
@@ -417,11 +417,11 @@ LABEL_28:
       }
 
       v60 = [(TTKDefaultContinuousPathGenerator *)self boxPoint:v10 + (v57 * -0.5 + v57 * v53) * -v56 + v55 * v58, v12 + v55 * (v57 * -0.5 + v57 * v53) + v56 * v58];
-      [v5 addObject:v60];
+      [array addObject:v60];
     }
 
-    v61 = [(TTKDefaultContinuousPathGenerator *)self boxPoint:v47, v49];
-    [v5 addObject:v61];
+    lastObject = [(TTKDefaultContinuousPathGenerator *)self boxPoint:v47, v49];
+    [array addObject:lastObject];
     v12 = v49;
     v10 = v47;
     goto LABEL_28;
@@ -429,29 +429,29 @@ LABEL_28:
 
 LABEL_30:
 
-  return v5;
+  return array;
 }
 
-- (id)generatePathFromString:(id)a3 timestamp:(double)a4 duration:(double)a5 layout:(id)a6
+- (id)generatePathFromString:(id)string timestamp:(double)timestamp duration:(double)duration layout:(id)layout
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(TTKDefaultContinuousPathGenerator *)self generateKeysFromString:v10 layout:v11];
+  stringCopy = string;
+  layoutCopy = layout;
+  v12 = [(TTKDefaultContinuousPathGenerator *)self generateKeysFromString:stringCopy layout:layoutCopy];
   if (v12)
   {
-    v13 = [(TTKDefaultContinuousPathGenerator *)self generateKeyCentersFromKeys:v12 string:v10 layout:v11];
+    v13 = [(TTKDefaultContinuousPathGenerator *)self generateKeyCentersFromKeys:v12 string:stringCopy layout:layoutCopy];
     if ([v13 count])
     {
       v14 = [(TTKDefaultContinuousPathGenerator *)self generateInflections:v12];
       v15 = [(TTKDefaultContinuousPathGenerator *)self generateTimingArray:v14];
-      if (a5 == -1.0)
+      if (duration == -1.0)
       {
-        [(TTKDefaultContinuousPathGenerator *)self generatePathFromInflectionPoints:v14 timestamp:v15 segmentTiming:v12 keys:v10 string:v11 layout:a4];
+        [(TTKDefaultContinuousPathGenerator *)self generatePathFromInflectionPoints:v14 timestamp:v15 segmentTiming:v12 keys:stringCopy string:layoutCopy layout:timestamp];
       }
 
       else
       {
-        [(TTKDefaultContinuousPathGenerator *)self generatePathFromInflectionPoints:v14 timestamp:v15 duration:v12 segmentTiming:v10 keys:v11 string:a4 layout:a5];
+        [(TTKDefaultContinuousPathGenerator *)self generatePathFromInflectionPoints:v14 timestamp:v15 duration:v12 segmentTiming:stringCopy keys:layoutCopy string:timestamp layout:duration];
       }
       v16 = ;
     }
@@ -470,30 +470,30 @@ LABEL_30:
   return v16;
 }
 
-- (id)generatePathFromString:(id)a3 timestamp:(double)a4 layout:(id)a5
+- (id)generatePathFromString:(id)string timestamp:(double)timestamp layout:(id)layout
 {
-  v5 = [(TTKDefaultContinuousPathGenerator *)self generatePathFromString:a3 timestamp:a5 duration:a4 layout:-1.0];
+  v5 = [(TTKDefaultContinuousPathGenerator *)self generatePathFromString:string timestamp:layout duration:timestamp layout:-1.0];
 
   return v5;
 }
 
-- (id)generatePathFromString:(id)a3 layout:(id)a4
+- (id)generatePathFromString:(id)string layout:(id)layout
 {
-  v4 = [(TTKDefaultContinuousPathGenerator *)self generatePathFromString:a3 timestamp:a4 layout:0.0];
+  v4 = [(TTKDefaultContinuousPathGenerator *)self generatePathFromString:string timestamp:layout layout:0.0];
 
   return v4;
 }
 
-- (id)generateKeyCentersFromKeys:(id)a3 string:(id)a4 layout:(id)a5
+- (id)generateKeyCentersFromKeys:(id)keys string:(id)string layout:(id)layout
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  keysCopy = keys;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -521,12 +521,12 @@ LABEL_30:
   return v7;
 }
 
-- (id)generateKeysFromString:(id)a3 layout:(id)a4
+- (id)generateKeysFromString:(id)string layout:(id)layout
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
+  stringCopy = string;
+  layoutCopy = layout;
+  v7 = [stringCopy length];
   if (v7 == 1)
   {
     v8 = 0;
@@ -541,7 +541,7 @@ LABEL_30:
       v11 = v7;
       do
       {
-        v24 = [v5 characterAtIndex:v10];
+        v24 = [stringCopy characterAtIndex:v10];
         v12 = [MEMORY[0x277CCACA8] stringWithCharacters:&v24 length:1];
         [v9 addObject:v12];
 
@@ -570,7 +570,7 @@ LABEL_30:
             objc_enumerationMutation(v14);
           }
 
-          v18 = [v6 findKey:*(*(&v20 + 1) + 8 * i)];
+          v18 = [layoutCopy findKey:*(*(&v20 + 1) + 8 * i)];
           if (!v18)
           {
 
@@ -634,14 +634,14 @@ LABEL_16:
   return *m_normal_distribution + v3 * *(m_normal_distribution + 1);
 }
 
-- (void)setRandomNumberSeed:(unsigned int)a3
+- (void)setRandomNumberSeed:(unsigned int)seed
 {
   m_generator = self->m_generator;
-  *m_generator = a3;
+  *m_generator = seed;
   for (i = 1; i != 624; ++i)
   {
-    a3 = i + 1812433253 * (a3 ^ (a3 >> 30));
-    m_generator[i] = a3;
+    seed = i + 1812433253 * (seed ^ (seed >> 30));
+    m_generator[i] = seed;
   }
 
   *(m_generator + 312) = 0;
@@ -673,12 +673,12 @@ LABEL_16:
   [(TTKDefaultContinuousPathGenerator *)&v6 dealloc];
 }
 
-- (TTKDefaultContinuousPathGenerator)initWithParams:(id)a3
+- (TTKDefaultContinuousPathGenerator)initWithParams:(id)params
 {
-  v4 = a3;
-  if (v4)
+  paramsCopy = params;
+  if (paramsCopy)
   {
-    v5 = v4;
+    v5 = paramsCopy;
   }
 
   else
@@ -847,22 +847,22 @@ LABEL_16:
   return 0;
 }
 
-- (id)boxPoint:(CGPoint)a3
+- (id)boxPoint:(CGPoint)point
 {
-  v5 = a3;
-  v3 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGPoint=dd}"];
+  pointCopy = point;
+  v3 = [MEMORY[0x277CCAE60] valueWithBytes:&pointCopy objCType:"{CGPoint=dd}"];
 
   return v3;
 }
 
-- (CGPoint)targetDeviatedNormallyFromPoint:(CGPoint)a3 withKeyWidth:(double)a4
+- (CGPoint)targetDeviatedNormallyFromPoint:(CGPoint)point withKeyWidth:(double)width
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TTKDefaultContinuousPathGenerator *)self randomNumberFromNormalDistribution];
-  v9 = v8 * a4 * self->_normalKeyWidthMultiple;
+  v9 = v8 * width * self->_normalKeyWidthMultiple;
   [(TTKDefaultContinuousPathGenerator *)self randomNumberFromNormalDistribution];
-  v11 = v10 * a4 * self->_normalKeyWidthMultiple;
+  v11 = v10 * width * self->_normalKeyWidthMultiple;
   v12 = x + v9;
   v13 = y + v11;
   result.y = v13;
@@ -870,39 +870,39 @@ LABEL_16:
   return result;
 }
 
-- (CGPoint)scalarMultiplyPoint:(CGPoint)a3 by:(double)a4
+- (CGPoint)scalarMultiplyPoint:(CGPoint)point by:(double)by
 {
-  v4 = a3.x * a4;
-  v5 = a3.y * a4;
+  v4 = point.x * by;
+  v5 = point.y * by;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)addPoint:(CGPoint)a3 andPoint:(CGPoint)a4
+- (CGPoint)addPoint:(CGPoint)point andPoint:(CGPoint)andPoint
 {
-  v4 = a3.x + a4.x;
-  v5 = a3.y + a4.y;
+  v4 = point.x + andPoint.x;
+  v5 = point.y + andPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)subtractPoint:(CGPoint)a3 byPoint:(CGPoint)a4
+- (CGPoint)subtractPoint:(CGPoint)point byPoint:(CGPoint)byPoint
 {
-  v4 = a3.x - a4.x;
-  v5 = a3.y - a4.y;
+  v4 = point.x - byPoint.x;
+  v5 = point.y - byPoint.y;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-+ (id)pathGeneratorWithAttributes:(id)a3
++ (id)pathGeneratorWithAttributes:(id)attributes
 {
-  v3 = a3;
-  if (v3)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
-    v4 = v3;
+    v4 = attributesCopy;
   }
 
   else

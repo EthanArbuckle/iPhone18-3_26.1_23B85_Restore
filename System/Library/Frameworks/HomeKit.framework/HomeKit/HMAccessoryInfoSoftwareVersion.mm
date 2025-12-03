@@ -1,8 +1,8 @@
 @interface HMAccessoryInfoSoftwareVersion
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryInfoSoftwareVersion)initWithProtoData:(id)a3;
-- (HMAccessoryInfoSoftwareVersion)initWithProtoPayload:(id)a3;
-- (HMAccessoryInfoSoftwareVersion)initWithSoftwareVersion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryInfoSoftwareVersion)initWithProtoData:(id)data;
+- (HMAccessoryInfoSoftwareVersion)initWithProtoPayload:(id)payload;
+- (HMAccessoryInfoSoftwareVersion)initWithSoftwareVersion:(id)version;
 - (id)description;
 - (id)protoData;
 - (id)protoPayload;
@@ -11,36 +11,36 @@
 
 @implementation HMAccessoryInfoSoftwareVersion
 
-- (HMAccessoryInfoSoftwareVersion)initWithProtoData:(id)a3
+- (HMAccessoryInfoSoftwareVersion)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[HMAccessoryInfoProtoSoftwareVersionInfoEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[HMAccessoryInfoProtoSoftwareVersionInfoEvent alloc] initWithData:dataCopy];
 
   v6 = [(HMAccessoryInfoSoftwareVersion *)self initWithProtoPayload:v5];
   return v6;
 }
 
-- (HMAccessoryInfoSoftwareVersion)initWithProtoPayload:(id)a3
+- (HMAccessoryInfoSoftwareVersion)initWithProtoPayload:(id)payload
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasMajorVersion] && objc_msgSend(v4, "hasMinorVersion") && (objc_msgSend(v4, "hasUpdateVersion") & 1) != 0)
+  payloadCopy = payload;
+  if ([payloadCopy hasMajorVersion] && objc_msgSend(payloadCopy, "hasMinorVersion") && (objc_msgSend(payloadCopy, "hasUpdateVersion") & 1) != 0)
   {
     v5 = objc_alloc(MEMORY[0x1E69A2A60]);
-    v6 = [v4 majorVersion];
-    v7 = [v4 minorVersion];
-    v8 = [v4 updateVersion];
-    v9 = [v4 buildVersion];
-    v10 = [v5 initWithMajorVersion:v6 minorVersion:v7 updateVersion:v8 buildVersion:v9];
+    majorVersion = [payloadCopy majorVersion];
+    minorVersion = [payloadCopy minorVersion];
+    updateVersion = [payloadCopy updateVersion];
+    buildVersion = [payloadCopy buildVersion];
+    v10 = [v5 initWithMajorVersion:majorVersion minorVersion:minorVersion updateVersion:updateVersion buildVersion:buildVersion];
 
-    v11 = [(HMAccessoryInfoSoftwareVersion *)self initWithSoftwareVersion:v10];
-    v12 = v11;
+    selfCopy = [(HMAccessoryInfoSoftwareVersion *)self initWithSoftwareVersion:v10];
+    v12 = selfCopy;
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -48,11 +48,11 @@
       v18 = 138544130;
       v19 = v15;
       v20 = 2048;
-      v21 = [v4 majorVersion];
+      majorVersion2 = [payloadCopy majorVersion];
       v22 = 2048;
-      v23 = [v4 minorVersion];
+      minorVersion2 = [payloadCopy minorVersion];
       v24 = 2048;
-      v25 = [v4 updateVersion];
+      updateVersion2 = [payloadCopy updateVersion];
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_ERROR, "%{public}@Proto payload is missing required sw version info. Major: %lld minor: %lld update: %lld", &v18, 0x2Au);
     }
 
@@ -66,43 +66,43 @@
 
 - (id)protoData
 {
-  v2 = [(HMAccessoryInfoSoftwareVersion *)self protoPayload];
-  v3 = [v2 data];
+  protoPayload = [(HMAccessoryInfoSoftwareVersion *)self protoPayload];
+  data = [protoPayload data];
 
-  return v3;
+  return data;
 }
 
 - (id)protoPayload
 {
   v3 = objc_alloc_init(HMAccessoryInfoProtoSoftwareVersionInfoEvent);
-  v4 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  -[HMAccessoryInfoProtoSoftwareVersionInfoEvent setMajorVersion:](v3, "setMajorVersion:", [v4 majorVersion]);
+  softwareVersion = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  -[HMAccessoryInfoProtoSoftwareVersionInfoEvent setMajorVersion:](v3, "setMajorVersion:", [softwareVersion majorVersion]);
 
-  v5 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  -[HMAccessoryInfoProtoSoftwareVersionInfoEvent setMinorVersion:](v3, "setMinorVersion:", [v5 minorVersion]);
+  softwareVersion2 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  -[HMAccessoryInfoProtoSoftwareVersionInfoEvent setMinorVersion:](v3, "setMinorVersion:", [softwareVersion2 minorVersion]);
 
-  v6 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  -[HMAccessoryInfoProtoSoftwareVersionInfoEvent setUpdateVersion:](v3, "setUpdateVersion:", [v6 updateVersion]);
+  softwareVersion3 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  -[HMAccessoryInfoProtoSoftwareVersionInfoEvent setUpdateVersion:](v3, "setUpdateVersion:", [softwareVersion3 updateVersion]);
 
-  v7 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  v8 = [v7 buildVersion];
-  [(HMAccessoryInfoProtoSoftwareVersionInfoEvent *)v3 setBuildVersion:v8];
+  softwareVersion4 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  buildVersion = [softwareVersion4 buildVersion];
+  [(HMAccessoryInfoProtoSoftwareVersionInfoEvent *)v3 setBuildVersion:buildVersion];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  v3 = [v2 hash];
+  softwareVersion = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  v3 = [softwareVersion hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -112,7 +112,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -123,8 +123,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-      v8 = [(HMAccessoryInfoSoftwareVersion *)v6 softwareVersion];
+      softwareVersion = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+      softwareVersion2 = [(HMAccessoryInfoSoftwareVersion *)v6 softwareVersion];
       v9 = HMFEqualObjects();
     }
 
@@ -143,24 +143,24 @@
   v10.receiver = self;
   v10.super_class = HMAccessoryInfoSoftwareVersion;
   v4 = [(HMAccessoryInfoSoftwareVersion *)&v10 description];
-  v5 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  v6 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
-  v7 = [v6 buildVersion];
-  v8 = [v3 stringWithFormat:@"%@, %@ (%@)", v4, v5, v7];
+  softwareVersion = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  softwareVersion2 = [(HMAccessoryInfoSoftwareVersion *)self softwareVersion];
+  buildVersion = [softwareVersion2 buildVersion];
+  v8 = [v3 stringWithFormat:@"%@, %@ (%@)", v4, softwareVersion, buildVersion];
 
   return v8;
 }
 
-- (HMAccessoryInfoSoftwareVersion)initWithSoftwareVersion:(id)a3
+- (HMAccessoryInfoSoftwareVersion)initWithSoftwareVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = HMAccessoryInfoSoftwareVersion;
   v6 = [(HMAccessoryInfoSoftwareVersion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_softwareVersion, a3);
+    objc_storeStrong(&v6->_softwareVersion, version);
   }
 
   return v7;

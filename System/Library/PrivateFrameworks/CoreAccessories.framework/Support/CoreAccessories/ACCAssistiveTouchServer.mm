@@ -1,23 +1,23 @@
 @interface ACCAssistiveTouchServer
 + (id)sharedServer;
-- (ACCAssistiveTouchServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (void)accessoryAssistiveTouchAttached:(id)a3;
-- (void)accessoryAssistiveTouchDetached:(id)a3;
+- (ACCAssistiveTouchServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (void)accessoryAssistiveTouchAttached:(id)attached;
+- (void)accessoryAssistiveTouchDetached:(id)detached;
 - (void)dealloc;
-- (void)iterateAttachedConnectionsSync:(id)a3;
-- (void)requestState:(id)a3;
+- (void)iterateAttachedConnectionsSync:(id)sync;
+- (void)requestState:(id)state;
 @end
 
 @implementation ACCAssistiveTouchServer
 
-- (ACCAssistiveTouchServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCAssistiveTouchServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = ACCAssistiveTouchServer;
-  v7 = [(ACCFeatureServer *)&v17 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v7 = [(ACCFeatureServer *)&v17 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -47,9 +47,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = v6;
+    v19 = nameCopy;
     v20 = 2080;
-    v21 = a4;
+    notificationCopy = notification;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "initWithXPCServiceName: serviceName='%@' notification='%s' self=%@", buf, 0x20u);
@@ -103,7 +103,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc: self=%@", buf, 0xCu);
   }
 
@@ -121,16 +121,16 @@
   [(ACCFeatureServer *)&v9 dealloc];
 }
 
-- (void)iterateAttachedConnectionsSync:(id)a3
+- (void)iterateAttachedConnectionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   [(NSLock *)self->_registeredAccessoryConnectionsLock lock];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -141,13 +141,13 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 1;
-      v11 = [v10 accessoryUID];
-      v4[2](v4, v11, &v12);
+      accessoryUID = [v10 accessoryUID];
+      syncCopy[2](syncCopy, accessoryUID, &v12);
 
       if (v12 != 1)
       {
@@ -156,7 +156,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -170,10 +170,10 @@ LABEL_3:
   [(NSLock *)self->_registeredAccessoryConnectionsLock unlock];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -209,26 +209,26 @@ LABEL_3:
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCAssistiveTouchXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCAssistiveTouchServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCAssistiveTouchServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCAssistiveTouchXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invoke;
   v23[3] = &unk_100227718;
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
-  [v7 setInvalidationHandler:v23];
+  [connectionCopy setInvalidationHandler:v23];
   v15 = objc_alloc_init(_ACCAssistiveTouchProviderInfo);
-  [(_ACCAssistiveTouchProviderInfo *)v15 setConnection:v7];
+  [(_ACCAssistiveTouchProviderInfo *)v15 setConnection:connectionCopy];
   [(_ACCAssistiveTouchProviderInfo *)v15 setServerRemote:v13];
-  v16 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_33];
+  v16 = [connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_33];
   [(_ACCAssistiveTouchProviderInfo *)v15 setRemoteObject:v16];
 
   objc_storeStrong(&self->_assistiveTouchProviderInfo, v15);
@@ -256,7 +256,7 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "providerInfo=%@", buf, 0xCu);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   v20 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -424,14 +424,14 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
   return [*(*(a1 + 32) + 72) unlock];
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   assistiveTouchProviderInfo = self->_assistiveTouchProviderInfo;
   if (assistiveTouchProviderInfo)
   {
-    v6 = [(_ACCAssistiveTouchProviderInfo *)assistiveTouchProviderInfo connection];
-    v7 = [v6 isEqual:v4];
+    connection = [(_ACCAssistiveTouchProviderInfo *)assistiveTouchProviderInfo connection];
+    v7 = [connection isEqual:connectionCopy];
   }
 
   else
@@ -473,16 +473,16 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
     v14 = 2112;
     v15 = v11;
     v16 = 2112;
-    v17 = v4;
+    v17 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "AssistiveTouch server, shouldAcceptConnection=%d _assistiveTouchProviderInfo=%@ connection=%@", v13, 0x1Cu);
   }
 
   return v7;
 }
 
-- (void)accessoryAssistiveTouchAttached:(id)a3
+- (void)accessoryAssistiveTouchAttached:(id)attached
 {
-  v4 = a3;
+  attachedCopy = attached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -512,17 +512,17 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = attachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "AssistiveTouch server, accessoryAssistiveTouchAttached: %@", &v13, 0xCu);
   }
 
   [(NSLock *)self->_registeredAccessoryConnectionsLock lock];
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:attachedCopy];
 
   if (!v8)
   {
-    v9 = [[_ACCAssistiveTouchAccessoryInfo alloc] initWithUID:v4];
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v9 forKey:v4];
+    v9 = [[_ACCAssistiveTouchAccessoryInfo alloc] initWithUID:attachedCopy];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v9 forKey:attachedCopy];
   }
 
   [(NSLock *)self->_registeredAccessoryConnectionsLock unlock];
@@ -544,16 +544,16 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCAssistiveTouchServer *)v4 accessoryAssistiveTouchAttached:?];
+    [(ACCAssistiveTouchServer *)attachedCopy accessoryAssistiveTouchAttached:?];
   }
 
-  v12 = [(_ACCAssistiveTouchProviderInfo *)self->_assistiveTouchProviderInfo remoteObject];
-  [v12 accessoryAssistiveTouchAttached:v4];
+  remoteObject = [(_ACCAssistiveTouchProviderInfo *)self->_assistiveTouchProviderInfo remoteObject];
+  [remoteObject accessoryAssistiveTouchAttached:attachedCopy];
 }
 
-- (void)accessoryAssistiveTouchDetached:(id)a3
+- (void)accessoryAssistiveTouchDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -583,16 +583,16 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "AssistiveTouch server, accessoryAssistiveTouchDetached: %@", &v12, 0xCu);
   }
 
   [(NSLock *)self->_registeredAccessoryConnectionsLock lock];
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:detachedCopy];
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:detachedCopy];
   }
 
   [(NSLock *)self->_registeredAccessoryConnectionsLock unlock];
@@ -614,16 +614,16 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCAssistiveTouchServer *)v4 accessoryAssistiveTouchDetached:?];
+    [(ACCAssistiveTouchServer *)detachedCopy accessoryAssistiveTouchDetached:?];
   }
 
-  v11 = [(_ACCAssistiveTouchProviderInfo *)self->_assistiveTouchProviderInfo remoteObject];
-  [v11 accessoryAssistiveTouchDetached:v4];
+  remoteObject = [(_ACCAssistiveTouchProviderInfo *)self->_assistiveTouchProviderInfo remoteObject];
+  [remoteObject accessoryAssistiveTouchDetached:detachedCopy];
 }
 
-- (void)requestState:(id)a3
+- (void)requestState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -653,7 +653,7 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = stateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "requestState: accessoryUID=%@", &v11, 0xCu);
   }
 
@@ -675,11 +675,11 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCAssistiveTouchServer *)v4 requestState:?];
+    [(ACCAssistiveTouchServer *)stateCopy requestState:?];
   }
 
-  v10 = [(_ACCAssistiveTouchProviderInfo *)self->_assistiveTouchProviderInfo remoteObject];
-  [v10 requestState:v4];
+  remoteObject = [(_ACCAssistiveTouchProviderInfo *)self->_assistiveTouchProviderInfo remoteObject];
+  [remoteObject requestState:stateCopy];
 }
 
 + (id)sharedServer
@@ -688,7 +688,7 @@ id __62__ACCAssistiveTouchServer_listener_shouldAcceptNewConnection___block_invo
   block[1] = 3221225472;
   block[2] = __39__ACCAssistiveTouchServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_8 != -1)
   {
     dispatch_once(&sharedServer_once_8, block);

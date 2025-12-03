@@ -1,39 +1,39 @@
 @interface SBAppClipOverlayViewController
 - (NSString)description;
-- (SBAppClipOverlayViewController)initWithCoder:(id)a3;
-- (SBAppClipOverlayViewController)initWithCoordinator:(id)a3 bundleIdentifier:(id)a4 sceneIdentifier:(id)a5;
-- (SBAppClipOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBAppClipOverlayViewController)initWithCoder:(id)coder;
+- (SBAppClipOverlayViewController)initWithCoordinator:(id)coordinator bundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier;
+- (SBAppClipOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)participantName;
 - (id)view;
 - (void)invalidate;
 - (void)loadView;
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 animated:(BOOL)a4;
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder animated:(BOOL)animated;
 - (void)setNeedsUpdate;
-- (void)setSceneActivationState:(int64_t)a3 animated:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setSceneActivationState:(int64_t)state animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBAppClipOverlayViewController
 
-- (SBAppClipOverlayViewController)initWithCoordinator:(id)a3 bundleIdentifier:(id)a4 sceneIdentifier:(id)a5
+- (SBAppClipOverlayViewController)initWithCoordinator:(id)coordinator bundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  coordinatorCopy = coordinator;
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
   v23.receiver = self;
   v23.super_class = SBAppClipOverlayViewController;
   v12 = [(SBAppClipOverlayViewController *)&v23 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_coordinator, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_coordinator, coordinator);
+    v14 = [identifierCopy copy];
     bundleIdentifier = v13->_bundleIdentifier;
     v13->_bundleIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [sceneIdentifierCopy copy];
     sceneIdentifier = v13->_sceneIdentifier;
     v13->_sceneIdentifier = v16;
 
@@ -50,59 +50,59 @@
   return v13;
 }
 
-- (SBAppClipOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBAppClipOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"SBAppClipOverlayViewController.m" lineNumber:61 description:@"Use -initWithCoordinator:bundleIdentifier:sceneIdentifier: instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppClipOverlayViewController.m" lineNumber:61 description:@"Use -initWithCoordinator:bundleIdentifier:sceneIdentifier: instead"];
 
   return [(SBAppClipOverlayViewController *)self initWithCoordinator:0 bundleIdentifier:0 sceneIdentifier:0];
 }
 
-- (SBAppClipOverlayViewController)initWithCoder:(id)a3
+- (SBAppClipOverlayViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBAppClipOverlayViewController.m" lineNumber:66 description:@"Use -initWithCoordinator:bundleIdentifier:sceneIdentifier: instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppClipOverlayViewController.m" lineNumber:66 description:@"Use -initWithCoordinator:bundleIdentifier:sceneIdentifier: instead"];
 
   return [(SBAppClipOverlayViewController *)self initWithCoordinator:0 bundleIdentifier:0 sceneIdentifier:0];
 }
 
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder animated:(BOOL)animated
 {
-  if (self->_displayedOverPlaceholder != a3)
+  if (self->_displayedOverPlaceholder != placeholder)
   {
-    v6 = self;
-    self->_displayedOverPlaceholder = a3;
-    if (a3)
+    selfCopy2 = self;
+    self->_displayedOverPlaceholder = placeholder;
+    if (placeholder)
     {
       if (self->_webClipIdentifier)
       {
-        *&a3 = 1;
+        *&placeholder = 1;
       }
 
       else
       {
         v11 = v4;
         v12 = v5;
-        v8 = a4;
+        animatedCopy = animated;
         [(SBAppClipOverlayViewController *)a2 setDisplayedOverPlaceholder:&self->_displayedOverPlaceholder animated:&v10];
-        v6 = self;
-        *&a4 = v8;
-        *&a3 = v10;
+        selfCopy2 = self;
+        *&animated = animatedCopy;
+        *&placeholder = v10;
         v5 = v12;
       }
     }
 
-    overlayViewController = v6->_overlayViewController;
+    overlayViewController = selfCopy2->_overlayViewController;
 
-    [(CPSClipOverlayViewController *)overlayViewController setDisplayedOverPlaceholder:a3 animated:a4];
+    [(CPSClipOverlayViewController *)overlayViewController setDisplayedOverPlaceholder:placeholder animated:animated];
   }
 }
 
-- (void)setSceneActivationState:(int64_t)a3 animated:(BOOL)a4
+- (void)setSceneActivationState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_sceneActivationState != a3)
+  if (self->_sceneActivationState != state)
   {
-    self->_sceneActivationState = a3;
+    self->_sceneActivationState = state;
     [CPSClipOverlayViewController setSceneActivationState:"setSceneActivationState:animated:" animated:?];
   }
 }
@@ -124,9 +124,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBAppClipOverlayViewController;
-  v2 = [(SBAppClipOverlayViewController *)&v4 view];
+  view = [(SBAppClipOverlayViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 - (void)loadView
@@ -137,11 +137,11 @@
   [(SBAppClipOverlayViewController *)self setView:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = SBAppClipOverlayViewController;
-  [(SBAppClipOverlayViewController *)&v8 viewWillAppear:a3];
+  [(SBAppClipOverlayViewController *)&v8 viewWillAppear:appear];
   if (!self->_overlayViewController)
   {
     v4 = [(SBAppClipOverlayCoordinator *)self->_coordinator overlayViewControllerForBundleIdentifier:self->_bundleIdentifier webClipIdentifier:self->_webClipIdentifier participant:self];
@@ -149,8 +149,8 @@
     self->_overlayViewController = v4;
 
     v6 = self->_overlayViewController;
-    v7 = [(SBAppClipOverlayViewController *)self view];
-    [(SBAppClipOverlayViewController *)self bs_addChildViewController:v6 withSuperview:v7];
+    view = [(SBAppClipOverlayViewController *)self view];
+    [(SBAppClipOverlayViewController *)self bs_addChildViewController:v6 withSuperview:view];
 
     [(CPSClipOverlayViewController *)self->_overlayViewController setDisplayedOverPlaceholder:self->_displayedOverPlaceholder animated:0];
     [(CPSClipOverlayViewController *)self->_overlayViewController setSceneActivationState:self->_sceneActivationState animated:0];
@@ -162,13 +162,13 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SBAppClipOverlayViewController *)self invalidate];
   v5.receiver = self;
   v5.super_class = SBAppClipOverlayViewController;
-  [(SBAppClipOverlayViewController *)&v5 viewDidDisappear:v3];
+  [(SBAppClipOverlayViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -176,15 +176,15 @@
   v13.receiver = self;
   v13.super_class = SBAppClipOverlayViewController;
   [(SBAppClipOverlayViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(SBAppClipOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBAppClipOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CPSClipOverlayViewController *)self->_overlayViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(CPSClipOverlayViewController *)self->_overlayViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (id)participantName

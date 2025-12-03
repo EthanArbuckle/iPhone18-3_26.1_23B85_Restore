@@ -1,55 +1,55 @@
 @interface CSDFaceTimeIMAVProviderDelegate
-- (BOOL)hasCallStartedConnectingWithUUID:(id)a3;
-- (BOOL)isManagingCallWithUUID:(id)a3;
-- (CSDFaceTimeIMAVProviderDelegate)initWithQueue:(id)a3;
+- (BOOL)hasCallStartedConnectingWithUUID:(id)d;
+- (BOOL)isManagingCallWithUUID:(id)d;
+- (CSDFaceTimeIMAVProviderDelegate)initWithQueue:(id)queue;
 - (CSDFaceTimeProviderDelegateManagerDelegate)faceTimeDemuxerDelegate;
-- (id)chatWithUUID:(id)a3;
-- (id)failureContextForChat:(id)a3;
-- (unsigned)IMAVChatRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)a3;
-- (void)_endChatWithUUID:(id)a3 withEndedReason:(unsigned int)a4;
+- (id)chatWithUUID:(id)d;
+- (id)failureContextForChat:(id)chat;
+- (unsigned)IMAVChatRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)state;
+- (void)_endChatWithUUID:(id)d withEndedReason:(unsigned int)reason;
 - (void)_requestPendingInvites;
 - (void)_setUpListeners;
-- (void)_updateProviderForConnectedChat:(id)a3;
-- (void)_updateProviderForConnectingChat:(id)a3;
-- (void)_updateProviderForEndedChat:(id)a3;
-- (void)daemonConnected:(id)a3;
+- (void)_updateProviderForConnectedChat:(id)chat;
+- (void)_updateProviderForConnectingChat:(id)chat;
+- (void)_updateProviderForEndedChat:(id)chat;
+- (void)daemonConnected:(id)connected;
 - (void)dealloc;
-- (void)endCallWithUUID:(id)a3;
-- (void)endCallWithUUIDAsAnsweredElsewhere:(id)a3;
-- (void)endCallWithUUIDAsDeclinedElsewhere:(id)a3;
-- (void)endCallWithUUIDAsLocalHangup:(id)a3;
-- (void)handleChatCallInfoChangedNotification:(id)a3;
-- (void)handleChatConferenceIDChangedNotification:(id)a3;
-- (void)handleChatConferenceMetadataUpdated:(id)a3;
-- (void)handleChatFirstRemoteFrameArrived:(id)a3;
-- (void)handleChatInFrequencyChangedNotification:(id)a3;
-- (void)handleChatInvitationSent:(id)a3;
-- (void)handleChatMayRequireBreakBeforeMakeChanged:(id)a3;
-- (void)handleChatOutFrequencyChangedNotification:(id)a3;
-- (void)handleChatStateChanged:(id)a3;
-- (void)inviteIMAVPeersWithAction:(id)a3 tokensToExclude:(id)a4 joinCallActionToFulfill:(id)a5;
-- (void)invitedToIMAVChat:(id)a3;
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4;
-- (void)provider:(id)a3 performEnableVideoCallAction:(id)a4;
-- (void)provider:(id)a3 performEndCallAction:(id)a4;
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4;
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4;
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4;
-- (void)provider:(id)a3 performSetSharingScreenCallAction:(id)a4;
-- (void)provider:(id)a3 performSetVideoPresentationSizeCallAction:(id)a4;
-- (void)provider:(id)a3 performSetVideoPresentationStateCallAction:(id)a4;
-- (void)providerDidBegin:(id)a3;
-- (void)providerDidReset:(id)a3;
-- (void)receivedProtectedInitiate:(id)a3;
-- (void)registerChat:(id)a3;
+- (void)endCallWithUUID:(id)d;
+- (void)endCallWithUUIDAsAnsweredElsewhere:(id)elsewhere;
+- (void)endCallWithUUIDAsDeclinedElsewhere:(id)elsewhere;
+- (void)endCallWithUUIDAsLocalHangup:(id)hangup;
+- (void)handleChatCallInfoChangedNotification:(id)notification;
+- (void)handleChatConferenceIDChangedNotification:(id)notification;
+- (void)handleChatConferenceMetadataUpdated:(id)updated;
+- (void)handleChatFirstRemoteFrameArrived:(id)arrived;
+- (void)handleChatInFrequencyChangedNotification:(id)notification;
+- (void)handleChatInvitationSent:(id)sent;
+- (void)handleChatMayRequireBreakBeforeMakeChanged:(id)changed;
+- (void)handleChatOutFrequencyChangedNotification:(id)notification;
+- (void)handleChatStateChanged:(id)changed;
+- (void)inviteIMAVPeersWithAction:(id)action tokensToExclude:(id)exclude joinCallActionToFulfill:(id)fulfill;
+- (void)invitedToIMAVChat:(id)chat;
+- (void)provider:(id)provider performAnswerCallAction:(id)action;
+- (void)provider:(id)provider performEnableVideoCallAction:(id)action;
+- (void)provider:(id)provider performEndCallAction:(id)action;
+- (void)provider:(id)provider performSetHeldCallAction:(id)action;
+- (void)provider:(id)provider performSetMutedCallAction:(id)action;
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action;
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action;
+- (void)provider:(id)provider performSetSharingScreenCallAction:(id)action;
+- (void)provider:(id)provider performSetVideoPresentationSizeCallAction:(id)action;
+- (void)provider:(id)provider performSetVideoPresentationStateCallAction:(id)action;
+- (void)providerDidBegin:(id)begin;
+- (void)providerDidReset:(id)reset;
+- (void)receivedProtectedInitiate:(id)initiate;
+- (void)registerChat:(id)chat;
 @end
 
 @implementation CSDFaceTimeIMAVProviderDelegate
 
-- (CSDFaceTimeIMAVProviderDelegate)initWithQueue:(id)a3
+- (CSDFaceTimeIMAVProviderDelegate)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CSDFaceTimeIMAVProviderDelegate;
   v6 = [(CSDFaceTimeIMAVProviderDelegate *)&v11 init];
@@ -59,7 +59,7 @@
     cachedChats = v6->_cachedChats;
     v6->_cachedChats = v7;
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v6->_accessorLock._os_unfair_lock_opaque = 0;
     imAccountForActionBlock = v6->_imAccountForActionBlock;
     v6->_imAccountForActionBlock = &stru_10061A2A0;
@@ -304,20 +304,20 @@
     }
 
     v13 = CUTWeakLinkClass();
-    v14 = [v13 sharedInstance];
-    [v14 addDelegate:self queue:&_dispatch_main_q];
+    sharedInstance = [v13 sharedInstance];
+    [sharedInstance addDelegate:self queue:&_dispatch_main_q];
 
-    v15 = [v13 sharedInstance];
-    [v15 setIMAVCapabilities:25 toCaps:25];
+    sharedInstance2 = [v13 sharedInstance];
+    [sharedInstance2 setIMAVCapabilities:25 toCaps:25];
 
-    v16 = [v13 sharedInstance];
-    [v16 setupIMAVController];
+    sharedInstance3 = [v13 sharedInstance];
+    [sharedInstance3 setupIMAVController];
 
-    v17 = [v13 sharedInstance];
-    [v17 setBlockIncomingInvitationsDuringCall:0];
+    sharedInstance4 = [v13 sharedInstance];
+    [sharedInstance4 setBlockIncomingInvitationsDuringCall:0];
 
-    v18 = [v13 sharedInstance];
-    [v18 setBlockMultipleIncomingInvitations:1];
+    sharedInstance5 = [v13 sharedInstance];
+    [sharedInstance5 setBlockMultipleIncomingInvitations:1];
 
     [(CSDFaceTimeIMAVProviderDelegate *)self _requestPendingInvites];
   }
@@ -329,30 +329,30 @@
   v2 = CUTWeakLinkClass();
   if (+[TUCallCapabilities supportsDisplayingFaceTimeAudioCalls])
   {
-    v3 = [v2 sharedInstance];
-    [v3 requestPendingACInvitations];
+    sharedInstance = [v2 sharedInstance];
+    [sharedInstance requestPendingACInvitations];
   }
 
   if (+[TUCallCapabilities supportsDisplayingFaceTimeVideoCalls])
   {
-    v4 = [v2 sharedInstance];
-    [v4 requestPendingVCInvitations];
+    sharedInstance2 = [v2 sharedInstance];
+    [sharedInstance2 requestPendingVCInvitations];
   }
 }
 
-- (id)chatWithUUID:(id)a3
+- (id)chatWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   os_unfair_lock_lock(&self->_accessorLock);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  cachedChats = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
+  v7 = [cachedChats countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -365,14 +365,14 @@ LABEL_3:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(cachedChats);
       }
 
       v9 = *(*(&v17 + 1) + 8 * v11);
 
-      v13 = [v9 GUID];
-      v14 = [v4 UUIDString];
-      v15 = [v13 isEqualToString:v14];
+      gUID = [v9 GUID];
+      uUIDString = [dCopy UUIDString];
+      v15 = [gUID isEqualToString:uUIDString];
 
       if (v15)
       {
@@ -383,7 +383,7 @@ LABEL_3:
       v12 = v9;
       if (v8 == v11)
       {
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [cachedChats countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -405,79 +405,79 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)isManagingCallWithUUID:(id)a3
+- (BOOL)isManagingCallWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v4];
+  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:dCopy];
 
   return v6 != 0;
 }
 
-- (void)registerChat:(id)a3
+- (void)registerChat:(id)chat
 {
-  v5 = a3;
+  chatCopy = chat;
   os_unfair_lock_lock(&self->_accessorLock);
-  if ([v5 state] && objc_msgSend(v5, "state") != 5)
+  if ([chatCopy state] && objc_msgSend(chatCopy, "state") != 5)
   {
-    v4 = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
-    [v4 addObject:v5];
+    cachedChats = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
+    [cachedChats addObject:chatCopy];
   }
 
   else
   {
-    v4 = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
-    [v4 removeObject:v5];
+    cachedChats = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
+    [cachedChats removeObject:chatCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)endCallWithUUIDAsAnsweredElsewhere:(id)a3
+- (void)endCallWithUUIDAsAnsweredElsewhere:(id)elsewhere
 {
-  v5 = a3;
-  v4 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v4);
+  elsewhereCopy = elsewhere;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:v5 withEndedReason:27];
+  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:elsewhereCopy withEndedReason:27];
 }
 
-- (void)endCallWithUUIDAsDeclinedElsewhere:(id)a3
+- (void)endCallWithUUIDAsDeclinedElsewhere:(id)elsewhere
 {
-  v5 = a3;
-  v4 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v4);
+  elsewhereCopy = elsewhere;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:v5 withEndedReason:29];
+  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:elsewhereCopy withEndedReason:29];
 }
 
-- (void)endCallWithUUIDAsLocalHangup:(id)a3
+- (void)endCallWithUUIDAsLocalHangup:(id)hangup
 {
-  v5 = a3;
-  v4 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v4);
+  hangupCopy = hangup;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:v5 withEndedReason:1];
+  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:hangupCopy withEndedReason:1];
 }
 
-- (void)endCallWithUUID:(id)a3
+- (void)endCallWithUUID:(id)d
 {
-  v5 = a3;
-  v4 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v4);
+  dCopy = d;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:v5 withEndedReason:8];
+  [(CSDFaceTimeIMAVProviderDelegate *)self _endChatWithUUID:dCopy withEndedReason:8];
 }
 
-- (void)_endChatWithUUID:(id)a3 withEndedReason:(unsigned int)a4
+- (void)_endChatWithUUID:(id)d withEndedReason:(unsigned int)reason
 {
-  v6 = a3;
-  v7 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v6];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:dCopy];
   v9 = v8;
   if (v8)
   {
@@ -486,7 +486,7 @@ LABEL_10:
     v11[2] = sub_10007F560;
     v11[3] = &unk_100619EF8;
     v12 = v8;
-    v13 = a4;
+    reasonCopy = reason;
     dispatch_async(&_dispatch_main_q, v11);
     v10 = v12;
   }
@@ -497,111 +497,111 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v6;
+      v15 = dCopy;
       v16 = 2048;
-      v17 = a4;
+      reasonCopy2 = reason;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Asked to end chat with UUID: %@, reason: (%ld) but could not find it", buf, 0x16u);
     }
   }
 }
 
-- (BOOL)hasCallStartedConnectingWithUUID:(id)a3
+- (BOOL)hasCallStartedConnectingWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v4];
+  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:dCopy];
 
-  LOBYTE(v4) = [v6 state] > 2;
-  return v4;
+  LOBYTE(dCopy) = [v6 state] > 2;
+  return dCopy;
 }
 
-- (void)inviteIMAVPeersWithAction:(id)a3 tokensToExclude:(id)a4 joinCallActionToFulfill:(id)a5
+- (void)inviteIMAVPeersWithAction:(id)action tokensToExclude:(id)exclude joinCallActionToFulfill:(id)fulfill
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10007F780;
   v11[3] = &unk_10061A450;
-  v12 = a3;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v8 = v15;
-  v9 = v14;
-  v10 = v12;
+  actionCopy = action;
+  selfCopy = self;
+  excludeCopy = exclude;
+  fulfillCopy = fulfill;
+  v8 = fulfillCopy;
+  v9 = excludeCopy;
+  v10 = actionCopy;
   dispatch_sync(&_dispatch_main_q, v11);
 }
 
-- (unsigned)IMAVChatRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)a3
+- (unsigned)IMAVChatRemoteVideoPresentationStateFromCXVideoPresentationState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (void)_updateProviderForConnectingChat:(id)a3
+- (void)_updateProviderForConnectingChat:(id)chat
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  chatCopy = chat;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 isCaller])
+  if ([chatCopy isCaller])
   {
-    v6 = [(CSDFaceTimeIMAVProviderDelegate *)self faceTimeDemuxerDelegate];
-    v7 = v4;
+    faceTimeDemuxerDelegate = [(CSDFaceTimeIMAVProviderDelegate *)self faceTimeDemuxerDelegate];
+    v7 = chatCopy;
     v8 = [NSUUID alloc];
-    v9 = [v7 GUID];
+    gUID = [v7 GUID];
 
-    v10 = [v8 initWithUUIDString:v9];
+    v10 = [v8 initWithUUIDString:gUID];
     v11 = +[NSDate date];
-    [v6 providerDelegate:self callWithUUID:v10 startedConnectingAtDate:v11];
+    [faceTimeDemuxerDelegate providerDelegate:self callWithUUID:v10 startedConnectingAtDate:v11];
   }
 
-  v12 = [[CXCallUpdate alloc] initWithIMAVChat:v4];
+  v12 = [[CXCallUpdate alloc] initWithIMAVChat:chatCopy];
   [v12 setFaceTimeTransportType:1];
-  v13 = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
-  v17 = v4;
+  provider = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
+  v17 = chatCopy;
   v14 = [NSUUID alloc];
-  v15 = [v17 GUID];
+  gUID2 = [v17 GUID];
 
-  v16 = [v14 initWithUUIDString:v15];
-  [v13 reportCallWithUUID:v16 updated:v12];
+  v16 = [v14 initWithUUIDString:gUID2];
+  [provider reportCallWithUUID:v16 updated:v12];
 }
 
-- (void)_updateProviderForConnectedChat:(id)a3
+- (void)_updateProviderForConnectedChat:(id)chat
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  chatCopy = chat;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 isCaller])
+  if ([chatCopy isCaller])
   {
-    v6 = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
-    v7 = v4;
+    provider = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
+    v7 = chatCopy;
     v8 = [NSUUID alloc];
-    v9 = [v7 GUID];
+    gUID = [v7 GUID];
 
-    v10 = [v8 initWithUUIDString:v9];
-    v11 = [v7 dateConnected];
-    [v6 reportOutgoingCallWithUUID:v10 connectedAtDate:v11];
+    v10 = [v8 initWithUUIDString:gUID];
+    dateConnected = [v7 dateConnected];
+    [provider reportOutgoingCallWithUUID:v10 connectedAtDate:dateConnected];
   }
 
   else
   {
-    v12 = v4;
+    v12 = chatCopy;
     v13 = [NSUUID alloc];
-    v14 = [v12 GUID];
+    gUID2 = [v12 GUID];
 
-    v15 = [v13 initWithUUIDString:v14];
-    v16 = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
-    v17 = [v16 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v15];
+    v15 = [v13 initWithUUIDString:gUID2];
+    provider2 = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
+    v17 = [provider2 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v15];
 
     if ([v17 count])
     {
@@ -615,7 +615,7 @@ LABEL_10:
       {
         v20 = v19;
         v27 = v17;
-        v28 = v4;
+        v28 = chatCopy;
         v21 = *v30;
         do
         {
@@ -637,21 +637,21 @@ LABEL_10:
 
             if (([v23 isComplete] & 1) == 0)
             {
-              v25 = [v12 dateConnected];
-              if (v25)
+              dateConnected2 = [v12 dateConnected];
+              if (dateConnected2)
               {
-                v26 = [v12 dateConnected];
-                [v23 fulfillWithDateConnected:v26];
+                dateConnected3 = [v12 dateConnected];
+                [v23 fulfillWithDateConnected:dateConnected3];
               }
 
               else
               {
-                v26 = sub_100004778();
-                if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+                dateConnected3 = sub_100004778();
+                if (os_log_type_enabled(dateConnected3, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
                   v34 = v23;
-                  _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Legacy chat did not provide a connection date; Could not fulfill answer call action %@", buf, 0xCu);
+                  _os_log_error_impl(&_mh_execute_header, dateConnected3, OS_LOG_TYPE_ERROR, "Legacy chat did not provide a connection date; Could not fulfill answer call action %@", buf, 0xCu);
                 }
               }
             }
@@ -661,7 +661,7 @@ LABEL_10:
         }
 
         while (v20);
-        v4 = v28;
+        chatCopy = v28;
         v17 = v27;
       }
     }
@@ -679,19 +679,19 @@ LABEL_10:
   }
 }
 
-- (void)_updateProviderForEndedChat:(id)a3
+- (void)_updateProviderForEndedChat:(id)chat
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  chatCopy = chat;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = v4;
+  v6 = chatCopy;
   v7 = [NSUUID alloc];
-  v8 = [v6 GUID];
+  gUID = [v6 GUID];
 
-  v9 = [v7 initWithUUIDString:v8];
-  v10 = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
-  v11 = [v10 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v9];
+  v9 = [v7 initWithUUIDString:gUID];
+  provider = [(CSDFaceTimeIMAVProviderDelegate *)self provider];
+  v11 = [provider pendingCallActionsOfClass:objc_opt_class() withCallUUID:v9];
 
   v21 = 0u;
   v22 = 0u;
@@ -734,7 +734,7 @@ LABEL_10:
   }
 }
 
-- (void)daemonConnected:(id)a3
+- (void)daemonConnected:(id)connected
 {
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -751,66 +751,66 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)handleChatStateChanged:(id)a3
+- (void)handleChatStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
   [CSDSignposts trace:2];
-  v6 = [v4 object];
-  [(CSDFaceTimeIMAVProviderDelegate *)self registerChat:v6];
-  v7 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  object = [changedCopy object];
+  [(CSDFaceTimeIMAVProviderDelegate *)self registerChat:object];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000806E0;
   v9[3] = &unk_100619D88;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = object;
+  selfCopy = self;
+  v8 = object;
+  dispatch_async(queue, v9);
 }
 
-- (id)failureContextForChat:(id)a3
+- (id)failureContextForChat:(id)chat
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  chatCopy = chat;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 endedReason] == 12)
+  if ([chatCopy endedReason] == 12)
   {
     v6 = objc_alloc_init(CXCallFailureContext);
     [v6 setFailureReason:2];
     v7 = +[FTDeviceSupport sharedInstance];
     v8 = +[FTNetworkSupport sharedInstance];
-    v9 = [v7 supportsWLAN];
-    if (([v8 allowAnyNetwork] & 1) != 0 || (objc_msgSend(v4, "isVideo") & 1) == 0 && (objc_msgSend(v7, "supportsNonWiFiCalling") & 1) != 0 || objc_msgSend(v4, "isVideo") && objc_msgSend(v7, "supportsNonWiFiFaceTime"))
+    supportsWLAN = [v7 supportsWLAN];
+    if (([v8 allowAnyNetwork] & 1) != 0 || (objc_msgSend(chatCopy, "isVideo") & 1) == 0 && (objc_msgSend(v7, "supportsNonWiFiCalling") & 1) != 0 || objc_msgSend(chatCopy, "isVideo") && objc_msgSend(v7, "supportsNonWiFiFaceTime"))
     {
       v10 = TUBundle();
       v11 = [v10 localizedStringForKey:@"CALL_FAILED_NO_NETWORK_CONNECTION_TITLE" value:&stru_100631E68 table:@"TelephonyUtilities"];
       [v6 setTitle:v11];
 
-      v12 = [v4 isVideo];
+      isVideo = [chatCopy isVideo];
       v13 = TUBundle();
       v14 = v13;
       v15 = @"CALL_FAILED_NO_LOCAL_NETWORK_WLAN_MESSAGE";
-      if (v12)
+      if (isVideo)
       {
         v15 = @"ALERT_VIDEO_FAILED_NO_LOCAL_NETWORK_WLAN_MESSAGE";
       }
 
       v16 = @"ALERT_VIDEO_FAILED_NO_LOCAL_NETWORK_WIFI_MESSAGE";
-      if (!v12)
+      if (!isVideo)
       {
         v16 = @"CALL_FAILED_NO_LOCAL_NETWORK_WIFI_MESSAGE";
       }
 
-      if (v9)
+      if (supportsWLAN)
       {
         v17 = v15;
       }
@@ -828,10 +828,10 @@ LABEL_10:
         v19 = +[IMMobileNetworkManager sharedInstance];
         if (([v19 isAirplaneModeEnabled] & 1) == 0)
         {
-          v68 = [v19 isSIMRemoved];
+          isSIMRemoved = [v19 isSIMRemoved];
 
           [v6 setHasWiFiSettingsRemediation:1];
-          if ((v68 & 1) == 0)
+          if ((isSIMRemoved & 1) == 0)
           {
             [v6 setHasCellularSettingsRemediation:1];
           }
@@ -843,22 +843,22 @@ LABEL_10:
 
     else
     {
-      v28 = [v4 isVideo];
+      isVideo2 = [chatCopy isVideo];
       v29 = TUBundle();
       v30 = v29;
       v31 = @"CALL_FAILED_NO_LOCAL_WLAN_MESSAGE";
-      if (v28)
+      if (isVideo2)
       {
         v31 = @"ALERT_VIDEO_FAILED_NO_LOCAL_WLAN_MESSAGE";
       }
 
       v32 = @"ALERT_VIDEO_FAILED_NO_LOCAL_WIFI_MESSAGE";
-      if (!v28)
+      if (!isVideo2)
       {
         v32 = @"CALL_FAILED_NO_LOCAL_WIFI_MESSAGE";
       }
 
-      if (v9)
+      if (supportsWLAN)
       {
         v33 = v31;
       }
@@ -878,16 +878,16 @@ LABEL_35:
     goto LABEL_80;
   }
 
-  if ([v4 endedReason] == 28)
+  if ([chatCopy endedReason] == 28)
   {
     v6 = objc_alloc_init(CXCallFailureContext);
     [v6 setFailureReason:1];
-    if ([v4 endedError] == 5087)
+    if ([chatCopy endedError] == 5087)
     {
-      v20 = [v4 isVideo];
+      isVideo3 = [chatCopy isVideo];
       v21 = TUBundle();
       v22 = v21;
-      if (v20)
+      if (isVideo3)
       {
         v23 = @"ALERT_VIDEO_FAILED_TITLE";
       }
@@ -900,7 +900,7 @@ LABEL_35:
       v24 = [v21 localizedStringForKey:v23 value:&stru_100631E68 table:@"TelephonyUtilities"];
       [v6 setTitle:v24];
 
-      if ([v4 isVideo])
+      if ([chatCopy isVideo])
       {
         v25 = @"ALERT_VIDEO_FAILED_BAD_NONCE_TIMESTAMP";
       }
@@ -918,11 +918,11 @@ LABEL_35:
       goto LABEL_80;
     }
 
-    v44 = [v4 endedError];
-    v45 = [v4 isVideo];
+    endedError = [chatCopy endedError];
+    isVideo4 = [chatCopy isVideo];
     v46 = TUBundle();
     v47 = v46;
-    if (v45)
+    if (isVideo4)
     {
       v48 = @"ALERT_VIDEO_FAILED_TITLE";
     }
@@ -935,11 +935,11 @@ LABEL_35:
     v49 = [v46 localizedStringForKey:v48 value:&stru_100631E68 table:@"TelephonyUtilities"];
     [v6 setTitle:v49];
 
-    v50 = [v4 isVideo];
-    v51 = v50;
-    if (v44 == 7001)
+    isVideo5 = [chatCopy isVideo];
+    v51 = isVideo5;
+    if (endedError == 7001)
     {
-      if (v50)
+      if (isVideo5)
       {
         v52 = @"ALERT_VIDEO_FAILED_UPDATE_LOCATION_MESSAGE";
       }
@@ -974,7 +974,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if ([v4 endedReason] == 26)
+  if ([chatCopy endedReason] == 26)
   {
     v6 = objc_alloc_init(CXCallFailureContext);
     v35 = TUBundle();
@@ -982,13 +982,13 @@ LABEL_35:
     [v6 setTitle:v36];
 
     [v6 setFailureReason:2];
-    v37 = [v4 otherIMHandle];
-    v38 = [v37 ID];
+    otherIMHandle = [chatCopy otherIMHandle];
+    v38 = [otherIMHandle ID];
 
-    LODWORD(v37) = [v38 destinationIdIsPhoneNumber];
+    LODWORD(otherIMHandle) = [v38 destinationIdIsPhoneNumber];
     v39 = TUBundle();
     v40 = v39;
-    if (v37)
+    if (otherIMHandle)
     {
       v41 = @"ALERT_VIDEO_FAILED_REMOTE_INCOMPATIBLE_MESSAGE_%@_NUMBER";
     }
@@ -1005,13 +1005,13 @@ LABEL_35:
     goto LABEL_79;
   }
 
-  if ([v4 endedReason] == 13 || objc_msgSend(v4, "endedReason") == 16 && objc_msgSend(v4, "endedError") == -1)
+  if ([chatCopy endedReason] == 13 || objc_msgSend(chatCopy, "endedReason") == 16 && objc_msgSend(chatCopy, "endedError") == -1)
   {
     v6 = objc_alloc_init(CXCallFailureContext);
-    v55 = [v4 isVideo];
+    isVideo6 = [chatCopy isVideo];
     v56 = TUBundle();
     v57 = v56;
-    if (v55)
+    if (isVideo6)
     {
       v58 = @"ALERT_VIDEO_NOT_AVAILABLE_TITLE";
     }
@@ -1025,26 +1025,26 @@ LABEL_35:
     [v6 setTitle:v59];
 
     [v6 setFailureReason:2];
-    v60 = [v4 otherIMHandle];
-    v38 = [v60 ID];
+    otherIMHandle2 = [chatCopy otherIMHandle];
+    v38 = [otherIMHandle2 ID];
 
-    v61 = [v38 destinationIdIsPhoneNumber];
-    v62 = [v4 isVideo];
+    destinationIdIsPhoneNumber = [v38 destinationIdIsPhoneNumber];
+    isVideo7 = [chatCopy isVideo];
     v63 = TUBundle();
     v64 = v63;
     v65 = @"CALL_FAILED_%@_NOT_AVAILABLE_MESSAGE_NAME";
-    if (v62)
+    if (isVideo7)
     {
       v65 = @"ALERT_VIDEO_FAILED_NOT_AVAILABLE_MESSAGE_%@_NAME";
     }
 
     v66 = @"ALERT_VIDEO_FAILED_NOT_AVAILABLE_MESSAGE_%@_NUMBER";
-    if (!v62)
+    if (!isVideo7)
     {
       v66 = @"CALL_FAILED_%@_NOT_AVAILABLE_MESSAGE_NUMBER";
     }
 
-    if (v61)
+    if (destinationIdIsPhoneNumber)
     {
       v67 = v66;
     }
@@ -1057,13 +1057,13 @@ LABEL_35:
     goto LABEL_78;
   }
 
-  if ([v4 endedReason] == 24 || objc_msgSend(v4, "endedReason") == 23 || objc_msgSend(v4, "endedReason") == 16 && objc_msgSend(v4, "endedError") == 6400)
+  if ([chatCopy endedReason] == 24 || objc_msgSend(chatCopy, "endedReason") == 23 || objc_msgSend(chatCopy, "endedReason") == 16 && objc_msgSend(chatCopy, "endedError") == 6400)
   {
     v6 = objc_alloc_init(CXCallFailureContext);
-    v71 = [v4 isVideo];
+    isVideo8 = [chatCopy isVideo];
     v72 = TUBundle();
     v73 = v72;
-    if (v71)
+    if (isVideo8)
     {
       v74 = @"ALERT_VIDEO_FAILED_TITLE";
     }
@@ -1077,26 +1077,26 @@ LABEL_35:
     [v6 setTitle:v75];
 
     [v6 setFailureReason:1];
-    v76 = [v4 otherIMHandle];
-    v38 = [v76 ID];
+    otherIMHandle3 = [chatCopy otherIMHandle];
+    v38 = [otherIMHandle3 ID];
 
-    v77 = [v38 destinationIdIsPhoneNumber];
-    v78 = [v4 isVideo];
+    destinationIdIsPhoneNumber2 = [v38 destinationIdIsPhoneNumber];
+    isVideo9 = [chatCopy isVideo];
     v63 = TUBundle();
     v64 = v63;
     v79 = @"CALL_FAILED_%@_NOT_AVAILABLE_MESSAGE_NUMBER";
-    if (v78)
+    if (isVideo9)
     {
       v79 = @"ALERT_VIDEO_FAILED_NOT_AVAILABLE_MESSAGE_%@_NUMBER";
     }
 
     v80 = @"ALERT_VIDEO_FAILED_NOT_AVAILABLE_MESSAGE_%@_NAME";
-    if (!v78)
+    if (!isVideo9)
     {
       v80 = @"CALL_FAILED_%@_NOT_AVAILABLE_MESSAGE_NAME";
     }
 
-    if (v77)
+    if (destinationIdIsPhoneNumber2)
     {
       v67 = v79;
     }
@@ -1115,7 +1115,7 @@ LABEL_79:
     goto LABEL_80;
   }
 
-  if ([v4 endedReason] == 6 && objc_msgSend(v4, "endedError") == 32005)
+  if ([chatCopy endedReason] == 6 && objc_msgSend(chatCopy, "endedError") == 32005)
   {
     v84 = objc_alloc_init(CXCallFailureContext);
     v6 = v84;
@@ -1125,7 +1125,7 @@ LABEL_92:
     goto LABEL_80;
   }
 
-  if ([v4 endedReason] == 30)
+  if ([chatCopy endedReason] == 30)
   {
     v84 = objc_alloc_init(CXCallFailureContext);
     v6 = v84;
@@ -1135,237 +1135,237 @@ LABEL_92:
 
   v6 = 0;
 LABEL_80:
-  [v6 setProviderErrorCode:{objc_msgSend(v4, "endedReason")}];
+  [v6 setProviderErrorCode:{objc_msgSend(chatCopy, "endedReason")}];
 
   return v6;
 }
 
-- (void)handleChatFirstRemoteFrameArrived:(id)a3
+- (void)handleChatFirstRemoteFrameArrived:(id)arrived
 {
-  v4 = [a3 object];
+  object = [arrived object];
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008167C;
   v8[3] = &unk_100619D88;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = object;
+  selfCopy = self;
+  v7 = object;
+  dispatch_async(queue, v8);
 }
 
-- (void)handleChatInvitationSent:(id)a3
+- (void)handleChatInvitationSent:(id)sent
 {
-  v4 = [a3 object];
+  object = [sent object];
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100081828;
   v8[3] = &unk_100619D88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = object;
+  v7 = object;
+  dispatch_async(queue, v8);
 }
 
-- (void)handleChatCallInfoChangedNotification:(id)a3
+- (void)handleChatCallInfoChangedNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v6 = [v4 avChat];
-  v7 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  avChat = [object avChat];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100081A38;
   block[3] = &unk_100619E58;
-  v11 = v6;
-  v12 = v4;
-  v13 = self;
-  v8 = v4;
-  v9 = v6;
-  dispatch_async(v7, block);
+  v11 = avChat;
+  v12 = object;
+  selfCopy = self;
+  v8 = object;
+  v9 = avChat;
+  dispatch_async(queue, block);
 }
 
-- (void)handleChatConferenceIDChangedNotification:(id)a3
+- (void)handleChatConferenceIDChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  if ([v5 state] >= 2)
+  if ([object state] >= 2)
   {
-    v7 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+    queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100081C7C;
     v8[3] = &unk_100619D88;
-    v9 = v5;
-    v10 = self;
-    dispatch_async(v7, v8);
+    v9 = object;
+    selfCopy = self;
+    dispatch_async(queue, v8);
   }
 }
 
-- (void)handleChatConferenceMetadataUpdated:(id)a3
+- (void)handleChatConferenceMetadataUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 object];
+  updatedCopy = updated;
+  object = [updatedCopy object];
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = updatedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v7 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100081EA0;
   v9[3] = &unk_100619D88;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = object;
+  v8 = object;
+  dispatch_async(queue, v9);
 }
 
-- (void)handleChatMayRequireBreakBeforeMakeChanged:(id)a3
+- (void)handleChatMayRequireBreakBeforeMakeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v6 = [v4 object];
-  v7 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  object = [changedCopy object];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000820B4;
   v9[3] = &unk_100619D88;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = object;
+  selfCopy = self;
+  v8 = object;
+  dispatch_async(queue, v9);
 }
 
-- (void)handleChatInFrequencyChangedNotification:(id)a3
+- (void)handleChatInFrequencyChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  notificationCopy = notification;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100082240;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)handleChatOutFrequencyChangedNotification:(id)a3
+- (void)handleChatOutFrequencyChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  notificationCopy = notification;
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000823D0;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)invitedToIMAVChat:(id)a3
+- (void)invitedToIMAVChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = chatCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
   [CSDAnalyticsReporter sendIncomingIMAVCallEventWithSilenced:0];
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000825EC;
   v8[3] = &unk_100619D88;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = chatCopy;
+  selfCopy = self;
+  v7 = chatCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)receivedProtectedInitiate:(id)a3
+- (void)receivedProtectedInitiate:(id)initiate
 {
-  v4 = a3;
+  initiateCopy = initiate;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = initiateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "protected chat: %@", buf, 0xCu);
   }
 
   [CSDAnalyticsReporter sendIncomingIMAVCallEventWithSilenced:1];
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
+  queue = [(CSDFaceTimeIMAVProviderDelegate *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100082A54;
   v8[3] = &unk_100619D88;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = initiateCopy;
+  selfCopy = self;
+  v7 = initiateCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)providerDidBegin:(id)a3
+- (void)providerDidBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = beginCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "provider: %@", buf, 0xCu);
   }
 
-  [(CSDFaceTimeIMAVProviderDelegate *)self setProvider:v4];
+  [(CSDFaceTimeIMAVProviderDelegate *)self setProvider:beginCopy];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100082E88;
@@ -1374,14 +1374,14 @@ LABEL_80:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)providerDidReset:(id)a3
+- (void)providerDidReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = resetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "provider: %@", buf, 0xCu);
   }
 
@@ -1390,8 +1390,8 @@ LABEL_80:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  cachedChats = [(CSDFaceTimeIMAVProviderDelegate *)self cachedChats];
+  v7 = [cachedChats countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1403,7 +1403,7 @@ LABEL_80:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cachedChats);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -1417,7 +1417,7 @@ LABEL_80:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [cachedChats countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1426,19 +1426,19 @@ LABEL_80:
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4
+- (void)provider:(id)provider performAnswerCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   if ([v8 state] == 4)
   {
@@ -1448,9 +1448,9 @@ LABEL_80:
       sub_100471DC4();
     }
 
-    if (([v5 isComplete] & 1) == 0)
+    if (([actionCopy isComplete] & 1) == 0)
     {
-      [v5 fail];
+      [actionCopy fail];
     }
   }
 
@@ -1461,25 +1461,25 @@ LABEL_80:
     block[2] = sub_100083328;
     block[3] = &unk_100619E58;
     block[4] = self;
-    v11 = v5;
+    v11 = actionCopy;
     v12 = v8;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)provider:(id)a3 performEndCallAction:(id)a4
+- (void)provider:(id)provider performEndCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v5;
+    v14 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1496,25 +1496,25 @@ LABEL_80:
   v10 = v8;
   v12 = v10;
   dispatch_async(&_dispatch_main_q, block);
-  if (([v5 isComplete] & 1) == 0)
+  if (([actionCopy isComplete] & 1) == 0)
   {
-    [v5 fulfill];
+    [actionCopy fulfill];
   }
 }
 
-- (void)provider:(id)a3 performSetHeldCallAction:(id)a4
+- (void)provider:(id)provider performSetHeldCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   if ([v8 state] == 4)
   {
@@ -1522,12 +1522,12 @@ LABEL_80:
     v11 = 3221225472;
     v12 = sub_1000837A0;
     v13 = &unk_100619EA8;
-    v15 = [v5 isOnHold] ^ 1;
+    v15 = [actionCopy isOnHold] ^ 1;
     v14 = v8;
     dispatch_async(&_dispatch_main_q, &v10);
-    if (([v5 isComplete] & 1) == 0)
+    if (([actionCopy isComplete] & 1) == 0)
     {
-      [v5 fulfill];
+      [actionCopy fulfill];
     }
   }
 
@@ -1539,32 +1539,32 @@ LABEL_80:
       sub_100471E2C();
     }
 
-    if (([v5 isComplete] & 1) == 0)
+    if (([actionCopy isComplete] & 1) == 0)
     {
-      [v5 fail];
+      [actionCopy fail];
     }
   }
 }
 
-- (void)provider:(id)a3 performSetSendingVideoCallAction:(id)a4
+- (void)provider:(id)provider performSetSendingVideoCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000839D4;
   v14 = &unk_100619D88;
-  v9 = v5;
+  v9 = actionCopy;
   v15 = v9;
   v16 = v8;
   v10 = v8;
@@ -1575,53 +1575,53 @@ LABEL_80:
   }
 }
 
-- (void)provider:(id)a3 performSetSharingScreenCallAction:(id)a4
+- (void)provider:(id)provider performSetSharingScreenCallAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "action: %@", &v6, 0xCu);
   }
 
-  [v4 fail];
+  [actionCopy fail];
 }
 
-- (void)provider:(id)a3 performEnableVideoCallAction:(id)a4
+- (void)provider:(id)provider performEnableVideoCallAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "action: %@", &v6, 0xCu);
   }
 
-  [v4 fail];
+  [actionCopy fail];
 }
 
-- (void)provider:(id)a3 performSetVideoPresentationSizeCallAction:(id)a4
+- (void)provider:(id)provider performSetVideoPresentationSizeCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100083D7C;
   v14 = &unk_100619D88;
-  v9 = v5;
+  v9 = actionCopy;
   v15 = v9;
   v16 = v8;
   v10 = v8;
@@ -1632,28 +1632,28 @@ LABEL_80:
   }
 }
 
-- (void)provider:(id)a3 performSetVideoPresentationStateCallAction:(id)a4
+- (void)provider:(id)provider performSetVideoPresentationStateCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083FD4;
   block[3] = &unk_100619E58;
-  v9 = v5;
+  v9 = actionCopy;
   v12 = v9;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v10 = v8;
   dispatch_async(&_dispatch_main_q, block);
   if (([v9 isComplete] & 1) == 0)
@@ -1662,25 +1662,25 @@ LABEL_80:
   }
 }
 
-- (void)provider:(id)a3 performSetRelayingCallAction:(id)a4
+- (void)provider:(id)provider performSetRelayingCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10008422C;
   v14 = &unk_100619D88;
-  v9 = v5;
+  v9 = actionCopy;
   v15 = v9;
   v16 = v8;
   v10 = v8;
@@ -1691,25 +1691,25 @@ LABEL_80:
   }
 }
 
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4
+- (void)provider:(id)provider performSetMutedCallAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "action: %@", buf, 0xCu);
   }
 
-  v7 = [v5 callUUID];
-  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:v7];
+  callUUID = [actionCopy callUUID];
+  v8 = [(CSDFaceTimeIMAVProviderDelegate *)self chatWithUUID:callUUID];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10008446C;
   v14 = &unk_100619D88;
-  v9 = v5;
+  v9 = actionCopy;
   v15 = v9;
   v16 = v8;
   v10 = v8;

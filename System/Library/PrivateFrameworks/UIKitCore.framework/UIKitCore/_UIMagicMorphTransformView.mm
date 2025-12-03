@@ -1,22 +1,22 @@
 @interface _UIMagicMorphTransformView
 - (BOOL)isUserInteractionEnabled;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC5UIKit26_UIMagicMorphTransformView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC5UIKit26_UIMagicMorphTransformView)initWithCoder:(id)coder;
 - (id)_parentTraitEnvironment;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIMagicMorphTransformView
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_188D62BFC(a3);
+  selfCopy = self;
+  sub_188D62BFC(enabled);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit26_UIMagicMorphTransformView_sourcePreview);
   if (v4)
@@ -27,8 +27,8 @@
 
   else
   {
-    height = a3.height;
-    width = a3.width;
+    height = fits.height;
+    width = fits.width;
     v9.receiver = self;
     v9.super_class = type metadata accessor for _UIMagicMorphTransformView();
     [(UIView *)&v9 sizeThatFits:width, height];
@@ -50,13 +50,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188D70460();
 }
 
 - (id)_parentTraitEnvironment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18922BD30();
 
   return v3;
@@ -69,7 +69,7 @@
   return [(UIView *)&v3 isUserInteractionEnabled];
 }
 
-- (_TtC5UIKit26_UIMagicMorphTransformView)initWithCoder:(id)a3
+- (_TtC5UIKit26_UIMagicMorphTransformView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit26_UIMagicMorphTransformView_hidesSourceView) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5UIKit26_UIMagicMorphTransformView_matchesAlpha) = 0;

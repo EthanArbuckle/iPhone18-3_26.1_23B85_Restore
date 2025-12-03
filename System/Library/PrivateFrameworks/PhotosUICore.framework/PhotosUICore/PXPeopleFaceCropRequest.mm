@@ -6,7 +6,7 @@
 - (CGRect)normalizedSmallFaceRect;
 - (CGRect)smallFaceRect;
 - (CGSize)targetSizeToUse;
-- (PXPeopleFaceCropRequest)initWithFetchOptions:(id)a3;
+- (PXPeopleFaceCropRequest)initWithFetchOptions:(id)options;
 - (id)description;
 - (void)cancel;
 @end
@@ -103,14 +103,14 @@
   v3 = [(PXPeopleFaceCropRequest *)&v16 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PXPeopleFaceCropRequest *)self options];
-  [v4 appendFormat:@":\noptions: %@", v5];
+  options = [(PXPeopleFaceCropRequest *)self options];
+  [v4 appendFormat:@":\noptions: %@", options];
 
-  v6 = [(PXPeopleFaceCropRequest *)self face];
-  [v4 appendFormat:@"face: %@, \n", v6];
+  face = [(PXPeopleFaceCropRequest *)self face];
+  [v4 appendFormat:@"face: %@, \n", face];
 
-  v7 = [(PXPeopleFaceCropRequest *)self asset];
-  [v4 appendFormat:@"asset: %@, \n", v7];
+  asset = [(PXPeopleFaceCropRequest *)self asset];
+  [v4 appendFormat:@"asset: %@, \n", asset];
 
   [v4 appendFormat:@"faceCropRequestID: %d, \n", -[PXPeopleFaceCropRequest faceCropRequestID](self, "faceCropRequestID")];
   [v4 appendFormat:@"imageManagerRequestID: %d, \n", -[PXPeopleFaceCropRequest imageManagerRequestID](self, "imageManagerRequestID")];
@@ -130,9 +130,9 @@
   v11 = NSStringFromPoint(v18);
   [v4 appendFormat:@"normalizedCenterEyeLine: %@, \n", v11];
 
-  v12 = [(PXPeopleFaceCropRequest *)self canceled];
+  canceled = [(PXPeopleFaceCropRequest *)self canceled];
   v13 = @"NO";
-  if (v12)
+  if (canceled)
   {
     v13 = @"YES";
   }
@@ -146,22 +146,22 @@
 - (void)cancel
 {
   self->_canceled = 1;
-  v3 = [MEMORY[0x1E6978860] defaultManager];
-  [v3 cancelImageRequest:{-[PXPeopleFaceCropRequest imageManagerRequestID](self, "imageManagerRequestID")}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:{-[PXPeopleFaceCropRequest imageManagerRequestID](self, "imageManagerRequestID")}];
 }
 
-- (PXPeopleFaceCropRequest)initWithFetchOptions:(id)a3
+- (PXPeopleFaceCropRequest)initWithFetchOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = PXPeopleFaceCropRequest;
   v6 = [(PXPeopleFaceCropRequest *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v7->_faceCropRequestID = +[PXPeopleFaceCropRequest generateUniqueRequestID];
-    [v5 targetPixelSize];
+    [optionsCopy targetPixelSize];
     v7->_targetSizeToUse.width = v8;
     v7->_targetSizeToUse.height = v9;
   }

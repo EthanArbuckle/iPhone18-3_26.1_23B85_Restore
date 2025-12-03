@@ -1,16 +1,16 @@
 @interface WKWebProcessPlugInNodeHandle
 - (ECMessageBodyNode)parentNode;
 - (NSString)tagName;
-- (id)getAttribute:(id)a3;
+- (id)getAttribute:(id)attribute;
 @end
 
 @implementation WKWebProcessPlugInNodeHandle
 
 - (ECMessageBodyNode)parentNode
 {
-  v3 = [(WKWebProcessPlugInNodeHandle *)self frame];
+  frame = [(WKWebProcessPlugInNodeHandle *)self frame];
   v4 = +[WKWebProcessPlugInScriptWorld normalWorld];
-  v5 = [v3 jsNodeForNodeHandle:self inWorld:v4];
+  v5 = [frame jsNodeForNodeHandle:self inWorld:v4];
 
   v6 = [v5 objectForKeyedSubscript:@"parentNode"];
   if ([v6 isNull])
@@ -29,29 +29,29 @@
 
 - (NSString)tagName
 {
-  v3 = [(WKWebProcessPlugInNodeHandle *)self frame];
+  frame = [(WKWebProcessPlugInNodeHandle *)self frame];
   v4 = +[WKWebProcessPlugInScriptWorld normalWorld];
-  v5 = [v3 jsNodeForNodeHandle:self inWorld:v4];
+  v5 = [frame jsNodeForNodeHandle:self inWorld:v4];
 
   v6 = [v5 objectForKeyedSubscript:@"tagName"];
-  v7 = [v6 toString];
+  toString = [v6 toString];
 
-  return v7;
+  return toString;
 }
 
-- (id)getAttribute:(id)a3
+- (id)getAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [(WKWebProcessPlugInNodeHandle *)self frame];
+  attributeCopy = attribute;
+  frame = [(WKWebProcessPlugInNodeHandle *)self frame];
   v6 = +[WKWebProcessPlugInScriptWorld normalWorld];
-  v7 = [v5 jsNodeForNodeHandle:self inWorld:v6];
+  v7 = [frame jsNodeForNodeHandle:self inWorld:v6];
 
-  v12 = v4;
+  v12 = attributeCopy;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   v9 = [v7 invokeMethod:@"getAttribute" withArguments:v8];
-  v10 = [v9 toString];
+  toString = [v9 toString];
 
-  return v10;
+  return toString;
 }
 
 @end

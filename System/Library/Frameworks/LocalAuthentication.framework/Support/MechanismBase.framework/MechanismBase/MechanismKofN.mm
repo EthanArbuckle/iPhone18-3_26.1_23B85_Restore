@@ -1,50 +1,50 @@
 @interface MechanismKofN
-- (BOOL)requiresHostingControllerUiWithEventProcessing:(id)a3;
-- (BOOL)requiresRemoteViewControllerUiWithEventProcessing:(id)a3;
-- (BOOL)requiresUiWithEventProcessing:(id)a3;
-- (MechanismKofN)initWithK:(unint64_t)a3 ofSubmechanisms:(id)a4 serial:(BOOL)a5 request:(id)a6;
-- (id)additionalControllerInternalInfoForPolicy:(int64_t)a3;
-- (id)availabilityEventsForPurpose:(int64_t)a3;
-- (id)bestEffortAvailableMechanismForRequest:(id)a3 error:(id *)a4;
+- (BOOL)requiresHostingControllerUiWithEventProcessing:(id)processing;
+- (BOOL)requiresRemoteViewControllerUiWithEventProcessing:(id)processing;
+- (BOOL)requiresUiWithEventProcessing:(id)processing;
+- (MechanismKofN)initWithK:(unint64_t)k ofSubmechanisms:(id)submechanisms serial:(BOOL)serial request:(id)request;
+- (id)additionalControllerInternalInfoForPolicy:(int64_t)policy;
+- (id)availabilityEventsForPurpose:(int64_t)purpose;
+- (id)bestEffortAvailableMechanismForRequest:(id)request error:(id *)error;
 - (id)cachedExternalizationDelegate;
 - (id)descriptionFlags;
-- (id)findMechanismWithEventIdentifier:(int64_t)a3;
-- (id)mechanismPruningMechanismsWithEventIdentifier:(int64_t)a3;
+- (id)findMechanismWithEventIdentifier:(int64_t)identifier;
+- (id)mechanismPruningMechanismsWithEventIdentifier:(int64_t)identifier;
 - (id)mechanismTreeDescription;
-- (void)_runSubmechanismAtIndex:(int64_t)a3 hints:(id)a4 eventsDelegate:(id)a5 succeeded:(int64_t)a6 failed:(int64_t)a7 results:(id)a8 reply:(id)a9;
-- (void)finishRunWithResult:(id)a3 error:(id)a4;
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5;
-- (void)setParent:(id)a3;
+- (void)_runSubmechanismAtIndex:(int64_t)index hints:(id)hints eventsDelegate:(id)delegate succeeded:(int64_t)succeeded failed:(int64_t)failed results:(id)results reply:(id)reply;
+- (void)finishRunWithResult:(id)result error:(id)error;
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply;
+- (void)setParent:(id)parent;
 @end
 
 @implementation MechanismKofN
 
-- (MechanismKofN)initWithK:(unint64_t)a3 ofSubmechanisms:(id)a4 serial:(BOOL)a5 request:(id)a6
+- (MechanismKofN)initWithK:(unint64_t)k ofSubmechanisms:(id)submechanisms serial:(BOOL)serial request:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  submechanismsCopy = submechanisms;
+  requestCopy = request;
   v12 = LA_LOG_MechanismKofN();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v18 = "[MechanismKofN initWithK:ofSubmechanisms:serial:request:]";
     v19 = 1024;
-    v20 = a3;
+    kCopy = k;
     v21 = 2114;
-    v22 = v10;
+    v22 = submechanismsCopy;
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_238B95000, v12, OS_LOG_TYPE_DEBUG, "%s %d, %{public}@ on %@", buf, 0x26u);
   }
 
   v16.receiver = self;
   v16.super_class = MechanismKofN;
-  v13 = [(MechanismBaseComposite *)&v16 initWithEventIdentifier:0 remoteViewController:0 k:a3 ofSubmechanisms:v10 request:v11];
+  v13 = [(MechanismBaseComposite *)&v16 initWithEventIdentifier:0 remoteViewController:0 k:k ofSubmechanisms:submechanismsCopy request:requestCopy];
 
   if (v13)
   {
-    v13->_serial = a5;
+    v13->_serial = serial;
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -61,7 +61,7 @@ void __94__MechanismKofN_mechanismWithK_ofSubmechanisms_serial_request_preserveS
   }
 }
 
-- (id)mechanismPruningMechanismsWithEventIdentifier:(int64_t)a3
+- (id)mechanismPruningMechanismsWithEventIdentifier:(int64_t)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = [(MechanismKofN *)self findMechanismWithEventIdentifier:?];
@@ -73,8 +73,8 @@ void __94__MechanismKofN_mechanismWithK_ofSubmechanisms_serial_request_preserveS
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [(MechanismBaseComposite *)self submechanisms];
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    submechanisms = [(MechanismBaseComposite *)self submechanisms];
+    v8 = [submechanisms countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -85,27 +85,27 @@ void __94__MechanismKofN_mechanismWithK_ofSubmechanisms_serial_request_preserveS
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(submechanisms);
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 mechanismPruningMechanismsWithEventIdentifier:a3];
+            v13 = [v12 mechanismPruningMechanismsWithEventIdentifier:identifier];
             if (v13)
             {
               [v6 addObject:v13];
             }
           }
 
-          else if ([v12 eventIdentifier] != a3)
+          else if ([v12 eventIdentifier] != identifier)
           {
             [v6 addObject:v12];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v9 = [submechanisms countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v9);
@@ -118,26 +118,26 @@ void __94__MechanismKofN_mechanismWithK_ofSubmechanisms_serial_request_preserveS
       v20 = __63__MechanismKofN_mechanismPruningMechanismsWithEventIdentifier___block_invoke;
       v21 = &unk_278A62F78;
       v22 = v6;
-      v23 = self;
-      v14 = __63__MechanismKofN_mechanismPruningMechanismsWithEventIdentifier___block_invoke(&v18);
+      selfCopy = self;
+      selfCopy2 = __63__MechanismKofN_mechanismPruningMechanismsWithEventIdentifier___block_invoke(&v18);
       v15 = [(MechanismBase *)self parent:v18];
-      [(MechanismKofN *)v14 setParent:v15];
+      [(MechanismKofN *)selfCopy2 setParent:v15];
     }
 
     else
     {
-      v14 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v14 = self;
+    selfCopy2 = self;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return selfCopy2;
 }
 
 id __63__MechanismKofN_mechanismPruningMechanismsWithEventIdentifier___block_invoke(uint64_t a1)
@@ -205,75 +205,75 @@ uint64_t __63__MechanismKofN_mechanismPruningMechanismsWithEventIdentifier___blo
   v13[2] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = MechanismKofN;
-  v3 = [(MechanismBase *)&v12 descriptionFlags];
+  descriptionFlags = [(MechanismBase *)&v12 descriptionFlags];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"k:%u", -[MechanismBaseComposite k](self, "k")];
   v13[0] = v4;
-  v5 = [(MechanismBaseComposite *)self submechanisms];
-  v6 = v5;
-  if (!v5)
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v6 = submechanisms;
+  if (!submechanisms)
   {
-    v5 = MEMORY[0x277CBEBF8];
+    submechanisms = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [v5 componentsJoinedByString:{@", "}];
+  v7 = [submechanisms componentsJoinedByString:{@", "}];
   v13[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-  v9 = [v3 arrayByAddingObjectsFromArray:v8];
+  v9 = [descriptionFlags arrayByAddingObjectsFromArray:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply
 {
   v13.receiver = self;
   v13.super_class = MechanismKofN;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(MechanismBase *)&v13 runWithHints:v10 eventsDelegate:v9 reply:v8];
+  replyCopy = reply;
+  delegateCopy = delegate;
+  hintsCopy = hints;
+  [(MechanismBase *)&v13 runWithHints:hintsCopy eventsDelegate:delegateCopy reply:replyCopy];
   self->_finishing = 0;
   v11 = objc_opt_new();
   runningMechanisms = self->_runningMechanisms;
   self->_runningMechanisms = v11;
 
-  [(MechanismKofN *)self _runSubmechanismAtIndex:0 hints:v10 eventsDelegate:v9 succeeded:0 failed:0 results:MEMORY[0x277CBEC10] reply:v8];
+  [(MechanismKofN *)self _runSubmechanismAtIndex:0 hints:hintsCopy eventsDelegate:delegateCopy succeeded:0 failed:0 results:MEMORY[0x277CBEC10] reply:replyCopy];
 }
 
-- (void)_runSubmechanismAtIndex:(int64_t)a3 hints:(id)a4 eventsDelegate:(id)a5 succeeded:(int64_t)a6 failed:(int64_t)a7 results:(id)a8 reply:(id)a9
+- (void)_runSubmechanismAtIndex:(int64_t)index hints:(id)hints eventsDelegate:(id)delegate succeeded:(int64_t)succeeded failed:(int64_t)failed results:(id)results reply:(id)reply
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
+  hintsCopy = hints;
+  delegateCopy = delegate;
+  resultsCopy = results;
+  replyCopy = reply;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x2020000000;
-  v39[3] = a6;
+  v39[3] = succeeded;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
-  v38[3] = a7;
+  v38[3] = failed;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy__0;
   v36[4] = __Block_byref_object_dispose__0;
-  v26 = v17;
+  v26 = resultsCopy;
   v37 = v26;
   do
   {
-    v19 = [(MechanismBaseComposite *)self submechanisms];
-    v20 = [v19 count];
+    submechanisms = [(MechanismBaseComposite *)self submechanisms];
+    v20 = [submechanisms count];
 
-    if (a3 >= v20)
+    if (index >= v20)
     {
       break;
     }
 
-    v21 = [(MechanismBaseComposite *)self submechanisms];
-    v22 = [v21 objectAtIndex:a3];
+    submechanisms2 = [(MechanismBaseComposite *)self submechanisms];
+    v22 = [submechanisms2 objectAtIndex:index];
 
     [(NSMutableArray *)self->_runningMechanisms addObject:v22];
     v27[0] = MEMORY[0x277D85DD0];
@@ -286,16 +286,16 @@ uint64_t __63__MechanismKofN_mechanismPruningMechanismsWithEventIdentifier___blo
     v32 = v36;
     v33 = v39;
     v34 = v38;
-    v35 = a3;
-    v24 = v15;
+    indexCopy = index;
+    v24 = hintsCopy;
     v29 = v24;
-    v25 = v16;
+    v25 = delegateCopy;
     v30 = v25;
-    v31 = v18;
+    v31 = replyCopy;
     [v23 runWithHints:v24 eventsDelegate:v25 reply:v27];
     LOBYTE(v24) = self->_serial;
 
-    ++a3;
+    ++index;
   }
 
   while ((v24 & 1) == 0);
@@ -364,14 +364,14 @@ LABEL_13:
   }
 }
 
-- (void)finishRunWithResult:(id)a3 error:(id)a4
+- (void)finishRunWithResult:(id)result error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   if (!self->_finishing)
   {
-    v16 = v6;
+    v16 = resultCopy;
     self->_finishing = 1;
     v18 = 0u;
     v19 = 0u;
@@ -394,9 +394,9 @@ LABEL_13:
           }
 
           v13 = *(*(&v18 + 1) + 8 * v12);
-          if (v7)
+          if (errorCopy)
           {
-            [*(*(&v18 + 1) + 8 * v12) finishRunWithResult:0 error:v7 skipReply:1];
+            [*(*(&v18 + 1) + 8 * v12) finishRunWithResult:0 error:errorCopy skipReply:1];
           }
 
           else
@@ -417,25 +417,25 @@ LABEL_13:
 
     v17.receiver = self;
     v17.super_class = MechanismKofN;
-    v6 = v16;
-    [(MechanismBase *)&v17 finishRunWithResult:v16 error:v7];
+    resultCopy = v16;
+    [(MechanismBase *)&v17 finishRunWithResult:v16 error:errorCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bestEffortAvailableMechanismForRequest:(id)a3 error:(id *)a4
+- (id)bestEffortAvailableMechanismForRequest:(id)request error:(id *)error
 {
-  v26 = a4;
+  errorCopy = error;
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v6 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [(MechanismBaseComposite *)self submechanisms];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v8 = [submechanisms countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -447,12 +447,12 @@ LABEL_13:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(submechanisms);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
         v27 = 0;
-        v14 = [v13 bestEffortAvailableMechanismForRequest:v5 error:{&v27, v26}];
+        v14 = [v13 bestEffortAvailableMechanismForRequest:requestCopy error:{&v27, errorCopy}];
         v15 = v27;
         v16 = v15;
         if (v14)
@@ -466,7 +466,7 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v9 = [submechanisms countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v9);
@@ -480,22 +480,22 @@ LABEL_13:
   v17 = [v6 count];
   if (v17 >= [(MechanismBaseComposite *)self k])
   {
-    v20 = [(MechanismBaseComposite *)self submechanisms];
-    v21 = [v6 isEqual:v20];
+    submechanisms2 = [(MechanismBaseComposite *)self submechanisms];
+    v21 = [v6 isEqual:submechanisms2];
 
-    v19 = v26;
+    v19 = errorCopy;
     if (v21)
     {
-      v22 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v22 = [MechanismKofN mechanismWithK:[(MechanismBaseComposite *)self k] ofSubmechanisms:v6 serial:self->_serial request:v5];
+      selfCopy = [MechanismKofN mechanismWithK:[(MechanismBaseComposite *)self k] ofSubmechanisms:v6 serial:self->_serial request:requestCopy];
     }
 
-    v18 = v22;
-    if (!v26)
+    v18 = selfCopy;
+    if (!errorCopy)
     {
       goto LABEL_25;
     }
@@ -504,8 +504,8 @@ LABEL_13:
   }
 
   v18 = 0;
-  v19 = v26;
-  if (v26)
+  v19 = errorCopy;
+  if (errorCopy)
   {
 LABEL_21:
     if (v18)
@@ -528,7 +528,7 @@ LABEL_25:
   return v18;
 }
 
-- (id)availabilityEventsForPurpose:(int64_t)a3
+- (id)availabilityEventsForPurpose:(int64_t)purpose
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -536,8 +536,8 @@ LABEL_25:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(MechanismBaseComposite *)self submechanisms];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v7 = [submechanisms countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -548,14 +548,14 @@ LABEL_25:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(submechanisms);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) availabilityEventsForPurpose:a3];
+        v11 = [*(*(&v14 + 1) + 8 * i) availabilityEventsForPurpose:purpose];
         [v5 addEntriesFromDictionary:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [submechanisms countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -566,15 +566,15 @@ LABEL_25:
   return v5;
 }
 
-- (id)findMechanismWithEventIdentifier:(int64_t)a3
+- (id)findMechanismWithEventIdentifier:(int64_t)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(MechanismBaseComposite *)self submechanisms];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v5 = [submechanisms countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -585,10 +585,10 @@ LABEL_25:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(submechanisms);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) findMechanismWithEventIdentifier:a3];
+        v9 = [*(*(&v13 + 1) + 8 * i) findMechanismWithEventIdentifier:identifier];
         if (v9)
         {
           v10 = v9;
@@ -596,7 +596,7 @@ LABEL_25:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [submechanisms countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -622,8 +622,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(MechanismBaseComposite *)self submechanisms];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v5 = [submechanisms countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -634,14 +634,14 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(submechanisms);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) mechanismTreeDescription];
-        [v3 addObject:v9];
+        mechanismTreeDescription = [*(*(&v15 + 1) + 8 * i) mechanismTreeDescription];
+        [v3 addObject:mechanismTreeDescription];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [submechanisms countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -665,16 +665,16 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)requiresUiWithEventProcessing:(id)a3
+- (BOOL)requiresUiWithEventProcessing:(id)processing
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processingCopy = processing;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MechanismBaseComposite *)self submechanisms];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -684,17 +684,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(submechanisms);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) requiresUiWithEventProcessing:v4])
+        if ([*(*(&v11 + 1) + 8 * i) requiresUiWithEventProcessing:processingCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -710,16 +710,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)requiresRemoteViewControllerUiWithEventProcessing:(id)a3
+- (BOOL)requiresRemoteViewControllerUiWithEventProcessing:(id)processing
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processingCopy = processing;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MechanismBaseComposite *)self submechanisms];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -729,17 +729,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(submechanisms);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) requiresRemoteViewControllerUiWithEventProcessing:v4])
+        if ([*(*(&v11 + 1) + 8 * i) requiresRemoteViewControllerUiWithEventProcessing:processingCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -755,16 +755,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)requiresHostingControllerUiWithEventProcessing:(id)a3
+- (BOOL)requiresHostingControllerUiWithEventProcessing:(id)processing
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processingCopy = processing;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MechanismBaseComposite *)self submechanisms];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -774,17 +774,17 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(submechanisms);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) requiresHostingControllerUiWithEventProcessing:v4])
+        if ([*(*(&v11 + 1) + 8 * i) requiresHostingControllerUiWithEventProcessing:processingCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -802,23 +802,23 @@ LABEL_11:
 
 - (id)cachedExternalizationDelegate
 {
-  v2 = [(MechanismBaseComposite *)self submechanisms];
-  v3 = [v2 objectAtIndexedSubscript:0];
-  v4 = [v3 cachedExternalizationDelegate];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v3 = [submechanisms objectAtIndexedSubscript:0];
+  cachedExternalizationDelegate = [v3 cachedExternalizationDelegate];
 
-  return v4;
+  return cachedExternalizationDelegate;
 }
 
-- (id)additionalControllerInternalInfoForPolicy:(int64_t)a3
+- (id)additionalControllerInternalInfoForPolicy:(int64_t)policy
 {
-  v4 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(MechanismBaseComposite *)self submechanisms];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v6 = [submechanisms countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (!v6)
   {
     v10 = MEMORY[0x277CBEC10];
@@ -826,7 +826,7 @@ LABEL_11:
   }
 
   v7 = v6;
-  v21 = v4;
+  v21 = selfCopy;
   v8 = 0;
   v9 = *v24;
   v10 = MEMORY[0x277CBEC10];
@@ -838,10 +838,10 @@ LABEL_11:
     {
       if (*v24 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(submechanisms);
       }
 
-      v13 = [*(*(&v23 + 1) + 8 * v11) additionalControllerInternalInfoForPolicy:a3];
+      v13 = [*(*(&v23 + 1) + 8 * v11) additionalControllerInternalInfoForPolicy:policy];
       v10 = [v12 dictionaryByMergingWith:v13];
 
       v14 = [v13 objectForKeyedSubscript:@"AuthType"];
@@ -852,7 +852,7 @@ LABEL_11:
     }
 
     while (v7 != v11);
-    v7 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    v7 = [submechanisms countByEnumeratingWithState:&v23 objects:v29 count:16];
   }
 
   while (v7);
@@ -860,9 +860,9 @@ LABEL_11:
   if (v8)
   {
     v27 = @"AuthType";
-    v4 = v21;
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:{v8 | ((-[MechanismBaseComposite k](v21, "k") > 1) << 30)}];
-    v28 = v5;
+    selfCopy = v21;
+    submechanisms = [MEMORY[0x277CCABB0] numberWithInteger:{v8 | ((-[MechanismBaseComposite k](v21, "k") > 1) << 30)}];
+    v28 = submechanisms;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v16 = [v10 dictionaryByMergingWith:v15];
 
@@ -872,7 +872,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v4 = v21;
+  selfCopy = v21;
 LABEL_13:
   if ([v10 count])
   {
@@ -881,9 +881,9 @@ LABEL_13:
 
   else
   {
-    v22.receiver = v4;
+    v22.receiver = selfCopy;
     v22.super_class = MechanismKofN;
-    v17 = [(MechanismBase *)&v22 additionalControllerInternalInfoForPolicy:a3];
+    v17 = [(MechanismBase *)&v22 additionalControllerInternalInfoForPolicy:policy];
   }
 
   v18 = v17;
@@ -893,19 +893,19 @@ LABEL_13:
   return v18;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parentCopy = parent;
   v15.receiver = self;
   v15.super_class = MechanismKofN;
-  [(MechanismBase *)&v15 setParent:v4];
+  [(MechanismBase *)&v15 setParent:parentCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(MechanismBaseComposite *)self submechanisms];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  submechanisms = [(MechanismBaseComposite *)self submechanisms];
+  v6 = [submechanisms countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -917,14 +917,14 @@ LABEL_13:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(submechanisms);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setParent:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setParent:parentCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [submechanisms countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);

@@ -1,12 +1,12 @@
 @interface _PXDefaultAudioCueProvider
 - (_PXDefaultAudioCueProvider)init;
-- (id)_cueProviderForCatalog:(int64_t)a3;
-- (id)requestCuesForAudioAsset:(id)a3 resultHandler:(id)a4;
+- (id)_cueProviderForCatalog:(int64_t)catalog;
+- (id)requestCuesForAudioAsset:(id)asset resultHandler:(id)handler;
 @end
 
 @implementation _PXDefaultAudioCueProvider
 
-- (id)_cueProviderForCatalog:(int64_t)a3
+- (id)_cueProviderForCatalog:(int64_t)catalog
 {
   v7 = 0;
   v8 = &v7;
@@ -21,7 +21,7 @@
   block[3] = &unk_1E77477B8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = catalog;
   dispatch_sync(stateQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (id)requestCuesForAudioAsset:(id)a3 resultHandler:(id)a4
+- (id)requestCuesForAudioAsset:(id)asset resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[_PXDefaultAudioCueProvider _cueProviderForCatalog:](self, "_cueProviderForCatalog:", [v7 catalog]);
+  handlerCopy = handler;
+  assetCopy = asset;
+  v8 = -[_PXDefaultAudioCueProvider _cueProviderForCatalog:](self, "_cueProviderForCatalog:", [assetCopy catalog]);
   v9 = os_signpost_id_make_with_pointer(self->_log, v8);
   v10 = self->_log;
   v11 = v10;
@@ -48,12 +48,12 @@
   v17[1] = 3221225472;
   v17[2] = __69___PXDefaultAudioCueProvider_requestCuesForAudioAsset_resultHandler___block_invoke;
   v17[3] = &unk_1E7740E60;
-  v19 = v6;
+  v19 = handlerCopy;
   v20 = v9;
   v18 = v12;
-  v13 = v6;
+  v13 = handlerCopy;
   v14 = v12;
-  v15 = [v8 requestCuesForAudioAsset:v7 resultHandler:v17];
+  v15 = [v8 requestCuesForAudioAsset:assetCopy resultHandler:v17];
 
   return v15;
 }

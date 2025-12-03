@@ -1,9 +1,9 @@
 @interface PPQuickTypeMetrics
 + (id)instance;
-+ (id)trackerForDistribution:(uint64_t)a1 withProperties:(void *)a2;
-+ (void)contactMatchesWithContactsCount:(unint64_t)a3 foundInAppsCount:(unint64_t)a4;
-+ (void)eventsMatches:(unint64_t)a3;
-+ (void)frameworkError:(id)a3 errorCode:(int64_t)a4;
++ (id)trackerForDistribution:(uint64_t)distribution withProperties:(void *)properties;
++ (void)contactMatchesWithContactsCount:(unint64_t)count foundInAppsCount:(unint64_t)appsCount;
++ (void)eventsMatches:(unint64_t)matches;
++ (void)frameworkError:(id)error errorCode:(int64_t)code;
 - (PPQuickTypeMetrics)init;
 @end
 
@@ -80,18 +80,18 @@
   return v2;
 }
 
-+ (id)trackerForDistribution:(uint64_t)a1 withProperties:(void *)a2
++ (id)trackerForDistribution:(uint64_t)distribution withProperties:(void *)properties
 {
   v3 = MEMORY[0x277CBEBF8];
   v4 = MEMORY[0x277CBEBF8];
-  v5 = a2;
+  propertiesCopy = properties;
   objc_opt_self();
-  v6 = [objc_alloc(MEMORY[0x277D41D98]) initWithFeatureId:@"ProactiveExperts" event:v5 registerProperties:v3];
+  v6 = [objc_alloc(MEMORY[0x277D41D98]) initWithFeatureId:@"ProactiveExperts" event:propertiesCopy registerProperties:v3];
 
   return v6;
 }
 
-+ (void)eventsMatches:(unint64_t)a3
++ (void)eventsMatches:(unint64_t)matches
 {
   v4 = +[PPQuickTypeMetrics instance];
   if (v4)
@@ -109,7 +109,7 @@
   v7[2] = __36__PPQuickTypeMetrics_eventsMatches___block_invoke;
   v7[3] = &unk_278977B20;
   v8 = v4;
-  v9 = a3;
+  matchesCopy = matches;
   v6 = v4;
   dispatch_async(v5, v7);
 }
@@ -132,7 +132,7 @@ uint64_t __30__PPQuickTypeMetrics_instance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)contactMatchesWithContactsCount:(unint64_t)a3 foundInAppsCount:(unint64_t)a4
++ (void)contactMatchesWithContactsCount:(unint64_t)count foundInAppsCount:(unint64_t)appsCount
 {
   v6 = +[PPQuickTypeMetrics instance];
   if (v6)
@@ -150,8 +150,8 @@ uint64_t __30__PPQuickTypeMetrics_instance__block_invoke()
   block[2] = __71__PPQuickTypeMetrics_contactMatchesWithContactsCount_foundInAppsCount___block_invoke;
   block[3] = &unk_2789743C0;
   v10 = v6;
-  v11 = a3;
-  v12 = a4;
+  countCopy = count;
+  appsCountCopy = appsCount;
   v8 = v6;
   dispatch_async(v7, block);
 }
@@ -187,9 +187,9 @@ uint64_t __71__PPQuickTypeMetrics_contactMatchesWithContactsCount_foundInAppsCou
   return [v5 trackEventWithPropertyValues:v7 value:v6];
 }
 
-+ (void)frameworkError:(id)a3 errorCode:(int64_t)a4
++ (void)frameworkError:(id)error errorCode:(int64_t)code
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = +[PPQuickTypeMetrics instance];
   v7 = v6;
   if (v6)
@@ -207,9 +207,9 @@ uint64_t __71__PPQuickTypeMetrics_contactMatchesWithContactsCount_foundInAppsCou
   block[2] = __47__PPQuickTypeMetrics_frameworkError_errorCode___block_invoke;
   block[3] = &unk_278978A80;
   v12 = v6;
-  v13 = v5;
-  v14 = a4;
-  v9 = v5;
+  v13 = errorCopy;
+  codeCopy = code;
+  v9 = errorCopy;
   v10 = v7;
   dispatch_async(v8, block);
 }

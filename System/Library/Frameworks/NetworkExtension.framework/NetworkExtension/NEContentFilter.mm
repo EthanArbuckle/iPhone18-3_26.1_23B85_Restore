@@ -1,105 +1,105 @@
 @interface NEContentFilter
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (NEContentFilter)init;
-- (NEContentFilter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEContentFilter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEContentFilter
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEContentFilter *)self provider];
+  errorsCopy = errors;
+  provider = [(NEContentFilter *)self provider];
 
-  if (v5)
+  if (provider)
   {
-    v6 = [(NEContentFilter *)self provider];
-    LOBYTE(v5) = [v6 checkValidityAndCollectErrors:v4];
+    provider2 = [(NEContentFilter *)self provider];
+    LOBYTE(provider) = [provider2 checkValidityAndCollectErrors:errorsCopy];
   }
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
   if ([(NEContentFilter *)self grade]< 1 || [(NEContentFilter *)self grade]>= 3)
   {
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
     v8 = NEResourcesCopyLocalizedNSString(@"CONTENT_FILTER_INVALID_GRADE", @"CONTENT_FILTER_INVALID_GRADE");
-    v5 = [v7 initWithFormat:v8, -[NEContentFilter grade](self, "grade")];
-    [v4 addObject:v5];
+    provider = [v7 initWithFormat:v8, -[NEContentFilter grade](self, "grade")];
+    [errorsCopy addObject:provider];
 
-    LOBYTE(v5) = 0;
+    LOBYTE(provider) = 0;
   }
 
-  v9 = [(NEContentFilter *)self perApp];
-  if (v9)
+  perApp = [(NEContentFilter *)self perApp];
+  if (perApp)
   {
-    v10 = v9;
-    v11 = [(NEContentFilter *)self perApp];
-    v12 = [v11 checkValidityAndCollectErrors:v4];
+    v10 = perApp;
+    perApp2 = [(NEContentFilter *)self perApp];
+    v12 = [perApp2 checkValidityAndCollectErrors:errorsCopy];
 
-    LOBYTE(v5) = v12 & v5;
+    LOBYTE(provider) = v12 & provider;
   }
 
-  return v5 & 1;
+  return provider & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEContentFilter allocWithZone:?]];
   [(NEContentFilter *)v4 setEnabled:[(NEContentFilter *)self isEnabled]];
   [(NEContentFilter *)v4 setDisableEncryptedDNSSettings:[(NEContentFilter *)self disableEncryptedDNSSettings]];
-  v5 = [(NEContentFilter *)self provider];
-  [(NEContentFilter *)v4 setProvider:v5];
+  provider = [(NEContentFilter *)self provider];
+  [(NEContentFilter *)v4 setProvider:provider];
 
   [(NEContentFilter *)v4 setGrade:[(NEContentFilter *)self grade]];
   [(NEContentFilter *)v4 setEnableManualMode:[(NEContentFilter *)self enableManualMode]];
-  v6 = [(NEContentFilter *)self perApp];
-  [(NEContentFilter *)v4 setPerApp:v6];
+  perApp = [(NEContentFilter *)self perApp];
+  [(NEContentFilter *)v4 setPerApp:perApp];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[NEContentFilter isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  [v4 encodeBool:-[NEContentFilter disableEncryptedDNSSettings](self forKey:{"disableEncryptedDNSSettings"), @"DisableEncryptedDNSSettings"}];
-  v5 = [(NEContentFilter *)self provider];
-  [v4 encodeObject:v5 forKey:@"Provider"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEContentFilter isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  [coderCopy encodeBool:-[NEContentFilter disableEncryptedDNSSettings](self forKey:{"disableEncryptedDNSSettings"), @"DisableEncryptedDNSSettings"}];
+  provider = [(NEContentFilter *)self provider];
+  [coderCopy encodeObject:provider forKey:@"Provider"];
 
-  [v4 encodeInteger:-[NEContentFilter grade](self forKey:{"grade"), @"FilterGrade"}];
-  [v4 encodeBool:-[NEContentFilter enableManualMode](self forKey:{"enableManualMode"), @"EnableManualMode"}];
-  v6 = [(NEContentFilter *)self perApp];
-  [v4 encodeObject:v6 forKey:@"PerApp"];
+  [coderCopy encodeInteger:-[NEContentFilter grade](self forKey:{"grade"), @"FilterGrade"}];
+  [coderCopy encodeBool:-[NEContentFilter enableManualMode](self forKey:{"enableManualMode"), @"EnableManualMode"}];
+  perApp = [(NEContentFilter *)self perApp];
+  [coderCopy encodeObject:perApp forKey:@"PerApp"];
 }
 
-- (NEContentFilter)initWithCoder:(id)a3
+- (NEContentFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEContentFilter *)self init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    v5->_disableEncryptedDNSSettings = [v4 decodeBoolForKey:@"DisableEncryptedDNSSettings"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Provider"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    v5->_disableEncryptedDNSSettings = [coderCopy decodeBoolForKey:@"DisableEncryptedDNSSettings"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Provider"];
     provider = v5->_provider;
     v5->_provider = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PerApp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PerApp"];
     perApp = v5->_perApp;
     v5->_perApp = v8;
 
-    v10 = [v4 decodeIntegerForKey:@"FilterGrade"];
+    v10 = [coderCopy decodeIntegerForKey:@"FilterGrade"];
     if ((v10 - 1) <= 1)
     {
       v5->_grade = v10;
     }
 
-    v5->_enableManualMode = [v4 decodeBoolForKey:@"EnableManualMode"];
+    v5->_enableManualMode = [coderCopy decodeBoolForKey:@"EnableManualMode"];
   }
 
   return v5;

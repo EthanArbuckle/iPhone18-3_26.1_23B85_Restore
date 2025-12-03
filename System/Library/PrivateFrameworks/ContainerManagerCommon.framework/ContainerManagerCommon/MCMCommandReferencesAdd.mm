@@ -5,7 +5,7 @@
 - (BOOL)deleteDuringReconciliation;
 - (BOOL)preflightClientAllowed;
 - (BOOL)yesReallyApplyToAll;
-- (MCMCommandReferencesAdd)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandReferencesAdd)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMUserIdentity)userIdentity;
 - (NSSet)groupIdentifiers;
 - (NSSet)ownerIdentifiers;
@@ -102,29 +102,29 @@
 - (id)_resolveUserIdentity
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 clientIdentity];
-  v5 = [v4 userIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  userIdentity = [clientIdentity userIdentity];
 
-  v6 = [(MCMCommandReferencesAdd *)self userIdentity];
+  userIdentity2 = [(MCMCommandReferencesAdd *)self userIdentity];
 
-  if (v6)
+  if (userIdentity2)
   {
-    v7 = [(MCMCommandReferencesAdd *)self userIdentity];
+    userIdentity3 = [(MCMCommandReferencesAdd *)self userIdentity];
   }
 
   else
   {
-    if ([v5 isNoSpecificPersona])
+    if ([userIdentity isNoSpecificPersona])
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = v5;
+    userIdentity3 = userIdentity;
   }
 
-  v8 = v7;
+  v8 = userIdentity3;
 LABEL_7:
 
   v9 = *MEMORY[0x1E69E9840];
@@ -137,26 +137,26 @@ LABEL_7:
   v91 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = [MEMORY[0x1E695DFA8] set];
-  v64 = [MEMORY[0x1E695DF70] array];
-  v63 = [(MCMCommandReferencesAdd *)self _resolveUserIdentity];
+  array = [MEMORY[0x1E695DF70] array];
+  _resolveUserIdentity = [(MCMCommandReferencesAdd *)self _resolveUserIdentity];
   v61 = [MCMUserIdentity isUserIdentityRequiredForContainerClass:[(MCMCommandReferencesAdd *)self containerClass]];
-  v5 = [(MCMCommandReferencesAdd *)self ownerIdentifiers];
+  ownerIdentifiers = [(MCMCommandReferencesAdd *)self ownerIdentifiers];
   p_superclass = (&OBJC_METACLASS___MCMCommandQuery + 8);
-  if (!v5)
+  if (!ownerIdentifiers)
   {
     goto LABEL_35;
   }
 
-  v7 = v5;
-  v8 = [(MCMCommandReferencesAdd *)self groupIdentifiers];
-  if (!v8)
+  v7 = ownerIdentifiers;
+  groupIdentifiers = [(MCMCommandReferencesAdd *)self groupIdentifiers];
+  if (!groupIdentifiers)
   {
     goto LABEL_34;
   }
 
-  v9 = v8;
-  v10 = [(MCMCommandReferencesAdd *)self ownerIdentifiers];
-  if (![v10 count])
+  v9 = groupIdentifiers;
+  ownerIdentifiers2 = [(MCMCommandReferencesAdd *)self ownerIdentifiers];
+  if (![ownerIdentifiers2 count])
   {
 
     p_superclass = &OBJC_METACLASS___MCMCommandQuery.superclass;
@@ -177,13 +177,13 @@ LABEL_35:
     v39 = container_log_handle_for_category();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v47 = [(MCMCommandReferencesAdd *)self ownerIdentifiers];
-      v48 = [v47 count];
-      v49 = [(MCMCommandReferencesAdd *)self groupIdentifiers];
+      ownerIdentifiers3 = [(MCMCommandReferencesAdd *)self ownerIdentifiers];
+      v48 = [ownerIdentifiers3 count];
+      groupIdentifiers2 = [(MCMCommandReferencesAdd *)self groupIdentifiers];
       *buf = 134218240;
       v88 = v48;
       v89 = 2048;
-      v90 = [v49 count];
+      v90 = [groupIdentifiers2 count];
       _os_log_error_impl(&dword_1DF2C3000, v39, OS_LOG_TYPE_ERROR, "Owner and group identifiers must be specified; owner cnt = %lu, group cnt = %lu", buf, 0x16u);
     }
 
@@ -201,8 +201,8 @@ LABEL_38:
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v13 = [(MCMCommandReferencesAdd *)v65 ownerIdentifiers];
-  v56 = [v13 countByEnumeratingWithState:&v83 objects:v82 count:16];
+  ownerIdentifiers4 = [(MCMCommandReferencesAdd *)v65 ownerIdentifiers];
+  v56 = [ownerIdentifiers4 countByEnumeratingWithState:&v83 objects:v82 count:16];
   v14 = 0;
   v15 = 0;
   if (v56)
@@ -210,7 +210,7 @@ LABEL_38:
     v16 = *v84;
     v58 = v3;
     v54 = *v84;
-    v55 = v13;
+    v55 = ownerIdentifiers4;
     do
     {
       v17 = 0;
@@ -218,7 +218,7 @@ LABEL_38:
       {
         if (*v84 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(ownerIdentifiers4);
         }
 
         v57 = v17;
@@ -227,8 +227,8 @@ LABEL_38:
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v19 = [(MCMCommandReferencesAdd *)self groupIdentifiers];
-        v20 = [v19 countByEnumeratingWithState:&v78 objects:v77 count:16];
+        groupIdentifiers3 = [(MCMCommandReferencesAdd *)self groupIdentifiers];
+        v20 = [groupIdentifiers3 countByEnumeratingWithState:&v78 objects:v77 count:16];
         if (v20)
         {
           v21 = v20;
@@ -241,21 +241,21 @@ LABEL_38:
             {
               if (*v79 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(groupIdentifiers3);
               }
 
               v25 = *(*(&v78 + 1) + 8 * v23);
               v26 = gCodeSigningMapping;
-              v27 = [(MCMCommandReferencesAdd *)v65 containerClass];
+              containerClass = [(MCMCommandReferencesAdd *)v65 containerClass];
               v71 = v24;
               v67[0] = MEMORY[0x1E69E9820];
               v67[1] = 3221225472;
               v67[2] = __34__MCMCommandReferencesAdd_execute__block_invoke;
               v67[3] = &unk_1E86AF968;
-              v68 = v63;
+              v68 = _resolveUserIdentity;
               v70 = v61;
               v69 = v4;
-              LODWORD(v25) = [v26 addGroupIdentifier:v25 forIdentifier:v18 containerClass:v27 error:&v71 reconcileHandler:v67];
+              LODWORD(v25) = [v26 addGroupIdentifier:v25 forIdentifier:v18 containerClass:containerClass error:&v71 reconcileHandler:v67];
               v15 = v71;
 
               if (!v25)
@@ -273,7 +273,7 @@ LABEL_38:
             }
 
             while (v21 != v23);
-            v21 = [v19 countByEnumeratingWithState:&v78 objects:v77 count:16];
+            v21 = [groupIdentifiers3 countByEnumeratingWithState:&v78 objects:v77 count:16];
             if (v21)
             {
               continue;
@@ -285,7 +285,7 @@ LABEL_38:
           v14 = 1;
           v3 = v58;
           v16 = v54;
-          v13 = v55;
+          ownerIdentifiers4 = v55;
         }
 
         v17 = v57 + 1;
@@ -294,7 +294,7 @@ LABEL_38:
       }
 
       while (v57 + 1 != v56);
-      v56 = [v13 countByEnumeratingWithState:&v83 objects:v82 count:16];
+      v56 = [ownerIdentifiers4 countByEnumeratingWithState:&v83 objects:v82 count:16];
     }
 
     while (v56);
@@ -326,16 +326,16 @@ LABEL_38:
           }
 
           v34 = *(*(&v73 + 1) + 8 * v32);
-          v35 = [(MCMCommand *)self context];
-          v36 = [v35 containerFactory];
+          context = [(MCMCommand *)self context];
+          containerFactory = [context containerFactory];
           v66 = v33;
-          v37 = [v36 containerForContainerIdentity:v34 createIfNecessary:1 error:&v66];
+          v37 = [containerFactory containerForContainerIdentity:v34 createIfNecessary:1 error:&v66];
           v15 = v66;
 
-          v38 = [v37 metadataMinimal];
-          if (([v38 existed] & 1) == 0)
+          metadataMinimal = [v37 metadataMinimal];
+          if (([metadataMinimal existed] & 1) == 0)
           {
-            [v64 addObject:v38];
+            [array addObject:metadataMinimal];
           }
 
           ++v32;
@@ -357,10 +357,10 @@ LABEL_38:
   }
 
   v50 = objc_alloc((p_superclass + 294));
-  v51 = [(MCMCommand *)self context];
-  v52 = [v51 clientIdentity];
+  context2 = [(MCMCommand *)self context];
+  clientIdentity = [context2 clientIdentity];
   LOBYTE(v53) = 1;
-  v40 = [v50 initWithContainers:v64 includePath:1 includeInfo:0 includeUserManagedAssetsRelPath:0 includeCreator:0 clientIdentity:v52 skipSandboxExtensions:v53];
+  v40 = [v50 initWithContainers:array includePath:1 includeInfo:0 includeUserManagedAssetsRelPath:0 includeCreator:0 clientIdentity:clientIdentity skipSandboxExtensions:v53];
 
   if ((v14 & 1) == 0)
   {
@@ -371,17 +371,17 @@ LABEL_39:
   v42 = container_log_handle_for_category();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
   {
-    v45 = [v64 count];
-    v46 = [v40 error];
+    v45 = [array count];
+    error = [v40 error];
     *buf = 134218242;
     v88 = v45;
     v89 = 2112;
-    v90 = v46;
+    v90 = error;
     _os_log_debug_impl(&dword_1DF2C3000, v42, OS_LOG_TYPE_DEBUG, "References add; created containers count = %lu, error = %@", buf, 0x16u);
   }
 
-  v43 = [(MCMCommand *)self resultPromise];
-  [v43 completeWithResult:v40];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v40];
 
   objc_autoreleasePoolPop(v3);
   v44 = *MEMORY[0x1E69E9840];
@@ -440,36 +440,36 @@ void __34__MCMCommandReferencesAdd_execute__block_invoke(uint64_t a1, uint64_t a
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToChangeReferences];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToChangeReferences = [clientIdentity isAllowedToChangeReferences];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToChangeReferences;
 }
 
-- (MCMCommandReferencesAdd)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandReferencesAdd)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v18.receiver = self;
   v18.super_class = MCMCommandReferencesAdd;
-  v9 = [(MCMCommand *)&v18 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v18 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v9->_containerClass = [v8 containerClass];
-    v10 = [v8 ownerIdentifiers];
+    v9->_containerClass = [messageCopy containerClass];
+    ownerIdentifiers = [messageCopy ownerIdentifiers];
     ownerIdentifiers = v9->_ownerIdentifiers;
-    v9->_ownerIdentifiers = v10;
+    v9->_ownerIdentifiers = ownerIdentifiers;
 
-    v12 = [v8 groupIdentifiers];
+    groupIdentifiers = [messageCopy groupIdentifiers];
     groupIdentifiers = v9->_groupIdentifiers;
-    v9->_groupIdentifiers = v12;
+    v9->_groupIdentifiers = groupIdentifiers;
 
-    v9->_createDuringReconciliation = [v8 createDuringReconciliation];
-    v14 = [v8 userIdentity];
+    v9->_createDuringReconciliation = [messageCopy createDuringReconciliation];
+    userIdentity = [messageCopy userIdentity];
     userIdentity = v9->_userIdentity;
-    v9->_userIdentity = v14;
+    v9->_userIdentity = userIdentity;
   }
 
   v16 = *MEMORY[0x1E69E9840];

@@ -1,15 +1,15 @@
 @interface BRShareDocumentInfoView
-- (BRShareDocumentInfoView)initWithFrame:(CGRect)a3;
-- (void)setCompactMode:(BOOL)a3;
+- (BRShareDocumentInfoView)initWithFrame:(CGRect)frame;
+- (void)setCompactMode:(BOOL)mode;
 @end
 
 @implementation BRShareDocumentInfoView
 
-- (BRShareDocumentInfoView)initWithFrame:(CGRect)a3
+- (BRShareDocumentInfoView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = BRShareDocumentInfoView;
-  v3 = [(BRShareDocumentInfoView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BRShareDocumentInfoView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -60,8 +60,8 @@
 
     [(BRShareFittingImageView *)v4->_thumbnailView setContentMode:1];
     [(BRShareFittingImageView *)v4->_thumbnailView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(BRShareFittingImageView *)v4->_thumbnailView heightAnchor];
-    v18 = [v17 constraintEqualToConstant:110.0];
+    heightAnchor = [(BRShareFittingImageView *)v4->_thumbnailView heightAnchor];
+    v18 = [heightAnchor constraintEqualToConstant:110.0];
     thumbnailHeightConstraint = v4->_thumbnailHeightConstraint;
     v4->_thumbnailHeightConstraint = v18;
 
@@ -118,12 +118,12 @@
   return v4;
 }
 
-- (void)setCompactMode:(BOOL)a3
+- (void)setCompactMode:(BOOL)mode
 {
-  self->_compactMode = a3;
+  self->_compactMode = mode;
   titleLabel = self->_titleLabel;
   v5 = 20.0;
-  if (a3)
+  if (mode)
   {
     v5 = 16.0;
     v6 = 10.0;
@@ -134,7 +134,7 @@
     v6 = 12.0;
   }
 
-  if (a3)
+  if (mode)
   {
     v7 = 75.0;
   }
@@ -144,7 +144,7 @@
     v7 = 110.0;
   }
 
-  if (a3)
+  if (mode)
   {
     v8 = 4.0;
   }

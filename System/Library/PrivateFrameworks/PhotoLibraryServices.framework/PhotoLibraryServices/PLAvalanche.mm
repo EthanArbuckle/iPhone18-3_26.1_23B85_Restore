@@ -1,164 +1,164 @@
 @interface PLAvalanche
-+ (BOOL)isValidBurstWithAssets:(id)a3;
++ (BOOL)isValidBurstWithAssets:(id)assets;
 + (CGRect)frameOfTopImageInStackForStackFrame:(CGRect)result;
-+ (id)_assetAmongAssets:(id)a3 fromIndexes:(id)a4 excludingIndexes:(id)a5;
-+ (id)_fetchRequestForAssetsWithAvalancheUUID:(id)a3 sourceType:(int64_t)a4;
-+ (id)_visibleIndexesAmongAssets:(id)a3 fromUserFavoriteIndexes:(id)a4 stackIndex:(unint64_t)a5;
-+ (id)assetsWithAvalancheUUID:(id)a3 sourceType:(int64_t)a4 inManagedObjectContext:(id)a5;
-+ (id)revalidateAvalancheAssets:(id)a3 inLibrary:(id)a4 deleteNonPicks:(BOOL)a5 allowDissolve:(BOOL)a6;
-+ (id)updatePropertiesForAssets:(id)a3 autoPicks:(id)a4 stackAsset:(id)a5 userFavorites:(id)a6 deleteNonPicks:(BOOL)a7 setFirstPick:(BOOL)a8 allowDissolve:(BOOL)a9;
-+ (unint64_t)_calculateStackAssetForAssetCount:(unint64_t)a3 autoPicks:(id)a4 userFavorites:(id)a5;
-+ (unint64_t)countForAssetsWithAvalancheUUID:(id)a3 sourceType:(int64_t)a4 inLibrary:(id)a5;
-+ (unsigned)_maskForAvalancheSupportedAssetsWithSourceType:(int64_t)a3;
-+ (void)disolveBurstForAssets:(id)a3 permanently:(BOOL)a4;
-+ (void)handleUpdatesForContextWillSave:(id)a3;
-+ (void)removeFavoriteStatus:(id)a3;
-+ (void)updateMembershipForAssets:(id)a3 autoPicks:(id)a4 stackAsset:(id)a5 userFavorites:(id)a6 deleteNonPicks:(BOOL)a7 allowDissolve:(BOOL)a8 inLibrary:(id)a9;
-- (BOOL)isAutoPick:(id)a3;
++ (id)_assetAmongAssets:(id)assets fromIndexes:(id)indexes excludingIndexes:(id)excludingIndexes;
++ (id)_fetchRequestForAssetsWithAvalancheUUID:(id)d sourceType:(int64_t)type;
++ (id)_visibleIndexesAmongAssets:(id)assets fromUserFavoriteIndexes:(id)indexes stackIndex:(unint64_t)index;
++ (id)assetsWithAvalancheUUID:(id)d sourceType:(int64_t)type inManagedObjectContext:(id)context;
++ (id)revalidateAvalancheAssets:(id)assets inLibrary:(id)library deleteNonPicks:(BOOL)picks allowDissolve:(BOOL)dissolve;
++ (id)updatePropertiesForAssets:(id)assets autoPicks:(id)picks stackAsset:(id)asset userFavorites:(id)favorites deleteNonPicks:(BOOL)nonPicks setFirstPick:(BOOL)pick allowDissolve:(BOOL)dissolve;
++ (unint64_t)_calculateStackAssetForAssetCount:(unint64_t)count autoPicks:(id)picks userFavorites:(id)favorites;
++ (unint64_t)countForAssetsWithAvalancheUUID:(id)d sourceType:(int64_t)type inLibrary:(id)library;
++ (unsigned)_maskForAvalancheSupportedAssetsWithSourceType:(int64_t)type;
++ (void)disolveBurstForAssets:(id)assets permanently:(BOOL)permanently;
++ (void)handleUpdatesForContextWillSave:(id)save;
++ (void)removeFavoriteStatus:(id)status;
++ (void)updateMembershipForAssets:(id)assets autoPicks:(id)picks stackAsset:(id)asset userFavorites:(id)favorites deleteNonPicks:(BOOL)nonPicks allowDissolve:(BOOL)dissolve inLibrary:(id)library;
+- (BOOL)isAutoPick:(id)pick;
 - (BOOL)isEmpty;
-- (BOOL)isUserFavorite:(id)a3;
+- (BOOL)isUserFavorite:(id)favorite;
 - (NSString)description;
-- (PLAvalanche)initWithUUID:(id)a3 sourceType:(int64_t)a4 photoLibrary:(id)a5;
+- (PLAvalanche)initWithUUID:(id)d sourceType:(int64_t)type photoLibrary:(id)library;
 - (id)autoPicks;
-- (id)proposedStackAssetAfterRemovingFavorite:(id)a3;
+- (id)proposedStackAssetAfterRemovingFavorite:(id)favorite;
 - (id)stackAsset;
 - (id)userFavorites;
 - (unint64_t)approximateCount;
 - (unint64_t)assetsCount;
 - (unint64_t)photosCount;
 - (void)_recalculateStackAsset;
-- (void)addUserFavorite:(id)a3;
-- (void)applyChangesAndDeleteNonPicks:(BOOL)a3 currentContainer:(id)a4 completionHandler:(id)a5;
-- (void)applyTrashedState:(signed __int16)a3 withTrashedReason:(unsigned __int16)a4;
-- (void)assetsDidChange:(id)a3;
+- (void)addUserFavorite:(id)favorite;
+- (void)applyChangesAndDeleteNonPicks:(BOOL)picks currentContainer:(id)container completionHandler:(id)handler;
+- (void)applyTrashedState:(signed __int16)state withTrashedReason:(unsigned __int16)reason;
+- (void)assetsDidChange:(id)change;
 - (void)dealloc;
-- (void)removeUserFavorite:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)removeUserFavorite:(id)favorite;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation PLAvalanche
 
 - (BOOL)isEmpty
 {
-  v2 = [(PLAvalanche *)self assets];
-  v3 = [v2 count] == 0;
+  assets = [(PLAvalanche *)self assets];
+  v3 = [assets count] == 0;
 
   return v3;
 }
 
 - (unint64_t)photosCount
 {
-  v2 = [(PLAvalanche *)self assets];
-  v3 = [v2 count];
+  assets = [(PLAvalanche *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
 
 - (unint64_t)assetsCount
 {
-  v2 = [(PLAvalanche *)self assets];
-  v3 = [v2 count];
+  assets = [(PLAvalanche *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
 
 - (unint64_t)approximateCount
 {
-  v2 = [(PLAvalanche *)self assets];
-  v3 = [v2 count];
+  assets = [(PLAvalanche *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
 
-- (id)proposedStackAssetAfterRemovingFavorite:(id)a3
+- (id)proposedStackAssetAfterRemovingFavorite:(id)favorite
 {
-  v4 = a3;
-  v5 = [(PLAvalanche *)self stackAsset];
-  v6 = [(PLAvalanche *)self assets];
-  v7 = [v6 indexOfObject:v4];
+  favoriteCopy = favorite;
+  stackAsset = [(PLAvalanche *)self stackAsset];
+  assets = [(PLAvalanche *)self assets];
+  v7 = [assets indexOfObject:favoriteCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(PLAvalanche *)self _userFavoriteIndexes];
-    v9 = [v8 mutableCopy];
+    _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+    v9 = [_userFavoriteIndexes mutableCopy];
 
     [v9 removeIndex:v7];
-    v10 = [(PLAvalanche *)self assets];
-    v11 = [v10 count];
-    v12 = [(PLAvalanche *)self _originalAutoPickIndexes];
-    v13 = [PLAvalanche _calculateStackAssetForAssetCount:v11 autoPicks:v12 userFavorites:v9];
+    assets2 = [(PLAvalanche *)self assets];
+    v11 = [assets2 count];
+    _originalAutoPickIndexes = [(PLAvalanche *)self _originalAutoPickIndexes];
+    v13 = [PLAvalanche _calculateStackAssetForAssetCount:v11 autoPicks:_originalAutoPickIndexes userFavorites:v9];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [(PLAvalanche *)self assets];
-      v15 = [v14 objectAtIndex:v13];
+      assets3 = [(PLAvalanche *)self assets];
+      v15 = [assets3 objectAtIndex:v13];
 
-      v5 = v15;
+      stackAsset = v15;
     }
   }
 
-  return v5;
+  return stackAsset;
 }
 
-- (BOOL)isAutoPick:(id)a3
+- (BOOL)isAutoPick:(id)pick
 {
-  v4 = a3;
-  v5 = [(PLAvalanche *)self assets];
-  v6 = [v5 indexOfObject:v4];
+  pickCopy = pick;
+  assets = [(PLAvalanche *)self assets];
+  v6 = [assets indexOfObject:pickCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v8 = [(PLAvalanche *)self _autoPickIndexes];
-  v9 = [v8 containsIndex:v6];
+  _autoPickIndexes = [(PLAvalanche *)self _autoPickIndexes];
+  v9 = [_autoPickIndexes containsIndex:v6];
 
   return v9;
 }
 
-- (BOOL)isUserFavorite:(id)a3
+- (BOOL)isUserFavorite:(id)favorite
 {
-  v4 = a3;
-  v5 = [(PLAvalanche *)self assets];
-  v6 = [v5 indexOfObject:v4];
+  favoriteCopy = favorite;
+  assets = [(PLAvalanche *)self assets];
+  v6 = [assets indexOfObject:favoriteCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v8 = [(PLAvalanche *)self _userFavoriteIndexes];
-  v9 = [v8 containsIndex:v6];
+  _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+  v9 = [_userFavoriteIndexes containsIndex:v6];
 
   return v9;
 }
 
-- (void)removeUserFavorite:(id)a3
+- (void)removeUserFavorite:(id)favorite
 {
-  v4 = a3;
-  v5 = [(PLAvalanche *)self assets];
-  v6 = [v5 indexOfObject:v4];
+  favoriteCopy = favorite;
+  assets = [(PLAvalanche *)self assets];
+  v6 = [assets indexOfObject:favoriteCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PLAvalanche *)self _userFavoriteIndexes];
-    [v7 removeIndex:v6];
+    _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+    [_userFavoriteIndexes removeIndex:v6];
 
     [(PLAvalanche *)self _recalculateStackAsset];
   }
 }
 
-- (void)addUserFavorite:(id)a3
+- (void)addUserFavorite:(id)favorite
 {
-  v4 = a3;
-  v5 = [(PLAvalanche *)self assets];
-  v6 = [v5 indexOfObject:v4];
+  favoriteCopy = favorite;
+  assets = [(PLAvalanche *)self assets];
+  v6 = [assets indexOfObject:favoriteCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PLAvalanche *)self _userFavoriteIndexes];
-    [v7 addIndex:v6];
+    _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+    [_userFavoriteIndexes addIndex:v6];
 
     [(PLAvalanche *)self _recalculateStackAsset];
   }
@@ -166,11 +166,11 @@
 
 - (void)_recalculateStackAsset
 {
-  v6 = [(PLAvalanche *)self assets];
-  v3 = [v6 count];
-  v4 = [(PLAvalanche *)self _originalAutoPickIndexes];
-  v5 = [(PLAvalanche *)self _userFavoriteIndexes];
-  self->__stackIndex = [PLAvalanche _calculateStackAssetForAssetCount:v3 autoPicks:v4 userFavorites:v5];
+  assets = [(PLAvalanche *)self assets];
+  v3 = [assets count];
+  _originalAutoPickIndexes = [(PLAvalanche *)self _originalAutoPickIndexes];
+  _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+  self->__stackIndex = [PLAvalanche _calculateStackAssetForAssetCount:v3 autoPicks:_originalAutoPickIndexes userFavorites:_userFavoriteIndexes];
 }
 
 - (id)stackAsset
@@ -182,8 +182,8 @@
 
   else
   {
-    v4 = [(PLAvalanche *)self assets];
-    v3 = [v4 objectAtIndex:{-[PLAvalanche _stackIndex](self, "_stackIndex")}];
+    assets = [(PLAvalanche *)self assets];
+    v3 = [assets objectAtIndex:{-[PLAvalanche _stackIndex](self, "_stackIndex")}];
   }
 
   return v3;
@@ -192,9 +192,9 @@
 - (id)userFavorites
 {
   v3 = MEMORY[0x1E695DFB8];
-  v4 = [(PLAvalanche *)self assets];
-  v5 = [(PLAvalanche *)self _userFavoriteIndexes];
-  v6 = [v4 objectsAtIndexes:v5];
+  assets = [(PLAvalanche *)self assets];
+  _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+  v6 = [assets objectsAtIndexes:_userFavoriteIndexes];
   v7 = [v3 orderedSetWithArray:v6];
 
   return v7;
@@ -203,23 +203,23 @@
 - (id)autoPicks
 {
   v3 = MEMORY[0x1E695DFB8];
-  v4 = [(PLAvalanche *)self assets];
-  v5 = [(PLAvalanche *)self _autoPickIndexes];
-  v6 = [v4 objectsAtIndexes:v5];
+  assets = [(PLAvalanche *)self assets];
+  _autoPickIndexes = [(PLAvalanche *)self _autoPickIndexes];
+  v6 = [assets objectsAtIndexes:_autoPickIndexes];
   v7 = [v3 orderedSetWithArray:v6];
 
   return v7;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(PLAvalanche *)self assets];
-  v6 = [v5 mutableCopy];
+  assets = [(PLAvalanche *)self assets];
+  v6 = [assets mutableCopy];
 
-  v7 = [(PLAvalanche *)self userFavorites];
-  [v6 minusOrderedSet:v7];
+  userFavorites = [(PLAvalanche *)self userFavorites];
+  [v6 minusOrderedSet:userFavorites];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -240,7 +240,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) setHidden:{v3, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) setHidden:{hiddenCopy, v13}];
       }
 
       while (v10 != v12);
@@ -251,16 +251,16 @@
   }
 }
 
-- (void)applyTrashedState:(signed __int16)a3 withTrashedReason:(unsigned __int16)a4
+- (void)applyTrashedState:(signed __int16)state withTrashedReason:(unsigned __int16)reason
 {
-  v4 = a4;
-  v5 = a3;
+  reasonCopy = reason;
+  stateCopy = state;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = [(PLAvalanche *)self assets];
-  v8 = [v7 mutableCopy];
+  assets = [(PLAvalanche *)self assets];
+  v8 = [assets mutableCopy];
 
-  v9 = [(PLAvalanche *)self userFavorites];
-  [v8 minusOrderedSet:v9];
+  userFavorites = [(PLAvalanche *)self userFavorites];
+  [v8 minusOrderedSet:userFavorites];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -281,7 +281,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) applyTrashedState:v5 withTrashedReason:v4 expungeReasonFromClient:{0, v16}];
+        [*(*(&v16 + 1) + 8 * v14++) applyTrashedState:stateCopy withTrashedReason:reasonCopy expungeReasonFromClient:{0, v16}];
       }
 
       while (v12 != v14);
@@ -291,34 +291,34 @@
     while (v12);
   }
 
-  if (v5 == 2)
+  if (stateCopy == 2)
   {
-    v15 = [v9 array];
-    [PLAvalanche disolveBurstForAssets:v15 permanently:1];
+    array = [userFavorites array];
+    [PLAvalanche disolveBurstForAssets:array permanently:1];
   }
 }
 
-- (void)assetsDidChange:(id)a3
+- (void)assetsDidChange:(id)change
 {
-  v12 = [a3 updatedAssets];
-  if ([v12 count])
+  updatedAssets = [change updatedAssets];
+  if ([updatedAssets count])
   {
-    v4 = [(PLAvalanche *)self _anOldPick];
-    v5 = [(PLAvalanche *)self _aNewPick];
-    v6 = v5;
-    if (!(v5 | v4))
+    _anOldPick = [(PLAvalanche *)self _anOldPick];
+    _aNewPick = [(PLAvalanche *)self _aNewPick];
+    v6 = _aNewPick;
+    if (!(_aNewPick | _anOldPick))
     {
       goto LABEL_14;
     }
 
-    if (v5)
+    if (_aNewPick)
     {
-      if ([v12 containsObject:v5])
+      if ([updatedAssets containsObject:_aNewPick])
       {
-        v7 = [v6 moment];
-        v8 = v7 == 0;
+        moment = [v6 moment];
+        v8 = moment == 0;
 
-        if (!v4)
+        if (!_anOldPick)
         {
           goto LABEL_11;
         }
@@ -327,14 +327,14 @@
       }
 
       v8 = 1;
-      if (!v4)
+      if (!_anOldPick)
       {
 LABEL_11:
         v10 = 0;
 LABEL_12:
         if (!v8 && !v10)
         {
-          v11 = [(PLAvalanche *)self _completionHandler];
+          _completionHandler = [(PLAvalanche *)self _completionHandler];
           pl_dispatch_async();
 
           [(PLAvalanche *)self _setAnOldPick:0];
@@ -349,17 +349,17 @@ LABEL_12:
     else
     {
       v8 = 0;
-      if (!v4)
+      if (!_anOldPick)
       {
         goto LABEL_11;
       }
     }
 
 LABEL_8:
-    if ([v12 containsObject:v4])
+    if ([updatedAssets containsObject:_anOldPick])
     {
-      v9 = [v4 moment];
-      v10 = v9 != 0;
+      moment2 = [_anOldPick moment];
+      v10 = moment2 != 0;
 
       goto LABEL_12;
     }
@@ -368,47 +368,47 @@ LABEL_14:
   }
 }
 
-- (void)applyChangesAndDeleteNonPicks:(BOOL)a3 currentContainer:(id)a4 completionHandler:(id)a5
+- (void)applyChangesAndDeleteNonPicks:(BOOL)picks currentContainer:(id)container completionHandler:(id)handler
 {
-  v6 = a3;
+  picksCopy = picks;
   v41 = *MEMORY[0x1E69E9840];
-  v34 = a4;
-  v8 = a5;
-  v9 = [(PLAvalanche *)self assets];
-  if ([v9 count] == 1)
+  containerCopy = container;
+  handlerCopy = handler;
+  assets = [(PLAvalanche *)self assets];
+  if ([assets count] == 1)
   {
-    v10 = [v9 firstObject];
-    [(PLAvalanche *)self addUserFavorite:v10];
+    firstObject = [assets firstObject];
+    [(PLAvalanche *)self addUserFavorite:firstObject];
   }
 
-  v33 = v8;
-  v11 = [(PLAvalanche *)self autoPicks];
-  v12 = [(PLAvalanche *)self userFavorites];
-  v13 = [(PLAvalanche *)self stackAsset];
+  v33 = handlerCopy;
+  autoPicks = [(PLAvalanche *)self autoPicks];
+  userFavorites = [(PLAvalanche *)self userFavorites];
+  stackAsset = [(PLAvalanche *)self stackAsset];
   [(PLAvalanche *)self _originalStackIndex];
-  v30 = [(PLAvalanche *)self _originalUserFavoriteIndexes];
-  v35 = [PLAvalanche _visibleIndexesAmongAssets:"_visibleIndexesAmongAssets:fromUserFavoriteIndexes:stackIndex:" fromUserFavoriteIndexes:v9 stackIndex:?];
+  _originalUserFavoriteIndexes = [(PLAvalanche *)self _originalUserFavoriteIndexes];
+  v35 = [PLAvalanche _visibleIndexesAmongAssets:"_visibleIndexesAmongAssets:fromUserFavoriteIndexes:stackIndex:" fromUserFavoriteIndexes:assets stackIndex:?];
   LOBYTE(v29) = 1;
-  v31 = v13;
-  v32 = v11;
-  v14 = [PLAvalanche updatePropertiesForAssets:v9 autoPicks:v11 stackAsset:v13 userFavorites:v12 deleteNonPicks:v6 setFirstPick:0 allowDissolve:v29];
-  if (([v9 isSubsetOfOrderedSet:v12] & 1) == 0)
+  v31 = stackAsset;
+  v32 = autoPicks;
+  v14 = [PLAvalanche updatePropertiesForAssets:assets autoPicks:autoPicks stackAsset:stackAsset userFavorites:userFavorites deleteNonPicks:picksCopy setFirstPick:0 allowDissolve:v29];
+  if (([assets isSubsetOfOrderedSet:userFavorites] & 1) == 0)
   {
-    v15 = [v9 firstObject];
-    v16 = [v15 photoLibrary];
+    firstObject2 = [assets firstObject];
+    photoLibrary = [firstObject2 photoLibrary];
 
-    v17 = [v9 array];
-    v18 = [PLAvalanche revalidateAvalancheAssets:v17 inLibrary:v16 deleteNonPicks:v6 allowDissolve:1];
+    array = [assets array];
+    v18 = [PLAvalanche revalidateAvalancheAssets:array inLibrary:photoLibrary deleteNonPicks:picksCopy allowDissolve:1];
   }
 
-  v19 = [(PLAvalanche *)self _stackIndex];
-  v20 = [(PLAvalanche *)self _userFavoriteIndexes];
-  v21 = [PLAvalanche _visibleIndexesAmongAssets:v9 fromUserFavoriteIndexes:v20 stackIndex:v19];
+  _stackIndex = [(PLAvalanche *)self _stackIndex];
+  _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+  v21 = [PLAvalanche _visibleIndexesAmongAssets:assets fromUserFavoriteIndexes:_userFavoriteIndexes stackIndex:_stackIndex];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v22 = [v9 objectsAtIndexes:v21];
+  v22 = [assets objectsAtIndexes:v21];
   v23 = [v22 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v23)
   {
@@ -437,8 +437,8 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = [PLAvalanche _assetAmongAssets:v9 fromIndexes:v35 excludingIndexes:v21];
-      v28 = [PLAvalanche _assetAmongAssets:v9 fromIndexes:v21 excludingIndexes:v35];
+      v27 = [PLAvalanche _assetAmongAssets:assets fromIndexes:v35 excludingIndexes:v21];
+      v28 = [PLAvalanche _assetAmongAssets:assets fromIndexes:v21 excludingIndexes:v35];
     }
 
     else
@@ -469,10 +469,10 @@ LABEL_14:
   v4 = [(PLAvalanche *)&v12 description];
   uuid = self->_uuid;
   v6 = [(NSOrderedSet *)self->_assets valueForKey:@"shortObjectIDURI"];
-  v7 = [(PLAvalanche *)self _autoPickIndexes];
-  v8 = [(PLAvalanche *)self _stackIndex];
-  v9 = [(PLAvalanche *)self _userFavoriteIndexes];
-  v10 = [v3 stringWithFormat:@"%@ uuid %@, assets %@, autoPicks %@ stackAsset %lu userFavorites %@ ", v4, uuid, v6, v7, v8, v9];
+  _autoPickIndexes = [(PLAvalanche *)self _autoPickIndexes];
+  _stackIndex = [(PLAvalanche *)self _stackIndex];
+  _userFavoriteIndexes = [(PLAvalanche *)self _userFavoriteIndexes];
+  v10 = [v3 stringWithFormat:@"%@ uuid %@, assets %@, autoPicks %@ stackAsset %lu userFavorites %@ ", v4, uuid, v6, _autoPickIndexes, _stackIndex, _userFavoriteIndexes];
 
   return v10;
 }
@@ -490,25 +490,25 @@ LABEL_14:
   [(PLAvalanche *)&v4 dealloc];
 }
 
-- (PLAvalanche)initWithUUID:(id)a3 sourceType:(int64_t)a4 photoLibrary:(id)a5
+- (PLAvalanche)initWithUUID:(id)d sourceType:(int64_t)type photoLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  libraryCopy = library;
   v31.receiver = self;
   v31.super_class = PLAvalanche;
   v11 = [(PLAvalanche *)&v31 init];
   if (v11)
   {
-    if (!v9)
+    if (!dCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"tried to create with nil uuid"];
     }
 
-    objc_storeStrong(&v11->_uuid, a3);
-    objc_storeStrong(&v11->_photoLibrary, a5);
-    v11->_sourceType = a4;
-    v12 = [v10 managedObjectContext];
-    v13 = [PLAvalanche assetsWithAvalancheUUID:v9 sourceType:a4 inManagedObjectContext:v12];
+    objc_storeStrong(&v11->_uuid, d);
+    objc_storeStrong(&v11->_photoLibrary, library);
+    v11->_sourceType = type;
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v13 = [PLAvalanche assetsWithAvalancheUUID:dCopy sourceType:type inManagedObjectContext:managedObjectContext];
 
     v14 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v13];
     assets = v11->_assets;
@@ -627,16 +627,16 @@ uint64_t __43__PLAvalanche_shouldOnlyShowAvalanchePicks__block_invoke()
   return result;
 }
 
-+ (void)removeFavoriteStatus:(id)a3
++ (void)removeFavoriteStatus:(id)status
 {
-  v10 = a3;
-  v3 = [v10 isAvalanchePhoto];
-  v4 = v10;
-  if (v3)
+  statusCopy = status;
+  isAvalanchePhoto = [statusCopy isAvalanchePhoto];
+  v4 = statusCopy;
+  if (isAvalanchePhoto)
   {
-    v5 = [v10 avalanchePickType];
-    v6 = [v10 visibilityState];
-    if ((v5 & 4) != 0)
+    avalanchePickType = [statusCopy avalanchePickType];
+    visibilityState = [statusCopy visibilityState];
+    if ((avalanchePickType & 4) != 0)
     {
       v7 = 36;
     }
@@ -646,33 +646,33 @@ uint64_t __43__PLAvalanche_shouldOnlyShowAvalanchePicks__block_invoke()
       v7 = 34;
     }
 
-    if (v5 != (v7 & v5))
+    if (avalanchePickType != (v7 & avalanchePickType))
     {
-      [v10 setAvalanchePickType:?];
+      [statusCopy setAvalanchePickType:?];
     }
 
     v8 = +[PLAvalanche shouldOnlyShowAvalanchePicks];
-    v4 = v10;
+    v4 = statusCopy;
     if (v8)
     {
-      v9 = v10;
-      if (v6 != 2)
+      v9 = statusCopy;
+      if (visibilityState != 2)
       {
-        [v10 setVisibilityState:2];
-        v9 = v10;
+        [statusCopy setVisibilityState:2];
+        v9 = statusCopy;
       }
 
       [v9 setAlbums:0];
-      [v10 setNeedsMomentUpdate:1];
-      v4 = v10;
+      [statusCopy setNeedsMomentUpdate:1];
+      v4 = statusCopy;
     }
   }
 }
 
-+ (unint64_t)_calculateStackAssetForAssetCount:(unint64_t)a3 autoPicks:(id)a4 userFavorites:(id)a5
++ (unint64_t)_calculateStackAssetForAssetCount:(unint64_t)count autoPicks:(id)picks userFavorites:(id)favorites
 {
-  v7 = a4;
-  v8 = a5;
+  picksCopy = picks;
+  favoritesCopy = favorites;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -681,17 +681,17 @@ uint64_t __43__PLAvalanche_shouldOnlyShowAvalanchePicks__block_invoke()
   v14 = 3221225472;
   v15 = __73__PLAvalanche__calculateStackAssetForAssetCount_autoPicks_userFavorites___block_invoke;
   v16 = &unk_1E75734D0;
-  v9 = v8;
+  v9 = favoritesCopy;
   v17 = v9;
   v18 = &v19;
-  [v7 enumerateIndexesUsingBlock:&v13];
+  [picksCopy enumerateIndexesUsingBlock:&v13];
   v10 = v20[3];
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL && a3 != 0)
+  if (v10 == 0x7FFFFFFFFFFFFFFFLL && count != 0)
   {
     v10 = 0;
     while (([v9 containsIndex:{v10, v13, v14, v15, v16}] & 1) != 0)
     {
-      if (a3 == ++v10)
+      if (count == ++v10)
       {
         v10 = v20[3];
         goto LABEL_10;
@@ -719,17 +719,17 @@ uint64_t __73__PLAvalanche__calculateStackAssetForAssetCount_autoPicks_userFavor
   return result;
 }
 
-+ (id)_assetAmongAssets:(id)a3 fromIndexes:(id)a4 excludingIndexes:(id)a5
++ (id)_assetAmongAssets:(id)assets fromIndexes:(id)indexes excludingIndexes:(id)excludingIndexes
 {
-  v7 = a3;
-  v8 = a5;
+  assetsCopy = assets;
+  excludingIndexesCopy = excludingIndexes;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__PLAvalanche__assetAmongAssets_fromIndexes_excludingIndexes___block_invoke;
   v13[3] = &unk_1E75734A8;
-  v14 = v8;
-  v9 = v8;
-  v10 = [a4 indexPassingTest:v13];
+  v14 = excludingIndexesCopy;
+  v9 = excludingIndexesCopy;
+  v10 = [indexes indexPassingTest:v13];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
@@ -737,24 +737,24 @@ uint64_t __73__PLAvalanche__calculateStackAssetForAssetCount_autoPicks_userFavor
 
   else
   {
-    v11 = [v7 objectAtIndex:v10];
+    v11 = [assetsCopy objectAtIndex:v10];
   }
 
   return v11;
 }
 
-+ (id)_visibleIndexesAmongAssets:(id)a3 fromUserFavoriteIndexes:(id)a4 stackIndex:(unint64_t)a5
++ (id)_visibleIndexesAmongAssets:(id)assets fromUserFavoriteIndexes:(id)indexes stackIndex:(unint64_t)index
 {
-  v7 = a3;
+  assetsCopy = assets;
   v8 = MEMORY[0x1E696AD50];
-  v9 = a4;
-  v10 = [v8 indexSet];
+  indexesCopy = indexes;
+  indexSet = [v8 indexSet];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_stackIndex___block_invoke;
   aBlock[3] = &unk_1E7573458;
-  v22 = v7;
-  v11 = v7;
+  v22 = assetsCopy;
+  v11 = assetsCopy;
   v12 = _Block_copy(aBlock);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -762,13 +762,13 @@ uint64_t __73__PLAvalanche__calculateStackAssetForAssetCount_autoPicks_userFavor
   v18[3] = &unk_1E7573480;
   v13 = v12;
   v20 = v13;
-  v14 = v10;
+  v14 = indexSet;
   v19 = v14;
-  [v9 enumerateIndexesUsingBlock:v18];
+  [indexesCopy enumerateIndexesUsingBlock:v18];
 
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL && (*(v13 + 2))(v13, a5))
+  if (index != 0x7FFFFFFFFFFFFFFFLL && (*(v13 + 2))(v13, index))
   {
-    [v14 addIndex:a5];
+    [v14 addIndex:index];
   }
 
   v15 = v19;
@@ -806,26 +806,26 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
   return result;
 }
 
-+ (void)updateMembershipForAssets:(id)a3 autoPicks:(id)a4 stackAsset:(id)a5 userFavorites:(id)a6 deleteNonPicks:(BOOL)a7 allowDissolve:(BOOL)a8 inLibrary:(id)a9
++ (void)updateMembershipForAssets:(id)assets autoPicks:(id)picks stackAsset:(id)asset userFavorites:(id)favorites deleteNonPicks:(BOOL)nonPicks allowDissolve:(BOOL)dissolve inLibrary:(id)library
 {
-  v9 = a8;
-  v10 = a7;
+  dissolveCopy = dissolve;
+  nonPicksCopy = nonPicks;
   v31 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  assetsCopy = assets;
+  assetCopy = asset;
+  favoritesCopy = favorites;
   if (+[PLAvalanche shouldOnlyShowAvalanchePicks])
   {
-    if (v9)
+    if (dissolveCopy)
     {
-      LOBYTE(v9) = [v13 isSubsetOfOrderedSet:v15];
+      LOBYTE(dissolveCopy) = [assetsCopy isSubsetOfOrderedSet:favoritesCopy];
     }
 
-    v16 = [v13 mutableCopy];
-    [v16 minusOrderedSet:v15];
-    if (v14)
+    v16 = [assetsCopy mutableCopy];
+    [v16 minusOrderedSet:favoritesCopy];
+    if (assetCopy)
     {
-      v17 = v9;
+      v17 = dissolveCopy;
     }
 
     else
@@ -833,16 +833,16 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
       v17 = 1;
     }
 
-    v18 = v17 | v10;
-    if (((v17 | v10) & 1) == 0 && ([v14 isDeleted] & 1) == 0)
+    v18 = v17 | nonPicksCopy;
+    if (((v17 | nonPicksCopy) & 1) == 0 && ([assetCopy isDeleted] & 1) == 0)
     {
-      [v16 removeObject:v14];
+      [v16 removeObject:assetCopy];
     }
 
-    v19 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:v15];
-    if ((v18 & 1) == 0 && ([v14 isDeleted] & 1) == 0)
+    v19 = [MEMORY[0x1E695DFA0] orderedSetWithOrderedSet:favoritesCopy];
+    if ((v18 & 1) == 0 && ([assetCopy isDeleted] & 1) == 0)
     {
-      [v19 insertObject:v14 atIndex:0];
+      [v19 insertObject:assetCopy atIndex:0];
     }
 
     v28 = 0u;
@@ -865,7 +865,7 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
           }
 
           v25 = *(*(&v26 + 1) + 8 * i);
-          if (v10 && [*(*(&v26 + 1) + 8 * i) canMoveToTrash])
+          if (nonPicksCopy && [*(*(&v26 + 1) + 8 * i) canMoveToTrash])
           {
             [v25 trashWithReason:5];
           }
@@ -884,17 +884,17 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
   }
 }
 
-+ (id)updatePropertiesForAssets:(id)a3 autoPicks:(id)a4 stackAsset:(id)a5 userFavorites:(id)a6 deleteNonPicks:(BOOL)a7 setFirstPick:(BOOL)a8 allowDissolve:(BOOL)a9
++ (id)updatePropertiesForAssets:(id)assets autoPicks:(id)picks stackAsset:(id)asset userFavorites:(id)favorites deleteNonPicks:(BOOL)nonPicks setFirstPick:(BOOL)pick allowDissolve:(BOOL)dissolve
 {
   v54 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v40 = a4;
-  v14 = a5;
-  v15 = a6;
-  v39 = a7;
-  if (a9)
+  assetsCopy = assets;
+  picksCopy = picks;
+  assetCopy = asset;
+  favoritesCopy = favorites;
+  nonPicksCopy = nonPicks;
+  if (dissolve)
   {
-    v16 = [v13 isSubsetOfOrderedSet:v15];
+    v16 = [assetsCopy isSubsetOfOrderedSet:favoritesCopy];
   }
 
   else
@@ -906,9 +906,9 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v13;
+  obj = assetsCopy;
   v17 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
-  v41 = v15;
+  v41 = favoritesCopy;
   if (v17)
   {
     v18 = v17;
@@ -925,9 +925,9 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
         v21 = *(*(&v48 + 1) + 8 * i);
         if (([v21 isDeleted] & 1) == 0)
         {
-          v22 = [v21 avalanchePickType];
-          v23 = [v21 visibilityState];
-          if ([v15 containsObject:v21])
+          avalanchePickType = [v21 avalanchePickType];
+          visibilityState = [v21 visibilityState];
+          if ([favoritesCopy containsObject:v21])
           {
             if (v16)
             {
@@ -936,7 +936,7 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
 
             else
             {
-              v24 = v22 & 0x24 | 8;
+              v24 = avalanchePickType & 0x24 | 8;
             }
 
             if ([v21 isInTrash])
@@ -950,26 +950,26 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
 
           else
           {
-            if ([v40 containsObject:v21])
+            if ([picksCopy containsObject:v21])
             {
-              if (!v14)
+              if (!assetCopy)
               {
-                v14 = v21;
-                a8 = 0;
+                assetCopy = v21;
+                pick = 0;
               }
 
-              v24 = v22 & 0x20 | 4;
+              v24 = avalanchePickType & 0x20 | 4;
             }
 
             else
             {
-              v24 = v22 & 0x20 | 2;
+              v24 = avalanchePickType & 0x20 | 2;
             }
 
             v25 = 2;
           }
 
-          if (a8)
+          if (pick)
           {
             v26 = 48;
           }
@@ -979,7 +979,7 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
             v26 = 16;
           }
 
-          if (v14 == v21)
+          if (assetCopy == v21)
           {
             v27 = 0;
           }
@@ -989,7 +989,7 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
             v27 = v25;
           }
 
-          if (v14 == v21)
+          if (assetCopy == v21)
           {
             v28 = v26 | v24 & 0x2D;
           }
@@ -999,14 +999,14 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
             v28 = v24;
           }
 
-          if (v22 != v28)
+          if (avalanchePickType != v28)
           {
             [v21 setAvalanchePickType:?];
           }
 
           if (+[PLAvalanche shouldOnlyShowAvalanchePicks])
           {
-            if (v23 != v27)
+            if (visibilityState != v27)
             {
               [v21 setVisibilityState:v27];
             }
@@ -1017,11 +1017,11 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
           if (v16)
           {
             [v21 setAvalancheUUID:0];
-            v29 = [v21 additionalAttributes];
-            [v29 setCloudAvalanchePickType:0];
+            additionalAttributes = [v21 additionalAttributes];
+            [additionalAttributes setCloudAvalanchePickType:0];
           }
 
-          v15 = v41;
+          favoritesCopy = v41;
         }
       }
 
@@ -1031,9 +1031,9 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
     while (v18);
   }
 
-  if ((v14 != 0) | v16 & 1)
+  if ((assetCopy != 0) | v16 & 1)
   {
-    v30 = v14;
+    v30 = assetCopy;
   }
 
   else
@@ -1041,7 +1041,7 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
     v30 = 0;
   }
 
-  if (!((v14 != 0) | v16 & 1) && !v39)
+  if (!((assetCopy != 0) | v16 & 1) && !nonPicksCopy)
   {
     v46 = 0u;
     v47 = 0u;
@@ -1065,15 +1065,15 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
           v36 = *(*(&v44 + 1) + 8 * j);
           if (([v36 isDeleted] & 1) == 0)
           {
-            v37 = [v36 avalanchePickType];
-            if ((v37 & 8) == 0)
+            avalanchePickType2 = [v36 avalanchePickType];
+            if ((avalanchePickType2 & 8) == 0)
             {
-              if (v37 != (v37 & 0x24 | 0x10))
+              if (avalanchePickType2 != (avalanchePickType2 & 0x24 | 0x10))
               {
                 [v36 setAvalanchePickType:?];
               }
 
-              v15 = v41;
+              favoritesCopy = v41;
               if (+[PLAvalanche shouldOnlyShowAvalanchePicks](PLAvalanche, "shouldOnlyShowAvalanchePicks") && [v36 visibilityState])
               {
                 [v36 setVisibilityState:0];
@@ -1095,7 +1095,7 @@ uint64_t __77__PLAvalanche__visibleIndexesAmongAssets_fromUserFavoriteIndexes_st
       }
 
       v30 = 0;
-      v15 = v41;
+      favoritesCopy = v41;
     }
 
     else
@@ -1109,16 +1109,16 @@ LABEL_65:
   return v30;
 }
 
-+ (void)handleUpdatesForContextWillSave:(id)a3
++ (void)handleUpdatesForContextWillSave:(id)save
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 object];
-  if (v4)
+  saveCopy = save;
+  object = [saveCopy object];
+  if (object)
   {
-    v18 = v3;
+    v18 = saveCopy;
     context = objc_autoreleasePoolPush();
-    [v4 getAndClearRecordedAvalancheUUIDsForUpdate];
+    [object getAndClearRecordedAvalancheUUIDsForUpdate];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -1137,7 +1137,7 @@ LABEL_65:
             objc_enumerationMutation(obj);
           }
 
-          v9 = [a1 assetsWithAvalancheUUID:*(*(&v25 + 1) + 8 * i) sourceType:1 inManagedObjectContext:v4];
+          v9 = [self assetsWithAvalancheUUID:*(*(&v25 + 1) + 8 * i) sourceType:1 inManagedObjectContext:object];
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
@@ -1215,51 +1215,51 @@ LABEL_26:
     }
 
     objc_autoreleasePoolPop(context);
-    v3 = v18;
+    saveCopy = v18;
   }
 }
 
-+ (id)revalidateAvalancheAssets:(id)a3 inLibrary:(id)a4 deleteNonPicks:(BOOL)a5 allowDissolve:(BOOL)a6
++ (id)revalidateAvalancheAssets:(id)assets inLibrary:(id)library deleteNonPicks:(BOOL)picks allowDissolve:(BOOL)dissolve
 {
-  v6 = a6;
-  v7 = a5;
+  dissolveCopy = dissolve;
+  picksCopy = picks;
   v75 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if ([v9 count] == 1)
+  assetsCopy = assets;
+  libraryCopy = library;
+  if ([assetsCopy count] == 1)
   {
-    [PLAvalanche disolveBurstForAssets:v9 permanently:0];
+    [PLAvalanche disolveBurstForAssets:assetsCopy permanently:0];
 LABEL_45:
     v17 = 0;
     goto LABEL_56;
   }
 
-  if (![v9 count])
+  if (![assetsCopy count])
   {
     goto LABEL_45;
   }
 
-  v52 = v7;
-  v55 = v6;
-  v11 = [v9 firstObject];
-  v12 = [v11 avalancheUUID];
-  v54 = [v12 copy];
+  v52 = picksCopy;
+  v55 = dissolveCopy;
+  firstObject = [assetsCopy firstObject];
+  avalancheUUID = [firstObject avalancheUUID];
+  v54 = [avalancheUUID copy];
 
-  v58 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v57 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v14 = v9;
+  v14 = assetsCopy;
   v15 = [v14 countByEnumeratingWithState:&v63 objects:v74 count:16];
-  v56 = v13;
-  v53 = v10;
+  v56 = array2;
+  v53 = libraryCopy;
   if (v15)
   {
     v16 = v15;
-    v51 = v9;
+    v51 = assetsCopy;
     v17 = 0;
     v18 = *v64;
     do
@@ -1277,15 +1277,15 @@ LABEL_45:
           v21 = PLBackendGetLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v20 uuid];
-            v23 = [v20 avalancheUUID];
+            uuid = [v20 uuid];
+            avalancheUUID2 = [v20 avalancheUUID];
             *buf = 138543618;
-            v68 = v22;
+            v68 = uuid;
             v69 = 2114;
-            v70 = v23;
+            v70 = avalancheUUID2;
             _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Finder synced asset %{public}@ cannot be revalidated as part of burst %{public}@", buf, 0x16u);
 
-            v13 = v56;
+            array2 = v56;
           }
         }
 
@@ -1293,14 +1293,14 @@ LABEL_45:
         {
           if (([v20 avalanchePickType] & 4) != 0)
           {
-            [v58 addObject:v20];
+            [array addObject:v20];
           }
 
           if (([v20 avalanchePickType] & 0x20) != 0 && (objc_msgSend(v20, "avalanchePickType") & 8) == 0)
           {
             if (v17)
             {
-              [v13 addObject:v17];
+              [array2 addObject:v17];
             }
 
             v24 = v20;
@@ -1328,12 +1328,12 @@ LABEL_45:
 
           if (([v20 avalanchePickType] & 0x10) != 0)
           {
-            [v13 addObject:v20];
+            [array2 addObject:v20];
           }
 
           if (([v20 avalanchePickType] & 8) != 0)
           {
-            [v57 addObject:v20];
+            [array3 addObject:v20];
           }
         }
       }
@@ -1343,21 +1343,21 @@ LABEL_45:
 
     while (v16);
 
-    if (!v17 || [v13 count] <= 1 && (objc_msgSend(v13, "firstObject"), v26 = objc_claimAutoreleasedReturnValue(), v26, v26 == v17))
+    if (!v17 || [array2 count] <= 1 && (objc_msgSend(array2, "firstObject"), v26 = objc_claimAutoreleasedReturnValue(), v26, v26 == v17))
     {
-      v9 = v51;
+      assetsCopy = v51;
     }
 
     else
     {
-      [v13 removeObject:v17];
+      [array2 removeObject:v17];
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v27 = v13;
+      v27 = array2;
       v28 = [v27 countByEnumeratingWithState:&v59 objects:v73 count:16];
-      v9 = v51;
+      assetsCopy = v51;
       if (v28)
       {
         v29 = v28;
@@ -1404,12 +1404,12 @@ LABEL_45:
     v34 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v17 avalancheUUID];
-      v36 = [v17 uuid];
+      avalancheUUID3 = [v17 avalancheUUID];
+      uuid2 = [v17 uuid];
       *buf = 138412546;
-      v68 = v35;
+      v68 = avalancheUUID3;
       v69 = 2112;
-      v70 = v36;
+      v70 = uuid2;
       _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_DEFAULT, "Updating burst %@, stack will be set to %@", buf, 0x16u);
     }
 
@@ -1419,9 +1419,9 @@ LABEL_45:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v68 = v58;
+        v68 = array;
         v69 = 2112;
-        v70 = v57;
+        v70 = array3;
         v71 = 2112;
         v72 = v14;
         _os_log_impl(&dword_19BF1F000, v37, OS_LOG_TYPE_DEBUG, "autoPicks are %@, favorites are %@, the rest of burst are %@", buf, 0x20u);
@@ -1430,38 +1430,38 @@ LABEL_45:
   }
 
   v38 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v14];
-  v39 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v58];
-  v40 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v57];
+  v39 = [MEMORY[0x1E695DFB8] orderedSetWithArray:array];
+  v40 = [MEMORY[0x1E695DFB8] orderedSetWithArray:array3];
   LOBYTE(v50) = v55;
   v41 = [PLAvalanche updatePropertiesForAssets:v38 autoPicks:v39 stackAsset:v17 userFavorites:v40 deleteNonPicks:v52 setFirstPick:0 allowDissolve:v50];
 
   v42 = [[PLAvalanche alloc] initWithUUID:v54 sourceType:1 photoLibrary:v53];
-  v43 = [(PLAvalanche *)v42 stackAsset];
-  [v43 generateLargeThumbnailFileIfNecessary];
+  stackAsset = [(PLAvalanche *)v42 stackAsset];
+  [stackAsset generateLargeThumbnailFileIfNecessary];
 
-  v44 = [(PLAvalanche *)v42 assets];
-  v45 = [(PLAvalanche *)v42 autoPicks];
-  v46 = [(PLAvalanche *)v42 stackAsset];
-  v47 = [(PLAvalanche *)v42 userFavorites];
-  [PLAvalanche updateMembershipForAssets:v44 autoPicks:v45 stackAsset:v46 userFavorites:v47 deleteNonPicks:v52 allowDissolve:v55 inLibrary:v53];
+  assets = [(PLAvalanche *)v42 assets];
+  autoPicks = [(PLAvalanche *)v42 autoPicks];
+  stackAsset2 = [(PLAvalanche *)v42 stackAsset];
+  userFavorites = [(PLAvalanche *)v42 userFavorites];
+  [PLAvalanche updateMembershipForAssets:assets autoPicks:autoPicks stackAsset:stackAsset2 userFavorites:userFavorites deleteNonPicks:v52 allowDissolve:v55 inLibrary:v53];
 
-  v10 = v53;
+  libraryCopy = v53;
 LABEL_56:
-  v48 = [v17 uuid];
+  uuid3 = [v17 uuid];
 
-  return v48;
+  return uuid3;
 }
 
-+ (void)disolveBurstForAssets:(id)a3 permanently:(BOOL)a4
++ (void)disolveBurstForAssets:(id)assets permanently:(BOOL)permanently
 {
-  v4 = a4;
+  permanentlyCopy = permanently;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetsCopy = assets;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [assetsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1473,43 +1473,43 @@ LABEL_56:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if (v4)
+        if (permanentlyCopy)
         {
           [*(*(&v12 + 1) + 8 * v9) setAvalancheUUID:0];
           [v10 setAvalancheKind:0];
         }
 
         [v10 setAvalanchePickType:0];
-        v11 = [v10 additionalAttributes];
-        [v11 setCloudAvalanchePickType:0];
+        additionalAttributes = [v10 additionalAttributes];
+        [additionalAttributes setCloudAvalanchePickType:0];
 
         [v10 setVisibilityState:0];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [assetsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (BOOL)isValidBurstWithAssets:(id)a3
++ (BOOL)isValidBurstWithAssets:(id)assets
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] >= 2)
+  assetsCopy = assets;
+  if ([assetsCopy count] >= 2)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = v3;
+    v4 = assetsCopy;
     v5 = [v4 countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (!v5)
     {
@@ -1529,8 +1529,8 @@ LABEL_4:
         objc_enumerationMutation(v4);
       }
 
-      v10 = [*(*(&v24 + 1) + 8 * v9) avalanchePickType];
-      if ((v10 & 0x10) != 0)
+      avalanchePickType = [*(*(&v24 + 1) + 8 * v9) avalanchePickType];
+      if ((avalanchePickType & 0x10) != 0)
       {
         if (v7)
         {
@@ -1539,10 +1539,10 @@ LABEL_4:
             v14 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = [v4 firstObject];
-              v16 = [v15 avalancheUUID];
+              firstObject = [v4 firstObject];
+              avalancheUUID = [firstObject avalancheUUID];
               *buf = 138543362;
-              v29 = v16;
+              v29 = avalancheUUID;
               _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Invalid burst %{public}@, has more than 1 stack pick", buf, 0xCu);
             }
           }
@@ -1553,17 +1553,17 @@ LABEL_4:
         v7 = 1;
       }
 
-      else if (!v10)
+      else if (!avalanchePickType)
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
           v17 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v4 firstObject];
-            v19 = [v18 avalancheUUID];
+            firstObject2 = [v4 firstObject];
+            avalancheUUID2 = [firstObject2 avalancheUUID];
             *buf = 138543362;
-            v29 = v19;
+            v29 = avalancheUUID2;
             _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Invalid burst %{public}@, burst marked as not in burst", buf, 0xCu);
           }
         }
@@ -1579,10 +1579,10 @@ LABEL_29:
           v20 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v4 firstObject];
-            v22 = [v21 avalancheUUID];
+            firstObject3 = [v4 firstObject];
+            avalancheUUID3 = [firstObject3 avalancheUUID];
             *buf = 138543362;
-            v29 = v22;
+            v29 = avalancheUUID3;
             _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Invalid burst %{public}@, can't find a stack pick", buf, 0xCu);
           }
 
@@ -1617,10 +1617,10 @@ LABEL_29:
     v4 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v3 firstObject];
-      v13 = [v12 avalancheUUID];
+      firstObject4 = [assetsCopy firstObject];
+      avalancheUUID4 = [firstObject4 avalancheUUID];
       *buf = 138543362;
-      v29 = v13;
+      v29 = avalancheUUID4;
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Invalid burst %{public}@, has only 1 asset", buf, 0xCu);
     }
 
@@ -1634,19 +1634,19 @@ LABEL_35:
   return v11;
 }
 
-+ (id)_fetchRequestForAssetsWithAvalancheUUID:(id)a3 sourceType:(int64_t)a4
++ (id)_fetchRequestForAssetsWithAvalancheUUID:(id)d sourceType:(int64_t)type
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _maskForAvalancheSupportedAssetsWithSourceType:a4];
+  dCopy = d;
+  v7 = [self _maskForAvalancheSupportedAssetsWithSourceType:type];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
   v11 = MEMORY[0x1E696AB28];
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"avalancheUUID", v6];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"avalancheUUID", dCopy];
 
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"avalancheKind", 1, v12];
+  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"avalancheKind", 1, dCopy];
   v18[1] = v13;
   v14 = [MEMORY[0x1E69BF328] predicateForIncludeMask:v7 useIndex:0];
   v18[2] = v14;
@@ -1658,14 +1658,14 @@ LABEL_35:
   return v10;
 }
 
-+ (unsigned)_maskForAvalancheSupportedAssetsWithSourceType:(int64_t)a3
++ (unsigned)_maskForAvalancheSupportedAssetsWithSourceType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return [MEMORY[0x1E69BF328] maskForAvalancheSupportedAssetsFromFinderSync];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return [MEMORY[0x1E69BF328] maskForAvalancheSupportedAssetsFromUserLibrary];
   }
@@ -1673,16 +1673,16 @@ LABEL_35:
   return 0;
 }
 
-+ (unint64_t)countForAssetsWithAvalancheUUID:(id)a3 sourceType:(int64_t)a4 inLibrary:(id)a5
++ (unint64_t)countForAssetsWithAvalancheUUID:(id)d sourceType:(int64_t)type inLibrary:(id)library
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _fetchRequestForAssetsWithAvalancheUUID:v8 sourceType:a4];
-  v11 = [v9 managedObjectContext];
+  dCopy = d;
+  libraryCopy = library;
+  v10 = [self _fetchRequestForAssetsWithAvalancheUUID:dCopy sourceType:type];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
   v16 = 0;
-  v12 = [v11 countForFetchRequest:v10 error:&v16];
+  v12 = [managedObjectContext countForFetchRequest:v10 error:&v16];
   v13 = v16;
 
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1691,7 +1691,7 @@ LABEL_35:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v18 = v8;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v13;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Error counting assets with avalancheUUID %@: %@", buf, 0x16u);
@@ -1701,12 +1701,12 @@ LABEL_35:
   return v12;
 }
 
-+ (id)assetsWithAvalancheUUID:(id)a3 sourceType:(int64_t)a4 inManagedObjectContext:(id)a5
++ (id)assetsWithAvalancheUUID:(id)d sourceType:(int64_t)type inManagedObjectContext:(id)context
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _fetchRequestForAssetsWithAvalancheUUID:v8 sourceType:a4];
+  dCopy = d;
+  contextCopy = context;
+  v10 = [self _fetchRequestForAssetsWithAvalancheUUID:dCopy sourceType:type];
   v25[0] = @"additionalAttributes";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   [v10 setRelationshipKeyPathsForPrefetching:v11];
@@ -1719,7 +1719,7 @@ LABEL_35:
   [v10 setSortDescriptors:v14];
 
   v19 = 0;
-  v15 = [v9 executeFetchRequest:v10 error:&v19];
+  v15 = [contextCopy executeFetchRequest:v10 error:&v19];
 
   v16 = v19;
   if (!v15)
@@ -1728,7 +1728,7 @@ LABEL_35:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = v8;
+      v21 = dCopy;
       v22 = 2112;
       v23 = v16;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Error fetching assets with avalancheUUID %@: %@", buf, 0x16u);

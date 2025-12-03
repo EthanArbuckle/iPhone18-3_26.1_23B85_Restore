@@ -1,14 +1,14 @@
 @interface AVSampleBufferVideoRenderer
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (void)initialize;
-- ($8A865F3275AFFA793BA84D73056FEF19)_computeSampleBufferEnqueueingInfoForSampleBuffer:(SEL)a3;
+- ($8A865F3275AFFA793BA84D73056FEF19)_computeSampleBufferEnqueueingInfoForSampleBuffer:(SEL)buffer;
 - (AVQueuedSampleBufferRenderingStatus)status;
 - (AVSampleBufferVideoRenderer)init;
 - (BOOL)_createVideoQueueFailed;
 - (BOOL)_disallowsVideoLayerDisplayCompositing;
 - (BOOL)_hasEverEnqueued;
-- (BOOL)_setSynchronizerTimebase:(OpaqueCMTimebase *)a3 error:(id *)a4;
-- (BOOL)_setUpcomingPresentationTimeExpectations:(int)a3 minimumPresentationTime:(id *)a4;
+- (BOOL)_setSynchronizerTimebase:(OpaqueCMTimebase *)timebase error:(id *)error;
+- (BOOL)_setUpcomingPresentationTimeExpectations:(int)expectations minimumPresentationTime:(id *)time;
 - (BOOL)attachedToExternalContentKeySession;
 - (BOOL)hasSufficientMediaDataForReliablePlaybackStart;
 - (BOOL)isReadyForDisplay;
@@ -30,61 +30,61 @@
 - (__CVBuffer)copyDisplayedPixelBuffer;
 - (id)_loggingDescription;
 - (id)_nameForLogging;
-- (id)_statusString:(int64_t)a3;
+- (id)_statusString:(int64_t)string;
 - (id)contentKeySession;
 - (id)preferredDynamicRange;
 - (id)recommendedPixelBufferAttributes;
 - (id)videoPerformanceMetrics;
-- (int)_createVideoQueue:(OpaqueFigVideoQueue *)a3 errorStep:(id *)a4;
-- (int)_enqueueSingleSampleBuffer:(opaqueCMSampleBuffer *)a3 bufferEnqueueingInfo:(id *)a4;
-- (int)_setContentLayerOnFigVideoQueue:(OpaqueFigVideoQueue *)a3;
-- (int)attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5;
-- (int)createVideoQueue:(OpaqueFigVideoQueue *)a3;
+- (int)_createVideoQueue:(OpaqueFigVideoQueue *)queue errorStep:(id *)step;
+- (int)_enqueueSingleSampleBuffer:(opaqueCMSampleBuffer *)buffer bufferEnqueueingInfo:(id *)info;
+- (int)_setContentLayerOnFigVideoQueue:(OpaqueFigVideoQueue *)queue;
+- (int)attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession;
+- (int)createVideoQueue:(OpaqueFigVideoQueue *)queue;
 - (void)_addFigVideoQueueListeners;
-- (void)_callOldPrerollCompletionHandlerWithSuccess:(BOOL)a3 andSetNewPrerollCompletionHandler:(id)a4 forRequestID:(int)a5;
-- (void)_completedDecodeForPrerollForRequestID:(int)a3;
-- (void)_didFinishSuspension:(id)a3;
-- (void)_fireDisplayLayerNotificationNowThenReleaseOnMainThread:(id)a3 userInfo:(id)a4;
+- (void)_callOldPrerollCompletionHandlerWithSuccess:(BOOL)success andSetNewPrerollCompletionHandler:(id)handler forRequestID:(int)d;
+- (void)_completedDecodeForPrerollForRequestID:(int)d;
+- (void)_didFinishSuspension:(id)suspension;
+- (void)_fireDisplayLayerNotificationNowThenReleaseOnMainThread:(id)thread userInfo:(id)info;
 - (void)_flushComplete;
-- (void)_refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting:(BOOL)a3;
+- (void)_refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting:(BOOL)requesting;
 - (void)_removeFigVideoQueueListeners;
-- (void)_resetStatusWithOSStatus:(int)a3;
-- (void)_setCreateVideoQueueFailedWithOSStatus:(int)a3;
-- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)a3;
-- (void)_setOutputObscuredDueToInsufficientExternalProtection:(BOOL)a3;
-- (void)_setRequiresFlushToResumeDecoding:(BOOL)a3;
-- (void)_setStatus:(int64_t)a3 error:(id)a4;
+- (void)_resetStatusWithOSStatus:(int)status;
+- (void)_setCreateVideoQueueFailedWithOSStatus:(int)status;
+- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)compositing;
+- (void)_setOutputObscuredDueToInsufficientExternalProtection:(BOOL)protection;
+- (void)_setRequiresFlushToResumeDecoding:(BOOL)decoding;
+- (void)_setStatus:(int64_t)status error:(id)error;
 - (void)_updatePreferredDynamicRange;
 - (void)_updateVideoOutputs;
 - (void)_updateVideoTargetsOnVideoQueue;
-- (void)addOutput:(id)a3;
-- (void)addSampleBufferDisplayLayer:(id)a3;
-- (void)addVideoTarget:(OpaqueFigVideoTarget *)a3;
-- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)a3;
+- (void)addOutput:(id)output;
+- (void)addSampleBufferDisplayLayer:(id)layer;
+- (void)addVideoTarget:(OpaqueFigVideoTarget *)target;
+- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)renderer;
 - (void)dealloc;
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3 bufferEnqueueingInfo:(id *)a4;
-- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)a3;
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer bufferEnqueueingInfo:(id *)info;
+- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)time;
 - (void)expectMonotonicallyIncreasingUpcomingSampleBufferPresentationTimes;
 - (void)flushWithRemovalOfDisplayedImage:(BOOL)removeDisplayedImage completionHandler:(void *)handler;
-- (void)loadVideoPerformanceMetricsWithCompletionHandler:(id)a3;
-- (void)prerollDecodeWithCompletionHandler:(id)a3;
+- (void)loadVideoPerformanceMetricsWithCompletionHandler:(id)handler;
+- (void)prerollDecodeWithCompletionHandler:(id)handler;
 - (void)removeDisplayLayer;
-- (void)removeOutput:(id)a3;
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4;
+- (void)removeOutput:(id)output;
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block;
 - (void)resetUpcomingSampleBufferPresentationTimeExpectations;
-- (void)setContentKeySession:(id)a3;
-- (void)setControlTimebase:(OpaqueCMTimebase *)a3;
-- (void)setDisplayLayerVisibility:(BOOL)a3;
-- (void)setPreferredDynamicRange:(id)a3;
-- (void)setPreventsAutomaticBackgroundingDuringVideoPlayback:(BOOL)a3;
-- (void)setPreventsCapture:(BOOL)a3;
-- (void)setPreventsDisplaySleepDuringVideoPlayback:(BOOL)a3;
-- (void)setReadyForDisplayWithoutKVO:(BOOL)a3;
-- (void)setSTSLabel:(id)a3;
-- (void)setShouldWaitForVideoTarget:(BOOL)a3;
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3;
-- (void)setVideoLayerGeometryFlipped:(BOOL)a3;
+- (void)setContentKeySession:(id)session;
+- (void)setControlTimebase:(OpaqueCMTimebase *)timebase;
+- (void)setDisplayLayerVisibility:(BOOL)visibility;
+- (void)setPreferredDynamicRange:(id)range;
+- (void)setPreventsAutomaticBackgroundingDuringVideoPlayback:(BOOL)playback;
+- (void)setPreventsCapture:(BOOL)capture;
+- (void)setPreventsDisplaySleepDuringVideoPlayback:(BOOL)playback;
+- (void)setReadyForDisplayWithoutKVO:(BOOL)o;
+- (void)setSTSLabel:(id)label;
+- (void)setShouldWaitForVideoTarget:(BOOL)target;
+- (void)setToneMapToStandardDynamicRange:(BOOL)range;
+- (void)setVideoLayerGeometryFlipped:(BOOL)flipped;
 - (void)stopRequestingMediaData;
 @end
 
@@ -92,7 +92,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -101,7 +101,7 @@
   }
 }
 
-- (void)_fireDisplayLayerNotificationNowThenReleaseOnMainThread:(id)a3 userInfo:(id)a4
+- (void)_fireDisplayLayerNotificationNowThenReleaseOnMainThread:(id)thread userInfo:(id)info
 {
   v7 = objc_autoreleasePoolPush();
   WeakRetained = objc_loadWeakRetained(&self->_weakDisplayLayer);
@@ -125,7 +125,7 @@
   }
 }
 
-- (void)setControlTimebase:(OpaqueCMTimebase *)a3
+- (void)setControlTimebase:(OpaqueCMTimebase *)timebase
 {
   v15 = 0;
   v16 = &v15;
@@ -138,7 +138,7 @@
   block[3] = &unk_1E7462990;
   block[4] = self;
   block[5] = &v15;
-  block[6] = a3;
+  block[6] = timebase;
   dispatch_sync(serialQueue, block);
   if (v16[3])
   {
@@ -146,7 +146,7 @@
     objc_exception_throw(v12);
   }
 
-  if (a3)
+  if (timebase)
   {
     self->_controlTimebaseSetByUserIsInUse = 1;
     FigReadOnlyTimebaseSetTargetTimebase();
@@ -187,7 +187,7 @@ void __50__AVSampleBufferVideoRenderer_setControlTimebase___block_invoke(void *a
   }
 }
 
-- (BOOL)_setSynchronizerTimebase:(OpaqueCMTimebase *)a3 error:(id *)a4
+- (BOOL)_setSynchronizerTimebase:(OpaqueCMTimebase *)timebase error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -207,13 +207,13 @@ void __50__AVSampleBufferVideoRenderer_setControlTimebase___block_invoke(void *a
   v11[4] = self;
   v11[5] = &v12;
   v11[6] = &v18;
-  v11[7] = a3;
+  v11[7] = timebase;
   dispatch_sync(serialQueue, v11);
   v8 = v19;
   v9 = *(v19 + 24);
   if (v9 == 1)
   {
-    if (a3)
+    if (timebase)
     {
       self->_addedToSynchronizer = 1;
       FigReadOnlyTimebaseSetTargetTimebase();
@@ -232,9 +232,9 @@ void __50__AVSampleBufferVideoRenderer_setControlTimebase___block_invoke(void *a
     *(v19 + 24) = 1;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     LOBYTE(v9) = *(v8 + 24);
   }
 
@@ -288,7 +288,7 @@ CFTypeRef __58__AVSampleBufferVideoRenderer__readOnlyVideoQueueTimebase__block_i
   return result;
 }
 
-- (int)_createVideoQueue:(OpaqueFigVideoQueue *)a3 errorStep:(id *)a4
+- (int)_createVideoQueue:(OpaqueFigVideoQueue *)queue errorStep:(id *)step
 {
   v24 = 0;
   v25 = &v24;
@@ -299,8 +299,8 @@ CFTypeRef __58__AVSampleBufferVideoRenderer__readOnlyVideoQueueTimebase__block_i
   v22 = 0x2020000000;
   v23 = 0;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  v8 = [(AVSampleBufferVideoRenderer *)self _nameForLogging];
-  CFDictionarySetValue(Mutable, *MEMORY[0x1E6973CE8], v8);
+  _nameForLogging = [(AVSampleBufferVideoRenderer *)self _nameForLogging];
+  CFDictionarySetValue(Mutable, *MEMORY[0x1E6973CE8], _nameForLogging);
   videoQueueQueue = self->_videoQueueQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -354,16 +354,16 @@ CFTypeRef __58__AVSampleBufferVideoRenderer__readOnlyVideoQueueTimebase__block_i
     }
   }
 
-  if (a3)
+  if (queue)
   {
-    *a3 = v21[3];
+    *queue = v21[3];
   }
 
   v14 = v25;
   v15 = *(v25 + 6);
-  if (a4 && v15)
+  if (step && v15)
   {
-    *a4 = 0;
+    *step = 0;
     v15 = *(v14 + 6);
   }
 
@@ -423,14 +423,14 @@ uint64_t __59__AVSampleBufferVideoRenderer__createVideoQueue_errorStep___block_i
   return result;
 }
 
-- (int)createVideoQueue:(OpaqueFigVideoQueue *)a3
+- (int)createVideoQueue:(OpaqueFigVideoQueue *)queue
 {
   v5 = 0;
   v11 = 0;
   v12 = [[AVTelemetryInterval alloc] initAndStartWith:59];
   do
   {
-    v6 = [(AVSampleBufferVideoRenderer *)self _createVideoQueue:a3 errorStep:&v11];
+    v6 = [(AVSampleBufferVideoRenderer *)self _createVideoQueue:queue errorStep:&v11];
     v7 = [(AVSampleBufferVideoRenderer *)self _isCreateVideoQueueErrorRetryable:v6, v11, v12];
   }
 
@@ -489,7 +489,7 @@ CFTypeRef __46__AVSampleBufferVideoRenderer__copyVideoQueue__block_invoke(uint64
   return v3;
 }
 
-- (void)_refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting:(BOOL)a3
+- (void)_refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting:(BOOL)requesting
 {
   v19 = 0;
   v20 = &v19;
@@ -505,8 +505,8 @@ CFTypeRef __46__AVSampleBufferVideoRenderer__copyVideoQueue__block_invoke(uint64
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v12 = 0;
-  v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v5)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
     videoQueueQueue = self->_videoQueueQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -514,9 +514,9 @@ CFTypeRef __46__AVSampleBufferVideoRenderer__copyVideoQueue__block_invoke(uint64
     block[2] = __101__AVSampleBufferVideoRenderer__refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting___block_invoke;
     block[3] = &unk_1E7462AC0;
     block[4] = v11;
-    block[5] = v5;
+    block[5] = _copyVideoQueue;
     dispatch_sync(videoQueueQueue, block);
-    CFRelease(v5);
+    CFRelease(_copyVideoQueue);
   }
 
   serialQueue = self->_serialQueue;
@@ -526,7 +526,7 @@ CFTypeRef __46__AVSampleBufferVideoRenderer__copyVideoQueue__block_invoke(uint64
   v8[3] = &unk_1E7465740;
   v8[4] = self;
   v8[5] = v11;
-  v9 = a3;
+  requestingCopy = requesting;
   v8[6] = &v19;
   v8[7] = &v13;
   dispatch_sync(serialQueue, v8);
@@ -579,16 +579,16 @@ void *__101__AVSampleBufferVideoRenderer__refreshAboveHighWaterLevelAndAlwaysSta
   return result;
 }
 
-- (void)_setStatus:(int64_t)a3 error:(id)a4
+- (void)_setStatus:(int64_t)status error:(id)error
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if (self->_status < a3)
+  if (self->_status < status)
   {
     [(AVSampleBufferVideoRenderer *)self willChangeValueForKey:@"status"];
-    if (a4)
+    if (error)
     {
       [(AVSampleBufferVideoRenderer *)self willChangeValueForKey:@"error"];
     }
@@ -599,9 +599,9 @@ void *__101__AVSampleBufferVideoRenderer__refreshAboveHighWaterLevelAndAlwaysSta
     v8[2] = __48__AVSampleBufferVideoRenderer__setStatus_error___block_invoke;
     v8[3] = &unk_1E7465698;
     v8[4] = self;
-    v8[5] = a4;
+    v8[5] = error;
     v8[6] = &v9;
-    v8[7] = a3;
+    v8[7] = status;
     dispatch_sync(serialQueue, v8);
     if (*(v10 + 24) == 1)
     {
@@ -609,7 +609,7 @@ void *__101__AVSampleBufferVideoRenderer__refreshAboveHighWaterLevelAndAlwaysSta
     }
 
     [(AVSampleBufferVideoRenderer *)self didChangeValueForKey:@"status"];
-    if (a4)
+    if (error)
     {
       [(AVSampleBufferVideoRenderer *)self didChangeValueForKey:@"error"];
     }
@@ -650,11 +650,11 @@ void *__48__AVSampleBufferVideoRenderer__setStatus_error___block_invoke(void *re
   return result;
 }
 
-- (void)_resetStatusWithOSStatus:(int)a3
+- (void)_resetStatusWithOSStatus:(int)status
 {
-  if (a3)
+  if (status)
   {
-    v4 = AVLocalizedErrorWithUnderlyingOSStatus(a3, 0);
+    v4 = AVLocalizedErrorWithUnderlyingOSStatus(status, 0);
 
     [(AVSampleBufferVideoRenderer *)self _setStatus:2 error:v4];
   }
@@ -697,9 +697,9 @@ void __56__AVSampleBufferVideoRenderer__resetStatusWithOSStatus___block_invoke(u
   *(*(a1 + 32) + 32) = 0;
 }
 
-- (void)_setOutputObscuredDueToInsufficientExternalProtection:(BOOL)a3
+- (void)_setOutputObscuredDueToInsufficientExternalProtection:(BOOL)protection
 {
-  if ([(AVSampleBufferVideoRenderer *)self outputObscuredDueToInsufficientExternalProtection]!= a3)
+  if ([(AVSampleBufferVideoRenderer *)self outputObscuredDueToInsufficientExternalProtection]!= protection)
   {
     [(AVSampleBufferVideoRenderer *)self willChangeValueForKey:@"outputObscuredDueToInsufficientExternalProtection"];
     serialQueue = self->_serialQueue;
@@ -708,7 +708,7 @@ void __56__AVSampleBufferVideoRenderer__resetStatusWithOSStatus___block_invoke(u
     v6[2] = __85__AVSampleBufferVideoRenderer__setOutputObscuredDueToInsufficientExternalProtection___block_invoke;
     v6[3] = &unk_1E7460E40;
     v6[4] = self;
-    v7 = a3;
+    protectionCopy = protection;
     dispatch_sync(serialQueue, v6);
     [(AVSampleBufferVideoRenderer *)self didChangeValueForKey:@"outputObscuredDueToInsufficientExternalProtection"];
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -718,10 +718,10 @@ void __56__AVSampleBufferVideoRenderer__resetStatusWithOSStatus___block_invoke(u
 
 - (void)_addFigVideoQueueListeners
 {
-  v2 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v2)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v3 = v2;
+    v3 = _copyVideoQueue;
     CMNotificationCenterGetDefaultLocalCenter();
     FigNotificationCenterAddWeakListeners();
 
@@ -731,10 +731,10 @@ void __56__AVSampleBufferVideoRenderer__resetStatusWithOSStatus___block_invoke(u
 
 - (void)_removeFigVideoQueueListeners
 {
-  v2 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v2)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v3 = v2;
+    v3 = _copyVideoQueue;
     CMNotificationCenterGetDefaultLocalCenter();
     FigNotificationCenterRemoveWeakListeners();
 
@@ -742,10 +742,10 @@ void __56__AVSampleBufferVideoRenderer__resetStatusWithOSStatus___block_invoke(u
   }
 }
 
-- (void)_setRequiresFlushToResumeDecoding:(BOOL)a3
+- (void)_setRequiresFlushToResumeDecoding:(BOOL)decoding
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (decoding)
   {
     [(AVSampleBufferVideoRenderer *)self setReadyForDisplayWithoutKVO:0];
   }
@@ -759,7 +759,7 @@ void __56__AVSampleBufferVideoRenderer__resetStatusWithOSStatus___block_invoke(u
   block[1] = 3221225472;
   block[2] = __65__AVSampleBufferVideoRenderer__setRequiresFlushToResumeDecoding___block_invoke;
   block[3] = &unk_1E7462948;
-  v9 = a3;
+  decodingCopy = decoding;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(serialQueue, block);
@@ -792,7 +792,7 @@ uint64_t __65__AVSampleBufferVideoRenderer__setRequiresFlushToResumeDecoding___b
   return result;
 }
 
-- (void)_setCreateVideoQueueFailedWithOSStatus:(int)a3
+- (void)_setCreateVideoQueueFailedWithOSStatus:(int)status
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -800,7 +800,7 @@ uint64_t __65__AVSampleBufferVideoRenderer__setRequiresFlushToResumeDecoding___b
   v4[2] = __70__AVSampleBufferVideoRenderer__setCreateVideoQueueFailedWithOSStatus___block_invoke;
   v4[3] = &unk_1E74628F8;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -864,11 +864,11 @@ uint64_t __70__AVSampleBufferVideoRenderer__setCreateVideoQueueFailedWithOSStatu
 
 - (void)_updatePreferredDynamicRange
 {
-  v3 = [(AVSampleBufferVideoRenderer *)self preferredDynamicRange];
-  v4 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v4)
+  preferredDynamicRange = [(AVSampleBufferVideoRenderer *)self preferredDynamicRange];
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v5 = v4;
+    v5 = _copyVideoQueue;
     v8[0] = 0;
     v8[1] = v8;
     v8[2] = 0x2020000000;
@@ -880,7 +880,7 @@ uint64_t __70__AVSampleBufferVideoRenderer__setCreateVideoQueueFailedWithOSStatu
     block[3] = &unk_1E7462A50;
     block[5] = v8;
     block[6] = v5;
-    block[4] = v3;
+    block[4] = preferredDynamicRange;
     dispatch_sync(videoQueueQueue, block);
     CFRelease(v5);
     _Block_object_dispose(v8, 8);
@@ -934,14 +934,14 @@ uint64_t __52__AVSampleBufferVideoRenderer_preferredDynamicRange__block_invoke(u
   return result;
 }
 
-- (void)setPreferredDynamicRange:(id)a3
+- (void)setPreferredDynamicRange:(id)range
 {
   serialQueue = self->_serialQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__AVSampleBufferVideoRenderer_setPreferredDynamicRange___block_invoke;
   v5[3] = &unk_1E7460DF0;
-  v5[4] = a3;
+  v5[4] = range;
   v5[5] = self;
   dispatch_sync(serialQueue, v5);
   [(AVSampleBufferVideoRenderer *)self _updatePreferredDynamicRange];
@@ -984,13 +984,13 @@ void __56__AVSampleBufferVideoRenderer_setPreferredDynamicRange___block_invoke(u
     v2->_queueForCallingPrerollCompleteCallback = dispatch_queue_create("AVSampleBufferVideoRendererQueueForCallingPrerollCompleteCallback", v10);
     v2->_applicationStateMonitor = +[AVApplicationStateMonitor sharedApplicationStateMonitor];
     objc_initWeak(&location, v2);
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __35__AVSampleBufferVideoRenderer_init__block_invoke;
     v24[3] = &unk_1E7460BB0;
     objc_copyWeak(&v25, &location);
-    v2->_didFinishSuspensionNotificationToken = [v11 addObserverForName:@"_UIApplicationDidFinishSuspensionSnapshotNotification" object:0 queue:0 usingBlock:v24];
+    v2->_didFinishSuspensionNotificationToken = [defaultCenter addObserverForName:@"_UIApplicationDidFinishSuspensionSnapshotNotification" object:0 queue:0 usingBlock:v24];
     *&v2->_preventsDisplaySleepDuringVideoPlayback = 257;
     v2->_videoOutputs = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(AVSampleBufferVideoRenderer *)v2 setPreferredDynamicRange:*MEMORY[0x1E69792A0]];
@@ -1065,12 +1065,12 @@ LABEL_11:
 
     if (v17)
     {
-      v18 = [(AVSampleBufferVideoRenderer *)v2 _loggingDescription];
+      _loggingDescription = [(AVSampleBufferVideoRenderer *)v2 _loggingDescription];
       videoQueue = v2->_videoQueue;
       v29 = 136315650;
       v30 = "[AVSampleBufferVideoRenderer init]";
       v31 = 2114;
-      v32 = v18;
+      v32 = _loggingDescription;
       v33 = 2048;
       v34 = videoQueue;
       _os_log_send_and_compose_impl();
@@ -1260,7 +1260,7 @@ CFTypeRef __46__AVSampleBufferVideoRenderer_controlTimebase__block_invoke(uint64
   return result;
 }
 
-- (void)setDisplayLayerVisibility:(BOOL)a3
+- (void)setDisplayLayerVisibility:(BOOL)visibility
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakDisplayLayer);
   layerQueue = self->_layerQueue;
@@ -1268,7 +1268,7 @@ CFTypeRef __46__AVSampleBufferVideoRenderer_controlTimebase__block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __57__AVSampleBufferVideoRenderer_setDisplayLayerVisibility___block_invoke;
   block[3] = &unk_1E7460E18;
-  v8 = a3;
+  visibilityCopy = visibility;
   block[4] = self;
   block[5] = WeakRetained;
   dispatch_async(layerQueue, block);
@@ -1336,22 +1336,22 @@ uint64_t __57__AVSampleBufferVideoRenderer_setDisplayLayerVisibility___block_inv
   return result;
 }
 
-- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)a3
+- (void)copyFigSampleBufferAudioRenderer:(OpaqueFigSampleBufferAudioRenderer *)renderer
 {
-  if (a3)
+  if (renderer)
   {
-    *a3 = 0;
+    *renderer = 0;
   }
 }
 
-- (void)setSTSLabel:(id)a3
+- (void)setSTSLabel:(id)label
 {
   serialQueue = self->_serialQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__AVSampleBufferVideoRenderer_setSTSLabel___block_invoke;
   v6[3] = &unk_1E7460DF0;
-  v6[4] = a3;
+  v6[4] = label;
   v6[5] = self;
   dispatch_sync(serialQueue, v6);
   v5 = [MEMORY[0x1E696AD80] notificationWithName:@"AVSampleBufferSTSLabelDidChangeNotification" object:self];
@@ -1393,12 +1393,12 @@ id __40__AVSampleBufferVideoRenderer__STSLabel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapToStandardDynamicRange:(BOOL)range
 {
-  v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v5)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v6 = v5;
+    v6 = _copyVideoQueue;
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x2020000000;
@@ -1410,7 +1410,7 @@ id __40__AVSampleBufferVideoRenderer__STSLabel__block_invoke(uint64_t a1)
     block[3] = &unk_1E7465768;
     block[4] = v10;
     block[5] = v6;
-    v9 = a3;
+    rangeCopy = range;
     dispatch_sync(videoQueueQueue, block);
     CFRelease(v6);
     _Block_object_dispose(v10, 8);
@@ -1445,7 +1445,7 @@ uint64_t __64__AVSampleBufferVideoRenderer_setToneMapToStandardDynamicRange___bl
   return result;
 }
 
-- (void)setReadyForDisplayWithoutKVO:(BOOL)a3
+- (void)setReadyForDisplayWithoutKVO:(BOOL)o
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -1459,7 +1459,7 @@ uint64_t __64__AVSampleBufferVideoRenderer_setToneMapToStandardDynamicRange___bl
   block[3] = &unk_1E7465790;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  oCopy = o;
   dispatch_sync(serialQueue, block);
   if (*(v9 + 24) == 1)
   {
@@ -1502,7 +1502,7 @@ uint64_t __60__AVSampleBufferVideoRenderer_setReadyForDisplayWithoutKVO___block_
   return v3;
 }
 
-- (void)setContentKeySession:(id)a3
+- (void)setContentKeySession:(id)session
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1510,11 +1510,11 @@ uint64_t __60__AVSampleBufferVideoRenderer_setReadyForDisplayWithoutKVO___block_
   v4[2] = __52__AVSampleBufferVideoRenderer_setContentKeySession___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_sync(serialQueue, v4);
 }
 
-- (int)attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5
+- (int)attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession
 {
   v9 = 0;
   v10 = &v9;
@@ -1526,12 +1526,12 @@ uint64_t __60__AVSampleBufferVideoRenderer_setReadyForDisplayWithoutKVO___block_
   block[2] = __115__AVSampleBufferVideoRenderer_attachToContentKeySession_contentKeyBoss_failedSinceAlreadyAttachedToAnotherSession___block_invoke;
   block[3] = &unk_1E7460F30;
   block[4] = self;
-  block[5] = a3;
+  block[5] = session;
   block[6] = &v9;
   dispatch_sync(serialQueue, block);
-  if (a5)
+  if (anotherSession)
   {
-    *a5 = *(v10 + 24);
+    *anotherSession = *(v10 + 24);
   }
 
   _Block_object_dispose(&v9, 8);
@@ -1584,10 +1584,10 @@ id __66__AVSampleBufferVideoRenderer_attachedToExternalContentKeySession__block_
 
 - (void)removeDisplayLayer
 {
-  v3 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v3)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v4 = v3;
+    v4 = _copyVideoQueue;
     objc_loadWeak(&self->_weakDisplayLayer);
     FigObjectRecordMethodCallsForObject();
     videoQueueQueue = self->_videoQueueQueue;
@@ -1618,20 +1618,20 @@ uint64_t __49__AVSampleBufferVideoRenderer_removeDisplayLayer__block_invoke()
   return result;
 }
 
-- (void)setVideoLayerGeometryFlipped:(BOOL)a3
+- (void)setVideoLayerGeometryFlipped:(BOOL)flipped
 {
   if (_os_feature_enabled_impl())
   {
-    v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-    if (v5)
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __60__AVSampleBufferVideoRenderer_setVideoLayerGeometryFlipped___block_invoke;
       v7[3] = &__block_descriptor_41_e5_v8__0l;
-      v7[4] = v5;
-      v8 = a3;
+      v7[4] = _copyVideoQueue;
+      flippedCopy = flipped;
       dispatch_async(videoQueueQueue, v7);
     }
   }
@@ -1725,28 +1725,28 @@ const __CFArray *__54__AVSampleBufferVideoRenderer_isReadyForMoreMediaData__bloc
   return result;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([a3 isEqualToString:@"outputObscuredDueToInsufficientExternalProtection"])
+  if ([key isEqualToString:@"outputObscuredDueToInsufficientExternalProtection"])
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AVSampleBufferVideoRenderer;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-- (id)_statusString:(int64_t)a3
+- (id)_statusString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7465968[a3];
+    return off_1E7465968[string];
   }
 }
 
@@ -1804,7 +1804,7 @@ uint64_t __36__AVSampleBufferVideoRenderer_error__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (int)_enqueueSingleSampleBuffer:(opaqueCMSampleBuffer *)a3 bufferEnqueueingInfo:(id *)a4
+- (int)_enqueueSingleSampleBuffer:(opaqueCMSampleBuffer *)buffer bufferEnqueueingInfo:(id *)info
 {
   v26 = 0;
   v27 = &v26;
@@ -1829,7 +1829,7 @@ uint64_t __36__AVSampleBufferVideoRenderer_error__block_invoke(uint64_t a1)
   if (*(v23 + 6) >= 2u)
   {
     memset(&v15, 0, sizeof(v15));
-    CMSampleBufferGetOutputPresentationTimeStamp(&v15, a3);
+    CMSampleBufferGetOutputPresentationTimeStamp(&v15, buffer);
     time1 = v15;
     time2 = *(v27 + 4);
     CMTimeCompare(&time1, &time2);
@@ -1850,8 +1850,8 @@ uint64_t __36__AVSampleBufferVideoRenderer_error__block_invoke(uint64_t a1)
   *&v15.timescale = &v15;
   v15.epoch = 0x2020000000;
   v16 = 0;
-  v10 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v10)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
     videoQueueQueue = self->_videoQueueQueue;
     v14[0] = MEMORY[0x1E69E9820];
@@ -1859,11 +1859,11 @@ uint64_t __36__AVSampleBufferVideoRenderer_error__block_invoke(uint64_t a1)
     v14[2] = __79__AVSampleBufferVideoRenderer__enqueueSingleSampleBuffer_bufferEnqueueingInfo___block_invoke_3;
     v14[3] = &unk_1E74657B8;
     v14[4] = &v15;
-    v14[5] = v10;
-    v14[6] = a3;
-    v14[7] = a4;
+    v14[5] = _copyVideoQueue;
+    v14[6] = buffer;
+    v14[7] = info;
     dispatch_sync(videoQueueQueue, v14);
-    CFRelease(v10);
+    CFRelease(_copyVideoQueue);
   }
 
   v12 = *(*&v15.timescale + 24);
@@ -1920,7 +1920,7 @@ uint64_t __79__AVSampleBufferVideoRenderer__enqueueSingleSampleBuffer_bufferEnqu
   return result;
 }
 
-- ($8A865F3275AFFA793BA84D73056FEF19)_computeSampleBufferEnqueueingInfoForSampleBuffer:(SEL)a3
+- ($8A865F3275AFFA793BA84D73056FEF19)_computeSampleBufferEnqueueingInfoForSampleBuffer:(SEL)buffer
 {
   retstr->var0.origin.x = 0.0;
   retstr->var0.origin.y = 0.0;
@@ -2048,7 +2048,7 @@ void __81__AVSampleBufferVideoRenderer__computeSampleBufferEnqueueingInfoForSamp
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v16 = 0;
   v17 = &v16;
@@ -2064,10 +2064,10 @@ void __81__AVSampleBufferVideoRenderer__computeSampleBufferEnqueueingInfoForSamp
   dispatch_sync(serialQueue, block);
   if (*(v17 + 24) == 1)
   {
-    if (CMSampleBufferGetFormatDescription(a3))
+    if (CMSampleBufferGetFormatDescription(buffer))
     {
-      [(AVSampleBufferVideoRenderer *)self _computeSampleBufferEnqueueingInfoForSampleBuffer:a3, 0, 0, 0, 0, 0, 0, 0, 0];
-      [(AVSampleBufferVideoRenderer *)self enqueueSampleBuffer:a3 bufferEnqueueingInfo:v14];
+      [(AVSampleBufferVideoRenderer *)self _computeSampleBufferEnqueueingInfoForSampleBuffer:buffer, 0, 0, 0, 0, 0, 0, 0, 0];
+      [(AVSampleBufferVideoRenderer *)self enqueueSampleBuffer:buffer bufferEnqueueingInfo:v14];
     }
   }
 
@@ -2081,13 +2081,13 @@ void __81__AVSampleBufferVideoRenderer__computeSampleBufferEnqueueingInfoForSamp
     }
 
     memset(v14, 0, sizeof(v14));
-    [(AVSampleBufferVideoRenderer *)self enqueueSampleBuffer:a3 bufferEnqueueingInfo:v14];
+    [(AVSampleBufferVideoRenderer *)self enqueueSampleBuffer:buffer bufferEnqueueingInfo:v14];
   }
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3 bufferEnqueueingInfo:(id *)a4
+- (void)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer bufferEnqueueingInfo:(id *)info
 {
   v15 = 0;
   cf = 0;
@@ -2103,7 +2103,7 @@ void __81__AVSampleBufferVideoRenderer__computeSampleBufferEnqueueingInfoForSamp
 
   if (objc_loadWeak(&self->_weakContentKeySession))
   {
-    FormatDescription = CMSampleBufferGetFormatDescription(a3);
+    FormatDescription = CMSampleBufferGetFormatDescription(buffer);
     if (self->_lastCryptor && FigCFEqual())
     {
       FigSampleBufferSetDecryptor();
@@ -2159,8 +2159,8 @@ void __81__AVSampleBufferVideoRenderer__computeSampleBufferEnqueueingInfoForSamp
   dispatch_sync(serialQueue, block);
   [(AVSampleBufferVideoRenderer *)self _setStatus:1 error:0];
   refcon[0] = self;
-  refcon[1] = a4;
-  CMSampleBufferCallForEachSample(a3, _enqueueSingleSampleBufferStatic, refcon);
+  refcon[1] = info;
+  CMSampleBufferCallForEachSample(buffer, _enqueueSingleSampleBufferStatic, refcon);
   [(AVSampleBufferVideoRenderer *)self _refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting:0];
 LABEL_20:
   if (cf)
@@ -2224,8 +2224,8 @@ LABEL_3:
   }
 
 LABEL_4:
-  v11 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v11)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
     videoQueueQueue = self->_videoQueueQueue;
     v24[0] = MEMORY[0x1E69E9820];
@@ -2233,10 +2233,10 @@ LABEL_4:
     v24[2] = __82__AVSampleBufferVideoRenderer_flushWithRemovalOfDisplayedImage_completionHandler___block_invoke_4;
     v24[3] = &unk_1E7465830;
     v24[4] = &v29;
-    v24[5] = v11;
+    v24[5] = _copyVideoQueue;
     v25 = v9;
     dispatch_sync(videoQueueQueue, v24);
-    CFRelease(v11);
+    CFRelease(_copyVideoQueue);
   }
 
   objc_loadWeak(&self->_weakDisplayLayer);
@@ -2482,7 +2482,7 @@ uint64_t __45__AVSampleBufferVideoRenderer__flushComplete__block_invoke(uint64_t
   return result;
 }
 
-- (void)_callOldPrerollCompletionHandlerWithSuccess:(BOOL)a3 andSetNewPrerollCompletionHandler:(id)a4 forRequestID:(int)a5
+- (void)_callOldPrerollCompletionHandlerWithSuccess:(BOOL)success andSetNewPrerollCompletionHandler:(id)handler forRequestID:(int)d
 {
   v13 = 0;
   v14 = &v13;
@@ -2495,10 +2495,10 @@ uint64_t __45__AVSampleBufferVideoRenderer__flushComplete__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __122__AVSampleBufferVideoRenderer__callOldPrerollCompletionHandlerWithSuccess_andSetNewPrerollCompletionHandler_forRequestID___block_invoke;
   block[3] = &unk_1E7465858;
-  block[5] = a4;
+  block[5] = handler;
   block[6] = &v13;
   block[4] = self;
-  v12 = a5;
+  dCopy = d;
   dispatch_sync(queueForProtectingPrerollCompleteCallback, block);
   if (v14[5])
   {
@@ -2508,7 +2508,7 @@ uint64_t __45__AVSampleBufferVideoRenderer__flushComplete__block_invoke(uint64_t
     v9[2] = __122__AVSampleBufferVideoRenderer__callOldPrerollCompletionHandlerWithSuccess_andSetNewPrerollCompletionHandler_forRequestID___block_invoke_2;
     v9[3] = &unk_1E7465880;
     v9[4] = &v13;
-    v10 = a3;
+    successCopy = success;
     dispatch_async(queueForCallingPrerollCompleteCallback, v9);
   }
 
@@ -2544,7 +2544,7 @@ void __122__AVSampleBufferVideoRenderer__callOldPrerollCompletionHandlerWithSucc
   _Block_release(v2);
 }
 
-- (void)_completedDecodeForPrerollForRequestID:(int)a3
+- (void)_completedDecodeForPrerollForRequestID:(int)d
 {
   v9 = 0;
   v10 = &v9;
@@ -2557,7 +2557,7 @@ void __122__AVSampleBufferVideoRenderer__callOldPrerollCompletionHandlerWithSucc
   block[1] = 3221225472;
   block[2] = __70__AVSampleBufferVideoRenderer__completedDecodeForPrerollForRequestID___block_invoke;
   block[3] = &unk_1E7462C08;
-  v8 = a3;
+  dCopy = d;
   block[4] = self;
   block[5] = &v9;
   dispatch_sync(queueForProtectingPrerollCompleteCallback, block);
@@ -2599,7 +2599,7 @@ void __70__AVSampleBufferVideoRenderer__completedDecodeForPrerollForRequestID___
   _Block_release(v2);
 }
 
-- (void)prerollDecodeWithCompletionHandler:(id)a3
+- (void)prerollDecodeWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
   v16 = 0;
@@ -2607,9 +2607,9 @@ void __70__AVSampleBufferVideoRenderer__completedDecodeForPrerollForRequestID___
   v18 = 0x2020000000;
   v19 = 0;
   v5 = FigAtomicIncrement32();
-  [(AVSampleBufferVideoRenderer *)self _callOldPrerollCompletionHandlerWithSuccess:0 andSetNewPrerollCompletionHandler:a3 forRequestID:v5];
-  v6 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (!v6)
+  [(AVSampleBufferVideoRenderer *)self _callOldPrerollCompletionHandlerWithSuccess:0 andSetNewPrerollCompletionHandler:handler forRequestID:v5];
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (!_copyVideoQueue)
   {
     goto LABEL_5;
   }
@@ -2629,11 +2629,11 @@ void __70__AVSampleBufferVideoRenderer__completedDecodeForPrerollForRequestID___
   block[2] = __66__AVSampleBufferVideoRenderer_prerollDecodeWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7465830;
   block[4] = &v16;
-  block[5] = v6;
+  block[5] = _copyVideoQueue;
   v13 = v5;
   dispatch_sync(videoQueueQueue, block);
   v9 = *(v17 + 6);
-  CFRelease(v6);
+  CFRelease(_copyVideoQueue);
   if (v9)
   {
 LABEL_5:
@@ -2662,9 +2662,9 @@ uint64_t __66__AVSampleBufferVideoRenderer_prerollDecodeWithCompletionHandler___
   return result;
 }
 
-- (void)requestMediaDataWhenReadyOnQueue:(id)a3 usingBlock:(id)a4
+- (void)requestMediaDataWhenReadyOnQueue:(id)queue usingBlock:(id)block
 {
-  if (!a3)
+  if (!queue)
   {
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D940];
@@ -2672,18 +2672,18 @@ uint64_t __66__AVSampleBufferVideoRenderer_prerollDecodeWithCompletionHandler___
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!block)
   {
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D940];
     v15 = "block != nil";
 LABEL_6:
-    v16 = [v13 exceptionWithName:v14 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v15), 0}];
+    v16 = [v13 exceptionWithName:v14 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", block, v4, v5, v6, v7, v15), 0}];
     objc_exception_throw(v16);
   }
 
   [(AVSampleBufferVideoRenderer *)self stopRequestingMediaData];
-  v11 = [[AVMediaDataRequester alloc] initWithMediaDataConsumer:self requestQueue:a3 requestBlock:a4];
+  v11 = [[AVMediaDataRequester alloc] initWithMediaDataConsumer:self requestQueue:queue requestBlock:block];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2739,22 +2739,22 @@ uint64_t __54__AVSampleBufferVideoRenderer_stopRequestingMediaData__block_invoke
 
 - (BOOL)hasSufficientMediaDataForReliablePlaybackStart
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = ![(AVSampleBufferVideoRenderer *)self isReadyForMoreMediaData];
-  serialQueue = v2->_serialQueue;
+  serialQueue = selfCopy->_serialQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__AVSampleBufferVideoRenderer_hasSufficientMediaDataForReliablePlaybackStart__block_invoke;
   v5[3] = &unk_1E7460EE0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(serialQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 const __CFArray *__77__AVSampleBufferVideoRenderer_hasSufficientMediaDataForReliablePlaybackStart__block_invoke(const __CFArray *result)
@@ -2792,7 +2792,7 @@ const __CFArray *__77__AVSampleBufferVideoRenderer_hasSufficientMediaDataForReli
   return v3;
 }
 
-- (void)addSampleBufferDisplayLayer:(id)a3
+- (void)addSampleBufferDisplayLayer:(id)layer
 {
   if ([(AVSampleBufferVideoRenderer *)self _hasEverEnqueued]&& ![(AVSampleBufferVideoRenderer *)self shouldWaitForVideoTarget])
   {
@@ -2809,7 +2809,7 @@ const __CFArray *__77__AVSampleBufferVideoRenderer_hasSufficientMediaDataForReli
   block[1] = 3221225472;
   block[2] = __59__AVSampleBufferVideoRenderer_addSampleBufferDisplayLayer___block_invoke;
   block[3] = &unk_1E74658A8;
-  block[5] = a3;
+  block[5] = layer;
   block[6] = &v22;
   block[4] = self;
   dispatch_sync(serialQueue, block);
@@ -2819,11 +2819,11 @@ const __CFArray *__77__AVSampleBufferVideoRenderer_hasSufficientMediaDataForReli
     objc_exception_throw(v18);
   }
 
-  v17 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v17)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    [(AVSampleBufferVideoRenderer *)self _setContentLayerOnFigVideoQueue:v17];
-    CFRelease(v17);
+    [(AVSampleBufferVideoRenderer *)self _setContentLayerOnFigVideoQueue:_copyVideoQueue];
+    CFRelease(_copyVideoQueue);
   }
 
   _Block_object_dispose(&v22, 8);
@@ -2866,7 +2866,7 @@ id *__59__AVSampleBufferVideoRenderer_addSampleBufferDisplayLayer___block_invoke
   return v3;
 }
 
-- (void)setShouldWaitForVideoTarget:(BOOL)a3
+- (void)setShouldWaitForVideoTarget:(BOOL)target
 {
   v14 = 0;
   v15 = &v14;
@@ -2877,18 +2877,18 @@ id *__59__AVSampleBufferVideoRenderer_addSampleBufferDisplayLayer___block_invoke
   block[1] = 3221225472;
   block[2] = __59__AVSampleBufferVideoRenderer_setShouldWaitForVideoTarget___block_invoke;
   block[3] = &unk_1E7462948;
-  v13 = a3;
+  targetCopy = target;
   block[4] = self;
   block[5] = &v14;
   dispatch_sync(serialQueue, block);
   if (*(v15 + 24) == 1)
   {
-    v6 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x2020000000;
     v11 = 0;
-    if (v6)
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       v8[0] = MEMORY[0x1E69E9820];
@@ -2896,10 +2896,10 @@ id *__59__AVSampleBufferVideoRenderer_addSampleBufferDisplayLayer___block_invoke
       v8[2] = __59__AVSampleBufferVideoRenderer_setShouldWaitForVideoTarget___block_invoke_2;
       v8[3] = &unk_1E7465768;
       v8[4] = v10;
-      v8[5] = v6;
-      v9 = a3;
+      v8[5] = _copyVideoQueue;
+      targetCopy2 = target;
       dispatch_sync(videoQueueQueue, v8);
-      CFRelease(v6);
+      CFRelease(_copyVideoQueue);
     }
 
     [(AVSampleBufferVideoRenderer *)self _refreshAboveHighWaterLevelAndAlwaysStartRequestMediaDataIfRequesting:1];
@@ -2952,10 +2952,10 @@ uint64_t __59__AVSampleBufferVideoRenderer_setShouldWaitForVideoTarget___block_i
 
 - (void)_updateVideoTargetsOnVideoQueue
 {
-  v3 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v3)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v4 = v3;
+    v4 = _copyVideoQueue;
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -3018,7 +3018,7 @@ uint64_t __62__AVSampleBufferVideoRenderer__updateVideoTargetsOnVideoQueue__bloc
   return result;
 }
 
-- (void)addVideoTarget:(OpaqueFigVideoTarget *)a3
+- (void)addVideoTarget:(OpaqueFigVideoTarget *)target
 {
   if ([(AVSampleBufferVideoRenderer *)self _hasEverEnqueued]&& ![(AVSampleBufferVideoRenderer *)self shouldWaitForVideoTarget])
   {
@@ -3030,7 +3030,7 @@ uint64_t __62__AVSampleBufferVideoRenderer__updateVideoTargetsOnVideoQueue__bloc
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if (a3)
+  if (target)
   {
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -3038,7 +3038,7 @@ uint64_t __62__AVSampleBufferVideoRenderer__updateVideoTargetsOnVideoQueue__bloc
     block[2] = __46__AVSampleBufferVideoRenderer_addVideoTarget___block_invoke;
     block[3] = &unk_1E7462990;
     block[5] = &v21;
-    block[6] = a3;
+    block[6] = target;
     block[4] = self;
     dispatch_sync(serialQueue, block);
     if (*(v22 + 24) == 1)
@@ -3088,9 +3088,9 @@ void __46__AVSampleBufferVideoRenderer_addVideoTarget___block_invoke(void *a1)
   }
 }
 
-- (int)_setContentLayerOnFigVideoQueue:(OpaqueFigVideoQueue *)a3
+- (int)_setContentLayerOnFigVideoQueue:(OpaqueFigVideoQueue *)queue
 {
-  if (!a3)
+  if (!queue)
   {
     return 0;
   }
@@ -3104,21 +3104,21 @@ void __46__AVSampleBufferVideoRenderer_addVideoTarget___block_invoke(void *a1)
   }
 
   v7 = WeakRetained;
-  v8 = [WeakRetained _contentLayer];
-  if (v8)
+  _contentLayer = [WeakRetained _contentLayer];
+  if (_contentLayer)
   {
-    v9 = v8;
+    v9 = _contentLayer;
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0;
-    CFRetain(a3);
+    CFRetain(queue);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__AVSampleBufferVideoRenderer__setContentLayerOnFigVideoQueue___block_invoke;
     v13[3] = &unk_1E74658D0;
     v13[6] = &v14;
-    v13[7] = a3;
+    v13[7] = queue;
     v13[4] = self;
     v13[5] = v9;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v13);
@@ -3189,7 +3189,7 @@ void __63__AVSampleBufferVideoRenderer__setContentLayerOnFigVideoQueue___block_i
   v2 = *(a1 + 32);
 }
 
-- (void)_didFinishSuspension:(id)a3
+- (void)_didFinishSuspension:(id)suspension
 {
   v13 = *MEMORY[0x1E69E9840];
   if (dword_1EAEFCE70)
@@ -3201,7 +3201,7 @@ void __63__AVSampleBufferVideoRenderer__setContentLayerOnFigVideoQueue___block_i
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue:a3];
+  v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue:suspension];
   if (v5)
   {
     v6 = v5;
@@ -3289,8 +3289,8 @@ const __CFArray *__42__AVSampleBufferVideoRenderer_description__block_invoke(voi
   v25 = __Block_byref_object_copy__33;
   v26 = __Block_byref_object_dispose__33;
   v27 = 0;
-  v3 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v3)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
     videoQueueQueue = self->_videoQueueQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -3298,9 +3298,9 @@ const __CFArray *__42__AVSampleBufferVideoRenderer_description__block_invoke(voi
     block[2] = __86__AVSampleBufferVideoRenderer_VideoPerformanceMetricsPrivate__videoPerformanceMetrics__block_invoke;
     block[3] = &unk_1E7462AC0;
     block[4] = &v22;
-    block[5] = v3;
+    block[5] = _copyVideoQueue;
     dispatch_sync(videoQueueQueue, block);
-    CFRelease(v3);
+    CFRelease(_copyVideoQueue);
   }
 
   v5 = [v23[5] objectForKey:*MEMORY[0x1E6973C40]];
@@ -3384,7 +3384,7 @@ uint64_t __86__AVSampleBufferVideoRenderer_VideoPerformanceMetricsPrivate__video
   return result;
 }
 
-- (void)loadVideoPerformanceMetricsWithCompletionHandler:(id)a3
+- (void)loadVideoPerformanceMetricsWithCompletionHandler:(id)handler
 {
   videoPerformanceMetricsQueue = self->_videoPerformanceMetricsQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3392,7 +3392,7 @@ uint64_t __86__AVSampleBufferVideoRenderer_VideoPerformanceMetricsPrivate__video
   v4[2] = __132__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoPerformanceMetrics__loadVideoPerformanceMetricsWithCompletionHandler___block_invoke;
   v4[3] = &unk_1E7462650;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(videoPerformanceMetricsQueue, v4);
 }
 
@@ -3424,16 +3424,16 @@ uint64_t __132__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoPerf
   return v3;
 }
 
-- (void)setPreventsCapture:(BOOL)a3
+- (void)setPreventsCapture:(BOOL)capture
 {
-  v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v11 = 0;
-  if (v5)
+  if (_copyVideoQueue)
   {
-    v6 = v5;
+    v6 = _copyVideoQueue;
     videoQueueQueue = self->_videoQueueQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3441,7 +3441,7 @@ uint64_t __132__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoPerf
     block[3] = &unk_1E7465768;
     block[4] = v10;
     block[5] = v6;
-    v9 = a3;
+    captureCopy = capture;
     dispatch_sync(videoQueueQueue, block);
     CFRelease(v6);
   }
@@ -3487,8 +3487,8 @@ uint64_t __94__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererImageProte
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v3)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
     videoQueueQueue = self->_videoQueueQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -3497,9 +3497,9 @@ uint64_t __94__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererImageProte
     block[3] = &unk_1E74630E0;
     block[4] = v13;
     block[5] = &v9;
-    block[6] = v3;
+    block[6] = _copyVideoQueue;
     dispatch_sync(videoQueueQueue, block);
-    CFRelease(v3);
+    CFRelease(_copyVideoQueue);
   }
 
   v5 = v10[3];
@@ -3533,7 +3533,7 @@ uint64_t __90__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererImageProte
   return result;
 }
 
-- (void)setPreventsDisplaySleepDuringVideoPlayback:(BOOL)a3
+- (void)setPreventsDisplaySleepDuringVideoPlayback:(BOOL)playback
 {
   v15 = 0;
   v16 = &v15;
@@ -3544,18 +3544,18 @@ uint64_t __90__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererImageProte
   block[1] = 3221225472;
   block[2] = __130__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoDisplaySleepPrevention__setPreventsDisplaySleepDuringVideoPlayback___block_invoke;
   block[3] = &unk_1E7462948;
-  v14 = a3;
+  playbackCopy = playback;
   block[4] = self;
   block[5] = &v15;
   dispatch_sync(serialQueue, block);
   if (*(v16 + 24) == 1)
   {
-    v6 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x2020000000;
     v12 = 0;
-    if (v6)
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       v8[0] = MEMORY[0x1E69E9820];
@@ -3563,11 +3563,11 @@ uint64_t __90__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererImageProte
       v8[2] = __130__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoDisplaySleepPrevention__setPreventsDisplaySleepDuringVideoPlayback___block_invoke_2;
       v8[3] = &unk_1E74658F8;
       v8[4] = v11;
-      v8[5] = v6;
-      v9 = a3;
+      v8[5] = _copyVideoQueue;
+      playbackCopy2 = playback;
       v10 = 0;
       dispatch_sync(videoQueueQueue, v8);
-      CFRelease(v6);
+      CFRelease(_copyVideoQueue);
     }
 
     _Block_object_dispose(v11, 8);
@@ -3665,7 +3665,7 @@ uint64_t __130__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoDisp
   return v3;
 }
 
-- (void)setPreventsAutomaticBackgroundingDuringVideoPlayback:(BOOL)a3
+- (void)setPreventsAutomaticBackgroundingDuringVideoPlayback:(BOOL)playback
 {
   v18 = [[AVTelemetryInterval alloc] initAndStartWith:64];
   v14 = 0;
@@ -3677,18 +3677,18 @@ uint64_t __130__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoDisp
   block[1] = 3221225472;
   block[2] = __142__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererAutomaticBackgroundPrevention__setPreventsAutomaticBackgroundingDuringVideoPlayback___block_invoke;
   block[3] = &unk_1E7462948;
-  v13 = a3;
+  playbackCopy = playback;
   block[4] = self;
   block[5] = &v14;
   dispatch_sync(serialQueue, block);
   if (*(v15 + 24) == 1)
   {
-    v6 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x2020000000;
     v11 = 0;
-    if (v6)
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       v8[0] = MEMORY[0x1E69E9820];
@@ -3696,10 +3696,10 @@ uint64_t __130__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererVideoDisp
       v8[2] = __142__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererAutomaticBackgroundPrevention__setPreventsAutomaticBackgroundingDuringVideoPlayback___block_invoke_2;
       v8[3] = &unk_1E7465768;
       v8[4] = v10;
-      v8[5] = v6;
-      v9 = a3;
+      v8[5] = _copyVideoQueue;
+      playbackCopy2 = playback;
       dispatch_sync(videoQueueQueue, v8);
-      CFRelease(v6);
+      CFRelease(_copyVideoQueue);
     }
 
     _Block_object_dispose(v10, 8);
@@ -3769,7 +3769,7 @@ uint64_t __142__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererAutomatic
   return v3;
 }
 
-- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)a3
+- (void)_setDisallowsVideoLayerDisplayCompositing:(BOOL)compositing
 {
   v14 = 0;
   v15 = &v14;
@@ -3780,18 +3780,18 @@ uint64_t __142__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererAutomatic
   block[1] = 3221225472;
   block[2] = __120__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererDisplayCompositing___setDisallowsVideoLayerDisplayCompositing___block_invoke;
   block[3] = &unk_1E7462948;
-  v13 = a3;
+  compositingCopy = compositing;
   block[4] = self;
   block[5] = &v14;
   dispatch_sync(serialQueue, block);
   if (*(v15 + 24) == 1)
   {
-    v6 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x2020000000;
     v11 = 0;
-    if (v6)
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       v8[0] = MEMORY[0x1E69E9820];
@@ -3799,10 +3799,10 @@ uint64_t __142__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererAutomatic
       v8[2] = __120__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererDisplayCompositing___setDisallowsVideoLayerDisplayCompositing___block_invoke_2;
       v8[3] = &unk_1E7465768;
       v8[4] = v10;
-      v8[5] = v6;
-      v9 = a3;
+      v8[5] = _copyVideoQueue;
+      compositingCopy2 = compositing;
       dispatch_sync(videoQueueQueue, v8);
-      CFRelease(v6);
+      CFRelease(_copyVideoQueue);
     }
 
     _Block_object_dispose(v10, 8);
@@ -3871,7 +3871,7 @@ uint64_t __120__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererDisplayCo
   return v3;
 }
 
-- (BOOL)_setUpcomingPresentationTimeExpectations:(int)a3 minimumPresentationTime:(id *)a4
+- (BOOL)_setUpcomingPresentationTimeExpectations:(int)expectations minimumPresentationTime:(id *)time
 {
   v10 = 0;
   v11 = &v10;
@@ -3882,10 +3882,10 @@ uint64_t __120__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererDisplayCo
   v7[1] = 3221225472;
   v7[2] = __115__AVSampleBufferVideoRenderer_PowerOptimization___setUpcomingPresentationTimeExpectations_minimumPresentationTime___block_invoke;
   v7[3] = &unk_1E7465920;
-  v8 = a3;
+  expectationsCopy = expectations;
   v7[4] = self;
   v7[5] = &v10;
-  v9 = *a4;
+  v9 = *time;
   dispatch_sync(serialQueue, v7);
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -3914,26 +3914,26 @@ __n128 __115__AVSampleBufferVideoRenderer_PowerOptimization___setUpcomingPresent
   return result;
 }
 
-- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)a3
+- (void)expectMinimumUpcomingSampleBufferPresentationTime:(id *)time
 {
   v12 = [[AVTelemetryInterval alloc] initAndStartWith:60];
-  if ((a3->var2 & 0x1D) == 1)
+  if ((time->var2 & 0x1D) == 1)
   {
-    v9 = *&a3->var0;
-    var3 = a3->var3;
+    v9 = *&time->var0;
+    var3 = time->var3;
     if ([(AVSampleBufferVideoRenderer *)self _setUpcomingPresentationTimeExpectations:3 minimumPresentationTime:&v9])
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 2, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       CFDictionarySetValue(Mutable, *MEMORY[0x1E6973D80], *MEMORY[0x1E695E4D0]);
-      v9 = *&a3->var0;
-      var3 = a3->var3;
+      v9 = *&time->var0;
+      var3 = time->var3;
       FigCFDictionarySetCMTime();
       *&v9 = 0;
       *(&v9 + 1) = &v9;
       var3 = 0x2020000000;
       v11 = 0;
-      v6 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-      if (v6)
+      _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+      if (_copyVideoQueue)
       {
         videoQueueQueue = self->_videoQueueQueue;
         block[0] = MEMORY[0x1E69E9820];
@@ -3941,10 +3941,10 @@ __n128 __115__AVSampleBufferVideoRenderer_PowerOptimization___setUpcomingPresent
         block[2] = __100__AVSampleBufferVideoRenderer_PowerOptimization__expectMinimumUpcomingSampleBufferPresentationTime___block_invoke;
         block[3] = &unk_1E7462BD8;
         block[4] = &v9;
-        block[5] = v6;
+        block[5] = _copyVideoQueue;
         block[6] = Mutable;
         dispatch_sync(videoQueueQueue, block);
-        CFRelease(v6);
+        CFRelease(_copyVideoQueue);
       }
 
       if (Mutable)
@@ -3991,8 +3991,8 @@ uint64_t __100__AVSampleBufferVideoRenderer_PowerOptimization__expectMinimumUpco
     *(&v7 + 1) = &v7;
     v8 = 0x2020000000;
     v9 = 0;
-    v4 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-    if (v4)
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -4000,10 +4000,10 @@ uint64_t __100__AVSampleBufferVideoRenderer_PowerOptimization__expectMinimumUpco
       block[2] = __116__AVSampleBufferVideoRenderer_PowerOptimization__expectMonotonicallyIncreasingUpcomingSampleBufferPresentationTimes__block_invoke;
       block[3] = &unk_1E7462BD8;
       block[4] = &v7;
-      block[5] = v4;
+      block[5] = _copyVideoQueue;
       block[6] = Mutable;
       dispatch_sync(videoQueueQueue, block);
-      CFRelease(v4);
+      CFRelease(_copyVideoQueue);
     }
 
     if (Mutable)
@@ -4054,8 +4054,8 @@ uint64_t __116__AVSampleBufferVideoRenderer_PowerOptimization__expectMonotonical
     *(&v9 + 1) = &v9;
     v10 = 0x2020000000;
     v11 = 0;
-    v5 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-    if (v5)
+    _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+    if (_copyVideoQueue)
     {
       videoQueueQueue = self->_videoQueueQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -4063,10 +4063,10 @@ uint64_t __116__AVSampleBufferVideoRenderer_PowerOptimization__expectMonotonical
       block[2] = __103__AVSampleBufferVideoRenderer_PowerOptimization__resetUpcomingSampleBufferPresentationTimeExpectations__block_invoke;
       block[3] = &unk_1E7462BD8;
       block[4] = &v9;
-      block[5] = v5;
+      block[5] = _copyVideoQueue;
       block[6] = Mutable;
       dispatch_sync(videoQueueQueue, block);
-      CFRelease(v5);
+      CFRelease(_copyVideoQueue);
     }
 
     if (Mutable)
@@ -4158,10 +4158,10 @@ uint64_t __82__AVSampleBufferVideoRenderer_PowerOptimization__recommendedPixelBu
 
 - (void)_updateVideoOutputs
 {
-  v3 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v3)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
-    v4 = v3;
+    v4 = _copyVideoQueue;
     serialQueue = self->_serialQueue;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -4246,21 +4246,21 @@ uint64_t __86__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs___
   return result;
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
   v18 = [[AVTelemetryInterval alloc] initAndStartWith:65];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if (a3)
+  if (output)
   {
     serialQueue = self->_serialQueue;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __77__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__addOutput___block_invoke;
     v13[3] = &unk_1E7461068;
-    v13[5] = a3;
+    v13[5] = output;
     v13[6] = &v14;
     v13[4] = self;
     dispatch_sync(serialQueue, v13);
@@ -4292,10 +4292,10 @@ uint64_t __77__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__a
   return result;
 }
 
-- (void)removeOutput:(id)a3
+- (void)removeOutput:(id)output
 {
   v18 = [[AVTelemetryInterval alloc] initAndStartWith:66];
-  if (a3)
+  if (output)
   {
     v14 = 0;
     v15 = &v14;
@@ -4306,7 +4306,7 @@ uint64_t __77__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__a
     v13[1] = 3221225472;
     v13[2] = __80__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__removeOutput___block_invoke;
     v13[3] = &unk_1E7461068;
-    v13[5] = a3;
+    v13[5] = output;
     v13[6] = &v14;
     v13[4] = self;
     dispatch_sync(serialQueue, v13);
@@ -4377,8 +4377,8 @@ id __74__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__outputs
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v9 = 0;
-  v3 = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
-  if (v3)
+  _copyVideoQueue = [(AVSampleBufferVideoRenderer *)self _copyVideoQueue];
+  if (_copyVideoQueue)
   {
     videoQueueQueue = self->_videoQueueQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -4386,11 +4386,11 @@ id __74__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__outputs
     block[2] = __91__AVSampleBufferVideoRenderer_AVSampleBufferVideoRendererOutputs__copyDisplayedPixelBuffer__block_invoke;
     block[3] = &unk_1E7465948;
     block[6] = &v10;
-    block[7] = v3;
+    block[7] = _copyVideoQueue;
     block[4] = self;
     block[5] = v8;
     dispatch_sync(videoQueueQueue, block);
-    CFRelease(v3);
+    CFRelease(_copyVideoQueue);
   }
 
   v5 = v11[3];

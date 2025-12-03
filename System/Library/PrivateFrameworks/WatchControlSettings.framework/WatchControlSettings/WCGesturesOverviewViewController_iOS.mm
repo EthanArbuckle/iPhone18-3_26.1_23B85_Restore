@@ -42,10 +42,10 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v21 + 1) + 8 * v7) integerValue];
-        v9 = WCNameForGreyEvent(v8);
-        v10 = WCOnboardingDescriptionForGreyEvent(v8);
-        v11 = WCOnboardingImageForGreyEvent(v8, 1);
+        integerValue = [*(*(&v21 + 1) + 8 * v7) integerValue];
+        v9 = WCNameForGreyEvent(integerValue);
+        v10 = WCOnboardingDescriptionForGreyEvent(integerValue);
+        v11 = WCOnboardingImageForGreyEvent(integerValue, 1);
         [(WCGesturesOverviewViewController_iOS *)self addBulletedListItemWithTitle:v9 description:v10 image:v11];
 
         ++v7;
@@ -58,23 +58,23 @@
     while (v5);
   }
 
-  v12 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v13 = WCLocalizedString(@"grey.onboarding.try.it.out.on.watch.action");
-  [v12 setTitle:v13 forState:0];
+  [boldButton setTitle:v13 forState:0];
 
-  [v12 addTarget:self action:sel__tryItOutOnAppleWatch forControlEvents:64];
-  v14 = [(WCGesturesOverviewViewController_iOS *)self buttonTray];
-  [v14 addButton:v12];
+  [boldButton addTarget:self action:sel__tryItOutOnAppleWatch forControlEvents:64];
+  buttonTray = [(WCGesturesOverviewViewController_iOS *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v15 = [(WCGesturesOverviewViewController_iOS *)self navigationController];
-  v16 = [v15 viewControllers];
-  v17 = [v16 count];
+  navigationController = [(WCGesturesOverviewViewController_iOS *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v17 = [viewControllers count];
 
   if (v17 == 1)
   {
     v18 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismissOnboarding];
-    v19 = [(OBBaseWelcomeController *)self navigationItem];
-    [v19 setLeftBarButtonItem:v18];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v18];
   }
 
   v20 = *MEMORY[0x277D85DE8];

@@ -4,9 +4,9 @@
 - (id)sanitizedInfoDictionary;
 - (int64_t)uiOrientation;
 - (void)dealloc;
-- (void)setExifOrientation:(id)a3;
-- (void)setHighDynamicRangeGainMap:(__CVBuffer *)a3 orientation:(unsigned int)a4 averagePixelLuminance:(id)a5;
-- (void)setImageRef:(CGImage *)a3;
+- (void)setExifOrientation:(id)orientation;
+- (void)setHighDynamicRangeGainMap:(__CVBuffer *)map orientation:(unsigned int)orientation averagePixelLuminance:(id)luminance;
+- (void)setImageRef:(CGImage *)ref;
 @end
 
 @implementation PHImageResult
@@ -18,16 +18,16 @@
     return 1;
   }
 
-  v4 = [(PHImageResult *)self imageURL];
-  if (v4)
+  imageURL = [(PHImageResult *)self imageURL];
+  if (imageURL)
   {
     v2 = 1;
   }
 
   else
   {
-    v5 = [(PHImageResult *)self imageData];
-    v2 = v5 != 0;
+    imageData = [(PHImageResult *)self imageData];
+    v2 = imageData != 0;
   }
 
   return v2;
@@ -70,24 +70,24 @@ void __32__PHImageResult_allowedInfoKeys__block_invoke(uint64_t a1)
 {
   v7.receiver = self;
   v7.super_class = PHImageResult;
-  v3 = [(PHCompositeMediaResult *)&v7 sanitizedInfoDictionary];
+  sanitizedInfoDictionary = [(PHCompositeMediaResult *)&v7 sanitizedInfoDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[PHImageResult isDegraded](self, "isDegraded")}];
-  [v3 setObject:v4 forKeyedSubscript:@"PHImageResultIsDegradedKey"];
+  [sanitizedInfoDictionary setObject:v4 forKeyedSubscript:@"PHImageResultIsDegradedKey"];
 
   if ([(PHImageResult *)self isPlaceholder])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultIsPlaceholderKey"];
+    [sanitizedInfoDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultIsPlaceholderKey"];
   }
 
   if ([(PHImageResult *)self isDerivedFromDeferredPreview])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultIsDerivedFromDeferredPreviewKey"];
+    [sanitizedInfoDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHImageResultIsDerivedFromDeferredPreviewKey"];
   }
 
-  v5 = [(PHImageResult *)self uniformTypeIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"PHImageFileUTIKey"];
+  uniformTypeIdentifier = [(PHImageResult *)self uniformTypeIdentifier];
+  [sanitizedInfoDictionary setObject:uniformTypeIdentifier forKeyedSubscript:@"PHImageFileUTIKey"];
 
-  return v3;
+  return sanitizedInfoDictionary;
 }
 
 - (id)allowedInfoKeys
@@ -108,16 +108,16 @@ void __32__PHImageResult_allowedInfoKeys__block_invoke(uint64_t a1)
 - (int64_t)uiOrientation
 {
   v2 = [(NSMutableDictionary *)self->super._mutableInfo objectForKeyedSubscript:@"PHImageFileOrientationKey"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setExifOrientation:(id)a3
+- (void)setExifOrientation:(id)orientation
 {
-  v6 = a3;
-  objc_storeStrong(&self->_exifOrientation, a3);
-  if (v6)
+  orientationCopy = orientation;
+  objc_storeStrong(&self->_exifOrientation, orientation);
+  if (orientationCopy)
   {
     [(NSNumber *)self->_exifOrientation intValue];
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:PLImageOrientationFromExifOrientation()];
@@ -130,25 +130,25 @@ void __32__PHImageResult_allowedInfoKeys__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setHighDynamicRangeGainMap:(__CVBuffer *)a3 orientation:(unsigned int)a4 averagePixelLuminance:(id)a5
+- (void)setHighDynamicRangeGainMap:(__CVBuffer *)map orientation:(unsigned int)orientation averagePixelLuminance:(id)luminance
 {
-  v5 = *&a4;
+  v5 = *&orientation;
   v8 = MEMORY[0x1E696AD98];
-  v11 = a5;
+  luminanceCopy = luminance;
   v9 = [v8 numberWithUnsignedInt:v5];
   [(NSMutableDictionary *)self->super._mutableInfo setObject:v9 forKeyedSubscript:@"PHImageFileHighDynamicRangeGainMapOrientationKey"];
 
-  v10 = [MEMORY[0x1E69C0708] createImageRefFromAuxiliaryImagePixelBuffer:a3 applyingOrientation:v5 scaleFactor:1.0];
+  v10 = [MEMORY[0x1E69C0708] createImageRefFromAuxiliaryImagePixelBuffer:map applyingOrientation:v5 scaleFactor:1.0];
   [(NSMutableDictionary *)self->super._mutableInfo setObject:v10 forKeyedSubscript:@"PHImageFileHighDynamicRangeGainMapKey"];
 
-  [(NSMutableDictionary *)self->super._mutableInfo setObject:v11 forKeyedSubscript:@"PHImageFileHighDynamicRangeGainMapValueKey"];
+  [(NSMutableDictionary *)self->super._mutableInfo setObject:luminanceCopy forKeyedSubscript:@"PHImageFileHighDynamicRangeGainMapValueKey"];
 }
 
-- (void)setImageRef:(CGImage *)a3
+- (void)setImageRef:(CGImage *)ref
 {
-  CGImageRetain(a3);
+  CGImageRetain(ref);
   CGImageRelease(self->_imageRef);
-  self->_imageRef = a3;
+  self->_imageRef = ref;
 }
 
 @end

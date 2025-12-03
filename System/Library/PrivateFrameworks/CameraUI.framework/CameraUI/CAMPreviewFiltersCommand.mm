@@ -1,34 +1,34 @@
 @interface CAMPreviewFiltersCommand
-- (CAMPreviewFiltersCommand)initWithCoder:(id)a3;
-- (CAMPreviewFiltersCommand)initWithFilters:(id)a3 captureMode:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPreviewFiltersCommand)initWithCoder:(id)coder;
+- (CAMPreviewFiltersCommand)initWithFilters:(id)filters captureMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPreviewFiltersCommand
 
-- (CAMPreviewFiltersCommand)initWithFilters:(id)a3 captureMode:(int64_t)a4
+- (CAMPreviewFiltersCommand)initWithFilters:(id)filters captureMode:(int64_t)mode
 {
-  v7 = a3;
+  filtersCopy = filters;
   v12.receiver = self;
   v12.super_class = CAMPreviewFiltersCommand;
   v8 = [(CAMCaptureCommand *)&v12 initWithSubcommands:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filters, a3);
-    v9->__mode = a4;
+    objc_storeStrong(&v8->_filters, filters);
+    v9->__mode = mode;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (CAMPreviewFiltersCommand)initWithCoder:(id)a3
+- (CAMPreviewFiltersCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CAMPreviewFiltersDataKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CAMPreviewFiltersDataKey"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -52,22 +52,22 @@
     v9 = 0;
   }
 
-  v12 = -[CAMPreviewFiltersCommand initWithFilters:captureMode:](self, "initWithFilters:captureMode:", v9, [v4 decodeIntegerForKey:@"CAMPreviewFiltersModeKey"]);
+  v12 = -[CAMPreviewFiltersCommand initWithFilters:captureMode:](self, "initWithFilters:captureMode:", v9, [coderCopy decodeIntegerForKey:@"CAMPreviewFiltersModeKey"]);
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CAMPreviewFiltersCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v10 encodeWithCoder:v4];
-  v5 = [(CAMPreviewFiltersCommand *)self filters];
-  if (v5)
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v10 encodeWithCoder:coderCopy];
+  filters = [(CAMPreviewFiltersCommand *)self filters];
+  if (filters)
   {
     v9 = 0;
-    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v9];
+    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:filters requiringSecureCoding:1 error:&v9];
     v7 = v9;
     if (v7)
     {
@@ -84,34 +84,34 @@
     v6 = 0;
   }
 
-  [v4 encodeObject:v6 forKey:@"CAMPreviewFiltersDataKey"];
-  [v4 encodeInteger:-[CAMPreviewFiltersCommand _mode](self forKey:{"_mode"), @"CAMPreviewFiltersModeKey"}];
+  [coderCopy encodeObject:v6 forKey:@"CAMPreviewFiltersDataKey"];
+  [coderCopy encodeInteger:-[CAMPreviewFiltersCommand _mode](self forKey:{"_mode"), @"CAMPreviewFiltersModeKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMPreviewFiltersCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMPreviewFiltersCommand *)self filters];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  filters = [(CAMPreviewFiltersCommand *)self filters];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = filters;
 
   v4[4] = [(CAMPreviewFiltersCommand *)self _mode];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[CAMCaptureCapabilities capabilities];
   if ([v5 hasFilteringEntitlement])
   {
-    v6 = [(CAMPreviewFiltersCommand *)self filters];
-    if (v6)
+    filters = [(CAMPreviewFiltersCommand *)self filters];
+    if (filters)
     {
-      v7 = v6;
+      v7 = filters;
     }
 
     else
@@ -119,17 +119,17 @@
       v7 = MEMORY[0x1E695E0F0];
     }
 
-    v8 = [v4 currentVideoPreviewLayer];
-    v9 = [v8 videoPreviewFilters];
-    v10 = [CAMEffectFilterManager areFilters:v7 equalTo:v9];
+    currentVideoPreviewLayer = [contextCopy currentVideoPreviewLayer];
+    videoPreviewFilters = [currentVideoPreviewLayer videoPreviewFilters];
+    v10 = [CAMEffectFilterManager areFilters:v7 equalTo:videoPreviewFilters];
 
     if (!v10)
     {
       v11 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v8 videoPreviewFilters];
-        v12 = [CAMEffectFilterManager namesFromFilters:v17];
+        videoPreviewFilters2 = [currentVideoPreviewLayer videoPreviewFilters];
+        v12 = [CAMEffectFilterManager namesFromFilters:videoPreviewFilters2];
         v13 = [v12 componentsJoinedByString:{@", "}];
         v14 = [CAMEffectFilterManager namesFromFilters:v7];
         v15 = [v14 componentsJoinedByString:{@", "}];
@@ -140,12 +140,12 @@
         _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "CAMPreviewFiltersCommand: changing video preview filters from [%{public}@] to [%{public}@]", buf, 0x16u);
       }
 
-      [v8 setVideoPreviewFilters:v7];
+      [currentVideoPreviewLayer setVideoPreviewFilters:v7];
       v16 = objc_alloc_init(CAMSystemPressureMitigationCommand);
       [(CAMCaptureCommand *)self addSubcommand:v16];
     }
 
-    [v4 updateControlEnablementForFilters:v7 captureMode:{-[CAMPreviewFiltersCommand _mode](self, "_mode")}];
+    [contextCopy updateControlEnablementForFilters:v7 captureMode:{-[CAMPreviewFiltersCommand _mode](self, "_mode")}];
   }
 }
 

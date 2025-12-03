@@ -1,44 +1,44 @@
 @interface IXPlaceholderSeed
 - (BOOL)isAppExtension;
-- (IXPlaceholderSeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXPlaceholderSeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXPlaceholderSeed
 
-- (IXPlaceholderSeed)initWithCoder:(id)a3
+- (IXPlaceholderSeed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = IXPlaceholderSeed;
-  v5 = [(IXOwnedDataPromiseSeed *)&v17 initWithCoder:v4];
+  v5 = [(IXOwnedDataPromiseSeed *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleName"];
     bundleName = v5->_bundleName;
     v5->_bundleName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleDirectoryName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleDirectoryName"];
     bundleDirectoryName = v5->_bundleDirectoryName;
     v5->_bundleDirectoryName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installType"];
     v5->_installType = [v12 unsignedLongLongValue];
 
-    if ([v4 containsValueForKey:@"placeholderType"])
+    if ([coderCopy containsValueForKey:@"placeholderType"])
     {
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeholderType"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeholderType"];
       v5->_placeholderType = [v13 unsignedLongLongValue];
     }
 
     else
     {
-      v14 = [v4 decodeBoolForKey:@"isPlugin"];
+      v14 = [coderCopy decodeBoolForKey:@"isPlugin"];
       v15 = 1;
       if (v14)
       {
@@ -52,41 +52,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = IXPlaceholderSeed;
-  v4 = a3;
-  [(IXOwnedDataPromiseSeed *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IXOwnedDataPromiseSeed *)&v10 encodeWithCoder:coderCopy];
   v5 = [(IXPlaceholderSeed *)self bundleName:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleName"];
+  [coderCopy encodeObject:v5 forKey:@"bundleName"];
 
-  v6 = [(IXPlaceholderSeed *)self bundleDirectoryName];
-  [v4 encodeObject:v6 forKey:@"bundleDirectoryName"];
+  bundleDirectoryName = [(IXPlaceholderSeed *)self bundleDirectoryName];
+  [coderCopy encodeObject:bundleDirectoryName forKey:@"bundleDirectoryName"];
 
-  v7 = [(IXPlaceholderSeed *)self bundleID];
-  [v4 encodeObject:v7 forKey:@"bundleID"];
+  bundleID = [(IXPlaceholderSeed *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IXPlaceholderSeed installType](self, "installType")}];
-  [v4 encodeObject:v8 forKey:@"installType"];
+  [coderCopy encodeObject:v8 forKey:@"installType"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IXPlaceholderSeed placeholderType](self, "placeholderType")}];
-  [v4 encodeObject:v9 forKey:@"placeholderType"];
+  [coderCopy encodeObject:v9 forKey:@"placeholderType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IXPlaceholderSeed;
-  v4 = [(IXOwnedDataPromiseSeed *)&v9 copyWithZone:a3];
-  v5 = [(IXPlaceholderSeed *)self bundleName];
-  [v4 setBundleName:v5];
+  v4 = [(IXOwnedDataPromiseSeed *)&v9 copyWithZone:zone];
+  bundleName = [(IXPlaceholderSeed *)self bundleName];
+  [v4 setBundleName:bundleName];
 
-  v6 = [(IXPlaceholderSeed *)self bundleDirectoryName];
-  [v4 setBundleDirectoryName:v6];
+  bundleDirectoryName = [(IXPlaceholderSeed *)self bundleDirectoryName];
+  [v4 setBundleDirectoryName:bundleDirectoryName];
 
-  v7 = [(IXPlaceholderSeed *)self bundleID];
-  [v4 setBundleID:v7];
+  bundleID = [(IXPlaceholderSeed *)self bundleID];
+  [v4 setBundleID:bundleID];
 
   [v4 setInstallType:{-[IXPlaceholderSeed installType](self, "installType")}];
   [v4 setPlaceholderType:{-[IXPlaceholderSeed placeholderType](self, "placeholderType")}];
@@ -95,9 +95,9 @@
 
 - (BOOL)isAppExtension
 {
-  v2 = [(IXPlaceholderSeed *)self placeholderType];
+  placeholderType = [(IXPlaceholderSeed *)self placeholderType];
 
-  return IXIsAppExtensionForPlaceholderType(v2);
+  return IXIsAppExtensionForPlaceholderType(placeholderType);
 }
 
 @end

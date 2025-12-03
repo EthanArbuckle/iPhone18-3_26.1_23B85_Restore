@@ -1,66 +1,66 @@
 @interface FMDExtAccessoryInfo
-- (FMDExtAccessoryInfo)initWithCoder:(id)a3;
+- (FMDExtAccessoryInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDExtAccessoryInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
-  [v4 encodeObject:v5 forKey:@"accessoryIdentifier"];
+  coderCopy = coder;
+  accessoryIdentifier = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
+  [coderCopy encodeObject:accessoryIdentifier forKey:@"accessoryIdentifier"];
 
-  v6 = [(FMDExtAccessoryInfo *)self accessoryType];
-  [v4 encodeObject:v6 forKey:@"accessoryType"];
+  accessoryType = [(FMDExtAccessoryInfo *)self accessoryType];
+  [coderCopy encodeObject:accessoryType forKey:@"accessoryType"];
 
-  v7 = [(FMDExtAccessoryInfo *)self serialNumbers];
-  [v4 encodeObject:v7 forKey:@"serialNumbers"];
+  serialNumbers = [(FMDExtAccessoryInfo *)self serialNumbers];
+  [coderCopy encodeObject:serialNumbers forKey:@"serialNumbers"];
 
-  v8 = [(FMDExtAccessoryInfo *)self firmwareVersion];
-  [v4 encodeObject:v8 forKey:@"firmwareVersion"];
+  firmwareVersion = [(FMDExtAccessoryInfo *)self firmwareVersion];
+  [coderCopy encodeObject:firmwareVersion forKey:@"firmwareVersion"];
 
-  v9 = [(FMDExtAccessoryInfo *)self name];
-  [v4 encodeObject:v9 forKey:@"name"];
+  name = [(FMDExtAccessoryInfo *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v10 = [(FMDExtAccessoryInfo *)self additionalInfo];
-  [v4 encodeObject:v10 forKey:@"additionalInfo"];
+  additionalInfo = [(FMDExtAccessoryInfo *)self additionalInfo];
+  [coderCopy encodeObject:additionalInfo forKey:@"additionalInfo"];
 
-  v11 = [(FMDExtAccessoryInfo *)self deviceDiscoveryId];
-  [v4 encodeObject:v11 forKey:@"deviceDiscoveryId"];
+  deviceDiscoveryId = [(FMDExtAccessoryInfo *)self deviceDiscoveryId];
+  [coderCopy encodeObject:deviceDiscoveryId forKey:@"deviceDiscoveryId"];
 }
 
-- (FMDExtAccessoryInfo)initWithCoder:(id)a3
+- (FMDExtAccessoryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = FMDExtAccessoryInfo;
   v5 = [(FMDExtAccessoryInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIdentifier"];
     [(FMDExtAccessoryInfo *)v5 setAccessoryIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
     [(FMDExtAccessoryInfo *)v5 setAccessoryType:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
     [(FMDExtAccessoryInfo *)v5 setFirmwareVersion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(FMDExtAccessoryInfo *)v5 setName:v9];
 
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [NSSet setWithObjects:v10, v11, objc_opt_class(), 0];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"serialNumbers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"serialNumbers"];
     [(FMDExtAccessoryInfo *)v5 setSerialNumbers:v13];
 
-    v14 = [v4 decodeObjectOfClasses:v12 forKey:@"additionalInfo"];
+    v14 = [coderCopy decodeObjectOfClasses:v12 forKey:@"additionalInfo"];
     [(FMDExtAccessoryInfo *)v5 setAdditionalInfo:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceDiscoveryId"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceDiscoveryId"];
     [(FMDExtAccessoryInfo *)v5 setDeviceDiscoveryId:v15];
   }
 
@@ -69,14 +69,14 @@
 
 - (id)description
 {
-  v3 = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
-  v4 = [(FMDExtAccessoryInfo *)self accessoryType];
-  v5 = [(FMDExtAccessoryInfo *)self serialNumbers];
-  v6 = [(FMDExtAccessoryInfo *)self firmwareVersion];
-  v7 = [(FMDExtAccessoryInfo *)self name];
-  v8 = [(FMDExtAccessoryInfo *)self additionalInfo];
-  v9 = [(FMDExtAccessoryInfo *)self deviceDiscoveryId];
-  v10 = [NSString stringWithFormat:@"accessory Info = (0x%lx)\n    accessoryIdentifier = %@\n    accessoryType = %@\n    serialNumbers = %@\n    firmwareVersion = %@\n    name = %@\n    additionalInfo = %@\n deviceDiscoveryId = %@\n", self, v3, v4, v5, v6, v7, v8, v9];
+  accessoryIdentifier = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
+  accessoryType = [(FMDExtAccessoryInfo *)self accessoryType];
+  serialNumbers = [(FMDExtAccessoryInfo *)self serialNumbers];
+  firmwareVersion = [(FMDExtAccessoryInfo *)self firmwareVersion];
+  name = [(FMDExtAccessoryInfo *)self name];
+  additionalInfo = [(FMDExtAccessoryInfo *)self additionalInfo];
+  deviceDiscoveryId = [(FMDExtAccessoryInfo *)self deviceDiscoveryId];
+  v10 = [NSString stringWithFormat:@"accessory Info = (0x%lx)\n    accessoryIdentifier = %@\n    accessoryType = %@\n    serialNumbers = %@\n    firmwareVersion = %@\n    name = %@\n    additionalInfo = %@\n deviceDiscoveryId = %@\n", self, accessoryIdentifier, accessoryType, serialNumbers, firmwareVersion, name, additionalInfo, deviceDiscoveryId];
 
   return v10;
 }

@@ -1,31 +1,31 @@
 @interface EKRemoteUIPersistentObjectPointer
 - (_TtC8EventKit33EKRemoteUIPersistentObjectPointer)init;
-- (_TtC8EventKit33EKRemoteUIPersistentObjectPointer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8EventKit33EKRemoteUIPersistentObjectPointer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EKRemoteUIPersistentObjectPointer
 
-- (_TtC8EventKit33EKRemoteUIPersistentObjectPointer)initWithCoder:(id)a3
+- (_TtC8EventKit33EKRemoteUIPersistentObjectPointer)initWithCoder:(id)coder
 {
-  v3 = a3;
-  sub_1A8195010(v3);
+  coderCopy = coder;
+  sub_1A8195010(coderCopy);
   v5 = v4;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8EventKit33EKRemoteUIPersistentObjectPointer_objectID);
-  v5 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_1A81ACCB4();
-  [v5 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 
-  v7 = *(&v9->super.isa + OBJC_IVAR____TtC8EventKit33EKRemoteUIPersistentObjectPointer_isPendingInsert);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8EventKit33EKRemoteUIPersistentObjectPointer_isPendingInsert);
   v8 = sub_1A81ACCB4();
-  [v5 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:v7 forKey:v8];
 }
 
 - (_TtC8EventKit33EKRemoteUIPersistentObjectPointer)init

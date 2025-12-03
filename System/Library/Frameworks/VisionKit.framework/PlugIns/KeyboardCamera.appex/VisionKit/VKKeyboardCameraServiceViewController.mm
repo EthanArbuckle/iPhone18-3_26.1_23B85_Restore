@@ -1,8 +1,8 @@
 @interface VKKeyboardCameraServiceViewController
-- (void)keyboardCamera:(id)a3 didUpdateString:(id)a4;
-- (void)setTextContentType:(id)a3;
-- (void)userDidAcceptWithKeyboardCamera:(id)a3;
-- (void)userDidCancelWithKeyboardCamera:(id)a3;
+- (void)keyboardCamera:(id)camera didUpdateString:(id)string;
+- (void)setTextContentType:(id)type;
+- (void)userDidAcceptWithKeyboardCamera:(id)camera;
+- (void)userDidCancelWithKeyboardCamera:(id)camera;
 - (void)viewDidLoad;
 @end
 
@@ -24,30 +24,30 @@
   [(VKKeyboardCameraViewController *)self->_keyboardCamera setTextContentType:self->_textContentType];
   [(VKKeyboardCameraServiceViewController *)self addChildViewController:self->_keyboardCamera];
   [(VKKeyboardCameraViewController *)self->_keyboardCamera didMoveToParentViewController:self];
-  v5 = [(VKKeyboardCameraViewController *)self->_keyboardCamera view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(VKKeyboardCameraServiceViewController *)self view];
-  [v6 addSubview:v5];
+  view = [(VKKeyboardCameraViewController *)self->_keyboardCamera view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(VKKeyboardCameraServiceViewController *)self view];
+  [view2 addSubview:view];
 
-  v22 = [v5 topAnchor];
-  v23 = [(VKKeyboardCameraServiceViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor = [view topAnchor];
+  view3 = [(VKKeyboardCameraServiceViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[0] = v20;
-  v18 = [v5 leftAnchor];
-  v19 = [(VKKeyboardCameraServiceViewController *)self view];
-  v17 = [v19 leftAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  leftAnchor = [view leftAnchor];
+  view4 = [(VKKeyboardCameraServiceViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v25[1] = v16;
-  v7 = [v5 rightAnchor];
-  v8 = [(VKKeyboardCameraServiceViewController *)self view];
-  v9 = [v8 rightAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  rightAnchor = [view rightAnchor];
+  view5 = [(VKKeyboardCameraServiceViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v10 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v25[2] = v10;
-  v11 = [v5 bottomAnchor];
-  v12 = [(VKKeyboardCameraServiceViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(VKKeyboardCameraServiceViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v14;
   v15 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v15];
@@ -55,30 +55,30 @@
   MSNMonitorBeginException();
 }
 
-- (void)setTextContentType:(id)a3
+- (void)setTextContentType:(id)type
 {
-  objc_storeStrong(&self->_textContentType, a3);
-  v5 = a3;
-  [(VKKeyboardCameraViewController *)self->_keyboardCamera setTextContentType:v5];
+  objc_storeStrong(&self->_textContentType, type);
+  typeCopy = type;
+  [(VKKeyboardCameraViewController *)self->_keyboardCamera setTextContentType:typeCopy];
 }
 
-- (void)userDidCancelWithKeyboardCamera:(id)a3
+- (void)userDidCancelWithKeyboardCamera:(id)camera
 {
-  v3 = [(VKKeyboardCameraServiceViewController *)self client];
-  [v3 keyboardCameraDidCancel];
+  client = [(VKKeyboardCameraServiceViewController *)self client];
+  [client keyboardCameraDidCancel];
 }
 
-- (void)userDidAcceptWithKeyboardCamera:(id)a3
+- (void)userDidAcceptWithKeyboardCamera:(id)camera
 {
-  v3 = [(VKKeyboardCameraServiceViewController *)self client];
-  [v3 keyboardCameraDidAccept];
+  client = [(VKKeyboardCameraServiceViewController *)self client];
+  [client keyboardCameraDidAccept];
 }
 
-- (void)keyboardCamera:(id)a3 didUpdateString:(id)a4
+- (void)keyboardCamera:(id)camera didUpdateString:(id)string
 {
-  v5 = a4;
-  v6 = [(VKKeyboardCameraServiceViewController *)self client];
-  [v6 keyboardCameraDidUpdateString:v5];
+  stringCopy = string;
+  client = [(VKKeyboardCameraServiceViewController *)self client];
+  [client keyboardCameraDidUpdateString:stringCopy];
 }
 
 @end

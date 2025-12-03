@@ -1,33 +1,33 @@
 @interface PSPointerPortalSourceCollection
-- (BOOL)isEqual:(id)a3;
-- (PSPointerPortalSourceCollection)initWithCoder:(id)a3;
-- (PSPointerPortalSourceCollection)initWithPointerPortalSource:(id)a3 overlayEffectPortalSource:(id)a4 samplingMatchMoveSource:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PSPointerPortalSourceCollection)initWithCoder:(id)coder;
+- (PSPointerPortalSourceCollection)initWithPointerPortalSource:(id)source overlayEffectPortalSource:(id)portalSource samplingMatchMoveSource:(id)moveSource;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSPointerPortalSourceCollection
 
-- (PSPointerPortalSourceCollection)initWithPointerPortalSource:(id)a3 overlayEffectPortalSource:(id)a4 samplingMatchMoveSource:(id)a5
+- (PSPointerPortalSourceCollection)initWithPointerPortalSource:(id)source overlayEffectPortalSource:(id)portalSource samplingMatchMoveSource:(id)moveSource
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  portalSourceCopy = portalSource;
+  moveSourceCopy = moveSource;
   v19.receiver = self;
   v19.super_class = PSPointerPortalSourceCollection;
   v11 = [(PSPointerPortalSourceCollection *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [sourceCopy copy];
     pointerPortalSource = v11->_pointerPortalSource;
     v11->_pointerPortalSource = v12;
 
-    v14 = [v9 copy];
+    v14 = [portalSourceCopy copy];
     overlayEffectPortalSource = v11->_overlayEffectPortalSource;
     v11->_overlayEffectPortalSource = v14;
 
-    v16 = [v10 copy];
+    v16 = [moveSourceCopy copy];
     samplingMatchMoveSource = v11->_samplingMatchMoveSource;
     v11->_samplingMatchMoveSource = v16;
   }
@@ -35,10 +35,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -46,9 +46,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (pointerPortalSource = v4->_pointerPortalSource, v6 = self->_pointerPortalSource, BSEqualObjects()) && (overlayEffectPortalSource = v4->_overlayEffectPortalSource, v8 = self->_overlayEffectPortalSource, BSEqualObjects()))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (pointerPortalSource = equalCopy->_pointerPortalSource, v6 = self->_pointerPortalSource, BSEqualObjects()) && (overlayEffectPortalSource = equalCopy->_overlayEffectPortalSource, v8 = self->_overlayEffectPortalSource, BSEqualObjects()))
     {
-      samplingMatchMoveSource = v4->_samplingMatchMoveSource;
+      samplingMatchMoveSource = equalCopy->_samplingMatchMoveSource;
       v10 = self->_samplingMatchMoveSource;
       v11 = BSEqualObjects();
     }
@@ -79,17 +79,17 @@
   v6 = [v3 appendObject:self->_overlayEffectPortalSource withName:@"overlayEffectPortalSource"];
   v7 = [v3 appendObject:self->_samplingMatchMoveSource withName:@"samplingMatchMoveSource"];
   v8 = [v3 appendBool:self->_shouldBeInvalidatedIfPointerLeavesDisplay withName:@"shouldInvalidateIfPointerLeavesDisplay" ifEqualTo:1];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (PSPointerPortalSourceCollection)initWithCoder:(id)a3
+- (PSPointerPortalSourceCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pointerPortalSource"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"overlayEffectPortalSource"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"samplingMatchMoveSource"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pointerPortalSource"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"overlayEffectPortalSource"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"samplingMatchMoveSource"];
 
   if (v5)
   {
@@ -103,25 +103,25 @@
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSPointerPortalSourceCollection *)self initWithPointerPortalSource:v5 overlayEffectPortalSource:v6 samplingMatchMoveSource:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   overlayEffectPortalSource = self->_overlayEffectPortalSource;
-  v5 = a3;
-  [v5 encodeObject:overlayEffectPortalSource forKey:@"overlayEffectPortalSource"];
-  [v5 encodeObject:self->_pointerPortalSource forKey:@"pointerPortalSource"];
-  [v5 encodeObject:self->_samplingMatchMoveSource forKey:@"samplingMatchMoveSource"];
+  coderCopy = coder;
+  [coderCopy encodeObject:overlayEffectPortalSource forKey:@"overlayEffectPortalSource"];
+  [coderCopy encodeObject:self->_pointerPortalSource forKey:@"pointerPortalSource"];
+  [coderCopy encodeObject:self->_samplingMatchMoveSource forKey:@"samplingMatchMoveSource"];
 }
 
 @end

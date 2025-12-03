@@ -1,5 +1,5 @@
 @interface CCUIStatusLabelViewController
-- (CCUIStatusLabelViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUIStatusLabelViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CCUIStatusLabelViewControllerDelegate)delegate;
 - (UIEdgeInsets)edgeInsets;
 - (unint64_t)_advancePresentationStateFromFadeIn;
@@ -9,13 +9,13 @@
 - (void)_advancePresentationState;
 - (void)_notifyDelegateDidFinishStatusUpdates;
 - (void)_notifyDelegateWillBeginStatusUpdates;
-- (void)_resetPresentationStateAnimated:(BOOL)a3;
-- (void)enqueueStatusUpdate:(id)a3 forIdentifier:(id)a4;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setVerticalAlignment:(unint64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_resetPresentationStateAnimated:(BOOL)animated;
+- (void)enqueueStatusUpdate:(id)update forIdentifier:(id)identifier;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setVerticalAlignment:(unint64_t)alignment;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -27,8 +27,8 @@
   v17.receiver = self;
   v17.super_class = CCUIStatusLabelViewController;
   [(CCUIStatusLabelViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(CCUIStatusLabelViewController *)self view];
-  [v3 bounds];
+  view = [(CCUIStatusLabelViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -63,11 +63,11 @@
   }
 }
 
-- (CCUIStatusLabelViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIStatusLabelViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = CCUIStatusLabelViewController;
-  v4 = [(CCUIStatusLabelViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIStatusLabelViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(CCUIStatusUpdateQueue);
@@ -80,8 +80,8 @@
 
 - (UIEdgeInsets)edgeInsets
 {
-  v2 = [(NSArray *)self->_statusLabels firstObject];
-  [v2 edgeInsets];
+  firstObject = [(NSArray *)self->_statusLabels firstObject];
+  [firstObject edgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -98,12 +98,12 @@
   return result;
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v18 = *MEMORY[0x277D85DE8];
   [(CCUIStatusLabelViewController *)self loadViewIfNeeded];
   v15 = 0u;
@@ -139,13 +139,13 @@
 
 - (unint64_t)verticalAlignment
 {
-  v2 = [(NSArray *)self->_statusLabels firstObject];
-  v3 = [v2 verticalAlignment];
+  firstObject = [(NSArray *)self->_statusLabels firstObject];
+  verticalAlignment = [firstObject verticalAlignment];
 
-  return v3;
+  return verticalAlignment;
 }
 
-- (void)setVerticalAlignment:(unint64_t)a3
+- (void)setVerticalAlignment:(unint64_t)alignment
 {
   v15 = *MEMORY[0x277D85DE8];
   [(CCUIStatusLabelViewController *)self loadViewIfNeeded];
@@ -169,7 +169,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setVerticalAlignment:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setVerticalAlignment:{alignment, v10}];
       }
 
       while (v7 != v9);
@@ -180,9 +180,9 @@
   }
 }
 
-- (void)enqueueStatusUpdate:(id)a3 forIdentifier:(id)a4
+- (void)enqueueStatusUpdate:(id)update forIdentifier:(id)identifier
 {
-  [(CCUIStatusUpdateQueue *)self->_updateQueue enqueueStatusUpdate:a3 forIdentifier:a4];
+  [(CCUIStatusUpdateQueue *)self->_updateQueue enqueueStatusUpdate:update forIdentifier:identifier];
   if (!self->_presentationState)
   {
 
@@ -225,8 +225,8 @@
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        v13 = [(CCUIStatusLabelViewController *)self view];
-        [v13 addSubview:v12];
+        view = [(CCUIStatusLabelViewController *)self view];
+        [view addSubview:v12];
 
         ++v11;
       }
@@ -241,29 +241,29 @@
   [(CCUIStatusLabelViewController *)self _resetPresentationStateAnimated:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = CCUIStatusLabelViewController;
   [(CCUIStatusLabelViewController *)&v5 viewWillDisappear:?];
-  [(CCUIStatusLabelViewController *)self _resetPresentationStateAnimated:v3];
+  [(CCUIStatusLabelViewController *)self _resetPresentationStateAnimated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIStatusLabelViewController;
-  [(CCUIStatusLabelViewController *)&v4 viewDidDisappear:a3];
+  [(CCUIStatusLabelViewController *)&v4 viewDidDisappear:disappear];
   [(CCUIStatusLabelViewController *)self _resetPresentationStateAnimated:0];
 }
 
-- (void)_resetPresentationStateAnimated:(BOOL)a3
+- (void)_resetPresentationStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CCUIStatusUpdateQueue *)self->_updateQueue removeAllStatusUpdates];
   [(NSTimer *)self->_presentationTimer invalidate];
-  if (v3)
+  if (animatedCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -408,7 +408,7 @@ uint64_t __65__CCUIStatusLabelViewController__resetPresentationStateAnimated___b
   {
     if (presentationState == 2)
     {
-      v4 = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromPresenting];
+      _advancePresentationStateFromPresenting = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromPresenting];
     }
 
     else
@@ -418,7 +418,7 @@ uint64_t __65__CCUIStatusLabelViewController__resetPresentationStateAnimated___b
         return;
       }
 
-      v4 = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromFadeOut];
+      _advancePresentationStateFromPresenting = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromFadeOut];
     }
   }
 
@@ -429,29 +429,29 @@ uint64_t __65__CCUIStatusLabelViewController__resetPresentationStateAnimated___b
       return;
     }
 
-    v4 = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromFadeIn];
+    _advancePresentationStateFromPresenting = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromFadeIn];
   }
 
   else
   {
-    v4 = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromReady];
+    _advancePresentationStateFromPresenting = [(CCUIStatusLabelViewController *)self _advancePresentationStateFromReady];
   }
 
-  self->_presentationState = v4;
+  self->_presentationState = _advancePresentationStateFromPresenting;
 }
 
 - (unint64_t)_advancePresentationStateFromReady
 {
-  v3 = [(CCUIStatusUpdateQueue *)self->_updateQueue dequeueNextStatusUpdate];
-  if (v3)
+  dequeueNextStatusUpdate = [(CCUIStatusUpdateQueue *)self->_updateQueue dequeueNextStatusUpdate];
+  if (dequeueNextStatusUpdate)
   {
     v4 = self->_currentStatusLabelIndex + 1;
     self->_currentStatusLabelIndex = v4 % [(NSArray *)self->_statusLabels count];
     v5 = [(NSArray *)self->_statusLabels objectAtIndex:?];
-    v6 = [v3 message];
-    [v5 setText:v6];
-    v7 = [(CCUIStatusLabelViewController *)self view];
-    [v7 setNeedsLayout];
+    message = [dequeueNextStatusUpdate message];
+    [v5 setText:message];
+    view = [(CCUIStatusLabelViewController *)self view];
+    [view setNeedsLayout];
 
     objc_initWeak(&location, self);
     v8 = MEMORY[0x277D75D18];
@@ -561,18 +561,18 @@ void __68__CCUIStatusLabelViewController__advancePresentationStateFromFadeIn__bl
 
 - (unint64_t)_advancePresentationStateFromPresenting
 {
-  v3 = [(CCUIStatusUpdateQueue *)self->_updateQueue dequeueNextStatusUpdate];
+  dequeueNextStatusUpdate = [(CCUIStatusUpdateQueue *)self->_updateQueue dequeueNextStatusUpdate];
   v4 = [(NSArray *)self->_statusLabels objectAtIndex:self->_currentStatusLabelIndex];
-  if (v3)
+  if (dequeueNextStatusUpdate)
   {
     v5 = self->_currentStatusLabelIndex + 1;
     self->_currentStatusLabelIndex = v5 % [(NSArray *)self->_statusLabels count];
     v6 = [(NSArray *)self->_statusLabels objectAtIndex:?];
-    v7 = [v3 message];
-    [v6 setText:v7];
+    message = [dequeueNextStatusUpdate message];
+    [v6 setText:message];
 
-    v8 = [(CCUIStatusLabelViewController *)self view];
-    [v8 setNeedsLayout];
+    view = [(CCUIStatusLabelViewController *)self view];
+    [view setNeedsLayout];
 
     objc_initWeak(&location, self);
     v9 = MEMORY[0x277D75D18];

@@ -1,22 +1,22 @@
 @interface _TRUserNotification
-- (_TRUserNotification)initWithDictionary:(id)a3 options:(unint64_t)a4 error:(int *)a5;
-- (id)textFieldValueAtIndex:(unint64_t)a3;
+- (_TRUserNotification)initWithDictionary:(id)dictionary options:(unint64_t)options error:(int *)error;
+- (id)textFieldValueAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
 @implementation _TRUserNotification
 
-- (_TRUserNotification)initWithDictionary:(id)a3 options:(unint64_t)a4 error:(int *)a5
+- (_TRUserNotification)initWithDictionary:(id)dictionary options:(unint64_t)options error:(int *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _TRUserNotification;
   v9 = [(_TRUserNotification *)&v14 init];
-  if (v9 && (error = 0, v10 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, a4, &error, v8), (v9->_userNotification = v10) == 0))
+  if (v9 && (error = 0, v10 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, options, &error, dictionaryCopy), (v9->_userNotification = v10) == 0))
   {
-    if (a5)
+    if (error)
     {
-      *a5 = error;
+      *error = error;
     }
 
     v11 = 0;
@@ -44,9 +44,9 @@
   [(_TRUserNotification *)&v4 dealloc];
 }
 
-- (id)textFieldValueAtIndex:(unint64_t)a3
+- (id)textFieldValueAtIndex:(unint64_t)index
 {
-  v3 = [(__CFString *)CFUserNotificationGetResponseValue(self->_userNotification copy:a3)];
+  v3 = [(__CFString *)CFUserNotificationGetResponseValue(self->_userNotification copy:index)];
 
   return v3;
 }

@@ -1,5 +1,5 @@
 @interface ICAuthorizeMachineResponse
-- (ICAuthorizeMachineResponse)initWithResponseDictionary:(id)a3;
+- (ICAuthorizeMachineResponse)initWithResponseDictionary:(id)dictionary;
 - (NSData)keybagData;
 - (NSData)tokenData;
 @end
@@ -52,15 +52,15 @@ LABEL_7:
   return v4;
 }
 
-- (ICAuthorizeMachineResponse)initWithResponseDictionary:(id)a3
+- (ICAuthorizeMachineResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICAuthorizeMachineResponse;
   v5 = [(ICAuthorizeMachineResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

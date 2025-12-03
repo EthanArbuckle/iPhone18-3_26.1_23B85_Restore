@@ -1,14 +1,14 @@
 @interface ICQSubtitleHeaderView
-- (ICQSubtitleHeaderView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (ICQSubtitleHeaderView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (id)addSubtitle;
-- (id)subtitleAtIndex:(unint64_t)a3;
+- (id)subtitleAtIndex:(unint64_t)index;
 - (void)layoutSubviews;
 @end
 
 @implementation ICQSubtitleHeaderView
 
-- (ICQSubtitleHeaderView)initWithSpecifier:(id)a3
+- (ICQSubtitleHeaderView)initWithSpecifier:(id)specifier
 {
   v19.receiver = self;
   v19.super_class = ICQSubtitleHeaderView;
@@ -16,7 +16,7 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(ICQSubtitleHeaderView *)&v19 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(ICQSubtitleHeaderView *)&v19 initWithFrame:specifier, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v3, v4, v5, v6}];
@@ -28,12 +28,12 @@
     [(UILabel *)v10 setFont:v11];
 
     v12 = v7->_titleLabel;
-    v13 = [MEMORY[0x277D75348] darkGrayColor];
-    [(UILabel *)v12 setTextColor:v13];
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    [(UILabel *)v12 setTextColor:darkGrayColor];
 
     v14 = v7->_titleLabel;
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v14 setBackgroundColor:v15];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v14 setBackgroundColor:clearColor];
 
     [(ICQSubtitleHeaderView *)v7 addSubview:v7->_titleLabel];
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -44,16 +44,16 @@
   return v7;
 }
 
-- (id)subtitleAtIndex:(unint64_t)a3
+- (id)subtitleAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_subtitleLabels count]<= a3)
+  if ([(NSMutableArray *)self->_subtitleLabels count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_subtitleLabels objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_subtitleLabels objectAtIndex:index];
   }
 
   return v5;
@@ -66,11 +66,11 @@
   v5 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
   [v4 setFont:v5];
 
-  v6 = [MEMORY[0x277D75348] grayColor];
-  [v4 setTextColor:v6];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [v4 setTextColor:grayColor];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setNumberOfLines:0];
   [v4 setLineBreakMode:0];
@@ -81,7 +81,7 @@
   return v4;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   v39 = *MEMORY[0x277D85DE8];
   PSTextViewInsets();
@@ -112,16 +112,16 @@
         [v13 frame];
         v15 = v14;
         v17 = v16;
-        v18 = [v13 text];
-        v19 = [v13 font];
-        v20 = [(ICQSubtitleHeaderView *)self superview];
+        text = [v13 text];
+        font = [v13 font];
+        superview = [(ICQSubtitleHeaderView *)self superview];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         v22 = 15.0;
         if (isKindOfClass)
         {
-          v3 = [(ICQSubtitleHeaderView *)self superview];
-          [v3 _backgroundInset];
+          superview2 = [(ICQSubtitleHeaderView *)self superview];
+          [superview2 _backgroundInset];
           v24 = v23;
           if (PSIsN56())
           {
@@ -137,7 +137,7 @@
           v22 = v24 + v25 - v32;
         }
 
-        [v18 _legacy_sizeWithFont:v19 constrainedToSize:objc_msgSend(v13 lineBreakMode:{"lineBreakMode"), a3 + v22 * -2.0, 1.79769313e308}];
+        [text _legacy_sizeWithFont:font constrainedToSize:objc_msgSend(v13 lineBreakMode:{"lineBreakMode"), width + v22 * -2.0, 1.79769313e308}];
         v28 = v27;
         v30 = v29;
         if (isKindOfClass)
@@ -162,13 +162,13 @@
   v35 = *MEMORY[0x277D85DE8];
   PSTextViewInsets();
   v4 = v3;
-  v5 = [(ICQSubtitleHeaderView *)self superview];
+  superview = [(ICQSubtitleHeaderView *)self superview];
   objc_opt_class();
   v6 = 15.0;
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(ICQSubtitleHeaderView *)self superview];
-    [v7 _backgroundInset];
+    superview2 = [(ICQSubtitleHeaderView *)self superview];
+    [superview2 _backgroundInset];
     v9 = v8;
     if (PSIsN56())
     {
@@ -189,9 +189,9 @@
   [(UILabel *)self->_titleLabel frame];
   v15 = v14;
   v17 = v16;
-  v18 = [(ICQSubtitleHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(ICQSubtitleHeaderView *)self _shouldReverseLayoutDirection];
   v19 = v13 - v6 - v15;
-  if (!v18)
+  if (!_shouldReverseLayoutDirection)
   {
     v19 = v6;
   }

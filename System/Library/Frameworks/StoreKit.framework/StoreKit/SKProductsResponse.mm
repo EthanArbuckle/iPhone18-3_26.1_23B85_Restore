@@ -1,7 +1,7 @@
 @interface SKProductsResponse
 - (SKProductsResponse)init;
-- (void)_setInvalidIdentifiers:(id)a3;
-- (void)_setProducts:(id)a3;
+- (void)_setInvalidIdentifiers:(id)identifiers;
+- (void)_setProducts:(id)products;
 @end
 
 @implementation SKProductsResponse
@@ -21,25 +21,25 @@
   return v2;
 }
 
-- (void)_setInvalidIdentifiers:(id)a3
+- (void)_setInvalidIdentifiers:(id)identifiers
 {
   internal = self->_internal;
-  if (internal[1] != a3)
+  if (internal[1] != identifiers)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifiers copy];
     v6 = internal[1];
     internal[1] = v5;
   }
 }
 
-- (void)_setProducts:(id)a3
+- (void)_setProducts:(id)products
 {
   internal = self->_internal;
-  if (internal[2] != a3)
+  if (internal[2] != products)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [products copy];
     v6 = internal[2];
     internal[2] = v5;
   }

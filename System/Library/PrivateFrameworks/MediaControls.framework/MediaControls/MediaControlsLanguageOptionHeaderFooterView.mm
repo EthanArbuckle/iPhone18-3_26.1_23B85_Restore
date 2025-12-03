@@ -1,15 +1,15 @@
 @interface MediaControlsLanguageOptionHeaderFooterView
-- (MediaControlsLanguageOptionHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (MediaControlsLanguageOptionHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation MediaControlsLanguageOptionHeaderFooterView
 
-- (MediaControlsLanguageOptionHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (MediaControlsLanguageOptionHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v31[4] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = MediaControlsLanguageOptionHeaderFooterView;
-  v3 = [(MediaControlsLanguageOptionHeaderFooterView *)&v30 initWithReuseIdentifier:a3];
+  v3 = [(MediaControlsLanguageOptionHeaderFooterView *)&v30 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -22,36 +22,36 @@
     v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
     [(UILabel *)v3->_titleLabel setFont:v7];
 
-    v8 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
-    [v8 addSubview:v3->_titleLabel];
+    contentView = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v22 = MEMORY[0x1E696ACD8];
-    v28 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v29 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
-    v27 = [v29 leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27 constant:20.0];
+    leadingAnchor = [(UILabel *)v3->_titleLabel leadingAnchor];
+    contentView2 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v31[0] = v26;
-    v24 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v25 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
-    v23 = [v25 trailingAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23 constant:20.0];
+    trailingAnchor = [(UILabel *)v3->_titleLabel trailingAnchor];
+    contentView3 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:20.0];
     v31[1] = v21;
-    v20 = [(UILabel *)v3->_titleLabel firstBaselineAnchor];
-    v9 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
-    v10 = [v9 layoutMarginsGuide];
-    v11 = [v10 topAnchor];
-    v12 = [v20 constraintEqualToSystemSpacingBelowAnchor:v11 multiplier:1.5];
+    firstBaselineAnchor = [(UILabel *)v3->_titleLabel firstBaselineAnchor];
+    contentView4 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
+    layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+    topAnchor = [layoutMarginsGuide topAnchor];
+    v12 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor multiplier:1.5];
     v31[2] = v12;
-    v13 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
-    v14 = [v13 bottomAnchor];
-    v15 = [(UILabel *)v3->_titleLabel lastBaselineAnchor];
-    v16 = [v14 constraintEqualToSystemSpacingBelowAnchor:v15 multiplier:1.0];
+    contentView5 = [(MediaControlsLanguageOptionHeaderFooterView *)v3 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v3->_titleLabel lastBaselineAnchor];
+    v16 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
     v31[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
     [v22 activateConstraints:v17];
 
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    [(MediaControlsLanguageOptionHeaderFooterView *)v3 setTintColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MediaControlsLanguageOptionHeaderFooterView *)v3 setTintColor:clearColor];
   }
 
   return v3;

@@ -2,30 +2,30 @@
 - (CGRect)contentsCenter;
 - (CGSize)size;
 - (UIEdgeInsets)insets;
-- (UIEdgeInsets)roundedInsetsWithSize:(CGSize)a3;
-- (_BCUCoverEffectsShadow)initWithImage:(CGImage *)a3 insets:(UIEdgeInsets)a4 blendMode:(id)a5;
+- (UIEdgeInsets)roundedInsetsWithSize:(CGSize)size;
+- (_BCUCoverEffectsShadow)initWithImage:(CGImage *)image insets:(UIEdgeInsets)insets blendMode:(id)mode;
 @end
 
 @implementation _BCUCoverEffectsShadow
 
-- (_BCUCoverEffectsShadow)initWithImage:(CGImage *)a3 insets:(UIEdgeInsets)a4 blendMode:(id)a5
+- (_BCUCoverEffectsShadow)initWithImage:(CGImage *)image insets:(UIEdgeInsets)insets blendMode:(id)mode
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v12 = a5;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  modeCopy = mode;
   v15.receiver = self;
   v15.super_class = _BCUCoverEffectsShadow;
   v13 = [(_BCUCoverEffectsShadow *)&v15 init];
   if (v13)
   {
-    v13->_image = CGImageRetain(a3);
+    v13->_image = CGImageRetain(image);
     v13->_insets.top = top;
     v13->_insets.left = left;
     v13->_insets.bottom = bottom;
     v13->_insets.right = right;
-    objc_storeStrong(&v13->_blendMode, a5);
+    objc_storeStrong(&v13->_blendMode, mode);
   }
 
   return v13;
@@ -59,14 +59,14 @@
   return result;
 }
 
-- (UIEdgeInsets)roundedInsetsWithSize:(CGSize)a3
+- (UIEdgeInsets)roundedInsetsWithSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   top = self->_insets.top;
   left = self->_insets.left;
   bottom = self->_insets.bottom;
   right = self->_insets.right;
-  objc_msgSend_size(self, a2, v3, a3.width, a3.height);
+  objc_msgSend_size(self, a2, v3, size.width, size.height);
   v10 = 1.0;
   if (width > 0.0)
   {

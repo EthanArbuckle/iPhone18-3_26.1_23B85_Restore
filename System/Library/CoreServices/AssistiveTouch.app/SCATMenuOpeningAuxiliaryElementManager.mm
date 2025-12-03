@@ -1,12 +1,12 @@
 @interface SCATMenuOpeningAuxiliaryElementManager
-- (BOOL)containsElement:(id)a3;
+- (BOOL)containsElement:(id)element;
 - (BOOL)providesElements;
 - (SCATMenuOpeningAuxiliaryElementManager)init;
 - (UIControl)menuOpeningElement;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)lastElementWithOptions:(int *)a3;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
+- (id)lastElementWithOptions:(int *)options;
 - (int64_t)numberOfElements;
 - (void)dealloc;
 - (void)didFinishProvidingElements;
@@ -23,13 +23,13 @@
   if (v2)
   {
     v3 = objc_opt_new();
-    v4 = [v3 menuOpeningElement];
-    [v4 setScatAuxiliaryElementManager:v2];
+    menuOpeningElement = [v3 menuOpeningElement];
+    [menuOpeningElement setScatAuxiliaryElementManager:v2];
 
     [(SCATAuxiliaryElementManager *)v2 setViewController:v3];
     v5 = [SCATStaticElementProvider alloc];
-    v6 = [v3 menuOpeningElement];
-    v11 = v6;
+    menuOpeningElement2 = [v3 menuOpeningElement];
+    v11 = menuOpeningElement2;
     v7 = [NSArray arrayWithObjects:&v11 count:1];
     v8 = [(SCATStaticElementProvider *)v5 initWithElements:v7];
 
@@ -41,15 +41,15 @@
 
 - (void)dealloc
 {
-  v3 = [(SCATAuxiliaryElementManager *)self viewController];
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SCATAuxiliaryElementManager *)self viewController];
-    v6 = [v5 menuOpeningElement];
-    [v6 setScatAuxiliaryElementManager:0];
+    viewController2 = [(SCATAuxiliaryElementManager *)self viewController];
+    menuOpeningElement = [viewController2 menuOpeningElement];
+    [menuOpeningElement setScatAuxiliaryElementManager:0];
   }
 
   v7.receiver = self;
@@ -59,79 +59,79 @@
 
 - (UIControl)menuOpeningElement
 {
-  v2 = [(SCATAuxiliaryElementManager *)self viewController];
-  v3 = [v2 menuOpeningElement];
+  viewController = [(SCATAuxiliaryElementManager *)self viewController];
+  menuOpeningElement = [viewController menuOpeningElement];
 
-  return v3;
+  return menuOpeningElement;
 }
 
 - (BOOL)providesElements
 {
-  v2 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v3 = [v2 providesElements];
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  providesElements = [elementProvider providesElements];
 
-  return v3;
+  return providesElements;
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v4 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v5 = [v4 firstElementWithOptions:a3];
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  v5 = [elementProvider firstElementWithOptions:options];
 
   return v5;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v4 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v5 = [v4 lastElementWithOptions:a3];
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  v5 = [elementProvider lastElementWithOptions:options];
 
   return v5;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
-  v9 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v10 = [v9 elementBefore:v8 didWrap:a4 options:a5];
+  beforeCopy = before;
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  v10 = [elementProvider elementBefore:beforeCopy didWrap:wrap options:options];
 
   return v10;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
-  v9 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v10 = [v9 elementAfter:v8 didWrap:a4 options:a5];
+  afterCopy = after;
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  v10 = [elementProvider elementAfter:afterCopy didWrap:wrap options:options];
 
   return v10;
 }
 
 - (void)willBeginProvidingElements
 {
-  v2 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  [v2 willBeginProvidingElements];
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  [elementProvider willBeginProvidingElements];
 }
 
 - (void)didFinishProvidingElements
 {
-  v2 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  [v2 didFinishProvidingElements];
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  [elementProvider didFinishProvidingElements];
 }
 
-- (BOOL)containsElement:(id)a3
+- (BOOL)containsElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v6 = [v5 containsElement:v4];
+  elementCopy = element;
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  v6 = [elementProvider containsElement:elementCopy];
 
   return v6;
 }
 
 - (int64_t)numberOfElements
 {
-  v2 = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
-  v3 = [v2 count];
+  elementProvider = [(SCATMenuOpeningAuxiliaryElementManager *)self elementProvider];
+  v3 = [elementProvider count];
 
   return v3;
 }

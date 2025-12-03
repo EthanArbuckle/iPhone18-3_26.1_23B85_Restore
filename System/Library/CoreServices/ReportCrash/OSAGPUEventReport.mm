@@ -1,14 +1,14 @@
 @interface OSAGPUEventReport
-- (OSAGPUEventReport)initWithDictionary:(id)a3;
+- (OSAGPUEventReport)initWithDictionary:(id)dictionary;
 - (id)reportNamePrefix;
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4;
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block;
 @end
 
 @implementation OSAGPUEventReport
 
-- (OSAGPUEventReport)initWithDictionary:(id)a3
+- (OSAGPUEventReport)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = OSAGPUEventReport;
   v6 = [(OSAGPUEventReport *)&v23 init];
@@ -17,7 +17,7 @@
     Current = CFAbsoluteTimeGetCurrent();
     v8 = OBJC_IVAR___OSAReport__capture_time;
     *&v6->OSAReport_opaque[OBJC_IVAR___OSAReport__capture_time] = Current;
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, dictionary);
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       v9 = [(NSDictionary *)v6->_event count];
@@ -39,10 +39,10 @@
           sub_10002FF84();
         }
 
-        v13 = [(OSAGPUEventReport *)v6 reportNamePrefix];
+        reportNamePrefix = [(OSAGPUEventReport *)v6 reportNamePrefix];
         v14 = *&v6->OSAReport_opaque[v8];
         v15 = OSADateFormat();
-        v16 = [NSString stringWithFormat:@"%@-%@.tailspin", v13, v15];
+        v16 = [NSString stringWithFormat:@"%@-%@.tailspin", reportNamePrefix, v15];
 
         v17 = [@"/var/root/Library/Logs/tailspin" stringByAppendingPathComponent:v16];
         tailspinPath = v6->_tailspinPath;
@@ -92,9 +92,9 @@ LABEL_13:
   return v4;
 }
 
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block
 {
-  v9 = a4;
+  blockCopy = block;
   if (self->_tailspinPath)
   {
     v5 = [(NSDictionary *)self->_event mutableCopy];
@@ -103,11 +103,11 @@ LABEL_13:
     self->_event = v5;
   }
 
-  v7 = [(OSAGPUEventReport *)self problemType];
-  v8 = [OSALog commonFieldsForBody:v7];
-  v9[2](v9, v8);
+  problemType = [(OSAGPUEventReport *)self problemType];
+  v8 = [OSALog commonFieldsForBody:problemType];
+  blockCopy[2](blockCopy, v8);
 
-  v9[2](v9, self->_event);
+  blockCopy[2](blockCopy, self->_event);
 }
 
 @end

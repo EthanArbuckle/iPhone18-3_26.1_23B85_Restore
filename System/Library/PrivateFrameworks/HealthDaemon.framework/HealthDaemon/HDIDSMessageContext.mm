@@ -1,30 +1,30 @@
 @interface HDIDSMessageContext
-- (BOOL)isEqual:(id)a3;
-- (HDIDSMessageContext)initWithMessageContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDIDSMessageContext)initWithMessageContext:(id)context;
 - (NSString)originalGUID;
 @end
 
 @implementation HDIDSMessageContext
 
-- (HDIDSMessageContext)initWithMessageContext:(id)a3
+- (HDIDSMessageContext)initWithMessageContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HDIDSMessageContext;
   v6 = [(HDIDSMessageContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_6;
   }
@@ -38,7 +38,7 @@ LABEL_7:
   }
 
   context = self->_context;
-  v6 = v4->_context;
+  v6 = equalCopy->_context;
   if (context == v6)
   {
 LABEL_6:
@@ -59,8 +59,8 @@ LABEL_8:
 
 - (NSString)originalGUID
 {
-  v2 = [(IDSMessageContext *)self->_context originalGUID];
-  v3 = [v2 copy];
+  originalGUID = [(IDSMessageContext *)self->_context originalGUID];
+  v3 = [originalGUID copy];
 
   return v3;
 }

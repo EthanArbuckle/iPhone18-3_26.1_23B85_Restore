@@ -1,16 +1,16 @@
 @interface NSBBridgePersistence
 - (NSBBridgePersistence)init;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
 - (void)_addObservers;
-- (void)_deviceDidBecomeActive:(id)a3;
+- (void)_deviceDidBecomeActive:(id)active;
 - (void)_removeObservers;
 - (void)_setupDefaults;
 - (void)dealloc;
-- (void)removeObjectForKey:(id)a3;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)synchronize;
 @end
 
@@ -52,7 +52,7 @@
   [v3 addObserver:self selector:"_deviceDidBecomeActive:" name:NRPairedDeviceRegistryDeviceDidBecomeActive object:0];
 }
 
-- (void)_deviceDidBecomeActive:(id)a3
+- (void)_deviceDidBecomeActive:(id)active
 {
   v4 = stocks_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -79,80 +79,80 @@
   _objc_release_x1();
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSBBridgePersistence *)self defaults];
-  v6 = [v5 integerForKey:v4];
+  keyCopy = key;
+  defaults = [(NSBBridgePersistence *)self defaults];
+  v6 = [defaults integerForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(NSBBridgePersistence *)self defaults];
-  [v7 setInteger:a3 forKey:v6];
+  keyCopy = key;
+  defaults = [(NSBBridgePersistence *)self defaults];
+  [defaults setInteger:integer forKey:keyCopy];
 
-  v8 = [(NSBBridgePersistence *)self keysToSynchronize];
-  [v8 addObject:v6];
+  keysToSynchronize = [(NSBBridgePersistence *)self keysToSynchronize];
+  [keysToSynchronize addObject:keyCopy];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSBBridgePersistence *)self defaults];
-  v6 = [v5 stringForKey:v4];
+  keyCopy = key;
+  defaults = [(NSBBridgePersistence *)self defaults];
+  v6 = [defaults stringForKey:keyCopy];
 
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSBBridgePersistence *)self defaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  defaults = [(NSBBridgePersistence *)self defaults];
+  v6 = [defaults objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSBBridgePersistence *)self defaults];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  defaults = [(NSBBridgePersistence *)self defaults];
+  [defaults removeObjectForKey:keyCopy];
 
-  v6 = [(NSBBridgePersistence *)self keysToSynchronize];
-  [v6 addObject:v4];
+  keysToSynchronize = [(NSBBridgePersistence *)self keysToSynchronize];
+  [keysToSynchronize addObject:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSBBridgePersistence *)self defaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  defaults = [(NSBBridgePersistence *)self defaults];
+  [defaults setObject:objectCopy forKey:keyCopy];
 
-  v9 = [(NSBBridgePersistence *)self keysToSynchronize];
-  [v9 addObject:v6];
+  keysToSynchronize = [(NSBBridgePersistence *)self keysToSynchronize];
+  [keysToSynchronize addObject:keyCopy];
 }
 
 - (void)synchronize
 {
-  v3 = [(NSBBridgePersistence *)self defaults];
-  v4 = [v3 synchronize];
+  defaults = [(NSBBridgePersistence *)self defaults];
+  synchronize = [defaults synchronize];
 
-  v5 = [(NSBBridgePersistence *)self keysToSynchronize];
-  v6 = [v5 count];
+  keysToSynchronize = [(NSBBridgePersistence *)self keysToSynchronize];
+  v6 = [keysToSynchronize count];
 
   if (v6)
   {
-    v7 = [(NSBBridgePersistence *)self syncManager];
-    v8 = [(NSBBridgePersistence *)self keysToSynchronize];
-    [v7 synchronizeNanoDomain:@"com.apple.stocks.bridge" keys:v8];
+    syncManager = [(NSBBridgePersistence *)self syncManager];
+    keysToSynchronize2 = [(NSBBridgePersistence *)self keysToSynchronize];
+    [syncManager synchronizeNanoDomain:@"com.apple.stocks.bridge" keys:keysToSynchronize2];
 
-    v9 = [(NSBBridgePersistence *)self keysToSynchronize];
-    [v9 removeAllObjects];
+    keysToSynchronize3 = [(NSBBridgePersistence *)self keysToSynchronize];
+    [keysToSynchronize3 removeAllObjects];
   }
 }
 

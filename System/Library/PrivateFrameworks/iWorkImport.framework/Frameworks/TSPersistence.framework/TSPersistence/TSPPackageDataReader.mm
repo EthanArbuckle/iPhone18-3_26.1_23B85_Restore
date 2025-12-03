@@ -1,19 +1,19 @@
 @interface TSPPackageDataReader
 - (BOOL)isValid;
-- (BOOL)setPassphrase:(id)a3;
-- (CGDataProvider)newCGDataProviderAtRelativePath:(id)a3;
-- (CGImage)newCGImageAtRelativePath:(id)a3;
-- (CGImageSource)newCGImageSourceAtRelativePath:(id)a3;
+- (BOOL)setPassphrase:(id)passphrase;
+- (CGDataProvider)newCGDataProviderAtRelativePath:(id)path;
+- (CGImage)newCGImageAtRelativePath:(id)path;
+- (CGImageSource)newCGImageSourceAtRelativePath:(id)path;
 - (SFUCryptoKey)lastDecryptionKeyAttempted;
 - (TSPPackageDataReader)init;
-- (TSPPackageDataReader)initWithURL:(id)a3 decryptionKey:(id)a4;
-- (const)infoForDigest:(id)a3;
+- (TSPPackageDataReader)initWithURL:(id)l decryptionKey:(id)key;
+- (const)infoForDigest:(id)digest;
 - (id).cxx_construct;
-- (id)decryptionInfoForDataWithDigest:(id)a3;
-- (id)newDataCopyInputStreamProviderWithDigest:(id)a3 encryptionInfo:(id)a4 error:(id *)a5;
-- (id)newDataCopyReadChannelProviderWithDigest:(id)a3 encryptionInfo:(id)a4 length:(unint64_t *)a5 error:(id *)a6;
-- (id)newDataCopyURLProviderWithDigest:(id)a3 encryptionInfo:(id)a4 error:(id *)a5;
-- (id)relativePathForDataWithDigest:(id)a3;
+- (id)decryptionInfoForDataWithDigest:(id)digest;
+- (id)newDataCopyInputStreamProviderWithDigest:(id)digest encryptionInfo:(id)info error:(id *)error;
+- (id)newDataCopyReadChannelProviderWithDigest:(id)digest encryptionInfo:(id)info length:(unint64_t *)length error:(id *)error;
+- (id)newDataCopyURLProviderWithDigest:(id)digest encryptionInfo:(id)info error:(id *)error;
+- (id)relativePathForDataWithDigest:(id)digest;
 @end
 
 @implementation TSPPackageDataReader
@@ -34,18 +34,18 @@
   objc_exception_throw(v13);
 }
 
-- (TSPPackageDataReader)initWithURL:(id)a3 decryptionKey:(id)a4
+- (TSPPackageDataReader)initWithURL:(id)l decryptionKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  keyCopy = key;
   v17.receiver = self;
   v17.super_class = TSPPackageDataReader;
   v9 = [(TSPPackageDataReader *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_URL, a3);
-    v12 = objc_msgSend_newLazyPackageWithURL_packageIdentifier_decryptionKey_fileCoordinatorDelegate_(TSPPackage, v11, v7, 1, v8, v10);
+    objc_storeStrong(&v9->_URL, l);
+    v12 = objc_msgSend_newLazyPackageWithURL_packageIdentifier_decryptionKey_fileCoordinatorDelegate_(TSPPackage, v11, lCopy, 1, keyCopy, v10);
     package = v10->_package;
     v10->_package = v12;
 
@@ -83,13 +83,13 @@
   return objc_msgSend_isValidPackageAtURL_(TSPExpandedDirectoryPackage, v7, URL);
 }
 
-- (BOOL)setPassphrase:(id)a3
+- (BOOL)setPassphrase:(id)passphrase
 {
-  v4 = a3;
-  v8 = objc_msgSend_checkPassword_(self, v5, v4);
+  passphraseCopy = passphrase;
+  v8 = objc_msgSend_checkPassword_(self, v5, passphraseCopy);
   if (v8)
   {
-    v9 = objc_msgSend_copy(v4, v6, v7);
+    v9 = objc_msgSend_copy(passphraseCopy, v6, v7);
     lastPasswordAttempted = self->_lastPasswordAttempted;
     self->_lastPasswordAttempted = v9;
   }
@@ -113,16 +113,16 @@
   return v4;
 }
 
-- (const)infoForDigest:(id)a3
+- (const)infoForDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   dataInfosDispatchOnce = self->_dataInfosDispatchOnce;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_276A9B80C;
   v13[3] = &unk_27A6E2898;
   v13[4] = self;
-  v6 = v4;
+  v6 = digestCopy;
   v14 = v6;
   objc_msgSend_performBlockOnce_(dataInfosDispatchOnce, v7, v13);
   __p[0] = 0;
@@ -139,10 +139,10 @@
   return (v9 + 56);
 }
 
-- (id)relativePathForDataWithDigest:(id)a3
+- (id)relativePathForDataWithDigest:(id)digest
 {
-  v4 = a3;
-  v7 = objc_msgSend_infoForDigest_(self, v5, v4);
+  digestCopy = digest;
+  v7 = objc_msgSend_infoForDigest_(self, v5, digestCopy);
   if ((*(v7 + 16) & 2) != 0)
   {
     v9 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(v7 + 32) & 0xFFFFFFFFFFFFFFFELL);
@@ -179,9 +179,9 @@
   return v8;
 }
 
-- (id)decryptionInfoForDataWithDigest:(id)a3
+- (id)decryptionInfoForDataWithDigest:(id)digest
 {
-  v4 = objc_msgSend_infoForDigest_(self, a2, a3);
+  v4 = objc_msgSend_infoForDigest_(self, a2, digest);
   v7 = objc_msgSend_decryptionKey(self->_package, v5, v6);
   v9 = v7;
   v10 = *(v4 + 16);
@@ -218,14 +218,14 @@
   return v19;
 }
 
-- (CGDataProvider)newCGDataProviderAtRelativePath:(id)a3
+- (CGDataProvider)newCGDataProviderAtRelativePath:(id)path
 {
-  v4 = a3;
-  if (objc_msgSend_hasDataAtRelativePath_(self, v5, v4))
+  pathCopy = path;
+  if (objc_msgSend_hasDataAtRelativePath_(self, v5, pathCopy))
   {
     package = self->_package;
     v9 = objc_msgSend_decryptionKey(package, v6, v7);
-    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(package, v10, v4, v9, -1, self->_URL, 0);
+    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(package, v10, pathCopy, v9, -1, self->_URL, 0);
 
     v14 = objc_msgSend_newCGDataProvider(ModificationDate, v12, v13);
   }
@@ -238,14 +238,14 @@
   return v14;
 }
 
-- (CGImageSource)newCGImageSourceAtRelativePath:(id)a3
+- (CGImageSource)newCGImageSourceAtRelativePath:(id)path
 {
-  v4 = a3;
-  if (objc_msgSend_hasDataAtRelativePath_(self, v5, v4))
+  pathCopy = path;
+  if (objc_msgSend_hasDataAtRelativePath_(self, v5, pathCopy))
   {
     package = self->_package;
     v9 = objc_msgSend_decryptionKey(package, v6, v7);
-    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(package, v10, v4, v9, -1, self->_URL, 0);
+    ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(package, v10, pathCopy, v9, -1, self->_URL, 0);
 
     v14 = objc_msgSend_newCGImageSource(ModificationDate, v12, v13);
   }
@@ -258,10 +258,10 @@
   return v14;
 }
 
-- (CGImage)newCGImageAtRelativePath:(id)a3
+- (CGImage)newCGImageAtRelativePath:(id)path
 {
-  v4 = a3;
-  if (objc_msgSend_hasDataAtRelativePath_(self, v5, v4) && (v7 = objc_msgSend_newCGImageSourceAtRelativePath_(self, v6, v4), (v8 = v7) != 0))
+  pathCopy = path;
+  if (objc_msgSend_hasDataAtRelativePath_(self, v5, pathCopy) && (v7 = objc_msgSend_newCGImageSourceAtRelativePath_(self, v6, pathCopy), (v8 = v7) != 0))
   {
     ImageAtIndex = CGImageSourceCreateImageAtIndex(v7, 0, 0);
     CFRelease(v8);
@@ -275,20 +275,20 @@
   return ImageAtIndex;
 }
 
-- (id)newDataCopyURLProviderWithDigest:(id)a3 encryptionInfo:(id)a4 error:(id *)a5
+- (id)newDataCopyURLProviderWithDigest:(id)digest encryptionInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = objc_msgSend_relativePathForDataWithDigest_(self, v10, v8);
+  digestCopy = digest;
+  infoCopy = info;
+  v11 = objc_msgSend_relativePathForDataWithDigest_(self, v10, digestCopy);
   package = self->_package;
-  v14 = objc_msgSend_decryptionInfoForDataWithDigest_(self, v13, v8);
+  v14 = objc_msgSend_decryptionInfoForDataWithDigest_(self, v13, digestCopy);
   ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(package, v15, v11, v14, -1, self->_URL, 0);
 
   if (ModificationDate)
   {
     URL = self->_URL;
     v23 = 0;
-    v19 = objc_msgSend_newDataCopyURLProviderWithDocumentURL_encryptionInfo_error_(ModificationDate, v17, URL, v9, &v23);
+    v19 = objc_msgSend_newDataCopyURLProviderWithDocumentURL_encryptionInfo_error_(ModificationDate, v17, URL, infoCopy, &v23);
     v20 = v23;
   }
 
@@ -303,29 +303,29 @@
     v20 = objc_msgSend_tsp_unknownReadErrorWithUserInfo_(MEMORY[0x277CCA9B8], v17, 0);
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
   return v19;
 }
 
-- (id)newDataCopyReadChannelProviderWithDigest:(id)a3 encryptionInfo:(id)a4 length:(unint64_t *)a5 error:(id *)a6
+- (id)newDataCopyReadChannelProviderWithDigest:(id)digest encryptionInfo:(id)info length:(unint64_t *)length error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v13 = objc_msgSend_relativePathForDataWithDigest_(self, v12, v10);
+  digestCopy = digest;
+  infoCopy = info;
+  v13 = objc_msgSend_relativePathForDataWithDigest_(self, v12, digestCopy);
   package = self->_package;
-  v16 = objc_msgSend_decryptionInfoForDataWithDigest_(self, v15, v10);
+  v16 = objc_msgSend_decryptionInfoForDataWithDigest_(self, v15, digestCopy);
   ModificationDate = objc_msgSend_newDataStorageAtRelativePath_decryptionInfo_materializedLength_packageURL_lastModificationDate_(package, v17, v13, v16, -1, self->_URL, 0);
 
   if (!ModificationDate)
   {
     v22 = 0;
     v23 = 0;
-    if (!a5)
+    if (!length)
     {
       goto LABEL_6;
     }
@@ -335,12 +335,12 @@
 
   URL = self->_URL;
   v26 = 0;
-  v22 = objc_msgSend_newDataCopyReadChannelProviderWithDocumentURL_encryptionInfo_error_(ModificationDate, v19, URL, v11, &v26);
+  v22 = objc_msgSend_newDataCopyReadChannelProviderWithDocumentURL_encryptionInfo_error_(ModificationDate, v19, URL, infoCopy, &v26);
   v23 = v26;
-  if (a5)
+  if (length)
   {
 LABEL_5:
-    *a5 = objc_msgSend_length(ModificationDate, v19, v20);
+    *length = objc_msgSend_length(ModificationDate, v19, v20);
   }
 
 LABEL_6:
@@ -349,23 +349,23 @@ LABEL_6:
     v23 = objc_msgSend_tsp_unknownReadErrorWithUserInfo_(MEMORY[0x277CCA9B8], v19, 0);
   }
 
-  if (a6)
+  if (error)
   {
     v24 = v23;
-    *a6 = v23;
+    *error = v23;
   }
 
   return v22;
 }
 
-- (id)newDataCopyInputStreamProviderWithDigest:(id)a3 encryptionInfo:(id)a4 error:(id *)a5
+- (id)newDataCopyInputStreamProviderWithDigest:(id)digest encryptionInfo:(id)info error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  digestCopy = digest;
+  infoCopy = info;
   v27 = 0;
   objc_opt_class();
   v26 = 0;
-  v11 = objc_msgSend_newDataCopyReadChannelProviderWithDigest_encryptionInfo_length_error_(self, v10, v8, v9, &v27, &v26);
+  v11 = objc_msgSend_newDataCopyReadChannelProviderWithDigest_encryptionInfo_length_error_(self, v10, digestCopy, infoCopy, &v27, &v26);
   v12 = v26;
   v13 = TSUDynamicCast();
 
@@ -382,10 +382,10 @@ LABEL_6:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v24 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v13;

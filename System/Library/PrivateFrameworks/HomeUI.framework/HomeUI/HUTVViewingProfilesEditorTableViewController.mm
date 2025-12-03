@@ -1,14 +1,14 @@
 @interface HUTVViewingProfilesEditorTableViewController
-- (HUTVViewingProfilesEditorTableViewController)initWithUserItem:(id)a3;
+- (HUTVViewingProfilesEditorTableViewController)initWithUserItem:(id)item;
 - (id)itemModuleControllers;
 @end
 
 @implementation HUTVViewingProfilesEditorTableViewController
 
-- (HUTVViewingProfilesEditorTableViewController)initWithUserItem:(id)a3
+- (HUTVViewingProfilesEditorTableViewController)initWithUserItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HUTVViewingProfilesEditorItemManager alloc] initWithDelegate:self userItem:v4];
+  itemCopy = item;
+  v5 = [[HUTVViewingProfilesEditorItemManager alloc] initWithDelegate:self userItem:itemCopy];
 
   v13.receiver = self;
   v13.super_class = HUTVViewingProfilesEditorTableViewController;
@@ -16,8 +16,8 @@
   if (v6)
   {
     v7 = [HUTVViewingProfilesDevicesModuleController alloc];
-    v8 = [(HUTVViewingProfilesEditorItemManager *)v5 tvpDevicesModule];
-    v9 = [(HUTVViewingProfilesDevicesModuleController *)v7 initWithModule:v8 host:v6];
+    tvpDevicesModule = [(HUTVViewingProfilesEditorItemManager *)v5 tvpDevicesModule];
+    v9 = [(HUTVViewingProfilesDevicesModuleController *)v7 initWithModule:tvpDevicesModule host:v6];
     tvpDevicesModuleController = v6->_tvpDevicesModuleController;
     v6->_tvpDevicesModuleController = v9;
 
@@ -33,8 +33,8 @@
 - (id)itemModuleControllers
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUTVViewingProfilesEditorTableViewController *)self tvpDevicesModuleController];
-  v4 = [v2 setWithObject:v3];
+  tvpDevicesModuleController = [(HUTVViewingProfilesEditorTableViewController *)self tvpDevicesModuleController];
+  v4 = [v2 setWithObject:tvpDevicesModuleController];
 
   return v4;
 }

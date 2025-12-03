@@ -3,22 +3,22 @@
 - (NSArray)searchResults;
 - (NSDictionary)contactByHandle;
 - (NSString)searchQuery;
-- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)a3 dataSource:(id)a4 sharingIdentity:(id)a5;
-- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)a3 dataSource:(id)a4 sharingIdentity:(id)a5 searchResults:(id)a6 searchQuery:(id)a7;
-- (_TtC4Maps36CarNavigationShareTripViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)delegate dataSource:(id)source sharingIdentity:(id)identity;
+- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)delegate dataSource:(id)source sharingIdentity:(id)identity searchResults:(id)results searchQuery:(id)query;
+- (_TtC4Maps36CarNavigationShareTripViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps44CarNavigationShareTripViewControllerDelegate_)delegate;
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4;
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles;
 - (void)commitPendingShares;
 - (void)didScroll;
-- (void)didSelectUserInputWithAction:(unint64_t)a3 interactionModel:(unint64_t)a4;
-- (void)setContactByHandle:(id)a3;
-- (void)setSearchQuery:(id)a3;
-- (void)setSearchResults:(id)a3;
-- (void)setSharingIdentity:(id)a3;
-- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)a3;
+- (void)didSelectUserInputWithAction:(unint64_t)action interactionModel:(unint64_t)model;
+- (void)setContactByHandle:(id)handle;
+- (void)setSearchQuery:(id)query;
+- (void)setSearchResults:(id)results;
+- (void)setSharingIdentity:(id)identity;
+- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)display;
 - (void)updateViewModels;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarNavigationShareTripViewController
@@ -34,27 +34,27 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setSharingIdentity:(id)a3
+- (void)setSharingIdentity:(id)identity
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  identityCopy = identity;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
-- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)a3 dataSource:(id)a4 sharingIdentity:(id)a5
+- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)delegate dataSource:(id)source sharingIdentity:(id)identity
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_10027D08C(a3, v8, a5);
+  sourceCopy = source;
+  identityCopy = identity;
+  v10 = sub_10027D08C(delegate, sourceCopy, identity);
   swift_unknownObjectRelease();
 
   return v10;
@@ -69,7 +69,7 @@
   return v2.super.isa;
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
   sub_100014C84(0, &unk_101911D50);
   *(self + OBJC_IVAR____TtC4Maps36CarNavigationShareTripViewController_searchResults) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -83,7 +83,7 @@
   return v2;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC4Maps36CarNavigationShareTripViewController_searchQuery);
@@ -91,16 +91,16 @@
   v5[1] = v6;
 }
 
-- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)a3 dataSource:(id)a4 sharingIdentity:(id)a5 searchResults:(id)a6 searchQuery:(id)a7
+- (_TtC4Maps36CarNavigationShareTripViewController)initWithDelegate:(id)delegate dataSource:(id)source sharingIdentity:(id)identity searchResults:(id)results searchQuery:(id)query
 {
   sub_100014C84(0, &unk_101911D50);
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   swift_unknownObjectRetain();
-  v14 = a4;
-  v15 = a5;
-  return sub_100277D50(a3, v14, a5, v10, v11, v13);
+  sourceCopy = source;
+  identityCopy = identity;
+  return sub_100277D50(delegate, sourceCopy, identity, v10, v11, v13);
 }
 
 - (NSDictionary)contactByHandle
@@ -112,60 +112,60 @@
   return v2.super.isa;
 }
 
-- (void)setContactByHandle:(id)a3
+- (void)setContactByHandle:(id)handle
 {
   sub_100014C84(0, &unk_101911D50);
   *(self + OBJC_IVAR____TtC4Maps36CarNavigationShareTripViewController_contactByHandle) = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CarNavigationShareTripViewController();
   v4 = v7.receiver;
-  [(CarNavigationShareTripViewController *)&v7 viewWillAppear:v3];
+  [(CarNavigationShareTripViewController *)&v7 viewWillAppear:appearCopy];
   sub_100278BF4();
   [*&v4[OBJC_IVAR____TtC4Maps36CarNavigationShareTripViewController_dataSource] setDelegate:{v4, v7.receiver, v7.super_class}];
-  v5 = [objc_opt_self() sharedFetcher];
-  if (v5)
+  sharedFetcher = [objc_opt_self() sharedFetcher];
+  if (sharedFetcher)
   {
-    v6 = v5;
-    [v5 registerObserver:v4];
+    v6 = sharedFetcher;
+    [sharedFetcher registerObserver:v4];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CarNavigationShareTripViewController();
   v4 = v7.receiver;
-  [(CarNavigationShareTripViewController *)&v7 viewWillDisappear:v3];
-  v5 = [objc_opt_self() sharedFetcher];
-  if (v5)
+  [(CarNavigationShareTripViewController *)&v7 viewWillDisappear:disappearCopy];
+  sharedFetcher = [objc_opt_self() sharedFetcher];
+  if (sharedFetcher)
   {
-    v6 = v5;
-    [v5 unregisterObserver:v4];
+    v6 = sharedFetcher;
+    [sharedFetcher unregisterObserver:v4];
   }
 }
 
 - (void)commitPendingShares
 {
-  v2 = self;
+  selfCopy = self;
   sub_100278934();
 }
 
 - (void)updateViewModels
 {
-  v2 = self;
+  selfCopy = self;
   sub_100278BF4();
 }
 
-- (void)didSelectUserInputWithAction:(unint64_t)a3 interactionModel:(unint64_t)a4
+- (void)didSelectUserInputWithAction:(unint64_t)action interactionModel:(unint64_t)model
 {
-  v6 = self;
-  sub_100279EE0(a3, a4);
+  selfCopy = self;
+  sub_100279EE0(action, model);
 }
 
 - (void)didScroll
@@ -179,19 +179,19 @@
   }
 }
 
-- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)a3
+- (void)suggestionsDataSourceDidUpdateContactsForDisplay:(id)display
 {
-  v3 = self;
+  selfCopy = self;
   sub_100278BF4();
 }
 
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles
 {
-  v4 = self;
+  selfCopy = self;
   sub_100278BF4();
 }
 
-- (_TtC4Maps36CarNavigationShareTripViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps36CarNavigationShareTripViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

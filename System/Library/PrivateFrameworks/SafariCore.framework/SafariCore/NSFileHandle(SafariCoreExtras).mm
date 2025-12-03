@@ -15,14 +15,14 @@
     v11 = open([v10 fileSystemRepresentation], a4, a5);
     if ((v11 & 0x80000000) == 0)
     {
-      v12 = [[a1 alloc] initWithFileDescriptor:v11 closeOnDealloc:1];
+      v12 = [[self alloc] initWithFileDescriptor:v11 closeOnDealloc:1];
       goto LABEL_9;
     }
 
     if (a6)
     {
       v13 = *__error();
-      v14 = [v10 path];
+      path = [v10 path];
       *a6 = _NSErrorWithFilePathAndErrno();
     }
   }
@@ -50,8 +50,8 @@ LABEL_9:
     if (a7)
     {
       v15 = *__error();
-      v16 = [v13 safari_fileURL];
-      v17 = [v16 URLByAppendingPathComponent:v12];
+      safari_fileURL = [v13 safari_fileURL];
+      v17 = [safari_fileURL URLByAppendingPathComponent:v12];
 
       *a7 = _NSErrorWithFilePathAndErrno();
 
@@ -61,7 +61,7 @@ LABEL_9:
 
   else
   {
-    a7 = [[a1 alloc] initWithFileDescriptor:v14 closeOnDealloc:1];
+    a7 = [[self alloc] initWithFileDescriptor:v14 closeOnDealloc:1];
   }
 
   return a7;
@@ -101,7 +101,7 @@ LABEL_9:
       v20 = openat([v13 fileDescriptor], objc_msgSend(v19, "fileSystemRepresentation"), a5 | 0xA00, a6);
       if (v20 > 0)
       {
-        v21 = [[a1 alloc] initWithFileDescriptor:v20 closeOnDealloc:1];
+        v21 = [[self alloc] initWithFileDescriptor:v20 closeOnDealloc:1];
 LABEL_16:
         v12 = v27;
         goto LABEL_17;
@@ -111,8 +111,8 @@ LABEL_16:
       {
         if (v26)
         {
-          v22 = [v13 safari_fileURL];
-          v23 = [v22 URLByAppendingPathComponent:v19];
+          safari_fileURL = [v13 safari_fileURL];
+          v23 = [safari_fileURL URLByAppendingPathComponent:v19];
 
           *v26 = _NSErrorWithFilePathAndErrno();
         }
@@ -143,7 +143,7 @@ LABEL_17:
 - (id)safari_fileURL
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [a1 fileDescriptor];
+  fileDescriptor = [self fileDescriptor];
   bzero(v8, 0x402uLL);
   if (realpath_np())
   {
@@ -153,7 +153,7 @@ LABEL_17:
   else
   {
     memset(&v7, 0, sizeof(v7));
-    if (fstat(v1, &v7))
+    if (fstat(fileDescriptor, &v7))
     {
       v3 = 0;
     }

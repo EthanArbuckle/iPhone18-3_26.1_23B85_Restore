@@ -1,14 +1,14 @@
 @interface SKGNameEdge
-+ (id)edgeFromName:(id)a3 toNode:(id)a4;
++ (id)edgeFromName:(id)name toNode:(id)node;
 @end
 
 @implementation SKGNameEdge
 
-+ (id)edgeFromName:(id)a3 toNode:(id)a4
++ (id)edgeFromName:(id)name toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGNameEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  nameCopy = name;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGNameEdge alloc] initWithSourceNode:nameCopy targetNode:nodeCopy];
 
   return v7;
 }

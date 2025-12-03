@@ -1,7 +1,7 @@
 @interface FARequestCoalescer
 + (FARequestCoalescer)sharedInstance;
 - (FARequestCoalescer)init;
-- (id)performBlockForKey:(id)a3 force:(BOOL)a4 block:(id)a5;
+- (id)performBlockForKey:(id)key force:(BOOL)force block:(id)block;
 @end
 
 @implementation FARequestCoalescer
@@ -38,21 +38,21 @@
   return v2;
 }
 
-- (id)performBlockForKey:(id)a3 force:(BOOL)a4 block:(id)a5
+- (id)performBlockForKey:(id)key force:(BOOL)force block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  blockCopy = block;
   v10 = [AAFPromise alloc];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001B034;
   v15[3] = &unk_1000A70C0;
   v15[4] = self;
-  v16 = v8;
-  v18 = a4;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16 = keyCopy;
+  forceCopy = force;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = keyCopy;
   v13 = [v10 initWithBlock:v15];
 
   return v13;

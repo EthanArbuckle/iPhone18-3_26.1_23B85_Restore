@@ -1,14 +1,14 @@
 @interface IKJSArrayBufferStore
 - (IKAppContext)appContext;
-- (IKJSArrayBufferStore)initWithAppContext:(id)a3;
-- (id)arrayBufferForData:(id)a3;
+- (IKJSArrayBufferStore)initWithAppContext:(id)context;
+- (id)arrayBufferForData:(id)data;
 @end
 
 @implementation IKJSArrayBufferStore
 
-- (IKJSArrayBufferStore)initWithAppContext:(id)a3
+- (IKJSArrayBufferStore)initWithAppContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = IKJSArrayBufferStore;
   v5 = [(IKJSArrayBufferStore *)&v9 init];
@@ -18,30 +18,30 @@
     bufferStorage = v5->_bufferStorage;
     v5->_bufferStorage = v6;
 
-    objc_storeWeak(&v5->_appContext, v4);
+    objc_storeWeak(&v5->_appContext, contextCopy);
   }
 
   return v5;
 }
 
-- (id)arrayBufferForData:(id)a3
+- (id)arrayBufferForData:(id)data
 {
-  v4 = a3;
-  v5 = [(IKJSArrayBufferStore *)self appContext];
-  v6 = [v5 jsContext];
+  dataCopy = data;
+  appContext = [(IKJSArrayBufferStore *)self appContext];
+  jsContext = [appContext jsContext];
 
-  v7 = [v4 copy];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  v7 = [dataCopy copy];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [(IKJSArrayBufferStore *)self bufferStorage];
-  [v10 setObject:v7 forKey:v9];
+  bufferStorage = [(IKJSArrayBufferStore *)self bufferStorage];
+  [bufferStorage setObject:v7 forKey:uUIDString];
 
-  v11 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-  [v11 setObject:self forKey:@"IKJSArrayBufferStoreStoreKey"];
-  [v11 setObject:v9 forKey:@"IKJSArrayBufferStoreStoredDataKey"];
-  v12 = v11;
-  v13 = [MEMORY[0x277CD4658] valueWithJSValueRef:JSObjectMakeArrayBufferWithBytesNoCopy(objc_msgSend(v6 inContext:{"JSGlobalContextRef"), objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"), IKJSArrayBufferStoreDeallocator, v12, 0), v6}];
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  [strongToWeakObjectsMapTable setObject:self forKey:@"IKJSArrayBufferStoreStoreKey"];
+  [strongToWeakObjectsMapTable setObject:uUIDString forKey:@"IKJSArrayBufferStoreStoredDataKey"];
+  v12 = strongToWeakObjectsMapTable;
+  v13 = [MEMORY[0x277CD4658] valueWithJSValueRef:JSObjectMakeArrayBufferWithBytesNoCopy(objc_msgSend(jsContext inContext:{"JSGlobalContextRef"), objc_msgSend(v7, "bytes"), objc_msgSend(v7, "length"), IKJSArrayBufferStoreDeallocator, v12, 0), jsContext}];
 
   return v13;
 }

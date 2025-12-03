@@ -1,8 +1,8 @@
 @interface OPTTSWordTimingInfo
-+ (id)vs_wordTimingInfos:(id)a3 withText:(id)a4;
++ (id)vs_wordTimingInfos:(id)infos withText:(id)text;
 - (NSString)word;
-- (OPTTSWordTimingInfo)initWithFlatbuffData:(id)a3 root:(const WordTimingInfo *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::WordTimingInfo>)addObjectToBuffer:(void *)a3;
+- (OPTTSWordTimingInfo)initWithFlatbuffData:(id)data root:(const WordTimingInfo *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::WordTimingInfo>)addObjectToBuffer:(void *)buffer;
 - (float)timestamp;
 - (id)flatbuffData;
 - (unsigned)length;
@@ -41,35 +41,35 @@ flatbuffers::DetachedBuffer *__35__OPTTSWordTimingInfo_flatbuffData__block_invok
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::WordTimingInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::WordTimingInfo>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSWordTimingInfo *)self word];
-  v6 = v5;
-  if (!v5)
+  word = [(OPTTSWordTimingInfo *)self word];
+  v6 = word;
+  if (!word)
   {
-    v5 = &stru_2881CBD18;
+    word = &stru_2881CBD18;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)word UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(OPTTSWordTimingInfo *)self sample_idx];
-  v10 = [(OPTTSWordTimingInfo *)self offset];
+  sample_idx = [(OPTTSWordTimingInfo *)self sample_idx];
+  offset = [(OPTTSWordTimingInfo *)self offset];
   v11 = [(OPTTSWordTimingInfo *)self length];
   [(OPTTSWordTimingInfo *)self timestamp];
   v13 = v12;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 10);
-  v15 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 4, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v9);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v11);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 12, v13);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 10);
+  v15 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 4, uTF8String);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, sample_idx);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, offset);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, v11);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 12, v13);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v15 + v14);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v15 + v14);
 }
 
 - (float)timestamp
@@ -157,42 +157,42 @@ flatbuffers::DetachedBuffer *__35__OPTTSWordTimingInfo_flatbuffData__block_invok
   return v6;
 }
 
-- (OPTTSWordTimingInfo)initWithFlatbuffData:(id)a3 root:(const WordTimingInfo *)a4 verify:(BOOL)a5
+- (OPTTSWordTimingInfo)initWithFlatbuffData:(id)data root:(const WordTimingInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSWordTimingInfo;
   v10 = [(OPTTSWordTimingInfo *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -214,9 +214,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -225,17 +225,17 @@ LABEL_17:
   return v22;
 }
 
-+ (id)vs_wordTimingInfos:(id)a3 withText:(id)a4
++ (id)vs_wordTimingInfos:(id)infos withText:(id)text
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v25 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  infosCopy = infos;
+  textCopy = text;
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v5;
+  v7 = infosCopy;
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v41 count:16];
   v9 = 0x277D79000uLL;
   if (v8)
@@ -256,22 +256,22 @@ LABEL_17:
         v14 = VSGetLogDefault();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [v13 offset];
+          offset = [v13 offset];
           v17 = v7;
           v18 = [v13 length];
-          v19 = [v13 word];
-          v20 = [v13 sample_idx];
+          word = [v13 word];
+          sample_idx = [v13 sample_idx];
           [v13 timestamp];
           *buf = 134219010;
-          v32 = v26;
+          v32 = offset;
           v33 = 2048;
           v34 = v18;
           v7 = v17;
           v9 = 0x277D79000;
           v35 = 2112;
-          v36 = v19;
+          v36 = word;
           v37 = 1024;
-          v38 = v20;
+          v38 = sample_idx;
           v39 = 2048;
           v40 = (v21 / 1000.0);
           _os_log_debug_impl(&dword_2727E4000, v14, OS_LOG_TYPE_DEBUG, "OPTTSTextToSpeechResponse word timing info, offset: %ld, length: %ld, word: %@, sampleIndex: %d, timestamp: %.2f", buf, 0x30u);
@@ -281,7 +281,7 @@ LABEL_17:
         [v15 setTextRange:{objc_msgSend(v13, "offset"), objc_msgSend(v13, "length")}];
         [v13 timestamp];
         [v15 setStartTime:(v16 / 1000.0)];
-        [v6 addObject:v15];
+        [array addObject:v15];
 
         ++v12;
       }
@@ -293,7 +293,7 @@ LABEL_17:
     while (v10);
   }
 
-  v22 = [*(v9 + 2488) utf16TimingInfoWithUTF8Range:v6 withText:v25];
+  v22 = [*(v9 + 2488) utf16TimingInfoWithUTF8Range:array withText:textCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 

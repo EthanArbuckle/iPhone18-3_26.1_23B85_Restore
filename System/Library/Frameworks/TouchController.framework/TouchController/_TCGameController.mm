@@ -1,9 +1,9 @@
 @interface _TCGameController
 - (_TCGameController)init;
-- (void)addButtonWithLabel:(id)a3;
-- (void)addDirectionPadWithLabel:(id)a3;
-- (void)setPosition:(CGPoint)a3 forDirectionPadElement:(id)a4;
-- (void)setValue:(double)a3 forButtonElement:(id)a4;
+- (void)addButtonWithLabel:(id)label;
+- (void)addDirectionPadWithLabel:(id)label;
+- (void)setPosition:(CGPoint)position forDirectionPadElement:(id)element;
+- (void)setValue:(double)value forButtonElement:(id)element;
 @end
 
 @implementation _TCGameController
@@ -119,146 +119,146 @@
   return v14;
 }
 
-- (void)setValue:(double)a3 forButtonElement:(id)a4
+- (void)setValue:(double)value forButtonElement:(id)element
 {
-  v6 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x277CCAF78]])
+  elementCopy = element;
+  if ([elementCopy isEqualToString:*MEMORY[0x277CCAF78]])
   {
-    *&v7 = a3;
+    *&v7 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonAValue:v7];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAF80]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAF80]])
   {
-    *&v8 = a3;
+    *&v8 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBValue:v8];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFA0]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFA0]])
   {
-    *&v9 = a3;
+    *&v9 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonXValue:v9];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFA8]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFA8]])
   {
-    *&v10 = a3;
+    *&v10 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonYValue:v10];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFC0]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFC0]])
   {
-    *&v11 = a3;
+    *&v11 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonLeftShoulder:v11];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFE8]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFE8]])
   {
-    *&v12 = a3;
+    *&v12 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonRightShoulder:v12];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFB8]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFB8]])
   {
-    *&v13 = a3;
+    *&v13 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonLeftBumper:v13];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFE0]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFE0]])
   {
-    *&v14 = a3;
+    *&v14 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonRightBumper:v14];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFD8]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFD8]])
   {
-    *&v15 = a3;
+    *&v15 = value;
     [(_GCGamepadEventImpl *)self->_event setLeftTrigger:v15];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCB000]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCB000]])
   {
-    *&v16 = a3;
+    *&v16 = value;
     [(_GCGamepadEventImpl *)self->_event setRightTrigger:v16];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFD0]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFD0]])
   {
-    *&v17 = a3;
+    *&v17 = value;
     [(_GCGamepadEventImpl *)self->_event setLeftThumbstickButton:v17];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAFF8]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFF8]])
   {
-    *&v18 = a3;
+    *&v18 = value;
     [(_GCGamepadEventImpl *)self->_event setRightThumbstickButton:v18];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAF88]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAF88]])
   {
-    *&v19 = a3;
+    *&v19 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonMenu:v19];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAF90]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAF90]])
   {
-    *&v20 = a3;
+    *&v20 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonOptions:v20];
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CCAF98]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAF98]])
   {
-    *&v21 = a3;
+    *&v21 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonSpecial15:v21];
   }
 
-  else if (([v6 isEqualToString:*MEMORY[0x277CCAF58]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CCB018]))
+  else if (([elementCopy isEqualToString:*MEMORY[0x277CCAF58]] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", *MEMORY[0x277CCB018]))
   {
-    *&v22 = a3;
+    *&v22 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackLeftPrimary:v22];
   }
 
-  else if (([v6 isEqualToString:*MEMORY[0x277CCAF60]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CCB008]))
+  else if (([elementCopy isEqualToString:*MEMORY[0x277CCAF60]] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", *MEMORY[0x277CCB008]))
   {
-    *&v23 = a3;
+    *&v23 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackLeftSecondary:v23];
   }
 
-  else if (([v6 isEqualToString:*MEMORY[0x277CCAF68]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CCB010]))
+  else if (([elementCopy isEqualToString:*MEMORY[0x277CCAF68]] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", *MEMORY[0x277CCB010]))
   {
-    *&v24 = a3;
+    *&v24 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackRightPrimary:v24];
   }
 
-  else if (([v6 isEqualToString:*MEMORY[0x277CCAF70]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CCB020]))
+  else if (([elementCopy isEqualToString:*MEMORY[0x277CCAF70]] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", *MEMORY[0x277CCB020]))
   {
-    *&v25 = a3;
+    *&v25 = value;
     [(_GCGamepadEventImpl *)self->_event setButtonBackRightSecondary:v25];
   }
 
   else
   {
-    v26 = [(GCController *)self physicalInputProfile];
-    v27 = [v26 buttons];
-    v28 = [v27 objectForKeyedSubscript:v6];
+    physicalInputProfile = [(GCController *)self physicalInputProfile];
+    buttons = [physicalInputProfile buttons];
+    v28 = [buttons objectForKeyedSubscript:elementCopy];
 
     if (!v28)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"*** Unknown button element '%@'.", v6];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"*** Unknown button element '%@'.", elementCopy];
       v35 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v35);
     }
 
-    v30 = [(GCController *)self handlerQueue];
+    handlerQueue = [(GCController *)self handlerQueue];
     v31 = v28;
-    v29 = a3;
-    *&v32 = v29;
-    if ([v31 _setValue:v30 queue:v32])
+    valueCopy = value;
+    *&v32 = valueCopy;
+    if ([v31 _setValue:handlerQueue queue:v32])
     {
       [0 addObject:v31];
     }
 
-    v33 = [(GCController *)self handlerQueue];
+    handlerQueue2 = [(GCController *)self handlerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47___TCGameController_setValue_forButtonElement___block_invoke;
@@ -266,20 +266,20 @@
     block[4] = self;
     v37 = v31;
     v34 = v31;
-    dispatch_async(v33, block);
+    dispatch_async(handlerQueue2, block);
   }
 
   [(GCExtendedGamepad *)self->_extendedGamepad handleGamepadEvent:self->_event];
 }
 
-- (void)setPosition:(CGPoint)a3 forDirectionPadElement:(id)a4
+- (void)setPosition:(CGPoint)position forDirectionPadElement:(id)element
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = position.y;
+  x = position.x;
+  elementCopy = element;
   v8 = x;
   v9 = y;
-  if ([v7 isEqualToString:*MEMORY[0x277CCAFC8]])
+  if ([elementCopy isEqualToString:*MEMORY[0x277CCAFC8]])
   {
     *&v10 = fmaxf(v9, 0.0);
     [(_GCGamepadEventImpl *)self->_event setLeftThumbstickUp:v10];
@@ -301,7 +301,7 @@
     [(_GCGamepadEventImpl *)self->_event setLeftThumbstickLeft:v13];
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x277CCAFB0]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFB0]])
   {
     *&v14 = fmaxf(v9, 0.0);
     [(_GCGamepadEventImpl *)self->_event setDpadUpValue:v14];
@@ -323,7 +323,7 @@
     [(_GCGamepadEventImpl *)self->_event setDpadLeftValue:v17];
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x277CCAFF0]])
+  else if ([elementCopy isEqualToString:*MEMORY[0x277CCAFF0]])
   {
     *&v18 = fmaxf(v9, 0.0);
     [(_GCGamepadEventImpl *)self->_event setRightThumbstickUp:v18];
@@ -347,33 +347,33 @@
 
   else
   {
-    v22 = [(GCController *)self physicalInputProfile];
-    v23 = [v22 dpads];
-    v24 = [v23 objectForKeyedSubscript:v7];
+    physicalInputProfile = [(GCController *)self physicalInputProfile];
+    dpads = [physicalInputProfile dpads];
+    v24 = [dpads objectForKeyedSubscript:elementCopy];
 
     if (!v24)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"*** Unknown direction pad element '%@'.", v7];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"*** Unknown direction pad element '%@'.", elementCopy];
       v35 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
       objc_exception_throw(v35);
     }
 
-    v25 = [(GCController *)self handlerQueue];
+    handlerQueue = [(GCController *)self handlerQueue];
     v26 = v24;
-    v27 = [v26 xAxis];
+    xAxis = [v26 xAxis];
     *&v28 = v8;
-    v29 = [v27 _setValue:v25 queue:v28];
+    v29 = [xAxis _setValue:handlerQueue queue:v28];
 
-    v30 = [v26 yAxis];
+    yAxis = [v26 yAxis];
     *&v31 = v9;
-    v32 = [v30 _setValue:v25 queue:v31];
+    v32 = [yAxis _setValue:handlerQueue queue:v31];
 
     if ((v29 & 1) != 0 || v32)
     {
       [0 addObject:v26];
     }
 
-    v33 = [(GCController *)self handlerQueue];
+    handlerQueue2 = [(GCController *)self handlerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56___TCGameController_setPosition_forDirectionPadElement___block_invoke;
@@ -381,25 +381,25 @@
     block[4] = self;
     v37 = v26;
     v34 = v26;
-    dispatch_async(v33, block);
+    dispatch_async(handlerQueue2, block);
   }
 
   [(GCExtendedGamepad *)self->_extendedGamepad handleGamepadEvent:self->_event];
 }
 
-- (void)addButtonWithLabel:(id)a3
+- (void)addButtonWithLabel:(id)label
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(GCController *)self physicalInputProfile];
-  v6 = [v5 elements];
-  v7 = [v6 allKeys];
+  physicalInputProfile = [(GCController *)self physicalInputProfile];
+  elements = [physicalInputProfile elements];
+  allKeys = [elements allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -410,12 +410,12 @@ LABEL_3:
     {
       if (*v24 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v12 = *(*(&v23 + 1) + 8 * v11);
-      v13 = [v4 name];
-      LOBYTE(v12) = [v12 isEqual:v13];
+      name = [labelCopy name];
+      LOBYTE(v12) = [v12 isEqual:name];
 
       if (v12)
       {
@@ -424,7 +424,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -440,20 +440,20 @@ LABEL_3:
 LABEL_9:
 
     v14 = objc_alloc(MEMORY[0x277CCB048]);
-    v15 = [v4 name];
-    v16 = [v4 name];
-    v7 = [v14 initWithName:v15 additionalAliases:0 attributes:0 nameLocalizationKey:v16 symbolName:&stru_284DB3138 sourceAttributes:0 sourceExtendedEventField:-1];
+    name2 = [labelCopy name];
+    name3 = [labelCopy name];
+    allKeys = [v14 initWithName:name2 additionalAliases:0 attributes:0 nameLocalizationKey:name3 symbolName:&stru_284DB3138 sourceAttributes:0 sourceExtendedEventField:-1];
 
-    v17 = [(GCController *)self physicalInputProfile];
-    v18 = [v17 _buttonWithDescription:v7];
+    physicalInputProfile2 = [(GCController *)self physicalInputProfile];
+    v18 = [physicalInputProfile2 _buttonWithDescription:allKeys];
 
     v19 = getTCLogger();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(GCController *)self physicalInputProfile];
-      v21 = [v20 elements];
+      physicalInputProfile3 = [(GCController *)self physicalInputProfile];
+      elements2 = [physicalInputProfile3 elements];
       *buf = 138412290;
-      v28 = v21;
+      v28 = elements2;
       _os_log_impl(&dword_23AADD000, v19, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }
@@ -461,19 +461,19 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDirectionPadWithLabel:(id)a3
+- (void)addDirectionPadWithLabel:(id)label
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  labelCopy = label;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(GCController *)self physicalInputProfile];
-  v6 = [v5 elements];
-  v7 = [v6 allKeys];
+  physicalInputProfile = [(GCController *)self physicalInputProfile];
+  elements = [physicalInputProfile elements];
+  allKeys = [elements allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -484,12 +484,12 @@ LABEL_3:
     {
       if (*v24 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v12 = *(*(&v23 + 1) + 8 * v11);
-      v13 = [v4 name];
-      LOBYTE(v12) = [v12 isEqual:v13];
+      name = [labelCopy name];
+      LOBYTE(v12) = [v12 isEqual:name];
 
       if (v12)
       {
@@ -498,7 +498,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -514,20 +514,20 @@ LABEL_3:
 LABEL_9:
 
     v14 = objc_alloc(MEMORY[0x277CCB050]);
-    v15 = [v4 name];
-    v16 = [v4 name];
-    v7 = [v14 initWithName:v15 additionalAliases:0 attributes:0 nameLocalizationKey:v16 symbolName:&stru_284DB3138 sourceAttributes:0 sourceUpExtendedEventField:-1 sourceDownExtendedEventField:-1 sourceLeftExtendedEventField:-1 sourceRightExtendedEventField:-1];
+    name2 = [labelCopy name];
+    name3 = [labelCopy name];
+    allKeys = [v14 initWithName:name2 additionalAliases:0 attributes:0 nameLocalizationKey:name3 symbolName:&stru_284DB3138 sourceAttributes:0 sourceUpExtendedEventField:-1 sourceDownExtendedEventField:-1 sourceLeftExtendedEventField:-1 sourceRightExtendedEventField:-1];
 
-    v17 = [(GCController *)self physicalInputProfile];
-    v18 = [v17 _directionPadWithDescription:v7];
+    physicalInputProfile2 = [(GCController *)self physicalInputProfile];
+    v18 = [physicalInputProfile2 _directionPadWithDescription:allKeys];
 
     v19 = getTCLogger();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(GCController *)self physicalInputProfile];
-      v21 = [v20 elements];
+      physicalInputProfile3 = [(GCController *)self physicalInputProfile];
+      elements2 = [physicalInputProfile3 elements];
       *buf = 138412290;
-      v28 = v21;
+      v28 = elements2;
       _os_log_impl(&dword_23AADD000, v19, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
   }

@@ -19,11 +19,11 @@
 
   else
   {
-    v6 = [v4 currentItem];
-    v7 = v6;
-    if (v6)
+    currentItem = [v4 currentItem];
+    v7 = currentItem;
+    if (currentItem)
     {
-      [v6 currentTime];
+      [currentItem currentTime];
     }
 
     else

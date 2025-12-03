@@ -1,74 +1,74 @@
 @interface GKGameStatServicePrivate
-+ (id)currentFriendsPlayedList:(id)a3;
-+ (id)filterUnreportedAndHiddenAchievements:(id)a3 includeUnreported:(BOOL)a4 includeHidden:(BOOL)a5;
-- (id)ensureGameObject:(id)a3 gameDescriptor:(id)a4;
-- (id)ensureGameObjectsForDescriptors:(id)a3 moc:(id)a4;
-- (id)existingReengagementAchievement:(id)a3 context:(id)a4;
-- (id)findAchievementInternal:(id)a3 identifier:(id)a4 context:(id)a5 existingPercent:(double)a6 existingDate:(id)a7;
-- (id)getCachedAchievementListForLocalPlayer:(id)a3 context:(id)a4;
-- (id)processReengagementResults:(id)a3 localPlayer:(id)a4 expirationDate:(id)a5 context:(id)a6;
-- (void)clearAchievementsCacheWithHandler:(id)a3;
-- (void)clearLeaderboardsCacheWithHandler:(id)a3;
++ (id)currentFriendsPlayedList:(id)list;
++ (id)filterUnreportedAndHiddenAchievements:(id)achievements includeUnreported:(BOOL)unreported includeHidden:(BOOL)hidden;
+- (id)ensureGameObject:(id)object gameDescriptor:(id)descriptor;
+- (id)ensureGameObjectsForDescriptors:(id)descriptors moc:(id)moc;
+- (id)existingReengagementAchievement:(id)achievement context:(id)context;
+- (id)findAchievementInternal:(id)internal identifier:(id)identifier context:(id)context existingPercent:(double)percent existingDate:(id)date;
+- (id)getCachedAchievementListForLocalPlayer:(id)player context:(id)context;
+- (id)processReengagementResults:(id)results localPlayer:(id)player expirationDate:(id)date context:(id)context;
+- (void)clearAchievementsCacheWithHandler:(id)handler;
+- (void)clearLeaderboardsCacheWithHandler:(id)handler;
 - (void)expireGamesFriendsPlayed;
-- (void)getEntriesForLeaderboard:(id)a3 fetchOptions:(unint64_t)a4 gameDescriptor:(id)a5 localPlayer:(id)a6 playerScope:(int64_t)a7 timeScope:(int64_t)a8 range:(_NSRange)a9 players:(id)a10 handler:(id)a11;
-- (void)getGamesFriendsPlayed:(int64_t)a3 type:(id)a4 fetchOptions:(unint64_t)a5 withinSecs:(int64_t)a6 matchingBundleIDs:(id)a7 handler:(id)a8;
-- (void)getHypotheticalLeaderboardRanksForScores:(id)a3 forGameDescriptor:(id)a4 handler:(id)a5;
-- (void)getLeaderboardScoringFriendsForGameDescriptor:(id)a3 playerID:(id)a4 completionHandler:(id)a5;
-- (void)getReengagementAchievement:(id)a3;
-- (void)getReengagementAchievements:(id)a3;
-- (void)loadAchievementsForGameWithProfileFetchOptions:(id)a3 players:(id)a4 includeUnreported:(BOOL)a5 includeHidden:(BOOL)a6 profileFetchOptions:(unint64_t)a7 withCompletionHandler:(id)a8;
-- (void)loadGamesFriendsPlayed:(id)a3 matchingBundleIDs:(id)a4 handler:(id)a5;
-- (void)loadReengagementAchievements:(id)a3 handler:(id)a4;
+- (void)getEntriesForLeaderboard:(id)leaderboard fetchOptions:(unint64_t)options gameDescriptor:(id)descriptor localPlayer:(id)player playerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range players:(id)self0 handler:(id)self1;
+- (void)getGamesFriendsPlayed:(int64_t)played type:(id)type fetchOptions:(unint64_t)options withinSecs:(int64_t)secs matchingBundleIDs:(id)ds handler:(id)handler;
+- (void)getHypotheticalLeaderboardRanksForScores:(id)scores forGameDescriptor:(id)descriptor handler:(id)handler;
+- (void)getLeaderboardScoringFriendsForGameDescriptor:(id)descriptor playerID:(id)d completionHandler:(id)handler;
+- (void)getReengagementAchievement:(id)achievement;
+- (void)getReengagementAchievements:(id)achievements;
+- (void)loadAchievementsForGameWithProfileFetchOptions:(id)options players:(id)players includeUnreported:(BOOL)unreported includeHidden:(BOOL)hidden profileFetchOptions:(unint64_t)fetchOptions withCompletionHandler:(id)handler;
+- (void)loadGamesFriendsPlayed:(id)played matchingBundleIDs:(id)ds handler:(id)handler;
+- (void)loadReengagementAchievements:(id)achievements handler:(id)handler;
 @end
 
 @implementation GKGameStatServicePrivate
 
-+ (id)filterUnreportedAndHiddenAchievements:(id)a3 includeUnreported:(BOOL)a4 includeHidden:(BOOL)a5
++ (id)filterUnreportedAndHiddenAchievements:(id)achievements includeUnreported:(BOOL)unreported includeHidden:(BOOL)hidden
 {
-  v7 = a3;
+  achievementsCopy = achievements;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000BF7C0;
   v14 = &unk_100365058;
   v15 = objc_alloc_init(NSMutableDictionary);
-  v16 = a4;
-  v17 = a5;
+  unreportedCopy = unreported;
+  hiddenCopy = hidden;
   v8 = v15;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v11];
+  [achievementsCopy enumerateKeysAndObjectsUsingBlock:&v11];
 
   v9 = [v8 copy];
 
   return v9;
 }
 
-- (void)loadAchievementsForGameWithProfileFetchOptions:(id)a3 players:(id)a4 includeUnreported:(BOOL)a5 includeHidden:(BOOL)a6 profileFetchOptions:(unint64_t)a7 withCompletionHandler:(id)a8
+- (void)loadAchievementsForGameWithProfileFetchOptions:(id)options players:(id)players includeUnreported:(BOOL)unreported includeHidden:(BOOL)hidden profileFetchOptions:(unint64_t)fetchOptions withCompletionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
+  optionsCopy = options;
+  playersCopy = players;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000BFA1C;
   v19[3] = &unk_1003651C0;
   v19[4] = self;
-  v20 = v14;
-  v24 = a5;
-  v25 = a6;
-  v22 = a8;
-  v23 = a7;
-  v21 = v15;
-  v16 = v22;
-  v17 = v15;
-  v18 = v14;
+  v20 = optionsCopy;
+  unreportedCopy = unreported;
+  hiddenCopy = hidden;
+  handlerCopy = handler;
+  fetchOptionsCopy = fetchOptions;
+  v21 = playersCopy;
+  v16 = handlerCopy;
+  v17 = playersCopy;
+  v18 = optionsCopy;
   [(GKGameStatService *)self getAchievementsForGameDescriptor:v18 players:v17 handler:v19];
 }
 
-- (void)getEntriesForLeaderboard:(id)a3 fetchOptions:(unint64_t)a4 gameDescriptor:(id)a5 localPlayer:(id)a6 playerScope:(int64_t)a7 timeScope:(int64_t)a8 range:(_NSRange)a9 players:(id)a10 handler:(id)a11
+- (void)getEntriesForLeaderboard:(id)leaderboard fetchOptions:(unint64_t)options gameDescriptor:(id)descriptor localPlayer:(id)player playerScope:(int64_t)scope timeScope:(int64_t)timeScope range:(_NSRange)range players:(id)self0 handler:(id)self1
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a10;
-  v18 = a11;
+  leaderboardCopy = leaderboard;
+  descriptorCopy = descriptor;
+  playerCopy = player;
+  playersCopy = players;
+  handlerCopy = handler;
   v19 = [NSString stringWithFormat:@"%s:%d %s", "GKGameStatService.m", 3023, "[GKGameStatServicePrivate getEntriesForLeaderboard:fetchOptions:gameDescriptor:localPlayer:playerScope:timeScope:range:players:handler:]"];
   v20 = [(GKService *)self transactionGroupWithName:v19];
 
@@ -77,115 +77,115 @@
   v36[2] = sub_1000C0484;
   v36[3] = &unk_100365210;
   v36[4] = self;
-  v37 = v14;
-  v38 = v15;
-  v39 = v16;
-  v43 = a8;
-  v44 = a9;
-  v42 = a7;
-  v40 = v17;
+  v37 = leaderboardCopy;
+  v38 = descriptorCopy;
+  v39 = playerCopy;
+  timeScopeCopy = timeScope;
+  rangeCopy = range;
+  scopeCopy = scope;
+  v40 = playersCopy;
   v21 = v20;
   v41 = v21;
-  v45 = a4;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
+  optionsCopy = options;
+  v22 = playersCopy;
+  v23 = playerCopy;
+  v24 = descriptorCopy;
+  v25 = leaderboardCopy;
   [v21 perform:v36];
-  v26 = [(GKService *)self clientProxy];
-  v27 = [v26 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1000C0770;
   v33[3] = &unk_100360EB0;
   v34 = v21;
-  v35 = v18;
+  v35 = handlerCopy;
   v28 = v21;
-  v29 = v18;
-  [v28 notifyOnQueue:v27 block:v33];
+  v29 = handlerCopy;
+  [v28 notifyOnQueue:replyQueue block:v33];
 }
 
-- (void)getLeaderboardScoringFriendsForGameDescriptor:(id)a3 playerID:(id)a4 completionHandler:(id)a5
+- (void)getLeaderboardScoringFriendsForGameDescriptor:(id)descriptor playerID:(id)d completionHandler:(id)handler
 {
   v14[0] = @"game";
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 dictionaryForRequest];
+  handlerCopy = handler;
+  dCopy = d;
+  dictionaryForRequest = [descriptor dictionaryForRequest];
   v14[1] = @"player-id";
-  v15[0] = v10;
-  v15[1] = v9;
+  v15[0] = dictionaryForRequest;
+  v15[1] = dCopy;
   v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
   v12 = +[GKNetworkRequestManager commonNetworkRequestManager];
 
-  v13 = [(GKService *)self clientProxy];
-  [v12 readEntityWithRequest:v11 bagKey:@"gk-get-leaderboard-categories" includeStaleCacheData:0 clientProxy:v13 completionHandler:v8 entityMaker:&stru_100365230];
+  clientProxy = [(GKService *)self clientProxy];
+  [v12 readEntityWithRequest:v11 bagKey:@"gk-get-leaderboard-categories" includeStaleCacheData:0 clientProxy:clientProxy completionHandler:handlerCopy entityMaker:&stru_100365230];
 }
 
-- (void)getHypotheticalLeaderboardRanksForScores:(id)a3 forGameDescriptor:(id)a4 handler:(id)a5
+- (void)getHypotheticalLeaderboardRanksForScores:(id)scores forGameDescriptor:(id)descriptor handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  scoresCopy = scores;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v9)
+    if (descriptorCopy)
     {
-      if ([v8 count])
+      if ([scoresCopy count])
       {
-        v11 = [v9 bundleIdentifier];
+        bundleIdentifier = [descriptorCopy bundleIdentifier];
         v12 = [(GKService *)GKGameServicePrivate serviceFromService:self];
-        v20 = v11;
+        v20 = bundleIdentifier;
         v13 = [NSArray arrayWithObjects:&v20 count:1];
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_1000C0E94;
         v15[3] = &unk_100365280;
-        v19 = v10;
-        v16 = v8;
-        v17 = v9;
-        v18 = self;
+        v19 = handlerCopy;
+        v16 = scoresCopy;
+        v17 = descriptorCopy;
+        selfCopy = self;
         [v12 getGameStatsForPlayer:0 bundleIDs:v13 handler:v15];
       }
 
       else
       {
-        (*(v10 + 2))(v10, &__NSArray0__struct, 0);
+        (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
       }
     }
 
     else
     {
       v14 = [NSError userErrorForCode:17 underlyingError:0];
-      (*(v10 + 2))(v10, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 }
 
-- (id)ensureGameObjectsForDescriptors:(id)a3 moc:(id)a4
+- (id)ensureGameObjectsForDescriptors:(id)descriptors moc:(id)moc
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _gkMapWithBlock:&stru_1003652A0];
-  v8 = [GKGameCacheObject gamesForBundleIDs:v7 context:v6];
+  descriptorsCopy = descriptors;
+  mocCopy = moc;
+  v7 = [descriptorsCopy _gkMapWithBlock:&stru_1003652A0];
+  v8 = [GKGameCacheObject gamesForBundleIDs:v7 context:mocCopy];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000C1378;
   v11[3] = &unk_1003652C8;
-  v12 = v5;
-  v9 = v5;
+  v12 = descriptorsCopy;
+  v9 = descriptorsCopy;
   [v8 enumerateObjectsUsingBlock:v11];
 
   return v8;
 }
 
-- (id)ensureGameObject:(id)a3 gameDescriptor:(id)a4
+- (id)ensureGameObject:(id)object gameDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"bundle-id"];
-  v8 = [GKGameCacheObject gameForBundleID:v7 context:v5];
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  v7 = [descriptorCopy objectForKeyedSubscript:@"bundle-id"];
+  v8 = [GKGameCacheObject gameForBundleID:v7 context:objectCopy];
   if (v8)
   {
     v9 = v8;
@@ -193,7 +193,7 @@
 
   else
   {
-    v9 = [(GKCacheObject *)[GKGameCacheObject alloc] initWithManagedObjectContext:v5];
+    v9 = [(GKCacheObject *)[GKGameCacheObject alloc] initWithManagedObjectContext:objectCopy];
     [(GKGameCacheObject *)v9 setBundleID:v7];
     if (!v9)
     {
@@ -201,38 +201,38 @@
     }
   }
 
-  [(GKGameCacheObject *)v9 updateWithGameDescriptor:v6];
+  [(GKGameCacheObject *)v9 updateWithGameDescriptor:descriptorCopy];
 LABEL_5:
 
   return v9;
 }
 
-- (void)loadGamesFriendsPlayed:(id)a3 matchingBundleIDs:(id)a4 handler:(id)a5
+- (void)loadGamesFriendsPlayed:(id)played matchingBundleIDs:(id)ds handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  dsCopy = ds;
+  handlerCopy = handler;
+  playedCopy = played;
   v11 = +[GKNetworkRequestManager commonNetworkRequestManager];
   v12 = GKBagKeyGamesFriendsPlayed;
-  v13 = [(GKService *)self clientProxy];
+  clientProxy = [(GKService *)self clientProxy];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000C15DC;
   v16[3] = &unk_100365360;
-  v17 = v8;
-  v18 = v9;
+  v17 = dsCopy;
+  v18 = handlerCopy;
   v16[4] = self;
-  v14 = v8;
-  v15 = v9;
-  [v11 issueRequest:v10 bagKey:v12 clientProxy:v13 handler:v16];
+  v14 = dsCopy;
+  v15 = handlerCopy;
+  [v11 issueRequest:playedCopy bagKey:v12 clientProxy:clientProxy handler:v16];
 }
 
-+ (id)currentFriendsPlayedList:(id)a3
++ (id)currentFriendsPlayedList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = +[FriendsPlayedGameList _gkFetchRequest];
   v23 = 0;
-  v5 = [v3 executeFetchRequest:v4 error:&v23];
+  v5 = [listCopy executeFetchRequest:v4 error:&v23];
   v6 = v23;
   if (v6)
   {
@@ -301,7 +301,7 @@ LABEL_7:
     for (i = 1; i != v14; ++i)
     {
       v20 = [v5 objectAtIndexedSubscript:i];
-      [v3 deleteObject:v20];
+      [listCopy deleteObject:v20];
     }
   }
 
@@ -325,9 +325,9 @@ LABEL_8:
   }
 
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKGameStatService.m", 3337, "[GKGameStatServicePrivate expireGamesFriendsPlayed]"];
-  v6 = [(GKGameStatServicePrivate *)self currentLocalPlayer];
-  v7 = [v6 playerID];
-  v8 = [(GKService *)self transactionGroupWithName:v5 forPlayerID:v7];
+  currentLocalPlayer = [(GKGameStatServicePrivate *)self currentLocalPlayer];
+  playerID = [currentLocalPlayer playerID];
+  v8 = [(GKService *)self transactionGroupWithName:v5 forPlayerID:playerID];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -337,72 +337,72 @@ LABEL_8:
   [v8 performOnManagedObjectContext:v9];
 }
 
-- (void)getGamesFriendsPlayed:(int64_t)a3 type:(id)a4 fetchOptions:(unint64_t)a5 withinSecs:(int64_t)a6 matchingBundleIDs:(id)a7 handler:(id)a8
+- (void)getGamesFriendsPlayed:(int64_t)played type:(id)type fetchOptions:(unint64_t)options withinSecs:(int64_t)secs matchingBundleIDs:(id)ds handler:(id)handler
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = [(GKGameStatServicePrivate *)self currentLocalPlayer];
-  v18 = [(GKService *)self clientProxy];
-  v19 = [(GKService *)GKFriendServicePrivate serviceWithTransport:0 forClient:v18 localPlayer:v17];
+  typeCopy = type;
+  dsCopy = ds;
+  handlerCopy = handler;
+  currentLocalPlayer = [(GKGameStatServicePrivate *)self currentLocalPlayer];
+  clientProxy = [(GKService *)self clientProxy];
+  v19 = [(GKService *)GKFriendServicePrivate serviceWithTransport:0 forClient:clientProxy localPlayer:currentLocalPlayer];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000C291C;
   v24[3] = &unk_1003653B0;
-  v29 = v16;
-  v30 = a3;
-  v25 = v14;
-  v26 = self;
-  v27 = v17;
-  v28 = v15;
-  v31 = a6;
-  v32 = a5;
-  v20 = v15;
-  v21 = v17;
-  v22 = v14;
-  v23 = v16;
+  v29 = handlerCopy;
+  playedCopy = played;
+  v25 = typeCopy;
+  selfCopy = self;
+  v27 = currentLocalPlayer;
+  v28 = dsCopy;
+  secsCopy = secs;
+  optionsCopy = options;
+  v20 = dsCopy;
+  v21 = currentLocalPlayer;
+  v22 = typeCopy;
+  v23 = handlerCopy;
   [v19 getFriendsForPlayer:v21 commonFriends:0 handler:v24];
 }
 
-- (id)getCachedAchievementListForLocalPlayer:(id)a3 context:(id)a4
+- (id)getCachedAchievementListForLocalPlayer:(id)player context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [GKPlayerProfileCacheObject localPlayerInManagedObjectContext:v5];
-  v8 = [GKGameCacheObject gameForBundleID:v6 context:v5];
+  contextCopy = context;
+  playerCopy = player;
+  v7 = [GKPlayerProfileCacheObject localPlayerInManagedObjectContext:contextCopy];
+  v8 = [GKGameCacheObject gameForBundleID:playerCopy context:contextCopy];
 
-  v9 = [v7 achievementLists];
-  v10 = [NSMutableSet setWithSet:v9];
+  achievementLists = [v7 achievementLists];
+  v10 = [NSMutableSet setWithSet:achievementLists];
 
-  v11 = [v8 achievementLists];
-  [v10 intersectSet:v11];
+  achievementLists2 = [v8 achievementLists];
+  [v10 intersectSet:achievementLists2];
 
-  v12 = [v10 anyObject];
+  anyObject = [v10 anyObject];
 
-  return v12;
+  return anyObject;
 }
 
-- (id)findAchievementInternal:(id)a3 identifier:(id)a4 context:(id)a5 existingPercent:(double)a6 existingDate:(id)a7
+- (id)findAchievementInternal:(id)internal identifier:(id)identifier context:(id)context existingPercent:(double)percent existingDate:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(GKCacheObject *)GKAchievementDescriptionListCacheObject fetchRequestForContext:v14];
-  v17 = [NSPredicate predicateWithFormat:@"game.bundleID == %@", v12];
-  [v16 setPredicate:v17];
+  internalCopy = internal;
+  identifierCopy = identifier;
+  contextCopy = context;
+  dateCopy = date;
+  v16 = [(GKCacheObject *)GKAchievementDescriptionListCacheObject fetchRequestForContext:contextCopy];
+  internalCopy = [NSPredicate predicateWithFormat:@"game.bundleID == %@", internalCopy];
+  [v16 setPredicate:internalCopy];
 
-  v18 = [v14 executeFetchRequest:v16 error:0];
+  v18 = [contextCopy executeFetchRequest:v16 error:0];
   if (![v18 count])
   {
     v30 = 0;
     goto LABEL_35;
   }
 
-  v19 = [(GKGameStatServicePrivate *)self getCachedAchievementListForLocalPlayer:v12 context:v14];
-  v51 = v12;
-  v52 = v15;
+  v19 = [(GKGameStatServicePrivate *)self getCachedAchievementListForLocalPlayer:internalCopy context:contextCopy];
+  v51 = internalCopy;
+  v52 = dateCopy;
   v50 = v16;
   v53 = v19;
   v54 = v18;
@@ -412,8 +412,8 @@ LABEL_8:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v20 = [v19 entries];
-    v21 = [v20 countByEnumeratingWithState:&v59 objects:v64 count:16];
+    entries = [v19 entries];
+    v21 = [entries countByEnumeratingWithState:&v59 objects:v64 count:16];
     if (v21)
     {
       v22 = v21;
@@ -425,12 +425,12 @@ LABEL_8:
         {
           if (*v60 != v24)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(entries);
           }
 
           v26 = *(*(&v59 + 1) + 8 * i);
-          v27 = [v26 identifier];
-          v28 = [v27 isEqualToString:v13];
+          identifier = [v26 identifier];
+          v28 = [identifier isEqualToString:identifierCopy];
 
           if (v28)
           {
@@ -440,7 +440,7 @@ LABEL_8:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v59 objects:v64 count:16];
+        v22 = [entries countByEnumeratingWithState:&v59 objects:v64 count:16];
       }
 
       while (v22);
@@ -465,13 +465,13 @@ LABEL_18:
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v32 = [v31 entries];
-  v33 = [v32 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  entries2 = [v31 entries];
+  v33 = [entries2 countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v33)
   {
     v34 = v33;
     v48 = v31;
-    v49 = v14;
+    v49 = contextCopy;
     v35 = 0;
     v36 = *v56;
     do
@@ -480,12 +480,12 @@ LABEL_18:
       {
         if (*v56 != v36)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(entries2);
         }
 
         v38 = *(*(&v55 + 1) + 8 * j);
-        v39 = [v38 identifier];
-        v40 = [v39 isEqualToString:v13];
+        identifier2 = [v38 identifier];
+        v40 = [identifier2 isEqualToString:identifierCopy];
 
         if (v40)
         {
@@ -495,43 +495,43 @@ LABEL_18:
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v34 = [entries2 countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v34);
 
     if (v35)
     {
-      v42 = [v35 internalRepresentation];
+      internalRepresentation = [v35 internalRepresentation];
       [v23 percentComplete];
       v44 = v43;
-      v14 = v49;
-      if (v44 >= a6)
+      contextCopy = v49;
+      if (v44 >= percent)
       {
         [v23 percentComplete];
-        [v42 setPercentComplete:v45];
-        v46 = [v23 lastReportedDate];
-        [v42 setLastReportedDate:v46];
+        [internalRepresentation setPercentComplete:v45];
+        lastReportedDate = [v23 lastReportedDate];
+        [internalRepresentation setLastReportedDate:lastReportedDate];
       }
 
       else
       {
-        *&v44 = a6;
+        *&v44 = percent;
         [v23 setPercentComplete:v44];
         [v23 setLastReportedDate:v52];
-        [v42 setPercentComplete:a6];
-        [v42 setLastReportedDate:v52];
+        [internalRepresentation setPercentComplete:percent];
+        [internalRepresentation setLastReportedDate:v52];
       }
 
       v31 = v48;
-      v30 = v42;
+      v30 = internalRepresentation;
     }
 
     else
     {
       v30 = 0;
       v31 = v48;
-      v14 = v49;
+      contextCopy = v49;
     }
   }
 
@@ -542,8 +542,8 @@ LABEL_18:
     v30 = 0;
   }
 
-  v12 = v51;
-  v15 = v52;
+  internalCopy = v51;
+  dateCopy = v52;
   v16 = v50;
   v18 = v54;
 LABEL_35:
@@ -551,16 +551,16 @@ LABEL_35:
   return v30;
 }
 
-- (id)existingReengagementAchievement:(id)a3 context:(id)a4
+- (id)existingReengagementAchievement:(id)achievement context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  achievementCopy = achievement;
+  contextCopy = context;
   v7 = +[ReengagementAchievementEntry _gkFetchRequest];
-  v8 = [NSPredicate predicateWithFormat:@"playerID == %@", v5];
-  [v7 setPredicate:v8];
+  achievementCopy = [NSPredicate predicateWithFormat:@"playerID == %@", achievementCopy];
+  [v7 setPredicate:achievementCopy];
 
   v22 = 0;
-  v9 = [v6 executeFetchRequest:v7 error:&v22];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v22];
   v10 = v22;
   if (v10)
   {
@@ -607,7 +607,7 @@ LABEL_35:
         do
         {
           v20 = [v9 objectAtIndexedSubscript:v19];
-          [v6 deleteObject:v20];
+          [contextCopy deleteObject:v20];
 
           ++v19;
         }
@@ -622,19 +622,19 @@ LABEL_35:
   return v13;
 }
 
-- (id)processReengagementResults:(id)a3 localPlayer:(id)a4 expirationDate:(id)a5 context:(id)a6
+- (id)processReengagementResults:(id)results localPlayer:(id)player expirationDate:(id)date context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  resultsCopy = results;
+  playerCopy = player;
+  dateCopy = date;
+  contextCopy = context;
+  if ([resultsCopy count])
   {
-    v14 = [v10 objectAtIndexedSubscript:0];
+    v14 = [resultsCopy objectAtIndexedSubscript:0];
     v15 = [v14 objectForKeyedSubscript:@"achievements"];
     if ([v15 count])
     {
-      v46 = v12;
+      v46 = dateCopy;
       v45 = [v14 objectForKeyedSubscript:@"game"];
       v44 = [v45 objectForKeyedSubscript:@"bundle-id"];
       v16 = [v15 objectAtIndexedSubscript:0];
@@ -643,11 +643,11 @@ LABEL_35:
       v40 = [v16 objectForKeyedSubscript:@"timestamp"];
       [v40 doubleValue];
       v19 = [NSDate dateWithTimeIntervalSince1970:v18 / 1000.0];
-      v20 = v11;
+      v20 = playerCopy;
       v21 = v19;
       v47 = v20;
-      v22 = [v20 playerID];
-      v23 = [(GKGameStatServicePrivate *)self existingReengagementAchievement:v22 context:v13];
+      playerID = [v20 playerID];
+      v23 = [(GKGameStatServicePrivate *)self existingReengagementAchievement:playerID context:contextCopy];
 
       v43 = v14;
       v41 = v15;
@@ -677,7 +677,7 @@ LABEL_35:
           v33 = GKOSLoggers();
         }
 
-        v39 = self;
+        selfCopy = self;
         v34 = os_log_GKDaemon;
         if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
         {
@@ -687,26 +687,26 @@ LABEL_35:
 
         v35 = [ReengagementAchievementEntry alloc];
         v36 = +[ReengagementAchievementEntry entity];
-        v23 = [(ReengagementAchievementEntry *)v35 initWithEntity:v36 insertIntoManagedObjectContext:v13];
+        v23 = [(ReengagementAchievementEntry *)v35 initWithEntity:v36 insertIntoManagedObjectContext:contextCopy];
 
         v26 = v44;
         [(ReengagementAchievementEntry *)v23 setBundleID:v44];
         v27 = v42;
         [(ReengagementAchievementEntry *)v23 setIdentifier:v42];
-        v37 = [v47 playerID];
-        [(ReengagementAchievementEntry *)v23 setPlayerID:v37];
+        playerID2 = [v47 playerID];
+        [(ReengagementAchievementEntry *)v23 setPlayerID:playerID2];
 
-        self = v39;
+        self = selfCopy;
       }
 
       [(ReengagementAchievementEntry *)v23 setPercentComplete:v17];
       [(ReengagementAchievementEntry *)v23 setLastReportedDate:v21];
       [(ReengagementAchievementEntry *)v23 setExpirationDate:v46];
       [v17 doubleValue];
-      v30 = [(GKGameStatServicePrivate *)self findAchievementInternal:v26 identifier:v27 context:v13 existingPercent:v21 existingDate:?];
+      v30 = [(GKGameStatServicePrivate *)self findAchievementInternal:v26 identifier:v27 context:contextCopy existingPercent:v21 existingDate:?];
 
-      v12 = v46;
-      v11 = v47;
+      dateCopy = v46;
+      playerCopy = v47;
       v14 = v43;
       v15 = v41;
     }
@@ -749,45 +749,45 @@ LABEL_35:
   return v30;
 }
 
-- (void)loadReengagementAchievements:(id)a3 handler:(id)a4
+- (void)loadReengagementAchievements:(id)achievements handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  achievementsCopy = achievements;
+  handlerCopy = handler;
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = +[GKNetworkRequestManager commonNetworkRequestManager];
-  v10 = [(GKService *)self clientProxy];
+  clientProxy = [(GKService *)self clientProxy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000C3E18;
   v13[3] = &unk_100363A58;
-  v14 = v6;
-  v15 = v7;
+  v14 = achievementsCopy;
+  v15 = handlerCopy;
   v13[4] = self;
-  v11 = v6;
-  v12 = v7;
-  [v9 issueRequest:v8 bagKey:@"gk-reengagement-achievements" clientProxy:v10 handler:v13];
+  v11 = achievementsCopy;
+  v12 = handlerCopy;
+  [v9 issueRequest:v8 bagKey:@"gk-reengagement-achievements" clientProxy:clientProxy handler:v13];
 }
 
-- (void)getReengagementAchievements:(id)a3
+- (void)getReengagementAchievements:(id)achievements
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000C4848;
   v5[3] = &unk_100365450;
-  v6 = a3;
-  v4 = v6;
+  achievementsCopy = achievements;
+  v4 = achievementsCopy;
   [(GKGameStatServicePrivate *)self getReengagementAchievement:v5];
 }
 
-- (void)getReengagementAchievement:(id)a3
+- (void)getReengagementAchievement:(id)achievement
 {
-  v4 = a3;
-  if (v4)
+  achievementCopy = achievement;
+  if (achievementCopy)
   {
     v5 = +[GKPlayerCredentialController sharedController];
-    v6 = [(GKService *)self clientProxy];
-    v7 = [v5 pushCredentialForEnvironment:{objc_msgSend(v6, "environment")}];
-    v8 = [v7 playerInternal];
+    clientProxy = [(GKService *)self clientProxy];
+    v7 = [v5 pushCredentialForEnvironment:{objc_msgSend(clientProxy, "environment")}];
+    playerInternal = [v7 playerInternal];
 
     v9 = [NSString stringWithFormat:@"%s:%d %s", "GKGameStatService.m", 3650, "[GKGameStatServicePrivate getReengagementAchievement:]"];
     v10 = [(GKService *)self transactionGroupWithName:v9];
@@ -797,18 +797,18 @@ LABEL_35:
     v13[2] = sub_1000C49D4;
     v13[3] = &unk_1003636E0;
     v13[4] = self;
-    v14 = v8;
+    v14 = playerInternal;
     v15 = v10;
-    v16 = v4;
+    v16 = achievementCopy;
     v11 = v10;
-    v12 = v8;
+    v12 = playerInternal;
     [v11 performOnManagedObjectContext:v13];
   }
 }
 
-- (void)clearAchievementsCacheWithHandler:(id)a3
+- (void)clearAchievementsCacheWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKGameStatService.m", 3682, "[GKGameStatServicePrivate clearAchievementsCacheWithHandler:]"];
   v6 = [(GKService *)self transactionGroupWithName:v5];
 
@@ -826,22 +826,22 @@ LABEL_35:
   v8 = v7;
   v17 = v8;
   [v8 performOnManagedObjectContext:v16];
-  v9 = [(GKService *)self clientProxy];
-  v10 = [v9 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000C5358;
   v13[3] = &unk_100360EB0;
   v14 = v8;
-  v15 = v4;
+  v15 = handlerCopy;
   v11 = v8;
-  v12 = v4;
-  [v11 notifyOnQueue:v10 block:v13];
+  v12 = handlerCopy;
+  [v11 notifyOnQueue:replyQueue block:v13];
 }
 
-- (void)clearLeaderboardsCacheWithHandler:(id)a3
+- (void)clearLeaderboardsCacheWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSString stringWithFormat:@"%s:%d %s", "GKGameStatService.m", 3711, "[GKGameStatServicePrivate clearLeaderboardsCacheWithHandler:]"];
   v6 = [(GKService *)self transactionGroupWithName:v5];
 
@@ -852,17 +852,17 @@ LABEL_35:
   v7 = v6;
   v16 = v7;
   [v7 performOnManagedObjectContext:v15];
-  v8 = [(GKService *)self clientProxy];
-  v9 = [v8 replyQueue];
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000C562C;
   v12[3] = &unk_100360EB0;
   v13 = v7;
-  v14 = v4;
+  v14 = handlerCopy;
   v10 = v7;
-  v11 = v4;
-  [v10 notifyOnQueue:v9 block:v12];
+  v11 = handlerCopy;
+  [v10 notifyOnQueue:replyQueue block:v12];
 }
 
 @end

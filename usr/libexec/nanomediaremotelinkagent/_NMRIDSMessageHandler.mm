@@ -1,7 +1,7 @@
 @interface _NMRIDSMessageHandler
 - (SEL)action;
 - (id)target;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation _NMRIDSMessageHandler
@@ -26,19 +26,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

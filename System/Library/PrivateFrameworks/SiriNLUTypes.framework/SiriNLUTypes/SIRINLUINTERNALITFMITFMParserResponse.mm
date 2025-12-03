@@ -1,34 +1,34 @@
 @interface SIRINLUINTERNALITFMITFMParserResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addHypotheses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClassificationLabel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHypotheses:(id)hypotheses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClassificationLabel:(BOOL)label;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALITFMITFMParserResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if ((v6 & 2) != 0)
   {
-    self->_classificationLabel = *(v4 + 32);
+    self->_classificationLabel = *(fromCopy + 32);
     *&self->_has |= 2u;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
   }
 
   if (v6)
   {
-    self->_classificationProbability = *(v4 + 2);
+    self->_classificationProbability = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -130,18 +130,18 @@ LABEL_9:
   return v10 ^ [(NSMutableArray *)self->_hypotheses hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_4;
     }
@@ -151,21 +151,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_18;
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (self->_classificationLabel)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_18;
   }
@@ -173,25 +173,25 @@ LABEL_18:
 LABEL_4:
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_classificationProbability != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_classificationProbability != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_18;
   }
 
   parser = self->_parser;
-  if (parser | *(v4 + 3) && ![(SIRINLUEXTERNALParser *)parser isEqual:?])
+  if (parser | *(equalCopy + 3) && ![(SIRINLUEXTERNALParser *)parser isEqual:?])
   {
     goto LABEL_18;
   }
 
   hypotheses = self->_hypotheses;
-  if (hypotheses | *(v4 + 2))
+  if (hypotheses | *(equalCopy + 2))
   {
     v9 = [(NSMutableArray *)hypotheses isEqual:?];
   }
@@ -206,10 +206,10 @@ LABEL_19:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -225,7 +225,7 @@ LABEL_19:
     *(v5 + 36) |= 1u;
   }
 
-  v8 = [(SIRINLUEXTERNALParser *)self->_parser copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALParser *)self->_parser copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -248,7 +248,7 @@ LABEL_19:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addHypotheses:v15];
       }
 
@@ -262,36 +262,36 @@ LABEL_19:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[32] = self->_classificationLabel;
-    v4[36] |= 2u;
+    toCopy[32] = self->_classificationLabel;
+    toCopy[36] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = LODWORD(self->_classificationProbability);
-    v4[36] |= 1u;
+    *(toCopy + 2) = LODWORD(self->_classificationProbability);
+    toCopy[36] |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_parser)
   {
-    [v4 setParser:?];
+    [toCopy setParser:?];
   }
 
   if ([(SIRINLUINTERNALITFMITFMParserResponse *)self hypothesesCount])
   {
     [v10 clearHypotheses];
-    v6 = [(SIRINLUINTERNALITFMITFMParserResponse *)self hypothesesCount];
-    if (v6)
+    hypothesesCount = [(SIRINLUINTERNALITFMITFMParserResponse *)self hypothesesCount];
+    if (hypothesesCount)
     {
-      v7 = v6;
+      v7 = hypothesesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SIRINLUINTERNALITFMITFMParserResponse *)self hypothesesAtIndex:i];
@@ -301,10 +301,10 @@ LABEL_19:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -359,12 +359,12 @@ LABEL_19:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_classificationLabel];
-    [v3 setObject:v6 forKey:@"classification_label"];
+    [dictionary setObject:v6 forKey:@"classification_label"];
 
     has = self->_has;
   }
@@ -373,14 +373,14 @@ LABEL_19:
   {
     *&v4 = self->_classificationProbability;
     v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-    [v3 setObject:v7 forKey:@"classification_probability"];
+    [dictionary setObject:v7 forKey:@"classification_probability"];
   }
 
   parser = self->_parser;
   if (parser)
   {
-    v9 = [(SIRINLUEXTERNALParser *)parser dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"parser"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALParser *)parser dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"parser"];
   }
 
   if ([(NSMutableArray *)self->_hypotheses count])
@@ -405,8 +405,8 @@ LABEL_19:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -415,12 +415,12 @@ LABEL_19:
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"hypotheses"];
+    [dictionary setObject:v10 forKey:@"hypotheses"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -429,33 +429,33 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALITFMITFMParserResponse;
   v4 = [(SIRINLUINTERNALITFMITFMParserResponse *)&v8 description];
-  v5 = [(SIRINLUINTERNALITFMITFMParserResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALITFMITFMParserResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addHypotheses:(id)a3
+- (void)addHypotheses:(id)hypotheses
 {
-  v4 = a3;
+  hypothesesCopy = hypotheses;
   hypotheses = self->_hypotheses;
-  v8 = v4;
+  v8 = hypothesesCopy;
   if (!hypotheses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_hypotheses;
     self->_hypotheses = v6;
 
-    v4 = v8;
+    hypothesesCopy = v8;
     hypotheses = self->_hypotheses;
   }
 
-  [(NSMutableArray *)hypotheses addObject:v4];
+  [(NSMutableArray *)hypotheses addObject:hypothesesCopy];
 }
 
-- (void)setHasClassificationLabel:(BOOL)a3
+- (void)setHasClassificationLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 2;
   }

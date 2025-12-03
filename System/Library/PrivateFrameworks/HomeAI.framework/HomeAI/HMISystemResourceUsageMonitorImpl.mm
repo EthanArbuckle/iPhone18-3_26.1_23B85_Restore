@@ -1,29 +1,29 @@
 @interface HMISystemResourceUsageMonitorImpl
 - (HMISystemResourceUsage)currentSystemResourceUsage;
 - (HMISystemResourceUsageMonitorDelegate)delegate;
-- (HMISystemResourceUsageMonitorImpl)initWithProductClass:(int64_t)a3 workQueue:(id)a4;
+- (HMISystemResourceUsageMonitorImpl)initWithProductClass:(int64_t)class workQueue:(id)queue;
 - (float)maxAnalysisFPS;
 - (unint64_t)maxNumberOfAnalyzers;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 @end
 
 @implementation HMISystemResourceUsageMonitorImpl
 
-- (HMISystemResourceUsageMonitorImpl)initWithProductClass:(int64_t)a3 workQueue:(id)a4
+- (HMISystemResourceUsageMonitorImpl)initWithProductClass:(int64_t)class workQueue:(id)queue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HMISystemResourceUsageMonitorImpl;
   v8 = [(HMISystemResourceUsageMonitorImpl *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_workQueue, a4);
-    if (a3 == 3)
+    objc_storeStrong(&v8->_workQueue, queue);
+    if (class == 3)
     {
-      v10 = [[HMISystemResourceUsageMonitoriPad alloc] initWithWorkQueue:v7];
+      v10 = [[HMISystemResourceUsageMonitoriPad alloc] initWithWorkQueue:queueCopy];
       resourceUsageMonitor = v9->_resourceUsageMonitor;
       v9->_resourceUsageMonitor = v10;
     }
@@ -52,65 +52,65 @@
   return v9;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  workQueue = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
-  [v6 setDelegate:v4];
+  resourceUsageMonitor = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
+  [resourceUsageMonitor setDelegate:delegateCopy];
 }
 
 - (HMISystemResourceUsageMonitorDelegate)delegate
 {
-  v3 = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
-  v5 = [v4 delegate];
+  resourceUsageMonitor = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
+  delegate = [resourceUsageMonitor delegate];
 
-  return v5;
+  return delegate;
 }
 
 - (void)start
 {
-  v3 = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
-  [v4 start];
+  resourceUsageMonitor = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
+  [resourceUsageMonitor start];
 }
 
 - (HMISystemResourceUsage)currentSystemResourceUsage
 {
-  v3 = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
-  v5 = [v4 currentSystemResourceUsage];
+  resourceUsageMonitor = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
+  currentSystemResourceUsage = [resourceUsageMonitor currentSystemResourceUsage];
 
-  return v5;
+  return currentSystemResourceUsage;
 }
 
 - (unint64_t)maxNumberOfAnalyzers
 {
-  v3 = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
-  v5 = [v4 maxNumberOfAnalyzers];
+  resourceUsageMonitor = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
+  maxNumberOfAnalyzers = [resourceUsageMonitor maxNumberOfAnalyzers];
 
-  return v5;
+  return maxNumberOfAnalyzers;
 }
 
 - (float)maxAnalysisFPS
 {
-  v3 = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMISystemResourceUsageMonitorImpl *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
-  [v4 maxAnalysisFPS];
+  resourceUsageMonitor = [(HMISystemResourceUsageMonitorImpl *)self resourceUsageMonitor];
+  [resourceUsageMonitor maxAnalysisFPS];
   v6 = v5;
 
   return v6;

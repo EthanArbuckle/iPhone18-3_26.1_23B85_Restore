@@ -9,25 +9,25 @@
 - (TSDBezierNode)lastNode;
 - (TSDBezierPath)bezierPath;
 - (TSDBezierSubpath)init;
-- (double)distanceToPoint:(CGPoint)a3 elementIndex:(unint64_t *)a4 tValue:(double *)a5 threshold:(double)a6;
-- (id)bezierNodeUnderPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)distanceToPoint:(CGPoint)point elementIndex:(unint64_t *)index tValue:(double *)value threshold:(double)threshold;
+- (id)bezierNodeUnderPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)insertNodeAtPoint:(CGPoint)a3 tolerance:(double)a4;
-- (id)nodeAfterNode:(id)a3;
-- (id)nodePriorToNode:(id)a3;
-- (id)splitEdgeAtIndex:(unint64_t)a3;
-- (void)appendToBezierPath:(id)a3 selectedNodesOnly:(BOOL)a4 fromIndex:(unint64_t)a5;
+- (id)insertNodeAtPoint:(CGPoint)point tolerance:(double)tolerance;
+- (id)nodeAfterNode:(id)node;
+- (id)nodePriorToNode:(id)node;
+- (id)splitEdgeAtIndex:(unint64_t)index;
+- (void)appendToBezierPath:(id)path selectedNodesOnly:(BOOL)only fromIndex:(unint64_t)index;
 - (void)convertToHobby;
 - (void)dealloc;
 - (void)deleteSelectedNodes;
 - (void)deselectAllNodes;
-- (void)offsetSelectedEdgesByDelta:(CGPoint)a3;
-- (void)offsetSelectedNodesByDelta:(CGPoint)a3;
+- (void)offsetSelectedEdgesByDelta:(CGPoint)delta;
+- (void)offsetSelectedNodesByDelta:(CGPoint)delta;
 - (void)reverseDirection;
 - (void)selectAllNodes;
-- (void)smoothNode:(id)a3;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)smoothNode:(id)node;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSDBezierSubpath
@@ -45,7 +45,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setNodes:{objc_msgSend(objc_alloc(MEMORY[0x277CBEB18]), "initWithArray:copyItems:", -[TSDBezierSubpath nodes](self, "nodes"), 1)}];
@@ -81,10 +81,10 @@
 - (BOOL)isRectangular
 {
   v43[4] = *MEMORY[0x277D85DE8];
-  v3 = [(TSDBezierSubpath *)self isClosed];
-  if (!v3)
+  isClosed = [(TSDBezierSubpath *)self isClosed];
+  if (!isClosed)
   {
-    return v3;
+    return isClosed;
   }
 
   if ([(NSMutableArray *)self->mNodes count]!= 4)
@@ -96,8 +96,8 @@
   v4 = 0;
   do
   {
-    v3 = [v43[v4] isCollapsed];
-    if (v3)
+    isClosed = [v43[v4] isCollapsed];
+    if (isClosed)
     {
       v5 = v4 >= 3;
     }
@@ -111,7 +111,7 @@
   }
 
   while (!v5);
-  if (v3)
+  if (isClosed)
   {
     v6 = 0;
     v7 = v43;
@@ -156,8 +156,8 @@
       do
       {
         v39 = v38;
-        LOBYTE(v3) = TSDNearlyEqualPoints(*(v26 - 1), *v26, v35, v37);
-        if (v3)
+        LOBYTE(isClosed) = TSDNearlyEqualPoints(*(v26 - 1), *v26, v35, v37);
+        if (isClosed)
         {
           break;
         }
@@ -167,27 +167,27 @@
       }
 
       while (v39);
-      return v3;
+      return isClosed;
     }
 
 LABEL_23:
-    LOBYTE(v3) = 0;
+    LOBYTE(isClosed) = 0;
   }
 
-  return v3;
+  return isClosed;
 }
 
 - (BOOL)isCircular
 {
-  v3 = [(TSDBezierSubpath *)self isClosed];
-  if (v3)
+  isClosed = [(TSDBezierSubpath *)self isClosed];
+  if (isClosed)
   {
-    v4 = [(TSDBezierSubpath *)self bezierPath];
+    bezierPath = [(TSDBezierSubpath *)self bezierPath];
 
-    LOBYTE(v3) = [(TSDBezierPath *)v4 isCircular];
+    LOBYTE(isClosed) = [(TSDBezierPath *)bezierPath isCircular];
   }
 
-  return v3;
+  return isClosed;
 }
 
 - (TSDBezierPath)bezierPath
@@ -197,22 +197,22 @@ LABEL_23:
   return v3;
 }
 
-- (void)appendToBezierPath:(id)a3 selectedNodesOnly:(BOOL)a4 fromIndex:(unint64_t)a5
+- (void)appendToBezierPath:(id)path selectedNodesOnly:(BOOL)only fromIndex:(unint64_t)index
 {
-  v6 = a4;
+  onlyCopy = only;
   v9 = [(NSMutableArray *)self->mNodes count];
   if (v9)
   {
     v10 = v9;
-    v11 = a5 == 0 && self->mClosed;
-    v12 = [(NSMutableArray *)self->mNodes objectAtIndexedSubscript:a5];
+    v11 = index == 0 && self->mClosed;
+    v12 = [(NSMutableArray *)self->mNodes objectAtIndexedSubscript:index];
     [v12 nodePoint];
     v14 = v13;
     v16 = v15;
-    [a3 moveToPoint:?];
+    [path moveToPoint:?];
     v17 = 0;
     v18 = v10 + self->mClosed;
-    v19 = a5 + 1;
+    v19 = index + 1;
     do
     {
       if (v19 >= v18)
@@ -227,7 +227,7 @@ LABEL_23:
       [v12 nodePoint];
       v14 = v23;
       v16 = v24;
-      if (!v6 || [v22 isSelected] && objc_msgSend(v12, "isSelected"))
+      if (!onlyCopy || [v22 isSelected] && objc_msgSend(v12, "isSelected"))
       {
         [v22 outControlPoint];
         v26 = v25;
@@ -237,17 +237,17 @@ LABEL_23:
         v32 = v31;
         if (v17)
         {
-          [a3 moveToPoint:{v21, v20}];
+          [path moveToPoint:{v21, v20}];
         }
 
         if (TSDNearlyEqualPoints(v21, v20, v26, v28) && TSDNearlyEqualPoints(v30, v32, v14, v16))
         {
-          [a3 lineToPoint:{v14, v16}];
+          [path lineToPoint:{v14, v16}];
         }
 
         else
         {
-          [a3 curveToPoint:v14 controlPoint1:v16 controlPoint2:{v26, v28, v30, v32}];
+          [path curveToPoint:v14 controlPoint1:v16 controlPoint2:{v26, v28, v30, v32}];
         }
 
         v17 = 0;
@@ -266,33 +266,33 @@ LABEL_23:
     if (v11)
     {
 
-      [a3 closePath];
+      [path closePath];
     }
   }
 }
 
 - (void)reverseDirection
 {
-  v3 = [(NSMutableArray *)self->mNodes reverseObjectEnumerator];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mNodes reverseObjectEnumerator];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [v3 nextObject];
-  if (v4)
+  nextObject = [reverseObjectEnumerator nextObject];
+  if (nextObject)
   {
-    v5 = v4;
+    nextObject2 = nextObject;
     do
     {
-      [v5 swapControlPoints];
-      [v6 addObject:v5];
-      v5 = [v3 nextObject];
+      [nextObject2 swapControlPoints];
+      [v6 addObject:nextObject2];
+      nextObject2 = [reverseObjectEnumerator nextObject];
     }
 
-    while (v5);
+    while (nextObject2);
   }
 
   [(TSDBezierSubpath *)self setNodes:v6];
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -315,10 +315,10 @@ LABEL_23:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = *&a3->c;
-        v11[0] = *&a3->a;
+        v10 = *&transform->c;
+        v11[0] = *&transform->a;
         v11[1] = v10;
-        v11[2] = *&a3->tx;
+        v11[2] = *&transform->tx;
         [v9 transformUsingAffineTransform:v11];
       }
 
@@ -329,9 +329,9 @@ LABEL_23:
   }
 }
 
-- (id)nodePriorToNode:(id)a3
+- (id)nodePriorToNode:(id)node
 {
-  v4 = [(NSMutableArray *)self->mNodes indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->mNodes indexOfObject:node];
   v5 = v4 - 1;
   if (v4 < 1)
   {
@@ -356,9 +356,9 @@ LABEL_23:
   }
 }
 
-- (id)nodeAfterNode:(id)a3
+- (id)nodeAfterNode:(id)node
 {
-  v4 = [(NSMutableArray *)self->mNodes indexOfObject:a3]+ 1;
+  v4 = [(NSMutableArray *)self->mNodes indexOfObject:node]+ 1;
   if (v4 >= [(NSMutableArray *)self->mNodes count])
   {
     if (!self->mClosed)
@@ -389,9 +389,9 @@ LABEL_23:
   }
 }
 
-- (void)offsetSelectedNodesByDelta:(CGPoint)a3
+- (void)offsetSelectedNodesByDelta:(CGPoint)delta
 {
-  x = a3.x;
+  x = delta.x;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
@@ -427,79 +427,79 @@ LABEL_23:
   }
 }
 
-- (void)offsetSelectedEdgesByDelta:(CGPoint)a3
+- (void)offsetSelectedEdgesByDelta:(CGPoint)delta
 {
-  x = a3.x;
-  v5 = [(NSMutableArray *)self->mNodes objectEnumerator];
-  v6 = [-[NSMutableArray lastObject](self->mNodes "lastObject")];
-  v7 = [v5 nextObject];
-  if (v7)
+  x = delta.x;
+  objectEnumerator = [(NSMutableArray *)self->mNodes objectEnumerator];
+  isSelected = [-[NSMutableArray lastObject](self->mNodes "lastObject")];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    nextObject2 = nextObject;
     do
     {
-      if ((v6 & 1) != 0 || [v8 isSelected])
+      if ((isSelected & 1) != 0 || [nextObject2 isSelected])
       {
-        [v8 nodePoint];
-        [v8 moveToPoint:{TSDAddPoints(v9, v10, x)}];
-        v6 = [v8 isSelected];
+        [nextObject2 nodePoint];
+        [nextObject2 moveToPoint:{TSDAddPoints(v9, v10, x)}];
+        isSelected = [nextObject2 isSelected];
       }
 
       else
       {
-        v6 = 0;
+        isSelected = 0;
       }
 
-      v8 = [v5 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v8);
+    while (nextObject2);
   }
 }
 
 - (BOOL)allNodesSelected
 {
-  v2 = [(NSMutableArray *)self->mNodes reverseObjectEnumerator];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mNodes reverseObjectEnumerator];
   do
   {
-    v3 = [v2 nextObject];
-    v4 = v3;
+    nextObject = [reverseObjectEnumerator nextObject];
+    v4 = nextObject;
   }
 
-  while (v3 && ([v3 isSelected] & 1) != 0);
+  while (nextObject && ([nextObject isSelected] & 1) != 0);
   return v4 == 0;
 }
 
 - (BOOL)hasSelectedNode
 {
-  v2 = [(NSMutableArray *)self->mNodes reverseObjectEnumerator];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mNodes reverseObjectEnumerator];
   do
   {
-    v3 = [v2 nextObject];
-    v4 = v3;
+    nextObject = [reverseObjectEnumerator nextObject];
+    v4 = nextObject;
   }
 
-  while (v3 && ![v3 isSelected]);
+  while (nextObject && ![nextObject isSelected]);
   return v4 != 0;
 }
 
 - (BOOL)canDeleteSelectedNodes
 {
-  v2 = [(NSMutableArray *)self->mNodes objectEnumerator];
+  objectEnumerator = [(NSMutableArray *)self->mNodes objectEnumerator];
   v3 = 0;
   v4 = 0;
   do
   {
-    v5 = [v2 nextObject];
-    v6 = v5;
-    if (!v5)
+    nextObject = [objectEnumerator nextObject];
+    v6 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    v7 = [v5 isSelected];
-    v3 |= v7;
-    v4 += v7 ^ 1u;
+    isSelected = [nextObject isSelected];
+    v3 |= isSelected;
+    v4 += isSelected ^ 1u;
   }
 
   while ((v3 & 1) == 0 || v4 < 2);
@@ -508,23 +508,23 @@ LABEL_23:
 
 - (void)deleteSelectedNodes
 {
-  v3 = [(NSMutableArray *)self->mNodes objectEnumerator];
+  objectEnumerator = [(NSMutableArray *)self->mNodes objectEnumerator];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 nextObject];
-  if (v5)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      if (([v6 isSelected] & 1) == 0)
+      if (([nextObject2 isSelected] & 1) == 0)
       {
-        [(NSMutableArray *)v4 addObject:v6];
+        [(NSMutableArray *)v4 addObject:nextObject2];
       }
 
-      v6 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
   self->mNodes = v4;
@@ -599,7 +599,7 @@ LABEL_23:
   }
 }
 
-- (double)distanceToPoint:(CGPoint)a3 elementIndex:(unint64_t *)a4 tValue:(double *)a5 threshold:(double)a6
+- (double)distanceToPoint:(CGPoint)point elementIndex:(unint64_t *)index tValue:(double *)value threshold:(double)threshold
 {
   v55 = *MEMORY[0x277D85DE8];
   v10 = [(NSMutableArray *)self->mNodes count];
@@ -614,8 +614,8 @@ LABEL_23:
   v14 = v13;
   v16 = v15;
   v17 = v11 + self->mClosed;
-  v44 = a6 * a6;
-  if (v17 >= 2 && a6 * a6 < 1.79769313e308)
+  v44 = threshold * threshold;
+  if (v17 >= 2 && threshold * threshold < 1.79769313e308)
   {
     v19 = 0;
     v20 = 0.0;
@@ -641,9 +641,9 @@ LABEL_23:
         v48.f64[1] = v16;
         v49 = v26;
         v50 = v28;
-        x = a3.x;
-        y = a3.y;
-        TSDNearestPointOnLineToPoint(v48.f64, a3.x, a3.y);
+        x = point.x;
+        y = point.y;
+        TSDNearestPointOnLineToPoint(v48.f64, point.x, point.y);
         v40 = v39;
         v41 = TSDMixPoints(v48.f64[0], v48.f64[1], v49, v50, v39);
       }
@@ -658,9 +658,9 @@ LABEL_23:
         v52 = v36;
         v53 = v26;
         v54 = v28;
-        x = a3.x;
-        y = a3.y;
-        v40 = TSDNearestPointOnCurveToPoint(&v48, a3.x, a3.y, 1.0);
+        x = point.x;
+        y = point.y;
+        v40 = TSDNearestPointOnCurveToPoint(&v48, point.x, point.y, 1.0);
         v41 = TSDPointOnCurve(&v48, v40);
       }
 
@@ -695,63 +695,63 @@ LABEL_23:
     v21 = 1.79769313e308;
   }
 
-  if (a4)
+  if (index)
   {
-    *a4 = v19;
+    *index = v19;
   }
 
-  if (a5)
+  if (value)
   {
-    *a5 = v20;
+    *value = v20;
   }
 
   return sqrt(v21);
 }
 
-- (id)bezierNodeUnderPoint:(CGPoint)a3 withTransform:(CGAffineTransform *)a4 andTolerance:(double)a5 returningType:(int64_t *)a6
+- (id)bezierNodeUnderPoint:(CGPoint)point withTransform:(CGAffineTransform *)transform andTolerance:(double)tolerance returningType:(int64_t *)type
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = [(NSMutableArray *)[(TSDBezierSubpath *)self nodes] objectEnumerator];
+  y = point.y;
+  x = point.x;
+  objectEnumerator = [(NSMutableArray *)[(TSDBezierSubpath *)self nodes] objectEnumerator];
   do
   {
-    v12 = [v11 nextObject];
-    v13 = v12;
-    if (!v12)
+    nextObject = [objectEnumerator nextObject];
+    v13 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    v14 = *&a4->c;
-    v16[0] = *&a4->a;
+    v14 = *&transform->c;
+    v16[0] = *&transform->a;
     v16[1] = v14;
-    v16[2] = *&a4->tx;
+    v16[2] = *&transform->tx;
   }
 
-  while (![v12 underPoint:v16 withTransform:a6 andTolerance:x returningType:{y, a5}]);
+  while (![nextObject underPoint:v16 withTransform:type andTolerance:x returningType:{y, tolerance}]);
   return v13;
 }
 
-- (id)insertNodeAtPoint:(CGPoint)a3 tolerance:(double)a4
+- (id)insertNodeAtPoint:(CGPoint)point tolerance:(double)tolerance
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(NSMutableArray *)[(TSDBezierSubpath *)self nodes] objectEnumerator];
-  v9 = +[TSDBezierPath bezierPath];
-  v10 = [v8 nextObject];
-  v11 = [v8 nextObject];
-  if (!v11)
+  y = point.y;
+  x = point.x;
+  objectEnumerator = [(NSMutableArray *)[(TSDBezierSubpath *)self nodes] objectEnumerator];
+  bezierPathByFlatteningPath = +[TSDBezierPath bezierPath];
+  nextObject = [objectEnumerator nextObject];
+  nextObject2 = [objectEnumerator nextObject];
+  if (!nextObject2)
   {
     return 0;
   }
 
-  v12 = v11;
-  v13 = v10;
+  v12 = nextObject2;
+  v13 = nextObject;
   while (1)
   {
-    [v9 removeAllPoints];
+    [bezierPathByFlatteningPath removeAllPoints];
     [v13 nodePoint];
-    [v9 moveToPoint:?];
+    [bezierPathByFlatteningPath moveToPoint:?];
     [v12 nodePoint];
     v15 = v14;
     v17 = v16;
@@ -759,19 +759,19 @@ LABEL_23:
     v19 = v18;
     v21 = v20;
     [v12 inControlPoint];
-    [v9 curveToPoint:v15 controlPoint1:v17 controlPoint2:{v19, v21, v22, v23}];
-    v9 = [v9 bezierPathByFlatteningPath];
-    if ([v9 pointOnPath:x tolerance:{y, a4}])
+    [bezierPathByFlatteningPath curveToPoint:v15 controlPoint1:v17 controlPoint2:{v19, v21, v22, v23}];
+    bezierPathByFlatteningPath = [bezierPathByFlatteningPath bezierPathByFlatteningPath];
+    if ([bezierPathByFlatteningPath pointOnPath:x tolerance:{y, tolerance}])
     {
       break;
     }
 
-    v24 = [v8 nextObject];
-    if (v24 || (v25 = [(TSDBezierSubpath *)self isClosed], v24 = v10, v25))
+    nextObject3 = [objectEnumerator nextObject];
+    if (nextObject3 || (v25 = [(TSDBezierSubpath *)self isClosed], nextObject3 = nextObject, v25))
     {
       v13 = v12;
-      v12 = v24;
-      if (v24)
+      v12 = nextObject3;
+      if (nextObject3)
       {
         continue;
       }
@@ -863,39 +863,39 @@ LABEL_23:
   v5 = *(MEMORY[0x277CBF3A0] + 24);
   if ([(NSMutableArray *)[(TSDBezierSubpath *)self nodes] count])
   {
-    v6 = [(NSMutableArray *)[(TSDBezierSubpath *)self nodes] objectEnumerator];
-    [objc_msgSend(v6 "nextObject")];
+    objectEnumerator = [(NSMutableArray *)[(TSDBezierSubpath *)self nodes] objectEnumerator];
+    [objc_msgSend(objectEnumerator "nextObject")];
     v8 = v7;
     v10 = v9;
-    v11 = [v6 nextObject];
-    if (v11)
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      nextObject2 = nextObject;
       do
       {
-        [v12 nodePoint];
+        [nextObject2 nodePoint];
         v8 = TSDGrowRectToPoint(v8, v10, v4, v5, v13, v14);
         v10 = v15;
         v4 = v16;
         v5 = v17;
-        if ([v12 isSelected])
+        if ([nextObject2 isSelected])
         {
-          [v12 inControlPoint];
+          [nextObject2 inControlPoint];
           v20 = TSDGrowRectToPoint(v8, v10, v4, v5, v18, v19);
           v22 = v21;
           v24 = v23;
           v26 = v25;
-          [v12 outControlPoint];
+          [nextObject2 outControlPoint];
           v8 = TSDGrowRectToPoint(v20, v22, v24, v26, v27, v28);
           v10 = v29;
           v4 = v30;
           v5 = v31;
         }
 
-        v12 = [v6 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
       }
 
-      while (v12);
+      while (nextObject2);
     }
   }
 
@@ -916,10 +916,10 @@ LABEL_23:
   return result;
 }
 
-- (void)smoothNode:(id)a3
+- (void)smoothNode:(id)node
 {
   v5 = [(TSDBezierSubpath *)self nodePriorToNode:?];
-  v6 = [(TSDBezierSubpath *)self nodeAfterNode:a3];
+  v6 = [(TSDBezierSubpath *)self nodeAfterNode:node];
   v7 = v6;
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
@@ -928,18 +928,18 @@ LABEL_23:
     [v5 nodePoint];
     v11 = v10;
     v13 = v12;
-    [a3 nodePoint];
+    [node nodePoint];
     v15 = TSDSubtractPoints(v11, v13, v14);
     v17 = v16;
     if (!v7)
     {
-      [a3 nodePoint];
+      [node nodePoint];
       v19 = v18;
       v21 = v20;
       v22 = TSDMultiplyPointScalar(v15, v17, 0.330000013);
       v23 = TSDAddPoints(v19, v21, v22);
 
-      [a3 setInControlPoint:v23];
+      [node setInControlPoint:v23];
       return;
     }
   }
@@ -957,52 +957,52 @@ LABEL_23:
   [v7 nodePoint];
   v25 = v24;
   v27 = v26;
-  [a3 nodePoint];
+  [node nodePoint];
   v29 = TSDSubtractPoints(v25, v27, v28);
   v31 = v30;
   if (v5)
   {
     if (!TSDNearlyEqualPoints(v15, v17, v8, v9) && !TSDNearlyEqualPoints(v29, v31, v8, v9))
     {
-      [a3 inControlPoint];
+      [node inControlPoint];
       v39 = v38;
       v41 = v40;
-      [a3 nodePoint];
+      [node nodePoint];
       if (TSDNearlyEqualPoints(v39, v41, v42, v43))
       {
-        [a3 nodePoint];
+        [node nodePoint];
         v45 = v44;
         v47 = v46;
         v48 = TSDMultiplyPointScalar(v15, v17, 0.100000001);
-        [a3 setInControlPoint:{TSDAddPoints(v45, v47, v48)}];
+        [node setInControlPoint:{TSDAddPoints(v45, v47, v48)}];
       }
 
-      [a3 outControlPoint];
+      [node outControlPoint];
       v50 = v49;
       v52 = v51;
-      [a3 nodePoint];
+      [node nodePoint];
       if (TSDNearlyEqualPoints(v50, v52, v53, v54))
       {
-        [a3 nodePoint];
+        [node nodePoint];
         v56 = v55;
         v58 = v57;
         v59 = TSDMultiplyPointScalar(v29, v31, 0.100000001);
-        [a3 setOutControlPoint:{TSDAddPoints(v56, v58, v59)}];
+        [node setOutControlPoint:{TSDAddPoints(v56, v58, v59)}];
       }
 
-      [a3 inControlPoint];
+      [node inControlPoint];
       v61 = v60;
       v63 = v62;
-      [a3 nodePoint];
+      [node nodePoint];
       v65 = TSDSubtractPoints(v61, v63, v64);
       v67 = v66;
       v68 = TSDPointLength(v65, v66);
       v115 = TSDMultiplyPointScalar(v65, v67, 1.0 / v68);
       v116 = v69;
-      [a3 nodePoint];
+      [node nodePoint];
       v71 = v70;
       v73 = v72;
-      [a3 outControlPoint];
+      [node outControlPoint];
       v75 = TSDSubtractPoints(v71, v73, v74);
       v77 = v76;
       v78 = TSDPointLength(v75, v76);
@@ -1060,30 +1060,30 @@ LABEL_23:
         v104 = v97;
       }
 
-      [a3 nodePoint];
+      [node nodePoint];
       v106 = v105;
       v108 = v107;
       v109 = TSDMultiplyPointScalar(v94, v95, v96);
-      [a3 setInControlPoint:{TSDAddPoints(v106, v108, v109)}];
-      [a3 nodePoint];
+      [node setInControlPoint:{TSDAddPoints(v106, v108, v109)}];
+      [node nodePoint];
       v111 = v110;
       v113 = v112;
       v114 = TSDMultiplyPointScalar(v94, v95, v104);
-      [a3 setOutControlPoint:{TSDAddPoints(v111, v113, v114)}];
+      [node setOutControlPoint:{TSDAddPoints(v111, v113, v114)}];
 
-      [a3 setReflectedState:1];
+      [node setReflectedState:1];
     }
   }
 
   else
   {
-    [a3 nodePoint];
+    [node nodePoint];
     v33 = v32;
     v35 = v34;
     v36 = TSDMultiplyPointScalar(v29, v31, 0.330000013);
     v37 = TSDAddPoints(v33, v35, v36);
 
-    [a3 setOutControlPoint:v37];
+    [node setOutControlPoint:v37];
   }
 }
 
@@ -1096,33 +1096,33 @@ LABEL_23:
 
   else
   {
-    v4 = [(TSDBezierSubpath *)self firstNode];
-    v5 = [(TSDBezierSubpath *)self lastNode];
-    [(TSDBezierNode *)v5 nodePoint];
+    firstNode = [(TSDBezierSubpath *)self firstNode];
+    lastNode = [(TSDBezierSubpath *)self lastNode];
+    [(TSDBezierNode *)lastNode nodePoint];
     v7 = v6;
     v9 = v8;
-    [(TSDBezierNode *)v4 nodePoint];
+    [(TSDBezierNode *)firstNode nodePoint];
     v3 = TSDNearlyEqualPoints(v7, v9, v10, v11);
     if (v3)
     {
-      [(TSDBezierNode *)v5 inControlPoint];
-      [(TSDBezierNode *)v4 setInControlPoint:?];
+      [(TSDBezierNode *)lastNode inControlPoint];
+      [(TSDBezierNode *)firstNode setInControlPoint:?];
       [(TSDBezierSubpath *)self removeLastNode];
       [(TSDBezierSubpath *)self setClosed:1];
     }
 
-    [(TSDBezierNode *)v4 updateReflectedState];
+    [(TSDBezierNode *)firstNode updateReflectedState];
   }
 
   return v3;
 }
 
-- (id)splitEdgeAtIndex:(unint64_t)a3
+- (id)splitEdgeAtIndex:(unint64_t)index
 {
   v45 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableArray *)self->mNodes objectAtIndexedSubscript:?];
-  v6 = a3 + 1;
-  v7 = [(NSMutableArray *)self->mNodes objectAtIndexedSubscript:(a3 + 1) % [(NSMutableArray *)self->mNodes count]];
+  v6 = index + 1;
+  v7 = [(NSMutableArray *)self->mNodes objectAtIndexedSubscript:(index + 1) % [(NSMutableArray *)self->mNodes count]];
   [v5 nodePoint];
   v9 = v8;
   v11 = v10;

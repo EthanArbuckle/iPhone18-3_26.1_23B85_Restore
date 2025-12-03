@@ -1,29 +1,29 @@
 @interface _TUICoreDataGeneration
-- (_TUICoreDataGeneration)initWithContext:(id)a3 fetchRequest:(id)a4;
+- (_TUICoreDataGeneration)initWithContext:(id)context fetchRequest:(id)request;
 - (id)description;
-- (void)captureTokenFromContext:(id)a3;
-- (void)performBlockAndWait:(id)a3;
+- (void)captureTokenFromContext:(id)context;
+- (void)performBlockAndWait:(id)wait;
 @end
 
 @implementation _TUICoreDataGeneration
 
-- (_TUICoreDataGeneration)initWithContext:(id)a3 fetchRequest:(id)a4
+- (_TUICoreDataGeneration)initWithContext:(id)context fetchRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = _TUICoreDataGeneration;
   v8 = [(_TUICoreDataGeneration *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [requestCopy copy];
     fetchRequest = v8->_fetchRequest;
     v8->_fetchRequest = v9;
 
     v8->_fetchLock._os_unfair_lock_opaque = 0;
-    v11 = [v6 persistentStoreCoordinator];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
     coordinator = v8->_coordinator;
-    v8->_coordinator = v11;
+    v8->_coordinator = persistentStoreCoordinator;
 
     v8->_count = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -31,15 +31,15 @@
   return v8;
 }
 
-- (void)captureTokenFromContext:(id)a3
+- (void)captureTokenFromContext:(id)context
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_32484;
   v4[3] = &unk_25DCA0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  contextCopy = context;
+  v3 = contextCopy;
   [v3 performBlockAndWait:v4];
 }
 
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   os_unfair_lock_lock(&self->_fetchLock);
   if (!self->_context)
   {
@@ -74,8 +74,8 @@
     v11[2] = sub_32724;
     v11[3] = &unk_25EAA0;
     v11[4] = self;
-    v12 = v4;
-    v8 = v4;
+    v12 = waitCopy;
+    v8 = waitCopy;
     [(NSManagedObjectContext *)v7 performBlockAndWait:v11];
     v9 = v12;
   }
@@ -87,8 +87,8 @@
     v13[2] = sub_326AC;
     v13[3] = &unk_25EA78;
     v13[4] = self;
-    v14 = v4;
-    v10 = v4;
+    v14 = waitCopy;
+    v10 = waitCopy;
     [(NSManagedObjectContext *)v7 performBlockAndWait:v13];
     self->_fetched = 1;
     v9 = v14;

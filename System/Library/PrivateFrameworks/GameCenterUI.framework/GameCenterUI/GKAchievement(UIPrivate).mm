@@ -8,23 +8,23 @@
 
 - (id)imageURL
 {
-  v1 = [a1 _achievementDescription];
-  v2 = [v1 imageURL];
+  _achievementDescription = [self _achievementDescription];
+  imageURL = [_achievementDescription imageURL];
 
-  return v2;
+  return imageURL;
 }
 
 - (void)showBanner
 {
-  v1 = [a1 _achievementDescription];
-  [v1 showBanner];
+  _achievementDescription = [self _achievementDescription];
+  [_achievementDescription showBanner];
 }
 
 - (void)loadImageWithCompletionHandler:()UIPrivate
 {
   v4 = a3;
-  v5 = [a1 _achievementDescription];
-  [v5 loadImageWithCompletionHandler:v4];
+  _achievementDescription = [self _achievementDescription];
+  [_achievementDescription loadImageWithCompletionHandler:v4];
 }
 
 @end

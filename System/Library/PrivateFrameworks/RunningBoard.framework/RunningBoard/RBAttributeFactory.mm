@@ -1,36 +1,36 @@
 @interface RBAttributeFactory
-+ (id)_GPUAccessGrantWithProperties:(void *)a3 errors:;
-+ (id)_RBSBaseMemoryGrant:(void *)a3 errors:;
-+ (id)_acquisitionCompletionAttributeWithProperties:(void *)a3 errors:;
-+ (id)_appNapTimerThrottleAttributeWithProperties:(void *)a3 errors:;
++ (id)_GPUAccessGrantWithProperties:(void *)properties errors:;
++ (id)_RBSBaseMemoryGrant:(void *)grant errors:;
++ (id)_acquisitionCompletionAttributeWithProperties:(void *)properties errors:;
++ (id)_appNapTimerThrottleAttributeWithProperties:(void *)properties errors:;
 + (id)_attributeClassesByName;
-+ (id)_conditionAttributeWithProperties:(void *)a3 errors:;
-+ (id)_cpuAccessGrantWithProperties:(void *)a3 errors:;
-+ (id)_cpuMaximumUsageLimitationWithProperties:(void *)a3 errors:;
-+ (id)_cpuMinimumUsageGrantWithProperties:(void *)a3 errors:;
-+ (id)_domainAttributeWithProperties:(void *)a3 errors:;
-+ (id)_durationAttributeWithProperties:(void *)a3 errors:;
-+ (id)_endowmentGrantWithProperties:(void *)a3 errors:;
-+ (id)_invalidateUnderConditionAttributeWithProperties:(void *)a3 errors:;
-+ (id)_jetsamPriorityGrantWithProperties:(void *)a3 errors:;
++ (id)_conditionAttributeWithProperties:(void *)properties errors:;
++ (id)_cpuAccessGrantWithProperties:(void *)properties errors:;
++ (id)_cpuMaximumUsageLimitationWithProperties:(void *)properties errors:;
++ (id)_cpuMinimumUsageGrantWithProperties:(void *)properties errors:;
++ (id)_domainAttributeWithProperties:(void *)properties errors:;
++ (id)_durationAttributeWithProperties:(void *)properties errors:;
++ (id)_endowmentGrantWithProperties:(void *)properties errors:;
++ (id)_invalidateUnderConditionAttributeWithProperties:(void *)properties errors:;
++ (id)_jetsamPriorityGrantWithProperties:(void *)properties errors:;
 + (id)_legalPropertyNamesAndValuesByClassName;
-+ (id)_resistTerminationGrantWithProperties:(void *)a3 errors:;
-+ (id)_runningReasonAttributeWithProperties:(void *)a3 errors:;
-+ (id)_savedEndowmentGrantWithProperties:(void *)a3 errors:;
-+ (id)_suspendableCPUGrantWithProperties:(void *)a3 errors:;
-+ (id)_tagAttributeWithProperties:(void *)a3 errors:;
-+ (id)attributeForClass:(id)a3 andProperties:(id)a4 errors:(id)a5;
++ (id)_resistTerminationGrantWithProperties:(void *)properties errors:;
++ (id)_runningReasonAttributeWithProperties:(void *)properties errors:;
++ (id)_savedEndowmentGrantWithProperties:(void *)properties errors:;
++ (id)_suspendableCPUGrantWithProperties:(void *)properties errors:;
++ (id)_tagAttributeWithProperties:(void *)properties errors:;
++ (id)attributeForClass:(id)class andProperties:(id)properties errors:(id)errors;
 @end
 
 @implementation RBAttributeFactory
 
-+ (id)attributeForClass:(id)a3 andProperties:(id)a4 errors:(id)a5
++ (id)attributeForClass:(id)class andProperties:(id)properties errors:(id)errors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  classCopy = class;
+  propertiesCopy = properties;
+  errorsCopy = errors;
   v11 = +[RBAttributeFactory _attributeClassesByName];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  v12 = [v11 objectForKeyedSubscript:classCopy];
 
   if (!v12)
   {
@@ -45,7 +45,7 @@
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _acquisitionCompletionAttributeWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _acquisitionCompletionAttributeWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
@@ -53,19 +53,19 @@
   {
     v17 = MEMORY[0x277D46E08];
 LABEL_44:
-    v16 = [v17 grant];
+    grant = [v17 grant];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _cpuAccessGrantWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _cpuAccessGrantWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [(RBAttributeFactory *)a1 _suspendableCPUGrantWithProperties:v9 errors:v10];
+    grant = [(RBAttributeFactory *)self _suspendableCPUGrantWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
@@ -77,13 +77,13 @@ LABEL_44:
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _cpuMaximumUsageLimitationWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _cpuMaximumUsageLimitationWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _cpuMinimumUsageGrantWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _cpuMinimumUsageGrantWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
@@ -95,31 +95,31 @@ LABEL_44:
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _domainAttributeWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _domainAttributeWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _durationAttributeWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _durationAttributeWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _GPUAccessGrantWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _GPUAccessGrantWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _jetsamPriorityGrantWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _jetsamPriorityGrantWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _RBSBaseMemoryGrant:v9 errors:v10];
+    grant = [RBAttributeFactory _RBSBaseMemoryGrant:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
@@ -149,19 +149,19 @@ LABEL_44:
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _resistTerminationGrantWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _resistTerminationGrantWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _runningReasonAttributeWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _runningReasonAttributeWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
   if (v12 == objc_opt_class())
   {
-    v16 = [RBAttributeFactory _tagAttributeWithProperties:v9 errors:v10];
+    grant = [RBAttributeFactory _tagAttributeWithProperties:propertiesCopy errors:errorsCopy];
     goto LABEL_56;
   }
 
@@ -217,13 +217,13 @@ LABEL_44:
 
     if (v12 == objc_opt_class())
     {
-      v16 = [RBAttributeFactory _endowmentGrantWithProperties:v9 errors:v10];
+      grant = [RBAttributeFactory _endowmentGrantWithProperties:propertiesCopy errors:errorsCopy];
       goto LABEL_56;
     }
 
     if (v12 == objc_opt_class())
     {
-      v16 = [RBAttributeFactory _savedEndowmentGrantWithProperties:v9 errors:v10];
+      grant = [RBAttributeFactory _savedEndowmentGrantWithProperties:propertiesCopy errors:errorsCopy];
       goto LABEL_56;
     }
 
@@ -235,13 +235,13 @@ LABEL_44:
 
     if (v12 == objc_opt_class())
     {
-      v16 = [RBAttributeFactory _conditionAttributeWithProperties:v9 errors:v10];
+      grant = [RBAttributeFactory _conditionAttributeWithProperties:propertiesCopy errors:errorsCopy];
       goto LABEL_56;
     }
 
     if (v12 == objc_opt_class())
     {
-      v16 = [RBAttributeFactory _invalidateUnderConditionAttributeWithProperties:v9 errors:v10];
+      grant = [RBAttributeFactory _invalidateUnderConditionAttributeWithProperties:propertiesCopy errors:errorsCopy];
       goto LABEL_56;
     }
 
@@ -249,7 +249,7 @@ LABEL_44:
     {
       v13 = MEMORY[0x277D46EE8];
 LABEL_76:
-      v16 = [v13 attribute];
+      grant = [v13 attribute];
       goto LABEL_56;
     }
 
@@ -258,9 +258,9 @@ LABEL_41:
     goto LABEL_57;
   }
 
-  v16 = [RBAttributeFactory _appNapTimerThrottleAttributeWithProperties:v9 errors:v10];
+  grant = [RBAttributeFactory _appNapTimerThrottleAttributeWithProperties:propertiesCopy errors:errorsCopy];
 LABEL_56:
-  v15 = v16;
+  v15 = grant;
 LABEL_57:
 
   return v15;
@@ -279,9 +279,9 @@ LABEL_57:
   return v0;
 }
 
-+ (id)_acquisitionCompletionAttributeWithProperties:(void *)a3 errors:
++ (id)_acquisitionCompletionAttributeWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -290,7 +290,7 @@ LABEL_57:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"CompletionPolicy", v10, v4);
+  v11 = safeGetProperty(v5, @"CompletionPolicy", v10, propertiesCopy);
 
   if (v11)
   {
@@ -298,8 +298,8 @@ LABEL_57:
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 unsignedIntegerValue];
-      v15 = [MEMORY[0x277D46D78] attributeWithCompletionPolicy:v14];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
+      v15 = [MEMORY[0x277D46D78] attributeWithCompletionPolicy:unsignedIntegerValue];
       goto LABEL_10;
     }
 
@@ -325,9 +325,9 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_cpuAccessGrantWithProperties:(void *)a3 errors:
++ (id)_cpuAccessGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -336,7 +336,7 @@ LABEL_10:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"Role", v10, v4);
+  v11 = safeGetProperty(v5, @"Role", v10, propertiesCopy);
 
   if (v11)
   {
@@ -344,8 +344,8 @@ LABEL_10:
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 unsignedIntegerValue];
-      v15 = [MEMORY[0x277D46DF0] grantWithRole:v14];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
+      v15 = [MEMORY[0x277D46DF0] grantWithRole:unsignedIntegerValue];
     }
 
     else
@@ -362,9 +362,9 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_suspendableCPUGrantWithProperties:(void *)a3 errors:
++ (id)_suspendableCPUGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -373,7 +373,7 @@ LABEL_10:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"Role", v10, v4);
+  v11 = safeGetProperty(v5, @"Role", v10, propertiesCopy);
 
   if (v11)
   {
@@ -381,8 +381,8 @@ LABEL_10:
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 unsignedIntegerValue];
-      v15 = [MEMORY[0x277D46FF0] grantWithRole:v14];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
+      v15 = [MEMORY[0x277D46FF0] grantWithRole:unsignedIntegerValue];
     }
 
     else
@@ -399,10 +399,10 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_cpuMaximumUsageLimitationWithProperties:(void *)a3 errors:
++ (id)_cpuMaximumUsageLimitationWithProperties:(void *)properties errors:
 {
   v4 = a2;
-  v5 = a3;
+  propertiesCopy = properties;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
   v7 = objc_opt_class();
@@ -410,7 +410,7 @@ LABEL_10:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v4, @"ViolationPolicy", v10, v5);
+  v11 = safeGetProperty(v4, @"ViolationPolicy", v10, propertiesCopy);
   if (v11)
   {
     v12 = [v9 objectForKeyedSubscript:v11];
@@ -427,7 +427,7 @@ LABEL_10:
     }
 
     v13 = objc_opt_class();
-    v14 = safeGetProperty(v4, @"Role", v13, v5);
+    v14 = safeGetProperty(v4, @"Role", v13, propertiesCopy);
     if (!v14)
     {
       v15 = rbs_assertion_log();
@@ -454,12 +454,12 @@ LABEL_10:
     }
 
     v16 = objc_opt_class();
-    v17 = safeGetProperty(v4, @"Percentage", v16, v5);
+    v17 = safeGetProperty(v4, @"Percentage", v16, propertiesCopy);
     v18 = v17;
     if (v17)
     {
-      v29 = [v17 unsignedIntegerValue];
-      if ((v29 - 1) > 0x63)
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
+      if ((unsignedIntegerValue - 1) > 0x63)
       {
         v21 = rbs_assertion_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -471,7 +471,7 @@ LABEL_10:
       else
       {
         v19 = objc_opt_class();
-        v20 = safeGetProperty(v4, @"Duration", v19, v5);
+        v20 = safeGetProperty(v4, @"Duration", v19, propertiesCopy);
         v21 = v20;
         if (v20)
         {
@@ -479,9 +479,9 @@ LABEL_10:
           if (v22 > 0.0)
           {
             v23 = v22;
-            v28 = [v12 unsignedIntegerValue];
-            v24 = [v15 unsignedIntegerValue];
-            v25 = [MEMORY[0x277D46DF8] limitationForRole:v24 withPercentage:v29 duration:v28 violationPolicy:v23];
+            unsignedIntegerValue2 = [v12 unsignedIntegerValue];
+            unsignedIntegerValue3 = [v15 unsignedIntegerValue];
+            v25 = [MEMORY[0x277D46DF8] limitationForRole:unsignedIntegerValue3 withPercentage:unsignedIntegerValue duration:unsignedIntegerValue2 violationPolicy:v23];
 LABEL_32:
 
 LABEL_33:
@@ -534,10 +534,10 @@ LABEL_36:
   return v25;
 }
 
-+ (id)_cpuMinimumUsageGrantWithProperties:(void *)a3 errors:
++ (id)_cpuMinimumUsageGrantWithProperties:(void *)properties errors:
 {
   v4 = a2;
-  v5 = a3;
+  propertiesCopy = properties;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
   v7 = objc_opt_class();
@@ -545,7 +545,7 @@ LABEL_36:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v4, @"Role", v10, v5);
+  v11 = safeGetProperty(v4, @"Role", v10, propertiesCopy);
   if (v11)
   {
     v12 = [v9 objectForKeyedSubscript:v11];
@@ -562,12 +562,12 @@ LABEL_36:
     }
 
     v13 = objc_opt_class();
-    v14 = safeGetProperty(v4, @"Percentage", v13, v5);
+    v14 = safeGetProperty(v4, @"Percentage", v13, propertiesCopy);
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 unsignedIntegerValue];
-      if ((v16 - 1) > 0x63)
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
+      if ((unsignedIntegerValue - 1) > 0x63)
       {
         v19 = rbs_assertion_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -579,7 +579,7 @@ LABEL_36:
       else
       {
         v17 = objc_opt_class();
-        v18 = safeGetProperty(v4, @"Duration", v17, v5);
+        v18 = safeGetProperty(v4, @"Duration", v17, propertiesCopy);
         v19 = v18;
         if (v18)
         {
@@ -587,8 +587,8 @@ LABEL_36:
           if (v20 > 0.0)
           {
             v21 = v20;
-            v22 = [v12 unsignedIntegerValue];
-            v23 = [MEMORY[0x277D46E00] grantForRole:v22 withPercentage:v16 duration:v21];
+            unsignedIntegerValue2 = [v12 unsignedIntegerValue];
+            v23 = [MEMORY[0x277D46E00] grantForRole:unsignedIntegerValue2 withPercentage:unsignedIntegerValue duration:v21];
 LABEL_24:
 
 LABEL_25:
@@ -638,15 +638,15 @@ LABEL_26:
   return v23;
 }
 
-+ (id)_domainAttributeWithProperties:(void *)a3 errors:
++ (id)_domainAttributeWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_class();
-  v7 = safeGetProperty(v5, @"Domain", v6, v4);
+  v7 = safeGetProperty(v5, @"Domain", v6, propertiesCopy);
   v8 = objc_opt_class();
-  v9 = safeGetProperty(v5, @"Name", v8, v4);
+  v9 = safeGetProperty(v5, @"Name", v8, propertiesCopy);
 
   if (v7)
   {
@@ -677,10 +677,10 @@ LABEL_26:
   return v12;
 }
 
-+ (id)_durationAttributeWithProperties:(void *)a3 errors:
++ (id)_durationAttributeWithProperties:(void *)properties errors:
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -689,13 +689,13 @@ LABEL_26:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"InvalidationDuration", v10, v4);
+  v11 = safeGetProperty(v5, @"InvalidationDuration", v10, propertiesCopy);
   v12 = objc_opt_class();
-  v13 = safeGetProperty(v5, @"WarningDuration", v12, v4);
+  v13 = safeGetProperty(v5, @"WarningDuration", v12, propertiesCopy);
   v14 = objc_opt_class();
-  v15 = safeGetProperty(v5, @"StartPolicy", v14, v4);
+  v15 = safeGetProperty(v5, @"StartPolicy", v14, propertiesCopy);
   v16 = objc_opt_class();
-  v17 = safeGetProperty(v5, @"EndPolicy", v16, v4);
+  v17 = safeGetProperty(v5, @"EndPolicy", v16, propertiesCopy);
 
   if (v11 && v15 && v17)
   {
@@ -704,12 +704,12 @@ LABEL_26:
     v20 = v19;
     if (v18 && v19)
     {
-      v21 = [v18 unsignedIntegerValue];
-      v22 = [v20 unsignedIntegerValue];
+      unsignedIntegerValue = [v18 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v20 unsignedIntegerValue];
       [v11 doubleValue];
       v24 = v23;
       [v13 doubleValue];
-      v26 = [MEMORY[0x277D46E48] attributeWithDuration:v21 warningDuration:v22 startPolicy:v24 endPolicy:v25];
+      v26 = [MEMORY[0x277D46E48] attributeWithDuration:unsignedIntegerValue warningDuration:unsignedIntegerValue2 startPolicy:v24 endPolicy:v25];
 LABEL_20:
 
       goto LABEL_21;
@@ -770,9 +770,9 @@ LABEL_21:
   return v26;
 }
 
-+ (id)_GPUAccessGrantWithProperties:(void *)a3 errors:
++ (id)_GPUAccessGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -781,22 +781,22 @@ LABEL_21:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"Role", v10, v4);
+  v11 = safeGetProperty(v5, @"Role", v10, propertiesCopy);
 
   if (!v11)
   {
-    v14 = [MEMORY[0x277D46E70] grant];
+    grant = [MEMORY[0x277D46E70] grant];
     goto LABEL_5;
   }
 
   v12 = [v9 objectForKeyedSubscript:v11];
-  v13 = [v12 unsignedIntValue];
+  unsignedIntValue = [v12 unsignedIntValue];
 
-  if (v13)
+  if (unsignedIntValue)
   {
-    v14 = [MEMORY[0x277D46E70] grantWithRole:v13];
+    grant = [MEMORY[0x277D46E70] grantWithRole:unsignedIntValue];
 LABEL_5:
-    v15 = v14;
+    v15 = grant;
     goto LABEL_9;
   }
 
@@ -812,13 +812,13 @@ LABEL_9:
   return v15;
 }
 
-+ (id)_jetsamPriorityGrantWithProperties:(void *)a3 errors:
++ (id)_jetsamPriorityGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_class();
-  v7 = safeGetProperty(v5, @"Band", v6, v4);
+  v7 = safeGetProperty(v5, @"Band", v6, propertiesCopy);
 
   if (v7)
   {
@@ -839,10 +839,10 @@ LABEL_9:
   return v8;
 }
 
-+ (id)_RBSBaseMemoryGrant:(void *)a3 errors:
++ (id)_RBSBaseMemoryGrant:(void *)grant errors:
 {
   v4 = a2;
-  v5 = a3;
+  grantCopy = grant;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
   v7 = objc_opt_class();
@@ -850,11 +850,11 @@ LABEL_9:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v4, @"Category", v10, v5);
+  v11 = safeGetProperty(v4, @"Category", v10, grantCopy);
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = safeGetProperty(v4, @"Strength", v12, v5);
+    v13 = safeGetProperty(v4, @"Strength", v12, grantCopy);
     if (v13)
     {
       v14 = [v9 objectForKeyedSubscript:v13];
@@ -899,9 +899,9 @@ LABEL_15:
   return v16;
 }
 
-+ (id)_resistTerminationGrantWithProperties:(void *)a3 errors:
++ (id)_resistTerminationGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -910,7 +910,7 @@ LABEL_15:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"Resistance", v10, v4);
+  v11 = safeGetProperty(v5, @"Resistance", v10, propertiesCopy);
 
   if (v11)
   {
@@ -935,20 +935,20 @@ LABEL_15:
   return v14;
 }
 
-+ (id)_runningReasonAttributeWithProperties:(void *)a3 errors:
++ (id)_runningReasonAttributeWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_class();
-  v7 = safeGetProperty(v5, @"RunningReason", v6, v4);
+  v7 = safeGetProperty(v5, @"RunningReason", v6, propertiesCopy);
 
   if (v7)
   {
-    v8 = [v7 longValue];
-    if (v8 >= 1)
+    longValue = [v7 longValue];
+    if (longValue >= 1)
     {
-      v9 = [MEMORY[0x277D46FD0] withReason:v8];
+      v9 = [MEMORY[0x277D46FD0] withReason:longValue];
       goto LABEL_9;
     }
 
@@ -974,13 +974,13 @@ LABEL_9:
   return v9;
 }
 
-+ (id)_tagAttributeWithProperties:(void *)a3 errors:
++ (id)_tagAttributeWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_class();
-  v7 = safeGetProperty(v5, @"Tag", v6, v4);
+  v7 = safeGetProperty(v5, @"Tag", v6, propertiesCopy);
 
   if (v7)
   {
@@ -1001,9 +1001,9 @@ LABEL_9:
   return v8;
 }
 
-+ (id)_appNapTimerThrottleAttributeWithProperties:(void *)a3 errors:
++ (id)_appNapTimerThrottleAttributeWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -1012,7 +1012,7 @@ LABEL_9:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"Tier", v10, v4);
+  v11 = safeGetProperty(v5, @"Tier", v10, propertiesCopy);
 
   if (!v11 || ([v9 objectForKeyedSubscript:v11], (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, objc_msgSend(MEMORY[0x277D46DB0], "grantWithTier:", objc_msgSend(v12, "unsignedCharValue")), v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
   {
@@ -1028,9 +1028,9 @@ LABEL_9:
   return v14;
 }
 
-+ (id)_endowmentGrantWithProperties:(void *)a3 errors:
++ (id)_endowmentGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = +[RBAttributeFactory _legalPropertyNamesAndValuesByClassName];
@@ -1039,7 +1039,7 @@ LABEL_9:
   v9 = [v6 objectForKeyedSubscript:v8];
 
   v10 = objc_opt_class();
-  v11 = safeGetProperty(v5, @"Namespace", v10, v4);
+  v11 = safeGetProperty(v5, @"Namespace", v10, propertiesCopy);
 
   if (!v11 || ([v9 objectForKeyedSubscript:v11], (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, objc_msgSend(MEMORY[0x277D46E50], "grantWithNamespace:endowment:", v12, 0), v14 = objc_claimAutoreleasedReturnValue(), v13, !v14))
   {
@@ -1055,15 +1055,15 @@ LABEL_9:
   return v14;
 }
 
-+ (id)_savedEndowmentGrantWithProperties:(void *)a3 errors:
++ (id)_savedEndowmentGrantWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_class();
-  v7 = safeGetProperty(v5, @"Namespace", v6, v4);
+  v7 = safeGetProperty(v5, @"Namespace", v6, propertiesCopy);
   v8 = objc_opt_class();
-  v9 = safeGetProperty(v5, @"Key", v8, v4);
+  v9 = safeGetProperty(v5, @"Key", v8, propertiesCopy);
 
   if (v7)
   {
@@ -1089,15 +1089,15 @@ LABEL_9:
   return v11;
 }
 
-+ (id)_conditionAttributeWithProperties:(void *)a3 errors:
++ (id)_conditionAttributeWithProperties:(void *)properties errors:
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_class();
-  v7 = safeGetProperty(v5, @"Condition", v6, v4);
+  v7 = safeGetProperty(v5, @"Condition", v6, propertiesCopy);
   v8 = objc_opt_class();
-  v9 = safeGetProperty(v5, @"Value", v8, v4);
+  v9 = safeGetProperty(v5, @"Value", v8, propertiesCopy);
 
   if (v7)
   {
@@ -1123,15 +1123,15 @@ LABEL_9:
   return v11;
 }
 
-+ (id)_invalidateUnderConditionAttributeWithProperties:(void *)a3 errors:
++ (id)_invalidateUnderConditionAttributeWithProperties:(void *)properties errors:
 {
   v4 = a2;
-  v5 = a3;
+  propertiesCopy = properties;
   objc_opt_self();
   if (_os_feature_enabled_impl())
   {
     v6 = objc_opt_class();
-    v7 = safeGetProperty(v4, @"Condition", v6, v5);
+    v7 = safeGetProperty(v4, @"Condition", v6, propertiesCopy);
     if (currentDeviceClass() != 2 && v7 && ([v7 isEqualToString:@"therm"] & 1) != 0)
     {
       v8 = 0;
@@ -1140,7 +1140,7 @@ LABEL_9:
     else
     {
       v9 = objc_opt_class();
-      v10 = safeGetProperty(v4, @"MinValue", v9, v5);
+      v10 = safeGetProperty(v4, @"MinValue", v9, propertiesCopy);
       v11 = v10;
       if (!v7 || !v10 || ([MEMORY[0x277D46EA0] attributeWithCondition:v7 minValue:{objc_msgSend(v10, "integerValue")}], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
       {

@@ -1,29 +1,29 @@
 @interface PRPosterContentStyleSerialization
-+ (id)contentStyleForData:(id)a3 error:(id *)a4;
-+ (id)dataForContentStyle:(id)a3 error:(id *)a4;
++ (id)contentStyleForData:(id)data error:(id *)error;
++ (id)dataForContentStyle:(id)style error:(id *)error;
 @end
 
 @implementation PRPosterContentStyleSerialization
 
-+ (id)dataForContentStyle:(id)a3 error:(id *)a4
++ (id)dataForContentStyle:(id)style error:(id *)error
 {
-  v5 = a3;
+  styleCopy = style;
   v13 = 0;
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v13];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:styleCopy requiringSecureCoding:1 error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = PRLogModel();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(PRPosterContentStyleSerialization *)v5 dataForContentStyle:v8 error:v10];
+      [(PRPosterContentStyleSerialization *)styleCopy dataForContentStyle:v8 error:v10];
     }
 
     v11 = 0;
@@ -37,9 +37,9 @@
   return v11;
 }
 
-+ (id)contentStyleForData:(id)a3 error:(id *)a4
++ (id)contentStyleForData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = PRPosterContentStyleClasses();
   v7 = MEMORY[0x1E696ACD0];
   v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
@@ -50,7 +50,7 @@
   v9 = v6;
   v17 = v9;
   v15 = 0;
-  v10 = [v7 pf_unarchivedObjectOfClasses:v8 fromData:v5 strict:1 classReplacementBlock:v16 error:&v15];
+  v10 = [v7 pf_unarchivedObjectOfClasses:v8 fromData:dataCopy strict:1 classReplacementBlock:v16 error:&v15];
 
   v11 = v15;
   if (!v10)
@@ -62,10 +62,10 @@
     }
   }
 
-  if (a4 && v11)
+  if (error && v11)
   {
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v10;

@@ -1,37 +1,37 @@
 @interface SBHIconTableViewDiffableDataSource
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (void)applyQueryResult:(id)a3 animatingDifferences:(BOOL)a4;
-- (void)applyQueryResult:(id)a3 animatingDifferences:(BOOL)a4 completion:(id)a5;
-- (void)applySnapshot:(id)a3 animatingDifferences:(BOOL)a4 completion:(id)a5;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (void)applyQueryResult:(id)result animatingDifferences:(BOOL)differences;
+- (void)applyQueryResult:(id)result animatingDifferences:(BOOL)differences completion:(id)completion;
+- (void)applySnapshot:(id)snapshot animatingDifferences:(BOOL)differences completion:(id)completion;
 @end
 
 @implementation SBHIconTableViewDiffableDataSource
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   if ([(SBHIconLibraryQueryResult *)self->_queryResult sortMethodology]== 1)
   {
-    v4 = [(SBHIconLibraryQueryResult *)self->_queryResult totalNumberOfItems];
-    if (v4)
+    totalNumberOfItems = [(SBHIconLibraryQueryResult *)self->_queryResult totalNumberOfItems];
+    if (totalNumberOfItems)
     {
-      v4 = [(SBHIconLibraryQueryResult *)self->_queryResult sectionIndexTitles];
+      totalNumberOfItems = [(SBHIconLibraryQueryResult *)self->_queryResult sectionIndexTitles];
     }
   }
 
   else
   {
-    v4 = 0;
+    totalNumberOfItems = 0;
   }
 
-  return v4;
+  return totalNumberOfItems;
 }
 
-- (void)applyQueryResult:(id)a3 animatingDifferences:(BOOL)a4 completion:(id)a5
+- (void)applyQueryResult:(id)result animatingDifferences:(BOOL)differences completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
+  differencesCopy = differences;
+  resultCopy = result;
   v9 = MEMORY[0x1E696AF00];
-  v10 = a5;
+  completionCopy = completion;
   if (([v9 isMainThread] & 1) == 0)
   {
     v11 = SBLogCommon();
@@ -42,18 +42,18 @@
   }
 
   queryResult = self->_queryResult;
-  self->_queryResult = v8;
-  v20 = v8;
+  self->_queryResult = resultCopy;
+  v20 = resultCopy;
 
-  v21 = [(SBHIconLibraryQueryResult *)v20 snapshot];
+  snapshot = [(SBHIconLibraryQueryResult *)v20 snapshot];
 
-  [(SBHIconTableViewDiffableDataSource *)self applySnapshot:v21 animatingDifferences:v6 completion:v10];
+  [(SBHIconTableViewDiffableDataSource *)self applySnapshot:snapshot animatingDifferences:differencesCopy completion:completionCopy];
 }
 
-- (void)applyQueryResult:(id)a3 animatingDifferences:(BOOL)a4
+- (void)applyQueryResult:(id)result animatingDifferences:(BOOL)differences
 {
-  v4 = a4;
-  v6 = a3;
+  differencesCopy = differences;
+  resultCopy = result;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v7 = SBLogCommon();
@@ -64,19 +64,19 @@
   }
 
   queryResult = self->_queryResult;
-  self->_queryResult = v6;
-  v16 = v6;
+  self->_queryResult = resultCopy;
+  v16 = resultCopy;
 
-  v17 = [(SBHIconLibraryQueryResult *)v16 snapshot];
+  snapshot = [(SBHIconLibraryQueryResult *)v16 snapshot];
 
-  [(UITableViewDiffableDataSource *)self applySnapshot:v17 animatingDifferences:v4];
+  [(UITableViewDiffableDataSource *)self applySnapshot:snapshot animatingDifferences:differencesCopy];
 }
 
-- (void)applySnapshot:(id)a3 animatingDifferences:(BOOL)a4 completion:(id)a5
+- (void)applySnapshot:(id)snapshot animatingDifferences:(BOOL)differences completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  differencesCopy = differences;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v10 = SBLogCommon();
@@ -88,7 +88,7 @@
 
   v18.receiver = self;
   v18.super_class = SBHIconTableViewDiffableDataSource;
-  [(UITableViewDiffableDataSource *)&v18 applySnapshot:v8 animatingDifferences:v6 completion:v9];
+  [(UITableViewDiffableDataSource *)&v18 applySnapshot:snapshotCopy animatingDifferences:differencesCopy completion:completionCopy];
 }
 
 @end

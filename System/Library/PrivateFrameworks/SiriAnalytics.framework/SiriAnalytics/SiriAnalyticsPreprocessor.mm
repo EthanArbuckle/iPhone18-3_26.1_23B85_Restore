@@ -1,22 +1,22 @@
 @interface SiriAnalyticsPreprocessor
-- (SiriAnalyticsPreprocessor)initWithMetastore:(id)a3 logicalClocks:(id)a4 metastoreQueue:(id)a5 telemetry:(id)a6 messageStaging:(id)a7 messageTopics:(id)a8;
-- (void)triggerWithReason:(int64_t)a3 completion:(id)a4;
+- (SiriAnalyticsPreprocessor)initWithMetastore:(id)metastore logicalClocks:(id)clocks metastoreQueue:(id)queue telemetry:(id)telemetry messageStaging:(id)staging messageTopics:(id)topics;
+- (void)triggerWithReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation SiriAnalyticsPreprocessor
 
-- (SiriAnalyticsPreprocessor)initWithMetastore:(id)a3 logicalClocks:(id)a4 metastoreQueue:(id)a5 telemetry:(id)a6 messageStaging:(id)a7 messageTopics:(id)a8
+- (SiriAnalyticsPreprocessor)initWithMetastore:(id)metastore logicalClocks:(id)clocks metastoreQueue:(id)queue telemetry:(id)telemetry messageStaging:(id)staging messageTopics:(id)topics
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  return PreprocessorShim.init(metastore:logicalClocks:metastoreQueue:telemetry:messageStaging:messageTopics:)(v13, v14, v15, a6, a7, a8);
+  metastoreCopy = metastore;
+  clocksCopy = clocks;
+  queueCopy = queue;
+  telemetryCopy = telemetry;
+  return PreprocessorShim.init(metastore:logicalClocks:metastoreQueue:telemetry:messageStaging:messageTopics:)(metastoreCopy, clocksCopy, queueCopy, telemetry, staging, topics);
 }
 
-- (void)triggerWithReason:(int64_t)a3 completion:(id)a4
+- (void)triggerWithReason:(int64_t)reason completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -29,8 +29,8 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_1D988B8B8(a3, v6, v7);
+  selfCopy = self;
+  sub_1D988B8B8(reason, v6, v7);
   sub_1D98750DC(v6);
 }
 

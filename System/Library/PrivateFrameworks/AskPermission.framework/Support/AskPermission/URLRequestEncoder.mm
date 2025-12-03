@@ -15,8 +15,8 @@
     v3 = +[AMSBag sharedBag];
     [(URLRequestEncoder *)v2 setBag:v3];
 
-    v4 = [(URLRequestEncoder *)v2 _processInfo];
-    [(URLRequestEncoder *)v2 setClientInfo:v4];
+    _processInfo = [(URLRequestEncoder *)v2 _processInfo];
+    [(URLRequestEncoder *)v2 setClientInfo:_processInfo];
   }
 
   return v2;

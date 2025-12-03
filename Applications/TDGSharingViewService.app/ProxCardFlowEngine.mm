@@ -1,15 +1,15 @@
 @interface ProxCardFlowEngine
 - (_TtC21TDGSharingViewService18ProxCardFlowEngine)init;
-- (void)handleDeviceSetupNotification:(id)a3;
+- (void)handleDeviceSetupNotification:(id)notification;
 @end
 
 @implementation ProxCardFlowEngine
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100018BA0(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100018BA0(notificationCopy);
 }
 
 - (_TtC21TDGSharingViewService18ProxCardFlowEngine)init

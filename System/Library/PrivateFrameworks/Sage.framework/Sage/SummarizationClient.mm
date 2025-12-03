@@ -1,28 +1,28 @@
 @interface SummarizationClient
-- (void)didEncounterTextAssistantStreamingError:(id)a3 forRequestIdentifier:(id)a4;
-- (void)didFinishTextAssistantStreamingForRequestIdentifier:(id)a3;
-- (void)didProduceTextAssistantPartialSummary:(id)a3 forRequestIdentifier:(id)a4;
+- (void)didEncounterTextAssistantStreamingError:(id)error forRequestIdentifier:(id)identifier;
+- (void)didFinishTextAssistantStreamingForRequestIdentifier:(id)identifier;
+- (void)didProduceTextAssistantPartialSummary:(id)summary forRequestIdentifier:(id)identifier;
 @end
 
 @implementation SummarizationClient
 
-- (void)didProduceTextAssistantPartialSummary:(id)a3 forRequestIdentifier:(id)a4
+- (void)didProduceTextAssistantPartialSummary:(id)summary forRequestIdentifier:(id)identifier
 {
   sub_1B5EA56A0();
-  v5 = a3;
+  summaryCopy = summary;
 
   SummarizationClient.didProduceTextAssistantPartialSummary(_:forRequestIdentifier:)();
 }
 
-- (void)didEncounterTextAssistantStreamingError:(id)a3 forRequestIdentifier:(id)a4
+- (void)didEncounterTextAssistantStreamingError:(id)error forRequestIdentifier:(id)identifier
 {
   sub_1B5EA56A0();
-  v5 = a3;
+  errorCopy = error;
 
   SummarizationClient.didEncounterTextAssistantStreamingError(_:forRequestIdentifier:)();
 }
 
-- (void)didFinishTextAssistantStreamingForRequestIdentifier:(id)a3
+- (void)didFinishTextAssistantStreamingForRequestIdentifier:(id)identifier
 {
   v3 = sub_1B5EA56A0();
   v5 = v4;

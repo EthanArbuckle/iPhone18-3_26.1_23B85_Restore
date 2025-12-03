@@ -1,37 +1,37 @@
 @interface PLLibraryClusterer
-+ (BOOL)_momentEligibleForSplit:(id)a3;
++ (BOOL)_momentEligibleForSplit:(id)split;
 + (BOOL)highlightSplitBasedOnLocationTypeEnabled;
 + (BOOL)highlightSplitBasedOnOriginatorsEnabled;
 + (BOOL)highlightSplitBasedOnTimeAndLocationEnabled;
 + (void)initialize;
-- (PLLibraryClusterer)initWithLocalCreationDateCreator:(id)a3 frequentLocationManager:(id)a4;
+- (PLLibraryClusterer)initWithLocalCreationDateCreator:(id)creator frequentLocationManager:(id)manager;
 - (PLLibraryClustererDelegate)delegate;
-- (id)_eligibleClusterForMoment:(id)a3 inMomentsByLocationType:(id)a4;
-- (id)_momentsGroupedByDayWithMomentsSortedByDate:(id)a3;
-- (id)_momentsSplitBetweenOriginatorsWithMoments:(id)a3;
-- (id)_momentsSplitOnLocationTypeWithMoments:(id)a3;
-- (id)_momentsSplitWithinDayWithMoments:(id)a3;
-- (id)_startDateComponentsForMomentCluster:(id)a3;
-- (id)locationBasedMomentClustersForMomentsSortedByDate:(id)a3;
-- (id)momentClustersForMomentsSortedByDate:(id)a3 allowLocationSplits:(BOOL)a4 allowExternalSplits:(BOOL)a5;
-- (void)_createMomentsForDailyAssets:(id)a3 currentMomentExistingMomentData:(id)a4;
-- (void)_mergeMomentsIntoClustersBasedOnTimeWithMoments:(id)a3 clusters:(id)a4;
-- (void)processMomentsWithAssets:(id)a3;
+- (id)_eligibleClusterForMoment:(id)moment inMomentsByLocationType:(id)type;
+- (id)_momentsGroupedByDayWithMomentsSortedByDate:(id)date;
+- (id)_momentsSplitBetweenOriginatorsWithMoments:(id)moments;
+- (id)_momentsSplitOnLocationTypeWithMoments:(id)moments;
+- (id)_momentsSplitWithinDayWithMoments:(id)moments;
+- (id)_startDateComponentsForMomentCluster:(id)cluster;
+- (id)locationBasedMomentClustersForMomentsSortedByDate:(id)date;
+- (id)momentClustersForMomentsSortedByDate:(id)date allowLocationSplits:(BOOL)splits allowExternalSplits:(BOOL)externalSplits;
+- (void)_createMomentsForDailyAssets:(id)assets currentMomentExistingMomentData:(id)data;
+- (void)_mergeMomentsIntoClustersBasedOnTimeWithMoments:(id)moments clusters:(id)clusters;
+- (void)processMomentsWithAssets:(id)assets;
 @end
 
 @implementation PLLibraryClusterer
 
-+ (BOOL)_momentEligibleForSplit:(id)a3
++ (BOOL)_momentEligibleForSplit:(id)split
 {
-  v3 = a3;
-  v4 = [v3 localStartDate];
-  v5 = [v3 localEndDate];
-  [v5 timeIntervalSinceDate:v4];
+  splitCopy = split;
+  localStartDate = [splitCopy localStartDate];
+  localEndDate = [splitCopy localEndDate];
+  [localEndDate timeIntervalSinceDate:localStartDate];
   v7 = v6;
-  v8 = [v3 pl_numberOfAssets];
-  v9 = [v3 processedLocation];
+  pl_numberOfAssets = [splitCopy pl_numberOfAssets];
+  processedLocation = [splitCopy processedLocation];
 
-  v10 = v9 == 4 || v7 >= 1800.0 && v8 > 6;
+  v10 = processedLocation == 4 || v7 >= 1800.0 && pl_numberOfAssets > 6;
   return v10;
 }
 
@@ -86,10 +86,10 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
 + (void)initialize
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___PLLibraryClusterer;
   objc_msgSendSuper2(&v4, sel_initialize);
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v5[0] = @"PLLibraryClustererEnableHighlightSplitBasedOnTimeAndLocation";
   v5[1] = @"PLLibraryClustererEnableHighlightSplitBasedOnLocationType";
   v6[0] = MEMORY[0x1E695E118];
@@ -97,7 +97,7 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
   v5[2] = @"PLLibraryClustererEnableHighlightSplitBasedOnOriginators";
   v6[2] = MEMORY[0x1E695E118];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:3];
-  [v2 registerDefaults:v3];
+  [standardUserDefaults registerDefaults:v3];
 }
 
 - (PLLibraryClustererDelegate)delegate
@@ -107,18 +107,18 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
   return WeakRetained;
 }
 
-- (id)_momentsGroupedByDayWithMomentsSortedByDate:(id)a3
+- (id)_momentsGroupedByDayWithMomentsSortedByDate:(id)date
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v39 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  dateCopy = date;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v6 = [[PLClusterTimeInfo alloc] initWithCalendar:self->_calendar];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v4;
+  obj = dateCopy;
   v7 = [obj countByEnumeratingWithState:&v51 objects:v64 count:16];
   if (v7)
   {
@@ -127,7 +127,7 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
     *&v8 = 138543362;
     v38 = v8;
     v41 = v6;
-    v42 = v5;
+    v42 = array2;
     v40 = *v52;
     do
     {
@@ -142,21 +142,21 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
 
         v12 = *(*(&v51 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 startDate];
-        if (v14)
+        startDate = [v12 startDate];
+        if (startDate)
         {
           goto LABEL_26;
         }
 
         v46 = v13;
-        v15 = [MEMORY[0x1E695DF00] distantFuture];
+        distantFuture = [MEMORY[0x1E695DF00] distantFuture];
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
         v45 = v12;
-        v16 = [v12 assets];
-        v17 = [v16 countByEnumeratingWithState:&v47 objects:v63 count:16];
+        assets = [v12 assets];
+        v17 = [assets countByEnumeratingWithState:&v47 objects:v63 count:16];
         if (v17)
         {
           v18 = v17;
@@ -168,24 +168,24 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
             {
               if (*v48 != v20)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(assets);
               }
 
               v22 = *(*(&v47 + 1) + 8 * i);
-              v23 = [v22 dateCreated];
-              v24 = [v15 compare:v23];
+              dateCreated = [v22 dateCreated];
+              v24 = [distantFuture compare:dateCreated];
 
               if (v24 == 1)
               {
-                v25 = [v22 dateCreated];
+                dateCreated2 = [v22 dateCreated];
 
                 v26 = v22;
-                v15 = v25;
+                distantFuture = dateCreated2;
                 v19 = v26;
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v47 objects:v63 count:16];
+            v18 = [assets countByEnumeratingWithState:&v47 objects:v63 count:16];
           }
 
           while (v18);
@@ -196,28 +196,28 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
           v19 = 0;
         }
 
-        v27 = [v19 uuid];
-        v14 = [v19 pl_date];
+        uuid = [v19 uuid];
+        startDate = [v19 pl_date];
         v28 = PLMomentsGetLog();
         v12 = v45;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
         {
-          v29 = [v45 uuid];
-          v30 = [v45 isDeleted];
+          uuid2 = [v45 uuid];
+          isDeleted = [v45 isDeleted];
           *buf = 138544130;
-          v56 = v29;
+          v56 = uuid2;
           v57 = 1026;
-          v58 = v30;
+          v58 = isDeleted;
           v59 = 2112;
-          v60 = v14;
+          v60 = startDate;
           v61 = 2114;
-          v62 = v27;
+          v62 = uuid;
           _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_FAULT, "[MomentsGeneration] Moment start date unexpectedly nil. uuid %{public}@, isDeleted %{public}d. Taking asset date %@ %{public}@", buf, 0x26u);
         }
 
-        if (v14)
+        if (startDate)
         {
-          v31 = v14;
+          v31 = startDate;
         }
 
         else
@@ -226,35 +226,35 @@ void __65__PLLibraryClusterer_highlightSplitBasedOnTimeAndLocationEnabled__block
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
             *buf = v38;
-            v56 = v27;
+            v56 = uuid;
             _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "[MomentsGeneration] Fallback asset start date nil %{public}@.", buf, 0xCu);
           }
         }
 
         v6 = v41;
-        v5 = v42;
+        array2 = v42;
         v10 = v40;
         v9 = v43;
         v13 = v46;
-        if (v14)
+        if (startDate)
         {
 LABEL_26:
-          if (![(PLClusterTimeInfo *)v6 utcDateBelongsInCluster:v14, v38])
+          if (![(PLClusterTimeInfo *)v6 utcDateBelongsInCluster:startDate, v38])
           {
-            if ([v5 count])
+            if ([array2 count])
             {
-              v33 = [v5 copy];
-              [v39 addObject:v33];
+              v33 = [array2 copy];
+              [array addObject:v33];
 
-              [v5 removeAllObjects];
+              [array2 removeAllObjects];
             }
 
             [(PLClusterTimeInfo *)v6 reset];
           }
 
-          [v5 addObject:v12];
-          v34 = [v12 localStartDate];
-          [(PLClusterTimeInfo *)v6 updateWithUTCDate:v14 localDate:v34];
+          [array2 addObject:v12];
+          localStartDate = [v12 localStartDate];
+          [(PLClusterTimeInfo *)v6 updateWithUTCDate:startDate localDate:localStartDate];
         }
 
         else
@@ -274,39 +274,39 @@ LABEL_26:
     while (v35);
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
-    v36 = [v5 copy];
-    [v39 addObject:v36];
+    v36 = [array2 copy];
+    [array addObject:v36];
   }
 
-  return v39;
+  return array;
 }
 
-- (id)_startDateComponentsForMomentCluster:(id)a3
+- (id)_startDateComponentsForMomentCluster:(id)cluster
 {
   calendar = self->_calendar;
-  v4 = [a3 startDate];
-  v5 = [(NSCalendar *)calendar components:12 fromDate:v4];
+  startDate = [cluster startDate];
+  v5 = [(NSCalendar *)calendar components:12 fromDate:startDate];
 
   return v5;
 }
 
-- (id)_momentsSplitBetweenOriginatorsWithMoments:(id)a3
+- (id)_momentsSplitBetweenOriginatorsWithMoments:(id)moments
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  momentsCopy = moments;
   if ([objc_opt_class() highlightSplitBasedOnOriginatorsEnabled])
   {
-    if ([v3 count] > 1)
+    if ([momentsCopy count] > 1)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v9 = v3;
+      v9 = momentsCopy;
       v10 = [v9 countByEnumeratingWithState:&v64 objects:v70 count:16];
       if (v10)
       {
@@ -322,15 +322,15 @@ LABEL_26:
             }
 
             v14 = *(*(&v64 + 1) + 8 * i);
-            v15 = [v14 originatorState];
-            if ((v15 & 0x1C) != 0 && (v15 & 3) == 0)
+            originatorState = [v14 originatorState];
+            if ((originatorState & 0x1C) != 0 && (originatorState & 3) == 0)
             {
-              v17 = v8;
+              v17 = array2;
             }
 
             else
             {
-              v17 = v7;
+              v17 = array;
             }
 
             [v17 addObject:v14];
@@ -342,26 +342,26 @@ LABEL_26:
         while (v11);
       }
 
-      v4 = [MEMORY[0x1E695DF70] array];
-      if ([v8 count] && objc_msgSend(v7, "count"))
+      array3 = [MEMORY[0x1E695DF70] array];
+      if ([array2 count] && objc_msgSend(array, "count"))
       {
-        v43 = v4;
+        v43 = array3;
         v44 = v9;
-        v46 = v3;
-        v18 = [MEMORY[0x1E695DF70] array];
-        v47 = [MEMORY[0x1E695DF70] array];
+        v46 = momentsCopy;
+        array4 = [MEMORY[0x1E695DF70] array];
+        array5 = [MEMORY[0x1E695DF70] array];
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v45 = v8;
-        obj = v8;
+        v45 = array2;
+        obj = array2;
         v52 = [obj countByEnumeratingWithState:&v60 objects:v69 count:16];
         if (v52)
         {
           v50 = *v61;
-          v51 = v7;
-          v49 = v18;
+          v51 = array;
+          v49 = array4;
           do
           {
             for (j = 0; j != v52; ++j)
@@ -381,7 +381,7 @@ LABEL_26:
               v55 = 0u;
               v56 = 0u;
               v57 = 0u;
-              v23 = v7;
+              v23 = array;
               v24 = [v23 countByEnumeratingWithState:&v54 objects:v68 count:16];
               if (v24)
               {
@@ -399,16 +399,16 @@ LABEL_26:
                     }
 
                     v29 = *(*(&v54 + 1) + 8 * k);
-                    v30 = [v20 startDate];
-                    v31 = [v20 endDate];
-                    v32 = [v29 startDate];
-                    v33 = [v29 endDate];
-                    v34 = v30;
-                    [v32 timeIntervalSinceDate:v31];
+                    startDate = [v20 startDate];
+                    endDate = [v20 endDate];
+                    startDate2 = [v29 startDate];
+                    endDate2 = [v29 endDate];
+                    v34 = startDate;
+                    [startDate2 timeIntervalSinceDate:endDate];
                     v36 = v35;
                     if (v35 < 0.0)
                     {
-                      [v34 timeIntervalSinceDate:v33];
+                      [v34 timeIntervalSinceDate:endDate2];
                       if (v37 >= 0.0)
                       {
                         v36 = v37;
@@ -427,7 +427,7 @@ LABEL_26:
                       if (v38 > 10000.0)
                       {
 
-                        v18 = v49;
+                        array4 = v49;
                         v39 = v49;
                         j = v53;
                         goto LABEL_45;
@@ -449,24 +449,24 @@ LABEL_26:
                   break;
                 }
 
-                v18 = v49;
+                array4 = v49;
                 v39 = v49;
                 j = v53;
                 if (v27 <= 60.0)
                 {
-                  v39 = v47;
+                  v39 = array5;
                 }
               }
 
               else
               {
 
-                v39 = v18;
+                v39 = array4;
               }
 
 LABEL_45:
               [v39 addObject:v20];
-              v7 = v51;
+              array = v51;
             }
 
             v52 = [obj countByEnumeratingWithState:&v60 objects:v69 count:16];
@@ -475,31 +475,31 @@ LABEL_45:
           while (v52);
         }
 
-        v4 = v43;
-        if ([v18 count])
+        array3 = v43;
+        if ([array4 count])
         {
-          v40 = [v7 mutableCopy];
-          [v40 addObjectsFromArray:v47];
+          v40 = [array mutableCopy];
+          [v40 addObjectsFromArray:array5];
           [v43 addObject:v40];
-          [v43 addObject:v18];
+          [v43 addObject:array4];
         }
 
-        v8 = v45;
-        v3 = v46;
+        array2 = v45;
+        momentsCopy = v46;
         v9 = v44;
       }
 
-      if (![v4 count])
+      if (![array3 count])
       {
         v41 = [MEMORY[0x1E695DF70] arrayWithArray:v9];
-        [v4 addObject:v41];
+        [array3 addObject:v41];
       }
     }
 
     else
     {
-      v71 = v3;
-      v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
+      v71 = momentsCopy;
+      array3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
     }
   }
 
@@ -512,18 +512,18 @@ LABEL_45:
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "[MomentsGeneration] Moments split between originators is disabled", buf, 2u);
     }
 
-    v6 = [v3 mutableCopy];
+    v6 = [momentsCopy mutableCopy];
     v72[0] = v6;
-    v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:1];
+    array3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:1];
   }
 
-  return v4;
+  return array3;
 }
 
-- (id)_eligibleClusterForMoment:(id)a3 inMomentsByLocationType:(id)a4
+- (id)_eligibleClusterForMoment:(id)moment inMomentsByLocationType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  momentCopy = moment;
+  typeCopy = type;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -534,10 +534,10 @@ LABEL_45:
   v10[1] = 3221225472;
   v10[2] = __72__PLLibraryClusterer__eligibleClusterForMoment_inMomentsByLocationType___block_invoke;
   v10[3] = &unk_1E75771F8;
-  v7 = v5;
+  v7 = momentCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateKeysAndObjectsUsingBlock:v10];
+  [typeCopy enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -619,36 +619,36 @@ void __72__PLLibraryClusterer__eligibleClusterForMoment_inMomentsByLocationType_
 LABEL_16:
 }
 
-- (id)_momentsSplitOnLocationTypeWithMoments:(id)a3
+- (id)_momentsSplitOnLocationTypeWithMoments:(id)moments
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  momentsCopy = moments;
   if ([objc_opt_class() highlightSplitBasedOnLocationTypeEnabled])
   {
-    if ([v4 count] <= 1)
+    if ([momentsCopy count] <= 1)
     {
-      v54 = v4;
+      v54 = momentsCopy;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
       goto LABEL_50;
     }
 
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    v38 = [MEMORY[0x1E695DF90] dictionary];
-    v40 = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    currentFrequentLocations = [(PLFrequentLocationManager *)self->_frequentLocationManager currentFrequentLocations];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invoke;
     aBlock[3] = &unk_1E75771D0;
-    v10 = v9;
+    v10 = dictionary;
     v48 = v10;
     v42 = _Block_copy(aBlock);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v36 = v4;
-    v11 = v4;
+    v36 = momentsCopy;
+    v11 = momentsCopy;
     v12 = [v11 countByEnumeratingWithState:&v43 objects:v53 count:16];
     if (!v12)
     {
@@ -657,7 +657,7 @@ LABEL_16:
 
     v13 = v12;
     v14 = *v44;
-    v37 = v8;
+    v37 = array;
     while (1)
     {
       v15 = 0;
@@ -672,30 +672,30 @@ LABEL_16:
         v17 = objc_autoreleasePoolPush();
         if (([objc_opt_class() _momentEligibleForSplit:v16] & 1) == 0)
         {
-          [v8 addObject:v16];
+          [array addObject:v16];
           goto LABEL_37;
         }
 
-        v18 = [(PLLibraryClusterer *)self _eligibleClusterForMoment:v16 inMomentsByLocationType:v10];
-        if (v18)
+        array2 = [(PLLibraryClusterer *)self _eligibleClusterForMoment:v16 inMomentsByLocationType:v10];
+        if (array2)
         {
           goto LABEL_36;
         }
 
-        v19 = [v16 processedLocation];
-        if (v19 > 5)
+        processedLocation = [v16 processedLocation];
+        if (processedLocation > 5)
         {
-          if ((v19 - 8) >= 3)
+          if ((processedLocation - 8) >= 3)
           {
-            if (v19 != 6)
+            if (processedLocation != 6)
             {
-              if (v19 != 7)
+              if (processedLocation != 7)
               {
                 goto LABEL_45;
               }
 
 LABEL_32:
-              v26 = v8;
+              v26 = array;
               goto LABEL_35;
             }
 
@@ -705,30 +705,30 @@ LABEL_32:
 
         else
         {
-          if (v19 > 2)
+          if (processedLocation > 2)
           {
-            if ((v19 - 3) >= 2)
+            if ((processedLocation - 3) >= 2)
             {
-              if (v19 == 5)
+              if (processedLocation == 5)
               {
 LABEL_25:
-                v21 = [PLMomentGenerationUtils frequentLocationNearMoment:v16 withFrequentLocations:v40];
+                v21 = [PLMomentGenerationUtils frequentLocationNearMoment:v16 withFrequentLocations:currentFrequentLocations];
                 v41 = v21;
                 if (v21)
                 {
-                  v22 = [v21 centroid];
-                  v23 = [v22 pl_location];
+                  centroid = [v21 centroid];
+                  pl_location = [centroid pl_location];
 
-                  if (v23)
+                  if (pl_location)
                   {
-                    v24 = [v41 centroid];
-                    v25 = [v24 pl_location];
+                    centroid2 = [v41 centroid];
+                    pl_location2 = [centroid2 pl_location];
 
-                    v18 = [v38 objectForKeyedSubscript:v25];
-                    if (!v18)
+                    array2 = [dictionary2 objectForKeyedSubscript:pl_location2];
+                    if (!array2)
                     {
-                      v18 = [MEMORY[0x1E695DF70] array];
-                      [v38 setObject:v18 forKeyedSubscript:v25];
+                      array2 = [MEMORY[0x1E695DF70] array];
+                      [dictionary2 setObject:array2 forKeyedSubscript:pl_location2];
                     }
                   }
 
@@ -737,37 +737,37 @@ LABEL_25:
                     v27 = PLMomentsGetLog();
                     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                     {
-                      v28 = [v41 centroid];
+                      centroid3 = [v41 centroid];
                       *buf = 138412546;
                       v50 = v41;
                       v51 = 2112;
-                      v52 = v28;
-                      v29 = v28;
+                      v52 = centroid3;
+                      v29 = centroid3;
                       _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "[MomentsGeneration] matchedFrequentLocation (%@) centroid (%@) pl_location found to be nil.", buf, 0x16u);
                     }
 
-                    v18 = (*(v42 + 2))(v42, 5);
+                    array2 = (*(v42 + 2))(v42, 5);
                   }
 
-                  v8 = v37;
+                  array = v37;
                 }
 
                 else
                 {
-                  v18 = (*(v42 + 2))(v42, 5);
+                  array2 = (*(v42 + 2))(v42, 5);
                 }
 
-                if (v18)
+                if (array2)
                 {
                   goto LABEL_36;
                 }
               }
 
 LABEL_45:
-              v30 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v30 handleFailureInMethod:a2 object:self file:@"PLLibraryClusterer.m" lineNumber:593 description:@"Each moments need a target array"];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"PLLibraryClusterer.m" lineNumber:593 description:@"Each moments need a target array"];
 
-              v18 = 0;
+              array2 = 0;
               goto LABEL_36;
             }
 
@@ -776,14 +776,14 @@ LABEL_33:
             goto LABEL_34;
           }
 
-          if (v19)
+          if (processedLocation)
           {
-            if (v19 == 1)
+            if (processedLocation == 1)
             {
               goto LABEL_25;
             }
 
-            if (v19 != 2)
+            if (processedLocation != 2)
             {
               goto LABEL_45;
             }
@@ -796,14 +796,14 @@ LABEL_33:
 LABEL_34:
         v26 = v20();
 LABEL_35:
-        v18 = v26;
+        array2 = v26;
         if (!v26)
         {
           goto LABEL_45;
         }
 
 LABEL_36:
-        [v18 addObject:v16];
+        [array2 addObject:v16];
 
 LABEL_37:
         objc_autoreleasePoolPop(v17);
@@ -818,20 +818,20 @@ LABEL_37:
 LABEL_47:
 
         v32 = objc_autoreleasePoolPush();
-        v33 = [v10 allValues];
-        v5 = [v33 mutableCopy];
+        allValues = [v10 allValues];
+        v5 = [allValues mutableCopy];
 
-        v34 = [v38 allValues];
-        [v5 addObjectsFromArray:v34];
+        allValues2 = [dictionary2 allValues];
+        [v5 addObjectsFromArray:allValues2];
 
-        if ([v8 count])
+        if ([array count])
         {
-          [(PLLibraryClusterer *)self _mergeMomentsIntoClustersBasedOnTimeWithMoments:v8 clusters:v5];
+          [(PLLibraryClusterer *)self _mergeMomentsIntoClustersBasedOnTimeWithMoments:array clusters:v5];
         }
 
         objc_autoreleasePoolPop(v32);
 
-        v4 = v36;
+        momentsCopy = v36;
         goto LABEL_50;
       }
     }
@@ -844,7 +844,7 @@ LABEL_47:
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "[MomentsGeneration] Moments split on location type is disabled", buf, 2u);
   }
 
-  v7 = [v4 mutableCopy];
+  v7 = [momentsCopy mutableCopy];
   v55[0] = v7;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
 
@@ -866,28 +866,28 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
   return v4;
 }
 
-- (id)_momentsSplitWithinDayWithMoments:(id)a3
+- (id)_momentsSplitWithinDayWithMoments:(id)moments
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v63 = self;
-  v52 = v4;
+  momentsCopy = moments;
+  selfCopy = self;
+  v52 = momentsCopy;
   if ([objc_opt_class() highlightSplitBasedOnTimeAndLocationEnabled])
   {
-    if ([v4 count] > 1)
+    if ([momentsCopy count] > 1)
     {
       v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"localStartDate" ascending:1];
       v103 = v8;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v103 count:1];
       [v52 sortUsingDescriptors:v9];
 
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v84 = 0;
       v85 = &v84;
       v86 = 0x3032000000;
       v87 = __Block_byref_object_copy__111317;
       v88 = __Block_byref_object_dispose__111318;
-      v89 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v80 = 0;
       v81 = &v80;
       v82 = 0x2020000000;
@@ -910,7 +910,7 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
       v69[1] = 3221225472;
       v69[2] = __56__PLLibraryClusterer__momentsSplitWithinDayWithMoments___block_invoke_2;
       v69[3] = &unk_1E75771A8;
-      v51 = v10;
+      v51 = array;
       v70 = v51;
       v72 = &v84;
       v59 = v11;
@@ -938,18 +938,18 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
 
             v14 = *(*(&v65 + 1) + 8 * v13);
             v15 = objc_autoreleasePoolPush();
-            v16 = [v14 localStartDate];
-            v17 = [v14 localEndDate];
+            localStartDate = [v14 localStartDate];
+            localEndDate = [v14 localEndDate];
             v18 = [objc_opt_class() _momentEligibleForSplit:v14];
             v19 = v75[5];
             if ((v19 != 0) & v18) == 1 && (v81[3])
             {
-              v20 = [v19 localStartDate];
-              v21 = [v75[5] localEndDate];
-              v64 = v20;
-              v22 = v21;
-              v23 = v16;
-              v24 = v17;
+              localStartDate2 = [v19 localStartDate];
+              localEndDate2 = [v75[5] localEndDate];
+              v64 = localStartDate2;
+              v22 = localEndDate2;
+              v23 = localStartDate;
+              v24 = localEndDate;
               v62 = v22;
               [v23 timeIntervalSinceDate:v22];
               v26 = v25;
@@ -970,7 +970,7 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
                   v41 = MEMORY[0x1E696AEC0];
                   v42 = [v64 description];
                   v43 = [v62 description];
-                  v57 = [v41 stringWithFormat:@"[%@ - %@]", v42, v43];
+                  approximateLocation = [v41 stringWithFormat:@"[%@ - %@]", v42, v43];
 
                   v44 = MEMORY[0x1E696AEC0];
                   v45 = [v23 description];
@@ -980,16 +980,16 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
                   v47 = PLMomentsGetLog();
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                   {
-                    v48 = [v14 uuid];
-                    v49 = [v75[5] uuid];
+                    uuid = [v14 uuid];
+                    uuid2 = [v75[5] uuid];
                     *buf = 138413058;
-                    v91 = v48;
+                    v91 = uuid;
                     v92 = 2112;
                     v93 = v29;
                     v94 = 2112;
-                    v95 = v49;
+                    v95 = uuid2;
                     v96 = 2112;
-                    v97 = v57;
+                    v97 = approximateLocation;
                     _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_DEBUG, "[MomentsGeneration] Separated moment %@ %@ from moment %@ %@, 6 or more hours apart", buf, 0x2Au);
                   }
 
@@ -998,10 +998,10 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
 
                 else
                 {
-                  v57 = [v75[5] approximateLocation];
-                  v28 = [v14 approximateLocation];
-                  v29 = v28;
-                  if (v57 && v28 && ([v57 coordinate], objc_msgSend(v29, "coordinate"), CLLocationCoordinate2DGetDistanceFrom(), v31 = v30, -[PLLibraryClusterer _shouldSplitMomentsWithTimeDistance:locationDistance:](v63, "_shouldSplitMomentsWithTimeDistance:locationDistance:", v26, v30)))
+                  approximateLocation = [v75[5] approximateLocation];
+                  approximateLocation2 = [v14 approximateLocation];
+                  v29 = approximateLocation2;
+                  if (approximateLocation && approximateLocation2 && ([approximateLocation coordinate], objc_msgSend(v29, "coordinate"), CLLocationCoordinate2DGetDistanceFrom(), v31 = v30, -[PLLibraryClusterer _shouldSplitMomentsWithTimeDistance:locationDistance:](selfCopy, "_shouldSplitMomentsWithTimeDistance:locationDistance:", v26, v30)))
                   {
                     v32 = MEMORY[0x1E696AEC0];
                     v54 = [v64 description];
@@ -1017,14 +1017,14 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
                     v38 = PLMomentsGetLog();
                     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
                     {
-                      v39 = [v14 uuid];
-                      v40 = [v75[5] uuid];
+                      uuid3 = [v14 uuid];
+                      uuid4 = [v75[5] uuid];
                       *buf = 138413570;
-                      v91 = v39;
+                      v91 = uuid3;
                       v92 = 2112;
                       v93 = v55;
                       v94 = 2112;
-                      v95 = v40;
+                      v95 = uuid4;
                       v96 = 2112;
                       v97 = v53;
                       v98 = 2048;
@@ -1076,7 +1076,7 @@ id __61__PLLibraryClusterer__momentsSplitOnLocationTypeWithMoments___block_invok
 
     else
     {
-      v104 = v4;
+      v104 = momentsCopy;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v104 count:1];
     }
   }
@@ -1124,26 +1124,26 @@ void __56__PLLibraryClusterer__momentsSplitWithinDayWithMoments___block_invoke_2
   (*(a1[5] + 16))();
 }
 
-- (void)_mergeMomentsIntoClustersBasedOnTimeWithMoments:(id)a3 clusters:(id)a4
+- (void)_mergeMomentsIntoClustersBasedOnTimeWithMoments:(id)moments clusters:(id)clusters
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  momentsCopy = moments;
+  clustersCopy = clusters;
+  if ([clustersCopy count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v37 = v5;
-    v8 = v5;
+    v37 = momentsCopy;
+    v8 = momentsCopy;
     v41 = [v8 countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v41)
     {
-      v39 = v7;
+      v39 = array;
       v40 = *v54;
-      v44 = v6;
+      v44 = clustersCopy;
       v38 = v8;
       do
       {
@@ -1157,9 +1157,9 @@ void __56__PLLibraryClusterer__momentsSplitWithinDayWithMoments___block_invoke_2
 
           v10 = *(*(&v53 + 1) + 8 * v9);
           v11 = objc_autoreleasePoolPush();
-          v47 = [v10 startDate];
-          v12 = [v10 endDate];
-          if (![v6 count])
+          startDate = [v10 startDate];
+          endDate = [v10 endDate];
+          if (![clustersCopy count])
           {
             goto LABEL_24;
           }
@@ -1172,7 +1172,7 @@ void __56__PLLibraryClusterer__momentsSplitWithinDayWithMoments___block_invoke_2
           do
           {
             context = objc_autoreleasePoolPush();
-            v16 = [v6 objectAtIndexedSubscript:v13];
+            v16 = [clustersCopy objectAtIndexedSubscript:v13];
             v49 = 0u;
             v50 = 0u;
             v51 = 0u;
@@ -1195,14 +1195,14 @@ void __56__PLLibraryClusterer__momentsSplitWithinDayWithMoments___block_invoke_2
 
                   v21 = *(*(&v49 + 1) + 8 * v20);
                   v22 = objc_autoreleasePoolPush();
-                  v23 = [v21 startDate];
-                  v24 = [v21 endDate];
-                  v25 = v47;
-                  [v23 timeIntervalSinceDate:v12];
+                  startDate2 = [v21 startDate];
+                  endDate2 = [v21 endDate];
+                  v25 = startDate;
+                  [startDate2 timeIntervalSinceDate:endDate];
                   v27 = v26;
                   if (v26 < 0.0)
                   {
-                    [v25 timeIntervalSinceDate:v24];
+                    [v25 timeIntervalSinceDate:endDate2];
                     if (v28 < 0.0)
                     {
                       v27 = 0.0;
@@ -1233,12 +1233,12 @@ void __56__PLLibraryClusterer__momentsSplitWithinDayWithMoments___block_invoke_2
 
             objc_autoreleasePoolPop(context);
             ++v13;
-            v6 = v44;
+            clustersCopy = v44;
           }
 
           while (v13 < [v44 count]);
           v8 = v38;
-          v7 = v39;
+          array = v39;
           v11 = v42;
           v9 = v43;
           if (v14 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1255,7 +1255,7 @@ LABEL_24:
           }
 
           v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-          [v7 addObject:v30];
+          [array addObject:v30];
 
           objc_autoreleasePoolPop(v11);
           ++v9;
@@ -1275,10 +1275,10 @@ LABEL_24:
       {
         v32 = objc_autoreleasePoolPush();
         v33 = [v8 objectAtIndexedSubscript:v31];
-        v34 = [v7 objectAtIndexedSubscript:v31];
-        v35 = [v34 unsignedIntegerValue];
+        v34 = [array objectAtIndexedSubscript:v31];
+        unsignedIntegerValue = [v34 unsignedIntegerValue];
 
-        v36 = [v6 objectAtIndexedSubscript:v35];
+        v36 = [clustersCopy objectAtIndexedSubscript:unsignedIntegerValue];
         [v36 addObject:v33];
 
         objc_autoreleasePoolPop(v32);
@@ -1288,47 +1288,47 @@ LABEL_24:
       while (v31 < [v8 count]);
     }
 
-    v5 = v37;
+    momentsCopy = v37;
   }
 
   else
   {
-    [v6 addObject:v5];
+    [clustersCopy addObject:momentsCopy];
   }
 }
 
-- (void)_createMomentsForDailyAssets:(id)a3 currentMomentExistingMomentData:(id)a4
+- (void)_createMomentsForDailyAssets:(id)assets currentMomentExistingMomentData:(id)data
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v16 count])
+  assetsCopy = assets;
+  dataCopy = data;
+  if ([assetsCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained dataManager];
+    dataManager = [WeakRetained dataManager];
 
     v9 = [PLCompactMomentClustering alloc];
-    v10 = [(PLLibraryClusterer *)self frequentLocationManager];
-    v11 = [v10 currentFrequentLocations];
-    v12 = [(PLCompactMomentClustering *)v9 initWithDataManager:v8 frequentLocations:v11];
+    frequentLocationManager = [(PLLibraryClusterer *)self frequentLocationManager];
+    currentFrequentLocations = [frequentLocationManager currentFrequentLocations];
+    v12 = [(PLCompactMomentClustering *)v9 initWithDataManager:dataManager frequentLocations:currentFrequentLocations];
 
-    v13 = [(PLCompactMomentClustering *)v12 createAssetClustersForAssetsInDay:v16];
+    v13 = [(PLCompactMomentClustering *)v12 createAssetClustersForAssetsInDay:assetsCopy];
     v14 = objc_loadWeakRetained(&self->_delegate);
-    v15 = [v14 libraryClusterer:self createMomentClustersForAssetClusters:v13 existingMomentDataForAssets:v6];
+    v15 = [v14 libraryClusterer:self createMomentClustersForAssetClusters:v13 existingMomentDataForAssets:dataCopy];
   }
 }
 
-- (id)momentClustersForMomentsSortedByDate:(id)a3 allowLocationSplits:(BOOL)a4 allowExternalSplits:(BOOL)a5
+- (id)momentClustersForMomentsSortedByDate:(id)date allowLocationSplits:(BOOL)splits allowExternalSplits:(BOOL)externalSplits
 {
-  v5 = a5;
-  v28 = a4;
+  externalSplitsCopy = externalSplits;
+  splitsCopy = splits;
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 count])
+  dateCopy = date;
+  if ([dateCopy count])
   {
-    v25 = v7;
-    v26 = self;
-    v8 = [(PLLibraryClusterer *)self _momentsGroupedByDayWithMomentsSortedByDate:v7];
-    v31 = [MEMORY[0x1E695DF70] array];
+    v25 = dateCopy;
+    selfCopy = self;
+    v8 = [(PLLibraryClusterer *)self _momentsGroupedByDayWithMomentsSortedByDate:dateCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -1371,7 +1371,7 @@ LABEL_24:
                 }
 
                 v19 = *(*(&v32 + 1) + 8 * j);
-                if (!v5 || (v20 = [*(*(&v32 + 1) + 8 * j) pl_originatorState], v21 = v12, (v20 & 8) == 0))
+                if (!externalSplitsCopy || (v20 = [*(*(&v32 + 1) + 8 * j) pl_originatorState], v21 = v12, (v20 & 8) == 0))
                 {
                   v21 = v13;
                 }
@@ -1388,21 +1388,21 @@ LABEL_24:
           if ([v12 count])
           {
             v22 = [[PLMomentCluster alloc] initWithMoments:v12];
-            [v31 addObject:v22];
+            [array addObject:v22];
           }
 
           if ([v13 count])
           {
-            if (v28)
+            if (splitsCopy)
             {
-              v23 = [(PLLibraryClusterer *)v26 locationBasedMomentClustersForMomentsSortedByDate:v13];
-              [v31 addObjectsFromArray:v23];
+              v23 = [(PLLibraryClusterer *)selfCopy locationBasedMomentClustersForMomentsSortedByDate:v13];
+              [array addObjectsFromArray:v23];
             }
 
             else
             {
               v23 = [[PLMomentCluster alloc] initWithMoments:v13];
-              [v31 addObject:v23];
+              [array addObject:v23];
             }
           }
 
@@ -1415,39 +1415,39 @@ LABEL_24:
       while (v30);
     }
 
-    v7 = v25;
+    dateCopy = v25;
   }
 
   else
   {
-    v31 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v31;
+  return array;
 }
 
-- (id)locationBasedMomentClustersForMomentsSortedByDate:(id)a3
+- (id)locationBasedMomentClustersForMomentsSortedByDate:(id)date
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dateCopy = date;
+  if ([dateCopy count])
   {
-    if ([v4 count] == 1)
+    if ([dateCopy count] == 1)
     {
-      v5 = [[PLMomentCluster alloc] initWithMoments:v4];
-      v70[0] = v5;
-      v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
+      array = [[PLMomentCluster alloc] initWithMoments:dateCopy];
+      v70[0] = array;
+      array6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DF70] array];
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v8 = v4;
+      v8 = dateCopy;
       v9 = [v8 countByEnumeratingWithState:&v61 objects:v69 count:16];
       if (v9)
       {
@@ -1463,16 +1463,16 @@ LABEL_24:
             }
 
             v13 = *(*(&v61 + 1) + 8 * i);
-            v14 = [v13 approximateLocation];
+            approximateLocation = [v13 approximateLocation];
 
-            if (v14)
+            if (approximateLocation)
             {
-              v15 = v5;
+              v15 = array;
             }
 
             else
             {
-              v15 = v7;
+              v15 = array2;
             }
 
             [(PLMomentCluster *)v15 addObject:v13];
@@ -1484,17 +1484,17 @@ LABEL_24:
         while (v10);
       }
 
-      if ([(PLMomentCluster *)v5 count]> 1)
+      if ([(PLMomentCluster *)array count]> 1)
       {
-        v17 = [MEMORY[0x1E695DF70] array];
-        v46 = [(PLLibraryClusterer *)self _momentsSplitOnLocationTypeWithMoments:v5];
-        [v17 addObjectsFromArray:?];
-        v18 = [MEMORY[0x1E695DF70] array];
+        array3 = [MEMORY[0x1E695DF70] array];
+        v46 = [(PLLibraryClusterer *)self _momentsSplitOnLocationTypeWithMoments:array];
+        [array3 addObjectsFromArray:?];
+        array4 = [MEMORY[0x1E695DF70] array];
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v19 = v17;
+        v19 = array3;
         v20 = [(PLMomentCluster *)v19 countByEnumeratingWithState:&v57 objects:v67 count:16];
         obj = v19;
         if (v20)
@@ -1513,7 +1513,7 @@ LABEL_24:
               v24 = *(*(&v57 + 1) + 8 * j);
               v25 = objc_autoreleasePoolPush();
               v26 = [(PLLibraryClusterer *)self _momentsSplitBetweenOriginatorsWithMoments:v24];
-              [v18 addObjectsFromArray:v26];
+              [array4 addObjectsFromArray:v26];
 
               objc_autoreleasePoolPop(v25);
             }
@@ -1525,15 +1525,15 @@ LABEL_24:
           while (v21);
         }
 
-        v47 = v4;
+        v47 = dateCopy;
 
-        [(PLLibraryClusterer *)self _mergeMomentsIntoClustersBasedOnTimeWithMoments:v7 clusters:v18];
-        v27 = [MEMORY[0x1E695DF70] array];
+        [(PLLibraryClusterer *)self _mergeMomentsIntoClustersBasedOnTimeWithMoments:array2 clusters:array4];
+        array5 = [MEMORY[0x1E695DF70] array];
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v28 = v18;
+        v28 = array4;
         v29 = [v28 countByEnumeratingWithState:&v53 objects:v66 count:16];
         if (v29)
         {
@@ -1551,7 +1551,7 @@ LABEL_24:
               v33 = *(*(&v53 + 1) + 8 * k);
               v34 = objc_autoreleasePoolPush();
               v35 = [(PLLibraryClusterer *)self _momentsSplitWithinDayWithMoments:v33];
-              [v27 addObjectsFromArray:v35];
+              [array5 addObjectsFromArray:v35];
 
               objc_autoreleasePoolPop(v34);
             }
@@ -1564,12 +1564,12 @@ LABEL_24:
 
         v45 = v28;
 
-        v6 = [MEMORY[0x1E695DF70] array];
+        array6 = [MEMORY[0x1E695DF70] array];
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v36 = v27;
+        v36 = array5;
         v37 = [v36 countByEnumeratingWithState:&v49 objects:v65 count:16];
         if (v37)
         {
@@ -1589,7 +1589,7 @@ LABEL_24:
               v43 = [[PLMomentCluster alloc] initWithMoments:v41, v45];
               if (v43)
               {
-                [v6 addObject:v43];
+                [array6 addObject:v43];
               }
 
               objc_autoreleasePoolPop(v42);
@@ -1601,7 +1601,7 @@ LABEL_24:
           while (v38);
         }
 
-        v4 = v47;
+        dateCopy = v47;
         v16 = obj;
       }
 
@@ -1609,43 +1609,43 @@ LABEL_24:
       {
         v16 = [[PLMomentCluster alloc] initWithMoments:v8];
         v68 = v16;
-        v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v68 count:1];
+        array6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v68 count:1];
       }
     }
   }
 
   else
   {
-    v6 = MEMORY[0x1E695E0F0];
+    array6 = MEMORY[0x1E695E0F0];
   }
 
-  return v6;
+  return array6;
 }
 
-- (void)processMomentsWithAssets:(id)a3
+- (void)processMomentsWithAssets:(id)assets
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained logRoutineInformation];
 
-    v6 = [v4 anyObject];
-    v7 = [v6 assetComparisonSortDescriptors];
-    v8 = v7;
+    anyObject = [assetsCopy anyObject];
+    assetComparisonSortDescriptors = [anyObject assetComparisonSortDescriptors];
+    v8 = assetComparisonSortDescriptors;
     v9 = MEMORY[0x1E695E0F0];
-    if (v7)
+    if (assetComparisonSortDescriptors)
     {
-      v9 = v7;
+      v9 = assetComparisonSortDescriptors;
     }
 
     v10 = v9;
 
     v34 = v10;
-    v35 = v4;
-    v11 = [v4 sortedArrayUsingDescriptors:v10];
-    v12 = [MEMORY[0x1E695DF70] array];
+    v35 = assetsCopy;
+    v11 = [assetsCopy sortedArrayUsingDescriptors:v10];
+    array = [MEMORY[0x1E695DF70] array];
     v40 = [MEMORY[0x1E695DFA8] set];
     v39 = [[PLClusterTimeInfo alloc] initWithCalendar:self->_calendar];
     v41 = 0u;
@@ -1675,42 +1675,42 @@ LABEL_24:
           v19 = objc_autoreleasePoolPush();
           if (([v18 isDeleted] & 1) == 0)
           {
-            v20 = [v18 pl_date];
+            pl_date = [v18 pl_date];
             v21 = [v18 localDateAndCreateIfNeededWithLocalDateCreator:self->_localCreationDateCreator];
             if (!v21)
             {
               v32 = PLMomentsGetLog();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
               {
-                v33 = [v18 uuid];
+                uuid = [v18 uuid];
                 *buf = 138543362;
-                v46 = v33;
+                v46 = uuid;
                 _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_FAULT, "Asset dateCreated unexpectedly nil. %{public}@", buf, 0xCu);
               }
 
               objc_autoreleasePoolPop(v19);
               v31 = v34;
-              v4 = v35;
+              assetsCopy = v35;
               v30 = v40;
               goto LABEL_24;
             }
 
             v22 = v21;
-            if (![(PLClusterTimeInfo *)v39 utcDateBelongsInCluster:v20])
+            if (![(PLClusterTimeInfo *)v39 utcDateBelongsInCluster:pl_date])
             {
-              [(PLLibraryClusterer *)self _createMomentsForDailyAssets:v12 currentMomentExistingMomentData:v40];
-              [v12 removeAllObjects];
+              [(PLLibraryClusterer *)self _createMomentsForDailyAssets:array currentMomentExistingMomentData:v40];
+              [array removeAllObjects];
               [v40 removeAllObjects];
               [(PLClusterTimeInfo *)v39 reset];
             }
 
-            v23 = self;
-            v24 = v12;
-            [v12 addObject:v18];
-            [(PLClusterTimeInfo *)v39 updateWithUTCDate:v20 localDate:v22];
+            selfCopy = self;
+            v24 = array;
+            [array addObject:v18];
+            [(PLClusterTimeInfo *)v39 updateWithUTCDate:pl_date localDate:v22];
             v25 = [PLExistingMomentData alloc];
-            v26 = [v18 moment];
-            v27 = [(PLExistingMomentData *)v25 initWithMoment:v26];
+            moment = [v18 moment];
+            v27 = [(PLExistingMomentData *)v25 initWithMoment:moment];
 
             if (v27)
             {
@@ -1725,8 +1725,8 @@ LABEL_24:
               [v28 registerAsset:v18];
             }
 
-            v12 = v24;
-            self = v23;
+            array = v24;
+            self = selfCopy;
             v16 = v36;
             v13 = v37;
             v15 = v38;
@@ -1748,25 +1748,25 @@ LABEL_24:
     }
 
     v30 = v40;
-    [(PLLibraryClusterer *)self _createMomentsForDailyAssets:v12 currentMomentExistingMomentData:v40];
+    [(PLLibraryClusterer *)self _createMomentsForDailyAssets:array currentMomentExistingMomentData:v40];
     v31 = v34;
-    v4 = v35;
+    assetsCopy = v35;
 LABEL_24:
   }
 }
 
-- (PLLibraryClusterer)initWithLocalCreationDateCreator:(id)a3 frequentLocationManager:(id)a4
+- (PLLibraryClusterer)initWithLocalCreationDateCreator:(id)creator frequentLocationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  creatorCopy = creator;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PLLibraryClusterer;
   v9 = [(PLLibraryClusterer *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_localCreationDateCreator, a3);
-    objc_storeStrong(&v10->_frequentLocationManager, a4);
+    objc_storeStrong(&v9->_localCreationDateCreator, creator);
+    objc_storeStrong(&v10->_frequentLocationManager, manager);
     v11 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
     v12 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
     [(NSCalendar *)v11 setTimeZone:v12];

@@ -1,32 +1,32 @@
 @interface CRMetalPolygonRectifier
-- (CRMetalPolygonRectifier)initWithDevice:(id)a3 sourceImage:(id)a4;
-- (CRMetalPolygonRectifier)initWithDevice:(id)a3 sourceImage:(id)a4 regionOfInterest:(CGRect)a5;
-- (id)imageByRectifyingPolygon:(id)a3 imageHeight:(unint64_t)a4;
-- (void)_createRenderTargetWithSize:(CGSize)a3;
-- (void)_createTextureForInputCRImage:(id)a3;
-- (void)_setSourceImage:(id)a3;
-- (void)rectifyPolygonAsync:(id)a3 imageHeight:(unint64_t)a4 completionHandler:(id)a5;
+- (CRMetalPolygonRectifier)initWithDevice:(id)device sourceImage:(id)image;
+- (CRMetalPolygonRectifier)initWithDevice:(id)device sourceImage:(id)image regionOfInterest:(CGRect)interest;
+- (id)imageByRectifyingPolygon:(id)polygon imageHeight:(unint64_t)height;
+- (void)_createRenderTargetWithSize:(CGSize)size;
+- (void)_createTextureForInputCRImage:(id)image;
+- (void)_setSourceImage:(id)image;
+- (void)rectifyPolygonAsync:(id)async imageHeight:(unint64_t)height completionHandler:(id)handler;
 @end
 
 @implementation CRMetalPolygonRectifier
 
-- (CRMetalPolygonRectifier)initWithDevice:(id)a3 sourceImage:(id)a4
+- (CRMetalPolygonRectifier)initWithDevice:(id)device sourceImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[CRMetalPolygonRectifier initWithDevice:sourceImage:regionOfInterest:](self, "initWithDevice:sourceImage:regionOfInterest:", v6, v7, 0.0, 0.0, [v7 width], objc_msgSend(v7, "height"));
+  deviceCopy = device;
+  imageCopy = image;
+  v8 = -[CRMetalPolygonRectifier initWithDevice:sourceImage:regionOfInterest:](self, "initWithDevice:sourceImage:regionOfInterest:", deviceCopy, imageCopy, 0.0, 0.0, [imageCopy width], objc_msgSend(imageCopy, "height"));
 
   return v8;
 }
 
-- (CRMetalPolygonRectifier)initWithDevice:(id)a3 sourceImage:(id)a4 regionOfInterest:(CGRect)a5
+- (CRMetalPolygonRectifier)initWithDevice:(id)device sourceImage:(id)image regionOfInterest:(CGRect)interest
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  deviceCopy = device;
+  imageCopy = image;
   v58.receiver = self;
   v58.super_class = CRMetalPolygonRectifier;
   v13 = [(CRMetalPolygonRectifier *)&v58 init];
@@ -35,9 +35,9 @@
     goto LABEL_11;
   }
 
-  if (v11)
+  if (deviceCopy)
   {
-    v14 = v11;
+    v14 = deviceCopy;
   }
 
   else
@@ -48,7 +48,7 @@
   v15 = *(v13 + 1);
   *(v13 + 1) = v14;
 
-  if (!v12)
+  if (!imageCopy)
   {
 LABEL_17:
     v51 = 0;
@@ -60,9 +60,9 @@ LABEL_17:
   v59.size.width = width;
   v59.size.height = height;
   *(v13 + 72) = NSIntegralRect(v59);
-  [v12 size];
+  [imageCopy size];
   v17 = v16;
-  [v12 size];
+  [imageCopy size];
   v62.size.height = v18;
   v62.origin.x = 0.0;
   v62.origin.y = 0.0;
@@ -95,7 +95,7 @@ LABEL_17:
   v24 = *(v13 + 15);
   *(v13 + 15) = v23;
 
-  [v13 _setSourceImage:v12];
+  [v13 _setSourceImage:imageCopy];
   v25 = *(v13 + 1);
   v26 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v56 = 0;
@@ -116,8 +116,8 @@ LABEL_16:
   [v29 setVertexFunction:v54];
   [v29 setFragmentFunction:v53];
   v30 = *(v13 + 3);
-  v31 = [v29 colorAttachments];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  colorAttachments = [v29 colorAttachments];
+  v32 = [colorAttachments objectAtIndexedSubscript:0];
   [v32 setPixelFormat:v30];
 
   v33 = *(v13 + 1);
@@ -138,21 +138,21 @@ LABEL_16:
   v38 = *(v13 + 6);
   *(v13 + 6) = v37;
 
-  v39 = [*(v13 + 6) colorAttachments];
-  v40 = [v39 objectAtIndexedSubscript:0];
+  colorAttachments2 = [*(v13 + 6) colorAttachments];
+  v40 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v40 setLoadAction:0];
 
-  v41 = [*(v13 + 6) colorAttachments];
-  v42 = [v41 objectAtIndexedSubscript:0];
+  colorAttachments3 = [*(v13 + 6) colorAttachments];
+  v42 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v42 setClearColor:{0.5, 0.5, 0.5, 1.0}];
 
-  v43 = [*(v13 + 6) colorAttachments];
-  v44 = [v43 objectAtIndexedSubscript:0];
+  colorAttachments4 = [*(v13 + 6) colorAttachments];
+  v44 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v44 setStoreAction:1];
 
-  v45 = [*(v13 + 1) newCommandQueue];
+  newCommandQueue = [*(v13 + 1) newCommandQueue];
   v46 = *(v13 + 5);
-  *(v13 + 5) = v45;
+  *(v13 + 5) = newCommandQueue;
 
   v47 = dispatch_semaphore_create(1);
   v48 = *(v13 + 19);
@@ -171,20 +171,20 @@ LABEL_18:
   return v51;
 }
 
-- (void)_setSourceImage:(id)a3
+- (void)_setSourceImage:(id)image
 {
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   self->_imageSize.width = v5;
   self->_imageSize.height = v6;
-  self->_ioColorSpace = [v4 colorSpace];
-  if (![v4 colorSpace])
+  self->_ioColorSpace = [imageCopy colorSpace];
+  if (![imageCopy colorSpace])
   {
     v7 = 13;
     goto LABEL_5;
   }
 
-  if ([v4 colorSpace] == 1)
+  if ([imageCopy colorSpace] == 1)
   {
     v7 = 73;
 LABEL_5:
@@ -192,14 +192,14 @@ LABEL_5:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && CVPixelBufferGetIOSurface([v4 pixelBuffer]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && CVPixelBufferGetIOSurface([imageCopy pixelBuffer]))
   {
-    v8 = [v4 width];
-    v9 = [v4 height];
+    width = [imageCopy width];
+    height = [imageCopy height];
     self->_regionOfInterest.origin.x = 0.0;
     self->_regionOfInterest.origin.y = 0.0;
-    self->_regionOfInterest.size.width = v8;
-    self->_regionOfInterest.size.height = v9;
+    self->_regionOfInterest.size.width = width;
+    self->_regionOfInterest.size.height = height;
   }
 
   dispatch_group_enter(self->_textureCreationGroup);
@@ -209,8 +209,8 @@ LABEL_5:
   v12[2] = __43__CRMetalPolygonRectifier__setSourceImage___block_invoke;
   v12[3] = &unk_1E7BC2CC8;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = imageCopy;
+  v11 = imageCopy;
   dispatch_async(textureCreationQueue, v12);
 }
 
@@ -222,16 +222,16 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
   dispatch_group_leave(v2);
 }
 
-- (void)_createTextureForInputCRImage:(id)a3
+- (void)_createTextureForInputCRImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(MEMORY[0x1E69741C0]);
   [v5 setPixelFormat:self->_pixelFormat];
   [v5 setAllowGPUOptimizedContents:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    IOSurface = CVPixelBufferGetIOSurface([v4 pixelBuffer]);
+    IOSurface = CVPixelBufferGetIOSurface([imageCopy pixelBuffer]);
     v7 = IOSurface;
     if (IOSurface)
     {
@@ -250,21 +250,21 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
       v18 = self->_texture;
       self->_texture = v17;
 
-      v19 = [v5 width];
-      v20 = [v5 height];
-      CVPixelBufferLockBaseAddress([v4 pixelBuffer], 1uLL);
-      BaseAddress = CVPixelBufferGetBaseAddress([v4 pixelBuffer]);
-      BytesPerRow = CVPixelBufferGetBytesPerRow([v4 pixelBuffer]);
-      CVPixelBufferGetPlaneCount([v4 pixelBuffer]);
+      width = [v5 width];
+      height = [v5 height];
+      CVPixelBufferLockBaseAddress([imageCopy pixelBuffer], 1uLL);
+      BaseAddress = CVPixelBufferGetBaseAddress([imageCopy pixelBuffer]);
+      BytesPerRow = CVPixelBufferGetBytesPerRow([imageCopy pixelBuffer]);
+      CVPixelBufferGetPlaneCount([imageCopy pixelBuffer]);
       v23 = self->_texture;
       v28 = 0;
       v29 = 0;
       v30 = 0;
-      v31 = v19;
-      v32 = v20;
+      v31 = width;
+      v32 = height;
       v33 = 1;
       [(MTLTexture *)v23 replaceRegion:&v28 mipmapLevel:0 withBytes:BaseAddress bytesPerRow:BytesPerRow];
-      CVPixelBufferUnlockBaseAddress([v4 pixelBuffer], 1uLL);
+      CVPixelBufferUnlockBaseAddress([imageCopy pixelBuffer], 1uLL);
     }
   }
 
@@ -276,20 +276,20 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
     v11 = self->_texture;
     self->_texture = v10;
 
-    v12 = [v5 width];
-    v13 = [v5 height];
+    width2 = [v5 width];
+    height2 = [v5 height];
     v14 = self->_texture;
     v28 = 0;
     v29 = 0;
     v30 = 0;
-    v31 = v12;
-    v32 = v13;
+    v31 = width2;
+    v32 = height2;
     v33 = 1;
-    if (v4)
+    if (imageCopy)
     {
-      [v4 vImage];
+      [imageCopy vImage];
       v15 = v26;
-      [v4 vImage];
+      [imageCopy vImage];
       v16 = *(&v25 + 1);
     }
 
@@ -307,12 +307,12 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_createRenderTargetWithSize:(CGSize)a3
+- (void)_createRenderTargetWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v4 = a3.height;
-  *self->_viewportSize = vmovn_s64(vcvtq_u64_f64(a3));
+  height = size.height;
+  width = size.width;
+  v4 = size.height;
+  *self->_viewportSize = vmovn_s64(vcvtq_u64_f64(size));
   v12 = objc_alloc_init(MEMORY[0x1E69741C0]);
   [v12 setTextureType:2];
   [v12 setPixelFormat:self->_pixelFormat];
@@ -325,12 +325,12 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
   self->_renderDestination = v5;
 
   v7 = self->_renderDestination;
-  v8 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
+  v9 = [colorAttachments objectAtIndexedSubscript:0];
   [v9 setTexture:v7];
 }
 
-- (id)imageByRectifyingPolygon:(id)a3 imageHeight:(unint64_t)a4
+- (id)imageByRectifyingPolygon:(id)polygon imageHeight:(unint64_t)height
 {
   v14 = 0;
   v15 = &v14;
@@ -338,7 +338,7 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
   v17 = __Block_byref_object_copy__8;
   v18 = __Block_byref_object_dispose__8;
   v19 = 0;
-  v6 = a3;
+  polygonCopy = polygon;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_13);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -347,7 +347,7 @@ void __43__CRMetalPolygonRectifier__setSourceImage___block_invoke(uint64_t a1)
   v12 = v7;
   v13 = &v14;
   v8 = v7;
-  [(CRMetalPolygonRectifier *)self rectifyPolygonAsync:v6 imageHeight:a4 completionHandler:v11];
+  [(CRMetalPolygonRectifier *)self rectifyPolygonAsync:polygonCopy imageHeight:height completionHandler:v11];
 
   dispatch_block_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v15[5];
@@ -364,16 +364,16 @@ void __64__CRMetalPolygonRectifier_imageByRectifyingPolygon_imageHeight___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)rectifyPolygonAsync:(id)a3 imageHeight:(unint64_t)a4 completionHandler:(id)a5
+- (void)rectifyPolygonAsync:(id)async imageHeight:(unint64_t)height completionHandler:(id)handler
 {
-  v92 = a3;
-  v91 = a5;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [v92 denormalizedPolyline];
-  v10 = [v9 pointValues];
+  asyncCopy = async;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  denormalizedPolyline = [asyncCopy denormalizedPolyline];
+  pointValues = [denormalizedPolyline pointValues];
 
-  v11 = [v10 count];
+  v11 = [pointValues count];
   v12 = v11 / 2;
   v13 = v11 / 2 - 1;
   if (v11 >= 4)
@@ -392,11 +392,11 @@ void __64__CRMetalPolygonRectifier_imageByRectifyingPolygon_imageHeight___block_
     v16 = -1;
     do
     {
-      v17 = [v10 objectAtIndexedSubscript:v14];
-      [v7 addObject:v17];
+      v17 = [pointValues objectAtIndexedSubscript:v14];
+      [array addObject:v17];
 
-      v18 = [v10 objectAtIndexedSubscript:{v16 + objc_msgSend(v10, "count")}];
-      [v8 addObject:v18];
+      v18 = [pointValues objectAtIndexedSubscript:{v16 + objc_msgSend(pointValues, "count")}];
+      [array2 addObject:v18];
 
       ++v14;
       --v16;
@@ -405,45 +405,45 @@ void __64__CRMetalPolygonRectifier_imageByRectifyingPolygon_imageHeight___block_
     while (v15 != v14);
   }
 
-  v19 = [v10 objectAtIndexedSubscript:v13];
-  [v7 addObject:v19];
+  v19 = [pointValues objectAtIndexedSubscript:v13];
+  [array addObject:v19];
 
-  v20 = [v10 objectAtIndexedSubscript:{objc_msgSend(v10, "count") - v12}];
-  [v8 addObject:v20];
+  v20 = [pointValues objectAtIndexedSubscript:{objc_msgSend(pointValues, "count") - v12}];
+  [array2 addObject:v20];
 
-  v21 = [v7 count] - 1;
+  v21 = [array count] - 1;
   v22 = malloc_type_malloc(96 * v21, 0x1000040451B5BE8uLL);
   v90 = 6 * v21;
-  v89 = a4;
-  v23 = a4 * -0.5;
+  heightCopy = height;
+  v23 = height * -0.5;
   v94 = v23;
-  v24 = vcvtd_n_f64_u64(a4, 1uLL);
+  v24 = vcvtd_n_f64_u64(height, 1uLL);
   v93 = v24;
   v25 = v22 + 6;
   v26 = 0.0;
   v27 = 1;
   v28 = MEMORY[0x1E695F060];
   v29 = 0.0;
-  while (v27 < [v7 count])
+  while (v27 < [array count])
   {
     v30 = v27 - 1;
-    v31 = [v7 objectAtIndexedSubscript:v30];
+    v31 = [array objectAtIndexedSubscript:v30];
     [v31 pointValue];
     v101 = v33;
     v103 = v32;
 
-    v34 = [v7 objectAtIndexedSubscript:++v30];
+    v34 = [array objectAtIndexedSubscript:++v30];
     [v34 pointValue];
     v99 = v36;
     v100 = v35;
 
-    v37 = [v8 objectAtIndexedSubscript:--v30];
+    v37 = [array2 objectAtIndexedSubscript:--v30];
     [v37 pointValue];
     v97 = v39;
     v98 = v38;
 
     v40 = v30 + 1;
-    v41 = [v8 objectAtIndexedSubscript:v30 + 1];
+    v41 = [array2 objectAtIndexedSubscript:v30 + 1];
     [v41 pointValue];
     v95 = v43;
     v96 = v42;
@@ -547,7 +547,7 @@ void __64__CRMetalPolygonRectifier_imageByRectifyingPolygon_imageHeight___block_
     v27 = v40 + 1;
   }
 
-  v76 = v89 / (v26 / v21);
+  v76 = heightCopy / (v26 / v21);
   v77 = v29 * v76;
   if (v21)
   {
@@ -580,12 +580,12 @@ void __64__CRMetalPolygonRectifier_imageByRectifyingPolygon_imageHeight___block_
   }
 
   dispatch_semaphore_wait(self->_renderDestinationSem, 0xFFFFFFFFFFFFFFFFLL);
-  [(CRMetalPolygonRectifier *)self _createRenderTargetWithSize:v77, v89];
+  [(CRMetalPolygonRectifier *)self _createRenderTargetWithSize:v77, heightCopy];
   v83 = [(MTLDevice *)self->_device newBufferWithBytes:v22 length:96 * v21 options:0];
   free(v22);
-  v84 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v84 setLabel:@"CRMetalPolygonRectifier"];
-  v85 = [v84 renderCommandEncoderWithDescriptor:self->_renderPassDescriptor];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"CRMetalPolygonRectifier"];
+  v85 = [commandBuffer renderCommandEncoderWithDescriptor:self->_renderPassDescriptor];
   [v85 setLabel:@"CRMetalPolygonRectifierOffscreenRenderEncoder"];
   dispatch_group_wait(self->_textureCreationGroup, 0xFFFFFFFFFFFFFFFFLL);
   [v85 pushDebugGroup:@"OffscreenRenderPass"];
@@ -610,10 +610,10 @@ void __64__CRMetalPolygonRectifier_imageByRectifyingPolygon_imageHeight___block_
   v104[2] = __77__CRMetalPolygonRectifier_rectifyPolygonAsync_imageHeight_completionHandler___block_invoke;
   v104[3] = &unk_1E7BC2D18;
   v104[4] = self;
-  v88 = v91;
+  v88 = handlerCopy;
   v105 = v88;
-  [v84 addCompletedHandler:v104];
-  [v84 commit];
+  [commandBuffer addCompletedHandler:v104];
+  [commandBuffer commit];
 }
 
 void __77__CRMetalPolygonRectifier_rectifyPolygonAsync_imageHeight_completionHandler___block_invoke(uint64_t a1)

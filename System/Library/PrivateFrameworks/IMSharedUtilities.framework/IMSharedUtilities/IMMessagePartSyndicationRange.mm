@@ -1,33 +1,33 @@
 @interface IMMessagePartSyndicationRange
-+ (id)_stringFromSyndicationStatus:(int64_t)a3;
-+ (id)_stringFromSyndicationType:(int64_t)a3;
-+ (id)deserializeSyndicationRangeFromString:(id)a3;
-+ (id)findChangesFromRangeArray:(id)a3 comparedToRangeArray:(id)a4;
-+ (id)maxStartDateForRanges:(id)a3;
-+ (id)messagePartSyndicationRangeForRange:(_NSRange)a3 inRangesArray:(id)a4;
-+ (id)messageRangeFromTokens_v1:(id)a3;
-+ (id)messageRangeFromTokens_v3:(id)a3;
-+ (id)minStartDateForRanges:(id)a3;
-+ (id)rangesFromSerializedString:(id)a3;
-+ (id)removeAssetInfoForAsset:(int64_t)a3 range:(id)a4;
-+ (id)replaceAssetInfoWith:(id)a3 asset:(int64_t)a4 range:(id)a5;
-+ (id)serializedStringFromArray:(id)a3;
-+ (id)syndicationRangeForAssetDescriptor:(id)a3 range:(id)a4;
++ (id)_stringFromSyndicationStatus:(int64_t)status;
++ (id)_stringFromSyndicationType:(int64_t)type;
++ (id)deserializeSyndicationRangeFromString:(id)string;
++ (id)findChangesFromRangeArray:(id)array comparedToRangeArray:(id)rangeArray;
++ (id)maxStartDateForRanges:(id)ranges;
++ (id)messagePartSyndicationRangeForRange:(_NSRange)range inRangesArray:(id)array;
++ (id)messageRangeFromTokens_v1:(id)tokens_v1;
++ (id)messageRangeFromTokens_v3:(id)tokens_v3;
++ (id)minStartDateForRanges:(id)ranges;
++ (id)rangesFromSerializedString:(id)string;
++ (id)removeAssetInfoForAsset:(int64_t)asset range:(id)range;
++ (id)replaceAssetInfoWith:(id)with asset:(int64_t)asset range:(id)range;
++ (id)serializedStringFromArray:(id)array;
++ (id)syndicationRangeForAssetDescriptor:(id)descriptor range:(id)range;
 + (id)unarchiveClasses;
-+ (id)updateAssetInfoWith:(id)a3 asset:(int64_t)a4 range:(id)a5;
-+ (id)updateMessagesRanges:(id)a3 withMessagePartSyndicationRanges:(id)a4 didUpdate:(BOOL *)a5;
-- (BOOL)_canBeReplacedByRange:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IMMessagePartSyndicationRange)initWithCoder:(id)a3;
-- (IMMessagePartSyndicationRange)initWithSyndicationAction:(id)a3;
-- (IMMessagePartSyndicationRange)initWithSyndicationType:(int64_t)a3 messagePartRange:(_NSRange)a4 syndicationStartDate:(id)a5 syndicationStatus:(int64_t)a6 assetDescriptor:(id)a7;
++ (id)updateAssetInfoWith:(id)with asset:(int64_t)asset range:(id)range;
++ (id)updateMessagesRanges:(id)ranges withMessagePartSyndicationRanges:(id)syndicationRanges didUpdate:(BOOL *)update;
+- (BOOL)_canBeReplacedByRange:(id)range;
+- (BOOL)isEqual:(id)equal;
+- (IMMessagePartSyndicationRange)initWithCoder:(id)coder;
+- (IMMessagePartSyndicationRange)initWithSyndicationAction:(id)action;
+- (IMMessagePartSyndicationRange)initWithSyndicationType:(int64_t)type messagePartRange:(_NSRange)range syndicationStartDate:(id)date syndicationStatus:(int64_t)status assetDescriptor:(id)descriptor;
 - (NSString)serializedString;
 - (_NSRange)messagePartRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)syndicationForPartIndex:(unint64_t)a3 asset:(int64_t)a4;
+- (id)syndicationForPartIndex:(unint64_t)index asset:(int64_t)asset;
 - (unint64_t)serializedVersion;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMMessagePartSyndicationRange
@@ -38,12 +38,12 @@
   serializedString = self->_serializedString;
   if (!serializedString)
   {
-    v4 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
-    v5 = [v4 serializedString];
+    assetDescriptor = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+    serializedString = [assetDescriptor serializedString];
 
-    if (v5 && [v5 length])
+    if (serializedString && [serializedString length])
     {
-      v6 = [v5 cStringUsingEncoding:4];
+      v6 = [serializedString cStringUsingEncoding:4];
       v26[0] = @"|";
       v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[IMMessagePartSyndicationRange serializedVersion](self, "serializedVersion")}];
       v26[1] = v24;
@@ -56,8 +56,8 @@
       v11 = [v9 numberWithUnsignedInteger:v10];
       v26[4] = v11;
       v12 = MEMORY[0x1E696AD98];
-      v13 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
-      v14 = [v12 numberWithLongLong:{objc_msgSend(v13, "__im_nanosecondTimeInterval")}];
+      syndicationStartDate = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
+      v14 = [v12 numberWithLongLong:{objc_msgSend(syndicationStartDate, "__im_nanosecondTimeInterval")}];
       v26[5] = v14;
       v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IMMessagePartSyndicationRange syndicationStatus](self, "syndicationStatus")}];
       v26[6] = v15;
@@ -80,8 +80,8 @@
       v11 = [v18 numberWithUnsignedInteger:v19];
       v25[4] = v11;
       v20 = MEMORY[0x1E696AD98];
-      v13 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
-      v14 = [v20 numberWithLongLong:{objc_msgSend(v13, "__im_nanosecondTimeInterval")}];
+      syndicationStartDate = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
+      v14 = [v20 numberWithLongLong:{objc_msgSend(syndicationStartDate, "__im_nanosecondTimeInterval")}];
       v25[5] = v14;
       v15 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IMMessagePartSyndicationRange syndicationStatus](self, "syndicationStatus")}];
       v25[6] = v15;
@@ -98,12 +98,12 @@
   return serializedString;
 }
 
-- (IMMessagePartSyndicationRange)initWithSyndicationType:(int64_t)a3 messagePartRange:(_NSRange)a4 syndicationStartDate:(id)a5 syndicationStatus:(int64_t)a6 assetDescriptor:(id)a7
+- (IMMessagePartSyndicationRange)initWithSyndicationType:(int64_t)type messagePartRange:(_NSRange)range syndicationStartDate:(id)date syndicationStatus:(int64_t)status assetDescriptor:(id)descriptor
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = a5;
-  v15 = a7;
+  length = range.length;
+  location = range.location;
+  dateCopy = date;
+  descriptorCopy = descriptor;
   v22.receiver = self;
   v22.super_class = IMMessagePartSyndicationRange;
   v16 = [(IMMessagePartSyndicationRange *)&v22 init];
@@ -113,7 +113,7 @@
     goto LABEL_12;
   }
 
-  if (a3 < 0xA)
+  if (type < 0xA)
   {
     if (!(location | length))
     {
@@ -126,12 +126,12 @@
       goto LABEL_10;
     }
 
-    v16->_syndicationType = a3;
+    v16->_syndicationType = type;
     v16->_messagePartRange.location = location;
     v16->_messagePartRange.length = length;
-    objc_storeStrong(&v16->_syndicationStartDate, a5);
-    v17->_syndicationStatus = a6;
-    objc_storeStrong(&v17->_assetDescriptor, a7);
+    objc_storeStrong(&v16->_syndicationStartDate, date);
+    v17->_syndicationStatus = status;
+    objc_storeStrong(&v17->_assetDescriptor, descriptor);
 LABEL_12:
     v20 = v17;
     goto LABEL_13;
@@ -150,39 +150,39 @@ LABEL_13:
   return v20;
 }
 
-- (IMMessagePartSyndicationRange)initWithSyndicationAction:(id)a3
+- (IMMessagePartSyndicationRange)initWithSyndicationAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 messagePartSyndicationType];
-  v6 = [v4 messagePartRange];
+  actionCopy = action;
+  messagePartSyndicationType = [actionCopy messagePartSyndicationType];
+  messagePartRange = [actionCopy messagePartRange];
   v8 = v7;
-  v9 = [v4 syndicationStartDate];
-  v10 = [v4 messagePartSyndicationStatus];
+  syndicationStartDate = [actionCopy syndicationStartDate];
+  messagePartSyndicationStatus = [actionCopy messagePartSyndicationStatus];
 
-  v11 = [(IMMessagePartSyndicationRange *)self initWithSyndicationType:v5 messagePartRange:v6 syndicationStartDate:v8 syndicationStatus:v9 assetDescriptor:v10, 0];
+  v11 = [(IMMessagePartSyndicationRange *)self initWithSyndicationType:messagePartSyndicationType messagePartRange:messagePartRange syndicationStartDate:v8 syndicationStatus:syndicationStartDate assetDescriptor:messagePartSyndicationStatus, 0];
   return v11;
 }
 
-- (IMMessagePartSyndicationRange)initWithCoder:(id)a3
+- (IMMessagePartSyndicationRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = IMMessagePartSyndicationRange;
   v5 = [(IMMessagePartSyndicationRange *)&v13 init];
   if (v5)
   {
-    v5->_syndicationType = [v4 decodeIntegerForKey:@"syndicationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messagePartRange"];
+    v5->_syndicationType = [coderCopy decodeIntegerForKey:@"syndicationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messagePartRange"];
     v5->_messagePartRange.location = [v6 rangeValue];
     v5->_messagePartRange.length = v7;
 
-    v5->_serializedVersion = [v4 decodeIntegerForKey:@"serializedVersion"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"syndicationStartDate"];
+    v5->_serializedVersion = [coderCopy decodeIntegerForKey:@"serializedVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"syndicationStartDate"];
     syndicationStartDate = v5->_syndicationStartDate;
     v5->_syndicationStartDate = v8;
 
-    v5->_syndicationStatus = [v4 decodeIntegerForKey:@"syndicationStatus"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetDescriptor"];
+    v5->_syndicationStatus = [coderCopy decodeIntegerForKey:@"syndicationStatus"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetDescriptor"];
     assetDescriptor = v5->_assetDescriptor;
     v5->_assetDescriptor = v10;
   }
@@ -190,30 +190,30 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   syndicationType = self->_syndicationType;
-  v6 = a3;
-  [v6 encodeInteger:syndicationType forKey:@"syndicationType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:syndicationType forKey:@"syndicationType"];
   v5 = [MEMORY[0x1E696B098] valueWithRange:{self->_messagePartRange.location, self->_messagePartRange.length}];
-  [v6 encodeObject:v5 forKey:@"messagePartRange"];
+  [coderCopy encodeObject:v5 forKey:@"messagePartRange"];
 
-  [v6 encodeInteger:-[IMMessagePartSyndicationRange serializedVersion](self forKey:{"serializedVersion"), @"serializedVersion"}];
-  [v6 encodeObject:self->_syndicationStartDate forKey:@"syndicationStartDate"];
-  [v6 encodeInteger:self->_syndicationStatus forKey:@"syndicationStatus"];
-  [v6 encodeObject:self->_assetDescriptor forKey:@"assetDescriptor"];
+  [coderCopy encodeInteger:-[IMMessagePartSyndicationRange serializedVersion](self forKey:{"serializedVersion"), @"serializedVersion"}];
+  [coderCopy encodeObject:self->_syndicationStartDate forKey:@"syndicationStartDate"];
+  [coderCopy encodeInteger:self->_syndicationStatus forKey:@"syndicationStatus"];
+  [coderCopy encodeObject:self->_assetDescriptor forKey:@"assetDescriptor"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(IMMessagePartSyndicationRange *)self syndicationType];
-  v6 = [(IMMessagePartSyndicationRange *)self messagePartRange];
+  syndicationType = [(IMMessagePartSyndicationRange *)self syndicationType];
+  messagePartRange = [(IMMessagePartSyndicationRange *)self messagePartRange];
   v8 = v7;
-  v9 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
-  v10 = [(IMMessagePartSyndicationRange *)self syndicationStatus];
-  v11 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
-  v12 = [v4 initWithSyndicationType:v5 messagePartRange:v6 syndicationStartDate:v8 syndicationStatus:v9 assetDescriptor:{v10, v11}];
+  syndicationStartDate = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
+  syndicationStatus = [(IMMessagePartSyndicationRange *)self syndicationStatus];
+  assetDescriptor = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+  v12 = [v4 initWithSyndicationType:syndicationType messagePartRange:messagePartRange syndicationStartDate:v8 syndicationStatus:syndicationStartDate assetDescriptor:{syndicationStatus, assetDescriptor}];
 
   return v12;
 }
@@ -230,29 +230,29 @@ LABEL_13:
   return result;
 }
 
-+ (id)_stringFromSyndicationType:(int64_t)a3
++ (id)_stringFromSyndicationType:(int64_t)type
 {
-  if (a3 > 0xC)
+  if (type > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return off_1E782B848[a3];
+    return off_1E782B848[type];
   }
 }
 
-+ (id)_stringFromSyndicationStatus:(int64_t)a3
++ (id)_stringFromSyndicationStatus:(int64_t)status
 {
-  if (a3 > 2)
+  if (status > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E782B8B0[a3];
+    return off_1E782B8B0[status];
   }
 }
 
@@ -265,31 +265,31 @@ LABEL_13:
   v5 = [objc_opt_class() _stringFromSyndicationType:{-[IMMessagePartSyndicationRange syndicationType](self, "syndicationType")}];
   v6 = [objc_opt_class() _stringFromSyndicationStatus:{-[IMMessagePartSyndicationRange syndicationStatus](self, "syndicationStatus")}];
   v7 = NSStringFromRange(self->_messagePartRange);
-  v8 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
-  v9 = [(IMMessagePartSyndicationRange *)self serializedVersion];
-  v10 = [(IMMessagePartSyndicationRange *)self serializedString];
-  v11 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
-  v12 = [v3 stringWithFormat:@"%@, syndicationType: %@, syndicationStatus: %@, messagePartRange: %@, syndicationStartDate: %@, version: %ld, serializedString: %@, assetSyndications: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  syndicationStartDate = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
+  serializedVersion = [(IMMessagePartSyndicationRange *)self serializedVersion];
+  serializedString = [(IMMessagePartSyndicationRange *)self serializedString];
+  assetDescriptor = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+  v12 = [v3 stringWithFormat:@"%@, syndicationType: %@, syndicationStatus: %@, messagePartRange: %@, syndicationStartDate: %@, version: %ld, serializedString: %@, assetSyndications: %@", v4, v5, v6, v7, syndicationStartDate, serializedVersion, serializedString, assetDescriptor];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()))
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()))
   {
-    v7 = [v4 serializedVersion];
-    if (v7 == -[IMMessagePartSyndicationRange serializedVersion](self, "serializedVersion") && (v8 = [v4 syndicationType], v8 == -[IMMessagePartSyndicationRange syndicationType](self, "syndicationType")) && (v9 = objc_msgSend(v4, "syndicationStatus"), v9 == -[IMMessagePartSyndicationRange syndicationStatus](self, "syndicationStatus")))
+    serializedVersion = [equalCopy serializedVersion];
+    if (serializedVersion == -[IMMessagePartSyndicationRange serializedVersion](self, "serializedVersion") && (v8 = [equalCopy syndicationType], v8 == -[IMMessagePartSyndicationRange syndicationType](self, "syndicationType")) && (v9 = objc_msgSend(equalCopy, "syndicationStatus"), v9 == -[IMMessagePartSyndicationRange syndicationStatus](self, "syndicationStatus")))
     {
-      v10 = [v4 syndicationStartDate];
-      v11 = [v10 __im_nanosecondTimeInterval];
-      v12 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
-      if (v11 == [v12 __im_nanosecondTimeInterval])
+      syndicationStartDate = [equalCopy syndicationStartDate];
+      __im_nanosecondTimeInterval = [syndicationStartDate __im_nanosecondTimeInterval];
+      syndicationStartDate2 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
+      if (__im_nanosecondTimeInterval == [syndicationStartDate2 __im_nanosecondTimeInterval])
       {
-        v13 = [v4 messagePartRange];
+        messagePartRange = [equalCopy messagePartRange];
         v15 = v14;
-        v18 = v13 == [(IMMessagePartSyndicationRange *)self messagePartRange]&& v15 == v16;
+        v18 = messagePartRange == [(IMMessagePartSyndicationRange *)self messagePartRange]&& v15 == v16;
       }
 
       else
@@ -303,16 +303,16 @@ LABEL_13:
       v18 = 0;
     }
 
-    v19 = [v4 assetDescriptor];
-    v20 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
-    v21 = v20 | v19;
-    v22 = (v20 | v19) == 0;
+    assetDescriptor = [equalCopy assetDescriptor];
+    assetDescriptor2 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+    v21 = assetDescriptor2 | assetDescriptor;
+    v22 = (assetDescriptor2 | assetDescriptor) == 0;
 
     v6 = v22 && v18;
     if (v21 && v18)
     {
-      v23 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
-      v6 = [v23 isEqual:v19];
+      assetDescriptor3 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+      v6 = [assetDescriptor3 isEqual:assetDescriptor];
     }
   }
 
@@ -324,18 +324,18 @@ LABEL_13:
   return v6;
 }
 
-+ (id)serializedStringFromArray:(id)a3
++ (id)serializedStringFromArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v4 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -350,15 +350,15 @@ LABEL_13:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) serializedString];
-          if ([v4 length])
+          serializedString = [*(*(&v12 + 1) + 8 * i) serializedString];
+          if ([string length])
           {
-            [v4 appendFormat:@", %@", v10];
+            [string appendFormat:@", %@", serializedString];
           }
 
           else
           {
-            [v4 appendString:v10];
+            [string appendString:serializedString];
           }
         }
 
@@ -371,57 +371,57 @@ LABEL_13:
 
   else
   {
-    v4 = 0;
+    string = 0;
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)messageRangeFromTokens_v1:(id)a3
++ (id)messageRangeFromTokens_v1:(id)tokens_v1
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] != 5 && objc_msgSend(v4, "count") != 6)
+  tokens_v1Copy = tokens_v1;
+  if ([tokens_v1Copy count] != 5 && objc_msgSend(tokens_v1Copy, "count") != 6)
   {
     v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C6488(v4);
+      sub_1A88C6488(tokens_v1Copy);
     }
 
     goto LABEL_29;
   }
 
-  v5 = [v4 objectAtIndexedSubscript:1];
-  v6 = [v5 integerValue];
+  v5 = [tokens_v1Copy objectAtIndexedSubscript:1];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 objectAtIndexedSubscript:2];
-  v8 = [v7 integerValue];
+  v7 = [tokens_v1Copy objectAtIndexedSubscript:2];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v4 objectAtIndexedSubscript:3];
-  v10 = [v9 integerValue];
+  v9 = [tokens_v1Copy objectAtIndexedSubscript:3];
+  integerValue3 = [v9 integerValue];
 
-  v11 = [v4 objectAtIndexedSubscript:4];
-  v12 = [v11 longLongValue];
+  v11 = [tokens_v1Copy objectAtIndexedSubscript:4];
+  longLongValue = [v11 longLongValue];
 
-  if ([v4 count] == 6)
+  if ([tokens_v1Copy count] == 6)
   {
-    v13 = [v4 objectAtIndexedSubscript:5];
-    v14 = [v13 integerValue];
+    v13 = [tokens_v1Copy objectAtIndexedSubscript:5];
+    integerValue4 = [v13 integerValue];
   }
 
   else
   {
-    v14 = 0;
+    integerValue4 = 0;
   }
 
-  if (v6 >= 9)
+  if (integerValue >= 9)
   {
     v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [a1 _stringFromSyndicationType:v6];
-      v17 = [v4 componentsJoinedByString:{@", "}];
+      v16 = [self _stringFromSyndicationType:integerValue];
+      v17 = [tokens_v1Copy componentsJoinedByString:{@", "}];
       v23 = 138412546;
       v24 = v16;
       v25 = 2112;
@@ -435,16 +435,16 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v8 < 0 || v10 < 0)
+  if (integerValue2 < 0 || integerValue3 < 0)
   {
     v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v4 componentsJoinedByString:{@", "}];
+      v16 = [tokens_v1Copy componentsJoinedByString:{@", "}];
       v23 = 134218498;
-      v24 = v8;
+      v24 = integerValue2;
       v25 = 2048;
-      v26 = v10;
+      v26 = integerValue3;
       v27 = 2112;
       v28 = v16;
       _os_log_error_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_ERROR, "Message part range is out of range. Location: %ld, Length: %ld, in tokens: %@", &v23, 0x20u);
@@ -456,47 +456,47 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (!v10)
+  if (!integerValue3)
   {
     v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C6690(v4);
+      sub_1A88C6690(tokens_v1Copy);
     }
 
     goto LABEL_29;
   }
 
-  if (!v12)
+  if (!longLongValue)
   {
     v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C65D0(v4);
+      sub_1A88C65D0(tokens_v1Copy);
     }
 
     goto LABEL_29;
   }
 
-  v15 = [MEMORY[0x1E695DF00] __im_dateWithNanosecondTimeIntervalSinceReferenceDate:v12];
+  v15 = [MEMORY[0x1E695DF00] __im_dateWithNanosecondTimeIntervalSinceReferenceDate:longLongValue];
   if (!v15)
   {
     v16 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C6528(v4);
+      sub_1A88C6528(tokens_v1Copy);
     }
 
     goto LABEL_28;
   }
 
-  if (v14 >= 3)
+  if (integerValue4 >= 3)
   {
     v18 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v21 = [a1 _stringFromSyndicationStatus:v14];
-      v22 = [v4 componentsJoinedByString:{@", "}];
+      v21 = [self _stringFromSyndicationStatus:integerValue4];
+      v22 = [tokens_v1Copy componentsJoinedByString:{@", "}];
       v23 = 138412546;
       v24 = v21;
       v25 = 2112;
@@ -507,44 +507,44 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v19 = [[IMMessagePartSyndicationRange alloc] initWithSyndicationType:v6 messagePartRange:v8 syndicationStartDate:v10 syndicationStatus:v15 assetDescriptor:v14, 0];
+  v19 = [[IMMessagePartSyndicationRange alloc] initWithSyndicationType:integerValue messagePartRange:integerValue2 syndicationStartDate:integerValue3 syndicationStatus:v15 assetDescriptor:integerValue4, 0];
 LABEL_30:
 
   return v19;
 }
 
-+ (id)messageRangeFromTokens_v3:(id)a3
++ (id)messageRangeFromTokens_v3:(id)tokens_v3
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] == 6 || objc_msgSend(v4, "count") == 7)
+  tokens_v3Copy = tokens_v3;
+  if ([tokens_v3Copy count] == 6 || objc_msgSend(tokens_v3Copy, "count") == 7)
   {
-    v5 = [v4 objectAtIndexedSubscript:1];
-    v6 = [v5 integerValue];
+    v5 = [tokens_v3Copy objectAtIndexedSubscript:1];
+    integerValue = [v5 integerValue];
 
-    v7 = [v4 objectAtIndexedSubscript:2];
-    v8 = [v7 integerValue];
+    v7 = [tokens_v3Copy objectAtIndexedSubscript:2];
+    integerValue2 = [v7 integerValue];
 
-    v9 = [v4 objectAtIndexedSubscript:3];
-    v10 = [v9 integerValue];
+    v9 = [tokens_v3Copy objectAtIndexedSubscript:3];
+    integerValue3 = [v9 integerValue];
 
-    v11 = [v4 objectAtIndexedSubscript:4];
-    v12 = [v11 longLongValue];
+    v11 = [tokens_v3Copy objectAtIndexedSubscript:4];
+    longLongValue = [v11 longLongValue];
 
-    if ([v4 count] == 6 || objc_msgSend(v4, "count") == 7)
+    if ([tokens_v3Copy count] == 6 || objc_msgSend(tokens_v3Copy, "count") == 7)
     {
-      v13 = [v4 objectAtIndexedSubscript:5];
-      v14 = [v13 integerValue];
+      v13 = [tokens_v3Copy objectAtIndexedSubscript:5];
+      integerValue4 = [v13 integerValue];
     }
 
     else
     {
-      v14 = 0;
+      integerValue4 = 0;
     }
 
-    if ([v4 count] == 7)
+    if ([tokens_v3Copy count] == 7)
     {
-      v17 = [v4 objectAtIndexedSubscript:6];
+      v17 = [tokens_v3Copy objectAtIndexedSubscript:6];
       v15 = [IMMessagePartSyndicationAssetDescriptor descriptorFromSerializedString:v17];
     }
 
@@ -553,18 +553,18 @@ LABEL_30:
       v15 = 0;
     }
 
-    if (v6 < 9)
+    if (integerValue < 9)
     {
-      if (v8 < 0 || v10 < 0)
+      if (integerValue2 < 0 || integerValue3 < 0)
       {
         v18 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v4 componentsJoinedByString:{@", "}];
+          v19 = [tokens_v3Copy componentsJoinedByString:{@", "}];
           v25 = 134218498;
-          v26 = v8;
+          v26 = integerValue2;
           v27 = 2048;
-          v28 = v10;
+          v28 = integerValue3;
           v29 = 2112;
           v30 = v19;
           _os_log_error_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_ERROR, "Message part range is out of range. Location: %ld, Length: %ld, in tokens: %@", &v25, 0x20u);
@@ -574,51 +574,51 @@ LABEL_30:
 
       else
       {
-        if (!v10)
+        if (!integerValue3)
         {
           v18 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            sub_1A88C6690(v4);
+            sub_1A88C6690(tokens_v3Copy);
           }
 
           goto LABEL_34;
         }
 
-        if (!v12)
+        if (!longLongValue)
         {
           v18 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            sub_1A88C65D0(v4);
+            sub_1A88C65D0(tokens_v3Copy);
           }
 
           goto LABEL_34;
         }
 
-        v18 = [MEMORY[0x1E695DF00] __im_dateWithNanosecondTimeIntervalSinceReferenceDate:v12];
+        v18 = [MEMORY[0x1E695DF00] __im_dateWithNanosecondTimeIntervalSinceReferenceDate:longLongValue];
         if (!v18)
         {
           v19 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            sub_1A88C6528(v4);
+            sub_1A88C6528(tokens_v3Copy);
           }
 
           goto LABEL_33;
         }
 
-        if (v14 < 3)
+        if (integerValue4 < 3)
         {
-          v16 = [[IMMessagePartSyndicationRange alloc] initWithSyndicationType:v6 messagePartRange:v8 syndicationStartDate:v10 syndicationStatus:v18 assetDescriptor:v14, v15];
+          v16 = [[IMMessagePartSyndicationRange alloc] initWithSyndicationType:integerValue messagePartRange:integerValue2 syndicationStartDate:integerValue3 syndicationStatus:v18 assetDescriptor:integerValue4, v15];
           goto LABEL_35;
         }
 
         v21 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v23 = [a1 _stringFromSyndicationStatus:v14];
-          v24 = [v4 componentsJoinedByString:{@", "}];
+          v23 = [self _stringFromSyndicationStatus:integerValue4];
+          v24 = [tokens_v3Copy componentsJoinedByString:{@", "}];
           v25 = 138412546;
           v26 = v23;
           v27 = 2112;
@@ -633,8 +633,8 @@ LABEL_30:
       v18 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [a1 _stringFromSyndicationType:v6];
-        v20 = [v4 componentsJoinedByString:{@", "}];
+        v19 = [self _stringFromSyndicationType:integerValue];
+        v20 = [tokens_v3Copy componentsJoinedByString:{@", "}];
         v25 = 138412546;
         v26 = v19;
         v27 = 2112;
@@ -655,7 +655,7 @@ LABEL_35:
   v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_1A88C6724(v4);
+    sub_1A88C6724(tokens_v3Copy);
   }
 
   v16 = 0;
@@ -664,11 +664,11 @@ LABEL_36:
   return v16;
 }
 
-+ (id)deserializeSyndicationRangeFromString:(id)a3
++ (id)deserializeSyndicationRangeFromString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length] > 1)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length] > 1)
   {
     v6 = [v5 substringToIndex:1];
     v8 = [v5 substringFromIndex:2];
@@ -702,16 +702,16 @@ LABEL_14:
     }
 
     v12 = [v9 objectAtIndexedSubscript:0];
-    v13 = [v12 integerValue];
+    integerValue = [v12 integerValue];
 
-    if ((v13 - 1) >= 2)
+    if ((integerValue - 1) >= 2)
     {
-      if (v13 != 3)
+      if (integerValue != 3)
       {
         v15 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          sub_1A88C67C4(v5, v13);
+          sub_1A88C67C4(v5, integerValue);
         }
 
 LABEL_27:
@@ -724,12 +724,12 @@ LABEL_27:
         goto LABEL_13;
       }
 
-      v14 = [a1 messageRangeFromTokens_v3:v9];
+      v14 = [self messageRangeFromTokens_v3:v9];
     }
 
     else
     {
-      v14 = [a1 messageRangeFromTokens_v1:v9];
+      v14 = [self messageRangeFromTokens_v1:v9];
     }
 
     v7 = v14;
@@ -753,19 +753,19 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)_canBeReplacedByRange:(id)a3
+- (BOOL)_canBeReplacedByRange:(id)range
 {
-  v4 = a3;
-  if ([(IMMessagePartSyndicationRange *)self isEqual:v4])
+  rangeCopy = range;
+  if ([(IMMessagePartSyndicationRange *)self isEqual:rangeCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
-    v7 = [v4 syndicationStartDate];
-    v8 = [v6 compare:v7];
+    syndicationStartDate = [(IMMessagePartSyndicationRange *)self syndicationStartDate];
+    syndicationStartDate2 = [rangeCopy syndicationStartDate];
+    v8 = [syndicationStartDate compare:syndicationStartDate2];
 
     v5 = v8 != 1;
   }
@@ -773,12 +773,12 @@ LABEL_15:
   return v5;
 }
 
-+ (id)rangesFromSerializedString:(id)a3
++ (id)rangesFromSerializedString:(id)string
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (!stringCopy || ![stringCopy length])
   {
     v17 = 0;
     goto LABEL_26;
@@ -817,7 +817,7 @@ LABEL_15:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 deserializeSyndicationRangeFromString:{*(*(&v21 + 1) + 8 * i), v21}];
+        v14 = [self deserializeSyndicationRangeFromString:{*(*(&v21 + 1) + 8 * i), v21}];
         if (!v14)
         {
           v18 = IMLogHandleForCategory("IMMessagePartSyndicationRange");
@@ -878,22 +878,22 @@ LABEL_26:
   return v3;
 }
 
-+ (id)updateMessagesRanges:(id)a3 withMessagePartSyndicationRanges:(id)a4 didUpdate:(BOOL *)a5
++ (id)updateMessagesRanges:(id)ranges withMessagePartSyndicationRanges:(id)syndicationRanges didUpdate:(BOOL *)update
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  rangesCopy = ranges;
+  syndicationRangesCopy = syndicationRanges;
+  v9 = syndicationRangesCopy;
+  if (update)
   {
-    *a5 = 0;
+    *update = 0;
   }
 
-  if (v8 && [v8 count])
+  if (syndicationRangesCopy && [syndicationRangesCopy count])
   {
-    if (!v7)
+    if (!rangesCopy)
     {
-      v7 = MEMORY[0x1E695E0F0];
+      rangesCopy = MEMORY[0x1E695E0F0];
     }
 
     v35 = 0;
@@ -905,7 +905,7 @@ LABEL_26:
     v31 = 0x3032000000;
     v32 = sub_1A8602044;
     v33 = sub_1A8602214;
-    v34 = [v7 mutableCopy];
+    v34 = [rangesCopy mutableCopy];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -926,7 +926,7 @@ LABEL_26:
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [v13 messagePartRange];
+          messagePartRange = [v13 messagePartRange];
           v21 = 0;
           v22 = &v21;
           v23 = 0x2020000000;
@@ -935,13 +935,13 @@ LABEL_26:
           v20[1] = 3221225472;
           v20[2] = sub_1A870A0D8;
           v20[3] = &unk_1E782B828;
-          v20[8] = v14;
+          v20[8] = messagePartRange;
           v20[9] = v15;
           v20[4] = v13;
           v20[5] = &v29;
           v20[6] = &v35;
           v20[7] = &v21;
-          [v7 enumerateObjectsUsingBlock:v20];
+          [rangesCopy enumerateObjectsUsingBlock:v20];
           if (*(v22 + 24) == 1)
           {
             [v30[5] addObject:v13];
@@ -957,9 +957,9 @@ LABEL_26:
       while (v10);
     }
 
-    if (a5)
+    if (update)
     {
-      *a5 = *(v36 + 24);
+      *update = *(v36 + 24);
     }
 
     v16 = v30[5];
@@ -971,27 +971,27 @@ LABEL_26:
 
   else
   {
-    v7 = v7;
-    v16 = v7;
+    rangesCopy = rangesCopy;
+    v16 = rangesCopy;
   }
 
   return v16;
 }
 
-+ (id)messagePartSyndicationRangeForRange:(_NSRange)a3 inRangesArray:(id)a4
++ (id)messagePartSyndicationRangeForRange:(_NSRange)range inRangesArray:(id)array
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  arrayCopy = array;
+  v7 = arrayCopy;
+  if (arrayCopy)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v6;
+    v8 = arrayCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -1036,32 +1036,32 @@ LABEL_15:
   return v16;
 }
 
-+ (id)findChangesFromRangeArray:(id)a3 comparedToRangeArray:(id)a4
++ (id)findChangesFromRangeArray:(id)array comparedToRangeArray:(id)rangeArray
 {
   v71 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 count])
+  arrayCopy = array;
+  rangeArrayCopy = rangeArray;
+  if (arrayCopy && [arrayCopy count])
   {
-    if (!v6)
+    if (!rangeArrayCopy)
     {
-      v6 = MEMORY[0x1E695E0F0];
+      rangeArrayCopy = MEMORY[0x1E695E0F0];
     }
 
-    if (v6 == v5 || ([v5 isEqualToArray:v6] & 1) != 0)
+    if (rangeArrayCopy == arrayCopy || ([arrayCopy isEqualToArray:rangeArrayCopy] & 1) != 0)
     {
       v7 = 0;
     }
 
     else
     {
-      v49 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v45 = v5;
-      obj = v5;
+      v45 = arrayCopy;
+      obj = arrayCopy;
       v47 = [obj countByEnumeratingWithState:&v63 objects:v70 count:16];
       if (v47)
       {
@@ -1080,8 +1080,8 @@ LABEL_15:
             v60 = 0u;
             v61 = 0u;
             v62 = 0u;
-            v12 = v6;
-            v13 = v6;
+            v12 = rangeArrayCopy;
+            v13 = rangeArrayCopy;
             v14 = [(IMMessagePartSyndicationRange *)v13 countByEnumeratingWithState:&v59 objects:v69 count:16];
             if (v14)
             {
@@ -1097,9 +1097,9 @@ LABEL_24:
                 }
 
                 v18 = *(*(&v59 + 1) + 8 * v17);
-                v19 = [(IMMessagePartSyndicationRange *)v18 messagePartRange];
+                messagePartRange = [(IMMessagePartSyndicationRange *)v18 messagePartRange];
                 v21 = v20;
-                if (v19 == [v11 messagePartRange] && v21 == v22)
+                if (messagePartRange == [v11 messagePartRange] && v21 == v22)
                 {
                   break;
                 }
@@ -1127,18 +1127,18 @@ LABEL_24:
 LABEL_33:
 
               v24 = [IMMessagePartSyndicationRange alloc];
-              v25 = [v11 messagePartRange];
+              messagePartRange2 = [v11 messagePartRange];
               v27 = v26;
-              v28 = [v11 syndicationStartDate];
-              v18 = [(IMMessagePartSyndicationRange *)v24 initWithSyndicationType:0 messagePartRange:v25 syndicationStartDate:v27, v28];
+              syndicationStartDate = [v11 syndicationStartDate];
+              v18 = [(IMMessagePartSyndicationRange *)v24 initWithSyndicationType:0 messagePartRange:messagePartRange2 syndicationStartDate:v27, syndicationStartDate];
 
               v13 = v18;
             }
 
-            [v49 addObject:v18];
+            [array addObject:v18];
 LABEL_36:
 
-            v6 = v12;
+            rangeArrayCopy = v12;
           }
 
           v47 = [obj countByEnumeratingWithState:&v63 objects:v70 count:16];
@@ -1151,13 +1151,13 @@ LABEL_36:
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v6 = v6;
-      v29 = [v6 countByEnumeratingWithState:&v55 objects:v68 count:16];
+      rangeArrayCopy = rangeArrayCopy;
+      v29 = [rangeArrayCopy countByEnumeratingWithState:&v55 objects:v68 count:16];
       if (v29)
       {
         v30 = v29;
         v31 = *v56;
-        v48 = v6;
+        v48 = rangeArrayCopy;
         do
         {
           for (j = 0; j != v30; ++j)
@@ -1187,9 +1187,9 @@ LABEL_36:
                     objc_enumerationMutation(v34);
                   }
 
-                  v39 = [*(*(&v51 + 1) + 8 * k) messagePartRange];
+                  messagePartRange3 = [*(*(&v51 + 1) + 8 * k) messagePartRange];
                   v41 = v40;
-                  if (v39 == [v33 messagePartRange] && v41 == v42)
+                  if (messagePartRange3 == [v33 messagePartRange] && v41 == v42)
                   {
 
                     goto LABEL_56;
@@ -1206,21 +1206,21 @@ LABEL_36:
               }
             }
 
-            [v49 addObject:v33];
+            [array addObject:v33];
 LABEL_56:
             ;
           }
 
-          v6 = v48;
+          rangeArrayCopy = v48;
           v30 = [v48 countByEnumeratingWithState:&v55 objects:v68 count:16];
         }
 
         while (v30);
       }
 
-      if ([v49 count])
+      if ([array count])
       {
-        v44 = v49;
+        v44 = array;
       }
 
       else
@@ -1230,17 +1230,17 @@ LABEL_56:
 
       v7 = v44;
 
-      v5 = v45;
+      arrayCopy = v45;
     }
   }
 
   else
   {
-    if (v6)
+    if (rangeArrayCopy)
     {
-      if ([v6 count])
+      if ([rangeArrayCopy count])
       {
-        v8 = v6;
+        v8 = rangeArrayCopy;
       }
 
       else
@@ -1260,14 +1260,14 @@ LABEL_56:
   return v7;
 }
 
-- (id)syndicationForPartIndex:(unint64_t)a3 asset:(int64_t)a4
+- (id)syndicationForPartIndex:(unint64_t)index asset:(int64_t)asset
 {
-  v7 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+  assetDescriptor = [(IMMessagePartSyndicationRange *)self assetDescriptor];
 
-  if (v7)
+  if (assetDescriptor)
   {
-    v8 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
-    v9 = [v8 syndicationForPartIndex:a3 asset:a4];
+    assetDescriptor2 = [(IMMessagePartSyndicationRange *)self assetDescriptor];
+    v9 = [assetDescriptor2 syndicationForPartIndex:index asset:asset];
   }
 
   else
@@ -1284,95 +1284,95 @@ LABEL_56:
   return v9;
 }
 
-+ (id)syndicationRangeForAssetDescriptor:(id)a3 range:(id)a4
++ (id)syndicationRangeForAssetDescriptor:(id)descriptor range:(id)range
 {
-  v5 = a4;
-  v6 = a3;
+  rangeCopy = range;
+  descriptorCopy = descriptor;
   v7 = [IMMessagePartSyndicationRange alloc];
-  v8 = [v5 syndicationType];
-  v9 = [v5 messagePartRange];
+  syndicationType = [rangeCopy syndicationType];
+  messagePartRange = [rangeCopy messagePartRange];
   v11 = v10;
-  v12 = [v5 syndicationStartDate];
-  v13 = [v5 syndicationStatus];
+  syndicationStartDate = [rangeCopy syndicationStartDate];
+  syndicationStatus = [rangeCopy syndicationStatus];
 
-  v14 = [(IMMessagePartSyndicationRange *)v7 initWithSyndicationType:v8 messagePartRange:v9 syndicationStartDate:v11 syndicationStatus:v12 assetDescriptor:v13, v6];
+  descriptorCopy = [(IMMessagePartSyndicationRange *)v7 initWithSyndicationType:syndicationType messagePartRange:messagePartRange syndicationStartDate:v11 syndicationStatus:syndicationStartDate assetDescriptor:syndicationStatus, descriptorCopy];
 
-  return v14;
+  return descriptorCopy;
 }
 
-+ (id)updateAssetInfoWith:(id)a3 asset:(int64_t)a4 range:(id)a5
++ (id)updateAssetInfoWith:(id)with asset:(int64_t)asset range:(id)range
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 assetDescriptor];
-  v10 = [v9 copy];
+  rangeCopy = range;
+  withCopy = with;
+  assetDescriptor = [rangeCopy assetDescriptor];
+  v10 = [assetDescriptor copy];
 
   if (v10)
   {
-    [v10 updateSyndicationAssetWithInfo:v8 asset:a4];
-    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v10 range:v7];
+    [v10 updateSyndicationAssetWithInfo:withCopy asset:asset];
+    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v10 range:rangeCopy];
   }
 
   else
   {
     v12 = [IMMessagePartSyndicationAssetDescriptor alloc];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
     v17 = v13;
-    v18[0] = v8;
+    v18[0] = withCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v15 = [(IMMessagePartSyndicationAssetDescriptor *)v12 initWithAssetSyndications:v14];
 
-    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v15 range:v7];
+    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v15 range:rangeCopy];
   }
 
   return v11;
 }
 
-+ (id)replaceAssetInfoWith:(id)a3 asset:(int64_t)a4 range:(id)a5
++ (id)replaceAssetInfoWith:(id)with asset:(int64_t)asset range:(id)range
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 assetDescriptor];
-  v10 = [v9 copy];
+  rangeCopy = range;
+  withCopy = with;
+  assetDescriptor = [rangeCopy assetDescriptor];
+  v10 = [assetDescriptor copy];
 
   if (v10)
   {
-    [v10 replaceSyndicationAssetsInfoWith:v8 asset:a4];
-    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v10 range:v7];
+    [v10 replaceSyndicationAssetsInfoWith:withCopy asset:asset];
+    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v10 range:rangeCopy];
   }
 
   else
   {
     v12 = [IMMessagePartSyndicationAssetDescriptor alloc];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:asset];
     v17 = v13;
-    v18[0] = v8;
+    v18[0] = withCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v15 = [(IMMessagePartSyndicationAssetDescriptor *)v12 initWithAssetSyndications:v14];
 
-    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v15 range:v7];
+    v11 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v15 range:rangeCopy];
   }
 
   return v11;
 }
 
-+ (id)removeAssetInfoForAsset:(int64_t)a3 range:(id)a4
++ (id)removeAssetInfoForAsset:(int64_t)asset range:(id)range
 {
-  v5 = a4;
-  v6 = [v5 assetDescriptor];
-  v7 = [v6 copy];
+  rangeCopy = range;
+  assetDescriptor = [rangeCopy assetDescriptor];
+  v7 = [assetDescriptor copy];
 
   if (v7)
   {
-    [v7 removeSyndicationAssetsInfoFor:a3];
-    v8 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v7 range:v5];
+    [v7 removeSyndicationAssetsInfoFor:asset];
+    v8 = [IMMessagePartSyndicationRange syndicationRangeForAssetDescriptor:v7 range:rangeCopy];
   }
 
   else
   {
-    v8 = v5;
+    v8 = rangeCopy;
   }
 
   v9 = v8;
@@ -1380,15 +1380,15 @@ LABEL_56:
   return v9;
 }
 
-+ (id)minStartDateForRanges:(id)a3
++ (id)minStartDateForRanges:(id)ranges
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rangesCopy = ranges;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [rangesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1400,14 +1400,14 @@ LABEL_56:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rangesCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if (v6)
         {
-          v10 = [*(*(&v14 + 1) + 8 * i) syndicationStartDate];
-          v11 = [v10 compare:v6];
+          syndicationStartDate = [*(*(&v14 + 1) + 8 * i) syndicationStartDate];
+          v11 = [syndicationStartDate compare:v6];
 
           if (v11 != -1)
           {
@@ -1415,12 +1415,12 @@ LABEL_56:
           }
         }
 
-        v12 = [v9 syndicationStartDate];
+        syndicationStartDate2 = [v9 syndicationStartDate];
 
-        v6 = v12;
+        v6 = syndicationStartDate2;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [rangesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1434,15 +1434,15 @@ LABEL_56:
   return v6;
 }
 
-+ (id)maxStartDateForRanges:(id)a3
++ (id)maxStartDateForRanges:(id)ranges
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rangesCopy = ranges;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [rangesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1454,14 +1454,14 @@ LABEL_56:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rangesCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         if (v6)
         {
-          v10 = [*(*(&v14 + 1) + 8 * i) syndicationStartDate];
-          v11 = [v10 compare:v6];
+          syndicationStartDate = [*(*(&v14 + 1) + 8 * i) syndicationStartDate];
+          v11 = [syndicationStartDate compare:v6];
 
           if (v11 != 1)
           {
@@ -1469,12 +1469,12 @@ LABEL_56:
           }
         }
 
-        v12 = [v9 syndicationStartDate];
+        syndicationStartDate2 = [v9 syndicationStartDate];
 
-        v6 = v12;
+        v6 = syndicationStartDate2;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [rangesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);

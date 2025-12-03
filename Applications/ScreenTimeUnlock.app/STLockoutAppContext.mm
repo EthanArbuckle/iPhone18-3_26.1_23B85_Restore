@@ -1,59 +1,59 @@
 @interface STLockoutAppContext
-+ (id)contextWithData:(id)a3;
-- (STLockoutAppContext)initWithCoder:(id)a3;
-- (STLockoutAppContext)initWithEventType:(id)a3;
++ (id)contextWithData:(id)data;
+- (STLockoutAppContext)initWithCoder:(id)coder;
+- (STLockoutAppContext)initWithEventType:(id)type;
 - (id)dataRepresentation;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STLockoutAppContext
 
-- (STLockoutAppContext)initWithEventType:(id)a3
+- (STLockoutAppContext)initWithEventType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = STLockoutAppContext;
   v6 = [(STLockoutAppContext *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventType, a3);
+    objc_storeStrong(&v6->_eventType, type);
     v8 = [NSString stringWithUTF8String:getprogname()];
     clientName = v7->_clientName;
     v7->_clientName = v8;
 
     v10 = +[NSBundle mainBundle];
-    v11 = [v10 bundleIdentifier];
+    bundleIdentifier = [v10 bundleIdentifier];
     clientBundleID = v7->_clientBundleID;
-    v7->_clientBundleID = v11;
+    v7->_clientBundleID = bundleIdentifier;
   }
 
   return v7;
 }
 
-- (STLockoutAppContext)initWithCoder:(id)a3
+- (STLockoutAppContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = STLockoutAppContext;
   v5 = [(STLockoutAppContext *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eventType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eventType"];
     eventType = v5->_eventType;
     v5->_eventType = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientName"];
     clientName = v5->_clientName;
     v5->_clientName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientBundleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientBundleID"];
     clientBundleID = v5->_clientBundleID;
     v5->_clientBundleID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_additionalParameters"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_additionalParameters"];
     additionalParameters = v5->_additionalParameters;
     v5->_additionalParameters = v12;
   }
@@ -61,23 +61,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventType = self->_eventType;
-  v5 = a3;
-  [v5 encodeObject:eventType forKey:@"_eventType"];
-  [v5 encodeObject:self->_clientName forKey:@"_clientName"];
-  [v5 encodeObject:self->_clientBundleID forKey:@"_clientBundleID"];
-  [v5 encodeObject:self->_additionalParameters forKey:@"_additionalParameters"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventType forKey:@"_eventType"];
+  [coderCopy encodeObject:self->_clientName forKey:@"_clientName"];
+  [coderCopy encodeObject:self->_clientBundleID forKey:@"_clientBundleID"];
+  [coderCopy encodeObject:self->_additionalParameters forKey:@"_additionalParameters"];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(STLockoutAppContext *)self eventType];
-  v6 = [(STLockoutAppContext *)self clientName];
-  v7 = [NSString stringWithFormat:@"<%@: %p { eventType: %@, clientName: %@ }>", v4, self, v5, v6];
+  eventType = [(STLockoutAppContext *)self eventType];
+  clientName = [(STLockoutAppContext *)self clientName];
+  v7 = [NSString stringWithFormat:@"<%@: %p { eventType: %@, clientName: %@ }>", v4, self, eventType, clientName];
 
   return v7;
 }
@@ -86,24 +86,24 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(STLockoutAppContext *)self eventType];
-  v6 = [(STLockoutAppContext *)self clientName];
-  v7 = [(STLockoutAppContext *)self clientBundleID];
-  v8 = [(STLockoutAppContext *)self additionalParameters];
-  v9 = [NSString stringWithFormat:@"<%@: %p { eventType: %@, clientName: %@, clientBundleID: %@, additionalParameters: %@ }>", v4, self, v5, v6, v7, v8];
+  eventType = [(STLockoutAppContext *)self eventType];
+  clientName = [(STLockoutAppContext *)self clientName];
+  clientBundleID = [(STLockoutAppContext *)self clientBundleID];
+  additionalParameters = [(STLockoutAppContext *)self additionalParameters];
+  v9 = [NSString stringWithFormat:@"<%@: %p { eventType: %@, clientName: %@, clientBundleID: %@, additionalParameters: %@ }>", v4, self, eventType, clientName, clientBundleID, additionalParameters];
 
   return v9;
 }
 
-+ (id)contextWithData:(id)a3
++ (id)contextWithData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    sub_100002F7C(a2, a1);
+    sub_100002F7C(a2, self);
   }
 
-  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:0];
+  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:0];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
@@ -119,9 +119,9 @@
   v5 = NSStringFromClass(v4);
   [v3 encodeObject:self forKey:v5];
 
-  v6 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
 @end

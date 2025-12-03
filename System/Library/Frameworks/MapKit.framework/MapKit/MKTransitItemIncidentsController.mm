@@ -1,15 +1,15 @@
 @interface MKTransitItemIncidentsController
-- (MKTransitItemIncidentsController)initWithLineItem:(id)a3;
-- (MKTransitItemIncidentsController)initWithMapItem:(id)a3;
-- (id)_incidentsAffectingMuid:(unint64_t)a3;
+- (MKTransitItemIncidentsController)initWithLineItem:(id)item;
+- (MKTransitItemIncidentsController)initWithMapItem:(id)item;
+- (id)_incidentsAffectingMuid:(unint64_t)muid;
 - (id)blockedIncidentEntities;
-- (id)incidentsForDepartureSequence:(id)a3;
-- (id)incidentsForLine:(id)a3;
-- (id)incidentsForLinesInSystem:(id)a3;
-- (id)incidentsForMapItem:(id)a3;
-- (id)incidentsForSystem:(id)a3;
+- (id)incidentsForDepartureSequence:(id)sequence;
+- (id)incidentsForLine:(id)line;
+- (id)incidentsForLinesInSystem:(id)system;
+- (id)incidentsForMapItem:(id)item;
+- (id)incidentsForSystem:(id)system;
 - (void)resetCache;
-- (void)setReferenceDate:(id)a3;
+- (void)setReferenceDate:(id)date;
 @end
 
 @implementation MKTransitItemIncidentsController
@@ -47,8 +47,8 @@
             v21 = 0u;
             v18 = 0u;
             v19 = 0u;
-            v11 = [v10 affectedEntities];
-            v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            affectedEntities = [v10 affectedEntities];
+            v12 = [affectedEntities countByEnumeratingWithState:&v18 objects:v26 count:16];
             if (v12)
             {
               v13 = v12;
@@ -59,13 +59,13 @@
                 {
                   if (*v19 != v14)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(affectedEntities);
                   }
 
                   [(NSSet *)v4 addObject:*(*(&v18 + 1) + 8 * j)];
                 }
 
-                v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+                v13 = [affectedEntities countByEnumeratingWithState:&v18 objects:v26 count:16];
               }
 
               while (v13);
@@ -88,19 +88,19 @@
   return blockedIncidentEntities;
 }
 
-- (id)incidentsForDepartureSequence:(id)a3
+- (id)incidentsForDepartureSequence:(id)sequence
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sequenceCopy = sequence;
   v5 = MEMORY[0x1E696AD60];
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v4 line];
-  v8 = [v6 numberWithUnsignedLongLong:{objc_msgSend(v7, "muid")}];
+  line = [sequenceCopy line];
+  v8 = [v6 numberWithUnsignedLongLong:{objc_msgSend(line, "muid")}];
   v9 = [v5 stringWithFormat:@"%@", v8];
 
-  v10 = [v4 nextStopIDs];
-  v11 = [v10 allObjects];
-  v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_9];
+  nextStopIDs = [sequenceCopy nextStopIDs];
+  allObjects = [nextStopIDs allObjects];
+  v12 = [allObjects sortedArrayUsingComparator:&__block_literal_global_9];
 
   v28 = 0u;
   v29 = 0u;
@@ -139,7 +139,7 @@
     v24[1] = 3221225472;
     v24[2] = __66__MKTransitItemIncidentsController_incidentsForDepartureSequence___block_invoke_2;
     v24[3] = &unk_1E76C6E38;
-    v25 = v4;
+    v25 = sequenceCopy;
     v20 = [(NSArray *)validIncidents indexesOfObjectsPassingTest:v24];
     v21 = [(NSArray *)self->_validIncidents objectsAtIndexes:v20];
     [(NSMutableDictionary *)self->_incidentsForDepartureSequence setObject:v21 forKeyedSubscript:v9];
@@ -198,11 +198,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)incidentsForMapItem:(id)a3
+- (id)incidentsForMapItem:(id)item
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "_muid")}];
+  itemCopy = item;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(itemCopy, "_muid")}];
   v6 = [(NSMutableDictionary *)self->_incidentsForMapItem objectForKeyedSubscript:v5];
 
   if (!v6)
@@ -212,10 +212,10 @@ LABEL_11:
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [v4 _transitInfo];
-    v9 = [v8 systems];
+    _transitInfo = [itemCopy _transitInfo];
+    systems = [_transitInfo systems];
 
-    v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v10 = [systems countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v10)
     {
       v11 = v10;
@@ -226,14 +226,14 @@ LABEL_11:
         {
           if (*v35 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(systems);
           }
 
           v14 = [(MKTransitItemIncidentsController *)self incidentsForSystem:*(*(&v34 + 1) + 8 * i)];
           [v7 addObjectsFromArray:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v11 = [systems countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v11);
@@ -243,10 +243,10 @@ LABEL_11:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = [v4 _transitInfo];
-    v16 = [v15 lines];
+    _transitInfo2 = [itemCopy _transitInfo];
+    lines = [_transitInfo2 lines];
 
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v17 = [lines countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -257,14 +257,14 @@ LABEL_11:
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(lines);
           }
 
           v21 = [(MKTransitItemIncidentsController *)self incidentsForLine:*(*(&v30 + 1) + 8 * j)];
           [v7 addObjectsFromArray:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v18 = [lines countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v18);
@@ -287,15 +287,15 @@ LABEL_11:
   return v26;
 }
 
-- (id)incidentsForLine:(id)a3
+- (id)incidentsForLine:(id)line
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "muid")}];
+  lineCopy = line;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(lineCopy, "muid")}];
   v6 = [(NSMutableDictionary *)self->_incidentsForLine objectForKeyedSubscript:v5];
 
   if (!v6)
   {
-    v7 = -[MKTransitItemIncidentsController _incidentsAffectingMuid:](self, "_incidentsAffectingMuid:", [v4 muid]);
+    v7 = -[MKTransitItemIncidentsController _incidentsAffectingMuid:](self, "_incidentsAffectingMuid:", [lineCopy muid]);
     [(NSMutableDictionary *)self->_incidentsForLine setObject:v7 forKeyedSubscript:v5];
   }
 
@@ -304,29 +304,29 @@ LABEL_11:
   return v8;
 }
 
-- (id)incidentsForSystem:(id)a3
+- (id)incidentsForSystem:(id)system
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "muid")}];
+  systemCopy = system;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(systemCopy, "muid")}];
   v6 = [(NSMutableDictionary *)self->_incidentsForSystem objectForKeyedSubscript:v5];
 
   if (!v6)
   {
-    v29 = -[MKTransitItemIncidentsController _incidentsAffectingMuid:](self, "_incidentsAffectingMuid:", [v4 muid]);
+    v29 = -[MKTransitItemIncidentsController _incidentsAffectingMuid:](self, "_incidentsAffectingMuid:", [systemCopy muid]);
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [(MKMapItem *)self->_mapItem _transitInfo];
-    v9 = [v8 lines];
-    v10 = v9;
+    _transitInfo = [(MKMapItem *)self->_mapItem _transitInfo];
+    lines = [_transitInfo lines];
+    v10 = lines;
     v30 = v5;
-    v31 = self;
-    if (v9)
+    selfCopy = self;
+    if (lines)
     {
-      v11 = v9;
+      v11 = lines;
     }
 
     else
@@ -352,11 +352,11 @@ LABEL_11:
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
-          v18 = [v17 system];
-          v19 = [v18 muid];
-          v20 = [v4 muid];
+          system = [v17 system];
+          muid = [system muid];
+          muid2 = [systemCopy muid];
 
-          if (v19 == v20)
+          if (muid == muid2)
           {
             v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v17, "muid")}];
             [v7 addObject:v21];
@@ -369,8 +369,8 @@ LABEL_11:
       while (v14);
     }
 
-    self = v31;
-    validIncidents = v31->_validIncidents;
+    self = selfCopy;
+    validIncidents = selfCopy->_validIncidents;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __55__MKTransitItemIncidentsController_incidentsForSystem___block_invoke;
@@ -378,10 +378,10 @@ LABEL_11:
     v33 = v7;
     v23 = v7;
     v24 = [(NSArray *)validIncidents indexesOfObjectsPassingTest:v32];
-    v25 = [(NSArray *)v31->_validIncidents objectsAtIndexes:v24];
+    v25 = [(NSArray *)selfCopy->_validIncidents objectsAtIndexes:v24];
     v26 = [v25 arrayByAddingObjectsFromArray:v29];
     v5 = v30;
-    [(NSMutableDictionary *)v31->_incidentsForSystem setObject:v26 forKeyedSubscript:v30];
+    [(NSMutableDictionary *)selfCopy->_incidentsForSystem setObject:v26 forKeyedSubscript:v30];
   }
 
   v27 = [(NSMutableDictionary *)self->_incidentsForSystem objectForKeyedSubscript:v5, v29];
@@ -451,11 +451,11 @@ LABEL_13:
   return v11;
 }
 
-- (id)incidentsForLinesInSystem:(id)a3
+- (id)incidentsForLinesInSystem:(id)system
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "muid")}];
+  systemCopy = system;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(systemCopy, "muid")}];
   v6 = [(NSMutableDictionary *)self->_incidentsForLinesInSystem objectForKeyedSubscript:v5];
 
   if (!v6)
@@ -465,14 +465,14 @@ LABEL_13:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [(MKMapItem *)self->_mapItem _transitInfo];
-    v9 = [v8 lines];
-    v10 = v9;
+    _transitInfo = [(MKMapItem *)self->_mapItem _transitInfo];
+    lines = [_transitInfo lines];
+    v10 = lines;
     v28 = v5;
-    v29 = self;
-    if (v9)
+    selfCopy = self;
+    if (lines)
     {
-      v11 = v9;
+      v11 = lines;
     }
 
     else
@@ -498,11 +498,11 @@ LABEL_13:
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
-          v18 = [v17 system];
-          v19 = [v18 muid];
-          v20 = [v4 muid];
+          system = [v17 system];
+          muid = [system muid];
+          muid2 = [systemCopy muid];
 
-          if (v19 == v20)
+          if (muid == muid2)
           {
             v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v17, "muid")}];
             [v7 addObject:v21];
@@ -515,8 +515,8 @@ LABEL_13:
       while (v14);
     }
 
-    self = v29;
-    validIncidents = v29->_validIncidents;
+    self = selfCopy;
+    validIncidents = selfCopy->_validIncidents;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __62__MKTransitItemIncidentsController_incidentsForLinesInSystem___block_invoke;
@@ -524,9 +524,9 @@ LABEL_13:
     v31 = v7;
     v23 = v7;
     v24 = [(NSArray *)validIncidents indexesOfObjectsPassingTest:v30];
-    v25 = [(NSArray *)v29->_validIncidents objectsAtIndexes:v24];
+    v25 = [(NSArray *)selfCopy->_validIncidents objectsAtIndexes:v24];
     v5 = v28;
-    [(NSMutableDictionary *)v29->_incidentsForLinesInSystem setObject:v25 forKeyedSubscript:v28];
+    [(NSMutableDictionary *)selfCopy->_incidentsForLinesInSystem setObject:v25 forKeyedSubscript:v28];
   }
 
   v26 = [(NSMutableDictionary *)self->_incidentsForLinesInSystem objectForKeyedSubscript:v5];
@@ -587,9 +587,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)_incidentsAffectingMuid:(unint64_t)a3
+- (id)_incidentsAffectingMuid:(unint64_t)muid
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:muid];
   validIncidents = self->_validIncidents;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -650,13 +650,13 @@ uint64_t __60__MKTransitItemIncidentsController__incidentsAffectingMuid___block_
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v4 = [(MKMapItem *)mapItem _transitInfo];
-    v5 = [v4 incidents];
+    _transitInfo = [(MKMapItem *)mapItem _transitInfo];
+    incidents = [_transitInfo incidents];
   }
 
   else
   {
-    v5 = [(GEOTransitLineItem *)self->_lineItem incidents];
+    incidents = [(GEOTransitLineItem *)self->_lineItem incidents];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -664,8 +664,8 @@ uint64_t __60__MKTransitItemIncidentsController__incidentsAffectingMuid___block_
   v10[2] = __46__MKTransitItemIncidentsController_resetCache__block_invoke;
   v10[3] = &unk_1E76C6E38;
   v10[4] = self;
-  v6 = [v5 indexesOfObjectsPassingTest:v10];
-  v7 = [v5 objectsAtIndexes:v6];
+  v6 = [incidents indexesOfObjectsPassingTest:v10];
+  v7 = [incidents objectsAtIndexes:v6];
   v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_4258];
   validIncidents = self->_validIncidents;
   self->_validIncidents = v8;
@@ -762,25 +762,25 @@ uint64_t __46__MKTransitItemIncidentsController_resetCache__block_invoke_2(uint6
   return v7;
 }
 
-- (void)setReferenceDate:(id)a3
+- (void)setReferenceDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   referenceDate = self->_referenceDate;
   self->_referenceDate = v4;
 
   [(MKTransitItemIncidentsController *)self resetCache];
 }
 
-- (MKTransitItemIncidentsController)initWithLineItem:(id)a3
+- (MKTransitItemIncidentsController)initWithLineItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MKTransitItemIncidentsController;
   v6 = [(MKTransitItemIncidentsController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lineItem, a3);
+    objc_storeStrong(&v6->_lineItem, item);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     incidentsForLine = v7->_incidentsForLine;
     v7->_incidentsForLine = v8;
@@ -789,16 +789,16 @@ uint64_t __46__MKTransitItemIncidentsController_resetCache__block_invoke_2(uint6
   return v7;
 }
 
-- (MKTransitItemIncidentsController)initWithMapItem:(id)a3
+- (MKTransitItemIncidentsController)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = MKTransitItemIncidentsController;
   v6 = [(MKTransitItemIncidentsController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     incidentsForDepartureSequence = v7->_incidentsForDepartureSequence;
     v7->_incidentsForDepartureSequence = v8;

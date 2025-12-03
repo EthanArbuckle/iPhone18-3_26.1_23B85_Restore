@@ -1,13 +1,13 @@
 @interface NDOOutreachActivity
-- (void)performActivityForScheduler:(id)a3 withCompletionHandler:(id)a4;
+- (void)performActivityForScheduler:(id)scheduler withCompletionHandler:(id)handler;
 @end
 
 @implementation NDOOutreachActivity
 
-- (void)performActivityForScheduler:(id)a3 withCompletionHandler:(id)a4
+- (void)performActivityForScheduler:(id)scheduler withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  schedulerCopy = scheduler;
   v8 = objc_opt_new();
   v9 = _NDOLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -17,8 +17,8 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: for general outreach", &v11, 0xCu);
   }
 
-  v10 = [(NDOOutreachActivity *)self identifier];
-  [v8 performOutreachActivityForActivityID:v10 withScheduler:v7 andCompletion:v6];
+  identifier = [(NDOOutreachActivity *)self identifier];
+  [v8 performOutreachActivityForActivityID:identifier withScheduler:schedulerCopy andCompletion:handlerCopy];
 }
 
 @end

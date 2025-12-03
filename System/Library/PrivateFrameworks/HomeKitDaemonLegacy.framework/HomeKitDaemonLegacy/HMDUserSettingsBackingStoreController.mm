@@ -1,56 +1,56 @@
 @interface HMDUserSettingsBackingStoreController
 + (id)logCategory;
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4;
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user;
 - (HMDAssistantAccessControlModelUpdateReceiver)assistantAccessControlModelUpdateReceiver;
 - (HMDMediaContentProfileAccessControlModelUpdateReceiver)mediaContentProfileAccessControlModelUpdateReceiver;
 - (HMDSettingTransactionReceiverProtocol)transactionReceiver;
 - (HMDSharedUserDataModelUpdateReceiver)sharedUserDataModelUpdateReceiver;
 - (HMDUserListeningHistoryUpdateControlModelUpdateReceiver)userListeningHistoryUpdateControlModelUpdateReceiver;
-- (HMDUserSettingsBackingStoreController)initWithDelegate:(id)a3 queue:(id)a4 zoneName:(id)a5 database:(id)a6 shareMessenger:(id)a7;
+- (HMDUserSettingsBackingStoreController)initWithDelegate:(id)delegate queue:(id)queue zoneName:(id)name database:(id)database shareMessenger:(id)messenger;
 - (HMDUserSettingsBackingStoreControllerDelegate)delegate;
 - (HMDUserSupportsAutomaticHH2MigrationModelUpdateReceiver)userSupportsAutomaticHH2MigrationModelUpdateReceiver;
-- (id)_registrationWithParent:(void *)a3 subjectDeviceIdentifier:;
-- (id)_uuidForActivitySubject:(void *)a3 observer:;
-- (id)loadAssistantAccessControlModelWithModelID:(id)a3 error:(id *)a4;
-- (id)loadMediaContentAccessControlModelWithModelID:(id)a3 error:(id *)a4;
-- (id)loadPrivateUserDataModelWithError:(id *)a3;
-- (id)loadSharedUserDataModelWithError:(id *)a3;
-- (id)loadUserListeningHistoryUpdateControlModelWithModelID:(id)a3 error:(id *)a4;
+- (id)_registrationWithParent:(void *)parent subjectDeviceIdentifier:;
+- (id)_uuidForActivitySubject:(void *)subject observer:;
+- (id)loadAssistantAccessControlModelWithModelID:(id)d error:(id *)error;
+- (id)loadMediaContentAccessControlModelWithModelID:(id)d error:(id *)error;
+- (id)loadPrivateUserDataModelWithError:(id *)error;
+- (id)loadSharedUserDataModelWithError:(id *)error;
+- (id)loadUserListeningHistoryUpdateControlModelWithModelID:(id)d error:(id *)error;
 - (id)loadUserSettings;
-- (id)loadUserSupportsAutomaticHH2MigrationModelWithModelID:(id)a3 error:(id *)a4;
-- (id)queryPushTokensForDevicesObservingSubjectDevice:(id)a3 subActivity:(id)a4;
-- (id)settingTransactionWithName:(id)a3;
-- (void)_didFetchZonesWithResult:(id)a3 isOwnedZone:(BOOL)a4 error:(id)a5;
+- (id)loadUserSupportsAutomaticHH2MigrationModelWithModelID:(id)d error:(id *)error;
+- (id)queryPushTokensForDevicesObservingSubjectDevice:(id)device subActivity:(id)activity;
+- (id)settingTransactionWithName:(id)name;
+- (void)_didFetchZonesWithResult:(id)result isOwnedZone:(BOOL)zone error:(id)error;
 - (void)_invalidate;
-- (void)_localZone:(id)a3 updatedModel:(id)a4 previousModel:(id)a5 options:(id)a6;
-- (void)_sendShareInvitation:(id)a3 toUser:(id)a4 device:(id)a5;
+- (void)_localZone:(id)zone updatedModel:(id)model previousModel:(id)previousModel options:(id)options;
+- (void)_sendShareInvitation:(id)invitation toUser:(id)user device:(id)device;
 - (void)_startWithOwnedZone;
 - (void)_startWithSharedZone;
-- (void)_updateLogEventRunState:(int64_t)a3;
-- (void)_updateRunState:(int64_t)a3;
+- (void)_updateLogEventRunState:(int64_t)state;
+- (void)_updateRunState:(int64_t)state;
 - (void)clearParticipants;
-- (void)database:(id)a3 didCreateZoneWithName:(id)a4 isPrivate:(BOOL)a5;
-- (void)database:(id)a3 didRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5;
-- (void)deregisterObserverDeviceIdentifier:(id)a3;
-- (void)deregisterObserverDeviceIdentifier:(id)a3 observerPushToken:(id)a4 subActivity:(id)a5 subjectDeviceIdentifier:(id)a6;
+- (void)database:(id)database didCreateZoneWithName:(id)name isPrivate:(BOOL)private;
+- (void)database:(id)database didRemoveZoneWithName:(id)name isPrivate:(BOOL)private;
+- (void)deregisterObserverDeviceIdentifier:(id)identifier;
+- (void)deregisterObserverDeviceIdentifier:(id)identifier observerPushToken:(id)token subActivity:(id)activity subjectDeviceIdentifier:(id)deviceIdentifier;
 - (void)destroyZone;
-- (void)localZone:(id)a3 didProcessModelCreation:(id)a4;
-- (void)localZone:(id)a3 didProcessModelDeletion:(id)a4;
-- (void)localZone:(id)a3 didProcessModelUpdate:(id)a4;
-- (void)manager:(id)a3 didRequestSendForInvitation:(id)a4 toDevice:(id)a5;
-- (void)manager:(id)a3 didRequestSendForInvitation:(id)a4 toUser:(id)a5;
-- (void)messenger:(id)a3 didReceiveInvitationData:(id)a4 completion:(id)a5;
-- (void)messenger:(id)a3 didReceiveInvitationRequestFromUser:(id)a4 device:(id)a5;
-- (void)registerForAssistantAccessControlModelUpdates:(id)a3 modelID:(id)a4;
-- (void)registerForMediaContentAccessControlModelUpdates:(id)a3 modelID:(id)a4;
-- (void)registerForSettingsTransactions:(id)a3;
-- (void)registerForSharedUserDataModelUpdates:(id)a3 modelID:(id)a4;
-- (void)registerForUserListeningHistoryUpdateControlModelUpdates:(id)a3 modelID:(id)a4;
-- (void)registerForUserSupportsAutomaticHH2MigrationModelUpdates:(id)a3 modelID:(id)a4;
-- (void)registerObserverDeviceIdentifier:(id)a3 observerPushToken:(id)a4 subActivity:(id)a5 subjectDeviceIdentifier:(id)a6;
-- (void)runTransaction:(id)a3 waitForCloudPush:(BOOL)a4 completion:(id)a5;
+- (void)localZone:(id)zone didProcessModelCreation:(id)creation;
+- (void)localZone:(id)zone didProcessModelDeletion:(id)deletion;
+- (void)localZone:(id)zone didProcessModelUpdate:(id)update;
+- (void)manager:(id)manager didRequestSendForInvitation:(id)invitation toDevice:(id)device;
+- (void)manager:(id)manager didRequestSendForInvitation:(id)invitation toUser:(id)user;
+- (void)messenger:(id)messenger didReceiveInvitationData:(id)data completion:(id)completion;
+- (void)messenger:(id)messenger didReceiveInvitationRequestFromUser:(id)user device:(id)device;
+- (void)registerForAssistantAccessControlModelUpdates:(id)updates modelID:(id)d;
+- (void)registerForMediaContentAccessControlModelUpdates:(id)updates modelID:(id)d;
+- (void)registerForSettingsTransactions:(id)transactions;
+- (void)registerForSharedUserDataModelUpdates:(id)updates modelID:(id)d;
+- (void)registerForUserListeningHistoryUpdateControlModelUpdates:(id)updates modelID:(id)d;
+- (void)registerForUserSupportsAutomaticHH2MigrationModelUpdates:(id)updates modelID:(id)d;
+- (void)registerObserverDeviceIdentifier:(id)identifier observerPushToken:(id)token subActivity:(id)activity subjectDeviceIdentifier:(id)deviceIdentifier;
+- (void)runTransaction:(id)transaction waitForCloudPush:(BOOL)push completion:(id)completion;
 - (void)start;
-- (void)updateObserverDeviceIdentifier:(id)a3 observerPushToken:(id)a4;
+- (void)updateObserverDeviceIdentifier:(id)identifier observerPushToken:(id)token;
 - (void)updateParticipants;
 @end
 
@@ -105,27 +105,27 @@
   return WeakRetained;
 }
 
-- (void)database:(id)a3 didRemoveZoneWithName:(id)a4 isPrivate:(BOOL)a5
+- (void)database:(id)database didRemoveZoneWithName:(id)name isPrivate:(BOOL)private
 {
-  v5 = a5;
-  v7 = a4;
-  v12 = [(HMDUserSettingsBackingStoreController *)self zoneName];
-  v8 = [v7 isEqualToString:?];
+  privateCopy = private;
+  nameCopy = name;
+  zoneName = [(HMDUserSettingsBackingStoreController *)self zoneName];
+  v8 = [nameCopy isEqualToString:?];
 
   if (v8)
   {
-    v9 = [(HMDUserSettingsBackingStoreController *)self delegate];
-    v10 = [v9 isCurrentUser];
+    delegate = [(HMDUserSettingsBackingStoreController *)self delegate];
+    isCurrentUser = [delegate isCurrentUser];
 
-    if (v10 == v5)
+    if (isCurrentUser == privateCopy)
     {
-      v11 = [(HMDUserSettingsBackingStoreController *)self workQueue];
+      workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __82__HMDUserSettingsBackingStoreController_database_didRemoveZoneWithName_isPrivate___block_invoke;
       block[3] = &unk_279735D00;
       block[4] = self;
-      dispatch_async(v11, block);
+      dispatch_async(workQueue, block);
     }
   }
 
@@ -156,27 +156,27 @@ void __82__HMDUserSettingsBackingStoreController_database_didRemoveZoneWithName_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 didCreateZoneWithName:(id)a4 isPrivate:(BOOL)a5
+- (void)database:(id)database didCreateZoneWithName:(id)name isPrivate:(BOOL)private
 {
-  v5 = a5;
-  v7 = a4;
-  v12 = [(HMDUserSettingsBackingStoreController *)self zoneName];
-  v8 = [v7 isEqualToString:?];
+  privateCopy = private;
+  nameCopy = name;
+  zoneName = [(HMDUserSettingsBackingStoreController *)self zoneName];
+  v8 = [nameCopy isEqualToString:?];
 
   if (v8)
   {
-    v9 = [(HMDUserSettingsBackingStoreController *)self delegate];
-    v10 = [v9 isCurrentUser];
+    delegate = [(HMDUserSettingsBackingStoreController *)self delegate];
+    isCurrentUser = [delegate isCurrentUser];
 
-    if (v10 == v5)
+    if (isCurrentUser == privateCopy)
     {
-      v11 = [(HMDUserSettingsBackingStoreController *)self workQueue];
+      workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __82__HMDUserSettingsBackingStoreController_database_didCreateZoneWithName_isPrivate___block_invoke;
       block[3] = &unk_279735D00;
       block[4] = self;
-      dispatch_async(v11, block);
+      dispatch_async(workQueue, block);
     }
   }
 
@@ -205,33 +205,33 @@ uint64_t __82__HMDUserSettingsBackingStoreController_database_didCreateZoneWithN
   return result;
 }
 
-- (void)runTransaction:(id)a3 waitForCloudPush:(BOOL)a4 completion:(id)a5
+- (void)runTransaction:(id)transaction waitForCloudPush:(BOOL)push completion:(id)completion
 {
-  v6 = a4;
+  pushCopy = push;
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v49 = a5;
+  transactionCopy = transaction;
+  completionCopy = completion;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = HMDUserSettingsBackingStoreControllerRunStateAsString([(HMDUserSettingsBackingStoreController *)v10 runState]);
+    v13 = HMDUserSettingsBackingStoreControllerRunStateAsString([(HMDUserSettingsBackingStoreController *)selfCopy runState]);
     *buf = 138543874;
     v55 = v12;
     v56 = 2112;
-    v57 = v8;
+    v57 = transactionCopy;
     v58 = 2112;
     v59 = v13;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Running transaction %@, runState: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [(HMDUserSettingsBackingStoreController *)v10 localZone];
-  if (v14)
+  localZone = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
+  if (localZone)
   {
-    v15 = v8;
+    v15 = transactionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -246,28 +246,28 @@ uint64_t __82__HMDUserSettingsBackingStoreController_database_didCreateZoneWithN
     v17 = v16;
 
     v18 = MEMORY[0x277D17108];
-    v19 = [v17 transactionLabel];
-    v20 = [v18 optionsWithLabel:v19];
+    transactionLabel = [v17 transactionLabel];
+    v20 = [v18 optionsWithLabel:transactionLabel];
 
-    if (([v17 initialCreation] & 1) != 0 || v6)
+    if (([v17 initialCreation] & 1) != 0 || pushCopy)
     {
       [v20 setShouldRollBackIfMirrorOutputFails:1];
     }
 
-    v21 = [v17 updateModels];
-    if ([v21 count])
+    updateModels = [v17 updateModels];
+    if ([updateModels count])
     {
     }
 
     else
     {
-      v33 = [v17 removeUUIDs];
-      v34 = [v33 count];
+      removeUUIDs = [v17 removeUUIDs];
+      v34 = [removeUUIDs count];
 
       if (!v34)
       {
         v44 = objc_autoreleasePoolPush();
-        v45 = v10;
+        v45 = selfCopy;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
@@ -280,38 +280,38 @@ uint64_t __82__HMDUserSettingsBackingStoreController_database_didCreateZoneWithN
         }
 
         objc_autoreleasePoolPop(v44);
-        v32 = v49;
-        (*(v49 + 2))(v49, 0);
+        v32 = completionCopy;
+        (*(completionCopy + 2))(completionCopy, 0);
         goto LABEL_19;
       }
     }
 
-    v35 = [v17 updateModels];
-    v36 = [v17 removeUUIDs];
-    v37 = [v14 addModels:v35 andRemoveModelIDs:v36 options:v20];
+    updateModels2 = [v17 updateModels];
+    removeUUIDs2 = [v17 removeUUIDs];
+    v37 = [localZone addModels:updateModels2 andRemoveModelIDs:removeUUIDs2 options:v20];
 
     v38 = MEMORY[0x277D2C938];
-    v39 = [(HMDUserSettingsBackingStoreController *)v10 workQueue];
-    v40 = [v38 schedulerWithDispatchQueue:v39];
+    workQueue = [(HMDUserSettingsBackingStoreController *)selfCopy workQueue];
+    v40 = [v38 schedulerWithDispatchQueue:workQueue];
     v41 = [v37 reschedule:v40];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __84__HMDUserSettingsBackingStoreController_runTransaction_waitForCloudPush_completion___block_invoke;
     v50[3] = &unk_2797232B8;
-    v50[4] = v10;
+    v50[4] = selfCopy;
     v51 = v15;
-    v53 = v6;
-    v32 = v49;
-    v52 = v49;
+    v53 = pushCopy;
+    v32 = completionCopy;
+    v52 = completionCopy;
     v42 = [v41 addCompletionBlock:v50];
 
 LABEL_19:
-    v8 = v48;
+    transactionCopy = v48;
     goto LABEL_20;
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = v10;
+  v23 = selfCopy;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
   {
@@ -335,14 +335,14 @@ LABEL_19:
     *buf = 138543618;
     v55 = v31;
     v56 = 2112;
-    v57 = v8;
+    v57 = transactionCopy;
     _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_ERROR, "%{public}@Failed to run transaction: %@ due to nil localZone", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v28);
   v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  v32 = v49;
-  (*(v49 + 2))(v49, v17);
+  v32 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, v17);
 LABEL_20:
 
   v43 = *MEMORY[0x277D85DE8];
@@ -450,20 +450,20 @@ void __84__HMDUserSettingsBackingStoreController_runTransaction_waitForCloudPush
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)settingTransactionWithName:(id)a3
+- (id)settingTransactionWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[HMDSettingTransaction alloc] initWithTransactionLabel:v3];
+  nameCopy = name;
+  v4 = [[HMDSettingTransaction alloc] initWithTransactionLabel:nameCopy];
 
   return v4;
 }
 
-- (void)registerForSettingsTransactions:(id)a3
+- (void)registerForSettingsTransactions:(id)transactions
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -471,28 +471,28 @@ void __84__HMDUserSettingsBackingStoreController_runTransaction_waitForCloudPush
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = transactionsCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Registering transaction receiver %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDUserSettingsBackingStoreController *)v6 setTransactionReceiver:v4];
+  [(HMDUserSettingsBackingStoreController *)selfCopy setTransactionReceiver:transactionsCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_localZone:(id)a3 updatedModel:(id)a4 previousModel:(id)a5 options:(id)a6
+- (void)_localZone:(id)zone updatedModel:(id)model previousModel:(id)previousModel options:(id)options
 {
   v83 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  zoneCopy = zone;
+  modelCopy = model;
+  previousModelCopy = previousModel;
+  optionsCopy = options;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -500,13 +500,13 @@ void __84__HMDUserSettingsBackingStoreController_runTransaction_waitForCloudPush
     *buf = 138543618;
     v80 = v18;
     v81 = 2112;
-    v82 = v11;
+    v82 = modelCopy;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Received transaction update for model %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [(HMDUserSettingsBackingStoreController *)v16 transactionReceiver];
-  v20 = v11;
+  transactionReceiver = [(HMDUserSettingsBackingStoreController *)selfCopy transactionReceiver];
+  v20 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -538,7 +538,7 @@ void __84__HMDUserSettingsBackingStoreController_runTransaction_waitForCloudPush
 
     if (v25)
     {
-      [v19 transactionSettingModelUpdated:v23 previousModel:v12];
+      [transactionReceiver transactionSettingModelUpdated:v23 previousModel:previousModelCopy];
 LABEL_58:
 
       goto LABEL_59;
@@ -560,49 +560,49 @@ LABEL_58:
 
     if (v28)
     {
-      [v19 transactionSettingConstraintModelUpdated:v26 previousModel:v12];
+      [transactionReceiver transactionSettingConstraintModelUpdated:v26 previousModel:previousModelCopy];
       v25 = 0;
 LABEL_57:
 
       goto LABEL_58;
     }
 
-    v78 = v10;
-    v29 = [v26 hmbModelID];
-    v30 = [(HMDUserSettingsBackingStoreController *)v16 assistantAccessControlModelID];
-    v31 = [v29 isEqual:v30];
+    v78 = zoneCopy;
+    hmbModelID = [v26 hmbModelID];
+    assistantAccessControlModelID = [(HMDUserSettingsBackingStoreController *)selfCopy assistantAccessControlModelID];
+    v31 = [hmbModelID isEqual:assistantAccessControlModelID];
 
     if (v31)
     {
-      v32 = [(HMDUserSettingsBackingStoreController *)v16 assistantAccessControlModelUpdateReceiver];
-      [v32 assistantAccessControlModelUpdated:v26 previousModel:v12];
+      assistantAccessControlModelUpdateReceiver = [(HMDUserSettingsBackingStoreController *)selfCopy assistantAccessControlModelUpdateReceiver];
+      [assistantAccessControlModelUpdateReceiver assistantAccessControlModelUpdated:v26 previousModel:previousModelCopy];
 LABEL_22:
 
-      v10 = v78;
+      zoneCopy = v78;
       v25 = 0;
       v28 = 0;
       goto LABEL_57;
     }
 
-    v33 = [v26 hmbModelID];
-    v34 = [(HMDUserSettingsBackingStoreController *)v16 mediaContentProfileAccessControlModelID];
-    v35 = [v33 isEqual:v34];
+    hmbModelID2 = [v26 hmbModelID];
+    mediaContentProfileAccessControlModelID = [(HMDUserSettingsBackingStoreController *)selfCopy mediaContentProfileAccessControlModelID];
+    v35 = [hmbModelID2 isEqual:mediaContentProfileAccessControlModelID];
 
     if (v35)
     {
-      v32 = [(HMDUserSettingsBackingStoreController *)v16 mediaContentProfileAccessControlModelUpdateReceiver];
-      [v32 mediaContentProfileAccessControlModelUpdated:v26 previousModel:v12];
+      assistantAccessControlModelUpdateReceiver = [(HMDUserSettingsBackingStoreController *)selfCopy mediaContentProfileAccessControlModelUpdateReceiver];
+      [assistantAccessControlModelUpdateReceiver mediaContentProfileAccessControlModelUpdated:v26 previousModel:previousModelCopy];
       goto LABEL_22;
     }
 
-    v36 = [v26 hmbModelID];
-    v37 = [(HMDUserSettingsBackingStoreController *)v16 sharedUserDataModelUpdateModelID];
-    v38 = [v36 isEqual:v37];
+    hmbModelID3 = [v26 hmbModelID];
+    sharedUserDataModelUpdateModelID = [(HMDUserSettingsBackingStoreController *)selfCopy sharedUserDataModelUpdateModelID];
+    v38 = [hmbModelID3 isEqual:sharedUserDataModelUpdateModelID];
 
     if (v38)
     {
-      v39 = [(HMDUserSettingsBackingStoreController *)v16 sharedUserDataModelUpdateReceiver];
-      [v39 sharedUserDataModelUpdated:v26 previousModel:v12];
+      sharedUserDataModelUpdateReceiver = [(HMDUserSettingsBackingStoreController *)selfCopy sharedUserDataModelUpdateReceiver];
+      [sharedUserDataModelUpdateReceiver sharedUserDataModelUpdated:v26 previousModel:previousModelCopy];
     }
 
     v40 = v26;
@@ -620,16 +620,16 @@ LABEL_22:
     v42 = v41;
 
     v77 = v42;
-    v43 = [v42 hmbModelID];
-    v44 = [(HMDUserSettingsBackingStoreController *)v16 userListeningHistoryUpdateModelID];
-    v45 = [v43 isEqual:v44];
+    hmbModelID4 = [v42 hmbModelID];
+    userListeningHistoryUpdateModelID = [(HMDUserSettingsBackingStoreController *)selfCopy userListeningHistoryUpdateModelID];
+    v45 = [hmbModelID4 isEqual:userListeningHistoryUpdateModelID];
 
     if (v45)
     {
-      v46 = [(HMDUserSettingsBackingStoreController *)v16 userListeningHistoryUpdateControlModelUpdateReceiver];
+      userListeningHistoryUpdateControlModelUpdateReceiver = [(HMDUserSettingsBackingStoreController *)selfCopy userListeningHistoryUpdateControlModelUpdateReceiver];
       v47 = v77;
-      [v46 userListeningHistoryUpdateControlModelUpdated:v77 previousModel:v12];
-      v10 = v78;
+      [userListeningHistoryUpdateControlModelUpdateReceiver userListeningHistoryUpdateControlModelUpdated:v77 previousModel:previousModelCopy];
+      zoneCopy = v78;
       v25 = 0;
       v28 = 0;
 LABEL_56:
@@ -652,17 +652,17 @@ LABEL_56:
     v50 = v49;
 
     v76 = v50;
-    v51 = [v50 hmbModelID];
-    v52 = [(HMDUserSettingsBackingStoreController *)v16 userSupportsAutomaticHH2MigrationModelID];
-    v53 = [v51 isEqual:v52];
+    hmbModelID5 = [v50 hmbModelID];
+    userSupportsAutomaticHH2MigrationModelID = [(HMDUserSettingsBackingStoreController *)selfCopy userSupportsAutomaticHH2MigrationModelID];
+    v53 = [hmbModelID5 isEqual:userSupportsAutomaticHH2MigrationModelID];
 
     if (v53)
     {
-      v54 = [(HMDUserSettingsBackingStoreController *)v16 userSupportsAutomaticHH2MigrationModelUpdateReceiver];
-      v46 = v76;
-      [v54 userSupportsAutomaticHH2MigrationModelUpdated:v76 previousModel:v12];
-      v55 = v54;
-      v10 = v78;
+      userSupportsAutomaticHH2MigrationModelUpdateReceiver = [(HMDUserSettingsBackingStoreController *)selfCopy userSupportsAutomaticHH2MigrationModelUpdateReceiver];
+      userListeningHistoryUpdateControlModelUpdateReceiver = v76;
+      [userSupportsAutomaticHH2MigrationModelUpdateReceiver userSupportsAutomaticHH2MigrationModelUpdated:v76 previousModel:previousModelCopy];
+      v55 = userSupportsAutomaticHH2MigrationModelUpdateReceiver;
+      zoneCopy = v78;
       v25 = 0;
       v47 = v77;
       v28 = 0;
@@ -687,7 +687,7 @@ LABEL_55:
 
     if (v58)
     {
-      v59 = v12;
+      v59 = previousModelCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -706,17 +706,17 @@ LABEL_55:
       v28 = 0;
       if (!v62)
       {
-        v10 = v78;
+        zoneCopy = v78;
         v25 = 0;
-        v46 = v76;
+        userListeningHistoryUpdateControlModelUpdateReceiver = v76;
         v47 = v77;
         goto LABEL_55;
       }
 
       v63 = v55;
-      v64 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v75 = v63;
-      [v64 postNotificationName:@"HMDUserDidUpdateIDSActivityRegistration" object:v63];
+      [defaultCenter postNotificationName:@"HMDUserDidUpdateIDSActivityRegistration" object:v63];
     }
 
     else
@@ -734,14 +734,14 @@ LABEL_55:
         v66 = 0;
       }
 
-      v64 = v66;
+      defaultCenter = v66;
 
       v28 = 0;
-      if (!v64)
+      if (!defaultCenter)
       {
         v74 = v65;
         v68 = objc_autoreleasePoolPush();
-        v69 = v16;
+        v69 = selfCopy;
         v70 = HMFGetOSLogHandle();
         v25 = 0;
         if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
@@ -758,46 +758,46 @@ LABEL_55:
         }
 
         objc_autoreleasePoolPop(v68);
-        v64 = 0;
-        v10 = v78;
+        defaultCenter = 0;
+        zoneCopy = v78;
         goto LABEL_54;
       }
 
-      v67 = [(HMDUserSettingsBackingStoreController *)v16 delegate];
-      [v67 backingStoreController:v16 didUpdatePhotosPersonManagerSettingsModel:v64 previousPhotosPersonManagerSettingsModel:v12];
+      delegate = [(HMDUserSettingsBackingStoreController *)selfCopy delegate];
+      [delegate backingStoreController:selfCopy didUpdatePhotosPersonManagerSettingsModel:defaultCenter previousPhotosPersonManagerSettingsModel:previousModelCopy];
     }
 
-    v10 = v78;
+    zoneCopy = v78;
     v25 = 0;
 LABEL_54:
     v47 = v77;
 
     v55 = v75;
-    v46 = v76;
+    userListeningHistoryUpdateControlModelUpdateReceiver = v76;
     goto LABEL_55;
   }
 
-  [v19 transactionSettingGroupModelUpdated:v20 previousModel:v12];
+  [transactionReceiver transactionSettingGroupModelUpdated:v20 previousModel:previousModelCopy];
 LABEL_59:
 
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localZone:(id)a3 didProcessModelUpdate:(id)a4
+- (void)localZone:(id)zone didProcessModelUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  zoneCopy = zone;
+  updateCopy = update;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__HMDUserSettingsBackingStoreController_localZone_didProcessModelUpdate___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = zoneCopy;
+  v13 = updateCopy;
+  v9 = updateCopy;
+  v10 = zoneCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __73__HMDUserSettingsBackingStoreController_localZone_didProcessModelUpdate___block_invoke(uint64_t a1)
@@ -810,22 +810,22 @@ void __73__HMDUserSettingsBackingStoreController_localZone_didProcessModelUpdate
   [v2 _localZone:v3 updatedModel:v6 previousModel:v4 options:v5];
 }
 
-- (void)localZone:(id)a3 didProcessModelDeletion:(id)a4
+- (void)localZone:(id)zone didProcessModelDeletion:(id)deletion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  deletionCopy = deletion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v7 model];
+    model = [deletionCopy model];
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = model;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Notified of unhandled model deletion: %@", &v14, 0x16u);
   }
 
@@ -833,21 +833,21 @@ void __73__HMDUserSettingsBackingStoreController_localZone_didProcessModelUpdate
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localZone:(id)a3 didProcessModelCreation:(id)a4
+- (void)localZone:(id)zone didProcessModelCreation:(id)creation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  zoneCopy = zone;
+  creationCopy = creation;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDUserSettingsBackingStoreController_localZone_didProcessModelCreation___block_invoke;
   block[3] = &unk_279734960;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = zoneCopy;
+  v13 = creationCopy;
+  v9 = creationCopy;
+  v10 = zoneCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __75__HMDUserSettingsBackingStoreController_localZone_didProcessModelCreation___block_invoke(uint64_t a1)
@@ -859,50 +859,50 @@ void __75__HMDUserSettingsBackingStoreController_localZone_didProcessModelCreati
   [v2 _localZone:v3 updatedModel:v5 previousModel:0 options:v4];
 }
 
-- (void)messenger:(id)a3 didReceiveInvitationRequestFromUser:(id)a4 device:(id)a5
+- (void)messenger:(id)messenger didReceiveInvitationRequestFromUser:(id)user device:(id)device
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  messengerCopy = messenger;
+  userCopy = user;
+  deviceCopy = device;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v9 shortDescription];
-    v17 = [v10 shortDescription];
+    shortDescription = [userCopy shortDescription];
+    shortDescription2 = [deviceCopy shortDescription];
     v20 = 138543874;
     v21 = v15;
     v22 = 2112;
-    v23 = v16;
+    v23 = shortDescription;
     v24 = 2112;
-    v25 = v17;
+    v25 = shortDescription2;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Received invitation request from user %@ and device %@", &v20, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v18 = [(HMDUserSettingsBackingStoreController *)v13 participantsManager];
-  [v18 inviteUser:v9 usingDevice:v10];
+  participantsManager = [(HMDUserSettingsBackingStoreController *)selfCopy participantsManager];
+  [participantsManager inviteUser:userCopy usingDevice:deviceCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messenger:(id)a3 didReceiveInvitationData:(id)a4 completion:(id)a5
+- (void)messenger:(id)messenger didReceiveInvitationData:(id)data completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  messengerCopy = messenger;
+  dataCopy = data;
+  completionCopy = completion;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -916,32 +916,32 @@ void __75__HMDUserSettingsBackingStoreController_localZone_didProcessModelCreati
   v16 = MEMORY[0x277CCAAC8];
   v17 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v34 = 0;
-  v18 = [v16 _strictlyUnarchivedObjectOfClasses:v17 fromData:v9 error:&v34];
+  v18 = [v16 _strictlyUnarchivedObjectOfClasses:v17 fromData:dataCopy error:&v34];
   v19 = v34;
 
   if (v18)
   {
-    v20 = [(HMDUserSettingsBackingStoreController *)v13 database];
-    v21 = [v20 acceptInvitation:v18];
+    database = [(HMDUserSettingsBackingStoreController *)selfCopy database];
+    v21 = [database acceptInvitation:v18];
 
     v22 = MEMORY[0x277D2C938];
-    v23 = [(HMDUserSettingsBackingStoreController *)v13 workQueue];
-    v24 = [v22 schedulerWithDispatchQueue:v23];
+    workQueue2 = [(HMDUserSettingsBackingStoreController *)selfCopy workQueue];
+    v24 = [v22 schedulerWithDispatchQueue:workQueue2];
     v25 = [v21 reschedule:v24];
 
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __87__HMDUserSettingsBackingStoreController_messenger_didReceiveInvitationData_completion___block_invoke;
     v32[3] = &unk_279723268;
-    v32[4] = v13;
-    v33 = v10;
+    v32[4] = selfCopy;
+    v33 = completionCopy;
     v26 = [v25 addCompletionBlock:v32];
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = v13;
+    v28 = selfCopy;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -949,14 +949,14 @@ void __75__HMDUserSettingsBackingStoreController_localZone_didProcessModelCreati
       *buf = 138543874;
       v36 = v30;
       v37 = 2112;
-      v38 = v9;
+      v38 = dataCopy;
       v39 = 2112;
       v40 = v19;
       _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive share invitation from invitation data: %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v27);
-    (*(v10 + 2))(v10, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -991,47 +991,47 @@ void __87__HMDUserSettingsBackingStoreController_messenger_didReceiveInvitationD
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 didRequestSendForInvitation:(id)a4 toDevice:(id)a5
+- (void)manager:(id)manager didRequestSendForInvitation:(id)invitation toDevice:(id)device
 {
-  v7 = a5;
-  v9 = a4;
-  v8 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  deviceCopy = device;
+  invitationCopy = invitation;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)self _sendShareInvitation:v9 toUser:0 device:v7];
+  [(HMDUserSettingsBackingStoreController *)self _sendShareInvitation:invitationCopy toUser:0 device:deviceCopy];
 }
 
-- (void)manager:(id)a3 didRequestSendForInvitation:(id)a4 toUser:(id)a5
+- (void)manager:(id)manager didRequestSendForInvitation:(id)invitation toUser:(id)user
 {
-  v7 = a5;
-  v9 = a4;
-  v8 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  userCopy = user;
+  invitationCopy = invitation;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)self _sendShareInvitation:v9 toUser:v7 device:0];
+  [(HMDUserSettingsBackingStoreController *)self _sendShareInvitation:invitationCopy toUser:userCopy device:0];
 }
 
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(v6) = [v5 isOwner];
-  return v6;
+  LOBYTE(workQueue) = [userCopy isOwner];
+  return workQueue;
 }
 
-- (void)_sendShareInvitation:(id)a3 toUser:(id)a4 device:(id)a5
+- (void)_sendShareInvitation:(id)invitation toUser:(id)user device:(id)device
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  invitationCopy = invitation;
+  userCopy = user;
+  deviceCopy = device;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v37 = 0;
-  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v37];
+  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:invitationCopy requiringSecureCoding:1 error:&v37];
   v13 = v37;
   if (v12)
   {
@@ -1041,41 +1041,41 @@ void __87__HMDUserSettingsBackingStoreController_messenger_didReceiveInvitationD
     aBlock[3] = &unk_279732800;
     aBlock[4] = self;
     v14 = _Block_copy(aBlock);
-    if (!(v9 | v10))
+    if (!(userCopy | deviceCopy))
     {
       _HMFPreconditionFailure();
     }
 
     v15 = v14;
-    if (v9)
+    if (userCopy)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
         v19 = v34 = v13;
-        v20 = [v9 shortDescription];
+        shortDescription = [userCopy shortDescription];
         *buf = 138543618;
         v39 = v19;
         v40 = 2112;
-        v41 = v20;
+        v41 = shortDescription;
         _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@Sending share invitation for user settings to user: %@", buf, 0x16u);
 
         v13 = v34;
       }
 
       objc_autoreleasePoolPop(v16);
-      v21 = [(HMDUserSettingsBackingStoreController *)v17 shareMessenger];
+      shareMessenger = [(HMDUserSettingsBackingStoreController *)selfCopy shareMessenger];
       v22 = +[HMDHomeKitVersion version6];
       v23 = [MEMORY[0x277CBEB98] set];
-      [v21 sendShareInvitationData:v12 toUser:v9 minimumHomeKitVersion:v22 requiredSupportedFeatures:v23 completion:v15];
+      [shareMessenger sendShareInvitationData:v12 toUser:userCopy minimumHomeKitVersion:v22 requiredSupportedFeatures:v23 completion:v15];
     }
 
     else
     {
-      if (!v10)
+      if (!deviceCopy)
       {
 LABEL_15:
 
@@ -1083,12 +1083,12 @@ LABEL_15:
       }
 
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy2 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         v31 = HMFGetLogIdentifier();
-        [v10 shortDescription];
+        [deviceCopy shortDescription];
         v32 = v35 = v13;
         *buf = 138543618;
         v39 = v31;
@@ -1100,15 +1100,15 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v28);
-      v21 = [(HMDUserSettingsBackingStoreController *)v29 shareMessenger];
-      [v21 sendShareInvitationData:v12 toDevice:v10 completion:v15];
+      shareMessenger = [(HMDUserSettingsBackingStoreController *)selfCopy2 shareMessenger];
+      [shareMessenger sendShareInvitationData:v12 toDevice:deviceCopy completion:v15];
     }
 
     goto LABEL_15;
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy3 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -1116,7 +1116,7 @@ LABEL_15:
     *buf = 138543874;
     v39 = v27;
     v40 = 2112;
-    v41 = v8;
+    v41 = invitationCopy;
     v42 = 2112;
     v43 = v13;
     _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize invitation %@: %@", buf, 0x20u);
@@ -1191,30 +1191,30 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateLogEventRunState:(int64_t)a3
+- (void)_updateLogEventRunState:(int64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([(HMDUserSettingsBackingStoreController *)self logEventRunState]!= a3)
+  if ([(HMDUserSettingsBackingStoreController *)self logEventRunState]!= state)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      if (a3 >= 6)
+      if (state >= 6)
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        v12 = [MEMORY[0x277CCABB0] numberWithInteger:state];
         v10 = [v11 stringWithFormat:@"Unknown state %@", v12];
       }
 
       else
       {
-        v10 = off_2797232F0[a3];
+        v10 = off_2797232F0[state];
       }
 
       *buf = 138543618;
@@ -1225,27 +1225,27 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDUserSettingsBackingStoreController *)v7 setLogEventRunState:a3];
+    [(HMDUserSettingsBackingStoreController *)selfCopy setLogEventRunState:state];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateRunState:(int64_t)a3
+- (void)_updateRunState:(int64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([(HMDUserSettingsBackingStoreController *)self runState]!= a3)
+  if ([(HMDUserSettingsBackingStoreController *)self runState]!= state)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = HMDUserSettingsBackingStoreControllerRunStateAsString(a3);
+      v10 = HMDUserSettingsBackingStoreControllerRunStateAsString(state);
       v12 = 138543618;
       v13 = v9;
       v14 = 2112;
@@ -1254,7 +1254,7 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDUserSettingsBackingStoreController *)v7 setRunState:a3];
+    [(HMDUserSettingsBackingStoreController *)selfCopy setRunState:state];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1262,36 +1262,36 @@ LABEL_7:
 
 - (id)loadUserSettings
 {
-  v3 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v6 = [(HMDUserSettingsBackingStoreController *)self delegate];
-  v7 = [v6 userUUID];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  delegate = [(HMDUserSettingsBackingStoreController *)self delegate];
+  userUUID = [delegate userUUID];
   v20 = 0;
-  v8 = [v5 fetchModelsWithParentModelID:v7 error:&v20];
+  v8 = [localZone fetchModelsWithParentModelID:userUUID error:&v20];
   v9 = v20;
-  v10 = [v8 allObjects];
-  v11 = [v10 mutableCopy];
+  allObjects = [v8 allObjects];
+  v11 = [allObjects mutableCopy];
 
   [v4 addObjectsFromArray:v11];
   if ([v11 count])
   {
     do
     {
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
       [v11 hmf_removeFirstObject];
-      v13 = [(HMDUserSettingsBackingStoreController *)self localZone];
-      v14 = [v12 hmbModelID];
+      localZone2 = [(HMDUserSettingsBackingStoreController *)self localZone];
+      hmbModelID = [firstObject hmbModelID];
       v19 = v9;
-      v15 = [v13 fetchModelsWithParentModelID:v14 error:&v19];
+      v15 = [localZone2 fetchModelsWithParentModelID:hmbModelID error:&v19];
       v16 = v19;
 
-      v17 = [v15 allObjects];
+      allObjects2 = [v15 allObjects];
 
-      [v4 addObjectsFromArray:v17];
-      [v11 addObjectsFromArray:v17];
+      [v4 addObjectsFromArray:allObjects2];
+      [v11 addObjectsFromArray:allObjects2];
 
       v9 = v16;
     }
@@ -1307,50 +1307,50 @@ LABEL_7:
   return v4;
 }
 
-- (void)_didFetchZonesWithResult:(id)a3 isOwnedZone:(BOOL)a4 error:(id)a5
+- (void)_didFetchZonesWithResult:(id)result isOwnedZone:(BOOL)zone error:(id)error
 {
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  resultCopy = result;
+  errorCopy = error;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v8)
+  if (resultCopy)
   {
-    v78 = a4;
+    zoneCopy = zone;
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v8 localZone];
+      localZone = [resultCopy localZone];
       *buf = 138543618;
       v88 = v14;
       v89 = 2112;
-      v90 = v15;
+      v90 = localZone;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Did fetch zones with local zone %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v16 = [(HMDUserSettingsBackingStoreController *)v12 delegate];
-    v17 = [v8 localZone];
-    [(HMDUserSettingsBackingStoreController *)v12 setLocalZone:v17];
+    delegate = [(HMDUserSettingsBackingStoreController *)selfCopy delegate];
+    localZone2 = [resultCopy localZone];
+    [(HMDUserSettingsBackingStoreController *)selfCopy setLocalZone:localZone2];
 
-    v18 = [(HMDUserSettingsBackingStoreController *)v12 localZone];
-    [v18 addObserverForAllModels:v12];
+    localZone3 = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
+    [localZone3 addObserverForAllModels:selfCopy];
 
-    v19 = [(HMDUserSettingsBackingStoreController *)v12 localZone];
-    [v19 startUp];
+    localZone4 = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
+    [localZone4 startUp];
 
-    [v16 didStartLocalZoneForBackingStoreController:v12];
-    if (v12)
+    [delegate didStartLocalZoneForBackingStoreController:selfCopy];
+    if (selfCopy)
     {
-      v75 = v16;
-      v76 = v9;
-      v77 = v8;
-      v20 = [(HMDUserSettingsBackingStoreController *)v12 localZone];
-      v21 = [v20 fetchModelsOfType:objc_opt_class() error:0];
+      v75 = delegate;
+      v76 = errorCopy;
+      v77 = resultCopy;
+      localZone5 = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
+      v21 = [localZone5 fetchModelsOfType:objc_opt_class() error:0];
 
       v22 = [MEMORY[0x277CBEB58] set];
       v83 = 0u;
@@ -1373,17 +1373,17 @@ LABEL_7:
             }
 
             v28 = *(*(&v83 + 1) + 8 * i);
-            v29 = [v28 subjectDeviceIdentifier];
-            v30 = [v28 hmbParentModelID];
-            v31 = [(HMDUserSettingsBackingStoreController *)v12 _uuidForActivitySubject:v29 observer:v30];
+            subjectDeviceIdentifier = [v28 subjectDeviceIdentifier];
+            hmbParentModelID = [v28 hmbParentModelID];
+            v31 = [(HMDUserSettingsBackingStoreController *)selfCopy _uuidForActivitySubject:subjectDeviceIdentifier observer:hmbParentModelID];
 
-            v32 = [v28 hmbModelID];
-            LOBYTE(v29) = [v32 isEqual:v31];
+            hmbModelID = [v28 hmbModelID];
+            LOBYTE(subjectDeviceIdentifier) = [hmbModelID isEqual:v31];
 
-            if ((v29 & 1) == 0)
+            if ((subjectDeviceIdentifier & 1) == 0)
             {
-              v33 = [v28 hmbModelID];
-              [v22 addObject:v33];
+              hmbModelID2 = [v28 hmbModelID];
+              [v22 addObject:hmbModelID2];
             }
           }
 
@@ -1395,23 +1395,23 @@ LABEL_7:
 
       if ([v22 count])
       {
-        v34 = [(HMDUserSettingsBackingStoreController *)v12 localZone];
+        localZone6 = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
         v35 = [MEMORY[0x277D17108] optionsWithLabel:@"Removing non-derived HMDIDSActivityRegistrationModels"];
-        v36 = [v34 removeModelIDs:v22 options:v35];
+        v36 = [localZone6 removeModelIDs:v22 options:v35];
       }
 
-      v9 = v76;
-      v8 = v77;
-      v16 = v75;
+      errorCopy = v76;
+      resultCopy = v77;
+      delegate = v75;
     }
 
-    v37 = [v8 cloudZone];
-    [(HMDUserSettingsBackingStoreController *)v12 setCloudZone:v37];
+    cloudZone = [resultCopy cloudZone];
+    [(HMDUserSettingsBackingStoreController *)selfCopy setCloudZone:cloudZone];
 
-    if ([v16 isCurrentUser] && (objc_msgSend(v16, "isRunningOnHomeOwnersDevice") & 1) == 0)
+    if ([delegate isCurrentUser] && (objc_msgSend(delegate, "isRunningOnHomeOwnersDevice") & 1) == 0)
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = v12;
+      v39 = selfCopy;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
@@ -1422,59 +1422,59 @@ LABEL_7:
       }
 
       objc_autoreleasePoolPop(v38);
-      v42 = [v8 cloudZone];
-      v43 = [v16 backingStoreController:v39 createParticipantManagerForCloudZone:v42];
+      cloudZone2 = [resultCopy cloudZone];
+      v43 = [delegate backingStoreController:v39 createParticipantManagerForCloudZone:cloudZone2];
       [(HMDUserSettingsBackingStoreController *)v39 setParticipantsManager:v43];
 
-      v44 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
-      [v44 setDataSource:v39];
+      participantsManager = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
+      [participantsManager setDataSource:v39];
 
-      v45 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
-      [v45 setDelegate:v39];
+      participantsManager2 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
+      [participantsManager2 setDelegate:v39];
 
-      v46 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
-      [v46 configure];
+      participantsManager3 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
+      [participantsManager3 configure];
 
-      v47 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
-      [v47 updateShareParticipants];
+      participantsManager4 = [(HMDUserSettingsBackingStoreController *)v39 participantsManager];
+      [participantsManager4 updateShareParticipants];
     }
 
-    v48 = v12->_logger;
+    v48 = selfCopy->_logger;
     v49 = v48;
-    startupSignPost = v12->_startupSignPost;
+    startupSignPost = selfCopy->_startupSignPost;
     if (startupSignPost - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v48))
     {
       *buf = 0;
       _os_signpost_emit_with_name_impl(&dword_2531F8000, v49, OS_SIGNPOST_EVENT, startupSignPost, "UserZone.Startup", "Fetched Zones", buf, 2u);
     }
 
-    v51 = [(HMDUserSettingsBackingStoreController *)v12 cloudZone];
-    v52 = [v51 startUp];
+    cloudZone3 = [(HMDUserSettingsBackingStoreController *)selfCopy cloudZone];
+    startUp = [cloudZone3 startUp];
     v53 = MEMORY[0x277D2C938];
-    v54 = [(HMDUserSettingsBackingStoreController *)v12 workQueue];
-    v55 = [v53 schedulerWithDispatchQueue:v54];
-    v56 = [v52 reschedule:v55];
+    workQueue2 = [(HMDUserSettingsBackingStoreController *)selfCopy workQueue];
+    v55 = [v53 schedulerWithDispatchQueue:workQueue2];
+    v56 = [startUp reschedule:v55];
     v82[0] = MEMORY[0x277D85DD0];
     v82[1] = 3221225472;
     v82[2] = __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwnedZone_error___block_invoke;
     v82[3] = &unk_2797359D8;
-    v82[4] = v12;
+    v82[4] = selfCopy;
     v57 = [v56 addFailureBlock:v82];
 
-    v58 = [(HMDUserSettingsBackingStoreController *)v12 cloudZone];
-    v59 = [v58 startUp];
+    cloudZone4 = [(HMDUserSettingsBackingStoreController *)selfCopy cloudZone];
+    startUp2 = [cloudZone4 startUp];
     v60 = MEMORY[0x277D2C938];
-    v61 = [(HMDUserSettingsBackingStoreController *)v12 workQueue];
-    v62 = [v60 schedulerWithDispatchQueue:v61];
-    v63 = [v59 reschedule:v62];
+    workQueue3 = [(HMDUserSettingsBackingStoreController *)selfCopy workQueue];
+    v62 = [v60 schedulerWithDispatchQueue:workQueue3];
+    v63 = [startUp2 reschedule:v62];
     v79[0] = MEMORY[0x277D85DD0];
     v79[1] = 3221225472;
     v79[2] = __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwnedZone_error___block_invoke_114;
     v79[3] = &unk_27972CF98;
-    v81 = v78;
-    v79[4] = v12;
-    v80 = v16;
-    v64 = v16;
+    v81 = zoneCopy;
+    v79[4] = selfCopy;
+    v80 = delegate;
+    v64 = delegate;
     v65 = [v63 addSuccessBlock:v79];
   }
 
@@ -1486,29 +1486,29 @@ LABEL_7:
     if (v68 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v66))
     {
       *buf = 138412290;
-      v88 = v9;
+      v88 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_2531F8000, v67, OS_SIGNPOST_INTERVAL_END, v68, "UserZone.Startup", "Error=%{signpost.description:attribute}@ ", buf, 0xCu);
     }
 
     v69 = objc_autoreleasePoolPush();
-    v70 = self;
+    selfCopy2 = self;
     v71 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
     {
       v72 = HMFGetLogIdentifier();
-      v73 = [(HMDUserSettingsBackingStoreController *)v70 zoneName];
+      zoneName = [(HMDUserSettingsBackingStoreController *)selfCopy2 zoneName];
       *buf = 138543874;
       v88 = v72;
       v89 = 2112;
-      v90 = v73;
+      v90 = zoneName;
       v91 = 2112;
-      v92 = v9;
+      v92 = errorCopy;
       _os_log_impl(&dword_2531F8000, v71, OS_LOG_TYPE_ERROR, "%{public}@Failed to open zones for user settings with zone ID %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v69);
-    [(HMDUserSettingsBackingStoreController *)v70 _updateRunState:0];
-    [(HMDUserSettingsBackingStoreController *)v70 _updateLogEventRunState:3];
+    [(HMDUserSettingsBackingStoreController *)selfCopy2 _updateRunState:0];
+    [(HMDUserSettingsBackingStoreController *)selfCopy2 _updateLogEventRunState:3];
   }
 
   v74 = *MEMORY[0x277D85DE8];
@@ -1586,14 +1586,14 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_uuidForActivitySubject:(void *)a3 observer:
+- (id)_uuidForActivitySubject:(void *)subject observer:
 {
-  if (a1)
+  if (self)
   {
     v4 = MEMORY[0x277CCAD78];
     v5 = a2;
-    v6 = [a3 data];
-    v7 = [v4 hm_deriveUUIDFromBaseUUID:v5 identifierSalt:v6];
+    data = [subject data];
+    v7 = [v4 hm_deriveUUIDFromBaseUUID:v5 identifierSalt:data];
   }
 
   else
@@ -1607,18 +1607,18 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
 - (void)_startWithSharedZone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDUserSettingsBackingStoreController *)self database];
-  v5 = [v4 registerSharedSubscriptionForExternalRecordType:0];
+  database = [(HMDUserSettingsBackingStoreController *)self database];
+  v5 = [database registerSharedSubscriptionForExternalRecordType:0];
 
-  v6 = [(HMDUserSettingsBackingStoreController *)self database];
-  v7 = [(HMDUserSettingsBackingStoreController *)self zoneName];
-  v8 = [v6 existingSharedZoneIDWithName:v7];
+  database2 = [(HMDUserSettingsBackingStoreController *)self database];
+  zoneName = [(HMDUserSettingsBackingStoreController *)self zoneName];
+  v8 = [database2 existingSharedZoneIDWithName:zoneName];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
   if (v8)
@@ -1626,24 +1626,24 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
     if (v12)
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMDUserSettingsBackingStoreController *)v10 zoneName];
+      zoneName2 = [(HMDUserSettingsBackingStoreController *)selfCopy zoneName];
       *buf = 138543874;
       v29 = v13;
       v30 = 2112;
       v31 = v8;
       v32 = 2112;
-      v33 = v14;
+      v33 = zoneName2;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Got zoneID %@ for user settings zone %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v15 = [(HMDUserSettingsBackingStoreController *)v10 database];
+    database3 = [(HMDUserSettingsBackingStoreController *)selfCopy database];
     v16 = objc_alloc_init(MEMORY[0x277D17068]);
     v27 = 0;
-    v17 = [v15 sharedZonesWithID:v8 configuration:v16 delegate:0 error:&v27];
-    v18 = v27;
+    v17 = [database3 sharedZonesWithID:v8 configuration:v16 delegate:0 error:&v27];
+    shareMessenger = v27;
 
-    [(HMDUserSettingsBackingStoreController *)v10 _didFetchZonesWithResult:v17 isOwnedZone:0 error:v18];
+    [(HMDUserSettingsBackingStoreController *)selfCopy _didFetchZonesWithResult:v17 isOwnedZone:0 error:shareMessenger];
   }
 
   else
@@ -1651,22 +1651,22 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
     if (v12)
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [(HMDUserSettingsBackingStoreController *)v10 zoneName];
+      zoneName3 = [(HMDUserSettingsBackingStoreController *)selfCopy zoneName];
       *buf = 138543618;
       v29 = v19;
       v30 = 2112;
-      v31 = v20;
+      v31 = zoneName3;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@No shared zone exists for user settings with zone name %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMDUserSettingsBackingStoreController *)v10 _updateRunState:0];
-    [(HMDUserSettingsBackingStoreController *)v10 _updateLogEventRunState:5];
-    v21 = [(HMDUserSettingsBackingStoreController *)v10 delegate];
-    v17 = [v21 ownerForUserSettingsBackingStoreController:v10];
+    [(HMDUserSettingsBackingStoreController *)selfCopy _updateRunState:0];
+    [(HMDUserSettingsBackingStoreController *)selfCopy _updateLogEventRunState:5];
+    delegate = [(HMDUserSettingsBackingStoreController *)selfCopy delegate];
+    v17 = [delegate ownerForUserSettingsBackingStoreController:selfCopy];
 
     v22 = objc_autoreleasePoolPush();
-    v23 = v10;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -1679,8 +1679,8 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
     }
 
     objc_autoreleasePoolPop(v22);
-    v18 = [(HMDUserSettingsBackingStoreController *)v23 shareMessenger];
-    [v18 requestShareInvitationDataFromUser:v17];
+    shareMessenger = [(HMDUserSettingsBackingStoreController *)v23 shareMessenger];
+    [shareMessenger requestShareInvitationDataFromUser:v17];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1688,15 +1688,15 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
 
 - (void)_startWithOwnedZone
 {
-  v3 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_alloc_init(MEMORY[0x277D170E8]);
   [v4 setShouldRebuildOnManateeKeyLoss:1];
-  v5 = [(HMDUserSettingsBackingStoreController *)self database];
-  v6 = [(HMDUserSettingsBackingStoreController *)self zoneName];
+  database = [(HMDUserSettingsBackingStoreController *)self database];
+  zoneName = [(HMDUserSettingsBackingStoreController *)self zoneName];
   v9 = 0;
-  v7 = [v5 privateZonesWithName:v6 configuration:v4 delegate:0 error:&v9];
+  v7 = [database privateZonesWithName:zoneName configuration:v4 delegate:0 error:&v9];
   v8 = v9;
 
   [(HMDUserSettingsBackingStoreController *)self _didFetchZonesWithResult:v7 isOwnedZone:1 error:v8];
@@ -1706,7 +1706,7 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1717,8 +1717,8 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDUserSettingsBackingStoreController *)v4 participantsManager];
-  [v7 updateShareParticipants];
+  participantsManager = [(HMDUserSettingsBackingStoreController *)selfCopy participantsManager];
+  [participantsManager updateShareParticipants];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -1727,7 +1727,7 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1738,22 +1738,22 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDUserSettingsBackingStoreController *)v4 participantsManager];
-  [v7 clearParticipants];
+  participantsManager = [(HMDUserSettingsBackingStoreController *)selfCopy participantsManager];
+  [participantsManager clearParticipants];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)queryPushTokensForDevicesObservingSubjectDevice:(id)a3 subActivity:(id)a4
+- (id)queryPushTokensForDevicesObservingSubjectDevice:(id)device subActivity:(id)activity
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  activityCopy = activity;
   v30 = @"subjectDeviceIdentifier";
-  v31[0] = v6;
+  v31[0] = deviceCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -1761,25 +1761,25 @@ void __84__HMDUserSettingsBackingStoreController__didFetchZonesWithResult_isOwne
     *buf = 138543618;
     v27 = v12;
     v28 = 2112;
-    v29 = v6;
+    v29 = deviceCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Querying all models observing %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDUserSettingsBackingStoreController *)v10 localZone];
+  localZone = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
   v14 = +[HMDIDSActivityRegistrationModel registeredDevicesQuery];
-  v15 = [v13 queryModelsUsingQuery:v14 arguments:v8];
+  v15 = [localZone queryModelsUsingQuery:v14 arguments:v8];
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __101__HMDUserSettingsBackingStoreController_queryPushTokensForDevicesObservingSubjectDevice_subActivity___block_invoke;
   v22[3] = &unk_279723240;
-  v23 = v7;
-  v24 = v10;
-  v25 = v16;
-  v17 = v16;
-  v18 = v7;
+  v23 = activityCopy;
+  v24 = selfCopy;
+  v25 = array;
+  v17 = array;
+  v18 = activityCopy;
   [v15 enumerateObjectsUsingBlock:v22];
   v19 = [v17 copy];
 
@@ -1842,12 +1842,12 @@ void __101__HMDUserSettingsBackingStoreController_queryPushTokensForDevicesObser
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterObserverDeviceIdentifier:(id)a3
+- (void)deregisterObserverDeviceIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1855,22 +1855,22 @@ void __101__HMDUserSettingsBackingStoreController_queryPushTokensForDevicesObser
     *buf = 138543618;
     v19 = v8;
     v20 = 2112;
-    v21 = v4;
+    v21 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Removing IDS Activity Observer: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDUserSettingsBackingStoreController *)v6 localZone];
-  v10 = [MEMORY[0x277CBEB98] setWithObject:v4];
+  localZone = [(HMDUserSettingsBackingStoreController *)selfCopy localZone];
+  v10 = [MEMORY[0x277CBEB98] setWithObject:identifierCopy];
   v11 = [MEMORY[0x277D17108] optionsWithLabel:@"Removing IDS Activity Observer"];
-  v12 = [v9 removeModelIDs:v10 options:v11];
+  v12 = [localZone removeModelIDs:v10 options:v11];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentifier___block_invoke;
   v16[3] = &unk_2797358C8;
-  v16[4] = v6;
-  v17 = v4;
-  v13 = v4;
+  v16[4] = selfCopy;
+  v17 = identifierCopy;
+  v13 = identifierCopy;
   v14 = [v12 addFailureBlock:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1900,39 +1900,39 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterObserverDeviceIdentifier:(id)a3 observerPushToken:(id)a4 subActivity:(id)a5 subjectDeviceIdentifier:(id)a6
+- (void)deregisterObserverDeviceIdentifier:(id)identifier observerPushToken:(id)token subActivity:(id)activity subjectDeviceIdentifier:(id)deviceIdentifier
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v15 = [v14 fetchModelWithModelID:v10 ofType:objc_opt_class() error:0];
+  identifierCopy = identifier;
+  tokenCopy = token;
+  activityCopy = activity;
+  deviceIdentifierCopy = deviceIdentifier;
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v15 = [localZone fetchModelWithModelID:identifierCopy ofType:objc_opt_class() error:0];
 
   if (v15)
   {
-    v16 = [(HMDUserSettingsBackingStoreController *)self _registrationWithParent:v10 subjectDeviceIdentifier:v13];
+    v16 = [(HMDUserSettingsBackingStoreController *)self _registrationWithParent:identifierCopy subjectDeviceIdentifier:deviceIdentifierCopy];
     if (v16)
     {
       v17 = [MEMORY[0x277CBEB58] set];
-      v18 = [v16 subActivities];
-      v19 = [v18 containsObject:v12];
+      subActivities = [v16 subActivities];
+      v19 = [subActivities containsObject:activityCopy];
 
-      v52 = v13;
-      v53 = v11;
+      v52 = deviceIdentifierCopy;
+      v53 = tokenCopy;
       if (v19)
       {
         v20 = MEMORY[0x277CBEB18];
-        v21 = [v16 subActivities];
-        v22 = [v20 arrayWithArray:v21];
+        subActivities2 = [v16 subActivities];
+        v22 = [v20 arrayWithArray:subActivities2];
 
-        [v22 removeObject:v12];
+        [v22 removeObject:activityCopy];
         v23 = [v22 copy];
         [v16 setSubActivities:v23];
 
         context = objc_autoreleasePoolPush();
-        v24 = self;
+        selfCopy = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
@@ -1941,7 +1941,7 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
           *buf = 138543874;
           v57 = v27;
           v58 = 2112;
-          v59 = v12;
+          v59 = activityCopy;
           v60 = 2112;
           v61 = v22;
           _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@Removed subActivity %@ from existing list %@", buf, 0x20u);
@@ -1952,24 +1952,24 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
         objc_autoreleasePoolPop(context);
         [v17 addObject:v16];
 
-        v11 = v53;
+        tokenCopy = v53;
       }
 
       [v15 pushToken];
       v29 = v28 = v17;
-      v30 = [v11 isEqualToData:v29];
+      v30 = [tokenCopy isEqualToData:v29];
 
       v31 = v28;
       if ((v30 & 1) == 0)
       {
-        [v15 setPushToken:v11];
+        [v15 setPushToken:tokenCopy];
         [v28 addObject:v15];
       }
 
       if ([v28 count])
       {
         v32 = objc_autoreleasePoolPush();
-        v33 = self;
+        selfCopy2 = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
@@ -1977,48 +1977,48 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
           *buf = 138543874;
           v57 = v35;
           v58 = 2112;
-          v59 = v12;
+          v59 = activityCopy;
           v60 = 2112;
-          v61 = v10;
+          v61 = identifierCopy;
           _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@Removing subActivity %@ from IDS Activity Registration for: %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v32);
-        v36 = [(HMDUserSettingsBackingStoreController *)v33 localZone];
+        localZone2 = [(HMDUserSettingsBackingStoreController *)selfCopy2 localZone];
         v37 = [MEMORY[0x277CBEB98] setWithObjects:{v15, v16, 0}];
         v38 = [MEMORY[0x277D17108] optionsWithLabel:@"Updating IDS Activity Registration"];
-        v39 = [v36 addModels:v37 options:v38];
+        v39 = [localZone2 addModels:v37 options:v38];
         v54[0] = MEMORY[0x277D85DD0];
         v54[1] = 3221225472;
         v54[2] = __130__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentifier_observerPushToken_subActivity_subjectDeviceIdentifier___block_invoke;
         v54[3] = &unk_2797358C8;
-        v54[4] = v33;
-        v55 = v10;
+        v54[4] = selfCopy2;
+        v55 = identifierCopy;
         v40 = [v39 addFailureBlock:v54];
 
-        v11 = v53;
+        tokenCopy = v53;
         v31 = v28;
       }
 
-      v13 = v52;
+      deviceIdentifierCopy = v52;
     }
 
     else
     {
       v45 = objc_autoreleasePoolPush();
-      v46 = self;
+      selfCopy3 = self;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v49 = v48 = v11;
+        v49 = v48 = tokenCopy;
         *buf = 138543618;
         v57 = v49;
         v58 = 2112;
-        v59 = v10;
+        v59 = identifierCopy;
         _os_log_impl(&dword_2531F8000, v47, OS_LOG_TYPE_INFO, "%{public}@Unable to deregister, no IDS Activty Registration model found for %@", buf, 0x16u);
 
-        v11 = v48;
+        tokenCopy = v48;
       }
 
       objc_autoreleasePoolPop(v45);
@@ -2028,7 +2028,7 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
   else
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy4 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
@@ -2036,7 +2036,7 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
       *buf = 138543618;
       v57 = v44;
       v58 = 2112;
-      v59 = v10;
+      v59 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_INFO, "%{public}@Unable to deregister, no IDS Activty Observer model found for %@", buf, 0x16u);
     }
 
@@ -2046,19 +2046,19 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_registrationWithParent:(void *)a3 subjectDeviceIdentifier:
+- (id)_registrationWithParent:(void *)parent subjectDeviceIdentifier:
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  parentCopy = parent;
+  if (self)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [a1 localZone];
-    v8 = [v7 fetchModelsWithParentModelID:v5 error:0];
+    localZone = [self localZone];
+    v8 = [localZone fetchModelsWithParentModelID:v5 error:0];
 
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
@@ -2074,8 +2074,8 @@ void __76__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdentif
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 subjectDeviceIdentifier];
-          v14 = [v13 isEqual:v6];
+          subjectDeviceIdentifier = [v12 subjectDeviceIdentifier];
+          v14 = [subjectDeviceIdentifier isEqual:parentCopy];
 
           if (v14)
           {
@@ -2131,18 +2131,18 @@ void __130__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdenti
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateObserverDeviceIdentifier:(id)a3 observerPushToken:(id)a4
+- (void)updateObserverDeviceIdentifier:(id)identifier observerPushToken:(id)token
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v9 = [v8 fetchModelWithModelID:v6 ofType:objc_opt_class() error:0];
+  identifierCopy = identifier;
+  tokenCopy = token;
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v9 = [localZone fetchModelWithModelID:identifierCopy ofType:objc_opt_class() error:0];
 
   if (!v9)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -2150,7 +2150,7 @@ void __130__HMDUserSettingsBackingStoreController_deregisterObserverDeviceIdenti
       *buf = 138543618;
       v30 = v15;
       v31 = 2112;
-      v32 = v6;
+      v32 = identifierCopy;
       v16 = "%{public}@Unable to update observer pushToken, no IDS Activty Observer model found for %@";
       goto LABEL_7;
     }
@@ -2161,13 +2161,13 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v10 = [v9 pushToken];
-  v11 = [v7 isEqualToData:v10];
+  pushToken = [v9 pushToken];
+  v11 = [tokenCopy isEqualToData:pushToken];
 
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -2175,7 +2175,7 @@ LABEL_8:
       *buf = 138543618;
       v30 = v15;
       v31 = 2112;
-      v32 = v6;
+      v32 = identifierCopy;
       v16 = "%{public}@Push token already up to date for %@";
 LABEL_7:
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, v16, buf, 0x16u);
@@ -2186,9 +2186,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v9 setPushToken:v7];
+  [v9 setPushToken:tokenCopy];
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -2196,21 +2196,21 @@ LABEL_7:
     *buf = 138543618;
     v30 = v20;
     v31 = 2112;
-    v32 = v6;
+    v32 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Updating IDS Activity observer pushToken: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v21 = [(HMDUserSettingsBackingStoreController *)v18 localZone];
+  localZone2 = [(HMDUserSettingsBackingStoreController *)selfCopy3 localZone];
   v22 = [MEMORY[0x277CBEB98] setWithObject:v9];
   v23 = [MEMORY[0x277D17108] optionsWithLabel:@"Reregistering IDS Activity Observer"];
-  v24 = [v21 addModels:v22 options:v23];
+  v24 = [localZone2 addModels:v22 options:v23];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __90__HMDUserSettingsBackingStoreController_updateObserverDeviceIdentifier_observerPushToken___block_invoke;
   v27[3] = &unk_2797358C8;
-  v27[4] = v18;
-  v28 = v6;
+  v27[4] = selfCopy3;
+  v28 = identifierCopy;
   v25 = [v24 addFailureBlock:v27];
 
 LABEL_12:
@@ -2241,22 +2241,22 @@ void __90__HMDUserSettingsBackingStoreController_updateObserverDeviceIdentifier_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserverDeviceIdentifier:(id)a3 observerPushToken:(id)a4 subActivity:(id)a5 subjectDeviceIdentifier:(id)a6
+- (void)registerObserverDeviceIdentifier:(id)identifier observerPushToken:(id)token subActivity:(id)activity subjectDeviceIdentifier:(id)deviceIdentifier
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  activityCopy = activity;
+  deviceIdentifierCopy = deviceIdentifier;
   v14 = [MEMORY[0x277CBEB58] set];
-  v15 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v16 = [v15 fetchModelWithModelID:v10 ofType:objc_opt_class() error:0];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v16 = [localZone fetchModelWithModelID:identifierCopy ofType:objc_opt_class() error:0];
 
-  v56 = v12;
+  v56 = activityCopy;
   if (!v16)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
@@ -2264,23 +2264,23 @@ void __90__HMDUserSettingsBackingStoreController_updateObserverDeviceIdentifier_
       *buf = 138543618;
       v60 = v34;
       v61 = 2112;
-      v62 = v10;
+      v62 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_INFO, "%{public}@No IDS Activity observer found for %@, creating", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v31);
-    v16 = [[HMDIDSActivityObserverModel alloc] initWithModelID:v10];
+    v16 = [[HMDIDSActivityObserverModel alloc] initWithModelID:identifierCopy];
     [v14 addObject:v16];
     goto LABEL_13;
   }
 
-  v17 = [(HMDUserSettingsBackingStoreController *)self _registrationWithParent:v10 subjectDeviceIdentifier:v13];
+  v17 = [(HMDUserSettingsBackingStoreController *)self _registrationWithParent:identifierCopy subjectDeviceIdentifier:deviceIdentifierCopy];
   if (!v17)
   {
 LABEL_13:
-    v55 = v11;
+    v55 = tokenCopy;
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy2 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
@@ -2288,17 +2288,17 @@ LABEL_13:
       *buf = 138543618;
       v60 = v38;
       v61 = 2112;
-      v62 = v13;
+      v62 = deviceIdentifierCopy;
       _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_INFO, "%{public}@No IDS Activity registration found for %@, creating", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v35);
-    v26 = [(HMDUserSettingsBackingStoreController *)v36 _uuidForActivitySubject:v13 observer:v10];
+    v26 = [(HMDUserSettingsBackingStoreController *)selfCopy2 _uuidForActivitySubject:deviceIdentifierCopy observer:identifierCopy];
     v39 = [HMDIDSActivityRegistrationModel alloc];
-    v40 = [(HMBModel *)v16 hmbModelID];
-    v18 = [(HMBModel *)v39 initWithModelID:v26 parentModelID:v40];
+    hmbModelID = [(HMBModel *)v16 hmbModelID];
+    v18 = [(HMBModel *)v39 initWithModelID:v26 parentModelID:hmbModelID];
 
-    [(HMDIDSActivityRegistrationModel *)v18 setSubjectDeviceIdentifier:v13];
+    [(HMDIDSActivityRegistrationModel *)v18 setSubjectDeviceIdentifier:deviceIdentifierCopy];
     v65[0] = v56;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:1];
     [(HMDIDSActivityRegistrationModel *)v18 setSubActivities:v41];
@@ -2307,22 +2307,22 @@ LABEL_13:
   }
 
   v18 = v17;
-  v19 = [(HMDIDSActivityRegistrationModel *)v17 subActivities];
-  v20 = v12;
-  v21 = [v19 containsObject:v12];
+  subActivities = [(HMDIDSActivityRegistrationModel *)v17 subActivities];
+  v20 = activityCopy;
+  v21 = [subActivities containsObject:activityCopy];
 
   if (v21)
   {
     goto LABEL_17;
   }
 
-  v55 = v11;
+  v55 = tokenCopy;
   v22 = MEMORY[0x277CBEB18];
-  v23 = [(HMDIDSActivityRegistrationModel *)v18 subActivities];
-  v24 = v23;
-  if (v23)
+  subActivities2 = [(HMDIDSActivityRegistrationModel *)v18 subActivities];
+  v24 = subActivities2;
+  if (subActivities2)
   {
-    v25 = v23;
+    v25 = subActivities2;
   }
 
   else
@@ -2337,7 +2337,7 @@ LABEL_13:
   [(HMDIDSActivityRegistrationModel *)v18 setSubActivities:v27];
 
   v28 = objc_autoreleasePoolPush();
-  v29 = self;
+  selfCopy3 = self;
   v30 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
@@ -2355,22 +2355,22 @@ LABEL_13:
 LABEL_16:
   [v14 addObject:v18];
 
-  v11 = v55;
+  tokenCopy = v55;
 LABEL_17:
-  v42 = [(HMDIDSActivityObserverModel *)v16 pushToken];
-  v43 = [v11 isEqualToData:v42];
+  pushToken = [(HMDIDSActivityObserverModel *)v16 pushToken];
+  v43 = [tokenCopy isEqualToData:pushToken];
 
   v44 = v56;
   if ((v43 & 1) == 0)
   {
-    [(HMDIDSActivityObserverModel *)v16 setPushToken:v11];
+    [(HMDIDSActivityObserverModel *)v16 setPushToken:tokenCopy];
     [v14 addObject:v16];
   }
 
   if ([v14 count])
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = self;
+    selfCopy4 = self;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
     {
@@ -2383,15 +2383,15 @@ LABEL_17:
     }
 
     objc_autoreleasePoolPop(v45);
-    v49 = [(HMDUserSettingsBackingStoreController *)v46 localZone];
+    localZone2 = [(HMDUserSettingsBackingStoreController *)selfCopy4 localZone];
     v50 = [MEMORY[0x277D17108] optionsWithLabel:@"Updating IDS Activity Registration"];
-    v51 = [v49 addModels:v14 options:v50];
+    v51 = [localZone2 addModels:v14 options:v50];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifier_observerPushToken_subActivity_subjectDeviceIdentifier___block_invoke;
     v57[3] = &unk_2797358C8;
-    v57[4] = v46;
-    v58 = v10;
+    v57[4] = selfCopy4;
+    v58 = identifierCopy;
     v52 = [v51 addFailureBlock:v57];
 
     v44 = v56;
@@ -2427,11 +2427,11 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
 - (void)destroyZone
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2442,22 +2442,22 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDUserSettingsBackingStoreController *)v5 delegate];
-  v9 = [v8 isCurrentUser];
+  delegate = [(HMDUserSettingsBackingStoreController *)selfCopy delegate];
+  isCurrentUser = [delegate isCurrentUser];
 
-  v10 = [(HMDUserSettingsBackingStoreController *)v5 database];
-  v11 = [(HMDUserSettingsBackingStoreController *)v5 zoneName];
-  if (v9)
+  database = [(HMDUserSettingsBackingStoreController *)selfCopy database];
+  zoneName = [(HMDUserSettingsBackingStoreController *)selfCopy zoneName];
+  if (isCurrentUser)
   {
-    v12 = [v10 removePrivateZonesWithName:v11];
+    v12 = [database removePrivateZonesWithName:zoneName];
   }
 
   else
   {
-    v13 = [v10 removeSharedZonesWithName:v11];
+    v13 = [database removeSharedZonesWithName:zoneName];
   }
 
-  [(HMDUserSettingsBackingStoreController *)v5 _invalidate];
+  [(HMDUserSettingsBackingStoreController *)selfCopy _invalidate];
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -2465,7 +2465,7 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2476,112 +2476,112 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDUserSettingsBackingStoreController *)v4 workQueue];
-  dispatch_assert_queue_V2(v7);
+  workQueue = [(HMDUserSettingsBackingStoreController *)selfCopy workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)v4 setLocalZone:0];
-  [(HMDUserSettingsBackingStoreController *)v4 setCloudZone:0];
-  [(HMDUserSettingsBackingStoreController *)v4 _updateRunState:0];
-  [(HMDUserSettingsBackingStoreController *)v4 _updateLogEventRunState:4];
+  [(HMDUserSettingsBackingStoreController *)selfCopy setLocalZone:0];
+  [(HMDUserSettingsBackingStoreController *)selfCopy setCloudZone:0];
+  [(HMDUserSettingsBackingStoreController *)selfCopy _updateRunState:0];
+  [(HMDUserSettingsBackingStoreController *)selfCopy _updateLogEventRunState:4];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForSharedUserDataModelUpdates:(id)a3 modelID:(id)a4
+- (void)registerForSharedUserDataModelUpdates:(id)updates modelID:(id)d
 {
-  v6 = a4;
-  [(HMDUserSettingsBackingStoreController *)self setSharedUserDataModelUpdateReceiver:a3];
-  [(HMDUserSettingsBackingStoreController *)self setSharedUserDataModelUpdateModelID:v6];
+  dCopy = d;
+  [(HMDUserSettingsBackingStoreController *)self setSharedUserDataModelUpdateReceiver:updates];
+  [(HMDUserSettingsBackingStoreController *)self setSharedUserDataModelUpdateModelID:dCopy];
 }
 
-- (void)registerForUserSupportsAutomaticHH2MigrationModelUpdates:(id)a3 modelID:(id)a4
+- (void)registerForUserSupportsAutomaticHH2MigrationModelUpdates:(id)updates modelID:(id)d
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  updatesCopy = updates;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)self setUserSupportsAutomaticHH2MigrationModelUpdateReceiver:v6];
-  [(HMDUserSettingsBackingStoreController *)self setUserSupportsAutomaticHH2MigrationModelID:v8];
+  [(HMDUserSettingsBackingStoreController *)self setUserSupportsAutomaticHH2MigrationModelUpdateReceiver:updatesCopy];
+  [(HMDUserSettingsBackingStoreController *)self setUserSupportsAutomaticHH2MigrationModelID:dCopy];
 }
 
-- (id)loadUserSupportsAutomaticHH2MigrationModelWithModelID:(id)a3 error:(id *)a4
+- (id)loadUserSupportsAutomaticHH2MigrationModelWithModelID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v9 = [v8 fetchModelWithModelID:v6 error:a4];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v9 = [localZone fetchModelWithModelID:dCopy error:error];
 
   return v9;
 }
 
-- (void)registerForUserListeningHistoryUpdateControlModelUpdates:(id)a3 modelID:(id)a4
+- (void)registerForUserListeningHistoryUpdateControlModelUpdates:(id)updates modelID:(id)d
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  updatesCopy = updates;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)self setUserListeningHistoryUpdateControlModelUpdateReceiver:v6];
-  [(HMDUserSettingsBackingStoreController *)self setUserListeningHistoryUpdateModelID:v8];
+  [(HMDUserSettingsBackingStoreController *)self setUserListeningHistoryUpdateControlModelUpdateReceiver:updatesCopy];
+  [(HMDUserSettingsBackingStoreController *)self setUserListeningHistoryUpdateModelID:dCopy];
 }
 
-- (id)loadUserListeningHistoryUpdateControlModelWithModelID:(id)a3 error:(id *)a4
+- (id)loadUserListeningHistoryUpdateControlModelWithModelID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v9 = [v8 fetchModelWithModelID:v6 error:a4];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v9 = [localZone fetchModelWithModelID:dCopy error:error];
 
   return v9;
 }
 
-- (void)registerForMediaContentAccessControlModelUpdates:(id)a3 modelID:(id)a4
+- (void)registerForMediaContentAccessControlModelUpdates:(id)updates modelID:(id)d
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  updatesCopy = updates;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)self setMediaContentProfileAccessControlModelUpdateReceiver:v6];
-  [(HMDUserSettingsBackingStoreController *)self setMediaContentProfileAccessControlModelID:v8];
+  [(HMDUserSettingsBackingStoreController *)self setMediaContentProfileAccessControlModelUpdateReceiver:updatesCopy];
+  [(HMDUserSettingsBackingStoreController *)self setMediaContentProfileAccessControlModelID:dCopy];
 }
 
-- (id)loadMediaContentAccessControlModelWithModelID:(id)a3 error:(id *)a4
+- (id)loadMediaContentAccessControlModelWithModelID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v9 = [v8 fetchModelWithModelID:v6 error:a4];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v9 = [localZone fetchModelWithModelID:dCopy error:error];
 
   return v9;
 }
 
-- (void)registerForAssistantAccessControlModelUpdates:(id)a3 modelID:(id)a4
+- (void)registerForAssistantAccessControlModelUpdates:(id)updates modelID:(id)d
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  updatesCopy = updates;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDUserSettingsBackingStoreController *)self setAssistantAccessControlModelUpdateReceiver:v6];
-  [(HMDUserSettingsBackingStoreController *)self setAssistantAccessControlModelID:v8];
+  [(HMDUserSettingsBackingStoreController *)self setAssistantAccessControlModelUpdateReceiver:updatesCopy];
+  [(HMDUserSettingsBackingStoreController *)self setAssistantAccessControlModelID:dCopy];
 }
 
-- (id)loadAssistantAccessControlModelWithModelID:(id)a3 error:(id *)a4
+- (id)loadAssistantAccessControlModelWithModelID:(id)d error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v9 = [v8 fetchModelWithModelID:v6 error:a4];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  v9 = [localZone fetchModelWithModelID:dCopy error:error];
 
   v10 = v9;
   objc_opt_class();
@@ -2600,7 +2600,7 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
   if (v10 && !v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -2620,22 +2620,22 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
   return v12;
 }
 
-- (id)loadSharedUserDataModelWithError:(id *)a3
+- (id)loadSharedUserDataModelWithError:(id *)error
 {
-  v5 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v6 = [(HMDUserSettingsBackingStoreController *)self delegate];
-  v7 = [v6 userUUID];
-  v8 = [v5 fetchModelWithModelID:v7 error:a3];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  delegate = [(HMDUserSettingsBackingStoreController *)self delegate];
+  userUUID = [delegate userUUID];
+  v8 = [localZone fetchModelWithModelID:userUUID error:error];
 
   return v8;
 }
 
-- (id)loadPrivateUserDataModelWithError:(id *)a3
+- (id)loadPrivateUserDataModelWithError:(id *)error
 {
-  v5 = [(HMDUserSettingsBackingStoreController *)self localZone];
-  v6 = [(HMDUserSettingsBackingStoreController *)self delegate];
-  v7 = [v6 userUUID];
-  v8 = [v5 fetchModelWithModelID:v7 error:a3];
+  localZone = [(HMDUserSettingsBackingStoreController *)self localZone];
+  delegate = [(HMDUserSettingsBackingStoreController *)self delegate];
+  userUUID = [delegate userUUID];
+  v8 = [localZone fetchModelWithModelID:userUUID error:error];
 
   return v8;
 }
@@ -2643,18 +2643,18 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
 - (void)start
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserSettingsBackingStoreController *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDUserSettingsBackingStoreController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDUserSettingsBackingStoreController *)self runState])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = HMDUserSettingsBackingStoreControllerRunStateAsString([(HMDUserSettingsBackingStoreController *)v5 runState]);
+      v8 = HMDUserSettingsBackingStoreControllerRunStateAsString([(HMDUserSettingsBackingStoreController *)selfCopy runState]);
       v27 = 138543618;
       v28 = v7;
       v29 = 2112;
@@ -2667,88 +2667,88 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
 
   else
   {
-    v9 = [(HMDUserSettingsBackingStoreController *)self delegate];
-    if ([v9 isCurrentUser])
+    delegate = [(HMDUserSettingsBackingStoreController *)self delegate];
+    if ([delegate isCurrentUser])
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [v9 userUUID];
+        userUUID = [delegate userUUID];
         v27 = 138543618;
         v28 = v13;
         v29 = 2112;
-        v30 = v14;
+        v30 = userUUID;
         _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Starting backing store controller to fetch owned zone for user %@", &v27, 0x16u);
       }
 
       objc_autoreleasePoolPop(v10);
-      [(HMDUserSettingsBackingStoreController *)v11 _updateRunState:1];
-      [(HMDUserSettingsBackingStoreController *)v11 _updateLogEventRunState:1];
-      logger = v11->_logger;
+      [(HMDUserSettingsBackingStoreController *)selfCopy2 _updateRunState:1];
+      [(HMDUserSettingsBackingStoreController *)selfCopy2 _updateLogEventRunState:1];
+      logger = selfCopy2->_logger;
       if (os_signpost_enabled(logger))
       {
         v16 = logger;
-        v17 = [v9 userUUID];
+        userUUID2 = [delegate userUUID];
         v27 = 138412546;
         v28 = @"Owned";
         v29 = 2112;
-        v30 = v17;
+        v30 = userUUID2;
         _os_signpost_emit_with_name_impl(&dword_2531F8000, v16, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UserZone.Startup", "Type=%{signpost.description:attribute}@ User=%{signpost.description:attribute}@ ", &v27, 0x16u);
       }
 
-      v11->_startupSignPost = 0xEEEEB0B5B2B2EEEELL;
-      [(HMDUserSettingsBackingStoreController *)v11 _startWithOwnedZone];
+      selfCopy2->_startupSignPost = 0xEEEEB0B5B2B2EEEELL;
+      [(HMDUserSettingsBackingStoreController *)selfCopy2 _startWithOwnedZone];
     }
 
-    else if (([v9 isCurrentUser] & 1) == 0 && objc_msgSend(v9, "isRunningOnHomeOwnersDevice"))
+    else if (([delegate isCurrentUser] & 1) == 0 && objc_msgSend(delegate, "isRunningOnHomeOwnersDevice"))
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy3 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v9 userUUID];
+        userUUID3 = [delegate userUUID];
         v27 = 138543618;
         v28 = v21;
         v29 = 2112;
-        v30 = v22;
+        v30 = userUUID3;
         _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Starting backing store controller to fetch shared zone for user %@", &v27, 0x16u);
       }
 
       objc_autoreleasePoolPop(v18);
-      [(HMDUserSettingsBackingStoreController *)v19 _updateRunState:1];
-      [(HMDUserSettingsBackingStoreController *)v19 _updateLogEventRunState:1];
-      v23 = v19->_logger;
+      [(HMDUserSettingsBackingStoreController *)selfCopy3 _updateRunState:1];
+      [(HMDUserSettingsBackingStoreController *)selfCopy3 _updateLogEventRunState:1];
+      v23 = selfCopy3->_logger;
       if (os_signpost_enabled(v23))
       {
         v24 = v23;
-        v25 = [v9 userUUID];
+        userUUID4 = [delegate userUUID];
         v27 = 138412546;
         v28 = @"Shared";
         v29 = 2112;
-        v30 = v25;
+        v30 = userUUID4;
         _os_signpost_emit_with_name_impl(&dword_2531F8000, v24, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "UserZone.Startup", "Type=%{signpost.description:attribute}@ User=%{signpost.description:attribute}@ ", &v27, 0x16u);
       }
 
-      v19->_startupSignPost = 0xEEEEB0B5B2B2EEEELL;
-      [(HMDUserSettingsBackingStoreController *)v19 _startWithSharedZone];
+      selfCopy3->_startupSignPost = 0xEEEEB0B5B2B2EEEELL;
+      [(HMDUserSettingsBackingStoreController *)selfCopy3 _startWithSharedZone];
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserSettingsBackingStoreController)initWithDelegate:(id)a3 queue:(id)a4 zoneName:(id)a5 database:(id)a6 shareMessenger:(id)a7
+- (HMDUserSettingsBackingStoreController)initWithDelegate:(id)delegate queue:(id)queue zoneName:(id)name database:(id)database shareMessenger:(id)messenger
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  nameCopy = name;
+  databaseCopy = database;
+  messengerCopy = messenger;
   v23.receiver = self;
   v23.super_class = HMDUserSettingsBackingStoreController;
   v17 = [(HMDUserSettingsBackingStoreController *)&v23 init];
@@ -2759,20 +2759,20 @@ void __128__HMDUserSettingsBackingStoreController_registerObserverDeviceIdentifi
     v17->_logger = v18;
 
     v17->_startupSignPost = 0;
-    objc_storeWeak(&v17->_delegate, v12);
-    objc_storeStrong(&v17->_workQueue, a4);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v17->_workQueue, queue);
     v20 = +[HMDMetricsManager sharedLogEventSubmitter];
     logEventSubmitter = v17->_logEventSubmitter;
     v17->_logEventSubmitter = v20;
 
-    objc_storeStrong(&v17->_zoneName, a5);
-    objc_storeStrong(&v17->_database, a6);
-    objc_storeStrong(&v17->_shareMessenger, a7);
+    objc_storeStrong(&v17->_zoneName, name);
+    objc_storeStrong(&v17->_database, database);
+    objc_storeStrong(&v17->_shareMessenger, messenger);
     [(HMDCloudShareMessenger *)v17->_shareMessenger setDelegate:v17];
     [(HMDCloudShareMessenger *)v17->_shareMessenger configure];
     v17->_runState = 0;
     v17->_logEventRunState = 0;
-    [v15 addDelegate:v17];
+    [databaseCopy addDelegate:v17];
   }
 
   return v17;

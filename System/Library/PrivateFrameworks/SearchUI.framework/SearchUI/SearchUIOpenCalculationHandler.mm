@@ -1,14 +1,14 @@
 @interface SearchUIOpenCalculationHandler
 - (id)itemProvider;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIOpenCalculationHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v15 = a3;
-  if ([v15 shouldOpenCurrencyConversionProvider])
+  commandCopy = command;
+  if ([commandCopy shouldOpenCurrencyConversionProvider])
   {
     [_TtC8SearchUI28SearchUICalculateUIUtilities currencyConversionProviderURLWithCompletionHandler:&__block_literal_global_22];
   }
@@ -17,9 +17,9 @@
   {
     v5 = objc_opt_new();
     [v5 setScheme:@"calc"];
-    v6 = [v15 input];
-    v7 = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
-    v8 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+    input = [commandCopy input];
+    uRLHostAllowedCharacterSet = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
+    v8 = [input stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
     [v5 setHost:v8];
 
     v9 = objc_opt_new();
@@ -29,8 +29,8 @@
       [v9 addObject:v10];
     }
 
-    v11 = [v15 input];
-    v12 = [SearchUISearchWebHandler webSearchURLForQueryString:v11];
+    input2 = [commandCopy input];
+    v12 = [SearchUISearchWebHandler webSearchURLForQueryString:input2];
 
     if (v12)
     {
@@ -57,9 +57,9 @@ void __74__SearchUIOpenCalculationHandler_performCommand_triggerEvent_environmen
 - (id)itemProvider
 {
   v3 = objc_alloc(MEMORY[0x1E696ACA0]);
-  v4 = [(SearchUICommandHandler *)self command];
-  v5 = [v4 output];
-  v6 = [v3 initWithObject:v5];
+  command = [(SearchUICommandHandler *)self command];
+  output = [command output];
+  v6 = [v3 initWithObject:output];
 
   return v6;
 }

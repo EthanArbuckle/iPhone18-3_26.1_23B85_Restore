@@ -1,21 +1,21 @@
 @interface _UITabBarVisualProvider
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4;
-- (_UITabBarVisualProvider)initWithTabBar:(id)a3;
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options;
+- (_UITabBarVisualProvider)initWithTabBar:(id)bar;
 - (id)focusedTabBarItem;
-- (id)tabBarItemAtPoint:(CGPoint)a3;
+- (id)tabBarItemAtPoint:(CGPoint)point;
 - (void)updateUnselectedItemTintColor;
 @end
 
 @implementation _UITabBarVisualProvider
 
-- (_UITabBarVisualProvider)initWithTabBar:(id)a3
+- (_UITabBarVisualProvider)initWithTabBar:(id)bar
 {
   v5.receiver = self;
   v5.super_class = _UITabBarVisualProvider;
   result = [(_UITabBarVisualProvider *)&v5 init];
   if (result)
   {
-    result->_tabBar = a3;
+    result->_tabBar = bar;
   }
 
   return result;
@@ -24,13 +24,13 @@
 - (void)updateUnselectedItemTintColor
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(UITabBar *)self->_tabBar _effectiveUnselectedTintColor];
+  _effectiveUnselectedTintColor = [(UITabBar *)self->_tabBar _effectiveUnselectedTintColor];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(UITabBar *)self->_tabBar items];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  items = [(UITabBar *)self->_tabBar items];
+  v5 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -42,30 +42,30 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
-        v9 = [(UITabBarItem *)*(*(&v10 + 1) + 8 * v8) _tabBarButton];
-        [v9 _setUnselectedTintColor:v3];
+        _tabBarButton = [(UITabBarItem *)*(*(&v10 + 1) + 8 * v8) _tabBarButton];
+        [_tabBarButton _setUnselectedTintColor:_effectiveUnselectedTintColor];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)tabBarItemAtPoint:(CGPoint)a3
+- (id)tabBarItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [(_UITabBarVisualProvider *)self tabBar];
-  v7 = [v6 hitTest:0 withEvent:{x, y}];
+  tabBar = [(_UITabBarVisualProvider *)self tabBar];
+  v7 = [tabBar hitTest:0 withEvent:{x, y}];
 
   objc_opt_class();
   v8 = 0;
@@ -75,8 +75,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(UITabBar *)self->_tabBar items];
-    v8 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    items = [(UITabBar *)self->_tabBar items];
+    v8 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v10 = *v16;
@@ -86,20 +86,20 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [(UITabBarItem *)v12 _tabBarButton];
+          _tabBarButton = [(UITabBarItem *)v12 _tabBarButton];
 
-          if (v13 == v7)
+          if (_tabBarButton == v7)
           {
             v8 = v12;
             goto LABEL_12;
           }
         }
 
-        v8 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;
@@ -122,8 +122,8 @@ LABEL_12:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(UITabBar *)self->_tabBar items];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  items = [(UITabBar *)self->_tabBar items];
+  v3 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -133,21 +133,21 @@ LABEL_12:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [(UITabBarItem *)v6 _tabBarButton];
-        v8 = [v7 isFocused];
+        _tabBarButton = [(UITabBarItem *)v6 _tabBarButton];
+        isFocused = [_tabBarButton isFocused];
 
-        if (v8)
+        if (isFocused)
         {
           v3 = v6;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -162,7 +162,7 @@ LABEL_11:
   return v3;
 }
 
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options
 {
   v4 = *MEMORY[0x1E695F050];
   v5 = *(MEMORY[0x1E695F050] + 8);

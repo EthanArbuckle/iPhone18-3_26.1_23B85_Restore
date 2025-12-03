@@ -2,10 +2,10 @@
 + (id)conditionalFormatting;
 - (EDConditionalFormatting)init;
 - (id)description;
-- (id)rangeAtIndex:(unint64_t)a3;
-- (id)ruleAtIndex:(unint64_t)a3;
-- (void)addRange:(id)a3;
-- (void)addRule:(id)a3;
+- (id)rangeAtIndex:(unint64_t)index;
+- (id)ruleAtIndex:(unint64_t)index;
+- (void)addRange:(id)range;
+- (void)addRule:(id)rule;
 @end
 
 @implementation EDConditionalFormatting
@@ -38,58 +38,58 @@
   return v2;
 }
 
-- (id)ruleAtIndex:(unint64_t)a3
+- (id)ruleAtIndex:(unint64_t)index
 {
-  if ([(EDConditionalFormatting *)self ruleCount]<= a3)
+  if ([(EDConditionalFormatting *)self ruleCount]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->mRules objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mRules objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)addRule:(id)a3
+- (void)addRule:(id)rule
 {
-  v4 = a3;
-  if (v4)
+  ruleCopy = rule;
+  if (ruleCopy)
   {
-    v6 = v4;
-    [(NSMutableArray *)self->mRules addObject:v4];
-    v5 = [v6 appliesToDateOnly];
-    v4 = v6;
-    if (v5)
+    v6 = ruleCopy;
+    [(NSMutableArray *)self->mRules addObject:ruleCopy];
+    appliesToDateOnly = [v6 appliesToDateOnly];
+    ruleCopy = v6;
+    if (appliesToDateOnly)
     {
       self->mApplyToDate = 1;
     }
   }
 }
 
-- (id)rangeAtIndex:(unint64_t)a3
+- (id)rangeAtIndex:(unint64_t)index
 {
-  if ([(EDConditionalFormatting *)self rangeCount]<= a3)
+  if ([(EDConditionalFormatting *)self rangeCount]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(EDCollection *)self->mRanges objectAtIndex:a3];
+    v5 = [(EDCollection *)self->mRanges objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)addRange:(id)a3
+- (void)addRange:(id)range
 {
-  v4 = a3;
-  if (v4)
+  rangeCopy = range;
+  if (rangeCopy)
   {
-    [(EDReferenceCollection *)self->mRanges addObject:v4];
+    [(EDReferenceCollection *)self->mRanges addObject:rangeCopy];
   }
 }
 

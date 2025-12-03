@@ -1,27 +1,27 @@
 @interface MacSearchHomeRecentSearchesLayoutProvider
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation MacSearchHomeRecentSearchesLayoutProvider
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v11 = a3;
-  v12 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:v11];
+  environmentCopy = environment;
+  v12 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:environmentCopy];
   [v12 setSeparatorStyle:0];
   +[TwoLineCollectionViewListCell estimatedCellHeight];
   [v12 setEstimatedRowHeight:?];
-  v13 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v12 layoutEnvironment:v11];
+  v13 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v12 layoutEnvironment:environmentCopy];
 
   [v13 setInterGroupSpacing:3.0];
   v14 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v15 = [NSCollectionLayoutDimension estimatedDimension:a4];
+  v15 = [NSCollectionLayoutDimension estimatedDimension:height];
   v16 = [NSCollectionLayoutSize sizeWithWidthDimension:v14 heightDimension:v15];
 
   v17 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v18 = [NSCollectionLayoutDimension estimatedDimension:a5];
+  v18 = [NSCollectionLayoutDimension estimatedDimension:footerHeight];
   v19 = [NSCollectionLayoutSize sizeWithWidthDimension:v17 heightDimension:v18];
 
   v20 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v16 elementKind:UICollectionElementKindSectionHeader alignment:1];
@@ -39,7 +39,7 @@
       v25 = 138412546;
       v26 = 0;
       v27 = 2112;
-      v28 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "The layoutSection - %@ is nil for some reason in class - %@", &v25, 0x16u);
     }
   }
@@ -47,18 +47,18 @@
   return v13;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MacSearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v10];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  cellReuseIdentifier = [(MacSearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
-  v13 = [(MacSearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
-  [v12 setAccessibilityIdentifier:v13];
+  cellReuseIdentifier2 = [(MacSearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
+  [v12 setAccessibilityIdentifier:cellReuseIdentifier2];
 
-  [v12 setViewModel:v8];
+  [v12 setViewModel:itemCopy];
 
   return v12;
 }

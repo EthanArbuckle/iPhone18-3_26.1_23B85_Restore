@@ -1,6 +1,6 @@
 @interface SharedTripsAnnotationsController
 - (BOOL)_shouldBeActive;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
 - (ChromeViewController)chromeViewController;
 - (MKMapView)mapView;
 - (MapCameraController)mapCameraController;
@@ -9,29 +9,29 @@
 - (double)_userAnnotationViewImageSideLength;
 - (id)_composedRouteToDisplay;
 - (id)_waypointSearchResults;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_attachToMapViewIfNeeded:(BOOL)a3;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_attachToMapViewIfNeeded:(BOOL)needed;
 - (void)_connectOrDisconnectFromMapView;
 - (void)_detachFromMapView;
-- (void)_showStartEndPinsAnimated:(BOOL)a3;
+- (void)_showStartEndPinsAnimated:(BOOL)animated;
 - (void)_updateModernMapTokenIfNeeded;
 - (void)_updateRouteLines;
 - (void)_updateSubscriptions;
 - (void)dealloc;
-- (void)poiShapeLoader:(id)a3 didLoadStartPOIShape:(id)a4 endPOIShapes:(id)a5;
-- (void)recenterOnRouteAnimated:(BOOL)a3;
+- (void)poiShapeLoader:(id)loader didLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes;
+- (void)recenterOnRouteAnimated:(BOOL)animated;
 - (void)reload;
 - (void)removeFromMapView;
-- (void)setActive:(BOOL)a3;
-- (void)setChromeViewController:(id)a3;
-- (void)setMapView:(id)a3 mapCameraController:(id)a4 searchPinsManager:(id)a5 animated:(BOOL)a6;
-- (void)setSharedTrip:(id)a3;
-- (void)sharedTripService:(id)a3 didRemoveSharedTrip:(id)a4;
-- (void)sharedTripService:(id)a3 didUpdateClosedTrip:(id)a4;
-- (void)sharedTripService:(id)a3 didUpdateDestinationForSharedTrip:(id)a4;
-- (void)sharedTripService:(id)a3 didUpdateETAForSharedTrip:(id)a4;
-- (void)sharedTripService:(id)a3 didUpdateReachedDestinationForSharedTrip:(id)a4;
-- (void)sharedTripService:(id)a3 didUpdateRouteForSharedTrip:(id)a4;
+- (void)setActive:(BOOL)active;
+- (void)setChromeViewController:(id)controller;
+- (void)setMapView:(id)view mapCameraController:(id)controller searchPinsManager:(id)manager animated:(BOOL)animated;
+- (void)setSharedTrip:(id)trip;
+- (void)sharedTripService:(id)service didRemoveSharedTrip:(id)trip;
+- (void)sharedTripService:(id)service didUpdateClosedTrip:(id)trip;
+- (void)sharedTripService:(id)service didUpdateDestinationForSharedTrip:(id)trip;
+- (void)sharedTripService:(id)service didUpdateETAForSharedTrip:(id)trip;
+- (void)sharedTripService:(id)service didUpdateReachedDestinationForSharedTrip:(id)trip;
+- (void)sharedTripService:(id)service didUpdateRouteForSharedTrip:(id)trip;
 @end
 
 @implementation SharedTripsAnnotationsController
@@ -79,9 +79,9 @@
   return WeakRetained;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
   v5 = obj;
@@ -90,10 +90,10 @@
     objc_storeWeak(&self->_chromeViewController, obj);
     if (obj)
     {
-      v6 = [obj mapView];
-      v7 = [obj mapCameraController];
-      v8 = [obj searchPinsManager];
-      [(SharedTripsAnnotationsController *)self setMapView:v6 mapCameraController:v7 searchPinsManager:v8 animated:0];
+      mapView = [obj mapView];
+      mapCameraController = [obj mapCameraController];
+      searchPinsManager = [obj searchPinsManager];
+      [(SharedTripsAnnotationsController *)self setMapView:mapView mapCameraController:mapCameraController searchPinsManager:searchPinsManager animated:0];
     }
 
     else
@@ -105,94 +105,94 @@
   }
 }
 
-- (void)sharedTripService:(id)a3 didUpdateReachedDestinationForSharedTrip:(id)a4
+- (void)sharedTripService:(id)service didUpdateReachedDestinationForSharedTrip:(id)trip
 {
-  v10 = a4;
-  v6 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v7 = [v6 groupIdentifier];
-  v8 = [v10 groupIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
+  v9 = [groupIdentifier isEqualToString:groupIdentifier2];
 
   if (v9)
   {
-    objc_storeStrong(&self->_sharedTrip, a4);
+    objc_storeStrong(&self->_sharedTrip, trip);
     [(SharedTripsAnnotationsController *)self _updateRouteLines];
     [(SharedTripsAnnotationsController *)self _showStartEndPinsAnimated:1];
   }
 }
 
-- (void)sharedTripService:(id)a3 didUpdateClosedTrip:(id)a4
+- (void)sharedTripService:(id)service didUpdateClosedTrip:(id)trip
 {
-  v10 = a4;
-  v6 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v7 = [v6 groupIdentifier];
-  v8 = [v10 groupIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
+  v9 = [groupIdentifier isEqualToString:groupIdentifier2];
 
   if (v9)
   {
-    objc_storeStrong(&self->_sharedTrip, a4);
+    objc_storeStrong(&self->_sharedTrip, trip);
     [(SharedTripsAnnotationsController *)self _updateRouteLines];
     [(SharedTripsAnnotationsController *)self _showStartEndPinsAnimated:1];
   }
 }
 
-- (void)sharedTripService:(id)a3 didRemoveSharedTrip:(id)a4
+- (void)sharedTripService:(id)service didRemoveSharedTrip:(id)trip
 {
-  v5 = a4;
-  v6 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v7 = [v6 groupIdentifier];
-  v8 = [v5 groupIdentifier];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
 
-  LODWORD(v5) = [v7 isEqualToString:v8];
-  if (v5)
+  LODWORD(tripCopy) = [groupIdentifier isEqualToString:groupIdentifier2];
+  if (tripCopy)
   {
 
     [(SharedTripsAnnotationsController *)self setSharedTrip:0];
   }
 }
 
-- (void)sharedTripService:(id)a3 didUpdateDestinationForSharedTrip:(id)a4
+- (void)sharedTripService:(id)service didUpdateDestinationForSharedTrip:(id)trip
 {
-  v10 = a4;
-  v6 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v7 = [v6 groupIdentifier];
-  v8 = [v10 groupIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
+  v9 = [groupIdentifier isEqualToString:groupIdentifier2];
 
   if (v9)
   {
-    objc_storeStrong(&self->_sharedTrip, a4);
+    objc_storeStrong(&self->_sharedTrip, trip);
     [(SharedTripsAnnotationsController *)self _showStartEndPinsAnimated:1];
   }
 }
 
-- (void)sharedTripService:(id)a3 didUpdateETAForSharedTrip:(id)a4
+- (void)sharedTripService:(id)service didUpdateETAForSharedTrip:(id)trip
 {
-  v10 = a4;
-  v6 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v7 = [v6 groupIdentifier];
-  v8 = [v10 groupIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
+  v9 = [groupIdentifier isEqualToString:groupIdentifier2];
 
   if (v9)
   {
-    objc_storeStrong(&self->_sharedTrip, a4);
+    objc_storeStrong(&self->_sharedTrip, trip);
     [(SharedTripsAnnotationsController *)self _showStartEndPinsAnimated:1];
   }
 }
 
-- (void)sharedTripService:(id)a3 didUpdateRouteForSharedTrip:(id)a4
+- (void)sharedTripService:(id)service didUpdateRouteForSharedTrip:(id)trip
 {
-  v11 = a4;
-  v5 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v6 = [v5 groupIdentifier];
-  v7 = [v11 groupIdentifier];
-  v8 = [v6 isEqualToString:v7];
+  tripCopy = trip;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
+  groupIdentifier2 = [tripCopy groupIdentifier];
+  v8 = [groupIdentifier isEqualToString:groupIdentifier2];
 
   if (v8)
   {
-    v9 = [v11 copy];
+    v9 = [tripCopy copy];
     sharedTrip = self->_sharedTrip;
     self->_sharedTrip = v9;
 
@@ -203,11 +203,11 @@
 
 - (void)_updateModernMapTokenIfNeeded
 {
-  v3 = [(SharedTripsAnnotationsController *)self chromeViewController];
+  chromeViewController = [(SharedTripsAnnotationsController *)self chromeViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = chromeViewController;
   }
 
   else
@@ -219,16 +219,16 @@
 
   if (v5)
   {
-    v6 = [(SharedTripsAnnotationsController *)self sharedTrip];
-    v7 = [v6 routeInfo];
-    if (v7)
+    sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+    routeInfo = [sharedTrip routeInfo];
+    if (routeInfo)
     {
-      v8 = v7;
-      v9 = [(SharedTripsAnnotationsController *)self sharedTrip];
-      v10 = [v9 routeInfo];
-      v11 = [v10 routingPathLegsCount];
+      v8 = routeInfo;
+      sharedTrip2 = [(SharedTripsAnnotationsController *)self sharedTrip];
+      routeInfo2 = [sharedTrip2 routeInfo];
+      routingPathLegsCount = [routeInfo2 routingPathLegsCount];
 
-      if (!v11)
+      if (!routingPathLegsCount)
       {
         if (!self->_modernMapToken)
         {
@@ -280,15 +280,15 @@ LABEL_17:
     return 0;
   }
 
-  v2 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v3 = v2 != 0;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  v3 = sharedTrip != 0;
 
   return v3;
 }
 
-- (void)poiShapeLoader:(id)a3 didLoadStartPOIShape:(id)a4 endPOIShapes:(id)a5
+- (void)poiShapeLoader:(id)loader didLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes
 {
-  if ([(SharedTripsAnnotationsController *)self automaticallyRecenters:a3])
+  if ([(SharedTripsAnnotationsController *)self automaticallyRecenters:loader])
   {
 
     [(SharedTripsAnnotationsController *)self recenterOnRouteAnimated:1];
@@ -306,34 +306,34 @@ LABEL_17:
   return result;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a4;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     userAnnotationView = self->_userAnnotationView;
     if (userAnnotationView)
     {
-      [(SharedTripContactAnnotationView *)userAnnotationView setAnnotation:v5];
+      [(SharedTripContactAnnotationView *)userAnnotationView setAnnotation:annotationCopy];
     }
 
     else
     {
       v8 = [SharedTripContactAnnotationView alloc];
       [(SharedTripsAnnotationsController *)self _userAnnotationViewImageSideLength];
-      v9 = [(SharedTripContactAnnotationView *)v8 initWithAnnotation:v5 reuseIdentifier:@"UserAnnotation" imageSideLength:?];
+      v9 = [(SharedTripContactAnnotationView *)v8 initWithAnnotation:annotationCopy reuseIdentifier:@"UserAnnotation" imageSideLength:?];
       v10 = self->_userAnnotationView;
       self->_userAnnotationView = v9;
 
       [(SharedTripContactAnnotationView *)self->_userAnnotationView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v11 = [(SharedTripContactAnnotationView *)self->_userAnnotationView widthAnchor];
+      widthAnchor = [(SharedTripContactAnnotationView *)self->_userAnnotationView widthAnchor];
       [(SharedTripsAnnotationsController *)self _userAnnotationViewImageSideLength];
-      v12 = [v11 constraintEqualToConstant:?];
+      v12 = [widthAnchor constraintEqualToConstant:?];
       v17[0] = v12;
-      v13 = [(SharedTripContactAnnotationView *)self->_userAnnotationView heightAnchor];
+      heightAnchor = [(SharedTripContactAnnotationView *)self->_userAnnotationView heightAnchor];
       [(SharedTripsAnnotationsController *)self _userAnnotationViewImageSideLength];
-      v14 = [v13 constraintEqualToConstant:?];
+      v14 = [heightAnchor constraintEqualToConstant:?];
       v17[1] = v14;
       v15 = [NSArray arrayWithObjects:v17 count:2];
       [NSLayoutConstraint activateConstraints:v15];
@@ -350,39 +350,39 @@ LABEL_17:
   return v7;
 }
 
-- (void)_showStartEndPinsAnimated:(BOOL)a3
+- (void)_showStartEndPinsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v19 = [(SharedTripsAnnotationsController *)self sharedTrip];
+  animatedCopy = animated;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
   itemSource = self->_itemSource;
-  v6 = [(SharedTripsAnnotationsController *)self _waypointSearchResults];
-  [(RouteStartEndItemSource *)itemSource setStartLocation:0 endLocations:v6];
+  _waypointSearchResults = [(SharedTripsAnnotationsController *)self _waypointSearchResults];
+  [(RouteStartEndItemSource *)itemSource setStartLocation:0 endLocations:_waypointSearchResults];
 
   if ([(SharedTripsAnnotationsController *)self shouldShowRoute])
   {
-    v7 = [v19 lastLocation];
-    if ((![v19 hasClosed] || objc_msgSend(v19, "closed") != 1) && v7 && objc_msgSend(v7, "hasCoordinate"))
+    lastLocation = [sharedTrip lastLocation];
+    if ((![sharedTrip hasClosed] || objc_msgSend(sharedTrip, "closed") != 1) && lastLocation && objc_msgSend(lastLocation, "hasCoordinate"))
     {
       userAnnotation = self->_userAnnotation;
-      v9 = v19;
+      v9 = sharedTrip;
       if (!userAnnotation)
       {
         v10 = objc_alloc_init(SharedTripUserAnnotation);
         v11 = self->_userAnnotation;
         self->_userAnnotation = v10;
 
-        v12 = [(SharedTripsAnnotationsController *)self mapView];
-        [v12 addAnnotation:self->_userAnnotation];
+        mapView = [(SharedTripsAnnotationsController *)self mapView];
+        [mapView addAnnotation:self->_userAnnotation];
 
-        v9 = v19;
+        v9 = sharedTrip;
         userAnnotation = self->_userAnnotation;
       }
 
       [(SharedTripUserAnnotation *)userAnnotation setState:v9];
-      v13 = [v7 coordinate];
-      [v13 lat];
+      coordinate = [lastLocation coordinate];
+      [coordinate lat];
       v15 = v14;
-      [v13 lng];
+      [coordinate lng];
       v17 = CLLocationCoordinate2DMake(v15, v16);
       [(SharedTripUserAnnotation *)self->_userAnnotation setCoordinate:v17.latitude, v17.longitude];
     }
@@ -396,10 +396,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v18 = [(SharedTripsAnnotationsController *)self mapView];
-      [v18 removeAnnotation:self->_userAnnotation];
+      mapView2 = [(SharedTripsAnnotationsController *)self mapView];
+      [mapView2 removeAnnotation:self->_userAnnotation];
 
-      v13 = self->_userAnnotation;
+      coordinate = self->_userAnnotation;
       self->_userAnnotation = 0;
     }
 
@@ -409,15 +409,15 @@ LABEL_12:
 LABEL_13:
   if ([(SharedTripsAnnotationsController *)self automaticallyRecenters])
   {
-    [(SharedTripsAnnotationsController *)self recenterOnRouteAnimated:v3];
+    [(SharedTripsAnnotationsController *)self recenterOnRouteAnimated:animatedCopy];
   }
 }
 
 - (id)_waypointSearchResults
 {
-  v2 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v3 = v2;
-  if (v2 && ![v2 waypointInfosCount])
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  v3 = sharedTrip;
+  if (sharedTrip && ![sharedTrip waypointInfosCount])
   {
     v8 = sub_10006D178();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -448,47 +448,47 @@ LABEL_13:
 
   if ([v3 hasCurrentWaypointIndex])
   {
-    v4 = [v3 currentWaypointIndex];
+    currentWaypointIndex = [v3 currentWaypointIndex];
   }
 
   else
   {
-    v4 = 0;
+    currentWaypointIndex = 0;
   }
 
-  v5 = [v3 waypointInfos];
+  waypointInfos = [v3 waypointInfos];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100D42598;
   v11[3] = &unk_101651D58;
-  v11[4] = v4;
-  v6 = sub_100021DB0(v5, v11);
+  v11[4] = currentWaypointIndex;
+  v6 = sub_100021DB0(waypointInfos, v11);
 
   return v6;
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SharedTripsAnnotationsController *)self _composedRouteToDisplay];
-  [v4 setStyle:0];
-  if (v5)
+  configurationCopy = configuration;
+  _composedRouteToDisplay = [(SharedTripsAnnotationsController *)self _composedRouteToDisplay];
+  [configurationCopy setStyle:0];
+  if (_composedRouteToDisplay)
   {
-    v9 = v5;
+    v9 = _composedRouteToDisplay;
     v6 = [NSArray arrayWithObjects:&v9 count:1];
-    [v4 setRoutes:v6];
+    [configurationCopy setRoutes:v6];
 
     v7 = 0;
   }
 
   else
   {
-    [v4 setRoutes:&__NSArray0__struct];
+    [configurationCopy setRoutes:&__NSArray0__struct];
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v4 setRouteTrafficFeaturesActive:1];
-  [v4 setSelectedRouteIndex:v7];
+  [configurationCopy setRouteTrafficFeaturesActive:1];
+  [configurationCopy setSelectedRouteIndex:v7];
 
   return 1;
 }
@@ -496,8 +496,8 @@ LABEL_13:
 - (void)_updateRouteLines
 {
   [(SharedTripsAnnotationsController *)self _updateModernMapTokenIfNeeded];
-  v5 = [(SharedTripsAnnotationsController *)self _composedRouteToDisplay];
-  if (v5)
+  _composedRouteToDisplay = [(SharedTripsAnnotationsController *)self _composedRouteToDisplay];
+  if (_composedRouteToDisplay)
   {
     v3 = 0;
   }
@@ -508,16 +508,16 @@ LABEL_13:
   }
 
   [(RouteStartEndItemSource *)self->_itemSource setVisibilityMask:v3];
-  v4 = [(SharedTripsAnnotationsController *)self chromeViewController];
-  [v4 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
+  chromeViewController = [(SharedTripsAnnotationsController *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 }
 
 - (id)_composedRouteToDisplay
 {
-  v3 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  if ([v3 hasClosed])
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  if ([sharedTrip hasClosed])
   {
-    v4 = [v3 closed] ^ 1;
+    v4 = [sharedTrip closed] ^ 1;
   }
 
   else
@@ -525,28 +525,28 @@ LABEL_13:
     v4 = 1;
   }
 
-  v5 = 0;
-  if (v3 && v4)
+  composedRoute = 0;
+  if (sharedTrip && v4)
   {
-    if (-[SharedTripsAnnotationsController shouldShowRoute](self, "shouldShowRoute") && ([v3 composedRoute], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+    if (-[SharedTripsAnnotationsController shouldShowRoute](self, "shouldShowRoute") && ([sharedTrip composedRoute], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v5 = [v3 composedRoute];
+      composedRoute = [sharedTrip composedRoute];
     }
 
     else
     {
-      v5 = 0;
+      composedRoute = 0;
     }
   }
 
-  return v5;
+  return composedRoute;
 }
 
-- (void)recenterOnRouteAnimated:(BOOL)a3
+- (void)recenterOnRouteAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  if (!v5)
+  animatedCopy = animated;
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  if (!sharedTrip)
   {
     goto LABEL_26;
   }
@@ -554,15 +554,15 @@ LABEL_13:
   y = MKMapRectNull.origin.y;
   width = MKMapRectNull.size.width;
   height = MKMapRectNull.size.height;
-  v45 = v5;
-  v9 = [v5 hasClosed];
+  v45 = sharedTrip;
+  hasClosed = [sharedTrip hasClosed];
   v10 = v45;
-  if (!v9 || (v11 = [v45 closed], v10 = v45, (v11 & 1) == 0))
+  if (!hasClosed || (v11 = [v45 closed], v10 = v45, (v11 & 1) == 0))
   {
-    v14 = [v10 composedRoute];
-    if (v14 && [(SharedTripsAnnotationsController *)self shouldShowRoute])
+    composedRoute = [v10 composedRoute];
+    if (composedRoute && [(SharedTripsAnnotationsController *)self shouldShowRoute])
     {
-      v15 = [v14 boundingMapRegion];
+      boundingMapRegion = [composedRoute boundingMapRegion];
       GEOMapRectForMapRegion();
       v17 = v16;
       v19 = v18;
@@ -590,9 +590,9 @@ LABEL_13:
       x = MKMapRectNull.origin.x;
     }
 
-    v24 = [v45 etaInfo];
-    v25 = v24;
-    if (v24 && [v24 hasLatitude] && objc_msgSend(v25, "hasLongitude") && -[SharedTripsAnnotationsController shouldShowRoute](self, "shouldShowRoute"))
+    etaInfo = [v45 etaInfo];
+    v25 = etaInfo;
+    if (etaInfo && [etaInfo hasLatitude] && objc_msgSend(v25, "hasLongitude") && -[SharedTripsAnnotationsController shouldShowRoute](self, "shouldShowRoute"))
     {
       [v25 latitude];
       v27 = v26;
@@ -639,10 +639,10 @@ LABEL_18:
   v12 = y;
   x = MKMapRectNull.origin.x;
 LABEL_19:
-  v34 = [v45 destinationWaypointMapItem];
-  if (v34)
+  destinationWaypointMapItem = [v45 destinationWaypointMapItem];
+  if (destinationWaypointMapItem)
   {
-    v35 = [[MKMapItem alloc] initWithGeoMapItem:v34 isPlaceHolderPlace:0];
+    v35 = [[MKMapItem alloc] initWithGeoMapItem:destinationWaypointMapItem isPlaceHolderPlace:0];
     [v35 _coordinate];
     MKMapRectMakeWithRadialDistance();
     v58.origin.x = v36;
@@ -671,11 +671,11 @@ LABEL_19:
     v41 = v55.origin.y;
     v42 = v55.size.width;
     v43 = v55.size.height;
-    v44 = [(SharedTripsAnnotationsController *)self mapCameraController];
-    [v44 frameMapRect:v3 animated:0 completion:{v40, v41, v42, v43}];
+    mapCameraController = [(SharedTripsAnnotationsController *)self mapCameraController];
+    [mapCameraController frameMapRect:animatedCopy animated:0 completion:{v40, v41, v42, v43}];
   }
 
-  v5 = v45;
+  sharedTrip = v45;
 LABEL_26:
 }
 
@@ -688,23 +688,23 @@ LABEL_26:
 
 - (void)_updateSubscriptions
 {
-  v3 = [(SharedTripsAnnotationsController *)self _shouldBeActive];
-  v4 = [(SharedTripsAnnotationsController *)self sharedTrip];
-  v9 = [v4 groupIdentifier];
+  _shouldBeActive = [(SharedTripsAnnotationsController *)self _shouldBeActive];
+  sharedTrip = [(SharedTripsAnnotationsController *)self sharedTrip];
+  groupIdentifier = [sharedTrip groupIdentifier];
 
-  v5 = [(SharedTripsAnnotationsController *)self chromeViewController];
-  v6 = [v5 _maps_uiScene];
+  chromeViewController = [(SharedTripsAnnotationsController *)self chromeViewController];
+  _maps_uiScene = [chromeViewController _maps_uiScene];
 
   v7 = 0;
   subscriptionToken = self->_subscriptionToken;
-  if (v3 && v9 && v6)
+  if (_shouldBeActive && groupIdentifier && _maps_uiScene)
   {
     if (subscriptionToken)
     {
       goto LABEL_7;
     }
 
-    v7 = [[SharedTripSceneAwareSubscription alloc] initWithTripIdentifier:v9 scene:v6];
+    v7 = [[SharedTripSceneAwareSubscription alloc] initWithTripIdentifier:groupIdentifier scene:_maps_uiScene];
     subscriptionToken = self->_subscriptionToken;
   }
 
@@ -752,17 +752,17 @@ LABEL_7:
     v6 = [(SharedTripsAnnotationsController *)self mapView:self->_oldMapConfiguration.style];
     [v6 _setCartographicConfiguration:&v9];
 
-    v7 = [(SharedTripsAnnotationsController *)self mapView];
-    [v7 removeAnnotation:self->_userAnnotation];
+    mapView = [(SharedTripsAnnotationsController *)self mapView];
+    [mapView removeAnnotation:self->_userAnnotation];
 
-    v8 = [(SharedTripsAnnotationsController *)self searchPinsManager];
-    [v8 unregisterPOIShapeLoadingObserver:self];
+    searchPinsManager = [(SharedTripsAnnotationsController *)self searchPinsManager];
+    [searchPinsManager unregisterPOIShapeLoadingObserver:self];
   }
 }
 
-- (void)_attachToMapViewIfNeeded:(BOOL)a3
+- (void)_attachToMapViewIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
   if (WeakRetained)
   {
@@ -771,23 +771,23 @@ LABEL_7:
     if (sharedTrip)
     {
       self->_attachedToMapView = 1;
-      v7 = [(SharedTripsAnnotationsController *)self mapView];
-      v8 = [v7 camera];
-      v9 = [v8 copy];
+      mapView = [(SharedTripsAnnotationsController *)self mapView];
+      camera = [mapView camera];
+      v9 = [camera copy];
 
       [v9 setPitch:0.0];
       [v9 setHeading:0.0];
-      v10 = [(SharedTripsAnnotationsController *)self mapView];
-      [v10 setCamera:v9 animated:v3];
+      mapView2 = [(SharedTripsAnnotationsController *)self mapView];
+      [mapView2 setCamera:v9 animated:neededCopy];
 
-      v11 = [(SharedTripsAnnotationsController *)self mapView];
-      [v11 setShowsTraffic:1];
+      mapView3 = [(SharedTripsAnnotationsController *)self mapView];
+      [mapView3 setShowsTraffic:1];
 
-      v12 = [(SharedTripsAnnotationsController *)self mapView];
-      v13 = v12;
-      if (v12)
+      mapView4 = [(SharedTripsAnnotationsController *)self mapView];
+      v13 = mapView4;
+      if (mapView4)
       {
-        [v12 _cartographicConfiguration];
+        [mapView4 _cartographicConfiguration];
       }
 
       else
@@ -808,11 +808,11 @@ LABEL_7:
       v27 = 0u;
       v28 = 0u;
       v26 = 0u;
-      v15 = [(SharedTripsAnnotationsController *)self mapView];
-      v16 = v15;
-      if (v15)
+      mapView5 = [(SharedTripsAnnotationsController *)self mapView];
+      v16 = mapView5;
+      if (mapView5)
       {
-        [v15 _cartographicConfiguration];
+        [mapView5 _cartographicConfiguration];
       }
 
       else
@@ -829,57 +829,57 @@ LABEL_7:
       v22 = xmmword_1011F07A0;
       v23 = v27;
       v24 = v28;
-      v17 = [(SharedTripsAnnotationsController *)self mapView];
+      mapView6 = [(SharedTripsAnnotationsController *)self mapView];
       v20[0] = xmmword_1011F07A0;
       v20[1] = v23;
       v20[2] = v24;
       v21 = v25;
-      [v17 _setCartographicConfiguration:v20];
+      [mapView6 _setCartographicConfiguration:v20];
 
-      v18 = [(SharedTripsAnnotationsController *)self searchPinsManager];
-      [v18 registerPOIShapeLoadingObserver:self];
+      searchPinsManager = [(SharedTripsAnnotationsController *)self searchPinsManager];
+      [searchPinsManager registerPOIShapeLoadingObserver:self];
 
       [(SharedTripsAnnotationsController *)self _updateRouteLines];
-      [(SharedTripsAnnotationsController *)self _showStartEndPinsAnimated:v3];
+      [(SharedTripsAnnotationsController *)self _showStartEndPinsAnimated:neededCopy];
       v19 = +[MSPSharedTripService sharedInstance];
       [v19 addReceivingObserver:self];
     }
   }
 }
 
-- (void)setMapView:(id)a3 mapCameraController:(id)a4 searchPinsManager:(id)a5 animated:(BOOL)a6
+- (void)setMapView:(id)view mapCameraController:(id)controller searchPinsManager:(id)manager animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  objc_storeWeak(&self->_mapView, v12);
-  objc_storeWeak(&self->_mapCameraController, v11);
+  animatedCopy = animated;
+  managerCopy = manager;
+  controllerCopy = controller;
+  viewCopy = view;
+  objc_storeWeak(&self->_mapView, viewCopy);
+  objc_storeWeak(&self->_mapCameraController, controllerCopy);
 
-  objc_storeWeak(&self->_searchPinsManager, v10);
-  v13 = [v12 traitCollection];
+  objc_storeWeak(&self->_searchPinsManager, managerCopy);
+  traitCollection = [viewCopy traitCollection];
 
-  self->_idiom = [v13 userInterfaceIdiom];
+  self->_idiom = [traitCollection userInterfaceIdiom];
 
-  [(SharedTripsAnnotationsController *)self _attachToMapViewIfNeeded:v6];
+  [(SharedTripsAnnotationsController *)self _attachToMapViewIfNeeded:animatedCopy];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(SharedTripsAnnotationsController *)self _updateSubscriptions];
   }
 }
 
-- (void)setSharedTrip:(id)a3
+- (void)setSharedTrip:(id)trip
 {
-  v5 = a3;
-  if (self->_sharedTrip != v5)
+  tripCopy = trip;
+  if (self->_sharedTrip != tripCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_sharedTrip, a3);
+    v7 = tripCopy;
+    objc_storeStrong(&self->_sharedTrip, trip);
     subscriptionToken = self->_subscriptionToken;
     self->_subscriptionToken = 0;
 
@@ -887,7 +887,7 @@ LABEL_7:
     [(SharedTripsAnnotationsController *)self _connectOrDisconnectFromMapView];
     [(SharedTripsAnnotationsController *)self _updateSubscriptions];
     [(SharedTripsAnnotationsController *)self reload];
-    v5 = v7;
+    tripCopy = v7;
   }
 }
 

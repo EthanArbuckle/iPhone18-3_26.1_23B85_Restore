@@ -1,13 +1,13 @@
 @interface IDSTestableLinkWithScheduler
 - (IDSTestableLinkWithScheduler)init;
-- (IDSTestableLinkWithScheduler)initWithLink:(id)a3 addBlock:(id)a4;
+- (IDSTestableLinkWithScheduler)initWithLink:(id)link addBlock:(id)block;
 @end
 
 @implementation IDSTestableLinkWithScheduler
 
-- (IDSTestableLinkWithScheduler)initWithLink:(id)a3 addBlock:(id)a4
+- (IDSTestableLinkWithScheduler)initWithLink:(id)link addBlock:(id)block
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(block);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   type metadata accessor for _IDSTestableLinkWithScheduler();

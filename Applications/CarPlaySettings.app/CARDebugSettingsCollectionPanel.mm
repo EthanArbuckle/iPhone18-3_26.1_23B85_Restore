@@ -1,5 +1,5 @@
 @interface CARDebugSettingsCollectionPanel
-- (CARDebugSettingsCollectionPanel)initWithPanelController:(id)a3;
+- (CARDebugSettingsCollectionPanel)initWithPanelController:(id)controller;
 - (NSArray)colors;
 - (UIEdgeInsets)sectionInset;
 - (double)minimumInteritemSpacing;
@@ -38,11 +38,11 @@
   return cellSpecifier;
 }
 
-- (CARDebugSettingsCollectionPanel)initWithPanelController:(id)a3
+- (CARDebugSettingsCollectionPanel)initWithPanelController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = CARDebugSettingsCollectionPanel;
-  v3 = [(CARSettingsPanel *)&v8 initWithPanelController:a3];
+  v3 = [(CARSettingsPanel *)&v8 initWithPanelController:controller];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -76,20 +76,20 @@
 - (id)cellSpecifiers
 {
   v3 = objc_opt_new();
-  v4 = [(CARDebugSettingsCollectionPanel *)self config];
-  v5 = [v4 cells];
+  config = [(CARDebugSettingsCollectionPanel *)self config];
+  cells = [config cells];
 
-  if (v5)
+  if (cells)
   {
     v6 = 0;
     do
     {
       v7 = [CARDebugCollectionView alloc];
-      v8 = [(CARDebugSettingsCollectionPanel *)self config];
-      v9 = [(CARDebugSettingsCollectionPanel *)self colors];
-      v10 = [(CARDebugSettingsCollectionPanel *)self colors];
-      v11 = [v9 objectAtIndexedSubscript:{v6 % objc_msgSend(v10, "count")}];
-      v12 = [(CARDebugCollectionView *)v7 initWithConfig:v8 color:v11];
+      config2 = [(CARDebugSettingsCollectionPanel *)self config];
+      colors = [(CARDebugSettingsCollectionPanel *)self colors];
+      colors2 = [(CARDebugSettingsCollectionPanel *)self colors];
+      v11 = [colors objectAtIndexedSubscript:{v6 % objc_msgSend(colors2, "count")}];
+      v12 = [(CARDebugCollectionView *)v7 initWithConfig:config2 color:v11];
 
       v13 = [CARSettingsCellViewSpecifier alloc];
       v19[0] = _NSConcreteStackBlock;
@@ -102,11 +102,11 @@
       [v3 addObject:v15];
 
       ++v6;
-      v16 = [(CARDebugSettingsCollectionPanel *)self config];
-      v17 = [v16 cells];
+      config3 = [(CARDebugSettingsCollectionPanel *)self config];
+      cells2 = [config3 cells];
     }
 
-    while (v17 > v6);
+    while (cells2 > v6);
   }
 
   return v3;
@@ -114,18 +114,18 @@
 
 - (unint64_t)numberOfColumns
 {
-  v2 = [(CARDebugSettingsCollectionPanel *)self config];
-  v3 = [v2 columns];
+  config = [(CARDebugSettingsCollectionPanel *)self config];
+  columns = [config columns];
 
-  return v3;
+  return columns;
 }
 
 - (unint64_t)numberOfRows
 {
-  v2 = [(CARDebugSettingsCollectionPanel *)self config];
-  v3 = [v2 rows];
+  config = [(CARDebugSettingsCollectionPanel *)self config];
+  rows = [config rows];
 
-  return v3;
+  return rows;
 }
 
 - (UIEdgeInsets)sectionInset
@@ -133,8 +133,8 @@
   v8.receiver = self;
   v8.super_class = CARDebugSettingsCollectionPanel;
   [(CARSettingsCollectionPanel *)&v8 sectionInset];
-  v3 = [(CARDebugSettingsCollectionPanel *)self config];
-  [v3 sectionInset];
+  config = [(CARDebugSettingsCollectionPanel *)self config];
+  [config sectionInset];
 
   UIEdgeInsetsAdd();
   result.right = v7;
@@ -146,8 +146,8 @@
 
 - (double)minimumLineSpacing
 {
-  v2 = [(CARDebugSettingsCollectionPanel *)self config];
-  [v2 minimumLineSpacing];
+  config = [(CARDebugSettingsCollectionPanel *)self config];
+  [config minimumLineSpacing];
   v4 = v3;
 
   return v4;
@@ -155,8 +155,8 @@
 
 - (double)minimumInteritemSpacing
 {
-  v2 = [(CARDebugSettingsCollectionPanel *)self config];
-  [v2 minimumInteritemSpacing];
+  config = [(CARDebugSettingsCollectionPanel *)self config];
+  [config minimumInteritemSpacing];
   v4 = v3;
 
   return v4;

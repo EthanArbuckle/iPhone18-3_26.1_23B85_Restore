@@ -1,38 +1,38 @@
 @interface LocationService.Trampoline
 - (_TtCC13findmylocated15LocationService10Trampoline)init;
-- (void)clearCachedConfigWithCompletion:(id)a3;
-- (void)currentStewieStateWithCompletion:(id)a3;
-- (void)decryptNotificationWithPayload:(id)a3 completion:(id)a4;
-- (void)dismissStewieNotificationsWithCompletion:(id)a3;
-- (void)fetchConfigWithCompletion:(id)a3;
-- (void)getCachedLocationsWithCompletion:(id)a3;
-- (void)getSharedKeysWithCompletion:(id)a3;
-- (void)getSharingKeyWithCompletion:(id)a3;
-- (void)latestLocationsFor:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)locationsFor:(id)a3 completion:(id)a4;
-- (void)performKeyRollWithCompletion:(id)a3;
-- (void)processIDSServiceMessage:(id)a3 completion:(id)a4;
-- (void)processLocationCommandPayload:(id)a3 completion:(id)a4;
-- (void)processLocationPayload:(id)a3 completion:(id)a4;
-- (void)publishCurrentLocationToStewieWithCompletion:(id)a3;
-- (void)publishLocation:(id)a3 completion:(id)a4;
-- (void)setSharingKey:(id)a3 completion:(id)a4;
-- (void)startMonitoringStewieStateWithCompletion:(id)a3;
-- (void)startRefreshingLocationWithRequest:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)stewiePublishResultWithCompletion:(id)a3;
-- (void)stopMonitoringStewieStateWithCompletion:(id)a3;
-- (void)stopRefreshingAllLocationsWithClientID:(id)a3 completion:(id)a4;
-- (void)stopRefreshingLocationWithHandles:(id)a3 clientID:(id)a4 priority:(int64_t)a5 completion:(id)a6;
-- (void)subscribeToBackgroundProactiveLocationsWithClientID:(id)a3 completion:(id)a4;
-- (void)triggerStewieProactiveNotificationWithCompletion:(id)a3;
+- (void)clearCachedConfigWithCompletion:(id)completion;
+- (void)currentStewieStateWithCompletion:(id)completion;
+- (void)decryptNotificationWithPayload:(id)payload completion:(id)completion;
+- (void)dismissStewieNotificationsWithCompletion:(id)completion;
+- (void)fetchConfigWithCompletion:(id)completion;
+- (void)getCachedLocationsWithCompletion:(id)completion;
+- (void)getSharedKeysWithCompletion:(id)completion;
+- (void)getSharingKeyWithCompletion:(id)completion;
+- (void)latestLocationsFor:(id)for clientID:(id)d completion:(id)completion;
+- (void)locationsFor:(id)for completion:(id)completion;
+- (void)performKeyRollWithCompletion:(id)completion;
+- (void)processIDSServiceMessage:(id)message completion:(id)completion;
+- (void)processLocationCommandPayload:(id)payload completion:(id)completion;
+- (void)processLocationPayload:(id)payload completion:(id)completion;
+- (void)publishCurrentLocationToStewieWithCompletion:(id)completion;
+- (void)publishLocation:(id)location completion:(id)completion;
+- (void)setSharingKey:(id)key completion:(id)completion;
+- (void)startMonitoringStewieStateWithCompletion:(id)completion;
+- (void)startRefreshingLocationWithRequest:(id)request clientID:(id)d completion:(id)completion;
+- (void)stewiePublishResultWithCompletion:(id)completion;
+- (void)stopMonitoringStewieStateWithCompletion:(id)completion;
+- (void)stopRefreshingAllLocationsWithClientID:(id)d completion:(id)completion;
+- (void)stopRefreshingLocationWithHandles:(id)handles clientID:(id)d priority:(int64_t)priority completion:(id)completion;
+- (void)subscribeToBackgroundProactiveLocationsWithClientID:(id)d completion:(id)completion;
+- (void)triggerStewieProactiveNotificationWithCompletion:(id)completion;
 @end
 
 @implementation LocationService.Trampoline
 
-- (void)startMonitoringStewieStateWithCompletion:(id)a3
+- (void)startMonitoringStewieStateWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -46,12 +46,12 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)startRefreshingLocationWithRequest:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)startRefreshingLocationWithRequest:(id)request clientID:(id)d completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v10 = _Block_copy(a5);
-  v11 = a3;
-  v12 = a4;
+  v10 = _Block_copy(completion);
+  requestCopy = request;
+  dCopy = d;
 
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
@@ -81,12 +81,12 @@
   sub_1000049D0(v13, v15);
 }
 
-- (void)stopRefreshingLocationWithHandles:(id)a3 clientID:(id)a4 priority:(int64_t)a5 completion:(id)a6
+- (void)stopRefreshingLocationWithHandles:(id)handles clientID:(id)d priority:(int64_t)priority completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v12 = _Block_copy(a6);
-  v13 = a3;
-  v14 = a4;
+  v12 = _Block_copy(completion);
+  handlesCopy = handles;
+  dCopy = d;
 
   v15 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
@@ -98,7 +98,7 @@
   *(v21 + 16) = v12;
   type metadata accessor for Transaction();
   v22 = swift_allocObject();
-  v22[2] = a5;
+  v22[2] = priority;
   v22[3] = sub_1000CAB5C;
   v22[4] = v21;
   v22[5] = v18;
@@ -116,11 +116,11 @@
   sub_1000049D0(v15, v17);
 }
 
-- (void)stopRefreshingAllLocationsWithClientID:(id)a3 completion:(id)a4
+- (void)stopRefreshingAllLocationsWithClientID:(id)d completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  dCopy = d;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -143,11 +143,11 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)locationsFor:(id)a3 completion:(id)a4
+- (void)locationsFor:(id)for completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  forCopy = for;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -170,11 +170,11 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)subscribeToBackgroundProactiveLocationsWithClientID:(id)a3 completion:(id)a4
+- (void)subscribeToBackgroundProactiveLocationsWithClientID:(id)d completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  dCopy = d;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -197,12 +197,12 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)latestLocationsFor:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)latestLocationsFor:(id)for clientID:(id)d completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v10 = _Block_copy(a5);
-  v11 = a3;
-  v12 = a4;
+  v10 = _Block_copy(completion);
+  forCopy = for;
+  dCopy = d;
 
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
@@ -232,11 +232,11 @@
   sub_1000049D0(v13, v15);
 }
 
-- (void)processLocationPayload:(id)a3 completion:(id)a4
+- (void)processLocationPayload:(id)payload completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  payloadCopy = payload;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -259,11 +259,11 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)processLocationCommandPayload:(id)a3 completion:(id)a4
+- (void)processLocationCommandPayload:(id)payload completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  payloadCopy = payload;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -286,11 +286,11 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)publishLocation:(id)a3 completion:(id)a4
+- (void)publishLocation:(id)location completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  locationCopy = location;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -313,10 +313,10 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)getSharingKeyWithCompletion:(id)a3
+- (void)getSharingKeyWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -330,11 +330,11 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)setSharingKey:(id)a3 completion:(id)a4
+- (void)setSharingKey:(id)key completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  keyCopy = key;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -357,10 +357,10 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)performKeyRollWithCompletion:(id)a3
+- (void)performKeyRollWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -374,10 +374,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)getSharedKeysWithCompletion:(id)a3
+- (void)getSharedKeysWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -391,10 +391,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)getCachedLocationsWithCompletion:(id)a3
+- (void)getCachedLocationsWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -408,11 +408,11 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)processIDSServiceMessage:(id)a3 completion:(id)a4
+- (void)processIDSServiceMessage:(id)message completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  messageCopy = message;
 
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
@@ -435,10 +435,10 @@
   sub_1000049D0(v10, v12);
 }
 
-- (void)fetchConfigWithCompletion:(id)a3
+- (void)fetchConfigWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -452,10 +452,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)clearCachedConfigWithCompletion:(id)a3
+- (void)clearCachedConfigWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -469,10 +469,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)decryptNotificationWithPayload:(id)a3 completion:(id)a4
+- (void)decryptNotificationWithPayload:(id)payload completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(completion);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = swift_allocObject();
@@ -490,10 +490,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)triggerStewieProactiveNotificationWithCompletion:(id)a3
+- (void)triggerStewieProactiveNotificationWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -507,10 +507,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)dismissStewieNotificationsWithCompletion:(id)a3
+- (void)dismissStewieNotificationsWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -524,10 +524,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)publishCurrentLocationToStewieWithCompletion:(id)a3
+- (void)publishCurrentLocationToStewieWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -541,10 +541,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)stewiePublishResultWithCompletion:(id)a3
+- (void)stewiePublishResultWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -558,10 +558,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)currentStewieStateWithCompletion:(id)a3
+- (void)currentStewieStateWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
@@ -575,10 +575,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)stopMonitoringStewieStateWithCompletion:(id)a3
+- (void)stopMonitoringStewieStateWithCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();

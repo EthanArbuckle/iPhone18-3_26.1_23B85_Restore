@@ -4,17 +4,17 @@
 - (CGPoint)target;
 - (CGRect)boundingBox;
 - (CGVector)motion;
-- (HMIMotionVector)initWithOrigin:(CGPoint)a3 motion:(CGVector)a4;
+- (HMIMotionVector)initWithOrigin:(CGPoint)origin motion:(CGVector)motion;
 @end
 
 @implementation HMIMotionVector
 
-- (HMIMotionVector)initWithOrigin:(CGPoint)a3 motion:(CGVector)a4
+- (HMIMotionVector)initWithOrigin:(CGPoint)origin motion:(CGVector)motion
 {
-  dy = a4.dy;
-  dx = a4.dx;
-  y = a3.y;
-  x = a3.x;
+  dy = motion.dy;
+  dx = motion.dx;
+  y = origin.y;
+  x = origin.x;
   v12.receiver = self;
   v12.super_class = HMIMotionVector;
   v8 = [(HMIMotionVector *)&v12 init];

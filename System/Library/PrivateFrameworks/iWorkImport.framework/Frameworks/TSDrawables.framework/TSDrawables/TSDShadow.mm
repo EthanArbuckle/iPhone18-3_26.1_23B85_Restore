@@ -1,46 +1,46 @@
 @interface TSDShadow
-+ (TSDShadow)shadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8;
-+ (TSDShadow)shadowWithNSShadow:(id)a3;
-+ (id)contactShadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 height:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9;
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9;
++ (TSDShadow)shadowWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
++ (TSDShadow)shadowWithNSShadow:(id)shadow;
++ (id)contactShadowWithAngle:(double)angle offset:(double)offset radius:(double)radius height:(double)height opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled;
 + (id)defaultShadowPresets;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)mixableObjectClasses;
-+ (id)p_defaultShadowEnabled:(BOOL)a3;
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)p_defaultShadowEnabled:(BOOL)enabled;
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(unint64_t)alternate;
+- (BOOL)isEqual:(id)equal;
 - (CGImage)i_newEmptyImage;
 - (CGPoint)offsetDelta;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalAngle:(double)a4;
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (CGRect)shadowBoundsForRect:(CGRect)rect;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalAngle:(double)angle;
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform;
 - (NSShadow)NSShadow;
 - (NSString)description;
 - (NSString)typeDescription;
-- (TSDShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4;
+- (TSDShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (TSDShadow)shadowWithClampedValues;
-- (id)i_initWithOpacity:(double)a3 color:(id)a4 angle:(double)a5 offset:(double)a6 radius:(double)a7 enabled:(BOOL)a8;
-- (id)mixedBaseObjectWithObject:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)shadowByTransformingByTransform:(CGAffineTransform *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)applyToContext:(CGContext *)a3 viewScale:(double)a4 flipped:(BOOL)a5 extraOffset:(CGSize)a6;
-- (void)i_setColor:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)i_initWithOpacity:(double)opacity color:(id)color angle:(double)angle offset:(double)offset radius:(double)radius enabled:(BOOL)enabled;
+- (id)mixedBaseObjectWithObject:(id)object;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)shadowByTransformingByTransform:(CGAffineTransform *)transform;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)applyToContext:(CGContext *)context viewScale:(double)scale flipped:(BOOL)flipped extraOffset:(CGSize)offset;
+- (void)i_setColor:(id)color;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDShadow
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
-  if (TSD::ShadowArchive::ByteSizeLong(a3))
+  unarchiverCopy = unarchiver;
+  if (TSD::ShadowArchive::ByteSizeLong(archive))
   {
     v8 = off_27A6CB890;
     v9 = off_27A6CB880;
-    v10 = *(a3 + 14);
+    v10 = *(archive + 14);
     if (v10 != 1)
     {
       v9 = off_27A6CB8B8;
@@ -51,7 +51,7 @@
       v8 = v9;
     }
 
-    v11 = objc_msgSend_instanceWithArchive_unarchiver_(*v8, v6, a3, v5);
+    v11 = objc_msgSend_instanceWithArchive_unarchiver_(*v8, v6, archive, unarchiverCopy);
   }
 
   else
@@ -64,7 +64,7 @@
   return v12;
 }
 
-- (TSDShadow)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDShadow)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
@@ -85,58 +85,58 @@
     v16 = TSPTSUColorCreateFromMessage();
     objc_msgSend_i_setColor_(v15, v17, v16);
 
-    objc_msgSend_i_setAngle_(v15, v18, v19, *(a3 + 16));
-    objc_msgSend_i_setOffset_(v15, v20, v21, *(a3 + 17));
-    objc_msgSend_i_setRadius_(v15, v22, v23, *(a3 + 18));
-    objc_msgSend_i_setOpacity_(v15, v24, v25, *(a3 + 19));
-    objc_msgSend_i_setEnabled_(v15, v26, *(a3 + 60));
+    objc_msgSend_i_setAngle_(v15, v18, v19, *(archive + 16));
+    objc_msgSend_i_setOffset_(v15, v20, v21, *(archive + 17));
+    objc_msgSend_i_setRadius_(v15, v22, v23, *(archive + 18));
+    objc_msgSend_i_setOpacity_(v15, v24, v25, *(archive + 19));
+    objc_msgSend_i_setEnabled_(v15, v26, *(archive + 60));
   }
 
   return v15;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v43 = a4;
+  archiverCopy = archiver;
   v8 = objc_msgSend_color(self, v6, v7);
-  *(a3 + 4) |= 1u;
-  if (!*(a3 + 3))
+  *(archive + 4) |= 1u;
+  if (!*(archive + 3))
   {
-    v9 = *(a3 + 1);
+    v9 = *(archive + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
-    *(a3 + 3) = MEMORY[0x277C9BAF0](v9);
+    *(archive + 3) = MEMORY[0x277C9BAF0](v9);
   }
 
   TSPTSUColorCopyToMessage();
 
   objc_msgSend_angle(self, v10, v11);
   *&v12 = v12;
-  *(a3 + 4) |= 0x40u;
-  *(a3 + 16) = LODWORD(v12);
+  *(archive + 4) |= 0x40u;
+  *(archive + 16) = LODWORD(v12);
   objc_msgSend_offset(self, v13, v14);
   *&v15 = v15;
-  *(a3 + 4) |= 0x80u;
-  *(a3 + 17) = LODWORD(v15);
+  *(archive + 4) |= 0x80u;
+  *(archive + 17) = LODWORD(v15);
   v16 = MEMORY[0x277CCABB0];
   objc_msgSend_radius(self, v17, v18);
   v21 = objc_msgSend_numberWithInteger_(v16, v20, v19);
   v24 = objc_msgSend_intValue(v21, v22, v23);
-  *(a3 + 4) |= 0x100u;
-  *(a3 + 18) = v24;
+  *(archive + 4) |= 0x100u;
+  *(archive + 18) = v24;
 
   objc_msgSend_opacity(self, v25, v26);
   *&v27 = v27;
-  *(a3 + 4) |= 0x200u;
-  *(a3 + 19) = LODWORD(v27);
+  *(archive + 4) |= 0x200u;
+  *(archive + 19) = LODWORD(v27);
   isEnabled = objc_msgSend_isEnabled(self, v28, v29);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 60) = isEnabled;
+  *(archive + 4) |= 0x20u;
+  *(archive + 60) = isEnabled;
   v33 = objc_msgSend_shadowType(self, v31, v32);
-  *(a3 + 4) |= 0x10u;
+  *(archive + 4) |= 0x10u;
   if (v33)
   {
     if (v33 == 2)
@@ -154,12 +154,12 @@
       v35 = 0;
     }
 
-    *(a3 + 14) = v35;
+    *(archive + 14) = v35;
   }
 
   else
   {
-    *(a3 + 14) = 0;
+    *(archive + 14) = 0;
     v36 = MEMORY[0x277D81150];
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, "[TSDShadow(PersistenceAdditions) saveToArchive:archiver:]");
     v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShadowPersistenceAdditions.mm");
@@ -169,10 +169,10 @@
   }
 }
 
-- (id)i_initWithOpacity:(double)a3 color:(id)a4 angle:(double)a5 offset:(double)a6 radius:(double)a7 enabled:(BOOL)a8
+- (id)i_initWithOpacity:(double)opacity color:(id)color angle:(double)angle offset:(double)offset radius:(double)radius enabled:(BOOL)enabled
 {
-  v14 = a4;
-  if (!v14)
+  colorCopy = color;
+  if (!colorCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSDShadow i_initWithOpacity:color:angle:offset:radius:enabled:]");
@@ -188,59 +188,59 @@
   v25 = v22;
   if (v22)
   {
-    objc_msgSend_clampOpacity_(v22, v23, v24, a3);
+    objc_msgSend_clampOpacity_(v22, v23, v24, opacity);
     v25->mOpacity = v26;
-    v29 = objc_msgSend_copy(v14, v27, v28);
+    v29 = objc_msgSend_copy(colorCopy, v27, v28);
     mColor = v25->mColor;
     v25->mColor = v29;
 
     TSUNormalizeAngleInDegrees();
     v25->mAngle = v31;
-    objc_msgSend_clampOffset_(v25, v32, v33, a6);
+    objc_msgSend_clampOffset_(v25, v32, v33, offset);
     v25->mOffset = v34;
-    v25->mEnabled = a8;
-    objc_msgSend_clampRadius_(v25, v35, v36, a7);
+    v25->mEnabled = enabled;
+    objc_msgSend_clampRadius_(v25, v35, v36, radius);
     v25->mRadius = v37;
   }
 
   return v25;
 }
 
-+ (id)p_defaultShadowEnabled:(BOOL)a3
++ (id)p_defaultShadowEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [TSDDropShadow alloc];
   v7 = objc_msgSend_blackColor(MEMORY[0x277D81180], v5, v6);
-  v9 = objc_msgSend_initWithAngle_offset_radius_opacity_color_enabled_(v4, v8, v7, v3, 315.0, 5.0, 1.0, 1.0);
+  v9 = objc_msgSend_initWithAngle_offset_radius_opacity_color_enabled_(v4, v8, v7, enabledCopy, 315.0, 5.0, 1.0, 1.0);
 
   return v9;
 }
 
-+ (TSDShadow)shadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(id)a7 enabled:(BOOL)a8
++ (TSDShadow)shadowWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v8 = a8;
-  v13 = a7;
+  enabledCopy = enabled;
+  colorCopy = color;
   v14 = [TSDDropShadow alloc];
-  v16 = objc_msgSend_initWithAngle_offset_radius_opacity_color_enabled_(v14, v15, v13, v8, a3, a4, a5, a6);
+  v16 = objc_msgSend_initWithAngle_offset_radius_opacity_color_enabled_(v14, v15, colorCopy, enabledCopy, angle, offset, radius, opacity);
 
   return v16;
 }
 
-+ (id)contactShadowWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 height:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9
++ (id)contactShadowWithAngle:(double)angle offset:(double)offset radius:(double)radius height:(double)height opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  v14 = a8;
+  enabledCopy = enabled;
+  colorCopy = color;
   v15 = [TSDContactShadow alloc];
-  v17 = objc_msgSend_initWithOffset_height_radius_opacity_color_enabled_(v15, v16, v14, v9, a4, a6, a5, a7);
+  v17 = objc_msgSend_initWithOffset_height_radius_opacity_color_enabled_(v15, v16, colorCopy, enabledCopy, offset, height, radius, opacity);
 
   return v17;
 }
 
-+ (TSDShadow)shadowWithNSShadow:(id)a3
++ (TSDShadow)shadowWithNSShadow:(id)shadow
 {
-  v3 = a3;
-  objc_msgSend_shadowOffset(v3, v4, v5);
-  v8 = objc_msgSend_shadowColor(v3, v6, v7);
+  shadowCopy = shadow;
+  objc_msgSend_shadowOffset(shadowCopy, v4, v5);
+  v8 = objc_msgSend_shadowColor(shadowCopy, v6, v7);
   v9 = v8;
   v12 = objc_msgSend_CGColor(v9, v10, v11);
 
@@ -248,7 +248,7 @@
   v14 = v13 * 57.2957795;
   TSUPointLength();
   v16 = v15;
-  objc_msgSend_shadowBlurRadius(v3, v17, v18);
+  objc_msgSend_shadowBlurRadius(shadowCopy, v17, v18);
   v20 = v19;
 
   v22 = objc_msgSend_colorWithCGColor_(MEMORY[0x277D81180], v21, v12);
@@ -263,12 +263,12 @@
   return v31;
 }
 
-+ (id)curvedShadowWithOffset:(double)a3 angle:(double)a4 radius:(double)a5 curve:(double)a6 opacity:(double)a7 color:(id)a8 enabled:(BOOL)a9
++ (id)curvedShadowWithOffset:(double)offset angle:(double)angle radius:(double)radius curve:(double)curve opacity:(double)opacity color:(id)color enabled:(BOOL)enabled
 {
-  v9 = a9;
-  v15 = a8;
+  enabledCopy = enabled;
+  colorCopy = color;
   v16 = [TSDCurvedShadow alloc];
-  v18 = objc_msgSend_initWithOffset_angle_radius_curve_opacity_color_enabled_(v16, v17, v15, v9, a3, a4, a5, a6, a7);
+  v18 = objc_msgSend_initWithOffset_angle_radius_curve_opacity_color_enabled_(v16, v17, colorCopy, enabledCopy, offset, angle, radius, curve, opacity);
 
   return v18;
 }
@@ -295,11 +295,11 @@
   objc_exception_throw(v19);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = TSUDynamicCast();
 
@@ -400,9 +400,9 @@ LABEL_18:
   }
 }
 
-- (void)i_setColor:(id)a3
+- (void)i_setColor:(id)color
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(color, a2, color);
   mColor = self->mColor;
   self->mColor = v4;
 }
@@ -419,15 +419,15 @@ LABEL_18:
   return result;
 }
 
-- (void)applyToContext:(CGContext *)a3 viewScale:(double)a4 flipped:(BOOL)a5 extraOffset:(CGSize)a6
+- (void)applyToContext:(CGContext *)context viewScale:(double)scale flipped:(BOOL)flipped extraOffset:(CGSize)offset
 {
-  height = a6.height;
-  width = a6.width;
-  if (objc_msgSend_isEnabled(self, a2, a3))
+  height = offset.height;
+  width = offset.width;
+  if (objc_msgSend_isEnabled(self, a2, context))
   {
     objc_msgSend_angle(self, v11, v12);
-    v13 = sub_276649650(a3);
-    v16 = TSDCGContextAssociatedScreenScale(a3);
+    v13 = sub_276649650(context);
+    v16 = TSDCGContextAssociatedScreenScale(context);
     if (v13)
     {
       TSUMultiplySizeScalar();
@@ -437,12 +437,12 @@ LABEL_18:
     }
 
     objc_msgSend_radius(self, v14, v15);
-    v20 = v16 * (v19 * a4);
+    v20 = v16 * (v19 * scale);
     objc_msgSend_offset(self, v21, v22);
     TSUOriginRotate();
     v42.width = width;
     v42.height = height;
-    v23 = CGContextConvertSizeToDeviceSpace(a3, v42);
+    v23 = CGContextConvertSizeToDeviceSpace(context, v42);
     v26 = objc_msgSend_color(self, v24, v25);
     v29 = objc_msgSend_CGColor(v26, v27, v28);
     objc_msgSend_opacity(self, v30, v31);
@@ -454,12 +454,12 @@ LABEL_18:
 
     v43.width = v23.width + 0.0;
     v43.height = v23.height + 0.0;
-    CGContextSetShadowWithColor(a3, v43, v20, CopyWithAlpha);
+    CGContextSetShadowWithColor(context, v43, v20, CopyWithAlpha);
     CGColorRelease(CopyWithAlpha);
   }
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -472,7 +472,7 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -493,13 +493,13 @@ LABEL_18:
   return Image;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (objc_msgSend_isEnabled(self, a2, a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (objc_msgSend_isEnabled(self, a2, transform))
   {
     objc_msgSend_radius(self, v9, v10);
     v12 = -v11;
@@ -545,13 +545,13 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3
+- (CGRect)shadowBoundsForRect:(CGRect)rect
 {
   v3 = *(MEMORY[0x277CBF2C0] + 16);
   v8[0] = *MEMORY[0x277CBF2C0];
   v8[1] = v3;
   v8[2] = *(MEMORY[0x277CBF2C0] + 32);
-  objc_msgSend_shadowBoundsForRect_additionalTransform_(self, a2, v8, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  objc_msgSend_shadowBoundsForRect_additionalTransform_(self, a2, v8, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -559,13 +559,13 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)shadowBoundsForRect:(CGRect)a3 additionalAngle:(double)a4
+- (CGRect)shadowBoundsForRect:(CGRect)rect additionalAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGAffineTransformMakeRotation(&v14, a4 * 0.0174532925);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGAffineTransformMakeRotation(&v14, angle * 0.0174532925);
   objc_msgSend_shadowBoundsForRect_additionalTransform_(self, v9, &v14, x, y, width, height);
   result.size.height = v13;
   result.size.width = v12;
@@ -620,22 +620,22 @@ LABEL_18:
   return v5;
 }
 
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(unint64_t)a5
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(unint64_t)alternate
 {
-  v20 = a3;
-  v7 = a4;
-  if ((objc_msgSend_isEqual_(v20, v8, *MEMORY[0x277D80B80]) & 1) == 0)
+  kindCopy = kind;
+  themeCopy = theme;
+  if ((objc_msgSend_isEqual_(kindCopy, v8, *MEMORY[0x277D80B80]) & 1) == 0)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "+[TSDShadow bootstrapPresetsOfKind:inTheme:alternate:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShadow.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 480, 0, "Attempt to bootstrap shadow presets for kind %@ in theme <%p>.", v20, v7);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 480, 0, "Attempt to bootstrap shadow presets for kind %@ in theme <%p>.", kindCopy, themeCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  v18 = objc_msgSend_defaultShadowPresets(a1, v9, v10);
-  objc_msgSend_setPresets_ofKind_(v7, v19, v18, v20);
+  v18 = objc_msgSend_defaultShadowPresets(self, v9, v10);
+  objc_msgSend_setPresets_ofKind_(themeCopy, v19, v18, kindCopy);
 }
 
 + (id)mixableObjectClasses
@@ -649,10 +649,10 @@ LABEL_18:
   return v3;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDShadow mixingTypeWithObject:context:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDShadow mixingTypeWithObject:context:]", context);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShadow.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 506, 0, "Implement me in subclass!");
 
@@ -660,10 +660,10 @@ LABEL_18:
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDShadow mixedObjectWithFraction:ofObject:]", a3);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDShadow mixedObjectWithFraction:ofObject:]", fraction);
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDShadow.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 511, 0, "Implement me in subclass!");
 
@@ -671,23 +671,23 @@ LABEL_18:
   return self;
 }
 
-- (id)mixedBaseObjectWithObject:(id)a3
+- (id)mixedBaseObjectWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (!objc_msgSend_isEnabled(self, v5, v6))
   {
-    self = v4;
+    self = objectCopy;
   }
 
-  v7 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)shadowByTransformingByTransform:(CGAffineTransform *)a3
+- (id)shadowByTransformingByTransform:(CGAffineTransform *)transform
 {
-  v4 = fmin(a3->a, a3->d);
-  v5 = objc_msgSend_mutableCopy(self, a2, a3);
+  v4 = fmin(transform->a, transform->d);
+  v5 = objc_msgSend_mutableCopy(self, a2, transform);
   objc_msgSend_radius(self, v6, v7);
   objc_msgSend_setRadius_(v5, v9, v10, floor(v4 * v8));
   objc_msgSend_offset(self, v11, v12);

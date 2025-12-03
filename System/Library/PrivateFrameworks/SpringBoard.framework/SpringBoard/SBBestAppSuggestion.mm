@@ -7,8 +7,8 @@
 
 - (BOOL)isSiriSuggestion
 {
-  v2 = [(SBBestAppSuggestion *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.Siri"];
+  bundleIdentifier = [(SBBestAppSuggestion *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.Siri"];
 
   return v3;
 }
@@ -17,35 +17,35 @@
 {
   v44[16] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBBestAppSuggestion *)self uniqueIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"uniqueIdentifier"];
+  uniqueIdentifier = [(SBBestAppSuggestion *)self uniqueIdentifier];
+  v5 = [v3 appendObject:uniqueIdentifier withName:@"uniqueIdentifier"];
 
-  v6 = [(SBBestAppSuggestion *)self bundleIdentifier];
-  v7 = [v3 appendObject:v6 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(SBBestAppSuggestion *)self bundleIdentifier];
+  v7 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
-  v8 = [(SBBestAppSuggestion *)self activityType];
-  v9 = [v3 appendObject:v8 withName:@"activityType"];
+  activityType = [(SBBestAppSuggestion *)self activityType];
+  v9 = [v3 appendObject:activityType withName:@"activityType"];
 
-  v10 = [(SBBestAppSuggestion *)self lastUpdateTime];
-  v11 = [v3 appendObject:v10 withName:@"lastUpdateTime"];
+  lastUpdateTime = [(SBBestAppSuggestion *)self lastUpdateTime];
+  v11 = [v3 appendObject:lastUpdateTime withName:@"lastUpdateTime"];
 
-  v12 = [(SBBestAppSuggestion *)self originatingDeviceIdentifier];
-  v13 = [v3 appendObject:v12 withName:@"originatingDeviceIdentifier"];
+  originatingDeviceIdentifier = [(SBBestAppSuggestion *)self originatingDeviceIdentifier];
+  v13 = [v3 appendObject:originatingDeviceIdentifier withName:@"originatingDeviceIdentifier"];
 
-  v14 = [(SBBestAppSuggestion *)self originatingDeviceName];
-  v15 = [v3 appendObject:v14 withName:@"originatingDeviceName"];
+  originatingDeviceName = [(SBBestAppSuggestion *)self originatingDeviceName];
+  v15 = [v3 appendObject:originatingDeviceName withName:@"originatingDeviceName"];
 
-  v16 = [(SBBestAppSuggestion *)self originatingDeviceType];
-  v17 = [v3 appendObject:v16 withName:@"originatingDeviceType"];
+  originatingDeviceType = [(SBBestAppSuggestion *)self originatingDeviceType];
+  v17 = [v3 appendObject:originatingDeviceType withName:@"originatingDeviceType"];
 
-  v18 = [(SBBestAppSuggestion *)self originatingBundleIdentifier];
-  v19 = [v3 appendObject:v18 withName:@"originatingBundleIdentifier"];
+  originatingBundleIdentifier = [(SBBestAppSuggestion *)self originatingBundleIdentifier];
+  v19 = [v3 appendObject:originatingBundleIdentifier withName:@"originatingBundleIdentifier"];
 
-  v20 = [(SBBestAppSuggestion *)self suggestedLocationName];
-  v21 = [v3 appendObject:v20 withName:@"suggestedLocationName"];
+  suggestedLocationName = [(SBBestAppSuggestion *)self suggestedLocationName];
+  v21 = [v3 appendObject:suggestedLocationName withName:@"suggestedLocationName"];
 
-  v22 = [(SBBestAppSuggestion *)self launchURL];
-  v23 = [v3 appendObject:v22 withName:@"launchURL"];
+  launchURL = [(SBBestAppSuggestion *)self launchURL];
+  v23 = [v3 appendObject:launchURL withName:@"launchURL"];
 
   v43[0] = @"isNotificationSuggestion";
   v42 = [MEMORY[0x277CCABB0] numberWithBool:{-[SBBestAppSuggestion isNotificationSuggestion](self, "isNotificationSuggestion")}];
@@ -98,9 +98,9 @@
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:16];
   [v3 appendDictionarySection:v32 withName:@"wat" skipIfEmpty:0];
 
-  v33 = [v3 build];
+  build = [v3 build];
 
-  return v33;
+  return build;
 }
 
 @end

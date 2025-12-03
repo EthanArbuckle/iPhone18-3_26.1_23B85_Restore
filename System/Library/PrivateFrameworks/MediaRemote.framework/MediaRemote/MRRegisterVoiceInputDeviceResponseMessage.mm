@@ -7,18 +7,18 @@
 
 - (unsigned)deviceID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 deviceID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  deviceID = [underlyingCodableMessage deviceID];
 
-  return v3;
+  return deviceID;
 }
 
 - (int64_t)errorCode
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 errorCode];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  errorCode = [underlyingCodableMessage errorCode];
 
-  return v3;
+  return errorCode;
 }
 
 @end

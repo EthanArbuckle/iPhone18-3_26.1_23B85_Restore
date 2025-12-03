@@ -1,9 +1,9 @@
 @interface SALocalSearchMapItemSnippet
 - (BOOL)usesFixedLocation;
 - (SALocalSearchMapItem)selectedMapItem;
-- (id)urlForMapItemsWithLaunchOptions:(id)a3;
+- (id)urlForMapItemsWithLaunchOptions:(id)options;
 - (unint64_t)selectedItemIndex;
-- (void)setSelectedItemIndex:(unint64_t)a3;
+- (void)setSelectedItemIndex:(unint64_t)index;
 @end
 
 @implementation SALocalSearchMapItemSnippet
@@ -14,8 +14,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SALocalSearchMapItemSnippet *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  items = [(SALocalSearchMapItemSnippet *)self items];
+  v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -25,19 +25,19 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(items);
         }
 
-        v6 = [*(*(&v8 + 1) + 8 * i) distance];
+        distance = [*(*(&v8 + 1) + 8 * i) distance];
 
-        if (v6)
+        if (distance)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [items countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -58,20 +58,20 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setSelectedItemIndex:(unint64_t)a3
+- (void)setSelectedItemIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
@@ -87,33 +87,33 @@ LABEL_11:
 
 - (SALocalSearchMapItem)selectedMapItem
 {
-  v3 = [(SALocalSearchMapItemSnippet *)self selectedItemIndex];
-  v4 = [(SALocalSearchMapItemSnippet *)self items];
-  v5 = [v4 count];
+  selectedItemIndex = [(SALocalSearchMapItemSnippet *)self selectedItemIndex];
+  items = [(SALocalSearchMapItemSnippet *)self items];
+  v5 = [items count];
 
-  if (v3 >= v5)
+  if (selectedItemIndex >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(SALocalSearchMapItemSnippet *)self items];
-    v7 = [v6 objectAtIndexedSubscript:v3];
+    items2 = [(SALocalSearchMapItemSnippet *)self items];
+    v7 = [items2 objectAtIndexedSubscript:selectedItemIndex];
   }
 
   return v7;
 }
 
-- (id)urlForMapItemsWithLaunchOptions:(id)a3
+- (id)urlForMapItemsWithLaunchOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SALocalSearchMapItemSnippet *)self items];
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  optionsCopy = options;
+  items = [(SALocalSearchMapItemSnippet *)self items];
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [items count]);
 
-  if (v4)
+  if (optionsCopy)
   {
-    v7 = [NSMutableDictionary dictionaryWithDictionary:v4];
+    v7 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
   }
 
   else
@@ -126,8 +126,8 @@ LABEL_11:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(SALocalSearchMapItemSnippet *)self items];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  items2 = [(SALocalSearchMapItemSnippet *)self items];
+  v10 = [items2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -138,7 +138,7 @@ LABEL_11:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(items2);
         }
 
         v14 = [MKMapItem mapItemWithLocalSearchMapItem:*(*(&v21 + 1) + 8 * i)];
@@ -148,16 +148,16 @@ LABEL_11:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [items2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [(SALocalSearchMapItemSnippet *)self selectedItemIndex];
-  if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+  selectedItemIndex = [(SALocalSearchMapItemSnippet *)self selectedItemIndex];
+  if (selectedItemIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = [NSNumber numberWithUnsignedInteger:v15];
+    v16 = [NSNumber numberWithUnsignedInteger:selectedItemIndex];
     [v8 setObject:v16 forKeyedSubscript:MKLaunchOptionsSelectedIndexKey];
   }
 

@@ -1,31 +1,31 @@
 @interface SBSSystemNotesPresentationHandle
 - (SBSSystemNotesPresentationConfiguration)requestedConfiguration;
-- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)a3;
-- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)a3 client:(id)a4;
+- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)configuration;
+- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)configuration client:(id)client;
 - (int64_t)presentationMode;
-- (void)_invalidateWithError:(id)a3 locally:(BOOL)a4;
+- (void)_invalidateWithError:(id)error locally:(BOOL)locally;
 - (void)activate;
-- (void)addObserver:(id)a3;
-- (void)configuration:(id)a3 didChangeToPresentationMode:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)configuration:(id)configuration didChangeToPresentationMode:(id)mode;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBSSystemNotesPresentationHandle
 
-- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)a3
+- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(SBSSystemNotesPresentationClientToServerProxy);
-  v6 = [(SBSSystemNotesPresentationHandle *)self initWithConfiguration:v4 client:v5];
+  v6 = [(SBSSystemNotesPresentationHandle *)self initWithConfiguration:configurationCopy client:v5];
 
   return v6;
 }
 
-- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)a3 client:(id)a4
+- (SBSSystemNotesPresentationHandle)initWithConfiguration:(id)configuration client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = SBSSystemNotesPresentationHandle;
   v8 = [(SBSSystemNotesPresentationHandle *)&v15 init];
@@ -34,11 +34,11 @@
   {
     v8->_lock._os_unfair_lock_opaque = 0;
     *&v8->_lock_state = xmmword_191729630;
-    v10 = [v6 copy];
+    v10 = [configurationCopy copy];
     configuration = v9->_configuration;
     v9->_configuration = v10;
 
-    objc_storeStrong(&v9->_handleClient, a4);
+    objc_storeStrong(&v9->_handleClient, client);
     Serial = BSDispatchQueueCreateSerial();
     calloutSerialQueue = v9->_calloutSerialQueue;
     v9->_calloutSerialQueue = Serial;
@@ -65,33 +65,33 @@
 
 - (void)activate
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSSystemNotesPresentationHandle.m" lineNumber:66 description:@"attempting to activate a SBSSystemNotesPresentationHandle multiple times"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSSystemNotesPresentationHandle.m" lineNumber:66 description:@"attempting to activate a SBSSystemNotesPresentationHandle multiple times"];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   lock_observers = self->_lock_observers;
   if (!lock_observers)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = self->_lock_observers;
-    self->_lock_observers = v5;
+    self->_lock_observers = weakObjectsHashTable;
 
     lock_observers = self->_lock_observers;
   }
 
-  [(NSHashTable *)lock_observers addObject:v7];
+  [(NSHashTable *)lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_lock_observers count])
   {
@@ -117,11 +117,11 @@
   return v2;
 }
 
-- (void)configuration:(id)a3 didChangeToPresentationMode:(id)a4
+- (void)configuration:(id)configuration didChangeToPresentationMode:(id)mode
 {
-  v5 = [a4 integerValue];
+  integerValue = [mode integerValue];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_presentationMode = v5;
+  self->_lock_presentationMode = integerValue;
   os_unfair_lock_unlock(&self->_lock);
   calloutSerialQueue = self->_calloutSerialQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -129,7 +129,7 @@
   v7[2] = __78__SBSSystemNotesPresentationHandle_configuration_didChangeToPresentationMode___block_invoke;
   v7[3] = &unk_1E735F0D0;
   v7[4] = self;
-  v7[5] = v5;
+  v7[5] = integerValue;
   dispatch_async(calloutSerialQueue, v7);
 }
 
@@ -176,13 +176,13 @@ void __78__SBSSystemNotesPresentationHandle_configuration_didChangeToPresentatio
   }
 }
 
-- (void)_invalidateWithError:(id)a3 locally:(BOOL)a4
+- (void)_invalidateWithError:(id)error locally:(BOOL)locally
 {
-  v4 = a4;
+  locallyCopy = locally;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  if (!v4 && !self->_lock_state)
+  if (!locallyCopy && !self->_lock_state)
   {
     [SBSSystemNotesPresentationHandle _invalidateWithError:a2 locally:self];
   }
@@ -194,22 +194,22 @@ void __78__SBSSystemNotesPresentationHandle_configuration_didChangeToPresentatio
   {
     v9 = SBLogSystemNotes();
     v10 = v9;
-    if (v7)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(SBSSystemNotesPresentationHandle *)self _invalidateWithError:v7 locally:v10];
+        [(SBSSystemNotesPresentationHandle *)self _invalidateWithError:errorCopy locally:v10];
       }
     }
 
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19169D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ invalidating", buf, 0xCu);
     }
 
-    if (v4)
+    if (locallyCopy)
     {
       [(SBSSystemNotesPresentationClientToServerProxy *)self->_handleClient invalidate];
     }
@@ -220,7 +220,7 @@ void __78__SBSSystemNotesPresentationHandle_configuration_didChangeToPresentatio
     v12[2] = __65__SBSSystemNotesPresentationHandle__invalidateWithError_locally___block_invoke;
     v12[3] = &unk_1E735F7F0;
     v12[4] = self;
-    v13 = v7;
+    v13 = errorCopy;
     dispatch_async(calloutSerialQueue, v12);
   }
 }

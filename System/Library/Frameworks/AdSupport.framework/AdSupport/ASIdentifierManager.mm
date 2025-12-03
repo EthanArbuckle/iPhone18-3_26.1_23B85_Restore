@@ -16,18 +16,18 @@
 
 - (BOOL)isUserOptedIn
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F28]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F28]];
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveBoolValueForSetting:*MEMORY[0x277D25F40]];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:*MEMORY[0x277D25F40]];
 
   return v3 == 1 && v5 != 1;
 }
 
 - (BOOL)isAdvertisingTrackingEnabled
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.AdSupport"];
   v5 = [v4 objectForKey:@"LastRegionalEnforcementCheck"];
   v6 = [v4 objectForKey:@"ShouldEnforceATP"];
@@ -41,9 +41,9 @@
     v7 = 0;
   }
 
-  if (!v5 || ([v3 timeIntervalSinceDate:v5], v8 > 300.0))
+  if (!v5 || ([date timeIntervalSinceDate:v5], v8 > 300.0))
   {
-    [v4 setObject:v3 forKey:@"LastRegionalEnforcementCheck"];
+    [v4 setObject:date forKey:@"LastRegionalEnforcementCheck"];
     [v4 synchronize];
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -56,15 +56,15 @@
 
   if (v7)
   {
-    v10 = [(ASIdentifierManager *)self isUserOptedIn];
+    isUserOptedIn = [(ASIdentifierManager *)self isUserOptedIn];
   }
 
   else
   {
-    v10 = 0;
+    isUserOptedIn = 0;
   }
 
-  return v10;
+  return isUserOptedIn;
 }
 
 uint64_t __51__ASIdentifierManager_isAdvertisingTrackingEnabled__block_invoke(uint64_t a1)
@@ -76,21 +76,21 @@ uint64_t __51__ASIdentifierManager_isAdvertisingTrackingEnabled__block_invoke(ui
 
 - (NSUUID)advertisingIdentifier
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F40]];
 
   if (v3 || ([MEMORY[0x277D77BF8] sharedManager], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isSharedIPad"), v4, v5))
   {
-    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
+    deviceIdentifierForAdvertising = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v6 = [v7 deviceIdentifierForAdvertising];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    deviceIdentifierForAdvertising = [defaultWorkspace deviceIdentifierForAdvertising];
   }
 
-  return v6;
+  return deviceIdentifierForAdvertising;
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface TSDLayoutController
-+ (void)temporaryLayoutControllerForInfos:(id)a3 useInBlock:(id)a4;
++ (void)temporaryLayoutControllerForInfos:(id)infos useInBlock:(id)block;
 - (CGRect)rectOfTopLevelLayouts;
-- (TSDLayoutController)initWithCanvas:(id)a3;
-- (id)ancestorLayoutOfLayout:(id)a3 orDelegateConformingToProtocol:(id)a4;
-- (id)layoutForInfo:(id)a3;
-- (id)layoutForInfo:(id)a3 childOfLayout:(id)a4;
-- (id)layoutGeometryProviderForLayout:(id)a3;
-- (id)layoutsForInfo:(id)a3;
-- (id)layoutsForInfos:(id)a3;
-- (id)sortLayoutsForDependencies:(id)a3;
-- (id)validatedLayoutForInfo:(id)a3;
-- (id)validatedLayoutForInfo:(id)a3 childOfLayout:(id)a4;
-- (id)validatedLayoutsForInfo:(id)a3;
+- (TSDLayoutController)initWithCanvas:(id)canvas;
+- (id)ancestorLayoutOfLayout:(id)layout orDelegateConformingToProtocol:(id)protocol;
+- (id)layoutForInfo:(id)info;
+- (id)layoutForInfo:(id)info childOfLayout:(id)layout;
+- (id)layoutGeometryProviderForLayout:(id)layout;
+- (id)layoutsForInfo:(id)info;
+- (id)layoutsForInfos:(id)infos;
+- (id)sortLayoutsForDependencies:(id)dependencies;
+- (id)validatedLayoutForInfo:(id)info;
+- (id)validatedLayoutForInfo:(id)info childOfLayout:(id)layout;
+- (id)validatedLayoutsForInfo:(id)info;
 - (void)dealloc;
-- (void)i_registerLayout:(id)a3;
+- (void)i_registerLayout:(id)layout;
 - (void)i_removeAllLayouts;
-- (void)i_unregisterLayout:(id)a3;
-- (void)invalidateChildrenOfLayout:(id)a3;
-- (void)invalidateLayout:(id)a3;
-- (void)invalidateLayoutForRecreation:(id)a3;
-- (void)preregisterLayout:(id)a3;
-- (void)setInfos:(id)a3;
-- (void)unregisterLayout:(id)a3;
-- (void)validateLayoutWithDependencies:(id)a3;
+- (void)i_unregisterLayout:(id)layout;
+- (void)invalidateChildrenOfLayout:(id)layout;
+- (void)invalidateLayout:(id)layout;
+- (void)invalidateLayoutForRecreation:(id)recreation;
+- (void)preregisterLayout:(id)layout;
+- (void)setInfos:(id)infos;
+- (void)unregisterLayout:(id)layout;
+- (void)validateLayoutWithDependencies:(id)dependencies;
 - (void)validateLayouts;
-- (void)validateLayouts:(id)a3;
-- (void)validateLayoutsWithDependencies:(id)a3;
-- (void)validateOrderedLayouts:(id)a3;
+- (void)validateLayouts:(id)layouts;
+- (void)validateLayoutsWithDependencies:(id)dependencies;
+- (void)validateOrderedLayouts:(id)layouts;
 @end
 
 @implementation TSDLayoutController
 
-- (TSDLayoutController)initWithCanvas:(id)a3
+- (TSDLayoutController)initWithCanvas:(id)canvas
 {
-  v5 = a3;
+  canvasCopy = canvas;
   v20.receiver = self;
   v20.super_class = TSDLayoutController;
   v6 = [(TSDLayoutController *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mCanvas, a3);
+    objc_storeStrong(&v6->mCanvas, canvas);
     v8 = [[TSDRootLayout alloc] initWithLayoutController:v7];
     mRootLayout = v7->mRootLayout;
     v7->mRootLayout = v8;
@@ -58,7 +58,7 @@
     mLayoutsNeedingRecreating = v7->mLayoutsNeedingRecreating;
     v7->mLayoutsNeedingRecreating = v14;
 
-    if ([v5 isCanvasInteractive])
+    if ([canvasCopy isCanvasInteractive])
     {
       v16 = TSDLayoutControllerAllInteractiveControllers;
       if (!TSDLayoutControllerAllInteractiveControllers)
@@ -108,33 +108,33 @@
   [(TSDLayoutController *)&v9 dealloc];
 }
 
-+ (void)temporaryLayoutControllerForInfos:(id)a3 useInBlock:(id)a4
++ (void)temporaryLayoutControllerForInfos:(id)infos useInBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = [[TSDCanvas alloc] initForTemporaryLayout];
-  v7 = [v10 layoutController];
-  [v7 setInfos:v6];
+  blockCopy = block;
+  infosCopy = infos;
+  initForTemporaryLayout = [[TSDCanvas alloc] initForTemporaryLayout];
+  layoutController = [initForTemporaryLayout layoutController];
+  [layoutController setInfos:infosCopy];
 
-  v8 = [v10 layoutController];
-  [v8 validateLayouts];
+  layoutController2 = [initForTemporaryLayout layoutController];
+  [layoutController2 validateLayouts];
 
-  v9 = [v10 layoutController];
-  v5[2](v5, v9);
+  layoutController3 = [initForTemporaryLayout layoutController];
+  blockCopy[2](blockCopy, layoutController3);
 
-  [v10 teardown];
+  [initForTemporaryLayout teardown];
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = infosCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -155,14 +155,14 @@
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 allObjects];
-          [v5 addObjectsFromArray:v15];
+          allObjects = [v13 allObjects];
+          [v5 addObjectsFromArray:allObjects];
         }
 
         else
         {
-          v15 = [objc_alloc(objc_msgSend(v11 "layoutClass"))];
-          [v5 addObject:v15];
+          allObjects = [objc_alloc(objc_msgSend(v11 "layoutClass"))];
+          [v5 addObject:allObjects];
         }
 
         objc_autoreleasePoolPop(v12);
@@ -174,8 +174,8 @@
     while (v8);
   }
 
-  v16 = [(TSDAbstractLayout *)self->mRootLayout children];
-  v17 = [v16 isEqual:v5];
+  children = [(TSDAbstractLayout *)self->mRootLayout children];
+  v17 = [children isEqual:v5];
 
   if ((v17 & 1) == 0)
   {
@@ -186,9 +186,9 @@
   [v5 makeObjectsPerformSelector:{sel_updateChildrenFromInfo, v18}];
 }
 
-- (void)invalidateLayout:(id)a3
+- (void)invalidateLayout:(id)layout
 {
-  if (self->mValidatingLayout != a3)
+  if (self->mValidatingLayout != layout)
   {
     [(NSMutableSet *)self->mInvalidLayouts addObject:?];
     mCanvas = self->mCanvas;
@@ -197,27 +197,27 @@
   }
 }
 
-- (void)invalidateChildrenOfLayout:(id)a3
+- (void)invalidateChildrenOfLayout:(id)layout
 {
-  [(NSMutableSet *)self->mInvalidChildrenLayouts addObject:a3];
+  [(NSMutableSet *)self->mInvalidChildrenLayouts addObject:layout];
   mCanvas = self->mCanvas;
 
   [(TSDCanvas *)mCanvas layoutInvalidated];
 }
 
-- (void)invalidateLayoutForRecreation:(id)a3
+- (void)invalidateLayoutForRecreation:(id)recreation
 {
-  [(NSMutableSet *)self->mLayoutsNeedingRecreating addObject:a3];
+  [(NSMutableSet *)self->mLayoutsNeedingRecreating addObject:recreation];
   mCanvas = self->mCanvas;
 
   [(TSDCanvas *)mCanvas layoutInvalidated];
 }
 
-- (id)layoutForInfo:(id)a3
+- (id)layoutForInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TSDLayoutController *)self layoutsForInfo:v4];
+  infoCopy = info;
+  v5 = [(TSDLayoutController *)self layoutsForInfo:infoCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -260,28 +260,28 @@
   return v8;
 }
 
-- (id)layoutsForInfo:(id)a3
+- (id)layoutsForInfo:(id)info
 {
   mLayoutsByInfo = self->mLayoutsByInfo;
   if (mLayoutsByInfo)
   {
-    mLayoutsByInfo = CFDictionaryGetValue(mLayoutsByInfo, a3);
+    mLayoutsByInfo = CFDictionaryGetValue(mLayoutsByInfo, info);
     v3 = vars8;
   }
 
   return mLayoutsByInfo;
 }
 
-- (id)layoutsForInfos:(id)a3
+- (id)layoutsForInfos:(id)infos
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  infosCopy = infos;
+  v16 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(infosCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = infosCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -302,10 +302,10 @@
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 partitioner];
-          v14 = [v13 i_layout];
+          partitioner = [v11 partitioner];
+          i_layout = [partitioner i_layout];
 
-          v10 = v14;
+          v10 = i_layout;
         }
 
         if (v10)
@@ -323,11 +323,11 @@
   return v16;
 }
 
-- (id)layoutForInfo:(id)a3 childOfLayout:(id)a4
+- (id)layoutForInfo:(id)info childOfLayout:(id)layout
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(TSDLayoutController *)self layoutsForInfo:a3];
+  layoutCopy = layout;
+  [(TSDLayoutController *)self layoutsForInfo:info];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -346,9 +346,9 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 parent];
+        parent = [v11 parent];
 
-        if (v12 == v6)
+        if (parent == layoutCopy)
         {
           v8 = v11;
           goto LABEL_11;
@@ -381,8 +381,8 @@ LABEL_11:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(TSDAbstractLayout *)self->mRootLayout children];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  children = [(TSDAbstractLayout *)self->mRootLayout children];
+  v7 = [children countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -394,7 +394,7 @@ LABEL_11:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v22 + 1) + 8 * v10) frameForCulling];
@@ -406,7 +406,7 @@ LABEL_11:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [children countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);
@@ -448,15 +448,15 @@ LABEL_11:
 
         v8 = *(*(&v34 + 1) + 8 * v7);
         v9 = objc_autoreleasePoolPush();
-        v10 = [v8 info];
-        v11 = objc_alloc([v10 layoutClass]);
-        v12 = [v8 info];
-        v13 = [v11 initWithInfo:v12];
+        info = [v8 info];
+        v11 = objc_alloc([info layoutClass]);
+        info2 = [v8 info];
+        v13 = [v11 initWithInfo:info2];
 
         [(NSMutableSet *)self->mInvalidLayouts removeObject:v8];
         [(NSMutableSet *)self->mInvalidLayouts addObject:v13];
-        v14 = [v8 parent];
-        [v14 replaceChild:v8 with:v13];
+        parent = [v8 parent];
+        [parent replaceChild:v8 with:v13];
 
         objc_autoreleasePoolPop(v9);
         ++v7;
@@ -506,10 +506,10 @@ LABEL_11:
 
     if ([(NSMutableSet *)self->mInvalidChildrenLayouts intersectsSet:v16])
     {
-      v21 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDLayoutController validateLayouts]"];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutController.m"];
-      [v21 handleFailureInFunction:v22 file:v23 lineNumber:259 description:{@"one of these layouts had invalidateChildren while updating: %@", self->mInvalidChildrenLayouts}];
+      [currentHandler handleFailureInFunction:v22 file:v23 lineNumber:259 description:{@"one of these layouts had invalidateChildren while updating: %@", self->mInvalidChildrenLayouts}];
     }
   }
 
@@ -523,23 +523,23 @@ LABEL_11:
     [(TSDLayoutController *)self validateLayouts:v24];
     if ([(NSMutableSet *)self->mInvalidLayouts intersectsSet:v24])
     {
-      v27 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDLayoutController validateLayouts]"];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutController.m"];
-      [v27 handleFailureInFunction:v28 file:v29 lineNumber:271 description:{@"one of these layouts was invalidated while validating: %@", self->mInvalidLayouts}];
+      [currentHandler2 handleFailureInFunction:v28 file:v29 lineNumber:271 description:{@"one of these layouts was invalidated while validating: %@", self->mInvalidLayouts}];
     }
   }
 }
 
-- (id)sortLayoutsForDependencies:(id)a3
+- (id)sortLayoutsForDependencies:(id)dependencies
 {
   v94 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v56 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [objc_alloc(MEMORY[0x277D6C348]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v59 = v3;
-  v6 = [objc_alloc(MEMORY[0x277D6C348]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dependenciesCopy = dependencies;
+  v4 = [dependenciesCopy mutableCopy];
+  v56 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dependenciesCopy, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277D6C348]) initWithCapacity:{objc_msgSend(dependenciesCopy, "count")}];
+  v59 = dependenciesCopy;
+  v6 = [objc_alloc(MEMORY[0x277D6C348]) initWithCapacity:{objc_msgSend(dependenciesCopy, "count")}];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
@@ -593,12 +593,12 @@ LABEL_11:
 
         v16 = *(*(&v80 + 1) + 8 * j);
         v17 = MEMORY[0x277CBEB58];
-        v18 = [v16 dependentLayouts];
-        v19 = [v17 setWithArray:v18];
+        dependentLayouts = [v16 dependentLayouts];
+        v19 = [v17 setWithArray:dependentLayouts];
 
         v20 = MEMORY[0x277CBEB58];
-        v21 = [v16 reliedOnLayouts];
-        v22 = [v20 setWithSet:v21];
+        reliedOnLayouts = [v16 reliedOnLayouts];
+        v22 = [v20 setWithSet:reliedOnLayouts];
 
         [v22 intersectSet:v59];
         [v19 intersectSet:v59];
@@ -710,15 +710,15 @@ LABEL_11:
     v63 = v36;
     while ([v35 count])
     {
-      v43 = [v35 anyObject];
-      [v35 removeObject:v43];
-      [v36 removeObject:v43];
-      [v56 addObject:v43];
+      anyObject = [v35 anyObject];
+      [v35 removeObject:anyObject];
+      [v36 removeObject:anyObject];
+      [v56 addObject:anyObject];
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v44 = [v6 objectForKey:v43];
+      v44 = [v6 objectForKey:anyObject];
       v45 = [v44 countByEnumeratingWithState:&v64 objects:v88 count:16];
       if (v45)
       {
@@ -742,7 +742,7 @@ LABEL_11:
 
             else
             {
-              [v50 removeObject:v43];
+              [v50 removeObject:anyObject];
             }
           }
 
@@ -759,13 +759,13 @@ LABEL_11:
       }
     }
 
-    v51 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDLayoutController sortLayoutsForDependencies:]"];
     v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDLayoutController.m"];
-    [v51 handleFailureInFunction:v52 file:v53 lineNumber:334 description:@"Layout dependency loop"];
+    [currentHandler handleFailureInFunction:v52 file:v53 lineNumber:334 description:@"Layout dependency loop"];
 
-    v54 = [v36 allObjects];
-    [v56 addObjectsFromArray:v54];
+    allObjects = [v36 allObjects];
+    [v56 addObjectsFromArray:allObjects];
   }
 
 LABEL_54:
@@ -773,15 +773,15 @@ LABEL_54:
   return v56;
 }
 
-- (void)validateOrderedLayouts:(id)a3
+- (void)validateOrderedLayouts:(id)layouts
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [layoutsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -792,7 +792,7 @@ LABEL_54:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layoutsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -807,29 +807,29 @@ LABEL_54:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [layoutsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)validateLayouts:(id)a3
+- (void)validateLayouts:(id)layouts
 {
-  v4 = [(TSDLayoutController *)self sortLayoutsForDependencies:a3];
+  v4 = [(TSDLayoutController *)self sortLayoutsForDependencies:layouts];
   [(TSDLayoutController *)self validateOrderedLayouts:v4];
 }
 
-- (void)validateLayoutsWithDependencies:(id)a3
+- (void)validateLayoutsWithDependencies:(id)dependencies
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dependenciesCopy = dependencies;
   v22 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = dependenciesCopy;
   v23 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v23)
   {
@@ -907,43 +907,43 @@ LABEL_54:
   }
 
   [(TSDLayoutController *)self validateLayouts:v22];
-  v15 = [(TSDCanvas *)self->mCanvas delegate];
-  if (v15)
+  delegate = [(TSDCanvas *)self->mCanvas delegate];
+  if (delegate)
   {
-    v16 = v15;
-    v17 = [(TSDCanvas *)self->mCanvas delegate];
+    v16 = delegate;
+    delegate2 = [(TSDCanvas *)self->mCanvas delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(TSDCanvas *)self->mCanvas delegate];
-      [v19 canvasDidValidateLayoutsWithDependencies:self->mCanvas];
+      delegate3 = [(TSDCanvas *)self->mCanvas delegate];
+      [delegate3 canvasDidValidateLayoutsWithDependencies:self->mCanvas];
     }
   }
 }
 
-- (void)validateLayoutWithDependencies:(id)a3
+- (void)validateLayoutWithDependencies:(id)dependencies
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:dependencies];
   [(TSDLayoutController *)self validateLayoutsWithDependencies:v4];
 }
 
-- (id)validatedLayoutForInfo:(id)a3
+- (id)validatedLayoutForInfo:(id)info
 {
-  v3 = [(TSDLayoutController *)self validatedLayoutsForInfo:a3];
-  v4 = [v3 anyObject];
+  v3 = [(TSDLayoutController *)self validatedLayoutsForInfo:info];
+  anyObject = [v3 anyObject];
 
-  return v4;
+  return anyObject;
 }
 
-- (id)validatedLayoutsForInfo:(id)a3
+- (id)validatedLayoutsForInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TSDLayoutController *)self layoutsForInfo:v4];
+  infoCopy = info;
+  v5 = [(TSDLayoutController *)self layoutsForInfo:infoCopy];
   if (!v5)
   {
-    v6 = [objc_alloc(objc_msgSend(v4 "layoutClass"))];
+    v6 = [objc_alloc(objc_msgSend(infoCopy "layoutClass"))];
     if (v6)
     {
       v5 = [MEMORY[0x277CBEB98] setWithObject:v6];
@@ -1024,11 +1024,11 @@ LABEL_54:
   return v5;
 }
 
-- (id)validatedLayoutForInfo:(id)a3 childOfLayout:(id)a4
+- (id)validatedLayoutForInfo:(id)info childOfLayout:(id)layout
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(TSDLayoutController *)self validatedLayoutsForInfo:a3];
+  layoutCopy = layout;
+  [(TSDLayoutController *)self validatedLayoutsForInfo:info];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1047,9 +1047,9 @@ LABEL_54:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 parent];
+        parent = [v11 parent];
 
-        if (v12 == v6)
+        if (parent == layoutCopy)
         {
           v8 = v11;
           goto LABEL_11;
@@ -1071,16 +1071,16 @@ LABEL_11:
   return v8;
 }
 
-- (void)i_registerLayout:(id)a3
+- (void)i_registerLayout:(id)layout
 {
-  value = a3;
+  value = layout;
   [value willBeAddedToLayoutController:self];
   if (value && self->mLayoutsByInfo)
   {
-    v4 = [value info];
-    if (v4)
+    info = [value info];
+    if (info)
     {
-      v5 = CFDictionaryGetValue(self->mLayoutsByInfo, v4);
+      v5 = CFDictionaryGetValue(self->mLayoutsByInfo, info);
       if (v5)
       {
         Mutable = v5;
@@ -1090,44 +1090,44 @@ LABEL_11:
       else
       {
         Mutable = CFSetCreateMutable(*MEMORY[0x277CBECE8], 0, 0);
-        CFDictionarySetValue(self->mLayoutsByInfo, v4, Mutable);
+        CFDictionarySetValue(self->mLayoutsByInfo, info, Mutable);
       }
 
       CFSetAddValue(Mutable, value);
       CFRelease(Mutable);
     }
 
-    v7 = [(TSDCanvas *)self->mCanvas canvasController];
-    [v7 i_layoutRegistered:value];
+    canvasController = [(TSDCanvas *)self->mCanvas canvasController];
+    [canvasController i_layoutRegistered:value];
   }
 
   [(TSDCanvas *)self->mCanvas layoutInvalidated];
   [value wasAddedToLayoutController:self];
 }
 
-- (void)i_unregisterLayout:(id)a3
+- (void)i_unregisterLayout:(id)layout
 {
-  value = a3;
+  value = layout;
   [value willBeRemovedFromLayoutController:self];
   if (value && self->mLayoutsByInfo)
   {
-    v4 = [value info];
-    if (v4)
+    info = [value info];
+    if (info)
     {
-      v5 = CFDictionaryGetValue(self->mLayoutsByInfo, v4);
+      v5 = CFDictionaryGetValue(self->mLayoutsByInfo, info);
       if (v5)
       {
         v6 = v5;
         CFSetRemoveValue(v5, value);
         if (!CFSetGetCount(v6))
         {
-          CFDictionaryRemoveValue(self->mLayoutsByInfo, v4);
+          CFDictionaryRemoveValue(self->mLayoutsByInfo, info);
         }
       }
     }
 
-    v7 = [(TSDCanvas *)self->mCanvas canvasController];
-    [v7 i_layoutUnregistered:value];
+    canvasController = [(TSDCanvas *)self->mCanvas canvasController];
+    [canvasController i_layoutUnregistered:value];
   }
 
   [(TSDCanvas *)self->mCanvas layoutInvalidated];
@@ -1139,8 +1139,8 @@ LABEL_11:
 - (void)i_removeAllLayouts
 {
   mRootLayout = self->mRootLayout;
-  v4 = [MEMORY[0x277CBEA60] array];
-  [(TSDAbstractLayout *)mRootLayout setChildren:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  [(TSDAbstractLayout *)mRootLayout setChildren:array];
 
   CFDictionaryRemoveAllValues(self->mLayoutsByInfo);
   [(NSMutableSet *)self->mInvalidLayouts removeAllObjects];
@@ -1149,13 +1149,13 @@ LABEL_11:
   [(NSMutableSet *)mInvalidChildrenLayouts removeAllObjects];
 }
 
-- (id)layoutGeometryProviderForLayout:(id)a3
+- (id)layoutGeometryProviderForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 parent];
-  if (v5)
+  layoutCopy = layout;
+  parent = [layoutCopy parent];
+  if (parent)
   {
-    v6 = v5;
+    v6 = parent;
     while (1)
     {
       v7 = TSUProtocolCast();
@@ -1164,10 +1164,10 @@ LABEL_11:
         break;
       }
 
-      v8 = [v6 parent];
+      parent2 = [v6 parent];
 
-      v6 = v8;
-      if (!v8)
+      v6 = parent2;
+      if (!parent2)
       {
         goto LABEL_5;
       }
@@ -1179,8 +1179,8 @@ LABEL_11:
   else
   {
 LABEL_5:
-    v9 = [(TSDLayoutController *)self canvas];
-    v10 = [v9 layoutGeometryProviderForLayout:v4];
+    canvas = [(TSDLayoutController *)self canvas];
+    v10 = [canvas layoutGeometryProviderForLayout:layoutCopy];
 
     v6 = 0;
   }
@@ -1188,55 +1188,55 @@ LABEL_5:
   return v10;
 }
 
-- (id)ancestorLayoutOfLayout:(id)a3 orDelegateConformingToProtocol:(id)a4
+- (id)ancestorLayoutOfLayout:(id)layout orDelegateConformingToProtocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  layoutCopy = layout;
+  protocolCopy = protocol;
+  if (protocolCopy)
   {
-    v8 = [v6 parent];
-    if (v8)
+    parent = [layoutCopy parent];
+    if (parent)
     {
-      v9 = v8;
+      v9 = parent;
       while (1)
       {
-        v10 = [v9 delegateConformingToProtocol:v7 forLayout:v6];
+        v10 = [v9 delegateConformingToProtocol:protocolCopy forLayout:layoutCopy];
         if (v10)
         {
           v12 = v10;
-          v11 = v9;
+          parent2 = v9;
           goto LABEL_16;
         }
 
-        if ([v9 conformsToProtocol:v7])
+        if ([v9 conformsToProtocol:protocolCopy])
         {
           break;
         }
 
-        v11 = [v9 parent];
+        parent2 = [v9 parent];
 
-        v9 = v11;
-        if (!v11)
+        v9 = parent2;
+        if (!parent2)
         {
           goto LABEL_10;
         }
       }
 
-      v11 = v9;
-      v12 = v11;
+      parent2 = v9;
+      v12 = parent2;
     }
 
     else
     {
-      v11 = 0;
+      parent2 = 0;
 LABEL_10:
-      v13 = [(TSDLayoutController *)self canvas];
-      v14 = [v13 canvasController];
+      canvas = [(TSDLayoutController *)self canvas];
+      canvasController = [canvas canvasController];
 
-      v15 = [v14 delegate];
+      delegate = [canvasController delegate];
       if (objc_opt_respondsToSelector())
       {
-        v12 = [v15 interactiveCanvasController:v14 delegateConformingToProtocol:v7 forLayout:v6];
+        v12 = [delegate interactiveCanvasController:canvasController delegateConformingToProtocol:protocolCopy forLayout:layoutCopy];
       }
 
       else
@@ -1256,17 +1256,17 @@ LABEL_16:
   return v12;
 }
 
-- (void)preregisterLayout:(id)a3
+- (void)preregisterLayout:(id)layout
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(TSDLayoutController *)self i_registerLayout:v4];
+  layoutCopy = layout;
+  [(TSDLayoutController *)self i_registerLayout:layoutCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 children];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [layoutCopy children];
+  v6 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1278,31 +1278,31 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         [(TSDLayoutController *)self preregisterLayout:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)unregisterLayout:(id)a3
+- (void)unregisterLayout:(id)layout
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(TSDLayoutController *)self i_unregisterLayout:v4];
+  layoutCopy = layout;
+  [(TSDLayoutController *)self i_unregisterLayout:layoutCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 children];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [layoutCopy children];
+  v6 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1314,14 +1314,14 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         [(TSDLayoutController *)self unregisterLayout:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

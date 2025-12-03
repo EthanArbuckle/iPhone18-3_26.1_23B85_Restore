@@ -1,7 +1,7 @@
 @interface MSDXCTestSpawnWrapper
 + (id)sharedInstance;
-- (BOOL)executeTestScriptOfIdentifier:(id)a3;
-- (id)_parseTestScriptsFromXCTSpawnResultDictionary:(id)a3;
+- (BOOL)executeTestScriptOfIdentifier:(id)identifier;
+- (id)_parseTestScriptsFromXCTSpawnResultDictionary:(id)dictionary;
 - (id)_testProductsPath;
 - (id)listAllTestScripts;
 @end
@@ -22,22 +22,22 @@
 
 - (id)listAllTestScripts
 {
-  v3 = [(MSDXCTestSpawnWrapper *)self _testProductsPath];
+  _testProductsPath = [(MSDXCTestSpawnWrapper *)self _testProductsPath];
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"/var/tmp/%@.json", v5];
+  uUIDString = [v4 UUIDString];
+  v6 = [NSString stringWithFormat:@"/var/tmp/%@.json", uUIDString];
 
   v7 = sub_100021268();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v47 = v3;
+    v47 = _testProductsPath;
     v48 = 2114;
     v49 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Listing all test scripts from input: %{public}@ output: %{public}@", buf, 0x16u);
   }
 
-  v8 = [NSURL fileURLWithPath:v3];
+  v8 = [NSURL fileURLWithPath:_testProductsPath];
   v45 = 0;
   v44 = 0;
   v9 = [v8 getResourceValue:&v45 forKey:NSURLContentModificationDateKey error:&v44];
@@ -53,12 +53,12 @@
     }
   }
 
-  v13 = [(MSDXCTestSpawnWrapper *)self testScripts];
-  if (v13)
+  testScripts = [(MSDXCTestSpawnWrapper *)self testScripts];
+  if (testScripts)
   {
-    v14 = v13;
-    v15 = [(MSDXCTestSpawnWrapper *)self testScriptsLastModified];
-    v16 = [v15 isEqualToDate:v10];
+    v14 = testScripts;
+    testScriptsLastModified = [(MSDXCTestSpawnWrapper *)self testScriptsLastModified];
+    v16 = [testScriptsLastModified isEqualToDate:v10];
 
     if (v16)
     {
@@ -69,7 +69,7 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "No change in test scripts. Returning cached results!", buf, 2u);
       }
 
-      v18 = [(MSDXCTestSpawnWrapper *)self testScripts];
+      testScripts2 = [(MSDXCTestSpawnWrapper *)self testScripts];
       goto LABEL_23;
     }
   }
@@ -92,7 +92,7 @@
 
   v22 = objc_alloc_init(NSTask);
   [v22 setLaunchPath:@"/usr/local/bin/xctspawn"];
-  v23 = [NSArray arrayWithObjects:v3, @"--enumerate-tests", @"--test-enumeration-format", @"json", @"--test-enumeration-output-path", v6, 0];
+  v23 = [NSArray arrayWithObjects:_testProductsPath, @"--enumerate-tests", @"--test-enumeration-format", @"json", @"--test-enumeration-output-path", v6, 0];
   [v22 setArguments:v23];
 
   [v22 setCurrentDirectoryPath:@"/var/tmp"];
@@ -101,25 +101,25 @@
   v25 = sub_100021268();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v22 launchPath];
-    v27 = [v22 arguments];
+    launchPath = [v22 launchPath];
+    arguments = [v22 arguments];
     *buf = 138543618;
-    v47 = v26;
+    v47 = launchPath;
     v48 = 2114;
-    v49 = v27;
+    v49 = arguments;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Launching %{public}@ with arguments: %{public}@", buf, 0x16u);
   }
 
   [v22 launch];
   [v22 waitUntilExit];
-  v28 = [v22 terminationStatus];
-  if (v28)
+  terminationStatus = [v22 terminationStatus];
+  if (terminationStatus)
   {
-    v29 = v28;
-    v30 = [v24 fileHandleForReading];
-    v31 = [v30 readDataToEndOfFile];
+    v29 = terminationStatus;
+    fileHandleForReading = [v24 fileHandleForReading];
+    readDataToEndOfFile = [fileHandleForReading readDataToEndOfFile];
 
-    v32 = [[NSString alloc] initWithData:v31 encoding:4];
+    v32 = [[NSString alloc] initWithData:readDataToEndOfFile encoding:4];
     v33 = sub_100021268();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -127,7 +127,7 @@
     }
 
 LABEL_22:
-    v18 = 0;
+    testScripts2 = 0;
     v11 = v21;
     goto LABEL_23;
   }
@@ -148,7 +148,7 @@ LABEL_22:
       [(MSDXCTestSpawnWrapper *)self setTestScripts:v39];
 
       [(MSDXCTestSpawnWrapper *)self setTestScriptsLastModified:v10];
-      v18 = [(MSDXCTestSpawnWrapper *)self testScripts];
+      testScripts2 = [(MSDXCTestSpawnWrapper *)self testScripts];
     }
 
     else
@@ -159,7 +159,7 @@ LABEL_22:
         sub_1000314DC(v11);
       }
 
-      v18 = 0;
+      testScripts2 = 0;
     }
   }
 
@@ -171,31 +171,31 @@ LABEL_22:
       sub_100031560(v37);
     }
 
-    v18 = 0;
+    testScripts2 = 0;
     v11 = v37;
   }
 
 LABEL_23:
 
-  return v18;
+  return testScripts2;
 }
 
-- (BOOL)executeTestScriptOfIdentifier:(id)a3
+- (BOOL)executeTestScriptOfIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MSDXCTestSpawnWrapper *)self _testProductsPath];
+  identifierCopy = identifier;
+  _testProductsPath = [(MSDXCTestSpawnWrapper *)self _testProductsPath];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  v8 = [NSString stringWithFormat:@"/var/tmp/%@.xcresult", v7];
+  uUIDString = [v6 UUIDString];
+  v8 = [NSString stringWithFormat:@"/var/tmp/%@.xcresult", uUIDString];
 
   if (os_variant_has_internal_content())
   {
     v9 = +[MSDTestPreferences sharedInstance];
-    v10 = [v9 pressDemoTestTarget];
+    pressDemoTestTarget = [v9 pressDemoTestTarget];
 
-    if (v10)
+    if (pressDemoTestTarget)
     {
-      v11 = v10;
+      v11 = pressDemoTestTarget;
     }
 
     else
@@ -209,56 +209,56 @@ LABEL_23:
     v11 = @"PressDemoScripts";
   }
 
-  v12 = [NSString stringWithFormat:@"%@/%@", v11, v4];
+  identifierCopy = [NSString stringWithFormat:@"%@/%@", v11, identifierCopy];
   v13 = sub_100021268();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = v12;
+    v23 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Exexcuting test script of identifier %{public}@", buf, 0xCu);
   }
 
   v14 = objc_alloc_init(NSTask);
   [v14 setLaunchPath:@"/usr/local/bin/xctspawn"];
-  v15 = [NSArray arrayWithObjects:v5, @"--result-bundle-path", v8, @"--only-testing", v12, 0];
+  v15 = [NSArray arrayWithObjects:_testProductsPath, @"--result-bundle-path", v8, @"--only-testing", identifierCopy, 0];
   [v14 setArguments:v15];
 
   [v14 setCurrentDirectoryPath:@"/var/tmp"];
   v16 = sub_100021268();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v14 launchPath];
-    v18 = [v14 arguments];
+    launchPath = [v14 launchPath];
+    arguments = [v14 arguments];
     *buf = 138543618;
-    v23 = v17;
+    v23 = launchPath;
     v24 = 2114;
-    v25 = v18;
+    v25 = arguments;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Launching %{public}@ with arguments: %{public}@", buf, 0x16u);
   }
 
   [v14 launch];
   [v14 waitUntilExit];
-  v19 = [v14 terminationStatus];
-  if (v19)
+  terminationStatus = [v14 terminationStatus];
+  if (terminationStatus)
   {
     v20 = sub_100021268();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_1000315E4(v19, v20);
+      sub_1000315E4(terminationStatus, v20);
     }
   }
 
-  return v19 == 0;
+  return terminationStatus == 0;
 }
 
 - (id)_testProductsPath
 {
   v2 = +[MSDTestPreferences sharedInstance];
-  v3 = [v2 pressDemoXCTestProductsPath];
+  pressDemoXCTestProductsPath = [v2 pressDemoXCTestProductsPath];
 
-  if (v3)
+  if (pressDemoXCTestProductsPath)
   {
-    v4 = v3;
+    v4 = pressDemoXCTestProductsPath;
   }
 
   else
@@ -269,9 +269,9 @@ LABEL_23:
   return v4;
 }
 
-- (id)_parseTestScriptsFromXCTSpawnResultDictionary:(id)a3
+- (id)_parseTestScriptsFromXCTSpawnResultDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"values"];
+  v3 = [dictionary objectForKeyedSubscript:@"values"];
   v4 = [v3 objectAtIndexedSubscript:0];
 
   v5 = sub_100021268();
@@ -361,7 +361,7 @@ LABEL_23:
                   v24 = *(*(&v40 + 1) + 8 * i);
                   v25 = [v24 objectForKeyedSubscript:@"name"];
                   v26 = [v24 objectForKeyedSubscript:@"disabled"];
-                  v27 = [v26 BOOLValue];
+                  bOOLValue = [v26 BOOLValue];
 
                   v28 = sub_100021268();
                   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -369,11 +369,11 @@ LABEL_23:
                     *buf = 138543618;
                     v49 = v25;
                     v50 = 1024;
-                    v51 = v27;
+                    v51 = bOOLValue;
                     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, ">>> Found test method: %{public}@  Disabled: %{BOOL}d", buf, 0x12u);
                   }
 
-                  if ((v27 & 1) == 0)
+                  if ((bOOLValue & 1) == 0)
                   {
                     [v18 addObject:v25];
                   }

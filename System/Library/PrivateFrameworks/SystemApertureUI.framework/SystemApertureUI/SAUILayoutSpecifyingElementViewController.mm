@@ -5,78 +5,78 @@
 - (BOOL)_expandToCustomLayoutModeFromUserActionIfPossible;
 - (BOOL)_isObstructedBySensorRegion;
 - (BOOL)isInteractiveDismissalEnabled;
-- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (BOOL)isMinimalPresentationPossible;
-- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (BOOL)isRequestingMenuPresentation;
 - (BOOL)isTrackingTransition;
-- (BOOL)isTrackingTransitionWithReason:(id)a3;
+- (BOOL)isTrackingTransitionWithReason:(id)reason;
 - (CGSize)_obstructedRegionSize;
 - (NSArray)temporallyOrderedAlertingActivityAssertions;
-- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)a3;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7;
+- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)size;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (NSString)description;
 - (SAAutomaticallyInvalidatable)alertingActivityAssertion;
 - (SAUILayoutHosting)layoutHost;
 - (SAUILayoutModePreferring)layoutModePreference;
-- (SAUILayoutSpecifyingElementViewController)initWithElementViewProvider:(id)a3;
+- (SAUILayoutSpecifyingElementViewController)initWithElementViewProvider:(id)provider;
 - (SAUIPreferredLayoutModeAssertion)preferredLayoutModeAssertion;
 - (double)_defaultAlertingDuration;
-- (double)concentricPaddingForProvidedView:(id)a3 fromViewProvider:(id)a4;
-- (id)_alertingActivityAssertionWithReason:(id)a3 implicitlyDismissable:(BOOL)a4 withPreferredLayoutMode:(int64_t)a5;
+- (double)concentricPaddingForProvidedView:(id)view fromViewProvider:(id)provider;
+- (id)_alertingActivityAssertionWithReason:(id)reason implicitlyDismissable:(BOOL)dismissable withPreferredLayoutMode:(int64_t)mode;
 - (id)_elementHost;
-- (id)_overrideWithPreference:(id)a3;
-- (id)_updatePreferredLayoutModeAssertionWithPreference:(id)a3;
-- (id)alertWithReason:(id)a3 implicitlyDismissable:(BOOL)a4;
-- (id)layoutModePreferenceForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (id)systemManagedAlertingActivityAssertionWithReason:(id)a3;
-- (id)systemManagedAlertingActivityAssertionWithReason:(id)a3 preferredLayoutMode:(int64_t)a4;
-- (int64_t)handleElementLongPress:(id)a3;
-- (int64_t)handleElementTap:(id)a3;
+- (id)_overrideWithPreference:(id)preference;
+- (id)_updatePreferredLayoutModeAssertionWithPreference:(id)preference;
+- (id)alertWithReason:(id)reason implicitlyDismissable:(BOOL)dismissable;
+- (id)layoutModePreferenceForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (id)systemManagedAlertingActivityAssertionWithReason:(id)reason;
+- (id)systemManagedAlertingActivityAssertionWithReason:(id)reason preferredLayoutMode:(int64_t)mode;
+- (int64_t)handleElementLongPress:(id)press;
+- (int64_t)handleElementTap:(id)tap;
 - (int64_t)layoutMode;
 - (int64_t)maximumSupportedLayoutMode;
-- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (int64_t)minimumSupportedLayoutMode;
-- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (int64_t)preferredLayoutMode;
-- (unint64_t)customizationOptionsForLayoutMode:(int64_t)a3;
+- (unint64_t)customizationOptionsForLayoutMode:(int64_t)mode;
 - (void)_axRequestDiminishment;
 - (void)_configureAlertAssertionIfNecessary;
 - (void)_configureTransitionShadowViewIfNecessary;
 - (void)_defaultAlertingDuration;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_insertSnapshotView:(id)a3;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_insertSnapshotView:(id)view;
 - (void)_invalidateElementPromotionPreferences;
-- (void)_invalidatePreferredLayoutModeAssertionWithReason:(int64_t)a3;
+- (void)_invalidatePreferredLayoutModeAssertionWithReason:(int64_t)reason;
 - (void)_layoutTransitionShadowView;
-- (void)addElementViewControllingObserver:(id)a3;
-- (void)beginTrackingTransitionWithUniqueIdentifier:(id)a3 reason:(id)a4;
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5;
-- (void)elementRequestsNegativeResponse:(id)a3;
-- (void)elementRequestsSignificantUpdateTransition:(id)a3;
-- (void)endTrackingTransitionWithUniqueIdentifier:(id)a3;
-- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)a3;
-- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)removeElementViewControllingObserver:(id)a3;
-- (void)setLayoutHost:(id)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5;
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5;
-- (void)setSensorObscuringShadowProgress:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)addElementViewControllingObserver:(id)observer;
+- (void)beginTrackingTransitionWithUniqueIdentifier:(id)identifier reason:(id)reason;
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator;
+- (void)elementRequestsNegativeResponse:(id)response;
+- (void)elementRequestsSignificantUpdateTransition:(id)transition;
+- (void)endTrackingTransitionWithUniqueIdentifier:(id)identifier;
+- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)specifier;
+- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)removeElementViewControllingObserver:(id)observer;
+- (void)setLayoutHost:(id)host;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider;
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider;
+- (void)setSensorObscuringShadowProgress:(double)progress;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SAUILayoutSpecifyingElementViewController
@@ -85,26 +85,26 @@
 {
   v14 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(SAUILayoutSpecifyingElementViewController *)self isViewLoaded];
-  if (v4)
+  isViewLoaded = [(SAUILayoutSpecifyingElementViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
-    v5 = [(SAUILayoutSpecifyingElementViewController *)self view];
+    view = [(SAUILayoutSpecifyingElementViewController *)self view];
   }
 
   else
   {
-    v5 = @"[view not loaded]";
+    view = @"[view not loaded]";
   }
 
   v6 = SAUIStringFromElementViewLayoutMode([(SAUILayoutSpecifyingElementViewController *)self layoutMode]);
   v7 = SAUIStringFromElementViewLayoutMode([(SAUILayoutSpecifyingElementViewController *)self preferredLayoutMode]);
-  v8 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
-  v9 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
-  v10 = [v9 element];
+  elementViewProvider = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
+  elementViewProvider2 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
+  element = [elementViewProvider2 element];
   v11 = MEMORY[0x26D6A1D80]();
-  v12 = [v14 stringWithFormat:@"<%@: %p view: %@; layoutMode: %@; preferredLayoutMode: %@; elementViewProvider: %@; element: %@>", v3, self, v5, v6, v7, v8, v11];;
+  v12 = [v14 stringWithFormat:@"<%@: %p view: %@; layoutMode: %@; preferredLayoutMode: %@; elementViewProvider: %@; element: %@>", v3, self, view, v6, v7, elementViewProvider, v11];;
 
-  if (v4)
+  if (isViewLoaded)
   {
   }
 
@@ -113,10 +113,10 @@
 
 - (int64_t)layoutMode
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 layoutMode];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  layoutMode = [systemApertureLayoutSpecifyingOverrider layoutMode];
 
-  return v3;
+  return layoutMode;
 }
 
 - (SAUILayoutHosting)layoutHost
@@ -128,39 +128,39 @@
 
 - (int64_t)preferredLayoutMode
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 preferredLayoutMode];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  preferredLayoutMode = [systemApertureLayoutSpecifyingOverrider preferredLayoutMode];
 
-  return v3;
+  return preferredLayoutMode;
 }
 
 - (int64_t)maximumSupportedLayoutMode
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 maximumSupportedLayoutMode];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  maximumSupportedLayoutMode = [systemApertureLayoutSpecifyingOverrider maximumSupportedLayoutMode];
 
-  return v3;
+  return maximumSupportedLayoutMode;
 }
 
 - (int64_t)minimumSupportedLayoutMode
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 minimumSupportedLayoutMode];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  minimumSupportedLayoutMode = [systemApertureLayoutSpecifyingOverrider minimumSupportedLayoutMode];
 
-  return v3;
+  return minimumSupportedLayoutMode;
 }
 
 - (NSArray)temporallyOrderedAlertingActivityAssertions
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4->_reasonsToAlertingActivityAssertions;
+  v5 = selfCopy->_reasonsToAlertingActivityAssertions;
   v6 = [(NSMapTable *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -174,7 +174,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [(NSMapTable *)v4->_reasonsToAlertingActivityAssertions objectForKey:*(*(&v11 + 1) + 8 * i), v11];
+        v9 = [(NSMapTable *)selfCopy->_reasonsToAlertingActivityAssertions objectForKey:*(*(&v11 + 1) + 8 * i), v11];
         [v3 addObject:v9];
       }
 
@@ -185,7 +185,7 @@
   }
 
   [v3 sortUsingComparator:&__block_literal_global_0];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -210,16 +210,16 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SAUILayoutSpecifyingElementViewController *)self view];
-    v4 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
-    [WeakRetained sensorRegionInContentView:v3 fromViewProvider:v4];
+    view = [(SAUILayoutSpecifyingElementViewController *)self view];
+    elementViewProvider = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
+    [WeakRetained sensorRegionInContentView:view fromViewProvider:elementViewProvider];
   }
 
-  v5 = [(UIImageView *)self->_contentsTransitionShadowView image];
-  [v5 size];
+  image = [(UIImageView *)self->_contentsTransitionShadowView image];
+  [image size];
   BSRectWithSize();
-  v6 = [(SAUILayoutSpecifyingElementViewController *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(SAUILayoutSpecifyingElementViewController *)self traitCollection];
+  [traitCollection displayScale];
   v16 = v7;
   UIRectCenteredIntegralRectScale();
   v9 = v8;
@@ -238,8 +238,8 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   if (objc_opt_respondsToSelector())
   {
     elementViewProvider = self->_elementViewProvider;
-    v4 = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
-    [(SAElementViewProviding *)elementViewProvider layoutHostContainerViewDidLayoutSubviews:v4];
+    _contentView = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
+    [(SAElementViewProviding *)elementViewProvider layoutHostContainerViewDidLayoutSubviews:_contentView];
   }
 }
 
@@ -251,8 +251,8 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   if (objc_opt_respondsToSelector())
   {
     elementViewProvider = self->_elementViewProvider;
-    v4 = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
-    [(SAElementViewProviding *)elementViewProvider layoutHostContainerViewWillLayoutSubviews:v4];
+    _contentView = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
+    [(SAElementViewProviding *)elementViewProvider layoutHostContainerViewWillLayoutSubviews:_contentView];
   }
 
   [(SAUILayoutSpecifyingElementViewController *)self _configureTransitionShadowViewIfNecessary];
@@ -264,8 +264,8 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
-    v5 = [WeakRetained viewProviderShouldMakeSensorShadowVisible:v4];
+    elementViewProvider = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
+    v5 = [WeakRetained viewProviderShouldMakeSensorShadowVisible:elementViewProvider];
   }
 
   else
@@ -273,8 +273,8 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x277D75348] systemOrangeColor];
-  v7 = [(UIImageView *)self->_contentsTransitionShadowView tintColor];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  tintColor = [(UIImageView *)self->_contentsTransitionShadowView tintColor];
   v8 = BSEqualObjects();
 
   if (v5 != v8)
@@ -293,7 +293,7 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
     v11[3] = &unk_279D32760;
     v11[4] = self;
     v13 = v5;
-    v12 = v6;
+    v12 = systemOrangeColor;
     [v10 performWithoutAnimation:v11];
   }
 }
@@ -303,9 +303,9 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
-    v5 = [(SAUILayoutSpecifyingElementViewController *)self view];
-    [WeakRetained sensorRegionObstructingViewProvider:v4 inContentView:v5];
+    elementViewProvider = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
+    view = [(SAUILayoutSpecifyingElementViewController *)self view];
+    [WeakRetained sensorRegionObstructingViewProvider:elementViewProvider inContentView:view];
     v8 = v7 != *(MEMORY[0x277CBF3A8] + 8) || v6 != *MEMORY[0x277CBF3A8];
   }
 
@@ -326,17 +326,17 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     SAUIRegisterSystemApertureLogging();
   }
 }
 
-- (SAUILayoutSpecifyingElementViewController)initWithElementViewProvider:(id)a3
+- (SAUILayoutSpecifyingElementViewController)initWithElementViewProvider:(id)provider
 {
-  v5 = a3;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [SAUILayoutSpecifyingElementViewController initWithElementViewProvider:];
   }
@@ -347,20 +347,20 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementViewProvider, a3);
+    objc_storeStrong(&v6->_elementViewProvider, provider);
     if (objc_opt_respondsToSelector())
     {
       [(SAElementViewProviding *)v7->_elementViewProvider setLayoutHost:v7];
     }
 
-    v8 = [(SAElementViewProviding *)v7->_elementViewProvider element];
+    element = [(SAElementViewProviding *)v7->_elementViewProvider element];
     if (objc_opt_respondsToSelector())
     {
-      [v8 setElementHost:v7];
+      [element setElementHost:v7];
     }
 
-    v9 = [(SAElementViewProviding *)v7->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-    [v9 addBehaviorOverridingParticipant:v7];
+    systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)v7->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+    [systemApertureLayoutSpecifyingOverrider addBehaviorOverridingParticipant:v7];
 
     v10 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v7->_observers;
@@ -376,22 +376,22 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   v6.super_class = SAUILayoutSpecifyingElementViewController;
   [(SAUILayoutSpecifyingElementViewController *)&v6 viewDidLoad];
   [(SAUILayoutSpecifyingElementViewController *)self setOverrideUserInterfaceStyle:2];
-  v3 = [(SAUILayoutSpecifyingElementViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  view = [(SAUILayoutSpecifyingElementViewController *)self view];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 
-  v5 = [(SAUILayoutSpecifyingElementViewController *)self _containerView];
-  if (v5)
+  _containerView = [(SAUILayoutSpecifyingElementViewController *)self _containerView];
+  if (_containerView)
   {
-    [v3 addSubview:v5];
+    [view addSubview:_containerView];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SAUILayoutSpecifyingElementViewController;
-  [(SAUILayoutSpecifyingElementViewController *)&v5 viewWillAppear:a3];
+  [(SAUILayoutSpecifyingElementViewController *)&v5 viewWillAppear:appear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__SAUILayoutSpecifyingElementViewController_viewWillAppear___block_invoke;
@@ -400,11 +400,11 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   [(SAUILayoutSpecifyingElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingWillAppear_ usingBlock:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SAUILayoutSpecifyingElementViewController;
-  [(SAUILayoutSpecifyingElementViewController *)&v5 viewDidAppear:a3];
+  [(SAUILayoutSpecifyingElementViewController *)&v5 viewDidAppear:appear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__SAUILayoutSpecifyingElementViewController_viewDidAppear___block_invoke;
@@ -413,11 +413,11 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   [(SAUILayoutSpecifyingElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingDidAppear_ usingBlock:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SAUILayoutSpecifyingElementViewController;
-  [(SAUILayoutSpecifyingElementViewController *)&v5 viewWillDisappear:a3];
+  [(SAUILayoutSpecifyingElementViewController *)&v5 viewWillDisappear:disappear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__SAUILayoutSpecifyingElementViewController_viewWillDisappear___block_invoke;
@@ -426,11 +426,11 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   [(SAUILayoutSpecifyingElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingWillDisappear_ usingBlock:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SAUILayoutSpecifyingElementViewController;
-  [(SAUILayoutSpecifyingElementViewController *)&v5 viewDidDisappear:a3];
+  [(SAUILayoutSpecifyingElementViewController *)&v5 viewDidDisappear:disappear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __62__SAUILayoutSpecifyingElementViewController_viewDidDisappear___block_invoke;
@@ -439,19 +439,19 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   [(SAUILayoutSpecifyingElementViewController *)self _enumerateObserversRespondingToSelector:sel_elementViewControllingDidDisappear_ usingBlock:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = SAUILayoutSpecifyingElementViewController;
-  [(SAUILayoutSpecifyingElementViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SAUILayoutSpecifyingElementViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (objc_opt_respondsToSelector())
   {
     elementViewProvider = self->_elementViewProvider;
-    v9 = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
-    [(SAElementViewProviding *)elementViewProvider contentProviderWillTransitionToSize:v9 inContainerView:v7 transitionCoordinator:width, height];
+    _contentView = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
+    [(SAElementViewProviding *)elementViewProvider contentProviderWillTransitionToSize:_contentView inContainerView:coordinatorCopy transitionCoordinator:width, height];
   }
 
   previousLayoutMode = self->_previousLayoutMode;
@@ -462,7 +462,7 @@ void __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfN
   v11[3] = &unk_279D32710;
   objc_copyWeak(v12, &location);
   v12[1] = previousLayoutMode;
-  [v7 animateAlongsideTransition:0 completion:v11];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v11];
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
 }
@@ -490,18 +490,18 @@ void __96__SAUILayoutSpecifyingElementViewController_viewWillTransitionToSize_wi
   return [(SAElementViewProviding *)elementViewProvider _canShowWhileLocked];
 }
 
-- (id)alertWithReason:(id)a3 implicitlyDismissable:(BOOL)a4
+- (id)alertWithReason:(id)reason implicitlyDismissable:(BOOL)dismissable
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SAElementViewProviding *)self->_elementViewProvider element];
+  dismissableCopy = dismissable;
+  reasonCopy = reason;
+  element = [(SAElementViewProviding *)self->_elementViewProvider element];
   v8 = SAHasActivityBehavior();
 
   if (v8)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    WeakRetained = objc_loadWeakRetained(&v9->_alertingActivityAssertion);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_alertingActivityAssertion);
     v11 = objc_opt_class();
     v12 = WeakRetained;
     if (v11)
@@ -526,21 +526,21 @@ void __96__SAUILayoutSpecifyingElementViewController_viewWillTransitionToSize_wi
 
     if (!v14)
     {
-      v14 = [(SAUILayoutSpecifyingElementViewController *)v9 _alertingActivityAssertionWithReason:v6 implicitlyDismissable:v4 withPreferredLayoutMode:[(SAUILayoutSpecifyingElementViewController *)v9 maximumSupportedLayoutMode]];
-      objc_initWeak(&location, v9);
+      v14 = [(SAUILayoutSpecifyingElementViewController *)selfCopy _alertingActivityAssertionWithReason:reasonCopy implicitlyDismissable:dismissableCopy withPreferredLayoutMode:[(SAUILayoutSpecifyingElementViewController *)selfCopy maximumSupportedLayoutMode]];
+      objc_initWeak(&location, selfCopy);
       v16 = MEMORY[0x277D85DD0];
       v17 = 3221225472;
       v18 = __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyDismissable___block_invoke;
       v19 = &unk_279D32738;
       objc_copyWeak(&v20, &location);
       [v14 addInvalidationBlock:&v16];
-      objc_storeWeak(&v9->_alertingActivityAssertion, v14);
-      [(SAUILayoutSpecifyingElementViewController *)v9 _invalidatePreferredLayoutModeAssertionWithReason:2, v16, v17, v18, v19];
+      objc_storeWeak(&selfCopy->_alertingActivityAssertion, v14);
+      [(SAUILayoutSpecifyingElementViewController *)selfCopy _invalidatePreferredLayoutModeAssertionWithReason:2, v16, v17, v18, v19];
       objc_destroyWeak(&v20);
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -568,7 +568,7 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   }
 }
 
-- (int64_t)handleElementTap:(id)a3
+- (int64_t)handleElementTap:(id)tap
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(SAElementViewProviding *)self->_elementViewProvider handleElementViewEvent:0]& 1) != 0)
   {
@@ -581,7 +581,7 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   }
 }
 
-- (int64_t)handleElementLongPress:(id)a3
+- (int64_t)handleElementLongPress:(id)press
 {
   if ([(SAUILayoutSpecifyingElementViewController *)self layoutMode]!= 3 || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -596,39 +596,39 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   return 0;
 }
 
-- (void)addElementViewControllingObserver:(id)a3
+- (void)addElementViewControllingObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
+    v6 = observerCopy;
     v5 = self->_observers;
     objc_sync_enter(v5);
     [(NSHashTable *)self->_observers addObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)removeElementViewControllingObserver:(id)a3
+- (void)removeElementViewControllingObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
+    v6 = observerCopy;
     v5 = self->_observers;
     objc_sync_enter(v5);
     [(NSHashTable *)self->_observers removeObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)setLayoutHost:(id)a3
+- (void)setLayoutHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (WeakRetained != obj)
   {
@@ -639,56 +639,56 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
 
     objc_storeWeak(&self->_layoutHost, obj);
     [(SAUILayoutSpecifyingElementViewController *)self _configureAlertAssertionIfNecessary];
-    v5 = [(SAElementViewProviding *)self->_elementViewProvider element];
+    element = [(SAElementViewProviding *)self->_elementViewProvider element];
     if (SAHasAlertBehavior())
     {
       if (objc_opt_respondsToSelector())
       {
-        [v5 setAlertHost:self];
+        [element setAlertHost:self];
       }
     }
 
     else if (SAHasActivityBehavior() && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 setActivityHost:self];
+      [element setActivityHost:self];
     }
   }
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
-  v6 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  [v6 setLayoutMode:a3 reason:a4];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  [systemApertureLayoutSpecifyingOverrider setLayoutMode:mode reason:reason];
 }
 
 - (BOOL)isInteractiveDismissalEnabled
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 isInteractiveDismissalEnabled];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  isInteractiveDismissalEnabled = [systemApertureLayoutSpecifyingOverrider isInteractiveDismissalEnabled];
 
-  return v3;
+  return isInteractiveDismissalEnabled;
 }
 
 - (BOOL)isMinimalPresentationPossible
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 isMinimalPresentationPossible];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  isMinimalPresentationPossible = [systemApertureLayoutSpecifyingOverrider isMinimalPresentationPossible];
 
-  return v3;
+  return isMinimalPresentationPossible;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v9 = a4.trailing;
-  v10 = a4.bottom;
-  v11 = a4.leading;
-  v12 = a4.top;
-  v14 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  [v14 preferredEdgeOutsetsForLayoutMode:a3 suggestedOutsets:v12 maximumOutsets:{v11, v10, v9, top, leading, bottom, trailing}];
+  trailing = maximumOutsets.trailing;
+  bottom = maximumOutsets.bottom;
+  leading = maximumOutsets.leading;
+  top = maximumOutsets.top;
+  v9 = outsets.trailing;
+  v10 = outsets.bottom;
+  v11 = outsets.leading;
+  v12 = outsets.top;
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  [systemApertureLayoutSpecifyingOverrider preferredEdgeOutsetsForLayoutMode:mode suggestedOutsets:v12 maximumOutsets:{v11, v10, v9, top, leading, bottom, trailing}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -707,25 +707,25 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
 
 - (BOOL)isRequestingMenuPresentation
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 isRequestingMenuPresentation];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  isRequestingMenuPresentation = [systemApertureLayoutSpecifyingOverrider isRequestingMenuPresentation];
 
-  return v3;
+  return isRequestingMenuPresentation;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider
 {
   layoutMode = self->_layoutMode;
-  if (layoutMode != a3)
+  if (layoutMode != mode)
   {
-    v9 = a5;
+    overriderCopy = overrider;
     [(SAUILayoutSpecifyingElementViewController *)self _setPreviousLayoutMode:layoutMode];
-    self->_layoutMode = a3;
-    if (a4 == 3)
+    self->_layoutMode = mode;
+    if (reason == 3)
     {
-      if ([(SAUIPreferredLayoutModeAssertion *)self->_preferredLayoutModeAssertion preferredLayoutMode]!= a3 || [(SAUIPreferredLayoutModeAssertion *)self->_preferredLayoutModeAssertion layoutModeChangeReason]!= 3)
+      if ([(SAUIPreferredLayoutModeAssertion *)self->_preferredLayoutModeAssertion preferredLayoutMode]!= mode || [(SAUIPreferredLayoutModeAssertion *)self->_preferredLayoutModeAssertion layoutModeChangeReason]!= 3)
       {
-        v10 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:a3 reason:3];
+        v10 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:mode reason:3];
         v11 = [(SAUILayoutSpecifyingElementViewController *)self _updatePreferredLayoutModeAssertionWithPreference:v10];
       }
 
@@ -733,77 +733,77 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
       [WeakRetained invalidateWithReason:@"layout mode changed by user interaction"];
     }
 
-    else if (a3 <= 0)
+    else if (mode <= 0)
     {
       [(SAAssertion *)self->_preferredLayoutModeAssertion invalidateWithReason:@"no longer in visible layout mode"];
     }
 
-    v13 = [v9 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
-    [v13 setLayoutMode:self->_layoutMode reason:a4 forTargetWithOverrider:v9];
+    v13 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
+    [v13 setLayoutMode:self->_layoutMode reason:reason forTargetWithOverrider:overriderCopy];
 
-    v14 = [(SAUILayoutSpecifyingElementViewController *)self viewIfLoaded];
-    [v14 setNeedsLayout];
+    viewIfLoaded = [(SAUILayoutSpecifyingElementViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v6 = a3;
-  v7 = [v6 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_minimumSupportedLayoutModeForTargetWithOverrider_isDefaultValue_];
-  v8 = [v7 minimumSupportedLayoutModeForTargetWithOverrider:v6 isDefaultValue:a4];
+  overriderCopy = overrider;
+  v7 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_minimumSupportedLayoutModeForTargetWithOverrider_isDefaultValue_];
+  preferredLayoutMode = [v7 minimumSupportedLayoutModeForTargetWithOverrider:overriderCopy isDefaultValue:value];
 
-  if (a4 && *a4 || v8 == -1)
+  if (value && *value || preferredLayoutMode == -1)
   {
     v9 = SATargetElementFromBehaviorOverrider();
     if (SAHasActivityBehavior())
     {
-      v8 = 1;
+      preferredLayoutMode = 1;
     }
 
     else if (SAHasAlertBehavior())
     {
-      if (v8 == -1)
+      if (preferredLayoutMode == -1)
       {
-        v10 = [v6 behaviorOverridingTarget];
+        behaviorOverridingTarget = [overriderCopy behaviorOverridingTarget];
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v10 preferredLayoutMode];
+          preferredLayoutMode = [behaviorOverridingTarget preferredLayoutMode];
         }
 
         else
         {
-          v8 = -1;
+          preferredLayoutMode = -1;
         }
       }
 
       else
       {
-        v8 = 2;
+        preferredLayoutMode = 2;
       }
     }
   }
 
+  return preferredLayoutMode;
+}
+
+- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
+{
+  overriderCopy = overrider;
+  v7 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_maximumSupportedLayoutModeForTargetWithOverrider_isDefaultValue_];
+  v8 = [v7 maximumSupportedLayoutModeForTargetWithOverrider:overriderCopy isDefaultValue:value];
+
   return v8;
 }
 
-- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v6 = a3;
-  v7 = [v6 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_maximumSupportedLayoutModeForTargetWithOverrider_isDefaultValue_];
-  v8 = [v7 maximumSupportedLayoutModeForTargetWithOverrider:v6 isDefaultValue:a4];
+  overriderCopy = overrider;
+  v7 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_isInteractiveDismissalEnabledForTargetWithOverrider_isDefaultValue_];
+  v8 = [v7 isInteractiveDismissalEnabledForTargetWithOverrider:overriderCopy isDefaultValue:value];
 
-  return v8;
-}
-
-- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
-{
-  v6 = a3;
-  v7 = [v6 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_isInteractiveDismissalEnabledForTargetWithOverrider_isDefaultValue_];
-  v8 = [v7 isInteractiveDismissalEnabledForTargetWithOverrider:v6 isDefaultValue:a4];
-
-  if (a4 && *a4)
+  if (value && *value)
   {
-    v9 = [v6 behaviorOverridingTarget];
+    behaviorOverridingTarget = [overriderCopy behaviorOverridingTarget];
     if (SAHasActivityBehavior())
     {
       v8 = 0;
@@ -818,15 +818,15 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   return v8 & 1;
 }
 
-- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v6 = a3;
-  v7 = [v6 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_isMinimalPresentationPossibleForTargetWithOverrider_isDefaultValue_];
-  v8 = [v7 isMinimalPresentationPossibleForTargetWithOverrider:v6 isDefaultValue:a4];
+  overriderCopy = overrider;
+  v7 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_isMinimalPresentationPossibleForTargetWithOverrider_isDefaultValue_];
+  v8 = [v7 isMinimalPresentationPossibleForTargetWithOverrider:overriderCopy isDefaultValue:value];
 
-  if (a4 && *a4)
+  if (value && *value)
   {
-    v9 = [v6 behaviorOverridingTarget];
+    behaviorOverridingTarget = [overriderCopy behaviorOverridingTarget];
     if (SAHasActivityBehavior())
     {
       v8 = 0;
@@ -835,7 +835,7 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
     else if (SAHasAlertBehavior())
     {
       v12 = 1;
-      v10 = [(SAUILayoutSpecifyingElementViewController *)self layoutModePreferenceForTargetWithOverrider:v6 isDefaultValue:&v12];
+      v10 = [(SAUILayoutSpecifyingElementViewController *)self layoutModePreferenceForTargetWithOverrider:overriderCopy isDefaultValue:&v12];
       v8 = [v10 preferredLayoutMode] == 2;
     }
   }
@@ -843,9 +843,9 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   return v8;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  if (a3 < 1)
+  if (mode < 1)
   {
     v28 = *MEMORY[0x277D75060];
     v29 = *(MEMORY[0x277D75060] + 8);
@@ -855,17 +855,17 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
 
   else
   {
-    trailing = a5.trailing;
-    bottom = a5.bottom;
-    leading = a5.leading;
-    top = a5.top;
-    v12 = a4.trailing;
-    v13 = a4.bottom;
-    v14 = a4.leading;
-    v15 = a4.top;
-    v18 = a6;
-    v19 = [v18 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_preferredEdgeOutsetsForLayoutMode_suggestedOutsets_maximumOutsets_forTargetWithOverrider_isDefaultValue_];
-    [v19 preferredEdgeOutsetsForLayoutMode:a3 suggestedOutsets:v18 maximumOutsets:a7 forTargetWithOverrider:v15 isDefaultValue:{v14, v13, v12, top, leading, bottom, trailing}];
+    trailing = maximumOutsets.trailing;
+    bottom = maximumOutsets.bottom;
+    leading = maximumOutsets.leading;
+    top = maximumOutsets.top;
+    v12 = outsets.trailing;
+    v13 = outsets.bottom;
+    v14 = outsets.leading;
+    v15 = outsets.top;
+    overriderCopy = overrider;
+    v19 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_preferredEdgeOutsetsForLayoutMode_suggestedOutsets_maximumOutsets_forTargetWithOverrider_isDefaultValue_];
+    [v19 preferredEdgeOutsetsForLayoutMode:mode suggestedOutsets:overriderCopy maximumOutsets:value forTargetWithOverrider:v15 isDefaultValue:{v14, v13, v12, top, leading, bottom, trailing}];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -881,16 +881,16 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   return result;
 }
 
-- (id)layoutModePreferenceForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (id)layoutModePreferenceForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v6 = a3;
-  v7 = [(NSPointerArray *)self->_preferredLayoutModeAssertions sa_lastPointer];
-  if (!v7)
+  overriderCopy = overrider;
+  sa_lastPointer = [(NSPointerArray *)self->_preferredLayoutModeAssertions sa_lastPointer];
+  if (!sa_lastPointer)
   {
-    v8 = [v6 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_layoutModePreferenceForTargetWithOverrider_isDefaultValue_];
-    v9 = [v8 layoutModePreferenceForTargetWithOverrider:v6 isDefaultValue:a4];
+    v8 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_layoutModePreferenceForTargetWithOverrider_isDefaultValue_];
+    v9 = [v8 layoutModePreferenceForTargetWithOverrider:overriderCopy isDefaultValue:value];
 
-    if (a4 && *a4)
+    if (value && *value)
     {
       v10 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:2 reason:0];
 
@@ -898,26 +898,26 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
     }
 
     v11 = [(SAUILayoutSpecifyingElementViewController *)self _updatePreferredLayoutModeAssertionWithPreference:v9];
-    v7 = [(NSPointerArray *)self->_preferredLayoutModeAssertions sa_lastPointer];
+    sa_lastPointer = [(NSPointerArray *)self->_preferredLayoutModeAssertions sa_lastPointer];
   }
 
-  return v7;
+  return sa_lastPointer;
 }
 
-- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSPointerArray *)v6->_preferredLayoutModeAssertions sa_lastPointer];
-  objc_sync_exit(v6);
+  overriderCopy = overrider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sa_lastPointer = [(NSPointerArray *)selfCopy->_preferredLayoutModeAssertions sa_lastPointer];
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return sa_lastPointer;
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider
 {
-  v6 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:a3 reason:a4];
+  v6 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:mode reason:reason];
   v8 = [(SAUILayoutSpecifyingElementViewController *)self _updatePreferredLayoutModeAssertionWithPreference:v6];
 
   v7 = v8;
@@ -928,55 +928,55 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   }
 }
 
-- (double)concentricPaddingForProvidedView:(id)a3 fromViewProvider:(id)a4
+- (double)concentricPaddingForProvidedView:(id)view fromViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   v9 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained concentricPaddingForProvidedView:v6 fromViewProvider:v7];
+    [WeakRetained concentricPaddingForProvidedView:viewCopy fromViewProvider:providerCopy];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (void)contentProviderWillTransitionToSize:(CGSize)a3 inContainerView:(id)a4 transitionCoordinator:(id)a5
+- (void)contentProviderWillTransitionToSize:(CGSize)size inContainerView:(id)view transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if (objc_opt_respondsToSelector())
   {
     elementViewProvider = self->_elementViewProvider;
-    v9 = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
-    [(SAElementViewProviding *)elementViewProvider contentProviderWillTransitionToSize:v9 inContainerView:v10 transitionCoordinator:width, height];
+    _contentView = [(SAUILayoutSpecifyingElementViewController *)self _contentView];
+    [(SAElementViewProviding *)elementViewProvider contentProviderWillTransitionToSize:_contentView inContainerView:coordinatorCopy transitionCoordinator:width, height];
   }
 }
 
 - (BOOL)isTrackingTransition
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_transitionIDsToReasons count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_transitionIDsToReasons count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)isTrackingTransitionWithReason:(id)a3
+- (BOOL)isTrackingTransitionWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5->_transitionIDsToReasons;
+  v6 = selfCopy->_transitionIDsToReasons;
   v7 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -991,8 +991,8 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
           objc_enumerationMutation(v6);
         }
 
-        v11 = [(NSMutableDictionary *)v5->_transitionIDsToReasons objectForKey:*(*(&v14 + 1) + 8 * i), v14];
-        v12 = [v11 isEqualToString:v4];
+        v11 = [(NSMutableDictionary *)selfCopy->_transitionIDsToReasons objectForKey:*(*(&v14 + 1) + 8 * i), v14];
+        v12 = [v11 isEqualToString:reasonCopy];
 
         v8 += v12;
       }
@@ -1004,90 +1004,90 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
     LOBYTE(v7) = v8 != 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)beginTrackingTransitionWithUniqueIdentifier:(id)a3 reason:(id)a4
+- (void)beginTrackingTransitionWithUniqueIdentifier:(id)identifier reason:(id)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  if (!identifierCopy)
   {
     [SAUILayoutSpecifyingElementViewController beginTrackingTransitionWithUniqueIdentifier:reason:];
   }
 
-  if (![v7 length])
+  if (![reasonCopy length])
   {
     [SAUILayoutSpecifyingElementViewController beginTrackingTransitionWithUniqueIdentifier:reason:];
   }
 
-  v8 = [(SAElementViewProviding *)self->_elementViewProvider element];
+  element = [(SAElementViewProviding *)self->_elementViewProvider element];
   v9 = SAUILogElementViewControlling;
   if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = MEMORY[0x26D6A1D80](v8);
+    v11 = MEMORY[0x26D6A1D80](element);
     v16 = 138543874;
     v17 = v11;
     v18 = 2114;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = 2114;
-    v21 = v7;
+    v21 = reasonCopy;
     _os_log_impl(&dword_26C482000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Begin tracking transition with identifier '%{public}@' with reason: %{public}@", &v16, 0x20u);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  transitionIDsToReasons = v12->_transitionIDsToReasons;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  transitionIDsToReasons = selfCopy->_transitionIDsToReasons;
   if (!transitionIDsToReasons)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v15 = v12->_transitionIDsToReasons;
-    v12->_transitionIDsToReasons = v14;
+    v15 = selfCopy->_transitionIDsToReasons;
+    selfCopy->_transitionIDsToReasons = v14;
 
-    transitionIDsToReasons = v12->_transitionIDsToReasons;
+    transitionIDsToReasons = selfCopy->_transitionIDsToReasons;
   }
 
-  [(NSMutableDictionary *)transitionIDsToReasons setObject:v7 forKey:v6];
-  objc_sync_exit(v12);
+  [(NSMutableDictionary *)transitionIDsToReasons setObject:reasonCopy forKey:identifierCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)endTrackingTransitionWithUniqueIdentifier:(id)a3
+- (void)endTrackingTransitionWithUniqueIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_transitionIDsToReasons objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_transitionIDsToReasons objectForKey:identifierCopy];
     if (v6)
     {
-      v7 = [(SAElementViewProviding *)v5->_elementViewProvider element];
+      element = [(SAElementViewProviding *)selfCopy->_elementViewProvider element];
       v8 = SAUILogElementViewControlling;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = MEMORY[0x26D6A1D80](v7);
+        v9 = MEMORY[0x26D6A1D80](element);
         v11 = 138543874;
         v12 = v9;
         v13 = 2114;
-        v14 = v4;
+        v14 = identifierCopy;
         v15 = 2114;
         v16 = v6;
         _os_log_impl(&dword_26C482000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: End tracking transition with identifier '%{public}@' with reason: %{public}@", &v11, 0x20u);
       }
 
-      [(NSMutableDictionary *)v5->_transitionIDsToReasons removeObjectForKey:v4];
-      if (![(NSMutableDictionary *)v5->_transitionIDsToReasons count])
+      [(NSMutableDictionary *)selfCopy->_transitionIDsToReasons removeObjectForKey:identifierCopy];
+      if (![(NSMutableDictionary *)selfCopy->_transitionIDsToReasons count])
       {
-        transitionIDsToReasons = v5->_transitionIDsToReasons;
-        v5->_transitionIDsToReasons = 0;
+        transitionIDsToReasons = selfCopy->_transitionIDsToReasons;
+        selfCopy->_transitionIDsToReasons = 0;
       }
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1154,11 +1154,11 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
   return v5;
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     v6 = self->_observers;
     objc_sync_enter(v6);
@@ -1185,7 +1185,7 @@ void __83__SAUILayoutSpecifyingElementViewController_alertWithReason_implicitlyD
           v12 = *(*(&v13 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v12);
+            blockCopy[2](blockCopy, v12);
           }
 
           ++v11;
@@ -1239,30 +1239,30 @@ void __86__SAUILayoutSpecifyingElementViewController__configureTransitionShadowV
   [*(a1 + 32) _layoutTransitionShadowView];
 }
 
-- (id)_overrideWithPreference:(id)a3
+- (id)_overrideWithPreference:(id)preference
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  preferenceCopy = preference;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [SAUIPreferredLayoutModeAssertion alloc];
-  v7 = [(SAElementViewProviding *)v5->_elementViewProvider element];
-  v8 = [(SAUIPreferredLayoutModeAssertion *)v6 initWithRepresentedElement:v7 layoutModePreference:v4];
+  element = [(SAElementViewProviding *)selfCopy->_elementViewProvider element];
+  v8 = [(SAUIPreferredLayoutModeAssertion *)v6 initWithRepresentedElement:element layoutModePreference:preferenceCopy];
 
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, selfCopy);
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __69__SAUILayoutSpecifyingElementViewController__overrideWithPreference___block_invoke;
   v21 = &unk_279D32738;
   objc_copyWeak(&v22, &location);
   [(SAAssertion *)v8 addInvalidationBlock:&v18];
-  preferredLayoutModeAssertions = v5->_preferredLayoutModeAssertions;
+  preferredLayoutModeAssertions = selfCopy->_preferredLayoutModeAssertions;
   if (!preferredLayoutModeAssertions)
   {
-    v10 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
-    v11 = v5->_preferredLayoutModeAssertions;
-    v5->_preferredLayoutModeAssertions = v10;
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    v11 = selfCopy->_preferredLayoutModeAssertions;
+    selfCopy->_preferredLayoutModeAssertions = weakObjectsPointerArray;
 
-    preferredLayoutModeAssertions = v5->_preferredLayoutModeAssertions;
+    preferredLayoutModeAssertions = selfCopy->_preferredLayoutModeAssertions;
   }
 
   [(NSPointerArray *)preferredLayoutModeAssertions sa_compact:v18];
@@ -1270,22 +1270,22 @@ void __86__SAUILayoutSpecifyingElementViewController__configureTransitionShadowV
   do
   {
     v13 = v12;
-    if (v12 >= [(NSPointerArray *)v5->_preferredLayoutModeAssertions count])
+    if (v12 >= [(NSPointerArray *)selfCopy->_preferredLayoutModeAssertions count])
     {
       break;
     }
 
-    v14 = [(NSPointerArray *)v5->_preferredLayoutModeAssertions pointerAtIndex:v12];
-    v15 = [v14 layoutModeChangeReason];
-    v16 = [(SAUIPreferredLayoutModeAssertion *)v8 layoutModeChangeReason];
+    v14 = [(NSPointerArray *)selfCopy->_preferredLayoutModeAssertions pointerAtIndex:v12];
+    layoutModeChangeReason = [v14 layoutModeChangeReason];
+    layoutModeChangeReason2 = [(SAUIPreferredLayoutModeAssertion *)v8 layoutModeChangeReason];
     ++v12;
   }
 
-  while (v15 <= v16);
-  [(NSPointerArray *)v5->_preferredLayoutModeAssertions insertPointer:v8 atIndex:v13];
+  while (layoutModeChangeReason <= layoutModeChangeReason2);
+  [(NSPointerArray *)selfCopy->_preferredLayoutModeAssertions insertPointer:v8 atIndex:v13];
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -1324,24 +1324,24 @@ LABEL_9:
   }
 }
 
-- (id)_updatePreferredLayoutModeAssertionWithPreference:(id)a3
+- (id)_updatePreferredLayoutModeAssertionWithPreference:(id)preference
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  preferenceCopy = preference;
   v5 = SAUILogElementViewControlling;
   if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v37 = v4;
+    v37 = preferenceCopy;
     _os_log_impl(&dword_26C482000, v5, OS_LOG_TYPE_DEFAULT, "Update preferred layout mode assertion with layout mode preference: %{public}@", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(SAAutomaticallyInvalidatingAssertion *)v4 preferredLayoutMode];
-  if ([(SAUILayoutSpecifyingElementViewController *)v6 minimumSupportedLayoutMode]> v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  preferredLayoutMode = [(SAAutomaticallyInvalidatingAssertion *)preferenceCopy preferredLayoutMode];
+  if ([(SAUILayoutSpecifyingElementViewController *)selfCopy minimumSupportedLayoutMode]> preferredLayoutMode)
   {
-    if (!v7)
+    if (!preferredLayoutMode)
     {
       goto LABEL_9;
     }
@@ -1351,66 +1351,66 @@ LABEL_8:
     goto LABEL_25;
   }
 
-  v8 = [(SAUILayoutSpecifyingElementViewController *)v6 maximumSupportedLayoutMode];
-  if (v7 && v7 > v8)
+  maximumSupportedLayoutMode = [(SAUILayoutSpecifyingElementViewController *)selfCopy maximumSupportedLayoutMode];
+  if (preferredLayoutMode && preferredLayoutMode > maximumSupportedLayoutMode)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v10 = [(SAAutomaticallyInvalidatingAssertion *)v4 layoutModeChangeReason];
-  if (v10 <= 4 && ((1 << v10) & 0x1A) != 0 || !v6->_cooldownAssertion)
+  layoutModeChangeReason = [(SAAutomaticallyInvalidatingAssertion *)preferenceCopy layoutModeChangeReason];
+  if (layoutModeChangeReason <= 4 && ((1 << layoutModeChangeReason) & 0x1A) != 0 || !selfCopy->_cooldownAssertion)
   {
-    v11 = [(SAUILayoutSpecifyingElementViewController *)v6 _overrideWithPreference:v4];
-    preferredLayoutModeAssertion = v6->_preferredLayoutModeAssertion;
-    v6->_preferredLayoutModeAssertion = v11;
+    v11 = [(SAUILayoutSpecifyingElementViewController *)selfCopy _overrideWithPreference:preferenceCopy];
+    preferredLayoutModeAssertion = selfCopy->_preferredLayoutModeAssertion;
+    selfCopy->_preferredLayoutModeAssertion = v11;
 
-    objc_initWeak(&location, v6);
-    v13 = v6->_preferredLayoutModeAssertion;
+    objc_initWeak(&location, selfCopy);
+    v13 = selfCopy->_preferredLayoutModeAssertion;
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutModeAssertionWithPreference___block_invoke_2;
     v30[3] = &unk_279D32738;
     objc_copyWeak(&v31, &location);
     [(SAAssertion *)v13 addInvalidationBlock:v30];
-    if ([(SAUIPreferredLayoutModeAssertion *)v6->_preferredLayoutModeAssertion layoutModeChangeReason]== 3)
+    if ([(SAUIPreferredLayoutModeAssertion *)selfCopy->_preferredLayoutModeAssertion layoutModeChangeReason]== 3)
     {
-      if (v6->_cooldownAssertion)
+      if (selfCopy->_cooldownAssertion)
       {
         v14 = SAUILogElementViewControlling;
         if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
         {
-          cooldownAssertion = v6->_cooldownAssertion;
+          cooldownAssertion = selfCopy->_cooldownAssertion;
           *buf = 138543362;
           v37 = cooldownAssertion;
           _os_log_impl(&dword_26C482000, v14, OS_LOG_TYPE_DEFAULT, "Resetting automatic invalidation timer of existing cooldown assertion: %{public}@", buf, 0xCu);
         }
 
-        [(SAAutomaticallyInvalidatingAssertion *)v6->_cooldownAssertion resetAutomaticInvalidationTimer];
+        [(SAAutomaticallyInvalidatingAssertion *)selfCopy->_cooldownAssertion resetAutomaticInvalidationTimer];
       }
 
       else
       {
         v19 = [objc_alloc(MEMORY[0x277D6B8A0]) initWithInvalidationInterval:3.0];
-        v20 = v6->_cooldownAssertion;
-        v6->_cooldownAssertion = v19;
+        v20 = selfCopy->_cooldownAssertion;
+        selfCopy->_cooldownAssertion = v19;
 
-        v21 = v6->_cooldownAssertion;
+        v21 = selfCopy->_cooldownAssertion;
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutModeAssertionWithPreference___block_invoke_119;
         v28[3] = &unk_279D32738;
         objc_copyWeak(&v29, &location);
         [(SAAutomaticallyInvalidatingAssertion *)v21 addInvalidationBlock:v28];
-        [(SAAutomaticallyInvalidatingAssertion *)v6->_cooldownAssertion setAutomaticallyInvalidatable:1];
+        [(SAAutomaticallyInvalidatingAssertion *)selfCopy->_cooldownAssertion setAutomaticallyInvalidatable:1];
         v22 = SAUILogElementViewControlling;
         if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = v6->_cooldownAssertion;
+          v23 = selfCopy->_cooldownAssertion;
           *buf = 138543618;
           v37 = v23;
           v38 = 2114;
-          v39 = v4;
+          v39 = preferenceCopy;
           _os_log_impl(&dword_26C482000, v22, OS_LOG_TYPE_DEFAULT, "Created cooldown assertion (%{public}@) for layout mode preference: %{public}@", buf, 0x16u);
         }
 
@@ -1427,40 +1427,40 @@ LABEL_9:
     v16 = SAUILogElementViewControlling;
     if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = v6->_cooldownAssertion;
+      v17 = selfCopy->_cooldownAssertion;
       *buf = 138543362;
       v37 = v17;
       _os_log_impl(&dword_26C482000, v16, OS_LOG_TYPE_DEFAULT, "Deferring preferred layout mode assertion update due to existing cooldown assertion: %{public}@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v6);
-    v18 = v6->_cooldownAssertion;
+    objc_initWeak(buf, selfCopy);
+    v18 = selfCopy->_cooldownAssertion;
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutModeAssertionWithPreference___block_invoke;
     v33[3] = &unk_279D32788;
     objc_copyWeak(&v35, buf);
-    v34 = v4;
+    v34 = preferenceCopy;
     [(SAAutomaticallyInvalidatingAssertion *)v18 addInvalidationBlock:v33];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(buf);
   }
 
-  objc_initWeak(buf, v6);
+  objc_initWeak(buf, selfCopy);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutModeAssertionWithPreference___block_invoke_120;
   v26[3] = &unk_279D327B0;
   objc_copyWeak(&v27, buf);
-  v26[4] = v6;
+  v26[4] = selfCopy;
   v9 = MEMORY[0x26D6A2080](v26);
   objc_destroyWeak(&v27);
   objc_destroyWeak(buf);
 LABEL_25:
   v24 = MEMORY[0x26D6A2080](v9);
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v24;
 }
@@ -1535,21 +1535,21 @@ uint64_t __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutM
   return v6;
 }
 
-- (id)_alertingActivityAssertionWithReason:(id)a3 implicitlyDismissable:(BOOL)a4 withPreferredLayoutMode:(int64_t)a5
+- (id)_alertingActivityAssertionWithReason:(id)reason implicitlyDismissable:(BOOL)dismissable withPreferredLayoutMode:(int64_t)mode
 {
-  v6 = a4;
+  dismissableCopy = dismissable;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(SAElementViewProviding *)self->_elementViewProvider element];
+  reasonCopy = reason;
+  element = [(SAElementViewProviding *)self->_elementViewProvider element];
   if (SAHasActivityBehavior())
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(NSMapTable *)v10->_reasonsToAlertingActivityAssertions objectForKey:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [(NSMapTable *)selfCopy->_reasonsToAlertingActivityAssertions objectForKey:reasonCopy];
     if (!v11)
     {
       v12 = [SAUILayoutModePreference alloc];
-      if (v6)
+      if (dismissableCopy)
       {
         v13 = 5;
       }
@@ -1559,42 +1559,42 @@ uint64_t __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutM
         v13 = 2;
       }
 
-      v14 = [(SAUILayoutModePreference *)v12 initWithPreferredLayoutMode:a5 reason:v13];
-      v15 = [(SAUILayoutSpecifyingElementViewController *)v10 _overrideWithPreference:v14];
+      v14 = [(SAUILayoutModePreference *)v12 initWithPreferredLayoutMode:mode reason:v13];
+      v15 = [(SAUILayoutSpecifyingElementViewController *)selfCopy _overrideWithPreference:v14];
 
       v16 = [SAUIAlertingAssertion alloc];
-      [(SAUILayoutSpecifyingElementViewController *)v10 _defaultAlertingDuration];
+      [(SAUILayoutSpecifyingElementViewController *)selfCopy _defaultAlertingDuration];
       v11 = [(SAUIAlertingAssertion *)v16 initWithPreferredLayoutModeAssertion:v15 invalidationInterval:?];
       v17 = SAUILogElementViewControlling;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = MEMORY[0x26D6A1D80](v9);
+        v18 = MEMORY[0x26D6A1D80](element);
         *buf = 138543874;
         v31 = v11;
         v32 = 2114;
-        v33 = v8;
+        v33 = reasonCopy;
         v34 = 2114;
         v35 = v18;
         _os_log_impl(&dword_26C482000, v17, OS_LOG_TYPE_DEFAULT, "Created alerting activity assertion (%{public}@) with reason '%{public}@' for element: %{public}@", buf, 0x20u);
       }
 
-      objc_initWeak(buf, v10);
+      objc_initWeak(buf, selfCopy);
       v24 = MEMORY[0x277D85DD0];
       v25 = 3221225472;
       v26 = __128__SAUILayoutSpecifyingElementViewController__alertingActivityAssertionWithReason_implicitlyDismissable_withPreferredLayoutMode___block_invoke;
       v27 = &unk_279D32788;
       objc_copyWeak(&v29, buf);
-      v19 = v8;
+      v19 = reasonCopy;
       v28 = v19;
       [(SAAssertion *)v11 addInvalidationBlock:&v24];
-      reasonsToAlertingActivityAssertions = v10->_reasonsToAlertingActivityAssertions;
+      reasonsToAlertingActivityAssertions = selfCopy->_reasonsToAlertingActivityAssertions;
       if (!reasonsToAlertingActivityAssertions)
       {
-        v21 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-        v22 = v10->_reasonsToAlertingActivityAssertions;
-        v10->_reasonsToAlertingActivityAssertions = v21;
+        strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+        v22 = selfCopy->_reasonsToAlertingActivityAssertions;
+        selfCopy->_reasonsToAlertingActivityAssertions = strongToWeakObjectsMapTable;
 
-        reasonsToAlertingActivityAssertions = v10->_reasonsToAlertingActivityAssertions;
+        reasonsToAlertingActivityAssertions = selfCopy->_reasonsToAlertingActivityAssertions;
       }
 
       [(NSMapTable *)reasonsToAlertingActivityAssertions setObject:v11 forKey:v19, v24, v25, v26, v27];
@@ -1603,7 +1603,7 @@ uint64_t __95__SAUILayoutSpecifyingElementViewController__updatePreferredLayoutM
       objc_destroyWeak(buf);
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1628,7 +1628,7 @@ void __128__SAUILayoutSpecifyingElementViewController__alertingActivityAssertion
 - (void)_configureAlertAssertionIfNecessary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SAElementViewProviding *)self->_elementViewProvider element];
+  element = [(SAElementViewProviding *)self->_elementViewProvider element];
   if (SAHasAlertBehavior())
   {
     if (!self->_alertAssertion)
@@ -1637,15 +1637,15 @@ void __128__SAUILayoutSpecifyingElementViewController__alertingActivityAssertion
 
       if (WeakRetained)
       {
-        v5 = self;
-        objc_sync_enter(v5);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
         v6 = objc_alloc(MEMORY[0x277D6B8A0]);
-        [(SAUILayoutSpecifyingElementViewController *)v5 _defaultAlertingDuration];
+        [(SAUILayoutSpecifyingElementViewController *)selfCopy _defaultAlertingDuration];
         v7 = [v6 initWithInvalidationInterval:?];
         v8 = SAUILogElementViewControlling;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = MEMORY[0x26D6A1D80](v3);
+          v9 = MEMORY[0x26D6A1D80](element);
           *buf = 138543618;
           v14 = v7;
           v15 = 2114;
@@ -1653,7 +1653,7 @@ void __128__SAUILayoutSpecifyingElementViewController__alertingActivityAssertion
           _os_log_impl(&dword_26C482000, v8, OS_LOG_TYPE_DEFAULT, "Created alert assertion (%{public}@) for element: %{public}@", buf, 0x16u);
         }
 
-        objc_initWeak(buf, v5);
+        objc_initWeak(buf, selfCopy);
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __80__SAUILayoutSpecifyingElementViewController__configureAlertAssertionIfNecessary__block_invoke;
@@ -1665,35 +1665,35 @@ void __128__SAUILayoutSpecifyingElementViewController__alertingActivityAssertion
 
         objc_destroyWeak(&v12);
         objc_destroyWeak(buf);
-        objc_sync_exit(v5);
+        objc_sync_exit(selfCopy);
       }
     }
   }
 }
 
-- (void)_invalidatePreferredLayoutModeAssertionWithReason:(int64_t)a3
+- (void)_invalidatePreferredLayoutModeAssertionWithReason:(int64_t)reason
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = SAUILogElementViewControlling;
   if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = SAUIStringFromLayoutModeChangeReason(a3);
+    v7 = SAUIStringFromLayoutModeChangeReason(reason);
     *buf = 138543362;
     v18 = v7;
     _os_log_impl(&dword_26C482000, v6, OS_LOG_TYPE_DEFAULT, "Invalidate preferred layout mode assertion with reason: %{public}@", buf, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if (a3 <= 4 && ((1 << a3) & 0x1A) != 0 || !v8->_cooldownAssertion)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (reason <= 4 && ((1 << reason) & 0x1A) != 0 || !selfCopy->_cooldownAssertion)
   {
-    preferredLayoutModeAssertion = v8->_preferredLayoutModeAssertion;
-    v10 = SAUIStringFromLayoutModeChangeReason(a3);
+    preferredLayoutModeAssertion = selfCopy->_preferredLayoutModeAssertion;
+    v10 = SAUIStringFromLayoutModeChangeReason(reason);
     [(SAAssertion *)preferredLayoutModeAssertion invalidateWithReason:v10];
 
-    WeakRetained = objc_loadWeakRetained(&v8->_layoutHost);
-    [WeakRetained preferredLayoutModeDidInvalidateForLayoutSpecifier:v8];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_layoutHost);
+    [WeakRetained preferredLayoutModeDidInvalidateForLayoutSpecifier:selfCopy];
   }
 
   else
@@ -1701,26 +1701,26 @@ void __128__SAUILayoutSpecifyingElementViewController__alertingActivityAssertion
     v12 = SAUILogElementViewControlling;
     if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
     {
-      cooldownAssertion = v8->_cooldownAssertion;
+      cooldownAssertion = selfCopy->_cooldownAssertion;
       *buf = 138543362;
       v18 = cooldownAssertion;
       _os_log_impl(&dword_26C482000, v12, OS_LOG_TYPE_DEFAULT, "Deferring preferred layout mode assertion invalidation due to existing cooldown assertion: %{public}@", buf, 0xCu);
     }
 
-    objc_initWeak(buf, v8);
-    v14 = v8->_cooldownAssertion;
+    objc_initWeak(buf, selfCopy);
+    v14 = selfCopy->_cooldownAssertion;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __95__SAUILayoutSpecifyingElementViewController__invalidatePreferredLayoutModeAssertionWithReason___block_invoke;
     v15[3] = &unk_279D327D8;
     objc_copyWeak(v16, buf);
-    v16[1] = a3;
+    v16[1] = reason;
     [(SAAutomaticallyInvalidatingAssertion *)v14 addInvalidationBlock:v15];
     objc_destroyWeak(v16);
     objc_destroyWeak(buf);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 void __95__SAUILayoutSpecifyingElementViewController__invalidatePreferredLayoutModeAssertionWithReason___block_invoke(uint64_t a1)
@@ -1743,9 +1743,9 @@ void __95__SAUILayoutSpecifyingElementViewController__invalidatePreferredLayoutM
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SAUILayoutSpecifyingElementViewController *)self view];
-    v5 = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
-    [WeakRetained sensorRegionInContentView:v4 fromViewProvider:v5];
+    view = [(SAUILayoutSpecifyingElementViewController *)self view];
+    elementViewProvider = [(SAUILayoutSpecifyingElementViewController *)self elementViewProvider];
+    [WeakRetained sensorRegionInContentView:view fromViewProvider:elementViewProvider];
     v7 = v6;
     v9 = v8;
   }
@@ -1763,30 +1763,30 @@ void __95__SAUILayoutSpecifyingElementViewController__invalidatePreferredLayoutM
   return result;
 }
 
-- (void)_insertSnapshotView:(id)a3
+- (void)_insertSnapshotView:(id)view
 {
-  v4 = a3;
-  v5 = [(SAUILayoutSpecifyingElementViewController *)self view];
-  [v5 insertSubview:v4 belowSubview:self->_contentsTransitionShadowView];
+  viewCopy = view;
+  view = [(SAUILayoutSpecifyingElementViewController *)self view];
+  [view insertSubview:viewCopy belowSubview:self->_contentsTransitionShadowView];
 }
 
-- (void)elementRequestsNegativeResponse:(id)a3
+- (void)elementRequestsNegativeResponse:(id)response
 {
-  v5 = a3;
-  v4 = [(SAUILayoutSpecifyingElementViewController *)self _elementHost];
+  responseCopy = response;
+  _elementHost = [(SAUILayoutSpecifyingElementViewController *)self _elementHost];
   if (objc_opt_respondsToSelector())
   {
-    [v4 elementRequestsNegativeResponse:v5];
+    [_elementHost elementRequestsNegativeResponse:responseCopy];
   }
 }
 
-- (void)elementRequestsSignificantUpdateTransition:(id)a3
+- (void)elementRequestsSignificantUpdateTransition:(id)transition
 {
-  v5 = a3;
-  v4 = [(SAUILayoutSpecifyingElementViewController *)self _elementHost];
+  transitionCopy = transition;
+  _elementHost = [(SAUILayoutSpecifyingElementViewController *)self _elementHost];
   if (objc_opt_respondsToSelector())
   {
-    [v4 elementRequestsSignificantUpdateTransition:v5];
+    [_elementHost elementRequestsSignificantUpdateTransition:transitionCopy];
   }
 }
 
@@ -1810,18 +1810,18 @@ uint64_t __105__SAUILayoutSpecifyingElementViewController_SubclassSupport__tempo
   return v8;
 }
 
-- (id)systemManagedAlertingActivityAssertionWithReason:(id)a3
+- (id)systemManagedAlertingActivityAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SAUILayoutSpecifyingElementViewController *)self systemManagedAlertingActivityAssertionWithReason:v4 preferredLayoutMode:[(SAUILayoutSpecifyingElementViewController *)self maximumSupportedLayoutMode]];
+  reasonCopy = reason;
+  v5 = [(SAUILayoutSpecifyingElementViewController *)self systemManagedAlertingActivityAssertionWithReason:reasonCopy preferredLayoutMode:[(SAUILayoutSpecifyingElementViewController *)self maximumSupportedLayoutMode]];
 
   return v5;
 }
 
-- (id)systemManagedAlertingActivityAssertionWithReason:(id)a3 preferredLayoutMode:(int64_t)a4
+- (id)systemManagedAlertingActivityAssertionWithReason:(id)reason preferredLayoutMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(SAUILayoutSpecifyingElementViewController *)self _alertingActivityAssertionWithReason:v6 implicitlyDismissable:0 withPreferredLayoutMode:a4];
+  reasonCopy = reason;
+  v7 = [(SAUILayoutSpecifyingElementViewController *)self _alertingActivityAssertionWithReason:reasonCopy implicitlyDismissable:0 withPreferredLayoutMode:mode];
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
@@ -1849,42 +1849,42 @@ void __131__SAUILayoutSpecifyingElementViewController_SubclassSupport__systemMan
 
 - (SAUILayoutModePreferring)layoutModePreference
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 layoutModePreference];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  layoutModePreference = [systemApertureLayoutSpecifyingOverrider layoutModePreference];
 
-  return v3;
+  return layoutModePreference;
 }
 
-- (unint64_t)customizationOptionsForLayoutMode:(int64_t)a3
+- (unint64_t)customizationOptionsForLayoutMode:(int64_t)mode
 {
-  v4 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v5 = [v4 customizationOptionsForLayoutMode:a3];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  v5 = [systemApertureLayoutSpecifyingOverrider customizationOptionsForLayoutMode:mode];
 
   return v5;
 }
 
 - (SAUIPreferredLayoutModeAssertion)preferredLayoutModeAssertion
 {
-  v2 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  v3 = [v2 preferredLayoutModeAssertion];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  preferredLayoutModeAssertion = [systemApertureLayoutSpecifyingOverrider preferredLayoutModeAssertion];
 
-  return v3;
+  return preferredLayoutModeAssertion;
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
-  v6 = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
-  [v6 setPreferredLayoutMode:a3 reason:a4];
+  systemApertureLayoutSpecifyingOverrider = [(SAElementViewProviding *)self->_elementViewProvider systemApertureLayoutSpecifyingOverrider];
+  [systemApertureLayoutSpecifyingOverrider setPreferredLayoutMode:mode reason:reason];
 }
 
-- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)specifier
 {
   [(SAUILayoutSpecifyingElementViewController *)self _invalidatePreferredLayoutModeAssertionWithReason:1];
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   [WeakRetained preferredLayoutModeDidInvalidateForLayoutSpecifier:self];
 }
 
-- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)specifier
 {
   if ([(SAUILayoutSpecifyingElementViewController *)self layoutMode]>= 1)
   {
@@ -1893,7 +1893,7 @@ void __131__SAUILayoutSpecifyingElementViewController_SubclassSupport__systemMan
   }
 }
 
-- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)a3
+- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)specifier
 {
   if ([(SAUILayoutSpecifyingElementViewController *)self layoutMode]>= 1)
   {
@@ -1902,10 +1902,10 @@ void __131__SAUILayoutSpecifyingElementViewController_SubclassSupport__systemMan
   }
 }
 
-- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)a3
+- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   [WeakRetained edgeOutsetsForSize:{width, height}];
   v7 = v6;
@@ -1924,42 +1924,42 @@ void __131__SAUILayoutSpecifyingElementViewController_SubclassSupport__systemMan
   return result;
 }
 
-- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained preferredPromotionDidInvalidateForLayoutSpecifier:v5];
+    [WeakRetained preferredPromotionDidInvalidateForLayoutSpecifier:specifierCopy];
   }
 }
 
-- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained preferredComponentViewSizeDidInvalidateForLayoutSpecifier:v5];
+    [WeakRetained preferredComponentViewSizeDidInvalidateForLayoutSpecifier:specifierCopy];
   }
 }
 
-- (void)setSensorObscuringShadowProgress:(double)a3
+- (void)setSensorObscuringShadowProgress:(double)progress
 {
-  if (self->_sensorObscuringShadowProgress != a3)
+  if (self->_sensorObscuringShadowProgress != progress)
   {
     v6[6] = v3;
     v6[7] = v4;
-    self->_sensorObscuringShadowProgress = a3;
+    self->_sensorObscuringShadowProgress = progress;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __95__SAUILayoutSpecifyingElementViewController_SubclassSupport__setSensorObscuringShadowProgress___block_invoke;
     v6[3] = &unk_279D32820;
     v6[4] = self;
-    *&v6[5] = a3;
-    LODWORD(a3) = *MEMORY[0x277CD9DD0];
+    *&v6[5] = progress;
+    LODWORD(progress) = *MEMORY[0x277CD9DD0];
     LODWORD(v5) = *(MEMORY[0x277CD9DD0] + 8);
-    [MEMORY[0x277D75D18] _modifyAnimationsWithPreferredFrameRateRange:0 updateReason:v6 animations:{a3, COERCE_DOUBLE(*(MEMORY[0x277CD9DD0] + 4)), v5}];
+    [MEMORY[0x277D75D18] _modifyAnimationsWithPreferredFrameRateRange:0 updateReason:v6 animations:{progress, COERCE_DOUBLE(*(MEMORY[0x277CD9DD0] + 4)), v5}];
   }
 }
 
@@ -1997,7 +1997,7 @@ void __131__SAUILayoutSpecifyingElementViewController_SubclassSupport__systemMan
 
 - (void)_defaultAlertingDuration
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 }
 
 @end

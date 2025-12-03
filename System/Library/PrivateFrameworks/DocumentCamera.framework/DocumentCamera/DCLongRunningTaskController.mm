@@ -1,13 +1,13 @@
 @interface DCLongRunningTaskController
 - (DCLongRunningTaskController)init;
-- (DCLongRunningTaskController)initWithWindow:(id)a3 intervalBeforeOpeningProgressDialog:(double)a4;
+- (DCLongRunningTaskController)initWithWindow:(id)window intervalBeforeOpeningProgressDialog:(double)dialog;
 - (void)closeProgressDialog;
 - (void)completeTaskIfNecessary;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)openProgressDialog;
-- (void)startTask:(id)a3 completionBlock:(id)a4;
+- (void)startTask:(id)task completionBlock:(id)block;
 - (void)updateProgress;
-- (void)willDismissProgressViewController:(id)a3;
+- (void)willDismissProgressViewController:(id)controller;
 @end
 
 @implementation DCLongRunningTaskController
@@ -19,34 +19,34 @@
   return 0;
 }
 
-- (DCLongRunningTaskController)initWithWindow:(id)a3 intervalBeforeOpeningProgressDialog:(double)a4
+- (DCLongRunningTaskController)initWithWindow:(id)window intervalBeforeOpeningProgressDialog:(double)dialog
 {
-  v6 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = DCLongRunningTaskController;
   v7 = [(DCLongRunningTaskController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(DCLongRunningTaskController *)v7 setIntervalBeforeOpeningProgressDialog:a4];
-    [(DCLongRunningTaskController *)v8 setWindow:v6];
+    [(DCLongRunningTaskController *)v7 setIntervalBeforeOpeningProgressDialog:dialog];
+    [(DCLongRunningTaskController *)v8 setWindow:windowCopy];
   }
 
   return v8;
 }
 
-- (void)startTask:(id)a3 completionBlock:(id)a4
+- (void)startTask:(id)task completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  blockCopy = block;
   [(DCLongRunningTaskController *)self setKeepAlive:self];
-  [(DCLongRunningTaskController *)self setCompletionBlock:v7];
+  [(DCLongRunningTaskController *)self setCompletionBlock:blockCopy];
 
   v8 = [objc_alloc(MEMORY[0x277CCAC48]) initWithParent:0 userInfo:0];
   [(DCLongRunningTaskController *)self setProgress:v8];
 
-  v9 = [(DCLongRunningTaskController *)self progress];
-  [v9 addObserver:self forKeyPath:@"fractionCompleted" options:0 context:DCLongRunningTaskControllerKVOContext];
+  progress = [(DCLongRunningTaskController *)self progress];
+  [progress addObserver:self forKeyPath:@"fractionCompleted" options:0 context:DCLongRunningTaskControllerKVOContext];
 
   v10 = dispatch_semaphore_create(0);
   v11 = dispatch_get_global_queue(0, 0);
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke;
   block[3] = &unk_278F93128;
-  v12 = v6;
+  v12 = taskCopy;
   v21 = v12;
   block[4] = self;
   v13 = v10;
@@ -65,13 +65,13 @@
   v15 = dispatch_time(0, (v14 * 1000000000.0));
   if (dispatch_semaphore_wait(v13, v15))
   {
-    v16 = [(DCLongRunningTaskController *)self progress];
-    v17 = [v16 totalUnitCount];
+    progress2 = [(DCLongRunningTaskController *)self progress];
+    totalUnitCount = [progress2 totalUnitCount];
 
-    if (v17 != 1)
+    if (totalUnitCount != 1)
     {
-      v18 = [MEMORY[0x277CBEAA8] date];
-      [(DCLongRunningTaskController *)self setOpenProgressDate:v18];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(DCLongRunningTaskController *)self setOpenProgressDate:date];
 
       [(DCLongRunningTaskController *)self openProgressDialog];
     }
@@ -93,9 +93,9 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (DCLongRunningTaskControllerKVOContext == a6)
+  if (DCLongRunningTaskControllerKVOContext == context)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -109,33 +109,33 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
   {
     v6.receiver = self;
     v6.super_class = DCLongRunningTaskController;
-    [(DCLongRunningTaskController *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DCLongRunningTaskController *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)completeTaskIfNecessary
 {
-  v3 = [(DCLongRunningTaskController *)self completionBlock];
+  completionBlock = [(DCLongRunningTaskController *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
-    v4 = [(DCLongRunningTaskController *)self completionBlock];
-    (v4)[2](v4, [(DCLongRunningTaskController *)self isCancelled]);
+    completionBlock2 = [(DCLongRunningTaskController *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, [(DCLongRunningTaskController *)self isCancelled]);
 
     [(DCLongRunningTaskController *)self setCompletionBlock:0];
   }
 
-  v5 = [(DCLongRunningTaskController *)self progress];
+  progress = [(DCLongRunningTaskController *)self progress];
 
-  if (v5)
+  if (progress)
   {
-    v6 = [(DCLongRunningTaskController *)self openProgressDate];
+    openProgressDate = [(DCLongRunningTaskController *)self openProgressDate];
 
-    if (v6)
+    if (openProgressDate)
     {
-      v7 = [MEMORY[0x277CBEAA8] date];
-      v8 = [(DCLongRunningTaskController *)self openProgressDate];
-      [v7 timeIntervalSinceDate:v8];
+      date = [MEMORY[0x277CBEAA8] date];
+      openProgressDate2 = [(DCLongRunningTaskController *)self openProgressDate];
+      [date timeIntervalSinceDate:openProgressDate2];
       v10 = v9;
 
       if (v10 < 0.5)
@@ -147,8 +147,8 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
       [(DCLongRunningTaskController *)self setOpenProgressDate:0];
     }
 
-    v11 = [(DCLongRunningTaskController *)self progress];
-    [v11 removeObserver:self forKeyPath:@"fractionCompleted"];
+    progress2 = [(DCLongRunningTaskController *)self progress];
+    [progress2 removeObserver:self forKeyPath:@"fractionCompleted"];
 
     [(DCLongRunningTaskController *)self setProgress:0];
   }
@@ -158,34 +158,34 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
 
 - (void)updateProgress
 {
-  v3 = [(DCLongRunningTaskController *)self progress];
-  v4 = [v3 totalUnitCount];
+  progress = [(DCLongRunningTaskController *)self progress];
+  totalUnitCount = [progress totalUnitCount];
 
-  if (v4 >= 1)
+  if (totalUnitCount >= 1)
   {
-    v5 = [(DCLongRunningTaskController *)self updateProgressUIBlock];
+    updateProgressUIBlock = [(DCLongRunningTaskController *)self updateProgressUIBlock];
 
-    if (v5)
+    if (updateProgressUIBlock)
     {
-      v6 = [(DCLongRunningTaskController *)self progressToStringTransformer];
+      progressToStringTransformer = [(DCLongRunningTaskController *)self progressToStringTransformer];
 
-      if (v6)
+      if (progressToStringTransformer)
       {
-        v7 = [(DCLongRunningTaskController *)self progress];
-        v8 = [v7 completedUnitCount];
+        progress2 = [(DCLongRunningTaskController *)self progress];
+        completedUnitCount = [progress2 completedUnitCount];
 
-        if (v8 + 1 < v4)
+        if (completedUnitCount + 1 < totalUnitCount)
         {
-          v9 = v8 + 1;
+          v9 = completedUnitCount + 1;
         }
 
         else
         {
-          v9 = v4;
+          v9 = totalUnitCount;
         }
 
-        v10 = [(DCLongRunningTaskController *)self progressToStringTransformer];
-        v11 = v10[2](v10, v9, v4);
+        progressToStringTransformer2 = [(DCLongRunningTaskController *)self progressToStringTransformer];
+        v11 = progressToStringTransformer2[2](progressToStringTransformer2, v9, totalUnitCount);
       }
 
       else
@@ -200,30 +200,30 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
         v11 = &stru_285C55A80;
       }
 
-      v13 = [(DCLongRunningTaskController *)self updateProgressUIBlock];
-      v14 = [(DCLongRunningTaskController *)self progress];
-      [v14 fractionCompleted];
-      (v13)[2](v13, v11);
+      updateProgressUIBlock2 = [(DCLongRunningTaskController *)self updateProgressUIBlock];
+      progress3 = [(DCLongRunningTaskController *)self progress];
+      [progress3 fractionCompleted];
+      (updateProgressUIBlock2)[2](updateProgressUIBlock2, v11);
 
-      v15 = [MEMORY[0x277CBEAA8] date];
-      v16 = [(DCLongRunningTaskController *)self lastAccessibilityAnnouncementDate];
-      if (v16)
+      date = [MEMORY[0x277CBEAA8] date];
+      lastAccessibilityAnnouncementDate = [(DCLongRunningTaskController *)self lastAccessibilityAnnouncementDate];
+      if (lastAccessibilityAnnouncementDate)
       {
-        v17 = v16;
-        v18 = [(DCLongRunningTaskController *)self lastAccessibilityAnnouncementDate];
-        [v15 timeIntervalSinceDate:v18];
+        v17 = lastAccessibilityAnnouncementDate;
+        lastAccessibilityAnnouncementDate2 = [(DCLongRunningTaskController *)self lastAccessibilityAnnouncementDate];
+        [date timeIntervalSinceDate:lastAccessibilityAnnouncementDate2];
         v20 = v19;
 
         if (v20 > 3.0)
         {
-          v21 = [(DCLongRunningTaskController *)self progress];
-          [v21 fractionCompleted];
+          progress4 = [(DCLongRunningTaskController *)self progress];
+          [progress4 fractionCompleted];
           v23 = (v22 * 100.0);
 
           v24 = [DCLocalization localizedStringForKey:@"%lu%% complete" value:@"%lu%% complete" table:@"Localizable"];
           v25 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v24, v23];
           DCAccessibilityPostHighPriorityAnnouncementNotification(0, v25);
-          [(DCLongRunningTaskController *)self setLastAccessibilityAnnouncementDate:v15];
+          [(DCLongRunningTaskController *)self setLastAccessibilityAnnouncementDate:date];
         }
       }
     }
@@ -237,12 +237,12 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
   [(DCLongRunningTaskController *)self setProgressViewController:v4];
   if ([(DCLongRunningTaskController *)self shouldShowCircularProgress])
   {
-    v5 = [(DCLongRunningTaskController *)self progressViewController];
-    v6 = [v5 view];
+    progressViewController = [(DCLongRunningTaskController *)self progressViewController];
+    view = [progressViewController view];
 
-    v7 = [(DCLongRunningTaskController *)self progress];
-    v8 = [(DCLongRunningTaskController *)self progressViewController];
-    [v8 setObservedProgress:v7];
+    progress = [(DCLongRunningTaskController *)self progress];
+    progressViewController2 = [(DCLongRunningTaskController *)self progressViewController];
+    [progressViewController2 setObservedProgress:progress];
   }
 
   if ([(DCLongRunningTaskController *)self shouldShowCancelButton])
@@ -269,26 +269,26 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
   v24 = v4;
   v12 = v4;
   [(DCLongRunningTaskController *)self setUpdateProgressUIBlock:v23];
-  v13 = [(DCLongRunningTaskController *)self progressViewController];
-  [v3 setContentViewController:v13];
+  progressViewController3 = [(DCLongRunningTaskController *)self progressViewController];
+  [v3 setContentViewController:progressViewController3];
 
-  v14 = [(DCLongRunningTaskController *)self progressViewController];
-  v15 = [v14 view];
+  progressViewController4 = [(DCLongRunningTaskController *)self progressViewController];
+  view2 = [progressViewController4 view];
 
   [(DCLongRunningTaskController *)self updateProgress];
   [(DCLongRunningTaskController *)self setProgressViewControllerDidFinishPresenting:0];
   [(DCLongRunningTaskController *)self setShouldDismissProgressViewController:0];
-  v16 = [(DCLongRunningTaskController *)self viewControllerToPresentFrom];
-  v17 = v16;
-  if (v16)
+  viewControllerToPresentFrom = [(DCLongRunningTaskController *)self viewControllerToPresentFrom];
+  v17 = viewControllerToPresentFrom;
+  if (viewControllerToPresentFrom)
   {
-    v18 = v16;
+    rootViewController = viewControllerToPresentFrom;
   }
 
   else
   {
-    v19 = [(DCLongRunningTaskController *)self window];
-    v18 = [v19 rootViewController];
+    window = [(DCLongRunningTaskController *)self window];
+    rootViewController = [window rootViewController];
   }
 
   v21[0] = MEMORY[0x277D85DD0];
@@ -296,8 +296,8 @@ void __57__DCLongRunningTaskController_startTask_completionBlock___block_invoke(
   v21[2] = __49__DCLongRunningTaskController_openProgressDialog__block_invoke_3;
   v21[3] = &unk_278F92DE8;
   v21[4] = self;
-  v22 = v18;
-  v20 = v18;
+  v22 = rootViewController;
+  v20 = rootViewController;
   [v20 presentViewController:v3 animated:1 completion:v21];
 }
 
@@ -335,20 +335,20 @@ uint64_t __49__DCLongRunningTaskController_openProgressDialog__block_invoke_3(ui
 
 - (void)closeProgressDialog
 {
-  v3 = [(DCLongRunningTaskController *)self progressViewController];
+  progressViewController = [(DCLongRunningTaskController *)self progressViewController];
 
-  if (v3)
+  if (progressViewController)
   {
-    v4 = [(DCLongRunningTaskController *)self progressViewController];
-    [v4 setProgressDelegate:0];
+    progressViewController2 = [(DCLongRunningTaskController *)self progressViewController];
+    [progressViewController2 setProgressDelegate:0];
 
-    v5 = [(DCLongRunningTaskController *)self progressViewController];
-    v6 = [v5 presentingViewController];
+    progressViewController3 = [(DCLongRunningTaskController *)self progressViewController];
+    presentingViewController = [progressViewController3 presentingViewController];
 
     [(DCLongRunningTaskController *)self setProgressViewController:0];
     if ([(DCLongRunningTaskController *)self progressViewControllerDidFinishPresenting])
     {
-      [v6 dismissViewControllerAnimated:1 completion:0];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
     }
 
     else
@@ -358,10 +358,10 @@ uint64_t __49__DCLongRunningTaskController_openProgressDialog__block_invoke_3(ui
   }
 }
 
-- (void)willDismissProgressViewController:(id)a3
+- (void)willDismissProgressViewController:(id)controller
 {
-  v3 = [(DCLongRunningTaskController *)self progress];
-  [v3 cancel];
+  progress = [(DCLongRunningTaskController *)self progress];
+  [progress cancel];
 }
 
 @end

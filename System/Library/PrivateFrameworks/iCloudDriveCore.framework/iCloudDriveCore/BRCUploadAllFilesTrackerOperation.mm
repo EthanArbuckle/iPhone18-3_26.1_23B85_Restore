@@ -1,23 +1,23 @@
 @interface BRCUploadAllFilesTrackerOperation
-- (BRCUploadAllFilesTrackerOperation)initWithSessionContext:(id)a3 appLibraries:(id)a4;
+- (BRCUploadAllFilesTrackerOperation)initWithSessionContext:(id)context appLibraries:(id)libraries;
 - (NSString)description;
 - (void)cancel;
-- (void)clientZone:(id)a3 didFinishUploadingAllItemsWithError:(id)a4;
+- (void)clientZone:(id)zone didFinishUploadingAllItemsWithError:(id)error;
 - (void)main;
 @end
 
 @implementation BRCUploadAllFilesTrackerOperation
 
-- (BRCUploadAllFilesTrackerOperation)initWithSessionContext:(id)a3 appLibraries:(id)a4
+- (BRCUploadAllFilesTrackerOperation)initWithSessionContext:(id)context appLibraries:(id)libraries
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 syncContextProvider];
-  v9 = [v8 defaultSyncContext];
+  contextCopy = context;
+  librariesCopy = libraries;
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v28.receiver = self;
   v28.super_class = BRCUploadAllFilesTrackerOperation;
-  v10 = [(_BRCOperation *)&v28 initWithName:@"upload-tracker" syncContext:v9 sessionContext:v6];
+  v10 = [(_BRCOperation *)&v28 initWithName:@"upload-tracker" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v10)
   {
@@ -26,7 +26,7 @@
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = v7;
+    v12 = librariesCopy;
     v13 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v13)
     {
@@ -42,8 +42,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v24 + 1) + 8 * v16) defaultClientZone];
-          [v11 addObject:v17];
+          defaultClientZone = [*(*(&v24 + 1) + 8 * v16) defaultClientZone];
+          [v11 addObject:defaultClientZone];
 
           ++v16;
         }
@@ -55,13 +55,13 @@
       while (v14);
     }
 
-    v18 = [v11 allObjects];
-    v19 = [v18 mutableCopy];
+    allObjects = [v11 allObjects];
+    v19 = [allObjects mutableCopy];
     zonesStillUploading = v10->_zonesStillUploading;
     v10->_zonesStillUploading = v19;
 
-    v21 = [MEMORY[0x277CBC4F8] br_logout];
-    [(_BRCOperation *)v10 setGroup:v21];
+    br_logout = [MEMORY[0x277CBC4F8] br_logout];
+    [(_BRCOperation *)v10 setGroup:br_logout];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -73,14 +73,14 @@
   v6.receiver = self;
   v6.super_class = BRCUploadAllFilesTrackerOperation;
   [(_BRCOperation *)&v6 cancel];
-  v3 = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
-  v4 = [v3 serialQueue];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
+  serialQueue = [clientReadWriteDatabaseFacade serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__BRCUploadAllFilesTrackerOperation_cancel__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __43__BRCUploadAllFilesTrackerOperation_cancel__block_invoke(uint64_t a1)
@@ -126,30 +126,30 @@ void __43__BRCUploadAllFilesTrackerOperation_cancel__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientZone:(id)a3 didFinishUploadingAllItemsWithError:(id)a4
+- (void)clientZone:(id)zone didFinishUploadingAllItemsWithError:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
-  [v8 assertOnQueue];
+  zoneCopy = zone;
+  errorCopy = error;
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
+  [clientReadWriteDatabaseFacade assertOnQueue];
 
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v6 zoneName];
-    v22 = v21;
+    zoneName = [zoneCopy zoneName];
+    v22 = zoneName;
     *buf = 138413058;
     v23 = @"success";
-    v27 = self;
-    if (v7)
+    selfCopy = self;
+    if (errorCopy)
     {
-      v23 = v7;
+      v23 = errorCopy;
     }
 
     v28 = 2112;
-    v29 = v21;
+    v29 = zoneName;
     v30 = 2112;
     v31 = v23;
     v32 = 2112;
@@ -157,13 +157,13 @@ void __43__BRCUploadAllFilesTrackerOperation_cancel__block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] %@: finished uploading all items in %@: %@%@", buf, 0x2Au);
   }
 
-  [(NSMutableArray *)self->_zonesStillUploading removeObject:v6];
-  if (v7)
+  [(NSMutableArray *)self->_zonesStillUploading removeObject:zoneCopy];
+  if (errorCopy)
   {
     perContainerIDError = self->_perContainerIDError;
-    v12 = [v6 mangledID];
-    v13 = [v12 aliasTargetContainerString];
-    [(NSMutableDictionary *)perContainerIDError setObject:v7 forKeyedSubscript:v13];
+    mangledID = [zoneCopy mangledID];
+    aliasTargetContainerString = [mangledID aliasTargetContainerString];
+    [(NSMutableDictionary *)perContainerIDError setObject:errorCopy forKeyedSubscript:aliasTargetContainerString];
   }
 
   if (![(NSMutableArray *)self->_zonesStillUploading count]&& self->_zonesStillUploading)
@@ -177,10 +177,10 @@ void __43__BRCUploadAllFilesTrackerOperation_cancel__block_invoke(uint64_t a1)
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v18 = [v14 errorWithDomain:v15 code:21 userInfo:v17];
 
-      v7 = v18;
+      errorCopy = v18;
     }
 
-    [(_BRCOperation *)self completedWithResult:0 error:v7];
+    [(_BRCOperation *)self completedWithResult:0 error:errorCopy];
     zonesStillUploading = self->_zonesStillUploading;
     self->_zonesStillUploading = 0;
   }
@@ -191,14 +191,14 @@ void __43__BRCUploadAllFilesTrackerOperation_cancel__block_invoke(uint64_t a1)
 - (void)main
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
-  v4 = [v3 serialQueue];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super.super._sessionContext clientReadWriteDatabaseFacade];
+  serialQueue = [clientReadWriteDatabaseFacade serialQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __41__BRCUploadAllFilesTrackerOperation_main__block_invoke;
   v15[3] = &unk_2784FF450;
   v15[4] = self;
-  v5 = v4;
+  v5 = serialQueue;
   v6 = v15;
   v7 = objc_autoreleasePoolPush();
   v16 = 0uLL;

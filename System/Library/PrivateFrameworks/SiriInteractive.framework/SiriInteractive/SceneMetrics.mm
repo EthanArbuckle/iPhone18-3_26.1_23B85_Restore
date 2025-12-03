@@ -1,7 +1,7 @@
 @interface SceneMetrics
 - (CGSize)size;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SceneMetrics
@@ -14,19 +14,19 @@
   return result;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_267515880(a3);
+  selfCopy = self;
+  sub_267515880(dictionary);
   swift_unknownObjectRelease();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_267515A10(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_267515A10(coderCopy);
 }
 
 @end

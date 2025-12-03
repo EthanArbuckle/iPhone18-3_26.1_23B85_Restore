@@ -7,28 +7,28 @@
 + (id)libraryForWatchApplications
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D37B50] sharedInstance];
-  v3 = [MEMORY[0x277D37B50] activeDeviceSelectorBlock];
-  v4 = [v2 getDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  activeDeviceSelectorBlock = [MEMORY[0x277D37B50] activeDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D37B50] getDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
   v6 = cslprf_app_library_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 pairingID];
+    pairingID = [firstObject pairingID];
     v13 = 138412290;
-    v14 = v7;
+    v14 = pairingID;
     _os_log_impl(&dword_22CE92000, v6, OS_LOG_TYPE_INFO, "Device Registry provided device:%@", &v13, 0xCu);
   }
 
-  v8 = [v5 supportsCapability:486198456];
+  v8 = [firstObject supportsCapability:486198456];
   v9 = off_278743FC0;
   if (!v8)
   {
     v9 = off_278744050;
   }
 
-  v10 = [objc_alloc(*v9) initWithPairedWatch:v5];
+  v10 = [objc_alloc(*v9) initWithPairedWatch:firstObject];
 
   v11 = *MEMORY[0x277D85DE8];
 

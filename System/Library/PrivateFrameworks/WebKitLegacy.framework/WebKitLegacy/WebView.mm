@@ -1,76 +1,76 @@
 @interface WebView
-+ (BOOL)_canHandleRequest:(id)a3 forMainFrame:(BOOL)a4;
++ (BOOL)_canHandleRequest:(id)request forMainFrame:(BOOL)frame;
 + (BOOL)_isUnderMemoryPressure;
-+ (BOOL)_representationExistsForURLScheme:(id)a3;
-+ (BOOL)_viewClass:(Class *)a3 andRepresentationClass:(Class *)a4 forMIMEType:(id)a5 allowingPlugins:(BOOL)a6;
-+ (BOOL)canShowFile:(id)a3;
++ (BOOL)_representationExistsForURLScheme:(id)scheme;
++ (BOOL)_viewClass:(Class *)class andRepresentationClass:(Class *)representationClass forMIMEType:(id)type allowingPlugins:(BOOL)plugins;
++ (BOOL)canShowFile:(id)file;
 + (BOOL)canShowMIMETypeAsHTML:(NSString *)MIMEType;
 + (Class)_getPDFRepresentationClass;
 + (Class)_getPDFViewClass;
 + (NSArray)MIMETypesShownAsHTML;
-+ (id)_MIMETypeForFile:(id)a3;
-+ (id)_decodeData:(id)a3;
-+ (id)_generatedMIMETypeForURLScheme:(id)a3;
++ (id)_MIMETypeForFile:(id)file;
++ (id)_decodeData:(id)data;
++ (id)_generatedMIMETypeForURLScheme:(id)scheme;
 + (id)_productivityDocumentMIMETypes;
-+ (id)_standardUserAgentWithApplicationName:(id)a3;
++ (id)_standardUserAgentWithApplicationName:(id)name;
 + (id)_supportedMIMETypes;
 + (unint64_t)_maxCacheModelInAnyInstance;
-+ (void)_addOriginAccessAllowListEntryWithSourceOrigin:(id)a3 destinationProtocol:(id)a4 destinationHost:(id)a5 allowDestinationSubdomains:(BOOL)a6;
-+ (void)_addUserScriptToGroup:(id)a3 world:(id)a4 source:(id)a5 url:(id)a6 includeMatchPatternStrings:(id)a7 excludeMatchPatternStrings:(id)a8 injectionTime:(int)a9 injectedFrames:(int)a10;
-+ (void)_addUserStyleSheetToGroup:(id)a3 world:(id)a4 source:(id)a5 url:(id)a6 includeMatchPatternStrings:(id)a7 excludeMatchPatternStrings:(id)a8 injectedFrames:(int)a9;
++ (void)_addOriginAccessAllowListEntryWithSourceOrigin:(id)origin destinationProtocol:(id)protocol destinationHost:(id)host allowDestinationSubdomains:(BOOL)subdomains;
++ (void)_addUserScriptToGroup:(id)group world:(id)world source:(id)source url:(id)url includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings injectionTime:(int)time injectedFrames:(int)self0;
++ (void)_addUserStyleSheetToGroup:(id)group world:(id)world source:(id)source url:(id)url includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings injectedFrames:(int)frames;
 + (void)_disableRemoteInspector;
 + (void)_enableRemoteInspector;
-+ (void)_makeAllWebViewsPerformSelector:(SEL)a3;
-+ (void)_preferencesRemovedNotification:(id)a3;
-+ (void)_registerPluginMIMEType:(id)a3;
-+ (void)_registerURLSchemeAsAllowingDatabaseAccessInPrivateBrowsing:(id)a3;
-+ (void)_registerURLSchemeAsSecure:(id)a3;
-+ (void)_registerViewClass:(Class)a3 representationClass:(Class)a4 forURLScheme:(id)a5;
-+ (void)_removeAllUserContentFromGroup:(id)a3;
-+ (void)_removeOriginAccessAllowListEntryWithSourceOrigin:(id)a3 destinationProtocol:(id)a4 destinationHost:(id)a5 allowDestinationSubdomains:(BOOL)a6;
-+ (void)_removeUserScriptFromGroup:(id)a3 world:(id)a4 url:(id)a5;
-+ (void)_removeUserScriptsFromGroup:(id)a3 world:(id)a4;
-+ (void)_removeUserStyleSheetFromGroup:(id)a3 world:(id)a4 url:(id)a5;
-+ (void)_removeUserStyleSheetsFromGroup:(id)a3 world:(id)a4;
-+ (void)_reportException:(OpaqueJSValue *)a3 inContext:(OpaqueJSContext *)a4;
-+ (void)_setAlwaysUsesComplexTextCodePath:(BOOL)a3;
-+ (void)_setCacheModel:(unint64_t)a3;
-+ (void)_setDomainRelaxationForbidden:(BOOL)a3 forURLScheme:(id)a4;
-+ (void)_setLoadResourcesSerially:(BOOL)a3;
-+ (void)_unregisterPluginMIMEType:(id)a3;
-+ (void)_unregisterViewClassAndRepresentationClassForMIMEType:(id)a3;
++ (void)_makeAllWebViewsPerformSelector:(SEL)selector;
++ (void)_preferencesRemovedNotification:(id)notification;
++ (void)_registerPluginMIMEType:(id)type;
++ (void)_registerURLSchemeAsAllowingDatabaseAccessInPrivateBrowsing:(id)browsing;
++ (void)_registerURLSchemeAsSecure:(id)secure;
++ (void)_registerViewClass:(Class)class representationClass:(Class)representationClass forURLScheme:(id)scheme;
++ (void)_removeAllUserContentFromGroup:(id)group;
++ (void)_removeOriginAccessAllowListEntryWithSourceOrigin:(id)origin destinationProtocol:(id)protocol destinationHost:(id)host allowDestinationSubdomains:(BOOL)subdomains;
++ (void)_removeUserScriptFromGroup:(id)group world:(id)world url:(id)url;
++ (void)_removeUserScriptsFromGroup:(id)group world:(id)world;
++ (void)_removeUserStyleSheetFromGroup:(id)group world:(id)world url:(id)url;
++ (void)_removeUserStyleSheetsFromGroup:(id)group world:(id)world;
++ (void)_reportException:(OpaqueJSValue *)exception inContext:(OpaqueJSContext *)context;
++ (void)_setAlwaysUsesComplexTextCodePath:(BOOL)path;
++ (void)_setCacheModel:(unint64_t)model;
++ (void)_setDomainRelaxationForbidden:(BOOL)forbidden forURLScheme:(id)scheme;
++ (void)_setLoadResourcesSerially:(BOOL)serially;
++ (void)_unregisterPluginMIMEType:(id)type;
++ (void)_unregisterViewClassAndRepresentationClassForMIMEType:(id)type;
 + (void)closeAllWebViews;
 + (void)enableWebThread;
 + (void)initialize;
 + (void)registerURLSchemeAsLocal:(NSString *)scheme;
 + (void)registerViewClass:(Class)viewClass representationClass:(Class)representationClass forMIMEType:(NSString *)MIMEType;
 + (void)setMIMETypesShownAsHTML:(NSArray *)MIMETypes;
-- (BOOL)_canResetZoom:(BOOL)a3;
-- (BOOL)_canShowMIMEType:(id)a3;
-- (BOOL)_canZoomIn:(BOOL)a3;
-- (BOOL)_canZoomOut:(BOOL)a3;
+- (BOOL)_canResetZoom:(BOOL)zoom;
+- (BOOL)_canShowMIMEType:(id)type;
+- (BOOL)_canZoomIn:(BOOL)in;
+- (BOOL)_canZoomOut:(BOOL)out;
 - (BOOL)_continuousCheckingAllowed;
 - (BOOL)_cookieEnabled;
-- (BOOL)_fetchCustomFixedPositionLayoutRect:(CGRect *)a3;
+- (BOOL)_fetchCustomFixedPositionLayoutRect:(CGRect *)rect;
 - (BOOL)_flushCompositingChanges;
 - (BOOL)_inFastImageScalingMode;
 - (BOOL)_isLoading;
 - (BOOL)_isSoftwareRenderable;
 - (BOOL)_isUsingAcceleratedCompositing;
 - (BOOL)_isViewVisible;
-- (BOOL)_locked_plugInsAreRunningInFrame:(id)a3;
+- (BOOL)_locked_plugInsAreRunningInFrame:(id)frame;
 - (BOOL)_paginationBehavesLikeColumns;
 - (BOOL)_pluginsAreRunning;
-- (BOOL)_requestStartDataInteraction:(CGPoint)a3 globalPosition:(CGPoint)a4;
+- (BOOL)_requestStartDataInteraction:(CGPoint)interaction globalPosition:(CGPoint)position;
 - (BOOL)_selectionIsAll;
 - (BOOL)_selectionIsCaret;
-- (BOOL)_setMediaLayer:(id)a3 forPluginView:(id)a4;
-- (BOOL)_shouldChangeSelectedDOMRange:(id)a3 toDOMRange:(id)a4 affinity:(unint64_t)a5 stillSelecting:(BOOL)a6;
-- (BOOL)_tryToPerformDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6;
+- (BOOL)_setMediaLayer:(id)layer forPluginView:(id)view;
+- (BOOL)_shouldChangeSelectedDOMRange:(id)range toDOMRange:(id)mRange affinity:(unint64_t)affinity stillSelecting:(BOOL)selecting;
+- (BOOL)_tryToPerformDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation;
 - (BOOL)_useDarkAppearance;
 - (BOOL)_useElevatedUserInterfaceLevel;
 - (BOOL)_useFixedLayout;
-- (BOOL)_viewClass:(Class *)a3 andRepresentationClass:(Class *)a4 forMIMEType:(id)a5;
+- (BOOL)_viewClass:(Class *)class andRepresentationClass:(Class *)representationClass forMIMEType:(id)type;
 - (BOOL)_wantsTelephoneNumberParsing;
 - (BOOL)_webGLEnabled;
 - (BOOL)acceptsFirstResponder;
@@ -82,19 +82,19 @@
 - (BOOL)canMakeTextStandardSize;
 - (BOOL)canMarkAllTextMatches;
 - (BOOL)defersCallbacks;
-- (BOOL)findString:(id)a3 options:(unint64_t)a4;
+- (BOOL)findString:(id)string options:(unint64_t)options;
 - (BOOL)goBack;
 - (BOOL)goForward;
 - (BOOL)goToBackForwardItem:(WebHistoryItem *)item;
 - (BOOL)isEditable;
 - (BOOL)isTrackingRepaints;
-- (BOOL)searchFor:(id)a3 direction:(BOOL)a4 caseSensitive:(BOOL)a5 wrap:(BOOL)a6 startInSelection:(BOOL)a7;
+- (BOOL)searchFor:(id)for direction:(BOOL)direction caseSensitive:(BOOL)sensitive wrap:(BOOL)wrap startInSelection:(BOOL)selection;
 - (BOOL)shouldClose;
 - (BOOL)supportsTextEncoding;
 - (BOOL)tabKeyCyclesThroughElements;
 - (BOOL)usesPageCache;
-- (CGPoint)_convertPointFromRootView:(CGPoint)a3;
-- (CGRect)_convertRectFromRootView:(CGRect)a3;
+- (CGPoint)_convertPointFromRootView:(CGPoint)view;
+- (CGRect)_convertRectFromRootView:(CGRect)view;
 - (CGRect)_dataInteractionCaretRect;
 - (CGRect)_draggedElementBounds;
 - (CGSize)_fixedLayoutSize;
@@ -104,7 +104,7 @@
 - (DOMDocument)mainFrameDocument;
 - (DOMRange)editableDOMRangeForPoint:(NSPoint)point;
 - (DOMRange)selectedDOMRange;
-- (DragData)dragDataForSession:(SEL)a3 client:(id)a4 global:(CGPoint)a5 operation:(CGPoint)a6;
+- (DragData)dragDataForSession:(SEL)session client:(id)client global:(CGPoint)global operation:(CGPoint)operation;
 - (NSDictionary)elementAtPoint:(NSPoint)point;
 - (NSSelectionAffinity)selectionAffinity;
 - (NSString)applicationNameForUserAgent;
@@ -118,7 +118,7 @@
 - (NSUndoManager)undoManager;
 - (NSWindow)hostWindow;
 - (String)_userAgentString;
-- (Vector<WTF::String,)_dictationAlternatives:()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)a3 :ObjectIdentifierMainThreadAccessTraits<uint64_t> :DictationContextType;
+- (Vector<WTF::String,)_dictationAlternatives:()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)f :ObjectIdentifierMainThreadAccessTraits<uint64_t> :DictationContextType;
 - (WebBackForwardList)backForwardList;
 - (WebEdgeInsets)_unobscuredSafeAreaInsets;
 - (WebFrame)mainFrame;
@@ -127,62 +127,62 @@
 - (double)_gapBetweenPages;
 - (double)_pageLength;
 - (double)estimatedProgress;
-- (float)_zoomMultiplier:(BOOL)a3;
+- (float)_zoomMultiplier:(BOOL)multiplier;
 - (float)mediaVolume;
 - (float)pageSizeMultiplier;
 - (float)textSizeMultiplier;
-- (id)DOMRangeOfString:(id)a3 relativeTo:(id)a4 options:(unint64_t)a5;
-- (id)_UIDelegateForSelector:(SEL)a3;
+- (id)DOMRangeOfString:(id)string relativeTo:(id)to options:(unint64_t)options;
+- (id)_UIDelegateForSelector:(SEL)selector;
 - (id)_UIDelegateForwarder;
 - (id)_UIKitDelegateForwarder;
-- (id)_contentsOfUserInterfaceItem:(id)a3;
+- (id)_contentsOfUserInterfaceItem:(id)item;
 - (id)_deviceOrientationProvider;
 - (id)_displayURL;
-- (id)_downloadURL:(id)a3;
-- (id)_editableElementsInRect:(CGRect)a3;
+- (id)_downloadURL:(id)l;
+- (id)_editableElementsInRect:(CGRect)rect;
 - (id)_editingDelegateForwarder;
-- (id)_elementAtWindowPoint:(CGPoint)a3;
+- (id)_elementAtWindowPoint:(CGPoint)point;
 - (id)_fixedPositionContent;
 - (id)_focusedFrame;
-- (id)_formDelegateForSelector:(SEL)a3;
+- (id)_formDelegateForSelector:(SEL)selector;
 - (id)_formDelegateForwarder;
 - (id)_frameLoadDelegateForwarder;
-- (id)_frameViewAtWindowPoint:(CGPoint)a3;
+- (id)_frameViewAtWindowPoint:(CGPoint)point;
 - (id)_geolocationProvider;
-- (id)_initWithArguments:(id)a3;
-- (id)_initWithFrame:(CGRect)a3 frameName:(id)a4 groupName:(id)a5;
+- (id)_initWithArguments:(id)arguments;
+- (id)_initWithFrame:(CGRect)frame frameName:(id)name groupName:(id)groupName;
 - (id)_mainFrameOverrideEncoding;
-- (id)_notificationIDForTesting:(OpaqueJSValue *)a3;
+- (id)_notificationIDForTesting:(OpaqueJSValue *)testing;
 - (id)_notificationProvider;
-- (id)_objectForIdentifier:(unint64_t)a3;
-- (id)_openNewWindowWithRequest:(id)a3;
+- (id)_objectForIdentifier:(unint64_t)identifier;
+- (id)_openNewWindowWithRequest:(id)request;
 - (id)_policyDelegateForwarder;
 - (id)_resourceLoadDelegateForwarder;
 - (id)_responderForResponderOperations;
 - (id)_selectedOrMainFrame;
 - (id)_touchEventRegions;
 - (id)_webcore_effectiveFirstResponder;
-- (id)documentViewAtWindowPoint:(CGPoint)a3;
-- (id)initSimpleHTMLDocumentWithStyle:(id)a3 frame:(CGRect)a4 preferences:(id)a5 groupName:(id)a6;
+- (id)documentViewAtWindowPoint:(CGPoint)point;
+- (id)initSimpleHTMLDocumentWithStyle:(id)style frame:(CGRect)frame preferences:(id)preferences groupName:(id)name;
 - (id)inspector;
 - (id)mainFrameIconURL;
 - (id)previousValidKeyView;
 - (id)rectsForTextMatches;
 - (id)styleAtSelectionStart;
-- (id)textIteratorForRect:(CGRect)a3;
+- (id)textIteratorForRect:(CGRect)rect;
 - (id)trackedRepaintRects;
 - (id)typingAttributes;
 - (int)_keyboardUIMode;
 - (int)_paginationMode;
 - (int)_visibilityState;
-- (unint64_t)_enteredDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6;
+- (unint64_t)_enteredDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation;
 - (unint64_t)_layoutMilestones;
 - (unint64_t)_pageCount;
 - (unint64_t)_renderTreeSize;
-- (unint64_t)_updatedDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6;
-- (unint64_t)countMatchesForText:(id)a3 inDOMRange:(id)a4 options:(unint64_t)a5 highlight:(BOOL)a6 limit:(unint64_t)a7 markMatches:(BOOL)a8;
-- (unint64_t)dragDestinationActionMaskForSession:(id)a3;
-- (void)_addObject:(id)a3 forIdentifier:(unint64_t)a4;
+- (unint64_t)_updatedDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation;
+- (unint64_t)countMatchesForText:(id)text inDOMRange:(id)range options:(unint64_t)options highlight:(BOOL)highlight limit:(unint64_t)limit markMatches:(BOOL)matches;
+- (unint64_t)dragDestinationActionMaskForSession:(id)session;
+- (void)_addObject:(id)object forIdentifier:(unint64_t)identifier;
 - (void)_addToAllWebViewsSet;
 - (void)_attachScriptDebuggerToAllFrames;
 - (void)_cacheFrameLoadDelegateImplementations;
@@ -196,89 +196,89 @@
 - (void)_closePluginDatabases;
 - (void)_closeWindow;
 - (void)_closeWithFastTeardown;
-- (void)_commonInitializationWithFrameName:(id)a3 groupName:(id)a4;
+- (void)_commonInitializationWithFrameName:(id)name groupName:(id)groupName;
 - (void)_destroyAllPlugIns;
 - (void)_detachScriptDebuggerFromAllFrames;
-- (void)_didCommitLoadForFrame:(id)a3;
+- (void)_didCommitLoadForFrame:(id)frame;
 - (void)_didCompleteRenderingFrame;
 - (void)_didCompleteRenderingUpdateDisplay;
 - (void)_didConcludeEditDrag;
 - (void)_didFinishScrollingOrZooming;
-- (void)_didScrollDocumentInFrameView:(id)a3;
+- (void)_didScrollDocumentInFrameView:(id)view;
 - (void)_dispatchPendingLoadRequests;
-- (void)_dispatchTileDidDraw:(id)a3;
+- (void)_dispatchTileDidDraw:(id)draw;
 - (void)_documentScaleChanged;
-- (void)_endedDataInteraction:(CGPoint)a3 global:(CGPoint)a4;
-- (void)_enterVideoFullscreenForVideoElement:(NakedPtr<WebCore:(unsigned int)a4 :HTMLVideoElement>)a3 mode:;
-- (void)_executeCoreCommandByName:(id)a3 value:(id)a4;
+- (void)_endedDataInteraction:(CGPoint)interaction global:(CGPoint)global;
+- (void)_enterVideoFullscreenForVideoElement:(NakedPtr<WebCore:(unsigned int)element :HTMLVideoElement>)a3 mode:;
+- (void)_executeCoreCommandByName:(id)name value:(id)value;
 - (void)_exitVideoFullscreen;
-- (void)_exitedDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6;
+- (void)_exitedDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation;
 - (void)_forceRepaintForTesting;
-- (void)_geolocationDidChangePosition:(id)a3;
-- (void)_geolocationDidFailWithMessage:(id)a3;
-- (void)_getWebCoreDictationAlternatives:(void *)a3 fromTextAlternatives:(const void *)a4;
+- (void)_geolocationDidChangePosition:(id)position;
+- (void)_geolocationDidFailWithMessage:(id)message;
+- (void)_getWebCoreDictationAlternatives:(void *)alternatives fromTextAlternatives:(const void *)textAlternatives;
 - (void)_insertNewlineInQuotedContent;
 - (void)_invalidateUserAgentCache;
-- (void)_listenForLayoutMilestones:(unint64_t)a3;
-- (void)_loadBackForwardListFromOtherView:(id)a3;
-- (void)_locked_recursivelyPerformPlugInSelector:(SEL)a3 inFrame:(id)a4;
+- (void)_listenForLayoutMilestones:(unint64_t)milestones;
+- (void)_loadBackForwardListFromOtherView:(id)view;
+- (void)_locked_recursivelyPerformPlugInSelector:(SEL)selector inFrame:(id)frame;
 - (void)_mainCoreFrame;
-- (void)_mouseDidMoveOverElement:(id)a3 modifierFlags:(unint64_t)a4;
-- (void)_notificationDidClick:(id)a3;
-- (void)_notificationDidShow:(id)a3;
-- (void)_notificationsDidClose:(id)a3;
-- (void)_overflowScrollPositionChangedTo:(CGPoint)a3 forNode:(id)a4 isUserScroll:(BOOL)a5;
-- (void)_performResponderOperation:(SEL)a3 with:(id)a4;
-- (void)_preferencesChanged:(id)a3;
-- (void)_preferencesChangedGenerated:(id)a3;
-- (void)_preferencesChangedNotification:(id)a3;
+- (void)_mouseDidMoveOverElement:(id)element modifierFlags:(unint64_t)flags;
+- (void)_notificationDidClick:(id)click;
+- (void)_notificationDidShow:(id)show;
+- (void)_notificationsDidClose:(id)close;
+- (void)_overflowScrollPositionChangedTo:(CGPoint)to forNode:(id)node isUserScroll:(BOOL)scroll;
+- (void)_performResponderOperation:(SEL)operation with:(id)with;
+- (void)_preferencesChanged:(id)changed;
+- (void)_preferencesChangedGenerated:(id)generated;
+- (void)_preferencesChangedNotification:(id)notification;
 - (void)_removeFromAllWebViewsSet;
-- (void)_removeObjectForIdentifier:(unint64_t)a3;
-- (void)_replaceCurrentHistoryItem:(id)a3;
-- (void)_replaceSelectionWithNode:(id)a3 matchStyle:(BOOL)a4;
+- (void)_removeObjectForIdentifier:(unint64_t)identifier;
+- (void)_replaceCurrentHistoryItem:(id)item;
+- (void)_replaceSelectionWithNode:(id)node matchStyle:(BOOL)style;
 - (void)_resetAllGeolocationPermission;
-- (void)_resetZoom:(id)a3 isTextOnly:(BOOL)a4;
+- (void)_resetZoom:(id)zoom isTextOnly:(BOOL)only;
 - (void)_restorePlugInsFromCache;
-- (void)_retrieveKeyboardUIModeFromPreferences:(id)a3;
-- (void)_scaleWebView:(float)a3 atOrigin:(CGPoint)a4;
+- (void)_retrieveKeyboardUIModeFromPreferences:(id)preferences;
+- (void)_scaleWebView:(float)view atOrigin:(CGPoint)origin;
 - (void)_scheduleRenderingUpdateForPendingTileCacheRepaint;
 - (void)_scheduleUpdateRendering;
-- (void)_setBrowserUserAgentProductVersion:(id)a3 buildVersion:(id)a4 bundleVersion:(id)a5;
-- (void)_setCookieEnabled:(BOOL)a3;
-- (void)_setCustomFixedPositionLayoutRect:(CGRect)a3;
-- (void)_setCustomFixedPositionLayoutRectInWebThread:(CGRect)a3 synchronize:(BOOL)a4;
-- (void)_setDeviceOrientationProvider:(id)a3;
-- (void)_setFixedLayoutSize:(CGSize)a3;
-- (void)_setFontFallbackPrefersPictographs:(BOOL)a3;
-- (void)_setFormDelegate:(id)a3;
-- (void)_setGapBetweenPages:(double)a3;
-- (void)_setGeolocationProvider:(id)a3;
-- (void)_setHostApplicationProcessIdentifier:(int)a3 auditToken:(id *)a4;
-- (void)_setIsVisible:(BOOL)a3;
-- (void)_setNeedsUnrestrictedGetMatchedCSSRules:(BOOL)a3;
-- (void)_setNotificationProvider:(id)a3;
-- (void)_setObscuredTopContentInsetForTesting:(float)a3 right:(float)a4 bottom:(float)a5 left:(float)a6;
-- (void)_setPageLength:(double)a3;
-- (void)_setPaginationBehavesLikeColumns:(BOOL)a3;
-- (void)_setPaginationMode:(int)a3;
-- (void)_setPortsForUpgradingInsecureSchemeForTesting:(unsigned __int16)a3 withSecurePort:(unsigned __int16)a4;
-- (void)_setResourceLoadSchedulerSuspended:(BOOL)a3;
-- (void)_setSourceApplicationAuditData:(id)a3;
-- (void)_setUIKitDelegate:(id)a3;
-- (void)_setUnobscuredSafeAreaInsets:(WebEdgeInsets)a3;
-- (void)_setUseDarkAppearance:(BOOL)a3;
-- (void)_setUseDarkAppearance:(BOOL)a3 useElevatedUserInterfaceLevel:(BOOL)a4;
-- (void)_setUseElevatedUserInterfaceLevel:(BOOL)a3;
-- (void)_setUseFastImageScalingMode:(BOOL)a3;
-- (void)_setUseFixedLayout:(BOOL)a3;
-- (void)_setUseSystemAppearance:(BOOL)a3;
-- (void)_setVisibilityState:(int)a3 isInitialState:(BOOL)a4;
-- (void)_setWantsTelephoneNumberParsing:(BOOL)a3;
-- (void)_setWebGLEnabled:(BOOL)a3;
-- (void)_setZoomMultiplier:(float)a3 isTextOnly:(BOOL)a4;
-- (void)_simplifyMarkup:(id)a3 endNode:(id)a4;
+- (void)_setBrowserUserAgentProductVersion:(id)version buildVersion:(id)buildVersion bundleVersion:(id)bundleVersion;
+- (void)_setCookieEnabled:(BOOL)enabled;
+- (void)_setCustomFixedPositionLayoutRect:(CGRect)rect;
+- (void)_setCustomFixedPositionLayoutRectInWebThread:(CGRect)thread synchronize:(BOOL)synchronize;
+- (void)_setDeviceOrientationProvider:(id)provider;
+- (void)_setFixedLayoutSize:(CGSize)size;
+- (void)_setFontFallbackPrefersPictographs:(BOOL)pictographs;
+- (void)_setFormDelegate:(id)delegate;
+- (void)_setGapBetweenPages:(double)pages;
+- (void)_setGeolocationProvider:(id)provider;
+- (void)_setHostApplicationProcessIdentifier:(int)identifier auditToken:(id *)token;
+- (void)_setIsVisible:(BOOL)visible;
+- (void)_setNeedsUnrestrictedGetMatchedCSSRules:(BOOL)rules;
+- (void)_setNotificationProvider:(id)provider;
+- (void)_setObscuredTopContentInsetForTesting:(float)testing right:(float)right bottom:(float)bottom left:(float)left;
+- (void)_setPageLength:(double)length;
+- (void)_setPaginationBehavesLikeColumns:(BOOL)columns;
+- (void)_setPaginationMode:(int)mode;
+- (void)_setPortsForUpgradingInsecureSchemeForTesting:(unsigned __int16)testing withSecurePort:(unsigned __int16)port;
+- (void)_setResourceLoadSchedulerSuspended:(BOOL)suspended;
+- (void)_setSourceApplicationAuditData:(id)data;
+- (void)_setUIKitDelegate:(id)delegate;
+- (void)_setUnobscuredSafeAreaInsets:(WebEdgeInsets)insets;
+- (void)_setUseDarkAppearance:(BOOL)appearance;
+- (void)_setUseDarkAppearance:(BOOL)appearance useElevatedUserInterfaceLevel:(BOOL)level;
+- (void)_setUseElevatedUserInterfaceLevel:(BOOL)level;
+- (void)_setUseFastImageScalingMode:(BOOL)mode;
+- (void)_setUseFixedLayout:(BOOL)layout;
+- (void)_setUseSystemAppearance:(BOOL)appearance;
+- (void)_setVisibilityState:(int)state isInitialState:(BOOL)initialState;
+- (void)_setWantsTelephoneNumberParsing:(BOOL)parsing;
+- (void)_setWebGLEnabled:(BOOL)enabled;
+- (void)_setZoomMultiplier:(float)multiplier isTextOnly:(BOOL)only;
+- (void)_simplifyMarkup:(id)markup endNode:(id)node;
 - (void)_startAllPlugIns;
-- (void)_startDrag:(const void *)a3;
+- (void)_startDrag:(const void *)drag;
 - (void)_stopAllPlugIns;
 - (void)_stopAllPlugInsForPageCache;
 - (void)_synchronizeCustomFixedPositionLayoutRect;
@@ -287,26 +287,26 @@
 - (void)_updateScreenScaleFromWindow;
 - (void)_updateVisibilityState;
 - (void)_viewGeometryDidChange;
-- (void)_wakWindowVisibilityChanged:(id)a3;
+- (void)_wakWindowVisibilityChanged:(id)changed;
 - (void)_willStartRenderingUpdateDisplay;
 - (void)_willStartScrollingOrZooming;
-- (void)_zoomIn:(id)a3 isTextOnly:(BOOL)a4;
-- (void)_zoomOut:(id)a3 isTextOnly:(BOOL)a4;
-- (void)addCaretChangeListener:(id)a3;
-- (void)addVisitedLinks:(id)a3;
+- (void)_zoomIn:(id)in isTextOnly:(BOOL)only;
+- (void)_zoomOut:(id)out isTextOnly:(BOOL)only;
+- (void)addCaretChangeListener:(id)listener;
+- (void)addVisitedLinks:(id)links;
 - (void)applyStyle:(DOMCSSStyleDeclaration *)style;
 - (void)caretChanged;
 - (void)close;
 - (void)dealloc;
 - (void)deleteSelection;
 - (void)hideFormValidationMessage;
-- (void)insertDictationPhrases:(id)a3 metadata:(id)a4;
+- (void)insertDictationPhrases:(id)phrases metadata:(id)metadata;
 - (void)makeTextLarger:(id)sender;
 - (void)makeTextSmaller:(id)sender;
 - (void)makeTextStandardSize:(id)sender;
-- (void)registerForEditingDelegateNotification:(id)a3 selector:(SEL)a4;
+- (void)registerForEditingDelegateNotification:(id)notification selector:(SEL)selector;
 - (void)reloadFromOrigin:(id)sender;
-- (void)removeVisitedLink:(id)a3;
+- (void)removeVisitedLink:(id)link;
 - (void)replaceSelectionWithArchive:(WebArchive *)archive;
 - (void)replaceSelectionWithMarkupString:(NSString *)markupString;
 - (void)replaceSelectionWithNode:(DOMNode *)node;
@@ -314,16 +314,16 @@
 - (void)resetTrackedRepaints;
 - (void)resumeAllMediaPlayback;
 - (void)revealCurrentSelection;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)scrollDOMRangeToVisible:(id)a3;
-- (void)scrollDOMRangeToVisible:(id)a3 withInset:(double)a4;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)scrollDOMRangeToVisible:(id)visible;
+- (void)scrollDOMRangeToVisible:(id)visible withInset:(double)inset;
 - (void)setApplicationNameForUserAgent:(NSString *)applicationNameForUserAgent;
-- (void)setBackgroundColor:(CGColor *)a3;
+- (void)setBackgroundColor:(CGColor *)color;
 - (void)setContinuousSpellCheckingEnabled:(BOOL)continuousSpellCheckingEnabled;
-- (void)setCurrentNodeHighlight:(id)a3;
+- (void)setCurrentNodeHighlight:(id)highlight;
 - (void)setCustomTextEncodingName:(NSString *)customTextEncodingName;
 - (void)setCustomUserAgent:(NSString *)customUserAgent;
-- (void)setDefersCallbacks:(BOOL)a3;
+- (void)setDefersCallbacks:(BOOL)callbacks;
 - (void)setDrawsBackground:(BOOL)drawsBackground;
 - (void)setEditable:(BOOL)editable;
 - (void)setEditingDelegate:(id)editingDelegate;
@@ -333,43 +333,43 @@
 - (void)setMainFrameURL:(NSString *)mainFrameURL;
 - (void)setMaintainsBackForwardList:(BOOL)flag;
 - (void)setMediaStyle:(NSString *)mediaStyle;
-- (void)setMediaVolume:(float)a3;
-- (void)setNextKeyView:(id)a3;
+- (void)setMediaVolume:(float)volume;
+- (void)setNextKeyView:(id)view;
 - (void)setPolicyDelegate:(id)policyDelegate;
 - (void)setPreferences:(WebPreferences *)preferences;
 - (void)setPreferencesIdentifier:(NSString *)preferencesIdentifier;
 - (void)setResourceLoadDelegate:(id)resourceLoadDelegate;
-- (void)setScriptDebugDelegate:(id)a3;
-- (void)setSelectTrailingWhitespaceEnabled:(BOOL)a3;
+- (void)setScriptDebugDelegate:(id)delegate;
+- (void)setSelectTrailingWhitespaceEnabled:(BOOL)enabled;
 - (void)setSelectedDOMRange:(DOMRange *)range affinity:(NSSelectionAffinity)selectionAffinity;
 - (void)setShouldUpdateWhileOffscreen:(BOOL)shouldUpdateWhileOffscreen;
-- (void)setShowingInspectorIndication:(BOOL)a3;
+- (void)setShowingInspectorIndication:(BOOL)indication;
 - (void)setSmartInsertDeleteEnabled:(BOOL)smartInsertDeleteEnabled;
-- (void)setTabKeyCyclesThroughElements:(BOOL)a3;
+- (void)setTabKeyCyclesThroughElements:(BOOL)elements;
 - (void)setTextSizeMultiplier:(float)textSizeMultiplier;
-- (void)setTracksRepaints:(BOOL)a3;
+- (void)setTracksRepaints:(BOOL)repaints;
 - (void)setTypingStyle:(DOMCSSStyleDeclaration *)typingStyle;
 - (void)setUIDelegate:(id)UIDelegate;
-- (void)setUsesPageCache:(BOOL)a3;
+- (void)setUsesPageCache:(BOOL)cache;
 - (void)stopLoading:(id)sender;
 - (void)stopLoadingAndClear;
 - (void)suspendAllMediaPlayback;
 - (void)takeStringURLFrom:(id)sender;
 - (void)toggleContinuousSpellChecking:(id)sender;
 - (void)unmarkAllTextMatches;
-- (void)unscheduleFromRunLoop:(id)a3 forMode:(id)a4;
+- (void)unscheduleFromRunLoop:(id)loop forMode:(id)mode;
 - (void)viewDidMoveToWindow;
 @end
 
 @implementation WebView
 
-+ (void)_makeAllWebViewsPerformSelector:(SEL)a3
++ (void)_makeAllWebViewsPerformSelector:(SEL)selector
 {
   if (byte_1ED6A6137)
   {
     if (qword_1ED6A6168)
     {
-      [qword_1ED6A6168 makeObjectsPerformSelector:a3];
+      [qword_1ED6A6168 makeObjectsPerformSelector:selector];
     }
   }
 
@@ -422,7 +422,7 @@
     if (!v5)
     {
 LABEL_3:
-      v4 = self;
+      selfCopy4 = self;
 
       goto LABEL_5;
     }
@@ -431,7 +431,7 @@ LABEL_3:
     if (byte_1ED6A6137 == 1)
     {
       Mutable = qword_1ED6A6168;
-      v4 = self;
+      selfCopy4 = self;
     }
 
     else
@@ -439,7 +439,7 @@ LABEL_3:
       Mutable = 0;
       qword_1ED6A6168 = 0;
       byte_1ED6A6137 = 1;
-      v4 = self;
+      selfCopy4 = self;
     }
   }
 
@@ -447,16 +447,16 @@ LABEL_3:
   {
     byte_1ED6A6137 = 1;
     qword_1ED6A6168 = Mutable;
-    v4 = self;
+    selfCopy4 = self;
   }
 
 LABEL_5:
-  CFSetSetValue(Mutable, v4);
+  CFSetSetValue(Mutable, selfCopy4);
 }
 
-+ (id)_standardUserAgentWithApplicationName:(id)a3
++ (id)_standardUserAgentWithApplicationName:(id)name
 {
-  MEMORY[0x1CCA63A40](&v12, a3);
+  MEMORY[0x1CCA63A40](&v12, name);
   WebCore::standardUserAgentWithApplicationName();
   v3 = v13;
   if (v13)
@@ -504,20 +504,20 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setBrowserUserAgentProductVersion:(id)a3 buildVersion:(id)a4 bundleVersion:(id)a5
+- (void)_setBrowserUserAgentProductVersion:(id)version buildVersion:(id)buildVersion bundleVersion:(id)bundleVersion
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Version/%@ Mobile/15E148 Safari/%@", a4, a3, a5];
+  bundleVersion = [MEMORY[0x1E696AEC0] stringWithFormat:@"Version/%@ Mobile/15E148 Safari/%@", buildVersion, version, bundleVersion];
 
-  [(WebView *)self setApplicationNameForUserAgent:v6];
+  [(WebView *)self setApplicationNameForUserAgent:bundleVersion];
 }
 
-+ (void)_reportException:(OpaqueJSValue *)a3 inContext:(OpaqueJSContext *)a4
++ (void)_reportException:(OpaqueJSValue *)exception inContext:(OpaqueJSContext *)context
 {
-  if (a3 && a4)
+  if (exception && context)
   {
     JSC::JSLockHolder::JSLockHolder();
-    v5 = *(16 * (*a4 & 0xFFFFFFFE) + 0x4C);
-    v6 = *(16 * (*a4 & 0xFFFFFFFE) + 0x4C) != 0;
+    v5 = *(16 * (*context & 0xFFFFFFFE) + 0x4C);
+    v6 = *(16 * (*context & 0xFFFFFFFE) + 0x4C) != 0;
     v7 = 16 * v5;
     if (v5)
     {
@@ -567,7 +567,7 @@ LABEL_5:
   WebResourceLoadScheduler::servePendingRequests(v3, 0);
 }
 
-- (void)_commonInitializationWithFrameName:(id)a3 groupName:(id)a4
+- (void)_commonInitializationWithFrameName:(id)name groupName:(id)groupName
 {
   v251 = *MEMORY[0x1E69E9840];
   v7 = +[WebPreferences standardPreferences];
@@ -586,7 +586,7 @@ LABEL_5:
 
   self->_private->mainFrameDocumentReady = 0;
   self->_private->drawsBackground = 1;
-  v239 = 0x11040000FFFFFFFFLL;
+  selfCopy = 0x11040000FFFFFFFFLL;
   WebCore::cachedCGColor();
   v12 = self->_private;
   v13 = cf[0];
@@ -604,10 +604,10 @@ LABEL_5:
     }
   }
 
-  if ((v239 & 0x8000000000000) != 0)
+  if ((selfCopy & 0x8000000000000) != 0)
   {
-    v16 = (v239 & 0xFFFFFFFFFFFFLL);
-    if (atomic_fetch_add((v239 & 0xFFFFFFFFFFFFLL), 0xFFFFFFFF) == 1)
+    v16 = (selfCopy & 0xFFFFFFFFFFFFLL);
+    if (atomic_fetch_add((selfCopy & 0xFFFFFFFFFFFFLL), 0xFFFFFFFF) == 1)
     {
       atomic_store(1u, v16);
       WTF::fastFree(v16, v11);
@@ -618,10 +618,10 @@ LABEL_5:
   v19 = [[WebFrameView alloc] initWithFrame:0.0, 0.0, v17, v18];
   [(WebFrameView *)v19 setAutoresizingMask:18];
   [(WebView *)self addSubview:v19];
-  v20 = [(WebView *)self updateTouchBar];
+  updateTouchBar = [(WebView *)self updateTouchBar];
   if ((byte_1ED6A6131 & 1) == 0)
   {
-    WTF::logChannels(v20);
+    WTF::logChannels(updateTouchBar);
     LOBYTE(v236) = 0;
     v237 = 0;
     v21 = WTF::LogChannels::initializeLogChannelsIfNecessary();
@@ -645,21 +645,21 @@ LABEL_5:
       +[WebDatabaseManager sharedWebDatabaseManager];
     }
 
-    v24 = [(WebPreferences *)v7 storageTrackerEnabled];
-    if (v24)
+    storageTrackerEnabled = [(WebPreferences *)v7 storageTrackerEnabled];
+    if (storageTrackerEnabled)
     {
       WebKitInitializeStorageIfNecessary();
     }
 
     if ((byte_1ED6A6138 & 1) == 0)
     {
-      v25 = WebCore::GamepadProvider::singleton(v24);
+      v25 = WebCore::GamepadProvider::singleton(storageTrackerEnabled);
       WebCore::GameControllerGamepadProvider::singleton(v25);
-      v24 = WebCore::GamepadProvider::setSharedProvider();
+      storageTrackerEnabled = WebCore::GamepadProvider::setSharedProvider();
       byte_1ED6A6138 = 1;
     }
 
-    isMobileSafari = WTF::IOSApplication::isMobileSafari(v24);
+    isMobileSafari = WTF::IOSApplication::isMobileSafari(storageTrackerEnabled);
     if (isMobileSafari)
     {
       isMobileSafari = MEMORY[0x1CCA66A40](1);
@@ -667,7 +667,7 @@ LABEL_5:
 
     WebCore::AudioSession::enableMediaPlayback(isMobileSafari);
     v27 = NSTemporaryDirectory();
-    MEMORY[0x1CCA63A40](&v239, v27);
+    MEMORY[0x1CCA63A40](&selfCopy, v27);
     WTF::FileSystemImpl::pathByAppendingComponent();
     WebCore::HTMLMediaElement::setMediaCacheDirectory(cf, v28);
     v30 = cf[0];
@@ -677,8 +677,8 @@ LABEL_5:
       WTF::StringImpl::destroy(v30, v29);
     }
 
-    v31 = v239;
-    v239 = 0;
+    v31 = selfCopy;
+    selfCopy = 0;
     if (v31 && atomic_fetch_add_explicit(v31, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
       WTF::StringImpl::destroy(v31, v29);
@@ -687,9 +687,9 @@ LABEL_5:
     byte_1ED6A6131 = 1;
   }
 
-  MEMORY[0x1CCA63A40](&v239, a4);
+  MEMORY[0x1CCA63A40](&selfCopy, groupName);
   MEMORY[0x1CCA63A40](&v238, [(WebPreferences *)self->_private->preferences.m_ptr _localStorageDatabasePath]);
-  WebViewGroup::getOrCreate(&v239, &v238, cf);
+  WebViewGroup::getOrCreate(&selfCopy, &v238, cf);
   v33 = self->_private;
   v34 = cf[0];
   cf[0] = 0;
@@ -728,16 +728,16 @@ LABEL_35:
   }
 
 LABEL_37:
-  v39 = v239;
-  v239 = 0;
+  v39 = selfCopy;
+  selfCopy = 0;
   if (v39 && atomic_fetch_add_explicit(v39, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v39, v32);
   }
 
   v40 = self->_private->group.m_ptr;
-  v239 = self;
-  WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(v40 + 2, &v239, cf);
+  selfCopy = self;
+  WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(v40 + 2, &selfCopy, cf);
   v41 = WTF::fastMalloc(0x18);
   *(v41 + 8) = 1;
   *v41 = &unk_1F472BE10;
@@ -783,7 +783,7 @@ LABEL_37:
   v223 = v50;
   v51 = WTF::fastMalloc(0x10);
   *v51 = &unk_1F472C218;
-  v239 = v51;
+  selfCopy = v51;
   v240 = 0;
   v241 = 0;
   FrameIdentifier = WebCore::generateFrameIdentifier(v51);
@@ -889,7 +889,7 @@ LABEL_37:
   v202 = &v217;
   v199 = &v222;
   v200 = &v221;
-  v197 = &v239;
+  v197 = &selfCopy;
   v198 = FrameIdentifier;
   v195 = &v225;
   v196 = &v223;
@@ -1227,8 +1227,8 @@ LABEL_128:
   }
 
 LABEL_131:
-  v99 = v239;
-  v239 = 0;
+  v99 = selfCopy;
+  selfCopy = 0;
   if (v98)
   {
     if (!v99)
@@ -1462,8 +1462,8 @@ LABEL_163:
 
   if (atomic_load_explicit(&qword_1ED6A6178, memory_order_acquire) != -1)
   {
-    v239 = &v231;
-    v238 = &v239;
+    selfCopy = &v231;
+    v238 = &selfCopy;
     std::__call_once(&qword_1ED6A6178, &v238, std::__call_once_proxy[abi:sn200100]<std::tuple<webApplicationCacheStorage(void)::$_0 &&>>);
   }
 
@@ -1481,10 +1481,10 @@ LABEL_163:
 
   else
   {
-    WebCore::ApplicationCacheStorage::create(&v239, v119, v120);
-    v189 = v239;
-    v239 = 0;
-    WTF::Ref<WebCore::ApplicationCacheStorage,WTF::RawPtrTraits<WebCore::ApplicationCacheStorage>,WTF::DefaultRefDerefTraits<WebCore::ApplicationCacheStorage>>::~Ref(&v239, v190);
+    WebCore::ApplicationCacheStorage::create(&selfCopy, v119, v120);
+    v189 = selfCopy;
+    selfCopy = 0;
+    WTF::Ref<WebCore::ApplicationCacheStorage,WTF::RawPtrTraits<WebCore::ApplicationCacheStorage>,WTF::DefaultRefDerefTraits<WebCore::ApplicationCacheStorage>>::~Ref(&selfCopy, v190);
     qword_1ED6A6180 = v189;
     byte_1ED6A6139 = 1;
     ++*v189;
@@ -1622,8 +1622,8 @@ LABEL_195:
 
   WebCore::Page::create();
   v141 = self->_private;
-  v142 = v239;
-  v239 = 0;
+  v142 = selfCopy;
+  selfCopy = 0;
   v143 = v141->page.m_ptr;
   v141->page.m_ptr = v142;
   if (v143)
@@ -1631,10 +1631,10 @@ LABEL_195:
     v144 = *(v143 + 2) - 1;
     if (*(v143 + 2) == 1)
     {
-      v184 = MEMORY[0x1CCA673C0](v143, v134, v135, v136, v137, v138, v139, v140, &v227, &v226, &v225, &v223, &v239, FrameIdentifier, &v222, &v221, &v219, &v217);
+      v184 = MEMORY[0x1CCA673C0](v143, v134, v135, v136, v137, v138, v139, v140, &v227, &v226, &v225, &v223, &selfCopy, FrameIdentifier, &v222, &v221, &v219, &v217);
       bmalloc::api::tzoneFree(v184, v185);
-      v143 = v239;
-      v239 = 0;
+      v143 = selfCopy;
+      selfCopy = 0;
       if (!v143)
       {
         goto LABEL_206;
@@ -1688,10 +1688,10 @@ LABEL_206:
 
 LABEL_212:
   v150 = self->_private->page.m_ptr;
-  MEMORY[0x1CCA63A40](&v239, a4);
-  WebCore::Page::setGroupName(v150, &v239);
-  v152 = v239;
-  v239 = 0;
+  MEMORY[0x1CCA63A40](&selfCopy, groupName);
+  WebCore::Page::setGroupName(v150, &selfCopy);
+  v152 = selfCopy;
+  selfCopy = 0;
   if (v152 && atomic_fetch_add_explicit(v152, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v152, v151);
@@ -1756,11 +1756,11 @@ LABEL_220:
   [(WebView *)self window];
   WebCore::Page::setCanStartMedia(v162);
   v163 = *(self->_private->page.m_ptr + 15);
-  MEMORY[0x1CCA63A40](&v239, [(WebPreferences *)[(WebView *)self preferences] _localStorageDatabasePath]);
-  v165 = v239;
-  if (v239)
+  MEMORY[0x1CCA63A40](&selfCopy, [(WebPreferences *)[(WebView *)self preferences] _localStorageDatabasePath]);
+  v165 = selfCopy;
+  if (selfCopy)
   {
-    atomic_fetch_add_explicit(v239, 2u, memory_order_relaxed);
+    atomic_fetch_add_explicit(selfCopy, 2u, memory_order_relaxed);
   }
 
   v166 = *(v163 + 448);
@@ -1770,8 +1770,8 @@ LABEL_220:
     WTF::StringImpl::destroy(v166, v164);
   }
 
-  v167 = v239;
-  v239 = 0;
+  v167 = selfCopy;
+  selfCopy = 0;
   if (v167 && atomic_fetch_add_explicit(v167, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v167, v164);
@@ -1779,10 +1779,10 @@ LABEL_220:
 
   *(*(self->_private->page.m_ptr + 15) + 552) = 5242880;
   [(WebView *)self _updateScreenScaleFromWindow:v193];
-  v168 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v168 addObserver:self selector:sel__wakWindowScreenScaleChanged_ name:*MEMORY[0x1E69E21F0] object:0];
-  v169 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v169 addObserver:self selector:sel__wakWindowVisibilityChanged_ name:*MEMORY[0x1E69E21F8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__wakWindowScreenScaleChanged_ name:*MEMORY[0x1E69E21F0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__wakWindowVisibilityChanged_ name:*MEMORY[0x1E69E21F8] object:0];
   v170 = [[WebFixedPositionContent alloc] initWithWebView:self];
   v171 = self->_private;
   v172 = v171->_fixedPositionContent.m_ptr;
@@ -1798,8 +1798,8 @@ LABEL_220:
   }
 
   v174 = self->_private->page.m_ptr;
-  WTF::AtomStringImpl::add(&v239, a3, v173);
-  v238 = v239;
+  WTF::AtomStringImpl::add(&selfCopy, name, v173);
+  v238 = selfCopy;
   [WebFrame _createMainFrameWithPage:v174 frameName:&v238 frameView:v19];
   v176 = v238;
   v238 = 0;
@@ -1823,10 +1823,10 @@ LABEL_220:
 
   [(WebView *)self scheduleInRunLoop:v177 forMode:*v179];
   [(WebView *)self _addToAllWebViewsSet];
-  v180 = [(WebView *)self nextKeyView];
-  if (v180 && v19 != v180)
+  nextKeyView = [(WebView *)self nextKeyView];
+  if (nextKeyView && v19 != nextKeyView)
   {
-    [(WebFrameView *)v19 setNextKeyView:v180];
+    [(WebFrameView *)v19 setNextKeyView:nextKeyView];
   }
 
   v203.receiver = self;
@@ -1838,10 +1838,10 @@ LABEL_220:
   }
 
   [(WebView *)self _setIsVisible:[(WebView *)self _isViewVisible]];
-  v181 = [(WebView *)self preferences];
-  v182 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v182 addObserver:self selector:sel__preferencesChangedNotification_ name:WebPreferencesChangedInternalNotification[0] object:v181];
-  [(WebView *)self _preferencesChanged:v181];
+  preferences = [(WebView *)self preferences];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__preferencesChangedNotification_ name:WebPreferencesChangedInternalNotification[0] object:preferences];
+  [(WebView *)self _preferencesChanged:preferences];
   WebCore::Settings::setFontFallbackPrefersPictographs(*(self->_private->page.m_ptr + 15));
   v183 = [objc_msgSend(MEMORY[0x1E695E000] "standardUserDefaults")];
   if ((v183 & 1) == 0)
@@ -1849,8 +1849,8 @@ LABEL_220:
     WebCore::registerMemoryReleaseNotifyCallbacks(v183);
     if (atomic_load_explicit(&qword_1ED6A6158, memory_order_acquire) != -1)
     {
-      v239 = &v231;
-      v238 = &v239;
+      selfCopy = &v231;
+      v238 = &selfCopy;
       std::__call_once(&qword_1ED6A6158, &v238, std::__call_once_proxy[abi:sn200100]<std::tuple<WebInstallMemoryPressureHandler::$_0 &&>>);
     }
   }
@@ -1874,15 +1874,15 @@ LABEL_251:
   }
 }
 
-- (id)_initWithFrame:(CGRect)a3 frameName:(id)a4 groupName:(id)a5
+- (id)_initWithFrame:(CGRect)frame frameName:(id)name groupName:(id)groupName
 {
   v9.receiver = self;
   v9.super_class = WebView;
-  v7 = [(WebView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(WebView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
     v7->_private = objc_alloc_init(WebViewPrivate);
-    [(WebView *)v7 _commonInitializationWithFrameName:a4 groupName:a5];
+    [(WebView *)v7 _commonInitializationWithFrameName:name groupName:groupName];
     [(WebView *)v7 setMaintainsBackForwardList:1];
   }
 
@@ -1926,41 +1926,41 @@ LABEL_251:
   }
 }
 
-- (id)initSimpleHTMLDocumentWithStyle:(id)a3 frame:(CGRect)a4 preferences:(id)a5 groupName:(id)a6
+- (id)initSimpleHTMLDocumentWithStyle:(id)style frame:(CGRect)frame preferences:(id)preferences groupName:(id)name
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v218 = *MEMORY[0x1E69E9840];
   v205.receiver = self;
   v205.super_class = WebView;
-  v10 = [(WebView *)&v205 initWithFrame:a4.origin.x, a4.origin.y];
+  v10 = [(WebView *)&v205 initWithFrame:frame.origin.x, frame.origin.y];
   if (!v10)
   {
     return v10;
   }
 
   v10->_private = objc_alloc_init(WebViewPrivate);
-  if (a5)
+  if (preferences)
   {
-    [a5 willAddToWebView];
+    [preferences willAddToWebView];
     p_m_ptr = &v10->_private->preferences.m_ptr;
   }
 
   else
   {
-    a5 = +[WebPreferences standardPreferences];
-    [a5 willAddToWebView];
+    preferences = +[WebPreferences standardPreferences];
+    [preferences willAddToWebView];
     p_m_ptr = &v10->_private->preferences.m_ptr;
-    if (!a5)
+    if (!preferences)
     {
       goto LABEL_6;
     }
   }
 
-  v12 = a5;
+  preferencesCopy = preferences;
 LABEL_6:
   v13 = *p_m_ptr;
-  *p_m_ptr = a5;
+  *p_m_ptr = preferences;
   if (v13)
   {
   }
@@ -1995,10 +1995,10 @@ LABEL_6:
     }
   }
 
-  v20 = [[WebFrameView alloc] initWithFrame:0.0, 0.0, width, height];
-  [(WebFrameView *)v20 setAutoresizingMask:18];
-  [(WebView *)v10 addSubview:v20];
-  MEMORY[0x1CCA63A40](&v207, a6);
+  height = [[WebFrameView alloc] initWithFrame:0.0, 0.0, width, height];
+  [(WebFrameView *)height setAutoresizingMask:18];
+  [(WebView *)v10 addSubview:height];
+  MEMORY[0x1CCA63A40](&v207, name);
   MEMORY[0x1CCA63A40](&v206, [(WebPreferences *)v10->_private->preferences.m_ptr _localStorageDatabasePath]);
   WebViewGroup::getOrCreate(&v207, &v206, cf);
   v22 = v10->_private;
@@ -2940,9 +2940,9 @@ LABEL_192:
   WebCore::Settings::setDefaultFontSize(*(v10->_private->page.m_ptr + 15), [(WebPreferences *)v10->_private->preferences.m_ptr defaultFontSize]);
   WebCore::Settings::setDefaultFixedFontSize(*(v10->_private->page.m_ptr + 15), 13.0);
   v137 = *(v10->_private->page.m_ptr + 15);
-  v138 = [a5 acceleratedDrawingEnabled];
+  acceleratedDrawingEnabled = [preferences acceleratedDrawingEnabled];
   v139 = 4;
-  if (!v138)
+  if (!acceleratedDrawingEnabled)
   {
     v139 = 0;
   }
@@ -2975,16 +2975,16 @@ LABEL_192:
   WebCore::Settings::setMinimumFontSize(*(v10->_private->page.m_ptr + 15), [(WebPreferences *)v10->_private->preferences.m_ptr minimumFontSize]);
   v146 = v10->_private;
   v147 = *(v146->page.m_ptr + 15);
-  v148 = [(WebPreferences *)v146->preferences.m_ptr httpEquivEnabled];
+  httpEquivEnabled = [(WebPreferences *)v146->preferences.m_ptr httpEquivEnabled];
   v149 = 0x20000000;
-  if (!v148)
+  if (!httpEquivEnabled)
   {
     v149 = 0;
   }
 
   *(v147 + 696) = *(v147 + 696) & 0xFFFFFFFFDFFFFFFFLL | v149;
   v150 = v10->_private->page.m_ptr;
-  MEMORY[0x1CCA63A40](&v207, a6);
+  MEMORY[0x1CCA63A40](&v207, name);
   WebCore::Page::setGroupName(v150, &v207);
   v152 = v207;
   v207 = 0;
@@ -3002,22 +3002,22 @@ LABEL_192:
 
   WebCore::Page::setInspectable(v153);
   [(WebView *)v10 _updateScreenScaleFromWindow];
-  v154 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v154 addObserver:v10 selector:sel__wakWindowScreenScaleChanged_ name:*MEMORY[0x1E69E21F0] object:0];
-  v155 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v155 addObserver:v10 selector:sel__wakWindowVisibilityChanged_ name:*MEMORY[0x1E69E21F8] object:0];
-  [WebFrame _createMainFrameWithSimpleHTMLDocumentWithPage:v10->_private->page.m_ptr frameView:v20 style:a3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v10 selector:sel__wakWindowScreenScaleChanged_ name:*MEMORY[0x1E69E21F0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v10 selector:sel__wakWindowVisibilityChanged_ name:*MEMORY[0x1E69E21F8] object:0];
+  [WebFrame _createMainFrameWithSimpleHTMLDocumentWithPage:v10->_private->page.m_ptr frameView:height style:style];
   [(WebView *)v10 _addToAllWebViewsSet];
   ++WebViewCount;
   WebCore::SecurityPolicy::setLocalLoadPolicy();
-  v156 = [(WebPreferences *)[(WebView *)v10 preferences] attachmentElementEnabled];
-  *(WebCore::DeprecatedGlobalSettings::shared(v156) + 24) = v156;
+  attachmentElementEnabled = [(WebPreferences *)[(WebView *)v10 preferences] attachmentElementEnabled];
+  *(WebCore::DeprecatedGlobalSettings::shared(attachmentElementEnabled) + 24) = attachmentElementEnabled;
   MEMORY[0x1CCA65F00](cf);
   if (atomic_fetch_add((v30 + 8), 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, (v30 + 8));
     (*(*v30 + 16))(v30);
-    if (!v20)
+    if (!height)
     {
       return v10;
     }
@@ -3025,7 +3025,7 @@ LABEL_192:
     goto LABEL_211;
   }
 
-  if (v20)
+  if (height)
   {
 LABEL_211:
   }
@@ -3033,13 +3033,13 @@ LABEL_211:
   return v10;
 }
 
-- (void)_replaceCurrentHistoryItem:(id)a3
+- (void)_replaceCurrentHistoryItem:(id)item
 {
   if ([(WebView *)self _mainCoreFrame])
   {
-    if (a3)
+    if (item)
     {
-      v4 = *(*(a3 + 1) + 8);
+      v4 = *(*(item + 1) + 8);
       if (v4)
       {
         ++*(v4 + 8);
@@ -3104,10 +3104,10 @@ uint64_t __59__WebView_WebPrivate__updateLayoutIgnorePendingStyleSheets__block_i
   return result;
 }
 
-- (BOOL)_requestStartDataInteraction:(CGPoint)a3 globalPosition:(CGPoint)a4
+- (BOOL)_requestStartDataInteraction:(CGPoint)interaction globalPosition:(CGPoint)position
 {
-  v16 = a3;
-  v15 = a4;
+  interactionCopy = interaction;
+  positionCopy = position;
   WebThreadLock();
   v5 = 0;
   v6 = *(self->_private->page.m_ptr + 22);
@@ -3120,8 +3120,8 @@ uint64_t __59__WebView_WebPrivate__updateLayoutIgnorePendingStyleSheets__block_i
   v7 = WTF::fastMalloc(8);
   *v7 = 1;
   *(v7 + 4) = 0;
-  WebCore::IntPoint::IntPoint(v14, &v16);
-  WebCore::IntPoint::IntPoint(v13, &v15);
+  WebCore::IntPoint::IntPoint(v14, &interactionCopy);
+  WebCore::IntPoint::IntPoint(v13, &positionCopy);
   atomic_fetch_add(v7, 1u);
   v8 = WTF::fastMalloc(0x10);
   *v8 = &unk_1F472C3B0;
@@ -3169,16 +3169,16 @@ LABEL_10:
   return v5 & 1;
 }
 
-- (void)_startDrag:(const void *)a3
+- (void)_startDrag:(const void *)drag
 {
-  v5 = *a3;
-  if (*a3)
+  v5 = *drag;
+  if (*drag)
   {
-    CFRetain(*a3);
+    CFRetain(*drag);
     CFRelease(v5);
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(drag + 1);
   if (!v6)
   {
     v55 = [[WebUITextIndicatorData alloc] initWithImage:v5 scale:*(self->_private->page.m_ptr + 81)];
@@ -3360,7 +3360,7 @@ LABEL_34:
   }
 
 LABEL_35:
-  v31 = *(a3 + 17);
+  v31 = *(drag + 17);
   if (!v31)
   {
     goto LABEL_38;
@@ -3368,7 +3368,7 @@ LABEL_35:
 
   if (*(v31 + 4))
   {
-    WTF::URL::createCFURL(v58, (a3 + 136));
+    WTF::URL::createCFURL(v58, (drag + 136));
     v31 = *&v58[0];
 LABEL_38:
     v32 = self->_private;
@@ -3401,7 +3401,7 @@ LABEL_39:
   }
 
 LABEL_41:
-  v35 = *(a3 + 16);
+  v35 = *(drag + 16);
   if (v35 && v35[1])
   {
     atomic_fetch_add_explicit(v35, 2u, memory_order_relaxed);
@@ -3455,7 +3455,7 @@ LABEL_51:
   v44->dragPreviewFrameInRootViewCoordinates.origin.y = v46;
   v44->dragPreviewFrameInRootViewCoordinates.size.width = v47;
   v44->dragPreviewFrameInRootViewCoordinates.size.height = v48;
-  v49 = *(a3 + 48);
+  v49 = *(drag + 48);
   if ((v49 & 0x100) != 0 && (v50 = v49 - 1, v50 <= 7u))
   {
     v51 = qword_1C7B33950[v50];
@@ -3540,19 +3540,19 @@ LABEL_51:
   return result;
 }
 
-- (unint64_t)dragDestinationActionMaskForSession:(id)a3
+- (unint64_t)dragDestinationActionMaskForSession:(id)session
 {
-  v5 = [(WebView *)self _UIDelegateForwarder];
+  _UIDelegateForwarder = [(WebView *)self _UIDelegateForwarder];
 
-  return [v5 webView:self dragDestinationActionMaskForSession:a3];
+  return [_UIDelegateForwarder webView:self dragDestinationActionMaskForSession:session];
 }
 
-- (DragData)dragDataForSession:(SEL)a3 client:(id)a4 global:(CGPoint)a5 operation:(CGPoint)a6
+- (DragData)dragDataForSession:(SEL)session client:(id)client global:(CGPoint)global operation:(CGPoint)operation
 {
-  v24 = a5;
-  v23 = a6;
+  globalCopy = global;
+  operationCopy = operation;
   [(WebView *)self dragDestinationActionMaskForSession:?];
-  WebCore::FloatPoint::FloatPoint(v21, &v24);
+  WebCore::FloatPoint::FloatPoint(v21, &globalCopy);
   v7 = roundf(v21[0]);
   v8 = 0x7FFFFFFFLL;
   v9 = v7;
@@ -3580,7 +3580,7 @@ LABEL_51:
   }
 
   v22 = v11 | v8;
-  WebCore::FloatPoint::FloatPoint(v19, &v23);
+  WebCore::FloatPoint::FloatPoint(v19, &operationCopy);
   v13 = roundf(v19[0]);
   v14 = 0x7FFFFFFFLL;
   v15 = 0x80000000;
@@ -3614,24 +3614,24 @@ LABEL_51:
   return WebCore::DragData::DragData();
 }
 
-- (unint64_t)_enteredDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6
+- (unint64_t)_enteredDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v13 = [(WebView *)self _mainCoreFrame];
-  if (!v13)
+  y = global.y;
+  x = global.x;
+  v9 = client.y;
+  v10 = client.x;
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (!_mainCoreFrame)
   {
     return 0;
   }
 
-  v14 = v13;
-  ++v13[4];
+  v14 = _mainCoreFrame;
+  ++_mainCoreFrame[4];
   WebThreadLock();
   if (self)
   {
-    [(WebView *)self dragDataForSession:a3 client:a6 global:v10 operation:v9, x, y];
+    [(WebView *)self dragDataForSession:interaction client:operation global:v10 operation:v9, x, y];
   }
 
   else
@@ -3721,24 +3721,24 @@ LABEL_8:
   return v17;
 }
 
-- (unint64_t)_updatedDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6
+- (unint64_t)_updatedDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v13 = [(WebView *)self _mainCoreFrame];
-  if (!v13)
+  y = global.y;
+  x = global.x;
+  v9 = client.y;
+  v10 = client.x;
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (!_mainCoreFrame)
   {
     return 0;
   }
 
-  v14 = v13;
-  ++v13[4];
+  v14 = _mainCoreFrame;
+  ++_mainCoreFrame[4];
   WebThreadLock();
   if (self)
   {
-    [(WebView *)self dragDataForSession:a3 client:a6 global:v10 operation:v9, x, y];
+    [(WebView *)self dragDataForSession:interaction client:operation global:v10 operation:v9, x, y];
   }
 
   else
@@ -3828,21 +3828,21 @@ LABEL_8:
   return v17;
 }
 
-- (void)_exitedDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6
+- (void)_exitedDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v13 = [(WebView *)self _mainCoreFrame];
-  if (v13)
+  y = global.y;
+  x = global.x;
+  v9 = client.y;
+  v10 = client.x;
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame)
   {
-    v14 = v13;
-    ++v13[4];
+    v14 = _mainCoreFrame;
+    ++_mainCoreFrame[4];
     WebThreadLock();
     if (self)
     {
-      [(WebView *)self dragDataForSession:a3 client:a6 global:v10 operation:v9, x, y];
+      [(WebView *)self dragDataForSession:interaction client:operation global:v10 operation:v9, x, y];
     }
 
     else
@@ -3895,16 +3895,16 @@ LABEL_8:
   }
 }
 
-- (BOOL)_tryToPerformDataInteraction:(id)a3 client:(CGPoint)a4 global:(CGPoint)a5 operation:(unint64_t)a6
+- (BOOL)_tryToPerformDataInteraction:(id)interaction client:(CGPoint)client global:(CGPoint)global operation:(unint64_t)operation
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = global.y;
+  x = global.x;
+  v9 = client.y;
+  v10 = client.x;
   WebThreadLock();
   if (self)
   {
-    [(WebView *)self dragDataForSession:a3 client:a6 global:v10 operation:v9, x, y];
+    [(WebView *)self dragDataForSession:interaction client:operation global:v10 operation:v9, x, y];
   }
 
   else
@@ -3948,7 +3948,7 @@ LABEL_8:
   return v14;
 }
 
-- (void)_endedDataInteraction:(CGPoint)a3 global:(CGPoint)a4
+- (void)_endedDataInteraction:(CGPoint)interaction global:(CGPoint)global
 {
   WebThreadLock();
   WebCore::DragController::dragEnded(*(self->_private->page.m_ptr + 9));
@@ -4271,14 +4271,14 @@ LABEL_36:
   }
 }
 
-+ (void)_registerPluginMIMEType:(id)a3
++ (void)_registerPluginMIMEType:(id)type
 {
   v4 = objc_opt_class();
-  [WebView registerViewClass:v4 representationClass:objc_opt_class() forMIMEType:a3];
+  [WebView registerViewClass:v4 representationClass:objc_opt_class() forMIMEType:type];
   if (byte_1ED6A613C == 1)
   {
     v5 = qword_1ED6A6188;
-    v6 = a3;
+    typeCopy2 = type;
   }
 
   else
@@ -4286,19 +4286,19 @@ LABEL_36:
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     qword_1ED6A6188 = v5;
     byte_1ED6A613C = 1;
-    v6 = a3;
+    typeCopy2 = type;
   }
 
-  [v5 addObject:v6];
+  [v5 addObject:typeCopy2];
 }
 
-+ (void)_unregisterPluginMIMEType:(id)a3
++ (void)_unregisterPluginMIMEType:(id)type
 {
-  [a1 _unregisterViewClassAndRepresentationClassForMIMEType:?];
+  [self _unregisterViewClassAndRepresentationClassForMIMEType:?];
   if (byte_1ED6A613C == 1)
   {
     v4 = qword_1ED6A6188;
-    v5 = a3;
+    typeCopy2 = type;
   }
 
   else
@@ -4306,18 +4306,18 @@ LABEL_36:
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     qword_1ED6A6188 = v4;
     byte_1ED6A613C = 1;
-    v5 = a3;
+    typeCopy2 = type;
   }
 
-  [v4 removeObject:v5];
+  [v4 removeObject:typeCopy2];
 }
 
-+ (BOOL)_viewClass:(Class *)a3 andRepresentationClass:(Class *)a4 forMIMEType:(id)a5 allowingPlugins:(BOOL)a6
++ (BOOL)_viewClass:(Class *)class andRepresentationClass:(Class *)representationClass forMIMEType:(id)type allowingPlugins:(BOOL)plugins
 {
-  v6 = a6;
-  v9 = [a5 lowercaseString];
-  v10 = [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{1), "_webkit_objectForMIMEType:", v9}];
-  v11 = [+[WebDataSource _repTypesAllowImageTypeOmission:](WebDataSource _repTypesAllowImageTypeOmission:{1), "_webkit_objectForMIMEType:", v9}];
+  pluginsCopy = plugins;
+  lowercaseString = [type lowercaseString];
+  v10 = [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{1), "_webkit_objectForMIMEType:", lowercaseString}];
+  v11 = [+[WebDataSource _repTypesAllowImageTypeOmission:](WebDataSource _repTypesAllowImageTypeOmission:{1), "_webkit_objectForMIMEType:", lowercaseString}];
   if (v10)
   {
     v12 = v11 == 0;
@@ -4330,13 +4330,13 @@ LABEL_36:
 
   if (v12 || (v13 = v11, [-[objc_class supportedMIMETypes](+[WebView _getPDFViewClass](WebView "_getPDFViewClass")]))
   {
-    if (v6)
+    if (pluginsCopy)
     {
       +[WebPluginDatabase sharedDatabase];
     }
 
-    v10 = [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{0), "_webkit_objectForMIMEType:", v9}];
-    v13 = [+[WebDataSource _repTypesAllowImageTypeOmission:](WebDataSource _repTypesAllowImageTypeOmission:{0), "_webkit_objectForMIMEType:", v9}];
+    v10 = [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{0), "_webkit_objectForMIMEType:", lowercaseString}];
+    v13 = [+[WebDataSource _repTypesAllowImageTypeOmission:](WebDataSource _repTypesAllowImageTypeOmission:{0), "_webkit_objectForMIMEType:", lowercaseString}];
   }
 
   LOBYTE(v14) = 0;
@@ -4350,11 +4350,11 @@ LABEL_36:
         return v14;
       }
 
-      if (!v6)
+      if (!pluginsCopy)
       {
         if (byte_1ED6A613C == 1)
         {
-          if ([qword_1ED6A6188 containsObject:v9])
+          if ([qword_1ED6A6188 containsObject:lowercaseString])
           {
 LABEL_24:
             if (([+[WebHTMLView supportedNonImageMIMETypes](WebHTMLView "supportedNonImageMIMETypes")] & 1) == 0)
@@ -4372,7 +4372,7 @@ LABEL_24:
         {
           qword_1ED6A6188 = objc_alloc_init(MEMORY[0x1E695DFA8]);
           byte_1ED6A613C = 1;
-          if ([qword_1ED6A6188 containsObject:v9])
+          if ([qword_1ED6A6188 containsObject:lowercaseString])
           {
             goto LABEL_24;
           }
@@ -4380,14 +4380,14 @@ LABEL_24:
       }
     }
 
-    if (a3)
+    if (class)
     {
-      *a3 = v10;
+      *class = v10;
     }
 
-    if (a4)
+    if (representationClass)
     {
-      *a4 = v13;
+      *representationClass = v13;
     }
 
     LOBYTE(v14) = 1;
@@ -4396,16 +4396,16 @@ LABEL_24:
   return v14;
 }
 
-- (BOOL)_viewClass:(Class *)a3 andRepresentationClass:(Class *)a4 forMIMEType:(id)a5
+- (BOOL)_viewClass:(Class *)class andRepresentationClass:(Class *)representationClass forMIMEType:(id)type
 {
   v8 = objc_opt_class();
 
-  return [v8 _viewClass:a3 andRepresentationClass:a4 forMIMEType:a5 allowingPlugins:0];
+  return [v8 _viewClass:class andRepresentationClass:representationClass forMIMEType:type allowingPlugins:0];
 }
 
-+ (void)_setAlwaysUsesComplexTextCodePath:(BOOL)a3
++ (void)_setAlwaysUsesComplexTextCodePath:(BOOL)path
 {
-  if (a3)
+  if (path)
   {
     v3 = 2;
   }
@@ -4421,7 +4421,7 @@ LABEL_24:
 + (void)closeAllWebViews
 {
   v13 = *MEMORY[0x1E69E9840];
-  WebCore::LocalDOMWindow::dispatchAllPendingUnloadEvents(a1);
+  WebCore::LocalDOMWindow::dispatchAllPendingUnloadEvents(self);
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
@@ -4438,8 +4438,8 @@ LABEL_24:
     byte_1ED6A6137 = 1;
   }
 
-  v3 = [v2 allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [v2 allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4450,23 +4450,23 @@ LABEL_24:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * i) close];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (BOOL)canShowFile:(id)a3
++ (BOOL)canShowFile:(id)file
 {
   v4 = objc_opt_class();
-  v5 = [WebView _MIMETypeForFile:a3];
+  v5 = [WebView _MIMETypeForFile:file];
 
   return [v4 canShowMIMEType:v5];
 }
@@ -4570,13 +4570,13 @@ LABEL_6:
   return result;
 }
 
-- (void)_dispatchTileDidDraw:(id)a3
+- (void)_dispatchTileDidDraw:(id)draw
 {
-  v5 = [(WebView *)self _webMailDelegate];
+  _webMailDelegate = [(WebView *)self _webMailDelegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [v5 _webthread_webView:self tileDidDraw:a3];
+    [_webMailDelegate _webthread_webView:self tileDidDraw:draw];
   }
 
   else
@@ -4622,15 +4622,15 @@ LABEL_6:
   }
 }
 
-- (void)_setResourceLoadSchedulerSuspended:(BOOL)a3
+- (void)_setResourceLoadSchedulerSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   v4 = WebCore::platformStrategies(self);
   v5 = v4[1];
   if (v5)
   {
     v6 = *(v5 + 88);
-    if (v3)
+    if (suspendedCopy)
     {
 LABEL_3:
       *(v5 + 88) = v6 + 1;
@@ -4643,7 +4643,7 @@ LABEL_3:
     v5 = (*(*v4 + 16))(v4);
     v4[1] = v5;
     v6 = *(v5 + 88);
-    if (v3)
+    if (suspendedCopy)
     {
       goto LABEL_3;
     }
@@ -4666,7 +4666,7 @@ LABEL_3:
 
 + (BOOL)_isUnderMemoryPressure
 {
-  v2 = WTF::MemoryPressureHandler::singleton(a1);
+  v2 = WTF::MemoryPressureHandler::singleton(self);
   v3 = atomic_load((v2 + 4));
   return (v3 == 2) | *(v2 + 7) & 1;
 }
@@ -4785,26 +4785,26 @@ LABEL_17:
   }
 }
 
-+ (id)_MIMETypeForFile:(id)a3
++ (id)_MIMETypeForFile:(id)file
 {
   if (![0 length] || (v4 = objc_msgSend(0, "isEqualToString:", @"application/octet-stream"), result = 0, v4))
   {
-    v6 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:a3];
+    v6 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:file];
     v7 = [v6 readDataOfLength:1024];
     [v6 closeFile];
     if ([v7 length])
     {
-      v8 = [v7 _webkit_guessedMIMEType];
+      _webkit_guessedMIMEType = [v7 _webkit_guessedMIMEType];
     }
 
     else
     {
-      v8 = 0;
+      _webkit_guessedMIMEType = 0;
     }
 
-    if ([v8 length])
+    if ([_webkit_guessedMIMEType length])
     {
-      return v8;
+      return _webkit_guessedMIMEType;
     }
 
     else
@@ -4816,9 +4816,9 @@ LABEL_17:
   return result;
 }
 
-- (id)_downloadURL:(id)a3
+- (id)_downloadURL:(id)l
 {
-  v4 = [objc_alloc(MEMORY[0x1E695AC68]) initWithURL:a3];
+  v4 = [objc_alloc(MEMORY[0x1E695AC68]) initWithURL:l];
   result = [(NSURLDownload *)WebDownload _downloadWithRequest:v4 delegate:self->_private->downloadDelegate directory:0];
   if (v4)
   {
@@ -4830,10 +4830,10 @@ LABEL_17:
   return result;
 }
 
-- (id)_openNewWindowWithRequest:(id)a3
+- (id)_openNewWindowWithRequest:(id)request
 {
-  v4 = [(WebView *)self _UIDelegateForwarder];
-  result = [v4 webView:self createWebViewWithRequest:0 windowFeatures:MEMORY[0x1E695E0F8]];
+  _UIDelegateForwarder = [(WebView *)self _UIDelegateForwarder];
+  result = [_UIDelegateForwarder webView:self createWebViewWithRequest:0 windowFeatures:MEMORY[0x1E695E0F8]];
   if (result)
   {
     v6 = result;
@@ -4858,7 +4858,7 @@ LABEL_17:
   }
 }
 
-- (void)_setUseDarkAppearance:(BOOL)a3
+- (void)_setUseDarkAppearance:(BOOL)appearance
 {
   v3 = self->_private;
   if (v3)
@@ -4866,7 +4866,7 @@ LABEL_17:
     m_ptr = v3->page.m_ptr;
     if (m_ptr)
     {
-      [(WebView *)self _setUseDarkAppearance:a3 useElevatedUserInterfaceLevel:*(m_ptr + 426)];
+      [(WebView *)self _setUseDarkAppearance:appearance useElevatedUserInterfaceLevel:*(m_ptr + 426)];
     }
   }
 }
@@ -4886,7 +4886,7 @@ LABEL_17:
   return m_ptr & 1;
 }
 
-- (void)_setUseElevatedUserInterfaceLevel:(BOOL)a3
+- (void)_setUseElevatedUserInterfaceLevel:(BOOL)level
 {
   v3 = self->_private;
   if (v3)
@@ -4894,15 +4894,15 @@ LABEL_17:
     m_ptr = v3->page.m_ptr;
     if (m_ptr)
     {
-      v5 = a3;
+      levelCopy = level;
       v7 = WebCore::Page::useDarkAppearance(m_ptr);
 
-      [(WebView *)self _setUseDarkAppearance:v7 useElevatedUserInterfaceLevel:v5];
+      [(WebView *)self _setUseDarkAppearance:v7 useElevatedUserInterfaceLevel:levelCopy];
     }
   }
 }
 
-- (void)_setUseDarkAppearance:(BOOL)a3 useElevatedUserInterfaceLevel:(BOOL)a4
+- (void)_setUseDarkAppearance:(BOOL)appearance useElevatedUserInterfaceLevel:(BOOL)level
 {
   v4 = self->_private;
   if (v4)
@@ -4935,22 +4935,22 @@ LABEL_17:
 
 + (void)_enableRemoteInspector
 {
-  v2 = Inspector::RemoteInspector::singleton(a1);
+  v2 = Inspector::RemoteInspector::singleton(self);
 
   MEMORY[0x1EEDCB9F8](v2);
 }
 
 + (void)_disableRemoteInspector
 {
-  v2 = Inspector::RemoteInspector::singleton(a1);
+  v2 = Inspector::RemoteInspector::singleton(self);
 
   MEMORY[0x1EEDCB9F0](v2);
 }
 
-- (void)setShowingInspectorIndication:(BOOL)a3
+- (void)setShowingInspectorIndication:(BOOL)indication
 {
   m_ptr = self->_private->indicateLayer.m_ptr;
-  if (a3)
+  if (indication)
   {
     if (!m_ptr)
     {
@@ -4982,9 +4982,9 @@ LABEL_17:
   }
 }
 
-- (void)_setHostApplicationProcessIdentifier:(int)a3 auditToken:(id *)a4
+- (void)_setHostApplicationProcessIdentifier:(int)identifier auditToken:(id *)token
 {
-  v4 = CFDataCreate(0, a4, 32);
+  v4 = CFDataCreate(0, token, 32);
   Inspector::RemoteInspector::singleton(v4);
   if (v4)
   {
@@ -4999,22 +4999,22 @@ LABEL_17:
   }
 }
 
-- (void)_mouseDidMoveOverElement:(id)a3 modifierFlags:(unint64_t)a4
+- (void)_mouseDidMoveOverElement:(id)element modifierFlags:(unint64_t)flags
 {
-  if (a3)
+  if (element)
   {
-    CallUIDelegate(self, sel_webView_mouseDidMoveOverElement_modifierFlags_, a3, a4);
+    CallUIDelegate(self, sel_webView_mouseDidMoveOverElement_modifierFlags_, element, flags);
   }
 }
 
-- (void)_loadBackForwardListFromOtherView:(id)a3
+- (void)_loadBackForwardListFromOtherView:(id)view
 {
   m_ptr = self->_private->page.m_ptr;
-  if (m_ptr && *(*(a3 + 10) + 8))
+  if (m_ptr && *(*(view + 10) + 8))
   {
     v6 = *(m_ptr + 19);
     ++*v6;
-    v7 = *(*(*(a3 + 10) + 8) + 152);
+    v7 = *(*(*(view + 10) + 8) + 152);
     ++*v7;
     WebCore::BackForwardController::currentItem();
     v8 = v24;
@@ -5041,7 +5041,7 @@ LABEL_17:
         {
           if (!v12)
           {
-            v18 = *(*(*(a3 + 10) + 8) + 176);
+            v18 = *(*(*(view + 10) + 8) + 176);
             if (v18)
             {
               if ((*(v18 + 136) & 1) == 0)
@@ -5136,9 +5136,9 @@ LABEL_31:
   }
 }
 
-- (void)_setFormDelegate:(id)a3
+- (void)_setFormDelegate:(id)delegate
 {
-  self->_private->formDelegate = a3;
+  self->_private->formDelegate = delegate;
   [self->_private->formDelegateForwarder.m_ptr clearTarget];
   v4 = self->_private;
   m_ptr = v4->formDelegateForwarder.m_ptr;
@@ -5173,7 +5173,7 @@ LABEL_31:
   return self->_private->formDelegateForwarder.m_ptr;
 }
 
-- (id)_formDelegateForSelector:(SEL)a3
+- (id)_formDelegateForSelector:(SEL)selector
 {
   formDelegate = self->_private->formDelegate;
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -5188,7 +5188,7 @@ LABEL_31:
   return formDelegate;
 }
 
-- (void)_preferencesChangedNotification:(id)a3
+- (void)_preferencesChangedNotification:(id)notification
 {
   if ((WebThreadIsLocked() & 1) == 0)
   {
@@ -5197,9 +5197,9 @@ LABEL_31:
 
   if ([(WebFrame *)[(WebView *)self mainFrame] _loadsSynchronously])
   {
-    v5 = [a3 object];
+    object = [notification object];
 
-    [(WebView *)self _preferencesChanged:v5];
+    [(WebView *)self _preferencesChanged:object];
   }
 
   else
@@ -5222,7 +5222,7 @@ uint64_t __55__WebView_WebPrivate___preferencesChangedNotification___block_invok
   return result;
 }
 
-- (void)_preferencesChanged:(id)a3
+- (void)_preferencesChanged:(id)changed
 {
   v5 = self->_private;
   if (!v5->userAgentOverridden)
@@ -5235,20 +5235,20 @@ uint64_t __55__WebView_WebPrivate___preferencesChangedNotification___block_invok
   {
     if (byte_1ED6A6131 == 1)
     {
-      if ([a3 databasesEnabled])
+      if ([changed databasesEnabled])
       {
         +[WebDatabaseManager sharedWebDatabaseManager];
       }
 
-      if ([a3 storageTrackerEnabled])
+      if ([changed storageTrackerEnabled])
       {
         WebKitInitializeStorageIfNecessary();
       }
     }
 
-    v53 = [a3 additionalSupportedImageTypes];
-    v52 = &v53;
-    WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v49, [v53 count], &v52, 0);
+    additionalSupportedImageTypes = [changed additionalSupportedImageTypes];
+    v52 = &additionalSupportedImageTypes;
+    WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v49, [additionalSupportedImageTypes count], &v52, 0);
     WebCore::setAdditionalSupportedImageTypes();
     v7 = v49;
     if (v51)
@@ -5278,56 +5278,56 @@ uint64_t __55__WebView_WebPrivate___preferencesChangedNotification___block_invok
       WTF::fastFree(v7, v6);
     }
 
-    [(WebView *)self _preferencesChangedGenerated:a3];
+    [(WebView *)self _preferencesChangedGenerated:changed];
     v10 = *(self->_private->page.m_ptr + 15);
-    v11 = [(WebView *)self interactiveFormValidationEnabled];
+    interactiveFormValidationEnabled = [(WebView *)self interactiveFormValidationEnabled];
     v12 = 0x2000000000000;
-    if (!v11)
+    if (!interactiveFormValidationEnabled)
     {
       v12 = 0;
     }
 
     *(v10 + 696) = *(v10 + 696) & 0xFFFDFFFFFFFFFFFFLL | v12;
     *(v10 + 616) = [(WebView *)self validationMessageTimerMagnification];
-    [a3 storageBlockingPolicy];
+    [changed storageBlockingPolicy];
     WebCore::Settings::setStorageBlockingPolicy();
-    v13 = [a3 editableLinkBehavior];
-    if (v13 >= 5)
+    editableLinkBehavior = [changed editableLinkBehavior];
+    if (editableLinkBehavior >= 5)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v13;
+      v14 = editableLinkBehavior;
     }
 
     *(v10 + 369) = v14;
-    *(v10 + 432) = [a3 javaScriptRuntimeFlags];
-    v15 = [a3 textDirectionSubmenuInclusionBehavior];
-    if (v15 == 2)
+    *(v10 + 432) = [changed javaScriptRuntimeFlags];
+    textDirectionSubmenuInclusionBehavior = [changed textDirectionSubmenuInclusionBehavior];
+    if (textDirectionSubmenuInclusionBehavior == 2)
     {
       v16 = 2;
     }
 
     else
     {
-      v16 = v15 == 1;
+      v16 = textDirectionSubmenuInclusionBehavior == 1;
     }
 
     *(v10 + 558) = v16;
-    [a3 _backForwardCacheExpirationInterval];
+    [changed _backForwardCacheExpirationInterval];
     *(v10 + 312) = v17;
-    *(v10 + 528) = [a3 _pitchCorrectionAlgorithm];
-    v18 = [a3 developerExtrasEnabled];
+    *(v10 + 528) = [changed _pitchCorrectionAlgorithm];
+    developerExtrasEnabled = [changed developerExtrasEnabled];
     v19 = 0x10000000000000;
-    if (!v18)
+    if (!developerExtrasEnabled)
     {
       v19 = 0;
     }
 
     *(v10 + 688) = *(v10 + 688) & 0xFFEFFFFFFFFFFFFFLL | v19;
-    if ([a3 mediaPlaybackRequiresUserGesture])
+    if ([changed mediaPlaybackRequiresUserGesture])
     {
       v20 = *(v10 + 712) | 0x40;
       *(v10 + 712) = v20;
@@ -5335,18 +5335,18 @@ uint64_t __55__WebView_WebPrivate___preferencesChangedNotification___block_invok
 
     else
     {
-      v21 = [a3 videoPlaybackRequiresUserGesture];
+      videoPlaybackRequiresUserGesture = [changed videoPlaybackRequiresUserGesture];
       v22 = 64;
-      if (!v21)
+      if (!videoPlaybackRequiresUserGesture)
       {
         v22 = 0;
       }
 
       *(v10 + 712) = *(v10 + 712) & 0xFFFFFFFFFFFFFFBFLL | v22;
-      v23 = [a3 audioPlaybackRequiresUserGesture];
+      audioPlaybackRequiresUserGesture = [changed audioPlaybackRequiresUserGesture];
       v24 = 0;
       v20 = *(v10 + 712);
-      if (!v23)
+      if (!audioPlaybackRequiresUserGesture)
       {
         goto LABEL_34;
       }
@@ -5355,14 +5355,14 @@ uint64_t __55__WebView_WebPrivate___preferencesChangedNotification___block_invok
     v24 = 32;
 LABEL_34:
     *(v10 + 712) = v24 | v20 & 0xFFFFFFFFFFFFFFDFLL;
-    v25 = [a3 webSQLEnabled];
-    v26 = v25;
-    v27 = WebCore::DeprecatedGlobalSettings::shared(v25);
+    webSQLEnabled = [changed webSQLEnabled];
+    v26 = webSQLEnabled;
+    v27 = WebCore::DeprecatedGlobalSettings::shared(webSQLEnabled);
     *(v27 + 23) = v26;
     v28 = WebCore::DatabaseManager::singleton(v27);
-    [a3 databasesEnabled];
+    [changed databasesEnabled];
     WebCore::DatabaseManager::setIsAvailable(v28);
-    MEMORY[0x1CCA63A40](&v49, [a3 _localStorageDatabasePath]);
+    MEMORY[0x1CCA63A40](&v49, [changed _localStorageDatabasePath]);
     v30 = v49;
     if (v49)
     {
@@ -5384,7 +5384,7 @@ LABEL_34:
     }
 
     m_ptr = self->_private->page.m_ptr;
-    if ([a3 privateBrowsingEnabled])
+    if ([changed privateBrowsingEnabled])
     {
       v34.m_identifier = 0x8000000000000001;
     }
@@ -5395,8 +5395,8 @@ LABEL_34:
     }
 
     WebCore::Page::setSessionID(m_ptr, v34);
-    WebBroadcastChannelRegistry::getOrCreate([a3 privateBrowsingEnabled], &v53);
-    v49 = v53;
+    WebBroadcastChannelRegistry::getOrCreate([changed privateBrowsingEnabled], &additionalSupportedImageTypes);
+    v49 = additionalSupportedImageTypes;
     WebCore::Page::setBroadcastChannelRegistry();
     v35 = v49;
     v49 = 0;
@@ -5414,7 +5414,7 @@ LABEL_34:
     }
 
     v36 = WebViewGroup::storageNamespaceProvider(self->_private->group.m_ptr);
-    if ([a3 privateBrowsingEnabled])
+    if ([changed privateBrowsingEnabled])
     {
       v37.m_identifier = 0x8000000000000001;
     }
@@ -5425,8 +5425,8 @@ LABEL_34:
     }
 
     WebCore::StorageNamespaceProvider::setSessionIDForTesting(v36, v37);
-    WebCore::DeprecatedGlobalSettings::setAudioSessionCategoryOverride([a3 audioSessionCategoryOverride]);
-    MEMORY[0x1CCA63A40](&v49, [a3 networkInterfaceName]);
+    WebCore::DeprecatedGlobalSettings::setAudioSessionCategoryOverride([changed audioSessionCategoryOverride]);
+    MEMORY[0x1CCA63A40](&v49, [changed networkInterfaceName]);
     WebCore::DeprecatedGlobalSettings::setNetworkInterfaceName(&v49, v38);
     v40 = v49;
     v49 = 0;
@@ -5436,7 +5436,7 @@ LABEL_34:
     }
 
     v41 = self->_private->page.m_ptr;
-    MEMORY[0x1CCA63A40](&v49, [a3 mediaKeysStorageDirectory]);
+    MEMORY[0x1CCA63A40](&v49, [changed mediaKeysStorageDirectory]);
     WebCore::Page::setMediaKeysStorageDirectory(v41, &v49);
     v43 = v49;
     v49 = 0;
@@ -5445,27 +5445,27 @@ LABEL_34:
       WTF::StringImpl::destroy(v43, v42);
     }
 
-    WebCore::DeprecatedGlobalSettings::setTrackingPreventionEnabled([a3 resourceLoadStatisticsEnabled]);
-    v44 = [a3 zoomsTextOnly];
+    WebCore::DeprecatedGlobalSettings::setTrackingPreventionEnabled([changed resourceLoadStatisticsEnabled]);
+    zoomsTextOnly = [changed zoomsTextOnly];
     v46 = self->_private;
-    if (v46->zoomsTextOnly != v44)
+    if (v46->zoomsTextOnly != zoomsTextOnly)
     {
       *&v45 = v46->zoomMultiplier;
-      [(WebView *)self _setZoomMultiplier:v44 isTextOnly:v45];
+      [(WebView *)self _setZoomMultiplier:zoomsTextOnly isTextOnly:v45];
     }
 
     v47 = [-[WebView window](self "window")];
     if (v47)
     {
       v48 = v47;
-      [a3 showDebugBorders];
+      [changed showDebugBorders];
       WebCore::LegacyTileCache::setTileBordersVisible(v48);
-      [a3 showRepaintCounter];
+      [changed showRepaintCounter];
       WebCore::LegacyTileCache::setTilePaintCountersVisible(v48);
-      *(v48 + 74) = [a3 acceleratedDrawingEnabled];
+      *(v48 + 74) = [changed acceleratedDrawingEnabled];
     }
 
-    [MEMORY[0x1E69E2180] _setInterpolationQuality:{objc_msgSend(a3, "_interpolationQuality")}];
+    [MEMORY[0x1E69E2180] _setInterpolationQuality:{objc_msgSend(changed, "_interpolationQuality")}];
     WebCore::Page::settingsDidChange(self->_private->page.m_ptr);
   }
 }
@@ -6307,7 +6307,7 @@ LABEL_16:
   return self->_private->UIDelegateForwarder.m_ptr;
 }
 
-- (id)_UIDelegateForSelector:(SEL)a3
+- (id)_UIDelegateForSelector:(SEL)selector
 {
   UIDelegate = self->_private->UIDelegate;
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -6345,11 +6345,11 @@ LABEL_16:
   return result;
 }
 
-+ (void)_unregisterViewClassAndRepresentationClassForMIMEType:(id)a3
++ (void)_unregisterViewClassAndRepresentationClassForMIMEType:(id)type
 {
-  [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{0), "removeObjectForKey:", a3}];
-  v4 = WebCore::MIMETypeRegistry::supportedNonImageMIMETypes([+[WebDataSource _repTypesAllowImageTypeOmission:](WebDataSource _repTypesAllowImageTypeOmission:{0), "removeObjectForKey:", a3}]);
-  MEMORY[0x1CCA63A40](&v17, a3);
+  [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{0), "removeObjectForKey:", type}];
+  v4 = WebCore::MIMETypeRegistry::supportedNonImageMIMETypes([+[WebDataSource _repTypesAllowImageTypeOmission:](WebDataSource _repTypesAllowImageTypeOmission:{0), "removeObjectForKey:", type}]);
+  MEMORY[0x1CCA63A40](&v17, type);
   v6 = v17;
   v7 = *v4;
   if (*v4)
@@ -6414,10 +6414,10 @@ LABEL_18:
   }
 }
 
-+ (void)_registerViewClass:(Class)a3 representationClass:(Class)a4 forURLScheme:(id)a5
++ (void)_registerViewClass:(Class)class representationClass:(Class)representationClass forURLScheme:(id)scheme
 {
-  v9 = [a1 _generatedMIMETypeForURLScheme:a5];
-  [a1 registerViewClass:a3 representationClass:a4 forMIMEType:v9];
+  v9 = [self _generatedMIMETypeForURLScheme:scheme];
+  [self registerViewClass:class representationClass:representationClass forMIMEType:v9];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   if (v10 == v11)
@@ -6471,21 +6471,21 @@ LABEL_8:
 
   v15 = v16;
 LABEL_11:
-  v18 = [objc_msgSend(a5 "lowercaseString")];
+  v18 = [objc_msgSend(scheme "lowercaseString")];
   [v15 addObject:v18];
   if (v18)
   {
   }
 }
 
-+ (id)_generatedMIMETypeForURLScheme:(id)a3
++ (id)_generatedMIMETypeForURLScheme:(id)scheme
 {
-  v3 = [a3 lowercaseString];
+  lowercaseString = [scheme lowercaseString];
 
-  return [@"x-apple-web-kit/" stringByAppendingString:v3];
+  return [@"x-apple-web-kit/" stringByAppendingString:lowercaseString];
 }
 
-+ (BOOL)_representationExistsForURLScheme:(id)a3
++ (BOOL)_representationExistsForURLScheme:(id)scheme
 {
   if (byte_1ED6A613F == 1)
   {
@@ -6499,20 +6499,20 @@ LABEL_11:
     byte_1ED6A613F = 1;
   }
 
-  v4 = [a3 lowercaseString];
+  lowercaseString = [scheme lowercaseString];
 
-  return [v3 containsObject:v4];
+  return [v3 containsObject:lowercaseString];
 }
 
-+ (BOOL)_canHandleRequest:(id)a3 forMainFrame:(BOOL)a4
++ (BOOL)_canHandleRequest:(id)request forMainFrame:(BOOL)frame
 {
-  if (a3)
+  if (request)
   {
-    v4 = a4;
-    v7 = [a3 URL];
+    frameCopy = frame;
+    v7 = [request URL];
     if (v7)
     {
-      if ([MEMORY[0x1E695AC40] canHandleRequest:a3] & 1) != 0 || (v8 = objc_msgSend(objc_msgSend(a3, "URL"), "scheme"), v4) && (objc_msgSend(a1, "_representationExistsForURLScheme:", v8) & 1) != 0 || (objc_msgSend(v8, "_webkit_isCaseInsensitiveEqualToString:", @"applewebdata"))
+      if ([MEMORY[0x1E695AC40] canHandleRequest:request] & 1) != 0 || (v8 = objc_msgSend(objc_msgSend(request, "URL"), "scheme"), frameCopy) && (objc_msgSend(self, "_representationExistsForURLScheme:", v8) & 1) != 0 || (objc_msgSend(v8, "_webkit_isCaseInsensitiveEqualToString:", @"applewebdata"))
       {
         LOBYTE(v7) = 1;
       }
@@ -6533,17 +6533,17 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_decodeData:(id)a3
++ (id)_decodeData:(id)data
 {
-  WebCore::HTMLNames::init(a1);
+  WebCore::HTMLNames::init(self);
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v16[0] = &unk_1F472B448;
   memset(&v16[1], 0, 24);
   WebCore::TextResourceDecoder::create(&v17, v16, 0);
-  if (a3)
+  if (data)
   {
-    [a3 bytes];
-    [a3 length];
+    [data bytes];
+    [data length];
   }
 
   WebCore::TextResourceDecoder::decodeAndFlush();
@@ -6622,17 +6622,17 @@ LABEL_16:
   return v6;
 }
 
-- (void)_didCommitLoadForFrame:(id)a3
+- (void)_didCommitLoadForFrame:(id)frame
 {
-  if ([(WebView *)self mainFrame]== a3)
+  if ([(WebView *)self mainFrame]== frame)
   {
     atomic_store(0, &self->_private->didDrawTiles);
   }
 }
 
-- (void)_setUIKitDelegate:(id)a3
+- (void)_setUIKitDelegate:(id)delegate
 {
-  self->_private->UIKitDelegate = a3;
+  self->_private->UIKitDelegate = delegate;
   [self->_private->UIKitDelegateForwarder.m_ptr clearTarget];
   v4 = self->_private;
   m_ptr = v4->UIKitDelegateForwarder.m_ptr;
@@ -6642,26 +6642,26 @@ LABEL_16:
   }
 }
 
-- (void)addCaretChangeListener:(id)a3
+- (void)addCaretChangeListener:(id)listener
 {
   if (!self->_private->_caretChangeListeners.m_ptr)
   {
-    v4 = a3;
+    listenerCopy = listener;
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    a3 = v4;
+    listener = listenerCopy;
     v6 = self->_private;
     m_ptr = v6->_caretChangeListeners.m_ptr;
     v6->_caretChangeListeners.m_ptr = v5;
     if (m_ptr)
     {
 
-      a3 = v4;
+      listener = listenerCopy;
     }
   }
 
   v8 = self->_private->_caretChangeListeners.m_ptr;
 
-  [(NSMutableSet *)v8 addObject:a3];
+  [(NSMutableSet *)v8 addObject:listener];
 }
 
 - (void)caretChanged
@@ -6722,33 +6722,33 @@ LABEL_16:
 - (id)_displayURL
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
-  v4 = [(WebFrame *)v3 provisionalDataSource];
-  v5 = v4;
-  if (v4)
+  mainFrame = [(WebView *)self mainFrame];
+  provisionalDataSource = [(WebFrame *)mainFrame provisionalDataSource];
+  dataSource = provisionalDataSource;
+  if (provisionalDataSource)
   {
-    v6 = [(WebDataSource *)v4 unreachableURL];
-    if (v6)
+    unreachableURL = [(WebDataSource *)provisionalDataSource unreachableURL];
+    if (unreachableURL)
     {
 LABEL_3:
-      v7 = v6;
-      v8 = v6;
-      v9 = v6;
+      v7 = unreachableURL;
+      v8 = unreachableURL;
+      v9 = unreachableURL;
       goto LABEL_7;
     }
   }
 
   else
   {
-    v5 = [(WebFrame *)v3 dataSource];
-    v6 = [(WebDataSource *)v5 unreachableURL];
-    if (v6)
+    dataSource = [(WebFrame *)mainFrame dataSource];
+    unreachableURL = [(WebDataSource *)dataSource unreachableURL];
+    if (unreachableURL)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [(NSMutableURLRequest *)[(WebDataSource *)v5 request] URL];
+  v10 = [(NSMutableURLRequest *)[(WebDataSource *)dataSource request] URL];
   v9 = v10;
   if (!v10)
   {
@@ -6758,17 +6758,17 @@ LABEL_3:
   v11 = v10;
 LABEL_7:
   v12 = v9;
-  if (v6)
+  if (unreachableURL)
   {
   }
 
   return v9;
 }
 
-- (void)_setUseFastImageScalingMode:(BOOL)a3
+- (void)_setUseFastImageScalingMode:(BOOL)mode
 {
   m_ptr = self->_private->page.m_ptr;
-  if (m_ptr && WebCore::Page::inLowQualityImageInterpolationMode(m_ptr) != a3)
+  if (m_ptr && WebCore::Page::inLowQualityImageInterpolationMode(m_ptr) != mode)
   {
     WebCore::Page::setInLowQualityImageInterpolationMode(self->_private->page.m_ptr);
 
@@ -6803,14 +6803,14 @@ LABEL_7:
   return v3;
 }
 
-- (void)_setCookieEnabled:(BOOL)a3
+- (void)_setCookieEnabled:(BOOL)enabled
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
     v4 = *(m_ptr + 15);
     v5 = 0x2000000000000000;
-    if (!a3)
+    if (!enabled)
     {
       v5 = 0;
     }
@@ -6819,9 +6819,9 @@ LABEL_7:
   }
 }
 
-- (BOOL)_locked_plugInsAreRunningInFrame:(id)a3
+- (BOOL)_locked_plugInsAreRunningInFrame:(id)frame
 {
-  v5 = [objc_msgSend(a3 "frameView")];
+  v5 = [objc_msgSend(frame "frameView")];
   if (v5)
   {
     v6 = v5;
@@ -6832,8 +6832,8 @@ LABEL_7:
     }
   }
 
-  v8 = [a3 childFrames];
-  v9 = [v8 count];
+  childFrames = [frame childFrames];
+  v9 = [childFrames count];
   if (!v9)
   {
     return 0;
@@ -6843,7 +6843,7 @@ LABEL_7:
   v11 = v9 - 1;
   do
   {
-    result = -[WebView _locked_plugInsAreRunningInFrame:](self, "_locked_plugInsAreRunningInFrame:", [v8 objectAtIndex:v10]);
+    result = -[WebView _locked_plugInsAreRunningInFrame:](self, "_locked_plugInsAreRunningInFrame:", [childFrames objectAtIndex:v10]);
     if (result)
     {
       break;
@@ -6857,14 +6857,14 @@ LABEL_7:
 - (BOOL)_pluginsAreRunning
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  return [(WebView *)self _locked_plugInsAreRunningInFrame:v3];
+  return [(WebView *)self _locked_plugInsAreRunningInFrame:mainFrame];
 }
 
-- (void)_locked_recursivelyPerformPlugInSelector:(SEL)a3 inFrame:(id)a4
+- (void)_locked_recursivelyPerformPlugInSelector:(SEL)selector inFrame:(id)frame
 {
-  v7 = [objc_msgSend(a4 "frameView")];
+  v7 = [objc_msgSend(frame "frameView")];
   if (v7)
   {
     v8 = v7;
@@ -6875,15 +6875,15 @@ LABEL_7:
     }
   }
 
-  v9 = [a4 childFrames];
-  v10 = [v9 count];
+  childFrames = [frame childFrames];
+  v10 = [childFrames count];
   v11 = v10;
   if (v10)
   {
     v12 = 0;
     do
     {
-      -[WebView _locked_recursivelyPerformPlugInSelector:inFrame:](self, "_locked_recursivelyPerformPlugInSelector:inFrame:", a3, [v9 objectAtIndex:v12++]);
+      -[WebView _locked_recursivelyPerformPlugInSelector:inFrame:](self, "_locked_recursivelyPerformPlugInSelector:inFrame:", selector, [childFrames objectAtIndex:v12++]);
     }
 
     while (v11 != v12);
@@ -6893,102 +6893,102 @@ LABEL_7:
 - (void)_destroyAllPlugIns
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_destroyAllPlugins inFrame:v3];
+  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_destroyAllPlugins inFrame:mainFrame];
 }
 
 - (void)_startAllPlugIns
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_startAllPlugins inFrame:v3];
+  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_startAllPlugins inFrame:mainFrame];
 }
 
 - (void)_stopAllPlugIns
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_stopAllPlugins inFrame:v3];
+  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_stopAllPlugins inFrame:mainFrame];
 }
 
 - (void)_stopAllPlugInsForPageCache
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_stopPluginsForPageCache inFrame:v3];
+  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_stopPluginsForPageCache inFrame:mainFrame];
 }
 
 - (void)_restorePlugInsFromCache
 {
   WebThreadLock();
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_restorePluginsFromCache inFrame:v3];
+  [(WebView *)self _locked_recursivelyPerformPlugInSelector:sel_restorePluginsFromCache inFrame:mainFrame];
 }
 
-- (BOOL)_setMediaLayer:(id)a3 forPluginView:(id)a4
+- (BOOL)_setMediaLayer:(id)layer forPluginView:(id)view
 {
   WebThreadLock();
-  v7 = [(WebView *)self _mainCoreFrame];
-  if (v7)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame)
   {
-    v8 = v7;
-    v9 = v7;
+    v8 = _mainCoreFrame;
+    v9 = _mainCoreFrame;
     while (1)
     {
       v10 = *(v9 + 27);
       if (v10)
       {
-        v11 = WebCore::LocalFrameView::graphicsLayerForPlatformWidget(v10, a4);
+        v11 = WebCore::LocalFrameView::graphicsLayerForPlatformWidget(v10, view);
         if (v11)
         {
           v12 = v11;
-          if ((*(*v11 + 544))(v11) != a3)
+          if ((*(*v11 + 544))(v11) != layer)
           {
             break;
           }
         }
       }
 
-      v7 = WebCore::FrameTree::traverseNext((v9 + 40), 0);
-      if (!v7)
+      _mainCoreFrame = WebCore::FrameTree::traverseNext((v9 + 40), 0);
+      if (!_mainCoreFrame)
       {
-        return v7;
+        return _mainCoreFrame;
       }
 
-      v9 = v7;
-      if (v7[136] == 1)
+      v9 = _mainCoreFrame;
+      if (_mainCoreFrame[136] == 1)
       {
-        LOBYTE(v7) = 0;
-        return v7;
+        LOBYTE(_mainCoreFrame) = 0;
+        return _mainCoreFrame;
       }
     }
 
-    (*(*v12 + 560))(v12, a3, 2);
+    (*(*v12 + 560))(v12, layer, 2);
     v13 = *(v8 + 27);
     if (v13)
     {
       WebCore::LocalFrameView::flushCompositingStateIncludingSubframes(v13);
     }
 
-    LOBYTE(v7) = 1;
+    LOBYTE(_mainCoreFrame) = 1;
   }
 
-  return v7;
+  return _mainCoreFrame;
 }
 
-- (void)_setNeedsUnrestrictedGetMatchedCSSRules:(BOOL)a3
+- (void)_setNeedsUnrestrictedGetMatchedCSSRules:(BOOL)rules
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
     v4 = *(m_ptr + 15);
     v5 = 8;
-    if (!a3)
+    if (!rules)
     {
       v5 = 0;
     }
@@ -6999,10 +6999,10 @@ LABEL_7:
 
 - (void)_attachScriptDebuggerToAllFrames
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame)
   {
-    v3 = v2;
+    v3 = _mainCoreFrame;
     do
     {
       if ((*(v3 + 136) & 1) == 0)
@@ -7030,10 +7030,10 @@ LABEL_7:
 
 - (void)_detachScriptDebuggerFromAllFrames
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame)
   {
-    v3 = v2;
+    v3 = _mainCoreFrame;
     do
     {
       if ((*(v3 + 136) & 1) == 0)
@@ -7059,22 +7059,22 @@ LABEL_7:
   }
 }
 
-- (void)setBackgroundColor:(CGColor *)a3
+- (void)setBackgroundColor:(CGColor *)color
 {
-  if (a3 && !CFEqual(self->_private->backgroundColor.m_ptr, a3))
+  if (color && !CFEqual(self->_private->backgroundColor.m_ptr, color))
   {
     v5 = self->_private;
-    CFRetain(a3);
+    CFRetain(color);
     m_ptr = v5->backgroundColor.m_ptr;
-    v5->backgroundColor.m_ptr = a3;
+    v5->backgroundColor.m_ptr = color;
     if (m_ptr)
     {
       CFRelease(m_ptr);
     }
 
-    v7 = [(WebView *)self mainFrame];
+    mainFrame = [(WebView *)self mainFrame];
 
-    [(WebFrame *)v7 _updateBackgroundAndUpdatesWhileOffscreen];
+    [(WebFrame *)mainFrame _updateBackgroundAndUpdatesWhileOffscreen];
   }
 }
 
@@ -7089,7 +7089,7 @@ LABEL_7:
   return m_ptr & 1;
 }
 
-- (void)setDefersCallbacks:(BOOL)a3
+- (void)setDefersCallbacks:(BOOL)callbacks
 {
   if (self->_private->page.m_ptr)
   {
@@ -7099,22 +7099,22 @@ LABEL_7:
 
 + (id)_productivityDocumentMIMETypes
 {
-  SupportedMIMETypesSet = WebCore::QLPreviewGetSupportedMIMETypesSet(a1);
+  SupportedMIMETypesSet = WebCore::QLPreviewGetSupportedMIMETypesSet(self);
 
   return [SupportedMIMETypesSet allObjects];
 }
 
-- (void)_setFixedLayoutSize:(CGSize)a3
+- (void)_setFixedLayoutSize:(CGSize)size
 {
-  v7 = a3;
-  self->_private->fixedLayoutSize = a3;
-  v4 = [(WebView *)self mainFrame];
-  if (v4)
+  sizeCopy = size;
+  self->_private->fixedLayoutSize = size;
+  mainFrame = [(WebView *)self mainFrame];
+  if (mainFrame)
   {
-    m_ptr = v4->_private->coreFrame.m_ptr;
+    m_ptr = mainFrame->_private->coreFrame.m_ptr;
     if (m_ptr)
     {
-      WebCore::IntSize::IntSize(&v6, &v7);
+      WebCore::IntSize::IntSize(&v6, &sizeCopy);
       WebCore::ScrollView::setFixedLayoutSize();
       WebCore::ScrollView::setUseFixedLayout(*(m_ptr + 27));
       [(WebView *)self setNeedsDisplay:1];
@@ -7189,7 +7189,7 @@ LABEL_7:
   }
 }
 
-- (void)_setCustomFixedPositionLayoutRectInWebThread:(CGRect)a3 synchronize:(BOOL)a4
+- (void)_setCustomFixedPositionLayoutRectInWebThread:(CGRect)thread synchronize:(BOOL)synchronize
 {
   v4 = 0;
   p_pendingFixedPositionLayoutRectMutex = &self->_private->pendingFixedPositionLayoutRectMutex;
@@ -7197,26 +7197,26 @@ LABEL_7:
   atomic_compare_exchange_strong_explicit(p_pendingFixedPositionLayoutRectMutex, &v4, 1u, memory_order_acquire, memory_order_acquire);
   if (v4)
   {
-    v7 = self;
-    v8 = a4;
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    selfCopy = self;
+    synchronizeCopy = synchronize;
+    height = thread.size.height;
+    width = thread.size.width;
+    y = thread.origin.y;
+    x = thread.origin.x;
     MEMORY[0x1CCA63990](p_pendingFixedPositionLayoutRectMutex, a2);
-    a3.origin.x = x;
-    a3.origin.y = y;
-    a3.size.width = width;
-    a3.size.height = height;
-    *&a4 = v8;
-    self = v7;
+    thread.origin.x = x;
+    thread.origin.y = y;
+    thread.size.width = width;
+    thread.size.height = height;
+    *&synchronize = synchronizeCopy;
+    self = selfCopy;
   }
 
-  self->_private->pendingFixedPositionLayoutRect = a3;
+  self->_private->pendingFixedPositionLayoutRect = thread;
   atomic_compare_exchange_strong_explicit(p_pendingFixedPositionLayoutRectMutex, &v6, 0, memory_order_release, memory_order_relaxed);
   if (v6 == 1)
   {
-    if (!a4)
+    if (!synchronize)
     {
       return;
     }
@@ -7225,9 +7225,9 @@ LABEL_7:
   else
   {
     v13 = p_pendingFixedPositionLayoutRectMutex;
-    v14 = a4;
+    synchronizeCopy2 = synchronize;
     WTF::Lock::unlockSlow(v13);
-    if (!v14)
+    if (!synchronizeCopy2)
     {
       return;
     }
@@ -7236,7 +7236,7 @@ LABEL_7:
   WebThreadRun();
 }
 
-- (void)_setCustomFixedPositionLayoutRect:(CGRect)a3
+- (void)_setCustomFixedPositionLayoutRect:(CGRect)rect
 {
   v3 = 0;
   p_pendingFixedPositionLayoutRectMutex = &self->_private->pendingFixedPositionLayoutRectMutex;
@@ -7244,32 +7244,32 @@ LABEL_7:
   atomic_compare_exchange_strong_explicit(p_pendingFixedPositionLayoutRectMutex, &v3, 1u, memory_order_acquire, memory_order_acquire);
   if (v3)
   {
-    v6 = self;
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    selfCopy = self;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     MEMORY[0x1CCA63990](p_pendingFixedPositionLayoutRectMutex, a2);
-    a3.origin.x = x;
-    a3.origin.y = y;
-    a3.size.width = width;
-    a3.size.height = height;
-    self = v6;
+    rect.origin.x = x;
+    rect.origin.y = y;
+    rect.size.width = width;
+    rect.size.height = height;
+    self = selfCopy;
   }
 
-  self->_private->pendingFixedPositionLayoutRect = a3;
+  self->_private->pendingFixedPositionLayoutRect = rect;
   atomic_compare_exchange_strong_explicit(p_pendingFixedPositionLayoutRectMutex, &v5, 0, memory_order_release, memory_order_relaxed);
   if (v5 != 1)
   {
-    v11 = self;
+    selfCopy2 = self;
     WTF::Lock::unlockSlow(p_pendingFixedPositionLayoutRectMutex);
-    self = v11;
+    self = selfCopy2;
   }
 
   [(WebView *)self _synchronizeCustomFixedPositionLayoutRect];
 }
 
-- (BOOL)_fetchCustomFixedPositionLayoutRect:(CGRect *)a3
+- (BOOL)_fetchCustomFixedPositionLayoutRect:(CGRect *)rect
 {
   v5 = 0;
   p_pendingFixedPositionLayoutRectMutex = &self->_private->pendingFixedPositionLayoutRectMutex;
@@ -7293,8 +7293,8 @@ LABEL_7:
   else
   {
     size = self->_private->pendingFixedPositionLayoutRect.size;
-    a3->origin = self->_private->pendingFixedPositionLayoutRect.origin;
-    a3->size = size;
+    rect->origin = self->_private->pendingFixedPositionLayoutRect.origin;
+    rect->size = size;
     p_pendingFixedPositionLayoutRect = &self->_private->pendingFixedPositionLayoutRect;
     v12 = *(MEMORY[0x1E695F050] + 16);
     p_pendingFixedPositionLayoutRect->origin = *MEMORY[0x1E695F050];
@@ -7321,17 +7321,17 @@ LABEL_7:
   }
 }
 
-- (void)_overflowScrollPositionChangedTo:(CGPoint)a3 forNode:(id)a4 isUserScroll:(BOOL)a5
+- (void)_overflowScrollPositionChangedTo:(CGPoint)to forNode:(id)node isUserScroll:(BOOL)scroll
 {
-  v16 = a3;
-  v5 = *(a4 + 2);
+  toCopy = to;
+  v5 = *(node + 2);
   v6 = *(*(*(v5 + 48) + 8) + 552);
   if (v6)
   {
     v7 = *(v6 + 8);
     if (v7)
     {
-      WebCore::FloatPoint::FloatPoint(v14, &v16);
+      WebCore::FloatPoint::FloatPoint(v14, &toCopy);
       v8 = roundf(v14[0]);
       v9 = 0x7FFFFFFFLL;
       v10 = v8;
@@ -7366,8 +7366,8 @@ LABEL_7:
 
 - (id)_touchEventRegions
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (v2 && v2[28])
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame && _mainCoreFrame[28])
   {
     WebCore::Document::getTouchRects();
   }
@@ -7382,23 +7382,23 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(WebView *)self preferences];
+  preferences = [(WebView *)self preferences];
 
-  return [(WebPreferences *)v4 usesPageCache];
+  return [(WebPreferences *)preferences usesPageCache];
 }
 
-- (void)setUsesPageCache:(BOOL)a3
+- (void)setUsesPageCache:(BOOL)cache
 {
-  self->_private->usesPageCache = a3;
+  self->_private->usesPageCache = cache;
   [(WebView *)self _preferencesChanged:[(WebView *)self preferences]];
-  v4 = [(WebView *)self preferences];
+  preferences = [(WebView *)self preferences];
 
-  [(WebPreferences *)v4 _postPreferencesChangedAPINotification];
+  [(WebPreferences *)preferences _postPreferencesChangedAPINotification];
 }
 
-- (id)textIteratorForRect:(CGRect)a3
+- (id)textIteratorForRect:(CGRect)rect
 {
-  v25 = a3;
+  rectCopy = rect;
   result = [(WebView *)self _mainCoreFrame];
   if (!result)
   {
@@ -7406,7 +7406,7 @@ LABEL_7:
   }
 
   v5 = result;
-  v6 = WebCore::enclosingIntRect(&v25, v4);
+  v6 = WebCore::enclosingIntRect(&rectCopy, v4);
   v8 = v7;
   v19 = v6;
   WebCore::LocalFrame::visiblePositionForPoint(&v20, v5, &v19);
@@ -7512,7 +7512,7 @@ LABEL_18:
   return result;
 }
 
-- (void)_executeCoreCommandByName:(id)a3 value:(id)a4
+- (void)_executeCoreCommandByName:(id)name value:(id)value
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
@@ -7546,9 +7546,9 @@ LABEL_18:
       }
     }
 
-    MEMORY[0x1CCA63A40](&v19, a3);
+    MEMORY[0x1CCA63A40](&v19, name);
     WebCore::Editor::command(&v20, v10, &v19);
-    MEMORY[0x1CCA63A40](&v18, a4);
+    MEMORY[0x1CCA63A40](&v18, value);
     WebCore::Editor::Command::execute();
     v12 = v18;
     v18 = 0;
@@ -7632,30 +7632,30 @@ LABEL_18:
   }
 }
 
-- (void)setSelectTrailingWhitespaceEnabled:(BOOL)a3
+- (void)setSelectTrailingWhitespaceEnabled:(BOOL)enabled
 {
   v3 = *(self->_private->page.m_ptr + 15);
   v4 = *(v3 + 712);
-  if (v4 < 0 != a3)
+  if (v4 < 0 != enabled)
   {
     v5 = 0x80000000;
-    if (!a3)
+    if (!enabled)
     {
       v5 = 0;
     }
 
     *(v3 + 712) = v4 & 0xFFFFFFFF7FFFFFFFLL | v5;
-    [(WebView *)self setSmartInsertDeleteEnabled:!a3];
+    [(WebView *)self setSmartInsertDeleteEnabled:!enabled];
   }
 }
 
 - (BOOL)_isUsingAcceleratedCompositing
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame)
   {
-    v3 = v2;
-    v4 = v2;
+    v3 = _mainCoreFrame;
+    v4 = _mainCoreFrame;
     while (1)
     {
       if ((*(v4 + 136) & 1) == 0)
@@ -7670,24 +7670,24 @@ LABEL_18:
         }
       }
 
-      v2 = WebCore::FrameTree::traverseNext((v4 + 40), v3);
-      v4 = v2;
-      if (!v2)
+      _mainCoreFrame = WebCore::FrameTree::traverseNext((v4 + 40), v3);
+      v4 = _mainCoreFrame;
+      if (!_mainCoreFrame)
       {
-        return v2;
+        return _mainCoreFrame;
       }
     }
 
-    LOBYTE(v2) = 1;
+    LOBYTE(_mainCoreFrame) = 1;
   }
 
-  return v2;
+  return _mainCoreFrame;
 }
 
-- (id)_contentsOfUserInterfaceItem:(id)a3
+- (id)_contentsOfUserInterfaceItem:(id)item
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (![a3 isEqualToString:@"validationBubble"])
+  if (![item isEqualToString:@"validationBubble"])
   {
     return 0;
   }
@@ -7708,7 +7708,7 @@ LABEL_18:
   if (m_ptr)
   {
     v8 = *(m_ptr + 3);
-    v19 = a3;
+    itemCopy2 = item;
     v17 = @"message";
     if (v7)
     {
@@ -7719,7 +7719,7 @@ LABEL_18:
   else
   {
     v8 = 0.0;
-    v19 = a3;
+    itemCopy2 = item;
     v17 = @"message";
     if (v7)
     {
@@ -7740,7 +7740,7 @@ LABEL_8:
 LABEL_10:
   v18[1] = [MEMORY[0x1E696AD98] numberWithDouble:{v8, v16, v17, @"fontSize", v16}];
   v20[0] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:2];
-  result = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+  result = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&itemCopy2 count:1];
   v12 = v16;
   v16 = 0;
   if (v12)
@@ -7763,7 +7763,7 @@ LABEL_10:
   return result;
 }
 
-- (void)_setObscuredTopContentInsetForTesting:(float)a3 right:(float)a4 bottom:(float)a5 left:(float)a6
+- (void)_setObscuredTopContentInsetForTesting:(float)testing right:(float)right bottom:(float)bottom left:(float)left
 {
   v6 = self->_private;
   if (v6)
@@ -7777,22 +7777,22 @@ LABEL_10:
 
 - (BOOL)_isSoftwareRenderable
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (!v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (!_mainCoreFrame)
   {
     return 1;
   }
 
-  v3 = v2;
+  v3 = _mainCoreFrame;
   while (1)
   {
-    if ((v2[17] & 1) == 0)
+    if ((_mainCoreFrame[17] & 1) == 0)
     {
-      if (v2[27])
+      if (_mainCoreFrame[27])
       {
-        v4 = v2;
-        isSoftwareRenderable = WebCore::LocalFrameView::isSoftwareRenderable(v2[27]);
-        v2 = v4;
+        v4 = _mainCoreFrame;
+        isSoftwareRenderable = WebCore::LocalFrameView::isSoftwareRenderable(_mainCoreFrame[27]);
+        _mainCoreFrame = v4;
         if (!isSoftwareRenderable)
         {
           break;
@@ -7800,8 +7800,8 @@ LABEL_10:
       }
     }
 
-    v2 = WebCore::FrameTree::traverseNext((v2 + 5), v3);
-    if (!v2)
+    _mainCoreFrame = WebCore::FrameTree::traverseNext((_mainCoreFrame + 5), v3);
+    if (!_mainCoreFrame)
     {
       return 1;
     }
@@ -7810,7 +7810,7 @@ LABEL_10:
   return 0;
 }
 
-- (void)setTracksRepaints:(BOOL)a3
+- (void)setTracksRepaints:(BOOL)repaints
 {
   if (*([(WebView *)self _mainCoreFrame]+ 216))
   {
@@ -7903,15 +7903,15 @@ LABEL_10:
   return v3;
 }
 
-+ (void)_addOriginAccessAllowListEntryWithSourceOrigin:(id)a3 destinationProtocol:(id)a4 destinationHost:(id)a5 allowDestinationSubdomains:(BOOL)a6
++ (void)_addOriginAccessAllowListEntryWithSourceOrigin:(id)origin destinationProtocol:(id)protocol destinationHost:(id)host allowDestinationSubdomains:(BOOL)subdomains
 {
-  v6 = a6;
-  MEMORY[0x1CCA63A40](&v20, a3);
+  subdomainsCopy = subdomains;
+  MEMORY[0x1CCA63A40](&v20, origin);
   WebCore::SecurityOrigin::createFromString(&v21, &v20, v9);
   v10 = v21;
-  MEMORY[0x1CCA63A40](&v19, a4);
-  MEMORY[0x1CCA63A40](&v18, a5);
-  WebCore::SecurityPolicy::addOriginAccessAllowlistEntry(v10, &v19, &v18, v6);
+  MEMORY[0x1CCA63A40](&v19, protocol);
+  MEMORY[0x1CCA63A40](&v18, host);
+  WebCore::SecurityPolicy::addOriginAccessAllowlistEntry(v10, &v19, &v18, subdomainsCopy);
   v12 = v18;
   v18 = 0;
   if (v12 && atomic_fetch_add_explicit(v12, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -7957,15 +7957,15 @@ LABEL_10:
   }
 }
 
-+ (void)_removeOriginAccessAllowListEntryWithSourceOrigin:(id)a3 destinationProtocol:(id)a4 destinationHost:(id)a5 allowDestinationSubdomains:(BOOL)a6
++ (void)_removeOriginAccessAllowListEntryWithSourceOrigin:(id)origin destinationProtocol:(id)protocol destinationHost:(id)host allowDestinationSubdomains:(BOOL)subdomains
 {
-  v6 = a6;
-  MEMORY[0x1CCA63A40](&v20, a3);
+  subdomainsCopy = subdomains;
+  MEMORY[0x1CCA63A40](&v20, origin);
   WebCore::SecurityOrigin::createFromString(&v21, &v20, v9);
   v10 = v21;
-  MEMORY[0x1CCA63A40](&v19, a4);
-  MEMORY[0x1CCA63A40](&v18, a5);
-  WebCore::SecurityPolicy::removeOriginAccessAllowlistEntry(v10, &v19, &v18, v6);
+  MEMORY[0x1CCA63A40](&v19, protocol);
+  MEMORY[0x1CCA63A40](&v18, host);
+  WebCore::SecurityPolicy::removeOriginAccessAllowlistEntry(v10, &v19, &v18, subdomainsCopy);
   v12 = v18;
   v18 = 0;
   if (v12 && atomic_fetch_add_explicit(v12, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -8013,17 +8013,17 @@ LABEL_10:
 
 - (BOOL)_isViewVisible
 {
-  v3 = [(WebView *)self window];
-  if (v3)
+  window = [(WebView *)self window];
+  if (window)
   {
-    LODWORD(v3) = [v3 isVisible];
-    if (v3)
+    LODWORD(window) = [window isVisible];
+    if (window)
     {
-      LOBYTE(v3) = [(WebView *)self isHiddenOrHasHiddenAncestor]^ 1;
+      LOBYTE(window) = [(WebView *)self isHiddenOrHasHiddenAncestor]^ 1;
     }
   }
 
-  return v3;
+  return window;
 }
 
 - (void)_updateVisibilityState
@@ -8031,9 +8031,9 @@ LABEL_10:
   v2 = self->_private;
   if (v2 && v2->page.m_ptr)
   {
-    v4 = [(WebView *)self _isViewVisible];
+    _isViewVisible = [(WebView *)self _isViewVisible];
 
-    [(WebView *)self _setIsVisible:v4];
+    [(WebView *)self _setIsVisible:_isViewVisible];
   }
 }
 
@@ -8053,9 +8053,9 @@ LABEL_10:
   }
 }
 
-+ (void)_addUserScriptToGroup:(id)a3 world:(id)a4 source:(id)a5 url:(id)a6 includeMatchPatternStrings:(id)a7 excludeMatchPatternStrings:(id)a8 injectionTime:(int)a9 injectedFrames:(int)a10
++ (void)_addUserScriptToGroup:(id)group world:(id)world source:(id)source url:(id)url includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings injectionTime:(int)time injectedFrames:(int)self0
 {
-  MEMORY[0x1CCA63A40](&v45, a3);
+  MEMORY[0x1CCA63A40](&v45, group);
   v17 = v45;
   if (v45)
   {
@@ -8071,7 +8071,7 @@ LABEL_42:
       return;
     }
 
-    MEMORY[0x1CCA63A40](v46, a3);
+    MEMORY[0x1CCA63A40](v46, group);
     v40 = 0;
     WebViewGroup::getOrCreate(v46, &v40, &v44);
     v18 = v46[0];
@@ -8081,13 +8081,13 @@ LABEL_42:
       WTF::StringImpl::destroy(v18, v16);
     }
 
-    if (a4)
+    if (world)
     {
-      v46[0] = a7;
+      v46[0] = strings;
       v37 = v46;
-      WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v40, [a7 count], &v37, 0);
-      v46[0] = a8;
-      v19 = [a8 count];
+      WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v40, [strings count], &v37, 0);
+      v46[0] = patternStrings;
+      v19 = [patternStrings count];
       v47 = v46;
       WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v37, v19, &v47, 0);
       if (*MEMORY[0x1E69E24C0])
@@ -8101,9 +8101,9 @@ LABEL_42:
       }
 
       v22 = NonCompact;
-      MEMORY[0x1CCA63A40](&v47, a5);
-      MEMORY[0x1CCA63960](v46, a6);
-      MEMORY[0x1CCA63E90](v22, &v47, v46, &v40, &v37, a9 != 0, a10 != 0, 0);
+      MEMORY[0x1CCA63A40](&v47, source);
+      MEMORY[0x1CCA63960](v46, url);
+      MEMORY[0x1CCA63E90](v22, &v47, v46, &v40, &v37, time != 0, frames != 0, 0);
       v43 = v22;
       v24 = v46[0];
       v46[0] = 0;
@@ -8221,9 +8221,9 @@ LABEL_39:
   }
 }
 
-+ (void)_addUserStyleSheetToGroup:(id)a3 world:(id)a4 source:(id)a5 url:(id)a6 includeMatchPatternStrings:(id)a7 excludeMatchPatternStrings:(id)a8 injectedFrames:(int)a9
++ (void)_addUserStyleSheetToGroup:(id)group world:(id)world source:(id)source url:(id)url includeMatchPatternStrings:(id)strings excludeMatchPatternStrings:(id)patternStrings injectedFrames:(int)frames
 {
-  MEMORY[0x1CCA63A40](&v44, a3);
+  MEMORY[0x1CCA63A40](&v44, group);
   v16 = v44;
   if (v44)
   {
@@ -8239,7 +8239,7 @@ LABEL_42:
       return;
     }
 
-    MEMORY[0x1CCA63A40](v45, a3);
+    MEMORY[0x1CCA63A40](v45, group);
     v39 = 0;
     WebViewGroup::getOrCreate(v45, &v39, &v43);
     v17 = v45[0];
@@ -8249,13 +8249,13 @@ LABEL_42:
       WTF::StringImpl::destroy(v17, v15);
     }
 
-    if (a4)
+    if (world)
     {
-      v45[0] = a7;
+      v45[0] = strings;
       v36 = v45;
-      WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v39, [a7 count], &v36, 0);
-      v45[0] = a8;
-      v18 = [a8 count];
+      WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v39, [strings count], &v36, 0);
+      v45[0] = patternStrings;
+      v18 = [patternStrings count];
       v46 = v45;
       WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v36, v18, &v46, 0);
       if (*MEMORY[0x1E69E2550])
@@ -8269,8 +8269,8 @@ LABEL_42:
       }
 
       v21 = NonCompact;
-      MEMORY[0x1CCA63A40](&v46, a5);
-      MEMORY[0x1CCA63960](v45, a6);
+      MEMORY[0x1CCA63A40](&v46, source);
+      MEMORY[0x1CCA63960](v45, url);
       WebCore::UserStyleSheet::UserStyleSheet();
       v42 = v21;
       v23 = v45[0];
@@ -8389,21 +8389,21 @@ LABEL_39:
   }
 }
 
-+ (void)_removeUserScriptFromGroup:(id)a3 world:(id)a4 url:(id)a5
++ (void)_removeUserScriptFromGroup:(id)group world:(id)world url:(id)url
 {
-  MEMORY[0x1CCA63A40](&v15, a3);
+  MEMORY[0x1CCA63A40](&v15, group);
   if (v15)
   {
     if (*(v15 + 1))
     {
       v9 = WebViewGroup::get(&v15, v7, v8);
-      if (a4)
+      if (world)
       {
         if (v9)
         {
           v10 = *(v9 + 5);
-          v11 = *(*(a4 + 1) + 8);
-          MEMORY[0x1CCA63960](v14, a5);
+          v11 = *(*(world + 1) + 8);
+          MEMORY[0x1CCA63960](v14, url);
           WebCore::UserContentController::removeUserScript(v10, v11, v14);
           v12 = v14[0];
           v14[0] = 0;
@@ -8430,21 +8430,21 @@ LABEL_39:
   }
 }
 
-+ (void)_removeUserStyleSheetFromGroup:(id)a3 world:(id)a4 url:(id)a5
++ (void)_removeUserStyleSheetFromGroup:(id)group world:(id)world url:(id)url
 {
-  MEMORY[0x1CCA63A40](&v15, a3);
+  MEMORY[0x1CCA63A40](&v15, group);
   if (v15)
   {
     if (*(v15 + 1))
     {
       v9 = WebViewGroup::get(&v15, v7, v8);
-      if (a4)
+      if (world)
       {
         if (v9)
         {
           v10 = *(v9 + 5);
-          v11 = *(*(a4 + 1) + 8);
-          MEMORY[0x1CCA63960](v14, a5);
+          v11 = *(*(world + 1) + 8);
+          MEMORY[0x1CCA63960](v14, url);
           WebCore::UserContentController::removeUserStyleSheet(v10, v11, v14);
           v12 = v14[0];
           v14[0] = 0;
@@ -8471,19 +8471,19 @@ LABEL_39:
   }
 }
 
-+ (void)_removeUserScriptsFromGroup:(id)a3 world:(id)a4
++ (void)_removeUserScriptsFromGroup:(id)group world:(id)world
 {
-  MEMORY[0x1CCA63A40](&v9, a3);
+  MEMORY[0x1CCA63A40](&v9, group);
   if (v9)
   {
     if (*(v9 + 1))
     {
       v7 = WebViewGroup::get(&v9, v5, v6);
-      if (a4)
+      if (world)
       {
         if (v7)
         {
-          WebCore::UserContentController::removeUserScripts(*(v7 + 5), *(*(a4 + 1) + 8));
+          WebCore::UserContentController::removeUserScripts(*(v7 + 5), *(*(world + 1) + 8));
         }
       }
     }
@@ -8500,19 +8500,19 @@ LABEL_39:
   }
 }
 
-+ (void)_removeUserStyleSheetsFromGroup:(id)a3 world:(id)a4
++ (void)_removeUserStyleSheetsFromGroup:(id)group world:(id)world
 {
-  MEMORY[0x1CCA63A40](&v9, a3);
+  MEMORY[0x1CCA63A40](&v9, group);
   if (v9)
   {
     if (*(v9 + 1))
     {
       v7 = WebViewGroup::get(&v9, v5, v6);
-      if (a4)
+      if (world)
       {
         if (v7)
         {
-          WebCore::UserContentController::removeUserStyleSheets(*(v7 + 5), *(*(a4 + 1) + 8));
+          WebCore::UserContentController::removeUserStyleSheets(*(v7 + 5), *(*(world + 1) + 8));
         }
       }
     }
@@ -8529,9 +8529,9 @@ LABEL_39:
   }
 }
 
-+ (void)_removeAllUserContentFromGroup:(id)a3
++ (void)_removeAllUserContentFromGroup:(id)group
 {
-  MEMORY[0x1CCA63A40](&v7, a3);
+  MEMORY[0x1CCA63A40](&v7, group);
   if (v7)
   {
     if (*(v7 + 1))
@@ -8564,11 +8564,11 @@ LABEL_39:
   [v2 synchronize];
 }
 
-+ (void)_setDomainRelaxationForbidden:(BOOL)a3 forURLScheme:(id)a4
++ (void)_setDomainRelaxationForbidden:(BOOL)forbidden forURLScheme:(id)scheme
 {
-  v4 = a3;
-  MEMORY[0x1CCA63A40](&v8, a4);
-  WebCore::LegacySchemeRegistry::setDomainRelaxationForbiddenForURLScheme(v4, &v8, v5);
+  forbiddenCopy = forbidden;
+  MEMORY[0x1CCA63A40](&v8, scheme);
+  WebCore::LegacySchemeRegistry::setDomainRelaxationForbiddenForURLScheme(forbiddenCopy, &v8, v5);
   v7 = v8;
   v8 = 0;
   if (v7)
@@ -8580,9 +8580,9 @@ LABEL_39:
   }
 }
 
-+ (void)_registerURLSchemeAsSecure:(id)a3
++ (void)_registerURLSchemeAsSecure:(id)secure
 {
-  MEMORY[0x1CCA63A40](&v6, a3);
+  MEMORY[0x1CCA63A40](&v6, secure);
   WebCore::LegacySchemeRegistry::registerURLSchemeAsSecure(&v6, v3);
   v5 = v6;
   v6 = 0;
@@ -8595,9 +8595,9 @@ LABEL_39:
   }
 }
 
-+ (void)_registerURLSchemeAsAllowingDatabaseAccessInPrivateBrowsing:(id)a3
++ (void)_registerURLSchemeAsAllowingDatabaseAccessInPrivateBrowsing:(id)browsing
 {
-  MEMORY[0x1CCA63A40](&v6, a3);
+  MEMORY[0x1CCA63A40](&v6, browsing);
   WebCore::LegacySchemeRegistry::registerURLSchemeAsAllowingDatabaseAccessInPrivateBrowsing(&v6, v3);
   v5 = v6;
   v6 = 0;
@@ -8610,22 +8610,22 @@ LABEL_39:
   }
 }
 
-- (void)_scaleWebView:(float)a3 atOrigin:(CGPoint)a4
+- (void)_scaleWebView:(float)view atOrigin:(CGPoint)origin
 {
-  v8 = a4;
+  originCopy = origin;
   [(WebView *)self hideFormValidationMessage];
   m_ptr = self->_private->page.m_ptr;
-  WebCore::IntPoint::IntPoint(&v7, &v8);
-  WebCore::Page::setPageScaleFactor(m_ptr, a3, &v7);
+  WebCore::IntPoint::IntPoint(&v7, &originCopy);
+  WebCore::Page::setPageScaleFactor(m_ptr, view, &v7);
 }
 
-- (void)_setUseFixedLayout:(BOOL)a3
+- (void)_setUseFixedLayout:(BOOL)layout
 {
-  v4 = [(WebView *)self _mainCoreFrame];
-  if (v4 && v4[27])
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame && _mainCoreFrame[27])
   {
-    WebCore::ScrollView::setUseFixedLayout(v4[27]);
-    if (!a3)
+    WebCore::ScrollView::setUseFixedLayout(_mainCoreFrame[27]);
+    if (!layout)
     {
       WebCore::ScrollView::setFixedLayoutSize();
     }
@@ -8634,13 +8634,13 @@ LABEL_39:
 
 - (BOOL)_useFixedLayout
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (!v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (!_mainCoreFrame)
   {
     return 0;
   }
 
-  v3 = v2[27];
+  v3 = _mainCoreFrame[27];
   if (!v3)
   {
     return 0;
@@ -8649,16 +8649,16 @@ LABEL_39:
   return WebCore::ScrollView::useFixedLayout(v3);
 }
 
-- (void)_setPaginationMode:(int)a3
+- (void)_setPaginationMode:(int)mode
 {
   if (self)
   {
     [(WebView *)self page];
     if (v4)
     {
-      if (a3 <= 1)
+      if (mode <= 1)
       {
-        if (a3 > 1)
+        if (mode > 1)
         {
           return;
         }
@@ -8666,7 +8666,7 @@ LABEL_39:
         goto LABEL_9;
       }
 
-      if (a3 == 2 || a3 == 3 || a3 == 4)
+      if (mode == 2 || mode == 3 || mode == 4)
       {
 LABEL_9:
         WebCore::Page::setPagination();
@@ -8702,7 +8702,7 @@ LABEL_9:
   return self;
 }
 
-- (void)_listenForLayoutMilestones:(unint64_t)a3
+- (void)_listenForLayoutMilestones:(unint64_t)milestones
 {
   if (self)
   {
@@ -8745,7 +8745,7 @@ LABEL_9:
   return m_ptr;
 }
 
-- (void)_setIsVisible:(BOOL)a3
+- (void)_setIsVisible:(BOOL)visible
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
@@ -8754,13 +8754,13 @@ LABEL_9:
   }
 }
 
-- (void)_setVisibilityState:(int)a3 isInitialState:(BOOL)a4
+- (void)_setVisibilityState:(int)state isInitialState:(BOOL)initialState
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
     WebCore::Page::setIsVisible(m_ptr);
-    if (a3 == 2)
+    if (state == 2)
     {
       v7 = self->_private->page.m_ptr;
 
@@ -8769,7 +8769,7 @@ LABEL_9:
   }
 }
 
-- (void)_setPaginationBehavesLikeColumns:(BOOL)a3
+- (void)_setPaginationBehavesLikeColumns:(BOOL)columns
 {
   if (self)
   {
@@ -8779,7 +8779,7 @@ LABEL_9:
     {
       v5 = *(v5 + 444);
       v6 = *(v4 + 452);
-      BYTE1(v5) = a3;
+      BYTE1(v5) = columns;
       WebCore::Page::setPagination();
     }
   }
@@ -8802,7 +8802,7 @@ LABEL_9:
   return v2 & 1;
 }
 
-- (void)_setPageLength:(double)a3
+- (void)_setPageLength:(double)length
 {
   if (self)
   {
@@ -8831,7 +8831,7 @@ LABEL_9:
   return v2;
 }
 
-- (void)_setGapBetweenPages:(double)a3
+- (void)_setGapBetweenPages:(double)pages
 {
   if (self)
   {
@@ -8875,31 +8875,31 @@ LABEL_9:
   return self;
 }
 
-- (BOOL)searchFor:(id)a3 direction:(BOOL)a4 caseSensitive:(BOOL)a5 wrap:(BOOL)a6 startInSelection:(BOOL)a7
+- (BOOL)searchFor:(id)for direction:(BOOL)direction caseSensitive:(BOOL)sensitive wrap:(BOOL)wrap startInSelection:(BOOL)selection
 {
   v7 = 8;
-  if (a4)
+  if (direction)
   {
     v7 = 0;
   }
 
   v8 = 16;
-  if (!a6)
+  if (!wrap)
   {
     v8 = 0;
   }
 
-  v9 = v7 | v8 | !a5;
+  v9 = v7 | v8 | !sensitive;
   v10 = 32;
-  if (!a7)
+  if (!selection)
   {
     v10 = 0;
   }
 
-  return [(WebView *)self findString:a3 options:v9 | v10];
+  return [(WebView *)self findString:for options:v9 | v10];
 }
 
-+ (void)_setLoadResourcesSerially:(BOOL)a3
++ (void)_setLoadResourcesSerially:(BOOL)serially
 {
   v4 = WebThreadLock();
   if (!WebPlatformStrategies::initializeIfNecessary(void)::platformStrategies)
@@ -8911,7 +8911,7 @@ LABEL_9:
   v6 = v5[1];
   if (v6)
   {
-    *(v6 + 92) = a3;
+    *(v6 + 92) = serially;
   }
 
   else
@@ -8919,11 +8919,11 @@ LABEL_9:
     v7 = v5;
     v8 = (*(*v5 + 16))();
     v7[1] = v8;
-    *(v8 + 92) = a3;
+    *(v8 + 92) = serially;
   }
 }
 
-- (void)_setPortsForUpgradingInsecureSchemeForTesting:(unsigned __int16)a3 withSecurePort:(unsigned __int16)a4
+- (void)_setPortsForUpgradingInsecureSchemeForTesting:(unsigned __int16)testing withSecurePort:(unsigned __int16)port
 {
   if (self)
   {
@@ -8936,12 +8936,12 @@ LABEL_9:
   }
 }
 
-- (void)_didScrollDocumentInFrameView:(id)a3
+- (void)_didScrollDocumentInFrameView:(id)view
 {
   [(WebView *)self hideFormValidationMessage];
-  v5 = [(WebView *)self _UIDelegateForwarder];
+  _UIDelegateForwarder = [(WebView *)self _UIDelegateForwarder];
 
-  [v5 webView:self didScrollDocumentInFrameView:a3];
+  [_UIDelegateForwarder webView:self didScrollDocumentInFrameView:view];
 }
 
 - (id)_fixedPositionContent
@@ -8960,10 +8960,10 @@ LABEL_9:
 
 - (void)_documentScaleChanged
 {
-  v3 = [(WebView *)self currentNodeHighlight];
-  if (v3)
+  currentNodeHighlight = [(WebView *)self currentNodeHighlight];
+  if (currentNodeHighlight)
   {
-    [v3 setNeedsDisplay];
+    [currentNodeHighlight setNeedsDisplay];
   }
 
   m_ptr = self->_private->indicateLayer.m_ptr;
@@ -8992,14 +8992,14 @@ LABEL_9:
   return v3;
 }
 
-- (void)_setWantsTelephoneNumberParsing:(BOOL)a3
+- (void)_setWantsTelephoneNumberParsing:(BOOL)parsing
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
     v4 = *(m_ptr + 15);
     v5 = 0x80000;
-    if (!a3)
+    if (!parsing)
     {
       v5 = 0;
     }
@@ -9024,14 +9024,14 @@ LABEL_9:
   return v3;
 }
 
-- (void)_setWebGLEnabled:(BOOL)a3
+- (void)_setWebGLEnabled:(BOOL)enabled
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
     v4 = *(m_ptr + 15);
     v5 = 0x8000000000000000;
-    if (!a3)
+    if (!enabled)
     {
       v5 = 0;
     }
@@ -9040,7 +9040,7 @@ LABEL_9:
   }
 }
 
-- (void)_setUnobscuredSafeAreaInsets:(WebEdgeInsets)a3
+- (void)_setUnobscuredSafeAreaInsets:(WebEdgeInsets)insets
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
@@ -9106,20 +9106,20 @@ LABEL_9:
   return result;
 }
 
-- (void)_setUseSystemAppearance:(BOOL)a3
+- (void)_setUseSystemAppearance:(BOOL)appearance
 {
   v3 = self->_private;
   if (v3)
   {
-    [(WebPreferences *)v3->preferences.m_ptr _setUseSystemAppearance:a3];
+    [(WebPreferences *)v3->preferences.m_ptr _setUseSystemAppearance:appearance];
   }
 }
 
-- (void)_setSourceApplicationAuditData:(id)a3
+- (void)_setSourceApplicationAuditData:(id)data
 {
-  if (self->_private->sourceApplicationAuditData.m_ptr != a3)
+  if (self->_private->sourceApplicationAuditData.m_ptr != data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     v5 = self->_private;
     m_ptr = v5->sourceApplicationAuditData.m_ptr;
     v5->sourceApplicationAuditData.m_ptr = v4;
@@ -9129,7 +9129,7 @@ LABEL_9:
   }
 }
 
-- (void)_setFontFallbackPrefersPictographs:(BOOL)a3
+- (void)_setFontFallbackPrefersPictographs:(BOOL)pictographs
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
@@ -9143,7 +9143,7 @@ LABEL_9:
   if ((byte_1ED6A6132 & 1) == 0)
   {
     byte_1ED6A6132 = 1;
-    shouldOSFaultLogForAppleApplicationUsingWebKit1 = WTF::CocoaApplication::shouldOSFaultLogForAppleApplicationUsingWebKit1(a1);
+    shouldOSFaultLogForAppleApplicationUsingWebKit1 = WTF::CocoaApplication::shouldOSFaultLogForAppleApplicationUsingWebKit1(self);
     if (shouldOSFaultLogForAppleApplicationUsingWebKit1)
     {
       shouldOSFaultLogForAppleApplicationUsingWebKit1 = os_fault_with_payload();
@@ -9152,19 +9152,19 @@ LABEL_9:
     WTF::allPrivileges(shouldOSFaultLogForAppleApplicationUsingWebKit1);
     WTF::setProcessPrivileges();
     WebCore::NetworkStorageSession::permitProcessToUseCookieAPI(1);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:a1 selector:sel__cacheModelChangedNotification_ name:WebPreferencesCacheModelChangedInternalNotification object:0];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:a1 selector:sel__preferencesRemovedNotification_ name:WebPreferencesRemovedNotification[0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__cacheModelChangedNotification_ name:WebPreferencesCacheModelChangedInternalNotification object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__preferencesRemovedNotification_ name:WebPreferencesRemovedNotification[0] object:0];
     byte_1ED6A6133 = 0;
   }
 }
 
-- (BOOL)_canShowMIMEType:(id)a3
+- (BOOL)_canShowMIMEType:(id)type
 {
   v4 = objc_opt_class();
 
-  return [v4 _canShowMIMEType:a3 allowingPlugins:0];
+  return [v4 _canShowMIMEType:type allowingPlugins:0];
 }
 
 + (BOOL)canShowMIMETypeAsHTML:(NSString *)MIMEType
@@ -9180,20 +9180,20 @@ LABEL_9:
 + (NSArray)MIMETypesShownAsHTML
 {
   v2 = [WebFrameView _viewTypesAllowImageTypeOmission:1];
-  v3 = [v2 keyEnumerator];
+  keyEnumerator = [v2 keyEnumerator];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   while (1)
   {
-    v5 = [v3 nextObject];
-    if (!v5)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v6 = [v2 objectForKey:v5];
+    v6 = [v2 objectForKey:nextObject];
     if (v6 == objc_opt_class())
     {
-      [(NSArray *)v4 addObject:v5];
+      [(NSArray *)v4 addObject:nextObject];
     }
   }
 
@@ -9208,19 +9208,19 @@ LABEL_9:
 + (void)setMIMETypesShownAsHTML:(NSArray *)MIMETypes
 {
   v11 = [+[WebFrameView _viewTypesAllowImageTypeOmission:](WebFrameView _viewTypesAllowImageTypeOmission:{1), "copy"}];
-  v4 = [v11 keyEnumerator];
+  keyEnumerator = [v11 keyEnumerator];
   while (1)
   {
-    v5 = [v4 nextObject];
-    if (!v5)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v6 = [v11 objectForKey:v5];
+    v6 = [v11 objectForKey:nextObject];
     if (v6 == objc_opt_class())
     {
-      [WebView _unregisterViewClassAndRepresentationClassForMIMEType:v5];
+      [WebView _unregisterViewClassAndRepresentationClassForMIMEType:nextObject];
     }
   }
 
@@ -9258,9 +9258,9 @@ LABEL_9:
   }
 }
 
-- (id)_initWithArguments:(id)a3
+- (id)_initWithArguments:(id)arguments
 {
-  v5 = [a3 objectForKey:@"frame"];
+  v5 = [arguments objectForKey:@"frame"];
   if (v5)
   {
     [v5 rectValue];
@@ -9278,8 +9278,8 @@ LABEL_9:
     v13 = *(MEMORY[0x1E696AA80] + 24);
   }
 
-  v14 = [a3 objectForKey:@"frameName"];
-  v15 = [a3 objectForKey:@"groupName"];
+  v14 = [arguments objectForKey:@"frameName"];
+  v15 = [arguments objectForKey:@"groupName"];
 
   return [(WebView *)self initWithFrame:v14 frameName:v15 groupName:v7, v9, v11, v13];
 }
@@ -9331,22 +9331,22 @@ LABEL_9:
   v2 = self->_private;
   if (v2 && !v2->closed)
   {
-    v4 = [(WebView *)self window];
+    window = [(WebView *)self window];
     v5 = self->_private;
-    if (v4)
+    if (window)
     {
       WebCore::Page::setCanStartMedia(v5->page.m_ptr);
       WebCore::Page::setIsInWindow(self->_private->page.m_ptr);
-      v6 = [(WebView *)self preferences];
+      preferences = [(WebView *)self preferences];
       v7 = [-[WebView window](self "window")];
       if (v7)
       {
         v8 = v7;
-        [(WebPreferences *)v6 showDebugBorders];
+        [(WebPreferences *)preferences showDebugBorders];
         WebCore::LegacyTileCache::setTileBordersVisible(v8);
-        [(WebPreferences *)v6 showRepaintCounter];
+        [(WebPreferences *)preferences showRepaintCounter];
         WebCore::LegacyTileCache::setTilePaintCountersVisible(v8);
-        *(v8 + 74) = [(WebPreferences *)v6 acceleratedDrawingEnabled];
+        *(v8 + 74) = [(WebPreferences *)preferences acceleratedDrawingEnabled];
       }
     }
 
@@ -9361,10 +9361,10 @@ LABEL_9:
   }
 }
 
-- (void)_wakWindowVisibilityChanged:(id)a3
+- (void)_wakWindowVisibilityChanged:(id)changed
 {
-  v4 = [a3 object];
-  if (v4 == [(WebView *)self window])
+  object = [changed object];
+  if (object == [(WebView *)self window])
   {
 
     [(WebView *)self _updateVisibilityState];
@@ -9373,10 +9373,10 @@ LABEL_9:
 
 - (void)_updateScreenScaleFromWindow
 {
-  v3 = [(WebView *)self window];
-  if (v3)
+  window = [(WebView *)self window];
+  if (window)
   {
-    [v3 screenScale];
+    [window screenScale];
     v5.n128_f32[0] = v5.n128_f64[0];
   }
 
@@ -9414,8 +9414,8 @@ LABEL_9:
   v5 = self->_private;
   m_ptr = v5->preferences.m_ptr;
   v5->preferences.m_ptr = 0;
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:WebPreferencesChangedInternalNotification[0] object:{-[WebView preferences](self, "preferences")}];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:WebPreferencesChangedInternalNotification[0] object:{-[WebView preferences](self, "preferences")}];
   [WebPreferences _removeReferenceForIdentifier:[(WebPreferences *)m_ptr identifier]];
   v7 = self->_private;
   if (v3)
@@ -9429,8 +9429,8 @@ LABEL_9:
   {
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel__preferencesChangedNotification_ name:WebPreferencesChangedInternalNotification[0] object:{-[WebView preferences](self, "preferences")}];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__preferencesChangedNotification_ name:WebPreferencesChangedInternalNotification[0] object:{-[WebView preferences](self, "preferences")}];
   [(WebView *)self _preferencesChanged:[(WebView *)self preferences]];
   [(WebPreferences *)[(WebView *)self preferences] _postPreferencesChangedAPINotification];
   [(WebPreferences *)m_ptr didRemoveFromWebView];
@@ -9453,9 +9453,9 @@ LABEL_9:
 
 - (NSString)preferencesIdentifier
 {
-  v2 = [(WebView *)self preferences];
+  preferences = [(WebView *)self preferences];
 
-  return [(WebPreferences *)v2 identifier];
+  return [(WebPreferences *)preferences identifier];
 }
 
 - (void)setUIDelegate:(id)UIDelegate
@@ -9600,9 +9600,9 @@ LABEL_9:
   result = [(WebView *)self _focusedFrame];
   if (!result)
   {
-    v4 = [(WebView *)self mainFrame];
+    mainFrame = [(WebView *)self mainFrame];
 
-    return [(WebFrame *)v4 _findFrameWithSelection];
+    return [(WebFrame *)mainFrame _findFrameWithSelection];
   }
 
   return result;
@@ -9717,9 +9717,9 @@ LABEL_9:
 
 - (float)textSizeMultiplier
 {
-  v3 = [(WebView *)self _realZoomMultiplierIsTextOnly];
+  _realZoomMultiplierIsTextOnly = [(WebView *)self _realZoomMultiplierIsTextOnly];
   result = 1.0;
-  if (v3)
+  if (_realZoomMultiplierIsTextOnly)
   {
     return self->_private->zoomMultiplier;
   }
@@ -9727,35 +9727,35 @@ LABEL_9:
   return result;
 }
 
-- (void)_setZoomMultiplier:(float)a3 isTextOnly:(BOOL)a4
+- (void)_setZoomMultiplier:(float)multiplier isTextOnly:(BOOL)only
 {
-  self->_private->zoomMultiplier = a3;
-  self->_private->zoomsTextOnly = a4;
+  self->_private->zoomMultiplier = multiplier;
+  self->_private->zoomsTextOnly = only;
   [(WebView *)self hideFormValidationMessage];
   if ([(WebView *)self _mainCoreFrame])
   {
     if (self->_private->zoomsTextOnly)
     {
       v6.n128_u32[0] = 1.0;
-      v7.n128_f32[0] = a3;
+      v7.n128_f32[0] = multiplier;
     }
 
     else
     {
       v7.n128_u32[0] = 1.0;
-      v6.n128_f32[0] = a3;
+      v6.n128_f32[0] = multiplier;
     }
 
     MEMORY[0x1EEE53EB8](v6, v7);
   }
 }
 
-- (float)_zoomMultiplier:(BOOL)a3
+- (float)_zoomMultiplier:(BOOL)multiplier
 {
-  v3 = a3;
-  v5 = [(WebView *)self _realZoomMultiplierIsTextOnly];
+  multiplierCopy = multiplier;
+  _realZoomMultiplierIsTextOnly = [(WebView *)self _realZoomMultiplierIsTextOnly];
   result = 1.0;
-  if (v5 == v3)
+  if (_realZoomMultiplierIsTextOnly == multiplierCopy)
   {
     return self->_private->zoomMultiplier;
   }
@@ -9763,117 +9763,117 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)_canZoomOut:(BOOL)a3
+- (BOOL)_canZoomOut:(BOOL)out
 {
-  v3 = a3;
-  v5 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  if ([(NSView *)v5 conformsToProtocol:&unk_1F4773998])
+  outCopy = out;
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F4773998])
   {
 
-    return [(NSView *)v5 _canZoomOut];
+    return [(NSView *)documentView _canZoomOut];
   }
 
   else
   {
-    [(WebView *)self _zoomMultiplier:v3];
+    [(WebView *)self _zoomMultiplier:outCopy];
     return (v7 / 1.2) > 0.5;
   }
 }
 
-- (BOOL)_canZoomIn:(BOOL)a3
+- (BOOL)_canZoomIn:(BOOL)in
 {
-  v3 = a3;
-  v5 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  if ([(NSView *)v5 conformsToProtocol:&unk_1F4773998])
+  inCopy = in;
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F4773998])
   {
 
-    return [(NSView *)v5 _canZoomIn];
+    return [(NSView *)documentView _canZoomIn];
   }
 
   else
   {
-    [(WebView *)self _zoomMultiplier:v3];
+    [(WebView *)self _zoomMultiplier:inCopy];
     return (v7 * 1.2) < 3.0;
   }
 }
 
-- (void)_zoomOut:(id)a3 isTextOnly:(BOOL)a4
+- (void)_zoomOut:(id)out isTextOnly:(BOOL)only
 {
-  v4 = a4;
-  v7 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  if ([(NSView *)v7 conformsToProtocol:&unk_1F4773998])
+  onlyCopy = only;
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F4773998])
   {
 
-    [(NSView *)v7 _zoomOut:a3];
+    [(NSView *)documentView _zoomOut:out];
   }
 
   else
   {
-    [(WebView *)self _zoomMultiplier:v4];
+    [(WebView *)self _zoomMultiplier:onlyCopy];
     if ((v8 / 1.2) > 0.5)
     {
 
-      [(WebView *)self _setZoomMultiplier:v4 isTextOnly:?];
+      [(WebView *)self _setZoomMultiplier:onlyCopy isTextOnly:?];
     }
   }
 }
 
-- (void)_zoomIn:(id)a3 isTextOnly:(BOOL)a4
+- (void)_zoomIn:(id)in isTextOnly:(BOOL)only
 {
-  v4 = a4;
-  v7 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  if ([(NSView *)v7 conformsToProtocol:&unk_1F4773998])
+  onlyCopy = only;
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F4773998])
   {
 
-    [(NSView *)v7 _zoomIn:a3];
+    [(NSView *)documentView _zoomIn:in];
   }
 
   else
   {
-    [(WebView *)self _zoomMultiplier:v4];
+    [(WebView *)self _zoomMultiplier:onlyCopy];
     if ((v8 * 1.2) < 3.0)
     {
 
-      [(WebView *)self _setZoomMultiplier:v4 isTextOnly:?];
+      [(WebView *)self _setZoomMultiplier:onlyCopy isTextOnly:?];
     }
   }
 }
 
-- (BOOL)_canResetZoom:(BOOL)a3
+- (BOOL)_canResetZoom:(BOOL)zoom
 {
-  v3 = a3;
-  v5 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  if ([(NSView *)v5 conformsToProtocol:&unk_1F4773998])
+  zoomCopy = zoom;
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F4773998])
   {
 
-    return [(NSView *)v5 _canResetZoom];
+    return [(NSView *)documentView _canResetZoom];
   }
 
   else
   {
-    [(WebView *)self _zoomMultiplier:v3];
+    [(WebView *)self _zoomMultiplier:zoomCopy];
     return v7 != 1.0;
   }
 }
 
-- (void)_resetZoom:(id)a3 isTextOnly:(BOOL)a4
+- (void)_resetZoom:(id)zoom isTextOnly:(BOOL)only
 {
-  v4 = a4;
-  v7 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  if ([(NSView *)v7 conformsToProtocol:&unk_1F4773998])
+  onlyCopy = only;
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F4773998])
   {
 
-    [(NSView *)v7 _resetZoom:a3];
+    [(NSView *)documentView _resetZoom:zoom];
   }
 
   else
   {
-    [(WebView *)self _zoomMultiplier:v4];
+    [(WebView *)self _zoomMultiplier:onlyCopy];
     if (*&v8 != 1.0)
     {
       LODWORD(v8) = 1.0;
 
-      [(WebView *)self _setZoomMultiplier:v4 isTextOnly:v8];
+      [(WebView *)self _setZoomMultiplier:onlyCopy isTextOnly:v8];
     }
   }
 }
@@ -9904,9 +9904,9 @@ LABEL_9:
     v2->userAgent.m_impl.m_ptr = 0;
     if (atomic_fetch_add_explicit(m_ptr, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
-      v4 = self;
+      selfCopy = self;
       WTF::StringImpl::destroy(m_ptr, a2);
-      self = v4;
+      self = selfCopy;
     }
 
     if (self->_private->page.m_ptr)
@@ -10015,12 +10015,12 @@ LABEL_6:
 
 - (BOOL)supportsTextEncoding
 {
-  v2 = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
-  v3 = [(NSView *)v2 conformsToProtocol:&unk_1F475AAC0];
+  documentView = [(WebFrameView *)[(WebFrame *)[(WebView *)self mainFrame] frameView] documentView];
+  v3 = [(NSView *)documentView conformsToProtocol:&unk_1F475AAC0];
   if (v3)
   {
 
-    LOBYTE(v3) = [(NSView *)v2 supportsTextEncoding];
+    LOBYTE(v3) = [(NSView *)documentView supportsTextEncoding];
   }
 
   return v3;
@@ -10028,13 +10028,13 @@ LABEL_6:
 
 - (void)setCustomTextEncodingName:(NSString *)customTextEncodingName
 {
-  v5 = [(WebView *)self customTextEncodingName];
-  if (v5 != customTextEncodingName && ![(NSString *)customTextEncodingName isEqualToString:v5])
+  customTextEncodingName = [(WebView *)self customTextEncodingName];
+  if (customTextEncodingName != customTextEncodingName && ![(NSString *)customTextEncodingName isEqualToString:customTextEncodingName])
   {
-    v6 = [(WebView *)self _mainCoreFrame];
-    if (v6)
+    _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+    if (_mainCoreFrame)
     {
-      v7 = v6[26];
+      v7 = _mainCoreFrame[26];
       MEMORY[0x1CCA63A40](&v10, customTextEncodingName);
       WebCore::FrameLoader::reloadWithOverrideEncoding(v7, &v10);
       v9 = v10;
@@ -10076,9 +10076,9 @@ LABEL_6:
 
 - (NSString)stringByEvaluatingJavaScriptFromString:(NSString *)script
 {
-  v4 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  return [(WebFrame *)v4 _stringByEvaluatingJavaScriptFromString:script];
+  return [(WebFrame *)mainFrame _stringByEvaluatingJavaScriptFromString:script];
 }
 
 - (WebScriptObject)windowScriptObject
@@ -10103,10 +10103,10 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = [objc_opt_class() _standardUserAgentWithApplicationName:self->_private->applicationNameForUserAgent.m_ptr];
   MEMORY[0x1CCA63A40](&v10, v6);
-  v8 = v5->_private;
+  v8 = selfCopy->_private;
   v9 = v10;
   v10 = 0;
   self = v8->userAgent.m_impl.m_ptr;
@@ -10126,7 +10126,7 @@ LABEL_6:
     }
   }
 
-  m_ptr = v5->_private->userAgent.m_impl.m_ptr;
+  m_ptr = selfCopy->_private->userAgent.m_impl.m_ptr;
   if (m_ptr)
   {
 LABEL_9:
@@ -10187,7 +10187,7 @@ LABEL_7:
   v4 = self->_private;
   if ((!hostWindow || !v4->closed) && v4->hostWindow.m_ptr != hostWindow)
   {
-    v6 = [(WebView *)self _mainCoreFrame];
+    _mainCoreFrame = [(WebView *)self _mainCoreFrame];
     v7 = self->_private;
     if (hostWindow)
     {
@@ -10200,9 +10200,9 @@ LABEL_7:
     {
     }
 
-    if (v6)
+    if (_mainCoreFrame)
     {
-      v10 = v6;
+      v10 = _mainCoreFrame;
       do
       {
         if ((*(v10 + 136) & 1) == 0)
@@ -10221,7 +10221,7 @@ LABEL_7:
           [objc_msgSend(objc_msgSend(v11 "frameView")];
         }
 
-        v10 = WebCore::FrameTree::traverseNext((v10 + 40), v6);
+        v10 = WebCore::FrameTree::traverseNext((v10 + 40), _mainCoreFrame);
       }
 
       while (v10);
@@ -10243,28 +10243,28 @@ LABEL_7:
   }
 }
 
-- (id)documentViewAtWindowPoint:(CGPoint)a3
+- (id)documentViewAtWindowPoint:(CGPoint)point
 {
-  v3 = [(WebView *)self _frameViewAtWindowPoint:a3.x, a3.y];
+  v3 = [(WebView *)self _frameViewAtWindowPoint:point.x, point.y];
 
   return [v3 documentView];
 }
 
-- (id)_elementAtWindowPoint:(CGPoint)a3
+- (id)_elementAtWindowPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v9[1] = *MEMORY[0x1E69E9840];
   result = [(WebView *)self _frameViewAtWindowPoint:?];
   if (result)
   {
     v6 = result;
-    v7 = [result documentView];
-    if ([v7 conformsToProtocol:&unk_1F475A7A8])
+    documentView = [result documentView];
+    if ([documentView conformsToProtocol:&unk_1F475A7A8])
     {
-      [v7 convertPoint:0 fromView:{x, y}];
+      [documentView convertPoint:0 fromView:{x, y}];
 
-      return [v7 elementAtPoint:?];
+      return [documentView elementAtPoint:?];
     }
 
     else
@@ -10287,9 +10287,9 @@ LABEL_7:
 
 - (BOOL)acceptsFirstResponder
 {
-  v2 = [(WebFrame *)[(WebView *)self mainFrame] frameView];
+  frameView = [(WebFrame *)[(WebView *)self mainFrame] frameView];
 
-  return [(WebFrameView *)v2 acceptsFirstResponder];
+  return [(WebFrameView *)frameView acceptsFirstResponder];
 }
 
 - (BOOL)becomeFirstResponder
@@ -10299,18 +10299,18 @@ LABEL_7:
     return 0;
   }
 
-  v5 = [(WebFrame *)[(WebView *)self mainFrame] frameView];
+  frameView = [(WebFrame *)[(WebView *)self mainFrame] frameView];
 
-  return [(WebFrameView *)v5 acceptsFirstResponder];
+  return [(WebFrameView *)frameView acceptsFirstResponder];
 }
 
 - (id)_webcore_effectiveFirstResponder
 {
-  v3 = [(WebFrame *)[(WebView *)self mainFrame] frameView];
-  if (v3)
+  frameView = [(WebFrame *)[(WebView *)self mainFrame] frameView];
+  if (frameView)
   {
 
-    return [(WebFrameView *)v3 _webcore_effectiveFirstResponder];
+    return [(WebFrameView *)frameView _webcore_effectiveFirstResponder];
   }
 
   else
@@ -10321,20 +10321,20 @@ LABEL_7:
   }
 }
 
-- (void)setNextKeyView:(id)a3
+- (void)setNextKeyView:(id)view
 {
-  v5 = [(WebFrame *)[(WebView *)self mainFrame] frameView];
-  if (v5)
+  frameView = [(WebFrame *)[(WebView *)self mainFrame] frameView];
+  if (frameView)
   {
 
-    [(WebFrameView *)v5 setNextKeyView:a3];
+    [(WebFrameView *)frameView setNextKeyView:view];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WebView;
-    [(WebView *)&v6 setNextKeyView:a3];
+    [(WebView *)&v6 setNextKeyView:view];
   }
 }
 
@@ -10370,9 +10370,9 @@ LABEL_7:
     WTF::HashSet<WebView *,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::remove(m_ptr + 2, v23);
   }
 
-  MEMORY[0x1CCA63A40](&v24, groupName);
+  MEMORY[0x1CCA63A40](&selfCopy, groupName);
   MEMORY[0x1CCA63A40](&v22, [(WebPreferences *)self->_private->preferences.m_ptr _localStorageDatabasePath]);
-  WebViewGroup::getOrCreate(&v24, &v22, v23);
+  WebViewGroup::getOrCreate(&selfCopy, &v22, v23);
   v7 = self->_private;
   v8 = v7->group.m_ptr;
   v7->group.m_ptr = v23[0];
@@ -10409,16 +10409,16 @@ LABEL_9:
   }
 
 LABEL_11:
-  v12 = v24;
-  v24 = 0;
+  v12 = selfCopy;
+  selfCopy = 0;
   if (v12 && atomic_fetch_add_explicit(v12, 0xFFFFFFFE, memory_order_relaxed) == 2)
   {
     WTF::StringImpl::destroy(v12, v6);
   }
 
   v13 = self->_private->group.m_ptr;
-  v24 = self;
-  WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(v13 + 2, &v24, v23);
+  selfCopy = self;
+  WTF::HashTable<WebView *,WebView *,WTF::IdentityExtractor,WTF::DefaultHash<WebView *>,WTF::HashTraits<WebView *>,WTF::HashTraits<WebView *>,WTF::FastMalloc>::add<(WTF::ShouldValidateKey)1>(v13 + 2, &selfCopy, v23);
   v14 = self->_private;
   if (v14->page.m_ptr)
   {
@@ -10545,18 +10545,18 @@ LABEL_11:
   }
 
   v6 = v5;
-  v7 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
   v8 = [MEMORY[0x1E695AC68] requestWithURL:v6];
 
-  [(WebFrame *)v7 loadRequest:v8];
+  [(WebFrame *)mainFrame loadRequest:v8];
 }
 
 - (NSString)mainFrameURL
 {
-  v3 = [(WebFrame *)[(WebView *)self mainFrame] provisionalDataSource];
-  if (v3)
+  provisionalDataSource = [(WebFrame *)[(WebView *)self mainFrame] provisionalDataSource];
+  if (provisionalDataSource)
   {
-    v4 = [(NSMutableURLRequest *)[(WebDataSource *)v3 request] URL];
+    v4 = [(NSMutableURLRequest *)[(WebDataSource *)provisionalDataSource request] URL];
   }
 
   else
@@ -10620,9 +10620,9 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  return [(WebFrame *)v4 DOMDocument];
+  return [(WebFrame *)mainFrame DOMDocument];
 }
 
 - (void)setDrawsBackground:(BOOL)drawsBackground
@@ -10631,9 +10631,9 @@ LABEL_11:
   if (v5->drawsBackground != drawsBackground)
   {
     v5->drawsBackground = drawsBackground;
-    v6 = [(WebView *)self mainFrame];
+    mainFrame = [(WebView *)self mainFrame];
 
-    [(WebFrame *)v6 _updateBackgroundAndUpdatesWhileOffscreen];
+    [(WebFrame *)mainFrame _updateBackgroundAndUpdatesWhileOffscreen];
   }
 }
 
@@ -10643,22 +10643,22 @@ LABEL_11:
   if (v5->shouldUpdateWhileOffscreen != shouldUpdateWhileOffscreen)
   {
     v5->shouldUpdateWhileOffscreen = shouldUpdateWhileOffscreen;
-    v6 = [(WebView *)self mainFrame];
+    mainFrame = [(WebView *)self mainFrame];
 
-    [(WebFrame *)v6 _updateBackgroundAndUpdatesWhileOffscreen];
+    [(WebFrame *)mainFrame _updateBackgroundAndUpdatesWhileOffscreen];
   }
 }
 
-- (void)setCurrentNodeHighlight:(id)a3
+- (void)setCurrentNodeHighlight:(id)highlight
 {
   v4 = self->_private;
-  if (a3)
+  if (highlight)
   {
-    v5 = a3;
+    highlightCopy = highlight;
   }
 
   m_ptr = v4->currentNodeHighlight.m_ptr;
-  v4->currentNodeHighlight.m_ptr = a3;
+  v4->currentNodeHighlight.m_ptr = highlight;
   if (m_ptr)
   {
   }
@@ -10666,26 +10666,26 @@ LABEL_11:
 
 - (id)previousValidKeyView
 {
-  v2 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = WebView;
-  v3 = [(WebView *)&v6 previousValidKeyView];
-  if ([v3 isDescendantOf:v2])
+  previousValidKeyView = [(WebView *)&v6 previousValidKeyView];
+  if ([previousValidKeyView isDescendantOf:selfCopy])
   {
     Mutable = CFSetCreateMutable(0, 0, 0);
-    CFSetAddValue(Mutable, v3);
+    CFSetAddValue(Mutable, previousValidKeyView);
     while (1)
     {
-      CFSetAddValue(Mutable, v2);
-      v2 = [(WebView *)v2 previousKeyView];
-      if (!v2 || CFSetGetValue(Mutable, v2))
+      CFSetAddValue(Mutable, selfCopy);
+      selfCopy = [(WebView *)selfCopy previousKeyView];
+      if (!selfCopy || CFSetGetValue(Mutable, selfCopy))
       {
         break;
       }
 
-      if (([v3 isDescendantOf:v2] & 1) == 0)
+      if (([previousValidKeyView isDescendantOf:selfCopy] & 1) == 0)
       {
-        v3 = [(WebView *)v2 previousValidKeyView];
+        previousValidKeyView = [(WebView *)selfCopy previousValidKeyView];
         break;
       }
     }
@@ -10696,7 +10696,7 @@ LABEL_11:
     }
   }
 
-  return v3;
+  return previousValidKeyView;
 }
 
 + (unint64_t)_maxCacheModelInAnyInstance
@@ -10713,14 +10713,14 @@ LABEL_11:
     byte_1ED6A6137 = 1;
   }
 
-  v7 = [v6 objectEnumerator];
-  v8 = [objc_msgSend(v7 "nextObject")];
-  for (i = 0; v8; v8 = [objc_msgSend(v7 "nextObject")])
+  objectEnumerator = [v6 objectEnumerator];
+  v8 = [objc_msgSend(objectEnumerator "nextObject")];
+  for (i = 0; v8; v8 = [objc_msgSend(objectEnumerator "nextObject")])
   {
-    v10 = [v8 cacheModel];
-    if (i <= v10)
+    cacheModel = [v8 cacheModel];
+    if (i <= cacheModel)
     {
-      i = v10;
+      i = cacheModel;
     }
   }
 
@@ -10762,24 +10762,24 @@ unint64_t __42__WebView__cacheModelChangedNotification___block_invoke(uint64_t a
   return result;
 }
 
-+ (void)_preferencesRemovedNotification:(id)a3
++ (void)_preferencesRemovedNotification:(id)notification
 {
-  v4 = [objc_msgSend(a3 "object")];
-  if (v4 == [a1 _cacheModel])
+  v4 = [objc_msgSend(notification "object")];
+  if (v4 == [self _cacheModel])
   {
-    v5 = [+[WebPreferences standardPreferences](WebPreferences cacheModel];
-    v6 = [a1 _maxCacheModelInAnyInstance];
-    if (v5 <= v6)
+    cacheModel = [+[WebPreferences standardPreferences](WebPreferences cacheModel];
+    _maxCacheModelInAnyInstance = [self _maxCacheModelInAnyInstance];
+    if (cacheModel <= _maxCacheModelInAnyInstance)
     {
-      v7 = v6;
+      v7 = _maxCacheModelInAnyInstance;
     }
 
     else
     {
-      v7 = v5;
+      v7 = cacheModel;
     }
 
-    [a1 _setCacheModel:v7];
+    [self _setCacheModel:v7];
   }
 }
 
@@ -10791,9 +10791,9 @@ unint64_t __42__WebView__cacheModelChangedNotification___block_invoke(uint64_t a
     return 0;
   }
 
-  v4 = v3;
+  superview = v3;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![v4 isDescendantOf:{-[WebFrame frameView](-[WebView mainFrame](self, "mainFrame"), "frameView")}])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![superview isDescendantOf:{-[WebFrame frameView](-[WebView mainFrame](self, "mainFrame"), "frameView")}])
   {
     return 0;
   }
@@ -10806,35 +10806,35 @@ unint64_t __42__WebView__cacheModelChangedNotification___block_invoke(uint64_t a
       break;
     }
 
-    v4 = [v4 superview];
+    superview = [superview superview];
   }
 
-  while (v4);
+  while (superview);
 
-  return [v4 webFrame];
+  return [superview webFrame];
 }
 
 - (BOOL)_isLoading
 {
-  v2 = [(WebView *)self mainFrame];
-  if ([-[WebFrame _dataSource](v2 "_dataSource")])
+  mainFrame = [(WebView *)self mainFrame];
+  if ([-[WebFrame _dataSource](mainFrame "_dataSource")])
   {
     return 1;
   }
 
-  v4 = [(WebFrame *)v2 provisionalDataSource];
+  provisionalDataSource = [(WebFrame *)mainFrame provisionalDataSource];
 
-  return [(WebDataSource *)v4 isLoading];
+  return [(WebDataSource *)provisionalDataSource isLoading];
 }
 
-- (id)_frameViewAtWindowPoint:(CGPoint)a3
+- (id)_frameViewAtWindowPoint:(CGPoint)point
 {
   if (self->_private->closed)
   {
     return 0;
   }
 
-  v5 = [(WebView *)self hitTest:a3.x, a3.y];
+  v5 = [(WebView *)self hitTest:point.x, point.y];
   v6 = [v5 isDescendantOf:{-[WebFrame frameView](-[WebView mainFrame](self, "mainFrame"), "frameView")}];
   result = 0;
   if (v6 && v5)
@@ -10879,16 +10879,16 @@ unint64_t __42__WebView__cacheModelChangedNotification___block_invoke(uint64_t a
 - (id)_responderForResponderOperations
 {
   v3 = [-[WebView window](self "window")];
-  v4 = [(WebFrame *)[(WebView *)self mainFrame] frameView];
+  frameView = [(WebFrame *)[(WebView *)self mainFrame] frameView];
   if (v3 != self)
   {
-    v5 = v4;
-    if (![(WAKView *)v4 _web_firstResponderIsSelfOrDescendantView])
+    v5 = frameView;
+    if (![(WAKView *)frameView _web_firstResponderIsSelfOrDescendantView])
     {
-      v6 = [(WebFrameView *)v5 documentView];
-      if (v6)
+      documentView = [(WebFrameView *)v5 documentView];
+      if (documentView)
       {
-        return v6;
+        return documentView;
       }
 
       else
@@ -10903,11 +10903,11 @@ unint64_t __42__WebView__cacheModelChangedNotification___block_invoke(uint64_t a
 
 - (void)takeStringURLFrom:(id)sender
 {
-  v4 = [sender stringValue];
-  v5 = [(WebView *)self mainFrame];
-  v6 = [MEMORY[0x1E695AC68] requestWithURL:{objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithDataAsString:", v4)}];
+  stringValue = [sender stringValue];
+  mainFrame = [(WebView *)self mainFrame];
+  v6 = [MEMORY[0x1E695AC68] requestWithURL:{objc_msgSend(MEMORY[0x1E695DFF8], "_web_URLWithDataAsString:", stringValue)}];
 
-  [(WebFrame *)v5 loadRequest:v6];
+  [(WebFrame *)mainFrame loadRequest:v6];
 }
 
 - (BOOL)canGoBack
@@ -11000,9 +11000,9 @@ uint64_t __32__WebView_WebIBActions__reload___block_invoke(uint64_t a1)
 
 - (void)reloadFromOrigin:(id)sender
 {
-  v3 = [(WebView *)self mainFrame];
+  mainFrame = [(WebView *)self mainFrame];
 
-  [(WebFrame *)v3 reloadFromOrigin];
+  [(WebFrame *)mainFrame reloadFromOrigin];
 }
 
 - (BOOL)canMakeTextSmaller
@@ -11054,9 +11054,9 @@ uint64_t __32__WebView_WebIBActions__reload___block_invoke(uint64_t a1)
   [(WebView *)self setContinuousSpellCheckingEnabled:v4];
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3 && a4)
+  if (loop && mode)
   {
     if (self)
     {
@@ -11064,7 +11064,7 @@ uint64_t __32__WebView_WebIBActions__reload___block_invoke(uint64_t a1)
     }
 
     v6 = WTF::fastMalloc(0x20);
-    MEMORY[0x1CCA63530](v6, a3, a4);
+    MEMORY[0x1CCA63530](v6, loop, mode);
     WebCore::Page::addSchedulePair();
     if (v6 && atomic_fetch_add(v6, 0xFFFFFFFF) == 1)
     {
@@ -11094,9 +11094,9 @@ uint64_t __32__WebView_WebIBActions__reload___block_invoke(uint64_t a1)
   }
 }
 
-- (void)unscheduleFromRunLoop:(id)a3 forMode:(id)a4
+- (void)unscheduleFromRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3 && a4)
+  if (loop && mode)
   {
     if (self)
     {
@@ -11104,7 +11104,7 @@ uint64_t __32__WebView_WebIBActions__reload___block_invoke(uint64_t a1)
     }
 
     v6 = WTF::fastMalloc(0x20);
-    MEMORY[0x1CCA63530](v6, a3, a4);
+    MEMORY[0x1CCA63530](v6, loop, mode);
     WebCore::Page::removeSchedulePair();
     if (v6 && atomic_fetch_add(v6, 0xFFFFFFFF) == 1)
     {
@@ -11134,7 +11134,7 @@ uint64_t __32__WebView_WebIBActions__reload___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)findString:(id)a3 options:(unint64_t)a4
+- (BOOL)findString:(id)string options:(unint64_t)options
 {
   if (self->_private->closed)
   {
@@ -11143,20 +11143,20 @@ LABEL_2:
     return v4;
   }
 
-  v6 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
   v7 = 0;
-  v8 = v6;
+  v8 = _selectedOrMainFrame;
   do
   {
     if (v8)
     {
-      if ((a4 & 8) == 0)
+      if ((options & 8) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if ((a4 & 8) == 0)
+    else if ((options & 8) == 0)
     {
 LABEL_6:
       v9 = WebCore::FrameTree::traverseNext();
@@ -11187,24 +11187,24 @@ LABEL_13:
     v12 = [objc_msgSend(v8 "frameView")];
     if ([v12 conformsToProtocol:&unk_1F475ADE0])
     {
-      if (v8 == v6)
+      if (v8 == _selectedOrMainFrame)
       {
         v7 = v12;
       }
 
       if (v8 == v11)
       {
-        v13 = a4;
+        optionsCopy = options;
       }
 
       else
       {
-        v13 = a4 & 0xFFFFFFFFFFFFFFEFLL;
+        optionsCopy = options & 0xFFFFFFFFFFFFFFEFLL;
       }
 
       if ([v12 conformsToProtocol:&unk_1F475A968])
       {
-        if ([v12 _findString:a3 options:v13])
+        if ([v12 _findString:string options:optionsCopy])
         {
           goto LABEL_35;
         }
@@ -11213,28 +11213,28 @@ LABEL_13:
       else
       {
         v14 = [v12 conformsToProtocol:&unk_1F475AC60];
-        v15 = (v13 >> 4) & 1;
-        v16 = (v13 & 1) == 0;
+        v15 = (optionsCopy >> 4) & 1;
+        v16 = (optionsCopy & 1) == 0;
         if (v14)
         {
-          if ([v12 searchFor:a3 direction:(v13 & 8) == 0 caseSensitive:v16 wrap:v15 startInSelection:(v13 >> 5) & 1])
+          if ([v12 searchFor:string direction:(optionsCopy & 8) == 0 caseSensitive:v16 wrap:v15 startInSelection:(optionsCopy >> 5) & 1])
           {
             goto LABEL_35;
           }
         }
 
-        else if ([v12 searchFor:a3 direction:(v13 & 8) == 0 caseSensitive:v16 wrap:v15])
+        else if ([v12 searchFor:string direction:(optionsCopy & 8) == 0 caseSensitive:v16 wrap:v15])
         {
 LABEL_35:
-          if (v8 != v6)
+          if (v8 != _selectedOrMainFrame)
           {
-            [v6 _clearSelection];
+            [_selectedOrMainFrame _clearSelection];
           }
 
-          v17 = [(WebView *)self window];
+          window = [(WebView *)self window];
           v18 = v12;
 LABEL_43:
-          [v17 makeFirstResponder:v18];
+          [window makeFirstResponder:v18];
           LOBYTE(v4) = 1;
           return v4;
         }
@@ -11254,13 +11254,13 @@ LABEL_43:
     v8 = v11;
   }
 
-  while (v11 != v6);
+  while (v11 != _selectedOrMainFrame);
   LOBYTE(v4) = 0;
-  if ((a4 & 0x10) != 0 && v7)
+  if ((options & 0x10) != 0 && v7)
   {
     if ([v7 conformsToProtocol:&unk_1F475A968])
     {
-      if (([v7 _findString:a3 options:a4] & 1) == 0)
+      if (([v7 _findString:string options:options] & 1) == 0)
       {
         goto LABEL_2;
       }
@@ -11269,10 +11269,10 @@ LABEL_43:
     else
     {
       v19 = [v7 conformsToProtocol:&unk_1F475AC60];
-      v20 = (a4 & 1) == 0;
+      v20 = (options & 1) == 0;
       if (v19)
       {
-        if (([v7 searchFor:a3 direction:(a4 & 8) == 0 caseSensitive:v20 wrap:1 startInSelection:(a4 >> 5) & 1] & 1) == 0)
+        if (([v7 searchFor:string direction:(options & 8) == 0 caseSensitive:v20 wrap:1 startInSelection:(options >> 5) & 1] & 1) == 0)
         {
           goto LABEL_2;
         }
@@ -11280,7 +11280,7 @@ LABEL_43:
 
       else
       {
-        v4 = [v7 searchFor:a3 direction:(a4 & 8) == 0 caseSensitive:v20 wrap:1];
+        v4 = [v7 searchFor:string direction:(options & 8) == 0 caseSensitive:v20 wrap:1];
         if (!v4)
         {
           return v4;
@@ -11288,7 +11288,7 @@ LABEL_43:
       }
     }
 
-    v17 = [(WebView *)self window];
+    window = [(WebView *)self window];
     v18 = v7;
     goto LABEL_43;
   }
@@ -11296,14 +11296,14 @@ LABEL_43:
   return v4;
 }
 
-- (id)DOMRangeOfString:(id)a3 relativeTo:(id)a4 options:(unint64_t)a5
+- (id)DOMRangeOfString:(id)string relativeTo:(id)to options:(unint64_t)options
 {
   if (!self->_private->page.m_ptr)
   {
     return 0;
   }
 
-  MEMORY[0x1CCA63A40](&v19, a3);
+  MEMORY[0x1CCA63A40](&v19, string);
   WebCore::makeSimpleRange();
   WebCore::Page::rangeOfString();
   result = kit();
@@ -11412,13 +11412,13 @@ LABEL_25:
   return result;
 }
 
-- (void)setTabKeyCyclesThroughElements:(BOOL)a3
+- (void)setTabKeyCyclesThroughElements:(BOOL)elements
 {
   self->_private->tabKeyCyclesThroughElementsChanged = 1;
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
-    *(m_ptr + 298) = a3;
+    *(m_ptr + 298) = elements;
   }
 }
 
@@ -11433,11 +11433,11 @@ LABEL_25:
   return m_ptr & 1;
 }
 
-- (void)setScriptDebugDelegate:(id)a3
+- (void)setScriptDebugDelegate:(id)delegate
 {
-  self->_private->scriptDebugDelegate = a3;
+  self->_private->scriptDebugDelegate = delegate;
   [(WebView *)self _cacheScriptDebugDelegateImplementations];
-  if (a3)
+  if (delegate)
   {
 
     [(WebView *)self _attachScriptDebuggerToAllFrames];
@@ -11452,13 +11452,13 @@ LABEL_25:
 
 - (BOOL)shouldClose
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (!v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (!_mainCoreFrame)
   {
     return 1;
   }
 
-  v3 = v2[26];
+  v3 = _mainCoreFrame[26];
 
   return MEMORY[0x1EEE542C0](v3);
 }
@@ -11472,13 +11472,13 @@ LABEL_25:
 
   else
   {
-    v3 = [(WebView *)self mainFrame];
+    mainFrame = [(WebView *)self mainFrame];
     while (1)
     {
-      v4 = [(WebFrameView *)[(WebFrame *)v3 frameView] documentView];
-      if (v4)
+      documentView = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+      if (documentView)
       {
-        v2 = [(NSView *)v4 conformsToProtocol:&unk_1F475A8E8];
+        v2 = [(NSView *)documentView conformsToProtocol:&unk_1F475A8E8];
         if (!v2)
         {
           break;
@@ -11493,8 +11493,8 @@ LABEL_25:
           v6 = *(*(v5 + 208) + 16);
           if (((*(*v6 + 1032))(v6) & 1) == 0)
           {
-            v3 = v6[3];
-            if (v3)
+            mainFrame = v6[3];
+            if (mainFrame)
             {
               continue;
             }
@@ -11510,29 +11510,29 @@ LABEL_25:
   return v2;
 }
 
-- (unint64_t)countMatchesForText:(id)a3 inDOMRange:(id)a4 options:(unint64_t)a5 highlight:(BOOL)a6 limit:(unint64_t)a7 markMatches:(BOOL)a8
+- (unint64_t)countMatchesForText:(id)text inDOMRange:(id)range options:(unint64_t)options highlight:(BOOL)highlight limit:(unint64_t)limit markMatches:(BOOL)matches
 {
   if (self->_private->closed)
   {
     return 0;
   }
 
-  v9 = a8;
-  v11 = a6;
-  v15 = [(WebView *)self mainFrame];
-  v16 = a7 - 1;
+  matchesCopy = matches;
+  highlightCopy = highlight;
+  mainFrame = [(WebView *)self mainFrame];
+  v16 = limit - 1;
   LODWORD(v17) = 0;
-  if (v9)
+  if (matchesCopy)
   {
-    if (a7)
+    if (limit)
     {
       do
       {
-        v18 = [(WebFrameView *)[(WebFrame *)v15 frameView] documentView];
-        if ([(NSView *)v18 conformsToProtocol:&unk_1F475A8E8])
+        documentView = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+        if ([(NSView *)documentView conformsToProtocol:&unk_1F475A8E8])
         {
-          [(NSView *)v18 setMarkedTextMatchesAreHighlighted:v11];
-          v17 = v17 + [(NSView *)v18 countMatchesForText:a3 inDOMRange:a4 options:a5 limit:a7 - v17 markMatches:1];
+          [(NSView *)documentView setMarkedTextMatchesAreHighlighted:highlightCopy];
+          v17 = v17 + [(NSView *)documentView countMatchesForText:text inDOMRange:range options:options limit:limit - v17 markMatches:1];
           if (v16 < v17)
           {
             break;
@@ -11556,21 +11556,21 @@ LABEL_25:
           break;
         }
 
-        v15 = v20[3];
+        mainFrame = v20[3];
       }
 
-      while (v15);
+      while (mainFrame);
     }
 
     else
     {
       do
       {
-        v24 = [(WebFrameView *)[(WebFrame *)v15 frameView] documentView];
-        if ([(NSView *)v24 conformsToProtocol:&unk_1F475A8E8])
+        documentView2 = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+        if ([(NSView *)documentView2 conformsToProtocol:&unk_1F475A8E8])
         {
-          [(NSView *)v24 setMarkedTextMatchesAreHighlighted:v11];
-          v17 = v17 + [(NSView *)v24 countMatchesForText:a3 inDOMRange:a4 options:a5 limit:0 markMatches:1];
+          [(NSView *)documentView2 setMarkedTextMatchesAreHighlighted:highlightCopy];
+          v17 = v17 + [(NSView *)documentView2 countMatchesForText:text inDOMRange:range options:options limit:0 markMatches:1];
           if (v16 < v17)
           {
             break;
@@ -11594,21 +11594,21 @@ LABEL_25:
           break;
         }
 
-        v15 = v26[3];
+        mainFrame = v26[3];
       }
 
-      while (v15);
+      while (mainFrame);
     }
   }
 
-  else if (a7)
+  else if (limit)
   {
     do
     {
-      v21 = [(WebFrameView *)[(WebFrame *)v15 frameView] documentView];
-      if ([(NSView *)v21 conformsToProtocol:&unk_1F475A8E8])
+      documentView3 = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+      if ([(NSView *)documentView3 conformsToProtocol:&unk_1F475A8E8])
       {
-        v17 = v17 + [(NSView *)v21 countMatchesForText:a3 inDOMRange:a4 options:a5 limit:a7 - v17 markMatches:0];
+        v17 = v17 + [(NSView *)documentView3 countMatchesForText:text inDOMRange:range options:options limit:limit - v17 markMatches:0];
         if (v16 < v17)
         {
           break;
@@ -11632,20 +11632,20 @@ LABEL_25:
         break;
       }
 
-      v15 = v23[3];
+      mainFrame = v23[3];
     }
 
-    while (v15);
+    while (mainFrame);
   }
 
   else
   {
     do
     {
-      v27 = [(WebFrameView *)[(WebFrame *)v15 frameView] documentView];
-      if ([(NSView *)v27 conformsToProtocol:&unk_1F475A8E8])
+      documentView4 = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+      if ([(NSView *)documentView4 conformsToProtocol:&unk_1F475A8E8])
       {
-        v17 = v17 + [(NSView *)v27 countMatchesForText:a3 inDOMRange:a4 options:a5 limit:0 markMatches:0];
+        v17 = v17 + [(NSView *)documentView4 countMatchesForText:text inDOMRange:range options:options limit:0 markMatches:0];
         if (v16 < v17)
         {
           break;
@@ -11669,10 +11669,10 @@ LABEL_25:
         break;
       }
 
-      v15 = v29[3];
+      mainFrame = v29[3];
     }
 
-    while (v15);
+    while (mainFrame);
   }
 
   return v17;
@@ -11682,13 +11682,13 @@ LABEL_25:
 {
   if (!self->_private->closed)
   {
-    v2 = [(WebView *)self mainFrame];
+    mainFrame = [(WebView *)self mainFrame];
     do
     {
-      v3 = [(WebFrameView *)[(WebFrame *)v2 frameView] documentView];
-      if ([(NSView *)v3 conformsToProtocol:&unk_1F475A8E8])
+      documentView = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+      if ([(NSView *)documentView conformsToProtocol:&unk_1F475A8E8])
       {
-        [(NSView *)v3 unmarkAllTextMatches];
+        [(NSView *)documentView unmarkAllTextMatches];
       }
 
       v4 = WebCore::FrameTree::traverseNext();
@@ -11708,10 +11708,10 @@ LABEL_25:
         break;
       }
 
-      v2 = v5[3];
+      mainFrame = v5[3];
     }
 
-    while (v2);
+    while (mainFrame);
   }
 }
 
@@ -11723,14 +11723,14 @@ LABEL_25:
     return MEMORY[0x1E695E0F0];
   }
 
-  v2 = [MEMORY[0x1E695DF70] array];
-  v5 = [(WebView *)self mainFrame];
+  array = [MEMORY[0x1E695DF70] array];
+  mainFrame = [(WebView *)self mainFrame];
   do
   {
-    v6 = [(WebFrameView *)[(WebFrame *)v5 frameView] documentView];
-    if ([(NSView *)v6 conformsToProtocol:&unk_1F475A8E8])
+    documentView = [(WebFrameView *)[(WebFrame *)mainFrame frameView] documentView];
+    if ([(NSView *)documentView conformsToProtocol:&unk_1F475A8E8])
     {
-      [(NSView *)v6 visibleRect];
+      [(NSView *)documentView visibleRect];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -11739,8 +11739,8 @@ LABEL_25:
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v15 = [(NSView *)v6 rectsForTextMatches];
-      v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      rectsForTextMatches = [(NSView *)documentView rectsForTextMatches];
+      v16 = [rectsForTextMatches countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v16)
       {
         v17 = v16;
@@ -11751,7 +11751,7 @@ LABEL_25:
           {
             if (*v28 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(rectsForTextMatches);
             }
 
             [*(*(&v27 + 1) + 8 * i) rectValue];
@@ -11767,13 +11767,13 @@ LABEL_25:
             if (!NSIsEmptyRect(v34))
             {
               v24 = objc_autoreleasePoolPush();
-              [(NSView *)v6 convertRect:self toView:x, y, width, height];
-              [v2 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithRect:")}];
+              [(NSView *)documentView convertRect:self toView:x, y, width, height];
+              [array addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithRect:")}];
               objc_autoreleasePoolPop(v24);
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v17 = [rectsForTextMatches countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v17);
@@ -11797,32 +11797,32 @@ LABEL_25:
       break;
     }
 
-    v5 = v26[3];
+    mainFrame = v26[3];
   }
 
-  while (v5);
-  return v2;
+  while (mainFrame);
+  return array;
 }
 
-- (void)scrollDOMRangeToVisible:(id)a3
+- (void)scrollDOMRangeToVisible:(id)visible
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "startContainer")];
+  v4 = [objc_msgSend(objc_msgSend(visible "startContainer")];
 
-  [v4 _scrollDOMRangeToVisible:a3];
+  [v4 _scrollDOMRangeToVisible:visible];
 }
 
-- (void)scrollDOMRangeToVisible:(id)a3 withInset:(double)a4
+- (void)scrollDOMRangeToVisible:(id)visible withInset:(double)inset
 {
-  v6 = [objc_msgSend(objc_msgSend(a3 "startContainer")];
+  v6 = [objc_msgSend(objc_msgSend(visible "startContainer")];
 
-  [v6 _scrollDOMRangeToVisible:a3 withInset:a4];
+  [v6 _scrollDOMRangeToVisible:visible withInset:inset];
 }
 
 - (float)pageSizeMultiplier
 {
-  v3 = [(WebView *)self _realZoomMultiplierIsTextOnly];
+  _realZoomMultiplierIsTextOnly = [(WebView *)self _realZoomMultiplierIsTextOnly];
   result = 1.0;
-  if (!v3)
+  if (!_realZoomMultiplierIsTextOnly)
   {
     return self->_private->zoomMultiplier;
   }
@@ -11830,12 +11830,12 @@ LABEL_25:
   return result;
 }
 
-- (void)setMediaVolume:(float)a3
+- (void)setMediaVolume:(float)volume
 {
   m_ptr = self->_private->page.m_ptr;
   if (m_ptr)
   {
-    MEMORY[0x1EEE5A588](m_ptr, a2, a3);
+    MEMORY[0x1EEE5A588](m_ptr, a2, volume);
   }
 }
 
@@ -11871,7 +11871,7 @@ LABEL_25:
   }
 }
 
-- (void)addVisitedLinks:(id)a3
+- (void)addVisitedLinks:(id)links
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = *(self->_private->group.m_ptr + 6);
@@ -11879,7 +11879,7 @@ LABEL_25:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [links countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -11891,24 +11891,24 @@ LABEL_25:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(links);
         }
 
         WebVisitedLinkStore::addVisitedLink(v4, *(*(&v9 + 1) + 8 * v8++));
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [links countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeVisitedLink:(id)a3
+- (void)removeVisitedLink:(id)link
 {
   v3 = *(self->_private->group.m_ptr + 6);
-  MEMORY[0x1CCA63960](&v10, a3);
+  MEMORY[0x1CCA63960](&v10, link);
   v4 = v10;
   if (v10)
   {
@@ -11956,9 +11956,9 @@ LABEL_25:
     v5 = &stru_1F472E7E8;
   }
 
-  v6 = [(DOMNode *)element ownerDocument];
+  ownerDocument = [(DOMNode *)element ownerDocument];
 
-  return [(DOMDocument *)v6 getComputedStyle:element pseudoElement:v5];
+  return [(DOMDocument *)ownerDocument getComputedStyle:element pseudoElement:v5];
 }
 
 - (DOMRange)editableDOMRangeForPoint:(NSPoint)point
@@ -11967,7 +11967,7 @@ LABEL_25:
   {
     y = point.y;
     x = point.x;
-    v5 = self;
+    selfCopy = self;
     [(DOMRange *)self page];
     if (!v17)
     {
@@ -12000,7 +12000,7 @@ LABEL_25:
           }
         }
 
-        [(DOMRange *)v5 convertPoint:0 toView:x, y];
+        [(DOMRange *)selfCopy convertPoint:0 toView:x, y];
         v15.x = v9;
         v15.y = v10;
         WebCore::IntPoint::IntPoint(&v16, &v15);
@@ -12014,9 +12014,9 @@ LABEL_25:
           {
             if (*(v11 + 7) == 2)
             {
-              v13 = self;
+              selfCopy2 = self;
               WebCore::Node::removedLastRef(v11);
-              self = v13;
+              self = selfCopy2;
               v12 = v17;
               v17 = 0;
               if (!v12)
@@ -12040,9 +12040,9 @@ LABEL_25:
 LABEL_18:
           if (*(v12 + 7) == 2)
           {
-            v14 = self;
+            selfCopy3 = self;
             WebCore::Node::removedLastRef(v12);
-            return v14;
+            return selfCopy3;
           }
 
           else
@@ -12057,20 +12057,20 @@ LABEL_18:
   return self;
 }
 
-- (BOOL)_shouldChangeSelectedDOMRange:(id)a3 toDOMRange:(id)a4 affinity:(unint64_t)a5 stillSelecting:(BOOL)a6
+- (BOOL)_shouldChangeSelectedDOMRange:(id)range toDOMRange:(id)mRange affinity:(unint64_t)affinity stillSelecting:(BOOL)selecting
 {
-  v6 = a6;
-  v11 = [(WebView *)self _editingDelegateForwarder];
+  selectingCopy = selecting;
+  _editingDelegateForwarder = [(WebView *)self _editingDelegateForwarder];
 
-  return [v11 webView:self shouldChangeSelectedDOMRange:a3 toDOMRange:a4 affinity:a5 stillSelecting:v6];
+  return [_editingDelegateForwarder webView:self shouldChangeSelectedDOMRange:range toDOMRange:mRange affinity:affinity stillSelecting:selectingCopy];
 }
 
 - (void)setSelectedDOMRange:(DOMRange *)range affinity:(NSSelectionAffinity)selectionAffinity
 {
-  v5 = [(WebView *)self _selectedOrMainFrame];
-  if (v5)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (_selectedOrMainFrame)
   {
-    v6 = *(v5[1] + 8);
+    v6 = *(_selectedOrMainFrame[1] + 8);
     if (v6)
     {
       if (range)
@@ -12182,8 +12182,8 @@ LABEL_8:
 
 - (NSSelectionAffinity)selectionAffinity
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
-  if (v2 && (v3 = *(v2[1] + 8)) != 0)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (_selectedOrMainFrame && (v3 = *(_selectedOrMainFrame[1] + 8)) != 0)
   {
     return *(*(*(v3 + 224) + 3208) + 152);
   }
@@ -12209,13 +12209,13 @@ LABEL_8:
         *(v6->page.m_ptr + 298) = !v3;
       }
 
-      v7 = [(WebView *)self _mainCoreFrame];
-      if (v7)
+      _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+      if (_mainCoreFrame)
       {
         if (v3)
         {
-          v8 = v7;
-          v9 = v7[28];
+          v8 = _mainCoreFrame;
+          v9 = _mainCoreFrame[28];
           if (v9)
           {
             *(v9 + 7) += 2;
@@ -12269,16 +12269,16 @@ LABEL_15:
 
 - (void)setTypingStyle:(DOMCSSStyleDeclaration *)typingStyle
 {
-  v4 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  [v4 _setTypingStyle:typingStyle withUndoAction:59];
+  [_selectedOrMainFrame _setTypingStyle:typingStyle withUndoAction:59];
 }
 
 - (DOMCSSStyleDeclaration)typingStyle
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  return [v2 _typingStyle];
+  return [_selectedOrMainFrame _typingStyle];
 }
 
 - (void)setSmartInsertDeleteEnabled:(BOOL)smartInsertDeleteEnabled
@@ -12315,9 +12315,9 @@ LABEL_15:
 
     else
     {
-      v5 = [(WebView *)self mainFrame];
+      mainFrame = [(WebView *)self mainFrame];
 
-      [(WebFrame *)v5 _unmarkAllMisspellings];
+      [(WebFrame *)mainFrame _unmarkAllMisspellings];
     }
   }
 }
@@ -12329,19 +12329,19 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(WebView *)self _editingDelegateForwarder];
+  _editingDelegateForwarder = [(WebView *)self _editingDelegateForwarder];
 
-  return [v4 undoManagerForWebView:self];
+  return [_editingDelegateForwarder undoManagerForWebView:self];
 }
 
-- (void)registerForEditingDelegateNotification:(id)a3 selector:(SEL)a4
+- (void)registerForEditingDelegateNotification:(id)notification selector:(SEL)selector
 {
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   if (objc_opt_respondsToSelector())
   {
     editingDelegate = self->_private->editingDelegate;
 
-    [v7 addObserver:editingDelegate selector:a4 name:a3 object:self];
+    [defaultCenter addObserver:editingDelegate selector:selector name:notification object:self];
   }
 }
 
@@ -12349,12 +12349,12 @@ LABEL_15:
 {
   if (self->_private->editingDelegate != editingDelegate)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self->_private->editingDelegate name:@"WebViewDidBeginEditingNotification" object:self];
-    [v5 removeObserver:self->_private->editingDelegate name:@"WebViewDidChangeNotification" object:self];
-    [v5 removeObserver:self->_private->editingDelegate name:@"WebViewDidEndEditingNotification" object:self];
-    [v5 removeObserver:self->_private->editingDelegate name:@"WebViewDidChangeTypingStyleNotification" object:self];
-    [v5 removeObserver:self->_private->editingDelegate name:@"WebViewDidChangeSelectionNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_private->editingDelegate name:@"WebViewDidBeginEditingNotification" object:self];
+    [defaultCenter removeObserver:self->_private->editingDelegate name:@"WebViewDidChangeNotification" object:self];
+    [defaultCenter removeObserver:self->_private->editingDelegate name:@"WebViewDidEndEditingNotification" object:self];
+    [defaultCenter removeObserver:self->_private->editingDelegate name:@"WebViewDidChangeTypingStyleNotification" object:self];
+    [defaultCenter removeObserver:self->_private->editingDelegate name:@"WebViewDidChangeSelectionNotification" object:self];
     self->_private->editingDelegate = editingDelegate;
     v6 = self->_private;
     m_ptr = v6->editingDelegateForwarder.m_ptr;
@@ -12381,23 +12381,23 @@ LABEL_15:
 
 - (void)replaceSelectionWithNode:(DOMNode *)node
 {
-  v4 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  [v4 _replaceSelectionWithNode:node selectReplacement:1 smartReplace:0 matchStyle:0];
+  [_selectedOrMainFrame _replaceSelectionWithNode:node selectReplacement:1 smartReplace:0 matchStyle:0];
 }
 
 - (void)replaceSelectionWithText:(NSString *)text
 {
-  v4 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  [v4 _replaceSelectionWithText:text selectReplacement:1 smartReplace:0];
+  [_selectedOrMainFrame _replaceSelectionWithText:text selectReplacement:1 smartReplace:0];
 }
 
 - (void)replaceSelectionWithMarkupString:(NSString *)markupString
 {
-  v4 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  [v4 _replaceSelectionWithMarkupString:markupString baseURLString:0 selectReplacement:1 smartReplace:0];
+  [_selectedOrMainFrame _replaceSelectionWithMarkupString:markupString baseURLString:0 selectReplacement:1 smartReplace:0];
 }
 
 - (void)replaceSelectionWithArchive:(WebArchive *)archive
@@ -12409,11 +12409,11 @@ LABEL_15:
 
 - (void)deleteSelection
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
-  if (v2)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (_selectedOrMainFrame)
   {
-    v3 = v2;
-    v4 = *(v2[1] + 8);
+    v3 = _selectedOrMainFrame;
+    v4 = *(_selectedOrMainFrame[1] + 8);
     if (v4)
     {
       v5 = *(v4 + 224);
@@ -12445,12 +12445,12 @@ LABEL_15:
 
 - (void)applyStyle:(DOMCSSStyleDeclaration *)style
 {
-  v4 = [(WebView *)self _selectedOrMainFrame];
-  if (v4)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (_selectedOrMainFrame)
   {
     if (style)
     {
-      v5 = *(v4[1] + 8);
+      v5 = *(_selectedOrMainFrame[1] + 8);
       if (v5)
       {
         internal = style->super._internal;
@@ -12505,30 +12505,30 @@ LABEL_15:
   }
 }
 
-- (void)_performResponderOperation:(SEL)a3 with:(id)a4
+- (void)_performResponderOperation:(SEL)operation with:(id)with
 {
   if ([WebView(WebViewEditingActions) _performResponderOperation:with:]::reentered == 1)
   {
-    v6 = [(WAKResponder *)self nextResponder];
+    nextResponder = [(WAKResponder *)self nextResponder];
 
-    [v6 tryToPerform:a3 with:a4];
+    [nextResponder tryToPerform:operation with:with];
   }
 
   else
   {
-    v7 = [(WebView *)self _responderForResponderOperations];
+    _responderForResponderOperations = [(WebView *)self _responderForResponderOperations];
     [WebView(WebViewEditingActions) _performResponderOperation:with:]::reentered = 1;
-    [v7 tryToPerform:a3 with:a4];
+    [_responderForResponderOperations tryToPerform:operation with:with];
     [WebView(WebViewEditingActions) _performResponderOperation:with:]::reentered = 0;
   }
 }
 
-- (void)insertDictationPhrases:(id)a3 metadata:(id)a4
+- (void)insertDictationPhrases:(id)phrases metadata:(id)metadata
 {
-  v5 = [(WebView *)self _selectedOrMainFrame];
-  if (v5)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (_selectedOrMainFrame)
   {
-    v6 = *(v5[1] + 8);
+    v6 = *(_selectedOrMainFrame[1] + 8);
     if (v6)
     {
       v7 = *(v6 + 224);
@@ -12551,7 +12551,7 @@ LABEL_15:
         }
       }
 
-      vectorForDictationPhrasesArray(a3, &v15);
+      vectorForDictationPhrasesArray(phrases, &v15);
       WebCore::Editor::insertDictationPhrases();
       v9 = v15;
       if (v17)
@@ -12607,13 +12607,13 @@ LABEL_15:
 
 - (id)typingAttributes
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
-  if (!v2)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (!_selectedOrMainFrame)
   {
     return 0;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_selectedOrMainFrame[1] + 8);
   if (!v3)
   {
     return 0;
@@ -12661,48 +12661,48 @@ LABEL_15:
 
 - (void)_insertNewlineInQuotedContent
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  [v2 _insertParagraphSeparatorInQuotedContent];
+  [_selectedOrMainFrame _insertParagraphSeparatorInQuotedContent];
 }
 
-- (void)_replaceSelectionWithNode:(id)a3 matchStyle:(BOOL)a4
+- (void)_replaceSelectionWithNode:(id)node matchStyle:(BOOL)style
 {
-  v4 = a4;
-  v6 = [(WebView *)self _selectedOrMainFrame];
+  styleCopy = style;
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
 
-  [v6 _replaceSelectionWithNode:a3 selectReplacement:1 smartReplace:0 matchStyle:v4];
+  [_selectedOrMainFrame _replaceSelectionWithNode:node selectReplacement:1 smartReplace:0 matchStyle:styleCopy];
 }
 
 - (BOOL)_selectionIsCaret
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
-  if (v2)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (_selectedOrMainFrame)
   {
-    v3 = *(v2[1] + 8);
+    v3 = *(_selectedOrMainFrame[1] + 8);
     if (v3)
     {
-      LOBYTE(v2) = *(*(*(v3 + 224) + 3208) + 153) == 1;
+      LOBYTE(_selectedOrMainFrame) = *(*(*(v3 + 224) + 3208) + 153) == 1;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(_selectedOrMainFrame) = 0;
     }
   }
 
-  return v2;
+  return _selectedOrMainFrame;
 }
 
 - (BOOL)_selectionIsAll
 {
-  v2 = [(WebView *)self _selectedOrMainFrame];
-  if (!v2)
+  _selectedOrMainFrame = [(WebView *)self _selectedOrMainFrame];
+  if (!_selectedOrMainFrame)
   {
     return 0;
   }
 
-  v3 = *(v2[1] + 8);
+  v3 = *(_selectedOrMainFrame[1] + 8);
   if (!v3)
   {
     return 0;
@@ -12713,26 +12713,26 @@ LABEL_15:
   return MEMORY[0x1EEE5D110](v4, 0);
 }
 
-- (void)_simplifyMarkup:(id)a3 endNode:(id)a4
+- (void)_simplifyMarkup:(id)markup endNode:(id)node
 {
-  v6 = [(WebView *)self mainFrame];
-  if (!v6)
+  mainFrame = [(WebView *)self mainFrame];
+  if (!mainFrame)
   {
     return;
   }
 
-  if (!a3)
+  if (!markup)
   {
     return;
   }
 
-  m_ptr = v6->_private->coreFrame.m_ptr;
+  m_ptr = mainFrame->_private->coreFrame.m_ptr;
   if (!m_ptr)
   {
     return;
   }
 
-  v8 = *(a3 + 2);
+  v8 = *(markup + 2);
   v9 = *(*(v8 + 48) + 8);
   v10 = *(m_ptr + 28);
   if (v9 != v10)
@@ -12753,7 +12753,7 @@ LABEL_15:
       v13 = v11;
       WebCore::Node::removedLastRef(v10);
       v11 = v13;
-      if (a4)
+      if (node)
       {
         goto LABEL_12;
       }
@@ -12766,21 +12766,21 @@ LABEL_14:
     *(v10 + 7) -= 2;
   }
 
-  if (!a4)
+  if (!node)
   {
     goto LABEL_14;
   }
 
 LABEL_12:
-  v12 = *(a4 + 2);
+  v12 = *(node + 2);
 LABEL_15:
 
   MEMORY[0x1EEE5AC18](v11, v8, v12);
 }
 
-+ (void)_setCacheModel:(unint64_t)a3
++ (void)_setCacheModel:(unint64_t)model
 {
-  if (byte_1ED6A6134 == 1 && qword_1ED6A6148 == a3)
+  if (byte_1ED6A6134 == 1 && qword_1ED6A6148 == model)
   {
     return;
   }
@@ -12807,14 +12807,14 @@ LABEL_15:
 
   v7 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
   v8 = [objc_msgSend(v7 objectForKey:{*MEMORY[0x1E696A3C0]), "unsignedLongLongValue"}];
-  v9 = [MEMORY[0x1E695AC38] sharedURLCache];
-  v10 = v9;
+  mEMORY[0x1E695AC38] = [MEMORY[0x1E695AC38] sharedURLCache];
+  v10 = mEMORY[0x1E695AC38];
   v11 = 0;
-  if (a3)
+  if (model)
   {
-    if (a3 != 1)
+    if (model != 1)
     {
-      if (a3 == 2)
+      if (model == 2)
       {
         if (qword_1ED6A6150 <= 0x3FF)
         {
@@ -12836,36 +12836,36 @@ LABEL_15:
               {
                 if (v8 >> 23 <= 0x7C)
                 {
-                  v16 = 52428800;
+                  diskCapacity = 52428800;
                 }
 
                 else
                 {
-                  v16 = 78643200;
+                  diskCapacity = 78643200;
                 }
               }
 
               else
               {
-                v16 = 104857600;
+                diskCapacity = 104857600;
               }
             }
 
             else
             {
-              v16 = 131072000;
+              diskCapacity = 131072000;
             }
           }
 
           else
           {
-            v16 = 157286400;
+            diskCapacity = 157286400;
           }
         }
 
         else
         {
-          v16 = 183500800;
+          diskCapacity = 183500800;
         }
 
         if (qword_1ED6A6150 <= 0x3FF)
@@ -12884,7 +12884,7 @@ LABEL_15:
       else
       {
         v17 = 0;
-        v16 = 0;
+        diskCapacity = 0;
         v13 = 0;
       }
 
@@ -12932,18 +12932,18 @@ LABEL_15:
 
     if (v8 >> 27 <= 0x7C)
     {
-      v16 = v14;
+      diskCapacity = v14;
     }
 
     else
     {
-      v16 = 52428800;
+      diskCapacity = 52428800;
     }
   }
 
   else
   {
-    v16 = [v9 diskCapacity];
+    diskCapacity = [mEMORY[0x1E695AC38] diskCapacity];
     v17 = 0;
     v12 = qword_1ED6A6150;
   }
@@ -12959,21 +12959,21 @@ LABEL_15:
   }
 
 LABEL_53:
-  v18 = [v10 diskCapacity];
-  if (v16 <= v18)
+  diskCapacity2 = [v10 diskCapacity];
+  if (diskCapacity <= diskCapacity2)
   {
-    v16 = v18;
+    diskCapacity = diskCapacity2;
   }
 
-  v19 = WebCore::MemoryCache::singleton(v18);
+  v19 = WebCore::MemoryCache::singleton(diskCapacity2);
   v20 = WebCore::MemoryCache::setCapacities(v19);
   *(v19 + 2) = v11;
   v21 = WebCore::BackForwardCache::singleton(v20);
   WebCore::BackForwardCache::setMaxSize(v21);
-  v22 = [v10 memoryCapacity];
-  if (v17 <= v22)
+  memoryCapacity = [v10 memoryCapacity];
+  if (v17 <= memoryCapacity)
   {
-    v17 = v22;
+    v17 = memoryCapacity;
   }
 
   if ([v10 _CFURLCache])
@@ -12986,9 +12986,9 @@ LABEL_53:
     [v10 setMemoryCapacity:v17];
   }
 
-  [v10 setDiskCapacity:v16];
+  [v10 setDiskCapacity:diskCapacity];
   [WebView _setTileCacheLayerPoolCapacity:v13];
-  qword_1ED6A6148 = a3;
+  qword_1ED6A6148 = model;
   byte_1ED6A6134 = 1;
   if (cf)
   {
@@ -12997,7 +12997,7 @@ LABEL_53:
   }
 }
 
-- (void)_addObject:(id)a3 forIdentifier:(unint64_t)a4
+- (void)_addObject:(id)object forIdentifier:(unint64_t)identifier
 {
   v6 = self->_private;
   m_table = v6->identifierMap.m_impl.m_table;
@@ -13007,7 +13007,7 @@ LABEL_53:
     v6 = self->_private;
   }
 
-  if (a4 == -1 || !a4)
+  if (identifier == -1 || !identifier)
   {
     __break(0xC471u);
     JUMPOUT(0x1C7A9EA60);
@@ -13022,7 +13022,7 @@ LABEL_53:
   }
 
   v11 = *(v10 - 8);
-  v12 = (~(a4 << 32) + a4) ^ ((~(a4 << 32) + a4) >> 22);
+  v12 = (~(identifier << 32) + identifier) ^ ((~(identifier << 32) + identifier) >> 22);
   v13 = 9 * ((v12 + ~(v12 << 13)) ^ ((v12 + ~(v12 << 13)) >> 8));
   v14 = (v13 ^ (v13 >> 15)) + ~((v13 ^ (v13 >> 15)) << 27);
   v15 = v11 & ((v14 >> 31) ^ v14);
@@ -13031,14 +13031,14 @@ LABEL_53:
   if (!*v16)
   {
 LABEL_16:
-    *v16 = a4;
-    if (a3)
+    *v16 = identifier;
+    if (object)
     {
-      v20 = a3;
+      objectCopy = object;
     }
 
     v21 = v16[1];
-    v16[1] = a3;
+    v16[1] = object;
     if (v21)
     {
     }
@@ -13096,7 +13096,7 @@ LABEL_34:
 
   v18 = 0;
   v19 = 1;
-  while (v17 != a4)
+  while (v17 != identifier)
   {
     if (v17 == -1)
     {
@@ -13121,21 +13121,21 @@ LABEL_34:
     }
   }
 
-  if (a3)
+  if (object)
   {
-    v28 = a3;
+    objectCopy2 = object;
   }
 
   v29 = v16[1];
-  v16[1] = a3;
+  v16[1] = object;
   if (v29)
   {
   }
 }
 
-- (id)_objectForIdentifier:(unint64_t)a3
+- (id)_objectForIdentifier:(unint64_t)identifier
 {
-  if (a3 == -1 || !a3)
+  if (identifier == -1 || !identifier)
   {
     __break(0xC471u);
     JUMPOUT(0x1C7A9EB78);
@@ -13148,12 +13148,12 @@ LABEL_34:
   }
 
   v4 = *(m_table - 2);
-  v5 = (~(a3 << 32) + a3) ^ ((~(a3 << 32) + a3) >> 22);
+  v5 = (~(identifier << 32) + identifier) ^ ((~(identifier << 32) + identifier) >> 22);
   v6 = 9 * ((v5 + ~(v5 << 13)) ^ ((v5 + ~(v5 << 13)) >> 8));
   v7 = (v6 ^ (v6 >> 15)) + ~((v6 ^ (v6 >> 15)) << 27);
   v8 = v4 & ((v7 >> 31) ^ v7);
   v9 = *&m_table[4 * v8];
-  if (v9 != a3)
+  if (v9 != identifier)
   {
     v10 = 1;
     while (v9)
@@ -13161,7 +13161,7 @@ LABEL_34:
       v8 = (v8 + v10) & v4;
       v9 = *&m_table[4 * v8];
       ++v10;
-      if (v9 == a3)
+      if (v9 == identifier)
       {
         goto LABEL_8;
       }
@@ -13180,25 +13180,25 @@ LABEL_8:
   return v11;
 }
 
-- (void)_removeObjectForIdentifier:(unint64_t)a3
+- (void)_removeObjectForIdentifier:(unint64_t)identifier
 {
   v3 = self->_private;
   m_table = v3->identifierMap.m_impl.m_table;
   if (m_table)
   {
-    if (a3 == -1 || !a3)
+    if (identifier == -1 || !identifier)
     {
       __break(0xC471u);
       JUMPOUT(0x1C7A9ED30);
     }
 
     v5 = *(m_table - 2);
-    v6 = (~(a3 << 32) + a3) ^ ((~(a3 << 32) + a3) >> 22);
+    v6 = (~(identifier << 32) + identifier) ^ ((~(identifier << 32) + identifier) >> 22);
     v7 = 9 * ((v6 + ~(v6 << 13)) ^ ((v6 + ~(v6 << 13)) >> 8));
     v8 = (v7 ^ (v7 >> 15)) + ~((v7 ^ (v7 >> 15)) << 27);
     v9 = v5 & ((v8 >> 31) ^ v8);
     v10 = *&m_table[4 * v9];
-    if (v10 == a3)
+    if (v10 == identifier)
     {
 LABEL_8:
       if (v9 != *(m_table - 1))
@@ -13210,9 +13210,9 @@ LABEL_8:
         v13[1] = 0;
         if (v14)
         {
-          v15 = self;
+          selfCopy = self;
 
-          self = v15;
+          self = selfCopy;
         }
 
         v16 = *p_identifierMap;
@@ -13221,9 +13221,9 @@ LABEL_8:
         v18 = *(v16 - 4);
         if (6 * v17.i32[1] < v18 && v18 >= 9)
         {
-          v20 = self;
+          selfCopy2 = self;
           WTF::HashTable<unsigned long,WTF::KeyValuePair<unsigned long,WTF::RetainPtr<objc_object *>>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<unsigned long,WTF::RetainPtr<objc_object *>>>,WTF::DefaultHash<unsigned long>,WTF::HashMap<unsigned long,WTF::RetainPtr<objc_object *>,WTF::DefaultHash<unsigned long>,WTF::HashTraits<unsigned long>,WTF::HashTraits<WTF::RetainPtr<objc_object *>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<unsigned long>,WTF::FastMalloc>::rehash(p_identifierMap, v18 >> 1);
-          self = v20;
+          self = selfCopy2;
         }
       }
     }
@@ -13236,7 +13236,7 @@ LABEL_8:
         v9 = (v9 + v11) & v5;
         v10 = *&m_table[4 * v9];
         ++v11;
-        if (v10 == a3)
+        if (v10 == identifier)
         {
           goto LABEL_8;
         }
@@ -13248,11 +13248,11 @@ LABEL_8:
   if (!v21 || !*(v21 - 3))
   {
 
-    v22 = self;
+    selfCopy3 = self;
   }
 }
 
-- (void)_retrieveKeyboardUIModeFromPreferences:(id)a3
+- (void)_retrieveKeyboardUIModeFromPreferences:(id)preferences
 {
   v4 = *MEMORY[0x1E695E8A8];
   CFPreferencesAppSynchronize(*MEMORY[0x1E695E8A8]);
@@ -13267,8 +13267,8 @@ LABEL_8:
   {
     v2->_keyboardUIModeAccessed = 1;
     [(WebView *)self _retrieveKeyboardUIModeFromPreferences:0];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__retrieveKeyboardUIModeFromPreferences_ name:WebPreferencesChangedInternalNotification[0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__retrieveKeyboardUIModeFromPreferences_ name:WebPreferencesChangedInternalNotification[0] object:0];
     v2 = self->_private;
   }
 
@@ -13315,10 +13315,10 @@ LABEL_8:
 
 - (void)_clearCredentials
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (_mainCoreFrame)
   {
-    v3 = WebCore::FrameLoader::networkingContext(v2[26]);
+    v3 = WebCore::FrameLoader::networkingContext(_mainCoreFrame[26]);
     if (v3)
     {
       v4 = (**v3)(v3) + 112;
@@ -13554,13 +13554,13 @@ LABEL_5:
 
 - (BOOL)_flushCompositingChanges
 {
-  v2 = [(WebView *)self _mainCoreFrame];
-  if (!v2)
+  _mainCoreFrame = [(WebView *)self _mainCoreFrame];
+  if (!_mainCoreFrame)
   {
     return 1;
   }
 
-  v3 = v2[27];
+  v3 = _mainCoreFrame[27];
   if (!v3)
   {
     return 1;
@@ -13590,9 +13590,9 @@ LABEL_5:
   }
 }
 
-- (void)_enterVideoFullscreenForVideoElement:(NakedPtr<WebCore:(unsigned int)a4 :HTMLVideoElement>)a3 mode:
+- (void)_enterVideoFullscreenForVideoElement:(NakedPtr<WebCore:(unsigned int)element :HTMLVideoElement>)a3 mode:
 {
-  v4 = *&a4;
+  v4 = *&element;
   m_ptr = self->_private->fullscreenController.m_ptr;
   if (m_ptr)
   {
@@ -13771,12 +13771,12 @@ LABEL_18:
   }
 }
 
-- (void)_getWebCoreDictationAlternatives:(void *)a3 fromTextAlternatives:(const void *)a4
+- (void)_getWebCoreDictationAlternatives:(void *)alternatives fromTextAlternatives:(const void *)textAlternatives
 {
-  v4 = *(a4 + 3);
+  v4 = *(textAlternatives + 3);
   if (v4)
   {
-    v6 = *a4 + 16;
+    v6 = *textAlternatives + 16;
     v7 = 24 * v4;
     do
     {
@@ -13785,25 +13785,25 @@ LABEL_18:
       {
         v15 = *(v6 - 16);
         v16 = v12;
-        v14 = *(a3 + 3);
-        if (v14 == *(a3 + 2))
+        v14 = *(alternatives + 3);
+        if (v14 == *(alternatives + 2))
         {
-          v8 = WTF::Vector<WebCore::DictationAlternative,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(a3, v14 + 1, &v15);
-          v9 = *a3 + 24 * *(a3 + 3);
+          v8 = WTF::Vector<WebCore::DictationAlternative,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::expandCapacity<(WTF::FailureAction)0>(alternatives, v14 + 1, &v15);
+          v9 = *alternatives + 24 * *(alternatives + 3);
           v10 = *v8;
           v11 = *(v8 + 2);
         }
 
         else
         {
-          v9 = *a3 + 24 * v14;
+          v9 = *alternatives + 24 * v14;
           v10 = v15;
           v11 = v16;
         }
 
         *(v9 + 16) = v11;
         *v9 = v10;
-        ++*(a3 + 3);
+        ++*(alternatives + 3);
       }
 
       v6 += 24;
@@ -13814,22 +13814,22 @@ LABEL_18:
   }
 }
 
-- (Vector<WTF::String,)_dictationAlternatives:()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)a3 :ObjectIdentifierMainThreadAccessTraits<uint64_t> :DictationContextType
+- (Vector<WTF::String,)_dictationAlternatives:()ObjectIdentifierGeneric<WebCore:()WTF:(unsigned long long>)f :ObjectIdentifierMainThreadAccessTraits<uint64_t> :DictationContextType
 {
   v4 = v3;
-  v8 = [WebCore::AlternativeTextUIController::alternativesForContext() alternativeStrings];
-  v7 = &v8;
-  v5 = WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v4, [v8 count], &v7, 0);
+  alternativeStrings = [WebCore::AlternativeTextUIController::alternativesForContext() alternativeStrings];
+  v7 = &alternativeStrings;
+  v5 = WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v4, [alternativeStrings count], &v7, 0);
   result.var1 = v6;
   result.var2 = HIDWORD(v6);
   result.var0 = v5;
   return result;
 }
 
-- (CGPoint)_convertPointFromRootView:(CGPoint)a3
+- (CGPoint)_convertPointFromRootView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = view.y;
+  x = view.x;
   [(WebView *)self bounds];
   v6 = v5 - y;
   v7 = x;
@@ -13838,12 +13838,12 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)_convertRectFromRootView:(CGRect)a3
+- (CGRect)_convertRectFromRootView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   [(WebView *)self bounds];
   v8 = v7 - y - height;
   v9 = x;
@@ -13879,17 +13879,17 @@ LABEL_18:
 
 - (void)_closeWindow
 {
-  v3 = [(WebView *)self _UIDelegateForwarder];
+  _UIDelegateForwarder = [(WebView *)self _UIDelegateForwarder];
 
-  [v3 webViewClose:self];
+  [_UIDelegateForwarder webViewClose:self];
 }
 
-- (void)_setDeviceOrientationProvider:(id)a3
+- (void)_setDeviceOrientationProvider:(id)provider
 {
   v3 = self->_private;
   if (v3)
   {
-    v3->m_deviceOrientationProvider = a3;
+    v3->m_deviceOrientationProvider = provider;
   }
 }
 
@@ -13907,12 +13907,12 @@ LABEL_18:
   }
 }
 
-- (void)_setGeolocationProvider:(id)a3
+- (void)_setGeolocationProvider:(id)provider
 {
   v3 = self->_private;
   if (v3)
   {
-    v3->_geolocationProvider = a3;
+    v3->_geolocationProvider = provider;
   }
 }
 
@@ -13930,7 +13930,7 @@ LABEL_18:
   }
 }
 
-- (void)_geolocationDidChangePosition:(id)a3
+- (void)_geolocationDidChangePosition:(id)position
 {
   v3 = self->_private;
   if (v3)
@@ -13945,12 +13945,12 @@ LABEL_18:
   }
 }
 
-- (void)_geolocationDidFailWithMessage:(id)a3
+- (void)_geolocationDidFailWithMessage:(id)message
 {
   v3 = self->_private;
   if (v3 && v3->page.m_ptr)
   {
-    MEMORY[0x1CCA63A40](&v14, a3);
+    MEMORY[0x1CCA63A40](&v14, message);
     v5 = WTF::fastMalloc(0x10);
     v7 = v5;
     *v5 = 0x100000001;
@@ -14018,14 +14018,14 @@ LABEL_18:
   }
 }
 
-- (void)_setNotificationProvider:(id)a3
+- (void)_setNotificationProvider:(id)provider
 {
   v3 = self->_private;
   if (v3)
   {
     if (!v3->_notificationProvider)
     {
-      v3->_notificationProvider = a3;
+      v3->_notificationProvider = provider;
       [(WebNotificationProvider *)self->_private->_notificationProvider registerWebView:self];
     }
   }
@@ -14045,28 +14045,28 @@ LABEL_18:
   }
 }
 
-- (void)_notificationDidShow:(id)a3
+- (void)_notificationDidShow:(id)show
 {
-  v5 = [(WebView *)self _notificationProvider];
+  _notificationProvider = [(WebView *)self _notificationProvider];
 
-  [v5 webView:self didShowNotification:a3];
+  [_notificationProvider webView:self didShowNotification:show];
 }
 
-- (void)_notificationDidClick:(id)a3
+- (void)_notificationDidClick:(id)click
 {
-  v5 = [(WebView *)self _notificationProvider];
+  _notificationProvider = [(WebView *)self _notificationProvider];
 
-  [v5 webView:self didClickNotification:a3];
+  [_notificationProvider webView:self didClickNotification:click];
 }
 
-- (void)_notificationsDidClose:(id)a3
+- (void)_notificationsDidClose:(id)close
 {
-  v5 = [(WebView *)self _notificationProvider];
+  _notificationProvider = [(WebView *)self _notificationProvider];
 
-  [v5 webView:self didCloseNotifications:a3];
+  [_notificationProvider webView:self didCloseNotifications:close];
 }
 
-- (id)_notificationIDForTesting:(OpaqueJSValue *)a3
+- (id)_notificationIDForTesting:(OpaqueJSValue *)testing
 {
   m_ptr = self->_private->page.m_ptr;
   if (!m_ptr)
@@ -14181,9 +14181,9 @@ LABEL_18:
   return result;
 }
 
-- (id)_editableElementsInRect:(CGRect)a3
+- (id)_editableElementsInRect:(CGRect)rect
 {
-  v19 = a3;
+  rectCopy = rect;
   if (!self)
   {
     return MEMORY[0x1E695E0F0];
@@ -14196,7 +14196,7 @@ LABEL_18:
     return MEMORY[0x1E695E0F0];
   }
 
-  WebCore::FloatRect::FloatRect(v15, &v19);
+  WebCore::FloatRect::FloatRect(v15, &rectCopy);
   WebCore::Page::editableElementsInRect(&v16, v3, v15);
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
   v6 = [v4 initWithCapacity:v18];
@@ -14277,10 +14277,10 @@ LABEL_18:
   }
 }
 
-- (void)_preferencesChangedGenerated:(id)a3
+- (void)_preferencesChangedGenerated:(id)generated
 {
   v4 = *(self->_private->page.m_ptr + 15);
-  if ([a3 _BOOLValueForKey:@"WebKitPictureInPictureAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitPictureInPictureAPIEnabled"])
   {
     v5 = 0x1000000;
   }
@@ -14291,9 +14291,9 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFEFFFFFFLL | v5;
-  [a3 _BOOLValueForKey:@"WebKitAcceleratedCompositingEnabled"];
+  [generated _BOOLValueForKey:@"WebKitAcceleratedCompositingEnabled"];
   WebCore::Settings::setAcceleratedCompositingEnabled(v4);
-  v6 = [a3 _BOOLValueForKey:@"WebKitAcceleratedCompositingForFixedPositionEnabled"];
+  v6 = [generated _BOOLValueForKey:@"WebKitAcceleratedCompositingForFixedPositionEnabled"];
   v7 = 2;
   if (!v6)
   {
@@ -14301,7 +14301,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFFFDLL | v7;
-  if ([a3 _BOOLValueForKey:@"WebKitWirelessPlaybackTargetAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWirelessPlaybackTargetAPIEnabled"])
   {
     v8 = 0x20000;
   }
@@ -14312,7 +14312,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFDFFFFLL | v8;
-  v9 = [a3 _BOOLValueForKey:@"WebKitAggressiveTileRetentionEnabled"];
+  v9 = [generated _BOOLValueForKey:@"WebKitAggressiveTileRetentionEnabled"];
   v10 = 32;
   if (!v9)
   {
@@ -14320,7 +14320,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFFDFLL | v10;
-  v11 = [a3 _BOOLValueForKey:@"WebKitAllowContentSecurityPolicySourceStarToMatchAnyProtocol"];
+  v11 = [generated _BOOLValueForKey:@"WebKitAllowContentSecurityPolicySourceStarToMatchAnyProtocol"];
   v12 = 128;
   if (!v11)
   {
@@ -14328,7 +14328,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFF7FLL | v12;
-  if ([a3 _BOOLValueForKey:@"WebKitAllowDisplayOfInsecureContent"])
+  if ([generated _BOOLValueForKey:@"WebKitAllowDisplayOfInsecureContent"])
   {
     v13 = 256;
   }
@@ -14339,7 +14339,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFEFFLL | v13;
-  v14 = [a3 _BOOLValueForKey:@"WebKitAllowFileAccessFromFileURLs"];
+  v14 = [generated _BOOLValueForKey:@"WebKitAllowFileAccessFromFileURLs"];
   v15 = 512;
   if (!v14)
   {
@@ -14347,7 +14347,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFDFFLL | v15;
-  if ([a3 _BOOLValueForKey:@"WebKitAllowMultiElementImplicitFormSubmissionPreferenceKey"])
+  if ([generated _BOOLValueForKey:@"WebKitAllowMultiElementImplicitFormSubmissionPreferenceKey"])
   {
     v16 = 2048;
   }
@@ -14358,7 +14358,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFF7FFLL | v16;
-  v17 = [a3 _BOOLValueForKey:@"WebKitAllowRunningOfInsecureContent"];
+  v17 = [generated _BOOLValueForKey:@"WebKitAllowRunningOfInsecureContent"];
   v18 = 0x2000;
   if (!v17)
   {
@@ -14366,7 +14366,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFDFFFLL | v18;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaPlaybackAllowsAirPlay"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaPlaybackAllowsAirPlay"])
   {
     v19 = 1024;
   }
@@ -14377,7 +14377,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFBFF | v19;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaPlaybackAllowsInline"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaPlaybackAllowsInline"])
   {
     v20 = 0x10000;
   }
@@ -14388,7 +14388,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFEFFFFLL | v20;
-  if ([a3 _BOOLValueForKey:@"WebKitAllowsInlineMediaPlaybackAfterFullscreen"])
+  if ([generated _BOOLValueForKey:@"WebKitAllowsInlineMediaPlaybackAfterFullscreen"])
   {
     v21 = 0x20000;
   }
@@ -14399,7 +14399,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFDFFFFLL | v21;
-  v22 = [a3 _BOOLValueForKey:@"WebKitAllowsPictureInPictureMediaPlayback"];
+  v22 = [generated _BOOLValueForKey:@"WebKitAllowsPictureInPictureMediaPlayback"];
   v23 = 0x40000;
   if (!v22)
   {
@@ -14407,7 +14407,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFBFFFFLL | v23;
-  if ([a3 _BOOLValueForKey:@"WebKitAlternateFullScreenControlDesignEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitAlternateFullScreenControlDesignEnabled"])
   {
     v24 = 0x200000;
   }
@@ -14418,7 +14418,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFDFFFFF | v24;
-  if ([a3 _BOOLValueForKey:@"WebKitWindowFocusRestricted"])
+  if ([generated _BOOLValueForKey:@"WebKitWindowFocusRestricted"])
   {
     v25 = 0x10000;
   }
@@ -14429,7 +14429,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFEFFFFLL | v25;
-  if ([a3 _BOOLValueForKey:@"WebKitAnimatedImageAsyncDecodingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitAnimatedImageAsyncDecodingEnabled"])
   {
     v26 = 0x100000;
   }
@@ -14440,7 +14440,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFEFFFFFLL | v26;
-  v27 = [a3 _BOOLValueForKey:@"WebKitAppleMailPaginationQuirkEnabled"];
+  v27 = [generated _BOOLValueForKey:@"WebKitAppleMailPaginationQuirkEnabled"];
   v28 = 0x800000;
   if (!v27)
   {
@@ -14448,7 +14448,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFF7FFFFFLL | v28;
-  if ([a3 _BOOLValueForKey:@"WebKitApplePayCapabilityDisclosureAllowed"])
+  if ([generated _BOOLValueForKey:@"WebKitApplePayCapabilityDisclosureAllowed"])
   {
     v29 = 0x100000;
   }
@@ -14459,7 +14459,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFEFFFFFLL | v29;
-  if ([a3 _BOOLValueForKey:@"WebKitApplePayEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitApplePayEnabled"])
   {
     v30 = 0x200000;
   }
@@ -14470,7 +14470,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFDFFFFFLL | v30;
-  v31 = [a3 _BOOLValueForKey:@"WebKitAsynchronousSpellCheckingEnabled"];
+  v31 = [generated _BOOLValueForKey:@"WebKitAsynchronousSpellCheckingEnabled"];
   v32 = 0x8000000;
   if (!v31)
   {
@@ -14478,7 +14478,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFF7FFFFFFLL | v32;
-  v33 = [a3 _BOOLValueForKey:@"WebKitAudioControlsScaleWithPageZoom"];
+  v33 = [generated _BOOLValueForKey:@"WebKitAudioControlsScaleWithPageZoom"];
   v34 = 0x10000000;
   if (!v33)
   {
@@ -14486,9 +14486,9 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFEFFFFFFFLL | v34;
-  [a3 _BOOLValueForKey:@"WebKitAuthorAndUserStylesEnabledPreferenceKey"];
+  [generated _BOOLValueForKey:@"WebKitAuthorAndUserStylesEnabledPreferenceKey"];
   WebCore::Settings::setAuthorAndUserStylesEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitWebSocketEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebSocketEnabled"])
   {
     v35 = 2048;
   }
@@ -14499,7 +14499,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFF7FFLL | v35;
-  v36 = [a3 _BOOLValueForKey:@"WebKitBackspaceKeyNavigationEnabled"];
+  v36 = [generated _BOOLValueForKey:@"WebKitBackspaceKeyNavigationEnabled"];
   v37 = 0x1000000000;
   if (!v36)
   {
@@ -14507,7 +14507,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFEFFFFFFFFFLL | v37;
-  if ([a3 _BOOLValueForKey:@"WebKitWebSecurityEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebSecurityEnabled"])
   {
     v38 = 256;
   }
@@ -14518,7 +14518,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFEFFLL | v38;
-  v39 = [a3 _BOOLValueForKey:@"WebKitCaretBrowsingEnabled"];
+  v39 = [generated _BOOLValueForKey:@"WebKitCaretBrowsingEnabled"];
   v40 = 0x800000000000;
   if (!v39)
   {
@@ -14526,9 +14526,9 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFF7FFFFFFFFFFFLL | v40;
-  [a3 _BOOLValueForKey:@"WebKitColorFilterEnabled"];
+  [generated _BOOLValueForKey:@"WebKitColorFilterEnabled"];
   WebCore::Settings::setColorFilterEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitContentChangeObserverEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitContentChangeObserverEnabled"])
   {
     v41 = 0x1000000;
   }
@@ -14539,7 +14539,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFEFFFFFFLL | v41;
-  v42 = [a3 _BOOLValueForKey:@"WebKitContentDispositionAttachmentSandboxEnabled"];
+  v42 = [generated _BOOLValueForKey:@"WebKitContentDispositionAttachmentSandboxEnabled"];
   v43 = 0x400000000000000;
   if (!v42)
   {
@@ -14547,7 +14547,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFBFFFFFFFFFFFFFFLL | v43;
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitCursiveFont"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitCursiveFont"]);
   WebCore::SettingsBase::setCursiveFontFamily();
   v45 = v730;
   v730 = 0;
@@ -14556,7 +14556,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v45, v44);
   }
 
-  v46 = [a3 _BOOLValueForKey:@"WebKitDOMPasteAllowedPreferenceKey"];
+  v46 = [generated _BOOLValueForKey:@"WebKitDOMPasteAllowedPreferenceKey"];
   v47 = 0x400000000000000;
   if (!v46)
   {
@@ -14564,12 +14564,12 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFBFFFFFFFFFFFFFFLL | v47;
-  *(v4 + 624) = [a3 _integerValueForKey:@"WebKitDataDetectorTypes"];
-  [a3 _floatValueForKey:@"WebKitDefaultFixedFontSize"];
+  *(v4 + 624) = [generated _integerValueForKey:@"WebKitDataDetectorTypes"];
+  [generated _floatValueForKey:@"WebKitDefaultFixedFontSize"];
   WebCore::Settings::setDefaultFixedFontSize(v4, v48);
-  [a3 _floatValueForKey:@"WebKitDefaultFontSize"];
+  [generated _floatValueForKey:@"WebKitDefaultFontSize"];
   WebCore::Settings::setDefaultFontSize(v4, v49);
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitDefaultTextEncodingName"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitDefaultTextEncodingName"]);
   v51 = v730;
   if (v730)
   {
@@ -14590,8 +14590,8 @@ LABEL_18:
     WTF::StringImpl::destroy(v53, v50);
   }
 
-  *(v4 + 360) = [a3 _integerValueForKey:@"WebKitDeviceHeight"];
-  v54 = [a3 _BOOLValueForKey:@"WebKitDeviceOrientationEventEnabled"];
+  *(v4 + 360) = [generated _integerValueForKey:@"WebKitDeviceHeight"];
+  v54 = [generated _BOOLValueForKey:@"WebKitDeviceOrientationEventEnabled"];
   v55 = 0x10000000;
   if (!v54)
   {
@@ -14599,7 +14599,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFEFFFFFFFLL | v55;
-  v56 = [a3 _BOOLValueForKey:@"WebKitDeviceOrientationPermissionAPIEnabled"];
+  v56 = [generated _BOOLValueForKey:@"WebKitDeviceOrientationPermissionAPIEnabled"];
   v57 = 0x20000000;
   if (!v56)
   {
@@ -14607,8 +14607,8 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFDFFFFFFFLL | v57;
-  *(v4 + 364) = [a3 _integerValueForKey:@"WebKitDeviceWidth"];
-  v58 = [a3 _BOOLValueForKey:@"WebKitDisabledAdaptationsMetaTagEnabled"];
+  *(v4 + 364) = [generated _integerValueForKey:@"WebKitDeviceWidth"];
+  v58 = [generated _BOOLValueForKey:@"WebKitDisabledAdaptationsMetaTagEnabled"];
   v59 = 0x100000000000000;
   if (!v58)
   {
@@ -14616,7 +14616,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFEFFFFFFFFFFFFFFLL | v59;
-  v60 = [a3 _BOOLValueForKey:@"WebKitDownloadAttributeEnabled"];
+  v60 = [generated _BOOLValueForKey:@"WebKitDownloadAttributeEnabled"];
   v61 = 0x2000000000000000;
   if (!v60)
   {
@@ -14624,8 +14624,8 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xDFFFFFFFFFFFFFFFLL | v61;
-  *(v4 + 369) = [a3 _integerValueForKey:@"WebKitEditableLinkBehavior"];
-  if ([a3 _BOOLValueForKey:@"WebKitEnableInheritURIQueryComponent"])
+  *(v4 + 369) = [generated _integerValueForKey:@"WebKitEditableLinkBehavior"];
+  if ([generated _BOOLValueForKey:@"WebKitEnableInheritURIQueryComponent"])
   {
     v62 = 2;
   }
@@ -14636,7 +14636,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFFDLL | v62;
-  v63 = [a3 _BOOLValueForKey:@"WebKitWebAudioEnabled"];
+  v63 = [generated _BOOLValueForKey:@"WebKitWebAudioEnabled"];
   v64 = 0x10000000000000;
   if (!v63)
   {
@@ -14644,7 +14644,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFEFFFFFFFFFFFFFLL | v64;
-  v65 = [a3 _BOOLValueForKey:@"WebKitEncryptedMediaAPIEnabled"];
+  v65 = [generated _BOOLValueForKey:@"WebKitEncryptedMediaAPIEnabled"];
   v66 = 0x100000000;
   if (!v65)
   {
@@ -14652,7 +14652,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFEFFFFFFFFLL | v66;
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitFTPDirectoryTemplatePath"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitFTPDirectoryTemplatePath"]);
   v68 = v730;
   if (v730)
   {
@@ -14673,7 +14673,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v70, v67);
   }
 
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitFantasyFont"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitFantasyFont"]);
   WebCore::SettingsBase::setFantasyFontFamily();
   v72 = v730;
   v730 = 0;
@@ -14682,7 +14682,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v72, v71);
   }
 
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitFixedFont"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitFixedFont"]);
   WebCore::SettingsBase::setFixedFontFamily();
   v74 = v730;
   v730 = 0;
@@ -14691,7 +14691,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v74, v73);
   }
 
-  v75 = [a3 _BOOLValueForKey:@"WebKitWantsBalancedSetDefersLoadingBehavior"];
+  v75 = [generated _BOOLValueForKey:@"WebKitWantsBalancedSetDefersLoadingBehavior"];
   v76 = 0x40000000000000;
   if (!v75)
   {
@@ -14699,7 +14699,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFBFFFFFFFFFFFFFLL | v76;
-  if ([a3 _BOOLValueForKey:@"WebKitForceFTPDirectoryListings"])
+  if ([generated _BOOLValueForKey:@"WebKitForceFTPDirectoryListings"])
   {
     v77 = 0x4000;
   }
@@ -14710,7 +14710,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFBFFFLL | v77;
-  if ([a3 _BOOLValueForKey:@"WebKitForceWebGLUsesLowPower"])
+  if ([generated _BOOLValueForKey:@"WebKitForceWebGLUsesLowPower"])
   {
     v78 = 0x10000;
   }
@@ -14721,10 +14721,10 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFEFFFFLL | v78;
-  [a3 _BOOLValueForKey:@"WebKitVisualViewportEnabled"];
+  [generated _BOOLValueForKey:@"WebKitVisualViewportEnabled"];
   WebCore::Settings::setVisualViewportEnabled(v4);
-  *(v4 + 620) = [a3 _integerValueForKey:@"WebKitVisibleDebugOverlayRegions"];
-  if ([a3 _BOOLValueForKey:@"WebKitVideoQualityIncludesDisplayCompositingEnabled"])
+  *(v4 + 620) = [generated _integerValueForKey:@"WebKitVisibleDebugOverlayRegions"];
+  if ([generated _BOOLValueForKey:@"WebKitVideoQualityIncludesDisplayCompositingEnabled"])
   {
     v79 = 0x100000000000;
   }
@@ -14735,7 +14735,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFEFFFFFFFFFFFLL | v79;
-  if ([a3 _BOOLValueForKey:@"WebKitVideoPresentationModeAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitVideoPresentationModeAPIEnabled"])
   {
     v80 = 0x1000000000000;
   }
@@ -14746,7 +14746,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFEFFFFFFFFFFFFLL | v80;
-  v81 = [a3 _BOOLValueForKey:@"WebKitVideoPresentationManagerEnabled"];
+  v81 = [generated _BOOLValueForKey:@"WebKitVideoPresentationManagerEnabled"];
   v82 = 0x800000000000;
   if (!v81)
   {
@@ -14754,7 +14754,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFF7FFFFFFFFFFFLL | v82;
-  if ([a3 _BOOLValueForKey:@"WebKitVideoFullscreenRequiresElementFullscreen"])
+  if ([generated _BOOLValueForKey:@"WebKitVideoFullscreenRequiresElementFullscreen"])
   {
     v83 = 0x4000000000;
   }
@@ -14765,9 +14765,9 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFBFFFFFFFFFLL | v83;
-  [a3 _BOOLValueForKey:@"WebKitHiddenPageCSSAnimationSuspensionEnabled"];
+  [generated _BOOLValueForKey:@"WebKitHiddenPageCSSAnimationSuspensionEnabled"];
   WebCore::Settings::setHiddenPageCSSAnimationSuspensionEnabled(v4);
-  v84 = [a3 _BOOLValueForKey:@"WebKitVP9DecoderEnabled"];
+  v84 = [generated _BOOLValueForKey:@"WebKitVP9DecoderEnabled"];
   v85 = 0x200000000000;
   if (!v84)
   {
@@ -14775,7 +14775,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFDFFFFFFFFFFFLL | v85;
-  if ([a3 _BOOLValueForKey:@"WebKitUsesEncodingDetector"])
+  if ([generated _BOOLValueForKey:@"WebKitUsesEncodingDetector"])
   {
     v86 = 0x100000000000;
   }
@@ -14786,7 +14786,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFEFFFFFFFFFFFLL | v86;
-  if ([a3 _BOOLValueForKey:@"WebKitIncompleteImageBorderEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIncompleteImageBorderEnabled"])
   {
     v87 = 0x4000000000;
   }
@@ -14797,7 +14797,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFBFFFFFFFFFLL | v87;
-  if ([a3 _BOOLValueForKey:@"WebKitIncrementalPDFLoadingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIncrementalPDFLoadingEnabled"])
   {
     v88 = 0x4000;
   }
@@ -14808,9 +14808,9 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFBFFF | v88;
-  [a3 _floatValueForKey:@"WebKitIncrementalRenderingSuppressionTimeoutInSeconds"];
+  [generated _floatValueForKey:@"WebKitIncrementalRenderingSuppressionTimeoutInSeconds"];
   *(v4 + 400) = v89;
-  v90 = [a3 _BOOLValueForKey:@"WebKitInlineMediaPlaybackRequiresPlaysInlineAttribute"];
+  v90 = [generated _BOOLValueForKey:@"WebKitInlineMediaPlaybackRequiresPlaysInlineAttribute"];
   v91 = 0x10000000000;
   if (!v90)
   {
@@ -14818,12 +14818,12 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFEFFFFFFFFFFLL | v91;
-  [a3 _BOOLValueForKey:@"WebKitUsesPageCachePreferenceKey"];
+  [generated _BOOLValueForKey:@"WebKitUsesPageCachePreferenceKey"];
   WebCore::Settings::setUsesBackForwardCache(v4);
-  *(v4 + 568) = [a3 _integerValueForKey:@"WebKitUserInterfaceDirectionPolicy"] != 0;
-  [a3 _BOOLValueForKey:@"WebKitUseSystemAppearance"];
+  *(v4 + 568) = [generated _integerValueForKey:@"WebKitUserInterfaceDirectionPolicy"] != 0;
+  [generated _BOOLValueForKey:@"WebKitUseSystemAppearance"];
   WebCore::Settings::setUseSystemAppearance(v4);
-  v92 = [a3 _BOOLValueForKey:@"WebKitUsePreHTML5ParserQuirks"];
+  v92 = [generated _BOOLValueForKey:@"WebKitUsePreHTML5ParserQuirks"];
   v93 = 0x8000000000;
   if (!v92)
   {
@@ -14831,8 +14831,8 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFF7FFFFFFFFFLL | v93;
-  *(v4 + 408) = [a3 _integerValueForKey:@"WebKitInspectorMaximumResourcesContentSize"];
-  if ([a3 _BOOLValueForKey:@"WebKitInspectorSupportsShowingCertificate"])
+  *(v4 + 408) = [generated _integerValueForKey:@"WebKitInspectorMaximumResourcesContentSize"];
+  if ([generated _BOOLValueForKey:@"WebKitInspectorSupportsShowingCertificate"])
   {
     v94 = 0x1000000000000;
   }
@@ -14843,11 +14843,11 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFEFFFFFFFFFFFFLL | v94;
-  [a3 _floatValueForKey:@"WebKitInteractionRegionInlinePadding"];
+  [generated _floatValueForKey:@"WebKitInteractionRegionInlinePadding"];
   *(v4 + 416) = v95;
-  [a3 _floatValueForKey:@"WebKitInteractionRegionMinimumCornerRadius"];
+  [generated _floatValueForKey:@"WebKitInteractionRegionMinimumCornerRadius"];
   *(v4 + 424) = v96;
-  if ([a3 _BOOLValueForKey:@"WebKitUseImageDocumentForSubframePDF"])
+  if ([generated _BOOLValueForKey:@"WebKitUseImageDocumentForSubframePDF"])
   {
     v97 = 0x4000000000;
   }
@@ -14858,7 +14858,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFBFFFFFFFFFLL | v97;
-  v98 = [a3 _BOOLValueForKey:@"WebKitInterruptAudioOnPageVisibilityChangeEnabled"];
+  v98 = [generated _BOOLValueForKey:@"WebKitInterruptAudioOnPageVisibilityChangeEnabled"];
   v99 = 16;
   if (!v98)
   {
@@ -14866,7 +14866,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFFEFLL | v99;
-  v100 = [a3 _BOOLValueForKey:@"WebKitInterruptVideoOnPageVisibilityChangeEnabled"];
+  v100 = [generated _BOOLValueForKey:@"WebKitInterruptVideoOnPageVisibilityChangeEnabled"];
   v101 = 32;
   if (!v100)
   {
@@ -14874,7 +14874,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFFDFLL | v101;
-  v102 = [a3 _BOOLValueForKey:@"InvisibleAutoplayNotPermitted"];
+  v102 = [generated _BOOLValueForKey:@"InvisibleAutoplayNotPermitted"];
   v103 = 0x4000000000000;
   if (!v102)
   {
@@ -14882,7 +14882,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFBFFFFFFFFFFFFLL | v103;
-  v104 = [a3 _BOOLValueForKey:@"WebKitTreatsAnyTextCSSLinkAsStylesheet"];
+  v104 = [generated _BOOLValueForKey:@"WebKitTreatsAnyTextCSSLinkAsStylesheet"];
   v105 = 0x8000000;
   if (!v104)
   {
@@ -14890,7 +14890,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFF7FFFFFFLL | v105;
-  v106 = [a3 _BOOLValueForKey:@"WebKitJavaScriptCanAccessClipboard"];
+  v106 = [generated _BOOLValueForKey:@"WebKitJavaScriptCanAccessClipboard"];
   v107 = 0x4000000000000000;
   if (!v106)
   {
@@ -14898,7 +14898,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xBFFFFFFFFFFFFFFFLL | v107;
-  v108 = [a3 _BOOLValueForKey:@"WebKitJavaScriptCanOpenWindowsAutomatically"];
+  v108 = [generated _BOOLValueForKey:@"WebKitJavaScriptCanOpenWindowsAutomatically"];
   v109 = 0x8000000000000000;
   if (!v108)
   {
@@ -14906,7 +14906,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = v109 & 0x8000000000000000 | *(v4 + 696) & 0x7FFFFFFFFFFFFFFFLL;
-  if ([a3 _BOOLValueForKey:@"WebKitJavaScriptMarkupEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitJavaScriptMarkupEnabled"])
   {
     v110 = 0x10000;
   }
@@ -14917,8 +14917,8 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFEFFFFLL | v110;
-  *(v4 + 432) = [a3 _integerValueForKey:@"WebKitJavaScriptRuntimeFlagsPreferenceKey"];
-  v111 = [a3 _BOOLValueForKey:@"WebKitLargeImageAsyncDecodingEnabled"];
+  *(v4 + 432) = [generated _integerValueForKey:@"WebKitJavaScriptRuntimeFlagsPreferenceKey"];
+  v111 = [generated _BOOLValueForKey:@"WebKitLargeImageAsyncDecodingEnabled"];
   v112 = 2;
   if (!v111)
   {
@@ -14926,7 +14926,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFFFDLL | v112;
-  v113 = [a3 _BOOLValueForKey:@"WebKitTextInteractionEnabled"];
+  v113 = [generated _BOOLValueForKey:@"WebKitTextInteractionEnabled"];
   v114 = 0x400000;
   if (!v113)
   {
@@ -14934,14 +14934,14 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFBFFFFFLL | v114;
-  *(v4 + 436) = [a3 _integerValueForKey:@"WebKitLayoutFallbackWidth"];
-  [a3 _floatValueForKey:@"WebKitLayoutViewportHeightExpansionFactor"];
+  *(v4 + 436) = [generated _integerValueForKey:@"WebKitLayoutFallbackWidth"];
+  [generated _floatValueForKey:@"WebKitLayoutViewportHeightExpansionFactor"];
   WebCore::Settings::setLayoutViewportHeightExpansionFactor(v4, v115);
-  [a3 _BOOLValueForKey:@"WebKitTextAutosizingEnabled"];
+  [generated _BOOLValueForKey:@"WebKitTextAutosizingEnabled"];
   WebCore::Settings::setTextAutosizingEnabled(v4);
-  [a3 _BOOLValueForKey:@"WebKitTextAreasAreResizable"];
+  [generated _BOOLValueForKey:@"WebKitTextAreasAreResizable"];
   WebCore::Settings::setTextAreasAreResizable(v4);
-  v116 = [a3 _BOOLValueForKey:@"WebKitTemporaryTileCohortRetentionEnabled"];
+  v116 = [generated _BOOLValueForKey:@"WebKitTemporaryTileCohortRetentionEnabled"];
   v117 = 0x100000;
   if (!v116)
   {
@@ -14949,7 +14949,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFEFFFFFLL | v117;
-  v118 = [a3 _BOOLValueForKey:@"WebKitTelephoneParsingEnabledPreferenceKey"];
+  v118 = [generated _BOOLValueForKey:@"WebKitTelephoneParsingEnabledPreferenceKey"];
   v119 = 0x80000;
   if (!v118)
   {
@@ -14957,7 +14957,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFF7FFFFLL | v119;
-  if ([a3 _BOOLValueForKey:@"WebKitSystemPreviewEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitSystemPreviewEnabled"])
   {
     v120 = 0x80000000;
   }
@@ -14968,7 +14968,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = v120 & 0x80000000 | *(v4 + 744) & 0x7FFFFFFF;
-  v121 = [a3 _BOOLValueForKey:@"WebKitLinkPreconnect"];
+  v121 = [generated _BOOLValueForKey:@"WebKitLinkPreconnect"];
   v122 = 512;
   if (!v121)
   {
@@ -14976,8 +14976,8 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFDFFLL | v122;
-  *(v4 + 557) = [a3 _integerValueForKey:@"WebKitSystemLayoutDirection"] != 0;
-  v123 = [a3 _BOOLValueForKey:@"WebKitLinkPreloadEnabled"];
+  *(v4 + 557) = [generated _integerValueForKey:@"WebKitSystemLayoutDirection"] != 0;
+  v123 = [generated _BOOLValueForKey:@"WebKitLinkPreloadEnabled"];
   v124 = 2048;
   if (!v123)
   {
@@ -14985,7 +14985,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFF7FFLL | v124;
-  if ([a3 _BOOLValueForKey:@"WebKitSuppressesIncrementalRendering"])
+  if ([generated _BOOLValueForKey:@"WebKitSuppressesIncrementalRendering"])
   {
     v125 = 0x10000;
   }
@@ -14996,7 +14996,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFEFFFFLL | v125;
-  v126 = [a3 _BOOLValueForKey:@"WebKitLoadDeferringEnabled"];
+  v126 = [generated _BOOLValueForKey:@"WebKitLoadDeferringEnabled"];
   v127 = 0x2000;
   if (!v126)
   {
@@ -15004,7 +15004,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFDFFFLL | v127;
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitStandardFont"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitStandardFont"]);
   WebCore::SettingsBase::setStandardFontFamily();
   v129 = v730;
   v730 = 0;
@@ -15013,9 +15013,9 @@ LABEL_18:
     WTF::StringImpl::destroy(v129, v128);
   }
 
-  [a3 _BOOLValueForKey:@"WebKitDisplayImagesKey"];
+  [generated _BOOLValueForKey:@"WebKitDisplayImagesKey"];
   WebCore::Settings::setLoadsImagesAutomatically(v4);
-  v130 = [a3 _BOOLValueForKey:@"WebKitStandalonePreferenceKey"];
+  v130 = [generated _BOOLValueForKey:@"WebKitStandalonePreferenceKey"];
   v131 = 512;
   if (!v130)
   {
@@ -15023,7 +15023,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFDFFLL | v131;
-  v132 = [a3 _BOOLValueForKey:@"WebKitSpatialNavigationEnabled"];
+  v132 = [generated _BOOLValueForKey:@"WebKitSpatialNavigationEnabled"];
   v133 = 32;
   if (!v132)
   {
@@ -15031,7 +15031,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFDFLL | v133;
-  v134 = [a3 _BOOLValueForKey:@"WebKitSourceBufferChangeTypeEnabled"];
+  v134 = [generated _BOOLValueForKey:@"WebKitSourceBufferChangeTypeEnabled"];
   v135 = 0x200000000000000;
   if (!v134)
   {
@@ -15039,7 +15039,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFDFFFFFFFFFFFFFFLL | v135;
-  v136 = [a3 _BOOLValueForKey:@"WebKitShrinksStandaloneImagesToFit"];
+  v136 = [generated _BOOLValueForKey:@"WebKitShrinksStandaloneImagesToFit"];
   v137 = 2;
   if (!v136)
   {
@@ -15047,8 +15047,8 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFFDLL | v137;
-  *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFFELL | [a3 _BOOLValueForKey:@"WebKitShowsURLsInToolTips"];
-  v138 = [a3 _BOOLValueForKey:@"WebKitShowsToolTipOverTruncatedText"];
+  *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFFELL | [generated _BOOLValueForKey:@"WebKitShowsURLsInToolTips"];
+  v138 = [generated _BOOLValueForKey:@"WebKitShowsToolTipOverTruncatedText"];
   v139 = 0x8000000000000000;
   if (!v138)
   {
@@ -15056,7 +15056,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = v139 & 0x8000000000000000 | *(v4 + 712) & 0x7FFFFFFFFFFFFFFFLL;
-  v140 = [a3 _BOOLValueForKey:@"WebKitShouldUseServiceWorkerShortTimeout"];
+  v140 = [generated _BOOLValueForKey:@"WebKitShouldUseServiceWorkerShortTimeout"];
   v141 = 0x100000000000000;
   if (!v140)
   {
@@ -15064,7 +15064,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFEFFFFFFFFFFFFFFLL | v141;
-  v142 = [a3 _BOOLValueForKey:@"WebKitShouldSuppressTextInputFromEditingDuringProvisionalNavigation"];
+  v142 = [generated _BOOLValueForKey:@"WebKitShouldSuppressTextInputFromEditingDuringProvisionalNavigation"];
   v143 = 0x40000000000000;
   if (!v142)
   {
@@ -15072,7 +15072,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFBFFFFFFFFFFFFFLL | v143;
-  v144 = [a3 _BOOLValueForKey:@"WebKitMathMLEnabled"];
+  v144 = [generated _BOOLValueForKey:@"WebKitMathMLEnabled"];
   v145 = 0x2000000000000;
   if (!v144)
   {
@@ -15080,9 +15080,9 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFDFFFFFFFFFFFFLL | v145;
-  [a3 _floatValueForKey:@"WebKitMaxParseDurationPreferenceKey"];
+  [generated _floatValueForKey:@"WebKitMaxParseDurationPreferenceKey"];
   *(v4 + 456) = v146;
-  v147 = [a3 _BOOLValueForKey:@"WebKitMediaCapabilitiesEnabled"];
+  v147 = [generated _BOOLValueForKey:@"WebKitMediaCapabilitiesEnabled"];
   v148 = 0x1000000;
   if (!v147)
   {
@@ -15090,7 +15090,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFEFFFFFFLL | v148;
-  v149 = [a3 _BOOLValueForKey:@"WebKitShouldRestrictBaseURLSchemes"];
+  v149 = [generated _BOOLValueForKey:@"WebKitShouldRestrictBaseURLSchemes"];
   v150 = 0x20000000000000;
   if (!v149)
   {
@@ -15098,7 +15098,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFDFFFFFFFFFFFFFLL | v150;
-  v151 = [a3 _BOOLValueForKey:@"WebKitShouldRespectImageOrientation"];
+  v151 = [generated _BOOLValueForKey:@"WebKitShouldRespectImageOrientation"];
   v152 = 0x10000000000000;
   if (!v151)
   {
@@ -15106,7 +15106,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFEFFFFFFFFFFFFFLL | v152;
-  v153 = [a3 _BOOLValueForKey:@"WebKitShouldPrintBackgroundsPreferenceKey"];
+  v153 = [generated _BOOLValueForKey:@"WebKitShouldPrintBackgroundsPreferenceKey"];
   v154 = 0x8000000000000;
   if (!v153)
   {
@@ -15114,7 +15114,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFF7FFFFFFFFFFFFLL | v154;
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitMediaContentTypesRequiringHardwareSupport"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitMediaContentTypesRequiringHardwareSupport"]);
   WebCore::SettingsBase::setMediaContentTypesRequiringHardwareSupport(v4, &v730);
   v156 = v730;
   v730 = 0;
@@ -15123,7 +15123,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v156, v155);
   }
 
-  v157 = [a3 _BOOLValueForKey:@"WebKitMediaControlsContextMenusEnabled"];
+  v157 = [generated _BOOLValueForKey:@"WebKitMediaControlsContextMenusEnabled"];
   v158 = 0x4000000000000;
   if (!v157)
   {
@@ -15131,7 +15131,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFBFFFFFFFFFFFFLL | v158;
-  v159 = [a3 _BOOLValueForKey:@"WebKitMediaControlsScaleWithPageZoom"];
+  v159 = [generated _BOOLValueForKey:@"WebKitMediaControlsScaleWithPageZoom"];
   v160 = 0x4000000;
   if (!v159)
   {
@@ -15139,7 +15139,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFBFFFFFFLL | v160;
-  v161 = [a3 _BOOLValueForKey:@"WebKitMediaDataLoadsAutomatically"];
+  v161 = [generated _BOOLValueForKey:@"WebKitMediaDataLoadsAutomatically"];
   v162 = 0x8000000;
   if (!v161)
   {
@@ -15147,7 +15147,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFF7FFFFFFLL | v162;
-  v163 = [a3 _BOOLValueForKey:@"WebKitShouldIgnoreMetaViewport"];
+  v163 = [generated _BOOLValueForKey:@"WebKitShouldIgnoreMetaViewport"];
   v164 = 0x2000000000000;
   if (!v163)
   {
@@ -15155,11 +15155,11 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFDFFFFFFFFFFFFLL | v164;
-  [a3 _BOOLValueForKey:@"WebKitShouldEnableTextAutosizingBoost"];
+  [generated _BOOLValueForKey:@"WebKitShouldEnableTextAutosizingBoost"];
   WebCore::Settings::setShouldEnableTextAutosizingBoost(v4);
-  [a3 _floatValueForKey:@"WebKitMediaPreferredFullscreenWidth"];
+  [generated _floatValueForKey:@"WebKitMediaPreferredFullscreenWidth"];
   *(v4 + 480) = v165;
-  v166 = [a3 _BOOLValueForKey:@"WebKitMediaPreloadingEnabled"];
+  v166 = [generated _BOOLValueForKey:@"WebKitMediaPreloadingEnabled"];
   v167 = 0x20000000;
   if (!v166)
   {
@@ -15167,7 +15167,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFDFFFFFFFLL | v167;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldDisplayTextDescriptions"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldDisplayTextDescriptions"])
   {
     v168 = 0x80000000000;
   }
@@ -15178,7 +15178,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFF7FFFFFFFFFFLL | v168;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldDisplaySubtitles"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldDisplaySubtitles"])
   {
     v169 = 0x40000000000;
   }
@@ -15189,7 +15189,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFBFFFFFFFFFFLL | v169;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldDisplayCaptions"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldDisplayCaptions"])
   {
     v170 = 0x20000000000;
   }
@@ -15200,7 +15200,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFDFFFFFFFFFFLL | v170;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldDecidePolicyBeforeLoadingQuickLookPreview"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldDecidePolicyBeforeLoadingQuickLookPreview"])
   {
     v171 = 0x80000000000;
   }
@@ -15211,7 +15211,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFF7FFFFFFFFFFLL | v171;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldConvertPositionStyleOnCopy"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldConvertPositionStyleOnCopy"])
   {
     v172 = 0x40000000000;
   }
@@ -15222,7 +15222,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFBFFFFFFFFFFLL | v172;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldConvertInvalidURLsToBlank"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldConvertInvalidURLsToBlank"])
   {
     v173 = 0x20000000000;
   }
@@ -15233,7 +15233,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFDFFFFFFFFFFLL | v173;
-  v174 = [a3 _BOOLValueForKey:@"WebKitMediaUserGestureInheritsFromDocument"];
+  v174 = [generated _BOOLValueForKey:@"WebKitMediaUserGestureInheritsFromDocument"];
   v175 = 0x100000000;
   if (!v174)
   {
@@ -15241,13 +15241,13 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFEFFFFFFFFLL | v175;
-  [a3 _floatValueForKey:@"WebKitMinimumFontSize"];
+  [generated _floatValueForKey:@"WebKitMinimumFontSize"];
   WebCore::Settings::setMinimumFontSize(v4, v176);
-  [a3 _floatValueForKey:@"WebKitMinimumLogicalFontSize"];
+  [generated _floatValueForKey:@"WebKitMinimumLogicalFontSize"];
   WebCore::Settings::setMinimumLogicalFontSize(v4, v177);
-  [a3 _floatValueForKey:@"WebKitMinimumZoomFontSizePreferenceKey"];
+  [generated _floatValueForKey:@"WebKitMinimumZoomFontSizePreferenceKey"];
   *(v4 + 656) = v178;
-  v179 = [a3 _BOOLValueForKey:@"WebKitMockScrollbarsControllerEnabled"];
+  v179 = [generated _BOOLValueForKey:@"WebKitMockScrollbarsControllerEnabled"];
   v180 = 0x200000000;
   if (!v179)
   {
@@ -15255,9 +15255,9 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFDFFFFFFFFLL | v180;
-  [a3 _BOOLValueForKey:@"WebKitShouldAllowUserInstalledFonts"];
+  [generated _BOOLValueForKey:@"WebKitShouldAllowUserInstalledFonts"];
   WebCore::Settings::setShouldAllowUserInstalledFonts(v4);
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitSerifFont"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitSerifFont"]);
   WebCore::SettingsBase::setSerifFontFamily();
   v182 = v730;
   v730 = 0;
@@ -15266,7 +15266,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v182, v181);
   }
 
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitSansSerifFont"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitSansSerifFont"]);
   WebCore::SettingsBase::setSansSerifFontFamily();
   v184 = v730;
   v730 = 0;
@@ -15275,7 +15275,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v184, v183);
   }
 
-  v185 = [a3 _BOOLValueForKey:@"WebKitNeedsAdobeFrameReloadingQuirk"];
+  v185 = [generated _BOOLValueForKey:@"WebKitNeedsAdobeFrameReloadingQuirk"];
   v186 = 0x4000000000;
   if (!v185)
   {
@@ -15283,7 +15283,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFBFFFFFFFFFLL | v186;
-  v187 = [a3 _BOOLValueForKey:@"WebKitNeedsFrameNameFallbackToIdQuirk"];
+  v187 = [generated _BOOLValueForKey:@"WebKitNeedsFrameNameFallbackToIdQuirk"];
   v188 = 0x10000000000;
   if (!v187)
   {
@@ -15291,7 +15291,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFEFFFFFFFFFFLL | v188;
-  v189 = [a3 _BOOLValueForKey:@"WebKitNeedsKeyboardEventDisambiguationQuirks"];
+  v189 = [generated _BOOLValueForKey:@"WebKitNeedsKeyboardEventDisambiguationQuirks"];
   v190 = 0x20000000000;
   if (!v189)
   {
@@ -15299,11 +15299,11 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFDFFFFFFFFFFLL | v190;
-  [a3 _floatValueForKey:@"WebKitSampledPageTopColorMinHeight"];
+  [generated _floatValueForKey:@"WebKitSampledPageTopColorMinHeight"];
   *(v4 + 544) = v191;
-  [a3 _floatValueForKey:@"WebKitSampledPageTopColorMaxDifference"];
+  [generated _floatValueForKey:@"WebKitSampledPageTopColorMaxDifference"];
   *(v4 + 536) = v192;
-  v193 = [a3 _BOOLValueForKey:@"WebKitRequiresUserGestureToLoadVideo"];
+  v193 = [generated _BOOLValueForKey:@"WebKitRequiresUserGestureToLoadVideo"];
   v194 = 128;
   if (!v193)
   {
@@ -15311,7 +15311,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFF7FLL | v194;
-  v195 = [a3 _BOOLValueForKey:@"WebKitVideoPlaybackRequiresUserGesture"];
+  v195 = [generated _BOOLValueForKey:@"WebKitVideoPlaybackRequiresUserGesture"];
   v196 = 64;
   if (!v195)
   {
@@ -15319,7 +15319,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFBFLL | v196;
-  v197 = [a3 _BOOLValueForKey:@"WebKitAudioPlaybackRequiresUserGesture"];
+  v197 = [generated _BOOLValueForKey:@"WebKitAudioPlaybackRequiresUserGesture"];
   v198 = 32;
   if (!v197)
   {
@@ -15327,7 +15327,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFDFLL | v198;
-  v199 = [a3 _BOOLValueForKey:@"WebKitRequiresPageVisibilityToPlayAudio"];
+  v199 = [generated _BOOLValueForKey:@"WebKitRequiresPageVisibilityToPlayAudio"];
   v200 = 16;
   if (!v199)
   {
@@ -15336,7 +15336,7 @@ LABEL_18:
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFEFLL | v200;
   *(v4 + 744) &= ~0x20000u;
-  if ([a3 _BOOLValueForKey:@"WebKitPDFPluginHUDEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitPDFPluginHUDEnabled"])
   {
     v201 = 0x40000;
   }
@@ -15347,7 +15347,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFBFFFF | v201;
-  v202 = [a3 _BOOLValueForKey:@"WebKitPDFPluginPageNumberIndicatorEnabled"];
+  v202 = [generated _BOOLValueForKey:@"WebKitPDFPluginPageNumberIndicatorEnabled"];
   v203 = 0x800000;
   if (!v202)
   {
@@ -15355,7 +15355,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFF7FFFFFLL | v203;
-  v204 = [a3 _BOOLValueForKey:@"WebKitPassiveTouchListenersAsDefaultOnDocument"];
+  v204 = [generated _BOOLValueForKey:@"WebKitPassiveTouchListenersAsDefaultOnDocument"];
   v205 = 0x2000000000000;
   if (!v204)
   {
@@ -15363,11 +15363,11 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFDFFFFFFFFFFFFLL | v205;
-  [a3 _BOOLValueForKey:@"WebKitPunchOutWhiteBackgroundsInDarkMode"];
+  [generated _BOOLValueForKey:@"WebKitPunchOutWhiteBackgroundsInDarkMode"];
   WebCore::Settings::setPunchOutWhiteBackgroundsInDarkMode(v4);
-  [a3 _floatValueForKey:@"WebKitPasswordEchoDurationPreferenceKey"];
+  [generated _floatValueForKey:@"WebKitPasswordEchoDurationPreferenceKey"];
   *(v4 + 520) = v206;
-  v207 = [a3 _BOOLValueForKey:@"WebKitEnablePasswordEchoPreferenceKey"];
+  v207 = [generated _BOOLValueForKey:@"WebKitEnablePasswordEchoPreferenceKey"];
   v208 = 0x8000000000000;
   if (!v207)
   {
@@ -15375,8 +15375,8 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFF7FFFFFFFFFFFFLL | v208;
-  *(v4 + 528) = [a3 _integerValueForKey:@"WebKitPitchCorrectionAlgorithm"];
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitPictographFont"]);
+  *(v4 + 528) = [generated _integerValueForKey:@"WebKitPitchCorrectionAlgorithm"];
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitPictographFont"]);
   WebCore::SettingsBase::setPictographFontFamily();
   v210 = v730;
   v730 = 0;
@@ -15385,7 +15385,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v210, v209);
   }
 
-  v211 = [a3 _BOOLValueForKey:@"WebKitTargetTextPseudoElementEnabled"];
+  v211 = [generated _BOOLValueForKey:@"WebKitTargetTextPseudoElementEnabled"];
   v212 = 0x40000;
   if (!v211)
   {
@@ -15393,7 +15393,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFBFFFFLL | v212;
-  v213 = [a3 _BOOLValueForKey:@"WebKitThumbAndTrackPseudoElementsEnabled"];
+  v213 = [generated _BOOLValueForKey:@"WebKitThumbAndTrackPseudoElementsEnabled"];
   v214 = 0x800000;
   if (!v213)
   {
@@ -15401,7 +15401,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFF7FFFFFLL | v214;
-  v215 = [a3 _BOOLValueForKey:@"WebKitLinkDNSPrefetchEnabled"];
+  v215 = [generated _BOOLValueForKey:@"WebKitLinkDNSPrefetchEnabled"];
   v216 = 128;
   if (!v215)
   {
@@ -15409,7 +15409,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFF7FLL | v216;
-  v217 = [a3 _BOOLValueForKey:@"WebKitSelectShowPickerEnabled"];
+  v217 = [generated _BOOLValueForKey:@"WebKitSelectShowPickerEnabled"];
   v218 = 0x40000000;
   if (!v217)
   {
@@ -15417,7 +15417,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFBFFFFFFFLL | v218;
-  v219 = [a3 _BOOLValueForKey:@"WebKitPageAtRuleMarginDescriptorsEnabled"];
+  v219 = [generated _BOOLValueForKey:@"WebKitPageAtRuleMarginDescriptorsEnabled"];
   v220 = 0x1000000000000;
   if (!v219)
   {
@@ -15425,9 +15425,9 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFEFFFFFFFFFFFFLL | v220;
-  [a3 _BOOLValueForKey:@"WebKitAcceleratedFiltersEnabled"];
+  [generated _BOOLValueForKey:@"WebKitAcceleratedFiltersEnabled"];
   WebCore::Settings::setAcceleratedFiltersEnabled(v4);
-  v221 = [a3 _BOOLValueForKey:@"WebKitAccessHandleEnabled"];
+  v221 = [generated _BOOLValueForKey:@"WebKitAccessHandleEnabled"];
   v222 = 16;
   if (!v221)
   {
@@ -15435,7 +15435,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFFEFLL | v222;
-  v223 = [a3 _BOOLValueForKey:@"WebKitDOMTestingAPIsEnabled"];
+  v223 = [generated _BOOLValueForKey:@"WebKitDOMTestingAPIsEnabled"];
   v224 = 0x800000000000000;
   if (!v223)
   {
@@ -15443,7 +15443,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xF7FFFFFFFFFFFFFFLL | v224;
-  v225 = [a3 _BOOLValueForKey:@"WebKitAllowMediaContentTypesRequiringHardwareSupportAsFallback"];
+  v225 = [generated _BOOLValueForKey:@"WebKitAllowMediaContentTypesRequiringHardwareSupportAsFallback"];
   v226 = 1024;
   if (!v225)
   {
@@ -15451,7 +15451,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFBFFLL | v226;
-  v227 = [a3 _BOOLValueForKey:@"WebKitAllowPrivacySensitiveOperationsInNonPersistentDataStores"];
+  v227 = [generated _BOOLValueForKey:@"WebKitAllowPrivacySensitiveOperationsInNonPersistentDataStores"];
   v228 = 4096;
   if (!v227)
   {
@@ -15459,7 +15459,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFEFFFLL | v228;
-  if ([a3 _BOOLValueForKey:@"WebKitAllowViewportShrinkToFitContent"])
+  if ([generated _BOOLValueForKey:@"WebKitAllowViewportShrinkToFitContent"])
   {
     v229 = 0x100000;
   }
@@ -15470,7 +15470,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFEFFFFF | v229;
-  v230 = [a3 _BOOLValueForKey:@"WebKitAllowWebGLInWorkers"];
+  v230 = [generated _BOOLValueForKey:@"WebKitAllowWebGLInWorkers"];
   v231 = 0x800000000000;
   if (!v230)
   {
@@ -15478,7 +15478,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFF7FFFFFFFFFFFLL | v231;
-  v232 = [a3 _BOOLValueForKey:@"WebKitAllowTopNavigationToDataURLs"];
+  v232 = [generated _BOOLValueForKey:@"WebKitAllowTopNavigationToDataURLs"];
   v233 = 0x4000;
   if (!v232)
   {
@@ -15486,7 +15486,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFBFFFLL | v233;
-  v234 = [a3 _BOOLValueForKey:@"WebKitAllowUniversalAccessFromFileURLs"];
+  v234 = [generated _BOOLValueForKey:@"WebKitAllowUniversalAccessFromFileURLs"];
   v235 = 0x8000;
   if (!v234)
   {
@@ -15494,7 +15494,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFF7FFFLL | v235;
-  if ([a3 _BOOLValueForKey:@"WebKitAlwaysAllowLocalWebarchive"])
+  if ([generated _BOOLValueForKey:@"WebKitAlwaysAllowLocalWebarchive"])
   {
     v236 = 0x1000000000000;
   }
@@ -15505,7 +15505,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFEFFFFFFFFFFFFLL | v236;
-  v237 = [a3 _BOOLValueForKey:@"WebKitAppBadgeEnabled"];
+  v237 = [generated _BOOLValueForKey:@"WebKitAppBadgeEnabled"];
   v238 = 0x400000;
   if (!v237)
   {
@@ -15513,7 +15513,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFBFFFFFLL | v238;
-  if ([a3 _BOOLValueForKey:@"WebKitAppHighlightsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitAppHighlightsEnabled"])
   {
     v239 = 0x400000;
   }
@@ -15526,7 +15526,7 @@ LABEL_18:
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFBFFFFFLL | v239;
   WebCore::Settings::setAsyncFrameScrollingEnabled(v4);
   WebCore::Settings::setAsyncOverflowScrollingEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitUseAsyncUIKitInteractions"])
+  if ([generated _BOOLValueForKey:@"WebKitUseAsyncUIKitInteractions"])
   {
     v240 = 0x800000;
   }
@@ -15537,7 +15537,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFF7FFFFF | v240;
-  v241 = [a3 _BOOLValueForKey:@"WebKitAsyncClipboardAPIEnabled"];
+  v241 = [generated _BOOLValueForKey:@"WebKitAsyncClipboardAPIEnabled"];
   v242 = 0x1000000;
   if (!v241)
   {
@@ -15545,7 +15545,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFEFFFFFFLL | v242;
-  if ([a3 _BOOLValueForKey:@"WebKitAttachmentWideLayoutEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitAttachmentWideLayoutEnabled"])
   {
     v243 = 0x800000;
   }
@@ -15556,7 +15556,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFF7FFFFFLL | v243;
-  v244 = [a3 _BOOLValueForKey:@"WebKitExtendedAudioDescriptionsEnabled"];
+  v244 = [generated _BOOLValueForKey:@"WebKitExtendedAudioDescriptionsEnabled"];
   v245 = 0x4000000000;
   if (!v244)
   {
@@ -15564,7 +15564,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFBFFFFFFFFFLL | v245;
-  v246 = [a3 _BOOLValueForKey:@"WebKitAudioDescriptionsEnabled"];
+  v246 = [generated _BOOLValueForKey:@"WebKitAudioDescriptionsEnabled"];
   v247 = 0x2000000000;
   if (!v246)
   {
@@ -15572,7 +15572,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFDFFFFFFFFFLL | v247;
-  if ([a3 _BOOLValueForKey:@"WebKitDOMAudioSessionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDOMAudioSessionEnabled"])
   {
     v248 = 0x40000000;
   }
@@ -15583,7 +15583,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFBFFFFFFFLL | v248;
-  v249 = [a3 _BOOLValueForKey:@"WebKitDOMAudioSessionFullEnabled"];
+  v249 = [generated _BOOLValueForKey:@"WebKitDOMAudioSessionFullEnabled"];
   v250 = 0x80000000;
   if (!v249)
   {
@@ -15591,7 +15591,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFF7FFFFFFFLL | v250;
-  if ([a3 _BOOLValueForKey:@"WebKitAutomaticallyAdjustsViewScaleUsingMinimumEffectiveDeviceWidth"])
+  if ([generated _BOOLValueForKey:@"WebKitAutomaticallyAdjustsViewScaleUsingMinimumEffectiveDeviceWidth"])
   {
     v251 = 0x40000000;
   }
@@ -15602,7 +15602,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFBFFFFFFFLL | v251;
-  if ([a3 _BOOLValueForKey:@"WebKitBeaconAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitBeaconAPIEnabled"])
   {
     v252 = 0x2000000000;
   }
@@ -15613,7 +15613,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFDFFFFFFFFFLL | v252;
-  if ([a3 _BOOLValueForKey:@"WebKitBidiContentAwarePasteEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitBidiContentAwarePasteEnabled"])
   {
     v253 = 0x4000000000;
   }
@@ -15624,7 +15624,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFBFFFFFFFFFLL | v253;
-  v254 = [a3 _BOOLValueForKey:@"WebKitBroadcastChannelEnabled"];
+  v254 = [generated _BOOLValueForKey:@"WebKitBroadcastChannelEnabled"];
   v255 = 0x10000000000;
   if (!v254)
   {
@@ -15632,7 +15632,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFEFFFFFFFFFFLL | v255;
-  v256 = [a3 _BOOLValueForKey:@"WebKitCSS3DTransformBackfaceVisibilityInteroperabilityEnabled"];
+  v256 = [generated _BOOLValueForKey:@"WebKitCSS3DTransformBackfaceVisibilityInteroperabilityEnabled"];
   v257 = 64;
   if (!v256)
   {
@@ -15640,7 +15640,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFFBFLL | v257;
-  v258 = [a3 _BOOLValueForKey:@"WebKitCSSCounterStyleAtRuleImageSymbolsEnabled"];
+  v258 = [generated _BOOLValueForKey:@"WebKitCSSCounterStyleAtRuleImageSymbolsEnabled"];
   v259 = 0x10000;
   if (!v258)
   {
@@ -15648,7 +15648,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFEFFFFLL | v259;
-  v260 = [a3 _BOOLValueForKey:@"WebKitAccentColorEnabled"];
+  v260 = [generated _BOOLValueForKey:@"WebKitAccentColorEnabled"];
   v261 = 8;
   if (!v260)
   {
@@ -15656,7 +15656,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFFF7 | v261;
-  if ([a3 _BOOLValueForKey:@"WebKitCSSAnchorPositioningEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCSSAnchorPositioningEnabled"])
   {
     v262 = 128;
   }
@@ -15667,7 +15667,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFF7FLL | v262;
-  v263 = [a3 _BOOLValueForKey:@"WebKitCSSAnchorPositioningPositionVisibilityEnabled"];
+  v263 = [generated _BOOLValueForKey:@"WebKitCSSAnchorPositioningPositionVisibilityEnabled"];
   v264 = 256;
   if (!v263)
   {
@@ -15675,7 +15675,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFEFFLL | v264;
-  v265 = [a3 _BOOLValueForKey:@"WebKitDevolvableWidgetsEnabled"];
+  v265 = [generated _BOOLValueForKey:@"WebKitDevolvableWidgetsEnabled"];
   v266 = 0x20000000000000;
   if (!v265)
   {
@@ -15683,7 +15683,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFDFFFFFFFFFFFFFLL | v266;
-  v267 = [a3 _BOOLValueForKey:@"WebKitCSSInputSecurityEnabled"];
+  v267 = [generated _BOOLValueForKey:@"WebKitCSSInputSecurityEnabled"];
   v268 = 0x200000;
   if (!v267)
   {
@@ -15691,7 +15691,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFDFFFFFLL | v268;
-  if ([a3 _BOOLValueForKey:@"WebKitMasonryEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMasonryEnabled"])
   {
     v269 = 0x800000;
   }
@@ -15702,7 +15702,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFF7FFFFFLL | v269;
-  if ([a3 _BOOLValueForKey:@"WebKitOverscrollBehaviorEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitOverscrollBehaviorEnabled"])
   {
     v270 = 0x800000000000;
   }
@@ -15713,7 +15713,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFF7FFFFFFFFFFFLL | v270;
-  if ([a3 _BOOLValueForKey:@"WebKitCSSPaintingAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCSSPaintingAPIEnabled"])
   {
     v271 = 0x1000000;
   }
@@ -15724,7 +15724,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFEFFFFFFLL | v271;
-  v272 = [a3 _BOOLValueForKey:@"WebKitCSSRhythmicSizingEnabled"];
+  v272 = [generated _BOOLValueForKey:@"WebKitCSSRhythmicSizingEnabled"];
   v273 = 0x8000000;
   if (!v272)
   {
@@ -15732,7 +15732,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFF7FFFFFFLL | v273;
-  if ([a3 _BOOLValueForKey:@"WebKitCSSScrollAnchoringEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCSSScrollAnchoringEnabled"])
   {
     v274 = 0x40000000;
   }
@@ -15743,7 +15743,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFBFFFFFFFLL | v274;
-  if ([a3 _BOOLValueForKey:@"WebKitSpringTimingFunctionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitSpringTimingFunctionEnabled"])
   {
     v275 = 256;
   }
@@ -15754,7 +15754,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFEFFLL | v275;
-  v276 = [a3 _BOOLValueForKey:@"WebKitCSSTreeCountingFunctionsEnabled"];
+  v276 = [generated _BOOLValueForKey:@"WebKitCSSTreeCountingFunctionsEnabled"];
   v277 = 0x40000000000;
   if (!v276)
   {
@@ -15762,7 +15762,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFBFFFFFFFFFFLL | v277;
-  v278 = [a3 _BOOLValueForKey:@"WebKitCSSTypedOMColorEnabled"];
+  v278 = [generated _BOOLValueForKey:@"WebKitCSSTypedOMColorEnabled"];
   v279 = 0x80000000000;
   if (!v278)
   {
@@ -15770,7 +15770,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFF7FFFFFFFFFFLL | v279;
-  v280 = [a3 _BOOLValueForKey:@"WebKitCSSURLModifiersEnabled"];
+  v280 = [generated _BOOLValueForKey:@"WebKitCSSURLModifiersEnabled"];
   v281 = 0x100000000000;
   if (!v280)
   {
@@ -15778,7 +15778,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFEFFFFFFFFFFFLL | v281;
-  v282 = [a3 _BOOLValueForKey:@"WebKitCSSUnprefixedBackdropFilterEnabled"];
+  v282 = [generated _BOOLValueForKey:@"WebKitCSSUnprefixedBackdropFilterEnabled"];
   v283 = 0x200000000000;
   if (!v282)
   {
@@ -15786,7 +15786,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFDFFFFFFFFFFFLL | v283;
-  v284 = [a3 _BOOLValueForKey:@"WebKitCSSAppearanceBaseEnabled"];
+  v284 = [generated _BOOLValueForKey:@"WebKitCSSAppearanceBaseEnabled"];
   v285 = 512;
   if (!v284)
   {
@@ -15794,7 +15794,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFDFFLL | v285;
-  v286 = [a3 _BOOLValueForKey:@"WebKitCSSAxisRelativePositionKeywordsEnabled"];
+  v286 = [generated _BOOLValueForKey:@"WebKitCSSAxisRelativePositionKeywordsEnabled"];
   v287 = 1024;
   if (!v286)
   {
@@ -15802,7 +15802,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFBFFLL | v287;
-  v288 = [a3 _BOOLValueForKey:@"WebKitCSSBackgroundClipBorderAreaEnabled"];
+  v288 = [generated _BOOLValueForKey:@"WebKitCSSBackgroundClipBorderAreaEnabled"];
   v289 = 2048;
   if (!v288)
   {
@@ -15810,7 +15810,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFF7FFLL | v289;
-  v290 = [a3 _BOOLValueForKey:@"WebKitCSSColorLayersEnabled"];
+  v290 = [generated _BOOLValueForKey:@"WebKitCSSColorLayersEnabled"];
   v291 = 4096;
   if (!v290)
   {
@@ -15818,7 +15818,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFEFFFLL | v291;
-  v292 = [a3 _BOOLValueForKey:@"WebKitCSSContrastColorEnabled"];
+  v292 = [generated _BOOLValueForKey:@"WebKitCSSContrastColorEnabled"];
   v293 = 0x4000;
   if (!v292)
   {
@@ -15826,7 +15826,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFBFFFLL | v293;
-  if ([a3 _BOOLValueForKey:@"WebKitCSSCornerShapeEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCSSCornerShapeEnabled"])
   {
     v294 = 0x8000;
   }
@@ -15837,7 +15837,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFF7FFFLL | v294;
-  v295 = [a3 _BOOLValueForKey:@"WebKitCSSDPropertyEnabled"];
+  v295 = [generated _BOOLValueForKey:@"WebKitCSSDPropertyEnabled"];
   v296 = 0x20000;
   if (!v295)
   {
@@ -15845,7 +15845,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFDFFFFLL | v296;
-  v297 = [a3 _BOOLValueForKey:@"WebKitCSSDynamicRangeLimitMixEnabled"];
+  v297 = [generated _BOOLValueForKey:@"WebKitCSSDynamicRangeLimitMixEnabled"];
   v298 = 0x40000;
   if (!v297)
   {
@@ -15853,7 +15853,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFBFFFFLL | v298;
-  v299 = [a3 _BOOLValueForKey:@"WebKitCSSConstrainedDynamicRangeLimitEnabled"];
+  v299 = [generated _BOOLValueForKey:@"WebKitCSSConstrainedDynamicRangeLimitEnabled"];
   v300 = 0x2000;
   if (!v299)
   {
@@ -15861,7 +15861,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFDFFFLL | v300;
-  v301 = [a3 _BOOLValueForKey:@"WebKitCSSFieldSizingEnabled"];
+  v301 = [generated _BOOLValueForKey:@"WebKitCSSFieldSizingEnabled"];
   v302 = 0x80000;
   if (!v301)
   {
@@ -15869,7 +15869,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFF7FFFFLL | v302;
-  v303 = [a3 _BOOLValueForKey:@"WebKitCSSFontVariantEmojiEnabled"];
+  v303 = [generated _BOOLValueForKey:@"WebKitCSSFontVariantEmojiEnabled"];
   v304 = 0x100000;
   if (!v303)
   {
@@ -15877,7 +15877,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFEFFFFFLL | v304;
-  v305 = [a3 _BOOLValueForKey:@"WebKitCSSLineClampEnabled"];
+  v305 = [generated _BOOLValueForKey:@"WebKitCSSLineClampEnabled"];
   v306 = 0x400000;
   if (!v305)
   {
@@ -15885,7 +15885,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFBFFFFFLL | v306;
-  if ([a3 _BOOLValueForKey:@"WebKitCSSLineFitEdgeEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCSSLineFitEdgeEnabled"])
   {
     v307 = 0x800000;
   }
@@ -15896,7 +15896,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFF7FFFFFLL | v307;
-  v308 = [a3 _BOOLValueForKey:@"WebKitCSSProgressFunctionEnabled"];
+  v308 = [generated _BOOLValueForKey:@"WebKitCSSProgressFunctionEnabled"];
   v309 = 0x2000000;
   if (!v308)
   {
@@ -15904,7 +15904,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFDFFFFFFLL | v309;
-  v310 = [a3 _BOOLValueForKey:@"WebKitCSSRandomFunctionEnabled"];
+  v310 = [generated _BOOLValueForKey:@"WebKitCSSRandomFunctionEnabled"];
   v311 = 0x4000000;
   if (!v310)
   {
@@ -15912,7 +15912,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFBFFFFFFLL | v311;
-  v312 = [a3 _BOOLValueForKey:@"WebKitCSSRubyAlignEnabled"];
+  v312 = [generated _BOOLValueForKey:@"WebKitCSSRubyAlignEnabled"];
   v313 = 0x10000000;
   if (!v312)
   {
@@ -15920,7 +15920,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFEFFFFFFFLL | v313;
-  v314 = [a3 _BOOLValueForKey:@"WebKitCSSRubyOverhangEnabled"];
+  v314 = [generated _BOOLValueForKey:@"WebKitCSSRubyOverhangEnabled"];
   v315 = 0x20000000;
   if (!v314)
   {
@@ -15928,7 +15928,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFDFFFFFFFLL | v315;
-  v316 = [a3 _BOOLValueForKey:@"WebKitCSSScrollbarColorEnabled"];
+  v316 = [generated _BOOLValueForKey:@"WebKitCSSScrollbarColorEnabled"];
   v317 = 0x80000000;
   if (!v316)
   {
@@ -15936,7 +15936,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFF7FFFFFFFLL | v317;
-  v318 = [a3 _BOOLValueForKey:@"WebKitCSSScrollbarGutterEnabled"];
+  v318 = [generated _BOOLValueForKey:@"WebKitCSSScrollbarGutterEnabled"];
   v319 = 0x100000000;
   if (!v318)
   {
@@ -15944,7 +15944,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFEFFFFFFFFLL | v319;
-  v320 = [a3 _BOOLValueForKey:@"WebKitCSSScrollbarWidthEnabled"];
+  v320 = [generated _BOOLValueForKey:@"WebKitCSSScrollbarWidthEnabled"];
   v321 = 0x200000000;
   if (!v320)
   {
@@ -15952,7 +15952,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFDFFFFFFFFLL | v321;
-  v322 = [a3 _BOOLValueForKey:@"WebKitCSSShapeFunctionEnabled"];
+  v322 = [generated _BOOLValueForKey:@"WebKitCSSShapeFunctionEnabled"];
   v323 = 0x400000000;
   if (!v322)
   {
@@ -15960,7 +15960,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFBFFFFFFFFLL | v323;
-  v324 = [a3 _BOOLValueForKey:@"WebKitCSSTextAutospaceEnabled"];
+  v324 = [generated _BOOLValueForKey:@"WebKitCSSTextAutospaceEnabled"];
   v325 = 0x800000000;
   if (!v324)
   {
@@ -15968,7 +15968,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFF7FFFFFFFFLL | v325;
-  v326 = [a3 _BOOLValueForKey:@"WebKitCSSTextBoxTrimEnabled"];
+  v326 = [generated _BOOLValueForKey:@"WebKitCSSTextBoxTrimEnabled"];
   v327 = 0x1000000000;
   if (!v326)
   {
@@ -15976,7 +15976,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFEFFFFFFFFFLL | v327;
-  if ([a3 _BOOLValueForKey:@"WebKitCSSTextGroupAlignEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCSSTextGroupAlignEnabled"])
   {
     v328 = 0x2000000000;
   }
@@ -15987,7 +15987,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFDFFFFFFFFFLL | v328;
-  v329 = [a3 _BOOLValueForKey:@"WebKitCSSTextJustifyEnabled"];
+  v329 = [generated _BOOLValueForKey:@"WebKitCSSTextJustifyEnabled"];
   v330 = 0x4000000000;
   if (!v329)
   {
@@ -15995,7 +15995,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFBFFFFFFFFFLL | v330;
-  v331 = [a3 _BOOLValueForKey:@"WebKitCSSTextSpacingTrimEnabled"];
+  v331 = [generated _BOOLValueForKey:@"WebKitCSSTextSpacingTrimEnabled"];
   v332 = 0x8000000000;
   if (!v331)
   {
@@ -16003,7 +16003,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFF7FFFFFFFFFLL | v332;
-  v333 = [a3 _BOOLValueForKey:@"WebKitCSSTextUnderlinePositionLeftRightEnabled"];
+  v333 = [generated _BOOLValueForKey:@"WebKitCSSTextUnderlinePositionLeftRightEnabled"];
   v334 = 0x10000000000;
   if (!v333)
   {
@@ -16011,7 +16011,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFEFFFFFFFFFFLL | v334;
-  v335 = [a3 _BOOLValueForKey:@"WebKitCSSTextWrapPrettyEnabled"];
+  v335 = [generated _BOOLValueForKey:@"WebKitCSSTextWrapPrettyEnabled"];
   v336 = 0x20000000000;
   if (!v335)
   {
@@ -16019,7 +16019,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFDFFFFFFFFFFLL | v336;
-  if ([a3 _BOOLValueForKey:@"WebKitCacheAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCacheAPIEnabled"])
   {
     v337 = 0x20000000000;
   }
@@ -16030,7 +16030,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFDFFFFFFFFFFLL | v337;
-  if ([a3 _BOOLValueForKey:@"WebKitCanvasColorSpaceEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCanvasColorSpaceEnabled"])
   {
     v338 = 0x40000000000;
   }
@@ -16041,9 +16041,9 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFBFFFFFFFFFFLL | v338;
-  [a3 _BOOLValueForKey:@"WebKitCanvasFiltersEnabled"];
+  [generated _BOOLValueForKey:@"WebKitCanvasFiltersEnabled"];
   WebCore::Settings::setCanvasFiltersEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitCanvasLayersEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCanvasLayersEnabled"])
   {
     v339 = 0x200000000000;
   }
@@ -16054,7 +16054,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFDFFFFFFFFFFFLL | v339;
-  if ([a3 _BOOLValueForKey:@"WebKitCanvasUsesAcceleratedDrawing"])
+  if ([generated _BOOLValueForKey:@"WebKitCanvasUsesAcceleratedDrawing"])
   {
     v340 = 0x2000000;
   }
@@ -16065,7 +16065,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFDFFFFFF | v340;
-  v341 = [a3 _BOOLValueForKey:@"WebKitCanvasPixelFormatEnabled"];
+  v341 = [generated _BOOLValueForKey:@"WebKitCanvasPixelFormatEnabled"];
   v342 = 0x400000000000;
   if (!v341)
   {
@@ -16073,7 +16073,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFDBFFFFFFFFFFFLL | v342;
-  v343 = [a3 _BOOLValueForKey:@"WebKitClearSiteDataHTTPHeaderEnabled"];
+  v343 = [generated _BOOLValueForKey:@"WebKitClearSiteDataHTTPHeaderEnabled"];
   v344 = 0x8000000000000;
   if (!v343)
   {
@@ -16081,7 +16081,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFF7FFFFFFFFFFFFLL | v344;
-  v345 = [a3 _BOOLValueForKey:@"WebKitClearSiteDataExecutionContextsSupportEnabled"];
+  v345 = [generated _BOOLValueForKey:@"WebKitClearSiteDataExecutionContextsSupportEnabled"];
   v346 = 0x4000000000000;
   if (!v345)
   {
@@ -16089,7 +16089,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFBFFFFFFFFFFFFLL | v346;
-  if ([a3 _BOOLValueForKey:@"WebKitCloseWatcherEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCloseWatcherEnabled"])
   {
     v347 = 0x20000000000000;
   }
@@ -16100,7 +16100,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFDFFFFFFFFFFFFFLL | v347;
-  if ([a3 _BOOLValueForKey:@"WebKitInputTypeColorEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitInputTypeColorEnabled"])
   {
     v348 = 0x20000000000;
   }
@@ -16111,11 +16111,11 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFDFFFFFFFFFFLL | v348;
-  [a3 _BOOLValueForKey:@"WebKitShowDebugBorders"];
+  [generated _BOOLValueForKey:@"WebKitShowDebugBorders"];
   WebCore::Settings::setShowDebugBorders(v4);
-  [a3 _BOOLValueForKey:@"WebKitShowRepaintCounter"];
+  [generated _BOOLValueForKey:@"WebKitShowRepaintCounter"];
   WebCore::Settings::setShowRepaintCounter(v4);
-  v349 = [a3 _BOOLValueForKey:@"WebKitCompressionStreamEnabled"];
+  v349 = [generated _BOOLValueForKey:@"WebKitCompressionStreamEnabled"];
   v350 = 0x100000000000000;
   if (!v349)
   {
@@ -16123,7 +16123,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFEFFFFFFFFFFFFFFLL | v350;
-  v351 = [a3 _BOOLValueForKey:@"WebKitContactPickerAPIEnabled"];
+  v351 = [generated _BOOLValueForKey:@"WebKitContactPickerAPIEnabled"];
   v352 = 0x200000000000000;
   if (!v351)
   {
@@ -16131,7 +16131,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFDFFFFFFFFFFFFFFLL | v352;
-  v353 = [a3 _BOOLValueForKey:@"WebKitContentInsetBackgroundFillEnabled"];
+  v353 = [generated _BOOLValueForKey:@"WebKitContentInsetBackgroundFillEnabled"];
   v354 = 0x800000000000000;
   if (!v353)
   {
@@ -16139,8 +16139,8 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xE7FFFFFFFFFFFFFFLL | v354;
-  *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFFFELL | [a3 _BOOLValueForKey:@"WebKitCookieStoreManagerEnabled"];
-  v355 = [a3 _BOOLValueForKey:@"WebKitCookieStoreAPIExtendedAttributesEnabled"];
+  *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFFFELL | [generated _BOOLValueForKey:@"WebKitCookieStoreManagerEnabled"];
+  v355 = [generated _BOOLValueForKey:@"WebKitCookieStoreAPIExtendedAttributesEnabled"];
   v356 = 0x8000000000000000;
   if (!v355)
   {
@@ -16148,7 +16148,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = v356 & 0x8000000000000000 | *(v4 + 680) & 0x7FFFFFFFFFFFFFFFLL;
-  v357 = [a3 _BOOLValueForKey:@"WebKitCookieStoreAPIEnabled"];
+  v357 = [generated _BOOLValueForKey:@"WebKitCookieStoreAPIEnabled"];
   v358 = 0x4000000000000000;
   if (!v357)
   {
@@ -16156,7 +16156,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xBFFFFFFFFFFFFFFFLL | v358;
-  v359 = [a3 _BOOLValueForKey:@"WebKitCrossDocumentViewTransitionsEnabled"];
+  v359 = [generated _BOOLValueForKey:@"WebKitCrossDocumentViewTransitionsEnabled"];
   v360 = 4;
   if (!v359)
   {
@@ -16164,7 +16164,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFFFBLL | v360;
-  if ([a3 _BOOLValueForKey:@"WebKitCrossOriginEmbedderPolicyEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCrossOriginEmbedderPolicyEnabled"])
   {
     v361 = 16;
   }
@@ -16175,7 +16175,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFFEFLL | v361;
-  v362 = [a3 _BOOLValueForKey:@"WebKitCrossOriginOpenerPolicyEnabled"];
+  v362 = [generated _BOOLValueForKey:@"WebKitCrossOriginOpenerPolicyEnabled"];
   v363 = 32;
   if (!v362)
   {
@@ -16183,7 +16183,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFFFFFFFFFFFFDFLL | v363;
-  if ([a3 _BOOLValueForKey:@"WebKitDOMPasteAccessRequestsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDOMPasteAccessRequestsEnabled"])
   {
     v364 = 0x200000000000000;
   }
@@ -16194,7 +16194,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFDFFFFFFFFFFFFFFLL | v364;
-  if ([a3 _BOOLValueForKey:@"WebKitMutationEventsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMutationEventsEnabled"])
   {
     v365 = 0x800000000;
   }
@@ -16205,7 +16205,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFF7FFFFFFFFLL | v365;
-  v366 = [a3 _BOOLValueForKey:@"WebKitDOMTimersThrottlingEnabledPreferenceKey"];
+  v366 = [generated _BOOLValueForKey:@"WebKitDOMTimersThrottlingEnabledPreferenceKey"];
   v367 = 0x1000000000000000;
   if (!v366)
   {
@@ -16213,7 +16213,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xEFFFFFFFFFFFFFFFLL | v367;
-  if ([a3 _BOOLValueForKey:@"WebKitDataTransferItemsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDataTransferItemsEnabled"])
   {
     v368 = 0x1000000000000;
   }
@@ -16224,7 +16224,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFEFFFFFFFFFFFFLL | v368;
-  if ([a3 _BOOLValueForKey:@"WebKitDataListElementEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDataListElementEnabled"])
   {
     v369 = 0x800000000000;
   }
@@ -16235,7 +16235,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFF7FFFFFFFFFFFLL | v369;
-  v370 = [a3 _BOOLValueForKey:@"WebKitInputTypeDateEnabled"];
+  v370 = [generated _BOOLValueForKey:@"WebKitInputTypeDateEnabled"];
   v371 = 0x80000000000;
   if (!v370)
   {
@@ -16243,7 +16243,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFF7FFFFFFFFFFLL | v371;
-  v372 = [a3 _BOOLValueForKey:@"WebKitDateTimeInputsEditableComponentsEnabled"];
+  v372 = [generated _BOOLValueForKey:@"WebKitDateTimeInputsEditableComponentsEnabled"];
   v373 = 0x2000000000000;
   if (!v372)
   {
@@ -16251,7 +16251,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFDFFFFFFFFFFFFLL | v373;
-  v374 = [a3 _BOOLValueForKey:@"WebKitDeclarativeWebPush"];
+  v374 = [generated _BOOLValueForKey:@"WebKitDeclarativeWebPush"];
   v375 = 0x8000000;
   if (!v374)
   {
@@ -16259,7 +16259,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFF7FFFFFFLL | v375;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldDeferAsynchronousScriptsUntilAfterDocumentLoadOrFirstPaint"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldDeferAsynchronousScriptsUntilAfterDocumentLoadOrFirstPaint"])
   {
     v376 = 0x100000000000;
   }
@@ -16270,7 +16270,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFEFFFFFFFFFFFLL | v376;
-  if ([a3 _BOOLValueForKey:@"WebKitDeprecationReportingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDeprecationReportingEnabled"])
   {
     v377 = 0x4000000000000;
   }
@@ -16281,7 +16281,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFFBFFFFFFFFFFFFLL | v377;
-  v378 = [a3 _BOOLValueForKey:@"WebKitDetachableMediaSourceEnabled"];
+  v378 = [generated _BOOLValueForKey:@"WebKitDetachableMediaSourceEnabled"];
   v379 = 0x80000000000000;
   if (!v378)
   {
@@ -16289,7 +16289,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFF7FFFFFFFFFFFFFLL | v379;
-  v380 = [a3 _BOOLValueForKey:@"WebKitUAVisualTransitionDetectionEnabled"];
+  v380 = [generated _BOOLValueForKey:@"WebKitUAVisualTransitionDetectionEnabled"];
   v381 = 0x20000000;
   if (!v380)
   {
@@ -16297,7 +16297,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFDFFFFFFFLL | v381;
-  v382 = [a3 _BOOLValueForKey:@"WebKitDiagnosticLoggingEnabled"];
+  v382 = [generated _BOOLValueForKey:@"WebKitDiagnosticLoggingEnabled"];
   v383 = 0x40000000000000;
   if (!v382)
   {
@@ -16305,7 +16305,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFBFFFFFFFFFFFFFLL | v383;
-  if ([a3 _BOOLValueForKey:@"WebKitDigitalCredentialsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDigitalCredentialsEnabled"])
   {
     v384 = 0x20000000000000;
   }
@@ -16316,7 +16316,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFDFFFFFFFFFFFFFLL | v384;
-  if ([a3 _BOOLValueForKey:@"WebKitDirectoryUploadEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDirectoryUploadEnabled"])
   {
     v385 = 0x80000000000000;
   }
@@ -16327,7 +16327,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFF7FFFFFFFFFFFFFLL | v385;
-  if ([a3 _BOOLValueForKey:@"WebKitIsThirdPartyCookieBlockingDisabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIsThirdPartyCookieBlockingDisabled"])
   {
     v386 = 0x1000000000000000;
   }
@@ -16338,7 +16338,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xEFFFFFFFFFFFFFFFLL | v386;
-  v387 = [a3 _BOOLValueForKey:@"WebKitIsFirstPartyWebsiteDataRemovalDisabled"];
+  v387 = [generated _BOOLValueForKey:@"WebKitIsFirstPartyWebsiteDataRemovalDisabled"];
   v388 = 0x8000000000000;
   if (!v387)
   {
@@ -16346,7 +16346,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFF7FFFFFFFFFFFFLL | v388;
-  if ([a3 _BOOLValueForKey:@"WebKitShouldDropNearSuspendedAssertionAfterDelay"])
+  if ([generated _BOOLValueForKey:@"WebKitShouldDropNearSuspendedAssertionAfterDelay"])
   {
     v389 = 0x800000000000;
   }
@@ -16357,7 +16357,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFF7FFFFFFFFFFFLL | v389;
-  if ([a3 _BOOLValueForKey:@"WebKitDynamicSiteInterventionsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitDynamicSiteInterventionsEnabled"])
   {
     v390 = 0x4000000000000000;
   }
@@ -16368,7 +16368,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xBFFFFFFFFFFFFFFFLL | v390;
-  v391 = [a3 _BOOLValueForKey:@"WebKitEmbedElementEnabled"];
+  v391 = [generated _BOOLValueForKey:@"WebKitEmbedElementEnabled"];
   v392 = 0x8000000000000000;
   if (!v391)
   {
@@ -16376,7 +16376,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = v392 & 0x8000000000000000 | *(v4 + 688) & 0x7FFFFFFFFFFFFFFFLL;
-  if ([a3 _BOOLValueForKey:@"WebKitCanvasFingerprintingQuirkEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitCanvasFingerprintingQuirkEnabled"])
   {
     v393 = 0x100000000000;
   }
@@ -16387,10 +16387,10 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFEFFFFFFFFFFFLL | v393;
-  *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFFELL | [a3 _BOOLValueForKey:@"WebKitEnableElementCurrentCSSZoom"];
-  [a3 _BOOLValueForKey:@"WebKitICECandidateFilteringEnabled"];
+  *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFFELL | [generated _BOOLValueForKey:@"WebKitEnableElementCurrentCSSZoom"];
+  [generated _BOOLValueForKey:@"WebKitICECandidateFilteringEnabled"];
   WebCore::Settings::setICECandidateFilteringEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitLegacyEncryptedMediaAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitLegacyEncryptedMediaAPIEnabled"])
   {
     v394 = 0x1000000000000;
   }
@@ -16401,9 +16401,9 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFEFFFFFFFFFFFFLL | v394;
-  [a3 _BOOLValueForKey:@"WebKitMockCaptureDevicesEnabled"];
+  [generated _BOOLValueForKey:@"WebKitMockCaptureDevicesEnabled"];
   WebCore::Settings::setMockCaptureDevicesEnabled(v4);
-  v395 = [a3 _BOOLValueForKey:@"WebKitAuxclickEventEnabled"];
+  v395 = [generated _BOOLValueForKey:@"WebKitAuxclickEventEnabled"];
   v396 = 0x100000000;
   if (!v395)
   {
@@ -16411,7 +16411,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFEFFFFFFFFLL | v396;
-  if ([a3 _BOOLValueForKey:@"WebKitBlobFileAccessEnforcementEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitBlobFileAccessEnforcementEnabled"])
   {
     v397 = 0x8000000000;
   }
@@ -16422,7 +16422,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFF7FFFFFFFFFLL | v397;
-  if ([a3 _BOOLValueForKey:@"WebKitEnterKeyHintEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitEnterKeyHintEnabled"])
   {
     v398 = 8;
   }
@@ -16433,7 +16433,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFF7 | v398;
-  if ([a3 _BOOLValueForKey:@"WebKitEventHandlerDrivenSmoothKeyboardScrollingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitEventHandlerDrivenSmoothKeyboardScrollingEnabled"])
   {
     v399 = 16;
   }
@@ -16444,7 +16444,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFEFLL | v399;
-  if ([a3 _BOOLValueForKey:@"WebKitFTPEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitFTPEnabled"])
   {
     v400 = 0x20000;
   }
@@ -16455,7 +16455,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFDFFFFLL | v400;
-  v401 = [a3 _BOOLValueForKey:@"WebKitFileSystemEnabled"];
+  v401 = [generated _BOOLValueForKey:@"WebKitFileSystemEnabled"];
   v402 = 64;
   if (!v401)
   {
@@ -16463,7 +16463,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFBFLL | v402;
-  v403 = [a3 _BOOLValueForKey:@"WebKitFileSystemWritableStreamEnabled"];
+  v403 = [generated _BOOLValueForKey:@"WebKitFileSystemWritableStreamEnabled"];
   v404 = 128;
   if (!v403)
   {
@@ -16471,7 +16471,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFF7FLL | v404;
-  v405 = [a3 _BOOLValueForKey:@"WebKitFileReaderAPIEnabled"];
+  v405 = [generated _BOOLValueForKey:@"WebKitFileReaderAPIEnabled"];
   v406 = 32;
   if (!v405)
   {
@@ -16479,7 +16479,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFDFLL | v406;
-  v407 = [a3 _BOOLValueForKey:@"WebKitFilterLinkDecorationByDefaultEnabled"];
+  v407 = [generated _BOOLValueForKey:@"WebKitFilterLinkDecorationByDefaultEnabled"];
   v408 = 256;
   if (!v407)
   {
@@ -16487,7 +16487,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFF7EFFLL | v408;
-  if ([a3 _BOOLValueForKey:@"WebKitFormControlRefreshEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitFormControlRefreshEnabled"])
   {
     v409 = 0x400000000;
   }
@@ -16498,7 +16498,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFBFFFFFFFFLL | v409;
-  v410 = [a3 _BOOLValueForKey:@"WebKitIFrameResourceMonitoringTestingSettingsEnabled"];
+  v410 = [generated _BOOLValueForKey:@"WebKitIFrameResourceMonitoringTestingSettingsEnabled"];
   v411 = 0x4000000;
   if (!v410)
   {
@@ -16506,7 +16506,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFBFFFFFFLL | v411;
-  v412 = [a3 _BOOLValueForKey:@"WebKitIFrameResourceMonitoringEnabled"];
+  v412 = [generated _BOOLValueForKey:@"WebKitIFrameResourceMonitoringEnabled"];
   v413 = 0x2000000;
   if (!v412)
   {
@@ -16514,7 +16514,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFDFFFFFFLL | v413;
-  v414 = [a3 _BOOLValueForKey:@"WebKitFullScreenKeyboardLock"];
+  v414 = [generated _BOOLValueForKey:@"WebKitFullScreenKeyboardLock"];
   v415 = 0x1000000000;
   if (!v414)
   {
@@ -16522,7 +16522,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFEFFFFFFFFFLL | v415;
-  v416 = [a3 _BOOLValueForKey:@"WebKitFullScreenEnabled"];
+  v416 = [generated _BOOLValueForKey:@"WebKitFullScreenEnabled"];
   v417 = 0x800000000;
   if (!v416)
   {
@@ -16530,7 +16530,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFF7FFFFFFFFLL | v417;
-  if ([a3 _BOOLValueForKey:@"WebKitBlockMediaLayerRehostingInWebContentProcess"])
+  if ([generated _BOOLValueForKey:@"WebKitBlockMediaLayerRehostingInWebContentProcess"])
   {
     v418 = 0x40000000000;
   }
@@ -16541,7 +16541,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFBFFFFFFFFFFLL | v418;
-  if ([a3 _BOOLValueForKey:@"WebKitManageCaptureStatusBarInGPUProcessEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitManageCaptureStatusBarInGPUProcessEnabled"])
   {
     v419 = 0x8000;
   }
@@ -16552,7 +16552,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFF7FFFLL | v419;
-  v420 = [a3 _BOOLValueForKey:@"WebKitUseGPUProcessForWebGLEnabled"];
+  v420 = [generated _BOOLValueForKey:@"WebKitUseGPUProcessForWebGLEnabled"];
   v421 = 0x80000000000;
   if (!v420)
   {
@@ -16560,7 +16560,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFF7FFFFFFFFFFLL | v421;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCPlatformCodecsInGPUProcessEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCPlatformCodecsInGPUProcessEnabled"])
   {
     v422 = 8;
   }
@@ -16571,7 +16571,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFFF7 | v422;
-  if ([a3 _BOOLValueForKey:@"WebKitGamepadTriggerRumbleEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGamepadTriggerRumbleEnabled"])
   {
     v423 = 0x8000000000;
   }
@@ -16582,7 +16582,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFF7FFFFFFFFFLL | v423;
-  if ([a3 _BOOLValueForKey:@"WebKitGamepadVibrationActuatorEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGamepadVibrationActuatorEnabled"])
   {
     v424 = 0x10000000000;
   }
@@ -16593,7 +16593,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFEFFFFFFFFFFLL | v424;
-  v425 = [a3 _BOOLValueForKey:@"WebKitGamepadsEnabled"];
+  v425 = [generated _BOOLValueForKey:@"WebKitGamepadsEnabled"];
   v426 = 0x20000000000;
   if (!v425)
   {
@@ -16601,7 +16601,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFDFFFFFFFFFFLL | v426;
-  if ([a3 _BOOLValueForKey:@"WebKitGenericCueAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGenericCueAPIEnabled"])
   {
     v427 = 0x8000000000;
   }
@@ -16612,7 +16612,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFF7FFFFFFFFFLL | v427;
-  if ([a3 _BOOLValueForKey:@"WebKitGeolocationAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGeolocationAPIEnabled"])
   {
     v428 = 0x80000;
   }
@@ -16623,9 +16623,9 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFF7FFFFLL | v428;
-  [a3 _BOOLValueForKey:@"WebKitGraphicsContextFiltersEnabled"];
+  [generated _BOOLValueForKey:@"WebKitGraphicsContextFiltersEnabled"];
   WebCore::Settings::setGraphicsContextFiltersEnabled(v4);
-  v429 = [a3 _BOOLValueForKey:@"WebKitAcceleratedDrawingEnabled"];
+  v429 = [generated _BOOLValueForKey:@"WebKitAcceleratedDrawingEnabled"];
   v430 = 4;
   if (!v429)
   {
@@ -16633,7 +16633,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFFFFFFBLL | v430;
-  if ([a3 _BOOLValueForKey:@"WebKitModelElementEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitModelElementEnabled"])
   {
     v431 = 0x10000;
   }
@@ -16644,7 +16644,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFEFFFFLL | v431;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaEnabled"])
   {
     v432 = 0x10000000000;
   }
@@ -16655,7 +16655,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFEFFFFFFFFFFLL | v432;
-  if ([a3 _BOOLValueForKey:@"WebKitInputTypeColorEnhancementsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitInputTypeColorEnhancementsEnabled"])
   {
     v433 = 0x40000000000;
   }
@@ -16666,7 +16666,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFBFFFFFFFFFFLL | v433;
-  v434 = [a3 _BOOLValueForKey:@"WebKitDetailsAutoExpandEnabled"];
+  v434 = [generated _BOOLValueForKey:@"WebKitDetailsAutoExpandEnabled"];
   v435 = 0x8000000000000;
   if (!v434)
   {
@@ -16674,7 +16674,7 @@ LABEL_18:
   }
 
   *(v4 + 688) = *(v4 + 688) & 0xFFF7FFFFFFFFFFFFLL | v435;
-  v436 = [a3 _BOOLValueForKey:@"WebKitCommandAttributesEnabled"];
+  v436 = [generated _BOOLValueForKey:@"WebKitCommandAttributesEnabled"];
   v437 = 0x80000000000000;
   if (!v436)
   {
@@ -16682,7 +16682,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFF7FFFFFFFFFFFFFLL | v437;
-  v438 = [a3 _BOOLValueForKey:@"WebKitHTMLLegacyAttributeValueSerializationEnabled"];
+  v438 = [generated _BOOLValueForKey:@"WebKitHTMLLegacyAttributeValueSerializationEnabled"];
   v439 = 0x10000000;
   if (!v438)
   {
@@ -16690,7 +16690,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFEFFFFFFFLL | v439;
-  v440 = [a3 _BOOLValueForKey:@"WebKitPopoverAttributeEnabled"];
+  v440 = [generated _BOOLValueForKey:@"WebKitPopoverAttributeEnabled"];
   v441 = 0x20000000000000;
   if (!v440)
   {
@@ -16698,7 +16698,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFDFFFFFFFFFFFFFLL | v441;
-  if ([a3 _BOOLValueForKey:@"WebKitSwitchControlEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitSwitchControlEnabled"])
   {
     v442 = 0x20000;
   }
@@ -16709,7 +16709,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFDFFFFLL | v442;
-  v443 = [a3 _BOOLValueForKey:@"WebKitHTTPSByDefaultEnabled"];
+  v443 = [generated _BOOLValueForKey:@"WebKitHTTPSByDefaultEnabled"];
   v444 = 0x40000000;
   if (!v443)
   {
@@ -16717,11 +16717,11 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFBFFFFFFFLL | v444;
-  [a3 _BOOLValueForKey:@"WebKitHiddenPageDOMTimerThrottlingAutoIncreases"];
+  [generated _BOOLValueForKey:@"WebKitHiddenPageDOMTimerThrottlingAutoIncreases"];
   WebCore::Settings::setHiddenPageDOMTimerThrottlingAutoIncreases(v4);
-  [a3 _BOOLValueForKey:@"WebKitHiddenPageDOMTimerThrottlingEnabled"];
+  [generated _BOOLValueForKey:@"WebKitHiddenPageDOMTimerThrottlingEnabled"];
   WebCore::Settings::setHiddenPageDOMTimerThrottlingEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitHostedBlurMaterialInMediaControlsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitHostedBlurMaterialInMediaControlsEnabled"])
   {
     v445 = 0x8000;
   }
@@ -16732,7 +16732,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFF7FFF | v445;
-  if ([a3 _BOOLValueForKey:@"WebKitIOSurfaceLosslessCompressionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIOSurfaceLosslessCompressionEnabled"])
   {
     v446 = 0x80000000;
   }
@@ -16743,7 +16743,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFF7FFFFFFFLL | v446;
-  v447 = [a3 _BOOLValueForKey:@"WebKitItpDebugModeEnabled"];
+  v447 = [generated _BOOLValueForKey:@"WebKitItpDebugModeEnabled"];
   v448 = 0x2000000000000000;
   if (!v447)
   {
@@ -16751,9 +16751,9 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xDFFFFFFFFFFFFFFFLL | v448;
-  [a3 _BOOLValueForKey:@"WebKitTextAutosizingUsesIdempotentMode"];
+  [generated _BOOLValueForKey:@"WebKitTextAutosizingUsesIdempotentMode"];
   WebCore::Settings::setTextAutosizingUsesIdempotentMode(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitIgnoreIframeEmbeddingProtectionsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIgnoreIframeEmbeddingProtectionsEnabled"])
   {
     v449 = 0x400000000;
   }
@@ -16764,7 +16764,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFBFFFFFFFFLL | v449;
-  v450 = [a3 _BOOLValueForKey:@"WebKitImageAnalysisDuringFindInPageEnabled"];
+  v450 = [generated _BOOLValueForKey:@"WebKitImageAnalysisDuringFindInPageEnabled"];
   v451 = 0x100000000000;
   if (!v450)
   {
@@ -16772,7 +16772,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFEFFFFFFFFFFFLL | v451;
-  if ([a3 _BOOLValueForKey:@"WebKitImageAnimationControlEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitImageAnimationControlEnabled"])
   {
     v452 = 0x80000;
   }
@@ -16783,7 +16783,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFF7FFFFLL | v452;
-  v453 = [a3 _BOOLValueForKey:@"WebKitInWindowFullscreenEnabled"];
+  v453 = [generated _BOOLValueForKey:@"WebKitInWindowFullscreenEnabled"];
   v454 = 0x2000000000;
   if (!v453)
   {
@@ -16791,7 +16791,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFDFFFFFFFFFLL | v454;
-  if ([a3 _BOOLValueForKey:@"WebKitIndexedDBAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIndexedDBAPIEnabled"])
   {
     v455 = 0x8000000000;
   }
@@ -16802,7 +16802,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFF7FFFFFFFFFLL | v455;
-  if ([a3 _BOOLValueForKey:@"WebKitJavaScriptEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitJavaScriptEnabled"])
   {
     v456 = 0x8000;
   }
@@ -16813,9 +16813,9 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFF7FFFLL | v456;
-  [a3 _BOOLValueForKey:@"WebKitLayerBasedSVGEngineEnabled"];
+  [generated _BOOLValueForKey:@"WebKitLayerBasedSVGEngineEnabled"];
   WebCore::Settings::setLayerBasedSVGEngineEnabled(v4);
-  v457 = [a3 _BOOLValueForKey:@"WebKitLazyIframeLoadingEnabled"];
+  v457 = [generated _BOOLValueForKey:@"WebKitLazyIframeLoadingEnabled"];
   v458 = 8;
   if (!v457)
   {
@@ -16823,7 +16823,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFFF7 | v458;
-  v459 = [a3 _BOOLValueForKey:@"WebKitLazyImageLoadingEnabled"];
+  v459 = [generated _BOOLValueForKey:@"WebKitLazyImageLoadingEnabled"];
   v460 = 16;
   if (!v459)
   {
@@ -16831,11 +16831,11 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFFEFLL | v460;
-  [a3 _BOOLValueForKey:@"WebKitLegacyOverflowScrollingTouchEnabled"];
+  [generated _BOOLValueForKey:@"WebKitLegacyOverflowScrollingTouchEnabled"];
   WebCore::Settings::setLegacyOverflowScrollingTouchEnabled(v4);
-  [a3 _BOOLValueForKey:@"WebKitLegacyLineLayoutVisualCoverageEnabled"];
+  [generated _BOOLValueForKey:@"WebKitLegacyLineLayoutVisualCoverageEnabled"];
   WebCore::Settings::setLegacyLineLayoutVisualCoverageEnabled(v4);
-  if ([a3 _BOOLValueForKey:@"WebKitShowModalDialogEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitShowModalDialogEnabled"])
   {
     v461 = 0x1000000000000000;
   }
@@ -16846,7 +16846,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xEFFFFFFFFFFFFFFFLL | v461;
-  v462 = [a3 _BOOLValueForKey:@"WebKitMediaCaptureRequiresSecureConnection"];
+  v462 = [generated _BOOLValueForKey:@"WebKitMediaCaptureRequiresSecureConnection"];
   v463 = 64;
   if (!v462)
   {
@@ -16854,7 +16854,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFFBFLL | v463;
-  v464 = [a3 _BOOLValueForKey:@"WebKitLimitedMatroskaSupportEnabled"];
+  v464 = [generated _BOOLValueForKey:@"WebKitLimitedMatroskaSupportEnabled"];
   v465 = 0x10000000000000;
   if (!v464)
   {
@@ -16862,7 +16862,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFEFFFFFFFFFFFFFLL | v465;
-  v466 = [a3 _BOOLValueForKey:@"WebKitLinkSanitizerEnabled"];
+  v466 = [generated _BOOLValueForKey:@"WebKitLinkSanitizerEnabled"];
   v467 = 4096;
   if (!v466)
   {
@@ -16870,7 +16870,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFEFFFLL | v467;
-  if ([a3 _BOOLValueForKey:@"WebKitLinkPreconnectEarlyHintsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitLinkPreconnectEarlyHintsEnabled"])
   {
     v468 = 256;
   }
@@ -16881,7 +16881,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFEFFLL | v468;
-  if ([a3 _BOOLValueForKey:@"WebKitLinkPrefetchEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitLinkPrefetchEnabled"])
   {
     v469 = 1024;
   }
@@ -16892,7 +16892,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFBFFLL | v469;
-  v470 = [a3 _BOOLValueForKey:@"WebKitLoadWebArchiveWithEphemeralStorageEnabled"];
+  v470 = [generated _BOOLValueForKey:@"WebKitLoadWebArchiveWithEphemeralStorageEnabled"];
   v471 = 0x2000000000000;
   if (!v470)
   {
@@ -16900,7 +16900,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFDFFFFFFFFFFFFLL | v471;
-  if ([a3 _BOOLValueForKey:@"WebKitLocalFileContentSniffingEnabledPreferenceKey"])
+  if ([generated _BOOLValueForKey:@"WebKitLocalFileContentSniffingEnabledPreferenceKey"])
   {
     v472 = 0x8000;
   }
@@ -16911,7 +16911,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFF7FFFLL | v472;
-  if ([a3 _BOOLValueForKey:@"WebKitLocalNetworkAccessEnabledPreferenceKey"])
+  if ([generated _BOOLValueForKey:@"WebKitLocalNetworkAccessEnabledPreferenceKey"])
   {
     v473 = 0x10000;
   }
@@ -16922,7 +16922,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFEFFFFLL | v473;
-  v474 = [a3 _BOOLValueForKey:@"WebKitLocalStorageEnabledPreferenceKey"];
+  v474 = [generated _BOOLValueForKey:@"WebKitLocalStorageEnabledPreferenceKey"];
   v475 = 393216;
   if (!v474)
   {
@@ -16930,7 +16930,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFF9FFFFLL | v475;
-  if ([a3 _BOOLValueForKey:@"WebKitLogsPageMessagesToSystemConsoleEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitLogsPageMessagesToSystemConsoleEnabled"])
   {
     v476 = 0x200000;
   }
@@ -16941,7 +16941,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFDFFFFFLL | v476;
-  if ([a3 _BOOLValueForKey:@"WebKitLoginStatusAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitLoginStatusAPIEnabled"])
   {
     v477 = 0x80000;
   }
@@ -16952,7 +16952,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFF7FFFFLL | v477;
-  if ([a3 _BOOLValueForKey:@"WebKitMainContentUserGestureOverrideEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMainContentUserGestureOverrideEnabled"])
   {
     v478 = 0x400000;
   }
@@ -16963,7 +16963,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFBFFFFFLL | v478;
-  v479 = [a3 _BOOLValueForKey:@"WebKitManagedMediaSourceEnabled"];
+  v479 = [generated _BOOLValueForKey:@"WebKitManagedMediaSourceEnabled"];
   v480 = 0x100000000000000;
   if (!v479)
   {
@@ -16971,7 +16971,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFEFFFFFFFFFFFFFFLL | v480;
-  v481 = [a3 _BOOLValueForKey:@"WebKitManagedMediaSourceNeedsAirPlay"];
+  v481 = [generated _BOOLValueForKey:@"WebKitManagedMediaSourceNeedsAirPlay"];
   v482 = 0x800000000000000;
   if (!v481)
   {
@@ -16979,9 +16979,9 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xF7FFFFFFFFFFFFFFLL | v482;
-  [a3 _BOOLValueForKey:@"WebKitCoreMathMLEnabled"];
+  [generated _BOOLValueForKey:@"WebKitCoreMathMLEnabled"];
   WebCore::Settings::setCoreMathMLEnabled(v4);
-  v483 = [a3 _BOOLValueForKey:@"WebKitMediaCapabilitiesExtensionsEnabled"];
+  v483 = [generated _BOOLValueForKey:@"WebKitMediaCapabilitiesExtensionsEnabled"];
   v484 = 0x2000000;
   if (!v483)
   {
@@ -16989,7 +16989,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFDFFFFFFLL | v484;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaCapabilityGrantsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaCapabilityGrantsEnabled"])
   {
     v485 = 0x200000000;
   }
@@ -17000,7 +17000,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFDFFFFFFFFLL | v485;
-  v486 = [a3 _BOOLValueForKey:@"WebKitMediaPlaybackEnabled"];
+  v486 = [generated _BOOLValueForKey:@"WebKitMediaPlaybackEnabled"];
   v487 = 0x10000000;
   if (!v486)
   {
@@ -17008,7 +17008,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFEFFFFFFFLL | v487;
-  v488 = [a3 _BOOLValueForKey:@"WebKitMediaSessionEnabled"];
+  v488 = [generated _BOOLValueForKey:@"WebKitMediaSessionEnabled"];
   v489 = 0x40000000000000;
   if (!v488)
   {
@@ -17016,7 +17016,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFBFFFFFFFFFFFFFLL | v489;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaSourceEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaSourceEnabled"])
   {
     v490 = 0x80000000;
   }
@@ -17027,7 +17027,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFF7FFFFFFFLL | v490;
-  v491 = [a3 _BOOLValueForKey:@"WebKitMediaDevicesEnabled"];
+  v491 = [generated _BOOLValueForKey:@"WebKitMediaDevicesEnabled"];
   v492 = 128;
   if (!v491)
   {
@@ -17035,7 +17035,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFF7FLL | v492;
-  v493 = [a3 _BOOLValueForKey:@"WebKitMediaRecorderEnabledWebM"];
+  v493 = [generated _BOOLValueForKey:@"WebKitMediaRecorderEnabledWebM"];
   v494 = 0x20000000000000;
   if (!v493)
   {
@@ -17043,7 +17043,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFDFFFFFFFFFFFFFLL | v494;
-  v495 = [a3 _BOOLValueForKey:@"WebKitMediaRecorderEnabled"];
+  v495 = [generated _BOOLValueForKey:@"WebKitMediaRecorderEnabled"];
   v496 = 0x8000000000000;
   if (!v495)
   {
@@ -17051,7 +17051,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFF7FFFFFFFFFFFFLL | v496;
-  v497 = [a3 _BOOLValueForKey:@"WebKitMediaSessionCaptureToggleAPIEnabled"];
+  v497 = [generated _BOOLValueForKey:@"WebKitMediaSessionCaptureToggleAPIEnabled"];
   v498 = 0x40000000;
   if (!v497)
   {
@@ -17060,7 +17060,7 @@ LABEL_18:
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFBFFFFFFFLL | v498;
   *(v4 + 728) &= ~0x2000000000000000uLL;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaSourcePrefersDecompressionSession"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaSourcePrefersDecompressionSession"])
   {
     v499 = 0x1000000000000000;
   }
@@ -17071,7 +17071,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xEFFFFFFFFFFFFFFFLL | v499;
-  if ([a3 _BOOLValueForKey:@"WebKitMediaStreamTrackProcessingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMediaStreamTrackProcessingEnabled"])
   {
     v500 = 256;
   }
@@ -17082,9 +17082,9 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFEFFLL | v500;
-  [a3 _BOOLValueForKey:@"WebKitShouldUseModernAVContentKeySession"];
+  [generated _BOOLValueForKey:@"WebKitShouldUseModernAVContentKeySession"];
   WebCore::Settings::setShouldUseModernAVContentKeySession(v4);
-  v501 = [a3 _BOOLValueForKey:@"WebKitMomentumScrollingAnimatorEnabled"];
+  v501 = [generated _BOOLValueForKey:@"WebKitMomentumScrollingAnimatorEnabled"];
   v502 = 0x400000000;
   if (!v501)
   {
@@ -17092,7 +17092,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFBFFFFFFFFLL | v502;
-  if ([a3 _BOOLValueForKey:@"WebKitInputTypeMonthEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitInputTypeMonthEnabled"])
   {
     v503 = 0x200000000000;
   }
@@ -17103,7 +17103,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFDFFFFFFFFFFFLL | v503;
-  if ([a3 _BOOLValueForKey:@"WebKitMouseEventsSimulationEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMouseEventsSimulationEnabled"])
   {
     v504 = 0x200000000;
   }
@@ -17114,7 +17114,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFDFFFFFFFFLL | v504;
-  if ([a3 _BOOLValueForKey:@"WebKitMuteCameraOnMicrophoneInterruptionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitMuteCameraOnMicrophoneInterruptionEnabled"])
   {
     v505 = 1024;
   }
@@ -17125,7 +17125,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFBFFLL | v505;
-  v506 = [a3 _BOOLValueForKey:@"WebKitNavigationAPIEnabled"];
+  v506 = [generated _BOOLValueForKey:@"WebKitNavigationAPIEnabled"];
   v507 = 0x1000000000;
   if (!v506)
   {
@@ -17133,7 +17133,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFEFFFFFFFFFLL | v507;
-  v508 = [a3 _BOOLValueForKey:@"WebKitNavigatorUserAgentDataJavaScriptAPIEnabled"];
+  v508 = [generated _BOOLValueForKey:@"WebKitNavigatorUserAgentDataJavaScriptAPIEnabled"];
   v509 = 0x2000000000;
   if (!v508)
   {
@@ -17141,7 +17141,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFDFFFFFFFFFLL | v509;
-  v510 = [a3 _BOOLValueForKey:@"WebKitUseSiteSpecificSpoofing"];
+  v510 = [generated _BOOLValueForKey:@"WebKitUseSiteSpecificSpoofing"];
   v511 = 0x40000000000;
   if (!v510)
   {
@@ -17149,7 +17149,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFBFFFFFFFFFFLL | v511;
-  v512 = [a3 _BOOLValueForKey:@"WebKitNeedsStorageAccessFromFileURLsQuirk"];
+  v512 = [generated _BOOLValueForKey:@"WebKitNeedsStorageAccessFromFileURLsQuirk"];
   v513 = 0x80000000000;
   if (!v512)
   {
@@ -17157,7 +17157,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFF7FFFFFFFFFFLL | v513;
-  if ([a3 _BOOLValueForKey:@"WebKitFlexFormattingContextIntegrationEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitFlexFormattingContextIntegrationEnabled"])
   {
     v514 = 2048;
   }
@@ -17168,7 +17168,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFF7FFLL | v514;
-  v515 = [a3 _BOOLValueForKey:@"WebKitNotificationsEnabled"];
+  v515 = [generated _BOOLValueForKey:@"WebKitNotificationsEnabled"];
   v516 = 0x20000;
   if (!v515)
   {
@@ -17176,7 +17176,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFDFFFFLL | v516;
-  v517 = [a3 _BOOLValueForKey:@"WebKitObservableEnabled"];
+  v517 = [generated _BOOLValueForKey:@"WebKitObservableEnabled"];
   v518 = 0x100000000000;
   if (!v517)
   {
@@ -17184,7 +17184,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFEFFFFFFFFFFFLL | v518;
-  if ([a3 _BOOLValueForKey:@"WebKitOffscreenCanvasInWorkersEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitOffscreenCanvasInWorkersEnabled"])
   {
     v519 = 0x100000;
   }
@@ -17195,7 +17195,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFEFFFFFLL | v519;
-  v520 = [a3 _BOOLValueForKey:@"WebKitOffscreenCanvasEnabled"];
+  v520 = [generated _BOOLValueForKey:@"WebKitOffscreenCanvasEnabled"];
   v521 = 0x80000;
   if (!v520)
   {
@@ -17203,7 +17203,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFF7FFFFLL | v521;
-  if ([a3 _BOOLValueForKey:@"WebKitEnableOpaqueLoadingForMedia"])
+  if ([generated _BOOLValueForKey:@"WebKitEnableOpaqueLoadingForMedia"])
   {
     v522 = 4;
   }
@@ -17214,7 +17214,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFFFFFBLL | v522;
-  if ([a3 _BOOLValueForKey:@"WebKitOpportunisticSweepingAndGarbageCollectionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitOpportunisticSweepingAndGarbageCollectionEnabled"])
   {
     v523 = 0x200000000000;
   }
@@ -17225,7 +17225,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFDFFFFFFFFFFFLL | v523;
-  v524 = [a3 _BOOLValueForKey:@"WebKitOverlappingBackingStoreProvidersEnabled"];
+  v524 = [generated _BOOLValueForKey:@"WebKitOverlappingBackingStoreProvidersEnabled"];
   v525 = 0x400000000000;
   if (!v524)
   {
@@ -17233,7 +17233,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFBFFFFFFFFFFFLL | v525;
-  v526 = [a3 _BOOLValueForKey:@"WebKitPermissionsAPIEnabled"];
+  v526 = [generated _BOOLValueForKey:@"WebKitPermissionsAPIEnabled"];
   v527 = 0x10000000000000;
   if (!v526)
   {
@@ -17241,7 +17241,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFEFFFFFFFFFFFFFLL | v527;
-  if ([a3 _BOOLValueForKey:@"WebKitGetCoalescedEventsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGetCoalescedEventsEnabled"])
   {
     v528 = 0x200000;
   }
@@ -17252,7 +17252,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFDFFFFFLL | v528;
-  if ([a3 _BOOLValueForKey:@"WebKitGetPredictedEventsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGetPredictedEventsEnabled"])
   {
     v529 = 0x400000;
   }
@@ -17263,7 +17263,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFBFFFFFLL | v529;
-  v530 = [a3 _BOOLValueForKey:@"WebKitPreferPageRenderingUpdatesNear60FPSEnabled"];
+  v530 = [generated _BOOLValueForKey:@"WebKitPreferPageRenderingUpdatesNear60FPSEnabled"];
   v531 = 0x80000000000000;
   if (!v530)
   {
@@ -17271,7 +17271,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFF7FFFFFFFFFFFFFLL | v531;
-  if ([a3 _BOOLValueForKey:@"WebKitVideoFullsceenPrefersMostVisibleHeuristic"])
+  if ([generated _BOOLValueForKey:@"WebKitVideoFullsceenPrefersMostVisibleHeuristic"])
   {
     v532 = 0x2000000000;
   }
@@ -17282,7 +17282,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFDFFFFFFFFFLL | v532;
-  v533 = [a3 _BOOLValueForKey:@"WebKitPrivateClickMeasurementDebugModeEnabled"];
+  v533 = [generated _BOOLValueForKey:@"WebKitPrivateClickMeasurementDebugModeEnabled"];
   v534 = 0x200000000000000;
   if (!v533)
   {
@@ -17290,7 +17290,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFDFFFFFFFFFFFFFFLL | v534;
-  v535 = [a3 _BOOLValueForKey:@"WebKitPrivateClickMeasurementEnabled"];
+  v535 = [generated _BOOLValueForKey:@"WebKitPrivateClickMeasurementEnabled"];
   v536 = 0x400000000000000;
   if (!v535)
   {
@@ -17298,7 +17298,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFBFFFFFFFFFFFFFFLL | v536;
-  v537 = [a3 _BOOLValueForKey:@"WebKitPrivateTokenUsageByThirdPartyEnabled"];
+  v537 = [generated _BOOLValueForKey:@"WebKitPrivateTokenUsageByThirdPartyEnabled"];
   v538 = 0x1000000000000000;
   if (!v537)
   {
@@ -17306,7 +17306,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xEFFFFFFFFFFFFFFFLL | v538;
-  v539 = [a3 _BOOLValueForKey:@"WebKitPushAPIEnabled"];
+  v539 = [generated _BOOLValueForKey:@"WebKitPushAPIEnabled"];
   v540 = 0x4000000000000000;
   if (!v539)
   {
@@ -17314,7 +17314,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xBFFFFFFFFFFFFFFFLL | v540;
-  v541 = [a3 _BOOLValueForKey:@"WebKitLegacyPluginQuirkForMailSignaturesEnabled"];
+  v541 = [generated _BOOLValueForKey:@"WebKitLegacyPluginQuirkForMailSignaturesEnabled"];
   v542 = 64;
   if (!v541)
   {
@@ -17322,7 +17322,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFFFFFBFLL | v542;
-  if ([a3 _BOOLValueForKey:@"WebKitGoogleAntiFlickerOptimizationQuirkEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitGoogleAntiFlickerOptimizationQuirkEnabled"])
   {
     v543 = 0x800000;
   }
@@ -17333,7 +17333,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFF7FFFFFLL | v543;
-  v544 = [a3 _BOOLValueForKey:@"WebKitRemoteMediaSessionManagerEnabled"];
+  v544 = [generated _BOOLValueForKey:@"WebKitRemoteMediaSessionManagerEnabled"];
   v545 = 0x8000000000000000;
   if (!v544)
   {
@@ -17341,7 +17341,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = v545 & 0x8000000000000000 | *(v4 + 704) & 0x7FFFFFFFFFFFFFFFLL;
-  if ([a3 _BOOLValueForKey:@"WebKitRemotePlaybackEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitRemotePlaybackEnabled"])
   {
     v546 = 2048;
   }
@@ -17352,9 +17352,9 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFF7FF | v546;
-  *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFFELL | [a3 _BOOLValueForKey:@"WebKitRemoteSnapshottingEnabled"];
+  *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFFELL | [generated _BOOLValueForKey:@"WebKitRemoteSnapshottingEnabled"];
   *(v4 + 728) &= ~0x800000000000uLL;
-  if ([a3 _BOOLValueForKey:@"WebKitRequestVideoFrameCallbackEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitRequestVideoFrameCallbackEnabled"])
   {
     v547 = 8;
   }
@@ -17365,7 +17365,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFF7 | v547;
-  if ([a3 _BOOLValueForKey:@"WebKitLoginStatusAPIRequiresWebAuthnEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitLoginStatusAPIRequiresWebAuthnEnabled"])
   {
     v548 = 0x100000;
   }
@@ -17376,7 +17376,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFFFFFFFFEFFFFFLL | v548;
-  if ([a3 _BOOLValueForKey:@"WebKitSpeakerSelectionRequiresUserGesture"])
+  if ([generated _BOOLValueForKey:@"WebKitSpeakerSelectionRequiresUserGesture"])
   {
     v549 = 0x2000;
   }
@@ -17387,7 +17387,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFDFFFLL | v549;
-  if ([a3 _BOOLValueForKey:@"WebKitFullscreenRequirementForScreenOrientationLockingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitFullscreenRequirementForScreenOrientationLockingEnabled"])
   {
     v550 = 0x40000;
   }
@@ -17398,7 +17398,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFFFFBFFFFLL | v550;
-  if ([a3 _BOOLValueForKey:@"WebKitGetUserMediaRequiresFocus"])
+  if ([generated _BOOLValueForKey:@"WebKitGetUserMediaRequiresFocus"])
   {
     v551 = 4;
   }
@@ -17409,7 +17409,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFFFFBLL | v551;
-  v552 = [a3 _BOOLValueForKey:@"WebKitResourceLoadSchedulingEnabled"];
+  v552 = [generated _BOOLValueForKey:@"WebKitResourceLoadSchedulingEnabled"];
   v553 = 256;
   if (!v552)
   {
@@ -17417,9 +17417,9 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFEFFLL | v553;
-  [a3 _BOOLValueForKey:@"WebKitResourceUsageOverlayVisible"];
+  [generated _BOOLValueForKey:@"WebKitResourceUsageOverlayVisible"];
   WebCore::Settings::setResourceUsageOverlayVisible(v4);
-  v554 = [a3 _BOOLValueForKey:@"WebKitRespondToThermalPressureAggressively"];
+  v554 = [generated _BOOLValueForKey:@"WebKitRespondToThermalPressureAggressively"];
   v555 = 512;
   if (!v554)
   {
@@ -17427,7 +17427,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFDFFLL | v555;
-  if ([a3 _BOOLValueForKey:@"WebKitSKAttributionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitSKAttributionEnabled"])
   {
     v556 = 1024;
   }
@@ -17438,7 +17438,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFBFFLL | v556;
-  if ([a3 _BOOLValueForKey:@"WebKitIsSameSiteStrictEnforcementEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIsSameSiteStrictEnforcementEnabled"])
   {
     v557 = 0x800000000000000;
   }
@@ -17449,7 +17449,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xF7FFFFFFFFFFFFFFLL | v557;
-  if ([a3 _BOOLValueForKey:@"WebKitScopedCustomElementRegistryEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScopedCustomElementRegistryEnabled"])
   {
     v558 = 2048;
   }
@@ -17460,7 +17460,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFF7FFLL | v558;
-  if ([a3 _BOOLValueForKey:@"WebKitScreenOrientationLockingAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScreenOrientationLockingAPIEnabled"])
   {
     v559 = 0x2000;
   }
@@ -17471,7 +17471,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFDFFFLL | v559;
-  if ([a3 _BOOLValueForKey:@"WebKitScreenOrientationAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScreenOrientationAPIEnabled"])
   {
     v560 = 4096;
   }
@@ -17482,7 +17482,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFEFFFLL | v560;
-  v561 = [a3 _BOOLValueForKey:@"WebKitScreenTimeEnabled"];
+  v561 = [generated _BOOLValueForKey:@"WebKitScreenTimeEnabled"];
   v562 = 0x4000000;
   if (!v561)
   {
@@ -17490,7 +17490,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFBFFFFFFLL | v562;
-  v563 = [a3 _BOOLValueForKey:@"WebKitScreenWakeLockAPIEnabled"];
+  v563 = [generated _BOOLValueForKey:@"WebKitScreenWakeLockAPIEnabled"];
   v564 = 0x4000;
   if (!v563)
   {
@@ -17498,7 +17498,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFBFFFLL | v564;
-  if ([a3 _BOOLValueForKey:@"WebKitScreenCaptureEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScreenCaptureEnabled"])
   {
     v565 = 4096;
   }
@@ -17511,7 +17511,7 @@ LABEL_18:
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFFFFFFEFFFLL | v565;
   *(v4 + 712) &= ~0x20000uLL;
   WebCore::Settings::setScrollingPerformanceTestingEnabled(v4);
-  v566 = [a3 _BOOLValueForKey:@"WebKitScrollToTextFragmentFeatureDetectionEnabled"];
+  v566 = [generated _BOOLValueForKey:@"WebKitScrollToTextFragmentFeatureDetectionEnabled"];
   v567 = 0x200000;
   if (!v566)
   {
@@ -17519,7 +17519,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFDFFFFFLL | v567;
-  v568 = [a3 _BOOLValueForKey:@"WebKitScrollToTextFragmentGenerationEnabled"];
+  v568 = [generated _BOOLValueForKey:@"WebKitScrollToTextFragmentGenerationEnabled"];
   v569 = 0x400000;
   if (!v568)
   {
@@ -17527,7 +17527,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFBFFFFFLL | v569;
-  if ([a3 _BOOLValueForKey:@"WebKitScrollToTextFragmentIndicatorEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScrollToTextFragmentIndicatorEnabled"])
   {
     v570 = 0x800000;
   }
@@ -17538,7 +17538,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFF7FFFFFLL | v570;
-  if ([a3 _BOOLValueForKey:@"WebKitScrollToTextFragmentMarkingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScrollToTextFragmentMarkingEnabled"])
   {
     v571 = 0x1000000;
   }
@@ -17549,7 +17549,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFEFFFFFFLL | v571;
-  if ([a3 _BOOLValueForKey:@"WebKitScrollToTextFragmentEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScrollToTextFragmentEnabled"])
   {
     v572 = 0x100000;
   }
@@ -17560,7 +17560,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFEFFFFFLL | v572;
-  if ([a3 _BOOLValueForKey:@"WebKitScrollAnimatorEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitScrollAnimatorEnabled"])
   {
     v573 = 0x40000;
   }
@@ -17571,7 +17571,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFBFFFFLL | v573;
-  v574 = [a3 _BOOLValueForKey:@"WebKitScrollDrivenAnimationsEnabled"];
+  v574 = [generated _BOOLValueForKey:@"WebKitScrollDrivenAnimationsEnabled"];
   v575 = 0x80000;
   if (!v574)
   {
@@ -17579,7 +17579,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFF7FFFFLL | v575;
-  if ([a3 _BOOLValueForKey:@"WebKitSecureContextChecksEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitSecureContextChecksEnabled"])
   {
     v576 = 0x20000000;
   }
@@ -17591,7 +17591,7 @@ LABEL_18:
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFDFFFFFFFLL | v576;
   *(v4 + 744) &= ~0x400000u;
-  if ([a3 _BOOLValueForKey:@"WebKitServiceWorkerInstallEventEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitServiceWorkerInstallEventEnabled"])
   {
     v577 = 0x100000000;
   }
@@ -17602,7 +17602,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFEFFFFFFFFLL | v577;
-  if ([a3 _BOOLValueForKey:@"WebKitServiceWorkerNavigationPreloadEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitServiceWorkerNavigationPreloadEnabled"])
   {
     v578 = 0x200000000;
   }
@@ -17613,7 +17613,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFF9FFFFFFFFLL | v578;
-  v579 = [a3 _BOOLValueForKey:@"WebKitShapeDetection"];
+  v579 = [generated _BOOLValueForKey:@"WebKitShapeDetection"];
   v580 = 0x4000000000;
   if (!v579)
   {
@@ -17621,7 +17621,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFBFFFFFFFFFLL | v580;
-  v581 = [a3 _BOOLValueForKey:@"WebKitSharedWorkerEnabled"];
+  v581 = [generated _BOOLValueForKey:@"WebKitSharedWorkerEnabled"];
   v582 = 0x8000000000;
   if (!v581)
   {
@@ -17629,7 +17629,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFF7FFFFFFFFFLL | v582;
-  if ([a3 _BOOLValueForKey:@"WebKitShowMediaStatsContextMenuItemEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitShowMediaStatsContextMenuItemEnabled"])
   {
     v583 = 0x800000000000000;
   }
@@ -17640,9 +17640,9 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xF7FFFFFFFFFFFFFFLL | v583;
-  [a3 _BOOLValueForKey:@"WebKitShowFrameProcessBordersEnabled"];
+  [generated _BOOLValueForKey:@"WebKitShowFrameProcessBordersEnabled"];
   WebCore::Settings::setShowFrameProcessBorders(v4);
-  v584 = [a3 _BOOLValueForKey:@"WebKitSidewaysWritingModesEnabled"];
+  v584 = [generated _BOOLValueForKey:@"WebKitSidewaysWritingModesEnabled"];
   v585 = 4;
   if (!v584)
   {
@@ -17650,7 +17650,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFFBLL | v585;
-  if ([a3 _BOOLValueForKey:@"WebKitSiteIsolationEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitSiteIsolationEnabled"])
   {
     v586 = 8;
   }
@@ -17661,7 +17661,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFF7 | v586;
-  v587 = [a3 _BOOLValueForKey:@"WebKitSpeechRecognitionEnabled"];
+  v587 = [generated _BOOLValueForKey:@"WebKitSpeechRecognitionEnabled"];
   v588 = 64;
   if (!v587)
   {
@@ -17669,7 +17669,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFFBFLL | v588;
-  v589 = [a3 _BOOLValueForKey:@"WebKitSpeechSynthesisAPIEnabled"];
+  v589 = [generated _BOOLValueForKey:@"WebKitSpeechSynthesisAPIEnabled"];
   v590 = 128;
   if (!v589)
   {
@@ -17677,7 +17677,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFF7FLL | v590;
-  v591 = [a3 _BOOLValueForKey:@"WebKitStorageAPIEstimateEnabled"];
+  v591 = [generated _BOOLValueForKey:@"WebKitStorageAPIEstimateEnabled"];
   v592 = 2048;
   if (!v591)
   {
@@ -17685,7 +17685,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFF7FFLL | v592;
-  if ([a3 _BOOLValueForKey:@"WebKitStorageAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitStorageAPIEnabled"])
   {
     v593 = 1024;
   }
@@ -17696,14 +17696,14 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFFFFFBFFLL | v593;
-  [a3 _integerValueForKey:@"WebKitStorageBlockingPolicy"];
+  [generated _integerValueForKey:@"WebKitStorageBlockingPolicy"];
   WebCore::Settings::setStorageBlockingPolicy();
-  [a3 _BOOLValueForKey:@"WebKitSupportHDRCompositorTonemappingEnabled"];
+  [generated _BOOLValueForKey:@"WebKitSupportHDRCompositorTonemappingEnabled"];
   WebCore::Settings::setSupportHDRCompositorTonemappingEnabled(v4);
-  [a3 _BOOLValueForKey:@"WebKitSupportHDRDisplayEnabled"];
+  [generated _BOOLValueForKey:@"WebKitSupportHDRDisplayEnabled"];
   WebCore::Settings::setSupportHDRDisplayEnabled(v4);
   *(v4 + 712) |= 0x80000000000000uLL;
-  if ([a3 _BOOLValueForKey:@"WebKitTextAnimationsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitTextAnimationsEnabled"])
   {
     v594 = 0x2000;
   }
@@ -17715,7 +17715,7 @@ LABEL_18:
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFDFFF | v594;
   *(v4 + 728) &= ~0x400000000000uLL;
-  v595 = [a3 _BOOLValueForKey:@"WebKitTextTracksInMSEEnabled"];
+  v595 = [generated _BOOLValueForKey:@"WebKitTextTracksInMSEEnabled"];
   v596 = 0x400000000000000;
   if (!v595)
   {
@@ -17723,7 +17723,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFBFFFFFFFFFFFFFFLL | v596;
-  if ([a3 _BOOLValueForKey:@"WebKitThreadedAnimationResolutionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitThreadedAnimationResolutionEnabled"])
   {
     v597 = 0x100000000;
   }
@@ -17734,7 +17734,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFFEFFFFFFFFLL | v597;
-  v598 = [a3 _BOOLValueForKey:@"WebKitTiledScrollingIndicatorVisible"];
+  v598 = [generated _BOOLValueForKey:@"WebKitTiledScrollingIndicatorVisible"];
   v599 = 0x4000000000000000;
   if (!v598)
   {
@@ -17742,7 +17742,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xBFFFFFFFFFFFFFFFLL | v599;
-  if ([a3 _BOOLValueForKey:@"WebKitInputTypeTimeEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitInputTypeTimeEnabled"])
   {
     v600 = 0x400000000000;
   }
@@ -17753,7 +17753,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFBFFFFFFFFFFFLL | v600;
-  if ([a3 _BOOLValueForKey:@"WebKitTopContentInsetBackgroundCanChangeAfterScrolling"])
+  if ([generated _BOOLValueForKey:@"WebKitTopContentInsetBackgroundCanChangeAfterScrolling"])
   {
     v601 = 0x1000000;
   }
@@ -17764,7 +17764,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFEFFFFFFLL | v601;
-  v602 = [a3 _BOOLValueForKey:@"WebKitTrackConfigurationEnabled"];
+  v602 = [generated _BOOLValueForKey:@"WebKitTrackConfigurationEnabled"];
   v603 = 0x2000000;
   if (!v602)
   {
@@ -17772,7 +17772,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFFDFFFFFFLL | v603;
-  v604 = [a3 _BOOLValueForKey:@"WebKitTrustedTypesEnabled"];
+  v604 = [generated _BOOLValueForKey:@"WebKitTrustedTypesEnabled"];
   v605 = 0x10000000;
   if (!v604)
   {
@@ -17780,7 +17780,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFEFFFFFFFLL | v605;
-  v606 = [a3 _BOOLValueForKey:@"WebKitURLPatternAPIEnabled"];
+  v606 = [generated _BOOLValueForKey:@"WebKitURLPatternAPIEnabled"];
   v607 = 0x400000000;
   if (!v606)
   {
@@ -17788,7 +17788,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFBFFFFFFFFLL | v607;
-  if ([a3 _BOOLValueForKey:@"WebKitUndoManagerAPIEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitUndoManagerAPIEnabled"])
   {
     v608 = 0x40000000;
   }
@@ -17799,7 +17799,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFFBFFFFFFFLL | v608;
-  if ([a3 _BOOLValueForKey:@"WebKitUnifiedPDFEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitUnifiedPDFEnabled"])
   {
     v609 = 0x1000000000;
   }
@@ -17810,7 +17810,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFFFEFFFFFFFFFLL | v609;
-  if ([a3 _BOOLValueForKey:@"WebKitIPAddressAndLocalhostMixedContentUpgradeTestingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitIPAddressAndLocalhostMixedContentUpgradeTestingEnabled"])
   {
     v610 = 0x100000000;
   }
@@ -17821,7 +17821,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFEFFFFFFFFLL | v610;
-  if ([a3 _BOOLValueForKey:@"WebKitUpgradeMixedContentEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitUpgradeMixedContentEnabled"])
   {
     v611 = 0x200000000;
   }
@@ -17832,7 +17832,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFFDFFFFFFFFLL | v611;
-  v612 = [a3 _BOOLValueForKey:@"WebKitUseIFCForSVGText"];
+  v612 = [generated _BOOLValueForKey:@"WebKitUseIFCForSVGText"];
   v613 = 0x2000000000;
   if (!v612)
   {
@@ -17840,7 +17840,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFDFFFFFFFFFLL | v613;
-  if ([a3 _BOOLValueForKey:@"WebKitUseGiantTiles"])
+  if ([generated _BOOLValueForKey:@"WebKitUseGiantTiles"])
   {
     v614 = 0x1000000000;
   }
@@ -17851,7 +17851,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFFEFFFFFFFFFLL | v614;
-  v615 = [a3 _BOOLValueForKey:@"WebKitUserActivationAPIEnabled"];
+  v615 = [generated _BOOLValueForKey:@"WebKitUserActivationAPIEnabled"];
   v616 = 0x20000000000;
   if (!v615)
   {
@@ -17859,7 +17859,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFDFFFFFFFFFFLL | v616;
-  v617 = [a3 _BOOLValueForKey:@"WebKitUserGesturePromisePropagationEnabled"];
+  v617 = [generated _BOOLValueForKey:@"WebKitUserGesturePromisePropagationEnabled"];
   v618 = 0x40000000000;
   if (!v617)
   {
@@ -17867,7 +17867,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFFBFFFFFFFFFFLL | v618;
-  v619 = [a3 _BOOLValueForKey:@"WebKitServiceWorkersUserGestureEnabled"];
+  v619 = [generated _BOOLValueForKey:@"WebKitServiceWorkersUserGestureEnabled"];
   v620 = 0x800000000;
   if (!v619)
   {
@@ -17875,7 +17875,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFF7FFFFFFFFLL | v620;
-  v621 = [a3 _BOOLValueForKey:@"WebKitVerifyWindowOpenUserGestureFromUIProcess"];
+  v621 = [generated _BOOLValueForKey:@"WebKitVerifyWindowOpenUserGestureFromUIProcess"];
   v622 = 0x200000000000;
   if (!v621)
   {
@@ -17883,7 +17883,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFDFFFFFFFFFFFLL | v622;
-  if ([a3 _BOOLValueForKey:@"WebKitVerticalFormControlsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitVerticalFormControlsEnabled"])
   {
     v623 = 0x400000000000;
   }
@@ -17894,7 +17894,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFFBFFFFFFFFFFFLL | v623;
-  if ([a3 _BOOLValueForKey:@"WebKitVideoRendererProtectedFallbackDisabled"])
+  if ([generated _BOOLValueForKey:@"WebKitVideoRendererProtectedFallbackDisabled"])
   {
     v624 = 0x20000000;
   }
@@ -17905,7 +17905,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xDFFFFFFF | v624;
-  if ([a3 _BOOLValueForKey:@"WebKitVideoRendererUseDecompressionSessionForProtected"])
+  if ([generated _BOOLValueForKey:@"WebKitVideoRendererUseDecompressionSessionForProtected"])
   {
     v625 = 0x40000000;
   }
@@ -17916,7 +17916,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xBFFFFFFF | v625;
-  v626 = [a3 _BOOLValueForKey:@"WebKitViewTransitionClassesEnabled"];
+  v626 = [generated _BOOLValueForKey:@"WebKitViewTransitionClassesEnabled"];
   v627 = 0x2000000000000;
   if (!v626)
   {
@@ -17924,7 +17924,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFDFFFFFFFFFFFFLL | v627;
-  if ([a3 _BOOLValueForKey:@"WebKitViewTransitionTypesEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitViewTransitionTypesEnabled"])
   {
     v628 = 0x4000000000000;
   }
@@ -17935,7 +17935,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFFBFFFFFFFFFFFFLL | v628;
-  if ([a3 _BOOLValueForKey:@"WebKitViewTransitionsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitViewTransitionsEnabled"])
   {
     v629 = 0x8000000000000;
   }
@@ -17947,7 +17947,7 @@ LABEL_18:
 
   *(v4 + 720) = *(v4 + 720) & 0xFFF7FFFFFFFFFFFFLL | v629;
   *(v4 + 728) &= ~0x200000000000uLL;
-  v630 = [a3 _BOOLValueForKey:@"WebKitVisualViewportAPIEnabled"];
+  v630 = [generated _BOOLValueForKey:@"WebKitVisualViewportAPIEnabled"];
   v631 = 0x10000000000000;
   if (!v630)
   {
@@ -17955,7 +17955,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFFEFFFFFFFFFFFFFLL | v631;
-  if ([a3 _BOOLValueForKey:@"WebKitVisuallyContiguousBidiTextSelectionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitVisuallyContiguousBidiTextSelectionEnabled"])
   {
     v632 = 0x1000000;
   }
@@ -17966,7 +17966,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFEFFFFFF | v632;
-  if ([a3 _BOOLValueForKey:@"WebKitWebAPIStatisticsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebAPIStatisticsEnabled"])
   {
     v633 = 0x80000000000000;
   }
@@ -17977,7 +17977,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFF7FFFFFFFFFFFFFLL | v633;
-  if ([a3 _BOOLValueForKey:@"WebKitWebAPIsInShadowRealmEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebAPIsInShadowRealmEnabled"])
   {
     v634 = 0x100000000000000;
   }
@@ -17988,7 +17988,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFEFFFFFFFFFFFFFFLL | v634;
-  v635 = [a3 _BOOLValueForKey:@"WebKitWebAnimationsOverallProgressPropertyEnabled"];
+  v635 = [generated _BOOLValueForKey:@"WebKitWebAnimationsOverallProgressPropertyEnabled"];
   v636 = 0x800000000000000;
   if (!v635)
   {
@@ -17996,7 +17996,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xF7FFFFFFFFFFFFFFLL | v636;
-  if ([a3 _BOOLValueForKey:@"WebKitWebAnimationsCustomEffectsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebAnimationsCustomEffectsEnabled"])
   {
     v637 = 0x200000000000000;
   }
@@ -18007,7 +18007,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFDFFFFFFFFFFFFFFLL | v637;
-  if ([a3 _BOOLValueForKey:@"WebKitWebAnimationsCustomFrameRateEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebAnimationsCustomFrameRateEnabled"])
   {
     v638 = 0x400000000000000;
   }
@@ -18018,7 +18018,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xFBFFFFFFFFFFFFFFLL | v638;
-  if ([a3 _BOOLValueForKey:@"WebKitWebArchiveDebugModeEnabledPreferenceKey"])
+  if ([generated _BOOLValueForKey:@"WebKitWebArchiveDebugModeEnabledPreferenceKey"])
   {
     v639 = 0x4000000000000;
   }
@@ -18029,7 +18029,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFBFFFFFFFFFFFFLL | v639;
-  if ([a3 _BOOLValueForKey:@"WebKitWebArchiveTestingModeEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebArchiveTestingModeEnabled"])
   {
     v640 = 0x8000000000000;
   }
@@ -18040,7 +18040,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFF7FFFFFFFFFFFFLL | v640;
-  if ([a3 _BOOLValueForKey:@"WebKitWebAuthenticationASEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebAuthenticationASEnabled"])
   {
     v641 = 0x10000;
   }
@@ -18051,7 +18051,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFEFFFF | v641;
-  v642 = [a3 _BOOLValueForKey:@"WebKitWebAuthenticationEnabled"];
+  v642 = [generated _BOOLValueForKey:@"WebKitWebAuthenticationEnabled"];
   v643 = 0x40000000000000;
   if (!v642)
   {
@@ -18059,7 +18059,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFBFFFFFFFFFFFFFLL | v643;
-  if ([a3 _BOOLValueForKey:@"WebKitWebCryptoSafeCurvesEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebCryptoSafeCurvesEnabled"])
   {
     v644 = 0x1000000000000000;
   }
@@ -18070,7 +18070,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xEFFFFFFFFFFFFFFFLL | v644;
-  if ([a3 _BOOLValueForKey:@"WebKitWebCryptoX25519Enabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebCryptoX25519Enabled"])
   {
     v645 = 0x2000000000000000;
   }
@@ -18081,7 +18081,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xDFFFFFFFFFFFFFFFLL | v645;
-  v646 = [a3 _BOOLValueForKey:@"WebKitWebLocksAPIEnabled"];
+  v646 = [generated _BOOLValueForKey:@"WebKitWebLocksAPIEnabled"];
   v647 = 32;
   if (!v646)
   {
@@ -18089,7 +18089,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFFDFLL | v647;
-  v648 = [a3 _BOOLValueForKey:@"WebKitWebShareFileAPIEnabled"];
+  v648 = [generated _BOOLValueForKey:@"WebKitWebShareFileAPIEnabled"];
   v649 = 1024;
   if (!v648)
   {
@@ -18097,7 +18097,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFBFFLL | v649;
-  v650 = [a3 _BOOLValueForKey:@"WebKitWebShareEnabled"];
+  v650 = [generated _BOOLValueForKey:@"WebKitWebShareEnabled"];
   v651 = 512;
   if (!v650)
   {
@@ -18105,7 +18105,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFDFFLL | v651;
-  if ([a3 _BOOLValueForKey:@"WebKitWebAssemblyESMIntegrationEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebAssemblyESMIntegrationEnabled"])
   {
     v652 = 0x400000000000;
   }
@@ -18116,7 +18116,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFFFFBFFFFFFFFFFFLL | v652;
-  if ([a3 _BOOLValueForKey:@"WebKitWebCodecsAV1Enabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebCodecsAV1Enabled"])
   {
     v653 = 0x80000000000000;
   }
@@ -18127,7 +18127,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFF7FFFFFFFFFFFFFLL | v653;
-  if ([a3 _BOOLValueForKey:@"WebKitWebCodecsAudioEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebCodecsAudioEnabled"])
   {
     v654 = 0x100000000000000;
   }
@@ -18138,7 +18138,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFEFFFFFFFFFFFFFFLL | v654;
-  if ([a3 _BOOLValueForKey:@"WebKitWebCodecsHEVCEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebCodecsHEVCEnabled"])
   {
     v655 = 0x200000000000000;
   }
@@ -18149,7 +18149,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFDFFFFFFFFFFFFFFLL | v655;
-  if ([a3 _BOOLValueForKey:@"WebKitWebCodecsVideoEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebCodecsVideoEnabled"])
   {
     v656 = 0x400000000000000;
   }
@@ -18160,7 +18160,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xFBFFFFFFFFFFFFFFLL | v656;
-  if ([a3 _BOOLValueForKey:@"WebKitWebGLDraftExtensionsEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebGLDraftExtensionsEnabled"])
   {
     v657 = 0x4000000000000000;
   }
@@ -18171,7 +18171,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = *(v4 + 720) & 0xBFFFFFFFFFFFFFFFLL | v657;
-  if ([a3 _BOOLValueForKey:@"WebKitWebGLTimerQueriesEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebGLTimerQueriesEnabled"])
   {
     v658 = 2;
   }
@@ -18182,7 +18182,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFFFDLL | v658;
-  if ([a3 _BOOLValueForKey:@"WebKitWebGLEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebGLEnabled"])
   {
     v659 = 0x8000000000000000;
   }
@@ -18193,7 +18193,7 @@ LABEL_18:
   }
 
   *(v4 + 720) = v659 & 0x8000000000000000 | *(v4 + 720) & 0x7FFFFFFFFFFFFFFFLL;
-  v660 = [a3 _BOOLValueForKey:@"WebKitWebGPUHDREnabled"];
+  v660 = [generated _BOOLValueForKey:@"WebKitWebGPUHDREnabled"];
   v661 = 8;
   if (!v660)
   {
@@ -18201,7 +18201,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFFF7 | v661;
-  v662 = [a3 _BOOLValueForKey:@"WebKitWebXRWebGPUBindingsEnabled"];
+  v662 = [generated _BOOLValueForKey:@"WebKitWebXRWebGPUBindingsEnabled"];
   v663 = 0x2000;
   if (!v662)
   {
@@ -18209,7 +18209,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFDFFFLL | v663;
-  if ([a3 _BOOLValueForKey:@"WebKitWebGPUEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebGPUEnabled"])
   {
     v664 = 4;
   }
@@ -18220,7 +18220,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFFFBLL | v664;
-  if ([a3 _BOOLValueForKey:@"WebKitWebInspectorEngineeringSettingsAllowed"])
+  if ([generated _BOOLValueForKey:@"WebKitWebInspectorEngineeringSettingsAllowed"])
   {
     v665 = 16;
   }
@@ -18231,7 +18231,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFFEFLL | v665;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCAV1CodecEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCAV1CodecEnabled"])
   {
     v666 = 0x4000000000000000;
   }
@@ -18242,7 +18242,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xBFFFFFFFFFFFFFFFLL | v666;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCDTMFEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCDTMFEnabled"])
   {
     v667 = 0x8000000000000000;
   }
@@ -18253,8 +18253,8 @@ LABEL_18:
   }
 
   *(v4 + 736) = v667 & 0x8000000000000000 | *(v4 + 736) & 0x7FFFFFFFFFFFFFFFLL;
-  *(v4 + 744) = *(v4 + 744) & 0xFFFFFFFE | [a3 _BOOLValueForKey:@"WebKitWebRTCEncodedTransformEnabled"];
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCH265CodecEnabled"])
+  *(v4 + 744) = *(v4 + 744) & 0xFFFFFFFE | [generated _BOOLValueForKey:@"WebKitWebRTCEncodedTransformEnabled"];
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCH265CodecEnabled"])
   {
     v668 = 2;
   }
@@ -18265,7 +18265,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFFFD | v668;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCL4SEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCL4SEnabled"])
   {
     v669 = 4;
   }
@@ -18276,7 +18276,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFFFB | v669;
-  v670 = [a3 _BOOLValueForKey:@"WebKitWebRTCMediaPipelineAdditionalLoggingEnabled"];
+  v670 = [generated _BOOLValueForKey:@"WebKitWebRTCMediaPipelineAdditionalLoggingEnabled"];
   v671 = 128;
   if (!v670)
   {
@@ -18284,7 +18284,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFFF7FLL | v671;
-  v672 = [a3 _BOOLValueForKey:@"WebKitLegacyWebRTCOfferOptionsEnabled"];
+  v672 = [generated _BOOLValueForKey:@"WebKitLegacyWebRTCOfferOptionsEnabled"];
   v673 = 0x800000000000000;
   if (!v672)
   {
@@ -18292,7 +18292,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xF7FFFFFFFFFFFFFFLL | v673;
-  if ([a3 _BOOLValueForKey:@"WebKitPeerConnectionVideoScalingAdaptationDisabled"])
+  if ([generated _BOOLValueForKey:@"WebKitPeerConnectionVideoScalingAdaptationDisabled"])
   {
     v674 = 0x2000000000000000;
   }
@@ -18303,7 +18303,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xDFFFFFFFFFFFFFFFLL | v674;
-  if ([a3 _BOOLValueForKey:@"WebKitPeerConnectionEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitPeerConnectionEnabled"])
   {
     v675 = 0x1000000000000000;
   }
@@ -18314,7 +18314,7 @@ LABEL_18:
   }
 
   *(v4 + 736) = *(v4 + 736) & 0xEFFFFFFFFFFFFFFFLL | v675;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCRemoteVideoFrameEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCRemoteVideoFrameEnabled"])
   {
     v676 = 16;
   }
@@ -18325,7 +18325,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFFEF | v676;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCSFrameTransformEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCSFrameTransformEnabled"])
   {
     v677 = 32;
   }
@@ -18336,7 +18336,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFFDF | v677;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCSocketsProxyingEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCSocketsProxyingEnabled"])
   {
     v678 = 64;
   }
@@ -18347,7 +18347,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFFBF | v678;
-  MEMORY[0x1CCA63A40](&v730, [a3 _stringValueForKey:@"WebKitWebRTCUDPPortRange"]);
+  MEMORY[0x1CCA63A40](&v730, [generated _stringValueForKey:@"WebKitWebRTCUDPPortRange"]);
   v680 = v730;
   if (v730)
   {
@@ -18368,7 +18368,7 @@ LABEL_18:
     WTF::StringImpl::destroy(v682, v679);
   }
 
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCVP9Profile0CodecEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCVP9Profile0CodecEnabled"])
   {
     v683 = 128;
   }
@@ -18379,7 +18379,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFF7F | v683;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCVP9Profile2CodecEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCVP9Profile2CodecEnabled"])
   {
     v684 = 256;
   }
@@ -18390,7 +18390,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFEFF | v684;
-  if ([a3 _BOOLValueForKey:@"WebKitWebRTCInterfaceMonitoringViaNWEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebRTCInterfaceMonitoringViaNWEnabled"])
   {
     v685 = 512;
   }
@@ -18401,7 +18401,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFFDFF | v685;
-  if ([a3 _BOOLValueForKey:@"WebKitWebTransportEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWebTransportEnabled"])
   {
     v686 = 4096;
   }
@@ -18412,7 +18412,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFFEFFFLL | v686;
-  v687 = [a3 _BOOLValueForKey:@"WebKitInputTypeWeekEnabled"];
+  v687 = [generated _BOOLValueForKey:@"WebKitInputTypeWeekEnabled"];
   v688 = 0x800000000000;
   if (!v687)
   {
@@ -18420,7 +18420,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFF7FFFFFFFFFFFLL | v688;
-  v689 = [a3 _BOOLValueForKey:@"WebKitWheelEventGesturesBecomeNonBlocking"];
+  v689 = [generated _BOOLValueForKey:@"WebKitWheelEventGesturesBecomeNonBlocking"];
   v690 = 0x8000;
   if (!v689)
   {
@@ -18428,7 +18428,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFF7FFFLL | v690;
-  v691 = [a3 _BOOLValueForKey:@"WebKitPassiveWheelListenersAsDefaultOnDocument"];
+  v691 = [generated _BOOLValueForKey:@"WebKitPassiveWheelListenersAsDefaultOnDocument"];
   v692 = 0x4000000000000;
   if (!v691)
   {
@@ -18436,7 +18436,7 @@ LABEL_18:
   }
 
   *(v4 + 704) = *(v4 + 704) & 0xFFFBFFFFFFFFFFFFLL | v692;
-  v693 = [a3 _BOOLValueForKey:@"WebKitWorkerAsynchronousURLErrorHandlingEnabled"];
+  v693 = [generated _BOOLValueForKey:@"WebKitWorkerAsynchronousURLErrorHandlingEnabled"];
   v694 = 0x40000;
   if (!v693)
   {
@@ -18444,7 +18444,7 @@ LABEL_18:
   }
 
   *(v4 + 728) = *(v4 + 728) & 0xFFFFFFFFFFFBFFFFLL | v694;
-  if ([a3 _BOOLValueForKey:@"WebKitWriteRichTextDataWhenCopyingOrDragging"])
+  if ([generated _BOOLValueForKey:@"WebKitWriteRichTextDataWhenCopyingOrDragging"])
   {
     v695 = 0x80000;
   }
@@ -18455,7 +18455,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFF7FFFF | v695;
-  if ([a3 _BOOLValueForKey:@"WebKitWritingSuggestionsAttributeEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitWritingSuggestionsAttributeEnabled"])
   {
     v696 = 4096;
   }
@@ -18466,7 +18466,7 @@ LABEL_18:
   }
 
   *(v4 + 744) = *(v4 + 744) & 0xFFFFEFFF | v696;
-  v697 = [a3 _BOOLValueForKey:@"WebKitIsFirstPartyWebsiteDataRemovalLiveOnTestingEnabled"];
+  v697 = [generated _BOOLValueForKey:@"WebKitIsFirstPartyWebsiteDataRemovalLiveOnTestingEnabled"];
   v698 = 0x10000000000000;
   if (!v697)
   {
@@ -18474,7 +18474,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFEFFFFFFFFFFFFFLL | v698;
-  v699 = [a3 _BOOLValueForKey:@"WebKitIsFirstPartyWebsiteDataRemovalReproTestingEnabled"];
+  v699 = [generated _BOOLValueForKey:@"WebKitIsFirstPartyWebsiteDataRemovalReproTestingEnabled"];
   v700 = 0x20000000000000;
   if (!v699)
   {
@@ -18482,7 +18482,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFDFFFFFFFFFFFFFLL | v700;
-  if ([a3 _BOOLValueForKey:@"WebKitAltitudeAngleEnabled"])
+  if ([generated _BOOLValueForKey:@"WebKitAltitudeAngleEnabled"])
   {
     v701 = 0x80000;
   }
@@ -18493,7 +18493,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFFFFF7FFFFLL | v701;
-  v702 = [a3 _BOOLValueForKey:@"WebKitAzimuthAngleEnabled"];
+  v702 = [generated _BOOLValueForKey:@"WebKitAzimuthAngleEnabled"];
   v703 = 0x200000000;
   if (!v702)
   {
@@ -18501,7 +18501,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFFFFFDFFFFFFFFLL | v703;
-  v704 = [a3 _BOOLValueForKey:@"WebKitInputTypeDateTimeLocalEnabled"];
+  v704 = [generated _BOOLValueForKey:@"WebKitInputTypeDateTimeLocalEnabled"];
   v705 = 0x100000000000;
   if (!v704)
   {
@@ -18509,7 +18509,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFEFFFFFFFFFFFLL | v705;
-  v706 = [a3 _BOOLValueForKey:@"WebKitCaretPositionFromPointEnabled"];
+  v706 = [generated _BOOLValueForKey:@"WebKitCaretPositionFromPointEnabled"];
   v707 = 0x1000000000000;
   if (!v706)
   {
@@ -18517,7 +18517,7 @@ LABEL_18:
   }
 
   *(v4 + 680) = *(v4 + 680) & 0xFFFEFFFFFFFFFFFFLL | v707;
-  v708 = [a3 _BOOLValueForKey:@"WebKitHiddenUntilFoundEnabled"];
+  v708 = [generated _BOOLValueForKey:@"WebKitHiddenUntilFoundEnabled"];
   v709 = 0x8000000;
   if (!v708)
   {
@@ -18525,7 +18525,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFF7FFFFFFLL | v709;
-  v710 = [a3 _BOOLValueForKey:@"WebKitHTTPEquivEnabled"];
+  v710 = [generated _BOOLValueForKey:@"WebKitHTTPEquivEnabled"];
   v711 = 0x20000000;
   if (!v710)
   {
@@ -18533,7 +18533,7 @@ LABEL_18:
   }
 
   *(v4 + 696) = *(v4 + 696) & 0xFFFFFFFFDFFFFFFFLL | v711;
-  v712 = [a3 _BOOLValueForKey:@"WebKitShadowRootReferenceTargetEnabledForAriaOwns"];
+  v712 = [generated _BOOLValueForKey:@"WebKitShadowRootReferenceTargetEnabledForAriaOwns"];
   v713 = 0x2000000000;
   if (!v712)
   {
@@ -18541,7 +18541,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFDFFFFFFFFFLL | v713;
-  v714 = [a3 _BOOLValueForKey:@"WebKitShadowRootReferenceTargetEnabled"];
+  v714 = [generated _BOOLValueForKey:@"WebKitShadowRootReferenceTargetEnabled"];
   v715 = 0x1000000000;
   if (!v714)
   {
@@ -18549,7 +18549,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFEFFFFFFFFFLL | v715;
-  v716 = [a3 _BOOLValueForKey:@"WebKitRequestIdleCallbackEnabled"];
+  v716 = [generated _BOOLValueForKey:@"WebKitRequestIdleCallbackEnabled"];
   v717 = 2;
   if (!v716)
   {
@@ -18557,7 +18557,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFFDLL | v717;
-  v718 = [a3 _BOOLValueForKey:@"WebKitRequestStorageAccessThrowsExceptionUntilReload"];
+  v718 = [generated _BOOLValueForKey:@"WebKitRequestStorageAccessThrowsExceptionUntilReload"];
   v719 = 4;
   if (!v718)
   {
@@ -18565,7 +18565,7 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFFFFFFFBLL | v719;
-  v720 = [a3 _BOOLValueForKey:@"WebKitScrollendEventEnabled"];
+  v720 = [generated _BOOLValueForKey:@"WebKitScrollendEventEnabled"];
   v721 = 0x2000000;
   if (!v720)
   {
@@ -18573,25 +18573,25 @@ LABEL_18:
   }
 
   *(v4 + 712) = *(v4 + 712) & 0xFFFFFFFFFDFFFFFFLL | v721;
-  [a3 _BOOLValueForKey:@"WebKitCSSWordBreakAutoPhraseEnabled"];
+  [generated _BOOLValueForKey:@"WebKitCSSWordBreakAutoPhraseEnabled"];
   WebCore::Settings::setCSSWordBreakAutoPhraseEnabled(v4);
-  v722 = [a3 _BOOLValueForKey:@"WebKitLowPowerVideoAudioBufferSizeEnabled"];
+  v722 = [generated _BOOLValueForKey:@"WebKitLowPowerVideoAudioBufferSizeEnabled"];
   *(WebCore::DeprecatedGlobalSettings::shared(v722) + 18) = v722;
-  WebCore::DeprecatedGlobalSettings::setMockScrollbarsEnabled([a3 _BOOLValueForKey:@"WebKitMockScrollbarsEnabled"]);
-  WebCore::DeprecatedGlobalSettings::setAVFoundationEnabled([a3 _BOOLValueForKey:@"WebKitAVFoundationEnabled"]);
-  v723 = [a3 _BOOLValueForKey:@"WebKitAttachmentElementEnabled"];
+  WebCore::DeprecatedGlobalSettings::setMockScrollbarsEnabled([generated _BOOLValueForKey:@"WebKitMockScrollbarsEnabled"]);
+  WebCore::DeprecatedGlobalSettings::setAVFoundationEnabled([generated _BOOLValueForKey:@"WebKitAVFoundationEnabled"]);
+  v723 = [generated _BOOLValueForKey:@"WebKitAttachmentElementEnabled"];
   *(WebCore::DeprecatedGlobalSettings::shared(v723) + 24) = v723;
-  v724 = [a3 _BOOLValueForKey:@"WebKitCustomPasteboardDataEnabled"];
+  v724 = [generated _BOOLValueForKey:@"WebKitCustomPasteboardDataEnabled"];
   *(WebCore::DeprecatedGlobalSettings::shared(v724) + 21) = v724;
-  v725 = [a3 _BOOLValueForKey:@"WebKitDisableScreenSizeOverride"];
+  v725 = [generated _BOOLValueForKey:@"WebKitDisableScreenSizeOverride"];
   *(WebCore::DeprecatedGlobalSettings::shared(v725) + 17) = v725;
-  v726 = [a3 _BOOLValueForKey:@"WebKitModelDocumentEnabled"];
+  v726 = [generated _BOOLValueForKey:@"WebKitModelDocumentEnabled"];
   *(WebCore::DeprecatedGlobalSettings::shared(v726) + 29) = v726;
-  v727 = [a3 _BOOLValueForKey:@"WebKitReadableByteStreamAPIEnabled"];
+  v727 = [generated _BOOLValueForKey:@"WebKitReadableByteStreamAPIEnabled"];
   *(WebCore::DeprecatedGlobalSettings::shared(v727) + 26) = v727;
-  v728 = [a3 _BOOLValueForKey:@"WebKitUsesWebContentRestrictionsForFilter"];
+  v728 = [generated _BOOLValueForKey:@"WebKitUsesWebContentRestrictionsForFilter"];
   *(WebCore::DeprecatedGlobalSettings::shared(v728) + 30) = v728;
-  v729 = [a3 _BOOLValueForKey:@"WebKitWebRTCAudioLatencyAdaptationEnabled"];
+  v729 = [generated _BOOLValueForKey:@"WebKitWebRTCAudioLatencyAdaptationEnabled"];
   *(WebCore::DeprecatedGlobalSettings::shared(v729) + 25) = v729;
 }
 

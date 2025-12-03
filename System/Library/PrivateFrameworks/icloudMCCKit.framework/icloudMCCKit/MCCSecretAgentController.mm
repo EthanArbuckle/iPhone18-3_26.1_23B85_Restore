@@ -1,58 +1,58 @@
 @interface MCCSecretAgentController
-- (MCCSecretAgentController)initWithAgentXPCEndpoint:(id)a3;
-- (MCCSecretAgentController)initWithCallbackListener:(id)a3;
-- (void)canSendSecureMessageFrom:(id)a3 to:(id)a4 completion:(id)a5;
-- (void)clearAllUserOverridesWithTimestamp:(double)a3 completion:(id)a4;
-- (void)decryptedDataFromContentData:(id)a3 senderEmail:(id)a4 recipientEmail:(id)a5 completion:(id)a6;
-- (void)encryptedDataFromContentData:(id)a3 senderEmail:(id)a4 recipientEmails:(id)a5 completion:(id)a6;
-- (void)generateSSCertificateWithContext:(id)a3 completion:(id)a4;
-- (void)getBlackPearlVersionWithCompletion:(id)a3;
-- (void)getIABCategoryID:(id)a3 completion:(id)a4;
-- (void)getIsSecureEmailEnabledForEmail:(id)a3 completion:(id)a4;
-- (void)getPKCategoryForDomain:(id)a3 completion:(id)a4;
-- (void)invokeModelDownloadWithCompletion:(id)a3;
-- (void)isCategorizationSupportedForLocale:(id)a3 completion:(id)a4;
-- (void)isModelReadyWithCompletion:(id)a3;
-- (void)isPersonalDomain:(id)a3 completion:(id)a4;
-- (void)listSecItemsWithContext:(id)a3 completion:(id)a4;
-- (void)notifyFullSyncCategoryOverrides:(id)a3;
-- (void)notifyNewOldCategoryChange:(id)a3 timestamp:(double)a4;
-- (void)notifyWebRule:(id)a3;
-- (void)pingWithcompletion:(id)a3;
-- (void)predictCommerceEmailWithContext:(id)a3 completion:(id)a4;
-- (void)registerCategoryRulesCallbackListener:(id)a3 notificationTypes:(unint64_t)a4 completion:(id)a5;
-- (void)registerCategoryRulesCallbackWithNotificationTypes:(unint64_t)a3;
-- (void)signedDataFromContentData:(id)a3 senderEmail:(id)a4 recipientEmails:(id)a5 completion:(id)a6;
-- (void)storeSecItemsWithContext:(id)a3 completion:(id)a4;
-- (void)syncNewOldCategoryTimestamps:(id)a3;
-- (void)syncRecategorizationRules:(id)a3 completion:(id)a4;
+- (MCCSecretAgentController)initWithAgentXPCEndpoint:(id)endpoint;
+- (MCCSecretAgentController)initWithCallbackListener:(id)listener;
+- (void)canSendSecureMessageFrom:(id)from to:(id)to completion:(id)completion;
+- (void)clearAllUserOverridesWithTimestamp:(double)timestamp completion:(id)completion;
+- (void)decryptedDataFromContentData:(id)data senderEmail:(id)email recipientEmail:(id)recipientEmail completion:(id)completion;
+- (void)encryptedDataFromContentData:(id)data senderEmail:(id)email recipientEmails:(id)emails completion:(id)completion;
+- (void)generateSSCertificateWithContext:(id)context completion:(id)completion;
+- (void)getBlackPearlVersionWithCompletion:(id)completion;
+- (void)getIABCategoryID:(id)d completion:(id)completion;
+- (void)getIsSecureEmailEnabledForEmail:(id)email completion:(id)completion;
+- (void)getPKCategoryForDomain:(id)domain completion:(id)completion;
+- (void)invokeModelDownloadWithCompletion:(id)completion;
+- (void)isCategorizationSupportedForLocale:(id)locale completion:(id)completion;
+- (void)isModelReadyWithCompletion:(id)completion;
+- (void)isPersonalDomain:(id)domain completion:(id)completion;
+- (void)listSecItemsWithContext:(id)context completion:(id)completion;
+- (void)notifyFullSyncCategoryOverrides:(id)overrides;
+- (void)notifyNewOldCategoryChange:(id)change timestamp:(double)timestamp;
+- (void)notifyWebRule:(id)rule;
+- (void)pingWithcompletion:(id)withcompletion;
+- (void)predictCommerceEmailWithContext:(id)context completion:(id)completion;
+- (void)registerCategoryRulesCallbackListener:(id)listener notificationTypes:(unint64_t)types completion:(id)completion;
+- (void)registerCategoryRulesCallbackWithNotificationTypes:(unint64_t)types;
+- (void)signedDataFromContentData:(id)data senderEmail:(id)email recipientEmails:(id)emails completion:(id)completion;
+- (void)storeSecItemsWithContext:(id)context completion:(id)completion;
+- (void)syncNewOldCategoryTimestamps:(id)timestamps;
+- (void)syncRecategorizationRules:(id)rules completion:(id)completion;
 @end
 
 @implementation MCCSecretAgentController
 
-- (MCCSecretAgentController)initWithCallbackListener:(id)a3
+- (MCCSecretAgentController)initWithCallbackListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v6 = [(MCCSecretAgentController *)self initWithAgentXPCEndpoint:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callbackListener, a3);
+    objc_storeStrong(&v6->_callbackListener, listener);
     [(NSXPCListener *)v7->_callbackListener resume];
   }
 
   return v7;
 }
 
-- (MCCSecretAgentController)initWithAgentXPCEndpoint:(id)a3
+- (MCCSecretAgentController)initWithAgentXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = MCCSecretAgentController;
   v5 = [(MCCSecretAgentController *)&v11 init];
   if (v5)
   {
-    v6 = [[MCCSecretAgentConnection alloc] initWithListenerEndpoint:v4];
+    v6 = [[MCCSecretAgentConnection alloc] initWithListenerEndpoint:endpointCopy];
     agentConnection = v5->_agentConnection;
     v5->_agentConnection = v6;
 
@@ -64,26 +64,26 @@
   return v5;
 }
 
-- (void)getIsSecureEmailEnabledForEmail:(id)a3 completion:(id)a4
+- (void)getIsSecureEmailEnabledForEmail:(id)email completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  emailCopy = email;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__MCCSecretAgentController_getIsSecureEmailEnabledForEmail_completion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v21 = v22;
-  v9 = v7;
+  v9 = completionCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __71__MCCSecretAgentController_getIsSecureEmailEnabledForEmail_completion___block_invoke_2;
@@ -97,7 +97,7 @@
   v15[3] = &unk_1E8458208;
   v14 = v12;
   v16 = v14;
-  [v13 getIsSecureEmailEnabledForEmail:v6 completion:v15];
+  [v13 getIsSecureEmailEnabledForEmail:emailCopy completion:v15];
 
   _Block_object_dispose(v22, 8);
 }
@@ -184,27 +184,27 @@ void __72__MCCSecretAgentController_setIsSecureEmailEnabled_forEmail_completion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)canSendSecureMessageFrom:(id)a3 to:(id)a4 completion:(id)a5
+- (void)canSendSecureMessageFrom:(id)from to:(id)to completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fromCopy = from;
+  toCopy = to;
+  completionCopy = completion;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x3032000000;
   v25[3] = __Block_byref_object_copy_;
   v25[4] = __Block_byref_object_dispose_;
-  v11 = self;
-  v26 = v11;
+  selfCopy = self;
+  v26 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__MCCSecretAgentController_canSendSecureMessageFrom_to_completion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v24 = v25;
-  v12 = v10;
+  v12 = completionCopy;
   v23 = v12;
   v13 = _Block_copy(aBlock);
-  agentConnection = v11->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __67__MCCSecretAgentController_canSendSecureMessageFrom_to_completion___block_invoke_2;
@@ -218,7 +218,7 @@ void __72__MCCSecretAgentController_setIsSecureEmailEnabled_forEmail_completion_
   v18[3] = &unk_1E8458208;
   v17 = v15;
   v19 = v17;
-  [v16 canSendSecureMessageFrom:v8 to:v9 completion:v18];
+  [v16 canSendSecureMessageFrom:fromCopy to:toCopy completion:v18];
 
   _Block_object_dispose(v25, 8);
 }
@@ -305,26 +305,26 @@ void __78__MCCSecretAgentController_setCanSendSecureMessageFrom_to_canSend_compl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)listSecItemsWithContext:(id)a3 completion:(id)a4
+- (void)listSecItemsWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__MCCSecretAgentController_listSecItemsWithContext_completion___block_invoke;
   aBlock[3] = &unk_1E8458258;
   v21 = v22;
-  v9 = v7;
+  v9 = completionCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __63__MCCSecretAgentController_listSecItemsWithContext_completion___block_invoke_2;
@@ -338,7 +338,7 @@ void __78__MCCSecretAgentController_setCanSendSecureMessageFrom_to_canSend_compl
   v15[3] = &unk_1E8458280;
   v14 = v12;
   v16 = v14;
-  [v13 listSecItemsWithContext:v6 completion:v15];
+  [v13 listSecItemsWithContext:contextCopy completion:v15];
 
   _Block_object_dispose(v22, 8);
 }
@@ -389,26 +389,26 @@ void __63__MCCSecretAgentController_listSecItemsWithContext_completion___block_i
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeSecItemsWithContext:(id)a3 completion:(id)a4
+- (void)storeSecItemsWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__MCCSecretAgentController_storeSecItemsWithContext_completion___block_invoke;
   aBlock[3] = &unk_1E8458230;
   v21 = v22;
-  v9 = v7;
+  v9 = completionCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __64__MCCSecretAgentController_storeSecItemsWithContext_completion___block_invoke_2;
@@ -422,7 +422,7 @@ void __63__MCCSecretAgentController_listSecItemsWithContext_completion___block_i
   v15[3] = &unk_1E84581E0;
   v14 = v12;
   v16 = v14;
-  [v13 storeSecItemsWithContext:v6 completion:v15];
+  [v13 storeSecItemsWithContext:contextCopy completion:v15];
 
   _Block_object_dispose(v22, 8);
 }
@@ -469,26 +469,26 @@ void __64__MCCSecretAgentController_storeSecItemsWithContext_completion___block_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateSSCertificateWithContext:(id)a3 completion:(id)a4
+- (void)generateSSCertificateWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__MCCSecretAgentController_generateSSCertificateWithContext_completion___block_invoke;
   aBlock[3] = &unk_1E8458230;
   v21 = v22;
-  v9 = v7;
+  v9 = completionCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__MCCSecretAgentController_generateSSCertificateWithContext_completion___block_invoke_2;
@@ -502,7 +502,7 @@ void __64__MCCSecretAgentController_storeSecItemsWithContext_completion___block_
   v15[3] = &unk_1E84581E0;
   v14 = v12;
   v16 = v14;
-  [v13 generateSSCertificateWithContext:v6 completion:v15];
+  [v13 generateSSCertificateWithContext:contextCopy completion:v15];
 
   _Block_object_dispose(v22, 8);
 }
@@ -549,28 +549,28 @@ void __72__MCCSecretAgentController_generateSSCertificateWithContext_completion_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)signedDataFromContentData:(id)a3 senderEmail:(id)a4 recipientEmails:(id)a5 completion:(id)a6
+- (void)signedDataFromContentData:(id)data senderEmail:(id)email recipientEmails:(id)emails completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  emailCopy = email;
+  emailsCopy = emails;
+  completionCopy = completion;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy_;
   v28[4] = __Block_byref_object_dispose_;
-  v14 = self;
-  v29 = v14;
+  selfCopy = self;
+  v29 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__MCCSecretAgentController_signedDataFromContentData_senderEmail_recipientEmails_completion___block_invoke;
   aBlock[3] = &unk_1E84582A8;
   v27 = v28;
-  v15 = v13;
+  v15 = completionCopy;
   v26 = v15;
   v16 = _Block_copy(aBlock);
-  agentConnection = v14->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __93__MCCSecretAgentController_signedDataFromContentData_senderEmail_recipientEmails_completion___block_invoke_2;
@@ -584,7 +584,7 @@ void __72__MCCSecretAgentController_generateSSCertificateWithContext_completion_
   v21[3] = &unk_1E84582D0;
   v20 = v18;
   v22 = v20;
-  [v19 signedDataFromContentData:v10 senderEmail:v11 recipientEmails:v12 completion:v21];
+  [v19 signedDataFromContentData:dataCopy senderEmail:emailCopy recipientEmails:emailsCopy completion:v21];
 
   _Block_object_dispose(v28, 8);
 }
@@ -633,28 +633,28 @@ void __93__MCCSecretAgentController_signedDataFromContentData_senderEmail_recipi
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encryptedDataFromContentData:(id)a3 senderEmail:(id)a4 recipientEmails:(id)a5 completion:(id)a6
+- (void)encryptedDataFromContentData:(id)data senderEmail:(id)email recipientEmails:(id)emails completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  emailCopy = email;
+  emailsCopy = emails;
+  completionCopy = completion;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy_;
   v28[4] = __Block_byref_object_dispose_;
-  v14 = self;
-  v29 = v14;
+  selfCopy = self;
+  v29 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__MCCSecretAgentController_encryptedDataFromContentData_senderEmail_recipientEmails_completion___block_invoke;
   aBlock[3] = &unk_1E84582A8;
   v27 = v28;
-  v15 = v13;
+  v15 = completionCopy;
   v26 = v15;
   v16 = _Block_copy(aBlock);
-  agentConnection = v14->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __96__MCCSecretAgentController_encryptedDataFromContentData_senderEmail_recipientEmails_completion___block_invoke_2;
@@ -668,7 +668,7 @@ void __93__MCCSecretAgentController_signedDataFromContentData_senderEmail_recipi
   v21[3] = &unk_1E84582D0;
   v20 = v18;
   v22 = v20;
-  [v19 encryptedDataFromContentData:v10 senderEmail:v11 recipientEmails:v12 completion:v21];
+  [v19 encryptedDataFromContentData:dataCopy senderEmail:emailCopy recipientEmails:emailsCopy completion:v21];
 
   _Block_object_dispose(v28, 8);
 }
@@ -717,28 +717,28 @@ void __96__MCCSecretAgentController_encryptedDataFromContentData_senderEmail_rec
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)decryptedDataFromContentData:(id)a3 senderEmail:(id)a4 recipientEmail:(id)a5 completion:(id)a6
+- (void)decryptedDataFromContentData:(id)data senderEmail:(id)email recipientEmail:(id)recipientEmail completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  emailCopy = email;
+  recipientEmailCopy = recipientEmail;
+  completionCopy = completion;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
   v28[3] = __Block_byref_object_copy_;
   v28[4] = __Block_byref_object_dispose_;
-  v14 = self;
-  v29 = v14;
+  selfCopy = self;
+  v29 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__MCCSecretAgentController_decryptedDataFromContentData_senderEmail_recipientEmail_completion___block_invoke;
   aBlock[3] = &unk_1E84582A8;
   v27 = v28;
-  v15 = v13;
+  v15 = completionCopy;
   v26 = v15;
   v16 = _Block_copy(aBlock);
-  agentConnection = v14->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __95__MCCSecretAgentController_decryptedDataFromContentData_senderEmail_recipientEmail_completion___block_invoke_2;
@@ -752,7 +752,7 @@ void __96__MCCSecretAgentController_encryptedDataFromContentData_senderEmail_rec
   v21[3] = &unk_1E84582D0;
   v20 = v18;
   v22 = v20;
-  [v19 decryptedDataFromContentData:v10 senderEmail:v11 recipientEmail:v12 completion:v21];
+  [v19 decryptedDataFromContentData:dataCopy senderEmail:emailCopy recipientEmail:recipientEmailCopy completion:v21];
 
   _Block_object_dispose(v28, 8);
 }
@@ -801,26 +801,26 @@ void __95__MCCSecretAgentController_decryptedDataFromContentData_senderEmail_rec
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)predictCommerceEmailWithContext:(id)a3 completion:(id)a4
+- (void)predictCommerceEmailWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__MCCSecretAgentController_predictCommerceEmailWithContext_completion___block_invoke;
   aBlock[3] = &unk_1E84582F8;
   v21 = v22;
-  v9 = v7;
+  v9 = completionCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __71__MCCSecretAgentController_predictCommerceEmailWithContext_completion___block_invoke_2;
@@ -834,7 +834,7 @@ void __95__MCCSecretAgentController_decryptedDataFromContentData_senderEmail_rec
   v15[3] = &unk_1E8458320;
   v14 = v12;
   v16 = v14;
-  [v13 predictCommerceEmailWithContext:v6 completion:v15];
+  [v13 predictCommerceEmailWithContext:contextCopy completion:v15];
 
   _Block_object_dispose(v22, 8);
 }
@@ -882,10 +882,10 @@ void __71__MCCSecretAgentController_predictCommerceEmailWithContext_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)registerCategoryRulesCallbackWithNotificationTypes:(unint64_t)a3
+- (void)registerCategoryRulesCallbackWithNotificationTypes:(unint64_t)types
 {
-  v5 = [(NSXPCListener *)self->_callbackListener endpoint];
-  [(MCCSecretAgentController *)self registerCategoryRulesCallbackListener:v5 notificationTypes:a3 completion:&__block_literal_global_0];
+  endpoint = [(NSXPCListener *)self->_callbackListener endpoint];
+  [(MCCSecretAgentController *)self registerCategoryRulesCallbackListener:endpoint notificationTypes:types completion:&__block_literal_global_0];
 }
 
 void __79__MCCSecretAgentController_registerCategoryRulesCallbackWithNotificationTypes___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -901,26 +901,26 @@ void __79__MCCSecretAgentController_registerCategoryRulesCallbackWithNotificatio
   }
 }
 
-- (void)registerCategoryRulesCallbackListener:(id)a3 notificationTypes:(unint64_t)a4 completion:(id)a5
+- (void)registerCategoryRulesCallbackListener:(id)listener notificationTypes:(unint64_t)types completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  listenerCopy = listener;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy_;
   v24[4] = __Block_byref_object_dispose_;
-  v10 = self;
-  v25 = v10;
+  selfCopy = self;
+  v25 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__MCCSecretAgentController_registerCategoryRulesCallbackListener_notificationTypes_completion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v23 = v24;
-  v11 = v9;
+  v11 = completionCopy;
   v22 = v11;
   v12 = _Block_copy(aBlock);
-  agentConnection = v10->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __95__MCCSecretAgentController_registerCategoryRulesCallbackListener_notificationTypes_completion___block_invoke_2;
@@ -934,7 +934,7 @@ void __79__MCCSecretAgentController_registerCategoryRulesCallbackWithNotificatio
   v17[3] = &unk_1E8458208;
   v16 = v14;
   v18 = v16;
-  [v15 registerCategoryRulesCallbackListener:v8 notificationTypes:a4 completion:v17];
+  [v15 registerCategoryRulesCallbackListener:listenerCopy notificationTypes:types completion:v17];
 
   _Block_object_dispose(v24, 8);
 }
@@ -980,26 +980,26 @@ void __95__MCCSecretAgentController_registerCategoryRulesCallbackListener_notifi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)syncRecategorizationRules:(id)a3 completion:(id)a4
+- (void)syncRecategorizationRules:(id)rules completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  rulesCopy = rules;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy_;
   v22[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v23 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__MCCSecretAgentController_syncRecategorizationRules_completion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v21 = v22;
-  v9 = v7;
+  v9 = completionCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __65__MCCSecretAgentController_syncRecategorizationRules_completion___block_invoke_2;
@@ -1013,7 +1013,7 @@ void __95__MCCSecretAgentController_registerCategoryRulesCallbackListener_notifi
   v15[3] = &unk_1E8458208;
   v14 = v12;
   v16 = v14;
-  [v13 syncRecategorizationRules:v6 completion:v15];
+  [v13 syncRecategorizationRules:rulesCopy completion:v15];
 
   _Block_object_dispose(v22, 8);
 }
@@ -1059,25 +1059,25 @@ void __65__MCCSecretAgentController_syncRecategorizationRules_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)isModelReadyWithCompletion:(id)a3
+- (void)isModelReadyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v5 = self;
-  v20 = v5;
+  selfCopy = self;
+  v20 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__MCCSecretAgentController_isModelReadyWithCompletion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v18 = v19;
-  v6 = v4;
+  v6 = completionCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
-  agentConnection = v5->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __55__MCCSecretAgentController_isModelReadyWithCompletion___block_invoke_2;
@@ -1144,25 +1144,25 @@ void __55__MCCSecretAgentController_isModelReadyWithCompletion___block_invoke_74
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invokeModelDownloadWithCompletion:(id)a3
+- (void)invokeModelDownloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v5 = self;
-  v20 = v5;
+  selfCopy = self;
+  v20 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__MCCSecretAgentController_invokeModelDownloadWithCompletion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v18 = v19;
-  v6 = v4;
+  v6 = completionCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
-  agentConnection = v5->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__MCCSecretAgentController_invokeModelDownloadWithCompletion___block_invoke_2;
@@ -1229,26 +1229,26 @@ void __62__MCCSecretAgentController_invokeModelDownloadWithCompletion___block_in
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getIABCategoryID:(id)a3 completion:(id)a4
+- (void)getIABCategoryID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy_;
   v21[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v22 = v8;
+  selfCopy = self;
+  v22 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__MCCSecretAgentController_getIABCategoryID_completion___block_invoke;
   aBlock[3] = &unk_1E8458368;
   v20 = v21;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__MCCSecretAgentController_getIABCategoryID_completion___block_invoke_2;
@@ -1263,7 +1263,7 @@ void __62__MCCSecretAgentController_invokeModelDownloadWithCompletion___block_in
     v14[2] = __56__MCCSecretAgentController_getIABCategoryID_completion___block_invoke_77;
     v14[3] = &unk_1E8458390;
     v15 = v12;
-    [v13 getIABCategoryID:v6 completion:v14];
+    [v13 getIABCategoryID:dCopy completion:v14];
   }
 
   _Block_object_dispose(v21, 8);
@@ -1310,33 +1310,33 @@ void __56__MCCSecretAgentController_getIABCategoryID_completion___block_invoke_7
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPKCategoryForDomain:(id)a3 completion:(id)a4
+- (void)getPKCategoryForDomain:(id)domain completion:(id)completion
 {
   domainHelperInterface = self->_domainHelperInterface;
-  v6 = a4;
-  v6[2](v6, [(DomainHelperInterface *)domainHelperInterface getPKCategoryForDomain:a3], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(DomainHelperInterface *)domainHelperInterface getPKCategoryForDomain:domain], 0);
 }
 
-- (void)isPersonalDomain:(id)a3 completion:(id)a4
+- (void)isPersonalDomain:(id)domain completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy_;
   v21[4] = __Block_byref_object_dispose_;
-  v8 = self;
-  v22 = v8;
+  selfCopy = self;
+  v22 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__MCCSecretAgentController_isPersonalDomain_completion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v20 = v21;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v10 = _Block_copy(aBlock);
-  agentConnection = v8->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__MCCSecretAgentController_isPersonalDomain_completion___block_invoke_2;
@@ -1351,7 +1351,7 @@ void __56__MCCSecretAgentController_getIABCategoryID_completion___block_invoke_7
     v14[2] = __56__MCCSecretAgentController_isPersonalDomain_completion___block_invoke_78;
     v14[3] = &unk_1E8458208;
     v15 = v12;
-    [v13 isPersonalDomain:v6 completion:v14];
+    [v13 isPersonalDomain:domainCopy completion:v14];
   }
 
   _Block_object_dispose(v21, 8);
@@ -1405,25 +1405,25 @@ void __56__MCCSecretAgentController_isPersonalDomain_completion___block_invoke_7
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getBlackPearlVersionWithCompletion:(id)a3
+- (void)getBlackPearlVersionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v5 = self;
-  v20 = v5;
+  selfCopy = self;
+  v20 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__MCCSecretAgentController_getBlackPearlVersionWithCompletion___block_invoke;
   aBlock[3] = &unk_1E84582F8;
   v18 = v19;
-  v6 = v4;
+  v6 = completionCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
-  agentConnection = v5->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__MCCSecretAgentController_getBlackPearlVersionWithCompletion___block_invoke_2;
@@ -1485,11 +1485,11 @@ void __63__MCCSecretAgentController_getBlackPearlVersionWithCompletion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)isCategorizationSupportedForLocale:(id)a3 completion:(id)a4
+- (void)isCategorizationSupportedForLocale:(id)locale completion:(id)completion
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [_TtC12icloudMCCKit23LanguageDetectionHelper isCategorizationSupportedFor:a3];
+  completionCopy = completion;
+  v6 = [_TtC12icloudMCCKit23LanguageDetectionHelper isCategorizationSupportedFor:locale];
   v7 = _MCCLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1498,29 +1498,29 @@ void __63__MCCSecretAgentController_getBlackPearlVersionWithCompletion___block_i
     _os_log_impl(&dword_1D3703000, v7, OS_LOG_TYPE_DEFAULT, "isCategorizationSupportedForLocale: %d", v9, 8u);
   }
 
-  v5[2](v5, v6, 0);
+  completionCopy[2](completionCopy, v6, 0);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pingWithcompletion:(id)a3
+- (void)pingWithcompletion:(id)withcompletion
 {
-  v4 = a3;
+  withcompletionCopy = withcompletion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v5 = self;
-  v20 = v5;
+  selfCopy = self;
+  v20 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__MCCSecretAgentController_pingWithcompletion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v18 = v19;
-  v6 = v4;
+  v6 = withcompletionCopy;
   v17 = v6;
   v7 = _Block_copy(aBlock);
-  agentConnection = v5->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __47__MCCSecretAgentController_pingWithcompletion___block_invoke_2;
@@ -1585,25 +1585,25 @@ void __47__MCCSecretAgentController_pingWithcompletion___block_invoke_81(uint64_
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearAllUserOverridesWithTimestamp:(double)a3 completion:(id)a4
+- (void)clearAllUserOverridesWithTimestamp:(double)timestamp completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy_;
   v21[4] = __Block_byref_object_dispose_;
-  v7 = self;
-  v22 = v7;
+  selfCopy = self;
+  v22 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__MCCSecretAgentController_clearAllUserOverridesWithTimestamp_completion___block_invoke;
   aBlock[3] = &unk_1E84581B8;
   v20 = v21;
-  v8 = v6;
+  v8 = completionCopy;
   v19 = v8;
   v9 = _Block_copy(aBlock);
-  agentConnection = v7->_agentConnection;
+  agentConnection = selfCopy->_agentConnection;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __74__MCCSecretAgentController_clearAllUserOverridesWithTimestamp_completion___block_invoke_2;
@@ -1617,7 +1617,7 @@ void __47__MCCSecretAgentController_pingWithcompletion___block_invoke_81(uint64_
   v14[3] = &unk_1E8458208;
   v13 = v11;
   v15 = v13;
-  [v12 clearAllUserOverridesWithTimestamp:v14 completion:a3];
+  [v12 clearAllUserOverridesWithTimestamp:v14 completion:timestamp];
 
   _Block_object_dispose(v21, 8);
 }
@@ -1663,12 +1663,12 @@ void __74__MCCSecretAgentController_clearAllUserOverridesWithTimestamp_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)syncNewOldCategoryTimestamps:(id)a3
+- (void)syncNewOldCategoryTimestamps:(id)timestamps
 {
   agentConnection = self->_agentConnection;
-  v4 = a3;
+  timestampsCopy = timestamps;
   v5 = [(MCCSecretAgentConnection *)agentConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_84];
-  [v5 syncNewOldCategoryTimestamps:v4];
+  [v5 syncNewOldCategoryTimestamps:timestampsCopy];
 }
 
 void __57__MCCSecretAgentController_syncNewOldCategoryTimestamps___block_invoke(uint64_t a1, void *a2)
@@ -1681,12 +1681,12 @@ void __57__MCCSecretAgentController_syncNewOldCategoryTimestamps___block_invoke(
   }
 }
 
-- (void)notifyWebRule:(id)a3
+- (void)notifyWebRule:(id)rule
 {
   agentConnection = self->_agentConnection;
-  v4 = a3;
+  ruleCopy = rule;
   v5 = [(MCCSecretAgentConnection *)agentConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_86];
-  [v5 notifyWebRule:v4];
+  [v5 notifyWebRule:ruleCopy];
 }
 
 void __42__MCCSecretAgentController_notifyWebRule___block_invoke(uint64_t a1, void *a2)
@@ -1699,12 +1699,12 @@ void __42__MCCSecretAgentController_notifyWebRule___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)notifyFullSyncCategoryOverrides:(id)a3
+- (void)notifyFullSyncCategoryOverrides:(id)overrides
 {
   agentConnection = self->_agentConnection;
-  v4 = a3;
+  overridesCopy = overrides;
   v5 = [(MCCSecretAgentConnection *)agentConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_88];
-  [v5 notifyFullSyncCategoryOverrides:v4];
+  [v5 notifyFullSyncCategoryOverrides:overridesCopy];
 }
 
 void __60__MCCSecretAgentController_notifyFullSyncCategoryOverrides___block_invoke(uint64_t a1, void *a2)
@@ -1717,12 +1717,12 @@ void __60__MCCSecretAgentController_notifyFullSyncCategoryOverrides___block_invo
   }
 }
 
-- (void)notifyNewOldCategoryChange:(id)a3 timestamp:(double)a4
+- (void)notifyNewOldCategoryChange:(id)change timestamp:(double)timestamp
 {
   agentConnection = self->_agentConnection;
-  v6 = a3;
+  changeCopy = change;
   v7 = [(MCCSecretAgentConnection *)agentConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_90];
-  [v7 notifyNewOldCategoryChange:v6 timestamp:a4];
+  [v7 notifyNewOldCategoryChange:changeCopy timestamp:timestamp];
 }
 
 void __65__MCCSecretAgentController_notifyNewOldCategoryChange_timestamp___block_invoke(uint64_t a1, void *a2)

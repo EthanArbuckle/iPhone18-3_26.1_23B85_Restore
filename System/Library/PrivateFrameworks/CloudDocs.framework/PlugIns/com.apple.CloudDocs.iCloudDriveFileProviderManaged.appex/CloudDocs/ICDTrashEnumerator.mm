@@ -1,17 +1,17 @@
 @interface ICDTrashEnumerator
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4;
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page;
 @end
 
 @implementation ICDTrashEnumerator
 
-- (void)enumerateItemsForObserver:(id)a3 startingAtPage:(id)a4
+- (void)enumerateItemsForObserver:(id)observer startingAtPage:(id)page
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  observerCopy = observer;
+  pageCopy = page;
+  v7 = pageCopy;
+  if (pageCopy)
   {
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" from page %llu", [v6 br_pageTokenOffset]);
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" from page %llu", [pageCopy br_pageTokenOffset]);
   }
 
   else
@@ -38,20 +38,20 @@
   v21[1] = 3221225472;
   v21[2] = sub_100004738;
   v21[3] = &unk_100044700;
-  v11 = v5;
+  v11 = observerCopy;
   v22 = v11;
   v12 = v7;
   v23 = v12;
   v13 = objc_retainBlock(v21);
-  v14 = [v11 suggestedPageSize];
-  if (v14 >= 0xC8)
+  suggestedPageSize = [v11 suggestedPageSize];
+  if (suggestedPageSize >= 0xC8)
   {
     v15 = 200;
   }
 
   else
   {
-    v15 = v14;
+    v15 = suggestedPageSize;
   }
 
   v16 = +[BRDaemonConnection defaultConnection];

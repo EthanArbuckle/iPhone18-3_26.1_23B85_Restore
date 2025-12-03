@@ -1,43 +1,43 @@
 @interface RMConfigurationEventStreamSubscription
-- (RMConfigurationEventStreamSubscription)initWithToken:(unint64_t)a3 configurationTypes:(id)a4 eventPublisher:(id)a5;
+- (RMConfigurationEventStreamSubscription)initWithToken:(unint64_t)token configurationTypes:(id)types eventPublisher:(id)publisher;
 - (id)reportDetails;
-- (void)applyChangedConfigurationsTypes:(id)a3;
+- (void)applyChangedConfigurationsTypes:(id)types;
 @end
 
 @implementation RMConfigurationEventStreamSubscription
 
-- (RMConfigurationEventStreamSubscription)initWithToken:(unint64_t)a3 configurationTypes:(id)a4 eventPublisher:(id)a5
+- (RMConfigurationEventStreamSubscription)initWithToken:(unint64_t)token configurationTypes:(id)types eventPublisher:(id)publisher
 {
-  v8 = a4;
-  v9 = a5;
+  typesCopy = types;
+  publisherCopy = publisher;
   v18.receiver = self;
   v18.super_class = RMConfigurationEventStreamSubscription;
   v10 = [(RMConfigurationEventStreamSubscription *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_token = a3;
-    v12 = [NSNumber numberWithUnsignedLongLong:a3];
-    v13 = [v12 stringValue];
+    v10->_token = token;
+    v12 = [NSNumber numberWithUnsignedLongLong:token];
+    stringValue = [v12 stringValue];
     identifier = v11->_identifier;
-    v11->_identifier = v13;
+    v11->_identifier = stringValue;
 
-    v15 = [v8 copy];
+    v15 = [typesCopy copy];
     configurationTypes = v11->_configurationTypes;
     v11->_configurationTypes = v15;
 
-    objc_storeStrong(&v11->_eventPublisher, a5);
+    objc_storeStrong(&v11->_eventPublisher, publisher);
   }
 
   return v11;
 }
 
-- (void)applyChangedConfigurationsTypes:(id)a3
+- (void)applyChangedConfigurationsTypes:(id)types
 {
   v11 = @"ConfigurationTypes";
-  v12 = a3;
-  v4 = a3;
-  v5 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+  typesCopy = types;
+  typesCopy2 = types;
+  v5 = [NSDictionary dictionaryWithObjects:&typesCopy forKeys:&v11 count:1];
   v6 = +[RMLog configurationEventStreamSubscription];
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@
   }
 
   v7 = _CFXPCCreateXPCObjectFromCFObject();
-  v8 = [(RMConfigurationEventStreamSubscription *)self eventPublisher];
+  eventPublisher = [(RMConfigurationEventStreamSubscription *)self eventPublisher];
   [(RMConfigurationEventStreamSubscription *)self token];
   xpc_event_publisher_fire();
 }
@@ -56,16 +56,16 @@
 - (id)reportDetails
 {
   v11[0] = @"Location";
-  v3 = [(RMConfigurationEventStreamSubscription *)self identifier];
-  v4 = [NSString stringWithFormat:@"XPCEvent/%@", v3];
+  identifier = [(RMConfigurationEventStreamSubscription *)self identifier];
+  v4 = [NSString stringWithFormat:@"XPCEvent/%@", identifier];
   v12[0] = v4;
   v11[1] = @"Identifier";
-  v5 = [(RMConfigurationEventStreamSubscription *)self identifier];
-  v12[1] = v5;
+  identifier2 = [(RMConfigurationEventStreamSubscription *)self identifier];
+  v12[1] = identifier2;
   v11[2] = @"ConfigurationTypes";
-  v6 = [(RMConfigurationEventStreamSubscription *)self configurationTypes];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+  configurationTypes = [(RMConfigurationEventStreamSubscription *)self configurationTypes];
+  allObjects = [configurationTypes allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
   v12[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
 

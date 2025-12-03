@@ -1,5 +1,5 @@
 @interface SBAutoUnlockComposableRule
-- (BOOL)shouldAutoUnlockForSource:(int)a3;
+- (BOOL)shouldAutoUnlockForSource:(int)source;
 - (SBAutoUnlockComposableRule)init;
 @end
 
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (BOOL)shouldAutoUnlockForSource:(int)a3
+- (BOOL)shouldAutoUnlockForSource:(int)source
 {
   v8 = 0;
   v9 = &v8;
@@ -31,7 +31,7 @@
   v6[1] = 3221225472;
   v6[2] = __56__SBAutoUnlockComposableRule_shouldAutoUnlockForSource___block_invoke;
   v6[3] = &unk_2783B58E8;
-  v7 = a3;
+  sourceCopy = source;
   v6[4] = &v8;
   [(NSMutableSet *)rules enumerateObjectsUsingBlock:v6];
   v4 = *(v9 + 24);

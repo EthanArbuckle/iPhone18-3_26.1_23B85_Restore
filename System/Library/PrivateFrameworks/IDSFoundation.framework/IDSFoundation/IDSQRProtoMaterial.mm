@@ -1,32 +1,32 @@
 @interface IDSQRProtoMaterial
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addMaterialInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMaterialInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoMaterial
 
-- (void)addMaterialInfo:(id)a3
+- (void)addMaterialInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   materialInfos = self->_materialInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!materialInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_materialInfos;
     self->_materialInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     materialInfos = self->_materialInfos;
   }
 
-  [(NSMutableArray *)materialInfos addObject:v4];
+  [(NSMutableArray *)materialInfos addObject:infoCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoMaterial;
   v4 = [(IDSQRProtoMaterial *)&v8 description];
-  v5 = [(IDSQRProtoMaterial *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoMaterial *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_ownerParticipantId];
-  [v3 setObject:v4 forKey:@"owner_participant_id"];
+  [dictionary setObject:v4 forKey:@"owner_participant_id"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_receiverParticipantId];
-  [v3 setObject:v5 forKey:@"receiver_participant_id"];
+  [dictionary setObject:v5 forKey:@"receiver_participant_id"];
 
   if ([(NSMutableArray *)self->_materialInfos count])
   {
@@ -73,8 +73,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -83,16 +83,16 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"material_info"];
+    [dictionary setObject:v6 forKey:@"material_info"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteUint64Field();
   PBDataWriterWriteUint64Field();
   v12 = 0u;
@@ -127,19 +127,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[1] = self->_ownerParticipantId;
-  v9 = v4;
-  v4[2] = self->_receiverParticipantId;
+  toCopy = to;
+  toCopy[1] = self->_ownerParticipantId;
+  v9 = toCopy;
+  toCopy[2] = self->_receiverParticipantId;
   if ([(IDSQRProtoMaterial *)self materialInfosCount])
   {
     [v9 clearMaterialInfos];
-    v5 = [(IDSQRProtoMaterial *)self materialInfosCount];
-    if (v5)
+    materialInfosCount = [(IDSQRProtoMaterial *)self materialInfosCount];
+    if (materialInfosCount)
     {
-      v6 = v5;
+      v6 = materialInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(IDSQRProtoMaterial *)self materialInfoAtIndex:i];
@@ -149,10 +149,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_ownerParticipantId;
   v5[2] = self->_receiverParticipantId;
   v13 = 0u;
@@ -175,7 +175,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addMaterialInfo:v11];
 
         ++v10;
@@ -191,13 +191,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_ownerParticipantId == v4[1] && self->_receiverParticipantId == v4[2])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_ownerParticipantId == equalCopy[1] && self->_receiverParticipantId == equalCopy[2])
   {
     materialInfos = self->_materialInfos;
-    if (materialInfos | v4[3])
+    if (materialInfos | equalCopy[3])
     {
       v6 = [(NSMutableArray *)materialInfos isEqual:?];
     }
@@ -216,17 +216,17 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_ownerParticipantId = *(v4 + 1);
-  self->_receiverParticipantId = *(v4 + 2);
+  fromCopy = from;
+  self->_ownerParticipantId = *(fromCopy + 1);
+  self->_receiverParticipantId = *(fromCopy + 2);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

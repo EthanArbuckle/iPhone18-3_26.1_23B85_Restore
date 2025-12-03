@@ -1,5 +1,5 @@
 @interface HMDDataStreamBulkSendOpenSessionResult
-- (HMDDataStreamBulkSendOpenSessionResult)initWithSession:(id)a3 payload:(id)a4;
+- (HMDDataStreamBulkSendOpenSessionResult)initWithSession:(id)session payload:(id)payload;
 - (id)attributeDescriptions;
 @end
 
@@ -9,12 +9,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDDataStreamBulkSendOpenSessionResult *)self session];
-  v5 = [v3 initWithName:@"session" value:v4];
+  session = [(HMDDataStreamBulkSendOpenSessionResult *)self session];
+  v5 = [v3 initWithName:@"session" value:session];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDDataStreamBulkSendOpenSessionResult *)self payload];
-  v8 = [v6 initWithName:@"payload" value:v7];
+  payload = [(HMDDataStreamBulkSendOpenSessionResult *)self payload];
+  v8 = [v6 initWithName:@"payload" value:payload];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -23,18 +23,18 @@
   return v9;
 }
 
-- (HMDDataStreamBulkSendOpenSessionResult)initWithSession:(id)a3 payload:(id)a4
+- (HMDDataStreamBulkSendOpenSessionResult)initWithSession:(id)session payload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = HMDDataStreamBulkSendOpenSessionResult;
   v9 = [(HMDDataStreamBulkSendOpenSessionResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_session, a3);
-    objc_storeStrong(&v10->_payload, a4);
+    objc_storeStrong(&v9->_session, session);
+    objc_storeStrong(&v10->_payload, payload);
   }
 
   return v10;

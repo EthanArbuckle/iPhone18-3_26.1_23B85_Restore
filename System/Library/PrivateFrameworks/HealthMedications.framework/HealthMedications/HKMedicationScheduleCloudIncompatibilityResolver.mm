@@ -1,8 +1,8 @@
 @interface HKMedicationScheduleCloudIncompatibilityResolver
 - (HKMedicationScheduleCloudIncompatibilityResolver)init;
-- (HKMedicationScheduleCloudIncompatibilityResolver)initWithHealthStore:(id)a3 accountStore:(id)a4 deviceRequest:(id)a5;
-- (void)checkIncompatibilityForSchedule:(id)a3 completion:(id)a4;
-- (void)resolveIncompatibleSchedulesWithCompletion:(id)a3;
+- (HKMedicationScheduleCloudIncompatibilityResolver)initWithHealthStore:(id)store accountStore:(id)accountStore deviceRequest:(id)request;
+- (void)checkIncompatibilityForSchedule:(id)schedule completion:(id)completion;
+- (void)resolveIncompatibleSchedulesWithCompletion:(id)completion;
 @end
 
 @implementation HKMedicationScheduleCloudIncompatibilityResolver
@@ -17,23 +17,23 @@
   return 0;
 }
 
-- (HKMedicationScheduleCloudIncompatibilityResolver)initWithHealthStore:(id)a3 accountStore:(id)a4 deviceRequest:(id)a5
+- (HKMedicationScheduleCloudIncompatibilityResolver)initWithHealthStore:(id)store accountStore:(id)accountStore deviceRequest:(id)request
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  accountStoreCopy = accountStore;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = HKMedicationScheduleCloudIncompatibilityResolver;
   v12 = [(HKMedicationScheduleBaseIncompatibilityResolver *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    v14 = [[HKACAccountDeviceStore alloc] initWithAccountStore:v10];
+    objc_storeStrong(&v12->_healthStore, store);
+    v14 = [[HKACAccountDeviceStore alloc] initWithAccountStore:accountStoreCopy];
     accountDeviceStore = v13->_accountDeviceStore;
     v13->_accountDeviceStore = v14;
 
-    objc_storeStrong(&v13->_deviceRequest, a5);
+    objc_storeStrong(&v13->_deviceRequest, request);
     v16 = [[HKMedicationScheduleControl alloc] initWithHealthStore:v13->_healthStore];
     scheduleControl = v13->_scheduleControl;
     v13->_scheduleControl = v16;
@@ -42,9 +42,9 @@
   return v13;
 }
 
-- (void)resolveIncompatibleSchedulesWithCompletion:(id)a3
+- (void)resolveIncompatibleSchedulesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   v33[0] = 0;
   v33[1] = v33;
@@ -59,8 +59,8 @@
   v31[4] = __Block_byref_object_dispose_;
   v32 = 0;
   dispatch_group_enter(v5);
-  v6 = [(HKMedicationScheduleCloudIncompatibilityResolver *)self accountDeviceStore];
-  v7 = [(HKMedicationScheduleCloudIncompatibilityResolver *)self deviceRequest];
+  accountDeviceStore = [(HKMedicationScheduleCloudIncompatibilityResolver *)self accountDeviceStore];
+  deviceRequest = [(HKMedicationScheduleCloudIncompatibilityResolver *)self deviceRequest];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __95__HKMedicationScheduleCloudIncompatibilityResolver_resolveIncompatibleSchedulesWithCompletion___block_invoke;
@@ -70,7 +70,7 @@
   v27[4] = self;
   v8 = v5;
   v28 = v8;
-  [v6 fetchDevicesWithRequest:v7 completion:v27];
+  [accountDeviceStore fetchDevicesWithRequest:deviceRequest completion:v27];
 
   v25[0] = 0;
   v25[1] = v25;
@@ -85,7 +85,7 @@
   v23[4] = __Block_byref_object_dispose_;
   v24 = 0;
   dispatch_group_enter(v8);
-  v9 = [(HKMedicationScheduleCloudIncompatibilityResolver *)self scheduleControl];
+  scheduleControl = [(HKMedicationScheduleCloudIncompatibilityResolver *)self scheduleControl];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __95__HKMedicationScheduleCloudIncompatibilityResolver_resolveIncompatibleSchedulesWithCompletion___block_invoke_328;
@@ -95,9 +95,9 @@
   v19[4] = self;
   v10 = v8;
   v20 = v10;
-  [v9 fetchAllSchedulesWithCompletion:v19];
+  [scheduleControl fetchAllSchedulesWithCompletion:v19];
 
-  v11 = [(HKHealthStore *)self->_healthStore clientQueue];
+  clientQueue = [(HKHealthStore *)self->_healthStore clientQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__HKMedicationScheduleCloudIncompatibilityResolver_resolveIncompatibleSchedulesWithCompletion___block_invoke_329;
@@ -107,9 +107,9 @@
   v17 = v33;
   v18 = v31;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
-  dispatch_group_notify(v10, v11, v13);
+  v14 = completionCopy;
+  v12 = completionCopy;
+  dispatch_group_notify(v10, clientQueue, v13);
 
   _Block_object_dispose(v23, 8);
   _Block_object_dispose(v25, 8);
@@ -170,22 +170,22 @@ void __95__HKMedicationScheduleCloudIncompatibilityResolver_resolveIncompatibleS
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkIncompatibilityForSchedule:(id)a3 completion:(id)a4
+- (void)checkIncompatibilityForSchedule:(id)schedule completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKMedicationScheduleCloudIncompatibilityResolver *)self accountDeviceStore];
-  v9 = [(HKMedicationScheduleCloudIncompatibilityResolver *)self deviceRequest];
+  scheduleCopy = schedule;
+  completionCopy = completion;
+  accountDeviceStore = [(HKMedicationScheduleCloudIncompatibilityResolver *)self accountDeviceStore];
+  deviceRequest = [(HKMedicationScheduleCloudIncompatibilityResolver *)self deviceRequest];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __95__HKMedicationScheduleCloudIncompatibilityResolver_checkIncompatibilityForSchedule_completion___block_invoke;
   v12[3] = &unk_2796C9FC8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v8 fetchDevicesWithRequest:v9 completion:v12];
+  v13 = scheduleCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = scheduleCopy;
+  [accountDeviceStore fetchDevicesWithRequest:deviceRequest completion:v12];
 }
 
 void __95__HKMedicationScheduleCloudIncompatibilityResolver_checkIncompatibilityForSchedule_completion___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,16 +1,16 @@
 @interface DTOSLogArgumentPlaceholderDescription
-- (DTOSLogArgumentPlaceholderDescription)initWithPlaceholderToken:(id)a3;
+- (DTOSLogArgumentPlaceholderDescription)initWithPlaceholderToken:(id)token;
 @end
 
 @implementation DTOSLogArgumentPlaceholderDescription
 
-- (DTOSLogArgumentPlaceholderDescription)initWithPlaceholderToken:(id)a3
+- (DTOSLogArgumentPlaceholderDescription)initWithPlaceholderToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v31.receiver = self;
   v31.super_class = DTOSLogArgumentPlaceholderDescription;
   v6 = [(DTOSLogArgumentPlaceholderDescription *)&v31 init];
-  objc_storeStrong(&v6->_placeholderToken, a3);
+  objc_storeStrong(&v6->_placeholderToken, token);
   v7 = [(NSString *)v6->_placeholderToken componentsSeparatedByString:@":"];
   if (![v7 count])
   {
@@ -18,7 +18,7 @@
     placeholderKey = v6->_placeholderKey;
     v6->_placeholderKey = &stru_285A19CB8;
 
-    v14 = v5;
+    v14 = tokenCopy;
     goto LABEL_13;
   }
 

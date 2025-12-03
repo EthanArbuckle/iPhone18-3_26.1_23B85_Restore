@@ -1,30 +1,30 @@
 @interface UIKBViewControllerBackedKeyView
-- (UIKBViewControllerBackedKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6;
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5;
+- (UIKBViewControllerBackedKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits;
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window;
 - (void)addChildViewControllerIfNeeded;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDrawFrame:(CGRect)a3;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
+- (void)setDrawFrame:(CGRect)frame;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
 @end
 
 @implementation UIKBViewControllerBackedKeyView
 
-- (UIKBViewControllerBackedKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6
+- (UIKBViewControllerBackedKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitsCopy = traits;
   v17.receiver = self;
   v17.super_class = UIKBViewControllerBackedKeyView;
-  v14 = [(UIKBKeyView *)&v17 initWithFrame:a4 keyplane:a5 key:v13 screenTraits:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(UIKBKeyView *)&v17 initWithFrame:keyplane keyplane:key key:traitsCopy screenTraits:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    [(UIView *)v14 setUserInteractionEnabled:1];
-    [(UIKBKeyView *)v15 setScreenTraits:v13];
+    [(UIView *)height setUserInteractionEnabled:1];
+    [(UIKBKeyView *)v15 setScreenTraits:traitsCopy];
   }
 
   return v15;
@@ -37,8 +37,8 @@
     [(UIViewController *)self->_childViewController willMoveToParentViewController:0];
   }
 
-  v3 = [(UIViewController *)self->_childViewController view];
-  [v3 removeFromSuperview];
+  view = [(UIViewController *)self->_childViewController view];
+  [view removeFromSuperview];
 
   if (self->_hasAncestorViewController)
   {
@@ -50,11 +50,11 @@
   [(UIKBKeyView *)&v4 dealloc];
 }
 
-- (void)setDrawFrame:(CGRect)a3
+- (void)setDrawFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = UIKBViewControllerBackedKeyView;
-  [(UIKBKeyView *)&v4 setDrawFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIKBKeyView *)&v4 setDrawFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self setNeedsLayout];
 }
 
@@ -63,19 +63,19 @@
   v28[4] = *MEMORY[0x1E69E9840];
   if (!self->_childViewController)
   {
-    v3 = [(UIKBViewControllerBackedKeyView *)self contentViewController];
+    contentViewController = [(UIKBViewControllerBackedKeyView *)self contentViewController];
     childViewController = self->_childViewController;
-    self->_childViewController = v3;
+    self->_childViewController = contentViewController;
   }
 
-  v5 = [(UIView *)self _viewControllerForAncestor];
-  v6 = [(UIView *)self window];
-  self->_hasAncestorViewController = v5 != 0;
-  v7 = [(UIViewController *)self->_childViewController view];
-  v8 = v7;
-  if (v7)
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  window = [(UIView *)self window];
+  self->_hasAncestorViewController = _viewControllerForAncestor != 0;
+  view = [(UIViewController *)self->_childViewController view];
+  v8 = view;
+  if (view)
   {
-    v9 = v6 == 0;
+    v9 = window == 0;
   }
 
   else
@@ -89,55 +89,55 @@
 
   else
   {
-    v10 = [(UIViewController *)self->_childViewController view];
-    v11 = [v10 window];
-    v12 = [(UIView *)self window];
+    view2 = [(UIViewController *)self->_childViewController view];
+    window2 = [view2 window];
+    window3 = [(UIView *)self window];
 
-    if (v11 != v12)
+    if (window2 != window3)
     {
-      v27 = v6;
+      v27 = window;
       if (self->_hasAncestorViewController)
       {
-        [v5 addChildViewController:self->_childViewController];
+        [_viewControllerForAncestor addChildViewController:self->_childViewController];
       }
 
-      v13 = [(UIViewController *)self->_childViewController view];
-      [(UIView *)self addSubview:v13];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v26 = [v13 topAnchor];
-      v25 = [(UIView *)self topAnchor];
-      v24 = [v26 constraintEqualToAnchor:v25];
+      view3 = [(UIViewController *)self->_childViewController view];
+      [(UIView *)self addSubview:view3];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+      topAnchor = [view3 topAnchor];
+      topAnchor2 = [(UIView *)self topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v28[0] = v24;
-      v23 = [v13 leadingAnchor];
-      v22 = [(UIView *)self leadingAnchor];
-      v21 = [v23 constraintEqualToAnchor:v22];
+      leadingAnchor = [view3 leadingAnchor];
+      leadingAnchor2 = [(UIView *)self leadingAnchor];
+      v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v28[1] = v21;
-      v20 = [v13 trailingAnchor];
-      v14 = [(UIView *)self trailingAnchor];
-      v15 = [v20 constraintEqualToAnchor:v14];
+      trailingAnchor = [view3 trailingAnchor];
+      trailingAnchor2 = [(UIView *)self trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v28[2] = v15;
-      v16 = [v13 bottomAnchor];
-      v17 = [(UIView *)self bottomAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      bottomAnchor = [view3 bottomAnchor];
+      bottomAnchor2 = [(UIView *)self bottomAnchor];
+      v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v28[3] = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
 
       [MEMORY[0x1E69977A0] activateConstraints:v19];
       if (self->_hasAncestorViewController)
       {
-        [(UIViewController *)self->_childViewController didMoveToParentViewController:v5];
+        [(UIViewController *)self->_childViewController didMoveToParentViewController:_viewControllerForAncestor];
       }
 
-      v6 = v27;
+      window = v27;
     }
   }
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
   v5.receiver = self;
   v5.super_class = UIKBViewControllerBackedKeyView;
-  [(UIKBKeyView *)&v5 updateForKeyplane:a3 key:a4];
+  [(UIKBKeyView *)&v5 updateForKeyplane:keyplane key:key];
   [(UIKBViewControllerBackedKeyView *)self addChildViewControllerIfNeeded];
 }
 
@@ -149,25 +149,25 @@
   [(UIKBViewControllerBackedKeyView *)self addChildViewControllerIfNeeded];
 }
 
-- (id)_hitTest:(CGPoint)a3 withEvent:(id)a4 windowServerHitTestWindow:(id)a5
+- (id)_hitTest:(CGPoint)test withEvent:(id)event windowServerHitTestWindow:(id)window
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  if (_UIApplicationIsStickerPickerService() && +[UIKeyboard canShowEmojiKeyboardInsideStickerPickerService]&& ([(UIView *)self window], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 != v10))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  windowCopy = window;
+  if (_UIApplicationIsStickerPickerService() && +[UIKeyboard canShowEmojiKeyboardInsideStickerPickerService]&& ([(UIView *)self window], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 != windowCopy))
   {
-    v12 = [(UIView *)self window];
+    window = [(UIView *)self window];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = UIKBViewControllerBackedKeyView;
-    v12 = [(UIView *)&v15 _hitTest:v9 withEvent:v10 windowServerHitTestWindow:x, y];
+    window = [(UIView *)&v15 _hitTest:eventCopy withEvent:windowCopy windowServerHitTestWindow:x, y];
   }
 
-  v13 = v12;
+  v13 = window;
 
   return v13;
 }

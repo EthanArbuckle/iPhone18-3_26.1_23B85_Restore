@@ -1,11 +1,11 @@
 @interface NSProgressPublisherProxy
 - (NSFileAccessNode)itemLocation;
-- (NSProgressPublisherProxy)initWithForwarder:(id)a3 onConnection:(id)a4 publisherID:(id)a5 values:(id)a6;
+- (NSProgressPublisherProxy)initWithForwarder:(id)forwarder onConnection:(id)connection publisherID:(id)d values:(id)values;
 - (id)publisherID;
 - (void)dealloc;
-- (void)observeUserInfoValue:(id)a3 forKey:(id)a4;
-- (void)observeValues:(id)a3 forKeys:(id)a4;
-- (void)setItemLocation:(id)a3;
+- (void)observeUserInfoValue:(id)value forKey:(id)key;
+- (void)observeValues:(id)values forKeys:(id)keys;
+- (void)setItemLocation:(id)location;
 @end
 
 @implementation NSProgressPublisherProxy
@@ -33,7 +33,7 @@
   return v2;
 }
 
-- (NSProgressPublisherProxy)initWithForwarder:(id)a3 onConnection:(id)a4 publisherID:(id)a5 values:(id)a6
+- (NSProgressPublisherProxy)initWithForwarder:(id)forwarder onConnection:(id)connection publisherID:(id)d values:(id)values
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -41,22 +41,22 @@
   v10 = [(NSProgressPublisherProxy *)&v12 init];
   if (v10)
   {
-    v10->_forwarder = a3;
-    v10->_publisherID = a5;
-    v10->_connection = a4;
-    v10->_values = [a6 copy];
+    v10->_forwarder = forwarder;
+    v10->_publisherID = d;
+    v10->_connection = connection;
+    v10->_values = [values copy];
   }
 
   return v10;
 }
 
-- (void)setItemLocation:(id)a3
+- (void)setItemLocation:(id)location
 {
   v6[5] = *MEMORY[0x1E69E9840];
   itemLocation = self->_itemLocation;
-  if (itemLocation != a3)
+  if (itemLocation != location)
   {
-    if (!a3)
+    if (!location)
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -68,12 +68,12 @@
     }
 
     [(NSFileAccessNode *)itemLocation removeProgressPublisher:self];
-    self->_itemLocation = a3;
-    [a3 addProgressPublisher:self];
+    self->_itemLocation = location;
+    [location addProgressPublisher:self];
   }
 }
 
-- (void)observeUserInfoValue:(id)a3 forKey:(id)a4
+- (void)observeUserInfoValue:(id)value forKey:(id)key
 {
   userInfo = self->_values->_userInfo;
   if (!userInfo)
@@ -82,18 +82,18 @@
     userInfo = self->_values->_userInfo;
   }
 
-  [(NSMutableDictionary *)userInfo setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)userInfo setObject:value forKeyedSubscript:key];
 }
 
-- (void)observeValues:(id)a3 forKeys:(id)a4
+- (void)observeValues:(id)values forKeys:(id)keys
 {
-  v7 = [a3 count];
-  v8 = [a4 count];
+  v7 = [values count];
+  v8 = [keys count];
   if (v7 && v7 == v8)
   {
     for (i = 0; i != v7; ++i)
     {
-      -[NSProgressValues setValue:forKey:](self->_values, "setValue:forKey:", [a3 objectAtIndexedSubscript:i], objc_msgSend(a4, "objectAtIndexedSubscript:", i));
+      -[NSProgressValues setValue:forKey:](self->_values, "setValue:forKey:", [values objectAtIndexedSubscript:i], objc_msgSend(keys, "objectAtIndexedSubscript:", i));
     }
   }
 }

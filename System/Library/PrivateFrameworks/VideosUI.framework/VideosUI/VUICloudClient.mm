@@ -1,7 +1,7 @@
 @interface VUICloudClient
 + (id)sharedInstance;
 - (VUICloudClient)init;
-- (void)loadArtworkURLsForPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4;
+- (void)loadArtworkURLsForPurchaseHistoryIDs:(id)ds completionHandler:(id)handler;
 @end
 
 @implementation VUICloudClient
@@ -40,14 +40,14 @@ void __32__VUICloudClient_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)loadArtworkURLsForPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4
+- (void)loadArtworkURLsForPurchaseHistoryIDs:(id)ds completionHandler:(id)handler
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v38 = objc_alloc_init(MEMORY[0x1E69E43C8]);
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
   v54[2] = __73__VUICloudClient_loadArtworkURLsForPurchaseHistoryIDs_completionHandler___block_invoke;
@@ -57,23 +57,23 @@ void __32__VUICloudClient_sharedInstance__block_invoke()
   v55 = v10;
   v11 = v9;
   v56 = v11;
-  [v6 enumerateObjectsUsingBlock:v54];
+  [dsCopy enumerateObjectsUsingBlock:v54];
   v12 = [v11 count];
   v13 = [v10 count];
   v14 = v13;
   if (v12)
   {
-    v7[2](v7, v11, v13 == 0);
+    handlerCopy[2](handlerCopy, v11, v13 == 0);
   }
 
   if (v14)
   {
     val = self;
-    v36 = v7;
-    v37 = v6;
-    v34 = [v7 copy];
+    v36 = handlerCopy;
+    v37 = dsCopy;
+    v34 = [handlerCopy copy];
     v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = [v10 count];
     if (v17)
     {
@@ -92,7 +92,7 @@ void __32__VUICloudClient_sharedInstance__block_invoke()
         }
 
         v21 = [v10 subarrayWithRange:{v19, v20}];
-        [v16 addObject:v21];
+        [array addObject:v21];
         v18 -= v20;
         v19 += v20;
       }
@@ -112,7 +112,7 @@ void __32__VUICloudClient_sharedInstance__block_invoke()
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v24 = v16;
+    v24 = array;
     v25 = [v24 countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (v25)
     {
@@ -161,8 +161,8 @@ void __32__VUICloudClient_sharedInstance__block_invoke()
     objc_destroyWeak(&v43);
     objc_destroyWeak(&location);
 
-    v7 = v36;
-    v6 = v37;
+    handlerCopy = v36;
+    dsCopy = v37;
   }
 }
 

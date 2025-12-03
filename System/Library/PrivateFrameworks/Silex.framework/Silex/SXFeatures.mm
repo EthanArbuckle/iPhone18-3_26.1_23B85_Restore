@@ -1,20 +1,20 @@
 @interface SXFeatures
-- (SXFeatures)initWithNewAdsEnabled:(BOOL)a3 limitTextSelectionEnabled:(BOOL)a4 textSelectionLimit:(int)a5 writingToolsDisabled:(BOOL)a6;
+- (SXFeatures)initWithNewAdsEnabled:(BOOL)enabled limitTextSelectionEnabled:(BOOL)selectionEnabled textSelectionLimit:(int)limit writingToolsDisabled:(BOOL)disabled;
 @end
 
 @implementation SXFeatures
 
-- (SXFeatures)initWithNewAdsEnabled:(BOOL)a3 limitTextSelectionEnabled:(BOOL)a4 textSelectionLimit:(int)a5 writingToolsDisabled:(BOOL)a6
+- (SXFeatures)initWithNewAdsEnabled:(BOOL)enabled limitTextSelectionEnabled:(BOOL)selectionEnabled textSelectionLimit:(int)limit writingToolsDisabled:(BOOL)disabled
 {
   v11.receiver = self;
   v11.super_class = SXFeatures;
   result = [(SXFeatures *)&v11 init];
   if (result)
   {
-    result->_newAdsEnabled = a3;
-    result->_limitTextSelectionEnabled = a4;
-    result->_textSelectionLimit = a5;
-    result->_writingToolsDisabled = a6;
+    result->_newAdsEnabled = enabled;
+    result->_limitTextSelectionEnabled = selectionEnabled;
+    result->_textSelectionLimit = limit;
+    result->_writingToolsDisabled = disabled;
   }
 
   return result;

@@ -7,16 +7,16 @@
 
 - (void)pl_adjustIndexesForInsertions:()PLAdditions
 {
-  v2 = [a1 pl_indexSetAdjustedForInsertions:?];
-  [a1 removeAllIndexes];
-  [a1 addIndexes:v2];
+  v2 = [self pl_indexSetAdjustedForInsertions:?];
+  [self removeAllIndexes];
+  [self addIndexes:v2];
 }
 
 - (void)pl_adjustIndexesForDeletions:()PLAdditions
 {
-  v2 = [a1 pl_indexSetAdjustedForDeletions:?];
-  [a1 removeAllIndexes];
-  [a1 addIndexes:v2];
+  v2 = [self pl_indexSetAdjustedForDeletions:?];
+  [self removeAllIndexes];
+  [self addIndexes:v2];
 }
 
 @end

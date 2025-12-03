@@ -1,84 +1,84 @@
 @interface IDSDeliveryPipelineParameter
-- (IDSDeliveryPipelineParameter)initWithInfo:(id)a3 uris:(id)a4 service:(id)a5 maxSize:(unint64_t)a6;
+- (IDSDeliveryPipelineParameter)initWithInfo:(id)info uris:(id)uris service:(id)service maxSize:(unint64_t)size;
 - (id)description;
 @end
 
 @implementation IDSDeliveryPipelineParameter
 
-- (IDSDeliveryPipelineParameter)initWithInfo:(id)a3 uris:(id)a4 service:(id)a5 maxSize:(unint64_t)a6
+- (IDSDeliveryPipelineParameter)initWithInfo:(id)info uris:(id)uris service:(id)service maxSize:(unint64_t)size
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  infoCopy = info;
+  urisCopy = uris;
+  serviceCopy = service;
   v57.receiver = self;
   v57.super_class = IDSDeliveryPipelineParameter;
   v13 = [(IDSDeliveryPipelineParameter *)&v57 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_uris, a4);
-    v15 = [v10 objectForKey:IDSDeliveryFromIDKey];
+    objc_storeStrong(&v13->_uris, uris);
+    v15 = [infoCopy objectForKey:IDSDeliveryFromIDKey];
     fromID = v14->_fromID;
     v14->_fromID = v15;
 
-    v17 = [v10 objectForKey:IDSDeliveryFromShortHandle];
+    v17 = [infoCopy objectForKey:IDSDeliveryFromShortHandle];
     fromShortHandle = v14->_fromShortHandle;
     v14->_fromShortHandle = v17;
 
-    objc_storeStrong(&v14->_service, a5);
-    v19 = [v10 objectForKey:IDSDeliveryFromIdentityKey];
+    objc_storeStrong(&v14->_service, service);
+    v19 = [infoCopy objectForKey:IDSDeliveryFromIdentityKey];
     fromIdentity = v14->_fromIdentity;
     v14->_fromIdentity = v19;
 
-    v21 = [v10 objectForKey:IDSDeliveryAlwaysSkipSelfKey];
+    v21 = [infoCopy objectForKey:IDSDeliveryAlwaysSkipSelfKey];
     v14->_alwaysSkipSelf = [v21 BOOLValue];
 
-    v22 = [v10 objectForKey:IDSDeliveryAlwaysIncludeSelfKey];
+    v22 = [infoCopy objectForKey:IDSDeliveryAlwaysIncludeSelfKey];
     v14->_alwaysIncludeSelf = [v22 BOOLValue];
 
-    v23 = [v10 objectForKey:IDSDeliveryDisallowQueryRefreshKey];
+    v23 = [infoCopy objectForKey:IDSDeliveryDisallowQueryRefreshKey];
     v14->_disallowQueryRefresh = [v23 BOOLValue];
 
-    v24 = [v10 objectForKey:IDSDeliveryRegistrationPropertiesKey];
+    v24 = [infoCopy objectForKey:IDSDeliveryRegistrationPropertiesKey];
     registrationProperties = v14->_registrationProperties;
     v14->_registrationProperties = v24;
 
-    v26 = [v10 objectForKey:IDSDeliveryDataToEncryptKey];
+    v26 = [infoCopy objectForKey:IDSDeliveryDataToEncryptKey];
     dataToEncrypt = v14->_dataToEncrypt;
     v14->_dataToEncrypt = v26;
 
-    v28 = [v10 objectForKey:IDSDeliveryEncryptionAttributesKey];
+    v28 = [infoCopy objectForKey:IDSDeliveryEncryptionAttributesKey];
     attributes = v14->_attributes;
     v14->_attributes = v28;
 
-    v30 = [v10 objectForKey:IDSDeliveryKeyTransparencyURIVerificationMapKey];
+    v30 = [infoCopy objectForKey:IDSDeliveryKeyTransparencyURIVerificationMapKey];
     ktURIVerificationMap = v14->_ktURIVerificationMap;
     v14->_ktURIVerificationMap = v30;
 
     v14->_forceAttachmentMessage = +[IMUserDefaults isForcingAttachmentMessage];
     v14->_forceOnePerFanout = +[IMUserDefaults isForcingOnePerFanout];
-    v32 = [v10 objectForKey:IDSDeliveryWantsFirewallDonation];
+    v32 = [infoCopy objectForKey:IDSDeliveryWantsFirewallDonation];
     v14->_wantsFirewallDonation = [v32 BOOLValue];
 
-    v14->_maxSize = a6;
-    v33 = [v10 objectForKey:IDSDeliveryMessageKey];
+    v14->_maxSize = size;
+    v33 = [infoCopy objectForKey:IDSDeliveryMessageKey];
     messageToSend = v14->_messageToSend;
     v14->_messageToSend = v33;
 
-    v35 = [(IDSPeerMessage *)v14->_messageToSend wantsDeliveryStatus];
-    v14->_wantsDeliveryStatus = [v35 BOOLValue];
+    wantsDeliveryStatus = [(IDSPeerMessage *)v14->_messageToSend wantsDeliveryStatus];
+    v14->_wantsDeliveryStatus = [wantsDeliveryStatus BOOLValue];
 
     v14->_wantsCertifiedDelivery = [(IDSPeerMessage *)v14->_messageToSend wantsCertifiedDelivery];
-    v36 = [v10 objectForKey:IDSDeliveryWillSendBlockKey];
+    v36 = [infoCopy objectForKey:IDSDeliveryWillSendBlockKey];
     willSendBlock = v14->_willSendBlock;
     v14->_willSendBlock = v36;
 
-    v38 = [v10 objectForKey:IDSDeliveryPrioritizedTokenListKey];
+    v38 = [infoCopy objectForKey:IDSDeliveryPrioritizedTokenListKey];
     prioritizedTokenList = v14->_prioritizedTokenList;
     v14->_prioritizedTokenList = v38;
 
-    v40 = [(IDSPeerMessage *)v14->_messageToSend messageID];
-    v41 = [v40 copy];
+    messageID = [(IDSPeerMessage *)v14->_messageToSend messageID];
+    v41 = [messageID copy];
     guid = v14->_guid;
     v14->_guid = v41;
 
@@ -112,8 +112,8 @@
     }
 
     v14->_encryptionType = v48;
-    v49 = [(IDSPeerMessage *)v14->_messageToSend deliveryMinimumTimeDelay];
-    if (v49)
+    deliveryMinimumTimeDelay = [(IDSPeerMessage *)v14->_messageToSend deliveryMinimumTimeDelay];
+    if (deliveryMinimumTimeDelay)
     {
       v14->_isScheduled = 1;
       p_isScheduled = &v14->_isScheduled;
@@ -121,8 +121,8 @@
 
     else
     {
-      v51 = [(IDSPeerMessage *)v14->_messageToSend deliveryMinimumTime];
-      v14->_isScheduled = v51 != 0;
+      deliveryMinimumTime = [(IDSPeerMessage *)v14->_messageToSend deliveryMinimumTime];
+      v14->_isScheduled = deliveryMinimumTime != 0;
       p_isScheduled = &v14->_isScheduled;
     }
 
@@ -133,19 +133,19 @@
 
     else
     {
-      v53 = [(IDSPeerMessage *)v14->_messageToSend messageBody];
-      v54 = [v53 objectForKey:IDSCommandKey];
+      messageBody = [(IDSPeerMessage *)v14->_messageToSend messageBody];
+      v54 = [messageBody objectForKey:IDSCommandKey];
       v52 = [v54 isEqualToNumber:&off_100C3CDD8];
     }
 
-    if ([(IDSDeliveryPipelineParameter *)v14 overrideSendOnePerTokenForService:v12])
+    if ([(IDSDeliveryPipelineParameter *)v14 overrideSendOnePerTokenForService:serviceCopy])
     {
       v14->_sendOnePerToken = 1;
     }
 
     else
     {
-      v55 = [v10 objectForKey:IDSDeliverySendOnePerTokenKey];
+      v55 = [infoCopy objectForKey:IDSDeliverySendOnePerTokenKey];
       v14->_sendOnePerToken = ([v55 BOOLValue] | v52) & 1;
     }
   }

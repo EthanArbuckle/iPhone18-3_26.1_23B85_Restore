@@ -1,7 +1,7 @@
 @interface AFUIAutoCompleteMappingController
 + (id)sharedInstance;
-- (id)heuristicStringsForTextContentTypes:(id)a3;
-- (id)heuristicTextContentTypeForHints:(id)a3 textContentTypesToSkip:(id)a4;
+- (id)heuristicStringsForTextContentTypes:(id)types;
+- (id)heuristicTextContentTypeForHints:(id)hints textContentTypesToSkip:(id)skip;
 - (void)_cachePlistMappings;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __51__AFUIAutoCompleteMappingController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -37,9 +37,9 @@ uint64_t __51__AFUIAutoCompleteMappingController_sharedInstance__block_invoke(ui
   {
     v11[10] = v2;
     v11[11] = v3;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cache = self->_cache;
-    self->_cache = v5;
+    self->_cache = dictionary;
 
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = [v7 pathForResource:@"ABAutoCompleteMappings" ofType:@"plist"];
@@ -97,20 +97,20 @@ void __56__AFUIAutoCompleteMappingController__cachePlistMappings__block_invoke(u
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)heuristicStringsForTextContentTypes:(id)a3
+- (id)heuristicStringsForTextContentTypes:(id)types
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v5 = [v4 mutableCopy];
+    v5 = [typesCopy mutableCopy];
     if (self->_cache)
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v6 = v4;
+      v6 = typesCopy;
       v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v7)
       {
@@ -151,7 +151,7 @@ void __56__AFUIAutoCompleteMappingController__cachePlistMappings__block_invoke(u
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v4;
+    v14 = typesCopy;
     v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v15)
     {
@@ -199,11 +199,11 @@ void __56__AFUIAutoCompleteMappingController__cachePlistMappings__block_invoke(u
   return v13;
 }
 
-- (id)heuristicTextContentTypeForHints:(id)a3 textContentTypesToSkip:(id)a4
+- (id)heuristicTextContentTypeForHints:(id)hints textContentTypesToSkip:(id)skip
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  hintsCopy = hints;
+  skipCopy = skip;
+  if ([hintsCopy count])
   {
     [(AFUIAutoCompleteMappingController *)self _cachePlistMappings];
     v15 = 0;
@@ -217,8 +217,8 @@ void __56__AFUIAutoCompleteMappingController__cachePlistMappings__block_invoke(u
     v11[1] = 3221225472;
     v11[2] = __93__AFUIAutoCompleteMappingController_heuristicTextContentTypeForHints_textContentTypesToSkip___block_invoke;
     v11[3] = &unk_1E8424D48;
-    v12 = v7;
-    v13 = v6;
+    v12 = skipCopy;
+    v13 = hintsCopy;
     v14 = &v15;
     [(NSMutableDictionary *)cache enumerateKeysAndObjectsUsingBlock:v11];
     v9 = v16[5];

@@ -1,34 +1,34 @@
 @interface WLKServerRoute
 - (NSURL)URL;
-- (WLKServerRoute)initWithDictionary:(id)a3 routeName:(id)a4;
+- (WLKServerRoute)initWithDictionary:(id)dictionary routeName:(id)name;
 @end
 
 @implementation WLKServerRoute
 
-- (WLKServerRoute)initWithDictionary:(id)a3 routeName:(id)a4
+- (WLKServerRoute)initWithDictionary:(id)dictionary routeName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = WLKServerRoute;
   v8 = [(WLKServerRoute *)&v22 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [nameCopy copy];
     routeName = v8->_routeName;
     v8->_routeName = v9;
 
-    v11 = [v6 wlk_stringForKey:@"host"];
+    v11 = [dictionaryCopy wlk_stringForKey:@"host"];
     v12 = [v11 copy];
     host = v8->_host;
     v8->_host = v12;
 
-    v14 = [v6 wlk_stringForKey:@"path"];
+    v14 = [dictionaryCopy wlk_stringForKey:@"path"];
     v15 = [v14 copy];
     path = v8->_path;
     v8->_path = v15;
 
-    v17 = [v6 wlk_stringForKey:@"requiredParamsType"];
+    v17 = [dictionaryCopy wlk_stringForKey:@"requiredParamsType"];
     v18 = [v17 copy];
     requiredKVPType = v8->_requiredKVPType;
     v8->_requiredKVPType = v18;
@@ -39,7 +39,7 @@
       v8->_requiredKVPType = @"Default";
     }
 
-    v8->_requiresLocation = [v6 wlk_BOOLForKey:@"needsLocation" defaultValue:1];
+    v8->_requiresLocation = [dictionaryCopy wlk_BOOLForKey:@"needsLocation" defaultValue:1];
   }
 
   return v8;

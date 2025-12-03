@@ -1,18 +1,18 @@
 @interface CCDatabaseUpdateBuilder
-- (CCDatabaseUpdateBuilder)initWithTableName:(id)a3;
+- (CCDatabaseUpdateBuilder)initWithTableName:(id)name;
 - (id)build;
-- (void)setCommandCriterion:(id)a3;
-- (void)setReturningColumns:(id)a3;
-- (void)setValue:(id)a3 forColumn:(id)a4;
+- (void)setCommandCriterion:(id)criterion;
+- (void)setReturningColumns:(id)columns;
+- (void)setValue:(id)value forColumn:(id)column;
 @end
 
 @implementation CCDatabaseUpdateBuilder
 
-- (CCDatabaseUpdateBuilder)initWithTableName:(id)a3
+- (CCDatabaseUpdateBuilder)initWithTableName:(id)name
 {
   v9.receiver = self;
   v9.super_class = CCDatabaseUpdateBuilder;
-  v3 = [(CCDatabaseCommandBuilder *)&v9 initWithTableName:a3];
+  v3 = [(CCDatabaseCommandBuilder *)&v9 initWithTableName:name];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -29,33 +29,33 @@
 
 - (id)build
 {
-  v3 = [(CCDatabaseCommandBuilder *)self tableName];
+  tableName = [(CCDatabaseCommandBuilder *)self tableName];
   columnNames = self->_columnNames;
   columnValues = self->_columnValues;
-  v6 = [(CCDatabaseCommandBuilder *)self criterion];
-  v7 = [CCSQLCommandGenerator updateWithTableName:v3 columnNames:columnNames columnValues:columnValues criterion:v6 returningColumns:self->_returningColumns];
+  criterion = [(CCDatabaseCommandBuilder *)self criterion];
+  v7 = [CCSQLCommandGenerator updateWithTableName:tableName columnNames:columnNames columnValues:columnValues criterion:criterion returningColumns:self->_returningColumns];
 
   return v7;
 }
 
-- (void)setCommandCriterion:(id)a3
+- (void)setCommandCriterion:(id)criterion
 {
   v3.receiver = self;
   v3.super_class = CCDatabaseUpdateBuilder;
-  [(CCDatabaseCommandBuilder *)&v3 setCommandCriterion:a3];
+  [(CCDatabaseCommandBuilder *)&v3 setCommandCriterion:criterion];
 }
 
-- (void)setValue:(id)a3 forColumn:(id)a4
+- (void)setValue:(id)value forColumn:(id)column
 {
   columnNames = self->_columnNames;
-  v7 = a3;
-  [(NSMutableArray *)columnNames addObject:a4];
-  [(NSMutableArray *)self->_columnValues addObject:v7];
+  valueCopy = value;
+  [(NSMutableArray *)columnNames addObject:column];
+  [(NSMutableArray *)self->_columnValues addObject:valueCopy];
 }
 
-- (void)setReturningColumns:(id)a3
+- (void)setReturningColumns:(id)columns
 {
-  v4 = [a3 copy];
+  v4 = [columns copy];
   returningColumns = self->_returningColumns;
   self->_returningColumns = v4;
 

@@ -6,7 +6,7 @@
 
 - (id)searchUIGridSectionModel_heightDimensionWithColumnCount:()SearchUIGridSectionModel
 {
-  if ([a1 searchUIGridSectionModel_useEstimatedHeight])
+  if ([self searchUIGridSectionModel_useEstimatedHeight])
   {
     v1 = [MEMORY[0x1E6995558] estimatedDimension:1.0];
   }

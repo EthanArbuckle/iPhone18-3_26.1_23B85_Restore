@@ -1,47 +1,47 @@
 @interface InstallAttributionParams
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation InstallAttributionParams
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(InstallAttributionParams *)self appAdamId];
-    v7 = [v5 appAdamId];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    appAdamId = [(InstallAttributionParams *)self appAdamId];
+    appAdamId2 = [v5 appAdamId];
+    if ([appAdamId isEqual:appAdamId2])
     {
-      v8 = [(InstallAttributionParams *)self adNetworkId];
-      v9 = [v5 adNetworkId];
-      if ([v8 isEqual:v9])
+      adNetworkId = [(InstallAttributionParams *)self adNetworkId];
+      adNetworkId2 = [v5 adNetworkId];
+      if ([adNetworkId isEqual:adNetworkId2])
       {
-        v10 = [(InstallAttributionParams *)self campaignId];
-        v11 = [v5 campaignId];
-        if ([v10 isEqual:v11])
+        campaignId = [(InstallAttributionParams *)self campaignId];
+        campaignId2 = [v5 campaignId];
+        if ([campaignId isEqual:campaignId2])
         {
-          v12 = [(InstallAttributionParams *)self timestamp];
-          v25 = [v5 timestamp];
-          v26 = v12;
-          if ([v12 isEqual:v25])
+          timestamp = [(InstallAttributionParams *)self timestamp];
+          timestamp2 = [v5 timestamp];
+          v26 = timestamp;
+          if ([timestamp isEqual:timestamp2])
           {
-            v13 = [(InstallAttributionParams *)self impressionId];
-            v23 = [v5 impressionId];
-            v24 = v13;
-            if ([v13 isEqual:v23])
+            impressionId = [(InstallAttributionParams *)self impressionId];
+            impressionId2 = [v5 impressionId];
+            v24 = impressionId;
+            if ([impressionId isEqual:impressionId2])
             {
-              v14 = [(InstallAttributionParams *)self attributionSignature];
-              v15 = [v5 attributionSignature];
-              v22 = v14;
-              v16 = v14;
-              v17 = v15;
-              if ([v16 isEqual:v15])
+              attributionSignature = [(InstallAttributionParams *)self attributionSignature];
+              attributionSignature2 = [v5 attributionSignature];
+              v22 = attributionSignature;
+              v16 = attributionSignature;
+              v17 = attributionSignature2;
+              if ([v16 isEqual:attributionSignature2])
               {
-                v21 = [(InstallAttributionParams *)self localTimestamp];
-                v20 = [v5 localTimestamp];
-                v18 = [v21 isEqual:v20];
+                localTimestamp = [(InstallAttributionParams *)self localTimestamp];
+                localTimestamp2 = [v5 localTimestamp];
+                v18 = [localTimestamp isEqual:localTimestamp2];
               }
 
               else

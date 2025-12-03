@@ -2,17 +2,17 @@
 + (OS_os_log)log;
 + (id)localDiagnosticsDirectoryURL;
 + (id)remoteInterface;
-- (EMDiagnosticInfoGatherer)initWithRemoteConnection:(id)a3;
-- (id)_moveLocalDiagnosticsTo:(id)a3;
-- (id)registerDiagnosticInfoProvider:(id)a3;
+- (EMDiagnosticInfoGatherer)initWithRemoteConnection:(id)connection;
+- (id)_moveLocalDiagnosticsTo:(id)to;
+- (id)registerDiagnosticInfoProvider:(id)provider;
 - (void)_registerSelfAsProviderIfRequired;
-- (void)databaseStatisticsWithCompletionHandler:(id)a3;
+- (void)databaseStatisticsWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchControllerStatusWithCompletionHandler:(id)a3;
-- (void)gatherDiagnosticsWithOptions:(unint64_t)a3 completionHandler:(id)a4;
-- (void)gatherIndexingDiagnosticsWithRedaction:(int64_t)a3 completionHandler:(id)a4;
-- (void)provideDiagnosticsAt:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)searchableIndexDatabaseStatisticsWithCompletionHandler:(id)a3;
+- (void)fetchControllerStatusWithCompletionHandler:(id)handler;
+- (void)gatherDiagnosticsWithOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)gatherIndexingDiagnosticsWithRedaction:(int64_t)redaction completionHandler:(id)handler;
+- (void)provideDiagnosticsAt:(id)at options:(unint64_t)options completion:(id)completion;
+- (void)searchableIndexDatabaseStatisticsWithCompletionHandler:(id)handler;
 @end
 
 @implementation EMDiagnosticInfoGatherer
@@ -39,16 +39,16 @@
   os_unfair_lock_lock(&self->_providerCancelableLock);
   if (!self->_providerCancelable)
   {
-    v3 = [(EMDiagnosticInfoGatherer *)self connection];
-    v4 = [v3 reattemptingRemoteObjectProxy];
-    v5 = [(EMDiagnosticInfoGatherer *)self providerQueue];
-    v6 = [(EMDiagnosticInfoGatherer *)self ef_onScheduler:v5];
+    connection = [(EMDiagnosticInfoGatherer *)self connection];
+    reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+    providerQueue = [(EMDiagnosticInfoGatherer *)self providerQueue];
+    v6 = [(EMDiagnosticInfoGatherer *)self ef_onScheduler:providerQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__EMDiagnosticInfoGatherer__registerSelfAsProviderIfRequired__block_invoke;
     v7[3] = &unk_1E826CD58;
     v7[4] = self;
-    [v4 registerDiagnosticInfoProvider:v6 completionHandler:v7];
+    [reattemptingRemoteObjectProxy registerDiagnosticInfoProvider:v6 completionHandler:v7];
   }
 
   os_unfair_lock_unlock(&self->_providerCancelableLock);
@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = __31__EMDiagnosticInfoGatherer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_12 != -1)
   {
     dispatch_once(&log_onceToken_12, block);
@@ -96,16 +96,16 @@ uint64_t __61__EMDiagnosticInfoGatherer__registerSelfAsProviderIfRequired__block
   return v5;
 }
 
-- (EMDiagnosticInfoGatherer)initWithRemoteConnection:(id)a3
+- (EMDiagnosticInfoGatherer)initWithRemoteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = EMDiagnosticInfoGatherer;
   v6 = [(EMDiagnosticInfoGatherer *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.email.EMDiagnosticInfoGatherer.queue"];
     providerQueue = v7->_providerQueue;
     v7->_providerQueue = v8;
@@ -181,8 +181,8 @@ void __53__EMDiagnosticInfoGatherer_initWithRemoteConnection___block_invoke_2(ui
 - (void)dealloc
 {
   os_unfair_lock_lock(&self->_providerCancelableLock);
-  v3 = [(EMDiagnosticInfoGatherer *)self providerCancelable];
-  [v3 cancel];
+  providerCancelable = [(EMDiagnosticInfoGatherer *)self providerCancelable];
+  [providerCancelable cancel];
 
   os_unfair_lock_unlock(&self->_providerCancelableLock);
   v4.receiver = self;
@@ -190,19 +190,19 @@ void __53__EMDiagnosticInfoGatherer_initWithRemoteConnection___block_invoke_2(ui
   [(EMDiagnosticInfoGatherer *)&v4 dealloc];
 }
 
-- (id)registerDiagnosticInfoProvider:(id)a3
+- (id)registerDiagnosticInfoProvider:(id)provider
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providerCopy = provider;
   [(EMDiagnosticInfoGatherer *)self _registerSelfAsProviderIfRequired];
-  v5 = [(EMDiagnosticInfoGatherer *)self providers];
+  providers = [(EMDiagnosticInfoGatherer *)self providers];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__EMDiagnosticInfoGatherer_registerDiagnosticInfoProvider___block_invoke;
   v20[3] = &unk_1E826CD80;
-  v6 = v4;
+  v6 = providerCopy;
   v21 = v6;
-  [v5 performWhileLocked:v20];
+  [providers performWhileLocked:v20];
 
   v7 = objc_alloc_init(MEMORY[0x1E699B7F8]);
   objc_initWeak(&location, self);
@@ -217,11 +217,11 @@ void __53__EMDiagnosticInfoGatherer_initWithRemoteConnection___block_invoke_2(ui
   v9 = [EMDiagnosticInfoGatherer log:v13];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 providerObjectID];
+    providerObjectID = [v8 providerObjectID];
     *buf = 134218242;
     v23 = v8;
     v24 = 2114;
-    v25 = v10;
+    v25 = providerObjectID;
     _os_log_impl(&dword_1C6655000, v9, OS_LOG_TYPE_DEFAULT, "Registerd EMDiagnosticInfoProviding: %p, objectID: %{public}@", buf, 0x16u);
   }
 
@@ -249,26 +249,26 @@ void __59__EMDiagnosticInfoGatherer_registerDiagnosticInfoProvider___block_invok
   }
 }
 
-- (void)fetchControllerStatusWithCompletionHandler:(id)a3
+- (void)fetchControllerStatusWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(EMDiagnosticInfoGatherer *)self connection];
-  v5 = [v4 reattemptingRemoteObjectProxy];
-  [v5 fetchControllerStatusWithCompletionHandler:v6];
+  handlerCopy = handler;
+  connection = [(EMDiagnosticInfoGatherer *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy fetchControllerStatusWithCompletionHandler:handlerCopy];
 }
 
-- (void)gatherDiagnosticsWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)gatherDiagnosticsWithOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(EMDiagnosticInfoGatherer *)self connection];
-  v8 = [v7 reattemptingRemoteObjectProxy];
+  handlerCopy = handler;
+  connection = [(EMDiagnosticInfoGatherer *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandler___block_invoke;
   v10[3] = &unk_1E826CDA8;
-  v9 = v6;
+  v9 = handlerCopy;
   v11 = v9;
-  [v8 gatherDiagnosticsWithOptions:a3 completionHandler:v10];
+  [reattemptingRemoteObjectProxy gatherDiagnosticsWithOptions:options completionHandler:v10];
 }
 
 void __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -278,41 +278,41 @@ void __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandl
   (*(v2 + 16))(v2);
 }
 
-- (void)databaseStatisticsWithCompletionHandler:(id)a3
+- (void)databaseStatisticsWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(EMDiagnosticInfoGatherer *)self connection];
-  v5 = [v4 reattemptingRemoteObjectProxy];
-  [v5 databaseStatisticsWithCompletionHandler:v6];
+  handlerCopy = handler;
+  connection = [(EMDiagnosticInfoGatherer *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy databaseStatisticsWithCompletionHandler:handlerCopy];
 }
 
-- (void)searchableIndexDatabaseStatisticsWithCompletionHandler:(id)a3
+- (void)searchableIndexDatabaseStatisticsWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(EMDiagnosticInfoGatherer *)self connection];
-  v5 = [v4 reattemptingRemoteObjectProxy];
-  [v5 searchableIndexDatabaseStatisticsWithCompletionHandler:v6];
+  handlerCopy = handler;
+  connection = [(EMDiagnosticInfoGatherer *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy searchableIndexDatabaseStatisticsWithCompletionHandler:handlerCopy];
 }
 
-- (void)gatherIndexingDiagnosticsWithRedaction:(int64_t)a3 completionHandler:(id)a4
+- (void)gatherIndexingDiagnosticsWithRedaction:(int64_t)redaction completionHandler:(id)handler
 {
-  v8 = a4;
-  v6 = [(EMDiagnosticInfoGatherer *)self connection];
-  v7 = [v6 reattemptingRemoteObjectProxy];
-  [v7 gatherIndexingDiagnosticsWithRedaction:a3 completionHandler:v8];
+  handlerCopy = handler;
+  connection = [(EMDiagnosticInfoGatherer *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy gatherIndexingDiagnosticsWithRedaction:redaction completionHandler:handlerCopy];
 }
 
-- (void)provideDiagnosticsAt:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)provideDiagnosticsAt:(id)at options:(unint64_t)options completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v23 = a5;
-  v30 = [MEMORY[0x1E695DF70] array];
-  v7 = [(EMDiagnosticInfoGatherer *)self providers];
-  v25 = [v7 getObject];
+  atCopy = at;
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
+  providers = [(EMDiagnosticInfoGatherer *)self providers];
+  getObject = [providers getObject];
 
-  v29 = [v26 url];
-  v22 = [v29 startAccessingSecurityScopedResource];
+  v29 = [atCopy url];
+  startAccessingSecurityScopedResource = [v29 startAccessingSecurityScopedResource];
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x3032000000;
@@ -323,12 +323,12 @@ void __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandl
   v48 = [v8 initWithObject:v9];
 
   v24 = [(EMDiagnosticInfoGatherer *)self _moveLocalDiagnosticsTo:v29];
-  [v30 addObject:?];
+  [array addObject:?];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v25;
+  obj = getObject;
   v10 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v10)
   {
@@ -343,18 +343,18 @@ void __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandl
         }
 
         v13 = *(*(&v43 + 1) + 8 * i);
-        v14 = [MEMORY[0x1E699B868] promise];
+        promise = [MEMORY[0x1E699B868] promise];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __68__EMDiagnosticInfoGatherer_provideDiagnosticsAt_options_completion___block_invoke;
         v40[3] = &unk_1E826CDD0;
         v42 = v47;
         v40[4] = self;
-        v15 = v14;
+        v15 = promise;
         v41 = v15;
-        [v13 provideDiagnosticsAt:v29 options:a4 completion:v40];
-        v16 = [v15 future];
-        [v30 addObject:v16];
+        [v13 provideDiagnosticsAt:v29 options:options completion:v40];
+        future = [v15 future];
+        [array addObject:future];
       }
 
       v10 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -363,12 +363,12 @@ void __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandl
     while (v10);
   }
 
-  v17 = [MEMORY[0x1E699B7C8] combine:v30];
+  v17 = [MEMORY[0x1E699B7C8] combine:array];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __68__EMDiagnosticInfoGatherer_provideDiagnosticsAt_options_completion___block_invoke_3;
   v37[3] = &unk_1E826CDF8;
-  v18 = v23;
+  v18 = completionCopy;
   v38 = v18;
   v39 = v47;
   [v17 addSuccessBlock:v37];
@@ -384,7 +384,7 @@ void __75__EMDiagnosticInfoGatherer_gatherDiagnosticsWithOptions_completionHandl
   v31[1] = 3221225472;
   v31[2] = __68__EMDiagnosticInfoGatherer_provideDiagnosticsAt_options_completion___block_invoke_5;
   v31[3] = &unk_1E826CE48;
-  v33 = v22;
+  v33 = startAccessingSecurityScopedResource;
   v20 = v29;
   v32 = v20;
   [v17 always:v31];
@@ -462,20 +462,20 @@ void __68__EMDiagnosticInfoGatherer__logCategoryMetadataForMessageObjectIDs___bl
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_moveLocalDiagnosticsTo:(id)a3
+- (id)_moveLocalDiagnosticsTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v26 = [MEMORY[0x1E699B868] promise];
-  v25 = [objc_opt_class() localDiagnosticsDirectoryURL];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v25 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  toCopy = to;
+  promise = [MEMORY[0x1E699B868] promise];
+  localDiagnosticsDirectoryURL = [objc_opt_class() localDiagnosticsDirectoryURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [localDiagnosticsDirectoryURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
     v32 = 0;
-    v7 = [v4 contentsOfDirectoryAtURL:v25 includingPropertiesForKeys:0 options:0 error:&v32];
+    v7 = [defaultManager contentsOfDirectoryAtURL:localDiagnosticsDirectoryURL includingPropertiesForKeys:0 options:0 error:&v32];
     v8 = v32;
     v28 = 0u;
     v29 = 0u;
@@ -496,11 +496,11 @@ void __68__EMDiagnosticInfoGatherer__logCategoryMetadataForMessageObjectIDs___bl
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
-          v14 = [v13 lastPathComponent];
-          v15 = [v3 URLByAppendingPathComponent:v14];
+          lastPathComponent = [v13 lastPathComponent];
+          v15 = [toCopy URLByAppendingPathComponent:lastPathComponent];
 
           v27 = v8;
-          [v4 moveItemAtURL:v13 toURL:v15 error:&v27];
+          [defaultManager moveItemAtURL:v13 toURL:v15 error:&v27];
           v16 = v27;
 
           if (v16)
@@ -508,12 +508,12 @@ void __68__EMDiagnosticInfoGatherer__logCategoryMetadataForMessageObjectIDs___bl
             v18 = +[EMDiagnosticInfoGatherer log];
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v13 path];
-              v24 = [v15 path];
+              path2 = [v13 path];
+              path3 = [v15 path];
               *buf = 138543874;
-              v34 = v23;
+              v34 = path2;
               v35 = 2114;
-              v36 = v24;
+              v36 = path3;
               v37 = 2112;
               v38 = v16;
               _os_log_error_impl(&dword_1C6655000, v18, OS_LOG_TYPE_ERROR, "Error moving file from %{public}@ to %{public}@, error: %{error}@", buf, 0x20u);
@@ -544,21 +544,21 @@ void __68__EMDiagnosticInfoGatherer__logCategoryMetadataForMessageObjectIDs___bl
 
 LABEL_16:
 
-    v19 = [MEMORY[0x1E695DFB0] null];
-    [v26 finishWithResult:v19 error:v16];
+    null = [MEMORY[0x1E695DFB0] null];
+    [promise finishWithResult:null error:v16];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
-    [v26 finishWithResult:v17];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [promise finishWithResult:null2];
   }
 
-  v20 = [v26 future];
+  future = [promise future];
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return future;
 }
 
 @end

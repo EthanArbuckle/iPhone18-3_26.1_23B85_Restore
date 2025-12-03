@@ -1,17 +1,17 @@
 @interface NPKProtoSecureElementGetAppletsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)activationStatesAtIndex:(unint64_t)a3;
-- (unsigned)lifecycleStatesAtIndex:(unint64_t)a3;
-- (void)addAppletsBytes:(id)a3;
-- (void)addCardAIDs:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)activationStatesAtIndex:(unint64_t)index;
+- (unsigned)lifecycleStatesAtIndex:(unint64_t)index;
+- (void)addAppletsBytes:(id)bytes;
+- (void)addCardAIDs:(id)ds;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoSecureElementGetAppletsResponse
@@ -25,72 +25,72 @@
   [(NPKProtoSecureElementGetAppletsResponse *)&v3 dealloc];
 }
 
-- (void)addCardAIDs:(id)a3
+- (void)addCardAIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   cardAIDs = self->_cardAIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!cardAIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_cardAIDs;
     self->_cardAIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     cardAIDs = self->_cardAIDs;
   }
 
-  [(NSMutableArray *)cardAIDs addObject:v4];
+  [(NSMutableArray *)cardAIDs addObject:dsCopy];
 }
 
-- (unsigned)lifecycleStatesAtIndex:(unint64_t)a3
+- (unsigned)lifecycleStatesAtIndex:(unint64_t)index
 {
   p_lifecycleStates = &self->_lifecycleStates;
   count = self->_lifecycleStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_lifecycleStates->list[a3];
+  return p_lifecycleStates->list[index];
 }
 
-- (unsigned)activationStatesAtIndex:(unint64_t)a3
+- (unsigned)activationStatesAtIndex:(unint64_t)index
 {
   p_activationStates = &self->_activationStates;
   count = self->_activationStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_activationStates->list[a3];
+  return p_activationStates->list[index];
 }
 
-- (void)addAppletsBytes:(id)a3
+- (void)addAppletsBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   appletsBytes = self->_appletsBytes;
-  v8 = v4;
+  v8 = bytesCopy;
   if (!appletsBytes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appletsBytes;
     self->_appletsBytes = v6;
 
-    v4 = v8;
+    bytesCopy = v8;
     appletsBytes = self->_appletsBytes;
   }
 
-  [(NSMutableArray *)appletsBytes addObject:v4];
+  [(NSMutableArray *)appletsBytes addObject:bytesCopy];
 }
 
 - (id)description
@@ -99,46 +99,46 @@
   v8.receiver = self;
   v8.super_class = NPKProtoSecureElementGetAppletsResponse;
   v4 = [(NPKProtoSecureElementGetAppletsResponse *)&v8 description];
-  v5 = [(NPKProtoSecureElementGetAppletsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoSecureElementGetAppletsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v4 forKey:@"pending"];
+    [dictionary setObject:v4 forKey:@"pending"];
   }
 
   cardAIDs = self->_cardAIDs;
   if (cardAIDs)
   {
-    [v3 setObject:cardAIDs forKey:@"cardAIDs"];
+    [dictionary setObject:cardAIDs forKey:@"cardAIDs"];
   }
 
   v6 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v6 forKey:@"lifecycleStates"];
+  [dictionary setObject:v6 forKey:@"lifecycleStates"];
 
   v7 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v7 forKey:@"activationStates"];
+  [dictionary setObject:v7 forKey:@"activationStates"];
 
   appletsBytes = self->_appletsBytes;
   if (appletsBytes)
   {
-    [v3 setObject:appletsBytes forKey:@"appletsBytes"];
+    [dictionary setObject:appletsBytes forKey:@"appletsBytes"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     pending = self->_pending;
@@ -232,23 +232,23 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[72] = self->_pending;
-    v4[76] |= 1u;
+    toCopy[72] = self->_pending;
+    toCopy[76] |= 1u;
   }
 
-  v19 = v4;
+  v19 = toCopy;
   if ([(NPKProtoSecureElementGetAppletsResponse *)self cardAIDsCount])
   {
     [v19 clearCardAIDs];
-    v5 = [(NPKProtoSecureElementGetAppletsResponse *)self cardAIDsCount];
-    if (v5)
+    cardAIDsCount = [(NPKProtoSecureElementGetAppletsResponse *)self cardAIDsCount];
+    if (cardAIDsCount)
     {
-      v6 = v5;
+      v6 = cardAIDsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoSecureElementGetAppletsResponse *)self cardAIDsAtIndex:i];
@@ -260,10 +260,10 @@
   if ([(NPKProtoSecureElementGetAppletsResponse *)self lifecycleStatesCount])
   {
     [v19 clearLifecycleStates];
-    v9 = [(NPKProtoSecureElementGetAppletsResponse *)self lifecycleStatesCount];
-    if (v9)
+    lifecycleStatesCount = [(NPKProtoSecureElementGetAppletsResponse *)self lifecycleStatesCount];
+    if (lifecycleStatesCount)
     {
-      v10 = v9;
+      v10 = lifecycleStatesCount;
       for (j = 0; j != v10; ++j)
       {
         [v19 addLifecycleStates:{-[NPKProtoSecureElementGetAppletsResponse lifecycleStatesAtIndex:](self, "lifecycleStatesAtIndex:", j)}];
@@ -274,10 +274,10 @@
   if ([(NPKProtoSecureElementGetAppletsResponse *)self activationStatesCount])
   {
     [v19 clearActivationStates];
-    v12 = [(NPKProtoSecureElementGetAppletsResponse *)self activationStatesCount];
-    if (v12)
+    activationStatesCount = [(NPKProtoSecureElementGetAppletsResponse *)self activationStatesCount];
+    if (activationStatesCount)
     {
-      v13 = v12;
+      v13 = activationStatesCount;
       for (k = 0; k != v13; ++k)
       {
         [v19 addActivationStates:{-[NPKProtoSecureElementGetAppletsResponse activationStatesAtIndex:](self, "activationStatesAtIndex:", k)}];
@@ -288,10 +288,10 @@
   if ([(NPKProtoSecureElementGetAppletsResponse *)self appletsBytesCount])
   {
     [v19 clearAppletsBytes];
-    v15 = [(NPKProtoSecureElementGetAppletsResponse *)self appletsBytesCount];
-    if (v15)
+    appletsBytesCount = [(NPKProtoSecureElementGetAppletsResponse *)self appletsBytesCount];
+    if (appletsBytesCount)
     {
-      v16 = v15;
+      v16 = appletsBytesCount;
       for (m = 0; m != v16; ++m)
       {
         v18 = [(NPKProtoSecureElementGetAppletsResponse *)self appletsBytesAtIndex:m];
@@ -301,10 +301,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -332,7 +332,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v25 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addCardAIDs:v12];
 
         ++v11;
@@ -367,7 +367,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * v17) copyWithZone:{zone, v21}];
         [v6 addAppletsBytes:v18];
 
         ++v17;
@@ -384,26 +384,26 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(equalCopy + 76);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 76) & 1) == 0)
+  if ((*(equalCopy + 76) & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if (!self->_pending)
   {
 LABEL_3:
@@ -417,20 +417,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((*(v4 + 72) & 1) == 0)
+  if ((*(equalCopy + 72) & 1) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
   cardAIDs = self->_cardAIDs;
-  if (cardAIDs | *(v4 + 8) && ![(NSMutableArray *)cardAIDs isEqual:?]|| !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
+  if (cardAIDs | *(equalCopy + 8) && ![(NSMutableArray *)cardAIDs isEqual:?]|| !PBRepeatedUInt32IsEqual() || !PBRepeatedUInt32IsEqual())
   {
     goto LABEL_11;
   }
 
   appletsBytes = self->_appletsBytes;
-  if (appletsBytes | *(v4 + 7))
+  if (appletsBytes | *(equalCopy + 7))
   {
     v8 = [(NSMutableArray *)appletsBytes isEqual:?];
   }
@@ -463,14 +463,14 @@ LABEL_12:
   return v6 ^ [(NSMutableArray *)self->_appletsBytes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 76))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 76))
   {
-    self->_pending = *(v4 + 72);
+    self->_pending = *(fromCopy + 72);
     *&self->_has |= 1u;
   }
 
@@ -478,7 +478,7 @@ LABEL_12:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = *(v4 + 8);
+  v6 = *(fromCopy + 8);
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -504,20 +504,20 @@ LABEL_12:
     while (v8);
   }
 
-  v11 = [v5 lifecycleStatesCount];
-  if (v11)
+  lifecycleStatesCount = [v5 lifecycleStatesCount];
+  if (lifecycleStatesCount)
   {
-    v12 = v11;
+    v12 = lifecycleStatesCount;
     for (i = 0; i != v12; ++i)
     {
       -[NPKProtoSecureElementGetAppletsResponse addLifecycleStates:](self, "addLifecycleStates:", [v5 lifecycleStatesAtIndex:i]);
     }
   }
 
-  v14 = [v5 activationStatesCount];
-  if (v14)
+  activationStatesCount = [v5 activationStatesCount];
+  if (activationStatesCount)
   {
-    v15 = v14;
+    v15 = activationStatesCount;
     for (j = 0; j != v15; ++j)
     {
       -[NPKProtoSecureElementGetAppletsResponse addActivationStates:](self, "addActivationStates:", [v5 activationStatesAtIndex:j]);

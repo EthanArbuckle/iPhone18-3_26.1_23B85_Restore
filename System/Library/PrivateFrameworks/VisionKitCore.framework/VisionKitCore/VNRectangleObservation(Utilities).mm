@@ -8,7 +8,7 @@
 - (VKQuad)vkQuad
 {
   v2 = objc_opt_class();
-  v3 = VKDynamicCast(v2, a1);
+  v3 = VKDynamicCast(v2, self);
   v4 = v3;
   if (v3)
   {
@@ -40,8 +40,8 @@
 - (id)vk_quadConvertedToView:()Utilities withContentsRect:
 {
   v12 = a7;
-  v13 = [a1 vkQuad];
-  v14 = [v13 quadByConvertingFromNormalizedRectToView:v12 contentsRect:{a2, a3, a4, a5}];
+  vkQuad = [self vkQuad];
+  v14 = [vkQuad quadByConvertingFromNormalizedRectToView:v12 contentsRect:{a2, a3, a4, a5}];
 
   return v14;
 }

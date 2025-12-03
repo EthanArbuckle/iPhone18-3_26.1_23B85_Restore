@@ -1,50 +1,50 @@
 @interface GSSorter
-- (BOOL)encodeSorting:(id)a3 forAssets:(id)a4 sorterDescriptor:(id)a5 renderDescriptor:(id)a6 error:(id *)a7;
-- (GSSorter)initWithDevice:(id)a3 forAssets:(id)a4 error:(id *)a5;
+- (BOOL)encodeSorting:(id)sorting forAssets:(id)assets sorterDescriptor:(id)descriptor renderDescriptor:(id)renderDescriptor error:(id *)error;
+- (GSSorter)initWithDevice:(id)device forAssets:(id)assets error:(id *)error;
 - (id).cxx_construct;
 - (shared_ptr<apple3dgs::Sorter>)impl;
-- (void)setImpl:(shared_ptr<apple3dgs::Sorter>)a3;
+- (void)setImpl:(shared_ptr<apple3dgs::Sorter>)impl;
 @end
 
 @implementation GSSorter
 
-- (GSSorter)initWithDevice:(id)a3 forAssets:(id)a4 error:(id *)a5
+- (GSSorter)initWithDevice:(id)device forAssets:(id)assets error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  assetsCopy = assets;
   v11.receiver = self;
   v11.super_class = GSSorter;
   [(GSSorter *)&v11 init];
   operator new();
 }
 
-- (BOOL)encodeSorting:(id)a3 forAssets:(id)a4 sorterDescriptor:(id)a5 renderDescriptor:(id)a6 error:(id *)a7
+- (BOOL)encodeSorting:(id)sorting forAssets:(id)assets sorterDescriptor:(id)descriptor renderDescriptor:(id)renderDescriptor error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  sortingCopy = sorting;
+  assetsCopy = assets;
+  descriptorCopy = descriptor;
+  renderDescriptorCopy = renderDescriptor;
   v16 = __p;
   v17 = v35;
   v18 = 0uLL;
   ptr = self->_impl.__ptr_;
-  if (v14)
+  if (descriptorCopy)
   {
-    [v14 impl];
+    [descriptorCopy impl];
     v18 = v32;
   }
 
   v33 = v18;
   v20 = 0uLL;
   v32 = 0u;
-  if (v15)
+  if (renderDescriptorCopy)
   {
-    [v15 impl];
+    [renderDescriptorCopy impl];
     v20 = v30;
   }
 
   v31 = v20;
-  v21 = (**ptr)(ptr, v12, v16, (v17 - v16) >> 4, &v33, &v31, a7);
+  v21 = (**ptr)(ptr, sortingCopy, v16, (v17 - v16) >> 4, &v33, &v31, error);
   v22 = *(&v31 + 1);
   if (*(&v31 + 1) && !atomic_fetch_add((*(&v31 + 1) + 8), 0xFFFFFFFFFFFFFFFFLL))
   {
@@ -111,10 +111,10 @@
   return result;
 }
 
-- (void)setImpl:(shared_ptr<apple3dgs::Sorter>)a3
+- (void)setImpl:(shared_ptr<apple3dgs::Sorter>)impl
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *impl.__ptr_;
+  v3 = *(impl.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

@@ -1,9 +1,9 @@
 @interface SPBeaconObservation
 - (SPBeaconObservation)init;
-- (SPBeaconObservation)initWithBeaconIdentifier:(id)a3 type:(int64_t)a4 date:(id)a5 location:(id)a6;
-- (SPBeaconObservation)initWithCoder:(id)a3;
+- (SPBeaconObservation)initWithBeaconIdentifier:(id)identifier type:(int64_t)type date:(id)date location:(id)location;
+- (SPBeaconObservation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconObservation
@@ -19,17 +19,17 @@
   objc_exception_throw(v6);
 }
 
-- (SPBeaconObservation)initWithBeaconIdentifier:(id)a3 type:(int64_t)a4 date:(id)a5 location:(id)a6
+- (SPBeaconObservation)initWithBeaconIdentifier:(id)identifier type:(int64_t)type date:(id)date location:(id)location
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  dateCopy = date;
+  locationCopy = location;
+  if (!identifierCopy)
   {
-    if (![SPBeaconObservation initWithBeaconIdentifier:a2 type:self date:v12 location:?])
+    if (![SPBeaconObservation initWithBeaconIdentifier:a2 type:self date:dateCopy location:?])
     {
 LABEL_9:
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_6;
     }
 
@@ -38,7 +38,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!dateCopy)
   {
     goto LABEL_8;
   }
@@ -48,44 +48,44 @@ LABEL_8:
   v14 = [(SPBeaconObservation *)&v23 init];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [identifierCopy copy];
     beaconIdentifier = v14->_beaconIdentifier;
     v14->_beaconIdentifier = v15;
 
-    v14->_type = a4;
-    v17 = [v12 copy];
+    v14->_type = type;
+    v17 = [dateCopy copy];
     date = v14->_date;
     v14->_date = v17;
 
-    v19 = [v13 copy];
+    v19 = [locationCopy copy];
     location = v14->_location;
     v14->_location = v19;
   }
 
   self = v14;
-  v21 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v21;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   beaconIdentifier = self->_beaconIdentifier;
-  v5 = a3;
-  [v5 encodeObject:beaconIdentifier forKey:@"kSPBeaconObservationSecureCodingBeaconIdentifierKey"];
-  [v5 encodeInteger:self->_type forKey:@"kSPBeaconObservationSecureCodingTypeKey"];
-  [v5 encodeObject:self->_date forKey:@"kSPBeaconObservationSecureCodingDateKey"];
-  [v5 encodeObject:self->_location forKey:@"kSPBeaconObservationSecureCodingLocationKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:beaconIdentifier forKey:@"kSPBeaconObservationSecureCodingBeaconIdentifierKey"];
+  [coderCopy encodeInteger:self->_type forKey:@"kSPBeaconObservationSecureCodingTypeKey"];
+  [coderCopy encodeObject:self->_date forKey:@"kSPBeaconObservationSecureCodingDateKey"];
+  [coderCopy encodeObject:self->_location forKey:@"kSPBeaconObservationSecureCodingLocationKey"];
 }
 
-- (SPBeaconObservation)initWithCoder:(id)a3
+- (SPBeaconObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSPBeaconObservationSecureCodingBeaconIdentifierKey"];
-  v6 = [v4 decodeIntegerForKey:@"kSPBeaconObservationSecureCodingTypeKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSPBeaconObservationSecureCodingDateKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSPBeaconObservationSecureCodingLocationKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSPBeaconObservationSecureCodingBeaconIdentifierKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"kSPBeaconObservationSecureCodingTypeKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSPBeaconObservationSecureCodingDateKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSPBeaconObservationSecureCodingLocationKey"];
 
   v9 = [(SPBeaconObservation *)self initWithBeaconIdentifier:v5 type:v6 date:v7 location:v8];
   return v9;
@@ -94,8 +94,8 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSUUID *)self->_beaconIdentifier UUIDString];
-  v5 = [v3 stringWithFormat:@"SPBeaconObservation, identifier, %@, type, %lld, date, %@, location, %@", v4, self->_type, self->_date, self->_location];
+  uUIDString = [(NSUUID *)self->_beaconIdentifier UUIDString];
+  v5 = [v3 stringWithFormat:@"SPBeaconObservation, identifier, %@, type, %lld, date, %@, location, %@", uUIDString, self->_type, self->_date, self->_location];
 
   return v5;
 }

@@ -1,39 +1,39 @@
 @interface BMSiriRemembersInteraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRemembersInteraction)initWithIdentifier:(id)a3 type:(id)a4 domain:(id)a5 appBundleId:(id)a6 status:(int)a7 direction:(int)a8 isDonatedBySiri:(id)a9 startDate:(id)a10 durationInSeconds:(id)a11 fields:(id)a12 groupIdentifier:(id)a13 appIntentInteractionIdentifier:(id)a14 interactionSource:(int)a15 contentHash:(id)a16 userDonatorType:(int)a17;
-- (BMSiriRemembersInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRemembersInteraction)initWithIdentifier:(id)identifier type:(id)type domain:(id)domain appBundleId:(id)id status:(int)status direction:(int)direction isDonatedBySiri:(id)siri startDate:(id)self0 durationInSeconds:(id)self1 fields:(id)self2 groupIdentifier:(id)self3 appIntentInteractionIdentifier:(id)self4 interactionSource:(int)self5 contentHash:(id)self6 userDonatorType:(int)self7;
+- (BMSiriRemembersInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)startDate;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRemembersInteraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRemembersInteraction *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMSiriRemembersInteraction *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriRemembersInteraction *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMSiriRemembersInteraction *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSiriRemembersInteraction *)self type];
-    v14 = [v5 type];
-    v15 = v14;
-    if (v13 == v14)
+    type = [(BMSiriRemembersInteraction *)self type];
+    type2 = [v5 type];
+    v15 = type2;
+    if (type == type2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriRemembersInteraction *)self type];
-      v17 = [v5 type];
-      v18 = [v16 isEqual:v17];
+      type3 = [(BMSiriRemembersInteraction *)self type];
+      type4 = [v5 type];
+      v18 = [type3 isEqual:type4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMSiriRemembersInteraction *)self domain];
-    v20 = [v5 domain];
-    v21 = v20;
-    if (v19 == v20)
+    domain = [(BMSiriRemembersInteraction *)self domain];
+    domain2 = [v5 domain];
+    v21 = domain2;
+    if (domain == domain2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriRemembersInteraction *)self domain];
-      v23 = [v5 domain];
-      v24 = [v22 isEqual:v23];
+      domain3 = [(BMSiriRemembersInteraction *)self domain];
+      domain4 = [v5 domain];
+      v24 = [domain3 isEqual:domain4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMSiriRemembersInteraction *)self appBundleId];
-    v26 = [v5 appBundleId];
-    v27 = v26;
-    if (v25 == v26)
+    appBundleId = [(BMSiriRemembersInteraction *)self appBundleId];
+    appBundleId2 = [v5 appBundleId];
+    v27 = appBundleId2;
+    if (appBundleId == appBundleId2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriRemembersInteraction *)self appBundleId];
-      v29 = [v5 appBundleId];
-      v30 = [v28 isEqual:v29];
+      appBundleId3 = [(BMSiriRemembersInteraction *)self appBundleId];
+      appBundleId4 = [v5 appBundleId];
+      v30 = [appBundleId3 isEqual:appBundleId4];
 
       if (!v30)
       {
@@ -98,14 +98,14 @@
       }
     }
 
-    v31 = [(BMSiriRemembersInteraction *)self status];
-    if (v31 != [v5 status])
+    status = [(BMSiriRemembersInteraction *)self status];
+    if (status != [v5 status])
     {
       goto LABEL_54;
     }
 
-    v32 = [(BMSiriRemembersInteraction *)self direction];
-    if (v32 != [v5 direction])
+    direction = [(BMSiriRemembersInteraction *)self direction];
+    if (direction != [v5 direction])
     {
       goto LABEL_54;
     }
@@ -122,25 +122,25 @@
         goto LABEL_54;
       }
 
-      v33 = [(BMSiriRemembersInteraction *)self isDonatedBySiri];
-      if (v33 != [v5 isDonatedBySiri])
+      isDonatedBySiri = [(BMSiriRemembersInteraction *)self isDonatedBySiri];
+      if (isDonatedBySiri != [v5 isDonatedBySiri])
       {
         goto LABEL_54;
       }
     }
 
-    v34 = [(BMSiriRemembersInteraction *)self startDate];
-    v35 = [v5 startDate];
-    v36 = v35;
-    if (v34 == v35)
+    startDate = [(BMSiriRemembersInteraction *)self startDate];
+    startDate2 = [v5 startDate];
+    v36 = startDate2;
+    if (startDate == startDate2)
     {
     }
 
     else
     {
-      v37 = [(BMSiriRemembersInteraction *)self startDate];
-      v38 = [v5 startDate];
-      v39 = [v37 isEqual:v38];
+      startDate3 = [(BMSiriRemembersInteraction *)self startDate];
+      startDate4 = [v5 startDate];
+      v39 = [startDate3 isEqual:startDate4];
 
       if (!v39)
       {
@@ -169,18 +169,18 @@
       }
     }
 
-    v43 = [(BMSiriRemembersInteraction *)self fields];
-    v44 = [v5 fields];
-    v45 = v44;
-    if (v43 == v44)
+    fields = [(BMSiriRemembersInteraction *)self fields];
+    fields2 = [v5 fields];
+    v45 = fields2;
+    if (fields == fields2)
     {
     }
 
     else
     {
-      v46 = [(BMSiriRemembersInteraction *)self fields];
-      v47 = [v5 fields];
-      v48 = [v46 isEqual:v47];
+      fields3 = [(BMSiriRemembersInteraction *)self fields];
+      fields4 = [v5 fields];
+      v48 = [fields3 isEqual:fields4];
 
       if (!v48)
       {
@@ -188,18 +188,18 @@
       }
     }
 
-    v49 = [(BMSiriRemembersInteraction *)self groupIdentifier];
-    v50 = [v5 groupIdentifier];
-    v51 = v50;
-    if (v49 == v50)
+    groupIdentifier = [(BMSiriRemembersInteraction *)self groupIdentifier];
+    groupIdentifier2 = [v5 groupIdentifier];
+    v51 = groupIdentifier2;
+    if (groupIdentifier == groupIdentifier2)
     {
     }
 
     else
     {
-      v52 = [(BMSiriRemembersInteraction *)self groupIdentifier];
-      v53 = [v5 groupIdentifier];
-      v54 = [v52 isEqual:v53];
+      groupIdentifier3 = [(BMSiriRemembersInteraction *)self groupIdentifier];
+      groupIdentifier4 = [v5 groupIdentifier];
+      v54 = [groupIdentifier3 isEqual:groupIdentifier4];
 
       if (!v54)
       {
@@ -207,18 +207,18 @@
       }
     }
 
-    v55 = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
-    v56 = [v5 appIntentInteractionIdentifier];
-    v57 = v56;
-    if (v55 == v56)
+    appIntentInteractionIdentifier = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
+    appIntentInteractionIdentifier2 = [v5 appIntentInteractionIdentifier];
+    v57 = appIntentInteractionIdentifier2;
+    if (appIntentInteractionIdentifier == appIntentInteractionIdentifier2)
     {
     }
 
     else
     {
-      v58 = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
-      v59 = [v5 appIntentInteractionIdentifier];
-      v60 = [v58 isEqual:v59];
+      appIntentInteractionIdentifier3 = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
+      appIntentInteractionIdentifier4 = [v5 appIntentInteractionIdentifier];
+      v60 = [appIntentInteractionIdentifier3 isEqual:appIntentInteractionIdentifier4];
 
       if (!v60)
       {
@@ -226,13 +226,13 @@
       }
     }
 
-    v61 = [(BMSiriRemembersInteraction *)self interactionSource];
-    if (v61 == [v5 interactionSource])
+    interactionSource = [(BMSiriRemembersInteraction *)self interactionSource];
+    if (interactionSource == [v5 interactionSource])
     {
       if (!-[BMSiriRemembersInteraction hasContentHash](self, "hasContentHash") && ![v5 hasContentHash] || -[BMSiriRemembersInteraction hasContentHash](self, "hasContentHash") && objc_msgSend(v5, "hasContentHash") && (v62 = -[BMSiriRemembersInteraction contentHash](self, "contentHash"), v62 == objc_msgSend(v5, "contentHash")))
       {
-        v63 = [(BMSiriRemembersInteraction *)self userDonatorType];
-        v12 = v63 == [v5 userDonatorType];
+        userDonatorType = [(BMSiriRemembersInteraction *)self userDonatorType];
+        v12 = userDonatorType == [v5 userDonatorType];
 LABEL_55:
 
         goto LABEL_56;
@@ -270,10 +270,10 @@ LABEL_56:
 - (id)jsonDictionary
 {
   v52[15] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriRemembersInteraction *)self identifier];
-  v4 = [(BMSiriRemembersInteraction *)self type];
-  v5 = [(BMSiriRemembersInteraction *)self domain];
-  v50 = [(BMSiriRemembersInteraction *)self appBundleId];
+  identifier = [(BMSiriRemembersInteraction *)self identifier];
+  type = [(BMSiriRemembersInteraction *)self type];
+  domain = [(BMSiriRemembersInteraction *)self domain];
+  appBundleId = [(BMSiriRemembersInteraction *)self appBundleId];
   v49 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRemembersInteraction status](self, "status")}];
   v48 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRemembersInteraction direction](self, "direction")}];
   if ([(BMSiriRemembersInteraction *)self hasIsDonatedBySiri])
@@ -286,12 +286,12 @@ LABEL_56:
     v47 = 0;
   }
 
-  v6 = [(BMSiriRemembersInteraction *)self startDate];
-  if (v6)
+  startDate = [(BMSiriRemembersInteraction *)self startDate];
+  if (startDate)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMSiriRemembersInteraction *)self startDate];
-    [v8 timeIntervalSince1970];
+    startDate2 = [(BMSiriRemembersInteraction *)self startDate];
+    [startDate2 timeIntervalSince1970];
     v46 = [v7 numberWithDouble:?];
   }
 
@@ -313,9 +313,9 @@ LABEL_56:
     v45 = [v10 numberWithDouble:?];
   }
 
-  v44 = [(BMSiriRemembersInteraction *)self fields];
-  v43 = [(BMSiriRemembersInteraction *)self groupIdentifier];
-  v42 = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
+  fields = [(BMSiriRemembersInteraction *)self fields];
+  groupIdentifier = [(BMSiriRemembersInteraction *)self groupIdentifier];
+  appIntentInteractionIdentifier = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
   v41 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRemembersInteraction interactionSource](self, "interactionSource")}];
   if ([(BMSiriRemembersInteraction *)self hasContentHash])
   {
@@ -329,135 +329,135 @@ LABEL_56:
 
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriRemembersInteraction userDonatorType](self, "userDonatorType")}];
   v51[0] = @"identifier";
-  v13 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v13;
-  v52[0] = v13;
+  v36 = null;
+  v52[0] = null;
   v51[1] = @"type";
-  v14 = v4;
-  if (!v4)
+  null2 = type;
+  if (!type)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v14;
-  v52[1] = v14;
+  v35 = null2;
+  v52[1] = null2;
   v51[2] = @"domain";
-  v15 = v5;
-  if (!v5)
+  null3 = domain;
+  if (!domain)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v15;
-  v52[2] = v15;
+  v34 = null3;
+  v52[2] = null3;
   v51[3] = @"appBundleId";
-  v16 = v50;
-  if (!v50)
+  null4 = appBundleId;
+  if (!appBundleId)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[3] = v16;
+  v52[3] = null4;
   v51[4] = @"status";
-  v17 = v49;
+  null5 = v49;
   if (!v49)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[4] = v17;
+  v52[4] = null5;
   v51[5] = @"direction";
-  v18 = v48;
+  null6 = v48;
   if (!v48)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v4;
-  v52[5] = v18;
+  v39 = type;
+  v52[5] = null6;
   v51[6] = @"isDonatedBySiri";
-  v19 = v47;
+  null7 = v47;
   if (!v47)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v5;
-  v30 = v19;
-  v52[6] = v19;
+  v38 = domain;
+  v30 = null7;
+  v52[6] = null7;
   v51[7] = @"startDate";
-  v20 = v46;
+  null8 = v46;
   if (!v46)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40 = v3;
-  v52[7] = v20;
+  v40 = identifier;
+  v52[7] = null8;
   v51[8] = @"durationInSeconds";
-  v21 = v45;
+  null9 = v45;
   if (!v45)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v16;
-  v52[8] = v21;
+  v33 = null4;
+  v52[8] = null9;
   v51[9] = @"fields";
-  v22 = v44;
-  if (!v44)
+  null10 = fields;
+  if (!fields)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v17;
-  v52[9] = v22;
+  v32 = null5;
+  v52[9] = null10;
   v51[10] = @"groupIdentifier";
-  v23 = v43;
-  if (!v43)
+  null11 = groupIdentifier;
+  if (!groupIdentifier)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v18;
-  v52[10] = v23;
+  v31 = null6;
+  v52[10] = null11;
   v51[11] = @"appIntentInteractionIdentifier";
-  v24 = v42;
-  if (!v42)
+  null12 = appIntentInteractionIdentifier;
+  if (!appIntentInteractionIdentifier)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[11] = v24;
+  v52[11] = null12;
   v51[12] = @"interactionSource";
-  v25 = v41;
+  null13 = v41;
   if (!v41)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[12] = v25;
+  v52[12] = null13;
   v51[13] = @"contentHash";
-  v26 = v11;
+  null14 = v11;
   if (!v11)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[13] = v26;
+  v52[13] = null14;
   v51[14] = @"userDonatorType";
-  v27 = v12;
+  null15 = v12;
   if (!v12)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52[14] = v27;
+  v52[14] = null15;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:15];
   if (v12)
   {
@@ -481,15 +481,15 @@ LABEL_46:
   {
   }
 
-  if (!v42)
+  if (!appIntentInteractionIdentifier)
   {
   }
 
-  if (!v43)
+  if (!groupIdentifier)
   {
   }
 
-  if (!v44)
+  if (!fields)
   {
   }
 
@@ -513,7 +513,7 @@ LABEL_46:
   {
   }
 
-  if (v50)
+  if (appBundleId)
   {
     if (v38)
     {
@@ -562,11 +562,11 @@ LABEL_68:
   return v37;
 }
 
-- (BMSiriRemembersInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRemembersInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v181[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
@@ -578,7 +578,7 @@ LABEL_68:
   {
     v7 = v6;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"type"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v148 = 0;
@@ -590,7 +590,7 @@ LABEL_4:
     {
       v148 = v8;
 LABEL_7:
-      v9 = [v5 objectForKeyedSubscript:@"domain"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
       v149 = v7;
       v150 = v9;
       if (!v9 || (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -604,13 +604,13 @@ LABEL_7:
       {
         v146 = v10;
 LABEL_10:
-        v11 = [v5 objectForKeyedSubscript:@"appBundleId"];
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"appBundleId"];
         v147 = v11;
         if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v12 = 0;
 LABEL_13:
-          v13 = [v5 objectForKeyedSubscript:@"status"];
+          v13 = [dictionaryCopy objectForKeyedSubscript:@"status"];
           v144 = v12;
           v140 = v13;
           if (v13 && (v14 = v13, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -626,7 +626,7 @@ LABEL_13:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v145 = 0;
                   v39 = 0;
@@ -644,7 +644,7 @@ LABEL_13:
                 v85 = [v83 initWithDomain:v84 code:2 userInfo:?];
                 v145 = 0;
                 v39 = 0;
-                *a4 = v85;
+                *error = v85;
                 v11 = v147;
                 v37 = v148;
                 v43 = v146;
@@ -660,7 +660,7 @@ LABEL_13:
             v145 = 0;
           }
 
-          v15 = [v5 objectForKeyedSubscript:@"direction"];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"direction"];
           v141 = v15;
           v138 = v8;
           if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -676,7 +676,7 @@ LABEL_13:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v143 = 0;
                   v39 = 0;
@@ -695,7 +695,7 @@ LABEL_13:
                 v93 = [v91 initWithDomain:v92 code:2 userInfo:v17];
                 v143 = 0;
                 v39 = 0;
-                *a4 = v93;
+                *error = v93;
                 v11 = v147;
                 v37 = v148;
                 v43 = v146;
@@ -711,13 +711,13 @@ LABEL_13:
             v143 = 0;
           }
 
-          v17 = [v5 objectForKeyedSubscript:@"isDonatedBySiri"];
+          v17 = [dictionaryCopy objectForKeyedSubscript:@"isDonatedBySiri"];
           if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v134 = v17;
             v142 = 0;
 LABEL_22:
-            v18 = [v5 objectForKeyedSubscript:@"startDate"];
+            v18 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
             v133 = v18;
             if (v18 && (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
@@ -748,7 +748,7 @@ LABEL_22:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    if (!a4)
+                    if (!error)
                     {
                       v139 = 0;
                       v39 = 0;
@@ -772,7 +772,7 @@ LABEL_22:
                     v113 = [v112 initWithDomain:v110 code:2 userInfo:?];
                     v139 = 0;
                     v39 = 0;
-                    *a4 = v113;
+                    *error = v113;
                     v68 = v133;
                     v37 = v148;
                     v43 = v146;
@@ -791,14 +791,14 @@ LABEL_22:
               v139 = 0;
             }
 
-            v20 = [v5 objectForKeyedSubscript:@"durationInSeconds"];
+            v20 = [dictionaryCopy objectForKeyedSubscript:@"durationInSeconds"];
             v135 = v20;
             if (v20 && (v21 = v20, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v137 = 0;
                   v39 = 0;
@@ -826,7 +826,7 @@ LABEL_22:
                 v76 = [v75 initWithDomain:v71 code:2 userInfo:?];
                 v137 = 0;
                 v39 = 0;
-                *a4 = v76;
+                *error = v76;
                 v37 = v148;
                 v43 = v146;
                 goto LABEL_137;
@@ -840,7 +840,7 @@ LABEL_22:
               v137 = 0;
             }
 
-            v22 = [v5 objectForKeyedSubscript:@"fields"];
+            v22 = [dictionaryCopy objectForKeyedSubscript:@"fields"];
             v132 = v22;
             if (!v22 || (v23 = v22, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -853,7 +853,7 @@ LABEL_22:
             {
               v136 = v23;
 LABEL_31:
-              v24 = [v5 objectForKeyedSubscript:@"groupIdentifier"];
+              v24 = [dictionaryCopy objectForKeyedSubscript:@"groupIdentifier"];
               v129 = v24;
               if (!v24 || (v25 = v24, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -866,7 +866,7 @@ LABEL_31:
               {
                 v131 = v25;
 LABEL_34:
-                v26 = [v5 objectForKeyedSubscript:@"appIntentInteractionIdentifier"];
+                v26 = [dictionaryCopy objectForKeyedSubscript:@"appIntentInteractionIdentifier"];
                 v128 = v26;
                 if (!v26 || (v27 = v26, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -879,20 +879,20 @@ LABEL_34:
                 {
                   v130 = v27;
 LABEL_37:
-                  v28 = [v5 objectForKeyedSubscript:@"interactionSource"];
+                  v28 = [dictionaryCopy objectForKeyedSubscript:@"interactionSource"];
                   v126 = v28;
                   if (!v28 || (v29 = v28, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
                     v30 = 0;
 LABEL_40:
-                    v31 = [v5 objectForKeyedSubscript:@"contentHash"];
+                    v31 = [dictionaryCopy objectForKeyedSubscript:@"contentHash"];
                     v125 = v30;
                     if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                     {
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        if (!a4)
+                        if (!error)
                         {
                           v127 = 0;
                           v39 = 0;
@@ -911,7 +911,7 @@ LABEL_40:
                         v102 = [v99 initWithDomain:v101 code:2 userInfo:v32];
                         v127 = 0;
                         v39 = 0;
-                        *a4 = v102;
+                        *error = v102;
                         goto LABEL_151;
                       }
 
@@ -923,21 +923,21 @@ LABEL_40:
                       v127 = 0;
                     }
 
-                    v32 = [v5 objectForKeyedSubscript:@"userDonatorType"];
+                    v32 = [dictionaryCopy objectForKeyedSubscript:@"userDonatorType"];
                     if (!v32 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
-                      v33 = self;
+                      selfCopy3 = self;
                       v34 = 0;
 LABEL_119:
-                      v103 = [v145 intValue];
-                      v104 = [v143 intValue];
-                      v105 = [v30 intValue];
+                      intValue = [v145 intValue];
+                      intValue2 = [v143 intValue];
+                      intValue3 = [v30 intValue];
                       LODWORD(v124) = [v34 intValue];
-                      LODWORD(v123) = v105;
-                      v106 = v33;
+                      LODWORD(v123) = intValue3;
+                      v106 = selfCopy3;
                       v37 = v148;
                       v12 = v144;
-                      v39 = [(BMSiriRemembersInteraction *)v106 initWithIdentifier:v149 type:v148 domain:v146 appBundleId:v144 status:v103 direction:v104 isDonatedBySiri:v142 startDate:v139 durationInSeconds:v137 fields:v136 groupIdentifier:v131 appIntentInteractionIdentifier:v130 interactionSource:v123 contentHash:v127 userDonatorType:v124, v30];
+                      v39 = [(BMSiriRemembersInteraction *)v106 initWithIdentifier:v149 type:v148 domain:v146 appBundleId:v144 status:intValue direction:intValue2 isDonatedBySiri:v142 startDate:v139 durationInSeconds:v137 fields:v136 groupIdentifier:v131 appIntentInteractionIdentifier:v130 interactionSource:v123 contentHash:v127 userDonatorType:v124, v30];
                       self = v39;
 LABEL_120:
 
@@ -962,7 +962,7 @@ LABEL_126:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v33 = self;
+                      selfCopy3 = self;
                       v82 = v32;
 LABEL_118:
                       v34 = v82;
@@ -972,12 +972,12 @@ LABEL_118:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v33 = self;
+                      selfCopy3 = self;
                       v82 = [MEMORY[0x1E696AD98] numberWithInt:BMSiriRemembersInteractionUserDonatorTypeFromString(v32)];
                       goto LABEL_118;
                     }
 
-                    if (a4)
+                    if (error)
                     {
                       v117 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v118 = *MEMORY[0x1E698F240];
@@ -985,7 +985,7 @@ LABEL_118:
                       v119 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"userDonatorType"];
                       v153 = v119;
                       v120 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v153 forKeys:&v152 count:1];
-                      *a4 = [v117 initWithDomain:v118 code:2 userInfo:v120];
+                      *error = [v117 initWithDomain:v118 code:2 userInfo:v120];
                     }
 
                     v34 = 0;
@@ -1009,7 +1009,7 @@ LABEL_151:
                     goto LABEL_40;
                   }
 
-                  if (a4)
+                  if (error)
                   {
                     v114 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v115 = *MEMORY[0x1E698F240];
@@ -1020,7 +1020,7 @@ LABEL_151:
                     v116 = [v114 initWithDomain:v115 code:2 userInfo:v31];
                     v125 = 0;
                     v39 = 0;
-                    *a4 = v116;
+                    *error = v116;
                     v37 = v148;
                     goto LABEL_121;
                   }
@@ -1036,7 +1036,7 @@ LABEL_155:
                   goto LABEL_122;
                 }
 
-                if (a4)
+                if (error)
                 {
                   v94 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v95 = *MEMORY[0x1E698F240];
@@ -1050,7 +1050,7 @@ LABEL_155:
                   v98 = [v97 initWithDomain:v95 code:2 userInfo:?];
                   v130 = 0;
                   v39 = 0;
-                  *a4 = v98;
+                  *error = v98;
                   v37 = v148;
                   goto LABEL_155;
                 }
@@ -1066,7 +1066,7 @@ LABEL_147:
                 goto LABEL_123;
               }
 
-              if (a4)
+              if (error)
               {
                 v86 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v87 = *MEMORY[0x1E698F240];
@@ -1080,7 +1080,7 @@ LABEL_147:
                 v90 = [v89 initWithDomain:v87 code:2 userInfo:?];
                 v131 = 0;
                 v39 = 0;
-                *a4 = v90;
+                *error = v90;
                 goto LABEL_147;
               }
 
@@ -1095,7 +1095,7 @@ LABEL_140:
               goto LABEL_124;
             }
 
-            if (a4)
+            if (error)
             {
               v77 = objc_alloc(MEMORY[0x1E696ABC0]);
               v78 = *MEMORY[0x1E698F240];
@@ -1109,7 +1109,7 @@ LABEL_140:
               v81 = [v80 initWithDomain:v78 code:2 userInfo:?];
               v136 = 0;
               v39 = 0;
-              *a4 = v81;
+              *error = v81;
               goto LABEL_140;
             }
 
@@ -1132,7 +1132,7 @@ LABEL_137:
             goto LABEL_22;
           }
 
-          if (a4)
+          if (error)
           {
             v61 = objc_alloc(MEMORY[0x1E696ABC0]);
             v62 = *MEMORY[0x1E698F240];
@@ -1149,7 +1149,7 @@ LABEL_137:
             v67 = [v66 initWithDomain:v62 code:2 userInfo:v65];
             v142 = 0;
             v39 = 0;
-            *a4 = v67;
+            *error = v67;
             v68 = v65;
             v37 = v148;
             v43 = v146;
@@ -1180,7 +1180,7 @@ LABEL_129:
           goto LABEL_13;
         }
 
-        if (a4)
+        if (error)
         {
           v57 = objc_alloc(MEMORY[0x1E696ABC0]);
           v58 = *MEMORY[0x1E698F240];
@@ -1193,7 +1193,7 @@ LABEL_129:
           v60 = [v59 initWithDomain:v58 code:2 userInfo:v14];
           v12 = 0;
           v39 = 0;
-          *a4 = v60;
+          *error = v60;
           v37 = v148;
           v43 = v146;
 LABEL_130:
@@ -1211,7 +1211,7 @@ LABEL_131:
         goto LABEL_132;
       }
 
-      if (a4)
+      if (error)
       {
         v52 = objc_alloc(MEMORY[0x1E696ABC0]);
         v53 = *MEMORY[0x1E698F240];
@@ -1224,7 +1224,7 @@ LABEL_131:
         v56 = [v55 initWithDomain:v53 code:2 userInfo:v54];
         v43 = 0;
         v39 = 0;
-        *a4 = v56;
+        *error = v56;
         v37 = v148;
         goto LABEL_131;
       }
@@ -1237,7 +1237,7 @@ LABEL_132:
       goto LABEL_133;
     }
 
-    if (a4)
+    if (error)
     {
       v40 = v7;
       v41 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -1252,7 +1252,7 @@ LABEL_132:
       v46 = [v45 initWithDomain:v42 code:2 userInfo:?];
       v37 = 0;
       v39 = 0;
-      *a4 = v46;
+      *error = v46;
       goto LABEL_132;
     }
 
@@ -1263,7 +1263,7 @@ LABEL_133:
     goto LABEL_134;
   }
 
-  if (a4)
+  if (error)
   {
     v35 = objc_alloc(MEMORY[0x1E696ABC0]);
     v36 = *MEMORY[0x1E698F240];
@@ -1274,7 +1274,7 @@ LABEL_133:
     v38 = [v35 initWithDomain:v36 code:2 userInfo:v8];
     v7 = 0;
     v39 = 0;
-    *a4 = v38;
+    *error = v38;
     goto LABEL_133;
   }
 
@@ -1290,14 +1290,14 @@ LABEL_134:
 {
   v3 = objc_opt_new();
   [(BMSiriRemembersInteraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -1367,9 +1367,9 @@ LABEL_134:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v66.receiver = self;
   v66.super_class = BMSiriRemembersInteraction;
   v5 = [(BMEventBase *)&v66 init];
@@ -1378,12 +1378,12 @@ LABEL_134:
     goto LABEL_120;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1394,18 +1394,18 @@ LABEL_134:
       while (1)
       {
         LOBYTE(v67) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v67 & 0x7F) << v7;
@@ -1423,9 +1423,9 @@ LABEL_134:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1455,18 +1455,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v67) = 0;
-            v52 = [v4 position] + 1;
-            if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 1, v53 <= objc_msgSend(v4, "length")))
+            v52 = [fromCopy position] + 1;
+            if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 1, v53 <= objc_msgSend(fromCopy, "length")))
             {
-              v54 = [v4 data];
-              [v54 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v67 & 0x7F) << v50;
@@ -1483,7 +1483,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 7)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 7)
           {
 LABEL_109:
             LODWORD(v26) = 0;
@@ -1498,18 +1498,18 @@ LABEL_109:
           while (1)
           {
             LOBYTE(v67) = 0;
-            v33 = [v4 position] + 1;
-            if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+            v33 = [fromCopy position] + 1;
+            if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
             {
-              v35 = [v4 data];
-              [v35 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v67 & 0x7F) << v31;
@@ -1526,7 +1526,7 @@ LABEL_109:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 3)
           {
 LABEL_99:
             LODWORD(v26) = 0;
@@ -1542,18 +1542,18 @@ LABEL_99:
           while (1)
           {
             LOBYTE(v67) = 0;
-            v39 = [v4 position] + 1;
-            if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+            v39 = [fromCopy position] + 1;
+            if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
             {
-              v41 = [v4 data];
-              [v41 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v38 |= (v67 & 0x7F) << v36;
@@ -1571,25 +1571,25 @@ LABEL_99:
             }
           }
 
-          v42 = (v38 != 0) & ~[v4 hasError];
+          v42 = (v38 != 0) & ~[fromCopy hasError];
 LABEL_102:
           v5->_isDonatedBySiri = v42;
           goto LABEL_117;
         case 8u:
           v5->_hasRaw_startDate = 1;
           v67 = 0;
-          v43 = [v4 position] + 8;
-          if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 8, v44 <= objc_msgSend(v4, "length")))
+          v43 = [fromCopy position] + 8;
+          if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 8, v44 <= objc_msgSend(fromCopy, "length")))
           {
-            v59 = [v4 data];
-            [v59 getBytes:&v67 range:{objc_msgSend(v4, "position"), 8}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v60 = v67;
@@ -1598,18 +1598,18 @@ LABEL_102:
         case 9u:
           v5->_hasDurationInSeconds = 1;
           v67 = 0;
-          v56 = [v4 position] + 8;
-          if (v56 >= [v4 position] && (v57 = objc_msgSend(v4, "position") + 8, v57 <= objc_msgSend(v4, "length")))
+          v56 = [fromCopy position] + 8;
+          if (v56 >= [fromCopy position] && (v57 = objc_msgSend(fromCopy, "position") + 8, v57 <= objc_msgSend(fromCopy, "length")))
           {
-            v62 = [v4 data];
-            [v62 getBytes:&v67 range:{objc_msgSend(v4, "position"), 8}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v60 = v67;
@@ -1640,18 +1640,18 @@ LABEL_85:
           while (1)
           {
             LOBYTE(v67) = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v67 & 0x7F) << v24;
@@ -1668,7 +1668,7 @@ LABEL_85:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v26 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v26 > 2)
           {
 LABEL_95:
             LODWORD(v26) = 0;
@@ -1684,18 +1684,18 @@ LABEL_95:
           while (1)
           {
             LOBYTE(v67) = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v67 & 0x7F) << v17;
@@ -1713,7 +1713,7 @@ LABEL_95:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v23 = 0;
           }
@@ -1743,18 +1743,18 @@ LABEL_92:
       while (1)
       {
         LOBYTE(v67) = 0;
-        v47 = [v4 position] + 1;
-        if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 1, v48 <= objc_msgSend(v4, "length")))
+        v47 = [fromCopy position] + 1;
+        if (v47 >= [fromCopy position] && (v48 = objc_msgSend(fromCopy, "position") + 1, v48 <= objc_msgSend(fromCopy, "length")))
         {
-          v49 = [v4 data];
-          [v49 getBytes:&v67 range:{objc_msgSend(v4, "position"), 1}];
+          data9 = [fromCopy data];
+          [data9 getBytes:&v67 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v26 |= (v67 & 0x7F) << v45;
@@ -1771,7 +1771,7 @@ LABEL_92:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v26 > 3)
+      if (([fromCopy hasError] & 1) != 0 || v26 > 3)
       {
 LABEL_105:
         LODWORD(v26) = 0;
@@ -1781,13 +1781,13 @@ LABEL_105:
 LABEL_111:
       *(&v5->super.super.isa + v58) = v26;
 LABEL_117:
-      v63 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v63 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_119:
     v64 = 0;
@@ -1805,58 +1805,58 @@ LABEL_120:
 - (NSString)description
 {
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v16 = [(BMSiriRemembersInteraction *)self identifier];
-  v21 = [(BMSiriRemembersInteraction *)self type];
-  v20 = [(BMSiriRemembersInteraction *)self domain];
-  v15 = [(BMSiriRemembersInteraction *)self appBundleId];
+  identifier = [(BMSiriRemembersInteraction *)self identifier];
+  type = [(BMSiriRemembersInteraction *)self type];
+  domain = [(BMSiriRemembersInteraction *)self domain];
+  appBundleId = [(BMSiriRemembersInteraction *)self appBundleId];
   v14 = BMSiriRemembersInteractionInteractionStatusAsString([(BMSiriRemembersInteraction *)self status]);
   v19 = BMSiriRemembersInteractionInteractionDirectionAsString([(BMSiriRemembersInteraction *)self direction]);
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriRemembersInteraction isDonatedBySiri](self, "isDonatedBySiri")}];
-  v13 = [(BMSiriRemembersInteraction *)self startDate];
+  startDate = [(BMSiriRemembersInteraction *)self startDate];
   v3 = MEMORY[0x1E696AD98];
   [(BMSiriRemembersInteraction *)self durationInSeconds];
   v11 = [v3 numberWithDouble:?];
-  v4 = [(BMSiriRemembersInteraction *)self fields];
-  v5 = [(BMSiriRemembersInteraction *)self groupIdentifier];
-  v6 = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
+  fields = [(BMSiriRemembersInteraction *)self fields];
+  groupIdentifier = [(BMSiriRemembersInteraction *)self groupIdentifier];
+  appIntentInteractionIdentifier = [(BMSiriRemembersInteraction *)self appIntentInteractionIdentifier];
   v7 = BMSiriRemembersInteractionInteractionSourceAsString([(BMSiriRemembersInteraction *)self interactionSource]);
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[BMSiriRemembersInteraction contentHash](self, "contentHash")}];
   v9 = BMSiriRemembersInteractionUserDonatorTypeAsString([(BMSiriRemembersInteraction *)self userDonatorType]);
-  v18 = [v17 initWithFormat:@"BMSiriRemembersInteraction with identifier: %@, type: %@, domain: %@, appBundleId: %@, status: %@, direction: %@, isDonatedBySiri: %@, startDate: %@, durationInSeconds: %@, fields: %@, groupIdentifier: %@, appIntentInteractionIdentifier: %@, interactionSource: %@, contentHash: %@, userDonatorType: %@", v16, v21, v20, v15, v14, v19, v12, v13, v11, v4, v5, v6, v7, v8, v9];
+  v18 = [v17 initWithFormat:@"BMSiriRemembersInteraction with identifier: %@, type: %@, domain: %@, appBundleId: %@, status: %@, direction: %@, isDonatedBySiri: %@, startDate: %@, durationInSeconds: %@, fields: %@, groupIdentifier: %@, appIntentInteractionIdentifier: %@, interactionSource: %@, contentHash: %@, userDonatorType: %@", identifier, type, domain, appBundleId, v14, v19, v12, startDate, v11, fields, groupIdentifier, appIntentInteractionIdentifier, v7, v8, v9];
 
   return v18;
 }
 
-- (BMSiriRemembersInteraction)initWithIdentifier:(id)a3 type:(id)a4 domain:(id)a5 appBundleId:(id)a6 status:(int)a7 direction:(int)a8 isDonatedBySiri:(id)a9 startDate:(id)a10 durationInSeconds:(id)a11 fields:(id)a12 groupIdentifier:(id)a13 appIntentInteractionIdentifier:(id)a14 interactionSource:(int)a15 contentHash:(id)a16 userDonatorType:(int)a17
+- (BMSiriRemembersInteraction)initWithIdentifier:(id)identifier type:(id)type domain:(id)domain appBundleId:(id)id status:(int)status direction:(int)direction isDonatedBySiri:(id)siri startDate:(id)self0 durationInSeconds:(id)self1 fields:(id)self2 groupIdentifier:(id)self3 appIntentInteractionIdentifier:(id)self4 interactionSource:(int)self5 contentHash:(id)self6 userDonatorType:(int)self7
 {
-  v40 = a3;
-  v32 = a4;
-  v39 = a4;
-  v38 = a5;
-  v37 = a6;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v36 = a12;
-  v23 = a13;
-  v24 = a14;
-  v25 = a16;
+  identifierCopy = identifier;
+  typeCopy = type;
+  typeCopy2 = type;
+  domainCopy = domain;
+  idCopy = id;
+  siriCopy = siri;
+  dateCopy = date;
+  secondsCopy = seconds;
+  fieldsCopy = fields;
+  groupIdentifierCopy = groupIdentifier;
+  interactionIdentifierCopy = interactionIdentifier;
+  hashCopy = hash;
   v41.receiver = self;
   v41.super_class = BMSiriRemembersInteraction;
   v26 = [(BMEventBase *)&v41 init];
   if (v26)
   {
     v26->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v26->_identifier, a3);
-    objc_storeStrong(&v26->_type, v32);
-    objc_storeStrong(&v26->_domain, a5);
-    objc_storeStrong(&v26->_appBundleId, a6);
-    v26->_status = a7;
-    v26->_direction = a8;
-    if (v20)
+    objc_storeStrong(&v26->_identifier, identifier);
+    objc_storeStrong(&v26->_type, typeCopy);
+    objc_storeStrong(&v26->_domain, domain);
+    objc_storeStrong(&v26->_appBundleId, id);
+    v26->_status = status;
+    v26->_direction = direction;
+    if (siriCopy)
     {
       v26->_hasIsDonatedBySiri = 1;
-      v26->_isDonatedBySiri = [v20 BOOLValue];
+      v26->_isDonatedBySiri = [siriCopy BOOLValue];
     }
 
     else
@@ -1865,10 +1865,10 @@ LABEL_120:
       v26->_isDonatedBySiri = 0;
     }
 
-    if (v21)
+    if (dateCopy)
     {
       v26->_hasRaw_startDate = 1;
-      [v21 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     else
@@ -1878,10 +1878,10 @@ LABEL_120:
     }
 
     v26->_raw_startDate = v27;
-    if (v22)
+    if (secondsCopy)
     {
       v26->_hasDurationInSeconds = 1;
-      [v22 doubleValue];
+      [secondsCopy doubleValue];
     }
 
     else
@@ -1891,24 +1891,24 @@ LABEL_120:
     }
 
     v26->_durationInSeconds = v28;
-    objc_storeStrong(&v26->_fields, a12);
-    objc_storeStrong(&v26->_groupIdentifier, a13);
-    objc_storeStrong(&v26->_appIntentInteractionIdentifier, a14);
-    v26->_interactionSource = a15;
-    if (v25)
+    objc_storeStrong(&v26->_fields, fields);
+    objc_storeStrong(&v26->_groupIdentifier, groupIdentifier);
+    objc_storeStrong(&v26->_appIntentInteractionIdentifier, interactionIdentifier);
+    v26->_interactionSource = source;
+    if (hashCopy)
     {
       v26->_hasContentHash = 1;
-      v29 = [v25 longLongValue];
+      longLongValue = [hashCopy longLongValue];
     }
 
     else
     {
       v26->_hasContentHash = 0;
-      v29 = -1;
+      longLongValue = -1;
     }
 
-    v26->_contentHash = v29;
-    v26->_userDonatorType = a17;
+    v26->_contentHash = longLongValue;
+    v26->_userDonatorType = donatorType;
   }
 
   return v26;
@@ -1998,9 +1998,9 @@ LABEL_120:
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -2008,8 +2008,8 @@ LABEL_120:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRemembersInteraction alloc] initByReadFrom:v7];
     v4 = v8;

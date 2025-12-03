@@ -5,7 +5,7 @@
 + (BOOL)_isWAPEnabled;
 + (BOOL)_yahooSearchProviderIsAvailable;
 + (BOOL)defaultSearchEngineMatchesExperiment;
-+ (BOOL)getForcedCFPreferencesAppBoolValueForKey:(__CFString *)a3 applicationID:(__CFString *)a4 withFallbackValue:(unsigned __int8)a5;
++ (BOOL)getForcedCFPreferencesAppBoolValueForKey:(__CFString *)key applicationID:(__CFString *)d withFallbackValue:(unsigned __int8)value;
 + (BOOL)hasInternalContent;
 + (BOOL)is2024CloudTabsEnabled;
 + (BOOL)is2024FavoritesEnabled;
@@ -45,7 +45,7 @@
 + (BOOL)isSavedAccountHistoryEnabled;
 + (BOOL)isSavedAccountHistoryInAutoFillEnabled;
 + (BOOL)isSearchEvaluationLoggingEnabled;
-+ (BOOL)isSearchProviderEnabled:(unint64_t)a3;
++ (BOOL)isSearchProviderEnabled:(unint64_t)enabled;
 + (BOOL)isSiriReadThisEnabled;
 + (BOOL)isSolariumEnabled;
 + (BOOL)isStartPageSettingSyncEnabled;
@@ -96,15 +96,15 @@ uint64_t __44__WBSFeatureAvailability_hasInternalContent__block_invoke()
 
 + (BOOL)isAutoFillDrivenByUIProcess
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  if ([v2 safari_BOOLForKey:@"UIProcessDrivenAutoFill" defaultValue:0])
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  if ([safari_browserDefaults safari_BOOLForKey:@"UIProcessDrivenAutoFill" defaultValue:0])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 safari_BOOLForKey:@"InternalDebugSiteIsolationEnabled" defaultValue:0];
+    v3 = [safari_browserDefaults safari_BOOLForKey:@"InternalDebugSiteIsolationEnabled" defaultValue:0];
   }
 
   return v3;
@@ -116,7 +116,7 @@ uint64_t __44__WBSFeatureAvailability_hasInternalContent__block_invoke()
   block[1] = 3221225472;
   block[2] = __38__WBSFeatureAvailability_isWAPEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isWAPEnabled_onceToken != -1)
   {
     dispatch_once(&isWAPEnabled_onceToken, block);
@@ -155,9 +155,9 @@ uint64_t __38__WBSFeatureAvailability_isWAPEnabled__block_invoke(uint64_t a1)
 + (BOOL)defaultSearchEngineMatchesExperiment
 {
   v2 = +[WBSSearchEnginePreferenceObserver sharedObserver];
-  v3 = [v2 defaultSearchEngineMatchesExperiment];
+  defaultSearchEngineMatchesExperiment = [v2 defaultSearchEngineMatchesExperiment];
 
-  return v3;
+  return defaultSearchEngineMatchesExperiment;
 }
 
 + (BOOL)isInternalInstall
@@ -179,18 +179,18 @@ uint64_t __43__WBSFeatureAvailability_isInternalInstall__block_invoke()
 
 + (BOOL)isOngoingCredentialSharingEnabled
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 safari_isPasswordManagerTestMode];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  safari_isPasswordManagerTestMode = [processInfo safari_isPasswordManagerTestMode];
 
-  if (v4)
+  if (safari_isPasswordManagerTestMode)
   {
     goto LABEL_19;
   }
 
   v5 = +[WBSKeychainSyncingMonitor sharedMonitor];
-  v6 = [v5 keychainSyncSettingValue];
+  keychainSyncSettingValue = [v5 keychainSyncSettingValue];
 
-  if (v6 == 1)
+  if (keychainSyncSettingValue == 1)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXKeychain();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -203,12 +203,12 @@ uint64_t __43__WBSFeatureAvailability_isInternalInstall__block_invoke()
     }
   }
 
-  else if (v6)
+  else if (keychainSyncSettingValue)
   {
     v11 = +[WBSPrimaryAppleAccountObserver sharedObserver];
-    v12 = [v11 isCurrentAppleIDManaged];
+    isCurrentAppleIDManaged = [v11 isCurrentAppleIDManaged];
 
-    if (v12)
+    if (isCurrentAppleIDManaged)
     {
       v7 = WBS_LOG_CHANNEL_PREFIXKeychain();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -223,7 +223,7 @@ uint64_t __43__WBSFeatureAvailability_isInternalInstall__block_invoke()
 
     else if (_os_feature_enabled_impl())
     {
-      if ([a1 _isPasswordSharingAvailable])
+      if ([self _isPasswordSharingAvailable])
       {
         LOBYTE(v8) = 1;
       }
@@ -303,10 +303,10 @@ LABEL_19:
 
 + (BOOL)isHistoryClearingEnabled
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isSafariHistoryClearingAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isSafariHistoryClearingAllowed = [mEMORY[0x1E69ADFB8] isSafariHistoryClearingAllowed];
 
-  return v3;
+  return isSafariHistoryClearingAllowed;
 }
 
 + (BOOL)isWebKitTextExtractionEnabled
@@ -327,10 +327,10 @@ void __55__WBSFeatureAvailability_isWebKitTextExtractionEnabled__block_invoke()
 
 + (BOOL)isPrivateBrowsingEnabled
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isSafariPrivateBrowsingAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isSafariPrivateBrowsingAllowed = [mEMORY[0x1E69ADFB8] isSafariPrivateBrowsingAllowed];
 
-  return v3;
+  return isSafariPrivateBrowsingAllowed;
 }
 
 + (BOOL)is2024CloudTabsEnabled
@@ -339,7 +339,7 @@ void __55__WBSFeatureAvailability_isWebKitTextExtractionEnabled__block_invoke()
   block[1] = 3221225472;
   block[2] = __48__WBSFeatureAvailability_is2024CloudTabsEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (is2024CloudTabsEnabled_onceToken != -1)
   {
     dispatch_once(&is2024CloudTabsEnabled_onceToken, block);
@@ -386,7 +386,7 @@ void __58__WBSFeatureAvailability__is2024StartPageDisabledOverride__block_invoke
   block[1] = 3221225472;
   block[2] = __52__WBSFeatureAvailability_is2024PrivacyReportEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (is2024PrivacyReportEnabled_onceToken != -1)
   {
     dispatch_once(&is2024PrivacyReportEnabled_onceToken, block);
@@ -417,7 +417,7 @@ void __52__WBSFeatureAvailability_is2024PrivacyReportEnabled__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __50__WBSFeatureAvailability_is2024ReadingListEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (is2024ReadingListEnabled_onceToken != -1)
   {
     dispatch_once(&is2024ReadingListEnabled_onceToken, block);
@@ -448,7 +448,7 @@ void __50__WBSFeatureAvailability_is2024ReadingListEnabled__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __48__WBSFeatureAvailability_is2024FavoritesEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (is2024FavoritesEnabled_onceToken != -1)
   {
     dispatch_once(&is2024FavoritesEnabled_onceToken, block);
@@ -495,7 +495,7 @@ void __45__WBSFeatureAvailability_isOnboardingEnabled__block_invoke()
   block[1] = 3221225472;
   block[2] = __50__WBSFeatureAvailability_is2024SuggestionsEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (is2024SuggestionsEnabled_onceToken != -1)
   {
     dispatch_once(&is2024SuggestionsEnabled_onceToken, block);
@@ -522,34 +522,34 @@ void __50__WBSFeatureAvailability_is2024SuggestionsEnabled__block_invoke(uint64_
 
 + (BOOL)isCustomizationSyncEnabled
 {
-  if ([a1 isPerSiteSettingSyncEnabled])
+  if ([self isPerSiteSettingSyncEnabled])
   {
     return 1;
   }
 
-  return [a1 isStartPageSettingSyncEnabled];
+  return [self isStartPageSettingSyncEnabled];
 }
 
 + (BOOL)isPerSiteSettingSyncEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:@"WBSEnablePerSiteSettingsSync" defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:@"WBSEnablePerSiteSettingsSync" defaultValue:1];
 
   return v3;
 }
 
 + (BOOL)isSavedAccountHistoryEnabled
 {
-  v2 = [MEMORY[0x1E695E000] pm_defaults];
-  v3 = [v2 safari_BOOLForKey:@"WBSSavedAccountHistory" defaultValue:1];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v3 = [pm_defaults safari_BOOLForKey:@"WBSSavedAccountHistory" defaultValue:1];
 
   return v3;
 }
 
 + (BOOL)isAllowFavoritesInFrequentlyVisitedEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:@"FrequentlyVisitedSitesAllowSitesFromFavorites"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:@"FrequentlyVisitedSitesAllowSitesFromFavorites"];
 
   return v3;
 }
@@ -581,21 +581,21 @@ void __57__WBSFeatureAvailability__yahooSearchProviderIsAvailable__block_invoke(
   _yahooSearchProviderIsAvailable_yahooSearchProviderIsAvailable = v5 ^ 1;
 }
 
-+ (BOOL)isSearchProviderEnabled:(unint64_t)a3
++ (BOOL)isSearchProviderEnabled:(unint64_t)enabled
 {
-  if (a3 < 3)
+  if (enabled < 3)
   {
-    return [a1 _shouldShowChineseFeatures];
+    return [self _shouldShowChineseFeatures];
   }
 
-  if (a3 == 3)
+  if (enabled == 3)
   {
-    return [a1 _shouldShowRussianFeatures];
+    return [self _shouldShowRussianFeatures];
   }
 
-  if (a3 == 4)
+  if (enabled == 4)
   {
-    return [a1 _yahooSearchProviderIsAvailable];
+    return [self _yahooSearchProviderIsAvailable];
   }
 
   return 0;
@@ -627,8 +627,8 @@ uint64_t __73__WBSFeatureAvailability_supportsURLCredentialStorageAccessControlG
 
   if (shouldShowInternalUI_hasInternalUI == 1)
   {
-    v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v3 = [v2 BOOLForKey:@"hideInternalUI"] ^ 1;
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v3 = [safari_browserDefaults BOOLForKey:@"hideInternalUI"] ^ 1;
   }
 
   else
@@ -658,8 +658,8 @@ uint64_t __46__WBSFeatureAvailability_shouldShowInternalUI__block_invoke()
 
 + (BOOL)isStartPageSettingSyncEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:@"WBSEnableCloudSettingsSync" defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:@"WBSEnableCloudSettingsSync" defaultValue:1];
 
   return v3;
 }
@@ -691,16 +691,16 @@ void __47__WBSFeatureAvailability_isSiriReadThisEnabled__block_invoke()
 + (BOOL)isAirDropPasswordsEnabled
 {
   v3 = +[WBSPrimaryAppleAccountObserver sharedObserver];
-  v4 = [v3 isUsingICloud];
+  isUsingICloud = [v3 isUsingICloud];
 
-  if (v4)
+  if (isUsingICloud)
   {
     v5 = +[WBSPrimaryAppleAccountObserver sharedObserver];
-    v6 = [v5 isCurrentAppleIDManaged];
+    isCurrentAppleIDManaged = [v5 isCurrentAppleIDManaged];
 
-    if (!v6)
+    if (!isCurrentAppleIDManaged)
     {
-      if ([a1 _isPasswordSharingAvailable])
+      if ([self _isPasswordSharingAvailable])
       {
         LOBYTE(v8) = 1;
         return v8;
@@ -750,10 +750,10 @@ LABEL_7:
 
 + (BOOL)_isPasswordSharingAvailable
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isPasswordSharingAllowed];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isPasswordSharingAllowed = [mEMORY[0x1E69ADFB8] isPasswordSharingAllowed];
 
-  return v3;
+  return isPasswordSharingAllowed;
 }
 
 + (BOOL)isNewTabAndWindowSyncingEnabled
@@ -762,7 +762,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __57__WBSFeatureAvailability_isNewTabAndWindowSyncingEnabled__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isNewTabAndWindowSyncingEnabled_onceToken != -1)
   {
     dispatch_once(&isNewTabAndWindowSyncingEnabled_onceToken, block);
@@ -866,10 +866,10 @@ void __58__WBSFeatureAvailability_isSearchEvaluationLoggingEnabled__block_invoke
   v2 = _os_feature_enabled_impl();
   if (v2)
   {
-    v3 = [MEMORY[0x1E696EE70] sharedInstance];
-    v4 = [v3 isFeatureEnabled];
+    mEMORY[0x1E696EE70] = [MEMORY[0x1E696EE70] sharedInstance];
+    isFeatureEnabled = [mEMORY[0x1E696EE70] isFeatureEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isFeatureEnabled;
   }
 
   return v2;
@@ -917,16 +917,16 @@ void __56__WBSFeatureAvailability_isOnDeviceSummarizationEnabled__block_invoke()
 
 + (BOOL)isAutomaticStrongPasswordsEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:@"EnableAutomaticStrongPasswords" defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:@"EnableAutomaticStrongPasswords" defaultValue:1];
 
   return v3;
 }
 
 + (BOOL)isAutomaticPasskeyUpgradesEnabled
 {
-  v2 = [MEMORY[0x1E695E000] pm_defaults];
-  v3 = [v2 safari_BOOLForKey:@"AllowAutomaticPasskeyUpgrades" defaultValue:1];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v3 = [pm_defaults safari_BOOLForKey:@"AllowAutomaticPasskeyUpgrades" defaultValue:1];
 
   return v3;
 }
@@ -1015,16 +1015,16 @@ void __53__WBSFeatureAvailability_isPostFixSuggestionsEnabled__block_invoke()
 
 + (BOOL)isDropOutliersInFrequentlyVisitedEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:@"EnableDropOutliersInFrequentlyVisited"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:@"EnableDropOutliersInFrequentlyVisited"];
 
   return v3;
 }
 
 + (BOOL)isAllowLogOnURLsInFrequentlyVisitedEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:@"FrequentlyVisitedSitesAllowLogonURLs"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:@"FrequentlyVisitedSitesAllowLogonURLs"];
 
   return v3;
 }
@@ -1054,80 +1054,80 @@ uint64_t __38__WBSFeatureAvailability_isWAPEnabled__block_invoke_2(uint64_t a1)
 
 + (BOOL)isPasswordsAppFuzzySearchEnabled
 {
-  v2 = [MEMORY[0x1E695E000] pm_defaults];
-  v3 = [v2 safari_BOOLForKey:@"EnablePasswordsFuzzySearch" defaultValue:1];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v3 = [pm_defaults safari_BOOLForKey:@"EnablePasswordsFuzzySearch" defaultValue:1];
 
   return v3;
 }
 
 + (BOOL)isPromotePasskeyUpgradesEnabled
 {
-  v2 = [MEMORY[0x1E695E000] pm_defaults];
-  v3 = [v2 safari_BOOLForKey:@"PromotePasskeyUpgrades" defaultValue:1];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v3 = [pm_defaults safari_BOOLForKey:@"PromotePasskeyUpgrades" defaultValue:1];
 
   return v3;
 }
 
-+ (BOOL)getForcedCFPreferencesAppBoolValueForKey:(__CFString *)a3 applicationID:(__CFString *)a4 withFallbackValue:(unsigned __int8)a5
++ (BOOL)getForcedCFPreferencesAppBoolValueForKey:(__CFString *)key applicationID:(__CFString *)d withFallbackValue:(unsigned __int8)value
 {
-  v5 = a5;
-  if (CFPreferencesAppValueIsForced(a3, a4))
+  valueCopy = value;
+  if (CFPreferencesAppValueIsForced(key, d))
   {
     keyExistsAndHasValidFormat = 0;
-    AppBooleanValue = CFPreferencesGetAppBooleanValue(a3, a4, &keyExistsAndHasValidFormat);
+    AppBooleanValue = CFPreferencesGetAppBooleanValue(key, d, &keyExistsAndHasValidFormat);
     if (keyExistsAndHasValidFormat)
     {
-      v5 = AppBooleanValue;
+      valueCopy = AppBooleanValue;
     }
   }
 
-  return v5 != 0;
+  return valueCopy != 0;
 }
 
 + (BOOL)isSavedAccountHistoryInAutoFillEnabled
 {
-  v2 = [MEMORY[0x1E695E000] pm_defaults];
-  v3 = [v2 safari_BOOLForKey:@"WBSSavedAccountHistoryInAutoFill" defaultValue:0];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v3 = [pm_defaults safari_BOOLForKey:@"WBSSavedAccountHistoryInAutoFill" defaultValue:0];
 
   return v3;
 }
 
 + (BOOL)isCrossFrameAutoFillEnabled
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_BOOLForKey:@"EnableCrossFrameAutoFill" defaultValue:1];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_BOOLForKey:@"EnableCrossFrameAutoFill" defaultValue:1];
 
   return v3;
 }
 
 + (BOOL)isAutoFillInternalFeedbackUIEnabled
 {
-  v2 = [a1 shouldShowInternalUI];
-  if (v2)
+  shouldShowInternalUI = [self shouldShowInternalUI];
+  if (shouldShowInternalUI)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"WBSAutoFillInternalFeedbackUIEnabled"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"WBSAutoFillInternalFeedbackUIEnabled"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(shouldShowInternalUI) = v4;
   }
 
-  return v2;
+  return shouldShowInternalUI;
 }
 
 + (BOOL)_isLockdownModeEnabled
 {
-  v2 = [MEMORY[0x1E69AD388] shared];
-  v3 = [v2 enabled];
+  mEMORY[0x1E69AD388] = [MEMORY[0x1E69AD388] shared];
+  enabled = [mEMORY[0x1E69AD388] enabled];
 
-  return v3;
+  return enabled;
 }
 
 + (BOOL)isNetworkFetchingForPasswordsEnabled
 {
-  v3 = [MEMORY[0x1E695E000] pm_defaults];
-  LOBYTE(a1) = [v3 safari_BOOLForKey:@"WBSPasswordsAppBackgroundNetworkingEnabled" defaultValue:{objc_msgSend(a1, "_isLockdownModeEnabled") ^ 1}];
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  LOBYTE(self) = [pm_defaults safari_BOOLForKey:@"WBSPasswordsAppBackgroundNetworkingEnabled" defaultValue:{objc_msgSend(self, "_isLockdownModeEnabled") ^ 1}];
 
-  return a1;
+  return self;
 }
 
 @end

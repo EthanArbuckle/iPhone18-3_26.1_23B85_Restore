@@ -1,7 +1,7 @@
 @interface ACXDeviceConnectionProtocolInterface
 + (id)interface;
 + (id)new;
-+ (void)configureInterface:(id)a3;
++ (void)configureInterface:(id)interface;
 - (ACXDeviceConnectionProtocolInterface)init;
 @end
 
@@ -23,32 +23,32 @@
 
 + (id)interface
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&interface_weakInterface);
   if (!WeakRetained)
   {
     v4 = MEMORY[0x277CCAE90];
-    v5 = [v2 interfaceProtocol];
-    WeakRetained = [v4 interfaceWithProtocol:v5];
+    interfaceProtocol = [selfCopy interfaceProtocol];
+    WeakRetained = [v4 interfaceWithProtocol:interfaceProtocol];
 
-    [v2 configureInterface:WeakRetained];
+    [selfCopy configureInterface:WeakRetained];
     objc_storeWeak(&interface_weakInterface, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-+ (void)configureInterface:(id)a3
++ (void)configureInterface:(id)interface
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = [v3 setWithObjects:{v5, v6, objc_opt_class(), 0}];
-  [v4 setClasses:v7 forSelector:sel_fetchLocalizedValuesFromAllDevicesForInfoPlistKeys_forAppWithBundleID_fetchingFirstMatchingLocalizationInList_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v7 forSelector:sel_fetchLocalizedValuesFromAllDevicesForInfoPlistKeys_forAppWithBundleID_fetchingFirstMatchingLocalizationInList_completion_ argumentIndex:0 ofReply:1];
 }
 
 @end

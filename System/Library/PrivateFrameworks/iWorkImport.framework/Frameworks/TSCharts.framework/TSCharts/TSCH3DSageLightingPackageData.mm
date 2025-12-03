@@ -1,44 +1,44 @@
 @interface TSCH3DSageLightingPackageData
-+ (id)dataWithDictionary:(id)a3;
-- (BOOL)enabledAtIndex:(unint64_t)a3;
-- (Color)ambientColorAtIndex:(unint64_t)a3;
-- (Color)colorAtIndex:(unint64_t)a3 redKey:(id)a4 greenKey:(id)a5 blueKey:(id)a6;
-- (Color)diffuseColorAtIndex:(unint64_t)a3;
-- (Color)specularColorAtIndex:(unint64_t)a3;
-- (TSCH3DSageLightingPackageData)initWithDictionary:(id)a3;
-- (Vector3)attenuationAtIndex:(unint64_t)a3;
-- (Vector3)directionAtIndex:(unint64_t)a3;
-- (Vector3)positionAtIndex:(unint64_t)a3;
-- (float)cutOffAngleAtIndex:(unint64_t)a3;
-- (float)dropOffRateAtIndex:(unint64_t)a3;
-- (float)intensityAtIndex:(unint64_t)a3;
-- (id)nameAtIndex:(unint64_t)a3;
-- (int64_t)coordinateSpaceAtIndex:(unint64_t)a3;
-- (int64_t)typeAtIndex:(unint64_t)a3;
++ (id)dataWithDictionary:(id)dictionary;
+- (BOOL)enabledAtIndex:(unint64_t)index;
+- (Color)ambientColorAtIndex:(unint64_t)index;
+- (Color)colorAtIndex:(unint64_t)index redKey:(id)key greenKey:(id)greenKey blueKey:(id)blueKey;
+- (Color)diffuseColorAtIndex:(unint64_t)index;
+- (Color)specularColorAtIndex:(unint64_t)index;
+- (TSCH3DSageLightingPackageData)initWithDictionary:(id)dictionary;
+- (Vector3)attenuationAtIndex:(unint64_t)index;
+- (Vector3)directionAtIndex:(unint64_t)index;
+- (Vector3)positionAtIndex:(unint64_t)index;
+- (float)cutOffAngleAtIndex:(unint64_t)index;
+- (float)dropOffRateAtIndex:(unint64_t)index;
+- (float)intensityAtIndex:(unint64_t)index;
+- (id)nameAtIndex:(unint64_t)index;
+- (int64_t)coordinateSpaceAtIndex:(unint64_t)index;
+- (int64_t)typeAtIndex:(unint64_t)index;
 - (unint64_t)count;
 @end
 
 @implementation TSCH3DSageLightingPackageData
 
-+ (id)dataWithDictionary:(id)a3
++ (id)dataWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithDictionary_(v5, v6, v7, v8, v9, v4);
+  dictionaryCopy = dictionary;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithDictionary_(v5, v6, v7, v8, v9, dictionaryCopy);
 
   return v10;
 }
 
-- (TSCH3DSageLightingPackageData)initWithDictionary:(id)a3
+- (TSCH3DSageLightingPackageData)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v59.receiver = self;
   v59.super_class = TSCH3DSageLightingPackageData;
   v6 = [(TSCH3DSageLightingPackageData *)&v59 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_package, a3);
+    objc_storeStrong(&v6->_package, dictionary);
     v12 = objc_msgSend_objectForKey_(v7->_package, v8, v9, v10, v11, @"lights");
     objc_storeWeak(&v7->_lights, v12);
 
@@ -82,19 +82,19 @@
   return v7;
 }
 
-- (id)nameAtIndex:(unint64_t)a3
+- (id)nameAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"name");
 
   return v14;
 }
 
-- (int64_t)typeAtIndex:(unint64_t)a3
+- (int64_t)typeAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"type");
 
   if ((objc_msgSend_isEqualToString_(v14, v15, v16, v17, v18, @"point") & 1) == 0)
@@ -125,17 +125,17 @@ LABEL_7:
   return v23;
 }
 
-- (Color)colorAtIndex:(unint64_t)a3 redKey:(id)a4 greenKey:(id)a5 blueKey:(id)a6
+- (Color)colorAtIndex:(unint64_t)index redKey:(id)key greenKey:(id)greenKey blueKey:(id)blueKey
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  greenKeyCopy = greenKey;
+  blueKeyCopy = blueKey;
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v18 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v14, v15, v16, v17, a3);
+  v18 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v14, v15, v16, v17, index);
 
-  v23 = objc_msgSend_objectForKey_(v18, v19, v20, v21, v22, v10);
-  v28 = objc_msgSend_objectForKey_(v18, v24, v25, v26, v27, v11);
-  v33 = objc_msgSend_objectForKey_(v18, v29, v30, v31, v32, v12);
+  v23 = objc_msgSend_objectForKey_(v18, v19, v20, v21, v22, keyCopy);
+  v28 = objc_msgSend_objectForKey_(v18, v24, v25, v26, v27, greenKeyCopy);
+  v33 = objc_msgSend_objectForKey_(v18, v29, v30, v31, v32, blueKeyCopy);
   v38 = v33;
   if (v23 && v28 && v33)
   {
@@ -173,7 +173,7 @@ LABEL_7:
   return result;
 }
 
-- (Color)ambientColorAtIndex:(unint64_t)a3
+- (Color)ambientColorAtIndex:(unint64_t)index
 {
   (MEMORY[0x2821F9670])(self, sel_colorAtIndex_redKey_greenKey_blueKey_);
   result.var3 = v6;
@@ -183,7 +183,7 @@ LABEL_7:
   return result;
 }
 
-- (Color)diffuseColorAtIndex:(unint64_t)a3
+- (Color)diffuseColorAtIndex:(unint64_t)index
 {
   (MEMORY[0x2821F9670])(self, sel_colorAtIndex_redKey_greenKey_blueKey_);
   result.var3 = v6;
@@ -193,7 +193,7 @@ LABEL_7:
   return result;
 }
 
-- (Color)specularColorAtIndex:(unint64_t)a3
+- (Color)specularColorAtIndex:(unint64_t)index
 {
   (MEMORY[0x2821F9670])(self, sel_colorAtIndex_redKey_greenKey_blueKey_);
   result.var3 = v6;
@@ -203,10 +203,10 @@ LABEL_7:
   return result;
 }
 
-- (float)intensityAtIndex:(unint64_t)a3
+- (float)intensityAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"intensity");
 
   if (v14)
@@ -229,10 +229,10 @@ LABEL_7:
   return v20;
 }
 
-- (Vector3)attenuationAtIndex:(unint64_t)a3
+- (Vector3)attenuationAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
 
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"attenuationQuadratic");
   v19 = objc_msgSend_objectForKey_(v9, v15, v16, v17, v18, @"attenuationLinear");
@@ -270,10 +270,10 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)coordinateSpaceAtIndex:(unint64_t)a3
+- (int64_t)coordinateSpaceAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"coordinateSpace");
 
   if (objc_msgSend_isEqualToString_(v14, v15, v16, v17, v18, @"chart"))
@@ -300,11 +300,11 @@ LABEL_6:
   return v27;
 }
 
-- (BOOL)enabledAtIndex:(unint64_t)a3
+- (BOOL)enabledAtIndex:(unint64_t)index
 {
   objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v10 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v6, v7, v8, v9, index);
   v15 = objc_msgSend_objectForKey_(v10, v11, v12, v13, v14, @"on");
   v16 = TSUDynamicCast();
   v21 = objc_msgSend_BOOLValue(v16, v17, v18, v19, v20);
@@ -312,10 +312,10 @@ LABEL_6:
   return v21;
 }
 
-- (Vector3)positionAtIndex:(unint64_t)a3
+- (Vector3)positionAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
 
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"xLocation");
   v19 = objc_msgSend_objectForKey_(v9, v15, v16, v17, v18, @"yLocation");
@@ -353,10 +353,10 @@ LABEL_6:
   return result;
 }
 
-- (Vector3)directionAtIndex:(unint64_t)a3
+- (Vector3)directionAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
 
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"xDirection");
   v19 = objc_msgSend_objectForKey_(v9, v15, v16, v17, v18, @"yDirection");
@@ -394,10 +394,10 @@ LABEL_6:
   return result;
 }
 
-- (float)cutOffAngleAtIndex:(unint64_t)a3
+- (float)cutOffAngleAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"cutOffAngle");
 
   if (!v14)
@@ -416,10 +416,10 @@ LABEL_6:
   return v35;
 }
 
-- (float)dropOffRateAtIndex:(unint64_t)a3
+- (float)dropOffRateAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_lights);
-  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(WeakRetained, v5, v6, v7, v8, index);
   v14 = objc_msgSend_objectForKey_(v9, v10, v11, v12, v13, @"dropOffRate");
 
   if (!v14)

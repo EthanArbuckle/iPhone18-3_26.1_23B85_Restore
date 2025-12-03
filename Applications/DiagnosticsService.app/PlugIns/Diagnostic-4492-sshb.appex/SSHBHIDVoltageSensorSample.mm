@@ -12,11 +12,11 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithString:v5];
 
-  v7 = [(SSHBHIDVoltageSensorSample *)self identifier];
-  [v6 appendFormat:@"\nidentifier: %@", v7];
+  identifier = [(SSHBHIDVoltageSensorSample *)self identifier];
+  [v6 appendFormat:@"\nidentifier: %@", identifier];
 
-  v8 = [(SSHBHIDVoltageSensorSample *)self name];
-  [v6 appendFormat:@"\nname: %@", v8];
+  name = [(SSHBHIDVoltageSensorSample *)self name];
+  [v6 appendFormat:@"\nname: %@", name];
 
   [(SSHBHIDVoltageSensorSample *)self voltage];
   [v6 appendFormat:@"\nvoltage: %f", v9];
@@ -26,10 +26,10 @@
 
 - (id)csv
 {
-  v3 = [(SSHBHIDVoltageSensorSample *)self identifier];
-  v4 = [(SSHBHIDVoltageSensorSample *)self name];
+  identifier = [(SSHBHIDVoltageSensorSample *)self identifier];
+  name = [(SSHBHIDVoltageSensorSample *)self name];
   [(SSHBHIDVoltageSensorSample *)self voltage];
-  v6 = [NSString stringWithFormat:@"%@, %@, %f", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"%@, %@, %f", identifier, name, v5];
 
   return v6;
 }

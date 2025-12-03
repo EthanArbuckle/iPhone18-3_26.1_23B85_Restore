@@ -1,52 +1,52 @@
 @interface AKCoordinatedDataBlock
-+ (id)startCoordinatingBlock:(id)a3;
-- (AKCoordinatedDataBlock)initWithBlock:(id)a3;
-- (void)_callCompletionWithData:(id)a3 error:(id)a4;
++ (id)startCoordinatingBlock:(id)block;
+- (AKCoordinatedDataBlock)initWithBlock:(id)block;
+- (void)_callCompletionWithData:(id)data error:(id)error;
 - (void)_start;
-- (void)setCompletion:(id)a3;
+- (void)setCompletion:(id)completion;
 - (void)start;
 @end
 
 @implementation AKCoordinatedDataBlock
 
-- (AKCoordinatedDataBlock)initWithBlock:(id)a3
+- (AKCoordinatedDataBlock)initWithBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, block);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKCoordinatedDataBlock;
-  v12 = [(AKCoordinatedDataBlock *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(AKCoordinatedDataBlock *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = MEMORY[0x193B165F0](location[0]);
-    v5 = *(v12 + 1);
-    *(v12 + 1) = v4;
+    v5 = *(selfCopy + 1);
+    *(selfCopy + 1) = v4;
     MEMORY[0x1E69E5920](v5);
-    *(v12 + 7) = 0;
+    *(selfCopy + 7) = 0;
     v6 = dispatch_group_create();
-    v7 = *(v12 + 4);
-    *(v12 + 4) = v6;
+    v7 = *(selfCopy + 4);
+    *(selfCopy + 4) = v6;
     MEMORY[0x1E69E5920](v7);
-    dispatch_group_enter(*(v12 + 4));
+    dispatch_group_enter(*(selfCopy + 4));
   }
 
-  v9 = MEMORY[0x1E69E5928](v12);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-+ (id)startCoordinatingBlock:(id)a3
++ (id)startCoordinatingBlock:(id)block
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   v3 = [AKCoordinatedDataBlock alloc];
   v6 = [(AKCoordinatedDataBlock *)v3 initWithBlock:location[0]];
   [(AKCoordinatedDataBlock *)v6 _start];
@@ -59,7 +59,7 @@
 
 - (void)start
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   v14 = 0;
   v15 = &v14;
@@ -91,7 +91,7 @@
 
   else
   {
-    [(AKCoordinatedDataBlock *)v20 _start];
+    [(AKCoordinatedDataBlock *)selfCopy _start];
   }
 
   objc_storeStrong(v13, 0);
@@ -105,30 +105,30 @@ uint64_t __31__AKCoordinatedDataBlock_start__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v11 = 0;
   v12 = &v11;
   v13 = 0x20000000;
   v14 = 32;
   v15 = 1;
-  p_lock = &v17->_lock;
+  p_lock = &selfCopy->_lock;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __40__AKCoordinatedDataBlock_setCompletion___block_invoke;
   v8 = &unk_1E73D8168;
   v10[1] = &v11;
-  v9 = MEMORY[0x1E69E5928](v17);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   v10[0] = MEMORY[0x1E69E5928](location[0]);
   ak_unfair_lock_perform_3(p_lock, &v4);
   if (v12[3])
   {
-    dispatch_group_leave(v17->_group);
+    dispatch_group_leave(selfCopy->_group);
   }
 
   objc_storeStrong(v10, 0);
@@ -149,10 +149,10 @@ uint64_t __40__AKCoordinatedDataBlock_setCompletion___block_invoke(void *a1)
 
 - (void)_start
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  block = v10->_block;
+  block = selfCopy->_block;
   v3 = MEMORY[0x1E69E9820];
   v4 = -1073741824;
   v5 = 0;
@@ -178,16 +178,16 @@ void __32__AKCoordinatedDataBlock__start__block_invoke(id *a1, void *a2, void *a
   objc_storeStrong(location, 0);
 }
 
-- (void)_callCompletionWithData:(id)a3 error:(id)a4
+- (void)_callCompletionWithData:(id)data error:(id)error
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v18);
-  group = v18->_group;
+  objc_storeStrong(&v16, error);
+  objc_initWeak(&v15, selfCopy);
+  group = selfCopy->_group;
   queue = dispatch_get_global_queue(21, 0);
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;

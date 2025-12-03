@@ -1,22 +1,22 @@
 @interface EMParsecInstantAnswers
 + (NSString)bundleIdentifier;
-+ (id)_dateComponentsForDate:(id)a3 inTimeZone:(id)a4;
-+ (id)_flightArrivalDateFromUpdatedFlightInformation:(id)a3;
-+ (id)_flightDepartureDateFromUpdatedFlightInformation:(id)a3;
-+ (id)dictionaryFromTimezone:(id)a3;
-+ (id)flightArrivalDateComponentsFromUpdatedFlightInformation:(id)a3 arrivalTimeZone:(id)a4;
-+ (id)flightDepartureDateComponentsFromUpdatedFlightInformation:(id)a3 departureTimeZone:(id)a4;
-+ (id)flightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5;
-+ (id)flightURLFromUpdatedFlightInformation:(id)a3;
-+ (id)formattedDate:(id)a3 withTimezone:(id)a4;
-+ (id)inlineCardWithManageReservationButton:(BOOL)a3 bodyCardSectionID:(id)a4 buttonsCardSectionID:(id)a5;
++ (id)_dateComponentsForDate:(id)date inTimeZone:(id)zone;
++ (id)_flightArrivalDateFromUpdatedFlightInformation:(id)information;
++ (id)_flightDepartureDateFromUpdatedFlightInformation:(id)information;
++ (id)dictionaryFromTimezone:(id)timezone;
++ (id)flightArrivalDateComponentsFromUpdatedFlightInformation:(id)information arrivalTimeZone:(id)zone;
++ (id)flightDepartureDateComponentsFromUpdatedFlightInformation:(id)information departureTimeZone:(id)zone;
++ (id)flightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date;
++ (id)flightURLFromUpdatedFlightInformation:(id)information;
++ (id)formattedDate:(id)date withTimezone:(id)timezone;
++ (id)inlineCardWithManageReservationButton:(BOOL)button bodyCardSectionID:(id)d buttonsCardSectionID:(id)iD;
 + (id)log;
-+ (id)sfAirportToDictionnary:(id)a3;
-+ (id)sfFlightStatusToString:(int)a3;
-+ (id)sfFlightsToDictionary:(id)a3;
-+ (id)updatedFlightInformationForInstantAnswer:(id)a3;
++ (id)sfAirportToDictionnary:(id)dictionnary;
++ (id)sfFlightStatusToString:(int)string;
++ (id)sfFlightsToDictionary:(id)dictionary;
++ (id)updatedFlightInformationForInstantAnswer:(id)answer;
 + (id)utcFormatter;
-+ (void)setBundleIdentifier:(id)a3;
++ (void)setBundleIdentifier:(id)identifier;
 @end
 
 @implementation EMParsecInstantAnswers
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __29__EMParsecInstantAnswers_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_30 != -1)
   {
     dispatch_once(&log_onceToken_30, block);
@@ -46,26 +46,26 @@ void __29__EMParsecInstantAnswers_log__block_invoke(uint64_t a1)
   log_log_30 = v1;
 }
 
-+ (id)updatedFlightInformationForInstantAnswer:(id)a3
++ (id)updatedFlightInformationForInstantAnswer:(id)answer
 {
   v84 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 flightDepartureDateComponents];
-  if (!v4)
+  answerCopy = answer;
+  flightDepartureDateComponents = [answerCopy flightDepartureDateComponents];
+  if (!flightDepartureDateComponents)
   {
     v15 = 0;
     goto LABEL_15;
   }
 
-  v66 = v3;
-  v5 = [v3 flightArrivalDateComponents];
-  if (!v5)
+  v66 = answerCopy;
+  flightArrivalDateComponents = [answerCopy flightArrivalDateComponents];
+  if (!flightArrivalDateComponents)
   {
     goto LABEL_12;
   }
 
-  v6 = [v66 flightArrivalAirportCode];
-  if (!v6)
+  flightArrivalAirportCode = [v66 flightArrivalAirportCode];
+  if (!flightArrivalAirportCode)
   {
 LABEL_11:
 
@@ -73,27 +73,27 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [v66 flightArrivalAirportCode];
-  if ([v7 length] < 2 || (objc_msgSend(v66, "flightDepartureAirportCode"), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  flightArrivalAirportCode2 = [v66 flightArrivalAirportCode];
+  if ([flightArrivalAirportCode2 length] < 2 || (objc_msgSend(v66, "flightDepartureAirportCode"), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_11;
   }
 
-  v9 = [v66 flightDepartureAirportCode];
-  v10 = [v9 length];
+  flightDepartureAirportCode = [v66 flightDepartureAirportCode];
+  v10 = [flightDepartureAirportCode length];
 
   if (v10 >= 2)
   {
     v11 = v66;
     v12 = objc_alloc(MEMORY[0x1E695DEE8]);
     v58 = [v12 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-    v13 = [v66 flightDepartureTimeZone];
+    flightDepartureTimeZone = [v66 flightDepartureTimeZone];
 
-    if (v13)
+    if (flightDepartureTimeZone)
     {
-      v14 = [v66 flightDepartureTimeZone];
-      [v58 setTimeZone:v14];
+      flightDepartureTimeZone2 = [v66 flightDepartureTimeZone];
+      [v58 setTimeZone:flightDepartureTimeZone2];
     }
 
     else
@@ -111,12 +111,12 @@ LABEL_12:
       v11 = v66;
     }
 
-    v20 = [v11 flightDepartureDateComponents];
-    v60 = [v58 dateFromComponents:v20];
+    flightDepartureDateComponents2 = [v11 flightDepartureDateComponents];
+    v60 = [v58 dateFromComponents:flightDepartureDateComponents2];
 
-    v21 = [v66 flightCarrierCode];
-    v22 = [v66 flightNumber];
-    v57 = [EMParsecInstantAnswers flightInformationWithAirlineCode:v21 flightNumber:v22 flightDate:v60];
+    flightCarrierCode = [v66 flightCarrierCode];
+    flightNumber = [v66 flightNumber];
+    v57 = [EMParsecInstantAnswers flightInformationWithAirlineCode:flightCarrierCode flightNumber:flightNumber flightDate:v60];
 
     if (!v57)
     {
@@ -187,11 +187,11 @@ LABEL_83:
                   v33 = [v31 objectForKey:@"code"];
                   if (!v33)
                   {
-                    v34 = +[EMParsecInstantAnswers log];
-                    if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+                    flightDepartureAirportCode2 = +[EMParsecInstantAnswers log];
+                    if (os_log_type_enabled(flightDepartureAirportCode2, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 0;
-                      _os_log_impl(&dword_1C6655000, v34, OS_LOG_TYPE_DEFAULT, "[instant answers][flights api] found flight leg with no departure airport code", buf, 2u);
+                      _os_log_impl(&dword_1C6655000, flightDepartureAirportCode2, OS_LOG_TYPE_DEFAULT, "[instant answers][flights api] found flight leg with no departure airport code", buf, 2u);
                     }
 
 LABEL_45:
@@ -199,8 +199,8 @@ LABEL_45:
                     goto LABEL_46;
                   }
 
-                  v34 = [v66 flightDepartureAirportCode];
-                  if (![v33 isEqualToString:v34])
+                  flightDepartureAirportCode2 = [v66 flightDepartureAirportCode];
+                  if (![v33 isEqualToString:flightDepartureAirportCode2])
                   {
                     goto LABEL_45;
                   }
@@ -361,7 +361,7 @@ LABEL_82:
 LABEL_13:
   v15 = 0;
 LABEL_14:
-  v3 = v66;
+  answerCopy = v66;
 LABEL_15:
 
   v16 = *MEMORY[0x1E69E9840];
@@ -369,9 +369,9 @@ LABEL_15:
   return v15;
 }
 
-+ (id)flightURLFromUpdatedFlightInformation:(id)a3
++ (id)flightURLFromUpdatedFlightInformation:(id)information
 {
-  v3 = [a3 objectForKey:@"carrierWebsite"];
+  v3 = [information objectForKey:@"carrierWebsite"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
@@ -385,31 +385,31 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_flightDepartureDateFromUpdatedFlightInformation:(id)a3
++ (id)_flightDepartureDateFromUpdatedFlightInformation:(id)information
 {
-  v3 = [a3 objectForKey:@"departureActualTime"];
+  v3 = [information objectForKey:@"departureActualTime"];
   v4 = +[EMParsecInstantAnswers utcFormatter];
   v5 = [v4 dateFromString:v3];
 
   return v5;
 }
 
-+ (id)_flightArrivalDateFromUpdatedFlightInformation:(id)a3
++ (id)_flightArrivalDateFromUpdatedFlightInformation:(id)information
 {
-  v3 = [a3 objectForKey:@"arrivalActualTime"];
+  v3 = [information objectForKey:@"arrivalActualTime"];
   v4 = +[EMParsecInstantAnswers utcFormatter];
   v5 = [v4 dateFromString:v3];
 
   return v5;
 }
 
-+ (id)flightDepartureDateComponentsFromUpdatedFlightInformation:(id)a3 departureTimeZone:(id)a4
++ (id)flightDepartureDateComponentsFromUpdatedFlightInformation:(id)information departureTimeZone:(id)zone
 {
-  v5 = a4;
-  v6 = [EMParsecInstantAnswers _flightDepartureDateFromUpdatedFlightInformation:a3];
+  zoneCopy = zone;
+  v6 = [EMParsecInstantAnswers _flightDepartureDateFromUpdatedFlightInformation:information];
   if (v6)
   {
-    v7 = [EMParsecInstantAnswers _dateComponentsForDate:v6 inTimeZone:v5];
+    v7 = [EMParsecInstantAnswers _dateComponentsForDate:v6 inTimeZone:zoneCopy];
   }
 
   else
@@ -420,13 +420,13 @@ LABEL_15:
   return v7;
 }
 
-+ (id)flightArrivalDateComponentsFromUpdatedFlightInformation:(id)a3 arrivalTimeZone:(id)a4
++ (id)flightArrivalDateComponentsFromUpdatedFlightInformation:(id)information arrivalTimeZone:(id)zone
 {
-  v5 = a4;
-  v6 = [EMParsecInstantAnswers _flightArrivalDateFromUpdatedFlightInformation:a3];
+  zoneCopy = zone;
+  v6 = [EMParsecInstantAnswers _flightArrivalDateFromUpdatedFlightInformation:information];
   if (v6)
   {
-    v7 = [EMParsecInstantAnswers _dateComponentsForDate:v6 inTimeZone:v5];
+    v7 = [EMParsecInstantAnswers _dateComponentsForDate:v6 inTimeZone:zoneCopy];
   }
 
   else
@@ -437,36 +437,36 @@ LABEL_15:
   return v7;
 }
 
-+ (id)_dateComponentsForDate:(id)a3 inTimeZone:(id)a4
++ (id)_dateComponentsForDate:(id)date inTimeZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v7 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  [v7 setTimeZone:v6];
-  v8 = [v7 components:252 fromDate:v5];
+  [v7 setTimeZone:zoneCopy];
+  v8 = [v7 components:252 fromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)inlineCardWithManageReservationButton:(BOOL)a3 bodyCardSectionID:(id)a4 buttonsCardSectionID:(id)a5
++ (id)inlineCardWithManageReservationButton:(BOOL)button bodyCardSectionID:(id)d buttonsCardSectionID:(id)iD
 {
-  v6 = a3;
+  buttonCopy = button;
   v23[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v9 = objc_alloc_init(MEMORY[0x1E69C9F08]);
-  [v9 setCardSectionId:v7];
+  [v9 setCardSectionId:dCopy];
   v10 = objc_alloc_init(MEMORY[0x1E69CA580]);
   [v9 setCommand:v10];
 
   v11 = objc_alloc_init(MEMORY[0x1E69C9ED8]);
-  [v11 setCardSectionId:v8];
+  [v11 setCardSectionId:iDCopy];
   v12 = objc_alloc_init(MEMORY[0x1E69C9F90]);
   v13 = objc_alloc_init(MEMORY[0x1E69CA580]);
   [v12 setCommand:v13];
 
   [v12 setUniqueId:1];
-  if (v6)
+  if (buttonCopy)
   {
     v14 = objc_alloc_init(MEMORY[0x1E69C9F90]);
     v15 = objc_alloc_init(MEMORY[0x1E69CA1E8]);
@@ -516,53 +516,53 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
   utcFormatter_utcFormatter = v0;
 }
 
-+ (id)sfFlightStatusToString:(int)a3
++ (id)sfFlightStatusToString:(int)string
 {
-  if ((a3 - 1) > 8)
+  if ((string - 1) > 8)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E826F1E0[a3 - 1];
+    return off_1E826F1E0[string - 1];
   }
 }
 
-+ (id)dictionaryFromTimezone:(id)a3
++ (id)dictionaryFromTimezone:(id)timezone
 {
-  v3 = a3;
+  timezoneCopy = timezone;
   v4 = objc_opt_new();
-  v5 = [v3 name];
+  name = [timezoneCopy name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    [v4 setObject:v6 forKeyedSubscript:@"name"];
+    name2 = [timezoneCopy name];
+    [v4 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "secondsFromGMT")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(timezoneCopy, "secondsFromGMT")}];
   [v4 setObject:v7 forKeyedSubscript:@"secondsFromGMT"];
 
   return v4;
 }
 
-+ (id)formattedDate:(id)a3 withTimezone:(id)a4
++ (id)formattedDate:(id)date withTimezone:(id)timezone
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  timezoneCopy = timezone;
   v9 = objc_autoreleasePoolPush();
-  if (!v7)
+  if (!dateCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"EMParsecInstantAnswers.m" lineNumber:244 description:{@"Can't create formattedDate, date is nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMParsecInstantAnswers.m" lineNumber:244 description:{@"Can't create formattedDate, date is nil"}];
   }
 
   v10 = objc_opt_new();
   v11 = v10;
-  if (v8)
+  if (timezoneCopy)
   {
-    [v10 setTimeZone:v8];
+    [v10 setTimeZone:timezoneCopy];
     v12 = [v11 formatOptions] | 0x40;
   }
 
@@ -575,52 +575,52 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
   }
 
   [v11 setFormatOptions:v12];
-  v14 = [v11 stringFromDate:v7];
+  v14 = [v11 stringFromDate:dateCopy];
 
   objc_autoreleasePoolPop(v9);
 
   return v14;
 }
 
-+ (id)sfAirportToDictionnary:(id)a3
++ (id)sfAirportToDictionnary:(id)dictionnary
 {
-  v4 = a3;
+  dictionnaryCopy = dictionnary;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
-  v7 = [v4 code];
-  v8 = v7;
-  if (!v7)
+  code = [dictionnaryCopy code];
+  null = code;
+  if (!code)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v6 setObject:v8 forKeyedSubscript:@"code"];
-  if (!v7)
+  [v6 setObject:null forKeyedSubscript:@"code"];
+  if (!code)
   {
   }
 
-  v9 = [v4 timezone];
-  v10 = [a1 dictionaryFromTimezone:v9];
-  v11 = v10;
+  timezone = [dictionnaryCopy timezone];
+  v10 = [self dictionaryFromTimezone:timezone];
+  null2 = v10;
   if (!v10)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v6 setObject:v11 forKeyedSubscript:@"timezone"];
+  [v6 setObject:null2 forKeyedSubscript:@"timezone"];
   if (!v10)
   {
   }
 
-  v12 = [v4 name];
-  v13 = v12;
-  if (!v12)
+  name = [dictionnaryCopy name];
+  null3 = name;
+  if (!name)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v6 setObject:v13 forKeyedSubscript:@"name"];
-  if (!v12)
+  [v6 setObject:null3 forKeyedSubscript:@"name"];
+  if (!name)
   {
   }
 
@@ -630,17 +630,17 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
   return v14;
 }
 
-+ (id)sfFlightsToDictionary:(id)a3
++ (id)sfFlightsToDictionary:(id)dictionary
 {
   v101 = *MEMORY[0x1E69E9840];
-  v61 = a3;
+  dictionaryCopy = dictionary;
   v67 = objc_opt_new();
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  obj = v61;
-  v3 = [obj countByEnumeratingWithState:&v95 objects:v100 count:{16, v61}];
+  obj = dictionaryCopy;
+  v3 = [obj countByEnumeratingWithState:&v95 objects:v100 count:{16, dictionaryCopy}];
   if (v3)
   {
     v66 = *v96;
@@ -659,44 +659,44 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
         v5 = *(*(&v95 + 1) + 8 * v4);
         context = objc_autoreleasePoolPush();
         v71 = objc_opt_new();
-        v6 = [v5 flightNumber];
-        v7 = v6;
-        if (!v6)
+        flightNumber = [v5 flightNumber];
+        v7 = flightNumber;
+        if (!flightNumber)
         {
-          v64 = [MEMORY[0x1E695DFB0] null];
-          v7 = v64;
+          null = [MEMORY[0x1E695DFB0] null];
+          v7 = null;
         }
 
         [v71 setObject:v7 forKeyedSubscript:@"flightNumber"];
-        if (!v6)
+        if (!flightNumber)
         {
         }
 
-        v8 = [v5 carrierCode];
-        v9 = v8;
-        if (!v8)
+        carrierCode = [v5 carrierCode];
+        v9 = carrierCode;
+        if (!carrierCode)
         {
-          v63 = [MEMORY[0x1E695DFB0] null];
-          v9 = v63;
+          null2 = [MEMORY[0x1E695DFB0] null];
+          v9 = null2;
         }
 
         [v71 setObject:v9 forKeyedSubscript:@"carrierCode"];
-        if (!v8)
+        if (!carrierCode)
         {
         }
 
-        v10 = [v5 carrierWebsite];
+        carrierWebsite = [v5 carrierWebsite];
         v88 = objc_opt_new();
         v93 = 0u;
         v94 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v11 = [v5 legs];
-        v89 = [v11 countByEnumeratingWithState:&v91 objects:v99 count:16];
+        legs = [v5 legs];
+        v89 = [legs countByEnumeratingWithState:&v91 objects:v99 count:16];
         if (v89)
         {
           v87 = *v92;
-          v72 = v11;
+          v72 = legs;
           do
           {
             for (i = 0; i != v89; ++i)
@@ -712,8 +712,8 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               v16 = v15;
               if (!v15)
               {
-                v85 = [MEMORY[0x1E695DFB0] null];
-                v16 = v85;
+                null3 = [MEMORY[0x1E695DFB0] null];
+                v16 = null3;
               }
 
               [v14 setObject:v16 forKeyedSubscript:@"status"];
@@ -721,28 +721,28 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v17 = [v13 title];
-              v18 = v17;
-              if (!v17)
+              title = [v13 title];
+              v18 = title;
+              if (!title)
               {
-                v84 = [MEMORY[0x1E695DFB0] null];
-                v18 = v84;
+                null4 = [MEMORY[0x1E695DFB0] null];
+                v18 = null4;
               }
 
               [v14 setObject:v18 forKeyedSubscript:@"title"];
-              if (!v17)
+              if (!title)
               {
               }
 
-              v19 = [v13 departurePublishedTime];
-              v20 = [v13 departureAirport];
-              v21 = [v20 timezone];
-              v22 = [EMParsecInstantAnswers formattedDate:v19 withTimezone:v21];
+              departurePublishedTime = [v13 departurePublishedTime];
+              departureAirport = [v13 departureAirport];
+              timezone = [departureAirport timezone];
+              v22 = [EMParsecInstantAnswers formattedDate:departurePublishedTime withTimezone:timezone];
               v23 = v22;
               if (!v22)
               {
-                v83 = [MEMORY[0x1E695DFB0] null];
-                v23 = v83;
+                null5 = [MEMORY[0x1E695DFB0] null];
+                v23 = null5;
               }
 
               [v14 setObject:v23 forKeyedSubscript:@"departurePublishedTime"];
@@ -750,15 +750,15 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v24 = [v13 departureActualTime];
-              v25 = [v13 departureAirport];
-              v26 = [v25 timezone];
-              v27 = [EMParsecInstantAnswers formattedDate:v24 withTimezone:v26];
+              departureActualTime = [v13 departureActualTime];
+              departureAirport2 = [v13 departureAirport];
+              timezone2 = [departureAirport2 timezone];
+              v27 = [EMParsecInstantAnswers formattedDate:departureActualTime withTimezone:timezone2];
               v28 = v27;
               if (!v27)
               {
-                v82 = [MEMORY[0x1E695DFB0] null];
-                v28 = v82;
+                null6 = [MEMORY[0x1E695DFB0] null];
+                v28 = null6;
               }
 
               [v14 setObject:v28 forKeyedSubscript:@"departureActualTime"];
@@ -766,41 +766,41 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v29 = [v13 departureTerminal];
-              v30 = v29;
-              if (!v29)
+              departureTerminal = [v13 departureTerminal];
+              v30 = departureTerminal;
+              if (!departureTerminal)
               {
-                v81 = [MEMORY[0x1E695DFB0] null];
-                v30 = v81;
+                null7 = [MEMORY[0x1E695DFB0] null];
+                v30 = null7;
               }
 
               [v14 setObject:v30 forKeyedSubscript:@"departureTerminal"];
-              if (!v29)
+              if (!departureTerminal)
               {
               }
 
-              v31 = [v13 departureGate];
-              v32 = v31;
-              if (!v31)
+              departureGate = [v13 departureGate];
+              v32 = departureGate;
+              if (!departureGate)
               {
-                v80 = [MEMORY[0x1E695DFB0] null];
-                v32 = v80;
+                null8 = [MEMORY[0x1E695DFB0] null];
+                v32 = null8;
               }
 
               [v14 setObject:v32 forKeyedSubscript:@"departureGate"];
-              if (!v31)
+              if (!departureGate)
               {
               }
 
-              v33 = [v13 arrivalPublishedTime];
-              v34 = [v13 arrivalAirport];
-              v35 = [v34 timezone];
-              v36 = [EMParsecInstantAnswers formattedDate:v33 withTimezone:v35];
+              arrivalPublishedTime = [v13 arrivalPublishedTime];
+              arrivalAirport = [v13 arrivalAirport];
+              timezone3 = [arrivalAirport timezone];
+              v36 = [EMParsecInstantAnswers formattedDate:arrivalPublishedTime withTimezone:timezone3];
               v37 = v36;
               if (!v36)
               {
-                v79 = [MEMORY[0x1E695DFB0] null];
-                v37 = v79;
+                null9 = [MEMORY[0x1E695DFB0] null];
+                v37 = null9;
               }
 
               [v14 setObject:v37 forKeyedSubscript:@"arrivalPublishedTime"];
@@ -808,15 +808,15 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v38 = [v13 arrivalActualTime];
-              v39 = [v13 arrivalAirport];
-              v40 = [v39 timezone];
-              v41 = [EMParsecInstantAnswers formattedDate:v38 withTimezone:v40];
+              arrivalActualTime = [v13 arrivalActualTime];
+              arrivalAirport2 = [v13 arrivalAirport];
+              timezone4 = [arrivalAirport2 timezone];
+              v41 = [EMParsecInstantAnswers formattedDate:arrivalActualTime withTimezone:timezone4];
               v42 = v41;
               if (!v41)
               {
-                v78 = [MEMORY[0x1E695DFB0] null];
-                v42 = v78;
+                null10 = [MEMORY[0x1E695DFB0] null];
+                v42 = null10;
               }
 
               [v14 setObject:v42 forKeyedSubscript:@"arrivalActualTime"];
@@ -824,39 +824,39 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v43 = [v13 arrivalTerminal];
-              v44 = v43;
-              if (!v43)
+              arrivalTerminal = [v13 arrivalTerminal];
+              v44 = arrivalTerminal;
+              if (!arrivalTerminal)
               {
-                v77 = [MEMORY[0x1E695DFB0] null];
-                v44 = v77;
+                null11 = [MEMORY[0x1E695DFB0] null];
+                v44 = null11;
               }
 
               [v14 setObject:v44 forKeyedSubscript:@"arrivalTerminal"];
-              if (!v43)
+              if (!arrivalTerminal)
               {
               }
 
-              v45 = [v13 arrivalGate];
-              v46 = v45;
-              if (!v45)
+              arrivalGate = [v13 arrivalGate];
+              v46 = arrivalGate;
+              if (!arrivalGate)
               {
-                v76 = [MEMORY[0x1E695DFB0] null];
-                v46 = v76;
+                null12 = [MEMORY[0x1E695DFB0] null];
+                v46 = null12;
               }
 
               [v14 setObject:v46 forKeyedSubscript:@"arrivalGate"];
-              if (!v45)
+              if (!arrivalGate)
               {
               }
 
-              v47 = [v13 departureAirport];
-              v48 = [EMParsecInstantAnswers sfAirportToDictionnary:v47];
+              departureAirport3 = [v13 departureAirport];
+              v48 = [EMParsecInstantAnswers sfAirportToDictionnary:departureAirport3];
               v49 = v48;
               if (!v48)
               {
-                v75 = [MEMORY[0x1E695DFB0] null];
-                v49 = v75;
+                null13 = [MEMORY[0x1E695DFB0] null];
+                v49 = null13;
               }
 
               [v14 setObject:v49 forKeyedSubscript:@"departureAirport"];
@@ -864,13 +864,13 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v50 = [v13 arrivalAirport];
-              v51 = [EMParsecInstantAnswers sfAirportToDictionnary:v50];
+              arrivalAirport3 = [v13 arrivalAirport];
+              v51 = [EMParsecInstantAnswers sfAirportToDictionnary:arrivalAirport3];
               v52 = v51;
               if (!v51)
               {
-                v74 = [MEMORY[0x1E695DFB0] null];
-                v52 = v74;
+                null14 = [MEMORY[0x1E695DFB0] null];
+                v52 = null14;
               }
 
               [v14 setObject:v52 forKeyedSubscript:@"arrivalAirport"];
@@ -878,13 +878,13 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v53 = [v13 divertedAirport];
-              v54 = [a1 sfAirportToDictionnary:v53];
+              divertedAirport = [v13 divertedAirport];
+              v54 = [self sfAirportToDictionnary:divertedAirport];
               v55 = v54;
               if (!v54)
               {
-                v73 = [MEMORY[0x1E695DFB0] null];
-                v55 = v73;
+                null15 = [MEMORY[0x1E695DFB0] null];
+                v55 = null15;
               }
 
               [v14 setObject:v55 forKeyedSubscript:@"divertedAirport"];
@@ -892,22 +892,22 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
               {
               }
 
-              v56 = v10;
-              if (!v10)
+              v56 = carrierWebsite;
+              if (!carrierWebsite)
               {
-                v90 = [MEMORY[0x1E695DFB0] null];
-                v56 = v90;
+                null16 = [MEMORY[0x1E695DFB0] null];
+                v56 = null16;
               }
 
               [v14 setObject:v56 forKeyedSubscript:@"carrierWebsite"];
-              if (!v10)
+              if (!carrierWebsite)
               {
               }
 
               [v88 addObject:v14];
             }
 
-            v11 = v72;
+            legs = v72;
             v89 = [v72 countByEnumeratingWithState:&v91 objects:v99 count:16];
           }
 
@@ -917,8 +917,8 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
         v57 = v88;
         if (!v88)
         {
-          v68 = [MEMORY[0x1E695DFB0] null];
-          v57 = v68;
+          null17 = [MEMORY[0x1E695DFB0] null];
+          v57 = null17;
         }
 
         [v71 setObject:v57 forKeyedSubscript:@"legs"];
@@ -945,23 +945,23 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
   return v58;
 }
 
-+ (id)flightInformationWithAirlineCode:(id)a3 flightNumber:(id)a4 flightDate:(id)a5
++ (id)flightInformationWithAirlineCode:(id)code flightNumber:(id)number flightDate:(id)date
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  codeCopy = code;
+  numberCopy = number;
+  dateCopy = date;
+  v12 = dateCopy;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
   v52 = __Block_byref_object_copy__10;
   v53 = __Block_byref_object_dispose__10;
   v54 = 0;
-  if (!v9)
+  if (!codeCopy)
   {
-    v13 = +[EMParsecInstantAnswers log];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    numberCopy = +[EMParsecInstantAnswers log];
+    if (!os_log_type_enabled(numberCopy, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_22;
     }
@@ -969,14 +969,14 @@ void __38__EMParsecInstantAnswers_utcFormatter__block_invoke()
     *buf = 0;
     v24 = "[instant answers][flights api] Can't get flightInformation, airlineCode is nil";
 LABEL_21:
-    _os_log_impl(&dword_1C6655000, v13, OS_LOG_TYPE_DEFAULT, v24, buf, 2u);
+    _os_log_impl(&dword_1C6655000, numberCopy, OS_LOG_TYPE_DEFAULT, v24, buf, 2u);
     goto LABEL_22;
   }
 
-  if (!v10)
+  if (!numberCopy)
   {
-    v13 = +[EMParsecInstantAnswers log];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    numberCopy = +[EMParsecInstantAnswers log];
+    if (!os_log_type_enabled(numberCopy, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_22;
     }
@@ -986,10 +986,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
-    v13 = +[EMParsecInstantAnswers log];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    numberCopy = +[EMParsecInstantAnswers log];
+    if (os_log_type_enabled(numberCopy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v24 = "[instant answers][flights api] Can't get flightInformation, flightDate is nil";
@@ -1001,8 +1001,8 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v9, v10];
-  if (!v13)
+  numberCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", codeCopy, numberCopy];
+  if (!numberCopy)
   {
     v27 = +[EMParsecInstantAnswers log];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1028,11 +1028,11 @@ LABEL_22:
   }
 
   v37 = v14;
-  v38 = [MEMORY[0x1E6998648] flightRequestForQuery:v13 date:v12 appBundleId:?];
+  v38 = [MEMORY[0x1E6998648] flightRequestForQuery:numberCopy date:v12 appBundleId:?];
   if (!v38)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"EMParsecInstantAnswers.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMParsecInstantAnswers.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   v16 = [objc_alloc(MEMORY[0x1E6998678]) initWithId:@"com.apple.mail" userAgent:@"mail/1"];
@@ -1092,8 +1092,8 @@ LABEL_22:
         v31 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v30, "code")}];
         v56[1] = v31;
         v55[2] = @"userInfo";
-        v36 = [*(v44 + 5) userInfo];
-        v56[2] = v36;
+        userInfo = [*(v44 + 5) userInfo];
+        v56[2] = userInfo;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:3];
         v57 = v32;
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
@@ -1152,19 +1152,19 @@ void __83__EMParsecInstantAnswers_flightInformationWithAirlineCode_flightNumber_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setBundleIdentifier:(id)a3
++ (void)setBundleIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[EMParsecInstantAnswers log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v3;
+    v9 = identifierCopy;
     _os_log_impl(&dword_1C6655000, v4, OS_LOG_TYPE_DEFAULT, "[instant answers] updated to use new bundle identifier:%{public}@", &v8, 0xCu);
   }
 
-  v5 = [v3 copy];
+  v5 = [identifierCopy copy];
   v6 = s_bundleIdentifier;
   s_bundleIdentifier = v5;
 
@@ -1175,16 +1175,16 @@ void __83__EMParsecInstantAnswers_flightInformationWithAirlineCode_flightNumber_
 {
   if (s_bundleIdentifier)
   {
-    v2 = s_bundleIdentifier;
+    bundleIdentifier = s_bundleIdentifier;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v2 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
 @end

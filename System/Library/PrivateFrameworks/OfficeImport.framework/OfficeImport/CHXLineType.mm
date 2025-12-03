@@ -1,19 +1,19 @@
 @interface CHXLineType
-+ (void)readFrom:(_xmlNode *)a3 chartType:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from chartType:(id)type state:(id)state;
 @end
 
 @implementation CHXLineType
 
-+ (void)readFrom:(_xmlNode *)a3 chartType:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from chartType:(id)type state:(id)state
 {
-  v11 = a4;
-  v7 = a5;
-  [v11 setVaryColors:0];
-  v8 = [v7 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "grouping");
+  typeCopy = type;
+  stateCopy = state;
+  [typeCopy setVaryColors:0];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(from, oAXChartNamespace, "grouping");
 
-  [v11 setGrouping:{+[CHXChartType chdGroupingFromXmlGroupingElement:](CHXChartType, "chdGroupingFromXmlGroupingElement:", v10)}];
+  [typeCopy setGrouping:{+[CHXChartType chdGroupingFromXmlGroupingElement:](CHXChartType, "chdGroupingFromXmlGroupingElement:", v10)}];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface SKAction
-+ (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
++ (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
 + (SKAction)actionNamed:(NSString *)name;
 + (SKAction)actionNamed:(NSString *)name duration:(NSTimeInterval)duration;
 + (SKAction)actionNamed:(NSString *)name fromURL:(NSURL *)url;
@@ -47,28 +47,28 @@
 + (SKAction)stereoPanBy:(float)v duration:(NSTimeInterval)duration;
 + (SKAction)stereoPanTo:(float)v duration:(NSTimeInterval)duration;
 + (SKAction)warpTo:(SKWarpGeometry *)warp duration:(NSTimeInterval)duration;
-+ (id)findNamedActionInBundle:(id)a3;
-+ (id)javaScriptActionWithDuration:(double)a3 script:(id)a4;
-+ (id)playSoundFileNamed:(id)a3;
-+ (id)playSoundFileNamed:(id)a3 atPosition:(CGPoint)a4 waitForCompletion:(BOOL)a5;
-+ (id)recursivePathsForResourcesOfType:(id)a3 inDirectory:(id)a4;
++ (id)findNamedActionInBundle:(id)bundle;
++ (id)javaScriptActionWithDuration:(double)duration script:(id)script;
++ (id)playSoundFileNamed:(id)named;
++ (id)playSoundFileNamed:(id)named atPosition:(CGPoint)position waitForCompletion:(BOOL)completion;
++ (id)recursivePathsForResourcesOfType:(id)type inDirectory:(id)directory;
 + (void)clearActionTableCache;
-+ (void)convertAction:(id)a3 toDuration:(double)a4;
-- (BOOL)isEqualToAction:(id)a3;
++ (void)convertAction:(id)action toDuration:(double)duration;
+- (BOOL)isEqualToAction:(id)action;
 - (SKAction)init;
-- (SKAction)initWithCoder:(id)a3;
+- (SKAction)initWithCoder:(id)coder;
 - (SKAction)reversedAction;
 - (SKActionTimingFunction)timingFunction;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)commonInit;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCppAction:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCppAction:(void *)action;
 - (void)setTimingFunction:(SKActionTimingFunction)timingFunction;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)wasAddedToTarget:(id)a3 atTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)wasAddedToTarget:(id)target atTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SKAction
@@ -989,9 +989,9 @@ void __22__SKAction_commonInit__block_invoke()
   return 0;
 }
 
-- (SKAction)initWithCoder:(id)a3
+- (SKAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKAction;
   if ([(SKAction *)&v6 init])
@@ -1002,25 +1002,25 @@ void __22__SKAction_commonInit__block_invoke()
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_caction->var8];
-  [v6 encodeObject:v4 forKey:@"_duration"];
+  [coderCopy encodeObject:v4 forKey:@"_duration"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_caction->var14];
-  [v6 encodeObject:v5 forKey:@"_timingMode"];
+  [coderCopy encodeObject:v5 forKey:@"_timingMode"];
 }
 
-- (BOOL)isEqualToAction:(id)a3
+- (BOOL)isEqualToAction:(id)action
 {
-  if (self == a3)
+  if (self == action)
   {
     return 1;
   }
 
   caction = self->_caction;
-  v4 = *(a3 + 1);
+  v4 = *(action + 1);
   return (COERCE_UNSIGNED_INT(caction->var8 - *(v4 + 56)) & 0x60000000) == 0 && caction->var14 == *(v4 + 88);
 }
 
@@ -1031,7 +1031,7 @@ void __22__SKAction_commonInit__block_invoke()
   return [(SKAction *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   caction = self->_caction;
@@ -1040,10 +1040,10 @@ void __22__SKAction_commonInit__block_invoke()
   *(v6 + 100) = *&caction->var16;
   *(v6 + 72) = 0;
   *(v6 + 56) = *&caction->var8;
-  v7 = [(SKAction *)self timingFunction];
+  timingFunction = [(SKAction *)self timingFunction];
   v8 = v4[1];
   v9 = *(v8 + 16);
-  *(v8 + 16) = v7;
+  *(v8 + 16) = timingFunction;
 
   return v4;
 }
@@ -1175,9 +1175,9 @@ void __22__SKAction_commonInit__block_invoke()
   return v6;
 }
 
-+ (id)playSoundFileNamed:(id)a3
++ (id)playSoundFileNamed:(id)named
 {
-  v3 = [SKPlaySound playSoundFileNamed:a3 atPosition:0 waitForCompletion:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  v3 = [SKPlaySound playSoundFileNamed:named atPosition:0 waitForCompletion:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 
   return v3;
 }
@@ -1189,9 +1189,9 @@ void __22__SKAction_commonInit__block_invoke()
   return v4;
 }
 
-+ (id)playSoundFileNamed:(id)a3 atPosition:(CGPoint)a4 waitForCompletion:(BOOL)a5
++ (id)playSoundFileNamed:(id)named atPosition:(CGPoint)position waitForCompletion:(BOOL)completion
 {
-  v5 = [SKPlaySound playSoundFileNamed:a3 atPosition:a5 waitForCompletion:a4.x, a4.y];
+  v5 = [SKPlaySound playSoundFileNamed:named atPosition:completion waitForCompletion:position.x, position.y];
 
   return v5;
 }
@@ -1205,16 +1205,16 @@ void __22__SKAction_commonInit__block_invoke()
 
 + (SKAction)reachTo:(CGPoint)position rootNode:(SKNode *)root duration:(NSTimeInterval)duration
 {
-  v5 = [SKReach reachTo:root rootNode:position.x duration:position.y, duration];
+  duration = [SKReach reachTo:root rootNode:position.x duration:position.y, duration];
 
-  return v5;
+  return duration;
 }
 
 + (SKAction)reachTo:(CGPoint)position rootNode:(SKNode *)root velocity:(CGFloat)velocity
 {
-  v5 = [SKReach reachTo:root rootNode:position.x velocity:position.y, velocity];
+  velocity = [SKReach reachTo:root rootNode:position.x velocity:position.y, velocity];
 
-  return v5;
+  return velocity;
 }
 
 + (SKAction)reachToNode:(SKNode *)node rootNode:(SKNode *)root duration:(NSTimeInterval)sec
@@ -1251,9 +1251,9 @@ void __22__SKAction_commonInit__block_invoke()
   return v4;
 }
 
-+ (id)javaScriptActionWithDuration:(double)a3 script:(id)a4
++ (id)javaScriptActionWithDuration:(double)duration script:(id)script
 {
-  v4 = [SKJavaScriptAction javaScriptActionWithDuration:a4 script:a3];
+  v4 = [SKJavaScriptAction javaScriptActionWithDuration:script script:duration];
 
   return v4;
 }
@@ -1271,7 +1271,7 @@ void __22__SKAction_commonInit__block_invoke()
   v5 = [_actionTable objectForKey:v4];
   if (!v5)
   {
-    v5 = [a1 findNamedActionInBundle:v4];
+    v5 = [self findNamedActionInBundle:v4];
   }
 
   return v5;
@@ -1279,13 +1279,13 @@ void __22__SKAction_commonInit__block_invoke()
 
 + (SKAction)actionNamed:(NSString *)name duration:(NSTimeInterval)duration
 {
-  v6 = [a1 actionNamed:name];
+  v6 = [self actionNamed:name];
   if (v6)
   {
     v7 = v6;
     v8 = [v6 copy];
 
-    [a1 convertAction:v8 toDuration:duration];
+    [self convertAction:v8 toDuration:duration];
   }
 
   else
@@ -1301,8 +1301,8 @@ void __22__SKAction_commonInit__block_invoke()
   v23[3] = *MEMORY[0x277D85DE8];
   v6 = name;
   v7 = MEMORY[0x277CBEA90];
-  v8 = [(NSURL *)url path];
-  v9 = [v7 dataWithContentsOfFile:v8];
+  path = [(NSURL *)url path];
+  v9 = [v7 dataWithContentsOfFile:path];
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v23[0] = objc_opt_class();
@@ -1327,7 +1327,7 @@ void __22__SKAction_commonInit__block_invoke()
     v18 = [v17 objectForKeyedSubscript:v6];
     if (v18)
     {
-      [a1 addActionsToCachedActionTable:v17];
+      [self addActionsToCachedActionTable:v17];
 LABEL_8:
 
       goto LABEL_10;
@@ -1341,8 +1341,8 @@ LABEL_8:
     v18 = [v17 actionForName:v6];
     if (v18)
     {
-      v19 = [v17 actionTableDictionary];
-      [a1 addActionsToCachedActionTable:v19];
+      actionTableDictionary = [v17 actionTableDictionary];
+      [self addActionsToCachedActionTable:actionTableDictionary];
     }
 
     goto LABEL_8;
@@ -1356,43 +1356,43 @@ LABEL_10:
 
 + (SKAction)actionNamed:(NSString *)name fromURL:(NSURL *)url duration:(NSTimeInterval)duration
 {
-  v7 = [a1 actionNamed:name fromURL:url];
+  v7 = [self actionNamed:name fromURL:url];
   if (v7)
   {
-    [a1 convertAction:v7 toDuration:duration];
+    [self convertAction:v7 toDuration:duration];
   }
 
   return v7;
 }
 
-+ (id)recursivePathsForResourcesOfType:(id)a3 inDirectory:(id)a4
++ (id)recursivePathsForResourcesOfType:(id)type inDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  directoryCopy = directory;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 enumeratorAtPath:v6];
-  v10 = 0;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager enumeratorAtPath:directoryCopy];
+  nextObject = 0;
 LABEL_2:
 
-  v11 = v10;
+  v11 = nextObject;
   while (1)
   {
-    v10 = [v9 nextObject];
+    nextObject = [v9 nextObject];
 
-    if (!v10)
+    if (!nextObject)
     {
       break;
     }
 
-    v12 = [v10 pathExtension];
-    v13 = [v12 caseInsensitiveCompare:v5];
+    pathExtension = [nextObject pathExtension];
+    v13 = [pathExtension caseInsensitiveCompare:typeCopy];
 
-    v11 = v10;
+    v11 = nextObject;
     if (!v13)
     {
-      v8 = [v6 stringByAppendingPathComponent:v10];
-      [v7 addObject:v8];
+      defaultManager = [directoryCopy stringByAppendingPathComponent:nextObject];
+      [v7 addObject:defaultManager];
       goto LABEL_2;
     }
   }
@@ -1405,18 +1405,18 @@ LABEL_2:
   v18 = [MEMORY[0x277CBEB98] setWithArray:v7];
   [v17 unionSet:v18];
 
-  v19 = [v17 allObjects];
+  allObjects = [v17 allObjects];
 
-  return v19;
+  return allObjects;
 }
 
-+ (id)findNamedActionInBundle:(id)a3
++ (id)findNamedActionInBundle:(id)bundle
 {
   v72 = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  bundleCopy = bundle;
   v3 = SKGetResourceBundle();
-  v4 = [v3 bundlePath];
-  v5 = [a1 recursivePathsForResourcesOfType:@"sks" inDirectory:v4];
+  bundlePath = [v3 bundlePath];
+  v5 = [self recursivePathsForResourcesOfType:@"sks" inDirectory:bundlePath];
 
   v63 = 0u;
   v64 = 0u;
@@ -1552,7 +1552,7 @@ LABEL_37:
       v39 = [v38 initForReadingFromData:v37 error:&v60];
       v40 = v60;
       [v39 setRequiresSecureCoding:0];
-      [v39 setDelegate:a1];
+      [v39 setDelegate:self];
       v41 = MEMORY[0x277CBEB98];
       v69[0] = objc_opt_class();
       v69[1] = objc_opt_class();
@@ -1565,10 +1565,10 @@ LABEL_37:
       if (objc_opt_isKindOfClass())
       {
         v45 = [v44 objectForKeyedSubscript:@"actions"];
-        v46 = [v45 objectForKeyedSubscript:v51];
+        v46 = [v45 objectForKeyedSubscript:bundleCopy];
         if (v46)
         {
-          [a1 addActionsToCachedActionTable:v45];
+          [self addActionsToCachedActionTable:v45];
 LABEL_43:
           v48 = 0;
           v50 = v46;
@@ -1584,11 +1584,11 @@ LABEL_45:
       if (objc_opt_isKindOfClass())
       {
         v45 = v44;
-        v46 = [v45 actionForName:v51];
+        v46 = [v45 actionForName:bundleCopy];
         if (v46)
         {
-          v47 = [v45 actionTableDictionary];
-          [a1 addActionsToCachedActionTable:v47];
+          actionTableDictionary = [v45 actionTableDictionary];
+          [self addActionsToCachedActionTable:actionTableDictionary];
 
           goto LABEL_43;
         }
@@ -1621,15 +1621,15 @@ LABEL_51:
   return v50;
 }
 
-+ (void)convertAction:(id)a3 toDuration:(double)a4
++ (void)convertAction:(id)action toDuration:(double)duration
 {
   v34 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  [v31 duration];
+  actionCopy = action;
+  [actionCopy duration];
   v6 = v5;
   v30 = 0u;
   memset(v29, 0, sizeof(v29));
-  std::deque<SKAction * {__strong}>::push_back(v29, &v31);
+  std::deque<SKAction * {__strong}>::push_back(v29, &actionCopy);
   while (*(&v30 + 1))
   {
     v7 = *(*(*(&v29[0] + 1) + (((*(&v30 + 1) + v30 - 1) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((*(&v30 + 1) + v30 - 1) & 0x1FF));
@@ -1645,8 +1645,8 @@ LABEL_51:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v7 subactions];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
+    subactions = [v7 subactions];
+    v11 = [subactions countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v11)
     {
       v12 = *v25;
@@ -1656,14 +1656,14 @@ LABEL_51:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subactions);
           }
 
           v28 = *(*(&v24 + 1) + 8 * i);
           std::deque<SKAction * {__strong}>::push_back(v29, &v28);
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        v11 = [subactions countByEnumeratingWithState:&v24 objects:v33 count:16];
       }
 
       while (v11);
@@ -1672,19 +1672,19 @@ LABEL_51:
 
   if (v6 != 0.0)
   {
-    std::deque<SKAction * {__strong}>::push_back(v29, &v31);
+    std::deque<SKAction * {__strong}>::push_back(v29, &actionCopy);
     while (*(&v30 + 1))
     {
       v14 = *(*(*(&v29[0] + 1) + (((*(&v30 + 1) + v30 - 1) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * ((*(&v30 + 1) + v30 - 1) & 0x1FF));
       std::deque<SKAction * {__strong}>::pop_back(v29);
       [v14 duration];
-      [v14 setDuration:v15 / v6 * a4];
+      [v14 setDuration:v15 / v6 * duration];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v16 = [v14 subactions];
-      v17 = [v16 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      subactions2 = [v14 subactions];
+      v17 = [subactions2 countByEnumeratingWithState:&v20 objects:v32 count:16];
       if (v17)
       {
         v18 = *v21;
@@ -1694,14 +1694,14 @@ LABEL_51:
           {
             if (*v21 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(subactions2);
             }
 
             v28 = *(*(&v20 + 1) + 8 * j);
             std::deque<SKAction * {__strong}>::push_back(v29, &v28);
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v20 objects:v32 count:16];
+          v17 = [subactions2 countByEnumeratingWithState:&v20 objects:v32 count:16];
         }
 
         while (v17);
@@ -1720,26 +1720,26 @@ LABEL_51:
   }
 }
 
-+ (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
++ (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
-  v5 = a5;
-  if ([v5 count] < 2)
+  classesCopy = classes;
+  if ([classesCopy count] < 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:1];
+    v6 = [classesCopy objectAtIndex:1];
     v7 = NSClassFromString(v6);
   }
 
   return v7;
 }
 
-- (void)setCppAction:(void *)a3
+- (void)setCppAction:(void *)action
 {
-  ++*(a3 + 2);
+  ++*(action + 2);
   caction = self->_caction;
   if (caction)
   {
@@ -1751,11 +1751,11 @@ LABEL_51:
     }
   }
 
-  self->_caction = a3;
-  *(a3 + 3) = self;
+  self->_caction = action;
+  *(action + 3) = self;
 }
 
-- (void)wasAddedToTarget:(id)a3 atTime:(double)a4
+- (void)wasAddedToTarget:(id)target atTime:(double)time
 {
   caction = self->_caction;
   caction->var11 = 0;
@@ -1778,24 +1778,24 @@ LABEL_51:
   }
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
   caction = self->_caction;
-  caction->var6 = a4;
+  caction->var6 = time;
   caction->var15 = 0.0;
   *&caction->var11 = 256;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  v10 = a3;
-  SKCAction::ratioForTime(self->_caction, a4);
+  targetCopy = target;
+  SKCAction::ratioForTime(self->_caction, time);
   if (v6 >= 1.0)
   {
     caction = self->_caction;
-    v8 = [v10 _backingNode];
-    v9.n128_f64[0] = a4;
-    SKCAction::didFinishWithTargetAtTime(caction, v8, v9);
+    _backingNode = [targetCopy _backingNode];
+    v9.n128_f64[0] = time;
+    SKCAction::didFinishWithTargetAtTime(caction, _backingNode, v9);
   }
 }
 

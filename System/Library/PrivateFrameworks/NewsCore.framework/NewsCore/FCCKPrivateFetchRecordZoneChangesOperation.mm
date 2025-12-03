@@ -1,7 +1,7 @@
 @interface FCCKPrivateFetchRecordZoneChangesOperation
 - (BOOL)validateOperation;
-- (id)_configurationForDestination:(int64_t)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_configurationForDestination:(int64_t)destination;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -12,10 +12,10 @@
   v17 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = FCCKPrivateFetchRecordZoneChangesOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v8 validateOperation];
-  v4 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v8 validateOperation];
+  recordZoneID = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!recordZoneID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"can't fetch zone changes without a zone ID"];
     *buf = 136315906;
@@ -29,9 +29,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (v4)
+  if (recordZoneID)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -60,26 +60,26 @@
 
   v32 = 0x2020000000;
   v33 = 0;
-  v4 = [(FCCKPrivateDatabaseOperation *)self database];
-  v5 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
-  v37[0] = v5;
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  recordZoneID = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
+  v37[0] = recordZoneID;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __62__FCCKPrivateFetchRecordZoneChangesOperation_performOperation__block_invoke;
   v29[3] = &unk_1E7C3B438;
   v29[4] = &v30;
-  [(FCCKPrivateDatabase *)v4 enumeratePayloadsWithRecordIDs:0 records:v6 zoneIDs:0 zones:v3 options:v29 payloadHandler:?];
+  [(FCCKPrivateDatabase *)database enumeratePayloadsWithRecordIDs:0 records:v6 zoneIDs:0 zones:v3 options:v29 payloadHandler:?];
 
   v7 = objc_alloc_init(MEMORY[0x1E695B918]);
-  v8 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
-  v36 = v8;
+  recordZoneID2 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
+  v36 = recordZoneID2;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
   [v7 setRecordZoneIDs:v9];
 
   [v7 setFetchAllChanges:{-[FCCKPrivateFetchRecordZoneChangesOperation fetchAllChanges](self, "fetchAllChanges")}];
-  v10 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
-  v34 = v10;
+  recordZoneID3 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self recordZoneID];
+  v34 = recordZoneID3;
   v11 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self _configurationForDestination:v31[3]];
   v35 = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
@@ -93,12 +93,12 @@
   v14 = v13;
   v28 = v14;
   [v7 setRecordChangedBlock:v27];
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __62__FCCKPrivateFetchRecordZoneChangesOperation_performOperation__block_invoke_2;
   v25[3] = &unk_1E7C3B460;
-  v16 = v15;
+  v16 = array;
   v26 = v16;
   [v7 setRecordWithIDWasDeletedBlock:v25];
   v21[0] = MEMORY[0x1E69E9820];
@@ -206,87 +206,87 @@ void __62__FCCKPrivateFetchRecordZoneChangesOperation_performOperation__block_in
   [*(a1 + 32) setResultMoreComing:a5];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultServerChangeToken];
-  v6 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultMoreComing];
-  v18 = v4;
-  v7 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultChangedRecords];
-  v8 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultDeletedRecordIDs];
+  errorCopy = error;
+  resultServerChangeToken = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultServerChangeToken];
+  resultMoreComing = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultMoreComing];
+  v18 = errorCopy;
+  resultChangedRecords = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultChangedRecords];
+  resultDeletedRecordIDs = [(FCCKPrivateFetchRecordZoneChangesOperation *)self resultDeletedRecordIDs];
   if (v18)
   {
-    if (!v5)
+    if (!resultServerChangeToken)
     {
-      v5 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
+      resultServerChangeToken = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
     }
 
-    v6 = [v18 fc_isMissingZoneError] ^ 1;
-    v9 = v18;
+    resultMoreComing = [v18 fc_isMissingZoneError] ^ 1;
+    previousServerChangeToken = v18;
     goto LABEL_15;
   }
 
-  v9 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
-  if (v9)
+  previousServerChangeToken = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
+  if (previousServerChangeToken)
   {
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    if ([v10 BOOLForKey:@"simulate_expired_change_tokens"])
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:@"simulate_expired_change_tokens"])
     {
 
 LABEL_9:
-      v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695B740] code:21 userInfo:MEMORY[0x1E695E0F8]];
+      previousServerChangeToken = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E695B740] code:21 userInfo:MEMORY[0x1E695E0F8]];
       goto LABEL_11;
     }
 
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v12 = [v11 BOOLForKey:@"simulate_server_side_data_reset"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v12 = [standardUserDefaults2 BOOLForKey:@"simulate_server_side_data_reset"];
 
     if (v12)
     {
       goto LABEL_9;
     }
 
-    v9 = 0;
+    previousServerChangeToken = 0;
   }
 
 LABEL_11:
-  v13 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
-  if (v13)
+  previousServerChangeToken2 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
+  if (previousServerChangeToken2)
   {
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v15 = [v14 BOOLForKey:@"simulate_server_side_data_reset"];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v15 = [standardUserDefaults3 BOOLForKey:@"simulate_server_side_data_reset"];
 
     if (v15)
     {
 
-      v7 = MEMORY[0x1E695E0F0];
-      v8 = MEMORY[0x1E695E0F0];
+      resultChangedRecords = MEMORY[0x1E695E0F0];
+      resultDeletedRecordIDs = MEMORY[0x1E695E0F0];
     }
   }
 
 LABEL_15:
-  v16 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self fetchRecordZoneChangesCompletionBlock];
+  fetchRecordZoneChangesCompletionBlock = [(FCCKPrivateFetchRecordZoneChangesOperation *)self fetchRecordZoneChangesCompletionBlock];
 
-  if (v16)
+  if (fetchRecordZoneChangesCompletionBlock)
   {
-    v17 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self fetchRecordZoneChangesCompletionBlock];
-    (v17)[2](v17, v7, v8, v5, v6, v9);
+    fetchRecordZoneChangesCompletionBlock2 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self fetchRecordZoneChangesCompletionBlock];
+    (fetchRecordZoneChangesCompletionBlock2)[2](fetchRecordZoneChangesCompletionBlock2, resultChangedRecords, resultDeletedRecordIDs, resultServerChangeToken, resultMoreComing, previousServerChangeToken);
   }
 }
 
-- (id)_configurationForDestination:(int64_t)a3
+- (id)_configurationForDestination:(int64_t)destination
 {
   v5 = objc_alloc_init(MEMORY[0x1E695B908]);
-  v6 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
-  v7 = [v6 changeTokenForDestination:a3];
+  previousServerChangeToken = [(FCCKPrivateFetchRecordZoneChangesOperation *)self previousServerChangeToken];
+  v7 = [previousServerChangeToken changeTokenForDestination:destination];
   [v5 setPreviousServerChangeToken:v7];
 
-  v8 = [(FCCKPrivateFetchRecordZoneChangesOperation *)self desiredKeys];
-  [v5 setDesiredKeys:v8];
+  desiredKeys = [(FCCKPrivateFetchRecordZoneChangesOperation *)self desiredKeys];
+  [v5 setDesiredKeys:desiredKeys];
 
   [v5 setFetchNewestChangesFirst:{-[FCCKPrivateFetchRecordZoneChangesOperation fetchNewestChangesFirst](self, "fetchNewestChangesFirst")}];
 

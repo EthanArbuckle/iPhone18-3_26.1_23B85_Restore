@@ -1,7 +1,7 @@
 @interface ISiOSAppClipRecipe
 - (id)appRect;
 - (id)blurRadius;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISiOSAppClipRecipe
@@ -62,10 +62,10 @@ uint64_t __32__ISiOSAppClipRecipe_blurRadius__block_invoke()
   return [v2 addHintedFloat:50.0 forSize:{512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(ISLayer);
   [(ISLayer *)v7 setSize:width, height];
   [(ISLayer *)v7 setName:@"root layer"];
@@ -80,8 +80,8 @@ uint64_t __32__ISiOSAppClipRecipe_blurRadius__block_invoke()
   [(ISLayer *)v10 setSize:width, height];
   [(ISContentLayer *)v10 setContent:@"kISPrimaryResourceKey"];
   v11 = [ISBlurEffect alloc];
-  v12 = [(ISiOSAppClipRecipe *)self blurRadius];
-  [v12 hintedFloatForSize:{width, height}];
+  blurRadius = [(ISiOSAppClipRecipe *)self blurRadius];
+  [blurRadius hintedFloatForSize:{width, height}];
   v13 = [(ISBlurEffect *)v11 initWithRadius:?];
   [(ISLayer *)v10 setEffect:v13];
 
@@ -90,8 +90,8 @@ uint64_t __32__ISiOSAppClipRecipe_blurRadius__block_invoke()
   {
     v14 = objc_alloc_init(ISContentLayer);
     [(ISLayer *)v14 setName:@"Center Image"];
-    v15 = [(ISiOSAppClipRecipe *)self appRect];
-    [v15 hintedRectForSize:{width, height}];
+    appRect = [(ISiOSAppClipRecipe *)self appRect];
+    [appRect hintedRectForSize:{width, height}];
     [(ISLayer *)v14 setFrame:?];
 
     [(ISContentLayer *)v14 setContent:@"kISPrimaryResourceKey"];
@@ -114,8 +114,8 @@ uint64_t __32__ISiOSAppClipRecipe_blurRadius__block_invoke()
   [(ISLayer *)v18 setSize:width, height];
   [(ISLayer *)v18 setName:@"mask layer"];
   v19 = MEMORY[0x1E69A8990];
-  v20 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v21 = [v19 imageBagWithResourcesNamed:@"AppClipMask" fromBundle:v20];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v21 = [v19 imageBagWithResourcesNamed:@"AppClipMask" fromBundle:iconsetResourceBundle];
   [(ISContentLayer *)v18 setContent:v21];
 
   [(ISLayer *)v10 setMask:v18];

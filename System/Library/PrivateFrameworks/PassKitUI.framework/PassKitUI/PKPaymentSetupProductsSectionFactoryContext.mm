@@ -1,44 +1,44 @@
 @interface PKPaymentSetupProductsSectionFactoryContext
-+ (id)contextWithPrimaryRegion:(id)a3 primaryCountryName:(id)a4 secondaryRegion:(id)a5 secondaryCountryName:(id)a6 location:(id)a7 tokenizerCharacterSet:(id)a8;
-- (PKPaymentSetupProductsSectionFactoryContext)initWithPrimaryRegion:(id)a3 primaryCountryName:(id)a4 secondaryRegion:(id)a5 secondaryCountryName:(id)a6 location:(id)a7 tokenizerCharacterSet:(id)a8;
++ (id)contextWithPrimaryRegion:(id)region primaryCountryName:(id)name secondaryRegion:(id)secondaryRegion secondaryCountryName:(id)countryName location:(id)location tokenizerCharacterSet:(id)set;
+- (PKPaymentSetupProductsSectionFactoryContext)initWithPrimaryRegion:(id)region primaryCountryName:(id)name secondaryRegion:(id)secondaryRegion secondaryCountryName:(id)countryName location:(id)location tokenizerCharacterSet:(id)set;
 - (id)description;
 @end
 
 @implementation PKPaymentSetupProductsSectionFactoryContext
 
-+ (id)contextWithPrimaryRegion:(id)a3 primaryCountryName:(id)a4 secondaryRegion:(id)a5 secondaryCountryName:(id)a6 location:(id)a7 tokenizerCharacterSet:(id)a8
++ (id)contextWithPrimaryRegion:(id)region primaryCountryName:(id)name secondaryRegion:(id)secondaryRegion secondaryCountryName:(id)countryName location:(id)location tokenizerCharacterSet:(id)set
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] initWithPrimaryRegion:v19 primaryCountryName:v18 secondaryRegion:v17 secondaryCountryName:v16 location:v15 tokenizerCharacterSet:v14];
+  setCopy = set;
+  locationCopy = location;
+  countryNameCopy = countryName;
+  secondaryRegionCopy = secondaryRegion;
+  nameCopy = name;
+  regionCopy = region;
+  v20 = [[self alloc] initWithPrimaryRegion:regionCopy primaryCountryName:nameCopy secondaryRegion:secondaryRegionCopy secondaryCountryName:countryNameCopy location:locationCopy tokenizerCharacterSet:setCopy];
 
   return v20;
 }
 
-- (PKPaymentSetupProductsSectionFactoryContext)initWithPrimaryRegion:(id)a3 primaryCountryName:(id)a4 secondaryRegion:(id)a5 secondaryCountryName:(id)a6 location:(id)a7 tokenizerCharacterSet:(id)a8
+- (PKPaymentSetupProductsSectionFactoryContext)initWithPrimaryRegion:(id)region primaryCountryName:(id)name secondaryRegion:(id)secondaryRegion secondaryCountryName:(id)countryName location:(id)location tokenizerCharacterSet:(id)set
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  regionCopy = region;
+  nameCopy = name;
+  secondaryRegionCopy = secondaryRegion;
+  countryNameCopy = countryName;
+  locationCopy = location;
+  setCopy = set;
   v24.receiver = self;
   v24.super_class = PKPaymentSetupProductsSectionFactoryContext;
   v18 = [(PKPaymentSetupProductsSectionFactoryContext *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_primaryRegion, a3);
-    objc_storeStrong(&v19->_primaryCountryName, a4);
-    objc_storeStrong(&v19->_secondaryRegion, a5);
-    objc_storeStrong(&v19->_secondaryCountryName, a6);
-    objc_storeStrong(&v19->_location, a7);
-    objc_storeStrong(&v19->_tokenizerCharacterSet, a8);
+    objc_storeStrong(&v18->_primaryRegion, region);
+    objc_storeStrong(&v19->_primaryCountryName, name);
+    objc_storeStrong(&v19->_secondaryRegion, secondaryRegion);
+    objc_storeStrong(&v19->_secondaryCountryName, countryName);
+    objc_storeStrong(&v19->_location, location);
+    objc_storeStrong(&v19->_tokenizerCharacterSet, set);
   }
 
   return v19;

@@ -1,9 +1,9 @@
 @interface CNVCardViewController
 - (CNContactNavigationController)contactNavigationController;
-- (CNVCardViewController)initWithVCardData:(id)a3;
+- (CNVCardViewController)initWithVCardData:(id)data;
 - (CNVCardViewControllerDelegate)delegate;
-- (void)contactNavigationControllerDidCancel:(id)a3;
-- (void)contactNavigationControllerDidComplete:(id)a3;
+- (void)contactNavigationControllerDidCancel:(id)cancel;
+- (void)contactNavigationControllerDidComplete:(id)complete;
 - (void)viewDidLoad;
 @end
 
@@ -20,52 +20,52 @@
 {
   [(CNVCardViewController *)self view];
 
-  v3 = [(CNVCardViewController *)self contacts];
-  if ([v3 count] < 2)
+  contacts = [(CNVCardViewController *)self contacts];
+  if ([contacts count] < 2)
   {
-    v6 = 0;
+    firstObject = 0;
     goto LABEL_5;
   }
 
-  v4 = [(CNVCardViewController *)self childViewControllers];
-  v5 = [v4 count];
+  childViewControllers = [(CNVCardViewController *)self childViewControllers];
+  v5 = [childViewControllers count];
 
   if (v5 == 1)
   {
-    v3 = [(CNVCardViewController *)self childViewControllers];
-    v6 = [v3 firstObject];
+    contacts = [(CNVCardViewController *)self childViewControllers];
+    firstObject = [contacts firstObject];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v6 = 0;
+  firstObject = 0;
 LABEL_7:
 
-  return v6;
+  return firstObject;
 }
 
-- (void)contactNavigationControllerDidCancel:(id)a3
+- (void)contactNavigationControllerDidCancel:(id)cancel
 {
-  v4 = [(CNVCardViewController *)self delegate];
+  delegate = [(CNVCardViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNVCardViewController *)self delegate];
-    [v6 vCardViewControllerDidComplete:self];
+    delegate2 = [(CNVCardViewController *)self delegate];
+    [delegate2 vCardViewControllerDidComplete:self];
   }
 }
 
-- (void)contactNavigationControllerDidComplete:(id)a3
+- (void)contactNavigationControllerDidComplete:(id)complete
 {
-  v4 = [(CNVCardViewController *)self delegate];
+  delegate = [(CNVCardViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNVCardViewController *)self delegate];
-    [v6 vCardViewControllerDidComplete:self];
+    delegate2 = [(CNVCardViewController *)self delegate];
+    [delegate2 vCardViewControllerDidComplete:self];
   }
 }
 
@@ -75,8 +75,8 @@ LABEL_7:
   v30.receiver = self;
   v30.super_class = CNVCardViewController;
   [(CNVCardViewController *)&v30 viewDidLoad];
-  v3 = [(CNVCardViewController *)self contacts];
-  v4 = [v3 count];
+  contacts = [(CNVCardViewController *)self contacts];
+  v4 = [contacts count];
 
   if (!v4)
   {
@@ -117,22 +117,22 @@ LABEL_7:
       return;
     }
 
-    v24 = [(CNVCardViewController *)self view];
-    [v24 bounds];
+    view = [(CNVCardViewController *)self view];
+    [view bounds];
     [(CNContactNavigationController *)v7 setFrame:?];
 
     [(CNContactNavigationController *)v7 setAutoresizingMask:18];
-    v25 = [(CNVCardViewController *)self view];
-    [v25 addSubview:v7];
+    view2 = [(CNVCardViewController *)self view];
+    [view2 addSubview:v7];
 
     goto LABEL_9;
   }
 
   if (v4 == 1)
   {
-    v5 = [(CNVCardViewController *)self contacts];
-    v6 = [v5 firstObject];
-    v7 = [CNContactViewController viewControllerForUnknownContact:v6];
+    contacts2 = [(CNVCardViewController *)self contacts];
+    firstObject = [contacts2 firstObject];
+    v7 = [CNContactViewController viewControllerForUnknownContact:firstObject];
 
     v8 = objc_alloc_init(MEMORY[0x1E695CE18]);
     [(CNContactNavigationController *)v7 setContactStore:v8];
@@ -141,11 +141,11 @@ LABEL_7:
   else
   {
     v26 = [CNContactCustomDataSource alloc];
-    v27 = [(CNVCardViewController *)self contacts];
+    contacts3 = [(CNVCardViewController *)self contacts];
     v28 = +[CNContactViewController descriptorForRequiredKeys];
     v31 = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-    v8 = [(CNContactCustomDataSource *)v26 initWithContacts:v27 keysToFetch:v29];
+    v8 = [(CNContactCustomDataSource *)v26 initWithContacts:contacts3 keysToFetch:v29];
 
     [(CNContactCustomDataSource *)v8 setAutoUpdateContacts:0];
     v7 = [[CNContactNavigationController alloc] initWithDataSource:v8];
@@ -160,14 +160,14 @@ LABEL_9:
   }
 }
 
-- (CNVCardViewController)initWithVCardData:(id)a3
+- (CNVCardViewController)initWithVCardData:(id)data
 {
   v13.receiver = self;
   v13.super_class = CNVCardViewController;
-  v3 = a3;
+  dataCopy = data;
   v4 = [(CNVCardViewController *)&v13 initWithNibName:0 bundle:0];
   v12 = 0;
-  v5 = [MEMORY[0x1E695CE30] contactsWithData:v3 error:&v12];
+  v5 = [MEMORY[0x1E695CE30] contactsWithData:dataCopy error:&v12];
 
   v6 = v12;
   [(CNVCardViewController *)v4 setContacts:v5];

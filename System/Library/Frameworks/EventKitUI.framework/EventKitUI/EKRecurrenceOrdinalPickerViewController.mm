@@ -1,16 +1,16 @@
 @interface EKRecurrenceOrdinalPickerViewController
 - (id)_leftColumn;
 - (id)_rightColumn;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
 - (int)dayMask;
 - (int)ordinalValue;
-- (int64_t)dayOfWeekForRow:(int64_t)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (int64_t)rowForDayOfWeek:(int64_t)a3;
+- (int64_t)dayOfWeekForRow:(int64_t)row;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (int64_t)rowForDayOfWeek:(int64_t)week;
 - (void)loadView;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)updateFromRecurrenceRule:(id)a3;
-- (void)updateRecurrenceRuleBuilder:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)updateFromRecurrenceRule:(id)rule;
+- (void)updateRecurrenceRuleBuilder:(id)builder;
 - (void)viewDidLoad;
 @end
 
@@ -30,83 +30,83 @@
   v4.receiver = self;
   v4.super_class = EKRecurrenceOrdinalPickerViewController;
   [(EKRecurrenceOrdinalPickerViewController *)&v4 viewDidLoad];
-  v3 = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
-  [v3 _setHostsLayoutEngine:0];
+  pickerView = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
+  [pickerView _setHostsLayoutEngine:0];
 }
 
-- (int64_t)dayOfWeekForRow:(int64_t)a3
+- (int64_t)dayOfWeekForRow:(int64_t)row
 {
-  v3 = a3;
-  if (a3 <= 6)
+  rowCopy = row;
+  if (row <= 6)
   {
     v4 = CUIKZeroIndexedWeekStart();
-    if (v4 + v3 <= 6)
+    if (v4 + rowCopy <= 6)
     {
-      v3 += v4;
+      rowCopy += v4;
     }
 
     else
     {
-      return v4 + v3 - 7;
+      return v4 + rowCopy - 7;
     }
   }
 
-  return v3;
+  return rowCopy;
 }
 
-- (int64_t)rowForDayOfWeek:(int64_t)a3
+- (int64_t)rowForDayOfWeek:(int64_t)week
 {
   v4 = CUIKZeroIndexedWeekStart();
-  if (a3 >= v4)
+  if (week >= v4)
   {
-    return a3 - v4;
+    return week - v4;
   }
 
   else
   {
-    return a3 - v4 + 7;
+    return week - v4 + 7;
   }
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (component == 1)
   {
-    v7 = [(EKRecurrenceOrdinalPickerViewController *)self _rightColumn];
+    _rightColumn = [(EKRecurrenceOrdinalPickerViewController *)self _rightColumn];
   }
 
   else
   {
-    if (a4)
+    if (component)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(EKRecurrenceOrdinalPickerViewController *)self _leftColumn];
+    _rightColumn = [(EKRecurrenceOrdinalPickerViewController *)self _leftColumn];
   }
 
-  v8 = v7;
-  v9 = [v7 count];
+  v8 = _rightColumn;
+  v9 = [_rightColumn count];
 
 LABEL_7:
   return v9;
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  viewCopy = view;
+  reusingViewCopy = reusingView;
+  v12 = reusingViewCopy;
+  if (reusingViewCopy)
   {
-    if (a5)
+    if (component)
     {
 LABEL_3:
-      v13 = [(EKRecurrenceOrdinalPickerViewController *)self _rightColumn];
-      v14 = [(EKRecurrenceOrdinalPickerViewController *)self dayOfWeekForRow:a4];
-      v15 = v13;
+      _rightColumn = [(EKRecurrenceOrdinalPickerViewController *)self _rightColumn];
+      rowCopy = [(EKRecurrenceOrdinalPickerViewController *)self dayOfWeekForRow:row];
+      _leftColumn = _rightColumn;
       goto LABEL_6;
     }
   }
@@ -120,64 +120,64 @@ LABEL_3:
 
     [v12 setAdjustsFontSizeToFitWidth:1];
     [v12 setMinimumScaleFactor:0.7];
-    if (a5)
+    if (component)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [(EKRecurrenceOrdinalPickerViewController *)self _leftColumn];
-  v13 = v15;
-  v14 = a4;
+  _leftColumn = [(EKRecurrenceOrdinalPickerViewController *)self _leftColumn];
+  _rightColumn = _leftColumn;
+  rowCopy = row;
 LABEL_6:
-  v17 = [v15 objectAtIndexedSubscript:v14];
+  v17 = [_leftColumn objectAtIndexedSubscript:rowCopy];
 
   [v12 setText:v17];
-  [v10 rowSizeForComponent:a5];
+  [viewCopy rowSizeForComponent:component];
   [v12 setFrame:{0.0, 0.0, v18 + -18.0, v19}];
 
   return v12;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v6 = [(EKRecurrenceOrdinalPickerViewController *)self delegate:a3];
+  v6 = [(EKRecurrenceOrdinalPickerViewController *)self delegate:view];
   [v6 frequencyPickerUpdated:self];
 }
 
-- (void)updateRecurrenceRuleBuilder:(id)a3
+- (void)updateRecurrenceRuleBuilder:(id)builder
 {
-  v4 = a3;
-  [v4 setDays:{-[EKRecurrenceOrdinalPickerViewController dayMask](self, "dayMask")}];
-  [v4 setOrdinalValue:{-[EKRecurrenceOrdinalPickerViewController ordinalValue](self, "ordinalValue")}];
+  builderCopy = builder;
+  [builderCopy setDays:{-[EKRecurrenceOrdinalPickerViewController dayMask](self, "dayMask")}];
+  [builderCopy setOrdinalValue:{-[EKRecurrenceOrdinalPickerViewController ordinalValue](self, "ordinalValue")}];
 }
 
-- (void)updateFromRecurrenceRule:(id)a3
+- (void)updateFromRecurrenceRule:(id)rule
 {
-  v14 = a3;
-  v4 = [v14 setPositions];
-  v5 = [v4 firstObject];
+  ruleCopy = rule;
+  setPositions = [ruleCopy setPositions];
+  firstObject = [setPositions firstObject];
 
-  v6 = [v14 daysOfTheWeek];
-  if ([v6 count])
+  daysOfTheWeek = [ruleCopy daysOfTheWeek];
+  if ([daysOfTheWeek count])
   {
-    v7 = [v6 objectAtIndexedSubscript:0];
-    if ([v6 count] == 1)
+    v7 = [daysOfTheWeek objectAtIndexedSubscript:0];
+    if ([daysOfTheWeek count] == 1)
     {
       v8 = [v7 dayOfTheWeek] - 1;
     }
 
-    else if ([v14 isWeekendRule])
+    else if ([ruleCopy isWeekendRule])
     {
       v8 = 9;
     }
 
-    else if ([v14 isWeekdayRule])
+    else if ([ruleCopy isWeekdayRule])
     {
       v8 = 8;
     }
 
-    else if ([v14 isAnyDayRule])
+    else if ([ruleCopy isAnyDayRule])
     {
       v8 = 7;
     }
@@ -187,9 +187,9 @@ LABEL_6:
       v8 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v9 = [v7 weekNumber];
+    weekNumber = [v7 weekNumber];
 
-    if (v5)
+    if (firstObject)
     {
       goto LABEL_14;
     }
@@ -197,55 +197,55 @@ LABEL_6:
 
   else
   {
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    weekNumber = 0x7FFFFFFFFFFFFFFFLL;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v5)
+    if (firstObject)
     {
 LABEL_14:
-      v9 = [v5 integerValue];
+      weekNumber = [firstObject integerValue];
     }
   }
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = [(EKRecurrenceOrdinalPickerViewController *)self rowForDayOfWeek:v8];
-    v11 = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
-    [v11 selectRow:v10 inComponent:1 animated:0];
+    pickerView = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
+    [pickerView selectRow:v10 inComponent:1 animated:0];
   }
 
-  if (v9 == -2)
+  if (weekNumber == -2)
   {
     v12 = 5;
   }
 
   else
   {
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    if (weekNumber == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_24;
     }
 
-    if (v9 >= 6)
+    if (weekNumber >= 6)
     {
       v12 = 6;
     }
 
     else
     {
-      v12 = v9 - 1;
+      v12 = weekNumber - 1;
     }
   }
 
-  v13 = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
-  [v13 selectRow:v12 inComponent:0 animated:0];
+  pickerView2 = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
+  [pickerView2 selectRow:v12 inComponent:0 animated:0];
 
 LABEL_24:
 }
 
 - (int)dayMask
 {
-  v3 = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
-  v4 = [v3 selectedRowInComponent:1];
+  pickerView = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
+  v4 = [pickerView selectedRowInComponent:1];
 
   if (v4 > 6)
   {
@@ -270,8 +270,8 @@ LABEL_24:
 
 - (int)ordinalValue
 {
-  v2 = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
-  v3 = [v2 selectedRowInComponent:0];
+  pickerView = [(EKRecurrenceOrdinalPickerViewController *)self pickerView];
+  v3 = [pickerView selectedRowInComponent:0];
 
   return v3 + 1;
 }

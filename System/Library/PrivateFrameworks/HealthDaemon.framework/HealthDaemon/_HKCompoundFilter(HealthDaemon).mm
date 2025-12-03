@@ -13,8 +13,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [a1 subfilters];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  subfilters = [self subfilters];
+  v8 = [subfilters countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -25,7 +25,7 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subfilters);
         }
 
         v12 = [*(*(&v25 + 1) + 8 * i) predicateWithProfile:v5];
@@ -42,7 +42,7 @@
             _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "Unable to construct predicate for filter: %{public}@", buf, 0xCu);
           }
 
-          v17 = [MEMORY[0x277D10B70] falsePredicate];
+          falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
 
           goto LABEL_21;
         }
@@ -51,7 +51,7 @@
         [v6 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v9 = [subfilters countByEnumeratingWithState:&v25 objects:v31 count:16];
       if (v9)
       {
         continue;
@@ -61,46 +61,46 @@
     }
   }
 
-  v14 = [a1 compoundPredicateType];
-  if (v14)
+  compoundPredicateType = [self compoundPredicateType];
+  if (compoundPredicateType)
   {
-    if (v14 == 2)
+    if (compoundPredicateType == 2)
     {
       v15 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:v6];
     }
 
     else
     {
-      if (v14 == 1)
+      if (compoundPredicateType == 1)
       {
         [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v6];
       }
 
       else
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
-        [v20 handleFailureInMethod:a2 object:a1 file:@"HKFilter+HealthDaemon.m" lineNumber:73 description:@"Unreachable code has been executed"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HKFilter+HealthDaemon.m" lineNumber:73 description:@"Unreachable code has been executed"];
 
         [MEMORY[0x277D10B70] falsePredicate];
       }
       v15 = ;
     }
 
-    v17 = v15;
+    falsePredicate = v15;
   }
 
   else
   {
     v18 = MEMORY[0x277D10B20];
-    v19 = [v6 lastObject];
-    v17 = [v18 negatedPredicate:v19];
+    lastObject = [v6 lastObject];
+    falsePredicate = [v18 negatedPredicate:lastObject];
   }
 
 LABEL_21:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return falsePredicate;
 }
 
 @end

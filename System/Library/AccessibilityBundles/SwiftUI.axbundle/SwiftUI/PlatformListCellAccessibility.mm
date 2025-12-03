@@ -1,16 +1,16 @@
 @interface PlatformListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 @end
 
 @implementation PlatformListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SwiftUI.AccessibilityNode"];
-  [v3 validateClass:@"SwiftUI.ListTableViewCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SwiftUI.AccessibilityNode"];
+  [validationsCopy validateClass:@"SwiftUI.ListTableViewCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (id)accessibilityLabel
@@ -18,16 +18,16 @@
   v30 = *MEMORY[0x29EDCA608];
   v28.receiver = self;
   v28.super_class = PlatformListCellAccessibility;
-  v2 = [(PlatformListCellAccessibility *)&v28 accessibilityLabel];
-  if (![v2 length])
+  accessibilityLabel = [(PlatformListCellAccessibility *)&v28 accessibilityLabel];
+  if (![accessibilityLabel length])
   {
     v27 = 0;
     objc_opt_class();
     v3 = __UIAccessibilityCastAsClass();
-    v4 = [v3 contentView];
-    v5 = [v4 subviews];
-    v6 = [v5 firstObject];
-    v7 = [v6 _accessibilityFindUnsortedDescendantsPassingTest:&__block_literal_global_0];
+    contentView = [v3 contentView];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
+    v7 = [firstObject _accessibilityFindUnsortedDescendantsPassingTest:&__block_literal_global_0];
 
     v25 = 0u;
     v26 = 0u;
@@ -43,7 +43,7 @@
       do
       {
         v13 = 0;
-        v14 = v2;
+        v14 = accessibilityLabel;
         do
         {
           if (*v24 != v11)
@@ -52,26 +52,26 @@
           }
 
           v15 = *(*(&v23 + 1) + 8 * v13);
-          v16 = [v15 accessibilityLabel];
-          v17 = [v15 accessibilityLanguage];
-          if (v17)
+          accessibilityLabel2 = [v15 accessibilityLabel];
+          accessibilityLanguage = [v15 accessibilityLanguage];
+          if (accessibilityLanguage)
           {
-            v18 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v16];
+            v18 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityLabel2];
 
-            [v18 setAttribute:v17 forKey:*v12];
-            v16 = v18;
+            [v18 setAttribute:accessibilityLanguage forKey:*v12];
+            accessibilityLabel2 = v18;
           }
 
-          v21 = v16;
+          v21 = accessibilityLabel2;
           v22 = @"__AXStringForVariablesSentinel";
-          v2 = __UIAXStringForVariables();
+          accessibilityLabel = __UIAXStringForVariables();
 
           ++v13;
-          v14 = v2;
+          v14 = accessibilityLabel;
         }
 
         while (v10 != v13);
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:{16, v16, @"__AXStringForVariablesSentinel"}];
+        v10 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:{16, accessibilityLabel2, @"__AXStringForVariablesSentinel"}];
       }
 
       while (v10);
@@ -80,7 +80,7 @@
 
   v19 = *MEMORY[0x29EDCA608];
 
-  return v2;
+  return accessibilityLabel;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -88,15 +88,15 @@
   v18 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 contentView];
-  v5 = [v4 subviews];
-  v6 = [v5 firstObject];
-  v7 = [v6 accessibilityElements];
+  contentView = [v3 contentView];
+  subviews = [contentView subviews];
+  firstObject = [subviews firstObject];
+  accessibilityElements = [firstObject accessibilityElements];
 
-  if ([v7 count] == 1)
+  if ([accessibilityElements count] == 1)
   {
-    v8 = [v7 firstObject];
-    [v8 accessibilityActivationPoint];
+    firstObject2 = [accessibilityElements firstObject];
+    [firstObject2 accessibilityActivationPoint];
     v10 = v9;
     v12 = v11;
   }

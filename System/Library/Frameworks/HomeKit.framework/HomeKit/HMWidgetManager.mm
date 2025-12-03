@@ -1,12 +1,12 @@
 @interface HMWidgetManager
 + (id)logCategory;
 - (HMHomeManager)homeManager;
-- (HMWidgetManager)initWithHomeManager:(id)a3 context:(id)a4;
-- (void)fetchStateForActionSets:(id)a3 completion:(id)a4;
-- (void)fetchStateForCharacteristics:(id)a3 completion:(id)a4;
-- (void)monitorAndFetchStateForActionSets:(id)a3 widgetIdentifier:(id)a4 kind:(id)a5 completion:(id)a6;
-- (void)monitorStateForMTRAttributeDescriptors:(id)a3 widgetIdentifier:(id)a4 kind:(id)a5 completion:(id)a6;
-- (void)performRequests:(id)a3 forKind:(id)a4 completion:(id)a5;
+- (HMWidgetManager)initWithHomeManager:(id)manager context:(id)context;
+- (void)fetchStateForActionSets:(id)sets completion:(id)completion;
+- (void)fetchStateForCharacteristics:(id)characteristics completion:(id)completion;
+- (void)monitorAndFetchStateForActionSets:(id)sets widgetIdentifier:(id)identifier kind:(id)kind completion:(id)completion;
+- (void)monitorStateForMTRAttributeDescriptors:(id)descriptors widgetIdentifier:(id)identifier kind:(id)kind completion:(id)completion;
+- (void)performRequests:(id)requests forKind:(id)kind completion:(id)completion;
 @end
 
 @implementation HMWidgetManager
@@ -18,27 +18,27 @@
   return WeakRetained;
 }
 
-- (void)monitorStateForMTRAttributeDescriptors:(id)a3 widgetIdentifier:(id)a4 kind:(id)a5 completion:(id)a6
+- (void)monitorStateForMTRAttributeDescriptors:(id)descriptors widgetIdentifier:(id)identifier kind:(id)kind completion:(id)completion
 {
   v73[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  completionCopy = completion;
+  if (!descriptorsCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!identifierCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!kindCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
@@ -46,8 +46,8 @@ LABEL_16:
     _HMFPreconditionFailure();
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_16;
   }
@@ -58,22 +58,22 @@ LABEL_16:
   v19 = [v17 stringWithFormat:@"%@, %s:%ld", v18, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Widgets/HMWidgetManager.m", 464];
   v20 = [v16 initWithName:v19];
 
-  v21 = [(HMWidgetManager *)self homeManager];
+  homeManager = [(HMWidgetManager *)self homeManager];
   v22 = objc_autoreleasePoolPush();
   v23 = v22;
-  if (v21)
+  if (homeManager)
   {
     context = v22;
-    v24 = encodeRootObject(v11);
+    v24 = encodeRootObject(descriptorsCopy);
     v25 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v56 = v21;
-    v26 = [v21 uuid];
-    v27 = [v25 initWithTarget:v26];
+    v56 = homeManager;
+    uuid = [homeManager uuid];
+    v27 = [v25 initWithTarget:uuid];
 
     v72[0] = @"HMWM.widgetIdentifier";
     v72[1] = @"HMWM.widgetKind";
-    v73[0] = v12;
-    v73[1] = v13;
+    v73[0] = identifierCopy;
+    v73[1] = kindCopy;
     v72[2] = @"HMWM.mtrAttributes";
     v53 = v24;
     v73[2] = v24;
@@ -81,20 +81,20 @@ LABEL_16:
     v52 = v27;
     v28 = [MEMORY[0x1E69A2A10] messageWithName:@"HMWM.monitorMTRAttributes" destination:v27 payload:?];
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v32 = v48 = v29;
-      v33 = [v20 identifier];
-      [v33 shortDescription];
+      identifier = [v20 identifier];
+      [identifier shortDescription];
       v49 = v20;
-      v35 = v34 = v13;
+      v35 = v34 = kindCopy;
       [v28 identifier];
       v50 = v15;
-      v36 = v12;
-      v38 = v37 = v11;
+      v36 = identifierCopy;
+      v38 = v37 = descriptorsCopy;
       *buf = 138544642;
       v61 = v32;
       v62 = 2114;
@@ -109,11 +109,11 @@ LABEL_16:
       v71 = v34;
       _os_log_impl(&dword_19BB39000, v31, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] [%@] Monitoring %ld attributes for widget (%@, %@)", buf, 0x3Eu);
 
-      v11 = v37;
-      v12 = v36;
+      descriptorsCopy = v37;
+      identifierCopy = v36;
       v15 = v50;
 
-      v13 = v34;
+      kindCopy = v34;
       v20 = v49;
 
       v29 = v48;
@@ -124,36 +124,36 @@ LABEL_16:
     v57[1] = 3221225472;
     v57[2] = __91__HMWidgetManager_monitorStateForMTRAttributeDescriptors_widgetIdentifier_kind_completion___block_invoke;
     v57[3] = &unk_1E754E480;
-    v57[4] = v30;
+    v57[4] = selfCopy;
     v58 = v20;
     v59 = v15;
     [v28 setResponseHandler:v57];
-    v39 = [(HMWidgetManager *)v30 context];
-    v40 = [v39 messageDispatcher];
-    [v40 sendMessage:v28];
+    context = [(HMWidgetManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v28];
 
     objc_autoreleasePoolPop(context);
-    v21 = v56;
+    homeManager = v56;
   }
 
   else
   {
-    v41 = self;
+    selfCopy2 = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       v43 = HMFGetLogIdentifier();
       [v20 identifier];
       v44 = contexta = v23;
-      v45 = [v44 shortDescription];
+      shortDescription = [v44 shortDescription];
       *buf = 138543618;
       v61 = v43;
       v62 = 2114;
-      v63 = v45;
+      v63 = shortDescription;
       _os_log_impl(&dword_19BB39000, v42, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] HomeManager has been deallocated", buf, 0x16u);
 
       v23 = contexta;
-      v21 = 0;
+      homeManager = 0;
     }
 
     objc_autoreleasePoolPop(v23);
@@ -227,20 +227,20 @@ LABEL_6:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchStateForActionSets:(id)a3 completion:(id)a4
+- (void)fetchStateForActionSets:(id)sets completion:(id)completion
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  setsCopy = sets;
+  completionCopy = completion;
+  if (!setsCopy)
   {
     _HMFPreconditionFailure();
 LABEL_12:
     _HMFPreconditionFailure();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_12;
   }
@@ -251,13 +251,13 @@ LABEL_12:
   v13 = [v11 stringWithFormat:@"%@, %s:%ld", v12, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Widgets/HMWidgetManager.m", 397];
   v14 = [v10 initWithName:v13];
 
-  v15 = [(HMWidgetManager *)self homeManager];
-  if (v15)
+  homeManager = [(HMWidgetManager *)self homeManager];
+  if (homeManager)
   {
-    v16 = [v7 na_map:&__block_literal_global_127];
+    v16 = [setsCopy na_map:&__block_literal_global_127];
     v17 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v18 = [v15 uuid];
-    v19 = [v17 initWithTarget:v18];
+    uuid = [homeManager uuid];
+    v19 = [v17 initWithTarget:uuid];
 
     v57 = @"HMWM.actionSets";
     v58[0] = v16;
@@ -265,7 +265,7 @@ LABEL_12:
     v45 = v19;
     v21 = [MEMORY[0x1E69A2A10] messageWithName:@"HMWM.fetchStateForActionSets" destination:v19 payload:v20];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -274,9 +274,9 @@ LABEL_12:
       [v14 identifier];
       v26 = v41 = v22;
       [v26 shortDescription];
-      v27 = v44 = v7;
+      v27 = v44 = setsCopy;
       [v21 identifier];
-      v43 = v15;
+      v43 = homeManager;
       v28 = v9;
       v30 = v29 = v14;
       *buf = 138544130;
@@ -291,9 +291,9 @@ LABEL_12:
 
       v14 = v29;
       v9 = v28;
-      v15 = v43;
+      homeManager = v43;
 
-      v7 = v44;
+      setsCopy = v44;
       v22 = v41;
 
       v20 = v42;
@@ -304,33 +304,33 @@ LABEL_12:
     v46[1] = 3221225472;
     v46[2] = __54__HMWidgetManager_fetchStateForActionSets_completion___block_invoke_128;
     v46[3] = &unk_1E754E480;
-    v46[4] = v23;
+    v46[4] = selfCopy;
     v47 = v14;
     v48 = v9;
     [v21 setResponseHandler:v46];
-    v31 = [(HMWidgetManager *)v23 context];
-    v32 = [v31 messageDispatcher];
-    [v32 sendMessage:v21];
+    context = [(HMWidgetManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v21];
   }
 
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy2 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v37 = v36 = v7;
-      v38 = [v14 identifier];
-      v39 = [v38 shortDescription];
+      v37 = v36 = setsCopy;
+      identifier = [v14 identifier];
+      shortDescription = [identifier shortDescription];
       *buf = 138543618;
       v50 = v37;
       v51 = 2114;
-      v52 = v39;
+      v52 = shortDescription;
       _os_log_impl(&dword_19BB39000, v35, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] HomeManager has been deallocated", buf, 0x16u);
 
-      v7 = v36;
+      setsCopy = v36;
     }
 
     objc_autoreleasePoolPop(v33);
@@ -472,27 +472,27 @@ void __54__HMWidgetManager_fetchStateForActionSets_completion___block_invoke_130
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)monitorAndFetchStateForActionSets:(id)a3 widgetIdentifier:(id)a4 kind:(id)a5 completion:(id)a6
+- (void)monitorAndFetchStateForActionSets:(id)sets widgetIdentifier:(id)identifier kind:(id)kind completion:(id)completion
 {
   v69[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  setsCopy = sets;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  completionCopy = completion;
+  if (!setsCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!identifierCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!kindCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
@@ -500,8 +500,8 @@ LABEL_16:
     _HMFPreconditionFailure();
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_16;
   }
@@ -512,38 +512,38 @@ LABEL_16:
   v19 = [v17 stringWithFormat:@"%@, %s:%ld", v18, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Widgets/HMWidgetManager.m", 334];
   v20 = [v16 initWithName:v19];
 
-  v21 = [(HMWidgetManager *)self homeManager];
-  if (v21)
+  homeManager = [(HMWidgetManager *)self homeManager];
+  if (homeManager)
   {
     v51 = v20;
     v49 = v15;
-    v22 = [v11 na_map:&__block_literal_global_120];
+    v22 = [setsCopy na_map:&__block_literal_global_120];
     v23 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v24 = [v21 uuid];
-    v25 = [v23 initWithTarget:v24];
+    uuid = [homeManager uuid];
+    v25 = [v23 initWithTarget:uuid];
 
     v68[0] = @"HMWM.widgetIdentifier";
     v68[1] = @"HMWM.widgetKind";
-    v69[0] = v12;
-    v69[1] = v13;
+    v69[0] = identifierCopy;
+    v69[1] = kindCopy;
     v68[2] = @"HMWM.actionSets";
     v69[2] = v22;
     v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:v68 count:3];
     v48 = v25;
     v26 = [MEMORY[0x1E69A2A10] messageWithName:@"HMWM.monitorActionSets" destination:v25 payload:?];
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v30 = v45 = v27;
-      v31 = [v51 identifier];
-      [v31 shortDescription];
-      v50 = v21;
-      v33 = v32 = v12;
+      identifier = [v51 identifier];
+      [identifier shortDescription];
+      v50 = homeManager;
+      v33 = v32 = identifierCopy;
       [v26 identifier];
-      v34 = v46 = v11;
+      v34 = v46 = setsCopy;
       *buf = 138544642;
       v57 = v30;
       v58 = 2114;
@@ -553,14 +553,14 @@ LABEL_16:
       v62 = 2112;
       v63 = v32;
       v64 = 2112;
-      v65 = v13;
+      v65 = kindCopy;
       v66 = 2112;
       v67 = v22;
       _os_log_impl(&dword_19BB39000, v29, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] [%@] Monitoring action sets for widget (%@, %@): %@", buf, 0x3Eu);
 
-      v11 = v46;
-      v12 = v32;
-      v21 = v50;
+      setsCopy = v46;
+      identifierCopy = v32;
+      homeManager = v50;
 
       v27 = v45;
     }
@@ -570,21 +570,21 @@ LABEL_16:
     v53[1] = 3221225472;
     v53[2] = __86__HMWidgetManager_monitorAndFetchStateForActionSets_widgetIdentifier_kind_completion___block_invoke_121;
     v53[3] = &unk_1E754E480;
-    v53[4] = v28;
+    v53[4] = selfCopy;
     v20 = v51;
     v54 = v51;
     v15 = v49;
     v55 = v49;
     [v26 setResponseHandler:v53];
-    v35 = [(HMWidgetManager *)v28 context];
-    v36 = [v35 messageDispatcher];
-    [v36 sendMessage:v26];
+    context = [(HMWidgetManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v26];
   }
 
   else
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy2 = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
@@ -606,7 +606,7 @@ LABEL_16:
     objc_autoreleasePoolPop(v37);
     v22 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2];
     (v15)[2](v15, 0, v22);
-    v21 = 0;
+    homeManager = 0;
   }
 
   v44 = *MEMORY[0x1E69E9840];
@@ -743,49 +743,49 @@ void __86__HMWidgetManager_monitorAndFetchStateForActionSets_widgetIdentifier_ki
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)performRequests:(id)a3 forKind:(id)a4 completion:(id)a5
+- (void)performRequests:(id)requests forKind:(id)kind completion:(id)completion
 {
   v105 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  requestsCopy = requests;
+  kindCopy = kind;
+  completionCopy = completion;
+  if (!requestsCopy)
   {
     _HMFPreconditionFailure();
 LABEL_44:
     _HMFPreconditionFailure();
   }
 
-  if (!v10)
+  if (!kindCopy)
   {
     goto LABEL_44;
   }
 
-  v12 = v11;
+  v12 = completionCopy;
   v13 = objc_alloc(MEMORY[0x1E69A29C0]);
   v14 = MEMORY[0x1E696AEC0];
   v15 = MEMORY[0x19EAEB2A0](self, a2);
   v16 = [v14 stringWithFormat:@"%@, %s:%ld", v15, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Widgets/HMWidgetManager.m", 263];
   v17 = [v13 initWithName:v16];
 
-  v18 = [(HMWidgetManager *)self homeManager];
-  if (v18)
+  homeManager = [(HMWidgetManager *)self homeManager];
+  if (homeManager)
   {
-    if ([v9 count])
+    if ([requestsCopy count])
     {
-      v79 = self;
-      v82 = v10;
+      selfCopy = self;
+      v82 = kindCopy;
       v83 = v17;
       aBlock = v12;
-      v19 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v90 = 0u;
       v91 = 0u;
       v92 = 0u;
       v93 = 0u;
-      v81 = v9;
-      obj = v9;
+      v81 = requestsCopy;
+      obj = requestsCopy;
       v20 = [obj countByEnumeratingWithState:&v90 objects:v104 count:16];
-      v85 = v19;
+      v85 = array;
       if (v20)
       {
         v21 = v20;
@@ -800,7 +800,7 @@ LABEL_44:
             }
 
             v24 = *(*(&v90 + 1) + 8 * i);
-            v25 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v26 = v24;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -831,13 +831,13 @@ LABEL_44:
 
             if (v28)
             {
-              [v25 setObject:&unk_1F0EFD2B0 forKeyedSubscript:@"HMWM.requestType"];
-              v32 = [v28 characteristic];
-              v33 = [v32 uniqueIdentifier];
-              [v25 setObject:v33 forKeyedSubscript:@"HMWM.characteristicUUID"];
+              [dictionary setObject:&unk_1F0EFD2B0 forKeyedSubscript:@"HMWM.requestType"];
+              characteristic = [v28 characteristic];
+              uniqueIdentifier = [characteristic uniqueIdentifier];
+              [dictionary setObject:uniqueIdentifier forKeyedSubscript:@"HMWM.characteristicUUID"];
 
-              v34 = [v28 value];
-              [v25 setObject:v34 forKeyedSubscript:@"HMWM.characteristicValue"];
+              value = [v28 value];
+              [dictionary setObject:value forKeyedSubscript:@"HMWM.characteristicValue"];
             }
 
             else
@@ -845,17 +845,17 @@ LABEL_44:
               if (!v31)
               {
                 v70 = objc_autoreleasePoolPush();
-                v71 = self;
+                selfCopy2 = self;
                 v72 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
                 {
                   v73 = HMFGetLogIdentifier();
-                  v74 = [v83 identifier];
-                  v75 = [v74 shortDescription];
+                  identifier = [v83 identifier];
+                  shortDescription = [identifier shortDescription];
                   *buf = 138543874;
                   v95 = v73;
                   v96 = 2114;
-                  v97 = v75;
+                  v97 = shortDescription;
                   v98 = 2112;
                   v99 = v29;
                   _os_log_impl(&dword_19BB39000, v72, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Request is not a supported type: %@", buf, 0x20u);
@@ -864,14 +864,14 @@ LABEL_44:
                 objc_autoreleasePoolPop(v70);
                 v12 = aBlock;
                 v76 = _Block_copy(aBlock);
-                v10 = v82;
+                kindCopy = v82;
                 if (v76)
                 {
                   v77 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
                   v76[2](v76, v77);
                 }
 
-                v9 = v81;
+                requestsCopy = v81;
                 v17 = v83;
                 goto LABEL_41;
               }
@@ -888,15 +888,15 @@ LABEL_44:
               }
 
               v37 = [v35 numberWithInteger:v36];
-              [v25 setObject:v37 forKeyedSubscript:@"HMWM.requestType"];
+              [dictionary setObject:v37 forKeyedSubscript:@"HMWM.requestType"];
 
-              v34 = [v31 actionSet];
-              v38 = [v34 uniqueIdentifier];
-              [v25 setObject:v38 forKeyedSubscript:@"HMWM.actionSetUUID"];
+              value = [v31 actionSet];
+              uniqueIdentifier2 = [value uniqueIdentifier];
+              [dictionary setObject:uniqueIdentifier2 forKeyedSubscript:@"HMWM.actionSetUUID"];
             }
 
-            v19 = v85;
-            [v85 addObject:v25];
+            array = v85;
+            [v85 addObject:dictionary];
           }
 
           v21 = [obj countByEnumeratingWithState:&v90 objects:v104 count:16];
@@ -911,36 +911,36 @@ LABEL_44:
 
       v102[0] = @"HMWM.requests";
       v102[1] = @"HMWM.widgetKind";
-      v10 = v82;
-      v103[0] = v19;
+      kindCopy = v82;
+      v103[0] = array;
       v103[1] = v82;
       v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:2];
       v40 = MEMORY[0x1E69A2A10];
       v41 = objc_alloc(MEMORY[0x1E69A2A00]);
-      v42 = [v18 uuid];
-      v43 = [v41 initWithTarget:v42];
+      uuid = [homeManager uuid];
+      v43 = [v41 initWithTarget:uuid];
       v44 = [v40 messageWithName:@"HMWM.performRequests" destination:v43 payload:v39];
 
       v45 = objc_autoreleasePoolPush();
-      v46 = v79;
+      v46 = selfCopy;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
         v48 = HMFGetLogIdentifier();
-        v49 = [v83 identifier];
-        v50 = [v49 shortDescription];
-        v51 = [v44 identifier];
+        identifier2 = [v83 identifier];
+        shortDescription2 = [identifier2 shortDescription];
+        identifier3 = [v44 identifier];
         *buf = 138544130;
         v95 = v48;
         v96 = 2114;
-        v97 = v50;
+        v97 = shortDescription2;
         v98 = 2112;
-        v99 = v51;
+        v99 = identifier3;
         v100 = 2112;
         v101 = v85;
         _os_log_impl(&dword_19BB39000, v47, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] [%@] Performing requests: %@", buf, 0x2Au);
 
-        v10 = v82;
+        kindCopy = v82;
       }
 
       objc_autoreleasePoolPop(v45);
@@ -954,11 +954,11 @@ LABEL_44:
       v12 = aBlock;
       v89 = aBlock;
       [v44 setResponseHandler:v87];
-      v52 = [(HMWidgetManager *)v46 context];
-      v53 = [v52 messageDispatcher];
-      [v53 sendMessage:v44];
+      context = [(HMWidgetManager *)v46 context];
+      messageDispatcher = [context messageDispatcher];
+      [messageDispatcher sendMessage:v44];
 
-      v9 = v81;
+      requestsCopy = v81;
 LABEL_41:
       v60 = v85;
     }
@@ -966,22 +966,22 @@ LABEL_41:
     else
     {
       v62 = objc_autoreleasePoolPush();
-      v63 = self;
+      selfCopy3 = self;
       v64 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
       {
         v65 = HMFGetLogIdentifier();
-        v66 = [v17 identifier];
-        [v66 shortDescription];
+        identifier4 = [v17 identifier];
+        [identifier4 shortDescription];
         v86 = v62;
-        v68 = v67 = v18;
+        v68 = v67 = homeManager;
         *buf = 138543618;
         v95 = v65;
         v96 = 2114;
         v97 = v68;
         _os_log_impl(&dword_19BB39000, v64, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] No requests to process", buf, 0x16u);
 
-        v18 = v67;
+        homeManager = v67;
         v62 = v86;
       }
 
@@ -998,20 +998,20 @@ LABEL_41:
   else
   {
     v54 = objc_autoreleasePoolPush();
-    v55 = self;
+    selfCopy4 = self;
     v56 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
     {
       v57 = HMFGetLogIdentifier();
-      v58 = [v17 identifier];
-      v59 = [v58 shortDescription];
+      identifier5 = [v17 identifier];
+      shortDescription3 = [identifier5 shortDescription];
       *buf = 138543618;
       v95 = v57;
       v96 = 2114;
-      v97 = v59;
+      v97 = shortDescription3;
       _os_log_impl(&dword_19BB39000, v56, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] HomeManager has been deallocated", buf, 0x16u);
 
-      v18 = 0;
+      homeManager = 0;
     }
 
     objc_autoreleasePoolPop(v54);
@@ -1100,20 +1100,20 @@ void __54__HMWidgetManager_performRequests_forKind_completion___block_invoke_114
   }
 }
 
-- (void)fetchStateForCharacteristics:(id)a3 completion:(id)a4
+- (void)fetchStateForCharacteristics:(id)characteristics completion:(id)completion
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  characteristicsCopy = characteristics;
+  completionCopy = completion;
+  if (!characteristicsCopy)
   {
     _HMFPreconditionFailure();
 LABEL_12:
     _HMFPreconditionFailure();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_12;
   }
@@ -1124,13 +1124,13 @@ LABEL_12:
   v13 = [v11 stringWithFormat:@"%@, %s:%ld", v12, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Widgets/HMWidgetManager.m", 203];
   v14 = [v10 initWithName:v13];
 
-  v15 = [(HMWidgetManager *)self homeManager];
-  if (v15)
+  homeManager = [(HMWidgetManager *)self homeManager];
+  if (homeManager)
   {
-    v16 = [v7 na_map:&__block_literal_global_99];
+    v16 = [characteristicsCopy na_map:&__block_literal_global_99];
     v17 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v18 = [v15 uuid];
-    v19 = [v17 initWithTarget:v18];
+    uuid = [homeManager uuid];
+    v19 = [v17 initWithTarget:uuid];
 
     v57 = @"HMWM.characteristics";
     v58[0] = v16;
@@ -1138,7 +1138,7 @@ LABEL_12:
     v45 = v19;
     v21 = [MEMORY[0x1E69A2A10] messageWithName:@"HMWM.fetchState" destination:v19 payload:v20];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -1147,9 +1147,9 @@ LABEL_12:
       [v14 identifier];
       v26 = v41 = v22;
       [v26 shortDescription];
-      v27 = v44 = v7;
+      v27 = v44 = characteristicsCopy;
       [v21 identifier];
-      v43 = v15;
+      v43 = homeManager;
       v28 = v9;
       v30 = v29 = v14;
       *buf = 138544130;
@@ -1164,9 +1164,9 @@ LABEL_12:
 
       v14 = v29;
       v9 = v28;
-      v15 = v43;
+      homeManager = v43;
 
-      v7 = v44;
+      characteristicsCopy = v44;
       v22 = v41;
 
       v20 = v42;
@@ -1177,33 +1177,33 @@ LABEL_12:
     v46[1] = 3221225472;
     v46[2] = __59__HMWidgetManager_fetchStateForCharacteristics_completion___block_invoke_100;
     v46[3] = &unk_1E754E480;
-    v46[4] = v23;
+    v46[4] = selfCopy;
     v47 = v14;
     v48 = v9;
     [v21 setResponseHandler:v46];
-    v31 = [(HMWidgetManager *)v23 context];
-    v32 = [v31 messageDispatcher];
-    [v32 sendMessage:v21];
+    context = [(HMWidgetManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v21];
   }
 
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy2 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v37 = v36 = v7;
-      v38 = [v14 identifier];
-      v39 = [v38 shortDescription];
+      v37 = v36 = characteristicsCopy;
+      identifier = [v14 identifier];
+      shortDescription = [identifier shortDescription];
       *buf = 138543618;
       v50 = v37;
       v51 = 2114;
-      v52 = v39;
+      v52 = shortDescription;
       _os_log_impl(&dword_19BB39000, v35, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] HomeManager has been deallocated", buf, 0x16u);
 
-      v7 = v36;
+      characteristicsCopy = v36;
     }
 
     objc_autoreleasePoolPop(v33);
@@ -1496,18 +1496,18 @@ void __118__HMWidgetManager_monitorAndFetchStateForCharacteristics_monitorReacha
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (HMWidgetManager)initWithHomeManager:(id)a3 context:(id)a4
+- (HMWidgetManager)initWithHomeManager:(id)manager context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  managerCopy = manager;
+  contextCopy = context;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = contextCopy;
+  if (!contextCopy)
   {
 LABEL_7:
     v12 = _HMFPreconditionFailure();
@@ -1520,8 +1520,8 @@ LABEL_7:
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_homeManager, v6);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeWeak(&v9->_homeManager, managerCopy);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;

@@ -1,13 +1,13 @@
 @interface JavaNetAddressCache_AddressCacheEntry
-- (JavaNetAddressCache_AddressCacheEntry)initWithId:(id)a3;
+- (JavaNetAddressCache_AddressCacheEntry)initWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaNetAddressCache_AddressCacheEntry
 
-- (JavaNetAddressCache_AddressCacheEntry)initWithId:(id)a3
+- (JavaNetAddressCache_AddressCacheEntry)initWithId:(id)id
 {
-  JreStrongAssign(&self->value_, a3);
+  JreStrongAssign(&self->value_, id);
   self->expiryNanos_ = JavaLangSystem_nanoTime() + 2000000000;
   return self;
 }

@@ -1,31 +1,31 @@
 @interface L28BackupStats
-+ (id)l28BackupStatsForAccount:(id)a3 snapshotFormat:(int64_t)a4 backupReason:(int64_t)a5 backupError:(id)a6 error:(id *)a7;
-- (L28BackupStats)initWithPlistDict:(id)a3;
++ (id)l28BackupStatsForAccount:(id)account snapshotFormat:(int64_t)format backupReason:(int64_t)reason backupError:(id)error error:(id *)a7;
+- (L28BackupStats)initWithPlistDict:(id)dict;
 - (id)_dictionaryRepresentation;
-- (id)l28StatsTelemetryPolicy:(int64_t)a3 plistPath:(id)a4 snapshotFormat:(int64_t)a5 backupReason:(int64_t)a6 backupError:(id)a7 error:(id *)a8;
+- (id)l28StatsTelemetryPolicy:(int64_t)policy plistPath:(id)path snapshotFormat:(int64_t)format backupReason:(int64_t)reason backupError:(id)error error:(id *)a8;
 - (void)_nullifyL28Stats;
 - (void)computeStatsOnL28BackupHistory;
-- (void)updateL28HistoryWithCurrentBackupState:(BOOL)a3 snapshotFormat:(int64_t)a4 isSuccessful:(BOOL)a5 quotaExceeded:(BOOL)a6 osVersion:(id)a7 currentDay:(int64_t)a8 isNewDay:(BOOL)a9;
+- (void)updateL28HistoryWithCurrentBackupState:(BOOL)state snapshotFormat:(int64_t)format isSuccessful:(BOOL)successful quotaExceeded:(BOOL)exceeded osVersion:(id)version currentDay:(int64_t)day isNewDay:(BOOL)newDay;
 @end
 
 @implementation L28BackupStats
 
-+ (id)l28BackupStatsForAccount:(id)a3 snapshotFormat:(int64_t)a4 backupReason:(int64_t)a5 backupError:(id)a6 error:(id *)a7
++ (id)l28BackupStatsForAccount:(id)account snapshotFormat:(int64_t)format backupReason:(int64_t)reason backupError:(id)error error:(id *)a7
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = [v11 persona];
-  v14 = [v13 l28BackupTelemetryPlistPath];
+  accountCopy = account;
+  errorCopy = error;
+  persona = [accountCopy persona];
+  l28BackupTelemetryPlistPath = [persona l28BackupTelemetryPlistPath];
 
-  if (!v14)
+  if (!l28BackupTelemetryPlistPath)
   {
     __assert_rtn("+[L28BackupStats l28BackupStatsForAccount:snapshotFormat:backupReason:backupError:error:]", "MBL28BackupStats.m", 161, "plistPath");
   }
 
   v15 = +[NSDate date];
-  v16 = [v15 absoluteDay];
+  absoluteDay = [v15 absoluteDay];
 
-  v17 = [NSData dataWithContentsOfFile:v14];
+  v17 = [NSData dataWithContentsOfFile:l28BackupTelemetryPlistPath];
   if (!v17)
   {
     v18 = 0;
@@ -40,7 +40,7 @@ LABEL_8:
     v22 = v21;
     if (v21)
     {
-      v20 = [(L28BackupStats *)v21 l28StatsTelemetryPolicy:v16 plistPath:v14 snapshotFormat:a4 backupReason:a5 backupError:v12 error:a7];
+      v20 = [(L28BackupStats *)v21 l28StatsTelemetryPolicy:absoluteDay plistPath:l28BackupTelemetryPlistPath snapshotFormat:format backupReason:reason backupError:errorCopy error:a7];
     }
 
     else
@@ -56,7 +56,7 @@ LABEL_8:
   {
     v19 = *a7;
     *buf = 138412546;
-    v26 = v14;
+    v26 = l28BackupTelemetryPlistPath;
     v27 = 2112;
     v28 = v19;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Error deserializing plist %@ : %@", buf, 0x16u);
@@ -70,24 +70,24 @@ LABEL_12:
   return v20;
 }
 
-- (L28BackupStats)initWithPlistDict:(id)a3
+- (L28BackupStats)initWithPlistDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v15.receiver = self;
   v15.super_class = L28BackupStats;
   v5 = [(L28BackupStats *)&v15 init];
   if (v5)
   {
     v6 = [L28BackupBuffer alloc];
-    v7 = [v4 objectForKeyedSubscript:@"L28Buffer"];
-    v8 = [v4 objectForKeyedSubscript:@"L28BufferNextDayIndex"];
-    v9 = [v8 intValue];
-    v10 = [v4 objectForKeyedSubscript:@"L28BufferEndDay"];
-    v11 = -[L28BackupBuffer _initWithBuffer:nextDayIndex:endDay:](v6, "_initWithBuffer:nextDayIndex:endDay:", v7, v9, [v10 integerValue]);
+    v7 = [dictCopy objectForKeyedSubscript:@"L28Buffer"];
+    v8 = [dictCopy objectForKeyedSubscript:@"L28BufferNextDayIndex"];
+    intValue = [v8 intValue];
+    v10 = [dictCopy objectForKeyedSubscript:@"L28BufferEndDay"];
+    v11 = -[L28BackupBuffer _initWithBuffer:nextDayIndex:endDay:](v6, "_initWithBuffer:nextDayIndex:endDay:", v7, intValue, [v10 integerValue]);
     buffer = v5->_buffer;
     v5->_buffer = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"L28lastTelemetryDay"];
+    v13 = [dictCopy objectForKeyedSubscript:@"L28lastTelemetryDay"];
     v5->_lastTelemetryDay = [v13 intValue];
 
     [(L28BackupStats *)v5 _nullifyL28Stats];
@@ -96,26 +96,26 @@ LABEL_12:
   return v5;
 }
 
-- (id)l28StatsTelemetryPolicy:(int64_t)a3 plistPath:(id)a4 snapshotFormat:(int64_t)a5 backupReason:(int64_t)a6 backupError:(id)a7 error:(id *)a8
+- (id)l28StatsTelemetryPolicy:(int64_t)policy plistPath:(id)path snapshotFormat:(int64_t)format backupReason:(int64_t)reason backupError:(id)error error:(id *)a8
 {
-  v33 = a4;
-  v12 = a7;
+  pathCopy = path;
+  errorCopy = error;
   lastTelemetryDay = self->_lastTelemetryDay;
-  if (lastTelemetryDay != a3)
+  if (lastTelemetryDay != policy)
   {
-    self->_lastTelemetryDay = a3;
+    self->_lastTelemetryDay = policy;
     [(L28BackupStats *)self computeStatsOnL28BackupHistory];
   }
 
   IsManual = MBBackupReasonIsManual();
-  v15 = [MBError isCKError:v12 withCode:25];
+  v15 = [MBError isCKError:errorCopy withCode:25];
   v16 = MBProductVersion();
-  LOBYTE(v30) = lastTelemetryDay != a3;
-  [(L28BackupStats *)self updateL28HistoryWithCurrentBackupState:IsManual snapshotFormat:a5 isSuccessful:v12 == 0 quotaExceeded:v15 osVersion:v16 currentDay:a3 isNewDay:v30];
+  LOBYTE(v30) = lastTelemetryDay != policy;
+  [(L28BackupStats *)self updateL28HistoryWithCurrentBackupState:IsManual snapshotFormat:format isSuccessful:errorCopy == 0 quotaExceeded:v15 osVersion:v16 currentDay:policy isNewDay:v30];
 
   v17 = +[NSMutableDictionary dictionary];
-  v18 = [(L28BackupBuffer *)self->_buffer _slots];
-  [v17 setObject:v18 forKeyedSubscript:@"L28Buffer"];
+  _slots = [(L28BackupBuffer *)self->_buffer _slots];
+  [v17 setObject:_slots forKeyedSubscript:@"L28Buffer"];
 
   v19 = [NSNumber numberWithInt:[(L28BackupBuffer *)self->_buffer nextDayIndex]];
   [v17 setObject:v19 forKeyedSubscript:@"L28BufferNextDayIndex"];
@@ -130,12 +130,12 @@ LABEL_12:
   v23 = v22;
   if (v22)
   {
-    v24 = v33;
-    if ([v22 writeToFile:v33 atomically:1])
+    v24 = pathCopy;
+    if ([v22 writeToFile:pathCopy atomically:1])
     {
-      if (lastTelemetryDay != a3)
+      if (lastTelemetryDay != policy)
       {
-        v25 = [(L28BackupStats *)self _dictionaryRepresentation];
+        _dictionaryRepresentation = [(L28BackupStats *)self _dictionaryRepresentation];
         goto LABEL_14;
       }
     }
@@ -155,7 +155,7 @@ LABEL_12:
   else
   {
     v26 = MBGetDefaultLog();
-    v24 = v33;
+    v24 = pathCopy;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       v27 = *a8;
@@ -167,70 +167,70 @@ LABEL_12:
     }
   }
 
-  v25 = 0;
+  _dictionaryRepresentation = 0;
 LABEL_14:
 
-  return v25;
+  return _dictionaryRepresentation;
 }
 
-- (void)updateL28HistoryWithCurrentBackupState:(BOOL)a3 snapshotFormat:(int64_t)a4 isSuccessful:(BOOL)a5 quotaExceeded:(BOOL)a6 osVersion:(id)a7 currentDay:(int64_t)a8 isNewDay:(BOOL)a9
+- (void)updateL28HistoryWithCurrentBackupState:(BOOL)state snapshotFormat:(int64_t)format isSuccessful:(BOOL)successful quotaExceeded:(BOOL)exceeded osVersion:(id)version currentDay:(int64_t)day isNewDay:(BOOL)newDay
 {
-  v11 = a6;
-  v12 = a5;
-  v14 = a3;
-  if (a9)
+  exceededCopy = exceeded;
+  successfulCopy = successful;
+  stateCopy = state;
+  if (newDay)
   {
-    v16 = a7;
+    versionCopy = version;
     v27 = +[NSMutableDictionary dictionary];
   }
 
   else
   {
     buffer = self->_buffer;
-    v18 = a7;
-    v19 = [(L28BackupBuffer *)buffer _latestBackup];
-    v27 = [v19 mutableCopy];
+    versionCopy2 = version;
+    _latestBackup = [(L28BackupBuffer *)buffer _latestBackup];
+    v27 = [_latestBackup mutableCopy];
   }
 
-  v20 = [NSNumber numberWithLongLong:a4];
+  v20 = [NSNumber numberWithLongLong:format];
   [v27 setObject:v20 forKeyedSubscript:@"snapshotFormat"];
 
-  [v27 setObject:a7 forKeyedSubscript:@"osVersion"];
+  [v27 setObject:version forKeyedSubscript:@"osVersion"];
   v21 = [v27 objectForKeyedSubscript:@"isQuotaExceeded"];
-  v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v21 BOOLValue] | v11);
+  v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v21 BOOLValue] | exceededCopy);
   [v27 setObject:v22 forKeyedSubscript:@"isQuotaExceeded"];
 
   v23 = [v27 objectForKeyedSubscript:@"successfulBackupCount"];
-  v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v23 intValue] + v12);
+  v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v23 intValue] + successfulCopy);
   [v27 setObject:v24 forKeyedSubscript:@"successfulBackupCount"];
 
   v25 = [v27 objectForKeyedSubscript:@"successfulBackupManualCount"];
-  v26 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v25 intValue] + (v14 && v12));
+  v26 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v25 intValue] + (stateCopy && successfulCopy));
   [v27 setObject:v26 forKeyedSubscript:@"successfulBackupManualCount"];
 
-  [(L28BackupBuffer *)self->_buffer _updateCurrentMetrics:v27 forDay:a8];
+  [(L28BackupBuffer *)self->_buffer _updateCurrentMetrics:v27 forDay:day];
 }
 
 - (void)computeStatsOnL28BackupHistory
 {
   [(L28BackupStats *)self _nullifyL28Stats];
-  v3 = [(L28BackupBuffer *)self->_buffer nextDayIndex];
+  nextDayIndex = [(L28BackupBuffer *)self->_buffer nextDayIndex];
   v28 = 0;
   v29 = 0;
   v4 = 0;
   v30 = 0;
   for (i = 27; i != -1; --i)
   {
-    v6 = [(L28BackupBuffer *)self->_buffer _slotAtIndex:v3 % 0x1C];
-    v7 = [v6 objectForKeyedSubscript:@"init"];
-    v8 = [v7 BOOLValue];
+    0x1C = [(L28BackupBuffer *)self->_buffer _slotAtIndex:nextDayIndex % 0x1C];
+    v7 = [0x1C objectForKeyedSubscript:@"init"];
+    bOOLValue = [v7 BOOLValue];
 
-    if ((v8 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v9 = [v6 objectForKeyedSubscript:@"successfulBackupCount"];
-      v10 = [v9 intValue];
+      v9 = [0x1C objectForKeyedSubscript:@"successfulBackupCount"];
+      intValue = [v9 intValue];
 
-      if (v10 < 1)
+      if (intValue < 1)
       {
         maxIntervalBetweenSuccessfulBackups = self->_maxIntervalBetweenSuccessfulBackups;
         if (maxIntervalBetweenSuccessfulBackups <= v30 + 1)
@@ -245,18 +245,18 @@ LABEL_14:
       else
       {
         self->_lastSuccessfulBackup = i;
-        v11 = [v6 objectForKeyedSubscript:@"successfulBackupCount"];
+        v11 = [0x1C objectForKeyedSubscript:@"successfulBackupCount"];
         self->_successfulBackupCount += [v11 intValue];
 
-        v12 = [v6 objectForKeyedSubscript:@"successfulBackupManualCount"];
+        v12 = [0x1C objectForKeyedSubscript:@"successfulBackupManualCount"];
         self->_successfulManualBackupCount += [v12 intValue];
 
         v30 = 0;
       }
 
-      if ([v6 count])
+      if ([0x1C count])
       {
-        v14 = [v6 objectForKeyedSubscript:@"isQuotaExceeded"];
+        v14 = [0x1C objectForKeyedSubscript:@"isQuotaExceeded"];
 
         if (v14)
         {
@@ -267,24 +267,24 @@ LABEL_14:
 
           else
           {
-            v15 = [v6 objectForKeyedSubscript:@"isQuotaExceeded"];
+            v15 = [0x1C objectForKeyedSubscript:@"isQuotaExceeded"];
             self->_isQuotaExceeded = [v15 BOOLValue];
           }
         }
 
-        v16 = [v6 objectForKeyedSubscript:@"osVersion"];
+        v16 = [0x1C objectForKeyedSubscript:@"osVersion"];
 
         if (v16)
         {
           v17 = v4;
-          v18 = [v6 objectForKeyedSubscript:@"osVersion"];
+          v18 = [0x1C objectForKeyedSubscript:@"osVersion"];
           v19 = [v18 componentsSeparatedByString:@"."];
-          v20 = [v19 firstObject];
+          firstObject = [v19 firstObject];
 
           if (!v29)
           {
             v29 = v18;
-            v21 = v20;
+            v21 = firstObject;
 
             v28 = v21;
           }
@@ -303,7 +303,7 @@ LABEL_14:
           self->_singleOSVersionMinor = v22;
           if (self->_singleOSVersionMajor)
           {
-            v23 = [v20 isEqualToString:v28];
+            v23 = [firstObject isEqualToString:v28];
           }
 
           else
@@ -314,7 +314,7 @@ LABEL_14:
           self->_singleOSVersionMajor = v23;
         }
 
-        v24 = [v6 objectForKeyedSubscript:@"snapshotFormat"];
+        v24 = [0x1C objectForKeyedSubscript:@"snapshotFormat"];
         v25 = v24;
         if (v24)
         {
@@ -344,7 +344,7 @@ LABEL_14:
       }
     }
 
-    ++v3;
+    ++nextDayIndex;
   }
 }
 

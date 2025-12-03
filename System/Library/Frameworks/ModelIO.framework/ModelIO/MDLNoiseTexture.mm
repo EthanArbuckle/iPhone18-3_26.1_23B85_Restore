@@ -2,26 +2,26 @@
 - (MDLNoiseTexture)initCellularNoiseWithFrequency:(float)frequency name:(NSString *)name textureDimensions:(vector_int2)textureDimensions channelEncoding:(MDLTextureChannelEncoding)channelEncoding;
 - (MDLNoiseTexture)initScalarNoiseWithSmoothness:(float)smoothness name:(NSString *)name textureDimensions:(vector_int2)textureDimensions channelCount:(int)channelCount channelEncoding:(MDLTextureChannelEncoding)channelEncoding grayscale:(BOOL)grayscale;
 - (MDLNoiseTexture)initVectorNoiseWithSmoothness:(float)smoothness name:(NSString *)name textureDimensions:(vector_int2)textureDimensions channelEncoding:(MDLTextureChannelEncoding)channelEncoding;
-- (id)_generateCellularNoiseAtLevel:(int64_t)a3 selector:(SEL)a4;
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4;
+- (id)_generateCellularNoiseAtLevel:(int64_t)level selector:(SEL)selector;
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector;
 @end
 
 @implementation MDLNoiseTexture
 
-- (id)_generateCellularNoiseAtLevel:(int64_t)a3 selector:(SEL)a4
+- (id)_generateCellularNoiseAtLevel:(int64_t)level selector:(SEL)selector
 {
   if (self->super._textureData.channelCount != 1)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = NSStringFromSelector(a4);
+    v10 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v7, v11, @"ModelIOException", @"[%@ %@]: Only single channel textures supported for cellular noise", v9, v10);
   }
 
   v47 = *self->super._anon_118;
   smoothness = self->_smoothness;
-  v13 = objc_msgSend_allocateDataAtLevel_(self, a2, a3);
+  v13 = objc_msgSend_allocateDataAtLevel_(self, a2, level);
   v14 = v13;
   v17 = objc_msgSend_mutableBytes(v14, v15, v16);
   v18.i32[0] = 0;
@@ -29,18 +29,18 @@
   v19.i32[0] = 1;
   v20 = vbsl_s8(vdup_lane_s32(vcgt_s32(v18, v47), 0), v19, v47);
   v21 = vbsl_s8(vdup_lane_s32(vcgt_s32(v18, vdup_lane_s32(v20, 1)), 0), (v20.u32[0] | 0x100000000), v20);
-  v22 = v21.i32[1] >> a3;
-  if (v21.i32[0] >> a3 <= 1)
+  v22 = v21.i32[1] >> level;
+  if (v21.i32[0] >> level <= 1)
   {
     v23 = 1;
   }
 
   else
   {
-    v23 = (v21.i32[0] >> a3);
+    v23 = (v21.i32[0] >> level);
   }
 
-  v48 = smoothness * (1 << a3);
+  v48 = smoothness * (1 << level);
   channelCount = self->super._textureData.channelCount;
   v25 = sub_239F6B868(self->super._channelEncoding);
   v27 = 0;
@@ -123,11 +123,11 @@
   return v13;
 }
 
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector
 {
   if (!*&self->_grayScale)
   {
-    v19 = objc_msgSend__generateCellularNoiseAtLevel_selector_(self, a2, a3, a4);
+    v19 = objc_msgSend__generateCellularNoiseAtLevel_selector_(self, a2, level, selector);
     goto LABEL_41;
   }
 
@@ -136,7 +136,7 @@
     v8 = MEMORY[0x277CBEAD8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = NSStringFromSelector(a4);
+    v11 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v8, v12, @"ModelIOException", @"[%@ %@]: Only 8 bit textures supported", v10, v11);
   }
 
@@ -151,7 +151,7 @@
     v14 = MEMORY[0x277CBEAD8];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = NSStringFromSelector(a4);
+    v17 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v14, v18, @"ModelIOException", @"[%@ %@]: Only 4 channel textures supported for vector noise", v16, v17);
     goto LABEL_13;
   }
@@ -161,7 +161,7 @@
     v21 = MEMORY[0x277CBEAD8];
     v22 = objc_opt_class();
     v16 = NSStringFromClass(v22);
-    v17 = NSStringFromSelector(a4);
+    v17 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v21, v23, @"ModelIOException", @"[%@ %@]: Only 1 and 4 channel textures supported for scalar noise", v16, v17);
 LABEL_13:
   }
@@ -173,21 +173,21 @@ LABEL_14:
   v25 = vbsl_s8(vdup_lane_s32(vcgt_s32(v4, *self->super._anon_118), 0), v24, *self->super._anon_118);
   v26 = vbsl_s8(vdup_lane_s32(vcgt_s32(v4, vdup_lane_s32(v25, 1)), 0), (v25.u32[0] | 0x100000000), v25);
   v72 = v26.i32[1];
-  if (v26.i32[0] >> a3 <= 1)
+  if (v26.i32[0] >> level <= 1)
   {
     v27 = 1;
   }
 
   else
   {
-    v27 = (v26.i32[0] >> a3);
+    v27 = (v26.i32[0] >> level);
   }
 
-  v19 = objc_msgSend_allocateDataAtLevel_(self, a2, a3);
+  v19 = objc_msgSend_allocateDataAtLevel_(self, a2, level);
   v28 = v19;
   v31 = objc_msgSend_mutableBytes(v28, v29, v30);
-  v32 = v72 >> a3;
-  v33 = (1 << a3);
+  v32 = v72 >> level;
+  v33 = (1 << level);
   if (*(&self->super._hasAlphaValues + 1))
   {
     v34 = __exp10(((*(&self->super._hasAlphaValues + 2) * -2.0) + 3.0));

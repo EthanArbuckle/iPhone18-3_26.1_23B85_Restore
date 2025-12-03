@@ -1,51 +1,51 @@
 @interface DetailsViewCoordinator
-- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)a3;
+- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)controller;
 - (_TtC7ChatKit22DetailsViewCoordinator)init;
-- (id)toolbarItemForIdentifier:(id)a3;
+- (id)toolbarItemForIdentifier:(id)identifier;
 - (void)closeBarButtonPressed;
-- (void)configureWithToolbarController:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)configureWithToolbarController:(id)controller;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)handleCancelAction;
 - (void)handleDoneAction;
-- (void)previewControllerDidDismiss:(id)a3;
+- (void)previewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation DetailsViewCoordinator
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlySelectedContact);
   *(&self->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlySelectedContact) = 0;
-  v5 = a3;
-  v7 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
 
-  v6 = *(&v7->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController);
-  *(&v7->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController) = 0;
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController) = 0;
 
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_19084DB94(v7);
+  pickerCopy = picker;
+  contactCopy = contact;
+  selfCopy = self;
+  sub_19084DB94(contactCopy);
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlySelectedContact);
   *(&self->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlySelectedContact) = 0;
-  v6 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
 
-  v7 = *(&v8->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController);
-  *(&v8->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController) = 0;
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC7ChatKit22DetailsViewCoordinator_currentlyPresentedContactSelectionNavigationController) = 0;
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)closeBarButtonPressed
@@ -59,15 +59,15 @@
   }
 }
 
-- (void)configureWithToolbarController:(id)a3
+- (void)configureWithToolbarController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  [v4 setInspectorItemProvider_];
-  [v4 reloadToolbarItems];
+  controllerCopy = controller;
+  selfCopy = self;
+  [controllerCopy setInspectorItemProvider_];
+  [controllerCopy reloadToolbarItems];
 }
 
-- (id)toolbarItemForIdentifier:(id)a3
+- (id)toolbarItemForIdentifier:(id)identifier
 {
   v3._countAndFlagsBits = sub_190D56F10();
   v4 = DetailsViewCoordinator.toolbarItem(forIdentifier:)(v3);
@@ -75,10 +75,10 @@
   return v4;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   _s7ChatKit22DetailsViewCoordinatorC27previewControllerDidDismissyySo09QLPreviewG0CF_0();
 }
 
@@ -91,35 +91,35 @@
 
 - (void)handleCancelAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BE8070();
 }
 
 - (void)handleDoneAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BE8254();
 }
 
-- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)a3
+- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     __break(1u);
     goto LABEL_5;
   }
 
-  v3 = a3;
-  v4 = [v3 view];
-  if (!v4)
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  if (!view)
   {
 LABEL_5:
     __break(1u);
     goto LABEL_6;
   }
 
-  v9 = v4;
-  [v4 safeAreaInsets];
+  v9 = view;
+  [view safeAreaInsets];
   v11 = v10;
 
   v6 = 0.0;

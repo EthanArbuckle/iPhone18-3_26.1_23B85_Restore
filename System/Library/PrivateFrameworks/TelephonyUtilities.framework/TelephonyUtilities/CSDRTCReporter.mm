@@ -1,161 +1,161 @@
 @interface CSDRTCReporter
-- (void)reportingController:(id)a3 AVCBlobRecoveryStartedForConversation:(id)a4;
-- (void)reportingController:(id)a3 AVCBlobRecoveryTimedOutForConversation:(id)a4;
-- (void)reportingController:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)reportingController:(id)a3 addedActiveConversation:(id)a4;
-- (void)reportingController:(id)a3 callUUID:(id)a4 withUserScore:(int)a5;
-- (void)reportingController:(id)a3 createConversationReportingSessionForConversation:(id)a4;
-- (void)reportingController:(id)a3 oneToOneModeSwitchFailureForConversation:(id)a4 isOneToOneMode:(BOOL)a5;
-- (void)reportingController:(id)a3 participantClusterChangedForConversation:(id)a4;
-- (void)reportingController:(id)a3 pickedRoute:(id)a4 forCall:(id)a5;
-- (void)reportingController:(id)a3 receivedConnectionSetupReport:(id)a4 eventType:(int64_t)a5 forConversation:(id)a6;
-- (void)reportingController:(id)a3 receivedHandoffReport:(id)a4 forConversation:(id)a5;
-- (void)reportingController:(id)a3 receivedIDSChat:(id)a4;
-- (void)reportingController:(id)a3 receivedIDSReports:(id)a4 forSessionWithUUID:(id)a5;
-- (void)reportingController:(id)a3 receivedLetMeInRequestForConversation:(id)a4;
-- (void)reportingController:(id)a3 remoteMemberNotInMemberListForConversation:(id)a4;
-- (void)reportingController:(id)a3 remoteMembersChangedForConversation:(id)a4;
-- (void)reportingController:(id)a3 removedActiveConversation:(id)a4;
-- (void)reportingController:(id)a3 sentLetMeInResponseForConversation:(id)a4 isApproved:(BOOL)a5;
-- (void)reportingController:(id)a3 stateChangedForConversation:(id)a4;
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5;
-- (void)reportingController:(id)a3 timedOutPickingRoute:(id)a4 forCall:(id)a5;
-- (void)reportingController:(id)a3 transitionAttemptForConversation:(id)a4;
+- (void)reportingController:(id)controller AVCBlobRecoveryStartedForConversation:(id)conversation;
+- (void)reportingController:(id)controller AVCBlobRecoveryTimedOutForConversation:(id)conversation;
+- (void)reportingController:(id)controller activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)reportingController:(id)controller addedActiveConversation:(id)conversation;
+- (void)reportingController:(id)controller callUUID:(id)d withUserScore:(int)score;
+- (void)reportingController:(id)controller createConversationReportingSessionForConversation:(id)conversation;
+- (void)reportingController:(id)controller oneToOneModeSwitchFailureForConversation:(id)conversation isOneToOneMode:(BOOL)mode;
+- (void)reportingController:(id)controller participantClusterChangedForConversation:(id)conversation;
+- (void)reportingController:(id)controller pickedRoute:(id)route forCall:(id)call;
+- (void)reportingController:(id)controller receivedConnectionSetupReport:(id)report eventType:(int64_t)type forConversation:(id)conversation;
+- (void)reportingController:(id)controller receivedHandoffReport:(id)report forConversation:(id)conversation;
+- (void)reportingController:(id)controller receivedIDSChat:(id)chat;
+- (void)reportingController:(id)controller receivedIDSReports:(id)reports forSessionWithUUID:(id)d;
+- (void)reportingController:(id)controller receivedLetMeInRequestForConversation:(id)conversation;
+- (void)reportingController:(id)controller remoteMemberNotInMemberListForConversation:(id)conversation;
+- (void)reportingController:(id)controller remoteMembersChangedForConversation:(id)conversation;
+- (void)reportingController:(id)controller removedActiveConversation:(id)conversation;
+- (void)reportingController:(id)controller sentLetMeInResponseForConversation:(id)conversation isApproved:(BOOL)approved;
+- (void)reportingController:(id)controller stateChangedForConversation:(id)conversation;
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count;
+- (void)reportingController:(id)controller timedOutPickingRoute:(id)route forCall:(id)call;
+- (void)reportingController:(id)controller transitionAttemptForConversation:(id)conversation;
 @end
 
 @implementation CSDRTCReporter
 
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  controllerCopy = controller;
+  callCopy = call;
+  selfCopy = self;
   sub_100036140();
 }
 
-- (void)reportingController:(id)a3 createConversationReportingSessionForConversation:(id)a4
+- (void)reportingController:(id)controller createConversationReportingSessionForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 timedOutPickingRoute:(id)a4 forCall:(id)a5
+- (void)reportingController:(id)controller timedOutPickingRoute:(id)route forCall:(id)call
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  routeCopy = route;
+  callCopy = call;
+  selfCopy = self;
   sub_1002BF808();
 }
 
-- (void)reportingController:(id)a3 pickedRoute:(id)a4 forCall:(id)a5
+- (void)reportingController:(id)controller pickedRoute:(id)route forCall:(id)call
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  routeCopy = route;
+  callCopy = call;
+  selfCopy = self;
   sub_1002BF808();
 }
 
-- (void)reportingController:(id)a3 stateChangedForConversation:(id)a4
+- (void)reportingController:(id)controller stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C2044();
 }
 
-- (void)reportingController:(id)a3 remoteMembersChangedForConversation:(id)a4
+- (void)reportingController:(id)controller remoteMembersChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 participantClusterChangedForConversation:(id)a4
+- (void)reportingController:(id)controller participantClusterChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)reportingController:(id)controller activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 addedActiveConversation:(id)a4
+- (void)reportingController:(id)controller addedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 removedActiveConversation:(id)a4
+- (void)reportingController:(id)controller removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C2044();
 }
 
-- (void)reportingController:(id)a3 AVCBlobRecoveryStartedForConversation:(id)a4
+- (void)reportingController:(id)controller AVCBlobRecoveryStartedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 remoteMemberNotInMemberListForConversation:(id)a4
+- (void)reportingController:(id)controller remoteMemberNotInMemberListForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 transitionAttemptForConversation:(id)a4
+- (void)reportingController:(id)controller transitionAttemptForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 AVCBlobRecoveryTimedOutForConversation:(id)a4
+- (void)reportingController:(id)controller AVCBlobRecoveryTimedOutForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 oneToOneModeSwitchFailureForConversation:(id)a4 isOneToOneMode:(BOOL)a5
+- (void)reportingController:(id)controller oneToOneModeSwitchFailureForConversation:(id)conversation isOneToOneMode:(BOOL)mode
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5F30();
 }
 
-- (void)reportingController:(id)a3 receivedIDSChat:(id)a4
+- (void)reportingController:(id)controller receivedIDSChat:(id)chat
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  chatCopy = chat;
+  selfCopy = self;
   sub_1002C2044();
 }
 
-- (void)reportingController:(id)a3 receivedIDSReports:(id)a4 forSessionWithUUID:(id)a5
+- (void)reportingController:(id)controller receivedIDSReports:(id)reports forSessionWithUUID:(id)d
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
@@ -165,52 +165,52 @@
   sub_10026D814(&unk_1006A2A00, &unk_10057D710);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1002C27B4();
 
   (*(v8 + 8))(v12, v7);
 }
 
-- (void)reportingController:(id)a3 receivedHandoffReport:(id)a4 forConversation:(id)a5
+- (void)reportingController:(id)controller receivedHandoffReport:(id)report forConversation:(id)conversation
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C49A8();
 }
 
-- (void)reportingController:(id)a3 receivedConnectionSetupReport:(id)a4 eventType:(int64_t)a5 forConversation:(id)a6
+- (void)reportingController:(id)controller receivedConnectionSetupReport:(id)report eventType:(int64_t)type forConversation:(id)conversation
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a6;
-  v11 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C3F14();
 }
 
-- (void)reportingController:(id)a3 receivedLetMeInRequestForConversation:(id)a4
+- (void)reportingController:(id)controller receivedLetMeInRequestForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5B54();
 }
 
-- (void)reportingController:(id)a3 sentLetMeInResponseForConversation:(id)a4 isApproved:(BOOL)a5
+- (void)reportingController:(id)controller sentLetMeInResponseForConversation:(id)conversation isApproved:(BOOL)approved
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  controllerCopy = controller;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_1002C5F30();
 }
 
-- (void)reportingController:(id)a3 callUUID:(id)a4 withUserScore:(int)a5
+- (void)reportingController:(id)controller callUUID:(id)d withUserScore:(int)score
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1002BE480();
 }
 

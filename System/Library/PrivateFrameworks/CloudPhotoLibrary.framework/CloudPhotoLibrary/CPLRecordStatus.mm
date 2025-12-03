@@ -1,18 +1,18 @@
 @interface CPLRecordStatus
-- (CPLRecordStatus)initWithCoder:(id)a3;
-- (CPLRecordStatus)initWithRecord:(id)a3 generation:(unint64_t)a4;
+- (CPLRecordStatus)initWithCoder:(id)coder;
+- (CPLRecordStatus)initWithRecord:(id)record generation:(unint64_t)generation;
 - (NSString)statusDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmed:(BOOL)a3;
-- (void)setQuarantined:(BOOL)a3;
-- (void)setResetting:(BOOL)a3;
-- (void)setShared:(BOOL)a3;
-- (void)setUpdating:(BOOL)a3;
-- (void)setUploaded:(BOOL)a3;
-- (void)setUploading:(BOOL)a3;
-- (void)setWaitingForUpdate:(BOOL)a3;
-- (void)setWaitingForUpload:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmed:(BOOL)confirmed;
+- (void)setQuarantined:(BOOL)quarantined;
+- (void)setResetting:(BOOL)resetting;
+- (void)setShared:(BOOL)shared;
+- (void)setUpdating:(BOOL)updating;
+- (void)setUploaded:(BOOL)uploaded;
+- (void)setUploading:(BOOL)uploading;
+- (void)setWaitingForUpdate:(BOOL)update;
+- (void)setWaitingForUpload:(BOOL)upload;
 @end
 
 @implementation CPLRecordStatus
@@ -22,8 +22,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   generation = self->_generation;
-  v6 = [(CPLRecordStatus *)self statusDescription];
-  v7 = [v3 stringWithFormat:@"<%@ (%lu) for %@>", v4, generation, v6];
+  statusDescription = [(CPLRecordStatus *)self statusDescription];
+  v7 = [v3 stringWithFormat:@"<%@ (%lu) for %@>", v4, generation, statusDescription];
 
   return v7;
 }
@@ -33,11 +33,11 @@
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   record = self->_record;
   v5 = objc_opt_class();
-  v6 = [(CPLRecordChange *)self->_record scopedIdentifier];
-  v7 = [v3 initWithFormat:@"%@ %@:", v5, v6];
+  scopedIdentifier = [(CPLRecordChange *)self->_record scopedIdentifier];
+  v7 = [v3 initWithFormat:@"%@ %@:", v5, scopedIdentifier];
 
-  v8 = [(CPLRecordStatus *)self isUnknown];
-  if (v8)
+  isUnknown = [(CPLRecordStatus *)self isUnknown];
+  if (isUnknown)
   {
     [v7 appendString:@" unknown"];
   }
@@ -45,43 +45,43 @@
   if ([(CPLRecordStatus *)self isResetting])
   {
     [v7 appendString:@" resetting"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isQuarantined])
   {
     [v7 appendString:@" quarantined"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isUploaded])
   {
     [v7 appendString:@" uploaded"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isWaitingForUpload])
   {
     [v7 appendString:@" waitingForUpload"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isUploading])
   {
     [v7 appendString:@" uploading"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isWaitingForUpdate])
   {
     [v7 appendString:@" waitingForUpdate"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isUpdating])
   {
     [v7 appendString:@" updating"];
-    v8 = 1;
+    isUnknown = 1;
   }
 
   if ([(CPLRecordStatus *)self isConfirmed])
@@ -97,8 +97,8 @@
 
   else
   {
-    v10 = [(CPLRecordStatus *)self isShared];
-    if (v10)
+    isShared = [(CPLRecordStatus *)self isShared];
+    if (isShared)
     {
       v9 = @" shared";
     }
@@ -108,7 +108,7 @@
       v9 = @" no status";
     }
 
-    if (!v10 && v8)
+    if (!isShared && isUnknown)
     {
       goto LABEL_26;
     }
@@ -120,30 +120,30 @@ LABEL_26:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   record = self->_record;
-  v8 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v8 encodeObject:v6 forKey:@"rClass"];
+  [coderCopy encodeObject:v6 forKey:@"rClass"];
 
-  v7 = [(CPLRecordChange *)self->_record scopedIdentifier];
-  [v8 encodeObject:v7 forKey:@"r"];
+  scopedIdentifier = [(CPLRecordChange *)self->_record scopedIdentifier];
+  [coderCopy encodeObject:scopedIdentifier forKey:@"r"];
 
-  [v8 encodeInteger:self->_generation forKey:@"g"];
-  [v8 encodeInt:self->_status.packedStatus forKey:@"pS"];
+  [coderCopy encodeInteger:self->_generation forKey:@"g"];
+  [coderCopy encodeInt:self->_status.packedStatus forKey:@"pS"];
 }
 
-- (CPLRecordStatus)initWithCoder:(id)a3
+- (CPLRecordStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CPLRecordStatus;
   v5 = [(CPLRecordStatus *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rClass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rClass"];
     v7 = v6;
     if (v6)
     {
@@ -155,7 +155,7 @@ LABEL_26:
       v8 = 0;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"r"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"r"];
     v10 = v9;
     if (!v8 || !v9)
     {
@@ -168,8 +168,8 @@ LABEL_26:
     record = v5->_record;
     v5->_record = v11;
 
-    v5->_generation = [v4 decodeIntegerForKey:@"g"];
-    v5->_status.packedStatus = [v4 decodeIntForKey:@"pS"];
+    v5->_generation = [coderCopy decodeIntegerForKey:@"g"];
+    v5->_status.packedStatus = [coderCopy decodeIntForKey:@"pS"];
   }
 
   v13 = v5;
@@ -178,25 +178,25 @@ LABEL_10:
   return v13;
 }
 
-- (CPLRecordStatus)initWithRecord:(id)a3 generation:(unint64_t)a4
+- (CPLRecordStatus)initWithRecord:(id)record generation:(unint64_t)generation
 {
-  v7 = a3;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = CPLRecordStatus;
   v8 = [(CPLRecordStatus *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_record, a3);
-    v9->_generation = a4;
+    objc_storeStrong(&v8->_record, record);
+    v9->_generation = generation;
   }
 
   return v9;
 }
 
-- (void)setShared:(BOOL)a3
+- (void)setShared:(BOOL)shared
 {
-  if (a3)
+  if (shared)
   {
     v3 = 512;
   }
@@ -209,9 +209,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFDFF | v3;
 }
 
-- (void)setConfirmed:(BOOL)a3
+- (void)setConfirmed:(BOOL)confirmed
 {
-  if (a3)
+  if (confirmed)
   {
     v3 = 256;
   }
@@ -224,9 +224,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFEFF | v3;
 }
 
-- (void)setUpdating:(BOOL)a3
+- (void)setUpdating:(BOOL)updating
 {
-  if (a3)
+  if (updating)
   {
     v3 = 128;
   }
@@ -239,9 +239,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFF7F | v3;
 }
 
-- (void)setWaitingForUpdate:(BOOL)a3
+- (void)setWaitingForUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
     v3 = 64;
   }
@@ -254,9 +254,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFFBF | v3;
 }
 
-- (void)setUploading:(BOOL)a3
+- (void)setUploading:(BOOL)uploading
 {
-  if (a3)
+  if (uploading)
   {
     v3 = 32;
   }
@@ -269,9 +269,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFFDF | v3;
 }
 
-- (void)setWaitingForUpload:(BOOL)a3
+- (void)setWaitingForUpload:(BOOL)upload
 {
-  if (a3)
+  if (upload)
   {
     v3 = 16;
   }
@@ -284,9 +284,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFFEF | v3;
 }
 
-- (void)setUploaded:(BOOL)a3
+- (void)setUploaded:(BOOL)uploaded
 {
-  if (a3)
+  if (uploaded)
   {
     v3 = 8;
   }
@@ -299,9 +299,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFFF7 | v3;
 }
 
-- (void)setResetting:(BOOL)a3
+- (void)setResetting:(BOOL)resetting
 {
-  if (a3)
+  if (resetting)
   {
     v3 = 4;
   }
@@ -314,9 +314,9 @@ LABEL_10:
   *&self->_status.status = *&self->_status.status & 0xFFFB | v3;
 }
 
-- (void)setQuarantined:(BOOL)a3
+- (void)setQuarantined:(BOOL)quarantined
 {
-  if (a3)
+  if (quarantined)
   {
     v3 = 2;
   }

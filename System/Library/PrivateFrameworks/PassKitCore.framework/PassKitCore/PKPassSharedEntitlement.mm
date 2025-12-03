@@ -1,35 +1,35 @@
 @interface PKPassSharedEntitlement
-- (BOOL)hasCanonicallyEquivalentRightsToPassEntitlement:(id)a3;
-- (BOOL)hasCanonicallyEquivalentRoleToPassEntitlement:(id)a3;
-- (BOOL)hasCanonicallyEquivalentRoleToPassSharedEntitlement:(id)a3;
-- (BOOL)hasCanonicallyEquivalentSharingCapabilityToPassEntitlement:(id)a3;
+- (BOOL)hasCanonicallyEquivalentRightsToPassEntitlement:(id)entitlement;
+- (BOOL)hasCanonicallyEquivalentRoleToPassEntitlement:(id)entitlement;
+- (BOOL)hasCanonicallyEquivalentRoleToPassSharedEntitlement:(id)entitlement;
+- (BOOL)hasCanonicallyEquivalentSharingCapabilityToPassEntitlement:(id)entitlement;
 - (BOOL)intraAccountSharingEnabled;
-- (BOOL)isEqual:(id)a3;
-- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)a3;
-- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)a3 role:(id)a4;
-- (PKPassSharedEntitlement)initWithCoder:(id)a3;
-- (PKPassSharedEntitlement)initWithDictionary:(id)a3;
-- (PKPassSharedEntitlement)initWithEntitlement:(id)a3;
-- (PKPassSharedEntitlement)initWithSubcredentialDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)value;
+- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)value role:(id)role;
+- (PKPassSharedEntitlement)initWithCoder:(id)coder;
+- (PKPassSharedEntitlement)initWithDictionary:(id)dictionary;
+- (PKPassSharedEntitlement)initWithEntitlement:(id)entitlement;
+- (PKPassSharedEntitlement)initWithSubcredentialDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)carKeyEntitlementValue;
 - (unint64_t)hash;
 - (void)_recalculateRecipientCapabilityRole;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIntraAccountSharingEnabled:(BOOL)a3;
-- (void)setRecipientManageability:(unint64_t)a3;
-- (void)setRecipientShareability:(unint64_t)a3;
-- (void)setRecipientVisibility:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIntraAccountSharingEnabled:(BOOL)enabled;
+- (void)setRecipientManageability:(unint64_t)manageability;
+- (void)setRecipientShareability:(unint64_t)shareability;
+- (void)setRecipientVisibility:(unint64_t)visibility;
 @end
 
 @implementation PKPassSharedEntitlement
 
-- (PKPassSharedEntitlement)initWithDictionary:(id)a3
+- (PKPassSharedEntitlement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_16;
   }
@@ -41,47 +41,47 @@
   {
 LABEL_13:
     self = self;
-    v12 = self;
+    selfCopy = self;
     goto LABEL_17;
   }
 
-  v5 = [v4 PKStringForKey:@"entitlementIdentifier"];
+  v5 = [dictionaryCopy PKStringForKey:@"entitlementIdentifier"];
   entitlementIdentifier = self->_entitlementIdentifier;
   self->_entitlementIdentifier = v5;
 
   if (!self->_entitlementIdentifier)
   {
 LABEL_16:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
   v7 = [PKPassShareTimeConfiguration alloc];
-  v8 = [v4 PKDictionaryForKey:@"timeConfiguration"];
+  v8 = [dictionaryCopy PKDictionaryForKey:@"timeConfiguration"];
   v9 = [(PKPassShareTimeConfiguration *)v7 initWithDictionary:v8];
   timeConfiguration = self->_timeConfiguration;
   self->_timeConfiguration = v9;
 
-  v11 = [v4 PKStringForKey:@"recipientShareability"];
-  v12 = v11;
+  v11 = [dictionaryCopy PKStringForKey:@"recipientShareability"];
+  selfCopy = v11;
   if (v11)
   {
     self->_recipientShareability = PKSharingCapabilityShareabilityFromString(v11);
-    v13 = [v4 PKStringForKey:@"recipientManageability"];
+    v13 = [dictionaryCopy PKStringForKey:@"recipientManageability"];
     if (v13)
     {
       v14 = v13;
       self->_recipientManageability = PKSharingCapabilityManageabilityFromString(v13);
-      v15 = [v4 PKStringForKey:@"recipientVisibility"];
+      v15 = [dictionaryCopy PKStringForKey:@"recipientVisibility"];
       v16 = v15;
       if (v15)
       {
         self->_recipientVisibility = PKSharingCapabilityVisibilityFromString(v15);
-        v17 = [v4 objectForKeyedSubscript:@"version"];
-        v18 = v17 ? [v4 PKIntegerForKey:@"version"] : 1;
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"version"];
+        v18 = v17 ? [dictionaryCopy PKIntegerForKey:@"version"] : 1;
         self->_creationVersion = v18;
 
-        if (self->_creationVersion < 2 || ([v4 PKNumberForKey:@"recipientCapabilityRole"], v19 = objc_claimAutoreleasedReturnValue(), recipientCapabilityRole = self->_recipientCapabilityRole, self->_recipientCapabilityRole = v19, recipientCapabilityRole, self->_recipientCapabilityRole))
+        if (self->_creationVersion < 2 || ([dictionaryCopy PKNumberForKey:@"recipientCapabilityRole"], v19 = objc_claimAutoreleasedReturnValue(), recipientCapabilityRole = self->_recipientCapabilityRole, self->_recipientCapabilityRole = v19, recipientCapabilityRole, self->_recipientCapabilityRole))
         {
           [(PKPassSharedEntitlement *)self _recalculateRecipientCapabilityRole];
 
@@ -95,52 +95,52 @@ LABEL_16:
 
 LABEL_17:
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)_recalculateRecipientCapabilityRole
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 48);
+    v2 = *(self + 48);
     v3 = [PKMutablePassEntitlementCapabilitySet alloc];
     if (v2)
     {
-      v6 = -[PKPassEntitlementCapabilitySet initWithIntRole:](v3, "initWithIntRole:", [*(a1 + 48) unsignedShortValue]);
-      [(PKMutablePassEntitlementCapabilitySet *)v6 setShareability:*(a1 + 24)];
-      [(PKMutablePassEntitlementCapabilitySet *)v6 setVisibility:*(a1 + 40)];
-      [(PKMutablePassEntitlementCapabilitySet *)v6 setManageability:*(a1 + 32)];
+      v6 = -[PKPassEntitlementCapabilitySet initWithIntRole:](v3, "initWithIntRole:", [*(self + 48) unsignedShortValue]);
+      [(PKMutablePassEntitlementCapabilitySet *)v6 setShareability:*(self + 24)];
+      [(PKMutablePassEntitlementCapabilitySet *)v6 setVisibility:*(self + 40)];
+      [(PKMutablePassEntitlementCapabilitySet *)v6 setManageability:*(self + 32)];
     }
 
     else
     {
-      v6 = [(PKPassEntitlementCapabilitySet *)v3 initWithLocalizedName:&stru_1F227FD28 isOwner:0 shareability:*(a1 + 24) manageability:*(a1 + 32) visibility:*(a1 + 40)];
+      v6 = [(PKPassEntitlementCapabilitySet *)v3 initWithLocalizedName:&stru_1F227FD28 isOwner:0 shareability:*(self + 24) manageability:*(self + 32) visibility:*(self + 40)];
     }
 
-    if (*(a1 + 56) < 2)
+    if (*(self + 56) < 2)
     {
-      v4 = 0;
+      capabilityRoleValue = 0;
     }
 
     else
     {
-      v4 = [(PKPassEntitlementCapabilitySet *)v6 capabilityRoleValue];
+      capabilityRoleValue = [(PKPassEntitlementCapabilitySet *)v6 capabilityRoleValue];
     }
 
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v4;
+    v5 = *(self + 48);
+    *(self + 48) = capabilityRoleValue;
   }
 }
 
-- (PKPassSharedEntitlement)initWithSubcredentialDictionary:(id)a3
+- (PKPassSharedEntitlement)initWithSubcredentialDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [v4 PKStringForKey:@"accountRole"];
-    v6 = [v4 PKNumberForKey:@"accessProfile"];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy PKStringForKey:@"accountRole"];
+    v6 = [dictionaryCopy PKNumberForKey:@"accessProfile"];
 
-    v7 = 0;
+    selfCopy = 0;
     if (v5 && v6)
     {
       v18.receiver = self;
@@ -169,44 +169,44 @@ LABEL_17:
           v8->_recipientManageability = [(PKPassEntitlementCapabilitySet *)v12 manageability];
           if (v8->_creationVersion < 2)
           {
-            v15 = 0;
+            capabilityRoleValue = 0;
           }
 
           else
           {
-            v15 = [(PKPassEntitlementCapabilitySet *)v12 capabilityRoleValue];
+            capabilityRoleValue = [(PKPassEntitlementCapabilitySet *)v12 capabilityRoleValue];
           }
 
           recipientCapabilityRole = v8->_recipientCapabilityRole;
-          v8->_recipientCapabilityRole = v15;
+          v8->_recipientCapabilityRole = capabilityRoleValue;
         }
 
         [(PKPassSharedEntitlement *)v8 _recalculateRecipientCapabilityRole];
       }
 
       self = v8;
-      v7 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)a3
+- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)value
 {
   v8.receiver = self;
   v8.super_class = PKPassSharedEntitlement;
   v4 = [(PKPassSharedEntitlement *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%lu", @"CarKeyEntitlement-", a3];
+    value = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%lu", @"CarKeyEntitlement-", value];
     entitlementIdentifier = v4->_entitlementIdentifier;
-    v4->_entitlementIdentifier = v5;
+    v4->_entitlementIdentifier = value;
 
     [(PKPassSharedEntitlement *)v4 _recalculateRecipientCapabilityRole];
   }
@@ -214,20 +214,20 @@ LABEL_17:
   return v4;
 }
 
-- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)a3 role:(id)a4
+- (PKPassSharedEntitlement)initWithCarKeyEntitlementValue:(unint64_t)value role:(id)role
 {
-  v6 = a4;
+  roleCopy = role;
   v17.receiver = self;
   v17.super_class = PKPassSharedEntitlement;
   v7 = [(PKPassSharedEntitlement *)&v17 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%lu", @"CarKeyEntitlement-", a3];
+    value = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%lu", @"CarKeyEntitlement-", value];
     entitlementIdentifier = v7->_entitlementIdentifier;
-    v7->_entitlementIdentifier = v8;
+    v7->_entitlementIdentifier = value;
 
     v7->_creationVersion = 2;
-    v10 = [[PKPassEntitlementCapabilitySet alloc] initWithRole:v6];
+    v10 = [[PKPassEntitlementCapabilitySet alloc] initWithRole:roleCopy];
     v11 = v10;
     if (v10)
     {
@@ -241,9 +241,9 @@ LABEL_17:
       v7->_recipientShareability = [(PKPassEntitlementCapabilitySet *)v11 shareability];
       v7->_recipientVisibility = [(PKPassEntitlementCapabilitySet *)v11 visibility];
       v7->_recipientManageability = [(PKPassEntitlementCapabilitySet *)v11 manageability];
-      v14 = [(PKPassEntitlementCapabilitySet *)v11 capabilityRoleValue];
+      capabilityRoleValue = [(PKPassEntitlementCapabilitySet *)v11 capabilityRoleValue];
       recipientCapabilityRole = v7->_recipientCapabilityRole;
-      v7->_recipientCapabilityRole = v14;
+      v7->_recipientCapabilityRole = capabilityRoleValue;
     }
 
     [(PKPassSharedEntitlement *)v7 _recalculateRecipientCapabilityRole];
@@ -252,21 +252,21 @@ LABEL_17:
   return v7;
 }
 
-- (PKPassSharedEntitlement)initWithEntitlement:(id)a3
+- (PKPassSharedEntitlement)initWithEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   v10.receiver = self;
   v10.super_class = PKPassSharedEntitlement;
   v5 = [(PKPassSharedEntitlement *)&v10 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [entitlementCopy identifier];
     entitlementIdentifier = v5->_entitlementIdentifier;
-    v5->_entitlementIdentifier = v6;
+    v5->_entitlementIdentifier = identifier;
 
-    v8 = [v4 activeCapabilityRole];
+    activeCapabilityRole = [entitlementCopy activeCapabilityRole];
 
-    if (v8)
+    if (activeCapabilityRole)
     {
       v5->_creationVersion = 2;
     }
@@ -281,8 +281,8 @@ LABEL_17:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_entitlementIdentifier forKeyedSubscript:@"entitlementIdentifier"];
-  v4 = [(PKPassShareTimeConfiguration *)self->_timeConfiguration dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"timeConfiguration"];
+  dictionaryRepresentation = [(PKPassShareTimeConfiguration *)self->_timeConfiguration dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"timeConfiguration"];
 
   v5 = PKSharingCapabilityShareabilityToString(self->_recipientShareability);
   [v3 setObject:v5 forKeyedSubscript:@"recipientShareability"];
@@ -307,8 +307,8 @@ LABEL_17:
   v2 = [(NSString *)self->_entitlementIdentifier stringByReplacingOccurrencesOfString:@"CarKeyEntitlement-" withString:&stru_1F227FD28];
   v3 = [v2 stringByReplacingOccurrencesOfString:@"-Owner" withString:&stru_1F227FD28];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 - (BOOL)intraAccountSharingEnabled
@@ -319,63 +319,63 @@ LABEL_17:
   }
 
   v2 = [[PKPassEntitlementCapabilitySet alloc] initWithIntRole:[(NSNumber *)self->_recipientCapabilityRole unsignedShortValue]];
-  v3 = [(PKPassEntitlementCapabilitySet *)v2 intraAccountSharingEnabled];
+  intraAccountSharingEnabled = [(PKPassEntitlementCapabilitySet *)v2 intraAccountSharingEnabled];
 
-  return v3;
+  return intraAccountSharingEnabled;
 }
 
-- (void)setRecipientShareability:(unint64_t)a3
+- (void)setRecipientShareability:(unint64_t)shareability
 {
-  if (self->_recipientShareability != a3)
+  if (self->_recipientShareability != shareability)
   {
-    self->_recipientShareability = a3;
+    self->_recipientShareability = shareability;
     [(PKPassSharedEntitlement *)self _recalculateRecipientCapabilityRole];
   }
 }
 
-- (void)setRecipientVisibility:(unint64_t)a3
+- (void)setRecipientVisibility:(unint64_t)visibility
 {
-  if (self->_recipientVisibility != a3)
+  if (self->_recipientVisibility != visibility)
   {
-    self->_recipientVisibility = a3;
+    self->_recipientVisibility = visibility;
     [(PKPassSharedEntitlement *)self _recalculateRecipientCapabilityRole];
   }
 }
 
-- (void)setRecipientManageability:(unint64_t)a3
+- (void)setRecipientManageability:(unint64_t)manageability
 {
-  if (self->_recipientManageability != a3)
+  if (self->_recipientManageability != manageability)
   {
-    self->_recipientManageability = a3;
+    self->_recipientManageability = manageability;
     [(PKPassSharedEntitlement *)self _recalculateRecipientCapabilityRole];
   }
 }
 
-- (void)setIntraAccountSharingEnabled:(BOOL)a3
+- (void)setIntraAccountSharingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(PKPassSharedEntitlement *)self _recalculateRecipientCapabilityRole];
   v7 = [(PKPassEntitlementCapabilitySet *)[PKMutablePassEntitlementCapabilitySet alloc] initWithIntRole:[(NSNumber *)self->_recipientCapabilityRole unsignedShortValue]];
-  [(PKMutablePassEntitlementCapabilitySet *)v7 setIntraAccountSharingEnabled:v3];
+  [(PKMutablePassEntitlementCapabilitySet *)v7 setIntraAccountSharingEnabled:enabledCopy];
   if (self->_creationVersion < 2)
   {
-    v5 = 0;
+    capabilityRoleValue = 0;
   }
 
   else
   {
-    v5 = [(PKPassEntitlementCapabilitySet *)v7 capabilityRoleValue];
+    capabilityRoleValue = [(PKPassEntitlementCapabilitySet *)v7 capabilityRoleValue];
   }
 
   recipientCapabilityRole = self->_recipientCapabilityRole;
-  self->_recipientCapabilityRole = v5;
+  self->_recipientCapabilityRole = capabilityRoleValue;
 }
 
-- (BOOL)hasCanonicallyEquivalentRightsToPassEntitlement:(id)a3
+- (BOOL)hasCanonicallyEquivalentRightsToPassEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   timeConfiguration = self->_timeConfiguration;
-  v6 = v4[2];
+  v6 = entitlementCopy[2];
   if (timeConfiguration)
   {
     v7 = v6 == 0;
@@ -391,7 +391,7 @@ LABEL_17:
     if (timeConfiguration == v6)
     {
 LABEL_9:
-      v8 = [(PKPassSharedEntitlement *)self hasCanonicallyEquivalentSharingCapabilityToPassEntitlement:v4];
+      v8 = [(PKPassSharedEntitlement *)self hasCanonicallyEquivalentSharingCapabilityToPassEntitlement:entitlementCopy];
       goto LABEL_10;
     }
   }
@@ -407,16 +407,16 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)hasCanonicallyEquivalentSharingCapabilityToPassEntitlement:(id)a3
+- (BOOL)hasCanonicallyEquivalentSharingCapabilityToPassEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_recipientShareability != v4[3])
+  entitlementCopy = entitlement;
+  v5 = entitlementCopy;
+  if (self->_recipientShareability != entitlementCopy[3])
   {
     goto LABEL_11;
   }
 
-  v6 = v4;
+  v6 = entitlementCopy;
   v7 = v6;
   recipientVisibility = self->_recipientVisibility;
   if (recipientVisibility < 2)
@@ -466,8 +466,8 @@ LABEL_7:
       }
 
 LABEL_14:
-      v16 = [(PKPassSharedEntitlement *)self intraAccountSharingEnabled];
-      v14 = v16 ^ [v11 intraAccountSharingEnabled] ^ 1;
+      intraAccountSharingEnabled = [(PKPassSharedEntitlement *)self intraAccountSharingEnabled];
+      v14 = intraAccountSharingEnabled ^ [v11 intraAccountSharingEnabled] ^ 1;
       goto LABEL_12;
     }
 
@@ -484,12 +484,12 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)hasCanonicallyEquivalentRoleToPassEntitlement:(id)a3
+- (BOOL)hasCanonicallyEquivalentRoleToPassEntitlement:(id)entitlement
 {
-  v4 = [a3 activeCapabilityRole];
-  if (v4)
+  activeCapabilityRole = [entitlement activeCapabilityRole];
+  if (activeCapabilityRole)
   {
-    v5 = [(NSNumber *)self->_recipientCapabilityRole isEqualToNumber:v4];
+    v5 = [(NSNumber *)self->_recipientCapabilityRole isEqualToNumber:activeCapabilityRole];
   }
 
   else
@@ -500,12 +500,12 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)hasCanonicallyEquivalentRoleToPassSharedEntitlement:(id)a3
+- (BOOL)hasCanonicallyEquivalentRoleToPassSharedEntitlement:(id)entitlement
 {
-  v4 = [a3 recipientCapabilityRole];
-  if (v4)
+  recipientCapabilityRole = [entitlement recipientCapabilityRole];
+  if (recipientCapabilityRole)
   {
-    v5 = [(NSNumber *)self->_recipientCapabilityRole isEqualToNumber:v4];
+    v5 = [(NSNumber *)self->_recipientCapabilityRole isEqualToNumber:recipientCapabilityRole];
   }
 
   else
@@ -516,36 +516,36 @@ LABEL_12:
   return v5;
 }
 
-- (PKPassSharedEntitlement)initWithCoder:(id)a3
+- (PKPassSharedEntitlement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPassSharedEntitlement;
   v5 = [(PKPassSharedEntitlement *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entitlementIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entitlementIdentifier"];
     entitlementIdentifier = v5->_entitlementIdentifier;
     v5->_entitlementIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeConfiguration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeConfiguration"];
     timeConfiguration = v5->_timeConfiguration;
     v5->_timeConfiguration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientShareability"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientShareability"];
     v5->_recipientShareability = PKSharingCapabilityShareabilityFromString(v10);
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientManageability"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientManageability"];
     v5->_recipientManageability = PKSharingCapabilityManageabilityFromString(v11);
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientVisibility"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientVisibility"];
     v5->_recipientVisibility = PKSharingCapabilityVisibilityFromString(v12);
 
-    v13 = [v4 decodeIntegerForKey:@"version"];
+    v13 = [coderCopy decodeIntegerForKey:@"version"];
     v5->_creationVersion = v13;
     if (v13 >= 2)
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientCapabilityRole"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientCapabilityRole"];
       recipientCapabilityRole = v5->_recipientCapabilityRole;
       v5->_recipientCapabilityRole = v14;
     }
@@ -554,23 +554,23 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entitlementIdentifier = self->_entitlementIdentifier;
-  v8 = a3;
-  [v8 encodeObject:entitlementIdentifier forKey:@"entitlementIdentifier"];
-  [v8 encodeObject:self->_timeConfiguration forKey:@"timeConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entitlementIdentifier forKey:@"entitlementIdentifier"];
+  [coderCopy encodeObject:self->_timeConfiguration forKey:@"timeConfiguration"];
   v5 = PKSharingCapabilityShareabilityToString(self->_recipientShareability);
-  [v8 encodeObject:v5 forKey:@"recipientShareability"];
+  [coderCopy encodeObject:v5 forKey:@"recipientShareability"];
 
   v6 = PKSharingCapabilityManageabilityToString(self->_recipientManageability);
-  [v8 encodeObject:v6 forKey:@"recipientManageability"];
+  [coderCopy encodeObject:v6 forKey:@"recipientManageability"];
 
   v7 = PKSharingCapabilityVisibilityToString(self->_recipientVisibility);
-  [v8 encodeObject:v7 forKey:@"recipientVisibility"];
+  [coderCopy encodeObject:v7 forKey:@"recipientVisibility"];
 
-  [v8 encodeObject:self->_recipientCapabilityRole forKey:@"recipientCapabilityRole"];
-  [v8 encodeInteger:self->_creationVersion forKey:@"version"];
+  [coderCopy encodeObject:self->_recipientCapabilityRole forKey:@"recipientCapabilityRole"];
+  [coderCopy encodeInteger:self->_creationVersion forKey:@"version"];
 }
 
 - (id)description
@@ -605,11 +605,11 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_entitlementIdentifier)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_timeConfiguration)
@@ -631,18 +631,18 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -723,7 +723,7 @@ LABEL_28:
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPassSharedEntitlement allocWithZone:?]];
   v5 = [(NSString *)self->_entitlementIdentifier copy];

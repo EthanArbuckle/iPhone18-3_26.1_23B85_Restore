@@ -1,18 +1,18 @@
 @interface PIMakerNoteUtilities
-+ (void)addAssetIdentifier:(id)a3 toMetadataArray:(id)a4;
-+ (void)addAssetIdentifier:(id)a3 toMetadataDictionary:(id)a4;
-+ (void)removeAssetIdentifierFromMetadataArray:(id)a3;
++ (void)addAssetIdentifier:(id)identifier toMetadataArray:(id)array;
++ (void)addAssetIdentifier:(id)identifier toMetadataDictionary:(id)dictionary;
++ (void)removeAssetIdentifierFromMetadataArray:(id)array;
 @end
 
 @implementation PIMakerNoteUtilities
 
-+ (void)removeAssetIdentifierFromMetadataArray:(id)a3
++ (void)removeAssetIdentifierFromMetadataArray:(id)array
 {
-  v4 = a3;
-  v3 = [v4 indexOfObjectPassingTest:&__block_literal_global_6939];
+  arrayCopy = array;
+  v3 = [arrayCopy indexOfObjectPassingTest:&__block_literal_global_6939];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 removeObjectAtIndex:v3];
+    [arrayCopy removeObjectAtIndex:v3];
   }
 }
 
@@ -24,24 +24,24 @@ uint64_t __63__PIMakerNoteUtilities_removeAssetIdentifierFromMetadataArray___blo
   return v3;
 }
 
-+ (void)addAssetIdentifier:(id)a3 toMetadataArray:(id)a4
++ (void)addAssetIdentifier:(id)identifier toMetadataArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 removeAssetIdentifierFromMetadataArray:v6];
-  v8 = [MEMORY[0x1E6988050] metadataItem];
-  [v8 setIdentifier:*MEMORY[0x1E6987798]];
-  [v8 setValue:v7];
+  arrayCopy = array;
+  identifierCopy = identifier;
+  [self removeAssetIdentifierFromMetadataArray:arrayCopy];
+  metadataItem = [MEMORY[0x1E6988050] metadataItem];
+  [metadataItem setIdentifier:*MEMORY[0x1E6987798]];
+  [metadataItem setValue:identifierCopy];
 
-  [v6 addObject:v8];
+  [arrayCopy addObject:metadataItem];
 }
 
-+ (void)addAssetIdentifier:(id)a3 toMetadataDictionary:(id)a4
++ (void)addAssetIdentifier:(id)identifier toMetadataDictionary:(id)dictionary
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x1E696DE30];
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:v5];
   v8 = [v7 mutableCopy];
 
   if (!v8)
@@ -49,8 +49,8 @@ uint64_t __63__PIMakerNoteUtilities_removeAssetIdentifierFromMetadataArray___blo
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69867A8]];
-  [v6 setObject:v8 forKeyedSubscript:v5];
+  [v8 setObject:identifierCopy forKeyedSubscript:*MEMORY[0x1E69867A8]];
+  [dictionaryCopy setObject:v8 forKeyedSubscript:v5];
 }
 
 @end

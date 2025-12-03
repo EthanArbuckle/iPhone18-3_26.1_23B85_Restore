@@ -1,26 +1,26 @@
 @interface ZoomUI_UIDragInteraction
-- (void)_sessionHandedOffDragImage:(id)a3;
-- (void)_sessionWillEnd:(id)a3 withOperation:(unint64_t)a4;
+- (void)_sessionHandedOffDragImage:(id)image;
+- (void)_sessionWillEnd:(id)end withOperation:(unint64_t)operation;
 @end
 
 @implementation ZoomUI_UIDragInteraction
 
-- (void)_sessionHandedOffDragImage:(id)a3
+- (void)_sessionHandedOffDragImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = ZoomUI_UIDragInteraction;
-  [(ZoomUI_UIDragInteraction *)&v4 _sessionHandedOffDragImage:a3];
-  v3 = [getZoomServicesClass() sharedInstance];
-  [v3 notifyZoomDragWillStart];
+  [(ZoomUI_UIDragInteraction *)&v4 _sessionHandedOffDragImage:image];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomDragWillStart];
 }
 
-- (void)_sessionWillEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)_sessionWillEnd:(id)end withOperation:(unint64_t)operation
 {
   v5.receiver = self;
   v5.super_class = ZoomUI_UIDragInteraction;
-  [(ZoomUI_UIDragInteraction *)&v5 _sessionWillEnd:a3 withOperation:a4];
-  v4 = [getZoomServicesClass() sharedInstance];
-  [v4 notifyZoomDragWillEnd];
+  [(ZoomUI_UIDragInteraction *)&v5 _sessionWillEnd:end withOperation:operation];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance notifyZoomDragWillEnd];
 }
 
 @end

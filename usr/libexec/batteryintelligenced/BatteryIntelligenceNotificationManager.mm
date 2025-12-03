@@ -1,12 +1,12 @@
 @interface BatteryIntelligenceNotificationManager
 + (BatteryIntelligenceNotificationManager)sharedInstance;
 - (BatteryIntelligenceNotificationManager)init;
-- (id)notificationRequestWith:(id)a3 content:(id)a4;
-- (id)timeStringFromDuration:(double)a3;
-- (id)tt80NotificationContentWithDuration:(double)a3;
-- (id)tt80NotificationRequestWithDuration:(double)a3;
-- (void)postNotificationWith:(id)a3 content:(id)a4;
-- (void)postTT80NotificationWithDuration:(double)a3;
+- (id)notificationRequestWith:(id)with content:(id)content;
+- (id)timeStringFromDuration:(double)duration;
+- (id)tt80NotificationContentWithDuration:(double)duration;
+- (id)tt80NotificationRequestWithDuration:(double)duration;
+- (void)postNotificationWith:(id)with content:(id)content;
+- (void)postTT80NotificationWithDuration:(double)duration;
 @end
 
 @implementation BatteryIntelligenceNotificationManager
@@ -33,15 +33,15 @@
     }
 
     self = v3;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 + (BatteryIntelligenceNotificationManager)sharedInstance
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000104B0;
   block[3] = &unk_100048718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100057910 != -1)
   {
     dispatch_once(&qword_100057910, block);
@@ -61,50 +61,50 @@
   return v2;
 }
 
-- (id)timeStringFromDuration:(double)a3
+- (id)timeStringFromDuration:(double)duration
 {
-  if (a3 >= 60.0)
+  if (duration >= 60.0)
   {
-    if (a3 >= 3600.0)
+    if (duration >= 3600.0)
     {
-      if (a3 >= 7200.0)
+      if (duration >= 7200.0)
       {
-        v3 = vcvtmd_s64_f64(a3);
+        v3 = vcvtmd_s64_f64(duration);
         v4 = v3 % 3600 + ((-30583 * (v3 % 3600)) >> 16);
-        [NSString stringWithFormat:@"%.0f hours, %.0d minutes", a3 / 3600.0, (v4 >> 5) + ((v4 & 0x8000) >> 15)];
+        [NSString stringWithFormat:@"%.0f hours, %.0d minutes", duration / 3600.0, (v4 >> 5) + ((v4 & 0x8000) >> 15)];
       }
 
       else
       {
-        [NSString stringWithFormat:@"1 hour, %.0f minutes", (a3 + -3600.0) / 60.0, v7];
+        [NSString stringWithFormat:@"1 hour, %.0f minutes", (duration + -3600.0) / 60.0, v7];
       }
     }
 
     else
     {
-      [NSString stringWithFormat:@"%.0f minutes", a3 / 60.0, v7];
+      [NSString stringWithFormat:@"%.0f minutes", duration / 60.0, v7];
     }
   }
 
   else
   {
-    [NSString stringWithFormat:@"%.0f seconds", *&a3, v7];
+    [NSString stringWithFormat:@"%.0f seconds", *&duration, v7];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)notificationRequestWith:(id)a3 content:(id)a4
+- (id)notificationRequestWith:(id)with content:(id)content
 {
-  if (a4)
+  if (content)
   {
-    v5 = a4;
-    v6 = a3;
+    contentCopy = content;
+    withCopy = with;
     v7 = +[NSDate date];
-    v8 = [NSString stringWithFormat:@"%@-%@", v6, v7];
+    v8 = [NSString stringWithFormat:@"%@-%@", withCopy, v7];
 
-    v9 = [UNNotificationRequest requestWithIdentifier:v8 content:v5 trigger:0];
+    v9 = [UNNotificationRequest requestWithIdentifier:v8 content:contentCopy trigger:0];
 
     [v9 setDestinations:15];
   }
@@ -117,11 +117,11 @@
   return v9;
 }
 
-- (void)postNotificationWith:(id)a3 content:(id)a4
+- (void)postNotificationWith:(id)with content:(id)content
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BatteryIntelligenceNotificationManager *)self notificationRequestWith:v6 content:v7];
+  withCopy = with;
+  contentCopy = content;
+  v8 = [(BatteryIntelligenceNotificationManager *)self notificationRequestWith:withCopy content:contentCopy];
   objc_initWeak(&location, self);
   unCenter = self->_unCenter;
   v10[0] = _NSConcreteStackBlock;
@@ -134,11 +134,11 @@
   objc_destroyWeak(&location);
 }
 
-- (id)tt80NotificationContentWithDuration:(double)a3
+- (id)tt80NotificationContentWithDuration:(double)duration
 {
   v5 = objc_alloc_init(UNMutableNotificationContent);
   [v5 setTitle:@"Charge Time"];
-  v6 = [(BatteryIntelligenceNotificationManager *)self timeStringFromDuration:a3];
+  v6 = [(BatteryIntelligenceNotificationManager *)self timeStringFromDuration:duration];
   v7 = [NSString stringWithFormat:@"It will take %@ to charge to 80%%.", v6];
   [v5 setBody:v7];
 
@@ -156,9 +156,9 @@
   return v5;
 }
 
-- (id)tt80NotificationRequestWithDuration:(double)a3
+- (id)tt80NotificationRequestWithDuration:(double)duration
 {
-  v3 = [(BatteryIntelligenceNotificationManager *)self tt80NotificationContentWithDuration:a3];
+  v3 = [(BatteryIntelligenceNotificationManager *)self tt80NotificationContentWithDuration:duration];
   if (v3)
   {
     v4 = +[NSDate date];
@@ -176,11 +176,11 @@
   return v6;
 }
 
-- (void)postTT80NotificationWithDuration:(double)a3
+- (void)postTT80NotificationWithDuration:(double)duration
 {
   if (sub_10001E444())
   {
-    v5 = [(BatteryIntelligenceNotificationManager *)self tt80NotificationRequestWithDuration:a3];
+    v5 = [(BatteryIntelligenceNotificationManager *)self tt80NotificationRequestWithDuration:duration];
     objc_initWeak(location, self);
     unCenter = self->_unCenter;
     v7[0] = _NSConcreteStackBlock;

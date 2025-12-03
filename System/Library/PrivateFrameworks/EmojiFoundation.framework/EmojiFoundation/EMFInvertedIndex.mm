@@ -1,74 +1,74 @@
 @interface EMFInvertedIndex
 - (EMFIndexStrategy)strategy;
-- (EMFInvertedIndex)initWithTermIndex:(id)a3 andDocumentIndex:(id)a4;
-- (id)calculateDocumentWeightsForQueryTokenCounts:(id)a3;
-- (id)commonDocumentsForTerms:(id)a3;
-- (id)postingsForTerm:(id)a3;
-- (id)termWeightForTerm:(id)a3 inDocument:(id)a4;
-- (id)termsForDocument:(id)a3;
+- (EMFInvertedIndex)initWithTermIndex:(id)index andDocumentIndex:(id)documentIndex;
+- (id)calculateDocumentWeightsForQueryTokenCounts:(id)counts;
+- (id)commonDocumentsForTerms:(id)terms;
+- (id)postingsForTerm:(id)term;
+- (id)termWeightForTerm:(id)term inDocument:(id)document;
+- (id)termsForDocument:(id)document;
 @end
 
 @implementation EMFInvertedIndex
 
-- (EMFInvertedIndex)initWithTermIndex:(id)a3 andDocumentIndex:(id)a4
+- (EMFInvertedIndex)initWithTermIndex:(id)index andDocumentIndex:(id)documentIndex
 {
-  v7 = a3;
-  v8 = a4;
+  indexCopy = index;
+  documentIndexCopy = documentIndex;
   v12.receiver = self;
   v12.super_class = EMFInvertedIndex;
   v9 = [(EMFInvertedIndex *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_termIndex, a3);
-    objc_storeStrong(&v10->_documentIndex, a4);
+    objc_storeStrong(&v9->_termIndex, index);
+    objc_storeStrong(&v10->_documentIndex, documentIndex);
   }
 
   return v10;
 }
 
-- (id)postingsForTerm:(id)a3
+- (id)postingsForTerm:(id)term
 {
-  v4 = a3;
-  v5 = [(EMFInvertedIndex *)self strategy];
-  v6 = [v5 postingsForTerm:v4];
+  termCopy = term;
+  strategy = [(EMFInvertedIndex *)self strategy];
+  v6 = [strategy postingsForTerm:termCopy];
 
   return v6;
 }
 
-- (id)termsForDocument:(id)a3
+- (id)termsForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(EMFInvertedIndex *)self strategy];
-  v6 = [v5 termsForDocument:v4];
+  documentCopy = document;
+  strategy = [(EMFInvertedIndex *)self strategy];
+  v6 = [strategy termsForDocument:documentCopy];
 
   return v6;
 }
 
-- (id)termWeightForTerm:(id)a3 inDocument:(id)a4
+- (id)termWeightForTerm:(id)term inDocument:(id)document
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EMFInvertedIndex *)self strategy];
-  v9 = [v8 termWeightForTerm:v7 inDocument:v6];
+  documentCopy = document;
+  termCopy = term;
+  strategy = [(EMFInvertedIndex *)self strategy];
+  v9 = [strategy termWeightForTerm:termCopy inDocument:documentCopy];
 
   return v9;
 }
 
-- (id)commonDocumentsForTerms:(id)a3
+- (id)commonDocumentsForTerms:(id)terms
 {
-  v4 = a3;
-  v5 = [(EMFInvertedIndex *)self strategy];
-  v6 = [v5 commonDocumentsForTerms:v4];
+  termsCopy = terms;
+  strategy = [(EMFInvertedIndex *)self strategy];
+  v6 = [strategy commonDocumentsForTerms:termsCopy];
 
   return v6;
 }
 
-- (id)calculateDocumentWeightsForQueryTokenCounts:(id)a3
+- (id)calculateDocumentWeightsForQueryTokenCounts:(id)counts
 {
-  v4 = a3;
-  v5 = [(EMFInvertedIndex *)self strategy];
-  v6 = [v5 calculateDocumentWeightsForQueryTokenCounts:v4];
+  countsCopy = counts;
+  strategy = [(EMFInvertedIndex *)self strategy];
+  v6 = [strategy calculateDocumentWeightsForQueryTokenCounts:countsCopy];
 
   return v6;
 }
@@ -78,9 +78,9 @@
   strategy = self->_strategy;
   if (!strategy)
   {
-    v4 = [(EMFInvertedIndex *)self termIndex];
-    v5 = [(EMFInvertedIndex *)self documentIndex];
-    v6 = [EMFIndexStrategyFactory defaultStrategyWithTermIndex:v4 andDocumentIndex:v5];
+    termIndex = [(EMFInvertedIndex *)self termIndex];
+    documentIndex = [(EMFInvertedIndex *)self documentIndex];
+    v6 = [EMFIndexStrategyFactory defaultStrategyWithTermIndex:termIndex andDocumentIndex:documentIndex];
     v7 = self->_strategy;
     self->_strategy = v6;
 

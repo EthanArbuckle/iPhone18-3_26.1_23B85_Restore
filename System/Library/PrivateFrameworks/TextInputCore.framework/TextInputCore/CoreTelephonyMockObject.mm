@@ -1,14 +1,14 @@
 @interface CoreTelephonyMockObject
-- (CoreTelephonyMockObject)initWithCellularEid:(id)a3 cellularImei:(id)a4;
-- (id)retrieveDeviceIdentifier:(int64_t)a3;
+- (CoreTelephonyMockObject)initWithCellularEid:(id)eid cellularImei:(id)imei;
+- (id)retrieveDeviceIdentifier:(int64_t)identifier;
 @end
 
 @implementation CoreTelephonyMockObject
 
-- (id)retrieveDeviceIdentifier:(int64_t)a3
+- (id)retrieveDeviceIdentifier:(int64_t)identifier
 {
   v3 = 16;
-  if (!a3)
+  if (!identifier)
   {
     v3 = 8;
   }
@@ -16,18 +16,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (CoreTelephonyMockObject)initWithCellularEid:(id)a3 cellularImei:(id)a4
+- (CoreTelephonyMockObject)initWithCellularEid:(id)eid cellularImei:(id)imei
 {
-  v7 = a3;
-  v8 = a4;
+  eidCopy = eid;
+  imeiCopy = imei;
   v12.receiver = self;
   v12.super_class = CoreTelephonyMockObject;
   v9 = [(CoreTelephonyMockObject *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cellularEid, a3);
-    objc_storeStrong(&v10->_cellularImei, a4);
+    objc_storeStrong(&v9->_cellularEid, eid);
+    objc_storeStrong(&v10->_cellularImei, imei);
   }
 
   return v10;

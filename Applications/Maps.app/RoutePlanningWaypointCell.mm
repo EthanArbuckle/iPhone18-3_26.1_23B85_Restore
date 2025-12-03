@@ -1,16 +1,16 @@
 @interface RoutePlanningWaypointCell
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (NSString)currentText;
-- (RoutePlanningWaypointCell)initWithWaypoints:(id)a3 waypointIndex:(id)a4 editable:(BOOL)a5 delegate:(id)a6 waypointInfoProvider:(id)a7 cellIndex:(unint64_t)a8;
+- (RoutePlanningWaypointCell)initWithWaypoints:(id)waypoints waypointIndex:(id)index editable:(BOOL)editable delegate:(id)delegate waypointInfoProvider:(id)provider cellIndex:(unint64_t)cellIndex;
 - (RoutePlanningWaypointCellDelegate)delegate;
 - (SearchFieldItem)editingWaypoint;
 - (id)mapsDragDestinationHandler;
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5;
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop;
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions;
 - (void)_markAsEditing;
 - (void)_markAsNotEditingAndUpdateContent;
-- (void)_textFieldEditingChanged:(id)a3;
+- (void)_textFieldEditingChanged:(id)changed;
 - (void)_updateConstraints;
 - (void)_updateContent;
 - (void)_updateFonts;
@@ -18,14 +18,14 @@
 - (void)_updatePlaceholderText;
 - (void)_updateTitleText;
 - (void)beginEditing;
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveMapItem:(id)a4;
+- (void)mapsDragDestinationHandler:(id)handler didReceiveMapItem:(id)item;
 - (void)prepareForReplacement;
-- (void)setCellIndex:(unint64_t)a3;
-- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCellIndex:(unint64_t)index;
+- (void)textDroppableView:(id)view dropSessionDidEnd:(id)end;
+- (void)textDroppableView:(id)view willPerformDrop:(id)drop;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RoutePlanningWaypointCell
@@ -42,26 +42,26 @@
   if (self->_editing)
   {
     self->_editing = 0;
-    v3 = [(RoutePlanningWaypointCell *)self editingWaypoint];
-    v4 = [v3 waypoint];
-    v5 = [v4 isValid];
+    editingWaypoint = [(RoutePlanningWaypointCell *)self editingWaypoint];
+    waypoint = [editingWaypoint waypoint];
+    isValid = [waypoint isValid];
 
-    if ((v5 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
-      [v3 clear];
-      v6 = [(RoutePlanningWaypointCell *)self currentText];
-      v7 = [v6 length];
+      [editingWaypoint clear];
+      currentText = [(RoutePlanningWaypointCell *)self currentText];
+      v7 = [currentText length];
 
       if (v7)
       {
-        v8 = [(RoutePlanningWaypointCell *)self currentText];
-        [v3 setSearchString:v8];
+        currentText2 = [(RoutePlanningWaypointCell *)self currentText];
+        [editingWaypoint setSearchString:currentText2];
 
         v9 = sub_100798A3C();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           v10 = 138412290;
-          v11 = v3;
+          v11 = editingWaypoint;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Did end editing invalid item with entered text, saving to item: %@", &v10, 0xCu);
         }
       }
@@ -76,20 +76,20 @@
   if (!self->_editing)
   {
     self->_editing = 1;
-    v4 = [(RoutePlanningWaypointCell *)self editingWaypoint];
-    [v4 clear];
+    editingWaypoint = [(RoutePlanningWaypointCell *)self editingWaypoint];
+    [editingWaypoint clear];
 
     [(RoutePlanningWaypointCell *)self _updateIconImage];
   }
 }
 
-- (void)mapsDragDestinationHandler:(id)a3 didReceiveMapItem:(id)a4
+- (void)mapsDragDestinationHandler:(id)handler didReceiveMapItem:(id)item
 {
-  v5 = a4;
-  v6 = [v5 name];
-  [(RoutePlanningWaypointTextField *)self->_titleTextField setText:v6];
+  itemCopy = item;
+  name = [itemCopy name];
+  [(RoutePlanningWaypointTextField *)self->_titleTextField setText:name];
 
-  v7 = [(RoutePlanningWaypointCell *)self delegate];
+  delegate = [(RoutePlanningWaypointCell *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -99,7 +99,7 @@
     v9[2] = sub_100DDA670;
     v9[3] = &unk_101661A90;
     v9[4] = self;
-    v10 = v5;
+    v10 = itemCopy;
     dispatch_async(&_dispatch_main_q, v9);
   }
 
@@ -109,34 +109,34 @@
   }
 }
 
-- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)textDroppableView:(id)view dropSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v6 = [(RoutePlanningWaypointCell *)self mapsDragDestinationHandler];
-  [v6 endDrop:v5];
+  endCopy = end;
+  mapsDragDestinationHandler = [(RoutePlanningWaypointCell *)self mapsDragDestinationHandler];
+  [mapsDragDestinationHandler endDrop:endCopy];
 }
 
-- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4
+- (void)textDroppableView:(id)view willPerformDrop:(id)drop
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 bounds];
+  dropCopy = drop;
+  viewCopy = view;
+  [viewCopy bounds];
   v10 = v8 + v9 * 0.5;
   v13 = v11 + v12 * 0.5;
-  v15 = [(RoutePlanningWaypointCell *)self mapsDragDestinationHandler];
-  v14 = [v6 dropSession];
+  mapsDragDestinationHandler = [(RoutePlanningWaypointCell *)self mapsDragDestinationHandler];
+  dropSession = [dropCopy dropSession];
 
-  [v15 performDrop:v14 finishingAtLocation:v7 inView:{v10, v13}];
+  [mapsDragDestinationHandler performDrop:dropSession finishingAtLocation:viewCopy inView:{v10, v13}];
 }
 
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop
 {
-  v5 = a4;
+  dropCopy = drop;
   v6 = [[UITextDropProposal alloc] initWithDropOperation:2];
-  v7 = [(RoutePlanningWaypointCell *)self mapsDragDestinationHandler];
-  v8 = [v5 dropSession];
+  mapsDragDestinationHandler = [(RoutePlanningWaypointCell *)self mapsDragDestinationHandler];
+  dropSession = [dropCopy dropSession];
 
-  [v7 beginDrop:v8];
+  [mapsDragDestinationHandler beginDrop:dropSession];
   [v6 setDropPerformer:1];
 
   return v6;
@@ -158,20 +158,20 @@
   return mapsDragDestinationHandler;
 }
 
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions
 {
-  v6 = a5;
-  v7 = [(RoutePlanningWaypointCell *)self delegate];
+  actionsCopy = actions;
+  delegate = [(RoutePlanningWaypointCell *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(RoutePlanningWaypointCell *)self delegate];
-    v10 = [v9 contextMenuForCell:self];
+    delegate2 = [(RoutePlanningWaypointCell *)self delegate];
+    v10 = [delegate2 contextMenuForCell:self];
 
     if (v10)
     {
-      v11 = [v6 mutableCopy];
+      v11 = [actionsCopy mutableCopy];
       [v11 insertObject:v10 atIndex:0];
       v12 = [UIMenu menuWithChildren:v11];
     }
@@ -190,38 +190,38 @@
   return v12;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [a3 text];
-  v5 = [v4 _maps_stringByTrimmingLeadingWhitespace];
-  v6 = [v5 length];
+  text = [return text];
+  _maps_stringByTrimmingLeadingWhitespace = [text _maps_stringByTrimmingLeadingWhitespace];
+  v6 = [_maps_stringByTrimmingLeadingWhitespace length];
 
   if (v6)
   {
-    v7 = [(RoutePlanningWaypointCell *)self delegate];
+    delegate = [(RoutePlanningWaypointCell *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(RoutePlanningWaypointCell *)self delegate];
-      [v9 cellDidRequestSearch:self];
+      delegate2 = [(RoutePlanningWaypointCell *)self delegate];
+      [delegate2 cellDidRequestSearch:self];
     }
   }
 
   return v6 != 0;
 }
 
-- (void)_textFieldEditingChanged:(id)a3
+- (void)_textFieldEditingChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(RoutePlanningWaypointCell *)self _markAsEditing];
-  v5 = [(RoutePlanningWaypointCell *)self delegate];
+  delegate = [(RoutePlanningWaypointCell *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 text];
-    if (!v7)
+    text = [changedCopy text];
+    if (!text)
     {
       v9 = sub_10006D178();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -253,62 +253,62 @@
       }
     }
 
-    v8 = [(RoutePlanningWaypointCell *)self delegate];
-    [v8 cell:self didChangeInputText:v7];
+    delegate2 = [(RoutePlanningWaypointCell *)self delegate];
+    [delegate2 cell:self didChangeInputText:text];
   }
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   v4 = sub_100798A3C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(RoutePlanningWaypointCell *)self editingWaypoint];
+    editingWaypoint = [(RoutePlanningWaypointCell *)self editingWaypoint];
     v11 = 138412290;
-    v12 = v5;
+    v12 = editingWaypoint;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Will clear item: %@", &v11, 0xCu);
   }
 
-  v6 = [(RoutePlanningWaypointCell *)self editingWaypoint];
-  [v6 clear];
+  editingWaypoint2 = [(RoutePlanningWaypointCell *)self editingWaypoint];
+  [editingWaypoint2 clear];
 
   [(RoutePlanningWaypointCell *)self _markAsEditing];
-  v7 = [(RoutePlanningWaypointCell *)self delegate];
+  delegate = [(RoutePlanningWaypointCell *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(RoutePlanningWaypointCell *)self delegate];
-    [v9 cellDidClearInputText:self];
+    delegate2 = [(RoutePlanningWaypointCell *)self delegate];
+    [delegate2 cellDidClearInputText:self];
   }
 
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   [(RoutePlanningWaypointCell *)self _markAsNotEditingAndUpdateContent];
-  v4 = [(RoutePlanningWaypointCell *)self delegate];
+  delegate = [(RoutePlanningWaypointCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(RoutePlanningWaypointCell *)self delegate];
-    [v6 cellDidStopEditing:self];
+    delegate2 = [(RoutePlanningWaypointCell *)self delegate];
+    [delegate2 cellDidStopEditing:self];
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = [(RoutePlanningWaypointTextField *)self->_titleTextField isHandlingTouch];
-  [(RoutePlanningWaypointTextField *)self->_titleTextField didBeginEditingFromTouch:v4];
-  v5 = [(RoutePlanningWaypointCell *)self delegate];
+  isHandlingTouch = [(RoutePlanningWaypointTextField *)self->_titleTextField isHandlingTouch];
+  [(RoutePlanningWaypointTextField *)self->_titleTextField didBeginEditingFromTouch:isHandlingTouch];
+  delegate = [(RoutePlanningWaypointCell *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(RoutePlanningWaypointCell *)self delegate];
-    [v7 cellDidStartEditing:self withUserInteraction:v4];
+    delegate2 = [(RoutePlanningWaypointCell *)self delegate];
+    [delegate2 cellDidStartEditing:self withUserInteraction:isHandlingTouch];
   }
 }
 
@@ -339,22 +339,22 @@
 {
   if ([(RoutePlanningWaypointCell *)self isEditable])
   {
-    v3 = [(RoutePlanningWaypointCell *)self waypoints];
-    v4 = [v3 firstObject];
+    waypoints = [(RoutePlanningWaypointCell *)self waypoints];
+    firstObject = [waypoints firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (NSString)currentText
 {
-  v2 = [(RoutePlanningWaypointTextField *)self->_titleTextField text];
-  v3 = [v2 copy];
+  text = [(RoutePlanningWaypointTextField *)self->_titleTextField text];
+  v3 = [text copy];
 
   return v3;
 }
@@ -380,9 +380,9 @@
 
 - (void)_updateConstraints
 {
-  v3 = [(RoutePlanningWaypointCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryCompareToCategory(v4, UIContentSizeCategoryExtraExtraExtraLarge);
+  traitCollection = [(RoutePlanningWaypointCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryExtraExtraExtraLarge);
 
   v6 = sub_10000FA08(self);
   v7 = 30.0;
@@ -453,38 +453,38 @@
 
 - (void)_updateFonts
 {
-  v5 = [(RoutePlanningWaypointCell *)self traitCollection];
-  v3 = [v5 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
+  traitCollection = [(RoutePlanningWaypointCell *)self traitCollection];
+  v3 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v3];
   [(RoutePlanningWaypointTextField *)self->_titleTextField setFont:v4];
 }
 
 - (void)_updateIconImage
 {
-  v3 = [(RoutePlanningWaypointCell *)self waypoints];
-  v4 = [v3 count];
+  waypoints = [(RoutePlanningWaypointCell *)self waypoints];
+  v4 = [waypoints count];
   if (!self->_editing)
   {
     v5 = v4;
-    v6 = [(RoutePlanningWaypointTextField *)self->_titleTextField text];
-    v7 = [v6 length];
+    text = [(RoutePlanningWaypointTextField *)self->_titleTextField text];
+    v7 = [text length];
 
     if (v7 && v5 != 0)
     {
       if (v5 < 2)
       {
         [(UIImageView *)self->_iconView setTintColor:0];
-        v21 = [v3 firstObject];
-        v22 = [(RoutePlanningWaypointCell *)self traitCollection];
-        [v22 displayScale];
-        v10 = [v21 waypointIconWithScale:?];
+        firstObject = [waypoints firstObject];
+        traitCollection = [(RoutePlanningWaypointCell *)self traitCollection];
+        [traitCollection displayScale];
+        v10 = [firstObject waypointIconWithScale:?];
 
         if (!v10)
         {
 LABEL_17:
           v23 = +[GEOFeatureStyleAttributes genericMarkerStyleAttributes];
-          v24 = [(RoutePlanningWaypointCell *)self traitCollection];
-          [v24 displayScale];
+          traitCollection2 = [(RoutePlanningWaypointCell *)self traitCollection];
+          [traitCollection2 displayScale];
           v10 = [MKIconManager imageForStyle:v23 size:0 forScale:0 format:?];
         }
       }
@@ -495,8 +495,8 @@ LABEL_17:
         [(UIImageView *)self->_iconView setTintColor:v15];
 
         v16 = +[GEOFeatureStyleAttributes multipleWaypointsStyleAttributes];
-        v17 = [(RoutePlanningWaypointCell *)self traitCollection];
-        [v17 displayScale];
+        traitCollection3 = [(RoutePlanningWaypointCell *)self traitCollection];
+        [traitCollection3 displayScale];
         v10 = [MKIconManager imageForStyle:v16 size:0 forScale:0 format:?];
 
         if (!v10)
@@ -553,19 +553,19 @@ LABEL_19:
 
 - (void)_updateTitleText
 {
-  v17 = [(RoutePlanningWaypointCell *)self waypoints];
-  v3 = [v17 count];
+  waypoints = [(RoutePlanningWaypointCell *)self waypoints];
+  v3 = [waypoints count];
   if (v3 < 2)
   {
-    v8 = [v17 firstObject];
-    if (!-[RoutePlanningWaypointTextField isEnabled](self->_titleTextField, "isEnabled") || ([v8 searchResult], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isDynamicCurrentLocation"), v9, !v10) || (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isLocationServicesApproved"), v13 = objc_msgSend(v11, "isAuthorizedForPreciseLocation"), v11, v14 = &stru_1016631F0, v12) && v13)
+    firstObject = [waypoints firstObject];
+    if (!-[RoutePlanningWaypointTextField isEnabled](self->_titleTextField, "isEnabled") || ([firstObject searchResult], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isDynamicCurrentLocation"), v9, !v10) || (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isLocationServicesApproved"), v13 = objc_msgSend(v11, "isAuthorizedForPreciseLocation"), v11, waypointName = &stru_1016631F0, v12) && v13)
     {
-      v14 = [v8 waypointName];
+      waypointName = [firstObject waypointName];
     }
 
-    if (v14)
+    if (waypointName)
     {
-      v15 = v14;
+      v15 = waypointName;
     }
 
     else
@@ -586,8 +586,8 @@ LABEL_19:
     v7 = [NSString localizedStringWithFormat:v6, v4, v4, v4];
     [(RoutePlanningWaypointTextField *)self->_titleTextField setText:v7];
 
-    v8 = +[UIColor systemBlueColor];
-    [(RoutePlanningWaypointTextField *)self->_titleTextField setTextColor:v8];
+    firstObject = +[UIColor systemBlueColor];
+    [(RoutePlanningWaypointTextField *)self->_titleTextField setTextColor:firstObject];
   }
 }
 
@@ -598,55 +598,55 @@ LABEL_19:
   [(RoutePlanningWaypointCell *)self _updateIconImage];
 }
 
-- (void)setCellIndex:(unint64_t)a3
+- (void)setCellIndex:(unint64_t)index
 {
-  if (self->_cellIndex != a3)
+  if (self->_cellIndex != index)
   {
-    self->_cellIndex = a3;
+    self->_cellIndex = index;
     [(RoutePlanningWaypointCell *)self _updatePlaceholderText];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = RoutePlanningWaypointCell;
-  v4 = a3;
-  [(RoutePlanningWaypointCell *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(RoutePlanningWaypointCell *)&v8 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
 
-  v6 = [(RoutePlanningWaypointCell *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
+  traitCollection = [(RoutePlanningWaypointCell *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v5 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(RoutePlanningWaypointCell *)self _updateFonts];
     [(RoutePlanningWaypointCell *)self _updateConstraints];
   }
 }
 
-- (RoutePlanningWaypointCell)initWithWaypoints:(id)a3 waypointIndex:(id)a4 editable:(BOOL)a5 delegate:(id)a6 waypointInfoProvider:(id)a7 cellIndex:(unint64_t)a8
+- (RoutePlanningWaypointCell)initWithWaypoints:(id)waypoints waypointIndex:(id)index editable:(BOOL)editable delegate:(id)delegate waypointInfoProvider:(id)provider cellIndex:(unint64_t)cellIndex
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  editableCopy = editable;
+  waypointsCopy = waypoints;
+  indexCopy = index;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v115.receiver = self;
   v115.super_class = RoutePlanningWaypointCell;
   v18 = [(RoutePlanningWaypointCell *)&v115 initWithStyle:0 reuseIdentifier:0];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [waypointsCopy copy];
     waypoints = v18->_waypoints;
     v18->_waypoints = v19;
 
-    objc_storeStrong(&v18->_waypointIndex, a4);
-    v18->_editable = v11;
-    objc_storeWeak(&v18->_delegate, v16);
-    v18->_cellIndex = a8;
-    v111 = v14;
-    v109 = v16;
+    objc_storeStrong(&v18->_waypointIndex, index);
+    v18->_editable = editableCopy;
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    v18->_cellIndex = cellIndex;
+    v111 = waypointsCopy;
+    v109 = delegateCopy;
     if (_UISolariumEnabled())
     {
       +[UIColor clearColor];
@@ -667,8 +667,8 @@ LABEL_19:
     v26 = [v22 initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v26 setUserInteractionEnabled:0];
-    v27 = [(RoutePlanningWaypointCell *)v18 contentView];
-    [v27 addSubview:v26];
+    contentView = [(RoutePlanningWaypointCell *)v18 contentView];
+    [contentView addSubview:v26];
 
     v28 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     iconView = v18->_iconView;
@@ -677,19 +677,19 @@ LABEL_19:
     [(UIImageView *)v18->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v18->_iconView setContentMode:1];
     [(UIImageView *)v18->_iconView setAccessibilityIdentifier:@"RoutePlanningWaypointCellIconView"];
-    v30 = [(RoutePlanningWaypointCell *)v18 traitCollection];
-    v31 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:v30 compatibleWithTraitCollection:UIFontWeightBold];
+    traitCollection = [(RoutePlanningWaypointCell *)v18 traitCollection];
+    v31 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:traitCollection compatibleWithTraitCollection:UIFontWeightBold];
     v32 = [UIImageSymbolConfiguration configurationWithFont:v31];
     [(UIImageView *)v18->_iconView setPreferredSymbolConfiguration:v32];
 
     [(UIImageView *)v18->_iconView setTag:10101];
     [v26 addSubview:v18->_iconView];
-    v33 = [[RoutePlanningWaypointTextField alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[RoutePlanningWaypointTextField alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     titleTextField = v18->_titleTextField;
-    v18->_titleTextField = v33;
+    v18->_titleTextField = height;
 
     [(RoutePlanningWaypointTextField *)v18->_titleTextField setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(RoutePlanningWaypointTextField *)v18->_titleTextField setEnabled:v11];
+    [(RoutePlanningWaypointTextField *)v18->_titleTextField setEnabled:editableCopy];
     [(RoutePlanningWaypointTextField *)v18->_titleTextField setAccessibilityIdentifier:@"RoutePlanningWaypointCellTextField"];
     [(RoutePlanningWaypointTextField *)v18->_titleTextField setDelegate:v18];
     [(RoutePlanningWaypointTextField *)v18->_titleTextField setTextDropDelegate:v18];
@@ -705,8 +705,8 @@ LABEL_19:
     [(RoutePlanningWaypointTextField *)v18->_titleTextField setTextAlignment:2 * v31];
     [(RoutePlanningWaypointCell *)v18 _updateFonts];
     [(RoutePlanningWaypointTextField *)v18->_titleTextField addTarget:v18 action:"_textFieldEditingChanged:" forControlEvents:0x20000];
-    v37 = [(RoutePlanningWaypointCell *)v18 contentView];
-    [v37 addSubview:v18->_titleTextField];
+    contentView2 = [(RoutePlanningWaypointCell *)v18 contentView];
+    [contentView2 addSubview:v18->_titleTextField];
 
     if (sub_10000FA08(v18) == 5)
     {
@@ -762,75 +762,75 @@ LABEL_19:
     }
 
     v48 = v43 + v38 + v46;
-    v49 = [v26 widthAnchor];
-    v50 = [v49 constraintEqualToConstant:v48];
+    widthAnchor = [v26 widthAnchor];
+    v50 = [widthAnchor constraintEqualToConstant:v48];
     imageContainerViewWidthConstraint = v18->_imageContainerViewWidthConstraint;
     v18->_imageContainerViewWidthConstraint = v50;
 
-    v52 = [(UIImageView *)v18->_iconView widthAnchor];
-    v53 = [v52 constraintEqualToConstant:v38];
+    widthAnchor2 = [(UIImageView *)v18->_iconView widthAnchor];
+    v53 = [widthAnchor2 constraintEqualToConstant:v38];
     iconViewWidthConstraint = v18->_iconViewWidthConstraint;
     v18->_iconViewWidthConstraint = v53;
 
-    v55 = [(UIImageView *)v18->_iconView heightAnchor];
-    v56 = [v55 constraintEqualToConstant:v38];
+    heightAnchor = [(UIImageView *)v18->_iconView heightAnchor];
+    v56 = [heightAnchor constraintEqualToConstant:v38];
     iconViewHeightConstraint = v18->_iconViewHeightConstraint;
     v18->_iconViewHeightConstraint = v56;
 
-    v110 = v15;
-    if (v15 && [v17 hasValidEVRoute])
+    v110 = indexCopy;
+    if (indexCopy && [providerCopy hasValidEVRoute])
     {
-      v58 = -[RoutePlanningWaypointPillView initWithWaypointIndex:waypointInfoProvider:]([RoutePlanningWaypointPillView alloc], "initWithWaypointIndex:waypointInfoProvider:", [v15 unsignedIntegerValue], v17);
+      v58 = -[RoutePlanningWaypointPillView initWithWaypointIndex:waypointInfoProvider:]([RoutePlanningWaypointPillView alloc], "initWithWaypointIndex:waypointInfoProvider:", [indexCopy unsignedIntegerValue], providerCopy);
       pillView = v18->_pillView;
       v18->_pillView = v58;
 
       [(RoutePlanningWaypointPillView *)v18->_pillView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v60 = [(RoutePlanningWaypointCell *)v18 contentView];
-      [v60 addSubview:v18->_pillView];
+      contentView3 = [(RoutePlanningWaypointCell *)v18 contentView];
+      [contentView3 addSubview:v18->_pillView];
     }
 
-    v108 = v17;
+    v108 = providerCopy;
     v112 = objc_opt_new();
-    v103 = [v26 leadingAnchor];
-    v105 = [(RoutePlanningWaypointCell *)v18 contentView];
-    v101 = [v105 leadingAnchor];
-    v100 = [v103 constraintEqualToAnchor:v101];
+    leadingAnchor = [v26 leadingAnchor];
+    contentView4 = [(RoutePlanningWaypointCell *)v18 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v100 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v117[0] = v100;
-    v98 = [v26 topAnchor];
-    v99 = [(RoutePlanningWaypointCell *)v18 contentView];
-    v97 = [v99 topAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97];
+    topAnchor = [v26 topAnchor];
+    contentView5 = [(RoutePlanningWaypointCell *)v18 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v96 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v117[1] = v96;
-    v94 = [v26 bottomAnchor];
-    v95 = [(RoutePlanningWaypointCell *)v18 contentView];
-    v93 = [v95 bottomAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93];
+    bottomAnchor = [v26 bottomAnchor];
+    contentView6 = [(RoutePlanningWaypointCell *)v18 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v92 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v117[2] = v92;
     v117[3] = v18->_imageContainerViewWidthConstraint;
-    v91 = [(UIImageView *)v18->_iconView leadingAnchor];
-    v90 = [v26 leadingAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90 constant:v43];
+    leadingAnchor3 = [(UIImageView *)v18->_iconView leadingAnchor];
+    leadingAnchor4 = [v26 leadingAnchor];
+    v89 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v43];
     v117[4] = v89;
-    v88 = [(UIImageView *)v18->_iconView centerYAnchor];
-    v87 = [v26 centerYAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87];
+    centerYAnchor = [(UIImageView *)v18->_iconView centerYAnchor];
+    centerYAnchor2 = [v26 centerYAnchor];
+    v86 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v117[5] = v86;
     v117[6] = v18->_iconViewWidthConstraint;
     v117[7] = v18->_iconViewHeightConstraint;
-    v85 = [(RoutePlanningWaypointTextField *)v18->_titleTextField leadingAnchor];
+    leadingAnchor5 = [(RoutePlanningWaypointTextField *)v18->_titleTextField leadingAnchor];
     v107 = v26;
-    v84 = [v26 trailingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    trailingAnchor = [v26 trailingAnchor];
+    v83 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor];
     v117[8] = v83;
-    v82 = [(RoutePlanningWaypointTextField *)v18->_titleTextField topAnchor];
-    v61 = [(RoutePlanningWaypointCell *)v18 contentView];
-    v62 = [v61 topAnchor];
-    v63 = [v82 constraintEqualToAnchor:v62];
+    topAnchor3 = [(RoutePlanningWaypointTextField *)v18->_titleTextField topAnchor];
+    contentView7 = [(RoutePlanningWaypointCell *)v18 contentView];
+    topAnchor4 = [contentView7 topAnchor];
+    v63 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v117[9] = v63;
-    v64 = [(RoutePlanningWaypointTextField *)v18->_titleTextField bottomAnchor];
-    v65 = [(RoutePlanningWaypointCell *)v18 contentView];
-    v66 = [v65 bottomAnchor];
-    v67 = [v64 constraintEqualToAnchor:v66];
+    bottomAnchor3 = [(RoutePlanningWaypointTextField *)v18->_titleTextField bottomAnchor];
+    contentView8 = [(RoutePlanningWaypointCell *)v18 contentView];
+    bottomAnchor4 = [contentView8 bottomAnchor];
+    v67 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v117[10] = v67;
     v68 = [NSArray arrayWithObjects:v117 count:11];
     [v112 addObjectsFromArray:v68];
@@ -838,38 +838,38 @@ LABEL_19:
     v69 = v18->_pillView;
     if (v69)
     {
-      v106 = [(RoutePlanningWaypointPillView *)v69 leadingAnchor];
-      v102 = [(RoutePlanningWaypointTextField *)v18->_titleTextField trailingAnchor];
-      v70 = [v106 constraintEqualToAnchor:v102 constant:10.0];
-      v116[0] = v70;
-      v71 = [(RoutePlanningWaypointPillView *)v18->_pillView trailingAnchor];
-      v104 = [(RoutePlanningWaypointCell *)v18 contentView];
-      v72 = [v104 trailingAnchor];
-      v73 = [v71 constraintLessThanOrEqualToAnchor:v72 constant:-16.0];
+      leadingAnchor6 = [(RoutePlanningWaypointPillView *)v69 leadingAnchor];
+      trailingAnchor2 = [(RoutePlanningWaypointTextField *)v18->_titleTextField trailingAnchor];
+      trailingAnchor6 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor2 constant:10.0];
+      v116[0] = trailingAnchor6;
+      trailingAnchor3 = [(RoutePlanningWaypointPillView *)v18->_pillView trailingAnchor];
+      contentView9 = [(RoutePlanningWaypointCell *)v18 contentView];
+      trailingAnchor4 = [contentView9 trailingAnchor];
+      v73 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-16.0];
       v116[1] = v73;
-      v74 = [(RoutePlanningWaypointPillView *)v18->_pillView centerYAnchor];
-      v75 = [(RoutePlanningWaypointCell *)v18 contentView];
-      v76 = [v75 centerYAnchor];
-      v77 = [v74 constraintEqualToAnchor:v76];
+      centerYAnchor3 = [(RoutePlanningWaypointPillView *)v18->_pillView centerYAnchor];
+      contentView10 = [(RoutePlanningWaypointCell *)v18 contentView];
+      centerYAnchor4 = [contentView10 centerYAnchor];
+      v77 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v116[2] = v77;
       v78 = [NSArray arrayWithObjects:v116 count:3];
       [v112 addObjectsFromArray:v78];
 
-      v79 = v102;
-      v80 = v106;
+      contentView11 = trailingAnchor2;
+      trailingAnchor5 = leadingAnchor6;
     }
 
     else
     {
-      v80 = [(RoutePlanningWaypointTextField *)v18->_titleTextField trailingAnchor];
-      v79 = [(RoutePlanningWaypointCell *)v18 contentView];
-      v70 = [v79 trailingAnchor];
-      v71 = [v80 constraintEqualToAnchor:v70];
-      [v112 addObject:v71];
+      trailingAnchor5 = [(RoutePlanningWaypointTextField *)v18->_titleTextField trailingAnchor];
+      contentView11 = [(RoutePlanningWaypointCell *)v18 contentView];
+      trailingAnchor6 = [contentView11 trailingAnchor];
+      trailingAnchor3 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+      [v112 addObject:trailingAnchor3];
     }
 
-    v14 = v111;
-    v16 = v109;
+    waypointsCopy = v111;
+    delegateCopy = v109;
 
     [NSLayoutConstraint activateConstraints:v112];
     [(RoutePlanningWaypointCell *)v18 _updateContent];
@@ -882,8 +882,8 @@ LABEL_19:
     v114 = v18;
     [UIView performWithoutAnimation:v113];
 
-    v15 = v110;
-    v17 = v108;
+    indexCopy = v110;
+    providerCopy = v108;
   }
 
   return v18;

@@ -1,9 +1,9 @@
 @interface MULoadingView
-- (MULoadingView)initWithFrame:(CGRect)a3;
+- (MULoadingView)initWithFrame:(CGRect)frame;
 - (void)_layout;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation MULoadingView
@@ -34,11 +34,11 @@
   [(MULoadingView *)self _layout];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MULoadingView;
-  [(MULoadingView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MULoadingView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MULoadingView *)self _layout];
 }
 
@@ -54,11 +54,11 @@
   [(MULoadingView *)&v3 dealloc];
 }
 
-- (MULoadingView)initWithFrame:(CGRect)a3
+- (MULoadingView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MULoadingView;
-  v3 = [(MULoadingView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MULoadingView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];

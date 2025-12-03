@@ -1,17 +1,17 @@
 @interface _PASLazyArrayBase
-- (BOOL)isEqualToArray:(id)a3;
-- (id)arrayByAddingObject:(id)a3;
-- (id)arrayByAddingObjectsFromArray:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectsAtIndexes:(id)a3;
-- (id)sortedArrayFromRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5;
-- (id)subarrayWithRange:(_NSRange)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (BOOL)isEqualToArray:(id)array;
+- (id)arrayByAddingObject:(id)object;
+- (id)arrayByAddingObjectsFromArray:(id)array;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectsAtIndexes:(id)indexes;
+- (id)sortedArrayFromRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator;
+- (id)subarrayWithRange:(_NSRange)range;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation _PASLazyArrayBase
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(_PASLazyArrayBase *)self count];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
@@ -30,45 +30,45 @@
   return v5;
 }
 
-- (id)arrayByAddingObjectsFromArray:(id)a3
+- (id)arrayByAddingObjectsFromArray:(id)array
 {
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v5 = objc_autoreleasePoolPush();
     v6 = [(_PASLazyArrayBase *)self mutableCopy];
-    [v6 addObjectsFromArray:v4];
-    v7 = [v6 copy];
+    [v6 addObjectsFromArray:arrayCopy];
+    selfCopy = [v6 copy];
 
     objc_autoreleasePoolPop(v5);
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)arrayByAddingObject:(id)a3
+- (id)arrayByAddingObject:(id)object
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     v5 = [(_PASLazyArrayBase *)self count];
     v6 = objc_autoreleasePoolPush();
     if (v5)
     {
       v7 = [(_PASLazyArrayBase *)self mutableCopy];
-      [v7 addObject:v4];
+      [v7 addObject:objectCopy];
       v8 = [v7 copy];
     }
 
     else
     {
-      v12[0] = v4;
+      v12[0] = objectCopy;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     }
 
@@ -87,16 +87,16 @@
   return v8;
 }
 
-- (BOOL)isEqualToArray:(id)a3
+- (BOOL)isEqualToArray:(id)array
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  arrayCopy = array;
+  v5 = arrayCopy;
+  if (arrayCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (v6 = [(_PASLazyArrayBase *)v4 count], v6 == [(_PASLazyArrayBase *)self count]))
+  else if (arrayCopy && (v6 = [(_PASLazyArrayBase *)arrayCopy count], v6 == [(_PASLazyArrayBase *)self count]))
   {
     v12 = 0;
     v13 = &v12;
@@ -122,19 +122,19 @@
   return v7 & 1;
 }
 
-- (id)subarrayWithRange:(_NSRange)a3
+- (id)subarrayWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v16[1] = *MEMORY[0x1E69E9840];
   v6 = [(_PASLazyArrayBase *)self count];
   if (location + length > v6)
   {
     v15.receiver = self;
     v15.super_class = _PASLazyArrayBase;
-    v7 = [(_PASLazyArrayBase *)&v15 subarrayWithRange:location, length];
+    selfCopy = [(_PASLazyArrayBase *)&v15 subarrayWithRange:location, length];
 LABEL_3:
-    v8 = v7;
+    v8 = selfCopy;
     goto LABEL_13;
   }
 
@@ -152,7 +152,7 @@ LABEL_3:
   {
     if (length == v6)
     {
-      v7 = self;
+      selfCopy = self;
       goto LABEL_3;
     }
 
@@ -186,16 +186,16 @@ LABEL_13:
   return v8;
 }
 
-- (id)sortedArrayFromRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5
+- (id)sortedArrayFromRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  comparatorCopy = comparator;
   v10 = objc_autoreleasePoolPush();
   v11 = [(_PASLazyArrayBase *)self subarrayWithRange:location, length];
   v12 = [v11 mutableCopy];
 
-  [v12 sortWithOptions:a4 usingComparator:v9];
+  [v12 sortWithOptions:options usingComparator:comparatorCopy];
   v13 = [v12 copy];
 
   objc_autoreleasePoolPop(v10);
@@ -203,13 +203,13 @@ LABEL_13:
   return v13;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  indexesCopy = indexes;
+  v5 = [indexesCopy count];
   v6 = [(_PASLazyArrayBase *)self count];
-  if (!v4)
+  if (!indexesCopy)
   {
     goto LABEL_6;
   }
@@ -222,21 +222,21 @@ LABEL_13:
   }
 
   v7 = v6;
-  if ([v4 lastIndex] >= v6)
+  if ([indexesCopy lastIndex] >= v6)
   {
 LABEL_6:
     v22.receiver = self;
     v22.super_class = _PASLazyArrayBase;
-    v11 = [(_PASLazyArrayBase *)&v22 objectsAtIndexes:v4];
+    selfCopy = [(_PASLazyArrayBase *)&v22 objectsAtIndexes:indexesCopy];
 LABEL_7:
-    v10 = v11;
+    v10 = selfCopy;
     goto LABEL_9;
   }
 
   if (v5 == 1)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = -[_PASLazyArrayBase objectAtIndex:](self, "objectAtIndex:", [v4 firstIndex]);
+    v9 = -[_PASLazyArrayBase objectAtIndex:](self, "objectAtIndex:", [indexesCopy firstIndex]);
     v23[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
 
@@ -246,7 +246,7 @@ LABEL_7:
 
   if (v5 == v7)
   {
-    v11 = self;
+    selfCopy = self;
     goto LABEL_7;
   }
 
@@ -256,9 +256,9 @@ LABEL_7:
   v18 = __38___PASLazyArrayBase_objectsAtIndexes___block_invoke;
   v19 = &unk_1E77F1A00;
   v20 = v14;
-  v21 = self;
+  selfCopy2 = self;
   v15 = v14;
-  [v4 enumerateIndexesUsingBlock:&v16];
+  [indexesCopy enumerateIndexesUsingBlock:&v16];
   v10 = [v15 copy];
 
 LABEL_9:
@@ -267,13 +267,13 @@ LABEL_9:
   return v10;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_PASLazyArrayBase.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLazyArrayBase.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v15 = 0;
@@ -288,11 +288,11 @@ LABEL_9:
       v10 = [(_PASLazyArrayBase *)self objectAtIndex:v7];
       if (!v10)
       {
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"_PASLazyArrayBase.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"obj"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLazyArrayBase.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"obj"}];
       }
 
-      v5[2](v5, v10, v7, &v15);
+      blockCopy[2](blockCopy, v10, v7, &v15);
       v11 = v15;
 
       objc_autoreleasePoolPop(v9);

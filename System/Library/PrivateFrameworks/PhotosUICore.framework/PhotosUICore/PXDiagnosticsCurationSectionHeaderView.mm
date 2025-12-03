@@ -1,46 +1,46 @@
 @interface PXDiagnosticsCurationSectionHeaderView
-- (PXDiagnosticsCurationSectionHeaderView)initWithFrame:(CGRect)a3;
+- (PXDiagnosticsCurationSectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAgentAndStage:(id)a3;
-- (void)setReason:(id)a3;
-- (void)setSectionInfo:(id)a3;
-- (void)setState:(id)a3;
+- (void)setAgentAndStage:(id)stage;
+- (void)setReason:(id)reason;
+- (void)setSectionInfo:(id)info;
+- (void)setState:(id)state;
 @end
 
 @implementation PXDiagnosticsCurationSectionHeaderView
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  objc_storeStrong(&self->_reason, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_reason, reason);
+  reasonCopy = reason;
   [(UILabel *)self->_reasonLabel setText:self->_reason];
 }
 
-- (void)setAgentAndStage:(id)a3
+- (void)setAgentAndStage:(id)stage
 {
-  objc_storeStrong(&self->_agentAndStage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_agentAndStage, stage);
+  stageCopy = stage;
   [(UILabel *)self->_agentAndStageLabel setText:self->_agentAndStage];
 }
 
-- (void)setSectionInfo:(id)a3
+- (void)setSectionInfo:(id)info
 {
-  v13 = a3;
-  if (v13 && ([v13 objectForKeyedSubscript:@"state"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  infoCopy = info;
+  if (infoCopy && ([infoCopy objectForKeyedSubscript:@"state"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v13 objectForKeyedSubscript:@"state"];
+    v5 = [infoCopy objectForKeyedSubscript:@"state"];
     [(PXDiagnosticsCurationSectionHeaderView *)self setState:v5];
 
-    v6 = [v13 objectForKeyedSubscript:@"stateHistory"];
-    v7 = [v6 lastObject];
+    v6 = [infoCopy objectForKeyedSubscript:@"stateHistory"];
+    lastObject = [v6 lastObject];
 
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v7 objectForKeyedSubscript:@"stage"];
-    v10 = [v7 objectForKeyedSubscript:@"agent"];
+    v9 = [lastObject objectForKeyedSubscript:@"stage"];
+    v10 = [lastObject objectForKeyedSubscript:@"agent"];
     v11 = [v8 stringWithFormat:@"%@ (%@)", v9, v10];
     [(PXDiagnosticsCurationSectionHeaderView *)self setAgentAndStage:v11];
 
-    v12 = [v7 objectForKeyedSubscript:@"reason"];
+    v12 = [lastObject objectForKeyedSubscript:@"reason"];
     [(PXDiagnosticsCurationSectionHeaderView *)self setReason:v12];
   }
 
@@ -52,10 +52,10 @@
   }
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  objc_storeStrong(&self->_state, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_state, state);
+  stateCopy = state;
   [(PXStateBadgeView *)self->_stateBadgeView setState:self->_state];
 }
 
@@ -78,11 +78,11 @@
   [(UILabel *)self->_reasonLabel setFont:v9];
 }
 
-- (PXDiagnosticsCurationSectionHeaderView)initWithFrame:(CGRect)a3
+- (PXDiagnosticsCurationSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = PXDiagnosticsCurationSectionHeaderView;
-  v3 = [(PXDiagnosticsCurationSectionHeaderView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXDiagnosticsCurationSectionHeaderView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -90,8 +90,8 @@
     v6 = v5;
     [(PXDiagnosticsCurationSectionHeaderView *)v4 bounds];
     v8 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 3.0, v6, v7 + -4.0}];
-    v9 = [MEMORY[0x1E69DC888] lightGrayColor];
-    [v8 setBackgroundColor:v9];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    [v8 setBackgroundColor:lightGrayColor];
 
     [(PXDiagnosticsCurationSectionHeaderView *)v4 addSubview:v8];
     v10 = [[PXStateBadgeView alloc] initWithState:@"Unknown"];
@@ -104,8 +104,8 @@
     v4->_agentAndStageLabel = v12;
 
     [(UILabel *)v4->_agentAndStageLabel setText:@"Agent & Stage"];
-    v14 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v4->_agentAndStageLabel setTextColor:v14];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v4->_agentAndStageLabel setTextColor:blackColor];
 
     [(PXDiagnosticsCurationSectionHeaderView *)v4 addSubview:v4->_agentAndStageLabel];
     v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -113,8 +113,8 @@
     v4->_reasonLabel = v15;
 
     [(UILabel *)v4->_reasonLabel setText:@"Reason"];
-    v17 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v4->_reasonLabel setTextColor:v17];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v4->_reasonLabel setTextColor:blackColor2];
 
     [(PXDiagnosticsCurationSectionHeaderView *)v4 addSubview:v4->_reasonLabel];
   }

@@ -1,24 +1,24 @@
 @interface NTKSnowglobeFaceBundle
-- (id)_sortableFacesForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)_sortableFacesForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKSnowglobeFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [(NTKFace *)NTKSnowglobeFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [(NTKFace *)NTKSnowglobeFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -33,14 +33,14 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
-    v5 = [(NTKSnowglobeFaceBundle *)self artistFacesForDevice:v4];
-    v6 = [MEMORY[0x277CBEB18] array];
+    v5 = [(NTKSnowglobeFaceBundle *)self artistFacesForDevice:deviceCopy];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -60,8 +60,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) face];
-          [v6 addObject:v12];
+          face = [*(*(&v17 + 1) + 8 * i) face];
+          [array addObject:face];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -70,14 +70,14 @@
       while (v9);
     }
 
-    v13 = [v6 copy];
+    v13 = [array copy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = NTKSnowglobeFaceBundle;
-    v13 = [(NTKFaceBundle *)&v16 galleryFacesForDevice:v4];
+    v13 = [(NTKFaceBundle *)&v16 galleryFacesForDevice:deviceCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -85,26 +85,26 @@
   return v13;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3887189377])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3887189377])
   {
     v5 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v5 = [(NTKSnowglobeFaceBundle *)self _sortableFacesForDevice:v4];
+    v5 = [(NTKSnowglobeFaceBundle *)self _sortableFacesForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)_sortableFacesForDevice:(id)a3
+- (id)_sortableFacesForDevice:(id)device
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKSnowglobeFaceBundle *)self defaultFaceForDevice:a3];
+  v3 = [(NTKSnowglobeFaceBundle *)self defaultFaceForDevice:device];
   v4 = [MEMORY[0x277D2C020] placementWithWatchOS12Group:15 zOrder:7000];
   v13[0] = v4;
   v5 = [MEMORY[0x277D2C020] placementWithWatchOS12Group:2 zOrder:4000];

@@ -1,14 +1,14 @@
 @interface RETimeline
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimeline:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimeline:(id)timeline;
 - (NSDate)endDate;
 - (NSDate)startDate;
 - (RETimeline)init;
-- (RETimeline)initWithStartDate:(id)a3 values:(id)a4 durations:(id)a5;
-- (RETimeline)initWithTimeline:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RETimeline)initWithStartDate:(id)date values:(id)values durations:(id)durations;
+- (RETimeline)initWithTimeline:(id)timeline;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)valueForDate:(id)a3;
+- (id)valueForDate:(id)date;
 - (unint64_t)hash;
 @end
 
@@ -22,8 +22,8 @@
   v2 = [(RETimeline *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] distantFuture];
-    v10[0] = v3;
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v10[0] = distantFuture;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     transitionDates = v2->_transitionDates;
     v2->_transitionDates = v4;
@@ -36,17 +36,17 @@
   return v2;
 }
 
-- (RETimeline)initWithStartDate:(id)a3 values:(id)a4 durations:(id)a5
+- (RETimeline)initWithStartDate:(id)date values:(id)values durations:(id)durations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 count];
-  if (v11 != [v10 count])
+  dateCopy = date;
+  valuesCopy = values;
+  durationsCopy = durations;
+  v11 = [valuesCopy count];
+  if (v11 != [durationsCopy count])
   {
     v12 = *MEMORY[0x277CBE660];
-    v13 = [v9 count];
-    [v10 count];
+    v13 = [valuesCopy count];
+    [durationsCopy count];
     RERaiseInternalException(v12, @"Number of values (%lu) must match number of durations (%lu)", v14, v15, v16, v17, v18, v19, v13);
   }
 
@@ -55,32 +55,32 @@
   v20 = [(RETimeline *)&v35 init];
   if (v20)
   {
-    v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count") + 1}];
-    v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-    [v21 addObject:v8];
-    if ([v9 count])
+    v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valuesCopy, "count") + 1}];
+    v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
+    [v21 addObject:dateCopy];
+    if ([valuesCopy count])
     {
       v23 = 0;
       do
       {
-        v24 = [v10 objectAtIndexedSubscript:v23];
+        v24 = [durationsCopy objectAtIndexedSubscript:v23];
         [v24 doubleValue];
         v26 = v25;
 
         if (v26 > 0.0)
         {
-          v27 = [v21 lastObject];
-          v28 = [v27 dateByAddingTimeInterval:v26];
+          lastObject = [v21 lastObject];
+          v28 = [lastObject dateByAddingTimeInterval:v26];
           [v21 addObject:v28];
 
-          v29 = [v9 objectAtIndexedSubscript:v23];
+          v29 = [valuesCopy objectAtIndexedSubscript:v23];
           [v22 addObject:v29];
         }
 
         ++v23;
       }
 
-      while (v23 < [v9 count]);
+      while (v23 < [valuesCopy count]);
     }
 
     v30 = [v21 copy];
@@ -95,27 +95,27 @@
   return v20;
 }
 
-- (id)valueForDate:(id)a3
+- (id)valueForDate:(id)date
 {
-  v4 = a3;
-  if (v4 && [(NSArray *)self->_transitionDates count]>= 2)
+  dateCopy = date;
+  if (dateCopy && [(NSArray *)self->_transitionDates count]>= 2)
   {
-    v6 = [(RETimeline *)self startDate];
-    v7 = [(RETimeline *)self endDate];
-    v14 = v7;
-    if (v6 && v7)
+    startDate = [(RETimeline *)self startDate];
+    endDate = [(RETimeline *)self endDate];
+    v14 = endDate;
+    if (startDate && endDate)
     {
       v15 = objc_alloc(MEMORY[0x277CCA970]);
-      v16 = [(RETimeline *)self startDate];
-      v17 = [(RETimeline *)self endDate];
-      v18 = [v15 initWithStartDate:v16 endDate:v17];
+      startDate2 = [(RETimeline *)self startDate];
+      endDate2 = [(RETimeline *)self endDate];
+      v18 = [v15 initWithStartDate:startDate2 endDate:endDate2];
 
-      if ([v18 containsDate:v4] && (-[RETimeline endDate](self, "endDate"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v4, "isEqual:", v19), v19, (v20 & 1) == 0))
+      if ([v18 containsDate:dateCopy] && (-[RETimeline endDate](self, "endDate"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(dateCopy, "isEqual:", v19), v19, (v20 & 1) == 0))
       {
-        v21 = [(NSArray *)self->_transitionDates indexOfObject:v4 inSortedRange:0 options:[(NSArray *)self->_transitionDates count] usingComparator:256, &__block_literal_global_84];
+        v21 = [(NSArray *)self->_transitionDates indexOfObject:dateCopy inSortedRange:0 options:[(NSArray *)self->_transitionDates count] usingComparator:256, &__block_literal_global_84];
         if (v21 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v21 = [(NSArray *)self->_transitionDates indexOfObject:v4 inSortedRange:0 options:[(NSArray *)self->_transitionDates count] usingComparator:1024, &__block_literal_global_9_1]- 1;
+          v21 = [(NSArray *)self->_transitionDates indexOfObject:dateCopy inSortedRange:0 options:[(NSArray *)self->_transitionDates count] usingComparator:1024, &__block_literal_global_9_1]- 1;
         }
 
         v5 = [(NSArray *)self->_values objectAtIndexedSubscript:v21];
@@ -129,7 +129,7 @@
 
     else
     {
-      RERaiseInternalException(*MEMORY[0x277CBE658], @"startDate(%@) and endDate(%@) must be non-nil.", v8, v9, v10, v11, v12, v13, v6);
+      RERaiseInternalException(*MEMORY[0x277CBE658], @"startDate(%@) and endDate(%@) must be non-nil.", v8, v9, v10, v11, v12, v13, startDate);
       v5 = 0;
     }
   }
@@ -144,39 +144,39 @@
 
 - (NSDate)startDate
 {
-  v2 = [(RETimeline *)self transitionDates];
-  v3 = [v2 firstObject];
+  transitionDates = [(RETimeline *)self transitionDates];
+  firstObject = [transitionDates firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSDate)endDate
 {
-  v2 = [(RETimeline *)self transitionDates];
-  v3 = [v2 lastObject];
+  transitionDates = [(RETimeline *)self transitionDates];
+  lastObject = [transitionDates lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [RETimeline allocWithZone:a3];
+  v4 = [RETimeline allocWithZone:zone];
 
   return [(RETimeline *)v4 initWithTimeline:self];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(RETimeline *)self transitionDates];
-  v3 = [v2 count];
+  transitionDates = [(RETimeline *)self transitionDates];
+  v3 = [transitionDates count];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -184,31 +184,31 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RETimeline *)self isEqualToTimeline:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RETimeline *)self isEqualToTimeline:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTimeline:(id)a3
+- (BOOL)isEqualToTimeline:(id)timeline
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  timelineCopy = timeline;
+  v5 = timelineCopy;
+  if (self == timelineCopy)
   {
     v16 = 1;
   }
 
   else
   {
-    if (v4)
+    if (timelineCopy)
     {
-      v6 = [(RETimeline *)self transitionDates];
-      v7 = [(RETimeline *)v5 transitionDates];
-      v8 = [v6 count];
-      if (v8 == [v7 count])
+      transitionDates = [(RETimeline *)self transitionDates];
+      transitionDates2 = [(RETimeline *)v5 transitionDates];
+      v8 = [transitionDates count];
+      if (v8 == [transitionDates2 count])
       {
-        if (![v6 count])
+        if (![transitionDates count])
         {
 LABEL_12:
           v16 = 1;
@@ -220,8 +220,8 @@ LABEL_17:
         v9 = 0;
         while (1)
         {
-          v10 = [v6 objectAtIndexedSubscript:v9];
-          v11 = [v7 objectAtIndexedSubscript:v9];
+          v10 = [transitionDates objectAtIndexedSubscript:v9];
+          v11 = [transitionDates2 objectAtIndexedSubscript:v9];
           if (![v10 isEqualToDate:v11])
           {
             break;
@@ -244,7 +244,7 @@ LABEL_17:
             }
           }
 
-          if (++v9 >= [v6 count])
+          if (++v9 >= [transitionDates count])
           {
             goto LABEL_12;
           }
@@ -267,16 +267,16 @@ LABEL_18:
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@: %p>", objc_opt_class(), self];
-  v4 = [(RETimeline *)self transitionDates];
+  transitionDates = [(RETimeline *)self transitionDates];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __25__RETimeline_description__block_invoke;
   v10[3] = &unk_2785FAAF0;
-  v11 = v4;
-  v12 = self;
+  v11 = transitionDates;
+  selfCopy = self;
   v5 = v3;
   v13 = v5;
-  v6 = v4;
+  v6 = transitionDates;
   [v6 enumerateObjectsUsingBlock:v10];
   v7 = v13;
   v8 = v5;
@@ -295,15 +295,15 @@ void __25__RETimeline_description__block_invoke(id *a1, void *a2, unint64_t a3)
   }
 }
 
-- (RETimeline)initWithTimeline:(id)a3
+- (RETimeline)initWithTimeline:(id)timeline
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  if (v5)
+  timelineCopy = timeline;
+  startDate = [timelineCopy startDate];
+  if (startDate)
   {
-    v6 = [v4 transitionDates];
+    transitionDates = [timelineCopy transitionDates];
     v7 = MEMORY[0x277CBEB18];
-    v8 = [v6 count];
+    v8 = [transitionDates count];
     if (v8 <= 1)
     {
       v9 = 1;
@@ -316,7 +316,7 @@ void __25__RETimeline_description__block_invoke(id *a1, void *a2, unint64_t a3)
 
     v10 = [v7 arrayWithCapacity:v9 - 1];
     v11 = MEMORY[0x277CBEB18];
-    v12 = [v6 count];
+    v12 = [transitionDates count];
     if (v12 <= 1)
     {
       v13 = 1;
@@ -332,15 +332,15 @@ void __25__RETimeline_description__block_invoke(id *a1, void *a2, unint64_t a3)
     v21 = 3221225472;
     v22 = __51__RETimeline_REExtendedTimeline__initWithTimeline___block_invoke;
     v23 = &unk_2785FDD90;
-    v24 = v6;
-    v25 = v4;
+    v24 = transitionDates;
+    v25 = timelineCopy;
     v26 = v10;
     v27 = v14;
     v15 = v14;
     v16 = v10;
-    v17 = v6;
+    v17 = transitionDates;
     [v17 enumerateObjectsUsingBlock:&v20];
-    v18 = [(RETimeline *)self initWithStartDate:v5 values:v15 durations:v16, v20, v21, v22, v23];
+    v18 = [(RETimeline *)self initWithStartDate:startDate values:v15 durations:v16, v20, v21, v22, v23];
   }
 
   else

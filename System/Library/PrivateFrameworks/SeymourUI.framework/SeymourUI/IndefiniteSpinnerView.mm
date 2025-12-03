@@ -1,13 +1,13 @@
 @interface IndefiniteSpinnerView
-- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation IndefiniteSpinnerView
 
-- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithCoder:(id)a3
+- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithCoder:(id)coder
 {
   *(&self->super.super + OBJC_IVAR____TtC9SeymourUI21IndefiniteSpinnerView_layout) = xmmword_20C15ACD0;
   v4 = OBJC_IVAR____TtC9SeymourUI21IndefiniteSpinnerView_spinnerLayer;
@@ -22,17 +22,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7F21DC();
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7F23B8();
 }
 
-- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI21IndefiniteSpinnerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

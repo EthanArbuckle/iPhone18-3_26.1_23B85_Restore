@@ -1,7 +1,7 @@
 @interface PLImageContainer
 - (CGSize)pixelSize;
-- (PLImageContainer)initWithCGImage:(CGImage *)a3 ioSurface:(void *)a4 CIImage:(id)a5 backingData:(id)a6 uniformTypeIdentifier:(id)a7 size:(CGSize)a8 auxiliaryImageRecords:(id)a9;
-- (PLImageContainer)initWithPLImage:(id)a3 backingData:(id)a4 uniformTypeIdentifier:(id)a5 auxiliaryImageRecords:(id)a6;
+- (PLImageContainer)initWithCGImage:(CGImage *)image ioSurface:(void *)surface CIImage:(id)iImage backingData:(id)data uniformTypeIdentifier:(id)identifier size:(CGSize)size auxiliaryImageRecords:(id)records;
+- (PLImageContainer)initWithPLImage:(id)image backingData:(id)data uniformTypeIdentifier:(id)identifier auxiliaryImageRecords:(id)records;
 - (id)description;
 - (void)dealloc;
 - (void)ioSurface;
@@ -108,48 +108,48 @@ LABEL_8:
   [(PLImageContainer *)&v5 dealloc];
 }
 
-- (PLImageContainer)initWithPLImage:(id)a3 backingData:(id)a4 uniformTypeIdentifier:(id)a5 auxiliaryImageRecords:(id)a6
+- (PLImageContainer)initWithPLImage:(id)image backingData:(id)data uniformTypeIdentifier:(id)identifier auxiliaryImageRecords:(id)records
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  recordsCopy = records;
+  identifierCopy = identifier;
+  dataCopy = data;
+  imageCopy = image;
   v14 = MEMORY[0x19EAED870]();
   v15 = DCIM_CGImageRefFromPLImage();
-  v16 = MEMORY[0x19EAED760](v13);
+  v16 = MEMORY[0x19EAED760](imageCopy);
 
-  v17 = [(PLImageContainer *)self initWithCGImage:v15 ioSurface:v14 CIImage:v16 backingData:v12 uniformTypeIdentifier:v11 size:v10 auxiliaryImageRecords:-1.0, -1.0];
+  v17 = [(PLImageContainer *)self initWithCGImage:v15 ioSurface:v14 CIImage:v16 backingData:dataCopy uniformTypeIdentifier:identifierCopy size:recordsCopy auxiliaryImageRecords:-1.0, -1.0];
   return v17;
 }
 
-- (PLImageContainer)initWithCGImage:(CGImage *)a3 ioSurface:(void *)a4 CIImage:(id)a5 backingData:(id)a6 uniformTypeIdentifier:(id)a7 size:(CGSize)a8 auxiliaryImageRecords:(id)a9
+- (PLImageContainer)initWithCGImage:(CGImage *)image ioSurface:(void *)surface CIImage:(id)iImage backingData:(id)data uniformTypeIdentifier:(id)identifier size:(CGSize)size auxiliaryImageRecords:(id)records
 {
-  height = a8.height;
-  width = a8.width;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
+  height = size.height;
+  width = size.width;
+  iImageCopy = iImage;
+  dataCopy = data;
+  identifierCopy = identifier;
+  recordsCopy = records;
   v26.receiver = self;
   v26.super_class = PLImageContainer;
   v22 = [(PLImageContainer *)&v26 init];
   if (v22)
   {
-    v22->_CGImage = CGImageRetain(a3);
-    objc_storeStrong(&v22->_CIImage, a5);
-    if (a4)
+    v22->_CGImage = CGImageRetain(image);
+    objc_storeStrong(&v22->_CIImage, iImage);
+    if (surface)
     {
-      v22->_ioSurface = CFRetain(a4);
+      v22->_ioSurface = CFRetain(surface);
     }
 
-    objc_storeStrong(&v22->_data, a6);
-    v23 = [v20 copy];
+    objc_storeStrong(&v22->_data, data);
+    v23 = [identifierCopy copy];
     uniformTypeIdentifier = v22->_uniformTypeIdentifier;
     v22->_uniformTypeIdentifier = v23;
 
     v22->_pixelSize.width = width;
     v22->_pixelSize.height = height;
-    objc_storeStrong(&v22->_auxiliaryImageRecords, a9);
+    objc_storeStrong(&v22->_auxiliaryImageRecords, records);
   }
 
   return v22;

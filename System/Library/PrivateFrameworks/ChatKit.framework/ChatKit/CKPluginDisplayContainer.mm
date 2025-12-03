@@ -1,25 +1,25 @@
 @interface CKPluginDisplayContainer
-+ (id)pluginDisplayContainerWithPluginPayload:(id)a3 composeImage:(id)a4;
-+ (id)unarchiveFromData:(id)a3 error:(id *)a4;
-- (CKPluginDisplayContainer)initWithCoder:(id)a3;
++ (id)pluginDisplayContainerWithPluginPayload:(id)payload composeImage:(id)image;
++ (id)unarchiveFromData:(id)data error:(id *)error;
+- (CKPluginDisplayContainer)initWithCoder:(id)coder;
 - (id)pasteboardItemProvider;
-- (id)rtfDocumentItemsWithFormatString:(id)a3 selectedTextRange:(_NSRange)a4;
-- (id)urlForPayload:(id)a3;
-- (void)_registerItemProvider:(id)a3 forURL:(id)a4 withPluginPayload:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)rtfDocumentItemsWithFormatString:(id)string selectedTextRange:(_NSRange)range;
+- (id)urlForPayload:(id)payload;
+- (void)_registerItemProvider:(id)provider forURL:(id)l withPluginPayload:(id)payload;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKPluginDisplayContainer
 
-+ (id)pluginDisplayContainerWithPluginPayload:(id)a3 composeImage:(id)a4
++ (id)pluginDisplayContainerWithPluginPayload:(id)payload composeImage:(id)image
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  payloadCopy = payload;
+  imageCopy = image;
+  if (payloadCopy)
   {
     v7 = objc_alloc_init(CKPluginDisplayContainer);
-    [(CKPluginDisplayContainer *)v7 setPluginPayload:v5];
-    [(CKPluginDisplayContainer *)v7 setComposeImage:v6];
+    [(CKPluginDisplayContainer *)v7 setPluginPayload:payloadCopy];
+    [(CKPluginDisplayContainer *)v7 setComposeImage:imageCopy];
   }
 
   else
@@ -40,49 +40,49 @@
   return v7;
 }
 
-- (id)rtfDocumentItemsWithFormatString:(id)a3 selectedTextRange:(_NSRange)a4
+- (id)rtfDocumentItemsWithFormatString:(id)string selectedTextRange:(_NSRange)range
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(CKPluginDisplayContainer *)self pluginPayload];
-  v8 = [(CKPluginDisplayContainer *)self composeImage];
-  if (v7 && ([v7 pluginBundleID], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69A6A18]), v9, v10))
+  stringCopy = string;
+  array = [MEMORY[0x1E695DF70] array];
+  pluginPayload = [(CKPluginDisplayContainer *)self pluginPayload];
+  composeImage = [(CKPluginDisplayContainer *)self composeImage];
+  if (pluginPayload && ([pluginPayload pluginBundleID], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69A6A18]), v9, v10))
   {
-    v11 = [v7 url];
+    v11 = [pluginPayload url];
 
     if (v11)
     {
-      v12 = [v7 url];
-      v13 = [v12 absoluteString];
+      v12 = [pluginPayload url];
+      absoluteString = [v12 absoluteString];
 
       v14 = objc_alloc(MEMORY[0x1E696AAB0]);
       v15 = v14;
-      if (v5)
+      if (stringCopy)
       {
-        v16 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, v13];
+        v16 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:stringCopy validFormatSpecifiers:@"%@" error:0, absoluteString];
         v17 = [v15 initWithString:v16];
-        [v6 addObject:v17];
+        [array addObject:v17];
       }
 
       else
       {
-        v16 = [v14 initWithString:v13];
-        [v6 addObject:v16];
+        v16 = [v14 initWithString:absoluteString];
+        [array addObject:v16];
       }
     }
   }
 
-  else if (v8)
+  else if (composeImage)
   {
     v18 = objc_alloc(MEMORY[0x1E69DB7F0]);
-    v19 = UIImagePNGRepresentation(v8);
+    v19 = UIImagePNGRepresentation(composeImage);
     v20 = [v18 initWithData:v19 ofType:*MEMORY[0x1E6963860]];
 
     v21 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v20];
     v22 = [v21 mutableCopy];
 
-    if (v7)
+    if (pluginPayload)
     {
       v28 = 0;
       v23 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v28];
@@ -97,93 +97,93 @@
         v25 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [v24 localizedDescription];
+          localizedDescription = [v24 localizedDescription];
           *buf = 138412290;
-          v30 = v26;
+          v30 = localizedDescription;
           _os_log_impl(&dword_19020E000, v25, OS_LOG_TYPE_INFO, "Failed to archive plugin display container on copy with error: %@", buf, 0xCu);
         }
       }
     }
 
-    [v6 addObject:v22];
+    [array addObject:v22];
   }
 
-  return v6;
+  return array;
 }
 
-- (id)urlForPayload:(id)a3
+- (id)urlForPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E69A5AC8]) initWithPluginPayload:v3];
-  if ([MEMORY[0x1E69A5AC8] isPayloadServiceManatee:v3])
+  payloadCopy = payload;
+  v4 = [objc_alloc(MEMORY[0x1E69A5AC8]) initWithPluginPayload:payloadCopy];
+  if ([MEMORY[0x1E69A5AC8] isPayloadServiceManatee:payloadCopy])
   {
     v5 = MEMORY[0x1E69A5AC8];
-    v6 = [v3 url];
+    v6 = [payloadCopy url];
     v7 = MEMORY[0x1E69A5AC8];
-    v8 = [v4 chat];
-    v9 = [v7 lastAddressedHandleIDFromChat:v8];
-    v10 = [v5 URLForDugongShareURL:v6 handle:v9 payload:v3];
+    chat = [v4 chat];
+    v9 = [v7 lastAddressedHandleIDFromChat:chat];
+    v10 = [v5 URLForDugongShareURL:v6 handle:v9 payload:payloadCopy];
   }
 
   else
   {
-    v10 = [v3 url];
+    v10 = [payloadCopy url];
   }
 
   return v10;
 }
 
-- (void)_registerItemProvider:(id)a3 forURL:(id)a4 withPluginPayload:(id)a5
+- (void)_registerItemProvider:(id)provider forURL:(id)l withPluginPayload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v11 = [v10 isRichLinkImprovementsEnabled];
+  providerCopy = provider;
+  lCopy = l;
+  payloadCopy = payload;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRichLinkImprovementsEnabled = [mEMORY[0x1E69A8070] isRichLinkImprovementsEnabled];
 
-  if (v9)
+  if (payloadCopy)
   {
-    if (v11)
+    if (isRichLinkImprovementsEnabled)
     {
-      v12 = [v9 data];
+      data = [payloadCopy data];
 
-      if (v12)
+      if (data)
       {
         v13 = MEMORY[0x1E696ECD8];
-        v14 = [v9 data];
-        v15 = [v9 attachments];
-        v16 = [v13 linkWithDataRepresentation:v14 attachments:v15];
+        data2 = [payloadCopy data];
+        attachments = [payloadCopy attachments];
+        v16 = [v13 linkWithDataRepresentation:data2 attachments:attachments];
 
-        v17 = [v16 metadata];
+        metadata = [v16 metadata];
         v18 = *MEMORY[0x1E696EC00];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __75__CKPluginDisplayContainer__registerItemProvider_forURL_withPluginPayload___block_invoke;
         v28[3] = &unk_1E72EC878;
-        v29 = v17;
-        v19 = v17;
-        [v7 registerDataRepresentationForTypeIdentifier:v18 visibility:0 loadHandler:v28];
+        v29 = metadata;
+        v19 = metadata;
+        [providerCopy registerDataRepresentationForTypeIdentifier:v18 visibility:0 loadHandler:v28];
       }
     }
   }
 
-  v20 = [*MEMORY[0x1E6983030] identifier];
+  identifier = [*MEMORY[0x1E6983030] identifier];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __75__CKPluginDisplayContainer__registerItemProvider_forURL_withPluginPayload___block_invoke_2;
   v26[3] = &unk_1E72EC878;
-  v21 = v8;
+  v21 = lCopy;
   v27 = v21;
-  [v7 registerDataRepresentationForTypeIdentifier:v20 visibility:0 loadHandler:v26];
+  [providerCopy registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v26];
 
-  v22 = [*MEMORY[0x1E6983060] identifier];
+  identifier2 = [*MEMORY[0x1E6983060] identifier];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __75__CKPluginDisplayContainer__registerItemProvider_forURL_withPluginPayload___block_invoke_3;
   v24[3] = &unk_1E72EC878;
   v25 = v21;
   v23 = v21;
-  [v7 registerDataRepresentationForTypeIdentifier:v22 visibility:0 loadHandler:v24];
+  [providerCopy registerDataRepresentationForTypeIdentifier:identifier2 visibility:0 loadHandler:v24];
 }
 
 uint64_t __75__CKPluginDisplayContainer__registerItemProvider_forURL_withPluginPayload___block_invoke(uint64_t a1, void (**a2)(void, void, void))
@@ -220,9 +220,9 @@ uint64_t __75__CKPluginDisplayContainer__registerItemProvider_forURL_withPluginP
 - (id)pasteboardItemProvider
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(CKPluginDisplayContainer *)self pluginPayload];
-  v4 = v3;
-  if (!v3)
+  pluginPayload = [(CKPluginDisplayContainer *)self pluginPayload];
+  v4 = pluginPayload;
+  if (!pluginPayload)
   {
     if (IMOSLoggingEnabled())
     {
@@ -238,15 +238,15 @@ uint64_t __75__CKPluginDisplayContainer__registerItemProvider_forURL_withPluginP
     goto LABEL_16;
   }
 
-  v5 = [v3 pluginBundleID];
+  pluginBundleID = [pluginPayload pluginBundleID];
   v6 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  if (![v5 isEqualToString:*MEMORY[0x1E69A6A18]])
+  if (![pluginBundleID isEqualToString:*MEMORY[0x1E69A6A18]])
   {
-    v9 = [(CKPluginDisplayContainer *)self composeImage];
-    p_super = &v9->super;
-    if (v9)
+    composeImage = [(CKPluginDisplayContainer *)self composeImage];
+    p_super = &composeImage->super;
+    if (composeImage)
     {
-      v11 = UIImagePNGRepresentation(v9);
+      v11 = UIImagePNGRepresentation(composeImage);
       if (v11)
       {
         v12 = CKFrameworkBundle();
@@ -355,11 +355,11 @@ LABEL_36:
   return v20;
 }
 
-+ (id)unarchiveFromData:(id)a3 error:(id *)a4
++ (id)unarchiveFromData:(id)data error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     if (unarchiveFromData_error__onceToken != -1)
     {
@@ -367,7 +367,7 @@ LABEL_36:
     }
 
     v22 = 0;
-    v6 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v5 error:&v22];
+    v6 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v22];
     v7 = v22;
     if (v6)
     {
@@ -391,12 +391,12 @@ LABEL_36:
 
       else
       {
-        v17 = [v6 error];
-        v9 = v17;
-        if (a4)
+        error = [v6 error];
+        v9 = error;
+        if (error)
         {
-          v18 = v17;
-          *a4 = v9;
+          v18 = error;
+          *error = v9;
         }
 
         if (IMOSLoggingEnabled())
@@ -404,9 +404,9 @@ LABEL_36:
           v19 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v20 = [v9 localizedDescription];
+            localizedDescription = [v9 localizedDescription];
             *buf = 138412290;
-            v24 = v20;
+            v24 = localizedDescription;
             _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "failed to unarchive plugin display controller: failed to decode object with error: %@", buf, 0xCu);
           }
         }
@@ -416,10 +416,10 @@ LABEL_36:
     else
     {
       v9 = v7;
-      if (a4)
+      if (error)
       {
         v10 = v7;
-        *a4 = v9;
+        *error = v9;
       }
 
       if (IMOSLoggingEnabled())
@@ -427,9 +427,9 @@ LABEL_36:
         v11 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v9 localizedDescription];
+          localizedDescription2 = [v9 localizedDescription];
           *buf = 138412290;
-          v24 = v12;
+          v24 = localizedDescription2;
           _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "failed to unarchive plugin display controller: failed to create unarchiver %@", buf, 0xCu);
         }
       }
@@ -466,32 +466,32 @@ void __52__CKPluginDisplayContainer_unarchiveFromData_error___block_invoke()
   unarchiveFromData_error__allowlistedClasses = v1;
 }
 
-- (CKPluginDisplayContainer)initWithCoder:(id)a3
+- (CKPluginDisplayContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CKPluginDisplayContainer;
   v5 = [(CKPluginDisplayContainer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CKPLUGINDISPLAYCONTAINER_PLUGINGPAYLOAD_KEY"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CKPLUGINDISPLAYCONTAINER_PLUGINGPAYLOAD_KEY"];
     [(CKPluginDisplayContainer *)v5 setPluginPayload:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CKPLUGINDISPLAYCONTAINER_COMPOSEIMAGE_KEY"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CKPLUGINDISPLAYCONTAINER_COMPOSEIMAGE_KEY"];
     [(CKPluginDisplayContainer *)v5 setComposeImage:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKPluginDisplayContainer *)self pluginPayload];
-  [v4 encodeObject:v5 forKey:@"CKPLUGINDISPLAYCONTAINER_PLUGINGPAYLOAD_KEY"];
+  coderCopy = coder;
+  pluginPayload = [(CKPluginDisplayContainer *)self pluginPayload];
+  [coderCopy encodeObject:pluginPayload forKey:@"CKPLUGINDISPLAYCONTAINER_PLUGINGPAYLOAD_KEY"];
 
-  v6 = [(CKPluginDisplayContainer *)self composeImage];
-  [v4 encodeObject:v6 forKey:@"CKPLUGINDISPLAYCONTAINER_COMPOSEIMAGE_KEY"];
+  composeImage = [(CKPluginDisplayContainer *)self composeImage];
+  [coderCopy encodeObject:composeImage forKey:@"CKPLUGINDISPLAYCONTAINER_COMPOSEIMAGE_KEY"];
 }
 
 @end

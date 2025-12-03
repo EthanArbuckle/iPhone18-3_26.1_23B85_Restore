@@ -4,9 +4,9 @@
 - (id)activitySpotlightIdentifier;
 - (id)metricsAdditionalData;
 - (id)metricsContentIdentifier;
-- (id)objectAtIndex:(unint64_t)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)setNetworkUPPEnabled:(BOOL)a3;
+- (id)objectAtIndex:(unint64_t)index;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)setNetworkUPPEnabled:(BOOL)enabled;
 @end
 
 @implementation MTPlayerManifest
@@ -19,8 +19,8 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
-    [(MTPlayerManifest *)v2 setManifestIdentifier:v4];
+    uUIDString = [v3 UUIDString];
+    [(MTPlayerManifest *)v2 setManifestIdentifier:uUIDString];
   }
 
   return v2;
@@ -30,31 +30,31 @@
 {
   v9.receiver = self;
   v9.super_class = MTPlayerManifest;
-  v3 = [(MTPlayerManifest *)&v9 activity];
-  [v3 setEligibleForHandoff:1];
-  v4 = [(MTPlayerManifest *)self currentItem];
-  v5 = [v4 episodeShareUrl];
-  [v3 setWebpageURL:v5];
+  activity = [(MTPlayerManifest *)&v9 activity];
+  [activity setEligibleForHandoff:1];
+  currentItem = [(MTPlayerManifest *)self currentItem];
+  episodeShareUrl = [currentItem episodeShareUrl];
+  [activity setWebpageURL:episodeShareUrl];
 
-  v6 = [(MTPlayerManifest *)self activitySpotlightIdentifier];
-  if (v6)
+  activitySpotlightIdentifier = [(MTPlayerManifest *)self activitySpotlightIdentifier];
+  if (activitySpotlightIdentifier)
   {
     v7 = [[CSSearchableItemAttributeSet alloc] initWithContentType:UTTypeAudiovisualContent];
-    [v7 setRelatedUniqueIdentifier:v6];
-    [v3 setContentAttributeSet:v7];
+    [v7 setRelatedUniqueIdentifier:activitySpotlightIdentifier];
+    [activity setContentAttributeSet:v7];
   }
 
-  return v3;
+  return activity;
 }
 
 - (id)activitySpotlightIdentifier
 {
-  v3 = [(MTPlayerManifest *)self currentItem];
+  currentItem = [(MTPlayerManifest *)self currentItem];
 
-  if (v3)
+  if (currentItem)
   {
-    v4 = [(MTPlayerManifest *)self currentItem];
-    v5 = [MTCoreSpotlightUtil uniqueIdentifierForPodcastInPlayerItem:v4];
+    currentItem2 = [(MTPlayerManifest *)self currentItem];
+    v5 = [MTCoreSpotlightUtil uniqueIdentifierForPodcastInPlayerItem:currentItem2];
   }
 
   else
@@ -65,14 +65,14 @@
   return v5;
 }
 
-- (void)setNetworkUPPEnabled:(BOOL)a3
+- (void)setNetworkUPPEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = _MTLogCategoryPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"Disabled";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = @"Enabled";
     }
@@ -80,33 +80,33 @@
     v7 = 138412546;
     v8 = v6;
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Network UPP %@ for manifest %@", &v7, 0x16u);
   }
 
-  self->_networkUPPEnabled = v3;
+  self->_networkUPPEnabled = enabledCopy;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v5.receiver = self;
   v5.super_class = MTPlayerManifest;
-  v3 = [(MTPlayerManifest *)&v5 objectAtIndex:a3];
+  v3 = [(MTPlayerManifest *)&v5 objectAtIndex:index];
 
   return v3;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4 && [(MTPlayerManifest *)self count])
+  blockCopy = block;
+  if (blockCopy && [(MTPlayerManifest *)self count])
   {
     v5 = 0;
     do
     {
       v6 = [(MTPlayerManifest *)self objectAtIndex:v5];
       v8 = 0;
-      v4[2](v4, v6, &v8);
+      blockCopy[2](blockCopy, v6, &v8);
       v7 = v8;
 
       if (v7 == 1)
@@ -134,16 +134,16 @@
   v4 = [NSNumber numberWithUnsignedInteger:[(MTPlayerManifest *)self count]];
   [v3 setObject:v4 forKeyedSubscript:@"count"];
 
-  v5 = [(MTPlayerManifest *)self title];
+  title = [(MTPlayerManifest *)self title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [(MTPlayerManifest *)self title];
-    [v3 setObject:v6 forKeyedSubscript:@"title"];
+    title2 = [(MTPlayerManifest *)self title];
+    [v3 setObject:title2 forKeyedSubscript:@"title"];
   }
 
-  v7 = [(MTPlayerManifest *)self manifestIdentifier];
-  [v3 setObject:v7 forKeyedSubscript:@"manifest_id"];
+  manifestIdentifier = [(MTPlayerManifest *)self manifestIdentifier];
+  [v3 setObject:manifestIdentifier forKeyedSubscript:@"manifest_id"];
 
   v8 = [MTStoreReportingController reportingStringForPlayReason:[(MTPlayerManifest *)self playReason]];
   [v3 setObject:v8 forKeyedSubscript:@"manifest_source"];

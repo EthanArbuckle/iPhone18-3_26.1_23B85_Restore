@@ -1,48 +1,48 @@
 @interface HMDMessageHandler
 + (id)logCategory;
-- (BOOL)hasQueuedIncomingMessage:(id)a3;
+- (BOOL)hasQueuedIncomingMessage:(id)message;
 - (BOOL)hasQueuedIncomingMessages;
-- (BOOL)hasQueuedOutgoingMessage:(id)a3;
+- (BOOL)hasQueuedOutgoingMessage:(id)message;
 - (BOOL)hasQueuedOutgoingMessages;
-- (BOOL)hasQueuedOutgoingMessagesForDevice:(id)a3;
-- (BOOL)isReadyForIncomingMessage:(id)a3 error:(id *)a4;
+- (BOOL)hasQueuedOutgoingMessagesForDevice:(id)device;
+- (BOOL)isReadyForIncomingMessage:(id)message error:(id *)error;
 - (BOOL)isReadyForOutgoingMessaging;
-- (BOOL)shouldRelayIncomingMessage:(id)a3 error:(id *)a4;
+- (BOOL)shouldRelayIncomingMessage:(id)message error:(id *)error;
 - (HMDHome)home;
 - (HMDHomeManager)homeManager;
-- (HMDMessageHandler)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 ownerPrivateRemoteMessages:(id)a6 adminPrivateRemoteMessages:(id)a7 internalMessages:(id)a8 notifications:(id)a9 notificationsToObject:(id)a10;
-- (HMDMessageHandler)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 ownerPrivateRemoteMessages:(id)a6 adminPrivateRemoteMessages:(id)a7 internalMessages:(id)a8 notifications:(id)a9 notificationsToObject:(id)a10 appleAccountManager:(id)a11 metricsDispatcher:(id)a12;
+- (HMDMessageHandler)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher notificationCenter:(id)center ownerPrivateRemoteMessages:(id)messages adminPrivateRemoteMessages:(id)remoteMessages internalMessages:(id)internalMessages notifications:(id)notifications notificationsToObject:(id)self0;
+- (HMDMessageHandler)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher notificationCenter:(id)center ownerPrivateRemoteMessages:(id)messages adminPrivateRemoteMessages:(id)remoteMessages internalMessages:(id)internalMessages notifications:(id)notifications notificationsToObject:(id)self0 appleAccountManager:(id)self1 metricsDispatcher:(id)self2;
 - (HMDMessageHandlerDataSource)dataSource;
-- (SEL)selectorForName:(id)a3;
+- (SEL)selectorForName:(id)name;
 - (id)attributeDescriptions;
 - (id)currentAccountDevice;
-- (id)dequeueIncomingMessage:(id)a3;
-- (id)dequeueOutgoingMessage:(id)a3;
+- (id)dequeueIncomingMessage:(id)message;
+- (id)dequeueOutgoingMessage:(id)message;
 - (id)dequeueQueuedIncomingMessages;
-- (id)deviceForMessage:(id)a3;
+- (id)deviceForMessage:(id)message;
 - (id)logIdentifier;
 - (id)queuedIncomingMessages;
 - (id)queuedOutgoingMessages;
-- (id)queuedOutgoingMessagesForDevice:(id)a3;
-- (void)_cleanUpDeviceMappingsForMessage:(id)a3;
-- (void)_logMediaDestinationControllerUpdateMetricsUsingMessage:(id)a3;
-- (void)associateDevice:(id)a3 withOutgoingMessage:(id)a4;
-- (void)configureWithHome:(id)a3;
-- (void)didTriggerMessageHandlerQueuedMessage:(id)a3;
-- (void)didTriggerQueuedIncomingMessage:(id)a3;
-- (void)didTriggerQueuedOutgoingMessage:(id)a3;
-- (void)handleAccountAddedDeviceNotification:(id)a3;
-- (void)queueIncomingMessage:(id)a3;
-- (void)queueOutgoingMessage:(id)a3;
-- (void)registerForMessagesWithHome:(id)a3;
+- (id)queuedOutgoingMessagesForDevice:(id)device;
+- (void)_cleanUpDeviceMappingsForMessage:(id)message;
+- (void)_logMediaDestinationControllerUpdateMetricsUsingMessage:(id)message;
+- (void)associateDevice:(id)device withOutgoingMessage:(id)message;
+- (void)configureWithHome:(id)home;
+- (void)didTriggerMessageHandlerQueuedMessage:(id)message;
+- (void)didTriggerQueuedIncomingMessage:(id)message;
+- (void)didTriggerQueuedOutgoingMessage:(id)message;
+- (void)handleAccountAddedDeviceNotification:(id)notification;
+- (void)queueIncomingMessage:(id)message;
+- (void)queueOutgoingMessage:(id)message;
+- (void)registerForMessagesWithHome:(id)home;
 - (void)registerForNotifications;
-- (void)registerForSPIRemoteMessages:(id)a3 home:(id)a4 userPrivilege:(unint64_t)a5 internalBuildOnly:(BOOL)a6;
-- (void)relayMessage:(id)a3 shouldQueue:(BOOL)a4;
-- (void)routeMessage:(id)a3 shouldQueue:(BOOL)a4;
+- (void)registerForSPIRemoteMessages:(id)messages home:(id)home userPrivilege:(unint64_t)privilege internalBuildOnly:(BOOL)only;
+- (void)relayMessage:(id)message shouldQueue:(BOOL)queue;
+- (void)routeMessage:(id)message shouldQueue:(BOOL)queue;
 - (void)routeQueuedIncomingMessages;
 - (void)sendQueuedOutgoingMessages;
-- (void)sendQueuedOutgoingMessages:(id)a3;
-- (void)sendQueuedOutgoingMessagesForDevice:(id)a3;
+- (void)sendQueuedOutgoingMessages:(id)messages;
+- (void)sendQueuedOutgoingMessagesForDevice:(id)device;
 - (void)triggerQueuedIncomingMessagesTimeouts;
 - (void)triggerQueuedOutgoingMessagesTimeouts;
 @end
@@ -72,18 +72,18 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMessageHandler *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMDMessageHandler *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)attributeDescriptions
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMessageHandler *)self messageTargetUUID];
-  v5 = [v3 initWithName:@"messageTargetUUID" value:v4];
+  messageTargetUUID = [(HMDMessageHandler *)self messageTargetUUID];
+  v5 = [v3 initWithName:@"messageTargetUUID" value:messageTargetUUID];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -92,18 +92,18 @@
   return v6;
 }
 
-- (void)didTriggerQueuedOutgoingMessage:(id)a3
+- (void)didTriggerQueuedOutgoingMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 message];
-  v6 = [(HMDMessageHandler *)self dequeueOutgoingMessage:v5];
+  messageCopy = message;
+  message = [messageCopy message];
+  v6 = [(HMDMessageHandler *)self dequeueOutgoingMessage:message];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -111,7 +111,7 @@
       v14 = 138543874;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = messageCopy;
       v18 = 2112;
       v19 = v7;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Unable to send queued outgoing message: %@ error: %@", &v14, 0x20u);
@@ -119,25 +119,25 @@
 
     objc_autoreleasePoolPop(v8);
     [v6 respondWithError:v7];
-    v12 = [(HMDMessageHandler *)v9 metricsDispatcher];
-    [v12 submitFailureEventOfType:2 message:v6];
+    metricsDispatcher = [(HMDMessageHandler *)selfCopy metricsDispatcher];
+    [metricsDispatcher submitFailureEventOfType:2 message:v6];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTriggerQueuedIncomingMessage:(id)a3
+- (void)didTriggerQueuedIncomingMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 message];
-  v6 = [(HMDMessageHandler *)self dequeueIncomingMessage:v5];
+  messageCopy = message;
+  message = [messageCopy message];
+  v6 = [(HMDMessageHandler *)self dequeueIncomingMessage:message];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -145,7 +145,7 @@
       v14 = 138543874;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = messageCopy;
       v18 = 2112;
       v19 = v7;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Unable to send queued incoming message: %@ error: %@", &v14, 0x20u);
@@ -153,39 +153,39 @@
 
     objc_autoreleasePoolPop(v8);
     [v6 respondWithError:v7];
-    v12 = [(HMDMessageHandler *)v9 metricsDispatcher];
-    [v12 submitFailureEventOfType:1 message:v6];
+    metricsDispatcher = [(HMDMessageHandler *)selfCopy metricsDispatcher];
+    [metricsDispatcher submitFailureEventOfType:1 message:v6];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTriggerMessageHandlerQueuedMessage:(id)a3
+- (void)didTriggerMessageHandlerQueuedMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 message];
-  v6 = [(HMDMessageHandler *)self hasQueuedIncomingMessage:v5];
+  messageCopy = message;
+  message = [messageCopy message];
+  v6 = [(HMDMessageHandler *)self hasQueuedIncomingMessage:message];
 
   if (v6)
   {
-    [(HMDMessageHandler *)self didTriggerQueuedIncomingMessage:v4];
+    [(HMDMessageHandler *)self didTriggerQueuedIncomingMessage:messageCopy];
   }
 
   else
   {
-    v7 = [v4 message];
-    v8 = [(HMDMessageHandler *)self hasQueuedOutgoingMessage:v7];
+    message2 = [messageCopy message];
+    v8 = [(HMDMessageHandler *)self hasQueuedOutgoingMessage:message2];
 
     if (v8)
     {
-      [(HMDMessageHandler *)self didTriggerQueuedOutgoingMessage:v4];
+      [(HMDMessageHandler *)self didTriggerQueuedOutgoingMessage:messageCopy];
     }
 
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -193,7 +193,7 @@
         v14 = 138543618;
         v15 = v12;
         v16 = 2112;
-        v17 = v4;
+        v17 = messageCopy;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Dropping unknown triggered queued message: %@", &v14, 0x16u);
       }
 
@@ -208,13 +208,13 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_messageNameToQueuedIncomingMessages allValues];
+  allValues = [(NSMutableDictionary *)self->_messageNameToQueuedIncomingMessages allValues];
   os_unfair_lock_unlock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -229,8 +229,8 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 delegate];
-        [v9 didTriggerMessageHandlerQueuedMessage:v8];
+        delegate = [v8 delegate];
+        [delegate didTriggerMessageHandlerQueuedMessage:v8];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -246,13 +246,13 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_messageNameToQueuedOutgoingMessage allValues];
+  allValues = [(NSMutableDictionary *)self->_messageNameToQueuedOutgoingMessage allValues];
   os_unfair_lock_unlock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -267,8 +267,8 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 delegate];
-        [v9 didTriggerMessageHandlerQueuedMessage:v8];
+        delegate = [v8 delegate];
+        [delegate didTriggerMessageHandlerQueuedMessage:v8];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -280,12 +280,12 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccountAddedDeviceNotification:(id)a3
+- (void)handleAccountAddedDeviceNotification:(id)notification
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"HMDDeviceNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"HMDDeviceNotificationKey"];
 
   v7 = v6;
   objc_opt_class();
@@ -303,20 +303,20 @@
 
   if (v9)
   {
-    v10 = [(HMDMessageHandler *)self currentAccountDevice];
-    v11 = v10;
-    if (v10)
+    currentAccountDevice = [(HMDMessageHandler *)self currentAccountDevice];
+    v11 = currentAccountDevice;
+    if (currentAccountDevice)
     {
-      v12 = [v10 identifier];
-      v13 = [v9 identifier];
-      if ([v12 hmf_isEqualToUUID:v13])
+      identifier = [currentAccountDevice identifier];
+      identifier2 = [v9 identifier];
+      if ([identifier hmf_isEqualToUUID:identifier2])
       {
-        v14 = [(HMDMessageHandler *)self hasQueuedOutgoingMessages];
+        hasQueuedOutgoingMessages = [(HMDMessageHandler *)self hasQueuedOutgoingMessages];
 
-        if (v14)
+        if (hasQueuedOutgoingMessages)
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = self;
+          selfCopy = self;
           v17 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
@@ -327,7 +327,7 @@
           }
 
           objc_autoreleasePoolPop(v15);
-          [(HMDMessageHandler *)v16 sendQueuedOutgoingMessages];
+          [(HMDMessageHandler *)selfCopy sendQueuedOutgoingMessages];
         }
       }
 
@@ -340,7 +340,7 @@
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -348,7 +348,7 @@
       v24 = 138543618;
       v25 = v22;
       v26 = 2112;
-      v27 = v4;
+      v27 = notificationCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to get new device from notification: %@", &v24, 0x16u);
     }
 
@@ -361,13 +361,13 @@
 - (BOOL)isReadyForOutgoingMessaging
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMessageHandler *)self appleAccountManager];
-  v4 = [v3 device];
+  appleAccountManager = [(HMDMessageHandler *)self appleAccountManager];
+  device = [appleAccountManager device];
 
-  if (!v4)
+  if (!device)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -375,7 +375,7 @@
       v11 = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = v3;
+      v14 = appleAccountManager;
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Not ready for outgoing messaging due to no device for account manager: %@", &v11, 0x16u);
     }
 
@@ -383,32 +383,32 @@
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4 != 0;
+  return device != 0;
 }
 
 - (id)currentAccountDevice
 {
-  v2 = [(HMDMessageHandler *)self appleAccountManager];
-  v3 = [v2 device];
+  appleAccountManager = [(HMDMessageHandler *)self appleAccountManager];
+  device = [appleAccountManager device];
 
-  return v3;
+  return device;
 }
 
-- (id)deviceForMessage:(id)a3
+- (id)deviceForMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMessageHandler *)self dataSource];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  dataSource = [(HMDMessageHandler *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 messageHandler:self deviceForOutgoingMessage:v4];
+    v7 = [dataSource messageHandler:self deviceForOutgoingMessage:messageCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -427,22 +427,22 @@
   return v7;
 }
 
-- (SEL)selectorForName:(id)a3
+- (SEL)selectorForName:(id)name
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] < 4)
+  nameCopy = name;
+  if ([nameCopy length] < 4)
   {
 LABEL_6:
-    if ([v4 length] >= 3)
+    if ([nameCopy length] >= 3)
     {
-      v11 = [v4 substringToIndex:3];
-      v12 = [v4 substringToIndex:3];
-      v13 = [v12 uppercaseString];
-      if ([v11 isEqualToString:v13])
+      v11 = [nameCopy substringToIndex:3];
+      v12 = [nameCopy substringToIndex:3];
+      uppercaseString = [v12 uppercaseString];
+      if ([v11 isEqualToString:uppercaseString])
       {
         v8 = 2;
-        v14 = [v4 substringToIndex:2];
+        v14 = [nameCopy substringToIndex:2];
         v15 = [v14 isEqualToString:@"HM"];
 
         if (v15)
@@ -460,17 +460,17 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  v5 = [v4 substringToIndex:4];
-  v6 = [v4 substringToIndex:4];
-  v7 = [v6 uppercaseString];
-  if (([v5 isEqualToString:v7] & 1) == 0)
+  v5 = [nameCopy substringToIndex:4];
+  v6 = [nameCopy substringToIndex:4];
+  uppercaseString2 = [v6 uppercaseString];
+  if (([v5 isEqualToString:uppercaseString2] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
   v8 = 3;
-  v9 = [v4 substringToIndex:3];
+  v9 = [nameCopy substringToIndex:3];
   v10 = [v9 isEqualToString:@"HMD"];
 
   if ((v10 & 1) == 0)
@@ -480,7 +480,7 @@ LABEL_6:
 
 LABEL_9:
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v4 substringFromIndex:v8];
+  v17 = [nameCopy substringFromIndex:v8];
   v18 = [v16 stringWithFormat:@"handle%@:", v17];
 
   v19 = NSSelectorFromString(v18);
@@ -488,7 +488,7 @@ LABEL_9:
   {
 LABEL_18:
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -503,7 +503,7 @@ LABEL_21:
     *buf = 138543874;
     v35 = v30;
     v36 = 2112;
-    v37 = v4;
+    v37 = nameCopy;
     v38 = 2112;
     v39 = v18;
     v31 = "%{public}@Failed to parse name: %@ selector: %@";
@@ -517,7 +517,7 @@ LABEL_20:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -528,7 +528,7 @@ LABEL_20:
     *buf = 138543874;
     v35 = v30;
     v36 = 2112;
-    v37 = v4;
+    v37 = nameCopy;
     v38 = 2112;
     v39 = v18;
     v31 = "%{public}@Failed to get handler for name: %@ selector: %@";
@@ -540,7 +540,7 @@ LABEL_20:
   if (([v22 isEqualToString:@"v"] & 1) == 0)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -548,7 +548,7 @@ LABEL_20:
       *buf = 138543874;
       v35 = v26;
       v36 = 2112;
-      v37 = v4;
+      v37 = nameCopy;
       v38 = 2112;
       v39 = v18;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Failed to route message due to unsafe return type on handler for name: %@ selector: %@", buf, 0x20u);
@@ -566,9 +566,9 @@ LABEL_22:
 - (void)routeQueuedIncomingMessages
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMessageHandler *)self dequeueQueuedIncomingMessages];
+  dequeueQueuedIncomingMessages = [(HMDMessageHandler *)self dequeueQueuedIncomingMessages];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -576,7 +576,7 @@ LABEL_22:
     *buf = 138543618;
     v20 = v7;
     v21 = 2112;
-    v22 = v3;
+    v22 = dequeueQueuedIncomingMessages;
     _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Routing queued incoming messages: %@", buf, 0x16u);
   }
 
@@ -585,7 +585,7 @@ LABEL_22:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v3;
+  v8 = dequeueQueuedIncomingMessages;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -601,7 +601,7 @@ LABEL_22:
           objc_enumerationMutation(v8);
         }
 
-        [(HMDMessageHandler *)v5 routeMessage:*(*(&v14 + 1) + 8 * v12++), v14];
+        [(HMDMessageHandler *)selfCopy routeMessage:*(*(&v14 + 1) + 8 * v12++), v14];
       }
 
       while (v10 != v12);
@@ -614,12 +614,12 @@ LABEL_22:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendQueuedOutgoingMessages:(id)a3
+- (void)sendQueuedOutgoingMessages:(id)messages
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -627,7 +627,7 @@ LABEL_22:
     *buf = 138543618;
     v21 = v8;
     v22 = 2112;
-    v23 = v4;
+    v23 = messagesCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Sending queued messages: %@", buf, 0x16u);
   }
 
@@ -636,7 +636,7 @@ LABEL_22:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v4;
+  v9 = messagesCopy;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -652,7 +652,7 @@ LABEL_22:
           objc_enumerationMutation(v9);
         }
 
-        [(HMDMessageHandler *)v6 relayMessage:*(*(&v15 + 1) + 8 * v13++) shouldQueue:0, v15];
+        [(HMDMessageHandler *)selfCopy relayMessage:*(*(&v15 + 1) + 8 * v13++) shouldQueue:0, v15];
       }
 
       while (v11 != v13);
@@ -665,25 +665,25 @@ LABEL_22:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendQueuedOutgoingMessagesForDevice:(id)a3
+- (void)sendQueuedOutgoingMessagesForDevice:(id)device
 {
-  v4 = [(HMDMessageHandler *)self queuedOutgoingMessagesForDevice:a3];
+  v4 = [(HMDMessageHandler *)self queuedOutgoingMessagesForDevice:device];
   [(HMDMessageHandler *)self sendQueuedOutgoingMessages:v4];
 }
 
 - (void)sendQueuedOutgoingMessages
 {
-  v3 = [(HMDMessageHandler *)self queuedOutgoingMessages];
-  [(HMDMessageHandler *)self sendQueuedOutgoingMessages:v3];
+  queuedOutgoingMessages = [(HMDMessageHandler *)self queuedOutgoingMessages];
+  [(HMDMessageHandler *)self sendQueuedOutgoingMessages:queuedOutgoingMessages];
 }
 
-- (BOOL)hasQueuedOutgoingMessagesForDevice:(id)a3
+- (BOOL)hasQueuedOutgoingMessagesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   deviceIdentifierToQueuedOutgoingMessageNames = self->_deviceIdentifierToQueuedOutgoingMessageNames;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)deviceIdentifierToQueuedOutgoingMessageNames objectForKey:v6];
+  identifier = [deviceCopy identifier];
+  v7 = [(NSMutableDictionary *)deviceIdentifierToQueuedOutgoingMessageNames objectForKey:identifier];
 
   if (v7)
   {
@@ -707,22 +707,22 @@ LABEL_22:
   return v3;
 }
 
-- (BOOL)shouldRelayIncomingMessage:(id)a3 error:(id *)a4
+- (BOOL)shouldRelayIncomingMessage:(id)message error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDMessageHandler *)self dataSource];
-  v8 = [v7 messageHandler:self shouldRelayIncomingMessage:v6];
+  messageCopy = message;
+  dataSource = [(HMDMessageHandler *)self dataSource];
+  v8 = [dataSource messageHandler:self shouldRelayIncomingMessage:messageCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -730,37 +730,37 @@ LABEL_22:
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v7;
+      v20 = dataSource;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Failed to get relay preference from data source: %@", &v17, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      *a4 = v10 = 0;
+      *error = bOOLValue = 0;
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v10;
+  return bOOLValue;
 }
 
-- (BOOL)isReadyForIncomingMessage:(id)a3 error:(id *)a4
+- (BOOL)isReadyForIncomingMessage:(id)message error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDMessageHandler *)self dataSource];
-  if (v7)
+  messageCopy = message;
+  dataSource = [(HMDMessageHandler *)self dataSource];
+  if (dataSource)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 messageHandler:self isReadyForIncomingMessage:v6];
+      v8 = [dataSource messageHandler:self isReadyForIncomingMessage:messageCopy];
     }
 
     else
@@ -772,7 +772,7 @@ LABEL_22:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -783,10 +783,10 @@ LABEL_22:
     }
 
     objc_autoreleasePoolPop(v9);
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -799,13 +799,13 @@ LABEL_22:
   return v8;
 }
 
-- (void)relayMessage:(id)a3 shouldQueue:(BOOL)a4
+- (void)relayMessage:(id)message shouldQueue:(BOOL)queue
 {
-  v4 = a4;
+  queueCopy = queue;
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -814,17 +814,17 @@ LABEL_22:
     *buf = 138543874;
     v51 = v10;
     v52 = 2112;
-    v53 = v6;
+    v53 = messageCopy;
     v54 = 2112;
     v55 = v11;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Relaying message: %@ should queue: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  if ([v6 isRemote])
+  if ([messageCopy isRemote])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v8;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -832,45 +832,45 @@ LABEL_22:
       *buf = 138543618;
       v51 = v15;
       v52 = 2112;
-      v53 = v6;
+      v53 = messageCopy;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Failed to relay remote message: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
     v16 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
-    [v6 respondWithError:v16];
-    v17 = [(HMDMessageHandler *)v13 metricsDispatcher];
-    [v17 submitFailureEventOfType:0 message:v6];
+    [messageCopy respondWithError:v16];
+    metricsDispatcher = [(HMDMessageHandler *)v13 metricsDispatcher];
+    [metricsDispatcher submitFailureEventOfType:0 message:messageCopy];
   }
 
   else
   {
-    if (v4)
+    if (queueCopy)
     {
-      [(HMDMessageHandler *)v8 queueOutgoingMessage:v6];
+      [(HMDMessageHandler *)selfCopy queueOutgoingMessage:messageCopy];
     }
 
-    v18 = [(HMDMessageHandler *)v8 deviceForMessage:v6];
+    v18 = [(HMDMessageHandler *)selfCopy deviceForMessage:messageCopy];
     if (v18)
     {
       v16 = v18;
-      [(HMDMessageHandler *)v8 associateDevice:v18 withOutgoingMessage:v6];
-      if ([(HMDMessageHandler *)v8 isReadyForOutgoingMessaging])
+      [(HMDMessageHandler *)selfCopy associateDevice:v18 withOutgoingMessage:messageCopy];
+      if ([(HMDMessageHandler *)selfCopy isReadyForOutgoingMessaging])
       {
-        v19 = [(HMDMessageHandler *)v8 dequeueOutgoingMessage:v6];
+        v19 = [(HMDMessageHandler *)selfCopy dequeueOutgoingMessage:messageCopy];
 
         if (v19)
         {
           v20 = [HMDRemoteDeviceMessageDestination alloc];
-          v21 = [(HMDMessageHandler *)v8 messageTargetUUID];
-          v22 = [(HMDRemoteDeviceMessageDestination *)v20 initWithTarget:v21 device:v16];
+          messageTargetUUID = [(HMDMessageHandler *)selfCopy messageTargetUUID];
+          v22 = [(HMDRemoteDeviceMessageDestination *)v20 initWithTarget:messageTargetUUID device:v16];
 
-          v23 = [v19 name];
-          v24 = [v19 remoteRestriction];
-          if ([v23 isEqualToString:@"HMMediaDestinationControllerUpdateDestinationRequestMessage"])
+          name = [v19 name];
+          remoteRestriction = [v19 remoteRestriction];
+          if ([name isEqualToString:@"HMMediaDestinationControllerUpdateDestinationRequestMessage"])
           {
             v25 = objc_autoreleasePoolPush();
-            v26 = v8;
+            v26 = selfCopy;
             v27 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
             {
@@ -889,26 +889,26 @@ LABEL_22:
             }
 
             objc_autoreleasePoolPop(v25);
-            v24 = 41;
+            remoteRestriction = 41;
           }
 
-          v30 = [(HMDMessageHandler *)v8 messageDispatcher];
-          v31 = [v19 name];
-          v32 = [v19 qualityOfService];
-          v33 = [v19 messagePayload];
-          v34 = [HMDRemoteMessage secureMessageWithName:v31 qualityOfService:v32 destination:v22 messagePayload:v33 restriction:v24];
+          messageDispatcher = [(HMDMessageHandler *)selfCopy messageDispatcher];
+          name2 = [v19 name];
+          qualityOfService = [v19 qualityOfService];
+          messagePayload = [v19 messagePayload];
+          v34 = [HMDRemoteMessage secureMessageWithName:name2 qualityOfService:qualityOfService destination:v22 messagePayload:messagePayload restriction:remoteRestriction];
 
-          v35 = [v19 responseHandler];
-          [v34 setResponseHandler:v35];
+          responseHandler = [v19 responseHandler];
+          [v34 setResponseHandler:responseHandler];
 
-          [v30 sendMessage:v34];
-          v6 = v19;
+          [messageDispatcher sendMessage:v34];
+          messageCopy = v19;
         }
 
         else
         {
           v44 = objc_autoreleasePoolPush();
-          v45 = v8;
+          v45 = selfCopy;
           v46 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
           {
@@ -919,14 +919,14 @@ LABEL_22:
           }
 
           objc_autoreleasePoolPop(v44);
-          v6 = 0;
+          messageCopy = 0;
         }
       }
 
       else
       {
         v40 = objc_autoreleasePoolPush();
-        v41 = v8;
+        v41 = selfCopy;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
@@ -934,7 +934,7 @@ LABEL_22:
           *buf = 138543618;
           v51 = v43;
           v52 = 2112;
-          v53 = v6;
+          v53 = messageCopy;
           _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_INFO, "%{public}@Leaving message in queue until ready for outgoing message: %@", buf, 0x16u);
         }
 
@@ -945,7 +945,7 @@ LABEL_22:
     else
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = v8;
+      v37 = selfCopy;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
@@ -953,7 +953,7 @@ LABEL_22:
         *buf = 138543618;
         v51 = v39;
         v52 = 2112;
-        v53 = v6;
+        v53 = messageCopy;
         _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@Leaving message in queue until device is found for message: %@", buf, 0x16u);
       }
 
@@ -965,20 +965,20 @@ LABEL_22:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logMediaDestinationControllerUpdateMetricsUsingMessage:(id)a3
+- (void)_logMediaDestinationControllerUpdateMetricsUsingMessage:(id)message
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMessageHandler *)self home];
-  v6 = [v5 homeTheaterSetupMetricDispatcher];
-  v7 = v6;
-  if (v5 && v6)
+  messageCopy = message;
+  home = [(HMDMessageHandler *)self home];
+  homeTheaterSetupMetricDispatcher = [home homeTheaterSetupMetricDispatcher];
+  v7 = homeTheaterSetupMetricDispatcher;
+  if (home && homeTheaterSetupMetricDispatcher)
   {
-    v8 = [v4 name];
-    v9 = [v4 messagePayload];
-    if ([v8 isEqualToString:@"HMMediaDestinationControllerUpdateDestinationRequestMessage"] && v9)
+    name = [messageCopy name];
+    messagePayload = [messageCopy messagePayload];
+    if ([name isEqualToString:@"HMMediaDestinationControllerUpdateDestinationRequestMessage"] && messagePayload)
     {
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CD0858]];
+      v10 = [messagePayload objectForKeyedSubscript:*MEMORY[0x277CD0858]];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -994,7 +994,7 @@ LABEL_22:
 
       v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v12];
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       v17 = v16;
       v39 = v13;
@@ -1031,11 +1031,11 @@ LABEL_22:
         {
           HMFGetLogIdentifier();
           v25 = v37 = v14;
-          v26 = [(HMDMessageHandler *)v15 messageTargetUUID];
+          messageTargetUUID = [(HMDMessageHandler *)selfCopy messageTargetUUID];
           *buf = 138543874;
           v42 = v25;
           v43 = 2112;
-          v44 = v26;
+          v44 = messageTargetUUID;
           v45 = 2112;
           v46 = v12;
           _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Received request to update controller %@ with destination identifier %@", buf, 0x20u);
@@ -1046,18 +1046,18 @@ LABEL_22:
         objc_autoreleasePoolPop(v14);
         if ([v12 isEqualToString:*MEMORY[0x277CD0860]])
         {
-          v27 = [(HMDMessageHandler *)v15 messageTargetUUID];
-          [v7 markRequestReceivedForGroupIdentifier:v27 metricType:4 setupSessionIdentifier:0 setupRequestOption:0 setupSessionStartTimeMS:0];
+          messageTargetUUID2 = [(HMDMessageHandler *)selfCopy messageTargetUUID];
+          [v7 markRequestReceivedForGroupIdentifier:messageTargetUUID2 metricType:4 setupSessionIdentifier:0 setupRequestOption:0 setupSessionStartTimeMS:0];
         }
 
         else
         {
           v40 = 0.0;
-          v28 = [v5 homeManager];
-          v29 = [v28 firstSetupSessionIdentifierOutputStartTime:&v40];
+          homeManager = [home homeManager];
+          v29 = [homeManager firstSetupSessionIdentifierOutputStartTime:&v40];
 
           v30 = objc_autoreleasePoolPush();
-          v31 = v15;
+          v31 = selfCopy;
           v32 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
@@ -1074,8 +1074,8 @@ LABEL_22:
 
           objc_autoreleasePoolPop(v30);
           v34 = 1000 * v40;
-          v35 = [(HMDMessageHandler *)v31 messageTargetUUID];
-          [v7 markRequestReceivedForGroupIdentifier:v35 metricType:3 setupSessionIdentifier:v29 setupRequestOption:0 setupSessionStartTimeMS:v34];
+          messageTargetUUID3 = [(HMDMessageHandler *)v31 messageTargetUUID];
+          [v7 markRequestReceivedForGroupIdentifier:messageTargetUUID3 metricType:3 setupSessionIdentifier:v29 setupRequestOption:0 setupSessionStartTimeMS:v34];
         }
       }
     }
@@ -1084,7 +1084,7 @@ LABEL_22:
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1100,12 +1100,12 @@ LABEL_22:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)routeMessage:(id)a3 shouldQueue:(BOOL)a4
+- (void)routeMessage:(id)message shouldQueue:(BOOL)queue
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  messageCopy = message;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1113,17 +1113,17 @@ LABEL_22:
     *buf = 138543618;
     v44 = v9;
     v45 = 2112;
-    v46 = v5;
+    v46 = messageCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Routing message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [v5 responseHandler];
+  responseHandler = [messageCopy responseHandler];
 
-  if (!v10)
+  if (!responseHandler)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1131,7 +1131,7 @@ LABEL_22:
       *buf = 138543618;
       v44 = v21;
       v45 = 2112;
-      v46 = v5;
+      v46 = messageCopy;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to route message due to no response handler from message: %@", buf, 0x16u);
     }
 
@@ -1140,15 +1140,15 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  [(HMDMessageHandler *)v7 queueIncomingMessage:v5];
+  [(HMDMessageHandler *)selfCopy queueIncomingMessage:messageCopy];
   v42 = 0;
-  v11 = [(HMDMessageHandler *)v7 isReadyForIncomingMessage:v5 error:&v42];
+  v11 = [(HMDMessageHandler *)selfCopy isReadyForIncomingMessage:messageCopy error:&v42];
   v12 = v42;
   if (v12)
   {
     v13 = v12;
     v14 = objc_autoreleasePoolPush();
-    v15 = v7;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -1162,7 +1162,7 @@ LABEL_22:
 
     objc_autoreleasePoolPop(v14);
 LABEL_11:
-    [v5 respondWithError:v13];
+    [messageCopy respondWithError:v13];
 
     goto LABEL_12;
   }
@@ -1172,18 +1172,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v23 = [(HMDMessageHandler *)v7 dequeueIncomingMessage:v5];
+  v23 = [(HMDMessageHandler *)selfCopy dequeueIncomingMessage:messageCopy];
 
   if (v23)
   {
     v41 = 0;
-    v24 = [(HMDMessageHandler *)v7 shouldRelayIncomingMessage:v23 error:&v41];
+    v24 = [(HMDMessageHandler *)selfCopy shouldRelayIncomingMessage:v23 error:&v41];
     v25 = v41;
     if (v25)
     {
       v26 = v25;
       v27 = objc_autoreleasePoolPush();
-      v28 = v7;
+      v28 = selfCopy;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
@@ -1200,24 +1200,24 @@ LABEL_11:
 
     else
     {
-      [(HMDMessageHandler *)v7 _logMediaDestinationControllerUpdateMetricsUsingMessage:v23];
+      [(HMDMessageHandler *)selfCopy _logMediaDestinationControllerUpdateMetricsUsingMessage:v23];
       if (v24)
       {
-        [(HMDMessageHandler *)v7 relayMessage:v23];
+        [(HMDMessageHandler *)selfCopy relayMessage:v23];
         goto LABEL_27;
       }
 
-      v35 = [v23 name];
-      v36 = [(HMDMessageHandler *)v7 selectorForName:v35];
+      name = [v23 name];
+      v36 = [(HMDMessageHandler *)selfCopy selectorForName:name];
 
       if (v36)
       {
-        [(HMDMessageHandler *)v7 performSelector:v36 withObject:v23];
+        [(HMDMessageHandler *)selfCopy performSelector:v36 withObject:v23];
         goto LABEL_27;
       }
 
       v37 = objc_autoreleasePoolPush();
-      v38 = v7;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1236,12 +1236,12 @@ LABEL_11:
     [v23 respondWithError:v26];
 
 LABEL_27:
-    v5 = v23;
+    messageCopy = v23;
     goto LABEL_12;
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = v7;
+  v32 = selfCopy;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
@@ -1252,19 +1252,19 @@ LABEL_27:
   }
 
   objc_autoreleasePoolPop(v31);
-  v5 = 0;
+  messageCopy = 0;
 LABEL_12:
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)queuedOutgoingMessagesForDevice:(id)a3
+- (id)queuedOutgoingMessagesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   deviceIdentifierToQueuedOutgoingMessageNames = self->_deviceIdentifierToQueuedOutgoingMessageNames;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)deviceIdentifierToQueuedOutgoingMessageNames objectForKey:v6];
+  identifier = [deviceCopy identifier];
+  v7 = [(NSMutableDictionary *)deviceIdentifierToQueuedOutgoingMessageNames objectForKey:identifier];
 
   if (v7)
   {
@@ -1274,17 +1274,17 @@ LABEL_12:
     v11[3] = &unk_278686DF0;
     v11[4] = self;
     v8 = [v7 na_map:v11];
-    v9 = [v8 allObjects];
+    allObjects = [v8 allObjects];
   }
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v9;
+  return allObjects;
 }
 
 id __53__HMDMessageHandler_queuedOutgoingMessagesForDevice___block_invoke(uint64_t a1, uint64_t a2)
@@ -1298,25 +1298,25 @@ id __53__HMDMessageHandler_queuedOutgoingMessagesForDevice___block_invoke(uint64
 - (id)queuedOutgoingMessages
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_messageNameToQueuedOutgoingMessage allValues];
+  allValues = [(NSMutableDictionary *)self->_messageNameToQueuedOutgoingMessage allValues];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 na_map:&__block_literal_global_48_259950];
+  v4 = [allValues na_map:&__block_literal_global_48_259950];
 
   return v4;
 }
 
-- (BOOL)hasQueuedOutgoingMessage:(id)a3
+- (BOOL)hasQueuedOutgoingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_messageNameToQueuedOutgoingMessage allValues];
+  allValues = [(NSMutableDictionary *)self->_messageNameToQueuedOutgoingMessage allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__HMDMessageHandler_hasQueuedOutgoingMessage___block_invoke;
   v9[3] = &unk_278686DC8;
-  v6 = v4;
+  v6 = messageCopy;
   v10 = v6;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [allValues na_firstObjectPassingTest:v9];
 
   os_unfair_lock_unlock(&self->_lock);
   return v7 != 0;
@@ -1331,17 +1331,17 @@ uint64_t __46__HMDMessageHandler_hasQueuedOutgoingMessage___block_invoke(uint64_
   return v5;
 }
 
-- (void)_cleanUpDeviceMappingsForMessage:(id)a3
+- (void)_cleanUpDeviceMappingsForMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_deviceIdentifierToQueuedOutgoingMessageNames allKeys];
+  allKeys = [(NSMutableDictionary *)self->_deviceIdentifierToQueuedOutgoingMessageNames allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1352,15 +1352,15 @@ uint64_t __46__HMDMessageHandler_hasQueuedOutgoingMessage___block_invoke(uint64_
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_deviceIdentifierToQueuedOutgoingMessageNames objectForKey:v10];
         if (v11)
         {
-          v12 = [v4 name];
-          [v11 removeObject:v12];
+          name = [messageCopy name];
+          [v11 removeObject:name];
 
           if (![v11 count])
           {
@@ -1369,7 +1369,7 @@ uint64_t __46__HMDMessageHandler_hasQueuedOutgoingMessage___block_invoke(uint64_
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -1378,12 +1378,12 @@ uint64_t __46__HMDMessageHandler_hasQueuedOutgoingMessage___block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dequeueOutgoingMessage:(id)a3
+- (id)dequeueOutgoingMessage:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1391,42 +1391,42 @@ uint64_t __46__HMDMessageHandler_hasQueuedOutgoingMessage___block_invoke(uint64_
     *buf = 138543618;
     v20 = v8;
     v21 = 2112;
-    v22 = v4;
+    v22 = messageCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Dequeueing outgoing message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v9 = [(NSMutableDictionary *)v6->_messageNameToQueuedOutgoingMessage allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_messageNameToQueuedOutgoingMessage allValues];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __44__HMDMessageHandler_dequeueOutgoingMessage___block_invoke;
   v17[3] = &unk_278686DC8;
-  v10 = v4;
+  v10 = messageCopy;
   v18 = v10;
-  v11 = [v9 na_firstObjectPassingTest:v17];
+  v11 = [allValues na_firstObjectPassingTest:v17];
 
   if (v11)
   {
     [v11 setDelegate:0];
     [v11 suspendTimer];
-    messageNameToQueuedOutgoingMessage = v6->_messageNameToQueuedOutgoingMessage;
-    v13 = [v10 name];
-    [(NSMutableDictionary *)messageNameToQueuedOutgoingMessage removeObjectForKey:v13];
+    messageNameToQueuedOutgoingMessage = selfCopy->_messageNameToQueuedOutgoingMessage;
+    name = [v10 name];
+    [(NSMutableDictionary *)messageNameToQueuedOutgoingMessage removeObjectForKey:name];
 
-    [(HMDMessageHandler *)v6 _cleanUpDeviceMappingsForMessage:v10];
-    v14 = [v11 message];
+    [(HMDMessageHandler *)selfCopy _cleanUpDeviceMappingsForMessage:v10];
+    message = [v11 message];
   }
 
   else
   {
-    v14 = 0;
+    message = 0;
   }
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return message;
 }
 
 uint64_t __44__HMDMessageHandler_dequeueOutgoingMessage___block_invoke(uint64_t a1, void *a2)
@@ -1438,13 +1438,13 @@ uint64_t __44__HMDMessageHandler_dequeueOutgoingMessage___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)associateDevice:(id)a3 withOutgoingMessage:(id)a4
+- (void)associateDevice:(id)device withOutgoingMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1452,35 +1452,35 @@ uint64_t __44__HMDMessageHandler_dequeueOutgoingMessage___block_invoke(uint64_t 
     v16 = 138543874;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = deviceCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = messageCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Associating device: %@ with outgoing message: %@", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_lock_with_options();
-  v12 = [v6 identifier];
-  v13 = [(NSMutableDictionary *)v9->_deviceIdentifierToQueuedOutgoingMessageNames objectForKey:v12];
+  identifier = [deviceCopy identifier];
+  v13 = [(NSMutableDictionary *)selfCopy->_deviceIdentifierToQueuedOutgoingMessageNames objectForKey:identifier];
   if (!v13)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    [(NSMutableDictionary *)v9->_deviceIdentifierToQueuedOutgoingMessageNames setObject:v13 forKey:v12];
+    [(NSMutableDictionary *)selfCopy->_deviceIdentifierToQueuedOutgoingMessageNames setObject:v13 forKey:identifier];
   }
 
-  v14 = [v7 name];
-  [v13 addObject:v14];
+  name = [messageCopy name];
+  [v13 addObject:name];
 
-  os_unfair_lock_unlock(&v9->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueOutgoingMessage:(id)a3
+- (void)queueOutgoingMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1488,37 +1488,37 @@ uint64_t __44__HMDMessageHandler_dequeueOutgoingMessage___block_invoke(uint64_t 
     v23 = 138543618;
     v24 = v8;
     v25 = 2112;
-    v26 = v4;
+    v26 = messageCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Queueing outgoing message: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [[HMDMessageHandlerQueuedMessage alloc] initWithMessage:v4 timeInterval:180.0];
-  [(HMDMessageHandlerQueuedMessage *)v9 setDelegate:v6];
+  v9 = [[HMDMessageHandlerQueuedMessage alloc] initWithMessage:messageCopy timeInterval:180.0];
+  [(HMDMessageHandlerQueuedMessage *)v9 setDelegate:selfCopy];
   [(HMDMessageHandlerQueuedMessage *)v9 resumeTimer];
   os_unfair_lock_lock_with_options();
-  messageNameToQueuedOutgoingMessage = v6->_messageNameToQueuedOutgoingMessage;
-  v11 = [(HMDMessageHandlerQueuedMessage *)v9 name];
-  v12 = [(NSMutableDictionary *)messageNameToQueuedOutgoingMessage objectForKey:v11];
+  messageNameToQueuedOutgoingMessage = selfCopy->_messageNameToQueuedOutgoingMessage;
+  name = [(HMDMessageHandlerQueuedMessage *)v9 name];
+  v12 = [(NSMutableDictionary *)messageNameToQueuedOutgoingMessage objectForKey:name];
 
-  v13 = v6->_messageNameToQueuedOutgoingMessage;
-  v14 = [(HMDMessageHandlerQueuedMessage *)v9 name];
-  [(NSMutableDictionary *)v13 setObject:v9 forKey:v14];
+  v13 = selfCopy->_messageNameToQueuedOutgoingMessage;
+  name2 = [(HMDMessageHandlerQueuedMessage *)v9 name];
+  [(NSMutableDictionary *)v13 setObject:v9 forKey:name2];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v12)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v6;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v12 message];
+      message = [v12 message];
       v23 = 138543618;
       v24 = v18;
       v25 = 2112;
-      v26 = v19;
+      v26 = message;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Canceling queued outgoing message due to duplicate message name for message: %@", &v23, 0x16u);
     }
 
@@ -1526,25 +1526,25 @@ uint64_t __44__HMDMessageHandler_dequeueOutgoingMessage___block_invoke(uint64_t 
     [v12 setDelegate:0];
     [v12 suspendTimer];
     v20 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-    v21 = [v12 message];
-    [v21 respondWithError:v20];
+    message2 = [v12 message];
+    [message2 respondWithError:v20];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasQueuedIncomingMessage:(id)a3
+- (BOOL)hasQueuedIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_messageNameToQueuedIncomingMessages allValues];
+  allValues = [(NSMutableDictionary *)self->_messageNameToQueuedIncomingMessages allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__HMDMessageHandler_hasQueuedIncomingMessage___block_invoke;
   v9[3] = &unk_278686DC8;
-  v6 = v4;
+  v6 = messageCopy;
   v10 = v6;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v7 = [allValues na_firstObjectPassingTest:v9];
 
   os_unfair_lock_unlock(&self->_lock);
   return v7 != 0;
@@ -1563,25 +1563,25 @@ uint64_t __46__HMDMessageHandler_hasQueuedIncomingMessage___block_invoke(uint64_
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDMessageHandler *)v4 queuedIncomingMessages];
+    queuedIncomingMessages = [(HMDMessageHandler *)selfCopy queuedIncomingMessages];
     v12 = 138543618;
     v13 = v6;
     v14 = 2112;
-    v15 = v7;
+    v15 = queuedIncomingMessages;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Dequeueing incoming messages: %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  v8 = [(NSMutableDictionary *)v4->_messageNameToQueuedIncomingMessages allValues];
-  [(NSMutableDictionary *)v4->_messageNameToQueuedIncomingMessages removeAllObjects];
-  os_unfair_lock_unlock(&v4->_lock);
-  v9 = [v8 na_map:&__block_literal_global_45_259961];
+  allValues = [(NSMutableDictionary *)selfCopy->_messageNameToQueuedIncomingMessages allValues];
+  [(NSMutableDictionary *)selfCopy->_messageNameToQueuedIncomingMessages removeAllObjects];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  v9 = [allValues na_map:&__block_literal_global_45_259961];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -1598,12 +1598,12 @@ id __50__HMDMessageHandler_dequeueQueuedIncomingMessages__block_invoke(uint64_t 
   return v3;
 }
 
-- (id)dequeueIncomingMessage:(id)a3
+- (id)dequeueIncomingMessage:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1611,41 +1611,41 @@ id __50__HMDMessageHandler_dequeueQueuedIncomingMessages__block_invoke(uint64_t 
     *buf = 138543618;
     v20 = v8;
     v21 = 2112;
-    v22 = v4;
+    v22 = messageCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Dequeueing incoming message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v9 = [(NSMutableDictionary *)v6->_messageNameToQueuedIncomingMessages allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_messageNameToQueuedIncomingMessages allValues];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke;
   v17[3] = &unk_278686DC8;
-  v10 = v4;
+  v10 = messageCopy;
   v18 = v10;
-  v11 = [v9 na_firstObjectPassingTest:v17];
+  v11 = [allValues na_firstObjectPassingTest:v17];
 
   if (v11)
   {
     [v11 setDelegate:0];
     [v11 suspendTimer];
-    messageNameToQueuedIncomingMessages = v6->_messageNameToQueuedIncomingMessages;
-    v13 = [v10 name];
-    [(NSMutableDictionary *)messageNameToQueuedIncomingMessages removeObjectForKey:v13];
+    messageNameToQueuedIncomingMessages = selfCopy->_messageNameToQueuedIncomingMessages;
+    name = [v10 name];
+    [(NSMutableDictionary *)messageNameToQueuedIncomingMessages removeObjectForKey:name];
 
-    v14 = [v11 message];
+    message = [v11 message];
   }
 
   else
   {
-    v14 = 0;
+    message = 0;
   }
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return message;
 }
 
 uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t a1, void *a2)
@@ -1657,12 +1657,12 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
   return v5;
 }
 
-- (void)queueIncomingMessage:(id)a3
+- (void)queueIncomingMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1670,37 +1670,37 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
     v23 = 138543618;
     v24 = v8;
     v25 = 2112;
-    v26 = v4;
+    v26 = messageCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Queueing incoming message: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [[HMDMessageHandlerQueuedMessage alloc] initWithMessage:v4 timeInterval:600.0];
-  [(HMDMessageHandlerQueuedMessage *)v9 setDelegate:v6];
+  v9 = [[HMDMessageHandlerQueuedMessage alloc] initWithMessage:messageCopy timeInterval:600.0];
+  [(HMDMessageHandlerQueuedMessage *)v9 setDelegate:selfCopy];
   [(HMDMessageHandlerQueuedMessage *)v9 resumeTimer];
   os_unfair_lock_lock_with_options();
-  messageNameToQueuedIncomingMessages = v6->_messageNameToQueuedIncomingMessages;
-  v11 = [(HMDMessageHandlerQueuedMessage *)v9 name];
-  v12 = [(NSMutableDictionary *)messageNameToQueuedIncomingMessages objectForKey:v11];
+  messageNameToQueuedIncomingMessages = selfCopy->_messageNameToQueuedIncomingMessages;
+  name = [(HMDMessageHandlerQueuedMessage *)v9 name];
+  v12 = [(NSMutableDictionary *)messageNameToQueuedIncomingMessages objectForKey:name];
 
-  v13 = v6->_messageNameToQueuedIncomingMessages;
-  v14 = [(HMDMessageHandlerQueuedMessage *)v9 name];
-  [(NSMutableDictionary *)v13 setObject:v9 forKey:v14];
+  v13 = selfCopy->_messageNameToQueuedIncomingMessages;
+  name2 = [(HMDMessageHandlerQueuedMessage *)v9 name];
+  [(NSMutableDictionary *)v13 setObject:v9 forKey:name2];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v12)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v6;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v12 message];
+      message = [v12 message];
       v23 = 138543618;
       v24 = v18;
       v25 = 2112;
-      v26 = v19;
+      v26 = message;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Canceling queued incoming message due to duplicate message name for message: %@", &v23, 0x16u);
     }
 
@@ -1708,8 +1708,8 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
     [v12 setDelegate:0];
     [v12 suspendTimer];
     v20 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-    v21 = [v12 message];
-    [v21 respondWithError:v20];
+    message2 = [v12 message];
+    [message2 respondWithError:v20];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1718,9 +1718,9 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
 - (id)queuedIncomingMessages
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_messageNameToQueuedIncomingMessages allValues];
+  allValues = [(NSMutableDictionary *)self->_messageNameToQueuedIncomingMessages allValues];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 na_map:&__block_literal_global_259966];
+  v4 = [allValues na_map:&__block_literal_global_259966];
 
   return v4;
 }
@@ -1736,10 +1736,10 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
 - (void)registerForNotifications
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMessageHandler *)self notifications];
-  v4 = [(HMDMessageHandler *)self notificationsToObject];
+  notifications = [(HMDMessageHandler *)self notifications];
+  notificationsToObject = [(HMDMessageHandler *)self notificationsToObject];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1747,16 +1747,16 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
     *buf = 138543874;
     v29 = v8;
     v30 = 2112;
-    v31 = v3;
+    v31 = notifications;
     v32 = 2112;
-    v33 = v4;
+    v33 = notificationsToObject;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Register for notifications: %@ notifications to objects: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 allKeys];
-  v22 = v3;
-  v10 = [v3 arrayByAddingObjectsFromArray:v9];
+  allKeys = [notificationsToObject allKeys];
+  v22 = notifications;
+  v10 = [notifications arrayByAddingObjectsFromArray:allKeys];
 
   v25 = 0u;
   v26 = 0u;
@@ -1778,13 +1778,13 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [(HMDMessageHandler *)v6 selectorForName:v16];
+        v17 = [(HMDMessageHandler *)selfCopy selectorForName:v16];
         if (v17)
         {
           v18 = v17;
-          v19 = [v4 objectForKeyedSubscript:v16];
-          v20 = [(HMDMessageHandler *)v6 notificationCenter];
-          [v20 addObserver:v6 selector:v18 name:v16 object:v19];
+          v19 = [notificationsToObject objectForKeyedSubscript:v16];
+          notificationCenter = [(HMDMessageHandler *)selfCopy notificationCenter];
+          [notificationCenter addObserver:selfCopy selector:v18 name:v16 object:v19];
         }
       }
 
@@ -1797,16 +1797,16 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForSPIRemoteMessages:(id)a3 home:(id)a4 userPrivilege:(unint64_t)a5 internalBuildOnly:(BOOL)a6
+- (void)registerForSPIRemoteMessages:(id)messages home:(id)home userPrivilege:(unint64_t)privilege internalBuildOnly:(BOOL)only
 {
-  v6 = a6;
+  onlyCopy = only;
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v28 = a4;
-  if (v6 && (isInternalBuild() & 1) == 0)
+  messagesCopy = messages;
+  homeCopy = home;
+  if (onlyCopy && (isInternalBuild() & 1) == 0)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -1814,7 +1814,7 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
       *buf = 138543618;
       v36 = v22;
       v37 = 2112;
-      v38 = v9;
+      v38 = messagesCopy;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Skipping registration for internal build messages: %@", buf, 0x16u);
     }
 
@@ -1823,15 +1823,15 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
 
   else
   {
-    v27 = [(HMDMessageHandler *)self messageDispatcher];
+    messageDispatcher = [(HMDMessageHandler *)self messageDispatcher];
     v26 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
     v10 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = v9;
-    v11 = v9;
+    v24 = messagesCopy;
+    v11 = messagesCopy;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v12)
     {
@@ -1849,12 +1849,12 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
           v16 = *(*(&v29 + 1) + 8 * i);
           if ([(HMDMessageHandler *)self selectorForName:v16])
           {
-            v17 = [HMDUserMessagePolicy userMessagePolicyWithHome:v28 userPrivilege:a5 remoteAccessRequired:0];
+            v17 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:privilege remoteAccessRequired:0];
             v33[0] = v17;
             v33[1] = v10;
             v33[2] = v26;
             v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
-            [v27 registerForMessage:v16 receiver:self policies:v18 selector:sel_routeMessage_];
+            [messageDispatcher registerForMessage:v16 receiver:self policies:v18 selector:sel_routeMessage_];
           }
         }
 
@@ -1864,21 +1864,21 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
       while (v13);
     }
 
-    v9 = v24;
+    messagesCopy = v24;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessagesWithHome:(id)a3
+- (void)registerForMessagesWithHome:(id)home
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMessageHandler *)self ownerPrivateRemoteMessages];
-  v6 = [(HMDMessageHandler *)self adminPrivateRemoteMessages];
-  v7 = [(HMDMessageHandler *)self internalMessages];
+  homeCopy = home;
+  ownerPrivateRemoteMessages = [(HMDMessageHandler *)self ownerPrivateRemoteMessages];
+  adminPrivateRemoteMessages = [(HMDMessageHandler *)self adminPrivateRemoteMessages];
+  internalMessages = [(HMDMessageHandler *)self internalMessages];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1886,28 +1886,28 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
     v13 = 138544130;
     v14 = v11;
     v15 = 2112;
-    v16 = v5;
+    v16 = ownerPrivateRemoteMessages;
     v17 = 2112;
-    v18 = v6;
+    v18 = adminPrivateRemoteMessages;
     v19 = 2112;
-    v20 = v7;
+    v20 = internalMessages;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Registering for messages owner: %@, admin: %@, internal: %@", &v13, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMDMessageHandler *)v9 registerForSPIRemoteMessages:v5 home:v4 userPrivilege:3 internalBuildOnly:0];
-  [(HMDMessageHandler *)v9 registerForSPIRemoteMessages:v6 home:v4 userPrivilege:4 internalBuildOnly:0];
-  [(HMDMessageHandler *)v9 registerForSPIRemoteMessages:v7 home:v4 userPrivilege:3 internalBuildOnly:1];
+  [(HMDMessageHandler *)selfCopy registerForSPIRemoteMessages:ownerPrivateRemoteMessages home:homeCopy userPrivilege:3 internalBuildOnly:0];
+  [(HMDMessageHandler *)selfCopy registerForSPIRemoteMessages:adminPrivateRemoteMessages home:homeCopy userPrivilege:4 internalBuildOnly:0];
+  [(HMDMessageHandler *)selfCopy registerForSPIRemoteMessages:internalMessages home:homeCopy userPrivilege:3 internalBuildOnly:1];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1918,94 +1918,94 @@ uint64_t __44__HMDMessageHandler_dequeueIncomingMessage___block_invoke(uint64_t 
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDMessageHandler *)v6 registerForMessagesWithHome:v4];
-  [(HMDMessageHandler *)v6 registerForNotifications];
-  [(HMDMessageHandler *)v6 setHome:v4];
-  v9 = [v4 homeManager];
-  [(HMDMessageHandler *)v6 setHomeManager:v9];
+  [(HMDMessageHandler *)selfCopy registerForMessagesWithHome:homeCopy];
+  [(HMDMessageHandler *)selfCopy registerForNotifications];
+  [(HMDMessageHandler *)selfCopy setHome:homeCopy];
+  homeManager = [homeCopy homeManager];
+  [(HMDMessageHandler *)selfCopy setHomeManager:homeManager];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMessageHandler)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 ownerPrivateRemoteMessages:(id)a6 adminPrivateRemoteMessages:(id)a7 internalMessages:(id)a8 notifications:(id)a9 notificationsToObject:(id)a10 appleAccountManager:(id)a11 metricsDispatcher:(id)a12
+- (HMDMessageHandler)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher notificationCenter:(id)center ownerPrivateRemoteMessages:(id)messages adminPrivateRemoteMessages:(id)remoteMessages internalMessages:(id)internalMessages notifications:(id)notifications notificationsToObject:(id)self0 appleAccountManager:(id)self1 metricsDispatcher:(id)self2
 {
-  v17 = a3;
-  v42 = a4;
-  v18 = a4;
-  v50 = a5;
-  v49 = a6;
-  v48 = a7;
-  v43 = a8;
-  v47 = a8;
-  v19 = a9;
-  v20 = a10;
-  v46 = a11;
-  v21 = a12;
-  if (!v17)
+  dCopy = d;
+  dispatcherCopy = dispatcher;
+  dispatcherCopy2 = dispatcher;
+  centerCopy = center;
+  messagesCopy = messages;
+  remoteMessagesCopy = remoteMessages;
+  internalMessagesCopy = internalMessages;
+  internalMessagesCopy2 = internalMessages;
+  notificationsCopy = notifications;
+  objectCopy = object;
+  managerCopy = manager;
+  metricsDispatcherCopy = metricsDispatcher;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v18)
+  if (!dispatcherCopy2)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v50)
+  if (!centerCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v49)
+  if (!messagesCopy)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  if (!v48)
+  if (!remoteMessagesCopy)
   {
 LABEL_17:
     _HMFPreconditionFailure();
     goto LABEL_18;
   }
 
-  if (!v47)
+  if (!internalMessagesCopy2)
   {
 LABEL_18:
     _HMFPreconditionFailure();
     goto LABEL_19;
   }
 
-  if (!v19)
+  if (!notificationsCopy)
   {
 LABEL_19:
     _HMFPreconditionFailure();
     goto LABEL_20;
   }
 
-  if (!v20)
+  if (!objectCopy)
   {
 LABEL_20:
     _HMFPreconditionFailure();
     goto LABEL_21;
   }
 
-  v22 = v21;
-  if (!v21)
+  v22 = metricsDispatcherCopy;
+  if (!metricsDispatcherCopy)
   {
 LABEL_21:
     v33 = _HMFPreconditionFailure();
-    return [(HMDMessageHandler *)v33 initWithMessageTargetUUID:v34 messageDispatcher:v35 notificationCenter:v36 ownerPrivateRemoteMessages:v37 adminPrivateRemoteMessages:v38 internalMessages:v39 notifications:v40 notificationsToObject:a9, a10];
+    return [(HMDMessageHandler *)v33 initWithMessageTargetUUID:v34 messageDispatcher:v35 notificationCenter:v36 ownerPrivateRemoteMessages:v37 adminPrivateRemoteMessages:v38 internalMessages:v39 notifications:v40 notificationsToObject:notifications, object];
   }
 
-  v44 = v20;
-  v23 = [v19 arrayByAddingObject:@"HMDAccountAddedDeviceNotification"];
+  v44 = objectCopy;
+  v23 = [notificationsCopy arrayByAddingObject:@"HMDAccountAddedDeviceNotification"];
 
   v51.receiver = self;
   v51.super_class = HMDMessageHandler;
@@ -2013,49 +2013,49 @@ LABEL_21:
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_messageTargetUUID, a3);
-    objc_storeStrong(&v25->_messageDispatcher, v42);
-    objc_storeStrong(&v25->_notificationCenter, a5);
-    objc_storeStrong(&v25->_ownerPrivateRemoteMessages, a6);
-    objc_storeStrong(&v25->_adminPrivateRemoteMessages, a7);
-    objc_storeStrong(&v25->_internalMessages, v43);
+    objc_storeStrong(&v24->_messageTargetUUID, d);
+    objc_storeStrong(&v25->_messageDispatcher, dispatcherCopy);
+    objc_storeStrong(&v25->_notificationCenter, center);
+    objc_storeStrong(&v25->_ownerPrivateRemoteMessages, messages);
+    objc_storeStrong(&v25->_adminPrivateRemoteMessages, remoteMessages);
+    objc_storeStrong(&v25->_internalMessages, internalMessagesCopy);
     objc_storeStrong(&v25->_notifications, v23);
-    objc_storeStrong(&v25->_notificationsToObject, a10);
-    objc_storeStrong(&v25->_appleAccountManager, a11);
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v25->_notificationsToObject, object);
+    objc_storeStrong(&v25->_appleAccountManager, manager);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     messageNameToQueuedIncomingMessages = v25->_messageNameToQueuedIncomingMessages;
-    v25->_messageNameToQueuedIncomingMessages = v26;
+    v25->_messageNameToQueuedIncomingMessages = dictionary;
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     messageNameToQueuedOutgoingMessage = v25->_messageNameToQueuedOutgoingMessage;
-    v25->_messageNameToQueuedOutgoingMessage = v28;
+    v25->_messageNameToQueuedOutgoingMessage = dictionary2;
 
-    v30 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     deviceIdentifierToQueuedOutgoingMessageNames = v25->_deviceIdentifierToQueuedOutgoingMessageNames;
-    v25->_deviceIdentifierToQueuedOutgoingMessageNames = v30;
+    v25->_deviceIdentifierToQueuedOutgoingMessageNames = dictionary3;
 
-    objc_storeStrong(&v25->_metricsDispatcher, a12);
+    objc_storeStrong(&v25->_metricsDispatcher, metricsDispatcher);
   }
 
   return v25;
 }
 
-- (HMDMessageHandler)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 ownerPrivateRemoteMessages:(id)a6 adminPrivateRemoteMessages:(id)a7 internalMessages:(id)a8 notifications:(id)a9 notificationsToObject:(id)a10
+- (HMDMessageHandler)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher notificationCenter:(id)center ownerPrivateRemoteMessages:(id)messages adminPrivateRemoteMessages:(id)remoteMessages internalMessages:(id)internalMessages notifications:(id)notifications notificationsToObject:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  objectCopy = object;
+  notificationsCopy = notifications;
+  internalMessagesCopy = internalMessages;
+  remoteMessagesCopy = remoteMessages;
+  messagesCopy = messages;
+  centerCopy = center;
+  dispatcherCopy = dispatcher;
+  dCopy = d;
   v24 = [HMDMessageHandlerMetricsDispatcher alloc];
   v25 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v26 = [(HMDMessageHandlerMetricsDispatcher *)v24 initWithIdentifier:v23 logEventSubmitter:v25];
+  v26 = [(HMDMessageHandlerMetricsDispatcher *)v24 initWithIdentifier:dCopy logEventSubmitter:v25];
 
   v27 = +[HMDAppleAccountManager sharedManager];
-  v30 = [(HMDMessageHandler *)self initWithMessageTargetUUID:v23 messageDispatcher:v22 notificationCenter:v21 ownerPrivateRemoteMessages:v20 adminPrivateRemoteMessages:v19 internalMessages:v18 notifications:v17 notificationsToObject:v16 appleAccountManager:v27 metricsDispatcher:v26];
+  v30 = [(HMDMessageHandler *)self initWithMessageTargetUUID:dCopy messageDispatcher:dispatcherCopy notificationCenter:centerCopy ownerPrivateRemoteMessages:messagesCopy adminPrivateRemoteMessages:remoteMessagesCopy internalMessages:internalMessagesCopy notifications:notificationsCopy notificationsToObject:objectCopy appleAccountManager:v27 metricsDispatcher:v26];
 
   return v30;
 }

@@ -1,26 +1,26 @@
 @interface HDOntologyLocalizedStringProvider
-+ (id)_localizedLoggingUnitForAttribute:(id)a3 locale:(id)a4 propertyType:(int64_t)a5;
-+ (id)_nullLocalizedOntologyStringsWithVersion:(int64_t)a3 localesToDelete:(id)a4 propertyType:(int64_t)a5;
-+ (id)localizedLoggingUnitsForConcept:(id)a3;
-+ (id)localizedOntologyPreferredNamesForConcept:(id)a3 version:(id)a4 withUserDomainConceptPropertyType:(int64_t)a5;
-+ (id)localizedUserDomainConceptPropertyStringForConceptAttribute:(id)a3 locale:(id)a4 propertyType:(int64_t)a5;
-+ (id)nullLocalizedOntologyPreferredNamesWithVersion:(int64_t)a3 withUserDomainConceptPropertyType:(int64_t)a4;
++ (id)_localizedLoggingUnitForAttribute:(id)attribute locale:(id)locale propertyType:(int64_t)type;
++ (id)_nullLocalizedOntologyStringsWithVersion:(int64_t)version localesToDelete:(id)delete propertyType:(int64_t)type;
++ (id)localizedLoggingUnitsForConcept:(id)concept;
++ (id)localizedOntologyPreferredNamesForConcept:(id)concept version:(id)version withUserDomainConceptPropertyType:(int64_t)type;
++ (id)localizedUserDomainConceptPropertyStringForConceptAttribute:(id)attribute locale:(id)locale propertyType:(int64_t)type;
++ (id)nullLocalizedOntologyPreferredNamesWithVersion:(int64_t)version withUserDomainConceptPropertyType:(int64_t)type;
 @end
 
 @implementation HDOntologyLocalizedStringProvider
 
-+ (id)localizedOntologyPreferredNamesForConcept:(id)a3 version:(id)a4 withUserDomainConceptPropertyType:(int64_t)a5
++ (id)localizedOntologyPreferredNamesForConcept:(id)concept version:(id)version withUserDomainConceptPropertyType:(int64_t)type
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
+  conceptCopy = concept;
+  versionCopy = version;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = v6;
-  obj = [v6 attributes];
+  v22 = conceptCopy;
+  obj = [conceptCopy attributes];
   v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -67,24 +67,24 @@
 
         if ([v13 isDeleted])
         {
-          v16 = [MEMORY[0x277CCDB10] nullPropertyWithType:a5 locale:v15 version:{objc_msgSend(v13, "version")}];
+          v16 = [MEMORY[0x277CCDB10] nullPropertyWithType:type locale:v15 version:{objc_msgSend(v13, "version")}];
         }
 
         else
         {
           v17 = objc_alloc(MEMORY[0x277CCDB10]);
-          v18 = [v13 stringValue];
-          if (v23)
+          stringValue = [v13 stringValue];
+          if (versionCopy)
           {
-            v19 = [v23 integerValue];
+            integerValue = [versionCopy integerValue];
           }
 
           else
           {
-            v19 = [v13 version];
+            integerValue = [v13 version];
           }
 
-          v16 = [v17 initWithType:a5 stringValue:v18 locale:v15 version:v19];
+          v16 = [v17 initWithType:type stringValue:stringValue locale:v15 version:integerValue];
         }
 
         [v7 addObject:v16];
@@ -101,7 +101,7 @@
   return v7;
 }
 
-+ (id)nullLocalizedOntologyPreferredNamesWithVersion:(int64_t)a3 withUserDomainConceptPropertyType:(int64_t)a4
++ (id)nullLocalizedOntologyPreferredNamesWithVersion:(int64_t)version withUserDomainConceptPropertyType:(int64_t)type
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v11[0] = *MEMORY[0x277CCCE40];
@@ -109,36 +109,36 @@
   v11[2] = @"en_GB";
   v11[3] = @"en_CA";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:4];
-  v8 = [a1 _nullLocalizedOntologyStringsWithVersion:a3 localesToDelete:v7 propertyType:a4];
+  v8 = [self _nullLocalizedOntologyStringsWithVersion:version localesToDelete:v7 propertyType:type];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-+ (id)_nullLocalizedOntologyStringsWithVersion:(int64_t)a3 localesToDelete:(id)a4 propertyType:(int64_t)a5
++ (id)_nullLocalizedOntologyStringsWithVersion:(int64_t)version localesToDelete:(id)delete propertyType:(int64_t)type
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __107__HDOntologyLocalizedStringProvider__nullLocalizedOntologyStringsWithVersion_localesToDelete_propertyType___block_invoke;
   v7[3] = &__block_descriptor_48_e54___HKUserDomainConceptLocalizedString_16__0__NSString_8l;
-  v7[4] = a5;
-  v7[5] = a3;
-  v5 = [a4 hk_map:v7];
+  v7[4] = type;
+  v7[5] = version;
+  v5 = [delete hk_map:v7];
 
   return v5;
 }
 
-+ (id)localizedLoggingUnitsForConcept:(id)a3
++ (id)localizedLoggingUnitsForConcept:(id)concept
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  conceptCopy = concept;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v4 attributes];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  attributes = [conceptCopy attributes];
+  v6 = [attributes countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -152,12 +152,12 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attributes);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 type];
-        switch(v14)
+        type = [v13 type];
+        switch(type)
         {
           case 795:
             v18 = v13;
@@ -170,16 +170,16 @@
             v9 = v17;
             break;
           case 802:
-            v15 = [v13 stringValue];
+            stringValue = [v13 stringValue];
             v16 = v10;
-            v10 = v15;
+            v10 = stringValue;
             break;
           default:
             continue;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (!v7)
       {
 
@@ -188,14 +188,14 @@
           v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
           if (v8)
           {
-            v20 = [a1 _localizedLoggingUnitForAttribute:v8 locale:v10 propertyType:160018];
+            v20 = [self _localizedLoggingUnitForAttribute:v8 locale:v10 propertyType:160018];
             [v19 addObject:v20];
           }
 
           if (v9)
           {
-            v5 = [a1 _localizedLoggingUnitForAttribute:v9 locale:v10 propertyType:160017];
-            [v19 addObject:v5];
+            attributes = [self _localizedLoggingUnitForAttribute:v9 locale:v10 propertyType:160017];
+            [v19 addObject:attributes];
             goto LABEL_21;
           }
         }
@@ -222,43 +222,43 @@ LABEL_23:
   return v19;
 }
 
-+ (id)_localizedLoggingUnitForAttribute:(id)a3 locale:(id)a4 propertyType:(int64_t)a5
++ (id)_localizedLoggingUnitForAttribute:(id)attribute locale:(id)locale propertyType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isDeleted])
+  attributeCopy = attribute;
+  localeCopy = locale;
+  if ([attributeCopy isDeleted])
   {
-    v9 = [MEMORY[0x277CCDB10] nullPropertyWithType:a5 locale:v8 version:{objc_msgSend(v7, "version")}];
+    v9 = [MEMORY[0x277CCDB10] nullPropertyWithType:type locale:localeCopy version:{objc_msgSend(attributeCopy, "version")}];
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x277CCDB10]);
-    v11 = [v7 stringValue];
-    v9 = [v10 initWithType:a5 stringValue:v11 locale:v8 version:{objc_msgSend(v7, "version")}];
+    stringValue = [attributeCopy stringValue];
+    v9 = [v10 initWithType:type stringValue:stringValue locale:localeCopy version:{objc_msgSend(attributeCopy, "version")}];
 
-    v8 = v11;
+    localeCopy = stringValue;
   }
 
   return v9;
 }
 
-+ (id)localizedUserDomainConceptPropertyStringForConceptAttribute:(id)a3 locale:(id)a4 propertyType:(int64_t)a5
++ (id)localizedUserDomainConceptPropertyStringForConceptAttribute:(id)attribute locale:(id)locale propertyType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isDeleted])
+  attributeCopy = attribute;
+  localeCopy = locale;
+  if ([attributeCopy isDeleted])
   {
-    v9 = [MEMORY[0x277CCDB10] nullPropertyWithType:a5 locale:v8 version:{objc_msgSend(v7, "version")}];
+    v9 = [MEMORY[0x277CCDB10] nullPropertyWithType:type locale:localeCopy version:{objc_msgSend(attributeCopy, "version")}];
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x277CCDB10]);
-    v11 = [v7 stringValue];
-    v9 = [v10 initWithType:a5 stringValue:v11 locale:v8 version:{objc_msgSend(v7, "version")}];
+    stringValue = [attributeCopy stringValue];
+    v9 = [v10 initWithType:type stringValue:stringValue locale:localeCopy version:{objc_msgSend(attributeCopy, "version")}];
 
-    v8 = v11;
+    localeCopy = stringValue;
   }
 
   return v9;

@@ -1,28 +1,28 @@
 @interface MTLDebugPipelineLibrary
-- (MTLDebugPipelineLibrary)initWithLibrary:(id)a3 parent:(id)a4 filePath:(id)a5;
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
+- (MTLDebugPipelineLibrary)initWithLibrary:(id)library parent:(id)parent filePath:(id)path;
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MTLDebugPipelineLibrary
 
-- (MTLDebugPipelineLibrary)initWithLibrary:(id)a3 parent:(id)a4 filePath:(id)a5
+- (MTLDebugPipelineLibrary)initWithLibrary:(id)library parent:(id)parent filePath:(id)path
 {
   v8.receiver = self;
   v8.super_class = MTLDebugPipelineLibrary;
-  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsObject *)&v8 initWithBaseObject:library parent:parent];
   if (v6)
   {
-    v6->_filePath = [a5 copy];
+    v6->_filePath = [path copy];
   }
 
   return v6;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -39,9 +39,9 @@
   v17 = 0;
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
   v12 = v11;
-  if (a5)
+  if (reflection)
   {
-    *a5 = v17;
+    *reflection = v17;
   }
 
   if (!v11)
@@ -56,9 +56,9 @@
   return v15;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithName:(id)name options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -75,9 +75,9 @@
   v17 = 0;
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
   v12 = v11;
-  if (a5)
+  if (reflection)
   {
-    *a5 = v17;
+    *reflection = v17;
   }
 
   if (!v11)

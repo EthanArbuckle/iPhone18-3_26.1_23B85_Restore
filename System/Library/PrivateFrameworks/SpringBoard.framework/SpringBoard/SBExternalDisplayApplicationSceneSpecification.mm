@@ -10,11 +10,11 @@
   v10[2] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = SBExternalDisplayApplicationSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v9 defaultExtensions];
-  v3 = v2;
-  if (v2)
+  defaultExtensions = [(UIApplicationSceneSpecification *)&v9 defaultExtensions];
+  v3 = defaultExtensions;
+  if (defaultExtensions)
   {
-    v4 = v2;
+    v4 = defaultExtensions;
   }
 
   else
@@ -36,8 +36,8 @@
 {
   v5.receiver = self;
   v5.super_class = SBExternalDisplayApplicationSceneSpecification;
-  v2 = [(UIApplicationSceneSpecification *)&v5 baseSceneComponentClassDictionary];
-  v3 = [v2 mutableCopy];
+  baseSceneComponentClassDictionary = [(UIApplicationSceneSpecification *)&v5 baseSceneComponentClassDictionary];
+  v3 = [baseSceneComponentClassDictionary mutableCopy];
 
   [v3 setObject:objc_opt_class() forKey:*MEMORY[0x277D77598]];
 

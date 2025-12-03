@@ -1,39 +1,39 @@
 @interface FHExperiment
-- (FHExperiment)initWithClient:(id)a3 namespaceName:(id)a4 setRefresh:(BOOL)a5 delegate:(id)a6;
+- (FHExperiment)initWithClient:(id)client namespaceName:(id)name setRefresh:(BOOL)refresh delegate:(id)delegate;
 - (FHTRIClientUpdateDelegate)delegate;
-- (id)getDirectoryForFactor:(id)a3;
-- (id)getFilePathForFactor:(id)a3;
-- (id)getLevelForFactor:(id)a3;
-- (id)getTrialIdForFactor:(id)a3;
+- (id)getDirectoryForFactor:(id)factor;
+- (id)getFilePathForFactor:(id)factor;
+- (id)getLevelForFactor:(id)factor;
+- (id)getTrialIdForFactor:(id)factor;
 @end
 
 @implementation FHExperiment
 
-- (FHExperiment)initWithClient:(id)a3 namespaceName:(id)a4 setRefresh:(BOOL)a5 delegate:(id)a6
+- (FHExperiment)initWithClient:(id)client namespaceName:(id)name setRefresh:(BOOL)refresh delegate:(id)delegate
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  refreshCopy = refresh;
+  clientCopy = client;
+  nameCopy = name;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = FHExperiment;
   v13 = [(FHExperiment *)&v27 init];
   if (v13)
   {
-    if (v10)
+    if (clientCopy)
     {
-      v14 = v10;
+      client = clientCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x277D73660] client];
+      client = [MEMORY[0x277D73660] client];
     }
 
     triClient = v13->_triClient;
-    v13->_triClient = v14;
+    v13->_triClient = client;
 
-    v16 = [v11 copy];
+    v16 = [nameCopy copy];
     namespaceName = v13->_namespaceName;
     v13->_namespaceName = v16;
 
@@ -41,8 +41,8 @@
     factorMetadatas = v13->_factorMetadatas;
     v13->_factorMetadatas = v18;
 
-    objc_storeWeak(&v13->_delegate, v12);
-    if (v7)
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    if (refreshCopy)
     {
       objc_initWeak(&location, v13);
       v20 = v13->_triClient;
@@ -51,7 +51,7 @@
       v23[2] = __65__FHExperiment_initWithClient_namespaceName_setRefresh_delegate___block_invoke;
       v23[3] = &unk_2785CB530;
       objc_copyWeak(&v25, &location);
-      v24 = v11;
+      v24 = nameCopy;
       v21 = [(TRIClient *)v20 addUpdateHandlerForNamespaceName:v24 usingBlock:v23];
 
       objc_destroyWeak(&v25);
@@ -98,11 +98,11 @@ void __65__FHExperiment_initWithClient_namespaceName_setRefresh_delegate___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getLevelForFactor:(id)a3
+- (id)getLevelForFactor:(id)factor
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRIClient *)self->_triClient levelForFactor:v4 withNamespaceName:self->_namespaceName];
+  factorCopy = factor;
+  v5 = [(TRIClient *)self->_triClient levelForFactor:factorCopy withNamespaceName:self->_namespaceName];
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:self->_factorMetadatas];
   v7 = v6;
   if (v5)
@@ -113,15 +113,15 @@ void __65__FHExperiment_initWithClient_namespaceName_setRefresh_delegate___block
     v10 = [(TRIClient *)self->_triClient rolloutIdentifiersWithNamespaceName:self->_namespaceName];
     v11 = [v10 copy];
 
-    v12 = [v5 metadata];
-    v13 = v12;
-    if (v9 && ([v12 objectForKey:@"factorType"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"exp"), v14, v15))
+    metadata = [v5 metadata];
+    v13 = metadata;
+    if (v9 && ([metadata objectForKey:@"factorType"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"exp"), v14, v15))
     {
       v32 = v11;
       v16 = MEMORY[0x277CCACA8];
-      v17 = [v9 experimentId];
-      v18 = [v9 treatmentId];
-      v19 = [v16 stringWithFormat:@"e:%@:%@", v17, v18];
+      experimentId = [v9 experimentId];
+      treatmentId = [v9 treatmentId];
+      v19 = [v16 stringWithFormat:@"e:%@:%@", experimentId, treatmentId];
     }
 
     else
@@ -132,7 +132,7 @@ void __65__FHExperiment_initWithClient_namespaceName_setRefresh_delegate___block
 LABEL_14:
         [v13 setObject:v19 forKey:@"trialId"];
         v26 = [v13 copy];
-        [v7 setObject:v26 forKey:v4];
+        [v7 setObject:v26 forKey:factorCopy];
 
         v27 = FinHealthLogObject(@"FinHealthCore");
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -140,7 +140,7 @@ LABEL_14:
           *buf = 136315650;
           v34 = "[FHExperiment getLevelForFactor:]";
           v35 = 2112;
-          v36 = v4;
+          v36 = factorCopy;
           v37 = 2112;
           v38 = v5;
           _os_log_impl(&dword_226DD4000, v27, OS_LOG_TYPE_DEBUG, "%s Factor %@ level %@", buf, 0x20u);
@@ -150,8 +150,8 @@ LABEL_14:
       }
 
       v32 = v11;
-      v20 = [v5 metadata];
-      v21 = [v20 objectForKey:@"factorType"];
+      metadata2 = [v5 metadata];
+      v21 = [metadata2 objectForKey:@"factorType"];
       v22 = [v21 isEqualToString:@"rollout"];
 
       if (!v22)
@@ -161,10 +161,10 @@ LABEL_14:
       }
 
       v23 = MEMORY[0x277CCACA8];
-      v17 = [v32 rolloutId];
-      v18 = [v32 factorPackId];
-      v24 = [v32 rampId];
-      v19 = [v23 stringWithFormat:@"r:%@:%@:%@", v17, v18, v24];
+      experimentId = [v32 rolloutId];
+      treatmentId = [v32 factorPackId];
+      rampId = [v32 rampId];
+      v19 = [v23 stringWithFormat:@"r:%@:%@:%@", experimentId, treatmentId, rampId];
     }
 
 LABEL_13:
@@ -172,7 +172,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:factorCopy];
   v9 = FinHealthLogObject(@"FinHealthCore");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -180,7 +180,7 @@ LABEL_13:
     *buf = 136315650;
     v34 = "[FHExperiment getLevelForFactor:]";
     v35 = 2112;
-    v36 = v4;
+    v36 = factorCopy;
     v37 = 2112;
     v38 = namespaceName;
     _os_log_impl(&dword_226DD4000, v9, OS_LOG_TYPE_DEBUG, "%s No level found for factor %@ in namespace %@", buf, 0x20u);
@@ -197,64 +197,64 @@ LABEL_17:
   return v5;
 }
 
-- (id)getTrialIdForFactor:(id)a3
+- (id)getTrialIdForFactor:(id)factor
 {
-  v3 = [(NSDictionary *)self->_factorMetadatas objectForKey:a3];
+  v3 = [(NSDictionary *)self->_factorMetadatas objectForKey:factor];
   v4 = [v3 objectForKey:@"trialId"];
 
   return v4;
 }
 
-- (id)getFilePathForFactor:(id)a3
+- (id)getFilePathForFactor:(id)factor
 {
-  v3 = [(FHExperiment *)self getLevelForFactor:a3];
+  v3 = [(FHExperiment *)self getLevelForFactor:factor];
   v4 = v3;
   if (v3)
   {
     if ([v3 levelOneOfCase] == 101)
     {
-      v5 = [v4 directoryValue];
-      v6 = [v5 path];
+      directoryValue = [v4 directoryValue];
+      path = [directoryValue path];
 
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
-      v8 = [v7 contentsOfDirectoryAtPath:v6 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v8 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
       v9 = MEMORY[0x277CCACA8];
       v10 = [v8 objectAtIndex:0];
-      v11 = [v9 stringWithFormat:@"%@/%@", v6, v10];
+      v6Path = [v9 stringWithFormat:@"%@/%@", path, v10];
     }
 
     else
     {
-      v6 = [v4 fileValue];
-      v11 = [v6 path];
+      path = [v4 fileValue];
+      v6Path = [path path];
     }
   }
 
   else
   {
-    v11 = 0;
+    v6Path = 0;
   }
 
-  return v11;
+  return v6Path;
 }
 
-- (id)getDirectoryForFactor:(id)a3
+- (id)getDirectoryForFactor:(id)factor
 {
-  v3 = [(FHExperiment *)self getLevelForFactor:a3];
+  v3 = [(FHExperiment *)self getLevelForFactor:factor];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 directoryValue];
-    v6 = [v5 path];
+    directoryValue = [v3 directoryValue];
+    path = [directoryValue path];
   }
 
   else
   {
-    v6 = 0;
+    path = 0;
   }
 
-  return v6;
+  return path;
 }
 
 - (FHTRIClientUpdateDelegate)delegate

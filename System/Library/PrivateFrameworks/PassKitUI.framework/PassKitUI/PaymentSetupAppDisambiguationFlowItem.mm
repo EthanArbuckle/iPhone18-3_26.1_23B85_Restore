@@ -1,7 +1,7 @@
 @interface PaymentSetupAppDisambiguationFlowItem
 - (_TtC9PassKitUI37PaymentSetupAppDisambiguationFlowItem)init;
-- (void)bankAppDisambiguationViewControllerDidManualEntry:(id)a3;
-- (void)bankAppDisambiguationViewControllerDidSelectApp:(id)a3;
+- (void)bankAppDisambiguationViewControllerDidManualEntry:(id)entry;
+- (void)bankAppDisambiguationViewControllerDidSelectApp:(id)app;
 @end
 
 @implementation PaymentSetupAppDisambiguationFlowItem
@@ -13,17 +13,17 @@
   return result;
 }
 
-- (void)bankAppDisambiguationViewControllerDidSelectApp:(id)a3
+- (void)bankAppDisambiguationViewControllerDidSelectApp:(id)app
 {
-  v4 = a3;
-  v5 = self;
+  appCopy = app;
+  selfCopy = self;
   sub_1BD54E548();
 }
 
-- (void)bankAppDisambiguationViewControllerDidManualEntry:(id)a3
+- (void)bankAppDisambiguationViewControllerDidManualEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
+  entryCopy = entry;
+  selfCopy = self;
   sub_1BD54E670();
 }
 

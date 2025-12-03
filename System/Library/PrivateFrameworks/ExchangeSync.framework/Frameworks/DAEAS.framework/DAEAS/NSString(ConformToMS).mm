@@ -7,7 +7,7 @@
 - (id)stringFormattedForMSVersioning
 {
   v2 = objc_opt_new();
-  v3 = [a1 length];
+  v3 = [self length];
   if (v3)
   {
     v4 = v3;
@@ -15,7 +15,7 @@
     v6 = 0;
     while (1)
     {
-      v7 = [a1 characterAtIndex:v6];
+      v7 = [self characterAtIndex:v6];
       v8 = v7;
       if ((v8 - 48) <= 9)
       {

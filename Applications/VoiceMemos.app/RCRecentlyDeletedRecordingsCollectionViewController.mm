@@ -1,30 +1,30 @@
 @interface RCRecentlyDeletedRecordingsCollectionViewController
 - (BOOL)canDelete;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canPlayRecording;
 - (BOOL)canRenameRecording;
 - (BOOL)isShowingRecentlyDeleted;
 - (RCRecentlyDeletedRecordingsCollectionViewController)init;
 - (void)_classSpecificInit;
-- (void)_handleDelete:(id)a3;
+- (void)_handleDelete:(id)delete;
 - (void)contentSizeChanged;
-- (void)handleEraseAll:(id)a3;
-- (void)handleEraseForUUID:(id)a3;
-- (void)handleRecover:(id)a3;
-- (void)handleRecoverForUUID:(id)a3;
-- (void)renameRecording:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleEraseAll:(id)all;
+- (void)handleEraseForUUID:(id)d;
+- (void)handleRecover:(id)recover;
+- (void)handleRecoverForUUID:(id)d;
+- (void)renameRecording:(id)recording;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation RCRecentlyDeletedRecordingsCollectionViewController
 
 - (RCRecentlyDeletedRecordingsCollectionViewController)init
 {
-  v3 = [(RCRecordingsCollectionViewController *)self _createCollectionViewLayout];
+  _createCollectionViewLayout = [(RCRecordingsCollectionViewController *)self _createCollectionViewLayout];
   v7.receiver = self;
   v7.super_class = RCRecentlyDeletedRecordingsCollectionViewController;
-  v4 = [(RCRecordingsCollectionViewController *)&v7 initWithCollectionViewLayout:v3];
+  v4 = [(RCRecordingsCollectionViewController *)&v7 initWithCollectionViewLayout:_createCollectionViewLayout];
 
   if (v4)
   {
@@ -47,53 +47,53 @@
   [(RCRecordingsCollectionViewController *)self setReuseIdentifier:@"RecentlyDeletedRecordingCellReuseIdentifier"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = RCRecentlyDeletedRecordingsCollectionViewController;
-  [(RCRecordingsCollectionViewController *)&v5 viewDidAppear:a3];
+  [(RCRecordingsCollectionViewController *)&v5 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"contentSizeChanged" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
 - (void)contentSizeChanged
 {
-  v3 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(RCRecordingsCollectionViewController *)self restyle];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v9.receiver = self;
   v9.super_class = RCRecentlyDeletedRecordingsCollectionViewController;
-  [(RCRecordingsCollectionViewController *)&v9 setEditing:a3 animated:a4];
-  v6 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationItem];
-  [v6 setHidesBackButton:v4];
+  [(RCRecordingsCollectionViewController *)&v9 setEditing:editing animated:animated];
+  navigationItem = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:editingCopy];
 
-  v7 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationController];
-  v8 = [v7 interactivePopGestureRecognizer];
-  [v8 setEnabled:v4 ^ 1];
+  navigationController = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:editingCopy ^ 1];
 }
 
-- (void)handleEraseAll:(id)a3
+- (void)handleEraseAll:(id)all
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  [v5 performAction:18 atPosition:0 forUUID:self sourceController:v4 source:0.0];
+  allCopy = all;
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  [libraryActionHandler performAction:18 atPosition:0 forUUID:self sourceController:allCopy source:0.0];
 }
 
-- (void)handleRecover:(id)a3
+- (void)handleRecover:(id)recover
 {
-  v4 = a3;
-  v5 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v7 = [v6 count];
+  recoverCopy = recover;
+  collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v7 = [indexPathsForSelectedItems count];
 
-  v8 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-  v9 = v8;
+  libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+  v9 = libraryActionHandler;
   if (v7)
   {
     v10 = 20;
@@ -104,24 +104,24 @@
     v10 = 21;
   }
 
-  [v8 performAction:v10 atPosition:0 forUUID:self sourceController:v4 source:0.0];
+  [libraryActionHandler performAction:v10 atPosition:0 forUUID:self sourceController:recoverCopy source:0.0];
 
   [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
 }
 
-- (void)_handleDelete:(id)a3
+- (void)_handleDelete:(id)delete
 {
-  v18 = a3;
-  v4 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationController];
-  v5 = [v4 isToolbarHidden];
+  deleteCopy = delete;
+  navigationController = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationController];
+  isToolbarHidden = [navigationController isToolbarHidden];
 
-  v6 = v18;
-  if (!v5)
+  v6 = deleteCopy;
+  if (!isToolbarHidden)
   {
 LABEL_7:
-    v13 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-    v14 = [v13 indexPathsForSelectedItems];
-    v15 = [v14 count];
+    collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v15 = [indexPathsForSelectedItems count];
 
     if (v15)
     {
@@ -133,26 +133,26 @@ LABEL_7:
       v16 = 18;
     }
 
-    v17 = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
-    [v17 performAction:v16 atPosition:0 forUUID:self sourceController:v6 source:0.0];
+    libraryActionHandler = [(RCRecordingsCollectionViewController *)self libraryActionHandler];
+    [libraryActionHandler performAction:v16 atPosition:0 forUUID:self sourceController:v6 source:0.0];
 
     [(RCRecordingsCollectionViewController *)self _handleEditModeFooterAndNavigationItem];
     goto LABEL_11;
   }
 
-  v7 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v8 = [v7 indexPathsForSelectedItems];
-  v9 = [v8 count];
+  collectionView2 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems2 = [collectionView2 indexPathsForSelectedItems];
+  v9 = [indexPathsForSelectedItems2 count];
 
-  v6 = v18;
+  v6 = deleteCopy;
   if (v9)
   {
     if (v9 == 1)
     {
-      v10 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-      v11 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-      v12 = [v11 indexPathForSelectedItem];
-      v6 = [v10 cellForItemAtIndexPath:v12];
+      collectionView3 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+      collectionView4 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+      indexPathForSelectedItem = [collectionView4 indexPathForSelectedItem];
+      v6 = [collectionView3 cellForItemAtIndexPath:indexPathForSelectedItem];
     }
 
     else
@@ -166,9 +166,9 @@ LABEL_7:
 LABEL_11:
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if ("delete:" == a3)
+  if ("delete:" == action)
   {
     return [(RCRecentlyDeletedRecordingsCollectionViewController *)self canDelete];
   }
@@ -186,42 +186,42 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
-  v3 = [v5 count] != 0;
+  collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v3 = [indexPathsForSelectedItems count] != 0;
 
   return v3;
 }
 
 - (BOOL)canRenameRecording
 {
-  v3 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   if (v4 < 1)
   {
     return 0;
   }
 
-  v5 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForSelectedItem];
+  collectionView2 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  indexPathForSelectedItem = [collectionView2 indexPathForSelectedItem];
 
-  v7 = v6 != 0;
+  v7 = indexPathForSelectedItem != 0;
   return v7;
 }
 
-- (void)renameRecording:(id)a3
+- (void)renameRecording:(id)recording
 {
-  v4 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v5 = [v4 numberOfItemsInSection:0];
+  collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  v5 = [collectionView numberOfItemsInSection:0];
 
   if (v5 >= 1)
   {
-    v6 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-    v9 = [v6 indexPathForSelectedItem];
+    collectionView2 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+    indexPathForSelectedItem = [collectionView2 indexPathForSelectedItem];
 
-    v7 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v9];
+    collectionView3 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+    v8 = [collectionView3 cellForItemAtIndexPath:indexPathForSelectedItem];
 
     if (v8)
     {
@@ -236,26 +236,26 @@ LABEL_11:
 
 - (BOOL)canPlayRecording
 {
-  v3 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   if (v4 < 1)
   {
     return 0;
   }
 
-  v5 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForSelectedItem];
+  collectionView2 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self collectionView];
+  indexPathForSelectedItem = [collectionView2 indexPathForSelectedItem];
 
-  v7 = v6 != 0;
+  v7 = indexPathForSelectedItem != 0;
   return v7;
 }
 
-- (void)handleRecoverForUUID:(id)a3
+- (void)handleRecoverForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+  v6 = [dCopy isEqualToString:uuidOfSelectedItem];
 
   if (v6)
   {
@@ -264,11 +264,11 @@ LABEL_11:
   }
 }
 
-- (void)handleEraseForUUID:(id)a3
+- (void)handleEraseForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  uuidOfSelectedItem = [(RCRecordingsCollectionViewController *)self uuidOfSelectedItem];
+  v6 = [dCopy isEqualToString:uuidOfSelectedItem];
 
   if (v6)
   {
@@ -279,12 +279,12 @@ LABEL_11:
 
 - (BOOL)isShowingRecentlyDeleted
 {
-  v2 = self;
-  v3 = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationController];
-  v4 = [v3 childViewControllers];
-  LOBYTE(v2) = [v4 containsObject:v2];
+  selfCopy = self;
+  navigationController = [(RCRecentlyDeletedRecordingsCollectionViewController *)self navigationController];
+  childViewControllers = [navigationController childViewControllers];
+  LOBYTE(selfCopy) = [childViewControllers containsObject:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

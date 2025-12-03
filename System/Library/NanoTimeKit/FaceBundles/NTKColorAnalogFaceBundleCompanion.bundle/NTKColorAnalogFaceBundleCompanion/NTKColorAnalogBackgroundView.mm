@@ -1,31 +1,31 @@
 @interface NTKColorAnalogBackgroundView
-- (NTKColorAnalogBackgroundView)initWithFrame:(CGRect)a3 device:(id)a4;
-- (void)applyColor:(id)a3;
-- (void)applyStyle:(unint64_t)a3;
-- (void)applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5 withPrimaryColor:(id)a6 boostedColor:(id)a7;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)updateLayerVisibilityForStyles:(id)a3;
+- (NTKColorAnalogBackgroundView)initWithFrame:(CGRect)frame device:(id)device;
+- (void)applyColor:(id)color;
+- (void)applyStyle:(unint64_t)style;
+- (void)applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor withPrimaryColor:(id)primaryColor boostedColor:(id)boostedColor;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)updateLayerVisibilityForStyles:(id)styles;
 @end
 
 @implementation NTKColorAnalogBackgroundView
 
-- (NTKColorAnalogBackgroundView)initWithFrame:(CGRect)a3 device:(id)a4
+- (NTKColorAnalogBackgroundView)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v60.receiver = self;
   v60.super_class = NTKColorAnalogBackgroundView;
-  v11 = [(NTKColorAnalogBackgroundView *)&v60 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKColorAnalogBackgroundView *)&v60 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
     v55 = width;
     v56 = height;
-    objc_storeStrong(&v11->_device, a4);
-    v14 = sub_1ED4(v13, v10);
+    objc_storeStrong(&height->_device, device);
+    v14 = sub_1ED4(v13, deviceCopy);
     v58 = v15;
     v16 = +[NSNull null];
     v61[0] = @"opacity";
@@ -48,13 +48,13 @@
     v57 = v16;
     v62[8] = v16;
     v17 = [NSDictionary dictionaryWithObjects:v62 forKeys:v61 count:9];
-    v18 = [(NTKColorAnalogBackgroundView *)v12 layer];
+    layer = [(NTKColorAnalogBackgroundView *)v12 layer];
     [(NTKColorAnalogBackgroundView *)v12 bounds];
     MidX = CGRectGetMidX(v63);
     [(NTKColorAnalogBackgroundView *)v12 bounds];
     MidY = CGRectGetMidY(v64);
     v21 = CGPointZero.y;
-    [NTKAnalogUtilities dialSizeForDevice:v10];
+    [NTKAnalogUtilities dialSizeForDevice:deviceCopy];
     v23 = v22;
     v25 = v24;
     v26 = +[CALayer layer];
@@ -64,8 +64,8 @@
     [(CALayer *)v12->_tickContainerLayer setBounds:CGPointZero.x, v21, v23, v25];
     [(CALayer *)v12->_tickContainerLayer setPosition:MidX, MidY];
     [(CALayer *)v12->_tickContainerLayer setActions:v17];
-    v54 = v18;
-    [v18 addSublayer:v12->_tickContainerLayer];
+    v54 = layer;
+    [layer addSublayer:v12->_tickContainerLayer];
     v28 = +[NSMutableArray array];
     for (i = 0; i != 60; ++i)
     {
@@ -108,7 +108,7 @@
     v12->_circleLayer = v39;
 
     v41 = v12->_circleLayer;
-    [NTKAnalogUtilities dialSizeForDevice:v10];
+    [NTKAnalogUtilities dialSizeForDevice:deviceCopy];
     [(CALayer *)v41 setBounds:CGPointZero.x, v21, v42, v43];
     v44 = v12->_circleLayer;
     v45 = +[UIColor whiteColor];
@@ -130,7 +130,7 @@
     -[CALayer setBackgroundColor:](v50, "setBackgroundColor:", [v51 CGColor]);
 
     v52 = v12->_fullscreenLayer;
-    [v10 screenCornerRadius];
+    [deviceCopy screenCornerRadius];
     [(CALayer *)v52 setCornerRadius:?];
     [(CALayer *)v12->_fullscreenLayer setCornerCurve:kCACornerCurveContinuous];
     [(CALayer *)v12->_fullscreenLayer setPosition:MidX, MidY];
@@ -142,60 +142,60 @@
   return v12;
 }
 
-- (void)applyColor:(id)a3
+- (void)applyColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
-  [(CALayer *)self->_circleLayer setBackgroundColor:v6];
-  [(CALayer *)self->_fullscreenLayer setBackgroundColor:v6];
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
+  [(CALayer *)self->_circleLayer setBackgroundColor:cGColor];
+  [(CALayer *)self->_fullscreenLayer setBackgroundColor:cGColor];
   tickLayers = self->_tickLayers;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1598;
   v8[3] = &unk_10410;
-  v8[4] = v6;
+  v8[4] = cGColor;
   [(NSArray *)tickLayers enumerateObjectsUsingBlock:v8];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColor:(id)a4 toColor:(id)a5 withPrimaryColor:(id)a6 boostedColor:(id)a7
+- (void)applyTransitionFraction:(double)fraction fromColor:(id)color toColor:(id)toColor withPrimaryColor:(id)primaryColor boostedColor:(id)boostedColor
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
+  colorCopy = color;
+  toColorCopy = toColor;
+  boostedColorCopy = boostedColor;
+  primaryColorCopy = primaryColor;
   v16 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-  *&v17 = fabs(a3 + -0.5) * -2.0 + 1.0;
+  *&v17 = fabs(fraction + -0.5) * -2.0 + 1.0;
   [v16 _solveForInput:v17];
   v19 = v18 * 0.025 + 1.0;
 
   v20 = NTKInterpolateBetweenColors();
 
-  v21 = [v20 CGColor];
+  cGColor = [v20 CGColor];
   circleLayer = self->_circleLayer;
   CGAffineTransformMakeScale(&v31, v19, v19);
   [(CALayer *)circleLayer setAffineTransform:&v31];
-  [(CALayer *)self->_circleLayer setBackgroundColor:v21];
-  [(CALayer *)self->_fullscreenLayer setBackgroundColor:v21];
+  [(CALayer *)self->_circleLayer setBackgroundColor:cGColor];
+  [(CALayer *)self->_fullscreenLayer setBackgroundColor:cGColor];
   v23 = [(NSArray *)self->_tickLayers count];
   tickLayers = self->_tickLayers;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_17A4;
   v27[3] = &unk_10438;
-  v30 = llround((v23 + 1) * a3);
-  v28 = v12;
-  v29 = v13;
-  v25 = v13;
-  v26 = v12;
+  v30 = llround((v23 + 1) * fraction);
+  v28 = colorCopy;
+  v29 = toColorCopy;
+  v25 = toColorCopy;
+  v26 = colorCopy;
   [(NSArray *)tickLayers enumerateObjectsUsingBlock:v27];
 }
 
-- (void)applyStyle:(unint64_t)a3
+- (void)applyStyle:(unint64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   fullscreenLayer = self->_fullscreenLayer;
-  if (a3 == 2)
+  if (style == 2)
   {
     *&v3 = 1.0;
   }
@@ -206,7 +206,7 @@
   }
 
   [(CALayer *)fullscreenLayer setOpacity:v3];
-  if (a3 == 1)
+  if (style == 1)
   {
     *&v7 = 1.0;
   }
@@ -217,7 +217,7 @@
   }
 
   [(CALayer *)self->_circleLayer setOpacity:v7];
-  if (a3)
+  if (style)
   {
     *&v8 = 0.0;
   }
@@ -228,13 +228,13 @@
   }
 
   [(CALayer *)self->_tickContainerLayer setOpacity:v8];
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:style];
   v11 = v9;
   v10 = [NSArray arrayWithObjects:&v11 count:1];
   [(NTKColorAnalogBackgroundView *)self updateLayerVisibilityForStyles:v10];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   fullscreenLayer = self->_fullscreenLayer;
   CLKInterpolateBetweenFloatsClipped();
@@ -248,22 +248,22 @@
   CLKInterpolateBetweenFloatsClipped();
   *&v13 = v13;
   [(CALayer *)tickContainerLayer setOpacity:v13];
-  v14 = [NSNumber numberWithUnsignedInteger:a4];
+  v14 = [NSNumber numberWithUnsignedInteger:style];
   v17[0] = v14;
-  v15 = [NSNumber numberWithUnsignedInteger:a5];
+  v15 = [NSNumber numberWithUnsignedInteger:toStyle];
   v17[1] = v15;
   v16 = [NSArray arrayWithObjects:v17 count:2];
   [(NTKColorAnalogBackgroundView *)self updateLayerVisibilityForStyles:v16];
 }
 
-- (void)updateLayerVisibilityForStyles:(id)a3
+- (void)updateLayerVisibilityForStyles:(id)styles
 {
-  v4 = a3;
+  stylesCopy = styles;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [stylesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -277,15 +277,15 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stylesCopy);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * i) integerValue];
-        if (v12 != &dword_0 + 2)
+        integerValue = [*(*(&v13 + 1) + 8 * i) integerValue];
+        if (integerValue != &dword_0 + 2)
         {
-          if (v12 != &dword_0 + 1)
+          if (integerValue != &dword_0 + 1)
           {
-            if (v12)
+            if (integerValue)
             {
               continue;
             }
@@ -299,7 +299,7 @@
         v8 = 0;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [stylesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (!v6)
       {
         goto LABEL_16;

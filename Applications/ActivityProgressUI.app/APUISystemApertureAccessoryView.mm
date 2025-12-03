@@ -1,14 +1,14 @@
 @interface APUISystemApertureAccessoryView
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithCoder:(id)a3;
-- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithCoder:(id)coder;
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation APUISystemApertureAccessoryView
 
-- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithCoder:(id)a3
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -27,20 +27,20 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for APUISystemApertureAccessoryView();
   v7 = v10.receiver;
   [(APUISystemApertureAccessoryView *)&v10 setFrame:x, y, width, height];
-  v8 = [*&v7[OBJC_IVAR____TtC18ActivityProgressUI31APUISystemApertureAccessoryView_hostingController] view];
-  if (v8)
+  view = [*&v7[OBJC_IVAR____TtC18ActivityProgressUI31APUISystemApertureAccessoryView_hostingController] view];
+  if (view)
   {
-    v9 = v8;
+    v9 = view;
     [v7 bounds];
     [v9 setFrame:?];
   }
@@ -51,7 +51,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI31APUISystemApertureAccessoryView_hostingController) preferredContentSize];
   result.height = v4;
@@ -59,7 +59,7 @@
   return result;
 }
 
-- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

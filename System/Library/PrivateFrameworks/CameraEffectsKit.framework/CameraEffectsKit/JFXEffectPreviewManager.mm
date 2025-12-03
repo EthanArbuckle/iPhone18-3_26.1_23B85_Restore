@@ -1,72 +1,72 @@
 @interface JFXEffectPreviewManager
-+ (id)JFX_createTransparentEmptyImageForPreviewSize:(CGSize)a3;
++ (id)JFX_createTransparentEmptyImageForPreviewSize:(CGSize)size;
 - (BOOL)JFX_rendersDefaultContinousPreviewImage;
 - (BOOL)isContinouslyPreviewing;
 - (CGSize)continousPreviewSize;
-- (JFXEffectPreviewManager)initWithName:(id)a3 callbackQueue:(id)a4;
+- (JFXEffectPreviewManager)initWithName:(id)name callbackQueue:(id)queue;
 - (JFXEffectPreviewManagerDelegate)delegate;
 - (JFXEffectPreviewManagerDelegate)delegate_internal;
 - (JFXEffectsPreviewGenerator)staticPreviewGenerator;
 - (NSSet)continousPreviewEffects;
-- (id)buildRenderRequest:(id)a3 time:(id *)a4;
+- (id)buildRenderRequest:(id)request time:(id *)time;
 - (id)defaultPreviewImage;
 - (id)defaultPreviewImageDisplayTransformValue;
 - (void)JFX_cancelAssetRequestForAllEffects;
-- (void)JFX_configureCommonRenderingPropertiesForEffect:(id)a3 forPreviewSize:(CGSize)a4 withPreviewOptions:(id)a5;
-- (void)JFX_delegateDidFinishDownloadingPreviewAssetsForEffect:(id)a3 wasCancelled:(BOOL)a4 error:(id)a5;
-- (void)JFX_delegateDownloadingPreviewAssetsForEffect:(id)a3 progress:(double)a4;
-- (void)JFX_delegateUpdateContinousPreviewsForEffectIDs:(id)a3;
-- (void)JFX_delegateWillBeginDownloadingPreviewAssetsForEffect:(id)a3;
-- (void)JFX_dispatchBlockOnCallbackQueueImmediatelyWhenPossible:(id)a3;
-- (void)JFX_loadRenderingResourcesForEffect:(id)a3 completion:(id)a4;
-- (void)JFX_prepareEffectForContinousPreview:(id)a3;
-- (void)JFX_renderPreviewForEffect:(id)a3 previewSize:(CGSize)a4 options:(id)a5 completion:(id)a6;
-- (void)JFX_requestPreviewAssetsForEffect:(id)a3 withPriority:(int64_t)a4 onlyThumbnailAssetWhenAvailable:(BOOL)a5 completion:(id)a6;
-- (void)JFX_setContinousPreviewEffects:(id)a3;
-- (void)JFX_startPreparingPreviewsContinuouslyAtSize:(CGSize)a3 options:(id)a4;
+- (void)JFX_configureCommonRenderingPropertiesForEffect:(id)effect forPreviewSize:(CGSize)size withPreviewOptions:(id)options;
+- (void)JFX_delegateDidFinishDownloadingPreviewAssetsForEffect:(id)effect wasCancelled:(BOOL)cancelled error:(id)error;
+- (void)JFX_delegateDownloadingPreviewAssetsForEffect:(id)effect progress:(double)progress;
+- (void)JFX_delegateUpdateContinousPreviewsForEffectIDs:(id)ds;
+- (void)JFX_delegateWillBeginDownloadingPreviewAssetsForEffect:(id)effect;
+- (void)JFX_dispatchBlockOnCallbackQueueImmediatelyWhenPossible:(id)possible;
+- (void)JFX_loadRenderingResourcesForEffect:(id)effect completion:(id)completion;
+- (void)JFX_prepareEffectForContinousPreview:(id)preview;
+- (void)JFX_renderPreviewForEffect:(id)effect previewSize:(CGSize)size options:(id)options completion:(id)completion;
+- (void)JFX_requestPreviewAssetsForEffect:(id)effect withPriority:(int64_t)priority onlyThumbnailAssetWhenAvailable:(BOOL)available completion:(id)completion;
+- (void)JFX_setContinousPreviewEffects:(id)effects;
+- (void)JFX_startPreparingPreviewsContinuouslyAtSize:(CGSize)size options:(id)options;
 - (void)JFX_stopCachingPreviewsContinuously;
-- (void)JFX_updateAssetRequestsPriorityAssociatedWithEffects:(id)a3 toPriority:(int64_t)a4;
-- (void)JFX_updateAssetRequestsPriorityNotAssociatedWithEffects:(id)a3 toPriority:(int64_t)a4;
-- (void)cachedPreviewForEffect:(id)a3 completion:(id)a4;
-- (void)continousPreviewsForEffectIDs:(id)a3 completion:(id)a4;
+- (void)JFX_updateAssetRequestsPriorityAssociatedWithEffects:(id)effects toPriority:(int64_t)priority;
+- (void)JFX_updateAssetRequestsPriorityNotAssociatedWithEffects:(id)effects toPriority:(int64_t)priority;
+- (void)cachedPreviewForEffect:(id)effect completion:(id)completion;
+- (void)continousPreviewsForEffectIDs:(id)ds completion:(id)completion;
 - (void)dealloc;
-- (void)preparePreviewForEffect:(id)a3 atSize:(CGSize)a4 options:(id)a5 completion:(id)a6;
-- (void)previewForEffect:(id)a3 atSize:(CGSize)a4 options:(id)a5 completion:(id)a6;
-- (void)purgeCachedPreviewForEffect:(id)a3;
+- (void)preparePreviewForEffect:(id)effect atSize:(CGSize)size options:(id)options completion:(id)completion;
+- (void)previewForEffect:(id)effect atSize:(CGSize)size options:(id)options completion:(id)completion;
+- (void)purgeCachedPreviewForEffect:(id)effect;
 - (void)purgeCachedPreviewsForAllEffects;
-- (void)renderRequestComplete:(id)a3 results:(id)a4 completedOutOfOrder:(BOOL)a5;
-- (void)setContinousPreviewEffects:(id)a3;
-- (void)setContinouslyPreviewing:(BOOL)a3;
-- (void)setDefaultPreviewImage:(id)a3 transformValue:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startPreparingPreviewsContinuouslyAtSize:(CGSize)a3 options:(id)a4;
+- (void)renderRequestComplete:(id)complete results:(id)results completedOutOfOrder:(BOOL)order;
+- (void)setContinousPreviewEffects:(id)effects;
+- (void)setContinouslyPreviewing:(BOOL)previewing;
+- (void)setDefaultPreviewImage:(id)image transformValue:(id)value;
+- (void)setDelegate:(id)delegate;
+- (void)startPreparingPreviewsContinuouslyAtSize:(CGSize)size options:(id)options;
 - (void)stopCachingPreviewsContinuously;
 @end
 
 @implementation JFXEffectPreviewManager
 
-- (JFXEffectPreviewManager)initWithName:(id)a3 callbackQueue:(id)a4
+- (JFXEffectPreviewManager)initWithName:(id)name callbackQueue:(id)queue
 {
-  v6 = a3;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = JFXEffectPreviewManager;
   v7 = [(JFXEffectPreviewManager *)&v28 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_name, a3);
+    objc_storeStrong(&v7->_name, name);
     v8->_inDealloc = 0;
     objc_storeStrong(&v8->_callbackQueue, MEMORY[0x277D85CD0]);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_USER_INITIATED, 0);
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"EffectPreviewManager.%@.previewQ", v6];
-    v12 = dispatch_queue_create([v11 UTF8String], v10);
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"EffectPreviewManager.%@.previewQ", nameCopy];
+    v12 = dispatch_queue_create([nameCopy UTF8String], v10);
     previewQueue = v8->_previewQueue;
     v8->_previewQueue = v12;
 
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"EffectPreviewManager.%@.synchronization", v6];
-    v15 = dispatch_queue_create([v14 UTF8String], 0);
+    nameCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"EffectPreviewManager.%@.synchronization", nameCopy];
+    v15 = dispatch_queue_create([nameCopy2 UTF8String], 0);
     synchronizationQueue = v8->_synchronizationQueue;
     v8->_synchronizationQueue = v15;
 
@@ -74,7 +74,7 @@
     previewCache = v8->_previewCache;
     v8->_previewCache = v17;
 
-    v19 = [[JFXEffectPreviewDiskCache alloc] initWithDirectory:v6];
+    v19 = [[JFXEffectPreviewDiskCache alloc] initWithDirectory:nameCopy];
     previewDiskCache = v8->_previewDiskCache;
     v8->_previewDiskCache = v19;
 
@@ -122,11 +122,11 @@ uint64_t __54__JFXEffectPreviewManager_initWithName_callbackQueue___block_invoke
   [(JFXEffectPreviewManager *)&v3 dealloc];
 }
 
-- (void)JFX_dispatchBlockOnCallbackQueueImmediatelyWhenPossible:(id)a3
+- (void)JFX_dispatchBlockOnCallbackQueueImmediatelyWhenPossible:(id)possible
 {
-  block = a3;
-  v4 = [(JFXEffectPreviewManager *)self callbackQueue];
-  label = dispatch_queue_get_label(v4);
+  block = possible;
+  callbackQueue = [(JFXEffectPreviewManager *)self callbackQueue];
+  label = dispatch_queue_get_label(callbackQueue);
   v6 = dispatch_queue_get_label(0);
 
   if (label == v6)
@@ -136,23 +136,23 @@ uint64_t __54__JFXEffectPreviewManager_initWithName_callbackQueue___block_invoke
 
   else
   {
-    v7 = [(JFXEffectPreviewManager *)self callbackQueue];
-    dispatch_async(v7, block);
+    callbackQueue2 = [(JFXEffectPreviewManager *)self callbackQueue];
+    dispatch_async(callbackQueue2, block);
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  delegateCopy = delegate;
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__JFXEffectPreviewManager_setDelegate___block_invoke;
   v7[3] = &unk_278D79C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(synchronizationQueue, v7);
 }
 
 uint64_t __39__JFXEffectPreviewManager_setDelegate___block_invoke(uint64_t a1)
@@ -174,14 +174,14 @@ uint64_t __39__JFXEffectPreviewManager_setDelegate___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__24;
   v11 = __Block_byref_object_dispose__24;
   v12 = 0;
-  v3 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__JFXEffectPreviewManager_delegate__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(synchronizationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -199,20 +199,20 @@ uint64_t __35__JFXEffectPreviewManager_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](WeakRetained, v4);
 }
 
-- (void)JFX_delegateUpdateContinousPreviewsForEffectIDs:(id)a3
+- (void)JFX_delegateUpdateContinousPreviewsForEffectIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   objc_initWeak(&location, self);
-  v5 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__JFXEffectPreviewManager_JFX_delegateUpdateContinousPreviewsForEffectIDs___block_invoke;
   v7[3] = &unk_278D7C140;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dsCopy;
+  v6 = dsCopy;
+  dispatch_sync(synchronizationQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -243,20 +243,20 @@ void __75__JFXEffectPreviewManager_JFX_delegateUpdateContinousPreviewsForEffectI
   [WeakRetained effectPreviewManager:a1[5] didUpdateContinousPreviewsForEffectIDs:a1[6]];
 }
 
-- (void)JFX_delegateWillBeginDownloadingPreviewAssetsForEffect:(id)a3
+- (void)JFX_delegateWillBeginDownloadingPreviewAssetsForEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   objc_initWeak(&location, self);
-  v5 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__JFXEffectPreviewManager_JFX_delegateWillBeginDownloadingPreviewAssetsForEffect___block_invoke;
   v7[3] = &unk_278D7C140;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = effectCopy;
+  v6 = effectCopy;
+  dispatch_sync(synchronizationQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -287,21 +287,21 @@ void __82__JFXEffectPreviewManager_JFX_delegateWillBeginDownloadingPreviewAssets
   [WeakRetained effectPreviewManager:a1[5] willBeginDownloadingPreviewAssetsForEffect:a1[6]];
 }
 
-- (void)JFX_delegateDownloadingPreviewAssetsForEffect:(id)a3 progress:(double)a4
+- (void)JFX_delegateDownloadingPreviewAssetsForEffect:(id)effect progress:(double)progress
 {
-  v6 = a3;
+  effectCopy = effect;
   objc_initWeak(&location, self);
-  v7 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__JFXEffectPreviewManager_JFX_delegateDownloadingPreviewAssetsForEffect_progress___block_invoke;
   block[3] = &unk_278D7CDA8;
   objc_copyWeak(v11, &location);
   block[4] = self;
-  v10 = v6;
-  v11[1] = *&a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = effectCopy;
+  v11[1] = *&progress;
+  v8 = effectCopy;
+  dispatch_sync(synchronizationQueue, block);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -333,24 +333,24 @@ void __82__JFXEffectPreviewManager_JFX_delegateDownloadingPreviewAssetsForEffect
   [WeakRetained effectPreviewManager:*(a1 + 40) downloadingPreviewAssetsForEffect:*(a1 + 48) progress:*(a1 + 56)];
 }
 
-- (void)JFX_delegateDidFinishDownloadingPreviewAssetsForEffect:(id)a3 wasCancelled:(BOOL)a4 error:(id)a5
+- (void)JFX_delegateDidFinishDownloadingPreviewAssetsForEffect:(id)effect wasCancelled:(BOOL)cancelled error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  effectCopy = effect;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v10 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __101__JFXEffectPreviewManager_JFX_delegateDidFinishDownloadingPreviewAssetsForEffect_wasCancelled_error___block_invoke;
   v13[3] = &unk_278D7CDF8;
   objc_copyWeak(&v16, &location);
   v13[4] = self;
-  v14 = v8;
-  v17 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = effectCopy;
+  cancelledCopy = cancelled;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = effectCopy;
+  dispatch_sync(synchronizationQueue, v13);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -383,19 +383,19 @@ void __101__JFXEffectPreviewManager_JFX_delegateDidFinishDownloadingPreviewAsset
   [WeakRetained effectPreviewManager:*(a1 + 40) didFinishDownloadingPreviewAssetsForEffect:*(a1 + 48) wasCancelled:*(a1 + 64) error:*(a1 + 56)];
 }
 
-- (void)setContinousPreviewEffects:(id)a3
+- (void)setContinousPreviewEffects:(id)effects
 {
-  v4 = a3;
+  effectsCopy = effects;
   objc_initWeak(&location, self);
-  v5 = [(JFXEffectPreviewManager *)self previewQueue];
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__JFXEffectPreviewManager_setContinousPreviewEffects___block_invoke;
   block[3] = &unk_278D7B3F0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = effectsCopy;
+  v6 = effectsCopy;
+  dispatch_async(previewQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -407,21 +407,21 @@ void __54__JFXEffectPreviewManager_setContinousPreviewEffects___block_invoke(uin
   [WeakRetained JFX_setContinousPreviewEffects:*(a1 + 32)];
 }
 
-- (void)JFX_setContinousPreviewEffects:(id)a3
+- (void)JFX_setContinousPreviewEffects:(id)effects
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v5);
+  effectsCopy = effects;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  [(JFXEffectPreviewManager *)self setCurrentContinousPreviewEffects:v4];
-  v6 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
-  v7 = [v6 effectsToApplyToBackground];
+  [(JFXEffectPreviewManager *)self setCurrentContinousPreviewEffects:effectsCopy];
+  continousPreviewOptions = [(JFXEffectPreviewManager *)self continousPreviewOptions];
+  effectsToApplyToBackground = [continousPreviewOptions effectsToApplyToBackground];
 
-  if ([v7 count])
+  if ([effectsToApplyToBackground count])
   {
-    v8 = [v7 firstObject];
-    v9 = [v8 isNone] ^ 1;
+    firstObject = [effectsToApplyToBackground firstObject];
+    v9 = [firstObject isNone] ^ 1;
   }
 
   else
@@ -433,7 +433,7 @@ void __54__JFXEffectPreviewManager_setContinousPreviewEffects___block_invoke(uin
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = effectsCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -477,14 +477,14 @@ void __54__JFXEffectPreviewManager_setContinousPreviewEffects___block_invoke(uin
   v10 = __Block_byref_object_copy__24;
   v11 = __Block_byref_object_dispose__24;
   v12 = 0;
-  v3 = [(JFXEffectPreviewManager *)self previewQueue];
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__JFXEffectPreviewManager_continousPreviewEffects__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(previewQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -504,52 +504,52 @@ uint64_t __50__JFXEffectPreviewManager_continousPreviewEffects__block_invoke(uin
 
 - (BOOL)isContinouslyPreviewing
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__JFXEffectPreviewManager_isContinouslyPreviewing__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(synchronizationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setContinouslyPreviewing:(BOOL)a3
+- (void)setContinouslyPreviewing:(BOOL)previewing
 {
-  v5 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__JFXEffectPreviewManager_setContinouslyPreviewing___block_invoke;
   v6[3] = &unk_278D79E38;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  previewingCopy = previewing;
+  dispatch_sync(synchronizationQueue, v6);
 }
 
-- (void)setDefaultPreviewImage:(id)a3 transformValue:(id)a4
+- (void)setDefaultPreviewImage:(id)image transformValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  imageCopy = image;
+  valueCopy = value;
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block_invoke;
   block[3] = &unk_278D7A600;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = imageCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = imageCopy;
+  dispatch_sync(synchronizationQueue, block);
 }
 
 void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block_invoke(uint64_t a1)
@@ -569,14 +569,14 @@ void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block
   v10 = __Block_byref_object_copy__24;
   v11 = __Block_byref_object_dispose__24;
   v12 = 0;
-  v3 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__JFXEffectPreviewManager_defaultPreviewImage__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(synchronizationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -592,14 +592,14 @@ void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block
   v10 = __Block_byref_object_copy__24;
   v11 = __Block_byref_object_dispose__24;
   v12 = 0;
-  v3 = [(JFXEffectPreviewManager *)self synchronizationQueue];
+  synchronizationQueue = [(JFXEffectPreviewManager *)self synchronizationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__JFXEffectPreviewManager_defaultPreviewImageDisplayTransformValue__block_invoke;
   v6[3] = &unk_278D79C60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(synchronizationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -607,13 +607,13 @@ void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block
   return v4;
 }
 
-- (void)JFX_loadRenderingResourcesForEffect:(id)a3 completion:(id)a4
+- (void)JFX_loadRenderingResourcesForEffect:(id)effect completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 renderEffectResourcesAreReady])
+  effectCopy = effect;
+  completionCopy = completion;
+  if ([effectCopy renderEffectResourcesAreReady])
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -623,51 +623,51 @@ void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block
     v9[1] = 3221225472;
     v9[2] = __74__JFXEffectPreviewManager_JFX_loadRenderingResourcesForEffect_completion___block_invoke;
     v9[3] = &unk_278D79D20;
-    v10 = v5;
+    v10 = effectCopy;
     v8 = [v7 blockOperationWithBlock:v9];
-    [v8 setCompletionBlock:v6];
+    [v8 setCompletionBlock:completionCopy];
     [s_renderResourceLoadingOperationsQueue addOperation:v8];
   }
 }
 
-- (void)JFX_configureCommonRenderingPropertiesForEffect:(id)a3 forPreviewSize:(CGSize)a4 withPreviewOptions:(id)a5
+- (void)JFX_configureCommonRenderingPropertiesForEffect:(id)effect forPreviewSize:(CGSize)size withPreviewOptions:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v8 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v8);
+  height = size.height;
+  width = size.width;
+  effectCopy = effect;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  [v9 setRenderSize:{width, height}];
+  [effectCopy setRenderSize:{width, height}];
 }
 
-- (void)JFX_requestPreviewAssetsForEffect:(id)a3 withPriority:(int64_t)a4 onlyThumbnailAssetWhenAvailable:(BOOL)a5 completion:(id)a6
+- (void)JFX_requestPreviewAssetsForEffect:(id)effect withPriority:(int64_t)priority onlyThumbnailAssetWhenAvailable:(BOOL)available completion:(id)completion
 {
-  v7 = a5;
+  availableCopy = available;
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v12);
+  effectCopy = effect;
+  completionCopy = completion;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  if ([v10 arePreviewingAssetsLocal])
+  if ([effectCopy arePreviewingAssetsLocal])
   {
     v13 = objc_opt_new();
     [v13 setContentType:1];
     [v13 setUsageMode:1];
     [v13 setFilteringMode:1];
-    [v10 localAssetsWithFilteringOptions:v13];
+    [effectCopy localAssetsWithFilteringOptions:v13];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v14 = v38 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
-    if (v15)
+    localURL = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    if (localURL)
     {
       v16 = *v38;
       while (2)
       {
-        for (i = 0; i != v15; i = i + 1)
+        for (i = 0; i != localURL; i = i + 1)
         {
           if (*v38 != v16)
           {
@@ -675,17 +675,17 @@ void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block
           }
 
           v18 = *(*(&v37 + 1) + 8 * i);
-          v19 = [v18 attributes];
-          if ([v19 contentType] == 1 && objc_msgSend(v19, "usageMode") == 1)
+          attributes = [v18 attributes];
+          if ([attributes contentType] == 1 && objc_msgSend(attributes, "usageMode") == 1)
           {
-            v15 = [v18 localURL];
+            localURL = [v18 localURL];
 
             goto LABEL_16;
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
-        if (v15)
+        localURL = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        if (localURL)
         {
           continue;
         }
@@ -696,37 +696,37 @@ void __65__JFXEffectPreviewManager_setDefaultPreviewImage_transformValue___block
 
 LABEL_16:
 
-    (*(v11 + 2))(v11, 0, v15, 0);
+    (*(completionCopy + 2))(completionCopy, 0, localURL, 0);
   }
 
   else
   {
-    v20 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+    assetRequestsForPreviewEffects = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
 
-    if (!v20)
+    if (!assetRequestsForPreviewEffects)
     {
       v21 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:512 valueOptions:0];
       [(JFXEffectPreviewManager *)self setAssetRequestsForPreviewEffects:v21];
     }
 
-    [(JFXEffectPreviewManager *)self JFX_delegateWillBeginDownloadingPreviewAssetsForEffect:v10];
+    [(JFXEffectPreviewManager *)self JFX_delegateWillBeginDownloadingPreviewAssetsForEffect:effectCopy];
     objc_initWeak(&location, self);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __117__JFXEffectPreviewManager_JFX_requestPreviewAssetsForEffect_withPriority_onlyThumbnailAssetWhenAvailable_completion___block_invoke;
     v33[3] = &unk_278D7CE20;
     objc_copyWeak(&v35, &location);
-    v22 = v10;
+    v22 = effectCopy;
     v34 = v22;
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
     v28 = __117__JFXEffectPreviewManager_JFX_requestPreviewAssetsForEffect_withPriority_onlyThumbnailAssetWhenAvailable_completion___block_invoke_2;
     v29 = &unk_278D7CE70;
     objc_copyWeak(&v32, &location);
-    v31 = v11;
+    v31 = completionCopy;
     v23 = v22;
     v30 = v23;
-    v24 = [v23 requestPreviewingAssetsWithPriority:a4 onlyThumbnailAssetWhenAvailable:v7 progressHandler:v33 completionHandler:&v26];
+    v24 = [v23 requestPreviewingAssetsWithPriority:priority onlyThumbnailAssetWhenAvailable:availableCopy progressHandler:v33 completionHandler:&v26];
     v25 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects:v26];
     [v25 setObject:v24 forKey:v23];
 
@@ -845,15 +845,15 @@ LABEL_7:
   }
 }
 
-- (void)JFX_updateAssetRequestsPriorityAssociatedWithEffects:(id)a3 toPriority:(int64_t)a4
+- (void)JFX_updateAssetRequestsPriorityAssociatedWithEffects:(id)effects toPriority:(int64_t)priority
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  effectsCopy = effects;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [effectsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -865,47 +865,47 @@ LABEL_7:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(effectsCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
-        v13 = [v12 objectForKey:v11];
+        assetRequestsForPreviewEffects = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+        v13 = [assetRequestsForPreviewEffects objectForKey:v11];
 
         if (v13)
         {
-          [v11 updatePriorityForAssetRequest:v13 newPriority:a4];
+          [v11 updatePriorityForAssetRequest:v13 newPriority:priority];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [effectsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)JFX_updateAssetRequestsPriorityNotAssociatedWithEffects:(id)a3 toPriority:(int64_t)a4
+- (void)JFX_updateAssetRequestsPriorityNotAssociatedWithEffects:(id)effects toPriority:(int64_t)priority
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v7);
+  effectsCopy = effects;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  v8 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
-  v9 = [v8 count];
+  assetRequestsForPreviewEffects = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+  v9 = [assetRequestsForPreviewEffects count];
 
   if (v9)
   {
     v10 = MEMORY[0x277CBEB58];
-    v11 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
-    v12 = NSAllMapTableKeys(v11);
+    assetRequestsForPreviewEffects2 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+    v12 = NSAllMapTableKeys(assetRequestsForPreviewEffects2);
     v13 = [v10 setWithArray:v12];
 
-    [v13 minusSet:v6];
+    [v13 minusSet:effectsCopy];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -927,10 +927,10 @@ LABEL_7:
           }
 
           v19 = *(*(&v22 + 1) + 8 * v18);
-          v20 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
-          v21 = [v20 objectForKey:v19];
+          assetRequestsForPreviewEffects3 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+          v21 = [assetRequestsForPreviewEffects3 objectForKey:v19];
 
-          [v19 updatePriorityForAssetRequest:v21 newPriority:a4];
+          [v19 updatePriorityForAssetRequest:v21 newPriority:priority];
           ++v18;
         }
 
@@ -948,16 +948,16 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
   if (!self->_inDealloc)
   {
-    v3 = [(JFXEffectPreviewManager *)self previewQueue];
-    dispatch_assert_queue_V2(v3);
+    previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+    dispatch_assert_queue_V2(previewQueue);
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  assetRequestsForPreviewEffects = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+  v5 = [assetRequestsForPreviewEffects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -969,19 +969,19 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetRequestsForPreviewEffects);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
-        v11 = [v10 objectForKey:v9];
+        assetRequestsForPreviewEffects2 = [(JFXEffectPreviewManager *)self assetRequestsForPreviewEffects];
+        v11 = [assetRequestsForPreviewEffects2 objectForKey:v9];
 
         [v9 cancelAssetRequest:v11];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [assetRequestsForPreviewEffects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -990,16 +990,16 @@ LABEL_7:
   [(JFXEffectPreviewManager *)self setAssetRequestsForPreviewEffects:0];
 }
 
-- (void)startPreparingPreviewsContinuouslyAtSize:(CGSize)a3 options:(id)a4
+- (void)startPreparingPreviewsContinuouslyAtSize:(CGSize)size options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   if (![(JFXEffectPreviewManager *)self isContinouslyPreviewing])
   {
     [(JFXEffectPreviewManager *)self setContinouslyPreviewing:1];
     objc_initWeak(&location, self);
-    v8 = [(JFXEffectPreviewManager *)self previewQueue];
+    previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__JFXEffectPreviewManager_startPreparingPreviewsContinuouslyAtSize_options___block_invoke;
@@ -1007,8 +1007,8 @@ LABEL_7:
     objc_copyWeak(v11, &location);
     v11[1] = *&width;
     v11[2] = *&height;
-    v10 = v7;
-    dispatch_async(v8, block);
+    v10 = optionsCopy;
+    dispatch_async(previewQueue, block);
 
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);
@@ -1021,60 +1021,60 @@ void __76__JFXEffectPreviewManager_startPreparingPreviewsContinuouslyAtSize_opti
   [WeakRetained JFX_startPreparingPreviewsContinuouslyAtSize:*(a1 + 32) options:{*(a1 + 48), *(a1 + 56)}];
 }
 
-- (void)JFX_startPreparingPreviewsContinuouslyAtSize:(CGSize)a3 options:(id)a4
+- (void)JFX_startPreparingPreviewsContinuouslyAtSize:(CGSize)size options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v62[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v8);
+  optionsCopy = options;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  v9 = [(JFXEffectPreviewManager *)self previewCache];
-  [v9 setCapacity:0];
+  previewCache = [(JFXEffectPreviewManager *)self previewCache];
+  [previewCache setCapacity:0];
 
   [(JFXEffectPreviewManager *)self setContinousPreviewSize:width, height];
-  v10 = [v7 copy];
+  v10 = [optionsCopy copy];
   [(JFXEffectPreviewManager *)self setContinousPreviewOptions:v10];
 
   v61 = *MEMORY[0x277D41AC0];
-  v11 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
-  v12 = [v11 outputColorSpace];
-  v62[0] = v12;
+  continousPreviewOptions = [(JFXEffectPreviewManager *)self continousPreviewOptions];
+  outputColorSpace = [continousPreviewOptions outputColorSpace];
+  v62[0] = outputColorSpace;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:&v61 count:1];
 
   v14 = [objc_alloc(MEMORY[0x277D41660]) initWithOptions:v13 delegate:self];
   [(JFXEffectPreviewManager *)self setContinousPreviewPlayer:v14];
 
-  v15 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-  v16 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
-  [v15 setQueueSize:{objc_msgSend(v16, "maxFramesRenderedAtATime")}];
+  continousPreviewPlayer = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+  continousPreviewOptions2 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
+  [continousPreviewPlayer setQueueSize:{objc_msgSend(continousPreviewOptions2, "maxFramesRenderedAtATime")}];
 
-  v17 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+  continousPreviewPlayer2 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
   v18 = MEMORY[0x277CCACA8];
-  v19 = [(JFXEffectPreviewManager *)self name];
-  v20 = [v18 stringWithFormat:@"PreviewManagerPVPlayer_%@", v19];
-  [v17 setName:v20];
+  name = [(JFXEffectPreviewManager *)self name];
+  v20 = [v18 stringWithFormat:@"PreviewManagerPVPlayer_%@", name];
+  [continousPreviewPlayer2 setName:v20];
 
-  v21 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
-  LOBYTE(v19) = [v21 parentCode] == -1;
+  continousPreviewOptions3 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
+  LOBYTE(name) = [continousPreviewOptions3 parentCode] == -1;
 
-  if ((v19 & 1) == 0)
+  if ((name & 1) == 0)
   {
-    v22 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
-    v23 = [v22 parentCode];
-    v24 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v24 setParentCode:v23];
+    continousPreviewOptions4 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
+    parentCode = [continousPreviewOptions4 parentCode];
+    continousPreviewPlayer3 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer3 setParentCode:parentCode];
   }
 
   v25 = objc_opt_new();
   [(JFXEffectPreviewManager *)self setPreparedContinousPreviewEffects:v25];
 
-  v26 = [v7 backgroundType];
-  if (!v26)
+  backgroundType = [optionsCopy backgroundType];
+  if (!backgroundType)
   {
-    v30 = v7;
-    v41 = [objc_alloc(MEMORY[0x277D41668]) initWithCADisplayLinkFPS:{objc_msgSend(v30, "preferredUpdatesPerSecond")}];
+    pickerSource = optionsCopy;
+    v41 = [objc_alloc(MEMORY[0x277D41668]) initWithCADisplayLinkFPS:{objc_msgSend(pickerSource, "preferredUpdatesPerSecond")}];
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1097,14 +1097,14 @@ void __76__JFXEffectPreviewManager_startPreparingPreviewsContinuouslyAtSize_opti
     v46 = CreatePVLPThrottlingControlParameters();
     [v42 setThermalLevel:30 controlParameters:v46];
 
-    v47 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v47 setThermalThrottlingPolicy:v42];
+    continousPreviewPlayer4 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer4 setThermalThrottlingPolicy:v42];
 
-    v48 = [v30 backgroundImage];
-    v49 = v48;
-    if (v48)
+    backgroundImage = [pickerSource backgroundImage];
+    v49 = backgroundImage;
+    if (backgroundImage)
     {
-      v50 = v48;
+      v50 = backgroundImage;
     }
 
     else
@@ -1115,36 +1115,36 @@ void __76__JFXEffectPreviewManager_startPreparingPreviewsContinuouslyAtSize_opti
     v51 = v50;
 
     v52 = objc_alloc(MEMORY[0x277D41680]);
-    v53 = [v51 pvImageBuffer];
-    v54 = [v52 initWithPVImageBuffer:v53];
+    pvImageBuffer = [v51 pvImageBuffer];
+    v54 = [v52 initWithPVImageBuffer:pvImageBuffer];
 
     [(JFXEffectPreviewManager *)self setDefaultPreviewImage:v51 transformValue:0];
-    v55 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v55 setSource:v54 inputID:0];
+    continousPreviewPlayer5 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer5 setSource:v54 inputID:0];
 
-    v56 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v56 start];
+    continousPreviewPlayer6 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer6 start];
 
     objc_destroyWeak(&v59);
     objc_destroyWeak(&location);
     goto LABEL_10;
   }
 
-  if (v26 == 1)
+  if (backgroundType == 1)
   {
     v27 = +[JFXPickerCameraSource sharedInstance];
-    v28 = [(JFXEffectPreviewManager *)self pickerPreviewingToken];
-    [v27 registerPickerAsPreviewingWithObject:v28];
+    pickerPreviewingToken = [(JFXEffectPreviewManager *)self pickerPreviewingToken];
+    [v27 registerPickerAsPreviewingWithObject:pickerPreviewingToken];
 
     v29 = +[JFXPickerCameraSource sharedInstance];
-    v30 = [v29 pickerSource];
+    pickerSource = [v29 pickerSource];
 
-    v31 = [objc_alloc(MEMORY[0x277D41670]) initWithPlayerCameraSource:v30];
-    v32 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v32 setSource:v30 inputID:0];
+    v31 = [objc_alloc(MEMORY[0x277D41670]) initWithPlayerCameraSource:pickerSource];
+    continousPreviewPlayer7 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer7 setSource:pickerSource inputID:0];
 
-    v33 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v33 setRenderLink:v31];
+    continousPreviewPlayer8 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer8 setRenderLink:v31];
 
     v34 = objc_alloc_init(MEMORY[0x277D41688]);
     v35 = CreatePVLPThrottlingControlParameters();
@@ -1159,11 +1159,11 @@ void __76__JFXEffectPreviewManager_startPreparingPreviewsContinuouslyAtSize_opti
     v38 = CreatePVLPThrottlingControlParameters();
     [v34 setThermalLevel:30 controlParameters:v38];
 
-    v39 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v39 setThermalThrottlingPolicy:v34];
+    continousPreviewPlayer9 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer9 setThermalThrottlingPolicy:v34];
 
-    v40 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v40 start];
+    continousPreviewPlayer10 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer10 start];
 
 LABEL_10:
   }
@@ -1176,41 +1176,41 @@ void __80__JFXEffectPreviewManager_JFX_startPreparingPreviewsContinuouslyAtSize_
   [v2 setRenderLink:*(a1 + 32)];
 }
 
-+ (id)JFX_createTransparentEmptyImageForPreviewSize:(CGSize)a3
++ (id)JFX_createTransparentEmptyImageForPreviewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x277D75568] defaultFormat];
-  [v5 setOpaque:0];
-  [v5 setPreferredRange:2];
-  [v5 setScale:1.0];
-  v6 = [objc_alloc(MEMORY[0x277D75560]) initWithBounds:v5 format:{0.0, 0.0, width, height}];
+  height = size.height;
+  width = size.width;
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+  [defaultFormat setOpaque:0];
+  [defaultFormat setPreferredRange:2];
+  [defaultFormat setScale:1.0];
+  v6 = [objc_alloc(MEMORY[0x277D75560]) initWithBounds:defaultFormat format:{0.0, 0.0, width, height}];
   v7 = [v6 imageWithActions:&__block_literal_global_69_1];
   v8 = [JTImage jtImageWithUIImage:v7];
 
   return v8;
 }
 
-- (void)JFX_prepareEffectForContinousPreview:(id)a3
+- (void)JFX_prepareEffectForContinousPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v5);
+  previewCopy = preview;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  v6 = [(JFXEffectPreviewManager *)self preparedContinousPreviewEffects];
-  if ([v6 containsObject:v4])
+  preparedContinousPreviewEffects = [(JFXEffectPreviewManager *)self preparedContinousPreviewEffects];
+  if ([preparedContinousPreviewEffects containsObject:previewCopy])
   {
   }
 
   else
   {
-    v7 = [(JFXEffectPreviewManager *)self effectsPreparingForPreview];
-    v8 = [v7 containsObject:v4];
+    effectsPreparingForPreview = [(JFXEffectPreviewManager *)self effectsPreparingForPreview];
+    v8 = [effectsPreparingForPreview containsObject:previewCopy];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(JFXEffectPreviewManager *)self effectsPreparingForPreview];
-      [v9 addObject:v4];
+      effectsPreparingForPreview2 = [(JFXEffectPreviewManager *)self effectsPreparingForPreview];
+      [effectsPreparingForPreview2 addObject:previewCopy];
 
       objc_initWeak(&location, self);
       v17[0] = MEMORY[0x277D85DD0];
@@ -1218,7 +1218,7 @@ void __80__JFXEffectPreviewManager_JFX_startPreparingPreviewsContinuouslyAtSize_
       v17[2] = __64__JFXEffectPreviewManager_JFX_prepareEffectForContinousPreview___block_invoke;
       v17[3] = &unk_278D7B3F0;
       objc_copyWeak(&v19, &location);
-      v10 = v4;
+      v10 = previewCopy;
       v18 = v10;
       v11 = MEMORY[0x245D22230](v17);
       v13[0] = MEMORY[0x277D85DD0];
@@ -1346,17 +1346,17 @@ void __64__JFXEffectPreviewManager_JFX_prepareEffectForContinousPreview___block_
   }
 }
 
-- (void)continousPreviewsForEffectIDs:(id)a3 completion:(id)a4
+- (void)continousPreviewsForEffectIDs:(id)ds completion:(id)completion
 {
-  v5 = a3;
-  v19 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if (continousPreviewsForEffectIDs_completion__onceToken != -1)
   {
     [JFXEffectPreviewManager continousPreviewsForEffectIDs:completion:];
   }
 
-  v6 = [(JFXEffectPreviewManager *)self previewCache];
-  v7 = [v6 objectsForKeys:v5 notFoundMarker:continousPreviewsForEffectIDs_completion__s_missingImageMarker];
+  previewCache = [(JFXEffectPreviewManager *)self previewCache];
+  v7 = [previewCache objectsForKeys:dsCopy notFoundMarker:continousPreviewsForEffectIDs_completion__s_missingImageMarker];
 
   v8 = [v7 count];
   v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v8];
@@ -1368,7 +1368,7 @@ void __64__JFXEffectPreviewManager_JFX_prepareEffectForContinousPreview___block_
     while (1)
     {
       v13 = [v7 objectAtIndexedSubscript:v11];
-      v14 = [v5 objectAtIndexedSubscript:v11];
+      v14 = [dsCopy objectAtIndexedSubscript:v11];
       if (v13 == continousPreviewsForEffectIDs_completion__s_missingImageMarker)
       {
         break;
@@ -1389,9 +1389,9 @@ LABEL_8:
 
     if ((v12 & 1) == 0)
     {
-      v15 = [(JFXEffectPreviewManager *)self defaultPreviewImage];
+      defaultPreviewImage = [(JFXEffectPreviewManager *)self defaultPreviewImage];
 
-      v10 = v15;
+      v10 = defaultPreviewImage;
     }
 
     v10 = v10;
@@ -1409,7 +1409,7 @@ LABEL_7:
   }
 
 LABEL_14:
-  v16 = [(JFXEffectPreviewManager *)self callbackQueue];
+  callbackQueue = [(JFXEffectPreviewManager *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__JFXEffectPreviewManager_continousPreviewsForEffectIDs_completion___block_invoke_2;
@@ -1418,7 +1418,7 @@ LABEL_14:
   v24 = v20;
   v17 = v9;
   v18 = v20;
-  dispatch_async(v16, block);
+  dispatch_async(callbackQueue, block);
 }
 
 uint64_t __68__JFXEffectPreviewManager_continousPreviewsForEffectIDs_completion___block_invoke()
@@ -1432,35 +1432,35 @@ uint64_t __68__JFXEffectPreviewManager_continousPreviewsForEffectIDs_completion_
 
 - (void)stopCachingPreviewsContinuously
 {
-  v3 = [(JFXEffectPreviewManager *)self previewQueue];
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__JFXEffectPreviewManager_stopCachingPreviewsContinuously__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(previewQueue, block);
 }
 
 - (void)JFX_stopCachingPreviewsContinuously
 {
   if (!self->_inDealloc)
   {
-    v3 = [(JFXEffectPreviewManager *)self previewQueue];
-    dispatch_assert_queue_V2(v3);
+    previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+    dispatch_assert_queue_V2(previewQueue);
   }
 
   if ([(JFXEffectPreviewManager *)self isContinouslyPreviewing])
   {
     [(JFXEffectPreviewManager *)self setContinouslyPreviewing:0];
     v4 = +[JFXPickerCameraSource sharedInstance];
-    v5 = [(JFXEffectPreviewManager *)self pickerPreviewingToken];
-    [v4 unregisterPickerAsPreviewingWithObject:v5];
+    pickerPreviewingToken = [(JFXEffectPreviewManager *)self pickerPreviewingToken];
+    [v4 unregisterPickerAsPreviewingWithObject:pickerPreviewingToken];
 
-    v6 = [(JFXEffectPreviewManager *)self previewCache];
-    [v6 setCapacity:20];
+    previewCache = [(JFXEffectPreviewManager *)self previewCache];
+    [previewCache setCapacity:20];
 
-    v7 = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
-    [v7 shutdown];
+    continousPreviewPlayer = [(JFXEffectPreviewManager *)self continousPreviewPlayer];
+    [continousPreviewPlayer shutdown];
 
     [(JFXEffectPreviewManager *)self setContinousPreviewPlayer:0];
     [(JFXEffectPreviewManager *)self setContinousPreviewOptions:0];
@@ -1473,32 +1473,32 @@ uint64_t __68__JFXEffectPreviewManager_continousPreviewsForEffectIDs_completion_
 
 - (BOOL)JFX_rendersDefaultContinousPreviewImage
 {
-  v2 = [(JFXEffectPreviewManager *)self continousPreviewOptions];
-  v3 = [v2 backgroundType] == 1;
+  continousPreviewOptions = [(JFXEffectPreviewManager *)self continousPreviewOptions];
+  v3 = [continousPreviewOptions backgroundType] == 1;
 
   return v3;
 }
 
-- (id)buildRenderRequest:(id)a3 time:(id *)a4
+- (id)buildRenderRequest:(id)request time:(id *)time
 {
-  v6 = a3;
+  requestCopy = request;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__24;
   v19 = __Block_byref_object_dispose__24;
   v20 = 0;
-  v7 = [(JFXEffectPreviewManager *)self previewQueue];
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__JFXEffectPreviewManager_buildRenderRequest_time___block_invoke;
   v11[3] = &unk_278D7C190;
-  v14 = *a4;
+  v14 = *time;
   v11[4] = self;
-  v12 = v6;
+  v12 = requestCopy;
   v13 = &v15;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  v8 = requestCopy;
+  dispatch_sync(previewQueue, v11);
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -1759,21 +1759,21 @@ void __51__JFXEffectPreviewManager_buildRenderRequest_time___block_invoke_2(uint
   [v4 setDefaultPreviewImage:v5 transformValue:0];
 }
 
-- (void)renderRequestComplete:(id)a3 results:(id)a4 completedOutOfOrder:(BOOL)a5
+- (void)renderRequestComplete:(id)complete results:(id)results completedOutOfOrder:(BOOL)order
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!a5 && [v8 count])
+  completeCopy = complete;
+  resultsCopy = results;
+  v9 = resultsCopy;
+  if (!order && [resultsCopy count])
   {
-    v10 = [(JFXEffectPreviewManager *)self previewCache];
-    [v10 removeAllObjects];
+    previewCache = [(JFXEffectPreviewManager *)self previewCache];
+    [previewCache removeAllObjects];
 
-    v26 = v7;
-    v24 = [v7 userContext];
+    v26 = completeCopy;
+    userContext = [completeCopy userContext];
     v25 = v9;
-    v11 = [v24 buildCallbackMap:v9];
+    v11 = [userContext buildCallbackMap:v9];
     v12 = objc_opt_new();
     v28 = 0u;
     v29 = 0u;
@@ -1797,12 +1797,12 @@ void __51__JFXEffectPreviewManager_buildRenderRequest_time___block_invoke_2(uint
           v18 = *(*(&v28 + 1) + 8 * i);
           v19 = [v13 objectForKey:v18];
           v20 = [[JTImage alloc] initWithPVImage:v19];
-          v21 = [(JFXEffectPreviewManager *)self previewCache];
-          v22 = [v18 effectID];
-          [v21 setObject:v20 forKey:v22];
+          previewCache2 = [(JFXEffectPreviewManager *)self previewCache];
+          effectID = [v18 effectID];
+          [previewCache2 setObject:v20 forKey:effectID];
 
-          v23 = [v18 effectID];
-          [v12 addObject:v23];
+          effectID2 = [v18 effectID];
+          [v12 addObject:effectID2];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -1815,14 +1815,14 @@ void __51__JFXEffectPreviewManager_buildRenderRequest_time___block_invoke_2(uint
     [(JFXEffectPreviewManager *)self JFX_delegateUpdateContinousPreviewsForEffectIDs:v12];
 
     v9 = v25;
-    v7 = v26;
+    completeCopy = v26;
   }
 }
 
 - (JFXEffectsPreviewGenerator)staticPreviewGenerator
 {
-  v3 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v3);
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
   staticPreviewGenerator = self->_staticPreviewGenerator;
   if (!staticPreviewGenerator)
@@ -1833,8 +1833,8 @@ void __51__JFXEffectPreviewManager_buildRenderRequest_time___block_invoke_2(uint
 
     [(JFXEffectsPreviewGenerator *)self->_staticPreviewGenerator trackStats:0];
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(JFXEffectPreviewManager *)self name];
-    v9 = [v7 stringWithFormat:@"PreviewManagerStaticPreview_%@", v8];
+    name = [(JFXEffectPreviewManager *)self name];
+    v9 = [v7 stringWithFormat:@"PreviewManagerStaticPreview_%@", name];
     [(JFXEffectsPreviewGenerator *)self->_staticPreviewGenerator setName:v9];
 
     staticPreviewGenerator = self->_staticPreviewGenerator;
@@ -1843,28 +1843,28 @@ void __51__JFXEffectPreviewManager_buildRenderRequest_time___block_invoke_2(uint
   return staticPreviewGenerator;
 }
 
-- (void)preparePreviewForEffect:(id)a3 atSize:(CGSize)a4 options:(id)a5 completion:(id)a6
+- (void)preparePreviewForEffect:(id)effect atSize:(CGSize)size options:(id)options completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(JFXEffectPreviewManager *)self previewQueue];
+  height = size.height;
+  width = size.width;
+  effectCopy = effect;
+  optionsCopy = options;
+  completionCopy = completion;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __77__JFXEffectPreviewManager_preparePreviewForEffect_atSize_options_completion___block_invoke;
   v18[3] = &unk_278D7CFD0;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v13;
+  v19 = effectCopy;
+  v20 = optionsCopy;
+  v21 = completionCopy;
   v22 = width;
   v23 = height;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  dispatch_async(v14, v18);
+  v15 = completionCopy;
+  v16 = optionsCopy;
+  v17 = effectCopy;
+  dispatch_async(previewQueue, v18);
 }
 
 void __77__JFXEffectPreviewManager_preparePreviewForEffect_atSize_options_completion___block_invoke(uint64_t a1)
@@ -2040,26 +2040,26 @@ void __77__JFXEffectPreviewManager_preparePreviewForEffect_atSize_options_comple
   dispatch_async(v9, block);
 }
 
-- (void)previewForEffect:(id)a3 atSize:(CGSize)a4 options:(id)a5 completion:(id)a6
+- (void)previewForEffect:(id)effect atSize:(CGSize)size options:(id)options completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  effectCopy = effect;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __70__JFXEffectPreviewManager_previewForEffect_atSize_options_completion___block_invoke;
   v17[3] = &unk_278D7D020;
   objc_copyWeak(v21, &location);
-  v14 = v13;
+  v14 = completionCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = effectCopy;
   v18 = v15;
   v21[1] = *&width;
   v21[2] = *&height;
-  v16 = v12;
+  v16 = optionsCopy;
   v19 = v16;
   [(JFXEffectPreviewManager *)self cachedPreviewForEffect:v15 completion:v17];
 
@@ -2091,24 +2091,24 @@ void __70__JFXEffectPreviewManager_previewForEffect_atSize_options_completion___
   }
 }
 
-- (void)JFX_renderPreviewForEffect:(id)a3 previewSize:(CGSize)a4 options:(id)a5 completion:(id)a6
+- (void)JFX_renderPreviewForEffect:(id)effect previewSize:(CGSize)size options:(id)options completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v57[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(JFXEffectPreviewManager *)self previewQueue];
-  dispatch_assert_queue_V2(v14);
+  effectCopy = effect;
+  optionsCopy = options;
+  completionCopy = completion;
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
+  dispatch_assert_queue_V2(previewQueue);
 
-  v15 = [(JFXEffectPreviewManager *)self concurrentStaticPreviewSemaphore];
+  concurrentStaticPreviewSemaphore = [(JFXEffectPreviewManager *)self concurrentStaticPreviewSemaphore];
   v16 = dispatch_time(0, 5000000000);
-  dispatch_semaphore_wait(v15, v16);
+  dispatch_semaphore_wait(concurrentStaticPreviewSemaphore, v16);
 
-  if (v12)
+  if (optionsCopy)
   {
-    [v12 renderRange];
+    [optionsCopy renderRange];
   }
 
   else
@@ -2118,38 +2118,38 @@ void __70__JFXEffectPreviewManager_previewForEffect_atSize_options_completion___
     v54 = 0u;
   }
 
-  v17 = [v11 renderEffect];
+  renderEffect = [effectCopy renderEffect];
   v51 = v54;
   v52 = v55;
   v53 = v56;
-  [v17 setEffectRange:&v51];
+  [renderEffect setEffectRange:&v51];
 
-  [v11 setForceRenderAtPosterFrame:1];
-  [(JFXEffectPreviewManager *)self JFX_configureCommonRenderingPropertiesForEffect:v11 forPreviewSize:v12 withPreviewOptions:width, height];
-  [v12 renderedImageCropRect];
+  [effectCopy setForceRenderAtPosterFrame:1];
+  [(JFXEffectPreviewManager *)self JFX_configureCommonRenderingPropertiesForEffect:effectCopy forPreviewSize:optionsCopy withPreviewOptions:width, height];
+  [optionsCopy renderedImageCropRect];
   *&v51 = v18;
   *(&v51 + 1) = v19;
   *&v52 = v20;
   *(&v52 + 1) = v21;
-  v22 = [v12 renderPropertiesConfigurationBlock];
-  LOBYTE(v17) = v22 == 0;
+  renderPropertiesConfigurationBlock = [optionsCopy renderPropertiesConfigurationBlock];
+  LOBYTE(renderEffect) = renderPropertiesConfigurationBlock == 0;
 
-  if ((v17 & 1) == 0)
+  if ((renderEffect & 1) == 0)
   {
-    v23 = [v12 renderPropertiesConfigurationBlock];
-    (v23)[2](v23, v11, &v51, width, height);
+    renderPropertiesConfigurationBlock2 = [optionsCopy renderPropertiesConfigurationBlock];
+    (renderPropertiesConfigurationBlock2)[2](renderPropertiesConfigurationBlock2, effectCopy, &v51, width, height);
   }
 
-  v24 = [v12 renderBackgroundImage];
-  v25 = v24 == 0;
+  renderBackgroundImage = [optionsCopy renderBackgroundImage];
+  v25 = renderBackgroundImage == 0;
 
   if (v25)
   {
     location = 0uLL;
     v50 = 0;
-    if (v12 && ([v12 renderTime], (v48 & 1) != 0))
+    if (optionsCopy && ([optionsCopy renderTime], (v48 & 1) != 0))
     {
-      [v12 renderTime];
+      [optionsCopy renderTime];
     }
 
     else
@@ -2161,19 +2161,19 @@ void __70__JFXEffectPreviewManager_previewForEffect_atSize_options_completion___
     v31 = [JFXEffectsPreviewGenerationRequest alloc];
     v46 = location;
     v47 = v50;
-    v30 = [(JFXEffectsPreviewGenerationRequest *)v31 initWithInputGenerator:v11 effectStack:0 outputSize:&v46 renderTime:width, height];
+    height = [(JFXEffectsPreviewGenerationRequest *)v31 initWithInputGenerator:effectCopy effectStack:0 outputSize:&v46 renderTime:width, height];
   }
 
   else
   {
     v26 = [JFXEffectsPreviewGenerationRequest alloc];
-    v27 = [v12 renderBackgroundImage];
-    v28 = [v27 pvImageBuffer];
-    v57[0] = v11;
+    renderBackgroundImage2 = [optionsCopy renderBackgroundImage];
+    pvImageBuffer = [renderBackgroundImage2 pvImageBuffer];
+    v57[0] = effectCopy;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
-    if (v12)
+    if (optionsCopy)
     {
-      [v12 renderTime];
+      [optionsCopy renderTime];
     }
 
     else
@@ -2182,36 +2182,36 @@ void __70__JFXEffectPreviewManager_previewForEffect_atSize_options_completion___
       v50 = 0;
     }
 
-    v30 = [(JFXEffectsPreviewGenerationRequest *)v26 initWithInput:v28 effectStack:v29 outputSize:&location renderTime:width, height];
+    height = [(JFXEffectsPreviewGenerationRequest *)v26 initWithInput:pvImageBuffer effectStack:v29 outputSize:&location renderTime:width, height];
 
-    [(JFXEffectsPreviewGenerationRequest *)v30 centerAnimationInfo];
+    [(JFXEffectsPreviewGenerationRequest *)height centerAnimationInfo];
   }
 
-  -[JFXEffectsPreviewGenerationRequest setHighQuality:](v30, "setHighQuality:", [v12 quality] == 2);
-  if ([v12 parentCode] != -1)
+  -[JFXEffectsPreviewGenerationRequest setHighQuality:](height, "setHighQuality:", [optionsCopy quality] == 2);
+  if ([optionsCopy parentCode] != -1)
   {
-    -[JFXEffectsPreviewGenerationRequest setParentCode:](v30, "setParentCode:", [v12 parentCode]);
+    -[JFXEffectsPreviewGenerationRequest setParentCode:](height, "setParentCode:", [optionsCopy parentCode]);
   }
 
-  v32 = [(JFXEffectPreviewManager *)self concurrentStaticPreviewSemaphore];
+  concurrentStaticPreviewSemaphore2 = [(JFXEffectPreviewManager *)self concurrentStaticPreviewSemaphore];
   objc_initWeak(&location, self);
-  v33 = [(JFXEffectPreviewManager *)self staticPreviewGenerator];
+  staticPreviewGenerator = [(JFXEffectPreviewManager *)self staticPreviewGenerator];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __85__JFXEffectPreviewManager_JFX_renderPreviewForEffect_previewSize_options_completion___block_invoke;
   v38[3] = &unk_278D7D048;
-  v34 = v32;
+  v34 = concurrentStaticPreviewSemaphore2;
   v39 = v34;
   objc_copyWeak(&v43, &location);
-  v35 = v13;
+  v35 = completionCopy;
   v42 = v35;
   v44 = v51;
   v45 = v52;
-  v36 = v12;
+  v36 = optionsCopy;
   v40 = v36;
-  v37 = v11;
+  v37 = effectCopy;
   v41 = v37;
-  [v33 generatePreviewRequest:v30 completionHandler:v38];
+  [staticPreviewGenerator generatePreviewRequest:height completionHandler:v38];
 
   objc_destroyWeak(&v43);
   objc_destroyWeak(&location);
@@ -2278,13 +2278,13 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)cachedPreviewForEffect:(id)a3 completion:(id)a4
+- (void)cachedPreviewForEffect:(id)effect completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(JFXEffectPreviewManager *)self previewCache];
-  v9 = [v6 effectID];
-  v10 = [v8 objectForKey:v9];
+  effectCopy = effect;
+  completionCopy = completion;
+  previewCache = [(JFXEffectPreviewManager *)self previewCache];
+  effectID = [effectCopy effectID];
+  v10 = [previewCache objectForKey:effectID];
 
   if (v10)
   {
@@ -2292,24 +2292,24 @@ LABEL_15:
     v29[1] = 3221225472;
     v29[2] = __61__JFXEffectPreviewManager_cachedPreviewForEffect_completion___block_invoke;
     v29[3] = &unk_278D7A320;
-    v32 = v7;
+    v32 = completionCopy;
     v30 = v10;
     v31 = 0;
     [(JFXEffectPreviewManager *)self JFX_dispatchBlockOnCallbackQueueImmediatelyWhenPossible:v29];
 
-    v11 = v32;
+    defaultPreviewImage = v32;
   }
 
   else if ([(JFXEffectPreviewManager *)self isContinouslyPreviewing])
   {
-    v11 = [(JFXEffectPreviewManager *)self defaultPreviewImage];
-    if (v11)
+    defaultPreviewImage = [(JFXEffectPreviewManager *)self defaultPreviewImage];
+    if (defaultPreviewImage)
     {
       v12 = objc_opt_new();
-      v13 = [(JFXEffectPreviewManager *)self defaultPreviewImageDisplayTransformValue];
-      if (v13)
+      defaultPreviewImageDisplayTransformValue = [(JFXEffectPreviewManager *)self defaultPreviewImageDisplayTransformValue];
+      if (defaultPreviewImageDisplayTransformValue)
       {
-        [v12 setValue:v13 forKey:@"JFXEffectFoundPreviewLiveCaptureImageDisplayTransform"];
+        [v12 setValue:defaultPreviewImageDisplayTransformValue forKey:@"JFXEffectFoundPreviewLiveCaptureImageDisplayTransform"];
       }
 
       [v12 setValue:MEMORY[0x277CBEC38] forKey:@"JFXEffectFoundDefaultImageToUseWhilePreparingPreview"];
@@ -2317,9 +2317,9 @@ LABEL_15:
       v19[1] = 3221225472;
       v19[2] = __61__JFXEffectPreviewManager_cachedPreviewForEffect_completion___block_invoke_4;
       v19[3] = &unk_278D7A320;
-      v22 = v7;
-      v11 = v11;
-      v20 = v11;
+      v22 = completionCopy;
+      defaultPreviewImage = defaultPreviewImage;
+      v20 = defaultPreviewImage;
       v21 = v12;
       v14 = v12;
       [(JFXEffectPreviewManager *)self JFX_dispatchBlockOnCallbackQueueImmediatelyWhenPossible:v19];
@@ -2328,21 +2328,21 @@ LABEL_15:
 
   else
   {
-    v15 = [(JFXEffectPreviewManager *)self callbackQueue];
+    callbackQueue = [(JFXEffectPreviewManager *)self callbackQueue];
     objc_initWeak(&location, self);
-    v16 = [(JFXEffectPreviewManager *)self previewDiskCache];
-    v17 = [v6 effectID];
-    v18 = [v6 contentVersion];
+    previewDiskCache = [(JFXEffectPreviewManager *)self previewDiskCache];
+    effectID2 = [effectCopy effectID];
+    contentVersion = [effectCopy contentVersion];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __61__JFXEffectPreviewManager_cachedPreviewForEffect_completion___block_invoke_2;
     v23[3] = &unk_278D7D070;
     objc_copyWeak(&v27, &location);
-    v24 = v6;
-    v11 = v15;
-    v25 = v11;
-    v26 = v7;
-    [v16 previewForEffectID:v17 version:v18 completion:v23];
+    v24 = effectCopy;
+    defaultPreviewImage = callbackQueue;
+    v25 = defaultPreviewImage;
+    v26 = completionCopy;
+    [previewDiskCache previewForEffectID:effectID2 version:contentVersion completion:v23];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -2372,28 +2372,28 @@ void __61__JFXEffectPreviewManager_cachedPreviewForEffect_completion___block_inv
   dispatch_async(v7, v10);
 }
 
-- (void)purgeCachedPreviewForEffect:(id)a3
+- (void)purgeCachedPreviewForEffect:(id)effect
 {
-  v4 = a3;
-  v6 = [(JFXEffectPreviewManager *)self previewCache];
-  v5 = [v4 effectID];
+  effectCopy = effect;
+  previewCache = [(JFXEffectPreviewManager *)self previewCache];
+  effectID = [effectCopy effectID];
 
-  [v6 removeObjectForKey:v5];
+  [previewCache removeObjectForKey:effectID];
 }
 
 - (void)purgeCachedPreviewsForAllEffects
 {
-  v3 = [(JFXEffectPreviewManager *)self previewCache];
-  [v3 removeAllObjects];
+  previewCache = [(JFXEffectPreviewManager *)self previewCache];
+  [previewCache removeAllObjects];
 
   objc_initWeak(&location, self);
-  v4 = [(JFXEffectPreviewManager *)self previewQueue];
+  previewQueue = [(JFXEffectPreviewManager *)self previewQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __59__JFXEffectPreviewManager_purgeCachedPreviewsForAllEffects__block_invoke;
   v5[3] = &unk_278D7B1C8;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(previewQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

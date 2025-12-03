@@ -1,17 +1,17 @@
 @interface JavaNetURLConnection_DefaultContentHandler
-- (id)getContentWithJavaNetURLConnection:(id)a3;
+- (id)getContentWithJavaNetURLConnection:(id)connection;
 @end
 
 @implementation JavaNetURLConnection_DefaultContentHandler
 
-- (id)getContentWithJavaNetURLConnection:(id)a3
+- (id)getContentWithJavaNetURLConnection:(id)connection
 {
-  if (!a3)
+  if (!connection)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 getInputStream];
+  return [connection getInputStream];
 }
 
 @end

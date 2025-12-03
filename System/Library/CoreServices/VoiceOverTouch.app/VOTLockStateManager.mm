@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (VOTLockStateManager)init;
 - (void)_notifyObserversLockStateDidChange;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation VOTLockStateManager
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000F858;
   block[3] = &unk_1001C78B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001FE9E0 != -1)
   {
     dispatch_once(&qword_1001FE9E0, block);
@@ -57,14 +57,14 @@
   [(VOTLockStateManager *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     lockStateObserversLock = self->_lockStateObserversLock;
-    v5 = a3;
+    observerCopy = observer;
     [(NSLock *)lockStateObserversLock lock];
-    [(NSHashTable *)self->_lockStateObservers addObject:v5];
+    [(NSHashTable *)self->_lockStateObservers addObject:observerCopy];
 
     v6 = self->_lockStateObserversLock;
 
@@ -72,14 +72,14 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     lockStateObserversLock = self->_lockStateObserversLock;
-    v5 = a3;
+    observerCopy = observer;
     [(NSLock *)lockStateObserversLock lock];
-    [(NSHashTable *)self->_lockStateObservers removeObject:v5];
+    [(NSHashTable *)self->_lockStateObservers removeObject:observerCopy];
 
     v6 = self->_lockStateObserversLock;
 
@@ -90,14 +90,14 @@
 - (void)_notifyObserversLockStateDidChange
 {
   [(NSLock *)self->_lockStateObserversLock lock];
-  v3 = [(NSHashTable *)self->_lockStateObservers allObjects];
+  allObjects = [(NSHashTable *)self->_lockStateObservers allObjects];
   [(NSLock *)self->_lockStateObserversLock unlock];
-  v4 = [(VOTLockStateManager *)self isLocked];
+  isLocked = [(VOTLockStateManager *)self isLocked];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -113,7 +113,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) lockStateDidChange:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) lockStateDidChange:{isLocked, v10}];
         v9 = v9 + 1;
       }
 

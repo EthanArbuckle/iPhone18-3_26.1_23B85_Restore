@@ -1,47 +1,47 @@
 @interface SBWindowSceneStatusBarAssertionManager
-- (BOOL)isFrontmostStatusBarPartHidden:(int64_t)a3;
-- (BOOL)statusBar:(id)a3 shouldRequestStyle:(int64_t)a4 animationParameters:(id)a5 forced:(BOOL)a6;
-- (BOOL)statusBar:(id)a3 shouldRequestStyleAttributes:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6;
-- (BOOL)statusBar:(id)a3 shouldSetAlpha:(double)a4;
-- (SBWindowSceneStatusBarAssertionManager)initWithWindowScene:(id)a3;
-- (id)_descriptionForPropertyWithAssertions:(id)a3;
-- (id)_styleRequestForSettings:(id)a3;
-- (id)acquireDisableAlphaChangesAssertionWithReason:(id)a3;
-- (id)acquireDisableUserInteractionChangesAssertionWithReason:(id)a3;
-- (id)acquireHideFrontmostStatusBarAssertionForReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)effectiveStatusBarStyleRequestForLevel:(unint64_t)a3;
-- (id)effectiveStatusBarStyleRequestWithSettings:(id)a3;
-- (id)newSettingsAssertionWithSettings:(id)a3 atLevel:(unint64_t)a4 reason:(id)a5;
-- (id)newSettingsAssertionWithStatusBarHidden:(BOOL)a3 atLevel:(unint64_t)a4 reason:(id)a5;
-- (id)statusBar:(id)a3 effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)a4;
-- (id)statusBarSettingsForLevel:(unint64_t)a3;
+- (BOOL)isFrontmostStatusBarPartHidden:(int64_t)hidden;
+- (BOOL)statusBar:(id)bar shouldRequestStyle:(int64_t)style animationParameters:(id)parameters forced:(BOOL)forced;
+- (BOOL)statusBar:(id)bar shouldRequestStyleAttributes:(id)attributes animationParameters:(id)parameters forced:(BOOL)forced;
+- (BOOL)statusBar:(id)bar shouldSetAlpha:(double)alpha;
+- (SBWindowSceneStatusBarAssertionManager)initWithWindowScene:(id)scene;
+- (id)_descriptionForPropertyWithAssertions:(id)assertions;
+- (id)_styleRequestForSettings:(id)settings;
+- (id)acquireDisableAlphaChangesAssertionWithReason:(id)reason;
+- (id)acquireDisableUserInteractionChangesAssertionWithReason:(id)reason;
+- (id)acquireHideFrontmostStatusBarAssertionForReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)effectiveStatusBarStyleRequestForLevel:(unint64_t)level;
+- (id)effectiveStatusBarStyleRequestWithSettings:(id)settings;
+- (id)newSettingsAssertionWithSettings:(id)settings atLevel:(unint64_t)level reason:(id)reason;
+- (id)newSettingsAssertionWithStatusBarHidden:(BOOL)hidden atLevel:(unint64_t)level reason:(id)reason;
+- (id)statusBar:(id)bar effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)identifiers;
+- (id)statusBarSettingsForLevel:(unint64_t)level;
 - (id)succinctDescription;
-- (int64_t)effectiveStatusBarStyleForRequestedStyle:(int64_t)a3 styleOverridesToSuppress:(unint64_t)a4;
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5;
-- (void)_addDisableWindowSceneStatusBarAlphaChangesAssertion:(id)a3;
-- (void)_addDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)a3;
-- (void)_addStatusBarSettingsAssertion:(id)a3 withAnimationParameters:(id)a4;
+- (int64_t)effectiveStatusBarStyleForRequestedStyle:(int64_t)style styleOverridesToSuppress:(unint64_t)suppress;
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides;
+- (void)_addDisableWindowSceneStatusBarAlphaChangesAssertion:(id)assertion;
+- (void)_addDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)assertion;
+- (void)_addStatusBarSettingsAssertion:(id)assertion withAnimationParameters:(id)parameters;
 - (void)_cleanUpAllStatusBarSettingsAssertions;
-- (void)_enumerateAssertionsToLevel:(unint64_t)a3 withBlock:(id)a4;
-- (void)_evaluateSettingsWithStyleAnimations:(id)a3;
-- (void)_removeDisableWindowSceneStatusBarAlphaChangesAssertion:(id)a3;
-- (void)_removeDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)a3;
-- (void)_removeStatusBarSettingsAssertion:(id)a3 withAnimationParameters:(id)a4;
-- (void)_resolveEffectiveStatusBarStyleForSettings:(id)a3;
-- (void)_setStatusBarValueForPropertyWithAssertions:(id)a3 setter:(id)a4;
-- (void)_statusBarUpdatedFromSettings:(id)a3 toSettings:(id)a4 withAnimations:(id)a5;
-- (void)addObserver:(id)a3;
+- (void)_enumerateAssertionsToLevel:(unint64_t)level withBlock:(id)block;
+- (void)_evaluateSettingsWithStyleAnimations:(id)animations;
+- (void)_removeDisableWindowSceneStatusBarAlphaChangesAssertion:(id)assertion;
+- (void)_removeDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)assertion;
+- (void)_removeStatusBarSettingsAssertion:(id)assertion withAnimationParameters:(id)parameters;
+- (void)_resolveEffectiveStatusBarStyleForSettings:(id)settings;
+- (void)_setStatusBarValueForPropertyWithAssertions:(id)assertions setter:(id)setter;
+- (void)_statusBarUpdatedFromSettings:(id)settings toSettings:(id)toSettings withAnimations:(id)animations;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBWindowSceneStatusBarAssertionManager
 
-- (SBWindowSceneStatusBarAssertionManager)initWithWindowScene:(id)a3
+- (SBWindowSceneStatusBarAssertionManager)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v18.receiver = self;
   v18.super_class = SBWindowSceneStatusBarAssertionManager;
   v5 = [(SBWindowSceneStatusBarAssertionManager *)&v18 init];
@@ -59,7 +59,7 @@
     hideStatusBarAssertions = v5->_hideStatusBarAssertions;
     v5->_hideStatusBarAssertions = v10;
 
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     objc_initWeak(&location, v5);
     v12 = MEMORY[0x277D85CD0];
     objc_copyWeak(&v16, &location);
@@ -90,20 +90,20 @@ id __62__SBWindowSceneStatusBarAssertionManager_initWithWindowScene___block_invo
   [(SBWindowSceneStatusBarAssertionManager *)&v3 dealloc];
 }
 
-- (id)effectiveStatusBarStyleRequestForLevel:(unint64_t)a3
+- (id)effectiveStatusBarStyleRequestForLevel:(unint64_t)level
 {
-  v4 = [(SBWindowSceneStatusBarAssertionManager *)self statusBarSettingsForLevel:a3];
+  v4 = [(SBWindowSceneStatusBarAssertionManager *)self statusBarSettingsForLevel:level];
   v5 = [(SBWindowSceneStatusBarAssertionManager *)self _styleRequestForSettings:v4];
 
   return v5;
 }
 
-- (id)effectiveStatusBarStyleRequestWithSettings:(id)a3
+- (id)effectiveStatusBarStyleRequestWithSettings:(id)settings
 {
   currentStatusBarSettings = self->_currentStatusBarSettings;
-  v5 = a3;
+  settingsCopy = settings;
   v6 = [(SBStatusBarSettings *)currentStatusBarSettings mutableCopy];
-  [v6 applySettings:v5];
+  [v6 applySettings:settingsCopy];
 
   [(SBWindowSceneStatusBarAssertionManager *)self _resolveEffectiveStatusBarStyleForSettings:v6];
   v7 = [(SBWindowSceneStatusBarAssertionManager *)self _styleRequestForSettings:v6];
@@ -111,7 +111,7 @@ id __62__SBWindowSceneStatusBarAssertionManager_initWithWindowScene___block_invo
   return v7;
 }
 
-- (id)statusBarSettingsForLevel:(unint64_t)a3
+- (id)statusBarSettingsForLevel:(unint64_t)level
 {
   v8 = 0;
   v9 = &v8;
@@ -124,7 +124,7 @@ id __62__SBWindowSceneStatusBarAssertionManager_initWithWindowScene___block_invo
   v7[2] = __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___block_invoke;
   v7[3] = &unk_2783C0D80;
   v7[4] = &v8;
-  [(SBWindowSceneStatusBarAssertionManager *)self _enumerateAssertionsToLevel:a3 withBlock:v7];
+  [(SBWindowSceneStatusBarAssertionManager *)self _enumerateAssertionsToLevel:level withBlock:v7];
   [(SBWindowSceneStatusBarAssertionManager *)self _resolveEffectiveStatusBarStyleForSettings:v9[5]];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -139,119 +139,119 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
   [v2 applySettings:v3];
 }
 
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides
 {
-  v6 = [(SBStatusBarSettings *)self->_currentStatusBarSettings backgroundActivitiesToSuppress:a3];
+  v6 = [(SBStatusBarSettings *)self->_currentStatusBarSettings backgroundActivitiesToSuppress:bar];
   v7 = STUIStyleOverridesForBackgroundActivityIdentifiers();
 
-  return a5 & ~v7;
+  return overrides & ~v7;
 }
 
-- (int64_t)effectiveStatusBarStyleForRequestedStyle:(int64_t)a3 styleOverridesToSuppress:(unint64_t)a4
+- (int64_t)effectiveStatusBarStyleForRequestedStyle:(int64_t)style styleOverridesToSuppress:(unint64_t)suppress
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v7 = [WeakRetained statusBarManager];
-  v8 = [v7 statusBar];
-  v9 = [v8 styleOverrides];
+  statusBarManager = [WeakRetained statusBarManager];
+  statusBar = [statusBarManager statusBar];
+  styleOverrides = [statusBar styleOverrides];
 
   v10 = MEMORY[0x277D75A78];
 
-  return [v10 defaultStyleForRequestedStyle:a3 styleOverrides:v9 & ~a4];
+  return [v10 defaultStyleForRequestedStyle:style styleOverrides:styleOverrides & ~suppress];
 }
 
-- (id)statusBar:(id)a3 effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)a4
+- (id)statusBar:(id)bar effectiveBackgroundActivitiesForBackgroundActiviesWithIdentifiers:(id)identifiers
 {
-  v5 = [a4 mutableCopy];
-  v6 = [(SBStatusBarSettings *)self->_currentStatusBarSettings backgroundActivitiesToSuppress];
-  [v5 minusSet:v6];
+  v5 = [identifiers mutableCopy];
+  backgroundActivitiesToSuppress = [(SBStatusBarSettings *)self->_currentStatusBarSettings backgroundActivitiesToSuppress];
+  [v5 minusSet:backgroundActivitiesToSuppress];
 
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (id)acquireDisableAlphaChangesAssertionWithReason:(id)a3
+- (id)acquireDisableAlphaChangesAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[SBDisableWindowSceneStatusBarAlphaChangesAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self reason:v4];
+  reasonCopy = reason;
+  v5 = [[SBDisableWindowSceneStatusBarAlphaChangesAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self reason:reasonCopy];
 
   return v5;
 }
 
-- (id)acquireDisableUserInteractionChangesAssertionWithReason:(id)a3
+- (id)acquireDisableUserInteractionChangesAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[SBDisableWindowSceneStatusBarUserInteractionChangesAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self reason:v4];
+  reasonCopy = reason;
+  v5 = [[SBDisableWindowSceneStatusBarUserInteractionChangesAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self reason:reasonCopy];
 
   return v5;
 }
 
-- (id)newSettingsAssertionWithSettings:(id)a3 atLevel:(unint64_t)a4 reason:(id)a5
+- (id)newSettingsAssertionWithSettings:(id)settings atLevel:(unint64_t)level reason:(id)reason
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[SBWindowSceneStatusBarSettingsAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self settings:v9 atLevel:a4 reason:v8];
+  reasonCopy = reason;
+  settingsCopy = settings;
+  v10 = [[SBWindowSceneStatusBarSettingsAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self settings:settingsCopy atLevel:level reason:reasonCopy];
 
   return v10;
 }
 
-- (id)newSettingsAssertionWithStatusBarHidden:(BOOL)a3 atLevel:(unint64_t)a4 reason:(id)a5
+- (id)newSettingsAssertionWithStatusBarHidden:(BOOL)hidden atLevel:(unint64_t)level reason:(id)reason
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [[SBWindowSceneStatusBarSettingsAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self statusBarHidden:v6 atLevel:a4 reason:v8];
+  hiddenCopy = hidden;
+  reasonCopy = reason;
+  v9 = [[SBWindowSceneStatusBarSettingsAssertion alloc] _initWithWindowSceneStatusBarAssertionManager:self statusBarHidden:hiddenCopy atLevel:level reason:reasonCopy];
 
   return v9;
 }
 
-- (BOOL)statusBar:(id)a3 shouldSetAlpha:(double)a4
+- (BOOL)statusBar:(id)bar shouldSetAlpha:(double)alpha
 {
   v16 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCACC8];
-  v7 = a3;
+  barCopy = bar;
   if (([v6 isMainThread] & 1) == 0)
   {
     [SBWindowSceneStatusBarAssertionManager statusBar:shouldSetAlpha:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v9 = [WeakRetained statusBarManager];
-  v10 = [v9 statusBar];
+  statusBarManager = [WeakRetained statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  if (v10 == v7 && !self->_changingStatusBarAlpha)
+  if (statusBar == barCopy && !self->_changingStatusBarAlpha)
   {
     v13 = SBLogStatusBarish();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = 134217984;
-      v15 = a4;
+      alphaCopy = alpha;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, "Status bar alpha changed outside of SBWindowSceneStatusBarSettingsAssertion. Rejecting change to set alpha to: %f", &v14, 0xCu);
     }
 
@@ -264,20 +264,20 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
   }
 }
 
-- (BOOL)statusBar:(id)a3 shouldRequestStyleAttributes:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6
+- (BOOL)statusBar:(id)bar shouldRequestStyleAttributes:(id)attributes animationParameters:(id)parameters forced:(BOOL)forced
 {
   v7 = MEMORY[0x277CCACC8];
-  v8 = a3;
+  barCopy = bar;
   if (([v7 isMainThread] & 1) == 0)
   {
     [SBWindowSceneStatusBarAssertionManager statusBar:shouldRequestStyleAttributes:animationParameters:forced:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v10 = [WeakRetained statusBarManager];
-  v11 = [v10 statusBar];
+  statusBarManager = [WeakRetained statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  if (v11 == v8 && !self->_changingStatusBarStyle)
+  if (statusBar == barCopy && !self->_changingStatusBarStyle)
   {
     v12 = SBLogStatusBarish();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -289,20 +289,20 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
   return 1;
 }
 
-- (BOOL)statusBar:(id)a3 shouldRequestStyle:(int64_t)a4 animationParameters:(id)a5 forced:(BOOL)a6
+- (BOOL)statusBar:(id)bar shouldRequestStyle:(int64_t)style animationParameters:(id)parameters forced:(BOOL)forced
 {
   v7 = MEMORY[0x277CCACC8];
-  v8 = a3;
+  barCopy = bar;
   if (([v7 isMainThread] & 1) == 0)
   {
     [SBWindowSceneStatusBarAssertionManager statusBar:shouldRequestStyle:animationParameters:forced:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v10 = [WeakRetained statusBarManager];
-  v11 = [v10 statusBar];
+  statusBarManager = [WeakRetained statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  if (v11 == v8 && !self->_changingStatusBarStyle)
+  if (statusBar == barCopy && !self->_changingStatusBarStyle)
   {
     v12 = SBLogStatusBarish();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -314,39 +314,39 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
   return 1;
 }
 
-- (void)_addDisableWindowSceneStatusBarAlphaChangesAssertion:(id)a3
+- (void)_addDisableWindowSceneStatusBarAlphaChangesAssertion:(id)assertion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
     v5 = SBLogStatusBarish();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = assertionCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Adding status bar disable alpha change assertion: %@", &v6, 0xCu);
     }
 
-    [(NSHashTable *)self->_disableAlphaChangeAssertions addObject:v4];
+    [(NSHashTable *)self->_disableAlphaChangeAssertions addObject:assertionCopy];
   }
 }
 
-- (void)_removeDisableWindowSceneStatusBarAlphaChangesAssertion:(id)a3
+- (void)_removeDisableWindowSceneStatusBarAlphaChangesAssertion:(id)assertion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
     v5 = SBLogStatusBarish();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = assertionCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Removing status bar disable alpha change assertion: %@", &v6, 0xCu);
     }
 
-    [(NSHashTable *)self->_disableAlphaChangeAssertions removeObject:v4];
+    [(NSHashTable *)self->_disableAlphaChangeAssertions removeObject:assertionCopy];
     if (![(NSHashTable *)self->_disableAlphaChangeAssertions count])
     {
       [(SBWindowSceneStatusBarAssertionManager *)self _statusBarUpdatedFromSettings:0 toSettings:self->_currentStatusBarSettings withAnimations:0];
@@ -354,54 +354,54 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
   }
 }
 
-- (void)_addDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)a3
+- (void)_addDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
     [(NSHashTable *)self->_disableUserInteractionChangeAssertions addObject:?];
   }
 }
 
-- (void)_removeDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)a3
+- (void)_removeDisableWindowSceneStatusBarUserInteractionChangesAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
     [(NSHashTable *)self->_disableUserInteractionChangeAssertions removeObject:?];
   }
 }
 
-- (void)_addStatusBarSettingsAssertion:(id)a3 withAnimationParameters:(id)a4
+- (void)_addStatusBarSettingsAssertion:(id)assertion withAnimationParameters:(id)parameters
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 level];
+  assertionCopy = assertion;
+  parametersCopy = parameters;
+  level = [assertionCopy level];
   statusBarSettingsAssertionsByLevel = self->_statusBarSettingsAssertionsByLevel;
-  v10 = self->_statusBarSettingsAssertionsByLevel[v8];
+  v10 = self->_statusBarSettingsAssertionsByLevel[level];
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277CCAC18]) initWithOptions:514];
-    v11 = statusBarSettingsAssertionsByLevel[v8];
-    statusBarSettingsAssertionsByLevel[v8] = v10;
+    v11 = statusBarSettingsAssertionsByLevel[level];
+    statusBarSettingsAssertionsByLevel[level] = v10;
   }
 
   v12 = SBLogStatusBarish();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v6;
+    v26 = assertionCopy;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "adding status bar settings assertion: %{public}@", buf, 0xCu);
   }
 
-  [(NSPointerArray *)v10 addPointer:v6];
-  v19 = v7;
-  [(SBWindowSceneStatusBarAssertionManager *)self _evaluateSettingsWithStyleAnimations:v7];
+  [(NSPointerArray *)v10 addPointer:assertionCopy];
+  v19 = parametersCopy;
+  [(SBWindowSceneStatusBarAssertionManager *)self _evaluateSettingsWithStyleAnimations:parametersCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(NSHashTable *)self->_observers allObjects];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v14 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
   {
     v15 = v14;
@@ -413,34 +413,34 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allObjects);
         }
 
         v18 = *(*(&v20 + 1) + 8 * v17);
         if (objc_opt_respondsToSelector())
         {
-          [v18 statusBarAssertionManager:self addStatusBarSettingsAssertion:v6];
+          [v18 statusBarAssertionManager:self addStatusBarSettingsAssertion:assertionCopy];
         }
 
         ++v17;
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v15 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v15);
   }
 }
 
-- (void)_removeStatusBarSettingsAssertion:(id)a3 withAnimationParameters:(id)a4
+- (void)_removeStatusBarSettingsAssertion:(id)assertion withAnimationParameters:(id)parameters
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 level];
+  assertionCopy = assertion;
+  parametersCopy = parameters;
+  level = [assertionCopy level];
   statusBarSettingsAssertionsByLevel = self->_statusBarSettingsAssertionsByLevel;
-  v10 = self->_statusBarSettingsAssertionsByLevel[v8];
+  v10 = self->_statusBarSettingsAssertionsByLevel[level];
   v11 = v10;
   if (v10)
   {
@@ -449,7 +449,7 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
     {
       v13 = v12;
       v14 = 0;
-      while ([(NSPointerArray *)v11 pointerAtIndex:v14]!= v6)
+      while ([(NSPointerArray *)v11 pointerAtIndex:v14]!= assertionCopy)
       {
         if (v13 == ++v14)
         {
@@ -462,36 +462,36 @@ void __68__SBWindowSceneStatusBarAssertionManager_statusBarSettingsForLevel___bl
         v15 = SBLogStatusBarish();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [MEMORY[0x277CBEAA8] date];
-          v16 = [v6 timestamp];
-          [v25 timeIntervalSinceDate:?];
+          date = [MEMORY[0x277CBEAA8] date];
+          timestamp = [assertionCopy timestamp];
+          [date timeIntervalSinceDate:?];
           *buf = 134218242;
           v33 = v17;
           v34 = 2114;
-          v35 = v6;
+          v35 = assertionCopy;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "removing status bar settings assertion after %f seconds: %{public}@", buf, 0x16u);
         }
 
         [(NSPointerArray *)v11 removePointerAtIndex:v14];
         if (![(NSPointerArray *)v11 count])
         {
-          v18 = statusBarSettingsAssertionsByLevel[v8];
-          statusBarSettingsAssertionsByLevel[v8] = 0;
+          v18 = statusBarSettingsAssertionsByLevel[level];
+          statusBarSettingsAssertionsByLevel[level] = 0;
         }
 
-        [(SBWindowSceneStatusBarAssertionManager *)self _evaluateSettingsWithStyleAnimations:v7];
+        [(SBWindowSceneStatusBarAssertionManager *)self _evaluateSettingsWithStyleAnimations:parametersCopy];
       }
     }
   }
 
 LABEL_13:
-  v26 = v7;
+  v26 = parametersCopy;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v19 = [(NSHashTable *)self->_observers allObjects];
-  v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v20 = [allObjects countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v20)
   {
     v21 = v20;
@@ -502,28 +502,28 @@ LABEL_13:
       {
         if (*v28 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allObjects);
         }
 
         v24 = *(*(&v27 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v24 statusBarAssertionManager:self removeStatusBarSettingsAssertion:v6];
+          [v24 statusBarAssertionManager:self removeStatusBarSettingsAssertion:assertionCopy];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v21 = [allObjects countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v21);
   }
 }
 
-- (void)_enumerateAssertionsToLevel:(unint64_t)a3 withBlock:(id)a4
+- (void)_enumerateAssertionsToLevel:(unint64_t)level withBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a3 >= 0xE)
+  blockCopy = block;
+  if (level >= 0xE)
   {
     [SBWindowSceneStatusBarAssertionManager _enumerateAssertionsToLevel:a2 withBlock:self];
   }
@@ -555,7 +555,7 @@ LABEL_13:
               objc_enumerationMutation(v11);
             }
 
-            v7[2](v7, *(*(&v16 + 1) + 8 * v15++));
+            blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v15++));
           }
 
           while (v13 != v15);
@@ -569,99 +569,99 @@ LABEL_13:
     ++v8;
   }
 
-  while (v8 <= a3);
+  while (v8 <= level);
 }
 
-- (void)_resolveEffectiveStatusBarStyleForSettings:(id)a3
+- (void)_resolveEffectiveStatusBarStyleForSettings:(id)settings
 {
-  v8 = a3;
-  if ([v8 style] == -1)
+  settingsCopy = settings;
+  if ([settingsCopy style] == -1)
   {
-    v4 = SBDefaultStatusBarStyle();
+    style = SBDefaultStatusBarStyle();
   }
 
   else
   {
-    v4 = [v8 style];
+    style = [settingsCopy style];
   }
 
-  v5 = v4;
-  v6 = [v8 backgroundActivitiesToSuppress];
+  v5 = style;
+  backgroundActivitiesToSuppress = [settingsCopy backgroundActivitiesToSuppress];
   v7 = [(SBWindowSceneStatusBarAssertionManager *)self effectiveStatusBarStyleForRequestedStyle:v5 styleOverridesToSuppress:STUIStyleOverridesForBackgroundActivityIdentifiers()];
 
-  [v8 setStyle:v7];
+  [settingsCopy setStyle:v7];
 }
 
-- (id)_styleRequestForSettings:(id)a3
+- (id)_styleRequestForSettings:(id)settings
 {
   v3 = MEMORY[0x277D6BFE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = [v3 alloc];
-  v6 = _SBStatusBarStyleFromLegacyStyle([v4 style]);
-  v7 = [v4 legibilitySettings];
+  v6 = _SBStatusBarStyleFromLegacyStyle([settingsCopy style]);
+  legibilitySettings = [settingsCopy legibilitySettings];
 
-  v8 = [v7 primaryColor];
-  v9 = [v5 initWithResolvedStyle:v6 foregroundColor:v8];
+  primaryColor = [legibilitySettings primaryColor];
+  v9 = [v5 initWithResolvedStyle:v6 foregroundColor:primaryColor];
 
   return v9;
 }
 
-- (void)_statusBarUpdatedFromSettings:(id)a3 toSettings:(id)a4 withAnimations:(id)a5
+- (void)_statusBarUpdatedFromSettings:(id)settings toSettings:(id)toSettings withAnimations:(id)animations
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingsCopy = settings;
+  toSettingsCopy = toSettings;
+  animationsCopy = animations;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBWindowSceneStatusBarAssertionManager _statusBarUpdatedFromSettings:toSettings:withAnimations:];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v12 = [WeakRetained statusBarManager];
-  v13 = [v12 statusBar];
+  statusBarManager = [WeakRetained statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  v14 = [(SBWindowSceneStatusBarAssertionManager *)self _styleRequestForSettings:v9];
+  v14 = [(SBWindowSceneStatusBarAssertionManager *)self _styleRequestForSettings:toSettingsCopy];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __98__SBWindowSceneStatusBarAssertionManager__statusBarUpdatedFromSettings_toSettings_withAnimations___block_invoke;
   v56[3] = &unk_2783C0DA8;
   v56[4] = self;
-  v15 = v13;
+  v15 = statusBar;
   v57 = v15;
   v45 = MEMORY[0x223D6F7F0](v56);
   val = self;
-  if (!v10)
+  if (!animationsCopy)
   {
     if ([MEMORY[0x277D75D18] _isInAnimationBlock])
     {
-      v10 = [objc_alloc(MEMORY[0x277D75AA0]) initWithEmptyParameters];
-      v16 = [MEMORY[0x277D75D18] _currentAnimationSettings];
-      [v16 duration];
-      [v10 setDuration:?];
-      [v16 delay];
-      [v10 setDelay:?];
-      [v10 setCurve:3];
-      [v10 setStyleAnimation:1];
+      animationsCopy = [objc_alloc(MEMORY[0x277D75AA0]) initWithEmptyParameters];
+      _currentAnimationSettings = [MEMORY[0x277D75D18] _currentAnimationSettings];
+      [_currentAnimationSettings duration];
+      [animationsCopy setDuration:?];
+      [_currentAnimationSettings delay];
+      [animationsCopy setDelay:?];
+      [animationsCopy setCurve:3];
+      [animationsCopy setStyleAnimation:1];
     }
 
     else
     {
-      v10 = 0;
+      animationsCopy = 0;
     }
   }
 
   v43 = v14;
-  v44 = v10;
-  if (v8)
+  v44 = animationsCopy;
+  if (settingsCopy)
   {
-    v17 = [v8 alpha];
-    [v17 floatValue];
-    v18 = [v9 alpha];
-    [v18 floatValue];
+    alpha = [settingsCopy alpha];
+    [alpha floatValue];
+    alpha2 = [toSettingsCopy alpha];
+    [alpha2 floatValue];
     v42 = BSFloatEqualToFloat() ^ 1;
 
-    v19 = [v8 backgroundActivitiesToSuppress];
-    v20 = [v9 backgroundActivitiesToSuppress];
+    backgroundActivitiesToSuppress = [settingsCopy backgroundActivitiesToSuppress];
+    backgroundActivitiesToSuppress2 = [toSettingsCopy backgroundActivitiesToSuppress];
     v21 = BSEqualSets();
   }
 
@@ -671,18 +671,18 @@ LABEL_13:
     v42 = 1;
   }
 
-  v22 = [v8 legibilitySettings];
-  v23 = [v9 legibilitySettings];
+  legibilitySettings = [settingsCopy legibilitySettings];
+  legibilitySettings2 = [toSettingsCopy legibilitySettings];
   v24 = BSEqualObjects();
 
-  if (v8)
+  if (settingsCopy)
   {
-    v25 = [v8 style];
-    v26 = (v25 == [v9 style]) & v24 & v21;
-    v27 = [v8 hiddenParts];
-    v28 = v27 != [v9 hiddenParts];
-    v29 = [v8 alpha];
-    [v29 floatValue];
+    style = [settingsCopy style];
+    v26 = (style == [toSettingsCopy style]) & v24 & v21;
+    hiddenParts = [settingsCopy hiddenParts];
+    v28 = hiddenParts != [toSettingsCopy hiddenParts];
+    alpha3 = [settingsCopy alpha];
+    [alpha3 floatValue];
   }
 
   else
@@ -694,8 +694,8 @@ LABEL_13:
 
   if (BSFloatGreaterThanFloat())
   {
-    v30 = [v9 alpha];
-    [v30 floatValue];
+    alpha4 = [toSettingsCopy alpha];
+    [alpha4 floatValue];
     IsZero = BSFloatIsZero();
   }
 
@@ -706,8 +706,8 @@ LABEL_13:
 
   if (BSFloatIsZero())
   {
-    v32 = [v9 alpha];
-    [v32 floatValue];
+    alpha5 = [toSettingsCopy alpha];
+    [alpha5 floatValue];
     v33 = BSFloatGreaterThanFloat();
   }
 
@@ -718,8 +718,8 @@ LABEL_13:
 
   if (BSFloatGreaterThanFloat())
   {
-    v34 = [v9 alpha];
-    [v34 floatValue];
+    alpha6 = [toSettingsCopy alpha];
+    [alpha6 floatValue];
     v35 = BSFloatGreaterThanFloat();
   }
 
@@ -731,8 +731,8 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && v33)
   {
-    v36 = [v15 statusBar];
-    [v36 reinitializeStatusBar];
+    statusBar2 = [v15 statusBar];
+    [statusBar2 reinitializeStatusBar];
   }
 
   if (((v33 ^ 1) & (v26 | IsZero) & 1) == 0)
@@ -758,7 +758,7 @@ LABEL_13:
     v53[2] = __98__SBWindowSceneStatusBarAssertionManager__statusBarUpdatedFromSettings_toSettings_withAnimations___block_invoke_3;
     v53[3] = &unk_2783A92D8;
     v54 = v15;
-    v55 = v9;
+    v55 = toSettingsCopy;
     [v38 animateWithParameters:v44 fromCurrentState:1 animations:v53 completion:0];
   }
 
@@ -938,12 +938,12 @@ LABEL_6:
   while (v2 != 14);
 }
 
-- (void)_evaluateSettingsWithStyleAnimations:(id)a3
+- (void)_evaluateSettingsWithStyleAnimations:(id)animations
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  animationsCopy = animations;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained statusBarManager];
+  statusBarManager = [WeakRetained statusBarManager];
 
   v29 = 0;
   v30 = &v29;
@@ -960,14 +960,14 @@ LABEL_6:
   v7 = SBLogStatusBarish();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [v30[5] alpha];
-    [v15 floatValue];
+    alpha = [v30[5] alpha];
+    [alpha floatValue];
     v17 = v16;
-    v18 = [(SBStatusBarSettings *)self->_currentStatusBarSettings alpha];
-    [v18 floatValue];
+    alpha2 = [(SBStatusBarSettings *)self->_currentStatusBarSettings alpha];
+    [alpha2 floatValue];
     v20 = v19;
-    v21 = [v6 statusBar];
-    [v21 alpha];
+    statusBar = [statusBarManager statusBar];
+    [statusBar alpha];
     *buf = 134349568;
     v37 = v17;
     v38 = 2050;
@@ -981,15 +981,15 @@ LABEL_6:
   if (![(SBStatusBarSettings *)self->_currentStatusBarSettings isEqual:v30[5]])
   {
     objc_storeStrong(&self->_currentStatusBarSettings, v30[5]);
-    [(SBWindowSceneStatusBarAssertionManager *)self _statusBarUpdatedFromSettings:v8 toSettings:v30[5] withAnimations:v4];
-    v23 = v4;
-    v9 = v6;
+    [(SBWindowSceneStatusBarAssertionManager *)self _statusBarUpdatedFromSettings:v8 toSettings:v30[5] withAnimations:animationsCopy];
+    v23 = animationsCopy;
+    v9 = statusBarManager;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [(NSHashTable *)self->_observers allObjects];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v35 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v11 = [allObjects countByEnumeratingWithState:&v24 objects:v35 count:16];
     if (v11)
     {
       v12 = *v25;
@@ -1000,7 +1000,7 @@ LABEL_6:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v24 + 1) + 8 * v13);
@@ -1013,14 +1013,14 @@ LABEL_6:
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v24 objects:v35 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v24 objects:v35 count:16];
       }
 
       while (v11);
     }
 
-    v6 = v9;
-    v4 = v23;
+    statusBarManager = v9;
+    animationsCopy = v23;
   }
 
   _Block_object_dispose(&v29, 8);
@@ -1033,14 +1033,14 @@ void __79__SBWindowSceneStatusBarAssertionManager__evaluateSettingsWithStyleAnim
   [v2 applySettings:v3];
 }
 
-- (id)_descriptionForPropertyWithAssertions:(id)a3
+- (id)_descriptionForPropertyWithAssertions:(id)assertions
 {
-  if (self->_disableAlphaChangeAssertions == a3)
+  if (self->_disableAlphaChangeAssertions == assertions)
   {
     return @"alpha";
   }
 
-  if (self->_disableUserInteractionChangeAssertions == a3)
+  if (self->_disableUserInteractionChangeAssertions == assertions)
   {
     return @"user interaction";
   }
@@ -1048,62 +1048,62 @@ void __79__SBWindowSceneStatusBarAssertionManager__evaluateSettingsWithStyleAnim
   return 0;
 }
 
-- (void)_setStatusBarValueForPropertyWithAssertions:(id)a3 setter:(id)a4
+- (void)_setStatusBarValueForPropertyWithAssertions:(id)assertions setter:(id)setter
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  assertionsCopy = assertions;
+  setterCopy = setter;
+  if ([assertionsCopy count])
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(SBWindowSceneStatusBarAssertionManager *)self _descriptionForPropertyWithAssertions:v6];
+      v9 = [(SBWindowSceneStatusBarAssertionManager *)self _descriptionForPropertyWithAssertions:assertionsCopy];
       v10 = 138543618;
       v11 = v9;
       v12 = 2112;
-      v13 = v6;
+      v13 = assertionsCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "Suppressing status bar %{public}@ change due to outstanding disablement assertions: %@", &v10, 0x16u);
     }
   }
 
-  else if (v7)
+  else if (setterCopy)
   {
-    v7[2](v7);
+    setterCopy[2](setterCopy);
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBWindowSceneStatusBarAssertionManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWindowSceneStatusBarAssertionManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWindowSceneStatusBarAssertionManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWindowSceneStatusBarAssertionManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBWindowSceneStatusBarAssertionManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBWindowSceneStatusBarAssertionManager *)self succinctDescriptionBuilder];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__SBWindowSceneStatusBarAssertionManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v11[3] = &unk_2783A8ED8;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v12 = v7;
   v13 = WeakRetained;
-  v14 = self;
+  selfCopy = self;
   v8 = WeakRetained;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v4 block:v11];
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v11];
 
   v9 = v7;
   return v7;
@@ -1166,62 +1166,62 @@ void __80__SBWindowSceneStatusBarAssertionManager_descriptionBuilderWithMultilin
   }
 }
 
-- (BOOL)isFrontmostStatusBarPartHidden:(int64_t)a3
+- (BOOL)isFrontmostStatusBarPartHidden:(int64_t)hidden
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained statusBarManager];
-  if (![v6 isStatusBarEffectivelyHidden])
+  statusBarManager = [WeakRetained statusBarManager];
+  if (![statusBarManager isStatusBarEffectivelyHidden])
   {
     goto LABEL_40;
   }
 
-  v7 = [WeakRetained lockScreenManager];
-  if (![v7 isUILocked] || (-[SBWindowSceneStatusBarAssertionManager currentStatusBarSettings](self, "currentStatusBarSettings"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "alpha"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", &unk_283371FC0), v9, v8, !v10))
+  lockScreenManager = [WeakRetained lockScreenManager];
+  if (![lockScreenManager isUILocked] || (-[SBWindowSceneStatusBarAssertionManager currentStatusBarSettings](self, "currentStatusBarSettings"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "alpha"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqual:", &unk_283371FC0), v9, v8, !v10))
   {
-    v12 = [WeakRetained transientOverlayPresenter];
-    if ([v12 hasActivePresentation])
+    transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+    if ([transientOverlayPresenter hasActivePresentation])
     {
-      v11 = [v12 hasVisibleStatusBar] ^ 1;
+      v11 = [transientOverlayPresenter hasVisibleStatusBar] ^ 1;
 
       goto LABEL_41;
     }
 
-    v13 = [WeakRetained switcherController];
-    v14 = [v13 layoutStatePrimaryElement];
-    v15 = [v14 workspaceEntity];
-    v16 = [v15 applicationSceneEntity];
-    v17 = [v16 sceneHandle];
+    switcherController = [WeakRetained switcherController];
+    layoutStatePrimaryElement = [switcherController layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
 
-    v18 = [v13 layoutStateSideElement];
-    v19 = [v18 workspaceEntity];
-    v20 = [v19 applicationSceneEntity];
-    v34 = [v20 sceneHandle];
+    layoutStateSideElement = [switcherController layoutStateSideElement];
+    workspaceEntity2 = [layoutStateSideElement workspaceEntity];
+    applicationSceneEntity2 = [workspaceEntity2 applicationSceneEntity];
+    sceneHandle2 = [applicationSceneEntity2 sceneHandle];
 
-    if (!v17)
+    if (!sceneHandle)
     {
       LOBYTE(v11) = 1;
       goto LABEL_39;
     }
 
-    v21 = [v17 application];
-    if ([v21 isClassic] && !objc_msgSend(v21, "includesStatusBarInClassicJailForInterfaceOrientation:", objc_msgSend(v17, "activationInterfaceOrientationForCurrentOrientation")))
+    application = [sceneHandle application];
+    if ([application isClassic] && !objc_msgSend(application, "includesStatusBarInClassicJailForInterfaceOrientation:", objc_msgSend(sceneHandle, "activationInterfaceOrientationForCurrentOrientation")))
     {
       LOBYTE(v11) = 0;
 LABEL_38:
 
 LABEL_39:
-      if (v17)
+      if (sceneHandle)
       {
         goto LABEL_41;
       }
 
 LABEL_40:
-      LOBYTE(v11) = [v6 isStatusBarEffectivelyHidden];
+      LOBYTE(v11) = [statusBarManager isStatusBarEffectivelyHidden];
       goto LABEL_41;
     }
 
-    v22 = [WeakRetained switcherController];
-    if ([v22 isInAppStatusBarHidden])
+    switcherController2 = [WeakRetained switcherController];
+    if ([switcherController2 isInAppStatusBarHidden])
     {
       LOBYTE(v11) = 1;
 LABEL_37:
@@ -1229,38 +1229,38 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    if (a3 <= 3)
+    if (hidden <= 3)
     {
-      if (a3 != 1)
+      if (hidden != 1)
       {
-        if (a3 == 2)
+        if (hidden == 2)
         {
-          v23 = [v22 windowManagementContext];
-          if (([v23 isMedusaEnabled] & (v34 != 0)) != 0)
+          windowManagementContext = [switcherController2 windowManagementContext];
+          if (([windowManagementContext isMedusaEnabled] & (sceneHandle2 != 0)) != 0)
           {
-            v24 = v34;
+            v24 = sceneHandle2;
           }
 
           else
           {
-            v24 = v17;
+            v24 = sceneHandle;
           }
 
-          v25 = [v24 sceneIfExists];
+          sceneIfExists = [v24 sceneIfExists];
 
 LABEL_31:
-          if (v25)
+          if (sceneIfExists)
           {
-            v33 = v25;
-            v31 = [v25 uiClientSettings];
-            if ([v31 statusBarHidden])
+            v33 = sceneIfExists;
+            uiClientSettings = [sceneIfExists uiClientSettings];
+            if ([uiClientSettings statusBarHidden])
             {
               LOBYTE(v11) = 1;
             }
 
             else
             {
-              [v31 statusBarAlpha];
+              [uiClientSettings statusBarAlpha];
               LOBYTE(v11) = BSFloatIsZero();
             }
 
@@ -1269,18 +1269,18 @@ LABEL_31:
         }
 
 LABEL_34:
-        LOBYTE(v11) = [v22 unlockedEnvironmentMode] == 2;
+        LOBYTE(v11) = [switcherController2 unlockedEnvironmentMode] == 2;
         goto LABEL_37;
       }
 
 LABEL_23:
-      v25 = [v17 sceneIfExists];
+      sceneIfExists = [sceneHandle sceneIfExists];
       goto LABEL_31;
     }
 
-    if (a3 != 4)
+    if (hidden != 4)
     {
-      if (a3 != 0xFFFF)
+      if (hidden != 0xFFFF)
       {
         goto LABEL_34;
       }
@@ -1288,31 +1288,31 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v26 = [v22 layoutState];
-    v27 = [v26 appLayout];
+    layoutState = [switcherController2 layoutState];
+    appLayout = [layoutState appLayout];
 
-    v28 = SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([v27 configuration]);
+    v28 = SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([appLayout configuration]);
     if (v28 >= 2)
     {
       if (v28 == 2)
       {
-        v29 = v34;
+        v29 = sceneHandle2;
         goto LABEL_29;
       }
 
       if (v28 != 4)
       {
-        v30 = 0;
+        sceneIfExists2 = 0;
         goto LABEL_30;
       }
     }
 
-    v29 = v17;
+    v29 = sceneHandle;
 LABEL_29:
-    v30 = [v29 sceneIfExists];
+    sceneIfExists2 = [v29 sceneIfExists];
 LABEL_30:
 
-    v25 = v30;
+    sceneIfExists = sceneIfExists2;
     goto LABEL_31;
   }
 
@@ -1322,17 +1322,17 @@ LABEL_41:
   return v11;
 }
 
-- (id)acquireHideFrontmostStatusBarAssertionForReason:(id)a3
+- (id)acquireHideFrontmostStatusBarAssertionForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBWindowSceneStatusBarAssertionManager *)self newSettingsAssertionWithStatusBarHidden:1 atLevel:8 reason:v4];
+  reasonCopy = reason;
+  v5 = [(SBWindowSceneStatusBarAssertionManager *)self newSettingsAssertionWithStatusBarHidden:1 atLevel:8 reason:reasonCopy];
   [v5 acquire];
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v7 = [WeakRetained switcherController];
-  v8 = [v7 requestInAppStatusBarHiddenAssertionForReason:v4 animated:0];
+  switcherController = [WeakRetained switcherController];
+  v8 = [switcherController requestInAppStatusBarHiddenAssertionForReason:reasonCopy animated:0];
 
-  v9 = [WeakRetained transientOverlayPresenter];
-  v10 = [v9 newContentStatusBarHiddenAssertionWithReason:@"com.springboard.SBStatusBarManager.hideStatusBarAssertion"];
+  transientOverlayPresenter = [WeakRetained transientOverlayPresenter];
+  v10 = [transientOverlayPresenter newContentStatusBarHiddenAssertionWithReason:@"com.springboard.SBStatusBarManager.hideStatusBarAssertion"];
   v11 = objc_alloc(MEMORY[0x277CF0CE8]);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1344,7 +1344,7 @@ LABEL_41:
   v12 = v10;
   v13 = v8;
   v14 = v5;
-  v15 = [v11 initWithIdentifier:@"com.springboard.SBStatusBarManager.hideStatusBarAssertion" forReason:v4 queue:MEMORY[0x277D85CD0] invalidationBlock:v17];
+  v15 = [v11 initWithIdentifier:@"com.springboard.SBStatusBarManager.hideStatusBarAssertion" forReason:reasonCopy queue:MEMORY[0x277D85CD0] invalidationBlock:v17];
 
   [(NSHashTable *)self->_hideStatusBarAssertions addObject:v15];
 

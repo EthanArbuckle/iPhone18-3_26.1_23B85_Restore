@@ -1,39 +1,39 @@
 @interface CarMetadataNavigationListener
-- (CarMetadataNavigationListener)initWithDelegate:(id)a3;
-- (double)_angleForGeoLaneDirection:(int)a3;
-- (id)_attributedInstructionVariantsForGuidanceEvent:(id)a3 route:(id)a4;
-- (id)_cpLaneGuidanceForGuidanceEvent:(id)a3;
-- (id)_cpManeuverForGuidanceEvent:(id)a3 route:(id)a4;
-- (id)_cpRouteLineForRoute:(id)a3;
-- (id)_cpTravelEstimatesForGuidanceEvent:(id)a3 route:(id)a4;
-- (id)_instructionVariantsForGuidanceEvent:(id)a3 route:(id)a4;
-- (id)_lightMapItemForWaypoint:(id)a3;
-- (id)_measurementForDistanceInMeters:(double)a3;
+- (CarMetadataNavigationListener)initWithDelegate:(id)delegate;
+- (double)_angleForGeoLaneDirection:(int)direction;
+- (id)_attributedInstructionVariantsForGuidanceEvent:(id)event route:(id)route;
+- (id)_cpLaneGuidanceForGuidanceEvent:(id)event;
+- (id)_cpManeuverForGuidanceEvent:(id)event route:(id)route;
+- (id)_cpRouteLineForRoute:(id)route;
+- (id)_cpTravelEstimatesForGuidanceEvent:(id)event route:(id)route;
+- (id)_instructionVariantsForGuidanceEvent:(id)event route:(id)route;
+- (id)_lightMapItemForWaypoint:(id)waypoint;
+- (id)_measurementForDistanceInMeters:(double)meters;
 - (id)_preconditioningInfo;
-- (id)_symbolImageForGuidanceEvent:(id)a3;
-- (int64_t)_maneuverStateForLocation:(id)a3 distanceToManeuver:(double)a4;
-- (unint64_t)_cpConnectorTypeForConnectorType:(int)a3;
-- (unsigned)_cpRerouteReasonForRerouteReason:(unint64_t)a3;
+- (id)_symbolImageForGuidanceEvent:(id)event;
+- (int64_t)_maneuverStateForLocation:(id)location distanceToManeuver:(double)maneuver;
+- (unint64_t)_cpConnectorTypeForConnectorType:(int)type;
+- (unsigned)_cpRerouteReasonForRerouteReason:(unint64_t)reason;
 - (void)_carPlayConnectionDidChange;
-- (void)_startRouteGuidanceUpdatesWithRoute:(id)a3;
+- (void)_startRouteGuidanceUpdatesWithRoute:(id)route;
 - (void)_stopRouteGuidanceUpdates;
 - (void)_updateBeingShownInApp;
-- (void)_updateCarPlayNavigationState:(id)a3;
-- (void)_updateForNewRoute:(id)a3;
+- (void)_updateCarPlayNavigationState:(id)state;
+- (void)_updateForNewRoute:(id)route;
 - (void)_updatePreconditioningInfo;
-- (void)_updateRouteGuidance:(id)a3;
-- (void)_updateStringArgument:(id)a3 route:(id)a4 guidanceEvent:(id)a5;
+- (void)_updateRouteGuidance:(id)guidance;
+- (void)_updateStringArgument:(id)argument route:(id)route guidanceEvent:(id)event;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateETAResponse:(id)a4 forRoute:(id)a5;
-- (void)navigationService:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4;
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationServiceDidFinishLocationUpdate:(id)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didChangeNavigationState:(int)state;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateETAResponse:(id)response forRoute:(id)route;
+- (void)navigationService:(id)service didUpdateTargetLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationServiceDidFinishLocationUpdate:(id)update;
 @end
 
 @implementation CarMetadataNavigationListener
@@ -41,35 +41,35 @@
 - (id)_preconditioningInfo
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 route];
+  route = [v3 route];
   v5 = sub_10007DD1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v29 = [v4 isEVRoute];
+    isEVRoute = [route isEVRoute];
     v30 = 1024;
-    v31 = [v3 targetLegIndex];
+    targetLegIndex = [v3 targetLegIndex];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating preconditioning info. Is EV route: %d, target leg index: %d", buf, 0xEu);
   }
 
-  if ([v4 isEVRoute])
+  if ([route isEVRoute])
   {
-    v6 = [v3 targetLegIndex];
-    v7 = [v4 legs];
-    v8 = [v7 count];
+    targetLegIndex2 = [v3 targetLegIndex];
+    legs = [route legs];
+    v8 = [legs count];
 
-    if (v6 >= v8)
+    if (targetLegIndex2 >= v8)
     {
       v10 = sub_10007DD1C();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v3 targetLegIndex];
-        v24 = [v4 legs];
-        v25 = [v24 count];
+        targetLegIndex3 = [v3 targetLegIndex];
+        legs2 = [route legs];
+        v25 = [legs2 count];
         *buf = 67109376;
-        v29 = v23;
+        isEVRoute = targetLegIndex3;
         v30 = 1024;
-        v31 = v25;
+        targetLegIndex = v25;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Target leg index (%d) on navigation service is out of bounds of current route (%d legs).", buf, 0xEu);
       }
 
@@ -78,36 +78,36 @@
 
     else
     {
-      v9 = [v4 legs];
-      v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v3, "targetLegIndex")}];
+      legs3 = [route legs];
+      v10 = [legs3 objectAtIndexedSubscript:{objc_msgSend(v3, "targetLegIndex")}];
 
       v11 = objc_opt_new();
-      v12 = [v4 batteryLevelForStepIndex:{-[NSObject endStepIndex](v10, "endStepIndex")}];
+      v12 = [route batteryLevelForStepIndex:{-[NSObject endStepIndex](v10, "endStepIndex")}];
       [v11 setArrivalBatteryLevel:v12];
 
-      v13 = [v4 steps];
-      v14 = [v13 lastObject];
-      v15 = [v4 batteryLevelForStepIndex:{objc_msgSend(v14, "stepIndex")}];
+      steps = [route steps];
+      lastObject = [steps lastObject];
+      v15 = [route batteryLevelForStepIndex:{objc_msgSend(lastObject, "stepIndex")}];
       [v11 setFinalWaypointBatteryLevel:v15];
 
-      v16 = [v10 nextLeg];
-      v17 = v16;
-      if (v16)
+      nextLeg = [v10 nextLeg];
+      v17 = nextLeg;
+      if (nextLeg)
       {
-        v18 = [v4 batteryLevelForStepIndex:{objc_msgSend(v16, "startStepIndex")}];
+        v18 = [route batteryLevelForStepIndex:{objc_msgSend(nextLeg, "startStepIndex")}];
         [v11 setDepartureBatteryLevel:v18];
       }
 
-      v19 = [v4 mutableData];
-      v20 = [v19 chargingStationInfoForLegIndex:{-[NSObject legIndex](v10, "legIndex")}];
+      mutableData = [route mutableData];
+      v20 = [mutableData chargingStationInfoForLegIndex:{-[NSObject legIndex](v10, "legIndex")}];
 
-      v21 = [v20 supportedChargerPlugs];
+      supportedChargerPlugs = [v20 supportedChargerPlugs];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_100811F0C;
       v27[3] = &unk_10162B358;
       v27[4] = self;
-      v22 = sub_100021DB0(v21, v27);
+      v22 = sub_100021DB0(supportedChargerPlugs, v27);
       [v11 setConnectors:v22];
     }
   }
@@ -122,42 +122,42 @@
 
 - (void)_updatePreconditioningInfo
 {
-  v4 = [(CarMetadataNavigationListener *)self _preconditioningInfo];
+  _preconditioningInfo = [(CarMetadataNavigationListener *)self _preconditioningInfo];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained navigationListener:self didUpdatePreconditioningInfo:v4];
+  [WeakRetained navigationListener:self didUpdatePreconditioningInfo:_preconditioningInfo];
 }
 
-- (void)navigationService:(id)a3 didUpdateTargetLegIndex:(unint64_t)a4
+- (void)navigationService:(id)service didUpdateTargetLegIndex:(unint64_t)index
 {
   if (self->_isConnectedToCarPlay)
   {
-    [(CarMetadataNavigationListener *)self _updatePreconditioningInfo:a3];
+    [(CarMetadataNavigationListener *)self _updatePreconditioningInfo:service];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateETAResponse:(id)a4 forRoute:(id)a5
+- (void)navigationService:(id)service didUpdateETAResponse:(id)response forRoute:(id)route
 {
   if (self->_isConnectedToCarPlay)
   {
-    [(CarMetadataNavigationListener *)self _updatePreconditioningInfo:a3];
+    [(CarMetadataNavigationListener *)self _updatePreconditioningInfo:service];
   }
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
+  serviceCopy = service;
+  routeCopy = route;
+  trafficCopy = traffic;
   if (self->_isConnectedToCarPlay)
   {
-    if (a4)
+    if (type)
     {
       [(CarMetadataNavigationListener *)self _stopRouteGuidanceUpdates];
     }
 
     else if (self->_cpRouteGuidance)
     {
-      [(CarMetadataNavigationListener *)self _updateForNewRoute:v10];
+      [(CarMetadataNavigationListener *)self _updateForNewRoute:routeCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained navigationListener:self didRerouteWithReason:0 routeInfo:self->_cpRouteInfo];
 
@@ -166,24 +166,24 @@
 
     else
     {
-      [(CarMetadataNavigationListener *)self _startRouteGuidanceUpdatesWithRoute:v10];
+      [(CarMetadataNavigationListener *)self _startRouteGuidanceUpdatesWithRoute:routeCopy];
     }
   }
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
   if (self->_isConnectedToCarPlay)
   {
-    [(CarMetadataNavigationListener *)self _updateForNewRoute:a4];
+    [(CarMetadataNavigationListener *)self _updateForNewRoute:reroute];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained navigationListener:self didRerouteWithReason:-[CarMetadataNavigationListener _cpRerouteReasonForRerouteReason:](self routeInfo:{"_cpRerouteReasonForRerouteReason:", a5), self->_cpRouteInfo}];
+    [WeakRetained navigationListener:self didRerouteWithReason:-[CarMetadataNavigationListener _cpRerouteReasonForRerouteReason:](self routeInfo:{"_cpRerouteReasonForRerouteReason:", reason), self->_cpRouteInfo}];
 
     [(CarMetadataNavigationListener *)self _updatePreconditioningInfo];
   }
 }
 
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id
 {
   if (self->_isConnectedToCarPlay)
   {
@@ -192,47 +192,47 @@
   }
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
   if (self->_isConnectedToCarPlay)
   {
-    v6 = [a4 uniqueID];
-    v8 = v6;
-    if (v6)
+    uniqueID = [directions uniqueID];
+    v8 = uniqueID;
+    if (uniqueID)
     {
-      v6 = [(NSDictionary *)self->_guidanceEventLookup objectForKeyedSubscript:v6];
+      uniqueID = [(NSDictionary *)self->_guidanceEventLookup objectForKeyedSubscript:uniqueID];
     }
 
     activeLaneGuidanceEvent = self->_activeLaneGuidanceEvent;
-    self->_activeLaneGuidanceEvent = v6;
+    self->_activeLaneGuidanceEvent = uniqueID;
   }
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   if (self->_isConnectedToCarPlay)
   {
-    v21 = v5;
+    v21 = infoCopy;
     v6 = +[NSMutableArray array];
-    v7 = [v21 primarySign];
-    v8 = [v7 uniqueID];
+    primarySign = [v21 primarySign];
+    uniqueID = [primarySign uniqueID];
 
-    if (v8)
+    if (uniqueID)
     {
-      v9 = [(NSDictionary *)self->_guidanceEventLookup objectForKeyedSubscript:v8];
+      v9 = [(NSDictionary *)self->_guidanceEventLookup objectForKeyedSubscript:uniqueID];
       if (v9)
       {
         [v6 addObject:v9];
       }
     }
 
-    v10 = [v21 secondarySign];
-    v11 = [v10 uniqueID];
+    secondarySign = [v21 secondarySign];
+    uniqueID2 = [secondarySign uniqueID];
 
-    if (v11)
+    if (uniqueID2)
     {
-      v12 = [(NSDictionary *)self->_guidanceEventLookup objectForKeyedSubscript:v11];
+      v12 = [(NSDictionary *)self->_guidanceEventLookup objectForKeyedSubscript:uniqueID2];
       if (v12)
       {
         [v6 addObject:v12];
@@ -240,18 +240,18 @@
     }
 
     objc_storeStrong(&self->_activeManeuverGuidanceEvents, v6);
-    v13 = [v21 primarySign];
-    [v13 remainingDistance];
+    primarySign2 = [v21 primarySign];
+    [primarySign2 remainingDistance];
     v14 = [NSMeasurement _geo_distanceMeasurementForMeters:?];
     remainingDistanceToManeuver = self->_remainingDistanceToManeuver;
     self->_remainingDistanceToManeuver = v14;
 
-    v16 = [v21 primarySign];
-    v17 = [v16 displayRemainingDistance];
-    v18 = v17;
-    if (v17)
+    primarySign3 = [v21 primarySign];
+    displayRemainingDistance = [primarySign3 displayRemainingDistance];
+    v18 = displayRemainingDistance;
+    if (displayRemainingDistance)
     {
-      v19 = v17;
+      v19 = displayRemainingDistance;
     }
 
     else
@@ -262,25 +262,25 @@
     displayRemainingDistanceToManeuver = self->_displayRemainingDistanceToManeuver;
     self->_displayRemainingDistanceToManeuver = v19;
 
-    v5 = v21;
+    infoCopy = v21;
   }
 }
 
-- (void)navigationServiceDidFinishLocationUpdate:(id)a3
+- (void)navigationServiceDidFinishLocationUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (self->_isConnectedToCarPlay)
   {
     cpRouteGuidance = self->_cpRouteGuidance;
     if (cpRouteGuidance)
     {
       [(CPRouteGuidance *)cpRouteGuidance setGuidanceState:self->_cpGuidanceState];
-      v6 = [v4 lastLocation];
-      v7 = [v6 roadName];
-      if (v7)
+      lastLocation = [updateCopy lastLocation];
+      roadName = [lastLocation roadName];
+      if (roadName)
       {
-        v8 = [v6 roadName];
-        v64 = v8;
+        roadName2 = [lastLocation roadName];
+        v64 = roadName2;
         v9 = [NSArray arrayWithObjects:&v64 count:1];
         [(CPRouteGuidance *)self->_cpRouteGuidance setCurrentRoadNameVariants:v9];
       }
@@ -290,12 +290,12 @@
         [(CPRouteGuidance *)self->_cpRouteGuidance setCurrentRoadNameVariants:0];
       }
 
-      v10 = [v4 route];
-      v11 = [v4 targetLegIndex];
-      v12 = [v10 legs];
-      v13 = [v12 count];
+      route = [updateCopy route];
+      targetLegIndex = [updateCopy targetLegIndex];
+      legs = [route legs];
+      v13 = [legs count];
 
-      if (v11 >= v13)
+      if (targetLegIndex >= v13)
       {
         v14 = 0;
       }
@@ -305,46 +305,46 @@
         v14 = 0;
         do
         {
-          v15 = [v10 legs];
-          v16 = [v15 objectAtIndexedSubscript:v11];
+          legs2 = [route legs];
+          v16 = [legs2 objectAtIndexedSubscript:targetLegIndex];
 
-          v17 = [v16 destination];
-          v18 = [v17 navDisplayName];
+          destination = [v16 destination];
+          navDisplayName = [destination navDisplayName];
 
-          if (v18)
+          if (navDisplayName)
           {
             if (!v14)
             {
               v14 = +[NSMutableArray array];
             }
 
-            [v14 addObject:v18];
+            [v14 addObject:navDisplayName];
           }
 
-          ++v11;
-          v19 = [v10 legs];
-          v20 = [v19 count];
+          ++targetLegIndex;
+          legs3 = [route legs];
+          v20 = [legs3 count];
         }
 
-        while (v11 < v20);
+        while (targetLegIndex < v20);
       }
 
       [(CPRouteGuidance *)self->_cpRouteGuidance setDestinationNameVariants:v14];
-      v21 = [v4 displayEtaInfo];
-      v22 = [v21 legInfos];
-      v23 = [v22 firstObject];
+      displayEtaInfo = [updateCopy displayEtaInfo];
+      legInfos = [displayEtaInfo legInfos];
+      firstObject = [legInfos firstObject];
 
-      -[CPRouteGuidance setTimeRemaining:](self->_cpRouteGuidance, "setTimeRemaining:", (60 * [v23 remainingMinutes]));
-      v24 = [v23 eta];
+      -[CPRouteGuidance setTimeRemaining:](self->_cpRouteGuidance, "setTimeRemaining:", (60 * [firstObject remainingMinutes]));
+      v24 = [firstObject eta];
       [(CPRouteGuidance *)self->_cpRouteGuidance setEstimatedTimeOfArrival:v24];
 
-      v61 = v23;
-      v25 = [v23 timeZone];
-      v26 = [v25 secondsFromGMT];
-      [(CPRouteGuidance *)self->_cpRouteGuidance setDestinationTimeZoneOffsetMinutes:(((34953 * v26) >> 16) >> 5) + (((v26 + ((-30583 * v26) >> 16)) & 0x8000) >> 15)];
+      v61 = firstObject;
+      timeZone = [firstObject timeZone];
+      secondsFromGMT = [timeZone secondsFromGMT];
+      [(CPRouteGuidance *)self->_cpRouteGuidance setDestinationTimeZoneOffsetMinutes:(((34953 * secondsFromGMT) >> 16) >> 5) + (((secondsFromGMT + ((-30583 * secondsFromGMT) >> 16)) & 0x8000) >> 15)];
 
-      v27 = [v4 remainingDistanceInfo];
-      [v27 distanceRemainingToEndOfLeg];
+      remainingDistanceInfo = [updateCopy remainingDistanceInfo];
+      [remainingDistanceInfo distanceRemainingToEndOfLeg];
       v29 = v28;
 
       v30 = [NSMeasurement alloc];
@@ -355,21 +355,21 @@
       v33 = [(CarMetadataNavigationListener *)self _measurementForDistanceInMeters:v29];
       [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingDisplay:v33];
 
-      v34 = [(NSArray *)self->_activeManeuverGuidanceEvents firstObject];
-      if (v34)
+      firstObject2 = [(NSArray *)self->_activeManeuverGuidanceEvents firstObject];
+      if (firstObject2)
       {
-        if ([v4 navigationState] == 2)
+        if ([updateCopy navigationState] == 2)
         {
           [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingToNextManeuver:self->_remainingDistanceToManeuver];
           [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingToNextManeuverDisplay:self->_displayRemainingDistanceToManeuver];
           [(NSMeasurement *)self->_remainingDistanceToManeuver doubleValue];
-          [(CPRouteGuidance *)self->_cpRouteGuidance setManeuverState:[(CarMetadataNavigationListener *)self _maneuverStateForLocation:v6 distanceToManeuver:?]];
+          [(CPRouteGuidance *)self->_cpRouteGuidance setManeuverState:[(CarMetadataNavigationListener *)self _maneuverStateForLocation:lastLocation distanceToManeuver:?]];
         }
 
-        else if ([v4 navigationState] == 1)
+        else if ([updateCopy navigationState] == 1)
         {
-          v35 = [v6 routeMatch];
-          [v35 distanceFromRoute];
+          routeMatch = [lastLocation routeMatch];
+          [routeMatch distanceFromRoute];
           v36 = [NSMeasurement _geo_distanceMeasurementForMeters:?];
 
           [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingToNextManeuver:v36];
@@ -378,7 +378,7 @@
         }
       }
 
-      v62 = v6;
+      v62 = lastLocation;
       v38 = [(NSArray *)self->_activeManeuverGuidanceEvents _geo_map:&stru_10162B398];
       [(CPRouteGuidance *)self->_cpRouteGuidance setCurrentManeuverIndexes:v38];
       activeManeuverGuidanceEvents = self->_activeManeuverGuidanceEvents;
@@ -390,7 +390,7 @@
       v40 = [(NSArray *)activeManeuverGuidanceEvents _geo_map:v63];
       [(CPRouteGuidance *)self->_cpRouteGuidance setCurrentManeuvers:v40];
       activeLaneGuidanceEvent = self->_activeLaneGuidanceEvent;
-      if (!activeLaneGuidanceEvent || (-[_CarMetadataGuidanceEventPair cpIndex](activeLaneGuidanceEvent, "cpIndex"), v42 = objc_claimAutoreleasedReturnValue(), v59 = [v42 unsignedIntegerValue], -[CPRouteInfo laneGuidances](self->_cpRouteInfo, "laneGuidances"), v43 = v40, v44 = v4, v45 = v38, v46 = v34, v47 = objc_claimAutoreleasedReturnValue(), v60 = v21, v48 = objc_msgSend(v47, "count"), v47, v34 = v46, v38 = v45, v4 = v44, v40 = v43, v42, v49 = v59 >= v48, v21 = v60, v49))
+      if (!activeLaneGuidanceEvent || (-[_CarMetadataGuidanceEventPair cpIndex](activeLaneGuidanceEvent, "cpIndex"), v42 = objc_claimAutoreleasedReturnValue(), v59 = [v42 unsignedIntegerValue], -[CPRouteInfo laneGuidances](self->_cpRouteInfo, "laneGuidances"), v43 = v40, v44 = updateCopy, v45 = v38, v46 = firstObject2, v47 = objc_claimAutoreleasedReturnValue(), v60 = displayEtaInfo, v48 = objc_msgSend(v47, "count"), v47, firstObject2 = v46, v38 = v45, updateCopy = v44, v40 = v43, v42, v49 = v59 >= v48, displayEtaInfo = v60, v49))
       {
         [(CPRouteGuidance *)self->_cpRouteGuidance setLaneGuidanceShowing:0];
       }
@@ -398,27 +398,27 @@
       else
       {
         [(CPRouteGuidance *)self->_cpRouteGuidance setLaneGuidanceShowing:1];
-        v50 = [(_CarMetadataGuidanceEventPair *)self->_activeLaneGuidanceEvent cpIndex];
-        -[CPRouteGuidance setCurrentLaneGuidanceIndex:](self->_cpRouteGuidance, "setCurrentLaneGuidanceIndex:", [v50 intValue]);
+        cpIndex = [(_CarMetadataGuidanceEventPair *)self->_activeLaneGuidanceEvent cpIndex];
+        -[CPRouteGuidance setCurrentLaneGuidanceIndex:](self->_cpRouteGuidance, "setCurrentLaneGuidanceIndex:", [cpIndex intValue]);
 
-        v51 = [(CPRouteInfo *)self->_cpRouteInfo laneGuidances];
-        v52 = [(_CarMetadataGuidanceEventPair *)self->_activeLaneGuidanceEvent cpIndex];
-        v53 = [v51 objectAtIndexedSubscript:{objc_msgSend(v52, "unsignedIntegerValue")}];
+        laneGuidances = [(CPRouteInfo *)self->_cpRouteInfo laneGuidances];
+        cpIndex2 = [(_CarMetadataGuidanceEventPair *)self->_activeLaneGuidanceEvent cpIndex];
+        v53 = [laneGuidances objectAtIndexedSubscript:{objc_msgSend(cpIndex2, "unsignedIntegerValue")}];
         [(CPRouteGuidance *)self->_cpRouteGuidance setCurrentLaneGuidance:v53];
 
-        v21 = v60;
+        displayEtaInfo = v60;
       }
 
-      v54 = [(CPRouteInfo *)self->_cpRouteInfo maneuvers];
-      -[CPRouteGuidance setTotalManeuverCount:](self->_cpRouteGuidance, "setTotalManeuverCount:", [v54 count]);
+      maneuvers = [(CPRouteInfo *)self->_cpRouteInfo maneuvers];
+      -[CPRouteGuidance setTotalManeuverCount:](self->_cpRouteGuidance, "setTotalManeuverCount:", [maneuvers count]);
 
-      v55 = [(CPRouteInfo *)self->_cpRouteInfo laneGuidances];
-      -[CPRouteGuidance setTotalLaneGuidanceCount:](self->_cpRouteGuidance, "setTotalLaneGuidanceCount:", [v55 count]);
+      laneGuidances2 = [(CPRouteInfo *)self->_cpRouteInfo laneGuidances];
+      -[CPRouteGuidance setTotalLaneGuidanceCount:](self->_cpRouteGuidance, "setTotalLaneGuidanceCount:", [laneGuidances2 count]);
 
-      v56 = [v4 nextWaypoint];
-      if ([v10 isEVRoute] && (objc_msgSend(v56, "chargingInfo"), v57 = objc_claimAutoreleasedReturnValue(), v57, v57))
+      nextWaypoint = [updateCopy nextWaypoint];
+      if ([route isEVRoute] && (objc_msgSend(nextWaypoint, "chargingInfo"), v57 = objc_claimAutoreleasedReturnValue(), v57, v57))
       {
-        if ([v56 isServerProvidedWaypoint])
+        if ([nextWaypoint isServerProvidedWaypoint])
         {
           v58 = 3;
         }
@@ -440,16 +440,16 @@
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v10 = a3;
+  serviceCopy = service;
   if (!self->_isConnectedToCarPlay)
   {
     goto LABEL_10;
   }
 
   cpRouteGuidance = self->_cpRouteGuidance;
-  if (![(CarMetadataNavigationListener *)self _isTurnByTurn:a5])
+  if (![(CarMetadataNavigationListener *)self _isTurnByTurn:toState])
   {
     if (!cpRouteGuidance)
     {
@@ -461,13 +461,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [v10 navigationTransportType];
-  if ((cpRouteGuidance == 0) == (v8 == 0))
+  navigationTransportType = [serviceCopy navigationTransportType];
+  if ((cpRouteGuidance == 0) == (navigationTransportType == 0))
   {
-    if (!v8)
+    if (!navigationTransportType)
     {
-      v9 = [v10 route];
-      [(CarMetadataNavigationListener *)self _startRouteGuidanceUpdatesWithRoute:v9];
+      route = [serviceCopy route];
+      [(CarMetadataNavigationListener *)self _startRouteGuidanceUpdatesWithRoute:route];
 
       goto LABEL_10;
     }
@@ -475,7 +475,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!navigationTransportType)
   {
     [(CarMetadataNavigationListener *)self _updateBeingShownInApp];
   }
@@ -483,19 +483,19 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4
+- (void)navigationService:(id)service didChangeNavigationState:(int)state
 {
   if (self->_isConnectedToCarPlay)
   {
-    [(CarMetadataNavigationListener *)self _updateCarPlayNavigationState:a3, *&a4];
+    [(CarMetadataNavigationListener *)self _updateCarPlayNavigationState:service, *&state];
   }
 }
 
 - (void)_carPlayConnectionDidChange
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 screen];
-  self->_isConnectedToCarPlay = v4 != 0;
+  screen = [v3 screen];
+  self->_isConnectedToCarPlay = screen != 0;
 
   if (self->_isConnectedToCarPlay)
   {
@@ -511,11 +511,11 @@ LABEL_10:
       v5 = 0;
     }
 
-    v6 = [v8 route];
-    v7 = v6;
-    if (v5 && v6)
+    route = [v8 route];
+    v7 = route;
+    if (v5 && route)
     {
-      [(CarMetadataNavigationListener *)self _startRouteGuidanceUpdatesWithRoute:v6];
+      [(CarMetadataNavigationListener *)self _startRouteGuidanceUpdatesWithRoute:route];
     }
 
     else
@@ -525,70 +525,70 @@ LABEL_10:
   }
 }
 
-- (void)_updateCarPlayNavigationState:(id)a3
+- (void)_updateCarPlayNavigationState:(id)state
 {
-  v4 = [a3 navigationState] - 1;
+  v4 = [state navigationState] - 1;
   if (v4 <= 6 && ((0x73u >> v4) & 1) != 0)
   {
     self->_cpGuidanceState = 0x2020501010106uLL >> (8 * v4);
   }
 }
 
-- (unsigned)_cpRerouteReasonForRerouteReason:(unint64_t)a3
+- (unsigned)_cpRerouteReasonForRerouteReason:(unint64_t)reason
 {
-  if (a3 - 1 > 0xF)
+  if (reason - 1 > 0xF)
   {
     return 0;
   }
 
   else
   {
-    return byte_101212C10[a3 - 1];
+    return byte_101212C10[reason - 1];
   }
 }
 
-- (unint64_t)_cpConnectorTypeForConnectorType:(int)a3
+- (unint64_t)_cpConnectorTypeForConnectorType:(int)type
 {
-  if (a3 > 0xA)
+  if (type > 0xA)
   {
     return 3;
   }
 
   else
   {
-    return qword_1012135E0[a3];
+    return qword_1012135E0[type];
   }
 }
 
-- (void)_updateStringArgument:(id)a3 route:(id)a4 guidanceEvent:(id)a5
+- (void)_updateStringArgument:(id)argument route:(id)route guidanceEvent:(id)event
 {
-  v22 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ([v22 type] == 10)
+  argumentCopy = argument;
+  routeCopy = route;
+  eventCopy = event;
+  if ([argumentCopy type] == 10)
   {
-    v9 = [v7 legIndexForStepIndex:{objc_msgSend(v8, "stepIndex")}];
-    v10 = [v7 legs];
-    v11 = [v10 count];
+    v9 = [routeCopy legIndexForStepIndex:{objc_msgSend(eventCopy, "stepIndex")}];
+    legs = [routeCopy legs];
+    v11 = [legs count];
 
     if (v9 < v11)
     {
-      v12 = [v7 legs];
-      v13 = [v12 objectAtIndexedSubscript:v9];
+      legs2 = [routeCopy legs];
+      v13 = [legs2 objectAtIndexedSubscript:v9];
 
-      v14 = [v22 token];
-      v15 = [v14 isEqualToString:@"{Name}"];
+      token = [argumentCopy token];
+      v15 = [token isEqualToString:@"{Name}"];
 
       if (v15)
       {
-        v16 = [v13 destination];
-        v17 = [v16 navDisplayName];
+        destination = [v13 destination];
+        navDisplayName = [destination navDisplayName];
       }
 
       else
       {
-        v18 = [v22 token];
-        v19 = [v18 isEqualToString:@"{Address}"];
+        token2 = [argumentCopy token];
+        v19 = [token2 isEqualToString:@"{Address}"];
 
         if (!v19)
         {
@@ -597,13 +597,13 @@ LABEL_8:
           goto LABEL_9;
         }
 
-        v16 = [v13 destination];
-        v17 = [v16 navDisplayAddress];
+        destination = [v13 destination];
+        navDisplayName = [destination navDisplayAddress];
       }
 
-      v20 = v17;
-      v21 = [v22 stringFormat];
-      [v21 setOverrideValue:v20];
+      v20 = navDisplayName;
+      stringFormat = [argumentCopy stringFormat];
+      [stringFormat setOverrideValue:v20];
 
       goto LABEL_8;
     }
@@ -612,26 +612,26 @@ LABEL_8:
 LABEL_9:
 }
 
-- (int64_t)_maneuverStateForLocation:(id)a3 distanceToManeuver:(double)a4
+- (int64_t)_maneuverStateForLocation:(id)location distanceToManeuver:(double)maneuver
 {
-  v5 = a3;
+  locationCopy = location;
   if (qword_10195D900 != -1)
   {
     dispatch_once(&qword_10195D900, &stru_10162B330);
   }
 
-  v6 = [v5 routeMatch];
-  v7 = [v6 road];
-  v8 = [v7 roadClass];
+  routeMatch = [locationCopy routeMatch];
+  road = [routeMatch road];
+  roadClass = [road roadClass];
 
-  if (v8 - 2 > 6)
+  if (roadClass - 2 > 6)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = qword_101214FD8[v8 - 2];
+    v9 = qword_101214FD8[roadClass - 2];
   }
 
   v10 = +[NSLocale currentLocale];
@@ -650,13 +650,13 @@ LABEL_9:
       v25 = 0u;
       v26 = 0u;
       v15 = v14;
-      v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
-      if (v16)
+      unsignedCharValue = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      if (unsignedCharValue)
       {
         v17 = *v26;
         while (2)
         {
-          for (i = 0; i != v16; ++i)
+          for (i = 0; i != unsignedCharValue; ++i)
           {
             if (*v26 != v17)
             {
@@ -670,18 +670,18 @@ LABEL_9:
               [v20 doubleValue];
               v22 = v21;
 
-              if (v22 > a4)
+              if (v22 > maneuver)
               {
                 v23 = [v19 objectAtIndexedSubscript:1];
-                v16 = [v23 unsignedCharValue];
+                unsignedCharValue = [v23 unsignedCharValue];
 
                 goto LABEL_19;
               }
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
-          if (v16)
+          unsignedCharValue = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          if (unsignedCharValue)
           {
             continue;
           }
@@ -695,66 +695,66 @@ LABEL_19:
 
     else
     {
-      v16 = 0;
+      unsignedCharValue = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v16;
+  return unsignedCharValue;
 }
 
-- (double)_angleForGeoLaneDirection:(int)a3
+- (double)_angleForGeoLaneDirection:(int)direction
 {
   result = 0.0;
-  if (a3 > 31)
+  if (direction > 31)
   {
-    if (a3 > 127)
+    if (direction > 127)
     {
-      if (a3 == 256)
+      if (direction == 256)
       {
         return 180.0;
       }
 
-      else if (a3 == 128)
+      else if (direction == 128)
       {
         return -45.0;
       }
     }
 
-    else if (a3 == 32)
+    else if (direction == 32)
     {
       return -135.0;
     }
 
-    else if (a3 == 64)
+    else if (direction == 64)
     {
       return -90.0;
     }
   }
 
-  else if (a3 > 7)
+  else if (direction > 7)
   {
-    if (a3 == 8)
+    if (direction == 8)
     {
       return 135.0;
     }
 
-    else if (a3 == 16)
+    else if (direction == 16)
     {
       return -180.0;
     }
   }
 
-  else if (a3 == 2)
+  else if (direction == 2)
   {
     return 45.0;
   }
 
-  else if (a3 == 4)
+  else if (direction == 4)
   {
     return 90.0;
   }
@@ -762,21 +762,21 @@ LABEL_19:
   return result;
 }
 
-- (id)_cpLaneGuidanceForGuidanceEvent:(id)a3
+- (id)_cpLaneGuidanceForGuidanceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 lanes];
-  v6 = [v5 count];
+  eventCopy = event;
+  lanes = [eventCopy lanes];
+  v6 = [lanes count];
 
   if (v6)
   {
-    v7 = [v4 lanes];
+    lanes2 = [eventCopy lanes];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100812788;
     v11[3] = &unk_10162B310;
     v11[4] = self;
-    v8 = [v7 _geo_map:v11];
+    v8 = [lanes2 _geo_map:v11];
 
     v9 = objc_opt_new();
     [v9 setLanes:v8];
@@ -790,13 +790,13 @@ LABEL_19:
   return v9;
 }
 
-- (id)_symbolImageForGuidanceEvent:(id)a3
+- (id)_symbolImageForGuidanceEvent:(id)event
 {
   memset(__src, 0, sizeof(__src));
-  v3 = a3;
+  eventCopy = event;
   MKDefaultGuidanceManeuverMetrics();
-  [v3 maneuverType];
-  [v3 drivingSide];
+  [eventCopy maneuverType];
+  [eventCopy drivingSide];
 
   v4 = +[UIColor whiteColor];
   v5 = +[UIColor lightGrayColor];
@@ -804,71 +804,71 @@ LABEL_19:
   v6 = MKManeuverArrowImage();
 
   v7 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
-  v8 = [v6 configuration];
-  v9 = [v8 configurationWithTraitCollection:v7];
+  configuration = [v6 configuration];
+  v9 = [configuration configurationWithTraitCollection:v7];
 
   return v6;
 }
 
-- (id)_attributedInstructionVariantsForGuidanceEvent:(id)a3 route:(id)a4
+- (id)_attributedInstructionVariantsForGuidanceEvent:(id)event route:(id)route
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 secondarySignStrings];
+  eventCopy = event;
+  routeCopy = route;
+  secondarySignStrings = [eventCopy secondarySignStrings];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100812BCC;
   v13[3] = &unk_1016312D0;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 _geo_map:v13];
+  v14 = routeCopy;
+  v15 = eventCopy;
+  v9 = eventCopy;
+  v10 = routeCopy;
+  v11 = [secondarySignStrings _geo_map:v13];
 
   return v11;
 }
 
-- (id)_instructionVariantsForGuidanceEvent:(id)a3 route:(id)a4
+- (id)_instructionVariantsForGuidanceEvent:(id)event route:(id)route
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 secondarySignStrings];
+  eventCopy = event;
+  routeCopy = route;
+  secondarySignStrings = [eventCopy secondarySignStrings];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100812E64;
   v13[3] = &unk_10162B2C0;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 _geo_map:v13];
+  v14 = routeCopy;
+  v15 = eventCopy;
+  v9 = eventCopy;
+  v10 = routeCopy;
+  v11 = [secondarySignStrings _geo_map:v13];
 
   return v11;
 }
 
-- (id)_cpTravelEstimatesForGuidanceEvent:(id)a3 route:(id)a4
+- (id)_cpTravelEstimatesForGuidanceEvent:(id)event route:(id)route
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 distanceBetweenRouteCoordinate:objc_msgSend(v5 andRouteCoordinate:{"startValidRouteCoordinate"), objc_msgSend(v5, "endValidRouteCoordinate")}];
+  eventCopy = event;
+  routeCopy = route;
+  [routeCopy distanceBetweenRouteCoordinate:objc_msgSend(eventCopy andRouteCoordinate:{"startValidRouteCoordinate"), objc_msgSend(eventCopy, "endValidRouteCoordinate")}];
   v7 = GEORoundedMeasurementForDistance();
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [v5 startValidRouteCoordinate];
+  startValidRouteCoordinate = [eventCopy startValidRouteCoordinate];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1008130E8;
   v14[3] = &unk_10162B270;
-  v9 = v5;
+  v9 = eventCopy;
   v15 = v9;
-  v10 = v6;
+  v10 = routeCopy;
   v16 = v10;
   v17 = &v18;
-  [v10 iterateTravelTimeRangesFromRouteCoordinate:v8 etaRoute:0 handler:v14];
+  [v10 iterateTravelTimeRangesFromRouteCoordinate:startValidRouteCoordinate etaRoute:0 handler:v14];
   v11 = [CPTravelEstimates alloc];
   v12 = [v11 initWithDistanceRemaining:v7 timeRemaining:v19[3]];
 
@@ -877,44 +877,44 @@ LABEL_19:
   return v12;
 }
 
-- (id)_cpManeuverForGuidanceEvent:(id)a3 route:(id)a4
+- (id)_cpManeuverForGuidanceEvent:(id)event route:(id)route
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasSignGuidance])
+  eventCopy = event;
+  routeCopy = route;
+  if ([eventCopy hasSignGuidance])
   {
-    v8 = [v6 stepIndex];
-    v9 = [v7 steps];
-    if (v8 >= [v9 count])
+    stepIndex = [eventCopy stepIndex];
+    steps = [routeCopy steps];
+    if (stepIndex >= [steps count])
     {
       v11 = 0;
     }
 
     else
     {
-      v10 = [v7 steps];
-      v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "stepIndex")}];
+      steps2 = [routeCopy steps];
+      v11 = [steps2 objectAtIndexedSubscript:{objc_msgSend(eventCopy, "stepIndex")}];
     }
 
-    v13 = [v6 maneuverJunction];
+    maneuverJunction = [eventCopy maneuverJunction];
     v12 = objc_opt_new();
-    v14 = [(CarMetadataNavigationListener *)self _cpTravelEstimatesForGuidanceEvent:v6 route:v7];
+    v14 = [(CarMetadataNavigationListener *)self _cpTravelEstimatesForGuidanceEvent:eventCopy route:routeCopy];
     [v12 setInitialTravelEstimates:v14];
 
-    v15 = [(CarMetadataNavigationListener *)self _instructionVariantsForGuidanceEvent:v6 route:v7];
+    v15 = [(CarMetadataNavigationListener *)self _instructionVariantsForGuidanceEvent:eventCopy route:routeCopy];
     [v12 setInstructionVariants:v15];
 
-    v16 = [(CarMetadataNavigationListener *)self _attributedInstructionVariantsForGuidanceEvent:v6 route:v7];
+    v16 = [(CarMetadataNavigationListener *)self _attributedInstructionVariantsForGuidanceEvent:eventCopy route:routeCopy];
     [v12 setAttributedInstructionVariants:v16];
 
-    v17 = [(CarMetadataNavigationListener *)self _symbolImageForGuidanceEvent:v6];
+    v17 = [(CarMetadataNavigationListener *)self _symbolImageForGuidanceEvent:eventCopy];
     [v12 setSymbolImage:v17];
 
-    v18 = [v6 roadName];
-    if (v18)
+    roadName = [eventCopy roadName];
+    if (roadName)
     {
-      v19 = [v6 roadName];
-      v42 = v19;
+      roadName2 = [eventCopy roadName];
+      v42 = roadName2;
       v20 = [NSArray arrayWithObjects:&v42 count:1];
       [v12 setRoadFollowingManeuverVariants:v20];
     }
@@ -924,7 +924,7 @@ LABEL_19:
       [v12 setRoadFollowingManeuverVariants:0];
     }
 
-    v21 = [v6 maneuverType] - 1;
+    v21 = [eventCopy maneuverType] - 1;
     if (v21 > 0x57)
     {
       v22 = 0;
@@ -936,17 +936,17 @@ LABEL_19:
     }
 
     [v12 setManeuverType:v22];
-    [v12 setTrafficSide:{objc_msgSend(v6, "drivingSide") != 0}];
-    [v12 setJunctionType:{objc_msgSend(v13, "junctionType") != 0}];
-    v23 = [v13 numElements];
-    if (v23)
+    [v12 setTrafficSide:{objc_msgSend(eventCopy, "drivingSide") != 0}];
+    [v12 setJunctionType:{objc_msgSend(maneuverJunction, "junctionType") != 0}];
+    numElements = [maneuverJunction numElements];
+    if (numElements)
     {
-      v24 = v23;
-      v40 = v7;
-      v41 = v6;
-      v25 = [v13 elements];
-      v26 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v13 numElements]);
-      v27 = v25 + 12;
+      v24 = numElements;
+      v40 = routeCopy;
+      v41 = eventCopy;
+      elements = [maneuverJunction elements];
+      v26 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [maneuverJunction numElements]);
+      v27 = elements + 12;
       do
       {
         v28 = *(v27 - 3);
@@ -975,21 +975,21 @@ LABEL_19:
       while (v24);
       [v12 setJunctionElementAngles:v26];
 
-      v7 = v40;
-      v6 = v41;
+      routeCopy = v40;
+      eventCopy = v41;
     }
 
-    v35 = [v11 geoStep];
-    v36 = [v35 exitNumber];
+    geoStep = [v11 geoStep];
+    exitNumber = [geoStep exitNumber];
 
-    if (v36)
+    if (exitNumber)
     {
-      v37 = [v6 shieldInfo];
-      v38 = [v37 shield];
+      shieldInfo = [eventCopy shieldInfo];
+      shield = [shieldInfo shield];
 
-      if ([v38 length])
+      if ([shield length])
       {
-        [v12 setExitInfo:v38];
+        [v12 setExitInfo:shield];
       }
     }
   }
@@ -1002,71 +1002,71 @@ LABEL_19:
   return v12;
 }
 
-- (id)_cpRouteLineForRoute:(id)a3
+- (id)_cpRouteLineForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = sub_100813740;
   v17[4] = sub_100813750;
   v18 = 0;
-  v5 = [v4 legs];
+  legs = [routeCopy legs];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100813758;
   v14[3] = &unk_10162B248;
   v16 = v17;
   v14[4] = self;
-  v6 = v4;
+  v6 = routeCopy;
   v15 = v6;
-  v7 = [v5 _geo_map:v14];
+  v7 = [legs _geo_map:v14];
 
-  v8 = [v7 firstObject];
-  v9 = [v8 origin];
+  firstObject = [v7 firstObject];
+  origin = [firstObject origin];
 
-  v10 = [v7 lastObject];
-  v11 = [v10 destination];
+  lastObject = [v7 lastObject];
+  destination = [lastObject destination];
 
-  v12 = [[CPRouteLine alloc] initWithGeodeticSystem:1 origin:v9 destination:v11 routeLegs:v7];
+  v12 = [[CPRouteLine alloc] initWithGeodeticSystem:1 origin:origin destination:destination routeLegs:v7];
   _Block_object_dispose(v17, 8);
 
   return v12;
 }
 
-- (id)_lightMapItemForWaypoint:(id)a3
+- (id)_lightMapItemForWaypoint:(id)waypoint
 {
-  v3 = a3;
-  [v3 coordinate];
+  waypointCopy = waypoint;
+  [waypointCopy coordinate];
   v6 = [[CLLocation alloc] initWithLatitude:v4 longitude:v5];
-  v7 = [v3 geoMapItem];
+  geoMapItem = [waypointCopy geoMapItem];
 
-  v8 = [v7 addressObject];
-  v9 = [v8 fullAddressWithMultiline:0];
+  addressObject = [geoMapItem addressObject];
+  v9 = [addressObject fullAddressWithMultiline:0];
 
-  v10 = [v7 addressObject];
-  v11 = [v10 shortAddress];
+  addressObject2 = [geoMapItem addressObject];
+  shortAddress = [addressObject2 shortAddress];
 
-  v12 = [[MKAddress alloc] initWithFullAddress:v9 shortAddress:v11];
+  v12 = [[MKAddress alloc] initWithFullAddress:v9 shortAddress:shortAddress];
   v13 = [[MKMapItem alloc] initWithCLLocation:v6 address:v12];
-  v14 = [v7 name];
-  [v13 setName:v14];
+  name = [geoMapItem name];
+  [v13 setName:name];
 
   return v13;
 }
 
-- (void)_updateForNewRoute:(id)a3
+- (void)_updateForNewRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v30 = +[NSMutableArray array];
   v29 = +[NSMutableArray array];
   +[NSMutableDictionary dictionary];
-  v33 = v32 = v4;
+  v33 = v32 = routeCopy;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = [v4 composedGuidanceEvents];
+  obj = [routeCopy composedGuidanceEvents];
   v5 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v5)
   {
@@ -1094,8 +1094,8 @@ LABEL_19:
           v14 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v12 index]);
           [v13 setCpIndex:v14];
 
-          v15 = [v10 uniqueID];
-          [(NSDictionary *)v33 setObject:v13 forKeyedSubscript:v15];
+          uniqueID = [v10 uniqueID];
+          [(NSDictionary *)v33 setObject:v13 forKeyedSubscript:uniqueID];
 
           [v30 addObject:v12];
           ++v8;
@@ -1112,8 +1112,8 @@ LABEL_19:
           v20 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v17 index]);
           [v19 setCpIndex:v20];
 
-          v21 = [v10 uniqueID];
-          [(NSDictionary *)v33 setObject:v19 forKeyedSubscript:v21];
+          uniqueID2 = [v10 uniqueID];
+          [(NSDictionary *)v33 setObject:v19 forKeyedSubscript:uniqueID2];
 
           [v29 addObject:v17];
           v7 = v18;
@@ -1143,7 +1143,7 @@ LABEL_19:
   [(CarMetadataNavigationListener *)self _updatePreconditioningInfo];
 }
 
-- (id)_measurementForDistanceInMeters:(double)a3
+- (id)_measurementForDistanceInMeters:(double)meters
 {
   v3 = +[NSLocale currentLocale];
   [v3 _navigation_distanceUsesMetricSystem];
@@ -1209,68 +1209,68 @@ LABEL_15:
 - (void)_updateBeingShownInApp
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 state];
+  state = [v3 state];
 
   cpRouteGuidance = self->_cpRouteGuidance;
 
-  [(CPRouteGuidance *)cpRouteGuidance setBeingShownInApp:v4 == 4];
+  [(CPRouteGuidance *)cpRouteGuidance setBeingShownInApp:state == 4];
 }
 
-- (void)_updateRouteGuidance:(id)a3
+- (void)_updateRouteGuidance:(id)guidance
 {
-  v4 = a3;
+  guidanceCopy = guidance;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 estimatedTimeOfArrival];
+    estimatedTimeOfArrival = [guidanceCopy estimatedTimeOfArrival];
 
-    if (!v7)
+    if (!estimatedTimeOfArrival)
     {
       v8 = +[NSDate now];
-      [v4 setEstimatedTimeOfArrival:v8];
+      [guidanceCopy setEstimatedTimeOfArrival:v8];
     }
 
-    v9 = [v4 distanceRemainingToNextManeuver];
+    distanceRemainingToNextManeuver = [guidanceCopy distanceRemainingToNextManeuver];
 
-    if (!v9)
+    if (!distanceRemainingToNextManeuver)
     {
       v10 = [NSMeasurement alloc];
       v11 = +[NSUnitLength meters];
       v12 = [v10 initWithDoubleValue:v11 unit:0.0];
-      [v4 setDistanceRemainingToNextManeuver:v12];
+      [guidanceCopy setDistanceRemainingToNextManeuver:v12];
     }
 
-    v13 = [v4 distanceRemainingToNextManeuverDisplay];
+    distanceRemainingToNextManeuverDisplay = [guidanceCopy distanceRemainingToNextManeuverDisplay];
 
-    if (!v13)
+    if (!distanceRemainingToNextManeuverDisplay)
     {
       v14 = [NSMeasurement alloc];
       v15 = +[NSUnitLength meters];
       v16 = [v14 initWithDoubleValue:v15 unit:0.0];
-      [v4 setDistanceRemainingToNextManeuverDisplay:v16];
+      [guidanceCopy setDistanceRemainingToNextManeuverDisplay:v16];
     }
 
-    v17 = [v4 destinationNameVariants];
+    destinationNameVariants = [guidanceCopy destinationNameVariants];
 
-    if (!v17)
+    if (!destinationNameVariants)
     {
       v18 = +[NSArray array];
-      [v4 setDestinationNameVariants:v18];
+      [guidanceCopy setDestinationNameVariants:v18];
     }
 
     v19 = sub_10007DD1C();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [v4 _maps_description];
+      _maps_description = [guidanceCopy _maps_description];
       v22 = 138412290;
-      v23 = v20;
+      v23 = _maps_description;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Updating CPRouteGuidance: %@", &v22, 0xCu);
     }
 
     v21 = objc_loadWeakRetained(&self->_delegate);
-    [v21 navigationListener:self didUpdateRouteGuidance:v4];
+    [v21 navigationListener:self didUpdateRouteGuidance:guidanceCopy];
   }
 }
 
@@ -1296,9 +1296,9 @@ LABEL_15:
   [WeakRetained navigationListenerDidStopNavigation:self];
 }
 
-- (void)_startRouteGuidanceUpdatesWithRoute:(id)a3
+- (void)_startRouteGuidanceUpdatesWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = objc_alloc_init(CPRouteGuidance);
   cpRouteGuidance = self->_cpRouteGuidance;
   self->_cpRouteGuidance = v5;
@@ -1308,12 +1308,12 @@ LABEL_15:
   v7 = sub_10007DD1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CPRouteGuidance *)self->_cpRouteGuidance sourceName];
-    v9 = [(CPRouteGuidance *)self->_cpRouteGuidance sourceSupportsRouteGuidance];
+    sourceName = [(CPRouteGuidance *)self->_cpRouteGuidance sourceName];
+    sourceSupportsRouteGuidance = [(CPRouteGuidance *)self->_cpRouteGuidance sourceSupportsRouteGuidance];
     v16 = 138412546;
-    v17 = v8;
+    v17 = sourceName;
     v18 = 1024;
-    v19 = v9;
+    v19 = sourceSupportsRouteGuidance;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating CPRouteGuidance. Source name: %@, supports route guidance: %d", &v16, 0x12u);
   }
 
@@ -1323,19 +1323,19 @@ LABEL_15:
   [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingDisplay:v10];
   [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingToNextManeuver:v10];
   [(CPRouteGuidance *)self->_cpRouteGuidance setDistanceRemainingToNextManeuverDisplay:v10];
-  [(CarMetadataNavigationListener *)self _updateForNewRoute:v4];
+  [(CarMetadataNavigationListener *)self _updateForNewRoute:routeCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained navigationListener:self didStartNavigationWithRouteInfo:self->_cpRouteInfo];
 
   if (GEOConfigGetBOOL())
   {
-    v12 = [(CarMetadataNavigationListener *)self _cpRouteLineForRoute:v4];
+    v12 = [(CarMetadataNavigationListener *)self _cpRouteLineForRoute:routeCopy];
     v13 = sub_10007DD1C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v12 _maps_description];
+      _maps_description = [v12 _maps_description];
       v16 = 138412290;
-      v17 = v14;
+      v17 = _maps_description;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Updating CPRouteLine:\n%@", &v16, 0xCu);
     }
 
@@ -1360,16 +1360,16 @@ LABEL_15:
   [(CarMetadataNavigationListener *)&v5 dealloc];
 }
 
-- (CarMetadataNavigationListener)initWithDelegate:(id)a3
+- (CarMetadataNavigationListener)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = CarMetadataNavigationListener;
   v5 = [(CarMetadataNavigationListener *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[MNNavigationService sharedService];
     [v7 registerObserver:v6];
 

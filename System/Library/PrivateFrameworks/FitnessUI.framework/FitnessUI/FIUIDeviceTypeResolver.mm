@@ -1,24 +1,24 @@
 @interface FIUIDeviceTypeResolver
-+ (int64_t)deviceTypeForDeviceClass:(id)a3;
++ (int64_t)deviceTypeForDeviceClass:(id)class;
 @end
 
 @implementation FIUIDeviceTypeResolver
 
-+ (int64_t)deviceTypeForDeviceClass:(id)a3
++ (int64_t)deviceTypeForDeviceClass:(id)class
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"iPad"])
+  classCopy = class;
+  if ([classCopy isEqualToString:@"iPad"])
   {
     v4 = 2;
   }
 
   else
   {
-    if (([v3 isEqualToString:@"iPhone"] & 1) == 0)
+    if (([classCopy isEqualToString:@"iPhone"] & 1) == 0)
     {
-      if (([v3 isEqualToString:@"Watch"] & 1) == 0)
+      if (([classCopy isEqualToString:@"Watch"] & 1) == 0)
       {
-        if ([v3 isEqualToString:@"RealityDevice"])
+        if ([classCopy isEqualToString:@"RealityDevice"])
         {
           v4 = 3;
           goto LABEL_12;

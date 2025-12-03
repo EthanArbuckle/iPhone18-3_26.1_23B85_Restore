@@ -1,13 +1,13 @@
 @interface SUUIChartColumnHeaderView
 - (NSArray)titles;
 - (double)edgePadding;
-- (void)_buttonAction:(id)a3;
+- (void)_buttonAction:(id)action;
 - (void)_reloadSelectedButton;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setSelectedTitleIndex:(int64_t)a3;
-- (void)setTitles:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setSelectedTitleIndex:(int64_t)index;
+- (void)setTitles:(id)titles;
 - (void)sizeToFit;
 @end
 
@@ -51,26 +51,26 @@
   [(SUUIChartColumnHeaderView *)&v8 dealloc];
 }
 
-- (void)setSelectedTitleIndex:(int64_t)a3
+- (void)setSelectedTitleIndex:(int64_t)index
 {
-  if (self->_selectedTitleIndex != a3)
+  if (self->_selectedTitleIndex != index)
   {
-    self->_selectedTitleIndex = a3;
+    self->_selectedTitleIndex = index;
     [(SUUIChartColumnHeaderView *)self _reloadSelectedButton];
   }
 }
 
-- (void)setTitles:(id)a3
+- (void)setTitles:(id)titles
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titlesCopy = titles;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SUUIChartColumnHeaderView *)self tintColor];
+  tintColor = [(SUUIChartColumnHeaderView *)self tintColor];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = titlesCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
@@ -88,18 +88,18 @@
         v11 = *(*(&v30 + 1) + 8 * i);
         v12 = objc_alloc_init(MEMORY[0x277D75220]);
         [v12 addTarget:self action:sel__buttonAction_ forControlEvents:64];
-        v13 = [(SUUIChartColumnHeaderView *)self backgroundColor];
-        [v12 setBackgroundColor:v13];
+        backgroundColor = [(SUUIChartColumnHeaderView *)self backgroundColor];
+        [v12 setBackgroundColor:backgroundColor];
 
         [v12 setTitle:v11 forState:0];
-        [v12 setTitleColor:v6 forState:1];
-        [v12 setTitleColor:v6 forState:4];
-        v14 = [MEMORY[0x277D75348] labelColor];
-        [v12 setTitleColor:v14 forState:0];
+        [v12 setTitleColor:tintColor forState:1];
+        [v12 setTitleColor:tintColor forState:4];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [v12 setTitleColor:labelColor forState:0];
 
-        v15 = [v12 titleLabel];
+        titleLabel = [v12 titleLabel];
         v16 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-        [v15 setFont:v16];
+        [titleLabel setFont:v16];
 
         [v12 sizeToFit];
         [v5 addObject:v12];
@@ -152,7 +152,7 @@
 - (NSArray)titles
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -173,7 +173,7 @@
         }
 
         v9 = [*(*(&v11 + 1) + 8 * i) titleForState:{0, v11}];
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -182,7 +182,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)layoutSubviews
@@ -255,14 +255,14 @@ CGFloat __43__SUUIChartColumnHeaderView_layoutSubviews__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   buttons = self->_buttons;
-  v5 = a3;
-  [(NSArray *)buttons makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v5];
+  colorCopy = color;
+  [(NSArray *)buttons makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIChartColumnHeaderView;
-  [(SUUIChartColumnHeaderView *)&v6 setBackgroundColor:v5];
+  [(SUUIChartColumnHeaderView *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (void)sizeToFit
@@ -318,9 +318,9 @@ CGFloat __43__SUUIChartColumnHeaderView_layoutSubviews__block_invoke(uint64_t a1
   [(SUUIChartColumnHeaderView *)self setFrame:v4, v6, v17, 44.0, v18];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = [(NSArray *)self->_buttons indexOfObjectIdenticalTo:a3];
+  v4 = [(NSArray *)self->_buttons indexOfObjectIdenticalTo:action];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     self->_selectedTitleIndex = v4;

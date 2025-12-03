@@ -1,6 +1,6 @@
 @interface MUVendorLinkSorter
-- (MUVendorLinkSorter)initWithViewModels:(id)a3;
-- (id)sortedViewModelsForParameters:(id)a3;
+- (MUVendorLinkSorter)initWithViewModels:(id)models;
+- (id)sortedViewModelsForParameters:(id)parameters;
 @end
 
 @implementation MUVendorLinkSorter
@@ -15,21 +15,21 @@ uint64_t __52__MUVendorLinkSorter__sortViewModelsAlphabetically___block_invoke(u
   return v7;
 }
 
-- (id)sortedViewModelsForParameters:(id)a3
+- (id)sortedViewModelsForParameters:(id)parameters
 {
   v52 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  obj = [v26 preferredOrdering];
+  parametersCopy = parameters;
+  obj = [parametersCopy preferredOrdering];
   if ([obj count])
   {
-    v3 = [v26 preferredOrdering];
+    preferredOrdering = [parametersCopy preferredOrdering];
 
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v3;
+    obj = preferredOrdering;
     v4 = [obj countByEnumeratingWithState:&v44 objects:v51 count:16];
     if (v4)
     {
@@ -63,8 +63,8 @@ uint64_t __52__MUVendorLinkSorter__sortViewModelsAlphabetically___block_invoke(u
                 }
 
                 v11 = *(*(&v40 + 1) + 8 * j);
-                v12 = [v11 partnerId];
-                v13 = [v12 isEqualToString:v6];
+                partnerId = [v11 partnerId];
+                v13 = [partnerId isEqualToString:v6];
 
                 if (v13)
                 {
@@ -104,8 +104,8 @@ LABEL_17:
     v37 = __Block_byref_object_copy__10417;
     v38 = __Block_byref_object_dispose__10418;
     v39 = 0;
-    v15 = [v26 winningAdamId];
-    v16 = [v15 length] == 0;
+    winningAdamId = [parametersCopy winningAdamId];
+    v16 = [winningAdamId length] == 0;
 
     if (!v16)
     {
@@ -113,7 +113,7 @@ LABEL_17:
       v31[1] = 3221225472;
       v31[2] = __52__MUVendorLinkSorter_sortedViewModelsForParameters___block_invoke;
       v31[3] = &unk_1E8219608;
-      v17 = v26;
+      v17 = parametersCopy;
       v32 = v17;
       v33 = &v34;
       v18 = [v28 indexOfObjectPassingTest:v31];
@@ -127,9 +127,9 @@ LABEL_17:
         v19 = MUGetMUVendorLinkSorterLog_log;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = [v17 winningAdamId];
+          winningAdamId2 = [v17 winningAdamId];
           *buf = 138412290;
-          v49 = v20;
+          v49 = winningAdamId2;
           _os_log_impl(&dword_1C5620000, v19, OS_LOG_TYPE_ERROR, "Could not remove winning adam id @%@", buf, 0xCu);
         }
       }
@@ -140,7 +140,7 @@ LABEL_17:
       }
     }
 
-    if ([v26 sortAlphabetically])
+    if ([parametersCopy sortAlphabetically])
     {
       v21 = [v28 copy];
       v22 = [(MUVendorLinkSorter *)self _sortViewModelsAlphabetically:v21];
@@ -180,16 +180,16 @@ uint64_t __52__MUVendorLinkSorter_sortedViewModelsForParameters___block_invoke(u
   return v10;
 }
 
-- (MUVendorLinkSorter)initWithViewModels:(id)a3
+- (MUVendorLinkSorter)initWithViewModels:(id)models
 {
-  v5 = a3;
+  modelsCopy = models;
   v9.receiver = self;
   v9.super_class = MUVendorLinkSorter;
   v6 = [(MUVendorLinkSorter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModels, a3);
+    objc_storeStrong(&v6->_viewModels, models);
   }
 
   return v7;

@@ -6,107 +6,107 @@
 
 - (uint64_t)sf_cardSectionType
 {
-  if ([a1 isEqualToString:@"title"])
+  if ([self isEqualToString:@"title"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"rich_title"] & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"website"))
+  if ([self isEqualToString:@"rich_title"] & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"website"))
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"app_link_list"])
+  if ([self isEqualToString:@"app_link_list"])
   {
     return 15;
   }
 
-  if ([a1 isEqualToString:@"track_list"])
+  if ([self isEqualToString:@"track_list"])
   {
     return 16;
   }
 
-  if ([a1 isEqualToString:@"row"])
+  if ([self isEqualToString:@"row"])
   {
     return 3;
   }
 
-  if ([a1 isEqualToString:@"description"])
+  if ([self isEqualToString:@"description"])
   {
     return 4;
   }
 
-  if ([a1 isEqualToString:@"movie_info"])
+  if ([self isEqualToString:@"movie_info"])
   {
     return 5;
   }
 
-  if ([a1 isEqualToString:@"trailers"])
+  if ([self isEqualToString:@"trailers"])
   {
     return 6;
   }
 
-  if ([a1 isEqualToString:@"twitter"] & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"hashtags"))
+  if ([self isEqualToString:@"twitter"] & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"hashtags"))
   {
     return 7;
   }
 
-  if ([a1 isEqualToString:@"meta_info"])
+  if ([self isEqualToString:@"meta_info"])
   {
     return 8;
   }
 
-  if ([a1 isEqualToString:@"sports_summary_card"])
+  if ([self isEqualToString:@"sports_summary_card"])
   {
     return 9;
   }
 
-  if ([a1 isEqualToString:@"movie_list"])
+  if ([self isEqualToString:@"movie_list"])
   {
     return 10;
   }
 
-  if ([a1 isEqualToString:@"data_card_with_image"])
+  if ([self isEqualToString:@"data_card_with_image"])
   {
     return 11;
   }
 
-  if ([a1 isEqualToString:@"card_row_table"])
+  if ([self isEqualToString:@"card_row_table"])
   {
     return 12;
   }
 
-  if ([a1 isEqualToString:@"detailed_row"])
+  if ([self isEqualToString:@"detailed_row"])
   {
     return 13;
   }
 
-  if ([a1 isEqualToString:@"text_columns"])
+  if ([self isEqualToString:@"text_columns"])
   {
     return 14;
   }
 
-  if ([a1 isEqualToString:@"stock_chart"])
+  if ([self isEqualToString:@"stock_chart"])
   {
     return 17;
   }
 
-  if ([a1 isEqualToString:@"web"])
+  if ([self isEqualToString:@"web"])
   {
     return 18;
   }
 
-  if ([a1 isEqualToString:@"flight"])
+  if ([self isEqualToString:@"flight"])
   {
     return 19;
   }
 
-  if ([a1 isEqualToString:@"suggestion"])
+  if ([self isEqualToString:@"suggestion"])
   {
     return 20;
   }
 
-  if ([a1 isEqualToString:@"watch_list"])
+  if ([self isEqualToString:@"watch_list"])
   {
     return 21;
   }

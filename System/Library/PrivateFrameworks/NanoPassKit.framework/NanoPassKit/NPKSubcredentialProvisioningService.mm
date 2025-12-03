@@ -4,11 +4,11 @@
 - (id)_sendOptions;
 - (void)_setUpSubcredentialProvisioningQueue;
 - (void)_setUpSubcredentialProvisioningService;
-- (void)_trackOutstandingRequestWithMessageIdentifier:(id)a3 completionHandler:(id)a4 errorHandler:(id)a5;
-- (void)registerProtobufActionsForService:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)_trackOutstandingRequestWithMessageIdentifier:(id)identifier completionHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)registerProtobufActionsForService:(id)service;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation NPKSubcredentialProvisioningService
@@ -28,9 +28,9 @@
     subcredentialService = v2->_subcredentialService;
     v2->_subcredentialService = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     outstandingRequests = v2->_outstandingRequests;
-    v2->_outstandingRequests = v7;
+    v2->_outstandingRequests = dictionary;
 
     v9 = v2->_subcredentialProvisioningQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -52,10 +52,10 @@ uint64_t __43__NPKSubcredentialProvisioningService_init__block_invoke(uint64_t a
   return [v2 _setUpSubcredentialProvisioningService];
 }
 
-- (void)registerProtobufActionsForService:(id)a3
+- (void)registerProtobufActionsForService:(id)service
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!service)
   {
     v3 = pk_General_log();
     v4 = os_log_type_enabled(v3, OS_LOG_TYPE_ERROR);
@@ -83,8 +83,8 @@ uint64_t __43__NPKSubcredentialProvisioningService_init__block_invoke(uint64_t a
 
 - (BOOL)isPairedDeviceConnected
 {
-  v2 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
-  v3 = NPKIsConnectedToPairedOrPairingDeviceFromService(v2);
+  subcredentialService = [(NPKSubcredentialProvisioningService *)self subcredentialService];
+  v3 = NPKIsConnectedToPairedOrPairingDeviceFromService(subcredentialService);
 
   return v3;
 }
@@ -99,18 +99,18 @@ uint64_t __43__NPKSubcredentialProvisioningService_init__block_invoke(uint64_t a
 - (void)_setUpSubcredentialProvisioningService
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
-  dispatch_assert_queue_V2(v3);
+  subcredentialProvisioningQueue = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+  dispatch_assert_queue_V2(subcredentialProvisioningQueue);
 
-  v4 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
-  if (v4 && (v5 = v4, [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  subcredentialService = [(NPKSubcredentialProvisioningService *)self subcredentialService];
+  if (subcredentialService && (v5 = subcredentialService, [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
-    [(NPKSubcredentialProvisioningService *)self registerProtobufActionsForService:v7];
+    subcredentialService2 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
+    [(NPKSubcredentialProvisioningService *)self registerProtobufActionsForService:subcredentialService2];
 
-    v18 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
-    v8 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
-    [v18 addDelegate:self queue:v8];
+    subcredentialService3 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
+    subcredentialProvisioningQueue2 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+    [subcredentialService3 addDelegate:self queue:subcredentialProvisioningQueue2];
 
     v9 = *MEMORY[0x277D85DE8];
   }
@@ -127,14 +127,14 @@ uint64_t __43__NPKSubcredentialProvisioningService_init__block_invoke(uint64_t a
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
-        v16 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+        subcredentialService4 = [(NPKSubcredentialProvisioningService *)self subcredentialService];
+        subcredentialProvisioningQueue3 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
         *buf = 138543874;
         v20 = v14;
         v21 = 2112;
-        v22 = v15;
+        v22 = subcredentialService4;
         v23 = 2112;
-        v24 = v16;
+        v24 = subcredentialProvisioningQueue3;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Warning: %{public}@: Expected subcredentialProvisioningService and subcredentialProvisioningQueue to be non-nil! subcredentialProvisioningService: %@ subcredentialProvisioningQueue: %@", buf, 0x20u);
       }
     }
@@ -178,29 +178,29 @@ void __83__NPKSubcredentialProvisioningService__sendProtobuf_responseExpected_ex
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trackOutstandingRequestWithMessageIdentifier:(id)a3 completionHandler:(id)a4 errorHandler:(id)a5
+- (void)_trackOutstandingRequestWithMessageIdentifier:(id)identifier completionHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v11 = objc_alloc_init(NPKProvisioningServiceOutstandingRequest);
-  [(NPKProvisioningServiceOutstandingRequest *)v11 setCompletionHandler:v9];
-  [(NPKProvisioningServiceOutstandingRequest *)v11 setErrorHandler:v10];
-  [(NPKProvisioningServiceOutstandingRequest *)v11 setMessageIdentifier:v8];
+  [(NPKProvisioningServiceOutstandingRequest *)v11 setCompletionHandler:handlerCopy];
+  [(NPKProvisioningServiceOutstandingRequest *)v11 setErrorHandler:errorHandlerCopy];
+  [(NPKProvisioningServiceOutstandingRequest *)v11 setMessageIdentifier:identifierCopy];
   objc_initWeak(&location, self);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMessageIdentifier_completionHandler_errorHandler___block_invoke;
   v18 = &unk_279945A98;
   objc_copyWeak(&v21, &location);
-  v12 = v8;
+  v12 = identifierCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = errorHandlerCopy;
   v20 = v13;
   [(NPKProvisioningServiceOutstandingRequest *)v11 setTimeoutHandler:&v15];
   [(NPKProvisioningServiceOutstandingRequest *)v11 setTimeoutQueue:self->_subcredentialProvisioningQueue, v15, v16, v17, v18];
-  v14 = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
-  [v14 setObject:v11 forKey:v12];
+  outstandingRequests = [(NPKSubcredentialProvisioningService *)self outstandingRequests];
+  [outstandingRequests setObject:v11 forKey:v12];
 
   [(NPKProvisioningServiceOutstandingRequest *)v11 setOrResetCleanupTimer];
   objc_destroyWeak(&v21);
@@ -254,10 +254,10 @@ void __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMess
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -271,7 +271,7 @@ void __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMess
       v11 = 138543618;
       v12 = v9;
       v13 = 2112;
-      v14 = v4;
+      v14 = changedCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: IDS service accounts changed: %@", &v11, 0x16u);
     }
   }
@@ -279,10 +279,10 @@ void __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMess
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -296,7 +296,7 @@ void __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMess
       v11 = 138543618;
       v12 = v9;
       v13 = 2112;
-      v14 = v4;
+      v14 = changedCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: IDS service devices changed: %@", &v11, 0x16u);
     }
   }
@@ -304,14 +304,14 @@ void __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMess
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = pk_General_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -325,32 +325,32 @@ void __116__NPKSubcredentialProvisioningService__trackOutstandingRequestWithMess
       *buf = 138544642;
       v31 = v20;
       v32 = 2112;
-      v33 = v12;
+      v33 = serviceCopy;
       v34 = 2112;
-      v35 = v13;
+      v35 = accountCopy;
       v36 = 2112;
-      v37 = v14;
+      v37 = identifierCopy;
       v38 = 1024;
-      v39 = v8;
+      v39 = successCopy;
       v40 = 2112;
-      v41 = v15;
+      v41 = errorCopy;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: IDS service did send with success: %@ %@ %@ %d %@", buf, 0x3Au);
     }
   }
 
   objc_initWeak(buf, self);
-  v21 = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
+  subcredentialProvisioningQueue = [(NPKSubcredentialProvisioningService *)self subcredentialProvisioningQueue];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __91__NPKSubcredentialProvisioningService_service_account_identifier_didSendWithSuccess_error___block_invoke;
   v25[3] = &unk_2799471E8;
   objc_copyWeak(&v28, buf);
-  v29 = v8;
-  v26 = v14;
-  v27 = v15;
-  v22 = v15;
-  v23 = v14;
-  dispatch_async(v21, v25);
+  v29 = successCopy;
+  v26 = identifierCopy;
+  v27 = errorCopy;
+  v22 = errorCopy;
+  v23 = identifierCopy;
+  dispatch_async(subcredentialProvisioningQueue, v25);
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(buf);

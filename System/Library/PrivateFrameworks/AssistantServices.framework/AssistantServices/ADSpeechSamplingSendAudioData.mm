@@ -1,38 +1,38 @@
 @interface ADSpeechSamplingSendAudioData
 + (BOOL)isUserOptedIn;
-- (ADSpeechSamplingSendAudioData)initWithFilePaths:(id)a3 samplingType:(int64_t)a4 ignoreMinimumSampleAge:(BOOL)a5;
-- (id)convertToALAC:(id)a3 samplingRate:(int)a4;
-- (id)convertToWAV:(id)a3 samplingRate:(int)a4;
+- (ADSpeechSamplingSendAudioData)initWithFilePaths:(id)paths samplingType:(int64_t)type ignoreMinimumSampleAge:(BOOL)age;
+- (id)convertToALAC:(id)c samplingRate:(int)rate;
+- (id)convertToWAV:(id)v samplingRate:(int)rate;
 - (void)dealloc;
-- (void)enqueueAudioDataWithAudioFileName:(id)a3 audioMetadataDict:(id)a4 folderPath:(id)a5;
+- (void)enqueueAudioDataWithAudioFileName:(id)name audioMetadataDict:(id)dict folderPath:(id)path;
 - (void)sendAudioDataToServer;
 @end
 
 @implementation ADSpeechSamplingSendAudioData
 
-- (id)convertToALAC:(id)a3 samplingRate:(int)a4
+- (id)convertToALAC:(id)c samplingRate:(int)rate
 {
-  v6 = a3;
+  cCopy = c;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
   {
     samplingComponent = self->_samplingComponent;
     v33 = v7;
-    v34 = [v6 lastPathComponent];
+    lastPathComponent = [cCopy lastPathComponent];
     *inPropertyData = 136315650;
     *&inPropertyData[4] = "[ADSpeechSamplingSendAudioData convertToALAC:samplingRate:]";
     *&inPropertyData[12] = 2112;
     *&inPropertyData[14] = samplingComponent;
     *&inPropertyData[22] = 2112;
-    v68 = v34;
+    v68 = lastPathComponent;
     _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "%s %@ Sampling: convertToALAC: Converting file: %@", inPropertyData, 0x20u);
   }
 
-  v8 = [v6 stringByDeletingPathExtension];
-  v9 = [v8 stringByAppendingPathExtension:@"wav"];
-  v10 = [v8 stringByAppendingPathExtension:@"caf"];
+  stringByDeletingPathExtension = [cCopy stringByDeletingPathExtension];
+  v9 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"wav"];
+  v10 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"caf"];
   v69 = 16;
-  *inPropertyData = a4;
+  *inPropertyData = rate;
   v68 = 0x100000002;
   *&inPropertyData[8] = xmmword_1003F02E0;
   *&inStreamDesc.mBitsPerChannel = 0;
@@ -103,7 +103,7 @@ LABEL_47:
       if (!v35)
       {
         v52 = v24;
-        v53 = self;
+        selfCopy = self;
         v38 = malloc_type_malloc(0x10000uLL, 0x1000040BDFB0063uLL);
         while (1)
         {
@@ -117,7 +117,7 @@ LABEL_47:
             v40 = AFSiriLogContextSpeech;
             if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
             {
-              v44 = v53->_samplingComponent;
+              v44 = selfCopy->_samplingComponent;
               *buf = 136315650;
               v60 = "[ADSpeechSamplingSendAudioData convertToALAC:samplingRate:]";
               v61 = 2112;
@@ -154,7 +154,7 @@ LABEL_47:
         v46 = AFSiriLogContextSpeech;
         if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
         {
-          v50 = v53->_samplingComponent;
+          v50 = selfCopy->_samplingComponent;
           *buf = 136315650;
           v60 = "[ADSpeechSamplingSendAudioData convertToALAC:samplingRate:]";
           v61 = 2112;
@@ -174,7 +174,7 @@ LABEL_40:
           v24 = v52;
           if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
           {
-            v51 = v53->_samplingComponent;
+            v51 = selfCopy->_samplingComponent;
             *buf = 136315650;
             v60 = "[ADSpeechSamplingSendAudioData convertToALAC:samplingRate:]";
             v61 = 2112;
@@ -191,7 +191,7 @@ LABEL_40:
         v24 = v52;
         if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
         {
-          v48 = v53->_samplingComponent;
+          v48 = selfCopy->_samplingComponent;
           *buf = 136315394;
           v60 = "[ADSpeechSamplingSendAudioData convertToALAC:samplingRate:]";
           v61 = 2112;
@@ -266,32 +266,32 @@ LABEL_11:
   return v22;
 }
 
-- (id)convertToWAV:(id)a3 samplingRate:(int)a4
+- (id)convertToWAV:(id)v samplingRate:(int)rate
 {
-  v6 = a3;
-  v35 = a4;
+  vCopy = v;
+  rateCopy = rate;
   dispatch_assert_queue_V2(self->_queue);
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
   {
     samplingComponent = self->_samplingComponent;
     v19 = v7;
-    v20 = [v6 lastPathComponent];
+    lastPathComponent = [vCopy lastPathComponent];
     *buf = 136315650;
     v37 = "[ADSpeechSamplingSendAudioData convertToWAV:samplingRate:]";
     v38 = 2112;
     v39 = samplingComponent;
     v40 = 2112;
-    v41 = v20;
+    v41 = lastPathComponent;
     _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%s %@ Sampling: convertToWAV: Adding WAV headers to file: %@", buf, 0x20u);
   }
 
-  v8 = [v6 stringByDeletingPathExtension];
-  v9 = [v8 stringByAppendingPathExtension:@"wav"];
-  v10 = [NSMutableData dataWithContentsOfFile:v6];
+  stringByDeletingPathExtension = [vCopy stringByDeletingPathExtension];
+  v9 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"wav"];
+  v10 = [NSMutableData dataWithContentsOfFile:vCopy];
   v34 = 1;
   v33 = 16;
-  v32 = 2 * a4;
+  v32 = 2 * rate;
   v31 = 2;
   v29 = 16;
   v30 = (16 * [v10 length]) >> 3;
@@ -309,7 +309,7 @@ LABEL_11:
     fwrite(&v29, 4uLL, 1uLL, v12);
     fwrite(&v27, 2uLL, 1uLL, v12);
     fwrite(&v34, 2uLL, 1uLL, v12);
-    fwrite(&v35, 4uLL, 1uLL, v12);
+    fwrite(&rateCopy, 4uLL, 1uLL, v12);
     fwrite(&v32, 4uLL, 1uLL, v12);
     fwrite(&v31, 2uLL, 1uLL, v12);
     fwrite(&v33, 2uLL, 1uLL, v12);
@@ -365,11 +365,11 @@ LABEL_11:
   return v15;
 }
 
-- (void)enqueueAudioDataWithAudioFileName:(id)a3 audioMetadataDict:(id)a4 folderPath:(id)a5
+- (void)enqueueAudioDataWithAudioFileName:(id)name audioMetadataDict:(id)dict folderPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dictCopy = dict;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
   v11 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
@@ -380,19 +380,19 @@ LABEL_11:
     v56 = 2112;
     v57 = samplingComponent;
     v58 = 2112;
-    v59 = v8;
+    v59 = nameCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s %@ Sampling: Preparing audio file: %@", buf, 0x20u);
   }
 
   v12 = objc_alloc_init(DUSchemaSpeechAudioRecord);
-  v13 = [v9 valueForKey:@"codec"];
+  v13 = [dictCopy valueForKey:@"codec"];
   [v12 setCodec:v13];
 
-  v46 = v8;
-  v14 = [v10 stringByAppendingPathComponent:v8];
-  v15 = [v9 valueForKey:@"language"];
+  v46 = nameCopy;
+  v14 = [pathCopy stringByAppendingPathComponent:nameCopy];
+  v15 = [dictCopy valueForKey:@"language"];
   [v12 setLanguage:v15];
-  v16 = [v9 objectForKey:@"samplingRate"];
+  v16 = [dictCopy objectForKey:@"samplingRate"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -444,29 +444,29 @@ LABEL_11:
     }
 
     [v12 setCodec:v22];
-    v25 = [v12 codec];
+    codec = [v12 codec];
 
-    if (v25)
+    if (codec)
     {
       if (v21)
       {
-        v44 = v10;
+        v44 = pathCopy;
         v26 = [NSUUID alloc];
-        v27 = [v9 valueForKey:@"asrSelfComponentIdentifier"];
+        v27 = [dictCopy valueForKey:@"asrSelfComponentIdentifier"];
         v42 = [v26 initWithUUIDString:v27];
 
         v28 = [NSUUID alloc];
-        v29 = [v9 valueForKey:@"interactionIdentifier"];
+        v29 = [dictCopy valueForKey:@"interactionIdentifier"];
         v43 = [v28 initWithUUIDString:v29];
 
         v30 = [[SISchemaUUID alloc] initWithNSUUID:v43];
         [v12 setInteractionId:v30];
 
         v31 = +[ADAccount activeAccount];
-        v32 = [v31 speechIdentifier];
-        [v12 setSpeechIdString:v32];
+        speechIdentifier = [v31 speechIdentifier];
+        [v12 setSpeechIdString:speechIdentifier];
 
-        v33 = [v9 valueForKey:@"samplingTimestamp"];
+        v33 = [dictCopy valueForKey:@"samplingTimestamp"];
         v34 = 1000 * [v33 longLongValue];
 
         [v12 setAudioCreatedTimestampMs:v34];
@@ -480,12 +480,12 @@ LABEL_11:
         v49 = v42;
         v50 = v21;
         v51 = v12;
-        v52 = v10;
+        v52 = pathCopy;
         v53 = v46;
         v36 = v42;
         [v35 enqueueLargeMessageObjectFromPath:v50 assetIdentifier:v43 messageMetadata:v51 completion:v47];
 
-        v10 = v44;
+        pathCopy = v44;
         v15 = v45;
 LABEL_23:
 
@@ -562,7 +562,7 @@ LABEL_24:
     v8 = 2112;
     v9 = samplingComponent;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %@ Sampling: Deallocating instance: %p", buf, 0x20u);
   }
 
@@ -571,10 +571,10 @@ LABEL_24:
   [(ADSpeechSamplingSendAudioData *)&v5 dealloc];
 }
 
-- (ADSpeechSamplingSendAudioData)initWithFilePaths:(id)a3 samplingType:(int64_t)a4 ignoreMinimumSampleAge:(BOOL)a5
+- (ADSpeechSamplingSendAudioData)initWithFilePaths:(id)paths samplingType:(int64_t)type ignoreMinimumSampleAge:(BOOL)age
 {
-  v8 = a3;
-  if ([v8 count])
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
     v32.receiver = self;
     v32.super_class = ADSpeechSamplingSendAudioData;
@@ -586,9 +586,9 @@ LABEL_24:
       queue = v9->_queue;
       v9->_queue = v11;
 
-      v9->_samplingType = a4;
-      v9->_ignoreMinimumSampleAge = a5;
-      v13 = sub_100270078(a4);
+      v9->_samplingType = type;
+      v9->_ignoreMinimumSampleAge = age;
+      v13 = sub_100270078(type);
       samplingComponent = v9->_samplingComponent;
       v9->_samplingComponent = v13;
 
@@ -604,7 +604,7 @@ LABEL_24:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v19 = v8;
+      v19 = pathsCopy;
       v20 = [v19 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v20)
       {
@@ -636,40 +636,40 @@ LABEL_24:
     }
 
     self = v9;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 + (BOOL)isUserOptedIn
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 siriDataSharingOptInStatus];
+  siriDataSharingOptInStatus = [v2 siriDataSharingOptInStatus];
 
-  if (v3 != 1)
+  if (siriDataSharingOptInStatus != 1)
   {
     return 0;
   }
 
   v4 = +[ADPreferences sharedPreferences];
-  v5 = [v4 siriDataSharingOptInStatus];
+  siriDataSharingOptInStatus2 = [v4 siriDataSharingOptInStatus];
   v6 = +[AFPreferences sharedPreferences];
-  v7 = [v6 siriDataSharingOptInStatusHistory];
+  siriDataSharingOptInStatusHistory = [v6 siriDataSharingOptInStatusHistory];
   if (qword_100590550 != -1)
   {
     dispatch_once(&qword_100590550, &stru_100516C10);
   }
 
   v8 = byte_100590549;
-  v9 = v7;
+  v9 = siriDataSharingOptInStatusHistory;
   v10 = v9;
-  v11 = (v5 != 2) & v8;
+  v11 = (siriDataSharingOptInStatus2 != 2) & v8;
   if (v11)
   {
     v12 = 0;
@@ -679,12 +679,12 @@ LABEL_24:
 
   v14 = v9;
   v15 = [v14 count];
-  if (!v5 || v15)
+  if (!siriDataSharingOptInStatus2 || v15)
   {
-    v19 = [v14 firstObject];
-    v17 = [v19 objectForKey:kAFSiriDataSharingOptInStatusHistoryNewOptInStatusKey];
+    firstObject = [v14 firstObject];
+    v17 = [firstObject objectForKey:kAFSiriDataSharingOptInStatusHistoryNewOptInStatusKey];
 
-    if (AFSiriDataSharingOptInStatusGetFromName() == v5)
+    if (AFSiriDataSharingOptInStatusGetFromName() == siriDataSharingOptInStatus2)
     {
 
       v13 = 1;

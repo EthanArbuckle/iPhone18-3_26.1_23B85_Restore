@@ -1,16 +1,16 @@
 @interface ShelfTitleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)prepareForReuse;
 @end
 
 @implementation ShelfTitleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.ShelfTitleView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SeymourUI.ShelfTitleView" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.ShelfTitleView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SeymourUI.ShelfTitleView" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityElements

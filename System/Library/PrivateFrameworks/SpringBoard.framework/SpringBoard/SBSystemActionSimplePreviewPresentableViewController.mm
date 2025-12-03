@@ -1,7 +1,7 @@
 @interface SBSystemActionSimplePreviewPresentableViewController
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
-- (SBSystemActionSimplePreviewPresentableViewController)initWithSystemAction:(id)a3;
+- (SBSystemActionSimplePreviewPresentableViewController)initWithSystemAction:(id)action;
 - (id)_leadingView;
 - (id)_previewPrimaryText;
 - (id)_previewSecondaryText;
@@ -11,22 +11,22 @@
 
 @implementation SBSystemActionSimplePreviewPresentableViewController
 
-- (SBSystemActionSimplePreviewPresentableViewController)initWithSystemAction:(id)a3
+- (SBSystemActionSimplePreviewPresentableViewController)initWithSystemAction:(id)action
 {
-  v6 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = SBSystemActionSimplePreviewPresentableViewController;
   v7 = [(SBSystemActionSimplePreviewPresentableViewController *)&v12 initWithNibName:0 bundle:0];
   if (v7)
   {
-    if (!v6)
+    if (!actionCopy)
     {
       [(SBSystemActionSimplePreviewPresentableViewController *)a2 initWithSystemAction:v7];
     }
 
-    objc_storeStrong(&v7->_systemAction, a3);
-    v8 = [(SBSystemAction *)v7->_systemAction controlAction];
-    [(SBControlSystemAction *)v8 addObserver:v7];
+    objc_storeStrong(&v7->_systemAction, action);
+    controlAction = [(SBSystemAction *)v7->_systemAction controlAction];
+    [(SBControlSystemAction *)controlAction addObserver:v7];
 
     v9 = objc_alloc_init(SBBannerCustomTransitioningDelegate);
     customTransitioningDelegate = v7->_customTransitioningDelegate;
@@ -44,13 +44,13 @@
   v34.receiver = self;
   v34.super_class = SBSystemActionSimplePreviewPresentableViewController;
   [(SBSystemActionSimplePreviewPresentableViewController *)&v34 viewDidLoad];
-  v3 = [(SBSystemActionSimplePreviewPresentableViewController *)self view];
-  v4 = [(SBSystemAction *)self->_systemAction configuredAction];
-  v5 = [(SBSystemActionSimplePreviewPresentableViewController *)self _leadingView];
-  v6 = v5;
-  if (v5)
+  view = [(SBSystemActionSimplePreviewPresentableViewController *)self view];
+  configuredAction = [(SBSystemAction *)self->_systemAction configuredAction];
+  _leadingView = [(SBSystemActionSimplePreviewPresentableViewController *)self _leadingView];
+  v6 = _leadingView;
+  if (_leadingView)
   {
-    v7 = v5;
+    v7 = _leadingView;
   }
 
   else
@@ -65,8 +65,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [v9 subviews];
-  v11 = [v10 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  subviews = [v9 subviews];
+  v11 = [subviews countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
@@ -77,26 +77,26 @@
       {
         if (*v31 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subviews);
         }
 
-        v15 = [*(*(&v30 + 1) + 8 * i) layer];
-        [v15 setShadowOpacity:0.0];
+        layer = [*(*(&v30 + 1) + 8 * i) layer];
+        [layer setShadowOpacity:0.0];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v12 = [subviews countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [v4 trailingApertureView];
+  trailingApertureView = [configuredAction trailingApertureView];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = [v16 subviews];
-  v18 = [v17 countByEnumeratingWithState:&v26 objects:v35 count:16];
+  subviews2 = [trailingApertureView subviews];
+  v18 = [subviews2 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v18)
   {
     v19 = v18;
@@ -107,30 +107,30 @@
       {
         if (*v27 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(subviews2);
         }
 
-        v22 = [*(*(&v26 + 1) + 8 * j) layer];
-        [v22 setShadowOpacity:0.0];
+        layer2 = [*(*(&v26 + 1) + 8 * j) layer];
+        [layer2 setShadowOpacity:0.0];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v26 objects:v35 count:16];
+      v19 = [subviews2 countByEnumeratingWithState:&v26 objects:v35 count:16];
     }
 
     while (v19);
   }
 
-  v23 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:v9 trailingAccessoryView:v16];
+  v23 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:v9 trailingAccessoryView:trailingApertureView];
   pillView = self->_pillView;
   self->_pillView = v23;
 
   [(SBSystemActionSimplePreviewPresentableViewController *)self _updatePillViewContentItems];
   v25 = self->_pillView;
-  [v3 bounds];
+  [view bounds];
   [(PLPillView *)v25 setFrame:?];
   [(PLPillView *)self->_pillView setAutoresizingMask:18];
   [(PLPillView *)self->_pillView setMaterialGroupNameBase:@"SBSystemActionSimplePreviewMaterialGroup"];
-  [v3 addSubview:self->_pillView];
+  [view addSubview:self->_pillView];
   [(PLPillView *)self->_pillView intrinsicContentSize];
   [(SBSystemActionSimplePreviewPresentableViewController *)self setPreferredContentSize:?];
   [(SBSystemActionSimplePreviewPresentableViewController *)self setOverrideUserInterfaceStyle:2];
@@ -138,65 +138,65 @@
 
 - (id)_leadingView
 {
-  v3 = [(SBSystemAction *)self->_systemAction configuredAction];
-  v4 = [(SBSystemAction *)self->_systemAction controlAction];
-  v5 = v4;
-  if (v4)
+  configuredAction = [(SBSystemAction *)self->_systemAction configuredAction];
+  controlAction = [(SBSystemAction *)self->_systemAction controlAction];
+  v5 = controlAction;
+  if (controlAction)
   {
-    v6 = [(SBControlSystemAction *)v4 iconView];
+    iconView = [(SBControlSystemAction *)controlAction iconView];
     v7 = +[SBSystemAction defaultSymbolFont];
-    [v6 setFont:v7];
+    [iconView setFont:v7];
 
-    [v6 setStyle:1];
+    [iconView setStyle:1];
   }
 
   else
   {
-    v6 = [v3 leadingApertureView];
+    iconView = [configuredAction leadingApertureView];
   }
 
-  return v6;
+  return iconView;
 }
 
 - (id)_previewPrimaryText
 {
-  v3 = [(SBSystemAction *)self->_systemAction configuredAction];
-  v4 = [v3 sectionIdentifier];
-  v5 = [(SBSystemAction *)self->_systemAction controlAction];
-  if ([v4 isEqualToString:@"Accessibility"])
+  configuredAction = [(SBSystemAction *)self->_systemAction configuredAction];
+  sectionIdentifier = [configuredAction sectionIdentifier];
+  controlAction = [(SBSystemAction *)self->_systemAction controlAction];
+  if ([sectionIdentifier isEqualToString:@"Accessibility"])
   {
-    v6 = [v3 sb_configuredIntentAction];
-    v7 = [v6 templateParameterValues];
-    v8 = [v7 objectForKey:*MEMORY[0x277CE79B0]];
+    sb_configuredIntentAction = [configuredAction sb_configuredIntentAction];
+    templateParameterValues = [sb_configuredIntentAction templateParameterValues];
+    associatedBundleIdentifier = [templateParameterValues objectForKey:*MEMORY[0x277CE79B0]];
 
-    v9 = [v8 localizedTitle];
+    localizedTitle = [associatedBundleIdentifier localizedTitle];
     goto LABEL_3;
   }
 
-  if (v5)
+  if (controlAction)
   {
-    v6 = [(SBControlSystemAction *)v5 properties];
-    v9 = [(SBCameraActivationManager *)v6 workspace];
-    if (v9)
+    sb_configuredIntentAction = [(SBControlSystemAction *)controlAction properties];
+    localizedTitle = [(SBCameraActivationManager *)sb_configuredIntentAction workspace];
+    if (localizedTitle)
     {
       goto LABEL_6;
     }
 
-    v8 = [v3 associatedBundleIdentifier];
-    v11 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v8 allowPlaceholder:1 error:0];
-    v12 = [v11 localizedName];
-    v13 = v12;
-    if (v12)
+    associatedBundleIdentifier = [configuredAction associatedBundleIdentifier];
+    v11 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:associatedBundleIdentifier allowPlaceholder:1 error:0];
+    localizedName = [v11 localizedName];
+    v13 = localizedName;
+    if (localizedName)
     {
-      v14 = v12;
+      localizedShortName = localizedName;
     }
 
     else
     {
-      v14 = [v11 localizedShortName];
+      localizedShortName = [v11 localizedShortName];
     }
 
-    v9 = v14;
+    localizedTitle = localizedShortName;
 
 LABEL_3:
 LABEL_6:
@@ -204,72 +204,72 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v3 name];
+  localizedTitle = [configuredAction name];
 LABEL_7:
 
-  return v9;
+  return localizedTitle;
 }
 
 - (id)_previewSecondaryText
 {
-  v2 = [(SBSystemAction *)self->_systemAction controlAction];
-  v3 = v2;
-  if (v2)
+  controlAction = [(SBSystemAction *)self->_systemAction controlAction];
+  v3 = controlAction;
+  if (controlAction)
   {
-    v4 = [(SBControlSystemAction *)v2 properties];
-    v5 = [(SBHomeScreenConfigurationServer *)v4 listener];
+    properties = [(SBControlSystemAction *)controlAction properties];
+    listener = [(SBHomeScreenConfigurationServer *)properties listener];
   }
 
   else
   {
-    v5 = 0;
+    listener = 0;
   }
 
-  return v5;
+  return listener;
 }
 
 - (void)_updatePillViewContentItems
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SBSystemActionSimplePreviewPresentableViewController *)self _previewPrimaryText];
+  array = [MEMORY[0x277CBEB18] array];
+  _previewPrimaryText = [(SBSystemActionSimplePreviewPresentableViewController *)self _previewPrimaryText];
   v5 = MEMORY[0x277D740C0];
-  if (v4)
+  if (_previewPrimaryText)
   {
     v6 = objc_alloc(MEMORY[0x277CCA898]);
     v19 = *v5;
-    v7 = [MEMORY[0x277D75348] labelColor];
-    v20[0] = v7;
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v20[0] = labelColor;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v9 = [v6 initWithString:v4 attributes:v8];
+    v9 = [v6 initWithString:_previewPrimaryText attributes:v8];
 
     v10 = [objc_alloc(MEMORY[0x277D3D308]) initWithAttributedText:v9];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [(SBSystemActionSimplePreviewPresentableViewController *)self _previewSecondaryText];
-  if (v11)
+  _previewSecondaryText = [(SBSystemActionSimplePreviewPresentableViewController *)self _previewSecondaryText];
+  if (_previewSecondaryText)
   {
     v12 = objc_alloc(MEMORY[0x277CCA898]);
     v17 = *v5;
-    v13 = [(SBSystemActionSimplePreviewPresentableViewController *)self _previewSecondaryTextColor];
-    v18 = v13;
+    _previewSecondaryTextColor = [(SBSystemActionSimplePreviewPresentableViewController *)self _previewSecondaryTextColor];
+    v18 = _previewSecondaryTextColor;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v15 = [v12 initWithString:v11 attributes:v14];
+    v15 = [v12 initWithString:_previewSecondaryText attributes:v14];
 
     v16 = [objc_alloc(MEMORY[0x277D3D308]) initWithAttributedText:v15];
-    [v3 addObject:v16];
+    [array addObject:v16];
   }
 
-  [(PLPillView *)self->_pillView setCenterContentItems:v3];
+  [(PLPillView *)self->_pillView setCenterContentItems:array];
 }
 
 - (NSString)requestIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SBSystemAction *)self->_systemAction configuredAction];
-  v4 = [v3 identifier];
-  v5 = [v2 stringWithFormat:@"SBSystemActionSimplePreview-%@", v4];
+  configuredAction = [(SBSystemAction *)self->_systemAction configuredAction];
+  identifier = [configuredAction identifier];
+  v5 = [v2 stringWithFormat:@"SBSystemActionSimplePreview-%@", identifier];
 
   return v5;
 }

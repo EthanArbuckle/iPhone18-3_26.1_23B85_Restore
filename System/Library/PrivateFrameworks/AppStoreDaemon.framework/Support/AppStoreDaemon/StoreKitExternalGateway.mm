@@ -1,7 +1,7 @@
 @interface StoreKitExternalGateway
 + (_TtC9appstored23StoreKitExternalGateway)shared;
 - (_TtC9appstored23StoreKitExternalGateway)init;
-- (void)handleExternalPurchaseTokenInfoDictionary:(id)a3 bundleID:(id)a4;
+- (void)handleExternalPurchaseTokenInfoDictionary:(id)dictionary bundleID:(id)d;
 @end
 
 @implementation StoreKitExternalGateway
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (void)handleExternalPurchaseTokenInfoDictionary:(id)a3 bundleID:(id)a4
+- (void)handleExternalPurchaseTokenInfoDictionary:(id)dictionary bundleID:(id)d
 {
   v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1000FE9A0(v5, v6, v8);
 }
 

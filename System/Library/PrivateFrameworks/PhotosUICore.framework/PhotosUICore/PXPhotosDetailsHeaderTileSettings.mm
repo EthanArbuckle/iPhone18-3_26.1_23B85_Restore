@@ -13,11 +13,11 @@
   [(PTSettings *)&v6 setDefaultValues];
   [(PXPhotosDetailsHeaderTileSettings *)self setAspectRatio:1.77777779];
   [(PXPhotosDetailsHeaderTileSettings *)self setMaximumHeightRelativeToScreenHeight:0.666666687];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 400.0;
-  if (v4 == 2)
+  if (userInterfaceIdiom == 2)
   {
     v5 = 720.0;
   }
@@ -45,10 +45,10 @@
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   v12 = [v2 sectionWithRows:v11 title:@"Settings"];
 
-  v13 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v14 = MEMORY[0x1E69C6638];
   v18[0] = v12;
-  v18[1] = v13;
+  v18[1] = px_restoreDefaultsSection;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v16 = [v14 moduleWithTitle:@"Photos Details Header Tile" contents:v15];
 

@@ -1,19 +1,19 @@
 @interface UIKBGradient
-+ (id)gradientWith3Colors:(id)a3 middleLocation:(double)a4;
-+ (id)gradientWithColors:(id)a3 middleLocations:(id)a4;
-+ (id)gradientWithFlatColor:(id)a3;
-+ (id)gradientWithName:(id)a3;
-+ (id)gradientWithStartColor:(id)a3 endColor:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)gradientWith3Colors:(id)colors middleLocation:(double)location;
++ (id)gradientWithColors:(id)colors middleLocations:(id)locations;
++ (id)gradientWithFlatColor:(id)color;
++ (id)gradientWithName:(id)name;
++ (id)gradientWithStartColor:(id)color endColor:(id)endColor;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesRGBColors;
 - (CGGradient)CGGradient;
 - (NSString)flatColorName;
-- (UIKBGradient)initWith3Colors:(id)a3 middleLocation:(double)a4;
-- (UIKBGradient)initWithColors:(id)a3 middleLocations:(id)a4;
-- (UIKBGradient)initWithFlatColor:(id)a3;
-- (UIKBGradient)initWithName:(id)a3;
-- (UIKBGradient)initWithStartColor:(id)a3 endColor:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIKBGradient)initWith3Colors:(id)colors middleLocation:(double)location;
+- (UIKBGradient)initWithColors:(id)colors middleLocations:(id)locations;
+- (UIKBGradient)initWithFlatColor:(id)color;
+- (UIKBGradient)initWithName:(id)name;
+- (UIKBGradient)initWithStartColor:(id)color endColor:(id)endColor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -208,110 +208,110 @@ LABEL_7:
   return UIKBCreateTwoColorLinearGradient(v14, v15);
 }
 
-+ (id)gradientWithName:(id)a3
++ (id)gradientWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithName:nameCopy];
 
   return v5;
 }
 
-+ (id)gradientWithFlatColor:(id)a3
++ (id)gradientWithFlatColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFlatColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithFlatColor:colorCopy];
 
   return v5;
 }
 
-+ (id)gradientWithStartColor:(id)a3 endColor:(id)a4
++ (id)gradientWithStartColor:(id)color endColor:(id)endColor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithStartColor:v7 endColor:v6];
+  endColorCopy = endColor;
+  colorCopy = color;
+  v8 = [[self alloc] initWithStartColor:colorCopy endColor:endColorCopy];
 
   return v8;
 }
 
-+ (id)gradientWith3Colors:(id)a3 middleLocation:(double)a4
++ (id)gradientWith3Colors:(id)colors middleLocation:(double)location
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWith3Colors:v6 middleLocation:a4];
+  colorsCopy = colors;
+  v7 = [[self alloc] initWith3Colors:colorsCopy middleLocation:location];
 
   return v7;
 }
 
-+ (id)gradientWithColors:(id)a3 middleLocations:(id)a4
++ (id)gradientWithColors:(id)colors middleLocations:(id)locations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithColors:v7 middleLocations:v6];
+  locationsCopy = locations;
+  colorsCopy = colors;
+  v8 = [[self alloc] initWithColors:colorsCopy middleLocations:locationsCopy];
 
   return v8;
 }
 
-- (UIKBGradient)initWithName:(id)a3
+- (UIKBGradient)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = UIKBGradient;
   v6 = [(UIKBGradient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gradientName, a3);
+    objc_storeStrong(&v6->_gradientName, name);
     v7->_opacity = 1.0;
   }
 
   return v7;
 }
 
-- (UIKBGradient)initWithFlatColor:(id)a3
+- (UIKBGradient)initWithFlatColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = UIKBGradient;
   v6 = [(UIKBGradient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_flatColorName, a3);
+    objc_storeStrong(&v6->_flatColorName, color);
     v7->_opacity = 1.0;
   }
 
   return v7;
 }
 
-- (UIKBGradient)initWithStartColor:(id)a3 endColor:(id)a4
+- (UIKBGradient)initWithStartColor:(id)color endColor:(id)endColor
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  endColorCopy = endColor;
   v12.receiver = self;
   v12.super_class = UIKBGradient;
   v9 = [(UIKBGradient *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startColorName, a3);
-    objc_storeStrong(&v10->_endColorName, a4);
+    objc_storeStrong(&v9->_startColorName, color);
+    objc_storeStrong(&v10->_endColorName, endColor);
     v10->_opacity = 1.0;
   }
 
   return v10;
 }
 
-- (UIKBGradient)initWith3Colors:(id)a3 middleLocation:(double)a4
+- (UIKBGradient)initWith3Colors:(id)colors middleLocation:(double)location
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  colorsCopy = colors;
   v14.receiver = self;
   v14.super_class = UIKBGradient;
   v8 = [(UIKBGradient *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_colors, a3);
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    objc_storeStrong(&v8->_colors, colors);
+    v10 = [MEMORY[0x1E696AD98] numberWithDouble:location];
     v15[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     middleLocations = v9->_middleLocations;
@@ -323,18 +323,18 @@ LABEL_7:
   return v9;
 }
 
-- (UIKBGradient)initWithColors:(id)a3 middleLocations:(id)a4
+- (UIKBGradient)initWithColors:(id)colors middleLocations:(id)locations
 {
-  v7 = a3;
-  v8 = a4;
+  colorsCopy = colors;
+  locationsCopy = locations;
   v14.receiver = self;
   v14.super_class = UIKBGradient;
   v9 = [(UIKBGradient *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_colors, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_colors, colors);
+    v11 = [locationsCopy copy];
     middleLocations = v10->_middleLocations;
     v10->_middleLocations = v11;
 
@@ -384,10 +384,10 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -395,13 +395,13 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v11 = (objc_opt_isKindOfClass() & 1) != 0 && self->_horizontal == v4->_horizontal && (gradientName = self->_gradientName, (gradientName == 0) != (v4->_gradientName != 0)) && (!gradientName || [(NSString *)gradientName isEqualToString:?]) && (flatColorName = self->_flatColorName, (flatColorName == 0) != (v4->_flatColorName != 0)) && (!flatColorName || [(NSString *)flatColorName isEqualToString:?]) && (startColorName = self->_startColorName, (startColorName == 0) != (v4->_startColorName != 0)) && (!startColorName || [(NSString *)startColorName isEqualToString:?]) && (endColorName = self->_endColorName, (endColorName == 0) != (v4->_endColorName != 0)) && (!endColorName || [(NSString *)endColorName isEqualToString:?]) && (colors = self->_colors, (colors == 0) != (v4->_colors != 0)) && (!colors || [(NSArray *)colors isEqualToArray:?]) && ((middleLocations = self->_middleLocations) == 0 || [(NSArray *)middleLocations isEqualToArray:v4->_middleLocations]) && self->_opacity == v4->_opacity;
+    v11 = (objc_opt_isKindOfClass() & 1) != 0 && self->_horizontal == equalCopy->_horizontal && (gradientName = self->_gradientName, (gradientName == 0) != (equalCopy->_gradientName != 0)) && (!gradientName || [(NSString *)gradientName isEqualToString:?]) && (flatColorName = self->_flatColorName, (flatColorName == 0) != (equalCopy->_flatColorName != 0)) && (!flatColorName || [(NSString *)flatColorName isEqualToString:?]) && (startColorName = self->_startColorName, (startColorName == 0) != (equalCopy->_startColorName != 0)) && (!startColorName || [(NSString *)startColorName isEqualToString:?]) && (endColorName = self->_endColorName, (endColorName == 0) != (equalCopy->_endColorName != 0)) && (!endColorName || [(NSString *)endColorName isEqualToString:?]) && (colors = self->_colors, (colors == 0) != (equalCopy->_colors != 0)) && (!colors || [(NSArray *)colors isEqualToArray:?]) && ((middleLocations = self->_middleLocations) == 0 || [(NSArray *)middleLocations isEqualToArray:equalCopy->_middleLocations]) && self->_opacity == equalCopy->_opacity;
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIKBGradient allocWithZone:?]endColor:"initWithStartColor:endColor:", self->_startColorName, self->_endColorName];
   objc_storeStrong(&v4->_gradientName, self->_gradientName);

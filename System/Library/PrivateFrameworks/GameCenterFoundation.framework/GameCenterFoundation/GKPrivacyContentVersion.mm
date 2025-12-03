@@ -1,7 +1,7 @@
 @interface GKPrivacyContentVersion
 + (unint64_t)currentGamesPrivacyNoticeVersion;
 + (unint64_t)currentVersion;
-+ (unint64_t)versionForIdentifier:(id)a3;
++ (unint64_t)versionForIdentifier:(id)identifier;
 @end
 
 @implementation GKPrivacyContentVersion
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __41__GKPrivacyContentVersion_currentVersion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentVersion_onceToken != -1)
   {
     dispatch_once(&currentVersion_onceToken, block);
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __59__GKPrivacyContentVersion_currentGamesPrivacyNoticeVersion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentGamesPrivacyNoticeVersion_onceToken != -1)
   {
     dispatch_once(&currentGamesPrivacyNoticeVersion_onceToken, block);
@@ -70,9 +70,9 @@ uint64_t __59__GKPrivacyContentVersion_currentGamesPrivacyNoticeVersion__block_i
   return result;
 }
 
-+ (unint64_t)versionForIdentifier:(id)a3
++ (unint64_t)versionForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -91,7 +91,7 @@ uint64_t __59__GKPrivacyContentVersion_currentGamesPrivacyNoticeVersion__block_i
 
   v5 = v4;
   _Block_object_dispose(&v18, 8);
-  v6 = [v4 bundleWithIdentifier:v3];
+  v6 = [v4 bundleWithIdentifier:identifierCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -111,15 +111,15 @@ uint64_t __59__GKPrivacyContentVersion_currentGamesPrivacyNoticeVersion__block_i
   v8 = v7;
   _Block_object_dispose(&v18, 8);
   v9 = [v7 flowWithBundle:v6];
-  v10 = [v9 contentVersion];
-  if (v10 <= 1)
+  contentVersion = [v9 contentVersion];
+  if (contentVersion <= 1)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v10;
+    v11 = contentVersion;
   }
 
   return v11;

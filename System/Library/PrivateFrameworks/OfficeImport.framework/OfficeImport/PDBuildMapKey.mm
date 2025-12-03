@@ -1,9 +1,9 @@
 @interface PDBuildMapKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PDBuildMapKey)init;
-- (PDBuildMapKey)initWithDrawable:(id)a3 groupId:(id)a4;
+- (PDBuildMapKey)initWithDrawable:(id)drawable groupId:(id)id;
 - (id)description;
-- (void)setDrawable:(id)a3;
+- (void)setDrawable:(id)drawable;
 @end
 
 @implementation PDBuildMapKey
@@ -15,44 +15,44 @@
   return [(PDBuildMapKey *)&v3 init];
 }
 
-- (PDBuildMapKey)initWithDrawable:(id)a3 groupId:(id)a4
+- (PDBuildMapKey)initWithDrawable:(id)drawable groupId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  drawableCopy = drawable;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = PDBuildMapKey;
   v8 = [(PDBuildMapKey *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v6];
+    v9 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:drawableCopy];
     mDrawableValue = v8->mDrawableValue;
     v8->mDrawableValue = v9;
 
-    objc_storeStrong(&v8->mGroupId, a4);
+    objc_storeStrong(&v8->mGroupId, id);
   }
 
   return v8;
 }
 
-- (void)setDrawable:(id)a3
+- (void)setDrawable:(id)drawable
 {
-  v6 = a3;
+  drawableCopy = drawable;
   v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:?];
   mDrawableValue = self->mDrawableValue;
   self->mDrawableValue = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PDBuildMapKey *)self drawable];
-    v7 = [v5 drawable];
+    v5 = equalCopy;
+    drawable = [(PDBuildMapKey *)self drawable];
+    drawable2 = [v5 drawable];
 
-    if (v6 != v7)
+    if (drawable != drawable2)
     {
 LABEL_3:
       v8 = 0;
@@ -63,13 +63,13 @@ LABEL_11:
 
     if (self->mGroupId)
     {
-      v9 = [v5 groupId];
+      groupId = [v5 groupId];
 
       mGroupId = self->mGroupId;
-      if (v9)
+      if (groupId)
       {
-        v11 = [v5 groupId];
-        v8 = [(NSString *)mGroupId isEqualToString:v11];
+        groupId2 = [v5 groupId];
+        v8 = [(NSString *)mGroupId isEqualToString:groupId2];
 LABEL_10:
 
         goto LABEL_11;
@@ -81,8 +81,8 @@ LABEL_10:
       }
     }
 
-    v11 = [v5 groupId];
-    v8 = v11 == 0;
+    groupId2 = [v5 groupId];
+    v8 = groupId2 == 0;
     goto LABEL_10;
   }
 

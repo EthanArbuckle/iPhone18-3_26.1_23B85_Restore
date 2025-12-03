@@ -1,45 +1,45 @@
 @interface AKUIMicaPlayer
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5;
-+ (id)rootDictForPath:(id)a3;
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5;
-- (AKUIMicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4;
-- (AKUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4;
-- (AKUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6;
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value;
++ (id)rootDictForPath:(id)path;
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree;
+- (AKUIMicaPlayer)initWithFileName:(id)name retinaScale:(double)scale;
+- (AKUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale;
+- (AKUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects;
 - (AKUIMicaPlayerDelegate)delegate;
 - (BOOL)isPlaybackAtEnd;
 - (BOOL)isTimerNeeded;
 - (double)playbackTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publishedLayerWithKey:(id)a3 required:(BOOL)a4;
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4;
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publishedLayerWithKey:(id)key required:(BOOL)required;
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required;
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity;
 - (void)dealloc;
 - (void)gotoEnd;
-- (void)moveAndResizeWithinParentLayer:(id)a3 usingGravity:(id)a4 animate:(BOOL)a5;
+- (void)moveAndResizeWithinParentLayer:(id)layer usingGravity:(id)gravity animate:(BOOL)animate;
 - (void)notifyDelegateDidChangePlaybackTime;
 - (void)notifyDelegateDidStartPlaying;
 - (void)notifyDelegateDidStopPlaying;
 - (void)pause;
 - (void)play;
 - (void)removeFromSuperlayer;
-- (void)runPlayTimer:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPlaybackTime:(double)a3;
-- (void)setPreferredPlaybackSpeed:(float)a3;
-- (void)setRootLayer:(id)a3;
+- (void)runPlayTimer:(id)timer;
+- (void)setDelegate:(id)delegate;
+- (void)setPlaybackTime:(double)time;
+- (void)setPreferredPlaybackSpeed:(float)speed;
+- (void)setRootLayer:(id)layer;
 - (void)startPlayTimerIfNeeded;
 - (void)stopPlayTimer;
 @end
 
 @implementation AKUIMicaPlayer
 
-- (AKUIMicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4
+- (AKUIMicaPlayer)initWithFileName:(id)name retinaScale:(double)scale
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, name);
+  scaleCopy = scale;
   v13 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/AuthKitUI.framework"];
   v10 = MEMORY[0x277CBEBC0];
   v11 = [v13 pathForResource:location[0] ofType:@"caar"];
@@ -47,35 +47,35 @@
   *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
   if (v12)
   {
-    v7 = v16;
-    v8 = [v12 path];
-    v16 = 0;
-    v16 = [v7 initWithPath:v14 retinaScale:?];
-    objc_storeStrong(&v16, v16);
-    MEMORY[0x277D82BD8](v8);
+    v7 = selfCopy;
+    path = [v12 path];
+    selfCopy = 0;
+    selfCopy = [v7 initWithPath:scaleCopy retinaScale:?];
+    objc_storeStrong(&selfCopy, selfCopy);
+    MEMORY[0x277D82BD8](path);
   }
 
   else
   {
     NSLog(&cfstr_UnableToFindMi.isa, v4, location[0]);
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&selfCopy, 0);
   }
 
-  v6 = MEMORY[0x277D82BE0](v16);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (AKUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4
+- (AKUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
+  objc_storeStrong(location, path);
+  scaleCopy = scale;
   v11 = [AKUIMicaPlayer rootDictForPath:location[0]];
   if (v11)
   {
@@ -85,18 +85,18 @@
       [v10 setGeometryFlipped:{+[AKUIMicaPlayer BOOLFromDictionary:key:defaultValue:](AKUIMicaPlayer, "BOOLFromDictionary:key:defaultValue:", v11, @"geometryFlipped", 0) ^ 1}];
       [v10 setMasksToBounds:1];
       [v10 setRepeatCount:0.0];
-      v7 = v14;
+      v7 = selfCopy;
       v6 = location[0];
       v8 = [v11 objectForKeyedSubscript:@"publishedObjects"];
-      v14 = 0;
-      v14 = [v7 initWithPath:v6 retinaScale:v10 rootLayer:v12 publishedObjects:?];
-      objc_storeStrong(&v14, v14);
+      selfCopy = 0;
+      selfCopy = [v7 initWithPath:v6 retinaScale:v10 rootLayer:scaleCopy publishedObjects:?];
+      objc_storeStrong(&selfCopy, selfCopy);
       MEMORY[0x277D82BD8](v8);
     }
 
     else
     {
-      objc_storeStrong(&v14, 0);
+      objc_storeStrong(&selfCopy, 0);
     }
 
     objc_storeStrong(&v10, 0);
@@ -104,76 +104,76 @@
 
   else
   {
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&selfCopy, 0);
   }
 
-  if (!v14)
+  if (!selfCopy)
   {
     NSLog(&cfstr_UnableToLoadMi.isa, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v14);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6
+- (AKUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, path);
+  scaleCopy = scale;
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, layer);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
-  v6 = v19;
-  v19 = 0;
+  objc_storeStrong(&v15, objects);
+  v6 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v6;
   v14.super_class = AKUIMicaPlayer;
   v13 = [(AKUIMicaPlayer *)&v14 init];
-  v19 = v13;
-  objc_storeStrong(&v19, v13);
+  selfCopy = v13;
+  objc_storeStrong(&selfCopy, v13);
   if (v13)
   {
-    [(AKUIMicaPlayer *)v19 setPath:location[0]];
-    [(AKUIMicaPlayer *)v19 setRootLayer:v16];
-    [(AKUIMicaPlayer *)v19 setPublishedObjects:v15];
+    [(AKUIMicaPlayer *)selfCopy setPath:location[0]];
+    [(AKUIMicaPlayer *)selfCopy setRootLayer:v16];
+    [(AKUIMicaPlayer *)selfCopy setPublishedObjects:v15];
     LODWORD(v7) = 1.0;
-    [(AKUIMicaPlayer *)v19 setPreferredPlaybackSpeed:v7];
-    [(AKUIMicaPlayer *)v19 setRetinaScale:v17];
+    [(AKUIMicaPlayer *)selfCopy setPreferredPlaybackSpeed:v7];
+    [(AKUIMicaPlayer *)selfCopy setRetinaScale:scaleCopy];
     [v16 duration];
-    [(AKUIMicaPlayer *)v19 setDocumentDuration:?];
-    [(CALayer *)v19->_rootLayer setDuration:INFINITY];
+    [(AKUIMicaPlayer *)selfCopy setDocumentDuration:?];
+    [(CALayer *)selfCopy->_rootLayer setDuration:INFINITY];
   }
 
-  v9 = MEMORY[0x277D82BE0](v19);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKUIMicaPlayer *)self stopPlayTimer];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKUIMicaPlayer;
   [(AKUIMicaPlayer *)&v2 dealloc];
 }
 
-+ (id)rootDictForPath:(id)a3
++ (id)rootDictForPath:(id)path
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v23 = 0;
   v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:location[0]];
   if (v22)
@@ -199,9 +199,9 @@
       *&v4 = MEMORY[0x277D82BD8](v3).n128_u64[0];
       if (v21)
       {
-        v8 = [location[0] lastPathComponent];
-        NSLog(&cfstr_UnableToOpenMi.isa, v8);
-        *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+        lastPathComponent = [location[0] lastPathComponent];
+        NSLog(&cfstr_UnableToOpenMi.isa, lastPathComponent);
+        *&v5 = MEMORY[0x277D82BD8](lastPathComponent).n128_u64[0];
         v9 = [v21 description];
         NSLog(&cfstr_Error.isa, v9);
         MEMORY[0x277D82BD8](v9);
@@ -222,15 +222,15 @@
   return v7;
 }
 
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9 = a5;
+  objc_storeStrong(&v10, key);
+  valueCopy = value;
   v8 = [location[0] objectForKeyedSubscript:v10];
   if (v8)
   {
@@ -239,7 +239,7 @@
 
   else
   {
-    v12 = v9;
+    v12 = valueCopy;
   }
 
   objc_storeStrong(&v8, 0);
@@ -248,53 +248,53 @@
   return v12 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v10 = [(AKUIMicaPlayer *)self path];
-  v13 = [(NSString *)v10 copy];
-  v9 = [(AKUIMicaPlayer *)v17 rootLayer];
-  v12 = [(CALayer *)v9 mp_deepCopyLayer];
-  v8 = [(AKUIMicaPlayer *)v17 publishedObjects];
-  v7 = [(AKUIMicaPlayer *)v17 rootLayer];
-  location = [AKUIMicaPlayer updatePublishedObjects:v8 toReferenceLayersInTree:v12 ratherThanLayersInTree:?];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  v6 = [objc_opt_class() allocWithZone:v15];
-  [(AKUIMicaPlayer *)v17 retinaScale];
-  v14 = [v6 initWithPath:v13 retinaScale:v12 rootLayer:location publishedObjects:v3];
+  zoneCopy = zone;
+  path = [(AKUIMicaPlayer *)self path];
+  v13 = [(NSString *)path copy];
+  rootLayer = [(AKUIMicaPlayer *)selfCopy rootLayer];
+  mp_deepCopyLayer = [(CALayer *)rootLayer mp_deepCopyLayer];
+  publishedObjects = [(AKUIMicaPlayer *)selfCopy publishedObjects];
+  rootLayer2 = [(AKUIMicaPlayer *)selfCopy rootLayer];
+  location = [AKUIMicaPlayer updatePublishedObjects:publishedObjects toReferenceLayersInTree:mp_deepCopyLayer ratherThanLayersInTree:?];
+  MEMORY[0x277D82BD8](rootLayer2);
+  MEMORY[0x277D82BD8](publishedObjects);
+  v6 = [objc_opt_class() allocWithZone:zoneCopy];
+  [(AKUIMicaPlayer *)selfCopy retinaScale];
+  v14 = [v6 initWithPath:v13 retinaScale:mp_deepCopyLayer rootLayer:location publishedObjects:v3];
   MEMORY[0x277D82BD8](0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&mp_deepCopyLayer, 0);
   objc_storeStrong(&v13, 0);
   v5 = MEMORY[0x277D82BE0](v14);
   objc_storeStrong(&v14, 0);
   return v5;
 }
 
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree
 {
   v33 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, objects);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, tree);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
-  v28 = [MEMORY[0x277CBEB38] dictionary];
+  objc_storeStrong(&v29, inTree);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (location[0] && [location[0] count])
   {
-    v27 = [v29 mp_allLayersInTree];
-    v26 = [v29 mp_allAnimationsInTree];
-    v25 = [v30 mp_allLayersInTree];
-    v24 = [v30 mp_allAnimationsInTree];
+    mp_allLayersInTree = [v29 mp_allLayersInTree];
+    mp_allAnimationsInTree = [v29 mp_allAnimationsInTree];
+    mp_allLayersInTree2 = [v30 mp_allLayersInTree];
+    mp_allAnimationsInTree2 = [v30 mp_allAnimationsInTree];
     memset(__b, 0, sizeof(__b));
-    v11 = [location[0] allKeys];
-    v12 = [v11 countByEnumeratingWithState:__b objects:v32 count:16];
+    allKeys = [location[0] allKeys];
+    v12 = [allKeys countByEnumeratingWithState:__b objects:v32 count:16];
     if (v12)
     {
       v8 = *__b[2];
@@ -305,7 +305,7 @@
         v7 = v9;
         if (*__b[2] != v8)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(__b[1] + 8 * v9);
@@ -314,9 +314,9 @@
         if (objc_opt_isKindOfClass())
         {
           v20 = MEMORY[0x277D82BE0](v21);
-          v19 = [v27 indexOfObjectIdenticalTo:v20];
-          v18 = [v25 objectAtIndexedSubscript:v19];
-          [v28 setObject:v18 forKeyedSubscript:v23];
+          v19 = [mp_allLayersInTree indexOfObjectIdenticalTo:v20];
+          v18 = [mp_allLayersInTree2 objectAtIndexedSubscript:v19];
+          [dictionary setObject:v18 forKeyedSubscript:v23];
           objc_storeStrong(&v18, 0);
           objc_storeStrong(&v20, 0);
         }
@@ -327,9 +327,9 @@
           if (objc_opt_isKindOfClass())
           {
             v17 = MEMORY[0x277D82BE0](v21);
-            v16 = [v26 indexOfObjectIdenticalTo:v17];
-            v15 = [v24 objectAtIndexedSubscript:v16];
-            [v28 setObject:v15 forKeyedSubscript:v23];
+            v16 = [mp_allAnimationsInTree indexOfObjectIdenticalTo:v17];
+            v15 = [mp_allAnimationsInTree2 objectAtIndexedSubscript:v16];
+            [dictionary setObject:v15 forKeyedSubscript:v23];
             objc_storeStrong(&v15, 0);
             objc_storeStrong(&v17, 0);
           }
@@ -340,7 +340,7 @@
         if (v7 + 1 >= v10)
         {
           v9 = 0;
-          v10 = [v11 countByEnumeratingWithState:__b objects:v32 count:16];
+          v10 = [allKeys countByEnumeratingWithState:__b objects:v32 count:16];
           if (!v10)
           {
             break;
@@ -349,15 +349,15 @@
       }
     }
 
-    MEMORY[0x277D82BD8](v11);
-    objc_storeStrong(&v24, 0);
-    objc_storeStrong(&v25, 0);
-    objc_storeStrong(&v26, 0);
-    objc_storeStrong(&v27, 0);
+    MEMORY[0x277D82BD8](allKeys);
+    objc_storeStrong(&mp_allAnimationsInTree2, 0);
+    objc_storeStrong(&mp_allLayersInTree2, 0);
+    objc_storeStrong(&mp_allAnimationsInTree, 0);
+    objc_storeStrong(&mp_allLayersInTree, 0);
   }
 
-  v6 = MEMORY[0x277D82BE0](v28);
-  objc_storeStrong(&v28, 0);
+  v6 = MEMORY[0x277D82BE0](dictionary);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(location, 0);
@@ -366,30 +366,30 @@
   return v6;
 }
 
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, layer);
+  topCopy = top;
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v8 = [(CALayer *)v12->_rootLayer superlayer];
-  *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  if (!v8)
+  objc_storeStrong(&v9, gravity);
+  superlayer = [(CALayer *)selfCopy->_rootLayer superlayer];
+  *&v5 = MEMORY[0x277D82BD8](superlayer).n128_u64[0];
+  if (!superlayer)
   {
-    [(AKUIMicaPlayer *)v12 pause];
-    [(AKUIMicaPlayer *)v12 setPlaybackTime:0.0];
-    [(AKUIMicaPlayer *)v12 moveAndResizeWithinParentLayer:location[0] usingGravity:v9 animate:0];
-    if (v10)
+    [(AKUIMicaPlayer *)selfCopy pause];
+    [(AKUIMicaPlayer *)selfCopy setPlaybackTime:0.0];
+    [(AKUIMicaPlayer *)selfCopy moveAndResizeWithinParentLayer:location[0] usingGravity:v9 animate:0];
+    if (topCopy)
     {
-      [location[0] addSublayer:v12->_rootLayer];
+      [location[0] addSublayer:selfCopy->_rootLayer];
     }
 
     else
     {
-      [location[0] insertSublayer:v12->_rootLayer atIndex:0];
+      [location[0] insertSublayer:selfCopy->_rootLayer atIndex:0];
     }
   }
 
@@ -399,40 +399,40 @@
 
 - (void)removeFromSuperlayer
 {
-  v3 = [(CALayer *)self->_rootLayer superlayer];
-  *&v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
-  if (v3)
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
+  *&v2 = MEMORY[0x277D82BD8](superlayer).n128_u64[0];
+  if (superlayer)
   {
     [(AKUIMicaPlayer *)self pause];
     [(CALayer *)self->_rootLayer removeFromSuperlayer];
   }
 }
 
-- (void)moveAndResizeWithinParentLayer:(id)a3 usingGravity:(id)a4 animate:(BOOL)a5
+- (void)moveAndResizeWithinParentLayer:(id)layer usingGravity:(id)gravity animate:(BOOL)animate
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, layer);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  rootLayer = v12->_rootLayer;
+  objc_storeStrong(&v10, gravity);
+  rootLayer = selfCopy->_rootLayer;
   v8 = location[0];
   v9 = v10;
-  [(AKUIMicaPlayer *)v12 retinaScale];
-  [(CALayer *)rootLayer mp_moveAndResizeWithinParentLayer:v8 usingGravity:v9 geometryFlipped:1 retinaScale:a5 animate:?];
+  [(AKUIMicaPlayer *)selfCopy retinaScale];
+  [(CALayer *)rootLayer mp_moveAndResizeWithinParentLayer:v8 usingGravity:v9 geometryFlipped:1 retinaScale:animate animate:?];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)publishedLayerWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedLayerWithKey:(id)key required:(BOOL)required
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
-  v7 = [(AKUIMicaPlayer *)v10 publishedObjectWithKey:location[0] required:a4];
+  objc_storeStrong(location, key);
+  requiredCopy = required;
+  v7 = [(AKUIMicaPlayer *)selfCopy publishedObjectWithKey:location[0] required:required];
   if (v7)
   {
     objc_opt_class();
@@ -449,21 +449,21 @@
   return v5;
 }
 
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required
 {
-  v11 = a4;
-  v15 = self;
+  requiredCopy = required;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = v11;
-  v12 = [(NSDictionary *)v15->_publishedObjects objectForKeyedSubscript:location[0]];
-  if (v11 && !v12)
+  objc_storeStrong(location, key);
+  v13 = requiredCopy;
+  v12 = [(NSDictionary *)selfCopy->_publishedObjects objectForKeyedSubscript:location[0]];
+  if (requiredCopy && !v12)
   {
     v9 = location[0];
-    v10 = [(NSString *)v15->_path lastPathComponent];
-    NSLog(&cfstr_MissingPublish.isa, v9, v10);
-    MEMORY[0x277D82BD8](v10);
+    lastPathComponent = [(NSString *)selfCopy->_path lastPathComponent];
+    NSLog(&cfstr_MissingPublish.isa, v9, lastPathComponent);
+    MEMORY[0x277D82BD8](lastPathComponent);
   }
 
   v6 = &v12;
@@ -517,18 +517,18 @@
   }
 }
 
-- (void)setPreferredPlaybackSpeed:(float)a3
+- (void)setPreferredPlaybackSpeed:(float)speed
 {
-  v4 = a3;
-  if (a3 <= 0.0)
+  speedCopy = speed;
+  if (speed <= 0.0)
   {
-    v4 = 1.0;
+    speedCopy = 1.0;
   }
 
-  self->_preferredPlaybackSpeed = v4;
+  self->_preferredPlaybackSpeed = speedCopy;
   if ([(AKUIMicaPlayer *)self isPlaying])
   {
-    *&v3 = v4;
+    *&v3 = speedCopy;
     [(CALayer *)self->_rootLayer setSpeed:v3];
   }
 }
@@ -551,18 +551,18 @@
   }
 }
 
-- (void)setPlaybackTime:(double)a3
+- (void)setPlaybackTime:(double)time
 {
   if ([(AKUIMicaPlayer *)self isPlaying])
   {
-    [(CALayer *)self->_rootLayer setBeginTime:CACurrentMediaTime() - a3];
+    [(CALayer *)self->_rootLayer setBeginTime:CACurrentMediaTime() - time];
     [(CALayer *)self->_rootLayer setTimeOffset:0.0];
   }
 
   else
   {
     [(CALayer *)self->_rootLayer setBeginTime:0.0];
-    [(CALayer *)self->_rootLayer setTimeOffset:a3];
+    [(CALayer *)self->_rootLayer setTimeOffset:time];
   }
 
   [(AKUIMicaPlayer *)self notifyDelegateDidChangePlaybackTime];
@@ -576,33 +576,33 @@
   return v5 >= v3 - 0.001;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeWeak(&v4->_delegate, location[0]);
-  if ([(AKUIMicaPlayer *)v4 isTimerNeeded])
+  objc_storeStrong(location, delegate);
+  objc_storeWeak(&selfCopy->_delegate, location[0]);
+  if ([(AKUIMicaPlayer *)selfCopy isTimerNeeded])
   {
-    [(AKUIMicaPlayer *)v4 startPlayTimerIfNeeded];
+    [(AKUIMicaPlayer *)selfCopy startPlayTimerIfNeeded];
   }
 
   else
   {
-    [(AKUIMicaPlayer *)v4 stopPlayTimer];
+    [(AKUIMicaPlayer *)selfCopy stopPlayTimer];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setRootLayer:(id)a3
+- (void)setRootLayer:(id)layer
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, layer);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -612,7 +612,7 @@
 
   objc_storeStrong(&oslog, 0);
   [location[0] setInheritsTiming:0];
-  objc_storeStrong(&v5->_rootLayer, location[0]);
+  objc_storeStrong(&selfCopy->_rootLayer, location[0]);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -703,22 +703,22 @@
     [(AKUIMicaPlayer *)self documentDuration];
     if (v2 == INFINITY)
     {
-      v4 = [(AKUIMicaPlayer *)self delegate];
+      delegate = [(AKUIMicaPlayer *)self delegate];
       v6 = 0;
       v5 = 0;
-      if (v4)
+      if (delegate)
       {
-        v7 = [(AKUIMicaPlayer *)self delegate];
+        delegate2 = [(AKUIMicaPlayer *)self delegate];
         v6 = 1;
         v5 = objc_opt_respondsToSelector();
       }
 
       if (v6)
       {
-        MEMORY[0x277D82BD8](v7);
+        MEMORY[0x277D82BD8](delegate2);
       }
 
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](delegate);
       if (v5)
       {
         return 1;
@@ -736,11 +736,11 @@
 
 - (void)startPlayTimerIfNeeded
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
-  if (!self->_playTimer && [(AKUIMicaPlayer *)v12 isTimerNeeded])
+  if (!self->_playTimer && [(AKUIMicaPlayer *)selfCopy isTimerNeeded])
   {
-    objc_initWeak(location, v12);
+    objc_initWeak(location, selfCopy);
     v4 = MEMORY[0x277CBEBB8];
     v5 = MEMORY[0x277D85DD0];
     v6 = -1073741824;
@@ -749,8 +749,8 @@
     v9 = &unk_2784A6AB0;
     objc_copyWeak(&v10, location);
     v2 = [v4 scheduledTimerWithTimeInterval:1 repeats:&v5 block:0.0333333333];
-    playTimer = v12->_playTimer;
-    v12->_playTimer = v2;
+    playTimer = selfCopy->_playTimer;
+    selfCopy->_playTimer = v2;
     MEMORY[0x277D82BD8](playTimer);
     objc_destroyWeak(&v10);
     objc_destroyWeak(location);
@@ -778,26 +778,26 @@ void __40__AKUIMicaPlayer_startPlayTimerIfNeeded__block_invoke(id *a1, void *a2)
   }
 }
 
-- (void)runPlayTimer:(id)a3
+- (void)runPlayTimer:(id)timer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKUIMicaPlayer *)v4 isPlaybackAtEnd])
+  objc_storeStrong(location, timer);
+  if ([(AKUIMicaPlayer *)selfCopy isPlaybackAtEnd])
   {
-    if (v4->_loopDuringPlayback)
+    if (selfCopy->_loopDuringPlayback)
     {
-      [(AKUIMicaPlayer *)v4 setPlaybackTime:0.0];
+      [(AKUIMicaPlayer *)selfCopy setPlaybackTime:0.0];
     }
 
     else
     {
-      [(AKUIMicaPlayer *)v4 pause];
+      [(AKUIMicaPlayer *)selfCopy pause];
     }
   }
 
-  [(AKUIMicaPlayer *)v4 notifyDelegateDidChangePlaybackTime];
+  [(AKUIMicaPlayer *)selfCopy notifyDelegateDidChangePlaybackTime];
   objc_storeStrong(location, 0);
 }
 

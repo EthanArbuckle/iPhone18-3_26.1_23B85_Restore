@@ -1,6 +1,6 @@
 @interface FlowerBlurringLayer
 - (_TtC13RhizomePoster19FlowerBlurringLayer)init;
-- (_TtC13RhizomePoster19FlowerBlurringLayer)initWithLayer:(id)a3;
+- (_TtC13RhizomePoster19FlowerBlurringLayer)initWithLayer:(id)layer;
 @end
 
 @implementation FlowerBlurringLayer
@@ -17,7 +17,7 @@
   return [(FlowerBlurringLayer *)&v4 init];
 }
 
-- (_TtC13RhizomePoster19FlowerBlurringLayer)initWithLayer:(id)a3
+- (_TtC13RhizomePoster19FlowerBlurringLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_100037298();

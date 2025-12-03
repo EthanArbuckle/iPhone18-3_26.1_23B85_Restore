@@ -1,16 +1,16 @@
 @interface WorkoutsListContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_isDateInLastWeek:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_isDateInLastWeek:(id)week;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation WorkoutsListContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.WorkoutsListContentView" hasSwiftField:@"workout" withSwiftType:"Optional<HKWorkout>"];
-  [v3 validateClass:@"FitnessApp.WorkoutsListContentView" hasSwiftField:@"dateLabel" withSwiftType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.WorkoutsListContentView" hasSwiftField:@"workout" withSwiftType:"Optional<HKWorkout>"];
+  [validationsCopy validateClass:@"FitnessApp.WorkoutsListContentView" hasSwiftField:@"dateLabel" withSwiftType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -61,9 +61,9 @@ id __82__WorkoutsListContentViewAccessibility__accessibilityLoadAccessibilityInf
   return v9;
 }
 
-- (BOOL)_isDateInLastWeek:(id)a3
+- (BOOL)_isDateInLastWeek:(id)week
 {
-  v3 = a3;
+  weekCopy = week;
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSDate date];
   v6 = [v4 dateByAddingUnit:16 value:-6 toDate:v5 options:0];
@@ -71,9 +71,9 @@ id __82__WorkoutsListContentViewAccessibility__accessibilityLoadAccessibilityInf
   v7 = +[NSCalendar currentCalendar];
   v8 = [v7 startOfDayForDate:v6];
 
-  v9 = [v3 laterDate:v8];
+  v9 = [weekCopy laterDate:v8];
 
-  return v9 == v3;
+  return v9 == weekCopy;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface VCPDatabaseManager
-+ (BOOL)existsDatabaseForPhotoLibrary:(id)a3;
-+ (id)sharedDatabaseForPhotoLibrary:(id)a3;
++ (BOOL)existsDatabaseForPhotoLibrary:(id)library;
++ (id)sharedDatabaseForPhotoLibrary:(id)library;
 + (id)sharedDatabaseManager;
-+ (int)_removeLegacyDatabaseFileAtPath:(id)a3 fileLabel:(id)a4;
-+ (int)removeLegacyDatabaseFilesForPhotoLibrary:(id)a3;
-+ (void)releaseSharedDatabaseForPhotoLibrary:(id)a3;
++ (int)_removeLegacyDatabaseFileAtPath:(id)path fileLabel:(id)label;
++ (int)removeLegacyDatabaseFilesForPhotoLibrary:(id)library;
++ (void)releaseSharedDatabaseForPhotoLibrary:(id)library;
 - (VCPDatabaseManager)init;
-- (id)sharedDatabaseForPhotoLibrary:(id)a3;
-- (void)releaseSharedDatabaseForPhotoLibrary:(id)a3;
+- (id)sharedDatabaseForPhotoLibrary:(id)library;
+- (void)releaseSharedDatabaseForPhotoLibrary:(id)library;
 @end
 
 @implementation VCPDatabaseManager
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000D47F0;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8388 != -1)
   {
     dispatch_once(&qword_1002B8388, block);
@@ -48,18 +48,18 @@
   return v2;
 }
 
-- (id)sharedDatabaseForPhotoLibrary:(id)a3
+- (id)sharedDatabaseForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_1000D4988;
   v18 = sub_1000D4998;
   v19 = 0;
-  v5 = [v4 photoLibraryURL];
-  v6 = v5;
-  if (v5)
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v6 = photoLibraryURL;
+  if (photoLibraryURL)
   {
     queue = self->_queue;
     v10[0] = _NSConcreteStackBlock;
@@ -68,8 +68,8 @@
     v10[3] = &unk_100285DB8;
     v13 = &v14;
     v10[4] = self;
-    v11 = v5;
-    v12 = v4;
+    v11 = photoLibraryURL;
+    v12 = libraryCopy;
     dispatch_sync(queue, v10);
   }
 
@@ -80,33 +80,33 @@
   return v8;
 }
 
-+ (id)sharedDatabaseForPhotoLibrary:(id)a3
++ (id)sharedDatabaseForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedDatabaseManager];
-  v5 = [v4 sharedDatabaseForPhotoLibrary:v3];
+  libraryCopy = library;
+  sharedDatabaseManager = [objc_opt_class() sharedDatabaseManager];
+  v5 = [sharedDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
 
   return v5;
 }
 
-+ (BOOL)existsDatabaseForPhotoLibrary:(id)a3
++ (BOOL)existsDatabaseForPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 vcp_mediaAnalysisDatabaseFilepath];
+  vcp_mediaAnalysisDatabaseFilepath = [libraryCopy vcp_mediaAnalysisDatabaseFilepath];
 
-  LOBYTE(v3) = [v4 fileExistsAtPath:v5];
-  return v3;
+  LOBYTE(libraryCopy) = [v4 fileExistsAtPath:vcp_mediaAnalysisDatabaseFilepath];
+  return libraryCopy;
 }
 
-- (void)releaseSharedDatabaseForPhotoLibrary:(id)a3
+- (void)releaseSharedDatabaseForPhotoLibrary:(id)library
 {
-  v4 = a3;
-  if (([v4 isSystemPhotoLibrary] & 1) == 0)
+  libraryCopy = library;
+  if (([libraryCopy isSystemPhotoLibrary] & 1) == 0)
   {
-    v5 = [v4 photoLibraryURL];
-    v6 = v5;
-    if (v5)
+    photoLibraryURL = [libraryCopy photoLibraryURL];
+    v6 = photoLibraryURL;
+    if (photoLibraryURL)
     {
       queue = self->_queue;
       v8[0] = _NSConcreteStackBlock;
@@ -114,31 +114,31 @@
       v8[2] = sub_1000D4BF4;
       v8[3] = &unk_100282F50;
       v8[4] = self;
-      v9 = v5;
+      v9 = photoLibraryURL;
       dispatch_sync(queue, v8);
     }
   }
 }
 
-+ (void)releaseSharedDatabaseForPhotoLibrary:(id)a3
++ (void)releaseSharedDatabaseForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedDatabaseManager];
-  [v4 releaseSharedDatabaseForPhotoLibrary:v3];
+  libraryCopy = library;
+  sharedDatabaseManager = [objc_opt_class() sharedDatabaseManager];
+  [sharedDatabaseManager releaseSharedDatabaseForPhotoLibrary:libraryCopy];
 }
 
-+ (int)_removeLegacyDatabaseFileAtPath:(id)a3 fileLabel:(id)a4
++ (int)_removeLegacyDatabaseFileAtPath:(id)path fileLabel:(id)label
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  labelCopy = label;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v5];
+  code = [v7 fileExistsAtPath:pathCopy];
 
-  if (v8)
+  if (code)
   {
     v9 = +[NSFileManager defaultManager];
     v16 = 0;
-    v10 = [v9 removeItemAtPath:v5 error:&v16];
+    v10 = [v9 removeItemAtPath:pathCopy error:&v16];
     v11 = v16;
 
     v12 = MediaAnalysisLogLevel();
@@ -150,14 +150,14 @@
         if (os_log_type_enabled(&_os_log_default, v13))
         {
           *buf = 138412546;
-          v18 = v6;
+          v18 = labelCopy;
           v19 = 2112;
-          v20 = v5;
+          v20 = pathCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[VCPDatabaseManager] Removed legacy database %@ file at path %@", buf, 0x16u);
         }
       }
 
-      v8 = 0;
+      code = 0;
     }
 
     else
@@ -168,41 +168,41 @@
         if (os_log_type_enabled(&_os_log_default, v14))
         {
           *buf = 138412802;
-          v18 = v6;
+          v18 = labelCopy;
           v19 = 2112;
-          v20 = v5;
+          v20 = pathCopy;
           v21 = 2112;
           v22 = v11;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[VCPDatabaseManager] Failed to remove legacy database %@ file at path %@ - %@", buf, 0x20u);
         }
       }
 
-      v8 = [v11 code];
+      code = [v11 code];
     }
   }
 
-  return v8;
+  return code;
 }
 
-+ (int)removeLegacyDatabaseFilesForPhotoLibrary:(id)a3
++ (int)removeLegacyDatabaseFilesForPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [a1 sharedDatabaseForPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [self sharedDatabaseForPhotoLibrary:libraryCopy];
   [v5 flush];
-  v6 = [v4 vcp_mediaAnalysisDatabaseFilepath];
-  v7 = [VCPDatabaseManager _removeLegacyDatabaseFileAtPath:v6 fileLabel:@".db"];
+  vcp_mediaAnalysisDatabaseFilepath = [libraryCopy vcp_mediaAnalysisDatabaseFilepath];
+  v7 = [VCPDatabaseManager _removeLegacyDatabaseFileAtPath:vcp_mediaAnalysisDatabaseFilepath fileLabel:@".db"];
   if (!v7)
   {
-    v8 = [v6 stringByAppendingString:@"-wal"];
+    v8 = [vcp_mediaAnalysisDatabaseFilepath stringByAppendingString:@"-wal"];
     v7 = [VCPDatabaseManager _removeLegacyDatabaseFileAtPath:v8 fileLabel:@".db-wal"];
     if (!v7)
     {
-      v9 = [v6 stringByAppendingString:@"-shm"];
+      v9 = [vcp_mediaAnalysisDatabaseFilepath stringByAppendingString:@"-shm"];
       v7 = [VCPDatabaseManager _removeLegacyDatabaseFileAtPath:v9 fileLabel:@".db-shm"];
       if (!v7)
       {
-        v10 = [v4 vcp_mediaAnalysisBackupFilepath];
-        v7 = [VCPDatabaseManager _removeLegacyDatabaseFileAtPath:v10 fileLabel:@"backup"];
+        vcp_mediaAnalysisBackupFilepath = [libraryCopy vcp_mediaAnalysisBackupFilepath];
+        v7 = [VCPDatabaseManager _removeLegacyDatabaseFileAtPath:vcp_mediaAnalysisBackupFilepath fileLabel:@"backup"];
       }
     }
   }

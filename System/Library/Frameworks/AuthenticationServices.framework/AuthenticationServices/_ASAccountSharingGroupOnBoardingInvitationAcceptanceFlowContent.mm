@@ -6,40 +6,40 @@
 + (UIImage)secondBulletImageForWelcomeView;
 + (UIImage)thirdBulletImageForWelcomeView;
 + (id)_bulletListItemImageConfiguration;
-+ (id)_headerImageForString:(id)a3;
-+ (id)descriptionForMovingCredentialsToGroup:(id)a3;
-+ (id)descriptionForRemovingDuplicateCredentialsInGroup:(id)a3;
-+ (id)headerSubtitleForRemovingDuplicateCredentialsInGroup:(id)a3;
-+ (id)headerTitleForWelcomeViewWithGroupName:(id)a3;
++ (id)_headerImageForString:(id)string;
++ (id)descriptionForMovingCredentialsToGroup:(id)group;
++ (id)descriptionForRemovingDuplicateCredentialsInGroup:(id)group;
++ (id)headerSubtitleForRemovingDuplicateCredentialsInGroup:(id)group;
++ (id)headerTitleForWelcomeViewWithGroupName:(id)name;
 @end
 
 @implementation _ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent
 
 + (UIImage)headerImageForWelcomeView
 {
-  v3 = [a1 headerImageNameForWelcomeView];
-  v4 = [a1 _headerImageForString:v3];
+  headerImageNameForWelcomeView = [self headerImageNameForWelcomeView];
+  v4 = [self _headerImageForString:headerImageNameForWelcomeView];
 
   return v4;
 }
 
-+ (id)headerTitleForWelcomeViewWithGroupName:(id)a3
++ (id)headerTitleForWelcomeViewWithGroupName:(id)name
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  nameCopy = name;
   v5 = _WBSLocalizedString();
-  v6 = [v3 stringWithFormat:v5, v4];
+  nameCopy = [v3 stringWithFormat:v5, nameCopy];
 
-  return v6;
+  return nameCopy;
 }
 
 + (UIImage)firstBulletImageForWelcomeView
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [a1 firstBulletImageNameForWelcomeView];
-  v5 = [v3 systemImageNamed:v4];
-  v6 = [a1 _bulletListItemImageConfiguration];
-  v7 = [v5 imageWithConfiguration:v6];
+  firstBulletImageNameForWelcomeView = [self firstBulletImageNameForWelcomeView];
+  v5 = [v3 systemImageNamed:firstBulletImageNameForWelcomeView];
+  _bulletListItemImageConfiguration = [self _bulletListItemImageConfiguration];
+  v7 = [v5 imageWithConfiguration:_bulletListItemImageConfiguration];
 
   return v7;
 }
@@ -47,10 +47,10 @@
 + (UIImage)secondBulletImageForWelcomeView
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [a1 secondBulletImageNameForWelcomeView];
-  v5 = [v3 systemImageNamed:v4];
-  v6 = [a1 _bulletListItemImageConfiguration];
-  v7 = [v5 imageWithConfiguration:v6];
+  secondBulletImageNameForWelcomeView = [self secondBulletImageNameForWelcomeView];
+  v5 = [v3 systemImageNamed:secondBulletImageNameForWelcomeView];
+  _bulletListItemImageConfiguration = [self _bulletListItemImageConfiguration];
+  v7 = [v5 imageWithConfiguration:_bulletListItemImageConfiguration];
 
   return v7;
 }
@@ -58,10 +58,10 @@
 + (UIImage)thirdBulletImageForWelcomeView
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [a1 thirdBulletImageNameForWelcomeView];
-  v5 = [v3 systemImageNamed:v4];
-  v6 = [a1 _bulletListItemImageConfiguration];
-  v7 = [v5 imageWithConfiguration:v6];
+  thirdBulletImageNameForWelcomeView = [self thirdBulletImageNameForWelcomeView];
+  v5 = [v3 systemImageNamed:thirdBulletImageNameForWelcomeView];
+  _bulletListItemImageConfiguration = [self _bulletListItemImageConfiguration];
+  v7 = [v5 imageWithConfiguration:_bulletListItemImageConfiguration];
 
   return v7;
 }
@@ -78,64 +78,64 @@
   return v3;
 }
 
-+ (id)descriptionForMovingCredentialsToGroup:(id)a3
++ (id)descriptionForMovingCredentialsToGroup:(id)group
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  groupCopy = group;
   v5 = _WBSLocalizedString();
-  v6 = [v3 localizedStringWithFormat:v5, v4];
+  groupCopy = [v3 localizedStringWithFormat:v5, groupCopy];
 
-  return v6;
+  return groupCopy;
 }
 
 + (UIImage)headerImageForMovingCredentialsToGroup
 {
-  v3 = [a1 headerImageNameForMovingCredentialsToGroup];
-  v4 = [a1 _headerImageForString:v3];
+  headerImageNameForMovingCredentialsToGroup = [self headerImageNameForMovingCredentialsToGroup];
+  v4 = [self _headerImageForString:headerImageNameForMovingCredentialsToGroup];
 
   return v4;
 }
 
-+ (id)descriptionForRemovingDuplicateCredentialsInGroup:(id)a3
++ (id)descriptionForRemovingDuplicateCredentialsInGroup:(id)group
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  groupCopy = group;
   v5 = _WBSLocalizedString();
-  v6 = [v3 localizedStringWithFormat:v5, v4];
+  groupCopy = [v3 localizedStringWithFormat:v5, groupCopy];
 
-  return v6;
+  return groupCopy;
 }
 
 + (UIImage)headerImageForRemovingDuplicateCredentialsInGroup
 {
-  v3 = [a1 headerImageNameForRemovingDuplicateCredentialsInGroup];
-  v4 = [a1 _headerImageForString:v3];
+  headerImageNameForRemovingDuplicateCredentialsInGroup = [self headerImageNameForRemovingDuplicateCredentialsInGroup];
+  v4 = [self _headerImageForString:headerImageNameForRemovingDuplicateCredentialsInGroup];
 
   return v4;
 }
 
-+ (id)headerSubtitleForRemovingDuplicateCredentialsInGroup:(id)a3
++ (id)headerSubtitleForRemovingDuplicateCredentialsInGroup:(id)group
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  groupCopy = group;
   v5 = _WBSLocalizedString();
-  v6 = [v3 localizedStringWithFormat:v5, v4];
+  groupCopy = [v3 localizedStringWithFormat:v5, groupCopy];
 
-  return v6;
+  return groupCopy;
 }
 
-+ (id)_headerImageForString:(id)a3
++ (id)_headerImageForString:(id)string
 {
   v3 = MEMORY[0x1E69DCAD8];
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 tintColor];
-  v7 = [v3 configurationWithHierarchicalColor:v6];
+  stringCopy = string;
+  tintColor = [v4 tintColor];
+  v7 = [v3 configurationWithHierarchicalColor:tintColor];
 
   v8 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:48.0];
   v9 = [v7 configurationByApplyingConfiguration:v8];
 
-  v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v5];
+  v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:stringCopy];
 
   v11 = [v10 imageWithConfiguration:v9];
 

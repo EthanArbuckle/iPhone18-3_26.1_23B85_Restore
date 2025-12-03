@@ -1,5 +1,5 @@
 @interface MPStoreFileAssetInfo
-- (MPStoreFileAssetInfo)initWithiTunesCloudStoreFileAssetInfo:(id)a3;
+- (MPStoreFileAssetInfo)initWithiTunesCloudStoreFileAssetInfo:(id)info;
 - (NSArray)fairPlayInfoList;
 - (int64_t)flavorType;
 - (int64_t)protectionType;
@@ -20,8 +20,8 @@
 
 - (int64_t)flavorType
 {
-  v2 = [(ICStoreFileAssetInfo *)self->_internalInfo flavorType];
-  if (v2 == 203)
+  flavorType = [(ICStoreFileAssetInfo *)self->_internalInfo flavorType];
+  if (flavorType == 203)
   {
     v3 = 203;
   }
@@ -31,12 +31,12 @@
     v3 = 0;
   }
 
-  if (v2 == 202)
+  if (flavorType == 202)
   {
     v3 = 202;
   }
 
-  if (v2 == 201)
+  if (flavorType == 201)
   {
     v4 = 201;
   }
@@ -46,17 +46,17 @@
     v4 = 0;
   }
 
-  if (v2 == 104)
+  if (flavorType == 104)
   {
     v4 = 104;
   }
 
-  if (v2 <= 201)
+  if (flavorType <= 201)
   {
     v3 = v4;
   }
 
-  if (v2 == 103)
+  if (flavorType == 103)
   {
     v5 = 103;
   }
@@ -66,17 +66,17 @@
     v5 = 0;
   }
 
-  if (v2 == 102)
+  if (flavorType == 102)
   {
     v5 = 102;
   }
 
-  if (v2 == 101)
+  if (flavorType == 101)
   {
     v5 = 101;
   }
 
-  if (v2 <= 103)
+  if (flavorType <= 103)
   {
     return v5;
   }
@@ -90,12 +90,12 @@
 - (NSArray)fairPlayInfoList
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(ICStoreFileAssetInfo *)self->_internalInfo fairPlayInfoList];
+  fairPlayInfoList = [(ICStoreFileAssetInfo *)self->_internalInfo fairPlayInfoList];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [fairPlayInfoList countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -107,7 +107,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(fairPlayInfoList);
         }
 
         v8 = [[MPStoreFileAssetFairPlayInfo alloc] initWithiTunesCloudStoreFileAssetFairPlayInfo:*(*(&v10 + 1) + 8 * i)];
@@ -122,7 +122,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [fairPlayInfoList countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -136,16 +136,16 @@
   return v5;
 }
 
-- (MPStoreFileAssetInfo)initWithiTunesCloudStoreFileAssetInfo:(id)a3
+- (MPStoreFileAssetInfo)initWithiTunesCloudStoreFileAssetInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = MPStoreFileAssetInfo;
   v6 = [(MPStoreFileAssetInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalInfo, a3);
+    objc_storeStrong(&v6->_internalInfo, info);
   }
 
   return v7;

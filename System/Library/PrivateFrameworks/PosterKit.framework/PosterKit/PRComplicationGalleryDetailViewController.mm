@@ -5,16 +5,16 @@
 - (SBHWidgetSheetViewControllerPresenter)presenter;
 - (void)_updateContent;
 - (void)_updateParallax;
-- (void)complicationGalleryDetailPageViewController:(id)a3 didSelectWidgetIconView:(id)a4;
-- (void)complicationGalleryView:(id)a3 didUpdateVisiblePagesWithAppearedBlock:(id)a4;
-- (void)complicationGalleryViewDidTapClose:(id)a3;
+- (void)complicationGalleryDetailPageViewController:(id)controller didSelectWidgetIconView:(id)view;
+- (void)complicationGalleryView:(id)view didUpdateVisiblePagesWithAppearedBlock:(id)block;
+- (void)complicationGalleryViewDidTapClose:(id)close;
 - (void)loadView;
-- (void)setAppName:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setShowsBackgroundView:(BOOL)a3;
-- (void)setShowsCloseButton:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setAppName:(id)name;
+- (void)setIconImage:(id)image;
+- (void)setShowsBackgroundView:(BOOL)view;
+- (void)setShowsCloseButton:(BOOL)button;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PRComplicationGalleryDetailViewController
@@ -24,8 +24,8 @@
   v43 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(PRComplicationGalleryDetailView);
   [(PRComplicationGalleryDetailView *)v3 setDelegate:self];
-  v4 = [(PRComplicationGalleryDetailView *)v3 contentScrollView];
-  [(PRComplicationGalleryDetailViewController *)self setReferenceView:v4];
+  contentScrollView = [(PRComplicationGalleryDetailView *)v3 contentScrollView];
+  [(PRComplicationGalleryDetailViewController *)self setReferenceView:contentScrollView];
 
   [(PRComplicationGalleryDetailViewController *)self setView:v3];
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -37,11 +37,11 @@
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [(PRComplicationGalleryDetailViewController *)self applicationWidgetCollection];
-  v6 = [v5 widgetDescriptors];
+  applicationWidgetCollection = [(PRComplicationGalleryDetailViewController *)self applicationWidgetCollection];
+  widgetDescriptors = [applicationWidgetCollection widgetDescriptors];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  obj = widgetDescriptors;
+  v7 = [widgetDescriptors countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
@@ -57,58 +57,58 @@
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        v37 = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
-        v13 = [(PRComplicationGalleryDetailViewController *)self applicationWidgetCollection];
-        v14 = [v13 isDisfavored];
+        allowedWidgets = [(SBHAddWidgetSheetViewControllerBase *)self allowedWidgets];
+        applicationWidgetCollection2 = [(PRComplicationGalleryDetailViewController *)self applicationWidgetCollection];
+        isDisfavored = [applicationWidgetCollection2 isDisfavored];
 
-        v15 = [(PRComplicationGalleryDetailViewController *)self addWidgetSheetLocation];
-        v16 = [*(v10 + 2360) currentDevice];
-        v17 = [v16 userInterfaceIdiom];
+        addWidgetSheetLocation = [(PRComplicationGalleryDetailViewController *)self addWidgetSheetLocation];
+        currentDevice = [*(v10 + 2360) currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
-          if (v14)
+          if (isDisfavored)
           {
-            v18 = [v12 sbh_disfavoredSizeClassesForAddWidgetSheetLocation:v15];
+            sbh_supportedSizeClasses = [v12 sbh_disfavoredSizeClassesForAddWidgetSheetLocation:addWidgetSheetLocation];
           }
 
           else
           {
-            v18 = [v12 sbh_favoredSizeClassesForAddWidgetSheetLocation:v15];
+            sbh_supportedSizeClasses = [v12 sbh_favoredSizeClassesForAddWidgetSheetLocation:addWidgetSheetLocation];
           }
         }
 
         else
         {
-          v18 = [v12 sbh_supportedSizeClasses];
+          sbh_supportedSizeClasses = [v12 sbh_supportedSizeClasses];
         }
 
-        v19 = v18;
+        v19 = sbh_supportedSizeClasses;
         v20 = v12;
         if ([v20 sbh_supportsRemovableBackgroundOrAccessoryFamilies])
         {
-          v21 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-          v36 = [v21 widgetDragHandler];
+          delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+          widgetDragHandler = [delegate widgetDragHandler];
 
           v22 = [PRComplicationGalleryDetailPageViewController alloc];
-          v23 = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
+          listLayoutProvider = [(SBHAddWidgetSheetViewControllerBase *)self listLayoutProvider];
           [(SBHAddWidgetSheetViewControllerBase *)self iconViewProvider];
-          v24 = self;
+          selfCopy = self;
           v25 = v8;
           v26 = v10;
           v28 = v27 = v9;
-          v29 = [(PRComplicationGalleryDetailPageViewController *)v22 initWithGalleryItem:v20 listLayoutProvider:v23 iconViewProvider:v28 widgetDragHandler:v36 allowedFamilies:v19 & v37];
+          v29 = [(PRComplicationGalleryDetailPageViewController *)v22 initWithGalleryItem:v20 listLayoutProvider:listLayoutProvider iconViewProvider:v28 widgetDragHandler:widgetDragHandler allowedFamilies:v19 & allowedWidgets];
 
           v9 = v27;
           v10 = v26;
           v8 = v25;
-          self = v24;
+          self = selfCopy;
 
-          [(PRComplicationGalleryDetailPageViewController *)v29 setDelegate:v24];
+          [(PRComplicationGalleryDetailPageViewController *)v29 setDelegate:selfCopy];
           [(PRComplicationGalleryDetailPageViewController *)v29 setLayoutGuide:v32];
           [v34 addObject:v29];
-          v30 = [(PRComplicationGalleryDetailPageViewController *)v29 view];
-          [v33 addObject:v30];
+          view = [(PRComplicationGalleryDetailPageViewController *)v29 view];
+          [v33 addObject:view];
         }
       }
 
@@ -123,31 +123,31 @@
   [(PRComplicationGalleryDetailViewController *)self _updateContent];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PRComplicationGalleryDetailViewController;
-  [(PRComplicationGalleryDetailViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PRComplicationGalleryDetailViewController *)self view];
-  [v4 layoutIfNeeded];
+  [(PRComplicationGalleryDetailViewController *)&v5 viewWillAppear:appear];
+  view = [(PRComplicationGalleryDetailViewController *)self view];
+  [view layoutIfNeeded];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v5.receiver = self;
   v5.super_class = PRComplicationGalleryDetailViewController;
-  [(PRComplicationGalleryDetailViewController *)&v5 viewIsAppearing:a3];
-  v4 = [(PRComplicationGalleryDetailViewController *)self view];
-  [v4 performInitialScrollIfNeeded];
+  [(PRComplicationGalleryDetailViewController *)&v5 viewIsAppearing:appearing];
+  view = [(PRComplicationGalleryDetailViewController *)self view];
+  [view performInitialScrollIfNeeded];
   [(PRComplicationGalleryDetailViewController *)self _updateParallax];
 }
 
-- (void)setAppName:(id)a3
+- (void)setAppName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_appName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     appName = self->_appName;
     self->_appName = v4;
 
@@ -155,69 +155,69 @@
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
-  if (self->_iconImage != v5)
+  imageCopy = image;
+  if (self->_iconImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_iconImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_iconImage, image);
     [(PRComplicationGalleryDetailViewController *)self _updateContent];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setShowsCloseButton:(BOOL)a3
+- (void)setShowsCloseButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   [(PRComplicationGalleryDetailViewController *)self loadViewIfNeeded];
-  v5 = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
-  [v5 setShowsCloseButton:v3];
+  _complicationGalleryDetailView = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
+  [_complicationGalleryDetailView setShowsCloseButton:buttonCopy];
 }
 
 - (BOOL)showsCloseButton
 {
   [(PRComplicationGalleryDetailViewController *)self loadViewIfNeeded];
-  v3 = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
-  v4 = [v3 showsCloseButton];
+  _complicationGalleryDetailView = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
+  showsCloseButton = [_complicationGalleryDetailView showsCloseButton];
 
-  return v4;
+  return showsCloseButton;
 }
 
-- (void)setShowsBackgroundView:(BOOL)a3
+- (void)setShowsBackgroundView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   [(PRComplicationGalleryDetailViewController *)self loadViewIfNeeded];
-  v5 = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
-  [v5 setShowsBackgroundView:v3];
+  _complicationGalleryDetailView = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
+  [_complicationGalleryDetailView setShowsBackgroundView:viewCopy];
 }
 
 - (BOOL)showsBackgroundView
 {
   [(PRComplicationGalleryDetailViewController *)self loadViewIfNeeded];
-  v3 = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
-  v4 = [v3 showsBackgroundView];
+  _complicationGalleryDetailView = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
+  showsBackgroundView = [_complicationGalleryDetailView showsBackgroundView];
 
-  return v4;
+  return showsBackgroundView;
 }
 
 - (void)_updateContent
 {
-  v3 = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
-  [v3 setTitle:self->_appName];
-  [v3 setIconImage:self->_iconImage];
+  _complicationGalleryDetailView = [(PRComplicationGalleryDetailViewController *)self _complicationGalleryDetailView];
+  [_complicationGalleryDetailView setTitle:self->_appName];
+  [_complicationGalleryDetailView setIconImage:self->_iconImage];
 }
 
-- (void)complicationGalleryView:(id)a3 didUpdateVisiblePagesWithAppearedBlock:(id)a4
+- (void)complicationGalleryView:(id)view didUpdateVisiblePagesWithAppearedBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   pageViewControllers = self->_pageViewControllers;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __108__PRComplicationGalleryDetailViewController_complicationGalleryView_didUpdateVisiblePagesWithAppearedBlock___block_invoke;
   v8[3] = &unk_1E7845820;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(NSArray *)pageViewControllers enumerateObjectsWithOptions:0 usingBlock:v8];
 }
 
@@ -229,10 +229,10 @@ void __108__PRComplicationGalleryDetailViewController_complicationGalleryView_di
   [v7 bs_endAppearanceTransition:v6];
 }
 
-- (void)complicationGalleryViewDidTapClose:(id)a3
+- (void)complicationGalleryViewDidTapClose:(id)close
 {
-  v4 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v4 addWidgetSheetViewControllerDidCancel:self];
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewControllerDidCancel:self];
 }
 
 - (void)_updateParallax
@@ -259,8 +259,8 @@ void __108__PRComplicationGalleryDetailViewController_complicationGalleryView_di
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(PRComplicationGalleryDetailViewController *)self referenceView];
-        [v8 updateParallaxEffectInReferenceView:v9];
+        referenceView = [(PRComplicationGalleryDetailViewController *)self referenceView];
+        [v8 updateParallaxEffectInReferenceView:referenceView];
 
         ++v7;
       }
@@ -273,11 +273,11 @@ void __108__PRComplicationGalleryDetailViewController_complicationGalleryView_di
   }
 }
 
-- (void)complicationGalleryDetailPageViewController:(id)a3 didSelectWidgetIconView:(id)a4
+- (void)complicationGalleryDetailPageViewController:(id)controller didSelectWidgetIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
-  [v6 addWidgetSheetViewController:self didSelectWidgetIconView:v5];
+  viewCopy = view;
+  delegate = [(SBHAddWidgetSheetViewControllerBase *)self delegate];
+  [delegate addWidgetSheetViewController:self didSelectWidgetIconView:viewCopy];
 }
 
 - (NSMutableDictionary)userInfo

@@ -1,5 +1,5 @@
 @interface CRLStrokeAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxStrokeIsEmpty;
 - (CRLColorAccessibility)crlaxStrokeColor;
 - (CRLStrokePatternAccessibility)crlaxStrokePattern;
@@ -13,11 +13,11 @@
 
 @implementation CRLStrokeAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -25,11 +25,11 @@
 - (CRLStrokePatternAccessibility)crlaxStrokePattern
 {
   v8 = 0;
-  v2 = [(CRLStrokeAccessibility *)self crlaxTarget];
-  v3 = [v2 pattern];
+  crlaxTarget = [(CRLStrokeAccessibility *)self crlaxTarget];
+  pattern = [crlaxTarget pattern];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, pattern, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -42,24 +42,24 @@
 
 - (BOOL)crlaxStrokeIsEmpty
 {
-  v2 = [(CRLStrokeAccessibility *)self crlaxTarget];
-  v3 = [v2 isNullStroke];
+  crlaxTarget = [(CRLStrokeAccessibility *)self crlaxTarget];
+  isNullStroke = [crlaxTarget isNullStroke];
 
-  return v3;
+  return isNullStroke;
 }
 
 - (NSString)crlaxStrokePatternDescription
 {
   if ([(CRLStrokeAccessibility *)self crlaxStrokeIsEmpty])
   {
-    v3 = +[NSBundle mainBundle];
-    [v3 localizedStringForKey:@"Empty stroke" value:0 table:0];
+    crlaxStrokePattern = +[NSBundle mainBundle];
+    [crlaxStrokePattern localizedStringForKey:@"Empty stroke" value:0 table:0];
   }
 
   else
   {
-    v3 = [(CRLStrokeAccessibility *)self crlaxStrokePattern];
-    [v3 crlaxStyleInfoDescription];
+    crlaxStrokePattern = [(CRLStrokeAccessibility *)self crlaxStrokePattern];
+    [crlaxStrokePattern crlaxStyleInfoDescription];
   }
   v4 = ;
 
@@ -79,28 +79,28 @@
 
 - (NSString)crlaxStrokeColorDescription
 {
-  v2 = [(CRLStrokeAccessibility *)self crlaxStrokeColor];
-  v3 = [v2 crlaxStyleInfoDescription];
+  crlaxStrokeColor = [(CRLStrokeAccessibility *)self crlaxStrokeColor];
+  crlaxStyleInfoDescription = [crlaxStrokeColor crlaxStyleInfoDescription];
 
-  return v3;
+  return crlaxStyleInfoDescription;
 }
 
 - (NSString)crlaxStrokeFullDescription
 {
   if ([(CRLStrokeAccessibility *)self crlaxStrokeIsEmpty]|| ([(CRLStrokeAccessibility *)self crlaxStrokeWidth], v3 <= 0.0))
   {
-    v4 = +[NSBundle mainBundle];
-    v14 = [v4 localizedStringForKey:@"None" value:0 table:0];
+    crlaxStrokeColor = +[NSBundle mainBundle];
+    v14 = [crlaxStrokeColor localizedStringForKey:@"None" value:0 table:0];
   }
 
   else
   {
-    v4 = [(CRLStrokeAccessibility *)self crlaxStrokeColor];
-    v5 = [v4 crlaxApproximateColorDescriptionWithOpacity];
-    v6 = [(CRLStrokeAccessibility *)self crlaxStrokeWidthDescription];
-    v7 = [(CRLStrokeAccessibility *)self crlaxStrokePattern];
-    v16 = [v7 crlaxStyleInfoDescriptionOmittingStroke];
-    v14 = __CRLAccessibilityStringForVariables(1, v5, v8, v9, v10, v11, v12, v13, v6);
+    crlaxStrokeColor = [(CRLStrokeAccessibility *)self crlaxStrokeColor];
+    crlaxApproximateColorDescriptionWithOpacity = [crlaxStrokeColor crlaxApproximateColorDescriptionWithOpacity];
+    crlaxStrokeWidthDescription = [(CRLStrokeAccessibility *)self crlaxStrokeWidthDescription];
+    crlaxStrokePattern = [(CRLStrokeAccessibility *)self crlaxStrokePattern];
+    crlaxStyleInfoDescriptionOmittingStroke = [crlaxStrokePattern crlaxStyleInfoDescriptionOmittingStroke];
+    v14 = __CRLAccessibilityStringForVariables(1, crlaxApproximateColorDescriptionWithOpacity, v8, v9, v10, v11, v12, v13, crlaxStrokeWidthDescription);
   }
 
   return v14;
@@ -109,11 +109,11 @@
 - (CRLColorAccessibility)crlaxStrokeColor
 {
   v8 = 0;
-  v2 = [(CRLStrokeAccessibility *)self crlaxTarget];
-  v3 = [v2 color];
+  crlaxTarget = [(CRLStrokeAccessibility *)self crlaxTarget];
+  color = [crlaxTarget color];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, color, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -126,8 +126,8 @@
 
 - (double)crlaxStrokeWidth
 {
-  v2 = [(CRLStrokeAccessibility *)self crlaxTarget];
-  [v2 width];
+  crlaxTarget = [(CRLStrokeAccessibility *)self crlaxTarget];
+  [crlaxTarget width];
   v4 = v3;
 
   return v4;
@@ -137,16 +137,16 @@
 {
   if ([(CRLStrokeAccessibility *)self crlaxStrokeIsEmpty])
   {
-    v3 = +[NSBundle mainBundle];
-    v4 = [v3 localizedStringForKey:@"No stroke" value:0 table:0];
+    crlaxStrokePatternDescription = +[NSBundle mainBundle];
+    v4 = [crlaxStrokePatternDescription localizedStringForKey:@"No stroke" value:0 table:0];
   }
 
   else
   {
-    v3 = [(CRLStrokeAccessibility *)self crlaxStrokePatternDescription];
-    v5 = [(CRLStrokeAccessibility *)self crlaxStrokeWidthDescription];
-    v13 = [(CRLStrokeAccessibility *)self crlaxStrokeColorDescription];
-    v4 = __CRLAccessibilityStringForVariables(1, v3, v6, v7, v8, v9, v10, v11, v5);
+    crlaxStrokePatternDescription = [(CRLStrokeAccessibility *)self crlaxStrokePatternDescription];
+    crlaxStrokeWidthDescription = [(CRLStrokeAccessibility *)self crlaxStrokeWidthDescription];
+    crlaxStrokeColorDescription = [(CRLStrokeAccessibility *)self crlaxStrokeColorDescription];
+    v4 = __CRLAccessibilityStringForVariables(1, crlaxStrokePatternDescription, v6, v7, v8, v9, v10, v11, crlaxStrokeWidthDescription);
   }
 
   return v4;

@@ -1,18 +1,18 @@
 @interface MPAssistantGetDynamiteClientState
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantGetDynamiteClientState
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277D477E0]);
   if (![(NSString *)self->_requestAceHash length])
   {
-    v6 = [(MPAssistantGetDynamiteClientState *)self aceId];
-    v7 = sub_233505670(@"Get Dynamite Client State", v6);
+    aceId = [(MPAssistantGetDynamiteClientState *)self aceId];
+    v7 = sub_233505670(@"Get Dynamite Client State", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v7;
   }
@@ -32,8 +32,8 @@
   v14[3] = &unk_2789DAEF0;
   v14[4] = self;
   v15 = v5;
-  v16 = v4;
-  v11 = v4;
+  v16 = completionCopy;
+  v11 = completionCopy;
   v12 = v5;
   sub_2334E7C10(v14, 0);
 

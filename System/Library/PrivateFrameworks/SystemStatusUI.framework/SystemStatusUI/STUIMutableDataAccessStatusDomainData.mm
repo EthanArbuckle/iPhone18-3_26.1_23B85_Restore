@@ -1,6 +1,6 @@
 @interface STUIMutableDataAccessStatusDomainData
 - (NSArray)dataAccessAttributions;
-- (void)setDataAccessAttributions:(id)a3;
+- (void)setDataAccessAttributions:(id)attributions;
 @end
 
 @implementation STUIMutableDataAccessStatusDomainData
@@ -9,8 +9,8 @@
 {
   v5.receiver = self;
   v5.super_class = STUIMutableDataAccessStatusDomainData;
-  v2 = [(STDataAccessStatusDomainData *)&v5 dataAccessAttributions];
-  v3 = [v2 bs_map:&__block_literal_global_26];
+  dataAccessAttributions = [(STDataAccessStatusDomainData *)&v5 dataAccessAttributions];
+  v3 = [dataAccessAttributions bs_map:&__block_literal_global_26];
 
   return v3;
 }
@@ -23,11 +23,11 @@ STUIDataAccessAttribution *__63__STUIMutableDataAccessStatusDomainData_dataAcces
   return v3;
 }
 
-- (void)setDataAccessAttributions:(id)a3
+- (void)setDataAccessAttributions:(id)attributions
 {
   v3.receiver = self;
   v3.super_class = STUIMutableDataAccessStatusDomainData;
-  [(STMutableDataAccessStatusDomainData *)&v3 setDataAccessAttributions:a3];
+  [(STMutableDataAccessStatusDomainData *)&v3 setDataAccessAttributions:attributions];
 }
 
 @end

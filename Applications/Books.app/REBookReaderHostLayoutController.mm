@@ -2,14 +2,14 @@
 - (CGRect)frame;
 - (NSString)description;
 - (REBookReaderHostLayoutController)init;
-- (REBookReaderHostLayoutController)initWithView:(id)a3;
-- (REBookReaderHostLayoutController)initWithViewController:(id)a3;
+- (REBookReaderHostLayoutController)initWithView:(id)view;
+- (REBookReaderHostLayoutController)initWithViewController:(id)controller;
 - (UIEdgeInsets)safeAreaInsets;
 - (UITraitCollection)traitCollection;
 - (double)defaultStatusBarHeight;
-- (void)setFrame:(CGRect)a3;
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)setTraitCollection:(id)collection;
 - (void)willEnterForeground;
 @end
 
@@ -17,7 +17,7 @@
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   sub_10079B904();
 
   v3 = v7;
@@ -31,19 +31,19 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   BookReaderHostLayoutController.frame.setter(x, y, width, height);
 }
 
 - (UIEdgeInsets)safeAreaInsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_10079B904();
 
   v3 = v7;
@@ -57,43 +57,43 @@
   return result;
 }
 
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   BookReaderHostLayoutController.safeAreaInsets.setter(top, left, bottom, right);
 }
 
 - (UITraitCollection)traitCollection
 {
-  v2 = self;
+  selfCopy = self;
   sub_10079B904();
 
   return v4;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  BookReaderHostLayoutController.traitCollection.setter(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  BookReaderHostLayoutController.traitCollection.setter(collectionCopy);
 }
 
 - (double)defaultStatusBarHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BookReaderHostLayoutController.defaultStatusBarHeight.getter();
 
   return v3;
 }
 
-- (REBookReaderHostLayoutController)initWithViewController:(id)a3
+- (REBookReaderHostLayoutController)initWithViewController:(id)controller
 {
-  v4 = a3;
-  result = [v4 view];
+  controllerCopy = controller;
+  result = [controllerCopy view];
   if (result)
   {
     v6 = result;
@@ -110,22 +110,22 @@
   return result;
 }
 
-- (REBookReaderHostLayoutController)initWithView:(id)a3
+- (REBookReaderHostLayoutController)initWithView:(id)view
 {
-  v3 = a3;
-  [v3 frame];
-  [v3 safeAreaInsets];
+  viewCopy = view;
+  [viewCopy frame];
+  [viewCopy safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 traitCollection];
+  traitCollection = [viewCopy traitCollection];
   v13 = objc_allocWithZone(type metadata accessor for BookReaderHostLayoutController());
   *&v22 = v9;
   *(&v22 + 1) = v11;
   *&v21 = v5;
   *(&v21 + 1) = v7;
-  v19 = sub_100545708(v12, v3, v13, v14, v15, v16, v17, v18, v21, v22);
+  v19 = sub_100545708(traitCollection, viewCopy, v13, v14, v15, v16, v17, v18, v21, v22);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v19;
@@ -133,7 +133,7 @@
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderHostLayoutController.willEnterForeground()();
 }
 
@@ -146,7 +146,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderHostLayoutController.description.getter();
 
   v3 = sub_1007A2214();

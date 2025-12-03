@@ -1,12 +1,12 @@
 @interface PLSinopeBBMetric
 + (id)sharedInstance;
-- (BOOL)registerForNotifClient:(id)a3 andProfile:(id)a4;
+- (BOOL)registerForNotifClient:(id)client andProfile:(id)profile;
 - (void)flushPeriodicMetrics;
-- (void)initializeDataStoreBBTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5;
-- (void)initializeMetricsDictWithTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5;
+- (void)initializeDataStoreBBTS:(id)s triggerCnt:(id)cnt triggerId:(id)id;
+- (void)initializeMetricsDictWithTS:(id)s triggerCnt:(id)cnt triggerId:(id)id;
 - (void)modelProdMetricsNotify;
-- (void)queueAperiodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5;
-- (void)queuePeriodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5;
+- (void)queueAperiodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger;
+- (void)queuePeriodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger;
 @end
 
 @implementation PLSinopeBBMetric
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __34__PLSinopeBBMetric_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2811F7030 != -1)
   {
     dispatch_once(&qword_2811F7030, block);
@@ -35,10 +35,10 @@ uint64_t __34__PLSinopeBBMetric_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)registerForNotifClient:(id)a3 andProfile:(id)a4
+- (BOOL)registerForNotifClient:(id)client andProfile:(id)profile
 {
-  v5 = [a4 integerValue];
-  if (v5 == 1)
+  integerValue = [profile integerValue];
+  if (integerValue == 1)
   {
     notificationTitle = self->_notificationTitle;
     self->_notificationTitle = @"SINOPE_METRIC_PROD";
@@ -54,24 +54,24 @@ uint64_t __34__PLSinopeBBMetric_sharedInstance__block_invoke(uint64_t a1)
     }
   }
 
-  return v5 == 1;
+  return integerValue == 1;
 }
 
-- (void)queuePeriodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5
+- (void)queuePeriodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  payloadCopy = payload;
+  triggerCopy = trigger;
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v24 = "[PLSinopeBBMetric queuePeriodicMetricId:payload:forTrigger:]";
     v25 = 2112;
-    v26 = v8;
+    v26 = idCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = triggerCopy;
     _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "[BBAgent] in @%s, metricId: %@, tid: %@", buf, 0x20u);
   }
 
@@ -91,9 +91,9 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v13 = [(PLAgent *)logAgent workQueue];
+  workQueue = [(PLAgent *)logAgent workQueue];
 
-  if (!v13)
+  if (!workQueue)
   {
     v15 = PLLogCommon();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -106,16 +106,16 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v14 = [(PLAgent *)self->_logAgent workQueue];
+  workQueue2 = [(PLAgent *)self->_logAgent workQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __61__PLSinopeBBMetric_queuePeriodicMetricId_payload_forTrigger___block_invoke;
   v18[3] = &unk_2782591A8;
-  v19 = v9;
-  v20 = v8;
-  v21 = self;
-  v22 = v10;
-  dispatch_async(v14, v18);
+  v19 = payloadCopy;
+  v20 = idCopy;
+  selfCopy = self;
+  v22 = triggerCopy;
+  dispatch_async(workQueue2, v18);
 
   v15 = v19;
 LABEL_9:
@@ -286,17 +286,17 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v4 = [(PLAgent *)logAgent workQueue];
+  workQueue = [(PLAgent *)logAgent workQueue];
 
-  if (v4)
+  if (workQueue)
   {
-    v5 = [(PLAgent *)self->_logAgent workQueue];
+    workQueue2 = [(PLAgent *)self->_logAgent workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__PLSinopeBBMetric_flushPeriodicMetrics__block_invoke;
     block[3] = &unk_2782591D0;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(workQueue2, block);
 
     return;
   }
@@ -331,11 +331,11 @@ uint64_t __40__PLSinopeBBMetric_flushPeriodicMetrics__block_invoke(uint64_t resu
   return result;
 }
 
-- (void)queueAperiodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5
+- (void)queueAperiodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  payloadCopy = payload;
+  triggerCopy = trigger;
   logAgent = self->_logAgent;
   if (!logAgent)
   {
@@ -352,9 +352,9 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v12 = [(PLAgent *)logAgent workQueue];
+  workQueue = [(PLAgent *)logAgent workQueue];
 
-  if (!v12)
+  if (!workQueue)
   {
     v14 = PLLogCommon();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -367,16 +367,16 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v13 = [(PLAgent *)self->_logAgent workQueue];
+  workQueue2 = [(PLAgent *)self->_logAgent workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_invoke;
   v16[3] = &unk_2782591A8;
-  v17 = v9;
-  v18 = v8;
-  v19 = self;
-  v20 = v10;
-  dispatch_async(v13, v16);
+  v17 = payloadCopy;
+  v18 = idCopy;
+  selfCopy = self;
+  v20 = triggerCopy;
+  dispatch_async(workQueue2, v16);
 
   v14 = v17;
 LABEL_7:
@@ -478,21 +478,21 @@ void __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_in
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializeMetricsDictWithTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5
+- (void)initializeMetricsDictWithTS:(id)s triggerCnt:(id)cnt triggerId:(id)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  cntCopy = cnt;
+  idCopy = id;
+  sCopy = s;
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v18 = 136315650;
     v19 = "[PLSinopeBBMetric initializeMetricsDictWithTS:triggerCnt:triggerId:]";
     v20 = 2112;
-    v21 = v8;
+    v21 = cntCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = idCopy;
     _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "[BBAgent] : in @%s, %@, %@", &v18, 0x20u);
   }
 
@@ -500,27 +500,27 @@ void __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_in
   metricDict = self->_metricDict;
   self->_metricDict = v12;
 
-  v14 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{objc_msgSend(v10, "integerValue")}];
-  v15 = [v14 convertFromBasebandToMonotonic];
-  [(NSMutableDictionary *)self->_metricDict setObject:v15 forKeyedSubscript:@"timestamp"];
+  v14 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{objc_msgSend(sCopy, "integerValue")}];
+  convertFromBasebandToMonotonic = [v14 convertFromBasebandToMonotonic];
+  [(NSMutableDictionary *)self->_metricDict setObject:convertFromBasebandToMonotonic forKeyedSubscript:@"timestamp"];
 
-  [(NSMutableDictionary *)self->_metricDict setObject:v10 forKeyedSubscript:@"bbtimestamp"];
+  [(NSMutableDictionary *)self->_metricDict setObject:sCopy forKeyedSubscript:@"bbtimestamp"];
   [(NSMutableDictionary *)self->_metricDict setObject:v14 forKeyedSubscript:@"timestampLogged"];
   [(NSMutableDictionary *)self->_metricDict setObject:&unk_282C0C960 forKeyedSubscript:@"duration"];
-  [(NSMutableDictionary *)self->_metricDict setObject:v8 forKeyedSubscript:@"seqnum"];
-  [(NSMutableDictionary *)self->_metricDict setObject:v9 forKeyedSubscript:@"triggerId"];
+  [(NSMutableDictionary *)self->_metricDict setObject:cntCopy forKeyedSubscript:@"seqnum"];
+  [(NSMutableDictionary *)self->_metricDict setObject:idCopy forKeyedSubscript:@"triggerId"];
   v16 = objc_opt_new();
   [(NSMutableDictionary *)self->_metricDict setObject:v16 forKeyedSubscript:@"arr"];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializeDataStoreBBTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5
+- (void)initializeDataStoreBBTS:(id)s triggerCnt:(id)cnt triggerId:(id)id
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  cntCopy = cnt;
+  sCopy = s;
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -529,7 +529,7 @@ void __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_in
     _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "[BBAgent] : in @%s", &v15, 0xCu);
   }
 
-  v12 = [[PLSinopeBBHardwareMessage alloc] initEntryWithBBTS:v10 triggerId:v8 seqnum:v9 payload:0 logAgent:self->_logAgent];
+  v12 = [[PLSinopeBBHardwareMessage alloc] initEntryWithBBTS:sCopy triggerId:idCopy seqnum:cntCopy payload:0 logAgent:self->_logAgent];
   hardwareMessage = self->_hardwareMessage;
   self->_hardwareMessage = v12;
 
@@ -566,21 +566,21 @@ void __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_in
         if (v10)
         {
           v11 = [v9 objectForKeyedSubscript:@"duration"];
-          v12 = [v11 intValue];
+          intValue = [v11 intValue];
 
-          if (v12 >= v7)
+          if (intValue >= v7)
           {
             v13 = v7;
           }
 
           else
           {
-            v13 = v12;
+            v13 = intValue;
           }
 
           if (v7 == -1)
           {
-            v7 = v12;
+            v7 = intValue;
           }
 
           else
@@ -588,19 +588,19 @@ void __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_in
             v7 = v13;
           }
 
-          if (v12 <= v6)
+          if (intValue <= v6)
           {
             v14 = v6;
           }
 
           else
           {
-            v14 = v12;
+            v14 = intValue;
           }
 
           if (v6 == -1)
           {
-            v6 = v12;
+            v6 = intValue;
           }
 
           else
@@ -635,9 +635,9 @@ void __62__PLSinopeBBMetric_queueAperiodicMetricId_payload_forTrigger___block_in
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad metrics channel: !PROD"];
     v17 = MEMORY[0x277D3F178];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KSinope/PLSinopeBBMetric-SINOPE.m"];
-    v19 = [v18 lastPathComponent];
+    lastPathComponent = [v18 lastPathComponent];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLSinopeBBMetric modelProdMetricsNotify]"];
-    [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:300];
+    [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:300];
 
     v21 = PLLogCommon();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))

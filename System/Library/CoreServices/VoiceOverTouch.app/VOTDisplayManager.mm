@@ -1,69 +1,69 @@
 @interface VOTDisplayManager
 + (id)displayManager;
 - (BOOL)_isSystemReadyForUI;
-- (CGRect)_adjustFrameToFitScreen:(CGRect)a3;
+- (CGRect)_adjustFrameToFitScreen:(CGRect)screen;
 - (CGRect)currentCursorFrame;
 - (CGRect)currentSonificationPlaybackBounds;
 - (VOTDisplayManager)init;
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6;
-- (void)_handleDidReceivePointerGlobalPoint:(CGPoint)a3;
-- (void)_handleRotorDidChange:(id)a3;
-- (void)_setCursorFrameForElement:(id)a3 animated:(BOOL)a4;
-- (void)_updateZoom:(CGRect)a3 element:(id)a4;
-- (void)beginSonificationPlaybackFromPosition:(double)a3 withDuration:(double)a4;
-- (void)convertFrameToCursorSpace:(CGRect)a3 displayID:(id)a4 completion:(id)a5;
-- (void)convertFramesToCursorSpace:(id)a3 displayID:(id)a4 completion:(id)a5;
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error;
+- (void)_handleDidReceivePointerGlobalPoint:(CGPoint)point;
+- (void)_handleRotorDidChange:(id)change;
+- (void)_setCursorFrameForElement:(id)element animated:(BOOL)animated;
+- (void)_updateZoom:(CGRect)zoom element:(id)element;
+- (void)beginSonificationPlaybackFromPosition:(double)position withDuration:(double)duration;
+- (void)convertFrameToCursorSpace:(CGRect)space displayID:(id)d completion:(id)completion;
+- (void)convertFramesToCursorSpace:(id)space displayID:(id)d completion:(id)completion;
 - (void)dealloc;
-- (void)displayBrailleDotNumbersWithReversed:(BOOL)a3;
-- (void)flashBrailleInsertedText:(id)a3;
+- (void)displayBrailleDotNumbersWithReversed:(BOOL)reversed;
+- (void)flashBrailleInsertedText:(id)text;
 - (void)hideBrailleUI;
 - (void)hideMapsExplorationUI;
 - (void)hideSonificationPlayhead;
-- (void)highlightBrailleDots:(id)a3;
-- (void)highlightMapsExplorationSegmentWithIndex:(int64_t)a3;
-- (void)movePointerToPoint:(CGPoint)a3 contextId:(unsigned int)a4;
-- (void)pauseSonificationPlaybackAtPosition:(double)a3;
-- (void)registerForPointerEvents:(id)a3;
-- (void)setCursorFrame:(CGRect)a3 withPath:(CGPath *)a4 withContextId:(unsigned int)a5 withDisplayId:(unsigned int)a6 element:(id)a7 forceRefresh:(BOOL)a8 animated:(BOOL)a9;
-- (void)setCursorFrameForElement:(id)a3 animated:(BOOL)a4;
-- (void)setElementFrames:(id)a3;
-- (void)setElementFrames:(id)a3 labels:(id)a4 uiClasses:(id)a5;
-- (void)setScreenCurtainEnabled:(BOOL)a3;
-- (void)setShouldHideCursor:(BOOL)a3;
-- (void)setSonificationPlayheadPosition:(double)a3;
-- (void)setVoiceOverCaptionText:(id)a3 withRange:(_NSRange)a4 language:(id)a5 voice:(id)a6;
-- (void)showBrailleUIWithOrientation:(int64_t)a3 dotPositions:(id)a4 typingMode:(int64_t)a5;
-- (void)showMapsExplorationUIWithCenter:(CGPoint)a3 andData:(id)a4;
-- (void)showSonificationPlayheadInPlaybackBounds:(CGRect)a3 atPosition:(double)a4;
-- (void)updateBrailleUIWithOrientation:(int64_t)a3 dotPositions:(id)a4 typingMode:(int64_t)a5;
-- (void)updateMapsExplorationUIWithCurrentCenter:(CGPoint)a3;
-- (void)updateMapsExplorationUIWithCurrentLocation:(CGPoint)a3;
-- (void)updateVisualRotor:(id)a3;
+- (void)highlightBrailleDots:(id)dots;
+- (void)highlightMapsExplorationSegmentWithIndex:(int64_t)index;
+- (void)movePointerToPoint:(CGPoint)point contextId:(unsigned int)id;
+- (void)pauseSonificationPlaybackAtPosition:(double)position;
+- (void)registerForPointerEvents:(id)events;
+- (void)setCursorFrame:(CGRect)frame withPath:(CGPath *)path withContextId:(unsigned int)id withDisplayId:(unsigned int)displayId element:(id)element forceRefresh:(BOOL)refresh animated:(BOOL)animated;
+- (void)setCursorFrameForElement:(id)element animated:(BOOL)animated;
+- (void)setElementFrames:(id)frames;
+- (void)setElementFrames:(id)frames labels:(id)labels uiClasses:(id)classes;
+- (void)setScreenCurtainEnabled:(BOOL)enabled;
+- (void)setShouldHideCursor:(BOOL)cursor;
+- (void)setSonificationPlayheadPosition:(double)position;
+- (void)setVoiceOverCaptionText:(id)text withRange:(_NSRange)range language:(id)language voice:(id)voice;
+- (void)showBrailleUIWithOrientation:(int64_t)orientation dotPositions:(id)positions typingMode:(int64_t)mode;
+- (void)showMapsExplorationUIWithCenter:(CGPoint)center andData:(id)data;
+- (void)showSonificationPlayheadInPlaybackBounds:(CGRect)bounds atPosition:(double)position;
+- (void)updateBrailleUIWithOrientation:(int64_t)orientation dotPositions:(id)positions typingMode:(int64_t)mode;
+- (void)updateMapsExplorationUIWithCurrentCenter:(CGPoint)center;
+- (void)updateMapsExplorationUIWithCurrentLocation:(CGPoint)location;
+- (void)updateVisualRotor:(id)rotor;
 @end
 
 @implementation VOTDisplayManager
 
-- (void)setShouldHideCursor:(BOOL)a3
+- (void)setShouldHideCursor:(BOOL)cursor
 {
-  if (self->_shouldHideCursor != a3)
+  if (self->_shouldHideCursor != cursor)
   {
-    self->_shouldHideCursor = a3;
+    self->_shouldHideCursor = cursor;
     [(VOTDisplayManager *)self currentCursorFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(VOTDisplayManager *)self currentCursorPath];
-    v14 = [(VOTDisplayManager *)self currentCursorContextID];
-    v15 = [(VOTDisplayManager *)self currentCursorDisplayID];
+    currentCursorPath = [(VOTDisplayManager *)self currentCursorPath];
+    currentCursorContextID = [(VOTDisplayManager *)self currentCursorContextID];
+    currentCursorDisplayID = [(VOTDisplayManager *)self currentCursorDisplayID];
 
-    [(VOTDisplayManager *)self setCursorFrame:v13 withPath:v14 withContextId:v15 withDisplayId:0 element:1 forceRefresh:v6, v8, v10, v12];
+    [(VOTDisplayManager *)self setCursorFrame:currentCursorPath withPath:currentCursorContextID withContextId:currentCursorDisplayID withDisplayId:0 element:1 forceRefresh:v6, v8, v10, v12];
   }
 }
 
 + (id)displayManager
 {
-  if (objc_opt_class() == a1 && (AXInPreboardScenario() & 1) == 0 && (AXInCheckerBoardScenario() & 1) == 0 && (AXDeviceIsAudioAccessory() & 1) == 0 && qword_1001FEC00 != -1)
+  if (objc_opt_class() == self && (AXInPreboardScenario() & 1) == 0 && (AXInCheckerBoardScenario() & 1) == 0 && (AXDeviceIsAudioAccessory() & 1) == 0 && qword_1001FEC00 != -1)
   {
     sub_100129EA8();
   }
@@ -85,9 +85,9 @@
     v2->_lock = v3;
 
     v5 = [AXUIClient alloc];
-    v6 = [(VOTDisplayManager *)v2 clientIdentifier];
-    v7 = [(VOTDisplayManager *)v2 serviceBundleName];
-    v8 = [v5 initWithIdentifier:v6 serviceBundleName:v7];
+    clientIdentifier = [(VOTDisplayManager *)v2 clientIdentifier];
+    serviceBundleName = [(VOTDisplayManager *)v2 serviceBundleName];
+    v8 = [v5 initWithIdentifier:clientIdentifier serviceBundleName:serviceBundleName];
 
     [(VOTDisplayManager *)v2 setUiClient:v8];
     [v8 setDelegate:v2];
@@ -120,48 +120,48 @@
   displayQueue = self->_displayQueue;
   self->_displayQueue = 0;
 
-  v6 = [(VOTDisplayManager *)self uiClient];
-  [v6 setDelegate:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient setDelegate:0];
 
   v7.receiver = self;
   v7.super_class = VOTDisplayManager;
   [(VOTDisplayManager *)&v7 dealloc];
 }
 
-- (void)setCursorFrameForElement:(id)a3 animated:(BOOL)a4
+- (void)setCursorFrameForElement:(id)element animated:(BOOL)animated
 {
-  v6 = a3;
+  elementCopy = element;
   displayQueue = self->_displayQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003E7C0;
   block[3] = &unk_1001C83D0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = elementCopy;
+  animatedCopy = animated;
+  v8 = elementCopy;
   dispatch_async(displayQueue, block);
 }
 
-- (void)_setCursorFrameForElement:(id)a3 animated:(BOOL)a4
+- (void)_setCursorFrameForElement:(id)element animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  elementCopy = element;
   if (!self->_displayShutdown)
   {
-    v30 = v6;
-    if (v6)
+    v30 = elementCopy;
+    if (elementCopy)
     {
-      [v6 updateFrame];
+      [elementCopy updateFrame];
       if ([v30 path])
       {
         [v30 updatePaths];
-        v7 = [v30 path];
+        path = [v30 path];
       }
 
       else
       {
-        v7 = 0;
+        path = 0;
       }
 
       [v30 frame];
@@ -171,8 +171,8 @@
       height = v15;
       if (AXDeviceHasJindo())
       {
-        v16 = [v30 uiElement];
-        v17 = [v16 BOOLWithAXAttribute:2229];
+        uiElement = [v30 uiElement];
+        v17 = [uiElement BOOLWithAXAttribute:2229];
 
         if (v17)
         {
@@ -186,35 +186,35 @@
         }
       }
 
-      v6 = v30;
+      elementCopy = v30;
     }
 
     else
     {
-      v7 = 0;
+      path = 0;
       x = CGRectZero.origin.x;
       y = CGRectZero.origin.y;
       width = CGRectZero.size.width;
       height = CGRectZero.size.height;
     }
 
-    v19 = [v6 windowContextId];
-    v20 = [v30 uiElement];
-    v21 = [v20 numberWithAXAttribute:2123];
-    v22 = [v21 unsignedIntValue];
+    windowContextId = [elementCopy windowContextId];
+    uiElement2 = [v30 uiElement];
+    v21 = [uiElement2 numberWithAXAttribute:2123];
+    unsignedIntValue = [v21 unsignedIntValue];
 
-    if (v19)
+    if (windowContextId)
     {
       v23 = +[VOTElement systemWideElement];
       v24 = v23;
-      if (v22 > 1)
+      if (unsignedIntValue > 1)
       {
-        [v23 convertFrame:v19 fromContextId:v22 fromDisplayId:{x, y, width, height}];
+        [v23 convertFrame:windowContextId fromContextId:unsignedIntValue fromDisplayId:{x, y, width, height}];
       }
 
       else
       {
-        [v23 convertRect:v19 fromContextId:{x, y, width, height}];
+        [v23 convertRect:windowContextId fromContextId:{x, y, width, height}];
       }
 
       x = v25;
@@ -222,28 +222,28 @@
       width = v27;
       height = v28;
 
-      if (v7)
+      if (path)
       {
         v29 = +[VOTElement systemWideElement];
-        v7 = [v29 convertPath:v7 fromContextId:v19 fromDisplayId:v22];
+        path = [v29 convertPath:path fromContextId:windowContextId fromDisplayId:unsignedIntValue];
       }
     }
 
-    [(VOTDisplayManager *)self setCursorFrame:v7 withPath:v19 withContextId:v22 withDisplayId:v30 element:0 forceRefresh:v4 animated:x, y, width, height];
-    v6 = v30;
+    [(VOTDisplayManager *)self setCursorFrame:path withPath:windowContextId withContextId:unsignedIntValue withDisplayId:v30 element:0 forceRefresh:animatedCopy animated:x, y, width, height];
+    elementCopy = v30;
   }
 }
 
-- (void)_updateZoom:(CGRect)a3 element:(id)a4
+- (void)_updateZoom:(CGRect)zoom element:(id)element
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = zoom.size.height;
+  width = zoom.size.width;
+  y = zoom.origin.y;
+  x = zoom.origin.x;
+  elementCopy = element;
   if (_AXSZoomTouchEnabled())
   {
-    if ([v9 doesHaveTraits:kAXKeyboardKeyTrait])
+    if ([elementCopy doesHaveTraits:kAXKeyboardKeyTrait])
     {
       v10 = 2;
     }
@@ -253,15 +253,15 @@
       v10 = 1;
     }
 
-    if ([v9 doesHaveAllTraits:kAXTextEntryTrait | kAXIsEditingTrait])
+    if ([elementCopy doesHaveAllTraits:kAXTextEntryTrait | kAXIsEditingTrait])
     {
-      [v9 textCursorFrame];
+      [elementCopy textCursorFrame];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = +[ZoomServices sharedInstance];
-      [v19 notifyZoomFocusDidChangeWithType:v10 rect:objc_msgSend(v9 contextId:"windowContextId") displayId:{objc_msgSend(v9, "displayId"), v12, v14, v16, v18}];
+      uiClient = +[ZoomServices sharedInstance];
+      [uiClient notifyZoomFocusDidChangeWithType:v10 rect:objc_msgSend(elementCopy contextId:"windowContextId") displayId:{objc_msgSend(elementCopy, "displayId"), v12, v14, v16, v18}];
 LABEL_15:
 
       goto LABEL_16;
@@ -269,7 +269,7 @@ LABEL_15:
 
     if (AXDeviceIsPhoneIdiom())
     {
-      if (width <= 250.0 || [v9 doesHaveTraits:kAXButtonTrait])
+      if (width <= 250.0 || [elementCopy doesHaveTraits:kAXButtonTrait])
       {
         if (width <= 100.0 && height <= 100.0)
         {
@@ -286,11 +286,11 @@ LABEL_15:
     }
 
 LABEL_14:
-    v22 = [v9 uiElement];
-    v23 = [v22 numberWithAXAttribute:2123];
-    v24 = [v23 unsignedIntValue];
+    uiElement = [elementCopy uiElement];
+    v23 = [uiElement numberWithAXAttribute:2123];
+    unsignedIntValue = [v23 unsignedIntValue];
 
-    v19 = [(VOTDisplayManager *)self uiClient];
+    uiClient = [(VOTDisplayManager *)self uiClient];
     v30[0] = @"FocusChangeFrameKey";
     v32.origin.x = x;
     v32.origin.y = y;
@@ -302,11 +302,11 @@ LABEL_14:
     v26 = [NSNumber numberWithInteger:v10];
     v31[1] = v26;
     v30[2] = @"display";
-    v27 = [NSNumber numberWithUnsignedInt:v24];
+    v27 = [NSNumber numberWithUnsignedInt:unsignedIntValue];
     v31[2] = v27;
     v28 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:3];
     v29 = +[AXAccessQueue mainAccessQueue];
-    [v19 sendAsynchronousMessage:v28 withIdentifier:20 targetAccessQueue:v29 completion:0];
+    [uiClient sendAsynchronousMessage:v28 withIdentifier:20 targetAccessQueue:v29 completion:0];
 
     goto LABEL_15;
   }
@@ -314,17 +314,17 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)setCursorFrame:(CGRect)a3 withPath:(CGPath *)a4 withContextId:(unsigned int)a5 withDisplayId:(unsigned int)a6 element:(id)a7 forceRefresh:(BOOL)a8 animated:(BOOL)a9
+- (void)setCursorFrame:(CGRect)frame withPath:(CGPath *)path withContextId:(unsigned int)id withDisplayId:(unsigned int)displayId element:(id)element forceRefresh:(BOOL)refresh animated:(BOOL)animated
 {
-  v9 = a9;
-  v10 = a8;
-  v11 = *&a6;
-  v12 = *&a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a7;
+  animatedCopy = animated;
+  refreshCopy = refresh;
+  v11 = *&displayId;
+  v12 = *&id;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  elementCopy = element;
   v39.origin.x = CGRectZero.origin.x;
   v39.origin.y = CGRectZero.origin.y;
   v39.size.width = CGRectZero.size.width;
@@ -344,12 +344,12 @@ LABEL_16:
   }
 
   [(NSLock *)self->_lock lock];
-  if (v10 || ([(VOTDisplayManager *)self currentCursorFrame], v43.origin.x = v25, v43.origin.y = v26, v43.size.width = v27, v43.size.height = v28, v40.origin.x = x, v40.origin.y = y, v40.size.width = width, v40.size.height = height, v29 = CGRectEqualToRect(v40, v43), a4) || !v29 || [(VOTDisplayManager *)self currentCursorPath])
+  if (refreshCopy || ([(VOTDisplayManager *)self currentCursorFrame], v43.origin.x = v25, v43.origin.y = v26, v43.size.width = v27, v43.size.height = v28, v40.origin.x = x, v40.origin.y = y, v40.size.width = width, v40.size.height = height, v29 = CGRectEqualToRect(v40, v43), path) || !v29 || [(VOTDisplayManager *)self currentCursorPath])
   {
     [(VOTDisplayManager *)self setCurrentCursorFrame:x, y, width, height];
     [(VOTDisplayManager *)self setCurrentCursorContextID:v12];
     [(VOTDisplayManager *)self setCurrentCursorDisplayID:v11];
-    [(VOTDisplayManager *)self setCurrentCursorPath:a4];
+    [(VOTDisplayManager *)self setCurrentCursorPath:path];
     [(NSLock *)self->_lock unlock];
     if ([(VOTDisplayManager *)self shouldHideCursor])
     {
@@ -365,7 +365,7 @@ LABEL_16:
     else
     {
       v31 = +[NSMutableDictionary dictionary];
-      v32 = [NSNumber numberWithBool:v9];
+      v32 = [NSNumber numberWithBool:animatedCopy];
       [v31 setObject:v32 forKeyedSubscript:@"animate"];
 
       v41.origin.x = x;
@@ -375,7 +375,7 @@ LABEL_16:
       v33 = NSStringFromRect(v41);
       [v31 setObject:v33 forKeyedSubscript:@"frame"];
 
-      if (a4)
+      if (path)
       {
         v34 = AX_CGPathCopyDataRepresentation();
         if (v34)
@@ -389,11 +389,11 @@ LABEL_16:
       v36 = [NSNumber numberWithUnsignedInt:v11];
       [v31 setObject:v36 forKeyedSubscript:@"display"];
 
-      v37 = [(VOTDisplayManager *)self uiClient];
-      [v37 sendAsynchronousMessage:v31 withIdentifier:1 targetAccessQueue:0 completion:0];
+      uiClient = [(VOTDisplayManager *)self uiClient];
+      [uiClient sendAsynchronousMessage:v31 withIdentifier:1 targetAccessQueue:0 completion:0];
     }
 
-    [(VOTDisplayManager *)self _updateZoom:v19 element:x, y, width, height];
+    [(VOTDisplayManager *)self _updateZoom:elementCopy element:x, y, width, height];
   }
 
   else
@@ -402,13 +402,13 @@ LABEL_16:
   }
 }
 
-- (CGRect)_adjustFrameToFitScreen:(CGRect)a3
+- (CGRect)_adjustFrameToFitScreen:(CGRect)screen
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v5 = a3.origin.x + a3.size.width;
-  v6 = a3.origin.y + a3.size.height;
-  v7 = a3.size.width - (fabs(a3.origin.x) + 1.0);
+  y = screen.origin.y;
+  x = screen.origin.x;
+  v5 = screen.origin.x + screen.size.width;
+  v6 = screen.origin.y + screen.size.height;
+  v7 = screen.size.width - (fabs(screen.origin.x) + 1.0);
   if (x <= 0.0)
   {
     width = v7;
@@ -416,18 +416,18 @@ LABEL_16:
 
   else
   {
-    width = a3.size.width;
+    width = screen.size.width;
   }
 
-  v9 = a3.size.height - (fabs(a3.origin.y) + 1.0);
-  if (a3.origin.y <= 0.0)
+  v9 = screen.size.height - (fabs(screen.origin.y) + 1.0);
+  if (screen.origin.y <= 0.0)
   {
     height = v9;
   }
 
   else
   {
-    height = a3.size.height;
+    height = screen.size.height;
   }
 
   if (sub_100052310())
@@ -499,12 +499,12 @@ LABEL_16:
   return result;
 }
 
-- (void)setElementFrames:(id)a3
+- (void)setElementFrames:(id)frames
 {
-  v8 = a3;
+  framesCopy = frames;
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
-  if ([v8 count])
+  if ([framesCopy count])
   {
     v6 = 0;
     do
@@ -516,38 +516,38 @@ LABEL_16:
       ++v6;
     }
 
-    while ([v8 count] > v6);
+    while ([framesCopy count] > v6);
   }
 
-  [(VOTDisplayManager *)self setElementFrames:v8 labels:v4 uiClasses:v5];
+  [(VOTDisplayManager *)self setElementFrames:framesCopy labels:v4 uiClasses:v5];
 }
 
-- (void)setElementFrames:(id)a3 labels:(id)a4 uiClasses:(id)a5
+- (void)setElementFrames:(id)frames labels:(id)labels uiClasses:(id)classes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VOTDisplayManager *)self uiClient];
+  classesCopy = classes;
+  labelsCopy = labels;
+  framesCopy = frames;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v13[0] = @"elementVisualizationFrames";
   v13[1] = @"elementVisualizationFrameLabels";
-  v14[0] = v10;
-  v14[1] = v9;
+  v14[0] = framesCopy;
+  v14[1] = labelsCopy;
   v13[2] = @"elementVisualizationUIClasses";
-  v14[2] = v8;
+  v14[2] = classesCopy;
   v12 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
 
-  [v11 sendAsynchronousMessage:v12 withIdentifier:10 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v12 withIdentifier:10 targetAccessQueue:0 completion:0];
 }
 
-- (void)convertFrameToCursorSpace:(CGRect)a3 displayID:(id)a4 completion:(id)a5
+- (void)convertFrameToCursorSpace:(CGRect)space displayID:(id)d completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(VOTDisplayManager *)self uiClient];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  completionCopy = completion;
+  dCopy = d;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v19[0] = @"frame";
   v21.origin.x = x;
   v21.origin.y = y;
@@ -556,72 +556,72 @@ LABEL_16:
   v14 = NSStringFromRect(v21);
   v19[1] = @"display";
   v20[0] = v14;
-  v20[1] = v12;
+  v20[1] = dCopy;
   v15 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10003F528;
   v17[3] = &unk_1001C83F8;
-  v18 = v11;
-  v16 = v11;
-  [v13 sendAsynchronousMessage:v15 withIdentifier:13 targetAccessQueue:0 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [uiClient sendAsynchronousMessage:v15 withIdentifier:13 targetAccessQueue:0 completion:v17];
 }
 
-- (void)convertFramesToCursorSpace:(id)a3 displayID:(id)a4 completion:(id)a5
+- (void)convertFramesToCursorSpace:(id)space displayID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(VOTDisplayManager *)self uiClient];
+  completionCopy = completion;
+  dCopy = d;
+  spaceCopy = space;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v16[0] = @"frames";
   v16[1] = @"display";
-  v17[0] = v10;
-  v17[1] = v9;
+  v17[0] = spaceCopy;
+  v17[1] = dCopy;
   v12 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10003F724;
   v14[3] = &unk_1001C83F8;
-  v15 = v8;
-  v13 = v8;
-  [v11 sendAsynchronousMessage:v12 withIdentifier:14 targetAccessQueue:0 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [uiClient sendAsynchronousMessage:v12 withIdentifier:14 targetAccessQueue:0 completion:v14];
 }
 
-- (void)_handleRotorDidChange:(id)a3
+- (void)_handleRotorDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"kVOTRotorChangedNotificationNewRotor"];
-  v6 = [v5 intValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"kVOTRotorChangedNotificationNewRotor"];
+  intValue = [v5 intValue];
 
-  [(VOTDisplayManager *)self setShouldHideCursor:v6 == 60];
+  [(VOTDisplayManager *)self setShouldHideCursor:intValue == 60];
 }
 
-- (void)updateVisualRotor:(id)a3
+- (void)updateVisualRotor:(id)rotor
 {
-  v4 = a3;
-  v5 = [(VOTDisplayManager *)self uiClient];
-  [v5 sendAsynchronousMessage:v4 withIdentifier:11 targetAccessQueue:0 completion:0];
+  rotorCopy = rotor;
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:rotorCopy withIdentifier:11 targetAccessQueue:0 completion:0];
 }
 
-- (void)showBrailleUIWithOrientation:(int64_t)a3 dotPositions:(id)a4 typingMode:(int64_t)a5
+- (void)showBrailleUIWithOrientation:(int64_t)orientation dotPositions:(id)positions typingMode:(int64_t)mode
 {
-  v8 = a4;
+  positionsCopy = positions;
   v9 = +[ZoomServices sharedInstance];
   [v9 notifyZoomWillShowBrailleInputUI];
 
-  v10 = [(VOTDisplayManager *)self uiClient];
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v15[0] = @"brailleOrientation";
-  v11 = [NSNumber numberWithLong:a3];
+  v11 = [NSNumber numberWithLong:orientation];
   v16[0] = v11;
   v15[1] = @"brailleDotPositions";
-  v12 = sub_10003FA08(v8);
+  v12 = sub_10003FA08(positionsCopy);
 
   v16[1] = v12;
   v15[2] = @"brailleTypingMode";
-  v13 = [NSNumber numberWithInteger:a5];
+  v13 = [NSNumber numberWithInteger:mode];
   v16[2] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
-  [v10 sendAsynchronousMessage:v14 withIdentifier:2 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v14 withIdentifier:2 targetAccessQueue:0 completion:0];
 }
 
 - (void)hideBrailleUI
@@ -629,83 +629,83 @@ LABEL_16:
   v3 = +[ZoomServices sharedInstance];
   [v3 notifyZoomWillHideBrailleInputUI];
 
-  v4 = [(VOTDisplayManager *)self uiClient];
-  [v4 sendAsynchronousMessage:0 withIdentifier:3 targetAccessQueue:0 completion:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:0 withIdentifier:3 targetAccessQueue:0 completion:0];
 }
 
-- (void)updateBrailleUIWithOrientation:(int64_t)a3 dotPositions:(id)a4 typingMode:(int64_t)a5
+- (void)updateBrailleUIWithOrientation:(int64_t)orientation dotPositions:(id)positions typingMode:(int64_t)mode
 {
-  v8 = a4;
-  v9 = [(VOTDisplayManager *)self uiClient];
+  positionsCopy = positions;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v14[0] = @"brailleOrientation";
-  v10 = [NSNumber numberWithLong:a3];
+  v10 = [NSNumber numberWithLong:orientation];
   v15[0] = v10;
   v14[1] = @"brailleDotPositions";
-  v11 = sub_10003FA08(v8);
+  v11 = sub_10003FA08(positionsCopy);
 
   v15[1] = v11;
   v14[2] = @"brailleTypingMode";
-  v12 = [NSNumber numberWithInteger:a5];
+  v12 = [NSNumber numberWithInteger:mode];
   v15[2] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
-  [v9 sendAsynchronousMessage:v13 withIdentifier:5 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v13 withIdentifier:5 targetAccessQueue:0 completion:0];
 }
 
-- (void)setScreenCurtainEnabled:(BOOL)a3
+- (void)setScreenCurtainEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(VOTDisplayManager *)self _isSystemReadyForUI])
   {
-    v5 = [(VOTDisplayManager *)self uiClient];
+    uiClient = [(VOTDisplayManager *)self uiClient];
     v8 = @"enabled";
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:enabledCopy];
     v9 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-    [v5 sendAsynchronousMessage:v7 withIdentifier:7 targetAccessQueue:0 completion:0];
+    [uiClient sendAsynchronousMessage:v7 withIdentifier:7 targetAccessQueue:0 completion:0];
   }
 }
 
-- (void)flashBrailleInsertedText:(id)a3
+- (void)flashBrailleInsertedText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v5 = [(VOTDisplayManager *)self uiClient];
+    uiClient = [(VOTDisplayManager *)self uiClient];
     v7 = @"brailleInsertedText";
-    v8 = v4;
+    v8 = textCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-    [v5 sendAsynchronousMessage:v6 withIdentifier:6 targetAccessQueue:0 completion:0];
+    [uiClient sendAsynchronousMessage:v6 withIdentifier:6 targetAccessQueue:0 completion:0];
   }
 }
 
-- (void)highlightBrailleDots:(id)a3
+- (void)highlightBrailleDots:(id)dots
 {
-  v4 = a3;
-  v5 = [(VOTDisplayManager *)self uiClient];
+  dotsCopy = dots;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v7 = @"brailleDotNumbers";
-  v8 = v4;
+  v8 = dotsCopy;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
 
-  [v5 sendAsynchronousMessage:v6 withIdentifier:4 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v6 withIdentifier:4 targetAccessQueue:0 completion:0];
 }
 
-- (void)displayBrailleDotNumbersWithReversed:(BOOL)a3
+- (void)displayBrailleDotNumbersWithReversed:(BOOL)reversed
 {
-  v3 = a3;
-  v4 = [(VOTDisplayManager *)self uiClient];
+  reversedCopy = reversed;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v7 = @"brailleDotNumbersReversed";
-  v5 = [NSNumber numberWithBool:v3];
+  v5 = [NSNumber numberWithBool:reversedCopy];
   v8 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  [v4 sendAsynchronousMessage:v6 withIdentifier:32 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v6 withIdentifier:32 targetAccessQueue:0 completion:0];
 }
 
-- (void)showMapsExplorationUIWithCenter:(CGPoint)a3 andData:(id)a4
+- (void)showMapsExplorationUIWithCenter:(CGPoint)center andData:(id)data
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(VOTDisplayManager *)self uiClient];
+  y = center.y;
+  x = center.x;
+  dataCopy = data;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v14[0] = @"mapsExplorationCenter";
   v9 = [NSNumber numberWithDouble:x];
   v13[0] = v9;
@@ -714,23 +714,23 @@ LABEL_16:
   v11 = [NSArray arrayWithObjects:v13 count:2];
   v14[1] = @"mapsExplorationData";
   v15[0] = v11;
-  v15[1] = v7;
+  v15[1] = dataCopy;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [v8 sendAsynchronousMessage:v12 withIdentifier:15 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v12 withIdentifier:15 targetAccessQueue:0 completion:0];
 }
 
 - (void)hideMapsExplorationUI
 {
-  v2 = [(VOTDisplayManager *)self uiClient];
-  [v2 sendAsynchronousMessage:0 withIdentifier:19 targetAccessQueue:0 completion:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:0 withIdentifier:19 targetAccessQueue:0 completion:0];
 }
 
-- (void)updateMapsExplorationUIWithCurrentCenter:(CGPoint)a3
+- (void)updateMapsExplorationUIWithCurrentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VOTDisplayManager *)self uiClient];
+  y = center.y;
+  x = center.x;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v11 = @"mapsExplorationCenter";
   v6 = [NSNumber numberWithDouble:x];
   v10[0] = v6;
@@ -739,14 +739,14 @@ LABEL_16:
   v8 = [NSArray arrayWithObjects:v10 count:2];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v5 sendAsynchronousMessage:v9 withIdentifier:17 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v9 withIdentifier:17 targetAccessQueue:0 completion:0];
 }
 
-- (void)updateMapsExplorationUIWithCurrentLocation:(CGPoint)a3
+- (void)updateMapsExplorationUIWithCurrentLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VOTDisplayManager *)self uiClient];
+  y = location.y;
+  x = location.x;
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v11 = @"mapsExplorationCurrentLocation";
   v6 = [NSNumber numberWithDouble:x];
   v10[0] = v6;
@@ -755,17 +755,17 @@ LABEL_16:
   v8 = [NSArray arrayWithObjects:v10 count:2];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v5 sendAsynchronousMessage:v9 withIdentifier:18 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v9 withIdentifier:18 targetAccessQueue:0 completion:0];
 }
 
-- (void)highlightMapsExplorationSegmentWithIndex:(int64_t)a3
+- (void)highlightMapsExplorationSegmentWithIndex:(int64_t)index
 {
-  v4 = [(VOTDisplayManager *)self uiClient];
+  uiClient = [(VOTDisplayManager *)self uiClient];
   v7 = @"mapsExplorationIndex";
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:index];
   v8 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  [v4 sendAsynchronousMessage:v6 withIdentifier:16 targetAccessQueue:0 completion:0];
+  [uiClient sendAsynchronousMessage:v6 withIdentifier:16 targetAccessQueue:0 completion:0];
 }
 
 - (BOOL)_isSystemReadyForUI
@@ -803,102 +803,102 @@ LABEL_16:
   return self->_systemReadyForUI;
 }
 
-- (void)setVoiceOverCaptionText:(id)a3 withRange:(_NSRange)a4 language:(id)a5 voice:(id)a6
+- (void)setVoiceOverCaptionText:(id)text withRange:(_NSRange)range language:(id)language voice:(id)voice
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100040724;
   v18[3] = &unk_1001C8420;
-  v19 = a3;
-  v20 = self;
+  textCopy = text;
+  selfCopy = self;
   v23 = location;
   v24 = length;
-  v21 = a5;
-  v22 = a6;
-  v11 = v22;
-  v12 = v21;
-  v13 = v19;
+  languageCopy = language;
+  voiceCopy = voice;
+  v11 = voiceCopy;
+  v12 = languageCopy;
+  v13 = textCopy;
   v14 = objc_retainBlock(v18);
   (v14[2])(v14, v15, v16, v17);
 }
 
-- (void)showSonificationPlayheadInPlaybackBounds:(CGRect)a3 atPosition:(double)a4
+- (void)showSonificationPlayheadInPlaybackBounds:(CGRect)bounds atPosition:(double)position
 {
-  [(VOTDisplayManager *)self setCurrentSonificationPlaybackBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VOTDisplayManager *)self setCurrentSonificationPlaybackBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
-  [(VOTDisplayManager *)self setSonificationPlayheadPosition:a4];
+  [(VOTDisplayManager *)self setSonificationPlayheadPosition:position];
 }
 
-- (void)setSonificationPlayheadPosition:(double)a3
+- (void)setSonificationPlayheadPosition:(double)position
 {
   v9[0] = @"sonificationPlaybackBounds";
   [(VOTDisplayManager *)self currentSonificationPlaybackBounds];
   v5 = NSStringFromRect(v11);
   v9[1] = @"sonificationPlayheadProgress";
   v10[0] = v5;
-  v6 = [NSNumber numberWithDouble:a3];
+  v6 = [NSNumber numberWithDouble:position];
   v10[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
-  v8 = [(VOTDisplayManager *)self uiClient];
-  [v8 sendAsynchronousMessage:v7 withIdentifier:21 targetAccessQueue:0 completion:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:v7 withIdentifier:21 targetAccessQueue:0 completion:0];
 }
 
-- (void)beginSonificationPlaybackFromPosition:(double)a3 withDuration:(double)a4
+- (void)beginSonificationPlaybackFromPosition:(double)position withDuration:(double)duration
 {
-  if (a3 > 1.0)
+  if (position > 1.0)
   {
-    a3 = 1.0;
+    position = 1.0;
   }
 
-  if (a3 >= 0.0)
+  if (position >= 0.0)
   {
-    v6 = a3;
+    positionCopy = position;
   }
 
   else
   {
-    v6 = 0.0;
+    positionCopy = 0.0;
   }
 
   Current = CFAbsoluteTimeGetCurrent();
   v15[0] = @"sonificationPlayheadProgress";
-  v8 = [NSNumber numberWithDouble:v6];
+  v8 = [NSNumber numberWithDouble:positionCopy];
   v16[0] = v8;
   v15[1] = @"sonificationPlaybackBounds";
   [(VOTDisplayManager *)self currentSonificationPlaybackBounds];
   v9 = NSStringFromRect(v17);
   v16[1] = v9;
   v15[2] = @"sonificationNormalizedPlayheadPosition";
-  v10 = [NSNumber numberWithDouble:v6];
+  v10 = [NSNumber numberWithDouble:positionCopy];
   v16[2] = v10;
   v15[3] = @"sonificationDuration";
-  v11 = [NSNumber numberWithDouble:a4];
+  v11 = [NSNumber numberWithDouble:duration];
   v16[3] = v11;
   v15[4] = @"sonificationPlaybackStartTime";
   v12 = [NSNumber numberWithDouble:Current];
   v16[4] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:5];
 
-  v14 = [(VOTDisplayManager *)self uiClient];
-  [v14 sendAsynchronousMessage:v13 withIdentifier:22 targetAccessQueue:0 completion:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:v13 withIdentifier:22 targetAccessQueue:0 completion:0];
 }
 
-- (void)pauseSonificationPlaybackAtPosition:(double)a3
+- (void)pauseSonificationPlaybackAtPosition:(double)position
 {
   v9[0] = @"sonificationPlaybackBounds";
   [(VOTDisplayManager *)self currentSonificationPlaybackBounds];
   v5 = NSStringFromRect(v11);
   v9[1] = @"sonificationPlayheadProgress";
   v10[0] = v5;
-  v6 = [NSNumber numberWithDouble:a3];
+  v6 = [NSNumber numberWithDouble:position];
   v10[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
-  v8 = [(VOTDisplayManager *)self uiClient];
-  [v8 sendAsynchronousMessage:v7 withIdentifier:23 targetAccessQueue:0 completion:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:v7 withIdentifier:23 targetAccessQueue:0 completion:0];
 }
 
 - (void)hideSonificationPlayhead
@@ -911,21 +911,21 @@ LABEL_16:
   v7[1] = &off_1001D9B48;
   v4 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
 
-  v5 = [(VOTDisplayManager *)self uiClient];
-  [v5 sendAsynchronousMessage:v4 withIdentifier:21 targetAccessQueue:0 completion:0];
+  uiClient = [(VOTDisplayManager *)self uiClient];
+  [uiClient sendAsynchronousMessage:v4 withIdentifier:21 targetAccessQueue:0 completion:0];
 }
 
-- (void)movePointerToPoint:(CGPoint)a3 contextId:(unsigned int)a4
+- (void)movePointerToPoint:(CGPoint)point contextId:(unsigned int)id
 {
-  v4 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v4 = *&id;
+  y = point.y;
+  x = point.x;
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 laserEnabled];
+  laserEnabled = [v8 laserEnabled];
 
-  if (v9)
+  if (laserEnabled)
   {
-    v10 = [(VOTDisplayManager *)self uiClient];
+    uiClient = [(VOTDisplayManager *)self uiClient];
     v14[0] = @"point";
     v16.x = x;
     v16.y = y;
@@ -935,48 +935,48 @@ LABEL_16:
     v12 = [NSNumber numberWithUnsignedInt:v4];
     v15[1] = v12;
     v13 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
-    [v10 sendAsynchronousMessage:v13 withIdentifier:26 targetAccessQueue:0 completion:0];
+    [uiClient sendAsynchronousMessage:v13 withIdentifier:26 targetAccessQueue:0 completion:0];
   }
 }
 
-- (void)registerForPointerEvents:(id)a3
+- (void)registerForPointerEvents:(id)events
 {
-  v10 = a3;
+  eventsCopy = events;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 laserEnabled];
+  laserEnabled = [v4 laserEnabled];
 
-  if (v5)
+  if (laserEnabled)
   {
     if (![(VOTDisplayManager *)self didRegisterForPointerEvents])
     {
       [(VOTDisplayManager *)self setDidRegisterForPointerEvents:1];
-      v6 = [(VOTDisplayManager *)self uiClient];
-      [v6 sendAsynchronousMessage:&off_1001DBB88 withIdentifier:25 targetAccessQueue:0 completion:0];
+      uiClient = [(VOTDisplayManager *)self uiClient];
+      [uiClient sendAsynchronousMessage:&off_1001DBB88 withIdentifier:25 targetAccessQueue:0 completion:0];
     }
 
-    v7 = [(VOTDisplayManager *)self pointerEventObservers];
+    pointerEventObservers = [(VOTDisplayManager *)self pointerEventObservers];
 
-    if (!v7)
+    if (!pointerEventObservers)
     {
       v8 = +[NSPointerArray weakObjectsPointerArray];
       [(VOTDisplayManager *)self setPointerEventObservers:v8];
     }
 
-    v9 = [(VOTDisplayManager *)self pointerEventObservers];
-    [v9 addPointer:v10];
+    pointerEventObservers2 = [(VOTDisplayManager *)self pointerEventObservers];
+    [pointerEventObservers2 addPointer:eventsCopy];
   }
 }
 
-- (void)_handleDidReceivePointerGlobalPoint:(CGPoint)a3
+- (void)_handleDidReceivePointerGlobalPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(VOTDisplayManager *)self pointerEventObservers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  pointerEventObservers = [(VOTDisplayManager *)self pointerEventObservers];
+  v6 = [pointerEventObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -988,7 +988,7 @@ LABEL_16:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pointerEventObservers);
         }
 
         [*(*(&v10 + 1) + 8 * v9) pointerDidMoveToGlobalPoint:{x, y}];
@@ -996,18 +996,18 @@ LABEL_16:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [pointerEventObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)userInterfaceClient:(id)a3 processMessageFromServer:(id)a4 withIdentifier:(unint64_t)a5 error:(id *)a6
+- (id)userInterfaceClient:(id)client processMessageFromServer:(id)server withIdentifier:(unint64_t)identifier error:(id *)error
 {
-  if (a5 == 1001)
+  if (identifier == 1001)
   {
-    v7 = [a4 objectForKeyedSubscript:@"point"];
+    v7 = [server objectForKeyedSubscript:@"point"];
     v8 = CGPointFromString(v7);
 
     [(VOTDisplayManager *)self _handleDidReceivePointerGlobalPoint:v8.x, v8.y];

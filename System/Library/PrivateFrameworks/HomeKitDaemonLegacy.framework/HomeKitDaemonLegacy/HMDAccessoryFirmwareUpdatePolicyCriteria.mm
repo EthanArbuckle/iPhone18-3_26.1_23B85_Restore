@@ -11,9 +11,9 @@
   v2 = [(HMDAccessoryFirmwareUpdatePolicyCriteria *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     characteristicConfigurations = v2->_characteristicConfigurations;
-    v2->_characteristicConfigurations = v3;
+    v2->_characteristicConfigurations = array;
   }
 
   return v2;

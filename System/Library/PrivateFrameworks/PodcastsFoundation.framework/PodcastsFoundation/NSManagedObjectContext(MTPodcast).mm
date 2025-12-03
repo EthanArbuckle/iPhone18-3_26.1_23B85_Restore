@@ -24,8 +24,8 @@
   v5[3] = &unk_1E856A0C8;
   v5[5] = &v6;
   v5[6] = a3;
-  v5[4] = a1;
-  [a1 performBlockAndWait:v5];
+  v5[4] = self;
+  [self performBlockAndWait:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -45,11 +45,11 @@
   v8[1] = 3221225472;
   v8[2] = __55__NSManagedObjectContext_MTPodcast__podcastForFeedUrl___block_invoke;
   v8[3] = &unk_1E856A118;
-  v8[4] = a1;
+  v8[4] = self;
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 performBlockAndWait:v8];
+  [self performBlockAndWait:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -71,8 +71,8 @@
   v5[3] = &unk_1E856A0C8;
   v5[5] = &v6;
   v5[6] = a3;
-  v5[4] = a1;
-  [a1 performBlockAndWait:v5];
+  v5[4] = self;
+  [self performBlockAndWait:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -85,7 +85,7 @@
   v3 = +[MTPodcast predicateForNotHiddenNotImplicitlyFollowedPodcasts];
   [v2 setPredicate:v3];
 
-  v4 = [a1 countForFetchRequest:v2 error:0];
+  v4 = [self countForFetchRequest:v2 error:0];
   return v4;
 }
 
@@ -95,7 +95,7 @@
   v3 = +[MTPodcast predicateForSubscribedAndNotHidden];
   [v2 setPredicate:v3];
 
-  v4 = [a1 countForFetchRequest:v2 error:0];
+  v4 = [self countForFetchRequest:v2 error:0];
   return v4;
 }
 
@@ -112,7 +112,7 @@
   [v2 setSortDescriptors:v5];
 
   [v2 setFetchLimit:1];
-  v6 = [a1 _nextSortOrderWithRequest:v2];
+  v6 = [self _nextSortOrderWithRequest:v2];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
@@ -121,12 +121,12 @@
 - (uint64_t)_nextSortOrderWithRequest:()MTPodcast
 {
   v9 = 0;
-  v3 = [a1 executeFetchRequest:a3 error:&v9];
+  v3 = [self executeFetchRequest:a3 error:&v9];
   v4 = v3;
   if (v3 && [v3 count])
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 valueForKey:@"sortOrder"];
+    firstObject = [v4 firstObject];
+    v6 = [firstObject valueForKey:@"sortOrder"];
     v7 = [v6 unsignedIntegerValue] + 1;
   }
 

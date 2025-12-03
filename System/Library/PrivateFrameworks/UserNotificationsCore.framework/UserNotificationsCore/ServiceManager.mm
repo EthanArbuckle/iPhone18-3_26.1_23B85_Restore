@@ -1,31 +1,31 @@
 @interface ServiceManager
 - (NSString)description;
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4;
-- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)a3;
-- (void)notificationRepository:(id)a3 didPerformUpdates:(id)a4 forBundleIdentifier:(id)a5;
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier;
+- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)unlock;
+- (void)notificationRepository:(id)repository didPerformUpdates:(id)updates forBundleIdentifier:(id)identifier;
 @end
 
 @implementation ServiceManager
 
-- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)a3
+- (void)contentProtectionStateChangedForFirstUnlock:(BOOL)unlock
 {
-  v4 = self;
-  ServiceManager.contentProtectionStateChanged(forFirstUnlock:)(a3);
+  selfCopy = self;
+  ServiceManager.contentProtectionStateChanged(forFirstUnlock:)(unlock);
 }
 
-- (void)notificationRepository:(id)a3 didPerformUpdates:(id)a4 forBundleIdentifier:(id)a5
+- (void)notificationRepository:(id)repository didPerformUpdates:(id)updates forBundleIdentifier:(id)identifier
 {
   sub_1DA7AF3EC(0, &unk_1EE114D90, off_1E85D5C78);
   v7 = sub_1DA940BE4();
   v8 = sub_1DA940A14();
   v10 = v9;
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_1DA8B1E6C(a3, v7, v8, v10);
+  selfCopy = self;
+  sub_1DA8B1E6C(repository, v7, v8, v10);
   swift_unknownObjectRelease();
 }
 
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier
 {
   v5 = sub_1DA940A14();
   v7 = v6;
@@ -37,7 +37,7 @@
   else
   {
     swift_unknownObjectRetain();
-    v9 = self;
+    selfCopy = self;
     v10 = v8;
     sub_1DA935578(v5, v7);
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ServiceManager.description.getter();
 
   v3 = sub_1DA940A04();

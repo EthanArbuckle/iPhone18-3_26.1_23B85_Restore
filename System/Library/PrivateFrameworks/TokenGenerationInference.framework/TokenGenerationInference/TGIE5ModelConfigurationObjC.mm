@@ -1,36 +1,36 @@
 @interface TGIE5ModelConfigurationObjC
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TGIE5ModelConfiguration)modelConfiguration;
-- (TGIE5ModelConfigurationObjC)initWithModelType:(int64_t)a3 modelBundlePath:(id)a4 e5Functions:(id)a5 adapterConfigurations:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TGIE5ModelConfigurationObjC)initWithModelType:(int64_t)type modelBundlePath:(id)path e5Functions:(id)functions adapterConfigurations:(id)configurations;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TGIE5ModelConfigurationObjC
 
-- (TGIE5ModelConfigurationObjC)initWithModelType:(int64_t)a3 modelBundlePath:(id)a4 e5Functions:(id)a5 adapterConfigurations:(id)a6
+- (TGIE5ModelConfigurationObjC)initWithModelType:(int64_t)type modelBundlePath:(id)path e5Functions:(id)functions adapterConfigurations:(id)configurations
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  functionsCopy = functions;
+  configurationsCopy = configurations;
   v23.receiver = self;
   v23.super_class = TGIE5ModelConfigurationObjC;
   v13 = [(TGIE5ModelConfigurationObjC *)&v23 init];
   v14 = v13;
   if (v13)
   {
-    v13->_modelType = a3;
-    v15 = [v10 copy];
+    v13->_modelType = type;
+    v15 = [pathCopy copy];
     modelBundlePath = v14->_modelBundlePath;
     v14->_modelBundlePath = v15;
 
-    v17 = [v12 copy];
+    v17 = [configurationsCopy copy];
     adapterConfigurations = v14->_adapterConfigurations;
     v14->_adapterConfigurations = v17;
 
-    v19 = [v11 copy];
+    v19 = [functionsCopy copy];
     e5Functions = v14->_e5Functions;
     v14->_e5Functions = v19;
 
@@ -65,8 +65,8 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = [v2 adapterConfigurations];
-  v7 = [v6 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  adapterConfigurations = [v2 adapterConfigurations];
+  v7 = [adapterConfigurations countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v7)
   {
     v8 = *v48;
@@ -76,7 +76,7 @@
       {
         if (*v48 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(adapterConfigurations);
         }
 
         v10 = *(*(&v47 + 1) + 8 * i);
@@ -111,7 +111,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v47 objects:v55 count:16];
+      v7 = [adapterConfigurations countByEnumeratingWithState:&v47 objects:v55 count:16];
     }
 
     while (v7);
@@ -124,8 +124,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = [v2 e5Functions];
-  v12 = [v11 countByEnumeratingWithState:&v35 objects:v54 count:16];
+  e5Functions = [v2 e5Functions];
+  v12 = [e5Functions countByEnumeratingWithState:&v35 objects:v54 count:16];
   if (v12)
   {
     v13 = *v36;
@@ -135,7 +135,7 @@
       {
         if (*v36 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(e5Functions);
         }
 
         v15 = *(*(&v35 + 1) + 8 * j);
@@ -195,7 +195,7 @@
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v35 objects:v54 count:16];
+      v12 = [e5Functions countByEnumeratingWithState:&v35 objects:v54 count:16];
     }
 
     while (v12);
@@ -204,16 +204,16 @@
   *v42 = 0u;
   *v43 = 0u;
   LODWORD(v44[0]) = 1065353216;
-  v20 = [v2 baseModel];
-  v21 = v20 == 0;
+  baseModel = [v2 baseModel];
+  v21 = baseModel == 0;
 
   if (!v21)
   {
-    v22 = [v2 baseModel];
-    v23 = v22;
-    if (v22)
+    baseModel2 = [v2 baseModel];
+    v23 = baseModel2;
+    if (baseModel2)
     {
-      [v22 sharedConstants];
+      [baseModel2 sharedConstants];
     }
 
     else
@@ -226,10 +226,10 @@
     std::__hash_table<std::__hash_value_type<std::string,std::shared_ptr<E5RT::IOPort>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::IOPort>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::shared_ptr<E5RT::IOPort>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::shared_ptr<E5RT::IOPort>>>>::~__hash_table(v33);
   }
 
-  v24 = [v2 modelBundlePath];
-  v25 = v24;
-  v31 = [v24 UTF8String];
-  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v32.__pn_, &v31);
+  modelBundlePath = [v2 modelBundlePath];
+  v25 = modelBundlePath;
+  uTF8String = [modelBundlePath UTF8String];
+  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v32.__pn_, &uTF8String);
   std::__fs::filesystem::__canonical(v33, &v32, 0);
   if (SHIBYTE(v32.__pn_.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -254,14 +254,14 @@
   retstr[4].var1.var0.var0.var1.var0 = 0;
   retstr[4].var1.var0.var0.var0.var0[8] = [v2 useModelCatalogE5CompilerCache];
   retstr[4].var1.var0.var0.var0.var0[9] = [v2 ignoreUnknownTokens];
-  v26 = [v2 serializeModelIOPath];
-  v27 = v26 == 0;
+  serializeModelIOPath = [v2 serializeModelIOPath];
+  v27 = serializeModelIOPath == 0;
 
   if (!v27)
   {
-    v28 = [v2 serializeModelIOPath];
-    v29 = v28;
-    v32.__pn_.__r_.__value_.__r.__words[0] = [v28 UTF8String];
+    serializeModelIOPath2 = [v2 serializeModelIOPath];
+    v29 = serializeModelIOPath2;
+    v32.__pn_.__r_.__value_.__r.__words[0] = [serializeModelIOPath2 UTF8String];
     std::__fs::filesystem::path::assign[abi:ne200100]<char const*>((&retstr[3].var1.var0.var0.var1 + 1), &v32);
   }
 
@@ -278,111 +278,111 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TGIE5ModelConfigurationObjC alloc];
-  v5 = [(TGIE5ModelConfigurationObjC *)self modelType];
-  v6 = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
-  v7 = [(TGIE5ModelConfigurationObjC *)self e5Functions];
-  v8 = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
-  v9 = [(TGIE5ModelConfigurationObjC *)v4 initWithModelType:v5 modelBundlePath:v6 e5Functions:v7 adapterConfigurations:v8];
+  modelType = [(TGIE5ModelConfigurationObjC *)self modelType];
+  modelBundlePath = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
+  e5Functions = [(TGIE5ModelConfigurationObjC *)self e5Functions];
+  adapterConfigurations = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
+  v9 = [(TGIE5ModelConfigurationObjC *)v4 initWithModelType:modelType modelBundlePath:modelBundlePath e5Functions:e5Functions adapterConfigurations:adapterConfigurations];
 
-  v10 = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
-  [(TGIE5ModelConfigurationObjC *)v9 setSerializeModelIOPath:v10];
+  serializeModelIOPath = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
+  [(TGIE5ModelConfigurationObjC *)v9 setSerializeModelIOPath:serializeModelIOPath];
 
-  v11 = [(TGIE5ModelConfigurationObjC *)self baseModel];
-  [(TGIE5ModelConfigurationObjC *)v9 setBaseModel:v11];
+  baseModel = [(TGIE5ModelConfigurationObjC *)self baseModel];
+  [(TGIE5ModelConfigurationObjC *)v9 setBaseModel:baseModel];
 
   [(TGIE5ModelConfigurationObjC *)v9 setUseEnergyEfficientMode:[(TGIE5ModelConfigurationObjC *)self useEnergyEfficientMode]];
   [(TGIE5ModelConfigurationObjC *)v9 setUseModelCatalogE5CompilerCache:[(TGIE5ModelConfigurationObjC *)self useModelCatalogE5CompilerCache]];
   [(TGIE5ModelConfigurationObjC *)v9 setIgnoreUnknownTokens:[(TGIE5ModelConfigurationObjC *)self ignoreUnknownTokens]];
-  v12 = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
-  [(TGIE5ModelConfigurationObjC *)v9 setAssetIdentifier:v12];
+  assetIdentifier = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
+  [(TGIE5ModelConfigurationObjC *)v9 setAssetIdentifier:assetIdentifier];
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TGIMutableE5ModelConfigurationObjC alloc];
-  v5 = [(TGIE5ModelConfigurationObjC *)self modelType];
-  v6 = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
-  v7 = [(TGIE5ModelConfigurationObjC *)self e5Functions];
-  v8 = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
-  v9 = [(TGIE5ModelConfigurationObjC *)v4 initWithModelType:v5 modelBundlePath:v6 e5Functions:v7 adapterConfigurations:v8];
+  modelType = [(TGIE5ModelConfigurationObjC *)self modelType];
+  modelBundlePath = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
+  e5Functions = [(TGIE5ModelConfigurationObjC *)self e5Functions];
+  adapterConfigurations = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
+  v9 = [(TGIE5ModelConfigurationObjC *)v4 initWithModelType:modelType modelBundlePath:modelBundlePath e5Functions:e5Functions adapterConfigurations:adapterConfigurations];
 
-  v10 = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
-  [(TGIE5ModelConfigurationObjC *)v9 setSerializeModelIOPath:v10];
+  serializeModelIOPath = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
+  [(TGIE5ModelConfigurationObjC *)v9 setSerializeModelIOPath:serializeModelIOPath];
 
-  v11 = [(TGIE5ModelConfigurationObjC *)self baseModel];
-  [(TGIE5ModelConfigurationObjC *)v9 setBaseModel:v11];
+  baseModel = [(TGIE5ModelConfigurationObjC *)self baseModel];
+  [(TGIE5ModelConfigurationObjC *)v9 setBaseModel:baseModel];
 
   [(TGIE5ModelConfigurationObjC *)v9 setUseEnergyEfficientMode:[(TGIE5ModelConfigurationObjC *)self useEnergyEfficientMode]];
   [(TGIE5ModelConfigurationObjC *)v9 setUseModelCatalogE5CompilerCache:[(TGIE5ModelConfigurationObjC *)self useModelCatalogE5CompilerCache]];
   [(TGIE5ModelConfigurationObjC *)v9 setIgnoreUnknownTokens:[(TGIE5ModelConfigurationObjC *)self ignoreUnknownTokens]];
-  v12 = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
-  [(TGIE5ModelConfigurationObjC *)v9 setAssetIdentifier:v12];
+  assetIdentifier = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
+  [(TGIE5ModelConfigurationObjC *)v9 setAssetIdentifier:assetIdentifier];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TGIE5ModelConfigurationObjC *)self modelType];
-  v4 = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
-  v5 = [v4 hash];
+  modelType = [(TGIE5ModelConfigurationObjC *)self modelType];
+  modelBundlePath = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
+  v5 = [modelBundlePath hash];
 
-  v6 = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
-  v7 = [v6 hash];
+  adapterConfigurations = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
+  v7 = [adapterConfigurations hash];
 
-  v8 = [(TGIE5ModelConfigurationObjC *)self useEnergyEfficientMode];
-  v9 = [(TGIE5ModelConfigurationObjC *)self baseModel];
-  v10 = [v9 hash];
+  useEnergyEfficientMode = [(TGIE5ModelConfigurationObjC *)self useEnergyEfficientMode];
+  baseModel = [(TGIE5ModelConfigurationObjC *)self baseModel];
+  v10 = [baseModel hash];
 
-  v11 = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
-  v12 = [v11 hash];
+  serializeModelIOPath = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
+  v12 = [serializeModelIOPath hash];
 
-  v13 = [(TGIE5ModelConfigurationObjC *)self useModelCatalogE5CompilerCache];
-  v14 = [(TGIE5ModelConfigurationObjC *)self ignoreUnknownTokens];
-  v15 = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
-  v16 = [v15 hash];
+  useModelCatalogE5CompilerCache = [(TGIE5ModelConfigurationObjC *)self useModelCatalogE5CompilerCache];
+  ignoreUnknownTokens = [(TGIE5ModelConfigurationObjC *)self ignoreUnknownTokens];
+  assetIdentifier = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
+  v16 = [assetIdentifier hash];
 
-  return v5 ^ v3 ^ v7 ^ v8 ^ v10 ^ v12 ^ v13 ^ v14 ^ v16;
+  return v5 ^ modelType ^ v7 ^ useEnergyEfficientMode ^ v10 ^ v12 ^ useModelCatalogE5CompilerCache ^ ignoreUnknownTokens ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TGIE5ModelConfigurationObjC *)self modelType];
-    if (v6 == [v5 modelType])
+    v5 = equalCopy;
+    modelType = [(TGIE5ModelConfigurationObjC *)self modelType];
+    if (modelType == [v5 modelType])
     {
-      v7 = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
-      v8 = [v5 modelBundlePath];
-      if ([v7 isEqual:v8])
+      modelBundlePath = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
+      modelBundlePath2 = [v5 modelBundlePath];
+      if ([modelBundlePath isEqual:modelBundlePath2])
       {
-        v9 = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
-        v10 = [v5 adapterConfigurations];
-        if (TGIIsEqualAllowingNil(v9, v10))
+        adapterConfigurations = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
+        adapterConfigurations2 = [v5 adapterConfigurations];
+        if (TGIIsEqualAllowingNil(adapterConfigurations, adapterConfigurations2))
         {
-          v11 = [(TGIE5ModelConfigurationObjC *)self e5Functions];
-          v12 = [v5 e5Functions];
-          if ([v11 isEqual:v12])
+          e5Functions = [(TGIE5ModelConfigurationObjC *)self e5Functions];
+          e5Functions2 = [v5 e5Functions];
+          if ([e5Functions isEqual:e5Functions2])
           {
-            v23 = [(TGIE5ModelConfigurationObjC *)self baseModel];
-            v22 = [v5 baseModel];
-            if (TGIIsEqualAllowingNil(v23, v22))
+            baseModel = [(TGIE5ModelConfigurationObjC *)self baseModel];
+            baseModel2 = [v5 baseModel];
+            if (TGIIsEqualAllowingNil(baseModel, baseModel2))
             {
-              v21 = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
-              v20 = [v5 serializeModelIOPath];
-              if (TGIIsEqualAllowingNil(v21, v20) && (v13 = -[TGIE5ModelConfigurationObjC useEnergyEfficientMode](self, "useEnergyEfficientMode", v20), v13 == [v5 useEnergyEfficientMode]) && (v14 = -[TGIE5ModelConfigurationObjC useModelCatalogE5CompilerCache](self, "useModelCatalogE5CompilerCache"), v14 == objc_msgSend(v5, "useModelCatalogE5CompilerCache")) && (v15 = -[TGIE5ModelConfigurationObjC ignoreUnknownTokens](self, "ignoreUnknownTokens"), v15 == objc_msgSend(v5, "ignoreUnknownTokens")))
+              serializeModelIOPath = [(TGIE5ModelConfigurationObjC *)self serializeModelIOPath];
+              serializeModelIOPath2 = [v5 serializeModelIOPath];
+              if (TGIIsEqualAllowingNil(serializeModelIOPath, serializeModelIOPath2) && (v13 = -[TGIE5ModelConfigurationObjC useEnergyEfficientMode](self, "useEnergyEfficientMode", serializeModelIOPath2), v13 == [v5 useEnergyEfficientMode]) && (v14 = -[TGIE5ModelConfigurationObjC useModelCatalogE5CompilerCache](self, "useModelCatalogE5CompilerCache"), v14 == objc_msgSend(v5, "useModelCatalogE5CompilerCache")) && (v15 = -[TGIE5ModelConfigurationObjC ignoreUnknownTokens](self, "ignoreUnknownTokens"), v15 == objc_msgSend(v5, "ignoreUnknownTokens")))
               {
-                v18 = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
-                v19 = [v5 assetIdentifier];
-                v16 = v18 == v19;
+                assetIdentifier = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
+                assetIdentifier2 = [v5 assetIdentifier];
+                v16 = assetIdentifier == assetIdentifier2;
               }
 
               else
@@ -436,14 +436,14 @@
   v3 = TGIE5ModelTypeObjcToString([(TGIE5ModelConfigurationObjC *)self modelType]);
   v15[0] = v3;
   v14[1] = @"modelBundlePath";
-  v4 = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
-  v15[1] = v4;
+  modelBundlePath = [(TGIE5ModelConfigurationObjC *)self modelBundlePath];
+  v15[1] = modelBundlePath;
   v14[2] = @"e5Functions";
-  v5 = [(TGIE5ModelConfigurationObjC *)self e5Functions];
-  v15[2] = v5;
+  e5Functions = [(TGIE5ModelConfigurationObjC *)self e5Functions];
+  v15[2] = e5Functions;
   v14[3] = @"adapterConfigurations";
-  v6 = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
-  v15[3] = v6;
+  adapterConfigurations = [(TGIE5ModelConfigurationObjC *)self adapterConfigurations];
+  v15[3] = adapterConfigurations;
   v14[4] = @"useEnergyEfficientMode";
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[TGIE5ModelConfigurationObjC useEnergyEfficientMode](self, "useEnergyEfficientMode")}];
   v15[4] = v7;
@@ -454,8 +454,8 @@
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[TGIE5ModelConfigurationObjC ignoreUnknownTokens](self, "ignoreUnknownTokens")}];
   v15[6] = v9;
   v14[7] = @"assetIdentifier";
-  v10 = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
-  v15[7] = v10;
+  assetIdentifier = [(TGIE5ModelConfigurationObjC *)self assetIdentifier];
+  v15[7] = assetIdentifier;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:8];
   v12 = [v11 description];
 

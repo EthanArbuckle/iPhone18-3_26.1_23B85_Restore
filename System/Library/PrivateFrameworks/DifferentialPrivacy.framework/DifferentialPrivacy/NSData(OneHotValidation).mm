@@ -6,8 +6,8 @@
 
 - (uint64_t)isValidOneHotVectorReturningIndex:()OneHotValidation error:
 {
-  v7 = [a1 bytes];
-  v8 = [a1 length];
+  bytes = [self bytes];
+  v8 = [self length];
   v9 = 0;
   if (v8)
   {
@@ -15,8 +15,8 @@
     v11 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v12 = *(v7 + v10);
-      if (*(v7 + v10))
+      v12 = *(bytes + v10);
+      if (*(bytes + v10))
       {
         if (v12 != 1)
         {

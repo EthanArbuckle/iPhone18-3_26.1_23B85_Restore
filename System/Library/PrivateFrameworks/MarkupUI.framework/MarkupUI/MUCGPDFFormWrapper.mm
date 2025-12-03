@@ -1,18 +1,18 @@
 @interface MUCGPDFFormWrapper
-- (MUCGPDFFormWrapper)initWithForm:(CGPDFForm *)a3;
+- (MUCGPDFFormWrapper)initWithForm:(CGPDFForm *)form;
 - (void)dealloc;
 @end
 
 @implementation MUCGPDFFormWrapper
 
-- (MUCGPDFFormWrapper)initWithForm:(CGPDFForm *)a3
+- (MUCGPDFFormWrapper)initWithForm:(CGPDFForm *)form
 {
   v5.receiver = self;
   v5.super_class = MUCGPDFFormWrapper;
   result = [(MUCGPDFFormWrapper *)&v5 init];
   if (result)
   {
-    result->_pdfForm = a3;
+    result->_pdfForm = form;
   }
 
   return result;

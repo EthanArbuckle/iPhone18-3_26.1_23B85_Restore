@@ -1,34 +1,34 @@
 @interface HMDAccessoryNetworkProtectionGroupRegistry
 + (id)logCategory;
-- (BOOL)_evaluateActiveStatusForGroupWithUUID:(id)a3;
-- (BOOL)addActiveSurrogateGroup:(id)a3;
-- (BOOL)updateTargetProtectionModeForGroupWithUUID:(id)a3 protectionMode:(int64_t)a4 error:(id *)a5 requestMessage:(id)a6;
-- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)a3 notificationCenter:(id)a4;
-- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)a3 notificationCenter:(id)a4 persistedGroups:(id)a5;
+- (BOOL)_evaluateActiveStatusForGroupWithUUID:(id)d;
+- (BOOL)addActiveSurrogateGroup:(id)group;
+- (BOOL)updateTargetProtectionModeForGroupWithUUID:(id)d protectionMode:(int64_t)mode error:(id *)error requestMessage:(id)message;
+- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)home notificationCenter:(id)center;
+- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)home notificationCenter:(id)center persistedGroups:(id)groups;
 - (HMDHome)home;
 - (NSSet)activeGroups;
 - (NSSet)persistedGroups;
 - (NSUUID)messageTargetUUID;
-- (id)accessoriesForGroupWithUUID:(id)a3;
-- (id)groupRecordWithUUID:(id)a3;
-- (id)groupWithUUID:(id)a3;
+- (id)accessoriesForGroupWithUUID:(id)d;
+- (id)groupRecordWithUUID:(id)d;
+- (id)groupWithUUID:(id)d;
 - (id)logIdentifier;
-- (id)removeGroupWithUUID:(id)a3;
-- (int64_t)targetProtectionModeForGroupWithUUID:(id)a3;
-- (void)_registerForAccessoryChanges:(id)a3;
+- (id)removeGroupWithUUID:(id)d;
+- (int64_t)targetProtectionModeForGroupWithUUID:(id)d;
+- (void)_registerForAccessoryChanges:(id)changes;
 - (void)_registerForMessages;
 - (void)_setupActiveGroupsForHome;
-- (void)addActiveSurrogateGroupForAccessory:(id)a3 shouldNotifyChange:(BOOL)a4;
+- (void)addActiveSurrogateGroupForAccessory:(id)accessory shouldNotifyChange:(BOOL)change;
 - (void)configure;
-- (void)handleAddOrUpdateAccessoryNetworkProtectionGroupModel:(id)a3 message:(id)a4;
-- (void)handleAddedAccessory:(id)a3;
-- (void)handleRemoveAccessoryNetworkProtectionGroupModel:(id)a3 message:(id)a4;
-- (void)handleRemovedAccessory:(id)a3;
-- (void)handleUpdateAccessoryNetworkProtectionGroupProtectionMode:(id)a3;
-- (void)handleUpdatedAccessoryConfiguredNetworkProtectionGroup:(id)a3;
-- (void)handleUpdatedAccessoryInitialManufacturerOrCategory:(id)a3;
-- (void)notifyClientsOfAddedGroup:(id)a3;
-- (void)notifyClientsOfRemovedGroup:(id)a3;
+- (void)handleAddOrUpdateAccessoryNetworkProtectionGroupModel:(id)model message:(id)message;
+- (void)handleAddedAccessory:(id)accessory;
+- (void)handleRemoveAccessoryNetworkProtectionGroupModel:(id)model message:(id)message;
+- (void)handleRemovedAccessory:(id)accessory;
+- (void)handleUpdateAccessoryNetworkProtectionGroupProtectionMode:(id)mode;
+- (void)handleUpdatedAccessoryConfiguredNetworkProtectionGroup:(id)group;
+- (void)handleUpdatedAccessoryInitialManufacturerOrCategory:(id)category;
+- (void)notifyClientsOfAddedGroup:(id)group;
+- (void)notifyClientsOfRemovedGroup:(id)group;
 @end
 
 @implementation HMDAccessoryNetworkProtectionGroupRegistry
@@ -40,18 +40,18 @@
   return WeakRetained;
 }
 
-- (id)accessoriesForGroupWithUUID:(id)a3
+- (id)accessoriesForGroupWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
-  v6 = [v5 accessories];
+  dCopy = d;
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  accessories = [home accessories];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__HMDAccessoryNetworkProtectionGroupRegistry_accessoriesForGroupWithUUID___block_invoke;
   v10[3] = &unk_279727E00;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 hmf_objectsPassingTest:v10];
+  v11 = dCopy;
+  v7 = dCopy;
+  v8 = [accessories hmf_objectsPassingTest:v10];
 
   return v8;
 }
@@ -64,37 +64,37 @@ uint64_t __74__HMDAccessoryNetworkProtectionGroupRegistry_accessoriesForGroupWit
   return v4;
 }
 
-- (BOOL)updateTargetProtectionModeForGroupWithUUID:(id)a3 protectionMode:(int64_t)a4 error:(id *)a5 requestMessage:(id)a6
+- (BOOL)updateTargetProtectionModeForGroupWithUUID:(id)d protectionMode:(int64_t)mode error:(id *)error requestMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (a5)
+  dCopy = d;
+  messageCopy = message;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v12 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self groupRecordWithUUID:v10];
+  v12 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self groupRecordWithUUID:dCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 isPersisted];
-    v15 = [v13 group];
-    v16 = v15;
-    if (v14)
+    isPersisted = [v12 isPersisted];
+    group = [v13 group];
+    v16 = group;
+    if (isPersisted)
     {
-      v17 = [v15 modelWithObjectChangeType:2];
+      v17 = [group modelWithObjectChangeType:2];
       v18 = @"Update network protection group protection mode";
     }
 
     else
     {
-      v17 = [v15 modelForVersion:4];
+      v17 = [group modelForVersion:4];
       v18 = @"Create network protection group";
     }
 
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
@@ -102,85 +102,85 @@ uint64_t __74__HMDAccessoryNetworkProtectionGroupRegistry_accessoriesForGroupWit
       v37 = 138543874;
       v38 = v29;
       v39 = 2048;
-      v40 = a4;
+      modeCopy = mode;
       v41 = 2112;
-      v42 = v10;
+      v42 = dCopy;
       _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@Updating target protection mode to: %ld, on group with UUID:%@", &v37, 0x20u);
     }
 
     objc_autoreleasePoolPop(v26);
-    v30 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v30 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
     [v17 setTargetProtectionMode:v30];
 
     v31 = [HMDBackingStoreTransactionOptions optionsWithSource:1 destination:2 mustReplay:0 mustPush:0];
-    v32 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v27 home];
-    v33 = [v32 backingStore];
-    v34 = [v33 transaction:v18 options:v31];
+    home = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+    backingStore = [home backingStore];
+    v34 = [backingStore transaction:v18 options:v31];
 
-    [v34 add:v17 withMessage:v11];
+    [v34 add:v17 withMessage:messageCopy];
     [v34 run];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v10 UUIDString];
+      uUIDString = [dCopy UUIDString];
       v37 = 138543618;
       v38 = v22;
       v39 = 2112;
-      v40 = v23;
+      modeCopy = uUIDString;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@Cannot find network protection group with UUID %@", &v37, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
     v17 = v24;
-    if (a5)
+    if (error)
     {
       v25 = v24;
-      *a5 = v17;
+      *error = v17;
     }
 
-    [v11 respondWithError:v17];
+    [messageCopy respondWithError:v17];
   }
 
   v35 = *MEMORY[0x277D85DE8];
   return v13 != 0;
 }
 
-- (int64_t)targetProtectionModeForGroupWithUUID:(id)a3
+- (int64_t)targetProtectionModeForGroupWithUUID:(id)d
 {
-  v3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self groupWithUUID:a3];
+  v3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self groupWithUUID:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 targetProtectionMode];
+    targetProtectionMode = [v3 targetProtectionMode];
   }
 
   else
   {
-    v5 = 0;
+    targetProtectionMode = 0;
   }
 
-  return v5;
+  return targetProtectionMode;
 }
 
-- (void)handleRemovedAccessory:(id)a3
+- (void)handleRemovedAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HMDAccessoryNetworkProtectionGroupRegistry_handleRemovedAccessory___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -297,17 +297,17 @@ LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAddedAccessory:(id)a3
+- (void)handleAddedAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HMDAccessoryNetworkProtectionGroupRegistry_handleAddedAccessory___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -371,76 +371,76 @@ void __67__HMDAccessoryNetworkProtectionGroupRegistry_handleAddedAccessory___blo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemoveAccessoryNetworkProtectionGroupModel:(id)a3 message:(id)a4
+- (void)handleRemoveAccessoryNetworkProtectionGroupModel:(id)model message:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 uuid];
-    v13 = [v12 UUIDString];
+    uuid = [modelCopy uuid];
+    uUIDString = [uuid UUIDString];
     v26 = 138543618;
     v27 = v11;
     v28 = 2112;
-    v29 = v13;
+    v29 = uUIDString;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling remove of accessory network group model %@", &v26, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v14 = [v6 uuid];
-  v15 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v9 removeGroupWithUUID:v14];
+  uuid2 = [modelCopy uuid];
+  v15 = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy removeGroupWithUUID:uuid2];
 
   if (v15)
   {
     if ([v15 isActive])
     {
-      v16 = [v15 group];
-      [(HMDAccessoryNetworkProtectionGroupRegistry *)v9 notifyClientsOfRemovedGroup:v16];
+      group = [v15 group];
+      [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy notifyClientsOfRemovedGroup:group];
     }
 
-    v17 = [v7 transactionResult];
-    [v17 markChanged];
+    transactionResult = [messageCopy transactionResult];
+    [transactionResult markChanged];
 
-    [v7 respondWithPayload:0];
+    [messageCopy respondWithPayload:0];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v9;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v6 uuid];
-      v23 = [v22 UUIDString];
+      uuid3 = [modelCopy uuid];
+      uUIDString2 = [uuid3 UUIDString];
       v26 = 138543618;
       v27 = v21;
       v28 = 2112;
-      v29 = v23;
+      v29 = uUIDString2;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Accessory network protection group %@ doesn't exist to remove", &v26, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
     v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v7 respondWithError:v24];
+    [messageCopy respondWithError:v24];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAddOrUpdateAccessoryNetworkProtectionGroupModel:(id)a3 message:(id)a4
+- (void)handleAddOrUpdateAccessoryNetworkProtectionGroupModel:(id)model message:(id)message
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -448,35 +448,35 @@ void __67__HMDAccessoryNetworkProtectionGroupRegistry_handleAddedAccessory___blo
     *buf = 138543618;
     v43 = v11;
     v44 = 2112;
-    v45 = v6;
+    v45 = modelCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling add/update of accessory network protection group model: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_lock_with_options();
-  groupRecords = v9->_groupRecords;
-  v13 = [v6 uuid];
-  v14 = [(NSMutableDictionary *)groupRecords objectForKeyedSubscript:v13];
+  groupRecords = selfCopy->_groupRecords;
+  uuid = [modelCopy uuid];
+  v14 = [(NSMutableDictionary *)groupRecords objectForKeyedSubscript:uuid];
 
   if (v14)
   {
     [v14 setPersisted:1];
-    v15 = [v14 group];
-    [v15 transactionObjectUpdated:0 newValues:v6 message:v7];
+    group = [v14 group];
+    [group transactionObjectUpdated:0 newValues:modelCopy message:messageCopy];
 
-    os_unfair_lock_unlock(&v9->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v16 = objc_autoreleasePoolPush();
-    v17 = v9;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v6 uuid];
-      v21 = [v20 UUIDString];
+      uuid2 = [modelCopy uuid];
+      uUIDString = [uuid2 UUIDString];
       *buf = 138543618;
       v43 = v19;
       v44 = 2112;
-      v45 = v21;
+      v45 = uUIDString;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@Marked existing record for network protection group %@ as persisted", buf, 0x16u);
     }
 
@@ -485,45 +485,45 @@ void __67__HMDAccessoryNetworkProtectionGroupRegistry_handleAddedAccessory___blo
 
   else
   {
-    v22 = [[HMDAccessoryNetworkProtectionGroup alloc] initWithModel:v6];
-    v23 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v9 home];
-    [(HMDAccessoryNetworkProtectionGroup *)v22 configureWithHome:v23];
+    v22 = [[HMDAccessoryNetworkProtectionGroup alloc] initWithModel:modelCopy];
+    home = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+    [(HMDAccessoryNetworkProtectionGroup *)v22 configureWithHome:home];
 
     v24 = [HMDAccessoryNetworkProtectionGroupRecord recordWithGroup:v22 active:0 persisted:1];
-    v25 = v9->_groupRecords;
-    v26 = [v6 uuid];
-    [(NSMutableDictionary *)v25 setObject:v24 forKeyedSubscript:v26];
+    v25 = selfCopy->_groupRecords;
+    uuid3 = [modelCopy uuid];
+    [(NSMutableDictionary *)v25 setObject:v24 forKeyedSubscript:uuid3];
 
-    os_unfair_lock_unlock(&v9->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v27 = objc_autoreleasePoolPush();
-    v28 = v9;
+    v28 = selfCopy;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [v6 uuid];
-      v32 = [v31 UUIDString];
+      uuid4 = [modelCopy uuid];
+      uUIDString2 = [uuid4 UUIDString];
       *buf = 138543618;
       v43 = v30;
       v44 = 2112;
-      v45 = v32;
+      v45 = uUIDString2;
       _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_INFO, "%{public}@Added new inactive accessory network protection group model %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v27);
-    v33 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v28 workQueue];
+    workQueue = [(HMDAccessoryNetworkProtectionGroupRegistry *)v28 workQueue];
     v36 = MEMORY[0x277D85DD0];
     v37 = 3221225472;
     v38 = __108__HMDAccessoryNetworkProtectionGroupRegistry_handleAddOrUpdateAccessoryNetworkProtectionGroupModel_message___block_invoke;
     v39 = &unk_2797359B0;
     v40 = v28;
-    v41 = v6;
-    dispatch_async(v33, &v36);
+    v41 = modelCopy;
+    dispatch_async(workQueue, &v36);
 
-    v34 = [v7 transactionResult];
-    [v34 markChanged];
+    transactionResult = [messageCopy transactionResult];
+    [transactionResult markChanged];
 
-    [v7 respondWithPayload:0];
+    [messageCopy respondWithPayload:0];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -543,50 +543,50 @@ void __108__HMDAccessoryNetworkProtectionGroupRegistry_handleAddOrUpdateAccessor
   [(HMDAccessoryNetworkProtectionGroupRegistry *)self _registerForMessages];
 }
 
-- (void)addActiveSurrogateGroupForAccessory:(id)a3 shouldNotifyChange:(BOOL)a4
+- (void)addActiveSurrogateGroupForAccessory:(id)accessory shouldNotifyChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
-  v8 = v6;
-  v9 = [v8 defaultNetworkProtectionGroupUUID];
+  accessoryCopy = accessory;
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  v8 = accessoryCopy;
+  defaultNetworkProtectionGroupUUID = [v8 defaultNetworkProtectionGroupUUID];
 
-  if (v9)
+  if (defaultNetworkProtectionGroupUUID)
   {
     v10 = [HMDAccessoryNetworkProtectionGroup alloc];
-    v11 = [v8 defaultNetworkProtectionGroupUUID];
-    v12 = [v8 initialManufacturer];
-    v13 = [v8 initialCategoryIdentifier];
-    v9 = [(HMDAccessoryNetworkProtectionGroup *)v10 initWithUUID:v11 manufacturer:v12 category:v13 targetProtectionMode:0];
+    defaultNetworkProtectionGroupUUID2 = [v8 defaultNetworkProtectionGroupUUID];
+    initialManufacturer = [v8 initialManufacturer];
+    initialCategoryIdentifier = [v8 initialCategoryIdentifier];
+    defaultNetworkProtectionGroupUUID = [(HMDAccessoryNetworkProtectionGroup *)v10 initWithUUID:defaultNetworkProtectionGroupUUID2 manufacturer:initialManufacturer category:initialCategoryIdentifier targetProtectionMode:0];
 
-    [(HMDAccessoryNetworkProtectionGroup *)v9 configureWithHome:v7];
+    [(HMDAccessoryNetworkProtectionGroup *)defaultNetworkProtectionGroupUUID configureWithHome:home];
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
-  if (!v9)
+  if (!defaultNetworkProtectionGroupUUID)
   {
     if (v17)
     {
       v39 = HMFGetLogIdentifier();
-      v40 = [v8 name];
-      v49 = [v8 uuid];
-      v41 = [v49 UUIDString];
-      v42 = [v8 initialManufacturer];
-      v43 = [v8 initialCategoryIdentifier];
+      name = [v8 name];
+      uuid = [v8 uuid];
+      uUIDString = [uuid UUIDString];
+      initialManufacturer2 = [v8 initialManufacturer];
+      initialCategoryIdentifier2 = [v8 initialCategoryIdentifier];
       *buf = 138544386;
       v51 = v39;
       v52 = 2112;
-      v53 = v40;
+      v53 = name;
       v54 = 2112;
-      v55 = v41;
+      v55 = uUIDString;
       v56 = 2112;
-      v57 = v42;
+      v57 = initialManufacturer2;
       v58 = 2112;
-      v59 = v43;
+      v59 = initialCategoryIdentifier2;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Unable to generate surrogate group due to missing information for accessory name: %@ UUID: %@ initialManufacturer: %@ initialCategory: %@ ", buf, 0x34u);
     }
 
@@ -600,19 +600,19 @@ void __108__HMDAccessoryNetworkProtectionGroupRegistry_handleAddOrUpdateAccessor
     *buf = 138543618;
     v51 = v18;
     v52 = 2112;
-    v53 = v9;
+    v53 = defaultNetworkProtectionGroupUUID;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Attempting to add active surrogate network protection group: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
   v19 = objc_autoreleasePoolPush();
-  v20 = v15;
+  v20 = selfCopy;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v22 = HMFGetLogIdentifier();
-    v23 = [(HMDAccessoryNetworkProtectionGroup *)v9 uuid];
-    v24 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v20 groupWithUUID:v23];
+    uuid2 = [(HMDAccessoryNetworkProtectionGroup *)defaultNetworkProtectionGroupUUID uuid];
+    v24 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v20 groupWithUUID:uuid2];
     *buf = 138543618;
     v51 = v22;
     v52 = 2112;
@@ -621,7 +621,7 @@ void __108__HMDAccessoryNetworkProtectionGroupRegistry_handleAddOrUpdateAccessor
   }
 
   objc_autoreleasePoolPop(v19);
-  v25 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v20 addActiveSurrogateGroup:v9];
+  v25 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v20 addActiveSurrogateGroup:defaultNetworkProtectionGroupUUID];
   v26 = objc_autoreleasePoolPush();
   v27 = v20;
   v28 = HMFGetOSLogHandle();
@@ -631,12 +631,12 @@ void __108__HMDAccessoryNetworkProtectionGroupRegistry_handleAddOrUpdateAccessor
     if (v29)
     {
       v45 = HMFGetLogIdentifier();
-      v46 = [(HMDAccessoryNetworkProtectionGroup *)v9 uuid];
-      v47 = [v46 UUIDString];
+      uuid3 = [(HMDAccessoryNetworkProtectionGroup *)defaultNetworkProtectionGroupUUID uuid];
+      uUIDString2 = [uuid3 UUIDString];
       *buf = 138543874;
       v51 = v45;
       v52 = 2112;
-      v53 = v47;
+      v53 = uUIDString2;
       v54 = 2112;
       v55 = v8;
       _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@No change to status of network protection group %@ on behalf of %@", buf, 0x20u);
@@ -651,8 +651,8 @@ LABEL_21:
   if (v29)
   {
     v30 = HMFGetLogIdentifier();
-    v31 = [(HMDAccessoryNetworkProtectionGroup *)v9 uuid];
-    v32 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v27 groupWithUUID:v31];
+    uuid4 = [(HMDAccessoryNetworkProtectionGroup *)defaultNetworkProtectionGroupUUID uuid];
+    v32 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v27 groupWithUUID:uuid4];
     *buf = 138543618;
     v51 = v30;
     v52 = 2112;
@@ -661,10 +661,10 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v26);
-  if (v4)
+  if (changeCopy)
   {
-    v33 = [(HMDAccessoryNetworkProtectionGroup *)v9 uuid];
-    v34 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v27 groupWithUUID:v33];
+    uuid5 = [(HMDAccessoryNetworkProtectionGroup *)defaultNetworkProtectionGroupUUID uuid];
+    v34 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v27 groupWithUUID:uuid5];
 
     v35 = objc_autoreleasePoolPush();
     v36 = v27;
@@ -688,68 +688,68 @@ LABEL_22:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyClientsOfRemovedGroup:(id)a3
+- (void)notifyClientsOfRemovedGroup:(id)group
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self notificationCenter];
+  groupCopy = group;
+  notificationCenter = [(HMDAccessoryNetworkProtectionGroupRegistry *)self notificationCenter];
   v19 = *MEMORY[0x277CCEBE0];
-  v20[0] = v4;
+  v20[0] = groupCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  [v5 postNotificationName:@"HMDAccessoryNetworkProtectionGroupProtectionModeDeactivated" object:self userInfo:v6];
+  [notificationCenter postNotificationName:@"HMDAccessoryNetworkProtectionGroupProtectionModeDeactivated" object:self userInfo:v6];
 
-  v7 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
   v8 = MEMORY[0x277D0F848];
   v9 = *MEMORY[0x277CCEC00];
-  v10 = [v7 messageDestination];
+  messageDestination = [home messageDestination];
   v17 = *MEMORY[0x277CCEC10];
-  v11 = [v4 uuid];
-  v12 = [v11 UUIDString];
-  v18 = v12;
+  uuid = [groupCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v18 = uUIDString;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  v14 = [v8 messageWithName:v9 destination:v10 payload:v13];
+  v14 = [v8 messageWithName:v9 destination:messageDestination payload:v13];
 
   [v14 setRequiresSPIEntitlement:1];
-  v15 = [v7 msgDispatcher];
-  [v15 sendMessage:v14 completionHandler:0];
+  msgDispatcher = [home msgDispatcher];
+  [msgDispatcher sendMessage:v14 completionHandler:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyClientsOfAddedGroup:(id)a3
+- (void)notifyClientsOfAddedGroup:(id)group
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self notificationCenter];
+  groupCopy = group;
+  notificationCenter = [(HMDAccessoryNetworkProtectionGroupRegistry *)self notificationCenter];
   v19 = *MEMORY[0x277CCEBE0];
   v6 = v19;
-  v20[0] = v4;
+  v20[0] = groupCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  [v5 postNotificationName:@"HMDAccessoryNetworkProtectionGroupProtectionModeActivated" object:self userInfo:v7];
+  [notificationCenter postNotificationName:@"HMDAccessoryNetworkProtectionGroupProtectionModeActivated" object:self userInfo:v7];
 
-  v8 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
   v9 = MEMORY[0x277D0F848];
   v10 = *MEMORY[0x277CCEBC8];
-  v11 = [v8 messageDestination];
+  messageDestination = [home messageDestination];
   v17 = v6;
-  v12 = encodeRootObjectForSPIClients(v4);
+  v12 = encodeRootObjectForSPIClients(groupCopy);
   v18 = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  v14 = [v9 messageWithName:v10 destination:v11 payload:v13];
+  v14 = [v9 messageWithName:v10 destination:messageDestination payload:v13];
 
   [v14 setRequiresSPIEntitlement:1];
-  v15 = [v8 msgDispatcher];
-  [v15 sendMessage:v14 completionHandler:0];
+  msgDispatcher = [home msgDispatcher];
+  [msgDispatcher sendMessage:v14 completionHandler:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_evaluateActiveStatusForGroupWithUUID:(id)a3
+- (BOOL)_evaluateActiveStatusForGroupWithUUID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -757,7 +757,7 @@ LABEL_22:
     *buf = 138543618;
     v33 = v7;
     v34 = 2112;
-    v35 = v26;
+    v35 = dCopy;
     _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@evaluating active status for groupUUID: %@", buf, 0x16u);
   }
 
@@ -766,10 +766,10 @@ LABEL_22:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v5 home];
-  v9 = [v8 accessories];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+  accessories = [home accessories];
 
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v10 = [accessories countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
     v11 = *v28;
@@ -779,7 +779,7 @@ LABEL_22:
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accessories);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
@@ -798,8 +798,8 @@ LABEL_22:
 
         if ([v15 supportsNetworkProtection])
         {
-          v16 = [v15 networkProtectionGroupUUID];
-          v17 = [v16 isEqual:v26];
+          networkProtectionGroupUUID = [v15 networkProtectionGroupUUID];
+          v17 = [networkProtectionGroupUUID isEqual:dCopy];
 
           if (v17)
           {
@@ -812,8 +812,8 @@ LABEL_22:
         else
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = v5;
-          v20 = v5;
+          v19 = selfCopy;
+          v20 = selfCopy;
           v21 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
@@ -824,11 +824,11 @@ LABEL_22:
           }
 
           objc_autoreleasePoolPop(v18);
-          v5 = v19;
+          selfCopy = v19;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v10 = [accessories countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v10);
@@ -836,7 +836,7 @@ LABEL_22:
 
 LABEL_19:
 
-  v23 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v5 _updateGroupWithUUID:v26 active:v10];
+  v23 = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy _updateGroupWithUUID:dCopy active:v10];
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
@@ -845,23 +845,23 @@ LABEL_19:
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v4 home];
-    v9 = [v8 accessories];
-    v10 = [v7 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
-    v11 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v4 home];
-    v12 = [v11 name];
+    home = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+    accessories = [home accessories];
+    v10 = [v7 numberWithUnsignedInteger:{objc_msgSend(accessories, "count")}];
+    home2 = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+    name = [home2 name];
     *buf = 138543874;
     v29 = v6;
     v30 = 2112;
     v31 = v10;
     v32 = 2112;
-    v33 = v12;
+    v33 = name;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Evaluating active network protection groups based on %@ existing accessories for home %@", buf, 0x20u);
   }
 
@@ -870,10 +870,10 @@ LABEL_19:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v4 home];
-  v14 = [v13 accessories];
+  home3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+  accessories2 = [home3 accessories];
 
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v15 = [accessories2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -885,7 +885,7 @@ LABEL_19:
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(accessories2);
         }
 
         v19 = *(*(&v23 + 1) + 8 * v18);
@@ -904,15 +904,15 @@ LABEL_19:
 
         if ([v21 supportsNetworkProtection])
         {
-          [(HMDAccessoryNetworkProtectionGroupRegistry *)v4 _registerForAccessoryChanges:v21];
-          [(HMDAccessoryNetworkProtectionGroupRegistry *)v4 _setupProtectionGroupForAccessory:v21 shouldNotifyChange:0];
+          [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy _registerForAccessoryChanges:v21];
+          [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy _setupProtectionGroupForAccessory:v21 shouldNotifyChange:0];
         }
 
         ++v18;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v16 = [accessories2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v16);
@@ -921,24 +921,24 @@ LABEL_19:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForAccessoryChanges:(id)a3
+- (void)_registerForAccessoryChanges:(id)changes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
     *buf = 0;
     *&buf[8] = 0;
-    v9 = [v4 uuid];
+    uuid = [changesCopy uuid];
 
-    if (v9)
+    if (uuid)
     {
-      v10 = [v4 uuid];
-      [v10 getUUIDBytes:buf];
+      uuid2 = [changesCopy uuid];
+      [uuid2 getUUIDBytes:buf];
     }
 
     else
@@ -957,24 +957,24 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v5);
-  v11 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v6 notificationCenter];
-  [v11 addObserver:v6 selector:sel_handleUpdatedAccessoryInitialManufacturerOrCategory_ name:@"HMDAccessoryManufacturerUpdatedNotification" object:v4];
+  notificationCenter = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy notificationCenter];
+  [notificationCenter addObserver:selfCopy selector:sel_handleUpdatedAccessoryInitialManufacturerOrCategory_ name:@"HMDAccessoryManufacturerUpdatedNotification" object:changesCopy];
 
-  v12 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v6 notificationCenter];
-  [v12 addObserver:v6 selector:sel_handleUpdatedAccessoryInitialManufacturerOrCategory_ name:@"HMDAccessoryCategoryUpdatedNotification" object:v4];
+  notificationCenter2 = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy notificationCenter];
+  [notificationCenter2 addObserver:selfCopy selector:sel_handleUpdatedAccessoryInitialManufacturerOrCategory_ name:@"HMDAccessoryCategoryUpdatedNotification" object:changesCopy];
 
-  v13 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v6 notificationCenter];
-  [v13 addObserver:v6 selector:sel_handleUpdatedAccessoryConfiguredNetworkProtectionGroup_ name:@"HMDAccessoryConfiguredNetworkProtectionGroupUpdatedNotification" object:v4];
+  notificationCenter3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy notificationCenter];
+  [notificationCenter3 addObserver:selfCopy selector:sel_handleUpdatedAccessoryConfiguredNetworkProtectionGroup_ name:@"HMDAccessoryConfiguredNetworkProtectionGroupUpdatedNotification" object:changesCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedAccessoryConfiguredNetworkProtectionGroup:(id)a3
+- (void)handleUpdatedAccessoryConfiguredNetworkProtectionGroup:(id)group
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -985,15 +985,15 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v6 workQueue];
+  workQueue = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __101__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryConfiguredNetworkProtectionGroup___block_invoke;
   v12[3] = &unk_2797359B0;
-  v13 = v4;
-  v14 = v6;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v13 = groupCopy;
+  v14 = selfCopy;
+  v10 = groupCopy;
+  dispatch_async(workQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1073,12 +1073,12 @@ void __101__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryCon
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedAccessoryInitialManufacturerOrCategory:(id)a3
+- (void)handleUpdatedAccessoryInitialManufacturerOrCategory:(id)category
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoryCopy = category;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1089,15 +1089,15 @@ void __101__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryCon
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v6 workQueue];
+  workQueue = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy workQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInitialManufacturerOrCategory___block_invoke;
   v12[3] = &unk_2797359B0;
-  v13 = v4;
-  v14 = v6;
-  v10 = v4;
-  dispatch_async(v9, v12);
+  v13 = categoryCopy;
+  v14 = selfCopy;
+  v10 = categoryCopy;
+  dispatch_async(workQueue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1184,12 +1184,12 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdateAccessoryNetworkProtectionGroupProtectionMode:(id)a3
+- (void)handleUpdateAccessoryNetworkProtectionGroupProtectionMode:(id)mode
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1200,26 +1200,26 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessoryNetworkProtectionGroupRegistry *)v6 home];
-  v10 = [v9 networkRouterSupport];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)selfCopy home];
+  networkRouterSupport = [home networkRouterSupport];
 
-  if ((v10 & 2) != 0)
+  if ((networkRouterSupport & 2) != 0)
   {
-    v16 = [v4 uuidForKey:*MEMORY[0x277CCEC10]];
+    v16 = [modeCopy uuidForKey:*MEMORY[0x277CCEC10]];
     if (v16)
     {
-      v17 = [v4 numberForKey:*MEMORY[0x277CCEBF0]];
+      v17 = [modeCopy numberForKey:*MEMORY[0x277CCEBF0]];
       if (v17)
       {
         v18 = v17;
         v29 = 0;
-        -[HMDAccessoryNetworkProtectionGroupRegistry updateTargetProtectionModeForGroupWithUUID:protectionMode:error:requestMessage:](v6, "updateTargetProtectionModeForGroupWithUUID:protectionMode:error:requestMessage:", v16, [v17 integerValue], &v29, v4);
+        -[HMDAccessoryNetworkProtectionGroupRegistry updateTargetProtectionModeForGroupWithUUID:protectionMode:error:requestMessage:](selfCopy, "updateTargetProtectionModeForGroupWithUUID:protectionMode:error:requestMessage:", v16, [v17 integerValue], &v29, modeCopy);
       }
 
       else
       {
         v23 = objc_autoreleasePoolPush();
-        v24 = v6;
+        v24 = selfCopy;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
@@ -1231,7 +1231,7 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
 
         objc_autoreleasePoolPop(v23);
         v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-        [v4 respondWithError:v27];
+        [modeCopy respondWithError:v27];
 
         v18 = 0;
       }
@@ -1240,7 +1240,7 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v6;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -1252,14 +1252,14 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
 
       objc_autoreleasePoolPop(v19);
       v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      [v4 respondWithError:v18];
+      [modeCopy respondWithError:v18];
     }
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1274,7 +1274,7 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
 
     objc_autoreleasePoolPop(v11);
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    [v4 respondWithError:v16];
+    [modeCopy respondWithError:v16];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -1283,43 +1283,43 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
 - (void)_registerForMessages
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
-  v4 = [v3 administratorHandler];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  administratorHandler = [home administratorHandler];
   v5 = *MEMORY[0x277CCEBF8];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v10[0] = v6;
   v7 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v10[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
-  [v4 registerForMessage:v5 receiver:self policies:v8 selector:sel_handleUpdateAccessoryNetworkProtectionGroupProtectionMode_];
+  [administratorHandler registerForMessage:v5 receiver:self policies:v8 selector:sel_handleUpdateAccessoryNetworkProtectionGroupProtectionMode_];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
-  v3 = [v2 messageTargetUUID];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  messageTargetUUID = [home messageTargetUUID];
 
-  return v3;
+  return messageTargetUUID;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDAccessoryNetworkProtectionGroupRegistry *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (id)removeGroupWithUUID:(id)a3
+- (id)removeGroupWithUUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1327,15 +1327,15 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
     v12 = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = dCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing group with UUID: %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(NSMutableDictionary *)v6->_groupRecords objectForKeyedSubscript:v4];
+  v9 = [(NSMutableDictionary *)selfCopy->_groupRecords objectForKeyedSubscript:dCopy];
   if (v9)
   {
-    [(NSMutableDictionary *)v6->_groupRecords removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_groupRecords removeObjectForKey:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1345,13 +1345,13 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   return v9;
 }
 
-- (BOOL)addActiveSurrogateGroup:(id)a3
+- (BOOL)addActiveSurrogateGroup:(id)group
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1359,36 +1359,36 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
     v21 = 138543618;
     v22 = v8;
     v23 = 2112;
-    v24 = v4;
+    v24 = groupCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Adding active surrogate group: %@", &v21, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  groupRecords = v6->_groupRecords;
-  v10 = [v4 uuid];
-  v11 = [(NSMutableDictionary *)groupRecords objectForKeyedSubscript:v10];
+  groupRecords = selfCopy->_groupRecords;
+  uuid = [groupCopy uuid];
+  v11 = [(NSMutableDictionary *)groupRecords objectForKeyedSubscript:uuid];
 
   if (v11)
   {
-    v12 = v6->_groupRecords;
-    v13 = [v4 uuid];
-    v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
+    v12 = selfCopy->_groupRecords;
+    uuid2 = [groupCopy uuid];
+    v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:uuid2];
 
-    v15 = [v14 isActive];
-    if ((v15 & 1) == 0)
+    isActive = [v14 isActive];
+    if ((isActive & 1) == 0)
     {
       [v14 setActive:1];
     }
 
-    v16 = v15 ^ 1;
+    v16 = isActive ^ 1;
   }
 
   else
   {
-    v14 = [HMDAccessoryNetworkProtectionGroupRecord recordWithGroup:v4 active:1 persisted:0];
-    v17 = v6->_groupRecords;
-    v18 = [v4 uuid];
-    [(NSMutableDictionary *)v17 setObject:v14 forKeyedSubscript:v18];
+    v14 = [HMDAccessoryNetworkProtectionGroupRecord recordWithGroup:groupCopy active:1 persisted:0];
+    v17 = selfCopy->_groupRecords;
+    uuid3 = [groupCopy uuid];
+    [(NSMutableDictionary *)v17 setObject:v14 forKeyedSubscript:uuid3];
 
     v16 = 1;
   }
@@ -1398,19 +1398,19 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   return v16;
 }
 
-- (id)groupWithUUID:(id)a3
+- (id)groupWithUUID:(id)d
 {
-  v3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self groupRecordWithUUID:a3];
-  v4 = [v3 group];
+  v3 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self groupRecordWithUUID:d];
+  group = [v3 group];
 
-  return v4;
+  return group;
 }
 
-- (id)groupRecordWithUUID:(id)a3
+- (id)groupRecordWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_groupRecords objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_groupRecords objectForKeyedSubscript:dCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
@@ -1425,8 +1425,8 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_groupRecords allValues];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_groupRecords allValues];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -1436,18 +1436,18 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 isActive])
         {
-          v9 = [v8 group];
-          [v3 addObject:v9];
+          group = [v8 group];
+          [v3 addObject:group];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -1469,8 +1469,8 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_groupRecords allValues];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_groupRecords allValues];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -1480,18 +1480,18 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 isPersisted])
         {
-          v9 = [v8 group];
-          [v3 addObject:v9];
+          group = [v8 group];
+          [v3 addObject:group];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -1504,26 +1504,26 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
   return v10;
 }
 
-- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)a3 notificationCenter:(id)a4 persistedGroups:(id)a5
+- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)home notificationCenter:(id)center persistedGroups:(id)groups
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self initWithHome:v8 notificationCenter:v9];
+  homeCopy = home;
+  centerCopy = center;
+  groupsCopy = groups;
+  v11 = [(HMDAccessoryNetworkProtectionGroupRegistry *)self initWithHome:homeCopy notificationCenter:centerCopy];
   v12 = v11;
-  if (v10 && v11)
+  if (groupsCopy && v11)
   {
-    v37 = v10;
-    v38 = v9;
+    v37 = groupsCopy;
+    v38 = centerCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v10;
+    obj = groupsCopy;
     v13 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
     v39 = v12;
-    v40 = v8;
+    v40 = homeCopy;
     if (v13)
     {
       v14 = v13;
@@ -1544,22 +1544,22 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
             v21 = HMFGetLogIdentifier();
-            v22 = [v8 uuid];
-            v23 = [v22 UUIDString];
+            uuid = [homeCopy uuid];
+            uUIDString = [uuid UUIDString];
             *buf = 138543874;
             v52 = v21;
             v53 = 2112;
-            v54 = v23;
+            v54 = uUIDString;
             v55 = 2112;
             v56 = v17;
             _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_DEBUG, "%{public}@[%@] Loading persisted group: %@", buf, 0x20u);
 
-            v8 = v40;
+            homeCopy = v40;
             v12 = v39;
           }
 
           objc_autoreleasePoolPop(v18);
-          [v17 configureWithHome:v8];
+          [v17 configureWithHome:homeCopy];
         }
 
         v14 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
@@ -1591,8 +1591,8 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
 
           v31 = *(*(&v46 + 1) + 8 * j);
           v32 = [HMDAccessoryNetworkProtectionGroupRecord recordWithGroup:v31 active:0 persisted:1, v37, v38];
-          v33 = [v31 uuid];
-          [(NSMutableDictionary *)v25 setObject:v32 forKeyedSubscript:v33];
+          uuid2 = [v31 uuid];
+          [(NSMutableDictionary *)v25 setObject:v32 forKeyedSubscript:uuid2];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v46 objects:buf count:16];
@@ -1605,33 +1605,33 @@ void __98__HMDAccessoryNetworkProtectionGroupRegistry_handleUpdatedAccessoryInit
     groupRecords = v39->_groupRecords;
     v39->_groupRecords = v25;
 
-    v8 = v40;
-    v10 = v37;
-    v9 = v38;
+    homeCopy = v40;
+    groupsCopy = v37;
+    centerCopy = v38;
   }
 
   v35 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)a3 notificationCenter:(id)a4
+- (HMDAccessoryNetworkProtectionGroupRegistry)initWithHome:(id)home notificationCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  centerCopy = center;
   v14.receiver = self;
   v14.super_class = HMDAccessoryNetworkProtectionGroupRegistry;
   v8 = [(HMDAccessoryNetworkProtectionGroupRegistry *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     groupRecords = v8->_groupRecords;
-    v8->_groupRecords = v9;
+    v8->_groupRecords = dictionary;
 
-    objc_storeWeak(&v8->_home, v6);
-    objc_storeStrong(&v8->_notificationCenter, a4);
-    v11 = [v6 workQueue];
+    objc_storeWeak(&v8->_home, homeCopy);
+    objc_storeStrong(&v8->_notificationCenter, center);
+    workQueue = [homeCopy workQueue];
     workQueue = v8->_workQueue;
-    v8->_workQueue = v11;
+    v8->_workQueue = workQueue;
   }
 
   return v8;

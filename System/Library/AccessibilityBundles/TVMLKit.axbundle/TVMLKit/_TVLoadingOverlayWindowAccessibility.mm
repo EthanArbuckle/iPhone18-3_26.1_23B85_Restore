@@ -15,10 +15,10 @@
     _AXAssert();
   }
 
-  v5 = [v4 firstObject];
-  v6 = [v5 _accessibilityViewIsVisible];
+  firstObject = [v4 firstObject];
+  _accessibilityViewIsVisible = [firstObject _accessibilityViewIsVisible];
 
-  return v6;
+  return _accessibilityViewIsVisible;
 }
 
 @end

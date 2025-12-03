@@ -1,44 +1,44 @@
 @interface NTKVideoPlayerSingleVideoDataSource
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 andListing:(id)a5;
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 endBehavior:(unint64_t)a5 andFilename:(id)a6;
-- (id)initForDevice:(id)a3 listing:(id)a4 posterImage:(id)a5;
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image andListing:(id)listing;
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image endBehavior:(unint64_t)behavior andFilename:(id)filename;
+- (id)initForDevice:(id)device listing:(id)listing posterImage:(id)image;
 @end
 
 @implementation NTKVideoPlayerSingleVideoDataSource
 
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 andListing:(id)a5
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image andListing:(id)listing
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[NTKVideoPlayerSingleVideoDataSource alloc] initForDevice:v9 listing:v7 posterImage:v8];
+  listingCopy = listing;
+  imageCopy = image;
+  deviceCopy = device;
+  v10 = [[NTKVideoPlayerSingleVideoDataSource alloc] initForDevice:deviceCopy listing:listingCopy posterImage:imageCopy];
 
   return v10;
 }
 
-+ (id)dataSourceForDevice:(id)a3 withPosterImage:(id)a4 endBehavior:(unint64_t)a5 andFilename:(id)a6
++ (id)dataSourceForDevice:(id)device withPosterImage:(id)image endBehavior:(unint64_t)behavior andFilename:(id)filename
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [NTKVideoPlayerListing listingForDevice:v10 withFilename:a6];
-  [v11 setEndBehavior:a5];
-  v12 = [[NTKVideoPlayerSingleVideoDataSource alloc] initForDevice:v10 listing:v11 posterImage:v9];
+  imageCopy = image;
+  deviceCopy = device;
+  v11 = [NTKVideoPlayerListing listingForDevice:deviceCopy withFilename:filename];
+  [v11 setEndBehavior:behavior];
+  v12 = [[NTKVideoPlayerSingleVideoDataSource alloc] initForDevice:deviceCopy listing:v11 posterImage:imageCopy];
 
   return v12;
 }
 
-- (id)initForDevice:(id)a3 listing:(id)a4 posterImage:(id)a5
+- (id)initForDevice:(id)device listing:(id)listing posterImage:(id)image
 {
-  v8 = a4;
-  v9 = a5;
+  listingCopy = listing;
+  imageCopy = image;
   v13.receiver = self;
   v13.super_class = NTKVideoPlayerSingleVideoDataSource;
   v10 = [(NTKVideoPlayerDataSource *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_listing, a4);
-    [(NTKVideoPlayerDataSource *)v11 setPosterImage:v9];
+    objc_storeStrong(&v10->_listing, listing);
+    [(NTKVideoPlayerDataSource *)v11 setPosterImage:imageCopy];
   }
 
   return v11;

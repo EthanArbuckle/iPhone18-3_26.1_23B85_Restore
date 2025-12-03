@@ -12,12 +12,12 @@
   v10[0] = MEMORY[0x277CBEC28];
   v9[0] = kADCoreDeviceConfigurationKeyVerboseLogs;
   v9[1] = kADCoreDeviceConfigurationKeyJasperPerformanceOverridePath;
-  v3 = [MEMORY[0x277CBEB68] null];
-  v10[1] = v3;
+  null = [MEMORY[0x277CBEB68] null];
+  v10[1] = null;
   v9[2] = kADCoreDeviceConfigurationKeyJasperPerformanceEmulatedDevice;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
   v9[3] = kADCoreDeviceConfigurationKeyWriteCoverage;
-  v10[2] = v4;
+  v10[2] = null2;
   v10[3] = &unk_2852520B8;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:4];
   v8.receiver = self;
@@ -52,7 +52,7 @@ void __65__ADCoreDeviceConfiguration_registerVerbosityConfigurationUpdate__block
     block[1] = 3221225472;
     block[2] = __48__ADCoreDeviceConfiguration_sharedConfiguration__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (+[ADCoreDeviceConfiguration sharedConfiguration]::onceToken != -1)
     {
       dispatch_once(&+[ADCoreDeviceConfiguration sharedConfiguration]::onceToken, block);

@@ -1,46 +1,46 @@
 @interface SWCDatabase
 + (OS_dispatch_queue)queue;
 + (SWCDatabase)sharedDatabase;
-+ (id)_archivedDataFromStorage:(id)a3 error:(id *)a4;
-+ (id)_storageFromArchivedData:(id)a3 error:(id *)a4;
-+ (id)loadContentsOfURL:(id)a3 error:(id *)a4;
-- (BOOL)_deleteStorageItemReturningError:(id *)a3;
-- (BOOL)_updateStorageItemWithData:(id)a3 error:(id *)a4;
-- (BOOL)addEntries:(id)a3;
-- (BOOL)removeEntries:(id)a3;
-- (BOOL)saveReturningError:(id *)a3;
++ (id)_archivedDataFromStorage:(id)storage error:(id *)error;
++ (id)_storageFromArchivedData:(id)data error:(id *)error;
++ (id)loadContentsOfURL:(id)l error:(id *)error;
+- (BOOL)_deleteStorageItemReturningError:(id *)error;
+- (BOOL)_updateStorageItemWithData:(id)data error:(id *)error;
+- (BOOL)addEntries:(id)entries;
+- (BOOL)removeEntries:(id)entries;
+- (BOOL)saveReturningError:(id *)error;
 - (NSURL)storageURL;
-- (id)_dataFromStorageReturningError:(id *)a3;
-- (id)_dataURLReturningError:(id *)a3;
+- (id)_dataFromStorageReturningError:(id *)error;
+- (id)_dataURLReturningError:(id *)error;
 - (id)_initShared;
 - (id)_storageForArchiving;
-- (id)entry:(id)a3;
-- (id)entryMatchingService:(id)a3 domain:(id)a4 appID:(id)a5;
-- (id)entryMatchingServiceSpecifier:(id)a3;
-- (void)_removeSettingsForKeysNoSave:(id)a3 serviceSpecifier:(id)a4;
-- (void)_reorderAppLinks:(id)a3 domain:(id)a4;
+- (id)entry:(id)entry;
+- (id)entryMatchingService:(id)service domain:(id)domain appID:(id)d;
+- (id)entryMatchingServiceSpecifier:(id)specifier;
+- (void)_removeSettingsForKeysNoSave:(id)save serviceSpecifier:(id)specifier;
+- (void)_reorderAppLinks:(id)links domain:(id)domain;
 - (void)_scheduleSave;
 - (void)cleanOldSettings;
-- (void)enumerateEntries:(id)a3 matchingService:(id)a4 domain:(id)a5 appID:(id)a6 block:(id)a7;
-- (void)enumerateEntries:(id)a3 matchingServiceSpecifier:(id)a4 block:(id)a5;
-- (void)enumerateEntriesMatchingService:(id)a3 exactDomain:(id)a4 appID:(id)a5 block:(id)a6;
-- (void)enumerateEntriesMatchingServiceSpecifier:(id)a3 block:(id)a4;
-- (void)enumerateEntriesMatchingServiceSpecifierWithExactDomain:(id)a3 block:(id)a4;
-- (void)enumerateEntriesWithBlock:(id)a3;
+- (void)enumerateEntries:(id)entries matchingService:(id)service domain:(id)domain appID:(id)d block:(id)block;
+- (void)enumerateEntries:(id)entries matchingServiceSpecifier:(id)specifier block:(id)block;
+- (void)enumerateEntriesMatchingService:(id)service exactDomain:(id)domain appID:(id)d block:(id)block;
+- (void)enumerateEntriesMatchingServiceSpecifier:(id)specifier block:(id)block;
+- (void)enumerateEntriesMatchingServiceSpecifierWithExactDomain:(id)domain block:(id)block;
+- (void)enumerateEntriesWithBlock:(id)block;
 - (void)receiveSIGTERMSignal;
 - (void)removeAllEntries;
-- (void)removeSettingsForKeys:(id)a3 serviceSpecifier:(id)a4;
-- (void)removeSettingsForKeys:(id)a3 serviceType:(id)a4;
-- (void)setSettingsDictionary:(id)a3 forServiceSpecifier:(id)a4;
-- (void)updateEntriesForDomain:(id)a3 canonicalEntries:(id)a4;
+- (void)removeSettingsForKeys:(id)keys serviceSpecifier:(id)specifier;
+- (void)removeSettingsForKeys:(id)keys serviceType:(id)type;
+- (void)setSettingsDictionary:(id)dictionary forServiceSpecifier:(id)specifier;
+- (void)updateEntriesForDomain:(id)domain canonicalEntries:(id)entries;
 @end
 
 @implementation SWCDatabase
 
 + (SWCDatabase)sharedDatabase
 {
-  v2 = [objc_opt_class() queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [objc_opt_class() queue];
+  dispatch_assert_queue_V2(queue);
 
   if (qword_10003ACC8 != -1)
   {
@@ -52,17 +52,17 @@
   return v3;
 }
 
-+ (id)loadContentsOfURL:(id)a3 error:(id *)a4
++ (id)loadContentsOfURL:(id)l error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v18 = 0;
-  v8 = [[NSData alloc] initWithContentsOfURL:a3 options:1 error:&v18];
+  v8 = [[NSData alloc] initWithContentsOfURL:l options:1 error:&v18];
   v9 = v18;
   v10 = v9;
   if (v8)
   {
     v17 = v9;
-    v11 = [a1 _storageFromArchivedData:v8 error:&v17];
+    v11 = [self _storageFromArchivedData:v8 error:&v17];
     v12 = v17;
 
     if (v11)
@@ -89,7 +89,7 @@
     v14 = qword_10003ACE0;
     if (!os_log_type_enabled(qword_10003ACE0, OS_LOG_TYPE_ERROR))
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -100,11 +100,11 @@
     *buf = 138412290;
     v20 = v10;
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to load SWC database: %@", buf, 0xCu);
-    if (a4)
+    if (error)
     {
 LABEL_11:
       v15 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -154,10 +154,10 @@ LABEL_12:
   return v3;
 }
 
-- (id)entry:(id)a3
+- (id)entry:(id)entry
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSMutableOrderedSet *)self->_entries indexOfObject:a3];
+  v6 = [(NSMutableOrderedSet *)self->_entries indexOfObject:entry];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -173,14 +173,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)enumerateEntries:(id)a3 matchingService:(id)a4 domain:(id)a5 appID:(id)a6 block:(id)a7
+- (void)enumerateEntries:(id)entries matchingService:(id)service domain:(id)domain appID:(id)d block:(id)block
 {
   context = objc_autoreleasePoolPush();
-  v13 = a3;
-  obj = v13;
-  if (a5 && self->_entries == v13 && [(SWCDomainCache *)self->_domainCache isValid])
+  entriesCopy = entries;
+  obj = entriesCopy;
+  if (domain && self->_entries == entriesCopy && [(SWCDomainCache *)self->_domainCache isValid])
   {
-    v14 = [(SWCDomainCache *)self->_domainCache entriesForDomain:a5];
+    v14 = [(SWCDomainCache *)self->_domainCache entriesForDomain:domain];
 
     obj = v14;
   }
@@ -204,14 +204,14 @@ LABEL_7:
       }
 
       v18 = *(*(&v29 + 1) + 8 * v17);
-      if (!a4 || ([*(*(&v29 + 1) + 8 * v17) serviceType], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "caseInsensitiveCompare:", a4) == 0, v19, v20))
+      if (!service || ([*(*(&v29 + 1) + 8 * v17) serviceType], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "caseInsensitiveCompare:", service) == 0, v19, v20))
       {
-        if (!a5 || ([v18 domain], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "encompassesDomain:", a5), v21, (v22 & 1) != 0))
+        if (!domain || ([v18 domain], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "encompassesDomain:", domain), v21, (v22 & 1) != 0))
         {
-          if (!a6 || ([v18 applicationIdentifier], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToApplicationIdentifierIgnoringPrefix:", a6), v23, (v24 & 1) != 0))
+          if (!d || ([v18 applicationIdentifier], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToApplicationIdentifierIgnoringPrefix:", d), v23, (v24 & 1) != 0))
           {
             v28 = 0;
-            (*(a7 + 2))(a7, v18, &v28);
+            (*(block + 2))(block, v18, &v28);
             if (v28)
             {
               break;
@@ -236,15 +236,15 @@ LABEL_7:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)enumerateEntries:(id)a3 matchingServiceSpecifier:(id)a4 block:(id)a5
+- (void)enumerateEntries:(id)entries matchingServiceSpecifier:(id)specifier block:(id)block
 {
-  v11 = [a4 serviceType];
-  v9 = [a4 SWCDomain];
-  v10 = [a4 SWCApplicationIdentifier];
-  [(SWCDatabase *)self enumerateEntries:a3 matchingService:v11 domain:v9 appID:v10 block:a5];
+  serviceType = [specifier serviceType];
+  sWCDomain = [specifier SWCDomain];
+  sWCApplicationIdentifier = [specifier SWCApplicationIdentifier];
+  [(SWCDatabase *)self enumerateEntries:entries matchingService:serviceType domain:sWCDomain appID:sWCApplicationIdentifier block:block];
 }
 
-- (void)enumerateEntriesWithBlock:(id)a3
+- (void)enumerateEntriesWithBlock:(id)block
 {
   v11 = 0u;
   v12 = 0u;
@@ -267,7 +267,7 @@ LABEL_3:
       v8 = *(*(&v11 + 1) + 8 * v7);
       v9 = objc_autoreleasePoolPush();
       v10 = 0;
-      (*(a3 + 2))(a3, v8, &v10);
+      (*(block + 2))(block, v8, &v10);
       LOBYTE(v8) = v10;
       objc_autoreleasePoolPop(v9);
       if (v8)
@@ -289,35 +289,35 @@ LABEL_3:
   }
 }
 
-- (void)enumerateEntriesMatchingServiceSpecifier:(id)a3 block:(id)a4
+- (void)enumerateEntriesMatchingServiceSpecifier:(id)specifier block:(id)block
 {
   entries = self->_entries;
-  v10 = [a3 serviceType];
-  v8 = [a3 SWCDomain];
-  v9 = [a3 SWCApplicationIdentifier];
-  [(SWCDatabase *)self enumerateEntries:entries matchingService:v10 domain:v8 appID:v9 block:a4];
+  serviceType = [specifier serviceType];
+  sWCDomain = [specifier SWCDomain];
+  sWCApplicationIdentifier = [specifier SWCApplicationIdentifier];
+  [(SWCDatabase *)self enumerateEntries:entries matchingService:serviceType domain:sWCDomain appID:sWCApplicationIdentifier block:block];
 }
 
-- (void)enumerateEntriesMatchingService:(id)a3 exactDomain:(id)a4 appID:(id)a5 block:(id)a6
+- (void)enumerateEntriesMatchingService:(id)service exactDomain:(id)domain appID:(id)d block:(id)block
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000EF9C;
   v6[3] = &unk_100034C90;
-  v6[4] = a4;
-  v6[5] = a6;
-  [(SWCDatabase *)self enumerateEntriesMatchingService:a3 domain:a4 appID:a5 block:v6];
+  v6[4] = domain;
+  v6[5] = block;
+  [(SWCDatabase *)self enumerateEntriesMatchingService:service domain:domain appID:d block:v6];
 }
 
-- (void)enumerateEntriesMatchingServiceSpecifierWithExactDomain:(id)a3 block:(id)a4
+- (void)enumerateEntriesMatchingServiceSpecifierWithExactDomain:(id)domain block:(id)block
 {
-  v9 = [a3 serviceType];
-  v7 = [a3 SWCDomain];
-  v8 = [a3 SWCApplicationIdentifier];
-  [(SWCDatabase *)self enumerateEntriesMatchingService:v9 exactDomain:v7 appID:v8 block:a4];
+  serviceType = [domain serviceType];
+  sWCDomain = [domain SWCDomain];
+  sWCApplicationIdentifier = [domain SWCApplicationIdentifier];
+  [(SWCDatabase *)self enumerateEntriesMatchingService:serviceType exactDomain:sWCDomain appID:sWCApplicationIdentifier block:block];
 }
 
-- (id)entryMatchingService:(id)a3 domain:(id)a4 appID:(id)a5
+- (id)entryMatchingService:(id)service domain:(id)domain appID:(id)d
 {
   v8 = 0;
   v9 = &v8;
@@ -329,43 +329,43 @@ LABEL_3:
   v7[1] = 3221225472;
   v7[2] = sub_10000F25C;
   v7[3] = &unk_100034CB8;
-  v7[4] = a4;
+  v7[4] = domain;
   v7[5] = &v8;
-  [(SWCDatabase *)self enumerateEntriesMatchingService:a3 domain:a4 appID:a5 block:v7];
+  [(SWCDatabase *)self enumerateEntriesMatchingService:service domain:domain appID:d block:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)entryMatchingServiceSpecifier:(id)a3
+- (id)entryMatchingServiceSpecifier:(id)specifier
 {
-  v5 = [a3 serviceType];
-  v6 = [a3 SWCDomain];
-  v7 = [a3 SWCApplicationIdentifier];
-  v8 = [(SWCDatabase *)self entryMatchingService:v5 domain:v6 appID:v7];
+  serviceType = [specifier serviceType];
+  sWCDomain = [specifier SWCDomain];
+  sWCApplicationIdentifier = [specifier SWCApplicationIdentifier];
+  v8 = [(SWCDatabase *)self entryMatchingService:serviceType domain:sWCDomain appID:sWCApplicationIdentifier];
 
   return v8;
 }
 
-- (BOOL)addEntries:(id)a3
+- (BOOL)addEntries:(id)entries
 {
   v5 = [(NSMutableOrderedSet *)self->_entries count];
-  [(NSMutableOrderedSet *)self->_entries unionOrderedSet:a3];
+  [(NSMutableOrderedSet *)self->_entries unionOrderedSet:entries];
   v6 = [(NSMutableOrderedSet *)self->_entries count];
   if (v6 != v5)
   {
-    [(SWCDomainCache *)self->_domainCache updateCachedDomainsForEntries:a3];
+    [(SWCDomainCache *)self->_domainCache updateCachedDomainsForEntries:entries];
     [(SWCDatabase *)self _scheduleSave];
   }
 
   return v6 != v5;
 }
 
-- (BOOL)removeEntries:(id)a3
+- (BOOL)removeEntries:(id)entries
 {
   v5 = [(NSMutableOrderedSet *)self->_entries count];
-  [(NSMutableOrderedSet *)self->_entries minusOrderedSet:a3];
+  [(NSMutableOrderedSet *)self->_entries minusOrderedSet:entries];
   v6 = [(NSMutableOrderedSet *)self->_entries count];
   if (v6 != v5)
   {
@@ -420,10 +420,10 @@ LABEL_3:
   }
 }
 
-- (void)updateEntriesForDomain:(id)a3 canonicalEntries:(id)a4
+- (void)updateEntriesForDomain:(id)domain canonicalEntries:(id)entries
 {
   v7 = +[NSDate date];
-  if (![a4 count])
+  if (![entries count])
   {
     if (qword_10003ACE8 != -1)
     {
@@ -434,7 +434,7 @@ LABEL_3:
     if (os_log_type_enabled(qword_10003ACE0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = a3;
+      domainCopy = domain;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "JSON file for %@ had no entries", buf, 0xCu);
     }
   }
@@ -445,28 +445,28 @@ LABEL_3:
   v13 = &unk_100034CE0;
   v9 = v7;
   v14 = v9;
-  v15 = a4;
-  [(SWCDatabase *)self enumerateEntriesMatchingService:0 exactDomain:a3 appID:0 block:&v10];
-  [(SWCDatabase *)self _reorderAppLinks:a4 domain:a3, v10, v11, v12, v13];
+  entriesCopy = entries;
+  [(SWCDatabase *)self enumerateEntriesMatchingService:0 exactDomain:domain appID:0 block:&v10];
+  [(SWCDatabase *)self _reorderAppLinks:entries domain:domain, v10, v11, v12, v13];
   [SWCEntry canonicalizeEntries:self->_entries];
   [(SWCDatabase *)self scheduleNextSave];
 }
 
-- (void)setSettingsDictionary:(id)a3 forServiceSpecifier:(id)a4
+- (void)setSettingsDictionary:(id)dictionary forServiceSpecifier:(id)specifier
 {
-  v6 = [a3 copy];
-  [(NSMutableDictionary *)self->_settings setObject:v6 forKeyedSubscript:a4];
+  v6 = [dictionary copy];
+  [(NSMutableDictionary *)self->_settings setObject:v6 forKeyedSubscript:specifier];
 
-  v7 = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
+  generationByIncrementingSelf = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
   settingsGeneration = self->_settingsGeneration;
-  self->_settingsGeneration = v7;
+  self->_settingsGeneration = generationByIncrementingSelf;
 
-  [_SWCServiceSettings postChangeNotificationForServiceSpecifier:a4];
+  [_SWCServiceSettings postChangeNotificationForServiceSpecifier:specifier];
 
   [(SWCDatabase *)self scheduleNextSave];
 }
 
-- (void)removeSettingsForKeys:(id)a3 serviceType:(id)a4
+- (void)removeSettingsForKeys:(id)keys serviceType:(id)type
 {
   v7 = objc_alloc_init(NSMutableArray);
   settings = self->_settings;
@@ -474,11 +474,11 @@ LABEL_3:
   v29[1] = 3221225472;
   v29[2] = sub_10000FDF8;
   v29[3] = &unk_100034D08;
-  v29[4] = a4;
+  v29[4] = type;
   v9 = v7;
   v30 = v9;
   [(NSMutableDictionary *)settings enumerateKeysAndObjectsUsingBlock:v29];
-  v10 = [a3 allObjects];
+  allObjects = [keys allObjects];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -498,7 +498,7 @@ LABEL_3:
           objc_enumerationMutation(v11);
         }
 
-        [(SWCDatabase *)self _removeSettingsForKeysNoSave:v10 serviceSpecifier:*(*(&v25 + 1) + 8 * v14)];
+        [(SWCDatabase *)self _removeSettingsForKeysNoSave:allObjects serviceSpecifier:*(*(&v25 + 1) + 8 * v14)];
         v14 = v14 + 1;
       }
 
@@ -509,9 +509,9 @@ LABEL_3:
     while (v12);
   }
 
-  v15 = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
+  generationByIncrementingSelf = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
   settingsGeneration = self->_settingsGeneration;
-  self->_settingsGeneration = v15;
+  self->_settingsGeneration = generationByIncrementingSelf;
 
   v23 = 0u;
   v24 = 0u;
@@ -546,16 +546,16 @@ LABEL_3:
   [(SWCDatabase *)self scheduleNextSave];
 }
 
-- (void)removeSettingsForKeys:(id)a3 serviceSpecifier:(id)a4
+- (void)removeSettingsForKeys:(id)keys serviceSpecifier:(id)specifier
 {
-  v6 = [a3 allObjects];
-  [(SWCDatabase *)self _removeSettingsForKeysNoSave:v6 serviceSpecifier:a4];
+  allObjects = [keys allObjects];
+  [(SWCDatabase *)self _removeSettingsForKeysNoSave:allObjects serviceSpecifier:specifier];
 
-  v7 = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
+  generationByIncrementingSelf = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
   settingsGeneration = self->_settingsGeneration;
-  self->_settingsGeneration = v7;
+  self->_settingsGeneration = generationByIncrementingSelf;
 
-  [_SWCServiceSettings postChangeNotificationForServiceSpecifier:a4];
+  [_SWCServiceSettings postChangeNotificationForServiceSpecifier:specifier];
 
   [(SWCDatabase *)self scheduleNextSave];
 }
@@ -574,12 +574,12 @@ LABEL_3:
   if ([v4 count])
   {
     settings = self->_settings;
-    v6 = [v4 allObjects];
-    [(NSMutableDictionary *)settings removeObjectsForKeys:v6];
+    allObjects = [v4 allObjects];
+    [(NSMutableDictionary *)settings removeObjectsForKeys:allObjects];
 
-    v7 = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
+    generationByIncrementingSelf = [(_SWCGeneration *)self->_settingsGeneration generationByIncrementingSelf];
     settingsGeneration = self->_settingsGeneration;
-    self->_settingsGeneration = v7;
+    self->_settingsGeneration = generationByIncrementingSelf;
 
     v15 = 0u;
     v16 = 0u;
@@ -617,7 +617,7 @@ LABEL_3:
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)saveReturningError:(id *)a3
+- (BOOL)saveReturningError:(id *)error
 {
   v5 = objc_autoreleasePoolPush();
   if (*(self + 40))
@@ -637,9 +637,9 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Saving SWC database with %llu entries...", buf, 0xCu);
     }
 
-    v9 = [(SWCDatabase *)self _storageForArchiving];
+    _storageForArchiving = [(SWCDatabase *)self _storageForArchiving];
     v20 = 0;
-    v10 = [objc_opt_class() _archivedDataFromStorage:v9 error:&v20];
+    v10 = [objc_opt_class() _archivedDataFromStorage:_storageForArchiving error:&v20];
     v11 = v20;
     v12 = v11;
     if (v10)
@@ -689,7 +689,7 @@ LABEL_3:
       *buf = 138412290;
       v22 = v12;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to save SWC database: %@", buf, 0xCu);
-      if (!a3)
+      if (!error)
       {
         goto LABEL_21;
       }
@@ -697,11 +697,11 @@ LABEL_3:
       goto LABEL_20;
     }
 
-    if (a3)
+    if (error)
     {
 LABEL_20:
       v17 = v12;
-      *a3 = v12;
+      *error = v12;
     }
   }
 
@@ -739,25 +739,25 @@ LABEL_21:
 
       if (v11)
       {
-        v13 = [v11 settings];
-        v14 = [v13 mutableCopy];
+        settings = [v11 settings];
+        v14 = [settings mutableCopy];
         settings = v2->_settings;
         v2->_settings = v14;
 
         if ([v11 databaseVersion] == 9)
         {
-          v16 = [v11 entries];
-          v17 = [v16 mutableCopy];
+          entries = [v11 entries];
+          v17 = [entries mutableCopy];
           entries = v2->_entries;
           v2->_entries = v17;
 
-          v19 = [v11 launchServicesDatabaseGeneration];
-          v20 = [v19 copy];
+          launchServicesDatabaseGeneration = [v11 launchServicesDatabaseGeneration];
+          v20 = [launchServicesDatabaseGeneration copy];
           launchServicesDatabaseGeneration = v2->_launchServicesDatabaseGeneration;
           v2->_launchServicesDatabaseGeneration = v20;
 
-          v22 = [v11 enterpriseState];
-          v23 = [v22 copy];
+          enterpriseState = [v11 enterpriseState];
+          v23 = [enterpriseState copy];
           enterpriseState = v2->_enterpriseState;
           v2->_enterpriseState = v23;
 
@@ -774,9 +774,9 @@ LABEL_21:
           v25 = qword_10003ACE0;
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v11 databaseVersion];
+            databaseVersion = [v11 databaseVersion];
             *buf = 134218240;
-            v39 = v26;
+            v39 = databaseVersion;
             v40 = 2048;
             v41 = 9;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "SWC database version did not match (had %llu, wanted %llu). Keeping settings and regenerating entries.", buf, 0x16u);
@@ -824,26 +824,26 @@ LABEL_21:
   return v2;
 }
 
-- (void)_removeSettingsForKeysNoSave:(id)a3 serviceSpecifier:(id)a4
+- (void)_removeSettingsForKeysNoSave:(id)save serviceSpecifier:(id)specifier
 {
   settings = self->_settings;
-  if (a3)
+  if (save)
   {
-    v8 = [(NSMutableDictionary *)settings objectForKeyedSubscript:a4];
+    v8 = [(NSMutableDictionary *)settings objectForKeyedSubscript:specifier];
     v10 = [v8 mutableCopy];
 
     if (v10)
     {
-      [v10 removeObjectsForKeys:a3];
+      [v10 removeObjectsForKeys:save];
       if ([v10 count])
       {
         v9 = [v10 copy];
-        [(NSMutableDictionary *)self->_settings setObject:v9 forKeyedSubscript:a4];
+        [(NSMutableDictionary *)self->_settings setObject:v9 forKeyedSubscript:specifier];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_settings setObject:0 forKeyedSubscript:a4];
+        [(NSMutableDictionary *)self->_settings setObject:0 forKeyedSubscript:specifier];
       }
     }
   }
@@ -873,33 +873,33 @@ LABEL_21:
   return v4;
 }
 
-+ (id)_storageFromArchivedData:(id)a3 error:(id *)a4
++ (id)_storageFromArchivedData:(id)data error:(id *)error
 {
   v6 = objc_autoreleasePoolPush();
   v11 = 0;
-  v7 = [NSKeyedUnarchiver swc_unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v11];
+  v7 = [NSKeyedUnarchiver swc_unarchivedObjectOfClass:objc_opt_class() fromData:data error:&v11];
   v8 = v11;
   objc_autoreleasePoolPop(v6);
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-+ (id)_archivedDataFromStorage:(id)a3 error:(id *)a4
++ (id)_archivedDataFromStorage:(id)storage error:(id *)error
 {
   v6 = objc_autoreleasePoolPush();
   v11 = 0;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v11];
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:storage requiringSecureCoding:1 error:&v11];
   v8 = v11;
   objc_autoreleasePoolPop(v6);
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
@@ -912,7 +912,7 @@ LABEL_21:
     v8 = 0;
     *buf = 0x402E000000000000;
     v9 = 0x401E000000000000;
-    v10 = [objc_opt_class() queue];
+    queue = [objc_opt_class() queue];
     v11 = os_transaction_create();
     objc_initWeak(&location, self);
     v4[0] = _NSConcreteStackBlock;
@@ -941,15 +941,15 @@ LABEL_21:
   }
 }
 
-- (void)_reorderAppLinks:(id)a3 domain:(id)a4
+- (void)_reorderAppLinks:(id)links domain:(id)domain
 {
   v6 = objc_alloc_init(NSMutableOrderedSet);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  linksCopy = links;
+  v8 = [linksCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v8)
   {
     v10 = *v21;
@@ -963,12 +963,12 @@ LABEL_21:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(linksCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
-        v14 = [v13 serviceType];
-        v15 = [v14 isEqual:v11];
+        serviceType = [v13 serviceType];
+        v15 = [serviceType isEqual:v11];
 
         if (v15)
         {
@@ -996,7 +996,7 @@ LABEL_21:
       }
 
       while (v8 != v12);
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v8 = [linksCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v8);
@@ -1021,10 +1021,10 @@ LABEL_21:
   }
 }
 
-- (id)_dataURLReturningError:(id *)a3
+- (id)_dataURLReturningError:(id *)error
 {
   v4 = +[_SWCPrefs sharedPrefs];
-  v5 = [v4 containerURLReturningError:a3];
+  v5 = [v4 containerURLReturningError:error];
 
   if (v5)
   {
@@ -1039,12 +1039,12 @@ LABEL_21:
   return v6;
 }
 
-- (id)_dataFromStorageReturningError:(id *)a3
+- (id)_dataFromStorageReturningError:(id *)error
 {
   v4 = [(SWCDatabase *)self _dataURLReturningError:?];
   if (v4)
   {
-    v5 = [[NSData alloc] initWithContentsOfURL:v4 options:1 error:a3];
+    v5 = [[NSData alloc] initWithContentsOfURL:v4 options:1 error:error];
   }
 
   else
@@ -1055,12 +1055,12 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)_updateStorageItemWithData:(id)a3 error:(id *)a4
+- (BOOL)_updateStorageItemWithData:(id)data error:(id *)error
 {
-  v6 = [(SWCDatabase *)self _dataURLReturningError:a4];
+  v6 = [(SWCDatabase *)self _dataURLReturningError:error];
   if (v6)
   {
-    v7 = [a3 writeToURL:v6 options:268435457 error:a4];
+    v7 = [data writeToURL:v6 options:268435457 error:error];
   }
 
   else
@@ -1071,13 +1071,13 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)_deleteStorageItemReturningError:(id *)a3
+- (BOOL)_deleteStorageItemReturningError:(id *)error
 {
   v4 = [(SWCDatabase *)self _dataURLReturningError:?];
   if (v4)
   {
     v5 = +[NSFileManager defaultManager];
-    v6 = [v5 removeItemAtURL:v4 error:a3];
+    v6 = [v5 removeItemAtURL:v4 error:error];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface HKMedicalIDHeightPickerDataProvider
 + (double)defaultCentimeterValue;
-+ (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4;
-+ (int64_t)numberOfRowsInComponent:(int64_t)a3;
++ (id)titleForRow:(int64_t)row inComponent:(int64_t)component;
++ (int64_t)numberOfRowsInComponent:(int64_t)component;
 @end
 
 @implementation HKMedicalIDHeightPickerDataProvider
@@ -9,10 +9,10 @@
 + (double)defaultCentimeterValue
 {
   v2 = +[HKPersonHeightFormatter sharedFormatter];
-  v3 = [v2 usesImperialUnits];
+  usesImperialUnits = [v2 usesImperialUnits];
 
   result = 168.0;
-  if (v3)
+  if (usesImperialUnits)
   {
     return 167.64;
   }
@@ -20,18 +20,18 @@
   return result;
 }
 
-+ (int64_t)numberOfRowsInComponent:(int64_t)a3
++ (int64_t)numberOfRowsInComponent:(int64_t)component
 {
   v4 = +[HKPersonHeightFormatter sharedFormatter];
-  v5 = [v4 usesImperialUnits];
+  usesImperialUnits = [v4 usesImperialUnits];
 
   v6 = 12;
-  if (!a3)
+  if (!component)
   {
     v6 = 10;
   }
 
-  if (v5)
+  if (usesImperialUnits)
   {
     return v6;
   }
@@ -42,24 +42,24 @@
   }
 }
 
-+ (id)titleForRow:(int64_t)a3 inComponent:(int64_t)a4
++ (id)titleForRow:(int64_t)row inComponent:(int64_t)component
 {
   v6 = +[HKPersonHeightFormatter sharedFormatter];
-  v7 = [v6 usesImperialUnits];
+  usesImperialUnits = [v6 usesImperialUnits];
 
-  if (v7)
+  if (usesImperialUnits)
   {
     v8 = +[HKPersonHeightFormatter sharedFormatter];
     v9 = v8;
-    v10 = a3;
-    if (a4)
+    rowCopy = row;
+    if (component)
     {
-      [v8 formattedValueForInches:v10];
+      [v8 formattedValueForInches:rowCopy];
     }
 
     else
     {
-      [v8 formattedValueForFeet:v10];
+      [v8 formattedValueForFeet:rowCopy];
     }
     v11 = ;
   }
@@ -67,7 +67,7 @@
   else
   {
     v9 = +[HKPersonHeightFormatter sharedFormatter];
-    v11 = [v9 formattedValueForCentimeters:a3];
+    v11 = [v9 formattedValueForCentimeters:row];
   }
 
   v12 = v11;

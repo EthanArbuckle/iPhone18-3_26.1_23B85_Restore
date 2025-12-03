@@ -1,19 +1,19 @@
 @interface EGStillImageSampleBufferEmitterNode
-- (EGStillImageSampleBufferEmitterNode)initWithName:(id)a3 description:(id)a4;
+- (EGStillImageSampleBufferEmitterNode)initWithName:(id)name description:(id)description;
 - (void)dealloc;
-- (void)receiveData:(id)a3 fromInput:(id)a4;
+- (void)receiveData:(id)data fromInput:(id)input;
 @end
 
 @implementation EGStillImageSampleBufferEmitterNode
 
-- (EGStillImageSampleBufferEmitterNode)initWithName:(id)a3 description:(id)a4
+- (EGStillImageSampleBufferEmitterNode)initWithName:(id)name description:(id)description
 {
   v9.receiver = self;
   v9.super_class = EGStillImageSampleBufferEmitterNode;
-  v5 = [(EGNode *)&v9 initWithName:a3];
+  v5 = [(EGNode *)&v9 initWithName:name];
   if (v5)
   {
-    v5->_description = a4;
+    v5->_description = description;
     v6 = [[EGInput alloc] initWithName:@"sbuf"];
     v5->_sbufInput = v6;
     [(EGNode *)v5 installInput:v6];
@@ -32,17 +32,17 @@
   [(EGNode *)&v3 dealloc];
 }
 
-- (void)receiveData:(id)a3 fromInput:(id)a4
+- (void)receiveData:(id)data fromInput:(id)input
 {
-  v5 = [a3 sampleBuffer];
+  sampleBuffer = [data sampleBuffer];
   v6 = EGStillImageGraphManagerForGraphElement(self);
-  if (v5)
+  if (sampleBuffer)
   {
-    [v6 didFinishProcessingSampleBuffer:v5 description:self->_description];
+    [v6 didFinishProcessingSampleBuffer:sampleBuffer description:self->_description];
     captureCompleteOutput = self->_captureCompleteOutput;
-    v8 = [[EGStillImageGraphPayload alloc] initWithEmptyPayload];
+    initWithEmptyPayload = [[EGStillImageGraphPayload alloc] initWithEmptyPayload];
 
-    [(EGStillImageOutput *)captureCompleteOutput emitPayload:v8];
+    [(EGStillImageOutput *)captureCompleteOutput emitPayload:initWithEmptyPayload];
   }
 
   else

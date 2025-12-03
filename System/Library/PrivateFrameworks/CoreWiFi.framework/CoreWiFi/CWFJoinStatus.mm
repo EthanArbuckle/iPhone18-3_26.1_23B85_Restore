@@ -1,8 +1,8 @@
 @interface CWFJoinStatus
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToJoinStatus:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToJoinStatus:(id)status;
 - (CWFJoinStatus)init;
-- (CWFJoinStatus)initWithCoder:(id)a3;
+- (CWFJoinStatus)initWithCoder:(id)coder;
 - (NSString)description;
 - (double)duration;
 - (double)durationUntilAssociationEnded;
@@ -13,12 +13,12 @@
 - (double)durationUntilIPv6Primary;
 - (double)durationUntilLinkUp;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionForEAP8021XControlState;
 - (id)descriptionForEAPOLClientStatus;
 - (id)descriptionForEAPOLControlMode;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFJoinStatus
@@ -30,9 +30,9 @@
   v2 = [(CWFJoinStatus *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
   }
 
   return v2;
@@ -40,22 +40,22 @@
 
 - (double)duration
 {
-  v3 = [(CWFJoinStatus *)self endedAt];
-  if (v3)
+  endedAt = [(CWFJoinStatus *)self endedAt];
+  if (endedAt)
   {
-    v4 = [(CWFJoinStatus *)self endedAt];
-    [v4 timeIntervalSinceReferenceDate];
+    endedAt2 = [(CWFJoinStatus *)self endedAt];
+    [endedAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self endedAt];
-      [v10 timeIntervalSinceReferenceDate];
+      endedAt3 = [(CWFJoinStatus *)self endedAt];
+      [endedAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -70,22 +70,22 @@
 
 - (double)durationUntilAssociationEnded
 {
-  v3 = [(CWFJoinStatus *)self associationEndedAt];
-  if (v3)
+  associationEndedAt = [(CWFJoinStatus *)self associationEndedAt];
+  if (associationEndedAt)
   {
-    v4 = [(CWFJoinStatus *)self associationEndedAt];
-    [v4 timeIntervalSinceReferenceDate];
+    associationEndedAt2 = [(CWFJoinStatus *)self associationEndedAt];
+    [associationEndedAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self associationEndedAt];
-      [v10 timeIntervalSinceReferenceDate];
+      associationEndedAt3 = [(CWFJoinStatus *)self associationEndedAt];
+      [associationEndedAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -100,22 +100,22 @@
 
 - (double)durationUntilAuthenticationEnded
 {
-  v3 = [(CWFJoinStatus *)self authenticationEndedAt];
-  if (v3)
+  authenticationEndedAt = [(CWFJoinStatus *)self authenticationEndedAt];
+  if (authenticationEndedAt)
   {
-    v4 = [(CWFJoinStatus *)self authenticationEndedAt];
-    [v4 timeIntervalSinceReferenceDate];
+    authenticationEndedAt2 = [(CWFJoinStatus *)self authenticationEndedAt];
+    [authenticationEndedAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self authenticationEndedAt];
-      [v10 timeIntervalSinceReferenceDate];
+      authenticationEndedAt3 = [(CWFJoinStatus *)self authenticationEndedAt];
+      [authenticationEndedAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -130,22 +130,22 @@
 
 - (double)durationUntilIPv4Assigned
 {
-  v3 = [(CWFJoinStatus *)self IPv4AssignedAt];
-  if (v3)
+  iPv4AssignedAt = [(CWFJoinStatus *)self IPv4AssignedAt];
+  if (iPv4AssignedAt)
   {
-    v4 = [(CWFJoinStatus *)self IPv4AssignedAt];
-    [v4 timeIntervalSinceReferenceDate];
+    iPv4AssignedAt2 = [(CWFJoinStatus *)self IPv4AssignedAt];
+    [iPv4AssignedAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self IPv4AssignedAt];
-      [v10 timeIntervalSinceReferenceDate];
+      iPv4AssignedAt3 = [(CWFJoinStatus *)self IPv4AssignedAt];
+      [iPv4AssignedAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -160,22 +160,22 @@
 
 - (double)durationUntilIPv6Assigned
 {
-  v3 = [(CWFJoinStatus *)self IPv6AssignedAt];
-  if (v3)
+  iPv6AssignedAt = [(CWFJoinStatus *)self IPv6AssignedAt];
+  if (iPv6AssignedAt)
   {
-    v4 = [(CWFJoinStatus *)self IPv6AssignedAt];
-    [v4 timeIntervalSinceReferenceDate];
+    iPv6AssignedAt2 = [(CWFJoinStatus *)self IPv6AssignedAt];
+    [iPv6AssignedAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self IPv6AssignedAt];
-      [v10 timeIntervalSinceReferenceDate];
+      iPv6AssignedAt3 = [(CWFJoinStatus *)self IPv6AssignedAt];
+      [iPv6AssignedAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -190,22 +190,22 @@
 
 - (double)durationUntilIPv4Primary
 {
-  v3 = [(CWFJoinStatus *)self IPv4PrimaryAt];
-  if (v3)
+  iPv4PrimaryAt = [(CWFJoinStatus *)self IPv4PrimaryAt];
+  if (iPv4PrimaryAt)
   {
-    v4 = [(CWFJoinStatus *)self IPv4PrimaryAt];
-    [v4 timeIntervalSinceReferenceDate];
+    iPv4PrimaryAt2 = [(CWFJoinStatus *)self IPv4PrimaryAt];
+    [iPv4PrimaryAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self IPv4PrimaryAt];
-      [v10 timeIntervalSinceReferenceDate];
+      iPv4PrimaryAt3 = [(CWFJoinStatus *)self IPv4PrimaryAt];
+      [iPv4PrimaryAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -220,22 +220,22 @@
 
 - (double)durationUntilIPv6Primary
 {
-  v3 = [(CWFJoinStatus *)self IPv6PrimaryAt];
-  if (v3)
+  iPv6PrimaryAt = [(CWFJoinStatus *)self IPv6PrimaryAt];
+  if (iPv6PrimaryAt)
   {
-    v4 = [(CWFJoinStatus *)self IPv6PrimaryAt];
-    [v4 timeIntervalSinceReferenceDate];
+    iPv6PrimaryAt2 = [(CWFJoinStatus *)self IPv6PrimaryAt];
+    [iPv6PrimaryAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self IPv6PrimaryAt];
-      [v10 timeIntervalSinceReferenceDate];
+      iPv6PrimaryAt3 = [(CWFJoinStatus *)self IPv6PrimaryAt];
+      [iPv6PrimaryAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -250,22 +250,22 @@
 
 - (double)durationUntilLinkUp
 {
-  v3 = [(CWFJoinStatus *)self linkUpAt];
-  if (v3)
+  linkUpAt = [(CWFJoinStatus *)self linkUpAt];
+  if (linkUpAt)
   {
-    v4 = [(CWFJoinStatus *)self linkUpAt];
-    [v4 timeIntervalSinceReferenceDate];
+    linkUpAt2 = [(CWFJoinStatus *)self linkUpAt];
+    [linkUpAt2 timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFJoinStatus *)self startedAt];
-    [v7 timeIntervalSinceReferenceDate];
+    startedAt = [(CWFJoinStatus *)self startedAt];
+    [startedAt timeIntervalSinceReferenceDate];
     v8 = 0.0;
     if (v6 >= v9)
     {
-      v10 = [(CWFJoinStatus *)self linkUpAt];
-      [v10 timeIntervalSinceReferenceDate];
+      linkUpAt3 = [(CWFJoinStatus *)self linkUpAt];
+      [linkUpAt3 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFJoinStatus *)self startedAt];
-      [v13 timeIntervalSinceReferenceDate];
+      startedAt2 = [(CWFJoinStatus *)self startedAt];
+      [startedAt2 timeIntervalSinceReferenceDate];
       v8 = v12 - v14;
     }
   }
@@ -280,27 +280,27 @@
 
 - (NSString)description
 {
-  v3 = [(CWFScanResult *)self->_scanResult SSID];
-  v4 = [(CWFScanResult *)self->_scanResult networkName];
-  if (!v3)
+  sSID = [(CWFScanResult *)self->_scanResult SSID];
+  networkName = [(CWFScanResult *)self->_scanResult networkName];
+  if (!sSID)
   {
-    v3 = [(CWFNetworkProfile *)self->_knownNetworkProfile SSID];
-    v5 = [(CWFNetworkProfile *)self->_knownNetworkProfile networkName];
+    sSID = [(CWFNetworkProfile *)self->_knownNetworkProfile SSID];
+    networkName2 = [(CWFNetworkProfile *)self->_knownNetworkProfile networkName];
 
-    v4 = v5;
+    networkName = networkName2;
   }
 
-  v31 = v3;
-  v36 = v4;
+  v31 = sSID;
+  v36 = networkName;
   v45 = MEMORY[0x1E696AEC0];
-  v48 = [(NSUUID *)self->_UUID UUIDString];
-  v6 = [v48 substringToIndex:5];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v6 = [uUIDString substringToIndex:5];
   interfaceName = self->_interfaceName;
   v44 = v6;
-  v42 = [v4 redactedForWiFi];
-  v47 = CWFHexadecimalStringFromData(v3);
-  v41 = [v47 redactedForWiFi];
-  v40 = [(NSError *)self->_error code];
+  redactedForWiFi = [networkName redactedForWiFi];
+  v47 = CWFHexadecimalStringFromData(sSID);
+  redactedForWiFi2 = [v47 redactedForWiFi];
+  code = [(NSError *)self->_error code];
   EAP8021XSupplicantState = self->_EAP8021XSupplicantState;
   EAP8021XControlMode = self->_EAP8021XControlMode;
   EAP8021XControlState = self->_EAP8021XControlState;
@@ -340,18 +340,18 @@
     v25 = "no";
   }
 
-  v46 = [v45 stringWithFormat:@"uuid=%@, intf=%@, ssid='%@' (%@), error=%ld, eap=[sup=%d mode=%d state=%d client=%d], start=%@, assoc=%@ (%lums), auth=%@ (%lums), linkup=%@ (%lums), end=%@ (%lums), ipv4=%@ (%lums), ipv4Primary=%@ (%lums), ipv6=%@ (%lums), ipv6Primary=%@ (%lums), auto=%s", v44, interfaceName, v42, v41, v40, EAP8021XSupplicantState, EAP8021XControlMode, EAP8021XControlState, EAP8021XClientStatus, v34, v33, v32, v8, v30, v29, v28, v11, v27, v13, v15, v16, v18, v19, v21, v22, v24, v25];
+  v46 = [v45 stringWithFormat:@"uuid=%@, intf=%@, ssid='%@' (%@), error=%ld, eap=[sup=%d mode=%d state=%d client=%d], start=%@, assoc=%@ (%lums), auth=%@ (%lums), linkup=%@ (%lums), end=%@ (%lums), ipv4=%@ (%lums), ipv4Primary=%@ (%lums), ipv6=%@ (%lums), ipv6Primary=%@ (%lums), auto=%s", v44, interfaceName, redactedForWiFi, redactedForWiFi2, code, EAP8021XSupplicantState, EAP8021XControlMode, EAP8021XControlState, EAP8021XClientStatus, v34, v33, v32, v8, v30, v29, v28, v11, v27, v13, v15, v16, v18, v19, v21, v22, v24, v25];
 
   return v46;
 }
 
-- (BOOL)isEqualToJoinStatus:(id)a3
+- (BOOL)isEqualToJoinStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   UUID = self->_UUID;
-  v179 = [v4 UUID];
-  v7 = UUID != v179;
-  if (UUID != v179)
+  uUID = [statusCopy UUID];
+  error3 = UUID != uUID;
+  if (UUID != uUID)
   {
     v8 = self->_UUID;
     if (!v8)
@@ -377,8 +377,8 @@
       goto LABEL_112;
     }
 
-    v9 = [v4 UUID];
-    if (!v9)
+    uUID2 = [statusCopy UUID];
+    if (!uUID2)
     {
       v168 = 0;
       *v178 = 0;
@@ -403,9 +403,9 @@
       goto LABEL_112;
     }
 
-    v168 = v9;
+    v168 = uUID2;
     v10 = self->_UUID;
-    v166 = [v4 UUID];
+    uUID3 = [statusCopy UUID];
     if (![(NSUUID *)v10 isEqual:?])
     {
       v181 = 0;
@@ -432,10 +432,10 @@
   }
 
   interfaceName = self->_interfaceName;
-  v169 = [v4 interfaceName];
-  v21 = interfaceName != v169;
-  v182 = v7;
-  if (interfaceName != v169)
+  interfaceName = [statusCopy interfaceName];
+  v21 = interfaceName != interfaceName;
+  v182 = error3;
+  if (interfaceName != interfaceName)
   {
     v8 = self->_interfaceName;
     if (!v8)
@@ -456,12 +456,12 @@
       v18 = 0;
       v19 = 0;
       *&v178[4] = 1;
-      *v178 = v7;
+      *v178 = error3;
       goto LABEL_112;
     }
 
-    v22 = [v4 interfaceName];
-    if (!v22)
+    interfaceName2 = [statusCopy interfaceName];
+    if (!interfaceName2)
     {
       v165 = 0;
       *(&v180 + 4) = 0;
@@ -483,14 +483,14 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       v178[8] = 0;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v180) = 1;
       goto LABEL_112;
     }
 
-    v165 = v22;
+    v165 = interfaceName2;
     v23 = self->_interfaceName;
-    v164 = [v4 interfaceName];
+    interfaceName3 = [statusCopy interfaceName];
     if (![(NSString *)v23 isEqual:?])
     {
       *(&v180 + 4) = 0;
@@ -513,16 +513,16 @@
       v178[8] = 0;
       HIDWORD(v180) = 1;
       HIDWORD(v177[4]) = 1;
-      *v178 = v7 | 0x100000000;
+      *v178 = error3 | 0x100000000;
       goto LABEL_112;
     }
   }
 
   startedAt = self->_startedAt;
-  v167 = [v4 startedAt];
-  v25 = startedAt != v167;
+  startedAt = [statusCopy startedAt];
+  v25 = startedAt != startedAt;
   HIDWORD(v180) = v21;
-  if (startedAt != v167)
+  if (startedAt != startedAt)
   {
     v8 = self->_startedAt;
     if (!v8)
@@ -547,13 +547,13 @@
       v6 = 1;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v35;
-      *v178 = v7;
+      *v178 = error3;
       LODWORD(v177[4]) = 1;
       goto LABEL_112;
     }
 
-    v26 = [v4 startedAt];
-    if (!v26)
+    startedAt2 = [statusCopy startedAt];
+    if (!startedAt2)
     {
       v163 = 0;
       v181 = 0;
@@ -576,15 +576,15 @@
       v6 = 1;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v43;
-      *v178 = v7;
+      *v178 = error3;
       LODWORD(v177[4]) = 1;
       DWORD2(v180) = 1;
       goto LABEL_112;
     }
 
-    v163 = v26;
+    v163 = startedAt2;
     v27 = self->_startedAt;
-    v162 = [v4 startedAt];
+    startedAt3 = [statusCopy startedAt];
     if (![(NSDate *)v27 isEqual:?])
     {
       v181 = 0;
@@ -607,7 +607,7 @@
       v6 = 1;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v28;
-      *v178 = v7;
+      *v178 = error3;
       LODWORD(v177[4]) = 1;
       DWORD2(v180) = 1;
       HIDWORD(v177[3]) = 1;
@@ -616,11 +616,11 @@
   }
 
   endedAt = self->_endedAt;
-  v30 = [v4 endedAt];
-  v31 = endedAt != v30;
+  endedAt = [statusCopy endedAt];
+  v31 = endedAt != endedAt;
   DWORD2(v180) = v25;
-  v174 = v30;
-  if (endedAt != v30)
+  v174 = endedAt;
+  if (endedAt != endedAt)
   {
     v8 = self->_endedAt;
     if (!v8)
@@ -644,15 +644,15 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v44;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       LODWORD(v177[3]) = 1;
       goto LABEL_112;
     }
 
-    v32 = [v4 endedAt];
-    if (!v32)
+    endedAt2 = [statusCopy endedAt];
+    if (!endedAt2)
     {
       v172 = 0;
       *&v180 = 0;
@@ -674,7 +674,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v53;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       LODWORD(v177[3]) = 1;
@@ -682,9 +682,9 @@
       goto LABEL_112;
     }
 
-    v172 = v32;
+    v172 = endedAt2;
     v33 = self->_endedAt;
-    v161 = [v4 endedAt];
+    endedAt3 = [statusCopy endedAt];
     if (![(NSDate *)v33 isEqual:?])
     {
       *&v180 = 0;
@@ -706,7 +706,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v34;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       LODWORD(v177[3]) = 1;
@@ -717,11 +717,11 @@
   }
 
   associationEndedAt = self->_associationEndedAt;
-  v37 = [v4 associationEndedAt];
-  v38 = associationEndedAt != v37;
+  associationEndedAt = [statusCopy associationEndedAt];
+  v38 = associationEndedAt != associationEndedAt;
   LODWORD(v181) = v31;
-  v173 = v37;
-  if (associationEndedAt != v37)
+  v173 = associationEndedAt;
+  if (associationEndedAt != associationEndedAt)
   {
     v8 = self->_associationEndedAt;
     if (!v8)
@@ -747,7 +747,7 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v54;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v55;
@@ -756,8 +756,8 @@
       goto LABEL_112;
     }
 
-    v39 = [v4 associationEndedAt];
-    if (!v39)
+    associationEndedAt2 = [statusCopy associationEndedAt];
+    if (!associationEndedAt2)
     {
       v170 = 0;
       v177[1] = 0;
@@ -782,7 +782,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v62;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v63;
@@ -791,9 +791,9 @@
       goto LABEL_112;
     }
 
-    v170 = v39;
+    v170 = associationEndedAt2;
     v40 = self->_associationEndedAt;
-    v159 = [v4 associationEndedAt];
+    associationEndedAt3 = [statusCopy associationEndedAt];
     if (![(NSDate *)v40 isEqual:?])
     {
       v11 = 0;
@@ -818,7 +818,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v41;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v42;
@@ -830,11 +830,11 @@
   }
 
   authenticationEndedAt = self->_authenticationEndedAt;
-  v46 = [v4 authenticationEndedAt];
-  v47 = authenticationEndedAt != v46;
+  authenticationEndedAt = [statusCopy authenticationEndedAt];
+  v47 = authenticationEndedAt != authenticationEndedAt;
   DWORD1(v180) = v38;
-  v171 = v46;
-  if (authenticationEndedAt != v46)
+  v171 = authenticationEndedAt;
+  if (authenticationEndedAt != authenticationEndedAt)
   {
     v8 = self->_authenticationEndedAt;
     if (!v8)
@@ -860,7 +860,7 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v64;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v65;
@@ -871,8 +871,8 @@
       goto LABEL_112;
     }
 
-    v48 = [v4 authenticationEndedAt];
-    if (!v48)
+    authenticationEndedAt2 = [statusCopy authenticationEndedAt];
+    if (!authenticationEndedAt2)
     {
       v158 = 0;
       *(v177 + 4) = 0;
@@ -896,7 +896,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v73;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v74;
@@ -908,9 +908,9 @@
       goto LABEL_112;
     }
 
-    v158 = v48;
+    v158 = authenticationEndedAt2;
     v49 = self->_authenticationEndedAt;
-    v156 = [v4 authenticationEndedAt];
+    authenticationEndedAt3 = [statusCopy authenticationEndedAt];
     if (![(NSDate *)v49 isEqual:?])
     {
       v177[0] = 0;
@@ -933,7 +933,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v50;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v51;
@@ -948,10 +948,10 @@
   }
 
   linkUpAt = self->_linkUpAt;
-  v160 = [v4 linkUpAt];
-  HIDWORD(v183[2]) = linkUpAt != v160;
+  linkUpAt = [statusCopy linkUpAt];
+  HIDWORD(v183[2]) = linkUpAt != linkUpAt;
   LODWORD(v180) = v47;
-  if (linkUpAt != v160)
+  if (linkUpAt != linkUpAt)
   {
     v8 = self->_linkUpAt;
     if (!v8)
@@ -976,7 +976,7 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v76;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v77;
@@ -987,8 +987,8 @@
       goto LABEL_112;
     }
 
-    v57 = [v4 linkUpAt];
-    if (!v57)
+    linkUpAt2 = [statusCopy linkUpAt];
+    if (!linkUpAt2)
     {
       v155 = 0;
       v86 = v21;
@@ -1012,7 +1012,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v86;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v87;
@@ -1024,9 +1024,9 @@
       goto LABEL_112;
     }
 
-    v155 = v57;
+    v155 = linkUpAt2;
     v58 = self->_linkUpAt;
-    v153 = [v4 linkUpAt];
+    linkUpAt3 = [statusCopy linkUpAt];
     if (![(NSDate *)v58 isEqual:?])
     {
       v176 = 0;
@@ -1048,7 +1048,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v59;
@@ -1063,9 +1063,9 @@
   }
 
   IPv4AssignedAt = self->_IPv4AssignedAt;
-  v157 = [v4 IPv4AssignedAt];
-  LODWORD(v183[2]) = IPv4AssignedAt != v157;
-  if (IPv4AssignedAt != v157)
+  iPv4AssignedAt = [statusCopy IPv4AssignedAt];
+  LODWORD(v183[2]) = IPv4AssignedAt != iPv4AssignedAt;
+  if (IPv4AssignedAt != iPv4AssignedAt)
   {
     v8 = self->_IPv4AssignedAt;
     if (!v8)
@@ -1086,7 +1086,7 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v31;
@@ -1099,8 +1099,8 @@
       goto LABEL_112;
     }
 
-    v68 = [v4 IPv4AssignedAt];
-    if (!v68)
+    iPv4AssignedAt2 = [statusCopy IPv4AssignedAt];
+    if (!iPv4AssignedAt2)
     {
       v152 = 0;
       v176 = 0;
@@ -1121,7 +1121,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v6;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v31;
@@ -1135,9 +1135,9 @@
       goto LABEL_112;
     }
 
-    v152 = v68;
+    v152 = iPv4AssignedAt2;
     v69 = self->_IPv4AssignedAt;
-    v150 = [v4 IPv4AssignedAt];
+    iPv4AssignedAt3 = [statusCopy IPv4AssignedAt];
     if (![(NSDate *)v69 isEqual:?])
     {
       v70 = v25;
@@ -1158,7 +1158,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v70;
       LODWORD(v177[4]) = 1;
       HIDWORD(v177[2]) = v31;
@@ -1174,10 +1174,10 @@
   }
 
   IPv6AssignedAt = self->_IPv6AssignedAt;
-  v81 = [v4 IPv6AssignedAt];
-  v82 = IPv6AssignedAt != v81;
-  v154 = v81;
-  if (IPv6AssignedAt != v81)
+  iPv6AssignedAt = [statusCopy IPv6AssignedAt];
+  v82 = IPv6AssignedAt != iPv6AssignedAt;
+  v154 = iPv6AssignedAt;
+  if (IPv6AssignedAt != iPv6AssignedAt)
   {
     v8 = self->_IPv6AssignedAt;
     if (!v8)
@@ -1197,7 +1197,7 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1212,8 +1212,8 @@
       goto LABEL_112;
     }
 
-    v83 = [v4 IPv6AssignedAt];
-    if (!v83)
+    iPv6AssignedAt2 = [statusCopy IPv6AssignedAt];
+    if (!iPv6AssignedAt2)
     {
       v149 = 0;
       *&v175 = 0;
@@ -1231,7 +1231,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1247,10 +1247,10 @@
       goto LABEL_112;
     }
 
-    v149 = v83;
+    v149 = iPv6AssignedAt2;
     v84 = v82;
     v85 = self->_IPv6AssignedAt;
-    v147 = [v4 IPv6AssignedAt];
+    iPv6AssignedAt3 = [statusCopy IPv6AssignedAt];
     if (![(NSDate *)v85 isEqual:?])
     {
       *&v175 = 0x100000000;
@@ -1268,7 +1268,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1288,11 +1288,11 @@
   }
 
   IPv4PrimaryAt = self->_IPv4PrimaryAt;
-  v93 = [v4 IPv4PrimaryAt];
+  iPv4PrimaryAt = [statusCopy IPv4PrimaryAt];
   LODWORD(v183[1]) = v82;
-  HIDWORD(v183[1]) = IPv4PrimaryAt != v93;
-  v151 = v93;
-  if (IPv4PrimaryAt != v93)
+  HIDWORD(v183[1]) = IPv4PrimaryAt != iPv4PrimaryAt;
+  v151 = iPv4PrimaryAt;
+  if (IPv4PrimaryAt != iPv4PrimaryAt)
   {
     v8 = self->_IPv4PrimaryAt;
     if (!v8)
@@ -1310,7 +1310,7 @@
       v19 = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1328,8 +1328,8 @@
       goto LABEL_112;
     }
 
-    v94 = [v4 IPv4PrimaryAt];
-    if (!v94)
+    iPv4PrimaryAt2 = [statusCopy IPv4PrimaryAt];
+    if (!iPv4PrimaryAt2)
     {
       v146 = 0;
       v111 = v38;
@@ -1345,7 +1345,7 @@
       LODWORD(v8) = 0;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1365,9 +1365,9 @@
       goto LABEL_112;
     }
 
-    v146 = v94;
+    v146 = iPv4PrimaryAt2;
     v95 = self->_IPv4PrimaryAt;
-    v144 = [v4 IPv4PrimaryAt];
+    iPv4PrimaryAt3 = [statusCopy IPv4PrimaryAt];
     if (![(NSDate *)v95 isEqual:?])
     {
       LODWORD(v176) = 0;
@@ -1382,7 +1382,7 @@
       *&v178[4] = 1;
       v178[8] = 0;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1409,10 +1409,10 @@
   }
 
   IPv6PrimaryAt = self->_IPv6PrimaryAt;
-  v100 = [v4 IPv6PrimaryAt];
-  v101 = IPv6PrimaryAt == v100;
-  v102 = IPv6PrimaryAt != v100;
-  v148 = v100;
+  iPv6PrimaryAt = [statusCopy IPv6PrimaryAt];
+  v101 = IPv6PrimaryAt == iPv6PrimaryAt;
+  v102 = IPv6PrimaryAt != iPv6PrimaryAt;
+  v148 = iPv6PrimaryAt;
   if (v101)
   {
     HIDWORD(v183[0]) = v102;
@@ -1432,7 +1432,7 @@
       v6 = 1;
       *&v178[4] = 1;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1455,8 +1455,8 @@
       goto LABEL_112;
     }
 
-    v103 = [v4 IPv6PrimaryAt];
-    if (!v103)
+    iPv6PrimaryAt2 = [statusCopy IPv6PrimaryAt];
+    if (!iPv6PrimaryAt2)
     {
       v143 = 0;
       v116 = v47;
@@ -1469,7 +1469,7 @@
       *&v178[4] = 1;
       v178[8] = 0;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1493,9 +1493,9 @@
       goto LABEL_112;
     }
 
-    v143 = v103;
+    v143 = iPv6PrimaryAt2;
     v104 = self->_IPv6PrimaryAt;
-    v140 = [v4 IPv6PrimaryAt];
+    iPv6PrimaryAt3 = [statusCopy IPv6PrimaryAt];
     if (![(NSDate *)v104 isEqual:?])
     {
       v183[0] = 0x100000000;
@@ -1507,7 +1507,7 @@
       *&v178[4] = 1;
       v178[8] = 0;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1535,10 +1535,10 @@
   }
 
   scanResult = self->_scanResult;
-  v109 = [v4 scanResult];
-  LODWORD(v183[0]) = scanResult != v109;
-  v145 = v109;
-  if (scanResult != v109)
+  scanResult = [statusCopy scanResult];
+  LODWORD(v183[0]) = scanResult != scanResult;
+  v145 = scanResult;
+  if (scanResult != scanResult)
   {
     v8 = self->_scanResult;
     if (!v8)
@@ -1550,7 +1550,7 @@
       *&v178[4] = 1;
       v178[8] = 0;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1574,10 +1574,10 @@
       goto LABEL_112;
     }
 
-    v142 = [v4 scanResult];
-    if (!v142)
+    scanResult2 = [statusCopy scanResult];
+    if (!scanResult2)
     {
-      v142 = 0;
+      scanResult2 = 0;
       HIDWORD(v181) = 0;
       v18 = 0;
       v19 = 0;
@@ -1585,7 +1585,7 @@
       *&v178[4] = 1;
       v178[8] = 0;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1611,7 +1611,7 @@
     }
 
     v110 = self->_scanResult;
-    v137 = [v4 scanResult];
+    scanResult3 = [statusCopy scanResult];
     if (![(CWFScanResult *)v110 isEqual:?])
     {
       HIDWORD(v181) = 0;
@@ -1646,14 +1646,14 @@
       goto LABEL_112;
     }
 
-    v7 = v182;
+    error3 = v182;
   }
 
   knownNetworkProfile = self->_knownNetworkProfile;
-  v115 = [v4 knownNetworkProfile];
-  HIDWORD(v181) = knownNetworkProfile != v115;
-  v141 = v115;
-  if (knownNetworkProfile != v115)
+  knownNetworkProfile = [statusCopy knownNetworkProfile];
+  HIDWORD(v181) = knownNetworkProfile != knownNetworkProfile;
+  v141 = knownNetworkProfile;
+  if (knownNetworkProfile != knownNetworkProfile)
   {
     v8 = self->_knownNetworkProfile;
     if (!v8)
@@ -1664,7 +1664,7 @@
       *&v178[4] = 1;
       v178[8] = 0;
       HIDWORD(v177[4]) = v21;
-      *v178 = v7;
+      *v178 = error3;
       HIDWORD(v177[3]) = v25;
       LODWORD(v177[4]) = 1;
       v17 = 0;
@@ -1688,10 +1688,10 @@
       goto LABEL_112;
     }
 
-    v139 = [v4 knownNetworkProfile];
-    if (!v139)
+    knownNetworkProfile2 = [statusCopy knownNetworkProfile];
+    if (!knownNetworkProfile2)
     {
-      v139 = 0;
+      knownNetworkProfile2 = 0;
       v18 = 0;
       v19 = 0;
       LODWORD(v8) = 0;
@@ -1723,9 +1723,9 @@
       goto LABEL_112;
     }
 
-    v7 = self->_knownNetworkProfile;
-    v135 = [v4 knownNetworkProfile];
-    if (![v7 isEqual:?])
+    error3 = self->_knownNetworkProfile;
+    knownNetworkProfile3 = [statusCopy knownNetworkProfile];
+    if (![error3 isEqual:?])
     {
       v18 = 0;
       v19 = 0;
@@ -1760,9 +1760,9 @@
   }
 
   error = self->_error;
-  v138 = [v4 error];
-  v134 = error != v138;
-  if (error == v138)
+  error = [statusCopy error];
+  v134 = error != error;
+  if (error == error)
   {
     goto LABEL_101;
   }
@@ -1770,11 +1770,11 @@
   v8 = self->_error;
   if (v8)
   {
-    v136 = [v4 error];
-    if (v136)
+    error2 = [statusCopy error];
+    if (error2)
     {
       v118 = self->_error;
-      v7 = [v4 error];
+      error3 = [statusCopy error];
       if (![(NSError *)v118 isEqual:?])
       {
         *&v178[4] = 1;
@@ -1804,16 +1804,16 @@
         v19 = 1;
         LODWORD(v8) = 1;
 LABEL_108:
-        v6 = v7;
+        v6 = error3;
         goto LABEL_112;
       }
 
 LABEL_101:
       EAP8021XSupplicantState = self->_EAP8021XSupplicantState;
-      if (EAP8021XSupplicantState == [v4 EAP8021XSupplicantState] && (EAP8021XControlMode = self->_EAP8021XControlMode, EAP8021XControlMode == objc_msgSend(v4, "EAP8021XControlMode")) && (EAP8021XControlState = self->_EAP8021XControlState, EAP8021XControlState == objc_msgSend(v4, "EAP8021XControlState")) && (EAP8021XClientStatus = self->_EAP8021XClientStatus, EAP8021XClientStatus == objc_msgSend(v4, "EAP8021XClientStatus")))
+      if (EAP8021XSupplicantState == [statusCopy EAP8021XSupplicantState] && (EAP8021XControlMode = self->_EAP8021XControlMode, EAP8021XControlMode == objc_msgSend(statusCopy, "EAP8021XControlMode")) && (EAP8021XControlState = self->_EAP8021XControlState, EAP8021XControlState == objc_msgSend(statusCopy, "EAP8021XControlState")) && (EAP8021XClientStatus = self->_EAP8021XClientStatus, EAP8021XClientStatus == objc_msgSend(statusCopy, "EAP8021XClientStatus")))
       {
         autoJoin = self->_autoJoin;
-        v178[8] = autoJoin == [v4 isAutoJoin];
+        v178[8] = autoJoin == [statusCopy isAutoJoin];
       }
 
       else
@@ -1849,7 +1849,7 @@ LABEL_101:
       goto LABEL_108;
     }
 
-    v136 = 0;
+    error2 = 0;
     LODWORD(v8) = 0;
     *&v178[4] = 1;
     v178[8] = 0;
@@ -2110,18 +2110,18 @@ LABEL_124:
   return v178[8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFJoinStatus *)self isEqualToJoinStatus:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFJoinStatus *)self isEqualToJoinStatus:v5];
   }
 
   return v6;
@@ -2145,7 +2145,7 @@ LABEL_124:
   return v13 ^ v15 ^ [(NSError *)self->_error hash]^ self->_EAP8021XSupplicantState ^ self->_EAP8021XControlMode ^ self->_EAP8021XControlState ^ self->_EAP8021XClientStatus ^ self->_autoJoin;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFJoinStatus allocWithZone:?]];
   [(CWFJoinStatus *)v4 setUUID:self->_UUID];
@@ -2170,100 +2170,100 @@ LABEL_124:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"_UUID"];
-  [v5 encodeObject:self->_interfaceName forKey:@"_interfaceName"];
-  [v5 encodeObject:self->_startedAt forKey:@"_startedAt"];
-  [v5 encodeObject:self->_endedAt forKey:@"_endedAt"];
-  [v5 encodeObject:self->_associationEndedAt forKey:@"_associationEndedAt"];
-  [v5 encodeObject:self->_authenticationEndedAt forKey:@"_authenticationEndedAt"];
-  [v5 encodeObject:self->_linkUpAt forKey:@"_linkUpAt"];
-  [v5 encodeObject:self->_IPv4AssignedAt forKey:@"_IPv4AssignedAt"];
-  [v5 encodeObject:self->_IPv6AssignedAt forKey:@"_IPv6AssignedAt"];
-  [v5 encodeObject:self->_IPv4PrimaryAt forKey:@"_IPv4PrimaryAt"];
-  [v5 encodeObject:self->_IPv6PrimaryAt forKey:@"_IPv6PrimaryAt"];
-  [v5 encodeObject:self->_error forKey:@"_error"];
-  [v5 encodeObject:self->_scanResult forKey:@"_scanResult"];
-  [v5 encodeObject:self->_knownNetworkProfile forKey:@"_knownNetworkProfile"];
-  [v5 encodeInteger:self->_EAP8021XSupplicantState forKey:@"_EAP8021XSupplicantState"];
-  [v5 encodeInteger:self->_EAP8021XControlState forKey:@"_EAP8021XControlState"];
-  [v5 encodeInteger:self->_EAP8021XControlMode forKey:@"_EAP8021XControlMode"];
-  [v5 encodeInteger:self->_EAP8021XClientStatus forKey:@"_EAP8021XClientStatus"];
-  [v5 encodeBool:self->_autoJoin forKey:@"_autoJoin"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"_UUID"];
+  [coderCopy encodeObject:self->_interfaceName forKey:@"_interfaceName"];
+  [coderCopy encodeObject:self->_startedAt forKey:@"_startedAt"];
+  [coderCopy encodeObject:self->_endedAt forKey:@"_endedAt"];
+  [coderCopy encodeObject:self->_associationEndedAt forKey:@"_associationEndedAt"];
+  [coderCopy encodeObject:self->_authenticationEndedAt forKey:@"_authenticationEndedAt"];
+  [coderCopy encodeObject:self->_linkUpAt forKey:@"_linkUpAt"];
+  [coderCopy encodeObject:self->_IPv4AssignedAt forKey:@"_IPv4AssignedAt"];
+  [coderCopy encodeObject:self->_IPv6AssignedAt forKey:@"_IPv6AssignedAt"];
+  [coderCopy encodeObject:self->_IPv4PrimaryAt forKey:@"_IPv4PrimaryAt"];
+  [coderCopy encodeObject:self->_IPv6PrimaryAt forKey:@"_IPv6PrimaryAt"];
+  [coderCopy encodeObject:self->_error forKey:@"_error"];
+  [coderCopy encodeObject:self->_scanResult forKey:@"_scanResult"];
+  [coderCopy encodeObject:self->_knownNetworkProfile forKey:@"_knownNetworkProfile"];
+  [coderCopy encodeInteger:self->_EAP8021XSupplicantState forKey:@"_EAP8021XSupplicantState"];
+  [coderCopy encodeInteger:self->_EAP8021XControlState forKey:@"_EAP8021XControlState"];
+  [coderCopy encodeInteger:self->_EAP8021XControlMode forKey:@"_EAP8021XControlMode"];
+  [coderCopy encodeInteger:self->_EAP8021XClientStatus forKey:@"_EAP8021XClientStatus"];
+  [coderCopy encodeBool:self->_autoJoin forKey:@"_autoJoin"];
 }
 
-- (CWFJoinStatus)initWithCoder:(id)a3
+- (CWFJoinStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = CWFJoinStatus;
   v5 = [(CWFJoinStatus *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
     interfaceName = v5->_interfaceName;
     v5->_interfaceName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startedAt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startedAt"];
     startedAt = v5->_startedAt;
     v5->_startedAt = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endedAt"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_endedAt"];
     endedAt = v5->_endedAt;
     v5->_endedAt = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_associationEndedAt"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_associationEndedAt"];
     associationEndedAt = v5->_associationEndedAt;
     v5->_associationEndedAt = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_authenticationEndedAt"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_authenticationEndedAt"];
     authenticationEndedAt = v5->_authenticationEndedAt;
     v5->_authenticationEndedAt = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_linkUpAt"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_linkUpAt"];
     linkUpAt = v5->_linkUpAt;
     v5->_linkUpAt = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_IPv4AssignedAt"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_IPv4AssignedAt"];
     IPv4AssignedAt = v5->_IPv4AssignedAt;
     v5->_IPv4AssignedAt = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_IPv6AssignedAt"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_IPv6AssignedAt"];
     IPv6AssignedAt = v5->_IPv6AssignedAt;
     v5->_IPv6AssignedAt = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_IPv4PrimaryAt"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_IPv4PrimaryAt"];
     IPv4PrimaryAt = v5->_IPv4PrimaryAt;
     v5->_IPv4PrimaryAt = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_IPv6PrimaryAt"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_IPv6PrimaryAt"];
     IPv6PrimaryAt = v5->_IPv6PrimaryAt;
     v5->_IPv6PrimaryAt = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_error"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_error"];
     error = v5->_error;
     v5->_error = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scanResult"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scanResult"];
     scanResult = v5->_scanResult;
     v5->_scanResult = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_knownNetworkProfile"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_knownNetworkProfile"];
     knownNetworkProfile = v5->_knownNetworkProfile;
     v5->_knownNetworkProfile = v32;
 
-    v5->_EAP8021XSupplicantState = [v4 decodeIntegerForKey:@"_EAP8021XSupplicantState"];
-    v5->_EAP8021XControlMode = [v4 decodeIntegerForKey:@"_EAP8021XControlMode"];
-    v5->_EAP8021XControlState = [v4 decodeIntegerForKey:@"_EAP8021XControlState"];
-    v5->_EAP8021XClientStatus = [v4 decodeIntegerForKey:@"_EAP8021XClientStatus"];
-    v5->_autoJoin = [v4 decodeBoolForKey:@"_autoJoin"];
+    v5->_EAP8021XSupplicantState = [coderCopy decodeIntegerForKey:@"_EAP8021XSupplicantState"];
+    v5->_EAP8021XControlMode = [coderCopy decodeIntegerForKey:@"_EAP8021XControlMode"];
+    v5->_EAP8021XControlState = [coderCopy decodeIntegerForKey:@"_EAP8021XControlState"];
+    v5->_EAP8021XClientStatus = [coderCopy decodeIntegerForKey:@"_EAP8021XClientStatus"];
+    v5->_autoJoin = [coderCopy decodeBoolForKey:@"_autoJoin"];
   }
 
   return v5;
@@ -2273,19 +2273,19 @@ LABEL_124:
 {
   v62[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CWFJoinStatus *)self UUID];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"uuid"];
+  uUID = [(CWFJoinStatus *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"uuid"];
 
-  v6 = [(CWFJoinStatus *)self interfaceName];
-  [v3 setObject:v6 forKeyedSubscript:@"interface_name"];
+  interfaceName = [(CWFJoinStatus *)self interfaceName];
+  [v3 setObject:interfaceName forKeyedSubscript:@"interface_name"];
 
-  v7 = [(CWFJoinStatus *)self scanResult];
-  v8 = [v7 JSONCompatibleKeyValueMap];
-  [v3 setObject:v8 forKeyedSubscript:@"scan_result"];
+  scanResult = [(CWFJoinStatus *)self scanResult];
+  jSONCompatibleKeyValueMap = [scanResult JSONCompatibleKeyValueMap];
+  [v3 setObject:jSONCompatibleKeyValueMap forKeyedSubscript:@"scan_result"];
 
-  v9 = [(CWFJoinStatus *)self error];
-  if ([v9 code] <= 0)
+  error = [(CWFJoinStatus *)self error];
+  if ([error code] <= 0)
   {
     [v3 setObject:0 forKeyedSubscript:@"error"];
   }
@@ -2293,13 +2293,13 @@ LABEL_124:
   else
   {
     v61[0] = @"description";
-    v10 = [(CWFJoinStatus *)self error];
-    v11 = [v10 localizedDescription];
+    error2 = [(CWFJoinStatus *)self error];
+    localizedDescription = [error2 localizedDescription];
     v61[1] = @"code";
-    v62[0] = v11;
+    v62[0] = localizedDescription;
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(CWFJoinStatus *)self error];
-    v14 = [v12 numberWithInteger:{objc_msgSend(v13, "code")}];
+    error3 = [(CWFJoinStatus *)self error];
+    v14 = [v12 numberWithInteger:{objc_msgSend(error3, "code")}];
     v62[1] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v62 forKeys:v61 count:2];
     [v3 setObject:v15 forKeyedSubscript:@"error"];
@@ -2308,67 +2308,67 @@ LABEL_124:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFJoinStatus isAutoJoin](self, "isAutoJoin")}];
   [v3 setObject:v16 forKeyedSubscript:@"is_auto_join"];
 
-  v17 = [(CWFJoinStatus *)self startedAt];
-  [v3 setObject:v17 forKeyedSubscript:@"started_at"];
+  startedAt = [(CWFJoinStatus *)self startedAt];
+  [v3 setObject:startedAt forKeyedSubscript:@"started_at"];
 
-  v18 = [(CWFJoinStatus *)self endedAt];
-  [v3 setObject:v18 forKeyedSubscript:@"ended_at"];
+  endedAt = [(CWFJoinStatus *)self endedAt];
+  [v3 setObject:endedAt forKeyedSubscript:@"ended_at"];
 
   v19 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self duration];
   v21 = [v19 numberWithUnsignedInteger:(v20 * 1000.0)];
   [v3 setObject:v21 forKeyedSubscript:@"duration"];
 
-  v22 = [(CWFJoinStatus *)self associationEndedAt];
-  [v3 setObject:v22 forKeyedSubscript:@"associated_ended_at"];
+  associationEndedAt = [(CWFJoinStatus *)self associationEndedAt];
+  [v3 setObject:associationEndedAt forKeyedSubscript:@"associated_ended_at"];
 
   v23 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilAssociationEnded];
   v25 = [v23 numberWithUnsignedInteger:(v24 * 1000.0)];
   [v3 setObject:v25 forKeyedSubscript:@"duration_until_association_ended"];
 
-  v26 = [(CWFJoinStatus *)self authenticationEndedAt];
-  [v3 setObject:v26 forKeyedSubscript:@"authentication_ended_at"];
+  authenticationEndedAt = [(CWFJoinStatus *)self authenticationEndedAt];
+  [v3 setObject:authenticationEndedAt forKeyedSubscript:@"authentication_ended_at"];
 
   v27 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilAuthenticationEnded];
   v29 = [v27 numberWithUnsignedInteger:(v28 * 1000.0)];
   [v3 setObject:v29 forKeyedSubscript:@"duration_until_authentication_ended"];
 
-  v30 = [(CWFJoinStatus *)self linkUpAt];
-  [v3 setObject:v30 forKeyedSubscript:@"link_up_at"];
+  linkUpAt = [(CWFJoinStatus *)self linkUpAt];
+  [v3 setObject:linkUpAt forKeyedSubscript:@"link_up_at"];
 
   v31 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilLinkUp];
   v33 = [v31 numberWithUnsignedInteger:(v32 * 1000.0)];
   [v3 setObject:v33 forKeyedSubscript:@"duration_until_link_up"];
 
-  v34 = [(CWFJoinStatus *)self IPv4AssignedAt];
-  [v3 setObject:v34 forKeyedSubscript:@"ipv4_assigned_at"];
+  iPv4AssignedAt = [(CWFJoinStatus *)self IPv4AssignedAt];
+  [v3 setObject:iPv4AssignedAt forKeyedSubscript:@"ipv4_assigned_at"];
 
   v35 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilIPv4Assigned];
   v37 = [v35 numberWithUnsignedInteger:(v36 * 1000.0)];
   [v3 setObject:v37 forKeyedSubscript:@"duration_until_ipv4_assigned"];
 
-  v38 = [(CWFJoinStatus *)self IPv4PrimaryAt];
-  [v3 setObject:v38 forKeyedSubscript:@"ipv4_primary_at"];
+  iPv4PrimaryAt = [(CWFJoinStatus *)self IPv4PrimaryAt];
+  [v3 setObject:iPv4PrimaryAt forKeyedSubscript:@"ipv4_primary_at"];
 
   v39 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilIPv4Primary];
   v41 = [v39 numberWithUnsignedInteger:(v40 * 1000.0)];
   [v3 setObject:v41 forKeyedSubscript:@"duration_until_ipv4_primary"];
 
-  v42 = [(CWFJoinStatus *)self IPv6AssignedAt];
-  [v3 setObject:v42 forKeyedSubscript:@"ipv4_assigned_at"];
+  iPv6AssignedAt = [(CWFJoinStatus *)self IPv6AssignedAt];
+  [v3 setObject:iPv6AssignedAt forKeyedSubscript:@"ipv4_assigned_at"];
 
   v43 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilIPv6Assigned];
   v45 = [v43 numberWithUnsignedInteger:(v44 * 1000.0)];
   [v3 setObject:v45 forKeyedSubscript:@"duration_until_ipv6_assigned"];
 
-  v46 = [(CWFJoinStatus *)self IPv6PrimaryAt];
-  [v3 setObject:v46 forKeyedSubscript:@"ipv6_primary_at"];
+  iPv6PrimaryAt = [(CWFJoinStatus *)self IPv6PrimaryAt];
+  [v3 setObject:iPv6PrimaryAt forKeyedSubscript:@"ipv6_primary_at"];
 
   v47 = MEMORY[0x1E696AD98];
   [(CWFJoinStatus *)self durationUntilIPv6Primary];
@@ -2376,28 +2376,28 @@ LABEL_124:
   [v3 setObject:v49 forKeyedSubscript:@"duration_until_ipv6_primary"];
 
   v50 = MEMORY[0x1E696AEC0];
-  v51 = [(CWFJoinStatus *)self EAP8021XSupplicantState];
-  if (v51 > 8)
+  eAP8021XSupplicantState = [(CWFJoinStatus *)self EAP8021XSupplicantState];
+  if (eAP8021XSupplicantState > 8)
   {
     v52 = "<unknown>";
   }
 
   else
   {
-    v52 = off_1E86EA510[v51];
+    v52 = off_1E86EA510[eAP8021XSupplicantState];
   }
 
   v53 = [v50 stringWithCString:v52 encoding:4];
   [v3 setObject:v53 forKeyedSubscript:@"supplicant_state"];
 
-  v54 = [(CWFJoinStatus *)self descriptionForEAPOLControlMode];
-  [v3 setObject:v54 forKeyedSubscript:@"eapol_control_mode"];
+  descriptionForEAPOLControlMode = [(CWFJoinStatus *)self descriptionForEAPOLControlMode];
+  [v3 setObject:descriptionForEAPOLControlMode forKeyedSubscript:@"eapol_control_mode"];
 
-  v55 = [(CWFJoinStatus *)self descriptionForEAP8021XControlState];
-  [v3 setObject:v55 forKeyedSubscript:@"eapol_control_state"];
+  descriptionForEAP8021XControlState = [(CWFJoinStatus *)self descriptionForEAP8021XControlState];
+  [v3 setObject:descriptionForEAP8021XControlState forKeyedSubscript:@"eapol_control_state"];
 
-  v56 = [(CWFJoinStatus *)self descriptionForEAPOLClientStatus];
-  [v3 setObject:v56 forKeyedSubscript:@"eapol_client_status"];
+  descriptionForEAPOLClientStatus = [(CWFJoinStatus *)self descriptionForEAPOLClientStatus];
+  [v3 setObject:descriptionForEAPOLClientStatus forKeyedSubscript:@"eapol_client_status"];
 
   v57 = sub_1E0BCEC64(v3, 0, 1u);
   if (v57)
@@ -2417,11 +2417,11 @@ LABEL_124:
 
 - (id)descriptionForEAPOLClientStatus
 {
-  v3 = [(CWFJoinStatus *)self EAP8021XClientStatus];
-  v4 = v3;
-  if (v3 > 999)
+  eAP8021XClientStatus = [(CWFJoinStatus *)self EAP8021XClientStatus];
+  v4 = eAP8021XClientStatus;
+  if (eAP8021XClientStatus > 999)
   {
-    switch(v3)
+    switch(eAP8021XClientStatus)
     {
       case 1000:
         v5 = @"Errno Error";
@@ -2513,15 +2513,15 @@ LABEL_28:
 
 - (id)descriptionForEAPOLControlMode
 {
-  v3 = [(CWFJoinStatus *)self EAP8021XControlMode];
-  if (v3 >= 4)
+  eAP8021XControlMode = [(CWFJoinStatus *)self EAP8021XControlMode];
+  if (eAP8021XControlMode >= 4)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%ld)", -[CWFJoinStatus EAP8021XControlMode](self, "EAP8021XControlMode")];
   }
 
   else
   {
-    v4 = off_1E86EA558[v3];
+    v4 = off_1E86EA558[eAP8021XControlMode];
   }
 
   return v4;
@@ -2529,15 +2529,15 @@ LABEL_28:
 
 - (id)descriptionForEAP8021XControlState
 {
-  v3 = [(CWFJoinStatus *)self EAP8021XControlState];
-  if (v3 >= 4)
+  eAP8021XControlState = [(CWFJoinStatus *)self EAP8021XControlState];
+  if (eAP8021XControlState >= 4)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%ld)", -[CWFJoinStatus EAP8021XControlState](self, "EAP8021XControlState")];
   }
 
   else
   {
-    v4 = off_1E86EA578[v3];
+    v4 = off_1E86EA578[eAP8021XControlState];
   }
 
   return v4;

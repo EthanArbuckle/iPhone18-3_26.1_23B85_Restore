@@ -1,15 +1,15 @@
 @interface EmptyStateTableViewCell
-- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation EmptyStateTableViewCell
 
-- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
+    identifier = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_1B9FE49EC(a3, a4, v6);
+  return sub_1B9FE49EC(style, identifier, v6);
 }
 
-- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23EmptyStateTableViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI23EmptyStateTableViewCell____lazy_storage___emptyStateCellView) = 0;
   v4 = self + OBJC_IVAR____TtC18HealthExperienceUI23EmptyStateTableViewCell_item;
@@ -30,8 +30,8 @@
   *(v4 + 4) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for EmptyStateTableViewCell();
-  v5 = a3;
-  v6 = [(EmptyStateTableViewCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(EmptyStateTableViewCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

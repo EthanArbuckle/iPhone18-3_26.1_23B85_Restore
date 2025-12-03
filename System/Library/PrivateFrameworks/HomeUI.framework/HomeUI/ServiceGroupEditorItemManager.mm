@@ -1,17 +1,17 @@
 @interface ServiceGroupEditorItemManager
-- (_TtC6HomeUI29ServiceGroupEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (_TtC6HomeUI29ServiceGroupEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 @end
 
 @implementation ServiceGroupEditorItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_20D11F3CC();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81AF70);
@@ -20,10 +20,10 @@
   return v6;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_20D11EBAC();
 
   sub_20CECF940(0, &qword_28111FFE0);
@@ -32,12 +32,12 @@
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   sub_20CECF940(0, &qword_281120AC0);
   sub_20CEF7F74(&qword_281120AB0, &qword_281120AC0);
   sub_20D567D08();
-  v4 = self;
+  selfCopy = self;
   sub_20D11EE80();
 
   sub_20CECF940(0, &unk_28111FFD0);
@@ -51,14 +51,14 @@
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC6HomeUI29ServiceGroupEditorItemManager_selectionController);
   swift_beginAccess();
   v4 = *(v3 + 16);
-  v5 = self;
-  v6 = [v4 home];
-  v7 = [objc_opt_self() futureWithResult_];
+  selfCopy = self;
+  home = [v4 home];
+  futureWithResult_ = [objc_opt_self() futureWithResult_];
 
-  return v7;
+  return futureWithResult_;
 }
 
-- (_TtC6HomeUI29ServiceGroupEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (_TtC6HomeUI29ServiceGroupEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface NavSignCollectionViewCell
-- (NavSignCollectionViewCell)initWithFrame:(CGRect)a3;
+- (NavSignCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_configureConstraints;
 - (void)prepareForReuse;
 @end
@@ -16,51 +16,51 @@
 
 - (void)_configureConstraints
 {
-  v18 = [(NavManeuverSignView *)self->_navSignView leadingAnchor];
-  v19 = [(NavSignCollectionViewCell *)self contentView];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  leadingAnchor = [(NavManeuverSignView *)self->_navSignView leadingAnchor];
+  contentView = [(NavSignCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v20[0] = v16;
-  v14 = [(NavManeuverSignView *)self->_navSignView trailingAnchor];
-  v15 = [(NavSignCollectionViewCell *)self contentView];
-  v13 = [v15 trailingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  trailingAnchor = [(NavManeuverSignView *)self->_navSignView trailingAnchor];
+  contentView2 = [(NavSignCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v20[1] = v3;
-  v4 = [(NavManeuverSignView *)self->_navSignView topAnchor];
-  v5 = [(NavSignCollectionViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  topAnchor = [(NavManeuverSignView *)self->_navSignView topAnchor];
+  contentView3 = [(NavSignCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[2] = v7;
-  v8 = [(NavManeuverSignView *)self->_navSignView bottomAnchor];
-  v9 = [(NavSignCollectionViewCell *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintLessThanOrEqualToAnchor:v10];
+  bottomAnchor = [(NavManeuverSignView *)self->_navSignView bottomAnchor];
+  contentView4 = [(NavSignCollectionViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v11 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v20[3] = v11;
   v12 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (NavSignCollectionViewCell)initWithFrame:(CGRect)a3
+- (NavSignCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = NavSignCollectionViewCell;
-  v3 = [(NavSignCollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavSignCollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     [(NavSignCollectionViewCell *)v3 setAccessibilityIdentifier:v5];
 
-    v6 = [(NavSignCollectionViewCell *)v3 contentView];
-    [v6 setAccessibilityIdentifier:@"NavSignCollectionViewCellContent"];
+    contentView = [(NavSignCollectionViewCell *)v3 contentView];
+    [contentView setAccessibilityIdentifier:@"NavSignCollectionViewCellContent"];
 
     v7 = [(NavSignView *)[NavManeuverSignView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     navSignView = v3->_navSignView;
     v3->_navSignView = v7;
 
     [(NavManeuverSignView *)v3->_navSignView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(NavSignCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v3->_navSignView];
+    contentView2 = [(NavSignCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_navSignView];
 
     [(NavSignCollectionViewCell *)v3 _configureConstraints];
   }

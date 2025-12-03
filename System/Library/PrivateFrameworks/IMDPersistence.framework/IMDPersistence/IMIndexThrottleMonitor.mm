@@ -2,13 +2,13 @@
 + (NSDate)dateOfThrottlingCompletion;
 + (id)defaults;
 + (int64_t)lastThrottleState;
-+ (void)setLastThrottleState:(int64_t)a3;
-+ (void)setThrottles:(id)a3;
-- (IMIndexThrottleMonitor)initWithChangeHandler:(id)a3;
++ (void)setLastThrottleState:(int64_t)state;
++ (void)setThrottles:(id)throttles;
+- (IMIndexThrottleMonitor)initWithChangeHandler:(id)handler;
 - (void)__unlocked_cancel;
 - (void)__unlocked_reload;
 - (void)cancel;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reload;
 @end
 
@@ -28,24 +28,24 @@
 
 + (int64_t)lastThrottleState
 {
-  v3 = objc_msgSend_defaults(a1, a2, v2);
+  v3 = objc_msgSend_defaults(self, a2, v2);
   v5 = objc_msgSend_integerForKey_(v3, v4, @"IMDIndexingLastThrottleState");
 
   return v5;
 }
 
-+ (void)setLastThrottleState:(int64_t)a3
++ (void)setLastThrottleState:(int64_t)state
 {
-  v5 = objc_msgSend_defaults(a1, a2, a3);
-  objc_msgSend_setInteger_forKey_(v5, v4, a3, @"IMDIndexingLastThrottleState");
+  v5 = objc_msgSend_defaults(self, a2, state);
+  objc_msgSend_setInteger_forKey_(v5, v4, state, @"IMDIndexingLastThrottleState");
 }
 
-+ (void)setThrottles:(id)a3
++ (void)setThrottles:(id)throttles
 {
-  v8 = a3;
-  if (objc_msgSend_count(v8, v3, v4))
+  throttlesCopy = throttles;
+  if (objc_msgSend_count(throttlesCopy, v3, v4))
   {
-    v7 = objc_msgSend_copy(v8, v5, v6);
+    v7 = objc_msgSend_copy(throttlesCopy, v5, v6);
     IMSetDomainValueForKey();
   }
 
@@ -57,9 +57,9 @@
 
 + (NSDate)dateOfThrottlingCompletion
 {
-  if (objc_msgSend_isThrottled(a1, a2, v2))
+  if (objc_msgSend_isThrottled(self, a2, v2))
   {
-    v6 = objc_msgSend_throttles(a1, v4, v5);
+    v6 = objc_msgSend_throttles(self, v4, v5);
     v9 = objc_msgSend_allValues(v6, v7, v8);
     v11 = objc_msgSend_sortedArrayUsingSelector_(v9, v10, sel_compare_);
     v14 = objc_msgSend_lastObject(v11, v12, v13);
@@ -87,19 +87,19 @@
   return v21;
 }
 
-- (IMIndexThrottleMonitor)initWithChangeHandler:(id)a3
+- (IMIndexThrottleMonitor)initWithChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v34.receiver = self;
   v34.super_class = IMIndexThrottleMonitor;
   v5 = [(IMIndexThrottleMonitor *)&v34 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     changeHandler = v5->_changeHandler;
     v5->_changeHandler = v6;
 
-    if (v4)
+    if (handlerCopy)
     {
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9 = dispatch_queue_create("com.apple.IMIndexThrottleMonitor", v8);
@@ -127,10 +127,10 @@
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v13 = a3;
-  if ((objc_msgSend_isEqualToString_(v13, v7, @"IMDIndexingLastThrottleState") & 1) != 0 || (objc_msgSend_isEqualToString_(v13, v8, @"IMDIndexingThrottles") & 1) != 0 || (objc_msgSend__ignoreThrottlingKey(MEMORY[0x1E69A7FF8], v8, v9), v10 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v11, v10), v10, isEqualToString))
+  pathCopy = path;
+  if ((objc_msgSend_isEqualToString_(pathCopy, v7, @"IMDIndexingLastThrottleState") & 1) != 0 || (objc_msgSend_isEqualToString_(pathCopy, v8, @"IMDIndexingThrottles") & 1) != 0 || (objc_msgSend__ignoreThrottlingKey(MEMORY[0x1E69A7FF8], v8, v9), v10 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(pathCopy, v11, v10), v10, isEqualToString))
   {
     objc_msgSend_reload(self, v8, v9);
   }

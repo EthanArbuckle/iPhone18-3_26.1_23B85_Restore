@@ -1,6 +1,6 @@
 @interface APSCourier
 - (APSClientIdentityProvider)identityProviderForMainCourier;
-- (APSCourier)initWithEnvironment:(id)a3 defaultUser:(id)a4 userDependencies:(id)a5 delegate:(id)a6;
+- (APSCourier)initWithEnvironment:(id)environment defaultUser:(id)user userDependencies:(id)dependencies delegate:(id)delegate;
 - (APSCourierDelegate)delegate;
 - (APSIDSProxyManager)proxyManager;
 - (BOOL)courierConnectionManagerClientsCanConnectRightNow;
@@ -18,62 +18,62 @@
 - (NSString)description;
 - (double)currentKeepAliveInterval;
 - (id)JSONDebugState;
-- (id)allRegisteredChannelsForTopic:(id)a3 user:(id)a4;
+- (id)allRegisteredChannelsForTopic:(id)topic user:(id)user;
 - (id)aps_prettyDescription;
 - (id)clientIdentityProvider;
-- (id)connectionForConnectionPortName:(id)a3 user:(id)a4;
-- (id)connectionServerDelegateForUser:(id)a3 dependencies:(id)a4;
-- (id)connectionServersForUser:(id)a3;
+- (id)connectionForConnectionPortName:(id)name user:(id)user;
+- (id)connectionServerDelegateForUser:(id)user dependencies:(id)dependencies;
+- (id)connectionServersForUser:(id)user;
 - (id)daemonUserIDs;
 - (id)ifname;
 - (id)latestGeoRegion;
-- (id)publicTokenForUser:(id)a3;
+- (id)publicTokenForUser:(id)user;
 - (unint64_t)serverTimeInNanoSeconds;
-- (void)_addProtocolConnectionsToUserCourier:(id)a3;
-- (void)addConnection:(id)a3 forUser:(id)a4 dependencies:(id)a5;
-- (void)appendPrettyStatusToStatusPrinter:(id)a3;
+- (void)_addProtocolConnectionsToUserCourier:(id)courier;
+- (void)addConnection:(id)connection forUser:(id)user dependencies:(id)dependencies;
+- (void)appendPrettyStatusToStatusPrinter:(id)printer;
 - (void)canUseProxyChanged;
-- (void)courierConnectionManager:(id)a3 openedNewProtocolConnection:(id)a4;
-- (void)courierConnectionManager:(id)a3 receivedServerBag:(id)a4 finishedProcessingServerBagBlock:(id)a5;
-- (void)courierConnectionManager:(id)a3 shouldConnectBlock:(id)a4;
-- (void)courierConnectionStatusDidChange:(id)a3;
-- (void)courierFilterChanged:(id)a3;
-- (void)courierHasNoConnections:(id)a3;
-- (void)courierIdentityBecameAvailable:(id)a3;
-- (void)courierIsIdle:(id)a3;
-- (void)courierShouldRollBAAEnvironmentTokens:(id)a3;
-- (void)didConnectOrDisconnectTokenForCourier:(id)a3 onProtocolConnection:(id)a4;
-- (void)fetchUserCourierIdentityForSigningWithCompletion:(id)a3;
-- (void)flushUser:(id)a3;
-- (void)forceBAAIdentityRefreshWithCompletion:(id)a3;
-- (void)incomingPresenceWithGuid:(id)a3 token:(id)a4 hwVersion:(id)a5 swVersion:(id)a6 swBuild:(id)a7 certificates:(id)a8 nonce:(id)a9 signature:(id)a10 additionalFlags:(int)a11;
+- (void)courierConnectionManager:(id)manager openedNewProtocolConnection:(id)connection;
+- (void)courierConnectionManager:(id)manager receivedServerBag:(id)bag finishedProcessingServerBagBlock:(id)block;
+- (void)courierConnectionManager:(id)manager shouldConnectBlock:(id)block;
+- (void)courierConnectionStatusDidChange:(id)change;
+- (void)courierFilterChanged:(id)changed;
+- (void)courierHasNoConnections:(id)connections;
+- (void)courierIdentityBecameAvailable:(id)available;
+- (void)courierIsIdle:(id)idle;
+- (void)courierShouldRollBAAEnvironmentTokens:(id)tokens;
+- (void)didConnectOrDisconnectTokenForCourier:(id)courier onProtocolConnection:(id)connection;
+- (void)fetchUserCourierIdentityForSigningWithCompletion:(id)completion;
+- (void)flushUser:(id)user;
+- (void)forceBAAIdentityRefreshWithCompletion:(id)completion;
+- (void)incomingPresenceWithGuid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)nonce signature:(id)self0 additionalFlags:(int)self1;
 - (void)invalidateDeviceIdentity;
 - (void)kickstartProxyConnection;
-- (void)logoutUser:(id)a3;
+- (void)logoutUser:(id)user;
 - (void)performKeepAlive;
 - (void)periodicSignalFired;
 - (void)prepareForDarkWake;
 - (void)prepareForFullWake;
 - (void)prepareForSleep;
-- (void)proxyAgent:(id)a3 openedNewProtocolConnection:(id)a4;
-- (void)removeConnectionForConnectionPortName:(id)a3 user:(id)a4;
-- (void)reportOffloadEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)a3 droppedEvents:(aonmicroapsd_droppedtelemetryeventcount_s *)a4;
+- (void)proxyAgent:(id)agent openedNewProtocolConnection:(id)connection;
+- (void)removeConnectionForConnectionPortName:(id)name user:(id)user;
+- (void)reportOffloadEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)events droppedEvents:(aonmicroapsd_droppedtelemetryeventcount_s *)droppedEvents;
 - (void)requestConnectionIfNeeded;
 - (void)rollTokenAndReconnect;
-- (void)setupForUser:(id)a3 dependencies:(id)a4;
-- (void)shouldUseInternetDidChange:(id)a3;
-- (void)updateKeepAliveInterval:(double)a3;
-- (void)userCourier:(id)a3 hasReasonToConnectChangedTo:(BOOL)a4;
+- (void)setupForUser:(id)user dependencies:(id)dependencies;
+- (void)shouldUseInternetDidChange:(id)change;
+- (void)updateKeepAliveInterval:(double)interval;
+- (void)userCourier:(id)courier hasReasonToConnectChangedTo:(BOOL)to;
 @end
 
 @implementation APSCourier
 
 - (id)clientIdentityProvider
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 clientIdentityProvider];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  clientIdentityProvider = [rootUserCourier clientIdentityProvider];
 
-  return v3;
+  return clientIdentityProvider;
 }
 
 - (BOOL)courierConnectionManagerClientsCanConnectRightNow
@@ -82,8 +82,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -93,7 +93,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isConnectableRightNow])
@@ -103,7 +103,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -120,36 +120,36 @@ LABEL_11:
 
 - (BOOL)courierConnectionManagerClientsWillBeAbleToConnect
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 willBeAbleToConnect];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  willBeAbleToConnect = [rootUserCourier willBeAbleToConnect];
 
-  return v3;
+  return willBeAbleToConnect;
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(APSCourier *)self environment];
-  v5 = [v4 name];
-  v6 = [(APSCourier *)self courierByUser];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ %p %@ numCouriers: %d>", v3, self, v5, [v6 count]);
+  environment = [(APSCourier *)self environment];
+  name = [environment name];
+  courierByUser = [(APSCourier *)self courierByUser];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ %p %@ numCouriers: %d>", v3, self, name, [courierByUser count]);
 
   return v7;
 }
 
-- (APSCourier)initWithEnvironment:(id)a3 defaultUser:(id)a4 userDependencies:(id)a5 delegate:(id)a6
+- (APSCourier)initWithEnvironment:(id)environment defaultUser:(id)user userDependencies:(id)dependencies delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  environmentCopy = environment;
+  userCopy = user;
+  dependenciesCopy = dependencies;
+  delegateCopy = delegate;
   v35.receiver = self;
   v35.super_class = APSCourier;
   v15 = [(APSCourier *)&v35 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_environment, a3);
+    objc_storeStrong(&v15->_environment, environment);
     v17 = objc_alloc_init(NSMutableDictionary);
     courierByUser = v16->_courierByUser;
     v16->_courierByUser = v17;
@@ -158,85 +158,85 @@ LABEL_11:
     orderedListOfNonMainCouriers = v16->_orderedListOfNonMainCouriers;
     v16->_orderedListOfNonMainCouriers = v19;
 
-    objc_storeWeak(&v16->_delegate, v14);
-    v21 = [[APSCourierConnectionManager alloc] initWithEnvironment:v11 delegate:v16];
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v21 = [[APSCourierConnectionManager alloc] initWithEnvironment:environmentCopy delegate:v16];
     connectionManager = v16->_connectionManager;
     v16->_connectionManager = v21;
 
-    v23 = [v13 clientIdentityProvider];
-    objc_storeWeak(&v16->_identityProviderForMainCourier, v23);
+    clientIdentityProvider = [dependenciesCopy clientIdentityProvider];
+    objc_storeWeak(&v16->_identityProviderForMainCourier, clientIdentityProvider);
 
     v24 = [APSUserCourier alloc];
-    v25 = [v13 userPreferences];
-    v26 = [v13 clientIdentityProvider];
-    v27 = [v13 userAppIDManager];
-    v28 = [v13 systemTokenStorage];
-    v29 = [(APSUserCourier *)v24 initWithEnvironment:v11 courierUser:v12 userPreferences:v25 clientIdentityProvider:v26 userAppIDManager:v27 systemTokenStorage:v28 delegate:v16 withConnectionEstablisher:v16->_connectionManager];
+    userPreferences = [dependenciesCopy userPreferences];
+    clientIdentityProvider2 = [dependenciesCopy clientIdentityProvider];
+    userAppIDManager = [dependenciesCopy userAppIDManager];
+    systemTokenStorage = [dependenciesCopy systemTokenStorage];
+    v29 = [(APSUserCourier *)v24 initWithEnvironment:environmentCopy courierUser:userCopy userPreferences:userPreferences clientIdentityProvider:clientIdentityProvider2 userAppIDManager:userAppIDManager systemTokenStorage:systemTokenStorage delegate:v16 withConnectionEstablisher:v16->_connectionManager];
     rootUserCourier = v16->_rootUserCourier;
     v16->_rootUserCourier = v29;
 
     v31 = v16->_courierByUser;
-    v32 = [(APSCourier *)v16 rootUserCourier];
-    v33 = [v12 name];
-    [(NSMutableDictionary *)v31 setObject:v32 forKey:v33];
+    rootUserCourier = [(APSCourier *)v16 rootUserCourier];
+    name = [userCopy name];
+    [(NSMutableDictionary *)v31 setObject:rootUserCourier forKey:name];
   }
 
   return v16;
 }
 
-- (void)courierHasNoConnections:(id)a3
+- (void)courierHasNoConnections:(id)connections
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self delegate];
-  [v5 courierHasNoConnections:v4];
+  connectionsCopy = connections;
+  delegate = [(APSCourier *)self delegate];
+  [delegate courierHasNoConnections:connectionsCopy];
 }
 
-- (void)courierConnectionStatusDidChange:(id)a3
+- (void)courierConnectionStatusDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self delegate];
-  [v5 courierConnectionStatusDidChange:v4];
+  changeCopy = change;
+  delegate = [(APSCourier *)self delegate];
+  [delegate courierConnectionStatusDidChange:changeCopy];
 }
 
-- (void)courierFilterChanged:(id)a3
+- (void)courierFilterChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self delegate];
-  [v5 courierFilterChanged:v4];
+  changedCopy = changed;
+  delegate = [(APSCourier *)self delegate];
+  [delegate courierFilterChanged:changedCopy];
 }
 
-- (void)userCourier:(id)a3 hasReasonToConnectChangedTo:(BOOL)a4
+- (void)userCourier:(id)courier hasReasonToConnectChangedTo:(BOOL)to
 {
-  if (a4)
+  if (to)
   {
     [(APSProxyAgent *)self->_proxyAgent setEnabled:1];
   }
 }
 
-- (void)courierIsIdle:(id)a3
+- (void)courierIsIdle:(id)idle
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self delegate];
-  [v5 courierIsIdle:v4];
+  idleCopy = idle;
+  delegate = [(APSCourier *)self delegate];
+  [delegate courierIsIdle:idleCopy];
 }
 
-- (void)shouldUseInternetDidChange:(id)a3
+- (void)shouldUseInternetDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self delegate];
-  [v5 shouldUseInternetDidChange:v4];
+  changeCopy = change;
+  delegate = [(APSCourier *)self delegate];
+  [delegate shouldUseInternetDidChange:changeCopy];
 }
 
-- (void)courierIdentityBecameAvailable:(id)a3
+- (void)courierIdentityBecameAvailable:(id)available
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(APSCourier *)self proxyAgent];
-  v5 = [v4 activeProtocolConnections];
+  proxyAgent = [(APSCourier *)self proxyAgent];
+  activeProtocolConnections = [proxyAgent activeProtocolConnections];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];
+  v6 = [activeProtocolConnections countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v6)
   {
     v8 = v6;
@@ -250,31 +250,31 @@ LABEL_11:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeProtocolConnections);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
         v12 = +[APSLog courier];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(APSCourier *)self rootUserCourier];
+          rootUserCourier = [(APSCourier *)self rootUserCourier];
           *buf = v15;
-          v21 = self;
+          selfCopy = self;
           v22 = 2112;
-          v23 = v13;
+          v23 = rootUserCourier;
           v24 = 2112;
           v25 = v11;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ Proxy was available adding since courier now has an identity {mainCourier: %@, protocolConnection: %@}", buf, 0x20u);
         }
 
-        v14 = [(APSCourier *)self rootUserCourier];
-        [v14 beginTrackingProtocolConnection:v11];
+        rootUserCourier2 = [(APSCourier *)self rootUserCourier];
+        [rootUserCourier2 beginTrackingProtocolConnection:v11];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];
+      v8 = [activeProtocolConnections countByEnumeratingWithState:&v16 objects:v26 count:16];
     }
 
     while (v8);
@@ -283,32 +283,32 @@ LABEL_11:
 
 - (void)kickstartProxyConnection
 {
-  v2 = [(APSCourier *)self proxyAgent];
-  [v2 kickstartProxyConnection];
+  proxyAgent = [(APSCourier *)self proxyAgent];
+  [proxyAgent kickstartProxyConnection];
 }
 
 - (APSIDSProxyManager)proxyManager
 {
-  v2 = [(APSCourier *)self delegate];
-  v3 = [v2 proxyManager];
+  delegate = [(APSCourier *)self delegate];
+  proxyManager = [delegate proxyManager];
 
-  return v3;
+  return proxyManager;
 }
 
-- (void)didConnectOrDisconnectTokenForCourier:(id)a3 onProtocolConnection:(id)a4
+- (void)didConnectOrDisconnectTokenForCourier:(id)courier onProtocolConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSCourier *)self rootUserCourier];
+  courierCopy = courier;
+  connectionCopy = connection;
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
 
-  if (v8 == v6)
+  if (rootUserCourier == courierCopy)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(NSMutableArray *)self->_orderedListOfNonMainCouriers indexOfObject:v6]+ 1;
+    v9 = [(NSMutableArray *)self->_orderedListOfNonMainCouriers indexOfObject:courierCopy]+ 1;
   }
 
   if ([(NSMutableArray *)self->_orderedListOfNonMainCouriers count]> v9)
@@ -318,37 +318,37 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Trying to connect/disconnect for courier %@", &v12, 0x16u);
     }
 
-    [v10 beginTrackingProtocolConnection:v7];
+    [v10 beginTrackingProtocolConnection:connectionCopy];
   }
 }
 
-- (void)courierShouldRollBAAEnvironmentTokens:(id)a3
+- (void)courierShouldRollBAAEnvironmentTokens:(id)tokens
 {
-  v4 = [(APSCourier *)self delegate];
-  [v4 rollTokensForAllBAAEnvironments:self];
+  delegate = [(APSCourier *)self delegate];
+  [delegate rollTokensForAllBAAEnvironments:self];
 }
 
-- (void)proxyAgent:(id)a3 openedNewProtocolConnection:(id)a4
+- (void)proxyAgent:(id)agent openedNewProtocolConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(APSCourier *)self rootUserCourier];
-  v7 = [v6 hasIdentity];
+  connectionCopy = connection;
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  hasIdentity = [rootUserCourier hasIdentity];
 
-  if (v7)
+  if (hasIdentity)
   {
-    v8 = [(APSCourier *)self rootUserCourier];
-    v9 = [v8 hasReasonToConnect];
+    rootUserCourier2 = [(APSCourier *)self rootUserCourier];
+    hasReasonToConnect = [rootUserCourier2 hasReasonToConnect];
 
-    if (v9)
+    if (hasReasonToConnect)
     {
-      v10 = [(APSCourier *)self rootUserCourier];
-      [v10 beginTrackingProtocolConnection:v5];
+      rootUserCourier3 = [(APSCourier *)self rootUserCourier];
+      [rootUserCourier3 beginTrackingProtocolConnection:connectionCopy];
     }
 
     else
@@ -356,13 +356,13 @@ LABEL_11:
       v13 = +[APSLog courier];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(APSCourier *)self rootUserCourier];
+        rootUserCourier4 = [(APSCourier *)self rootUserCourier];
         v15 = 138412802;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
-        v18 = v14;
+        v18 = rootUserCourier4;
         v19 = 2112;
-        v20 = v5;
+        v20 = connectionCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ Proxy available but courier does not have any active topics, waiting {mainCourier: %@, protocolConnection: %@}", &v15, 0x20u);
       }
 
@@ -375,42 +375,42 @@ LABEL_11:
     v11 = +[APSLog courier];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(APSCourier *)self rootUserCourier];
+      rootUserCourier5 = [(APSCourier *)self rootUserCourier];
       v15 = 138412802;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
-      v18 = v12;
+      v18 = rootUserCourier5;
       v19 = 2112;
-      v20 = v5;
+      v20 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Proxy available but courier does not have an identity yet, waiting {mainCourier: %@, protocolConnection: %@}", &v15, 0x20u);
     }
   }
 }
 
-- (void)updateKeepAliveInterval:(double)a3
+- (void)updateKeepAliveInterval:(double)interval
 {
-  v4 = [(APSCourier *)self connectionManager];
-  [v4 updateKeepAliveInterval:a3];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager updateKeepAliveInterval:interval];
 }
 
-- (void)courierConnectionManager:(id)a3 openedNewProtocolConnection:(id)a4
+- (void)courierConnectionManager:(id)manager openedNewProtocolConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(APSCourier *)self rootUserCourier];
-  [v6 beginTrackingProtocolConnection:v5];
+  connectionCopy = connection;
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier beginTrackingProtocolConnection:connectionCopy];
 }
 
-- (void)courierConnectionManager:(id)a3 receivedServerBag:(id)a4 finishedProcessingServerBagBlock:(id)a5
+- (void)courierConnectionManager:(id)manager receivedServerBag:(id)bag finishedProcessingServerBagBlock:(id)block
 {
-  v15 = a3;
-  v17 = a4;
-  v8 = a5;
-  v16 = [(NSMutableDictionary *)self->_courierByUser allValues];
+  managerCopy = manager;
+  bagCopy = bag;
+  blockCopy = block;
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
   v27[3] = 0;
-  v9 = [v16 count];
+  v9 = [allValues count];
   if (v9)
   {
     objc_initWeak(&location, self);
@@ -418,8 +418,8 @@ LABEL_11:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [(NSMutableDictionary *)self->_courierByUser allValues];
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_courierByUser allValues];
+    v11 = [allValues2 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v11)
     {
       v12 = *v23;
@@ -429,7 +429,7 @@ LABEL_11:
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allValues2);
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
@@ -440,13 +440,13 @@ LABEL_11:
           objc_copyWeak(v21, &location);
           v20 = v27;
           v21[1] = v9;
-          v19 = v8;
-          [v14 updateForReceivedConfig:v17 finishedProcessingConfigBlock:v18];
+          v19 = blockCopy;
+          [v14 updateForReceivedConfig:bagCopy finishedProcessingConfigBlock:v18];
 
           objc_destroyWeak(v21);
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        v11 = [allValues2 countByEnumeratingWithState:&v22 objects:v28 count:16];
       }
 
       while (v11);
@@ -457,32 +457,32 @@ LABEL_11:
 
   else
   {
-    v8[2](v8);
+    blockCopy[2](blockCopy);
   }
 
   _Block_object_dispose(v27, 8);
 }
 
-- (void)courierConnectionManager:(id)a3 shouldConnectBlock:(id)a4
+- (void)courierConnectionManager:(id)manager shouldConnectBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = +[APSLog courier];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ checking if main user courier is ready to connect", buf, 0xCu);
   }
 
-  v7 = [(APSCourier *)self rootUserCourier];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001F438;
   v9[3] = &unk_100186580;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  [v7 shouldConnectToCourier:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [rootUserCourier shouldConnectToCourier:v9];
 }
 
 - (BOOL)courierConnectionManagerClientsHaveEagerMessages
@@ -491,8 +491,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -502,7 +502,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) hasEagerMessages])
@@ -512,7 +512,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -533,8 +533,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -544,7 +544,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) wantsCriticalReliability])
@@ -554,7 +554,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -575,8 +575,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -586,7 +586,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isInteractivePushDuringSleepEnabled])
@@ -596,7 +596,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -611,24 +611,24 @@ LABEL_11:
   return v3;
 }
 
-- (void)_addProtocolConnectionsToUserCourier:(id)a3
+- (void)_addProtocolConnectionsToUserCourier:(id)courier
 {
-  v4 = a3;
+  courierCopy = courier;
   v5 = +[APSLog courier];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(APSCourier *)self connectionManager];
-    v7 = [v6 activeProtocolConnections];
-    v8 = [(APSCourier *)self proxyAgent];
-    v9 = [v8 activeProtocolConnections];
+    connectionManager = [(APSCourier *)self connectionManager];
+    activeProtocolConnections = [connectionManager activeProtocolConnections];
+    proxyAgent = [(APSCourier *)self proxyAgent];
+    activeProtocolConnections2 = [proxyAgent activeProtocolConnections];
     *buf = 138413058;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
-    v35 = v4;
+    v35 = courierCopy;
     v36 = 2112;
-    v37 = v7;
+    v37 = activeProtocolConnections;
     v38 = 2112;
-    v39 = v9;
+    v39 = activeProtocolConnections2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ Adding protocol connections to userCourier %@ {connectionManager.activeProtocolConnections: %@, proxyAgent.activeProtocolConnections: %@}", buf, 0x2Au);
   }
 
@@ -636,10 +636,10 @@ LABEL_11:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [(APSCourier *)self connectionManager];
-  v11 = [v10 activeProtocolConnections];
+  connectionManager2 = [(APSCourier *)self connectionManager];
+  activeProtocolConnections3 = [connectionManager2 activeProtocolConnections];
 
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v12 = [activeProtocolConnections3 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
@@ -651,15 +651,15 @@ LABEL_11:
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(activeProtocolConnections3);
         }
 
-        [v4 beginTrackingProtocolConnection:*(*(&v26 + 1) + 8 * v15)];
+        [courierCopy beginTrackingProtocolConnection:*(*(&v26 + 1) + 8 * v15)];
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v13 = [activeProtocolConnections3 countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v13);
@@ -669,10 +669,10 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = [(APSCourier *)self proxyAgent];
-  v17 = [v16 activeProtocolConnections];
+  proxyAgent2 = [(APSCourier *)self proxyAgent];
+  activeProtocolConnections4 = [proxyAgent2 activeProtocolConnections];
 
-  v18 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v18 = [activeProtocolConnections4 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v18)
   {
     v19 = v18;
@@ -684,15 +684,15 @@ LABEL_11:
       {
         if (*v23 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(activeProtocolConnections4);
         }
 
-        [v4 beginTrackingProtocolConnection:*(*(&v22 + 1) + 8 * v21)];
+        [courierCopy beginTrackingProtocolConnection:*(*(&v22 + 1) + 8 * v21)];
         v21 = v21 + 1;
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v19 = [activeProtocolConnections4 countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v19);
@@ -701,8 +701,8 @@ LABEL_11:
 
 - (id)daemonUserIDs
 {
-  v3 = [(APSCourier *)self courierByUser];
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  courierByUser = [(APSCourier *)self courierByUser];
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [courierByUser count]);
 
   v16 = 0u;
   v17 = 0u;
@@ -725,9 +725,9 @@ LABEL_11:
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [APSSystemUser systemUserWithUserID:v10, v14];
-        v12 = [v11 isDaemonUser];
+        isDaemonUser = [v11 isDaemonUser];
 
-        if (v12)
+        if (isDaemonUser)
         {
           [v4 addObject:v10];
         }
@@ -742,61 +742,61 @@ LABEL_11:
   return v4;
 }
 
-- (void)setupForUser:(id)a3 dependencies:(id)a4
+- (void)setupForUser:(id)user dependencies:(id)dependencies
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  dependenciesCopy = dependencies;
   courierByUser = self->_courierByUser;
-  v9 = [v6 name];
-  v10 = [(NSMutableDictionary *)courierByUser objectForKey:v9];
+  name = [userCopy name];
+  v10 = [(NSMutableDictionary *)courierByUser objectForKey:name];
 
   if (!v10)
   {
     v11 = +[APSLog courier];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 name];
+      name2 = [userCopy name];
       *buf = 138412546;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = v12;
+      v26 = name2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Login user %@", buf, 0x16u);
     }
 
     v13 = [APSUserCourier alloc];
-    v14 = [(APSCourier *)self environment];
-    v15 = [v7 userPreferences];
-    v16 = [v7 clientIdentityProvider];
-    v17 = [v7 userAppIDManager];
-    v18 = [v7 systemTokenStorage];
-    v19 = [(APSUserCourier *)v13 initWithEnvironment:v14 courierUser:v6 userPreferences:v15 clientIdentityProvider:v16 userAppIDManager:v17 systemTokenStorage:v18 delegate:self withConnectionEstablisher:self->_connectionManager];
+    environment = [(APSCourier *)self environment];
+    userPreferences = [dependenciesCopy userPreferences];
+    clientIdentityProvider = [dependenciesCopy clientIdentityProvider];
+    userAppIDManager = [dependenciesCopy userAppIDManager];
+    systemTokenStorage = [dependenciesCopy systemTokenStorage];
+    v19 = [(APSUserCourier *)v13 initWithEnvironment:environment courierUser:userCopy userPreferences:userPreferences clientIdentityProvider:clientIdentityProvider userAppIDManager:userAppIDManager systemTokenStorage:systemTokenStorage delegate:self withConnectionEstablisher:self->_connectionManager];
 
     v20 = self->_courierByUser;
-    v21 = [v6 name];
-    [(NSMutableDictionary *)v20 setObject:v19 forKey:v21];
+    name3 = [userCopy name];
+    [(NSMutableDictionary *)v20 setObject:v19 forKey:name3];
 
     [(NSMutableArray *)self->_orderedListOfNonMainCouriers addObject:v19];
-    v22 = [(APSCourier *)self rootUserCourier];
-    -[APSUserCourier setEnabled:](v19, "setEnabled:", [v22 enabled]);
+    rootUserCourier = [(APSCourier *)self rootUserCourier];
+    -[APSUserCourier setEnabled:](v19, "setEnabled:", [rootUserCourier enabled]);
 
     [(APSCourier *)self _addProtocolConnectionsToUserCourier:v19];
   }
 }
 
-- (void)logoutUser:(id)a3
+- (void)logoutUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   courierByUser = self->_courierByUser;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)courierByUser objectForKey:v6];
+  name = [userCopy name];
+  v7 = [(NSMutableDictionary *)courierByUser objectForKey:name];
 
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = userCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ Logging out user %@ on %@", &v9, 0x20u);
@@ -805,20 +805,20 @@ LABEL_11:
   [v7 logout];
 }
 
-- (void)flushUser:(id)a3
+- (void)flushUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   courierByUser = self->_courierByUser;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)courierByUser objectForKey:v6];
+  name = [userCopy name];
+  v7 = [(NSMutableDictionary *)courierByUser objectForKey:name];
 
   v8 = +[APSLog courier];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = userCopy;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ Flushing user %@ on %@", &v9, 0x20u);
@@ -829,55 +829,55 @@ LABEL_11:
 
 - (BOOL)isIdle
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 isIdle];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  isIdle = [rootUserCourier isIdle];
 
-  return v3;
+  return isIdle;
 }
 
-- (id)connectionServersForUser:(id)a3
+- (id)connectionServersForUser:(id)user
 {
   courierByUser = self->_courierByUser;
-  v4 = [a3 name];
-  v5 = [(NSMutableDictionary *)courierByUser objectForKey:v4];
-  v6 = [v5 connectionServers];
+  name = [user name];
+  v5 = [(NSMutableDictionary *)courierByUser objectForKey:name];
+  connectionServers = [v5 connectionServers];
 
-  return v6;
+  return connectionServers;
 }
 
-- (void)addConnection:(id)a3 forUser:(id)a4 dependencies:(id)a5
+- (void)addConnection:(id)connection forUser:(id)user dependencies:(id)dependencies
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
+  connectionCopy = connection;
+  userCopy = user;
+  dependenciesCopy = dependencies;
   courierByUser = self->_courierByUser;
-  v11 = [v8 name];
-  v12 = [(NSMutableDictionary *)courierByUser objectForKey:v11];
+  name = [userCopy name];
+  v12 = [(NSMutableDictionary *)courierByUser objectForKey:name];
 
   if (v12)
   {
-    [v12 addConnection:v23];
+    [v12 addConnection:connectionCopy];
   }
 
   else
   {
     v13 = [APSUserCourier alloc];
-    v14 = [(APSCourier *)self environment];
-    v15 = [v9 userPreferences];
-    v16 = [v9 clientIdentityProvider];
-    v17 = [v9 userAppIDManager];
-    v18 = [v9 systemTokenStorage];
-    v19 = [(APSUserCourier *)v13 initWithEnvironment:v14 courierUser:v8 userPreferences:v15 clientIdentityProvider:v16 userAppIDManager:v17 systemTokenStorage:v18 delegate:self withConnectionEstablisher:self->_connectionManager];
+    environment = [(APSCourier *)self environment];
+    userPreferences = [dependenciesCopy userPreferences];
+    clientIdentityProvider = [dependenciesCopy clientIdentityProvider];
+    userAppIDManager = [dependenciesCopy userAppIDManager];
+    systemTokenStorage = [dependenciesCopy systemTokenStorage];
+    v19 = [(APSUserCourier *)v13 initWithEnvironment:environment courierUser:userCopy userPreferences:userPreferences clientIdentityProvider:clientIdentityProvider userAppIDManager:userAppIDManager systemTokenStorage:systemTokenStorage delegate:self withConnectionEstablisher:self->_connectionManager];
 
     v20 = self->_courierByUser;
-    v21 = [v8 name];
-    [(NSMutableDictionary *)v20 setObject:v19 forKey:v21];
+    name2 = [userCopy name];
+    [(NSMutableDictionary *)v20 setObject:v19 forKey:name2];
 
     [(NSMutableArray *)self->_orderedListOfNonMainCouriers addObject:v19];
-    v22 = [(APSCourier *)self rootUserCourier];
-    -[APSUserCourier setEnabled:](v19, "setEnabled:", [v22 enabled]);
+    rootUserCourier = [(APSCourier *)self rootUserCourier];
+    -[APSUserCourier setEnabled:](v19, "setEnabled:", [rootUserCourier enabled]);
 
-    [(APSUserCourier *)v19 addConnection:v23];
+    [(APSUserCourier *)v19 addConnection:connectionCopy];
     [(APSCourier *)self _addProtocolConnectionsToUserCourier:v19];
   }
 }
@@ -888,8 +888,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -899,7 +899,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isInteractivePushDuringSleepEnabled])
@@ -909,7 +909,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -926,24 +926,24 @@ LABEL_11:
 
 - (BOOL)isKeepAliveProxyConfigured
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 isKeepAliveProxyConfigured];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  isKeepAliveProxyConfigured = [rootUserCourier isKeepAliveProxyConfigured];
 
-  return v3;
+  return isKeepAliveProxyConfigured;
 }
 
-- (void)appendPrettyStatusToStatusPrinter:(id)a3
+- (void)appendPrettyStatusToStatusPrinter:(id)printer
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self connectionManager];
-  [v5 appendPrettyStatusToStatusPrinter:v4];
+  printerCopy = printer;
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager appendPrettyStatusToStatusPrinter:printerCopy];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -955,15 +955,15 @@ LABEL_11:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) appendPrettyStatusToStatusPrinter:v4];
+        [*(*(&v11 + 1) + 8 * v10) appendPrettyStatusToStatusPrinter:printerCopy];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -995,8 +995,8 @@ LABEL_11:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_courierByUser objectForKeyedSubscript:v10, v15];
-        v12 = [v11 JSONDebugState];
-        [v4 setObject:v12 forKeyedSubscript:v10];
+        jSONDebugState = [v11 JSONDebugState];
+        [v4 setObject:jSONDebugState forKeyedSubscript:v10];
       }
 
       v7 = [(NSMutableDictionary *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1006,85 +1006,85 @@ LABEL_11:
   }
 
   [v3 setObject:v4 forKeyedSubscript:@"users"];
-  v13 = [(APSCourierConnectionManager *)self->_connectionManager JSONDebugState];
-  [v3 setObject:v13 forKeyedSubscript:@"connection"];
+  jSONDebugState2 = [(APSCourierConnectionManager *)self->_connectionManager JSONDebugState];
+  [v3 setObject:jSONDebugState2 forKeyedSubscript:@"connection"];
 
   return v3;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [(NSMutableDictionary *)self->_courierByUser allValues];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
   v4 = APSPrettyPrintCollection();
 
   v5 = objc_opt_class();
-  v6 = [(APSCourier *)self environment];
-  v7 = [v6 name];
+  environment = [(APSCourier *)self environment];
+  name = [environment name];
   v8 = [(APSCourierConnectionManager *)self->_connectionManager debugDescription];
-  v9 = [NSString stringWithFormat:@"<%@ %p, %@, couriers=%@, connectionManager=%@>", v5, self, v7, v4, v8];
+  v9 = [NSString stringWithFormat:@"<%@ %p, %@, couriers=%@, connectionManager=%@>", v5, self, name, v4, v8];
 
   return v9;
 }
 
 - (id)aps_prettyDescription
 {
-  v3 = [(NSMutableDictionary *)self->_courierByUser allValues];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
   v4 = APSPrettyPrintCollection();
 
-  v5 = [(APSCourier *)self environment];
-  v6 = [v5 name];
+  environment = [(APSCourier *)self environment];
+  name = [environment name];
   connectionManager = self->_connectionManager;
   v8 = APSPrettyPrintObject();
-  v9 = [NSString stringWithFormat:@"<%@, couriers=%@, connectionManager=%@>", v6, v4, v8];
+  v9 = [NSString stringWithFormat:@"<%@, couriers=%@, connectionManager=%@>", name, v4, v8];
 
   return v9;
 }
 
 - (double)currentKeepAliveInterval
 {
-  v2 = [(APSCourier *)self connectionManager];
-  [v2 currentKeepAliveInterval];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager currentKeepAliveInterval];
   v4 = v3;
 
   return v4;
 }
 
-- (void)removeConnectionForConnectionPortName:(id)a3 user:(id)a4
+- (void)removeConnectionForConnectionPortName:(id)name user:(id)user
 {
   courierByUser = self->_courierByUser;
-  v6 = a3;
-  v8 = [a4 name];
-  v7 = [(NSMutableDictionary *)courierByUser objectForKey:v8];
-  [v7 removeConnectionForConnectionPortName:v6];
+  nameCopy = name;
+  name = [user name];
+  v7 = [(NSMutableDictionary *)courierByUser objectForKey:name];
+  [v7 removeConnectionForConnectionPortName:nameCopy];
 }
 
-- (id)connectionForConnectionPortName:(id)a3 user:(id)a4
+- (id)connectionForConnectionPortName:(id)name user:(id)user
 {
   courierByUser = self->_courierByUser;
-  v6 = a3;
-  v7 = [a4 name];
-  v8 = [(NSMutableDictionary *)courierByUser objectForKey:v7];
-  v9 = [v8 connectionForConnectionPortName:v6];
+  nameCopy = name;
+  name = [user name];
+  v8 = [(NSMutableDictionary *)courierByUser objectForKey:name];
+  v9 = [v8 connectionForConnectionPortName:nameCopy];
 
   return v9;
 }
 
 - (void)requestConnectionIfNeeded
 {
-  v2 = [(APSCourier *)self connectionManager];
-  [v2 requestConnectionIfNeeded];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager requestConnectionIfNeeded];
 }
 
-- (id)publicTokenForUser:(id)a3
+- (id)publicTokenForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self courierByUser];
-  v6 = [v4 name];
+  userCopy = user;
+  courierByUser = [(APSCourier *)self courierByUser];
+  name = [userCopy name];
 
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 publicToken];
+  v7 = [courierByUser objectForKey:name];
+  publicToken = [v7 publicToken];
 
-  return v8;
+  return publicToken;
 }
 
 - (void)canUseProxyChanged
@@ -1093,8 +1093,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1106,7 +1106,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v7 + 1) + 8 * v6) canUseProxyChanged];
@@ -1114,107 +1114,107 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)incomingPresenceWithGuid:(id)a3 token:(id)a4 hwVersion:(id)a5 swVersion:(id)a6 swBuild:(id)a7 certificates:(id)a8 nonce:(id)a9 signature:(id)a10 additionalFlags:(int)a11
+- (void)incomingPresenceWithGuid:(id)guid token:(id)token hwVersion:(id)version swVersion:(id)swVersion swBuild:(id)build certificates:(id)certificates nonce:(id)nonce signature:(id)self0 additionalFlags:(int)self1
 {
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v27 = [(APSCourier *)self rootUserCourier];
-  LODWORD(v26) = a11;
-  [v27 incomingPresenceWithGuid:v25 token:v24 hwVersion:v23 swVersion:v22 swBuild:v21 certificates:v20 nonce:v19 signature:v18 additionalFlags:v26];
+  signatureCopy = signature;
+  nonceCopy = nonce;
+  certificatesCopy = certificates;
+  buildCopy = build;
+  swVersionCopy = swVersion;
+  versionCopy = version;
+  tokenCopy = token;
+  guidCopy = guid;
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  LODWORD(v26) = flags;
+  [rootUserCourier incomingPresenceWithGuid:guidCopy token:tokenCopy hwVersion:versionCopy swVersion:swVersionCopy swBuild:buildCopy certificates:certificatesCopy nonce:nonceCopy signature:signatureCopy additionalFlags:v26];
 }
 
 - (BOOL)isConnectedToService
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 isConnectedToService];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  isConnectedToService = [rootUserCourier isConnectedToService];
 
-  return v3;
+  return isConnectedToService;
 }
 
 - (void)invalidateDeviceIdentity
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  [v2 invalidateDeviceIdentity];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier invalidateDeviceIdentity];
 }
 
 - (void)periodicSignalFired
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  [v2 periodicSignalFired];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier periodicSignalFired];
 }
 
-- (id)connectionServerDelegateForUser:(id)a3 dependencies:(id)a4
+- (id)connectionServerDelegateForUser:(id)user dependencies:(id)dependencies
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  dependenciesCopy = dependencies;
   courierByUser = self->_courierByUser;
-  v9 = [v6 name];
-  v10 = [(NSMutableDictionary *)courierByUser objectForKey:v9];
+  name = [userCopy name];
+  v10 = [(NSMutableDictionary *)courierByUser objectForKey:name];
 
   if (!v10)
   {
-    [(APSCourier *)self setupForUser:v6 dependencies:v7];
+    [(APSCourier *)self setupForUser:userCopy dependencies:dependenciesCopy];
   }
 
   v11 = self->_courierByUser;
-  v12 = [v6 name];
-  v13 = [(NSMutableDictionary *)v11 objectForKey:v12];
+  name2 = [userCopy name];
+  v13 = [(NSMutableDictionary *)v11 objectForKey:name2];
 
   return v13;
 }
 
 - (BOOL)hasIdentity
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 hasIdentity];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  hasIdentity = [rootUserCourier hasIdentity];
 
-  return v3;
+  return hasIdentity;
 }
 
 - (unint64_t)serverTimeInNanoSeconds
 {
-  v2 = [(APSCourier *)self connectionManager];
-  v3 = [v2 serverTimeInNanoSeconds];
+  connectionManager = [(APSCourier *)self connectionManager];
+  serverTimeInNanoSeconds = [connectionManager serverTimeInNanoSeconds];
 
-  return v3;
+  return serverTimeInNanoSeconds;
 }
 
 - (id)latestGeoRegion
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  v3 = [v2 latestGeoRegion];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  latestGeoRegion = [rootUserCourier latestGeoRegion];
 
-  return v3;
+  return latestGeoRegion;
 }
 
-- (id)allRegisteredChannelsForTopic:(id)a3 user:(id)a4
+- (id)allRegisteredChannelsForTopic:(id)topic user:(id)user
 {
   courierByUser = self->_courierByUser;
-  v6 = a3;
-  v7 = [a4 name];
-  v8 = [(NSMutableDictionary *)courierByUser objectForKey:v7];
-  v9 = [v8 allRegisteredChannelsForTopic:v6];
+  topicCopy = topic;
+  name = [user name];
+  v8 = [(NSMutableDictionary *)courierByUser objectForKey:name];
+  v9 = [v8 allRegisteredChannelsForTopic:topicCopy];
 
   return v9;
 }
 
 - (void)performKeepAlive
 {
-  v2 = [(APSCourier *)self connectionManager];
-  [v2 performKeepAlive];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager performKeepAlive];
 }
 
 - (BOOL)shouldUseInternet
@@ -1223,8 +1223,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_courierByUser allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_courierByUser allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1234,7 +1234,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) shouldUseInternet])
@@ -1244,7 +1244,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1261,67 +1261,67 @@ LABEL_11:
 
 - (id)ifname
 {
-  v2 = [(APSCourier *)self connectionManager];
-  v3 = [v2 ifname];
+  connectionManager = [(APSCourier *)self connectionManager];
+  ifname = [connectionManager ifname];
 
-  return v3;
+  return ifname;
 }
 
-- (void)fetchUserCourierIdentityForSigningWithCompletion:(id)a3
+- (void)fetchUserCourierIdentityForSigningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(APSCourier *)self rootUserCourier];
-  v6 = [v5 clientIdentityProvider];
-  v7 = [(APSCourier *)self rootUserCourier];
-  v8 = [v7 publicToken];
+  completionCopy = completion;
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  clientIdentityProvider = [rootUserCourier clientIdentityProvider];
+  rootUserCourier2 = [(APSCourier *)self rootUserCourier];
+  publicToken = [rootUserCourier2 publicToken];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100021368;
   v10[3] = &unk_1001865A8;
-  v11 = v4;
-  v9 = v4;
-  [v6 fetchClientIdentityWithReason:0 hasExistingToken:v8 != 0 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [clientIdentityProvider fetchClientIdentityWithReason:0 hasExistingToken:publicToken != 0 completionHandler:v10];
 }
 
 - (void)rollTokenAndReconnect
 {
-  v2 = [(APSCourier *)self rootUserCourier];
-  [v2 rollTokenAndReconnectImmediately:1];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier rollTokenAndReconnectImmediately:1];
 }
 
-- (void)forceBAAIdentityRefreshWithCompletion:(id)a3
+- (void)forceBAAIdentityRefreshWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(APSCourier *)self rootUserCourier];
-  v5 = [v6 clientIdentityProvider];
-  [v5 debugForceDeleteIdentity:v4];
+  completionCopy = completion;
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  clientIdentityProvider = [rootUserCourier clientIdentityProvider];
+  [clientIdentityProvider debugForceDeleteIdentity:completionCopy];
 }
 
 - (void)prepareForDarkWake
 {
-  v3 = [(APSCourier *)self rootUserCourier];
-  [v3 prepareForDarkWake];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier prepareForDarkWake];
 
-  v4 = [(APSCourier *)self connectionManager];
-  [v4 prepareForDarkWake];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager prepareForDarkWake];
 }
 
 - (void)prepareForFullWake
 {
-  v3 = [(APSCourier *)self rootUserCourier];
-  [v3 prepareForFullWake];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier prepareForFullWake];
 
-  v4 = [(APSCourier *)self connectionManager];
-  [v4 prepareForFullWake];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager prepareForFullWake];
 }
 
 - (void)prepareForSleep
 {
-  v3 = [(APSCourier *)self rootUserCourier];
-  [v3 prepareForSleep];
+  rootUserCourier = [(APSCourier *)self rootUserCourier];
+  [rootUserCourier prepareForSleep];
 
-  v4 = [(APSCourier *)self connectionManager];
-  [v4 prepareForSleep];
+  connectionManager = [(APSCourier *)self connectionManager];
+  [connectionManager prepareForSleep];
 }
 
 - (APSCourierDelegate)delegate
@@ -1338,13 +1338,13 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)reportOffloadEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)a3 droppedEvents:(aonmicroapsd_droppedtelemetryeventcount_s *)a4
+- (void)reportOffloadEvents:(const aonmicroapsd_telemetryeventrecord_v_s *)events droppedEvents:(aonmicroapsd_droppedtelemetryeventcount_s *)droppedEvents
 {
-  v5 = *&a4->var7;
-  v7 = *&a4->var0;
-  v6 = *&a4->var3;
-  v8 = self;
-  APSCourier.reportOffloadEvents(_:droppedEvents:)(a3, v7, v6, v5);
+  v5 = *&droppedEvents->var7;
+  v7 = *&droppedEvents->var0;
+  v6 = *&droppedEvents->var3;
+  selfCopy = self;
+  APSCourier.reportOffloadEvents(_:droppedEvents:)(events, v7, v6, v5);
 }
 
 @end

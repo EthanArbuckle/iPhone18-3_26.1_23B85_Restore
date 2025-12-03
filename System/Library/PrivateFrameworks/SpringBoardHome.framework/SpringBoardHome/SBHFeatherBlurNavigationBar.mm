@@ -2,7 +2,7 @@
 - (CGRect)_calculateCompactNavBarFrame;
 - (CGRect)_calculateGradientMaskFrame;
 - (CGRect)gradientMaskFrame;
-- (SBHFeatherBlurNavigationBar)initWithFrame:(CGRect)a3;
+- (SBHFeatherBlurNavigationBar)initWithFrame:(CGRect)frame;
 - (double)_defaultHeightForMetrics;
 - (double)_topMargin;
 - (id)_capturedLargeTextLabelContainerView;
@@ -13,17 +13,17 @@
 - (void)_updateLabel;
 - (void)_updateLabelAlphas;
 - (void)layoutSubviews;
-- (void)setHidesFeatherBlur:(BOOL)a3;
+- (void)setHidesFeatherBlur:(BOOL)blur;
 @end
 
 @implementation SBHFeatherBlurNavigationBar
 
-- (SBHFeatherBlurNavigationBar)initWithFrame:(CGRect)a3
+- (SBHFeatherBlurNavigationBar)initWithFrame:(CGRect)frame
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = SBHFeatherBlurNavigationBar;
-  v3 = [(SBHFeatherBlurNavigationBar *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHFeatherBlurNavigationBar *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69D3FC0]) initWithRecipe:2];
@@ -62,21 +62,21 @@
   featherBlurBackgroundView = self->_featherBlurBackgroundView;
   [(SBHFeatherBlurNavigationBar *)self bounds];
   [(SBFFeatherBlurView *)featherBlurBackgroundView setFrame:?];
-  v4 = [(SBFFeatherBlurView *)self->_featherBlurBackgroundView window];
+  window = [(SBFFeatherBlurView *)self->_featherBlurBackgroundView window];
   v5 = self->_featherBlurBackgroundView;
-  if (v4)
+  if (window)
   {
     [(SBFFeatherBlurView *)self->_featherBlurBackgroundView bounds];
-    [(SBFFeatherBlurView *)v5 convertRect:v4 toCoordinateSpace:?];
-    v6 = [MEMORY[0x1E69D3FC0] matchMoveAnimationForFrame:v4 relativeToView:?];
-    v7 = [(SBFFeatherBlurView *)self->_featherBlurBackgroundView layer];
-    [v7 addAnimation:v6 forKey:@"SBHFeatherBlurNavigationBarMatchMoveAnimation"];
+    [(SBFFeatherBlurView *)v5 convertRect:window toCoordinateSpace:?];
+    layer2 = [MEMORY[0x1E69D3FC0] matchMoveAnimationForFrame:window relativeToView:?];
+    layer = [(SBFFeatherBlurView *)self->_featherBlurBackgroundView layer];
+    [layer addAnimation:layer2 forKey:@"SBHFeatherBlurNavigationBarMatchMoveAnimation"];
   }
 
   else
   {
-    v6 = [(SBFFeatherBlurView *)self->_featherBlurBackgroundView layer];
-    [v6 removeAnimationForKey:@"SBHFeatherBlurNavigationBarMatchMoveAnimation"];
+    layer2 = [(SBFFeatherBlurView *)self->_featherBlurBackgroundView layer];
+    [layer2 removeAnimationForKey:@"SBHFeatherBlurNavigationBarMatchMoveAnimation"];
   }
 
   featherBlurTitleLabel = self->_featherBlurTitleLabel;
@@ -97,18 +97,18 @@
   [(SBHFeatherBlurNavigationBar *)self _updateLabelAlphas];
 }
 
-- (void)setHidesFeatherBlur:(BOOL)a3
+- (void)setHidesFeatherBlur:(BOOL)blur
 {
-  if (self->_hidesFeatherBlur != a3)
+  if (self->_hidesFeatherBlur != blur)
   {
-    self->_hidesFeatherBlur = a3;
-    v4 = [(SBHFeatherBlurNavigationBar *)self superview];
-    if (v4)
+    self->_hidesFeatherBlur = blur;
+    superview = [(SBHFeatherBlurNavigationBar *)self superview];
+    if (superview)
     {
-      v5 = v4;
-      v6 = [(SBHFeatherBlurNavigationBar *)self window];
+      v5 = superview;
+      window = [(SBHFeatherBlurNavigationBar *)self window];
 
-      if (v6)
+      if (window)
       {
 
         [(SBHFeatherBlurNavigationBar *)self _updateAppearanceAfterTraitChange];
@@ -124,8 +124,8 @@
     [SBHFeatherBlurNavigationBar _capturedTinyTextLabelContainerView];
   }
 
-  v3 = [(SBHFeatherBlurNavigationBar *)self subviews];
-  v4 = [v3 bs_firstObjectOfClass:_capturedTinyTextLabelContainerView_tinyTextClass];
+  subviews = [(SBHFeatherBlurNavigationBar *)self subviews];
+  v4 = [subviews bs_firstObjectOfClass:_capturedTinyTextLabelContainerView_tinyTextClass];
 
   return v4;
 }
@@ -144,8 +144,8 @@ Class __66__SBHFeatherBlurNavigationBar__capturedTinyTextLabelContainerView__blo
     [SBHFeatherBlurNavigationBar _capturedLargeTextLabelContainerView];
   }
 
-  v3 = [(SBHFeatherBlurNavigationBar *)self subviews];
-  v4 = [v3 bs_firstObjectOfClass:_capturedLargeTextLabelContainerView_largeTextClass];
+  subviews = [(SBHFeatherBlurNavigationBar *)self subviews];
+  v4 = [subviews bs_firstObjectOfClass:_capturedLargeTextLabelContainerView_largeTextClass];
 
   return v4;
 }
@@ -194,8 +194,8 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
   self->_sb_minimumNavbarHeight = v3;
   if (!self->_configuredForItem)
   {
-    v4 = [(SBHFeatherBlurNavigationBar *)self items];
-    v5 = [v4 count];
+    items = [(SBHFeatherBlurNavigationBar *)self items];
+    v5 = [items count];
 
     if (v5)
     {
@@ -215,8 +215,8 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
   v3 = 20.0;
   if (!SBHIsHomeButtonDevice())
   {
-    v4 = [(SBHFeatherBlurNavigationBar *)self window];
-    [v4 safeAreaInsets];
+    window = [(SBHFeatherBlurNavigationBar *)self window];
+    [window safeAreaInsets];
     v3 = v5;
   }
 
@@ -230,14 +230,14 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
   self->_barAppearance = v3;
 
   [(UINavigationBarAppearance *)self->_barAppearance configureWithTransparentBackground];
-  v19 = [(UINavigationBarAppearance *)self->_barAppearance largeTitleTextAttributes];
-  v5 = [(UINavigationBarAppearance *)self->_barAppearance titleTextAttributes];
+  largeTitleTextAttributes = [(UINavigationBarAppearance *)self->_barAppearance largeTitleTextAttributes];
+  titleTextAttributes = [(UINavigationBarAppearance *)self->_barAppearance titleTextAttributes];
   v6 = *MEMORY[0x1E69DB648];
-  v7 = [v19 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-  v8 = [v5 objectForKeyedSubscript:v6];
-  v9 = [(SBHFeatherBlurNavigationBar *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69DDC20]];
+  v7 = [largeTitleTextAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+  v8 = [titleTextAttributes objectForKeyedSubscript:v6];
+  traitCollection = [(SBHFeatherBlurNavigationBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v11 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC20]];
 
   if (v11)
   {
@@ -247,9 +247,9 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
 
     v14 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v12];
 
-    v15 = [v19 mutableCopy];
+    v15 = [largeTitleTextAttributes mutableCopy];
     [v15 setObject:v13 forKeyedSubscript:v6];
-    v16 = [v19 mutableCopy];
+    v16 = [largeTitleTextAttributes mutableCopy];
     [v16 setObject:v14 forKeyedSubscript:v6];
     v17 = v15;
 
@@ -259,9 +259,9 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
     [(UINavigationBarAppearance *)self->_barAppearance setLargeTitleTextAttributes:v17];
     v7 = v13;
     v8 = v14;
-    v9 = v12;
-    v5 = v18;
-    v19 = v17;
+    traitCollection = v12;
+    titleTextAttributes = v18;
+    largeTitleTextAttributes = v17;
   }
 
   [(SBHFeatherBlurNavigationBar *)self setScrollEdgeAppearance:self->_barAppearance];
@@ -276,28 +276,28 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
   width = v26.size.width;
   if (!CGRectIsEmpty(v26))
   {
-    v4 = [(SBHFeatherBlurNavigationBar *)self items];
-    obj = [v4 lastObject];
+    items = [(SBHFeatherBlurNavigationBar *)self items];
+    obj = [items lastObject];
 
     if (obj && self->_configuredForItem != obj)
     {
       featherBlurTitleLabel = self->_featherBlurTitleLabel;
       v6 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v7 = [(UINavigationItem *)obj title];
-      v8 = [(UINavigationBarAppearance *)self->_barAppearance titleTextAttributes];
-      v9 = [v6 initWithString:v7 attributes:v8];
+      title = [(UINavigationItem *)obj title];
+      titleTextAttributes = [(UINavigationBarAppearance *)self->_barAppearance titleTextAttributes];
+      v9 = [v6 initWithString:title attributes:titleTextAttributes];
       [(UILabel *)featherBlurTitleLabel setAttributedText:v9];
 
       [(UILabel *)self->_featherBlurTitleLabel sizeToFit];
       objc_storeStrong(&self->_configuredForItem, obj);
-      v10 = [(UINavigationBarAppearance *)self->_barAppearance largeTitleTextAttributes];
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+      largeTitleTextAttributes = [(UINavigationBarAppearance *)self->_barAppearance largeTitleTextAttributes];
+      v11 = [largeTitleTextAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
       [v11 descender];
       v13 = v12;
       [v11 lineHeight];
       v15 = v13 + v14;
-      v16 = [(UINavigationItem *)obj title];
-      [v16 boundingRectWithSize:1 options:v10 attributes:0 context:{width, 1.79769313e308}];
+      title2 = [(UINavigationItem *)obj title];
+      [title2 boundingRectWithSize:1 options:largeTitleTextAttributes attributes:0 context:{width, 1.79769313e308}];
       v18 = v17;
 
       v19 = v18 / v15;
@@ -309,15 +309,15 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
     WeakRetained = objc_loadWeakRetained(&self->_capturedTinyTextLabelContainerView);
     if (!WeakRetained)
     {
-      v21 = [(SBHFeatherBlurNavigationBar *)self _capturedTinyTextLabelContainerView];
-      objc_storeWeak(&self->_capturedTinyTextLabelContainerView, v21);
+      _capturedTinyTextLabelContainerView = [(SBHFeatherBlurNavigationBar *)self _capturedTinyTextLabelContainerView];
+      objc_storeWeak(&self->_capturedTinyTextLabelContainerView, _capturedTinyTextLabelContainerView);
     }
 
     v22 = objc_loadWeakRetained(&self->_capturedLargeTextLabelContainerView);
     if (!v22)
     {
-      v23 = [(SBHFeatherBlurNavigationBar *)self _capturedLargeTextLabelContainerView];
-      objc_storeWeak(&self->_capturedLargeTextLabelContainerView, v23);
+      _capturedLargeTextLabelContainerView = [(SBHFeatherBlurNavigationBar *)self _capturedLargeTextLabelContainerView];
+      objc_storeWeak(&self->_capturedLargeTextLabelContainerView, _capturedLargeTextLabelContainerView);
     }
   }
 }
@@ -351,11 +351,11 @@ Class __67__SBHFeatherBlurNavigationBar__capturedLargeTextLabelContainerView__bl
     sb_minimumNavbarHeight = self->_sb_minimumNavbarHeight;
     [(SBHFeatherBlurNavigationBar *)self _topMargin];
     v9 = v8;
-    v10 = [(SBHFeatherBlurNavigationBar *)self superview];
-    if (v10)
+    superview = [(SBHFeatherBlurNavigationBar *)self superview];
+    if (superview)
     {
-      v11 = [(SBHFeatherBlurNavigationBar *)self window];
-      v13 = v6 <= sb_minimumNavbarHeight - v9 && v11 != 0;
+      window = [(SBHFeatherBlurNavigationBar *)self window];
+      v13 = v6 <= sb_minimumNavbarHeight - v9 && window != 0;
     }
 
     else

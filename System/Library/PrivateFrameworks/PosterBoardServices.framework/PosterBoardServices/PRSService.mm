@@ -1,85 +1,85 @@
 @interface PRSService
 - (PRSService)init;
-- (id)_serviceInterfaceWithError:(id *)a3;
-- (id)fetchActivePosterForRole:(id)a3 error:(id *)a4;
-- (void)_refreshPosterDescriptorsForExtension:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)_selectConfigurationAndRefreshSnapshot:(id)a3 completion:(id)a4;
-- (void)associateConfigurationMatchingUUID:(id)a3 focusModeActivityUUID:(id)a4 completion:(id)a5;
-- (void)clearMigrationFlags:(id)a3;
-- (void)commitSuggestionsForConfigurationMatchingUUID:(id)a3 selectSuggestionDescriptorUUID:(id)a4 completion:(id)a5;
-- (void)createAndSelectLegacyPosterConfigurationIfNeededWithCompletion:(id)a3;
-- (void)createPosterConfigurationForProviderIdentifier:(id)a3 posterDescriptorIdentifier:(id)a4 role:(id)a5 completion:(id)a6;
+- (id)_serviceInterfaceWithError:(id *)error;
+- (id)fetchActivePosterForRole:(id)role error:(id *)error;
+- (void)_refreshPosterDescriptorsForExtension:(id)extension sessionInfo:(id)info completion:(id)completion;
+- (void)_selectConfigurationAndRefreshSnapshot:(id)snapshot completion:(id)completion;
+- (void)associateConfigurationMatchingUUID:(id)d focusModeActivityUUID:(id)iD completion:(id)completion;
+- (void)clearMigrationFlags:(id)flags;
+- (void)commitSuggestionsForConfigurationMatchingUUID:(id)d selectSuggestionDescriptorUUID:(id)iD completion:(id)completion;
+- (void)createAndSelectLegacyPosterConfigurationIfNeededWithCompletion:(id)completion;
+- (void)createPosterConfigurationForProviderIdentifier:(id)identifier posterDescriptorIdentifier:(id)descriptorIdentifier role:(id)role completion:(id)completion;
 - (void)dealloc;
-- (void)deleteArchivedDataStoreNamed:(id)a3 completion:(id)a4;
-- (void)deleteDataStoreWithCompletion:(id)a3;
-- (void)deleteHostConfigurationForRole:(id)a3 completion:(id)a4;
-- (void)deletePosterConfigurationsMatchingUUID:(id)a3 completion:(id)a4;
-- (void)deletePosterDescriptorsForExtension:(id)a3 completion:(id)a4;
-- (void)deleteSnapshotsWithCompletion:(id)a3;
-- (void)deleteTransientDataWithCompletion:(id)a3;
-- (void)exportArchivedDataStoreNamed:(id)a3 completion:(id)a4;
-- (void)exportCurrentDataStoreToURL:(id)a3 options:(id)a4 sandboxToken:(id)a5 error:(id *)a6;
-- (void)exportPosterConfigurationMatchingUUID:(id)a3 completion:(id)a4;
-- (void)fetchActiveConfiguration:(id)a3;
-- (void)fetchActivePosterForRole:(id)a3 completion:(id)a4;
-- (void)fetchArchivedDataStoreNamesWithCompletion:(id)a3;
-- (void)fetchAssociatedHomeScreenPosterConfigurationUUID:(id)a3 completion:(id)a4;
-- (void)fetchChargerIdentifierRelationshipsWithCompletion:(id)a3;
-- (void)fetchContentCutoutBoundsForActivePosterWithOrientation:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchContentCutoutBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)fetchContentObstructionBoundsForActivePosterWithOrientation:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchContentObstructionBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)fetchExtendedContentCutoutBoundsForOrientation:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchExtensionIdentifiersWithCompletion:(id)a3;
-- (void)fetchFocusUUIDForConfiguration:(id)a3 completion:(id)a4;
-- (void)fetchGallery:(id)a3;
-- (void)fetchLimitedOcclusionBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)fetchMaximalContentCutoutBoundsForOrientation:(int64_t)a3 completionHandler:(id)a4;
-- (void)fetchObscurableBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)fetchPosterConfigurationsForExtension:(id)a3 completion:(id)a4;
-- (void)fetchPosterConfigurationsForRole:(id)a3 completion:(id)a4;
-- (void)fetchPosterDescriptorsForExtension:(id)a3 completion:(id)a4;
-- (void)fetchPosterFocusSnapshotsWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchPosterSnapshotsWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchRuntimeAssertionState:(id)a3;
-- (void)fetchSelectedConfiguration:(id)a3;
-- (void)fetchSelectedPosterForRole:(id)a3 completion:(id)a4;
-- (void)fetchStaticPosterDescriptorsForExtension:(id)a3 completion:(id)a4;
-- (void)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 completion:(id)a4;
-- (void)gatherDataFreshnessState:(id)a3;
-- (void)ignoreExtension:(id)a3 completion:(id)a4;
-- (void)importPosterConfigurationFromArchiveData:(id)a3 completion:(id)a4;
-- (void)importPosterConfigurationFromArchivedData:(id)a3 completion:(id)a4;
-- (void)ingestSnapshotCollection:(id)a3 forPosterConfiguration:(id)a4 completion:(id)a5;
+- (void)deleteArchivedDataStoreNamed:(id)named completion:(id)completion;
+- (void)deleteDataStoreWithCompletion:(id)completion;
+- (void)deleteHostConfigurationForRole:(id)role completion:(id)completion;
+- (void)deletePosterConfigurationsMatchingUUID:(id)d completion:(id)completion;
+- (void)deletePosterDescriptorsForExtension:(id)extension completion:(id)completion;
+- (void)deleteSnapshotsWithCompletion:(id)completion;
+- (void)deleteTransientDataWithCompletion:(id)completion;
+- (void)exportArchivedDataStoreNamed:(id)named completion:(id)completion;
+- (void)exportCurrentDataStoreToURL:(id)l options:(id)options sandboxToken:(id)token error:(id *)error;
+- (void)exportPosterConfigurationMatchingUUID:(id)d completion:(id)completion;
+- (void)fetchActiveConfiguration:(id)configuration;
+- (void)fetchActivePosterForRole:(id)role completion:(id)completion;
+- (void)fetchArchivedDataStoreNamesWithCompletion:(id)completion;
+- (void)fetchAssociatedHomeScreenPosterConfigurationUUID:(id)d completion:(id)completion;
+- (void)fetchChargerIdentifierRelationshipsWithCompletion:(id)completion;
+- (void)fetchContentCutoutBoundsForActivePosterWithOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchContentCutoutBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchContentObstructionBoundsForActivePosterWithOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchContentObstructionBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchExtendedContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchExtensionIdentifiersWithCompletion:(id)completion;
+- (void)fetchFocusUUIDForConfiguration:(id)configuration completion:(id)completion;
+- (void)fetchGallery:(id)gallery;
+- (void)fetchLimitedOcclusionBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchMaximalContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchObscurableBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)fetchPosterConfigurationsForExtension:(id)extension completion:(id)completion;
+- (void)fetchPosterConfigurationsForRole:(id)role completion:(id)completion;
+- (void)fetchPosterDescriptorsForExtension:(id)extension completion:(id)completion;
+- (void)fetchPosterFocusSnapshotsWithRequest:(id)request completion:(id)completion;
+- (void)fetchPosterSnapshotsWithRequest:(id)request completion:(id)completion;
+- (void)fetchRuntimeAssertionState:(id)state;
+- (void)fetchSelectedConfiguration:(id)configuration;
+- (void)fetchSelectedPosterForRole:(id)role completion:(id)completion;
+- (void)fetchStaticPosterDescriptorsForExtension:(id)extension completion:(id)completion;
+- (void)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)d completion:(id)completion;
+- (void)gatherDataFreshnessState:(id)state;
+- (void)ignoreExtension:(id)extension completion:(id)completion;
+- (void)importPosterConfigurationFromArchiveData:(id)data completion:(id)completion;
+- (void)importPosterConfigurationFromArchivedData:(id)data completion:(id)completion;
+- (void)ingestSnapshotCollection:(id)collection forPosterConfiguration:(id)configuration completion:(id)completion;
 - (void)init;
-- (void)notePosterConfigurationUnderlyingModelDidChange:(id)a3;
-- (void)notifyActiveChargerIdentifierDidUpdate:(id)a3 completion:(id)a4;
-- (void)notifyAvailableFocusModesDidChange:(id)a3 completion:(id)a4;
-- (void)notifyFocusModeDidChange:(id)a3 completion:(id)a4;
-- (void)notifyPosterBoardOfApplicationUpdatesWithCompletion:(id)a3;
-- (void)overnightUpdateWithCompletion:(id)a3;
-- (void)prewarmWithCompletion:(id)a3;
-- (void)pushPosterGalleryUpdate:(id)a3 completion:(id)a4;
-- (void)pushToProactiveWithCompletion:(id)a3;
-- (void)refreshPosterConfiguration:(id)a3 completion:(id)a4;
-- (void)refreshPosterConfiguration:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)refreshPosterConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)a3 extensionIdentifier:(id)a4 completion:(id)a5;
-- (void)refreshSnapshotForPosterConfiguration:(id)a3 completion:(id)a4;
-- (void)refreshSnapshotForPosterConfigurationMatchingUUID:(id)a3 completion:(id)a4;
-- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5;
-- (void)removeAllFocusConfigurationsMatchingFocusUUID:(id)a3 completion:(id)a4;
-- (void)resetRole:(id)a3 completion:(id)a4;
-- (void)retrieveGallery:(id)a3;
-- (void)setHostConfiguration:(id)a3 forRole:(id)a4 completion:(id)a5;
-- (void)stashCurrentDataStoreWithName:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)triggerMessedUpDataProtectionWithCompletion:(id)a3;
-- (void)unignoreExtension:(id)a3 completion:(id)a4;
-- (void)updatePosterConfiguration:(id)a3 update:(id)a4 completion:(id)a5;
-- (void)updatePosterConfigurationMatchingUUID:(id)a3 updates:(id)a4 completion:(id)a5;
-- (void)updatePosterConfigurationsFromHostForRole:(id)a3 completion:(id)a4;
-- (void)updateSelectedForRoleIdentifier:(id)a3 newlySelectedConfiguration:(id)a4 completion:(id)a5;
-- (void)updateToSelectedConfigurationMatchingUUID:(id)a3 role:(id)a4 completion:(id)a5;
+- (void)notePosterConfigurationUnderlyingModelDidChange:(id)change;
+- (void)notifyActiveChargerIdentifierDidUpdate:(id)update completion:(id)completion;
+- (void)notifyAvailableFocusModesDidChange:(id)change completion:(id)completion;
+- (void)notifyFocusModeDidChange:(id)change completion:(id)completion;
+- (void)notifyPosterBoardOfApplicationUpdatesWithCompletion:(id)completion;
+- (void)overnightUpdateWithCompletion:(id)completion;
+- (void)prewarmWithCompletion:(id)completion;
+- (void)pushPosterGalleryUpdate:(id)update completion:(id)completion;
+- (void)pushToProactiveWithCompletion:(id)completion;
+- (void)refreshPosterConfiguration:(id)configuration completion:(id)completion;
+- (void)refreshPosterConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion;
+- (void)refreshPosterConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion;
+- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier completion:(id)completion;
+- (void)refreshSnapshotForPosterConfiguration:(id)configuration completion:(id)completion;
+- (void)refreshSnapshotForPosterConfigurationMatchingUUID:(id)d completion:(id)completion;
+- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion;
+- (void)removeAllFocusConfigurationsMatchingFocusUUID:(id)d completion:(id)completion;
+- (void)resetRole:(id)role completion:(id)completion;
+- (void)retrieveGallery:(id)gallery;
+- (void)setHostConfiguration:(id)configuration forRole:(id)role completion:(id)completion;
+- (void)stashCurrentDataStoreWithName:(id)name options:(id)options completion:(id)completion;
+- (void)triggerMessedUpDataProtectionWithCompletion:(id)completion;
+- (void)unignoreExtension:(id)extension completion:(id)completion;
+- (void)updatePosterConfiguration:(id)configuration update:(id)update completion:(id)completion;
+- (void)updatePosterConfigurationMatchingUUID:(id)d updates:(id)updates completion:(id)completion;
+- (void)updatePosterConfigurationsFromHostForRole:(id)role completion:(id)completion;
+- (void)updateSelectedForRoleIdentifier:(id)identifier newlySelectedConfiguration:(id)configuration completion:(id)completion;
+- (void)updateToSelectedConfigurationMatchingUUID:(id)d role:(id)role completion:(id)completion;
 @end
 
 @implementation PRSService
@@ -93,8 +93,8 @@
   {
     v3 = PRSServiceInterface();
     v4 = MEMORY[0x1E698F498];
-    v5 = [v3 identifier];
-    v6 = [v4 endpointForMachName:@"com.apple.posterboardservices.services" service:v5 instance:0];
+    identifier = [v3 identifier];
+    v6 = [v4 endpointForMachName:@"com.apple.posterboardservices.services" service:identifier instance:0];
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -193,10 +193,10 @@ void __18__PRSService_init__block_invoke_8(uint64_t a1)
   [(PRSService *)&v3 dealloc];
 }
 
-- (void)deleteDataStoreWithCompletion:(id)a3
+- (void)deleteDataStoreWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService deleteDataStoreWithCompletion:];
   }
@@ -218,14 +218,14 @@ void __18__PRSService_init__block_invoke_8(uint64_t a1)
     v9[3] = &unk_1E818D6E0;
     v13 = a2;
     v10 = v7;
-    v11 = self;
-    v12 = v5;
+    selfCopy = self;
+    v12 = completionCopy;
     [v10 invalidateDataStoreWithCompletion:v9];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -268,11 +268,11 @@ void __44__PRSService_deleteDataStoreWithCompletion___block_invoke_24(uint64_t a
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)resetRole:(id)a3 completion:(id)a4
+- (void)resetRole:(id)role completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  roleCopy = role;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService resetRole:completion:];
   }
@@ -288,13 +288,13 @@ void __44__PRSService_deleteDataStoreWithCompletion___block_invoke_24(uint64_t a
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 resetRole:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 resetRole:roleCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -310,10 +310,10 @@ void __35__PRSService_resetRole_completion___block_invoke(uint64_t a1, void *a2)
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteSnapshotsWithCompletion:(id)a3
+- (void)deleteSnapshotsWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService deleteSnapshotsWithCompletion:];
   }
@@ -329,13 +329,13 @@ void __35__PRSService_resetRole_completion___block_invoke(uint64_t a1, void *a2)
     v8[3] = &unk_1E818D708;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 deleteSnapshotsWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -351,10 +351,10 @@ void __44__PRSService_deleteSnapshotsWithCompletion___block_invoke(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)notifyPosterBoardOfApplicationUpdatesWithCompletion:(id)a3
+- (void)notifyPosterBoardOfApplicationUpdatesWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService notifyPosterBoardOfApplicationUpdatesWithCompletion:];
   }
@@ -370,13 +370,13 @@ void __44__PRSService_deleteSnapshotsWithCompletion___block_invoke(uint64_t a1, 
     v8[3] = &unk_1E818D708;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 notifyPosterBoardOfApplicationUpdatesWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -392,10 +392,10 @@ void __66__PRSService_notifyPosterBoardOfApplicationUpdatesWithCompletion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteTransientDataWithCompletion:(id)a3
+- (void)deleteTransientDataWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService deleteTransientDataWithCompletion:];
   }
@@ -411,13 +411,13 @@ void __66__PRSService_notifyPosterBoardOfApplicationUpdatesWithCompletion___bloc
     v8[3] = &unk_1E818D708;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 deleteTransientDataWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -433,12 +433,12 @@ void __48__PRSService_deleteTransientDataWithCompletion___block_invoke(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setHostConfiguration:(id)a3 forRole:(id)a4 completion:(id)a5
+- (void)setHostConfiguration:(id)configuration forRole:(id)role completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  configurationCopy = configuration;
+  roleCopy = role;
+  completionCopy = completion;
+  if (!roleCopy)
   {
     [PRSService setHostConfiguration:forRole:completion:];
   }
@@ -454,13 +454,13 @@ void __48__PRSService_deleteTransientDataWithCompletion___block_invoke(uint64_t 
     v14[3] = &unk_1E818D708;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 setHostConfiguration:v9 forRole:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 setHostConfiguration:configurationCopy forRole:roleCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 }
 
@@ -480,11 +480,11 @@ void __54__PRSService_setHostConfiguration_forRole_completion___block_invoke(uin
   }
 }
 
-- (void)deleteHostConfigurationForRole:(id)a3 completion:(id)a4
+- (void)deleteHostConfigurationForRole:(id)role completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  roleCopy = role;
+  completionCopy = completion;
+  if (!roleCopy)
   {
     [PRSService deleteHostConfigurationForRole:completion:];
   }
@@ -500,13 +500,13 @@ void __54__PRSService_setHostConfiguration_forRole_completion___block_invoke(uin
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 deleteHostConfigurationForRole:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 deleteHostConfigurationForRole:roleCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -526,11 +526,11 @@ void __56__PRSService_deleteHostConfigurationForRole_completion___block_invoke(u
   }
 }
 
-- (void)updatePosterConfigurationsFromHostForRole:(id)a3 completion:(id)a4
+- (void)updatePosterConfigurationsFromHostForRole:(id)role completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  roleCopy = role;
+  completionCopy = completion;
+  if (!roleCopy)
   {
     [PRSService updatePosterConfigurationsFromHostForRole:completion:];
   }
@@ -546,13 +546,13 @@ void __56__PRSService_deleteHostConfigurationForRole_completion___block_invoke(u
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 updatePosterConfigurationsFromHostForRole:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 updatePosterConfigurationsFromHostForRole:roleCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -572,10 +572,10 @@ void __67__PRSService_updatePosterConfigurationsFromHostForRole_completion___blo
   }
 }
 
-- (void)fetchExtensionIdentifiersWithCompletion:(id)a3
+- (void)fetchExtensionIdentifiersWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchExtensionIdentifiersWithCompletion:];
   }
@@ -591,13 +591,13 @@ void __67__PRSService_updatePosterConfigurationsFromHostForRole_completion___blo
     v8[3] = &unk_1E818D730;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 fetchExtensionIdentifiersWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 
@@ -614,11 +614,11 @@ void __54__PRSService_fetchExtensionIdentifiersWithCompletion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchPosterDescriptorsForExtension:(id)a3 completion:(id)a4
+- (void)fetchPosterDescriptorsForExtension:(id)extension completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchPosterDescriptorsForExtension:completion:];
   }
@@ -634,13 +634,13 @@ void __54__PRSService_fetchExtensionIdentifiersWithCompletion___block_invoke(uin
     v11[3] = &unk_1E818D758;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 fetchPosterDescriptorsForExtension:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 fetchPosterDescriptorsForExtension:extensionCopy completion:v11];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -667,11 +667,11 @@ void __60__PRSService_fetchPosterDescriptorsForExtension_completion___block_invo
   }
 }
 
-- (void)fetchStaticPosterDescriptorsForExtension:(id)a3 completion:(id)a4
+- (void)fetchStaticPosterDescriptorsForExtension:(id)extension completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchStaticPosterDescriptorsForExtension:completion:];
   }
@@ -687,13 +687,13 @@ void __60__PRSService_fetchPosterDescriptorsForExtension_completion___block_invo
     v11[3] = &unk_1E818D758;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 fetchStaticPosterDescriptorsForExtension:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 fetchStaticPosterDescriptorsForExtension:extensionCopy completion:v11];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -720,12 +720,12 @@ void __66__PRSService_fetchStaticPosterDescriptorsForExtension_completion___bloc
   }
 }
 
-- (void)_refreshPosterDescriptorsForExtension:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)_refreshPosterDescriptorsForExtension:(id)extension sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  extensionCopy = extension;
+  infoCopy = info;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService _refreshPosterDescriptorsForExtension:sessionInfo:completion:];
   }
@@ -741,13 +741,13 @@ void __66__PRSService_fetchStaticPosterDescriptorsForExtension_completion___bloc
     v14[3] = &unk_1E818D758;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 refreshPosterDescriptorsForExtension:v9 sessionInfo:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 refreshPosterDescriptorsForExtension:extensionCopy sessionInfo:infoCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
@@ -774,13 +774,13 @@ void __75__PRSService__refreshPosterDescriptorsForExtension_sessionInfo_completi
   }
 }
 
-- (void)deletePosterDescriptorsForExtension:(id)a3 completion:(id)a4
+- (void)deletePosterDescriptorsForExtension:(id)extension completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  extensionCopy = extension;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v7)
+    if (extensionCopy)
     {
       goto LABEL_3;
     }
@@ -789,7 +789,7 @@ void __75__PRSService__refreshPosterDescriptorsForExtension_sessionInfo_completi
   else
   {
     [PRSService deletePosterDescriptorsForExtension:completion:];
-    if (v7)
+    if (extensionCopy)
     {
       goto LABEL_3;
     }
@@ -808,13 +808,13 @@ LABEL_3:
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 deletePosterDescriptorsForExtension:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 deletePosterDescriptorsForExtension:extensionCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -830,10 +830,10 @@ void __61__PRSService_deletePosterDescriptorsForExtension_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchRuntimeAssertionState:(id)a3
+- (void)fetchRuntimeAssertionState:(id)state
 {
-  v5 = a3;
-  if (!v5)
+  stateCopy = state;
+  if (!stateCopy)
   {
     [PRSService fetchRuntimeAssertionState:];
   }
@@ -849,13 +849,13 @@ void __61__PRSService_deletePosterDescriptorsForExtension_completion___block_inv
     v8[3] = &unk_1E818D780;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = stateCopy;
     [v6 fetchRuntimeAssertionState:v8];
   }
 
-  else if (v5)
+  else if (stateCopy)
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(stateCopy + 2))(stateCopy, 0, v7);
   }
 }
 
@@ -872,10 +872,10 @@ void __41__PRSService_fetchRuntimeAssertionState___block_invoke(uint64_t a1, voi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)triggerMessedUpDataProtectionWithCompletion:(id)a3
+- (void)triggerMessedUpDataProtectionWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService triggerMessedUpDataProtectionWithCompletion:];
   }
@@ -891,13 +891,13 @@ void __41__PRSService_fetchRuntimeAssertionState___block_invoke(uint64_t a1, voi
     v8[3] = &unk_1E818D708;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 triggerMessedUpDataProtectionWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -913,10 +913,10 @@ void __58__PRSService_triggerMessedUpDataProtectionWithCompletion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchChargerIdentifierRelationshipsWithCompletion:(id)a3
+- (void)fetchChargerIdentifierRelationshipsWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchChargerIdentifierRelationshipsWithCompletion:];
   }
@@ -932,13 +932,13 @@ void __58__PRSService_triggerMessedUpDataProtectionWithCompletion___block_invoke
     v8[3] = &unk_1E818D7A8;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 fetchChargerIdentifierRelationshipsWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 
@@ -955,15 +955,15 @@ void __64__PRSService_fetchChargerIdentifierRelationshipsWithCompletion___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)createPosterConfigurationForProviderIdentifier:(id)a3 posterDescriptorIdentifier:(id)a4 role:(id)a5 completion:(id)a6
+- (void)createPosterConfigurationForProviderIdentifier:(id)identifier posterDescriptorIdentifier:(id)descriptorIdentifier role:(id)role completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  identifierCopy = identifier;
+  descriptorIdentifierCopy = descriptorIdentifier;
+  roleCopy = role;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v11)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -972,7 +972,7 @@ void __64__PRSService_fetchChargerIdentifierRelationshipsWithCompletion___block_
   else
   {
     [PRSService createPosterConfigurationForProviderIdentifier:posterDescriptorIdentifier:role:completion:];
-    if (v11)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -980,9 +980,9 @@ void __64__PRSService_fetchChargerIdentifierRelationshipsWithCompletion___block_
 
   [PRSService createPosterConfigurationForProviderIdentifier:posterDescriptorIdentifier:role:completion:];
 LABEL_3:
-  if (!v13)
+  if (!roleCopy)
   {
-    v13 = @"PRPosterRoleLockScreen";
+    roleCopy = @"PRPosterRoleLockScreen";
   }
 
   v20 = 0;
@@ -996,13 +996,13 @@ LABEL_3:
     v17[3] = &unk_1E818D070;
     v19 = a2;
     v17[4] = self;
-    v18 = v14;
-    [v15 createPosterConfigurationForProviderIdentifier:v11 posterDescriptorIdentifier:v12 role:v13 completion:v17];
+    v18 = completionCopy;
+    [v15 createPosterConfigurationForProviderIdentifier:identifierCopy posterDescriptorIdentifier:descriptorIdentifierCopy role:roleCopy completion:v17];
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    (*(v14 + 2))(v14, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -1029,13 +1029,13 @@ void __104__PRSService_createPosterConfigurationForProviderIdentifier_posterDesc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)refreshPosterConfiguration:(id)a3 completion:(id)a4
+- (void)refreshPosterConfiguration:(id)configuration completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (configurationCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1044,7 +1044,7 @@ void __104__PRSService_createPosterConfigurationForProviderIdentifier_posterDesc
   else
   {
     [PRSService refreshPosterConfiguration:completion:];
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1052,21 +1052,21 @@ void __104__PRSService_createPosterConfigurationForProviderIdentifier_posterDesc
 
   [PRSService refreshPosterConfiguration:completion:];
 LABEL_3:
-  v7 = [v10 _path];
-  v8 = [v7 serverIdentity];
-  v9 = [v8 posterUUID];
+  _path = [configurationCopy _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  [(PRSService *)self refreshPosterConfigurationMatchingUUID:v9 sessionInfo:0 completion:v6];
+  [(PRSService *)self refreshPosterConfigurationMatchingUUID:posterUUID sessionInfo:0 completion:completionCopy];
 }
 
-- (void)refreshPosterConfiguration:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)refreshPosterConfiguration:(id)configuration sessionInfo:(id)info completion:(id)completion
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v13)
+  configurationCopy = configuration;
+  infoCopy = info;
+  completionCopy = completion;
+  if (configurationCopy)
   {
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1075,7 +1075,7 @@ LABEL_3:
   else
   {
     [PRSService refreshPosterConfiguration:sessionInfo:completion:];
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1083,21 +1083,21 @@ LABEL_3:
 
   [PRSService refreshPosterConfiguration:sessionInfo:completion:];
 LABEL_3:
-  v10 = [v13 _path];
-  v11 = [v10 serverIdentity];
-  v12 = [v11 posterUUID];
+  _path = [configurationCopy _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  [(PRSService *)self refreshPosterConfigurationMatchingUUID:v12 sessionInfo:v8 completion:v9];
+  [(PRSService *)self refreshPosterConfigurationMatchingUUID:posterUUID sessionInfo:infoCopy completion:completionCopy];
 }
 
-- (void)refreshPosterConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)refreshPosterConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dCopy = d;
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -1106,7 +1106,7 @@ LABEL_3:
   else
   {
     [PRSService refreshPosterConfigurationMatchingUUID:sessionInfo:completion:];
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -1125,13 +1125,13 @@ LABEL_3:
     v14[3] = &unk_1E818D070;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 refreshPosterConfigurationMatchingUUID:v9 sessionInfo:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 refreshPosterConfigurationMatchingUUID:dCopy sessionInfo:infoCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
@@ -1158,10 +1158,10 @@ void __76__PRSService_refreshPosterConfigurationMatchingUUID_sessionInfo_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)notePosterConfigurationUnderlyingModelDidChange:(id)a3
+- (void)notePosterConfigurationUnderlyingModelDidChange:(id)change
 {
-  v4 = a3;
-  if (!v4)
+  changeCopy = change;
+  if (!changeCopy)
   {
     [PRSService notePosterConfigurationUnderlyingModelDidChange:];
   }
@@ -1171,18 +1171,18 @@ void __76__PRSService_refreshPosterConfigurationMatchingUUID_sessionInfo_complet
   v6 = v5;
   if (v5)
   {
-    [v5 notePosterConfigurationUnderlyingModelDidChange:v4];
+    [v5 notePosterConfigurationUnderlyingModelDidChange:changeCopy];
   }
 }
 
-- (void)associateConfigurationMatchingUUID:(id)a3 focusModeActivityUUID:(id)a4 completion:(id)a5
+- (void)associateConfigurationMatchingUUID:(id)d focusModeActivityUUID:(id)iD completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -1191,7 +1191,7 @@ void __76__PRSService_refreshPosterConfigurationMatchingUUID_sessionInfo_complet
   else
   {
     [PRSService associateConfigurationMatchingUUID:focusModeActivityUUID:completion:];
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -1210,13 +1210,13 @@ LABEL_3:
     v14[3] = &unk_1E818D708;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 associateConfigurationMatchingUUID:v9 focusModeActivityUUID:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 associateConfigurationMatchingUUID:dCopy focusModeActivityUUID:iDCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 }
 
@@ -1232,14 +1232,14 @@ void __82__PRSService_associateConfigurationMatchingUUID_focusModeActivityUUID_c
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchPosterConfigurationsForExtension:(id)a3 completion:(id)a4
+- (void)fetchPosterConfigurationsForExtension:(id)extension completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  extensionCopy = extension;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (extensionCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1268,7 +1268,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 fetchPosterConfigurationsForExtension:v7 completion:v12];
+    [v10 fetchPosterConfigurationsForExtension:extensionCopy completion:v12];
   }
 
   else if (v9)
@@ -1293,14 +1293,14 @@ void __63__PRSService_fetchPosterConfigurationsForExtension_completion___block_i
   (*(v8 + 16))(v8, v9, v5);
 }
 
-- (void)fetchPosterSnapshotsWithRequest:(id)a3 completion:(id)a4
+- (void)fetchPosterSnapshotsWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1318,7 +1318,7 @@ void __63__PRSService_fetchPosterConfigurationsForExtension_completion___block_i
   [PRSService fetchPosterSnapshotsWithRequest:completion:];
 LABEL_3:
   v10 = objc_opt_class();
-  v11 = v7;
+  v11 = requestCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -1351,7 +1351,7 @@ LABEL_3:
   v17[2] = __57__PRSService_fetchPosterSnapshotsWithRequest_completion___block_invoke;
   v17[3] = &unk_1E818D7F8;
   v18 = v11;
-  v19 = self;
+  selfCopy = self;
   v20 = v9;
   v21 = a2;
   v15 = v9;
@@ -1403,23 +1403,23 @@ void __57__PRSService_fetchPosterSnapshotsWithRequest_completion___block_invoke_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchPosterFocusSnapshotsWithRequest:(id)a3 completion:(id)a4
+- (void)fetchPosterFocusSnapshotsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PRSPosterSnapshotRequest alloc] initWithFocusPosterRequest:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  v8 = [[PRSPosterSnapshotRequest alloc] initWithFocusPosterRequest:requestCopy];
 
-  [(PRSService *)self fetchPosterSnapshotsWithRequest:v8 completion:v6];
+  [(PRSService *)self fetchPosterSnapshotsWithRequest:v8 completion:completionCopy];
 }
 
-- (void)deletePosterConfigurationsMatchingUUID:(id)a3 completion:(id)a4
+- (void)deletePosterConfigurationsMatchingUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1448,7 +1448,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 deletePosterConfigurationsMatchingUUID:v7 completion:v12];
+    [v10 deletePosterConfigurationsMatchingUUID:dCopy completion:v12];
   }
 
   else if (v9)
@@ -1469,15 +1469,15 @@ void __64__PRSService_deletePosterConfigurationsMatchingUUID_completion___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 sessionInfo:(id)a4 completion:(id)a5
+- (void)refreshSuggestionDescriptorsForConfigurationMatchingUUID:(id)d sessionInfo:(id)info completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  dCopy = d;
+  infoCopy = info;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (dCopy)
   {
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1506,7 +1506,7 @@ LABEL_3:
     v17 = a2;
     v15[4] = self;
     v16 = v12;
-    [v13 refreshSuggestionDescriptorsForConfigurationMatchingUUID:v9 sessionInfo:v10 completion:v15];
+    [v13 refreshSuggestionDescriptorsForConfigurationMatchingUUID:dCopy sessionInfo:infoCopy completion:v15];
   }
 
   else if (v12)
@@ -1531,14 +1531,14 @@ void __94__PRSService_refreshSuggestionDescriptorsForConfigurationMatchingUUID_s
   (*(v8 + 16))(v8, v9, v5);
 }
 
-- (void)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)a3 completion:(id)a4
+- (void)fetchSuggestionDescriptorsForConfigurationMatchingUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1567,7 +1567,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 fetchSuggestionDescriptorsForConfigurationMatchingUUID:v7 completion:v12];
+    [v10 fetchSuggestionDescriptorsForConfigurationMatchingUUID:dCopy completion:v12];
   }
 
   else if (v9)
@@ -1592,15 +1592,15 @@ void __80__PRSService_fetchSuggestionDescriptorsForConfigurationMatchingUUID_com
   (*(v8 + 16))(v8, v9, v5);
 }
 
-- (void)commitSuggestionsForConfigurationMatchingUUID:(id)a3 selectSuggestionDescriptorUUID:(id)a4 completion:(id)a5
+- (void)commitSuggestionsForConfigurationMatchingUUID:(id)d selectSuggestionDescriptorUUID:(id)iD completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (dCopy)
   {
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1629,7 +1629,7 @@ LABEL_3:
     v17 = a2;
     v15[4] = self;
     v16 = v12;
-    [v13 commitSuggestionsForConfigurationMatchingUUID:v9 selectSuggestionDescriptorUUID:v10 completion:v15];
+    [v13 commitSuggestionsForConfigurationMatchingUUID:dCopy selectSuggestionDescriptorUUID:iDCopy completion:v15];
   }
 
   else if (v12)
@@ -1650,14 +1650,14 @@ void __102__PRSService_commitSuggestionsForConfigurationMatchingUUID_selectSugge
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)exportPosterConfigurationMatchingUUID:(id)a3 completion:(id)a4
+- (void)exportPosterConfigurationMatchingUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1686,7 +1686,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 exportPosterConfigurationMatchingUUID:v7 completion:v12];
+    [v10 exportPosterConfigurationMatchingUUID:dCopy completion:v12];
   }
 
   else if (v9)
@@ -1708,14 +1708,14 @@ void __63__PRSService_exportPosterConfigurationMatchingUUID_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)importPosterConfigurationFromArchiveData:(id)a3 completion:(id)a4
+- (void)importPosterConfigurationFromArchiveData:(id)data completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dataCopy = data;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (dataCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1744,7 +1744,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 importPosterConfigurationFromArchiveData:v7 completion:v12];
+    [v10 importPosterConfigurationFromArchiveData:dataCopy completion:v12];
   }
 
   else if (v9)
@@ -1770,14 +1770,14 @@ void __66__PRSService_importPosterConfigurationFromArchiveData_completion___bloc
   (*(v8 + 16))(v8, v10, v5);
 }
 
-- (void)importPosterConfigurationFromArchivedData:(id)a3 completion:(id)a4
+- (void)importPosterConfigurationFromArchivedData:(id)data completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dataCopy = data;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (dataCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1806,7 +1806,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 importPosterConfigurationFromArchiveData:v7 completion:v12];
+    [v10 importPosterConfigurationFromArchiveData:dataCopy completion:v12];
   }
 
   else if (v9)
@@ -1838,12 +1838,12 @@ void __67__PRSService_importPosterConfigurationFromArchivedData_completion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)updatePosterConfigurationMatchingUUID:(id)a3 updates:(id)a4 completion:(id)a5
+- (void)updatePosterConfigurationMatchingUUID:(id)d updates:(id)updates completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  dCopy = d;
+  updatesCopy = updates;
+  completionCopy = completion;
+  v12 = updatesCopy;
   NSClassFromString(&cfstr_Nsarray.isa);
   if (!v12)
   {
@@ -1855,7 +1855,7 @@ void __67__PRSService_importPosterConfigurationFromArchivedData_completion___blo
     [PRSService updatePosterConfigurationMatchingUUID:a2 updates:? completion:?];
   }
 
-  v13 = v9;
+  v13 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v13)
   {
@@ -1867,7 +1867,7 @@ void __67__PRSService_importPosterConfigurationFromArchivedData_completion___blo
     [PRSService updatePosterConfigurationMatchingUUID:a2 updates:? completion:?];
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     [PRSService updatePosterConfigurationMatchingUUID:updates:completion:];
   }
@@ -1883,13 +1883,13 @@ void __67__PRSService_importPosterConfigurationFromArchivedData_completion___blo
     v16[3] = &unk_1E818D848;
     v18 = a2;
     v16[4] = self;
-    v17 = v11;
+    v17 = completionCopy;
     [v14 updatePosterConfigurationMatchingUUID:v13 updates:v12 completion:v16];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v15);
   }
 }
 
@@ -1917,13 +1917,13 @@ void __71__PRSService_updatePosterConfigurationMatchingUUID_updates_completion__
   }
 }
 
-- (void)updatePosterConfiguration:(id)a3 update:(id)a4 completion:(id)a5
+- (void)updatePosterConfiguration:(id)configuration update:(id)update completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  configurationCopy = configuration;
+  updateCopy = update;
+  completionCopy = completion;
+  v12 = updateCopy;
   NSClassFromString(&cfstr_Prsposterupdat_25.isa);
   if (!v12)
   {
@@ -1935,7 +1935,7 @@ void __71__PRSService_updatePosterConfigurationMatchingUUID_updates_completion__
     [PRSService updatePosterConfiguration:a2 update:? completion:?];
   }
 
-  v13 = v9;
+  v13 = configurationCopy;
   NSClassFromString(&cfstr_Prsposterconfi_1.isa);
   if (!v13)
   {
@@ -1947,15 +1947,15 @@ void __71__PRSService_updatePosterConfigurationMatchingUUID_updates_completion__
     [PRSService updatePosterConfiguration:a2 update:? completion:?];
   }
 
-  v14 = [v13 _path];
-  v15 = [v14 isServerPosterPath];
+  _path = [v13 _path];
+  isServerPosterPath = [_path isServerPosterPath];
 
-  if ((v15 & 1) == 0)
+  if ((isServerPosterPath & 1) == 0)
   {
     [PRSService updatePosterConfiguration:a2 update:? completion:?];
   }
 
-  if (!v11)
+  if (!completionCopy)
   {
     [PRSService updatePosterConfiguration:update:completion:];
   }
@@ -1973,13 +1973,13 @@ void __71__PRSService_updatePosterConfigurationMatchingUUID_updates_completion__
     v20[3] = &unk_1E818D848;
     v22 = a2;
     v20[4] = self;
-    v21 = v11;
+    v21 = completionCopy;
     [v16 updatePosterConfiguration:v13 updates:v18 completion:v20];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, 0, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v17);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -2015,30 +2015,30 @@ void __58__PRSService_updatePosterConfiguration_update_completion___block_invoke
   }
 }
 
-- (void)refreshSnapshotForPosterConfiguration:(id)a3 completion:(id)a4
+- (void)refreshSnapshotForPosterConfiguration:(id)configuration completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (completion)
   {
     v5 = MEMORY[0x1E696ABC0];
-    v6 = a4;
+    completionCopy = completion;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v12 = *MEMORY[0x1E696A588];
     v13[0] = @"Deprecated.";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10 = [v5 errorWithDomain:v8 code:1 userInfo:v9];
-    (*(a4 + 2))(v6, v10);
+    (*(completion + 2))(completionCopy, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshSnapshotForPosterConfigurationMatchingUUID:(id)a3 completion:(id)a4
+- (void)refreshSnapshotForPosterConfigurationMatchingUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService refreshSnapshotForPosterConfigurationMatchingUUID:completion:];
   }
@@ -2054,13 +2054,13 @@ void __58__PRSService_updatePosterConfiguration_update_completion___block_invoke
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 refreshSnapshotForPosterConfigurationMatchUUID:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 refreshSnapshotForPosterConfigurationMatchUUID:dCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -2076,15 +2076,15 @@ void __75__PRSService_refreshSnapshotForPosterConfigurationMatchingUUID_completi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)ingestSnapshotCollection:(id)a3 forPosterConfiguration:(id)a4 completion:(id)a5
+- (void)ingestSnapshotCollection:(id)collection forPosterConfiguration:(id)configuration completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  collectionCopy = collection;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (collectionCopy)
   {
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -2101,9 +2101,9 @@ void __75__PRSService_refreshSnapshotForPosterConfigurationMatchingUUID_completi
 
   [PRSService ingestSnapshotCollection:forPosterConfiguration:completion:];
 LABEL_3:
-  v13 = [v10 _path];
-  v14 = [v13 serverIdentity];
-  v15 = [v14 posterUUID];
+  _path = [configurationCopy _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
   v21 = 0;
   v16 = [(PRSService *)self _serviceInterfaceWithError:&v21];
@@ -2117,7 +2117,7 @@ LABEL_3:
     v20 = a2;
     v18[4] = self;
     v19 = v12;
-    [v16 ingestSnapshotCollection:v9 forPosterConfigurationUUID:v15 completion:v18];
+    [v16 ingestSnapshotCollection:collectionCopy forPosterConfigurationUUID:posterUUID completion:v18];
   }
 
   else if (v12)
@@ -2138,10 +2138,10 @@ void __73__PRSService_ingestSnapshotCollection_forPosterConfiguration_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchContentObstructionBoundsForActivePosterWithOrientation:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchContentObstructionBoundsForActivePosterWithOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [PRSService fetchContentObstructionBoundsForActivePosterWithOrientation:completionHandler:];
   }
@@ -2150,11 +2150,11 @@ void __73__PRSService_ingestSnapshotCollection_forPosterConfiguration_completion
   v9[1] = 3221225472;
   v9[2] = __92__PRSService_fetchContentObstructionBoundsForActivePosterWithOrientation_completionHandler___block_invoke;
   v9[3] = &unk_1E818D898;
-  v11 = a3;
+  orientationCopy = orientation;
   v12 = a2;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(PRSService *)self fetchActivePosterConfiguration:v9];
 }
 
@@ -2210,29 +2210,29 @@ void __92__PRSService_fetchContentObstructionBoundsForActivePosterWithOrientatio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchContentObstructionBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchContentObstructionBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v17 = 0;
   v11 = [(PRSService *)self _serviceInterfaceWithError:&v17];
   v12 = v17;
   if (v11)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __96__PRSService_fetchContentObstructionBoundsForPosterConfiguration_orientation_completionHandler___block_invoke;
     v14[3] = &unk_1E818D870;
     v16 = a2;
     v14[4] = self;
-    v15 = v10;
-    [v11 fetchContentObstructionBoundsForPosterConfiguration:v9 orientation:v13 completion:v14];
+    v15 = handlerCopy;
+    [v11 fetchContentObstructionBoundsForPosterConfiguration:configurationCopy orientation:v13 completion:v14];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, MEMORY[0x1E695E0F0], v12);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0], v12);
   }
 }
 
@@ -2249,10 +2249,10 @@ void __96__PRSService_fetchContentObstructionBoundsForPosterConfiguration_orient
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchMaximalContentCutoutBoundsForOrientation:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchMaximalContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [PRSService fetchMaximalContentCutoutBoundsForOrientation:completionHandler:];
   }
@@ -2262,20 +2262,20 @@ void __96__PRSService_fetchContentObstructionBoundsForPosterConfiguration_orient
   v9 = v14;
   if (v8)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __78__PRSService_fetchMaximalContentCutoutBoundsForOrientation_completionHandler___block_invoke;
     v11[3] = &unk_1E818D8C0;
     v13 = a2;
     v11[4] = self;
-    v12 = v7;
+    v12 = handlerCopy;
     [v8 fetchMaximalContentCutoutBoundsForOrientation:v10 completion:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 
@@ -2292,10 +2292,10 @@ void __78__PRSService_fetchMaximalContentCutoutBoundsForOrientation_completionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchExtendedContentCutoutBoundsForOrientation:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchExtendedContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [PRSService fetchExtendedContentCutoutBoundsForOrientation:completionHandler:];
   }
@@ -2305,20 +2305,20 @@ void __78__PRSService_fetchMaximalContentCutoutBoundsForOrientation_completionHa
   v9 = v14;
   if (v8)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __79__PRSService_fetchExtendedContentCutoutBoundsForOrientation_completionHandler___block_invoke;
     v11[3] = &unk_1E818D8C0;
     v13 = a2;
     v11[4] = self;
-    v12 = v7;
+    v12 = handlerCopy;
     [v8 fetchExtendedContentCutoutBoundsForOrientation:v10 completion:v11];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 
@@ -2335,10 +2335,10 @@ void __79__PRSService_fetchExtendedContentCutoutBoundsForOrientation_completionH
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchContentCutoutBoundsForActivePosterWithOrientation:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchContentCutoutBoundsForActivePosterWithOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [PRSService fetchContentCutoutBoundsForActivePosterWithOrientation:completionHandler:];
   }
@@ -2347,11 +2347,11 @@ void __79__PRSService_fetchExtendedContentCutoutBoundsForOrientation_completionH
   v9[1] = 3221225472;
   v9[2] = __87__PRSService_fetchContentCutoutBoundsForActivePosterWithOrientation_completionHandler___block_invoke;
   v9[3] = &unk_1E818D898;
-  v11 = a3;
+  orientationCopy = orientation;
   v12 = a2;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(PRSService *)self fetchActivePosterConfiguration:v9];
 }
 
@@ -2407,29 +2407,29 @@ void __87__PRSService_fetchContentCutoutBoundsForActivePosterWithOrientation_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchContentCutoutBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchContentCutoutBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v17 = 0;
   v11 = [(PRSService *)self _serviceInterfaceWithError:&v17];
   v12 = v17;
   if (v11)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __91__PRSService_fetchContentCutoutBoundsForPosterConfiguration_orientation_completionHandler___block_invoke;
     v14[3] = &unk_1E818D8C0;
     v16 = a2;
     v14[4] = self;
-    v15 = v10;
-    [v11 fetchContentCutoutBoundsForPosterConfiguration:v9 orientation:v13 completion:v14];
+    v15 = handlerCopy;
+    [v11 fetchContentCutoutBoundsForPosterConfiguration:configurationCopy orientation:v13 completion:v14];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
@@ -2446,29 +2446,29 @@ void __91__PRSService_fetchContentCutoutBoundsForPosterConfiguration_orientation
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchObscurableBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchObscurableBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v17 = 0;
   v11 = [(PRSService *)self _serviceInterfaceWithError:&v17];
   v12 = v17;
   if (v11)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __88__PRSService_fetchObscurableBoundsForPosterConfiguration_orientation_completionHandler___block_invoke;
     v14[3] = &unk_1E818D8C0;
     v16 = a2;
     v14[4] = self;
-    v15 = v10;
-    [v11 fetchObscurableBoundsForPosterConfiguration:v9 orientation:v13 completion:v14];
+    v15 = handlerCopy;
+    [v11 fetchObscurableBoundsForPosterConfiguration:configurationCopy orientation:v13 completion:v14];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
@@ -2485,29 +2485,29 @@ void __88__PRSService_fetchObscurableBoundsForPosterConfiguration_orientation_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchLimitedOcclusionBoundsForPosterConfiguration:(id)a3 orientation:(int64_t)a4 completionHandler:(id)a5
+- (void)fetchLimitedOcclusionBoundsForPosterConfiguration:(id)configuration orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v17 = 0;
   v11 = [(PRSService *)self _serviceInterfaceWithError:&v17];
   v12 = v17;
   if (v11)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __94__PRSService_fetchLimitedOcclusionBoundsForPosterConfiguration_orientation_completionHandler___block_invoke;
     v14[3] = &unk_1E818D8C0;
     v16 = a2;
     v14[4] = self;
-    v15 = v10;
-    [v11 fetchLimitedOcclusionBoundsForPosterConfiguration:v9 orientation:v13 completion:v14];
+    v15 = handlerCopy;
+    [v11 fetchLimitedOcclusionBoundsForPosterConfiguration:configurationCopy orientation:v13 completion:v14];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
@@ -2524,18 +2524,18 @@ void __94__PRSService_fetchLimitedOcclusionBoundsForPosterConfiguration_orientat
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchPosterConfigurationsForRole:(id)a3 completion:(id)a4
+- (void)fetchPosterConfigurationsForRole:(id)role completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  roleCopy = role;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchPosterConfigurationsForRole:completion:];
   }
 
-  if (!v7)
+  if (!roleCopy)
   {
-    v7 = @"PRPosterRoleLockScreen";
+    roleCopy = @"PRPosterRoleLockScreen";
   }
 
   v14 = 0;
@@ -2549,13 +2549,13 @@ void __94__PRSService_fetchLimitedOcclusionBoundsForPosterConfiguration_orientat
     v11[3] = &unk_1E818D758;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 fetchPosterConfigurationsForRole:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 fetchPosterConfigurationsForRole:roleCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -2575,18 +2575,18 @@ void __58__PRSService_fetchPosterConfigurationsForRole_completion___block_invoke
   (*(v8 + 16))(v8, v9, v5);
 }
 
-- (void)fetchSelectedPosterForRole:(id)a3 completion:(id)a4
+- (void)fetchSelectedPosterForRole:(id)role completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  roleCopy = role;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchSelectedPosterForRole:completion:];
   }
 
-  if (!v7)
+  if (!roleCopy)
   {
-    v7 = @"PRPosterRoleLockScreen";
+    roleCopy = @"PRPosterRoleLockScreen";
   }
 
   v14 = 0;
@@ -2600,13 +2600,13 @@ void __58__PRSService_fetchPosterConfigurationsForRole_completion___block_invoke
     v11[3] = &unk_1E818D070;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 fetchSelectedPosterForRole:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 fetchSelectedPosterForRole:roleCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -2633,18 +2633,18 @@ void __52__PRSService_fetchSelectedPosterForRole_completion___block_invoke(uint6
   }
 }
 
-- (void)fetchActivePosterForRole:(id)a3 completion:(id)a4
+- (void)fetchActivePosterForRole:(id)role completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  roleCopy = role;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchActivePosterForRole:completion:];
   }
 
-  if (!v7)
+  if (!roleCopy)
   {
-    v7 = @"PRPosterRoleLockScreen";
+    roleCopy = @"PRPosterRoleLockScreen";
   }
 
   v14 = 0;
@@ -2658,13 +2658,13 @@ void __52__PRSService_fetchSelectedPosterForRole_completion___block_invoke(uint6
     v11[3] = &unk_1E818D8E8;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 fetchActivePosterForRole:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 fetchActivePosterForRole:roleCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -2707,12 +2707,12 @@ void __50__PRSService_fetchActivePosterForRole_completion___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)fetchActivePosterForRole:(id)a3 error:(id *)a4
+- (id)fetchActivePosterForRole:(id)role error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  roleCopy = role;
+  if (roleCopy)
   {
-    v7 = v6;
+    v7 = roleCopy;
   }
 
   else
@@ -2720,11 +2720,11 @@ void __50__PRSService_fetchActivePosterForRole_completion___block_invoke(uint64_
     v7 = @"PRPosterRoleLockScreen";
   }
 
-  v8 = [(PRSService *)self _serviceInterfaceWithError:a4];
+  v8 = [(PRSService *)self _serviceInterfaceWithError:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 fetchActivePosterForRole:v7 error:a4];
+    v10 = [v8 fetchActivePosterForRole:v7 error:error];
   }
 
   else
@@ -2735,25 +2735,25 @@ void __50__PRSService_fetchActivePosterForRole_completion___block_invoke(uint64_
   return v10;
 }
 
-- (void)updateSelectedForRoleIdentifier:(id)a3 newlySelectedConfiguration:(id)a4 completion:(id)a5
+- (void)updateSelectedForRoleIdentifier:(id)identifier newlySelectedConfiguration:(id)configuration completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService updateSelectedForRoleIdentifier:newlySelectedConfiguration:completion:];
   }
 
-  v12 = [v10 serverUUID];
-  if (!v12)
+  serverUUID = [configurationCopy serverUUID];
+  if (!serverUUID)
   {
     [PRSService updateSelectedForRoleIdentifier:newlySelectedConfiguration:completion:];
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
-    v9 = @"PRPosterRoleLockScreen";
+    identifierCopy = @"PRPosterRoleLockScreen";
   }
 
   v18 = 0;
@@ -2767,13 +2767,13 @@ void __50__PRSService_fetchActivePosterForRole_completion___block_invoke(uint64_
     v15[3] = &unk_1E818D708;
     v17 = a2;
     v15[4] = self;
-    v16 = v11;
-    [v13 updateToSelectedPosterMatchingUUID:v12 role:v9 completion:v15];
+    v16 = completionCopy;
+    [v13 updateToSelectedPosterMatchingUUID:serverUUID role:identifierCopy completion:v15];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 }
 
@@ -2789,25 +2789,25 @@ void __84__PRSService_updateSelectedForRoleIdentifier_newlySelectedConfiguration
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSelectedConfiguration:(id)a3
+- (void)fetchSelectedConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    [(PRSService *)self fetchSelectedPosterForRole:0 completion:a3];
+    [(PRSService *)self fetchSelectedPosterForRole:0 completion:configuration];
   }
 }
 
-- (void)fetchActiveConfiguration:(id)a3
+- (void)fetchActiveConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__PRSService_fetchActiveConfiguration___block_invoke;
     v6[3] = &unk_1E818D910;
-    v7 = v4;
+    v7 = configurationCopy;
     [(PRSService *)self fetchActivePosterForRole:0 completion:v6];
   }
 }
@@ -2820,14 +2820,14 @@ void __39__PRSService_fetchActiveConfiguration___block_invoke(uint64_t a1, void 
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)updateToSelectedConfigurationMatchingUUID:(id)a3 role:(id)a4 completion:(id)a5
+- (void)updateToSelectedConfigurationMatchingUUID:(id)d role:(id)role completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dCopy = d;
+  roleCopy = role;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -2836,7 +2836,7 @@ void __39__PRSService_fetchActiveConfiguration___block_invoke(uint64_t a1, void 
   else
   {
     [PRSService updateToSelectedConfigurationMatchingUUID:role:completion:];
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -2844,9 +2844,9 @@ void __39__PRSService_fetchActiveConfiguration___block_invoke(uint64_t a1, void 
 
   [PRSService updateToSelectedConfigurationMatchingUUID:role:completion:];
 LABEL_3:
-  if (!v10)
+  if (!roleCopy)
   {
-    v10 = @"PRPosterRoleLockScreen";
+    roleCopy = @"PRPosterRoleLockScreen";
   }
 
   v17 = 0;
@@ -2860,13 +2860,13 @@ LABEL_3:
     v14[3] = &unk_1E818D708;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 updateToSelectedPosterMatchingUUID:v9 role:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 updateToSelectedPosterMatchingUUID:dCopy role:roleCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 }
 
@@ -2882,13 +2882,13 @@ void __72__PRSService_updateToSelectedConfigurationMatchingUUID_role_completion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchFocusUUIDForConfiguration:(id)a3 completion:(id)a4
+- (void)fetchFocusUUIDForConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 _path];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  _path = [configurationCopy _path];
   NSClassFromString(&cfstr_Pfserverposter.isa);
-  if (!v9)
+  if (!_path)
   {
     [PRSService fetchFocusUUIDForConfiguration:a2 completion:?];
   }
@@ -2898,7 +2898,7 @@ void __72__PRSService_updateToSelectedConfigurationMatchingUUID_role_completion_
     [PRSService fetchFocusUUIDForConfiguration:a2 completion:?];
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     [PRSService fetchFocusUUIDForConfiguration:completion:];
   }
@@ -2908,20 +2908,20 @@ void __72__PRSService_updateToSelectedConfigurationMatchingUUID_role_completion_
   v11 = v16;
   if (v10)
   {
-    v12 = [v7 _path];
+    _path2 = [configurationCopy _path];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__PRSService_fetchFocusUUIDForConfiguration_completion___block_invoke;
     v13[3] = &unk_1E818D938;
     v15 = a2;
     v13[4] = self;
-    v14 = v8;
-    [v10 fetchFocusUUIDForConfiguration:v12 completion:v13];
+    v14 = completionCopy;
+    [v10 fetchFocusUUIDForConfiguration:_path2 completion:v13];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -2938,11 +2938,11 @@ void __56__PRSService_fetchFocusUUIDForConfiguration_completion___block_invoke(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeAllFocusConfigurationsMatchingFocusUUID:(id)a3 completion:(id)a4
+- (void)removeAllFocusConfigurationsMatchingFocusUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService removeAllFocusConfigurationsMatchingFocusUUID:completion:];
   }
@@ -2958,13 +2958,13 @@ void __56__PRSService_fetchFocusUUIDForConfiguration_completion___block_invoke(u
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 removeAllFocusConfigurationsMatchingFocusUUID:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 removeAllFocusConfigurationsMatchingFocusUUID:dCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -2980,10 +2980,10 @@ void __71__PRSService_removeAllFocusConfigurationsMatchingFocusUUID_completion__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pushToProactiveWithCompletion:(id)a3
+- (void)pushToProactiveWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService pushToProactiveWithCompletion:];
   }
@@ -2999,13 +2999,13 @@ void __71__PRSService_removeAllFocusConfigurationsMatchingFocusUUID_completion__
     v8[3] = &unk_1E818D708;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 pushToProactiveWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -3021,14 +3021,14 @@ void __44__PRSService_pushToProactiveWithCompletion___block_invoke(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)pushPosterGalleryUpdate:(id)a3 completion:(id)a4
+- (void)pushPosterGalleryUpdate:(id)update completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  updateCopy = update;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (updateCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -3057,7 +3057,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 pushPosterGalleryUpdate:v7 completion:v12];
+    [v10 pushPosterGalleryUpdate:updateCopy completion:v12];
   }
 
   else if (v9)
@@ -3078,10 +3078,10 @@ void __49__PRSService_pushPosterGalleryUpdate_completion___block_invoke(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchGallery:(id)a3
+- (void)fetchGallery:(id)gallery
 {
-  v5 = a3;
-  if (!v5)
+  galleryCopy = gallery;
+  if (!galleryCopy)
   {
     [PRSService fetchGallery:];
   }
@@ -3097,13 +3097,13 @@ void __49__PRSService_pushPosterGalleryUpdate_completion___block_invoke(uint64_t
     v8[3] = &unk_1E818D960;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = galleryCopy;
     [v6 fetchGallery:v8];
   }
 
-  else if (v5)
+  else if (galleryCopy)
   {
-    (*(v5 + 2))(v5, 0, 0, v7);
+    (*(galleryCopy + 2))(galleryCopy, 0, 0, v7);
   }
 }
 
@@ -3121,10 +3121,10 @@ void __27__PRSService_fetchGallery___block_invoke(uint64_t a1, void *a2, void *a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)retrieveGallery:(id)a3
+- (void)retrieveGallery:(id)gallery
 {
-  v5 = a3;
-  if (!v5)
+  galleryCopy = gallery;
+  if (!galleryCopy)
   {
     [PRSService retrieveGallery:];
   }
@@ -3140,13 +3140,13 @@ void __27__PRSService_fetchGallery___block_invoke(uint64_t a1, void *a2, void *a
     v8[3] = &unk_1E818D960;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = galleryCopy;
     [v6 retrieveGallery:v8];
   }
 
-  else if (v5)
+  else if (galleryCopy)
   {
-    (*(v5 + 2))(v5, 0, 0, v7);
+    (*(galleryCopy + 2))(galleryCopy, 0, 0, v7);
   }
 }
 
@@ -3164,10 +3164,10 @@ void __30__PRSService_retrieveGallery___block_invoke(uint64_t a1, void *a2, void
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)gatherDataFreshnessState:(id)a3
+- (void)gatherDataFreshnessState:(id)state
 {
-  v5 = a3;
-  if (!v5)
+  stateCopy = state;
+  if (!stateCopy)
   {
     [PRSService gatherDataFreshnessState:];
   }
@@ -3183,13 +3183,13 @@ void __30__PRSService_retrieveGallery___block_invoke(uint64_t a1, void *a2, void
     v8[3] = &unk_1E818D780;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = stateCopy;
     [v6 gatherDataFreshnessState:v8];
   }
 
-  else if (v5)
+  else if (stateCopy)
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(stateCopy + 2))(stateCopy, 0, v7);
   }
 }
 
@@ -3206,12 +3206,12 @@ void __39__PRSService_gatherDataFreshnessState___block_invoke(uint64_t a1, void 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)a3 extensionIdentifier:(id)a4 completion:(id)a5
+- (void)refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:(id)identifier extensionIdentifier:(id)extensionIdentifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:extensionIdentifier:completion:];
   }
@@ -3227,13 +3227,13 @@ void __39__PRSService_gatherDataFreshnessState___block_invoke(uint64_t a1, void 
     v14[3] = &unk_1E818D708;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:v9 extensionIdentifier:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 refreshSnapshotForGalleryItemsMatchingDescriptorIdentifier:identifierCopy extensionIdentifier:extensionIdentifierCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 }
 
@@ -3249,11 +3249,11 @@ void __104__PRSService_refreshSnapshotForGalleryItemsMatchingDescriptorIdentifie
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)notifyFocusModeDidChange:(id)a3 completion:(id)a4
+- (void)notifyFocusModeDidChange:(id)change completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  changeCopy = change;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService notifyFocusModeDidChange:completion:];
   }
@@ -3269,13 +3269,13 @@ void __104__PRSService_refreshSnapshotForGalleryItemsMatchingDescriptorIdentifie
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 notifyFocusModeDidChange:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 notifyFocusModeDidChange:changeCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -3291,10 +3291,10 @@ void __50__PRSService_notifyFocusModeDidChange_completion___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)notifyAvailableFocusModesDidChange:(id)a3 completion:(id)a4
+- (void)notifyAvailableFocusModesDidChange:(id)change completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v14 = 0;
   v9 = [(PRSService *)self _serviceInterfaceWithError:&v14];
   v10 = v14;
@@ -3306,13 +3306,13 @@ void __50__PRSService_notifyFocusModeDidChange_completion___block_invoke(uint64_
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 notifyAvailableFocusModesDidChange:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 notifyAvailableFocusModesDidChange:changeCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -3328,11 +3328,11 @@ void __60__PRSService_notifyAvailableFocusModesDidChange_completion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)notifyActiveChargerIdentifierDidUpdate:(id)a3 completion:(id)a4
+- (void)notifyActiveChargerIdentifierDidUpdate:(id)update completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updateCopy = update;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService notifyActiveChargerIdentifierDidUpdate:completion:];
   }
@@ -3348,13 +3348,13 @@ void __60__PRSService_notifyAvailableFocusModesDidChange_completion___block_invo
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 notifyActiveChargerIdentifierDidUpdate:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 notifyActiveChargerIdentifierDidUpdate:updateCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -3370,10 +3370,10 @@ void __64__PRSService_notifyActiveChargerIdentifierDidUpdate_completion___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)prewarmWithCompletion:(id)a3
+- (void)prewarmWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService prewarmWithCompletion:];
   }
@@ -3389,14 +3389,14 @@ void __64__PRSService_notifyActiveChargerIdentifierDidUpdate_completion___block_
     v8[3] = &unk_1E818D7F8;
     v12 = a2;
     v9 = v6;
-    v10 = self;
-    v11 = v5;
+    selfCopy = self;
+    v11 = completionCopy;
     [PRSHostContext hostContextWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -3426,10 +3426,10 @@ void __36__PRSService_prewarmWithCompletion___block_invoke_2(uint64_t a1, void *
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)overnightUpdateWithCompletion:(id)a3
+- (void)overnightUpdateWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService overnightUpdateWithCompletion:];
   }
@@ -3445,14 +3445,14 @@ void __36__PRSService_prewarmWithCompletion___block_invoke_2(uint64_t a1, void *
     v8[3] = &unk_1E818D7F8;
     v12 = a2;
     v9 = v6;
-    v10 = self;
-    v11 = v5;
+    selfCopy = self;
+    v11 = completionCopy;
     [PRSHostContext hostContextWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 }
 
@@ -3482,11 +3482,11 @@ void __44__PRSService_overnightUpdateWithCompletion___block_invoke_2(uint64_t a1
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAssociatedHomeScreenPosterConfigurationUUID:(id)a3 completion:(id)a4
+- (void)fetchAssociatedHomeScreenPosterConfigurationUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchAssociatedHomeScreenPosterConfigurationUUID:completion:];
   }
@@ -3502,13 +3502,13 @@ void __44__PRSService_overnightUpdateWithCompletion___block_invoke_2(uint64_t a1
     v11[3] = &unk_1E818D070;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 fetchAssociatedHomeScreenPosterConfigurationUUID:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 fetchAssociatedHomeScreenPosterConfigurationUUID:dCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -3555,10 +3555,10 @@ void __58__PRSService_runMigration_migrationDescriptor_completion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)clearMigrationFlags:(id)a3
+- (void)clearMigrationFlags:(id)flags
 {
-  v5 = a3;
-  if (!v5)
+  flagsCopy = flags;
+  if (!flagsCopy)
   {
     [PRSService clearMigrationFlags:];
   }
@@ -3574,13 +3574,13 @@ void __58__PRSService_runMigration_migrationDescriptor_completion___block_invoke
     v8[3] = &unk_1E818D988;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = flagsCopy;
     [v6 clearMigrationFlags:v8];
   }
 
-  else if (v5)
+  else if (flagsCopy)
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(flagsCopy + 2))(flagsCopy, 0, v7);
   }
 }
 
@@ -3600,9 +3600,9 @@ void __34__PRSService_clearMigrationFlags___block_invoke(uint64_t a1, void *a2, 
   (*(v8 + 16))(v8, v9, v5);
 }
 
-- (void)createAndSelectLegacyPosterConfigurationIfNeededWithCompletion:(id)a3
+- (void)createAndSelectLegacyPosterConfigurationIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77__PRSService_createAndSelectLegacyPosterConfigurationIfNeededWithCompletion___block_invoke;
@@ -3610,8 +3610,8 @@ void __34__PRSService_clearMigrationFlags___block_invoke(uint64_t a1, void *a2, 
   v6[4] = self;
   v7 = @"com.apple.PaperBoard.LegacyPoster";
   v8 = @"LegacyPoster";
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   [(PRSService *)self fetchPosterConfigurationsForExtension:@"com.apple.PaperBoard.LegacyPoster" completion:v6];
 }
 
@@ -3695,20 +3695,20 @@ void __77__PRSService_createAndSelectLegacyPosterConfigurationIfNeededWithComple
   }
 }
 
-- (void)_selectConfigurationAndRefreshSnapshot:(id)a3 completion:(id)a4
+- (void)_selectConfigurationAndRefreshSnapshot:(id)snapshot completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  snapshotCopy = snapshot;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (snapshotCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __64__PRSService__selectConfigurationAndRefreshSnapshot_completion___block_invoke;
     v10[3] = &unk_1E818DA28;
-    v12 = v7;
+    v12 = completionCopy;
     v10[4] = self;
-    v11 = v6;
+    v11 = snapshotCopy;
     [(PRSService *)self updateSelectedForRoleIdentifier:@"PRPosterRoleLockScreen" newlySelectedConfiguration:v11 completion:v10];
   }
 
@@ -3766,10 +3766,10 @@ void __64__PRSService__selectConfigurationAndRefreshSnapshot_completion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchArchivedDataStoreNamesWithCompletion:(id)a3
+- (void)fetchArchivedDataStoreNamesWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService fetchArchivedDataStoreNamesWithCompletion:];
   }
@@ -3785,13 +3785,13 @@ void __64__PRSService__selectConfigurationAndRefreshSnapshot_completion___block_
     v8[3] = &unk_1E818CFD8;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [v6 fetchArchivedDataStoreNamesWithCompletion:v8];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 
@@ -3808,17 +3808,17 @@ void __56__PRSService_fetchArchivedDataStoreNamesWithCompletion___block_invoke(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)stashCurrentDataStoreWithName:(id)a3 options:(id)a4 completion:(id)a5
+- (void)stashCurrentDataStoreWithName:(id)name options:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  nameCopy = name;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService stashCurrentDataStoreWithName:options:completion:];
   }
 
-  if (![v9 length])
+  if (![nameCopy length])
   {
     [PRSService stashCurrentDataStoreWithName:options:completion:];
   }
@@ -3834,13 +3834,13 @@ void __56__PRSService_fetchArchivedDataStoreNamesWithCompletion___block_invoke(u
     v14[3] = &unk_1E818D708;
     v16 = a2;
     v14[4] = self;
-    v15 = v11;
-    [v12 stashCurrentDataStoreWithName:v9 options:v10 completion:v14];
+    v15 = completionCopy;
+    [v12 stashCurrentDataStoreWithName:nameCopy options:optionsCopy completion:v14];
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    (*(v11 + 2))(v11, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 }
 
@@ -3868,11 +3868,11 @@ void __79__PRSService_restoreArchivedDataStoreNamed_backupExistingDataStore_comp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteArchivedDataStoreNamed:(id)a3 completion:(id)a4
+- (void)deleteArchivedDataStoreNamed:(id)named completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  namedCopy = named;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService deleteArchivedDataStoreNamed:completion:];
   }
@@ -3888,13 +3888,13 @@ void __79__PRSService_restoreArchivedDataStoreNamed_backupExistingDataStore_comp
     v11[3] = &unk_1E818D708;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 deleteArchivedDataStoreNamed:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 deleteArchivedDataStoreNamed:namedCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -3910,11 +3910,11 @@ void __54__PRSService_deleteArchivedDataStoreNamed_completion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)exportArchivedDataStoreNamed:(id)a3 completion:(id)a4
+- (void)exportArchivedDataStoreNamed:(id)named completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  namedCopy = named;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PRSService exportArchivedDataStoreNamed:completion:];
   }
@@ -3930,13 +3930,13 @@ void __54__PRSService_deleteArchivedDataStoreNamed_completion___block_invoke(uin
     v11[3] = &unk_1E818D820;
     v13 = a2;
     v11[4] = self;
-    v12 = v8;
-    [v9 exportArchivedDataStoreNamed:v7 completion:v11];
+    v12 = completionCopy;
+    [v9 exportArchivedDataStoreNamed:namedCopy completion:v11];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
@@ -3953,18 +3953,18 @@ void __54__PRSService_exportArchivedDataStoreNamed_completion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)exportCurrentDataStoreToURL:(id)a3 options:(id)a4 sandboxToken:(id)a5 error:(id *)a6
+- (void)exportCurrentDataStoreToURL:(id)l options:(id)options sandboxToken:(id)token error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  optionsCopy = options;
+  tokenCopy = token;
   v20 = 0;
   v14 = [(PRSService *)self _serviceInterfaceWithError:&v20];
   v15 = v20;
   if (v14)
   {
     v19 = 0;
-    [v14 exportCurrentDataStoreToURL:v11 options:v12 sandboxToken:v13 error:&v19];
+    [v14 exportCurrentDataStoreToURL:lCopy options:optionsCopy sandboxToken:tokenCopy error:&v19];
     v16 = v19;
 
     v17 = PRSLogCommon();
@@ -3977,17 +3977,17 @@ void __54__PRSService_exportArchivedDataStoreNamed_completion___block_invoke(uin
   }
 
   v18 = v15;
-  *a6 = v15;
+  *error = v15;
 }
 
-- (void)ignoreExtension:(id)a3 completion:(id)a4
+- (void)ignoreExtension:(id)extension completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  extensionCopy = extension;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (extensionCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -4016,7 +4016,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 ignoreExtension:v7 completion:v12];
+    [v10 ignoreExtension:extensionCopy completion:v12];
   }
 
   else if (v9)
@@ -4037,14 +4037,14 @@ void __41__PRSService_ignoreExtension_completion___block_invoke(uint64_t a1, voi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)unignoreExtension:(id)a3 completion:(id)a4
+- (void)unignoreExtension:(id)extension completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  extensionCopy = extension;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (extensionCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -4073,7 +4073,7 @@ LABEL_3:
     v14 = a2;
     v12[4] = self;
     v13 = v9;
-    [v10 unignoreExtension:v7 completion:v12];
+    [v10 unignoreExtension:extensionCopy completion:v12];
   }
 
   else if (v9)
@@ -4094,7 +4094,7 @@ void __43__PRSService_unignoreExtension_completion___block_invoke(uint64_t a1, v
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_serviceInterfaceWithError:(id *)a3
+- (id)_serviceInterfaceWithError:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   p_serviceConnection = &self->_serviceConnection;
@@ -4113,12 +4113,12 @@ void __43__PRSService_unignoreExtension_completion___block_invoke(uint64_t a1, v
       [(PRSService *)self _serviceInterfaceWithError:?];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      *a3 = [v11 errorWithDomain:v13 code:1 userInfo:0];
+      *error = [v11 errorWithDomain:v13 code:1 userInfo:0];
     }
   }
 

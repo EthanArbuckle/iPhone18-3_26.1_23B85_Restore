@@ -1,20 +1,20 @@
 @interface LNBundleConnectionPolicy
-- (BOOL)isEqual:(id)a3;
-- (LNBundleConnectionPolicy)initWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 processInstanceIdentifier:(id)a5;
-- (id)connectionWithUserIdentity:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNBundleConnectionPolicy)initWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier processInstanceIdentifier:(id)instanceIdentifier;
+- (id)connectionWithUserIdentity:(id)identity error:(id *)error;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation LNBundleConnectionPolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -23,10 +23,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNBundleConnectionPolicy *)self bundleIdentifier];
-    v8 = [(LNBundleConnectionPolicy *)v6 bundleIdentifier];
-    v9 = v7;
-    v10 = v8;
+    bundleIdentifier = [(LNBundleConnectionPolicy *)self bundleIdentifier];
+    bundleIdentifier2 = [(LNBundleConnectionPolicy *)v6 bundleIdentifier];
+    v9 = bundleIdentifier;
+    v10 = bundleIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -53,10 +53,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
-    v17 = [(LNBundleConnectionPolicy *)v6 appBundleIdentifier];
-    v14 = v16;
-    v18 = v17;
+    appBundleIdentifier = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
+    appBundleIdentifier2 = [(LNBundleConnectionPolicy *)v6 appBundleIdentifier];
+    v14 = appBundleIdentifier;
+    v18 = appBundleIdentifier2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -83,10 +83,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
-    v22 = [(LNBundleConnectionPolicy *)v6 processInstanceIdentifier];
-    v20 = v21;
-    v23 = v22;
+    processInstanceIdentifier = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
+    processInstanceIdentifier2 = [(LNBundleConnectionPolicy *)v6 processInstanceIdentifier];
+    v20 = processInstanceIdentifier;
+    v23 = processInstanceIdentifier2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -113,12 +113,12 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNBundleConnectionPolicy *)self bundleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
-  v8 = [v7 hash];
+  bundleIdentifier = [(LNBundleConnectionPolicy *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
+  appBundleIdentifier = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
+  v6 = [appBundleIdentifier hash] ^ v4;
+  processInstanceIdentifier = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
+  v8 = [processInstanceIdentifier hash];
 
   return v6 ^ v8;
 }
@@ -128,45 +128,45 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNBundleConnectionPolicy *)self bundleIdentifier];
-  v7 = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
-  v8 = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, appBundleIdentifier: %@, processInstanceIdentifier: %@>", v5, self, v6, v7, v8];
+  bundleIdentifier = [(LNBundleConnectionPolicy *)self bundleIdentifier];
+  appBundleIdentifier = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, appBundleIdentifier: %@, processInstanceIdentifier: %@>", v5, self, bundleIdentifier, appBundleIdentifier, processInstanceIdentifier];
 
   return v9;
 }
 
-- (id)connectionWithUserIdentity:(id)a3 error:(id *)a4
+- (id)connectionWithUserIdentity:(id)identity error:(id *)error
 {
   v6 = MEMORY[0x1E6963620];
-  v7 = a3;
-  v8 = [(LNBundleConnectionPolicy *)self bundleIdentifier];
-  v9 = [v6 bundleRecordWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
+  identityCopy = identity;
+  bundleIdentifier = [(LNBundleConnectionPolicy *)self bundleIdentifier];
+  v9 = [v6 bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
   objc_opt_class();
-  LOBYTE(v8) = objc_opt_isKindOfClass();
+  LOBYTE(bundleIdentifier) = objc_opt_isKindOfClass();
   v10 = objc_alloc(MEMORY[0x1E69AC7B0]);
-  v11 = [(LNBundleConnectionPolicy *)self bundleIdentifier];
+  bundleIdentifier2 = [(LNBundleConnectionPolicy *)self bundleIdentifier];
   v12 = [v9 URL];
-  v13 = [v10 initWithType:v8 & 1 bundleIdentifier:v11 url:v12];
+  v13 = [v10 initWithType:bundleIdentifier & 1 bundleIdentifier:bundleIdentifier2 url:v12];
 
   v14 = +[LNConnectionManager sharedInstance];
-  v15 = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
-  v16 = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
-  v17 = [v14 connectionForEffectiveBundleIdentifier:v13 appBundleIdentifier:v15 processInstanceIdentifier:v16 mangledTypeName:0 userIdentity:v7 error:a4];
+  appBundleIdentifier = [(LNBundleConnectionPolicy *)self appBundleIdentifier];
+  processInstanceIdentifier = [(LNBundleConnectionPolicy *)self processInstanceIdentifier];
+  v17 = [v14 connectionForEffectiveBundleIdentifier:v13 appBundleIdentifier:appBundleIdentifier processInstanceIdentifier:processInstanceIdentifier mangledTypeName:0 userIdentity:identityCopy error:error];
 
   return v17;
 }
 
-- (LNBundleConnectionPolicy)initWithBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 processInstanceIdentifier:(id)a5
+- (LNBundleConnectionPolicy)initWithBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier processInstanceIdentifier:(id)instanceIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  instanceIdentifierCopy = instanceIdentifier;
+  if (!identifierCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNBundleConnectionPolicy.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNBundleConnectionPolicy.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v22.receiver = self;
@@ -174,15 +174,15 @@ LABEL_28:
   v12 = [(LNBundleConnectionPolicy *)&v22 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     bundleIdentifier = v12->_bundleIdentifier;
     v12->_bundleIdentifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [bundleIdentifierCopy copy];
     appBundleIdentifier = v12->_appBundleIdentifier;
     v12->_appBundleIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [instanceIdentifierCopy copy];
     processInstanceIdentifier = v12->_processInstanceIdentifier;
     v12->_processInstanceIdentifier = v17;
 

@@ -1,27 +1,27 @@
 @interface FIUIChartMinMaxValueAxisDescriptor
 - (CGSize)shadowOffset;
-- (id)_axisLabelForValue:(id)a3 highlighted:(BOOL)a4;
+- (id)_axisLabelForValue:(id)value highlighted:(BOOL)highlighted;
 - (id)axisLabels;
 @end
 
 @implementation FIUIChartMinMaxValueAxisDescriptor
 
-- (id)_axisLabelForValue:(id)a3 highlighted:(BOOL)a4
+- (id)_axisLabelForValue:(id)value highlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v6 = a3;
+  highlightedCopy = highlighted;
+  valueCopy = value;
   v7 = objc_alloc_init(FIUIChartAxisLabel);
-  v8 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:v6 numberStyle:1];
+  v8 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:valueCopy numberStyle:1];
   [(FIUIChartAxisLabel *)v7 setText:v8];
 
   v9 = 16;
-  if (v4)
+  if (highlightedCopy)
   {
     v9 = 24;
   }
 
   [(FIUIChartAxisLabel *)v7 setLabelColor:*(&self->super.isa + v9)];
-  [(FIUIChartAxisLabel *)v7 setLocation:v6];
+  [(FIUIChartAxisLabel *)v7 setLocation:valueCopy];
 
   [(FIUIChartAxisLabel *)v7 setShadowColor:self->_shadowColor];
   [(FIUIChartAxisLabel *)v7 setShadowOffset:self->_shadowOffset.width, self->_shadowOffset.height];

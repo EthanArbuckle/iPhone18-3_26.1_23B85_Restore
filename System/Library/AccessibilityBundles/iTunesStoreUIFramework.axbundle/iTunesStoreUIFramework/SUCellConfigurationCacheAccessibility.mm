@@ -1,29 +1,29 @@
 @interface SUCellConfigurationCacheAccessibility
-- (id)configurationForRow:(unint64_t)a3;
+- (id)configurationForRow:(unint64_t)row;
 @end
 
 @implementation SUCellConfigurationCacheAccessibility
 
-- (id)configurationForRow:(unint64_t)a3
+- (id)configurationForRow:(unint64_t)row
 {
   v4 = [(SUCellConfigurationCacheAccessibility *)self safeValueForKey:@"_configurations"];
   v5 = [v4 count];
-  if (v5 <= a3)
+  if (v5 <= row)
   {
     v6 = v5;
     v7 = [v4 objectAtIndex:0];
     v8 = objc_opt_class();
 
-    if (a3 + 5 != v6)
+    if (row + 5 != v6)
     {
-      if (a3 + 5 - v6 <= 1)
+      if (row + 5 - v6 <= 1)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = a3 + 5 - v6;
+        v9 = row + 5 - v6;
       }
 
       do
@@ -38,7 +38,7 @@
     }
   }
 
-  v11 = [v4 objectAtIndex:a3];
+  v11 = [v4 objectAtIndex:row];
 
   return v11;
 }

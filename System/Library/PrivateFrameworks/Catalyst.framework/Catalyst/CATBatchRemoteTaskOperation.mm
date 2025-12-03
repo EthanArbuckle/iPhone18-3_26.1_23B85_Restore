@@ -1,20 +1,20 @@
 @interface CATBatchRemoteTaskOperation
-- (CATBatchRemoteTaskOperation)initWithRemoteTaskOperations:(id)a3;
-- (CATBatchRemoteTaskOperation)initWithTaskClient:(id)a3 requests:(id)a4;
+- (CATBatchRemoteTaskOperation)initWithRemoteTaskOperations:(id)operations;
+- (CATBatchRemoteTaskOperation)initWithTaskClient:(id)client requests:(id)requests;
 - (NSArray)remoteTaskOperations;
 - (void)cancel;
 - (void)main;
-- (void)remoteTaskDidFinish:(id)a3;
+- (void)remoteTaskDidFinish:(id)finish;
 @end
 
 @implementation CATBatchRemoteTaskOperation
 
-- (CATBatchRemoteTaskOperation)initWithTaskClient:(id)a3 requests:(id)a4
+- (CATBatchRemoteTaskOperation)initWithTaskClient:(id)client requests:(id)requests
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  clientCopy = client;
+  requestsCopy = requests;
+  if (!clientCopy)
   {
     [CATBatchRemoteTaskOperation initWithTaskClient:a2 requests:self];
   }
@@ -24,7 +24,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = requestsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -40,7 +40,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [v7 prepareTaskOperationForRequest:{*(*(&v19 + 1) + 8 * v14), v19}];
+        v15 = [clientCopy prepareTaskOperationForRequest:{*(*(&v19 + 1) + 8 * v14), v19}];
         [v9 addObject:v15];
 
         ++v14;
@@ -58,9 +58,9 @@
   return v16;
 }
 
-- (CATBatchRemoteTaskOperation)initWithRemoteTaskOperations:(id)a3
+- (CATBatchRemoteTaskOperation)initWithRemoteTaskOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v12.receiver = self;
   v12.super_class = CATBatchRemoteTaskOperation;
   v5 = [(CATOperation *)&v12 init];
@@ -73,7 +73,7 @@
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%p.main", objc_opt_class(), v5];
     [(NSOperationQueue *)v5->mQueue setName:v8];
 
-    v9 = [v4 copy];
+    v9 = [operationsCopy copy];
     mRemoteTasks = v5->mRemoteTasks;
     v5->mRemoteTasks = v9;
   }
@@ -144,11 +144,11 @@
   }
 }
 
-- (void)remoteTaskDidFinish:(id)a3
+- (void)remoteTaskDidFinish:(id)finish
 {
   [(CATOperation *)self setCompletedUnitCount:[(CATOperation *)self completedUnitCount]+ 1];
-  v4 = [(CATOperation *)self completedUnitCount];
-  if (v4 >= [(NSArray *)self->mRemoteTasks count])
+  completedUnitCount = [(CATOperation *)self completedUnitCount];
+  if (completedUnitCount >= [(NSArray *)self->mRemoteTasks count])
   {
     v5 = [objc_alloc(MEMORY[0x277CCAA80]) initWithTarget:self selector:sel_endOperationWithResultObject_ object:0];
     [(NSOperationQueue *)self->mQueue addOperation:v5];

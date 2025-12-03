@@ -1,20 +1,20 @@
 @interface _CPLPrequeliteStatementStatistic
-- (_CPLPrequeliteStatementStatistic)initWithStatement:(id)a3;
+- (_CPLPrequeliteStatementStatistic)initWithStatement:(id)statement;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation _CPLPrequeliteStatementStatistic
 
-- (_CPLPrequeliteStatementStatistic)initWithStatement:(id)a3
+- (_CPLPrequeliteStatementStatistic)initWithStatement:(id)statement
 {
-  v4 = a3;
+  statementCopy = statement;
   v9.receiver = self;
   v9.super_class = _CPLPrequeliteStatementStatistic;
   v5 = [(_CPLPrequeliteStatementStatistic *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [statementCopy copy];
     statement = v5->_statement;
     v5->_statement = v6;
   }
@@ -22,10 +22,10 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   durationInNanoSeconds = self->_durationInNanoSeconds;
-  v4 = *(a3 + 4);
+  v4 = *(compare + 4);
   v5 = durationInNanoSeconds > v4;
   v6 = durationInNanoSeconds != v4;
   if (v5)

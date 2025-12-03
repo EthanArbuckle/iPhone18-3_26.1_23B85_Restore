@@ -1,38 +1,38 @@
 @interface CKFaceTimeCollaborationUtilities
-+ (BOOL)shouldAddCollaboration:(id)a3 toFaceTimeConversation:(id)a4 forIMChat:(id)a5;
-+ (void)startCollaborationWithComposition:(id)a3 faceTimeConversation:(id)a4 imChat:(id)a5 chatController:(id)a6 backgroundTaskID:(unint64_t)a7;
++ (BOOL)shouldAddCollaboration:(id)collaboration toFaceTimeConversation:(id)conversation forIMChat:(id)chat;
++ (void)startCollaborationWithComposition:(id)composition faceTimeConversation:(id)conversation imChat:(id)chat chatController:(id)controller backgroundTaskID:(unint64_t)d;
 @end
 
 @implementation CKFaceTimeCollaborationUtilities
 
-+ (void)startCollaborationWithComposition:(id)a3 faceTimeConversation:(id)a4 imChat:(id)a5 chatController:(id)a6 backgroundTaskID:(unint64_t)a7
++ (void)startCollaborationWithComposition:(id)composition faceTimeConversation:(id)conversation imChat:(id)chat chatController:(id)controller backgroundTaskID:(unint64_t)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 shelfPluginPayload];
-  v16 = [MEMORY[0x1E696AEC0] stringGUID];
-  [v15 setMessageGUID:v16];
+  compositionCopy = composition;
+  conversationCopy = conversation;
+  chatCopy = chat;
+  controllerCopy = controller;
+  shelfPluginPayload = [compositionCopy shelfPluginPayload];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+  [shelfPluginPayload setMessageGUID:stringGUID];
 
-  [v15 setPluginBundleID:*MEMORY[0x1E69A6A18]];
+  [shelfPluginPayload setPluginBundleID:*MEMORY[0x1E69A6A18]];
   v17 = objc_alloc_init(MEMORY[0x1E697B6B8]);
-  v18 = [v15 url];
+  v18 = [shelfPluginPayload url];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __130__CKFaceTimeCollaborationUtilities_startCollaborationWithComposition_faceTimeConversation_imChat_chatController_backgroundTaskID___block_invoke;
   aBlock[3] = &unk_1E72F8678;
-  v29 = v12;
-  v30 = v13;
+  v29 = conversationCopy;
+  v30 = chatCopy;
   v31 = v17;
-  v32 = v11;
-  v33 = v14;
-  v34 = a7;
-  v19 = v14;
-  v20 = v11;
+  v32 = compositionCopy;
+  v33 = controllerCopy;
+  dCopy = d;
+  v19 = controllerCopy;
+  v20 = compositionCopy;
   v21 = v17;
-  v22 = v13;
-  v23 = v12;
+  v22 = chatCopy;
+  v23 = conversationCopy;
   v24 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -160,23 +160,23 @@ void __130__CKFaceTimeCollaborationUtilities_startCollaborationWithComposition_f
   (*(*(a1 + 32) + 16))();
 }
 
-+ (BOOL)shouldAddCollaboration:(id)a3 toFaceTimeConversation:(id)a4 forIMChat:(id)a5
++ (BOOL)shouldAddCollaboration:(id)collaboration toFaceTimeConversation:(id)conversation forIMChat:(id)chat
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 state];
-  if (v7 && v10 == 3)
+  collaborationCopy = collaboration;
+  conversationCopy = conversation;
+  chatCopy = chat;
+  state = [conversationCopy state];
+  if (collaborationCopy && state == 3)
   {
-    v26 = v8;
-    v27 = v7;
+    v26 = conversationCopy;
+    v27 = collaborationCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [v7 attributions];
-    v12 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    attributions = [collaborationCopy attributions];
+    v12 = [attributions countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v12)
     {
       v13 = v12;
@@ -187,23 +187,23 @@ void __130__CKFaceTimeCollaborationUtilities_startCollaborationWithComposition_f
         {
           if (*v29 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(attributions);
           }
 
-          v16 = [*(*(&v28 + 1) + 8 * i) uniqueIdentifier];
-          if (v16)
+          uniqueIdentifier = [*(*(&v28 + 1) + 8 * i) uniqueIdentifier];
+          if (uniqueIdentifier)
           {
-            v17 = v16;
+            v17 = uniqueIdentifier;
             v18 = IMDChatRecordCopyChatForMessageGUID();
-            v19 = [v18 groupID];
-            v20 = [v9 groupID];
-            v21 = [v19 isEqualToString:v20];
+            groupID = [v18 groupID];
+            groupID2 = [chatCopy groupID];
+            v21 = [groupID isEqualToString:groupID2];
 
             if (v21)
             {
               v24 = IMLogHandleForCategory();
-              v8 = v26;
-              v7 = v27;
+              conversationCopy = v26;
+              collaborationCopy = v27;
               if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
@@ -219,7 +219,7 @@ void __130__CKFaceTimeCollaborationUtilities_startCollaborationWithComposition_f
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v13 = [attributions countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v13)
         {
           continue;
@@ -229,19 +229,19 @@ void __130__CKFaceTimeCollaborationUtilities_startCollaborationWithComposition_f
       }
     }
 
-    v8 = v26;
-    v7 = v27;
+    conversationCopy = v26;
+    collaborationCopy = v27;
   }
 
-  v11 = IMLogHandleForCategory();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  attributions = IMLogHandleForCategory();
+  if (os_log_type_enabled(attributions, OS_LOG_TYPE_INFO))
   {
-    v22 = [v7 collaborationIdentifier];
+    collaborationIdentifier = [collaborationCopy collaborationIdentifier];
     *buf = 138412546;
-    v33 = v22;
+    v33 = collaborationIdentifier;
     v34 = 2112;
-    v35 = v9;
-    _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Will send message- Could not match collaboration: %@ to provided IMChat: %@", buf, 0x16u);
+    v35 = chatCopy;
+    _os_log_impl(&dword_19020E000, attributions, OS_LOG_TYPE_INFO, "Will send message- Could not match collaboration: %@ to provided IMChat: %@", buf, 0x16u);
   }
 
   v23 = 0;

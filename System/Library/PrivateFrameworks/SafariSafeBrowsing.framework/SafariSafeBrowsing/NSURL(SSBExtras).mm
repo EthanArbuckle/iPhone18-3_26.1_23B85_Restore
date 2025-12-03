@@ -9,7 +9,7 @@
 
 - (void)ssb_hasUserInfo
 {
-  result = [a1 scheme];
+  result = [self scheme];
   if (result)
   {
     v3 = result;
@@ -27,7 +27,7 @@
     {
     }
 
-    return (CFURLGetByteRangeForComponent(a1, kCFURLComponentUserInfo, 0).location != -1);
+    return (CFURLGetByteRangeForComponent(self, kCFURLComponentUserInfo, 0).location != -1);
   }
 
   return result;
@@ -35,20 +35,20 @@
 
 - (uint64_t)ssb_isSafeURL
 {
-  if ([a1 isFileURL])
+  if ([self isFileURL])
   {
     return 1;
   }
 
-  v3 = [a1 host];
-  v2 = [v3 length] == 0;
+  host = [self host];
+  v2 = [host length] == 0;
 
   return v2;
 }
 
 - (CFURLRef)ssb_canonicalizeURL
 {
-  Backend::Google::CanonicalURL::canonicalizeURL(a1, &__p);
+  Backend::Google::CanonicalURL::canonicalizeURL(self, &__p);
   v1 = CFURLCreateWithBytes(0, __p, v4 - __p, 0x8000100u, 0);
   if (__p)
   {
@@ -61,7 +61,7 @@
 
 - (id)ssb_hashes
 {
-  Backend::Google::CanonicalURL::canonicalizeURL(a1, v8);
+  Backend::Google::CanonicalURL::canonicalizeURL(self, v8);
   Backend::Google::CanonicalURL::computeHashes(v8, &__p);
   v1 = [MEMORY[0x277CBEB18] arrayWithCapacity:(v7 - __p) >> 5];
   v2 = __p;

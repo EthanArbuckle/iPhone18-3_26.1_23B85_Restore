@@ -1,15 +1,15 @@
 @interface HistoricalAnalysisDataSource
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4;
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis;
 @end
 
 @implementation HistoricalAnalysisDataSource
 
-- (void)analysisProvider:(id)a3 didUpdateAnalysis:(id)a4
+- (void)analysisProvider:(id)provider didUpdateAnalysis:(id)analysis
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  analysisCopy = analysis;
 
-  sub_29E177B28(v5, v6);
+  sub_29E177B28(providerCopy, analysisCopy);
 }
 
 @end

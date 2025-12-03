@@ -1,21 +1,21 @@
 @interface TIKeyboardBehaviors_Cangjie
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Cangjie
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 hasCandidates];
-  v5 = [v3 hasInput];
-  if (v4)
+  stateCopy = state;
+  hasCandidates = [stateCopy hasCandidates];
+  hasInput = [stateCopy hasInput];
+  if (hasCandidates)
   {
-    if ((v5 & 1) != 0 || [v3 hasCandidateSelected])
+    if ((hasInput & 1) != 0 || [stateCopy hasCandidateSelected])
     {
-      if ([v3 spaceConfirmation])
+      if ([stateCopy spaceConfirmation])
       {
-        if ([v3 hardwareKeyboardMode])
+        if ([stateCopy hardwareKeyboardMode])
         {
           v6 = 2;
         }
@@ -44,7 +44,7 @@
 
   else
   {
-    if (!v5)
+    if (!hasInput)
     {
       v8 = 0;
       goto LABEL_15;

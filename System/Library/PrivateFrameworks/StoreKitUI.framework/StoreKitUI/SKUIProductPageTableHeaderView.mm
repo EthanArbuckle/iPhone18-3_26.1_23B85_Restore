@@ -1,21 +1,21 @@
 @interface SKUIProductPageTableHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)title;
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIProductPageTableHeaderView
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -57,12 +57,12 @@
     }
   }
 
-  v13 = [(SKUIProductPageTableHeaderView *)self title];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  title = [(SKUIProductPageTableHeaderView *)self title];
+  v14 = title;
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v4)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -71,23 +71,23 @@
         self->_titleLabel = v16;
 
         v18 = self->_titleLabel;
-        v19 = [(SKUIProductPageTableHeaderView *)self backgroundColor];
-        [(UILabel *)v18 setBackgroundColor:v19];
+        backgroundColor = [(SKUIProductPageTableHeaderView *)self backgroundColor];
+        [(UILabel *)v18 setBackgroundColor:backgroundColor];
 
         v20 = self->_titleLabel;
         v21 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
         [(UILabel *)v20 setFont:v21];
 
         v22 = self->_titleLabel;
-        v23 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)v22 setTextColor:v23];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)v22 setTextColor:blackColor];
 
         [(SKUIProductPageTableHeaderView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
       [(UILabel *)titleLabel setHidden:0];
-      [(UILabel *)self->_titleLabel setText:v4];
+      [(UILabel *)self->_titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
       [(SKUIProductPageTableHeaderView *)self setNeedsLayout];
     }
@@ -113,9 +113,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  return v11;
+  return text;
 }
 
 - (void)layoutSubviews
@@ -138,9 +138,9 @@
   [(UILabel *)self->_titleLabel setFrame:self->_contentInsets.left, self->_contentInsets.top, v12 - self->_contentInsets.right - self->_contentInsets.left];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -153,13 +153,13 @@
     }
   }
 
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIProductPageTableHeaderView;
-  [(SKUIProductPageTableHeaderView *)&v13 setBackgroundColor:v4];
+  [(SKUIProductPageTableHeaderView *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (os_variant_has_internal_content())
   {

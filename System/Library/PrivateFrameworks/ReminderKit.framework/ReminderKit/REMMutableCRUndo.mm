@@ -1,7 +1,7 @@
 @interface REMMutableCRUndo
 - (REMMutableCRUndo)init;
 - (id)immutableCopy;
-- (void)addUndoBlock:(id)a3;
+- (void)addUndoBlock:(id)block;
 @end
 
 @implementation REMMutableCRUndo
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (void)addUndoBlock:(id)a3
+- (void)addUndoBlock:(id)block
 {
-  v4 = a3;
-  v6 = [(REMMutableCRUndo *)self undoBlocks];
-  v5 = MEMORY[0x19A8FD720](v4);
+  blockCopy = block;
+  undoBlocks = [(REMMutableCRUndo *)self undoBlocks];
+  v5 = MEMORY[0x19A8FD720](blockCopy);
 
-  [v6 addObject:v5];
+  [undoBlocks addObject:v5];
 }
 
 - (id)immutableCopy
 {
   v3 = [REMCRUndo alloc];
-  v4 = [(REMMutableCRUndo *)self undoBlocks];
-  v5 = [v4 copy];
+  undoBlocks = [(REMMutableCRUndo *)self undoBlocks];
+  v5 = [undoBlocks copy];
   v6 = [(REMCRUndo *)v3 initWithUndoBlocks:v5];
 
   return v6;

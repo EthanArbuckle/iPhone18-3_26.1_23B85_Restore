@@ -1,20 +1,20 @@
 @interface MXMSampleAttributeFilter
-- (BOOL)_matchesSampleAttributeNameWithName:(id)a3;
-- (BOOL)_matchesSampleAttributeValueWithValue:(id)a3;
-- (BOOL)matchesSampleWithAttribute:(id)a3;
-- (MXMSampleAttributeFilter)initWithAttribute:(id)a3;
-- (MXMSampleAttributeFilter)initWithAttributeName:(id)a3 numericValue:(id)a4;
-- (MXMSampleAttributeFilter)initWithAttributeName:(id)a3 stringValue:(id)a4;
-- (MXMSampleAttributeFilter)initWithAttributeName:(id)a3 valueType:(int64_t)a4 value:(id)a5;
-- (MXMSampleAttributeFilter)initWithCoder:(id)a3;
+- (BOOL)_matchesSampleAttributeNameWithName:(id)name;
+- (BOOL)_matchesSampleAttributeValueWithValue:(id)value;
+- (BOOL)matchesSampleWithAttribute:(id)attribute;
+- (MXMSampleAttributeFilter)initWithAttribute:(id)attribute;
+- (MXMSampleAttributeFilter)initWithAttributeName:(id)name numericValue:(id)value;
+- (MXMSampleAttributeFilter)initWithAttributeName:(id)name stringValue:(id)value;
+- (MXMSampleAttributeFilter)initWithAttributeName:(id)name valueType:(int64_t)type value:(id)value;
+- (MXMSampleAttributeFilter)initWithCoder:(id)coder;
 - (NSNumber)numericValue;
 - (NSSet)numericValues;
 - (NSSet)stringValues;
 - (NSSet)values;
 - (NSString)stringValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)value;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMSampleAttributeFilter
@@ -51,168 +51,168 @@
 
 - (NSString)stringValue
 {
-  v3 = [(MXMSampleAttributeFilter *)self stringValues];
-  if ([v3 count] == 1)
+  stringValues = [(MXMSampleAttributeFilter *)self stringValues];
+  if ([stringValues count] == 1)
   {
-    v4 = [(MXMSampleAttributeFilter *)self stringValues];
-    v5 = [v4 anyObject];
+    stringValues2 = [(MXMSampleAttributeFilter *)self stringValues];
+    anyObject = [stringValues2 anyObject];
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  return v5;
+  return anyObject;
 }
 
 - (NSNumber)numericValue
 {
-  v3 = [(MXMSampleAttributeFilter *)self numericValues];
-  if ([v3 count] == 1)
+  numericValues = [(MXMSampleAttributeFilter *)self numericValues];
+  if ([numericValues count] == 1)
   {
-    v4 = [(MXMSampleAttributeFilter *)self numericValues];
-    v5 = [v4 anyObject];
+    numericValues2 = [(MXMSampleAttributeFilter *)self numericValues];
+    anyObject = [numericValues2 anyObject];
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  return v5;
+  return anyObject;
 }
 
 - (id)value
 {
-  v3 = [(MXMSampleAttribute *)self valueType];
-  if (v3 == 2)
+  valueType = [(MXMSampleAttribute *)self valueType];
+  if (valueType == 2)
   {
-    v4 = [(MXMSampleAttributeFilter *)self numericValue];
+    numericValue = [(MXMSampleAttributeFilter *)self numericValue];
   }
 
-  else if (v3 == 1)
+  else if (valueType == 1)
   {
-    v4 = [(MXMSampleAttributeFilter *)self stringValue];
+    numericValue = [(MXMSampleAttributeFilter *)self stringValue];
   }
 
   else
   {
-    v4 = 0;
+    numericValue = 0;
   }
 
-  return v4;
+  return numericValue;
 }
 
 - (NSSet)values
 {
-  v3 = [(MXMSampleAttribute *)self valueType];
-  if (v3 == 2)
+  valueType = [(MXMSampleAttribute *)self valueType];
+  if (valueType == 2)
   {
-    v4 = [(MXMSampleAttributeFilter *)self numericValues];
+    numericValues = [(MXMSampleAttributeFilter *)self numericValues];
   }
 
-  else if (v3 == 1)
+  else if (valueType == 1)
   {
-    v4 = [(MXMSampleAttributeFilter *)self stringValues];
+    numericValues = [(MXMSampleAttributeFilter *)self stringValues];
   }
 
   else
   {
-    v4 = 0;
+    numericValues = 0;
   }
 
-  return v4;
+  return numericValues;
 }
 
-- (MXMSampleAttributeFilter)initWithAttribute:(id)a3
+- (MXMSampleAttributeFilter)initWithAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 valueType];
+  attributeCopy = attribute;
+  name = [attributeCopy name];
+  valueType = [attributeCopy valueType];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v4 value];
+  value = [attributeCopy value];
 
-  v9 = [v7 setWithObject:v8];
-  v10 = [(MXMSampleAttributeFilter *)self initWithAttributeName:v5 valueType:v6 value:v9];
+  v9 = [v7 setWithObject:value];
+  v10 = [(MXMSampleAttributeFilter *)self initWithAttributeName:name valueType:valueType value:v9];
 
   return v10;
 }
 
-- (MXMSampleAttributeFilter)initWithAttributeName:(id)a3 stringValue:(id)a4
+- (MXMSampleAttributeFilter)initWithAttributeName:(id)name stringValue:(id)value
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a3;
-  v8 = [v6 setWithObject:a4];
-  v9 = [(MXMSampleAttributeFilter *)self initWithAttributeName:v7 stringValues:v8];
+  nameCopy = name;
+  v8 = [v6 setWithObject:value];
+  v9 = [(MXMSampleAttributeFilter *)self initWithAttributeName:nameCopy stringValues:v8];
 
   return v9;
 }
 
-- (MXMSampleAttributeFilter)initWithAttributeName:(id)a3 numericValue:(id)a4
+- (MXMSampleAttributeFilter)initWithAttributeName:(id)name numericValue:(id)value
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a3;
-  v8 = [v6 setWithObject:a4];
-  v9 = [(MXMSampleAttributeFilter *)self initWithAttributeName:v7 numericValues:v8];
+  nameCopy = name;
+  v8 = [v6 setWithObject:value];
+  v9 = [(MXMSampleAttributeFilter *)self initWithAttributeName:nameCopy numericValues:v8];
 
   return v9;
 }
 
-- (MXMSampleAttributeFilter)initWithAttributeName:(id)a3 valueType:(int64_t)a4 value:(id)a5
+- (MXMSampleAttributeFilter)initWithAttributeName:(id)name valueType:(int64_t)type value:(id)value
 {
-  v8 = a5;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MXMSampleAttributeFilter;
-  v9 = [(MXMSampleAttribute *)&v15 initWithAttributeName:a3 valueType:a4 value:0];
+  v9 = [(MXMSampleAttribute *)&v15 initWithAttributeName:name valueType:type value:0];
   if (v9)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v10 = &OBJC_IVAR___MXMSampleAttributeFilter__matchingStringAttributeValues;
       goto LABEL_6;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v10 = &OBJC_IVAR___MXMSampleAttributeFilter__matchingNumericAttributeValues;
 LABEL_6:
-      v11 = [v8 allObjects];
+      allObjects = [valueCopy allObjects];
       v12 = *v10;
       v13 = *(&v9->super.super.isa + v12);
-      *(&v9->super.super.isa + v12) = v11;
+      *(&v9->super.super.isa + v12) = allObjects;
     }
   }
 
   return v9;
 }
 
-- (BOOL)_matchesSampleAttributeValueWithValue:(id)a3
+- (BOOL)_matchesSampleAttributeValueWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [(MXMSampleAttributeFilter *)self values];
-  v6 = [v5 containsObject:v4];
+  valueCopy = value;
+  values = [(MXMSampleAttributeFilter *)self values];
+  v6 = [values containsObject:valueCopy];
 
   return v6;
 }
 
-- (BOOL)_matchesSampleAttributeNameWithName:(id)a3
+- (BOOL)_matchesSampleAttributeNameWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MXMSampleAttribute *)self name];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  name = [(MXMSampleAttribute *)self name];
+  v6 = [nameCopy isEqualToString:name];
 
   return v6;
 }
 
-- (BOOL)matchesSampleWithAttribute:(id)a3
+- (BOOL)matchesSampleWithAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if (-[MXMSampleAttributeFilter _matchesSampleAttributeNameWithName:](self, "_matchesSampleAttributeNameWithName:", v5) && -[MXMSampleAttributeFilter _matchesSampleAttributeValueTypeWithAttributeValueType:](self, "_matchesSampleAttributeValueTypeWithAttributeValueType:", [v4 valueType]))
+  attributeCopy = attribute;
+  name = [attributeCopy name];
+  if (-[MXMSampleAttributeFilter _matchesSampleAttributeNameWithName:](self, "_matchesSampleAttributeNameWithName:", name) && -[MXMSampleAttributeFilter _matchesSampleAttributeValueTypeWithAttributeValueType:](self, "_matchesSampleAttributeValueTypeWithAttributeValueType:", [attributeCopy valueType]))
   {
-    v6 = [v4 value];
-    v7 = [(MXMSampleAttributeFilter *)self _matchesSampleAttributeValueWithValue:v6];
+    value = [attributeCopy value];
+    v7 = [(MXMSampleAttributeFilter *)self _matchesSampleAttributeValueWithValue:value];
   }
 
   else
@@ -223,46 +223,46 @@ LABEL_6:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MXMSampleAttributeFilter alloc];
-  v5 = [(MXMSampleAttribute *)self name];
-  v6 = [(MXMSampleAttribute *)self valueType];
-  v7 = [(MXMSampleAttributeFilter *)self values];
-  v8 = [(MXMSampleAttributeFilter *)v4 initWithAttributeName:v5 valueType:v6 value:v7];
+  name = [(MXMSampleAttribute *)self name];
+  valueType = [(MXMSampleAttribute *)self valueType];
+  values = [(MXMSampleAttributeFilter *)self values];
+  v8 = [(MXMSampleAttributeFilter *)v4 initWithAttributeName:name valueType:valueType value:values];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MXMSampleAttributeFilter;
-  v4 = a3;
-  [(MXMSampleAttribute *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_matchingStringAttributeValues forKey:{@"matchingStrings", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_matchingNumericAttributeValues forKey:@"matchingNumerics"];
+  coderCopy = coder;
+  [(MXMSampleAttribute *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_matchingStringAttributeValues forKey:{@"matchingStrings", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_matchingNumericAttributeValues forKey:@"matchingNumerics"];
 }
 
-- (MXMSampleAttributeFilter)initWithCoder:(id)a3
+- (MXMSampleAttributeFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MXMSampleAttributeFilter;
-  v5 = [(MXMSampleAttribute *)&v17 initWithCoder:v4];
+  v5 = [(MXMSampleAttribute *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"matchingStrings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"matchingStrings"];
     matchingStringAttributeValues = v5->_matchingStringAttributeValues;
     v5->_matchingStringAttributeValues = v9;
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"matchingNumerics"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"matchingNumerics"];
     matchingNumericAttributeValues = v5->_matchingNumericAttributeValues;
     v5->_matchingNumericAttributeValues = v14;
   }

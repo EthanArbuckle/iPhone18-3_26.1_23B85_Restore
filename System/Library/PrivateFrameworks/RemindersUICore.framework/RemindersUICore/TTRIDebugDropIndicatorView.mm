@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TTRIDebugDropIndicatorView.layoutSubviews()();
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   TTRIDebugDropIndicatorView.updateConstraints()();
 }
 

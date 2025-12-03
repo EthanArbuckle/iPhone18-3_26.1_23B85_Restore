@@ -1,23 +1,23 @@
 @interface BSUIFeedNavigationController
-- (BSUIFeedNavigationController)initWithOptions:(id)a3;
+- (BSUIFeedNavigationController)initWithOptions:(id)options;
 - (BSUIFeedViewController)currentFeedViewController;
 - (id)bc_ancestorOverrideCardPresentingViewController;
 - (int64_t)_topFeedLiveResizeOptions;
 - (int64_t)preferredStatusBarStyle;
-- (void)attachPalette:(id)a3 isPinned:(BOOL)a4;
-- (void)bc_dismissCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)bc_presentCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
+- (void)attachPalette:(id)palette isPinned:(BOOL)pinned;
+- (void)bc_dismissCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)bc_presentCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
 - (void)notifyFeedDidBecomeCurrent;
 @end
 
 @implementation BSUIFeedNavigationController
 
-- (BSUIFeedNavigationController)initWithOptions:(id)a3
+- (BSUIFeedNavigationController)initWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = BSUIFeedNavigationController;
-  v3 = [(BSUINavigationController *)&v6 initWithOptions:a3];
+  v3 = [(BSUINavigationController *)&v6 initWithOptions:options];
   v4 = v3;
   if (v3)
   {
@@ -29,98 +29,98 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(BSUIFeedNavigationController *)self topViewController];
-  v3 = [v2 preferredStatusBarStyle];
+  topViewController = [(BSUIFeedNavigationController *)self topViewController];
+  preferredStatusBarStyle = [topViewController preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
-- (void)attachPalette:(id)a3 isPinned:(BOOL)a4
+- (void)attachPalette:(id)palette isPinned:(BOOL)pinned
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BSUIFeedNavigationController *)self isNavigationBarHidden];
+  pinnedCopy = pinned;
+  paletteCopy = palette;
+  isNavigationBarHidden = [(BSUIFeedNavigationController *)self isNavigationBarHidden];
   [(BSUIFeedNavigationController *)self setNavigationBarHidden:0 animated:0];
   v8.receiver = self;
   v8.super_class = BSUIFeedNavigationController;
-  [(BSUIFeedNavigationController *)&v8 attachPalette:v6 isPinned:v4];
+  [(BSUIFeedNavigationController *)&v8 attachPalette:paletteCopy isPinned:pinnedCopy];
 
-  [(BSUIFeedNavigationController *)self setNavigationBarHidden:v7 animated:0];
+  [(BSUIFeedNavigationController *)self setNavigationBarHidden:isNavigationBarHidden animated:0];
 }
 
 - (id)bc_ancestorOverrideCardPresentingViewController
 {
   v8.receiver = self;
   v8.super_class = BSUIFeedNavigationController;
-  v3 = [(BSUIFeedNavigationController *)&v8 bc_ancestorOverrideCardPresentingViewController];
-  if (!v3)
+  selfCopy = [(BSUIFeedNavigationController *)&v8 bc_ancestorOverrideCardPresentingViewController];
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
     objc_opt_class();
-    v4 = [(BSUIFeedNavigationController *)v3 bc_childPresentedViewController];
+    bc_childPresentedViewController = [(BSUIFeedNavigationController *)selfCopy bc_childPresentedViewController];
     v5 = BUDynamicCast();
 
     if (v5)
     {
-      v6 = [(BSUIFeedNavigationController *)v3 bc_childPresentedViewController];
+      bc_childPresentedViewController2 = [(BSUIFeedNavigationController *)selfCopy bc_childPresentedViewController];
 
-      v3 = v6;
+      selfCopy = bc_childPresentedViewController2;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = BSUIFeedNavigationController;
-  [(BSUIFeedNavigationController *)&v5 didShowViewController:a3 animated:a4];
+  [(BSUIFeedNavigationController *)&v5 didShowViewController:controller animated:animated];
   [(BSUIFeedNavigationController *)self notifyFeedDidBecomeCurrent];
 }
 
 - (void)notifyFeedDidBecomeCurrent
 {
-  v2 = [(BSUIFeedNavigationController *)self currentFeedViewController];
-  if (v2)
+  currentFeedViewController = [(BSUIFeedNavigationController *)self currentFeedViewController];
+  if (currentFeedViewController)
   {
-    v3 = v2;
-    [v2 didBecomeCurrentFeed];
-    v2 = v3;
+    v3 = currentFeedViewController;
+    [currentFeedViewController didBecomeCurrentFeed];
+    currentFeedViewController = v3;
   }
 }
 
 - (BSUIFeedViewController)currentFeedViewController
 {
   objc_opt_class();
-  v3 = [(BSUIFeedNavigationController *)self topViewController];
+  topViewController = [(BSUIFeedNavigationController *)self topViewController];
   v4 = BUDynamicCast();
 
   return v4;
 }
 
-- (void)bc_presentCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)bc_presentCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   self->_isCoveredByCardStack = 1;
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   [(BSUIFeedNavigationController *)self updateTopFeedLiveResizeOptions];
   v10.receiver = self;
   v10.super_class = BSUIFeedNavigationController;
-  [(BSUIFeedNavigationController *)&v10 bc_presentCardViewController:v9 animated:v5 completion:v8];
+  [(BSUIFeedNavigationController *)&v10 bc_presentCardViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)bc_dismissCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)bc_dismissCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  animatedCopy = animated;
   self->_isCoveredByCardStack = 0;
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   [(BSUIFeedNavigationController *)self updateTopFeedLiveResizeOptions];
   v10.receiver = self;
   v10.super_class = BSUIFeedNavigationController;
-  [(BSUIFeedNavigationController *)&v10 bc_dismissCardViewController:v9 animated:v5 completion:v8];
+  [(BSUIFeedNavigationController *)&v10 bc_dismissCardViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (int64_t)_topFeedLiveResizeOptions

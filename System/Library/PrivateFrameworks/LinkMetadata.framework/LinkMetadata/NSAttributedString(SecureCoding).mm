@@ -6,7 +6,7 @@
 
 - (id)ln_attributedStringByRemovingNonSecureCodingAttributes
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   v2 = [v1 length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;

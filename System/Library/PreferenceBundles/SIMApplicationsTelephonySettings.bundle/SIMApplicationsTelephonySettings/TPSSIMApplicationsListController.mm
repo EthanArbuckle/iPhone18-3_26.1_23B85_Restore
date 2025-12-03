@@ -1,7 +1,7 @@
 @interface TPSSIMApplicationsListController
 - (TPSSIMApplicationsController)SIMApplicationsController;
 - (id)specifiers;
-- (void)handleApplicationButtonAction:(id)a3;
+- (void)handleApplicationButtonAction:(id)action;
 @end
 
 @implementation TPSSIMApplicationsListController
@@ -12,17 +12,17 @@
   v4 = *&self->TPSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TPSSIMApplicationsListController *)self subscriptionContext];
-    if (v5)
+    subscriptionContext = [(TPSSIMApplicationsListController *)self subscriptionContext];
+    if (subscriptionContext)
     {
       v6 = +[NSMutableArray array];
-      v7 = [(TPSSIMApplicationsListController *)self SIMApplicationsController];
-      v8 = [v7 localizedSubtitlesForSubscriptionContext:v5];
+      sIMApplicationsController = [(TPSSIMApplicationsListController *)self SIMApplicationsController];
+      v8 = [sIMApplicationsController localizedSubtitlesForSubscriptionContext:subscriptionContext];
 
       if ([v8 count])
       {
-        v9 = [(TPSSIMApplicationsListController *)self SIMApplicationsController];
-        v10 = [v9 localizedTitleForSubscriptionContext:v5];
+        sIMApplicationsController2 = [(TPSSIMApplicationsListController *)self SIMApplicationsController];
+        v10 = [sIMApplicationsController2 localizedTitleForSubscriptionContext:subscriptionContext];
 
         v11 = &NSStringFromClass_ptr;
         v21 = v3;
@@ -78,10 +78,10 @@
   SIMApplicationsController = self->_SIMApplicationsController;
   if (!SIMApplicationsController)
   {
-    v4 = [(TPSSIMApplicationsListController *)self specifier];
+    specifier = [(TPSSIMApplicationsListController *)self specifier];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v4 propertyForKey:v6];
+    v7 = [specifier propertyForKey:v6];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -95,15 +95,15 @@
   return SIMApplicationsController;
 }
 
-- (void)handleApplicationButtonAction:(id)a3
+- (void)handleApplicationButtonAction:(id)action
 {
-  v6 = [a3 userInfo];
+  userInfo = [action userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(TPSSIMApplicationsListController *)self SIMApplicationsController];
-    v5 = [(TPSSIMApplicationsListController *)self subscriptionContext];
-    [v4 openApplicationAtIndex:v6 forSubscriptionContext:v5];
+    sIMApplicationsController = [(TPSSIMApplicationsListController *)self SIMApplicationsController];
+    subscriptionContext = [(TPSSIMApplicationsListController *)self subscriptionContext];
+    [sIMApplicationsController openApplicationAtIndex:userInfo forSubscriptionContext:subscriptionContext];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface MRAVDistantOutputDevice
-- (MRAVDistantOutputDevice)initWithGroupSession:(id)a3;
-- (MRAVDistantOutputDevice)initWithSystemGroupSession:(id)a3;
+- (MRAVDistantOutputDevice)initWithGroupSession:(id)session;
+- (MRAVDistantOutputDevice)initWithSystemGroupSession:(id)session;
 @end
 
 @implementation MRAVDistantOutputDevice
 
-- (MRAVDistantOutputDevice)initWithGroupSession:(id)a3
+- (MRAVDistantOutputDevice)initWithGroupSession:(id)session
 {
   swift_unknownObjectRetain();
-  v4 = sub_1001C8DA4(a3);
+  v4 = sub_1001C8DA4(session);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (MRAVDistantOutputDevice)initWithSystemGroupSession:(id)a3
+- (MRAVDistantOutputDevice)initWithSystemGroupSession:(id)session
 {
-  v3 = a3;
-  v4 = sub_1001C9104(v3);
+  sessionCopy = session;
+  v4 = sub_1001C9104(sessionCopy);
 
   return v4;
 }

@@ -1,133 +1,133 @@
 @interface SBPIPInteractionController
 - (BOOL)_hasValidInteractionTargetView;
-- (BOOL)_isGestureRecognizerRecognizing:(id)a3;
+- (BOOL)_isGestureRecognizerRecognizing:(id)recognizing;
 - (BOOL)_isGesturing;
 - (BOOL)_isInteractive;
 - (BOOL)_isPanning;
 - (BOOL)_isPinching;
-- (BOOL)_isPositionCloserToStashedLeftRegion:(CGPoint)a3 closestPointOut:(CGPoint *)a4;
-- (BOOL)_isSystemGestureRecognizer:(id)a3;
-- (BOOL)_regionIsStashedOne:(id)a3;
-- (BOOL)_setEdgeInsets:(UIEdgeInsets)a3 forScene:(id)a4;
-- (BOOL)_setStashedPadding:(UIEdgeInsets)a3 forScene:(id)a4;
-- (BOOL)_updateGeometryContextUsingTargetViewBounds:(CGRect)a3 orientation:(int64_t)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)gestureRecognizerShouldFailForMovementPastHysteresis:(id)a3;
+- (BOOL)_isPositionCloserToStashedLeftRegion:(CGPoint)region closestPointOut:(CGPoint *)out;
+- (BOOL)_isSystemGestureRecognizer:(id)recognizer;
+- (BOOL)_regionIsStashedOne:(id)one;
+- (BOOL)_setEdgeInsets:(UIEdgeInsets)insets forScene:(id)scene;
+- (BOOL)_setStashedPadding:(UIEdgeInsets)padding forScene:(id)scene;
+- (BOOL)_updateGeometryContextUsingTargetViewBounds:(CGRect)bounds orientation:(int64_t)orientation;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)gestureRecognizerShouldFailForMovementPastHysteresis:(id)hysteresis;
 - (BOOL)isStashed;
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5;
-- (CGAffineTransform)_stashTabCompensationTransformForStashProgress:(SEL)a3 reason:(double)a4;
-- (CGAffineTransform)_transformFromDisplayArrangeSpaceToWindowScene:(SEL)a3;
-- (CGAffineTransform)_transformToDisplayArrangementSpaceFromWindowScene:(SEL)a3;
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view;
+- (CGAffineTransform)_stashTabCompensationTransformForStashProgress:(SEL)progress reason:(double)reason;
+- (CGAffineTransform)_transformFromDisplayArrangeSpaceToWindowScene:(SEL)scene;
+- (CGAffineTransform)_transformToDisplayArrangementSpaceFromWindowScene:(SEL)scene;
 - (CGPoint)_closestToDefaultCornersPosition;
-- (CGPoint)_convertPointToInteractionTargetView:(CGPoint)a3 fromSystemGestureRecognizer:(id)a4;
+- (CGPoint)_convertPointToInteractionTargetView:(CGPoint)view fromSystemGestureRecognizer:(id)recognizer;
 - (CGPoint)_currentPosition;
-- (CGPoint)_currentPositionForLayoutReason:(unint64_t)a3;
+- (CGPoint)_currentPositionForLayoutReason:(unint64_t)reason;
 - (CGPoint)_interactionTargetViewPresentationPosition;
-- (CGPoint)_roundPosition:(CGPoint)a3 forSize:(CGSize)a4;
+- (CGPoint)_roundPosition:(CGPoint)position forSize:(CGSize)size;
 - (CGPoint)edgeResizeAnchorPoint;
 - (CGRect)initialFrame;
 - (CGRect)nonoperationalFrame;
-- (CGSize)_currentSizeForLayoutReason:(unint64_t)a3;
+- (CGSize)_currentSizeForLayoutReason:(unint64_t)reason;
 - (CGSize)_lastSteadySize;
 - (CGSize)preferredContentSize;
 - (NSString)description;
-- (SBPIPInteractionController)initWithInteractionTargetView:(id)a3 preferredContentSize:(CGSize)a4 interactionSettings:(id)a5 dataSource:(id)a6 delegate:(id)a7;
+- (SBPIPInteractionController)initWithInteractionTargetView:(id)view preferredContentSize:(CGSize)size interactionSettings:(id)settings dataSource:(id)source delegate:(id)delegate;
 - (SBPIPInteractionControllerDataSource)dataSource;
-- (SBPIPPositionGeometryContext)regionComposer:(SEL)a3 transformGeometryContext:(id)a4 toWindowScene:(SBPIPPositionGeometryContext *)a5;
+- (SBPIPPositionGeometryContext)regionComposer:(SEL)composer transformGeometryContext:(id)context toWindowScene:(SBPIPPositionGeometryContext *)scene;
 - (SBPIPPositionInteractionStateContext)_currentPositionInteractionStateContext;
-- (UIEdgeInsets)_cachedEdgeInsetsForScene:(id)a3;
-- (UIEdgeInsets)_cachedStashedPaddingForScene:(id)a3;
+- (UIEdgeInsets)_cachedEdgeInsetsForScene:(id)scene;
+- (UIEdgeInsets)_cachedStashedPaddingForScene:(id)scene;
 - (UIEdgeInsets)_inFlightHitTestPadding;
-- (UIEdgeInsets)_minimumStashedPadding:(UIEdgeInsets)a3;
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3;
+- (UIEdgeInsets)_minimumStashedPadding:(UIEdgeInsets)padding;
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view;
 - (UIView)targetOverlayView;
 - (UIView)targetView;
-- (double)_proratedScaleForNormalizedScale:(double)a3;
-- (double)_stashProgressForPosition:(CGPoint)a3;
+- (double)_proratedScaleForNormalizedScale:(double)scale;
+- (double)_stashProgressForPosition:(CGPoint)position;
 - (double)currentNormalizedScale;
 - (double)preferredNormalizedScale;
 - (double)stashProgress;
 - (id)_rotationHyperregion;
 - (id)_scaleHyperregion;
 - (id)positionHyperregion;
-- (id)regionAtLocation:(CGPoint)a3 forView:(id)a4;
-- (id)styleForRegion:(id)a3 forView:(id)a4;
-- (id)targetWindowSceneForRegionComposer:(id)a3;
-- (unint64_t)__traitsForGesturesReasons:(unint64_t)a3;
-- (unint64_t)_canonicalPositionForPoint:(CGPoint)a3;
+- (id)regionAtLocation:(CGPoint)location forView:(id)view;
+- (id)styleForRegion:(id)region forView:(id)view;
+- (id)targetWindowSceneForRegionComposer:(id)composer;
+- (unint64_t)__traitsForGesturesReasons:(unint64_t)reasons;
+- (unint64_t)_canonicalPositionForPoint:(CGPoint)point;
 - (unint64_t)canonicalPosition;
-- (void)__handleGesturesEndedState:(id)a3;
-- (void)__moveToAnchorPoint:(CGPoint)a3 reason:(id)a4;
-- (void)_adjustContentViewAnchorPointForGestureRecognizer:(id)a3;
+- (void)__handleGesturesEndedState:(id)state;
+- (void)__moveToAnchorPoint:(CGPoint)point reason:(id)reason;
+- (void)_adjustContentViewAnchorPointForGestureRecognizer:(id)recognizer;
 - (void)_cancelAllGestures;
-- (void)_enumerateComposers:(id)a3 usingBlock:(id)a4;
-- (void)_handleGestureBeganState:(id)a3;
-- (void)_handleGestureEndedState:(id)a3;
-- (void)_noteStashProgress:(double)a3 withReason:(unint64_t)a4;
+- (void)_enumerateComposers:(id)composers usingBlock:(id)block;
+- (void)_handleGestureBeganState:(id)state;
+- (void)_handleGestureEndedState:(id)state;
+- (void)_noteStashProgress:(double)progress withReason:(unint64_t)reason;
 - (void)_performInitialLayoutIfNeeded;
 - (void)_removeGestureRecognizers;
 - (void)_removePointerInteraction;
 - (void)_resetAnchorPoint;
 - (void)_setDefaults;
-- (void)_setNeedsLayoutForTraits:(unint64_t)a3 withReason:(unint64_t)a4 behavior:(int)a5 layoutCompletion:(id)a6 interactionCompletion:(id)a7;
-- (void)_setPreferredScale:(double)a3 additionalReasons:(unint64_t)a4 animationBehavior:(int)a5;
+- (void)_setNeedsLayoutForTraits:(unint64_t)traits withReason:(unint64_t)reason behavior:(int)behavior layoutCompletion:(id)completion interactionCompletion:(id)interactionCompletion;
+- (void)_setPreferredScale:(double)scale additionalReasons:(unint64_t)reasons animationBehavior:(int)behavior;
 - (void)_setupDefaultInteractorsAndHyperRegions;
 - (void)_setupForInitialFrame;
 - (void)_setupGestureRecognizers;
 - (void)_setupPointerInteraction;
 - (void)_setupStateCapture;
-- (void)_sizeChangeBeganWithBehavior:(int)a3;
+- (void)_sizeChangeBeganWithBehavior:(int)behavior;
 - (void)_sizeChangeEnded;
 - (void)_updateGeometryContextBoundsUsingMainDisplayWindowScene;
 - (void)_updateHyperregionVisualizationIfNecessary;
-- (void)_updateInteractorsAndCommit:(BOOL)a3;
+- (void)_updateInteractorsAndCommit:(BOOL)commit;
 - (void)_updatePIPSizeGeometryContext;
 - (void)_updatePositionRegionComposers;
 - (void)_updatePreferredContentSize;
-- (void)_updateResolvedPositionHyperRegionsMapWithGeometry:(SBPIPPositionGeometryContext *)a3 interactionState:(SBPIPPositionInteractionStateContext *)a4;
+- (void)_updateResolvedPositionHyperRegionsMapWithGeometry:(SBPIPPositionGeometryContext *)geometry interactionState:(SBPIPPositionInteractionStateContext *)state;
 - (void)_updateSettingsDrivenParameters;
-- (void)_updateTargetWindowSceneIfNeededUpdatingInteractors:(BOOL)a3;
-- (void)addPositionRegionComposer:(id)a3;
+- (void)_updateTargetWindowSceneIfNeededUpdatingInteractors:(BOOL)interactors;
+- (void)addPositionRegionComposer:(id)composer;
 - (void)dealloc;
-- (void)finishTransitionToWindowScene:(id)a3;
-- (void)handleEdgeResizeGesture:(id)a3;
-- (void)handleExternalPanGesture:(id)a3;
-- (void)handlePanGesture:(id)a3;
-- (void)handlePinchGesture:(id)a3;
-- (void)handleRotationGesture:(id)a3;
-- (void)layoutInteractedTraits:(unint64_t)a3 withReason:(unint64_t)a4 source:(id)a5;
-- (void)layoutWithFrame:(CGRect)a3 reason:(id)a4 source:(id)a5 usingDisplayArrangementSpace:(BOOL)a6;
+- (void)finishTransitionToWindowScene:(id)scene;
+- (void)handleEdgeResizeGesture:(id)gesture;
+- (void)handleExternalPanGesture:(id)gesture;
+- (void)handlePanGesture:(id)gesture;
+- (void)handlePinchGesture:(id)gesture;
+- (void)handleRotationGesture:(id)gesture;
+- (void)layoutInteractedTraits:(unint64_t)traits withReason:(unint64_t)reason source:(id)source;
+- (void)layoutWithFrame:(CGRect)frame reason:(id)reason source:(id)source usingDisplayArrangementSpace:(BOOL)space;
 - (void)pointerWillExitRegion;
-- (void)positionRegionComposerDidInvalidate:(id)a3;
-- (void)positionRegionComposerNeedsUpdate:(id)a3 behavior:(int)a4;
-- (void)prepareForTransitionToWindowScene:(id)a3;
-- (void)recalculateScale:(double *)a3 baselineScale:(double *)a4 forTranslationInView:(CGPoint)a5;
+- (void)positionRegionComposerDidInvalidate:(id)invalidate;
+- (void)positionRegionComposerNeedsUpdate:(id)update behavior:(int)behavior;
+- (void)prepareForTransitionToWindowScene:(id)scene;
+- (void)recalculateScale:(double *)scale baselineScale:(double *)baselineScale forTranslationInView:(CGPoint)view;
 - (void)reloadHyperregionComposerData;
 - (void)reloadInsets;
-- (void)setContainerSize:(CGSize)a3 withOrientation:(int64_t)a4 scene:(id)a5;
-- (void)setContentLayoutSettings:(id)a3 animationBehavior:(int)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPlatformMetrics:(id)a3 contentSize:(CGSize)a4 animationBehavior:(int)a5;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setPreferredNormalizedScale:(double)a3 additionalReasons:(unint64_t)a4 animationBehavior:(int)a5;
-- (void)setStashed:(BOOL)a3;
-- (void)setTargetOverlayView:(id)a3;
+- (void)setContainerSize:(CGSize)size withOrientation:(int64_t)orientation scene:(id)scene;
+- (void)setContentLayoutSettings:(id)settings animationBehavior:(int)behavior;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPlatformMetrics:(id)metrics contentSize:(CGSize)size animationBehavior:(int)behavior;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setPreferredNormalizedScale:(double)scale additionalReasons:(unint64_t)reasons animationBehavior:(int)behavior;
+- (void)setStashed:(BOOL)stashed;
+- (void)setTargetOverlayView:(id)view;
 - (void)toggleUserPreferredScale;
 @end
 
 @implementation SBPIPInteractionController
 
-- (SBPIPInteractionController)initWithInteractionTargetView:(id)a3 preferredContentSize:(CGSize)a4 interactionSettings:(id)a5 dataSource:(id)a6 delegate:(id)a7
+- (SBPIPInteractionController)initWithInteractionTargetView:(id)view preferredContentSize:(CGSize)size interactionSettings:(id)settings dataSource:(id)source delegate:(id)delegate
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v82 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  viewCopy = view;
+  settingsCopy = settings;
+  sourceCopy = source;
+  delegateCopy = delegate;
   if (width <= 0.0)
   {
     [SBPIPInteractionController initWithInteractionTargetView:preferredContentSize:interactionSettings:dataSource:delegate:];
@@ -136,10 +136,10 @@
   if (height <= 0.0)
   {
     [SBPIPInteractionController initWithInteractionTargetView:preferredContentSize:interactionSettings:dataSource:delegate:];
-    if (v13)
+    if (viewCopy)
     {
 LABEL_5:
-      if (v14)
+      if (settingsCopy)
       {
         goto LABEL_6;
       }
@@ -148,23 +148,23 @@ LABEL_5:
     }
   }
 
-  else if (v13)
+  else if (viewCopy)
   {
     goto LABEL_5;
   }
 
   [SBPIPInteractionController initWithInteractionTargetView:preferredContentSize:interactionSettings:dataSource:delegate:];
-  if (v14)
+  if (settingsCopy)
   {
 LABEL_6:
-    if (v15)
+    if (sourceCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_21:
     [SBPIPInteractionController initWithInteractionTargetView:preferredContentSize:interactionSettings:dataSource:delegate:];
-    if (v16)
+    if (delegateCopy)
     {
       goto LABEL_8;
     }
@@ -174,13 +174,13 @@ LABEL_21:
 
 LABEL_20:
   [SBPIPInteractionController initWithInteractionTargetView:preferredContentSize:interactionSettings:dataSource:delegate:];
-  if (!v15)
+  if (!sourceCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_7:
-  if (v16)
+  if (delegateCopy)
   {
     goto LABEL_8;
   }
@@ -194,28 +194,28 @@ LABEL_8:
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v16);
-    objc_storeWeak(&v18->_dataSource, v15);
-    objc_storeWeak(&v18->_interactionTargetView, v13);
-    v19 = [v13 _sbWindowScene];
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeWeak(&v18->_dataSource, sourceCopy);
+    objc_storeWeak(&v18->_interactionTargetView, viewCopy);
+    _sbWindowScene = [viewCopy _sbWindowScene];
     targetWindowScene = v18->_targetWindowScene;
-    v18->_targetWindowScene = v19;
+    v18->_targetWindowScene = _sbWindowScene;
 
-    v21 = [v15 layoutSettings];
+    layoutSettings = [sourceCopy layoutSettings];
     layoutSettings = v18->_layoutSettings;
-    v18->_layoutSettings = v21;
+    v18->_layoutSettings = layoutSettings;
 
     if ([(SBWindowScene *)v18->_targetWindowScene isMainDisplayWindowScene])
     {
-      v23 = [v13 superview];
-      [v23 bounds];
+      superview = [viewCopy superview];
+      [superview bounds];
       BSRectWithSize();
       v25 = v24;
       v27 = v26;
       v29 = v28;
       v31 = v30;
-      v32 = [v13 _sbWindowScene];
-      -[SBPIPInteractionController _updateGeometryContextUsingTargetViewBounds:orientation:](v18, "_updateGeometryContextUsingTargetViewBounds:orientation:", [v32 interfaceOrientation], v25, v27, v29, v31);
+      _sbWindowScene2 = [viewCopy _sbWindowScene];
+      -[SBPIPInteractionController _updateGeometryContextUsingTargetViewBounds:orientation:](v18, "_updateGeometryContextUsingTargetViewBounds:orientation:", [_sbWindowScene2 interfaceOrientation], v25, v27, v29, v31);
     }
 
     else
@@ -228,17 +228,17 @@ LABEL_8:
     v18->_pointerHitTestBlocker = v33;
 
     v35 = v18->_pointerHitTestBlocker;
-    v36 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v35 setBackgroundColor:v36];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v35 setBackgroundColor:clearColor];
 
-    v37 = [(UIView *)v18->_pointerHitTestBlocker layer];
-    [v37 setHitTestsAsOpaque:1];
+    layer = [(UIView *)v18->_pointerHitTestBlocker layer];
+    [layer setHitTestsAsOpaque:1];
 
-    v38 = [(UIView *)v18->_pointerHitTestBlocker layer];
-    [v38 setAllowsHitTesting:1];
+    layer2 = [(UIView *)v18->_pointerHitTestBlocker layer];
+    [layer2 setAllowsHitTesting:1];
 
-    [v13 addSubview:v18->_pointerHitTestBlocker];
-    [v13 sendSubviewToBack:v18->_pointerHitTestBlocker];
+    [viewCopy addSubview:v18->_pointerHitTestBlocker];
+    [viewCopy sendSubviewToBack:v18->_pointerHitTestBlocker];
     [(SBPIPContentViewLayoutSettings *)v18->_layoutSettings defaultContentViewSizeForAspectRatio:width, height];
     v18->_preferredContentSize.width = v39;
     v18->_preferredContentSize.height = v40;
@@ -274,19 +274,19 @@ LABEL_8:
 
     v18->_anchorPoint = _Q1;
     *&v18->_stashTabCompensationTransform.a = v52;
-    v60 = [v15 debugName];
+    debugName = [sourceCopy debugName];
     debugName = v18->_debugName;
-    v18->_debugName = v60;
+    v18->_debugName = debugName;
 
-    v62 = [v15 systemGestureManagerForInteractionControllerResizing:v18];
+    v62 = [sourceCopy systemGestureManagerForInteractionControllerResizing:v18];
     systemGestureManagerForResizing = v18->_systemGestureManagerForResizing;
     v18->_systemGestureManagerForResizing = v62;
 
-    objc_storeStrong(&v18->_interactionSettings, a5);
+    objc_storeStrong(&v18->_interactionSettings, settings);
     [(PTSettings *)v18->_interactionSettings addKeyPathObserver:v18];
-    v64 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     positionRegionComposers = v18->_positionRegionComposers;
-    v18->_positionRegionComposers = v64;
+    v18->_positionRegionComposers = array;
 
     [(SBPIPInteractionController *)v18 _setupDefaultInteractorsAndHyperRegions];
     [(SBPIPInteractionController *)v18 _updateInteractorsAndCommit:1];
@@ -310,13 +310,13 @@ LABEL_8:
     {
       v71 = v18->_shortDescription;
       v72 = NSStringFromCGRect(v18->_nonoperationalFrame);
-      v73 = [(SBPIPInteractionController *)v18 canonicalPosition];
+      canonicalPosition = [(SBPIPInteractionController *)v18 canonicalPosition];
       *buf = 138543874;
       v77 = v71;
       v78 = 2114;
       v79 = v72;
       v80 = 2048;
-      v81 = v73;
+      v81 = canonicalPosition;
       _os_log_impl(&dword_21ED4E000, v70, OS_LOG_TYPE_DEFAULT, "[%{public}@] PIP Interaction controller was initialized. _nonoperationalFrame[%{public}@] canonicalPosition[%lu]", buf, 0x20u);
     }
   }
@@ -337,7 +337,7 @@ LABEL_8:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v6 = [WeakRetained window];
+  window = [WeakRetained window];
 
   v7 = self->_systemGestureManagerForResizing;
   v8 = v7;
@@ -351,14 +351,14 @@ LABEL_8:
 
   else
   {
-    [(SBSystemGestureManager *)v6 removeGestureRecognizer:self->_pinchGestureRecognizer];
+    [(SBSystemGestureManager *)window removeGestureRecognizer:self->_pinchGestureRecognizer];
     rotationGestureRecognizer = self->_rotationGestureRecognizer;
-    v10 = v6;
+    v10 = window;
   }
 
   [(SBSystemGestureManager *)v10 removeGestureRecognizer:rotationGestureRecognizer];
-  [(SBSystemGestureManager *)v6 removeGestureRecognizer:self->_panGestureRecognizer];
-  [(SBSystemGestureManager *)v6 removeGestureRecognizer:self->_edgeResizeGestureRecognizer];
+  [(SBSystemGestureManager *)window removeGestureRecognizer:self->_panGestureRecognizer];
+  [(SBSystemGestureManager *)window removeGestureRecognizer:self->_edgeResizeGestureRecognizer];
   [(BSInvalidatable *)self->_stateCaptureInvalidatable invalidate];
   [(UIViewFloatAnimatableProperty *)self->_layoutProgressProperty invalidate];
 
@@ -371,15 +371,15 @@ LABEL_8:
 {
   v18 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v3 = [WeakRetained superview];
+  superview = [WeakRetained superview];
 
-  v4 = [WeakRetained superview];
-  [v4 bounds];
+  superview2 = [WeakRetained superview];
+  [superview2 bounds];
   v7 = v6 != *(MEMORY[0x277CBF3A8] + 8) || v5 != *MEMORY[0x277CBF3A8];
 
   if (WeakRetained)
   {
-    v8 = v3 == 0;
+    v8 = superview == 0;
   }
 
   else
@@ -397,7 +397,7 @@ LABEL_8:
       v13[0] = 67109632;
       v13[1] = WeakRetained != 0;
       v14 = 1024;
-      v15 = v3 != 0;
+      v15 = superview != 0;
       v16 = 1024;
       v17 = v7;
       _os_log_error_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_ERROR, "Interaction target view is not valid for reason: interactionTargetView is != nil? %{BOOL}u — interactionContainerView is != nil? %{BOOL}u — container size is CGSizeZero? %{BOOL}u", v13, 0x14u);
@@ -551,8 +551,8 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
   v69[17] = v50;
   v68[18] = @"In Flight Animations Count";
   v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_inFlightAnimatedLayouts];
-  v48 = [v49 stringValue];
-  v69[18] = v48;
+  stringValue = [v49 stringValue];
+  v69[18] = stringValue;
   v68[19] = @"Pan Gesture Recognizer";
   panGestureRecognizer = self->_panGestureRecognizer;
   v47 = panGestureRecognizer;
@@ -796,7 +796,7 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
     [(SBPIPPinchGestureRecognizer *)self->_pinchGestureRecognizer setDelegate:self];
     [(SBPIPRotationGestureRecognizer *)self->_rotationGestureRecognizer setDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-    v40 = [WeakRetained window];
+    window = [WeakRetained window];
 
     v32 = self->_systemGestureManagerForResizing;
     if (v32)
@@ -829,12 +829,12 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
 
     else
     {
-      [v40 addGestureRecognizer:self->_pinchGestureRecognizer];
-      [v40 addGestureRecognizer:self->_rotationGestureRecognizer];
+      [window addGestureRecognizer:self->_pinchGestureRecognizer];
+      [window addGestureRecognizer:self->_rotationGestureRecognizer];
     }
 
-    [v40 addGestureRecognizer:self->_panGestureRecognizer];
-    [v40 addGestureRecognizer:self->_edgeResizeGestureRecognizer];
+    [window addGestureRecognizer:self->_panGestureRecognizer];
+    [window addGestureRecognizer:self->_edgeResizeGestureRecognizer];
     [(SBPIPInteractionController *)self _updateSettingsDrivenParameters];
   }
 }
@@ -842,7 +842,7 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
 - (void)_removeGestureRecognizers
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v13 = [WeakRetained window];
+  window = [WeakRetained window];
 
   v4 = self->_systemGestureManagerForResizing;
   v5 = v4;
@@ -856,14 +856,14 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
 
   else
   {
-    [(SBSystemGestureManager *)v13 removeGestureRecognizer:self->_pinchGestureRecognizer];
+    [(SBSystemGestureManager *)window removeGestureRecognizer:self->_pinchGestureRecognizer];
     rotationGestureRecognizer = self->_rotationGestureRecognizer;
-    v7 = v13;
+    v7 = window;
   }
 
   [(SBSystemGestureManager *)v7 removeGestureRecognizer:rotationGestureRecognizer];
-  [(SBSystemGestureManager *)v13 removeGestureRecognizer:self->_panGestureRecognizer];
-  [(SBSystemGestureManager *)v13 removeGestureRecognizer:self->_edgeResizeGestureRecognizer];
+  [(SBSystemGestureManager *)window removeGestureRecognizer:self->_panGestureRecognizer];
+  [(SBSystemGestureManager *)window removeGestureRecognizer:self->_edgeResizeGestureRecognizer];
   panGestureRecognizer = self->_panGestureRecognizer;
   self->_panGestureRecognizer = 0;
 
@@ -933,13 +933,13 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
 
 - (void)_updateSettingsDrivenParameters
 {
-  v3 = [(_UIHyperInteractor *)self->_positionInteractor _extender];
+  _extender = [(_UIHyperInteractor *)self->_positionInteractor _extender];
   [(SBPIPInteractionSettings *)self->_interactionSettings positionExtenderMaximumDistance];
-  [v3 _setMaximumDistance:?];
+  [_extender _setMaximumDistance:?];
 
-  v4 = [(_UIHyperInteractor *)self->_rotationInteractor _extender];
+  _extender2 = [(_UIHyperInteractor *)self->_rotationInteractor _extender];
   [(SBPIPInteractionSettings *)self->_interactionSettings rotationExtenderMaximumDistance];
-  [v4 _setMaximumDistance:?];
+  [_extender2 _setMaximumDistance:?];
 
   layoutSettings = self->_layoutSettings;
   [(SBPIPInteractionSettings *)self->_interactionSettings maximumSizeSpanForPreferredSizeTuning];
@@ -950,8 +950,8 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
   [(UIPanGestureRecognizer *)self->_panGestureRecognizer setEnabled:[(SBPIPInteractionSettings *)self->_interactionSettings panGestureEnabled]];
   [(UIPanGestureRecognizer *)self->_edgeResizeGestureRecognizer setEnabled:[(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeGestureEnabled]];
   edgeResizeGestureRecognizer = self->_edgeResizeGestureRecognizer;
-  v8 = [(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeSettings];
-  [v8 hysteresis];
+  edgeResizeSettings = [(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeSettings];
+  [edgeResizeSettings hysteresis];
   [(UIPanGestureRecognizer *)edgeResizeGestureRecognizer _setHysteresis:?];
 
   [(UIPanGestureRecognizer *)self->_panWhileResizingGestureRecognizer setEnabled:[(SBPIPInteractionSettings *)self->_interactionSettings panGestureEnabled]];
@@ -1015,11 +1015,11 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
 
 - (CGPoint)_closestToDefaultCornersPosition
 {
-  v3 = [(SBPIPContentViewLayoutSettings *)self->_layoutSettings currentContentViewPosition];
+  currentContentViewPosition = [(SBPIPContentViewLayoutSettings *)self->_layoutSettings currentContentViewPosition];
   pendingTransition = self->_pendingTransition;
   if (pendingTransition)
   {
-    v3 = [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition layoutCorner];
+    currentContentViewPosition = [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition layoutCorner];
   }
 
   v47 = 0.0;
@@ -1063,15 +1063,15 @@ id __48__SBPIPInteractionController__setupStateCapture__block_invoke(uint64_t a1
   v18[2] = __62__SBPIPInteractionController__closestToDefaultCornersPosition__block_invoke;
   v18[3] = &unk_2783B6B60;
   v18[4] = &v42;
-  v18[5] = v3;
+  v18[5] = currentContentViewPosition;
   v34 = v39;
   v35 = v40;
   v36 = v41;
   v33 = v38;
   v32 = v37;
   [(SBPIPInteractionController *)self _enumeratePositionRegionComposersUsingBlock:v18];
-  v15 = [(_UIHyperInteractor *)self->_positionInteractor _region];
-  [v15 _closestPoint:&v47 toPoint:v43 + 4];
+  _region = [(_UIHyperInteractor *)self->_positionInteractor _region];
+  [_region _closestPoint:&v47 toPoint:v43 + 4];
 
   _Block_object_dispose(&v42, 8);
   v16 = v47;
@@ -1121,10 +1121,10 @@ uint64_t __62__SBPIPInteractionController__closestToDefaultCornersPosition__bloc
   return result;
 }
 
-- (unint64_t)_canonicalPositionForPoint:(CGPoint)a3
+- (unint64_t)_canonicalPositionForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v41 = 0;
   v39 = 0u;
   v40 = 0u;
@@ -1169,17 +1169,17 @@ uint64_t __62__SBPIPInteractionController__closestToDefaultCornersPosition__bloc
   pendingTransition = self->_pendingTransition;
   if (pendingTransition)
   {
-    v12 = [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition layoutCorner];
-    v34[3] = v12;
+    layoutCorner = [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition layoutCorner];
+    v34[3] = layoutCorner;
   }
 
   else
   {
-    v12 = v34[3];
+    layoutCorner = v34[3];
   }
 
   _Block_object_dispose(&v33, 8);
-  return v12;
+  return layoutCorner;
 }
 
 uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_invoke(uint64_t a1, void *a2)
@@ -1218,12 +1218,12 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3)
+    self->_enabled = enabled;
+    if (enabled)
     {
       [(SBPIPInteractionController *)self _setupGestureRecognizers];
       [(SBPIPInteractionController *)self _setupPointerInteraction];
@@ -1274,9 +1274,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
 
 - (double)currentNormalizedScale
 {
-  v3 = [(_UIHyperInteractor *)self->_scaleInteractor _region];
-  v4 = *[v3 _minimumPoint];
-  v5 = *[v3 _maximumPoint] - v4;
+  _region = [(_UIHyperInteractor *)self->_scaleInteractor _region];
+  v4 = *[_region _minimumPoint];
+  v5 = *[_region _maximumPoint] - v4;
   v6 = 1.0;
   if ((BSFloatIsZero() & 1) == 0)
   {
@@ -1288,9 +1288,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
 
 - (double)preferredNormalizedScale
 {
-  v3 = [(_UIHyperInteractor *)self->_scaleInteractor _region];
-  v4 = *[v3 _minimumPoint];
-  v5 = *[v3 _maximumPoint] - v4;
+  _region = [(_UIHyperInteractor *)self->_scaleInteractor _region];
+  v4 = *[_region _minimumPoint];
+  v5 = *[_region _maximumPoint] - v4;
   v6 = 1.0;
   if ((BSFloatIsZero() & 1) == 0)
   {
@@ -1307,9 +1307,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return [(SBPIPInteractionController *)self _canonicalPositionForPoint:?];
 }
 
-- (void)setTargetOverlayView:(id)a3
+- (void)setTargetOverlayView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_targetOverlayView);
 
   if (WeakRetained != obj)
@@ -1330,27 +1330,27 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   }
 }
 
-- (void)setContentLayoutSettings:(id)a3 animationBehavior:(int)a4
+- (void)setContentLayoutSettings:(id)settings animationBehavior:(int)behavior
 {
-  v4 = *&a4;
-  v7 = a3;
-  if (self->_layoutSettings != v7)
+  v4 = *&behavior;
+  settingsCopy = settings;
+  if (self->_layoutSettings != settingsCopy)
   {
-    v9 = v7;
-    objc_storeStrong(&self->_layoutSettings, a3);
-    v8 = [(SBPIPContentViewLayoutSettings *)v9 platformMetrics];
-    [(SBPIPInteractionController *)self setPlatformMetrics:v8 contentSize:v4 animationBehavior:self->_preferredContentSize.width, self->_preferredContentSize.height];
+    v9 = settingsCopy;
+    objc_storeStrong(&self->_layoutSettings, settings);
+    platformMetrics = [(SBPIPContentViewLayoutSettings *)v9 platformMetrics];
+    [(SBPIPInteractionController *)self setPlatformMetrics:platformMetrics contentSize:v4 animationBehavior:self->_preferredContentSize.width, self->_preferredContentSize.height];
 
-    v7 = v9;
+    settingsCopy = v9;
   }
 }
 
-- (void)setPlatformMetrics:(id)a3 contentSize:(CGSize)a4 animationBehavior:(int)a5
+- (void)setPlatformMetrics:(id)metrics contentSize:(CGSize)size animationBehavior:(int)behavior
 {
-  v5 = *&a5;
-  height = a4.height;
-  width = a4.width;
-  [(SBPIPContentViewLayoutSettings *)self->_layoutSettings updatePlatformMetrics:a3];
+  v5 = *&behavior;
+  height = size.height;
+  width = size.width;
+  [(SBPIPContentViewLayoutSettings *)self->_layoutSettings updatePlatformMetrics:metrics];
   layoutSettings = self->_layoutSettings;
   [(SBPIPContentViewLayoutSettings *)layoutSettings currentContentViewSizeForAspectRatio:width, height];
   [(SBPIPContentViewLayoutSettings *)layoutSettings currentContentViewSizeForAspectRatio:?];
@@ -1374,12 +1374,12 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   }
 }
 
-- (void)setContainerSize:(CGSize)a3 withOrientation:(int64_t)a4 scene:(id)a5
+- (void)setContainerSize:(CGSize)size withOrientation:(int64_t)orientation scene:(id)scene
 {
-  if ([a5 isMainDisplayWindowScene])
+  if ([scene isMainDisplayWindowScene])
   {
     BSRectWithSize();
-    if ([(SBPIPInteractionController *)self _updateGeometryContextUsingTargetViewBounds:a4 orientation:?])
+    if ([(SBPIPInteractionController *)self _updateGeometryContextUsingTargetViewBounds:orientation orientation:?])
     {
       if (self->_enabled)
       {
@@ -1428,9 +1428,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   }
 }
 
-- (void)setStashed:(BOOL)a3
+- (void)setStashed:(BOOL)stashed
 {
-  v3 = a3;
+  stashedCopy = stashed;
   v15 = *MEMORY[0x277D85DE8];
   v5 = SBLogPIP();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1439,11 +1439,11 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
     v11 = 138543618;
     v12 = shortDescription;
     v13 = 1024;
-    v14 = v3;
+    v14 = stashedCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@][Layout] setStashed:%{BOOL}u", &v11, 0x12u);
   }
 
-  if (self->_shouldStash == 0x7FFFFFFFFFFFFFFFLL || BSSettingFlagForBool() != v3)
+  if (self->_shouldStash == 0x7FFFFFFFFFFFFFFFLL || BSSettingFlagForBool() != stashedCopy)
   {
     self->_shouldStash = BSSettingFlagForBool();
     v7 = SBLogPIP();
@@ -1460,9 +1460,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
 
     if (self->_enabled)
     {
-      v10 = [(SBPIPInteractionController *)self _isInteractive];
+      _isInteractive = [(SBPIPInteractionController *)self _isInteractive];
       [(SBPIPInteractionController *)self _cancelAllGestures];
-      [(SBPIPInteractionController *)self _updateInteractorsAndCommit:!v10];
+      [(SBPIPInteractionController *)self _updateInteractorsAndCommit:!_isInteractive];
       [(SBPIPInteractionController *)self _setNeedsLayoutForTraits:7 withReason:32 behavior:2];
     }
 
@@ -1473,12 +1473,12 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   }
 }
 
-- (UIEdgeInsets)_minimumStashedPadding:(UIEdgeInsets)a3
+- (UIEdgeInsets)_minimumStashedPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   [(SBPIPContentViewLayoutSettings *)self->_layoutSettings contentViewPaddingWhileStashed];
   if (v8 >= top)
   {
@@ -1506,12 +1506,12 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return result;
 }
 
-- (UIEdgeInsets)_cachedEdgeInsetsForScene:(id)a3
+- (UIEdgeInsets)_cachedEdgeInsetsForScene:(id)scene
 {
   scenePersistentIdentifierToEdgeInsets = self->_scenePersistentIdentifierToEdgeInsets;
-  v4 = [a3 session];
-  v5 = [v4 persistentIdentifier];
-  v6 = [(NSMutableDictionary *)scenePersistentIdentifierToEdgeInsets objectForKeyedSubscript:v5];
+  session = [scene session];
+  persistentIdentifier = [session persistentIdentifier];
+  v6 = [(NSMutableDictionary *)scenePersistentIdentifierToEdgeInsets objectForKeyedSubscript:persistentIdentifier];
   [v6 UIEdgeInsetsValue];
   v8 = v7;
   v10 = v9;
@@ -1529,12 +1529,12 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return result;
 }
 
-- (UIEdgeInsets)_cachedStashedPaddingForScene:(id)a3
+- (UIEdgeInsets)_cachedStashedPaddingForScene:(id)scene
 {
   scenePersistentIdentifierToStashedPadding = self->_scenePersistentIdentifierToStashedPadding;
-  v4 = [a3 session];
-  v5 = [v4 persistentIdentifier];
-  v6 = [(NSMutableDictionary *)scenePersistentIdentifierToStashedPadding objectForKeyedSubscript:v5];
+  session = [scene session];
+  persistentIdentifier = [session persistentIdentifier];
+  v6 = [(NSMutableDictionary *)scenePersistentIdentifierToStashedPadding objectForKeyedSubscript:persistentIdentifier];
   [v6 UIEdgeInsetsValue];
   v8 = v7;
   v10 = v9;
@@ -1552,18 +1552,18 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return result;
 }
 
-- (BOOL)_setEdgeInsets:(UIEdgeInsets)a3 forScene:(id)a4
+- (BOOL)_setEdgeInsets:(UIEdgeInsets)insets forScene:(id)scene
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  sceneCopy = scene;
   v26.origin.x = left + self->_geometryContext.containerBounds.origin.x;
   v26.origin.y = top + self->_geometryContext.containerBounds.origin.y;
   v26.size.width = self->_geometryContext.containerBounds.size.width - (left + right);
   v26.size.height = self->_geometryContext.containerBounds.size.height - (top + bottom);
-  if (CGRectIsInfinite(v26) || (([(SBPIPInteractionController *)self _cachedEdgeInsetsForScene:v9], left == v13) ? (v14 = top == v10) : (v14 = 0), v14 ? (v15 = right == v12) : (v15 = 0), v15 ? (v16 = bottom == v11) : (v16 = 0), v16))
+  if (CGRectIsInfinite(v26) || (([(SBPIPInteractionController *)self _cachedEdgeInsetsForScene:sceneCopy], left == v13) ? (v14 = top == v10) : (v14 = 0), v14 ? (v15 = right == v12) : (v15 = 0), v15 ? (v16 = bottom == v11) : (v16 = 0), v16))
   {
     v23 = 0;
   }
@@ -1572,9 +1572,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   {
     if (!self->_scenePersistentIdentifierToEdgeInsets)
     {
-      v17 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       scenePersistentIdentifierToEdgeInsets = self->_scenePersistentIdentifierToEdgeInsets;
-      self->_scenePersistentIdentifierToEdgeInsets = v17;
+      self->_scenePersistentIdentifierToEdgeInsets = dictionary;
     }
 
     *v25 = top;
@@ -1583,11 +1583,11 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
     *&v25[3] = right;
     v19 = [MEMORY[0x277CCAE60] valueWithBytes:v25 objCType:"{UIEdgeInsets=dddd}"];
     v20 = self->_scenePersistentIdentifierToEdgeInsets;
-    v21 = [v9 session];
-    v22 = [v21 persistentIdentifier];
-    [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:v22];
+    session = [sceneCopy session];
+    persistentIdentifier = [session persistentIdentifier];
+    [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:persistentIdentifier];
 
-    if ([v9 isMainDisplayWindowScene])
+    if ([sceneCopy isMainDisplayWindowScene])
     {
       self->_geometryContext.edgeInsets.top = top;
       self->_geometryContext.edgeInsets.left = left;
@@ -1605,13 +1605,13 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return v23;
 }
 
-- (BOOL)_setStashedPadding:(UIEdgeInsets)a3 forScene:(id)a4
+- (BOOL)_setStashedPadding:(UIEdgeInsets)padding forScene:(id)scene
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  sceneCopy = scene;
   [(SBPIPInteractionController *)self _minimumStashedPadding:top, left, bottom, right];
   v11 = v10;
   v13 = v12;
@@ -1621,7 +1621,7 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   v34.origin.y = v11 + self->_geometryContext.containerBounds.origin.y;
   v34.size.width = self->_geometryContext.containerBounds.size.width - (v13 + v16);
   v34.size.height = self->_geometryContext.containerBounds.size.height - (v11 + v15);
-  if (CGRectIsInfinite(v34) || (([(SBPIPInteractionController *)self _cachedStashedPaddingForScene:v9], v13 == v21) ? (v22 = v11 == v18) : (v22 = 0), v22 ? (v23 = v17 == v20) : (v23 = 0), v23 ? (v24 = v15 == v19) : (v24 = 0), v24))
+  if (CGRectIsInfinite(v34) || (([(SBPIPInteractionController *)self _cachedStashedPaddingForScene:sceneCopy], v13 == v21) ? (v22 = v11 == v18) : (v22 = 0), v22 ? (v23 = v17 == v20) : (v23 = 0), v23 ? (v24 = v15 == v19) : (v24 = 0), v24))
   {
     v31 = 0;
   }
@@ -1630,9 +1630,9 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   {
     if (!self->_scenePersistentIdentifierToStashedPadding)
     {
-      v25 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       scenePersistentIdentifierToStashedPadding = self->_scenePersistentIdentifierToStashedPadding;
-      self->_scenePersistentIdentifierToStashedPadding = v25;
+      self->_scenePersistentIdentifierToStashedPadding = dictionary;
     }
 
     *v33 = v11;
@@ -1641,11 +1641,11 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
     *&v33[3] = v17;
     v27 = [MEMORY[0x277CCAE60] valueWithBytes:v33 objCType:"{UIEdgeInsets=dddd}"];
     v28 = self->_scenePersistentIdentifierToStashedPadding;
-    v29 = [v9 session];
-    v30 = [v29 persistentIdentifier];
-    [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:v30];
+    session = [sceneCopy session];
+    persistentIdentifier = [session persistentIdentifier];
+    [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:persistentIdentifier];
 
-    if ([v9 isMainDisplayWindowScene])
+    if ([sceneCopy isMainDisplayWindowScene])
     {
       self->_geometryContext.stashedMinimumPadding.top = v11;
       self->_geometryContext.stashedMinimumPadding.left = v13;
@@ -1663,10 +1663,10 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   return v31;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x277D85DE8];
   [(SBPIPContentViewLayoutSettings *)self->_layoutSettings currentContentViewSizeForAspectRatio:?];
   v7 = v6;
@@ -1741,47 +1741,47 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
   }
 }
 
-- (double)_proratedScaleForNormalizedScale:(double)a3
+- (double)_proratedScaleForNormalizedScale:(double)scale
 {
-  v4 = [(_UIHyperInteractor *)self->_scaleInteractor _region];
-  v5 = *[v4 _minimumPoint];
-  v6 = v5 + (*[v4 _maximumPoint] - v5) * a3;
+  _region = [(_UIHyperInteractor *)self->_scaleInteractor _region];
+  v5 = *[_region _minimumPoint];
+  v6 = v5 + (*[_region _maximumPoint] - v5) * scale;
 
   return v6;
 }
 
-- (void)setPreferredNormalizedScale:(double)a3 additionalReasons:(unint64_t)a4 animationBehavior:(int)a5
+- (void)setPreferredNormalizedScale:(double)scale additionalReasons:(unint64_t)reasons animationBehavior:(int)behavior
 {
-  v5 = *&a5;
+  v5 = *&behavior;
   [(SBPIPInteractionController *)self currentNormalizedScale];
   v9 = BSFloatEqualToFloat();
   if (![(SBPIPInteractionController *)self _isInteractive])
   {
-    v10 = (a4 & 8) != 0 ? 0 : v9;
+    v10 = (reasons & 8) != 0 ? 0 : v9;
     if ((v10 & 1) == 0)
     {
-      [(SBPIPInteractionController *)self _proratedScaleForNormalizedScale:a3];
+      [(SBPIPInteractionController *)self _proratedScaleForNormalizedScale:scale];
 
-      [(SBPIPInteractionController *)self _setPreferredScale:a4 additionalReasons:v5 animationBehavior:?];
+      [(SBPIPInteractionController *)self _setPreferredScale:reasons additionalReasons:v5 animationBehavior:?];
     }
   }
 }
 
-- (void)_setPreferredScale:(double)a3 additionalReasons:(unint64_t)a4 animationBehavior:(int)a5
+- (void)_setPreferredScale:(double)scale additionalReasons:(unint64_t)reasons animationBehavior:(int)behavior
 {
-  v5 = *&a5;
+  v5 = *&behavior;
   v9 = SBLogPIP();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [SBPIPInteractionController _setPreferredScale:additionalReasons:animationBehavior:];
   }
 
-  self->_preferredScale = a3;
+  self->_preferredScale = scale;
   [(SBPIPInteractionController *)self _applyPreferredScale];
   if (self->_enabled)
   {
     [(SBPIPInteractionController *)self _updateInteractorsAndCommit:[(SBPIPInteractionController *)self _isPinching]^ 1];
-    [(SBPIPInteractionController *)self _setNeedsLayoutForTraits:2 withReason:a4 | 0x10 behavior:v5];
+    [(SBPIPInteractionController *)self _setNeedsLayoutForTraits:2 withReason:reasons | 0x10 behavior:v5];
   }
 
   else
@@ -1792,26 +1792,26 @@ uint64_t __57__SBPIPInteractionController__canonicalPositionForPoint___block_inv
 
 - (void)_updatePreferredContentSize
 {
-  v1 = NSStringFromCGSize(a1[8]);
+  v1 = NSStringFromCGSize(self[8]);
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_0_4();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
 }
 
-- (void)layoutInteractedTraits:(unint64_t)a3 withReason:(unint64_t)a4 source:(id)a5
+- (void)layoutInteractedTraits:(unint64_t)traits withReason:(unint64_t)reason source:(id)source
 {
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    if (a3)
+    if (traits)
     {
       goto LABEL_3;
     }
 
 LABEL_34:
     [SBPIPInteractionController layoutInteractedTraits:withReason:source:];
-    if (a4)
+    if (reason)
     {
       goto LABEL_4;
     }
@@ -1820,13 +1820,13 @@ LABEL_34:
   }
 
   [SBPIPInteractionController layoutInteractedTraits:withReason:source:];
-  if (!a3)
+  if (!traits)
   {
     goto LABEL_34;
   }
 
 LABEL_3:
-  if (a4)
+  if (reason)
   {
     goto LABEL_4;
   }
@@ -1836,45 +1836,45 @@ LABEL_35:
 LABEL_4:
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
   v10 = objc_loadWeakRetained(&self->_targetOverlayView);
-  [(SBPIPInteractionController *)self _currentSizeForLayoutReason:a4];
+  [(SBPIPInteractionController *)self _currentSizeForLayoutReason:reason];
   v12 = v11;
   v14 = v13;
-  [(SBPIPInteractionController *)self _currentPositionForLayoutReason:a4];
+  [(SBPIPInteractionController *)self _currentPositionForLayoutReason:reason];
   v49 = v15;
   v50 = v16;
   [(SBPIPInteractionController *)self _currentRotation];
   v18 = v17;
-  if ((a4 & 0x300) != 0)
+  if ((reason & 0x300) != 0)
   {
     if (self->_enabled)
     {
-      v19 = [WeakRetained layer];
-      [v19 setAnchorPoint:{self->_anchorPoint.x, self->_anchorPoint.y}];
+      layer = [WeakRetained layer];
+      [layer setAnchorPoint:{self->_anchorPoint.x, self->_anchorPoint.y}];
     }
 
-    v20 = [v10 layer];
-    [v20 setAnchorPoint:{self->_anchorPoint.x, self->_anchorPoint.y}];
+    layer2 = [v10 layer];
+    [layer2 setAnchorPoint:{self->_anchorPoint.x, self->_anchorPoint.y}];
   }
 
-  if ((a3 & 7) != 0)
+  if ((traits & 7) != 0)
   {
     if (self->_enabled)
     {
-      v21 = [WeakRetained _sbWindowScene];
-      [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:v21];
+      _sbWindowScene = [WeakRetained _sbWindowScene];
+      [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:_sbWindowScene];
       v47 = vaddq_f64(*&t1[32], vmlaq_n_f64(vmulq_n_f64(*&t1[16], v50), *t1, v49));
 
       [WeakRetained setCenter:*&v47];
     }
 
-    v22 = [v10 _sbWindowScene];
-    [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:v22];
+    _sbWindowScene2 = [v10 _sbWindowScene];
+    [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:_sbWindowScene2];
     v47 = vaddq_f64(*&t1[32], vmlaq_n_f64(vmulq_n_f64(*&t1[16], v50), *t1, v49));
 
     [v10 setCenter:*&v47];
   }
 
-  if ((a3 & 2) != 0)
+  if ((traits & 2) != 0)
   {
     if (self->_enabled)
     {
@@ -1886,17 +1886,17 @@ LABEL_4:
 
   [(SBPIPInteractionController *)self stashProgress];
   v24 = v23;
-  if (a3)
+  if (traits)
   {
-    [(SBPIPInteractionController *)self _noteStashProgress:a4 withReason:v23];
-    [(SBPIPInteractionController *)self _stashTabCompensationTransformForStashProgress:a4 reason:v24];
+    [(SBPIPInteractionController *)self _noteStashProgress:reason withReason:v23];
+    [(SBPIPInteractionController *)self _stashTabCompensationTransformForStashProgress:reason reason:v24];
     v25 = *&t1[16];
     *&self->_stashTabCompensationTransform.a = *t1;
     *&self->_stashTabCompensationTransform.c = v25;
     *&self->_stashTabCompensationTransform.tx = *&t1[32];
   }
 
-  if ((a3 & 4) != 0)
+  if ((traits & 4) != 0)
   {
     v26 = MEMORY[0x277CBF2C0];
     v27 = *(MEMORY[0x277CBF2C0] + 16);
@@ -1964,7 +1964,7 @@ LABEL_4:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
     shortDescription = self->_shortDescription;
-    v36 = SBStringFromPIPLayoutTrait(a3);
+    v36 = SBStringFromPIPLayoutTrait(traits);
     [WeakRetained frame];
     v38 = v37;
     [WeakRetained frame];
@@ -1973,7 +1973,7 @@ LABEL_4:
     y = self->_anchorPoint.y;
     [(SBPIPInteractionController *)self _currentScale];
     v43 = v42;
-    v44 = SBStringFromPIPLayoutReason(a4);
+    v44 = SBStringFromPIPLayoutReason(reason);
     v45 = objc_opt_class();
     v46 = NSStringFromClass(v45);
     *t1 = 138546946;
@@ -2010,26 +2010,26 @@ LABEL_4:
   }
 }
 
-- (void)layoutWithFrame:(CGRect)a3 reason:(id)a4 source:(id)a5 usingDisplayArrangementSpace:(BOOL)a6
+- (void)layoutWithFrame:(CGRect)frame reason:(id)reason source:(id)source usingDisplayArrangementSpace:(BOOL)space
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  spaceCopy = space;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v37 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
+  reasonCopy = reason;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
   v16 = objc_loadWeakRetained(&self->_targetOverlayView);
   v32 = width;
   v33 = height;
   v29 = x;
   v31 = y;
-  if (v6)
+  if (spaceCopy)
   {
-    v17 = [WeakRetained _sbWindowScene];
-    [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:v17];
+    _sbWindowScene = [WeakRetained _sbWindowScene];
+    [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:_sbWindowScene];
     v38.origin.x = x;
     v38.origin.y = y;
     v38.size.width = width;
@@ -2040,8 +2040,8 @@ LABEL_4:
     v20 = v39.size.width;
     v21 = v39.size.height;
 
-    v22 = [v16 _sbWindowScene];
-    [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:v22];
+    _sbWindowScene2 = [v16 _sbWindowScene];
+    [(SBPIPInteractionController *)self _transformFromDisplayArrangeSpaceToWindowScene:_sbWindowScene2];
     v40.origin.x = x;
     v40.origin.y = y;
     v40.size.width = width;
@@ -2081,9 +2081,9 @@ LABEL_4:
     WORD1(v34.c) = 2114;
     *(&v34.c + 4) = v26;
     WORD2(v34.d) = 2114;
-    *(&v34.d + 6) = v13;
+    *(&v34.d + 6) = reasonCopy;
     HIWORD(v34.tx) = 2114;
-    *&v34.ty = v14;
+    *&v34.ty = sourceCopy;
     v35 = 2114;
     v36 = v28;
     _os_log_impl(&dword_21ED4E000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@][Layout] With externally provided frame while enabled{%{BOOL}u}: frame{%{public}@} reason{%{public}@} source{[%{public}@]%{public}@}", &v34, 0x3Au);
@@ -2100,12 +2100,12 @@ LABEL_4:
   return result;
 }
 
-- (CGPoint)_currentPositionForLayoutReason:(unint64_t)a3
+- (CGPoint)_currentPositionForLayoutReason:(unint64_t)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   [(SBPIPInteractionController *)self _currentSizeForLayoutReason:?];
   [(SBPIPInteractionController *)self _currentPosition];
-  if ((v3 & 0x400) != 0)
+  if ((reasonCopy & 0x400) != 0)
   {
 
     [SBPIPInteractionController _roundPosition:"_roundPosition:forSize:" forSize:?];
@@ -2116,16 +2116,16 @@ LABEL_4:
   return result;
 }
 
-- (CGPoint)_roundPosition:(CGPoint)a3 forSize:(CGSize)a4
+- (CGPoint)_roundPosition:(CGPoint)position forSize:(CGSize)size
 {
-  v4 = a4.width * 0.5 + floor(a3.x - a4.width * 0.5);
-  v5 = a4.height * 0.5 + floor(a3.y - a4.height * 0.5);
+  v4 = size.width * 0.5 + floor(position.x - size.width * 0.5);
+  v5 = size.height * 0.5 + floor(position.y - size.height * 0.5);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGSize)_currentSizeForLayoutReason:(unint64_t)a3
+- (CGSize)_currentSizeForLayoutReason:(unint64_t)reason
 {
   [(SBPIPInteractionController *)self _currentScale];
 
@@ -2137,9 +2137,9 @@ LABEL_4:
 
 - (CGSize)_lastSteadySize
 {
-  v3 = [(_UIHyperInteractor *)self->_scaleInteractor _unconstrainedPoint];
-  v4 = *v3 * self->_preferredContentSize.width;
-  v5 = *v3 * self->_preferredContentSize.height;
+  _unconstrainedPoint = [(_UIHyperInteractor *)self->_scaleInteractor _unconstrainedPoint];
+  v4 = *_unconstrainedPoint * self->_preferredContentSize.width;
+  v5 = *_unconstrainedPoint * self->_preferredContentSize.height;
   result.height = v5;
   result.width = v4;
   return result;
@@ -2153,17 +2153,17 @@ LABEL_4:
   return result;
 }
 
-- (double)_stashProgressForPosition:(CGPoint)a3
+- (double)_stashProgressForPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v57 = *MEMORY[0x277D85DE8];
   v6 = 0.0;
   if (![(SBPIPInteractionController *)self _isPinching]&& ![(SBPIPInteractionController *)self _isRotating]&& (self->_stashedLeftRegion || self->_stashedRightRegion))
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-    v8 = [WeakRetained superview];
-    [v8 bounds];
+    superview = [WeakRetained superview];
+    [superview bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -2243,14 +2243,14 @@ LABEL_4:
 - (CGPoint)_interactionTargetViewPresentationPosition
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v4 = [WeakRetained layer];
-  v5 = [v4 presentationLayer];
-  [v5 position];
+  layer = [WeakRetained layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer position];
   v12 = v7;
   v13 = v6;
 
-  v8 = [WeakRetained _sbWindowScene];
-  [(SBPIPInteractionController *)self _transformToDisplayArrangementSpaceFromWindowScene:v8];
+  _sbWindowScene = [WeakRetained _sbWindowScene];
+  [(SBPIPInteractionController *)self _transformToDisplayArrangementSpaceFromWindowScene:_sbWindowScene];
 
   v11 = vaddq_f64(v16, vmlaq_n_f64(vmulq_n_f64(v15, v12), v14, v13));
   v10 = v11.f64[1];
@@ -2260,24 +2260,24 @@ LABEL_4:
   return result;
 }
 
-- (void)_noteStashProgress:(double)a3 withReason:(unint64_t)a4
+- (void)_noteStashProgress:(double)progress withReason:(unint64_t)reason
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  if (self->_lastStashedProgress != a3)
+  if (self->_lastStashedProgress != progress)
   {
-    self->_lastStashedProgress = a3;
+    self->_lastStashedProgress = progress;
     [(SBPIPInteractionSettings *)self->_interactionSettings stashProgressTabAppearanceThresholdX];
     v7 = v6;
     v8 = [(SBPIPInteractionController *)self _isPositionCloserToStashedLeftRegion:0 closestPointOut:*[(_UIHyperInteractor *)self->_positionInteractor _constrainedPoint], *([(_UIHyperInteractor *)self->_positionInteractor _constrainedPoint]+ 8)]^ 1;
     WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 interactionController:self didUpdateStashProgress:a3];
+    [v10 interactionController:self didUpdateStashProgress:progress];
     if ([(_UIHyperInteractor *)self->_positionInteractor sbpip_isInteractive])
     {
-      [v10 interactionController:self wantsStashTabHidden:v7 > a3 left:v8];
+      [v10 interactionController:self wantsStashTabHidden:v7 > progress left:v8];
       if (self->_didLastSettleInStashedState)
       {
-        if (v7 > a3 || (v11 = *&self->_stashTabCompensationTransform.c, *&v32.a = *&self->_stashTabCompensationTransform.a, *&v32.c = v11, *&v32.tx = *&self->_stashTabCompensationTransform.tx, !CGAffineTransformIsIdentity(&v32)))
+        if (v7 > progress || (v11 = *&self->_stashTabCompensationTransform.c, *&v32.a = *&self->_stashTabCompensationTransform.a, *&v32.c = v11, *&v32.tx = *&self->_stashTabCompensationTransform.tx, !CGAffineTransformIsIdentity(&v32)))
         {
           [(SBPIPInteractionController *)self _setNeedsLayoutForTraits:1 withReason:2048 behavior:2];
         }
@@ -2296,13 +2296,13 @@ LABEL_4:
 
     if (self->_didLastSettleInStashedState)
     {
-      v14 = [WeakRetained window];
-      if (v14)
+      window = [WeakRetained window];
+      if (window)
       {
-        v15 = [WeakRetained window];
-        v16 = [v15 isHidden];
+        window2 = [WeakRetained window];
+        isHidden = [window2 isHidden];
 
-        if ((v16 & 1) == 0)
+        if ((isHidden & 1) == 0)
         {
           v20 = objc_alloc_init(MEMORY[0x277D75D38]);
           v21 = self->_layoutProgressProperty;
@@ -2317,12 +2317,12 @@ LABEL_4:
           v26 = __60__SBPIPInteractionController__noteStashProgress_withReason___block_invoke;
           v27 = &unk_2783B4710;
           objc_copyWeak(&v30, &v32);
-          v28 = self;
+          selfCopy = self;
           v29 = v10;
           v31 = v8;
           [v22 _createTransformerWithInputAnimatableProperties:v23 presentationValueChangedCallback:&v24];
 
-          [(UIViewFloatAnimatableProperty *)self->_layoutProgressProperty setValue:0.0, v24, v25, v26, v27, v28];
+          [(UIViewFloatAnimatableProperty *)self->_layoutProgressProperty setValue:0.0, v24, v25, v26, v27, selfCopy];
           [(UIViewFloatAnimatableProperty *)self->_layoutProgressProperty setValue:1.0];
 
           objc_destroyWeak(&v30);
@@ -2331,19 +2331,19 @@ LABEL_4:
         }
       }
 
-      v17 = v7 > a3;
+      v17 = v7 > progress;
       v18 = v10;
-      v19 = self;
+      selfCopy3 = self;
     }
 
     else
     {
       v18 = v10;
-      v19 = self;
+      selfCopy3 = self;
       v17 = 1;
     }
 
-    [v18 interactionController:v19 wantsStashTabHidden:v17 left:v8];
+    [v18 interactionController:selfCopy3 wantsStashTabHidden:v17 left:v8];
 LABEL_15:
   }
 }
@@ -2363,9 +2363,9 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
   }
 }
 
-- (BOOL)_isPositionCloserToStashedLeftRegion:(CGPoint)a3 closestPointOut:(CGPoint *)a4
+- (BOOL)_isPositionCloserToStashedLeftRegion:(CGPoint)region closestPointOut:(CGPoint *)out
 {
-  v16 = a3;
+  regionCopy = region;
   stashedLeftRegion = self->_stashedLeftRegion;
   stashedRightRegion = self->_stashedRightRegion;
   if (stashedLeftRegion)
@@ -2374,14 +2374,14 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
     {
       v15 = *MEMORY[0x277CBF348];
       v13 = v15;
-      [(_UIHyperregionUnion *)stashedLeftRegion _closestPoint:&v15 toPoint:&v16];
+      [(_UIHyperregionUnion *)stashedLeftRegion _closestPoint:&v15 toPoint:&regionCopy];
       v14 = v13;
-      [(_UIHyperregionUnion *)self->_stashedRightRegion _closestPoint:&v14 toPoint:&v16];
+      [(_UIHyperregionUnion *)self->_stashedRightRegion _closestPoint:&v14 toPoint:&regionCopy];
       UIDistanceBetweenPoints();
       v9 = v8;
       UIDistanceBetweenPoints();
       result = v9 < v10;
-      if (a4)
+      if (out)
       {
         if (v9 >= v10)
         {
@@ -2393,13 +2393,13 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
           v12 = &v15;
         }
 
-        *a4 = *v12;
+        *out = *v12;
       }
     }
 
     else
     {
-      [(_UIHyperregionUnion *)stashedLeftRegion _closestPoint:a4 toPoint:&v16];
+      [(_UIHyperregionUnion *)stashedLeftRegion _closestPoint:out toPoint:&regionCopy];
       return 1;
     }
   }
@@ -2408,7 +2408,7 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
   {
     if (stashedRightRegion)
     {
-      [(_UIHyperregionUnion *)self->_stashedRightRegion _closestPoint:a4 toPoint:&v16];
+      [(_UIHyperregionUnion *)self->_stashedRightRegion _closestPoint:out toPoint:&regionCopy];
     }
 
     return 0;
@@ -2417,7 +2417,7 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
   return result;
 }
 
-- (CGAffineTransform)_stashTabCompensationTransformForStashProgress:(SEL)a3 reason:(double)a4
+- (CGAffineTransform)_stashTabCompensationTransformForStashProgress:(SEL)progress reason:(double)reason
 {
   v7 = *&self[12].c;
   *&retstr->a = *&self[12].a;
@@ -2434,20 +2434,20 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
 
   else if (a5 == 2048)
   {
-    v8 = self;
+    selfCopy = self;
     if (LOBYTE(self->ty) == 1)
     {
       [*&self[14].c stashProgressTabAppearanceThresholdX];
       v10 = v9;
-      v11 = [v8 _isPositionCloserToStashedLeftRegion:0 closestPointOut:{*objc_msgSend(v8[57], "_constrainedPoint"), *(objc_msgSend(v8[57], "_constrainedPoint") + 8)}];
-      [v8[88] minimumStashedTabSize];
+      v11 = [selfCopy _isPositionCloserToStashedLeftRegion:0 closestPointOut:{*objc_msgSend(selfCopy[57], "_constrainedPoint"), *(objc_msgSend(selfCopy[57], "_constrainedPoint") + 8)}];
+      [selfCopy[88] minimumStashedTabSize];
       if (!v11)
       {
         v12 = -v12;
       }
 
       v13 = 0.0;
-      if (v10 > a4)
+      if (v10 > reason)
       {
         v13 = 1.0;
       }
@@ -2457,32 +2457,32 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
       *&v18.c = v14;
       *&v18.tx = *(MEMORY[0x277CBF2C0] + 32);
       CGAffineTransformTranslate(retstr, &v18, v13 * v12, 0.0);
-      WeakRetained = objc_loadWeakRetained(v8 + 1);
-      [WeakRetained interactionController:v8 wantsStashTabHidden:v10 > a4 left:v11 ^ 1u];
+      WeakRetained = objc_loadWeakRetained(selfCopy + 1);
+      [WeakRetained interactionController:selfCopy wantsStashTabHidden:v10 > reason left:v11 ^ 1u];
     }
   }
 
   return self;
 }
 
-- (void)_adjustContentViewAnchorPointForGestureRecognizer:(id)a3
+- (void)_adjustContentViewAnchorPointForGestureRecognizer:(id)recognizer
 {
-  v32 = a3;
-  v5 = [(UIPanGestureRecognizer *)v32 state];
+  recognizerCopy = recognizer;
+  state = [(UIPanGestureRecognizer *)recognizerCopy state];
   v6 = MEMORY[0x277CCACA8];
   shortDescription = self->_shortDescription;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v6 stringWithFormat:@"[%@] %@ state — %i — is not suitable for anchor point update", shortDescription, v9, v5];
+  v10 = [v6 stringWithFormat:@"[%@] %@ state — %i — is not suitable for anchor point update", shortDescription, v9, state];
 
-  if ((v5 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((state - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     [(SBPIPInteractionController *)a2 _adjustContentViewAnchorPointForGestureRecognizer:v10];
   }
 
   if (![(_UIHyperInteractor *)self->_positionInteractor sbpip_isRubberBanding])
   {
-    if (self->_edgeResizeGestureRecognizer == v32)
+    if (self->_edgeResizeGestureRecognizer == recognizerCopy)
     {
       [(SBPIPInteractionController *)self edgeResizeAnchorPoint];
       v21 = v20;
@@ -2492,24 +2492,24 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-      if ([(SBPIPInteractionController *)self _isSystemGestureRecognizer:v32])
+      if ([(SBPIPInteractionController *)self _isSystemGestureRecognizer:recognizerCopy])
       {
-        v12 = [(UIPanGestureRecognizer *)v32 _activeEventOfType:0];
-        v13 = [(UIPanGestureRecognizer *)v32 _activeTouchesForEvent:v12];
-        v14 = [v13 anyObject];
+        v12 = [(UIPanGestureRecognizer *)recognizerCopy _activeEventOfType:0];
+        v13 = [(UIPanGestureRecognizer *)recognizerCopy _activeTouchesForEvent:v12];
+        anyObject = [v13 anyObject];
 
-        if ([v14 type] == 1)
+        if ([anyObject type] == 1)
         {
-          v15 = [(SBSystemGestureManager *)self->_systemGestureManagerForResizing indirectTouchLifecycleMonitor];
-          [v15 systemGestureHoverLocationInView:WeakRetained];
+          indirectTouchLifecycleMonitor = [(SBSystemGestureManager *)self->_systemGestureManagerForResizing indirectTouchLifecycleMonitor];
+          [indirectTouchLifecycleMonitor systemGestureHoverLocationInView:WeakRetained];
           v17 = v16;
           v19 = v18;
         }
 
         else
         {
-          [(UIPanGestureRecognizer *)v32 locationInView:0];
-          [(SBPIPInteractionController *)self _convertPointToInteractionTargetView:v32 fromSystemGestureRecognizer:?];
+          [(UIPanGestureRecognizer *)recognizerCopy locationInView:0];
+          [(SBPIPInteractionController *)self _convertPointToInteractionTargetView:recognizerCopy fromSystemGestureRecognizer:?];
           v17 = v26;
           v19 = v27;
         }
@@ -2517,7 +2517,7 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
 
       else
       {
-        [(UIPanGestureRecognizer *)v32 locationInView:WeakRetained];
+        [(UIPanGestureRecognizer *)recognizerCopy locationInView:WeakRetained];
         v17 = v24;
         v19 = v25;
       }
@@ -2552,12 +2552,12 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
   self->_geometryContext.pipAnchorPointOffset = *MEMORY[0x277CBF348];
 }
 
-- (void)__moveToAnchorPoint:(CGPoint)a3 reason:(id)a4
+- (void)__moveToAnchorPoint:(CGPoint)point reason:(id)reason
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
   v9 = self->_anchorPoint.x;
   v10 = self->_anchorPoint.y;
@@ -2587,7 +2587,7 @@ void __60__SBPIPInteractionController__noteStashProgress_withReason___block_invo
     *buf = 138545666;
     v24 = shortDescription;
     v25 = 2114;
-    v26 = v7;
+    v26 = reasonCopy;
     v27 = 2048;
     v28 = v9;
     v29 = 2048;
@@ -2617,9 +2617,9 @@ double __57__SBPIPInteractionController___moveToAnchorPoint_reason___block_invok
   return result;
 }
 
-- (void)_sizeChangeBeganWithBehavior:(int)a3
+- (void)_sizeChangeBeganWithBehavior:(int)behavior
 {
-  v3 = *&a3;
+  v3 = *&behavior;
   self->_isChangingSize = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained interactionControllerDidBeginSizeChange:self behavior:v3];
@@ -2632,19 +2632,19 @@ double __57__SBPIPInteractionController___moveToAnchorPoint_reason___block_invok
   [WeakRetained interactionControllerDidEndSizeChange:self];
 }
 
-- (CGPoint)_convertPointToInteractionTargetView:(CGPoint)a3 fromSystemGestureRecognizer:(id)a4
+- (CGPoint)_convertPointToInteractionTargetView:(CGPoint)view fromSystemGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v7 = [v5 view];
+  view = [recognizerCopy view];
 
-  [v7 size];
+  [view size];
   _UIWindowConvertPointFromOrientationToOrientation();
   v9 = v8;
   v11 = v10;
 
-  v12 = [WeakRetained superview];
-  [WeakRetained convertPoint:v12 fromView:{v9, v11}];
+  superview = [WeakRetained superview];
+  [WeakRetained convertPoint:superview fromView:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
@@ -2655,7 +2655,7 @@ double __57__SBPIPInteractionController___moveToAnchorPoint_reason___block_invok
   return result;
 }
 
-- (CGAffineTransform)_transformToDisplayArrangementSpaceFromWindowScene:(SEL)a3
+- (CGAffineTransform)_transformToDisplayArrangementSpaceFromWindowScene:(SEL)scene
 {
   v6 = a4;
   v7 = MEMORY[0x277CBF2C0];
@@ -2666,7 +2666,7 @@ double __57__SBPIPInteractionController___moveToAnchorPoint_reason___block_invok
   v32 = v6;
   if (v6 && ([v6 isMainDisplayWindowScene] & 1) == 0)
   {
-    v9 = [v32 _sbDisplayConfiguration];
+    _sbDisplayConfiguration = [v32 _sbDisplayConfiguration];
     v10 = SBSDisplayEdgeAdjacentToNeighboringDisplay();
     [v32 _boundsForInterfaceOrientation:{objc_msgSend(v32, "interfaceOrientation")}];
     v15 = v11;
@@ -2757,7 +2757,7 @@ LABEL_15:
   return result;
 }
 
-- (CGAffineTransform)_transformFromDisplayArrangeSpaceToWindowScene:(SEL)a3
+- (CGAffineTransform)_transformFromDisplayArrangeSpaceToWindowScene:(SEL)scene
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
@@ -2767,31 +2767,31 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
+  beginCopy = begin;
+  v5 = beginCopy;
   if (self->_pendingTransition)
   {
-    v6 = 0;
+    _isPinching = 0;
   }
 
-  else if (self->_panWhileResizingGestureRecognizer == v4)
+  else if (self->_panWhileResizingGestureRecognizer == beginCopy)
   {
-    v6 = [(SBPIPInteractionController *)self _isPinching];
+    _isPinching = [(SBPIPInteractionController *)self _isPinching];
   }
 
   else
   {
-    v6 = self->_edgeResizeGestureRecognizer != v4 || self->_pointerIsHoveringOverEdge != 0;
+    _isPinching = self->_edgeResizeGestureRecognizer != beginCopy || self->_pointerIsHoveringOverEdge != 0;
   }
 
-  return v6;
+  return _isPinching;
 }
 
-- (BOOL)gestureRecognizerShouldFailForMovementPastHysteresis:(id)a3
+- (BOOL)gestureRecognizerShouldFailForMovementPastHysteresis:(id)hysteresis
 {
-  if (self->_rotationGestureRecognizer != a3 && self->_pinchGestureRecognizer != a3)
+  if (self->_rotationGestureRecognizer != hysteresis && self->_pinchGestureRecognizer != hysteresis)
   {
     return 1;
   }
@@ -2804,16 +2804,16 @@ LABEL_15:
   return ![(SBPIPInteractionController *)self _isRotating];
 }
 
-- (void)handleExternalPanGesture:(id)a3
+- (void)handleExternalPanGesture:(id)gesture
 {
-  v17 = a3;
-  v5 = [v17 state];
-  if (v5 == 1)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 1)
   {
-    objc_storeStrong(&self->_externalPanDrivingGestureRecognizer, a3);
+    objc_storeStrong(&self->_externalPanDrivingGestureRecognizer, gesture);
     WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-    v7 = [WeakRetained superview];
-    [v17 locationInView:v7];
+    superview = [WeakRetained superview];
+    [gestureCopy locationInView:superview];
     v9 = v8;
     v11 = v10;
 
@@ -2823,13 +2823,13 @@ LABEL_15:
     self->_panGestureLocationOffset.x = v13;
     self->_panGestureLocationOffset.y = v11 - v14;
 
-    [(SBPIPInteractionController *)self handlePanGesture:v17];
+    [(SBPIPInteractionController *)self handlePanGesture:gestureCopy];
   }
 
   else
   {
-    v15 = v5;
-    [(SBPIPInteractionController *)self handlePanGesture:v17];
+    v15 = state;
+    [(SBPIPInteractionController *)self handlePanGesture:gestureCopy];
     if ((v15 - 3) <= 2)
     {
       externalPanDrivingGestureRecognizer = self->_externalPanDrivingGestureRecognizer;
@@ -2840,15 +2840,15 @@ LABEL_15:
   }
 }
 
-- (void)handleEdgeResizeGesture:(id)a3
+- (void)handleEdgeResizeGesture:(id)gesture
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v6 = [v4 state];
-  if (v6 > 3)
+  state = [gestureCopy state];
+  if (state > 3)
   {
-    if ((v6 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       goto LABEL_18;
     }
@@ -2861,13 +2861,13 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  switch(v6)
+  switch(state)
   {
     case 1:
       v8 = SBLogPIP();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [(SBPIPInteractionController *)self handleEdgeResizeGesture:v4];
+        [(SBPIPInteractionController *)self handleEdgeResizeGesture:gestureCopy];
       }
 
       self->_pinchGestureScaleFactor = 1.0;
@@ -2880,8 +2880,8 @@ LABEL_15:
       [WeakRetained bounds];
       self->_edgeResizeGestureBaselineHeight = v12;
       [(_UIHyperInteractor *)self->_scaleInteractor sbpip_setInteractive:1];
-      [(SBPIPInteractionController *)self _adjustContentViewAnchorPointForGestureRecognizer:v4];
-      [(SBPIPInteractionController *)self _handleGestureBeganState:v4];
+      [(SBPIPInteractionController *)self _adjustContentViewAnchorPointForGestureRecognizer:gestureCopy];
+      [(SBPIPInteractionController *)self _handleGestureBeganState:gestureCopy];
       break;
     case 2:
       break;
@@ -2890,17 +2890,17 @@ LABEL_9:
       v7 = SBLogPIP();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(SBPIPInteractionController *)self handleEdgeResizeGesture:v4];
+        [(SBPIPInteractionController *)self handleEdgeResizeGesture:gestureCopy];
       }
 
-      [(SBPIPInteractionController *)self _handleGestureEndedState:v4];
+      [(SBPIPInteractionController *)self _handleGestureEndedState:gestureCopy];
       goto LABEL_18;
     default:
       goto LABEL_18;
   }
 
-  v13 = [WeakRetained superview];
-  [v4 translationInView:v13];
+  superview = [WeakRetained superview];
+  [gestureCopy translationInView:superview];
   v20 = 0.0;
   v21 = 0.0;
   [(SBPIPInteractionController *)self recalculateScale:&v21 baselineScale:&v20 forTranslationInView:?];
@@ -2912,11 +2912,11 @@ LABEL_9:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     shortDescription = self->_shortDescription;
-    v18 = [v4 name];
+    name = [gestureCopy name];
     *buf = 138544130;
     v23 = shortDescription;
     v24 = 2114;
-    v25 = v18;
+    v25 = name;
     v26 = 2048;
     v27 = v21;
     v28 = 2048;
@@ -2930,18 +2930,18 @@ LABEL_9:
 LABEL_18:
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
   v6 = objc_loadWeakRetained(&self->_dataSource);
-  v7 = [v4 state];
-  if ((v7 - 3) >= 3)
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v7 != 2)
+    if (state != 2)
     {
-      if (v7 != 1)
+      if (state != 1)
       {
         goto LABEL_23;
       }
@@ -2949,7 +2949,7 @@ LABEL_18:
       v10 = SBLogPIP();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [(SBPIPInteractionController *)self handlePanGesture:v4];
+        [(SBPIPInteractionController *)self handlePanGesture:gestureCopy];
       }
 
       self->_threeTouchesPanDetected = 0;
@@ -2959,33 +2959,33 @@ LABEL_18:
         [(_UIHyperInteractor *)self->_scaleInteractor sbpip_setInteractive:1];
       }
 
-      [(SBPIPInteractionController *)self _handleGestureBeganState:v4];
+      [(SBPIPInteractionController *)self _handleGestureBeganState:gestureCopy];
     }
 
     [(SBPIPInteractionController *)self _updateTargetWindowSceneIfNeeded];
-    v11 = [WeakRetained superview];
-    [v4 translationInView:v11];
+    superview = [WeakRetained superview];
+    [gestureCopy translationInView:superview];
     v13 = v12 + self->_panGestureLocationOffset.x;
     v15 = v14 + self->_panGestureLocationOffset.y;
-    [v4 velocityInView:v11];
+    [gestureCopy velocityInView:superview];
     v17 = v16;
     v19 = v18;
     v30[0] = v16;
     v30[1] = v18;
     v20 = v13 + self->_geometryContext.pipAnchorPointOffset.x;
     v21 = v15 + self->_geometryContext.pipAnchorPointOffset.y;
-    v22 = [v4 numberOfTouches] == 3 || self->_threeTouchesPanDetected;
+    v22 = [gestureCopy numberOfTouches] == 3 || self->_threeTouchesPanDetected;
     self->_threeTouchesPanDetected = v22;
     v23 = SBLogPIP();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       shortDescription = self->_shortDescription;
-      v27 = [v4 name];
+      name = [gestureCopy name];
       threeTouchesPanDetected = self->_threeTouchesPanDetected;
       *buf = 138545410;
       v32 = shortDescription;
       v33 = 2114;
-      v34 = v27;
+      v34 = name;
       v35 = 2048;
       v36 = v13;
       v37 = 2048;
@@ -3009,7 +3009,7 @@ LABEL_18:
     {
       scaleInteractor = self->_scaleInteractor;
       [(SBPIPInteractionController *)self _lastSteadySize];
-      [v6 interactionController:self updateScaleInteractor:scaleInteractor pipSize:v4 forPanGesture:?];
+      [v6 interactionController:self updateScaleInteractor:scaleInteractor pipSize:gestureCopy forPanGesture:?];
       v25 = 3;
     }
 
@@ -3027,29 +3027,29 @@ LABEL_18:
     {
       v8 = self->_scaleInteractor;
       [(SBPIPInteractionController *)self _lastSteadySize];
-      [v6 interactionController:self updateScaleInteractor:v8 pipSize:v4 forPanGesture:?];
+      [v6 interactionController:self updateScaleInteractor:v8 pipSize:gestureCopy forPanGesture:?];
     }
 
     v9 = SBLogPIP();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(SBPIPInteractionController *)self handlePanGesture:v4];
+      [(SBPIPInteractionController *)self handlePanGesture:gestureCopy];
     }
 
-    [(SBPIPInteractionController *)self _handleGestureEndedState:v4];
+    [(SBPIPInteractionController *)self _handleGestureEndedState:gestureCopy];
   }
 
 LABEL_23:
 }
 
-- (void)handlePinchGesture:(id)a3
+- (void)handlePinchGesture:(id)gesture
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 > 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state > 3)
   {
-    if ((v5 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       goto LABEL_18;
     }
@@ -3062,13 +3062,13 @@ LABEL_23:
     goto LABEL_9;
   }
 
-  switch(v5)
+  switch(state)
   {
     case 1:
       v7 = SBLogPIP();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(SBPIPInteractionController *)self handlePinchGesture:v4];
+        [(SBPIPInteractionController *)self handlePinchGesture:gestureCopy];
       }
 
       self->_pinchGestureScaleFactor = 1.0;
@@ -3077,7 +3077,7 @@ LABEL_23:
       self->_pinchGestureBaselineScale = v9 / self->_preferredContentSize.width;
 
       [(_UIHyperInteractor *)self->_scaleInteractor sbpip_setInteractive:1];
-      [(SBPIPInteractionController *)self _adjustContentViewAnchorPointForGestureRecognizer:v4];
+      [(SBPIPInteractionController *)self _adjustContentViewAnchorPointForGestureRecognizer:gestureCopy];
       [(SBPIPInteractionController *)self _handleGestureBeganState:self->_pinchGestureRecognizer];
       break;
     case 2:
@@ -3087,18 +3087,18 @@ LABEL_9:
       v6 = SBLogPIP();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        [(SBPIPInteractionController *)self handlePinchGesture:v4];
+        [(SBPIPInteractionController *)self handlePinchGesture:gestureCopy];
       }
 
-      [(SBPIPInteractionController *)self _handleGestureEndedState:v4];
+      [(SBPIPInteractionController *)self _handleGestureEndedState:gestureCopy];
       goto LABEL_18;
     default:
       goto LABEL_18;
   }
 
-  [v4 scale];
+  [gestureCopy scale];
   v11 = v10;
-  [v4 velocity];
+  [gestureCopy velocity];
   v13 = v12;
   v20 = v12;
   v14 = v11 * 0.75 + self->_pinchGestureScaleFactor * 0.25;
@@ -3109,11 +3109,11 @@ LABEL_9:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     shortDescription = self->_shortDescription;
-    v18 = [v4 name];
+    name = [gestureCopy name];
     *buf = 138544386;
     v22 = shortDescription;
     v23 = 2114;
-    v24 = v18;
+    v24 = name;
     v25 = 2048;
     v26 = v11;
     v27 = 2048;
@@ -3129,16 +3129,16 @@ LABEL_9:
 LABEL_18:
 }
 
-- (void)handleRotationGesture:(id)a3
+- (void)handleRotationGesture:(id)gesture
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) >= 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v5 != 2)
+    if (state != 2)
     {
-      if (v5 != 1)
+      if (state != 1)
       {
         goto LABEL_17;
       }
@@ -3146,18 +3146,18 @@ LABEL_18:
       v7 = SBLogPIP();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(SBPIPInteractionController *)self handleRotationGesture:v4];
+        [(SBPIPInteractionController *)self handleRotationGesture:gestureCopy];
       }
 
       [(_UIHyperInteractor *)self->_rotationInteractor sbpip_setInteractive:1];
-      [(SBPIPInteractionController *)self _adjustContentViewAnchorPointForGestureRecognizer:v4];
-      [(SBPIPInteractionController *)self _handleGestureBeganState:v4];
+      [(SBPIPInteractionController *)self _adjustContentViewAnchorPointForGestureRecognizer:gestureCopy];
+      [(SBPIPInteractionController *)self _handleGestureBeganState:gestureCopy];
     }
 
-    [v4 rotation];
+    [gestureCopy rotation];
     v9 = v8;
     v18 = v8;
-    [v4 velocity];
+    [gestureCopy velocity];
     v11 = v10;
     v12 = *[(_UIHyperInteractor *)self->_rotationInteractor _translation];
     v13 = v9 - v12;
@@ -3168,7 +3168,7 @@ LABEL_18:
 
     if (v13 > 3.14159265)
     {
-      [v4 setRotation:v12];
+      [gestureCopy setRotation:v12];
       v18 = v12;
       v9 = v12;
     }
@@ -3177,11 +3177,11 @@ LABEL_18:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       shortDescription = self->_shortDescription;
-      v16 = [v4 name];
+      name = [gestureCopy name];
       *buf = 138544130;
       v20 = shortDescription;
       v21 = 2114;
-      v22 = v16;
+      v22 = name;
       v23 = 2048;
       v24 = v9;
       v25 = 2048;
@@ -3199,18 +3199,18 @@ LABEL_18:
     v6 = SBLogPIP();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(SBPIPInteractionController *)self handleRotationGesture:v4];
+      [(SBPIPInteractionController *)self handleRotationGesture:gestureCopy];
     }
 
-    [(SBPIPInteractionController *)self _handleGestureEndedState:v4];
+    [(SBPIPInteractionController *)self _handleGestureEndedState:gestureCopy];
   }
 
 LABEL_17:
 }
 
-- (void)_handleGestureBeganState:(id)a3
+- (void)_handleGestureBeganState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if (![(SBWindowScene *)self->_targetWindowScene isMainDisplayWindowScene])
   {
     [(SBPIPInteractionController *)self _updateGeometryContextBoundsUsingMainDisplayWindowScene];
@@ -3221,20 +3221,20 @@ LABEL_17:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained interactionControllerDidBeginInteraction:self forGestureRecognizer:v5];
+    [WeakRetained interactionControllerDidBeginInteraction:self forGestureRecognizer:stateCopy];
   }
 }
 
-- (void)_handleGestureEndedState:(id)a3
+- (void)_handleGestureEndedState:(id)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  self->_gesturesWereCancelled |= [(UIPanGestureRecognizer *)v5 state]== 4;
+  stateCopy = state;
+  self->_gesturesWereCancelled |= [(UIPanGestureRecognizer *)stateCopy state]== 4;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     gesturesEndedLayoutReason = self->_gesturesEndedLayoutReason;
-    if (self->_edgeResizeGestureRecognizer != v5)
+    if (self->_edgeResizeGestureRecognizer != stateCopy)
     {
       v7 = gesturesEndedLayoutReason | 0x80;
 LABEL_9:
@@ -3261,8 +3261,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"SBPIPInteractionController.m" lineNumber:1494 description:{@"Unrecognized gesture recognizer: %@", v5}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBPIPInteractionController.m" lineNumber:1494 description:{@"Unrecognized gesture recognizer: %@", stateCopy}];
 
 LABEL_10:
   if (!self->_didHandleGestureEndState)
@@ -3273,8 +3273,8 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       shortDescription = self->_shortDescription;
-      v13 = [(UIPanGestureRecognizer *)v5 name];
-      v14 = v13;
+      name = [(UIPanGestureRecognizer *)stateCopy name];
+      v14 = name;
       gesturesWereCancelled = self->_gesturesWereCancelled;
       *buf = 138543874;
       v19 = shortDescription;
@@ -3289,7 +3289,7 @@ LABEL_10:
       }
 
       v20 = 2114;
-      v21 = v13;
+      v21 = name;
       v22 = 2114;
       v23 = v16;
       _os_log_debug_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEBUG, "[%{public}@][Gesture][%{public}@] Will Handle Ended State: %{public}@", buf, 0x20u);
@@ -3302,9 +3302,9 @@ LABEL_10:
   }
 }
 
-- (void)__handleGesturesEndedState:(id)a3
+- (void)__handleGesturesEndedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (self->_didHandleGestureEndState)
   {
     v5 = SBLogPIP();
@@ -3313,7 +3313,7 @@ LABEL_10:
       [SBPIPInteractionController __handleGesturesEndedState:];
     }
 
-    [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel___handleGesturesEndedState_ object:v4];
+    [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel___handleGesturesEndedState_ object:stateCopy];
     [(SBPIPInteractionController *)self _resetAnchorPoint];
     [(SBPIPInteractionController *)self _updateInteractorsAndCommit:1];
     *&self->_didHandleGestureEndState = 0;
@@ -3331,7 +3331,7 @@ LABEL_10:
     }
 
     self->_gesturesEndedLayoutReason = 0;
-    v9 = [WeakRetained _sbWindowScene];
+    _sbWindowScene = [WeakRetained _sbWindowScene];
     [(SBPIPInteractionController *)self _inFlightHitTestPadding];
     [WeakRetained _setTouchInsets:?];
     v10 = [(SBPIPInteractionController *)self __traitsForGesturesReasons:gesturesEndedLayoutReason];
@@ -3347,7 +3347,7 @@ LABEL_10:
     v13[3] = &unk_2783B6BB0;
     objc_copyWeak(&v15, &to);
     objc_copyWeak(&v16, &location);
-    v12 = v9;
+    v12 = _sbWindowScene;
     v14 = v12;
     [(SBPIPInteractionController *)self _setNeedsLayoutForTraits:v10 withReason:gesturesEndedLayoutReason behavior:2 layoutCompletion:v17 interactionCompletion:v13];
 
@@ -3374,15 +3374,15 @@ void __57__SBPIPInteractionController___handleGesturesEndedState___block_invoke_
   }
 }
 
-- (void)_setNeedsLayoutForTraits:(unint64_t)a3 withReason:(unint64_t)a4 behavior:(int)a5 layoutCompletion:(id)a6 interactionCompletion:(id)a7
+- (void)_setNeedsLayoutForTraits:(unint64_t)traits withReason:(unint64_t)reason behavior:(int)behavior layoutCompletion:(id)completion interactionCompletion:(id)interactionCompletion
 {
-  v8 = *&a5;
+  v8 = *&behavior;
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
+  completionCopy = completion;
+  interactionCompletionCopy = interactionCompletion;
   objc_copyWeak(&to, &self->_delegate);
-  self->_allLayoutSessionUpdateReasons |= a4;
-  if ([(SBPIPInteractionController *)self _isSizeAffectedByLayoutReasons:a4])
+  self->_allLayoutSessionUpdateReasons |= reason;
+  if ([(SBPIPInteractionController *)self _isSizeAffectedByLayoutReasons:reason])
   {
     [(SBPIPInteractionController *)self _sizeChangeBeganWithBehavior:v8];
   }
@@ -3392,7 +3392,7 @@ void __57__SBPIPInteractionController___handleGesturesEndedState___block_invoke_
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     shortDescription = self->_shortDescription;
-    v22 = SBStringFromPIPLayoutReason(a4);
+    v22 = SBStringFromPIPLayoutReason(reason);
     inFlightAnimatedLayouts = self->_inFlightAnimatedLayouts;
     *buf = 138543874;
     v31 = shortDescription;
@@ -3408,7 +3408,7 @@ void __57__SBPIPInteractionController___handleGesturesEndedState___block_invoke_
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v16 = self->_shortDescription;
-    v17 = SBStringFromPIPLayoutReason(a4);
+    v17 = SBStringFromPIPLayoutReason(reason);
     [SBPIPInteractionController _setNeedsLayoutForTraits:v16 withReason:v17 behavior:buf layoutCompletion:v15 interactionCompletion:?];
   }
 
@@ -3419,12 +3419,12 @@ void __57__SBPIPInteractionController___handleGesturesEndedState___block_invoke_
   v24[3] = &unk_2783B6BD8;
   objc_copyWeak(v27, &location);
   v24[4] = self;
-  v27[1] = a4;
-  v19 = v12;
+  v27[1] = reason;
+  v19 = completionCopy;
   v25 = v19;
-  v20 = v13;
+  v20 = interactionCompletionCopy;
   v26 = v20;
-  [v18 setNeedsLayoutForInteractionController:self traits:a3 withReason:a4 behavior:v8 completion:v24];
+  [v18 setNeedsLayoutForInteractionController:self traits:traits withReason:reason behavior:v8 completion:v24];
 
   objc_destroyWeak(v27);
   objc_destroyWeak(&location);
@@ -3567,7 +3567,7 @@ uint64_t __114__SBPIPInteractionController__setNeedsLayoutForTraits_withReason_b
   return v2();
 }
 
-- (unint64_t)__traitsForGesturesReasons:(unint64_t)a3
+- (unint64_t)__traitsForGesturesReasons:(unint64_t)reasons
 {
   v15 = 0;
   v16 = &v15;
@@ -3577,19 +3577,19 @@ uint64_t __114__SBPIPInteractionController__setNeedsLayoutForTraits_withReason_b
   v10[1] = 3221225472;
   v11 = __57__SBPIPInteractionController___traitsForGesturesReasons___block_invoke;
   v12 = &unk_2783ABA80;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v4 = v10;
-  if (a3)
+  if (reasons)
   {
     v5 = 0;
     v19 = 0;
-    v6 = vcnt_s8(a3);
+    v6 = vcnt_s8(reasons);
     v6.i16[0] = vaddlv_u8(v6);
     v7 = v6.i32[0];
     do
     {
-      if (((1 << v5) & a3) != 0)
+      if (((1 << v5) & reasons) != 0)
       {
         (v11)(v4);
         if (v19)
@@ -3646,21 +3646,21 @@ LABEL_9:
   }
 }
 
-- (BOOL)_isSystemGestureRecognizer:(id)a3
+- (BOOL)_isSystemGestureRecognizer:(id)recognizer
 {
-  v4 = [a3 view];
+  view = [recognizer view];
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v6 = [WeakRetained window];
-  v7 = v4 != v6;
+  window = [WeakRetained window];
+  v7 = view != window;
 
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_panGestureRecognizer == v6 && self->_panWhileResizingGestureRecognizer == v7)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_panGestureRecognizer == recognizerCopy && self->_panWhileResizingGestureRecognizer == gestureRecognizerCopy)
   {
     v10 = 0;
   }
@@ -3668,24 +3668,24 @@ LABEL_9:
   else
   {
     edgeResizeGestureRecognizer = self->_edgeResizeGestureRecognizer;
-    v10 = edgeResizeGestureRecognizer != v6 && edgeResizeGestureRecognizer != v7;
+    v10 = edgeResizeGestureRecognizer != recognizerCopy && edgeResizeGestureRecognizer != gestureRecognizerCopy;
   }
 
   return v10;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  if ([(SBPIPInteractionController *)self _isSystemGestureRecognizer:v6])
+  if ([(SBPIPInteractionController *)self _isSystemGestureRecognizer:recognizerCopy])
   {
-    if ([v7 type] == 1)
+    if ([touchCopy type] == 1)
     {
-      v9 = [(SBSystemGestureManager *)self->_systemGestureManagerForResizing indirectTouchLifecycleMonitor];
-      [v9 systemGestureHoverLocationInView:WeakRetained];
+      indirectTouchLifecycleMonitor = [(SBSystemGestureManager *)self->_systemGestureManagerForResizing indirectTouchLifecycleMonitor];
+      [indirectTouchLifecycleMonitor systemGestureHoverLocationInView:WeakRetained];
       v11 = v10;
       v13 = v12;
 
@@ -3694,11 +3694,11 @@ LABEL_9:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         shortDescription = self->_shortDescription;
-        v17 = [(UIPanGestureRecognizer *)v6 name];
+        name = [(UIPanGestureRecognizer *)recognizerCopy name];
         v33 = 138544386;
         v34 = shortDescription;
         v35 = 2114;
-        v36 = v17;
+        v36 = name;
         v37 = 2048;
         v38 = v11;
         v39 = 2048;
@@ -3715,10 +3715,10 @@ LABEL_14:
 
     else
     {
-      [v7 locationInView:0];
+      [touchCopy locationInView:0];
       v24 = v23;
       v26 = v25;
-      [(SBPIPInteractionController *)self _convertPointToInteractionTargetView:v6 fromSystemGestureRecognizer:?];
+      [(SBPIPInteractionController *)self _convertPointToInteractionTargetView:recognizerCopy fromSystemGestureRecognizer:?];
       v28 = v27;
       v30 = v29;
       v14 = [WeakRetained pointInside:0 withEvent:?];
@@ -3726,11 +3726,11 @@ LABEL_14:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v32 = self->_shortDescription;
-        v17 = [(UIPanGestureRecognizer *)v6 name];
+        name = [(UIPanGestureRecognizer *)recognizerCopy name];
         v33 = 138544898;
         v34 = v32;
         v35 = 2114;
-        v36 = v17;
+        v36 = name;
         v37 = 2048;
         v38 = v24;
         v39 = 2048;
@@ -3751,16 +3751,16 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  [v7 locationInView:WeakRetained];
+  [touchCopy locationInView:WeakRetained];
   v21 = [WeakRetained pointInside:0 withEvent:?];
   LOBYTE(v14) = v21;
-  if (self->_panGestureRecognizer == v6)
+  if (self->_panGestureRecognizer == recognizerCopy)
   {
     v22 = self->_pointerIsHoveringOverEdge == 0;
     goto LABEL_11;
   }
 
-  if (self->_edgeResizeGestureRecognizer == v6)
+  if (self->_edgeResizeGestureRecognizer == recognizerCopy)
   {
     v22 = self->_pointerIsHoveringOverEdge != 0;
 LABEL_11:
@@ -3827,14 +3827,14 @@ LABEL_12:
   return [(SBPIPInteractionController *)self _isGestureRecognizerRecognizing:externalPanDrivingGestureRecognizer];
 }
 
-- (BOOL)_isGestureRecognizerRecognizing:(id)a3
+- (BOOL)_isGestureRecognizerRecognizing:(id)recognizing
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  recognizingCopy = recognizing;
+  v4 = recognizingCopy;
+  if (recognizingCopy)
   {
-    v5 = [v3 view];
-    v6 = v5 && [v4 state] >= 1 && objc_msgSend(v4, "state") < 3;
+    view = [recognizingCopy view];
+    v6 = view && [v4 state] >= 1 && objc_msgSend(v4, "state") < 3;
   }
 
   else
@@ -3871,10 +3871,10 @@ LABEL_12:
 
 - (CGPoint)edgeResizeAnchorPoint
 {
-  v3 = [(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeSettings];
-  v4 = [v3 anchorPointSettings];
+  edgeResizeSettings = [(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeSettings];
+  anchorPointSettings = [edgeResizeSettings anchorPointSettings];
   pointerIsHoveringOverEdge = self->_pointerIsHoveringOverEdge;
-  v6 = [(SBPIPInteractionController *)self canonicalPosition];
+  canonicalPosition = [(SBPIPInteractionController *)self canonicalPosition];
   v7 = 0.5;
   if (pointerIsHoveringOverEdge > 4)
   {
@@ -3951,42 +3951,42 @@ LABEL_12:
   {
     if (pointerIsHoveringOverEdge == 3)
     {
-      if (v6 > 1)
+      if (canonicalPosition > 1)
       {
-        if (v6 == 2)
+        if (canonicalPosition == 2)
         {
-          [v4 dockLowerRightResizeLeftEdgeAnchorPointX];
+          [anchorPointSettings dockLowerRightResizeLeftEdgeAnchorPointX];
           v7 = v26;
-          [v4 dockLowerRightResizeLeftEdgeAnchorPointY];
+          [anchorPointSettings dockLowerRightResizeLeftEdgeAnchorPointY];
           goto LABEL_63;
         }
 
         v8 = 0.5;
-        if (v6 == 3)
+        if (canonicalPosition == 3)
         {
-          [v4 dockUpperRightResizeLeftEdgeAnchorPointX];
+          [anchorPointSettings dockUpperRightResizeLeftEdgeAnchorPointX];
           v7 = v20;
-          [v4 dockUpperRightResizeLeftEdgeAnchorPointY];
+          [anchorPointSettings dockUpperRightResizeLeftEdgeAnchorPointY];
           goto LABEL_63;
         }
       }
 
       else
       {
-        if (!v6)
+        if (!canonicalPosition)
         {
-          [v4 dockUpperLeftResizeLeftEdgeAnchorPointX];
+          [anchorPointSettings dockUpperLeftResizeLeftEdgeAnchorPointX];
           v7 = v24;
-          [v4 dockUpperLeftResizeLeftEdgeAnchorPointY];
+          [anchorPointSettings dockUpperLeftResizeLeftEdgeAnchorPointY];
           goto LABEL_63;
         }
 
         v8 = 0.5;
-        if (v6 == 1)
+        if (canonicalPosition == 1)
         {
-          [v4 dockLowerLeftResizeLeftEdgeAnchorPointX];
+          [anchorPointSettings dockLowerLeftResizeLeftEdgeAnchorPointX];
           v7 = v18;
-          [v4 dockLowerLeftResizeLeftEdgeAnchorPointY];
+          [anchorPointSettings dockLowerLeftResizeLeftEdgeAnchorPointY];
           goto LABEL_63;
         }
       }
@@ -3995,40 +3995,40 @@ LABEL_12:
     else
     {
       v8 = 0.5;
-      if (v6 > 1)
+      if (canonicalPosition > 1)
       {
-        if (v6 == 2)
+        if (canonicalPosition == 2)
         {
-          [v4 dockLowerRightResizeRightEdgeAnchorPointX];
+          [anchorPointSettings dockLowerRightResizeRightEdgeAnchorPointX];
           v7 = v30;
-          [v4 dockLowerRightResizeRightEdgeAnchorPointY];
+          [anchorPointSettings dockLowerRightResizeRightEdgeAnchorPointY];
           goto LABEL_63;
         }
 
-        if (v6 == 3)
+        if (canonicalPosition == 3)
         {
-          [v4 dockUpperRightResizeRightEdgeAnchorPointX];
+          [anchorPointSettings dockUpperRightResizeRightEdgeAnchorPointX];
           v7 = v22;
-          [v4 dockUpperRightResizeRightEdgeAnchorPointY];
+          [anchorPointSettings dockUpperRightResizeRightEdgeAnchorPointY];
           goto LABEL_63;
         }
       }
 
       else
       {
-        if (!v6)
+        if (!canonicalPosition)
         {
-          [v4 dockUpperLeftResizeRightEdgeAnchorPointX];
+          [anchorPointSettings dockUpperLeftResizeRightEdgeAnchorPointX];
           v7 = v28;
-          [v4 dockUpperLeftResizeRightEdgeAnchorPointY];
+          [anchorPointSettings dockUpperLeftResizeRightEdgeAnchorPointY];
           goto LABEL_63;
         }
 
-        if (v6 == 1)
+        if (canonicalPosition == 1)
         {
-          [v4 dockLowerLeftResizeRightEdgeAnchorPointX];
+          [anchorPointSettings dockLowerLeftResizeRightEdgeAnchorPointX];
           v7 = v16;
-          [v4 dockLowerLeftResizeRightEdgeAnchorPointY];
+          [anchorPointSettings dockLowerLeftResizeRightEdgeAnchorPointY];
           goto LABEL_63;
         }
       }
@@ -4037,42 +4037,42 @@ LABEL_12:
 
   else if (pointerIsHoveringOverEdge == 1)
   {
-    if (v6 > 1)
+    if (canonicalPosition > 1)
     {
-      if (v6 == 2)
+      if (canonicalPosition == 2)
       {
-        [v4 dockLowerRightResizeTopEdgeAnchorPointX];
+        [anchorPointSettings dockLowerRightResizeTopEdgeAnchorPointX];
         v7 = v25;
-        [v4 dockLowerRightResizeTopEdgeAnchorPointY];
+        [anchorPointSettings dockLowerRightResizeTopEdgeAnchorPointY];
         goto LABEL_63;
       }
 
       v8 = 0.5;
-      if (v6 == 3)
+      if (canonicalPosition == 3)
       {
-        [v4 dockUpperRightResizeTopEdgeAnchorPointX];
+        [anchorPointSettings dockUpperRightResizeTopEdgeAnchorPointX];
         v7 = v19;
-        [v4 dockUpperRightResizeTopEdgeAnchorPointY];
+        [anchorPointSettings dockUpperRightResizeTopEdgeAnchorPointY];
         goto LABEL_63;
       }
     }
 
     else
     {
-      if (!v6)
+      if (!canonicalPosition)
       {
-        [v4 dockUpperLeftResizeTopEdgeAnchorPointX];
+        [anchorPointSettings dockUpperLeftResizeTopEdgeAnchorPointX];
         v7 = v23;
-        [v4 dockUpperLeftResizeTopEdgeAnchorPointY];
+        [anchorPointSettings dockUpperLeftResizeTopEdgeAnchorPointY];
         goto LABEL_63;
       }
 
       v8 = 0.5;
-      if (v6 == 1)
+      if (canonicalPosition == 1)
       {
-        [v4 dockLowerLeftResizeTopEdgeAnchorPointX];
+        [anchorPointSettings dockLowerLeftResizeTopEdgeAnchorPointX];
         v7 = v17;
-        [v4 dockLowerLeftResizeTopEdgeAnchorPointY];
+        [anchorPointSettings dockLowerLeftResizeTopEdgeAnchorPointY];
         goto LABEL_63;
       }
     }
@@ -4083,40 +4083,40 @@ LABEL_12:
     v8 = 0.5;
     if (pointerIsHoveringOverEdge == 2)
     {
-      if (v6 > 1)
+      if (canonicalPosition > 1)
       {
-        if (v6 == 2)
+        if (canonicalPosition == 2)
         {
-          [v4 dockLowerRightResizeBottomEdgeAnchorPointX];
+          [anchorPointSettings dockLowerRightResizeBottomEdgeAnchorPointX];
           v7 = v29;
-          [v4 dockLowerRightResizeBottomEdgeAnchorPointY];
+          [anchorPointSettings dockLowerRightResizeBottomEdgeAnchorPointY];
           goto LABEL_63;
         }
 
-        if (v6 == 3)
+        if (canonicalPosition == 3)
         {
-          [v4 dockUpperRightResizeBottomEdgeAnchorPointX];
+          [anchorPointSettings dockUpperRightResizeBottomEdgeAnchorPointX];
           v7 = v21;
-          [v4 dockUpperRightResizeBottomEdgeAnchorPointY];
+          [anchorPointSettings dockUpperRightResizeBottomEdgeAnchorPointY];
           goto LABEL_63;
         }
       }
 
       else
       {
-        if (!v6)
+        if (!canonicalPosition)
         {
-          [v4 dockUpperLeftResizeBottomEdgeAnchorPointX];
+          [anchorPointSettings dockUpperLeftResizeBottomEdgeAnchorPointX];
           v7 = v27;
-          [v4 dockUpperLeftResizeBottomEdgeAnchorPointY];
+          [anchorPointSettings dockUpperLeftResizeBottomEdgeAnchorPointY];
           goto LABEL_63;
         }
 
-        if (v6 == 1)
+        if (canonicalPosition == 1)
         {
-          [v4 dockLowerLeftResizeBottomEdgeAnchorPointX];
+          [anchorPointSettings dockLowerLeftResizeBottomEdgeAnchorPointX];
           v7 = v9;
-          [v4 dockLowerLeftResizeBottomEdgeAnchorPointY];
+          [anchorPointSettings dockLowerLeftResizeBottomEdgeAnchorPointY];
 LABEL_63:
           v8 = v10;
         }
@@ -4131,10 +4131,10 @@ LABEL_63:
   return result;
 }
 
-- (void)recalculateScale:(double *)a3 baselineScale:(double *)a4 forTranslationInView:(CGPoint)a5
+- (void)recalculateScale:(double *)scale baselineScale:(double *)baselineScale forTranslationInView:(CGPoint)view
 {
   edgeResizeGestureBaselineWidth = self->_edgeResizeGestureBaselineWidth;
-  v6 = edgeResizeGestureBaselineWidth - a5.x;
+  v6 = edgeResizeGestureBaselineWidth - view.x;
   pointerIsHoveringOverEdge = self->_pointerIsHoveringOverEdge;
   v8 = 0.0;
   if (pointerIsHoveringOverEdge > 4)
@@ -4150,12 +4150,12 @@ LABEL_63:
         }
 
         edgeResizeGestureBaselineHeight = self->_edgeResizeGestureBaselineHeight;
-        v12 = a5.y + edgeResizeGestureBaselineHeight;
+        v12 = view.y + edgeResizeGestureBaselineHeight;
         goto LABEL_14;
       }
 
       v15 = self->_edgeResizeGestureBaselineHeight;
-      v16 = a5.y + v15;
+      v16 = view.y + v15;
     }
 
     else
@@ -4163,15 +4163,15 @@ LABEL_63:
       if (pointerIsHoveringOverEdge != 5)
       {
         edgeResizeGestureBaselineHeight = self->_edgeResizeGestureBaselineHeight;
-        v12 = edgeResizeGestureBaselineHeight - a5.y;
+        v12 = edgeResizeGestureBaselineHeight - view.y;
 LABEL_14:
         v14 = v12 / edgeResizeGestureBaselineHeight;
-        v13 = a5.x + edgeResizeGestureBaselineWidth;
+        v13 = view.x + edgeResizeGestureBaselineWidth;
         goto LABEL_15;
       }
 
       v15 = self->_edgeResizeGestureBaselineHeight;
-      v16 = v15 - a5.y;
+      v16 = v15 - view.y;
     }
 
     v14 = v16 / v15;
@@ -4182,7 +4182,7 @@ LABEL_14:
   {
     if (pointerIsHoveringOverEdge != 3)
     {
-      v13 = a5.x + edgeResizeGestureBaselineWidth;
+      v13 = view.x + edgeResizeGestureBaselineWidth;
       v14 = 0.0;
 LABEL_15:
       v8 = v13 / edgeResizeGestureBaselineWidth;
@@ -4198,14 +4198,14 @@ LABEL_22:
   if (pointerIsHoveringOverEdge == 1)
   {
     v9 = self->_edgeResizeGestureBaselineHeight;
-    v10 = v9 - a5.y;
+    v10 = v9 - view.y;
     goto LABEL_17;
   }
 
   if (pointerIsHoveringOverEdge == 2)
   {
     v9 = self->_edgeResizeGestureBaselineHeight;
-    v10 = a5.y + v9;
+    v10 = view.y + v9;
 LABEL_17:
     v14 = v10 / v9;
     goto LABEL_23;
@@ -4230,8 +4230,8 @@ LABEL_23:
   }
 
   v19 = *(&self->super.isa + v18);
-  *a3 = fmax(v17, 0.0);
-  *a4 = v19;
+  *scale = fmax(v17, 0.0);
+  *baselineScale = v19;
 }
 
 - (void)reloadInsets
@@ -4323,16 +4323,16 @@ void __42__SBPIPInteractionController_reloadInsets__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_enumerateComposers:(id)a3 usingBlock:(id)a4
+- (void)_enumerateComposers:(id)composers usingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  composersCopy = composers;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [composersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4344,14 +4344,14 @@ void __42__SBPIPInteractionController_reloadInsets__block_invoke(uint64_t a1)
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(composersCopy);
         }
 
-        v6[2](v6, *(*(&v11 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [composersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -4361,14 +4361,14 @@ void __42__SBPIPInteractionController_reloadInsets__block_invoke(uint64_t a1)
 - (void)_updatePositionRegionComposers
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained defaultPositionHyperregionComposers];
+  defaultPositionHyperregionComposers = [WeakRetained defaultPositionHyperregionComposers];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__SBPIPInteractionController__updatePositionRegionComposers__block_invoke;
   v11[3] = &unk_2783B6C28;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = defaultPositionHyperregionComposers;
+  selfCopy = self;
+  v5 = defaultPositionHyperregionComposers;
   [(SBPIPInteractionController *)self _enumeratePositionRegionComposersUsingBlock:v11];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -4381,7 +4381,7 @@ void __42__SBPIPInteractionController_reloadInsets__block_invoke(uint64_t a1)
   v7[2] = __60__SBPIPInteractionController__updatePositionRegionComposers__block_invoke_3;
   v7[3] = &unk_2783B6C28;
   v8 = WeakRetained;
-  v9 = self;
+  selfCopy2 = self;
   v6 = WeakRetained;
   [(SBPIPInteractionController *)self _enumeratePositionRegionComposersUsingBlock:v7];
   [(SBPIPInteractionController *)self reloadInsets];
@@ -4415,13 +4415,13 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
   }
 }
 
-- (void)prepareForTransitionToWindowScene:(id)a3
+- (void)prepareForTransitionToWindowScene:(id)scene
 {
-  v4 = a3;
-  if (self->_targetWindowScene != v4)
+  sceneCopy = scene;
+  if (self->_targetWindowScene != sceneCopy)
   {
     pendingTransition = self->_pendingTransition;
-    v8 = v4;
+    v8 = sceneCopy;
     if (!pendingTransition)
     {
       v6 = objc_alloc_init(_SBPIPInteractionControllerTransitionInfo);
@@ -4433,11 +4433,11 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
     }
 
     [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition setTargetWindowScene:v8];
-    v4 = v8;
+    sceneCopy = v8;
   }
 }
 
-- (void)finishTransitionToWindowScene:(id)a3
+- (void)finishTransitionToWindowScene:(id)scene
 {
   [(SBPIPInteractionController *)self _setNeedsLayoutForTraits:1 withReason:1 behavior:2];
   pendingTransition = self->_pendingTransition;
@@ -4451,12 +4451,12 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
   [(SBPIPInteractionController *)self _updateInteractorsAndCommit:1];
 }
 
-- (void)_updateTargetWindowSceneIfNeededUpdatingInteractors:(BOOL)a3
+- (void)_updateTargetWindowSceneIfNeededUpdatingInteractors:(BOOL)interactors
 {
-  v3 = a3;
+  interactorsCopy = interactors;
   v55 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-  v6 = [WeakRetained _sbWindowScene];
+  _sbWindowScene = [WeakRetained _sbWindowScene];
 
   v7 = objc_loadWeakRetained(&self->_dataSource);
   v8 = [v7 interactionControllerConnectedWindowScenes:self];
@@ -4467,15 +4467,15 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
   if (!pendingTransition)
   {
     [(SBPIPInteractionController *)self _currentPositionInteractionStateContext];
-    if ((v53 & 1) == 0 && v6)
+    if ((v53 & 1) == 0 && _sbWindowScene)
     {
-      v12 = v6;
+      targetWindowScene = _sbWindowScene;
       goto LABEL_8;
     }
 
     if ([v8 count] == 1)
     {
-      v12 = [v8 bs_firstObjectPassingTest:&__block_literal_global_170];
+      targetWindowScene = [v8 bs_firstObjectPassingTest:&__block_literal_global_170];
       goto LABEL_8;
     }
 
@@ -4484,8 +4484,8 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
       goto LABEL_9;
     }
 
-    v42 = v3;
-    v43 = v6;
+    v42 = interactorsCopy;
+    v43 = _sbWindowScene;
     v52 = 0;
     v50 = 0u;
     v51 = 0u;
@@ -4515,9 +4515,9 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
           }
 
           v21 = *(*(&v44 + 1) + 8 * i);
-          v22 = [v21 isMainDisplayWindowScene];
+          isMainDisplayWindowScene = [v21 isMainDisplayWindowScene];
           v23 = v21;
-          if (v22)
+          if (isMainDisplayWindowScene)
           {
             v24 = v18;
           }
@@ -4527,7 +4527,7 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
             v24 = v17;
           }
 
-          if (v22)
+          if (isMainDisplayWindowScene)
           {
             v18 = v23;
           }
@@ -4550,12 +4550,12 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
       v18 = 0;
     }
 
-    v25 = [v18 _sbDisplayConfiguration];
+    _sbDisplayConfiguration = [v18 _sbDisplayConfiguration];
     v26 = SBSDisplayEdgeAdjacentToNeighboringDisplay();
     if (v26 > 1)
     {
-      v6 = v43;
-      v3 = v42;
+      _sbWindowScene = v43;
+      interactorsCopy = v42;
       p_targetWindowScene = &self->_targetWindowScene;
       v8 = v41;
       if (v26 == 2)
@@ -4600,8 +4600,8 @@ void __60__SBPIPInteractionController__updatePositionRegionComposers__block_invo
 
     else
     {
-      v6 = v43;
-      v3 = v42;
+      _sbWindowScene = v43;
+      interactorsCopy = v42;
       p_targetWindowScene = &self->_targetWindowScene;
       v8 = v41;
       if (!v26)
@@ -4649,36 +4649,36 @@ LABEL_46:
     goto LABEL_9;
   }
 
-  v12 = [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition targetWindowScene];
+  targetWindowScene = [(_SBPIPInteractionControllerTransitionInfo *)pendingTransition targetWindowScene];
 LABEL_8:
-  v13 = v12;
+  v13 = targetWindowScene;
 
   v10 = v13;
 LABEL_9:
   if (v10 != *p_targetWindowScene)
   {
     objc_storeStrong(p_targetWindowScene, v10);
-    if (v3)
+    if (interactorsCopy)
     {
       [(SBPIPInteractionController *)self _updateInteractorsAndCommit:0];
     }
   }
 }
 
-- (void)_updateInteractorsAndCommit:(BOOL)a3
+- (void)_updateInteractorsAndCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v37 = 0;
   v36 = *MEMORY[0x277CBF348];
   scaleInteractor = self->_scaleInteractor;
-  v6 = [(SBPIPInteractionController *)self _scaleHyperregion];
-  [(_UIHyperInteractor *)scaleInteractor _setRegion:v6];
+  _scaleHyperregion = [(SBPIPInteractionController *)self _scaleHyperregion];
+  [(_UIHyperInteractor *)scaleInteractor _setRegion:_scaleHyperregion];
 
-  if (v3)
+  if (commitCopy)
   {
     [(_UIHyperInteractor *)self->_scaleInteractor _commitTranslation];
-    v7 = [(_UIHyperInteractor *)self->_scaleInteractor _region];
-    [v7 _closestPoint:&v34 toPoint:{-[_UIHyperInteractor _projectedPoint](self->_scaleInteractor, "_projectedPoint")}];
+    _region = [(_UIHyperInteractor *)self->_scaleInteractor _region];
+    [_region _closestPoint:&v34 toPoint:{-[_UIHyperInteractor _projectedPoint](self->_scaleInteractor, "_projectedPoint")}];
 
     [(_UIHyperInteractor *)self->_scaleInteractor sbpip_setInteractive:0];
     [(_UIHyperInteractor *)self->_scaleInteractor _copyVelocity:&v37];
@@ -4690,32 +4690,32 @@ LABEL_9:
   }
 
   rotationInteractor = self->_rotationInteractor;
-  v10 = [(SBPIPInteractionController *)self _rotationHyperregion];
-  [(_UIHyperInteractor *)rotationInteractor _setRegion:v10];
+  _rotationHyperregion = [(SBPIPInteractionController *)self _rotationHyperregion];
+  [(_UIHyperInteractor *)rotationInteractor _setRegion:_rotationHyperregion];
 
-  if (v3)
+  if (commitCopy)
   {
-    v11 = [(_UIHyperInteractor *)self->_rotationInteractor _region];
+    _region2 = [(_UIHyperInteractor *)self->_rotationInteractor _region];
     [(_UIHyperInteractor *)self->_rotationInteractor _commitTranslation];
     [(_UIHyperInteractor *)self->_rotationInteractor sbpip_setInteractive:0];
     [(_UIHyperInteractor *)self->_rotationInteractor _copyVelocity:&v37];
-    -[_UIHyperInteractor _copyUnconstrainedPoint:](self->_rotationInteractor, "_copyUnconstrainedPoint:", [v11 _value]);
+    -[_UIHyperInteractor _copyUnconstrainedPoint:](self->_rotationInteractor, "_copyUnconstrainedPoint:", [_region2 _value]);
   }
 
   [(SBPIPInteractionController *)self _updateTargetWindowSceneIfNeededUpdatingInteractors:0];
-  v12 = [(SBPIPInteractionController *)self canonicalPosition];
+  canonicalPosition = [(SBPIPInteractionController *)self canonicalPosition];
   positionInteractor = self->_positionInteractor;
-  v14 = [(SBPIPInteractionController *)self positionHyperregion];
-  [(_UIHyperInteractor *)positionInteractor _setRegion:v14];
+  positionHyperregion = [(SBPIPInteractionController *)self positionHyperregion];
+  [(_UIHyperInteractor *)positionInteractor _setRegion:positionHyperregion];
 
   [(SBPIPInteractionController *)self _updateHyperregionVisualizationIfNecessary];
-  if (v3)
+  if (commitCopy)
   {
-    v15 = [(_UIHyperInteractor *)self->_positionInteractor _region];
+    _region3 = [(_UIHyperInteractor *)self->_positionInteractor _region];
     [(_UIHyperInteractor *)self->_positionInteractor _commitTranslation];
     v34 = 0.0;
     v35 = 0.0;
-    v16 = [(_UIHyperInteractor *)self->_positionInteractor sbpip_isInteractive];
+    sbpip_isInteractive = [(_UIHyperInteractor *)self->_positionInteractor sbpip_isInteractive];
     if (!self->_pendingTransition || (v17 = objc_loadWeakRetained(&self->_interactionTargetView), [v17 _sbWindowScene], v18 = objc_claimAutoreleasedReturnValue(), -[_SBPIPInteractionControllerTransitionInfo targetWindowScene](self->_pendingTransition, "targetWindowScene"), v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, v18 != v19))
     {
       if (BSSettingFlagIsExplicitNo())
@@ -4734,11 +4734,11 @@ LABEL_28:
         return;
       }
 
-      if (v16)
+      if (sbpip_isInteractive)
       {
-        v22 = [(_UIHyperInteractor *)self->_positionInteractor _projectedPoint];
+        _projectedPoint = [(_UIHyperInteractor *)self->_positionInteractor _projectedPoint];
 LABEL_16:
-        v23 = [v15 _regionIndexForClosestPoint:&v34 toPoint:v22];
+        v23 = [_region3 _regionIndexForClosestPoint:&v34 toPoint:_projectedPoint];
         if (v23 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v24 = SBLogPIP();
@@ -4751,8 +4751,8 @@ LABEL_16:
         else
         {
           v27 = v23;
-          v28 = [v15 _regions];
-          v24 = [v28 objectAtIndex:v27];
+          _regions = [_region3 _regions];
+          v24 = [_regions objectAtIndex:v27];
 
           self->_didLastSettleInStashedState = [(SBPIPInteractionController *)self _regionIsStashedOne:v24];
         }
@@ -4762,7 +4762,7 @@ LABEL_16:
         [(SBPIPPinchGestureRecognizer *)pinchGestureRecognizer setEnabled:v30];
         v31 = [(SBPIPInteractionController *)self _canonicalPositionForPoint:v34, v35];
         v32 = v31;
-        if (self->_didLastSettleInStashedState && v12 != v31)
+        if (self->_didLastSettleInStashedState && canonicalPosition != v31)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           [WeakRetained interactionController:self wantsStashTabHidden:0 left:(v32 & 0xFFFFFFFFFFFFFFFELL) == 2];
@@ -4774,7 +4774,7 @@ LABEL_16:
 
       if (self->_didLastSettleInStashedState || (BSSettingFlagIsYes() & 1) != 0 || [(SBPIPInteractionSettings *)self->_interactionSettings freePositioning]== 2)
       {
-        v22 = [(_UIHyperInteractor *)self->_positionInteractor _constrainedPoint];
+        _projectedPoint = [(_UIHyperInteractor *)self->_positionInteractor _constrainedPoint];
         goto LABEL_16;
       }
     }
@@ -4807,9 +4807,9 @@ LABEL_16:
   v13[3] = &__block_descriptor_40_e9_v16__0_d8l;
   *&v13[4] = v8;
   [v9 _mutateMaximumPoint:v13];
-  v10 = [(_UIHyperInteractor *)self->_scaleInteractor _extender];
+  _extender = [(_UIHyperInteractor *)self->_scaleInteractor _extender];
   [(SBPIPInteractionSettings *)self->_interactionSettings scaleExtenderMaximumDistance];
-  [v10 _setMaximumDistance:{fmax((v8 - v6) * v11, 0.0)}];
+  [_extender _setMaximumDistance:{fmax((v8 - v6) * v11, 0.0)}];
 
   return v9;
 }
@@ -4841,10 +4841,10 @@ double __47__SBPIPInteractionController__scaleHyperregion__block_invoke_2(uint64
   if ([(SBPIPInteractionController *)self _hasValidInteractionTargetView])
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-    v4 = [WeakRetained _sbWindowScene];
-    v5 = [v4 isMainDisplayWindowScene];
+    _sbWindowScene = [WeakRetained _sbWindowScene];
+    isMainDisplayWindowScene = [_sbWindowScene isMainDisplayWindowScene];
 
-    if ((v5 & 1) == 0)
+    if ((isMainDisplayWindowScene & 1) == 0)
     {
       [(SBPIPInteractionController *)self _updateGeometryContextBoundsUsingMainDisplayWindowScene];
     }
@@ -4885,13 +4885,13 @@ double __47__SBPIPInteractionController__scaleHyperregion__block_invoke_2(uint64
     v28[1] = v32;
     [(SBPIPInteractionController *)self _updateResolvedPositionHyperRegionsMapWithGeometry:v30 interactionState:v28];
     v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
-    v16 = [objc_alloc(MEMORY[0x277D76010]) initWithDimensions:2];
+    _region = [objc_alloc(MEMORY[0x277D76010]) initWithDimensions:2];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [(NSDictionary *)self->_resolvedPositionRegionsMap allValues];
-    v18 = [v17 countByEnumeratingWithState:&v24 objects:v36 count:16];
+    allValues = [(NSDictionary *)self->_resolvedPositionRegionsMap allValues];
+    v18 = [allValues countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v18)
     {
       v19 = v18;
@@ -4902,28 +4902,28 @@ double __47__SBPIPInteractionController__scaleHyperregion__block_invoke_2(uint64
         {
           if (*v25 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allValues);
           }
 
-          v22 = [*(*(&v24 + 1) + 8 * i) _regions];
-          [v15 addObjectsFromArray:v22];
+          _regions = [*(*(&v24 + 1) + 8 * i) _regions];
+          [v15 addObjectsFromArray:_regions];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v19 = [allValues countByEnumeratingWithState:&v24 objects:v36 count:16];
       }
 
       while (v19);
     }
 
-    [v16 _setRegions:v15];
+    [_region _setRegions:v15];
   }
 
   else
   {
-    v16 = [(_UIHyperInteractor *)self->_positionInteractor _region];
+    _region = [(_UIHyperInteractor *)self->_positionInteractor _region];
   }
 
-  return v16;
+  return _region;
 }
 
 - (void)_updatePIPSizeGeometryContext
@@ -4967,9 +4967,9 @@ double __47__SBPIPInteractionController__scaleHyperregion__block_invoke_2(uint64
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([v9 isMainDisplayWindowScene])
         {
-          v10 = [v9 interfaceOrientation];
-          [v9 _boundsForInterfaceOrientation:v10];
-          [(SBPIPInteractionController *)self _updateGeometryContextUsingTargetViewBounds:v10 orientation:?];
+          interfaceOrientation = [v9 interfaceOrientation];
+          [v9 _boundsForInterfaceOrientation:interfaceOrientation];
+          [(SBPIPInteractionController *)self _updateGeometryContextUsingTargetViewBounds:interfaceOrientation orientation:?];
           goto LABEL_11;
         }
       }
@@ -4987,16 +4987,16 @@ double __47__SBPIPInteractionController__scaleHyperregion__block_invoke_2(uint64
 LABEL_11:
 }
 
-- (BOOL)_updateGeometryContextUsingTargetViewBounds:(CGRect)a3 orientation:(int64_t)a4
+- (BOOL)_updateGeometryContextUsingTargetViewBounds:(CGRect)bounds orientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v30 = *MEMORY[0x277D85DE8];
   orientation = self->_geometryContext.orientation;
-  v10 = orientation != a4;
-  if (orientation != a4)
+  v10 = orientation != orientation;
+  if (orientation != orientation)
   {
     v12 = SBLogPIP();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -5009,13 +5009,13 @@ LABEL_11:
       v24 = 2048;
       v25 = v16;
       v26 = 2048;
-      v27 = a4;
+      orientationCopy = orientation;
       v28 = 1024;
       v29 = enabled;
       _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "[%{public}@][Layout] Updating orientation: old{%ld} new{%ld} while enabled{%{BOOL}u}", &v22, 0x26u);
     }
 
-    self->_geometryContext.orientation = a4;
+    self->_geometryContext.orientation = orientation;
   }
 
   v32.origin.x = x;
@@ -5040,7 +5040,7 @@ LABEL_11:
       v24 = 2114;
       v25 = v19;
       v26 = 2114;
-      v27 = v20;
+      orientationCopy = v20;
       v28 = 1024;
       v29 = v21;
       _os_log_debug_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEBUG, "[%{public}@][Layout] Updating container bounds: old{%{public}@ new{%{public}@} while enabled{%{BOOL}u}", &v22, 0x26u);
@@ -5081,7 +5081,7 @@ LABEL_11:
   return result;
 }
 
-- (void)_updateResolvedPositionHyperRegionsMapWithGeometry:(SBPIPPositionGeometryContext *)a3 interactionState:(SBPIPPositionInteractionStateContext *)a4
+- (void)_updateResolvedPositionHyperRegionsMapWithGeometry:(SBPIPPositionGeometryContext *)geometry interactionState:(SBPIPPositionInteractionStateContext *)state
 {
   v37 = *MEMORY[0x277D85DE8];
   v32 = 0u;
@@ -5107,31 +5107,31 @@ LABEL_11:
         }
 
         v14 = *(*(&v32 + 1) + 8 * v12);
-        v15 = *&a3->stashedMinimumPadding.bottom;
-        v31[10] = *&a3->stashedMinimumPadding.top;
+        v15 = *&geometry->stashedMinimumPadding.bottom;
+        v31[10] = *&geometry->stashedMinimumPadding.top;
         v31[11] = v15;
-        v31[12] = *&a3->offscreenCorners;
-        v16 = *&a3->edgeInsets.bottom;
-        v31[6] = *&a3->edgeInsets.top;
+        v31[12] = *&geometry->offscreenCorners;
+        v16 = *&geometry->edgeInsets.bottom;
+        v31[6] = *&geometry->edgeInsets.top;
         v31[7] = v16;
-        v17 = *&a3->minimumPadding.bottom;
-        v31[8] = *&a3->minimumPadding.top;
+        v17 = *&geometry->minimumPadding.bottom;
+        v31[8] = *&geometry->minimumPadding.top;
         v31[9] = v17;
-        pipAnchorPointOffset = a3->pipAnchorPointOffset;
-        v31[2] = a3->pipStashedSize;
+        pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+        v31[2] = geometry->pipStashedSize;
         v31[3] = pipAnchorPointOffset;
-        size = a3->containerBounds.size;
-        v31[4] = a3->containerBounds.origin;
+        size = geometry->containerBounds.size;
+        v31[4] = geometry->containerBounds.origin;
         v31[5] = size;
-        pipLastSteadySize = a3->pipLastSteadySize;
-        v31[0] = a3->pipCurrentSize;
+        pipLastSteadySize = geometry->pipLastSteadySize;
+        v31[0] = geometry->pipCurrentSize;
         v31[1] = pipLastSteadySize;
-        v21 = *&a4->currentPosition.y;
-        v29[2] = *&a4->initialPosition.y;
+        v21 = *&state->currentPosition.y;
+        v29[2] = *&state->initialPosition.y;
         v29[3] = v21;
-        projectedPositionStashProgress = a4->projectedPositionStashProgress;
-        v22 = *&a4->projectedPosition.y;
-        v29[0] = *&a4->isStashed;
+        projectedPositionStashProgress = state->projectedPositionStashProgress;
+        v22 = *&state->projectedPosition.y;
+        v29[0] = *&state->isStashed;
         v29[1] = v22;
         v10 = [v14 positionRegionsForRegions:v13 geometry:v31 interaction:v29];
 
@@ -5168,11 +5168,11 @@ LABEL_11:
 {
   v68 = *MEMORY[0x277D85DE8];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 pipDefaults];
-  v5 = [v4 visualizePositionRegions];
+  pipDefaults = [v3 pipDefaults];
+  visualizePositionRegions = [pipDefaults visualizePositionRegions];
 
   positionRegionVisualizationView = self->_positionRegionVisualizationView;
-  if (v5)
+  if (visualizePositionRegions)
   {
     if (!positionRegionVisualizationView)
     {
@@ -5182,12 +5182,12 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_interactionTargetView);
-    v10 = [WeakRetained superview];
+    superview = [WeakRetained superview];
 
-    [v10 addSubview:self->_positionRegionVisualizationView];
+    [superview addSubview:self->_positionRegionVisualizationView];
     v11 = self->_positionRegionVisualizationView;
-    v12 = [(_UIHyperInteractor *)self->_positionInteractor _region];
-    [(SBPIPInteractionControllerVisualizationView *)v11 setRegionUnion:v12];
+    _region = [(_UIHyperInteractor *)self->_positionInteractor _region];
+    [(SBPIPInteractionControllerVisualizationView *)v11 setRegionUnion:_region];
 
     v13 = self->_positionRegionVisualizationView;
     p_geometryContext = &self->_geometryContext;
@@ -5239,7 +5239,7 @@ LABEL_11:
           if (([v30 isMainDisplayWindowScene] & 1) == 0)
           {
             v39 = self->_positionRegionVisualizationView;
-            v40 = [(NSMutableArray *)self->_positionRegionComposers firstObject];
+            firstObject = [(NSMutableArray *)self->_positionRegionComposers firstObject];
             v41 = *&self->_geometryContext.stashedMinimumPadding.bottom;
             v49[10] = *&self->_geometryContext.stashedMinimumPadding.top;
             v49[11] = v41;
@@ -5259,7 +5259,7 @@ LABEL_11:
             v46 = self->_geometryContext.pipLastSteadySize;
             v49[0] = p_geometryContext->pipCurrentSize;
             v49[1] = v46;
-            [(SBPIPInteractionController *)self regionComposer:v40 transformGeometryContext:v49 toWindowScene:v30];
+            [(SBPIPInteractionController *)self regionComposer:firstObject transformGeometryContext:v49 toWindowScene:v30];
             [(SBPIPInteractionControllerVisualizationView *)v39 setExtendedGeometryContext:&pipCurrentSize];
 
             goto LABEL_18;
@@ -5302,7 +5302,7 @@ LABEL_18:
     [(SBPIPInteractionController *)self _currentPositionInteractionStateContext];
     [(SBPIPInteractionControllerVisualizationView *)v47 setInteractionContext:&pipCurrentSize];
     v48 = self->_positionRegionVisualizationView;
-    [v10 bounds];
+    [superview bounds];
     [(SBPIPInteractionControllerVisualizationView *)v48 setFrame:?];
     [(SBPIPInteractionControllerVisualizationView *)self->_positionRegionVisualizationView setNeedsLayout];
     [(SBPIPInteractionControllerVisualizationView *)self->_positionRegionVisualizationView layoutIfNeeded];
@@ -5316,11 +5316,11 @@ LABEL_18:
   }
 }
 
-- (BOOL)_regionIsStashedOne:(id)a3
+- (BOOL)_regionIsStashedOne:(id)one
 {
-  v4 = a3;
-  v5 = [(_UIHyperregionUnion *)self->_stashedLeftRegion _regions];
-  v6 = [v5 containsObject:v4];
+  oneCopy = one;
+  _regions = [(_UIHyperregionUnion *)self->_stashedLeftRegion _regions];
+  v6 = [_regions containsObject:oneCopy];
 
   if (v6)
   {
@@ -5329,27 +5329,27 @@ LABEL_18:
 
   else
   {
-    v8 = [(_UIHyperregionUnion *)self->_stashedRightRegion _regions];
-    v7 = [v8 containsObject:v4];
+    _regions2 = [(_UIHyperregionUnion *)self->_stashedRightRegion _regions];
+    v7 = [_regions2 containsObject:oneCopy];
   }
 
   return v7;
 }
 
-- (void)addPositionRegionComposer:(id)a3
+- (void)addPositionRegionComposer:(id)composer
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  composerCopy = composer;
+  v7 = composerCopy;
+  if (!composerCopy)
   {
     [SBPIPInteractionController addPositionRegionComposer:];
-    v5 = 0;
+    composerCopy = 0;
   }
 
-  if (([(NSMutableArray *)self->_positionRegionComposers containsObject:v5]& 1) != 0)
+  if (([(NSMutableArray *)self->_positionRegionComposers containsObject:composerCopy]& 1) != 0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBPIPInteractionController.m" lineNumber:2289 description:{@"[%@] already added to this interaction controller [%@]", v7, self->_shortDescription}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBPIPInteractionController.m" lineNumber:2289 description:{@"[%@] already added to this interaction controller [%@]", v7, self->_shortDescription}];
   }
 
   else
@@ -5359,21 +5359,21 @@ LABEL_18:
   }
 }
 
-- (void)positionRegionComposerDidInvalidate:(id)a3
+- (void)positionRegionComposerDidInvalidate:(id)invalidate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  invalidateCopy = invalidate;
+  if (!invalidateCopy)
   {
     [SBPIPInteractionController positionRegionComposerDidInvalidate:];
   }
 
-  if ([(NSMutableArray *)self->_positionRegionComposers containsObject:v5])
+  if ([(NSMutableArray *)self->_positionRegionComposers containsObject:invalidateCopy])
   {
-    [(NSMutableArray *)self->_positionRegionComposers removeObject:v5];
-    [v5 setDelegate:0];
-    v6 = SBLogPIP();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    [(NSMutableArray *)self->_positionRegionComposers removeObject:invalidateCopy];
+    [invalidateCopy setDelegate:0];
+    currentHandler = SBLogPIP();
+    if (os_log_type_enabled(currentHandler, OS_LOG_TYPE_DEFAULT))
     {
       v7 = _SBFLoggingMethodProem();
       *buf = 138543874;
@@ -5381,30 +5381,30 @@ LABEL_18:
       v11 = 2114;
       v12 = objc_opt_class();
       v13 = 2048;
-      v14 = v5;
+      v14 = invalidateCopy;
       v8 = v12;
-      _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@][Hyper] invalidated: %{public}@(%p)", buf, 0x20u);
+      _os_log_impl(&dword_21ED4E000, currentHandler, OS_LOG_TYPE_DEFAULT, "[%{public}@][Hyper] invalidated: %{public}@(%p)", buf, 0x20u);
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBPIPInteractionController.m" lineNumber:2300 description:@"[%@] already removed from this interaction controller [%@]", v5, self->_shortDescription];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBPIPInteractionController.m" lineNumber:2300 description:@"[%@] already removed from this interaction controller [%@]", invalidateCopy, self->_shortDescription];
   }
 }
 
-- (void)positionRegionComposerNeedsUpdate:(id)a3 behavior:(int)a4
+- (void)positionRegionComposerNeedsUpdate:(id)update behavior:(int)behavior
 {
-  v4 = *&a4;
+  v4 = *&behavior;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  updateCopy = update;
+  if (!updateCopy)
   {
     [SBPIPInteractionController positionRegionComposerNeedsUpdate:behavior:];
   }
 
-  if (([(NSMutableArray *)self->_positionRegionComposers containsObject:v6]& 1) == 0)
+  if (([(NSMutableArray *)self->_positionRegionComposers containsObject:updateCopy]& 1) == 0)
   {
     [SBPIPInteractionController positionRegionComposerNeedsUpdate:behavior:];
   }
@@ -5422,7 +5422,7 @@ LABEL_18:
       v13 = 2114;
       v14 = objc_opt_class();
       v15 = 2048;
-      v16 = v6;
+      v16 = updateCopy;
       v9 = v14;
       v10 = "[%{public}@][Hyper] enabled; needsUpdate: %{public}@(%p)";
 LABEL_10:
@@ -5442,7 +5442,7 @@ LABEL_10:
       v13 = 2114;
       v14 = objc_opt_class();
       v15 = 2048;
-      v16 = v6;
+      v16 = updateCopy;
       v9 = v14;
       v10 = "[%{public}@][Hyper] disabled; needsUpdate: %{public}@(%p)";
       goto LABEL_10;
@@ -5450,29 +5450,29 @@ LABEL_10:
   }
 }
 
-- (SBPIPPositionGeometryContext)regionComposer:(SEL)a3 transformGeometryContext:(id)a4 toWindowScene:(SBPIPPositionGeometryContext *)a5
+- (SBPIPPositionGeometryContext)regionComposer:(SEL)composer transformGeometryContext:(id)context toWindowScene:(SBPIPPositionGeometryContext *)scene
 {
-  v10 = a4;
+  contextCopy = context;
   v11 = a6;
   v12 = v11;
-  v13 = *&a5->stashedMinimumPadding.bottom;
-  *&retstr->stashedMinimumPadding.top = *&a5->stashedMinimumPadding.top;
+  v13 = *&scene->stashedMinimumPadding.bottom;
+  *&retstr->stashedMinimumPadding.top = *&scene->stashedMinimumPadding.top;
   *&retstr->stashedMinimumPadding.bottom = v13;
-  *&retstr->offscreenCorners = *&a5->offscreenCorners;
-  v14 = *&a5->edgeInsets.bottom;
-  *&retstr->edgeInsets.top = *&a5->edgeInsets.top;
+  *&retstr->offscreenCorners = *&scene->offscreenCorners;
+  v14 = *&scene->edgeInsets.bottom;
+  *&retstr->edgeInsets.top = *&scene->edgeInsets.top;
   *&retstr->edgeInsets.bottom = v14;
-  v15 = *&a5->minimumPadding.bottom;
-  *&retstr->minimumPadding.top = *&a5->minimumPadding.top;
+  v15 = *&scene->minimumPadding.bottom;
+  *&retstr->minimumPadding.top = *&scene->minimumPadding.top;
   *&retstr->minimumPadding.bottom = v15;
-  pipAnchorPointOffset = a5->pipAnchorPointOffset;
-  retstr->pipStashedSize = a5->pipStashedSize;
+  pipAnchorPointOffset = scene->pipAnchorPointOffset;
+  retstr->pipStashedSize = scene->pipStashedSize;
   retstr->pipAnchorPointOffset = pipAnchorPointOffset;
-  size = a5->containerBounds.size;
-  retstr->containerBounds.origin = a5->containerBounds.origin;
+  size = scene->containerBounds.size;
+  retstr->containerBounds.origin = scene->containerBounds.origin;
   retstr->containerBounds.size = size;
-  pipLastSteadySize = a5->pipLastSteadySize;
-  retstr->pipCurrentSize = a5->pipCurrentSize;
+  pipLastSteadySize = scene->pipLastSteadySize;
+  retstr->pipCurrentSize = scene->pipCurrentSize;
   retstr->pipLastSteadySize = pipLastSteadySize;
   if (v11 && ([v11 isMainDisplayWindowScene] & 1) == 0)
   {
@@ -5504,7 +5504,7 @@ LABEL_10:
   return result;
 }
 
-- (id)targetWindowSceneForRegionComposer:(id)a3
+- (id)targetWindowSceneForRegionComposer:(id)composer
 {
   [(SBPIPInteractionController *)self _updateTargetWindowSceneIfNeededUpdatingInteractors:0];
   targetWindowScene = self->_targetWindowScene;
@@ -5512,18 +5512,18 @@ LABEL_10:
   return targetWindowScene;
 }
 
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [v8 window];
-  v10 = [v9 screen];
-  v11 = [v10 fixedCoordinateSpace];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  window = [viewCopy window];
+  screen = [window screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
 
-  v12 = [v8 window];
-  [v12 convertPoint:v8 fromView:{x, y}];
-  [v9 convertPoint:v11 toCoordinateSpace:?];
+  window2 = [viewCopy window];
+  [window2 convertPoint:viewCopy fromView:{x, y}];
+  [window convertPoint:fixedCoordinateSpace toCoordinateSpace:?];
   v14 = v13;
   v16 = v15;
 
@@ -5533,15 +5533,15 @@ LABEL_10:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  if (![WeakRetained shouldPointerInteractionBeginForInteractionController:self atLocation:v8 inView:{x, y}])
+  if (![WeakRetained shouldPointerInteractionBeginForInteractionController:self atLocation:viewCopy inView:{x, y}])
   {
     v17 = 0;
     goto LABEL_9;
   }
 
-  v20 = [SBApp bannerManager];
-  v21 = [v9 _sbWindowScene];
-  v22 = [v20 pointInsideBanner:v21 inWindowScene:{v14, v16}];
+  bannerManager = [SBApp bannerManager];
+  _sbWindowScene = [window _sbWindowScene];
+  v22 = [bannerManager pointInsideBanner:_sbWindowScene inWindowScene:{v14, v16}];
 
   if ((v22 & 1) == 0)
   {
@@ -5586,10 +5586,10 @@ LABEL_4:
   [v6 interactionControllerDidEndEdgeResizing:self];
 }
 
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view
 {
-  v3 = [(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeSettings];
-  [v3 liveResizePointerInteractionRegionOuterLength];
+  edgeResizeSettings = [(SBPIPInteractionSettings *)self->_interactionSettings edgeResizeSettings];
+  [edgeResizeSettings liveResizePointerInteractionRegionOuterLength];
   UIEdgeInsetsMakeWithEdges();
   v5 = v4;
   v7 = v6;
@@ -5607,7 +5607,7 @@ LABEL_4:
   return result;
 }
 
-- (id)regionAtLocation:(CGPoint)a3 forView:(id)a4
+- (id)regionAtLocation:(CGPoint)location forView:(id)view
 {
   v5 = MEMORY[0x277D75880];
   v6 = objc_opt_class();
@@ -5619,11 +5619,11 @@ LABEL_4:
   return v8;
 }
 
-- (id)styleForRegion:(id)a3 forView:(id)a4
+- (id)styleForRegion:(id)region forView:(id)view
 {
   interactionSettings = self->_interactionSettings;
-  v6 = a3;
-  v7 = [(SBPIPInteractionSettings *)interactionSettings edgeResizeSettings];
+  regionCopy = region;
+  edgeResizeSettings = [(SBPIPInteractionSettings *)interactionSettings edgeResizeSettings];
   if (!self->_pointerIsHoveringOverEdge && self->_hoveringOverEdge)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -5632,12 +5632,12 @@ LABEL_4:
 
   self->_pointerIsHoveringOverEdge = self->_hoveringOverEdge;
   v9 = objc_loadWeakRetained(&self->_interactionTargetView);
-  [v7 liveResizePointerInteractionRegionOuterLength];
+  [edgeResizeSettings liveResizePointerInteractionRegionOuterLength];
   UIEdgeInsetsMakeWithEdges();
   [v9 _setTouchInsets:?];
 
   pointerHitTestBlocker = self->_pointerHitTestBlocker;
-  [v6 rect];
+  [regionCopy rect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -5649,9 +5649,9 @@ LABEL_4:
   v21 = v20;
 
   hoveringOverEdge = self->_hoveringOverEdge;
-  [v7 liveResizePointerInteractionRegionInnerLength];
+  [edgeResizeSettings liveResizePointerInteractionRegionInnerLength];
   v24 = v23;
-  [v7 liveResizePointerInteractionRegionOuterLength];
+  [edgeResizeSettings liveResizePointerInteractionRegionOuterLength];
   v26 = [SBEdgeResizeSystemPointerInteractionHelper fancyResizePointerShapeHoveringOverEdge:hoveringOverEdge innerLengthOfInteractionRegion:v24 outerLengthOfInteractionRegion:v25 cornerRadii:v21, v21, v21, v21];
   v27 = [MEMORY[0x277D75890] styleWithShape:v26 constrainedAxes:0];
 

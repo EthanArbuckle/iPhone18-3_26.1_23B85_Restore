@@ -1,26 +1,26 @@
 @interface NIAcwgSFZoneUpdate
-- (NIAcwgSFZoneUpdate)initWithCoder:(id)a3;
-- (NIAcwgSFZoneUpdate)initWithSFZone:(int64_t)a3 btConnHandle:(unsigned __int16)a4 lastBtRssiValue:(char)a5 ioStateDisplacing:(BOOL)a6 explicitPAITriggered:(BOOL)a7 currentSFInBubble:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NIAcwgSFZoneUpdate)initWithCoder:(id)coder;
+- (NIAcwgSFZoneUpdate)initWithSFZone:(int64_t)zone btConnHandle:(unsigned __int16)handle lastBtRssiValue:(char)value ioStateDisplacing:(BOOL)displacing explicitPAITriggered:(BOOL)triggered currentSFInBubble:(BOOL)bubble;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIAcwgSFZoneUpdate
 
-- (NIAcwgSFZoneUpdate)initWithSFZone:(int64_t)a3 btConnHandle:(unsigned __int16)a4 lastBtRssiValue:(char)a5 ioStateDisplacing:(BOOL)a6 explicitPAITriggered:(BOOL)a7 currentSFInBubble:(BOOL)a8
+- (NIAcwgSFZoneUpdate)initWithSFZone:(int64_t)zone btConnHandle:(unsigned __int16)handle lastBtRssiValue:(char)value ioStateDisplacing:(BOOL)displacing explicitPAITriggered:(BOOL)triggered currentSFInBubble:(BOOL)bubble
 {
   v15.receiver = self;
   v15.super_class = NIAcwgSFZoneUpdate;
   result = [(NIAcwgSFZoneUpdate *)&v15 init];
   if (result)
   {
-    result->_currentZone = a3;
-    result->_btConnHandle = a4;
-    result->_lastBtRssiValue = a5;
-    result->_ioStateDisplacing = a6;
-    result->_explicitPAITriggered = a7;
-    result->_currentSFInBubble = a8;
+    result->_currentZone = zone;
+    result->_btConnHandle = handle;
+    result->_lastBtRssiValue = value;
+    result->_ioStateDisplacing = displacing;
+    result->_explicitPAITriggered = triggered;
+    result->_currentSFInBubble = bubble;
   }
 
   return result;
@@ -60,9 +60,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   currentZone = self->_currentZone;
   btConnHandle = self->_btConnHandle;
   lastBtRssiValue = self->_lastBtRssiValue;
@@ -73,24 +73,24 @@
   return [v4 initWithSFZone:currentZone btConnHandle:btConnHandle lastBtRssiValue:lastBtRssiValue ioStateDisplacing:ioStateDisplacing explicitPAITriggered:explicitPAITriggered currentSFInBubble:currentSFInBubble];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:LODWORD(self->_currentZone) forKey:@"currentZone"];
-  [v4 encodeInt:self->_btConnHandle forKey:@"btConnHandle"];
-  [v4 encodeInt:self->_lastBtRssiValue forKey:@"lastBtRssiValue"];
-  [v4 encodeBool:self->_ioStateDisplacing forKey:@"ioStateDisplacing"];
-  [v4 encodeBool:self->_explicitPAITriggered forKey:@"explicitPAITriggered"];
-  [v4 encodeBool:self->_currentSFInBubble forKey:@"currentSFInBubble"];
+  coderCopy = coder;
+  [coderCopy encodeInt:LODWORD(self->_currentZone) forKey:@"currentZone"];
+  [coderCopy encodeInt:self->_btConnHandle forKey:@"btConnHandle"];
+  [coderCopy encodeInt:self->_lastBtRssiValue forKey:@"lastBtRssiValue"];
+  [coderCopy encodeBool:self->_ioStateDisplacing forKey:@"ioStateDisplacing"];
+  [coderCopy encodeBool:self->_explicitPAITriggered forKey:@"explicitPAITriggered"];
+  [coderCopy encodeBool:self->_currentSFInBubble forKey:@"currentSFInBubble"];
 }
 
-- (NIAcwgSFZoneUpdate)initWithCoder:(id)a3
+- (NIAcwgSFZoneUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    self->_currentZone = [v4 decodeIntForKey:@"currentZone"];
+    self->_currentZone = [coderCopy decodeIntForKey:@"currentZone"];
     self->_btConnHandle = [v5 decodeIntForKey:@"btConnHandle"];
     self->_lastBtRssiValue = [v5 decodeIntForKey:@"lastBtRssiValue"];
     self->_ioStateDisplacing = [v5 decodeBoolForKey:@"ioStateDisplacing"];

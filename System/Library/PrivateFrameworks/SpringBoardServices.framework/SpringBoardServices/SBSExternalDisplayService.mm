@@ -1,15 +1,15 @@
 @interface SBSExternalDisplayService
 - (id)_connection;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)externalDisplayDidConnect:(id)a3;
-- (void)externalDisplayDidUpdateProperties:(id)a3;
-- (void)externalDisplayWillDisconnect:(id)a3;
-- (void)getConnectedDisplayInfoWithCompletionHandler:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setDisplayArrangement:(id)a3 forDisplay:(id)a4;
-- (void)setMirroringEnabled:(BOOL)a3 forDisplay:(id)a4;
-- (void)setSettings:(id)a3 forDisplay:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
+- (void)externalDisplayDidConnect:(id)connect;
+- (void)externalDisplayDidUpdateProperties:(id)properties;
+- (void)externalDisplayWillDisconnect:(id)disconnect;
+- (void)getConnectedDisplayInfoWithCompletionHandler:(id)handler;
+- (void)removeObserver:(id)observer;
+- (void)setDisplayArrangement:(id)arrangement forDisplay:(id)display;
+- (void)setMirroringEnabled:(BOOL)enabled forDisplay:(id)display;
+- (void)setSettings:(id)settings forDisplay:(id)display options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation SBSExternalDisplayService
@@ -28,18 +28,18 @@
   [(SBSExternalDisplayService *)&v5 dealloc];
 }
 
-- (void)getConnectedDisplayInfoWithCompletionHandler:(id)a3
+- (void)getConnectedDisplayInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SBSExternalDisplayService *)self _connection];
-  v6 = [v5 remoteTarget];
+  handlerCopy = handler;
+  _connection = [(SBSExternalDisplayService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__SBSExternalDisplayService_getConnectedDisplayInfoWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7360900;
-  v9 = v4;
-  v7 = v4;
-  [v6 getConnectedDisplayInfoWithCompletion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [remoteTarget getConnectedDisplayInfoWithCompletion:v8];
 }
 
 void __74__SBSExternalDisplayService_getConnectedDisplayInfoWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -64,48 +64,48 @@ void __74__SBSExternalDisplayService_getConnectedDisplayInfoWithCompletionHandle
   v6();
 }
 
-- (void)setDisplayArrangement:(id)a3 forDisplay:(id)a4
+- (void)setDisplayArrangement:(id)arrangement forDisplay:(id)display
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SBSExternalDisplayService *)self _connection];
-  v8 = [v9 remoteTarget];
-  [v8 setDisplayArrangement:v7 forDisplay:v6];
+  displayCopy = display;
+  arrangementCopy = arrangement;
+  _connection = [(SBSExternalDisplayService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  [remoteTarget setDisplayArrangement:arrangementCopy forDisplay:displayCopy];
 }
 
-- (void)setMirroringEnabled:(BOOL)a3 forDisplay:(id)a4
+- (void)setMirroringEnabled:(BOOL)enabled forDisplay:(id)display
 {
-  v4 = a3;
-  v6 = a4;
-  v9 = [(SBSExternalDisplayService *)self _connection];
-  v7 = [v9 remoteTarget];
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-  [v7 setDisplayMirroringEnabled:v8 forDisplay:v6];
+  enabledCopy = enabled;
+  displayCopy = display;
+  _connection = [(SBSExternalDisplayService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+  [remoteTarget setDisplayMirroringEnabled:v8 forDisplay:displayCopy];
 }
 
-- (void)setSettings:(id)a3 forDisplay:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)setSettings:(id)settings forDisplay:(id)display options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v15 = [(SBSExternalDisplayService *)self _connection];
-  v13 = [v15 remoteTarget];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
-  [v13 setDisplayModeSettings:v12 forDisplay:v11 options:v14 completionHandler:v10];
+  handlerCopy = handler;
+  displayCopy = display;
+  settingsCopy = settings;
+  _connection = [(SBSExternalDisplayService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
+  [remoteTarget setDisplayModeSettings:settingsCopy forDisplay:displayCopy options:v14 completionHandler:handlerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBSExternalDisplayService *)self _connection];
+  observerCopy = observer;
+  _connection = [(SBSExternalDisplayService *)self _connection];
   connectionQueue = self->_connectionQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__SBSExternalDisplayService_addObserver___block_invoke;
   v8[3] = &unk_1E735F7F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_async(connectionQueue, v8);
 }
 
@@ -127,15 +127,15 @@ uint64_t __41__SBSExternalDisplayService_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__SBSExternalDisplayService_removeObserver___block_invoke;
   v8[3] = &unk_1E735F7F0;
   v8[4] = self;
-  v5 = v4;
+  v5 = observerCopy;
   v9 = v5;
   v6 = MEMORY[0x193AFFB30](v8);
   connectionQueue = self->_connectionQueue;
@@ -161,10 +161,10 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)externalDisplayDidConnect:(id)a3
+- (void)externalDisplayDidConnect:(id)connect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectCopy = connect;
   dispatch_assert_queue_V2(self->_connectionQueue);
   v13 = 0u;
   v14 = 0u;
@@ -189,7 +189,7 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 externalDisplayDidConnect:{v4, v11}];
+          [v10 externalDisplayDidConnect:{connectCopy, v11}];
         }
 
         ++v9;
@@ -203,10 +203,10 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)externalDisplayWillDisconnect:(id)a3
+- (void)externalDisplayWillDisconnect:(id)disconnect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  disconnectCopy = disconnect;
   dispatch_assert_queue_V2(self->_connectionQueue);
   v13 = 0u;
   v14 = 0u;
@@ -231,7 +231,7 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 externalDisplayWillDisconnect:{v4, v11}];
+          [v10 externalDisplayWillDisconnect:{disconnectCopy, v11}];
         }
 
         ++v9;
@@ -245,10 +245,10 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)externalDisplayDidUpdateProperties:(id)a3
+- (void)externalDisplayDidUpdateProperties:(id)properties
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   dispatch_assert_queue_V2(self->_connectionQueue);
   v13 = 0u;
   v14 = 0u;
@@ -273,7 +273,7 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 externalDisplayDidUpdateProperties:{v4, v11}];
+          [v10 externalDisplayDidUpdateProperties:{propertiesCopy, v11}];
         }
 
         ++v9;
@@ -293,9 +293,9 @@ void __44__SBSExternalDisplayService_removeObserver___block_invoke(uint64_t a1)
   if (!connection)
   {
     v4 = MEMORY[0x1E698F498];
-    v5 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v6 = +[SBSExternalDisplayServiceSpecification identifier];
-    v7 = [v4 endpointForMachName:v5 service:v6 instance:0];
+    v7 = [v4 endpointForMachName:defaultShellMachName service:v6 instance:0];
 
     v8 = BSDispatchQueueCreateWithQualityOfService();
     connectionQueue = self->_connectionQueue;

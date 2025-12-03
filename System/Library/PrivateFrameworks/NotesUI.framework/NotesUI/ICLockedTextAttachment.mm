@@ -6,17 +6,17 @@
 
 - (int64_t)lockedAttachmentViewLayout
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  if ([v3 isURL])
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  if ([attachment isURL])
   {
 
     return 0;
   }
 
-  v4 = [(ICAbstractTextAttachment *)self attachment];
-  v5 = [v4 isScannedDocument];
+  attachment2 = [(ICAbstractTextAttachment *)self attachment];
+  isScannedDocument = [attachment2 isScannedDocument];
 
-  return !v5;
+  return !isScannedDocument;
 }
 
 @end

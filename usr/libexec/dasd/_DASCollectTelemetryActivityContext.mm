@@ -1,7 +1,7 @@
 @interface _DASCollectTelemetryActivityContext
 - (_DASCollectTelemetryActivityContext)init;
 - (id)description;
-- (void)updateWithtask:(id)a3 prewarmingStartDate:(id)a4 launchStartDate:(id)a5;
+- (void)updateWithtask:(id)withtask prewarmingStartDate:(id)date launchStartDate:(id)startDate;
 @end
 
 @implementation _DASCollectTelemetryActivityContext
@@ -29,21 +29,21 @@
   return v3;
 }
 
-- (void)updateWithtask:(id)a3 prewarmingStartDate:(id)a4 launchStartDate:(id)a5
+- (void)updateWithtask:(id)withtask prewarmingStartDate:(id)date launchStartDate:(id)startDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  withtaskCopy = withtask;
+  dateCopy = date;
+  startDateCopy = startDate;
   task = self->_task;
-  self->_task = v8;
-  v12 = v8;
+  self->_task = withtaskCopy;
+  v12 = withtaskCopy;
 
   prewarmingDataCollectionStartDate = self->_prewarmingDataCollectionStartDate;
-  self->_prewarmingDataCollectionStartDate = v9;
-  v14 = v9;
+  self->_prewarmingDataCollectionStartDate = dateCopy;
+  v14 = dateCopy;
 
   launchDataCollectionStartDate = self->_launchDataCollectionStartDate;
-  self->_launchDataCollectionStartDate = v10;
+  self->_launchDataCollectionStartDate = startDateCopy;
 
   self->_wasDeferred = 0;
 }

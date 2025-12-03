@@ -1,8 +1,8 @@
 @interface ICQUsageDetailHeader
 + (double)usageDetailHeaderHeight;
-- (ICQUsageDetailHeader)initWithFrame:(CGRect)a3;
+- (ICQUsageDetailHeader)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setLabelTextAndIconWithSpecifier:(id)a3;
+- (void)setLabelTextAndIconWithSpecifier:(id)specifier;
 @end
 
 @implementation ICQUsageDetailHeader
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (ICQUsageDetailHeader)initWithFrame:(CGRect)a3
+- (ICQUsageDetailHeader)initWithFrame:(CGRect)frame
 {
   v52[1] = *MEMORY[0x277D85DE8];
   v50.receiver = self;
   v50.super_class = ICQUsageDetailHeader;
-  v3 = [(ICQUsageDetailHeader *)&v50 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICQUsageDetailHeader *)&v50 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -57,8 +57,8 @@
     v17 = PreferencesTableViewHeaderColor();
     [(UILabel *)v3->_nameLabel setTextColor:v17];
 
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_nameLabel setBackgroundColor:v18];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_nameLabel setBackgroundColor:clearColor];
 
     [(UIStackView *)v3->_verticalStack addArrangedSubview:v3->_nameLabel];
     v19 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v10, v11, v12, v13}];
@@ -72,8 +72,8 @@
     v22 = PreferencesTableViewHeaderColor();
     [(UILabel *)v3->_versionLabel setTextColor:v22];
 
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_versionLabel setBackgroundColor:v23];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_versionLabel setBackgroundColor:clearColor2];
 
     [(UIStackView *)v3->_verticalStack addArrangedSubview:v3->_versionLabel];
     v24 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v10, v11, v12, v13}];
@@ -87,8 +87,8 @@
     v27 = PreferencesTableViewHeaderColor();
     [(UILabel *)v3->_sizeLabel setTextColor:v27];
 
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_sizeLabel setBackgroundColor:v28];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_sizeLabel setBackgroundColor:clearColor3];
 
     [(UIStackView *)v3->_verticalStack addArrangedSubview:v3->_sizeLabel];
     v29 = objc_opt_new();
@@ -105,9 +105,9 @@
     [(UIStackView *)v3->_horizontalStack setSpacing:15.0];
     [(ICQUsageDetailHeader *)v3 addSubview:v3->_horizontalStack];
     v33 = _NSDictionaryOfVariableBindings(&cfstr_VerticalstackH.isa, v3->_verticalStack, v3->_horizontalStack, 0);
-    v34 = [(UIStackView *)v3->_horizontalStack leadingAnchor];
-    v35 = [(ICQUsageDetailHeader *)v3 leadingAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    leadingAnchor = [(UIStackView *)v3->_horizontalStack leadingAnchor];
+    leadingAnchor2 = [(ICQUsageDetailHeader *)v3 leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     leadingMargin = v3->_leadingMargin;
     v3->_leadingMargin = v36;
 
@@ -132,29 +132,29 @@
     v46 = [v40 constraintsWithVisualFormat:@"V:|-(topPadding)-[_horizontalStack]-|" options:0 metrics:v45 views:v33];
     [v40 activateConstraints:v46];
 
-    v47 = [(ICQUsageDetailHeader *)v3 heightAnchor];
+    heightAnchor = [(ICQUsageDetailHeader *)v3 heightAnchor];
     [objc_opt_class() usageDetailHeaderHeight];
-    v48 = [v47 constraintEqualToConstant:?];
+    v48 = [heightAnchor constraintEqualToConstant:?];
     [v48 setActive:1];
   }
 
   return v3;
 }
 
-- (void)setLabelTextAndIconWithSpecifier:(id)a3
+- (void)setLabelTextAndIconWithSpecifier:(id)specifier
 {
-  v27 = a3;
-  v4 = [v27 name];
-  v5 = [v4 uppercaseString];
-  [(UILabel *)self->_nameLabel setText:v5];
+  specifierCopy = specifier;
+  name = [specifierCopy name];
+  uppercaseString = [name uppercaseString];
+  [(UILabel *)self->_nameLabel setText:uppercaseString];
 
-  v6 = [v27 propertyForKey:@"SIZE_VALUE"];
+  v6 = [specifierCopy propertyForKey:@"SIZE_VALUE"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v8 = v27;
+  v8 = specifierCopy;
   if (isKindOfClass)
   {
-    v9 = [v27 propertyForKey:@"SIZE_TITLE"];
+    v9 = [specifierCopy propertyForKey:@"SIZE_TITLE"];
     v10 = v9;
     if (v9)
     {
@@ -172,7 +172,7 @@
     v15 = [v13 stringWithFormat:@"%@ %@", v11, v14];
     [(UILabel *)self->_sizeLabel setText:v15];
 
-    v8 = v27;
+    v8 = specifierCopy;
   }
 
   v16 = [v8 propertyForKey:@"VERSION"];
@@ -195,25 +195,25 @@
 
   [(UILabel *)*p_versionLabel setHidden:v17 == 0];
   v23 = MEMORY[0x277D755B8];
-  v24 = [v27 identifier];
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  [v25 scale];
-  v26 = [v23 _applicationIconImageForBundleIdentifier:v24 format:2 scale:?];
+  identifier = [specifierCopy identifier];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v26 = [v23 _applicationIconImageForBundleIdentifier:identifier format:2 scale:?];
   [(UIImageView *)self->_appIcon setImage:v26];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(ICQUsageDetailHeader *)self superview];
+  superview = [(ICQUsageDetailHeader *)self superview];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [ICQUsageDetailHeader layoutSubviews];
   }
 
-  v4 = [(ICQUsageDetailHeader *)self superview];
-  v5 = [v4 readableContentGuide];
-  [v5 layoutFrame];
+  superview2 = [(ICQUsageDetailHeader *)self superview];
+  readableContentGuide = [superview2 readableContentGuide];
+  [readableContentGuide layoutFrame];
   v7 = v6;
 
   v8 = PSIsiPad();

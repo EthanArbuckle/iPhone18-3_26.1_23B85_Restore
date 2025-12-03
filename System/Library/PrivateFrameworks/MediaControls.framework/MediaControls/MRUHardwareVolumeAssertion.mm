@@ -1,6 +1,6 @@
 @interface MRUHardwareVolumeAssertion
 - (MPVolumeControllerDataSource)volumeDataSource;
-- (MRUHardwareVolumeAssertion)initWithHardwareVolumeController:(id)a3 volumeDataSource:(id)a4 reason:(id)a5;
+- (MRUHardwareVolumeAssertion)initWithHardwareVolumeController:(id)controller volumeDataSource:(id)source reason:(id)reason;
 - (MRUHardwareVolumeController)hardwareVolumeController;
 - (NSString)description;
 - (void)dealloc;
@@ -9,20 +9,20 @@
 
 @implementation MRUHardwareVolumeAssertion
 
-- (MRUHardwareVolumeAssertion)initWithHardwareVolumeController:(id)a3 volumeDataSource:(id)a4 reason:(id)a5
+- (MRUHardwareVolumeAssertion)initWithHardwareVolumeController:(id)controller volumeDataSource:(id)source reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  sourceCopy = source;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = MRUHardwareVolumeAssertion;
   v11 = [(MRUHardwareVolumeAssertion *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_hardwareVolumeController, v8);
-    objc_storeWeak(&v12->_volumeDataSource, v9);
-    objc_storeStrong(&v12->_reason, a5);
+    objc_storeWeak(&v11->_hardwareVolumeController, controllerCopy);
+    objc_storeWeak(&v12->_volumeDataSource, sourceCopy);
+    objc_storeStrong(&v12->_reason, reason);
   }
 
   return v12;

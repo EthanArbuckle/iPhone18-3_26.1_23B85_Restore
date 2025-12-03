@@ -1,7 +1,7 @@
 @interface BRCFairScheduler
-- (BRCFairScheduler)initWithWorkloop:(id)a3 name:(id)a4;
-- (id)sourceForBitIndex:(unint64_t)a3;
-- (void)addSource:(id)a3;
+- (BRCFairScheduler)initWithWorkloop:(id)workloop name:(id)name;
+- (id)sourceForBitIndex:(unint64_t)index;
+- (void)addSource:(id)source;
 - (void)cancel;
 - (void)close;
 - (void)dealloc;
@@ -29,10 +29,10 @@
     self->_lastVisitedBit = v6;
     v8 = [(BRCFairScheduler *)self sourceForBitIndex:?];
     v9 = v5 & ~i;
-    v10 = [v8 workloop];
+    workloop = [v8 workloop];
     workloop = self->_workloop;
 
-    if (v10 == workloop)
+    if (workloop == workloop)
     {
       [v8 _runEventHandler];
       dispatch_resume(self->_source);
@@ -44,31 +44,31 @@
 
     else
     {
-      v12 = [v8 workloop];
+      workloop2 = [v8 workloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __28__BRCFairScheduler_schedule__block_invoke;
       block[3] = &unk_2785010A0;
       v14 = v8;
-      v15 = self;
+      selfCopy = self;
       v16 = v9;
-      dispatch_async(v12, block);
+      dispatch_async(workloop2, block);
     }
   }
 }
 
-- (BRCFairScheduler)initWithWorkloop:(id)a3 name:(id)a4
+- (BRCFairScheduler)initWithWorkloop:(id)workloop name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  workloopCopy = workloop;
+  nameCopy = name;
   v27.receiver = self;
   v27.super_class = BRCFairScheduler;
   v9 = [(BRCFairScheduler *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workloop, a3);
-    objc_storeStrong(&v10->_name, a4);
+    objc_storeStrong(&v9->_workloop, workloop);
+    objc_storeStrong(&v10->_name, name);
     v11 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, v10->_workloop);
     source = v10->_source;
     v10->_source = v11;
@@ -111,19 +111,19 @@ void __42__BRCFairScheduler_initWithWorkloop_name___block_invoke(uint64_t a1)
   [WeakRetained schedule];
 }
 
-- (void)addSource:(id)a3
+- (void)addSource:(id)source
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  sourceForBitIndex = v4->_sourceForBitIndex;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v4->_maxRegistedSourceBit];
-  [(NSMutableDictionary *)sourceForBitIndex setObject:v13 forKeyedSubscript:v6];
+  sourceCopy = source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sourceForBitIndex = selfCopy->_sourceForBitIndex;
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:selfCopy->_maxRegistedSourceBit];
+  [(NSMutableDictionary *)sourceForBitIndex setObject:sourceCopy forKeyedSubscript:v6];
 
-  maxRegistedSourceBit = v4->_maxRegistedSourceBit;
-  v13[1] = maxRegistedSourceBit++;
-  v4->_maxRegistedSourceBit = maxRegistedSourceBit;
+  maxRegistedSourceBit = selfCopy->_maxRegistedSourceBit;
+  sourceCopy[1] = maxRegistedSourceBit++;
+  selfCopy->_maxRegistedSourceBit = maxRegistedSourceBit;
   if (maxRegistedSourceBit >= 0x41)
   {
     abc_report_panic_with_signature();
@@ -138,11 +138,11 @@ void __42__BRCFairScheduler_initWithWorkloop_name___block_invoke(uint64_t a1)
     }
 
     brc_append_system_info_to_message();
-    v12 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    __assert_rtn("[BRCFairScheduler addSource:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/foundation/BRCFairScheduler.m", 61, v12);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    __assert_rtn("[BRCFairScheduler addSource:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/foundation/BRCFairScheduler.m", 61, uTF8String);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -158,15 +158,15 @@ void __42__BRCFairScheduler_initWithWorkloop_name___block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (id)sourceForBitIndex:(unint64_t)a3
+- (id)sourceForBitIndex:(unint64_t)index
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  sourceForBitIndex = v4->_sourceForBitIndex;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sourceForBitIndex = selfCopy->_sourceForBitIndex;
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:index];
   v7 = [(NSMutableDictionary *)sourceForBitIndex objectForKeyedSubscript:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

@@ -1,24 +1,24 @@
 @interface NLNLPLanguageModelNode
-+ (id)conditionalProbabilitiesForStrings:(id)a3 modelState:(void *)a4 copyRequired:(BOOL)a5;
-- (NLNLPLanguageModelNode)initWithTokenIDs:(id)a3;
-- (id)_treeDescriptionWithPrefix:(id)a3;
++ (id)conditionalProbabilitiesForStrings:(id)strings modelState:(void *)state copyRequired:(BOOL)required;
+- (NLNLPLanguageModelNode)initWithTokenIDs:(id)ds;
+- (id)_treeDescriptionWithPrefix:(id)prefix;
 - (id)description;
-- (void)_addString:(id)a3 tokenIDs:(id)a4;
-- (void)_evaluateChildrenWithModelState:(void *)a3 copyRequired:(BOOL)a4 probability:(double)a5 dictionary:(id)a6;
-- (void)_setProbability:(double)a3 dictionary:(id)a4;
+- (void)_addString:(id)string tokenIDs:(id)ds;
+- (void)_evaluateChildrenWithModelState:(void *)state copyRequired:(BOOL)required probability:(double)probability dictionary:(id)dictionary;
+- (void)_setProbability:(double)probability dictionary:(id)dictionary;
 @end
 
 @implementation NLNLPLanguageModelNode
 
-- (NLNLPLanguageModelNode)initWithTokenIDs:(id)a3
+- (NLNLPLanguageModelNode)initWithTokenIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = NLNLPLanguageModelNode;
   v5 = [(NLNLPLanguageModelNode *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dsCopy copy];
     tokenIDs = v5->_tokenIDs;
     v5->_tokenIDs = v6;
 
@@ -26,9 +26,9 @@
     strings = v5->_strings;
     v5->_strings = v8;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     children = v5->_children;
-    v5->_children = v10;
+    v5->_children = dictionary;
   }
 
   return v5;
@@ -45,21 +45,21 @@
 
   if ([(NSMutableSet *)self->_strings count])
   {
-    v7 = [(NSMutableSet *)self->_strings allObjects];
-    v8 = [v7 componentsJoinedByString:@"/"];
+    allObjects = [(NSMutableSet *)self->_strings allObjects];
+    v8 = [allObjects componentsJoinedByString:@"/"];
     [v6 appendFormat:@" <%@>", v8];
   }
 
   return v6;
 }
 
-- (id)_treeDescriptionWithPrefix:(id)a3
+- (id)_treeDescriptionWithPrefix:(id)prefix
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = MEMORY[0x1E696AD60];
   v6 = [(NLNLPLanguageModelNode *)self description];
-  v7 = [v5 stringWithFormat:@"%@%@", v4, v6];
+  v7 = [v5 stringWithFormat:@"%@%@", prefixCopy, v6];
 
   v20 = 0u;
   v21 = 0u;
@@ -81,7 +81,7 @@
         }
 
         v12 = [(NSMutableDictionary *)self->_children objectForKey:*(*(&v18 + 1) + 8 * i)];
-        v13 = [v4 stringByAppendingString:@"  "];
+        v13 = [prefixCopy stringByAppendingString:@"  "];
         v14 = [v12 _treeDescriptionWithPrefix:v13];
         [v7 appendFormat:@"\n%@", v14];
       }
@@ -97,37 +97,37 @@
   return v7;
 }
 
-- (void)_addString:(id)a3 tokenIDs:(id)a4
+- (void)_addString:(id)string tokenIDs:(id)ds
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v6 count])
+  stringCopy = string;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [v6 firstObject];
-    v8 = [(NSMutableDictionary *)self->_children objectForKey:v7];
+    firstObject = [dsCopy firstObject];
+    v8 = [(NSMutableDictionary *)self->_children objectForKey:firstObject];
     if (!v8)
     {
       v9 = [NLNLPLanguageModelNode alloc];
-      v10 = [(NSArray *)self->_tokenIDs arrayByAddingObject:v7];
+      v10 = [(NSArray *)self->_tokenIDs arrayByAddingObject:firstObject];
       v8 = [(NLNLPLanguageModelNode *)v9 initWithTokenIDs:v10];
 
-      [(NSMutableDictionary *)self->_children setObject:v8 forKey:v7];
+      [(NSMutableDictionary *)self->_children setObject:v8 forKey:firstObject];
     }
 
-    v11 = [v6 subarrayWithRange:{1, objc_msgSend(v6, "count") - 1}];
-    [(NLNLPLanguageModelNode *)v8 _addString:v12 tokenIDs:v11];
+    v11 = [dsCopy subarrayWithRange:{1, objc_msgSend(dsCopy, "count") - 1}];
+    [(NLNLPLanguageModelNode *)v8 _addString:stringCopy tokenIDs:v11];
   }
 
   else
   {
-    [(NSMutableSet *)self->_strings addObject:v12];
+    [(NSMutableSet *)self->_strings addObject:stringCopy];
   }
 }
 
-- (void)_setProbability:(double)a3 dictionary:(id)a4
+- (void)_setProbability:(double)probability dictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -150,8 +150,8 @@
 
         v12 = *(*(&v16 + 1) + 8 * v11);
         v13 = [NLProbabilityInfo alloc];
-        v14 = [(NLProbabilityInfo *)v13 initWithProbability:0 flags:a3, v16];
-        [v6 setObject:v14 forKey:v12];
+        v14 = [(NLProbabilityInfo *)v13 initWithProbability:0 flags:probability, v16];
+        [dictionaryCopy setObject:v14 forKey:v12];
 
         ++v11;
       }
@@ -166,28 +166,28 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_evaluateChildrenWithModelState:(void *)a3 copyRequired:(BOOL)a4 probability:(double)a5 dictionary:(id)a6
+- (void)_evaluateChildrenWithModelState:(void *)state copyRequired:(BOOL)required probability:(double)probability dictionary:(id)dictionary
 {
-  v32 = a4;
+  requiredCopy = required;
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = [(NSMutableDictionary *)self->_children allKeys];
-  v11 = [v10 count];
-  v34 = a3;
+  dictionaryCopy = dictionary;
+  allKeys = [(NSMutableDictionary *)self->_children allKeys];
+  v11 = [allKeys count];
+  stateCopy = state;
   v12 = CoreLMCopyConditionalProbabilities();
   if (v12)
   {
     v13 = v12;
-    v30 = v10;
+    v30 = allKeys;
     if (v11 == CFArrayGetCount(v12))
     {
       v31 = v11;
-      v33 = v9;
+      v33 = dictionaryCopy;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v14 = v10;
+      v14 = allKeys;
       v15 = [v14 countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (v15)
       {
@@ -218,7 +218,7 @@
         v17 = 0;
       }
 
-      v9 = v33;
+      dictionaryCopy = v33;
       v21 = v31;
       if (v31)
       {
@@ -232,11 +232,11 @@
           valuePtr = 0.0;
           if (CFNumberGetValue(ValueAtIndex, kCFNumberDoubleType, &valuePtr))
           {
-            [v25 _setProbability:v9 dictionary:valuePtr * a5];
+            [v25 _setProbability:dictionaryCopy dictionary:valuePtr * probability];
             if (([v25 isLeaf] & 1) == 0)
             {
-              v27 = ++v23 < v17 || v32;
-              v28 = v34;
+              v27 = ++v23 < v17 || requiredCopy;
+              v28 = stateCopy;
               if (v27 == 1)
               {
                 v28 = CoreLMCreateCopy();
@@ -248,7 +248,7 @@
                 [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
                 if (CoreLMUpdateWithContext())
                 {
-                  [v25 _evaluateChildrenWithModelState:v28 copyRequired:0 probability:v33 dictionary:valuePtr * a5];
+                  [v25 _evaluateChildrenWithModelState:v28 copyRequired:0 probability:v33 dictionary:valuePtr * probability];
                 }
 
                 if (v27)
@@ -257,7 +257,7 @@
                 }
               }
 
-              v9 = v33;
+              dictionaryCopy = v33;
               v21 = v31;
             }
           }
@@ -270,30 +270,30 @@
     }
 
     CFRelease(v13);
-    v10 = v30;
+    allKeys = v30;
   }
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)conditionalProbabilitiesForStrings:(id)a3 modelState:(void *)a4 copyRequired:(BOOL)a5
++ (id)conditionalProbabilitiesForStrings:(id)strings modelState:(void *)state copyRequired:(BOOL)required
 {
-  v5 = a5;
+  requiredCopy = required;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  if (a4)
+  stringsCopy = strings;
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (state)
   {
-    v27 = v5;
+    v27 = requiredCopy;
     v10 = [NLNLPLanguageModelNode alloc];
     v11 = [(NLNLPLanguageModelNode *)v10 initWithTokenIDs:MEMORY[0x1E695E0F0]];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = v7;
-    v12 = v7;
+    v28 = stringsCopy;
+    v12 = stringsCopy;
     v13 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v13)
     {
@@ -319,20 +319,20 @@
       while (v14);
     }
 
-    [(NLNLPLanguageModelNode *)v11 _setProbability:v9 dictionary:1.0];
+    [(NLNLPLanguageModelNode *)v11 _setProbability:dictionary dictionary:1.0];
     if (![(NLNLPLanguageModelNode *)v11 isLeaf])
     {
-      [(NLNLPLanguageModelNode *)v11 _evaluateChildrenWithModelState:a4 copyRequired:v27 probability:v9 dictionary:1.0];
+      [(NLNLPLanguageModelNode *)v11 _evaluateChildrenWithModelState:state copyRequired:v27 probability:dictionary dictionary:1.0];
     }
 
-    v7 = v28;
+    stringsCopy = v28;
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = v7;
+  v19 = stringsCopy;
   v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v20)
   {
@@ -347,13 +347,13 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [v9 objectForKey:*(*(&v29 + 1) + 8 * j)];
-        if (!v24)
+        initWithInvalidProbability = [dictionary objectForKey:*(*(&v29 + 1) + 8 * j)];
+        if (!initWithInvalidProbability)
         {
-          v24 = [[NLProbabilityInfo alloc] initWithInvalidProbability];
+          initWithInvalidProbability = [[NLProbabilityInfo alloc] initWithInvalidProbability];
         }
 
-        [v8 addObject:v24];
+        [array addObject:initWithInvalidProbability];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -364,7 +364,7 @@
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface MTRXPCDeviceControllerParameters
-- (MTRXPCDeviceControllerParameters)initWithXPCConnectionBlock:(id)a3 uniqueIdentifier:(id)a4;
+- (MTRXPCDeviceControllerParameters)initWithXPCConnectionBlock:(id)block uniqueIdentifier:(id)identifier;
 @end
 
 @implementation MTRXPCDeviceControllerParameters
 
-- (MTRXPCDeviceControllerParameters)initWithXPCConnectionBlock:(id)a3 uniqueIdentifier:(id)a4
+- (MTRXPCDeviceControllerParameters)initWithXPCConnectionBlock:(id)block uniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = MTRXPCDeviceControllerParameters;
-  v8 = [(MTRDeviceControllerAbstractParameters *)&v14 _initInternal];
-  if (v8)
+  _initInternal = [(MTRDeviceControllerAbstractParameters *)&v14 _initInternal];
+  if (_initInternal)
   {
-    v9 = [v6 copy];
-    xpcConnectionBlock = v8->_xpcConnectionBlock;
-    v8->_xpcConnectionBlock = v9;
+    v9 = [blockCopy copy];
+    xpcConnectionBlock = _initInternal->_xpcConnectionBlock;
+    _initInternal->_xpcConnectionBlock = v9;
 
-    v11 = [v7 copy];
-    uniqueIdentifier = v8->_uniqueIdentifier;
-    v8->_uniqueIdentifier = v11;
+    v11 = [identifierCopy copy];
+    uniqueIdentifier = _initInternal->_uniqueIdentifier;
+    _initInternal->_uniqueIdentifier = v11;
   }
 
-  return v8;
+  return _initInternal;
 }
 
 @end

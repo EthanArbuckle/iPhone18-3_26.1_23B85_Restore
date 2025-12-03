@@ -1,20 +1,20 @@
 @interface SKStoreReviewViewController
-- (SKStoreReviewViewController)initWithReviewRequestToken:(id)a3 scene:(id)a4;
+- (SKStoreReviewViewController)initWithReviewRequestToken:(id)token scene:(id)scene;
 - (void)_addRemoteView;
-- (void)_didFinishWithResult:(unint64_t)a3 error:(id)a4;
+- (void)_didFinishWithResult:(unint64_t)result error:(id)error;
 - (void)_requestRemoteViewController;
 - (void)dealloc;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillShow:(id)show;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKStoreReviewViewController
 
-- (SKStoreReviewViewController)initWithReviewRequestToken:(id)a3 scene:(id)a4
+- (SKStoreReviewViewController)initWithReviewRequestToken:(id)token scene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  sceneCopy = scene;
   v14.receiver = self;
   v14.super_class = SKStoreReviewViewController;
   v8 = [(SKStoreReviewViewController *)&v14 initWithNibName:0 bundle:0];
@@ -24,11 +24,11 @@
     serviceProxy = v8->_serviceProxy;
     v8->_serviceProxy = v9;
 
-    v11 = [v6 copy];
+    v11 = [tokenCopy copy];
     reviewRequestToken = v8->_reviewRequestToken;
     v8->_reviewRequestToken = v11;
 
-    objc_storeStrong(&v8->_scene, a4);
+    objc_storeStrong(&v8->_scene, scene);
     [(SKStoreReviewViewController *)v8 setModalPresentationStyle:17];
     [(SKStoreReviewViewController *)v8 setModalTransitionStyle:12];
   }
@@ -38,14 +38,14 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 restoreFirstResponder];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] restoreFirstResponder];
 
   [(SKStoreReviewViewController *)self setPresentationWindow:0];
-  v5 = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelRequest invoke];
   [(SKUIServiceReviewViewController *)self->_serviceProxy setInvocationTarget:0];
   [(SKRemoteReviewViewController *)self->_remoteViewController setReviewViewController:0];
   [(SKRemoteReviewViewController *)self->_remoteViewController setDelegate:0];
@@ -59,36 +59,36 @@
   v6.receiver = self;
   v6.super_class = SKStoreReviewViewController;
   [(SKStoreReviewViewController *)&v6 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v5 = [(SKStoreReviewViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(SKStoreReviewViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   [(SKStoreReviewViewController *)self _requestRemoteViewController];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = SKStoreReviewViewController;
   [(SKStoreReviewViewController *)&v7 viewWillDisappear:?];
-  v5 = [(SKStoreReviewViewController *)self serviceProxy];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 finishImmediately:v6];
+  serviceProxy = [(SKStoreReviewViewController *)self serviceProxy];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:disappearCopy];
+  [serviceProxy finishImmediately:v6];
 }
 
-- (void)_didFinishWithResult:(unint64_t)a3 error:(id)a4
+- (void)_didFinishWithResult:(unint64_t)result error:(id)error
 {
-  v9 = a4;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  errorCopy = error;
+  if ((result & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v6 = [[SKXPCConnection alloc] initWithServiceName:0x1F29BF4C0];
     v7 = SSXPCCreateMessageDictionary();
-    v8 = [(SKStoreReviewViewController *)self reviewRequestToken];
-    MEMORY[0x1B274B250](v7, "1", v8);
+    reviewRequestToken = [(SKStoreReviewViewController *)self reviewRequestToken];
+    MEMORY[0x1B274B250](v7, "1", reviewRequestToken);
 
     [(SKXPCConnection *)v6 sendMessage:v7];
   }
@@ -115,7 +115,7 @@
   v6 = __59__SKStoreReviewViewController__requestRemoteViewController__block_invoke_2;
   v7 = &unk_1E7B27AA0;
   objc_copyWeak(&v9, &location);
-  v8 = self;
+  selfCopy = self;
   v3 = [SKRemoteReviewViewController requestViewController:@"ServiceReviewViewController" fromServiceWithBundleIdentifier:@"com.apple.ios.StoreKitUIService" connectionHandler:&v4];
   [(SKStoreReviewViewController *)self setCancelRequest:v3, v4, v5, v6, v7];
 
@@ -170,34 +170,34 @@ void __59__SKStoreReviewViewController__requestRemoteViewController__block_invok
 
 - (void)_addRemoteView
 {
-  v3 = [(SKStoreReviewViewController *)self remoteViewController];
-  if (v3)
+  remoteViewController = [(SKStoreReviewViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    v4 = v3;
-    v5 = [(SKStoreReviewViewController *)self isViewLoaded];
+    v4 = remoteViewController;
+    isViewLoaded = [(SKStoreReviewViewController *)self isViewLoaded];
 
-    if (v5)
+    if (isViewLoaded)
     {
-      v6 = [(SKStoreReviewViewController *)self remoteViewController];
-      v9 = [v6 view];
+      remoteViewController2 = [(SKStoreReviewViewController *)self remoteViewController];
+      view = [remoteViewController2 view];
 
-      v7 = [MEMORY[0x1E69DC888] clearColor];
-      [v9 setBackgroundColor:v7];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [view setBackgroundColor:clearColor];
 
-      v8 = [(SKStoreReviewViewController *)self view];
-      [v8 bounds];
-      [v9 setFrame:?];
-      [v9 setAutoresizingMask:18];
-      [v8 addSubview:v9];
+      view2 = [(SKStoreReviewViewController *)self view];
+      [view2 bounds];
+      [view setFrame:?];
+      [view setAutoresizingMask:18];
+      [view2 addSubview:view];
     }
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [(SKStoreReviewViewController *)self scene];
-  [v5 resignFirstResponderInScene:v4];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  scene = [(SKStoreReviewViewController *)self scene];
+  [mEMORY[0x1E69DC668] resignFirstResponderInScene:scene];
 }
 
 @end

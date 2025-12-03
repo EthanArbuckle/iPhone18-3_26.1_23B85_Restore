@@ -1,16 +1,16 @@
 @interface ClimateGrid
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate11ClimateGrid)initWithFrame:(CGRect)a3;
+- (_TtC7Climate11ClimateGrid)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ClimateGrid
 
-- (_TtC7Climate11ClimateGrid)initWithFrame:(CGRect)a3
+- (_TtC7Climate11ClimateGrid)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate11ClimateGrid_grid) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate11ClimateGrid_source) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate11ClimateGrid_items) = _swiftEmptyArrayStorage;

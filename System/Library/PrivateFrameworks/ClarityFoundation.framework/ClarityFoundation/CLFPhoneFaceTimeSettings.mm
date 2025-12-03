@@ -15,17 +15,17 @@ uint64_t __56__CLFPhoneFaceTimeSettings_GeneratedCode_sharedInstance__block_invo
 
 - (BOOL)dialerKeypadEnabled
 {
-  v2 = [(CLFBaseCommunicationLimitSettings *)self outgoingCommunicationLimit];
-  v3 = [v2 isEqualToString:@"everyone"];
+  outgoingCommunicationLimit = [(CLFBaseCommunicationLimitSettings *)self outgoingCommunicationLimit];
+  v3 = [outgoingCommunicationLimit isEqualToString:@"everyone"];
 
   return v3;
 }
 
 - (id)legacyOutgoingCommunicationLimit
 {
-  v2 = [(CLFPhoneFaceTimeSettings *)self legacyDialerKeypadEnabled];
+  legacyDialerKeypadEnabled = [(CLFPhoneFaceTimeSettings *)self legacyDialerKeypadEnabled];
   v3 = &CLFCommunicationLimitEveryone;
-  if (!v2)
+  if (!legacyDialerKeypadEnabled)
   {
     v3 = &CLFCommunicationLimitSelectedContacts;
   }

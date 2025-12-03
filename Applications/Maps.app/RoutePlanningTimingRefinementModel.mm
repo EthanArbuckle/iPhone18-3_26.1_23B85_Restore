@@ -8,7 +8,7 @@
 
 - (void)_assertValidValue
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -47,16 +47,16 @@
 
 - (BOOL)shouldShowHighlighted
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
-  v3 = [v2 isDepartNow];
+  value = [(RoutePlanningRefinementModel *)self value];
+  isDepartNow = [value isDepartNow];
 
-  return v3 ^ 1;
+  return isDepartNow ^ 1;
 }
 
 - (id)titleText
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
-  v3 = [RoutePlanningTimingFormatter textForTiming:v2];
+  value = [(RoutePlanningRefinementModel *)self value];
+  v3 = [RoutePlanningTimingFormatter textForTiming:value];
 
   return v3;
 }

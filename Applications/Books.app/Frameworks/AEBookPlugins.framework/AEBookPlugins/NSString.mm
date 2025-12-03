@@ -1,42 +1,42 @@
 @interface NSString
-+ (id)ae_searchResultDetailTextWithCount:(unint64_t)a3;
-+ (id)fastHashStringFromPath:(id)a3;
-+ (id)md5StringWithContentsOfFile:(id)a3;
-+ (id)pathRelativeToContentBase:(id)a3 forRelativePath:(id)a4 startingFromAbsoluteFolderPath:(id)a5;
++ (id)ae_searchResultDetailTextWithCount:(unint64_t)count;
++ (id)fastHashStringFromPath:(id)path;
++ (id)md5StringWithContentsOfFile:(id)file;
++ (id)pathRelativeToContentBase:(id)base forRelativePath:(id)path startingFromAbsoluteFolderPath:(id)folderPath;
 @end
 
 @implementation NSString
 
-+ (id)md5StringWithContentsOfFile:(id)a3
++ (id)md5StringWithContentsOfFile:(id)file
 {
-  Md5String = ITFileUtil::createMd5String(a3, a2);
+  Md5String = ITFileUtil::createMd5String(file, a2);
 
   return Md5String;
 }
 
-+ (id)fastHashStringFromPath:(id)a3
++ (id)fastHashStringFromPath:(id)path
 {
-  FastFileHash = ITFileUtil::createFastFileHash(a3, a2);
+  FastFileHash = ITFileUtil::createFastFileHash(path, a2);
 
   return FastFileHash;
 }
 
-+ (id)pathRelativeToContentBase:(id)a3 forRelativePath:(id)a4 startingFromAbsoluteFolderPath:(id)a5
++ (id)pathRelativeToContentBase:(id)base forRelativePath:(id)path startingFromAbsoluteFolderPath:(id)folderPath
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  baseCopy = base;
+  pathCopy = path;
+  folderPathCopy = folderPath;
+  v10 = pathCopy;
   v11 = v10;
-  if (([v9 isEqualToString:v7] & 1) == 0)
+  if (([folderPathCopy isEqualToString:baseCopy] & 1) == 0)
   {
-    v12 = [v9 stringByAppendingPathComponent:v10];
-    v13 = [v12 stringByStandardizingPath];
-    v14 = [v7 stringByStandardizingPath];
+    v12 = [folderPathCopy stringByAppendingPathComponent:v10];
+    stringByStandardizingPath = [v12 stringByStandardizingPath];
+    stringByStandardizingPath2 = [baseCopy stringByStandardizingPath];
     v11 = v10;
-    if ([v13 hasPrefix:v14])
+    if ([stringByStandardizingPath hasPrefix:stringByStandardizingPath2])
     {
-      v11 = [v13 substringFromIndex:{objc_msgSend(v14, "length")}];
+      v11 = [stringByStandardizingPath substringFromIndex:{objc_msgSend(stringByStandardizingPath2, "length")}];
 
       if ([v11 length] >= 2 && objc_msgSend(v11, "characterAtIndex:", 0) == 47)
       {
@@ -50,9 +50,9 @@
   return v11;
 }
 
-+ (id)ae_searchResultDetailTextWithCount:(unint64_t)a3
++ (id)ae_searchResultDetailTextWithCount:(unint64_t)count
 {
-  _sSo8NSStringC13AEBookPluginsE22searchResultDetailText5countSSSu_tFZ_0(a3);
+  _sSo8NSStringC13AEBookPluginsE22searchResultDetailText5countSSSu_tFZ_0(count);
   v3 = sub_139990();
 
   return v3;

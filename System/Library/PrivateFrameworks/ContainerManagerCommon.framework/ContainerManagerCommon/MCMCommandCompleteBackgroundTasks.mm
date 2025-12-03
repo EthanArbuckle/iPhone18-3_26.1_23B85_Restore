@@ -35,9 +35,9 @@
   v6 = MCMDataProtectionQueue();
   dispatch_barrier_async_and_wait(v6, &__block_literal_global_4);
 
-  v7 = [(MCMCommand *)self resultPromise];
+  resultPromise = [(MCMCommand *)self resultPromise];
   v8 = objc_opt_new();
-  [v7 completeWithResult:v8];
+  [resultPromise completeWithResult:v8];
 
   v9 = *MEMORY[0x1E69E9840];
 
@@ -47,23 +47,23 @@
 - (BOOL)preflightClientAllowed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 codeSignInfo];
-  v5 = [v4 entitlements];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
 
-  if ([v5 allowed])
+  if ([entitlements allowed])
   {
-    v6 = 1;
+    testabilityAllowed = 1;
   }
 
   else
   {
-    v6 = [v5 testabilityAllowed];
+    testabilityAllowed = [entitlements testabilityAllowed];
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return testabilityAllowed;
 }
 
 @end

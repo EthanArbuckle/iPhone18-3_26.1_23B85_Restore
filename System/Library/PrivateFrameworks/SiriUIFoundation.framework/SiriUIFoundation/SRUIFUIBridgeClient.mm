@@ -1,23 +1,23 @@
 @interface SRUIFUIBridgeClient
-- (SRUIFUIBridgeClient)initWithStateHandler:(id)a3;
-- (SRUIFUIBridgeClient)initWithStateHandler:(id)a3 delegateQueue:(id)a4;
+- (SRUIFUIBridgeClient)initWithStateHandler:(id)handler;
+- (SRUIFUIBridgeClient)initWithStateHandler:(id)handler delegateQueue:(id)queue;
 - (SRUIFUIBridgeClientDelegate)delegate;
-- (void)_setIsAttending:(BOOL)a3;
-- (void)endForReason:(int64_t)a3;
-- (void)idleAndQuietDidChange:(BOOL)a3;
+- (void)_setIsAttending:(BOOL)attending;
+- (void)endForReason:(int64_t)reason;
+- (void)idleAndQuietDidChange:(BOOL)change;
 - (void)newRequestWillStart;
 - (void)notifySessionThatTypingStarted;
 - (void)promptedUserForInput;
 - (void)stopAttending;
-- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)a3;
-- (void)uiBridgeServiceDidReceiveTasks:(id)a3;
+- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)start;
+- (void)uiBridgeServiceDidReceiveTasks:(id)tasks;
 - (void)uiBridgeServiceDidStartAttending;
-- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)a3;
-- (void)uiBridgeServiceReceivedNLRoutingDecision:(id)a3;
-- (void)uiBridgeServiceReceivedRequestProgress:(id)a3;
+- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)reason;
+- (void)uiBridgeServiceReceivedNLRoutingDecision:(id)decision;
+- (void)uiBridgeServiceReceivedRequestProgress:(id)progress;
 - (void)uiBridgeServiceReceivedShowAssetsDownloadPrompt;
-- (void)uiBridgeServiceReceivedSiriResponse:(id)a3;
-- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)a3;
+- (void)uiBridgeServiceReceivedSiriResponse:(id)response;
+- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)result;
 - (void)uiBridgeServiceWillStartAttending;
 @end
 
@@ -37,14 +37,14 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (SRUIFUIBridgeClient)initWithStateHandler:(id)a3
+- (SRUIFUIBridgeClient)initWithStateHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = SRUIFUIBridgeClient;
   v6 = [(SRUIFUIBridgeClient *)&v16 init];
-  objc_storeStrong(&v6->_stateHandler, a3);
+  objc_storeStrong(&v6->_stateHandler, handler);
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -70,15 +70,15 @@
   return v6;
 }
 
-- (SRUIFUIBridgeClient)initWithStateHandler:(id)a3 delegateQueue:(id)a4
+- (SRUIFUIBridgeClient)initWithStateHandler:(id)handler delegateQueue:(id)queue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = SRUIFUIBridgeClient;
-  v8 = a4;
+  queueCopy = queue;
   v9 = [(SRUIFUIBridgeClient *)&v20 init];
-  objc_storeStrong(&v9->_stateHandler, a3);
+  objc_storeStrong(&v9->_stateHandler, handler);
   v10 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -88,7 +88,7 @@
   }
 
   v11 = objc_alloc(MEMORY[0x277D61A20]);
-  v12 = [v11 initWithDelegate:v9 delegateQueue:{v8, v20.receiver, v20.super_class}];
+  v12 = [v11 initWithDelegate:v9 delegateQueue:{queueCopy, v20.receiver, v20.super_class}];
 
   client = v9->_client;
   v9->_client = v12;
@@ -106,16 +106,16 @@
   return v9;
 }
 
-- (void)idleAndQuietDidChange:(BOOL)a3
+- (void)idleAndQuietDidChange:(BOOL)change
 {
-  if (a3 && [(SRUIFUIBridgeClient *)self isAttending])
+  if (change && [(SRUIFUIBridgeClient *)self isAttending])
   {
-    v4 = [(SRUIFUIBridgeClient *)self _stateHandler];
-    [v4 performTransitionForEvent:9];
+    _stateHandler = [(SRUIFUIBridgeClient *)self _stateHandler];
+    [_stateHandler performTransitionForEvent:9];
   }
 }
 
-- (void)endForReason:(int64_t)a3
+- (void)endForReason:(int64_t)reason
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -123,7 +123,7 @@
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithInteger:a3];
+    v8 = [v6 numberWithInteger:reason];
     v10 = 136315394;
     v11 = "[SRUIFUIBridgeClient endForReason:]";
     v12 = 2112;
@@ -154,7 +154,7 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setIsAttending:(BOOL)a3
+- (void)_setIsAttending:(BOOL)attending
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -163,7 +163,7 @@
   block[2] = __39__SRUIFUIBridgeClient__setIsAttending___block_invoke;
   block[3] = &unk_279C627E0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  attendingCopy = attending;
   dispatch_sync(queue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -274,7 +274,7 @@ void __53__SRUIFUIBridgeClient_notifySessionThatTypingStarted__block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)a3
+- (void)uiBridgeServiceDidStopAttendingUnexpectedlyWithReason:(unint64_t)reason
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF098];
@@ -290,27 +290,27 @@ void __53__SRUIFUIBridgeClient_notifySessionThatTypingStarted__block_invoke(uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)a3
+- (void)uiBridgeServiceDetectedSpeechStart:(BOOL)start
 {
-  v3 = a3;
+  startCopy = start;
   v18 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SRUIFUIBridgeClient *)self _stateHandler];
-    v8 = SRUIFSiriSessionStateGetDescription([v7 state]);
+    _stateHandler = [(SRUIFUIBridgeClient *)self _stateHandler];
+    v8 = SRUIFSiriSessionStateGetDescription([_stateHandler state]);
     v12 = 136315650;
     v13 = "[SRUIFUIBridgeClient uiBridgeServiceDetectedSpeechStart:]";
     v14 = 1024;
-    v15 = v3;
+    v15 = startCopy;
     v16 = 2112;
     v17 = v8;
     _os_log_impl(&dword_26951F000, v6, OS_LOG_TYPE_DEFAULT, "%s #IntuitiveConversation - speech start detected, shouldDuckTTS: %d, currentState: %@", &v12, 0x1Cu);
   }
 
   [(SRUIFSiriSessionStateHandler *)self->_stateHandler performTransitionForEvent:11];
-  if (v3)
+  if (startCopy)
   {
     self->_didDuckTTS = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -344,7 +344,7 @@ void __58__SRUIFUIBridgeClient_uiBridgeServiceDetectedSpeechStart___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)a3
+- (void)uiBridgeServiceReceivedSpeechMitigationResult:(unint64_t)result
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CEF098];
@@ -354,18 +354,18 @@ void __58__SRUIFUIBridgeClient_uiBridgeServiceDetectedSpeechStart___block_invoke
     v13 = 136315394;
     v14 = "[SRUIFUIBridgeClient uiBridgeServiceReceivedSpeechMitigationResult:]";
     v15 = 2048;
-    v16 = a3;
+    resultCopy = result;
     _os_log_impl(&dword_26951F000, v6, OS_LOG_TYPE_DEFAULT, "%s #IntuitiveConversation - mitigationResult: %ld", &v13, 0x16u);
   }
 
-  if (a3 == 1)
+  if (result == 1)
   {
     v7 = 13;
   }
 
   else
   {
-    if (a3 != 3)
+    if (result != 3)
     {
       goto LABEL_8;
     }
@@ -373,8 +373,8 @@ void __58__SRUIFUIBridgeClient_uiBridgeServiceDetectedSpeechStart___block_invoke
     v7 = 12;
   }
 
-  v8 = [(SRUIFUIBridgeClient *)self _stateHandler];
-  [v8 performTransitionForEvent:v7];
+  _stateHandler = [(SRUIFUIBridgeClient *)self _stateHandler];
+  [_stateHandler performTransitionForEvent:v7];
 
 LABEL_8:
   if (self->_didDuckTTS)
@@ -436,11 +436,11 @@ void __69__SRUIFUIBridgeClient_uiBridgeServiceReceivedSpeechMitigationResult___b
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uiBridgeServiceDidReceiveTasks:(id)a3
+- (void)uiBridgeServiceDidReceiveTasks:(id)tasks
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  tasksCopy = tasks;
+  v5 = [tasksCopy count];
   v6 = MEMORY[0x277CEF098];
   if (v5 >= 2)
   {
@@ -451,8 +451,8 @@ void __69__SRUIFUIBridgeClient_uiBridgeServiceReceivedSpeechMitigationResult___b
     }
   }
 
-  v15 = [v4 lastObject];
-  v16 = [v15 taskId];
+  lastObject = [tasksCopy lastObject];
+  taskId = [lastObject taskId];
 
   v17 = *v6;
   if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
@@ -460,65 +460,65 @@ void __69__SRUIFUIBridgeClient_uiBridgeServiceReceivedSpeechMitigationResult___b
     v23 = 136315394;
     v24 = "[SRUIFUIBridgeClient uiBridgeServiceDidReceiveTasks:]";
     v25 = 2112;
-    v26 = v16;
+    v26 = taskId;
     _os_log_impl(&dword_26951F000, v17, OS_LOG_TYPE_DEFAULT, "%s Siri UI received task with identifier: %@", &v23, 0x16u);
   }
 
   latencyStateManager = self->_latencyStateManager;
-  v19 = [v16 UUIDString];
-  [(SRUIFLatencyStateManager *)latencyStateManager processTaskReceivedWithIdentifier:v19];
+  uUIDString = [taskId UUIDString];
+  [(SRUIFLatencyStateManager *)latencyStateManager processTaskReceivedWithIdentifier:uUIDString];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v19) = objc_opt_respondsToSelector();
+  LOBYTE(uUIDString) = objc_opt_respondsToSelector();
 
-  if (v19)
+  if (uUIDString)
   {
     v21 = objc_loadWeakRetained(&self->_delegate);
-    [v21 orchestrationBeganTaskWithIdentifier:v16];
+    [v21 orchestrationBeganTaskWithIdentifier:taskId];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uiBridgeServiceReceivedSiriResponse:(id)a3
+- (void)uiBridgeServiceReceivedSiriResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
-    [(SRUIFUIBridgeClient *)v4 uiBridgeServiceReceivedSiriResponse:v5];
+    [(SRUIFUIBridgeClient *)responseCopy uiBridgeServiceReceivedSiriResponse:v5];
   }
 
-  v6 = [v4 inAppResponse];
+  inAppResponse = [responseCopy inAppResponse];
 
-  if (v6)
+  if (inAppResponse)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained orchestrationDidPresentResponseFullyInApp];
   }
 }
 
-- (void)uiBridgeServiceReceivedRequestProgress:(id)a3
+- (void)uiBridgeServiceReceivedRequestProgress:(id)progress
 {
-  v4 = a3;
-  if ([v4 progressType] == 2)
+  progressCopy = progress;
+  if ([progressCopy progressType] == 2)
   {
-    v5 = [v4 intelligenceFlowProgressUpdate];
+    intelligenceFlowProgressUpdate = [progressCopy intelligenceFlowProgressUpdate];
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
     {
-      [(SRUIFUIBridgeClient *)v6 uiBridgeServiceReceivedRequestProgress:v5];
+      [(SRUIFUIBridgeClient *)v6 uiBridgeServiceReceivedRequestProgress:intelligenceFlowProgressUpdate];
     }
 
-    [(SRUIFLatencyStateManager *)self->_latencyStateManager processLatencyProgressUpdate:v5];
+    [(SRUIFLatencyStateManager *)self->_latencyStateManager processLatencyProgressUpdate:intelligenceFlowProgressUpdate];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      v10 = [(SRUIFLatencyStateManager *)self->_latencyStateManager getLatestLatencyInformation];
-      [v9 receivedLatencyInformation:v10];
+      getLatestLatencyInformation = [(SRUIFLatencyStateManager *)self->_latencyStateManager getLatestLatencyInformation];
+      [v9 receivedLatencyInformation:getLatestLatencyInformation];
     }
   }
 
@@ -527,18 +527,18 @@ void __69__SRUIFUIBridgeClient_uiBridgeServiceReceivedSpeechMitigationResult___b
     v11 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
     {
-      [(SRUIFUIBridgeClient *)v11 uiBridgeServiceReceivedRequestProgress:v4];
+      [(SRUIFUIBridgeClient *)v11 uiBridgeServiceReceivedRequestProgress:progressCopy];
     }
   }
 }
 
-- (void)uiBridgeServiceReceivedNLRoutingDecision:(id)a3
+- (void)uiBridgeServiceReceivedNLRoutingDecision:(id)decision
 {
-  v4 = a3;
+  decisionCopy = decision;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
-    [(SRUIFUIBridgeClient *)v4 uiBridgeServiceReceivedNLRoutingDecision:v5];
+    [(SRUIFUIBridgeClient *)decisionCopy uiBridgeServiceReceivedNLRoutingDecision:v5];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -547,7 +547,7 @@ void __69__SRUIFUIBridgeClient_uiBridgeServiceReceivedSpeechMitigationResult___b
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 receivedNLRoutingDecision:v4];
+    [v8 receivedNLRoutingDecision:decisionCopy];
   }
 }
 

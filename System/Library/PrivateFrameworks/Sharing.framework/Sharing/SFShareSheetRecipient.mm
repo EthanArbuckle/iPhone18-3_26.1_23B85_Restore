@@ -1,44 +1,44 @@
 @interface SFShareSheetRecipient
-- (SFShareSheetRecipient)initWithAirDropNode:(id)a3;
-- (SFShareSheetRecipient)initWithCoder:(id)a3;
-- (SFShareSheetRecipient)initWithNode:(id)a3;
-- (SFShareSheetRecipient)initWithPerson:(id)a3 handleValidationBlock:(id)a4;
-- (SFShareSheetRecipient)initWithRealName:(id)a3 displayName:(id)a4 formattedHandles:(id)a5 contactIdentifier:(id)a6;
-- (id)_handleFromPerson:(id)a3 withHandleValidationBlock:(id)a4;
+- (SFShareSheetRecipient)initWithAirDropNode:(id)node;
+- (SFShareSheetRecipient)initWithCoder:(id)coder;
+- (SFShareSheetRecipient)initWithNode:(id)node;
+- (SFShareSheetRecipient)initWithPerson:(id)person handleValidationBlock:(id)block;
+- (SFShareSheetRecipient)initWithRealName:(id)name displayName:(id)displayName formattedHandles:(id)handles contactIdentifier:(id)identifier;
+- (id)_handleFromPerson:(id)person withHandleValidationBlock:(id)block;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShareSheetRecipient
 
-- (SFShareSheetRecipient)initWithNode:(id)a3
+- (SFShareSheetRecipient)initWithNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 realName];
-  v6 = [v4 displayName];
-  v7 = [v4 formattedHandles];
-  v8 = [v4 contactIdentifier];
+  nodeCopy = node;
+  realName = [nodeCopy realName];
+  displayName = [nodeCopy displayName];
+  formattedHandles = [nodeCopy formattedHandles];
+  contactIdentifier = [nodeCopy contactIdentifier];
 
-  v9 = [(SFShareSheetRecipient *)self initWithRealName:v5 displayName:v6 formattedHandles:v7 contactIdentifier:v8];
+  v9 = [(SFShareSheetRecipient *)self initWithRealName:realName displayName:displayName formattedHandles:formattedHandles contactIdentifier:contactIdentifier];
   return v9;
 }
 
-- (SFShareSheetRecipient)initWithAirDropNode:(id)a3
+- (SFShareSheetRecipient)initWithAirDropNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 realName];
-  v6 = [v4 displayName];
-  v7 = [v4 formattedHandles];
-  v8 = [v4 contactIdentifier];
+  nodeCopy = node;
+  realName = [nodeCopy realName];
+  displayName = [nodeCopy displayName];
+  formattedHandles = [nodeCopy formattedHandles];
+  contactIdentifier = [nodeCopy contactIdentifier];
 
-  v9 = [(SFShareSheetRecipient *)self initWithRealName:v5 displayName:v6 formattedHandles:v7 contactIdentifier:v8];
+  v9 = [(SFShareSheetRecipient *)self initWithRealName:realName displayName:displayName formattedHandles:formattedHandles contactIdentifier:contactIdentifier];
   return v9;
 }
 
-- (SFShareSheetRecipient)initWithPerson:(id)a3 handleValidationBlock:(id)a4
+- (SFShareSheetRecipient)initWithPerson:(id)person handleValidationBlock:(id)block
 {
-  v6 = a3;
-  v7 = [(SFShareSheetRecipient *)self _handleFromPerson:v6 withHandleValidationBlock:a4];
+  personCopy = person;
+  v7 = [(SFShareSheetRecipient *)self _handleFromPerson:personCopy withHandleValidationBlock:block];
   if (v7)
   {
     [MEMORY[0x1E695DFD8] setWithObject:v7];
@@ -49,38 +49,38 @@
     [MEMORY[0x1E695DFD8] set];
   }
   v8 = ;
-  v9 = [v6 customIdentifier];
-  v10 = [v6 displayName];
-  v11 = [v6 contactIdentifier];
+  customIdentifier = [personCopy customIdentifier];
+  displayName = [personCopy displayName];
+  contactIdentifier = [personCopy contactIdentifier];
 
-  v12 = [(SFShareSheetRecipient *)self initWithRealName:v9 displayName:v10 formattedHandles:v8 contactIdentifier:v11];
+  v12 = [(SFShareSheetRecipient *)self initWithRealName:customIdentifier displayName:displayName formattedHandles:v8 contactIdentifier:contactIdentifier];
   return v12;
 }
 
-- (SFShareSheetRecipient)initWithRealName:(id)a3 displayName:(id)a4 formattedHandles:(id)a5 contactIdentifier:(id)a6
+- (SFShareSheetRecipient)initWithRealName:(id)name displayName:(id)displayName formattedHandles:(id)handles contactIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  handlesCopy = handles;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = SFShareSheetRecipient;
   v14 = [(SFShareSheetRecipient *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     realName = v14->_realName;
     v14->_realName = v15;
 
-    v17 = [v11 copy];
+    v17 = [displayNameCopy copy];
     displayName = v14->_displayName;
     v14->_displayName = v17;
 
-    v19 = [v12 copy];
+    v19 = [handlesCopy copy];
     formattedHandles = v14->_formattedHandles;
     v14->_formattedHandles = v19;
 
-    v21 = [v13 copy];
+    v21 = [identifierCopy copy];
     contactIdentifier = v14->_contactIdentifier;
     v14->_contactIdentifier = v21;
   }
@@ -109,30 +109,30 @@
   return v5;
 }
 
-- (SFShareSheetRecipient)initWithCoder:(id)a3
+- (SFShareSheetRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = SFShareSheetRecipient;
   v5 = [(SFShareSheetRecipient *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"realName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"realName"];
     realName = v5->_realName;
     v5->_realName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"formattedHandles"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"formattedHandles"];
     formattedHandles = v5->_formattedHandles;
     v5->_formattedHandles = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v15;
   }
@@ -140,41 +140,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   realName = self->_realName;
-  v5 = a3;
-  [v5 encodeObject:realName forKey:@"realName"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_formattedHandles forKey:@"formattedHandles"];
-  [v5 encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:realName forKey:@"realName"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_formattedHandles forKey:@"formattedHandles"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
 }
 
-- (id)_handleFromPerson:(id)a3 withHandleValidationBlock:(id)a4
+- (id)_handleFromPerson:(id)person withHandleValidationBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 personHandle];
-  v8 = [v7 value];
+  personCopy = person;
+  blockCopy = block;
+  personHandle = [personCopy personHandle];
+  value = [personHandle value];
 
-  if (v8 && (!v6 || ([v5 personHandle], v9 = objc_claimAutoreleasedReturnValue(), v10 = v6[2](v6, v9), v9, v10)))
+  if (value && (!blockCopy || ([personCopy personHandle], v9 = objc_claimAutoreleasedReturnValue(), v10 = blockCopy[2](blockCopy, v9), v9, v10)))
   {
-    v11 = [v5 personHandle];
-    v12 = [v11 value];
+    personHandle2 = [personCopy personHandle];
+    value2 = [personHandle2 value];
   }
 
   else
   {
-    v12 = 0;
+    value2 = 0;
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [v5 aliases];
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  aliases = [personCopy aliases];
+  v14 = [aliases countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
     v15 = v14;
@@ -185,19 +185,19 @@
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(aliases);
         }
 
         v18 = *(*(&v22 + 1) + 8 * i);
-        if (!v6 || v6[2](v6, *(*(&v22 + 1) + 8 * i)))
+        if (!blockCopy || blockCopy[2](blockCopy, *(*(&v22 + 1) + 8 * i)))
         {
-          v19 = [v18 value];
+          value3 = [v18 value];
 
-          v12 = v19;
+          value2 = value3;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v15 = [aliases countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v15);
@@ -205,7 +205,7 @@
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return value2;
 }
 
 @end

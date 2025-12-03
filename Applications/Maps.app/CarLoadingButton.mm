@@ -1,6 +1,6 @@
 @interface CarLoadingButton
 - (UIActivityIndicatorView)activityIndicator;
-- (void)setLoading:(BOOL)a3;
+- (void)setLoading:(BOOL)loading;
 @end
 
 @implementation CarLoadingButton
@@ -12,12 +12,12 @@
   return WeakRetained;
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    self->_loading = a3;
-    if (a3)
+    self->_loading = loading;
+    if (loading)
     {
       obj = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
       [obj setAccessibilityIdentifier:@"CarLoadingButtonActivityIndicator"];

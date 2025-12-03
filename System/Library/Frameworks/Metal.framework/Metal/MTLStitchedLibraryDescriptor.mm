@@ -1,7 +1,7 @@
 @interface MTLStitchedLibraryDescriptor
 - (MTLStitchedLibraryDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setFunctionGraphs:self->_functionGraphs];
@@ -33,10 +33,10 @@
   [(MTLStitchedLibraryDescriptor *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -68,7 +68,7 @@
           v9 = objc_opt_new();
         }
 
-        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", a3 + 4)}];
+        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", description + 4)}];
       }
 
       v8 = [(NSArray *)functionGraphs countByEnumeratingWithState:&v20 objects:v25 count:16];

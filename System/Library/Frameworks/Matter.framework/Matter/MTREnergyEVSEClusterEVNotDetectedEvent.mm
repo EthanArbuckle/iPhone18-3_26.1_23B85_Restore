@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterEVNotDetectedEvent
 - (MTREnergyEVSEClusterEVNotDetectedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterEVNotDetectedEvent);
-  v5 = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionID];
-  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionID:v5];
+  sessionID = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionID];
+  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionID:sessionID];
 
-  v6 = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self state];
-  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setState:v6];
+  state = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self state];
+  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setState:state];
 
-  v7 = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionDuration];
-  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionDuration:v7];
+  sessionDuration = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionDuration];
+  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionDuration:sessionDuration];
 
-  v8 = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionEnergyCharged];
-  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionEnergyCharged:v8];
+  sessionEnergyCharged = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionEnergyCharged];
+  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionEnergyCharged:sessionEnergyCharged];
 
-  v9 = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionEnergyDischarged];
-  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionEnergyDischarged:v9];
+  sessionEnergyDischarged = [(MTREnergyEVSEClusterEVNotDetectedEvent *)self sessionEnergyDischarged];
+  [(MTREnergyEVSEClusterEVNotDetectedEvent *)v4 setSessionEnergyDischarged:sessionEnergyDischarged];
 
   return v4;
 }

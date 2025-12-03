@@ -1,14 +1,14 @@
 @interface CertUIPrompt
-- (void)setHost:(id)a3;
-- (void)setService:(id)a3;
-- (void)showPromptWithOptions:(id)a3 responseBlock:(id)a4;
+- (void)setHost:(id)host;
+- (void)setService:(id)service;
+- (void)showPromptWithOptions:(id)options responseBlock:(id)block;
 @end
 
 @implementation CertUIPrompt
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  if (a3)
+  if (host)
   {
     sub_1004A5764();
     v4 = *self->_setHostname;
@@ -28,9 +28,9 @@
   v4(v5, "setHost:", v6);
 }
 
-- (void)setService:(id)a3
+- (void)setService:(id)service
 {
-  if (a3)
+  if (service)
   {
     sub_1004A5764();
     v4 = *self->_setService;
@@ -50,18 +50,18 @@
   v4(v5, "setService:", v6);
 }
 
-- (void)showPromptWithOptions:(id)a3 responseBlock:(id)a4
+- (void)showPromptWithOptions:(id)options responseBlock:(id)block
 {
-  v5 = _Block_copy(a4);
-  if (a3)
+  v5 = _Block_copy(block);
+  if (options)
   {
-    a3 = sub_1004A5514();
+    options = sub_1004A5514();
   }
 
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
 
-  sub_1002506B0(a3, sub_100250C98, v6);
+  sub_1002506B0(options, sub_100250C98, v6);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface STUIStatusBarSeparatorView
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarSeparatorView)initWithCoder:(id)a3;
-- (STUIStatusBarSeparatorView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarSeparatorView)initWithCoder:(id)coder;
+- (STUIStatusBarSeparatorView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)_commonInit;
 - (void)_configureLayer;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setLineHeight:(double)a3;
-- (void)setLineWidth:(double)a3;
+- (void)setLineHeight:(double)height;
+- (void)setLineWidth:(double)width;
 @end
 
 @implementation STUIStatusBarSeparatorView
 
-- (STUIStatusBarSeparatorView)initWithFrame:(CGRect)a3
+- (STUIStatusBarSeparatorView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarSeparatorView;
-  v3 = [(STUIStatusBarSeparatorView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarSeparatorView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (STUIStatusBarSeparatorView)initWithCoder:(id)a3
+- (STUIStatusBarSeparatorView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarSeparatorView;
-  v3 = [(STUIStatusBarSeparatorView *)&v6 initWithCoder:a3];
+  v3 = [(STUIStatusBarSeparatorView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -41,11 +41,11 @@
   return v4;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v5 = [a3 imageDimmedTintColor];
-  v4 = v5;
-  -[CALayer setBackgroundColor:](self->_dividerLayer, "setBackgroundColor:", [v5 CGColor]);
+  imageDimmedTintColor = [attributes imageDimmedTintColor];
+  v4 = imageDimmedTintColor;
+  -[CALayer setBackgroundColor:](self->_dividerLayer, "setBackgroundColor:", [imageDimmedTintColor CGColor]);
 }
 
 - (void)_commonInit
@@ -68,20 +68,20 @@
   return result;
 }
 
-- (void)setLineHeight:(double)a3
+- (void)setLineHeight:(double)height
 {
-  if (self->_lineHeight != a3)
+  if (self->_lineHeight != height)
   {
-    self->_lineHeight = a3;
+    self->_lineHeight = height;
     [(STUIStatusBarSeparatorView *)self _configureLayer];
   }
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  if (self->_lineWidth != a3)
+  if (self->_lineWidth != width)
   {
-    self->_lineWidth = a3;
+    self->_lineWidth = width;
     [(STUIStatusBarSeparatorView *)self _configureLayer];
   }
 }
@@ -90,12 +90,12 @@
 {
   if (!self->_dividerLayer)
   {
-    v3 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     dividerLayer = self->_dividerLayer;
-    self->_dividerLayer = v3;
+    self->_dividerLayer = layer;
 
-    v5 = [(STUIStatusBarSeparatorView *)self layer];
-    [v5 addSublayer:self->_dividerLayer];
+    layer2 = [(STUIStatusBarSeparatorView *)self layer];
+    [layer2 addSublayer:self->_dividerLayer];
   }
 
   [(STUIStatusBarSeparatorView *)self bounds];

@@ -1,10 +1,10 @@
 @interface HMFWoBLEInfo
-- (BOOL)isEqual:(id)a3;
-- (HMFWoBLEInfo)initWithBLEIdentifier:(id)a3;
-- (HMFWoBLEInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMFWoBLEInfo)initWithBLEIdentifier:(id)identifier;
+- (HMFWoBLEInfo)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFWoBLEInfo
@@ -12,32 +12,32 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMFWoBLEInfo *)self bleIdentifier];
-  v4 = [v2 stringWithFormat:@"<BTLE Identifier: %@>", v3];
+  bleIdentifier = [(HMFWoBLEInfo *)self bleIdentifier];
+  v4 = [v2 stringWithFormat:@"<BTLE Identifier: %@>", bleIdentifier];
 
   return v4;
 }
 
-- (HMFWoBLEInfo)initWithCoder:(id)a3
+- (HMFWoBLEInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woBLE.ID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woBLE.ID"];
 
   v6 = [(HMFWoBLEInfo *)self initWithBLEIdentifier:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFWoBLEInfo *)self bleIdentifier];
-  [v4 encodeObject:v5 forKey:@"HMFCI.woBLE.ID"];
+  coderCopy = coder;
+  bleIdentifier = [(HMFWoBLEInfo *)self bleIdentifier];
+  [coderCopy encodeObject:bleIdentifier forKey:@"HMFCI.woBLE.ID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -58,8 +58,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMFWoBLEInfo *)self bleIdentifier];
-      v8 = [(HMFWoBLEInfo *)v6 bleIdentifier];
+      bleIdentifier = [(HMFWoBLEInfo *)self bleIdentifier];
+      bleIdentifier2 = [(HMFWoBLEInfo *)v6 bleIdentifier];
       v9 = HMFEqualObjects();
     }
 
@@ -74,22 +74,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMFWoBLEInfo *)self bleIdentifier];
-  v3 = [v2 hash];
+  bleIdentifier = [(HMFWoBLEInfo *)self bleIdentifier];
+  v3 = [bleIdentifier hash];
 
   return v3;
 }
 
-- (HMFWoBLEInfo)initWithBLEIdentifier:(id)a3
+- (HMFWoBLEInfo)initWithBLEIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HMFWoBLEInfo;
   v6 = [(HMFWoBLEInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bleIdentifier, a3);
+    objc_storeStrong(&v6->_bleIdentifier, identifier);
   }
 
   return v7;

@@ -1,19 +1,19 @@
 @interface PBUIWallpaperWindowSceneSettingsDiffAction
 - (id)_wallpaperSceneSettingsDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation PBUIWallpaperWindowSceneSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  contextCopy = context;
+  diffCopy = diff;
+  sSceneCopy = sScene;
   v19 = objc_opt_class();
-  v20 = v14;
+  v20 = sceneCopy;
   if (v19)
   {
     if (objc_opt_isKindOfClass())
@@ -34,10 +34,10 @@
 
   v22 = v21;
 
-  v23 = [v18 settings];
+  settings = [sSceneCopy settings];
 
   v24 = objc_opt_class();
-  v25 = v23;
+  v25 = settings;
   if (v24)
   {
     if (objc_opt_isKindOfClass())
@@ -59,7 +59,7 @@
   v27 = v26;
 
   v28 = objc_opt_class();
-  v29 = v15;
+  v29 = settingsCopy;
   if (v28)
   {
     if (objc_opt_isKindOfClass())
@@ -100,8 +100,8 @@
   [PBUIWallpaperWindowSceneSettingsDiffAction _performActionsForUIScene:a2 withUpdatedFBSScene:self settingsDiff:? fromSettings:? transitionContext:? lifecycleActionType:?];
 LABEL_18:
   v36 = 0;
-  v32 = [(PBUIWallpaperWindowSceneSettingsDiffAction *)self _wallpaperSceneSettingsDiffInspector];
-  [v32 inspectDiff:v17 withContext:&v36];
+  _wallpaperSceneSettingsDiffInspector = [(PBUIWallpaperWindowSceneSettingsDiffAction *)self _wallpaperSceneSettingsDiffInspector];
+  [_wallpaperSceneSettingsDiffInspector inspectDiff:diffCopy withContext:&v36];
 
   if (v36)
   {

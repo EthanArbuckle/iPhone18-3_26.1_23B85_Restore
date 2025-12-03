@@ -1,22 +1,22 @@
 @interface SFBannerTheme
-- (BOOL)isEqual:(id)a3;
-- (SFBannerTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SFBannerTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor;
 @end
 
 @implementation SFBannerTheme
 
-- (SFBannerTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5
+- (SFBannerTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor
 {
   v11.receiver = self;
   v11.super_class = SFBannerTheme;
-  v6 = [(SFThemeColorBarTheme *)&v11 initWithBarTintStyle:a3 preferredBarTintColor:a4 controlsTintColor:a5];
+  v6 = [(SFThemeColorBarTheme *)&v11 initWithBarTintStyle:style preferredBarTintColor:color controlsTintColor:tintColor];
   if (v6)
   {
-    if (a4)
+    if (color)
     {
-      v7 = [MEMORY[0x1E69DC888] sf_transparentBarHairlineColor];
+      sf_transparentBarHairlineColor = [MEMORY[0x1E69DC888] sf_transparentBarHairlineColor];
       separatorColor = v6->_separatorColor;
-      v6->_separatorColor = v7;
+      v6->_separatorColor = sf_transparentBarHairlineColor;
     }
 
     v9 = v6;
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -37,7 +37,7 @@
   {
     v7.receiver = self;
     v7.super_class = SFBannerTheme;
-    if ([(SFThemeColorBarTheme *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(SFThemeColorBarTheme *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5 = WBSIsEqual();
     }

@@ -4,16 +4,16 @@
 - (AVFlashlight)init;
 - (BOOL)isAvailable;
 - (BOOL)isOverheated;
-- (BOOL)setFlashlightLevel:(float)a3 withError:(id *)a4;
-- (BOOL)turnPowerOnWithError:(id *)a3;
+- (BOOL)setFlashlightLevel:(float)level withError:(id *)error;
+- (BOOL)turnPowerOnWithError:(id *)error;
 - (float)beamWidth;
 - (float)flashlightLevel;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
+- (void)_handleNotification:(id)notification payload:(id)payload;
 - (void)_reconnectToServer;
 - (void)_setupFlashlight;
 - (void)_teardownFlashlight;
 - (void)dealloc;
-- (void)setBeamWidth:(float)a3;
+- (void)setBeamWidth:(float)width;
 - (void)turnPowerOff;
 @end
 
@@ -70,7 +70,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -236,7 +236,7 @@ LABEL_8:
   [(AVFlashlight *)&v3 dealloc];
 }
 
-- (BOOL)turnPowerOnWithError:(id *)a3
+- (BOOL)turnPowerOnWithError:(id *)error
 {
   if (dword_1ED806880)
   {
@@ -267,15 +267,15 @@ LABEL_8:
   }
 
   FigSimpleMutexUnlock();
-  if (a3 && v8)
+  if (error && v8)
   {
-    *a3 = AVLocalizedErrorWithUnderlyingOSStatus();
+    *error = AVLocalizedErrorWithUnderlyingOSStatus();
   }
 
   return v8 == 0;
 }
 
-- (BOOL)setFlashlightLevel:(float)a3 withError:(id *)a4
+- (BOOL)setFlashlightLevel:(float)level withError:(id *)error
 {
   if (dword_1ED806880)
   {
@@ -284,12 +284,12 @@ LABEL_8:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (a3 != 3.4028e38 && (a3 < 0.0 || a3 > 1.0))
+  if (level != 3.4028e38 && (level < 0.0 || level > 1.0))
   {
     v9 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = AVLocalizedError();
+      *error = AVLocalizedError();
     }
 
     return v9;
@@ -298,8 +298,8 @@ LABEL_8:
   FigSimpleMutexLock();
   internal = self->_internal;
   flashlightLevel = internal->flashlightLevel;
-  v12 = flashlightLevel != 1.0 || a3 != 3.4028e38;
-  v13 = flashlightLevel != a3 && v12;
+  v12 = flashlightLevel != 1.0 || level != 3.4028e38;
+  v13 = flashlightLevel != level && v12;
   if (!v13)
   {
     goto LABEL_24;
@@ -308,7 +308,7 @@ LABEL_8:
   flashlight = internal->flashlight;
   if (!flashlight)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -317,12 +317,12 @@ LABEL_8:
   }
 
   v15 = *(*(CMBaseObjectGetVTable() + 16) + 40);
-  if (!v15 || v15(flashlight, a3))
+  if (!v15 || v15(flashlight, level))
   {
-    if (a4)
+    if (error)
     {
 LABEL_23:
-      *a4 = AVLocalizedErrorWithUnderlyingOSStatus();
+      *error = AVLocalizedErrorWithUnderlyingOSStatus();
     }
 
 LABEL_24:
@@ -331,21 +331,21 @@ LABEL_24:
     return v9;
   }
 
-  if (a3 == 3.4028e38)
+  if (level == 3.4028e38)
   {
     v17 = self->_internal->flashlight;
     v18 = *(*(CMBaseObjectGetVTable() + 16) + 48);
-    a3 = 0.0;
+    level = 0.0;
     if (v18)
     {
-      a3 = v18(v17);
+      level = v18(v17);
     }
   }
 
   FigSimpleMutexUnlock();
   [(AVFlashlight *)self willChangeValueForKey:@"flashlightLevel"];
   FigSimpleMutexLock();
-  self->_internal->flashlightLevel = a3;
+  self->_internal->flashlightLevel = level;
   FigSimpleMutexUnlock();
   [(AVFlashlight *)self didChangeValueForKey:@"flashlightLevel"];
   return 1;
@@ -359,12 +359,12 @@ LABEL_24:
   return flashlightLevel;
 }
 
-- (void)setBeamWidth:(float)a3
+- (void)setBeamWidth:(float)width
 {
   internal = self->_internal;
   if (internal->beamWidthControlSupported)
   {
-    if (internal->minBeamWidth <= a3 && internal->maxBeamWidth >= a3)
+    if (internal->minBeamWidth <= width && internal->maxBeamWidth >= width)
     {
       if (dword_1ED806880)
       {
@@ -375,15 +375,15 @@ LABEL_24:
 
       FigSimpleMutexLock();
       v11 = self->_internal;
-      if (v11->beamWidth != a3 && (flashlight = v11->flashlight) != 0 && (minBeamWidth = v11->minBeamWidth, maxBeamWidth = v11->maxBeamWidth, (v15 = *(*(CMBaseObjectGetVTable() + 16) + 56)) != 0))
+      if (v11->beamWidth != width && (flashlight = v11->flashlight) != 0 && (minBeamWidth = v11->minBeamWidth, maxBeamWidth = v11->maxBeamWidth, (v15 = *(*(CMBaseObjectGetVTable() + 16) + 56)) != 0))
       {
-        v16 = v15(flashlight, (a3 - minBeamWidth) / (maxBeamWidth - minBeamWidth));
+        v16 = v15(flashlight, (width - minBeamWidth) / (maxBeamWidth - minBeamWidth));
         FigSimpleMutexUnlock();
         if (!v16)
         {
           [(AVFlashlight *)self willChangeValueForKey:@"beamWidth"];
           FigSimpleMutexLock();
-          self->_internal->beamWidth = a3;
+          self->_internal->beamWidth = width;
           FigSimpleMutexUnlock();
           [(AVFlashlight *)self didChangeValueForKey:@"beamWidth"];
         }
@@ -424,7 +424,7 @@ LABEL_24:
   return beamWidth;
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
   FigSimpleMutexLock();
   internal = self->_internal;
@@ -432,9 +432,9 @@ LABEL_24:
   overheated = internal->overheated;
   flashlightLevel = internal->flashlightLevel;
   beamWidth = internal->beamWidth;
-  if ([a3 isEqualToString:*MEMORY[0x1E69909D0]])
+  if ([notification isEqualToString:*MEMORY[0x1E69909D0]])
   {
-    v12 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "BOOLValue"}];
+    v12 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "BOOLValue"}];
     if (v12)
     {
       v13 = flashlightLevel;
@@ -448,18 +448,18 @@ LABEL_24:
     goto LABEL_5;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E69909E8]])
+  if ([notification isEqualToString:*MEMORY[0x1E69909E8]])
   {
-    v14 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "BOOLValue"}];
+    v14 = [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "BOOLValue"}];
     v12 = available;
 LABEL_8:
     v13 = flashlightLevel;
     goto LABEL_9;
   }
 
-  if ([a3 isEqualToString:*MEMORY[0x1E69909E0]])
+  if ([notification isEqualToString:*MEMORY[0x1E69909E0]])
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "floatValue"}];
+    [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "floatValue"}];
     v13 = v16;
     v12 = available;
 LABEL_5:
@@ -469,14 +469,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![a3 isEqualToString:*MEMORY[0x1E69909D8]])
+  if (![notification isEqualToString:*MEMORY[0x1E69909D8]])
   {
     v12 = available;
     v14 = overheated;
     goto LABEL_8;
   }
 
-  [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "floatValue"}];
+  [objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E69909C8]), "floatValue"}];
   v15 = self->_internal->minBeamWidth + (v17 * (self->_internal->maxBeamWidth - self->_internal->minBeamWidth));
   v12 = available;
   v14 = overheated;

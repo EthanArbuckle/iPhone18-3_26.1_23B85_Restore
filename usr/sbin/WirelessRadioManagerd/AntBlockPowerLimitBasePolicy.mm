@@ -1,8 +1,8 @@
 @interface AntBlockPowerLimitBasePolicy
 - (AntBlockPowerLimitBasePolicy)init;
 - (id)constructXpcMessage;
-- (void)extractPolicy:(id)a3;
-- (void)setParameterEnable:(BOOL)a3 CellularAntBitmap:(unsigned int)a4 MitigationType:(unsigned int)a5 CellularTxPowerCap:(int)a6 CoexTech:(unsigned int)a7 CellularBand:(unsigned int)a8 CellFreq:(unsigned int)a9 CellBW:(unsigned int)a10;
+- (void)extractPolicy:(id)policy;
+- (void)setParameterEnable:(BOOL)enable CellularAntBitmap:(unsigned int)bitmap MitigationType:(unsigned int)type CellularTxPowerCap:(int)cap CoexTech:(unsigned int)tech CellularBand:(unsigned int)band CellFreq:(unsigned int)freq CellBW:(unsigned int)self0;
 @end
 
 @implementation AntBlockPowerLimitBasePolicy
@@ -16,39 +16,39 @@
   return result;
 }
 
-- (void)setParameterEnable:(BOOL)a3 CellularAntBitmap:(unsigned int)a4 MitigationType:(unsigned int)a5 CellularTxPowerCap:(int)a6 CoexTech:(unsigned int)a7 CellularBand:(unsigned int)a8 CellFreq:(unsigned int)a9 CellBW:(unsigned int)a10
+- (void)setParameterEnable:(BOOL)enable CellularAntBitmap:(unsigned int)bitmap MitigationType:(unsigned int)type CellularTxPowerCap:(int)cap CoexTech:(unsigned int)tech CellularBand:(unsigned int)band CellFreq:(unsigned int)freq CellBW:(unsigned int)self0
 {
-  self->_mEnable = a3;
-  self->_mCellularAntBitmap = a4;
-  self->_mMitigationType = a5;
-  self->_mCellularTxPowerCap = a6;
-  self->_mCellularCoexTech = a7;
-  self->_mCellularBand = a8;
-  self->_mCellularFrequencyKHz = a9;
-  self->_mCellularBandwidthKHz = a10;
+  self->_mEnable = enable;
+  self->_mCellularAntBitmap = bitmap;
+  self->_mMitigationType = type;
+  self->_mCellularTxPowerCap = cap;
+  self->_mCellularCoexTech = tech;
+  self->_mCellularBand = band;
+  self->_mCellularFrequencyKHz = freq;
+  self->_mCellularBandwidthKHz = w;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  v20 = [v4 objectForKey:@"Enable"];
-  v16 = [v20 BOOLValue];
-  v19 = [v4 objectForKey:@"Cellular_Ant_Bitmap"];
-  v15 = [v19 integerValue];
-  v17 = [v4 objectForKey:@"Mitigation_Type"];
-  v14 = [v17 integerValue];
-  v5 = [v4 objectForKey:@"Cellular_TX_Power_Cap"];
+  policyCopy = policy;
+  v20 = [policyCopy objectForKey:@"Enable"];
+  bOOLValue = [v20 BOOLValue];
+  v19 = [policyCopy objectForKey:@"Cellular_Ant_Bitmap"];
+  integerValue = [v19 integerValue];
+  v17 = [policyCopy objectForKey:@"Mitigation_Type"];
+  integerValue2 = [v17 integerValue];
+  v5 = [policyCopy objectForKey:@"Cellular_TX_Power_Cap"];
   [v5 doubleValue];
   LODWORD(v3) = vcvtd_n_s64_f64(v6, 4uLL);
-  v7 = [v4 objectForKey:@"Coex_Tech"];
-  v8 = [v7 integerValue];
-  v9 = [v4 objectForKey:@"Cellular_Band"];
-  v10 = [v9 integerValue];
-  v11 = [v4 objectForKey:@"Cellular_Center_Frequency_KHz"];
-  v12 = [v11 integerValue];
-  v13 = [v4 objectForKey:@"Cellular_Bandwidth_KHz"];
+  v7 = [policyCopy objectForKey:@"Coex_Tech"];
+  integerValue3 = [v7 integerValue];
+  v9 = [policyCopy objectForKey:@"Cellular_Band"];
+  integerValue4 = [v9 integerValue];
+  v11 = [policyCopy objectForKey:@"Cellular_Center_Frequency_KHz"];
+  integerValue5 = [v11 integerValue];
+  v13 = [policyCopy objectForKey:@"Cellular_Bandwidth_KHz"];
 
-  -[AntBlockPowerLimitBasePolicy setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:CoexTech:CellularBand:CellFreq:CellBW:](self, "setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:CoexTech:CellularBand:CellFreq:CellBW:", v16, v15, v14, v3, v8, v10, __PAIR64__([v13 integerValue], v12));
+  -[AntBlockPowerLimitBasePolicy setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:CoexTech:CellularBand:CellFreq:CellBW:](self, "setParameterEnable:CellularAntBitmap:MitigationType:CellularTxPowerCap:CoexTech:CellularBand:CellFreq:CellBW:", bOOLValue, integerValue, integerValue2, v3, integerValue3, integerValue4, __PAIR64__([v13 integerValue], integerValue5));
 }
 
 - (id)constructXpcMessage

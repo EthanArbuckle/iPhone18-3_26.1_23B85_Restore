@@ -3,8 +3,8 @@
 - (BOOL)enhanceDialogueEnabledGlobalValue;
 - (PFPlaybackSettingsDefaults)init;
 - (float)playbackRateGlobalValue;
-- (void)setEnhanceDialogueEnabledGlobalValue:(BOOL)a3;
-- (void)setPlaybackRateGlobalValue:(float)a3;
+- (void)setEnhanceDialogueEnabledGlobalValue:(BOOL)value;
+- (void)setPlaybackRateGlobalValue:(float)value;
 @end
 
 @implementation PFPlaybackSettingsDefaults
@@ -23,30 +23,30 @@
 
 - (float)playbackRateGlobalValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlaybackSettingsDefaults.playbackRateGlobalValue.getter();
 
   return v3;
 }
 
-- (void)setPlaybackRateGlobalValue:(float)a3
+- (void)setPlaybackRateGlobalValue:(float)value
 {
-  v4 = self;
-  PlaybackSettingsDefaults.playbackRateGlobalValue.setter(a3);
+  selfCopy = self;
+  PlaybackSettingsDefaults.playbackRateGlobalValue.setter(value);
 }
 
 - (BOOL)enhanceDialogueEnabledGlobalValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlaybackSettingsDefaults.enhanceDialogueEnabledGlobalValue.getter();
 
   return v3 & 1;
 }
 
-- (void)setEnhanceDialogueEnabledGlobalValue:(BOOL)a3
+- (void)setEnhanceDialogueEnabledGlobalValue:(BOOL)value
 {
-  v4 = self;
-  PlaybackSettingsDefaults.enhanceDialogueEnabledGlobalValue.setter(a3);
+  selfCopy = self;
+  PlaybackSettingsDefaults.enhanceDialogueEnabledGlobalValue.setter(value);
 }
 
 - (PFPlaybackSettingsDefaults)init

@@ -1,35 +1,35 @@
 @interface NTKVideoListing
-- (BOOL)snapshotDiffers:(id)a3;
+- (BOOL)snapshotDiffers:(id)differs;
 - (CLKVideo)video;
-- (id)initForDevice:(id)a3 withName:(id)a4 videoName:(id)a5 transitionImageName:(id)a6 overlayColor:(id)a7 theme:(unint64_t)a8 variant:(int64_t)a9 clip:(int64_t)a10 tags:(unint64_t)a11;
+- (id)initForDevice:(id)device withName:(id)name videoName:(id)videoName transitionImageName:(id)imageName overlayColor:(id)color theme:(unint64_t)theme variant:(int64_t)variant clip:(int64_t)self0 tags:(unint64_t)self1;
 - (void)_setHasAssets;
 - (void)discardAssets;
 @end
 
 @implementation NTKVideoListing
 
-- (id)initForDevice:(id)a3 withName:(id)a4 videoName:(id)a5 transitionImageName:(id)a6 overlayColor:(id)a7 theme:(unint64_t)a8 variant:(int64_t)a9 clip:(int64_t)a10 tags:(unint64_t)a11
+- (id)initForDevice:(id)device withName:(id)name videoName:(id)videoName transitionImageName:(id)imageName overlayColor:(id)color theme:(unint64_t)theme variant:(int64_t)variant clip:(int64_t)self0 tags:(unint64_t)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v26 = a5;
-  v25 = a6;
-  v20 = a7;
+  deviceCopy = device;
+  nameCopy = name;
+  videoNameCopy = videoName;
+  imageNameCopy = imageName;
+  colorCopy = color;
   v27.receiver = self;
   v27.super_class = NTKVideoListing;
   v21 = [(NTKVideoListing *)&v27 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_device, a3);
-    objc_storeStrong(&v22->_name, a4);
-    objc_storeStrong(&v22->_videoName, a5);
-    objc_storeStrong(&v22->_transitionImageName, a6);
-    objc_storeStrong(&v22->_overlayColor, a7);
-    v22->_theme = a8;
-    v22->_variant = a9;
-    v22->_clip = a10;
-    v22->_tags = a11;
+    objc_storeStrong(&v21->_device, device);
+    objc_storeStrong(&v22->_name, name);
+    objc_storeStrong(&v22->_videoName, videoName);
+    objc_storeStrong(&v22->_transitionImageName, imageName);
+    objc_storeStrong(&v22->_overlayColor, color);
+    v22->_theme = theme;
+    v22->_variant = variant;
+    v22->_clip = clip;
+    v22->_tags = tags;
     v23 = v22;
   }
 
@@ -62,18 +62,18 @@
   return video;
 }
 
-- (BOOL)snapshotDiffers:(id)a3
+- (BOOL)snapshotDiffers:(id)differs
 {
-  v4 = a3;
+  differsCopy = differs;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 theme];
-    if (v6 == [(NTKVideoListing *)self theme])
+    v5 = differsCopy;
+    theme = [v5 theme];
+    if (theme == [(NTKVideoListing *)self theme])
     {
-      v7 = [v5 variant];
-      v8 = v7 != [(NTKVideoListing *)self variant];
+      variant = [v5 variant];
+      v8 = variant != [(NTKVideoListing *)self variant];
     }
 
     else

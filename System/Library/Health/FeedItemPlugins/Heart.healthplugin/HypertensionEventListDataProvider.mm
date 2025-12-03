@@ -1,26 +1,26 @@
 @interface HypertensionEventListDataProvider
 - (_TtC5Heart33HypertensionEventListDataProvider)init;
-- (_TtC5Heart33HypertensionEventListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4;
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5;
+- (_TtC5Heart33HypertensionEventListDataProvider)initWithDisplayType:(id)type profile:(id)profile;
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view;
 - (id)sampleTypes;
-- (id)viewControllerForItemAtIndexPath:(id)a3;
+- (id)viewControllerForItemAtIndexPath:(id)path;
 @end
 
 @implementation HypertensionEventListDataProvider
 
-- (_TtC5Heart33HypertensionEventListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4
+- (_TtC5Heart33HypertensionEventListDataProvider)initWithDisplayType:(id)type profile:(id)profile
 {
   sub_29D69567C(0, &qword_2A1A24918, 0x29EDBAA68);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  profileCopy = profile;
   result = [ObjCClassFromMetadata hypertensionEventType];
   if (result)
   {
     *(&self->super.super.isa + OBJC_IVAR____TtC5Heart33HypertensionEventListDataProvider_sampleType) = result;
     v12.receiver = self;
     v12.super_class = type metadata accessor for HypertensionEventListDataProvider();
-    v11 = [(WDSampleListDataProvider *)&v12 initWithDisplayType:v8 profile:v9];
+    v11 = [(WDSampleListDataProvider *)&v12 initWithDisplayType:typeCopy profile:profileCopy];
 
     return v11;
   }
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (id)viewControllerForItemAtIndexPath:(id)a3
+- (id)viewControllerForItemAtIndexPath:(id)path
 {
   v4 = sub_29D933DB8();
   v5 = *(v4 - 8);
@@ -41,7 +41,7 @@
   MEMORY[0x2A1C7C4A8](v4, v7);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29D933D58();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_29D754BA4();
 
   (*(v5 + 8))(v9, v4);
@@ -63,7 +63,7 @@
   return v6;
 }
 
-- (id)customCellForObject:(id)a3 indexPath:(id)a4 tableView:(id)a5
+- (id)customCellForObject:(id)object indexPath:(id)path tableView:(id)view
 {
   v8 = sub_29D933DB8();
   v9 = *(v8 - 8);
@@ -71,14 +71,14 @@
   MEMORY[0x2A1C7C4A8](v8, v11);
   v13 = v19 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_unknownObjectRetain();
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
+  pathCopy = path;
+  viewCopy = view;
+  selfCopy = self;
   sub_29D93A868();
   sub_29D936978();
   sub_29D933D58();
 
-  v17 = sub_29D7551EC(v19, v13, v15);
+  v17 = sub_29D7551EC(v19, v13, viewCopy);
   (*(v9 + 8))(v13, v8);
   sub_29D69417C(v19);
 

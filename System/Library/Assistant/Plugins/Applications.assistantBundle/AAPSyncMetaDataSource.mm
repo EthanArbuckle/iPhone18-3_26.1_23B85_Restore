@@ -1,13 +1,13 @@
 @interface AAPSyncMetaDataSource
-+ ($334330880F6F150C3C7EE8C53B00592A)_createSourceInfoForLastState:(id)a3 startAnchor:(id)a4 keyAnchor:(id)a5 validity:(id)a6 configuration:(id)a7;
-+ (id)projectedStateForKeyAnchor:(id)a3 withValidity:(id)a4;
-- (AAPSyncMetaDataSource)initWithLastState:(id)a3 startAnchor:(id)a4 keyAnchor:(id)a5 validity:(id)a6 configuration:(id)a7 observer:(id)a8;
++ ($334330880F6F150C3C7EE8C53B00592A)_createSourceInfoForLastState:(id)state startAnchor:(id)anchor keyAnchor:(id)keyAnchor validity:(id)validity configuration:(id)configuration;
++ (id)projectedStateForKeyAnchor:(id)anchor withValidity:(id)validity;
+- (AAPSyncMetaDataSource)initWithLastState:(id)state startAnchor:(id)anchor keyAnchor:(id)keyAnchor validity:(id)validity configuration:(id)configuration observer:(id)observer;
 - (void)dealloc;
 @end
 
 @implementation AAPSyncMetaDataSource
 
-- (AAPSyncMetaDataSource)initWithLastState:(id)a3 startAnchor:(id)a4 keyAnchor:(id)a5 validity:(id)a6 configuration:(id)a7 observer:(id)a8
+- (AAPSyncMetaDataSource)initWithLastState:(id)state startAnchor:(id)anchor keyAnchor:(id)keyAnchor validity:(id)validity configuration:(id)configuration observer:(id)observer
 {
   v18.receiver = self;
   v18.super_class = AAPSyncMetaDataSource;
@@ -21,12 +21,12 @@
     block[2] = sub_5320;
     block[3] = &unk_20930;
     block[4] = v14;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a5;
-    block[8] = a6;
-    block[9] = a7;
-    block[10] = a8;
+    block[5] = state;
+    block[6] = anchor;
+    block[7] = keyAnchor;
+    block[8] = validity;
+    block[9] = configuration;
+    block[10] = observer;
     dispatch_async(v15, block);
   }
 
@@ -41,15 +41,15 @@
   [(AAPSyncMetaDataSource *)&v3 dealloc];
 }
 
-+ (id)projectedStateForKeyAnchor:(id)a3 withValidity:(id)a4
++ (id)projectedStateForKeyAnchor:(id)anchor withValidity:(id)validity
 {
-  v4 = [a1 _createSourceInfoForLastState:0 startAnchor:0 keyAnchor:a3 validity:a4 configuration:0];
+  v4 = [self _createSourceInfoForLastState:0 startAnchor:0 keyAnchor:anchor validity:validity configuration:0];
   v6 = v5;
 
   return v6;
 }
 
-+ ($334330880F6F150C3C7EE8C53B00592A)_createSourceInfoForLastState:(id)a3 startAnchor:(id)a4 keyAnchor:(id)a5 validity:(id)a6 configuration:(id)a7
++ ($334330880F6F150C3C7EE8C53B00592A)_createSourceInfoForLastState:(id)state startAnchor:(id)anchor keyAnchor:(id)keyAnchor validity:(id)validity configuration:(id)configuration
 {
   v10 = objc_alloc_init(NSMutableArray);
   v77 = 0;
@@ -57,22 +57,22 @@
   v79 = 0x3052000000;
   v80 = sub_5CDC;
   v81 = sub_5CEC;
-  v11 = [a5 isNewerThanAnchor:{objc_msgSend(a3, "keyAnchor")}];
-  v12 = a5;
+  v11 = [keyAnchor isNewerThanAnchor:{objc_msgSend(state, "keyAnchor")}];
+  keyAnchorCopy = keyAnchor;
   if ((v11 & 1) == 0)
   {
-    v12 = [a3 keyAnchor];
+    keyAnchorCopy = [state keyAnchor];
   }
 
-  v82 = v12;
+  v82 = keyAnchorCopy;
   v73 = 0;
   v74 = &v73;
   v75 = 0x2020000000;
-  v76 = [a5 isEqualToAnchor:{objc_msgSend(a3, "keyAnchor")}] ^ 1;
-  v48 = a3;
-  if ((v74[3] & 1) != 0 || ([objc_msgSend(a4 "primitiveAnchor")] & 1) == 0)
+  v76 = [keyAnchor isEqualToAnchor:{objc_msgSend(state, "keyAnchor")}] ^ 1;
+  stateCopy = state;
+  if ((v74[3] & 1) != 0 || ([objc_msgSend(anchor "primitiveAnchor")] & 1) == 0)
   {
-    obj = [[NSMutableSet alloc] initWithSet:{objc_msgSend(a3, "apps")}];
+    obj = [[NSMutableSet alloc] initWithSet:{objc_msgSend(state, "apps")}];
     v14 = objc_alloc_init(NSMutableSet);
     v63 = _NSConcreteStackBlock;
     v64 = 3221225472;
@@ -80,14 +80,14 @@
     v66 = &unk_20998;
     v67 = obj;
     v68 = v14;
-    v69 = a7;
+    configurationCopy = configuration;
     v70 = v10;
     v71 = &v77;
     v72 = &v73;
     AFApplicationWorkspaceEnumerateInstalledUserVisibleApplications();
     if (*(v74 + 24) == 1)
     {
-      v15 = [a3 keyAnchor];
+      keyAnchor = [state keyAnchor];
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
@@ -106,8 +106,8 @@
             }
 
             v19 = *(*(&v59 + 1) + 8 * i);
-            v15 = [v15 anchorByIncrementingSubIndex];
-            v20 = [[AAPSyncMetaDataItemDelete alloc] initWithAppId:v19 anchor:v15];
+            keyAnchor = [keyAnchor anchorByIncrementingSubIndex];
+            v20 = [[AAPSyncMetaDataItemDelete alloc] initWithAppId:v19 anchor:keyAnchor];
             [v10 addObject:v20];
 
             v21 = AFSiriLogContextPlugin;
@@ -116,7 +116,7 @@
               *buf = 136315394;
               v84 = "+[AAPSyncMetaDataSource _createSourceInfoForLastState:startAnchor:keyAnchor:validity:configuration:]";
               v85 = 2112;
-              v86 = v20;
+              anchorCopy = v20;
               _os_log_debug_impl(&dword_0, v21, OS_LOG_TYPE_DEBUG, "%s com.apple.siri.applications: inserting delete metaDataItem=%@", buf, 0x16u);
             }
           }
@@ -128,7 +128,7 @@
       }
 
       v22 = 0;
-      a3 = v48;
+      state = stateCopy;
     }
 
     else if ([obj count])
@@ -171,8 +171,8 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v25 = [a3 deletes];
-  v26 = [v25 countByEnumeratingWithState:&v55 objects:v92 count:16];
+  deletes = [state deletes];
+  v26 = [deletes countByEnumeratingWithState:&v55 objects:v92 count:16];
   if (!v26)
   {
     goto LABEL_40;
@@ -186,7 +186,7 @@
     {
       if (*v56 != v27)
       {
-        objc_enumerationMutation(v25);
+        objc_enumerationMutation(deletes);
       }
 
       v29 = *(*(&v55 + 1) + 8 * v28);
@@ -198,11 +198,11 @@
           goto LABEL_35;
         }
 
-        v31 = [v29 appId];
+        appId = [v29 appId];
         *buf = 136315394;
         v84 = "+[AAPSyncMetaDataSource _createSourceInfoForLastState:startAnchor:keyAnchor:validity:configuration:]";
         v85 = 2112;
-        v86 = v31;
+        anchorCopy = appId;
         v32 = v30;
         v33 = "%s com.apple.siri.applications: not applying saved delete because the app has been re-added -> (%@)";
       }
@@ -219,7 +219,7 @@
         *buf = 136315394;
         v84 = "+[AAPSyncMetaDataSource _createSourceInfoForLastState:startAnchor:keyAnchor:validity:configuration:]";
         v85 = 2112;
-        v86 = v29;
+        anchorCopy = v29;
         v32 = v34;
         v33 = "%s com.apple.siri.applications: applying saved delete metaDataItem=%@";
       }
@@ -230,7 +230,7 @@ LABEL_35:
     }
 
     while (v26 != v28);
-    v35 = [v25 countByEnumeratingWithState:&v55 objects:v92 count:16];
+    v35 = [deletes countByEnumeratingWithState:&v55 objects:v92 count:16];
     v26 = v35;
   }
 
@@ -238,7 +238,7 @@ LABEL_35:
 LABEL_40:
   [v10 sortUsingComparator:&stru_209D8];
   v36 = objc_alloc_init(NSMutableArray);
-  v37 = [v48 stopAnchor];
+  stopAnchor = [stateCopy stopAnchor];
   v24 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
   v53 = 0u;
   v54 = 0u;
@@ -258,8 +258,8 @@ LABEL_40:
         }
 
         v41 = *(*(&v51 + 1) + 8 * j);
-        v42 = [v41 anchor];
-        if ([v42 isNewerThanAnchor:a4])
+        anchor = [v41 anchor];
+        if ([anchor isNewerThanAnchor:anchor])
         {
           [v24 addObject:v41];
           if ([v41 isMetaDataItemDelete])
@@ -267,9 +267,9 @@ LABEL_40:
             [v36 addObject:v41];
           }
 
-          if ([v42 isNewerThanAnchor:v37])
+          if ([anchor isNewerThanAnchor:stopAnchor])
           {
-            v37 = v42;
+            stopAnchor = anchor;
           }
         }
       }
@@ -286,9 +286,9 @@ LABEL_40:
     *buf = 136315906;
     v84 = "+[AAPSyncMetaDataSource _createSourceInfoForLastState:startAnchor:keyAnchor:validity:configuration:]";
     v85 = 2114;
-    v86 = a4;
+    anchorCopy = anchor;
     v87 = 2114;
-    v88 = v37;
+    v88 = stopAnchor;
     v89 = 2112;
     v90 = v24;
     _os_log_debug_impl(&dword_0, v43, OS_LOG_TYPE_DEBUG, "%s com.apple.siri.applications: sorted and trimmed metaData to range (%{public}@, %{public}@) -> %@", buf, 0x2Au);
@@ -297,7 +297,7 @@ LABEL_40:
   if (*(v74 + 24) == 1)
   {
     v44 = [AAPSyncState alloc];
-    v23 = [(AAPSyncState *)v44 initWithValidity:a6 version:4 keyAnchor:v78[5] startAnchor:a4 stopAnchor:v37 apps:v14 deletes:v36];
+    v23 = [(AAPSyncState *)v44 initWithValidity:validity version:4 keyAnchor:v78[5] startAnchor:anchor stopAnchor:stopAnchor apps:v14 deletes:v36];
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
     {
       sub_10900();
@@ -306,7 +306,7 @@ LABEL_40:
 
   else
   {
-    v23 = v48;
+    v23 = stateCopy;
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
     {
       sub_1088C();

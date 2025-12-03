@@ -1,54 +1,54 @@
 @interface _PBFPosterRoleProcessorTransaction
-+ (_PBFPosterRoleProcessorTransaction)transactionWithReason:(id)a3 context:(id)a4 userInfo:(id)a5 observers:(id)a6 processor:(id)a7;
++ (_PBFPosterRoleProcessorTransaction)transactionWithReason:(id)reason context:(id)context userInfo:(id)info observers:(id)observers processor:(id)processor;
 - (NSArray)emittedEvents;
 - (NSArray)executedChanges;
 - (NSString)description;
 - (PBFPosterRoleProcessor)processor;
 - (_PBFPosterRoleProcessorTransaction)init;
-- (void)appendEmittedEvent:(id)a3;
-- (void)appendExecutedChange:(id)a3;
+- (void)appendEmittedEvent:(id)event;
+- (void)appendExecutedChange:(id)change;
 - (void)cancel;
 - (void)invalidate;
 @end
 
 @implementation _PBFPosterRoleProcessorTransaction
 
-+ (_PBFPosterRoleProcessorTransaction)transactionWithReason:(id)a3 context:(id)a4 userInfo:(id)a5 observers:(id)a6 processor:(id)a7
++ (_PBFPosterRoleProcessorTransaction)transactionWithReason:(id)reason context:(id)context userInfo:(id)info observers:(id)observers processor:(id)processor
 {
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
+  contextCopy = context;
+  processorCopy = processor;
+  observersCopy = observers;
+  infoCopy = info;
+  reasonCopy = reason;
   v17 = objc_alloc_init(_PBFPosterRoleProcessorTransaction);
-  objc_storeWeak(&v17->_processor, v13);
+  objc_storeWeak(&v17->_processor, processorCopy);
 
-  v18 = [v16 copy];
+  v18 = [reasonCopy copy];
   reason = v17->_reason;
   v17->_reason = v18;
 
-  objc_storeStrong(&v17->_context, a4);
-  v20 = [v15 copy];
+  objc_storeStrong(&v17->_context, context);
+  v20 = [infoCopy copy];
 
   userInfo = v17->_userInfo;
   v17->_userInfo = v20;
 
-  v22 = [v12 pbf_transitionContextIdentifier];
-  v23 = [v22 UUIDString];
-  v24 = [v23 substringToIndex:7];
+  pbf_transitionContextIdentifier = [contextCopy pbf_transitionContextIdentifier];
+  uUIDString = [pbf_transitionContextIdentifier UUIDString];
+  v24 = [uUIDString substringToIndex:7];
   shortIdentifier = v17->_shortIdentifier;
   v17->_shortIdentifier = v24;
 
-  v26 = [v14 copy];
+  v26 = [observersCopy copy];
   observers = v17->_observers;
   v17->_observers = v26;
 
   if (objc_opt_respondsToSelector())
   {
-    v28 = [v12 pbf_transitionAffectedRoles];
-    if ([v28 count])
+    pbf_transitionAffectedRoles = [contextCopy pbf_transitionAffectedRoles];
+    if ([pbf_transitionAffectedRoles count])
     {
-      objc_storeStrong(&v17->_affectedRoles, v28);
+      objc_storeStrong(&v17->_affectedRoles, pbf_transitionAffectedRoles);
     }
   }
 
@@ -86,12 +86,12 @@
   return v2;
 }
 
-- (void)appendEmittedEvent:(id)a3
+- (void)appendEmittedEvent:(id)event
 {
-  v4 = a3;
-  if (v4 && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0 && ([(BSAtomicFlag *)self->_cancelFlag getFlag]& 1) == 0)
+  eventCopy = event;
+  if (eventCopy && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0 && ([(BSAtomicFlag *)self->_cancelFlag getFlag]& 1) == 0)
   {
-    [(NSMutableArray *)self->_emittedEvents addObject:v4];
+    [(NSMutableArray *)self->_emittedEvents addObject:eventCopy];
   }
 }
 
@@ -102,12 +102,12 @@
   return v2;
 }
 
-- (void)appendExecutedChange:(id)a3
+- (void)appendExecutedChange:(id)change
 {
-  v4 = a3;
-  if (v4 && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0 && ([(BSAtomicFlag *)self->_cancelFlag getFlag]& 1) == 0)
+  changeCopy = change;
+  if (changeCopy && ([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0 && ([(BSAtomicFlag *)self->_cancelFlag getFlag]& 1) == 0)
   {
-    [(NSMutableArray *)self->_executedChanges addObject:v4];
+    [(NSMutableArray *)self->_executedChanges addObject:changeCopy];
   }
 }
 
@@ -150,9 +150,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_processor);
   v10 = [v3 appendPointer:WeakRetained withName:@"owner"];
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (PBFPosterRoleProcessor)processor

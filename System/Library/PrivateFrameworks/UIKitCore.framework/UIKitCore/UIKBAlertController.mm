@@ -1,20 +1,20 @@
 @interface UIKBAlertController
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation UIKBAlertController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = UIKBAlertController;
-  [(UIAlertController *)&v6 viewDidDisappear:a3];
-  v4 = [(UIKBAlertController *)self kbDelegate];
+  [(UIAlertController *)&v6 viewDidDisappear:disappear];
+  kbDelegate = [(UIKBAlertController *)self kbDelegate];
 
-  if (v4)
+  if (kbDelegate)
   {
-    v5 = [(UIKBAlertController *)self kbDelegate];
-    [v5 alertDidDismiss];
+    kbDelegate2 = [(UIKBAlertController *)self kbDelegate];
+    [kbDelegate2 alertDidDismiss];
   }
 }
 

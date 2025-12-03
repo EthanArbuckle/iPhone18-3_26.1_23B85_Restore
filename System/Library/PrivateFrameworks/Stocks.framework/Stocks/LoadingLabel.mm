@@ -1,7 +1,7 @@
 @interface LoadingLabel
 - (LoadingLabel)init;
-- (void)setHidden:(BOOL)a3;
-- (void)setText:(id)a3 showingActivity:(BOOL)a4;
+- (void)setHidden:(BOOL)hidden;
+- (void)setText:(id)text showingActivity:(BOOL)activity;
 - (void)sizeToFit;
 @end
 
@@ -25,8 +25,8 @@
     v7 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.4];
     [(UILabel *)v2->_label setTextColor:v7];
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v2->_label setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v2->_label setBackgroundColor:clearColor];
 
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:1];
     activityIndicator = v2->_activityIndicator;
@@ -72,30 +72,30 @@
   [(UILabel *)label setFrame:?];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if (a3)
+  hiddenCopy = hidden;
+  if (hidden)
   {
     [(UIActivityIndicatorView *)self->_activityIndicator stopAnimating];
   }
 
   v5.receiver = self;
   v5.super_class = LoadingLabel;
-  [(LoadingLabel *)&v5 setHidden:v3];
+  [(LoadingLabel *)&v5 setHidden:hiddenCopy];
 }
 
-- (void)setText:(id)a3 showingActivity:(BOOL)a4
+- (void)setText:(id)text showingActivity:(BOOL)activity
 {
-  v4 = a4;
-  v10 = a3;
+  activityCopy = activity;
+  textCopy = text;
   v6 = +[NetPreferences sharedPreferences];
-  v7 = [v6 isNetworkReachable];
+  isNetworkReachable = [v6 isNetworkReachable];
 
-  if (v7)
+  if (isNetworkReachable)
   {
-    [(UILabel *)self->_label setText:v10];
-    if (v4)
+    [(UILabel *)self->_label setText:textCopy];
+    if (activityCopy)
     {
       [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
       goto LABEL_6;

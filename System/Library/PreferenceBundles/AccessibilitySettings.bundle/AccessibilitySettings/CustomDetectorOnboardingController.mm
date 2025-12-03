@@ -1,10 +1,10 @@
 @interface CustomDetectorOnboardingController
 - (CustomDetectorDelegate)customDetectorDelegate;
-- (CustomDetectorOnboardingController)initWithCategory:(id)a3;
-- (CustomDetectorOnboardingController)initWithDetector:(id)a3;
+- (CustomDetectorOnboardingController)initWithCategory:(id)category;
+- (CustomDetectorOnboardingController)initWithDetector:(id)detector;
 - (void)_allShotsRecorded;
 - (void)_bugButtonTapped;
-- (void)_cancelModalFlowWithSwipe:(BOOL)a3 fromNameSoundPane:(BOOL)a4;
+- (void)_cancelModalFlowWithSwipe:(BOOL)swipe fromNameSoundPane:(BOOL)pane;
 - (void)_continueToTraining;
 - (void)_createInfoPane;
 - (void)_createNameSoundPane;
@@ -14,11 +14,11 @@
 - (void)_kShotModelSimilarityWarning;
 - (void)_keepListening;
 - (void)_keepTraining;
-- (void)_setUpContinueButton:(id)a3 withSelector:(SEL)a4;
-- (void)_setupLinkButtonWithTitle:(id)a3 action:(SEL)a4;
-- (void)_setupTrainingControllerBoldButtonWithTitle:(id)a3 action:(SEL)a4;
+- (void)_setUpContinueButton:(id)button withSelector:(SEL)selector;
+- (void)_setupLinkButtonWithTitle:(id)title action:(SEL)action;
+- (void)_setupTrainingControllerBoldButtonWithTitle:(id)title action:(SEL)action;
 - (void)_startTraining;
-- (void)_timeout:(id)a3;
+- (void)_timeout:(id)_timeout;
 - (void)dealloc;
 - (void)discardSoundAndKeepListening;
 - (void)dismissLearnMorePane;
@@ -30,18 +30,18 @@
 - (void)enterWaitingForSoundState;
 - (void)onboardNewSound;
 - (void)presentLearnMorePane;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)saveComplete;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CustomDetectorOnboardingController
 
-- (CustomDetectorOnboardingController)initWithCategory:(id)a3
+- (CustomDetectorOnboardingController)initWithCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v13.receiver = self;
   v13.super_class = CustomDetectorOnboardingController;
   v5 = [(CustomDetectorOnboardingController *)&v13 init];
@@ -49,17 +49,17 @@
   if (v5)
   {
     v5->_isTrainingNewDetector = 1;
-    v5->_category = v4;
-    v7 = [(CustomDetectorOnboardingController *)v5 presentationController];
-    [v7 setDelegate:v6];
+    v5->_category = categoryCopy;
+    presentationController = [(CustomDetectorOnboardingController *)v5 presentationController];
+    [presentationController setDelegate:v6];
 
     v8 = [[AXSDKShotDetector alloc] initWithName:&stru_25D420];
-    [v8 setCategory:v4];
+    [v8 setCategory:categoryCopy];
     v9 = [[SoundDetectionKshotTrainingAudioManager alloc] initWithTargetDetector:v8];
     [(CustomDetectorOnboardingController *)v6 setStateManager:v9];
 
-    v10 = [(CustomDetectorOnboardingController *)v6 stateManager];
-    [v10 setDelegate:v6];
+    stateManager = [(CustomDetectorOnboardingController *)v6 stateManager];
+    [stateManager setDelegate:v6];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _kShotModelSimilarityWarning, @"com.apple.accessibility.kshot.model.similarity.warning", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -68,23 +68,23 @@
   return v6;
 }
 
-- (CustomDetectorOnboardingController)initWithDetector:(id)a3
+- (CustomDetectorOnboardingController)initWithDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   v12.receiver = self;
   v12.super_class = CustomDetectorOnboardingController;
   v5 = [(CustomDetectorOnboardingController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CustomDetectorOnboardingController *)v5 presentationController];
-    [v7 setDelegate:v6];
+    presentationController = [(CustomDetectorOnboardingController *)v5 presentationController];
+    [presentationController setDelegate:v6];
 
-    v8 = [[SoundDetectionKshotTrainingAudioManager alloc] initWithTargetDetector:v4];
+    v8 = [[SoundDetectionKshotTrainingAudioManager alloc] initWithTargetDetector:detectorCopy];
     [(CustomDetectorOnboardingController *)v6 setStateManager:v8];
 
-    v9 = [(CustomDetectorOnboardingController *)v6 stateManager];
-    [v9 setDelegate:v6];
+    stateManager = [(CustomDetectorOnboardingController *)v6 stateManager];
+    [stateManager setDelegate:v6];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _kShotModelSimilarityWarning, @"com.apple.accessibility.kshot.model.similarity.warning", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -127,50 +127,50 @@ void __49__CustomDetectorOnboardingController_viewDidLoad__block_invoke(uint64_t
   [WeakRetained _kShotListeningStateDidChange];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CustomDetectorOnboardingController;
-  [(CustomDetectorOnboardingController *)&v5 viewWillDisappear:a3];
-  v4 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v4 stopListeningAndTrainIfPossible:0];
+  [(CustomDetectorOnboardingController *)&v5 viewWillDisappear:disappear];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [stateManager stopListeningAndTrainIfPossible:0];
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = [(CustomDetectorOnboardingController *)self visibleViewController];
-  v5 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  v6 = [v4 isEqual:v5];
+  visibleViewController = [(CustomDetectorOnboardingController *)self visibleViewController];
+  nameDetectorController = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  v6 = [visibleViewController isEqual:nameDetectorController];
 
   [(CustomDetectorOnboardingController *)self _cancelModalFlowWithSwipe:1 fromNameSoundPane:v6];
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v3 = [(CustomDetectorOnboardingController *)self customDetectorDelegate];
-  [v3 exitedOnboardingFlow];
+  customDetectorDelegate = [(CustomDetectorOnboardingController *)self customDetectorDelegate];
+  [customDetectorDelegate exitedOnboardingFlow];
 }
 
 - (void)_createInfoPane
 {
-  v3 = [(CustomDetectorOnboardingController *)self stateManager];
-  v4 = [v3 targetDetector];
-  v5 = [v4 category];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector = [stateManager targetDetector];
+  category = [targetDetector category];
   v6 = AXSDDetectorCategoryAlarm;
 
-  if (v5 == v6)
+  if (category == v6)
   {
     v12 = @"CUSTOM_ALARM";
   }
 
   else
   {
-    v7 = [(CustomDetectorOnboardingController *)self stateManager];
-    v8 = [v7 targetDetector];
-    v9 = [v8 category];
+    stateManager2 = [(CustomDetectorOnboardingController *)self stateManager];
+    targetDetector2 = [stateManager2 targetDetector];
+    category2 = [targetDetector2 category];
     v10 = AXSDDetectorCategoryHousehold;
 
-    if (v9 != v10)
+    if (category2 != v10)
     {
       v23 = &stru_25D420;
       v11 = &stru_25D420;
@@ -192,27 +192,27 @@ LABEL_7:
   v16 = [UIBarButtonItem alloc];
   v17 = settingsLocString(@"CANCEL_BUTTON", @"SoundDetection");
   v18 = [v16 initWithTitle:v17 style:0 target:self action:"_finishLater"];
-  v19 = [(CustomDetectorOnboardingController *)self detectorInfoController];
-  v20 = [v19 navigationItem];
-  [v20 setRightBarButtonItem:v18];
+  detectorInfoController = [(CustomDetectorOnboardingController *)self detectorInfoController];
+  navigationItem = [detectorInfoController navigationItem];
+  [navigationItem setRightBarButtonItem:v18];
 
-  v21 = [(CustomDetectorOnboardingController *)self detectorInfoController];
-  [(CustomDetectorOnboardingController *)self _setUpContinueButton:v21 withSelector:"_createNameSoundPane"];
+  detectorInfoController2 = [(CustomDetectorOnboardingController *)self detectorInfoController];
+  [(CustomDetectorOnboardingController *)self _setUpContinueButton:detectorInfoController2 withSelector:"_createNameSoundPane"];
 
-  v22 = [(CustomDetectorOnboardingController *)self detectorInfoController];
-  [(CustomDetectorOnboardingController *)self pushViewController:v22 animated:1];
+  detectorInfoController3 = [(CustomDetectorOnboardingController *)self detectorInfoController];
+  [(CustomDetectorOnboardingController *)self pushViewController:detectorInfoController3 animated:1];
 }
 
 - (void)_createNameSoundPane
 {
   v27 = settingsLocString(@"NAME_SOUND_TITLE", @"SoundDetection");
   v3 = settingsLocString(@"NAME_SOUND_SUBTITLE", @"SoundDetection");
-  v4 = [(CustomDetectorOnboardingController *)self stateManager];
-  v5 = [v4 targetDetector];
-  v6 = [v5 category];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector = [stateManager targetDetector];
+  category = [targetDetector category];
   v7 = AXSDDetectorCategoryAlarm;
 
-  if (v6 == v7)
+  if (category == v7)
   {
     v12 = @"CUSTOM_ALARM_NAME";
     v13 = @"CUSTOM_ALARM";
@@ -220,12 +220,12 @@ LABEL_7:
 
   else
   {
-    v8 = [(CustomDetectorOnboardingController *)self stateManager];
-    v9 = [v8 targetDetector];
-    v10 = [v9 category];
+    stateManager2 = [(CustomDetectorOnboardingController *)self stateManager];
+    targetDetector2 = [stateManager2 targetDetector];
+    category2 = [targetDetector2 category];
     v11 = AXSDDetectorCategoryHousehold;
 
-    if (v10 != v11)
+    if (category2 != v11)
     {
       goto LABEL_6;
     }
@@ -245,52 +245,52 @@ LABEL_6:
   nameDetectorController = self->_nameDetectorController;
   self->_nameDetectorController = v16;
 
-  v18 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  [v18 setDelegate:self];
+  nameDetectorController = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  [nameDetectorController setDelegate:self];
 
-  v19 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  [v19 setModalInPresentation:1];
+  nameDetectorController2 = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  [nameDetectorController2 setModalInPresentation:1];
 
-  v20 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  [(CustomDetectorOnboardingController *)self _setUpContinueButton:v20 withSelector:"_continueToTraining"];
+  nameDetectorController3 = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  [(CustomDetectorOnboardingController *)self _setUpContinueButton:nameDetectorController3 withSelector:"_continueToTraining"];
 
   v21 = [UIBarButtonItem alloc];
   v22 = settingsLocString(@"CANCEL_BUTTON", @"SoundDetection");
   v23 = [v21 initWithTitle:v22 style:0 target:self action:"_cancelFromNameSound"];
-  v24 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  v25 = [v24 navigationItem];
-  [v25 setRightBarButtonItem:v23];
+  nameDetectorController4 = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  navigationItem = [nameDetectorController4 navigationItem];
+  [navigationItem setRightBarButtonItem:v23];
 
-  v26 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  [(CustomDetectorOnboardingController *)self pushViewController:v26 animated:1];
+  nameDetectorController5 = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  [(CustomDetectorOnboardingController *)self pushViewController:nameDetectorController5 animated:1];
 }
 
 - (void)_continueToTraining
 {
-  v3 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  v4 = [v3 detectorNameTextField];
-  v5 = [v4 text];
-  v6 = [(CustomDetectorOnboardingController *)self stateManager];
-  v7 = [v6 targetDetector];
-  [v7 setName:v5];
+  nameDetectorController = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  detectorNameTextField = [nameDetectorController detectorNameTextField];
+  text = [detectorNameTextField text];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector = [stateManager targetDetector];
+  [targetDetector setName:text];
 
-  v8 = [(CustomDetectorOnboardingController *)self stateManager];
-  v9 = [v8 targetDetector];
-  v10 = [v9 name];
-  v11 = [v10 length];
+  stateManager2 = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector2 = [stateManager2 targetDetector];
+  name = [targetDetector2 name];
+  v11 = [name length];
 
   if (!v11)
   {
     v12 = settingsLocString(@"CUSTOM_SOUND_PLACEHOLDER", @"SoundDetection");
-    v13 = [(CustomDetectorOnboardingController *)self stateManager];
-    v14 = [v13 targetDetector];
-    [v14 setName:v12];
+    stateManager3 = [(CustomDetectorOnboardingController *)self stateManager];
+    targetDetector3 = [stateManager3 targetDetector];
+    [targetDetector3 setName:v12];
   }
 
   v15 = +[AXSDSettings sharedInstance];
-  v16 = [(CustomDetectorOnboardingController *)self stateManager];
-  v17 = [v16 targetDetector];
-  [v15 addKShotDetector:v17];
+  stateManager4 = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector4 = [stateManager4 targetDetector];
+  [v15 addKShotDetector:targetDetector4];
 
   if (!self->_nameDetectorLinkButton)
   {
@@ -298,17 +298,17 @@ LABEL_6:
     nameDetectorLinkButton = self->_nameDetectorLinkButton;
     self->_nameDetectorLinkButton = v18;
 
-    v20 = [(CustomDetectorOnboardingController *)self nameDetectorLinkButton];
+    nameDetectorLinkButton = [(CustomDetectorOnboardingController *)self nameDetectorLinkButton];
     v21 = settingsLocString(@"FINISH_LATER", @"SoundDetection");
-    [v20 setTitle:v21 forState:0];
+    [nameDetectorLinkButton setTitle:v21 forState:0];
 
-    v22 = [(CustomDetectorOnboardingController *)self nameDetectorLinkButton];
-    [v22 addTarget:self action:"_cancelFromNameSound" forControlEvents:64];
+    nameDetectorLinkButton2 = [(CustomDetectorOnboardingController *)self nameDetectorLinkButton];
+    [nameDetectorLinkButton2 addTarget:self action:"_cancelFromNameSound" forControlEvents:64];
 
-    v23 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-    v24 = [v23 buttonTray];
-    v25 = [(CustomDetectorOnboardingController *)self nameDetectorLinkButton];
-    [v24 addButton:v25];
+    nameDetectorController2 = [(CustomDetectorOnboardingController *)self nameDetectorController];
+    buttonTray = [nameDetectorController2 buttonTray];
+    nameDetectorLinkButton3 = [(CustomDetectorOnboardingController *)self nameDetectorLinkButton];
+    [buttonTray addButton:nameDetectorLinkButton3];
   }
 
   [(CustomDetectorOnboardingController *)self _startTraining];
@@ -318,10 +318,10 @@ LABEL_6:
 {
   v35 = AXLocStringKeyForModel();
   v3 = settingsLocString(@"SET_UP", @"SoundDetection");
-  v4 = [(CustomDetectorOnboardingController *)self stateManager];
-  v5 = [v4 targetDetector];
-  v6 = [v5 name];
-  v7 = [NSString localizedStringWithFormat:v3, v6];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector = [stateManager targetDetector];
+  name = [targetDetector name];
+  v7 = [NSString localizedStringWithFormat:v3, name];
 
   v8 = [TrainDetectorController alloc];
   v9 = settingsLocString(v35, @"SoundDetection");
@@ -329,24 +329,24 @@ LABEL_6:
   trainingController = self->_trainingController;
   self->_trainingController = v10;
 
-  v12 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v12 setModalInPresentation:1];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController setModalInPresentation:1];
 
-  v13 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v13 setLearnMoreDelegate:self];
+  trainingController2 = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController2 setLearnMoreDelegate:self];
 
-  v14 = [(CustomDetectorOnboardingController *)self stateManager];
-  v15 = [v14 targetDetector];
-  v16 = [v15 category];
-  v17 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v17 setCategory:v16];
+  stateManager2 = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector2 = [stateManager2 targetDetector];
+  category = [targetDetector2 category];
+  trainingController3 = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController3 setCategory:category];
 
   v18 = [UIBarButtonItem alloc];
   v19 = settingsLocString(@"CANCEL_BUTTON", @"SoundDetection");
   v20 = [v18 initWithTitle:v19 style:0 target:self action:"_cancelFromTraining"];
-  v21 = [(CustomDetectorOnboardingController *)self trainingController];
-  v22 = [v21 navigationItem];
-  [v22 setRightBarButtonItem:v20];
+  trainingController4 = [(CustomDetectorOnboardingController *)self trainingController];
+  navigationItem = [trainingController4 navigationItem];
+  [navigationItem setRightBarButtonItem:v20];
 
   if (AXIsInternalInstall())
   {
@@ -355,9 +355,9 @@ LABEL_6:
     v25 = [v23 imageWithTintColor:v24];
     v26 = [UIButton systemButtonWithImage:v25 target:self action:"_bugButtonTapped"];
 
-    v27 = [(CustomDetectorOnboardingController *)self trainingController];
-    v28 = [v27 navigationItem];
-    [v28 setTitleView:v26];
+    trainingController5 = [(CustomDetectorOnboardingController *)self trainingController];
+    navigationItem2 = [trainingController5 navigationItem];
+    [navigationItem2 setTitleView:v26];
   }
 
   linkButton = self->_linkButton;
@@ -372,27 +372,27 @@ LABEL_6:
   v32 = settingsLocString(@"FINISH_LATER", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupLinkButtonWithTitle:v32 action:"_finishLater"];
 
-  v33 = [(CustomDetectorOnboardingController *)self trainingController];
-  [(CustomDetectorOnboardingController *)self pushViewController:v33 animated:1];
+  trainingController6 = [(CustomDetectorOnboardingController *)self trainingController];
+  [(CustomDetectorOnboardingController *)self pushViewController:trainingController6 animated:1];
 
   [(SoundDetectionKshotTrainingAudioManager *)self->_stateManager startListening];
   v34 = +[AXSDSettings sharedInstance];
   [v34 setSoundDetectionKShotListeningState:0];
 }
 
-- (void)_cancelModalFlowWithSwipe:(BOOL)a3 fromNameSoundPane:(BOOL)a4
+- (void)_cancelModalFlowWithSwipe:(BOOL)swipe fromNameSoundPane:(BOOL)pane
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CustomDetectorOnboardingController *)self stateManager];
-  if ([v7 state])
+  paneCopy = pane;
+  swipeCopy = swipe;
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  if ([stateManager state])
   {
-    v8 = [(CustomDetectorOnboardingController *)self stateManager];
-    v9 = [v8 state];
+    stateManager2 = [(CustomDetectorOnboardingController *)self stateManager];
+    state = [stateManager2 state];
 
-    v10 = v9 == &dword_4 + 2;
-    v11 = !v5;
-    if (v9 == &dword_4 + 2)
+    v10 = state == &dword_4 + 2;
+    v11 = !swipeCopy;
+    if (state == &dword_4 + 2)
     {
       v11 = 1;
     }
@@ -428,7 +428,7 @@ LABEL_6:
     v16 = [UIAlertAction actionWithTitle:v15 style:2 handler:v30];
     [v14 addAction:v16];
 
-    if (v4)
+    if (paneCopy)
     {
       v17 = @"KEEP_EDITING";
     }
@@ -442,7 +442,7 @@ LABEL_6:
     v19 = &__block_literal_global_70;
   }
 
-  else if (v5)
+  else if (swipeCopy)
   {
     v20 = settingsLocString(@"FINISH_LATER", @"SoundDetection");
     v29[0] = _NSConcreteStackBlock;
@@ -533,36 +533,36 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
 
 - (void)_finishOnboarding
 {
-  v3 = [(CustomDetectorOnboardingController *)self customDetectorDelegate];
-  [v3 exitedOnboardingFlow];
+  customDetectorDelegate = [(CustomDetectorOnboardingController *)self customDetectorDelegate];
+  [customDetectorDelegate exitedOnboardingFlow];
 
-  v4 = [(CustomDetectorOnboardingController *)self timeoutTimer];
-  [v4 invalidate];
+  timeoutTimer = [(CustomDetectorOnboardingController *)self timeoutTimer];
+  [timeoutTimer invalidate];
 
   [(CustomDetectorOnboardingController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_finishLater
 {
-  v3 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v3 stopListeningAndTrainIfPossible:0];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [stateManager stopListeningAndTrainIfPossible:0];
 
-  v4 = [(CustomDetectorOnboardingController *)self timeoutTimer];
-  [v4 invalidate];
+  timeoutTimer = [(CustomDetectorOnboardingController *)self timeoutTimer];
+  [timeoutTimer invalidate];
 
-  v5 = [(CustomDetectorOnboardingController *)self customDetectorDelegate];
-  [v5 exitedOnboardingFlow];
+  customDetectorDelegate = [(CustomDetectorOnboardingController *)self customDetectorDelegate];
+  [customDetectorDelegate exitedOnboardingFlow];
 
   [(CustomDetectorOnboardingController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)enterWaitingForSoundState
 {
-  v3 = [(CustomDetectorOnboardingController *)self boldButton];
-  [v3 setHidden:1];
+  boldButton = [(CustomDetectorOnboardingController *)self boldButton];
+  [boldButton setHidden:1];
 
-  v4 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v4 enterWaitingForSoundState];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController enterWaitingForSoundState];
 
   v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"_timeout:" selector:0 userInfo:0 repeats:30.0];
   [(CustomDetectorOnboardingController *)self setTimeoutTimer:v5];
@@ -576,17 +576,17 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   v4 = settingsLocString(@"START_LISTENING_BUTTON", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupTrainingControllerBoldButtonWithTitle:v4 action:"enterWaitingForSoundState"];
 
-  v5 = [(CustomDetectorOnboardingController *)self boldButton];
-  [v5 setEnabled:1];
+  boldButton = [(CustomDetectorOnboardingController *)self boldButton];
+  [boldButton setEnabled:1];
 
-  v6 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v6 enterPreListeningState];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController enterPreListeningState];
 }
 
-- (void)_timeout:(id)a3
+- (void)_timeout:(id)_timeout
 {
-  v4 = [(CustomDetectorOnboardingController *)self timeoutTimer];
-  [v4 invalidate];
+  timeoutTimer = [(CustomDetectorOnboardingController *)self timeoutTimer];
+  [timeoutTimer invalidate];
 
   [(CustomDetectorOnboardingController *)self setTimeoutTimer:0];
   v5 = +[AXSDSettings sharedInstance];
@@ -604,8 +604,8 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   v4 = settingsLocString(@"IGNORE_KEEP_LISTENING", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupLinkButtonWithTitle:v4 action:"_keepListening"];
 
-  v5 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v5 enterTimeoutState];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController enterTimeoutState];
 }
 
 - (void)presentLearnMorePane
@@ -616,50 +616,50 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   learnMoreController = self->_learnMoreController;
   self->_learnMoreController = v5;
 
-  v7 = [(CustomDetectorOnboardingController *)self learnMoreController];
-  [(CustomDetectorOnboardingController *)self _setUpContinueButton:v7 withSelector:"dismissLearnMorePane"];
+  learnMoreController = [(CustomDetectorOnboardingController *)self learnMoreController];
+  [(CustomDetectorOnboardingController *)self _setUpContinueButton:learnMoreController withSelector:"dismissLearnMorePane"];
 
-  v8 = [(CustomDetectorOnboardingController *)self learnMoreController];
-  [(CustomDetectorOnboardingController *)self presentViewController:v8 animated:1 completion:0];
+  learnMoreController2 = [(CustomDetectorOnboardingController *)self learnMoreController];
+  [(CustomDetectorOnboardingController *)self presentViewController:learnMoreController2 animated:1 completion:0];
 }
 
 - (void)dismissLearnMorePane
 {
-  v2 = [(CustomDetectorOnboardingController *)self learnMoreController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  learnMoreController = [(CustomDetectorOnboardingController *)self learnMoreController];
+  [learnMoreController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)onboardNewSound
 {
   v3 = +[AXSDSettings sharedInstance];
-  v4 = [(CustomDetectorOnboardingController *)self stateManager];
-  v5 = [v4 targetDetector];
-  [v3 deleteTrainingFilesForDetector:v5];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  targetDetector = [stateManager targetDetector];
+  [v3 deleteTrainingFilesForDetector:targetDetector];
 
   v6 = [(CustomDetectorOnboardingController *)self popViewControllerAnimated:1];
-  v8 = [(CustomDetectorOnboardingController *)self nameDetectorController];
-  v7 = [v8 detectorNameTextField];
-  [v7 setText:&stru_25D420];
+  nameDetectorController = [(CustomDetectorOnboardingController *)self nameDetectorController];
+  detectorNameTextField = [nameDetectorController detectorNameTextField];
+  [detectorNameTextField setText:&stru_25D420];
 }
 
 - (void)enterListeningState
 {
-  v3 = [(CustomDetectorOnboardingController *)self trainingController];
-  v4 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v3 enterListeningStateWithCheckmarkIndex:{objc_msgSend(v4, "state")}];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [trainingController enterListeningStateWithCheckmarkIndex:{objc_msgSend(stateManager, "state")}];
 
   v5 = settingsLocString(@"FINISH_LATER", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupLinkButtonWithTitle:v5 action:"_finishLater"];
 
-  v6 = [(CustomDetectorOnboardingController *)self boldButton];
-  [v6 setHidden:1];
+  boldButton = [(CustomDetectorOnboardingController *)self boldButton];
+  [boldButton setHidden:1];
 }
 
 - (void)enterWaitingForSaveState
 {
-  v3 = [(CustomDetectorOnboardingController *)self trainingController];
-  v4 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v3 enterWaitingForSaveState:{objc_msgSend(v4, "state")}];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [trainingController enterWaitingForSaveState:{objc_msgSend(stateManager, "state")}];
 
   v5 = settingsLocString(@"IGNORE_KEEP_LISTENING", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupLinkButtonWithTitle:v5 action:"discardSoundAndKeepListening"];
@@ -673,9 +673,9 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   v3 = +[AXSDSettings sharedInstance];
   [v3 setKShotShouldSaveCurrentSound:1];
 
-  v4 = [(CustomDetectorOnboardingController *)self trainingController];
-  v5 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v4 enterSavingStateWithCheckmarkIndex:{objc_msgSend(v5, "state")}];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [trainingController enterSavingStateWithCheckmarkIndex:{objc_msgSend(stateManager, "state")}];
 
   v6 = settingsLocString(@"START_LISTENING_BUTTON", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupTrainingControllerBoldButtonWithTitle:v6 action:"enterWaitingForSoundState"];
@@ -683,8 +683,8 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   v7 = settingsLocString(@"FINISH_LATER", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupLinkButtonWithTitle:v7 action:"_finishLater"];
 
-  v8 = [(CustomDetectorOnboardingController *)self boldButton];
-  [v8 setEnabled:0];
+  boldButton = [(CustomDetectorOnboardingController *)self boldButton];
+  [boldButton setEnabled:0];
 }
 
 - (void)saveComplete
@@ -698,9 +698,9 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   v3 = +[AXSDSettings sharedInstance];
   [v3 setKShotShouldSaveCurrentSound:0];
 
-  v4 = [(CustomDetectorOnboardingController *)self trainingController];
-  v5 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v4 resetCheckmarkIndex:{objc_msgSend(v5, "state")}];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [trainingController resetCheckmarkIndex:{objc_msgSend(stateManager, "state")}];
 
   [(CustomDetectorOnboardingController *)self _keepListening];
 }
@@ -714,12 +714,12 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
 
 - (void)_keepTraining
 {
-  v3 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v3 updateState];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [stateManager updateState];
 
-  v4 = [(CustomDetectorOnboardingController *)self trainingController];
-  v5 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v4 resetCheckmarkIndex:{objc_msgSend(v5, "state")}];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  stateManager2 = [(CustomDetectorOnboardingController *)self stateManager];
+  [trainingController resetCheckmarkIndex:{objc_msgSend(stateManager2, "state")}];
 
   v6 = +[AXSDSettings sharedInstance];
   [v6 setSoundDetectionKShotListeningState:0];
@@ -727,20 +727,20 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
 
 - (void)_allShotsRecorded
 {
-  v3 = [(CustomDetectorOnboardingController *)self linkButton];
-  [v3 setHidden:1];
+  linkButton = [(CustomDetectorOnboardingController *)self linkButton];
+  [linkButton setHidden:1];
 
-  v4 = [(CustomDetectorOnboardingController *)self trainingController];
-  [v4 enterDoneState];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  [trainingController enterDoneState];
 
   v5 = settingsLocString(@"DONE_BUTTON", @"SoundDetection");
   [(CustomDetectorOnboardingController *)self _setupTrainingControllerBoldButtonWithTitle:v5 action:"_finishOnboarding"];
 
-  v6 = [(CustomDetectorOnboardingController *)self boldButton];
-  [v6 setEnabled:1];
+  boldButton = [(CustomDetectorOnboardingController *)self boldButton];
+  [boldButton setEnabled:1];
 
-  v7 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v7 stopListeningAndTrainIfPossible:1];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [stateManager stopListeningAndTrainIfPossible:1];
 }
 
 - (void)_kShotModelSimilarityWarning
@@ -754,25 +754,25 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
   v5 = +[AXSDSettings sharedInstance];
   [v5 setSoundDetectionKShotListeningState:6];
 
-  v7 = [(CustomDetectorOnboardingController *)self trainingController];
-  v6 = [(CustomDetectorOnboardingController *)self stateManager];
-  [v7 enterModelSimilarityWarningState:{objc_msgSend(v6, "state")}];
+  trainingController = [(CustomDetectorOnboardingController *)self trainingController];
+  stateManager = [(CustomDetectorOnboardingController *)self stateManager];
+  [trainingController enterModelSimilarityWarningState:{objc_msgSend(stateManager, "state")}];
 }
 
 - (void)_kShotListeningStateDidChange
 {
   v3 = +[AXSDSettings sharedInstance];
-  v4 = [v3 soundDetectionKShotListeningState];
+  soundDetectionKShotListeningState = [v3 soundDetectionKShotListeningState];
 
-  if (v4 <= 2)
+  if (soundDetectionKShotListeningState <= 2)
   {
-    if (v4)
+    if (soundDetectionKShotListeningState)
     {
-      if (v4 == (&dword_0 + 2))
+      if (soundDetectionKShotListeningState == (&dword_0 + 2))
       {
         [(CustomDetectorOnboardingController *)self enterListeningState];
-        v5 = [(CustomDetectorOnboardingController *)self timeoutTimer];
-        [v5 invalidate];
+        timeoutTimer = [(CustomDetectorOnboardingController *)self timeoutTimer];
+        [timeoutTimer invalidate];
       }
     }
 
@@ -783,19 +783,19 @@ void __82__CustomDetectorOnboardingController__cancelModalFlowWithSwipe_fromName
     }
   }
 
-  else if (v4 == (&dword_0 + 3))
+  else if (soundDetectionKShotListeningState == (&dword_0 + 3))
   {
 
     [(CustomDetectorOnboardingController *)self enterWaitingForSaveState];
   }
 
-  else if (v4 == &dword_4)
+  else if (soundDetectionKShotListeningState == &dword_4)
   {
 
     [(CustomDetectorOnboardingController *)self saveComplete];
   }
 
-  else if (v4 == (&dword_4 + 1))
+  else if (soundDetectionKShotListeningState == (&dword_4 + 1))
   {
 
     [(CustomDetectorOnboardingController *)self enterTimeoutState];
@@ -837,100 +837,100 @@ void __53__CustomDetectorOnboardingController_stateDidUpdate___block_invoke(uint
   }
 }
 
-- (void)_setupLinkButtonWithTitle:(id)a3 action:(SEL)a4
+- (void)_setupLinkButtonWithTitle:(id)title action:(SEL)action
 {
   if (self->_linkButton)
   {
-    v6 = a3;
-    v7 = [(CustomDetectorOnboardingController *)self linkButton];
-    [v7 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+    titleCopy = title;
+    linkButton = [(CustomDetectorOnboardingController *)self linkButton];
+    [linkButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-    v8 = [(CustomDetectorOnboardingController *)self linkButton];
-    [v8 setTitle:v6 forState:0];
+    linkButton2 = [(CustomDetectorOnboardingController *)self linkButton];
+    [linkButton2 setTitle:titleCopy forState:0];
 
-    v16 = [(CustomDetectorOnboardingController *)self linkButton];
-    [v16 addTarget:self action:a4 forControlEvents:64];
+    linkButton3 = [(CustomDetectorOnboardingController *)self linkButton];
+    [linkButton3 addTarget:self action:action forControlEvents:64];
   }
 
   else
   {
-    v9 = a3;
+    titleCopy2 = title;
     v10 = +[OBLinkTrayButton linkButton];
     linkButton = self->_linkButton;
     self->_linkButton = v10;
 
-    v12 = [(CustomDetectorOnboardingController *)self linkButton];
-    [v12 setTitle:v9 forState:0];
+    linkButton4 = [(CustomDetectorOnboardingController *)self linkButton];
+    [linkButton4 setTitle:titleCopy2 forState:0];
 
-    v13 = [(CustomDetectorOnboardingController *)self linkButton];
-    [v13 addTarget:self action:a4 forControlEvents:64];
+    linkButton5 = [(CustomDetectorOnboardingController *)self linkButton];
+    [linkButton5 addTarget:self action:action forControlEvents:64];
 
-    v16 = [(CustomDetectorOnboardingController *)self trainingController];
-    v14 = [v16 buttonTray];
-    v15 = [(CustomDetectorOnboardingController *)self linkButton];
-    [v14 addButton:v15];
+    linkButton3 = [(CustomDetectorOnboardingController *)self trainingController];
+    buttonTray = [linkButton3 buttonTray];
+    linkButton6 = [(CustomDetectorOnboardingController *)self linkButton];
+    [buttonTray addButton:linkButton6];
   }
 }
 
-- (void)_setupTrainingControllerBoldButtonWithTitle:(id)a3 action:(SEL)a4
+- (void)_setupTrainingControllerBoldButtonWithTitle:(id)title action:(SEL)action
 {
   if (self->_boldButton)
   {
-    v6 = a3;
-    v7 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v7 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+    titleCopy = title;
+    boldButton = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-    v8 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v8 setTitle:v6 forState:0];
+    boldButton2 = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton2 setTitle:titleCopy forState:0];
 
-    v9 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v9 addTarget:self action:a4 forControlEvents:64];
+    boldButton3 = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton3 addTarget:self action:action forControlEvents:64];
 
-    v10 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v10 setHidden:0];
+    boldButton4 = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton4 setHidden:0];
 
-    v18 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v18 setEnabled:1];
+    boldButton5 = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton5 setEnabled:1];
   }
 
   else
   {
-    v11 = a3;
+    titleCopy2 = title;
     v12 = +[OBBoldTrayButton boldButton];
     boldButton = self->_boldButton;
     self->_boldButton = v12;
 
-    v14 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v14 setTitle:v11 forState:0];
+    boldButton6 = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton6 setTitle:titleCopy2 forState:0];
 
-    v15 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v15 addTarget:self action:a4 forControlEvents:64];
+    boldButton7 = [(CustomDetectorOnboardingController *)self boldButton];
+    [boldButton7 addTarget:self action:action forControlEvents:64];
 
-    v18 = [(CustomDetectorOnboardingController *)self trainingController];
-    v16 = [v18 buttonTray];
-    v17 = [(CustomDetectorOnboardingController *)self boldButton];
-    [v16 addButton:v17];
+    boldButton5 = [(CustomDetectorOnboardingController *)self trainingController];
+    buttonTray = [boldButton5 buttonTray];
+    boldButton8 = [(CustomDetectorOnboardingController *)self boldButton];
+    [buttonTray addButton:boldButton8];
   }
 }
 
-- (void)_setUpContinueButton:(id)a3 withSelector:(SEL)a4
+- (void)_setUpContinueButton:(id)button withSelector:(SEL)selector
 {
-  v6 = a3;
+  buttonCopy = button;
   v7 = +[OBBoldTrayButton boldButton];
   continueButton = self->_continueButton;
   self->_continueButton = v7;
 
-  v9 = [(CustomDetectorOnboardingController *)self continueButton];
+  continueButton = [(CustomDetectorOnboardingController *)self continueButton];
   v10 = settingsLocString(@"CONTINUE_BUTTON", @"SoundDetection");
-  [v9 setTitle:v10 forState:0];
+  [continueButton setTitle:v10 forState:0];
 
-  v11 = [(CustomDetectorOnboardingController *)self continueButton];
-  [v11 addTarget:self action:a4 forControlEvents:64];
+  continueButton2 = [(CustomDetectorOnboardingController *)self continueButton];
+  [continueButton2 addTarget:self action:selector forControlEvents:64];
 
-  v13 = [v6 buttonTray];
+  buttonTray = [buttonCopy buttonTray];
 
-  v12 = [(CustomDetectorOnboardingController *)self continueButton];
-  [v13 addButton:v12];
+  continueButton3 = [(CustomDetectorOnboardingController *)self continueButton];
+  [buttonTray addButton:continueButton3];
 }
 
 - (void)_bugButtonTapped

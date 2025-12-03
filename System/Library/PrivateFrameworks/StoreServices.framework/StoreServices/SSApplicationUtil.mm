@@ -1,7 +1,7 @@
 @interface SSApplicationUtil
 - (SSApplicationUtil)init;
 - (id)_connection;
-- (void)restartApplication:(id)a3;
+- (void)restartApplication:(id)application;
 @end
 
 @implementation SSApplicationUtil
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (void)restartApplication:(id)a3
+- (void)restartApplication:(id)application
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  applicationCopy = application;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -37,19 +37,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -73,9 +73,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v19}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -88,8 +88,8 @@ LABEL_16:
   block[2] = __40__SSApplicationUtil_restartApplication___block_invoke;
   block[3] = &unk_1E84AC360;
   block[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = applicationCopy;
+  v18 = applicationCopy;
   dispatch_async(serialQueue, block);
 }
 

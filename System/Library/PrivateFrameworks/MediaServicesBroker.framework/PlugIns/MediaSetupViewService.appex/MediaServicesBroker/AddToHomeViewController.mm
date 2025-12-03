@@ -11,7 +11,7 @@
   {
     memset(v6, 0, sizeof(v6));
     v3 = self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC21MediaSetupViewService23AddToHomeViewController_trigger];
-    v5 = self;
+    selfCopy = self;
     v4 = v2;
     sub_1000056D4(v3, v6);
   }

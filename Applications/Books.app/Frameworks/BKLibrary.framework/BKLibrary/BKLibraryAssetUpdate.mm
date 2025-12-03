@@ -1,9 +1,9 @@
 @interface BKLibraryAssetUpdate
 - (BKLibraryAssetUpdate)init;
-- (BKLibraryAssetUpdate)initWithAsset:(id)a3 dataSource:(id)a4 dataSourceBitmask:(unint64_t)a5;
+- (BKLibraryAssetUpdate)initWithAsset:(id)asset dataSource:(id)source dataSourceBitmask:(unint64_t)bitmask;
 - (id)description;
 - (void)postIntegrateCleanup;
-- (void)propagateAdditionalDataWithAsset:(id)a3;
+- (void)propagateAdditionalDataWithAsset:(id)asset;
 @end
 
 @implementation BKLibraryAssetUpdate
@@ -23,228 +23,228 @@
   return v3;
 }
 
-- (BKLibraryAssetUpdate)initWithAsset:(id)a3 dataSource:(id)a4 dataSourceBitmask:(unint64_t)a5
+- (BKLibraryAssetUpdate)initWithAsset:(id)asset dataSource:(id)source dataSourceBitmask:(unint64_t)bitmask
 {
-  v9 = a3;
-  v10 = a4;
+  assetCopy = asset;
+  sourceCopy = source;
   v11 = [(BKLibraryAssetUpdate *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_asset, a3);
+    objc_storeStrong(&v11->_asset, asset);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v9 seriesID];
+      seriesID = [assetCopy seriesID];
 
-      if (v13)
+      if (seriesID)
       {
-        v14 = [v9 seriesID];
+        seriesID2 = [assetCopy seriesID];
         seriesID = v12->_seriesID;
-        v12->_seriesID = v14;
+        v12->_seriesID = seriesID2;
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v9 duration];
+      duration = [assetCopy duration];
 
-      if (v16)
+      if (duration)
       {
-        v17 = [v9 duration];
+        duration2 = [assetCopy duration];
         duration = v12->_duration;
-        v12->_duration = v17;
+        v12->_duration = duration2;
       }
     }
 
-    v12->_dataSourcesBitmask = a5;
+    v12->_dataSourcesBitmask = bitmask;
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v10 propagateDataProperties];
+      propagateDataProperties = [sourceCopy propagateDataProperties];
     }
 
     else
     {
-      v19 = 268370174;
+      propagateDataProperties = 268370174;
     }
 
-    [(BKLibraryAssetUpdate *)v12 setPropertiesToPropagate:v19];
-    [(BKLibraryAssetUpdate *)v12 propagateAdditionalDataWithAsset:v9];
+    [(BKLibraryAssetUpdate *)v12 setPropertiesToPropagate:propagateDataProperties];
+    [(BKLibraryAssetUpdate *)v12 propagateAdditionalDataWithAsset:assetCopy];
   }
 
   return v12;
 }
 
-- (void)propagateAdditionalDataWithAsset:(id)a3
+- (void)propagateAdditionalDataWithAsset:(id)asset
 {
-  v45 = a3;
-  v4 = [v45 purchaseDate];
-  if (v4)
+  assetCopy = asset;
+  purchaseDate = [assetCopy purchaseDate];
+  if (purchaseDate)
   {
-    v5 = [(BKLibraryAssetUpdate *)self purchaseDates_hack];
+    purchaseDates_hack = [(BKLibraryAssetUpdate *)self purchaseDates_hack];
 
-    if (!v5)
+    if (!purchaseDates_hack)
     {
       v6 = objc_opt_new();
       [(BKLibraryAssetUpdate *)self setPurchaseDates_hack:v6];
     }
 
-    v7 = [(BKLibraryAssetUpdate *)self purchaseDates_hack];
-    [v7 addObject:v4];
+    purchaseDates_hack2 = [(BKLibraryAssetUpdate *)self purchaseDates_hack];
+    [purchaseDates_hack2 addObject:purchaseDate];
 
     self->_hasChanges = 1;
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x10000000) != 0 && (objc_opt_respondsToSelector())
   {
-    v8 = [v45 coverAspectRatio];
-    if (v8)
+    coverAspectRatio = [assetCopy coverAspectRatio];
+    if (coverAspectRatio)
     {
-      v9 = v8;
-      objc_storeStrong(&self->_coverAspectRatio, v8);
+      v9 = coverAspectRatio;
+      objc_storeStrong(&self->_coverAspectRatio, coverAspectRatio);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x2000) != 0 && (objc_opt_respondsToSelector())
   {
-    v10 = [v45 assetIsHidden];
-    if (v10)
+    assetIsHidden = [assetCopy assetIsHidden];
+    if (assetIsHidden)
     {
-      v11 = v10;
-      objc_storeStrong(&self->_assetIsHidden, v10);
+      v11 = assetIsHidden;
+      objc_storeStrong(&self->_assetIsHidden, assetIsHidden);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 2) != 0 && (objc_opt_respondsToSelector())
   {
-    v12 = [v45 seriesID];
-    if (v12)
+    seriesID = [assetCopy seriesID];
+    if (seriesID)
     {
-      v13 = v12;
-      objc_storeStrong(&self->_seriesID, v12);
+      v13 = seriesID;
+      objc_storeStrong(&self->_seriesID, seriesID);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 4) != 0 && (objc_opt_respondsToSelector())
   {
-    v14 = [v45 seriesSortKey];
-    if (v14)
+    seriesSortKey = [assetCopy seriesSortKey];
+    if (seriesSortKey)
     {
-      v15 = v14;
-      objc_storeStrong(&self->_seriesSortKey, v14);
+      v15 = seriesSortKey;
+      objc_storeStrong(&self->_seriesSortKey, seriesSortKey);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 8) != 0 && (objc_opt_respondsToSelector())
   {
-    v16 = [v45 sequenceDisplayName];
-    if (v16)
+    sequenceDisplayName = [assetCopy sequenceDisplayName];
+    if (sequenceDisplayName)
     {
-      v17 = v16;
-      objc_storeStrong(&self->_sequenceDisplayName, v16);
+      v17 = sequenceDisplayName;
+      objc_storeStrong(&self->_sequenceDisplayName, sequenceDisplayName);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x4000000) != 0 && (objc_opt_respondsToSelector())
   {
-    v18 = [v45 sequenceNumber];
-    if (v18)
+    sequenceNumber = [assetCopy sequenceNumber];
+    if (sequenceNumber)
     {
-      v19 = v18;
-      objc_storeStrong(&self->_sequenceNumber, v18);
+      v19 = sequenceNumber;
+      objc_storeStrong(&self->_sequenceNumber, sequenceNumber);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x10) != 0 && (objc_opt_respondsToSelector())
   {
-    v20 = [v45 seriesIsHidden];
-    if (v20)
+    seriesIsHidden = [assetCopy seriesIsHidden];
+    if (seriesIsHidden)
     {
-      v21 = v20;
-      objc_storeStrong(&self->_seriesIsHidden, v20);
+      v21 = seriesIsHidden;
+      objc_storeStrong(&self->_seriesIsHidden, seriesIsHidden);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x4000) != 0 && (objc_opt_respondsToSelector())
   {
-    v22 = [v45 isStoreAudiobook];
-    if (v22)
+    isStoreAudiobook = [assetCopy isStoreAudiobook];
+    if (isStoreAudiobook)
     {
-      v23 = v22;
-      objc_storeStrong(&self->_isStoreAudiobook, v22);
+      v23 = isStoreAudiobook;
+      objc_storeStrong(&self->_isStoreAudiobook, isStoreAudiobook);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x8000) != 0 && (objc_opt_respondsToSelector())
   {
-    v24 = [v45 hasRACSupport];
-    if (v24)
+    hasRACSupport = [assetCopy hasRACSupport];
+    if (hasRACSupport)
     {
-      v25 = v24;
-      objc_storeStrong(&self->_hasRACSupport, v24);
+      v25 = hasRACSupport;
+      objc_storeStrong(&self->_hasRACSupport, hasRACSupport);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x20) != 0 && (objc_opt_respondsToSelector())
   {
-    v26 = [v45 seriesIsCloudOnly];
-    if (v26)
+    seriesIsCloudOnly = [assetCopy seriesIsCloudOnly];
+    if (seriesIsCloudOnly)
     {
-      v27 = v26;
-      objc_storeStrong(&self->_seriesIsCloudOnly, v26);
+      v27 = seriesIsCloudOnly;
+      objc_storeStrong(&self->_seriesIsCloudOnly, seriesIsCloudOnly);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x40) != 0 && (objc_opt_respondsToSelector())
   {
-    v28 = [v45 expectedDate];
-    if (v28)
+    expectedDate = [assetCopy expectedDate];
+    if (expectedDate)
     {
-      v29 = v28;
-      objc_storeStrong(&self->_expectedDate, v28);
+      v29 = expectedDate;
+      objc_storeStrong(&self->_expectedDate, expectedDate);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x2000000) != 0 && (objc_opt_respondsToSelector())
   {
-    v30 = [v45 releaseDate];
-    if (v30)
+    releaseDate = [assetCopy releaseDate];
+    if (releaseDate)
     {
-      v31 = v30;
-      objc_storeStrong(&self->_releaseDate, v30);
+      v31 = releaseDate;
+      objc_storeStrong(&self->_releaseDate, releaseDate);
       self->_hasChanges = 1;
     }
   }
 
-  if ((-[BKLibraryAssetUpdate propertiesToPropagate](self, "propertiesToPropagate") & 0x80) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v45 isSample])
+  if ((-[BKLibraryAssetUpdate propertiesToPropagate](self, "propertiesToPropagate") & 0x80) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [assetCopy isSample])
   {
     *&self->_hasChanges = 257;
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x100) != 0 && (objc_opt_respondsToSelector())
   {
-    v32 = [v45 title];
-    if (v32)
+    title = [assetCopy title];
+    if (title)
     {
-      v33 = v32;
-      objc_storeStrong(&self->_title, v32);
+      v33 = title;
+      objc_storeStrong(&self->_title, title);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x1000) != 0 && (objc_opt_respondsToSelector())
   {
-    v34 = [v45 url];
+    v34 = [assetCopy url];
     if (v34)
     {
       v35 = v34;
@@ -255,54 +255,54 @@
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x200) != 0 && (objc_opt_respondsToSelector())
   {
-    v36 = [v45 author];
-    if (v36)
+    author = [assetCopy author];
+    if (author)
     {
-      v37 = v36;
-      objc_storeStrong(&self->_author, v36);
+      v37 = author;
+      objc_storeStrong(&self->_author, author);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x400) != 0 && (objc_opt_respondsToSelector())
   {
-    v38 = [v45 genre];
-    if (v38)
+    genre = [assetCopy genre];
+    if (genre)
     {
-      v39 = v38;
-      objc_storeStrong(&self->_genre, v38);
+      v39 = genre;
+      objc_storeStrong(&self->_genre, genre);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x800) != 0 && (objc_opt_respondsToSelector())
   {
-    v40 = [v45 isExplicit];
-    if (v40)
+    isExplicit = [assetCopy isExplicit];
+    if (isExplicit)
     {
-      v41 = v40;
-      objc_storeStrong(&self->_isExplicit, v40);
+      v41 = isExplicit;
+      objc_storeStrong(&self->_isExplicit, isExplicit);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x800000) != 0 && (objc_opt_respondsToSelector())
   {
-    v42 = [v45 mappedAssetID];
-    if (v42)
+    mappedAssetID = [assetCopy mappedAssetID];
+    if (mappedAssetID)
     {
-      v43 = v42;
-      objc_storeStrong(&self->_mappedAssetID, v42);
+      v43 = mappedAssetID;
+      objc_storeStrong(&self->_mappedAssetID, mappedAssetID);
       self->_hasChanges = 1;
     }
   }
 
   if ([(BKLibraryAssetUpdate *)self propertiesToPropagate]& 0x1000000) != 0 && (objc_opt_respondsToSelector())
   {
-    v44 = [v45 mappedAssetContentType];
-    if (v44)
+    mappedAssetContentType = [assetCopy mappedAssetContentType];
+    if (mappedAssetContentType)
     {
-      self->_mappedAssetContentType = v44;
+      self->_mappedAssetContentType = mappedAssetContentType;
       self->_hasChanges = 1;
     }
   }
@@ -375,115 +375,115 @@
 
   [v5 appendFormat:@"\n\tproperties - 0x%lx", -[BKLibraryAssetUpdate propertiesToPropagate](self, "propertiesToPropagate")];
   [v5 appendFormat:@"\n\tbitmask=%#lx", -[BKLibraryAssetUpdate dataSourcesBitmask](self, "dataSourcesBitmask")];
-  v6 = [(BKLibraryAssetUpdate *)self asset];
-  [v5 appendFormat:@"\n\tasset=%p", v6];
+  asset = [(BKLibraryAssetUpdate *)self asset];
+  [v5 appendFormat:@"\n\tasset=%p", asset];
 
-  v7 = [(BKLibraryAssetUpdate *)self asset];
+  asset2 = [(BKLibraryAssetUpdate *)self asset];
 
-  if (v7)
+  if (asset2)
   {
-    v8 = [(BKLibraryAssetUpdate *)self asset];
-    v9 = [v8 assetID];
-    [v5 appendFormat:@"\n\tasset.assetID=%@", v9];
+    asset3 = [(BKLibraryAssetUpdate *)self asset];
+    assetID = [asset3 assetID];
+    [v5 appendFormat:@"\n\tasset.assetID=%@", assetID];
 
-    v10 = [(BKLibraryAssetUpdate *)self asset];
-    v11 = [v10 temporaryAssetID];
-    [v5 appendFormat:@"\n\tasset.temporaryAssetID=%@ ", v11];
+    asset4 = [(BKLibraryAssetUpdate *)self asset];
+    temporaryAssetID = [asset4 temporaryAssetID];
+    [v5 appendFormat:@"\n\tasset.temporaryAssetID=%@ ", temporaryAssetID];
 
-    v12 = [(BKLibraryAssetUpdate *)self asset];
-    v13 = [v12 title];
-    [v5 appendFormat:@"\n\tasset.title=%@", v13];
+    asset5 = [(BKLibraryAssetUpdate *)self asset];
+    title = [asset5 title];
+    [v5 appendFormat:@"\n\tasset.title=%@", title];
   }
 
-  v14 = [(BKLibraryAssetUpdate *)self seriesID];
-  v15 = v14;
-  if (v14)
+  seriesID = [(BKLibraryAssetUpdate *)self seriesID];
+  v15 = seriesID;
+  if (seriesID)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"seriesID", v14];
+    [v5 appendFormat:@"\n\t%@ - %@", @"seriesID", seriesID];
   }
 
-  v16 = [(BKLibraryAssetUpdate *)self seriesSortKey];
-  v17 = v16;
-  if (v16)
+  seriesSortKey = [(BKLibraryAssetUpdate *)self seriesSortKey];
+  v17 = seriesSortKey;
+  if (seriesSortKey)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"seriesSortKey", v16];
+    [v5 appendFormat:@"\n\t%@ - %@", @"seriesSortKey", seriesSortKey];
   }
 
-  v18 = [(BKLibraryAssetUpdate *)self sequenceDisplayName];
-  v19 = v18;
-  if (v18)
+  sequenceDisplayName = [(BKLibraryAssetUpdate *)self sequenceDisplayName];
+  v19 = sequenceDisplayName;
+  if (sequenceDisplayName)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"sequenceDisplayName", v18];
+    [v5 appendFormat:@"\n\t%@ - %@", @"sequenceDisplayName", sequenceDisplayName];
   }
 
-  v20 = [(BKLibraryAssetUpdate *)self sequenceNumber];
-  v21 = v20;
-  if (v20)
+  sequenceNumber = [(BKLibraryAssetUpdate *)self sequenceNumber];
+  v21 = sequenceNumber;
+  if (sequenceNumber)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"sequenceNumber", v20];
+    [v5 appendFormat:@"\n\t%@ - %@", @"sequenceNumber", sequenceNumber];
   }
 
-  v22 = [(BKLibraryAssetUpdate *)self seriesIsHidden];
-  v23 = v22;
-  if (v22)
+  seriesIsHidden = [(BKLibraryAssetUpdate *)self seriesIsHidden];
+  v23 = seriesIsHidden;
+  if (seriesIsHidden)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"seriesIsHidden", v22];
+    [v5 appendFormat:@"\n\t%@ - %@", @"seriesIsHidden", seriesIsHidden];
   }
 
-  v24 = [(BKLibraryAssetUpdate *)self seriesIsCloudOnly];
-  v25 = v24;
-  if (v24)
+  seriesIsCloudOnly = [(BKLibraryAssetUpdate *)self seriesIsCloudOnly];
+  v25 = seriesIsCloudOnly;
+  if (seriesIsCloudOnly)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"seriesIsCloudOnly", v24];
+    [v5 appendFormat:@"\n\t%@ - %@", @"seriesIsCloudOnly", seriesIsCloudOnly];
   }
 
-  v26 = [(BKLibraryAssetUpdate *)self isStoreAudiobook];
-  v27 = v26;
-  if (v26)
+  isStoreAudiobook = [(BKLibraryAssetUpdate *)self isStoreAudiobook];
+  v27 = isStoreAudiobook;
+  if (isStoreAudiobook)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"isStoreAudiobook", v26];
+    [v5 appendFormat:@"\n\t%@ - %@", @"isStoreAudiobook", isStoreAudiobook];
   }
 
-  v28 = [(BKLibraryAssetUpdate *)self expectedDate];
-  v29 = v28;
-  if (v28)
+  expectedDate = [(BKLibraryAssetUpdate *)self expectedDate];
+  v29 = expectedDate;
+  if (expectedDate)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"expectedDate", v28];
+    [v5 appendFormat:@"\n\t%@ - %@", @"expectedDate", expectedDate];
   }
 
-  v30 = [(BKLibraryAssetUpdate *)self releaseDate];
-  v31 = v30;
-  if (v30)
+  releaseDate = [(BKLibraryAssetUpdate *)self releaseDate];
+  v31 = releaseDate;
+  if (releaseDate)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"releaseDate", v30];
+    [v5 appendFormat:@"\n\t%@ - %@", @"releaseDate", releaseDate];
   }
 
-  v32 = [(BKLibraryAssetUpdate *)self title];
-  v33 = v32;
-  if (v32)
+  title2 = [(BKLibraryAssetUpdate *)self title];
+  v33 = title2;
+  if (title2)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"title", v32];
+    [v5 appendFormat:@"\n\t%@ - %@", @"title", title2];
   }
 
-  v34 = [(BKLibraryAssetUpdate *)self author];
-  v35 = v34;
-  if (v34)
+  author = [(BKLibraryAssetUpdate *)self author];
+  v35 = author;
+  if (author)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"author", v34];
+    [v5 appendFormat:@"\n\t%@ - %@", @"author", author];
   }
 
-  v36 = [(BKLibraryAssetUpdate *)self genre];
-  v37 = v36;
-  if (v36)
+  genre = [(BKLibraryAssetUpdate *)self genre];
+  v37 = genre;
+  if (genre)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"genre", v36];
+    [v5 appendFormat:@"\n\t%@ - %@", @"genre", genre];
   }
 
-  v38 = [(BKLibraryAssetUpdate *)self isExplicit];
-  v39 = v38;
-  if (v38)
+  isExplicit = [(BKLibraryAssetUpdate *)self isExplicit];
+  v39 = isExplicit;
+  if (isExplicit)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"isExplicit", v38];
+    [v5 appendFormat:@"\n\t%@ - %@", @"isExplicit", isExplicit];
   }
 
   v40 = [(BKLibraryAssetUpdate *)self url];
@@ -493,11 +493,11 @@
     [v5 appendFormat:@"\n\t%@ - %@", @"url", v40];
   }
 
-  v42 = [(BKLibraryAssetUpdate *)self coverAspectRatio];
-  v43 = v42;
-  if (v42)
+  coverAspectRatio = [(BKLibraryAssetUpdate *)self coverAspectRatio];
+  v43 = coverAspectRatio;
+  if (coverAspectRatio)
   {
-    [v5 appendFormat:@"\n\t%@ - %@", @"coverAspectRatio", v42];
+    [v5 appendFormat:@"\n\t%@ - %@", @"coverAspectRatio", coverAspectRatio];
   }
 
   return v5;

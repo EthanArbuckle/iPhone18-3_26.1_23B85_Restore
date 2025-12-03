@@ -1,16 +1,16 @@
 @interface ACDDatabaseMigrator
 - (ACDDatabaseMigrator)init;
-- (BOOL)runReturningError:(id *)a3;
-- (id)_compatibleModelForStoreAtURL:(id)a3;
-- (id)_fetchAllAuthorizationEntitiesForModelVersion:(int64_t)a3;
+- (BOOL)runReturningError:(id *)error;
+- (id)_compatibleModelForStoreAtURL:(id)l;
+- (id)_fetchAllAuthorizationEntitiesForModelVersion:(int64_t)version;
 - (id)_fetchAllDataclassEntitles;
 - (id)_setUpContextForMigration;
-- (id)initForDatabaseAtURL:(id)a3 persistentStoreCoordinator:(id)a4 storeOptions:(id)a5;
-- (int64_t)_versionForModel:(id)a3;
-- (void)_migrateAccessAuthorizationsToTCCFromModelVersion:(int64_t)a3;
+- (id)initForDatabaseAtURL:(id)l persistentStoreCoordinator:(id)coordinator storeOptions:(id)options;
+- (int64_t)_versionForModel:(id)model;
+- (void)_migrateAccessAuthorizationsToTCCFromModelVersion:(int64_t)version;
 - (void)_migrateNameAttributeOfDataclassEntities;
-- (void)_migrateOptionsAttributeOfAuthorizatinEntitiesFromModelVersion:(int64_t)a3;
-- (void)_postProcessMigrationFromVersion:(int64_t)a3 migrationData:(id)a4;
+- (void)_migrateOptionsAttributeOfAuthorizatinEntitiesFromModelVersion:(int64_t)version;
+- (void)_postProcessMigrationFromVersion:(int64_t)version migrationData:(id)data;
 - (void)_setUpContextForMigration;
 @end
 
@@ -23,20 +23,20 @@
   return 0;
 }
 
-- (id)initForDatabaseAtURL:(id)a3 persistentStoreCoordinator:(id)a4 storeOptions:(id)a5
+- (id)initForDatabaseAtURL:(id)l persistentStoreCoordinator:(id)coordinator storeOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  coordinatorCopy = coordinator;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = ACDDatabaseMigrator;
   v12 = [(ACDDatabaseMigrator *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_databaseURL, a3);
-    objc_storeStrong(&v13->_persistentStoreCoordinator, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_databaseURL, l);
+    objc_storeStrong(&v13->_persistentStoreCoordinator, coordinator);
+    v14 = [optionsCopy copy];
     storeOptions = v13->_storeOptions;
     v13->_storeOptions = v14;
   }
@@ -44,7 +44,7 @@
   return v13;
 }
 
-- (BOOL)runReturningError:(id *)a3
+- (BOOL)runReturningError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = _ACDLogSystem();
@@ -53,9 +53,9 @@
     [ACDDatabaseMigrator runReturningError:];
   }
 
-  v6 = [(ACDDatabaseMigrator *)self _setUpContextForMigration];
+  _setUpContextForMigration = [(ACDDatabaseMigrator *)self _setUpContextForMigration];
   migrationContext = self->_migrationContext;
-  self->_migrationContext = v6;
+  self->_migrationContext = _setUpContextForMigration;
 
   v8 = self->_migrationContext;
   if (!v8)
@@ -101,7 +101,7 @@
 
     [(ACDDatabaseMigrator *)self _postProcessMigrationFromVersion:v31[3] migrationData:v25[5]];
     v16 = 1;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -116,14 +116,14 @@
     }
 
     v16 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_14;
     }
   }
 
   v18 = v15;
-  *a3 = v15;
+  *error = v15;
 LABEL_14:
 
   _Block_object_dispose(&v24, 8);
@@ -260,7 +260,7 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_migrateAccessAuthorizationsToTCCFromModelVersion:(int64_t)a3
+- (void)_migrateAccessAuthorizationsToTCCFromModelVersion:(int64_t)version
 {
   v33 = *MEMORY[0x277D85DE8];
   v5 = _ACDLogSystem();
@@ -269,7 +269,7 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
     [ACDDatabaseMigrator _migrateAccessAuthorizationsToTCCFromModelVersion:];
   }
 
-  v6 = [(ACDDatabaseMigrator *)self _fetchAllAuthorizationEntitiesForModelVersion:a3];
+  v6 = [(ACDDatabaseMigrator *)self _fetchAllAuthorizationEntitiesForModelVersion:version];
   v7 = _ACDLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -298,27 +298,27 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 bundleID];
+        bundleID = [v14 bundleID];
         v16 = _ACDLogSystem();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           *buf = v25;
-          v31 = v15;
+          v31 = bundleID;
           _os_log_debug_impl(&dword_221D2F000, v16, OS_LOG_TYPE_DEBUG, "Found authorization for client: %@", buf, 0xCu);
         }
 
-        if (v15)
+        if (bundleID)
         {
-          v17 = [ACDClient clientWithBundleID:v15];
+          v17 = [ACDClient clientWithBundleID:bundleID];
           v18 = objc_alloc(MEMORY[0x277CB8F58]);
-          v19 = [v14 accountType];
-          v20 = [v18 initWithManagedAccountType:v19];
+          accountType = [v14 accountType];
+          v20 = [v18 initWithManagedAccountType:accountType];
 
           v21 = [v14 valueForKey:@"granted"];
-          v22 = [v21 BOOLValue];
+          bOOLValue = [v21 BOOLValue];
 
-          v23 = [v20 identifier];
-          [ACDTCCUtilities setTCCStateForClient:v17 accountTypeID:v23 toGranted:v22];
+          identifier = [v20 identifier];
+          [ACDTCCUtilities setTCCStateForClient:v17 accountTypeID:identifier toGranted:bOOLValue];
         }
       }
 
@@ -331,7 +331,7 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_migrateOptionsAttributeOfAuthorizatinEntitiesFromModelVersion:(int64_t)a3
+- (void)_migrateOptionsAttributeOfAuthorizatinEntitiesFromModelVersion:(int64_t)version
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB98];
@@ -341,7 +341,7 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v5 setWithObjects:{v6, v7, v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [(ACDDatabaseMigrator *)self _fetchAllAuthorizationEntitiesForModelVersion:a3];
+  v12 = [(ACDDatabaseMigrator *)self _fetchAllAuthorizationEntitiesForModelVersion:version];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -397,12 +397,12 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
 - (void)_migrateNameAttributeOfDataclassEntities
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(ACDDatabaseMigrator *)self _fetchAllDataclassEntitles];
+  _fetchAllDataclassEntitles = [(ACDDatabaseMigrator *)self _fetchAllDataclassEntitles];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [_fetchAllDataclassEntitles countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -413,7 +413,7 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_fetchAllDataclassEntitles);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -424,7 +424,7 @@ void __41__ACDDatabaseMigrator_runReturningError___block_invoke(uint64_t a1)
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [_fetchAllDataclassEntitles countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -484,7 +484,7 @@ uint64_t __49__ACDDatabaseMigrator__fetchAllDataclassEntitles__block_invoke(void
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_fetchAllAuthorizationEntitiesForModelVersion:(int64_t)a3
+- (id)_fetchAllAuthorizationEntitiesForModelVersion:(int64_t)version
 {
   v15 = 0;
   v16 = &v15;
@@ -493,12 +493,12 @@ uint64_t __49__ACDDatabaseMigrator__fetchAllDataclassEntitles__block_invoke(void
   v19 = __Block_byref_object_dispose__8;
   v20 = 0;
   v4 = @"Authorization";
-  if (a3 < 8)
+  if (version < 8)
   {
     v4 = @"Permission";
   }
 
-  if (a3 == 8)
+  if (version == 8)
   {
     v5 = @"ClientAuthorization";
   }
@@ -626,17 +626,17 @@ LABEL_14:
   return v15;
 }
 
-- (id)_compatibleModelForStoreAtURL:(id)a3
+- (id)_compatibleModelForStoreAtURL:(id)l
 {
   v40 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CBE2E8];
   v36 = 0;
-  v6 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v5 URL:a3 options:0 error:&v36];
+  v6 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v5 URL:l options:0 error:&v36];
   v7 = v36;
   v8 = 0;
   if (!v7)
   {
-    v31 = self;
+    selfCopy = self;
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 pathForResource:@"accounts" ofType:@"momd"];
 
@@ -712,7 +712,7 @@ LABEL_18:
       v8 = 0;
     }
 
-    if ([(ACDDatabaseMigrator *)v31 _versionForModel:v8]== 9)
+    if ([(ACDDatabaseMigrator *)selfCopy _versionForModel:v8]== 9)
     {
       [MEMORY[0x277CCA8D8] pathForResource:@"accounts-brighton-bridge" ofType:@"mom" inDirectory:v10];
       v24 = v23 = v10;
@@ -730,25 +730,25 @@ LABEL_18:
   return v8;
 }
 
-- (int64_t)_versionForModel:(id)a3
+- (int64_t)_versionForModel:(id)model
 {
-  v3 = [a3 versionIdentifiers];
-  v4 = [v3 anyObject];
-  v5 = [v4 integerValue];
+  versionIdentifiers = [model versionIdentifiers];
+  anyObject = [versionIdentifiers anyObject];
+  integerValue = [anyObject integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_postProcessMigrationFromVersion:(int64_t)a3 migrationData:(id)a4
+- (void)_postProcessMigrationFromVersion:(int64_t)version migrationData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v7 = _ACDLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ACDDatabaseMigrator _postProcessMigrationFromVersion:migrationData:];
   }
 
-  if (a3 < 18 || a3 == 2401802)
+  if (version < 18 || version == 2401802)
   {
     v8 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
     v10[0] = MEMORY[0x277D85DD0];
@@ -756,8 +756,8 @@ LABEL_18:
     v10[2] = __70__ACDDatabaseMigrator__postProcessMigrationFromVersion_migrationData___block_invoke;
     v10[3] = &unk_27848C0B8;
     v11 = v8;
-    v12 = self;
-    v13 = v6;
+    selfCopy = self;
+    v13 = dataCopy;
     v9 = v8;
     [v9 performBlockAndWait:v10];
   }

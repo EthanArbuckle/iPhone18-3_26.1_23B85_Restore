@@ -1,25 +1,25 @@
 @interface SISchemaABExperimentAssetRetrievalStatusChanged
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithDictionary:(id)a3;
-- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithJSON:(id)a3;
+- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithDictionary:(id)dictionary;
+- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaABExperimentAssetRetrievalStatusChanged
 
-- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithDictionary:(id)a3
+- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaABExperimentAssetRetrievalStatusChanged;
   v5 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"experimentId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"experimentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaABExperimentAssetRetrievalStatusChanged *)v5 setExperimentId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"assetId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SISchemaABExperimentAssetRetrievalStatusChanged *)v5 setAssetId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"retrievalStatusCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"retrievalStatusCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithJSON:(id)a3
+- (SISchemaABExperimentAssetRetrievalStatusChanged)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetId)
   {
-    v4 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetId"];
+    assetId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
+    v5 = [assetId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetId"];
   }
 
   if (self->_experimentId)
   {
-    v6 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"experimentId"];
+    experimentId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
+    v7 = [experimentId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"experimentId"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaABExperimentAssetRetrievalStatusChanged retrievalStatusCode](self, "retrievalStatusCode")}];
-    [v3 setObject:v8 forKeyedSubscript:@"retrievalStatusCode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"retrievalStatusCode"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,28 +127,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
-  v6 = [v4 experimentId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
+  experimentId2 = [equalCopy experimentId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
-  if (v7)
+  experimentId3 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
+  if (experimentId3)
   {
-    v8 = v7;
-    v9 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
-    v10 = [v4 experimentId];
-    v11 = [v9 isEqual:v10];
+    v8 = experimentId3;
+    experimentId4 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
+    experimentId5 = [equalCopy experimentId];
+    v11 = [experimentId4 isEqual:experimentId5];
 
     if (!v11)
     {
@@ -160,22 +160,22 @@
   {
   }
 
-  v5 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
-  v6 = [v4 assetId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
+  experimentId2 = [equalCopy assetId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
-  if (v12)
+  assetId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
+  if (assetId)
   {
-    v13 = v12;
-    v14 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
-    v15 = [v4 assetId];
-    v16 = [v14 isEqual:v15];
+    v13 = assetId;
+    assetId2 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
+    assetId3 = [equalCopy assetId];
+    v16 = [assetId2 isEqual:assetId3];
 
     if (!v16)
     {
@@ -187,9 +187,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (retrievalStatusCode = self->_retrievalStatusCode, retrievalStatusCode == [v4 retrievalStatusCode]))
+    if ((*&self->_has & 1) == 0 || (retrievalStatusCode = self->_retrievalStatusCode, retrievalStatusCode == [equalCopy retrievalStatusCode]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -203,28 +203,28 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
+  toCopy = to;
+  experimentId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self experimentId];
 
-  if (v4)
+  if (experimentId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
+  assetId = [(SISchemaABExperimentAssetRetrievalStatusChanged *)self assetId];
 
-  if (v5)
+  if (assetId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteSint32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

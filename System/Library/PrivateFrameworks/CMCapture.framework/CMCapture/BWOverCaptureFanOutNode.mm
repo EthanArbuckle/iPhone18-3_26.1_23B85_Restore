@@ -1,17 +1,17 @@
 @interface BWOverCaptureFanOutNode
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWOverCaptureFanOutNode
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    v7 = CMGetAttachment(a3, @"RecordingSettings", 0);
+    v7 = CMGetAttachment(buffer, @"RecordingSettings", 0);
     if (v7)
     {
-      v8 = [v7 spatialOverCaptureMovieURL];
+      spatialOverCaptureMovieURL = [v7 spatialOverCaptureMovieURL];
       if ([(NSArray *)[(BWNode *)self outputs] count]>= 2)
       {
         v9 = 1;
@@ -27,7 +27,7 @@
 
   v10.receiver = self;
   v10.super_class = BWOverCaptureFanOutNode;
-  [(BWFanOutNode *)&v10 renderSampleBuffer:a3 forInput:a4];
+  [(BWFanOutNode *)&v10 renderSampleBuffer:buffer forInput:input];
 }
 
 @end

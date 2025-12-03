@@ -7,21 +7,21 @@
 - (id)dictionaryValue
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(AudioSystemResult *)self input];
-  [v3 setObject:v4 forKeyedSubscript:@"input"];
+  input = [(AudioSystemResult *)self input];
+  [v3 setObject:input forKeyedSubscript:@"input"];
 
-  v5 = [(AudioSystemResult *)self output];
-  [v3 setObject:v5 forKeyedSubscript:@"output"];
+  output = [(AudioSystemResult *)self output];
+  [v3 setObject:output forKeyedSubscript:@"output"];
 
-  v6 = [(AudioSystemResult *)self source];
-  [v3 setObject:v6 forKeyedSubscript:@"source"];
+  source = [(AudioSystemResult *)self source];
+  [v3 setObject:source forKeyedSubscript:@"source"];
 
-  v7 = [(AudioSystemResult *)self dbValue];
+  dbValue = [(AudioSystemResult *)self dbValue];
 
-  if (v7)
+  if (dbValue)
   {
-    v8 = [(AudioSystemResult *)self dbValue];
-    [v3 setObject:v8 forKeyedSubscript:@"dbValue"];
+    dbValue2 = [(AudioSystemResult *)self dbValue];
+    [v3 setObject:dbValue2 forKeyedSubscript:@"dbValue"];
   }
 
   v9 = [v3 copy];

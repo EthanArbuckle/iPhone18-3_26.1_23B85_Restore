@@ -2,37 +2,37 @@
 - (BOOL)isBaseSubSuperscript;
 - (BOOL)isNumber;
 - (BOOL)isRangeSubSuperscript;
-- (SCRCMathSubSuperscriptExpression)initWithDictionary:(id)a3;
-- (id)_stringToAddForSuperscript:(id)a3 withPriorDescription:(id)a4 updatedDescription:(id *)a5;
+- (SCRCMathSubSuperscriptExpression)initWithDictionary:(id)dictionary;
+- (id)_stringToAddForSuperscript:(id)superscript withPriorDescription:(id)description updatedDescription:(id *)updatedDescription;
 - (id)description;
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4;
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
 - (id)latexMathModeDescription;
 - (id)mathMLString;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position;
 - (id)subExpressions;
 - (unint64_t)fractionLevel;
 @end
 
 @implementation SCRCMathSubSuperscriptExpression
 
-- (SCRCMathSubSuperscriptExpression)initWithDictionary:(id)a3
+- (SCRCMathSubSuperscriptExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SCRCMathSubSuperscriptExpression;
-  v5 = [(SCRCMathExpression *)&v13 initWithDictionary:v4];
+  v5 = [(SCRCMathExpression *)&v13 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMBaseObject"];
+    v6 = [dictionaryCopy objectForKey:@"AXMBaseObject"];
     v7 = [SCRCMathExpression mathExpressionWithDictionary:v6];
     [(SCRCMathSubSuperscriptExpression *)v5 setBase:v7];
 
-    v8 = [v4 objectForKey:@"AXMSubscriptObject"];
+    v8 = [dictionaryCopy objectForKey:@"AXMSubscriptObject"];
     v9 = [SCRCMathExpression mathExpressionWithDictionary:v8];
     [(SCRCMathSubSuperscriptExpression *)v5 setSubscript:v9];
 
-    v10 = [v4 objectForKey:@"AXMSuperscriptObject"];
+    v10 = [dictionaryCopy objectForKey:@"AXMSuperscriptObject"];
     v11 = [SCRCMathExpression mathExpressionWithDictionary:v10];
     [(SCRCMathSubSuperscriptExpression *)v5 setSuperscript:v11];
   }
@@ -45,61 +45,61 @@
   v9.receiver = self;
   v9.super_class = SCRCMathSubSuperscriptExpression;
   v3 = [(SCRCMathSubSuperscriptExpression *)&v9 description];
-  v4 = [(SCRCMathSubSuperscriptExpression *)self base];
-  v5 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-  v6 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-  v7 = [v3 stringByAppendingFormat:@" - base %@, subscript %@, superscript %@", v4, v5, v6];
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  v7 = [v3 stringByAppendingFormat:@" - base %@, subscript %@, superscript %@", base, subscript, superscript];
 
   return v7;
 }
 
 - (BOOL)isRangeSubSuperscript
 {
-  v3 = [(SCRCMathSubSuperscriptExpression *)self base];
-  if (v3 && ([(SCRCMathSubSuperscriptExpression *)self subscript], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  if (base && ([(SCRCMathSubSuperscriptExpression *)self subscript], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+    superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
 
-    if (v6)
+    if (superscript)
     {
-      LOBYTE(v6) = [v3 canBeUsedWithRange];
+      LOBYTE(superscript) = [base canBeUsedWithRange];
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(superscript) = 0;
   }
 
-  return v6;
+  return superscript;
 }
 
 - (BOOL)isBaseSubSuperscript
 {
-  v3 = [(SCRCMathSubSuperscriptExpression *)self base];
-  if (!v3)
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  if (!base)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-  if (!v5)
+  base2 = base;
+  subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  if (!subscript)
   {
-    v8 = 0;
+    canBeUsedWithBase = 0;
 LABEL_7:
 
-    return v8;
+    return canBeUsedWithBase;
   }
 
-  v6 = v5;
-  v7 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  v6 = subscript;
+  superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
 
-  if (!v7)
+  if (!superscript)
   {
-    v4 = [(SCRCMathSubSuperscriptExpression *)self base];
-    v8 = [v4 canBeUsedWithBase];
+    base2 = [(SCRCMathSubSuperscriptExpression *)self base];
+    canBeUsedWithBase = [base2 canBeUsedWithBase];
     goto LABEL_7;
   }
 
@@ -113,61 +113,61 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(SCRCMathSubSuperscriptExpression *)self base];
-  v5 = [v4 isNumber];
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  isNumber = [base isNumber];
 
-  return v5;
+  return isNumber;
 }
 
 - (unint64_t)fractionLevel
 {
-  v2 = [(SCRCMathSubSuperscriptExpression *)self base];
-  v3 = [v2 fractionLevel];
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  fractionLevel = [base fractionLevel];
 
-  return v3;
+  return fractionLevel;
 }
 
 - (id)subExpressions
 {
-  v3 = [(SCRCMathSubSuperscriptExpression *)self base];
-  v4 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-  v5 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-  v6 = [(SCRCMathExpression *)self arrayWithoutNilsFromFirstChild:v3 secondChild:v4 thirdChild:v5];
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  v6 = [(SCRCMathExpression *)self arrayWithoutNilsFromFirstChild:base secondChild:subscript thirdChild:superscript];
 
   return v6;
 }
 
-- (id)_stringToAddForSuperscript:(id)a3 withPriorDescription:(id)a4 updatedDescription:(id *)a5
+- (id)_stringToAddForSuperscript:(id)superscript withPriorDescription:(id)description updatedDescription:(id *)updatedDescription
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 length])
+  superscriptCopy = superscript;
+  descriptionCopy = description;
+  if (![superscriptCopy length])
   {
     v20 = 0;
     goto LABEL_21;
   }
 
-  v10 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-  v11 = [v10 isNumber];
+  superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  isNumber = [superscript isNumber];
 
-  v12 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-  v13 = v12;
-  if (v11)
+  superscript2 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  v13 = superscript2;
+  if (isNumber)
   {
-    v14 = [v12 isInteger];
+    isInteger = [superscript2 isInteger];
 
-    if (v14)
+    if (isInteger)
     {
-      v15 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-      v16 = [v15 integerValue];
+      superscript3 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+      integerValue = [superscript3 integerValue];
 
-      if (v16 == 2)
+      if (integerValue == 2)
       {
-        v17 = [v9 scrcContainsPause];
+        scrcContainsPause = [descriptionCopy scrcContainsPause];
         v18 = @"superscript.squared.formatter";
         v19 = @"superscript.squared.with.long.base.formatter";
 LABEL_12:
-        if (v17)
+        if (scrcContainsPause)
         {
           v27 = v19;
         }
@@ -180,26 +180,26 @@ LABEL_12:
         v28 = MEMORY[0x277CCA898];
         v29 = [(SCRCMathExpression *)self localizedStringForKey:v27];
 LABEL_20:
-        v31 = [v28 scrcStringWithFormat:v29, v9, v34];
+        v31 = [v28 scrcStringWithFormat:v29, descriptionCopy, v34];
 
         v20 = 0;
-        v9 = v31;
+        descriptionCopy = v31;
         goto LABEL_21;
       }
 
-      v25 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-      v26 = [v25 integerValue];
+      superscript4 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+      integerValue2 = [superscript4 integerValue];
 
-      if (v26 == 3)
+      if (integerValue2 == 3)
       {
-        v17 = [v9 scrcContainsPause];
+        scrcContainsPause = [descriptionCopy scrcContainsPause];
         v18 = @"superscript.cubed.formatter";
         v19 = @"superscript.cubed.with.long.base.formatter";
         goto LABEL_12;
       }
     }
 
-    if ([v9 scrcContainsPause])
+    if ([descriptionCopy scrcContainsPause])
     {
       v30 = @"raised.to.power.with.long.base.formatter";
     }
@@ -211,46 +211,46 @@ LABEL_20:
 
     v28 = MEMORY[0x277CCA898];
     v29 = [(SCRCMathExpression *)self localizedStringForKey:v30];
-    v34 = v8;
+    v34 = superscriptCopy;
     goto LABEL_20;
   }
 
-  v21 = [v12 isNaturalSuperscript];
+  isNaturalSuperscript = [superscript2 isNaturalSuperscript];
 
-  if (v21)
+  if (isNaturalSuperscript)
   {
-    v20 = v8;
+    v20 = superscriptCopy;
   }
 
   else
   {
     v22 = MEMORY[0x277CCA898];
     v23 = [(SCRCMathExpression *)self localizedStringForKey:@"generic.superscript.formatter"];
-    v24 = [v22 scrcStringWithFormat:v23, v8];
+    superscriptCopy = [v22 scrcStringWithFormat:v23, superscriptCopy];
 
-    v20 = [v24 scrcStringByAddingAttribute:@"kSCRCMathStringAttributeSpeakWithPitchInflection" value:&unk_28763AB68];
+    v20 = [superscriptCopy scrcStringByAddingAttribute:@"kSCRCMathStringAttributeSpeakWithPitchInflection" value:&unk_28763AB68];
   }
 
 LABEL_21:
-  if (a5)
+  if (updatedDescription)
   {
-    v32 = v9;
-    *a5 = v9;
+    v32 = descriptionCopy;
+    *updatedDescription = descriptionCopy;
   }
 
   return v20;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v47 = *MEMORY[0x277D85DE8];
-  v7 = [(SCRCMathSubSuperscriptExpression *)self isRangeSubSuperscript];
-  v8 = v7 | [(SCRCMathSubSuperscriptExpression *)self isBaseSubSuperscript];
+  isRangeSubSuperscript = [(SCRCMathSubSuperscriptExpression *)self isRangeSubSuperscript];
+  v8 = isRangeSubSuperscript | [(SCRCMathSubSuperscriptExpression *)self isBaseSubSuperscript];
   v9 = v8 ^ 1;
-  v10 = [(SCRCMathSubSuperscriptExpression *)self base];
-  v40 = v4;
-  v11 = [v10 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4 & (v8 ^ 1u)];
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
+  v40 = allowedCopy;
+  v11 = [base speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy & (v8 ^ 1u)];
 
   if (![v11 length])
   {
@@ -259,15 +259,15 @@ LABEL_21:
     v11 = v12;
   }
 
-  v13 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-  v14 = [v13 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v40 & v9];
+  subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  v14 = [subscript speakableDescriptionWithSpeakingStyle:style arePausesAllowed:v40 & v9];
 
-  v15 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-  v16 = [v15 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v40 & v9];
+  superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  v16 = [superscript speakableDescriptionWithSpeakingStyle:style arePausesAllowed:v40 & v9];
 
   if (v8)
   {
-    if (v7)
+    if (isRangeSubSuperscript)
     {
       v17 = @"range.sub.superscript.formatter";
     }
@@ -294,7 +294,7 @@ LABEL_21:
     if (v22)
     {
       v23 = v22;
-      v39 = self;
+      selfCopy = self;
       v20 = 0;
       v24 = *v43;
       v25 = 1;
@@ -318,7 +318,7 @@ LABEL_21:
             if ([v14 length])
             {
               v29 = MEMORY[0x277CCA898];
-              v30 = [(SCRCMathExpression *)v39 localizedStringForKey:@"generic.subscript.formatter"];
+              v30 = [(SCRCMathExpression *)selfCopy localizedStringForKey:@"generic.subscript.formatter"];
               v31 = [v29 scrcStringWithFormat:v30, v14];
 
               v28 = [v31 scrcStringByAddingAttribute:@"kSCRCMathStringAttributeSpeakWithPitchInflection" value:&unk_28763AB80];
@@ -333,7 +333,7 @@ LABEL_21:
           else if ([v27 isEqualToString:@"superscript"])
           {
             v41 = v20;
-            v28 = [(SCRCMathSubSuperscriptExpression *)v39 _stringToAddForSuperscript:v38 withPriorDescription:v20 updatedDescription:&v41];
+            v28 = [(SCRCMathSubSuperscriptExpression *)selfCopy _stringToAddForSuperscript:v38 withPriorDescription:v20 updatedDescription:&v41];
             v32 = v41;
 
             v20 = v32;
@@ -394,32 +394,32 @@ LABEL_21:
   return v20;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position
 {
   v99 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (a4)
+  positionCopy = position;
+  if (depth)
   {
-    v9 = a4 - 1;
-    if (a4 == 1)
+    v9 = depth - 1;
+    if (depth == 1)
     {
       v93.receiver = self;
       v93.super_class = SCRCMathSubSuperscriptExpression;
-      v10 = [(SCRCMathExpression *)&v93 speakableSegmentsWithSpeakingStyle:a3 upToDepth:1 treePosition:v8];
+      array = [(SCRCMathExpression *)&v93 speakableSegmentsWithSpeakingStyle:style upToDepth:1 treePosition:positionCopy];
       goto LABEL_72;
     }
 
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(SCRCMathSubSuperscriptExpression *)self isRangeSubSuperscript];
-    v12 = [(SCRCMathSubSuperscriptExpression *)self isBaseSubSuperscript];
+    array = [MEMORY[0x277CBEB18] array];
+    isRangeSubSuperscript = [(SCRCMathSubSuperscriptExpression *)self isRangeSubSuperscript];
+    isBaseSubSuperscript = [(SCRCMathSubSuperscriptExpression *)self isBaseSubSuperscript];
     v13 = @"SubSuperscript";
-    if (v12)
+    if (isBaseSubSuperscript)
     {
       v13 = @"BaseSubSuperscript";
     }
 
-    v69 = v11;
-    if (v11)
+    v69 = isRangeSubSuperscript;
+    if (isRangeSubSuperscript)
     {
       v14 = @"RangeSubSuperscript";
     }
@@ -437,17 +437,17 @@ LABEL_21:
     v79 = [obj countByEnumeratingWithState:&v89 objects:v98 count:16];
     if (v79)
     {
-      v15 = v11 || v12;
+      v15 = isRangeSubSuperscript || isBaseSubSuperscript;
       v16 = @"segment.subscript.prefix";
       v78 = *v90;
       v17 = @"segment.subscript.suffix";
-      if (v12)
+      if (isBaseSubSuperscript)
       {
         v16 = @"segment.base.subscript.prefix";
         v17 = @"segment.base.subscript.suffix";
       }
 
-      if (v11)
+      if (isRangeSubSuperscript)
       {
         v18 = @"segment.range.subscript.prefix";
       }
@@ -457,17 +457,17 @@ LABEL_21:
         v18 = v16;
       }
 
-      if (v11)
+      if (isRangeSubSuperscript)
       {
         v17 = @"segment.range.subscript.suffix";
       }
 
       v70 = v17;
       v71 = v18;
-      v72 = a3;
-      v73 = self;
+      styleCopy = style;
+      selfCopy = self;
       v74 = v9;
-      v75 = v8;
+      v75 = positionCopy;
       do
       {
         v19 = 0;
@@ -482,14 +482,14 @@ LABEL_21:
           v20 = *(*(&v89 + 1) + 8 * v19);
           if ([v20 isEqualToString:@"base"])
           {
-            v21 = [(SCRCMathSubSuperscriptExpression *)self base];
+            base = [(SCRCMathSubSuperscriptExpression *)self base];
 
-            if (v21)
+            if (base)
             {
-              v22 = [(SCRCMathSubSuperscriptExpression *)self base];
-              v23 = [v8 indexPathByAddingIndex:0];
-              v24 = [v22 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v9 treePosition:v23];
-              [v10 addObjectsFromArray:v24];
+              base2 = [(SCRCMathSubSuperscriptExpression *)self base];
+              v23 = [positionCopy indexPathByAddingIndex:0];
+              v24 = [base2 speakableSegmentsWithSpeakingStyle:style upToDepth:v9 treePosition:v23];
+              [array addObjectsFromArray:v24];
 LABEL_68:
 
               goto LABEL_69;
@@ -498,14 +498,14 @@ LABEL_68:
 
           if ([v20 isEqualToString:@"subscript"])
           {
-            v25 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+            subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
 
-            if (v25)
+            if (subscript)
             {
-              v26 = [v8 indexPathByAddingIndex:1];
-              v27 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+              v26 = [positionCopy indexPathByAddingIndex:1];
+              subscript2 = [(SCRCMathSubSuperscriptExpression *)self subscript];
               v28 = v26;
-              v29 = [v27 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v9 treePosition:v26 localizablePrefix:v71 localizableSuffix:v70];
+              v29 = [subscript2 speakableSegmentsWithSpeakingStyle:style upToDepth:v9 treePosition:v26 localizablePrefix:v71 localizableSuffix:v70];
 
               v87 = 0u;
               v88 = 0u;
@@ -535,7 +535,7 @@ LABEL_68:
                       v35 = v36;
                     }
 
-                    [v10 addObject:v35];
+                    [array addObject:v35];
                   }
 
                   v31 = [v24 countByEnumeratingWithState:&v85 objects:v97 count:16];
@@ -543,8 +543,8 @@ LABEL_68:
 
                 while (v31);
                 v23 = v24;
-                a3 = v72;
-                self = v73;
+                style = styleCopy;
+                self = selfCopy;
                 v9 = v74;
               }
 
@@ -553,25 +553,25 @@ LABEL_68:
                 v23 = v24;
               }
 
-              v22 = v28;
-              v8 = v75;
+              base2 = v28;
+              positionCopy = v75;
               goto LABEL_68;
             }
           }
 
           if ([v20 isEqualToString:@"superscript"])
           {
-            v37 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+            superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
 
-            if (v37)
+            if (superscript)
             {
-              v38 = [v8 indexPathByAddingIndex:2];
-              v39 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-              v40 = v39;
+              v38 = [positionCopy indexPathByAddingIndex:2];
+              superscript2 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+              v40 = superscript2;
               v76 = v38;
               if (v69)
               {
-                v41 = a3;
+                styleCopy3 = style;
                 v42 = v9;
                 v43 = v38;
                 v44 = @"segment.range.superscript.prefix";
@@ -579,24 +579,24 @@ LABEL_68:
                 goto LABEL_54;
               }
 
-              v46 = [v39 isNumber];
+              isNumber = [superscript2 isNumber];
 
-              v47 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-              v48 = v47;
-              if (v46)
+              superscript3 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+              v48 = superscript3;
+              if (isNumber)
               {
-                v49 = [v47 isInteger];
+                isInteger = [superscript3 isInteger];
 
                 v9 = v74;
-                if (!v49)
+                if (!isInteger)
                 {
                   goto LABEL_53;
                 }
 
-                v50 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-                v51 = [v50 integerValue];
+                superscript4 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+                integerValue = [superscript4 integerValue];
 
-                if (v51 == 2)
+                if (integerValue == 2)
                 {
                   v40 = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"segment.superscript.squared" treePosition:v76];
                   v96 = v40;
@@ -605,10 +605,10 @@ LABEL_68:
                   goto LABEL_52;
                 }
 
-                v59 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-                v60 = [v59 integerValue];
+                superscript5 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+                integerValue2 = [superscript5 integerValue];
 
-                if (v60 == 3)
+                if (integerValue2 == 3)
                 {
                   v40 = [(SCRCMathExpression *)self localizedAttributedStringForKey:@"segment.superscript.cubed" treePosition:v76];
                   v95 = v40;
@@ -621,15 +621,15 @@ LABEL_52:
                 else
                 {
 LABEL_53:
-                  v39 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-                  v40 = v39;
-                  v41 = a3;
+                  superscript2 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+                  v40 = superscript2;
+                  styleCopy3 = style;
                   v42 = v74;
                   v43 = v76;
                   v44 = @"segment.raised.to.power.prefix";
                   v45 = @"segment.raised.to.power.suffix";
 LABEL_54:
-                  v56 = [v39 speakableSegmentsWithSpeakingStyle:v41 upToDepth:v42 treePosition:v43 localizablePrefix:v44 localizableSuffix:v45];
+                  v56 = [superscript2 speakableSegmentsWithSpeakingStyle:styleCopy3 upToDepth:v42 treePosition:v43 localizablePrefix:v44 localizableSuffix:v45];
                 }
 
 LABEL_55:
@@ -639,19 +639,19 @@ LABEL_55:
 
               else
               {
-                v54 = [v47 isNaturalSuperscript];
+                isNaturalSuperscript = [superscript3 isNaturalSuperscript];
 
-                v55 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-                v40 = v55;
-                if (v54)
+                superscript6 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+                v40 = superscript6;
+                if (isNaturalSuperscript)
                 {
                   v9 = v74;
-                  v56 = [v55 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v74 treePosition:v76];
+                  v56 = [superscript6 speakableSegmentsWithSpeakingStyle:style upToDepth:v74 treePosition:v76];
                   goto LABEL_55;
                 }
 
                 v9 = v74;
-                v57 = [v55 speakableSegmentsWithSpeakingStyle:a3 upToDepth:v74 treePosition:v76 localizablePrefix:@"segment.superscript.prefix" localizableSuffix:@"segment.superscript.suffix"];
+                v57 = [superscript6 speakableSegmentsWithSpeakingStyle:style upToDepth:v74 treePosition:v76 localizablePrefix:@"segment.superscript.prefix" localizableSuffix:@"segment.superscript.suffix"];
                 v58 = 1;
               }
 
@@ -683,7 +683,7 @@ LABEL_55:
                       v66 = v67;
                     }
 
-                    [v10 addObject:v66];
+                    [array addObject:v66];
                   }
 
                   v62 = [v24 countByEnumeratingWithState:&v81 objects:v94 count:16];
@@ -692,18 +692,18 @@ LABEL_55:
                 while (v62);
                 v23 = v24;
                 v9 = v74;
-                v8 = v75;
-                a3 = v72;
-                self = v73;
+                positionCopy = v75;
+                style = styleCopy;
+                self = selfCopy;
               }
 
               else
               {
                 v23 = v24;
-                self = v73;
+                self = selfCopy;
               }
 
-              v22 = v76;
+              base2 = v76;
               goto LABEL_68;
             }
           }
@@ -722,81 +722,81 @@ LABEL_69:
 
   else
   {
-    v10 = 0;
+    array = 0;
   }
 
 LABEL_72:
 
-  return v10;
+  return array;
 }
 
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB48] scrcString];
-  v8 = [(SCRCMathSubSuperscriptExpression *)self base];
+  positionCopy = position;
+  scrcString = [MEMORY[0x277CCAB48] scrcString];
+  base = [(SCRCMathSubSuperscriptExpression *)self base];
 
-  if (v8)
+  if (base)
   {
-    v9 = [(SCRCMathSubSuperscriptExpression *)self base];
-    v10 = [v6 indexPathByAddingIndex:0];
-    v11 = [v9 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v10];
-    [v7 appendAttributedString:v11];
+    base2 = [(SCRCMathSubSuperscriptExpression *)self base];
+    v10 = [positionCopy indexPathByAddingIndex:0];
+    v11 = [base2 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:v10];
+    [scrcString appendAttributedString:v11];
   }
 
-  v12 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
 
-  if (v12)
+  if (subscript)
   {
-    v13 = [v6 indexPathByAddingIndex:1];
+    v13 = [positionCopy indexPathByAddingIndex:1];
     v14 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"bs" treePosition:v13];
-    [v7 appendAttributedString:v14];
+    [scrcString appendAttributedString:v14];
 
-    v15 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-    v16 = [v15 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v13];
-    [v7 appendAttributedString:v16];
+    subscript2 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+    v16 = [subscript2 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:v13];
+    [scrcString appendAttributedString:v16];
 
     v17 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"be" treePosition:v13];
-    [v7 appendAttributedString:v17];
+    [scrcString appendAttributedString:v17];
   }
 
-  v18 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
 
-  if (v18)
+  if (superscript)
   {
-    v19 = [v6 indexPathByAddingIndex:2];
+    v19 = [positionCopy indexPathByAddingIndex:2];
     v20 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"ps" treePosition:v19];
-    [v7 appendAttributedString:v20];
+    [scrcString appendAttributedString:v20];
 
-    v21 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-    v22 = [v21 dollarCodeDescriptionWithNumberOfOuterRadicals:a3 treePosition:v19];
-    [v7 appendAttributedString:v22];
+    superscript2 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+    v22 = [superscript2 dollarCodeDescriptionWithNumberOfOuterRadicals:radicals treePosition:v19];
+    [scrcString appendAttributedString:v22];
 
     v23 = [MEMORY[0x277CCA898] scrcStringWithDollarCode:@"pe" treePosition:v19];
-    [v7 appendAttributedString:v23];
+    [scrcString appendAttributedString:v23];
   }
 
-  return v7;
+  return scrcString;
 }
 
 - (id)mathMLString
 {
-  v3 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-  if (v3)
+  subscript = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  if (subscript)
   {
-    v4 = v3;
-    v5 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+    v4 = subscript;
+    superscript = [(SCRCMathSubSuperscriptExpression *)self superscript];
 
-    if (v5)
+    if (superscript)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(SCRCMathSubSuperscriptExpression *)self base];
-      v8 = [v7 mathMLString];
-      v9 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-      v10 = [v9 mathMLString];
-      v11 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-      v12 = [v11 mathMLString];
-      v13 = [v6 stringWithFormat:@"%@%@%@", v8, v10, v12];
+      base = [(SCRCMathSubSuperscriptExpression *)self base];
+      mathMLString = [base mathMLString];
+      subscript2 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+      mathMLString2 = [subscript2 mathMLString];
+      superscript2 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+      mathMLString3 = [superscript2 mathMLString];
+      v13 = [v6 stringWithFormat:@"%@%@%@", mathMLString, mathMLString2, mathMLString3];
       v14 = [v13 stringWrappedInMathMLTag:@"msubsup"];
 
 LABEL_9:
@@ -804,34 +804,34 @@ LABEL_9:
     }
   }
 
-  v15 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+  subscript3 = [(SCRCMathSubSuperscriptExpression *)self subscript];
 
-  if (v15)
+  if (subscript3)
   {
     v16 = MEMORY[0x277CCACA8];
-    v7 = [(SCRCMathSubSuperscriptExpression *)self base];
-    v8 = [v7 mathMLString];
-    v9 = [(SCRCMathSubSuperscriptExpression *)self subscript];
-    v10 = [v9 mathMLString];
-    v17 = [v16 stringWithFormat:@"%@%@", v8, v10];
-    v11 = v17;
+    base = [(SCRCMathSubSuperscriptExpression *)self base];
+    mathMLString = [base mathMLString];
+    subscript2 = [(SCRCMathSubSuperscriptExpression *)self subscript];
+    mathMLString2 = [subscript2 mathMLString];
+    v17 = [v16 stringWithFormat:@"%@%@", mathMLString, mathMLString2];
+    superscript2 = v17;
     v18 = @"msub";
 LABEL_8:
     v14 = [v17 stringWrappedInMathMLTag:v18];
     goto LABEL_9;
   }
 
-  v19 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+  superscript3 = [(SCRCMathSubSuperscriptExpression *)self superscript];
 
-  if (v19)
+  if (superscript3)
   {
     v20 = MEMORY[0x277CCACA8];
-    v7 = [(SCRCMathSubSuperscriptExpression *)self base];
-    v8 = [v7 mathMLString];
-    v9 = [(SCRCMathSubSuperscriptExpression *)self superscript];
-    v10 = [v9 mathMLString];
-    v17 = [v20 stringWithFormat:@"%@%@", v8, v10];
-    v11 = v17;
+    base = [(SCRCMathSubSuperscriptExpression *)self base];
+    mathMLString = [base mathMLString];
+    subscript2 = [(SCRCMathSubSuperscriptExpression *)self superscript];
+    mathMLString2 = [subscript2 mathMLString];
+    v17 = [v20 stringWithFormat:@"%@%@", mathMLString, mathMLString2];
+    superscript2 = v17;
     v18 = @"msup";
     goto LABEL_8;
   }

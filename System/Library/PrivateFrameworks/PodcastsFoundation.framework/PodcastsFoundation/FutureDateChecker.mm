@@ -1,13 +1,13 @@
 @interface FutureDateChecker
 + (BOOL)sharedInstanceShouldAssertTestsOnly;
-+ (void)setSharedInstanceShouldAssertTestsOnly:(BOOL)a3;
-- (BOOL)isFutureWithDate:(id)a3 boundBy:(id)a4;
-- (BOOL)isFutureWithTimestamp:(double)a3;
++ (void)setSharedInstanceShouldAssertTestsOnly:(BOOL)only;
+- (BOOL)isFutureWithDate:(id)date boundBy:(id)by;
+- (BOOL)isFutureWithTimestamp:(double)timestamp;
 - (_TtC18PodcastsFoundation17FutureDateChecker)init;
-- (double)timestamp:(double)a3 boundBy:(double)a4;
-- (double)timestampBoundByNow:(double)a3;
-- (double)timestampBoundByNowForDate:(id)a3;
-- (double)timestampForDate:(id)a3 boundBy:(id)a4;
+- (double)timestamp:(double)timestamp boundBy:(double)by;
+- (double)timestampBoundByNow:(double)now;
+- (double)timestampBoundByNowForDate:(id)date;
+- (double)timestampForDate:(id)date boundBy:(id)by;
 @end
 
 @implementation FutureDateChecker
@@ -22,28 +22,28 @@
   return *(qword_1ECAB20C8 + OBJC_IVAR____TtC18PodcastsFoundation17FutureDateChecker_assertOnFutures);
 }
 
-+ (void)setSharedInstanceShouldAssertTestsOnly:(BOOL)a3
++ (void)setSharedInstanceShouldAssertTestsOnly:(BOOL)only
 {
   if (qword_1ECAB3740 != -1)
   {
-    v3 = a3;
+    onlyCopy = only;
     swift_once();
-    a3 = v3;
+    only = onlyCopy;
   }
 
-  *(qword_1ECAB20C8 + OBJC_IVAR____TtC18PodcastsFoundation17FutureDateChecker_assertOnFutures) = a3;
+  *(qword_1ECAB20C8 + OBJC_IVAR____TtC18PodcastsFoundation17FutureDateChecker_assertOnFutures) = only;
 }
 
-- (BOOL)isFutureWithTimestamp:(double)a3
+- (BOOL)isFutureWithTimestamp:(double)timestamp
 {
-  v4 = self;
+  selfCopy = self;
   sub_1D9176CDC();
-  v6 = sub_1D9163AFC(a3, v5);
+  v6 = sub_1D9163AFC(timestamp, v5);
 
   return v6;
 }
 
-- (BOOL)isFutureWithDate:(id)a3 boundBy:(id)a4
+- (BOOL)isFutureWithDate:(id)date boundBy:(id)by
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECAB75C0, &unk_1D9188A50);
   v7 = *(*(v6 - 8) + 64);
@@ -59,7 +59,7 @@
   MEMORY[0x1EEE9AC00](v18);
   v20 = &v31 - v19;
   sub_1D9176DFC();
-  if (a4)
+  if (by)
   {
     sub_1D9176DFC();
     v21 = 0;
@@ -75,7 +75,7 @@
   v22 = *(v14 + 48);
   if (v22(v9, 1, v13) == 1)
   {
-    v23 = self;
+    selfCopy = self;
     sub_1D9176E2C();
     if (v22(v9, 1, v13) != 1)
     {
@@ -86,7 +86,7 @@
   else
   {
     (*(v14 + 32))(v17, v9, v13);
-    v24 = self;
+    selfCopy2 = self;
   }
 
   sub_1D9176CCC();
@@ -101,20 +101,20 @@
   return v28;
 }
 
-- (double)timestamp:(double)a3 boundBy:(double)a4
+- (double)timestamp:(double)timestamp boundBy:(double)by
 {
-  if (sub_1D9163AFC(a3, a4))
+  if (sub_1D9163AFC(timestamp, by))
   {
-    return a4;
+    return by;
   }
 
   else
   {
-    return a3;
+    return timestamp;
   }
 }
 
-- (double)timestampForDate:(id)a3 boundBy:(id)a4
+- (double)timestampForDate:(id)date boundBy:(id)by
 {
   v5 = sub_1D9176E3C();
   v6 = *(v5 - 8);
@@ -125,7 +125,7 @@
   v12 = &v21 - v11;
   sub_1D9176DFC();
   sub_1D9176DFC();
-  v13 = self;
+  selfCopy = self;
   sub_1D9176CCC();
   v15 = v14;
   sub_1D9176CCC();
@@ -146,12 +146,12 @@
   }
 }
 
-- (double)timestampBoundByNow:(double)a3
+- (double)timestampBoundByNow:(double)now
 {
-  v4 = self;
+  selfCopy = self;
   sub_1D9176CDC();
   v6 = v5;
-  v7 = sub_1D9163AFC(a3, v5);
+  v7 = sub_1D9163AFC(now, v5);
 
   if (v7)
   {
@@ -160,11 +160,11 @@
 
   else
   {
-    return a3;
+    return now;
   }
 }
 
-- (double)timestampBoundByNowForDate:(id)a3
+- (double)timestampBoundByNowForDate:(id)date
 {
   v4 = sub_1D9176E3C();
   v5 = *(v4 - 8);
@@ -172,7 +172,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D9176DFC();
-  v9 = self;
+  selfCopy = self;
   sub_1D9176CCC();
   v11 = v10;
   sub_1D9176CDC();

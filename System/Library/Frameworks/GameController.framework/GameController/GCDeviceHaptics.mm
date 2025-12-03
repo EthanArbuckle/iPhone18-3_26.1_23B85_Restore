@@ -1,7 +1,7 @@
 @interface GCDeviceHaptics
 - (CHHapticEngine)createEngineWithLocality:(GCHapticsLocality)locality;
 - (GCController)controller;
-- (GCDeviceHaptics)initWithCapabilityGraph:(id)a3;
+- (GCDeviceHaptics)initWithCapabilityGraph:(id)graph;
 @end
 
 @implementation GCDeviceHaptics
@@ -12,8 +12,8 @@
   v4 = locality;
   if (v4 && [(NSMutableSet *)self->_supportedLocalities containsObject:v4])
   {
-    v5 = [(GCHapticCapabilityGraph *)self->_capabilityGraph nodes];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    nodes = [(GCHapticCapabilityGraph *)self->_capabilityGraph nodes];
+    v6 = [nodes objectForKeyedSubscript:v4];
 
     v7 = GCCurrentProcessLinkedOnAfter(0x7E70901FFFFFFFFuLL);
     v36[0] = @"com.apple.GameController.gamecontrollerd.haptics";
@@ -21,21 +21,21 @@
     v35[1] = @"actuators";
     v8 = MEMORY[0x1E696ACC8];
     v33 = v6;
-    v32 = [v6 actuators];
-    v31 = [v8 archivedDataWithRootObject:v32 requiringSecureCoding:1 error:0];
+    actuators = [v6 actuators];
+    v31 = [v8 archivedDataWithRootObject:actuators requiringSecureCoding:1 error:0];
     v36[1] = v31;
     v35[2] = @"controllerIdentifier";
     WeakRetained = objc_loadWeakRetained(&self->_controller);
-    v10 = [WeakRetained identifier];
-    v36[2] = v10;
+    identifier = [WeakRetained identifier];
+    v36[2] = identifier;
     v35[3] = @"persistentControllerIdentifier";
     v11 = objc_loadWeakRetained(&self->_controller);
-    v12 = [v11 persistentIdentifier];
-    v36[3] = v12;
+    persistentIdentifier = [v11 persistentIdentifier];
+    v36[3] = persistentIdentifier;
     v35[4] = @"controllerProductCategory";
     v13 = objc_loadWeakRetained(&self->_controller);
-    v14 = [v13 productCategory];
-    v36[4] = v14;
+    productCategory = [v13 productCategory];
+    v36[4] = productCategory;
     v35[5] = @"shouldSquareContinuousIntensity";
     v15 = [MEMORY[0x1E696AD98] numberWithBool:v7 ^ 1u];
     v36[5] = v15;
@@ -60,8 +60,8 @@
       v20 = +[GCAnalytics instance];
       v21 = currentProcessBundleIdentifier();
       v22 = objc_loadWeakRetained(&self->_controller);
-      v23 = [v22 productCategory];
-      [v20 sendHapticsErrorRaisedEventFromSource:v21 productCategory:v23 errorType:@"CHHapticEngineCreationFailure"];
+      productCategory2 = [v22 productCategory];
+      [v20 sendHapticsErrorRaisedEventFromSource:v21 productCategory:productCategory2 errorType:@"CHHapticEngineCreationFailure"];
 
       v24 = 0;
     }
@@ -75,9 +75,9 @@
 
       v25 = +[GCAnalytics instance];
       v26 = currentProcessBundleIdentifier();
-      v27 = [(GCDeviceHaptics *)self controller];
-      v28 = [v27 productCategory];
-      [v25 sendHapticsEngineCreatedEventForBundleID:v26 productCategory:v28 hapticsLocality:v4];
+      controller = [(GCDeviceHaptics *)self controller];
+      productCategory3 = [controller productCategory];
+      [v25 sendHapticsEngineCreatedEventForBundleID:v26 productCategory:productCategory3 hapticsLocality:v4];
 
       v24 = v17;
     }
@@ -100,18 +100,18 @@
   return WeakRetained;
 }
 
-- (GCDeviceHaptics)initWithCapabilityGraph:(id)a3
+- (GCDeviceHaptics)initWithCapabilityGraph:(id)graph
 {
-  v5 = a3;
+  graphCopy = graph;
   v12.receiver = self;
   v12.super_class = GCDeviceHaptics;
   v6 = [(GCDeviceHaptics *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_capabilityGraph, a3);
-    v8 = [v5 exposedCapabilities];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_capabilityGraph, graph);
+    exposedCapabilities = [graphCopy exposedCapabilities];
+    v9 = [exposedCapabilities copy];
     supportedLocalities = v7->_supportedLocalities;
     v7->_supportedLocalities = v9;
   }

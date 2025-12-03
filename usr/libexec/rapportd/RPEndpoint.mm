@@ -1,23 +1,23 @@
 @interface RPEndpoint
 + (id)nullEndpoint;
-- (BOOL)compareWithDeviceIdentifier:(id)a3;
-- (BOOL)removeBonjourDevice:(id)a3;
-- (BOOL)removeCBDevice:(id)a3;
-- (BOOL)removeSFDevice:(id)a3;
-- (RPEndpoint)initWithCoder:(id)a3;
+- (BOOL)compareWithDeviceIdentifier:(id)identifier;
+- (BOOL)removeBonjourDevice:(id)device;
+- (BOOL)removeCBDevice:(id)device;
+- (BOOL)removeSFDevice:(id)device;
+- (RPEndpoint)initWithCoder:(id)coder;
 - (id)bleTargetData;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (unsigned)removeIDSDevice;
-- (unsigned)updateTrustStatusFlagsWithIdentity:(id)a3;
-- (unsigned)updateWithBonjourDevice:(id)a3;
-- (unsigned)updateWithCBDevice:(id)a3;
-- (unsigned)updateWithEndpoint:(id)a3;
-- (unsigned)updateWithFamilyEndpoint:(id)a3;
-- (unsigned)updateWithIDSDevice:(id)a3;
-- (unsigned)updateWithIdentity:(id)a3;
-- (unsigned)updateWithSFDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOperatingSystemVersion:(id *)a3;
+- (unsigned)updateTrustStatusFlagsWithIdentity:(id)identity;
+- (unsigned)updateWithBonjourDevice:(id)device;
+- (unsigned)updateWithCBDevice:(id)device;
+- (unsigned)updateWithEndpoint:(id)endpoint;
+- (unsigned)updateWithFamilyEndpoint:(id)endpoint;
+- (unsigned)updateWithIDSDevice:(id)device;
+- (unsigned)updateWithIdentity:(id)identity;
+- (unsigned)updateWithSFDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOperatingSystemVersion:(id *)version;
 @end
 
 @implementation RPEndpoint
@@ -34,15 +34,15 @@
   return v3;
 }
 
-- (RPEndpoint)initWithCoder:(id)a3
+- (RPEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = RPEndpoint;
   v5 = [(RPEndpoint *)&v30 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -177,217 +177,217 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accountAltDSID = self->_accountAltDSID;
-  v32 = v4;
+  v32 = coderCopy;
   if (accountAltDSID)
   {
-    [v4 encodeObject:accountAltDSID forKey:@"altDSID"];
-    v4 = v32;
+    [coderCopy encodeObject:accountAltDSID forKey:@"altDSID"];
+    coderCopy = v32;
   }
 
   accountID = self->_accountID;
   if (accountID)
   {
     [v32 encodeObject:accountID forKey:@"aID"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   activityLevel = self->_activityLevel;
   if (activityLevel)
   {
     [v32 encodeInteger:activityLevel forKey:@"acl"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   activityLevelTimeStamp = self->_activityLevelTimeStamp;
   if (activityLevelTimeStamp)
   {
     [v32 encodeObject:activityLevelTimeStamp forKey:@"aclTS"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   if (self->_cameraState)
   {
     [v32 encodeInteger:? forKey:?];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   homeKitUserIdentifiers = self->_homeKitUserIdentifiers;
   if (homeKitUserIdentifiers)
   {
     [v32 encodeObject:homeKitUserIdentifiers forKey:@"hkUI"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   hotspotInfo = self->_hotspotInfo;
   if (hotspotInfo)
   {
     [v32 encodeInt64:hotspotInfo forKey:@"hsI"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v32 encodeObject:identifier forKey:@"id"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   idsDeviceIdentifier = self->_idsDeviceIdentifier;
   if (idsDeviceIdentifier)
   {
     [v32 encodeObject:idsDeviceIdentifier forKey:@"idsD"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   contactID = self->_contactID;
   if (contactID)
   {
     [v32 encodeObject:contactID forKey:@"cnID"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   if (self->_inDiscoverySession)
   {
     [v32 encodeBool:1 forKey:@"iLagS"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   ipAddress = self->_ipAddress;
   if (ipAddress)
   {
     [v32 encodeObject:ipAddress forKey:@"ipAdd"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   mediaRemoteIdentifier = self->_mediaRemoteIdentifier;
   if (mediaRemoteIdentifier)
   {
     [v32 encodeObject:mediaRemoteIdentifier forKey:@"MRI"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   mediaRouteIdentifier = self->_mediaRouteIdentifier;
   if (mediaRouteIdentifier)
   {
     [v32 encodeObject:mediaRouteIdentifier forKey:@"MRtI"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   model = self->_model;
   if (model)
   {
     [v32 encodeObject:model forKey:@"md"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   name = self->_name;
   if (name)
   {
     [v32 encodeObject:name forKey:@"nm"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   majorVersion = self->_operatingSystemVersion.majorVersion;
   if (majorVersion)
   {
     [v32 encodeInteger:majorVersion forKey:@"osma"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   minorVersion = self->_operatingSystemVersion.minorVersion;
   if (minorVersion)
   {
     [v32 encodeInteger:minorVersion forKey:@"osmi"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   patchVersion = self->_operatingSystemVersion.patchVersion;
   if (patchVersion)
   {
     [v32 encodeInteger:patchVersion forKey:@"osp"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   proximity = self->_proximity;
   if (proximity)
   {
     [v32 encodeInteger:proximity forKey:@"px"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   serviceInfo = self->_serviceInfo;
   if (serviceInfo)
   {
     [v32 encodeObject:serviceInfo forKey:@"si"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v32 encodeObject:serviceType forKey:@"st"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   serviceTypes = self->_serviceTypes;
   if (serviceTypes)
   {
     [v32 encodeObject:serviceTypes forKey:@"stA"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   sessionPairingIdentifier = self->_sessionPairingIdentifier;
   if (sessionPairingIdentifier)
   {
     [v32 encodeObject:sessionPairingIdentifier forKey:@"spID"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   statusFlags = self->_statusFlags;
   if (statusFlags)
   {
     [v32 encodeInt64:statusFlags forKey:@"sf"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   sourceVersion = self->_sourceVersion;
   if (sourceVersion)
   {
     [v32 encodeObject:sourceVersion forKey:@"sv"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   verifiedIdentity = self->_verifiedIdentity;
   if (verifiedIdentity)
   {
     [v32 encodeObject:verifiedIdentity forKey:@"vi"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   verifiedAcl = self->_verifiedAcl;
   if (verifiedAcl)
   {
     [v32 encodeObject:verifiedAcl forKey:@"vAcl"];
-    v4 = v32;
+    coderCopy = v32;
   }
 
   if (self->_encodeSensitiveProperties)
   {
-    v31 = [(RPEndpoint *)self bleTargetData];
-    if (v31)
+    bleTargetData = [(RPEndpoint *)self bleTargetData];
+    if (bleTargetData)
     {
-      [v32 encodeObject:v31 forKey:@"bleTD"];
+      [v32 encodeObject:bleTargetData forKey:@"bleTD"];
     }
 
-    v4 = v32;
+    coderCopy = v32;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v78 = 0;
   NSAppendPrintF();
@@ -600,7 +600,7 @@
     v6 = v42;
   }
 
-  if (a3 >= 20)
+  if (level >= 20)
   {
     activityLevelTimeStamp = self->_activityLevelTimeStamp;
     if (activityLevelTimeStamp)
@@ -616,19 +616,19 @@
   return v6;
 }
 
-- (unsigned)updateWithBonjourDevice:(id)a3
+- (unsigned)updateWithBonjourDevice:(id)device
 {
-  v5 = a3;
-  v6 = [v5 txtDictionary];
-  objc_storeStrong(&self->_bonjourDevice, a3);
-  v7 = [v5 deviceInfo];
+  deviceCopy = device;
+  txtDictionary = [deviceCopy txtDictionary];
+  objc_storeStrong(&self->_bonjourDevice, device);
+  deviceInfo = [deviceCopy deviceInfo];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   v8 = self->_idsDevice;
   v9 = self->_model;
   if (v9)
   {
-    v10 = v9;
+    modelIdentifier = v9;
 LABEL_3:
     v44 = 0;
     goto LABEL_8;
@@ -638,28 +638,28 @@ LABEL_3:
   v11 = CFDictionaryGetTypedValue();
   if (v11)
   {
-    v10 = v11;
+    modelIdentifier = v11;
   }
 
   else
   {
-    v10 = [(IDSDevice *)v8 modelIdentifier];
-    if (!v10)
+    modelIdentifier = [(IDSDevice *)v8 modelIdentifier];
+    if (!modelIdentifier)
     {
       goto LABEL_3;
     }
   }
 
-  objc_storeStrong(&self->_model, v10);
+  objc_storeStrong(&self->_model, modelIdentifier);
   v44 = 2;
 LABEL_8:
-  v12 = [v5 name];
-  v13 = v12;
-  if (v12)
+  name = [deviceCopy name];
+  v13 = name;
+  if (name)
   {
-    v14 = v6;
+    v14 = txtDictionary;
     name = self->_name;
-    v16 = v12;
+    v16 = name;
     v17 = name;
     v18 = v17;
     if (v16 == v17)
@@ -687,7 +687,7 @@ LABEL_8:
     }
 
 LABEL_16:
-    v6 = v14;
+    txtDictionary = v14;
   }
 
   v46 = *&self->_operatingSystemVersion.majorVersion;
@@ -734,13 +734,13 @@ LABEL_16:
 
 LABEL_26:
   v27 = self->_sourceVersion;
-  v42 = v10;
+  v42 = modelIdentifier;
   if (v27)
   {
     v28 = v27;
     v29 = v13;
 LABEL_28:
-    v30 = v5;
+    v30 = deviceCopy;
     goto LABEL_34;
   }
 
@@ -750,7 +750,7 @@ LABEL_28:
   if (v8 && !v31)
   {
     [(IDSDevice *)v8 operatingSystemVersion];
-    v28 = sub_10001AF18(v10, &v46);
+    v28 = sub_10001AF18(modelIdentifier, &v46);
   }
 
   v29 = v13;
@@ -759,15 +759,15 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v30 = v5;
+  v30 = deviceCopy;
   objc_storeStrong(&self->_sourceVersion, v28);
   v44 |= 2u;
 LABEL_34:
   Int64 = CFDictionaryGetInt64();
   statusFlags = self->_statusFlags;
-  v34 = [(IDSDevice *)v8 supportsApplePay];
+  supportsApplePay = [(IDSDevice *)v8 supportsApplePay];
   v35 = 4;
-  if (v34)
+  if (supportsApplePay)
   {
     v35 = 8388612;
   }
@@ -789,18 +789,18 @@ LABEL_34:
   return v39;
 }
 
-- (BOOL)removeBonjourDevice:(id)a3
+- (BOOL)removeBonjourDevice:(id)device
 {
   bonjourDevice = self->_bonjourDevice;
   self->_bonjourDevice = 0;
-  v5 = a3;
+  deviceCopy = device;
 
   self->_statusFlags &= ~4uLL;
-  v6 = [v5 deviceInfo];
+  deviceInfo = [deviceCopy deviceInfo];
 
-  LOBYTE(v5) = CFDictionaryGetInt64Ranged();
+  LOBYTE(deviceCopy) = CFDictionaryGetInt64Ranged();
   statusFlags = self->_statusFlags;
-  if ((v5 & 0x18) != 0)
+  if ((deviceCopy & 0x18) != 0)
   {
     statusFlags &= ~0x1000000uLL;
     self->_statusFlags = statusFlags;
@@ -809,18 +809,18 @@ LABEL_34:
   return (statusFlags & 0x10001F) == 0;
 }
 
-- (unsigned)updateWithFamilyEndpoint:(id)a3
+- (unsigned)updateWithFamilyEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [v4 deviceUniqueID];
-  v6 = v5;
-  if (!v5)
+  endpointCopy = endpoint;
+  deviceUniqueID = [endpointCopy deviceUniqueID];
+  v6 = deviceUniqueID;
+  if (!deviceUniqueID)
   {
     goto LABEL_7;
   }
 
   idsDeviceIdentifier = self->_idsDeviceIdentifier;
-  v8 = v5;
+  v8 = deviceUniqueID;
   v9 = idsDeviceIdentifier;
   v10 = v9;
   if (v8 == v9)
@@ -848,15 +848,15 @@ LABEL_9:
   v12 = 2;
 LABEL_10:
 
-  v13 = [v4 deviceName];
-  v14 = v13;
-  if (!v13)
+  deviceName = [endpointCopy deviceName];
+  v14 = deviceName;
+  if (!deviceName)
   {
     goto LABEL_18;
   }
 
   name = self->_name;
-  v16 = v13;
+  v16 = deviceName;
   v17 = name;
   v18 = v17;
   if (v16 == v17)
@@ -885,16 +885,16 @@ LABEL_18:
   v38 = *&self->_operatingSystemVersion.majorVersion;
   patchVersion = self->_operatingSystemVersion.patchVersion;
   v20 = sub_10000F224(&v38);
-  v21 = [v4 productVersion];
-  if (!v21)
+  productVersion = [endpointCopy productVersion];
+  if (!productVersion)
   {
     goto LABEL_26;
   }
 
-  v22 = v21;
-  v23 = [v4 productVersion];
+  v22 = productVersion;
+  productVersion2 = [endpointCopy productVersion];
   v24 = v20;
-  v25 = v23;
+  v25 = productVersion2;
   v26 = v25;
   if (v24 == v25)
   {
@@ -913,8 +913,8 @@ LABEL_18:
   if ((v27 & 1) == 0)
   {
 LABEL_25:
-    v28 = [v4 productVersion];
-    sub_10001B9C0(v28, &v38);
+    productVersion3 = [endpointCopy productVersion];
+    sub_10001B9C0(productVersion3, &v38);
     *&self->_operatingSystemVersion.majorVersion = v38;
     self->_operatingSystemVersion.patchVersion = patchVersion;
 
@@ -923,8 +923,8 @@ LABEL_25:
 
 LABEL_26:
   model = self->_model;
-  v30 = [v4 productVersion];
-  sub_10001B9C0(v30, &v38);
+  productVersion4 = [endpointCopy productVersion];
+  sub_10001B9C0(productVersion4, &v38);
   v31 = sub_10001AF18(model, &v38);
 
   if (v31)
@@ -963,19 +963,19 @@ LABEL_34:
   return v12;
 }
 
-- (unsigned)updateWithIDSDevice:(id)a3
+- (unsigned)updateWithIDSDevice:(id)device
 {
-  v5 = a3;
-  objc_storeStrong(&self->_idsDevice, a3);
-  v6 = [v5 uniqueIDOverride];
-  v7 = v6;
-  if (!v6)
+  deviceCopy = device;
+  objc_storeStrong(&self->_idsDevice, device);
+  uniqueIDOverride = [deviceCopy uniqueIDOverride];
+  v7 = uniqueIDOverride;
+  if (!uniqueIDOverride)
   {
     goto LABEL_7;
   }
 
   idsDeviceIdentifier = self->_idsDeviceIdentifier;
-  v9 = v6;
+  v9 = uniqueIDOverride;
   v10 = idsDeviceIdentifier;
   v11 = v10;
   if (v9 == v10)
@@ -1003,10 +1003,10 @@ LABEL_9:
   v13 = 2;
 LABEL_10:
 
-  v14 = [v5 modelIdentifier];
-  v15 = v14;
+  modelIdentifier = [deviceCopy modelIdentifier];
+  v15 = modelIdentifier;
   v16 = v15;
-  if (!v14)
+  if (!modelIdentifier)
   {
     goto LABEL_18;
   }
@@ -1032,21 +1032,21 @@ LABEL_10:
   if ((v21 & 1) == 0)
   {
 LABEL_17:
-    objc_storeStrong(&self->_model, v14);
+    objc_storeStrong(&self->_model, modelIdentifier);
     v13 = 2;
   }
 
 LABEL_18:
 
-  v22 = [v5 name];
-  v23 = v22;
-  if (!v22)
+  name = [deviceCopy name];
+  v23 = name;
+  if (!name)
   {
     goto LABEL_26;
   }
 
   name = self->_name;
-  v25 = v22;
+  v25 = name;
   v26 = name;
   v27 = v26;
   if (v25 == v26)
@@ -1075,15 +1075,15 @@ LABEL_26:
   v44 = *&self->_operatingSystemVersion.majorVersion;
   patchVersion = self->_operatingSystemVersion.patchVersion;
   v29 = sub_10000F224(&v44);
-  if (v5)
+  if (deviceCopy)
   {
-    [v5 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     if (v43 < 1)
     {
       goto LABEL_38;
     }
 
-    [v5 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     v30 = sub_10000F224(&v44);
     v31 = v29;
     v32 = v30;
@@ -1111,12 +1111,12 @@ LABEL_38:
           goto LABEL_43;
         }
 
-        [v5 operatingSystemVersion];
+        [deviceCopy operatingSystemVersion];
         goto LABEL_41;
       }
     }
 
-    [v5 operatingSystemVersion];
+    [deviceCopy operatingSystemVersion];
     *&self->_operatingSystemVersion.majorVersion = v44;
     self->_operatingSystemVersion.patchVersion = patchVersion;
     v13 |= 2u;
@@ -1143,9 +1143,9 @@ LABEL_41:
 
 LABEL_43:
   statusFlags = self->_statusFlags;
-  v39 = [v5 supportsApplePay];
+  supportsApplePay = [deviceCopy supportsApplePay];
   v40 = 1572864;
-  if (v39)
+  if (supportsApplePay)
   {
     v40 = 9961472;
   }
@@ -1189,23 +1189,23 @@ LABEL_43:
   }
 }
 
-- (unsigned)updateWithSFDevice:(id)a3
+- (unsigned)updateWithSFDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v136 = 0;
   v6 = self->_bleDevice;
-  objc_storeStrong(&self->_bleDevice, a3);
+  objc_storeStrong(&self->_bleDevice, device);
   v132 = self->_idsDevice;
-  v130 = [v5 deviceFlags];
+  deviceFlags = [deviceCopy deviceFlags];
   v7 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v5 accountAltDSID];
-    v9 = v8;
-    if (v8)
+    accountAltDSID = [deviceCopy accountAltDSID];
+    v9 = accountAltDSID;
+    if (accountAltDSID)
     {
       accountAltDSID = self->_accountAltDSID;
-      v11 = v8;
+      v11 = accountAltDSID;
       v12 = accountAltDSID;
       v13 = v12;
       if (v11 == v12)
@@ -1236,13 +1236,13 @@ LABEL_10:
 LABEL_11:
   }
 
-  v15 = [v5 accountID];
-  v16 = v15;
+  accountID = [deviceCopy accountID];
+  v16 = accountID;
   v131 = v6;
-  if (v15)
+  if (accountID)
   {
     accountID = self->_accountID;
-    v18 = v15;
+    v18 = accountID;
     v19 = accountID;
     v20 = v19;
     if (v18 == v19)
@@ -1277,11 +1277,11 @@ LABEL_11:
 
 LABEL_20:
 
-  v129 = [v5 bleDevice];
-  v22 = [v129 decryptedActivityLevel];
-  if (v22 != 16 && self->_activityLevel != v22)
+  bleDevice = [deviceCopy bleDevice];
+  decryptedActivityLevel = [bleDevice decryptedActivityLevel];
+  if (decryptedActivityLevel != 16 && self->_activityLevel != decryptedActivityLevel)
   {
-    self->_activityLevel = v22;
+    self->_activityLevel = decryptedActivityLevel;
     v23 = +[NSDate date];
     activityLevelTimeStamp = self->_activityLevelTimeStamp;
     self->_activityLevelTimeStamp = v23;
@@ -1289,12 +1289,12 @@ LABEL_20:
     v7 = 2;
   }
 
-  v25 = [v5 bleDevice];
-  v26 = [v25 advertisementData];
-  v27 = [(SFDevice *)v6 bleDevice];
-  v28 = [v27 advertisementData];
-  v29 = v26;
-  v30 = v28;
+  bleDevice2 = [deviceCopy bleDevice];
+  advertisementData = [bleDevice2 advertisementData];
+  bleDevice3 = [(SFDevice *)v6 bleDevice];
+  advertisementData2 = [bleDevice3 advertisementData];
+  v29 = advertisementData;
+  v30 = advertisementData2;
   v31 = v30;
   if (v29 == v30)
   {
@@ -1318,13 +1318,13 @@ LABEL_20:
     v7 |= 1u;
   }
 
-  v34 = [v5 bleDevice];
-  v35 = [v34 advertisementFields];
-  v36 = [v35 mutableCopy];
+  bleDevice4 = [deviceCopy bleDevice];
+  advertisementFields = [bleDevice4 advertisementFields];
+  v36 = [advertisementFields mutableCopy];
 
-  v37 = [(SFDevice *)v6 bleDevice];
-  v38 = [v37 advertisementFields];
-  v39 = [v38 mutableCopy];
+  bleDevice5 = [(SFDevice *)v6 bleDevice];
+  advertisementFields2 = [bleDevice5 advertisementFields];
+  v39 = [advertisementFields2 mutableCopy];
 
   [v36 setObject:0 forKeyedSubscript:@"ch"];
   [v39 setObject:0 forKeyedSubscript:@"ch"];
@@ -1358,8 +1358,8 @@ LABEL_36:
   }
 
 LABEL_38:
-  v46 = [v5 bleDevice];
-  v47 = [v46 advertisementFields];
+  bleDevice6 = [deviceCopy bleDevice];
+  advertisementFields3 = [bleDevice6 advertisementFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   if (self->_cameraState != Int64Ranged)
@@ -1369,18 +1369,18 @@ LABEL_38:
   }
 
   hotspotInfo = self->_hotspotInfo;
-  if (hotspotInfo != [v5 hotspotInfo])
+  if (hotspotInfo != [deviceCopy hotspotInfo])
   {
-    self->_hotspotInfo = [v5 hotspotInfo];
+    self->_hotspotInfo = [deviceCopy hotspotInfo];
     v45 |= 1u;
   }
 
-  v50 = [v5 idsIdentifier];
-  v51 = v50;
-  if (v50)
+  idsIdentifier = [deviceCopy idsIdentifier];
+  v51 = idsIdentifier;
+  if (idsIdentifier)
   {
     idsDeviceIdentifier = self->_idsDeviceIdentifier;
-    v53 = v50;
+    v53 = idsIdentifier;
     v54 = idsDeviceIdentifier;
     v55 = v54;
     if (v53 == v54)
@@ -1409,19 +1409,19 @@ LABEL_38:
 
 LABEL_50:
 
-  v57 = [v5 inDiscoverySession];
-  if (self->_inDiscoverySession != v57)
+  inDiscoverySession = [deviceCopy inDiscoverySession];
+  if (self->_inDiscoverySession != inDiscoverySession)
   {
-    self->_inDiscoverySession = v57;
+    self->_inDiscoverySession = inDiscoverySession;
     v45 |= 0x400u;
   }
 
-  v58 = [v5 contactIdentifier];
-  v59 = v58;
-  if (v58)
+  contactIdentifier = [deviceCopy contactIdentifier];
+  v59 = contactIdentifier;
+  if (contactIdentifier)
   {
     contactID = self->_contactID;
-    v61 = v58;
+    v61 = contactIdentifier;
     v62 = contactID;
     v63 = v62;
     if (v61 == v62)
@@ -1452,39 +1452,39 @@ LABEL_60:
 
   if (!self->_mediaRemoteIdentifier)
   {
-    v65 = [v5 mediaRemoteID];
-    if (v65)
+    mediaRemoteID = [deviceCopy mediaRemoteID];
+    if (mediaRemoteID)
     {
-      objc_storeStrong(&self->_mediaRemoteIdentifier, v65);
+      objc_storeStrong(&self->_mediaRemoteIdentifier, mediaRemoteID);
       v45 |= 2u;
     }
   }
 
   if (!self->_mediaRouteIdentifier)
   {
-    v66 = [v5 mediaRouteID];
-    if (v66)
+    mediaRouteID = [deviceCopy mediaRouteID];
+    if (mediaRouteID)
     {
-      objc_storeStrong(&self->_mediaRouteIdentifier, v66);
+      objc_storeStrong(&self->_mediaRouteIdentifier, mediaRouteID);
       v45 |= 2u;
     }
 
-    if (!self->_mediaRouteIdentifier && (v130 & 0x400) != 0)
+    if (!self->_mediaRouteIdentifier && (deviceFlags & 0x400) != 0)
     {
-      v67 = [v5 rapportIdentifier];
-      if (v67)
+      rapportIdentifier = [deviceCopy rapportIdentifier];
+      if (rapportIdentifier)
       {
-        objc_storeStrong(&self->_mediaRouteIdentifier, v67);
+        objc_storeStrong(&self->_mediaRouteIdentifier, rapportIdentifier);
         v45 |= 2u;
       }
     }
   }
 
-  v68 = [v5 rapportIdentifier];
-  if (v68)
+  rapportIdentifier2 = [deviceCopy rapportIdentifier];
+  if (rapportIdentifier2)
   {
     v69 = self->_sessionPairingIdentifier;
-    v70 = v68;
+    v70 = rapportIdentifier2;
     v71 = v70;
     if (v69 == v70)
     {
@@ -1506,9 +1506,9 @@ LABEL_60:
     {
     }
 
-    if (([v5 deviceFlags] & 0x8000) != 0)
+    if (([deviceCopy deviceFlags] & 0x8000) != 0)
     {
-      objc_storeStrong(&self->_sessionPairingIdentifier, v68);
+      objc_storeStrong(&self->_sessionPairingIdentifier, rapportIdentifier2);
       v45 |= 2u;
     }
   }
@@ -1522,24 +1522,24 @@ LABEL_81:
     goto LABEL_87;
   }
 
-  v75 = [v5 model];
-  if (v75 || ([(IDSDevice *)v43 modelIdentifier], (v75 = objc_claimAutoreleasedReturnValue()) != 0))
+  model = [deviceCopy model];
+  if (model || ([(IDSDevice *)v43 modelIdentifier], (model = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v74 = v75;
+    v74 = model;
 LABEL_86:
     objc_storeStrong(&self->_model, v74);
     v45 |= 2u;
     goto LABEL_87;
   }
 
-  if ([v5 deviceClassCode] == 4)
+  if ([deviceCopy deviceClassCode] == 4)
   {
-    if ([v5 deviceModelCode] == 5)
+    if ([deviceCopy deviceModelCode] == 5)
     {
       v74 = @"AudioAccessory5,1";
     }
 
-    else if ([v5 deviceModelCode] == 6)
+    else if ([deviceCopy deviceModelCode] == 6)
     {
       v74 = @"AudioAccessory6,1";
     }
@@ -1554,15 +1554,15 @@ LABEL_86:
 
   v74 = 0;
 LABEL_87:
-  v76 = [v5 name];
-  v77 = v76;
-  if (!v76)
+  name = [deviceCopy name];
+  v77 = name;
+  if (!name)
   {
     goto LABEL_95;
   }
 
   name = self->_name;
-  v79 = v76;
+  v79 = name;
   v80 = name;
   v81 = v80;
   if (v79 == v80)
@@ -1650,16 +1650,16 @@ LABEL_104:
 LABEL_107:
   v128 = v45;
   statusFlags = self->_statusFlags;
-  v93 = [v5 deviceActionType];
-  v94 = [(IDSDevice *)v43 supportsApplePay];
+  deviceActionType = [deviceCopy deviceActionType];
+  supportsApplePay = [(IDSDevice *)v43 supportsApplePay];
   v95 = 2;
-  if (v94)
+  if (supportsApplePay)
   {
     v95 = 8388610;
   }
 
-  v96 = statusFlags & 0xFFFFFF7FF7DFFEFDLL | v95 & 0xFFFFFF7FFFFFFFFFLL | ((((v130 & 0x80) >> 7) & 1) << 39);
-  v97 = (v130 & 8) != 0 && v93 == 28;
+  v96 = statusFlags & 0xFFFFFF7FF7DFFEFDLL | v95 & 0xFFFFFF7FFFFFFFFFLL | ((((deviceFlags & 0x80) >> 7) & 1) << 39);
+  v97 = (deviceFlags & 8) != 0 && deviceActionType == 28;
   if (v97)
   {
     v98 = 0x200000;
@@ -1670,16 +1670,16 @@ LABEL_107:
     v98 = 0;
   }
 
-  v99 = [v5 duetSync];
+  duetSync = [deviceCopy duetSync];
   v100 = 256;
-  if (!v99)
+  if (!duetSync)
   {
     v100 = 0;
   }
 
-  v101 = v96 | v98 | v100 | ((v93 == 29) << 27);
-  v102 = [v5 bleDevice];
-  v103 = [v102 advertisementFields];
+  v101 = v96 | v98 | v100 | ((deviceActionType == 29) << 27);
+  bleDevice7 = [deviceCopy bleDevice];
+  advertisementFields4 = [bleDevice7 advertisementFields];
   v104 = CFDictionaryGetInt64Ranged();
 
   if (!v136)
@@ -1687,7 +1687,7 @@ LABEL_107:
     v101 = v101 & 0xFFFFFFFFFFFFFDFFLL | ((v104 != 0) << 9);
   }
 
-  v105 = v101 & 0xFFFFFFFFBFFFFFFFLL | ((v93 == 34) << 30);
+  v105 = v101 & 0xFFFFFFFFBFFFFFFFLL | ((deviceActionType == 34) << 30);
   v106 = v74;
   v107 = [(__CFString *)v106 hasPrefix:@"AppleTV"];
 
@@ -1697,16 +1697,16 @@ LABEL_107:
     v108 = v105;
   }
 
-  if ((v130 & 8) != 0)
+  if ((deviceFlags & 8) != 0)
   {
     v108 |= 0x80000uLL;
   }
 
-  v109 = vandq_s8(vshlq_u32(vdupq_n_s32(v130), xmmword_1001480F0), xmmword_100148100);
+  v109 = vandq_s8(vshlq_u32(vdupq_n_s32(deviceFlags), xmmword_1001480F0), xmmword_100148100);
   *v109.i8 = vorr_s8(*v109.i8, *&vextq_s8(v109, v109, 8uLL));
-  v110 = (v109.i32[0] | v109.i32[1]) | ((((v130 & 0xC000) >> 8) >> 6) << 36) & 0xFFFFFFBFFFFFFFFFLL | v108 & 0xFFFFFF8FFFFD1FFFLL | ((((v130 & 0x10000) >> 16) & 1) << 38);
-  v111 = [v5 bleDevice];
-  v112 = [v111 advertisementFields];
+  v110 = (v109.i32[0] | v109.i32[1]) | ((((deviceFlags & 0xC000) >> 8) >> 6) << 36) & 0xFFFFFFBFFFFFFFFFLL | v108 & 0xFFFFFF8FFFFD1FFFLL | ((((deviceFlags & 0x10000) >> 16) & 1) << 38);
+  bleDevice8 = [deviceCopy bleDevice];
+  advertisementFields5 = [bleDevice8 advertisementFields];
   Int64 = CFDictionaryGetInt64();
 
   v114 = v110 | 0x80;
@@ -1722,8 +1722,8 @@ LABEL_107:
     v115 = v128 | 2;
   }
 
-  v116 = [v5 distance];
-  if (v116 >= 21)
+  distance = [deviceCopy distance];
+  if (distance >= 21)
   {
     v117 = 30;
   }
@@ -1733,7 +1733,7 @@ LABEL_107:
     v117 = 20;
   }
 
-  if (v116 < 11)
+  if (distance < 11)
   {
     v117 = 10;
   }
@@ -1744,13 +1744,13 @@ LABEL_107:
     v115 |= 0x80u;
   }
 
-  v118 = [v5 bleDevice];
-  v119 = [v118 rssi];
+  bleDevice9 = [deviceCopy bleDevice];
+  rssi = [bleDevice9 rssi];
 
-  v120 = [(SFDevice *)v131 bleDevice];
-  v121 = [v120 rssi];
+  bleDevice10 = [(SFDevice *)v131 bleDevice];
+  rssi2 = [bleDevice10 rssi];
 
-  if (v119 == v121 || v119 == 0)
+  if (rssi == rssi2 || rssi == 0)
   {
     v123 = v115;
   }
@@ -1763,7 +1763,7 @@ LABEL_107:
   return v123;
 }
 
-- (BOOL)removeSFDevice:(id)a3
+- (BOOL)removeSFDevice:(id)device
 {
   bleDevice = self->_bleDevice;
   self->_bleDevice = 0;
@@ -1777,10 +1777,10 @@ LABEL_107:
   return (statusFlags & 0x10001D) == 0;
 }
 
-- (unsigned)updateTrustStatusFlagsWithIdentity:(id)a3
+- (unsigned)updateTrustStatusFlagsWithIdentity:(id)identity
 {
   statusFlags = self->_statusFlags;
-  v5 = [a3 type] - 1;
+  v5 = [identity type] - 1;
   if (v5 > 0xE)
   {
     return 0;
@@ -1801,10 +1801,10 @@ LABEL_107:
   return 2;
 }
 
-- (unsigned)updateWithIdentity:(id)a3
+- (unsigned)updateWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = v4;
+  identityCopy = identity;
+  v5 = identityCopy;
   if (self->_identifier)
   {
     v6 = 0;
@@ -1812,10 +1812,10 @@ LABEL_107:
 
   else
   {
-    v7 = [v4 identifier];
-    if (v7)
+    identifier = [identityCopy identifier];
+    if (identifier)
     {
-      objc_storeStrong(&self->_identifier, v7);
+      objc_storeStrong(&self->_identifier, identifier);
       v6 = 2;
     }
 
@@ -1827,62 +1827,62 @@ LABEL_107:
 
   if (!self->_idsDeviceIdentifier)
   {
-    v8 = [v5 idsDeviceID];
-    if (v8)
+    idsDeviceID = [v5 idsDeviceID];
+    if (idsDeviceID)
     {
-      objc_storeStrong(&self->_idsDeviceIdentifier, v8);
+      objc_storeStrong(&self->_idsDeviceIdentifier, idsDeviceID);
       v6 = 2;
     }
   }
 
   if (!self->_accountAltDSID)
   {
-    v9 = [v5 accountAltDSID];
-    if (v9)
+    accountAltDSID = [v5 accountAltDSID];
+    if (accountAltDSID)
     {
-      objc_storeStrong(&self->_accountAltDSID, v9);
+      objc_storeStrong(&self->_accountAltDSID, accountAltDSID);
       v6 |= 2u;
     }
   }
 
   if (!self->_accountID)
   {
-    v10 = [v5 accountID];
-    if (v10)
+    accountID = [v5 accountID];
+    if (accountID)
     {
-      objc_storeStrong(&self->_accountID, v10);
+      objc_storeStrong(&self->_accountID, accountID);
       v6 |= 2u;
     }
   }
 
   if (!self->_contactID)
   {
-    v11 = [v5 contactID];
-    if (v11)
+    contactID = [v5 contactID];
+    if (contactID)
     {
-      objc_storeStrong(&self->_contactID, v11);
+      objc_storeStrong(&self->_contactID, contactID);
       v6 |= 2u;
     }
   }
 
   if (!self->_model)
   {
-    v12 = [v5 model];
-    if (v12)
+    model = [v5 model];
+    if (model)
     {
-      objc_storeStrong(&self->_model, v12);
+      objc_storeStrong(&self->_model, model);
       v6 |= 2u;
     }
   }
 
   statusFlags = self->_statusFlags;
   v14 = statusFlags | 2;
-  v15 = [v5 type];
-  if (v15 > 6)
+  type = [v5 type];
+  if (type > 6)
   {
-    if (v15 > 11)
+    if (type > 11)
     {
-      switch(v15)
+      switch(type)
       {
         case 12:
           v16 = 0x1000000002;
@@ -1898,14 +1898,14 @@ LABEL_107:
       }
     }
 
-    else if (v15 == 7 || v15 == 8)
+    else if (type == 7 || type == 8)
     {
       v16 = 32770;
     }
 
     else
     {
-      if (v15 != 9)
+      if (type != 9)
       {
         goto LABEL_50;
       }
@@ -1916,9 +1916,9 @@ LABEL_107:
     goto LABEL_49;
   }
 
-  if (v15 > 3)
+  if (type > 3)
   {
-    if (v15 != 4)
+    if (type != 4)
     {
       v16 = 131074;
 LABEL_49:
@@ -1931,13 +1931,13 @@ LABEL_44:
     goto LABEL_49;
   }
 
-  if (v15 == 1 || v15 == 2)
+  if (type == 1 || type == 2)
   {
     v16 = 524290;
     goto LABEL_49;
   }
 
-  if (v15 == 3)
+  if (type == 3)
   {
     goto LABEL_44;
   }
@@ -1958,40 +1958,40 @@ LABEL_50:
 
   if (!self->_idsDeviceIdentifier)
   {
-    v19 = [v5 idsDeviceID];
-    if (v19)
+    idsDeviceID2 = [v5 idsDeviceID];
+    if (idsDeviceID2)
     {
-      objc_storeStrong(&self->_idsDeviceIdentifier, v19);
+      objc_storeStrong(&self->_idsDeviceIdentifier, idsDeviceID2);
       v6 |= 2u;
     }
   }
 
   if (!self->_mediaRemoteIdentifier)
   {
-    v20 = [v5 mediaRemoteID];
-    if (v20)
+    mediaRemoteID = [v5 mediaRemoteID];
+    if (mediaRemoteID)
     {
-      objc_storeStrong(&self->_mediaRemoteIdentifier, v20);
+      objc_storeStrong(&self->_mediaRemoteIdentifier, mediaRemoteID);
       v6 |= 2u;
     }
   }
 
   if (!self->_mediaRouteIdentifier)
   {
-    v21 = [v5 mediaRouteID];
-    if (v21)
+    mediaRouteID = [v5 mediaRouteID];
+    if (mediaRouteID)
     {
-      objc_storeStrong(&self->_mediaRouteIdentifier, v21);
+      objc_storeStrong(&self->_mediaRouteIdentifier, mediaRouteID);
       v6 |= 2u;
     }
   }
 
-  v22 = [v5 name];
-  v23 = v22;
-  if (v22)
+  name = [v5 name];
+  v23 = name;
+  if (name)
   {
     name = self->_name;
-    v25 = v22;
+    v25 = name;
     v26 = name;
     v27 = v26;
     if (v25 == v26)
@@ -2024,15 +2024,15 @@ LABEL_74:
   return v6;
 }
 
-- (unsigned)updateWithCBDevice:(id)a3
+- (unsigned)updateWithCBDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v6 = self->_cbDevice;
-  objc_storeStrong(&self->_cbDevice, a3);
-  v7 = [v5 bleAdvertisementData];
-  v8 = [(CBDevice *)v6 bleAdvertisementData];
-  v9 = v7;
-  v10 = v8;
+  objc_storeStrong(&self->_cbDevice, device);
+  bleAdvertisementData = [deviceCopy bleAdvertisementData];
+  bleAdvertisementData2 = [(CBDevice *)v6 bleAdvertisementData];
+  v9 = bleAdvertisementData;
+  v10 = bleAdvertisementData2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -2048,8 +2048,8 @@ LABEL_74:
     }
   }
 
-  v13 = [v5 rssi];
-  if (v13 == [(CBDevice *)v6 rssi]|| v13 == 0)
+  rssi = [deviceCopy rssi];
+  if (rssi == [(CBDevice *)v6 rssi]|| rssi == 0)
   {
     v15 = v12;
   }
@@ -2062,18 +2062,18 @@ LABEL_74:
   return v15;
 }
 
-- (unsigned)updateWithEndpoint:(id)a3
+- (unsigned)updateWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [v4 accountAltDSID];
-  v6 = v5;
-  if (!v5)
+  endpointCopy = endpoint;
+  accountAltDSID = [endpointCopy accountAltDSID];
+  v6 = accountAltDSID;
+  if (!accountAltDSID)
   {
     goto LABEL_7;
   }
 
   accountAltDSID = self->_accountAltDSID;
-  v8 = v5;
+  v8 = accountAltDSID;
   v9 = accountAltDSID;
   v10 = v9;
   if (v8 == v9)
@@ -2100,15 +2100,15 @@ LABEL_9:
   objc_storeStrong(&self->_accountAltDSID, v6);
   v12 = 2;
 LABEL_10:
-  v13 = [v4 contactID];
-  v14 = v13;
-  if (!v13)
+  contactID = [endpointCopy contactID];
+  v14 = contactID;
+  if (!contactID)
   {
     goto LABEL_18;
   }
 
   contactID = self->_contactID;
-  v16 = v13;
+  v16 = contactID;
   v17 = contactID;
   v18 = v17;
   if (v16 == v17)
@@ -2133,15 +2133,15 @@ LABEL_17:
   }
 
 LABEL_18:
-  v20 = [v4 identifier];
-  v21 = v20;
-  if (!v20)
+  identifier = [endpointCopy identifier];
+  v21 = identifier;
+  if (!identifier)
   {
     goto LABEL_26;
   }
 
   identifier = self->_identifier;
-  v23 = v20;
+  v23 = identifier;
   v24 = identifier;
   v25 = v24;
   if (v23 == v24)
@@ -2167,15 +2167,15 @@ LABEL_25:
 
 LABEL_26:
   v62 = v6;
-  v27 = [v4 idsDeviceIdentifier];
-  v28 = v27;
-  if (!v27)
+  idsDeviceIdentifier = [endpointCopy idsDeviceIdentifier];
+  v28 = idsDeviceIdentifier;
+  if (!idsDeviceIdentifier)
   {
     goto LABEL_34;
   }
 
   idsDeviceIdentifier = self->_idsDeviceIdentifier;
-  v30 = v27;
+  v30 = idsDeviceIdentifier;
   v31 = idsDeviceIdentifier;
   v32 = v31;
   if (v30 == v31)
@@ -2201,15 +2201,15 @@ LABEL_33:
 
 LABEL_34:
   v61 = v14;
-  v34 = [v4 model];
-  v35 = v34;
-  if (!v34)
+  model = [endpointCopy model];
+  v35 = model;
+  if (!model)
   {
     goto LABEL_42;
   }
 
   model = self->_model;
-  v37 = v34;
+  v37 = model;
   v38 = model;
   v39 = v38;
   if (v37 == v38)
@@ -2235,15 +2235,15 @@ LABEL_41:
 
 LABEL_42:
   v60 = v21;
-  v41 = [v4 name];
-  v42 = v41;
-  if (!v41)
+  name = [endpointCopy name];
+  v42 = name;
+  if (!name)
   {
     goto LABEL_50;
   }
 
   name = self->_name;
-  v44 = v41;
+  v44 = name;
   v45 = name;
   v46 = v45;
   if (v44 == v45)
@@ -2268,15 +2268,15 @@ LABEL_49:
   }
 
 LABEL_50:
-  v48 = [v4 sessionPairingIdentifier];
-  v49 = v48;
-  if (!v48)
+  sessionPairingIdentifier = [endpointCopy sessionPairingIdentifier];
+  v49 = sessionPairingIdentifier;
+  if (!sessionPairingIdentifier)
   {
     goto LABEL_59;
   }
 
   sessionPairingIdentifier = self->_sessionPairingIdentifier;
-  v51 = v48;
+  v51 = sessionPairingIdentifier;
   v52 = sessionPairingIdentifier;
   v53 = v52;
   if (v51 == v52)
@@ -2307,26 +2307,26 @@ LABEL_58:
   v28 = v54;
   v35 = v59;
 LABEL_59:
-  v56 = [v4 statusFlags];
-  if (v56 != self->_statusFlags)
+  statusFlags = [endpointCopy statusFlags];
+  if (statusFlags != self->_statusFlags)
   {
-    self->_statusFlags = v56;
+    self->_statusFlags = statusFlags;
     v12 |= 2u;
   }
 
-  v57 = [v4 txtRecord];
-  if (v57 != self->_txtRecord)
+  txtRecord = [endpointCopy txtRecord];
+  if (txtRecord != self->_txtRecord)
   {
-    objc_storeStrong(&self->_txtRecord, v57);
+    objc_storeStrong(&self->_txtRecord, txtRecord);
     v12 |= 2u;
   }
 
-  if (v4)
+  if (endpointCopy)
   {
-    [v4 operatingSystemVersion];
+    [endpointCopy operatingSystemVersion];
     if (v65 >= 1)
     {
-      [v4 operatingSystemVersion];
+      [endpointCopy operatingSystemVersion];
       *&self->_operatingSystemVersion.majorVersion = v63;
       self->_operatingSystemVersion.patchVersion = v64;
       v12 |= 2u;
@@ -2336,7 +2336,7 @@ LABEL_59:
   return v12;
 }
 
-- (BOOL)removeCBDevice:(id)a3
+- (BOOL)removeCBDevice:(id)device
 {
   cbDevice = self->_cbDevice;
   self->_cbDevice = 0;
@@ -2346,14 +2346,14 @@ LABEL_59:
   return (statusFlags & 0x10001D) == 0;
 }
 
-- (BOOL)compareWithDeviceIdentifier:(id)a3
+- (BOOL)compareWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   identifier = self->_identifier;
-  v6 = v4;
-  v7 = identifier;
-  v8 = v7;
-  if (v7 == v6)
+  v6 = identifierCopy;
+  identifierCopy2 = identifier;
+  v8 = identifierCopy2;
+  if (identifierCopy2 == v6)
   {
     v10 = 1;
     v11 = v6;
@@ -2362,9 +2362,9 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ((v6 != 0) != (v7 == 0))
+  if ((v6 != 0) != (identifierCopy2 == 0))
   {
-    v9 = [(NSString *)v6 isEqual:v7];
+    v9 = [(NSString *)v6 isEqual:identifierCopy2];
 
     if (v9)
     {
@@ -2424,9 +2424,9 @@ LABEL_26:
   {
   }
 
-  v18 = [(SFDevice *)self->_bleDevice rapportIdentifier];
+  rapportIdentifier = [(SFDevice *)self->_bleDevice rapportIdentifier];
   v8 = v11;
-  v19 = v18;
+  v19 = rapportIdentifier;
   v11 = v19;
   if (v19 == v8)
   {
@@ -2476,30 +2476,30 @@ LABEL_28:
 
 - (id)bleTargetData
 {
-  v3 = self->_encodedBLETargetData;
-  if (!v3)
+  nearbyInfoV2TempAuthTagData = self->_encodedBLETargetData;
+  if (!nearbyInfoV2TempAuthTagData)
   {
-    v4 = [(RPEndpoint *)self bleDevice];
-    v5 = [v4 bleDevice];
+    bleDevice = [(RPEndpoint *)self bleDevice];
+    v4BleDevice = [bleDevice bleDevice];
 
-    v6 = [(RPEndpoint *)self cbDevice];
-    v7 = [v5 advertisementFields];
+    cbDevice = [(RPEndpoint *)self cbDevice];
+    advertisementFields = [v4BleDevice advertisementFields];
     CFDataGetTypeID();
-    v3 = CFDictionaryGetTypedValue();
+    nearbyInfoV2TempAuthTagData = CFDictionaryGetTypedValue();
 
-    if (!v3 && v6)
+    if (!nearbyInfoV2TempAuthTagData && cbDevice)
     {
-      v3 = [v6 nearbyInfoV2TempAuthTagData];
+      nearbyInfoV2TempAuthTagData = [cbDevice nearbyInfoV2TempAuthTagData];
     }
   }
 
-  return v3;
+  return nearbyInfoV2TempAuthTagData;
 }
 
-- (void)setOperatingSystemVersion:(id *)a3
+- (void)setOperatingSystemVersion:(id *)version
 {
-  v3 = *&a3->var0;
-  self->_operatingSystemVersion.patchVersion = a3->var2;
+  v3 = *&version->var0;
+  self->_operatingSystemVersion.patchVersion = version->var2;
   *&self->_operatingSystemVersion.majorVersion = v3;
 }
 

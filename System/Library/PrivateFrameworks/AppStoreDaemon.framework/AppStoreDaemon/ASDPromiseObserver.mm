@@ -1,38 +1,38 @@
 @interface ASDPromiseObserver
-- (ASDPromiseObserver)initWithValueBlock:(id)a3 errorBlock:(id)a4 scheduler:(id)a5;
-- (void)notifyRejectedWithError:(id)a3;
-- (void)notifyResolvedWithValue:(id)a3;
+- (ASDPromiseObserver)initWithValueBlock:(id)block errorBlock:(id)errorBlock scheduler:(id)scheduler;
+- (void)notifyRejectedWithError:(id)error;
+- (void)notifyResolvedWithValue:(id)value;
 @end
 
 @implementation ASDPromiseObserver
 
-- (ASDPromiseObserver)initWithValueBlock:(id)a3 errorBlock:(id)a4 scheduler:(id)a5
+- (ASDPromiseObserver)initWithValueBlock:(id)block errorBlock:(id)errorBlock scheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  errorBlockCopy = errorBlock;
+  schedulerCopy = scheduler;
   v17.receiver = self;
   v17.super_class = ASDPromiseObserver;
   v11 = [(ASDPromiseObserver *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [blockCopy copy];
     valueBlock = v11->_valueBlock;
     v11->_valueBlock = v12;
 
-    v14 = [v9 copy];
+    v14 = [errorBlockCopy copy];
     errorBlock = v11->_errorBlock;
     v11->_errorBlock = v14;
 
-    objc_storeStrong(&v11->_scheduler, a5);
+    objc_storeStrong(&v11->_scheduler, scheduler);
   }
 
   return v11;
 }
 
-- (void)notifyResolvedWithValue:(id)a3
+- (void)notifyResolvedWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -48,8 +48,8 @@
   v8[2] = __46__ASDPromiseObserver_notifyResolvedWithValue___block_invoke;
   v8[3] = &unk_1E7CDB868;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = valueCopy;
+  v7 = valueCopy;
   [Property scheduleBlock:v8];
 }
 
@@ -67,9 +67,9 @@ uint64_t __46__ASDPromiseObserver_notifyResolvedWithValue___block_invoke(uint64_
   return v5();
 }
 
-- (void)notifyRejectedWithError:(id)a3
+- (void)notifyRejectedWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -85,8 +85,8 @@ uint64_t __46__ASDPromiseObserver_notifyResolvedWithValue___block_invoke(uint64_
   v8[2] = __46__ASDPromiseObserver_notifyRejectedWithError___block_invoke;
   v8[3] = &unk_1E7CDB868;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   [Property scheduleBlock:v8];
 }
 

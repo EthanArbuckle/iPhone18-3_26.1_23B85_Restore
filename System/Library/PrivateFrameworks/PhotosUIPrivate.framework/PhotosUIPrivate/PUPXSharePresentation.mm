@@ -1,51 +1,51 @@
 @interface PUPXSharePresentation
-- (id)createActivitySharingControllerWithContext:(id)a3;
-- (id)createActivitySharingControllerWithContext:(id)a3 selectedAssetIndexSet:(id)a4;
+- (id)createActivitySharingControllerWithContext:(id)context;
+- (id)createActivitySharingControllerWithContext:(id)context selectedAssetIndexSet:(id)set;
 @end
 
 @implementation PUPXSharePresentation
 
-- (id)createActivitySharingControllerWithContext:(id)a3 selectedAssetIndexSet:(id)a4
+- (id)createActivitySharingControllerWithContext:(id)context selectedAssetIndexSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  setCopy = set;
   v7 = [[PUPhotoSelectionManager alloc] initWithOptions:0];
-  if ([v6 count])
+  if ([setCopy count])
   {
-    v8 = [v5 assetCollectionsFetchResult];
-    v9 = [v8 firstObject];
-    [(PUPhotoSelectionManager *)v7 selectAssetsAtIndexes:v6 inAssetCollection:v9];
+    assetCollectionsFetchResult = [contextCopy assetCollectionsFetchResult];
+    firstObject = [assetCollectionsFetchResult firstObject];
+    [(PUPhotoSelectionManager *)v7 selectAssetsAtIndexes:setCopy inAssetCollection:firstObject];
   }
 
-  v10 = [v5 assetCollectionsFetchResult];
-  v11 = [[PUActivitySharingConfiguration alloc] initWithCollectionsFetchResult:v10 selectionManager:v7];
-  v12 = [v5 activities];
-  [(PUActivitySharingConfiguration *)v11 setActivities:v12];
+  assetCollectionsFetchResult2 = [contextCopy assetCollectionsFetchResult];
+  v11 = [[PUActivitySharingConfiguration alloc] initWithCollectionsFetchResult:assetCollectionsFetchResult2 selectionManager:v7];
+  activities = [contextCopy activities];
+  [(PUActivitySharingConfiguration *)v11 setActivities:activities];
 
-  v13 = [v5 excludedActivityTypes];
-  [(PUActivitySharingConfiguration *)v11 setExcludedActivityTypes:v13];
+  excludedActivityTypes = [contextCopy excludedActivityTypes];
+  [(PUActivitySharingConfiguration *)v11 setExcludedActivityTypes:excludedActivityTypes];
 
-  v14 = [v5 keyAsset];
-  [(PUActivitySharingConfiguration *)v11 setKeyAsset:v14];
+  keyAsset = [contextCopy keyAsset];
+  [(PUActivitySharingConfiguration *)v11 setKeyAsset:keyAsset];
 
-  v15 = [v5 person];
-  [(PUActivitySharingConfiguration *)v11 setPerson:v15];
+  person = [contextCopy person];
+  [(PUActivitySharingConfiguration *)v11 setPerson:person];
 
-  -[PUActivitySharingConfiguration setSourceOrigin:](v11, "setSourceOrigin:", [v5 sourceOrigin]);
-  v16 = [v5 photosDataSource];
-  [(PUActivitySharingConfiguration *)v11 setPhotosDataSource:v16];
+  -[PUActivitySharingConfiguration setSourceOrigin:](v11, "setSourceOrigin:", [contextCopy sourceOrigin]);
+  photosDataSource = [contextCopy photosDataSource];
+  [(PUActivitySharingConfiguration *)v11 setPhotosDataSource:photosDataSource];
 
   v17 = [[PUActivitySharingController alloc] initWithActivitySharingConfiguration:v11];
 
   return v17;
 }
 
-- (id)createActivitySharingControllerWithContext:(id)a3
+- (id)createActivitySharingControllerWithContext:(id)context
 {
   v4 = MEMORY[0x1E696AC90];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(v4);
-  v7 = [(PUPXSharePresentation *)self createActivitySharingControllerWithContext:v5 selectedAssetIndexSet:v6];
+  v7 = [(PUPXSharePresentation *)self createActivitySharingControllerWithContext:contextCopy selectedAssetIndexSet:v6];
 
   return v7;
 }

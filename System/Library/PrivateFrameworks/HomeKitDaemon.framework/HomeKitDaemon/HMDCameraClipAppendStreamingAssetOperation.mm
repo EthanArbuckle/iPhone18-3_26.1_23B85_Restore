@@ -3,15 +3,15 @@
 + (NSString)metadataPropertyName;
 + (NSString)streamingAssetPropertyName;
 + (id)logCategory;
-- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)a3 localZone:(id)a4 data:(id)a5 metadata:(id)a6 encryptionManager:(id)a7;
-- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)a3 localZone:(id)a4 data:(id)a5 metadata:(id)a6 encryptionManager:(id)a7 dataSource:(id)a8;
-- (id)_retryDelayForError:(id)a3;
-- (id)_updateClipModel:(id)a3 usingStreamingAsset:(id)a4;
+- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)d localZone:(id)zone data:(id)data metadata:(id)metadata encryptionManager:(id)manager;
+- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)d localZone:(id)zone data:(id)data metadata:(id)metadata encryptionManager:(id)manager dataSource:(id)source;
+- (id)_retryDelayForError:(id)error;
+- (id)_updateClipModel:(id)model usingStreamingAsset:(id)asset;
 - (id)attributeDescriptions;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)finish;
 - (void)main;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraClipAppendStreamingAssetOperation
@@ -21,35 +21,35 @@
   v16[2] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = HMDCameraClipAppendStreamingAssetOperation;
-  v3 = [(HMDCameraClipOperation *)&v15 attributeDescriptions];
+  attributeDescriptions = [(HMDCameraClipOperation *)&v15 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDCameraClipAppendStreamingAssetOperation *)self data];
-  v6 = [v5 shortDescription];
-  v7 = [v4 initWithName:@"Data" value:v6];
+  data = [(HMDCameraClipAppendStreamingAssetOperation *)self data];
+  shortDescription = [data shortDescription];
+  v7 = [v4 initWithName:@"Data" value:shortDescription];
   v16[0] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
-  v10 = [v8 initWithName:@"Metadata" value:v9];
+  metadata = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
+  v10 = [v8 initWithName:@"Metadata" value:metadata];
   v16[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-  v12 = [v3 arrayByAddingObjectsFromArray:v11];
+  v12 = [attributeDescriptions arrayByAddingObjectsFromArray:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraClipAppendStreamingAssetOperation *)self retryTimer];
+  fireCopy = fire;
+  retryTimer = [(HMDCameraClipAppendStreamingAssetOperation *)self retryTimer];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v5 == v4)
+  if (retryTimer == fireCopy)
   {
     if (v9)
     {
@@ -60,8 +60,8 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDCameraClipAppendStreamingAssetOperation *)v7 setRetryTimer:0];
-    [(HMDCameraClipAppendStreamingAssetOperation *)v7 main];
+    [(HMDCameraClipAppendStreamingAssetOperation *)selfCopy setRetryTimer:0];
+    [(HMDCameraClipAppendStreamingAssetOperation *)selfCopy main];
   }
 
   else
@@ -76,23 +76,23 @@
 
     objc_autoreleasePoolPop(v6);
     v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:13];
-    [(HMDCameraClipAppendStreamingAssetOperation *)v7 cancelWithError:v11];
+    [(HMDCameraClipAppendStreamingAssetOperation *)selfCopy cancelWithError:v11];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_retryDelayForError:(id)a3
+- (id)_retryDelayForError:(id)error
 {
-  v3 = a3;
-  if ([objc_opt_class() shouldRetry] && (objc_msgSend(v3, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CBBF50]), v4, v5))
+  errorCopy = error;
+  if ([objc_opt_class() shouldRetry] && (objc_msgSend(errorCopy, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CBBF50]), v4, v5))
   {
-    v6 = [v3 code];
+    code = [errorCopy code];
     v7 = &unk_283E75F88;
-    if (v6 != 34 && v6 != 121)
+    if (code != 34 && code != 121)
     {
-      v8 = [v3 userInfo];
-      v7 = [v8 hmf_numberForKey:*MEMORY[0x277CBBF68]];
+      userInfo = [errorCopy userInfo];
+      v7 = [userInfo hmf_numberForKey:*MEMORY[0x277CBBF68]];
     }
   }
 
@@ -104,39 +104,39 @@
   return v7;
 }
 
-- (id)_updateClipModel:(id)a3 usingStreamingAsset:(id)a4
+- (id)_updateClipModel:(id)model usingStreamingAsset:(id)asset
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277D17130]) initWithUploadStreamingAsset:v7];
-  v9 = [objc_opt_class() streamingAssetPropertyName];
-  [v6 hmbSetProperty:v8 named:v9];
+  modelCopy = model;
+  assetCopy = asset;
+  v8 = [objc_alloc(MEMORY[0x277D17130]) initWithUploadStreamingAsset:assetCopy];
+  streamingAssetPropertyName = [objc_opt_class() streamingAssetPropertyName];
+  [modelCopy hmbSetProperty:v8 named:streamingAssetPropertyName];
 
-  v10 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
-  LODWORD(v9) = [v10 hasDuration];
+  metadata = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
+  LODWORD(streamingAssetPropertyName) = [metadata hasDuration];
 
-  if (v9)
+  if (streamingAssetPropertyName)
   {
     v11 = MEMORY[0x277CCABB0];
-    v12 = [v6 duration];
-    [v12 doubleValue];
+    duration = [modelCopy duration];
+    [duration doubleValue];
     v14 = v13;
-    v15 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
-    [v15 duration];
+    metadata2 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
+    [metadata2 duration];
     v17 = [v11 numberWithDouble:v14 + v16];
-    [v6 setDuration:v17];
+    [modelCopy setDuration:v17];
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v6 size];
-    v20 = [v19 unsignedIntegerValue];
-    v21 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
-    v22 = [v18 numberWithUnsignedLongLong:{objc_msgSend(v21, "byteLength") + v20}];
-    [v6 setSize:v22];
+    v19 = [modelCopy size];
+    unsignedIntegerValue = [v19 unsignedIntegerValue];
+    metadata3 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
+    v22 = [v18 numberWithUnsignedLongLong:{objc_msgSend(metadata3, "byteLength") + unsignedIntegerValue}];
+    [modelCopy setSize:v22];
   }
 
-  v23 = [objc_opt_class() metadataPropertyName];
-  v24 = [v6 hmbPropertyNamed:v23];
+  metadataPropertyName = [objc_opt_class() metadataPropertyName];
+  v24 = [modelCopy hmbPropertyNamed:metadataPropertyName];
   v25 = v24;
   v26 = MEMORY[0x277CBEBF8];
   if (v24)
@@ -146,15 +146,15 @@
 
   v27 = v26;
 
-  v28 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
-  v29 = [v28 data];
-  v30 = [v27 arrayByAddingObject:v29];
+  metadata4 = [(HMDCameraClipAppendStreamingAssetOperation *)self metadata];
+  data = [metadata4 data];
+  v30 = [v27 arrayByAddingObject:data];
 
-  v31 = [objc_opt_class() metadataPropertyName];
-  [v6 hmbSetProperty:v30 named:v31];
+  metadataPropertyName2 = [objc_opt_class() metadataPropertyName];
+  [modelCopy hmbSetProperty:v30 named:metadataPropertyName2];
 
   v32 = objc_autoreleasePoolPush();
-  v33 = self;
+  selfCopy = self;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
@@ -165,12 +165,12 @@
   }
 
   objc_autoreleasePoolPop(v32);
-  v36 = [(HMDCameraClipOperation *)v33 updateClipModel:v6];
+  v36 = [(HMDCameraClipOperation *)selfCopy updateClipModel:modelCopy];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __83__HMDCameraClipAppendStreamingAssetOperation__updateClipModel_usingStreamingAsset___block_invoke;
   v40[3] = &unk_278686CE8;
-  v40[4] = v33;
+  v40[4] = selfCopy;
   v37 = [v36 flatMap:v40];
 
   v38 = *MEMORY[0x277D85DE8];
@@ -213,11 +213,11 @@ id __83__HMDCameraClipAppendStreamingAssetOperation__updateClipModel_usingStream
   return v5;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
   v4.receiver = self;
   v4.super_class = HMDCameraClipAppendStreamingAssetOperation;
-  [(HMDCameraClipOperation *)&v4 cancelWithError:a3];
+  [(HMDCameraClipOperation *)&v4 cancelWithError:error];
   [(HMDCameraClipAppendStreamingAssetOperation *)self setRetryTimer:0];
 }
 
@@ -240,14 +240,14 @@ id __83__HMDCameraClipAppendStreamingAssetOperation__updateClipModel_usingStream
   v12[3] = __Block_byref_object_copy__186134;
   v12[4] = __Block_byref_object_dispose__186135;
   v13 = 0;
-  v3 = [(HMDCameraClipOperation *)self fetchClipModel];
+  fetchClipModel = [(HMDCameraClipOperation *)self fetchClipModel];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__HMDCameraClipAppendStreamingAssetOperation_main__block_invoke;
   v11[3] = &unk_27867DAD8;
   v11[4] = self;
   v11[5] = v12;
-  v4 = [v3 flatMap:v11];
+  v4 = [fetchClipModel flatMap:v11];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__HMDCameraClipAppendStreamingAssetOperation_main__block_invoke_28;
@@ -494,50 +494,50 @@ void __50__HMDCameraClipAppendStreamingAssetOperation_main__block_invoke_32(uint
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)a3 localZone:(id)a4 data:(id)a5 metadata:(id)a6 encryptionManager:(id)a7 dataSource:(id)a8
+- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)d localZone:(id)zone data:(id)data metadata:(id)metadata encryptionManager:(id)manager dataSource:(id)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  dCopy = d;
+  zoneCopy = zone;
+  dataCopy = data;
+  metadataCopy = metadata;
+  managerCopy = manager;
+  sourceCopy = source;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!zoneCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v16)
+  if (!dataCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!metadataCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v18)
+  if (!managerCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v20 = v19;
-  if (!v19)
+  v20 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_15:
     v24 = _HMFPreconditionFailure();
@@ -546,27 +546,27 @@ LABEL_15:
 
   v31.receiver = self;
   v31.super_class = HMDCameraClipAppendStreamingAssetOperation;
-  v21 = [(HMDCameraClipOperation *)&v31 initWithClipModelID:v14 localZone:v15 dataSource:v19];
+  v21 = [(HMDCameraClipOperation *)&v31 initWithClipModelID:dCopy localZone:zoneCopy dataSource:sourceCopy];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_data, a5);
-    objc_storeStrong(&v22->_metadata, a6);
-    objc_storeStrong(&v22->_encryptionManager, a7);
+    objc_storeStrong(&v21->_data, data);
+    objc_storeStrong(&v22->_metadata, metadata);
+    objc_storeStrong(&v22->_encryptionManager, manager);
   }
 
   return v22;
 }
 
-- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)a3 localZone:(id)a4 data:(id)a5 metadata:(id)a6 encryptionManager:(id)a7
+- (HMDCameraClipAppendStreamingAssetOperation)initWithClipModelID:(id)d localZone:(id)zone data:(id)data metadata:(id)metadata encryptionManager:(id)manager
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  managerCopy = manager;
+  metadataCopy = metadata;
+  dataCopy = data;
+  zoneCopy = zone;
+  dCopy = d;
   v17 = objc_alloc_init(HMDCameraClipOperationDataSource);
-  v18 = [(HMDCameraClipAppendStreamingAssetOperation *)self initWithClipModelID:v16 localZone:v15 data:v14 metadata:v13 encryptionManager:v12 dataSource:v17];
+  v18 = [(HMDCameraClipAppendStreamingAssetOperation *)self initWithClipModelID:dCopy localZone:zoneCopy data:dataCopy metadata:metadataCopy encryptionManager:managerCopy dataSource:v17];
 
   return v18;
 }

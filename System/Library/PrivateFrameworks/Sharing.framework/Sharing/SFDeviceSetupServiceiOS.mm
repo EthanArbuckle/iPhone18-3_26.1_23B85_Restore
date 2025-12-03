@@ -2,12 +2,12 @@
 - (SFDeviceSetupServiceiOS)init;
 - (int)_runResumeIfNeeded;
 - (void)_cleanup;
-- (void)_handleAppEventReceived:(id)a3;
-- (void)_handleConfigRequestReceived:(id)a3;
-- (void)_handleSessionEnded:(id)a3;
-- (void)_handleSessionSecured:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
-- (void)_handleSetupActionRequest:(id)a3 responseHandler:(id)a4;
+- (void)_handleAppEventReceived:(id)received;
+- (void)_handleConfigRequestReceived:(id)received;
+- (void)_handleSessionEnded:(id)ended;
+- (void)_handleSessionSecured:(id)secured;
+- (void)_handleSessionStarted:(id)started;
+- (void)_handleSetupActionRequest:(id)request responseHandler:(id)handler;
 - (void)_handleSetupActionResume;
 - (void)_handleSetupActionSuspend;
 - (void)_invalidated;
@@ -16,7 +16,7 @@
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendObject:(id)a3;
+- (void)sendObject:(id)object;
 @end
 
 @implementation SFDeviceSetupServiceiOS
@@ -225,7 +225,7 @@ uint64_t __37__SFDeviceSetupServiceiOS_invalidate__block_invoke(uint64_t a1)
     [SFDeviceSetupServiceiOS _runResumeIfNeeded];
   }
 
-  v11 = [v6 secrets];
+  secrets = [v6 secrets];
   v12 = CFDictionaryGetCFDataOfLength();
 
   if (!v12)
@@ -242,7 +242,7 @@ LABEL_21:
     return resumeState;
   }
 
-  v13 = [v6 secrets];
+  secrets2 = [v6 secrets];
   CFStringGetTypeID();
   v14 = CFDictionaryGetTypedValue();
 
@@ -541,13 +541,13 @@ void __42__SFDeviceSetupServiceiOS__sfServiceStart__block_invoke_10(uint64_t a1,
   }
 }
 
-- (void)sendObject:(id)a3
+- (void)sendObject:(id)object
 {
-  v4 = a3;
-  v8 = v4;
+  objectCopy = object;
+  v8 = objectCopy;
   if (self->_sfService)
   {
-    v5 = v4;
+    v5 = objectCopy;
     if (self->_peer)
     {
       if (gLogCategory_SFDeviceSetupServiceiOSCore <= 30)
@@ -576,16 +576,16 @@ void __42__SFDeviceSetupServiceiOS__sfServiceStart__block_invoke_10(uint64_t a1,
   }
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  startedCopy = started;
   p_sfSession = &self->_sfSession;
   if (self->_sfSession)
   {
     if (gLogCategory_SFDeviceSetupServiceiOSCore <= 60 && (gLogCategory_SFDeviceSetupServiceiOSCore != -1 || _LogCategory_Initialize()))
     {
-      [(SFDeviceSetupServiceiOS *)v5 _handleSessionStarted:?];
+      [(SFDeviceSetupServiceiOS *)startedCopy _handleSessionStarted:?];
     }
 
     goto LABEL_33;
@@ -593,10 +593,10 @@ void __42__SFDeviceSetupServiceiOS__sfServiceStart__block_invoke_10(uint64_t a1,
 
   if (gLogCategory_SFDeviceSetupServiceiOSCore <= 30 && (gLogCategory_SFDeviceSetupServiceiOSCore != -1 || _LogCategory_Initialize()))
   {
-    [SFDeviceSetupServiceiOS _handleSessionStarted:v5];
+    [SFDeviceSetupServiceiOS _handleSessionStarted:startedCopy];
   }
 
-  objc_storeStrong(&self->_sfSession, a3);
+  objc_storeStrong(&self->_sfSession, started);
   resumePassword = self->_resumePassword;
   if (resumePassword)
   {
@@ -636,8 +636,8 @@ void __42__SFDeviceSetupServiceiOS__sfServiceStart__block_invoke_10(uint64_t a1,
 
   [v8 setFixedPIN:{resumePassword, v15}];
 LABEL_25:
-  v10 = [v5 messageSessionTemplate];
-  if (v10)
+  messageSessionTemplate = [startedCopy messageSessionTemplate];
+  if (messageSessionTemplate)
   {
     sfSession = self->_sfSession;
     v16[0] = MEMORY[0x1E69E9820];
@@ -650,7 +650,7 @@ LABEL_25:
     if (progressHandlerEx)
     {
       v17 = @"mst";
-      v18[0] = v10;
+      v18[0] = messageSessionTemplate;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       progressHandlerEx[2](progressHandlerEx, 31, v13);
     }
@@ -667,19 +667,19 @@ LABEL_33:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionEnded:(id)a3
+- (void)_handleSessionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   sfSession = self->_sfSession;
-  if (sfSession == v4)
+  if (sfSession == endedCopy)
   {
-    v12 = v4;
-    if (v4 && gLogCategory_SFDeviceSetupServiceiOSCore <= 30)
+    v12 = endedCopy;
+    if (endedCopy && gLogCategory_SFDeviceSetupServiceiOSCore <= 30)
     {
       if (gLogCategory_SFDeviceSetupServiceiOSCore != -1)
       {
 LABEL_5:
-        v11 = [(SFSession *)sfSession peer];
+        peer = [(SFSession *)sfSession peer];
         LogPrintF();
 
         goto LABEL_7;
@@ -723,17 +723,17 @@ LABEL_11:
     [(SFService *)self->_sfService setAuthTagOverride:0];
     [(SFService *)self->_sfService setNeedsSetup:1];
 
-    v4 = v12;
+    endedCopy = v12;
   }
 }
 
-- (void)_handleSessionSecured:(id)a3
+- (void)_handleSessionSecured:(id)secured
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFSession *)self->_sfSession fixedPIN];
+  securedCopy = secured;
+  fixedPIN = [(SFSession *)self->_sfSession fixedPIN];
 
-  if (v5)
+  if (fixedPIN)
   {
     if (gLogCategory_SFDeviceSetupServiceiOSCore <= 30 && (gLogCategory_SFDeviceSetupServiceiOSCore != -1 || _LogCategory_Initialize()))
     {
@@ -752,13 +752,13 @@ LABEL_11:
 
     if (self->_progressHandlerEx)
     {
-      v6 = [v4 messageSessionTemplate];
-      v7 = v6;
-      if (v6)
+      messageSessionTemplate = [securedCopy messageSessionTemplate];
+      v7 = messageSessionTemplate;
+      if (messageSessionTemplate)
       {
         progressHandlerEx = self->_progressHandlerEx;
         v11 = @"mst";
-        v12[0] = v6;
+        v12[0] = messageSessionTemplate;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
         progressHandlerEx[2](progressHandlerEx, 33, v9);
       }
@@ -773,10 +773,10 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleConfigRequestReceived:(id)a3
+- (void)_handleConfigRequestReceived:(id)received
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  receivedCopy = received;
   v14 = objc_alloc_init(v4);
   fileTransferSessionTemplate = self->_fileTransferSessionTemplate;
   if (!fileTransferSessionTemplate)
@@ -797,16 +797,16 @@ LABEL_11:
     [(RPFileTransferSession *)self->_fileTransferSessionTemplate setPeerPublicKey:v9];
   }
 
-  v10 = [(RPFileTransferSession *)self->_fileTransferSessionTemplate selfPublicKey];
-  if (v10)
+  selfPublicKey = [(RPFileTransferSession *)self->_fileTransferSessionTemplate selfPublicKey];
+  if (selfPublicKey)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"ftPK"];
+    [v14 setObject:selfPublicKey forKeyedSubscript:@"ftPK"];
   }
 
-  v11 = [(RPFileTransferSession *)self->_fileTransferSessionTemplate targetID];
-  if (v11)
+  targetID = [(RPFileTransferSession *)self->_fileTransferSessionTemplate targetID];
+  if (targetID)
   {
-    [v14 setObject:v11 forKeyedSubscript:@"ftTID"];
+    [v14 setObject:targetID forKeyedSubscript:@"ftTID"];
   }
 
   if (!fileTransferSessionTemplate)
@@ -822,9 +822,9 @@ LABEL_11:
   [(SFDeviceSetupServiceiOS *)self sendObject:v14];
 }
 
-- (void)_handleAppEventReceived:(id)a3
+- (void)_handleAppEventReceived:(id)received
 {
-  v6 = a3;
+  receivedCopy = received;
   CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFDeviceSetupServiceiOSCore <= 30 && (gLogCategory_SFDeviceSetupServiceiOSCore != -1 || _LogCategory_Initialize()))
   {
@@ -832,19 +832,19 @@ LABEL_11:
   }
 
   receivedObjectHandler = self->_receivedObjectHandler;
-  v5 = v6;
+  v5 = receivedCopy;
   if (receivedObjectHandler)
   {
-    receivedObjectHandler[2](receivedObjectHandler, v6);
-    v5 = v6;
+    receivedObjectHandler[2](receivedObjectHandler, receivedCopy);
+    v5 = receivedCopy;
   }
 }
 
-- (void)_handleSetupActionRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleSetupActionRequest:(id)request responseHandler:(id)handler
 {
-  v10 = a3;
+  requestCopy = request;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = objc_alloc_init(v6);
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFDeviceSetupServiceiOSCore <= 30 && (gLogCategory_SFDeviceSetupServiceiOSCore != -1 || _LogCategory_Initialize()))
@@ -872,7 +872,7 @@ LABEL_11:
     [v8 setObject:&unk_1F1D7CF40 forKeyedSubscript:@"er"];
   }
 
-  (*(v7 + 2))(v7, 0, 0, v8);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
 }
 
 - (void)_handleSetupActionSuspend

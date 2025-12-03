@@ -1,18 +1,18 @@
 @interface WBSCloudKitContainerManateeObserver
-- (WBSCloudKitContainerManateeObserver)initWithContainerIdentifier:(id)a3 appleAccountInformationProvider:(id)a4;
+- (WBSCloudKitContainerManateeObserver)initWithContainerIdentifier:(id)identifier appleAccountInformationProvider:(id)provider;
 - (id)stateChangeObserver;
-- (void)_accountChanged:(id)a3;
-- (void)_determineAccountStateWithCompletion:(id)a3;
-- (void)determineAccountStateWithCompletion:(id)a3;
-- (void)setStateChangeObserver:(id)a3;
+- (void)_accountChanged:(id)changed;
+- (void)_determineAccountStateWithCompletion:(id)completion;
+- (void)determineAccountStateWithCompletion:(id)completion;
+- (void)setStateChangeObserver:(id)observer;
 @end
 
 @implementation WBSCloudKitContainerManateeObserver
 
-- (WBSCloudKitContainerManateeObserver)initWithContainerIdentifier:(id)a3 appleAccountInformationProvider:(id)a4
+- (WBSCloudKitContainerManateeObserver)initWithContainerIdentifier:(id)identifier appleAccountInformationProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = WBSCloudKitContainerManateeObserver;
   v8 = [(WBSCloudKitContainerManateeObserver *)&v24 init];
@@ -26,23 +26,23 @@
     queue = v8->_queue;
     v8->_queue = v13;
 
-    v15 = [v6 copy];
+    v15 = [identifierCopy copy];
     containerIdentifier = v8->_containerIdentifier;
     v8->_containerIdentifier = v15;
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     stateDeterminationCompletionBlocks = v8->_stateDeterminationCompletionBlocks;
-    v8->_stateDeterminationCompletionBlocks = v17;
+    v8->_stateDeterminationCompletionBlocks = array;
 
-    objc_storeStrong(&v8->_appleAccountInformationProvider, a4);
+    objc_storeStrong(&v8->_appleAccountInformationProvider, provider);
     if (NSClassFromString(&cfstr_Ckcontainer.isa))
     {
       v19 = [MEMORY[0x1E695B888] containerWithIdentifier:v8->_containerIdentifier];
       container = v8->_container;
       v8->_container = v19;
 
-      v21 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v21 addObserver:v8 selector:sel__accountChanged_ name:*MEMORY[0x1E695B710] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel__accountChanged_ name:*MEMORY[0x1E695B710] object:0];
     }
 
     v22 = v8;
@@ -51,17 +51,17 @@
   return v8;
 }
 
-- (void)setStateChangeObserver:(id)a3
+- (void)setStateChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__WBSCloudKitContainerManateeObserver_setStateChangeObserver___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -103,7 +103,7 @@ void __58__WBSCloudKitContainerManateeObserver_stateChangeObserver__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (void)_accountChanged:(id)a3
+- (void)_accountChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -143,10 +143,10 @@ uint64_t __55__WBSCloudKitContainerManateeObserver__accountChanged___block_invok
   return result;
 }
 
-- (void)_determineAccountStateWithCompletion:(id)a3
+- (void)_determineAccountStateWithCompletion:(id)completion
 {
   stateDeterminationCompletionBlocks = self->_stateDeterminationCompletionBlocks;
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(completion);
   [(NSMutableArray *)stateDeterminationCompletionBlocks addObject:v5];
 
   if (!self->_determiningManateeState)
@@ -259,17 +259,17 @@ uint64_t __76__WBSCloudKitContainerManateeObserver__determineAccountStateWithCom
   return v3();
 }
 
-- (void)determineAccountStateWithCompletion:(id)a3
+- (void)determineAccountStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WBSCloudKitContainerManateeObserver_determineAccountStateWithCompletion___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 

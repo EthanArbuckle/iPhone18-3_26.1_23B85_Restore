@@ -1,30 +1,30 @@
 @interface _UIButtonGroupViewController
 - (UIColor)backgroundColor;
 - (UIColor)tintColor;
-- (_UIButtonGroupViewController)initWithBarButtonItemGroups:(id)a3 overLightKeyboard:(BOOL)a4;
-- (_UIButtonGroupViewController)initWithCoder:(id)a3;
-- (_UIButtonGroupViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_UIButtonGroupViewController)initWithBarButtonItemGroups:(id)groups overLightKeyboard:(BOOL)keyboard;
+- (_UIButtonGroupViewController)initWithCoder:(id)coder;
+- (_UIButtonGroupViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissIfNecessary;
 - (void)loadView;
-- (void)setBackgroundColor:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setTintColor:(id)color;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _UIButtonGroupViewController
 
-- (_UIButtonGroupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_UIButtonGroupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s should not be called", a4, "-[_UIButtonGroupViewController initWithNibName:bundle:]"];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s should not be called", bundle, "-[_UIButtonGroupViewController initWithNibName:bundle:]"];
   v8 = [v5 exceptionWithName:v6 reason:v7 userInfo:0];
   [v8 raise];
 
   return 0;
 }
 
-- (_UIButtonGroupViewController)initWithCoder:(id)a3
+- (_UIButtonGroupViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -35,15 +35,15 @@
   return 0;
 }
 
-- (_UIButtonGroupViewController)initWithBarButtonItemGroups:(id)a3 overLightKeyboard:(BOOL)a4
+- (_UIButtonGroupViewController)initWithBarButtonItemGroups:(id)groups overLightKeyboard:(BOOL)keyboard
 {
-  v7 = a3;
-  if (![v7 count])
+  groupsCopy = groups;
+  if (![groupsCopy count])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    [v26 handleFailureInMethod:a2 object:self file:@"UIButtonGroupViewController.m" lineNumber:49 description:{@"You can't create a %@ with no bar button item groups...", v28}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIButtonGroupViewController.m" lineNumber:49 description:{@"You can't create a %@ with no bar button item groups...", v28}];
   }
 
   v32.receiver = self;
@@ -51,7 +51,7 @@
   v8 = [(UIViewController *)&v32 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [groupsCopy copy];
     barButtonItemGroups = v8->_barButtonItemGroups;
     v8->_barButtonItemGroups = v9;
 
@@ -64,7 +64,7 @@
     [(_UIButtonBar *)v8->_buttonBar setViewUpdater:v13];
 
     [(_UIButtonBar *)v8->_buttonBar setItemsInGroupUseSameSize:1];
-    v8->_overLightKeyboard = a4;
+    v8->_overLightKeyboard = keyboard;
     objc_initWeak(&location, v8);
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -73,24 +73,24 @@
     objc_copyWeak(&v30, &location);
     [(_UIButtonBar *)v8->_buttonBar setDefaultActionFilter:v29];
     [(UIViewController *)v8 setModalPresentationStyle:7];
-    v14 = [(NSArray *)v8->_barButtonItemGroups firstObject];
-    v15 = [v14 representativeItem];
-    v16 = [(UIViewController *)v8 popoverPresentationController];
-    [v16 setSourceItem:v15];
+    firstObject = [(NSArray *)v8->_barButtonItemGroups firstObject];
+    representativeItem = [firstObject representativeItem];
+    popoverPresentationController = [(UIViewController *)v8 popoverPresentationController];
+    [popoverPresentationController setSourceItem:representativeItem];
 
-    v17 = [(UIViewController *)v8 popoverPresentationController];
-    [v17 setPermittedArrowDirections:3];
+    popoverPresentationController2 = [(UIViewController *)v8 popoverPresentationController];
+    [popoverPresentationController2 setPermittedArrowDirections:3];
 
-    v18 = [(UIViewController *)v8 popoverPresentationController];
-    [v18 _setIgnoreBarButtonItemSiblings:1];
+    popoverPresentationController3 = [(UIViewController *)v8 popoverPresentationController];
+    [popoverPresentationController3 _setIgnoreBarButtonItemSiblings:1];
 
-    v19 = [(UIViewController *)v8 popoverPresentationController];
-    [v19 setDelegate:v8];
+    popoverPresentationController4 = [(UIViewController *)v8 popoverPresentationController];
+    [popoverPresentationController4 setDelegate:v8];
 
-    LODWORD(v15) = v8->_overLightKeyboard;
-    v20 = [(UIViewController *)v8 popoverPresentationController];
-    v21 = v20;
-    if (v15)
+    LODWORD(representativeItem) = v8->_overLightKeyboard;
+    popoverPresentationController5 = [(UIViewController *)v8 popoverPresentationController];
+    v21 = popoverPresentationController5;
+    if (representativeItem)
     {
       v22 = 6;
     }
@@ -100,13 +100,13 @@
       v22 = 7;
     }
 
-    [v20 _setPopoverBackgroundStyle:v22];
+    [popoverPresentationController5 _setPopoverBackgroundStyle:v22];
 
     if (!v8->_overLightKeyboard)
     {
       v23 = [UIColor colorWithRed:0.498039216 green:0.501960784 blue:0.509803922 alpha:0.8];
-      v24 = [(UIViewController *)v8 popoverPresentationController];
-      [v24 setBackgroundColor:v23];
+      popoverPresentationController6 = [(UIViewController *)v8 popoverPresentationController];
+      [popoverPresentationController6 setBackgroundColor:v23];
     }
 
     objc_destroyWeak(&v30);
@@ -118,14 +118,14 @@
 
 - (void)dismissIfNecessary
 {
-  v3 = [(UIViewController *)self popoverPresentationController];
-  v4 = [v3 _realSourceView];
-  v5 = [v4 superview];
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  _realSourceView = [popoverPresentationController _realSourceView];
+  superview = [_realSourceView superview];
 
-  if (!v5)
+  if (!superview)
   {
-    v6 = [(UIViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:0 completion:0];
+    presentingViewController = [(UIViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:0 completion:0];
   }
 }
 
@@ -141,20 +141,20 @@
   [(UIView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIScrollView *)self->_scrollView setContentInset:0.0, 17.5, 0.0, 17.5];
   [(UIView *)v3 addSubview:self->_scrollView];
-  v6 = [(_UIButtonGroupViewController *)self tintColor];
-  [(UIView *)v3 setTintColor:v6];
+  tintColor = [(_UIButtonGroupViewController *)self tintColor];
+  [(UIView *)v3 setTintColor:tintColor];
 
   [(_UIButtonBar *)self->_buttonBar setBarButtonGroups:self->_barButtonItemGroups];
   [(_UIButtonBar *)self->_buttonBar setMinimumInterItemSpace:15.0];
-  v7 = [(_UIButtonBar *)self->_buttonBar view];
-  [v7 setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+  view = [(_UIButtonBar *)self->_buttonBar view];
+  [view setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
 
-  v8 = [(_UIButtonBar *)self->_buttonBar view];
-  [(UIView *)self->_scrollView addSubview:v8];
+  view2 = [(_UIButtonBar *)self->_buttonBar view];
+  [(UIView *)self->_scrollView addSubview:view2];
   v23[0] = @"buttonBar";
   v23[1] = @"scrollView";
   v9 = self->_scrollView;
-  v24[0] = v8;
+  v24[0] = view2;
   v24[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v11 = MEMORY[0x1E69977A0];
@@ -174,42 +174,42 @@
   v19 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:|[buttonBar(<=56)]|" options:0 metrics:v12 views:v10];
   [v18 activateConstraints:v19];
 
-  [v8 layoutIfNeeded];
+  [view2 layoutIfNeeded];
   LODWORD(v20) = 1112014848;
   LODWORD(v21) = 1112014848;
-  [v8 systemLayoutSizeFittingSize:0.0 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v20, v21}];
+  [view2 systemLayoutSizeFittingSize:0.0 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v20, v21}];
   [(UIViewController *)self setPreferredContentSize:v22 + 35.0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _UIButtonGroupViewController;
-  [(UIViewController *)&v4 viewWillAppear:a3];
+  [(UIViewController *)&v4 viewWillAppear:appear];
   [(_UIButtonBar *)self->_buttonBar _validateAllItems];
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = [(UIViewController *)self popoverPresentationController];
-  v3 = [v2 backgroundColor];
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  backgroundColor = [popoverPresentationController backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self popoverPresentationController];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  [popoverPresentationController setBackgroundColor:colorCopy];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
-  v5 = a3;
-  v6 = [(UIViewController *)self view];
-  [v6 setTintColor:v5];
+  objc_storeStrong(&self->_tintColor, color);
+  colorCopy = color;
+  view = [(UIViewController *)self view];
+  [view setTintColor:colorCopy];
 }
 
 - (UIColor)tintColor

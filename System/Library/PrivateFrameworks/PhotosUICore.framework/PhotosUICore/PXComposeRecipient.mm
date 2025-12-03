@@ -1,11 +1,11 @@
 @interface PXComposeRecipient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNContact)contact;
 - (NSDictionary)diagnosticDictionary;
 - (NSString)description;
 - (NSString)localizedName;
-- (PXComposeRecipient)initWithPersonSuggestion:(id)a3 contact:(id)a4;
-- (PXComposeRecipient)initWithRecipient:(id)a3;
+- (PXComposeRecipient)initWithPersonSuggestion:(id)suggestion contact:(id)contact;
+- (PXComposeRecipient)initWithRecipient:(id)recipient;
 - (unint64_t)hash;
 @end
 
@@ -15,51 +15,51 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXComposeRecipient *)self localizedName];
-  v6 = [(PXComposeRecipient *)self contact];
-  v7 = [v3 stringWithFormat:@"<%@:%p, localizedName:%@, contact:%@>", v4, self, v5, v6];
+  localizedName = [(PXComposeRecipient *)self localizedName];
+  contact = [(PXComposeRecipient *)self contact];
+  v7 = [v3 stringWithFormat:@"<%@:%p, localizedName:%@, contact:%@>", v4, self, localizedName, contact];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PXComposeRecipient *)self recipient];
-  v4 = v3;
-  if (v3)
+  recipient = [(PXComposeRecipient *)self recipient];
+  v4 = recipient;
+  if (recipient)
   {
-    v5 = [v3 hash];
+    v5 = [recipient hash];
   }
 
   else
   {
-    v6 = [(PXComposeRecipient *)self personSuggestion];
-    v5 = [v6 hash];
+    personSuggestion = [(PXComposeRecipient *)self personSuggestion];
+    v5 = [personSuggestion hash];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXComposeRecipient *)self personSuggestion];
-    v7 = [v5 personSuggestion];
-    v8 = v7;
-    if (v6 && v7)
+    v5 = equalCopy;
+    personSuggestion = [(PXComposeRecipient *)self personSuggestion];
+    personSuggestion2 = [v5 personSuggestion];
+    v8 = personSuggestion2;
+    if (personSuggestion && personSuggestion2)
     {
-      v9 = [v6 isEqual:v7];
+      v9 = [personSuggestion isEqual:personSuggestion2];
     }
 
     else
     {
-      v10 = [(PXComposeRecipient *)self recipient];
-      v11 = [v5 recipient];
-      v9 = [v10 isEqual:v11];
+      recipient = [(PXComposeRecipient *)self recipient];
+      recipient2 = [v5 recipient];
+      v9 = [recipient isEqual:recipient2];
     }
   }
 
@@ -73,24 +73,24 @@
 
 - (NSDictionary)diagnosticDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PXComposeRecipient *)self localizedName];
-  [v3 setObject:v4 forKeyedSubscript:@"Localized Name"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  localizedName = [(PXComposeRecipient *)self localizedName];
+  [dictionary setObject:localizedName forKeyedSubscript:@"Localized Name"];
 
-  v5 = [(PXComposeRecipient *)self contact];
-  [v3 setObject:v5 forKeyedSubscript:@"Contact"];
+  contact = [(PXComposeRecipient *)self contact];
+  [dictionary setObject:contact forKeyedSubscript:@"Contact"];
 
-  v6 = [(PXComposeRecipient *)self personSuggestion];
+  personSuggestion = [(PXComposeRecipient *)self personSuggestion];
   v7 = @"YES";
-  if (!v6)
+  if (!personSuggestion)
   {
     v7 = @"NO";
   }
 
   v8 = v7;
-  [v3 setObject:v8 forKeyedSubscript:@"isSuggestion"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isSuggestion"];
 
-  return v3;
+  return dictionary;
 }
 
 - (CNContact)contact
@@ -113,19 +113,19 @@
     recipient = self->_personSuggestion;
   }
 
-  v4 = [recipient localizedName];
+  localizedName = [recipient localizedName];
 
-  return v4;
+  return localizedName;
 }
 
-- (PXComposeRecipient)initWithPersonSuggestion:(id)a3 contact:(id)a4
+- (PXComposeRecipient)initWithPersonSuggestion:(id)suggestion contact:(id)contact
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  suggestionCopy = suggestion;
+  contactCopy = contact;
+  if (!suggestionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXComposeRecipient.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"personSuggestion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipient.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"personSuggestion"}];
   }
 
   v16.receiver = self;
@@ -134,8 +134,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_personSuggestion, a3);
-    v12 = PXRecipientWithPersonSuggestion(v11->_personSuggestion, v9);
+    objc_storeStrong(&v10->_personSuggestion, suggestion);
+    v12 = PXRecipientWithPersonSuggestion(v11->_personSuggestion, contactCopy);
     recipient = v11->_recipient;
     v11->_recipient = v12;
   }
@@ -143,13 +143,13 @@
   return v11;
 }
 
-- (PXComposeRecipient)initWithRecipient:(id)a3
+- (PXComposeRecipient)initWithRecipient:(id)recipient
 {
-  v6 = a3;
-  if (!v6)
+  recipientCopy = recipient;
+  if (!recipientCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXComposeRecipient.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"recipient"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipient.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"recipient"}];
   }
 
   v11.receiver = self;
@@ -158,7 +158,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_recipient, a3);
+    objc_storeStrong(&v7->_recipient, recipient);
   }
 
   return v8;

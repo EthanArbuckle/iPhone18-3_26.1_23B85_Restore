@@ -1,6 +1,6 @@
 @interface ICTableLinkPresentationActivityItemSource
 - (ICTableLinkPresentationActivityItemSource)init;
-- (ICTableLinkPresentationActivityItemSource)initWithAttachment:(id)a3;
+- (ICTableLinkPresentationActivityItemSource)initWithAttachment:(id)attachment;
 - (id)detail;
 @end
 
@@ -13,16 +13,16 @@
   return 0;
 }
 
-- (ICTableLinkPresentationActivityItemSource)initWithAttachment:(id)a3
+- (ICTableLinkPresentationActivityItemSource)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v8.receiver = self;
   v8.super_class = ICTableLinkPresentationActivityItemSource;
   v5 = [(ICTableLinkPresentationActivityItemSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICTableLinkPresentationActivityItemSource *)v5 setAttachment:v4];
+    [(ICTableLinkPresentationActivityItemSource *)v5 setAttachment:attachmentCopy];
   }
 
   return v6;
@@ -31,8 +31,8 @@
 - (id)detail
 {
   objc_opt_class();
-  v3 = [(ICTableLinkPresentationActivityItemSource *)self attachment];
-  v4 = [v3 attachmentModel];
+  attachment = [(ICTableLinkPresentationActivityItemSource *)self attachment];
+  attachmentModel = [attachment attachmentModel];
   v5 = ICCheckedDynamicCast();
 
   v6 = [v5 stringsAtRow:0];

@@ -3,12 +3,12 @@
 - (BOOL)rightViewSelected;
 - (WFTriggerOptionSelectionViewContainer)init;
 - (WFTriggerOptionSelectionViewContainerDelegate)delegate;
-- (void)handleMultiSelectViewPressWithRecognizer:(id)a3;
-- (void)setLeftOptionImage:(id)a3 selectedImage:(id)a4 label:(id)a5 selected:(BOOL)a6 tintColor:(id)a7;
-- (void)setLeftViewSelected:(BOOL)a3;
-- (void)setRightOptionImage:(id)a3 selectedImage:(id)a4 label:(id)a5 selected:(BOOL)a6 tintColor:(id)a7;
-- (void)setRightViewSelected:(BOOL)a3;
-- (void)setSelectedImageTintColor:(id)a3;
+- (void)handleMultiSelectViewPressWithRecognizer:(id)recognizer;
+- (void)setLeftOptionImage:(id)image selectedImage:(id)selectedImage label:(id)label selected:(BOOL)selected tintColor:(id)color;
+- (void)setLeftViewSelected:(BOOL)selected;
+- (void)setRightOptionImage:(id)image selectedImage:(id)selectedImage label:(id)label selected:(BOOL)selected tintColor:(id)color;
+- (void)setRightViewSelected:(BOOL)selected;
+- (void)setSelectedImageTintColor:(id)color;
 @end
 
 @implementation WFTriggerOptionSelectionViewContainer
@@ -20,130 +20,130 @@
   return WeakRetained;
 }
 
-- (void)setRightOptionImage:(id)a3 selectedImage:(id)a4 label:(id)a5 selected:(BOOL)a6 tintColor:(id)a7
+- (void)setRightOptionImage:(id)image selectedImage:(id)selectedImage label:(id)label selected:(BOOL)selected tintColor:(id)color
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  [v16 setDefaultImage:v15];
+  selectedCopy = selected;
+  colorCopy = color;
+  labelCopy = label;
+  selectedImageCopy = selectedImage;
+  imageCopy = image;
+  rightView = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  [rightView setDefaultImage:imageCopy];
 
-  v17 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  [v17 setSelectedImage:v14];
+  rightView2 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  [rightView2 setSelectedImage:selectedImageCopy];
 
-  v18 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  [v18 setDefaultImageTintColor:v12];
+  rightView3 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  [rightView3 setDefaultImageTintColor:colorCopy];
 
-  v19 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  v20 = [v19 label];
-  [v20 setText:v13];
+  rightView4 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  label = [rightView4 label];
+  [label setText:labelCopy];
 
-  v21 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  [v21 setSelected:v7];
+  rightView5 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  [rightView5 setSelected:selectedCopy];
 
   [(WFTriggerOptionSelectionViewContainer *)self setNeedsUpdateConstraints];
 }
 
-- (void)setLeftOptionImage:(id)a3 selectedImage:(id)a4 label:(id)a5 selected:(BOOL)a6 tintColor:(id)a7
+- (void)setLeftOptionImage:(id)image selectedImage:(id)selectedImage label:(id)label selected:(BOOL)selected tintColor:(id)color
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  [v16 setDefaultImage:v15];
+  selectedCopy = selected;
+  colorCopy = color;
+  labelCopy = label;
+  selectedImageCopy = selectedImage;
+  imageCopy = image;
+  leftView = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  [leftView setDefaultImage:imageCopy];
 
-  v17 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  [v17 setSelectedImage:v14];
+  leftView2 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  [leftView2 setSelectedImage:selectedImageCopy];
 
-  v18 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  [v18 setDefaultImageTintColor:v12];
+  leftView3 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  [leftView3 setDefaultImageTintColor:colorCopy];
 
-  v19 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  v20 = [v19 label];
-  [v20 setText:v13];
+  leftView4 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  label = [leftView4 label];
+  [label setText:labelCopy];
 
-  v21 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  [v21 setSelected:v7];
+  leftView5 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  [leftView5 setSelected:selectedCopy];
 
   [(WFTriggerOptionSelectionViewContainer *)self setNeedsUpdateConstraints];
 }
 
-- (void)setSelectedImageTintColor:(id)a3
+- (void)setSelectedImageTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  [v5 setSelectedStateImageTintColor:v4];
+  colorCopy = color;
+  leftView = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  [leftView setSelectedStateImageTintColor:colorCopy];
 
-  v6 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  [v6 setSelectedStateImageTintColor:v4];
+  rightView = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  [rightView setSelectedStateImageTintColor:colorCopy];
 }
 
-- (void)setRightViewSelected:(BOOL)a3
+- (void)setRightViewSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  [v4 setSelected:v3];
+  selectedCopy = selected;
+  rightView = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  [rightView setSelected:selectedCopy];
 }
 
 - (BOOL)rightViewSelected
 {
-  v2 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-  v3 = [v2 selected];
+  rightView = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+  selected = [rightView selected];
 
-  return v3;
+  return selected;
 }
 
-- (void)setLeftViewSelected:(BOOL)a3
+- (void)setLeftViewSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  [v4 setSelected:v3];
+  selectedCopy = selected;
+  leftView = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  [leftView setSelected:selectedCopy];
 }
 
 - (BOOL)leftViewSelected
 {
-  v2 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
-  v3 = [v2 selected];
+  leftView = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+  selected = [leftView selected];
 
-  return v3;
+  return selected;
 }
 
-- (void)handleMultiSelectViewPressWithRecognizer:(id)a3
+- (void)handleMultiSelectViewPressWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 == 1)
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  if (state == 1)
   {
-    v6 = [(WFTriggerOptionSelectionViewContainer *)self feedbackGenerator];
-    [v6 prepare];
+    feedbackGenerator = [(WFTriggerOptionSelectionViewContainer *)self feedbackGenerator];
+    [feedbackGenerator prepare];
   }
 
-  v15 = [v4 view];
-  [v4 locationInView:v15];
+  view = [recognizerCopy view];
+  [recognizerCopy locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [v15 pointInside:0 withEvent:{v8, v10}];
-  [v15 setHighlighted:((v5 - 1) < 2) & v11];
-  if (v5 == 3 && (v11 & 1) != 0)
+  v11 = [view pointInside:0 withEvent:{v8, v10}];
+  [view setHighlighted:((state - 1) < 2) & v11];
+  if (state == 3 && (v11 & 1) != 0)
   {
     [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred];
-    v12 = [(WFTriggerOptionSelectionViewContainer *)self leftView];
+    leftView = [(WFTriggerOptionSelectionViewContainer *)self leftView];
 
-    v13 = [(WFTriggerOptionSelectionViewContainer *)self delegate];
-    if (v15 == v12)
+    delegate = [(WFTriggerOptionSelectionViewContainer *)self delegate];
+    if (view == leftView)
     {
-      [v13 view:self didSelectOptionWithLeftViewCurrentlySelected:{-[WFTriggerOptionSelectionViewContainer leftViewSelected](self, "leftViewSelected")}];
+      [delegate view:self didSelectOptionWithLeftViewCurrentlySelected:{-[WFTriggerOptionSelectionViewContainer leftViewSelected](self, "leftViewSelected")}];
     }
 
     else
     {
-      v14 = [(WFTriggerOptionSelectionViewContainer *)self rightView];
-      [v13 view:self didSelectOptionWithRightViewCurrentlySelected:{objc_msgSend(v14, "selected")}];
+      rightView = [(WFTriggerOptionSelectionViewContainer *)self rightView];
+      [delegate view:self didSelectOptionWithRightViewCurrentlySelected:{objc_msgSend(rightView, "selected")}];
     }
   }
 }
@@ -173,37 +173,37 @@
 
     [(WFTriggerOptionSelectionViewContainer *)v2 addSubview:v2->_stackView];
     v28 = MEMORY[0x277CCAAD0];
-    v33 = [(UIStackView *)v2->_stackView topAnchor];
-    v32 = [(WFTriggerOptionSelectionViewContainer *)v2 topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor = [(UIStackView *)v2->_stackView topAnchor];
+    topAnchor2 = [(WFTriggerOptionSelectionViewContainer *)v2 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v40[0] = v31;
-    v30 = [(UIStackView *)v2->_stackView bottomAnchor];
-    v29 = [(WFTriggerOptionSelectionViewContainer *)v2 bottomAnchor];
-    v9 = [v30 constraintEqualToAnchor:v29];
+    bottomAnchor = [(UIStackView *)v2->_stackView bottomAnchor];
+    bottomAnchor2 = [(WFTriggerOptionSelectionViewContainer *)v2 bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v40[1] = v9;
-    v10 = [(UIStackView *)v2->_stackView leadingAnchor];
-    v11 = [(WFTriggerOptionSelectionViewContainer *)v2 leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [(UIStackView *)v2->_stackView leadingAnchor];
+    leadingAnchor2 = [(WFTriggerOptionSelectionViewContainer *)v2 leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v40[2] = v12;
-    v13 = [(UIStackView *)v2->_stackView trailingAnchor];
-    v14 = [(WFTriggerOptionSelectionViewContainer *)v2 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [(UIStackView *)v2->_stackView trailingAnchor];
+    trailingAnchor2 = [(WFTriggerOptionSelectionViewContainer *)v2 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:4];
     [v28 activateConstraints:v16];
 
-    v17 = [(WFTriggerOptionSelectionViewContainer *)v2 stackView];
-    [v17 addArrangedSubview:v2->_leftView];
+    stackView = [(WFTriggerOptionSelectionViewContainer *)v2 stackView];
+    [stackView addArrangedSubview:v2->_leftView];
 
-    v18 = [(WFTriggerOptionSelectionViewContainer *)v2 stackView];
-    [v18 addArrangedSubview:v2->_rightView];
+    stackView2 = [(WFTriggerOptionSelectionViewContainer *)v2 stackView];
+    [stackView2 addArrangedSubview:v2->_rightView];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v19 = [(UIStackView *)v2->_stackView arrangedSubviews];
-    v20 = [v19 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    arrangedSubviews = [(UIStackView *)v2->_stackView arrangedSubviews];
+    v20 = [arrangedSubviews countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v20)
     {
       v21 = v20;
@@ -214,7 +214,7 @@
         {
           if (*v35 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           v24 = *(*(&v34 + 1) + 8 * i);
@@ -225,7 +225,7 @@
           [v24 addGestureRecognizer:v25];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v21 = [arrangedSubviews countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v21);

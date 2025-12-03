@@ -1,21 +1,21 @@
 @interface CKSearchActivityItemProvider
-- (CKSearchActivityItemProvider)initWithPlaceholderItem:(id)a3 metadata:(id)a4;
+- (CKSearchActivityItemProvider)initWithPlaceholderItem:(id)item metadata:(id)metadata;
 @end
 
 @implementation CKSearchActivityItemProvider
 
-- (CKSearchActivityItemProvider)initWithPlaceholderItem:(id)a3 metadata:(id)a4
+- (CKSearchActivityItemProvider)initWithPlaceholderItem:(id)item metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  metadataCopy = metadata;
   v11.receiver = self;
   v11.super_class = CKSearchActivityItemProvider;
-  v8 = [(UIActivityItemProvider *)&v11 initWithPlaceholderItem:v6];
+  v8 = [(UIActivityItemProvider *)&v11 initWithPlaceholderItem:itemCopy];
   v9 = v8;
   if (v8)
   {
-    [(CKSearchActivityItemProvider *)v8 setPayload:v6];
-    [(CKSearchActivityItemProvider *)v9 setMetadata:v7];
+    [(CKSearchActivityItemProvider *)v8 setPayload:itemCopy];
+    [(CKSearchActivityItemProvider *)v9 setMetadata:metadataCopy];
   }
 
   return v9;

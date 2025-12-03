@@ -1,6 +1,6 @@
 @interface DatabaseSession
 - (SQLiteConnection)connection;
-- (void)setConnection:(id)a3;
+- (void)setConnection:(id)connection;
 @end
 
 @implementation DatabaseSession
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000C9DFC(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_1000C9DFC(connectionCopy);
 }
 
 @end

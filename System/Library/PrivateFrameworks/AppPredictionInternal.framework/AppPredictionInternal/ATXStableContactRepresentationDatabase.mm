@@ -1,11 +1,11 @@
 @interface ATXStableContactRepresentationDatabase
 - (ATXStableContactRepresentationDatabase)init;
-- (BOOL)_runMigrationSteps:(id)a3;
+- (BOOL)_runMigrationSteps:(id)steps;
 - (BOOL)migrate;
-- (id)cnContactId:(id)a3;
+- (id)cnContactId:(id)id;
 - (id)deleteAllData;
-- (id)stableContactIdentifier:(id)a3;
-- (void)insertCnContactIdToStableContactIdentifierWithCnContactId:(id)a3 stableContactIdentifier:(id)a4;
+- (id)stableContactIdentifier:(id)identifier;
+- (void)insertCnContactIdToStableContactIdentifierWithCnContactId:(id)id stableContactIdentifier:(id)identifier;
 @end
 
 @implementation ATXStableContactRepresentationDatabase
@@ -20,13 +20,13 @@
 - (BOOL)migrate
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ATXAbstractVersionedDatabase *)self currentSchemaVersion];
-  if (v3 == [(ATXStableContactRepresentationDatabase *)self latestVersion])
+  currentSchemaVersion = [(ATXAbstractVersionedDatabase *)self currentSchemaVersion];
+  if (currentSchemaVersion == [(ATXStableContactRepresentationDatabase *)self latestVersion])
   {
     goto LABEL_6;
   }
 
-  if (v3 == 1)
+  if (currentSchemaVersion == 1)
   {
 LABEL_5:
     v10[0] = @"DROP TABLE IF EXISTS canonicalContactRepresentation";
@@ -44,7 +44,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v3)
+  if (!currentSchemaVersion)
   {
     v11[0] = @"CREATE TABLE IF NOT EXISTS canonicalContactRepresentation( cnContactId TEXT PRIMARY KEY,   canonicalCnContactId TEXT NOT NULL) WITHOUT ROWID";
     v11[1] = @"CREATE TABLE IF NOT EXISTS contactInfo( canonicalCnContactId TEXT PRIMARY KEY,   firstName TEXT,   lastName TEXT,   email1 TEXT,   email2 TEXT,   email3 TEXT,   phoneNumber1 TEXT,   phoneNumber2 TEXT,   phoneNumber3 TEXT) WITHOUT ROWID";
@@ -66,7 +66,7 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)_runMigrationSteps:(id)a3
+- (BOOL)_runMigrationSteps:(id)steps
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -77,7 +77,7 @@ LABEL_8:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = a3;
+  obj = steps;
   v4 = [obj countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
@@ -134,20 +134,20 @@ uint64_t __61__ATXStableContactRepresentationDatabase__runMigrationSteps___block
   return *v5;
 }
 
-- (void)insertCnContactIdToStableContactIdentifierWithCnContactId:(id)a3 stableContactIdentifier:(id)a4
+- (void)insertCnContactIdToStableContactIdentifierWithCnContactId:(id)id stableContactIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  identifierCopy = identifier;
   queue = self->super._queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __124__ATXStableContactRepresentationDatabase_insertCnContactIdToStableContactIdentifierWithCnContactId_stableContactIdentifier___block_invoke;
   v11[3] = &unk_278597828;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = idCopy;
   dispatch_sync_notxn(queue, v11);
 }
 
@@ -190,9 +190,9 @@ uint64_t __124__ATXStableContactRepresentationDatabase_insertCnContactIdToStable
   return *v5;
 }
 
-- (id)stableContactIdentifier:(id)a3
+- (id)stableContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -205,9 +205,9 @@ uint64_t __124__ATXStableContactRepresentationDatabase_insertCnContactIdToStable
   v9[2] = __66__ATXStableContactRepresentationDatabase_stableContactIdentifier___block_invoke;
   v9[3] = &unk_2785987E0;
   v9[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync_notxn(queue, v9);
   v7 = v13[5];
 
@@ -260,9 +260,9 @@ uint64_t __66__ATXStableContactRepresentationDatabase_stableContactIdentifier___
   return *v5;
 }
 
-- (id)cnContactId:(id)a3
+- (id)cnContactId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -275,9 +275,9 @@ uint64_t __66__ATXStableContactRepresentationDatabase_stableContactIdentifier___
   v9[2] = __54__ATXStableContactRepresentationDatabase_cnContactId___block_invoke;
   v9[3] = &unk_2785987E0;
   v9[4] = self;
-  v10 = v4;
+  v10 = idCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync_notxn(queue, v9);
   v7 = v13[5];
 

@@ -1,12 +1,12 @@
 @interface HKChartableCodedQuantity
-+ (id)_valueFromCodedQuantity:(id)a3 inUnit:(id)a4 error:(id *)a5;
-+ (id)chartableCodedQuantityWithCodings:(id)a3 originalCodedQuantity:(id)a4 originalRangeLowCodedQuantity:(id)a5 originalRangeHighCodedQuantity:(id)a6 error:(id *)a7;
++ (id)_valueFromCodedQuantity:(id)quantity inUnit:(id)unit error:(id *)error;
++ (id)chartableCodedQuantityWithCodings:(id)codings originalCodedQuantity:(id)quantity originalRangeLowCodedQuantity:(id)codedQuantity originalRangeHighCodedQuantity:(id)highCodedQuantity error:(id *)error;
 + (id)converter;
 - (BOOL)isInRange;
 - (HKChartableCodedQuantity)init;
-- (HKChartableCodedQuantity)initWithCodings:(id)a3 quantity:(id)a4 rangeLow:(id)a5 rangeHigh:(id)a6;
+- (HKChartableCodedQuantity)initWithCodings:(id)codings quantity:(id)quantity rangeLow:(id)low rangeHigh:(id)high;
 - (double)doubleValue;
-- (id)chartableCodedQuantityInUnit:(id)a3 adoptUnitIfNullUnit:(BOOL)a4 error:(id *)a5;
+- (id)chartableCodedQuantityInUnit:(id)unit adoptUnitIfNullUnit:(BOOL)nullUnit error:(id *)error;
 - (id)description;
 @end
 
@@ -22,30 +22,30 @@
   return 0;
 }
 
-- (HKChartableCodedQuantity)initWithCodings:(id)a3 quantity:(id)a4 rangeLow:(id)a5 rangeHigh:(id)a6
+- (HKChartableCodedQuantity)initWithCodings:(id)codings quantity:(id)quantity rangeLow:(id)low rangeHigh:(id)high
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codingsCopy = codings;
+  quantityCopy = quantity;
+  lowCopy = low;
+  highCopy = high;
   v24.receiver = self;
   v24.super_class = HKChartableCodedQuantity;
   v14 = [(HKChartableCodedQuantity *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [codingsCopy copy];
     codings = v14->_codings;
     v14->_codings = v15;
 
-    v17 = [v11 copy];
+    v17 = [quantityCopy copy];
     quantity = v14->_quantity;
     v14->_quantity = v17;
 
-    v19 = [v12 copy];
+    v19 = [lowCopy copy];
     rangeLow = v14->_rangeLow;
     v14->_rangeLow = v19;
 
-    v21 = [v13 copy];
+    v21 = [highCopy copy];
     rangeHigh = v14->_rangeHigh;
     v14->_rangeHigh = v21;
   }
@@ -53,24 +53,24 @@
   return v14;
 }
 
-+ (id)chartableCodedQuantityWithCodings:(id)a3 originalCodedQuantity:(id)a4 originalRangeLowCodedQuantity:(id)a5 originalRangeHighCodedQuantity:(id)a6 error:(id *)a7
++ (id)chartableCodedQuantityWithCodings:(id)codings originalCodedQuantity:(id)quantity originalRangeLowCodedQuantity:(id)codedQuantity originalRangeHighCodedQuantity:(id)highCodedQuantity error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [a1 converter];
-  v17 = [v13 quantityRepresentationWithUCUMConverter:v16 error:a7];
+  codingsCopy = codings;
+  quantityCopy = quantity;
+  codedQuantityCopy = codedQuantity;
+  highCodedQuantityCopy = highCodedQuantity;
+  converter = [self converter];
+  v17 = [quantityCopy quantityRepresentationWithUCUMConverter:converter error:error];
 
   if (v17)
   {
-    v37 = v12;
-    if (v14)
+    v37 = codingsCopy;
+    if (codedQuantityCopy)
     {
-      v18 = [v17 _unit];
+      _unit = [v17 _unit];
       v39 = 0;
-      v19 = [a1 _valueFromCodedQuantity:v14 inUnit:v18 error:&v39];
+      v19 = [self _valueFromCodedQuantity:codedQuantityCopy inUnit:_unit error:&v39];
       v20 = v39;
 
       if (v19)
@@ -101,11 +101,11 @@
       v21 = 1;
     }
 
-    if (v15)
+    if (highCodedQuantityCopy)
     {
-      v24 = [v17 _unit];
+      _unit2 = [v17 _unit];
       v38 = 0;
-      v25 = [a1 _valueFromCodedQuantity:v15 inUnit:v24 error:&v38];
+      v25 = [self _valueFromCodedQuantity:highCodedQuantityCopy inUnit:_unit2 error:&v38];
       v26 = v38;
 
       if (v25)
@@ -136,8 +136,8 @@
       v27 = 1;
     }
 
-    v22 = [[a1 alloc] initWithCodings:v37 quantity:v17 rangeLow:v19 rangeHigh:v25];
-    v29 = [v13 copy];
+    v22 = [[self alloc] initWithCodings:v37 quantity:v17 rangeLow:v19 rangeHigh:v25];
+    v29 = [quantityCopy copy];
     v30 = v22[5];
     v22[5] = v29;
 
@@ -148,13 +148,13 @@
 
     else
     {
-      v31 = [v14 copy];
+      v31 = [codedQuantityCopy copy];
     }
 
     v32 = v22[6];
     v22[6] = v31;
 
-    v12 = v37;
+    codingsCopy = v37;
     if (v27)
     {
       v33 = 0;
@@ -162,7 +162,7 @@
 
     else
     {
-      v33 = [v15 copy];
+      v33 = [highCodedQuantityCopy copy];
     }
 
     v34 = v22[7];
@@ -179,24 +179,24 @@
   return v22;
 }
 
-+ (id)_valueFromCodedQuantity:(id)a3 inUnit:(id)a4 error:(id *)a5
++ (id)_valueFromCodedQuantity:(id)quantity inUnit:(id)unit error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 converter];
-  v11 = [v9 quantityRepresentationWithUCUMConverter:v10 error:a5];
+  unitCopy = unit;
+  quantityCopy = quantity;
+  converter = [self converter];
+  v11 = [quantityCopy quantityRepresentationWithUCUMConverter:converter error:error];
 
   if (v11)
   {
-    if ([v11 isCompatibleWithUnit:v8])
+    if ([v11 isCompatibleWithUnit:unitCopy])
     {
       v12 = MEMORY[0x1E696AD98];
-      [v11 doubleValueForUnit:v8];
+      [v11 doubleValueForUnit:unitCopy];
       v13 = [v12 numberWithDouble:?];
       goto LABEL_6;
     }
 
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"value %@ is not compatible with unit %@", v11, v8}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"value %@ is not compatible with unit %@", v11, unitCopy}];
   }
 
   v13 = 0;
@@ -205,12 +205,12 @@ LABEL_6:
   return v13;
 }
 
-- (id)chartableCodedQuantityInUnit:(id)a3 adoptUnitIfNullUnit:(BOOL)a4 error:(id *)a5
+- (id)chartableCodedQuantityInUnit:(id)unit adoptUnitIfNullUnit:(BOOL)nullUnit error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(HKQuantity *)self->_quantity _unit];
-  v10 = [v9 isEqual:v8];
+  nullUnitCopy = nullUnit;
+  unitCopy = unit;
+  _unit = [(HKQuantity *)self->_quantity _unit];
+  v10 = [_unit isEqual:unitCopy];
 
   if (v10)
   {
@@ -220,31 +220,31 @@ LABEL_6:
 
   v12 = self->_quantity;
   v13 = v12;
-  if (v6)
+  if (nullUnitCopy)
   {
-    v14 = [(HKQuantity *)v12 _unit];
-    v15 = [v14 isNull];
+    _unit2 = [(HKQuantity *)v12 _unit];
+    isNull = [_unit2 isNull];
 
-    if (v15)
+    if (isNull)
     {
       [v13 _value];
-      v16 = [HKQuantity quantityWithUnit:v8 doubleValue:?];
+      v16 = [HKQuantity quantityWithUnit:unitCopy doubleValue:?];
 
       v13 = v16;
       goto LABEL_7;
     }
   }
 
-  if ([v13 isCompatibleWithUnit:v8])
+  if ([v13 isCompatibleWithUnit:unitCopy])
   {
 LABEL_7:
-    [v13 doubleValueForUnit:v8];
-    v17 = [HKQuantity quantityWithUnit:v8 doubleValue:?];
+    [v13 doubleValueForUnit:unitCopy];
+    v17 = [HKQuantity quantityWithUnit:unitCopy doubleValue:?];
     if (self->_rangeLow)
     {
-      v18 = [v13 _unit];
+      _unit3 = [v13 _unit];
       [(NSNumber *)self->_rangeLow doubleValue];
-      v19 = [HKQuantity quantityWithUnit:v18 doubleValue:?];
+      v19 = [HKQuantity quantityWithUnit:_unit3 doubleValue:?];
     }
 
     else
@@ -254,9 +254,9 @@ LABEL_7:
 
     if (self->_rangeHigh)
     {
-      v20 = [v13 _unit];
+      _unit4 = [v13 _unit];
       [(NSNumber *)self->_rangeHigh doubleValue];
-      v21 = [HKQuantity quantityWithUnit:v20 doubleValue:?];
+      v21 = [HKQuantity quantityWithUnit:_unit4 doubleValue:?];
     }
 
     else
@@ -267,13 +267,13 @@ LABEL_7:
     if (v19)
     {
       v22 = MEMORY[0x1E696AD98];
-      [v19 doubleValueForUnit:v8];
+      [v19 doubleValueForUnit:unitCopy];
       v23 = [v22 numberWithDouble:?];
       if (v21)
       {
 LABEL_16:
         v24 = MEMORY[0x1E696AD98];
-        [v21 doubleValueForUnit:v8];
+        [v21 doubleValueForUnit:unitCopy];
         v25 = [v24 numberWithDouble:?];
 LABEL_19:
         v11 = [objc_alloc(objc_opt_class()) initWithCodings:self->_codings quantity:v17 rangeLow:v23 rangeHigh:v25];
@@ -324,7 +324,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"Cannot convert %@ to unit %@", self, v8}];
+  [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Cannot convert %@ to unit %@", self, unitCopy}];
   v11 = 0;
 LABEL_26:
 
@@ -360,8 +360,8 @@ LABEL_27:
 - (double)doubleValue
 {
   quantity = self->_quantity;
-  v3 = [(HKQuantity *)quantity _unit];
-  [(HKQuantity *)quantity doubleValueForUnit:v3];
+  _unit = [(HKQuantity *)quantity _unit];
+  [(HKQuantity *)quantity doubleValueForUnit:_unit];
   v5 = v4;
 
   return v5;

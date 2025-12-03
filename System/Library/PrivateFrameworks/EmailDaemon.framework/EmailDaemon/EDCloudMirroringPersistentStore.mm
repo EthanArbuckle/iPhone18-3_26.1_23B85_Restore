@@ -1,11 +1,11 @@
 @interface EDCloudMirroringPersistentStore
 + (OS_os_log)log;
 - (EDCloudMirroringPersistentStore)init;
-- (id)_schedulerForKind:(int)a3;
-- (id)_wrapCompletion:(id)a3 forRequestKind:(int)a4;
+- (id)_schedulerForKind:(int)kind;
+- (id)_wrapCompletion:(id)completion forRequestKind:(int)kind;
 - (void)_setupCoreDataStack;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
 @end
 
 @implementation EDCloudMirroringPersistentStore
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDCloudMirroringPersistentStore_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_26 != -1)
   {
     dispatch_once(&log_onceToken_26, block);
@@ -86,33 +86,33 @@ void __54__EDCloudMirroringPersistentStore__setupCoreDataStack__block_invoke(uin
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(EDCloudMirroringPersistentStore *)self managedObjectContext];
+  blockCopy = block;
+  managedObjectContext = [(EDCloudMirroringPersistentStore *)self managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__EDCloudMirroringPersistentStore_performBlock___block_invoke;
   v8[3] = &unk_1E82518B0;
-  v6 = v4;
-  v9 = v5;
+  v6 = blockCopy;
+  v9 = managedObjectContext;
   v10 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   [v7 performBlock:v8];
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
-  v5 = [(EDCloudMirroringPersistentStore *)self managedObjectContext];
+  waitCopy = wait;
+  managedObjectContext = [(EDCloudMirroringPersistentStore *)self managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__EDCloudMirroringPersistentStore_performBlockAndWait___block_invoke;
   v8[3] = &unk_1E82518B0;
-  v6 = v4;
-  v9 = v5;
+  v6 = waitCopy;
+  v9 = managedObjectContext;
   v10 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   [v7 performBlockAndWait:v8];
 }
 
@@ -133,9 +133,9 @@ uint64_t __68__EDCloudMirroringPersistentStore__requestWithKind_completionBlock_
   return result;
 }
 
-- (id)_schedulerForKind:(int)a3
+- (id)_schedulerForKind:(int)kind
 {
-  if (a3)
+  if (kind)
   {
     [(EDCloudMirroringPersistentStore *)self exportScheduler];
   }
@@ -191,18 +191,18 @@ void __75__EDCloudMirroringPersistentStore__executeRequestWithKind_completionBlo
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_wrapCompletion:(id)a3 forRequestKind:(int)a4
+- (id)_wrapCompletion:(id)completion forRequestKind:(int)kind
 {
-  v6 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__EDCloudMirroringPersistentStore__wrapCompletion_forRequestKind___block_invoke;
   v10[3] = &unk_1E8251B98;
   objc_copyWeak(&v12, &location);
-  v13 = a4;
-  v11 = v6;
-  v7 = v6;
+  kindCopy = kind;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = _Block_copy(v10);
 
   objc_destroyWeak(&v12);

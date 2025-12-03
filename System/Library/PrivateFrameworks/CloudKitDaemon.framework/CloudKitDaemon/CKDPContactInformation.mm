@@ -1,12 +1,12 @@
 @interface CKDPContactInformation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPContactInformation
@@ -66,137 +66,137 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_emailAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_containerScopedUserId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_firstName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_lastName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_canonicalPhoneNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   emailAddress = self->_emailAddress;
-  v12 = v4;
+  v12 = toCopy;
   if (emailAddress)
   {
-    objc_msgSend_setEmailAddress_(v4, v5, emailAddress);
-    v4 = v12;
+    objc_msgSend_setEmailAddress_(toCopy, v5, emailAddress);
+    toCopy = v12;
   }
 
   containerScopedUserId = self->_containerScopedUserId;
   if (containerScopedUserId)
   {
     objc_msgSend_setContainerScopedUserId_(v12, v5, containerScopedUserId);
-    v4 = v12;
+    toCopy = v12;
   }
 
   firstName = self->_firstName;
   if (firstName)
   {
     objc_msgSend_setFirstName_(v12, v5, firstName);
-    v4 = v12;
+    toCopy = v12;
   }
 
   lastName = self->_lastName;
   if (lastName)
   {
     objc_msgSend_setLastName_(v12, v5, lastName);
-    v4 = v12;
+    toCopy = v12;
   }
 
   phoneNumber = self->_phoneNumber;
   if (phoneNumber)
   {
     objc_msgSend_setPhoneNumber_(v12, v5, phoneNumber);
-    v4 = v12;
+    toCopy = v12;
   }
 
   canonicalPhoneNumber = self->_canonicalPhoneNumber;
   if (canonicalPhoneNumber)
   {
     objc_msgSend_setCanonicalPhoneNumber_(v12, v5, canonicalPhoneNumber);
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_emailAddress, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_emailAddress, v11, zone);
   v13 = v10[3];
   v10[3] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_containerScopedUserId, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_containerScopedUserId, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_firstName, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_firstName, v17, zone);
   v19 = v10[4];
   v10[4] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_lastName, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_lastName, v20, zone);
   v22 = v10[5];
   v10[5] = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_phoneNumber, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_phoneNumber, v23, zone);
   v25 = v10[6];
   v10[6] = v24;
 
-  v27 = objc_msgSend_copyWithZone_(self->_canonicalPhoneNumber, v26, a3);
+  v27 = objc_msgSend_copyWithZone_(self->_canonicalPhoneNumber, v26, zone);
   v28 = v10[1];
   v10[1] = v27;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
   emailAddress = self->_emailAddress;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (emailAddress | v9)
   {
     if (!objc_msgSend_isEqual_(emailAddress, v7, v9))
@@ -206,7 +206,7 @@
   }
 
   containerScopedUserId = self->_containerScopedUserId;
-  v11 = v4[2];
+  v11 = equalCopy[2];
   if (containerScopedUserId | v11)
   {
     if (!objc_msgSend_isEqual_(containerScopedUserId, v7, v11))
@@ -215,10 +215,10 @@
     }
   }
 
-  if (((firstName = self->_firstName, v13 = v4[4], !(firstName | v13)) || objc_msgSend_isEqual_(firstName, v7, v13)) && ((lastName = self->_lastName, v15 = v4[5], !(lastName | v15)) || objc_msgSend_isEqual_(lastName, v7, v15)) && ((phoneNumber = self->_phoneNumber, v17 = v4[6], !(phoneNumber | v17)) || objc_msgSend_isEqual_(phoneNumber, v7, v17)))
+  if (((firstName = self->_firstName, v13 = equalCopy[4], !(firstName | v13)) || objc_msgSend_isEqual_(firstName, v7, v13)) && ((lastName = self->_lastName, v15 = equalCopy[5], !(lastName | v15)) || objc_msgSend_isEqual_(lastName, v7, v15)) && ((phoneNumber = self->_phoneNumber, v17 = equalCopy[6], !(phoneNumber | v17)) || objc_msgSend_isEqual_(phoneNumber, v7, v17)))
   {
     canonicalPhoneNumber = self->_canonicalPhoneNumber;
-    v19 = v4[1];
+    v19 = equalCopy[1];
     if (canonicalPhoneNumber | v19)
     {
       isEqual = objc_msgSend_isEqual_(canonicalPhoneNumber, v7, v19);
@@ -249,40 +249,40 @@ LABEL_14:
   return v13 ^ v16 ^ objc_msgSend_hash(self->_canonicalPhoneNumber, v17, v18);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v11 = a3;
-  v5 = v11[3];
+  fromCopy = from;
+  v5 = fromCopy[3];
   if (v5)
   {
     objc_msgSend_setEmailAddress_(self, v4, v5);
   }
 
-  v6 = v11[2];
+  v6 = fromCopy[2];
   if (v6)
   {
     objc_msgSend_setContainerScopedUserId_(self, v4, v6);
   }
 
-  v7 = v11[4];
+  v7 = fromCopy[4];
   if (v7)
   {
     objc_msgSend_setFirstName_(self, v4, v7);
   }
 
-  v8 = v11[5];
+  v8 = fromCopy[5];
   if (v8)
   {
     objc_msgSend_setLastName_(self, v4, v8);
   }
 
-  v9 = v11[6];
+  v9 = fromCopy[6];
   if (v9)
   {
     objc_msgSend_setPhoneNumber_(self, v4, v9);
   }
 
-  v10 = v11[1];
+  v10 = fromCopy[1];
   if (v10)
   {
     objc_msgSend_setCanonicalPhoneNumber_(self, v4, v10);

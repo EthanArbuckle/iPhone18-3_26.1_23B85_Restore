@@ -1,17 +1,17 @@
 @interface CSAttendingStatesMessageHandler
-- (BOOL)_shouldDuckTTSAtSpeechStartDetected:(int64_t)a3;
+- (BOOL)_shouldDuckTTSAtSpeechStartDetected:(int64_t)detected;
 - (CSAttendingStatesMessageHandler)init;
 - (LBAttendingStatesServiceDelegate)delegate;
 - (void)_handleSpeechRecognitionTaskDidStop;
 - (void)_resetCachedState;
-- (void)didCompleteRecognitionTaskWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6;
-- (void)didReceiveStartRecognitionRequest:(id)a3 taskName:(id)a4 sharedUserInfo:(id)a5;
-- (void)didReceiveStopRecognitionRequest:(id)a3 stopReason:(unint64_t)a4;
-- (void)localAttendingStartedWithRootRequestId:(id)a3;
+- (void)didCompleteRecognitionTaskWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error;
+- (void)didReceiveStartRecognitionRequest:(id)request taskName:(id)name sharedUserInfo:(id)info;
+- (void)didReceiveStopRecognitionRequest:(id)request stopReason:(unint64_t)reason;
+- (void)localAttendingStartedWithRootRequestId:(id)id;
 - (void)localAttendingStopped;
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3;
-- (void)localAttendingWillStartWithRootRequestId:(id)a3;
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5;
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error;
+- (void)localAttendingWillStartWithRootRequestId:(id)id;
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id;
 @end
 
 @implementation CSAttendingStatesMessageHandler
@@ -37,16 +37,16 @@
       if (v4)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
-        v5 = [(CSSpeechStartDetectedMetaData *)self->_speechDetectedMetaData hostTime];
-        v6 = [(CSSpeechStartDetectedMetaData *)self->_speechDetectedMetaData audioRecordType];
-        v7 = [(CSSpeechStartDetectedMetaData *)self->_speechDetectedMetaData deviceId];
-        [v8 speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:v5 audioRecordType:v6 audioRecordDeviceId:v7];
+        hostTime = [(CSSpeechStartDetectedMetaData *)self->_speechDetectedMetaData hostTime];
+        audioRecordType = [(CSSpeechStartDetectedMetaData *)self->_speechDetectedMetaData audioRecordType];
+        deviceId = [(CSSpeechStartDetectedMetaData *)self->_speechDetectedMetaData deviceId];
+        [v8 speechRecognizerReadyForNewTurnWithSpeechStartDetectedAtHostTime:hostTime audioRecordType:audioRecordType audioRecordDeviceId:deviceId];
       }
     }
   }
 }
 
-- (void)didCompleteRecognitionTaskWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6
+- (void)didCompleteRecognitionTaskWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -57,7 +57,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)didReceiveStopRecognitionRequest:(id)a3 stopReason:(unint64_t)a4
+- (void)didReceiveStopRecognitionRequest:(id)request stopReason:(unint64_t)reason
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -65,11 +65,11 @@
   v5[2] = sub_1000C7720;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = reason;
   dispatch_async(queue, v5);
 }
 
-- (void)didReceiveStartRecognitionRequest:(id)a3 taskName:(id)a4 sharedUserInfo:(id)a5
+- (void)didReceiveStartRecognitionRequest:(id)request taskName:(id)name sharedUserInfo:(id)info
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -80,9 +80,9 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)_shouldDuckTTSAtSpeechStartDetected:(int64_t)a3
+- (BOOL)_shouldDuckTTSAtSpeechStartDetected:(int64_t)detected
 {
-  v4 = a3 == 22 || a3 == 25;
+  v4 = detected == 22 || detected == 25;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,19 +96,19 @@
   return v4;
 }
 
-- (void)speechStartDetectedWithHostTime:(unint64_t)a3 audioRecordType:(int64_t)a4 audioRecordDeviceId:(id)a5
+- (void)speechStartDetectedWithHostTime:(unint64_t)time audioRecordType:(int64_t)type audioRecordDeviceId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000C79EC;
   v11[3] = &unk_100250B98;
-  v13 = a3;
-  v14 = a4;
+  timeCopy = time;
+  typeCopy = type;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = idCopy;
+  v10 = idCopy;
   dispatch_async(queue, v11);
 }
 
@@ -123,45 +123,45 @@
   dispatch_async(queue, block);
 }
 
-- (void)localAttendingStoppedUnexpectedlyWithError:(id)a3
+- (void)localAttendingStoppedUnexpectedlyWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C7DAC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)localAttendingStartedWithRootRequestId:(id)a3
+- (void)localAttendingStartedWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C7EA0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)localAttendingWillStartWithRootRequestId:(id)a3
+- (void)localAttendingWillStartWithRootRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C7FD8;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 

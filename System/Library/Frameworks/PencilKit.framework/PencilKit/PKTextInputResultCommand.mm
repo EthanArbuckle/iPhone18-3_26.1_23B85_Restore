@@ -1,72 +1,72 @@
 @interface PKTextInputResultCommand
-+ (id)_tokenColumnStringsForTopTranscriptionInTextResult:(uint64_t)a1;
-+ (id)_transcriptionForTokensAtColumn:(uint64_t)a3 row:(void *)a4 textResult:;
-- (id)_strokeSliceIDsToRemoveForCommittedTokenColumnCount:(char)a3 forceRemoveAll:;
++ (id)_tokenColumnStringsForTopTranscriptionInTextResult:(uint64_t)result;
++ (id)_transcriptionForTokensAtColumn:(uint64_t)column row:(void *)row textResult:;
+- (id)_strokeSliceIDsToRemoveForCommittedTokenColumnCount:(char)count forceRemoveAll:;
 - (id)description;
-- (uint64_t)initWithQueryItem:(void *)a3 handwritingShot:(uint64_t)a4 immediateCommitType:(double)a5 applyAfterDelay:;
+- (uint64_t)initWithQueryItem:(void *)item handwritingShot:(uint64_t)shot immediateCommitType:(double)type applyAfterDelay:;
 - (void)_applyResultCommandPhase2;
-- (void)_applyTextReplacementWithCompletion:(uint64_t)a1;
-- (void)_finishApplyingResultWithSuccess:(int)a3 cancelled:;
-- (void)_removeStrokesForSliceIDs:(CGFloat)a3 destinationRect:(CGFloat)a4;
-- (void)_setCommandState:(uint64_t)a1;
-- (void)_updateInputTargetStateWithUncommittedPendingText:(void *)a3 activePreviewText:(uint64_t)a4 committedTextLength:(uint64_t)a5 accumulatedCommitLength:;
-- (void)beginApplyingResultCommandWithInputTargetState:(uint64_t)a1;
+- (void)_applyTextReplacementWithCompletion:(uint64_t)completion;
+- (void)_finishApplyingResultWithSuccess:(int)success cancelled:;
+- (void)_removeStrokesForSliceIDs:(CGFloat)ds destinationRect:(CGFloat)rect;
+- (void)_setCommandState:(uint64_t)state;
+- (void)_updateInputTargetStateWithUncommittedPendingText:(void *)text activePreviewText:(uint64_t)previewText committedTextLength:(uint64_t)length accumulatedCommitLength:;
+- (void)beginApplyingResultCommandWithInputTargetState:(uint64_t)state;
 - (void)cancelDelayedCommand;
 @end
 
 @implementation PKTextInputResultCommand
 
-- (uint64_t)initWithQueryItem:(void *)a3 handwritingShot:(uint64_t)a4 immediateCommitType:(double)a5 applyAfterDelay:
+- (uint64_t)initWithQueryItem:(void *)item handwritingShot:(uint64_t)shot immediateCommitType:(double)type applyAfterDelay:
 {
   v10 = a2;
-  v11 = a3;
-  if (a1)
+  itemCopy = item;
+  if (self)
   {
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = PKTextInputResultCommand;
     v12 = objc_msgSendSuper2(&v23, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       *(v12 + 3) = 0;
       objc_storeStrong(v12 + 4, a2);
-      objc_storeStrong((a1 + 40), a3);
-      *(a1 + 64) = a4;
-      v13 = [v10 correctionResult];
-      v14 = [v13 inputTarget];
-      v15 = [v14 inputTargetIdentifier];
+      objc_storeStrong((self + 40), item);
+      *(self + 64) = shot;
+      correctionResult = [v10 correctionResult];
+      inputTarget = [correctionResult inputTarget];
+      inputTargetIdentifier = [inputTarget inputTargetIdentifier];
 
-      if (v15)
+      if (inputTargetIdentifier)
       {
-        v16 = [v11 textInputElementContentForRecognitionIdentifier:v15];
-        v17 = *(a1 + 48);
-        *(a1 + 48) = v16;
+        v16 = [itemCopy textInputElementContentForRecognitionIdentifier:inputTargetIdentifier];
+        v17 = *(self + 48);
+        *(self + 48) = v16;
       }
 
-      v18 = [v10 correctionResult];
-      if (v18)
+      correctionResult2 = [v10 correctionResult];
+      if (correctionResult2)
       {
-        v19 = [v10 correctionResult];
-        *(a1 + 112) = [v19 affectedRange];
-        *(a1 + 120) = v20;
-      }
-
-      else
-      {
-        *(a1 + 112) = xmmword_1C801E6F0;
-      }
-
-      *(a1 + 11) = 1;
-      if (a5 <= 0.0)
-      {
-        [(PKTextInputResultCommand *)a1 _setCommandState:?];
+        correctionResult3 = [v10 correctionResult];
+        *(self + 112) = [correctionResult3 affectedRange];
+        *(self + 120) = v20;
       }
 
       else
       {
-        [(PKTextInputResultCommand *)a1 _setCommandState:?];
-        objc_initWeak(&location, a1);
-        v21 = dispatch_time(0, (a5 * 1000000000.0));
+        *(self + 112) = xmmword_1C801E6F0;
+      }
+
+      *(self + 11) = 1;
+      if (type <= 0.0)
+      {
+        [(PKTextInputResultCommand *)self _setCommandState:?];
+      }
+
+      else
+      {
+        [(PKTextInputResultCommand *)self _setCommandState:?];
+        objc_initWeak(&location, self);
+        v21 = dispatch_time(0, (type * 1000000000.0));
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __59__PKTextInputResultCommand__scheduleBecomeReadyAfterDelay___block_invoke;
@@ -79,7 +79,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -116,22 +116,22 @@
     v6 = @"None";
   }
 
-  v10 = [v3 stringByAppendingFormat:@" state: %@, immediateCommitType: %@, queryItem: %@, handwritingShot: %@, targetElementContent: %@", v4, v6, v7, v8, targetElementContent];
+  targetElementContent = [v3 stringByAppendingFormat:@" state: %@, immediateCommitType: %@, queryItem: %@, handwritingShot: %@, targetElementContent: %@", v4, v6, v7, v8, targetElementContent];
 
-  return v10;
+  return targetElementContent;
 }
 
-- (void)beginApplyingResultCommandWithInputTargetState:(uint64_t)a1
+- (void)beginApplyingResultCommandWithInputTargetState:(uint64_t)state
 {
   v81 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!state)
   {
     return;
   }
 
-  objc_setProperty_nonatomic_copy(a1, newValue, newValue, 56);
-  v3 = [*(a1 + 32) correctionResult];
-  v4 = *(a1 + 48);
+  objc_setProperty_nonatomic_copy(state, newValue, newValue, 56);
+  correctionResult = [*(state + 32) correctionResult];
+  v4 = *(state + 48);
   v5 = v4;
   if (v4)
   {
@@ -145,20 +145,20 @@
 
   v7 = v6;
 
-  v8 = [(PKTextInputElement *)v7 coordinateSpace];
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v10 = [WeakRetained resultCommandSupportedElementDelegate:a1];
+  coordinateSpace = [(PKTextInputElement *)v7 coordinateSpace];
+  WeakRetained = objc_loadWeakRetained((state + 16));
+  v10 = [WeakRetained resultCommandSupportedElementDelegate:state];
 
   v11 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v3 resultType];
-    v13 = NSStringFromRange(*(a1 + 112));
-    v14 = *(a1 + 40);
+    resultType = [correctionResult resultType];
+    v13 = NSStringFromRange(*(state + 112));
+    v14 = *(state + 40);
     *buf = 134219010;
-    v72 = a1;
+    stateCopy4 = state;
     v73 = 2048;
-    v74 = v12;
+    v74 = resultType;
     v75 = 2112;
     v76 = v13;
     v77 = 2112;
@@ -168,17 +168,17 @@
     _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "ResultCommand %p: beginApplying, correctionType: %ld, affectedRange: %@, element: %@, shot: %p", buf, 0x34u);
   }
 
-  if (v7 && v8)
+  if (v7 && coordinateSpace)
   {
-    if (!v3)
+    if (!correctionResult)
     {
       v17 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v59 = *(a1 + 32);
-        v60 = *(a1 + 40);
+        v59 = *(state + 32);
+        v60 = *(state + 40);
         *buf = 134218498;
-        v72 = a1;
+        stateCopy4 = state;
         v73 = 2048;
         v74 = v59;
         v75 = 2112;
@@ -190,7 +190,7 @@
       goto LABEL_16;
     }
 
-    if ([v3 resultType] != 1 || (objc_msgSend(v3, "textResult"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+    if ([correctionResult resultType] != 1 || (objc_msgSend(correctionResult, "textResult"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
     {
       v16 = 1;
       goto LABEL_17;
@@ -199,12 +199,12 @@
     v17 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v53 = [v3 error];
-      v54 = *(a1 + 40);
+      error = [correctionResult error];
+      v54 = *(state + 40);
       *buf = 134218498;
-      v72 = a1;
+      stateCopy4 = state;
       v73 = 2112;
-      v74 = v53;
+      v74 = error;
       v75 = 2112;
       v76 = v54;
       v55 = "ResultCommand %p: failed because text result is nil. Error: %@. Shot: <%@>";
@@ -220,16 +220,16 @@ LABEL_49:
     v17 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v53 = [v3 error];
-      v58 = *(a1 + 40);
+      error = [correctionResult error];
+      v58 = *(state + 40);
       *buf = 134219010;
-      v72 = a1;
+      stateCopy4 = state;
       v73 = 2048;
       v74 = v7;
       v75 = 2048;
-      v76 = v8;
+      v76 = coordinateSpace;
       v77 = 2112;
-      v78 = v53;
+      v78 = error;
       v79 = 2112;
       v80 = v58;
       v55 = "ResultCommand %p: failed because of nil target element: %p or coordinate space: %p. Error: %@. Shot: <%@>";
@@ -242,7 +242,7 @@ LABEL_49:
 LABEL_16:
   v16 = 0;
 LABEL_17:
-  v18 = *(a1 + 56);
+  v18 = *(state + 56);
   v19 = v18;
   if (!v18)
   {
@@ -258,15 +258,15 @@ LABEL_17:
 
     if (v22)
     {
-      v62 = v3;
-      v23 = v8;
+      v62 = correctionResult;
+      v23 = coordinateSpace;
       v24 = v10;
       if (!v16)
       {
         goto LABEL_27;
       }
 
-      v25 = *(a1 + 48);
+      v25 = *(state + 48);
       if (v25)
       {
         v26 = *(v25 + 8);
@@ -284,15 +284,15 @@ LABEL_24:
 
             if (v31)
             {
-              v32 = [*(a1 + 32) correctionResult];
-              v33 = [v32 resultType];
+              correctionResult2 = [*(state + 32) correctionResult];
+              resultType2 = [correctionResult2 resultType];
 
-              if (v33 == 1)
+              if (resultType2 == 1)
               {
 LABEL_31:
                 v10 = v24;
-                v8 = v23;
-                v3 = v62;
+                coordinateSpace = v23;
+                correctionResult = v62;
                 goto LABEL_32;
               }
             }
@@ -326,9 +326,9 @@ LABEL_27:
 LABEL_32:
 
   v37 = objc_alloc_init(PKTextInputTargetState);
-  objc_storeStrong((a1 + 104), v37);
+  objc_storeStrong((state + 104), v37);
 
-  v38 = *(a1 + 56);
+  v38 = *(state + 56);
   if (v38)
   {
     v39 = v38[8];
@@ -339,7 +339,7 @@ LABEL_32:
     v39 = 0;
   }
 
-  v40 = *(a1 + 104);
+  v40 = *(state + 104);
   if (v40)
   {
     *(v40 + 8) = v39 & 1;
@@ -354,34 +354,34 @@ LABEL_32:
       block[2] = __75__PKTextInputResultCommand_beginApplyingResultCommandWithInputTargetState___block_invoke_2;
       block[3] = &unk_1E82DACE8;
       v64 = v10;
-      v65 = a1;
+      stateCopy5 = state;
       v66 = v7;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
-    else if ([(PKTextInputElement *)v7 shouldPostponeFocusing]&& (*(a1 + 10) = 1, !*(a1 + 64)))
+    else if ([(PKTextInputElement *)v7 shouldPostponeFocusing]&& (*(state + 10) = 1, !*(state + 64)))
     {
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __75__PKTextInputResultCommand_beginApplyingResultCommandWithInputTargetState___block_invoke_51;
       v67[3] = &unk_1E82D7148;
-      v67[4] = a1;
+      v67[4] = state;
       dispatch_async(MEMORY[0x1E69E96A0], v67);
     }
 
     else
     {
-      [(PKTextInputResultCommand *)a1 _setCommandState:?];
-      v41 = [*(a1 + 32) strokeIdentifiers];
-      v42 = [*(a1 + 40) strokeProvider];
-      v43 = objc_loadWeakRetained((a1 + 16));
-      v44 = [v43 resultCommandCanvasController:a1];
+      [(PKTextInputResultCommand *)state _setCommandState:?];
+      strokeIdentifiers = [*(state + 32) strokeIdentifiers];
+      strokeProvider = [*(state + 40) strokeProvider];
+      v43 = objc_loadWeakRetained((state + 16));
+      v44 = [v43 resultCommandCanvasController:state];
 
-      [v42 startingPointForSlicesWithIdentifiers:v41];
+      [strokeProvider startingPointForSlicesWithIdentifiers:strokeIdentifiers];
       v46 = v45;
       v48 = v47;
-      v49 = [(PKTextInputCanvasController *)v44 canvasCoordinateSpace];
-      v50 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v49, v8, v46, v48, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+      canvasCoordinateSpace = [(PKTextInputCanvasController *)v44 canvasCoordinateSpace];
+      v50 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(canvasCoordinateSpace, coordinateSpace, v46, v48, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
       v52 = v51;
 
       [(PKTextInputElement *)v7 updateWithFocusedTextInput:?];
@@ -389,7 +389,7 @@ LABEL_32:
       v68[1] = 3221225472;
       v68[2] = __75__PKTextInputResultCommand_beginApplyingResultCommandWithInputTargetState___block_invoke;
       v68[3] = &unk_1E82DB750;
-      v68[4] = a1;
+      v68[4] = state;
       v69 = v7;
       v70 = v10;
       [(PKTextInputElement *)v69 focusElementIfNeededWithReferencePoint:v68 alwaysSetSelectionFromReferencePoint:v50 completion:v52];
@@ -398,17 +398,17 @@ LABEL_32:
 
   else
   {
-    [(PKTextInputResultCommand *)a1 _finishApplyingResultWithSuccess:0 cancelled:?];
+    [(PKTextInputResultCommand *)state _finishApplyingResultWithSuccess:0 cancelled:?];
   }
 }
 
-- (void)_setCommandState:(uint64_t)a1
+- (void)_setCommandState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    *(a1 + 24) = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    [WeakRetained resultCommandStateDidChange:a1];
+    *(state + 24) = a2;
+    WeakRetained = objc_loadWeakRetained((state + 16));
+    [WeakRetained resultCommandStateDidChange:state];
   }
 }
 
@@ -520,19 +520,19 @@ LABEL_16:
 - (void)_applyResultCommandPhase2
 {
   v112 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(PKTextInputResultCommand *)a1 _setCommandState:?];
+    [(PKTextInputResultCommand *)self _setCommandState:?];
     v92[0] = MEMORY[0x1E69E9820];
     v92[1] = 3221225472;
     v93 = __53__PKTextInputResultCommand__applyResultCommandPhase2__block_invoke;
     v94 = &unk_1E82D8F30;
-    v95 = a1;
+    selfCopy = self;
     v2 = v92;
-    v3 = *(a1 + 32);
-    v4 = *(a1 + 56);
-    v5 = [v3 correctionResult];
-    v6 = *(a1 + 48);
+    v3 = *(self + 32);
+    v4 = *(self + 56);
+    correctionResult = [v3 correctionResult];
+    v6 = *(self + 48);
     v7 = v6;
     if (v6)
     {
@@ -547,15 +547,15 @@ LABEL_16:
     v90 = v3;
     v9 = v4;
     v89 = v8;
-    v91 = *(a1 + 40);
+    v91 = *(self + 40);
     if (v7)
     {
       v10 = v7[3];
       if (v10 && v10 != 3)
       {
-        v38 = *(a1 + 112);
-        v39 = *(a1 + 120);
-        if (v38 == 0x7FFFFFFFFFFFFFFFLL || ![(PKTextInputElementContent *)v7 isValidRange:*(a1 + 120)])
+        v38 = *(self + 112);
+        v39 = *(self + 120);
+        if (v38 == 0x7FFFFFFFFFFFFFFFLL || ![(PKTextInputElementContent *)v7 isValidRange:*(self + 120)])
         {
           v40 = os_log_create("com.apple.pencilkit", "PencilTextInput");
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -564,7 +564,7 @@ LABEL_16:
             v113.length = v39;
             v66 = NSStringFromRange(v113);
             *buf = 134218242;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             *&buf[12] = 2112;
             *&buf[14] = v66;
             _os_log_error_impl(&dword_1C7CCA000, v40, OS_LOG_TYPE_ERROR, "ResultCommand %p: Could not process result replacing range %@ because it is out of bounds.", buf, 0x16u);
@@ -576,24 +576,24 @@ LABEL_16:
       }
     }
 
-    v12 = [v5 resultType];
+    resultType = [correctionResult resultType];
     v13 = 1;
-    if (v12 > 6)
+    if (resultType > 6)
     {
-      if (v12 == 7)
+      if (resultType == 7)
       {
         v43 = v91;
-        v44 = [v91 inputInProgressStroke];
+        inputInProgressStroke = [v91 inputInProgressStroke];
 
-        if (!v44)
+        if (!inputInProgressStroke)
         {
           *buf = MEMORY[0x1E69E9820];
           *&buf[8] = 3221225472;
           *&buf[16] = __68__PKTextInputResultCommand__applyResultCommandPhase3WithCompletion___block_invoke_3;
           v102 = &unk_1E82DB7A0;
-          v103 = a1;
-          v104 = v2;
-          [(PKTextInputResultCommand *)a1 _applyTextReplacementWithCompletion:buf];
+          selfCopy4 = self;
+          selfCopy3 = v2;
+          [(PKTextInputResultCommand *)self _applyTextReplacementWithCompletion:buf];
 
           v41 = v89;
           v42 = v90;
@@ -604,7 +604,7 @@ LABEL_16:
         goto LABEL_34;
       }
 
-      if (v12 == 8)
+      if (resultType == 8)
       {
         goto LABEL_12;
       }
@@ -612,24 +612,24 @@ LABEL_16:
 
     else
     {
-      if ((v12 - 2) < 5)
+      if ((resultType - 2) < 5)
       {
 LABEL_12:
-        v14 = [v5 resultType];
+        resultType2 = [correctionResult resultType];
         v96[0] = MEMORY[0x1E69E9820];
         v96[1] = 3221225472;
         v96[2] = __68__PKTextInputResultCommand__applyResultCommandPhase3WithCompletion___block_invoke_4;
         v96[3] = &unk_1E82D77F0;
-        v96[4] = a1;
+        v96[4] = self;
         v85 = v2;
         v97 = v2;
         v15 = v96;
-        v16 = *(a1 + 48);
-        v17 = [*(a1 + 40) inputInProgressStroke];
-        v88 = [v17 _strokeUUID];
+        v16 = *(self + 48);
+        inputInProgressStroke2 = [*(self + 40) inputInProgressStroke];
+        _strokeUUID = [inputInProgressStroke2 _strokeUUID];
 
-        WeakRetained = objc_loadWeakRetained((a1 + 16));
-        v19 = [WeakRetained resultCommandFeedbackController:a1];
+        WeakRetained = objc_loadWeakRetained((self + 16));
+        v19 = [WeakRetained resultCommandFeedbackController:self];
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -651,19 +651,19 @@ LABEL_12:
           goto LABEL_80;
         }
 
-        v82 = *(a1 + 120);
-        log = *(a1 + 112);
-        v22 = objc_loadWeakRetained((a1 + 16));
-        v23 = [v22 resultCommandCursorController:a1];
+        v82 = *(self + 120);
+        log = *(self + 112);
+        v22 = objc_loadWeakRetained((self + 16));
+        v23 = [v22 resultCommandCursorController:self];
         [v23 makeCursorTemporarilyStrongWhileWriting];
 
-        if (!v88)
+        if (!_strokeUUID)
         {
-          *(a1 + 8) = 1;
+          *(self + 8) = 1;
           v42 = v90;
-          if (v14 == 6)
+          if (resultType2 == 6)
           {
-            objc_setProperty_nonatomic_copy(a1, v24, @"DeleteGesture", 96);
+            objc_setProperty_nonatomic_copy(self, v24, @"DeleteGesture", 96);
             v45 = *(v16 + 1);
             [v45 notifyTextInputTextWillChange];
 
@@ -673,8 +673,8 @@ LABEL_12:
             *&buf[16] = __73__PKTextInputResultCommand__applySelectOrDeleteGestureOfType_completion___block_invoke_3;
             v102 = &unk_1E82DB868;
             v46 = v16;
-            v103 = v46;
-            v104 = a1;
+            selfCopy4 = v46;
+            selfCopy3 = self;
             v105 = v20;
             [(PKTextInputElementContent *)v46 deleteTextInRange:v82 completion:buf];
 
@@ -683,18 +683,18 @@ LABEL_12:
 
           else
           {
-            objc_setProperty_nonatomic_copy(a1, v24, @"SelectGesture", 96);
+            objc_setProperty_nonatomic_copy(self, v24, @"SelectGesture", 96);
             *buf = MEMORY[0x1E69E9820];
             *&buf[8] = 3221225472;
             *&buf[16] = __73__PKTextInputResultCommand__applySelectOrDeleteGestureOfType_completion___block_invoke_4;
             v102 = &unk_1E82DB890;
-            v103 = a1;
+            selfCopy4 = self;
             v105 = v20;
-            v106 = log;
+            selfCopy6 = log;
             v107 = v82;
-            v104 = v16;
-            [(PKTextInputElementContent *)v104 selectTextInRange:v82 completion:buf];
-            v47 = *(a1 + 48);
+            selfCopy3 = v16;
+            [(PKTextInputElementContent *)selfCopy3 selectTextInRange:v82 completion:buf];
+            v47 = *(self + 48);
             v48 = v47;
             if (v47)
             {
@@ -711,12 +711,12 @@ LABEL_12:
             v2 = v85;
             if (log != 0x7FFFFFFFFFFFFFFFLL && v82 && ([v50 showSelectionCommands] & 1) == 0)
             {
-              v51 = [(PKTextInputElement *)v50 referenceView];
-              if (v51)
+              referenceView = [(PKTextInputElement *)v50 referenceView];
+              if (referenceView)
               {
-                v81 = v51;
-                [v51 bounds];
-                v56 = *(a1 + 48);
+                v81 = referenceView;
+                [referenceView bounds];
+                v56 = *(self + 48);
                 if (v56)
                 {
                   v57 = v81;
@@ -737,7 +737,7 @@ LABEL_12:
                   if (os_log_type_enabled(loga, OS_LOG_TYPE_ERROR))
                   {
                     *v108 = 134218242;
-                    v109 = a1;
+                    selfCopy5 = self;
                     v110 = 2112;
                     v111 = v50;
                     _os_log_error_impl(&dword_1C7CCA000, loga, OS_LOG_TYPE_ERROR, "ResultCommand %p: Failed to load element content, the callout menu might show up in the wrong place. Element: %@", v108, 0x16u);
@@ -746,10 +746,10 @@ LABEL_12:
                   v57 = v81;
                 }
 
-                v67 = [MEMORY[0x1E69DCC68] sharedMenuController];
-                [v67 showMenuFromView:v57 rect:{v59, v61, v63, v65}];
+                mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+                [mEMORY[0x1E69DCC68] showMenuFromView:v57 rect:{v59, v61, v63, v65}];
 
-                v51 = v57;
+                referenceView = v57;
               }
             }
           }
@@ -757,7 +757,7 @@ LABEL_12:
           goto LABEL_82;
         }
 
-        v25 = *(a1 + 56);
+        v25 = *(self + 56);
         if (!v25)
         {
           goto LABEL_60;
@@ -770,18 +770,18 @@ LABEL_12:
         }
 
         v27 = v26;
-        v28 = *(a1 + 56);
+        v28 = *(self + 56);
         if (v28)
         {
           v28 = v28[10];
         }
 
         v29 = v28;
-        v30 = [v88 isEqual:v29];
+        v30 = [_strokeUUID isEqual:v29];
 
         if (v30)
         {
-          v31 = *(a1 + 56);
+          v31 = *(self + 56);
           if (v31)
           {
             v32 = *(v31 + 104);
@@ -794,11 +794,11 @@ LABEL_12:
 
           v33 = v82;
           v34 = log;
-          v35 = *(a1 + 104);
+          v35 = *(self + 104);
           if (v35)
           {
             *(v35 + 104) = v32;
-            v31 = *(a1 + 56);
+            v31 = *(self + 56);
           }
 
           if (v31)
@@ -811,7 +811,7 @@ LABEL_12:
             v36 = 0;
           }
 
-          v37 = *(a1 + 104);
+          v37 = *(self + 104);
           if (v37)
           {
             *(v37 + 88) = v36;
@@ -822,18 +822,18 @@ LABEL_12:
         {
 LABEL_60:
           [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-          v69 = *(a1 + 104);
+          v69 = *(self + 104);
           if (v69)
           {
             *(v69 + 88) = v68;
           }
 
-          v70 = *(a1 + 48);
-          v71 = [(PKTextInputElementContent *)v70 selectedRange];
-          v73 = *(a1 + 104);
+          v70 = *(self + 48);
+          selectedRange = [(PKTextInputElementContent *)v70 selectedRange];
+          v73 = *(self + 104);
           if (v73)
           {
-            *(v73 + 104) = v71;
+            *(v73 + 104) = selectedRange;
             *(v73 + 112) = v72;
           }
 
@@ -841,19 +841,19 @@ LABEL_60:
           v34 = log;
         }
 
-        [(PKTextInputTargetState *)*(a1 + 104) setInProgressGestureStrokeUUID:v88];
-        v74 = *(a1 + 104);
+        [(PKTextInputTargetState *)*(self + 104) setInProgressGestureStrokeUUID:_strokeUUID];
+        v74 = *(self + 104);
         if (v74)
         {
-          v75 = v14 == 6 ? 0 : v33;
+          v75 = resultType2 == 6 ? 0 : v33;
           v76 = 0x7FFFFFFFFFFFFFFFLL;
-          v77 = v14 == 6 ? 0x7FFFFFFFFFFFFFFFLL : v34;
+          v77 = resultType2 == 6 ? 0x7FFFFFFFFFFFFFFFLL : v34;
           *(v74 + 120) = v77;
           *(v74 + 128) = v75;
-          v78 = *(a1 + 104);
+          v78 = *(self + 104);
           if (v78)
           {
-            if (v14 == 6)
+            if (resultType2 == 6)
             {
               v79 = v33;
             }
@@ -863,7 +863,7 @@ LABEL_60:
               v79 = 0;
             }
 
-            if (v14 == 6)
+            if (resultType2 == 6)
             {
               v76 = v34;
             }
@@ -873,9 +873,9 @@ LABEL_60:
           }
         }
 
-        if (v14 != 2)
+        if (resultType2 != 2)
         {
-          if (v14 == 6)
+          if (resultType2 == 6)
           {
             v80 = 1;
           }
@@ -889,12 +889,12 @@ LABEL_60:
           *&buf[8] = 3221225472;
           *&buf[16] = __73__PKTextInputResultCommand__applySelectOrDeleteGestureOfType_completion___block_invoke_2;
           v102 = &unk_1E82DB840;
-          v104 = v20;
+          selfCopy3 = v20;
           v105 = v80;
-          v106 = v34;
+          selfCopy6 = v34;
           v107 = v33;
-          v103 = v16;
-          [(PKTextInputElementContent *)v103 selectTextInRange:v34 completion:v33, buf];
+          selfCopy4 = v16;
+          [(PKTextInputElementContent *)selfCopy4 selectTextInRange:v34 completion:v33, buf];
         }
 
         else
@@ -912,20 +912,20 @@ LABEL_82:
         goto LABEL_83;
       }
 
-      if (v12 == 1)
+      if (resultType == 1)
       {
         *buf = MEMORY[0x1E69E9820];
         *&buf[8] = 3221225472;
         *&buf[16] = __68__PKTextInputResultCommand__applyResultCommandPhase3WithCompletion___block_invoke;
         v102 = &unk_1E82DB778;
         v41 = v89;
-        v103 = v89;
-        v104 = v9;
+        selfCopy4 = v89;
+        selfCopy3 = v9;
         v43 = v91;
         v105 = v91;
-        v106 = a1;
+        selfCopy6 = self;
         v107 = v2;
-        [(PKTextInputResultCommand *)a1 _applyTextReplacementWithCompletion:buf];
+        [(PKTextInputResultCommand *)self _applyTextReplacementWithCompletion:buf];
 
         v42 = v90;
         goto LABEL_83;
@@ -933,7 +933,7 @@ LABEL_82:
     }
 
 LABEL_34:
-    [(PKTextInputResultCommand *)a1 _updateInputTargetStateWithUncommittedPendingText:0 activePreviewText:0 committedTextLength:0 accumulatedCommitLength:?];
+    [(PKTextInputResultCommand *)self _updateInputTargetStateWithUncommittedPendingText:0 activePreviewText:0 committedTextLength:0 accumulatedCommitLength:?];
     v93(v2, v13);
     v41 = v89;
     v42 = v90;
@@ -942,10 +942,10 @@ LABEL_83:
   }
 }
 
-- (void)_finishApplyingResultWithSuccess:(int)a3 cancelled:
+- (void)_finishApplyingResultWithSuccess:(int)success cancelled:
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -953,18 +953,18 @@ LABEL_83:
   v4 = a2;
   if ((a2 & 1) == 0)
   {
-    [(PKTextInputTargetState *)*(a1 + 104) clear];
+    [(PKTextInputTargetState *)*(self + 104) clear];
   }
 
-  v6 = *(a1 + 104);
-  v7 = *(a1 + 32);
+  v6 = *(self + 104);
+  v7 = *(self + 32);
   [(PKMathResultAttribution *)v6 setString:v7];
 
-  v8 = *(a1 + 104);
-  v9 = *(a1 + 40);
+  v8 = *(self + 104);
+  v9 = *(self + 40);
   [(PKMathResultAttribution *)v8 setDate:v9];
 
-  v10 = *(a1 + 48);
+  v10 = *(self + 48);
   v11 = v10;
   if (!v10)
   {
@@ -984,26 +984,26 @@ LABEL_23:
   v14 = *(v12 + 14);
 LABEL_7:
   v16 = v14;
-  v17 = *(a1 + 104);
+  v17 = *(self + 104);
   if (v17)
   {
     objc_setProperty_nonatomic_copy(v17, v15, v16, 16);
   }
 
-  v18 = *(a1 + 40);
-  v20 = [v18 writingSessionIdentifier];
-  v21 = *(a1 + 104);
+  v18 = *(self + 40);
+  writingSessionIdentifier = [v18 writingSessionIdentifier];
+  v21 = *(self + 104);
   if (v21)
   {
-    objc_setProperty_nonatomic_copy(v21, v19, v20, 40);
+    objc_setProperty_nonatomic_copy(v21, v19, writingSessionIdentifier, 40);
   }
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  v24 = *(a1 + 104);
+  v24 = *(self + 104);
   if (v24)
   {
     *(v24 + 96) = v23;
-    v25 = *(a1 + 104);
+    v25 = *(self + 104);
   }
 
   else
@@ -1011,7 +1011,7 @@ LABEL_7:
     v25 = 0;
   }
 
-  objc_setProperty_nonatomic_copy(a1, v22, v25, 72);
+  objc_setProperty_nonatomic_copy(self, v22, v25, 72);
   if (v4)
   {
     v26 = 5;
@@ -1019,10 +1019,10 @@ LABEL_7:
 
   else
   {
-    v27 = [(PKTextInputResultCommand *)a1 _strokeSliceIDsToRemoveForCommittedTokenColumnCount:1 forceRemoveAll:?];
-    [(PKTextInputResultCommand *)a1 _removeStrokesForSliceIDs:v27 destinationRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+    v27 = [(PKTextInputResultCommand *)self _strokeSliceIDsToRemoveForCommittedTokenColumnCount:1 forceRemoveAll:?];
+    [(PKTextInputResultCommand *)self _removeStrokesForSliceIDs:v27 destinationRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
 
-    if (a3)
+    if (success)
     {
       v26 = 7;
     }
@@ -1036,10 +1036,10 @@ LABEL_7:
   v28 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = PKTextInputDescriptionForResultCommandState(*(a1 + 24));
+    v29 = PKTextInputDescriptionForResultCommandState(*(self + 24));
     v30 = PKTextInputDescriptionForResultCommandState(v26);
     v31 = 134218498;
-    v32 = a1;
+    selfCopy = self;
     v33 = 2112;
     v34 = v29;
     v35 = 2112;
@@ -1047,7 +1047,7 @@ LABEL_7:
     _os_log_impl(&dword_1C7CCA000, v28, OS_LOG_TYPE_DEFAULT, "ResultCommand %p: finishApplying. state change: %@ -> %@", &v31, 0x20u);
   }
 
-  [(PKTextInputResultCommand *)a1 _setCommandState:v26];
+  [(PKTextInputResultCommand *)self _setCommandState:v26];
 }
 
 void __75__PKTextInputResultCommand_beginApplyingResultCommandWithInputTargetState___block_invoke_51(uint64_t a1)
@@ -1122,17 +1122,17 @@ LABEL_5:
 - (void)cancelDelayedCommand
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
       v3 = 134217984;
-      v4 = a1;
+      selfCopy = self;
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "ResultCommand %p: Cancel delayed result command", &v3, 0xCu);
     }
 
-    [(PKTextInputResultCommand *)a1 _setCommandState:?];
+    [(PKTextInputResultCommand *)self _setCommandState:?];
   }
 }
 
@@ -1267,18 +1267,18 @@ LABEL_10:
   }
 }
 
-- (void)_updateInputTargetStateWithUncommittedPendingText:(void *)a3 activePreviewText:(uint64_t)a4 committedTextLength:(uint64_t)a5 accumulatedCommitLength:
+- (void)_updateInputTargetStateWithUncommittedPendingText:(void *)text activePreviewText:(uint64_t)previewText committedTextLength:(uint64_t)length accumulatedCommitLength:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v9 = a1[4];
-  v10 = a3;
+  v9 = self[4];
+  textCopy = text;
   v11 = a2;
-  v28 = [v9 correctionResult];
-  v12 = a1[6];
+  correctionResult = [v9 correctionResult];
+  v12 = self[6];
   if (v12)
   {
     v12 = v12[1];
@@ -1287,7 +1287,7 @@ LABEL_10:
   v13 = v12;
   if (v11)
   {
-    v14 = a1[7];
+    v14 = self[7];
     if (v14)
     {
       v14 = v14[2];
@@ -1309,81 +1309,81 @@ LABEL_10:
 
     if (v18)
     {
-      v19 = a1[7];
+      v19 = self[7];
       if (v19)
       {
-        v20 = *(v19 + 72);
+        affectedRange = *(v19 + 72);
       }
 
       else
       {
-        v20 = 0;
+        affectedRange = 0;
       }
 
       goto LABEL_18;
     }
   }
 
-  else if ([v28 isCharacterLevel])
+  else if ([correctionResult isCharacterLevel])
   {
-    v21 = [v28 resultType];
-    if (v21 == 6)
+    resultType = [correctionResult resultType];
+    if (resultType == 6)
     {
-      v20 = [v28 affectedRange];
+      affectedRange = [correctionResult affectedRange];
       goto LABEL_18;
     }
 
-    if (v21 == 1)
+    if (resultType == 1)
     {
-      v20 = 0x7FFFFFFFFFFFFFFFLL;
-      if ([v28 affectedRange] != 0x7FFFFFFFFFFFFFFFLL)
+      affectedRange = 0x7FFFFFFFFFFFFFFFLL;
+      if ([correctionResult affectedRange] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v20 = [v28 affectedRange] + a4;
+        affectedRange = [correctionResult affectedRange] + previewText;
       }
 
       goto LABEL_18;
     }
   }
 
-  v20 = 0x7FFFFFFFFFFFFFFFLL;
+  affectedRange = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_18:
 
-  v23 = a1[13];
+  v23 = self[13];
   if (v23)
   {
     objc_setProperty_nonatomic_copy(v23, v22, v11, 48);
   }
 
-  v25 = a1[13];
+  v25 = self[13];
   if (v25)
   {
-    objc_setProperty_nonatomic_copy(v25, v24, v10, 56);
+    objc_setProperty_nonatomic_copy(v25, v24, textCopy, 56);
   }
 
-  v26 = a1[13];
+  v26 = self[13];
   if (v26)
   {
-    *(v26 + 64) = a5;
-    v27 = a1[13];
+    *(v26 + 64) = length;
+    v27 = self[13];
     if (v27)
     {
-      *(v27 + 72) = v20;
+      *(v27 + 72) = affectedRange;
     }
   }
 }
 
-- (id)_strokeSliceIDsToRemoveForCommittedTokenColumnCount:(char)a3 forceRemoveAll:
+- (id)_strokeSliceIDsToRemoveForCommittedTokenColumnCount:(char)count forceRemoveAll:
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 32);
-    v7 = *(a1 + 40);
-    v8 = [v7 inputInProgressStroke];
+    v6 = *(self + 32);
+    v7 = *(self + 40);
+    inputInProgressStroke = [v7 inputInProgressStroke];
 
-    v9 = [v6 correctionResult];
-    v10 = [v9 resultType];
+    correctionResult = [v6 correctionResult];
+    resultType = [correctionResult resultType];
 
-    if (a3)
+    if (count)
     {
       v11 = 0;
       v12 = 1;
@@ -1391,8 +1391,8 @@ LABEL_18:
 
     else
     {
-      v17 = v8 == 0;
-      v18 = (v10 < 9) & (0x1FDu >> v10);
+      v17 = inputInProgressStroke == 0;
+      v18 = (resultType < 9) & (0x1FDu >> resultType);
       v12 = v18 & v17;
       if ((v18 & v17) != 0)
       {
@@ -1404,7 +1404,7 @@ LABEL_18:
         v11 = a2;
       }
 
-      if ((v18 & (v8 == 0)) == 0 && v11 < 1)
+      if ((v18 & (inputInProgressStroke == 0)) == 0 && v11 < 1)
       {
         v16 = MEMORY[0x1E695E0F0];
 LABEL_21:
@@ -1413,13 +1413,13 @@ LABEL_21:
       }
     }
 
-    v13 = [v7 strokeProvider];
-    v14 = [v6 strokeIdentifiers];
-    v15 = v14;
+    strokeProvider = [v7 strokeProvider];
+    strokeIdentifiers = [v6 strokeIdentifiers];
+    v15 = strokeIdentifiers;
     if (v12)
     {
-      v16 = v14;
-      if (!v8)
+      v16 = strokeIdentifiers;
+      if (!inputInProgressStroke)
       {
 LABEL_20:
 
@@ -1429,9 +1429,9 @@ LABEL_20:
 
     else
     {
-      v19 = [v6 correctionResult];
-      v20 = [v19 textResult];
-      v21 = [v20 strokeIndexesForColumnsInRange:{0, v11}];
+      correctionResult2 = [v6 correctionResult];
+      textResult = [correctionResult2 textResult];
+      v21 = [textResult strokeIndexesForColumnsInRange:{0, v11}];
 
       if (v21)
       {
@@ -1443,7 +1443,7 @@ LABEL_20:
         v16 = MEMORY[0x1E695E0F0];
       }
 
-      if (!v8)
+      if (!inputInProgressStroke)
       {
         goto LABEL_20;
       }
@@ -1453,7 +1453,7 @@ LABEL_20:
     v27 = 3221225472;
     v28 = __95__PKTextInputResultCommand__strokeSliceIDsToRemoveForCommittedTokenColumnCount_forceRemoveAll___block_invoke;
     v29 = &unk_1E82DB8B8;
-    v30 = v13;
+    v30 = strokeProvider;
     v31 = v7;
     v22 = [v16 indexesOfObjectsPassingTest:&v26];
     v23 = [v22 count];
@@ -1473,11 +1473,11 @@ LABEL_22:
   return v16;
 }
 
-- (void)_applyTextReplacementWithCompletion:(uint64_t)a1
+- (void)_applyTextReplacementWithCompletion:(uint64_t)completion
 {
   v244 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  v4 = *(a1 + 48);
+  v4 = *(completion + 48);
   v5 = v4;
   if (v4)
   {
@@ -1490,7 +1490,7 @@ LABEL_22:
   }
 
   v7 = v6;
-  v8 = *(a1 + 56);
+  v8 = *(completion + 56);
   v191 = v5;
   v187 = v3;
   v188 = v7;
@@ -1499,7 +1499,7 @@ LABEL_22:
     if (v8)
     {
       v204 = v8[8];
-      v15 = *(a1 + 32);
+      v15 = *(completion + 32);
       v184 = 0;
       v189 = v8;
       v16 = *(v8 + 3);
@@ -1511,74 +1511,74 @@ LABEL_22:
   {
   }
 
-  v15 = *(a1 + 32);
+  v15 = *(completion + 32);
   v204 = 0;
   v189 = 0;
   v16 = 0;
   v184 = 1;
 LABEL_12:
   v17 = v16;
-  v219 = [v15 correctionResult];
-  v185 = *(a1 + 112);
-  v194 = *(a1 + 120);
-  v18 = *(a1 + 64);
-  v19 = *(a1 + 11);
-  v197 = a1;
-  v20 = *(a1 + 40);
-  v21 = [v20 languageSpec];
-  v216 = [(PKTextInputLanguageSpec *)v21 uncommittedTokenColumnCount];
+  correctionResult = [v15 correctionResult];
+  v185 = *(completion + 112);
+  v194 = *(completion + 120);
+  v18 = *(completion + 64);
+  v19 = *(completion + 11);
+  completionCopy = completion;
+  v20 = *(completion + 40);
+  languageSpec = [v20 languageSpec];
+  uncommittedTokenColumnCount = [(PKTextInputLanguageSpec *)languageSpec uncommittedTokenColumnCount];
   v22 = v15;
   v192 = v17;
   v23 = objc_opt_self();
   v195 = v22;
-  v24 = [v22 correctionResult];
-  v25 = [v24 textResult];
-  v26 = [v25 tokenColumnCount];
-  v27 = [v25 changeableTokenColumnCount];
+  correctionResult2 = [v22 correctionResult];
+  textResult = [correctionResult2 textResult];
+  tokenColumnCount = [textResult tokenColumnCount];
+  changeableTokenColumnCount = [textResult changeableTokenColumnCount];
   if (v19 != 1)
   {
     goto LABEL_31;
   }
 
-  v28 = v27;
-  if (!v18 || v26 < 1)
+  v28 = changeableTokenColumnCount;
+  if (!v18 || tokenColumnCount < 1)
   {
-    v33 = [v195 correctionResult];
-    v34 = [v33 resultType];
+    correctionResult3 = [v195 correctionResult];
+    resultType = [correctionResult3 resultType];
 
-    if (v34 == 7)
+    if (resultType == 7)
     {
       v32 = @"SplitJoinGesture";
-      v29 = v197;
-      v35 = v26;
+      v29 = completionCopy;
+      v35 = tokenColumnCount;
 LABEL_33:
       v30 = v191;
-      v31 = v219;
+      v31 = correctionResult;
       goto LABEL_36;
     }
 
-    if (v26 >= 2)
+    if (tokenColumnCount >= 2)
     {
-      v36 = [v192 correctionResult];
-      v37 = [v36 textResult];
+      correctionResult4 = [v192 correctionResult];
+      textResult2 = [correctionResult4 textResult];
 
       v35 = 0;
-      if (v25 && v37)
+      if (textResult && textResult2)
       {
-        v38 = [(PKTextInputResultCommand *)v23 _tokenColumnStringsForTopTranscriptionInTextResult:v25];
-        v209 = v37;
-        v39 = v37;
+        v38 = [(PKTextInputResultCommand *)v23 _tokenColumnStringsForTopTranscriptionInTextResult:textResult];
+        v209 = textResult2;
+        v39 = textResult2;
         v40 = v38;
         v41 = [(PKTextInputResultCommand *)v23 _tokenColumnStringsForTopTranscriptionInTextResult:v39];
         v35 = 0;
         if ([v40 count])
         {
           v42 = 0;
-          v211 = v26 + ~v28;
-          v213 = v24;
+          v211 = tokenColumnCount + ~v28;
+          v213 = correctionResult2;
           while (v42 < [v41 count])
           {
-            v43 = v21;
+            v43 = languageSpec;
             v44 = v20;
             v45 = [v40 objectAtIndexedSubscript:v42];
             v46 = v41;
@@ -1600,16 +1600,16 @@ LABEL_33:
             {
               v41 = v46;
               v20 = v44;
-              v21 = v43;
-              v24 = v213;
+              languageSpec = v43;
+              correctionResult2 = v213;
               break;
             }
 
             ++v42;
             v41 = v46;
             v20 = v44;
-            v21 = v43;
-            v24 = v213;
+            languageSpec = v43;
+            correctionResult2 = v213;
             if (v42 >= [v40 count])
             {
               break;
@@ -1618,12 +1618,12 @@ LABEL_33:
         }
 
         v183 = [v40 count];
-        if (v35 >= v183 - v216)
+        if (v35 >= v183 - uncommittedTokenColumnCount)
         {
-          v35 = v183 - v216;
+          v35 = v183 - uncommittedTokenColumnCount;
         }
 
-        v37 = v209;
+        textResult2 = v209;
       }
 
       v32 = @"StableWord";
@@ -1634,13 +1634,13 @@ LABEL_31:
     v35 = 0;
     v32 = &stru_1F476BD20;
 LABEL_32:
-    v29 = v197;
+    v29 = completionCopy;
     goto LABEL_33;
   }
 
-  v29 = v197;
+  v29 = completionCopy;
   v30 = v191;
-  v31 = v219;
+  v31 = correctionResult;
   if (v18 > 3)
   {
     v32 = &stru_1F476BD20;
@@ -1651,7 +1651,7 @@ LABEL_32:
     v32 = off_1E82DB988[v18 - 1];
   }
 
-  v35 = v26;
+  v35 = tokenColumnCount;
 LABEL_36:
 
   v50 = v32;
@@ -1659,17 +1659,17 @@ LABEL_36:
   v52 = v31;
   v53 = v30;
   v210 = objc_opt_self();
-  v54 = [MEMORY[0x1E695DF70] array];
-  v55 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v193 = v52;
-  v56 = [v52 textResult];
-  v57 = v56;
+  textResult3 = [v52 textResult];
+  v57 = textResult3;
   v190 = v53;
   v186 = v50;
-  if (v56)
+  if (textResult3)
   {
-    v58 = [v56 transcriptionPaths];
-    v207 = [v58 firstObject];
+    transcriptionPaths = [textResult3 transcriptionPaths];
+    firstObject = [transcriptionPaths firstObject];
 
     if (v30)
     {
@@ -1704,9 +1704,9 @@ LABEL_36:
           v66 = 0;
         }
 
-        v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 65532];
+        65532 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 65532];
         v208 = v66;
-        if ([v66 isEqualToString:v67] && v64 + 2 <= -[PKTextInputElementContent contentLength](v53))
+        if ([v66 isEqualToString:65532] && v64 + 2 <= -[PKTextInputElementContent contentLength](v53))
         {
           v68 = [(PKTextInputElementContent *)v53 stringInRange:v65, 1];
 
@@ -1725,29 +1725,29 @@ LABEL_36:
     v203 = v30;
     if ([v57 tokenColumnCount] >= 1)
     {
-      v205 = v55;
+      v205 = array2;
       v206 = 0;
       v196 = 0;
       v69 = 0;
       v198 = v35 - 1;
       v199 = v57;
       v70 = v208;
-      v200 = v54;
+      v200 = array;
       v201 = v35;
       while (1)
       {
-        v71 = [v207 indexAtPosition:v69];
+        v71 = [firstObject indexAtPosition:v69];
         v72 = [v57 tokenRowsAtColumnIndex:v69];
         v214 = [v72 objectAtIndexedSubscript:v71];
-        v73 = [v214 firstObject];
-        v212 = v73;
-        if (!v73)
+        firstObject2 = [v214 firstObject];
+        v212 = firstObject2;
+        if (!firstObject2)
         {
           v75 = &stru_1F476BD20;
           goto LABEL_64;
         }
 
-        v74 = [v57 precedingSeparatorForToken:v73];
+        v74 = [v57 precedingSeparatorForToken:firstObject2];
         v75 = v74;
         if (v69 != 0 || (v204 & 1) == 0)
         {
@@ -1765,10 +1765,10 @@ LABEL_36:
 
         if (![v203 length] || -[__CFString isEqualToString:](v75, "isEqualToString:", v203))
         {
-          v76 = v54;
+          v76 = array;
           v77 = v35;
-          v78 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-          [(__CFString *)v75 stringByTrimmingCharactersInSet:v78];
+          newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+          [(__CFString *)v75 stringByTrimmingCharactersInSet:newlineCharacterSet];
           v80 = v79 = v75;
           v81 = [v80 length];
 
@@ -1786,8 +1786,8 @@ LABEL_36:
           }
 
           v35 = v77;
-          v54 = v76;
-          v55 = v205;
+          array = v76;
+          array2 = v205;
         }
 
 LABEL_64:
@@ -1795,25 +1795,25 @@ LABEL_64:
         v217 = v72;
         if (v69 == [v57 tokenColumnCount] - 1)
         {
-          v82 = [v57 trailingSeparator];
+          trailingSeparator = [v57 trailingSeparator];
           goto LABEL_74;
         }
 
         if (v69 != v198)
         {
-          v82 = &stru_1F476BD20;
+          trailingSeparator = &stru_1F476BD20;
           goto LABEL_74;
         }
 
-        v83 = [v57 transcriptionPaths];
-        v84 = [v83 firstObject];
-        v85 = [v57 tokensInTranscriptionPath:v84 atColumnIndex:v35];
+        transcriptionPaths2 = [v57 transcriptionPaths];
+        firstObject3 = [transcriptionPaths2 firstObject];
+        v85 = [v57 tokensInTranscriptionPath:firstObject3 atColumnIndex:v35];
 
-        v86 = [v85 firstObject];
-        if (v86)
+        firstObject4 = [v85 firstObject];
+        if (firstObject4)
         {
-          v82 = [v57 precedingSeparatorForToken:v86];
-          if (!v82)
+          trailingSeparator = [v57 precedingSeparatorForToken:firstObject4];
+          if (!trailingSeparator)
           {
             goto LABEL_73;
           }
@@ -1821,47 +1821,47 @@ LABEL_64:
 
         else
         {
-          v82 = &stru_1F476BD20;
+          trailingSeparator = &stru_1F476BD20;
         }
 
-        v196 |= [(__CFString *)v82 length]!= 0;
+        v196 |= [(__CFString *)trailingSeparator length]!= 0;
 LABEL_73:
         v70 = v208;
 
 LABEL_74:
-        if (![v70 length] || (-[__CFString isEqualToString:](v82, "isEqualToString:", v70) & 1) != 0 || (objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet"), v97 = objc_claimAutoreleasedReturnValue(), v98 = objc_msgSend(v97, "characterIsMember:", objc_msgSend(v70, "characterAtIndex:", 0)), v97, (v98 & 1) != 0) || !v82)
+        if (![v70 length] || (-[__CFString isEqualToString:](trailingSeparator, "isEqualToString:", v70) & 1) != 0 || (objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet"), v97 = objc_claimAutoreleasedReturnValue(), v98 = objc_msgSend(v97, "characterIsMember:", objc_msgSend(v70, "characterAtIndex:", 0)), v97, (v98 & 1) != 0) || !trailingSeparator)
         {
 
-          v82 = &stru_1F476BD20;
+          trailingSeparator = &stru_1F476BD20;
         }
 
         v87 = [(PKTextInputResultCommand *)v210 _transcriptionForTokensAtColumn:v69 row:v71 textResult:v57];
         v88 = v220;
         if (v69 >= v35)
         {
-          v96 = v206;
+          string = v206;
           if (!v206)
           {
-            v96 = [MEMORY[0x1E696AD60] string];
+            string = [MEMORY[0x1E696AD60] string];
           }
 
-          v206 = v96;
-          [v96 appendFormat:@"%@%@%@", v220, v87, v82];
+          v206 = string;
+          [string appendFormat:@"%@%@%@", v220, v87, trailingSeparator];
         }
 
         else
         {
           if ([(__CFString *)v220 length])
           {
-            [v54 addObject:v220];
-            [v55 addObject:MEMORY[0x1E695E0F0]];
+            [array addObject:v220];
+            [array2 addObject:MEMORY[0x1E695E0F0]];
           }
 
           v89 = v57;
           v90 = v87;
           v91 = objc_opt_self();
           v92 = [v89 tokenRowsAtColumnIndex:v69];
-          v93 = [MEMORY[0x1E695DF70] array];
+          array3 = [MEMORY[0x1E695DF70] array];
           if ([v92 count])
           {
             v94 = 0;
@@ -1870,7 +1870,7 @@ LABEL_74:
               v95 = [(PKTextInputResultCommand *)v91 _transcriptionForTokensAtColumn:v69 row:v94 textResult:v89];
               if (([v95 isEqualToString:v90] & 1) == 0)
               {
-                [v93 addObject:v95];
+                [array3 addObject:v95];
               }
 
               ++v94;
@@ -1879,13 +1879,13 @@ LABEL_74:
             while (v94 < [v92 count]);
           }
 
-          v54 = v200;
+          array = v200;
           [v200 addObject:v90];
-          v55 = v205;
-          [v205 addObject:v93];
-          if ([(__CFString *)v82 length])
+          array2 = v205;
+          [v205 addObject:array3];
+          if ([(__CFString *)trailingSeparator length])
           {
-            [v200 addObject:v82];
+            [v200 addObject:trailingSeparator];
             [v205 addObject:MEMORY[0x1E695E0F0]];
           }
 
@@ -1917,74 +1917,74 @@ LABEL_97:
     v63 = 0;
   }
 
-  v99 = v54;
-  v100 = v55;
+  v99 = array;
+  v100 = array2;
   v101 = v63;
 
-  v102 = v54;
-  v218 = v55;
+  v102 = array;
+  v218 = array2;
   v103 = v63;
   v104 = +[PKTextInputSettings sharedSettings];
-  v105 = [v104 activePreviewEnabled];
+  activePreviewEnabled = [v104 activePreviewEnabled];
 
-  if (!v105)
+  if (!activePreviewEnabled)
   {
     v221 = 0;
     goto LABEL_112;
   }
 
   v106 = v103;
-  v107 = *(v197 + 48);
+  v107 = *(completionCopy + 48);
   if (v107)
   {
     v107 = v107[1];
   }
 
   v108 = v107;
-  v215 = *(v197 + 32);
-  v109 = [*(v197 + 40) strokeProvider];
-  WeakRetained = objc_loadWeakRetained((v197 + 16));
-  v111 = [WeakRetained resultCommandCanvasController:v197];
+  v215 = *(completionCopy + 32);
+  strokeProvider = [*(completionCopy + 40) strokeProvider];
+  WeakRetained = objc_loadWeakRetained((completionCopy + 16));
+  v111 = [WeakRetained resultCommandCanvasController:completionCopy];
 
-  v112 = [(PKTextInputCanvasController *)v111 canvasCoordinateSpace];
+  canvasCoordinateSpace = [(PKTextInputCanvasController *)v111 canvasCoordinateSpace];
   v113 = v106;
   v114 = v113;
-  if (*(v197 + 11) != 1 || v194 || (v115 = *(v197 + 48)) == 0 || (v116 = *(v115 + 24), v116 == 3) || (v117 = v113, !v116))
+  if (*(completionCopy + 11) != 1 || v194 || (v115 = *(completionCopy + 48)) == 0 || (v116 = *(v115 + 24), v116 == 3) || (strokeIdentifiers = v113, !v116))
   {
 
-    v117 = 0;
+    strokeIdentifiers = 0;
   }
 
-  if ([v117 length] < 3)
+  if ([strokeIdentifiers length] < 3)
   {
     goto LABEL_108;
   }
 
-  v221 = v117;
-  if (!v109)
+  v221 = strokeIdentifiers;
+  if (!strokeProvider)
   {
     goto LABEL_110;
   }
 
-  if (!v112)
+  if (!canvasCoordinateSpace)
   {
     goto LABEL_110;
   }
 
-  v134 = [(PKTextInputElement *)v108 coordinateSpace];
+  coordinateSpace = [(PKTextInputElement *)v108 coordinateSpace];
 
-  if (!v134)
+  if (!coordinateSpace)
   {
     goto LABEL_110;
   }
 
-  v117 = [v215 strokeIdentifiers];
-  [v109 boundsForSliceIdentifiers:v117];
+  strokeIdentifiers = [v215 strokeIdentifiers];
+  [strokeProvider boundsForSliceIdentifiers:strokeIdentifiers];
   v136 = v135;
   v138 = v137;
   v140 = v139;
   v142 = v141;
-  v245.origin.x = [(PKTextInputElementContent *)*(v197 + 48) caretRectForCharacterIndex:v185 inCoordinateSpace:v112];
+  v245.origin.x = [(PKTextInputElementContent *)*(completionCopy + 48) caretRectForCharacterIndex:v185 inCoordinateSpace:canvasCoordinateSpace];
   x = v245.origin.x;
   y = v245.origin.y;
   width = v245.size.width;
@@ -2009,17 +2009,17 @@ LABEL_108:
 
 LABEL_110:
 LABEL_112:
-  v118 = *(v197 + 40);
+  v118 = *(completionCopy + 40);
   v119 = v195;
   objc_opt_self();
-  v120 = [v119 correctionResult];
-  v121 = [v118 strokeProvider];
-  v122 = [v119 strokeIdentifiers];
+  correctionResult5 = [v119 correctionResult];
+  strokeProvider2 = [v118 strokeProvider];
+  strokeIdentifiers2 = [v119 strokeIdentifiers];
 
-  v123 = [v118 inputInProgressStroke];
+  inputInProgressStroke = [v118 inputInProgressStroke];
 
   v124 = 0;
-  if (v123 || v194 < 2)
+  if (inputInProgressStroke || v194 < 2)
   {
 LABEL_138:
 
@@ -2055,27 +2055,27 @@ LABEL_155:
     goto LABEL_143;
   }
 
-  if ([v122 count] != 1)
+  if ([strokeIdentifiers2 count] != 1)
   {
-    v123 = 0;
+    inputInProgressStroke = 0;
     v124 = 0;
     goto LABEL_138;
   }
 
-  v125 = [v120 textResult];
-  v126 = [v125 tokenColumnCount];
+  textResult4 = [correctionResult5 textResult];
+  tokenColumnCount2 = [textResult4 tokenColumnCount];
 
-  if (v126 == 1)
+  if (tokenColumnCount2 == 1)
   {
-    v127 = [v120 textResult];
-    v123 = [v127 topTranscription];
+    textResult5 = [correctionResult5 textResult];
+    inputInProgressStroke = [textResult5 topTranscription];
 
-    if ([v123 length])
+    if ([inputInProgressStroke length])
     {
-      [v123 rangeOfComposedCharacterSequenceAtIndex:0];
+      [inputInProgressStroke rangeOfComposedCharacterSequenceAtIndex:0];
       v129 = v128;
-      v130 = [v123 length];
-      [v121 boundsForSliceIdentifiers:v122];
+      v130 = [inputInProgressStroke length];
+      [strokeProvider2 boundsForSliceIdentifiers:strokeIdentifiers2];
       v124 = 0;
       if (v129 == v130)
       {
@@ -2106,7 +2106,7 @@ LABEL_155:
     }
 
 LABEL_156:
-    *(v197 + 9) = 1;
+    *(completionCopy + 9) = 1;
     goto LABEL_163;
   }
 
@@ -2148,7 +2148,7 @@ LABEL_151:
     goto LABEL_152;
   }
 
-  v178 = *(v197 + 64);
+  v178 = *(completionCopy + 64);
   if (v184)
   {
     v179 = 0;
@@ -2210,7 +2210,7 @@ LABEL_158:
     v159 = 1;
   }
 
-  if ((v159 & 1) == 0 && !*(v197 + 64))
+  if ((v159 & 1) == 0 && !*(completionCopy + 64))
   {
     goto LABEL_156;
   }
@@ -2226,7 +2226,7 @@ LABEL_163:
     v227[3] = &unk_1E82DB7C8;
     v228 = v188;
     v229 = v102;
-    v230 = v197;
+    v230 = completionCopy;
     v234 = v35;
     v235 = v196 & 1;
     v233 = v187;
@@ -2241,17 +2241,17 @@ LABEL_163:
   {
     if (v151)
     {
-      v163 = *(v197 + 64);
+      v163 = *(completionCopy + 64);
       v161 = v221;
       if (v163)
       {
         v164 = os_log_create("com.apple.pencilkit", "PencilTextInput");
         if (os_log_type_enabled(v164, OS_LOG_TYPE_DEFAULT))
         {
-          v165 = NSStringFromRange(*(v197 + 112));
-          v166 = *(v197 + 40);
+          v165 = NSStringFromRange(*(completionCopy + 112));
+          v166 = *(completionCopy + 40);
           *buf = 134218754;
-          v237 = v197;
+          v237 = completionCopy;
           v161 = v221;
           v238 = 2112;
           v239 = v165;
@@ -2269,10 +2269,10 @@ LABEL_163:
 
     else
     {
-      v167 = [*(v197 + 40) inputInProgressStroke];
-      v168 = [v167 _strokeUUID];
+      inputInProgressStroke2 = [*(completionCopy + 40) inputInProgressStroke];
+      _strokeUUID = [inputInProgressStroke2 _strokeUUID];
 
-      v169 = *(v197 + 56);
+      v169 = *(completionCopy + 56);
       if (!v169)
       {
         goto LABEL_177;
@@ -2285,18 +2285,18 @@ LABEL_163:
       }
 
       v171 = v170;
-      v172 = *(v197 + 56);
+      v172 = *(completionCopy + 56);
       if (v172)
       {
         v172 = v172[10];
       }
 
       v173 = v172;
-      v174 = [v168 isEqual:v173];
+      v174 = [_strokeUUID isEqual:v173];
 
       if (v174)
       {
-        v175 = [v193 affectedRange];
+        affectedRange = [v193 affectedRange];
         v177 = v176;
         v222[0] = MEMORY[0x1E69E9820];
         v222[1] = 3221225472;
@@ -2308,7 +2308,7 @@ LABEL_163:
         v161 = v221;
         v224 = v221;
         v152 = v190;
-        [(PKTextInputElementContent *)v190 selectTextInRange:v175 completion:v177, v222];
+        [(PKTextInputElementContent *)v190 selectTextInRange:affectedRange completion:v177, v222];
       }
 
       else
@@ -2337,35 +2337,35 @@ void __68__PKTextInputResultCommand__applyResultCommandPhase3WithCompletion___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_removeStrokesForSliceIDs:(CGFloat)a3 destinationRect:(CGFloat)a4
+- (void)_removeStrokesForSliceIDs:(CGFloat)ds destinationRect:(CGFloat)rect
 {
-  if (a1)
+  if (self)
   {
-    v24 = *(a1 + 40);
+    v24 = *(self + 40);
     v12 = a2;
-    v13 = [v24 strokeProvider];
-    v14 = [v13 strokesForSliceIdentifiers:v12];
+    strokeProvider = [v24 strokeProvider];
+    v14 = [strokeProvider strokesForSliceIdentifiers:v12];
 
     if ([v14 count])
     {
       IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-      v26.origin.x = a3;
-      v26.origin.y = a4;
+      v26.origin.x = ds;
+      v26.origin.y = rect;
       v26.size.width = a5;
       v26.size.height = a6;
       IsNull = CGRectIsNull(v26);
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v18 = [WeakRetained resultCommandCanvasController:a1];
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      v18 = [WeakRetained resultCommandCanvasController:self];
 
       if (IsNull || IsReduceMotionEnabled)
       {
-        v20 = [v14 allObjects];
-        [(PKTextInputCanvasController *)v18 removeStrokes:v20 animationDuration:0.1];
+        allObjects = [v14 allObjects];
+        [(PKTextInputCanvasController *)v18 removeStrokes:allObjects animationDuration:0.1];
       }
 
       else
       {
-        if (*(a1 + 10))
+        if (*(self + 10))
         {
           v19 = 1;
         }
@@ -2376,11 +2376,11 @@ void __68__PKTextInputResultCommand__applyResultCommandPhase3WithCompletion___bl
           v19 = [v21 useTransformStrokesAnimation] ^ 1;
         }
 
-        v22 = [*(a1 + 40) languageSpec];
-        v23 = [(PKTextInputLanguageSpec *)v22 strokeFadeOutDuration];
+        languageSpec = [*(self + 40) languageSpec];
+        strokeFadeOutDuration = [(PKTextInputLanguageSpec *)languageSpec strokeFadeOutDuration];
 
-        v20 = [v14 allObjects];
-        [(PKTextInputCanvasController *)v18 animateAndRemoveStrokes:v20 destinationFrame:v19 animationDuration:a3 useImpreciseAnimation:a4, a5, a6, v23];
+        allObjects = [v14 allObjects];
+        [(PKTextInputCanvasController *)v18 animateAndRemoveStrokes:allObjects destinationFrame:v19 animationDuration:ds useImpreciseAnimation:rect, a5, a6, strokeFadeOutDuration];
       }
     }
   }
@@ -2588,15 +2588,15 @@ void __59__PKTextInputResultCommand__scheduleBecomeReadyAfterDelay___block_invok
   }
 }
 
-+ (id)_tokenColumnStringsForTopTranscriptionInTextResult:(uint64_t)a1
++ (id)_tokenColumnStringsForTopTranscriptionInTextResult:(uint64_t)result
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 tokenColumnCount];
-  v4 = [v2 transcriptionPaths];
-  v5 = [v4 firstObject];
+  tokenColumnCount = [v2 tokenColumnCount];
+  transcriptionPaths = [v2 transcriptionPaths];
+  firstObject = [transcriptionPaths firstObject];
 
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:2 * v3];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:2 * tokenColumnCount];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__PKTextInputResultCommand__tokenColumnStringsForTopTranscriptionInTextResult___block_invoke;
@@ -2605,22 +2605,22 @@ void __59__PKTextInputResultCommand__scheduleBecomeReadyAfterDelay___block_invok
   v13 = v7;
   v14 = v2;
   v8 = v2;
-  [v8 enumerateTokensInTranscriptionPath:v5 columnRange:0 tokenProcessingBlock:{v3, v12}];
+  [v8 enumerateTokensInTranscriptionPath:firstObject columnRange:0 tokenProcessingBlock:{tokenColumnCount, v12}];
   v9 = v14;
   v10 = v7;
 
   return v7;
 }
 
-+ (id)_transcriptionForTokensAtColumn:(uint64_t)a3 row:(void *)a4 textResult:
++ (id)_transcriptionForTokensAtColumn:(uint64_t)column row:(void *)row textResult:
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  rowCopy = row;
   objc_opt_self();
-  v24 = v6;
-  v21 = [v6 tokenRowsAtColumnIndex:a2];
-  v7 = [v21 objectAtIndexedSubscript:a3];
-  v8 = [MEMORY[0x1E696AD60] string];
+  v24 = rowCopy;
+  v21 = [rowCopy tokenRowsAtColumnIndex:a2];
+  v7 = [v21 objectAtIndexedSubscript:column];
+  string = [MEMORY[0x1E696AD60] string];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -2654,11 +2654,11 @@ void __59__PKTextInputResultCommand__scheduleBecomeReadyAfterDelay___block_invok
           v15 = [v24 precedingSeparatorForToken:*(*(&v25 + 1) + 8 * v13)];
         }
 
-        v16 = [v14 string];
-        v17 = v16;
-        if (v16)
+        string2 = [v14 string];
+        v17 = string2;
+        if (string2)
         {
-          v18 = v16;
+          v18 = string2;
         }
 
         else
@@ -2668,7 +2668,7 @@ void __59__PKTextInputResultCommand__scheduleBecomeReadyAfterDelay___block_invok
 
         v19 = v18;
 
-        [v8 appendFormat:@"%@%@", v15, v19];
+        [string appendFormat:@"%@%@", v15, v19];
         ++v11;
 
         ++v13;
@@ -2682,7 +2682,7 @@ void __59__PKTextInputResultCommand__scheduleBecomeReadyAfterDelay___block_invok
     while (v10);
   }
 
-  return v8;
+  return string;
 }
 
 void __79__PKTextInputResultCommand__tokenColumnStringsForTopTranscriptionInTextResult___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)

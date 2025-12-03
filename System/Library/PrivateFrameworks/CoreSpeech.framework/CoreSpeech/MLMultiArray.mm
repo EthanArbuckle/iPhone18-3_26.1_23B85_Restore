@@ -7,13 +7,13 @@
 - (id)convert1dMLMultiArrayToNSArray
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MLMultiArray *)self shape];
-  v5 = [v4 lastObject];
-  v6 = [v5 unsignedIntegerValue];
+  shape = [(MLMultiArray *)self shape];
+  lastObject = [shape lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  if (v6)
+  if (unsignedIntegerValue)
   {
-    for (i = 0; i != v6; ++i)
+    for (i = 0; i != unsignedIntegerValue; ++i)
     {
       v8 = [(MLMultiArray *)self objectAtIndexedSubscript:i];
       [v3 addObject:v8];

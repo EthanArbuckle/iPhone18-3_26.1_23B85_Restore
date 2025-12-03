@@ -1,9 +1,9 @@
 @interface COSUnpairingViewController
 - (COSUnpairingViewController)init;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSUnpairingViewController
@@ -16,34 +16,34 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(COSUnpairingViewController *)v2 headerView];
+    headerView = [(COSUnpairingViewController *)v2 headerView];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"UNPAIRING_TITLE" value:&stru_10026E598 table:@"Localizable"];
-    [v4 setTitle:v6];
+    [headerView setTitle:v6];
 
-    v7 = [(COSUnpairingViewController *)v3 headerView];
+    headerView2 = [(COSUnpairingViewController *)v3 headerView];
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"UNPAIRING_DETAIL" value:&stru_10026E598 table:@"Localizable"];
-    [v7 setDetailText:v9];
+    [headerView2 setDetailText:v9];
 
     v10 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
     activityIndicator = v3->_activityIndicator;
     v3->_activityIndicator = v10;
 
-    v12 = [(COSUnpairingViewController *)v3 view];
-    [v12 addSubview:v3->_activityIndicator];
+    view = [(COSUnpairingViewController *)v3 view];
+    [view addSubview:v3->_activityIndicator];
 
     [(UIActivityIndicatorView *)v3->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(UIActivityIndicatorView *)v3->_activityIndicator centerXAnchor];
-    v14 = [(COSUnpairingViewController *)v3 view];
-    v15 = [v14 centerXAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    centerXAnchor = [(UIActivityIndicatorView *)v3->_activityIndicator centerXAnchor];
+    view2 = [(COSUnpairingViewController *)v3 view];
+    centerXAnchor2 = [view2 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v16 setActive:1];
 
-    v17 = [(UIActivityIndicatorView *)v3->_activityIndicator centerYAnchor];
-    v18 = [(COSUnpairingViewController *)v3 view];
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    centerYAnchor = [(UIActivityIndicatorView *)v3->_activityIndicator centerYAnchor];
+    view3 = [(COSUnpairingViewController *)v3 view];
+    centerYAnchor2 = [view3 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v20 setActive:1];
 
     [(UIActivityIndicatorView *)v3->_activityIndicator startAnimating];
@@ -52,11 +52,11 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = COSUnpairingViewController;
-  [(COSUnpairingViewController *)&v5 viewWillAppear:a3];
+  [(COSUnpairingViewController *)&v5 viewWillAppear:appear];
   self->_controllerBeingDismissedOrGone = 0;
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSUnpairingViewController;
-  [(COSSetupPageViewController *)&v4 viewDidAppear:a3];
+  [(COSSetupPageViewController *)&v4 viewDidAppear:appear];
   v3 = pbb_setup_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,11 +81,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = COSUnpairingViewController;
-  [(COSSetupPageViewController *)&v5 viewWillDisappear:a3];
+  [(COSSetupPageViewController *)&v5 viewWillDisappear:disappear];
   self->_controllerBeingDismissedOrGone = 1;
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -96,11 +96,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = COSUnpairingViewController;
-  [(COSUnpairingViewController *)&v4 viewDidDisappear:a3];
+  [(COSUnpairingViewController *)&v4 viewDidDisappear:disappear];
   v3 = pbb_setup_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {

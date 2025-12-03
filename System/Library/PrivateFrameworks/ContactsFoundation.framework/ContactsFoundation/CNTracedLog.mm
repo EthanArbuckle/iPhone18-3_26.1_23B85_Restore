@@ -1,46 +1,46 @@
 @interface CNTracedLog
-+ (id)logWithDomain:(id)a3;
-+ (int64_t)roundNumber:(int64_t)a3 usingSignificantDigits:(unint64_t)a4;
-- (CNTracedLog)initWithDomain:(id)a3 message:(id)a4;
++ (id)logWithDomain:(id)domain;
++ (int64_t)roundNumber:(int64_t)number usingSignificantDigits:(unint64_t)digits;
+- (CNTracedLog)initWithDomain:(id)domain message:(id)message;
 @end
 
 @implementation CNTracedLog
 
-+ (id)logWithDomain:(id)a3
++ (id)logWithDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDomain:v4 message:&stru_1EF441028];
+  domainCopy = domain;
+  v5 = [[self alloc] initWithDomain:domainCopy message:&stru_1EF441028];
 
   return v5;
 }
 
-- (CNTracedLog)initWithDomain:(id)a3 message:(id)a4
+- (CNTracedLog)initWithDomain:(id)domain message:(id)message
 {
   v5.receiver = self;
   v5.super_class = CNTracedLog;
-  return [(CNTracedLog *)&v5 init:a3];
+  return [(CNTracedLog *)&v5 init:domain];
 }
 
-+ (int64_t)roundNumber:(int64_t)a3 usingSignificantDigits:(unint64_t)a4
++ (int64_t)roundNumber:(int64_t)number usingSignificantDigits:(unint64_t)digits
 {
-  if (!a3)
+  if (!number)
   {
     return 0;
   }
 
-  if (a3 >= 0)
+  if (number >= 0)
   {
-    v6 = a3;
+    numberCopy = number;
   }
 
   else
   {
-    v6 = -a3;
+    numberCopy = -number;
   }
 
-  v7 = log10(v6);
-  v8 = __exp10((a4 - vcvtpd_u64_f64(v7)));
-  return llround(round(v8 * a3) / v8);
+  v7 = log10(numberCopy);
+  v8 = __exp10((digits - vcvtpd_u64_f64(v7)));
+  return llround(round(v8 * number) / v8);
 }
 
 @end

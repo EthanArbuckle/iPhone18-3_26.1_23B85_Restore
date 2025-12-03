@@ -1,45 +1,45 @@
 @interface SXTagSubscriptionStatus
-- (BOOL)isEqual:(id)a3;
-- (SXTagSubscriptionStatus)initWithFollowing:(BOOL)a3 tags:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (SXTagSubscriptionStatus)initWithFollowing:(BOOL)following tags:(id)tags;
 - (id)description;
 @end
 
 @implementation SXTagSubscriptionStatus
 
-- (SXTagSubscriptionStatus)initWithFollowing:(BOOL)a3 tags:(id)a4
+- (SXTagSubscriptionStatus)initWithFollowing:(BOOL)following tags:(id)tags
 {
-  v7 = a4;
+  tagsCopy = tags;
   v11.receiver = self;
   v11.super_class = SXTagSubscriptionStatus;
   v8 = [(SXTagSubscriptionStatus *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_following = a3;
-    objc_storeStrong(&v8->_tags, a4);
+    v8->_following = following;
+    objc_storeStrong(&v8->_tags, tags);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v5 = 1;
     goto LABEL_7;
   }
 
-  if (self->_following == v4->_following)
+  if (self->_following == equalCopy->_following)
   {
-    v5 = [(NSArray *)self->_tags isEqualToArray:v4->_tags];
+    v5 = [(NSArray *)self->_tags isEqualToArray:equalCopy->_tags];
   }
 
   else

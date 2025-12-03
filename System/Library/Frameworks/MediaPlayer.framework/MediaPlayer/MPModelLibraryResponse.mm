@@ -1,55 +1,55 @@
 @interface MPModelLibraryResponse
-- (MPModelLibraryResponse)initWithRequest:(id)a3;
+- (MPModelLibraryResponse)initWithRequest:(id)request;
 - (id)debugDescription;
 - (id)description;
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4;
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation MPModelLibraryResponse
 
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [(MPModelResponse *)self request];
-  v9 = [v8 sectionKind];
+  handlerCopy = handler;
+  request = [(MPModelResponse *)self request];
+  sectionKind = [request sectionKind];
 
-  if (!v9)
+  if (!sectionKind)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequest.mm" lineNumber:413 description:@"Detailed keep local status only supported when request is sectioned."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequest.mm" lineNumber:413 description:@"Detailed keep local status only supported when request is sectioned."];
   }
 
-  if (([v8 wantsDetailedKeepLocalRequestableResponse] & 1) == 0)
+  if (([request wantsDetailedKeepLocalRequestableResponse] & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequest.mm" lineNumber:414 description:@"Detailed keep local status only supported when request wantsDetailedKeepLocalRequestableResponse."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequest.mm" lineNumber:414 description:@"Detailed keep local status only supported when request wantsDetailedKeepLocalRequestableResponse."];
   }
 
-  v10 = [(MPModelResponse *)self results];
-  v11 = [v10 sectionAtIndex:a3];
+  results = [(MPModelResponse *)self results];
+  v11 = [results sectionAtIndex:index];
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 keepLocalEnableState];
+    keepLocalEnableState = [v11 keepLocalEnableState];
   }
 
   else
   {
-    v12 = 0;
+    keepLocalEnableState = 0;
   }
 
   v13 = objc_alloc_init(MPModelLibraryKeepLocalStatusRequestOperation);
   v14 = [MPMediaLibraryView alloc];
-  v15 = [v8 mediaLibrary];
-  v16 = -[MPMediaLibraryView initWithLibrary:filteringOptions:](v14, "initWithLibrary:filteringOptions:", v15, [v8 filteringOptions]);
+  mediaLibrary = [request mediaLibrary];
+  v16 = -[MPMediaLibraryView initWithLibrary:filteringOptions:](v14, "initWithLibrary:filteringOptions:", mediaLibrary, [request filteringOptions]);
 
   [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setLibraryView:v16];
-  [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setEnableState:v12];
-  [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setResponseHandler:v7];
+  [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setEnableState:keepLocalEnableState];
+  [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setResponseHandler:handlerCopy];
   [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setIdentifyingModelObject:v11];
-  v17 = [(MPModelLibraryResponse *)self sectionKeepLocalStatusConfigurations];
-  v18 = [v17 objectAtIndexedSubscript:a3];
+  sectionKeepLocalStatusConfigurations = [(MPModelLibraryResponse *)self sectionKeepLocalStatusConfigurations];
+  v18 = [sectionKeepLocalStatusConfigurations objectAtIndexedSubscript:index];
 
   if (v18)
   {
@@ -68,8 +68,8 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v24);
   }
 
-  v19 = [v18 downloadablePlaylistItemEntityQueryBlock];
-  [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setDownloadablePlaylistItemEntityQueryBlock:v19];
+  downloadablePlaylistItemEntityQueryBlock = [v18 downloadablePlaylistItemEntityQueryBlock];
+  [(MPModelLibraryKeepLocalStatusRequestOperation *)v13 setDownloadablePlaylistItemEntityQueryBlock:downloadablePlaylistItemEntityQueryBlock];
 
   return v13;
 }
@@ -81,10 +81,10 @@
   v3 = [(MPModelResponse *)&v11 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(MPModelResponse *)self request];
-  v6 = [v5 scopedContainersPropertySet];
+  request = [(MPModelResponse *)self request];
+  scopedContainersPropertySet = [request scopedContainersPropertySet];
 
-  if (v6)
+  if (scopedContainersPropertySet)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = [(NSArray *)self->_scopedContainers description];
@@ -103,10 +103,10 @@
   v3 = [(MPModelResponse *)&v11 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(MPModelResponse *)self request];
-  v6 = [v5 scopedContainersPropertySet];
+  request = [(MPModelResponse *)self request];
+  scopedContainersPropertySet = [request scopedContainersPropertySet];
 
-  if (v6)
+  if (scopedContainersPropertySet)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = [(NSArray *)self->_scopedContainers debugDescription];
@@ -120,34 +120,34 @@
 
 - (void)dealloc
 {
-  v3 = [(MPModelResponse *)self request];
-  v4 = [v3 mediaLibrary];
-  [v4 endGeneratingLibraryChangeNotifications];
+  request = [(MPModelResponse *)self request];
+  mediaLibrary = [request mediaLibrary];
+  [mediaLibrary endGeneratingLibraryChangeNotifications];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = MPModelLibraryResponse;
   [(MPModelLibraryResponse *)&v6 dealloc];
 }
 
-- (MPModelLibraryResponse)initWithRequest:(id)a3
+- (MPModelLibraryResponse)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = MPModelLibraryResponse;
-  v5 = [(MPModelResponse *)&v9 initWithRequest:v4];
+  v5 = [(MPModelResponse *)&v9 initWithRequest:requestCopy];
   if (v5)
   {
-    v6 = [v4 mediaLibrary];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDidChangeNotification" object:v6];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDisplayValuesDidChangeNotification" object:v6];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDynamicPropertiesDidChangeNotification" object:v6];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsExplicitContentDidChangeNotification" object:0];
-    [v7 addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsMusicVideosDidChangeNotification" object:0];
-    [v6 beginGeneratingLibraryChangeNotifications];
+    mediaLibrary = [requestCopy mediaLibrary];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDidChangeNotification" object:mediaLibrary];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDisplayValuesDidChangeNotification" object:mediaLibrary];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPMediaLibraryDynamicPropertiesDidChangeNotification" object:mediaLibrary];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsExplicitContentDidChangeNotification" object:0];
+    [defaultCenter addObserver:v5 selector:sel__mediaLibraryDidChangeNotification_ name:@"MPRestrictionsMonitorAllowsMusicVideosDidChangeNotification" object:0];
+    [mediaLibrary beginGeneratingLibraryChangeNotifications];
   }
 
   return v5;

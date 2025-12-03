@@ -1,22 +1,22 @@
 @interface PLModelMigrationAction_DeleteCarouselCruft
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeleteCarouselCruft
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v108 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLModelMigrationActionCore *)self pathManager];
-  v7 = [v6 internalDirectoryWithSubType:5 additionalPathComponents:0 createIfNeeded:0 error:0];
+  contextCopy = context;
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v7 = [pathManager internalDirectoryWithSubType:5 additionalPathComponents:0 createIfNeeded:0 error:0];
 
   v64 = v7;
-  v65 = self;
+  selfCopy = self;
   if ([v7 length])
   {
-    v62 = v5;
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
+    v62 = contextCopy;
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
@@ -39,10 +39,10 @@
         }
 
         v13 = [v7 stringByAppendingPathComponent:*(*(&v68 + 1) + 8 * i)];
-        if ([v8 fileExistsAtPath:v13])
+        if ([defaultManager fileExistsAtPath:v13])
         {
           v67 = 0;
-          v14 = [v8 removeItemAtPath:v13 error:&v67];
+          v14 = [defaultManager removeItemAtPath:v13 error:&v67];
           v15 = v67;
           v16 = PLMigrationGetLog();
           v17 = v16;
@@ -55,9 +55,9 @@
               goto LABEL_23;
             }
 
-            v19 = [(PLModelMigrationActionCore *)v65 logger];
+            logger = [(PLModelMigrationActionCore *)selfCopy logger];
 
-            if (v19)
+            if (logger)
             {
               v105 = 0u;
               v106 = 0u;
@@ -92,13 +92,13 @@
               memset(buf, 0, sizeof(buf));
               v20 = PLMigrationGetLog();
               os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
-              v21 = [v13 lastPathComponent];
+              lastPathComponent = [v13 lastPathComponent];
               v72 = 138543362;
-              v73 = v21;
+              v73 = lastPathComponent;
               LODWORD(v60) = 12;
               v22 = _os_log_send_and_compose_impl();
 
-              v23 = [(PLModelMigrationActionCore *)v65 logger:&v72];
+              v23 = [(PLModelMigrationActionCore *)selfCopy logger:&v72];
               v24 = v23;
               v25 = v22;
               v26 = 1719;
@@ -121,9 +121,9 @@ LABEL_23:
             v32 = PLMigrationGetLog();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
             {
-              v33 = [v13 lastPathComponent];
+              lastPathComponent2 = [v13 lastPathComponent];
               *buf = 138543362;
-              *&buf[4] = v33;
+              *&buf[4] = lastPathComponent2;
               _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_INFO, "Successfully deleted file at %{public}@", buf, 0xCu);
             }
           }
@@ -137,9 +137,9 @@ LABEL_23:
               goto LABEL_23;
             }
 
-            v29 = [(PLModelMigrationActionCore *)v65 logger];
+            logger2 = [(PLModelMigrationActionCore *)selfCopy logger];
 
-            if (v29)
+            if (logger2)
             {
               v105 = 0u;
               v106 = 0u;
@@ -174,15 +174,15 @@ LABEL_23:
               memset(buf, 0, sizeof(buf));
               v30 = PLMigrationGetLog();
               os_log_type_enabled(v30, OS_LOG_TYPE_ERROR);
-              v31 = [v13 lastPathComponent];
+              lastPathComponent3 = [v13 lastPathComponent];
               v72 = 138543618;
-              v73 = v31;
+              v73 = lastPathComponent3;
               v74 = 2112;
               v75 = v15;
               LODWORD(v60) = 22;
               v22 = _os_log_send_and_compose_impl();
 
-              v23 = [(PLModelMigrationActionCore *)v65 logger:&v72];
+              v23 = [(PLModelMigrationActionCore *)selfCopy logger:&v72];
               v24 = v23;
               v25 = v22;
               v26 = 1721;
@@ -193,9 +193,9 @@ LABEL_23:
             v32 = PLMigrationGetLog();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
-              v34 = [v13 lastPathComponent];
+              lastPathComponent4 = [v13 lastPathComponent];
               *buf = 138543618;
-              *&buf[4] = v34;
+              *&buf[4] = lastPathComponent4;
               *&buf[12] = 2112;
               *&buf[14] = v15;
               _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Failed to delete file at %{public}@. Error: %@", buf, 0x16u);
@@ -213,8 +213,8 @@ LABEL_24:
       {
 LABEL_26:
 
-        v5 = v62;
-        self = v65;
+        contextCopy = v62;
+        self = selfCopy;
         break;
       }
     }
@@ -223,15 +223,15 @@ LABEL_26:
   v35 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"type", 9];
   v36 = +[PLSuggestion entityName];
   v66 = 0;
-  v37 = [PLModelMigrator executeBatchDeleteWithEntityName:v36 predicate:v35 managedObjectContext:v5 error:&v66];
+  v37 = [PLModelMigrator executeBatchDeleteWithEntityName:v36 predicate:v35 managedObjectContext:contextCopy error:&v66];
   v38 = v66;
 
   if (!v37)
   {
-    if (a4)
+    if (error)
     {
       v46 = v38;
-      *a4 = v38;
+      *error = v38;
     }
 
     v47 = PLMigrationGetLog();
@@ -239,9 +239,9 @@ LABEL_26:
 
     if (v48)
     {
-      v49 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v49)
+      if (logger3)
       {
         v105 = 0u;
         v106 = 0u;
@@ -324,9 +324,9 @@ LABEL_44:
     goto LABEL_49;
   }
 
-  v41 = [(PLModelMigrationActionCore *)self logger];
+  logger4 = [(PLModelMigrationActionCore *)self logger];
 
-  if (!v41)
+  if (!logger4)
   {
     v55 = PLMigrationGetLog();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -386,7 +386,7 @@ LABEL_44:
   v45 = 1;
 LABEL_40:
   v7 = v64;
-  self = v65;
+  self = selfCopy;
 LABEL_49:
   [(PLModelMigrationActionCore *)self finalizeProgress];
 

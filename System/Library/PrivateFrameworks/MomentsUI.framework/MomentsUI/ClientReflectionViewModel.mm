@@ -1,10 +1,10 @@
 @interface ClientReflectionViewModel
-- (_TtC9MomentsUI25ClientReflectionViewModel)initWithCoder:(id)a3;
+- (_TtC9MomentsUI25ClientReflectionViewModel)initWithCoder:(id)coder;
 @end
 
 @implementation ClientReflectionViewModel
 
-- (_TtC9MomentsUI25ClientReflectionViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI25ClientReflectionViewModel)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI25ClientReflectionViewModel_lightBackgroundColor) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI25ClientReflectionViewModel_darkBackgroundColor) = 0;

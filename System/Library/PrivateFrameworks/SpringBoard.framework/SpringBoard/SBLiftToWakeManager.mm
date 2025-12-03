@@ -1,6 +1,6 @@
 @interface SBLiftToWakeManager
 - (BOOL)_isLockScreenMainPageVisible;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (NSString)coverSheetIdentifier;
 - (NSString)description;
 - (SBBacklightController)_backlightController;
@@ -8,12 +8,12 @@
 - (SBLiftToWakeManager)init;
 - (SBLockScreenManager)_lockScreenManager;
 - (SBMainDisplayPolicyAggregator)_policyAggregator;
-- (id)_initWithLiftToWakeController:(id)a3;
+- (id)_initWithLiftToWakeController:(id)controller;
 - (int64_t)participantState;
-- (void)_backlightWillTurnOn:(id)a3;
+- (void)_backlightWillTurnOn:(id)on;
 - (void)dealloc;
 - (void)invalidate;
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5;
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation;
 @end
 
 @implementation SBLiftToWakeManager
@@ -23,16 +23,16 @@
   accessor_policyAggregator = self->_accessor_policyAggregator;
   if (accessor_policyAggregator)
   {
-    v3 = accessor_policyAggregator;
+    policyAggregator = accessor_policyAggregator;
   }
 
   else
   {
     v4 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v3 = [v4 policyAggregator];
+    policyAggregator = [v4 policyAggregator];
   }
 
-  return v3;
+  return policyAggregator;
 }
 
 - (SBLockScreenManager)_lockScreenManager
@@ -72,19 +72,19 @@
   return v4;
 }
 
-- (id)_initWithLiftToWakeController:(id)a3
+- (id)_initWithLiftToWakeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SBLiftToWakeManager;
   v6 = [(SBLiftToWakeManager *)&v10 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_liftToWakeController, a3);
+    objc_storeStrong(&v6->_liftToWakeController, controller);
     [p_isa[1] addObserver:p_isa];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:p_isa selector:sel__backlightWillTurnOn_ name:*MEMORY[0x277D67A38] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:p_isa selector:sel__backlightWillTurnOn_ name:*MEMORY[0x277D67A38] object:0];
   }
 
   return p_isa;
@@ -104,21 +104,21 @@
   v4 = [v3 appendBool:self->_gestureWokeScreen withName:@"gestureWokeScreen"];
   v5 = [v3 appendBool:-[SBLiftToWakeController isEnabled](self->_liftToWakeController withName:{"isEnabled"), @"enabled"}];
   v6 = [v3 appendObject:self->_liftToWakeController withName:@"liftToWakeController"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)_backlightWillTurnOn:(id)a3
+- (void)_backlightWillTurnOn:(id)on
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D67A10]];
-  v6 = [v5 intValue];
+  userInfo = [on userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D67A10]];
+  intValue = [v5 intValue];
 
-  if (v6 != 13)
+  if (intValue != 13)
   {
 
-    [(SBLiftToWakeManager *)self _setGestureWokeScreen:v6 == 20];
+    [(SBLiftToWakeManager *)self _setGestureWokeScreen:intValue == 20];
   }
 }
 
@@ -156,13 +156,13 @@
 
 - (BOOL)_isLockScreenMainPageVisible
 {
-  v2 = [(SBLiftToWakeManager *)self _lockScreenManager];
-  v3 = [v2 lockScreenEnvironment];
-  v4 = [v3 contentStateProvider];
+  _lockScreenManager = [(SBLiftToWakeManager *)self _lockScreenManager];
+  lockScreenEnvironment = [_lockScreenManager lockScreenEnvironment];
+  contentStateProvider = [lockScreenEnvironment contentStateProvider];
 
-  if ([v2 isLockScreenVisible] && objc_msgSend(v4, "isMainPageVisible"))
+  if ([_lockScreenManager isLockScreenVisible] && objc_msgSend(contentStateProvider, "isMainPageVisible"))
   {
-    v5 = [v2 isUIUnlocking] ^ 1;
+    v5 = [_lockScreenManager isUIUnlocking] ^ 1;
   }
 
   else
@@ -179,16 +179,16 @@
   {
     self->_invalidated = 1;
     [(SBLiftToWakeController *)self->_liftToWakeController removeObserver:self];
-    v5 = [(SBLiftToWakeManager *)self _lockScreenManager];
-    v4 = [v5 coverSheetViewController];
-    [v4 unregisterExternalEventHandler:self];
+    _lockScreenManager = [(SBLiftToWakeManager *)self _lockScreenManager];
+    coverSheetViewController = [_lockScreenManager coverSheetViewController];
+    [coverSheetViewController unregisterExternalEventHandler:self];
   }
 }
 
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v8 = NSStringFromSBLiftToWakeTransition(a4);
+  v8 = NSStringFromSBLiftToWakeTransition(transition);
   v9 = SBLogLiftToWake();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -199,41 +199,41 @@
 
   if (!BKSHIDServicesProximityDetectionActive())
   {
-    v11 = [(SBLiftToWakeManager *)self _policyAggregator];
+    _policyAggregator = [(SBLiftToWakeManager *)self _policyAggregator];
     v48 = 0;
-    v12 = [v11 allowsCapability:25 explanation:&v48];
+    v12 = [_policyAggregator allowsCapability:25 explanation:&v48];
     v13 = v48;
 
     if (v12)
     {
-      if (a4 <= 1)
+      if (transition <= 1)
       {
-        if (a4)
+        if (transition)
         {
-          if (a4 == 1)
+          if (transition == 1)
           {
 LABEL_19:
             if ([SBApp caseIsEnabledAndLatched])
             {
-              v17 = SBLogLiftToWake();
-              if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+              _idleTimerCoordinator = SBLogLiftToWake();
+              if (os_log_type_enabled(_idleTimerCoordinator, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
                 *v50 = v8;
-                _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Ignoring %{public}@ because smart cover is locked", buf, 0xCu);
+                _os_log_impl(&dword_21ED4E000, _idleTimerCoordinator, OS_LOG_TYPE_DEFAULT, "Ignoring %{public}@ because smart cover is locked", buf, 0xCu);
               }
             }
 
             else
             {
-              v29 = [(SBLiftToWakeManager *)self _lockScreenManager];
-              v30 = [v29 isUILocked];
+              _lockScreenManager = [(SBLiftToWakeManager *)self _lockScreenManager];
+              isUILocked = [_lockScreenManager isUILocked];
 
-              if (v30)
+              if (isUILocked)
               {
-                v31 = [(SBLiftToWakeManager *)self _lockScreenManager];
-                v32 = [v31 coverSheetViewController];
-                [v32 registerExternalEventHandler:self];
+                _lockScreenManager2 = [(SBLiftToWakeManager *)self _lockScreenManager];
+                coverSheetViewController = [_lockScreenManager2 coverSheetViewController];
+                [coverSheetViewController registerExternalEventHandler:self];
 
                 v33 = BKLogOrientationDevice();
                 if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -259,11 +259,11 @@ LABEL_19:
                 v37 = [MEMORY[0x277CCABB0] numberWithBool:1];
                 v56[1] = v37;
                 v55[2] = @"SBUIUnlockOptionsRequestedOrientationKey";
-                v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+                v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:orientation];
                 v56[2] = v38;
                 v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:3];
 
-                if (a4 == 4)
+                if (transition == 4)
                 {
                   v40 = 37;
                 }
@@ -273,8 +273,8 @@ LABEL_19:
                   v40 = 5;
                 }
 
-                v41 = [(SBLiftToWakeManager *)self _lockScreenManager];
-                [v41 unlockUIFromSource:v40 withOptions:v39];
+                _lockScreenManager3 = [(SBLiftToWakeManager *)self _lockScreenManager];
+                [_lockScreenManager3 unlockUIFromSource:v40 withOptions:v39];
 
                 self->_significantUserInteractionOccuredSinceWake = 0;
                 goto LABEL_50;
@@ -288,9 +288,9 @@ LABEL_19:
                 _os_log_impl(&dword_21ED4E000, v42, OS_LOG_TYPE_DEFAULT, "Resetting idle timer for transition %{public}@", buf, 0xCu);
               }
 
-              v17 = [(SBLiftToWakeManager *)self _idleTimerCoordinator];
+              _idleTimerCoordinator = [(SBLiftToWakeManager *)self _idleTimerCoordinator];
               v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"LiftToWakeTransition:%@", v8];
-              [v17 resetIdleTimerForReason:v43];
+              [_idleTimerCoordinator resetIdleTimerForReason:v43];
             }
 
             goto LABEL_49;
@@ -308,13 +308,13 @@ LABEL_50:
           _os_log_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEFAULT, "Unknown transition!", buf, 2u);
         }
 
-        v15 = self;
-        v16 = 0;
+        selfCopy3 = self;
+        transitionCopy = 0;
       }
 
       else
       {
-        if (a4 == 2)
+        if (transition == 2)
         {
           v18 = SBLogLiftToWake();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -323,25 +323,25 @@ LABEL_50:
             _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Resetting idle timer for transition wake -> wake", buf, 2u);
           }
 
-          v19 = [(SBLiftToWakeManager *)self _backlightController];
-          v20 = [v19 screenIsDim];
+          _backlightController = [(SBLiftToWakeManager *)self _backlightController];
+          screenIsDim = [_backlightController screenIsDim];
 
-          if (v20)
+          if (screenIsDim)
           {
-            v21 = [(SBLiftToWakeManager *)self _backlightController];
-            [v21 _undimFromSource:20];
+            _backlightController2 = [(SBLiftToWakeManager *)self _backlightController];
+            [_backlightController2 _undimFromSource:20];
           }
 
-          v17 = [(SBLiftToWakeManager *)self _idleTimerCoordinator];
-          [v17 resetIdleTimerForReason:@"LiftToWakeTransition:wake -> wake"];
+          _idleTimerCoordinator = [(SBLiftToWakeManager *)self _idleTimerCoordinator];
+          [_idleTimerCoordinator resetIdleTimerForReason:@"LiftToWakeTransition:wake -> wake"];
 LABEL_49:
 
           goto LABEL_50;
         }
 
-        if (a4 != 3)
+        if (transition != 3)
         {
-          if (a4 != 4)
+          if (transition != 4)
           {
             goto LABEL_50;
           }
@@ -349,12 +349,12 @@ LABEL_49:
           goto LABEL_19;
         }
 
-        v22 = [(SBLiftToWakeManager *)self _gestureWokeScreen];
-        v23 = [(SBLiftToWakeManager *)self _isLockScreenMainPageVisible];
-        v24 = [(SBLiftToWakeManager *)self _idleTimerCoordinator];
-        v25 = [v24 isIdleTimerDisabled];
+        _gestureWokeScreen = [(SBLiftToWakeManager *)self _gestureWokeScreen];
+        _isLockScreenMainPageVisible = [(SBLiftToWakeManager *)self _isLockScreenMainPageVisible];
+        _idleTimerCoordinator2 = [(SBLiftToWakeManager *)self _idleTimerCoordinator];
+        isIdleTimerDisabled = [_idleTimerCoordinator2 isIdleTimerDisabled];
 
-        if (v22 && v23 && (v25 & 1) == 0 && !self->_significantUserInteractionOccuredSinceWake)
+        if (_gestureWokeScreen && _isLockScreenMainPageVisible && (isIdleTimerDisabled & 1) == 0 && !self->_significantUserInteractionOccuredSinceWake)
         {
           v44 = SBLogLiftToWake();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -363,12 +363,12 @@ LABEL_49:
             _os_log_impl(&dword_21ED4E000, v44, OS_LOG_TYPE_DEFAULT, "Turning screen off for transition wake -> sleep", buf, 2u);
           }
 
-          v45 = [(SBLiftToWakeManager *)self _backlightController];
-          [v45 _startFadeOutAnimationFromLockSource:5];
+          _backlightController3 = [(SBLiftToWakeManager *)self _backlightController];
+          [_backlightController3 _startFadeOutAnimationFromLockSource:5];
 
-          v46 = [(SBLiftToWakeManager *)self _lockScreenManager];
-          v47 = [v46 coverSheetViewController];
-          [v47 unregisterExternalEventHandler:self];
+          _lockScreenManager4 = [(SBLiftToWakeManager *)self _lockScreenManager];
+          coverSheetViewController2 = [_lockScreenManager4 coverSheetViewController];
+          [coverSheetViewController2 unregisterExternalEventHandler:self];
 
           goto LABEL_50;
         }
@@ -378,18 +378,18 @@ LABEL_49:
         {
           significantUserInteractionOccuredSinceWake = self->_significantUserInteractionOccuredSinceWake;
           *buf = 67109888;
-          *v50 = v22;
+          *v50 = _gestureWokeScreen;
           *&v50[4] = 1024;
-          *&v50[6] = v23;
+          *&v50[6] = _isLockScreenMainPageVisible;
           v51 = 1024;
-          v52 = v25 ^ 1;
+          v52 = isIdleTimerDisabled ^ 1;
           v53 = 1024;
           v54 = significantUserInteractionOccuredSinceWake;
           _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_DEFAULT, "Not turning screen off for transition wake -> sleep because gestureWokeScreen: %d isLockScreenMainPageVisible: %d idleTimerRunning: %d significantUserInteractionOccuredSinceWake: %d", buf, 0x1Au);
         }
 
-        v15 = self;
-        v16 = 3;
+        selfCopy3 = self;
+        transitionCopy = 3;
       }
     }
 
@@ -403,11 +403,11 @@ LABEL_49:
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Ignoring transition - policy aggregator denied with with reason: %@", buf, 0xCu);
       }
 
-      v15 = self;
-      v16 = a4;
+      selfCopy3 = self;
+      transitionCopy = transition;
     }
 
-    [(SBLiftToWakeManager *)v15 _ignoredTransition:v16];
+    [(SBLiftToWakeManager *)selfCopy3 _ignoredTransition:transitionCopy];
     goto LABEL_50;
   }
 
@@ -418,7 +418,7 @@ LABEL_49:
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Ignoring transition -- prox is active", buf, 2u);
   }
 
-  [(SBLiftToWakeManager *)self _ignoredTransition:a4];
+  [(SBLiftToWakeManager *)self _ignoredTransition:transition];
 LABEL_51:
 }
 
@@ -429,23 +429,23 @@ LABEL_51:
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = v5 == 21 || v5 == 12;
+  eventCopy = event;
+  type = [eventCopy type];
+  v6 = type == 21 || type == 12;
   if (v6 && [(SBLiftToWakeManager *)self _gestureWokeScreen])
   {
     self->_significantUserInteractionOccuredSinceWake = 1;
-    v7 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    v7 = 0;
+    isConsumable = 0;
   }
 
-  return v7;
+  return isConsumable;
 }
 
 @end

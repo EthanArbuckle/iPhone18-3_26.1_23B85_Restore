@@ -12,34 +12,34 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSCalendars cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a1 calendarIdentifier];
-  if (v5)
+  calendarIdentifier = [self calendarIdentifier];
+  if (calendarIdentifier)
   {
-    [a3 encodeObject:v5 forKey:@"NS.identifier"];
+    [a3 encodeObject:calendarIdentifier forKey:@"NS.identifier"];
   }
 
-  v6 = [a1 locale];
-  if (v6)
+  locale = [self locale];
+  if (locale)
   {
-    [a3 encodeObject:v6 forKey:@"NS.locale"];
+    [a3 encodeObject:locale forKey:@"NS.locale"];
   }
 
-  v7 = [a1 timeZone];
-  if (v7)
+  timeZone = [self timeZone];
+  if (timeZone)
   {
-    [a3 encodeObject:v7 forKey:@"NS.timezone"];
+    [a3 encodeObject:timeZone forKey:@"NS.timezone"];
   }
 
-  v8 = [a1 gregorianStartDate];
-  if (v8)
+  gregorianStartDate = [self gregorianStartDate];
+  if (gregorianStartDate)
   {
-    [a3 encodeObject:v8 forKey:@"NS.gstartdate"];
+    [a3 encodeObject:gregorianStartDate forKey:@"NS.gstartdate"];
   }
 
-  [a3 encodeInteger:objc_msgSend(a1 forKey:{"firstWeekday"), @"NS.firstwkdy"}];
-  v9 = [a1 minimumDaysInFirstWeek];
+  [a3 encodeInteger:objc_msgSend(self forKey:{"firstWeekday"), @"NS.firstwkdy"}];
+  minimumDaysInFirstWeek = [self minimumDaysInFirstWeek];
 
-  return [a3 encodeInteger:v9 forKey:@"NS.mindays"];
+  return [a3 encodeInteger:minimumDaysInFirstWeek forKey:@"NS.mindays"];
 }
 
 - (void)initWithCoder:()NSCalendar
@@ -131,7 +131,7 @@ LABEL_9:
     return 0;
   }
 
-  v18 = [a1 initWithCalendarIdentifier:v6];
+  v18 = [self initWithCalendarIdentifier:v6];
   v12 = v18;
   if (v18)
   {

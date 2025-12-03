@@ -1,36 +1,36 @@
 @interface APUIWidgetViewController
-+ (id)imageForIconSize:(CGSize)a3 scale:(double)a4 appearance:(int64_t)a5 tintColor:(id)a6;
-+ (id)smartStackImageForIconSize:(CGSize)a3 scale:(double)a4 appearance:(int64_t)a5 tintColor:(id)a6;
++ (id)imageForIconSize:(CGSize)size scale:(double)scale appearance:(int64_t)appearance tintColor:(id)color;
++ (id)smartStackImageForIconSize:(CGSize)size scale:(double)scale appearance:(int64_t)appearance tintColor:(id)color;
 + (id)widgetIcon;
-- (APUIWidgetViewController)initWithIdentifier:(id)a3;
+- (APUIWidgetViewController)initWithIdentifier:(id)identifier;
 - (BOOL)isCurrentlyVisible;
-- (BOOL)matchesWidgetUniqueID:(id)a3 stackID:(id)a4;
-- (void)_topWidgetDidAppear:(id)a3;
-- (void)_topWidgetDidDisappear:(id)a3;
+- (BOOL)matchesWidgetUniqueID:(id)d stackID:(id)iD;
+- (void)_topWidgetDidAppear:(id)appear;
+- (void)_topWidgetDidDisappear:(id)disappear;
 - (void)_updateViewVisibility;
 - (void)dealloc;
-- (void)logChangeWithNewSuggestionIds:(id)a3 previousSuggestionIds:(id)a4 suggestionClient:(id)a5;
-- (void)setStackVisible:(BOOL)a3;
-- (void)setViewVisible:(BOOL)a3;
+- (void)logChangeWithNewSuggestionIds:(id)ids previousSuggestionIds:(id)suggestionIds suggestionClient:(id)client;
+- (void)setStackVisible:(BOOL)visible;
+- (void)setViewVisible:(BOOL)visible;
 @end
 
 @implementation APUIWidgetViewController
 
-- (APUIWidgetViewController)initWithIdentifier:(id)a3
+- (APUIWidgetViewController)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = APUIWidgetViewController;
   v5 = [(APUIWidgetViewController *)&v10 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__topWidgetDidAppear_ name:*MEMORY[0x277CEBAC0] object:0];
-    [v8 addObserver:v5 selector:sel__topWidgetDidDisappear_ name:*MEMORY[0x277CEBAC8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__topWidgetDidAppear_ name:*MEMORY[0x277CEBAC0] object:0];
+    [defaultCenter addObserver:v5 selector:sel__topWidgetDidDisappear_ name:*MEMORY[0x277CEBAC8] object:0];
   }
 
   return v5;
@@ -38,32 +38,32 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = APUIWidgetViewController;
   [(APUIWidgetViewController *)&v4 dealloc];
 }
 
-- (BOOL)matchesWidgetUniqueID:(id)a3 stackID:(id)a4
+- (BOOL)matchesWidgetUniqueID:(id)d stackID:(id)iD
 {
-  v5 = a3;
-  v6 = [(APUIWidgetViewController *)self identifier];
-  v7 = [v6 isEqualToString:v5];
+  dCopy = d;
+  identifier = [(APUIWidgetViewController *)self identifier];
+  v7 = [identifier isEqualToString:dCopy];
 
   return v7;
 }
 
-- (void)_topWidgetDidAppear:(id)a3
+- (void)_topWidgetDidAppear:(id)appear
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEBAD8]];
+  appearCopy = appear;
+  userInfo = [appearCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEBAD8]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [appearCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CEBAD0]];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CEBAD0]];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -90,15 +90,15 @@ uint64_t __48__APUIWidgetViewController__topWidgetDidAppear___block_invoke(uint6
   return result;
 }
 
-- (void)_topWidgetDidDisappear:(id)a3
+- (void)_topWidgetDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEBAD8]];
+  disappearCopy = disappear;
+  userInfo = [disappearCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEBAD8]];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [disappearCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CEBAD0]];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CEBAD0]];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -125,136 +125,136 @@ uint64_t __51__APUIWidgetViewController__topWidgetDidDisappear___block_invoke(ui
   return result;
 }
 
-- (void)logChangeWithNewSuggestionIds:(id)a3 previousSuggestionIds:(id)a4 suggestionClient:(id)a5
+- (void)logChangeWithNewSuggestionIds:(id)ids previousSuggestionIds:(id)suggestionIds suggestionClient:(id)client
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
+  idsCopy = ids;
+  suggestionIdsCopy = suggestionIds;
+  clientCopy = client;
   if ([(APUIWidgetViewController *)self effectiveViewVisibility])
   {
-    if ([v18 count])
+    if ([idsCopy count])
     {
       widgetIdentifiable = self->_widgetIdentifiable;
-      v11 = [(APUIWidgetViewController *)self layout];
-      v12 = [v11 uuid];
-      v13 = [v12 UUIDString];
-      [v9 logSuggestionsDidAppear:v18 widget:widgetIdentifiable blendingCacheId:v13];
+      layout = [(APUIWidgetViewController *)self layout];
+      uuid = [layout uuid];
+      uUIDString = [uuid UUIDString];
+      [clientCopy logSuggestionsDidAppear:idsCopy widget:widgetIdentifiable blendingCacheId:uUIDString];
     }
 
-    if ([v8 count])
+    if ([suggestionIdsCopy count])
     {
       v14 = self->_widgetIdentifiable;
-      v15 = [(APUIWidgetViewController *)self layout];
-      v16 = [v15 uuid];
-      v17 = [v16 UUIDString];
-      [v9 logSuggestionsDidDisappear:v8 widget:v14 blendingCacheId:v17];
+      layout2 = [(APUIWidgetViewController *)self layout];
+      uuid2 = [layout2 uuid];
+      uUIDString2 = [uuid2 UUIDString];
+      [clientCopy logSuggestionsDidDisappear:suggestionIdsCopy widget:v14 blendingCacheId:uUIDString2];
     }
   }
 }
 
 - (BOOL)isCurrentlyVisible
 {
-  v3 = [(APUIWidgetViewController *)self isViewVisible];
-  if (v3)
+  isViewVisible = [(APUIWidgetViewController *)self isViewVisible];
+  if (isViewVisible)
   {
 
-    LOBYTE(v3) = [(APUIWidgetViewController *)self stackVisible];
+    LOBYTE(isViewVisible) = [(APUIWidgetViewController *)self stackVisible];
   }
 
-  return v3;
+  return isViewVisible;
 }
 
-- (void)setStackVisible:(BOOL)a3
+- (void)setStackVisible:(BOOL)visible
 {
-  if (self->_stackVisible != a3)
+  if (self->_stackVisible != visible)
   {
-    self->_stackVisible = a3;
+    self->_stackVisible = visible;
     [(APUIWidgetViewController *)self _updateViewVisibility];
   }
 }
 
-- (void)setViewVisible:(BOOL)a3
+- (void)setViewVisible:(BOOL)visible
 {
-  if (self->_viewVisible != a3)
+  if (self->_viewVisible != visible)
   {
-    self->_viewVisible = a3;
+    self->_viewVisible = visible;
     [(APUIWidgetViewController *)self _updateViewVisibility];
   }
 }
 
 - (void)_updateViewVisibility
 {
-  v3 = [(APUIWidgetViewController *)self effectiveViewVisibility];
-  v4 = [(APUIWidgetViewController *)self isCurrentlyVisible];
-  if (v3 != v4)
+  effectiveViewVisibility = [(APUIWidgetViewController *)self effectiveViewVisibility];
+  isCurrentlyVisible = [(APUIWidgetViewController *)self isCurrentlyVisible];
+  if (effectiveViewVisibility != isCurrentlyVisible)
   {
-    v5 = [(APUIWidgetViewController *)self suggestionClient];
-    if (v4)
+    suggestionClient = [(APUIWidgetViewController *)self suggestionClient];
+    if (isCurrentlyVisible)
     {
-      v6 = [(APUIWidgetViewController *)self widgetIdentifiable];
-      v7 = [(APUIWidgetViewController *)self layout];
-      v8 = [v7 uuid];
-      v9 = [v8 UUIDString];
-      [v5 logWidgetDidAppear:v6 blendingCacheId:v9];
+      widgetIdentifiable = [(APUIWidgetViewController *)self widgetIdentifiable];
+      layout = [(APUIWidgetViewController *)self layout];
+      uuid = [layout uuid];
+      uUIDString = [uuid UUIDString];
+      [suggestionClient logWidgetDidAppear:widgetIdentifiable blendingCacheId:uUIDString];
 
-      v10 = [(APUIWidgetViewController *)self suggestionClient];
-      v11 = [(APUIWidgetViewController *)self suggestionIds];
-      v12 = [(APUIWidgetViewController *)self widgetIdentifiable];
-      v13 = [(APUIWidgetViewController *)self layout];
-      v14 = [v13 uuid];
-      v15 = [v14 UUIDString];
-      [v10 logSuggestionsDidAppear:v11 widget:v12 blendingCacheId:v15];
+      suggestionClient2 = [(APUIWidgetViewController *)self suggestionClient];
+      suggestionIds = [(APUIWidgetViewController *)self suggestionIds];
+      widgetIdentifiable2 = [(APUIWidgetViewController *)self widgetIdentifiable];
+      layout2 = [(APUIWidgetViewController *)self layout];
+      uuid2 = [layout2 uuid];
+      uUIDString2 = [uuid2 UUIDString];
+      [suggestionClient2 logSuggestionsDidAppear:suggestionIds widget:widgetIdentifiable2 blendingCacheId:uUIDString2];
     }
 
     else
     {
-      v16 = [(APUIWidgetViewController *)self suggestionIds];
-      v17 = [(APUIWidgetViewController *)self widgetIdentifiable];
-      v18 = [(APUIWidgetViewController *)self layout];
-      v19 = [v18 uuid];
-      v20 = [v19 UUIDString];
-      [v5 logSuggestionsDidDisappear:v16 widget:v17 blendingCacheId:v20];
+      suggestionIds2 = [(APUIWidgetViewController *)self suggestionIds];
+      widgetIdentifiable3 = [(APUIWidgetViewController *)self widgetIdentifiable];
+      layout3 = [(APUIWidgetViewController *)self layout];
+      uuid3 = [layout3 uuid];
+      uUIDString3 = [uuid3 UUIDString];
+      [suggestionClient logSuggestionsDidDisappear:suggestionIds2 widget:widgetIdentifiable3 blendingCacheId:uUIDString3];
 
-      v10 = [(APUIWidgetViewController *)self suggestionClient];
-      v11 = [(APUIWidgetViewController *)self widgetIdentifiable];
-      v12 = [(APUIWidgetViewController *)self layout];
-      v13 = [v12 uuid];
-      v14 = [v13 UUIDString];
-      [v10 logWidgetDidDisappear:v11 blendingCacheId:v14];
+      suggestionClient2 = [(APUIWidgetViewController *)self suggestionClient];
+      suggestionIds = [(APUIWidgetViewController *)self widgetIdentifiable];
+      widgetIdentifiable2 = [(APUIWidgetViewController *)self layout];
+      layout2 = [widgetIdentifiable2 uuid];
+      uuid2 = [layout2 UUIDString];
+      [suggestionClient2 logWidgetDidDisappear:suggestionIds blendingCacheId:uuid2];
     }
   }
 
-  [(APUIWidgetViewController *)self setEffectiveViewVisibility:v4];
+  [(APUIWidgetViewController *)self setEffectiveViewVisibility:isCurrentlyVisible];
 }
 
-+ (id)imageForIconSize:(CGSize)a3 scale:(double)a4 appearance:(int64_t)a5 tintColor:(id)a6
++ (id)imageForIconSize:(CGSize)size scale:(double)scale appearance:(int64_t)appearance tintColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a6;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v11 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:@"com.apple.siri"];
-  v12 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:width scale:{height, a4}];
+  v12 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:width scale:{height, scale}];
   v13 = v12;
-  if (a5 == 2)
+  if (appearance == 2)
   {
     [v12 setAppearance:2];
-    if (v10)
+    if (colorCopy)
     {
-      v15 = [objc_alloc(MEMORY[0x277D1B150]) initWithCGColor:{objc_msgSend(v10, "CGColor")}];
+      v15 = [objc_alloc(MEMORY[0x277D1B150]) initWithCGColor:{objc_msgSend(colorCopy, "CGColor")}];
       [v13 setTintColor:v15];
     }
   }
 
   else
   {
-    if (a5 == 1)
+    if (appearance == 1)
     {
       v14 = 1;
     }
 
     else
     {
-      if (a5)
+      if (appearance)
       {
         goto LABEL_9;
       }
@@ -275,26 +275,26 @@ LABEL_9:
   }
 
   v18 = MEMORY[0x277D755B8];
-  v19 = [v16 CGImage];
+  cGImage = [v16 CGImage];
   [v16 scale];
-  v20 = [v18 imageWithCGImage:v19 scale:0 orientation:?];
+  v20 = [v18 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v20;
 }
 
-+ (id)smartStackImageForIconSize:(CGSize)a3 scale:(double)a4 appearance:(int64_t)a5 tintColor:(id)a6
++ (id)smartStackImageForIconSize:(CGSize)size scale:(double)scale appearance:(int64_t)appearance tintColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v33[1] = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  colorCopy = color;
   v11 = @"smart-stack";
-  if (a5 == 1)
+  if (appearance == 1)
   {
     v11 = @"smart-stack-dark";
   }
 
-  if (a5 == 2)
+  if (appearance == 2)
   {
     v12 = @"smart-stack-tintable";
   }
@@ -309,36 +309,36 @@ LABEL_9:
   v15 = [v13 imageNamed:v12 inBundle:v14];
 
   v16 = objc_alloc(MEMORY[0x277D1B160]);
-  v17 = [v15 CGImage];
+  cGImage = [v15 CGImage];
   [v15 scale];
-  v18 = [v16 initWithCGImage:v17 scale:?];
+  v18 = [v16 initWithCGImage:cGImage scale:?];
   v19 = objc_alloc(MEMORY[0x277D1B1A8]);
   v33[0] = v18;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
   v21 = [v19 initWithImages:v20];
 
-  v22 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:width scale:{height, a4}];
+  v22 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:width scale:{height, scale}];
   v23 = v22;
-  if (a5 == 2)
+  if (appearance == 2)
   {
     [v22 setAppearance:2];
-    if (v10)
+    if (colorCopy)
     {
-      v25 = [objc_alloc(MEMORY[0x277D1B150]) initWithCGColor:{objc_msgSend(v10, "CGColor")}];
+      v25 = [objc_alloc(MEMORY[0x277D1B150]) initWithCGColor:{objc_msgSend(colorCopy, "CGColor")}];
       [v23 setTintColor:v25];
     }
   }
 
   else
   {
-    if (a5 == 1)
+    if (appearance == 1)
     {
       v24 = 1;
     }
 
     else
     {
-      if (a5)
+      if (appearance)
       {
         goto LABEL_14;
       }
@@ -359,9 +359,9 @@ LABEL_14:
   }
 
   v28 = MEMORY[0x277D755B8];
-  v29 = [v26 CGImage];
+  cGImage2 = [v26 CGImage];
   [v26 scale];
-  v30 = [v28 imageWithCGImage:v29 scale:0 orientation:?];
+  v30 = [v28 imageWithCGImage:cGImage2 scale:0 orientation:?];
 
   v31 = *MEMORY[0x277D85DE8];
 

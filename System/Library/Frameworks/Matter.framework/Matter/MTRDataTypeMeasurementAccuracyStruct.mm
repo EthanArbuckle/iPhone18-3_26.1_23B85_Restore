@@ -1,6 +1,6 @@
 @interface MTRDataTypeMeasurementAccuracyStruct
 - (MTRDataTypeMeasurementAccuracyStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,31 +26,31 @@
     maxMeasuredValue = v3->_maxMeasuredValue;
     v3->_maxMeasuredValue = &unk_284C3E588;
 
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     accuracyRanges = v3->_accuracyRanges;
-    v3->_accuracyRanges = v8;
+    v3->_accuracyRanges = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeMeasurementAccuracyStruct);
-  v5 = [(MTRDataTypeMeasurementAccuracyStruct *)self measurementType];
-  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMeasurementType:v5];
+  measurementType = [(MTRDataTypeMeasurementAccuracyStruct *)self measurementType];
+  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMeasurementType:measurementType];
 
-  v6 = [(MTRDataTypeMeasurementAccuracyStruct *)self measured];
-  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMeasured:v6];
+  measured = [(MTRDataTypeMeasurementAccuracyStruct *)self measured];
+  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMeasured:measured];
 
-  v7 = [(MTRDataTypeMeasurementAccuracyStruct *)self minMeasuredValue];
-  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMinMeasuredValue:v7];
+  minMeasuredValue = [(MTRDataTypeMeasurementAccuracyStruct *)self minMeasuredValue];
+  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMinMeasuredValue:minMeasuredValue];
 
-  v8 = [(MTRDataTypeMeasurementAccuracyStruct *)self maxMeasuredValue];
-  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMaxMeasuredValue:v8];
+  maxMeasuredValue = [(MTRDataTypeMeasurementAccuracyStruct *)self maxMeasuredValue];
+  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setMaxMeasuredValue:maxMeasuredValue];
 
-  v9 = [(MTRDataTypeMeasurementAccuracyStruct *)self accuracyRanges];
-  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setAccuracyRanges:v9];
+  accuracyRanges = [(MTRDataTypeMeasurementAccuracyStruct *)self accuracyRanges];
+  [(MTRDataTypeMeasurementAccuracyStruct *)v4 setAccuracyRanges:accuracyRanges];
 
   return v4;
 }

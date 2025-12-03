@@ -1,49 +1,49 @@
 @interface SPAnalyticsItem
-- (SPAnalyticsItem)initWithResult:(id)a3;
+- (SPAnalyticsItem)initWithResult:(id)result;
 @end
 
 @implementation SPAnalyticsItem
 
-- (SPAnalyticsItem)initWithResult:(id)a3
+- (SPAnalyticsItem)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = SPAnalyticsItem;
   v5 = [(SPAnalyticsItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
     applicationBundleIdentifier = v5->_applicationBundleIdentifier;
-    v5->_applicationBundleIdentifier = v6;
+    v5->_applicationBundleIdentifier = applicationBundleIdentifier;
 
-    v8 = [v4 sectionBundleIdentifier];
+    sectionBundleIdentifier = [resultCopy sectionBundleIdentifier];
     sectionBundleIdentifier = v5->_sectionBundleIdentifier;
-    v5->_sectionBundleIdentifier = v8;
+    v5->_sectionBundleIdentifier = sectionBundleIdentifier;
 
-    v10 = [v4 identifier];
+    identifier = [resultCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v10;
+    v5->_identifier = identifier;
 
-    v12 = [v4 contactIdentifier];
+    contactIdentifier = [resultCopy contactIdentifier];
     contactIdentifier = v5->_contactIdentifier;
-    v5->_contactIdentifier = v12;
+    v5->_contactIdentifier = contactIdentifier;
 
-    v5->_type = [v4 type];
-    v5->_isLocalApplicationResult = [v4 isLocalApplicationResult];
-    v5->_topHit = [v4 topHit];
-    v5->_isStaticCorrection = [v4 isStaticCorrection];
+    v5->_type = [resultCopy type];
+    v5->_isLocalApplicationResult = [resultCopy isLocalApplicationResult];
+    v5->_topHit = [resultCopy topHit];
+    v5->_isStaticCorrection = [resultCopy isStaticCorrection];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v4 rankingItem];
-      if ([v14 didMatchRankingDescriptor:*MEMORY[0x1E69D3EB8]])
+      rankingItem = [resultCopy rankingItem];
+      if ([rankingItem didMatchRankingDescriptor:*MEMORY[0x1E69D3EB8]])
       {
         v5->_isDisplayNameCorrectionsMatch = 1;
       }
 
-      v15 = [v4 launchString];
+      launchString = [resultCopy launchString];
 
-      if (v15)
+      if (launchString)
       {
         v5->_isLocalShortcut = 1;
       }

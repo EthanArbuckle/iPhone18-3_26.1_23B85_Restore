@@ -1,44 +1,44 @@
 @interface InAppReceiptDatabaseTransaction
-- (BOOL)cacheLegacyTransactionsForBundleID:(id)a3 transactions:(id)a4 logKey:(id)a5;
-- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)a3;
-- (BOOL)reconcileUnfinishedTransactionIDs:(id)a3 forBundleID:(id)a4 logKey:(id)a5;
-- (BOOL)removeAppTransactionForBundleID:(id)a3;
-- (BOOL)removeCachedLegacyTransactionWithID:(id)a3 forBundleID:(id)a4;
-- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)a3;
-- (BOOL)removeReceiptsForBundleID:(id)a3;
-- (BOOL)removeStatusesForBundleID:(id)a3;
-- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)a3;
-- (BOOL)setAppTransaction:(id)a3 revision:(int64_t)a4 forBundleID:(id)a5 bundleVersion:(id)a6 token:(id)a7;
-- (BOOL)setFinishedForTransactionID:(id)a3 bundleID:(id)a4 logKey:(id)a5;
-- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)a3 token:(id)a4;
-- (BOOL)setRevision:(id)a3 includesFinishedConsumables:(BOOL)a4 token:(id)a5 forBundleID:(id)a6;
-- (BOOL)setSubscriptionRenewalInfo:(id)a3 forGroupID:(id)a4 bundleID:(id)a5 gracePeriodExpirationDate:(id)a6 logKey:(id)a7;
-- (BOOL)setTransactionInfo:(id)a3 unfinishedIDs:(id)a4 forBundleID:(id)a5 logKey:(id)a6 containsSubscriptions:(BOOL *)a7;
+- (BOOL)cacheLegacyTransactionsForBundleID:(id)d transactions:(id)transactions logKey:(id)key;
+- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)d;
+- (BOOL)reconcileUnfinishedTransactionIDs:(id)ds forBundleID:(id)d logKey:(id)key;
+- (BOOL)removeAppTransactionForBundleID:(id)d;
+- (BOOL)removeCachedLegacyTransactionWithID:(id)d forBundleID:(id)iD;
+- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)d;
+- (BOOL)removeReceiptsForBundleID:(id)d;
+- (BOOL)removeStatusesForBundleID:(id)d;
+- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)d;
+- (BOOL)setAppTransaction:(id)transaction revision:(int64_t)revision forBundleID:(id)d bundleVersion:(id)version token:(id)token;
+- (BOOL)setFinishedForTransactionID:(id)d bundleID:(id)iD logKey:(id)key;
+- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)d token:(id)token;
+- (BOOL)setRevision:(id)revision includesFinishedConsumables:(BOOL)consumables token:(id)token forBundleID:(id)d;
+- (BOOL)setSubscriptionRenewalInfo:(id)info forGroupID:(id)d bundleID:(id)iD gracePeriodExpirationDate:(id)date logKey:(id)key;
+- (BOOL)setTransactionInfo:(id)info unfinishedIDs:(id)ds forBundleID:(id)d logKey:(id)key containsSubscriptions:(BOOL *)subscriptions;
 @end
 
 @implementation InAppReceiptDatabaseTransaction
 
-- (BOOL)cacheLegacyTransactionsForBundleID:(id)a3 transactions:(id)a4 logKey:(id)a5
+- (BOOL)cacheLegacyTransactionsForBundleID:(id)d transactions:(id)transactions logKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v37 = a5;
-  v39 = v7;
-  if (v7)
+  dCopy = d;
+  transactionsCopy = transactions;
+  keyCopy = key;
+  v39 = dCopy;
+  if (dCopy)
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v42 objects:v52 count:16];
+    v9 = [transactionsCopy countByEnumeratingWithState:&v42 objects:v52 count:16];
     if (v9)
     {
       v11 = v9;
       v12 = *v43;
-      v13 = 1;
+      existsInDatabase = 1;
       *&v10 = 138543874;
       v36 = v10;
-      obj = v8;
+      obj = transactionsCopy;
       do
       {
         v14 = 0;
@@ -104,15 +104,15 @@
                   if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_ERROR))
                   {
                     *buf = v36;
-                    v47 = self;
+                    selfCopy = self;
                     v48 = 2114;
-                    v49 = v37;
+                    v49 = keyCopy;
                     v50 = 2114;
                     v51 = v30;
                     _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "[%{public}@][%{public}@] Error caching assets: %{public}@", buf, 0x20u);
                   }
 
-                  v13 = 0;
+                  existsInDatabase = 0;
                 }
 
                 [v17 setObject:v28 forKeyedSubscript:@"assets"];
@@ -120,17 +120,17 @@
             }
 
             v32 = [InAppPendingTransactionsDatabaseEntity alloc];
-            v33 = [(InAppReceiptDatabaseSession *)self connection];
-            v34 = [(SQLiteEntity *)v32 initWithPropertyValues:v17 onConnection:v33];
+            connection = [(InAppReceiptDatabaseSession *)self connection];
+            v34 = [(SQLiteEntity *)v32 initWithPropertyValues:v17 onConnection:connection];
 
-            if (v13)
+            if (existsInDatabase)
             {
-              v13 = [(SQLiteEntity *)v34 existsInDatabase];
+              existsInDatabase = [(SQLiteEntity *)v34 existsInDatabase];
             }
 
             else
             {
-              v13 = 0;
+              existsInDatabase = 0;
             }
           }
 
@@ -138,7 +138,7 @@
         }
 
         while (v11 != v14);
-        v8 = obj;
+        transactionsCopy = obj;
         v11 = [obj countByEnumeratingWithState:&v42 objects:v52 count:16];
       }
 
@@ -147,7 +147,7 @@
 
     else
     {
-      v13 = 1;
+      existsInDatabase = 1;
     }
   }
 
@@ -163,36 +163,36 @@
       sub_1002D1124();
     }
 
-    v13 = 0;
+    existsInDatabase = 0;
   }
 
-  return v13 & 1;
+  return existsInDatabase & 1;
 }
 
-- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)a3
+- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(InAppReceiptDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity queryOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity queryOnConnection:connection predicate:v4];
 
-  LOBYTE(v5) = [v6 deleteAllEntities];
-  return v5;
+  LOBYTE(connection) = [v6 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)reconcileUnfinishedTransactionIDs:(id)a3 forBundleID:(id)a4 logKey:(id)a5
+- (BOOL)reconcileUnfinishedTransactionIDs:(id)ds forBundleID:(id)d logKey:(id)key
 {
-  v8 = a3;
-  v29 = a5;
-  v9 = a4;
-  v28 = [(InAppReceiptDatabaseSession *)self cacheIncludesFinishedConsumablesForBundleID:v9];
-  v10 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:v9 comparisonType:1];
+  dsCopy = ds;
+  keyCopy = key;
+  dCopy = d;
+  v28 = [(InAppReceiptDatabaseSession *)self cacheIncludesFinishedConsumablesForBundleID:dCopy];
+  v10 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:dCopy comparisonType:1];
 
   v11 = [SQLiteComparisonPredicate predicateWithProperty:@"is_finished" equalToValue:&__kCFBooleanFalse];
   v12 = &_s10Foundation3URLVSEAAMc_ptr;
-  if ([v8 count])
+  if ([dsCopy count])
   {
-    v13 = [v8 allObjects];
-    [SQLiteContainsPredicate containsPredicateWithProperty:@"transaction_id" values:v13];
+    allObjects = [dsCopy allObjects];
+    [SQLiteContainsPredicate containsPredicateWithProperty:@"transaction_id" values:allObjects];
     v14 = v11;
     v16 = v15 = v10;
 
@@ -223,136 +223,136 @@
   v35[1] = @"product_type";
   v35[2] = @"is_finished";
   v22 = [v12[153] arrayWithObjects:v35 count:3];
-  v23 = [(InAppReceiptDatabaseSession *)self connection];
-  v24 = [(SQLiteEntity *)InAppTransactionEntity queryOnConnection:v23 predicate:v20];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v24 = [(SQLiteEntity *)InAppTransactionEntity queryOnConnection:connection predicate:v20];
 
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10007129C;
   v30[3] = &unk_100382EB8;
-  v31 = v8;
-  v32 = self;
+  v31 = dsCopy;
+  selfCopy = self;
   v34 = v28;
-  v33 = v29;
-  v25 = v29;
-  v26 = v8;
+  v33 = keyCopy;
+  v25 = keyCopy;
+  v26 = dsCopy;
   [v24 enumeratePersistentIDsAndProperties:v22 usingBlock:v30];
 
   return 1;
 }
 
-- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)a3
+- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(InAppReceiptDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:connection predicate:v4];
 
-  LOBYTE(v5) = [v6 deleteAllEntities];
-  return v5;
+  LOBYTE(connection) = [v6 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)removeCachedLegacyTransactionWithID:(id)a3 forBundleID:(id)a4
+- (BOOL)removeCachedLegacyTransactionWithID:(id)d forBundleID:(id)iD
 {
-  v6 = a3;
-  v7 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a4];
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_id" equalToValue:v6];
+  dCopy = d;
+  v7 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:iD];
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_id" equalToValue:dCopy];
 
   v14[0] = v7;
   v14[1] = v8;
   v9 = [NSArray arrayWithObjects:v14 count:2];
   v10 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v9];
 
-  v11 = [(InAppReceiptDatabaseSession *)self connection];
-  v12 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:v11 predicate:v10];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v12 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:connection predicate:v10];
 
-  LOBYTE(v11) = [v12 deleteAllEntities];
-  return v11;
+  LOBYTE(connection) = [v12 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)removeReceiptsForBundleID:(id)a3
+- (BOOL)removeReceiptsForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:v4];
-  v6 = [(InAppReceiptDatabaseSession *)self connection];
-  v7 = [(SQLiteEntity *)InAppReceiptPropertiesDatabaseEntity queryOnConnection:v6 predicate:v5];
+  dCopy = d;
+  v5 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:dCopy];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v7 = [(SQLiteEntity *)InAppReceiptPropertiesDatabaseEntity queryOnConnection:connection predicate:v5];
 
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:v4];
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:dCopy];
 
-  v9 = [(InAppReceiptDatabaseSession *)self connection];
-  v10 = [(SQLiteEntity *)InAppTransactionEntity queryOnConnection:v9 predicate:v8];
+  connection2 = [(InAppReceiptDatabaseSession *)self connection];
+  v10 = [(SQLiteEntity *)InAppTransactionEntity queryOnConnection:connection2 predicate:v8];
 
   if ([v7 deleteAllEntities])
   {
-    v11 = [v10 deleteAllEntities];
+    deleteAllEntities = [v10 deleteAllEntities];
   }
 
   else
   {
-    v11 = 0;
+    deleteAllEntities = 0;
   }
 
-  return v11;
+  return deleteAllEntities;
 }
 
-- (BOOL)removeStatusesForBundleID:(id)a3
+- (BOOL)removeStatusesForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(InAppReceiptDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppSubscriptionStatusDatabaseEntity queryOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppSubscriptionStatusDatabaseEntity queryOnConnection:connection predicate:v4];
 
-  LOBYTE(v5) = [v6 deleteAllEntities];
-  return v5;
+  LOBYTE(connection) = [v6 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)setAppTransaction:(id)a3 revision:(int64_t)a4 forBundleID:(id)a5 bundleVersion:(id)a6 token:(id)a7
+- (BOOL)setAppTransaction:(id)transaction revision:(int64_t)revision forBundleID:(id)d bundleVersion:(id)version token:(id)token
 {
   v23[0] = @"bundle_id";
   v23[1] = @"bundle_version";
-  v24[0] = a5;
-  v24[1] = a6;
+  v24[0] = d;
+  v24[1] = version;
   v23[2] = @"last_updated";
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  tokenCopy = token;
+  versionCopy = version;
+  dCopy = d;
+  transactionCopy = transaction;
   v16 = +[NSDate now];
   v24[2] = v16;
-  v24[3] = v15;
+  v24[3] = transactionCopy;
   v23[3] = @"receipt";
   v23[4] = @"revision";
-  v17 = [NSNumber numberWithInteger:a4];
+  v17 = [NSNumber numberWithInteger:revision];
   v23[5] = @"token";
   v24[4] = v17;
-  v24[5] = v12;
+  v24[5] = tokenCopy;
   v18 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:6];
 
   v19 = [AppTransactionDatabaseEntity alloc];
-  v20 = [(InAppReceiptDatabaseSession *)self connection];
-  v21 = [(SQLiteEntity *)v19 initWithPropertyValues:v18 onConnection:v20];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v21 = [(SQLiteEntity *)v19 initWithPropertyValues:v18 onConnection:connection];
 
-  LOBYTE(v20) = [(SQLiteEntity *)v21 existsInDatabase];
-  return v20;
+  LOBYTE(connection) = [(SQLiteEntity *)v21 existsInDatabase];
+  return connection;
 }
 
-- (BOOL)removeAppTransactionForBundleID:(id)a3
+- (BOOL)removeAppTransactionForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(InAppReceiptDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)AppTransactionDatabaseEntity queryOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)AppTransactionDatabaseEntity queryOnConnection:connection predicate:v4];
 
-  LOBYTE(v5) = [v6 deleteAllEntities];
-  return v5;
+  LOBYTE(connection) = [v6 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)setFinishedForTransactionID:(id)a3 bundleID:(id)a4 logKey:(id)a5
+- (BOOL)setFinishedForTransactionID:(id)d bundleID:(id)iD logKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(InAppReceiptDatabaseSession *)self cacheIncludesFinishedConsumablesForBundleID:v9];
-  v12 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:v9 comparisonType:1];
+  keyCopy = key;
+  iDCopy = iD;
+  dCopy = d;
+  v11 = [(InAppReceiptDatabaseSession *)self cacheIncludesFinishedConsumablesForBundleID:iDCopy];
+  v12 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" value:iDCopy comparisonType:1];
 
-  v13 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_id" value:v10 comparisonType:1];
+  v13 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_id" value:dCopy comparisonType:1];
 
   v14 = [SQLiteComparisonPredicate predicateWithProperty:@"is_finished" value:&__kCFBooleanFalse comparisonType:1];
   v26[0] = v12;
@@ -361,8 +361,8 @@
   v15 = [NSArray arrayWithObjects:v26 count:3];
   v16 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v15];
 
-  v17 = [(InAppReceiptDatabaseSession *)self connection];
-  v18 = [(SQLiteEntity *)InAppTransactionEntity queryOnConnection:v17 predicate:v16];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v18 = [(SQLiteEntity *)InAppTransactionEntity queryOnConnection:connection predicate:v16];
 
   v25 = @"product_type";
   v19 = [NSArray arrayWithObjects:&v25 count:1];
@@ -372,37 +372,37 @@
   v22[3] = &unk_100382EE0;
   v24 = v11;
   v22[4] = self;
-  v23 = v8;
-  v20 = v8;
+  v23 = keyCopy;
+  v20 = keyCopy;
   [v18 enumeratePersistentIDsAndProperties:v19 usingBlock:v22];
 
   return 1;
 }
 
-- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)a3 token:(id)a4
+- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)d token:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  tokenCopy = token;
+  dCopy = d;
   v8 = [NSMutableDictionary dictionaryWithCapacity:3];
-  [v8 setObject:v7 forKeyedSubscript:@"bundle_id"];
+  [v8 setObject:dCopy forKeyedSubscript:@"bundle_id"];
 
-  [v8 setObject:v6 forKeyedSubscript:@"token"];
+  [v8 setObject:tokenCopy forKeyedSubscript:@"token"];
   v9 = +[NSDate now];
   [v8 setObject:v9 forKeyedSubscript:@"last_updated"];
 
   v10 = [InAppPendingTransactionsPropertiesDatabaseEntity alloc];
-  v11 = [(InAppReceiptDatabaseSession *)self connection];
-  v12 = [(SQLiteEntity *)v10 initWithPropertyValues:v8 onConnection:v11];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v12 = [(SQLiteEntity *)v10 initWithPropertyValues:v8 onConnection:connection];
 
-  LOBYTE(v11) = [(SQLiteEntity *)v12 existsInDatabase];
-  return v11;
+  LOBYTE(connection) = [(SQLiteEntity *)v12 existsInDatabase];
+  return connection;
 }
 
-- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)a3
+- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(InAppReceiptDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity anyOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity anyOnConnection:connection predicate:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -419,22 +419,22 @@
   return v8;
 }
 
-- (BOOL)setTransactionInfo:(id)a3 unfinishedIDs:(id)a4 forBundleID:(id)a5 logKey:(id)a6 containsSubscriptions:(BOOL *)a7
+- (BOOL)setTransactionInfo:(id)info unfinishedIDs:(id)ds forBundleID:(id)d logKey:(id)key containsSubscriptions:(BOOL *)subscriptions
 {
-  v11 = a3;
-  v12 = a4;
-  v64 = a5;
-  v60 = a6;
-  if (a7)
+  infoCopy = info;
+  dsCopy = ds;
+  dCopy = d;
+  keyCopy = key;
+  if (subscriptions)
   {
-    *a7 = 0;
+    *subscriptions = 0;
   }
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v13 = v11;
+  v13 = infoCopy;
   v14 = [v13 countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (!v14)
   {
@@ -443,14 +443,14 @@
   }
 
   v16 = v14;
-  v59 = a7;
+  subscriptionsCopy = subscriptions;
   v17 = *v70;
   *&v15 = 138543362;
   v58 = v15;
   v61 = *v70;
   v18 = 1;
   v62 = v13;
-  v63 = v12;
+  v63 = dsCopy;
   while (2)
   {
     v19 = 0;
@@ -479,7 +479,7 @@
         if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v74 = v60;
+          v74 = keyCopy;
           v75 = 2114;
           v76 = v23;
           _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "[%{public}@] Error parsing payload from transaction: %{public}@", buf, 0x16u);
@@ -503,7 +503,7 @@
         if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_ERROR))
         {
           *buf = v58;
-          v74 = v60;
+          v74 = keyCopy;
           _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "[%{public}@] Invalid transaction payload. ID = nil", buf, 0xCu);
         }
 
@@ -534,9 +534,9 @@
 
       [v26 setObject:v31 forKeyedSubscript:{@"is_upgraded", v58}];
 
-      if (v12)
+      if (dsCopy)
       {
-        v32 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v12 containsObject:v25] ^ 1);
+        v32 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [dsCopy containsObject:v25] ^ 1);
         [v26 setObject:v32 forKeyedSubscript:@"is_finished"];
       }
 
@@ -558,9 +558,9 @@
         if ([v33 isEqual:@"Auto-Renewable Subscription"])
         {
           [v26 setObject:&off_1003A1528 forKeyedSubscript:@"product_type"];
-          if (v59)
+          if (subscriptionsCopy)
           {
-            *v59 = 1;
+            *subscriptionsCopy = 1;
           }
 
           goto LABEL_30;
@@ -608,7 +608,7 @@ LABEL_30:
       }
 
       [v26 setObject:v20 forKeyedSubscript:@"receipt"];
-      v43 = [(InAppReceiptDatabaseSession *)self transactionForID:v25 bundleID:v64];
+      v43 = [(InAppReceiptDatabaseSession *)self transactionForID:v25 bundleID:dCopy];
       if (v43)
       {
         if (qword_1003D4918 != -1)
@@ -620,18 +620,18 @@ LABEL_30:
         if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138543619;
-          v74 = v60;
+          v74 = keyCopy;
           v75 = 2113;
           v76 = v25;
           _os_log_debug_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "[%{public}@] Updating transaction info for %{private}@", buf, 0x16u);
         }
 
         v45 = [InAppTransactionEntity alloc];
-        v46 = [v43 databaseID];
-        v47 = [(InAppReceiptDatabaseSession *)self connection];
-        v48 = [(SQLiteEntity *)v45 initWithPersistentID:v46 onConnection:v47];
+        databaseID = [v43 databaseID];
+        connection = [(InAppReceiptDatabaseSession *)self connection];
+        v48 = [(SQLiteEntity *)v45 initWithPersistentID:databaseID onConnection:connection];
 
-        v49 = [(SQLiteEntity *)v48 setValuesWithDictionary:v26];
+        existsInDatabase = [(SQLiteEntity *)v48 setValuesWithDictionary:v26];
       }
 
       else
@@ -645,24 +645,24 @@ LABEL_30:
         if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138543619;
-          v74 = v60;
+          v74 = keyCopy;
           v75 = 2113;
           v76 = v25;
           _os_log_debug_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEBUG, "[%{public}@] Writing new transaction info for %{private}@", buf, 0x16u);
         }
 
         v51 = [InAppTransactionEntity alloc];
-        v52 = [(InAppReceiptDatabaseSession *)self connection];
-        v48 = [(SQLiteEntity *)v51 initWithPropertyValues:v26 onConnection:v52];
+        connection2 = [(InAppReceiptDatabaseSession *)self connection];
+        v48 = [(SQLiteEntity *)v51 initWithPropertyValues:v26 onConnection:connection2];
 
-        v49 = [(SQLiteEntity *)v48 existsInDatabase];
+        existsInDatabase = [(SQLiteEntity *)v48 existsInDatabase];
       }
 
-      v53 = v49;
+      v53 = existsInDatabase;
 
       v54 = v67 & v53;
       v13 = v62;
-      v12 = v63;
+      dsCopy = v63;
       if ((v54 & 1) == 0)
       {
         if (qword_1003D4918 != -1)
@@ -674,7 +674,7 @@ LABEL_30:
         if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543619;
-          v74 = v60;
+          v74 = keyCopy;
           v75 = 2113;
           v76 = v25;
           _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "[%{public}@] Could not write transaction info for %{private}@", buf, 0x16u);
@@ -709,47 +709,47 @@ LABEL_65:
   return v18;
 }
 
-- (BOOL)setRevision:(id)a3 includesFinishedConsumables:(BOOL)a4 token:(id)a5 forBundleID:(id)a6
+- (BOOL)setRevision:(id)revision includesFinishedConsumables:(BOOL)consumables token:(id)token forBundleID:(id)d
 {
-  v7 = a4;
-  v21[0] = a6;
+  consumablesCopy = consumables;
+  v21[0] = d;
   v20[0] = @"bundle_id";
   v20[1] = @"finished_consumables";
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [NSNumber numberWithBool:v7];
+  dCopy = d;
+  tokenCopy = token;
+  revisionCopy = revision;
+  v13 = [NSNumber numberWithBool:consumablesCopy];
   v21[1] = v13;
-  v21[2] = v12;
+  v21[2] = revisionCopy;
   v20[2] = @"revision";
   v20[3] = @"token";
-  v21[3] = v11;
+  v21[3] = tokenCopy;
   v20[4] = @"last_updated";
   v14 = +[NSDate now];
   v21[4] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:5];
 
   v16 = [InAppReceiptPropertiesDatabaseEntity alloc];
-  v17 = [(InAppReceiptDatabaseSession *)self connection];
-  v18 = [(SQLiteEntity *)v16 initWithPropertyValues:v15 onConnection:v17];
+  connection = [(InAppReceiptDatabaseSession *)self connection];
+  v18 = [(SQLiteEntity *)v16 initWithPropertyValues:v15 onConnection:connection];
 
-  LOBYTE(v17) = [(SQLiteEntity *)v18 existsInDatabase];
-  return v17;
+  LOBYTE(connection) = [(SQLiteEntity *)v18 existsInDatabase];
+  return connection;
 }
 
-- (BOOL)setSubscriptionRenewalInfo:(id)a3 forGroupID:(id)a4 bundleID:(id)a5 gracePeriodExpirationDate:(id)a6 logKey:(id)a7
+- (BOOL)setSubscriptionRenewalInfo:(id)info forGroupID:(id)d bundleID:(id)iD gracePeriodExpirationDate:(id)date logKey:(id)key
 {
-  v11 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  keyCopy = key;
   v12 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v11;
+  obj = infoCopy;
   v13 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v13)
   {
@@ -786,45 +786,45 @@ LABEL_65:
   v22 = v40;
   if (v22)
   {
-    v24 = v36;
-    v23 = v37;
+    v24 = dateCopy;
+    v23 = iDCopy;
     if (qword_1003D4918 != -1)
     {
       sub_1002D10E8();
     }
 
-    v25 = v38;
-    v26 = v35;
+    v25 = dCopy;
+    v26 = keyCopy;
     if (os_log_type_enabled(qword_1003D48F8, OS_LOG_TYPE_ERROR))
     {
       sub_1002D127C();
     }
 
-    v27 = 0;
+    existsInDatabase = 0;
   }
 
   else
   {
     v28 = [NSMutableDictionary dictionaryWithCapacity:5];
-    v23 = v37;
-    [v28 setObject:v37 forKeyedSubscript:@"bundle_id"];
-    v25 = v38;
-    [v28 setObject:v38 forKeyedSubscript:@"subscription_group_id"];
+    v23 = iDCopy;
+    [v28 setObject:iDCopy forKeyedSubscript:@"bundle_id"];
+    v25 = dCopy;
+    [v28 setObject:dCopy forKeyedSubscript:@"subscription_group_id"];
     v29 = +[NSDate now];
     [v28 setObject:v29 forKeyedSubscript:@"last_updated"];
 
     [v28 setObject:v21 forKeyedSubscript:@"renewal_info"];
-    v24 = v36;
-    [v28 setObject:v36 forKeyedSubscript:@"grace_period_expiration_date"];
+    v24 = dateCopy;
+    [v28 setObject:dateCopy forKeyedSubscript:@"grace_period_expiration_date"];
     v30 = [InAppSubscriptionStatusDatabaseEntity alloc];
-    v31 = [(InAppReceiptDatabaseSession *)self connection];
-    v32 = [(SQLiteEntity *)v30 initWithPropertyValues:v28 onConnection:v31];
+    connection = [(InAppReceiptDatabaseSession *)self connection];
+    v32 = [(SQLiteEntity *)v30 initWithPropertyValues:v28 onConnection:connection];
 
-    v27 = [(SQLiteEntity *)v32 existsInDatabase];
-    v26 = v35;
+    existsInDatabase = [(SQLiteEntity *)v32 existsInDatabase];
+    v26 = keyCopy;
   }
 
-  return v27;
+  return existsInDatabase;
 }
 
 @end

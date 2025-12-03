@@ -6,8 +6,8 @@
 
 - (BOOL)accessibilityAppliesInvertColorsInDarkUI
 {
-  v2 = self;
-  v3 = [(UIViewMobileMailInvertColorsAccessibility *)v2 backgroundColor];
+  selfCopy = self;
+  backgroundColor = [(UIViewMobileMailInvertColorsAccessibility *)selfCopy backgroundColor];
   AXColorGetLuma();
   v5 = v4;
 
@@ -18,8 +18,8 @@
 
   else
   {
-    v6 = [(UIViewMobileMailInvertColorsAccessibility *)v2 subviews];
-    v7 = [v6 firstObject];
+    subviews = [(UIViewMobileMailInvertColorsAccessibility *)selfCopy subviews];
+    firstObject = [subviews firstObject];
     AXSafeClassFromString();
     isKindOfClass = objc_opt_isKindOfClass();
   }

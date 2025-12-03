@@ -1,5 +1,5 @@
 @interface HMDAppleMediaAccessoryAdvertisement
-- (HMDAppleMediaAccessoryAdvertisement)initWithOutputDevice:(id)a3 device:(id)a4;
+- (HMDAppleMediaAccessoryAdvertisement)initWithOutputDevice:(id)device device:(id)a4;
 - (id)description;
 @end
 
@@ -11,18 +11,18 @@
   v8.receiver = self;
   v8.super_class = HMDAppleMediaAccessoryAdvertisement;
   v4 = [(HMDMediaAccessoryAdvertisement *)&v8 description];
-  v5 = [(HMDAppleMediaAccessoryAdvertisement *)self device];
-  v6 = [v3 stringWithFormat:@"[ %@, device = %@]", v4, v5];
+  device = [(HMDAppleMediaAccessoryAdvertisement *)self device];
+  v6 = [v3 stringWithFormat:@"[ %@, device = %@]", v4, device];
 
   return v6;
 }
 
-- (HMDAppleMediaAccessoryAdvertisement)initWithOutputDevice:(id)a3 device:(id)a4
+- (HMDAppleMediaAccessoryAdvertisement)initWithOutputDevice:(id)device device:(id)a4
 {
   v7 = a4;
   v11.receiver = self;
   v11.super_class = HMDAppleMediaAccessoryAdvertisement;
-  v8 = [(HMDMediaAccessoryAdvertisement *)&v11 initWithOutputDevice:a3];
+  v8 = [(HMDMediaAccessoryAdvertisement *)&v11 initWithOutputDevice:device];
   v9 = v8;
   if (v8)
   {

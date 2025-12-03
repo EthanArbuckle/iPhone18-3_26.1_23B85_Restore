@@ -1,63 +1,63 @@
 @interface PXAssetLivePhotoUIViewTile
 - (CGSize)_targetSize;
 - (UIView)view;
-- (void)_handleLivePhotoResult:(id)a3 info:(id)a4 expectedRequestCount:(unint64_t)a5 expectedRequestID:(int64_t)a6;
+- (void)_handleLivePhotoResult:(id)result info:(id)info expectedRequestCount:(unint64_t)count expectedRequestID:(int64_t)d;
 - (void)_requestLivePhotoIfNeeded;
-- (void)_setPlayerItem:(id)a3;
+- (void)_setPlayerItem:(id)item;
 - (void)_updateLivePhotoView;
 - (void)becomeReusable;
-- (void)setCornerRadius:(double)a3;
-- (void)setImageRequester:(id)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setImageRequester:(id)requester;
 @end
 
 @implementation PXAssetLivePhotoUIViewTile
 
-- (void)_handleLivePhotoResult:(id)a3 info:(id)a4 expectedRequestCount:(unint64_t)a5 expectedRequestID:(int64_t)a6
+- (void)_handleLivePhotoResult:(id)result info:(id)info expectedRequestCount:(unint64_t)count expectedRequestID:(int64_t)d
 {
-  v10 = a3;
-  v11 = a4;
-  if (self->_requestCount == a5)
+  resultCopy = result;
+  infoCopy = info;
+  if (self->_requestCount == count)
   {
     livePhotoRequestID = self->_livePhotoRequestID;
-    if (livePhotoRequestID == a6 && livePhotoRequestID != 0)
+    if (livePhotoRequestID == d && livePhotoRequestID != 0)
     {
-      if (v10)
+      if (resultCopy)
       {
-        v14 = [v10 image];
-        v15 = [v10 videoAsset];
-        [v10 photoTime];
+        image = [resultCopy image];
+        videoAsset = [resultCopy videoAsset];
+        [resultCopy photoTime];
         Seconds = CMTimeGetSeconds(&time);
-        [v14 imageOrientation];
+        [image imageOrientation];
         v17 = PLExifOrientationFromImageOrientation();
-        [v10 targetSize];
+        [resultCopy targetSize];
         v20 = v19;
         v21 = v18;
         if (v19 == *MEMORY[0x1E695F060] && v18 == *(MEMORY[0x1E695F060] + 8))
         {
-          v23 = [(ISLivePhotoUIView *)self->_livePhotoView px_screen];
-          v24 = v23;
-          if (v23)
+          px_screen = [(ISLivePhotoUIView *)self->_livePhotoView px_screen];
+          v24 = px_screen;
+          if (px_screen)
           {
-            v25 = v23;
+            px_mainScreen = px_screen;
           }
 
           else
           {
-            v25 = [MEMORY[0x1E69DCEB0] px_mainScreen];
+            px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
           }
 
-          v26 = v25;
+          v26 = px_mainScreen;
 
           [v26 bounds];
           [v26 scale];
           PXSizeScale();
         }
 
-        v27 = [v10 hasPhotoColorAdjustments];
-        v28 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:v15 UIImage:v14 photoTime:v17 photoEXIFOrientation:v27 options:Seconds];
+        hasPhotoColorAdjustments = [resultCopy hasPhotoColorAdjustments];
+        v28 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:videoAsset UIImage:image photoTime:v17 photoEXIFOrientation:hasPhotoColorAdjustments options:Seconds];
         v29 = [MEMORY[0x1E69C1B00] playerItemWithAsset:v28 targetSize:{v20, v21}];
-        v30 = [v10 videoComposition];
-        [v29 setVideoComposition:v30];
+        videoComposition = [resultCopy videoComposition];
+        [v29 setVideoComposition:videoComposition];
       }
 
       else
@@ -86,12 +86,12 @@
 
 - (void)_requestLivePhotoIfNeeded
 {
-  v3 = [(PXAssetLivePhotoUIViewTile *)self imageRequester];
-  v4 = [v3 mediaProvider];
+  imageRequester = [(PXAssetLivePhotoUIViewTile *)self imageRequester];
+  mediaProvider = [imageRequester mediaProvider];
 
-  if (v4)
+  if (mediaProvider)
   {
-    [v4 cancelImageRequest:self->_livePhotoRequestID];
+    [mediaProvider cancelImageRequest:self->_livePhotoRequestID];
     v5 = objc_alloc_init(PXLivePhotoRequestOptions);
     [(PXLivePhotoRequestOptions *)v5 setNetworkAccessAllowed:1];
     [(PXLivePhotoRequestOptions *)v5 setDeliveryMode:1];
@@ -102,8 +102,8 @@
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    v7 = [(PXAssetLivePhotoUIViewTile *)self imageRequester];
-    v8 = [v7 asset];
+    imageRequester2 = [(PXAssetLivePhotoUIViewTile *)self imageRequester];
+    asset = [imageRequester2 asset];
     [(PXAssetLivePhotoUIViewTile *)self _targetSize];
     v10 = v9;
     v12 = v11;
@@ -114,7 +114,7 @@
     objc_copyWeak(v15, &location);
     v15[1] = v6;
     v14[4] = &v16;
-    v13 = [v4 requestLivePhotoForAsset:v8 targetSize:1 contentMode:v5 options:v14 resultHandler:{v10, v12}];
+    v13 = [mediaProvider requestLivePhotoForAsset:asset targetSize:1 contentMode:v5 options:v14 resultHandler:{v10, v12}];
 
     v17[3] = v13;
     self->_livePhotoRequestID = v13;
@@ -161,22 +161,22 @@ void __55__PXAssetLivePhotoUIViewTile__requestLivePhotoIfNeeded__block_invoke_2(
   [WeakRetained _handleLivePhotoResult:v8 info:*(a1 + 40) expectedRequestCount:*(a1 + 64) expectedRequestID:*(*(*(a1 + 48) + 8) + 24)];
 }
 
-- (void)_setPlayerItem:(id)a3
+- (void)_setPlayerItem:(id)item
 {
-  v5 = a3;
-  if (self->__playerItem != v5)
+  itemCopy = item;
+  if (self->__playerItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__playerItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->__playerItem, item);
     [(PXAssetLivePhotoUIViewTile *)self _updateLivePhotoView];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
 - (void)_updateLivePhotoView
 {
-  v13 = [(PXAssetLivePhotoUIViewTile *)self _playerItem];
-  if (v13)
+  _playerItem = [(PXAssetLivePhotoUIViewTile *)self _playerItem];
+  if (_playerItem)
   {
     if (!self->_livePhotoPlayer)
     {
@@ -186,7 +186,7 @@ void __55__PXAssetLivePhotoUIViewTile__requestLivePhotoIfNeeded__block_invoke_2(
 
       [(ISLivePhotoPlayer *)self->_livePhotoPlayer setAudioEnabled:0];
       [(ISLivePhotoUIView *)self->_livePhotoView setPlayer:self->_livePhotoPlayer];
-      [(ISLivePhotoPlayer *)self->_livePhotoPlayer setPlayerItem:v13];
+      [(ISLivePhotoPlayer *)self->_livePhotoPlayer setPlayerItem:_playerItem];
       [(ISLivePhotoPlayer *)self->_livePhotoPlayer startPlaybackWithStyleWhenReady:4];
     }
   }
@@ -201,41 +201,41 @@ void __55__PXAssetLivePhotoUIViewTile__requestLivePhotoIfNeeded__block_invoke_2(
   [(PXAssetLivePhotoUIViewTile *)self cornerRadius];
   if (v6 <= 0.0)
   {
-    v12 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-    [v12 setCornerRadius:0.0];
+    layer = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+    [layer setCornerRadius:0.0];
   }
 
   else
   {
     [(PXAssetLivePhotoUIViewTile *)self cornerRadius];
     v8 = v7;
-    v9 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-    [v9 setCornerRadius:v8];
+    layer2 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+    [layer2 setCornerRadius:v8];
 
     v10 = *MEMORY[0x1E69796E8];
-    v11 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-    [v11 setCornerCurve:v10];
+    layer3 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+    [layer3 setCornerCurve:v10];
 
-    v12 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-    [v12 setAllowsGroupOpacity:0];
+    layer = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+    [layer setAllowsGroupOpacity:0];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXAssetLivePhotoUIViewTile *)self _updateLivePhotoView];
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v9 = a3;
+  requesterCopy = requester;
   v5 = self->_imageRequester;
   v6 = v5;
-  if (v5 == v9)
+  if (v5 == requesterCopy)
   {
   }
 
@@ -245,10 +245,10 @@ void __55__PXAssetLivePhotoUIViewTile__requestLivePhotoIfNeeded__block_invoke_2(
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(PXImageRequester *)self->_imageRequester mediaProvider];
-      [v8 cancelImageRequest:self->_livePhotoRequestID];
+      mediaProvider = [(PXImageRequester *)self->_imageRequester mediaProvider];
+      [mediaProvider cancelImageRequest:self->_livePhotoRequestID];
 
-      objc_storeStrong(&self->_imageRequester, a3);
+      objc_storeStrong(&self->_imageRequester, requester);
       self->_livePhotoRequestID = 0;
       [(PXAssetLivePhotoUIViewTile *)self _requestLivePhotoIfNeeded];
       [(PXAssetLivePhotoUIViewTile *)self _updateLivePhotoView];
@@ -268,17 +268,17 @@ void __55__PXAssetLivePhotoUIViewTile__requestLivePhotoIfNeeded__block_invoke_2(
 
     [(ISLivePhotoUIView *)self->_livePhotoView setAutoresizingMask:18];
     v7 = +[PXAssetsSceneSettings sharedInstance];
-    v8 = [v7 showBordersOnAnimatedContent];
+    showBordersOnAnimatedContent = [v7 showBordersOnAnimatedContent];
 
-    if (v8)
+    if (showBordersOnAnimatedContent)
     {
-      v9 = [MEMORY[0x1E69DC888] greenColor];
-      v10 = [v9 CGColor];
-      v11 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-      [v11 setBorderColor:v10];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      cGColor = [greenColor CGColor];
+      layer = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+      [layer setBorderColor:cGColor];
 
-      v12 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-      [v12 setBorderWidth:4.0];
+      layer2 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+      [layer2 setBorderWidth:4.0];
     }
 
     [(PXAssetLivePhotoUIViewTile *)self _updateLivePhotoView];

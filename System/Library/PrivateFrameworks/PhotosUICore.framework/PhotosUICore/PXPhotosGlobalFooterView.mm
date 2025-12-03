@@ -1,16 +1,16 @@
 @interface PXPhotosGlobalFooterView
 - (BOOL)_shouldUseActionLinkInSubtitle1;
 - (BOOL)_shouldUseActionLinkInSubtitle2;
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXPhotosGlobalFooterView)initWithFrame:(CGRect)a3 needsWorkaroundFor53118165:(BOOL)a4;
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXPhotosGlobalFooterView)initWithFrame:(CGRect)frame needsWorkaroundFor53118165:(BOOL)for53118165;
 - (PXPhotosGlobalFooterViewDelegate)delegate;
 - (PXPhotosGlobalFooterViewLayoutDelegate)layoutDelegate;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_animatedIconCrossedGridCycleBoundary;
-- (void)_configurePhotoCollectionGlobalFooterLabel:(id)a3 withFont:(id)a4 textColor:(id)a5;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)_performActionFromView:(id)a3 sourceRect:(CGRect)a4;
+- (void)_configurePhotoCollectionGlobalFooterLabel:(id)label withFont:(id)font textColor:(id)color;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)_performActionFromView:(id)view sourceRect:(CGRect)rect;
 - (void)_updateAccessory;
 - (void)_updateAnimatedIcon;
 - (void)_updateExtendedTitle;
@@ -18,17 +18,17 @@
 - (void)_updateInternalMessageSubtitle;
 - (void)_updateLabelColor;
 - (void)_updateProcessingView;
-- (void)_updateProgressAnimated:(BOOL)a3;
+- (void)_updateProgressAnimated:(BOOL)animated;
 - (void)_updateSubtitle1;
 - (void)_updateSubtitle2;
 - (void)_updateTitle;
 - (void)_updateTopAccessory;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDelegate:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setHidden:(BOOL)hidden;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation PXPhotosGlobalFooterView
@@ -47,12 +47,12 @@
   return WeakRetained;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 contentType] == 2 && (objc_msgSend(v9, "tagIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"com.apple.photos.ui.link-action"), v11, v12))
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  if ([itemCopy contentType] == 2 && (objc_msgSend(itemCopy, "tagIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"com.apple.photos.ui.link-action"), v11, v12))
   {
     objc_initWeak(&location, self);
     v13 = MEMORY[0x1E69DC628];
@@ -60,8 +60,8 @@
     v16[1] = 3221225472;
     v16[2] = __76__PXPhotosGlobalFooterView_textView_primaryActionForTextItem_defaultAction___block_invoke;
     v16[3] = &unk_1E774A2F8;
-    v17 = v9;
-    v18 = v8;
+    v17 = itemCopy;
+    v18 = viewCopy;
     objc_copyWeak(&v19, &location);
     v14 = [v13 actionWithHandler:v16];
     objc_destroyWeak(&v19);
@@ -96,56 +96,56 @@ void __76__PXPhotosGlobalFooterView_textView_primaryActionForTextItem_defaultAct
   [WeakRetained _performActionFromView:a1[5] sourceRect:{v10, v12, v14, v16}];
 }
 
-- (void)_performActionFromView:(id)a3 sourceRect:(CGRect)a4
+- (void)_performActionFromView:(id)view sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v11 = [v10 action];
-  if (v11)
+  viewCopy = view;
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  action = [viewModel action];
+  if (action)
   {
-    v12 = [v10 actionConfirmationAlertTitle];
-    if (v12 && (v13 = v12, [v10 actionConfirmationAlertButtonTitle], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+    actionConfirmationAlertTitle = [viewModel actionConfirmationAlertTitle];
+    if (actionConfirmationAlertTitle && (v13 = actionConfirmationAlertTitle, [viewModel actionConfirmationAlertButtonTitle], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
     {
       v15 = PLUserStatusUIGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v10 actionTitle];
+        actionTitle = [viewModel actionTitle];
         *buf = 138543362;
-        v43 = v16;
+        v43 = actionTitle;
         _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "Presenting confirmation alert for action with title: %{public}@", buf, 0xCu);
       }
 
       v17 = MEMORY[0x1E69DC650];
-      v18 = [v10 actionConfirmationAlertTitle];
-      v19 = [v17 alertControllerWithTitle:v18 message:0 preferredStyle:0];
+      actionConfirmationAlertTitle2 = [viewModel actionConfirmationAlertTitle];
+      v19 = [v17 alertControllerWithTitle:actionConfirmationAlertTitle2 message:0 preferredStyle:0];
 
-      v20 = [v10 actionStyle];
-      if (v20 >= 3)
+      actionStyle = [viewModel actionStyle];
+      if (actionStyle >= 3)
       {
-        v33 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"UIAlertActionStyle UIAlertActionStyleFromPXAlertActionStyle(PXAlertActionStyle)"];
-        [v33 handleFailureInFunction:v34 file:@"PXAlertActionStyle.h" lineNumber:42 description:@"Code which should be unreachable has been reached"];
+        [currentHandler handleFailureInFunction:v34 file:@"PXAlertActionStyle.h" lineNumber:42 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
-      v21 = v20;
+      v21 = actionStyle;
       v22 = MEMORY[0x1E69DC648];
-      v23 = [v10 actionConfirmationAlertButtonTitle];
+      actionConfirmationAlertButtonTitle = [viewModel actionConfirmationAlertButtonTitle];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __62__PXPhotosGlobalFooterView__performActionFromView_sourceRect___block_invoke;
       v38[3] = &unk_1E774A2A0;
-      v24 = v10;
+      v24 = viewModel;
       v39 = v24;
-      v40 = self;
-      v41 = v11;
-      v25 = [v22 actionWithTitle:v23 style:v21 handler:v38];
+      selfCopy = self;
+      v41 = action;
+      v25 = [v22 actionWithTitle:actionConfirmationAlertButtonTitle style:v21 handler:v38];
       [v19 addAction:v25];
 
       v26 = MEMORY[0x1E69DC648];
@@ -155,28 +155,28 @@ void __76__PXPhotosGlobalFooterView_textView_primaryActionForTextItem_defaultAct
       v35[2] = __62__PXPhotosGlobalFooterView__performActionFromView_sourceRect___block_invoke_396;
       v35[3] = &unk_1E774A2C8;
       v36 = v24;
-      v37 = self;
+      selfCopy2 = self;
       v28 = [v26 actionWithTitle:v27 style:1 handler:v35];
       [v19 addAction:v28];
 
-      v29 = [v19 popoverPresentationController];
-      [v29 setSourceView:v9];
+      popoverPresentationController = [v19 popoverPresentationController];
+      [popoverPresentationController setSourceView:viewCopy];
 
-      v30 = [v19 popoverPresentationController];
-      [v30 setSourceRect:{x, y, width, height}];
+      popoverPresentationController2 = [v19 popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
-      v31 = [v19 popoverPresentationController];
-      [v31 setPermittedArrowDirections:2];
+      popoverPresentationController3 = [v19 popoverPresentationController];
+      [popoverPresentationController3 setPermittedArrowDirections:2];
 
-      v32 = [(PXPhotosGlobalFooterView *)self delegate];
-      [v32 photosGlobalFooterView:self presentViewController:v19];
+      delegate = [(PXPhotosGlobalFooterView *)self delegate];
+      [delegate photosGlobalFooterView:self presentViewController:v19];
 
       self->_isPresentingAlert = 1;
     }
 
     else
     {
-      v11[2](v11);
+      action[2](action);
     }
   }
 }
@@ -212,7 +212,7 @@ void __62__PXPhotosGlobalFooterView__performActionFromView_sourceRect___block_in
   *(*(a1 + 40) + 608) = 0;
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(PXPhotosGlobalFooterView *)self _updateTitle];
   [(PXPhotosGlobalFooterView *)self _updateExtendedTitle];
@@ -239,93 +239,93 @@ void __62__PXPhotosGlobalFooterView__performActionFromView_sourceRect___block_in
   [(PXPhotosGlobalFooterView *)&v4 didMoveToWindow];
   if (self->_delegateRespondsTo.photosGlobalFooterViewDidMoveToWindow)
   {
-    v3 = [(PXPhotosGlobalFooterView *)self delegate];
-    [v3 photosGlobalFooterViewDidMoveToWindow:self];
+    delegate = [(PXPhotosGlobalFooterView *)self delegate];
+    [delegate photosGlobalFooterViewDidMoveToWindow:self];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXPhotosGlobalFooterView *)self _performLayoutInWidth:0 updateSubviewFrames:a3.width, a3.height];
+  [(PXPhotosGlobalFooterView *)self _performLayoutInWidth:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames
 {
   [(PXPhotosGlobalFooterView *)self directionalLayoutMargins];
   [(PXPhotosGlobalFooterView *)self safeAreaInsets];
   [(PXPhotosGlobalFooterView *)self safeAreaInsets];
-  v5 = [(PXPhotosGlobalFooterView *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(PXPhotosGlobalFooterView *)self traitCollection];
+  [traitCollection displayScale];
 
   PXFloatCeilingToPixel();
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (PXPhotosGlobalFooterViewViewModelObservationContext != a5)
+  observableCopy = observable;
+  if (PXPhotosGlobalFooterViewViewModelObservationContext != context)
   {
     goto LABEL_26;
   }
 
-  v14 = v8;
-  if ((a4 & 0x8000) != 0)
+  v14 = observableCopy;
+  if ((change & 0x8000) != 0)
   {
     [(PXPhotosGlobalFooterView *)self _updateAnimatedIcon];
   }
 
-  if (a4)
+  if (change)
   {
     [(PXPhotosGlobalFooterView *)self _updateTitle];
   }
 
-  if ((a4 & 0x20002) != 0)
+  if ((change & 0x20002) != 0)
   {
     [(PXPhotosGlobalFooterView *)self _updateExtendedTitle];
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((change & 0x20) != 0)
   {
     [(PXPhotosGlobalFooterView *)self _updateInternalMessageSubtitle];
   }
 
-  if ((a4 & 4) != 0)
+  if ((change & 4) != 0)
   {
     [(PXPhotosGlobalFooterView *)self _updateFilterView];
   }
 
-  v9 = (a4 & 0x11C) != 0;
-  v10 = (a4 & 0x110) != 0;
-  if ((a4 & 0x2000C0) != 0)
+  v9 = (change & 0x11C) != 0;
+  v10 = (change & 0x110) != 0;
+  if ((change & 0x2000C0) != 0)
   {
     v9 = 1;
     [(PXPhotosGlobalFooterView *)self _updateProgressAnimated:1];
     v10 = 1;
   }
 
-  v11 = (a4 >> 9) & 1;
+  v11 = (change >> 9) & 1;
   v12 = v11 | v9;
-  if ((a4 & 0x1E00) != 0 && self->_isPresentingAlert)
+  if ((change & 0x1E00) != 0 && self->_isPresentingAlert)
   {
-    v13 = [(PXPhotosGlobalFooterView *)self delegate];
-    [v13 photosGlobalFooterView:self presentViewController:0];
+    delegate = [(PXPhotosGlobalFooterView *)self delegate];
+    [delegate photosGlobalFooterView:self presentViewController:0];
 
     self->_isPresentingAlert = 0;
   }
 
-  if ((a4 & 0x4000) == 0)
+  if ((change & 0x4000) == 0)
   {
-    if ((a4 & 0x10000) == 0)
+    if ((change & 0x10000) == 0)
     {
       goto LABEL_19;
     }
 
 LABEL_30:
     [(PXPhotosGlobalFooterView *)self _updateTopAccessory];
-    if ((a4 & 0x100000) == 0)
+    if ((change & 0x100000) == 0)
     {
       goto LABEL_21;
     }
@@ -335,13 +335,13 @@ LABEL_30:
 
   [(PXPhotosGlobalFooterView *)self _updateAccessory];
   v12 = 1;
-  if ((a4 & 0x10000) != 0)
+  if ((change & 0x10000) != 0)
   {
     goto LABEL_30;
   }
 
 LABEL_19:
-  if ((a4 & 0x100000) != 0)
+  if ((change & 0x100000) != 0)
   {
 LABEL_20:
     [(PXPhotosGlobalFooterView *)self _updateProcessingView];
@@ -359,34 +359,34 @@ LABEL_21:
   }
 
   [(PXPhotosGlobalFooterView *)self setNeedsLayout];
-  v8 = v14;
+  observableCopy = v14;
 LABEL_26:
 }
 
-- (void)_configurePhotoCollectionGlobalFooterLabel:(id)a3 withFont:(id)a4 textColor:(id)a5
+- (void)_configurePhotoCollectionGlobalFooterLabel:(id)label withFont:(id)font textColor:(id)color
 {
   v7 = MEMORY[0x1E69DC888];
-  v8 = a5;
-  v9 = a4;
-  v11 = a3;
-  v10 = [v7 clearColor];
-  [v11 setBackgroundColor:v10];
+  colorCopy = color;
+  fontCopy = font;
+  labelCopy = label;
+  clearColor = [v7 clearColor];
+  [labelCopy setBackgroundColor:clearColor];
 
-  [v11 setFont:v9];
-  [v11 setTextAlignment:1];
-  [v11 setTextColor:v8];
+  [labelCopy setFont:fontCopy];
+  [labelCopy setTextAlignment:1];
+  [labelCopy setTextColor:colorCopy];
 
-  [v11 setNumberOfLines:0];
+  [labelCopy setNumberOfLines:0];
 }
 
 - (BOOL)_shouldUseActionLinkInSubtitle1
 {
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v4 = [v3 actionTitle];
-  if (v4)
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  actionTitle = [viewModel actionTitle];
+  if (actionTitle)
   {
-    v5 = [v3 subtitle1];
-    if (v5)
+    subtitle1 = [viewModel subtitle1];
+    if (subtitle1)
     {
       v6 = ![(PXPhotosGlobalFooterView *)self _shouldUseActionLinkInSubtitle2];
     }
@@ -407,12 +407,12 @@ LABEL_26:
 
 - (BOOL)_shouldUseActionLinkInSubtitle2
 {
-  v2 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v3 = [v2 actionTitle];
-  if (v3)
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  actionTitle = [viewModel actionTitle];
+  if (actionTitle)
   {
-    v4 = [v2 subtitle2];
-    v5 = v4 != 0;
+    subtitle2 = [viewModel subtitle2];
+    v5 = subtitle2 != 0;
   }
 
   else
@@ -426,10 +426,10 @@ LABEL_26:
 - (void)_updateTopAccessory
 {
   [(UIView *)self->_topAccessoryView removeFromSuperview];
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v4 = [v3 topAccessoryView];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  topAccessoryView = [viewModel topAccessoryView];
   topAccessoryView = self->_topAccessoryView;
-  self->_topAccessoryView = v4;
+  self->_topAccessoryView = topAccessoryView;
 
   if (self->_topAccessoryView)
   {
@@ -441,10 +441,10 @@ LABEL_26:
 - (void)_updateAccessory
 {
   [(UIView *)self->_accessoryView removeFromSuperview];
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v4 = [v3 accessoryView];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  accessoryView = [viewModel accessoryView];
   accessoryView = self->_accessoryView;
-  self->_accessoryView = v4;
+  self->_accessoryView = accessoryView;
 
   if (self->_accessoryView)
   {
@@ -453,11 +453,11 @@ LABEL_26:
   }
 }
 
-- (void)_updateProgressAnimated:(BOOL)a3
+- (void)_updateProgressAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXPhotosGlobalFooterView *)self viewModel];
-  [v5 progress];
+  animatedCopy = animated;
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  [viewModel progress];
   v7 = v6;
 
   progressView = self->_progressView;
@@ -475,11 +475,11 @@ LABEL_26:
     }
 
     v9 = self->_progressView;
-    v10 = [(PXPhotosGlobalFooterView *)self viewModel];
-    v11 = [v10 isPaused];
+    viewModel2 = [(PXPhotosGlobalFooterView *)self viewModel];
+    isPaused = [viewModel2 isPaused];
     v12 = MEMORY[0x1E69DC888];
     v13 = v9;
-    if (v11)
+    if (isPaused)
     {
       [v12 systemGrayColor];
     }
@@ -507,17 +507,17 @@ LABEL_26:
 
     v19 = self->_progressView;
 
-    [(UIProgressView *)v19 setProgress:v3 animated:v18];
+    [(UIProgressView *)v19 setProgress:animatedCopy animated:v18];
   }
 }
 
 - (void)_updateSubtitle2
 {
-  v10 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v3 = [v10 subtitle2];
-  v4 = [(PXPhotosGlobalFooterView *)self _shouldUseActionLinkInSubtitle2];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  subtitle2 = [viewModel subtitle2];
+  _shouldUseActionLinkInSubtitle2 = [(PXPhotosGlobalFooterView *)self _shouldUseActionLinkInSubtitle2];
   subtitle2Label = self->_subtitle2Label;
-  if (!v3 || v4)
+  if (!subtitle2 || _shouldUseActionLinkInSubtitle2)
   {
     [(UILabel *)subtitle2Label setHidden:1];
   }
@@ -529,24 +529,24 @@ LABEL_26:
       [(UILabel *)self->_subtitle2Label setHidden:0];
     }
 
-    [(UILabel *)self->_subtitle2Label setText:v3];
+    [(UILabel *)self->_subtitle2Label setText:subtitle2];
     [(PXPhotosGlobalFooterView *)self _configurePhotoCollectionGlobalFooterSubtitleLabel:self->_subtitle2Label];
   }
 
   subtitle2TextView = self->_subtitle2TextView;
-  if (v4)
+  if (_shouldUseActionLinkInSubtitle2)
   {
     if ([(UITextView *)subtitle2TextView isHidden])
     {
       [(UITextView *)self->_subtitle2TextView setHidden:0];
     }
 
-    [v10 actionStyle];
-    [v10 useBlankActionSeparator];
+    [viewModel actionStyle];
+    [viewModel useBlankActionSeparator];
     v7 = self->_subtitle2TextView;
-    v8 = [v10 actionTitle];
-    v9 = [(PXPhotosGlobalFooterView *)self labelColor];
-    _ConfigureSubtitleTextView(v7, v3, v8, v9, 1, 0);
+    actionTitle = [viewModel actionTitle];
+    labelColor = [(PXPhotosGlobalFooterView *)self labelColor];
+    _ConfigureSubtitleTextView(v7, subtitle2, actionTitle, labelColor, 1, 0);
   }
 
   [(UITextView *)subtitle2TextView setHidden:1];
@@ -554,10 +554,10 @@ LABEL_26:
 
 - (void)_updateSubtitle1
 {
-  v11 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v3 = [v11 subtitle1];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  subtitle1 = [viewModel subtitle1];
   subtitle1TextView = self->_subtitle1TextView;
-  if (v3)
+  if (subtitle1)
   {
     if ([(UITextView *)subtitle1TextView isHidden])
     {
@@ -566,24 +566,24 @@ LABEL_26:
 
     if ([(PXPhotosGlobalFooterView *)self _shouldUseActionLinkInSubtitle1])
     {
-      v5 = [v11 actionTitle];
-      v6 = v11;
-      v7 = v5;
+      actionTitle = [viewModel actionTitle];
+      v6 = viewModel;
+      v7 = actionTitle;
     }
 
     else
     {
       v7 = 0;
-      v6 = v11;
+      v6 = viewModel;
     }
 
-    v8 = [v6 subtitle1Style];
-    [v11 actionStyle];
-    [v11 useBlankActionSeparator];
-    [v11 showBadge];
+    subtitle1Style = [v6 subtitle1Style];
+    [viewModel actionStyle];
+    [viewModel useBlankActionSeparator];
+    [viewModel showBadge];
     v9 = self->_subtitle1TextView;
-    v10 = [(PXPhotosGlobalFooterView *)self labelColor];
-    _ConfigureSubtitleTextView(v9, v3, v7, v10, 0, v8);
+    labelColor = [(PXPhotosGlobalFooterView *)self labelColor];
+    _ConfigureSubtitleTextView(v9, subtitle1, v7, labelColor, 0, subtitle1Style);
   }
 
   [(UITextView *)subtitle1TextView setHidden:1];
@@ -592,16 +592,16 @@ LABEL_26:
 - (void)_updateFilterView
 {
   [(UIView *)self->_filterView removeFromSuperview];
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v4 = [v3 filterView];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  filterView = [viewModel filterView];
   filterView = self->_filterView;
-  self->_filterView = v4;
+  self->_filterView = filterView;
 
   if (self->_filterView)
   {
-    v6 = [(PXPhotosGlobalFooterView *)self viewModel];
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v8 = [v6 adjustedChromeColor:v7];
+    viewModel2 = [(PXPhotosGlobalFooterView *)self viewModel];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v8 = [viewModel2 adjustedChromeColor:secondaryLabelColor];
 
     [(UIView *)self->_filterView setCaptionColor:v8];
     [(PXPhotosGlobalFooterView *)self addSubview:self->_filterView];
@@ -610,10 +610,10 @@ LABEL_26:
 
 - (void)_updateInternalMessageSubtitle
 {
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v6 = [v3 internalMessageSubtitle];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  internalMessageSubtitle = [viewModel internalMessageSubtitle];
 
-  v4 = [v6 length];
+  v4 = [internalMessageSubtitle length];
   internalMessageSubtitleLabel = self->_internalMessageSubtitleLabel;
   if (v4)
   {
@@ -622,7 +622,7 @@ LABEL_26:
       [(UILabel *)self->_internalMessageSubtitleLabel setHidden:0];
     }
 
-    [(UILabel *)self->_internalMessageSubtitleLabel setText:v6];
+    [(UILabel *)self->_internalMessageSubtitleLabel setText:internalMessageSubtitle];
   }
 
   else
@@ -633,10 +633,10 @@ LABEL_26:
 
 - (void)_updateExtendedTitle
 {
-  v22 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v3 = [v22 extendedTitle];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  extendedTitle = [viewModel extendedTitle];
   extendedTitleLabel = self->_extendedTitleLabel;
-  if (v3)
+  if (extendedTitle)
   {
     if ([(UILabel *)extendedTitleLabel isHidden])
     {
@@ -644,20 +644,20 @@ LABEL_26:
     }
 
     [(PXPhotosGlobalFooterView *)self _configurePhotoCollectionGlobalFooterExtendedTitleLabel:self->_extendedTitleLabel];
-    v5 = [v22 extendedSystemImageName];
-    if (v5)
+    extendedSystemImageName = [viewModel extendedSystemImageName];
+    if (extendedSystemImageName)
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
       v7 = MEMORY[0x1E69DCAD8];
-      v8 = [(UILabel *)self->_extendedTitleLabel font];
-      v9 = [v7 configurationWithFont:v8];
+      font = [(UILabel *)self->_extendedTitleLabel font];
+      v9 = [v7 configurationWithFont:font];
 
       v10 = MEMORY[0x1E69DCAD8];
-      v11 = [(PXPhotosGlobalFooterView *)self labelColor];
-      v12 = [v10 configurationWithHierarchicalColor:v11];
+      labelColor = [(PXPhotosGlobalFooterView *)self labelColor];
+      v12 = [v10 configurationWithHierarchicalColor:labelColor];
       v13 = [v9 configurationByApplyingConfiguration:v12];
 
-      v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5 withConfiguration:v13];
+      v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:extendedSystemImageName withConfiguration:v13];
       [v6 setImage:v14];
 
       v15 = objc_alloc_init(MEMORY[0x1E696AD40]);
@@ -665,7 +665,7 @@ LABEL_26:
       [v15 appendAttributedString:v16];
 
       v17 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v18 = [@" " stringByAppendingString:v3];
+      v18 = [@" " stringByAppendingString:extendedTitle];
       v19 = [v17 initWithString:v18];
       [v15 appendAttributedString:v19];
 
@@ -675,7 +675,7 @@ LABEL_26:
 
     else
     {
-      v21 = v3;
+      v21 = extendedTitle;
       v20 = 0;
     }
 
@@ -691,18 +691,18 @@ LABEL_26:
 
 - (void)_updateTitle
 {
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v5 = [v3 title];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  title = [viewModel title];
 
   titleLabel = self->_titleLabel;
-  if (v5)
+  if (title)
   {
     if ([(UILabel *)titleLabel isHidden])
     {
       [(UILabel *)self->_titleLabel setHidden:0];
     }
 
-    [(UILabel *)self->_titleLabel setText:v5];
+    [(UILabel *)self->_titleLabel setText:title];
     [(PXPhotosGlobalFooterView *)self _configurePhotoCollectionGlobalFooterTitleLabel:self->_titleLabel];
   }
 
@@ -714,17 +714,17 @@ LABEL_26:
 
 - (void)_animatedIconCrossedGridCycleBoundary
 {
-  v2 = [(PXPhotosGlobalFooterView *)self viewModel];
-  [v2 footerAnimationCrossedGridCycleBoundary];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  [viewModel footerAnimationCrossedGridCycleBoundary];
 }
 
 - (void)_updateAnimatedIcon
 {
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v4 = [v3 animatedIconMode];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  animatedIconMode = [viewModel animatedIconMode];
 
-  v5 = v4 != 0;
-  if (v4)
+  v5 = animatedIconMode != 0;
+  if (animatedIconMode)
   {
     if (!self->_animatedIconView)
     {
@@ -732,12 +732,12 @@ LABEL_26:
       animatedIconView = self->_animatedIconView;
       self->_animatedIconView = v6;
 
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel__animatedIconCrossedGridCycleBoundary name:@"PXFooterAnimatedIconViewCrossedGridCycleBoundaryNotificationName" object:self->_animatedIconView];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__animatedIconCrossedGridCycleBoundary name:@"PXFooterAnimatedIconViewCrossedGridCycleBoundaryNotificationName" object:self->_animatedIconView];
 
-      v9 = [(PXPhotosGlobalFooterView *)self needsWorkaroundFor53118165];
+      needsWorkaroundFor53118165 = [(PXPhotosGlobalFooterView *)self needsWorkaroundFor53118165];
       v10 = self->_animatedIconView;
-      if (v9)
+      if (needsWorkaroundFor53118165)
       {
         [(PXPhotosGlobalFooterView *)self insertSubview:v10 aboveSubview:self->_backgroundView];
       }
@@ -749,33 +749,33 @@ LABEL_26:
     }
 
     self->_hasAnimatedIconView = v5;
-    v11 = [(PXPhotosGlobalFooterView *)self isHidden];
+    isHidden = [(PXPhotosGlobalFooterView *)self isHidden];
   }
 
   else
   {
     self->_hasAnimatedIconView = v5;
-    v11 = 1;
+    isHidden = 1;
   }
 
-  [(PXFooterAnimatedIconView *)self->_animatedIconView setHidden:v11];
+  [(PXFooterAnimatedIconView *)self->_animatedIconView setHidden:isHidden];
   v12 = self->_animatedIconView;
 
-  [(PXFooterAnimatedIconView *)v12 setDesiredMode:v4];
+  [(PXFooterAnimatedIconView *)v12 setDesiredMode:animatedIconMode];
 }
 
 - (void)_updateProcessingView
 {
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
-  v4 = [v3 isProcessing];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
+  isProcessing = [viewModel isProcessing];
 
   processingView = self->_processingView;
-  if (v4)
+  if (isProcessing)
   {
     if (!processingView)
     {
-      v6 = [(PXPhotosGlobalFooterView *)self viewModel];
-      v7 = [PXLemonadeFeatureAvailabilityProcessingViewFactory makeProcessingViewWithFooterViewModel:v6];
+      viewModel2 = [(PXPhotosGlobalFooterView *)self viewModel];
+      v7 = [PXLemonadeFeatureAvailabilityProcessingViewFactory makeProcessingViewWithFooterViewModel:viewModel2];
       v8 = self->_processingView;
       self->_processingView = v7;
 
@@ -797,37 +797,37 @@ LABEL_26:
 
 - (void)_updateLabelColor
 {
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v3 = [(PXPhotosGlobalFooterView *)self viewModel];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  viewModel = [(PXPhotosGlobalFooterView *)self viewModel];
 
-  if (v3)
+  if (viewModel)
   {
-    v4 = [(PXPhotosGlobalFooterView *)self viewModel];
-    v5 = [v4 adjustedChromeColor:v7];
+    viewModel2 = [(PXPhotosGlobalFooterView *)self viewModel];
+    v5 = [viewModel2 adjustedChromeColor:labelColor];
 
     v6 = v5;
   }
 
   else
   {
-    v6 = v7;
+    v6 = labelColor;
   }
 
   v8 = v6;
   [(PXPhotosGlobalFooterView *)self setLabelColor:v6];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = PXPhotosGlobalFooterView;
-  [(PXPhotosGlobalFooterView *)&v4 setHidden:a3];
+  [(PXPhotosGlobalFooterView *)&v4 setHidden:hidden];
   [(PXPhotosGlobalFooterView *)self _updateAnimatedIcon];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -839,15 +839,15 @@ LABEL_26:
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXFooterViewModel *)viewModel unregisterChangeObserver:self context:PXPhotosGlobalFooterViewViewModelObservationContext];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PXPhotosGlobalFooterView *)self _updateLabelColor];
     [(PXPhotosGlobalFooterView *)self _updateTopAccessory];
     [(PXPhotosGlobalFooterView *)self _updateAnimatedIcon];
@@ -862,19 +862,19 @@ LABEL_26:
     [(PXPhotosGlobalFooterView *)self _updateProcessingView];
     [(PXPhotosGlobalFooterView *)self setNeedsLayout];
     [(PXFooterViewModel *)self->_viewModel registerChangeObserver:self context:PXPhotosGlobalFooterViewViewModelObservationContext];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (PXPhotosGlobalFooterView)initWithFrame:(CGRect)a3 needsWorkaroundFor53118165:(BOOL)a4
+- (PXPhotosGlobalFooterView)initWithFrame:(CGRect)frame needsWorkaroundFor53118165:(BOOL)for53118165
 {
   v26.receiver = self;
   v26.super_class = PXPhotosGlobalFooterView;
-  v5 = [(PXPhotosGlobalFooterView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PXPhotosGlobalFooterView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    if (a4)
+    if (for53118165)
     {
       v7 = +[PXWorkaroundSettings sharedInstance];
       v6->_needsWorkaroundFor53118165 = [v7 shouldWorkAround53118165];
@@ -925,8 +925,8 @@ LABEL_26:
     [(UITextView *)v6->_subtitle1TextView setDelegate:v6];
     [(PXPhotosGlobalFooterView *)v6 addSubview:v6->_subtitle1TextView];
     v23 = v6->_subtitle1TextView;
-    v24 = [(PXPhotosGlobalFooterView *)v6 labelColor];
-    _ConfigurePhotoCollectionGlobalFooterSubtitleTextView(v23, 0, v24);
+    labelColor = [(PXPhotosGlobalFooterView *)v6 labelColor];
+    _ConfigurePhotoCollectionGlobalFooterSubtitleTextView(v23, 0, labelColor);
   }
 
   return 0;

@@ -1,22 +1,22 @@
 @interface CAMTrackingSpring
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_secondaryTarget;
 - (BOOL)isConverged;
-- (CAMTrackingSpring)initWithTension:(double)a3 friction:(double)a4 epsilon:(double)a5;
+- (CAMTrackingSpring)initWithTension:(double)tension friction:(double)friction epsilon:(double)epsilon;
 - (double)convergenceProgress;
 - (void)_beginConverging;
-- (void)resetToValue:(double)a3 animated:(BOOL)a4;
-- (void)setSecondaryTarget:(double)a3 withStrength:(double)a4 animated:(BOOL)a5;
-- (void)setTarget:(double)a3 animated:(BOOL)a4;
-- (void)updateForTimestamp:(double)a3;
+- (void)resetToValue:(double)value animated:(BOOL)animated;
+- (void)setSecondaryTarget:(double)target withStrength:(double)strength animated:(BOOL)animated;
+- (void)setTarget:(double)target animated:(BOOL)animated;
+- (void)updateForTimestamp:(double)timestamp;
 @end
 
 @implementation CAMTrackingSpring
 
-- (CAMTrackingSpring)initWithTension:(double)a3 friction:(double)a4 epsilon:(double)a5
+- (CAMTrackingSpring)initWithTension:(double)tension friction:(double)friction epsilon:(double)epsilon
 {
   v6.receiver = self;
   v6.super_class = CAMTrackingSpring;
-  result = [(CAMSpring *)&v6 initWithTension:a3 friction:a4 epsilon:a5];
+  result = [(CAMSpring *)&v6 initWithTension:tension friction:friction epsilon:epsilon];
   if (result)
   {
     result->112 = CAMTrackingSpringTargetInvalid;
@@ -27,28 +27,28 @@
 
 - (BOOL)isConverged
 {
-  v3 = [(CAMTrackingSpring *)self _settleProgressSpring];
-  if (v3)
+  _settleProgressSpring = [(CAMTrackingSpring *)self _settleProgressSpring];
+  if (_settleProgressSpring)
   {
-    v4 = [(CAMTrackingSpring *)self _settleProgressSpring];
-    v5 = [v4 isConverged];
+    _settleProgressSpring2 = [(CAMTrackingSpring *)self _settleProgressSpring];
+    isConverged = [_settleProgressSpring2 isConverged];
   }
 
   else
   {
-    v5 = 1;
+    isConverged = 1;
   }
 
-  return v5;
+  return isConverged;
 }
 
 - (double)convergenceProgress
 {
-  v3 = [(CAMTrackingSpring *)self _settleProgressSpring];
-  if (v3)
+  _settleProgressSpring = [(CAMTrackingSpring *)self _settleProgressSpring];
+  if (_settleProgressSpring)
   {
-    v4 = [(CAMTrackingSpring *)self _settleProgressSpring];
-    [v4 _current];
+    _settleProgressSpring2 = [(CAMTrackingSpring *)self _settleProgressSpring];
+    [_settleProgressSpring2 _current];
     v6 = v5;
   }
 
@@ -62,9 +62,9 @@
 
 - (void)_beginConverging
 {
-  v3 = [(CAMTrackingSpring *)self _settleProgressSpring];
+  _settleProgressSpring = [(CAMTrackingSpring *)self _settleProgressSpring];
 
-  if (!v3)
+  if (!_settleProgressSpring)
   {
     v4 = [CAMSpring alloc];
     [(CAMSpring *)self tension];
@@ -74,37 +74,37 @@
     [(CAMTrackingSpring *)self _setSettlingSpring:v8];
   }
 
-  v9 = [(CAMTrackingSpring *)self _settleProgressSpring];
-  [v9 setTarget:1.0];
+  _settleProgressSpring2 = [(CAMTrackingSpring *)self _settleProgressSpring];
+  [_settleProgressSpring2 setTarget:1.0];
 
-  v10 = [(CAMTrackingSpring *)self _settleProgressSpring];
-  [v10 _setCurrent:0.0];
+  _settleProgressSpring3 = [(CAMTrackingSpring *)self _settleProgressSpring];
+  [_settleProgressSpring3 _setCurrent:0.0];
 
   [(CAMSpring *)self _current];
 
   [(CAMTrackingSpring *)self _convergenceStartValue:?];
 }
 
-- (void)setTarget:(double)a3 animated:(BOOL)a4
+- (void)setTarget:(double)target animated:(BOOL)animated
 {
-  v4 = a4;
-  [(CAMSpring *)self setTarget:a3];
-  if (v4)
+  animatedCopy = animated;
+  [(CAMSpring *)self setTarget:target];
+  if (animatedCopy)
   {
 
     [(CAMTrackingSpring *)self _beginConverging];
   }
 }
 
-- (void)setSecondaryTarget:(double)a3 withStrength:(double)a4 animated:(BOOL)a5
+- (void)setSecondaryTarget:(double)target withStrength:(double)strength animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   [(CAMTrackingSpring *)self _secondaryTarget];
-  if (v9 != a3 || v10 != a4)
+  if (v9 != target || v10 != strength)
   {
     v12 = v9;
-    [(CAMTrackingSpring *)self _setSecondaryTarget:a3, a4];
-    if (v12 != a3 && v5)
+    [(CAMTrackingSpring *)self _setSecondaryTarget:target, strength];
+    if (v12 != target && animatedCopy)
     {
 
       [(CAMTrackingSpring *)self _beginConverging];
@@ -112,12 +112,12 @@
   }
 }
 
-- (void)resetToValue:(double)a3 animated:(BOOL)a4
+- (void)resetToValue:(double)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(CAMTrackingSpring *)self removeSecondaryTargetAnimated:0];
-  [(CAMSpring *)self setTarget:a3];
-  if (v4)
+  [(CAMSpring *)self setTarget:value];
+  if (animatedCopy)
   {
 
     [(CAMTrackingSpring *)self _beginConverging];
@@ -127,14 +127,14 @@
   {
     [(CAMTrackingSpring *)self _setSettlingSpring:0];
 
-    [(CAMSpring *)self _setCurrent:a3];
+    [(CAMSpring *)self _setCurrent:value];
   }
 }
 
-- (void)updateForTimestamp:(double)a3
+- (void)updateForTimestamp:(double)timestamp
 {
-  v9 = [(CAMTrackingSpring *)self _settleProgressSpring];
-  [v9 updateForTimestamp:a3];
+  _settleProgressSpring = [(CAMTrackingSpring *)self _settleProgressSpring];
+  [_settleProgressSpring updateForTimestamp:timestamp];
   [(CAMSpring *)self target];
   v6 = v5;
   if ([(CAMTrackingSpring *)self hasSecondaryTarget])

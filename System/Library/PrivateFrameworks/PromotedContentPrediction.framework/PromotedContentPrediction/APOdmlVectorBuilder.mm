@@ -1,27 +1,27 @@
 @interface APOdmlVectorBuilder
-- (APOdmlVectorBuilder)initWithVersion:(id)a3 lookbackPeriod:(id)a4 maxQueryElements:(id)a5 task:(id)a6 exponentialDecayConstant:(id)a7 weightByDuration:(id)a8 isCounterfactual:(BOOL)a9;
+- (APOdmlVectorBuilder)initWithVersion:(id)version lookbackPeriod:(id)period maxQueryElements:(id)elements task:(id)task exponentialDecayConstant:(id)constant weightByDuration:(id)duration isCounterfactual:(BOOL)counterfactual;
 - (BOOL)shouldDefer;
-- (double)weightForEvents:(id)a3;
-- (id)adamIDForBundleID:(id)a3;
-- (id)eventsForLookbackPeriod:(double)a3;
+- (double)weightForEvents:(id)events;
+- (id)adamIDForBundleID:(id)d;
+- (id)eventsForLookbackPeriod:(double)period;
 - (id)pullEvents;
-- (id)retrieveFilteredEvents:(id)a3;
-- (id)retrieveVector:(id *)a3;
-- (id)updateVector:(id)a3 withVector:(id)a4 usingWeight:(double)a5;
-- (void)addAppVector:(id)a3;
-- (void)buildBundleIDtoAdamIDCache:(id)a3;
+- (id)retrieveFilteredEvents:(id)events;
+- (id)retrieveVector:(id *)vector;
+- (id)updateVector:(id)vector withVector:(id)withVector usingWeight:(double)weight;
+- (void)addAppVector:(id)vector;
+- (void)buildBundleIDtoAdamIDCache:(id)cache;
 @end
 
 @implementation APOdmlVectorBuilder
 
-- (APOdmlVectorBuilder)initWithVersion:(id)a3 lookbackPeriod:(id)a4 maxQueryElements:(id)a5 task:(id)a6 exponentialDecayConstant:(id)a7 weightByDuration:(id)a8 isCounterfactual:(BOOL)a9
+- (APOdmlVectorBuilder)initWithVersion:(id)version lookbackPeriod:(id)period maxQueryElements:(id)elements task:(id)task exponentialDecayConstant:(id)constant weightByDuration:(id)duration isCounterfactual:(BOOL)counterfactual
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  versionCopy = version;
+  periodCopy = period;
+  elementsCopy = elements;
+  taskCopy = task;
+  constantCopy = constant;
+  durationCopy = duration;
   v46.receiver = self;
   v46.super_class = APOdmlVectorBuilder;
   v22 = [(APOdmlVectorBuilder *)&v46 init];
@@ -31,9 +31,9 @@
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v22->_version, a3);
+  objc_storeStrong(&v22->_version, version);
   v24 = [APOdmlVector alloc];
-  v26 = objc_msgSend_initWithVersion_andArray_(v24, v25, v16, 0);
+  v26 = objc_msgSend_initWithVersion_andArray_(v24, v25, versionCopy, 0);
   vector = v23->_vector;
   v23->_vector = v26;
 
@@ -47,10 +47,10 @@
   adamIDtoBundleID = v23->_adamIDtoBundleID;
   v23->_adamIDtoBundleID = v34;
 
-  objc_storeStrong(&v23->_task, a6);
-  if (v17)
+  objc_storeStrong(&v23->_task, task);
+  if (periodCopy)
   {
-    objc_msgSend_doubleValue(v17, v36, v37);
+    objc_msgSend_doubleValue(periodCopy, v36, v37);
   }
 
   else
@@ -59,11 +59,11 @@
   }
 
   *&v23->_lookbackPeriod = v38;
-  v39 = v18 ? objc_msgSend_longValue(v18, v36, v37) : 1000;
+  v39 = elementsCopy ? objc_msgSend_longValue(elementsCopy, v36, v37) : 1000;
   v23->_maxQueryElements = v39;
-  if (v20)
+  if (constantCopy)
   {
-    objc_msgSend_doubleValue(v20, v36, v37);
+    objc_msgSend_doubleValue(constantCopy, v36, v37);
   }
 
   else
@@ -72,9 +72,9 @@
   }
 
   v23->_exponentialDecayConstant = v40;
-  v41 = v21 ? objc_msgSend_BOOLValue(v21, v36, v37) : 0;
+  v41 = durationCopy ? objc_msgSend_BOOLValue(durationCopy, v36, v37) : 0;
   v23->_weightByDuration = v41;
-  v23->_assetManagerIsCounterfactual = a9;
+  v23->_assetManagerIsCounterfactual = counterfactual;
   v42 = objc_msgSend_pullEvents(v23, v36, v37);
   events = v23->_events;
   v23->_events = v42;
@@ -93,15 +93,15 @@ LABEL_15:
   return v44;
 }
 
-- (void)addAppVector:(id)a3
+- (void)addAppVector:(id)vector
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  vectorCopy = vector;
+  v7 = vectorCopy;
+  if (vectorCopy)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = objc_msgSend_adamID(v4, v5, v6);
+    v9 = objc_msgSend_adamID(vectorCopy, v5, v6);
     v11 = objc_msgSend_numberWithUnsignedLongLong_(v8, v10, v9);
     v14 = objc_msgSend_adamIDtoBundleID(self, v12, v13);
     v16 = objc_msgSend_objectForKey_(v14, v15, v11);
@@ -172,7 +172,7 @@ LABEL_12:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (id)retrieveVector:(id *)a3
+- (id)retrieveVector:(id *)vector
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = OdmlLogForCategory(2uLL);
@@ -205,11 +205,11 @@ LABEL_12:
 
     v27 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v26, @"APOdmlFeatureCalculatorErrorDomain", 1006, 0);
     v12 = v27;
-    if (a3 && v27)
+    if (vector && v27)
     {
       v28 = v27;
       v22 = 0;
-      *a3 = v12;
+      *vector = v12;
       goto LABEL_18;
     }
   }
@@ -229,11 +229,11 @@ LABEL_12:
 
     v20 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v19, @"APOdmlFeatureCalculatorErrorDomain", 1005, 0);
 
-    if (a3 && v20)
+    if (vector && v20)
     {
       v21 = v20;
       v22 = 0;
-      *a3 = v20;
+      *vector = v20;
       v12 = v20;
       goto LABEL_18;
     }
@@ -253,10 +253,10 @@ LABEL_18:
   return v22;
 }
 
-- (id)retrieveFilteredEvents:(id)a3
+- (id)retrieveFilteredEvents:(id)events
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v7 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6);
   v23 = 0u;
   v24 = 0u;
@@ -279,7 +279,7 @@ LABEL_18:
 
         v17 = *(*(&v23 + 1) + 8 * i);
         v18 = objc_msgSend_objectForKey_(v17, v13, @"bundleID");
-        isEqualToString = objc_msgSend_isEqualToString_(v18, v19, v4);
+        isEqualToString = objc_msgSend_isEqualToString_(v18, v19, eventsCopy);
 
         if (isEqualToString)
         {
@@ -342,7 +342,7 @@ LABEL_18:
   return v6;
 }
 
-- (id)eventsForLookbackPeriod:(double)a3
+- (id)eventsForLookbackPeriod:(double)period
 {
   v39 = *MEMORY[0x277D85DE8];
   v6 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, v3);
@@ -350,8 +350,8 @@ LABEL_18:
   objc_msgSend_timeIntervalSince1970(v9, v10, v11);
   v13 = v12;
 
-  v17 = v13 - a3;
-  if (v13 >= v13 - a3)
+  v17 = v13 - period;
+  if (v13 >= v13 - period)
   {
     v18 = 0;
     *&v16 = 138412290;
@@ -400,16 +400,16 @@ LABEL_18:
   return v33;
 }
 
-- (double)weightForEvents:(id)a3
+- (double)weightForEvents:(id)events
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v7 = objc_msgSend_date(MEMORY[0x277CBEAA8], v5, v6);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v4;
+  v8 = eventsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v40, v44, 16);
   if (v10)
   {
@@ -464,23 +464,23 @@ LABEL_18:
   return v15;
 }
 
-- (id)updateVector:(id)a3 withVector:(id)a4 usingWeight:(double)a5
+- (id)updateVector:(id)vector withVector:(id)withVector usingWeight:(double)weight
 {
-  v7 = a3;
-  *&v8 = a5;
-  v11 = objc_msgSend_scalarMultiply_(a4, v9, v10, v8);
-  if (objc_msgSend_length(v7, v12, v13))
+  vectorCopy = vector;
+  *&v8 = weight;
+  v11 = objc_msgSend_scalarMultiply_(withVector, v9, v10, v8);
+  if (objc_msgSend_length(vectorCopy, v12, v13))
   {
-    v16 = objc_msgSend_vectorAdd_(v7, v14, v11);
+    v16 = objc_msgSend_vectorAdd_(vectorCopy, v14, v11);
   }
 
   else
   {
-    v17 = objc_msgSend_version(v7, v14, v15);
+    v17 = objc_msgSend_version(vectorCopy, v14, v15);
 
     if (v17)
     {
-      v20 = objc_msgSend_version(v7, v18, v19);
+      v20 = objc_msgSend_version(vectorCopy, v18, v19);
       objc_msgSend_setVersion_(v11, v21, v20);
     }
 
@@ -492,16 +492,16 @@ LABEL_18:
   return v22;
 }
 
-- (void)buildBundleIDtoAdamIDCache:(id)a3
+- (void)buildBundleIDtoAdamIDCache:(id)cache
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v7 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v4;
+  v8 = cacheCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v32, v36, 16);
   if (v10)
   {
@@ -565,13 +565,13 @@ LABEL_16:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)adamIDForBundleID:(id)a3
+- (id)adamIDForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x277CC1E70]);
   v19 = 0;
-  v7 = objc_msgSend_initWithBundleIdentifier_allowPlaceholder_error_(v5, v6, v3, 0, &v19);
+  v7 = objc_msgSend_initWithBundleIdentifier_allowPlaceholder_error_(v5, v6, dCopy, 0, &v19);
   v10 = v7;
   if (v7)
   {

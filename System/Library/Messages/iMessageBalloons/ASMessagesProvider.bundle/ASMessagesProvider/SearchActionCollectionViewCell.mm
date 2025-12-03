@@ -1,12 +1,12 @@
 @interface SearchActionCollectionViewCell
-- (_TtC18ASMessagesProvider30SearchActionCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider30SearchActionCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SearchActionCollectionViewCell
 
-- (_TtC18ASMessagesProvider30SearchActionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider30SearchActionCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider30SearchActionCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();

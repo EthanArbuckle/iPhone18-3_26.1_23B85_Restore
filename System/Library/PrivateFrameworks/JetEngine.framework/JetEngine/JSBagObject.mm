@@ -1,83 +1,83 @@
 @interface JSBagObject
 - (_TtC9JetEngine11JSBagObject)init;
-- (id)BOOLean:(id)a3;
-- (id)array:(id)a3;
-- (id)dictionary:(id)a3;
-- (id)double:(id)a3;
-- (id)integer:(id)a3;
-- (id)string:(id)a3;
-- (id)url:(id)a3;
-- (void)registerBagKeys:(id)a3;
+- (id)BOOLean:(id)lean;
+- (id)array:(id)array;
+- (id)dictionary:(id)dictionary;
+- (id)double:(id)double;
+- (id)integer:(id)integer;
+- (id)string:(id)string;
+- (id)url:(id)url;
+- (void)registerBagKeys:(id)keys;
 @end
 
 @implementation JSBagObject
 
-- (void)registerBagKeys:(id)a3
+- (void)registerBagKeys:(id)keys
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AB09B6D4(v4);
+  keysCopy = keys;
+  selfCopy = self;
+  sub_1AB09B6D4(keysCopy);
 }
 
-- (id)BOOLean:(id)a3
+- (id)BOOLean:(id)lean
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB0A2A74);
+  leanCopy = lean;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(leanCopy, sub_1AB0A2A74);
 
   return v6;
 }
 
-- (id)dictionary:(id)a3
+- (id)dictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB0A2EE8);
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(dictionaryCopy, sub_1AB0A2EE8);
 
   return v6;
 }
 
-- (id)url:(id)a3
+- (id)url:(id)url
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB0A33A8);
+  urlCopy = url;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(urlCopy, sub_1AB0A33A8);
 
   return v6;
 }
 
-- (id)string:(id)a3
+- (id)string:(id)string
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB0B7604);
+  stringCopy = string;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(stringCopy, sub_1AB0B7604);
 
   return v6;
 }
 
-- (id)double:(id)a3
+- (id)double:(id)double
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB3CFDE0);
+  doubleCopy = double;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(doubleCopy, sub_1AB3CFDE0);
 
   return v6;
 }
 
-- (id)integer:(id)a3
+- (id)integer:(id)integer
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB3CFFB4);
+  integerCopy = integer;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(integerCopy, sub_1AB3CFFB4);
 
   return v6;
 }
 
-- (id)array:(id)a3
+- (id)array:(id)array
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB0B7490(v4, sub_1AB3D0188);
+  arrayCopy = array;
+  selfCopy = self;
+  v6 = sub_1AB0B7490(arrayCopy, sub_1AB3D0188);
 
   return v6;
 }

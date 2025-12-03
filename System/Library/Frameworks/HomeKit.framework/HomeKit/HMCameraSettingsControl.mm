@@ -1,5 +1,5 @@
 @interface HMCameraSettingsControl
-- (HMCameraSettingsControl)initWithSettingsControl:(id)a3;
+- (HMCameraSettingsControl)initWithSettingsControl:(id)control;
 - (HMCharacteristic)currentHorizontalTilt;
 - (HMCharacteristic)currentVerticalTilt;
 - (HMCharacteristic)digitalZoom;
@@ -15,80 +15,80 @@
 
 - (HMCharacteristic)imageMirroring
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 imageMirroring];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  imageMirroring = [settingsControl imageMirroring];
 
-  return v3;
+  return imageMirroring;
 }
 
 - (HMCharacteristic)imageRotation
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 imageRotation];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  imageRotation = [settingsControl imageRotation];
 
-  return v3;
+  return imageRotation;
 }
 
 - (HMCharacteristic)digitalZoom
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 digitalZoom];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  digitalZoom = [settingsControl digitalZoom];
 
-  return v3;
+  return digitalZoom;
 }
 
 - (HMCharacteristic)opticalZoom
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 opticalZoom];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  opticalZoom = [settingsControl opticalZoom];
 
-  return v3;
+  return opticalZoom;
 }
 
 - (HMCharacteristic)targetVerticalTilt
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 targetVerticalTilt];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  targetVerticalTilt = [settingsControl targetVerticalTilt];
 
-  return v3;
+  return targetVerticalTilt;
 }
 
 - (HMCharacteristic)currentVerticalTilt
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 currentVerticalTilt];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  currentVerticalTilt = [settingsControl currentVerticalTilt];
 
-  return v3;
+  return currentVerticalTilt;
 }
 
 - (HMCharacteristic)targetHorizontalTilt
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 targetHorizontalTilt];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  targetHorizontalTilt = [settingsControl targetHorizontalTilt];
 
-  return v3;
+  return targetHorizontalTilt;
 }
 
 - (HMCharacteristic)currentHorizontalTilt
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 currentHorizontalTilt];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  currentHorizontalTilt = [settingsControl currentHorizontalTilt];
 
-  return v3;
+  return currentHorizontalTilt;
 }
 
 - (HMCharacteristic)nightVision
 {
-  v2 = [(HMCameraSettingsControl *)self settingsControl];
-  v3 = [v2 nightVision];
+  settingsControl = [(HMCameraSettingsControl *)self settingsControl];
+  nightVision = [settingsControl nightVision];
 
-  return v3;
+  return nightVision;
 }
 
-- (HMCameraSettingsControl)initWithSettingsControl:(id)a3
+- (HMCameraSettingsControl)initWithSettingsControl:(id)control
 {
-  v5 = a3;
-  if (v5)
+  controlCopy = control;
+  if (controlCopy)
   {
     v10.receiver = self;
     v10.super_class = HMCameraSettingsControl;
@@ -96,19 +96,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_settingsControl, a3);
+      objc_storeStrong(&v6->_settingsControl, control);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface PlayerItem
-- (_TtC11CloudAssets10PlayerItem)initWithAsset:(id)a3 automaticallyLoadedAssetKeys:(id)a4;
-- (id)copyWithZone:(void *)a3;
+- (_TtC11CloudAssets10PlayerItem)initWithAsset:(id)asset automaticallyLoadedAssetKeys:(id)keys;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation PlayerItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_243798AE8(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -16,14 +16,14 @@
   return v4;
 }
 
-- (_TtC11CloudAssets10PlayerItem)initWithAsset:(id)a3 automaticallyLoadedAssetKeys:(id)a4
+- (_TtC11CloudAssets10PlayerItem)initWithAsset:(id)asset automaticallyLoadedAssetKeys:(id)keys
 {
-  if (a4)
+  if (keys)
   {
     sub_2437ABB1C();
   }
 
-  v5 = a3;
+  assetCopy = asset;
   PlayerItem.init(asset:automaticallyLoadedAssetKeys:)();
 }
 

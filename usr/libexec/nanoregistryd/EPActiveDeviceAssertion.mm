@@ -6,10 +6,10 @@
 
 - (NSUUID)pairingID
 {
-  v2 = [(EPResource *)self resourceManager];
-  v3 = [v2 pairingID];
+  resourceManager = [(EPResource *)self resourceManager];
+  pairingID = [resourceManager pairingID];
 
-  return v3;
+  return pairingID;
 }
 
 @end

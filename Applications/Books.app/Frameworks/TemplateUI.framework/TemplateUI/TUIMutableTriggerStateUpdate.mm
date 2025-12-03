@@ -1,7 +1,7 @@
 @interface TUIMutableTriggerStateUpdate
 - (TUIMutableTriggerStateUpdate)init;
-- (void)addUpdateForTrigger:(id)a3 state:(unint64_t)a4;
-- (void)addUpdateForTrigger:(id)a3 value:(double)a4;
+- (void)addUpdateForTrigger:(id)trigger state:(unint64_t)state;
+- (void)addUpdateForTrigger:(id)trigger value:(double)value;
 @end
 
 @implementation TUIMutableTriggerStateUpdate
@@ -33,44 +33,44 @@
   return v2;
 }
 
-- (void)addUpdateForTrigger:(id)a3 state:(unint64_t)a4
+- (void)addUpdateForTrigger:(id)trigger state:(unint64_t)state
 {
   orderedKeys = self->_orderedKeys;
-  v7 = a3;
-  v8 = [v7 name];
-  [(NSMutableArray *)orderedKeys addObject:v8];
+  triggerCopy = trigger;
+  name = [triggerCopy name];
+  [(NSMutableArray *)orderedKeys addObject:name];
 
   triggerToStateMapping = self->_triggerToStateMapping;
-  v10 = [NSNumber numberWithUnsignedInteger:a4];
-  v11 = [v7 name];
-  [(NSMutableDictionary *)triggerToStateMapping setValue:v10 forKey:v11];
+  v10 = [NSNumber numberWithUnsignedInteger:state];
+  name2 = [triggerCopy name];
+  [(NSMutableDictionary *)triggerToStateMapping setValue:v10 forKey:name2];
 
   triggerNameToTriggerMapping = self->_triggerNameToTriggerMapping;
-  v13 = [v7 name];
-  [(NSMutableDictionary *)triggerNameToTriggerMapping setValue:v7 forKey:v13];
+  name3 = [triggerCopy name];
+  [(NSMutableDictionary *)triggerNameToTriggerMapping setValue:triggerCopy forKey:name3];
 }
 
-- (void)addUpdateForTrigger:(id)a3 value:(double)a4
+- (void)addUpdateForTrigger:(id)trigger value:(double)value
 {
-  v16 = a3;
+  triggerCopy = trigger;
   triggerToValueMapping = self->_triggerToValueMapping;
-  v7 = [NSNumber numberWithDouble:a4];
-  v8 = [v16 name];
-  [(NSMutableDictionary *)triggerToValueMapping setValue:v7 forKey:v8];
+  v7 = [NSNumber numberWithDouble:value];
+  name = [triggerCopy name];
+  [(NSMutableDictionary *)triggerToValueMapping setValue:v7 forKey:name];
 
   triggerNameToTriggerMapping = self->_triggerNameToTriggerMapping;
-  v10 = [v16 name];
-  v11 = [(NSMutableDictionary *)triggerNameToTriggerMapping objectForKeyedSubscript:v10];
+  name2 = [triggerCopy name];
+  v11 = [(NSMutableDictionary *)triggerNameToTriggerMapping objectForKeyedSubscript:name2];
 
   if (!v11)
   {
     orderedKeys = self->_orderedKeys;
-    v13 = [v16 name];
-    [(NSMutableArray *)orderedKeys addObject:v13];
+    name3 = [triggerCopy name];
+    [(NSMutableArray *)orderedKeys addObject:name3];
 
     v14 = self->_triggerNameToTriggerMapping;
-    v15 = [v16 name];
-    [(NSMutableDictionary *)v14 setValue:v16 forKey:v15];
+    name4 = [triggerCopy name];
+    [(NSMutableDictionary *)v14 setValue:triggerCopy forKey:name4];
   }
 }
 

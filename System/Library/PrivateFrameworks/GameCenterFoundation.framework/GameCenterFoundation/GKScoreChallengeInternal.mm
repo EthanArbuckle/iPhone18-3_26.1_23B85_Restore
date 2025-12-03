@@ -1,7 +1,7 @@
 @interface GKScoreChallengeInternal
 + (id)internalRepresentation;
 + (id)secureCodedPropertyKeys;
-- (id)serverRepresentationForReceivingPlayer:(id)a3;
+- (id)serverRepresentationForReceivingPlayer:(id)player;
 - (id)titleText;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)internalRepresentation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __51__GKScoreChallengeInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_168 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_168, block);
@@ -44,32 +44,32 @@ void __51__GKScoreChallengeInternal_secureCodedPropertyKeys__block_invoke(uint64
   secureCodedPropertyKeys_sSecureCodedKeys_167 = v2;
 }
 
-- (id)serverRepresentationForReceivingPlayer:(id)a3
+- (id)serverRepresentationForReceivingPlayer:(id)player
 {
   v24[4] = *MEMORY[0x277D85DE8];
   v22.receiver = self;
   v22.super_class = GKScoreChallengeInternal;
-  v5 = [(GKChallengeInternal *)&v22 serverRepresentationForReceivingPlayer:a3];
+  v5 = [(GKChallengeInternal *)&v22 serverRepresentationForReceivingPlayer:player];
   v6 = [v5 mutableCopy];
 
   [v6 setObject:&unk_283B33418 forKey:@"challenge-type"];
   v23[0] = @"value";
   v7 = MEMORY[0x277CCABB0];
-  v21 = [(GKScoreChallengeInternal *)self score];
-  v20 = [v7 numberWithLongLong:{objc_msgSend(v21, "value")}];
+  score = [(GKScoreChallengeInternal *)self score];
+  v20 = [v7 numberWithLongLong:{objc_msgSend(score, "value")}];
   v24[0] = v20;
   v23[1] = @"leaderboard-id";
-  v8 = [(GKScoreChallengeInternal *)self score];
-  v9 = [v8 leaderboardIdentifier];
-  v24[1] = v9;
+  score2 = [(GKScoreChallengeInternal *)self score];
+  leaderboardIdentifier = [score2 leaderboardIdentifier];
+  v24[1] = leaderboardIdentifier;
   v23[2] = @"timestamp";
-  v10 = [(GKScoreChallengeInternal *)self score];
-  v11 = [v10 date];
-  if (v11)
+  score3 = [(GKScoreChallengeInternal *)self score];
+  date = [score3 date];
+  if (date)
   {
-    v19 = [(GKScoreChallengeInternal *)self score];
-    v3 = [v19 date];
-    [v3 _gkServerTimestamp];
+    score4 = [(GKScoreChallengeInternal *)self score];
+    date2 = [score4 date];
+    [date2 _gkServerTimestamp];
   }
 
   else
@@ -80,15 +80,15 @@ void __51__GKScoreChallengeInternal_secureCodedPropertyKeys__block_invoke(uint64
   v24[2] = v12;
   v23[3] = @"context";
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(GKScoreChallengeInternal *)self score];
-  v15 = [v13 numberWithLongLong:{objc_msgSend(v14, "context")}];
+  score5 = [(GKScoreChallengeInternal *)self score];
+  v15 = [v13 numberWithLongLong:{objc_msgSend(score5, "context")}];
   v24[3] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
 
-  if (v11)
+  if (date)
   {
 
-    v12 = v19;
+    v12 = score4;
   }
 
   [v6 setObject:v16 forKey:@"score"];
@@ -99,16 +99,16 @@ void __51__GKScoreChallengeInternal_secureCodedPropertyKeys__block_invoke(uint64
 
 - (id)titleText
 {
-  v3 = [(GKScoreChallengeInternal *)self score];
-  v4 = [v3 formattedValue];
+  score = [(GKScoreChallengeInternal *)self score];
+  formattedValue = [score formattedValue];
 
-  if (v4 && (-[GKScoreChallengeInternal leaderboard](self, "leaderboard"), v5 = objc_claimAutoreleasedReturnValue(), [v5 title], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if (formattedValue && (-[GKScoreChallengeInternal leaderboard](self, "leaderboard"), v5 = objc_claimAutoreleasedReturnValue(), [v5 title], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings SHORT_CHALLENGE_SCORE_TITLE_FORMAT];
-    v9 = [(GKScoreChallengeInternal *)self leaderboard];
-    v10 = [v9 title];
-    v11 = [v7 stringWithFormat:v8, v4, v10];
+    leaderboard = [(GKScoreChallengeInternal *)self leaderboard];
+    title = [leaderboard title];
+    v11 = [v7 stringWithFormat:v8, formattedValue, title];
   }
 
   else

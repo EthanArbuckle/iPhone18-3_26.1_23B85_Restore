@@ -1,5 +1,5 @@
 @interface TBRemoteFetchAndCacheOperation
-- (TBRemoteFetchAndCacheOperation)initWithFetchRequest:(id)a3 dataSource:(id)a4;
+- (TBRemoteFetchAndCacheOperation)initWithFetchRequest:(id)request dataSource:(id)source;
 - (id)name;
 - (void)finish;
 - (void)start;
@@ -7,19 +7,19 @@
 
 @implementation TBRemoteFetchAndCacheOperation
 
-- (TBRemoteFetchAndCacheOperation)initWithFetchRequest:(id)a3 dataSource:(id)a4
+- (TBRemoteFetchAndCacheOperation)initWithFetchRequest:(id)request dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = TBRemoteFetchAndCacheOperation;
   v8 = [(TBRemoteFetchAndCacheOperation *)&v13 init];
   fetchRequest = v8->_fetchRequest;
-  v8->_fetchRequest = v6;
-  v10 = v6;
+  v8->_fetchRequest = requestCopy;
+  v10 = requestCopy;
 
   dataSource = v8->_dataSource;
-  v8->_dataSource = v7;
+  v8->_dataSource = sourceCopy;
 
   return v8;
 }
@@ -27,13 +27,13 @@
 - (void)start
 {
   self->_finished = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   start = self->_start;
-  self->_start = v3;
+  self->_start = date;
 
   objc_initWeak(&location, self);
-  v5 = [(TBRemoteFetchAndCacheOperation *)self fetchRequest];
-  v6 = [v5 copyWithZone:0];
+  fetchRequest = [(TBRemoteFetchAndCacheOperation *)self fetchRequest];
+  v6 = [fetchRequest copyWithZone:0];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -42,9 +42,9 @@
   objc_copyWeak(&v10, &location);
   v9[4] = self;
   [v6 setResultsHandler:v9];
-  v7 = [(TBRemoteFetchAndCacheOperation *)self dataSource];
-  v8 = [v7 fetchDataSource];
-  [v8 executeFetchRequest:v6];
+  dataSource = [(TBRemoteFetchAndCacheOperation *)self dataSource];
+  fetchDataSource = [dataSource fetchDataSource];
+  [fetchDataSource executeFetchRequest:v6];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -105,9 +105,9 @@ void __39__TBRemoteFetchAndCacheOperation_start__block_invoke_2(uint64_t a1)
 
 - (void)finish
 {
-  v3 = [(TBRemoteFetchAndCacheOperation *)self name];
+  name = [(TBRemoteFetchAndCacheOperation *)self name];
   [(NSDate *)self->_start timeIntervalSinceNow];
-  NSLog(&cfstr_FinishedElapse.isa, v3, -v4);
+  NSLog(&cfstr_FinishedElapse.isa, name, -v4);
 
   [(TBRemoteFetchAndCacheOperation *)self willChangeValueForKey:@"isFinished"];
   self->_finished = 1;

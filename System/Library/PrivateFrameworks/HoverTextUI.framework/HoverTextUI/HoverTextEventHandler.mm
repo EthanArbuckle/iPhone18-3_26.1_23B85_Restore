@@ -1,14 +1,14 @@
 @interface HoverTextEventHandler
-- (BOOL)handlePointerEvent:(id)a3;
+- (BOOL)handlePointerEvent:(id)event;
 @end
 
 @implementation HoverTextEventHandler
 
-- (BOOL)handlePointerEvent:(id)a3
+- (BOOL)handlePointerEvent:(id)event
 {
-  v5 = a3;
-  v6 = self;
-  sub_25467AE04(a3);
+  eventCopy = event;
+  selfCopy = self;
+  sub_25467AE04(event);
 
   return 0;
 }

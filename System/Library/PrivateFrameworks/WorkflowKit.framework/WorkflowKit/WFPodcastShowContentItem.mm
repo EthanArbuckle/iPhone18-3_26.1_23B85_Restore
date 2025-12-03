@@ -1,29 +1,29 @@
 @interface WFPodcastShowContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 @end
 
 @implementation WFPodcastShowContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Podcasts (plural)", @"Podcasts");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Podcast", @"Podcast");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -73,19 +73,19 @@
   return v14;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  v8 = thumbnailCopy;
+  if (thumbnailCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__WFPodcastShowContentItem_getListThumbnail_forSize___block_invoke;
     v10[3] = &unk_1E837D710;
-    v11 = v7;
+    v11 = thumbnailCopy;
     [(WFiTunesObjectContentItem *)self getArtworkForSize:v10 completionHandler:width, height];
   }
 
@@ -106,14 +106,14 @@ void __53__WFPodcastShowContentItem_getListThumbnail_forSize___block_invoke(uint
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFPodcastShowContentItem *)self podcastObject];
-    v7 = [v6 artistName];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    podcastObject = [(WFPodcastShowContentItem *)self podcastObject];
+    artistName = [podcastObject artistName];
+    (*(subtitle + 2))(subtitleCopy, artistName);
   }
 
   return 1;

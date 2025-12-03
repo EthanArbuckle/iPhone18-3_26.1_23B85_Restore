@@ -1,15 +1,15 @@
 @interface PodcastsArtworkDataSourceVisualIdenticalityToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(void *)zone;
 - (id)stringRepresentation;
 - (int64_t)hash;
 @end
 
 @implementation PodcastsArtworkDataSourceVisualIdenticalityToken
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C5D04454(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -18,11 +18,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C6017390();
     swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1C5D04594(v8);
@@ -42,7 +42,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5D04718();
 
   return v3;

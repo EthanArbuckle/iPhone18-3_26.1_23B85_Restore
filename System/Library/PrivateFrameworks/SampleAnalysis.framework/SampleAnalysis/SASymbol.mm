@@ -1,63 +1,63 @@
 @interface SASymbol
-+ (void)symbolWithOffsetIntoSegment:(uint64_t)a3 length:(void *)a4 name:;
-- (id)addInlineSourceInfoWithOffsetIntoSegment:(uint64_t)a3 length:(int)a4 lineNum:(int)a5 columnNum:(void *)a6 filePath:;
-- (id)addNonInlineSourceInfoWithOffsetIntoSegment:(uint64_t)a3 length:(int)a4 lineNum:(int)a5 columnNum:(void *)a6 filePath:;
++ (void)symbolWithOffsetIntoSegment:(uint64_t)segment length:(void *)length name:;
+- (id)addInlineSourceInfoWithOffsetIntoSegment:(uint64_t)segment length:(int)length lineNum:(int)num columnNum:(void *)columnNum filePath:;
+- (id)addNonInlineSourceInfoWithOffsetIntoSegment:(uint64_t)segment length:(int)length lineNum:(int)num columnNum:(void *)columnNum filePath:;
 - (id)debugDescription;
 @end
 
 @implementation SASymbol
 
-- (id)addInlineSourceInfoWithOffsetIntoSegment:(uint64_t)a3 length:(int)a4 lineNum:(int)a5 columnNum:(void *)a6 filePath:
+- (id)addInlineSourceInfoWithOffsetIntoSegment:(uint64_t)segment length:(int)length lineNum:(int)num columnNum:(void *)columnNum filePath:
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_27:
     v17 = 0;
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!segment)
   {
     v23 = *__error();
     v24 = _sa_logt();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [a1 debugDescription];
+      v25 = [self debugDescription];
       *buf = 136315906;
-      v40 = [v25 UTF8String];
+      uTF8String = [v25 UTF8String];
       v41 = 2080;
-      v42 = [a6 UTF8String];
+      uTF8String2 = [columnNum UTF8String];
       v43 = 1024;
-      v44 = a4;
+      lengthCopy = length;
       v45 = 1024;
-      v46 = a5;
+      numCopy = num;
       _os_log_error_impl(&dword_1E0E2F000, v24, OS_LOG_TYPE_ERROR, "%s: inlining 0-length source info %s:%d,%d", buf, 0x22u);
     }
 
     *__error() = v23;
-    v26 = [a1 debugDescription];
+    v26 = [self debugDescription];
     v27 = v26;
-    v28 = [v26 UTF8String];
-    v29 = a6;
-    [a6 UTF8String];
-    _SASetCrashLogMessage(4565, "%s: inlining 0-length source info %s:%d,%d", v30, v31, v32, v33, v34, v35, v28);
+    uTF8String3 = [v26 UTF8String];
+    columnNumCopy = columnNum;
+    [columnNum UTF8String];
+    _SASetCrashLogMessage(4565, "%s: inlining 0-length source info %s:%d,%d", v30, v31, v32, v33, v34, v35, uTF8String3);
 
     _os_crash();
     __break(1u);
     goto LABEL_27;
   }
 
-  v10 = a1;
-  objc_sync_enter(v10);
-  v11 = v10[4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = selfCopy[4];
   if (!v11)
   {
     v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    v13 = v10[4];
-    v10[4] = v12;
+    v13 = selfCopy[4];
+    selfCopy[4] = v12;
 
-    v11 = v10[4];
+    v11 = selfCopy[4];
   }
 
   v38[0] = MEMORY[0x1E69E9820];
@@ -65,7 +65,7 @@ LABEL_27:
   v38[2] = __87__SASymbol_addInlineSourceInfoWithOffsetIntoSegment_length_lineNum_columnNum_filePath___block_invoke;
   v38[3] = &__block_descriptor_48_e22_q16__0__SASourceInfo_8l;
   v38[4] = a2;
-  v38[5] = a3;
+  v38[5] = segment;
   v14 = SABinarySearchArray(v11, 1536, v38);
   v15 = v14;
   if (v14)
@@ -73,21 +73,21 @@ LABEL_27:
     v16 = v14 - 1;
     while (1)
     {
-      v17 = [v10[4] objectAtIndexedSubscript:v16];
-      if ([v17 offsetIntoSegment] != a2 || objc_msgSend(v17, "length") != a3)
+      v17 = [selfCopy[4] objectAtIndexedSubscript:v16];
+      if ([v17 offsetIntoSegment] != a2 || objc_msgSend(v17, "length") != segment)
       {
         break;
       }
 
-      if (a6)
+      if (columnNum)
       {
-        v18 = [v17 filePath];
-        if (v18)
+        filePath = [v17 filePath];
+        if (filePath)
         {
-          v19 = [v17 filePath];
-          if ([a6 isEqualToString:v19] && objc_msgSend(v17, "lineNum") == a4)
+          filePath2 = [v17 filePath];
+          if ([columnNum isEqualToString:filePath2] && objc_msgSend(v17, "lineNum") == length)
           {
-            v20 = [v17 columnNum] == a5;
+            v20 = [v17 columnNum] == num;
 
             if (v20)
             {
@@ -109,10 +109,10 @@ LABEL_27:
   }
 
 LABEL_19:
-  v17 = [SASourceInfo sourceInfoWithOffsetIntoSegment:a2 length:a3 lineNum:a4 columnNum:a5 filePath:a6];
-  [v10[4] insertObject:v17 atIndex:v15];
+  v17 = [SASourceInfo sourceInfoWithOffsetIntoSegment:a2 length:segment lineNum:length columnNum:num filePath:columnNum];
+  [selfCopy[4] insertObject:v17 atIndex:v15];
 LABEL_20:
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
 LABEL_21:
   v21 = *MEMORY[0x1E69E9840];
@@ -120,21 +120,21 @@ LABEL_21:
   return v17;
 }
 
-- (id)addNonInlineSourceInfoWithOffsetIntoSegment:(uint64_t)a3 length:(int)a4 lineNum:(int)a5 columnNum:(void *)a6 filePath:
+- (id)addNonInlineSourceInfoWithOffsetIntoSegment:(uint64_t)segment length:(int)length lineNum:(int)num columnNum:(void *)columnNum filePath:
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v11 = a1;
-    objc_sync_enter(v11);
-    v12 = v11[4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = selfCopy[4];
     if (!v12)
     {
       v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-      v14 = v11[4];
-      v11[4] = v13;
+      v14 = selfCopy[4];
+      selfCopy[4] = v13;
 
-      v12 = v11[4];
+      v12 = selfCopy[4];
     }
 
     v37[0] = MEMORY[0x1E69E9820];
@@ -143,21 +143,21 @@ LABEL_21:
     v37[3] = &__block_descriptor_40_e22_q16__0__SASourceInfo_8l;
     v37[4] = a2;
     v15 = SABinarySearchArray(v12, 1280, v37);
-    if (v15 < [v11[4] count])
+    if (v15 < [selfCopy[4] count])
     {
-      v16 = a5;
-      v17 = a6;
-      v18 = [v11[4] objectAtIndexedSubscript:v15];
+      numCopy = num;
+      columnNumCopy = columnNum;
+      v18 = [selfCopy[4] objectAtIndexedSubscript:v15];
       if ([v18 offsetIntoSegment] == a2)
       {
 LABEL_18:
-        objc_sync_exit(v11);
+        objc_sync_exit(selfCopy);
 
         goto LABEL_19;
       }
 
-      v19 = a3 + a2;
-      if (a3 + a2 > [v18 offsetIntoSegment])
+      v19 = segment + a2;
+      if (segment + a2 > [v18 offsetIntoSegment])
       {
         v20 = *__error();
         v21 = _sa_logt();
@@ -165,11 +165,11 @@ LABEL_18:
         {
           v34 = [v18 debugDescription];
           *buf = 138413570;
-          v39 = v17;
+          v39 = columnNumCopy;
           v40 = 1024;
-          *v41 = a4;
+          *v41 = length;
           *&v41[4] = 1024;
-          *&v41[6] = v16;
+          *&v41[6] = numCopy;
           *v42 = 2048;
           *&v42[2] = a2;
           v43 = 2048;
@@ -181,21 +181,21 @@ LABEL_18:
         }
 
         *__error() = v20;
-        a3 = [v18 offsetIntoSegment] - a2;
+        segment = [v18 offsetIntoSegment] - a2;
       }
 
-      a6 = v17;
-      a5 = v16;
+      columnNum = columnNumCopy;
+      num = numCopy;
     }
 
     if (v15)
     {
-      v36 = a4;
-      v22 = a5;
-      v23 = a6;
-      v24 = [v11[4] objectAtIndexedSubscript:v15 - 1];
-      v25 = [v24 offsetIntoSegment];
-      if ([v24 length] + v25 > a2)
+      lengthCopy = length;
+      numCopy2 = num;
+      columnNumCopy2 = columnNum;
+      v24 = [selfCopy[4] objectAtIndexedSubscript:v15 - 1];
+      offsetIntoSegment = [v24 offsetIntoSegment];
+      if ([v24 length] + offsetIntoSegment > a2)
       {
         v26 = *__error();
         v27 = _sa_logt();
@@ -205,33 +205,33 @@ LABEL_18:
           *buf = 138413570;
           v39 = v33;
           v40 = 2112;
-          *v41 = v23;
+          *v41 = columnNumCopy2;
           *&v41[8] = 1024;
-          *v42 = v36;
+          *v42 = lengthCopy;
           *&v42[4] = 1024;
-          *&v42[6] = v22;
+          *&v42[6] = numCopy2;
           v43 = 2048;
           v44 = a2;
           v45 = 2048;
-          v46 = a3 + a2;
+          v46 = segment + a2;
           _os_log_error_impl(&dword_1E0E2F000, v27, OS_LOG_TYPE_ERROR, "existing source info %@ overlaps new %@:%d,%d (0x%llx-0x%llx)", buf, 0x36u);
         }
 
         *__error() = v26;
-        v28 = [v24 offsetIntoSegment];
+        offsetIntoSegment2 = [v24 offsetIntoSegment];
         v29 = [v24 length];
-        v30 = [v24 offsetIntoSegment];
-        a3 = a3 + a2 - (v28 + v29);
-        a2 = [v24 length] + v30;
+        offsetIntoSegment3 = [v24 offsetIntoSegment];
+        segment = segment + a2 - (offsetIntoSegment2 + v29);
+        a2 = [v24 length] + offsetIntoSegment3;
       }
 
-      a6 = v23;
-      a5 = v22;
-      a4 = v36;
+      columnNum = columnNumCopy2;
+      num = numCopy2;
+      length = lengthCopy;
     }
 
-    v18 = [SASourceInfo sourceInfoWithOffsetIntoSegment:a2 length:a3 lineNum:a4 columnNum:a5 filePath:a6];
-    [v11[4] insertObject:v18 atIndex:v15];
+    v18 = [SASourceInfo sourceInfoWithOffsetIntoSegment:a2 length:segment lineNum:length columnNum:num filePath:columnNum];
+    [selfCopy[4] insertObject:v18 atIndex:v15];
     goto LABEL_18;
   }
 
@@ -242,12 +242,12 @@ LABEL_19:
   return v18;
 }
 
-+ (void)symbolWithOffsetIntoSegment:(uint64_t)a3 length:(void *)a4 name:
++ (void)symbolWithOffsetIntoSegment:(uint64_t)segment length:(void *)length name:
 {
   v7 = objc_alloc_init(objc_opt_self());
   v7[1] = a2;
-  v7[2] = a3;
-  v8 = [a4 copy];
+  v7[2] = segment;
+  v8 = [length copy];
   v9 = v7[3];
   v7[3] = v8;
 

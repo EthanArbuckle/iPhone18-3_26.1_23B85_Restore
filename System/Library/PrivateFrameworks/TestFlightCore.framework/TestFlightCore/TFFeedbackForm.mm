@@ -1,23 +1,23 @@
 @interface TFFeedbackForm
-- (TFFeedbackForm)initWithTitle:(id)a3 entryGroups:(id)a4;
+- (TFFeedbackForm)initWithTitle:(id)title entryGroups:(id)groups;
 @end
 
 @implementation TFFeedbackForm
 
-- (TFFeedbackForm)initWithTitle:(id)a3 entryGroups:(id)a4
+- (TFFeedbackForm)initWithTitle:(id)title entryGroups:(id)groups
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  groupsCopy = groups;
   v14.receiver = self;
   v14.super_class = TFFeedbackForm;
   v8 = [(TFFeedbackForm *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [groupsCopy copy];
     entryGroups = v8->_entryGroups;
     v8->_entryGroups = v11;
   }

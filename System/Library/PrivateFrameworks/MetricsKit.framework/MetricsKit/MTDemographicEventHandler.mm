@@ -1,31 +1,31 @@
 @interface MTDemographicEventHandler
-- (id)ageDataForUserId:(id)a3 updateInterval:(double)a4;
+- (id)ageDataForUserId:(id)id updateInterval:(double)interval;
 - (id)eventType;
-- (id)eventVersion:(id)a3;
-- (id)totalYearsSinceDate:(id)a3 calendar:(id)a4;
-- (void)clearUserDefaultsForTopic:(id)a3;
+- (id)eventVersion:(id)version;
+- (id)totalYearsSinceDate:(id)date calendar:(id)calendar;
+- (void)clearUserDefaultsForTopic:(id)topic;
 @end
 
 @implementation MTDemographicEventHandler
 
-- (id)ageDataForUserId:(id)a3 updateInterval:(double)a4
+- (id)ageDataForUserId:(id)id updateInterval:(double)interval
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   v7 = +[MTFrameworkEnvironment sharedEnvironment];
-  v35 = [v7 date];
+  date = [v7 date];
 
-  v33 = self;
-  v8 = [(MTObject *)self metricsKit];
-  v9 = [v8 topic];
+  selfCopy = self;
+  metricsKit = [(MTObject *)self metricsKit];
+  topic = [metricsKit topic];
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [@"MTDemographicDataProviderLastAgeUpdateDate" stringByAppendingString:v9];
-  v12 = [@"MTDemographicDataProviderPreviousUserID" stringByAppendingString:v9];
-  v34 = [v10 valueForKey:v11];
-  v13 = [v10 valueForKey:v12];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [@"MTDemographicDataProviderLastAgeUpdateDate" stringByAppendingString:topic];
+  v12 = [@"MTDemographicDataProviderPreviousUserID" stringByAppendingString:topic];
+  v34 = [standardUserDefaults valueForKey:v11];
+  v13 = [standardUserDefaults valueForKey:v12];
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && [v13 isEqualToString:v6] && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(v35, "timeIntervalSinceDate:", v34), v14 < a4))
+  if (objc_opt_isKindOfClass() & 1) != 0 && [v13 isEqualToString:idCopy] && (objc_opt_class(), (objc_opt_isKindOfClass()) && (objc_msgSend(date, "timeIntervalSinceDate:", v34), v14 < interval))
   {
     v15 = 0;
   }
@@ -33,20 +33,20 @@
   else
   {
     v16 = +[MTFrameworkEnvironment sharedEnvironment];
-    v17 = [v16 dateOfBirthComponents];
+    dateOfBirthComponents = [v16 dateOfBirthComponents];
 
-    if (v17)
+    if (dateOfBirthComponents)
     {
       v18 = objc_alloc(MEMORY[0x277CBEA80]);
       v19 = [v18 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-      [v17 setCalendar:v19];
-      [v17 date];
-      v20 = v31 = v17;
-      v21 = [(MTDemographicEventHandler *)v33 totalYearsSinceDate:v20 calendar:v19];
+      [dateOfBirthComponents setCalendar:v19];
+      [dateOfBirthComponents date];
+      v20 = v31 = dateOfBirthComponents;
+      v21 = [(MTDemographicEventHandler *)selfCopy totalYearsSinceDate:v20 calendar:v19];
 
       v30 = v21;
       [v21 setCalendar:v19];
-      v38[0] = v6;
+      v38[0] = idCopy;
       v37[0] = @"userId";
       v37[1] = @"ageRange";
       v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v21, "year")}];
@@ -57,19 +57,19 @@
       v38[2] = v23;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:3];
       v24 = v12;
-      v25 = v9;
-      v27 = v26 = v6;
-      v15 = [(MTEventHandler *)v33 metricsDataWithFields:v27, 0];
+      v25 = topic;
+      v27 = v26 = idCopy;
+      v15 = [(MTEventHandler *)selfCopy metricsDataWithFields:v27, 0];
 
-      v6 = v26;
-      v9 = v25;
+      idCopy = v26;
+      topic = v25;
       v12 = v24;
 
       v11 = v32;
-      v17 = v31;
-      [v10 setValue:v35 forKey:v32];
-      [v10 setValue:v6 forKey:v12];
-      [v10 synchronize];
+      dateOfBirthComponents = v31;
+      [standardUserDefaults setValue:date forKey:v32];
+      [standardUserDefaults setValue:idCopy forKey:v12];
+      [standardUserDefaults synchronize];
     }
 
     else
@@ -90,36 +90,36 @@
   return v15;
 }
 
-- (void)clearUserDefaultsForTopic:(id)a3
+- (void)clearUserDefaultsForTopic:(id)topic
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v7 = [v3 standardUserDefaults];
-  v5 = [@"MTDemographicDataProviderLastAgeUpdateDate" stringByAppendingString:v4];
-  [v7 removeObjectForKey:v5];
+  topicCopy = topic;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v5 = [@"MTDemographicDataProviderLastAgeUpdateDate" stringByAppendingString:topicCopy];
+  [standardUserDefaults removeObjectForKey:v5];
 
-  v6 = [@"MTDemographicDataProviderPreviousUserID" stringByAppendingString:v4];
+  v6 = [@"MTDemographicDataProviderPreviousUserID" stringByAppendingString:topicCopy];
 
-  [v7 removeObjectForKey:v6];
-  [v7 synchronize];
+  [standardUserDefaults removeObjectForKey:v6];
+  [standardUserDefaults synchronize];
 }
 
-- (id)totalYearsSinceDate:(id)a3 calendar:(id)a4
+- (id)totalYearsSinceDate:(id)date calendar:(id)calendar
 {
-  v5 = a4;
-  v6 = a3;
+  calendarCopy = calendar;
+  dateCopy = date;
   v7 = +[MTFrameworkEnvironment sharedEnvironment];
-  v8 = [v7 date];
-  v9 = [v5 components:4 fromDate:v6 toDate:v8 options:0];
+  date = [v7 date];
+  v9 = [calendarCopy components:4 fromDate:dateCopy toDate:date options:0];
 
   return v9;
 }
 
-- (id)eventVersion:(id)a3
+- (id)eventVersion:(id)version
 {
   v8.receiver = self;
   v8.super_class = MTDemographicEventHandler;
-  v3 = [(MTEventHandler *)&v8 eventVersion:a3];
+  v3 = [(MTEventHandler *)&v8 eventVersion:version];
   v4 = v3;
   if (v3)
   {
@@ -140,11 +140,11 @@
 {
   v7.receiver = self;
   v7.super_class = MTDemographicEventHandler;
-  v2 = [(MTEventHandler *)&v7 eventType];
-  v3 = v2;
-  if (v2)
+  eventType = [(MTEventHandler *)&v7 eventType];
+  v3 = eventType;
+  if (eventType)
   {
-    v4 = v2;
+    v4 = eventType;
   }
 
   else

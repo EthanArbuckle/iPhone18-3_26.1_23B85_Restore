@@ -1,21 +1,21 @@
 @interface IMSharedUtilitiesProtoCloudKitEncryptedMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssociatedMessageRangeLength:(BOOL)a3;
-- (void)setHasAssociatedMessageRangeLocation:(BOOL)a3;
-- (void)setHasExpireState:(BOOL)a3;
-- (void)setHasTimeDelivered:(BOOL)a3;
-- (void)setHasTimeExpressiveSentPlayed:(BOOL)a3;
-- (void)setHasTimePlayed:(BOOL)a3;
-- (void)setHasTimeRead:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssociatedMessageRangeLength:(BOOL)length;
+- (void)setHasAssociatedMessageRangeLocation:(BOOL)location;
+- (void)setHasExpireState:(BOOL)state;
+- (void)setHasTimeDelivered:(BOOL)delivered;
+- (void)setHasTimeExpressiveSentPlayed:(BOOL)played;
+- (void)setHasTimePlayed:(BOOL)played;
+- (void)setHasTimeRead:(BOOL)read;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IMSharedUtilitiesProtoCloudKitEncryptedMessage
@@ -36,9 +36,9 @@
   [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 256;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTimeRead:(BOOL)a3
+- (void)setHasTimeRead:(BOOL)read
 {
-  if (a3)
+  if (read)
   {
     v3 = 32;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTimePlayed:(BOOL)a3
+- (void)setHasTimePlayed:(BOOL)played
 {
-  if (a3)
+  if (played)
   {
     v3 = 16;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTimeExpressiveSentPlayed:(BOOL)a3
+- (void)setHasTimeExpressiveSentPlayed:(BOOL)played
 {
-  if (a3)
+  if (played)
   {
     v3 = 8;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTimeDelivered:(BOOL)a3
+- (void)setHasTimeDelivered:(BOOL)delivered
 {
-  if (a3)
+  if (delivered)
   {
     v3 = 4;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasExpireState:(BOOL)a3
+- (void)setHasExpireState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasAssociatedMessageRangeLocation:(BOOL)a3
+- (void)setHasAssociatedMessageRangeLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 128;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasAssociatedMessageRangeLength:(BOOL)a3
+- (void)setHasAssociatedMessageRangeLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 64;
   }
@@ -165,58 +165,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
   }
 
   messageSubject = self->_messageSubject;
   if (messageSubject)
   {
-    [v3 setObject:messageSubject forKey:@"message_subject"];
+    [dictionary setObject:messageSubject forKey:@"message_subject"];
   }
 
   messageBody = self->_messageBody;
   if (messageBody)
   {
-    [v3 setObject:messageBody forKey:@"message_body"];
+    [dictionary setObject:messageBody forKey:@"message_body"];
   }
 
   messageBodyData = self->_messageBodyData;
   if (messageBodyData)
   {
-    [v3 setObject:messageBodyData forKey:@"message_body_data"];
+    [dictionary setObject:messageBodyData forKey:@"message_body_data"];
   }
 
   baloonBundleId = self->_baloonBundleId;
   if (baloonBundleId)
   {
-    [v3 setObject:baloonBundleId forKey:@"baloon_bundle_id"];
+    [dictionary setObject:baloonBundleId forKey:@"baloon_bundle_id"];
   }
 
   payloadData = self->_payloadData;
   if (payloadData)
   {
-    [v3 setObject:payloadData forKey:@"payload_data"];
+    [dictionary setObject:payloadData forKey:@"payload_data"];
   }
 
   messageSummaryInfo = self->_messageSummaryInfo;
   if (messageSummaryInfo)
   {
-    [v3 setObject:messageSummaryInfo forKey:@"message_summary_info"];
+    [dictionary setObject:messageSummaryInfo forKey:@"message_summary_info"];
   }
 
   expressiveSendId = self->_expressiveSendId;
   if (expressiveSendId)
   {
-    [v3 setObject:expressiveSendId forKey:@"expressive_send_id"];
+    [dictionary setObject:expressiveSendId forKey:@"expressive_send_id"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeRead), @"time_read"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeRead), @"time_read"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -235,24 +235,24 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timePlayed), @"time_played"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timePlayed), @"time_played"}];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeExpressiveSentPlayed), @"time_expressive_sent_played"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeExpressiveSentPlayed), @"time_expressive_sent_played"}];
   }
 
 LABEL_21:
   padding = self->_padding;
   if (padding)
   {
-    [v3 setObject:padding forKey:@"padding"];
+    [dictionary setObject:padding forKey:@"padding"];
   }
 
   v13 = self->_has;
   if ((v13 & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeDelivered), @"time_delivered"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_timeDelivered), @"time_delivered"}];
     v13 = self->_has;
     if ((v13 & 2) == 0)
     {
@@ -271,36 +271,36 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_expireState), @"expire_state"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_expireState), @"expire_state"}];
   if (*&self->_has)
   {
 LABEL_26:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_associatedMessageType), @"associated_message_type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_associatedMessageType), @"associated_message_type"}];
   }
 
 LABEL_27:
   associatedMessageGuid = self->_associatedMessageGuid;
   if (associatedMessageGuid)
   {
-    [v3 setObject:associatedMessageGuid forKey:@"associated_message_guid"];
+    [dictionary setObject:associatedMessageGuid forKey:@"associated_message_guid"];
   }
 
   v15 = self->_has;
   if ((v15 & 0x80) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_associatedMessageRangeLocation), @"associated_message_range_location"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_associatedMessageRangeLocation), @"associated_message_range_location"}];
     v15 = self->_has;
   }
 
   if ((v15 & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_associatedMessageRangeLength), @"associated_message_range_length"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_associatedMessageRangeLength), @"associated_message_range_length"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 0x100) != 0)
   {
@@ -426,54 +426,54 @@ LABEL_27:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x100) != 0)
   {
-    *(a3 + 34) = self->_version;
-    *(a3 + 70) |= 0x100u;
+    *(to + 34) = self->_version;
+    *(to + 70) |= 0x100u;
   }
 
   if (self->_messageSubject)
   {
-    [a3 setMessageSubject:?];
+    [to setMessageSubject:?];
   }
 
   if (self->_messageBody)
   {
-    [a3 setMessageBody:?];
+    [to setMessageBody:?];
   }
 
   if (self->_messageBodyData)
   {
-    [a3 setMessageBodyData:?];
+    [to setMessageBodyData:?];
   }
 
   if (self->_baloonBundleId)
   {
-    [a3 setBaloonBundleId:?];
+    [to setBaloonBundleId:?];
   }
 
   if (self->_payloadData)
   {
-    [a3 setPayloadData:?];
+    [to setPayloadData:?];
   }
 
   if (self->_messageSummaryInfo)
   {
-    [a3 setMessageSummaryInfo:?];
+    [to setMessageSummaryInfo:?];
   }
 
   if (self->_expressiveSendId)
   {
-    [a3 setExpressiveSendId:?];
+    [to setExpressiveSendId:?];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(a3 + 6) = self->_timeRead;
-    *(a3 + 70) |= 0x20u;
+    *(to + 6) = self->_timeRead;
+    *(to + 70) |= 0x20u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -492,26 +492,26 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  *(a3 + 5) = self->_timePlayed;
-  *(a3 + 70) |= 0x10u;
+  *(to + 5) = self->_timePlayed;
+  *(to + 70) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_20:
-    *(a3 + 4) = self->_timeExpressiveSentPlayed;
-    *(a3 + 70) |= 8u;
+    *(to + 4) = self->_timeExpressiveSentPlayed;
+    *(to + 70) |= 8u;
   }
 
 LABEL_21:
   if (self->_padding)
   {
-    [a3 setPadding:?];
+    [to setPadding:?];
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(a3 + 3) = self->_timeDelivered;
-    *(a3 + 70) |= 4u;
+    *(to + 3) = self->_timeDelivered;
+    *(to + 70) |= 4u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -530,39 +530,39 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  *(a3 + 2) = self->_expireState;
-  *(a3 + 70) |= 2u;
+  *(to + 2) = self->_expireState;
+  *(to + 70) |= 2u;
   if (*&self->_has)
   {
 LABEL_26:
-    *(a3 + 1) = self->_associatedMessageType;
-    *(a3 + 70) |= 1u;
+    *(to + 1) = self->_associatedMessageType;
+    *(to + 70) |= 1u;
   }
 
 LABEL_27:
   if (self->_associatedMessageGuid)
   {
-    [a3 setAssociatedMessageGuid:?];
+    [to setAssociatedMessageGuid:?];
   }
 
   v7 = self->_has;
   if ((v7 & 0x80) != 0)
   {
-    *(a3 + 17) = self->_associatedMessageRangeLocation;
-    *(a3 + 70) |= 0x80u;
+    *(to + 17) = self->_associatedMessageRangeLocation;
+    *(to + 70) |= 0x80u;
     v7 = self->_has;
   }
 
   if ((v7 & 0x40) != 0)
   {
-    *(a3 + 16) = self->_associatedMessageRangeLength;
-    *(a3 + 70) |= 0x40u;
+    *(to + 16) = self->_associatedMessageRangeLength;
+    *(to + 70) |= 0x40u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x100) != 0)
   {
@@ -570,16 +570,16 @@ LABEL_27:
     *(v5 + 140) |= 0x100u;
   }
 
-  *(v6 + 104) = [(NSString *)self->_messageSubject copyWithZone:a3];
-  *(v6 + 88) = [(NSString *)self->_messageBody copyWithZone:a3];
+  *(v6 + 104) = [(NSString *)self->_messageSubject copyWithZone:zone];
+  *(v6 + 88) = [(NSString *)self->_messageBody copyWithZone:zone];
 
-  *(v6 + 96) = [(NSData *)self->_messageBodyData copyWithZone:a3];
-  *(v6 + 72) = [(NSString *)self->_baloonBundleId copyWithZone:a3];
+  *(v6 + 96) = [(NSData *)self->_messageBodyData copyWithZone:zone];
+  *(v6 + 72) = [(NSString *)self->_baloonBundleId copyWithZone:zone];
 
-  *(v6 + 128) = [(NSData *)self->_payloadData copyWithZone:a3];
-  *(v6 + 112) = [(NSData *)self->_messageSummaryInfo copyWithZone:a3];
+  *(v6 + 128) = [(NSData *)self->_payloadData copyWithZone:zone];
+  *(v6 + 112) = [(NSData *)self->_messageSummaryInfo copyWithZone:zone];
 
-  *(v6 + 80) = [(NSString *)self->_expressiveSendId copyWithZone:a3];
+  *(v6 + 80) = [(NSString *)self->_expressiveSendId copyWithZone:zone];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -614,7 +614,7 @@ LABEL_6:
 
 LABEL_7:
 
-  *(v6 + 120) = [(NSData *)self->_padding copyWithZone:a3];
+  *(v6 + 120) = [(NSData *)self->_padding copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 4) != 0)
   {
@@ -649,7 +649,7 @@ LABEL_10:
 
 LABEL_11:
 
-  *(v6 + 56) = [(NSString *)self->_associatedMessageGuid copyWithZone:a3];
+  *(v6 + 56) = [(NSString *)self->_associatedMessageGuid copyWithZone:zone];
   v9 = self->_has;
   if ((v9 & 0x80) != 0)
   {
@@ -667,20 +667,20 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 70) & 0x100) == 0 || self->_version != *(a3 + 34))
+      if ((*(equal + 70) & 0x100) == 0 || self->_version != *(equal + 34))
       {
         goto LABEL_66;
       }
     }
 
-    else if ((*(a3 + 70) & 0x100) != 0)
+    else if ((*(equal + 70) & 0x100) != 0)
     {
 LABEL_66:
       LOBYTE(v5) = 0;
@@ -688,31 +688,31 @@ LABEL_66:
     }
 
     messageSubject = self->_messageSubject;
-    if (!(messageSubject | *(a3 + 13)) || (v5 = [(NSString *)messageSubject isEqual:?]) != 0)
+    if (!(messageSubject | *(equal + 13)) || (v5 = [(NSString *)messageSubject isEqual:?]) != 0)
     {
       messageBody = self->_messageBody;
-      if (!(messageBody | *(a3 + 11)) || (v5 = [(NSString *)messageBody isEqual:?]) != 0)
+      if (!(messageBody | *(equal + 11)) || (v5 = [(NSString *)messageBody isEqual:?]) != 0)
       {
         messageBodyData = self->_messageBodyData;
-        if (!(messageBodyData | *(a3 + 12)) || (v5 = [(NSData *)messageBodyData isEqual:?]) != 0)
+        if (!(messageBodyData | *(equal + 12)) || (v5 = [(NSData *)messageBodyData isEqual:?]) != 0)
         {
           baloonBundleId = self->_baloonBundleId;
-          if (!(baloonBundleId | *(a3 + 9)) || (v5 = [(NSString *)baloonBundleId isEqual:?]) != 0)
+          if (!(baloonBundleId | *(equal + 9)) || (v5 = [(NSString *)baloonBundleId isEqual:?]) != 0)
           {
             payloadData = self->_payloadData;
-            if (!(payloadData | *(a3 + 16)) || (v5 = [(NSData *)payloadData isEqual:?]) != 0)
+            if (!(payloadData | *(equal + 16)) || (v5 = [(NSData *)payloadData isEqual:?]) != 0)
             {
               messageSummaryInfo = self->_messageSummaryInfo;
-              if (!(messageSummaryInfo | *(a3 + 14)) || (v5 = [(NSData *)messageSummaryInfo isEqual:?]) != 0)
+              if (!(messageSummaryInfo | *(equal + 14)) || (v5 = [(NSData *)messageSummaryInfo isEqual:?]) != 0)
               {
                 expressiveSendId = self->_expressiveSendId;
-                if (!(expressiveSendId | *(a3 + 10)) || (v5 = [(NSString *)expressiveSendId isEqual:?]) != 0)
+                if (!(expressiveSendId | *(equal + 10)) || (v5 = [(NSString *)expressiveSendId isEqual:?]) != 0)
                 {
                   has = self->_has;
-                  v14 = *(a3 + 70);
+                  v14 = *(equal + 70);
                   if ((has & 0x20) != 0)
                   {
-                    if ((v14 & 0x20) == 0 || self->_timeRead != *(a3 + 6))
+                    if ((v14 & 0x20) == 0 || self->_timeRead != *(equal + 6))
                     {
                       goto LABEL_66;
                     }
@@ -725,7 +725,7 @@ LABEL_66:
 
                   if ((has & 0x10) != 0)
                   {
-                    if ((v14 & 0x10) == 0 || self->_timePlayed != *(a3 + 5))
+                    if ((v14 & 0x10) == 0 || self->_timePlayed != *(equal + 5))
                     {
                       goto LABEL_66;
                     }
@@ -738,7 +738,7 @@ LABEL_66:
 
                   if ((has & 8) != 0)
                   {
-                    if ((v14 & 8) == 0 || self->_timeExpressiveSentPlayed != *(a3 + 4))
+                    if ((v14 & 8) == 0 || self->_timeExpressiveSentPlayed != *(equal + 4))
                     {
                       goto LABEL_66;
                     }
@@ -750,7 +750,7 @@ LABEL_66:
                   }
 
                   padding = self->_padding;
-                  if (padding | *(a3 + 15))
+                  if (padding | *(equal + 15))
                   {
                     v5 = [(NSData *)padding isEqual:?];
                     if (!v5)
@@ -761,10 +761,10 @@ LABEL_66:
                     has = self->_has;
                   }
 
-                  v16 = *(a3 + 70);
+                  v16 = *(equal + 70);
                   if ((has & 4) != 0)
                   {
-                    if ((v16 & 4) == 0 || self->_timeDelivered != *(a3 + 3))
+                    if ((v16 & 4) == 0 || self->_timeDelivered != *(equal + 3))
                     {
                       goto LABEL_66;
                     }
@@ -777,7 +777,7 @@ LABEL_66:
 
                   if ((has & 2) != 0)
                   {
-                    if ((v16 & 2) == 0 || self->_expireState != *(a3 + 2))
+                    if ((v16 & 2) == 0 || self->_expireState != *(equal + 2))
                     {
                       goto LABEL_66;
                     }
@@ -790,7 +790,7 @@ LABEL_66:
 
                   if (has)
                   {
-                    if ((v16 & 1) == 0 || self->_associatedMessageType != *(a3 + 1))
+                    if ((v16 & 1) == 0 || self->_associatedMessageType != *(equal + 1))
                     {
                       goto LABEL_66;
                     }
@@ -802,7 +802,7 @@ LABEL_66:
                   }
 
                   associatedMessageGuid = self->_associatedMessageGuid;
-                  if (associatedMessageGuid | *(a3 + 7))
+                  if (associatedMessageGuid | *(equal + 7))
                   {
                     v5 = [(NSString *)associatedMessageGuid isEqual:?];
                     if (!v5)
@@ -813,10 +813,10 @@ LABEL_66:
                     has = self->_has;
                   }
 
-                  v18 = *(a3 + 70);
+                  v18 = *(equal + 70);
                   if ((has & 0x80) != 0)
                   {
-                    if ((v18 & 0x80) == 0 || self->_associatedMessageRangeLocation != *(a3 + 17))
+                    if ((v18 & 0x80) == 0 || self->_associatedMessageRangeLocation != *(equal + 17))
                     {
                       goto LABEL_66;
                     }
@@ -830,7 +830,7 @@ LABEL_66:
                   LOBYTE(v5) = (v18 & 0x40) == 0;
                   if ((has & 0x40) != 0)
                   {
-                    if ((v18 & 0x40) == 0 || self->_associatedMessageRangeLength != *(a3 + 16))
+                    if ((v18 & 0x40) == 0 || self->_associatedMessageRangeLength != *(equal + 16))
                     {
                       goto LABEL_66;
                     }
@@ -969,55 +969,55 @@ LABEL_20:
   return v24 ^ v25 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 70) & 0x100) != 0)
+  if ((*(from + 70) & 0x100) != 0)
   {
-    self->_version = *(a3 + 34);
+    self->_version = *(from + 34);
     *&self->_has |= 0x100u;
   }
 
-  if (*(a3 + 13))
+  if (*(from + 13))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setMessageSubject:?];
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setMessageBody:?];
   }
 
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setMessageBodyData:?];
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setBaloonBundleId:?];
   }
 
-  if (*(a3 + 16))
+  if (*(from + 16))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setPayloadData:?];
   }
 
-  if (*(a3 + 14))
+  if (*(from + 14))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setMessageSummaryInfo:?];
   }
 
-  if (*(a3 + 10))
+  if (*(from + 10))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setExpressiveSendId:?];
   }
 
-  v5 = *(a3 + 70);
+  v5 = *(from + 70);
   if ((v5 & 0x20) != 0)
   {
-    self->_timeRead = *(a3 + 6);
+    self->_timeRead = *(from + 6);
     *&self->_has |= 0x20u;
-    v5 = *(a3 + 70);
+    v5 = *(from + 70);
     if ((v5 & 0x10) == 0)
     {
 LABEL_19:
@@ -1035,27 +1035,27 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_timePlayed = *(a3 + 5);
+  self->_timePlayed = *(from + 5);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 70) & 8) != 0)
+  if ((*(from + 70) & 8) != 0)
   {
 LABEL_20:
-    self->_timeExpressiveSentPlayed = *(a3 + 4);
+    self->_timeExpressiveSentPlayed = *(from + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_21:
-  if (*(a3 + 15))
+  if (*(from + 15))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setPadding:?];
   }
 
-  v6 = *(a3 + 70);
+  v6 = *(from + 70);
   if ((v6 & 4) != 0)
   {
-    self->_timeDelivered = *(a3 + 3);
+    self->_timeDelivered = *(from + 3);
     *&self->_has |= 4u;
-    v6 = *(a3 + 70);
+    v6 = *(from + 70);
     if ((v6 & 2) == 0)
     {
 LABEL_25:
@@ -1073,32 +1073,32 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  self->_expireState = *(a3 + 2);
+  self->_expireState = *(from + 2);
   *&self->_has |= 2u;
-  if (*(a3 + 70))
+  if (*(from + 70))
   {
 LABEL_26:
-    self->_associatedMessageType = *(a3 + 1);
+    self->_associatedMessageType = *(from + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_27:
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessage *)self setAssociatedMessageGuid:?];
   }
 
-  v7 = *(a3 + 70);
+  v7 = *(from + 70);
   if ((v7 & 0x80) != 0)
   {
-    self->_associatedMessageRangeLocation = *(a3 + 17);
+    self->_associatedMessageRangeLocation = *(from + 17);
     *&self->_has |= 0x80u;
-    v7 = *(a3 + 70);
+    v7 = *(from + 70);
   }
 
   if ((v7 & 0x40) != 0)
   {
-    self->_associatedMessageRangeLength = *(a3 + 16);
+    self->_associatedMessageRangeLength = *(from + 16);
     *&self->_has |= 0x40u;
   }
 }

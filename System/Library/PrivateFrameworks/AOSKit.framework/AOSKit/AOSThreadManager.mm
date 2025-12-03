@@ -1,7 +1,7 @@
 @interface AOSThreadManager
 + (id)sharedManager;
 - (void)dealloc;
-- (void)runAuthThreadWithContext:(id)a3;
+- (void)runAuthThreadWithContext:(id)context;
 @end
 
 @implementation AOSThreadManager
@@ -25,18 +25,18 @@
   [(AOSThreadManager *)&v2 dealloc];
 }
 
-- (void)runAuthThreadWithContext:(id)a3
+- (void)runAuthThreadWithContext:(id)context
 {
   v4 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  v5 = [a3 account];
-  v6 = [a3 transaction];
-  v7 = [a3 info];
-  v8 = [v7 objectForKey:kAOSAuthPreviousTokenKey];
-  v9 = [v7 objectForKey:kAOSAuthRequestURLKey];
-  if (v5)
+  account = [context account];
+  transaction = [context transaction];
+  info = [context info];
+  v8 = [info objectForKey:kAOSAuthPreviousTokenKey];
+  v9 = [info objectForKey:kAOSAuthRequestURLKey];
+  if (account)
   {
-    AOSAccountGetUser(v5);
-    AOSAccountGetPassword(v5);
+    AOSAccountGetUser(account);
+    AOSAccountGetPassword(account);
   }
 
   if (!_AOSValidateURL(v9))
@@ -46,7 +46,7 @@
     goto LABEL_7;
   }
 
-  if (v8 || (v16 = AOSAccountCopyAuthInfo(v5, v9, 0, 0)) == 0 || (v13 = v16, [v16 count] != 2))
+  if (v8 || (v16 = AOSAccountCopyAuthInfo(account, v9, 0, 0)) == 0 || (v13 = v16, [v16 count] != 2))
   {
     v10 = 5002;
 LABEL_7:
@@ -57,14 +57,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  AOSTransactionSetResult(v6, v13);
+  AOSTransactionSetResult(transaction, v13);
   v11 = 0;
   v12 = 1;
   v14 = 1;
 LABEL_8:
-  AOSTransactionSetError(v6, v11);
-  AOSTransactionSetSuccessful(v6, v14);
-  AOSTransactionSetIsFinished(v6, 1);
+  AOSTransactionSetError(transaction, v11);
+  AOSTransactionSetSuccessful(transaction, v14);
+  AOSTransactionSetIsFinished(transaction, 1);
   if ((v14 & 1) == 0)
   {
     CFRelease(v11);
@@ -75,10 +75,10 @@ LABEL_8:
     CFRelease(v13);
   }
 
-  v15 = [a3 scheduleCallback];
-  if (a3 && (v15 & 1) == 0)
+  scheduleCallback = [context scheduleCallback];
+  if (context && (scheduleCallback & 1) == 0)
   {
-    CFRelease(a3);
+    CFRelease(context);
   }
 
   [v4 drain];

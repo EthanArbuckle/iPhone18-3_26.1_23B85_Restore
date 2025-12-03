@@ -1,8 +1,8 @@
 @interface _UISearchControllerTrackableState
 - (BOOL)isActive;
 - (_UISearchControllerTrackableState)init;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIsActive:(BOOL)a3;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
+- (void)setIsActive:(BOOL)active;
 @end
 
 @implementation _UISearchControllerTrackableState
@@ -25,26 +25,26 @@
   v3 = *(&self->super.isa + OBJC_IVAR____UISearchControllerTrackableState_trackableState);
   swift_getKeyPath();
   sub_188CCA8E0();
-  v4 = self;
+  selfCopy = self;
 
   sub_18A4A2C08();
 
-  LOBYTE(v4) = *(v3 + 16);
+  LOBYTE(selfCopy) = *(v3 + 16);
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = self;
-  sub_1890A4930(v3);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1890A4930(activeCopy);
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1890A4A30(a3, a4);
+  selfCopy = self;
+  sub_1890A4A30(active, animated);
 }
 
 @end

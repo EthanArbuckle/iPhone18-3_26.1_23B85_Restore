@@ -1,43 +1,43 @@
 @interface SiriAnalyticsClockInactivityScheduler
-- (SiriAnalyticsClockInactivityScheduler)initWithSeconds:(int64_t)a3 queue:(id)a4 expiration:(id)a5 creation:(id)a6;
+- (SiriAnalyticsClockInactivityScheduler)initWithSeconds:(int64_t)seconds queue:(id)queue expiration:(id)expiration creation:(id)creation;
 - (void)clockCreated;
-- (void)clockExpiredWithCompletion:(id)a3;
-- (void)clockForcefullyDestroyedWithCompletion:(id)a3;
+- (void)clockExpiredWithCompletion:(id)completion;
+- (void)clockForcefullyDestroyedWithCompletion:(id)completion;
 - (void)destroyInactivityTimer;
 - (void)startScheduling;
 @end
 
 @implementation SiriAnalyticsClockInactivityScheduler
 
-- (SiriAnalyticsClockInactivityScheduler)initWithSeconds:(int64_t)a3 queue:(id)a4 expiration:(id)a5 creation:(id)a6
+- (SiriAnalyticsClockInactivityScheduler)initWithSeconds:(int64_t)seconds queue:(id)queue expiration:(id)expiration creation:(id)creation
 {
-  v8 = _Block_copy(a5);
-  v9 = _Block_copy(a6);
+  v8 = _Block_copy(expiration);
+  v9 = _Block_copy(creation);
   *(swift_allocObject() + 16) = v8;
   if (v9)
   {
     *(swift_allocObject() + 16) = v9;
   }
 
-  v10 = a4;
+  queueCopy = queue;
   return ClockInactivityScheduler.init(seconds:queue:expiration:creation:)();
 }
 
 - (void)startScheduling
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D98A24C4();
 }
 
 - (void)destroyInactivityTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D98A258C();
 }
 
-- (void)clockExpiredWithCompletion:(id)a3
+- (void)clockExpiredWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -52,14 +52,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1D98A26C0(v7, v6);
   sub_1D98750DC(v7);
 }
 
-- (void)clockForcefullyDestroyedWithCompletion:(id)a3
+- (void)clockForcefullyDestroyedWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -74,14 +74,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1D98A27D0(v7, v6);
   sub_1D98750DC(v7);
 }
 
 - (void)clockCreated
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D98A2960();
 }
 

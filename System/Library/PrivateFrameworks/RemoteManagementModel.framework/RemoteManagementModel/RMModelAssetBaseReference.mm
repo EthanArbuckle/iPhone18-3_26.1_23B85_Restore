@@ -1,10 +1,10 @@
 @interface RMModelAssetBaseReference
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithDataURL:(id)a3;
-+ (id)buildWithDataURL:(id)a3 contentType:(id)a4 size:(id)a5 hashSHA256:(id)a6;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithDataURL:(id)l;
++ (id)buildWithDataURL:(id)l contentType:(id)type size:(id)size hashSHA256:(id)a256;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAssetBaseReference
@@ -25,38 +25,38 @@
   return v4;
 }
 
-+ (id)buildWithDataURL:(id)a3 contentType:(id)a4 size:(id)a5 hashSHA256:(id)a6
++ (id)buildWithDataURL:(id)l contentType:(id)type size:(id)size hashSHA256:(id)a256
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  a256Copy = a256;
+  sizeCopy = size;
+  typeCopy = type;
+  lCopy = l;
   v13 = objc_opt_new();
-  [v13 setPayloadDataURL:v12];
+  [v13 setPayloadDataURL:lCopy];
 
-  [v13 setPayloadContentType:v11];
-  [v13 setPayloadSize:v10];
+  [v13 setPayloadContentType:typeCopy];
+  [v13 setPayloadSize:sizeCopy];
 
-  [v13 setPayloadHashSHA256:v9];
+  [v13 setPayloadHashSHA256:a256Copy];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithDataURL:(id)a3
++ (id)buildRequiredOnlyWithDataURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  [v4 setPayloadDataURL:v3];
+  [v4 setPayloadDataURL:lCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAssetBaseReference allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -64,35 +64,35 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DataURL" forKeyPath:@"payloadDataURL" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ContentType" forKeyPath:@"payloadContentType" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"Size" forKeyPath:@"payloadSize" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Hash-SHA-256" forKeyPath:@"payloadHashSHA256" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DataURL" forKeyPath:@"payloadDataURL" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ContentType" forKeyPath:@"payloadContentType" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Size" forKeyPath:@"payloadSize" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Hash-SHA-256" forKeyPath:@"payloadHashSHA256" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAssetBaseReference *)self payloadDataURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DataURL" value:v5 isRequired:1 defaultValue:0];
+  payloadDataURL = [(RMModelAssetBaseReference *)self payloadDataURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DataURL" value:payloadDataURL isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAssetBaseReference *)self payloadContentType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ContentType" value:v6 isRequired:0 defaultValue:0];
+  payloadContentType = [(RMModelAssetBaseReference *)self payloadContentType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ContentType" value:payloadContentType isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAssetBaseReference *)self payloadSize];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Size" value:v7 isRequired:0 defaultValue:0];
+  payloadSize = [(RMModelAssetBaseReference *)self payloadSize];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Size" value:payloadSize isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelAssetBaseReference *)self payloadHashSHA256];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Hash-SHA-256" value:v8 isRequired:0 defaultValue:0];
+  payloadHashSHA256 = [(RMModelAssetBaseReference *)self payloadHashSHA256];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Hash-SHA-256" value:payloadHashSHA256 isRequired:0 defaultValue:0];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelAssetBaseReference;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadDataURL copy];
   v6 = v4[2];
   v4[2] = v5;

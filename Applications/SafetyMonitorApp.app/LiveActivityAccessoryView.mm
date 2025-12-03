@@ -1,12 +1,12 @@
 @interface LiveActivityAccessoryView
 - (CGSize)intrinsicContentSize;
-- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithCoder:(id)a3;
-- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithFrame:(CGRect)a3;
+- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithCoder:(id)coder;
+- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation LiveActivityAccessoryView
 
-- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithCoder:(id)a3
+- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000077CC();
   v5 = v4;
 
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC16SafetyMonitorApp25LiveActivityAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

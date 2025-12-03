@@ -1,24 +1,24 @@
 @interface INShareETAIntent
-- (INShareETAIntent)initWithRecipients:(id)a3;
+- (INShareETAIntent)initWithRecipients:(id)recipients;
 - (NSArray)recipients;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setRecipients:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setRecipients:(id)recipients;
 @end
 
 @implementation INShareETAIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INShareETAIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 recipients];
-  v10 = INIntentSlotValueRedactedContactsFromContacts(v9, a3, v11);
+  idCopy = id;
+  _typedBackingStore = [(INShareETAIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  recipients = [_typedBackingStore recipients];
+  v10 = INIntentSlotValueRedactedContactsFromContacts(recipients, options, v11);
 
   [v8 setRecipients:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -28,16 +28,16 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"recipients";
-  v2 = [(INShareETAIntent *)self recipients];
-  v3 = v2;
-  if (!v2)
+  recipients = [(INShareETAIntent *)self recipients];
+  null = recipients;
+  if (!recipients)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!recipients)
   {
   }
 
@@ -46,61 +46,61 @@
   return v4;
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = a3;
-  v6 = [(INShareETAIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContacts(v4);
+  recipientsCopy = recipients;
+  _typedBackingStore = [(INShareETAIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContacts(recipientsCopy);
 
-  [v6 setRecipients:v5];
+  [_typedBackingStore setRecipients:v5];
 }
 
 - (NSArray)recipients
 {
-  v2 = [(INShareETAIntent *)self _typedBackingStore];
-  v3 = [v2 recipients];
-  v4 = INIntentSlotValueTransformFromContacts(v3);
+  _typedBackingStore = [(INShareETAIntent *)self _typedBackingStore];
+  recipients = [_typedBackingStore recipients];
+  v4 = INIntentSlotValueTransformFromContacts(recipients);
 
   return v4;
 }
 
-- (INShareETAIntent)initWithRecipients:(id)a3
+- (INShareETAIntent)initWithRecipients:(id)recipients
 {
-  v4 = a3;
+  recipientsCopy = recipients;
   v8.receiver = self;
   v8.super_class = INShareETAIntent;
   v5 = [(INIntent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(INShareETAIntent *)v5 setRecipients:v4];
+    [(INShareETAIntent *)v5 setRecipients:recipientsCopy];
   }
 
   return v6;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INShareETAIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INShareETAIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INShareETAIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INShareETAIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

@@ -6,8 +6,8 @@
 
 - (NSArray)lineFeatures
 {
-  v2 = [(CRTextRecognizerResults *)self textFeatures];
-  v3 = [CRTextResults linesFromTextFeatures:v2];
+  textFeatures = [(CRTextRecognizerResults *)self textFeatures];
+  v3 = [CRTextResults linesFromTextFeatures:textFeatures];
 
   return v3;
 }

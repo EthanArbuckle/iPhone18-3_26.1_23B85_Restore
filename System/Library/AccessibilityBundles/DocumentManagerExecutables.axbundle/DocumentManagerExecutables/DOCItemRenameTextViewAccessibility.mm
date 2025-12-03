@@ -1,5 +1,5 @@
 @interface DOCItemRenameTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsClearButtonInstalled;
 - (int64_t)_accessibilitySortPriority;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -10,12 +10,12 @@
 
 @implementation DOCItemRenameTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemRenameTextView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemRenameTextView" hasInstanceMethod:@"accessibilityClearButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemRenameTextView" hasInstanceMethod:@"installClearButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemRenameTextView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemRenameTextView" hasInstanceMethod:@"accessibilityClearButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemRenameTextView" hasInstanceMethod:@"installClearButton" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -64,9 +64,9 @@
 - (BOOL)_axIsClearButtonInstalled
 {
   v3 = [(DOCItemRenameTextViewAccessibility *)self safeUIViewForKey:@"superview"];
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
   v5 = [(DOCItemRenameTextViewAccessibility *)self safeValueForKey:@"accessibilityClearButton"];
-  v6 = [v4 containsObject:v5];
+  v6 = [subviews containsObject:v5];
 
   return v6;
 }

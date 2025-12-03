@@ -2,7 +2,7 @@
 - (id)hintedBadgeRect;
 - (id)hintedFontSize;
 - (id)hintedTextRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISmacosDocumentRecipe
@@ -80,19 +80,19 @@ uint64_t __39__ISmacosDocumentRecipe_hintedFontSize__block_invoke()
   return [v2 addHintedFloat:72.0 forSize:{512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(ISmacosDocumentRecipe *)self hintedBadgeRect:a3.width];
+  height = size.height;
+  width = size.width;
+  v7 = [(ISmacosDocumentRecipe *)self hintedBadgeRect:size.width];
   [v7 hintedRectForSize:{width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(ISmacosDocumentRecipe *)self hintedTextRect];
-  [v16 hintedRectForSize:{width, height}];
+  hintedTextRect = [(ISmacosDocumentRecipe *)self hintedTextRect];
+  [hintedTextRect hintedRectForSize:{width, height}];
   v45 = v18;
   v46 = v17;
   v20 = v19;
@@ -105,8 +105,8 @@ uint64_t __39__ISmacosDocumentRecipe_hintedFontSize__block_invoke()
   [(ISLayer *)v24 setName:@"Background layer"];
   [(ISLayer *)v24 setSize:width, height];
   v25 = MEMORY[0x1E69A8990];
-  v26 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v27 = [v25 imageBagWithResourcesNamed:@"GenericBackground" fromBundle:v26];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v27 = [v25 imageBagWithResourcesNamed:@"GenericBackground" fromBundle:iconsetResourceBundle];
 
   [(ISContentLayer *)v24 setContent:v27];
   [(ISLayer *)v23 addSublayer:v24];
@@ -135,8 +135,8 @@ uint64_t __39__ISmacosDocumentRecipe_hintedFontSize__block_invoke()
     [(ISLayer *)v32 setName:@"text layer"];
     [(ISLayer *)v32 setFrame:v46, v45, v20, v22];
     [(ISTextLayer *)v32 setText:@"kISTextResourceKey"];
-    v33 = [(ISmacosDocumentRecipe *)self hintedFontSize];
-    [v33 hintedFloatForSize:{width, height}];
+    hintedFontSize = [(ISmacosDocumentRecipe *)self hintedFontSize];
+    [hintedFontSize hintedFloatForSize:{width, height}];
     [(ISTextLayer *)v32 setFontSize:?];
 
     if (width * 0.001953125 >= 0.125)
@@ -159,8 +159,8 @@ uint64_t __39__ISmacosDocumentRecipe_hintedFontSize__block_invoke()
   [(ISLayer *)v36 setSize:width, height];
   [(ISLayer *)v36 setName:@"mask layer"];
   v37 = MEMORY[0x1E69A8990];
-  v38 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v39 = [v37 imageBagWithResourcesNamed:@"GenericFullDocumentMask" fromBundle:v38];
+  iconsetResourceBundle2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v39 = [v37 imageBagWithResourcesNamed:@"GenericFullDocumentMask" fromBundle:iconsetResourceBundle2];
 
   if (v39)
   {
@@ -173,8 +173,8 @@ uint64_t __39__ISmacosDocumentRecipe_hintedFontSize__block_invoke()
   [(ISLayer *)v40 setName:@"Forground layer"];
   [(ISLayer *)v40 setSize:width, height];
   v41 = MEMORY[0x1E69A8990];
-  v42 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v43 = [v41 imageBagWithResourcesNamed:@"GenericForeground" fromBundle:v42];
+  iconsetResourceBundle3 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v43 = [v41 imageBagWithResourcesNamed:@"GenericForeground" fromBundle:iconsetResourceBundle3];
 
   [(ISContentLayer *)v40 setContent:v43];
   [(ISLayer *)v23 addSublayer:v40];

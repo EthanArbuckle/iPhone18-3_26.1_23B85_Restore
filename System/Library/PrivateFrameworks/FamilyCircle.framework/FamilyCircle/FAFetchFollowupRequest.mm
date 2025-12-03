@@ -1,38 +1,38 @@
 @interface FAFetchFollowupRequest
-- (FAFetchFollowupRequest)initWithAltDSID:(id)a3;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FAFetchFollowupRequest)initWithAltDSID:(id)d;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAFetchFollowupRequest
 
-- (FAFetchFollowupRequest)initWithAltDSID:(id)a3
+- (FAFetchFollowupRequest)initWithAltDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = FAFetchFollowupRequest;
   v6 = [(FAFamilyCircleRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_altDSID, a3);
+    objc_storeStrong(&v6->_altDSID, d);
   }
 
   return v7;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__FAFetchFollowupRequest_startRequestWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CA46D8;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v9];
   altDSID = self->_altDSID;
-  v8 = [(FAFamilyCircleRequest *)self requestOptions];
-  [v6 fetchFollowupsWithAltDSID:altDSID options:v8 replyBlock:v5];
+  requestOptions = [(FAFamilyCircleRequest *)self requestOptions];
+  [v6 fetchFollowupsWithAltDSID:altDSID options:requestOptions replyBlock:v5];
 }
 
 void __60__FAFetchFollowupRequest_startRequestWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

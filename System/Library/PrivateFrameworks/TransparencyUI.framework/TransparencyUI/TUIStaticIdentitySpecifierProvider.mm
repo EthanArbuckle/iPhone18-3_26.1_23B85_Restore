@@ -1,44 +1,44 @@
 @interface TUIStaticIdentitySpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (NSArray)specifiers;
-- (TUIStaticIdentitySpecifierProvider)initWithAccountManager:(id)a3;
-- (TUIStaticIdentitySpecifierProvider)initWithStaticIdentityManager:(id)a3 analytics:(id)a4;
+- (TUIStaticIdentitySpecifierProvider)initWithAccountManager:(id)manager;
+- (TUIStaticIdentitySpecifierProvider)initWithStaticIdentityManager:(id)manager analytics:(id)analytics;
 - (id)_buttonsSpecifier;
 - (id)_codeSpecifier;
 - (id)_groupSpecifier;
-- (id)createGroupSpecifierWithIdentifier:(id)a3 title:(id)a4 footerText:(id)a5 linkText:(id)a6 actionMethodName:(id)a7 target:(id)a8;
-- (void)_markAsVerifiedAction:(id)a3;
-- (void)_noMatchAction:(id)a3;
+- (id)createGroupSpecifierWithIdentifier:(id)identifier title:(id)title footerText:(id)text linkText:(id)linkText actionMethodName:(id)name target:(id)target;
+- (void)_markAsVerifiedAction:(id)action;
+- (void)_noMatchAction:(id)action;
 - (void)_usePublicVerificationCodesTapped;
 - (void)reloadSpecifiers;
-- (void)verifyContact:(id)a3 peerPublicAccountIdentity:(id)a4;
+- (void)verifyContact:(id)contact peerPublicAccountIdentity:(id)identity;
 @end
 
 @implementation TUIStaticIdentitySpecifierProvider
 
-- (TUIStaticIdentitySpecifierProvider)initWithStaticIdentityManager:(id)a3 analytics:(id)a4
+- (TUIStaticIdentitySpecifierProvider)initWithStaticIdentityManager:(id)manager analytics:(id)analytics
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  analyticsCopy = analytics;
   v12.receiver = self;
   v12.super_class = TUIStaticIdentitySpecifierProvider;
   v9 = [(TUIStaticIdentitySpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_staticIdentityManager, a3);
+    objc_storeStrong(&v9->_staticIdentityManager, manager);
     [(TUIStaticIdentityManager *)v10->_staticIdentityManager setDelegate:v10];
     [(TUIStaticIdentityManager *)v10->_staticIdentityManager requestNewSasCode];
     [(TUIStaticIdentityManager *)v10->_staticIdentityManager requestConversationVerificationState:0];
-    objc_storeStrong(&v10->_analytics, a4);
+    objc_storeStrong(&v10->_analytics, analytics);
   }
 
   return v10;
 }
 
-- (TUIStaticIdentitySpecifierProvider)initWithAccountManager:(id)a3
+- (TUIStaticIdentitySpecifierProvider)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_17 != -1)
   {
     [TUIStaticIdentitySpecifierProvider initWithAccountManager:];
@@ -66,17 +66,17 @@ uint64_t __61__TUIStaticIdentitySpecifierProvider_initWithAccountManager___block
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(TUIStaticIdentitySpecifierProvider *)self _groupSpecifier];
-    [v4 addObject:v5];
+    array = [MEMORY[0x277CBEB18] array];
+    _groupSpecifier = [(TUIStaticIdentitySpecifierProvider *)self _groupSpecifier];
+    [array addObject:_groupSpecifier];
 
-    v6 = [(TUIStaticIdentitySpecifierProvider *)self _codeSpecifier];
-    [v4 addObject:v6];
+    _codeSpecifier = [(TUIStaticIdentitySpecifierProvider *)self _codeSpecifier];
+    [array addObject:_codeSpecifier];
 
-    v7 = [(TUIStaticIdentitySpecifierProvider *)self _buttonsSpecifier];
-    [v4 addObject:v7];
+    _buttonsSpecifier = [(TUIStaticIdentitySpecifierProvider *)self _buttonsSpecifier];
+    [array addObject:_buttonsSpecifier];
 
-    v8 = [v4 copy];
+    v8 = [array copy];
     v9 = self->_specifiers;
     self->_specifiers = v8;
 
@@ -131,8 +131,8 @@ uint64_t __54__TUIStaticIdentitySpecifierProvider_reloadSpecifiers__block_invoke
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"STATIC_IDENTITY_GROUP_TITLE" value:&stru_287F92480 table:@"Localizable"];
-  v6 = [(TUIStaticIdentityManager *)self->_staticIdentityManager accountKeysDisplayed];
-  if (v6)
+  accountKeysDisplayed = [(TUIStaticIdentityManager *)self->_staticIdentityManager accountKeysDisplayed];
+  if (accountKeysDisplayed)
   {
     v7 = 0;
   }
@@ -147,7 +147,7 @@ uint64_t __54__TUIStaticIdentitySpecifierProvider_reloadSpecifiers__block_invoke
   v9 = [v8 localizedStringForKey:@"STATIC_IDENTITY_GROUP_FOOTER_PART2" value:&stru_287F92480 table:@"Localizable"];
   v10 = [(TUIStaticIdentitySpecifierProvider *)self createGroupSpecifierWithIdentifier:@"TUI_STATIC_IDENTITY_GROUP" title:v5 footerText:v7 linkText:v9 actionMethodName:@"_usePublicVerificationCodesTapped" target:self];
 
-  if (!v6)
+  if (!accountKeysDisplayed)
   {
   }
 
@@ -169,11 +169,11 @@ uint64_t __54__TUIStaticIdentitySpecifierProvider_reloadSpecifiers__block_invoke
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
   [v3 setProperty:v4 forKey:*MEMORY[0x277D40140]];
 
-  v5 = [(TUIStaticIdentityManager *)self->_staticIdentityManager sasCodeString];
-  [v3 setProperty:v5 forKey:*MEMORY[0x277D40170]];
+  sasCodeString = [(TUIStaticIdentityManager *)self->_staticIdentityManager sasCodeString];
+  [v3 setProperty:sasCodeString forKey:*MEMORY[0x277D40170]];
 
-  v6 = [(TUIStaticIdentityManager *)self->_staticIdentityManager sasCodeString];
-  if (v6)
+  sasCodeString2 = [(TUIStaticIdentityManager *)self->_staticIdentityManager sasCodeString];
+  if (sasCodeString2)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"VERIFY_CODE_SUBTITLE" value:&stru_287F92480 table:@"Localizable"];
@@ -210,7 +210,7 @@ uint64_t __54__TUIStaticIdentitySpecifierProvider_reloadSpecifiers__block_invoke
   return v3;
 }
 
-- (void)_noMatchAction:(id)a3
+- (void)_noMatchAction:(id)action
 {
   [(TUIAnalytics *)self->_analytics ktInteraction:@"doNotMatchSelected"];
   objc_initWeak(&location, self);
@@ -414,7 +414,7 @@ uint64_t __53__TUIStaticIdentitySpecifierProvider__noMatchAction___block_invoke_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_markAsVerifiedAction:(id)a3
+- (void)_markAsVerifiedAction:(id)action
 {
   [(TUIAnalytics *)self->_analytics ktInteraction:@"markAsVerifiedSelected"];
   staticIdentityManager = self->_staticIdentityManager;
@@ -422,37 +422,37 @@ uint64_t __53__TUIStaticIdentitySpecifierProvider__noMatchAction___block_invoke_
   [(TUIStaticIdentityManager *)staticIdentityManager verifyConversation];
 }
 
-- (void)verifyContact:(id)a3 peerPublicAccountIdentity:(id)a4
+- (void)verifyContact:(id)contact peerPublicAccountIdentity:(id)identity
 {
-  v6 = [MEMORY[0x277CBDC48] viewControllerForUpdatingContact:a3 withPublicAccountIdentity:a4];
+  v6 = [MEMORY[0x277CBDC48] viewControllerForUpdatingContact:contact withPublicAccountIdentity:identity];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained specifierProvider:self showViewController:v6];
 }
 
-- (id)createGroupSpecifierWithIdentifier:(id)a3 title:(id)a4 footerText:(id)a5 linkText:(id)a6 actionMethodName:(id)a7 target:(id)a8
+- (id)createGroupSpecifierWithIdentifier:(id)identifier title:(id)title footerText:(id)text linkText:(id)linkText actionMethodName:(id)name target:(id)target
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:a3 name:a4];
-  if (v13)
+  textCopy = text;
+  linkTextCopy = linkText;
+  nameCopy = name;
+  targetCopy = target;
+  v17 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:identifier name:title];
+  if (textCopy)
   {
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v13, v14];
-    [v17 setProperty:v18 forKey:*MEMORY[0x277D3FF88]];
+    linkTextCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", textCopy, linkTextCopy];
+    [v17 setProperty:linkTextCopy forKey:*MEMORY[0x277D3FF88]];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     [v17 setProperty:v20 forKey:*MEMORY[0x277D3FF48]];
 
-    [v17 setProperty:v18 forKey:*MEMORY[0x277D3FF70]];
-    v25.location = [v18 rangeOfString:v14];
+    [v17 setProperty:linkTextCopy forKey:*MEMORY[0x277D3FF70]];
+    v25.location = [linkTextCopy rangeOfString:linkTextCopy];
     v21 = NSStringFromRange(v25);
     [v17 setProperty:v21 forKey:*MEMORY[0x277D3FF58]];
 
-    v22 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v16];
+    v22 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:targetCopy];
     [v17 setProperty:v22 forKey:*MEMORY[0x277D3FF68]];
 
-    [v17 setProperty:v15 forKey:*MEMORY[0x277D3FF50]];
+    [v17 setProperty:nameCopy forKey:*MEMORY[0x277D3FF50]];
   }
 
   return v17;

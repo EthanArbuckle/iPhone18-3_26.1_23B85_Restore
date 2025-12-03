@@ -1,22 +1,22 @@
 @interface SFAutoFillPasskey
 - (NSData)userHandle;
-- (SFAutoFillPasskey)initWithCoder:(id)a3;
-- (SFAutoFillPasskey)initWithCoreAutoFillPasskey:(id)a3;
+- (SFAutoFillPasskey)initWithCoder:(id)coder;
+- (SFAutoFillPasskey)initWithCoreAutoFillPasskey:(id)passkey;
 - (SFAutoFillPasskeyIdentifier)identifier;
 @end
 
 @implementation SFAutoFillPasskey
 
-- (SFAutoFillPasskey)initWithCoreAutoFillPasskey:(id)a3
+- (SFAutoFillPasskey)initWithCoreAutoFillPasskey:(id)passkey
 {
-  v5 = a3;
+  passkeyCopy = passkey;
   v10.receiver = self;
   v10.super_class = SFAutoFillPasskey;
   v6 = [(SFAutoFillPasskey *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_corePasskey, a3);
+    objc_storeStrong(&v6->_corePasskey, passkey);
     v8 = v7;
   }
 
@@ -26,30 +26,30 @@
 - (SFAutoFillPasskeyIdentifier)identifier
 {
   v3 = [SFAutoFillPasskeyIdentifier alloc];
-  v4 = [(WBSAutoFillPasskey *)self->_corePasskey identifier];
-  v5 = [(SFAutoFillPasskeyIdentifier *)v3 initWithCoreIdentifier:v4];
+  identifier = [(WBSAutoFillPasskey *)self->_corePasskey identifier];
+  v5 = [(SFAutoFillPasskeyIdentifier *)v3 initWithCoreIdentifier:identifier];
 
   return v5;
 }
 
 - (NSData)userHandle
 {
-  v2 = [(WBSAutoFillPasskey *)self->_corePasskey identifier];
-  v3 = [v2 credentialID];
-  v4 = [v3 dataUsingEncoding:4];
+  identifier = [(WBSAutoFillPasskey *)self->_corePasskey identifier];
+  credentialID = [identifier credentialID];
+  v4 = [credentialID dataUsingEncoding:4];
 
   return v4;
 }
 
-- (SFAutoFillPasskey)initWithCoder:(id)a3
+- (SFAutoFillPasskey)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SFAutoFillPasskey;
   v5 = [(SFAutoFillPasskey *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"corePasskey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"corePasskey"];
     corePasskey = v5->_corePasskey;
     v5->_corePasskey = v6;
 

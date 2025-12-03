@@ -1,30 +1,30 @@
 @interface GCConfigXPCServiceServiceConnection
-+ (id)connection:(id)a3 withClient:(id)a4;
-- (GCConfigXPCServiceServiceConnection)initWithConnection:(id)a3 serviceVendor:(id)a4;
-- (id)addInvalidationHandler:(id)a3;
-- (id)serviceVendorRequestWithLabel:(id)a3 handler:(id)a4;
++ (id)connection:(id)connection withClient:(id)client;
+- (GCConfigXPCServiceServiceConnection)initWithConnection:(id)connection serviceVendor:(id)vendor;
+- (id)addInvalidationHandler:(id)handler;
+- (id)serviceVendorRequestWithLabel:(id)label handler:(id)handler;
 @end
 
 @implementation GCConfigXPCServiceServiceConnection
 
-+ (id)connection:(id)a3 withClient:(id)a4
++ (id)connection:(id)connection withClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  connectionCopy = connection;
+  clientCopy = client;
+  if (!connectionCopy)
   {
-    [GCConfigXPCServiceServiceConnection connection:a2 withClient:a1];
+    [GCConfigXPCServiceServiceConnection connection:a2 withClient:self];
   }
 
-  v9 = [a1 serviceProtocol];
-  v10 = [v7 connectToService:v9 withClient:v8];
+  serviceProtocol = [self serviceProtocol];
+  v10 = [connectionCopy connectToService:serviceProtocol withClient:clientCopy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__GCConfigXPCServiceServiceConnection_connection_withClient___block_invoke;
   v14[3] = &unk_1E8414E70;
-  v15 = v7;
-  v16 = a1;
-  v11 = v7;
+  v15 = connectionCopy;
+  selfCopy = self;
+  v11 = connectionCopy;
   v12 = [v10 thenSynchronouslyWithResult:v14];
 
   return v12;
@@ -47,17 +47,17 @@ id __61__GCConfigXPCServiceServiceConnection_connection_withClient___block_invok
   return v5;
 }
 
-- (GCConfigXPCServiceServiceConnection)initWithConnection:(id)a3 serviceVendor:(id)a4
+- (GCConfigXPCServiceServiceConnection)initWithConnection:(id)connection serviceVendor:(id)vendor
 {
-  v8 = a3;
-  v9 = a4;
+  connectionCopy = connection;
+  vendorCopy = vendor;
   v24.receiver = self;
   v24.super_class = GCConfigXPCServiceServiceConnection;
   v10 = [(GCConfigXPCServiceServiceConnection *)&v24 init];
-  if (!v8)
+  if (!connectionCopy)
   {
     [GCConfigXPCServiceServiceConnection initWithConnection:a2 serviceVendor:v10];
-    if (v9)
+    if (vendorCopy)
     {
       goto LABEL_3;
     }
@@ -67,14 +67,14 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!vendorCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  objc_storeStrong(&v10->_rootConnection, a3);
-  objc_storeStrong(&v10->_serviceVendor, a4);
+  objc_storeStrong(&v10->_rootConnection, connection);
+  objc_storeStrong(&v10->_serviceVendor, vendor);
   v11 = objc_opt_new();
   invalidationHandlers = v10->_invalidationHandlers;
   v10->_invalidationHandlers = v11;
@@ -217,36 +217,36 @@ void __72__GCConfigXPCServiceServiceConnection_initWithConnection_serviceVendor_
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addInvalidationHandler:(id)a3
+- (id)addInvalidationHandler:(id)handler
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  v7 = atomic_load(&v5->_invalid);
+  v4 = [handler copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = atomic_load(&selfCopy->_invalid);
   if (v7)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v8 = 0;
   }
 
   else
   {
-    v9 = objc_getProperty(v5, v6, 48, 1);
+    v9 = objc_getProperty(selfCopy, v6, 48, 1);
     v10 = [v9 mutableCopy];
 
     v11 = _Block_copy(v4);
     [v10 addObject:v11];
 
-    objc_setProperty_atomic_copy(v5, v12, v10, 48);
-    objc_sync_exit(v5);
+    objc_setProperty_atomic_copy(selfCopy, v12, v10, 48);
+    objc_sync_exit(selfCopy);
 
     v13 = [GCDisposable alloc];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__GCConfigXPCServiceServiceConnection_addInvalidationHandler___block_invoke;
     v15[3] = &unk_1E84144C8;
-    v15[4] = v5;
+    v15[4] = selfCopy;
     v16 = v4;
     v8 = [(GCDisposable *)v13 initWithCleanupHandler:v15];
   }
@@ -279,32 +279,32 @@ void __62__GCConfigXPCServiceServiceConnection_addInvalidationHandler___block_in
   objc_sync_exit(obj);
 }
 
-- (id)serviceVendorRequestWithLabel:(id)a3 handler:(id)a4
+- (id)serviceVendorRequestWithLabel:(id)label handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  labelCopy = label;
   v8 = [[GCOperation alloc] initOnQueue:0 withOptions:0];
-  [v8 setLabel:v7];
+  [v8 setLabel:labelCopy];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __77__GCConfigXPCServiceServiceConnection_serviceVendorRequestWithLabel_handler___block_invoke;
   v19[3] = &unk_1E8414540;
   v19[4] = self;
-  v9 = v6;
+  v9 = handlerCopy;
   v20 = v9;
   [v8 setSyncBlock:v19];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __77__GCConfigXPCServiceServiceConnection_serviceVendorRequestWithLabel_handler___block_invoke_3;
   v16 = &unk_1E84145B8;
-  v17 = self;
+  selfCopy = self;
   v18 = v9;
   v10 = v9;
   [v8 setAsyncBlock:&v13];
-  v11 = [v8 activate];
+  activate = [v8 activate];
 
-  return v11;
+  return activate;
 }
 
 id __77__GCConfigXPCServiceServiceConnection_serviceVendorRequestWithLabel_handler___block_invoke(uint64_t a1, uint64_t a2, void *a3)

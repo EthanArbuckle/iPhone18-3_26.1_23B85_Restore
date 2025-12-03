@@ -1,8 +1,8 @@
 @interface HAHistoricalAnalyzerService
 - (BOOL)shouldSendCoreAnalytics;
-- (void)appendDays:(id)a3;
+- (void)appendDays:(id)days;
 - (void)beginSession;
-- (void)finishSessionWithReply:(id)a3;
+- (void)finishSessionWithReply:(id)reply;
 @end
 
 @implementation HAHistoricalAnalyzerService
@@ -10,9 +10,9 @@
 - (BOOL)shouldSendCoreAnalytics
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  isHealthDataSubmissionAllowed = [v2 isHealthDataSubmissionAllowed];
 
-  if (v3)
+  if (isHealthDataSubmissionAllowed)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = [v4 valueForKeyPath:@"HADateOfLastHistoricalAnalyzerCAEvent"];
@@ -20,16 +20,16 @@
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       [v5 timeIntervalSinceNow];
-      LOBYTE(v3) = v6 < -84600.0;
+      LOBYTE(isHealthDataSubmissionAllowed) = v6 < -84600.0;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isHealthDataSubmissionAllowed) = 1;
     }
   }
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
 - (void)beginSession
@@ -42,9 +42,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", &v10, 0xCu);
   }
 
-  v4 = [(HAHistoricalAnalyzerService *)self analyzer];
+  analyzer = [(HAHistoricalAnalyzerService *)self analyzer];
 
-  if (v4)
+  if (analyzer)
   {
     v5 = sub_100001974();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -56,9 +56,9 @@
   v6 = objc_opt_new();
   [(HAHistoricalAnalyzerService *)self setAnalyzer:v6];
 
-  v7 = [(HAHistoricalAnalyzerService *)self analyzer];
+  analyzer2 = [(HAHistoricalAnalyzerService *)self analyzer];
 
-  if (v7)
+  if (analyzer2)
   {
     v8 = objc_opt_new();
     [(HAHistoricalAnalyzerService *)self setDiagnosticLogger:v8];
@@ -77,18 +77,18 @@
   }
 }
 
-- (void)appendDays:(id)a3
+- (void)appendDays:(id)days
 {
-  v4 = a3;
-  v5 = [(HAHistoricalAnalyzerService *)self analyzer];
+  daysCopy = days;
+  analyzer = [(HAHistoricalAnalyzerService *)self analyzer];
 
-  if (v5)
+  if (analyzer)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = daysCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -104,11 +104,11 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [(HAHistoricalAnalyzerService *)self analyzer];
-          [v12 appendDay:v11];
+          analyzer2 = [(HAHistoricalAnalyzerService *)self analyzer];
+          [analyzer2 appendDay:v11];
 
-          v13 = [(HAHistoricalAnalyzerService *)self diagnosticLogger];
-          [v13 appendDay:v11];
+          diagnosticLogger = [(HAHistoricalAnalyzerService *)self diagnosticLogger];
+          [diagnosticLogger appendDay:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -128,9 +128,9 @@
   }
 }
 
-- (void)finishSessionWithReply:(id)a3
+- (void)finishSessionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = sub_100001974();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -139,8 +139,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v6 = [(HAHistoricalAnalyzerService *)self analyzer];
-  v7 = v6 == 0;
+  analyzer = [(HAHistoricalAnalyzerService *)self analyzer];
+  v7 = analyzer == 0;
 
   if (v7)
   {
@@ -150,13 +150,13 @@
       sub_100001A64();
     }
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v8 = [(HAHistoricalAnalyzerService *)self diagnosticLogger];
-    [v8 finalizeHistoricalAnalyzerInput];
+    diagnosticLogger = [(HAHistoricalAnalyzerService *)self diagnosticLogger];
+    [diagnosticLogger finalizeHistoricalAnalyzerInput];
 
     v9 = sub_100001974();
     v10 = v9;
@@ -167,11 +167,11 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "HistoricalAnalyzerAnalysisDuration", "", buf, 2u);
     }
 
-    v12 = [(HAHistoricalAnalyzerService *)self analyzer];
-    v13 = [v12 analyze];
+    analyzer2 = [(HAHistoricalAnalyzerService *)self analyzer];
+    analyze = [analyzer2 analyze];
     v15 = v14;
 
-    v16 = v13;
+    v16 = analyze;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -218,22 +218,22 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_END, v25, "HistoricalAnalyzerAnalysisDuration", "primarySourceWristTemperatureCount=%{signpost.telemetry:number1}lf enableTelemetry=YES ", buf, 0xCu);
     }
 
-    v26 = [(HAHistoricalAnalyzerService *)self diagnosticLogger];
+    diagnosticLogger2 = [(HAHistoricalAnalyzerService *)self diagnosticLogger];
     v27 = v16;
     v28 = v15;
-    if (v26)
+    if (diagnosticLogger2)
     {
-      [v26 logHistoricalAnalyzerOutput:{v13, v15}];
+      [diagnosticLogger2 logHistoricalAnalyzerOutput:{analyze, v15}];
     }
 
     else
     {
     }
 
-    v29 = [(HAHistoricalAnalyzerService *)self shouldSendCoreAnalytics];
+    shouldSendCoreAnalytics = [(HAHistoricalAnalyzerService *)self shouldSendCoreAnalytics];
     if (v15)
     {
-      v30 = v29;
+      v30 = shouldSendCoreAnalytics;
     }
 
     else
@@ -252,7 +252,7 @@
 
     [(HAHistoricalAnalyzerService *)self setAnalyzer:0];
     [(HAHistoricalAnalyzerService *)self setDiagnosticLogger:0];
-    (v4)[2](v4, v27);
+    (replyCopy)[2](replyCopy, v27);
   }
 }
 

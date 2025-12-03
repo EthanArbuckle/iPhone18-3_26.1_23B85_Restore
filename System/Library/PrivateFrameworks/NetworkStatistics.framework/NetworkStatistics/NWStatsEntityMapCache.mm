@@ -1,10 +1,10 @@
 @interface NWStatsEntityMapCache
 - (NWStatsEntityMapCache)init;
 - (id)description;
-- (id)entryForUUID:(id)a3;
+- (id)entryForUUID:(id)d;
 - (id)stateDictionary;
 - (void)pruneCache;
-- (void)setEntry:(id)a3 forUUID:(id)a4;
+- (void)setEntry:(id)entry forUUID:(id)d;
 @end
 
 @implementation NWStatsEntityMapCache
@@ -30,7 +30,7 @@
 - (void)pruneCache
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -52,13 +52,13 @@
 
         v9 = *(*(&v34 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:v9];
-        v11 = [v10 expiryTime];
-        [v11 timeIntervalSinceNow];
+        expiryTime = [v10 expiryTime];
+        [expiryTime timeIntervalSinceNow];
         v13 = v12;
 
         if (v13 < 0.0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -72,7 +72,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = v3;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v15)
   {
@@ -141,15 +141,15 @@ uint64_t __35__NWStatsEntityMapCache_pruneCache__block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)entryForUUID:(id)a3
+- (id)entryForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 entityName];
-    if (!v7)
+    entityName = [v5 entityName];
+    if (!entityName)
     {
       goto LABEL_13;
     }
@@ -166,8 +166,8 @@ uint64_t __35__NWStatsEntityMapCache_pruneCache__block_invoke(uint64_t a1, void 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 expiryTime];
-      [v9 timeIntervalSinceNow];
+      expiryTime = [v6 expiryTime];
+      [expiryTime timeIntervalSinceNow];
       v11 = v10;
 
       if (v11 >= 0.0)
@@ -175,7 +175,7 @@ uint64_t __35__NWStatsEntityMapCache_pruneCache__block_invoke(uint64_t a1, void 
         goto LABEL_13;
       }
 
-      [(NSMutableDictionary *)self->_uuidMap removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_uuidMap removeObjectForKey:dCopy];
 
       [(NWStatsEntityMapCache *)self pruneCache];
     }
@@ -191,39 +191,39 @@ uint64_t __35__NWStatsEntityMapCache_pruneCache__block_invoke(uint64_t a1, void 
     }
   }
 
-  v7 = 0;
+  entityName = 0;
 LABEL_13:
 
-  return v7;
+  return entityName;
 }
 
-- (void)setEntry:(id)a3 forUUID:(id)a4
+- (void)setEntry:(id)entry forUUID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  entryCopy = entry;
+  dCopy = d;
+  if (entryCopy && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    v8 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:v7];
+    v8 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:dCopy];
 
     if (v8)
     {
       v9 = NStatGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:v7];
+        v10 = [(NSMutableDictionary *)self->_uuidMap objectForKeyedSubscript:dCopy];
         v16 = 138543874;
-        v17 = v7;
+        v17 = dCopy;
         v18 = 2114;
         v19 = v10;
         v20 = 2114;
-        v21 = v6;
+        v21 = entryCopy;
         _os_log_impl(&dword_25BA3A000, v9, OS_LOG_TYPE_ERROR, "Attempted overwrite of entry for UUID %{public}@, was %{public}@ new %{public}@", &v16, 0x20u);
       }
     }
 
     v11 = objc_alloc_init(NWStatsEntityMapCacheEntry);
-    [(NWStatsEntityMapCacheEntry *)v11 setEntityName:v6];
+    [(NWStatsEntityMapCacheEntry *)v11 setEntityName:entryCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -249,7 +249,7 @@ LABEL_13:
       [(NWStatsEntityMapCache *)self pruneCache];
     }
 
-    [(NSMutableDictionary *)self->_uuidMap setObject:v11 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_uuidMap setObject:v11 forKeyedSubscript:dCopy];
   }
 
   else
@@ -309,8 +309,8 @@ LABEL_13:
   }
 
   [v3 setObject:v4 forKeyedSubscript:@"Cache"];
-  v13 = [MEMORY[0x277CBEAA8] date];
-  [v3 setObject:v13 forKeyedSubscript:@"TimeNow"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v3 setObject:date forKeyedSubscript:@"TimeNow"];
 
   v14 = *MEMORY[0x277D85DE8];
 

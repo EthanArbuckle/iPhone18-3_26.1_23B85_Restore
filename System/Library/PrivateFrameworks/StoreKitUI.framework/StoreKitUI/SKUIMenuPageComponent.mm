@@ -1,19 +1,19 @@
 @interface SKUIMenuPageComponent
 - (NSArray)allTitles;
-- (SKUIMenuPageComponent)initWithCustomPageContext:(id)a3;
-- (SKUIMenuPageComponent)initWithRoomSortData:(id)a3;
-- (SKUIMenuPageComponent)initWithViewElement:(id)a3;
-- (id)_componentWithContext:(id)a3;
-- (id)childComponentsForIndex:(int64_t)a3;
-- (id)sortURLForIndex:(int64_t)a3;
+- (SKUIMenuPageComponent)initWithCustomPageContext:(id)context;
+- (SKUIMenuPageComponent)initWithRoomSortData:(id)data;
+- (SKUIMenuPageComponent)initWithViewElement:(id)element;
+- (id)_componentWithContext:(id)context;
+- (id)childComponentsForIndex:(int64_t)index;
+- (id)sortURLForIndex:(int64_t)index;
 @end
 
 @implementation SKUIMenuPageComponent
 
-- (SKUIMenuPageComponent)initWithCustomPageContext:(id)a3
+- (SKUIMenuPageComponent)initWithCustomPageContext:(id)context
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -28,18 +28,18 @@
 
   v69.receiver = self;
   v69.super_class = SKUIMenuPageComponent;
-  v60 = [(SKUIPageComponent *)&v69 initWithCustomPageContext:v4];
+  v60 = [(SKUIPageComponent *)&v69 initWithCustomPageContext:contextCopy];
   if (v60)
   {
-    v13 = [v4 componentDictionary];
-    v14 = [v13 objectForKey:@"type"];
+    componentDictionary = [contextCopy componentDictionary];
+    v14 = [componentDictionary objectForKey:@"type"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 isEqualToString:@"popup"])
     {
       v60->_menuStyle = 1;
     }
 
-    v15 = [v13 objectForKey:@"moreTitle"];
+    v15 = [componentDictionary objectForKey:@"moreTitle"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -49,7 +49,7 @@
       v60->_titleForMoreItem = v16;
     }
 
-    v18 = [v13 objectForKey:@"title"];
+    v18 = [componentDictionary objectForKey:@"title"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -58,7 +58,7 @@
       menuTitle = v60->_menuTitle;
       v60->_menuTitle = v19;
 
-      v21 = [v13 objectForKey:@"titleSize"];
+      v21 = [componentDictionary objectForKey:@"titleSize"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -66,7 +66,7 @@
         v60->_menuTitleFontSize = v22;
       }
 
-      v18 = [v13 objectForKey:@"titleWeight"];
+      v18 = [componentDictionary objectForKey:@"titleWeight"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -75,11 +75,11 @@
       }
     }
 
-    v23 = [v13 objectForKey:@"children"];
+    v23 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v51 = v13;
+      v51 = componentDictionary;
       v58 = objc_alloc_init(MEMORY[0x277CCA940]);
       v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
       childrenComponents = v60->_childrenComponents;
@@ -99,7 +99,7 @@
       if (v56)
       {
         v29 = *v66;
-        v54 = v4;
+        v54 = contextCopy;
         v52 = *v66;
         v53 = v28;
         do
@@ -124,7 +124,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v36 = [v4 copy];
+                v36 = [contextCopy copy];
                 v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
                 v38 = v34;
                 v39 = v37;
@@ -159,12 +159,12 @@
                         v47 = v46;
                         if (v46)
                         {
-                          v48 = [v46 metricsElementName];
-                          if (v48)
+                          metricsElementName = [v46 metricsElementName];
+                          if (metricsElementName)
                           {
-                            [v47 _setMetricsLocationPosition:{objc_msgSend(v58, "countForObject:", v48)}];
+                            [v47 _setMetricsLocationPosition:{objc_msgSend(v58, "countForObject:", metricsElementName)}];
                             v42 = v59;
-                            [v58 addObject:v48];
+                            [v58 addObject:metricsElementName];
                           }
 
                           [v39 addObject:v47];
@@ -187,7 +187,7 @@
                   [(NSMutableArray *)v60->_titles addObject:v35];
                 }
 
-                v4 = v54;
+                contextCopy = v54;
                 v29 = v52;
                 v28 = v53;
                 v34 = v55;
@@ -204,7 +204,7 @@
         while (v56);
       }
 
-      v13 = v51;
+      componentDictionary = v51;
       v23 = v50;
     }
   }
@@ -212,9 +212,9 @@
   return v60;
 }
 
-- (SKUIMenuPageComponent)initWithRoomSortData:(id)a3
+- (SKUIMenuPageComponent)initWithRoomSortData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -244,7 +244,7 @@
     titles = v13->_titles;
     v13->_titles = v18;
 
-    v20 = [v4 objectForKey:@"defaultSort"];
+    v20 = [dataCopy objectForKey:@"defaultSort"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -256,7 +256,7 @@
       v21 = 0;
     }
 
-    v22 = [v4 objectForKey:@"sorts"];
+    v22 = [dataCopy objectForKey:@"sorts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,9 +320,9 @@ uint64_t __46__SKUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return MEMORY[0x2821F96F8](isKindOfClass, v6);
 }
 
-- (SKUIMenuPageComponent)initWithViewElement:(id)a3
+- (SKUIMenuPageComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -337,12 +337,12 @@ uint64_t __46__SKUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
 
   v18.receiver = self;
   v18.super_class = SKUIMenuPageComponent;
-  v13 = [(SKUIPageComponent *)&v18 initWithViewElement:v4];
+  v13 = [(SKUIPageComponent *)&v18 initWithViewElement:elementCopy];
   if (v13)
   {
-    v13->_defaultSelectedIndex = [v4 initialSelectedItemIndex];
-    v14 = [v4 segmentItemTitles];
-    v15 = [v14 mutableCopy];
+    v13->_defaultSelectedIndex = [elementCopy initialSelectedItemIndex];
+    segmentItemTitles = [elementCopy segmentItemTitles];
+    v15 = [segmentItemTitles mutableCopy];
     titles = v13->_titles;
     v13->_titles = v15;
   }
@@ -357,9 +357,9 @@ uint64_t __46__SKUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return v2;
 }
 
-- (id)childComponentsForIndex:(int64_t)a3
+- (id)childComponentsForIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_childrenComponents objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_childrenComponents objectAtIndex:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -370,12 +370,12 @@ uint64_t __46__SKUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return v3;
 }
 
-- (id)sortURLForIndex:(int64_t)a3
+- (id)sortURLForIndex:(int64_t)index
 {
   sortURLStrings = self->_sortURLStrings;
   if (sortURLStrings)
   {
-    v4 = [(NSMutableArray *)sortURLStrings objectAtIndex:a3];
+    v4 = [(NSMutableArray *)sortURLStrings objectAtIndex:index];
     v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
   }
 
@@ -387,16 +387,16 @@ uint64_t __46__SKUIMenuPageComponent_initWithRoomSortData___block_invoke(uint64_
   return v5;
 }
 
-- (id)_componentWithContext:(id)a3
+- (id)_componentWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 componentDictionary];
-  v5 = [v4 objectForKey:@"type"];
+  contextCopy = context;
+  componentDictionary = [contextCopy componentDictionary];
+  v5 = [componentDictionary objectForKey:@"type"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = SKUIPageComponentTypeForBlockType(v5), (v7 = SKUIPageComponentClassForComponentType(v6)) != 0))
   {
-    v8 = [[v7 alloc] initWithCustomPageContext:v3];
+    v8 = [[v7 alloc] initWithCustomPageContext:contextCopy];
   }
 
   else

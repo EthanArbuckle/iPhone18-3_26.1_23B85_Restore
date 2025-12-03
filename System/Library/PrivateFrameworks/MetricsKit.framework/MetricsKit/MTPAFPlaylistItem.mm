@@ -1,21 +1,21 @@
 @interface MTPAFPlaylistItem
-- (MTPAFPlaylistItem)initWithStart:(unint64_t)a3 end:(unint64_t)a4 metricsData:(id)a5;
+- (MTPAFPlaylistItem)initWithStart:(unint64_t)start end:(unint64_t)end metricsData:(id)data;
 @end
 
 @implementation MTPAFPlaylistItem
 
-- (MTPAFPlaylistItem)initWithStart:(unint64_t)a3 end:(unint64_t)a4 metricsData:(id)a5
+- (MTPAFPlaylistItem)initWithStart:(unint64_t)start end:(unint64_t)end metricsData:(id)data
 {
-  v8 = a5;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = MTPAFPlaylistItem;
   v9 = [(MTPAFPlaylistItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(MTPAFPlaylistItem *)v9 setStart:a3];
-    [(MTPAFPlaylistItem *)v10 setEnd:a4];
-    [(MTPAFPlaylistItem *)v10 setMetricsData:v8];
+    [(MTPAFPlaylistItem *)v9 setStart:start];
+    [(MTPAFPlaylistItem *)v10 setEnd:end];
+    [(MTPAFPlaylistItem *)v10 setMetricsData:dataCopy];
   }
 
   return v10;

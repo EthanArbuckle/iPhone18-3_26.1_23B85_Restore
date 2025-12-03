@@ -1,73 +1,73 @@
 @interface CRLWPRep
-+ (id)focusedHighlightColorForDarkMode:(BOOL)a3;
-+ (id)unfocusedHighlightColorForDarkMode:(BOOL)a3;
++ (id)focusedHighlightColorForDarkMode:(BOOL)mode;
++ (id)unfocusedHighlightColorForDarkMode:(BOOL)mode;
 + (void)initialize;
-- ($8162D66D923C6F9903B35BCF259B21FE)wordMetricsAtCharIndex:(SEL)a3;
-- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)a3;
-- ($D12B6492C59FD4124ECBBA05678185BF)p_lineMetricsAtPoint:(SEL)a3 allowNotFound:(CGPoint)a4;
-- (BOOL)canEditWithEditor:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
-- (BOOL)containsStartOfSelection:(id)a3;
-- (BOOL)didPointHitSelectionEnd:(CGPoint)a3;
+- ($8162D66D923C6F9903B35BCF259B21FE)wordMetricsAtCharIndex:(SEL)index;
+- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)index;
+- ($D12B6492C59FD4124ECBBA05678185BF)p_lineMetricsAtPoint:(SEL)point allowNotFound:(CGPoint)found;
+- (BOOL)canEditWithEditor:(id)editor;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
+- (BOOL)containsStartOfSelection:(id)selection;
+- (BOOL)didPointHitSelectionEnd:(CGPoint)end;
 - (BOOL)ghostCaretAppearance;
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5;
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
 - (BOOL)isBeingEdited;
-- (BOOL)isDragPoint:(CGPoint)a3 inSelection:(id)a4 includeEndpoints:(BOOL)a5;
+- (BOOL)isDragPoint:(CGPoint)point inSelection:(id)selection includeEndpoints:(BOOL)endpoints;
 - (BOOL)isDropTarget;
 - (BOOL)isOverflowing;
-- (BOOL)isPointInSelectedArea:(CGPoint)a3;
-- (BOOL)p_allowCaretForSelection:(id)a3;
+- (BOOL)isPointInSelectedArea:(CGPoint)area;
+- (BOOL)p_allowCaretForSelection:(id)selection;
 - (BOOL)p_automaticTextSubstitutionEnabled;
 - (BOOL)p_canShowSelectionAndCaretLayers;
-- (BOOL)p_doesRep:(id)a3 containCharIndex:(unint64_t)a4 isStart:(BOOL)a5;
-- (BOOL)p_doesRepIntersectSearchReference:(id)a3;
+- (BOOL)p_doesRep:(id)rep containCharIndex:(unint64_t)index isStart:(BOOL)start;
+- (BOOL)p_doesRepIntersectSearchReference:(id)reference;
 - (BOOL)p_needsSpellChecker;
-- (BOOL)p_positionCaretLayer:(id)a3 forSelection:(id)a4 layerRelative:(BOOL)a5;
+- (BOOL)p_positionCaretLayer:(id)layer forSelection:(id)selection layerRelative:(BOOL)relative;
 - (BOOL)p_spellCheckingEnabled;
-- (BOOL)p_storageMatchesSelectionPath:(id)a3;
+- (BOOL)p_storageMatchesSelectionPath:(id)path;
 - (BOOL)scribbleElementIsFocused;
-- (BOOL)scribbleExceedsVerticalDistanceForNearestCharIndex:(unint64_t)a3 boundsPoint:(CGPoint)a4 isAtEndOfLine:(BOOL)a5;
+- (BOOL)scribbleExceedsVerticalDistanceForNearestCharIndex:(unint64_t)index boundsPoint:(CGPoint)point isAtEndOfLine:(BOOL)line;
 - (BOOL)shouldAddCollaboratorLayerToOverlays;
 - (BOOL)shouldCreateTextKnobs;
-- (BOOL)shouldLayoutTilingLayer:(id)a3;
-- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)a3 withTouchType:(int64_t)a4;
+- (BOOL)shouldLayoutTilingLayer:(id)layer;
+- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)point withTouchType:(int64_t)type;
 - (BOOL)shouldShowCollaboratorCursorHighlight;
 - (BOOL)shouldShowEditMenu;
 - (BOOL)shouldShowKnobs;
 - (BOOL)textIsVertical;
-- (BOOL)wantsContextMenuWhenEditingDisabledAtPoint:(CGPoint)a3;
+- (BOOL)wantsContextMenuWhenEditingDisabledAtPoint:(CGPoint)point;
 - (CGAffineTransform)transformToConvertNaturalToScaledRoot;
 - (CGColor)p_caretLayerColor;
 - (CGColor)p_highlightLineColor;
-- (CGPath)newPathForSearchReference:(id)a3;
-- (CGPath)newPathForSelection:(id)a3;
-- (CGPath)p_newPathForSelection:(id)a3 withTransform:(CGAffineTransform *)a4 withInset:(double)a5;
-- (CGPath)p_newSelectionPathForSelection:(id)a3 transform:(CGAffineTransform *)a4 headPinRect:(CGRect *)a5 tailPinRect:(CGRect *)a6 markedText:(BOOL)a7;
-- (CGPoint)knobCenterForSelection:(id)a3 knob:(id)a4;
-- (CGPoint)p_applyLineSnappingToFloatingCaret:(id)a3 atPoint:(CGPoint)a4 withRect:(CGRect)a5;
-- (CGPoint)p_pinPoint:(CGPoint)a3 toRect:(CGRect)a4;
-- (CGPoint)pinToClosestColumn:(CGPoint)a3;
-- (CGPoint)pinToNaturalBounds:(CGPoint)a3 andLastLineFragment:(BOOL)a4;
+- (CGPath)newPathForSearchReference:(id)reference;
+- (CGPath)newPathForSelection:(id)selection;
+- (CGPath)p_newPathForSelection:(id)selection withTransform:(CGAffineTransform *)transform withInset:(double)inset;
+- (CGPath)p_newSelectionPathForSelection:(id)selection transform:(CGAffineTransform *)transform headPinRect:(CGRect *)rect tailPinRect:(CGRect *)pinRect markedText:(BOOL)text;
+- (CGPoint)knobCenterForSelection:(id)selection knob:(id)knob;
+- (CGPoint)p_applyLineSnappingToFloatingCaret:(id)caret atPoint:(CGPoint)point withRect:(CGRect)rect;
+- (CGPoint)p_pinPoint:(CGPoint)point toRect:(CGRect)rect;
+- (CGPoint)pinToClosestColumn:(CGPoint)column;
+- (CGPoint)pinToNaturalBounds:(CGPoint)bounds andLastLineFragment:(BOOL)fragment;
 - (CGRect)boundsForCollaboratorCursorRenderable;
 - (CGRect)caretRect;
-- (CGRect)caretRectForCharIndex:(unint64_t)a3 caretAffinity:(unint64_t)a4;
-- (CGRect)caretRectForCharIndex:(unint64_t)a3 leadingEdge:(BOOL)a4 caretAffinity:(unint64_t)a5;
-- (CGRect)caretRectForSelection:(id)a3;
+- (CGRect)caretRectForCharIndex:(unint64_t)index caretAffinity:(unint64_t)affinity;
+- (CGRect)caretRectForCharIndex:(unint64_t)index leadingEdge:(BOOL)edge caretAffinity:(unint64_t)affinity;
+- (CGRect)caretRectForSelection:(id)selection;
 - (CGRect)clipRect;
-- (CGRect)columnRectForRange:(_NSRange)a3;
+- (CGRect)columnRectForRange:(_NSRange)range;
 - (CGRect)getCurrentTextFieldBounds;
-- (CGRect)glyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)a3 glyphRange:(_NSRange)a4;
-- (CGRect)labelRectForCharIndex:(unint64_t)a3;
-- (CGRect)newTextLayerUnscaledBounds:(CGRect)a3 forNewTextBounds:(CGRect)a4;
-- (CGRect)p_caretRectForSelection:(id)a3;
-- (CGRect)p_clipRect:(CGRect)a3;
-- (CGRect)p_closestCaretRectForCharacterAtPoint:(CGPoint)a3;
-- (CGRect)p_closestCaretRectForPoint:(CGPoint)a3 inSelection:(BOOL)a4 allowPastBreak:(BOOL)a5;
-- (CGRect)p_convertNaturalRectToRotated:(CGRect)a3 repAngle:(double)a4;
-- (CGRect)p_convertRectIntoZoomCoordinates:(CGRect)a3;
-- (CGRect)p_topicDragRectForSelection:(id)a3;
-- (CGRect)rectForSelection:(id)a3 includeRuby:(BOOL)a4 includePaginatedAttachments:(BOOL)a5;
+- (CGRect)glyphRectForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)index glyphRange:(_NSRange)range;
+- (CGRect)labelRectForCharIndex:(unint64_t)index;
+- (CGRect)newTextLayerUnscaledBounds:(CGRect)bounds forNewTextBounds:(CGRect)textBounds;
+- (CGRect)p_caretRectForSelection:(id)selection;
+- (CGRect)p_clipRect:(CGRect)rect;
+- (CGRect)p_closestCaretRectForCharacterAtPoint:(CGPoint)point;
+- (CGRect)p_closestCaretRectForPoint:(CGPoint)point inSelection:(BOOL)selection allowPastBreak:(BOOL)break;
+- (CGRect)p_convertNaturalRectToRotated:(CGRect)rotated repAngle:(double)angle;
+- (CGRect)p_convertRectIntoZoomCoordinates:(CGRect)coordinates;
+- (CGRect)p_topicDragRectForSelection:(id)selection;
+- (CGRect)rectForSelection:(id)selection includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments;
 - (CGRect)rectToClipChildRepRenderables;
 - (CGRect)scaledScribbleEditingFrame;
 - (CGRect)selectionRect;
@@ -75,7 +75,7 @@
 - (CRLContainerInfo)containerInfo;
 - (CRLWPDragAndDropHelper)dragAndDropHelper;
 - (CRLWPLayoutTarget)layout;
-- (CRLWPRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CRLWPRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (CRLWPSelection)dropSelection;
 - (CRLWPSelection)selection;
 - (NSArray)columns;
@@ -83,210 +83,210 @@
 - (NSArray)scribbleCapableElements;
 - (_NSRange)dragRange;
 - (_NSRange)range;
-- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)a3;
+- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)index;
 - (_TtC8Freeform11CRLWPEditor)textEditor;
 - (_TtC8Freeform12CRLWPStorage)storage;
 - (_TtC8Freeform12CRLWPStorage)storageForDragDropOperation;
-- (double)collaborativeCursorOpacityForCaret:(BOOL)a3;
-- (double)knobOffsetForKnob:(id)a3 paragraphMode:(BOOL)a4;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (id)backgroundColorForDragPreviewOfSelection:(id)a3;
-- (id)closestColumnForPoint:(CGPoint)a3;
+- (double)collaborativeCursorOpacityForCaret:(BOOL)caret;
+- (double)knobOffsetForKnob:(id)knob paragraphMode:(BOOL)mode;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (id)backgroundColorForDragPreviewOfSelection:(id)selection;
+- (id)closestColumnForPoint:(CGPoint)point;
 - (id)collaboratorCursorRenderable;
-- (id)colorBehindLayer:(id)a3;
-- (id)columnForCharIndex:(unint64_t)a3;
-- (id)contextMenuConfigurationAtPoint:(CGPoint)a3;
-- (id)contextMenuPreviewForHighlightingMenuAtPoint:(CGPoint)a3 withConfiguration:(id)a4;
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5;
-- (id)cursorForPoint:(CGPoint)a3 withCursorPlatformObject:(id)a4;
-- (id)dragItemsForBeginningDragAtPoint:(CGPoint)a3;
+- (id)colorBehindLayer:(id)layer;
+- (id)columnForCharIndex:(unint64_t)index;
+- (id)contextMenuConfigurationAtPoint:(CGPoint)point;
+- (id)contextMenuPreviewForHighlightingMenuAtPoint:(CGPoint)point withConfiguration:(id)configuration;
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object;
+- (id)cursorForPoint:(CGPoint)point withCursorPlatformObject:(id)object;
+- (id)dragItemsForBeginningDragAtPoint:(CGPoint)point;
 - (id)hyperlinkContainerRep;
-- (id)imageForSearchReference:(id)a3 forPath:(CGPath *)a4 shouldPulsate:(BOOL)a5;
-- (id)knobClassWithTag:(unint64_t)a3;
+- (id)imageForSearchReference:(id)reference forPath:(CGPath *)path shouldPulsate:(BOOL)pulsate;
+- (id)knobClassWithTag:(unint64_t)tag;
 - (id)knobPositioner;
-- (id)lineSearchReferencesForSearchReference:(id)a3;
-- (id)newTrackerForKnob:(id)a3;
+- (id)lineSearchReferencesForSearchReference:(id)reference;
+- (id)newTrackerForKnob:(id)knob;
 - (id)overlayRenderables;
-- (id)p_caretLayerWithZPosition:(double)a3;
-- (id)p_dragItemsForBeginningDragWithSelection:(id)a3 inlineRepBeingDragged:(id)a4;
-- (id)p_hyperlinkAtPoint:(CGPoint)a3;
-- (id)p_imageForRect:(CGRect)a3 usingGlyphRect:(BOOL)a4 prepareBackground:(BOOL)a5 drawBackground:(BOOL)a6 shouldPulsate:(BOOL)a7 forCaret:(BOOL)a8 drawSelection:(id)a9 suppressInvisibles:(BOOL)a10 suppressChildReps:(BOOL)a11;
-- (id)p_imageForZeroLengthPath:(CGPath *)a3;
-- (id)p_lineSelectionsForSelection:(id)a3;
+- (id)p_caretLayerWithZPosition:(double)position;
+- (id)p_dragItemsForBeginningDragWithSelection:(id)selection inlineRepBeingDragged:(id)dragged;
+- (id)p_hyperlinkAtPoint:(CGPoint)point;
+- (id)p_imageForRect:(CGRect)rect usingGlyphRect:(BOOL)glyphRect prepareBackground:(BOOL)background drawBackground:(BOOL)drawBackground shouldPulsate:(BOOL)pulsate forCaret:(BOOL)caret drawSelection:(id)selection suppressInvisibles:(BOOL)self0 suppressChildReps:(BOOL)self1;
+- (id)p_imageForZeroLengthPath:(CGPath *)path;
+- (id)p_lineSelectionsForSelection:(id)selection;
 - (id)p_styleProvider;
-- (id)p_textEditorForStorage:(id)a3;
-- (id)p_textEditorForTextStorage:(id)a3;
+- (id)p_textEditorForStorage:(id)storage;
+- (id)p_textEditorForTextStorage:(id)storage;
 - (id)prepareForScribbleBlock;
-- (id)repForCharIndex:(unint64_t)a3 isStart:(BOOL)a4;
+- (id)repForCharIndex:(unint64_t)index isStart:(BOOL)start;
 - (id)repForDragging;
 - (id)scribbleEditingBlock;
-- (id)selectionForDragAndDropNaturalPoint:(CGPoint)a3;
+- (id)selectionForDragAndDropNaturalPoint:(CGPoint)point;
 - (id)siblings;
-- (id)smartFieldAtPoint:(CGPoint)a3;
-- (id)textEditorForDropIntoStorage:(id)a3;
-- (id)textImageForSelection:(id)a3 frame:(CGRect *)a4 usingGlyphRect:(BOOL)a5 shouldPulsate:(BOOL)a6 suppressInvisibles:(BOOL)a7 suppressChildReps:(BOOL)a8 drawBackground:(BOOL)a9 inset:(double)a10;
+- (id)smartFieldAtPoint:(CGPoint)point;
+- (id)textEditorForDropIntoStorage:(id)storage;
+- (id)textImageForSelection:(id)selection frame:(CGRect *)frame usingGlyphRect:(BOOL)rect shouldPulsate:(BOOL)pulsate suppressInvisibles:(BOOL)invisibles suppressChildReps:(BOOL)reps drawBackground:(BOOL)background inset:(double)self0;
 - (int64_t)tilingMode;
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4;
-- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)a3;
-- (unint64_t)pulseAnimationStyle:(id)a3;
-- (unsigned)fontTraitsForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (void)addAdditionalChildLayersToArray:(id)a3;
-- (void)addKnobsToArray:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)index;
+- (unint64_t)pulseAnimationStyle:(id)style;
+- (unsigned)fontTraitsForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (void)addAdditionalChildLayersToArray:(id)array;
+- (void)addKnobsToArray:(id)array;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)beginEditing;
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3 animate:(BOOL)a4;
-- (void)collaboratorCursorChangedToSelectionPath:(id)a3;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point animate:(BOOL)animate;
+- (void)collaboratorCursorChangedToSelectionPath:(id)path;
 - (void)dealloc;
-- (void)didBeginEditingWithTextEditor:(id)a3;
-- (void)didDrawInLayer:(id)a3 context:(CGContext *)a4;
-- (void)didUpdateRenderable:(id)a3;
-- (void)drawInLayerContext:(CGContext *)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)drawRubyInContext:(CGContext *)a3 rubyFieldStart:(unint64_t)a4 rubyGlyphRange:(_NSRange)a5;
-- (void)editingDidEndWithTextEditor:(id)a3;
-- (void)endFloatingCursorWithRepForAnimation:(id)a3;
-- (void)gesturesDidEnd:(id)a3;
+- (void)didBeginEditingWithTextEditor:(id)editor;
+- (void)didDrawInLayer:(id)layer context:(CGContext *)context;
+- (void)didUpdateRenderable:(id)renderable;
+- (void)drawInLayerContext:(CGContext *)context;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)drawRubyInContext:(CGContext *)context rubyFieldStart:(unint64_t)start rubyGlyphRange:(_NSRange)range;
+- (void)editingDidEndWithTextEditor:(id)editor;
+- (void)endFloatingCursorWithRepForAnimation:(id)animation;
+- (void)gesturesDidEnd:(id)end;
 - (void)handleFadeInForZoom;
 - (void)handleFadeOutForZoom;
 - (void)hideCollaboratorCursors;
 - (void)hideDragAndDropUI;
-- (void)i_primaryFindResultChanged:(id)a3;
+- (void)i_primaryFindResultChanged:(id)changed;
 - (void)i_setNeedsDisplayForSelectionChange;
-- (void)i_setNeedsErasableDisplayInRange:(_NSRange)a3;
-- (void)i_setSearchReferencesToHighlight:(id)a3;
+- (void)i_setNeedsErasableDisplayInRange:(_NSRange)range;
+- (void)i_setSearchReferencesToHighlight:(id)highlight;
 - (void)i_spellCheckerWordsDidChange;
 - (void)i_textInputResponderDidBecomeFirstResponder;
 - (void)i_textInputResponderDidResignFirstResponder;
 - (void)invalidateCollaboratorCursorRenderable;
-- (void)p_addDropAnimationToFloatingCursorWithEndingRep:(id)a3;
+- (void)p_addDropAnimationToFloatingCursorWithEndingRep:(id)rep;
 - (void)p_clearICCPrimaryFindResultSearchReference;
-- (void)p_createLayer:(int64_t)a3;
+- (void)p_createLayer:(int64_t)layer;
 - (void)p_createMarkHighlightLayer;
 - (void)p_createSelectionHighlightLayer;
 - (void)p_createSelectionLineLayers;
 - (void)p_createSelectionParagraphBorderLayer;
 - (void)p_createSpellChecker;
-- (void)p_destroyLayer:(int64_t)a3;
+- (void)p_destroyLayer:(int64_t)layer;
 - (void)p_destroySpellChecker;
-- (void)p_drawInContext:(CGContext *)a3 limitSelection:(id)a4 suppressInvisibles:(BOOL)a5;
-- (void)p_drawTextBackgroundLayerInContext:(CGContext *)a3;
-- (void)p_drawTextInLayer:(id)a3 context:(CGContext *)a4 limitSelection:(id)a5 rubyGlyphRange:(_NSRange)a6 renderMode:(unint64_t)a7 suppressInvisibles:(BOOL)a8;
-- (void)p_drawTextLayerInContext:(CGContext *)a3;
+- (void)p_drawInContext:(CGContext *)context limitSelection:(id)selection suppressInvisibles:(BOOL)invisibles;
+- (void)p_drawTextBackgroundLayerInContext:(CGContext *)context;
+- (void)p_drawTextInLayer:(id)layer context:(CGContext *)context limitSelection:(id)selection rubyGlyphRange:(_NSRange)range renderMode:(unint64_t)mode suppressInvisibles:(BOOL)invisibles;
+- (void)p_drawTextLayerInContext:(CGContext *)context;
 - (void)p_hideCollaboratorCursorLayer;
 - (void)p_hideSelectionLayers;
 - (void)p_hideSelectionParagraphBorderLayer;
 - (void)p_invalidateSuppressedMisspellingRange;
-- (void)p_positionAndSizeFloatingCaret:(id)a3 atPoint:(CGPoint)a4;
+- (void)p_positionAndSizeFloatingCaret:(id)caret atPoint:(CGPoint)point;
 - (void)p_registerNotifications;
-- (void)p_selectionChangedNotification:(id)a3;
-- (void)p_setPrimaryFindResultSearchReference:(id)a3;
-- (void)p_setPulseControllerActive:(BOOL)a3 autohide:(BOOL)a4;
+- (void)p_selectionChangedNotification:(id)notification;
+- (void)p_setPrimaryFindResultSearchReference:(id)reference;
+- (void)p_setPulseControllerActive:(BOOL)active autohide:(BOOL)autohide;
 - (void)p_setSelectionHighlightColor;
-- (void)p_setSelectionLineLayersHidden:(BOOL)a3;
-- (void)p_setSuppressedMisspellingRange:(_NSRange)a3;
+- (void)p_setSelectionLineLayersHidden:(BOOL)hidden;
+- (void)p_setSuppressedMisspellingRange:(_NSRange)range;
 - (void)p_showCollaboratorCursorLayer;
-- (void)p_showSelectionParagraphBorderLayerWithPath:(CGPath *)a3;
-- (void)p_spellcheckFinished:(id)a3;
+- (void)p_showSelectionParagraphBorderLayerWithPath:(CGPath *)path;
+- (void)p_spellcheckFinished:(id)finished;
 - (void)p_teardown;
 - (void)p_unregisterNotifications;
-- (void)p_updateAnimationWithAnimatingPulse:(BOOL)a3;
+- (void)p_updateAnimationWithAnimatingPulse:(BOOL)pulse;
 - (void)p_updateCaretLayerColor;
-- (void)p_updateForCurrentSelectionWithFlags:(unint64_t)a3;
+- (void)p_updateForCurrentSelectionWithFlags:(unint64_t)flags;
 - (void)p_updateHighlights;
-- (void)p_updateLayersForInsertionPointSelection:(id)a3;
-- (void)p_updateLayersForRangeSelection:(id)a3 selectionFlags:(unint64_t)a4;
+- (void)p_updateLayersForInsertionPointSelection:(id)selection;
+- (void)p_updateLayersForRangeSelection:(id)selection selectionFlags:(unint64_t)flags;
 - (void)p_updateMarkHighlightLayer;
 - (void)p_updateSecondaryHighlightLayer;
 - (void)p_updateSuppressedSpellingRange;
 - (void)p_validateWithLayoutController;
-- (void)p_withCollaboratorCursorPerformBlock:(id)a3;
-- (void)performBlockOnTextLayers:(id)a3;
-- (void)prepareLayoutForImagingSearchReferencesAsActive:(BOOL)a3 usingBlock:(id)a4;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)pulseAnimationDidStop:(id)a3;
-- (void)pulseAnimationDidStopForPulse:(id)a3;
+- (void)p_withCollaboratorCursorPerformBlock:(id)block;
+- (void)performBlockOnTextLayers:(id)layers;
+- (void)prepareLayoutForImagingSearchReferencesAsActive:(BOOL)active usingBlock:(id)block;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)pulseAnimationDidStop:(id)stop;
+- (void)pulseAnimationDidStopForPulse:(id)pulse;
 - (void)pulseCaret;
 - (void)refreshEditMenu;
 - (void)screenScaleDidChange;
-- (void)scribbleSetSelectionForBeginEditingWithBoundsPoint:(CGPoint)a3 tappedInRep:(id)a4;
-- (void)setDragRange:(_NSRange)a3;
-- (void)setDropSelection:(id)a3;
-- (void)setGhostCaretAppearance:(BOOL)a3;
-- (void)setHighlightedHyperlinkField:(id)a3;
+- (void)scribbleSetSelectionForBeginEditingWithBoundsPoint:(CGPoint)point tappedInRep:(id)rep;
+- (void)setDragRange:(_NSRange)range;
+- (void)setDropSelection:(id)selection;
+- (void)setGhostCaretAppearance:(BOOL)appearance;
+- (void)setHighlightedHyperlinkField:(id)field;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRange:(_NSRange)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setParentRep:(id)a3;
-- (void)setSecondaryHighlightRange:(_NSRange)a3 color:(CGColor *)a4 pathStyle:(int)a5;
-- (void)setSuppressSelectionHighlight:(BOOL)a3;
+- (void)setNeedsDisplayInRange:(_NSRange)range;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setParentRep:(id)rep;
+- (void)setSecondaryHighlightRange:(_NSRange)range color:(CGColor *)color pathStyle:(int)style;
+- (void)setSuppressSelectionHighlight:(BOOL)highlight;
 - (void)spellCheckingStateChanged;
 - (void)textInteractionCaretBeganFloating;
 - (void)textInteractionCaretDragStopped;
 - (void)textInteractionCaretEndedFloating;
-- (void)updateDragAndDropUIForPoint:(CGPoint)a3 dragInfo:(id)a4;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3;
+- (void)updateDragAndDropUIForPoint:(CGPoint)point dragInfo:(id)info;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point;
 - (void)updateFromLayout;
-- (void)updatePositionsOfKnobs:(id)a3;
+- (void)updatePositionsOfKnobs:(id)knobs;
 - (void)updateUniversalAccessZoomWindow;
-- (void)updateVisualSelection:(id)a3;
+- (void)updateVisualSelection:(id)selection;
 - (void)verticalTextPropertyChanged;
 - (void)willBeRemoved;
 @end
 
 @implementation CRLWPRep
 
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(CRLWPRep *)self dragAndDropHelper];
-  v9 = [v8 dragOperationForDragInfo:v7 atUnscaledPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  dragAndDropHelper = [(CRLWPRep *)self dragAndDropHelper];
+  v9 = [dragAndDropHelper dragOperationForDragInfo:infoCopy atUnscaledPoint:{x, y}];
 
   return v9;
 }
 
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = [(CRLWPRep *)self dragAndDropHelper];
-  LOBYTE(a3) = [v10 handleDragOperation:a3 withDragInfo:v9 atUnscaledPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  dragAndDropHelper = [(CRLWPRep *)self dragAndDropHelper];
+  LOBYTE(operation) = [dragAndDropHelper handleDragOperation:operation withDragInfo:infoCopy atUnscaledPoint:{x, y}];
 
-  return a3;
+  return operation;
 }
 
-- (void)updateDragAndDropUIForPoint:(CGPoint)a3 dragInfo:(id)a4
+- (void)updateDragAndDropUIForPoint:(CGPoint)point dragInfo:(id)info
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CRLWPRep *)self dragAndDropHelper];
-  [v8 adjustedUnscaledPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  dragAndDropHelper = [(CRLWPRep *)self dragAndDropHelper];
+  [dragAndDropHelper adjustedUnscaledPoint:{x, y}];
   v10 = v9;
   v12 = v11;
 
   v62.receiver = self;
   v62.super_class = CRLWPRep;
-  [(CRLCanvasRep *)&v62 updateDragAndDropUIForPoint:v7 dragInfo:v10, v12];
+  [(CRLCanvasRep *)&v62 updateDragAndDropUIForPoint:infoCopy dragInfo:v10, v12];
   [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:v10, v12];
   v14 = v13;
   v16 = v15;
   [(CRLWPRep *)self hideCaretLayer];
-  v17 = [(CRLWPRep *)self dragAndDropHelper];
-  v18 = [v17 sourceSelectionPathForDragInfo:v7];
+  dragAndDropHelper2 = [(CRLWPRep *)self dragAndDropHelper];
+  v18 = [dragAndDropHelper2 sourceSelectionPathForDragInfo:infoCopy];
 
-  v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v20 = [v19 modelsForSelectionPath:v18];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v20 = [interactiveCanvasController modelsForSelectionPath:v18];
 
   v21 = [v20 objectsPassingTest:&stru_101856388];
   v22 = objc_opt_class();
-  v23 = [v21 crl_onlyObject];
-  v24 = sub_100014370(v22, v23);
+  crl_onlyObject = [v21 crl_onlyObject];
+  v24 = sub_100014370(v22, crl_onlyObject);
 
-  v25 = [v24 textStorage];
-  if (v25)
+  textStorage = [v24 textStorage];
+  if (textStorage)
   {
     if (![v20 count])
     {
@@ -320,51 +320,51 @@
       v18 = v60;
     }
 
-    v29 = [v25 changeCount];
-    v30 = [(CRLWPRep *)self dragAndDropHelper];
-    v31 = [v30 sourceChangeCountForDragInfo:v7];
+    changeCount = [textStorage changeCount];
+    dragAndDropHelper3 = [(CRLWPRep *)self dragAndDropHelper];
+    v31 = [dragAndDropHelper3 sourceChangeCountForDragInfo:infoCopy];
 
-    if (v29 != v31)
+    if (changeCount != v31)
     {
 
-      v25 = 0;
+      textStorage = 0;
     }
   }
 
-  v32 = [(CRLWPRep *)self storage];
-  v33 = [(CRLWPRep *)self dragAndDropHelper];
-  [v33 setDragIsStorageLocal:v25 == v32];
+  storage = [(CRLWPRep *)self storage];
+  dragAndDropHelper4 = [(CRLWPRep *)self dragAndDropHelper];
+  [dragAndDropHelper4 setDragIsStorageLocal:textStorage == storage];
 
-  v34 = [(CRLWPRep *)self dragAndDropHelper];
-  v35 = [v34 dragIsStorageLocal];
+  dragAndDropHelper5 = [(CRLWPRep *)self dragAndDropHelper];
+  dragIsStorageLocal = [dragAndDropHelper5 dragIsStorageLocal];
 
-  if (v35)
+  if (dragIsStorageLocal)
   {
-    v36 = [(CRLWPRep *)self dragAndDropHelper];
-    v37 = [v36 sourceSelectionForDragInfo:v7];
+    dragAndDropHelper6 = [(CRLWPRep *)self dragAndDropHelper];
+    v37 = [dragAndDropHelper6 sourceSelectionForDragInfo:infoCopy];
 
     if (v37 && [(CRLWPRep *)self isDragPoint:v37 inSelection:0 includeEndpoints:v14, v16])
     {
-      v38 = [(CRLWPRep *)self dragAndDropHelper];
-      v39 = [v38 dragIsStorageLocal];
+      dragAndDropHelper7 = [(CRLWPRep *)self dragAndDropHelper];
+      dragIsStorageLocal2 = [dragAndDropHelper7 dragIsStorageLocal];
     }
 
     else
     {
-      v39 = 0;
+      dragIsStorageLocal2 = 0;
     }
   }
 
   else
   {
-    v39 = 0;
+    dragIsStorageLocal2 = 0;
     v37 = 0;
   }
 
-  v40 = [(CRLWPRep *)self dragAndDropCaretLayer];
-  [v40 setHidden:v39];
+  dragAndDropCaretLayer = [(CRLWPRep *)self dragAndDropCaretLayer];
+  [dragAndDropCaretLayer setHidden:dragIsStorageLocal2];
 
-  if (v39)
+  if (dragIsStorageLocal2)
   {
     [(CRLWPRep *)self hideDragAndDropUI];
   }
@@ -372,44 +372,44 @@
   else
   {
     [(CRLWPRep *)self setDragOperationInProgress:1];
-    v41 = [(CRLWPRep *)self dragAndDropHelper];
-    [v41 dragAndDropNaturalPoint];
+    dragAndDropHelper8 = [(CRLWPRep *)self dragAndDropHelper];
+    [dragAndDropHelper8 dragAndDropNaturalPoint];
     v43 = v42;
     v45 = v44;
 
     if (v43 != v14 || v45 != v16)
     {
-      v46 = [(CRLWPRep *)self dragAndDropHelper];
-      [v46 setDragAndDropNaturalPoint:{v14, v16}];
+      dragAndDropHelper9 = [(CRLWPRep *)self dragAndDropHelper];
+      [dragAndDropHelper9 setDragAndDropNaturalPoint:{v14, v16}];
 
-      v47 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v47 invalidateOverlayLayersForRep:self];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController2 invalidateOverlayLayersForRep:self];
     }
   }
 
-  v48 = [(CRLWPRep *)self dragAndDropHelper];
-  v49 = [v48 dragIsStorageLocal];
+  dragAndDropHelper10 = [(CRLWPRep *)self dragAndDropHelper];
+  dragIsStorageLocal3 = [dragAndDropHelper10 dragIsStorageLocal];
 
-  if (v49)
+  if (dragIsStorageLocal3)
   {
-    v61 = [v37 range];
+    range = [v37 range];
     v51 = v50;
     [objc_opt_class() unfocusedHighlightColorForDarkMode:0];
     v52 = v37;
-    v53 = v25;
-    v54 = v7;
+    v53 = textStorage;
+    v54 = infoCopy;
     v55 = v20;
     v56 = v24;
     v57 = v21;
     v59 = v58 = v18;
-    -[CRLWPRep setSecondaryHighlightRange:color:pathStyle:](self, "setSecondaryHighlightRange:color:pathStyle:", v61, v51, [v59 CGColor], 0);
+    -[CRLWPRep setSecondaryHighlightRange:color:pathStyle:](self, "setSecondaryHighlightRange:color:pathStyle:", range, v51, [v59 CGColor], 0);
 
     v18 = v58;
     v21 = v57;
     v24 = v56;
     v20 = v55;
-    v7 = v54;
-    v25 = v53;
+    infoCopy = v54;
+    textStorage = v53;
     v37 = v52;
   }
 }
@@ -418,15 +418,15 @@
 {
   [(CRLWPRep *)self setDragOperationInProgress:0];
   [(CRLWPRep *)self clearSecondaryHighlight];
-  v3 = [(CRLWPRep *)self dragAndDropHelper];
-  [v3 setDragAndDropNaturalPoint:{NAN, NAN}];
+  dragAndDropHelper = [(CRLWPRep *)self dragAndDropHelper];
+  [dragAndDropHelper setDragAndDropNaturalPoint:{NAN, NAN}];
 
-  v4 = [(CRLWPRep *)self dragAndDropCaretLayer];
-  [v4 setDelegate:0];
+  dragAndDropCaretLayer = [(CRLWPRep *)self dragAndDropCaretLayer];
+  [dragAndDropCaretLayer setDelegate:0];
 
   [(CRLWPRep *)self setDragAndDropCaretLayer:0];
-  v5 = [(CRLWPRep *)self dragAndDropTopicLayer];
-  [v5 setDelegate:0];
+  dragAndDropTopicLayer = [(CRLWPRep *)self dragAndDropTopicLayer];
+  [dragAndDropTopicLayer setDelegate:0];
 
   [(CRLWPRep *)self setDragAndDropTopicLayer:0];
   [(CRLWPRep *)self setDragAndDropTopicIndentLayer:0];
@@ -435,28 +435,28 @@
   [(CRLCanvasRep *)&v6 hideDragAndDropUI];
 }
 
-- (id)dragItemsForBeginningDragAtPoint:(CGPoint)a3
+- (id)dragItemsForBeginningDragAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPRep *)self textEditor];
+  y = point.y;
+  x = point.x;
+  textEditor = [(CRLWPRep *)self textEditor];
 
-  if (v6)
+  if (textEditor)
   {
-    v7 = [(CRLWPRep *)self selection];
-    if ([v7 isRange])
+    selection = [(CRLWPRep *)self selection];
+    if ([selection isRange])
     {
       v8 = [(CRLWPRep *)self isPointInSelectedArea:x, y];
 
       if (v8)
       {
         v9 = [_TtC8Freeform23CRLWPEditMenuController alloc];
-        v10 = [(CRLCanvasRep *)self interactiveCanvasController];
-        v11 = [(CRLWPEditMenuController *)v9 initWithICC:v10];
+        interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+        v11 = [(CRLWPEditMenuController *)v9 initWithICC:interactiveCanvasController];
         [(CRLWPEditMenuController *)v11 hide];
 
-        v12 = [(CRLWPRep *)self selection];
-        v13 = [(CRLWPRep *)self p_dragItemsForBeginningDragWithSelection:v12 inlineRepBeingDragged:0];
+        selection2 = [(CRLWPRep *)self selection];
+        v13 = [(CRLWPRep *)self p_dragItemsForBeginningDragWithSelection:selection2 inlineRepBeingDragged:0];
 
         goto LABEL_8;
       }
@@ -481,56 +481,56 @@ LABEL_8:
   return v13;
 }
 
-- (id)p_dragItemsForBeginningDragWithSelection:(id)a3 inlineRepBeingDragged:(id)a4
+- (id)p_dragItemsForBeginningDragWithSelection:(id)selection inlineRepBeingDragged:(id)dragged
 {
-  v5 = a3;
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController];
+  selectionCopy = selection;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
   v7 = objc_alloc_init(CRLItemProviderItemWriter);
   v14 = sub_1003035DC(v7, 1, v8, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLWPIngestibleItemWriting);
 
-  v15 = [(CRLWPRep *)self storage];
-  v16 = [(CRLWPRep *)self p_textEditorForStorage:v15];
+  storage = [(CRLWPRep *)self storage];
+  v16 = [(CRLWPRep *)self p_textEditorForStorage:storage];
 
   v68 = v16;
-  v17 = [v16 editorHelper];
-  v18 = [v17 hasWhitespaceBoundedWordAtSelection:v5];
+  editorHelper = [v16 editorHelper];
+  v18 = [editorHelper hasWhitespaceBoundedWordAtSelection:selectionCopy];
 
-  v19 = [(CRLWPRep *)self storage];
-  v20 = [v6 canvasEditor];
-  v21 = [v20 pasteboardController];
+  storage2 = [(CRLWPRep *)self storage];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  pasteboardController = [canvasEditor pasteboardController];
   v69 = v14;
-  v22 = [v14 itemProviderWithStorage:v19 selection:v5 boardItems:&__NSArray0__struct styleProvider:0 inIsSmart:v18 pasteboardController:v21];
+  v22 = [v14 itemProviderWithStorage:storage2 selection:selectionCopy boardItems:&__NSArray0__struct styleProvider:0 inIsSmart:v18 pasteboardController:pasteboardController];
 
   if (v22)
   {
-    v23 = [v6 selectionModelTranslator];
-    v24 = [(CRLWPRep *)self storage];
-    v25 = [v23 selectionPathForSelection:v5 onStorage:v24];
+    selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+    storage3 = [(CRLWPRep *)self storage];
+    v25 = [selectionModelTranslator selectionPathForSelection:selectionCopy onStorage:storage3];
 
-    v26 = [v6 editorController];
-    v27 = [v26 selectionPath];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
     v28 = [CRLWPiOSTextDraggingContext alloc];
-    v29 = [(CRLWPRep *)self storage];
-    v65 = v26;
-    v66 = v27;
+    storage4 = [(CRLWPRep *)self storage];
+    v65 = editorController;
+    v66 = selectionPath;
     v67 = v25;
-    v30 = -[CRLWPiOSTextDraggingContext initWithEditorController:sourceSelectionPath:changeCount:reverseSelectionPath:](v28, "initWithEditorController:sourceSelectionPath:changeCount:reverseSelectionPath:", v26, v25, [v29 changeCount], v27);
+    v30 = -[CRLWPiOSTextDraggingContext initWithEditorController:sourceSelectionPath:changeCount:reverseSelectionPath:](v28, "initWithEditorController:sourceSelectionPath:changeCount:reverseSelectionPath:", editorController, v25, [storage4 changeCount], selectionPath);
 
     size = CGRectNull.size;
     origin = CGRectNull.origin;
     v77 = size;
-    v32 = [(CRLCanvasRep *)self canvas];
-    [v32 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v34 = -12.0 / v33;
 
     LOBYTE(v63) = 1;
-    v35 = [(CRLWPRep *)self textImageForSelection:v5 frame:&origin usingGlyphRect:1 shouldPulsate:0 suppressInvisibles:1 suppressChildReps:0 drawBackground:v34 inset:v63];
+    v35 = [(CRLWPRep *)self textImageForSelection:selectionCopy frame:&origin usingGlyphRect:1 shouldPulsate:0 suppressInvisibles:1 suppressChildReps:0 drawBackground:v34 inset:v63];
     [(CRLCanvasRep *)self convertNaturalRectToUnscaledCanvas:origin, v77];
     v37 = v36;
     v39 = v38;
     v41 = v40;
     v43 = v42;
-    v44 = [(CRLWPRep *)self backgroundColorForDragPreviewOfSelection:v5];
+    v44 = [(CRLWPRep *)self backgroundColorForDragPreviewOfSelection:selectionCopy];
     v45 = objc_alloc_init(UIView);
     v81.origin.x = CGRectNull.origin.x;
     v81.origin.y = CGRectNull.origin.y;
@@ -547,22 +547,22 @@ LABEL_8:
 
     else
     {
-      [v6 convertUnscaledToBoundsRect:{v37, v39, v41, v43}];
+      [interactiveCanvasController convertUnscaledToBoundsRect:{v37, v39, v41, v43}];
       [v45 setFrame:?];
-      v53 = [(CRLCanvasRep *)self canvas];
-      [v53 viewScale];
+      canvas2 = [(CRLCanvasRep *)self canvas];
+      [canvas2 viewScale];
 
       v46 = [UIBezierPath bezierPathWithRoundedRect:sub_10011ECB4() cornerRadius:?];
     }
 
-    v54 = [v35 CGImage];
+    cGImage = [v35 CGImage];
     [v45 layer];
     v55 = v64 = v35;
-    [v55 setContents:v54];
+    [v55 setContents:cGImage];
 
-    v56 = [v45 layer];
+    layer = [v45 layer];
     LODWORD(v57) = 1062836634;
-    [v56 setOpacity:v57];
+    [layer setOpacity:v57];
 
     v58 = [CRLiOSCanvasDragItem alloc];
     v70[0] = _NSConcreteStackBlock;
@@ -571,7 +571,7 @@ LABEL_8:
     v70[3] = &unk_101856430;
     v71 = v46;
     v72 = v44;
-    v73 = v6;
+    v73 = interactiveCanvasController;
     v74 = v45;
     v75 = v30;
     v59 = v45;
@@ -625,31 +625,31 @@ LABEL_8:
 
 - (id)p_styleProvider
 {
-  v2 = [(CRLWPRep *)self storage];
-  v3 = [CRLWPStorageStyleProvider styleProviderForStorage:v2];
+  storage = [(CRLWPRep *)self storage];
+  v3 = [CRLWPStorageStyleProvider styleProviderForStorage:storage];
 
   return v3;
 }
 
-- (id)p_textEditorForStorage:(id)a3
+- (id)p_textEditorForStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_100327A54;
   v17 = sub_100327A64;
   v18 = 0;
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 editorController];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100327A6C;
   v10[3] = &unk_10183ECE0;
-  v7 = v4;
+  v7 = storageCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateEditorsOnStackUsingBlock:v10];
+  [editorController enumerateEditorsOnStackUsingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -657,46 +657,46 @@ LABEL_8:
   return v8;
 }
 
-+ (id)focusedHighlightColorForDarkMode:(BOOL)a3
++ (id)focusedHighlightColorForDarkMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  modeCopy = mode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = &unk_101A34FE8;
-  if (!v3)
+  if (!modeCopy)
   {
     v5 = &qword_101A34FE0;
   }
 
   v6 = *v5;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (id)unfocusedHighlightColorForDarkMode:(BOOL)a3
++ (id)unfocusedHighlightColorForDarkMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  modeCopy = mode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = &qword_101A34FF8;
-  if (!v3)
+  if (!modeCopy)
   {
     v5 = &unk_101A34FF0;
   }
 
   v6 = *v5;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)setSuppressSelectionHighlight:(BOOL)a3
+- (void)setSuppressSelectionHighlight:(BOOL)highlight
 {
-  if (self->_suppressSelectionHighlight != a3)
+  if (self->_suppressSelectionHighlight != highlight)
   {
-    self->_suppressSelectionHighlight = a3;
-    if (a3)
+    self->_suppressSelectionHighlight = highlight;
+    if (highlight)
     {
       [(CRLWPRep *)self p_hideSelectionLayers];
     }
@@ -707,54 +707,54 @@ LABEL_8:
 {
   v5.receiver = self;
   v5.super_class = CRLWPRep;
-  v3 = [(CRLCanvasRep *)&v5 shouldShowKnobs];
-  if (v3)
+  shouldShowKnobs = [(CRLCanvasRep *)&v5 shouldShowKnobs];
+  if (shouldShowKnobs)
   {
-    LOBYTE(v3) = [(CRLWPRep *)self p_shouldDisplaySelectionControls];
+    LOBYTE(shouldShowKnobs) = [(CRLWPRep *)self p_shouldDisplaySelectionControls];
   }
 
-  return v3;
+  return shouldShowKnobs;
 }
 
 - (CRLContainerInfo)containerInfo
 {
-  v2 = [(CRLCanvasRep *)self info];
+  info = [(CRLCanvasRep *)self info];
   v3 = objc_opt_class();
-  v9 = sub_1003038E0(v2, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
+  v9 = sub_1003038E0(info, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
 
   return v9;
 }
 
-- (void)setDragRange:(_NSRange)a3
+- (void)setDragRange:(_NSRange)range
 {
-  location = a3.location;
-  length = a3.length;
-  if (!a3.length)
+  location = range.location;
+  length = range.length;
+  if (!range.length)
   {
     location = self->_dragRange.location;
     length = self->_dragRange.length;
   }
 
-  self->_dragRange = a3;
+  self->_dragRange = range;
   [(CRLWPRep *)self i_setNeedsErasableDisplayInRange:location, length];
 }
 
-- (void)setDropSelection:(id)a3
+- (void)setDropSelection:(id)selection
 {
-  obj = a3;
+  obj = selection;
   WeakRetained = objc_loadWeakRetained(&self->_dropSelection);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_dropSelection, obj);
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v5 invalidateOverlayLayersForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController invalidateOverlayLayersForRep:self];
 
     v6 = objc_loadWeakRetained(&self->_dropSelection);
     if (v6)
     {
-      v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v7 layoutIfNeeded];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController2 layoutIfNeeded];
 
       [(CAShapeLayer *)self->_dragAndDropCaretLayer setHidden:0];
     }
@@ -787,7 +787,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [CRLColor colorWithRed:0.0 green:0.33 blue:0.65 alpha:0.25];
     v3 = qword_101A34FE0;
@@ -805,21 +805,21 @@ LABEL_8:
   }
 }
 
-- (CRLWPRep)initWithLayout:(id)a3 canvas:(id)a4
+- (CRLWPRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  canvasCopy = canvas;
   v24.receiver = self;
   v24.super_class = CRLWPRep;
-  v8 = [(CRLCanvasRep *)&v24 initWithLayout:v6 canvas:v7];
+  v8 = [(CRLCanvasRep *)&v24 initWithLayout:layoutCopy canvas:canvasCopy];
   if (v8)
   {
     v9 = objc_opt_class();
-    sub_100303920(v6, v9, 1, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLWPLayoutTarget);
+    sub_100303920(layoutCopy, v9, 1, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLWPLayoutTarget);
 
-    v15 = [v8 storage];
+    storage = [v8 storage];
 
-    if (v15)
+    if (storage)
     {
       [v8 p_registerNotifications];
       v8[573] = 1;
@@ -834,9 +834,9 @@ LABEL_8:
       v19 = *(v8 + 69);
       *(v8 + 69) = v18;
 
-      v20 = [v8 p_isRedesignedTextCursorEnabled];
-      v8[337] = v20;
-      v8[385] = v20;
+      p_isRedesignedTextCursorEnabled = [v8 p_isRedesignedTextCursorEnabled];
+      v8[337] = p_isRedesignedTextCursorEnabled;
+      v8[385] = p_isRedesignedTextCursorEnabled;
       [v8 setIbeamLength:20.0];
       v21 = +[NSUUID UUID];
       v22 = *(v8 + 72);
@@ -855,24 +855,24 @@ LABEL_8:
   [(CRLCanvasRep *)&v3 dealloc];
 }
 
-- (void)setParentRep:(id)a3
+- (void)setParentRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v15.receiver = self;
   v15.super_class = CRLWPRep;
-  [(CRLCanvasRep *)&v15 setParentRep:v4];
-  v5 = [(CRLWPRep *)self storage];
-  if (v5)
+  [(CRLCanvasRep *)&v15 setParentRep:repCopy];
+  storage = [(CRLWPRep *)self storage];
+  if (storage)
   {
-    v6 = [(CRLCanvasRep *)self canvas];
-    v7 = [v6 isCanvasInteractive];
+    canvas = [(CRLCanvasRep *)self canvas];
+    isCanvasInteractive = [canvas isCanvasInteractive];
 
-    if (v7)
+    if (isCanvasInteractive)
     {
       v8 = objc_opt_class();
-      v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v10 = [v9 primaryFindResultSearchReference];
-      v11 = sub_100014370(v8, v10);
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      primaryFindResultSearchReference = [interactiveCanvasController primaryFindResultSearchReference];
+      v11 = sub_100014370(v8, primaryFindResultSearchReference);
       v12 = [v11 copy];
 
       if ([(CRLWPRep *)self p_doesRepIntersectSearchReference:v12])
@@ -880,9 +880,9 @@ LABEL_8:
         [(CRLWPRep *)self p_setPrimaryFindResultSearchReference:v12];
       }
 
-      v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v14 = [v13 searchReferencesToHighlight];
-      [(CRLWPRep *)self i_setSearchReferencesToHighlight:v14];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      searchReferencesToHighlight = [interactiveCanvasController2 searchReferencesToHighlight];
+      [(CRLWPRep *)self i_setSearchReferencesToHighlight:searchReferencesToHighlight];
     }
   }
 }
@@ -901,8 +901,8 @@ LABEL_8:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(CRLWPRep *)self columns];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v3 = [columns countByEnumeratingWithState:&v15 objects:v19 count:16];
   v4 = 0;
   if (v3)
   {
@@ -914,7 +914,7 @@ LABEL_8:
       {
         if (*v16 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(columns);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
@@ -938,7 +938,7 @@ LABEL_8:
         v4 = length;
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v3 = [columns countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v3);
@@ -956,25 +956,25 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)pinToNaturalBounds:(CGPoint)a3 andLastLineFragment:(BOOL)a4
+- (CGPoint)pinToNaturalBounds:(CGPoint)bounds andLastLineFragment:(BOOL)fragment
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  fragmentCopy = fragment;
+  y = bounds.y;
+  x = bounds.x;
   [(CRLCanvasRep *)self naturalBounds];
   [(CRLWPRep *)self p_pinPoint:x toRect:y, v8, v9, v10, v11];
   v41 = v13;
   v42 = v12.f64[0];
   v12.f64[1] = v13;
   v40 = v12;
-  if (v4)
+  if (fragmentCopy)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v14 = [(CRLWPRep *)self columns];
-    v15 = [v14 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    columns = [(CRLWPRep *)self columns];
+    v15 = [columns countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v15)
     {
       v16 = *v47;
@@ -984,7 +984,7 @@ LABEL_8:
         {
           if (*v47 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(columns);
           }
 
           v18 = *(*(&v46 + 1) + 8 * i);
@@ -993,10 +993,10 @@ LABEL_8:
           v52.x = v42;
           if (CGRectContainsPoint(v53, v52))
           {
-            v19 = [v18 lineCount];
-            if (v19)
+            lineCount = [v18 lineCount];
+            if (lineCount)
             {
-              [v18 boundsOfLineFragmentAtIndex:v19 - 1];
+              [v18 boundsOfLineFragmentAtIndex:lineCount - 1];
               v21 = v20;
               v23 = v22;
               v25 = v24;
@@ -1052,7 +1052,7 @@ LABEL_8:
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v15 = [columns countByEnumeratingWithState:&v46 objects:v50 count:16];
         if (v15)
         {
           continue;
@@ -1072,10 +1072,10 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)pinToClosestColumn:(CGPoint)a3
+- (CGPoint)pinToClosestColumn:(CGPoint)column
 {
-  y = a3.y;
-  x = a3.x;
+  y = column.y;
+  x = column.x;
   v6 = [(CRLWPRep *)self closestColumnForPoint:?];
   v7 = v6;
   if (v6)
@@ -1095,8 +1095,8 @@ LABEL_20:
 
 - (CGRect)caretRect
 {
-  v3 = [(CRLWPRep *)self selection];
-  [(CRLWPRep *)self caretRectForSelection:v3];
+  selection = [(CRLWPRep *)self selection];
+  [(CRLWPRep *)self caretRectForSelection:selection];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1115,8 +1115,8 @@ LABEL_20:
 
 - (CGRect)selectionRect
 {
-  v3 = [(CRLWPRep *)self selection];
-  [(CRLWPRep *)self rectForSelection:v3 includeRuby:0 includePaginatedAttachments:0];
+  selection = [(CRLWPRep *)self selection];
+  [(CRLWPRep *)self rectForSelection:selection includeRuby:0 includePaginatedAttachments:0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1133,11 +1133,11 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
   v12.receiver = self;
   v12.super_class = CRLWPRep;
   if (![CRLCanvasRep containsPoint:"containsPoint:withPrecision:" withPrecision:?])
@@ -1145,33 +1145,33 @@ LABEL_20:
     return 0;
   }
 
-  v8 = [(CRLCanvasRep *)self parentRep];
+  parentRep = [(CRLCanvasRep *)self parentRep];
 
-  if (!v8)
+  if (!parentRep)
   {
     return 1;
   }
 
-  v9 = [(CRLCanvasRep *)self parentRep];
-  v10 = [v9 containsPoint:v4 withPrecision:{x, y}];
+  parentRep2 = [(CRLCanvasRep *)self parentRep];
+  v10 = [parentRep2 containsPoint:precisionCopy withPrecision:{x, y}];
 
   return v10;
 }
 
-- (BOOL)didPointHitSelectionEnd:(CGPoint)a3
+- (BOOL)didPointHitSelectionEnd:(CGPoint)end
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPRep *)self selection];
-  if (v6)
+  y = end.y;
+  x = end.x;
+  selection = [(CRLWPRep *)self selection];
+  if (selection)
   {
-    v7 = v6;
-    v8 = [(CRLWPRep *)self selection];
-    v9 = [v8 isInsertionPoint];
+    v7 = selection;
+    selection2 = [(CRLWPRep *)self selection];
+    isInsertionPoint = [selection2 isInsertionPoint];
 
-    if (v9)
+    if (isInsertionPoint)
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(selection) = 0;
     }
 
     else
@@ -1181,17 +1181,17 @@ LABEL_20:
       v20 = size;
       v18.origin = origin;
       v18.size = size;
-      v11 = [(CRLCanvasRep *)self canvas];
-      [v11 viewScale];
+      canvas = [(CRLCanvasRep *)self canvas];
+      [canvas viewScale];
       v13 = v12;
 
-      LODWORD(v11) = [(CRLWPRep *)self textIsVertical];
-      v14 = [(CRLWPRep *)self selection];
-      v15 = [(CRLWPRep *)self p_newSelectionPathForSelection:v14 transform:0 headPinRect:&origin tailPinRect:&v18];
+      LODWORD(canvas) = [(CRLWPRep *)self textIsVertical];
+      selection3 = [(CRLWPRep *)self selection];
+      v15 = [(CRLWPRep *)self p_newSelectionPathForSelection:selection3 transform:0 headPinRect:&origin tailPinRect:&v18];
 
       CGPathRelease(v15);
       v16 = 1.0 / v13;
-      if (v11)
+      if (canvas)
       {
         origin.y = origin.y - v16;
         v18.origin.y = CGRectGetMaxY(v18) - v16;
@@ -1203,23 +1203,23 @@ LABEL_20:
         v18.origin.x = CGRectGetMaxX(v18) - v16;
       }
 
-      if (sub_10011FF8C(x, y, origin.x + -2.5, origin.y + -3.5, v20.width + 5.0, v20.height + 7.0) || (LODWORD(v6) = sub_10011FF8C(x, y, v18.origin.x + -2.5, v18.origin.y + -3.5, v18.size.width + 5.0, v18.size.height + 7.0), v6))
+      if (sub_10011FF8C(x, y, origin.x + -2.5, origin.y + -3.5, v20.width + 5.0, v20.height + 7.0) || (LODWORD(selection) = sub_10011FF8C(x, y, v18.origin.x + -2.5, v18.origin.y + -3.5, v18.size.width + 5.0, v18.size.height + 7.0), selection))
       {
-        LOBYTE(v6) = 1;
+        LOBYTE(selection) = 1;
       }
     }
   }
 
-  return v6;
+  return selection;
 }
 
-- (BOOL)isPointInSelectedArea:(CGPoint)a3
+- (BOOL)isPointInSelectedArea:(CGPoint)area
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPRep *)self selection];
+  y = area.y;
+  x = area.x;
+  selection = [(CRLWPRep *)self selection];
 
-  if (!v6)
+  if (!selection)
   {
     return 0;
   }
@@ -1228,8 +1228,8 @@ LABEL_20:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [(CRLWPRep *)self columns];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v8 = [columns countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
     v9 = *v29;
@@ -1239,15 +1239,15 @@ LABEL_20:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(columns);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [(CRLWPRep *)self selection];
-        v13 = [v12 range];
+        selection2 = [(CRLWPRep *)self selection];
+        range = [selection2 range];
         v15 = v14;
-        v16 = [(CRLWPRep *)self selection];
-        v17 = [v11 rectsForSelectionRange:v13 selectionType:v15 forParagraphMode:objc_msgSend(v16 includeRuby:"type") includePaginatedAttachments:{0, 0, 0}];
+        selection3 = [(CRLWPRep *)self selection];
+        v17 = [v11 rectsForSelectionRange:range selectionType:v15 forParagraphMode:objc_msgSend(selection3 includeRuby:"type") includePaginatedAttachments:{0, 0, 0}];
 
         v26 = 0u;
         v27 = 0u;
@@ -1289,7 +1289,7 @@ LABEL_20:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v8 = [columns countByEnumeratingWithState:&v28 objects:v33 count:16];
       v22 = 0;
     }
 
@@ -1306,13 +1306,13 @@ LABEL_21:
   return v22;
 }
 
-- (CGRect)rectForSelection:(id)a3 includeRuby:(BOOL)a4 includePaginatedAttachments:(BOOL)a5
+- (CGRect)rectForSelection:(id)selection includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(CRLWPRep *)self columns];
-  [CRLWPColumn boundsRectForSelection:v8 columnArray:v9 includeRuby:v6 includePaginatedAttachments:v5];
+  attachmentsCopy = attachments;
+  rubyCopy = ruby;
+  selectionCopy = selection;
+  columns = [(CRLWPRep *)self columns];
+  [CRLWPColumn boundsRectForSelection:selectionCopy columnArray:columns includeRuby:rubyCopy includePaginatedAttachments:attachmentsCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1329,21 +1329,21 @@ LABEL_21:
   return result;
 }
 
-- (CGPath)newPathForSelection:(id)a3
+- (CGPath)newPathForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  if ([v4 isRange])
+  if ([selectionCopy isRange])
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v9 = [(CRLWPRep *)self columns];
-    v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    columns = [(CRLWPRep *)self columns];
+    v10 = [columns countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v10)
     {
       v11 = *v35;
@@ -1354,7 +1354,7 @@ LABEL_21:
         {
           if (*v35 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(columns);
           }
 
           v13 = *(*(&v34 + 1) + 8 * v12);
@@ -1362,8 +1362,8 @@ LABEL_21:
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v14 = [v4 range];
-          v16 = [v13 rectsForSelectionRange:v14 selectionType:v15 forParagraphMode:objc_msgSend(v4 includeRuby:"type") includePaginatedAttachments:{0, 0, 1}];
+          range = [selectionCopy range];
+          v16 = [v13 rectsForSelectionRange:range selectionType:v15 forParagraphMode:objc_msgSend(selectionCopy includeRuby:"type") includePaginatedAttachments:{0, 0, 1}];
           v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v17)
           {
@@ -1426,7 +1426,7 @@ LABEL_21:
         }
 
         while (v12 != v10);
-        v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v10 = [columns countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v10);
@@ -1456,10 +1456,10 @@ LABEL_21:
   return Mutable;
 }
 
-- (CGPath)p_newPathForSelection:(id)a3 withTransform:(CGAffineTransform *)a4 withInset:(double)a5
+- (CGPath)p_newPathForSelection:(id)selection withTransform:(CGAffineTransform *)transform withInset:(double)inset
 {
-  v8 = a3;
-  if ([v8 isRange])
+  selectionCopy = selection;
+  if ([selectionCopy isRange])
   {
     v36 = 0u;
     v37 = 0u;
@@ -1486,8 +1486,8 @@ LABEL_21:
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v14 = [v8 range];
-          v16 = [v13 rectsForSelectionRange:v14 selectionType:v15 forParagraphMode:objc_msgSend(v8 includeRuby:"type") includePaginatedAttachments:{0, 0, 1}];
+          range = [selectionCopy range];
+          v16 = [v13 rectsForSelectionRange:range selectionType:v15 forParagraphMode:objc_msgSend(selectionCopy includeRuby:"type") includePaginatedAttachments:{0, 0, 1}];
           v17 = [v16 countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v17)
           {
@@ -1513,7 +1513,7 @@ LABEL_21:
                   v41.origin.y = y;
                   v41.size.width = width;
                   v41.size.height = height;
-                  v42 = CGRectInset(v41, a5, a5);
+                  v42 = CGRectInset(v41, inset, inset);
                   v24 = v42.origin.x;
                   v25 = v42.origin.y;
                   v26 = v42.size.width;
@@ -1528,7 +1528,7 @@ LABEL_21:
                   v43.size.width = v26;
                   v43.size.height = v27;
                   v44 = CGRectIntegral(v43);
-                  CGPathAddRect(Mutable, a4, v44);
+                  CGPathAddRect(Mutable, transform, v44);
                 }
 
                 v19 = v19 + 1;
@@ -1560,10 +1560,10 @@ LABEL_21:
   return Mutable;
 }
 
-- (CGRect)caretRectForCharIndex:(unint64_t)a3 caretAffinity:(unint64_t)a4
+- (CGRect)caretRectForCharIndex:(unint64_t)index caretAffinity:(unint64_t)affinity
 {
-  v5 = [[CRLWPSelection alloc] initWithType:0 range:a3 styleInsertionBehavior:0 caretAffinity:0, a4];
-  [(CRLWPRep *)self p_caretRectForSelection:v5];
+  affinity = [[CRLWPSelection alloc] initWithType:0 range:index styleInsertionBehavior:0 caretAffinity:0, affinity];
+  [(CRLWPRep *)self p_caretRectForSelection:affinity];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1580,13 +1580,13 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)caretRectForCharIndex:(unint64_t)a3 leadingEdge:(BOOL)a4 caretAffinity:(unint64_t)a5
+- (CGRect)caretRectForCharIndex:(unint64_t)index leadingEdge:(BOOL)edge caretAffinity:(unint64_t)affinity
 {
   v9 = [CRLWPSelection alloc];
-  v10 = [(CRLWPRep *)self storage];
-  v11 = [v10 copyWithMarkedText];
-  LOBYTE(v25) = a4;
-  v12 = [(CRLWPSelection *)v9 initWithType:7 range:a3 styleInsertionBehavior:0 caretAffinity:0 smartFieldRange:a5 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v25, v11];
+  storage = [(CRLWPRep *)self storage];
+  copyWithMarkedText = [storage copyWithMarkedText];
+  LOBYTE(v25) = edge;
+  v12 = [(CRLWPSelection *)v9 initWithType:7 range:index styleInsertionBehavior:0 caretAffinity:0 smartFieldRange:affinity leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v25, copyWithMarkedText];
 
   [(CRLWPRep *)self p_caretRectForSelection:v12];
   v14 = v13;
@@ -1605,11 +1605,11 @@ LABEL_21:
   return result;
 }
 
-- ($D12B6492C59FD4124ECBBA05678185BF)p_lineMetricsAtPoint:(SEL)a3 allowNotFound:(CGPoint)a4
+- ($D12B6492C59FD4124ECBBA05678185BF)p_lineMetricsAtPoint:(SEL)point allowNotFound:(CGPoint)found
 {
   v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  y = found.y;
+  x = found.x;
   memcpy(retstr, &unk_101465F68, sizeof($D12B6492C59FD4124ECBBA05678185BF));
   v10 = [(CRLWPRep *)self closestColumnForPoint:x, y];
   v14 = 0;
@@ -1632,7 +1632,7 @@ LABEL_21:
   return result;
 }
 
-- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)a3
+- ($D12B6492C59FD4124ECBBA05678185BF)lineMetricsAtCharIndex:(SEL)index
 {
   v6 = [(CRLWPRep *)self columnForCharIndex:?];
   v8 = v6;
@@ -1669,7 +1669,7 @@ LABEL_21:
   return result;
 }
 
-- ($8162D66D923C6F9903B35BCF259B21FE)wordMetricsAtCharIndex:(SEL)a3
+- ($8162D66D923C6F9903B35BCF259B21FE)wordMetricsAtCharIndex:(SEL)index
 {
   *&retstr->var5 = xmmword_1014660F0;
   *&retstr->var6.b = unk_101466100;
@@ -1679,8 +1679,8 @@ LABEL_21:
   retstr->var0.size = unk_1014660C0;
   *&retstr->var1 = xmmword_1014660D0;
   *&retstr->var3 = unk_1014660E0;
-  v7 = [(CRLWPRep *)self storage];
-  v8 = [v7 wordAtCharIndex:a4 includePreviousWord:0];
+  storage = [(CRLWPRep *)self storage];
+  v8 = [storage wordAtCharIndex:a4 includePreviousWord:0];
   v10 = v9;
 
   v11 = [CRLWPSelection selectionWithRange:v8, v10];
@@ -1704,12 +1704,12 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)caretRectForSelection:(id)a3
+- (CGRect)caretRectForSelection:(id)selection
 {
-  v4 = a3;
-  if (v4)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
-    [(CRLWPRep *)self p_caretRectForSelection:v4];
+    [(CRLWPRep *)self p_caretRectForSelection:selectionCopy];
     x = v5;
     y = v7;
     width = v9;
@@ -1735,14 +1735,14 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)p_caretRectForSelection:(id)a3
+- (CGRect)p_caretRectForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  if ([v4 type] != 3 && objc_msgSend(v4, "type") != 5)
+  if ([selectionCopy type] != 3 && objc_msgSend(selectionCopy, "type") != 5)
   {
     v26.origin.x = CGRectNull.origin.x;
     v26.origin.y = y;
@@ -1754,8 +1754,8 @@ LABEL_21:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v9 = [(CRLWPRep *)self columns];
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      columns = [(CRLWPRep *)self columns];
+      v10 = [columns countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v10)
       {
         v11 = *v22;
@@ -1765,10 +1765,10 @@ LABEL_21:
           {
             if (*v22 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(columns);
             }
 
-            [*(*(&v21 + 1) + 8 * i) caretRectForSelection:v4];
+            [*(*(&v21 + 1) + 8 * i) caretRectForSelection:selectionCopy];
             if (v16 > 0.0 || v15 > 0.0)
             {
               x = v13;
@@ -1779,7 +1779,7 @@ LABEL_21:
             }
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v10 = [columns countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v10)
           {
             continue;
@@ -1804,14 +1804,14 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)p_topicDragRectForSelection:(id)a3
+- (CGRect)p_topicDragRectForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  if (!v4)
+  if (!selectionCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1846,8 +1846,8 @@ LABEL_15:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v12 = [(CRLWPRep *)self columns];
-  v13 = [v12 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v13 = [columns countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v13)
   {
     v14 = *v50;
@@ -1857,19 +1857,19 @@ LABEL_15:
       {
         if (*v50 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(columns);
         }
 
         v16 = *(*(&v49 + 1) + 8 * i);
-        [v16 caretRectForSelection:v4];
+        [v16 caretRectForSelection:selectionCopy];
         v19 = v18;
         v21 = v20;
         v22 = v17;
         v24 = v23;
         if (v23 > 0.0 || v17 > 0.0)
         {
-          v25 = [v16 textIsVertical];
-          if (v25)
+          textIsVertical = [v16 textIsVertical];
+          if (textIsVertical)
           {
             v54.origin.x = v19;
             v54.origin.y = v21;
@@ -1893,15 +1893,15 @@ LABEL_15:
             MaxY = v21;
           }
 
-          v34 = [v4 range];
+          range = [selectionCopy range];
           v48 = xmmword_101464828;
-          v35 = [(CRLWPRep *)self storage];
-          v36 = [v35 paragraphIndexAtCharIndex:v34 effectiveRange:&v48];
+          storage = [(CRLWPRep *)self storage];
+          v36 = [storage paragraphIndexAtCharIndex:range effectiveRange:&v48];
 
-          v37 = [(CRLWPRep *)self storage];
-          if (v36 == [v37 paragraphCount] && *(&v48 + 1))
+          storage2 = [(CRLWPRep *)self storage];
+          if (v36 == [storage2 paragraphCount] && *(&v48 + 1))
           {
-            v38 = v34 > v48;
+            v38 = range > v48;
 
             if (v38)
             {
@@ -1909,7 +1909,7 @@ LABEL_15:
               v40 = v21;
               v41 = v22;
               v42 = v24;
-              if (v25)
+              if (textIsVertical)
               {
                 MaxX = CGRectGetMinX(*&v39);
               }
@@ -1933,7 +1933,7 @@ LABEL_15:
           v56 = CGRectApplyAffineTransform(v55, &v47);
           x = v56.origin.x;
           y = v56.origin.y;
-          if (v25)
+          if (textIsVertical)
           {
             height = v56.size.height;
             x = rint(v56.origin.x);
@@ -1951,7 +1951,7 @@ LABEL_15:
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v13 = [columns countByEnumeratingWithState:&v49 objects:v53 count:16];
       if (v13)
       {
         continue;
@@ -1974,17 +1974,17 @@ LABEL_33:
   return result;
 }
 
-- (CGRect)p_closestCaretRectForCharacterAtPoint:(CGPoint)a3
+- (CGRect)p_closestCaretRectForCharacterAtPoint:(CGPoint)point
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  [(CRLWPRep *)self pinToNaturalBounds:1 andLastLineFragment:a3.x, a3.y];
+  [(CRLWPRep *)self pinToNaturalBounds:1 andLastLineFragment:point.x, point.y];
   v9 = v8;
   v11 = v10;
-  v12 = [(CRLWPRep *)self layout];
-  v13 = [CRLWPColumn charIndexFromPoint:1 allowPastBreak:1 allowNotFound:0 pastCenterGoesToNextChar:0 constrainToAscentAndDescent:0 isAtEndOfLine:0 leadingEdge:v9 inLayoutTarget:v11, v12];
+  layout = [(CRLWPRep *)self layout];
+  v13 = [CRLWPColumn charIndexFromPoint:1 allowPastBreak:1 allowNotFound:0 pastCenterGoesToNextChar:0 constrainToAscentAndDescent:0 isAtEndOfLine:0 leadingEdge:v9 inLayoutTarget:v11, layout];
 
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1992,8 +1992,8 @@ LABEL_33:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v14 = [(CRLWPRep *)self columns];
-    v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    columns = [(CRLWPRep *)self columns];
+    v15 = [columns countByEnumeratingWithState:&v33 objects:v37 count:16];
     v16 = v13 + 1;
     if (v15)
     {
@@ -2004,19 +2004,19 @@ LABEL_33:
         {
           if (*v34 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(columns);
           }
 
           v19 = *(*(&v33 + 1) + 8 * i);
-          v20 = [v19 range];
-          if (v16 >= v20 && v16 - v20 < v21)
+          range = [v19 range];
+          if (v16 >= range && v16 - range < v21)
           {
             v15 = v19;
             goto LABEL_14;
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v15 = [columns countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v15);
@@ -2053,23 +2053,23 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)p_closestCaretRectForPoint:(CGPoint)a3 inSelection:(BOOL)a4 allowPastBreak:(BOOL)a5
+- (CGRect)p_closestCaretRectForPoint:(CGPoint)point inSelection:(BOOL)selection allowPastBreak:(BOOL)break
 {
-  v5 = a5;
-  v6 = a4;
-  [(CRLWPRep *)self pinToNaturalBounds:1 andLastLineFragment:a3.x, a3.y];
+  breakCopy = break;
+  selectionCopy = selection;
+  [(CRLWPRep *)self pinToNaturalBounds:1 andLastLineFragment:point.x, point.y];
   v9 = v8;
   v11 = v10;
   v29 = 0;
-  v12 = [(CRLWPRep *)self layout];
-  v13 = [CRLWPColumn charIndexFromPoint:v5 allowPastBreak:&v29 isAtEndOfLine:v12 inLayoutTarget:v9, v11];
+  layout = [(CRLWPRep *)self layout];
+  v13 = [CRLWPColumn charIndexFromPoint:breakCopy allowPastBreak:&v29 isAtEndOfLine:layout inLayoutTarget:v9, v11];
 
-  if (v6)
+  if (selectionCopy)
   {
-    v14 = [(CRLWPRep *)self selection];
-    v15 = [v14 isValid];
+    selection = [(CRLWPRep *)self selection];
+    isValid = [selection isValid];
 
-    if ((v15 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -2100,26 +2100,26 @@ LABEL_14:
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:667 isFatal:0 description:"invalid text selection"];
     }
 
-    v19 = [(CRLWPRep *)self selection];
-    v20 = v13 < [v19 start];
+    selection2 = [(CRLWPRep *)self selection];
+    v20 = v13 < [selection2 start];
 
-    v21 = [(CRLWPRep *)self selection];
-    v22 = v21;
+    selection3 = [(CRLWPRep *)self selection];
+    selection4 = selection3;
     if (v20)
     {
-      v23 = [v21 start];
+      start = [selection3 start];
 LABEL_16:
-      v13 = v23;
+      v13 = start;
 
       goto LABEL_17;
     }
 
-    v24 = v13 > [v21 end];
+    v24 = v13 > [selection3 end];
 
     if (v24)
     {
-      v22 = [(CRLWPRep *)self selection];
-      v23 = [v22 end];
+      selection4 = [(CRLWPRep *)self selection];
+      start = [selection4 end];
       goto LABEL_16;
     }
   }
@@ -2133,22 +2133,22 @@ LABEL_17:
   return result;
 }
 
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  y = point.y;
+  x = point.x;
+  knobCopy = knob;
+  objectCopy = object;
+  if (knobCopy)
   {
     v14.receiver = self;
     v14.super_class = CRLWPRep;
-    v11 = [(CRLCanvasRep *)&v14 cursorAtPoint:v9 forKnob:v10 withCursorPlatformObject:x, y];
+    v11 = [(CRLCanvasRep *)&v14 cursorAtPoint:knobCopy forKnob:objectCopy withCursorPlatformObject:x, y];
   }
 
   else
   {
-    v11 = [(CRLWPRep *)self cursorForPoint:v10 withCursorPlatformObject:x, y];
+    v11 = [(CRLWPRep *)self cursorForPoint:objectCopy withCursorPlatformObject:x, y];
   }
 
   v12 = v11;
@@ -2156,17 +2156,17 @@ LABEL_17:
   return v12;
 }
 
-- (id)cursorForPoint:(CGPoint)a3 withCursorPlatformObject:(id)a4
+- (id)cursorForPoint:(CGPoint)point withCursorPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(CRLCanvasRep *)self canvas];
-  v68 = [v7 canvasController];
+  y = point.y;
+  x = point.x;
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
 
-  v8 = [(CRLWPRep *)self textIsVertical];
+  textIsVertical = [(CRLWPRep *)self textIsVertical];
   v9 = [(CRLWPRep *)self p_hyperlinkAtPoint:x, y];
   v10 = v9;
-  if (v8)
+  if (textIsVertical)
   {
     v11 = 1;
   }
@@ -2206,14 +2206,14 @@ LABEL_17:
   else
   {
     [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_100120414(v18, v19, v20, v21)];
-    [v68 convertUnscaledToBoundsPoint:?];
+    [canvasController convertUnscaledToBoundsPoint:?];
     v64 = v24;
     v65 = v23;
     if (!v10)
     {
-      [v68 viewScale];
+      [canvasController viewScale];
       v26 = sub_10011F340(v20, v21, v25);
-      if (!v8)
+      if (!textIsVertical)
       {
         v26 = v27;
       }
@@ -2224,11 +2224,11 @@ LABEL_17:
       }
     }
 
-    v28 = [(CRLWPRep *)self layout];
-    v29 = v28;
-    if (v28)
+    layout = [(CRLWPRep *)self layout];
+    v29 = layout;
+    if (layout)
     {
-      [v28 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -2245,7 +2245,7 @@ LABEL_17:
     {
       if (v32 == 90.0 || v32 == 270.0 || fabs(v32 + -90.0) < 0.0000899999998 || fabs(v32 + -270.0) < 0.000269999999)
       {
-        if (v8)
+        if (textIsVertical)
         {
           v11 = 2;
         }
@@ -2309,11 +2309,11 @@ LABEL_17:
     v72 = 0u;
     memset(&v70, 0, sizeof(v70));
     [(CRLWPRep *)self p_lineMetricsAtPoint:1 allowNotFound:x, y];
-    v33 = [(CRLWPRep *)self layout];
-    v34 = v33;
-    if (v33)
+    layout2 = [(CRLWPRep *)self layout];
+    v34 = layout2;
+    if (layout2)
     {
-      [v33 transformInRoot];
+      [layout2 transformInRoot];
     }
 
     else
@@ -2402,14 +2402,14 @@ LABEL_17:
   {
 LABEL_34:
     v48 = 0;
-    v49 = +[CRLCursor defaultCursor];
+    height = +[CRLCursor defaultCursor];
     goto LABEL_42;
   }
 
 LABEL_39:
   [(CRLWPRep *)self ibeamLength];
   v57 = [UIPointerShape beamWithPreferredLength:v11 axis:?];
-  v49 = [CRLCursor cursorWithShape:v57 activeScaledRect:v67, v66, width, height];
+  height = [CRLCursor cursorWithShape:v57 activeScaledRect:v67, v66, width, height];
   [(CRLWPRep *)self ibeamLength];
   v59 = @"H";
   if (v11 == 2)
@@ -2419,51 +2419,51 @@ LABEL_39:
 
   v48 = [NSString stringWithFormat:@"%f%@%@", v58, v59, v47];
   [(CRLWPRep *)self setIbeamLength:20.0];
-  [v49 setIdentifierSuffix:v48];
+  [height setIdentifierSuffix:v48];
 
 LABEL_42:
   if (v22)
   {
-    [v49 setConstrainedAxes:v11];
+    [height setConstrainedAxes:v11];
   }
 
-  return v49;
+  return height;
 }
 
 - (void)p_registerNotifications
 {
-  v5 = [(CRLCanvasRep *)self canvas];
-  v3 = [v5 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v3)
+  if (isCanvasInteractive)
   {
-    v6 = [(CRLWPRep *)self storage];
+    storage = [(CRLWPRep *)self storage];
     v4 = +[NSNotificationCenter defaultCenter];
-    [v4 addObserver:self selector:"p_selectionChangedNotification:" name:@"CRLTPEditorSelectionChanged" object:v6];
-    [v4 addObserver:self selector:"p_markChangedNotification:" name:@"CRLWPEditorMarkChanged" object:v6];
-    [v4 addObserver:self selector:"p_editingDidEndNotification:" name:@"CRLWPEditorEditingDidEnd" object:v6];
+    [v4 addObserver:self selector:"p_selectionChangedNotification:" name:@"CRLTPEditorSelectionChanged" object:storage];
+    [v4 addObserver:self selector:"p_markChangedNotification:" name:@"CRLWPEditorMarkChanged" object:storage];
+    [v4 addObserver:self selector:"p_editingDidEndNotification:" name:@"CRLWPEditorEditingDidEnd" object:storage];
   }
 }
 
 - (void)p_unregisterNotifications
 {
-  v5 = [(CRLCanvasRep *)self canvas];
-  v3 = [v5 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v3)
+  if (isCanvasInteractive)
   {
-    v6 = [(CRLWPRep *)self storage];
+    storage = [(CRLWPRep *)self storage];
     v4 = +[NSNotificationCenter defaultCenter];
-    [v4 removeObserver:self name:@"CRLTPEditorSelectionChanged" object:v6];
-    [v4 removeObserver:self name:@"CRLWPEditorMarkChanged" object:v6];
-    [v4 removeObserver:self name:@"CRLWPEditorEditingDidEnd" object:v6];
+    [v4 removeObserver:self name:@"CRLTPEditorSelectionChanged" object:storage];
+    [v4 removeObserver:self name:@"CRLWPEditorMarkChanged" object:storage];
+    [v4 removeObserver:self name:@"CRLWPEditorEditingDidEnd" object:storage];
   }
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
-  v4 = a3;
-  if (!v4)
+  knobCopy = knob;
+  if (!knobCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -2494,7 +2494,7 @@ LABEL_42:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:850 isFatal:0 description:"invalid nil value for '%{public}s'", "knob"];
   }
 
-  v8 = [[CRLWPTextKnobTracker alloc] initWithRep:self knob:v4];
+  v8 = [[CRLWPTextKnobTracker alloc] initWithRep:self knob:knobCopy];
 
   return v8;
 }
@@ -2502,8 +2502,8 @@ LABEL_42:
 - (id)knobPositioner
 {
   v3 = objc_opt_class();
-  v4 = [(CRLWPRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLWPRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
   if (v5)
   {
@@ -2518,15 +2518,15 @@ LABEL_42:
   return v6;
 }
 
-- (CGPoint)knobCenterForSelection:(id)a3 knob:(id)a4
+- (CGPoint)knobCenterForSelection:(id)selection knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLWPRep *)self knobPositioner];
-  v9 = v8;
-  if (v8)
+  selectionCopy = selection;
+  knobCopy = knob;
+  knobPositioner = [(CRLWPRep *)self knobPositioner];
+  v9 = knobPositioner;
+  if (knobPositioner)
   {
-    [v8 knobCenterForSelection:v6 knob:v7];
+    [knobPositioner knobCenterForSelection:selectionCopy knob:knobCopy];
     v11 = v10;
     v13 = v12;
   }
@@ -2544,29 +2544,29 @@ LABEL_42:
   return result;
 }
 
-- (double)knobOffsetForKnob:(id)a3 paragraphMode:(BOOL)a4
+- (double)knobOffsetForKnob:(id)knob paragraphMode:(BOOL)mode
 {
-  v6 = a3;
-  v7 = [v6 renderable];
-  [v7 bounds];
+  knobCopy = knob;
+  renderable = [knobCopy renderable];
+  [renderable bounds];
   Height = CGRectGetHeight(v16);
 
-  v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v9 viewScale];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController viewScale];
   v11 = v10;
 
-  v12 = [v6 tag];
+  v12 = [knobCopy tag];
   v13 = Height * 0.5;
   v14 = 0.0;
   if (v12 == 11)
   {
-    if (!a4)
+    if (!mode)
     {
       v14 = 0.0 - (v13 / v11 + -1.0);
     }
   }
 
-  else if (!a4)
+  else if (!mode)
   {
     v14 = v13 / v11 + -1.0;
   }
@@ -2597,14 +2597,14 @@ LABEL_42:
   self->_dragAndDropTopicIndentLayer = 0;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v5.receiver = self;
   v5.super_class = CRLWPRep;
   [(CRLCanvasRep *)&v5 processChangedProperty:?];
-  if (a3 != 7 && a3 != 29)
+  if (property != 7 && property != 29)
   {
-    if (a3 != 30)
+    if (property != 30)
     {
       return;
     }
@@ -2634,10 +2634,10 @@ LABEL_42:
   }
 }
 
-- (id)p_hyperlinkAtPoint:(CGPoint)a3
+- (id)p_hyperlinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_opt_class();
   v7 = [(CRLWPRep *)self smartFieldAtPoint:x, y];
   v8 = sub_100014370(v6, v7);
@@ -2645,12 +2645,12 @@ LABEL_42:
   return v8;
 }
 
-- (void)performBlockOnTextLayers:(id)a3
+- (void)performBlockOnTextLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   v5 = 0;
   textLayers = self->_textLayers;
-  v9 = v4;
+  v9 = layersCopy;
   v7 = 1;
   do
   {
@@ -2669,10 +2669,10 @@ LABEL_42:
 
 - (void)setNeedsDisplay
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v4)
+  if (isCanvasInteractive)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -2681,32 +2681,32 @@ LABEL_42:
     v8[4] = self;
     [(CRLWPRep *)self performBlockOnTextLayers:v8];
     v5 = objc_opt_class();
-    v6 = [(CRLCanvasRep *)self parentRep];
-    v7 = sub_100014370(v5, v6);
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    v7 = sub_100014370(v5, parentRep);
 
     [v7 invalidateEffectLayersForChildren];
   }
 }
 
-- (void)setNeedsDisplayInRange:(_NSRange)a3
+- (void)setNeedsDisplayInRange:(_NSRange)range
 {
-  v4 = [CRLWPSelection selectionWithRange:a3.location, a3.length];
+  v4 = [CRLWPSelection selectionWithRange:range.location, range.length];
   [CRLWPRep rectForSelection:"rectForSelection:includeRuby:includePaginatedAttachments:" includeRuby:? includePaginatedAttachments:?];
   [(CRLWPRep *)self setNeedsDisplayInRect:?];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsEmpty(rect))
   {
-    v8 = [(CRLCanvasRep *)self canvas];
-    v9 = [v8 isCanvasInteractive];
+    canvas = [(CRLCanvasRep *)self canvas];
+    isCanvasInteractive = [canvas isCanvasInteractive];
 
-    if (v9)
+    if (isCanvasInteractive)
     {
       [(CRLCanvasRep *)self convertNaturalRectToLayerRelative:x, y, width, height];
       v17[0] = _NSConcreteStackBlock;
@@ -2720,31 +2720,31 @@ LABEL_42:
       v17[8] = v13;
       [(CRLWPRep *)self performBlockOnTextLayers:v17];
       v14 = objc_opt_class();
-      v15 = [(CRLCanvasRep *)self parentRep];
-      v16 = sub_100014370(v14, v15);
+      parentRep = [(CRLCanvasRep *)self parentRep];
+      v16 = sub_100014370(v14, parentRep);
 
       [v16 invalidateEffectLayersForChildren];
     }
   }
 }
 
-- (id)colorBehindLayer:(id)a3
+- (id)colorBehindLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(CRLWPRep *)self backgroundColor];
-  if (!v5)
+  layerCopy = layer;
+  backgroundColor = [(CRLWPRep *)self backgroundColor];
+  if (!backgroundColor)
   {
     v6 = objc_opt_class();
-    v7 = [(CRLCanvasRep *)self parentRep];
-    v8 = sub_100014370(v6, v7);
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    v8 = sub_100014370(v6, parentRep);
 
-    v5 = [v8 colorBehindLayer:v4];
+    backgroundColor = [v8 colorBehindLayer:layerCopy];
   }
 
-  return v5;
+  return backgroundColor;
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -2775,30 +2775,30 @@ LABEL_42:
   [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:1039 isFatal:0 description:"this method should never be called, and WP reps should never get a bitmap allocated"];
 }
 
-- (void)p_drawInContext:(CGContext *)a3 limitSelection:(id)a4 suppressInvisibles:(BOOL)a5
+- (void)p_drawInContext:(CGContext *)context limitSelection:(id)selection suppressInvisibles:(BOOL)invisibles
 {
-  v9 = a4;
-  CGContextSaveGState(a3);
-  LOBYTE(v8) = a5;
-  [(CRLWPRep *)self p_drawTextInLayer:0 context:a3 limitSelection:v9 rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:3, v8];
-  CGContextRestoreGState(a3);
+  selectionCopy = selection;
+  CGContextSaveGState(context);
+  LOBYTE(v8) = invisibles;
+  [(CRLWPRep *)self p_drawTextInLayer:0 context:context limitSelection:selectionCopy rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:3, v8];
+  CGContextRestoreGState(context);
 }
 
-- (void)drawRubyInContext:(CGContext *)a3 rubyFieldStart:(unint64_t)a4 rubyGlyphRange:(_NSRange)a5
+- (void)drawRubyInContext:(CGContext *)context rubyFieldStart:(unint64_t)start rubyGlyphRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = [(CRLWPRep *)self storage];
-  v11 = [v10 smartFieldAtCharIndex:a4 attributeKind:7 effectiveRange:&v15];
+  length = range.length;
+  location = range.location;
+  storage = [(CRLWPRep *)self storage];
+  v11 = [storage smartFieldAtCharIndex:start attributeKind:7 effectiveRange:&v15];
 
   if (v16)
   {
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v12 = [CRLWPSelection alloc];
     v13 = [(CRLWPSelection *)v12 initWithRange:v15, v16];
     LOBYTE(v14) = 0;
-    [(CRLWPRep *)self p_drawTextInLayer:0 context:a3 limitSelection:v13 rubyGlyphRange:location renderMode:length suppressInvisibles:3, v14];
-    CGContextRestoreGState(a3);
+    [(CRLWPRep *)self p_drawTextInLayer:0 context:context limitSelection:v13 rubyGlyphRange:location renderMode:length suppressInvisibles:3, v14];
+    CGContextRestoreGState(context);
   }
 }
 
@@ -2806,8 +2806,8 @@ LABEL_42:
 {
   v53.receiver = self;
   v53.super_class = CRLWPRep;
-  v3 = [(CRLCanvasRep *)&v53 overlayRenderables];
-  v4 = [v3 mutableCopy];
+  overlayRenderables = [(CRLCanvasRep *)&v53 overlayRenderables];
+  v4 = [overlayRenderables mutableCopy];
 
   if (!self->_selectionLineLayers[0])
   {
@@ -2829,18 +2829,18 @@ LABEL_42:
   while ((v7 & 1) != 0);
   if (self->_caretPulseController)
   {
-    v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v10 = [(CRLHighlightController *)self->_caretPulseController layer];
-    [v10 setDelegate:v9];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    layer = [(CRLHighlightController *)self->_caretPulseController layer];
+    [layer setDelegate:interactiveCanvasController];
 
-    v11 = [(CRLHighlightController *)self->_caretPulseController layer];
-    v12 = [CRLCanvasRenderable renderableFromLayer:v11];
+    layer2 = [(CRLHighlightController *)self->_caretPulseController layer];
+    v12 = [CRLCanvasRenderable renderableFromLayer:layer2];
     [v4 addObject:v12];
   }
 
-  v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v14 = [v13 canvas];
-  [v14 contentsScale];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  canvas = [interactiveCanvasController2 canvas];
+  [canvas contentsScale];
   v16 = v15;
 
   if (![(CRLCanvasRep *)self shouldShowDragAndDropHighlight])
@@ -2854,8 +2854,8 @@ LABEL_42:
     goto LABEL_16;
   }
 
-  v17 = [(CRLWPRep *)self dragAndDropHelper];
-  [v17 dragAndDropNaturalPoint];
+  dragAndDropHelper = [(CRLWPRep *)self dragAndDropHelper];
+  [dragAndDropHelper dragAndDropNaturalPoint];
   v18 = sub_1001228B4();
 
   if (v18)
@@ -2864,21 +2864,21 @@ LABEL_42:
     goto LABEL_28;
   }
 
-  v20 = [(CRLWPRep *)self storage];
-  v21 = [(CRLWPRep *)self storageForDragDropOperation];
+  storage = [(CRLWPRep *)self storage];
+  storageForDragDropOperation = [(CRLWPRep *)self storageForDragDropOperation];
 
-  if (v20 == v21)
+  if (storage == storageForDragDropOperation)
   {
-    v22 = [(CRLWPRep *)self dragAndDropHelper];
-    [v22 dragAndDropNaturalPoint];
+    dragAndDropHelper2 = [(CRLWPRep *)self dragAndDropHelper];
+    [dragAndDropHelper2 dragAndDropNaturalPoint];
     [(CRLWPRep *)self selectionForDragAndDropNaturalPoint:?];
   }
 
   else
   {
-    v22 = [(CRLWPRep *)self storage];
-    v23 = [v22 range];
-    [CRLWPSelection selectionWithRange:v23, v24];
+    dragAndDropHelper2 = [(CRLWPRep *)self storage];
+    range = [dragAndDropHelper2 range];
+    [CRLWPSelection selectionWithRange:range, v24];
   }
   WeakRetained = ;
 
@@ -2912,16 +2912,16 @@ LABEL_16:
         [(CAShapeLayer *)v28 setStrokeColor:[(CRLWPRep *)self p_highlightLineColor]];
       }
 
-      v29 = [WeakRetained range];
+      range2 = [WeakRetained range];
       v31 = v30;
-      v32 = [(CRLWPRep *)self columns];
-      v33 = [CRLWPColumn pathForHighlightWithRange:v29 columnArray:v31 pathStyle:v32, 0];
+      columns = [(CRLWPRep *)self columns];
+      v33 = [CRLWPColumn pathForHighlightWithRange:range2 columnArray:v31 pathStyle:columns, 0];
 
-      v34 = [v33 pathByNormalizingClosedPathToRemoveSelfIntersections];
+      pathByNormalizingClosedPathToRemoveSelfIntersections = [v33 pathByNormalizingClosedPathToRemoveSelfIntersections];
 
       [(CRLWPRep *)self transformToConvertNaturalToScaledRoot];
-      [v34 transformUsingAffineTransform:&v52];
-      -[CAShapeLayer setPath:](self->_dragAndDropCaretLayer, "setPath:", [v34 CGPath]);
+      [pathByNormalizingClosedPathToRemoveSelfIntersections transformUsingAffineTransform:&v52];
+      -[CAShapeLayer setPath:](self->_dragAndDropCaretLayer, "setPath:", [pathByNormalizingClosedPathToRemoveSelfIntersections CGPath]);
       v35 = [CRLCanvasRenderable renderableFromLayer:self->_dragAndDropCaretLayer];
       [v4 addObject:v35];
     }
@@ -2948,31 +2948,31 @@ LABEL_16:
       }
 
       [(CRLWPRep *)self p_positionCaretLayer:v37 forSelection:WeakRetained layerRelative:0];
-      v34 = [CRLCanvasRenderable renderableFromLayer:self->_dragAndDropCaretLayer];
-      [v4 addObject:v34];
+      pathByNormalizingClosedPathToRemoveSelfIntersections = [CRLCanvasRenderable renderableFromLayer:self->_dragAndDropCaretLayer];
+      [v4 addObject:pathByNormalizingClosedPathToRemoveSelfIntersections];
     }
   }
 
 LABEL_28:
-  v40 = [(CRLWPRep *)self floatingCaretLayer];
+  floatingCaretLayer = [(CRLWPRep *)self floatingCaretLayer];
 
-  if (v40)
+  if (floatingCaretLayer)
   {
-    v41 = [(CRLWPRep *)self floatingCaretLayer];
-    v42 = [CRLCanvasRenderable renderableFromLayer:v41];
+    floatingCaretLayer2 = [(CRLWPRep *)self floatingCaretLayer];
+    v42 = [CRLCanvasRenderable renderableFromLayer:floatingCaretLayer2];
     [v4 addObject:v42];
   }
 
   pulseArrayController = self->_pulseArrayController;
   if (pulseArrayController)
   {
-    v44 = [(CRLWPHighlightArrayController *)pulseArrayController layers];
-    if ([v44 count])
+    layers = [(CRLWPHighlightArrayController *)pulseArrayController layers];
+    if ([layers count])
     {
-      v45 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v44 makeObjectsPerformSelector:"setDelegate:" withObject:v45];
+      interactiveCanvasController3 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [layers makeObjectsPerformSelector:"setDelegate:" withObject:interactiveCanvasController3];
 
-      v46 = [CRLCanvasRenderable renderablesFromLayers:v44];
+      v46 = [CRLCanvasRenderable renderablesFromLayers:layers];
       [v4 addObjectsFromArray:v46];
     }
   }
@@ -2980,13 +2980,13 @@ LABEL_28:
   highlightArrayController = self->_highlightArrayController;
   if (highlightArrayController)
   {
-    v48 = [(CRLWPHighlightArrayController *)highlightArrayController layers];
-    if ([v48 count])
+    layers2 = [(CRLWPHighlightArrayController *)highlightArrayController layers];
+    if ([layers2 count])
     {
-      v49 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v48 makeObjectsPerformSelector:"setDelegate:" withObject:v49];
+      interactiveCanvasController4 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [layers2 makeObjectsPerformSelector:"setDelegate:" withObject:interactiveCanvasController4];
 
-      v50 = [CRLCanvasRenderable renderablesFromLayers:v48];
+      v50 = [CRLCanvasRenderable renderablesFromLayers:layers2];
       [v4 addObjectsFromArray:v50];
     }
   }
@@ -2994,9 +2994,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
-  v13 = a3;
+  arrayCopy = array;
   caretLayer = self->_caretLayer;
   v5 = caretLayer == 0;
   if (!caretLayer)
@@ -3032,96 +3032,96 @@ LABEL_28:
 
   if (self->_markHighlightLayer)
   {
-    [v13 addObject:?];
+    [arrayCopy addObject:?];
   }
 
   if (self->_selectionHighlightLayer)
   {
-    [v13 addObject:?];
+    [arrayCopy addObject:?];
   }
 
   if (self->_smartFieldHighlightLayer)
   {
-    [v13 addObject:?];
+    [arrayCopy addObject:?];
   }
 
   if (self->_secondaryHighlightLayer)
   {
-    [v13 addObject:?];
+    [arrayCopy addObject:?];
   }
 
-  v8 = [(CRLWPRep *)self textLayer];
+  textLayer = [(CRLWPRep *)self textLayer];
 
-  if (!v8)
+  if (!textLayer)
   {
     [(CRLWPRep *)self p_createLayer:1];
   }
 
-  v9 = [(CRLWPRep *)self textLayer];
+  textLayer2 = [(CRLWPRep *)self textLayer];
 
-  if (v9)
+  if (textLayer2)
   {
-    v10 = [(CRLWPRep *)self textLayer];
-    [v13 addObject:v10];
+    textLayer3 = [(CRLWPRep *)self textLayer];
+    [arrayCopy addObject:textLayer3];
   }
 
   if (self->_selectionParagraphBorderLayer)
   {
-    [v13 addObject:?];
+    [arrayCopy addObject:?];
   }
 
-  [v13 addObject:self->_caretLayer];
+  [arrayCopy addObject:self->_caretLayer];
   if ([(CRLWPRep *)self shouldShowCollaboratorCursorHighlight]&& ![(CRLWPRep *)self shouldAddCollaboratorLayerToOverlays])
   {
-    v11 = [(CRLWPRep *)self collaboratorCursorRenderable];
-    v12 = [v11 layer];
+    collaboratorCursorRenderable = [(CRLWPRep *)self collaboratorCursorRenderable];
+    layer = [collaboratorCursorRenderable layer];
 
-    if (v12)
+    if (layer)
     {
-      [v13 addObject:v12];
+      [arrayCopy addObject:layer];
     }
   }
 }
 
 - (BOOL)shouldShowEditMenu
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  if (![v3 isCanvasInteractive])
+  canvas = [(CRLCanvasRep *)self canvas];
+  if (![canvas isCanvasInteractive])
   {
     goto LABEL_12;
   }
 
-  v4 = [(CRLWPRep *)self isBeingEdited];
+  isBeingEdited = [(CRLWPRep *)self isBeingEdited];
 
-  if (v4)
+  if (isBeingEdited)
   {
-    v3 = [(CRLWPRep *)self textEditor];
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v6 = [v5 textInputResponder];
-    if ([v6 scribbleInProgress])
+    canvas = [(CRLWPRep *)self textEditor];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    textInputResponder = [interactiveCanvasController textInputResponder];
+    if ([textInputResponder scribbleInProgress])
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v9 = [v8 textInputResponder];
-      v7 = [v9 sceneAnimationInProgress] ^ 1;
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      textInputResponder2 = [interactiveCanvasController2 textInputResponder];
+      v7 = [textInputResponder2 sceneAnimationInProgress] ^ 1;
     }
 
-    v10 = [v3 textSelectionDelegate];
-    v11 = [v10 selectedTextRange];
-    v12 = [v11 isInsertionPointRange];
+    textSelectionDelegate = [canvas textSelectionDelegate];
+    selectedTextRange = [textSelectionDelegate selectedTextRange];
+    isInsertionPointRange = [selectedTextRange isInsertionPointRange];
 
-    if (!v12)
+    if (!isInsertionPointRange)
     {
       goto LABEL_13;
     }
 
-    if ([v3 editMenuIsVisible])
+    if ([canvas editMenuIsVisible])
     {
-      [v3 hideEditMenu];
+      [canvas hideEditMenu];
     }
 
     else if (![(CRLWPRep *)self shouldIgnoreFirstRequestToShowEditMenu])
@@ -3151,11 +3151,11 @@ LABEL_12:
   self->_hudStateDirty = 1;
   if ([(CRLWPRep *)self p_isRedesignedTextCursorEnabled])
   {
-    v3 = [(CRLWPRep *)self textEditor];
-    v4 = [v3 textSelectionManager];
-    v5 = [v4 displayingSelectionView];
+    textEditor = [(CRLWPRep *)self textEditor];
+    textSelectionManager = [textEditor textSelectionManager];
+    displayingSelectionView = [textSelectionManager displayingSelectionView];
 
-    if (!v5)
+    if (!displayingSelectionView)
     {
       return;
     }
@@ -3169,45 +3169,45 @@ LABEL_12:
   range1 = [(CRLCanvasRep *)self interactiveCanvasController];
   if (![range1 textGesturesInFlight])
   {
-    v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-    if ([v6 currentlyScrolling])
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    if ([interactiveCanvasController currentlyScrolling])
     {
 
       goto LABEL_10;
     }
 
-    v7 = [(CRLWPRep *)self layout];
-    v8 = [v7 layoutIsValid];
+    layout = [(CRLWPRep *)self layout];
+    layoutIsValid = [layout layoutIsValid];
 
-    if (!v8)
+    if (!layoutIsValid)
     {
       return;
     }
 
-    v9 = [(CRLWPRep *)self layout];
-    v10 = [v9 columns];
+    layout2 = [(CRLWPRep *)self layout];
+    columns = [layout2 columns];
 
-    v11 = [v10 firstObject];
-    v12 = [v10 lastObject];
-    v13 = v12;
-    if (v11 && v12)
+    firstObject = [columns firstObject];
+    lastObject = [columns lastObject];
+    v13 = lastObject;
+    if (firstObject && lastObject)
     {
-      v14 = [v11 range];
+      range = [firstObject range];
       v16 = v15;
       v33.location = [v13 range];
       v33.length = v17;
-      v31.location = v14;
+      v31.location = range;
       v31.length = v16;
       v18 = NSUnionRange(v31, v33);
-      v19 = [(CRLWPRep *)self selection];
-      v20 = [v19 range];
+      selection = [(CRLWPRep *)self selection];
+      range2 = [selection range];
       range1a = v21;
-      v22 = v20;
+      v22 = range2;
 
-      v23 = [(CRLWPRep *)self selection];
-      v24 = [v23 isInsertionPoint];
+      selection2 = [(CRLWPRep *)self selection];
+      isInsertionPoint = [selection2 isInsertionPoint];
 
-      if (v24)
+      if (isInsertionPoint)
       {
         v25 = v22 - v18.location < v18.length && v22 >= v18.location;
         if (v25 || v18.location + v18.length == v22)
@@ -3215,13 +3215,13 @@ LABEL_12:
 LABEL_24:
           if ([(CRLWPRep *)self shouldShowEditMenu])
           {
-            v26 = [(CRLCanvasRep *)self interactiveCanvasController];
+            interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
             v29[0] = _NSConcreteStackBlock;
             v29[1] = 3221225472;
             v29[2] = sub_10046BF10;
             v29[3] = &unk_10183F960;
             v29[4] = self;
-            [v26 performBlockOnMainThreadAfterLayoutIfNecessary:v29];
+            [interactiveCanvasController2 performBlockOnMainThreadAfterLayoutIfNecessary:v29];
 
             self->_hudStateDirty = 0;
           }
@@ -3257,10 +3257,10 @@ LABEL_10:
       [(CRLWPRep *)self range];
       if (v3)
       {
-        v4 = [(CRLWPRep *)self layout];
-        v5 = [v4 isInstructional];
+        layout = [(CRLWPRep *)self layout];
+        isInstructional = [layout isInstructional];
 
-        if ((v5 & 1) == 0)
+        if ((isInstructional & 1) == 0)
         {
           [(CRLWPRep *)self p_createSpellChecker];
         }
@@ -3280,10 +3280,10 @@ LABEL_10:
     self->_selectionChanged = 0;
   }
 
-  v6 = [(CRLWPRep *)self selection];
-  v7 = [v6 isRange];
+  selection = [(CRLWPRep *)self selection];
+  isRange = [selection isRange];
 
-  if (v7)
+  if (isRange)
   {
     [(CRLCanvasRep *)self invalidateKnobPositions];
   }
@@ -3306,8 +3306,8 @@ LABEL_10:
 
   [(CRLWPHighlightArrayController *)highlightArrayController viewScale];
   v10 = v9;
-  v11 = [(CRLCanvasRep *)self canvas];
-  [v11 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   if (v10 != v12)
   {
 
@@ -3337,8 +3337,8 @@ LABEL_18:
 
   [(CRLWPHighlightArrayController *)pulseArrayController viewScale];
   v15 = v14;
-  v16 = [(CRLCanvasRep *)self canvas];
-  [v16 viewScale];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  [canvas2 viewScale];
   if (v15 != v17)
   {
 
@@ -3362,32 +3362,32 @@ LABEL_23:
 
   self->_searchHitsAreInvalid = 0;
   v18 = objc_opt_class();
-  v19 = [(CRLWPRep *)self layout];
-  v20 = sub_100014370(v18, v19);
+  layout2 = [(CRLWPRep *)self layout];
+  v20 = sub_100014370(v18, layout2);
 
-  LODWORD(v19) = [(CRLWPRep *)self hasOverflowed];
-  if (v19 != [v20 isOverflowing])
+  LODWORD(layout2) = [(CRLWPRep *)self hasOverflowed];
+  if (layout2 != [v20 isOverflowing])
   {
     -[CRLWPRep setHasOverflowed:](self, "setHasOverflowed:", [v20 isOverflowing]);
-    v21 = [(CRLCanvasRep *)self canvas];
-    v22 = [v21 canvasController];
-    v23 = [(CRLCanvasRep *)self parentRep];
-    [v22 invalidateOverlayLayersForRep:v23];
+    canvas3 = [(CRLCanvasRep *)self canvas];
+    canvasController = [canvas3 canvasController];
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    [canvasController invalidateOverlayLayersForRep:parentRep];
   }
 }
 
-- (CGRect)p_clipRect:(CGRect)a3
+- (CGRect)p_clipRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [(CRLWPRep *)self columns];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v9 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = *v21;
@@ -3398,7 +3398,7 @@ LABEL_23:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(columns);
         }
 
         [*(*(&v20 + 1) + 8 * v11) erasableBounds:0];
@@ -3419,7 +3419,7 @@ LABEL_23:
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -3446,13 +3446,13 @@ LABEL_23:
   return result;
 }
 
-- (void)didUpdateRenderable:(id)a3
+- (void)didUpdateRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   v40.receiver = self;
   v40.super_class = CRLWPRep;
-  [(CRLCanvasRep *)&v40 didUpdateRenderable:v4];
-  v5 = [v4 layer];
+  [(CRLCanvasRep *)&v40 didUpdateRenderable:renderableCopy];
+  layer = [renderableCopy layer];
   if (!-[CRLCanvasRep isBeingRotated](self, "isBeingRotated") || (-[CRLWPRep layout](self, "layout"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 wantsNormalLayoutDuringDynamicRotation], v6, v7))
   {
     [(CRLWPRep *)self p_clipRect:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
@@ -3460,11 +3460,11 @@ LABEL_23:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(CRLWPRep *)self layout];
-    v17 = v16;
-    if (v16)
+    layout = [(CRLWPRep *)self layout];
+    v17 = layout;
+    if (layout)
     {
-      [v16 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -3478,12 +3478,12 @@ LABEL_23:
     v42.size.height = v15;
     CGRectApplyAffineTransform(v42, &v39);
 
-    v18 = [(CRLWPRep *)self layout];
-    [v18 frameInRoot];
+    layout2 = [(CRLWPRep *)self layout];
+    [layout2 frameInRoot];
 
-    v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v41 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v19, v20);
-    [v19 convertUnscaledToBoundsRect:v41.recordType._object];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    v41 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(interactiveCanvasController, v20);
+    [interactiveCanvasController convertUnscaledToBoundsRect:v41.recordType._object];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -3508,14 +3508,14 @@ LABEL_23:
       v36 = y;
       v37 = width;
       v38 = height;
-      v34 = v5;
+      v34 = layer;
       [(CRLWPRep *)self performBlockOnTextLayers:v33];
     }
   }
 
-  if ([v5 edgeAntialiasingMask])
+  if ([layer edgeAntialiasingMask])
   {
-    [v5 setEdgeAntialiasingMask:0];
+    [layer setEdgeAntialiasingMask:0];
   }
 
   [(CRLWPRep *)self p_updateForCurrentSelectionWithFlags:0];
@@ -3531,8 +3531,8 @@ LABEL_23:
   width = v7;
   height = v9;
   v11 = objc_opt_class();
-  v12 = [(CRLWPRep *)self layout];
-  v13 = sub_100014370(v11, v12);
+  layout = [(CRLWPRep *)self layout];
+  v13 = sub_100014370(v11, layout);
 
   if (v13)
   {
@@ -3570,9 +3570,9 @@ LABEL_23:
   v10.receiver = self;
   v10.super_class = CRLWPRep;
   [(CRLCanvasRep *)&v10 screenScaleDidChange];
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 canvas];
-  [v4 contentsScale];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  canvas = [interactiveCanvasController canvas];
+  [canvas contentsScale];
   v6 = v5;
 
   v9[0] = _NSConcreteStackBlock;
@@ -3594,12 +3594,12 @@ LABEL_23:
   }
 }
 
-- (CGRect)newTextLayerUnscaledBounds:(CGRect)a3 forNewTextBounds:(CGRect)a4
+- (CGRect)newTextLayerUnscaledBounds:(CGRect)bounds forNewTextBounds:(CGRect)textBounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = textBounds.size.height;
+  width = textBounds.size.width;
+  y = textBounds.origin.y;
+  x = textBounds.origin.x;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -3609,42 +3609,42 @@ LABEL_23:
 
 - (void)beginEditing
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 selectionModelTranslator];
-  v5 = [(CRLWPRep *)self storage];
-  v6 = [_TtC8Freeform12CRLTextRange textRangeForEndOf:v5];
-  v7 = [v6 nsRange];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  storage = [(CRLWPRep *)self storage];
+  v6 = [_TtC8Freeform12CRLTextRange textRangeForEndOf:storage];
+  nsRange = [v6 nsRange];
   v9 = v8;
-  v10 = [(CRLWPRep *)self storage];
-  v12 = [v4 selectionPathForRange:v7 onStorage:{v9, v10}];
+  storage2 = [(CRLWPRep *)self storage];
+  v12 = [selectionModelTranslator selectionPathForRange:nsRange onStorage:{v9, storage2}];
 
-  v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v11 setSelectionPath:v12 withSelectionFlags:4];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController2 setSelectionPath:v12 withSelectionFlags:4];
 
   [(CRLWPRep *)self p_updateCaretLayerColor];
 }
 
-- (void)didBeginEditingWithTextEditor:(id)a3
+- (void)didBeginEditingWithTextEditor:(id)editor
 {
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasRep *)self parentRep];
-  v13 = sub_100014370(v4, v5);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v13 = sub_100014370(v4, parentRep);
 
   v6 = v13;
   if (v13)
   {
-    v7 = [v13 shapeLayout];
-    v8 = [v7 fill];
-    v9 = [v8 isOpaque];
+    shapeLayout = [v13 shapeLayout];
+    fill = [shapeLayout fill];
+    isOpaque = [fill isOpaque];
 
     v6 = v13;
-    if ((v9 & 1) == 0)
+    if ((isOpaque & 1) == 0)
     {
-      v10 = [v13 shadow];
-      v11 = v10;
-      if (v10)
+      shadow = [v13 shadow];
+      v11 = shadow;
+      if (shadow)
       {
-        v12 = [v10 showForEditingText] ^ 1;
+        v12 = [shadow showForEditingText] ^ 1;
       }
 
       else
@@ -3659,23 +3659,23 @@ LABEL_23:
   }
 }
 
-- (BOOL)canEditWithEditor:(id)a3
+- (BOOL)canEditWithEditor:(id)editor
 {
-  v4 = a3;
+  editorCopy = editor;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, editorCopy);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 storage];
-    v9 = [(CRLWPRep *)self storage];
-    if (v8 == v9)
+    storage = [v6 storage];
+    storage2 = [(CRLWPRep *)self storage];
+    if (storage == storage2)
     {
-      v11 = [(CRLWPRep *)self layout];
-      if ([v11 isInTopLevelContainerForEditing])
+      layout = [(CRLWPRep *)self layout];
+      if ([layout isInTopLevelContainerForEditing])
       {
-        v12 = [(CRLCanvasRep *)self parentRep];
-        v10 = [v12 isLocked] ^ 1;
+        parentRep = [(CRLCanvasRep *)self parentRep];
+        v10 = [parentRep isLocked] ^ 1;
       }
 
       else
@@ -3698,25 +3698,25 @@ LABEL_23:
   return v10;
 }
 
-- (id)smartFieldAtPoint:(CGPoint)a3
+- (id)smartFieldAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPRep *)self layout];
-  if (![v6 layoutIsValid])
+  y = point.y;
+  x = point.x;
+  layout = [(CRLWPRep *)self layout];
+  if (![layout layoutIsValid])
   {
     v10 = 0;
     goto LABEL_5;
   }
 
-  v7 = [(CRLWPRep *)self storage];
-  v8 = [v7 hasSmartFields];
+  storage = [(CRLWPRep *)self storage];
+  hasSmartFields = [storage hasSmartFields];
 
-  if (v8)
+  if (hasSmartFields)
   {
-    v6 = [(CRLWPRep *)self layout];
-    v9 = [v6 columns];
-    v10 = [CRLWPColumn smartFieldWithAttributeKind:6 inColumnArray:v9 atPoint:x, y];
+    layout = [(CRLWPRep *)self layout];
+    columns = [layout columns];
+    v10 = [CRLWPColumn smartFieldWithAttributeKind:6 inColumnArray:columns atPoint:x, y];
 
 LABEL_5:
     goto LABEL_7;
@@ -3734,8 +3734,8 @@ LABEL_7:
   {
     location = self->_secondaryHighlightRange.location;
     length = self->_secondaryHighlightRange.length;
-    v5 = [(CRLWPRep *)self columns];
-    v6 = [CRLWPColumn pathForHighlightWithRange:location columnArray:length pathStyle:v5, self->_secondaryHighlightPathStyle];
+    columns = [(CRLWPRep *)self columns];
+    v6 = [CRLWPColumn pathForHighlightWithRange:location columnArray:length pathStyle:columns, self->_secondaryHighlightPathStyle];
 
     [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
     [v6 transformUsingAffineTransform:&v7];
@@ -3743,15 +3743,15 @@ LABEL_7:
   }
 }
 
-- (void)setSecondaryHighlightRange:(_NSRange)a3 color:(CGColor *)a4 pathStyle:(int)a5
+- (void)setSecondaryHighlightRange:(_NSRange)range color:(CGColor *)color pathStyle:(int)style
 {
   p_secondaryHighlightRange = &self->_secondaryHighlightRange;
-  if (a3.location != self->_secondaryHighlightRange.location || a3.length != self->_secondaryHighlightRange.length)
+  if (range.location != self->_secondaryHighlightRange.location || range.length != self->_secondaryHighlightRange.length)
   {
-    length = a3.length;
-    if (a3.length)
+    length = range.length;
+    if (range.length)
     {
-      location = a3.location;
+      location = range.location;
       secondaryHighlightLayer = self->_secondaryHighlightLayer;
       if (!secondaryHighlightLayer)
       {
@@ -3764,88 +3764,88 @@ LABEL_7:
         secondaryHighlightLayer = self->_secondaryHighlightLayer;
       }
 
-      [(CAShapeLayer *)secondaryHighlightLayer setFillColor:a4];
+      [(CAShapeLayer *)secondaryHighlightLayer setFillColor:color];
       p_secondaryHighlightRange->location = location;
       p_secondaryHighlightRange->length = length;
-      self->_secondaryHighlightPathStyle = a5;
+      self->_secondaryHighlightPathStyle = style;
     }
 
     else
     {
       p_secondaryHighlightRange->location = 0;
       self->_secondaryHighlightRange.length = 0;
-      [(CAShapeLayer *)self->_secondaryHighlightLayer setDelegate:0, 0, a4, *&a5];
+      [(CAShapeLayer *)self->_secondaryHighlightLayer setDelegate:0, 0, color, *&style];
       [(CAShapeLayer *)self->_secondaryHighlightLayer removeFromSuperlayer];
       v15 = self->_secondaryHighlightLayer;
       self->_secondaryHighlightLayer = 0;
     }
 
-    v16 = [(CRLWPRep *)self layout];
-    [v16 invalidate];
+    layout = [(CRLWPRep *)self layout];
+    [layout invalidate];
   }
 }
 
-- (void)setHighlightedHyperlinkField:(id)a3
+- (void)setHighlightedHyperlinkField:(id)field
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  fieldCopy = field;
+  v9 = fieldCopy;
+  if (fieldCopy)
   {
-    v5 = [v4 range];
+    range = [fieldCopy range];
     v7 = v6;
   }
 
   else
   {
-    v5 = 0;
+    range = 0;
     v7 = 0;
   }
 
   v8 = [CRLColor colorWithWhite:0.300000012 alpha:0.469999999];
-  -[CRLWPRep setSecondaryHighlightRange:color:pathStyle:](self, "setSecondaryHighlightRange:color:pathStyle:", v5, v7, [v8 CGColor], 2);
+  -[CRLWPRep setSecondaryHighlightRange:color:pathStyle:](self, "setSecondaryHighlightRange:color:pathStyle:", range, v7, [v8 CGColor], 2);
 }
 
-- (id)closestColumnForPoint:(CGPoint)a3
+- (id)closestColumnForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLWPRep *)self layout];
-  v6 = [v5 columns];
-  v7 = [CRLWPColumn closestColumnInColumnsArray:v6 forPoint:1 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:x, y];
+  y = point.y;
+  x = point.x;
+  layout = [(CRLWPRep *)self layout];
+  columns = [layout columns];
+  v7 = [CRLWPColumn closestColumnInColumnsArray:columns forPoint:1 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:x, y];
 
   return v7;
 }
 
-- (id)columnForCharIndex:(unint64_t)a3
+- (id)columnForCharIndex:(unint64_t)index
 {
-  v5 = [(CRLWPRep *)self storage];
-  v6 = [v5 range];
+  storage = [(CRLWPRep *)self storage];
+  range = [storage range];
   v8 = v7;
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(CRLWPRep *)self layout];
-  v10 = [v9 columns];
+  layout = [(CRLWPRep *)self layout];
+  columns = [layout columns];
 
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v11 = [columns countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = *v23;
-    v13 = &v6[v8];
+    v13 = &range[v8];
     while (2)
     {
       for (i = 0; i != v11; i = i + 1)
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(columns);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 range];
-        if ((a3 < v16 || a3 - v16 >= v17) && (&v16[v17] != a3 || v13 != a3))
+        range2 = [v15 range];
+        if ((index < range2 || index - range2 >= v17) && (&range2[v17] != index || v13 != index))
         {
           continue;
         }
@@ -3854,7 +3854,7 @@ LABEL_7:
         goto LABEL_20;
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [columns countByEnumeratingWithState:&v22 objects:v26 count:16];
       v20 = 0;
       if (v11)
       {
@@ -3877,25 +3877,25 @@ LABEL_20:
 
 - (BOOL)isBeingEdited
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (!v4)
+  if (!isCanvasInteractive)
   {
     return 0;
   }
 
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v7 = [v6 editorController];
-  v8 = [v7 textInputEditor];
-  v9 = sub_100014370(v5, v8);
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  textInputEditor = [editorController textInputEditor];
+  v9 = sub_100014370(v5, textInputEditor);
 
   if (v9)
   {
-    v10 = [v9 storage];
-    v11 = [(CRLWPRep *)self storage];
-    v12 = v10 == v11;
+    storage = [v9 storage];
+    storage2 = [(CRLWPRep *)self storage];
+    v12 = storage == storage2;
   }
 
   else
@@ -3913,16 +3913,16 @@ LABEL_20:
     return 1;
   }
 
-  v4 = [(CRLWPRep *)self dropSelection];
-  v3 = [v4 isValid];
+  dropSelection = [(CRLWPRep *)self dropSelection];
+  isValid = [dropSelection isValid];
 
-  return v3;
+  return isValid;
 }
 
 - (CGSize)hitTestingSlop
 {
-  v2 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v2 convertBoundsToUnscaledSize:{20.0, 2.0}];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController convertBoundsToUnscaledSize:{20.0, 2.0}];
   v4 = v3;
   v6 = v5;
 
@@ -3938,10 +3938,10 @@ LABEL_20:
   if ([(CRLWPRep *)self isBeingEdited])
   {
     v3 = objc_opt_class();
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v5 = [v4 editorController];
-    v6 = [v5 textInputEditor];
-    v7 = sub_100014370(v3, v6);
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    textInputEditor = [editorController textInputEditor];
+    v7 = sub_100014370(v3, textInputEditor);
   }
 
   else
@@ -3977,10 +3977,10 @@ LABEL_20:
   [(CRLWPRep *)self p_showCollaboratorCursorLayer];
 }
 
-- (void)gesturesDidEnd:(id)a3
+- (void)gesturesDidEnd:(id)end
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CRLTextGesturesTerminated"];
+  userInfo = [end userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CRLTextGesturesTerminated"];
   v12 = sub_1003035DC(v5, 1, v6, v7, v8, v9, v10, v11, &OBJC_PROTOCOL___CRLGesture);
 
   if ([v12 inputType])
@@ -3989,18 +3989,18 @@ LABEL_20:
   }
 }
 
-- (void)p_addDropAnimationToFloatingCursorWithEndingRep:(id)a3
+- (void)p_addDropAnimationToFloatingCursorWithEndingRep:(id)rep
 {
-  v4 = a3;
-  v5 = [(CRLWPRep *)self floatingCaretLayer];
-  [v5 position];
+  repCopy = rep;
+  floatingCaretLayer = [(CRLWPRep *)self floatingCaretLayer];
+  [floatingCaretLayer position];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CRLWPRep *)self selection];
-  v11 = [v10 start];
-  v12 = [(CRLWPRep *)self selection];
-  [v4 caretRectForCharIndex:v11 caretAffinity:{objc_msgSend(v12, "caretAffinity")}];
+  selection = [(CRLWPRep *)self selection];
+  start = [selection start];
+  selection2 = [(CRLWPRep *)self selection];
+  [repCopy caretRectForCharIndex:start caretAffinity:{objc_msgSend(selection2, "caretAffinity")}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -4012,7 +4012,7 @@ LABEL_20:
   v43.size.height = v20;
   if (!CGRectIsNull(v43))
   {
-    [v4 convertNaturalRectToUnscaledCanvas:{v14, v16, v18, v20}];
+    [repCopy convertNaturalRectToUnscaledCanvas:{v14, v16, v18, v20}];
     [(CRLCanvasRep *)self convertNaturalRectFromUnscaledCanvas:?];
     v22 = v21;
     v24 = v23;
@@ -4039,18 +4039,18 @@ LABEL_20:
     [v35 setDelegate:self];
     v36 = [NSValue valueWithCGPoint:v7, v9];
     v42[0] = v36;
-    v37 = [NSValue valueWithCGPoint:MidX, MidY];
-    v42[1] = v37;
+    midY = [NSValue valueWithCGPoint:MidX, MidY];
+    v42[1] = midY;
     v38 = [NSArray arrayWithObjects:v42 count:2];
     [v35 setValues:v38];
 
     [v35 setRemovedOnCompletion:0];
     [v35 setDuration:0.25];
-    v39 = [(CRLWPRep *)self floatingCaretLayer];
-    [v39 addAnimation:v35 forKey:@"dropAnimation"];
+    floatingCaretLayer2 = [(CRLWPRep *)self floatingCaretLayer];
+    [floatingCaretLayer2 addAnimation:v35 forKey:@"dropAnimation"];
 
-    v40 = [(CRLWPRep *)self floatingCaretLayer];
-    [v40 setPosition:{MidX, MidY}];
+    floatingCaretLayer3 = [(CRLWPRep *)self floatingCaretLayer];
+    [floatingCaretLayer3 setPosition:{MidX, MidY}];
 
     +[CATransaction commit];
   }
@@ -4058,18 +4058,18 @@ LABEL_20:
 
 - (BOOL)ghostCaretAppearance
 {
-  v2 = [(CRLWPRep *)self overrideCaretColor];
-  v3 = v2 != 0;
+  overrideCaretColor = [(CRLWPRep *)self overrideCaretColor];
+  v3 = overrideCaretColor != 0;
 
   return v3;
 }
 
-- (void)setGhostCaretAppearance:(BOOL)a3
+- (void)setGhostCaretAppearance:(BOOL)appearance
 {
-  if (a3)
+  if (appearance)
   {
-    v4 = [(CRLWPRepHelper *)self->_repHelper colorForGhostCaret];
-    [(CRLWPRep *)self setOverrideCaretColor:v4];
+    colorForGhostCaret = [(CRLWPRepHelper *)self->_repHelper colorForGhostCaret];
+    [(CRLWPRep *)self setOverrideCaretColor:colorForGhostCaret];
   }
 
   else
@@ -4106,66 +4106,66 @@ LABEL_20:
   [(CRLWPRep *)self enableCaretAnimation];
 }
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3 animate:(BOOL)a4
+- (void)beginFloatingCursorAtPoint:(CGPoint)point animate:(BOOL)animate
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  animateCopy = animate;
+  y = point.y;
+  x = point.x;
   v8 = [CRLColor colorWithRed:0.26 green:0.42 blue:0.95 alpha:1.0];
-  v9 = [v8 CGColor];
+  cGColor = [v8 CGColor];
 
   v10 = [(CRLWPRep *)self p_caretLayerWithZPosition:1.0];
   [(CRLWPRep *)self setFloatingCaretLayer:v10];
 
-  v11 = [(CRLWPRep *)self floatingCaretLayer];
-  [v11 setBackgroundColor:v9];
+  floatingCaretLayer = [(CRLWPRep *)self floatingCaretLayer];
+  [floatingCaretLayer setBackgroundColor:cGColor];
 
-  v12 = [(CRLWPRep *)self floatingCaretLayer];
-  [(CRLWPRep *)self p_positionAndSizeFloatingCaret:v12 atPoint:x, y];
+  floatingCaretLayer2 = [(CRLWPRep *)self floatingCaretLayer];
+  [(CRLWPRep *)self p_positionAndSizeFloatingCaret:floatingCaretLayer2 atPoint:x, y];
 
   repHelper = self->_repHelper;
-  v14 = [(CRLWPRep *)self floatingCaretLayer];
-  [(CRLWPRepHelper *)repHelper cornerRadiusForFloatingCaret:v14];
+  floatingCaretLayer3 = [(CRLWPRep *)self floatingCaretLayer];
+  [(CRLWPRepHelper *)repHelper cornerRadiusForFloatingCaret:floatingCaretLayer3];
   v16 = v15;
-  v17 = [(CRLWPRep *)self floatingCaretLayer];
-  [v17 setCornerRadius:v16];
+  floatingCaretLayer4 = [(CRLWPRep *)self floatingCaretLayer];
+  [floatingCaretLayer4 setCornerRadius:v16];
 
   [(CRLWPRep *)self updateCaretColorForFloatingCursorInFlight];
-  v18 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v18 invalidateOverlayLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateOverlayLayersForRep:self];
 
-  if (v4)
+  if (animateCopy)
   {
 
     [(CRLWPRep *)self p_addLiftAnimationToFloatingCursor];
   }
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3
+- (void)updateFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPRep *)self floatingCaretLayer];
+  y = point.y;
+  x = point.x;
+  floatingCaretLayer = [(CRLWPRep *)self floatingCaretLayer];
   [(CRLWPRep *)self p_positionAndSizeFloatingCaret:x atPoint:y];
 }
 
-- (void)endFloatingCursorWithRepForAnimation:(id)a3
+- (void)endFloatingCursorWithRepForAnimation:(id)animation
 {
-  v8 = a3;
-  v4 = [(CRLWPRep *)self floatingCaretLayer];
+  animationCopy = animation;
+  floatingCaretLayer = [(CRLWPRep *)self floatingCaretLayer];
 
-  if (v4)
+  if (floatingCaretLayer)
   {
     [(CRLWPRep *)self updateCaretColorForFinishedFloatingCursor];
-    if (v8 && (-[CRLWPRep selection](self, "selection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isInsertionPoint], v5, v6))
+    if (animationCopy && (-[CRLWPRep selection](self, "selection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isInsertionPoint], v5, v6))
     {
-      [(CRLWPRep *)self p_addDropAnimationToFloatingCursorWithEndingRep:v8];
+      [(CRLWPRep *)self p_addDropAnimationToFloatingCursorWithEndingRep:animationCopy];
     }
 
     else
     {
-      v7 = [(CRLWPRep *)self floatingCaretLayer];
-      [v7 removeFromSuperlayer];
+      floatingCaretLayer2 = [(CRLWPRep *)self floatingCaretLayer];
+      [floatingCaretLayer2 removeFromSuperlayer];
 
       [(CRLWPRep *)self setFloatingCaretLayer:0];
     }
@@ -4197,11 +4197,11 @@ LABEL_20:
   self->_caretPulseController = v10;
 
   [(CRLPulseAnimationController *)self->_caretPulseController setAutohide:1];
-  v12 = [(CRLWPRep *)self layout];
-  v13 = v12;
-  if (v12)
+  layout = [(CRLWPRep *)self layout];
+  v13 = layout;
+  if (layout)
   {
-    [v12 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -4217,92 +4217,92 @@ LABEL_20:
   v21[2] = v24;
   [(CRLHighlightController *)v14 setTransform:v21];
 
-  v15 = [(CRLCanvasRep *)self canvas];
-  [v15 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   [(CRLHighlightController *)self->_caretPulseController setViewScale:?];
 
   [(CRLPulseAnimationController *)self->_caretPulseController setDuration:0.05];
   [(CRLPulseAnimationController *)self->_caretPulseController setPulseOffset:4.0];
   v16 = self->_caretPulseController;
-  v17 = [(CRLCanvasRep *)self canvas];
-  [v17 contentsScale];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  [canvas2 contentsScale];
   [(CRLHighlightController *)v16 createLayerWithZOrder:8.0 contentsScaleForLayers:v18];
 
   [(CRLHighlightController *)self->_caretPulseController buildLayersForPath:Mutable withImage:v9];
   [(CRLPulseAnimationController *)self->_caretPulseController startAnimating];
   CGPathRelease(Mutable);
-  v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v19 canvasInvalidatedForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController canvasInvalidatedForRep:self];
 }
 
-- (BOOL)containsStartOfSelection:(id)a3
+- (BOOL)containsStartOfSelection:(id)selection
 {
-  v4 = a3;
-  if ([v4 isInsertionPoint])
+  selectionCopy = selection;
+  if ([selectionCopy isInsertionPoint])
   {
-    v5 = [v4 start];
-    v6 = [(CRLWPRep *)self range];
-    if (v5 == v6)
+    start = [selectionCopy start];
+    range = [(CRLWPRep *)self range];
+    if (start == range)
     {
-      v8 = [v4 caretAffinity] == 0;
+      isOverflowing = [selectionCopy caretAffinity] == 0;
       goto LABEL_20;
     }
 
-    v13 = &v6[v7];
-    if (v6 < v5 && v5 < v13 || v5 == v13 && ([v4 caretAffinity] == 1 || (-[CRLWPRep storage](self, "storage"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v5 == v15)))
+    v13 = &range[v7];
+    if (range < start && start < v13 || start == v13 && ([selectionCopy caretAffinity] == 1 || (-[CRLWPRep storage](self, "storage"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, start == v15)))
     {
-      v8 = 1;
+      isOverflowing = 1;
       goto LABEL_20;
     }
 
-    if (v13 < v5)
+    if (v13 < start)
     {
-      v8 = [(CRLWPRep *)self isOverflowing];
+      isOverflowing = [(CRLWPRep *)self isOverflowing];
       goto LABEL_20;
     }
 
 LABEL_19:
-    v8 = 0;
+    isOverflowing = 0;
     goto LABEL_20;
   }
 
-  if (![v4 isRange])
+  if (![selectionCopy isRange])
   {
     goto LABEL_19;
   }
 
-  v9 = [v4 start];
-  v10 = [(CRLWPRep *)self range];
-  v8 = v9 >= v10 && v9 - v10 < v11;
+  start2 = [selectionCopy start];
+  range2 = [(CRLWPRep *)self range];
+  isOverflowing = start2 >= range2 && start2 - range2 < v11;
 LABEL_20:
 
-  return v8;
+  return isOverflowing;
 }
 
-- (BOOL)p_doesRep:(id)a3 containCharIndex:(unint64_t)a4 isStart:(BOOL)a5
+- (BOOL)p_doesRep:(id)rep containCharIndex:(unint64_t)index isStart:(BOOL)start
 {
-  v5 = a5;
-  v7 = [a3 range];
-  if (v5 && v7 <= a4)
+  startCopy = start;
+  range = [rep range];
+  if (startCopy && range <= index)
   {
-    return v7 + v8 > a4;
+    return range + v8 > index;
   }
 
-  v10 = v7 + v8 >= a4;
-  if (v7 >= a4)
+  v10 = range + v8 >= index;
+  if (range >= index)
   {
     v10 = 0;
   }
 
-  return !v5 && v10;
+  return !startCopy && v10;
 }
 
-- (id)repForCharIndex:(unint64_t)a3 isStart:(BOOL)a4
+- (id)repForCharIndex:(unint64_t)index isStart:(BOOL)start
 {
-  v4 = a4;
-  if ([(CRLWPRep *)self p_doesRep:self containCharIndex:a3 isStart:a4])
+  startCopy = start;
+  if ([(CRLWPRep *)self p_doesRep:self containCharIndex:index isStart:start])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -4311,8 +4311,8 @@ LABEL_20:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(CRLWPRep *)self siblings];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    siblings = [(CRLWPRep *)self siblings];
+    v9 = [siblings countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -4322,19 +4322,19 @@ LABEL_20:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(siblings);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
-          if ([(CRLWPRep *)self p_doesRep:v12 containCharIndex:a3 isStart:v4])
+          if ([(CRLWPRep *)self p_doesRep:v12 containCharIndex:index isStart:startCopy])
           {
-            v7 = v12;
+            selfCopy = v12;
 
             goto LABEL_13;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [siblings countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           continue;
@@ -4344,30 +4344,30 @@ LABEL_20:
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)siblings
 {
   v3 = +[NSMutableSet set];
-  v4 = [(CRLWPRep *)self storage];
-  v5 = [v4 wpKind];
+  storage = [(CRLWPRep *)self storage];
+  wpKind = [storage wpKind];
 
-  if (!v5)
+  if (!wpKind)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(CRLCanvasRep *)self parentRep];
-    v7 = [v6 childReps];
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    childReps = [parentRep childReps];
 
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v8 = [childReps countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = *v19;
@@ -4377,7 +4377,7 @@ LABEL_13:
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(childReps);
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
@@ -4385,9 +4385,9 @@ LABEL_13:
           {
             v12 = objc_opt_class();
             v13 = sub_100014370(v12, v11);
-            v14 = [v13 storage];
-            v15 = [(CRLWPRep *)self storage];
-            v16 = v14 == v15;
+            storage2 = [v13 storage];
+            storage3 = [(CRLWPRep *)self storage];
+            v16 = storage2 == storage3;
 
             if (v16)
             {
@@ -4396,7 +4396,7 @@ LABEL_13:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [childReps countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
@@ -4410,55 +4410,55 @@ LABEL_13:
 {
   if ([(CRLWPRep *)self isBeingEdited])
   {
-    v3 = 0;
+    repForDragging = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CRLWPRep;
-    v3 = [(CRLCanvasRep *)&v5 repForDragging];
+    repForDragging = [(CRLCanvasRep *)&v5 repForDragging];
   }
 
-  return v3;
+  return repForDragging;
 }
 
-- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)a3 withTouchType:(int64_t)a4
+- (BOOL)shouldPreventMarqueeInitiationAtPoint:(CGPoint)point withTouchType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v9 = [v8 layerHost];
-  v10 = [v9 asiOSCVC];
-  v11 = [v10 isCurrentlyInQuickSelectMode];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  isCurrentlyInQuickSelectMode = [asiOSCVC isCurrentlyInQuickSelectMode];
 
-  if (v11)
+  if (isCurrentlyInQuickSelectMode)
   {
     v15.receiver = self;
     v15.super_class = CRLWPRep;
-    return [(CRLCanvasRep *)&v15 shouldPreventMarqueeInitiationAtPoint:a4 withTouchType:x, y];
+    return [(CRLCanvasRep *)&v15 shouldPreventMarqueeInitiationAtPoint:type withTouchType:x, y];
   }
 
   else
   {
-    v13 = [(CRLWPRep *)self storage];
-    if ([v13 wpKind])
+    storage = [(CRLWPRep *)self storage];
+    if ([storage wpKind])
     {
-      v12 = [(CRLWPRep *)self isBeingEdited];
+      isBeingEdited = [(CRLWPRep *)self isBeingEdited];
     }
 
     else
     {
-      v12 = 1;
+      isBeingEdited = 1;
     }
   }
 
-  return v12;
+  return isBeingEdited;
 }
 
 - (id)hyperlinkContainerRep
 {
-  v3 = [(CRLCanvasRep *)self parentRep];
+  parentRep = [(CRLCanvasRep *)self parentRep];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4466,36 +4466,36 @@ LABEL_13:
   {
     v7.receiver = self;
     v7.super_class = CRLWPRep;
-    v5 = [(CRLCanvasRep *)&v7 repForSelecting];
+    repForSelecting = [(CRLCanvasRep *)&v7 repForSelecting];
   }
 
   else
   {
-    v5 = 0;
+    repForSelecting = 0;
   }
 
-  return v5;
+  return repForSelecting;
 }
 
-- (BOOL)wantsContextMenuWhenEditingDisabledAtPoint:(CGPoint)a3
+- (BOOL)wantsContextMenuWhenEditingDisabledAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = objc_opt_class();
-  v7 = [(CRLCanvasRep *)self parentRep];
-  v8 = sub_100014370(v6, v7);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v8 = sub_100014370(v6, parentRep);
 
-  LOBYTE(v7) = [v8 wantsContextMenuWhenEditingDisabledAtPoint:{x, y}];
-  return v7;
+  LOBYTE(parentRep) = [v8 wantsContextMenuWhenEditingDisabledAtPoint:{x, y}];
+  return parentRep;
 }
 
 - (CRLWPLayoutTarget)layout
 {
   v11.receiver = self;
   v11.super_class = CRLWPRep;
-  v2 = [(CRLCanvasRep *)&v11 layout];
+  layout = [(CRLCanvasRep *)&v11 layout];
   v3 = objc_opt_class();
-  v9 = sub_100303920(v2, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLWPLayoutTarget);
+  v9 = sub_100303920(layout, v3, 1, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLWPLayoutTarget);
 
   return v9;
 }
@@ -4503,8 +4503,8 @@ LABEL_13:
 - (_TtC8Freeform12CRLWPStorage)storage
 {
   v3 = objc_opt_class();
-  v4 = [(CRLWPRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLWPRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
   v6 = objc_opt_class();
   if (v5)
@@ -4524,59 +4524,59 @@ LABEL_13:
 
 - (NSArray)columns
 {
-  v2 = [(CRLWPRep *)self layout];
-  v3 = [v2 columns];
+  layout = [(CRLWPRep *)self layout];
+  columns = [layout columns];
 
-  return v3;
+  return columns;
 }
 
 - (CRLWPSelection)selection
 {
-  v2 = [(CRLWPRep *)self textEditor];
-  v3 = v2;
-  if (v2)
+  textEditor = [(CRLWPRep *)self textEditor];
+  v3 = textEditor;
+  if (textEditor)
   {
-    v4 = [v2 selection];
+    selection = [textEditor selection];
   }
 
   else
   {
-    v4 = 0;
+    selection = 0;
   }
 
-  return v4;
+  return selection;
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
-  v25 = a3;
-  v4 = [(CRLWPRep *)self layout];
-  v5 = [v4 layoutIsValid];
+  arrayCopy = array;
+  layout = [(CRLWPRep *)self layout];
+  layoutIsValid = [layout layoutIsValid];
 
-  if (v5 && [(CRLWPRep *)self shouldCreateTextKnobs])
+  if (layoutIsValid && [(CRLWPRep *)self shouldCreateTextKnobs])
   {
-    v24 = [(CRLWPRep *)self textEditor];
-    v6 = [v24 wantsParagraphMode];
-    v7 = [v24 knobTracking];
-    v23 = [(CRLWPRep *)self selection];
-    if ([v23 headCharIndex] == 0x7FFFFFFFFFFFFFFFLL)
+    textEditor = [(CRLWPRep *)self textEditor];
+    wantsParagraphMode = [textEditor wantsParagraphMode];
+    knobTracking = [textEditor knobTracking];
+    selection = [(CRLWPRep *)self selection];
+    if ([selection headCharIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v26 = [v23 start];
+      start = [selection start];
     }
 
     else
     {
-      v26 = [v23 headCharIndex];
+      start = [selection headCharIndex];
     }
 
-    v8 = [v23 tailCharIndex];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    tailCharIndex = [selection tailCharIndex];
+    if (tailCharIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [v23 end];
-      if (v8)
+      tailCharIndex = [selection end];
+      if (tailCharIndex)
       {
-        v9 = [(CRLWPRep *)self storage];
-        v8 = sub_10027EB4C(v8, v9);
+        storage = [(CRLWPRep *)self storage];
+        tailCharIndex = sub_10027EB4C(tailCharIndex, storage);
       }
     }
 
@@ -4584,25 +4584,25 @@ LABEL_13:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [(CRLWPRep *)self columns];
-    v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    columns = [(CRLWPRep *)self columns];
+    v11 = [columns countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v11)
     {
       v12 = *v28;
-      v13 = (v24 != 0) & v6 & v7;
-      v14 = v10;
+      v13 = (textEditor != 0) & wantsParagraphMode & knobTracking;
+      v14 = columns;
       do
       {
         for (i = 0; i != v11; i = i + 1)
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(columns);
           }
 
           v16 = *(*(&v27 + 1) + 8 * i);
-          v17 = [(CRLWPRep *)self selection];
-          if (![v16 lineFragmentForCharIndex:v26 knobTag:11 selectionType:{objc_msgSend(v17, "type")}])
+          selection2 = [(CRLWPRep *)self selection];
+          if (![v16 lineFragmentForCharIndex:start knobTag:11 selectionType:{objc_msgSend(selection2, "type")}])
           {
             goto LABEL_20;
           }
@@ -4611,14 +4611,14 @@ LABEL_13:
           {
 
 LABEL_19:
-            v17 = [(CRLWPRep *)self knobClassWithTag:11];
-            [v25 addObject:v17];
+            selection2 = [(CRLWPRep *)self knobClassWithTag:11];
+            [arrayCopy addObject:selection2];
 LABEL_20:
 
             goto LABEL_21;
           }
 
-          v18 = [v24 knobTag] == 11;
+          v18 = [textEditor knobTag] == 11;
 
           if (v18)
           {
@@ -4626,19 +4626,19 @@ LABEL_20:
           }
 
 LABEL_21:
-          v10 = v14;
-          v19 = [v16 range];
-          v21 = v8 < v19 || v8 - v19 >= v20;
-          if (!v21 && (!v13 || [v24 knobTag] == 10))
+          columns = v14;
+          range = [v16 range];
+          v21 = tailCharIndex < range || tailCharIndex - range >= v20;
+          if (!v21 && (!v13 || [textEditor knobTag] == 10))
           {
             v22 = [(CRLWPRep *)self knobClassWithTag:10];
-            [v25 addObject:v22];
+            [arrayCopy addObject:v22];
 
-            v10 = v14;
+            columns = v14;
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v11 = [columns countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v11);
@@ -4646,28 +4646,28 @@ LABEL_21:
   }
 }
 
-- (id)knobClassWithTag:(unint64_t)a3
+- (id)knobClassWithTag:(unint64_t)tag
 {
-  v5 = [(CRLWPRep *)self knobPositioner];
-  [v5 knobRadius];
+  knobPositioner = [(CRLWPRep *)self knobPositioner];
+  [knobPositioner knobRadius];
   v7 = v6;
-  v8 = [(CRLCanvasRep *)self canvas];
-  [v8 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v10 = v7 * v9;
 
-  v11 = [[CRLWPTextKnob alloc] initWithType:2 position:a3 radius:self tag:CGPointZero.x onRep:CGPointZero.y, v10];
+  v11 = [[CRLWPTextKnob alloc] initWithType:2 position:tag radius:self tag:CGPointZero.x onRep:CGPointZero.y, v10];
 
   return v11;
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  knobsCopy = knobs;
+  v5 = [knobsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -4678,19 +4678,19 @@ LABEL_21:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knobsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(CRLWPRep *)self selection];
-        [(CRLWPRep *)self knobCenterForSelection:v9 knob:v8];
+        selection = [(CRLWPRep *)self selection];
+        [(CRLWPRep *)self knobCenterForSelection:selection knob:v8];
         [v8 setPosition:?];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [knobsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -4704,18 +4704,18 @@ LABEL_21:
     return 0;
   }
 
-  v3 = [(CRLWPRep *)self knobPositioner];
-  v4 = [(CRLWPRep *)self selection];
-  v5 = [(CRLWPRep *)self storage];
-  v6 = [v3 shouldCreateKnobsForSelection:v4 inStorage:v5];
+  knobPositioner = [(CRLWPRep *)self knobPositioner];
+  selection = [(CRLWPRep *)self selection];
+  storage = [(CRLWPRep *)self storage];
+  v6 = [knobPositioner shouldCreateKnobsForSelection:selection inStorage:storage];
 
   return v6;
 }
 
-- (CGRect)labelRectForCharIndex:(unint64_t)a3
+- (CGRect)labelRectForCharIndex:(unint64_t)index
 {
-  v4 = [(CRLWPRep *)self columns];
-  [CRLWPColumn labelRectForCharIndex:a3 withColumns:v4];
+  columns = [(CRLWPRep *)self columns];
+  [CRLWPColumn labelRectForCharIndex:index withColumns:columns];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -4732,12 +4732,12 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)columnRectForRange:(_NSRange)a3
+- (CGRect)columnRectForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(CRLWPRep *)self columns];
-  [CRLWPColumn columnRectForRange:location withColumns:length, v5];
+  length = range.length;
+  location = range.location;
+  columns = [(CRLWPRep *)self columns];
+  [CRLWPColumn columnRectForRange:location withColumns:length, columns];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -4754,11 +4754,11 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)glyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (CGRect)glyphRectForRange:(_NSRange)range includingLabel:(BOOL)label
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
+  labelCopy = label;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -4767,8 +4767,8 @@ LABEL_21:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [(CRLWPRep *)self columns];
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v12 = [columns countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v12)
   {
     v13 = *v30;
@@ -4778,7 +4778,7 @@ LABEL_21:
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(columns);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
@@ -4799,7 +4799,7 @@ LABEL_21:
         v20 = sub_1002BC848(v16, v34, v18);
         if (v20 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v15 glyphRectForRange:v20 includingLabel:{v19, v4}];
+          [v15 glyphRectForRange:v20 includingLabel:{v19, labelCopy}];
           v38.origin.x = v21;
           v38.origin.y = v22;
           v38.size.width = v23;
@@ -4816,7 +4816,7 @@ LABEL_21:
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v12 = [columns countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v12);
@@ -4833,18 +4833,18 @@ LABEL_21:
   return result;
 }
 
-- (unsigned)fontTraitsForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (unsigned)fontTraitsForRange:(_NSRange)range includingLabel:(BOOL)label
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
+  labelCopy = label;
+  length = range.length;
+  location = range.location;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(CRLWPRep *)self columns];
+  columns = [(CRLWPRep *)self columns];
   v8 = 0;
-  v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = *v21;
@@ -4854,7 +4854,7 @@ LABEL_21:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(columns);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -4875,7 +4875,7 @@ LABEL_21:
         v17 = sub_1002BC848(v13, v25, v15);
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v18 = [v12 fontTraitsForRange:v17 includingLabel:{v16, v4}];
+          v18 = [v12 fontTraitsForRange:v17 includingLabel:{v16, labelCopy}];
           if (v8)
           {
             if (v8 != v18)
@@ -4891,7 +4891,7 @@ LABEL_21:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -4900,14 +4900,14 @@ LABEL_21:
   return v8;
 }
 
-- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)a3
+- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)index
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CRLWPRep *)self columns];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v5 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -4917,19 +4917,19 @@ LABEL_21:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columns);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 range];
-        if (a3 >= v9 && a3 - v9 < v10)
+        range = [v8 range];
+        if (index >= range && index - range < v10)
         {
-          v12 = [v8 glyphCountForRubyFieldAtCharIndex:a3];
+          v12 = [v8 glyphCountForRubyFieldAtCharIndex:index];
           goto LABEL_14;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -4941,10 +4941,10 @@ LABEL_14:
   return v12;
 }
 
-- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)a3 glyphRange:(_NSRange)a4
+- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)index glyphRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -4953,8 +4953,8 @@ LABEL_14:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = [(CRLWPRep *)self columns];
-  v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v12 = [columns countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
     v13 = *v28;
@@ -4964,14 +4964,14 @@ LABEL_14:
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(columns);
         }
 
         v15 = *(*(&v27 + 1) + 8 * i);
-        v16 = [v15 range];
-        if (a3 >= v16 && a3 - v16 < v17)
+        range = [v15 range];
+        if (index >= range && index - range < v17)
         {
-          [v15 glyphRectForRubyFieldAtCharIndex:a3 glyphRange:{location, length}];
+          [v15 glyphRectForRubyFieldAtCharIndex:index glyphRange:{location, length}];
           x = v19;
           y = v20;
           width = v21;
@@ -4980,7 +4980,7 @@ LABEL_14:
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v12 = [columns countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v12);
@@ -4999,7 +4999,7 @@ LABEL_13:
   return result;
 }
 
-- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)index
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
   v4 = 0;
@@ -5007,7 +5007,7 @@ LABEL_13:
   {
     if ([(CRLWPRep *)self p_spellCheckingEnabled])
     {
-      v3 = [(CRLWPStorageSpellChecker *)self->_spellChecker rangeOfMisspelledWordAtCharIndex:a3];
+      v3 = [(CRLWPStorageSpellChecker *)self->_spellChecker rangeOfMisspelledWordAtCharIndex:index];
       v4 = v7;
       v12.location = v3;
       v12.length = v7;
@@ -5027,19 +5027,19 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)p_convertNaturalRectToRotated:(CGRect)a3 repAngle:(double)a4
+- (CGRect)p_convertNaturalRectToRotated:(CGRect)rotated repAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(CRLWPRep *)self textIsVertical];
-  if (v9)
+  height = rotated.size.height;
+  width = rotated.size.width;
+  y = rotated.origin.y;
+  x = rotated.origin.x;
+  textIsVertical = [(CRLWPRep *)self textIsVertical];
+  if (textIsVertical)
   {
-    a4 = fmod(a4 + 270.0, 360.0);
+    angle = fmod(angle + 270.0, 360.0);
   }
 
-  if ((a4 <= 45.0 || a4 >= 135.0) && (a4 <= 225.0 || a4 >= 315.0))
+  if ((angle <= 45.0 || angle >= 135.0) && (angle <= 225.0 || angle >= 315.0))
   {
     v10 = width;
     v11 = height;
@@ -5052,7 +5052,7 @@ LABEL_13:
   }
 
   v12 = hypot(v11, v10);
-  if (v9)
+  if (textIsVertical)
   {
     v13 = v12;
   }
@@ -5062,7 +5062,7 @@ LABEL_13:
     v13 = v10;
   }
 
-  if (v9)
+  if (textIsVertical)
   {
     v14 = v11;
   }
@@ -5073,12 +5073,12 @@ LABEL_13:
   }
 
   v15 = x + width;
-  if (a4 <= 180.0)
+  if (angle <= 180.0)
   {
     v15 = x;
   }
 
-  v16 = a4 >= 270.0 || a4 <= 90.0;
+  v16 = angle >= 270.0 || angle <= 90.0;
   v17 = y + height;
   if (v16)
   {
@@ -5092,26 +5092,26 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)p_allowCaretForSelection:(id)a3
+- (BOOL)p_allowCaretForSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [v4 range];
-  v6 = [(CRLWPRep *)self storage];
-  v7 = [v6 hasMarkedText];
+  selectionCopy = selection;
+  range = [selectionCopy range];
+  storage = [(CRLWPRep *)self storage];
+  hasMarkedText = [storage hasMarkedText];
 
-  if ((v7 & 1) == 0)
+  if ((hasMarkedText & 1) == 0)
   {
-    if (![v4 isInsertionPoint] || ((v9 = -[CRLWPRep range](self, "range"), v5 < v9) || v5 - v9 >= v10) && (v11 = -[CRLWPRep range](self, "range"), v5 != &v11[v12]) || v5 == -[CRLWPRep range](self, "range") && (objc_msgSend(v4, "isAtEndOfLine") & 1) != 0)
+    if (![selectionCopy isInsertionPoint] || ((v9 = -[CRLWPRep range](self, "range"), range < v9) || range - v9 >= v10) && (v11 = -[CRLWPRep range](self, "range"), range != &v11[v12]) || range == -[CRLWPRep range](self, "range") && (objc_msgSend(selectionCopy, "isAtEndOfLine") & 1) != 0)
     {
       v8 = 0;
       goto LABEL_10;
     }
 
-    v14 = [(CRLWPRep *)self range];
-    if (v5 == &v14[v15] && ([v4 isAtEndOfLine] & 1) == 0)
+    range2 = [(CRLWPRep *)self range];
+    if (range == &range2[v15] && ([selectionCopy isAtEndOfLine] & 1) == 0)
     {
-      v16 = [(CRLWPRep *)self storage];
-      [v16 length];
+      storage2 = [(CRLWPRep *)self storage];
+      [storage2 length];
     }
   }
 
@@ -5121,26 +5121,26 @@ LABEL_10:
   return v8;
 }
 
-- (void)p_updateLayersForInsertionPointSelection:(id)a3
+- (void)p_updateLayersForInsertionPointSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   [(CRLWPRep *)self p_setSelectionLineLayersHidden:1];
   [(CRLWPRep *)self p_hideSelectionHighlightLayer];
   [(CRLWPRep *)self p_hideSelectionParagraphBorderLayer];
-  v5 = [(CRLWPRep *)self textEditor];
+  textEditor = [(CRLWPRep *)self textEditor];
   if (![(CRLWPRep *)self p_isRedesignedTextCursorEnabled])
   {
-    if ([v5 wantsCaret])
+    if ([textEditor wantsCaret])
     {
-      v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v7 = [v6 layerHost];
-      [v7 isInFocusedContainer];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      layerHost = [interactiveCanvasController layerHost];
+      [layerHost isInFocusedContainer];
     }
 
-    if ([(CRLWPRep *)self p_allowCaretForSelection:v4])
+    if ([(CRLWPRep *)self p_allowCaretForSelection:selectionCopy])
     {
-      v8 = [v5 editorHelper];
-      v9 = [v8 calculateVisualRunsFromSelection:v4 updateControllerSelection:1];
+      editorHelper = [textEditor editorHelper];
+      v9 = [editorHelper calculateVisualRunsFromSelection:selectionCopy updateControllerSelection:1];
 
       if ([CRLWPRep p_positionCaretLayer:"p_positionCaretLayer:forSelection:layerRelative:" forSelection:self->_caretLayer layerRelative:?]&& [(CRLWPRep *)self p_canShowSelectionAndCaretLayers])
       {
@@ -5148,23 +5148,23 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      v4 = v9;
+      selectionCopy = v9;
     }
   }
 
   [(CRLWPRepCaretController *)self->_caretController stopCaretLayerAnimationHidingCaret:1];
-  v9 = v4;
+  v9 = selectionCopy;
 LABEL_10:
 }
 
-- (id)p_imageForRect:(CGRect)a3 usingGlyphRect:(BOOL)a4 prepareBackground:(BOOL)a5 drawBackground:(BOOL)a6 shouldPulsate:(BOOL)a7 forCaret:(BOOL)a8 drawSelection:(id)a9 suppressInvisibles:(BOOL)a10 suppressChildReps:(BOOL)a11
+- (id)p_imageForRect:(CGRect)rect usingGlyphRect:(BOOL)glyphRect prepareBackground:(BOOL)background drawBackground:(BOOL)drawBackground shouldPulsate:(BOOL)pulsate forCaret:(BOOL)caret drawSelection:(id)selection suppressInvisibles:(BOOL)self0 suppressChildReps:(BOOL)self1
 {
-  v11 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a9;
+  drawBackgroundCopy = drawBackground;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selectionCopy = selection;
   [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
   memset(&v40, 0, sizeof(v40));
   v42.origin.x = x;
@@ -5189,10 +5189,10 @@ LABEL_10:
     CGContextTranslateCTM(v28, -v19, -v20);
     [(CRLCanvasRep *)self setupForDrawingInLayer:0 context:v28];
     CGContextSetShouldAntialias(v28, 1);
-    if (v18 || !a5)
+    if (selectionCopy || !background)
     {
       CGContextSaveGState(v28);
-      if (v11)
+      if (drawBackgroundCopy)
       {
         v29 = 3;
       }
@@ -5202,8 +5202,8 @@ LABEL_10:
         v29 = 33;
       }
 
-      LOBYTE(v39) = a10;
-      [(CRLWPRep *)self p_drawTextInLayer:0 context:v28 limitSelection:v18 rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:v29, v39];
+      LOBYTE(v39) = invisibles;
+      [(CRLWPRep *)self p_drawTextInLayer:0 context:v28 limitSelection:selectionCopy rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:v29, v39];
       CGContextRestoreGState(v28);
     }
 
@@ -5287,9 +5287,9 @@ LABEL_10:
   return v31;
 }
 
-- (id)p_imageForZeroLengthPath:(CGPath *)a3
+- (id)p_imageForZeroLengthPath:(CGPath *)path
 {
-  if (!a3)
+  if (!path)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -5320,7 +5320,7 @@ LABEL_10:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:2495 isFatal:0 description:"invalid nil value for '%{public}s'", "path"];
   }
 
-  PathBoundingBox = CGPathGetPathBoundingBox(a3);
+  PathBoundingBox = CGPathGetPathBoundingBox(path);
   x = PathBoundingBox.origin.x;
   y = PathBoundingBox.origin.y;
   width = PathBoundingBox.size.width;
@@ -5430,19 +5430,19 @@ LABEL_10:
   return v23;
 }
 
-- (id)textImageForSelection:(id)a3 frame:(CGRect *)a4 usingGlyphRect:(BOOL)a5 shouldPulsate:(BOOL)a6 suppressInvisibles:(BOOL)a7 suppressChildReps:(BOOL)a8 drawBackground:(BOOL)a9 inset:(double)a10
+- (id)textImageForSelection:(id)selection frame:(CGRect *)frame usingGlyphRect:(BOOL)rect shouldPulsate:(BOOL)pulsate suppressInvisibles:(BOOL)invisibles suppressChildReps:(BOOL)reps drawBackground:(BOOL)background inset:(double)self0
 {
-  v13 = a6;
-  v14 = a5;
-  v17 = a3;
-  v18 = v17;
+  pulsateCopy = pulsate;
+  rectCopy = rect;
+  selectionCopy = selection;
+  v18 = selectionCopy;
   v51 = 0;
   v52 = &v51;
   v53 = 0x5012000000;
   v54 = sub_10047123C;
   v55 = nullsub_53;
   v56 = &unk_1016A8115;
-  if (v14 && ([v17 type] != 7 || objc_msgSend(v18, "visualRangeCount") < 2 ? ((v32 = objc_msgSend(v18, "superRange"), v34 = v33, objc_msgSend(v18, "type") != 2) ? (v35 = objc_msgSend(v18, "type") == 1) : (v35 = 1), -[CRLWPRep glyphRectForRange:includingLabel:](self, "glyphRectForRange:includingLabel:", v32, v34, v35), v36 = v52, v52[6] = v28, v36[7] = v29, v36[8] = v30, v36[9] = v31) : (objc_msgSend(v18, "visualRanges"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "rangeAtIndex:", 0), -[CRLWPRep glyphRectForRange:includingLabel:](self, "glyphRectForRange:includingLabel:", v20, v21, 0), v22 = v52, v52[6] = v23, v22[7] = v24, v22[8] = v25, v22[9] = v26, v19, objc_msgSend(v18, "visualRanges"), v27 = objc_claimAutoreleasedReturnValue(), v50[0] = _NSConcreteStackBlock, v50[1] = 3221225472, v50[2] = sub_10047124C, v50[3] = &unk_1018651D8, v50[4] = self, v50[5] = &v51, objc_msgSend(v27, "enumerateRanges:", v50), v27, v28 = v52[6], v29 = v52[7], v30 = v52[8], v31 = v52[9]), !CGRectIsEmpty(*&v28)))
+  if (rectCopy && ([selectionCopy type] != 7 || objc_msgSend(v18, "visualRangeCount") < 2 ? ((v32 = objc_msgSend(v18, "superRange"), v34 = v33, objc_msgSend(v18, "type") != 2) ? (v35 = objc_msgSend(v18, "type") == 1) : (v35 = 1), -[CRLWPRep glyphRectForRange:includingLabel:](self, "glyphRectForRange:includingLabel:", v32, v34, v35), v36 = v52, v52[6] = v28, v36[7] = v29, v36[8] = v30, v36[9] = v31) : (objc_msgSend(v18, "visualRanges"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "rangeAtIndex:", 0), -[CRLWPRep glyphRectForRange:includingLabel:](self, "glyphRectForRange:includingLabel:", v20, v21, 0), v22 = v52, v52[6] = v23, v22[7] = v24, v22[8] = v25, v22[9] = v26, v19, objc_msgSend(v18, "visualRanges"), v27 = objc_claimAutoreleasedReturnValue(), v50[0] = _NSConcreteStackBlock, v50[1] = 3221225472, v50[2] = sub_10047124C, v50[3] = &unk_1018651D8, v50[4] = self, v50[5] = &v51, objc_msgSend(v27, "enumerateRanges:", v50), v27, v28 = v52[6], v29 = v52[7], v30 = v52[8], v31 = v52[9]), !CGRectIsEmpty(*&v28)))
   {
     v37 = v52[6];
     v38 = v52[7];
@@ -5462,22 +5462,22 @@ LABEL_10:
     v42[9] = v40;
   }
 
-  v58 = CGRectInset(*&v37, a10, a10);
+  v58 = CGRectInset(*&v37, inset, inset);
   v43 = v52;
   v44 = v52;
   *(v52 + 6) = v58;
   v45 = v44 + 6;
-  if (a4)
+  if (frame)
   {
     v46 = *(v45 + 1);
-    a4->origin = *v45;
-    a4->size = v46;
+    frame->origin = *v45;
+    frame->size = v46;
     v58 = *(v43 + 6);
   }
 
-  BYTE1(v49) = a8;
-  LOBYTE(v49) = a7;
-  v47 = [(CRLWPRep *)self p_imageForRect:v41 usingGlyphRect:0 prepareBackground:a9 drawBackground:v13 shouldPulsate:0 forCaret:v18 drawSelection:v58.origin.x suppressInvisibles:v58.origin.y suppressChildReps:v58.size.width, v58.size.height, v49];
+  BYTE1(v49) = reps;
+  LOBYTE(v49) = invisibles;
+  v47 = [(CRLWPRep *)self p_imageForRect:v41 usingGlyphRect:0 prepareBackground:background drawBackground:pulsateCopy shouldPulsate:0 forCaret:v18 drawSelection:v58.origin.x suppressInvisibles:v58.origin.y suppressChildReps:v58.size.width, v58.size.height, v49];
   _Block_object_dispose(&v51, 8);
 
   return v47;
@@ -5486,14 +5486,14 @@ LABEL_10:
 - (BOOL)isOverflowing
 {
   v3 = objc_opt_class();
-  v4 = [(CRLWPRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLWPRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
-  LOBYTE(v4) = [v5 isOverflowing];
-  return v4;
+  LOBYTE(layout) = [v5 isOverflowing];
+  return layout;
 }
 
-- (void)editingDidEndWithTextEditor:(id)a3
+- (void)editingDidEndWithTextEditor:(id)editor
 {
   [(CRLWPRep *)self p_hideSelectionLayers];
   if ([(CRLWPRep *)self doesNeedDisplayOnEditingDidEnd])
@@ -5502,8 +5502,8 @@ LABEL_10:
   }
 
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasRep *)self parentRep];
-  v6 = sub_100014370(v4, v5);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v6 = sub_100014370(v4, parentRep);
 
   if (v6)
   {
@@ -5511,20 +5511,20 @@ LABEL_10:
   }
 }
 
-- (void)p_updateAnimationWithAnimatingPulse:(BOOL)a3
+- (void)p_updateAnimationWithAnimatingPulse:(BOOL)pulse
 {
-  v3 = a3;
+  pulseCopy = pulse;
   if (![(CRLWPHighlightArrayController *)self->_pulseArrayController pulsating])
   {
-    v5 = [(CRLWPRep *)self primaryFindResultSearchReference];
+    primaryFindResultSearchReference = [(CRLWPRep *)self primaryFindResultSearchReference];
 
-    if (v5)
+    if (primaryFindResultSearchReference)
     {
       if (!self->_updatingHighlights)
       {
         self->_updatingHighlights = 1;
-        v6 = [(CRLCanvasRep *)self canvas];
-        [v6 viewScale];
+        canvas = [(CRLCanvasRep *)self canvas];
+        [canvas viewScale];
         [(CRLWPHighlightArrayController *)self->_pulseArrayController setViewScale:?];
 
         [(CRLWPHighlightArrayController *)self->_pulseArrayController reset];
@@ -5537,7 +5537,7 @@ LABEL_10:
         v8[5] = v7;
         [(CRLWPRep *)self prepareLayoutForImagingSearchReferencesAsActive:1 usingBlock:v8];
         CGColorRelease(v7);
-        if (v3)
+        if (pulseCopy)
         {
           [(CRLWPHighlightArrayController *)self->_pulseArrayController startAnimating];
         }
@@ -5549,46 +5549,46 @@ LABEL_10:
   }
 }
 
-- (void)updateVisualSelection:(id)a3
+- (void)updateVisualSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   CGPathRelease([CRLWPRep p_newSelectionPathForSelection:"p_newSelectionPathForSelection:transform:headPinRect:tailPinRect:" transform:? headPinRect:? tailPinRect:?]);
 }
 
-- (CGPath)p_newSelectionPathForSelection:(id)a3 transform:(CGAffineTransform *)a4 headPinRect:(CGRect *)a5 tailPinRect:(CGRect *)a6 markedText:(BOOL)a7
+- (CGPath)p_newSelectionPathForSelection:(id)selection transform:(CGAffineTransform *)transform headPinRect:(CGRect *)rect tailPinRect:(CGRect *)pinRect markedText:(BOOL)text
 {
-  v7 = a7;
-  v12 = a3;
+  textCopy = text;
+  selectionCopy = selection;
   v14 = 0x7FFFFFFFFFFFFFFFLL;
   v13 = 0;
-  v15 = [v12 type];
-  if ([v12 headCharIndex] != 0x7FFFFFFFFFFFFFFFLL)
+  type = [selectionCopy type];
+  if ([selectionCopy headCharIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = [v12 tailCharIndex];
-    if (v15 == 7 && v16 != 0x7FFFFFFFFFFFFFFFLL)
+    tailCharIndex = [selectionCopy tailCharIndex];
+    if (type == 7 && tailCharIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = [v12 headCharIndex];
-      v18 = [v12 tailCharIndex];
-      if (v18 >= v17)
+      headCharIndex = [selectionCopy headCharIndex];
+      tailCharIndex2 = [selectionCopy tailCharIndex];
+      if (tailCharIndex2 >= headCharIndex)
       {
-        v19 = v17;
+        v19 = headCharIndex;
       }
 
       else
       {
-        v19 = v18;
+        v19 = tailCharIndex2;
       }
 
-      v20 = [v12 headCharIndex];
-      v21 = [v12 tailCharIndex];
-      if (v20 <= v21)
+      headCharIndex2 = [selectionCopy headCharIndex];
+      tailCharIndex3 = [selectionCopy tailCharIndex];
+      if (headCharIndex2 <= tailCharIndex3)
       {
-        v22 = v21;
+        v22 = tailCharIndex3;
       }
 
       else
       {
-        v22 = v20;
+        v22 = headCharIndex2;
       }
 
       if (v19 <= v22 + 1)
@@ -5617,9 +5617,9 @@ LABEL_10:
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = [v12 range];
+    range = [selectionCopy range];
     v13 = v25;
-    v26 = v24 != 0x7FFFFFFFFFFFFFFFLL;
+    v26 = range != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -5636,12 +5636,12 @@ LABEL_10:
   if (v26 && v13)
   {
     memset(&m, 0, sizeof(m));
-    if (a4)
+    if (transform)
     {
-      v29 = *&a4->c;
-      *&m.a = *&a4->a;
+      v29 = *&transform->c;
+      *&m.a = *&transform->a;
       *&m.c = v29;
-      *&m.tx = *&a4->tx;
+      *&m.tx = *&transform->tx;
     }
 
     else
@@ -5649,18 +5649,18 @@ LABEL_10:
       [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
     }
 
-    v30 = [(CRLCanvasRep *)self canvas];
-    [v30 contentsScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas contentsScale];
     v71 = v31;
 
-    v32 = [(CRLWPRep *)self columns];
+    columns = [(CRLWPRep *)self columns];
     p_superclass = &OBJC_METACLASS___CRLCountedObserver.superclass;
-    [CRLWPColumn populateHeadAndTailCharIndicesInSelection:v12 forColumns:v32];
-    v70 = [CRLWPColumn selectionRectsforColumns:v32 forSelection:v12];
+    [CRLWPColumn populateHeadAndTailCharIndicesInSelection:selectionCopy forColumns:columns];
+    v70 = [CRLWPColumn selectionRectsforColumns:columns forSelection:selectionCopy];
     if ([v70 count])
     {
       Mutable = CGPathCreateMutable();
-      v34 = [(CRLWPRep *)self textIsVertical];
+      textIsVertical = [(CRLWPRep *)self textIsVertical];
       v75 = 0u;
       v76 = 0u;
       v73 = 0u;
@@ -5670,7 +5670,7 @@ LABEL_10:
       if (v36)
       {
         v37 = *v74;
-        if (v34)
+        if (textIsVertical)
         {
           v38 = 0.0;
         }
@@ -5680,7 +5680,7 @@ LABEL_10:
           v38 = 0.5;
         }
 
-        if (v34)
+        if (textIsVertical)
         {
           v39 = 0.5;
         }
@@ -5704,7 +5704,7 @@ LABEL_10:
             v46 = v42;
             v47 = v43;
             v48 = v44;
-            if (v7)
+            if (textCopy)
             {
               v83 = CGRectInset(*&v41, v38, v39);
               x = v83.origin.x;
@@ -5840,41 +5840,41 @@ LABEL_10:
       Mutable = 0;
     }
 
-    if (a5 | a6)
+    if (rect | pinRect)
     {
-      [p_superclass + 214 calculateSelectionPinRectsForSelection:v12 inColumns:v32 outSelectionPinRect:&origin outSelectionTailPinRect:&v78];
+      [p_superclass + 214 calculateSelectionPinRectsForSelection:selectionCopy inColumns:columns outSelectionPinRect:&origin outSelectionTailPinRect:&v78];
     }
   }
 
-  if (a5)
+  if (rect)
   {
     v67 = v81;
-    a5->origin = origin;
-    a5->size = v67;
+    rect->origin = origin;
+    rect->size = v67;
   }
 
-  if (a6)
+  if (pinRect)
   {
     v68 = v79;
-    a6->origin = v78;
-    a6->size = v68;
+    pinRect->origin = v78;
+    pinRect->size = v68;
   }
 
   return Mutable;
 }
 
-- (id)p_lineSelectionsForSelection:(id)a3
+- (id)p_lineSelectionsForSelection:(id)selection
 {
-  v4 = a3;
-  if ([v4 isRange])
+  selectionCopy = selection;
+  if ([selectionCopy isRange])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CRLWPRep *)self columns];
+    columns = [(CRLWPRep *)self columns];
     v6 = 0;
-    v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [columns countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = *v13;
@@ -5884,10 +5884,10 @@ LABEL_10:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(columns);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) lineSelectionsForSelection:v4];
+          v10 = [*(*(&v12 + 1) + 8 * i) lineSelectionsForSelection:selectionCopy];
           if (v10)
           {
             if (!v6)
@@ -5899,7 +5899,7 @@ LABEL_10:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [columns countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -5914,11 +5914,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)lineSearchReferencesForSearchReference:(id)a3
+- (id)lineSearchReferencesForSearchReference:(id)reference
 {
-  v4 = a3;
-  v5 = [v4 selection];
-  [(CRLWPRep *)self p_lineSelectionsForSelection:v5];
+  referenceCopy = reference;
+  selection = [referenceCopy selection];
+  [(CRLWPRep *)self p_lineSelectionsForSelection:selection];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -5944,9 +5944,9 @@ LABEL_10:
           v7 = +[NSMutableArray array];
         }
 
-        v12 = [v4 copy];
-        v13 = [v11 range];
-        [v12 setRange:{v13, v14}];
+        v12 = [referenceCopy copy];
+        range = [v11 range];
+        [v12 setRange:{range, v14}];
         [v7 addObject:v12];
 
         v10 = v10 + 1;
@@ -5963,19 +5963,19 @@ LABEL_10:
   return v7;
 }
 
-- (CGPoint)p_pinPoint:(CGPoint)a3 toRect:(CGRect)a4
+- (CGPoint)p_pinPoint:(CGPoint)point toRect:(CGRect)rect
 {
-  v4 = sub_1001203B8(a3.x, a3.y, a4.origin.x, a4.origin.y, a4.size.width + -1.0, a4.size.height + -1.0);
+  v4 = sub_1001203B8(point.x, point.y, rect.origin.x, rect.origin.y, rect.size.width + -1.0, rect.size.height + -1.0);
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)p_updateLayersForRangeSelection:(id)a3 selectionFlags:(unint64_t)a4
+- (void)p_updateLayersForRangeSelection:(id)selection selectionFlags:(unint64_t)flags
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLWPRep *)self p_canShowSelectionAndCaretLayers];
+  flagsCopy = flags;
+  selectionCopy = selection;
+  p_canShowSelectionAndCaretLayers = [(CRLWPRep *)self p_canShowSelectionAndCaretLayers];
   [(CRLWPRep *)self hideCaretLayer];
   selectionLineLayers = self->_selectionLineLayers;
   if (!self->_selectionLineLayers[0])
@@ -5983,7 +5983,7 @@ LABEL_10:
     [(CRLWPRep *)self p_createSelectionLineLayers];
   }
 
-  if (v4)
+  if (flagsCopy)
   {
     v9 = [CABasicAnimation animationWithKeyPath:@"path"];
     [v9 setDuration:0.100000001];
@@ -6000,10 +6000,10 @@ LABEL_10:
   v29.size = size;
   v28.origin = v29.origin;
   v28.size = size;
-  if (v7)
+  if (p_canShowSelectionAndCaretLayers)
   {
-    [v6 isVisual];
-    v11 = [(CRLWPRep *)self p_newSelectionPathForSelection:v6 transform:0 headPinRect:&v29 tailPinRect:&v28];
+    [selectionCopy isVisual];
+    v11 = [(CRLWPRep *)self p_newSelectionPathForSelection:selectionCopy transform:0 headPinRect:&v29 tailPinRect:&v28];
     [(CRLWPRep *)self p_hideSelectionParagraphBorderLayer];
     selectionHighlightLayer = self->_selectionHighlightLayer;
     if (v11)
@@ -6030,16 +6030,16 @@ LABEL_10:
     [(CAShapeLayer *)self->_selectionHighlightLayer setPath:0];
   }
 
-  v13 = [(CRLCanvasRep *)self canvas];
-  [v13 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v15 = v14;
 
-  v16 = [(CRLWPRep *)self textIsVertical];
-  v17 = [v6 type] == 3 || objc_msgSend(v6, "type") == 5;
-  if (([(CRLWPRep *)self p_shouldDisplaySelectionControls]& v7) == 1 && ((IsEmpty = CGRectIsEmpty(v29), v15 == 0.0) ? (v19 = 1) : (v19 = IsEmpty), ((v19 | v17) & 1) == 0))
+  textIsVertical = [(CRLWPRep *)self textIsVertical];
+  v17 = [selectionCopy type] == 3 || objc_msgSend(selectionCopy, "type") == 5;
+  if (([(CRLWPRep *)self p_shouldDisplaySelectionControls]& p_canShowSelectionAndCaretLayers) == 1 && ((IsEmpty = CGRectIsEmpty(v29), v15 == 0.0) ? (v19 = 1) : (v19 = IsEmpty), ((v19 | v17) & 1) == 0))
   {
     v21 = 1.0 / v15;
-    if (v16)
+    if (textIsVertical)
     {
       x = v29.origin.x;
       v29.size.height = 2.0 / v15;
@@ -6065,10 +6065,10 @@ LABEL_10:
     v20 = 0;
   }
 
-  if (([(CRLWPRep *)self p_shouldDisplaySelectionControls]& v7) == 1 && ((v23 = CGRectIsEmpty(v28), v15 == 0.0) ? (v24 = 1) : (v24 = v23), ((v24 | v17) & 1) == 0))
+  if (([(CRLWPRep *)self p_shouldDisplaySelectionControls]& p_canShowSelectionAndCaretLayers) == 1 && ((v23 = CGRectIsEmpty(v28), v15 == 0.0) ? (v24 = 1) : (v24 = v23), ((v24 | v17) & 1) == 0))
   {
     v26 = v28;
-    if (v16)
+    if (textIsVertical)
     {
       v28.origin.y = CGRectGetMaxY(v26) + -1.0 / v15;
       v28.size.height = 2.0 / v15;
@@ -6100,17 +6100,17 @@ LABEL_10:
 
 - (BOOL)p_canShowSelectionAndCaretLayers
 {
-  v3 = [(CRLWPRep *)self selection];
-  v4 = [v3 isRange];
+  selection = [(CRLWPRep *)self selection];
+  isRange = [selection isRange];
 
-  if (v4)
+  if (isRange)
   {
-    v5 = [(CRLWPRep *)self selection];
-    v6 = [v5 range];
+    selection2 = [(CRLWPRep *)self selection];
+    range = [selection2 range];
     v8 = v7;
 
     v18.location = [(CRLWPRep *)self range];
-    v19.location = v6;
+    v19.location = range;
     v19.length = v8;
     v9 = NSIntersectionRange(v18, v19);
     if (self->_secondaryHighlightLayer)
@@ -6137,12 +6137,12 @@ LABEL_10:
   }
 
 LABEL_6:
-  v11 = [(CRLWPRep *)self selection];
-  v12 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v13 = [v12 editorController];
-  v14 = [v13 selectionPath];
-  v15 = [v14 mostSpecificSelectionOfClass:0];
-  v16 = v11 == v15;
+  selection3 = [(CRLWPRep *)self selection];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  v15 = [selectionPath mostSpecificSelectionOfClass:0];
+  v16 = selection3 == v15;
 
   return v16;
 }
@@ -6157,10 +6157,10 @@ LABEL_6:
   [(CRLCanvasRep *)self invalidateKnobs];
 }
 
-- (void)i_setNeedsErasableDisplayInRange:(_NSRange)a3
+- (void)i_setNeedsErasableDisplayInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
@@ -6169,8 +6169,8 @@ LABEL_6:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(CRLWPRep *)self columns];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  columns = [(CRLWPRep *)self columns];
+  v11 = [columns countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = *v19;
@@ -6181,7 +6181,7 @@ LABEL_6:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(columns);
         }
 
         [*(*(&v18 + 1) + 8 * v13) erasableRectForSelectionRange:{location, length}];
@@ -6202,7 +6202,7 @@ LABEL_6:
       }
 
       while (v11 != v13);
-      v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [columns countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -6238,10 +6238,10 @@ LABEL_6:
   }
 }
 
-- (void)p_setSuppressedMisspellingRange:(_NSRange)a3
+- (void)p_setSuppressedMisspellingRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13.location = [(CRLWPRep *)self range];
   v13.length = v6;
   v12.location = location;
@@ -6279,7 +6279,7 @@ LABEL_6:
 
 - (void)p_updateSuppressedSpellingRange
 {
-  v3 = [(CRLWPRep *)self selection];
+  selection = [(CRLWPRep *)self selection];
   location = self->_suppressedMisspellingRange.location;
   length = self->_suppressedMisspellingRange.length;
   if (location != 0x7FFFFFFFFFFFFFFFLL || length != 0)
@@ -6291,31 +6291,31 @@ LABEL_6:
     self->_suppressedMisspellingRange = NSIntersectionRange(v11, v12);
   }
 
-  if ([v3 isValid])
+  if ([selection isValid])
   {
-    v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v9 = [v8 canvas];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    canvas = [interactiveCanvasController canvas];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100472A70;
     v10[3] = &unk_10185D010;
     v10[4] = self;
-    v10[5] = v3;
-    [v9 performBlockAfterLayoutIfNecessary:v10];
+    v10[5] = selection;
+    [canvas performBlockAfterLayoutIfNecessary:v10];
   }
 
   else
   {
     [(CRLWPRep *)self p_setSuppressedMisspellingRange:0x7FFFFFFFFFFFFFFFLL, 0];
-    v8 = [(CRLWPRep *)self storage];
-    self->_changeCountForSpellingSuppression = [v8 changeCount];
+    interactiveCanvasController = [(CRLWPRep *)self storage];
+    self->_changeCountForSpellingSuppression = [interactiveCanvasController changeCount];
   }
 }
 
-- (void)p_updateForCurrentSelectionWithFlags:(unint64_t)a3
+- (void)p_updateForCurrentSelectionWithFlags:(unint64_t)flags
 {
-  v5 = [(CRLWPRep *)self selection];
-  if (v5)
+  selection = [(CRLWPRep *)self selection];
+  if (selection)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6375,8 +6375,8 @@ LABEL_6:
 
   if ([(CRLWPRep *)self p_isRedesignedTextCursorEnabled])
   {
-    v15 = [(CRLWPRep *)self layout];
-    v16 = v15 == 0;
+    layout = [(CRLWPRep *)self layout];
+    v16 = layout == 0;
 
     if (!v16)
     {
@@ -6386,8 +6386,8 @@ LABEL_6:
 
   if (self->_caretLayer && !self->_suppressSelectionHighlight)
   {
-    v17 = [(CRLWPRep *)self layout];
-    v18 = v17 == 0;
+    layout2 = [(CRLWPRep *)self layout];
+    v18 = layout2 == 0;
 
     if (!v18)
     {
@@ -6395,28 +6395,28 @@ LABEL_6:
     }
 
     [(CRLWPRep *)self p_updateSuppressedSpellingRange];
-    v19 = [(CRLWPRep *)self textEditor];
-    v20 = [v19 markedRange];
+    textEditor = [(CRLWPRep *)self textEditor];
+    markedRange = [textEditor markedRange];
     v22 = v21;
 
-    v23 = v5;
-    v24 = [(CRLWPRep *)self storage];
-    v25 = [v24 hasMarkedText];
+    v23 = selection;
+    storage = [(CRLWPRep *)self storage];
+    hasMarkedText = [storage hasMarkedText];
 
-    if (v25)
+    if (hasMarkedText)
     {
       v51.location = [v23 range];
-      v52.location = v20;
+      v52.location = markedRange;
       v52.length = v22;
       v26 = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:NSUnionRange(v51, v52).location, v51.length];
-      v27 = [(CRLTextRange *)v26 makeTrailingInsertionPoint];
-      v28 = [v27 nsRange];
-      v30 = [v23 copyWithNewRange:{v28, v29}];
+      makeTrailingInsertionPoint = [(CRLTextRange *)v26 makeTrailingInsertionPoint];
+      nsRange = [makeTrailingInsertionPoint nsRange];
+      v30 = [v23 copyWithNewRange:{nsRange, v29}];
 
       v23 = v30;
     }
 
-    v31 = [v23 isInsertionPoint];
+    isInsertionPoint = [v23 isInsertionPoint];
     if (v22)
     {
       v32 = 1;
@@ -6424,7 +6424,7 @@ LABEL_6:
 
     else
     {
-      v32 = v31;
+      v32 = isInsertionPoint;
     }
 
     if (v32 == 1)
@@ -6434,7 +6434,7 @@ LABEL_6:
 
     else if ([v23 isRange])
     {
-      [(CRLWPRep *)self p_updateLayersForRangeSelection:v23 selectionFlags:a3];
+      [(CRLWPRep *)self p_updateLayersForRangeSelection:v23 selectionFlags:flags];
     }
 
     else
@@ -6453,15 +6453,15 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  v3 = [(CRLWPRep *)self storage];
-  v4 = [v3 parentInfo];
+  storage = [(CRLWPRep *)self storage];
+  parentInfo = [storage parentInfo];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CRLWPRep *)self storage];
-    v6 = [v5 parentInfo];
-    v7 = [v6 shouldHideEmptyBullets];
+    storage2 = [(CRLWPRep *)self storage];
+    parentInfo2 = [storage2 parentInfo];
+    shouldHideEmptyBullets = [parentInfo2 shouldHideEmptyBullets];
 
-    if (v7)
+    if (shouldHideEmptyBullets)
     {
 LABEL_4:
       [(CRLWPRep *)self setNeedsDisplay];
@@ -6473,17 +6473,17 @@ LABEL_4:
   {
   }
 
-  v8 = [(CRLWPRep *)self selection];
-  if (!-[CRLWPSelection isEqual:](self->_lastSelection, "isEqual:", v8) && (([v8 isRange] & 1) != 0 || -[CRLWPSelection isRange](self->_lastSelection, "isRange")))
+  selection = [(CRLWPRep *)self selection];
+  if (!-[CRLWPSelection isEqual:](self->_lastSelection, "isEqual:", selection) && (([selection isRange] & 1) != 0 || -[CRLWPSelection isRange](self->_lastSelection, "isRange")))
   {
-    if (v8)
+    if (selection)
     {
-      v9 = [v8 range];
+      range = [selection range];
       v11 = v10;
-      v12 = [(CRLWPRep *)self storage];
-      v50.location = [v12 range];
+      storage3 = [(CRLWPRep *)self storage];
+      v50.location = [storage3 range];
       v50.length = v13;
-      v47.location = v9;
+      v47.location = range;
       v47.length = v11;
       v14 = NSIntersectionRange(v47, v50);
       location = v14.location;
@@ -6499,12 +6499,12 @@ LABEL_4:
       length = 0;
     }
 
-    v18 = [(CRLWPSelection *)self->_lastSelection range];
+    range2 = [(CRLWPSelection *)self->_lastSelection range];
     v20 = v19;
-    v21 = [(CRLWPRep *)self storage];
-    v51.location = [v21 range];
+    storage4 = [(CRLWPRep *)self storage];
+    v51.location = [storage4 range];
     v51.length = v22;
-    v48.location = v18;
+    v48.location = range2;
     v48.length = v20;
     v23 = NSIntersectionRange(v48, v51);
 
@@ -6623,100 +6623,100 @@ LABEL_38:
     [(CRLWPRep *)self updateUniversalAccessZoomWindow];
   }
 
-  v34 = [(CRLWPRep *)self selection];
-  v35 = [v34 copy];
+  selection2 = [(CRLWPRep *)self selection];
+  v35 = [selection2 copy];
   lastSelection = self->_lastSelection;
   self->_lastSelection = v35;
 }
 
 - (void)p_validateWithLayoutController
 {
-  v3 = [(CRLWPRep *)self layout];
-  v2 = [v3 layoutController];
-  [v2 validateLayoutWithDependencies:v3];
+  layout = [(CRLWPRep *)self layout];
+  layoutController = [layout layoutController];
+  [layoutController validateLayoutWithDependencies:layout];
 }
 
-- (void)p_drawTextLayerInContext:(CGContext *)a3
+- (void)p_drawTextLayerInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
-  v5 = [(CRLWPRep *)self textLayer];
-  [(CRLCanvasRep *)self setupForDrawingInLayer:v5 context:a3];
+  CGContextSaveGState(context);
+  textLayer = [(CRLWPRep *)self textLayer];
+  [(CRLCanvasRep *)self setupForDrawingInLayer:textLayer context:context];
 
-  v6 = [(CRLWPRep *)self textLayer];
+  textLayer2 = [(CRLWPRep *)self textLayer];
   LOBYTE(v8) = 0;
-  [(CRLWPRep *)self p_drawTextInLayer:v6 context:a3 limitSelection:0 rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:3, v8];
+  [(CRLWPRep *)self p_drawTextInLayer:textLayer2 context:context limitSelection:0 rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:3, v8];
 
-  v7 = [(CRLWPRep *)self textLayer];
-  [(CRLWPRep *)self didDrawInLayer:v7 context:a3];
+  textLayer3 = [(CRLWPRep *)self textLayer];
+  [(CRLWPRep *)self didDrawInLayer:textLayer3 context:context];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_drawTextBackgroundLayerInContext:(CGContext *)a3
+- (void)p_drawTextBackgroundLayerInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
-  v5 = [(CRLWPRep *)self textBackgroundLayer];
-  [(CRLCanvasRep *)self setupForDrawingInLayer:v5 context:a3];
+  CGContextSaveGState(context);
+  textBackgroundLayer = [(CRLWPRep *)self textBackgroundLayer];
+  [(CRLCanvasRep *)self setupForDrawingInLayer:textBackgroundLayer context:context];
 
-  v6 = [(CRLWPRep *)self textBackgroundLayer];
+  textBackgroundLayer2 = [(CRLWPRep *)self textBackgroundLayer];
   LOBYTE(v8) = 0;
-  [(CRLWPRep *)self p_drawTextInLayer:v6 context:a3 limitSelection:0 rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:2, v8];
+  [(CRLWPRep *)self p_drawTextInLayer:textBackgroundLayer2 context:context limitSelection:0 rubyGlyphRange:0x7FFFFFFFFFFFFFFFLL renderMode:0 suppressInvisibles:2, v8];
 
-  v7 = [(CRLWPRep *)self textBackgroundLayer];
-  [(CRLWPRep *)self didDrawInLayer:v7 context:a3];
+  textBackgroundLayer3 = [(CRLWPRep *)self textBackgroundLayer];
+  [(CRLWPRep *)self didDrawInLayer:textBackgroundLayer3 context:context];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v10 = a3;
-  v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v7 = [v6 shouldSuppressRendering];
+  layerCopy = layer;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  shouldSuppressRendering = [interactiveCanvasController shouldSuppressRendering];
 
-  if ((v7 & 1) == 0)
+  if ((shouldSuppressRendering & 1) == 0)
   {
-    v8 = [(CRLWPRep *)self textLayer];
+    textLayer = [(CRLWPRep *)self textLayer];
 
-    if (v8 == v10)
+    if (textLayer == layerCopy)
     {
-      [(CRLWPRep *)self p_drawTextLayerInContext:a4];
+      [(CRLWPRep *)self p_drawTextLayerInContext:context];
     }
 
     else
     {
-      v9 = [(CRLWPRep *)self textBackgroundLayer];
+      textBackgroundLayer = [(CRLWPRep *)self textBackgroundLayer];
 
-      if (v9 == v10)
+      if (textBackgroundLayer == layerCopy)
       {
-        [(CRLWPRep *)self p_drawTextBackgroundLayerInContext:a4];
+        [(CRLWPRep *)self p_drawTextBackgroundLayerInContext:context];
       }
     }
   }
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v4 = [NSNull null:a3];
+  v4 = [NSNull null:layer];
 
   return v4;
 }
 
-- (BOOL)shouldLayoutTilingLayer:(id)a3
+- (BOOL)shouldLayoutTilingLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 shouldLayoutTilingLayer:v4];
+  layerCopy = layer;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v6 = [interactiveCanvasController shouldLayoutTilingLayer:layerCopy];
 
   return v6;
 }
 
 - (BOOL)textIsVertical
 {
-  v2 = [(CRLWPRep *)self layout];
-  v3 = [v2 textIsVertical];
+  layout = [(CRLWPRep *)self layout];
+  textIsVertical = [layout textIsVertical];
 
-  return v3;
+  return textIsVertical;
 }
 
 - (void)p_teardown
@@ -6728,18 +6728,18 @@ LABEL_38:
     [(CRLWPRepCaretController *)self->_caretController tearDown];
     if ([(CRLWPHighlightArrayController *)self->_pulseArrayController autohide])
     {
-      v3 = [(CRLWPRep *)self primaryFindResultSearchReference];
-      if (v3)
+      primaryFindResultSearchReference = [(CRLWPRep *)self primaryFindResultSearchReference];
+      if (primaryFindResultSearchReference)
       {
-        v4 = v3;
-        v28 = [(CRLCanvasRep *)self interactiveCanvasController];
-        v27 = [v28 primaryFindResultSearchReference];
-        if (v27)
+        v4 = primaryFindResultSearchReference;
+        interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+        primaryFindResultSearchReference2 = [interactiveCanvasController primaryFindResultSearchReference];
+        if (primaryFindResultSearchReference2)
         {
-          v26 = [(CRLCanvasRep *)self interactiveCanvasController];
-          v5 = [v26 primaryFindResultSearchReference];
-          v6 = [(CRLWPRep *)self primaryFindResultSearchReference];
-          v7 = [v5 isEqual:v6];
+          interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+          primaryFindResultSearchReference3 = [interactiveCanvasController2 primaryFindResultSearchReference];
+          primaryFindResultSearchReference4 = [(CRLWPRep *)self primaryFindResultSearchReference];
+          v7 = [primaryFindResultSearchReference3 isEqual:primaryFindResultSearchReference4];
 
           if (v7)
           {
@@ -6829,31 +6829,31 @@ LABEL_38:
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
-- (void)p_drawTextInLayer:(id)a3 context:(CGContext *)a4 limitSelection:(id)a5 rubyGlyphRange:(_NSRange)a6 renderMode:(unint64_t)a7 suppressInvisibles:(BOOL)a8
+- (void)p_drawTextInLayer:(id)layer context:(CGContext *)context limitSelection:(id)selection rubyGlyphRange:(_NSRange)range renderMode:(unint64_t)mode suppressInvisibles:(BOOL)invisibles
 {
-  v63 = a3;
-  v51 = a5;
-  v43 = sub_10050FEFC(a4);
-  [v43 beginTextStorageChunk:self limitSelection:v51];
-  v68 = self;
-  v11 = [(CRLCanvasRep *)self canvas];
-  v62 = [v11 textRendererForLayer:v63 context:a4];
+  layerCopy = layer;
+  selectionCopy = selection;
+  v43 = sub_10050FEFC(context);
+  [v43 beginTextStorageChunk:self limitSelection:selectionCopy];
+  selfCopy = self;
+  canvas = [(CRLCanvasRep *)self canvas];
+  v62 = [canvas textRendererForLayer:layerCopy context:context];
 
-  v12 = [(CRLCanvasRep *)self canvas];
-  v13 = [v12 canvasController];
-  v14 = [v13 freehandDrawingToolkit];
-  v48 = [v14 isInDrawingMode];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas2 canvasController];
+  freehandDrawingToolkit = [canvasController freehandDrawingToolkit];
+  isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-  v15 = [(CRLCanvasRep *)v68 canvas];
-  if (![v15 isCanvasInteractive])
+  canvas3 = [(CRLCanvasRep *)selfCopy canvas];
+  if (![canvas3 isCanvasInteractive])
   {
 
     goto LABEL_5;
   }
 
-  v16 = [(CRLWPRep *)v68 textEditor];
+  textEditor = [(CRLWPRep *)selfCopy textEditor];
 
-  if (!v16)
+  if (!textEditor)
   {
 LABEL_5:
     v19 = 0;
@@ -6862,35 +6862,35 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v17 = [v16 markedRange];
+  markedRange = [textEditor markedRange];
   v46 = v18;
-  v47 = v17;
-  v19 = v16;
+  v47 = markedRange;
+  v19 = textEditor;
 LABEL_6:
   v42 = v19;
-  v52 = [v19 markedText];
+  markedText = [v19 markedText];
   v53 = 0;
-  if ([(CRLWPRep *)v68 p_spellCheckingEnabled]&& !a8)
+  if ([(CRLWPRep *)selfCopy p_spellCheckingEnabled]&& !invisibles)
   {
-    v53 = v68->_spellChecker;
+    v53 = selfCopy->_spellChecker;
     if (v53)
     {
-      v20 = [(CRLWPRep *)v68 layout];
-      if (([v20 isInstructional] & 1) == 0)
+      layout = [(CRLWPRep *)selfCopy layout];
+      if (([layout isInstructional] & 1) == 0)
       {
-        v21 = [(CRLWPRep *)v68 storage];
-        if ([v21 length])
+        storage = [(CRLWPRep *)selfCopy storage];
+        if ([storage length])
         {
-          v22 = [(CRLWPRep *)v68 storage];
-          v23 = [v22 markedTextRange];
+          storage2 = [(CRLWPRep *)selfCopy storage];
+          markedTextRange = [storage2 markedTextRange];
 
-          if (v23)
+          if (markedTextRange)
           {
             goto LABEL_16;
           }
 
-          v20 = [(CRLWPRep *)v68 columns];
-          v24 = [CRLWPColumn rangeOfColumns:v20];
+          layout = [(CRLWPRep *)selfCopy columns];
+          v24 = [CRLWPColumn rangeOfColumns:layout];
           [(CRLWPStorageSpellChecker *)v53 checkRange:v24 synchronously:v25, 1];
         }
 
@@ -6911,7 +6911,7 @@ LABEL_16:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = [(CRLWPRep *)v68 columns];
+  obj = [(CRLWPRep *)selfCopy columns];
   v54 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v54)
   {
@@ -6926,9 +6926,9 @@ LABEL_16:
         }
 
         v26 = *(*(&v70 + 1) + 8 * i);
-        v27 = [(CRLWPRep *)v68 layout];
-        v28 = [v27 interiorClippingPath];
-        v67 = [v28 copy];
+        layout2 = [(CRLWPRep *)selfCopy layout];
+        interiorClippingPath = [layout2 interiorClippingPath];
+        v67 = [interiorClippingPath copy];
 
         if (v26)
         {
@@ -6945,10 +6945,10 @@ LABEL_16:
         v64 = +[(CRLWPRangeArray *)CRLWPMutableRangeArray];
         v65 = +[(CRLWPRangeArray *)CRLWPMutableRangeArray];
         v61 = v26;
-        if (v63)
+        if (layerCopy)
         {
-          v55 = [(CRLWPRep *)v68 selection];
-          v60 = v55;
+          selection = [(CRLWPRep *)selfCopy selection];
+          v60 = selection;
         }
 
         else
@@ -6956,27 +6956,27 @@ LABEL_16:
           v60 = 0;
         }
 
-        length = v68->_dragRange.length;
-        location = v68->_dragRange.location;
-        v58 = [(CRLCanvasRep *)v68 canvas];
-        v30 = [v58 isCanvasInteractive];
-        v31 = v68->_suppressedMisspellingRange.location;
-        v32 = v68->_suppressedMisspellingRange.length;
-        v57 = [(CRLCanvasRep *)v68 canvas];
-        v33 = [v57 shouldSuppressBackgrounds];
-        v56 = [(CRLWPRep *)v68 layout];
-        v34 = [v56 pageCount];
-        v35 = [(CRLCanvasRep *)v68 canvas];
-        v36 = [v35 canvasController];
-        v37 = [v36 canvasEditor];
-        v38 = [v37 canvasSelection];
-        LOBYTE(v41) = a8;
-        LOBYTE(v40) = ((a7 & 0x20) != 0) | v33;
-        BYTE1(v39) = v48;
-        LOBYTE(v39) = v30;
-        [v61 renderWithRenderer:v62 currentSelection:v60 limitSelection:v51 listRange:location rubyGlyphRange:length isCanvasInteractive:a6.location isInDrawingMode:a6.length spellChecker:v39 suppressedMisspellingRange:v53 blackAndWhite:v31 dictationInterpretations:v32 autocorrections:v40 markedRange:v64 markedText:v65 renderMode:v47 pageCount:v46 suppressInvisibles:v52 currentCanvasSelection:{a7, v34, v41, v38}];
+        length = selfCopy->_dragRange.length;
+        location = selfCopy->_dragRange.location;
+        canvas4 = [(CRLCanvasRep *)selfCopy canvas];
+        isCanvasInteractive = [canvas4 isCanvasInteractive];
+        v31 = selfCopy->_suppressedMisspellingRange.location;
+        v32 = selfCopy->_suppressedMisspellingRange.length;
+        canvas5 = [(CRLCanvasRep *)selfCopy canvas];
+        shouldSuppressBackgrounds = [canvas5 shouldSuppressBackgrounds];
+        layout3 = [(CRLWPRep *)selfCopy layout];
+        pageCount = [layout3 pageCount];
+        canvas6 = [(CRLCanvasRep *)selfCopy canvas];
+        canvasController2 = [canvas6 canvasController];
+        canvasEditor = [canvasController2 canvasEditor];
+        canvasSelection = [canvasEditor canvasSelection];
+        LOBYTE(v41) = invisibles;
+        LOBYTE(v40) = ((mode & 0x20) != 0) | shouldSuppressBackgrounds;
+        BYTE1(v39) = isInDrawingMode;
+        LOBYTE(v39) = isCanvasInteractive;
+        [v61 renderWithRenderer:v62 currentSelection:v60 limitSelection:selectionCopy listRange:location rubyGlyphRange:length isCanvasInteractive:range.location isInDrawingMode:range.length spellChecker:v39 suppressedMisspellingRange:v53 blackAndWhite:v31 dictationInterpretations:v32 autocorrections:v40 markedRange:v64 markedText:v65 renderMode:v47 pageCount:v46 suppressInvisibles:markedText currentCanvasSelection:{mode, pageCount, v41, canvasSelection}];
 
-        if (v63)
+        if (layerCopy)
         {
         }
       }
@@ -6987,13 +6987,13 @@ LABEL_16:
     while (v54);
   }
 
-  [v43 endTextStorageChunk:v68];
+  [v43 endTextStorageChunk:selfCopy];
 }
 
-- (void)p_createLayer:(int64_t)a3
+- (void)p_createLayer:(int64_t)layer
 {
   textLayers = self->_textLayers;
-  if (self->_textLayers[a3])
+  if (self->_textLayers[layer])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -7025,48 +7025,48 @@ LABEL_16:
   }
 
   v9 = objc_alloc_init(CRLTilingLayer);
-  v10 = textLayers[a3];
-  textLayers[a3] = &v9->super.super;
+  v10 = textLayers[layer];
+  textLayers[layer] = &v9->super.super;
 
-  [(CALayer *)textLayers[a3] setAnchorPoint:CGPointZero.x, CGPointZero.y];
-  [(CALayer *)textLayers[a3] setEdgeAntialiasingMask:0];
-  [(CALayer *)textLayers[a3] setDelegate:self];
-  [(CALayer *)textLayers[a3] setPosition:CGPointZero.x, CGPointZero.y];
+  [(CALayer *)textLayers[layer] setAnchorPoint:CGPointZero.x, CGPointZero.y];
+  [(CALayer *)textLayers[layer] setEdgeAntialiasingMask:0];
+  [(CALayer *)textLayers[layer] setDelegate:self];
+  [(CALayer *)textLayers[layer] setPosition:CGPointZero.x, CGPointZero.y];
   v11 = -3.0;
-  if (a3 == 1)
+  if (layer == 1)
   {
     v11 = -2.0;
   }
 
-  [(CALayer *)textLayers[a3] setZPosition:v11];
-  v12 = [(CRLCanvasRep *)self canvas];
-  [v12 contentsScale];
-  [(CALayer *)textLayers[a3] setContentsScale:?];
+  [(CALayer *)textLayers[layer] setZPosition:v11];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
+  [(CALayer *)textLayers[layer] setContentsScale:?];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CALayer *)textLayers[a3] setTilingMode:[(CRLWPRep *)self tilingMode]];
+    [(CALayer *)textLayers[layer] setTilingMode:[(CRLWPRep *)self tilingMode]];
   }
 
-  if (a3 == 1)
+  if (layer == 1)
   {
     [(CALayer *)textLayers[1] setDrawsAsynchronously:1];
   }
 
-  v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v13 setNeedsDisplayOnLayer:textLayers[a3]];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController setNeedsDisplayOnLayer:textLayers[layer]];
 }
 
-- (void)p_destroyLayer:(int64_t)a3
+- (void)p_destroyLayer:(int64_t)layer
 {
   textLayers = self->_textLayers;
-  [(CALayer *)self->_textLayers[a3] setDelegate:0];
-  v5 = textLayers[a3];
-  textLayers[a3] = 0;
+  [(CALayer *)self->_textLayers[layer] setDelegate:0];
+  v5 = textLayers[layer];
+  textLayers[layer] = 0;
 }
 
-- (id)p_caretLayerWithZPosition:(double)a3
+- (id)p_caretLayerWithZPosition:(double)position
 {
   v5 = objc_alloc_init(CAShapeLayer);
   [v5 setAnchorPoint:{CGPointZero.x, CGPointZero.y}];
@@ -7075,9 +7075,9 @@ LABEL_16:
   LODWORD(v6) = 1.0;
   [v5 setOpacity:v6];
   [v5 setDelegate:self];
-  [v5 setZPosition:a3];
-  v7 = [(CRLCanvasRep *)self canvas];
-  [v7 contentsScale];
+  [v5 setZPosition:position];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   [v5 setContentsScale:?];
 
   [v5 setHidden:0];
@@ -7086,11 +7086,11 @@ LABEL_16:
   return v5;
 }
 
-- (void)p_positionAndSizeFloatingCaret:(id)a3 atPoint:(CGPoint)a4
+- (void)p_positionAndSizeFloatingCaret:(id)caret atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  caretCopy = caret;
   [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:x, y];
   [(CRLWPRep *)self p_closestCaretRectForPoint:1 inSelection:1 allowPastBreak:?];
   v9 = v8;
@@ -7112,46 +7112,46 @@ LABEL_16:
 
   if (v15 > 0.0 || v13 > 0.0)
   {
-    [v7 setAnchorPoint:{0.5, 0.5}];
-    [v7 setEdgeAntialiasingMask:0];
-    v20 = [(CRLCanvasRep *)self canvas];
-    [v20 viewScale];
+    [caretCopy setAnchorPoint:{0.5, 0.5}];
+    [caretCopy setEdgeAntialiasingMask:0];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v22 = v21;
 
     [(CRLWPRepHelper *)self->_repHelper floatingCaretHeightMult];
-    [v7 setBounds:{0.0, 0.0, 2.0 / v22, round(v15 * v23)}];
+    [caretCopy setBounds:{0.0, 0.0, 2.0 / v22, round(v15 * v23)}];
   }
 
   v35 = 0uLL;
   v32[0] = v33;
   v32[1] = v34;
   v32[2] = 0uLL;
-  [v7 setAffineTransform:v32];
-  v24 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v24 convertUnscaledToBoundsPoint:{x, y}];
+  [caretCopy setAffineTransform:v32];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:{x, y}];
   v26 = v25;
   v28 = v27;
 
   [(CRLWPRepHelper *)self->_repHelper floatingCaretLineSnapAmount];
   if (v29 > 0.0)
   {
-    [(CRLWPRep *)self p_applyLineSnappingToFloatingCaret:v7 atPoint:x withRect:y, v9, v11, v13, v15];
+    [(CRLWPRep *)self p_applyLineSnappingToFloatingCaret:caretCopy atPoint:x withRect:y, v9, v11, v13, v15];
     v26 = v30;
     v28 = v31;
   }
 
-  [v7 setPosition:{v26, v28}];
+  [caretCopy setPosition:{v26, v28}];
 }
 
-- (CGPoint)p_applyLineSnappingToFloatingCaret:(id)a3 atPoint:(CGPoint)a4 withRect:(CGRect)a5
+- (CGPoint)p_applyLineSnappingToFloatingCaret:(id)caret atPoint:(CGPoint)point withRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  caretCopy = caret;
   [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:v10, v9];
   v14 = v13;
   v16 = v15;
@@ -7164,7 +7164,7 @@ LABEL_16:
   v19 = v18;
   [(CRLCanvasRep *)self naturalBounds];
   v21 = v20;
-  [v12 bounds];
+  [caretCopy bounds];
   if (v22 >= v21)
   {
     v23 = v21;
@@ -7177,7 +7177,7 @@ LABEL_16:
 
   [(CRLCanvasRep *)self naturalBounds];
   v25 = v24;
-  [v12 bounds];
+  [caretCopy bounds];
   v27 = v26;
   [(CRLCanvasRep *)self naturalBounds];
   if (v27 >= v25)
@@ -7194,8 +7194,8 @@ LABEL_16:
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_1001203B8(v14, MidY + (v16 - MidY) / v19, v46.origin.x, v46.origin.y, v46.size.width, v46.size.height)];
   v34 = v33;
   v36 = v35;
-  v37 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v37 convertUnscaledToBoundsPoint:{v34, v36}];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:{v34, v36}];
   v39 = v38;
   v41 = v40;
 
@@ -7206,12 +7206,12 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)p_positionCaretLayer:(id)a3 forSelection:(id)a4 layerRelative:(BOOL)a5
+- (BOOL)p_positionCaretLayer:(id)layer forSelection:(id)selection layerRelative:(BOOL)relative
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(CRLWPRep *)self p_caretRectForSelection:v9];
+  relativeCopy = relative;
+  layerCopy = layer;
+  selectionCopy = selection;
+  [(CRLWPRep *)self p_caretRectForSelection:selectionCopy];
   [(CRLWPRepHelper *)self->_repHelper rectForCaretLayer:?];
   v12 = v11;
   v14 = v13;
@@ -7222,7 +7222,7 @@ LABEL_16:
   {
     v19 = v10;
     memset(&v69, 0, sizeof(v69));
-    if (v5)
+    if (relativeCopy)
     {
       [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
     }
@@ -7247,10 +7247,10 @@ LABEL_16:
     sub_1001208E0(v24);
     v26 = fmod(360.0 - v25, 360.0);
     [(CRLWPRepHelper *)self->_repHelper anchorPointForCaretLayer:v14 > 0.0 rotated:v26 != 0.0];
-    [v8 setAnchorPoint:?];
+    [layerCopy setAnchorPoint:?];
     if (v26 == 0.0)
     {
-      [v8 setEdgeAntialiasingMask:0];
+      [layerCopy setEdgeAntialiasingMask:0];
       v38 = x;
       v39 = y;
       v40 = width;
@@ -7273,13 +7273,13 @@ LABEL_16:
         v37 = 2.0;
       }
 
-      v42 = -[CRLWPRep columnForCharIndex:](self, "columnForCharIndex:", [v9 range]);
+      v42 = -[CRLWPRep columnForCharIndex:](self, "columnForCharIndex:", [selectionCopy range]);
       [(CRLCanvasRep *)self naturalBounds];
       v44 = v43;
       v46 = v45;
       v48 = v47;
       v50 = v49;
-      [v42 boundsIncludingDropCapRectsForSelectionType:{objc_msgSend(v9, "type")}];
+      [v42 boundsIncludingDropCapRectsForSelectionType:{objc_msgSend(selectionCopy, "type")}];
       v79.origin.x = v51;
       v79.origin.y = v52;
       v79.size.width = v53;
@@ -7293,7 +7293,7 @@ LABEL_16:
       v56 = v75.origin.y;
       v57 = v75.size.width;
       v58 = v75.size.height;
-      if (v5)
+      if (relativeCopy)
       {
         [(CRLCanvasRep *)self transformToConvertNaturalToLayerRelative];
       }
@@ -7341,7 +7341,7 @@ LABEL_16:
         v29 = 15;
       }
 
-      [v8 setEdgeAntialiasingMask:v29];
+      [layerCopy setEdgeAntialiasingMask:v29];
       [(CRLWPRep *)self p_convertNaturalRectToRotated:x repAngle:y, width, height, v26];
       v33 = v32;
       v35 = v34;
@@ -7367,11 +7367,11 @@ LABEL_16:
     }
 
     [(CRLWPRepHelper *)self->_repHelper boundsForCaretLayer:v33, v35, v36, v37];
-    [v8 setBounds:?];
+    [layerCopy setBounds:?];
     [(CRLWPRepHelper *)self->_repHelper positionForCaretLayer:v33, v35, v36, v37];
-    [v8 setPosition:?];
+    [layerCopy setPosition:?];
     v59 = objc_opt_class();
-    v60 = sub_100013F00(v59, v8);
+    v60 = sub_100013F00(v59, layerCopy);
     CGAffineTransformMakeTranslation(&transform, 0.0, 0.0);
     if (v14 <= 0.0)
     {
@@ -7392,7 +7392,7 @@ LABEL_16:
     [v60 setPath:v63];
     CGPathRelease(v63);
     v64 = [NSNumber numberWithDouble:(360.0 - v26) * 3.14159265 / 180.0];
-    [v8 setValue:v64 forKeyPath:@"transform.rotation.z"];
+    [layerCopy setValue:v64 forKeyPath:@"transform.rotation.z"];
   }
 
   return v18;
@@ -7401,20 +7401,20 @@ LABEL_16:
 - (void)i_textInputResponderDidResignFirstResponder
 {
   [(CRLWPRepCaretController *)self->_caretController willEnterForeground];
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v3 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 }
 
 - (void)i_textInputResponderDidBecomeFirstResponder
 {
   [(CRLWPRepCaretController *)self->_caretController didEnterBackground];
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v3 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 }
 
 - (void)p_createSelectionLineLayers
 {
-  v3 = [(CRLWPRep *)self p_highlightLineColor];
+  p_highlightLineColor = [(CRLWPRep *)self p_highlightLineColor];
   v4 = 0;
   selectionLineLayers = self->_selectionLineLayers;
   v6 = 1;
@@ -7472,7 +7472,7 @@ LABEL_16:
     [(CAShapeLayer *)selectionLineLayers[v4] setEdgeAntialiasingMask:0];
     [(CAShapeLayer *)selectionLineLayers[v4] setDelegate:self];
     [(CAShapeLayer *)selectionLineLayers[v4] setZPosition:-1.0];
-    [(CAShapeLayer *)selectionLineLayers[v4] setFillColor:v3];
+    [(CAShapeLayer *)selectionLineLayers[v4] setFillColor:p_highlightLineColor];
     v6 = 0;
     v4 = 1;
   }
@@ -7480,39 +7480,39 @@ LABEL_16:
   while ((v7 & 1) != 0);
 }
 
-- (void)p_setSelectionLineLayersHidden:(BOOL)a3
+- (void)p_setSelectionLineLayersHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   selectionLineLayers = self->_selectionLineLayers;
   [(CAShapeLayer *)self->_selectionLineLayers[0] setHidden:?];
   v5 = selectionLineLayers[1];
 
-  [(CAShapeLayer *)v5 setHidden:v3];
+  [(CAShapeLayer *)v5 setHidden:hiddenCopy];
 }
 
 - (void)p_setSelectionHighlightColor
 {
-  v3 = [(CRLWPRep *)self selection];
-  v4 = [v3 type];
+  selection = [(CRLWPRep *)self selection];
+  type = [selection type];
 
-  if (v4 == 3 && ![(CRLWPRep *)self usesStandardHighlightColorForReplaceSelections])
+  if (type == 3 && ![(CRLWPRep *)self usesStandardHighlightColorForReplaceSelections])
   {
     v12 = [CRLColor colorWithRed:0.949019611 green:0.75686276 blue:0.654901981 alpha:0.200000003];
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v6 = [v5 layerHost];
-    v7 = [v6 asiOSCVC];
-    v8 = [v7 crl_windowWrapper];
-    if ([v8 isInSplitViewMode])
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
+    crl_windowWrapper = [asiOSCVC crl_windowWrapper];
+    if ([crl_windowWrapper isInSplitViewMode])
     {
-      v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v10 = [v9 layerHost];
-      v11 = [v10 isInFocusedContainer];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      layerHost2 = [interactiveCanvasController2 layerHost];
+      isInFocusedContainer = [layerHost2 isInFocusedContainer];
 
-      if ((v11 & 1) == 0)
+      if ((isInFocusedContainer & 1) == 0)
       {
         v12 = [objc_opt_class() unfocusedHighlightColorForDarkMode:0];
         goto LABEL_9;
@@ -7643,8 +7643,8 @@ LABEL_9:
   selectionParagraphBorderLayer = self->_selectionParagraphBorderLayer;
   self->_selectionParagraphBorderLayer = v6;
 
-  v8 = [(CRLCanvasRep *)self canvas];
-  [v8 contentsScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   [(CAShapeLayer *)self->_selectionParagraphBorderLayer setContentsScale:?];
 
   [(CAShapeLayer *)self->_selectionParagraphBorderLayer setHidden:0];
@@ -7677,9 +7677,9 @@ LABEL_9:
   }
 }
 
-- (void)p_showSelectionParagraphBorderLayerWithPath:(CGPath *)a3
+- (void)p_showSelectionParagraphBorderLayerWithPath:(CGPath *)path
 {
-  [(CAShapeLayer *)self->_selectionParagraphBorderLayer setPath:a3];
+  [(CAShapeLayer *)self->_selectionParagraphBorderLayer setPath:path];
   [(CAShapeLayer *)self->_selectionParagraphBorderLayer opacity];
   if (v4 != 1.0)
   {
@@ -7719,13 +7719,13 @@ LABEL_9:
 
 - (void)p_updateMarkHighlightLayer
 {
-  v3 = [(CRLWPRep *)self textEditor];
-  v4 = [v3 markedRange];
+  textEditor = [(CRLWPRep *)self textEditor];
+  markedRange = [textEditor markedRange];
   v6 = v5;
-  v7 = [(CRLWPRep *)self isBeingEdited];
+  isBeingEdited = [(CRLWPRep *)self isBeingEdited];
   if (v6)
   {
-    v8 = v7;
+    v8 = isBeingEdited;
   }
 
   else
@@ -7735,28 +7735,28 @@ LABEL_9:
 
   if (v8 == 1)
   {
-    v34 = v3;
-    v35 = [CRLWPSelection selectionWithRange:v4, v6];
+    v34 = textEditor;
+    v35 = [CRLWPSelection selectionWithRange:markedRange, v6];
     [(CAShapeLayer *)self->_markHighlightLayer setSublayers:0];
     [(CAShapeLayer *)self->_markHighlightLayer setPath:0];
-    v9 = [v3 markedText];
-    v10 = [v9 attribute:NSMarkedClauseSegmentAttributeName atIndex:0 effectiveRange:0];
+    markedText = [textEditor markedText];
+    v10 = [markedText attribute:NSMarkedClauseSegmentAttributeName atIndex:0 effectiveRange:0];
 
     if (v10)
     {
       v36 = +[NSMutableArray array];
-      v11 = [v3 markedRange];
-      v12 = [(CRLWPRep *)self storage];
-      v13 = [v12 length];
+      markedRange2 = [textEditor markedRange];
+      storage = [(CRLWPRep *)self storage];
+      v13 = [storage length];
 
       v37 = xmmword_101464838;
       v14 = 0;
-      while (v14 < [v9 length])
+      while (v14 < [markedText length])
       {
-        v15 = [v9 attribute:NSMarkedClauseSegmentAttributeName atIndex:v37 effectiveRange:&v37];
-        v16 = [v9 attribute:NSBackgroundColorAttributeName atIndex:v37 effectiveRange:0];
+        v15 = [markedText attribute:NSMarkedClauseSegmentAttributeName atIndex:v37 effectiveRange:&v37];
+        v16 = [markedText attribute:NSBackgroundColorAttributeName atIndex:v37 effectiveRange:0];
         v17 = v16;
-        if (!*(&v37 + 1) || (v18 = &v11[v37], &v11[v37] >= v13))
+        if (!*(&v37 + 1) || (v18 = &markedRange2[v37], &markedRange2[v37] >= v13))
         {
 
           break;
@@ -7764,7 +7764,7 @@ LABEL_9:
 
         if (v15)
         {
-          v19 = &v11[*(&v37 + 1) + v37];
+          v19 = &markedRange2[*(&v37 + 1) + v37];
           if (v13 < v19)
           {
             v19 = v13;
@@ -7777,7 +7777,7 @@ LABEL_9:
 
           else
           {
-            v20 = &v11[v37];
+            v20 = &markedRange2[v37];
           }
 
           if (v18 >= v19)
@@ -7787,7 +7787,7 @@ LABEL_9:
 
           else
           {
-            v21 = &v11[v37];
+            v21 = &markedRange2[v37];
           }
 
           v22 = [CRLWPSelection selectionWithRange:v21, v20 - v21];
@@ -7816,15 +7816,15 @@ LABEL_9:
         v37 = (*(&v37 + 1) + v37);
       }
 
-      v3 = v34;
+      textEditor = v34;
       if ([v36 count])
       {
         [(CAShapeLayer *)self->_markHighlightLayer setSublayers:v36];
       }
     }
 
-    v25 = [(CAShapeLayer *)self->_markHighlightLayer sublayers];
-    v26 = [v25 count];
+    sublayers = [(CAShapeLayer *)self->_markHighlightLayer sublayers];
+    v26 = [sublayers count];
 
     if (v26)
     {
@@ -7836,27 +7836,27 @@ LABEL_9:
       v27 = [(CRLWPRep *)self p_newSelectionPathForSelection:v35 transform:0 headPinRect:0 tailPinRect:0 markedText:1];
     }
 
-    v28 = [(CRLWPRep *)self textEditor];
-    v29 = [v28 markedText];
+    textEditor2 = [(CRLWPRep *)self textEditor];
+    markedText2 = [textEditor2 markedText];
 
-    if (v29)
+    if (markedText2)
     {
-      v30 = [v29 attributesAtIndex:0 effectiveRange:0];
+      v30 = [markedText2 attributesAtIndex:0 effectiveRange:0];
       v31 = [v30 objectForKeyedSubscript:NSBackgroundColorAttributeName];
       if (v31)
       {
         v32 = [CRLColor colorWithUIColor:v31];
-        v33 = [v32 CGColor];
+        cGColor = [v32 CGColor];
 
-        v3 = v34;
+        textEditor = v34;
       }
 
       else
       {
-        v33 = 0;
+        cGColor = 0;
       }
 
-      if (!v33)
+      if (!cGColor)
       {
         goto LABEL_42;
       }
@@ -7864,14 +7864,14 @@ LABEL_9:
 
     else
     {
-      v33 = [qword_101A35000 CGColor];
-      if (!v33)
+      cGColor = [qword_101A35000 CGColor];
+      if (!cGColor)
       {
         goto LABEL_42;
       }
     }
 
-    [(CAShapeLayer *)self->_markHighlightLayer setFillColor:v33];
+    [(CAShapeLayer *)self->_markHighlightLayer setFillColor:cGColor];
     [(CAShapeLayer *)self->_markHighlightLayer setStrokeColor:0];
     [(CAShapeLayer *)self->_markHighlightLayer setPath:v27];
     [(CAShapeLayer *)self->_markHighlightLayer setHidden:0];
@@ -7902,8 +7902,8 @@ LABEL_43:
 - (void)invalidateCollaboratorCursorRenderable
 {
   self->_collaboratorCursorRenderableValid = 0;
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v3 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 }
 
 - (BOOL)shouldAddCollaboratorLayerToOverlays
@@ -7920,14 +7920,14 @@ LABEL_43:
 
 - (BOOL)shouldShowCollaboratorCursorHighlight
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 collaboratorCursorDelegate];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  collaboratorCursorDelegate = [interactiveCanvasController collaboratorCursorDelegate];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v3 currentCollaboratorPresences];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  currentCollaboratorPresences = [interactiveCanvasController currentCollaboratorPresences];
+  v6 = [currentCollaboratorPresences countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -7937,10 +7937,10 @@ LABEL_43:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentCollaboratorPresences);
         }
 
-        v9 = [v4 collaboratorCursorSelectionPathForRenderer:v3 collaboratorPresence:*(*(&v13 + 1) + 8 * i)];
+        v9 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:interactiveCanvasController collaboratorPresence:*(*(&v13 + 1) + 8 * i)];
         v10 = [(CRLWPRep *)self p_storageMatchesSelectionPath:v9];
 
         if (v10)
@@ -7950,7 +7950,7 @@ LABEL_43:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [currentCollaboratorPresences countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -7966,9 +7966,9 @@ LABEL_11:
   return v11;
 }
 
-- (void)collaboratorCursorChangedToSelectionPath:(id)a3
+- (void)collaboratorCursorChangedToSelectionPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (qword_101AD5B90 != -1)
   {
     sub_10137A674();
@@ -7978,11 +7978,11 @@ LABEL_11:
   if (os_log_type_enabled(off_1019EDBE8, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Collaborator Cursor: Selection Path Changed called for rep: %{public}@", &v6, 0xCu);
   }
 
-  if ([(CRLWPRep *)self p_storageMatchesSelectionPath:v4])
+  if ([(CRLWPRep *)self p_storageMatchesSelectionPath:pathCopy])
   {
     [(CRLCanvasRep *)self invalidateKnobs];
     [(CRLWPRep *)self invalidateCollaboratorCursorRenderable];
@@ -7993,19 +7993,19 @@ LABEL_11:
 {
   self->_collaboratorCursorRenderableValid = 0;
   [(CRLCanvasRep *)self invalidateKnobs];
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v3 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 }
 
-- (BOOL)p_storageMatchesSelectionPath:(id)a3
+- (BOOL)p_storageMatchesSelectionPath:(id)path
 {
-  v17 = a3;
+  pathCopy = path;
   [(CRLCanvasRep *)self interactiveCanvasController];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v18 = v20 = 0u;
-  v4 = [v18 modelsForSelectionPath:v17];
+  v4 = [v18 modelsForSelectionPath:pathCopy];
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -8030,8 +8030,8 @@ LABEL_11:
           }
 
           v13 = objc_opt_class();
-          v14 = [v8 storage];
-          v10 = sub_100014370(v13, v14);
+          storage = [v8 storage];
+          v10 = sub_100014370(v13, storage);
 
           if (!v10)
           {
@@ -8039,8 +8039,8 @@ LABEL_11:
           }
         }
 
-        v11 = [(CRLWPRep *)self storage];
-        v12 = v10 == v11;
+        storage2 = [(CRLWPRep *)self storage];
+        v12 = v10 == storage2;
 
         if (v12)
         {
@@ -8061,16 +8061,16 @@ LABEL_14:
   return v15;
 }
 
-- (double)collaborativeCursorOpacityForCaret:(BOOL)a3
+- (double)collaborativeCursorOpacityForCaret:(BOOL)caret
 {
-  v3 = a3;
+  caretCopy = caret;
   if (qword_101A35018 != -1)
   {
     sub_10137A688();
   }
 
   v4 = &qword_101A35008;
-  if (!v3)
+  if (!caretCopy)
   {
     v4 = &qword_101A35010;
   }
@@ -8078,18 +8078,18 @@ LABEL_14:
   return *v4;
 }
 
-- (void)p_withCollaboratorCursorPerformBlock:(id)a3
+- (void)p_withCollaboratorCursorPerformBlock:(id)block
 {
-  v46 = a3;
-  v50 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v45 = [v50 currentCollaboratorPresences];
-  v51 = [v50 collaboratorCursorDelegate];
-  v54 = self;
+  blockCopy = block;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  currentCollaboratorPresences = [interactiveCanvasController currentCollaboratorPresences];
+  collaboratorCursorDelegate = [interactiveCanvasController collaboratorCursorDelegate];
+  selfCopy = self;
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  range_8 = v45;
+  range_8 = currentCollaboratorPresences;
   v4 = [range_8 countByEnumeratingWithState:&v59 objects:v81 count:16];
   if (v4)
   {
@@ -8105,22 +8105,22 @@ LABEL_14:
         }
 
         v6 = *(*(&v59 + 1) + 8 * i);
-        v7 = [v51 collaboratorCursorSelectionPathForRenderer:v50 collaboratorPresence:v6];
-        if ([(CRLWPRep *)v54 p_storageMatchesSelectionPath:v7])
+        v7 = [collaboratorCursorDelegate collaboratorCursorSelectionPathForRenderer:interactiveCanvasController collaboratorPresence:v6];
+        if ([(CRLWPRep *)selfCopy p_storageMatchesSelectionPath:v7])
         {
           v8 = objc_opt_class();
-          v9 = [v7 orderedSelections];
-          v10 = [v9 lastObject];
-          v53 = sub_100014370(v8, v10);
+          orderedSelections = [v7 orderedSelections];
+          lastObject = [orderedSelections lastObject];
+          v53 = sub_100014370(v8, lastObject);
 
           if ([v53 isValid])
           {
-            v11 = [v53 range];
+            range = [v53 range];
             v13 = v12;
-            v14 = [(CRLWPRep *)v54 storage];
-            range = v11;
-            v15 = v11 + v13;
-            v16 = v15 > [v14 length];
+            storage = [(CRLWPRep *)selfCopy storage];
+            range = range;
+            v15 = range + v13;
+            v16 = v15 > [storage length];
 
             if (v16)
             {
@@ -8136,8 +8136,8 @@ LABEL_14:
                 v83.location = range;
                 v83.length = v13;
                 v41 = NSStringFromRange(v83);
-                v42 = [(CRLWPRep *)v54 storage];
-                v43 = [v42 length];
+                storage2 = [(CRLWPRep *)selfCopy storage];
+                v43 = [storage2 length];
                 *buf = 67110402;
                 *&buf[4] = v17;
                 *&buf[8] = 2082;
@@ -8174,36 +8174,36 @@ LABEL_14:
               v82.location = range;
               v82.length = v13;
               v22 = NSStringFromRange(v82);
-              v23 = [(CRLWPRep *)v54 storage];
-              +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v20, v21, 4046, 0, "collaborator selection extends past end of storage (%{public}@ > %lu)", v22, [v23 length]);
+              storage3 = [(CRLWPRep *)selfCopy storage];
+              +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v20, v21, 4046, 0, "collaborator selection extends past end of storage (%{public}@ > %lu)", v22, [storage3 length]);
             }
 
-            v24 = [(CRLWPRep *)v54 storage];
-            v25 = v15 > [v24 length];
+            storage4 = [(CRLWPRep *)selfCopy storage];
+            v25 = v15 > [storage4 length];
 
             if (!v25)
             {
-              v26 = [(CRLCanvasRep *)v54 canvas];
-              [v26 viewScale];
+              canvas = [(CRLCanvasRep *)selfCopy canvas];
+              [canvas viewScale];
               v28 = v27;
 
               if (v13)
               {
-                v29 = [(CRLWPRep *)v54 p_newSelectionPathForSelection:v53 transform:0 headPinRect:0 tailPinRect:0];
+                v29 = [(CRLWPRep *)selfCopy p_newSelectionPathForSelection:v53 transform:0 headPinRect:0 tailPinRect:0];
                 if (v29)
                 {
                   v30 = *&CGAffineTransformIdentity.tx;
                   *&buf[16] = *&CGAffineTransformIdentity.c;
                   *&buf[32] = v30;
                   *buf = *&CGAffineTransformIdentity.a;
-                  v46[2](v46, v29, buf, v6, 0);
+                  blockCopy[2](blockCopy, v29, buf, v6, 0);
                   CFRelease(v29);
                 }
               }
 
-              else if ([(CRLWPRep *)v54 p_allowCaretForSelection:v53])
+              else if ([(CRLWPRep *)selfCopy p_allowCaretForSelection:v53])
               {
-                [(CRLWPRep *)v54 p_caretRectForSelection:v53];
+                [(CRLWPRep *)selfCopy p_caretRectForSelection:v53];
                 x = v84.origin.x;
                 y = v84.origin.y;
                 width = v84.size.width;
@@ -8228,10 +8228,10 @@ LABEL_14:
                   v64 = 0u;
                   v65 = 0u;
                   memset(buf, 0, sizeof(buf));
-                  [(CRLWPRep *)v54 lineMetricsAtCharIndex:range];
-                  v35 = [(CRLWPRep *)v54 columnForCharIndex:range];
-                  v36 = [v35 textIsVertical];
-                  if ((v36 & 1) == 0)
+                  [(CRLWPRep *)selfCopy lineMetricsAtCharIndex:range];
+                  v35 = [(CRLWPRep *)selfCopy columnForCharIndex:range];
+                  textIsVertical = [v35 textIsVertical];
+                  if ((textIsVertical & 1) == 0)
                   {
                     x = sub_1001204D4(x, y, width, height);
                     y = 4.0 / v28 + *&buf[32];
@@ -8244,7 +8244,7 @@ LABEL_14:
                     v39 = 7.0 / v28;
                     v40 = 14.0 / v28;
                     CGPathMoveToPoint(Mutable, 0, x, y);
-                    if (v36)
+                    if (textIsVertical)
                     {
                       CGPathAddLineToPoint(v38, 0, x - v39, y - v40 * 0.5);
                       CGPathAddLineToPoint(v38, 0, x - v39, v40 * 0.5 + y);
@@ -8261,11 +8261,11 @@ LABEL_14:
                     v57 = 0u;
                     v58 = 0u;
                     v56 = 0u;
-                    [(CRLCanvasRep *)v54 transformToConvertNaturalToLayerRelative];
+                    [(CRLCanvasRep *)selfCopy transformToConvertNaturalToLayerRelative];
                     v55[1] = v57;
                     v55[2] = v58;
                     v55[0] = v56;
-                    v46[2](v46, v38, v55, v6, 1);
+                    blockCopy[2](blockCopy, v38, v55, v6, 1);
                     CFRelease(v38);
                   }
                 }
@@ -8293,7 +8293,7 @@ LABEL_14:
   if (os_log_type_enabled(off_1019EDBE8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Collaborator Cursor: Requesting collaborator cursor renderable for WPRep: %{public}@", buf, 0xCu);
   }
 
@@ -8308,7 +8308,7 @@ LABEL_14:
     if (os_log_type_enabled(off_1019EDBE8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Collaborator Cursor: Not regenerating renderable, because it was considered already valid, for WPRep: %{public}@", buf, 0xCu);
     }
 
@@ -8326,7 +8326,7 @@ LABEL_14:
     if (os_log_type_enabled(off_1019EDBE8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Collaborator Cursor: Actually re-generating renderable for WPRep: %{public}@", buf, 0xCu);
     }
 
@@ -8337,7 +8337,7 @@ LABEL_14:
     v14 = 3221225472;
     v15 = sub_1004784D8;
     v16 = &unk_101865510;
-    v17 = self;
+    selfCopy4 = self;
     v9 = v8;
     v18 = v9;
     [(CRLWPRep *)self p_withCollaboratorCursorPerformBlock:&v13];
@@ -8345,19 +8345,19 @@ LABEL_14:
     self->_collaboratorCursorRenderableValid = 1;
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
+  selfCopy5 = self;
+  objc_sync_enter(selfCopy5);
   if (v9)
   {
-    objc_storeStrong(&v11->_collaboratorCursorRenderable, v9);
+    objc_storeStrong(&selfCopy5->_collaboratorCursorRenderable, v9);
   }
 
   else
   {
-    v9 = v11->_collaboratorCursorRenderable;
+    v9 = selfCopy5->_collaboratorCursorRenderable;
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy5);
 
   return v9;
 }
@@ -8383,37 +8383,37 @@ LABEL_14:
 
 - (BOOL)p_spellCheckingEnabled
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  if ([v3 spellCheckingSuppressed])
+  canvas = [(CRLCanvasRep *)self canvas];
+  if ([canvas spellCheckingSuppressed])
   {
-    v4 = 0;
+    spellCheckingEnabled = 0;
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)self canvas];
-    if ([v5 isCanvasInteractive])
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    if ([canvas2 isCanvasInteractive])
     {
       v6 = +[_TtC8Freeform21CRLWPObjcUserDefaults sharedUserDefaults];
-      v4 = [v6 spellCheckingEnabled];
+      spellCheckingEnabled = [v6 spellCheckingEnabled];
     }
 
     else
     {
-      v4 = 0;
+      spellCheckingEnabled = 0;
     }
   }
 
-  return v4;
+  return spellCheckingEnabled;
 }
 
 - (BOOL)p_automaticTextSubstitutionEnabled
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  if ([v3 isCanvasInteractive])
+  canvas = [(CRLCanvasRep *)self canvas];
+  if ([canvas isCanvasInteractive])
   {
-    v4 = [(CRLCanvasRep *)self canvas];
-    v5 = [v4 spellCheckingSuppressed] ^ 1;
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    v5 = [canvas2 spellCheckingSuppressed] ^ 1;
   }
 
   else
@@ -8426,19 +8426,19 @@ LABEL_14:
 
 - (BOOL)p_needsSpellChecker
 {
-  v3 = [(CRLWPRep *)self p_spellCheckingEnabled]|| [(CRLWPRep *)self p_automaticTextSubstitutionEnabled];
-  v4 = [(CRLWPRep *)self storage];
-  if ([v4 wpKind] != 7)
+  p_automaticTextSubstitutionEnabled = [(CRLWPRep *)self p_spellCheckingEnabled]|| [(CRLWPRep *)self p_automaticTextSubstitutionEnabled];
+  storage = [(CRLWPRep *)self storage];
+  if ([storage wpKind] != 7)
   {
-    v5 = [(CRLWPRep *)self layout];
-    if (![v5 isInstructional])
+    layout = [(CRLWPRep *)self layout];
+    if (![layout isInstructional])
     {
-      v7 = [(CRLWPRep *)self storage];
-      v8 = [v7 length];
+      storage2 = [(CRLWPRep *)self storage];
+      v8 = [storage2 length];
 
       if (v8)
       {
-        return v3;
+        return p_automaticTextSubstitutionEnabled;
       }
 
       return 0;
@@ -8483,8 +8483,8 @@ LABEL_14:
 
   else
   {
-    v3 = [(CRLWPRep *)self storage];
-    v4 = [CRLWPStorageSpellChecker newSpellCheckerForStorage:v3 selectionPath:0 orSearchCanvasDelegate:0];
+    storage = [(CRLWPRep *)self storage];
+    v4 = [CRLWPStorageSpellChecker newSpellCheckerForStorage:storage selectionPath:0 orSearchCanvasDelegate:0];
     spellChecker = self->_spellChecker;
     self->_spellChecker = v4;
 
@@ -8493,7 +8493,7 @@ LABEL_14:
   }
 }
 
-- (void)p_spellcheckFinished:(id)a3
+- (void)p_spellcheckFinished:(id)finished
 {
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
@@ -8502,7 +8502,7 @@ LABEL_14:
   v7[3] = &unk_101865598;
   objc_copyWeak(&v8, &location);
   v4 = objc_retainBlock(v7);
-  if (a3)
+  if (finished)
   {
     v5 = 0;
   }
@@ -8525,29 +8525,29 @@ LABEL_14:
   self->_spellChecker = 0;
 }
 
-- (void)didDrawInLayer:(id)a3 context:(CGContext *)a4
+- (void)didDrawInLayer:(id)layer context:(CGContext *)context
 {
   v4.receiver = self;
   v4.super_class = CRLWPRep;
-  [(CRLCanvasRep *)&v4 didDrawInLayer:a3 context:a4];
+  [(CRLCanvasRep *)&v4 didDrawInLayer:layer context:context];
 }
 
-- (void)p_selectionChangedNotification:(id)a3
+- (void)p_selectionChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [notification userInfo];
+  if (userInfo)
   {
-    v16 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"CRLWPEditorKey"];
-    v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v7 = [v5 interactiveCanvasController];
-    v8 = v7;
-    if (v7 == v6)
+    v16 = userInfo;
+    v5 = [userInfo objectForKeyedSubscript:@"CRLWPEditorKey"];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    interactiveCanvasController2 = [v5 interactiveCanvasController];
+    v8 = interactiveCanvasController2;
+    if (interactiveCanvasController2 == interactiveCanvasController)
     {
-      v9 = [v5 storage];
-      v10 = [(CRLWPRep *)self storage];
+      storage = [v5 storage];
+      storage2 = [(CRLWPRep *)self storage];
 
-      if (v9 == v10)
+      if (storage == storage2)
       {
         self->_selectionChanged = 1;
         v11 = [v16 objectForKeyedSubscript:@"CRLWPEditorSelectionFlagsKey"];
@@ -8556,17 +8556,17 @@ LABEL_14:
         newSelectionFlags = self->_newSelectionFlags;
         if ((newSelectionFlags & 0x100) != 0)
         {
-          v13 = [(CRLCanvasRep *)self canvas];
-          [v13 invalidateReps];
+          canvas = [(CRLCanvasRep *)self canvas];
+          [canvas invalidateReps];
 
           newSelectionFlags = self->_newSelectionFlags;
         }
 
         self->_hudStateDirty = (newSelectionFlags & 0x800) == 0;
-        v14 = [(CRLWPRep *)self layout];
-        v15 = [v14 layoutIsValid];
+        layout = [(CRLWPRep *)self layout];
+        layoutIsValid = [layout layoutIsValid];
 
-        if (v15)
+        if (layoutIsValid)
         {
           [(CRLWPRep *)self i_setNeedsDisplayForSelectionChange];
         }
@@ -8579,7 +8579,7 @@ LABEL_14:
     {
     }
 
-    v4 = v16;
+    userInfo = v16;
   }
 }
 
@@ -8590,11 +8590,11 @@ LABEL_14:
   {
     if ([(CAShapeLayer *)caretLayer fillColor])
     {
-      v4 = [(CRLWPRep *)self p_caretLayerColor];
-      if (v4)
+      p_caretLayerColor = [(CRLWPRep *)self p_caretLayerColor];
+      if (p_caretLayerColor)
       {
-        v5 = v4;
-        if (!CGColorEqualToColor([(CAShapeLayer *)self->_caretLayer fillColor], v4))
+        v5 = p_caretLayerColor;
+        if (!CGColorEqualToColor([(CAShapeLayer *)self->_caretLayer fillColor], p_caretLayerColor))
         {
           v6 = self->_caretLayer;
 
@@ -8607,14 +8607,14 @@ LABEL_14:
 
 - (CGColor)p_caretLayerColor
 {
-  v3 = [(CRLWPRep *)self overrideCaretColor];
+  overrideCaretColor = [(CRLWPRep *)self overrideCaretColor];
 
-  if (v3)
+  if (overrideCaretColor)
   {
-    v4 = [(CRLWPRep *)self overrideCaretColor];
-    v5 = [v4 CGColor];
+    overrideCaretColor2 = [(CRLWPRep *)self overrideCaretColor];
+    cGColor = [overrideCaretColor2 CGColor];
 
-    return v5;
+    return cGColor;
   }
 
   else
@@ -8627,19 +8627,19 @@ LABEL_14:
 - (CGColor)p_highlightLineColor
 {
   v2 = [CRLColor colorWithRed:0.0 green:0.435294118 blue:0.890196078 alpha:1.0];
-  v3 = [v2 CGColor];
+  cGColor = [v2 CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 - (CGAffineTransform)transformToConvertNaturalToScaledRoot
 {
   memset(&v13, 0, sizeof(v13));
-  v5 = [(CRLWPRep *)self layout];
-  v6 = v5;
-  if (v5)
+  layout = [(CRLWPRep *)self layout];
+  v6 = layout;
+  if (layout)
   {
-    [v5 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -8647,8 +8647,8 @@ LABEL_14:
     memset(&v13, 0, sizeof(v13));
   }
 
-  v7 = [(CRLCanvasRep *)self canvas];
-  [v7 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v9 = v8;
 
   t1 = v13;
@@ -8656,18 +8656,18 @@ LABEL_14:
   return CGAffineTransformConcat(retstr, &t1, &v11);
 }
 
-- (id)selectionForDragAndDropNaturalPoint:(CGPoint)a3
+- (id)selectionForDragAndDropNaturalPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPRep *)self storage];
-  v7 = [v6 length];
+  y = point.y;
+  x = point.x;
+  storage = [(CRLWPRep *)self storage];
+  v7 = [storage length];
 
   if (v7)
   {
     v16 = 0;
-    v8 = [(CRLWPRep *)self layout];
-    v9 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:&v16 isAtEndOfLine:v8 inLayoutTarget:x, y];
+    layout = [(CRLWPRep *)self layout];
+    v9 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:&v16 isAtEndOfLine:layout inLayoutTarget:x, y];
 
     v10 = v16;
     v11 = [CRLWPSelection alloc];
@@ -8687,15 +8687,15 @@ LABEL_14:
   return v14;
 }
 
-- (id)textEditorForDropIntoStorage:(id)a3
+- (id)textEditorForDropIntoStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [(CRLWPRep *)self textEditor];
-  if (v5)
+  storageCopy = storage;
+  textEditor = [(CRLWPRep *)self textEditor];
+  if (textEditor)
   {
-    v6 = [(CRLWPRep *)self storage];
+    storage = [(CRLWPRep *)self storage];
 
-    if (v6 != v4)
+    if (storage != storageCopy)
     {
       v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -8706,7 +8706,7 @@ LABEL_14:
       v8 = off_1019EDA68;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(CRLWPRep *)self storage];
+        storage2 = [(CRLWPRep *)self storage];
         *buf = 67110402;
         v24 = v7;
         v25 = 2082;
@@ -8716,9 +8716,9 @@ LABEL_14:
         v29 = 1024;
         v30 = 4393;
         v31 = 2112;
-        v32 = v4;
+        v32 = storageCopy;
         v33 = 2112;
-        v34 = v22;
+        v34 = storage2;
         _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Specified storage (%@) is not the rep storage (%@).", buf, 0x36u);
       }
 
@@ -8737,41 +8737,41 @@ LABEL_14:
 
       v10 = [NSString stringWithUTF8String:"[CRLWPRep textEditorForDropIntoStorage:]"];
       v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/CRLWPRep.mm"];
-      v12 = [(CRLWPRep *)self storage];
-      [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:4393 isFatal:0 description:"Specified storage (%@) is not the rep storage (%@).", v4, v12];
+      storage3 = [(CRLWPRep *)self storage];
+      [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:4393 isFatal:0 description:"Specified storage (%@) is not the rep storage (%@).", storageCopy, storage3];
     }
   }
 
   else
   {
     v13 = objc_opt_class();
-    v14 = [v4 parentInfo];
-    v15 = sub_100014370(v13, v14);
+    parentInfo = [storageCopy parentInfo];
+    v15 = sub_100014370(v13, parentInfo);
 
     v16 = objc_alloc([(CRLWPRep *)self wpEditorClass]);
-    v17 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v18 = [v17 editingCoordinator];
-    v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v20 = [v16 initWithEditingCoordinator:v18 enclosingShape:v15 icc:v19];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    v20 = [v16 initWithEditingCoordinator:editingCoordinator enclosingShape:v15 icc:interactiveCanvasController2];
 
-    v5 = v20;
+    textEditor = v20;
   }
 
-  return v5;
+  return textEditor;
 }
 
-- (BOOL)isDragPoint:(CGPoint)a3 inSelection:(id)a4 includeEndpoints:(BOOL)a5
+- (BOOL)isDragPoint:(CGPoint)point inSelection:(id)selection includeEndpoints:(BOOL)endpoints
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  if ([v9 isRange])
+  endpointsCopy = endpoints;
+  y = point.y;
+  x = point.x;
+  selectionCopy = selection;
+  if ([selectionCopy isRange])
   {
-    v10 = [(CRLWPRep *)self layout];
-    v11 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:0 allowNotFound:0 isAtEndOfLine:0 leadingEdge:v10 inLayoutTarget:x, y];
+    layout = [(CRLWPRep *)self layout];
+    v11 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:0 allowNotFound:0 isAtEndOfLine:0 leadingEdge:layout inLayoutTarget:x, y];
 
-    if (v5)
+    if (endpointsCopy)
     {
       v12 = 3;
     }
@@ -8781,7 +8781,7 @@ LABEL_14:
       v12 = 0;
     }
 
-    v13 = [v9 containsCharacterAtIndex:v11 withOptions:v12];
+    v13 = [selectionCopy containsCharacterAtIndex:v11 withOptions:v12];
   }
 
   else
@@ -8794,21 +8794,21 @@ LABEL_14:
 
 - (_TtC8Freeform12CRLWPStorage)storageForDragDropOperation
 {
-  v3 = [(CRLWPRep *)self storage];
-  v4 = [(CRLCanvasRep *)self parentRep];
-  v11 = sub_1003035DC(v4, 1, v5, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLWPRepParent);
+  storage = [(CRLWPRep *)self storage];
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v11 = sub_1003035DC(parentRep, 1, v5, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLWPRepParent);
 
   if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v12 = [v11 storageForDragDropOperation];
+    storageForDragDropOperation = [v11 storageForDragDropOperation];
 
-    v3 = v12;
+    storage = storageForDragDropOperation;
   }
 
-  return v3;
+  return storage;
 }
 
-- (id)backgroundColorForDragPreviewOfSelection:(id)a3
+- (id)backgroundColorForDragPreviewOfSelection:(id)selection
 {
   v3 = [(CRLWPRep *)self colorBehindLayer:self->_textLayers[1]];
   if (!v3)
@@ -8821,26 +8821,26 @@ LABEL_14:
 
 - (void)p_clearICCPrimaryFindResultSearchReference
 {
-  v3 = [(CRLWPRep *)self primaryFindResultSearchReference];
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v4 canvasInvalidatedForRep:self];
+  primaryFindResultSearchReference = [(CRLWPRep *)self primaryFindResultSearchReference];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController canvasInvalidatedForRep:self];
 
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 canvas];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  canvas = [interactiveCanvasController2 canvas];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100479B94;
   v8[3] = &unk_10185D010;
   v8[4] = self;
-  v7 = v3;
+  v7 = primaryFindResultSearchReference;
   v9 = v7;
-  [v6 performBlockAfterLayoutIfNecessary:v8];
+  [canvas performBlockAfterLayoutIfNecessary:v8];
 }
 
-- (void)pulseAnimationDidStop:(id)a3
+- (void)pulseAnimationDidStop:(id)stop
 {
   pulseArrayController = self->_pulseArrayController;
-  if (pulseArrayController == a3)
+  if (pulseArrayController == stop)
   {
     if ([(CRLWPHighlightArrayController *)pulseArrayController autohide])
     {
@@ -8876,16 +8876,16 @@ LABEL_14:
         [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:4474 isFatal:0 description:"expected nil value for '%{public}s'", "_pulseArrayController"];
       }
 
-      v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v9 = [v8 primaryFindResultSearchReference];
-      v10 = v9 == 0;
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      primaryFindResultSearchReference = [interactiveCanvasController primaryFindResultSearchReference];
+      v10 = primaryFindResultSearchReference == 0;
 
       if (!v10)
       {
-        v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-        v12 = [v11 primaryFindResultSearchReference];
-        v13 = [(CRLWPRep *)self primaryFindResultSearchReference];
-        v14 = [v12 isEqual:v13];
+        interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+        primaryFindResultSearchReference2 = [interactiveCanvasController2 primaryFindResultSearchReference];
+        primaryFindResultSearchReference3 = [(CRLWPRep *)self primaryFindResultSearchReference];
+        v14 = [primaryFindResultSearchReference2 isEqual:primaryFindResultSearchReference3];
 
         if (v14)
         {
@@ -8896,46 +8896,46 @@ LABEL_14:
       [(CRLWPRep *)self p_setPrimaryFindResultSearchReference:0];
       [(CRLWPRep *)self p_updateForCurrentSelectionWithFlags:0];
       [(CRLCanvasRep *)self invalidateKnobs];
-      v15 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v15 canvasInvalidatedForRep:self];
+      interactiveCanvasController3 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController3 canvasInvalidatedForRep:self];
     }
 
-    v16 = [(CRLWPRep *)self primaryFindResultSearchReference];
-    [v16 setPulseHighlight:0];
+    primaryFindResultSearchReference4 = [(CRLWPRep *)self primaryFindResultSearchReference];
+    [primaryFindResultSearchReference4 setPulseHighlight:0];
   }
 }
 
-- (void)pulseAnimationDidStopForPulse:(id)a3
+- (void)pulseAnimationDidStopForPulse:(id)pulse
 {
   caretPulseController = self->_caretPulseController;
-  if (caretPulseController == a3)
+  if (caretPulseController == pulse)
   {
     self->_caretPulseController = 0;
 
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v5 canvasInvalidatedForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController canvasInvalidatedForRep:self];
   }
 }
 
-- (unint64_t)pulseAnimationStyle:(id)a3
+- (unint64_t)pulseAnimationStyle:(id)style
 {
-  v4 = [(CRLWPRep *)self primaryFindResultSearchReference];
+  primaryFindResultSearchReference = [(CRLWPRep *)self primaryFindResultSearchReference];
 
-  if (v4)
+  if (primaryFindResultSearchReference)
   {
-    v5 = [(CRLWPRep *)self primaryFindResultSearchReference];
-    v4 = [v5 pulseAnimationStyle];
+    primaryFindResultSearchReference2 = [(CRLWPRep *)self primaryFindResultSearchReference];
+    primaryFindResultSearchReference = [primaryFindResultSearchReference2 pulseAnimationStyle];
   }
 
-  return v4;
+  return primaryFindResultSearchReference;
 }
 
-- (void)p_setPulseControllerActive:(BOOL)a3 autohide:(BOOL)a4
+- (void)p_setPulseControllerActive:(BOOL)active autohide:(BOOL)autohide
 {
   pulseArrayController = self->_pulseArrayController;
-  if (a3)
+  if (active)
   {
-    v6 = a4;
+    autohideCopy = autohide;
     if (!pulseArrayController)
     {
       v7 = [[CRLWPHighlightArrayController alloc] initWithZOrder:self delegate:8.0];
@@ -8946,12 +8946,12 @@ LABEL_14:
     }
 
     [(CRLWPHighlightArrayController *)pulseArrayController setShouldPulsate:1];
-    [(CRLWPHighlightArrayController *)self->_pulseArrayController setAutohide:v6];
-    v9 = [(CRLWPRep *)self layout];
-    v10 = v9;
-    if (v9)
+    [(CRLWPHighlightArrayController *)self->_pulseArrayController setAutohide:autohideCopy];
+    layout = [(CRLWPRep *)self layout];
+    v10 = layout;
+    if (layout)
     {
-      [v9 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -8967,8 +8967,8 @@ LABEL_14:
     v13[2] = v16;
     [(CRLWPHighlightArrayController *)v11 setTransform:v13];
 
-    v12 = [(CRLCanvasRep *)self canvas];
-    [v12 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     [(CRLWPHighlightArrayController *)self->_pulseArrayController setViewScale:?];
   }
 
@@ -8978,19 +8978,19 @@ LABEL_14:
   }
 }
 
-- (BOOL)p_doesRepIntersectSearchReference:(id)a3
+- (BOOL)p_doesRepIntersectSearchReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, referenceCopy);
   v7 = v6;
   if (v6 && ([v6 storage], v8 = objc_claimAutoreleasedReturnValue(), -[CRLWPRep storage](self, "storage"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v8 == v9))
   {
-    v10 = [v7 selection];
-    v11 = v10;
-    if (v10)
+    selection = [v7 selection];
+    v11 = selection;
+    if (selection)
     {
-      [v10 range];
+      [selection range];
       if (v12)
       {
         self = [(CRLWPRep *)self range];
@@ -9023,26 +9023,26 @@ LABEL_14:
   return self;
 }
 
-- (void)i_primaryFindResultChanged:(id)a3
+- (void)i_primaryFindResultChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   if ([(CRLWPRep *)self p_doesRepIntersectSearchReference:?]|| ([(CRLWPRep *)self primaryFindResultSearchReference], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    [(CRLWPRep *)self p_setPrimaryFindResultSearchReference:v5];
+    [(CRLWPRep *)self p_setPrimaryFindResultSearchReference:changedCopy];
   }
 }
 
-- (void)p_setPrimaryFindResultSearchReference:(id)a3
+- (void)p_setPrimaryFindResultSearchReference:(id)reference
 {
-  v10 = a3;
+  referenceCopy = reference;
   v4 = [(CRLWPRep *)self p_doesRepIntersectSearchReference:?];
   pulseArrayController = self->_pulseArrayController;
   if (v4)
   {
     [(CRLWPHighlightArrayController *)pulseArrayController stop];
-    -[CRLWPRep p_setPulseControllerActive:autohide:](self, "p_setPulseControllerActive:autohide:", v10 != 0, [v10 autohideHighlight]);
+    -[CRLWPRep p_setPulseControllerActive:autohide:](self, "p_setPulseControllerActive:autohide:", referenceCopy != 0, [referenceCopy autohideHighlight]);
     v6 = objc_opt_class();
-    v7 = sub_100014370(v6, v10);
+    v7 = sub_100014370(v6, referenceCopy);
     [(CRLWPRep *)self setPrimaryFindResultSearchReference:v7];
   }
 
@@ -9055,47 +9055,47 @@ LABEL_14:
   }
 
   self->_searchHitsAreInvalid = 1;
-  v8 = [(CRLWPRep *)self layout];
-  [v8 invalidate];
+  layout = [(CRLWPRep *)self layout];
+  [layout invalidate];
 
-  v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v9 canvasInvalidatedForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController canvasInvalidatedForRep:self];
 }
 
-- (void)i_setSearchReferencesToHighlight:(id)a3
+- (void)i_setSearchReferencesToHighlight:(id)highlight
 {
-  v9 = a3;
-  v4 = [(CRLWPRep *)self storage];
-  v5 = [v9 objectForKeyedSubscript:v4];
+  highlightCopy = highlight;
+  storage = [(CRLWPRep *)self storage];
+  v5 = [highlightCopy objectForKeyedSubscript:storage];
 
-  v6 = [(CRLWPRep *)self searchReferences];
+  searchReferences = [(CRLWPRep *)self searchReferences];
 
-  if (v6 != v5)
+  if (searchReferences != v5)
   {
     [(CRLWPRep *)self setSearchReferences:v5];
     self->_searchHitsAreInvalid = 1;
-    v7 = [(CRLWPRep *)self layout];
-    [v7 invalidate];
+    layout = [(CRLWPRep *)self layout];
+    [layout invalidate];
 
-    v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v8 canvasInvalidatedForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController canvasInvalidatedForRep:self];
 
     [(CRLCanvasRep *)self invalidateKnobs];
   }
 }
 
-- (void)prepareLayoutForImagingSearchReferencesAsActive:(BOOL)a3 usingBlock:(id)a4
+- (void)prepareLayoutForImagingSearchReferencesAsActive:(BOOL)active usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CRLWPRep *)self storage];
-  v8 = [v7 wpKind];
+  activeCopy = active;
+  blockCopy = block;
+  storage = [(CRLWPRep *)self storage];
+  wpKind = [storage wpKind];
 
-  if (v8 >= 3)
+  if (wpKind >= 3)
   {
     v9 = objc_opt_class();
-    v10 = [(CRLWPRep *)self layout];
-    v11 = sub_100014370(v9, v10);
+    layout = [(CRLWPRep *)self layout];
+    v11 = sub_100014370(v9, layout);
 
     if (!v11)
     {
@@ -9128,8 +9128,8 @@ LABEL_14:
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:4591 isFatal:0 description:"invalid nil value for '%{public}s'", "layout"];
     }
 
-    v15 = [v11 layoutController];
-    if (!v15)
+    layoutController = [v11 layoutController];
+    if (!layoutController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -9160,7 +9160,7 @@ LABEL_14:
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:4593 isFatal:0 description:"Building a imageSearchReference for a layout that has no layout controller"];
     }
 
-    if (v4)
+    if (activeCopy)
     {
       v19 = sub_1002843F0();
     }
@@ -9174,27 +9174,27 @@ LABEL_14:
     v21 = [CRLColor colorWithCGColor:v19];
     [(CRLWPRep *)self setBackgroundColor:v21];
 
-    [v15 validateLayoutWithDependencies:v11];
+    [layoutController validateLayoutWithDependencies:v11];
     if ([v11 layoutIsValid])
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
     [(CRLWPRep *)self setBackgroundColor:0];
     CGColorRelease(v20);
-    [v15 validateLayoutWithDependencies:v11];
+    [layoutController validateLayoutWithDependencies:v11];
   }
 
   else
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 }
 
 - (void)p_updateHighlights
 {
-  v3 = [(CRLWPRep *)self searchReferences];
-  v4 = [v3 count];
+  searchReferences = [(CRLWPRep *)self searchReferences];
+  v4 = [searchReferences count];
 
   highlightArrayController = self->_highlightArrayController;
   if (v4)
@@ -9206,11 +9206,11 @@ LABEL_14:
       self->_highlightArrayController = v6;
     }
 
-    v8 = [(CRLWPRep *)self layout];
-    v9 = v8;
-    if (v8)
+    layout = [(CRLWPRep *)self layout];
+    v9 = layout;
+    if (layout)
     {
-      [v8 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -9226,13 +9226,13 @@ LABEL_14:
     v16[2] = v19;
     [(CRLWPHighlightArrayController *)v10 setTransform:v16];
 
-    v11 = [(CRLCanvasRep *)self canvas];
-    [v11 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     [(CRLWPHighlightArrayController *)self->_highlightArrayController setViewScale:?];
 
     [(CRLWPHighlightArrayController *)self->_highlightArrayController reset];
-    v12 = [(CRLWPRep *)self searchReferences];
-    v13 = [v12 count];
+    searchReferences2 = [(CRLWPRep *)self searchReferences];
+    v13 = [searchReferences2 count];
 
     if (v13)
     {
@@ -9254,10 +9254,10 @@ LABEL_14:
   }
 }
 
-- (CGPath)newPathForSearchReference:(id)a3
+- (CGPath)newPathForSearchReference:(id)reference
 {
-  v4 = [a3 selectionPath];
-  v5 = [v4 mostSpecificSelectionOfClass:objc_opt_class()];
+  selectionPath = [reference selectionPath];
+  v5 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
   if (v5)
   {
@@ -9282,8 +9282,8 @@ LABEL_14:
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v17 = [(CRLWPRep *)self columns];
-      v18 = [v17 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      columns = [(CRLWPRep *)self columns];
+      v18 = [columns countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v18)
       {
         v19 = *v41;
@@ -9293,7 +9293,7 @@ LABEL_7:
         {
           if (*v41 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(columns);
           }
 
           v21 = *(*(&v40 + 1) + 8 * v20);
@@ -9305,7 +9305,7 @@ LABEL_7:
 
           if (v18 == ++v20)
           {
-            v18 = [v17 countByEnumeratingWithState:&v40 objects:v44 count:16];
+            v18 = [columns countByEnumeratingWithState:&v40 objects:v44 count:16];
             if (v18)
             {
               goto LABEL_7;
@@ -9417,17 +9417,17 @@ LABEL_16:
   return Mutable;
 }
 
-- (id)imageForSearchReference:(id)a3 forPath:(CGPath *)a4 shouldPulsate:(BOOL)a5
+- (id)imageForSearchReference:(id)reference forPath:(CGPath *)path shouldPulsate:(BOOL)pulsate
 {
-  v5 = a5;
-  v7 = [a3 selectionPath];
-  v8 = [v7 mostSpecificSelectionOfClass:objc_opt_class()];
+  pulsateCopy = pulsate;
+  selectionPath = [reference selectionPath];
+  v8 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
   [v8 range];
   if (v9)
   {
     LOBYTE(v12) = 0;
-    v10 = [(CRLWPRep *)self textImageForSelection:v8 frame:0 usingGlyphRect:0 shouldPulsate:v5 suppressInvisibles:0 suppressChildReps:0 drawBackground:-1.0 inset:v12];
+    v10 = [(CRLWPRep *)self textImageForSelection:v8 frame:0 usingGlyphRect:0 shouldPulsate:pulsateCopy suppressInvisibles:0 suppressChildReps:0 drawBackground:-1.0 inset:v12];
   }
 
   else
@@ -9438,31 +9438,31 @@ LABEL_16:
   return v10;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v10 = a3;
+  stopCopy = stop;
   [CRLWPRepHelper animationDidStop:"animationDidStop:caretLayer:floatingCaretLayer:" caretLayer:? floatingCaretLayer:?];
-  v5 = [(CRLWPRep *)self floatingCaretLayer];
-  v6 = [v5 animationForKey:@"dropAnimation"];
+  floatingCaretLayer = [(CRLWPRep *)self floatingCaretLayer];
+  v6 = [floatingCaretLayer animationForKey:@"dropAnimation"];
 
-  v7 = v10;
-  if (v6 == v10)
+  v7 = stopCopy;
+  if (v6 == stopCopy)
   {
-    v8 = [(CRLWPRep *)self floatingCaretLayer];
-    [v8 removeFromSuperlayer];
+    floatingCaretLayer2 = [(CRLWPRep *)self floatingCaretLayer];
+    [floatingCaretLayer2 removeFromSuperlayer];
 
     [(CRLWPRep *)self setFloatingCaretLayer:0];
-    v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v9 invalidateOverlayLayersForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController invalidateOverlayLayersForRep:self];
 
-    v7 = v10;
+    v7 = stopCopy;
   }
 }
 
 - (NSArray)scribbleCapableElements
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }
@@ -9493,21 +9493,21 @@ LABEL_16:
   return v3;
 }
 
-- (void)scribbleSetSelectionForBeginEditingWithBoundsPoint:(CGPoint)a3 tappedInRep:(id)a4
+- (void)scribbleSetSelectionForBeginEditingWithBoundsPoint:(CGPoint)point tappedInRep:(id)rep
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CRLCanvasRep *)self canvas];
-  v9 = [v8 canvasController];
+  y = point.y;
+  x = point.x;
+  repCopy = rep;
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
 
-  v10 = [v9 editorController];
-  v11 = [v10 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  editorController = [canvasController editorController];
+  v11 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
-  v12 = [v11 storage];
-  v13 = [v7 storage];
+  storage = [v11 storage];
+  storage2 = [repCopy storage];
 
-  if (v12 != v13)
+  if (storage != storage2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -9538,54 +9538,54 @@ LABEL_16:
     [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:4764 isFatal:0 description:"Expected the tapped rep to match our storage."];
   }
 
-  [v9 convertBoundsToUnscaledPoint:{x, y}];
+  [canvasController convertBoundsToUnscaledPoint:{x, y}];
   [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:?];
   v18 = v17;
   v20 = v19;
   v35 = 0;
-  v21 = [v7 layout];
+  layout = [repCopy layout];
   LOBYTE(v32) = 0;
-  v22 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:0 allowNotFound:1 pastCenterGoesToNextChar:1 constrainToAscentAndDescent:&v35 isAtEndOfLine:0 leadingEdge:v18 ignoreEmptyColumns:v20 inLayoutTarget:v32, v21];
+  v22 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:0 allowNotFound:1 pastCenterGoesToNextChar:1 constrainToAscentAndDescent:&v35 isAtEndOfLine:0 leadingEdge:v18 ignoreEmptyColumns:v20 inLayoutTarget:v32, layout];
 
   v23 = v35;
   if ([(CRLWPRep *)self scribbleExceedsVerticalDistanceForNearestCharIndex:v22 boundsPoint:v35 isAtEndOfLine:x, y])
   {
-    v24 = [v7 layout];
+    layout2 = [repCopy layout];
     LOBYTE(v33) = 0;
-    v22 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:0 allowNotFound:1 pastCenterGoesToNextChar:0 constrainToAscentAndDescent:&v35 isAtEndOfLine:0 leadingEdge:v18 ignoreEmptyColumns:v20 inLayoutTarget:v33, v24];
+    v22 = [CRLWPColumn charIndexFromPoint:0 allowPastBreak:0 allowNotFound:1 pastCenterGoesToNextChar:0 constrainToAscentAndDescent:&v35 isAtEndOfLine:0 leadingEdge:v18 ignoreEmptyColumns:v20 inLayoutTarget:v33, layout2];
 
     v23 = v35;
   }
 
   v25 = [CRLWPSelection alloc];
-  v26 = [v7 storage];
+  storage3 = [repCopy storage];
   LOBYTE(v34) = 1;
-  v27 = [(CRLWPSelection *)v25 initWithType:0 range:v22 styleInsertionBehavior:0 caretAffinity:0 smartFieldRange:v23 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v34, v26];
+  v27 = [(CRLWPSelection *)v25 initWithType:0 range:v22 styleInsertionBehavior:0 caretAffinity:0 smartFieldRange:v23 leadingEdge:0x7FFFFFFFFFFFFFFFLL storage:0, v34, storage3];
 
-  v28 = [v9 selectionModelTranslator];
-  v29 = [v7 storage];
-  v30 = [v28 selectionPathForSelection:v27 onStorage:v29];
+  selectionModelTranslator = [canvasController selectionModelTranslator];
+  storage4 = [repCopy storage];
+  v30 = [selectionModelTranslator selectionPathForSelection:v27 onStorage:storage4];
 
-  v31 = [v9 editorController];
-  [v31 setSelectionPath:v30];
+  editorController2 = [canvasController editorController];
+  [editorController2 setSelectionPath:v30];
 }
 
-- (BOOL)scribbleExceedsVerticalDistanceForNearestCharIndex:(unint64_t)a3 boundsPoint:(CGPoint)a4 isAtEndOfLine:(BOOL)a5
+- (BOOL)scribbleExceedsVerticalDistanceForNearestCharIndex:(unint64_t)index boundsPoint:(CGPoint)point isAtEndOfLine:(BOOL)line
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 1;
   }
 
-  y = a4.y;
-  [(CRLWPRep *)self caretRectForCharIndex:a3 caretAffinity:a5, a4.x];
+  y = point.y;
+  [(CRLWPRep *)self caretRectForCharIndex:index caretAffinity:line, point.x];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_100120414(v8, v9, v10, v11)];
   v13 = v12;
   v15 = v14;
-  v16 = [(CRLCanvasRep *)self canvas];
-  v17 = [v16 canvasController];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
 
-  [v17 convertUnscaledToBoundsPoint:{v13, v15}];
+  [canvasController convertUnscaledToBoundsPoint:{v13, v15}];
   v5 = vabdd_f64(y, v18) > 100.0;
 
   return v5;
@@ -9593,9 +9593,9 @@ LABEL_16:
 
 - (CGRect)scaledScribbleEditingFrame
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
   [(CRLCanvasRep *)self frameInUnscaledCanvas];
-  [v3 convertUnscaledToBoundsRect:?];
+  [interactiveCanvasController convertUnscaledToBoundsRect:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -9614,8 +9614,8 @@ LABEL_16:
 
 - (BOOL)scribbleElementIsFocused
 {
-  v2 = [(CRLWPRep *)self textEditor];
-  v3 = v2 != 0;
+  textEditor = [(CRLWPRep *)self textEditor];
+  v3 = textEditor != 0;
 
   return v3;
 }
@@ -9637,7 +9637,7 @@ LABEL_16:
       v6[1] = 3221225472;
       v6[2] = sub_10047C3A0;
       v6[3] = &unk_1018657B8;
-      v8 = self;
+      selfCopy = self;
       v9 = v3;
       v7 = v4;
       v5 = v4;
@@ -9646,15 +9646,15 @@ LABEL_16:
   }
 }
 
-- (CGRect)p_convertRectIntoZoomCoordinates:(CGRect)a3
+- (CGRect)p_convertRectIntoZoomCoordinates:(CGRect)coordinates
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CRLCanvasRep *)self interactiveCanvasController];
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
   [(CRLCanvasRep *)self convertNaturalRectToUnscaledCanvas:x, y, width, height];
-  [v8 convertUnscaledToBoundsRect:?];
+  [interactiveCanvasController convertUnscaledToBoundsRect:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -9671,25 +9671,25 @@ LABEL_16:
   return result;
 }
 
-- (id)p_textEditorForTextStorage:(id)a3
+- (id)p_textEditorForTextStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10047C798;
   v17 = sub_10047C7A8;
   v18 = 0;
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 editorController];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10047C7B0;
   v10[3] = &unk_1018657E0;
-  v7 = v4;
+  v7 = storageCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateEditorsOnStackUsingBlock:v10];
+  [editorController enumerateEditorsOnStackUsingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -9716,7 +9716,7 @@ LABEL_16:
 
 - (NSArray)hyperlinkRegions
 {
-  v2 = self;
+  selfCopy = self;
   CRLWPRep.hyperlinkRegions.getter();
 
   sub_100006370(0, &qword_101A13808);
@@ -9727,7 +9727,7 @@ LABEL_16:
 
 - (CGRect)getCurrentTextFieldBounds
 {
-  v2 = self;
+  selfCopy = self;
   sub_100B8F430();
   v4 = v3;
   v6 = v5;
@@ -9745,23 +9745,23 @@ LABEL_16:
   return result;
 }
 
-- (id)contextMenuConfigurationAtPoint:(CGPoint)a3
+- (id)contextMenuConfigurationAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = sub_100CD8490(v5, x, y);
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  v6 = sub_100CD8490(selfCopy, x, y);
 
   return v6;
 }
 
-- (id)contextMenuPreviewForHighlightingMenuAtPoint:(CGPoint)a3 withConfiguration:(id)a4
+- (id)contextMenuPreviewForHighlightingMenuAtPoint:(CGPoint)point withConfiguration:(id)configuration
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100CD9C7C(v7, v8, x, y);
+  y = point.y;
+  x = point.x;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_100CD9C7C(configurationCopy, selfCopy, x, y);
 
   return v9;
 }

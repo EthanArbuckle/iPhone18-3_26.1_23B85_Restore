@@ -1,15 +1,15 @@
 @interface ICAttachmentCryptoStrategyV1
-- (BOOL)rewrapWithMainKey:(id)a3;
-- (BOOL)writeEncryptedFallbackAssetData:(id)a3 fallbackAssetType:(int64_t)a4;
-- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)a3;
+- (BOOL)rewrapWithMainKey:(id)key;
+- (BOOL)writeEncryptedFallbackAssetData:(id)data fallbackAssetType:(int64_t)type;
+- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)type;
 @end
 
 @implementation ICAttachmentCryptoStrategyV1
 
-- (BOOL)rewrapWithMainKey:(id)a3
+- (BOOL)rewrapWithMainKey:(id)key
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -24,19 +24,19 @@
   v13[1] = 3221225472;
   v13[2] = __50__ICAttachmentCryptoStrategyV1_rewrapWithMainKey___block_invoke;
   v13[3] = &unk_27819A138;
-  v6 = v4;
+  v6 = keyCopy;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v13];
   v7 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(ICCryptoStrategyBase *)self object];
-    v11 = [v10 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:*(v18 + 24)];
     *buf = 138413058;
-    v22 = v11;
+    v22 = shortLoggingDescription;
     v23 = 2112;
     v25 = 2080;
     v24 = v12;
@@ -148,9 +148,9 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)writeEncryptedFallbackAssetData:(id)a3 fallbackAssetType:(int64_t)a4
+- (BOOL)writeEncryptedFallbackAssetData:(id)data fallbackAssetType:(int64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -160,8 +160,8 @@ LABEL_21:
   v9[2] = __82__ICAttachmentCryptoStrategyV1_writeEncryptedFallbackAssetData_fallbackAssetType___block_invoke;
   v9[3] = &unk_278194D00;
   v9[4] = self;
-  v12 = a4;
-  v7 = v6;
+  typeCopy = type;
+  v7 = dataCopy;
   v10 = v7;
   v11 = &v13;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v9];
@@ -314,7 +314,7 @@ void __82__ICAttachmentCryptoStrategyV1_writeEncryptedFallbackAssetData_fallback
   }
 }
 
-- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)a3
+- (id)decryptedFallbackAssetDataForFallbackAssetType:(int64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -327,7 +327,7 @@ void __82__ICAttachmentCryptoStrategyV1_writeEncryptedFallbackAssetData_fallback
   v5[2] = __79__ICAttachmentCryptoStrategyV1_decryptedFallbackAssetDataForFallbackAssetType___block_invoke;
   v5[3] = &unk_278194D28;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = type;
   v5[4] = self;
   [(ICCryptoStrategyBase *)self performBlockIfAttachmentExists:v5];
   v3 = v7[5];

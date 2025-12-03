@@ -1,55 +1,55 @@
 @interface PXSidebarDataController
-+ (id)albumsDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)bookmarksDataSectionManagerForLibrary:(id)a3;
-+ (id)collectionsDataSectionManagerForLibrary:(id)a3 mediaTypesItemManager:(id)a4 context:(id)a5;
-+ (id)collectionsItemDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)dataSectionManagerForCollection:(id)a3 context:(id)a4;
-+ (id)dataSectionManagerForCollection:(id)a3 context:(id)a4 enablementItem:(int64_t)a5;
-+ (id)dataSectionManagerForCollectionList:(id)a3 context:(id)a4 topLevelIdentifier:(id)a5;
-+ (id)dataSectionManagerForGroupCollectionList:(id)a3 context:(id)a4;
-+ (id)dataSectionManagerForTransientCollection:(id)a3 context:(id)a4;
-+ (id)devicesDataSectionManagerForLibrary:(id)a3;
-+ (id)favoritesDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)fromMyMacDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)libraryDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)libraryItemDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)mediaTypesDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)projectsDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)recentlySavedDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)sharedAlbumsDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)sharedLibrarySuggestionsDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)sharingDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)trashDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)unableToUploadDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-+ (id)utilitiesDataSectionManagerForLibrary:(id)a3 context:(id)a4;
-- (BOOL)isItemExpanded:(id)a3;
-- (BOOL)moveGroupItem:(id)a3 afterGroupItem:(id)a4;
++ (id)albumsDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)bookmarksDataSectionManagerForLibrary:(id)library;
++ (id)collectionsDataSectionManagerForLibrary:(id)library mediaTypesItemManager:(id)manager context:(id)context;
++ (id)collectionsItemDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)dataSectionManagerForCollection:(id)collection context:(id)context;
++ (id)dataSectionManagerForCollection:(id)collection context:(id)context enablementItem:(int64_t)item;
++ (id)dataSectionManagerForCollectionList:(id)list context:(id)context topLevelIdentifier:(id)identifier;
++ (id)dataSectionManagerForGroupCollectionList:(id)list context:(id)context;
++ (id)dataSectionManagerForTransientCollection:(id)collection context:(id)context;
++ (id)devicesDataSectionManagerForLibrary:(id)library;
++ (id)favoritesDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)fromMyMacDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)libraryDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)libraryItemDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)mediaTypesDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)projectsDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)recentlySavedDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)sharedAlbumsDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)sharedLibrarySuggestionsDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)sharingDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)trashDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)unableToUploadDataSectionManagerForLibrary:(id)library context:(id)context;
++ (id)utilitiesDataSectionManagerForLibrary:(id)library context:(id)context;
+- (BOOL)isItemExpanded:(id)expanded;
+- (BOOL)moveGroupItem:(id)item afterGroupItem:(id)groupItem;
 - (PXDataSectionManager)mediaTypesSectionManager;
 - (PXNavigationListItemDataSectionManager)mediaTypesItemManager;
 - (PXSidebarDataController)init;
-- (PXSidebarDataController)initWithPhotoLibrary:(id)a3 context:(id)a4 options:(unint64_t)a5 pickerAllPhotosVirtualCollection:(id)a6;
+- (PXSidebarDataController)initWithPhotoLibrary:(id)library context:(id)context options:(unint64_t)options pickerAllPhotosVirtualCollection:(id)collection;
 - (PXSidebarDataSourceControllerDelegate)delegate;
-- (id)_childDataSectionManagerForListItem:(id)a3;
-- (id)child:(int64_t)a3 ofItem:(id)a4;
-- (id)childDataSectionForItem:(id)a3;
-- (id)childrenOfListItem:(id)a3;
-- (id)dataSectionManagerForItem:(id)a3;
-- (id)fetchCollectionsInDisplayCollectionList:(id)a3;
-- (id)infoForItem:(id)a3 childIndex:(int64_t)a4;
-- (id)itemsForCollectionIdentifier:(id)a3;
+- (id)_childDataSectionManagerForListItem:(id)item;
+- (id)child:(int64_t)child ofItem:(id)item;
+- (id)childDataSectionForItem:(id)item;
+- (id)childrenOfListItem:(id)item;
+- (id)dataSectionManagerForItem:(id)item;
+- (id)fetchCollectionsInDisplayCollectionList:(id)list;
+- (id)infoForItem:(id)item childIndex:(int64_t)index;
+- (id)itemsForCollectionIdentifier:(id)identifier;
 - (id)makeSectionManagers;
-- (id)outlineDataSectionManager:(id)a3 arrangedSectionContent:(id)a4;
-- (int64_t)numberOfChildrenOfItem:(id)a3;
-- (void)_removeDataSectionManagerForKey:(id)a3;
-- (void)_setDataSectionManager:(id)a3 forKey:(id)a4;
-- (void)_updateDataSectionForRemovedItems:(id)a3;
+- (id)outlineDataSectionManager:(id)manager arrangedSectionContent:(id)content;
+- (int64_t)numberOfChildrenOfItem:(id)item;
+- (void)_removeDataSectionManagerForKey:(id)key;
+- (void)_setDataSectionManager:(id)manager forKey:(id)key;
+- (void)_updateDataSectionForRemovedItems:(id)items;
 - (void)_updateMediaTypesItemManager;
-- (void)_updateSectionObjectLookupDataForChildItem:(id)a3;
-- (void)cancelImageRequest:(int64_t)a3;
-- (void)didNavigateToListItem:(id)a3;
-- (void)markListItemAsRead:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setExpanded:(BOOL)a3 forItem:(id)a4;
+- (void)_updateSectionObjectLookupDataForChildItem:(id)item;
+- (void)cancelImageRequest:(int64_t)request;
+- (void)didNavigateToListItem:(id)item;
+- (void)markListItemAsRead:(id)read;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setExpanded:(BOOL)expanded forItem:(id)item;
 @end
 
 @implementation PXSidebarDataController
@@ -61,23 +61,23 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v7 = a3;
-  if (PXDataSectionManagerChangeContext == a5)
+  observableCopy = observable;
+  if (PXDataSectionManagerChangeContext == context)
   {
-    v15 = v7;
-    v8 = [(PXDataSectionManager *)v7 previousDataSection];
-    v9 = [(PXDataSectionManager *)v15 changeDetailsFromPreviousDataSection];
-    v10 = [[PXSidebarItemChangeDetails alloc] initWithArrayChangeDetails:v9 previousDataSection:v8];
-    v11 = [(PXSidebarItemChangeDetails *)v10 removedItems];
-    [(PXSidebarDataController *)self _updateDataSectionForRemovedItems:v11];
+    v15 = observableCopy;
+    previousDataSection = [(PXDataSectionManager *)observableCopy previousDataSection];
+    changeDetailsFromPreviousDataSection = [(PXDataSectionManager *)v15 changeDetailsFromPreviousDataSection];
+    v10 = [[PXSidebarItemChangeDetails alloc] initWithArrayChangeDetails:changeDetailsFromPreviousDataSection previousDataSection:previousDataSection];
+    removedItems = [(PXSidebarItemChangeDetails *)v10 removedItems];
+    [(PXSidebarDataController *)self _updateDataSectionForRemovedItems:removedItems];
 
-    v12 = [(PXDataSectionManager *)v15 outlineObject];
-    if (!v12 || ([(PXSidebarDataController *)self dataSectionManagerForItem:v12], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+    outlineObject = [(PXDataSectionManager *)v15 outlineObject];
+    if (!outlineObject || ([(PXSidebarDataController *)self dataSectionManagerForItem:outlineObject], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
     {
-      v14 = [(PXSidebarDataController *)self delegate];
-      [v14 sidebarDataSourceController:self didChangeChildrenOfItem:v12 changeDetails:v10];
+      delegate = [(PXSidebarDataController *)self delegate];
+      [delegate sidebarDataSourceController:self didChangeChildrenOfItem:outlineObject changeDetails:v10];
     }
 
     if (self->_mediaTypesSectionManager == v15)
@@ -85,22 +85,22 @@
       [(PXSidebarDataController *)self _updateMediaTypesItemManager];
     }
 
-    v7 = v15;
+    observableCopy = v15;
   }
 }
 
-- (id)outlineDataSectionManager:(id)a3 arrangedSectionContent:(id)a4
+- (id)outlineDataSectionManager:(id)manager arrangedSectionContent:(id)content
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  contentCopy = content;
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(contentCopy, "count")}];
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(contentCopy, "count")}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(contentCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v5;
+  v9 = contentCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v10)
   {
@@ -116,9 +116,9 @@
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        [v8 setObject:v14 forKeyedSubscript:v15];
-        [v7 addObject:v15];
+        identifier = [v14 identifier];
+        [v8 setObject:v14 forKeyedSubscript:identifier];
+        [v7 addObject:identifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -192,18 +192,18 @@ LABEL_18:
   return v24;
 }
 
-- (id)fetchCollectionsInDisplayCollectionList:(id)a3
+- (id)fetchCollectionsInDisplayCollectionList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    v4 = listCopy;
+    photoLibrary = [v4 photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v6 setIncludeUserSmartAlbums:1];
-    v7 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v4 options:v6];
+    [librarySpecificFetchOptions setIncludeUserSmartAlbums:1];
+    v7 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v4 options:librarySpecificFetchOptions];
   }
 
   else
@@ -214,26 +214,26 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)isItemExpanded:(id)a3
+- (BOOL)isItemExpanded:(id)expanded
 {
-  v4 = a3;
-  if ([v4 isExpandable])
+  expandedCopy = expanded;
+  if ([expandedCopy isExpandable])
   {
-    v5 = [v4 defaultsToExpanded];
-    v6 = [(PXSidebarDataController *)self localDefaults];
-    v7 = v6;
-    if (v5)
+    defaultsToExpanded = [expandedCopy defaultsToExpanded];
+    localDefaults = [(PXSidebarDataController *)self localDefaults];
+    v7 = localDefaults;
+    if (defaultsToExpanded)
     {
-      v8 = [v6 identifiersForKey:@"CollapsedSidebarSectionIdentifiers"];
-      v9 = [v4 identifier];
-      v10 = [v8 containsObject:v9] ^ 1;
+      v8 = [localDefaults identifiersForKey:@"CollapsedSidebarSectionIdentifiers"];
+      identifier = [expandedCopy identifier];
+      v10 = [v8 containsObject:identifier] ^ 1;
     }
 
     else
     {
-      v8 = [v6 identifiersForKey:@"ExpandedSidebarItemIdentifiers"];
-      v9 = [v4 identifier];
-      LOBYTE(v10) = [v8 containsObject:v9];
+      v8 = [localDefaults identifiersForKey:@"ExpandedSidebarItemIdentifiers"];
+      identifier = [expandedCopy identifier];
+      LOBYTE(v10) = [v8 containsObject:identifier];
     }
   }
 
@@ -245,18 +245,18 @@ LABEL_18:
   return v10;
 }
 
-- (id)dataSectionManagerForItem:(id)a3
+- (id)dataSectionManagerForItem:(id)item
 {
   dataSectionManagers = self->_dataSectionManagers;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)dataSectionManagers objectForKeyedSubscript:v4];
+  identifier = [item identifier];
+  v5 = [(NSMutableDictionary *)dataSectionManagers objectForKeyedSubscript:identifier];
 
   return v5;
 }
 
-- (id)childDataSectionForItem:(id)a3
+- (id)childDataSectionForItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     v3 = [(PXSidebarDataController *)self _childDataSectionManagerForListItem:?];
   }
@@ -267,79 +267,79 @@ LABEL_18:
   }
 
   v4 = v3;
-  v5 = [(PXDataSectionManager *)v3 dataSection];
+  dataSection = [(PXDataSectionManager *)v3 dataSection];
 
-  return v5;
+  return dataSection;
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
-  v4 = [(PXSidebarDataController *)self imageLoader];
-  [v4 cancelImageRequest:a3];
+  imageLoader = [(PXSidebarDataController *)self imageLoader];
+  [imageLoader cancelImageRequest:request];
 }
 
-- (id)infoForItem:(id)a3 childIndex:(int64_t)a4
+- (id)infoForItem:(id)item childIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(PXSidebarDataController *)self childDataSectionForItem:v6];
+  itemCopy = item;
+  v7 = [(PXSidebarDataController *)self childDataSectionForItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
     v14 = 0x7FFFFFFFFFFFFFFFLL;
-    v9 = [v8 indexOfChildDataSourceForObjectAtIndex:a4 localIndex:&v14];
+    v9 = [v8 indexOfChildDataSourceForObjectAtIndex:index localIndex:&v14];
     v7 = v8;
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v9;
-      v11 = [v8 childDataSections];
-      v7 = [v11 objectAtIndexedSubscript:v10];
+      childDataSections = [v8 childDataSections];
+      v7 = [childDataSections objectAtIndexedSubscript:v10];
 
-      a4 = v14;
+      index = v14;
     }
   }
 
-  v12 = [[PXSidebarItemChildInfo alloc] initWithListItem:v6 dataSection:v7 childIndex:a4];
+  v12 = [[PXSidebarItemChildInfo alloc] initWithListItem:itemCopy dataSection:v7 childIndex:index];
 
   return v12;
 }
 
-- (void)markListItemAsRead:(id)a3
+- (void)markListItemAsRead:(id)read
 {
-  v5 = [a3 collection];
-  if ([v5 px_isSharedLibrarySharingSuggestionsSmartAlbum])
+  collection = [read collection];
+  if ([collection px_isSharedLibrarySharingSuggestionsSmartAlbum])
   {
-    v3 = [v5 photoLibrary];
-    v4 = [v3 px_sharedLibrarySharingSuggestionsCountsManager];
-    [v4 markAllSuggestionsAsRead];
+    photoLibrary = [collection photoLibrary];
+    px_sharedLibrarySharingSuggestionsCountsManager = [photoLibrary px_sharedLibrarySharingSuggestionsCountsManager];
+    [px_sharedLibrarySharingSuggestionsCountsManager markAllSuggestionsAsRead];
   }
 }
 
-- (void)didNavigateToListItem:(id)a3
+- (void)didNavigateToListItem:(id)item
 {
-  v5 = [a3 collection];
-  if ([v5 px_isSharedLibrarySharingSuggestionsSmartAlbum])
+  collection = [item collection];
+  if ([collection px_isSharedLibrarySharingSuggestionsSmartAlbum])
   {
-    v3 = [v5 photoLibrary];
-    v4 = [v3 px_sharedLibrarySharingSuggestionsCountsManager];
-    [v4 markAnyNotificationsAsRead];
+    photoLibrary = [collection photoLibrary];
+    px_sharedLibrarySharingSuggestionsCountsManager = [photoLibrary px_sharedLibrarySharingSuggestionsCountsManager];
+    [px_sharedLibrarySharingSuggestionsCountsManager markAnyNotificationsAsRead];
   }
 }
 
-- (void)setExpanded:(BOOL)a3 forItem:(id)a4
+- (void)setExpanded:(BOOL)expanded forItem:(id)item
 {
-  v4 = a3;
-  v10 = a4;
-  v6 = [v10 defaultsToExpanded];
-  v7 = [(PXSidebarDataController *)self localDefaults];
-  v8 = [v10 identifier];
-  if (v6)
+  expandedCopy = expanded;
+  itemCopy = item;
+  defaultsToExpanded = [itemCopy defaultsToExpanded];
+  localDefaults = [(PXSidebarDataController *)self localDefaults];
+  identifier = [itemCopy identifier];
+  if (defaultsToExpanded)
   {
     v9 = @"CollapsedSidebarSectionIdentifiers";
-    if (v4)
+    if (expandedCopy)
     {
 LABEL_3:
-      [v7 removeIdentifier:v8 forKey:v9];
+      [localDefaults removeIdentifier:identifier forKey:v9];
       goto LABEL_6;
     }
   }
@@ -347,41 +347,41 @@ LABEL_3:
   else
   {
     v9 = @"ExpandedSidebarItemIdentifiers";
-    if (!v4)
+    if (!expandedCopy)
     {
       goto LABEL_3;
     }
   }
 
-  [v7 addIdentifier:v8 forKey:v9];
+  [localDefaults addIdentifier:identifier forKey:v9];
 LABEL_6:
 }
 
-- (BOOL)moveGroupItem:(id)a3 afterGroupItem:(id)a4
+- (BOOL)moveGroupItem:(id)item afterGroupItem:(id)groupItem
 {
-  v6 = a4;
+  groupItemCopy = groupItem;
   arrangedObjectIdentifiers = self->_arrangedObjectIdentifiers;
-  v8 = [a3 identifier];
-  [(NSArray *)arrangedObjectIdentifiers indexOfObject:v8];
+  identifier = [item identifier];
+  [(NSArray *)arrangedObjectIdentifiers indexOfObject:identifier];
 
-  if (v6)
+  if (groupItemCopy)
   {
     v9 = self->_arrangedObjectIdentifiers;
-    v10 = [v6 identifier];
-    [(NSArray *)v9 indexOfObject:v10];
+    identifier2 = [groupItemCopy identifier];
+    [(NSArray *)v9 indexOfObject:identifier2];
   }
 
   PXArrayByMovingObjectFromIndexToIndex();
 }
 
-- (id)itemsForCollectionIdentifier:(id)a3
+- (id)itemsForCollectionIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier objectForKeyedSubscript:a3];
-  v4 = [v3 allValues];
-  v5 = v4;
-  if (v4)
+  v3 = [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier objectForKeyedSubscript:identifier];
+  allValues = [v3 allValues];
+  v5 = allValues;
+  if (allValues)
   {
-    v6 = v4;
+    v6 = allValues;
   }
 
   else
@@ -394,9 +394,9 @@ LABEL_6:
   return v6;
 }
 
-- (id)childrenOfListItem:(id)a3
+- (id)childrenOfListItem:(id)item
 {
-  v4 = [(PXSidebarDataController *)self childDataSectionForItem:a3];
+  v4 = [(PXSidebarDataController *)self childDataSectionForItem:item];
   v5 = [v4 count];
   if (v5)
   {
@@ -417,117 +417,117 @@ LABEL_6:
       PXAssertGetLog();
     }
 
-    v10 = [v7 array];
+    array = [v7 array];
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v10;
+  return array;
 }
 
-- (id)child:(int64_t)a3 ofItem:(id)a4
+- (id)child:(int64_t)child ofItem:(id)item
 {
-  v6 = [(PXSidebarDataController *)self childDataSectionForItem:a4];
-  v7 = [v6 objectAtIndex:a3];
+  v6 = [(PXSidebarDataController *)self childDataSectionForItem:item];
+  v7 = [v6 objectAtIndex:child];
   [(PXSidebarDataController *)self _updateSectionObjectLookupDataForChildItem:v7];
 
   return v7;
 }
 
-- (int64_t)numberOfChildrenOfItem:(id)a3
+- (int64_t)numberOfChildrenOfItem:(id)item
 {
-  v3 = [(PXSidebarDataController *)self childDataSectionForItem:a3];
+  v3 = [(PXSidebarDataController *)self childDataSectionForItem:item];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (void)_updateSectionObjectLookupDataForChildItem:(id)a3
+- (void)_updateSectionObjectLookupDataForChildItem:(id)item
 {
-  v12 = a3;
-  v4 = [v12 identifier];
-  if (v4)
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  if (identifier)
   {
-    [(NSMutableDictionary *)self->_dataSectionObjectsByItemIdentifier setObject:v12 forKeyedSubscript:v4];
-    v5 = [(NSMutableDictionary *)self->_dataSectionManagers objectForKeyedSubscript:v4];
-    [v5 setOutlineObject:v12];
+    [(NSMutableDictionary *)self->_dataSectionObjectsByItemIdentifier setObject:itemCopy forKeyedSubscript:identifier];
+    v5 = [(NSMutableDictionary *)self->_dataSectionManagers objectForKeyedSubscript:identifier];
+    [v5 setOutlineObject:itemCopy];
   }
 
-  v6 = [v12 collectionIdentifier];
-  if (v6)
+  collectionIdentifier = [itemCopy collectionIdentifier];
+  if (collectionIdentifier)
   {
-    v7 = [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier objectForKeyedSubscript:collectionIdentifier];
     if (!v7)
     {
       v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-      [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier setObject:v7 forKeyedSubscript:collectionIdentifier];
     }
 
-    v8 = [v12 topLevelIdentifier];
-    v9 = v8;
+    topLevelIdentifier = [itemCopy topLevelIdentifier];
+    v9 = topLevelIdentifier;
     v10 = @"root";
-    if (v8)
+    if (topLevelIdentifier)
     {
-      v10 = v8;
+      v10 = topLevelIdentifier;
     }
 
     v11 = v10;
 
-    [v7 setObject:v12 forKeyedSubscript:v11];
+    [v7 setObject:itemCopy forKeyedSubscript:v11];
   }
 }
 
-- (id)_childDataSectionManagerForListItem:(id)a3
+- (id)_childDataSectionManagerForListItem:(id)item
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_dataSectionManagers objectForKeyedSubscript:v5];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_dataSectionManagers objectForKeyedSubscript:identifier];
   if (v6)
   {
     v7 = v6;
     goto LABEL_27;
   }
 
-  if (![v4 isExpandable] || (-[PXOutlineDataSectionManager childDataSectionManagerForOutlineObject:](self->_rootDataSectionManager, "childDataSectionManagerForOutlineObject:", v4), v7 = objc_claimAutoreleasedReturnValue(), -[PXSidebarDataController _setDataSectionManager:forKey:](self, "_setDataSectionManager:forKey:", v7, v5), !v7))
+  if (![itemCopy isExpandable] || (-[PXOutlineDataSectionManager childDataSectionManagerForOutlineObject:](self->_rootDataSectionManager, "childDataSectionManagerForOutlineObject:", itemCopy), v7 = objc_claimAutoreleasedReturnValue(), -[PXSidebarDataController _setDataSectionManager:forKey:](self, "_setDataSectionManager:forKey:", v7, identifier), !v7))
   {
-    v8 = [v4 collection];
-    v9 = [v4 topLevelIdentifier];
-    if (v9)
+    collection = [itemCopy collection];
+    topLevelIdentifier = [itemCopy topLevelIdentifier];
+    if (topLevelIdentifier)
     {
-      v10 = [v4 identifier];
+      identifier2 = [itemCopy identifier];
     }
 
     else
     {
-      v10 = 0;
+      identifier2 = 0;
     }
 
-    if ([v8 px_isSharedAlbumsAndActivityFolder])
+    if ([collection px_isSharedAlbumsAndActivityFolder])
     {
-      v11 = [(PXSidebarDataController *)self photoLibrary];
-      v12 = [v11 px_virtualCollections];
-      v45 = [v12 sharedActivityCollection];
+      photoLibrary = [(PXSidebarDataController *)self photoLibrary];
+      px_virtualCollections = [photoLibrary px_virtualCollections];
+      sharedActivityCollection = [px_virtualCollections sharedActivityCollection];
 
       [(PXSidebarDataController *)self context];
-      v46 = v8;
-      v14 = v13 = v10;
-      v15 = [PXSidebarDataController dataSectionManagerForCollection:v45 context:v14 enablementItem:5];
+      v46 = collection;
+      v14 = v13 = identifier2;
+      v15 = [PXSidebarDataController dataSectionManagerForCollection:sharedActivityCollection context:v14 enablementItem:5];
 
-      v16 = [(PXSidebarDataController *)self photoLibrary];
-      v17 = [v16 px_virtualCollections];
-      v18 = [v17 sharedAlbumsCollectionList];
+      photoLibrary2 = [(PXSidebarDataController *)self photoLibrary];
+      px_virtualCollections2 = [photoLibrary2 px_virtualCollections];
+      sharedAlbumsCollectionList = [px_virtualCollections2 sharedAlbumsCollectionList];
 
-      v19 = [PXNavigationListDataSectionConfiguration configurationWithCollectionList:v18];
+      v19 = [PXNavigationListDataSectionConfiguration configurationWithCollectionList:sharedAlbumsCollectionList];
       [v19 setIncludeKeyAssetFetches:1];
       [v19 setSkipAssetFetches:1];
       [v19 setSkipAssetCountFetches:1];
-      v20 = [(PXSidebarDataController *)self context];
-      v21 = [v20 assetsFilterPredicate];
-      [v19 setAssetsFilterPredicate:v21];
+      context = [(PXSidebarDataController *)self context];
+      assetsFilterPredicate = [context assetsFilterPredicate];
+      [v19 setAssetsFilterPredicate:assetsFilterPredicate];
 
       v22 = [[PXNavigationListDataSectionManager alloc] initWithConfiguration:v19 topLevelIdentifier:v13];
       [(PXNavigationListDataSectionManager *)v22 startBackgroundFetchingIfNeeded];
@@ -537,9 +537,9 @@ LABEL_6:
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
       v7 = [(PXStackedDataSectionManager *)v23 initWithChildDataSectionManagers:v24];
 
-      [(PXStackedDataSectionManager *)v7 setOutlineObject:v4];
-      v10 = v13;
-      v8 = v46;
+      [(PXStackedDataSectionManager *)v7 setOutlineObject:itemCopy];
+      identifier2 = v13;
+      collection = v46;
 
       if (v7)
       {
@@ -547,114 +547,114 @@ LABEL_6:
       }
     }
 
-    if ([v8 px_isUtilitiesFolder])
+    if ([collection px_isUtilitiesFolder])
     {
       v25 = ([(PXSidebarDataController *)self options]>> 3) & 1;
       v26 = ([(PXSidebarDataController *)self options]>> 4) & 1;
-      v27 = [(PXSidebarDataController *)self photoLibrary];
-      v7 = [PXSidebarDataManagerFactory makeUtilitiesDataSectionManagerWithLibrary:v27 topLevelIdentifier:v10 forPicker:v25 excludeHiddenAlbum:v26];
+      photoLibrary3 = [(PXSidebarDataController *)self photoLibrary];
+      v7 = [PXSidebarDataManagerFactory makeUtilitiesDataSectionManagerWithLibrary:photoLibrary3 topLevelIdentifier:identifier2 forPicker:v25 excludeHiddenAlbum:v26];
 
-      [(PXStackedDataSectionManager *)v7 setOutlineObject:v4];
+      [(PXStackedDataSectionManager *)v7 setOutlineObject:itemCopy];
       if (v7)
       {
         goto LABEL_25;
       }
     }
 
-    if ([v8 px_isMediaTypesFolder])
+    if ([collection px_isMediaTypesFolder])
     {
-      v28 = [(PXSidebarDataController *)self photoLibrary];
-      v7 = [PXSidebarDataManagerFactory makeMediaTypesDataSectionManagerWithLibrary:v28 topLevelIdentifier:v10];
+      photoLibrary4 = [(PXSidebarDataController *)self photoLibrary];
+      v7 = [PXSidebarDataManagerFactory makeMediaTypesDataSectionManagerWithLibrary:photoLibrary4 topLevelIdentifier:identifier2];
 
-      [(PXStackedDataSectionManager *)v7 setOutlineObject:v4];
+      [(PXStackedDataSectionManager *)v7 setOutlineObject:itemCopy];
       if (v7)
       {
         goto LABEL_25;
       }
     }
 
-    if ([v8 px_isAllMacSyncedAlbumsFolder])
+    if ([collection px_isAllMacSyncedAlbumsFolder])
     {
-      v29 = [(PXSidebarDataController *)self photoLibrary];
-      v7 = [PXSidebarDataManagerFactory makeMacSyncedDataSectionManagerWithLibrary:v29 topLevelIdentifier:v10];
+      photoLibrary5 = [(PXSidebarDataController *)self photoLibrary];
+      v7 = [PXSidebarDataManagerFactory makeMacSyncedDataSectionManagerWithLibrary:photoLibrary5 topLevelIdentifier:identifier2];
 
-      [(PXStackedDataSectionManager *)v7 setOutlineObject:v4];
+      [(PXStackedDataSectionManager *)v7 setOutlineObject:itemCopy];
       if (v7)
       {
         goto LABEL_25;
       }
     }
 
-    if ([v8 px_isBookmarksFolder])
+    if ([collection px_isBookmarksFolder])
     {
-      v30 = [(PXSidebarDataController *)self photoLibrary];
-      v7 = [PXSidebarDataManagerFactory makeBookmarksDataSectionManagerWithLibrary:v30 topLevelIdentifier:v10];
+      photoLibrary6 = [(PXSidebarDataController *)self photoLibrary];
+      v7 = [PXSidebarDataManagerFactory makeBookmarksDataSectionManagerWithLibrary:photoLibrary6 topLevelIdentifier:identifier2];
 
-      [(PXStackedDataSectionManager *)v7 setOutlineObject:v4];
+      [(PXStackedDataSectionManager *)v7 setOutlineObject:itemCopy];
       if (v7)
       {
         goto LABEL_25;
       }
     }
 
-    if ([v8 canContainCollections])
+    if ([collection canContainCollections])
     {
-      if ([v8 px_isProjectsFolder])
+      if ([collection px_isProjectsFolder])
       {
-        v31 = [(PXSidebarDataController *)self context];
-        v32 = [v31 libraryFilterState];
-        v33 = [v32 viewMode];
+        context2 = [(PXSidebarDataController *)self context];
+        libraryFilterState = [context2 libraryFilterState];
+        viewMode = [libraryFilterState viewMode];
 
-        if (v33)
+        if (viewMode)
         {
           v34 = MEMORY[0x1E6978760];
-          v35 = [v8 localizedTitle];
-          v36 = [(PXSidebarDataController *)self photoLibrary];
-          v37 = [v34 transientCollectionListWithCollections:MEMORY[0x1E695E0F0] title:v35 identifier:0 photoLibrary:v36];
+          localizedTitle = [collection localizedTitle];
+          photoLibrary7 = [(PXSidebarDataController *)self photoLibrary];
+          v37 = [v34 transientCollectionListWithCollections:MEMORY[0x1E695E0F0] title:localizedTitle identifier:0 photoLibrary:photoLibrary7];
 
-          v8 = v37;
+          collection = v37;
         }
       }
 
       v38 = objc_opt_class();
-      v39 = [(PXSidebarDataController *)self context];
-      v7 = [v38 dataSectionManagerForCollectionList:v8 context:v39 topLevelIdentifier:v10];
+      context3 = [(PXSidebarDataController *)self context];
+      v7 = [v38 dataSectionManagerForCollectionList:collection context:context3 topLevelIdentifier:identifier2];
 
-      [(PXStackedDataSectionManager *)v7 setOutlineObject:v4];
+      [(PXStackedDataSectionManager *)v7 setOutlineObject:itemCopy];
       if (v7)
       {
         goto LABEL_25;
       }
     }
 
-    if (![v5 isEqualToString:@"PXNavigationListGroupItemTypeDevices"])
+    if (![identifier isEqualToString:@"PXNavigationListGroupItemTypeDevices"])
     {
       v7 = 0;
       goto LABEL_26;
     }
 
     v40 = objc_opt_class();
-    v41 = [(PXSidebarDataController *)self photoLibrary];
-    v7 = [v40 devicesDataSectionManagerForLibrary:v41];
+    photoLibrary8 = [(PXSidebarDataController *)self photoLibrary];
+    v7 = [v40 devicesDataSectionManagerForLibrary:photoLibrary8];
 
     if (v7)
     {
 LABEL_25:
-      [(PXSidebarDataController *)self _setDataSectionManager:v7 forKey:v5, v45];
+      [(PXSidebarDataController *)self _setDataSectionManager:v7 forKey:identifier, sharedActivityCollection];
     }
 
 LABEL_26:
   }
 
 LABEL_27:
-  v42 = [off_1E7721858 sharedScheduler];
+  sharedScheduler = [off_1E7721858 sharedScheduler];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __63__PXSidebarDataController__childDataSectionManagerForListItem___block_invoke;
   v47[3] = &unk_1E774C648;
   v43 = v7;
   v48 = v43;
-  [v42 scheduleTaskAfterCATransactionCommits:v47];
+  [sharedScheduler scheduleTaskAfterCATransactionCommits:v47];
 
   return v43;
 }
@@ -674,15 +674,15 @@ LABEL_27:
   v7 = self->_mediaTypesItemManager;
   if (v7)
   {
-    v8 = [(PXSidebarDataController *)self mediaTypesSectionManager];
-    if ([v8 allowsEmptyDataSection])
+    mediaTypesSectionManager = [(PXSidebarDataController *)self mediaTypesSectionManager];
+    if ([mediaTypesSectionManager allowsEmptyDataSection])
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v8 isDataSectionEmpty] ^ 1;
+      v9 = [mediaTypesSectionManager isDataSectionEmpty] ^ 1;
     }
 
     [(PXNavigationListItemDataSectionManager *)v7 setEnabled:v9];
@@ -697,14 +697,14 @@ LABEL_27:
   }
 }
 
-- (void)_updateDataSectionForRemovedItems:(id)a3
+- (void)_updateDataSectionForRemovedItems:(id)items
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = items;
   v4 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
@@ -720,21 +720,21 @@ LABEL_27:
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        if (([v9 isEqualToString:@"PXMediaTypesVirtualCollection"] & 1) == 0)
+        identifier = [v8 identifier];
+        if (([identifier isEqualToString:@"PXMediaTypesVirtualCollection"] & 1) == 0)
         {
-          [(PXSidebarDataController *)self _removeDataSectionManagerForKey:v9];
-          [(NSMutableDictionary *)self->_dataSectionObjectsByItemIdentifier removeObjectForKey:v9];
-          v10 = [v8 collectionIdentifier];
-          if (v10)
+          [(PXSidebarDataController *)self _removeDataSectionManagerForKey:identifier];
+          [(NSMutableDictionary *)self->_dataSectionObjectsByItemIdentifier removeObjectForKey:identifier];
+          collectionIdentifier = [v8 collectionIdentifier];
+          if (collectionIdentifier)
           {
-            v11 = [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier objectForKeyedSubscript:v10];
-            v12 = [v8 topLevelIdentifier];
-            v13 = v12;
+            v11 = [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier objectForKeyedSubscript:collectionIdentifier];
+            topLevelIdentifier = [v8 topLevelIdentifier];
+            v13 = topLevelIdentifier;
             v14 = @"root";
-            if (v12)
+            if (topLevelIdentifier)
             {
-              v14 = v12;
+              v14 = topLevelIdentifier;
             }
 
             v15 = v14;
@@ -742,7 +742,7 @@ LABEL_27:
             [v11 setObject:0 forKeyedSubscript:v15];
             if (![v11 count])
             {
-              [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier setObject:0 forKeyedSubscript:v10];
+              [(NSMutableDictionary *)self->_dataSectionObjectsByCollectionIdentifier setObject:0 forKeyedSubscript:collectionIdentifier];
             }
           }
         }
@@ -755,84 +755,84 @@ LABEL_27:
   }
 }
 
-- (void)_removeDataSectionManagerForKey:(id)a3
+- (void)_removeDataSectionManagerForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_dataSectionManagers objectForKeyedSubscript:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_dataSectionManagers setObject:0 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_dataSectionManagers setObject:0 forKeyedSubscript:keyCopy];
     [v4 unregisterChangeObserver:self context:PXDataSectionManagerChangeContext];
   }
 }
 
-- (void)_setDataSectionManager:(id)a3 forKey:(id)a4
+- (void)_setDataSectionManager:(id)manager forKey:(id)key
 {
   dataSectionManagers = self->_dataSectionManagers;
-  v7 = a3;
-  [(NSMutableDictionary *)dataSectionManagers setObject:v7 forKeyedSubscript:a4];
-  [v7 registerChangeObserver:self context:PXDataSectionManagerChangeContext];
+  managerCopy = manager;
+  [(NSMutableDictionary *)dataSectionManagers setObject:managerCopy forKeyedSubscript:key];
+  [managerCopy registerChangeObserver:self context:PXDataSectionManagerChangeContext];
 }
 
 - (PXSidebarDataController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(sel_initWithPhotoLibrary_);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSidebarDataController.m" lineNumber:350 description:{@"Use the designated initializer %@", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSidebarDataController.m" lineNumber:350 description:{@"Use the designated initializer %@", v5}];
 
   return 0;
 }
 
 - (id)makeSectionManagers
 {
-  v3 = [(PXSidebarDataController *)self photoLibrary];
-  v4 = [(PXSidebarDataController *)self context];
+  photoLibrary = [(PXSidebarDataController *)self photoLibrary];
+  context = [(PXSidebarDataController *)self context];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
   v6 = MEMORY[0x1A590D320]();
   v7 = objc_opt_class();
   if (v6)
   {
-    v8 = [v7 libraryItemDataSectionManagerForLibrary:v3 context:v4];
+    v8 = [v7 libraryItemDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v8];
 
-    v9 = [objc_opt_class() collectionsItemDataSectionManagerForLibrary:v3 context:v4];
+    v9 = [objc_opt_class() collectionsItemDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v9];
 
-    v10 = [objc_opt_class() devicesDataSectionManagerForLibrary:v3];
+    v10 = [objc_opt_class() devicesDataSectionManagerForLibrary:photoLibrary];
     [v5 addObject:v10];
 
-    v11 = [objc_opt_class() bookmarksDataSectionManagerForLibrary:v3];
+    v11 = [objc_opt_class() bookmarksDataSectionManagerForLibrary:photoLibrary];
     [v5 addObject:v11];
 
-    v12 = [objc_opt_class() albumsDataSectionManagerForLibrary:v3 context:v4];
+    v12 = [objc_opt_class() albumsDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v12];
 
-    v13 = [objc_opt_class() sharingDataSectionManagerForLibrary:v3 context:v4];
+    v13 = [objc_opt_class() sharingDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v13];
 
-    v14 = [objc_opt_class() mediaTypesDataSectionManagerForLibrary:v3 context:v4];
+    v14 = [objc_opt_class() mediaTypesDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v14];
 
-    v15 = [objc_opt_class() utilitiesDataSectionManagerForLibrary:v3 context:v4];
+    v15 = [objc_opt_class() utilitiesDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v15];
 
-    [objc_opt_class() projectsDataSectionManagerForLibrary:v3 context:v4];
+    [objc_opt_class() projectsDataSectionManagerForLibrary:photoLibrary context:context];
   }
 
   else
   {
-    v16 = [v7 libraryDataSectionManagerForLibrary:v3 context:v4];
+    v16 = [v7 libraryDataSectionManagerForLibrary:photoLibrary context:context];
     [v5 addObject:v16];
 
-    v17 = [objc_opt_class() devicesDataSectionManagerForLibrary:v3];
+    v17 = [objc_opt_class() devicesDataSectionManagerForLibrary:photoLibrary];
     [v5 addObject:v17];
 
     v18 = objc_opt_class();
-    v19 = [(PXSidebarDataController *)self mediaTypesItemManager];
-    v20 = [v18 collectionsDataSectionManagerForLibrary:v3 mediaTypesItemManager:v19 context:v4];
+    mediaTypesItemManager = [(PXSidebarDataController *)self mediaTypesItemManager];
+    v20 = [v18 collectionsDataSectionManagerForLibrary:photoLibrary mediaTypesItemManager:mediaTypesItemManager context:context];
     [v5 addObject:v20];
 
-    [objc_opt_class() sharingDataSectionManagerForLibrary:v3 context:v4];
+    [objc_opt_class() sharingDataSectionManagerForLibrary:photoLibrary context:context];
   }
   v21 = ;
   [v5 addObject:v21];
@@ -859,11 +859,11 @@ LABEL_27:
     }
 
     v9 = objc_opt_class();
-    v10 = [(PXSidebarDataController *)self photoLibrary];
-    v11 = [v10 px_virtualCollections];
-    v12 = [v11 mediaTypesCollectionList];
-    v13 = [(PXSidebarDataController *)self context];
-    v4 = [v9 dataSectionManagerForCollection:v12 context:v13];
+    photoLibrary = [(PXSidebarDataController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    mediaTypesCollectionList = [px_virtualCollections mediaTypesCollectionList];
+    context = [(PXSidebarDataController *)self context];
+    v4 = [v9 dataSectionManagerForCollection:mediaTypesCollectionList context:context];
 
     objc_storeStrong(p_mediaTypesItemManager, v4);
     v14 = v8;
@@ -896,10 +896,10 @@ LABEL_27:
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PXSidebarDataController.mediaTypesSectionManager", "", buf, 2u);
     }
 
-    v9 = [(PXSidebarDataController *)self photoLibrary];
-    v10 = [v9 px_virtualCollections];
-    v11 = [v10 mediaTypesCollectionList];
-    v12 = PXNavigationListItemWithObject(v11, 0, 0, 0, 0);
+    photoLibrary = [(PXSidebarDataController *)self photoLibrary];
+    px_virtualCollections = [photoLibrary px_virtualCollections];
+    mediaTypesCollectionList = [px_virtualCollections mediaTypesCollectionList];
+    v12 = PXNavigationListItemWithObject(mediaTypesCollectionList, 0, 0, 0, 0);
 
     v4 = [(PXSidebarDataController *)self _childDataSectionManagerForListItem:v12];
     objc_storeStrong(p_mediaTypesSectionManager, v4);
@@ -915,28 +915,28 @@ LABEL_27:
   return v4;
 }
 
-- (PXSidebarDataController)initWithPhotoLibrary:(id)a3 context:(id)a4 options:(unint64_t)a5 pickerAllPhotosVirtualCollection:(id)a6
+- (PXSidebarDataController)initWithPhotoLibrary:(id)library context:(id)context options:(unint64_t)options pickerAllPhotosVirtualCollection:(id)collection
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  libraryCopy = library;
+  contextCopy = context;
+  collectionCopy = collection;
   v27.receiver = self;
   v27.super_class = PXSidebarDataController;
   v14 = [(PXSidebarDataController *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_photoLibrary, a3);
-    objc_storeStrong(&v15->_context, a4);
-    v15->_options = a5;
-    objc_storeStrong(&v15->_pickerAllPhotosVirtualCollection, a6);
+    objc_storeStrong(&v14->_photoLibrary, library);
+    objc_storeStrong(&v15->_context, context);
+    v15->_options = options;
+    objc_storeStrong(&v15->_pickerAllPhotosVirtualCollection, collection);
     v16 = objc_alloc_init(PXSidebarImageLoader);
     imageLoader = v15->_imageLoader;
     v15->_imageLoader = v16;
 
-    v18 = [v11 px_localDefaults];
+    px_localDefaults = [libraryCopy px_localDefaults];
     localDefaults = v15->_localDefaults;
-    v15->_localDefaults = v18;
+    v15->_localDefaults = px_localDefaults;
 
     v20 = objc_opt_new();
     dataSectionManagers = v15->_dataSectionManagers;
@@ -959,24 +959,24 @@ LABEL_27:
   return 0;
 }
 
-+ (id)bookmarksDataSectionManagerForLibrary:(id)a3
++ (id)bookmarksDataSectionManagerForLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [PXSidebarDataManagerFactory makeBookmarksDataSectionManagerWithLibrary:v3 topLevelIdentifier:@"bookmarks"];
+  libraryCopy = library;
+  v4 = [PXSidebarDataManagerFactory makeBookmarksDataSectionManagerWithLibrary:libraryCopy topLevelIdentifier:@"bookmarks"];
   v5 = [PXNavigationListGroupItem alloc];
-  v6 = [v3 px_virtualCollections];
+  px_virtualCollections = [libraryCopy px_virtualCollections];
 
-  v7 = [v6 bookmarksCollectionList];
-  v8 = [(PXNavigationListGroupItem *)v5 initWithCollectionList:v7];
+  bookmarksCollectionList = [px_virtualCollections bookmarksCollectionList];
+  v8 = [(PXNavigationListGroupItem *)v5 initWithCollectionList:bookmarksCollectionList];
   [v4 setOutlineObject:v8];
 
   return v4;
 }
 
-+ (id)devicesDataSectionManagerForLibrary:(id)a3
++ (id)devicesDataSectionManagerForLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [[PXImportSourceDataSectionManager alloc] initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [[PXImportSourceDataSectionManager alloc] initWithPhotoLibrary:libraryCopy];
 
   v5 = [[PXNavigationListGroupItem alloc] initWithIdentifier:@"PXNavigationListGroupItemTypeDevices" defaultsToExpanded:1];
   [(PXDataSectionManager *)v4 setOutlineObject:v5];
@@ -984,37 +984,37 @@ LABEL_27:
   return v4;
 }
 
-+ (id)collectionsDataSectionManagerForLibrary:(id)a3 mediaTypesItemManager:(id)a4 context:(id)a5
++ (id)collectionsDataSectionManagerForLibrary:(id)library mediaTypesItemManager:(id)manager context:(id)context
 {
   v33[9] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v24 = a4;
-  v9 = [a3 px_virtualCollections];
+  contextCopy = context;
+  managerCopy = manager;
+  px_virtualCollections = [library px_virtualCollections];
   v26 = [PXStackedDataSectionManager alloc];
-  v32 = [v9 eventsCollection];
-  v31 = [a1 dataSectionManagerForCollection:v32 context:v8];
+  eventsCollection = [px_virtualCollections eventsCollection];
+  v31 = [self dataSectionManagerForCollection:eventsCollection context:contextCopy];
   v33[0] = v31;
-  v30 = [v9 peopleCollection];
-  v29 = [a1 dataSectionManagerForCollection:v30 context:v8];
+  peopleCollection = [px_virtualCollections peopleCollection];
+  v29 = [self dataSectionManagerForCollection:peopleCollection context:contextCopy];
   v33[1] = v29;
-  v28 = [v9 memoriesCollection];
-  v27 = [a1 dataSectionManagerForCollection:v28 context:v8 enablementItem:1];
+  memoriesCollection = [px_virtualCollections memoriesCollection];
+  v27 = [self dataSectionManagerForCollection:memoriesCollection context:contextCopy enablementItem:1];
   v33[2] = v27;
-  v25 = [v9 tripsCollection];
-  v23 = [a1 dataSectionManagerForCollection:v25 context:v8 enablementItem:8];
+  tripsCollection = [px_virtualCollections tripsCollection];
+  v23 = [self dataSectionManagerForCollection:tripsCollection context:contextCopy enablementItem:8];
   v33[3] = v23;
-  v22 = [v9 featuredPhotosCollection];
-  v10 = [a1 dataSectionManagerForCollection:v22 context:v8 enablementItem:11];
+  featuredPhotosCollection = [px_virtualCollections featuredPhotosCollection];
+  v10 = [self dataSectionManagerForCollection:featuredPhotosCollection context:contextCopy enablementItem:11];
   v33[4] = v10;
-  v11 = [v9 utilitiesCollectionList];
-  v12 = [a1 dataSectionManagerForCollection:v11 context:v8];
+  utilitiesCollectionList = [px_virtualCollections utilitiesCollectionList];
+  v12 = [self dataSectionManagerForCollection:utilitiesCollectionList context:contextCopy];
   v33[5] = v12;
-  v33[6] = v24;
-  v13 = [v9 rootAlbumCollectionList];
-  v14 = [a1 dataSectionManagerForCollection:v13 context:v8];
+  v33[6] = managerCopy;
+  rootAlbumCollectionList = [px_virtualCollections rootAlbumCollectionList];
+  v14 = [self dataSectionManagerForCollection:rootAlbumCollectionList context:contextCopy];
   v33[7] = v14;
-  v15 = [v9 sharedAlbumsAndActivityCollectionList];
-  v16 = [a1 dataSectionManagerForCollection:v15 context:v8 enablementItem:6];
+  sharedAlbumsAndActivityCollectionList = [px_virtualCollections sharedAlbumsAndActivityCollectionList];
+  v16 = [self dataSectionManagerForCollection:sharedAlbumsAndActivityCollectionList context:contextCopy enablementItem:6];
 
   v33[8] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:9];
@@ -1027,79 +1027,79 @@ LABEL_27:
   return v18;
 }
 
-+ (id)utilitiesDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)utilitiesDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v4 = a3;
-  v5 = [PXSidebarDataManagerFactory makeUtilitiesDataSectionManagerWithLibrary:v4 topLevelIdentifier:0 forPicker:0 excludeHiddenAlbum:0];
+  libraryCopy = library;
+  v5 = [PXSidebarDataManagerFactory makeUtilitiesDataSectionManagerWithLibrary:libraryCopy topLevelIdentifier:0 forPicker:0 excludeHiddenAlbum:0];
   v6 = [PXNavigationListGroupItem alloc];
-  v7 = [v4 px_virtualCollections];
+  px_virtualCollections = [libraryCopy px_virtualCollections];
 
-  v8 = [v7 utilitiesCollectionList];
-  v9 = [(PXNavigationListGroupItem *)v6 initWithCollectionList:v8];
+  utilitiesCollectionList = [px_virtualCollections utilitiesCollectionList];
+  v9 = [(PXNavigationListGroupItem *)v6 initWithCollectionList:utilitiesCollectionList];
   [v5 setOutlineObject:v9];
 
   return v5;
 }
 
-+ (id)mediaTypesDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)mediaTypesDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v4 = a3;
-  v5 = [PXSidebarDataManagerFactory makeMediaTypesDataSectionManagerWithLibrary:v4 topLevelIdentifier:0];
+  libraryCopy = library;
+  v5 = [PXSidebarDataManagerFactory makeMediaTypesDataSectionManagerWithLibrary:libraryCopy topLevelIdentifier:0];
   v6 = [PXNavigationListGroupItem alloc];
-  v7 = [v4 px_virtualCollections];
+  px_virtualCollections = [libraryCopy px_virtualCollections];
 
-  v8 = [v7 mediaTypesCollectionList];
-  v9 = [(PXNavigationListGroupItem *)v6 initWithCollectionList:v8];
+  mediaTypesCollectionList = [px_virtualCollections mediaTypesCollectionList];
+  v9 = [(PXNavigationListGroupItem *)v6 initWithCollectionList:mediaTypesCollectionList];
   [v5 setOutlineObject:v9];
 
   return v5;
 }
 
-+ (id)sharingDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)sharingDataSectionManagerForLibrary:(id)library context:(id)context
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 px_virtualCollections];
+  contextCopy = context;
+  libraryCopy = library;
+  px_virtualCollections = [libraryCopy px_virtualCollections];
   v21 = [PXStackedDataSectionManager alloc];
-  v24 = [v8 sharedAlbumsCollectionList];
-  v23 = [a1 dataSectionManagerForCollection:v24 context:v6 enablementItem:6];
+  sharedAlbumsCollectionList = [px_virtualCollections sharedAlbumsCollectionList];
+  v23 = [self dataSectionManagerForCollection:sharedAlbumsCollectionList context:contextCopy enablementItem:6];
   v25[0] = v23;
-  v22 = [v8 sharedActivityCollection];
-  v9 = [a1 dataSectionManagerForCollection:v22 context:v6 enablementItem:6];
+  sharedActivityCollection = [px_virtualCollections sharedActivityCollection];
+  v9 = [self dataSectionManagerForCollection:sharedActivityCollection context:contextCopy enablementItem:6];
   v25[1] = v9;
-  v10 = [v8 contentSyndicationCollection];
-  v11 = [a1 dataSectionManagerForCollection:v10 context:v6 enablementItem:16];
+  contentSyndicationCollection = [px_virtualCollections contentSyndicationCollection];
+  v11 = [self dataSectionManagerForCollection:contentSyndicationCollection context:contextCopy enablementItem:16];
   v25[2] = v11;
-  v12 = [v8 completeMyMomentCollection];
-  v13 = [a1 dataSectionManagerForCollection:v12 context:v6 enablementItem:14];
+  completeMyMomentCollection = [px_virtualCollections completeMyMomentCollection];
+  v13 = [self dataSectionManagerForCollection:completeMyMomentCollection context:contextCopy enablementItem:14];
   v25[3] = v13;
-  v14 = [a1 sharedLibrarySuggestionsDataSectionManagerForLibrary:v7 context:v6];
+  v14 = [self sharedLibrarySuggestionsDataSectionManagerForLibrary:libraryCopy context:contextCopy];
 
   v25[4] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:5];
   v16 = [(PXStackedDataSectionManager *)v21 initWithChildDataSectionManagers:v15];
 
   v17 = [PXNavigationListGroupItem alloc];
-  v18 = [v7 isSystemPhotoLibrary];
+  isSystemPhotoLibrary = [libraryCopy isSystemPhotoLibrary];
 
-  v19 = [(PXNavigationListGroupItem *)v17 initWithIdentifier:@"PXNavigationListGroupItemTypeSharing" defaultsToExpanded:v18];
+  v19 = [(PXNavigationListGroupItem *)v17 initWithIdentifier:@"PXNavigationListGroupItemTypeSharing" defaultsToExpanded:isSystemPhotoLibrary];
   [(PXStackedDataSectionManager *)v16 setOutlineObject:v19];
 
   return v16;
 }
 
-+ (id)projectsDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)projectsDataSectionManagerForLibrary:(id)library context:(id)context
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 px_virtualCollections];
+  contextCopy = context;
+  px_virtualCollections = [library px_virtualCollections];
   v8 = [PXNavigationListItemDataSectionManager alloc];
-  v9 = [v7 allProjectsCollection];
-  v10 = [(PXNavigationListItemDataSectionManager *)v8 initWithCollection:v9 context:v6];
+  allProjectsCollection = [px_virtualCollections allProjectsCollection];
+  v10 = [(PXNavigationListItemDataSectionManager *)v8 initWithCollection:allProjectsCollection context:contextCopy];
 
-  v11 = [v7 rootProjectCollectionList];
-  v12 = [a1 dataSectionManagerForCollectionList:v11 context:v6 topLevelIdentifier:0];
+  rootProjectCollectionList = [px_virtualCollections rootProjectCollectionList];
+  v12 = [self dataSectionManagerForCollectionList:rootProjectCollectionList context:contextCopy topLevelIdentifier:0];
 
   v13 = [PXStackedDataSectionManager alloc];
   v20[0] = v10;
@@ -1109,24 +1109,24 @@ LABEL_27:
 
   [(PXStackedDataSectionManager *)v15 setAlwaysContainsObjects:1];
   v16 = [PXNavigationListGroupItem alloc];
-  v17 = [v7 rootProjectCollectionList];
-  v18 = [(PXNavigationListGroupItem *)v16 initWithCollectionList:v17];
+  rootProjectCollectionList2 = [px_virtualCollections rootProjectCollectionList];
+  v18 = [(PXNavigationListGroupItem *)v16 initWithCollectionList:rootProjectCollectionList2];
   [(PXStackedDataSectionManager *)v15 setOutlineObject:v18];
 
   return v15;
 }
 
-+ (id)sharedAlbumsDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)sharedAlbumsDataSectionManagerForLibrary:(id)library context:(id)context
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 px_virtualCollections];
+  contextCopy = context;
+  px_virtualCollections = [library px_virtualCollections];
   v8 = [PXNavigationListItemDataSectionManager alloc];
-  v9 = [v7 sharedAlbumsCollection];
-  v10 = [(PXNavigationListItemDataSectionManager *)v8 initWithCollection:v9 context:v6];
+  sharedAlbumsCollection = [px_virtualCollections sharedAlbumsCollection];
+  v10 = [(PXNavigationListItemDataSectionManager *)v8 initWithCollection:sharedAlbumsCollection context:contextCopy];
 
-  v11 = [v7 sharedAlbumsCollectionList];
-  v12 = [a1 dataSectionManagerForCollectionList:v11 context:v6 topLevelIdentifier:0];
+  sharedAlbumsCollectionList = [px_virtualCollections sharedAlbumsCollectionList];
+  v12 = [self dataSectionManagerForCollectionList:sharedAlbumsCollectionList context:contextCopy topLevelIdentifier:0];
 
   v13 = [PXStackedDataSectionManager alloc];
   v20[0] = v10;
@@ -1136,48 +1136,48 @@ LABEL_27:
 
   [(PXStackedDataSectionManager *)v15 setAlwaysContainsObjects:1];
   v16 = [PXNavigationListGroupItem alloc];
-  v17 = [v7 sharedAlbumsCollectionList];
-  v18 = [(PXNavigationListGroupItem *)v16 initWithCollectionList:v17];
+  sharedAlbumsCollectionList2 = [px_virtualCollections sharedAlbumsCollectionList];
+  v18 = [(PXNavigationListGroupItem *)v16 initWithCollectionList:sharedAlbumsCollectionList2];
   [(PXStackedDataSectionManager *)v15 setOutlineObject:v18];
 
   return v15;
 }
 
-+ (id)fromMyMacDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)fromMyMacDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 px_virtualCollections];
-  v7 = [v6 rootAlbumCollectionList];
-  v8 = [PXNavigationListDataSectionConfiguration configurationWithCollectionList:v7];
+  contextCopy = context;
+  px_virtualCollections = [library px_virtualCollections];
+  rootAlbumCollectionList = [px_virtualCollections rootAlbumCollectionList];
+  v8 = [PXNavigationListDataSectionConfiguration configurationWithCollectionList:rootAlbumCollectionList];
 
-  v9 = [v5 assetsFilterPredicate];
+  assetsFilterPredicate = [contextCopy assetsFilterPredicate];
 
-  [v8 setAssetsFilterPredicate:v9];
+  [v8 setAssetsFilterPredicate:assetsFilterPredicate];
   [v8 setIncludeKeyAssetFetches:1];
   [v8 setShowSyncedFromMacAlbums:1];
   [v8 setSkipAssetFetches:1];
   [v8 setSkipAssetCountFetches:1];
   v10 = [[PXNavigationListDataSectionManager alloc] initWithConfiguration:v8 topLevelIdentifier:0];
   v11 = [PXNavigationListGroupItem alloc];
-  v12 = [v6 macSyncedAlbumsCollectionList];
-  v13 = [(PXNavigationListGroupItem *)v11 initWithCollectionList:v12];
+  macSyncedAlbumsCollectionList = [px_virtualCollections macSyncedAlbumsCollectionList];
+  v13 = [(PXNavigationListGroupItem *)v11 initWithCollectionList:macSyncedAlbumsCollectionList];
   [(PXDataSectionManager *)v10 setOutlineObject:v13];
 
   return v10;
 }
 
-+ (id)albumsDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)albumsDataSectionManagerForLibrary:(id)library context:(id)context
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 px_virtualCollections];
+  contextCopy = context;
+  libraryCopy = library;
+  px_virtualCollections = [libraryCopy px_virtualCollections];
   v9 = [PXNavigationListItemDataSectionManager alloc];
-  v10 = [v8 allAlbumsCollection];
-  v11 = [(PXNavigationListItemDataSectionManager *)v9 initWithCollection:v10 context:v6];
+  allAlbumsCollection = [px_virtualCollections allAlbumsCollection];
+  v11 = [(PXNavigationListItemDataSectionManager *)v9 initWithCollection:allAlbumsCollection context:contextCopy];
 
-  v12 = [v7 px_rootAlbumCollectionList];
-  v13 = [a1 dataSectionManagerForCollectionList:v12 context:v6 topLevelIdentifier:0];
+  px_rootAlbumCollectionList = [libraryCopy px_rootAlbumCollectionList];
+  v13 = [self dataSectionManagerForCollectionList:px_rootAlbumCollectionList context:contextCopy topLevelIdentifier:0];
 
   v14 = [PXStackedDataSectionManager alloc];
   v21[0] = v11;
@@ -1187,29 +1187,29 @@ LABEL_27:
 
   [(PXStackedDataSectionManager *)v16 setAlwaysContainsObjects:1];
   v17 = [PXNavigationListGroupItem alloc];
-  v18 = [v7 px_rootAlbumCollectionList];
+  px_rootAlbumCollectionList2 = [libraryCopy px_rootAlbumCollectionList];
 
-  v19 = [(PXNavigationListGroupItem *)v17 initWithCollectionList:v18];
+  v19 = [(PXNavigationListGroupItem *)v17 initWithCollectionList:px_rootAlbumCollectionList2];
   [(PXStackedDataSectionManager *)v16 setOutlineObject:v19];
 
   return v16;
 }
 
-+ (id)libraryDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)libraryDataSectionManagerForLibrary:(id)library context:(id)context
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 px_virtualCollections];
+  contextCopy = context;
+  libraryCopy = library;
+  px_virtualCollections = [libraryCopy px_virtualCollections];
   v9 = [PXStackedDataSectionManager alloc];
-  v10 = [v8 photosCollection];
-  v11 = [a1 dataSectionManagerForCollection:v10 context:v6];
+  photosCollection = [px_virtualCollections photosCollection];
+  v11 = [self dataSectionManagerForCollection:photosCollection context:contextCopy];
   v19[0] = v11;
-  v12 = [a1 favoritesDataSectionManagerForLibrary:v7 context:v6];
+  v12 = [self favoritesDataSectionManagerForLibrary:libraryCopy context:contextCopy];
   v19[1] = v12;
-  v13 = [a1 recentlySavedDataSectionManagerForLibrary:v7 context:v6];
+  v13 = [self recentlySavedDataSectionManagerForLibrary:libraryCopy context:contextCopy];
   v19[2] = v13;
-  v14 = [a1 trashDataSectionManagerForLibrary:v7 context:v6];
+  v14 = [self trashDataSectionManagerForLibrary:libraryCopy context:contextCopy];
 
   v19[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
@@ -1221,151 +1221,151 @@ LABEL_27:
   return v16;
 }
 
-+ (id)dataSectionManagerForCollectionList:(id)a3 context:(id)a4 topLevelIdentifier:(id)a5
++ (id)dataSectionManagerForCollectionList:(id)list context:(id)context topLevelIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [PXNavigationListDataSectionConfiguration configurationWithCollectionList:v9];
-  v11 = [v9 px_isMediaTypesFolder];
-  v12 = [v8 assetsFilterPredicate];
+  identifierCopy = identifier;
+  contextCopy = context;
+  listCopy = list;
+  v10 = [PXNavigationListDataSectionConfiguration configurationWithCollectionList:listCopy];
+  px_isMediaTypesFolder = [listCopy px_isMediaTypesFolder];
+  assetsFilterPredicate = [contextCopy assetsFilterPredicate];
 
-  [v10 setAssetsFilterPredicate:v12];
-  [v10 setIncludeKeyAssetFetches:v11 ^ 1u];
+  [v10 setAssetsFilterPredicate:assetsFilterPredicate];
+  [v10 setIncludeKeyAssetFetches:px_isMediaTypesFolder ^ 1u];
   [v10 setIncludeUserSmartAlbums:1];
-  v13 = [v9 px_isMediaTypesFolder];
+  px_isMediaTypesFolder2 = [listCopy px_isMediaTypesFolder];
 
-  [v10 setEmptyCollectionsHidden:v13];
+  [v10 setEmptyCollectionsHidden:px_isMediaTypesFolder2];
   [v10 setSkipKeyAssetFetchesForSmartAlbums:1];
   [v10 setSkipAssetFetches:1];
   [v10 setSkipAssetCountFetches:1];
-  v14 = [[PXNavigationListDataSectionManager alloc] initWithConfiguration:v10 topLevelIdentifier:v7];
+  v14 = [[PXNavigationListDataSectionManager alloc] initWithConfiguration:v10 topLevelIdentifier:identifierCopy];
 
   return v14;
 }
 
-+ (id)trashDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)trashDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 px_assetCollectionForSmartAlbumWithSubtype:1000000201];
-  v8 = [a1 dataSectionManagerForCollection:v7 context:v6];
-  v9 = [v6 enablementProvider];
+  contextCopy = context;
+  v7 = [library px_assetCollectionForSmartAlbumWithSubtype:1000000201];
+  v8 = [self dataSectionManagerForCollection:v7 context:contextCopy];
+  enablementProvider = [contextCopy enablementProvider];
 
-  [v9 configureEnablementOfSectionManager:v8 enablementItem:3];
+  [enablementProvider configureEnablementOfSectionManager:v8 enablementItem:3];
   [v8 setHiddenWhenEmpty:0];
 
   return v8;
 }
 
-+ (id)sharedLibrarySuggestionsDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)sharedLibrarySuggestionsDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 px_assetCollectionForSmartAlbumWithSubtype:1000000214];
-  v8 = [a1 dataSectionManagerForCollection:v7 context:v6];
-  v9 = [v6 enablementProvider];
+  contextCopy = context;
+  v7 = [library px_assetCollectionForSmartAlbumWithSubtype:1000000214];
+  v8 = [self dataSectionManagerForCollection:v7 context:contextCopy];
+  enablementProvider = [contextCopy enablementProvider];
 
-  [v9 configureEnablementOfSectionManager:v8 enablementItem:15];
+  [enablementProvider configureEnablementOfSectionManager:v8 enablementItem:15];
   [v8 setHiddenWhenEmpty:1];
 
   return v8;
 }
 
-+ (id)unableToUploadDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)unableToUploadDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 px_assetCollectionForSmartAlbumWithSubtype:216];
-  v8 = [a1 dataSectionManagerForCollection:v7 context:v6];
-
-  [v8 setHiddenWhenEmpty:1];
-
-  return v8;
-}
-
-+ (id)recentlySavedDataSectionManagerForLibrary:(id)a3 context:(id)a4
-{
-  v6 = a4;
-  v7 = [a3 px_assetCollectionForSmartAlbumWithSubtype:1000000218];
-  v8 = [a1 dataSectionManagerForCollection:v7 context:v6];
+  contextCopy = context;
+  v7 = [library px_assetCollectionForSmartAlbumWithSubtype:216];
+  v8 = [self dataSectionManagerForCollection:v7 context:contextCopy];
 
   [v8 setHiddenWhenEmpty:1];
 
   return v8;
 }
 
-+ (id)favoritesDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)recentlySavedDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 px_assetCollectionForSmartAlbumWithSubtype:203];
-  v8 = [a1 dataSectionManagerForCollection:v7 context:v6];
+  contextCopy = context;
+  v7 = [library px_assetCollectionForSmartAlbumWithSubtype:1000000218];
+  v8 = [self dataSectionManagerForCollection:v7 context:contextCopy];
 
   [v8 setHiddenWhenEmpty:1];
 
   return v8;
 }
 
-+ (id)collectionsItemDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)favoritesDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 px_virtualCollections];
-  v8 = [v7 collectionsCollection];
+  contextCopy = context;
+  v7 = [library px_assetCollectionForSmartAlbumWithSubtype:203];
+  v8 = [self dataSectionManagerForCollection:v7 context:contextCopy];
 
-  v9 = [a1 dataSectionManagerForCollection:v8 context:v6];
+  [v8 setHiddenWhenEmpty:1];
 
-  v10 = PXNavigationListItemWithObject(v8, 0, 0, 0, 0);
+  return v8;
+}
+
++ (id)collectionsItemDataSectionManagerForLibrary:(id)library context:(id)context
+{
+  contextCopy = context;
+  px_virtualCollections = [library px_virtualCollections];
+  collectionsCollection = [px_virtualCollections collectionsCollection];
+
+  v9 = [self dataSectionManagerForCollection:collectionsCollection context:contextCopy];
+
+  v10 = PXNavigationListItemWithObject(collectionsCollection, 0, 0, 0, 0);
   [v9 setOutlineObject:v10];
 
   return v9;
 }
 
-+ (id)libraryItemDataSectionManagerForLibrary:(id)a3 context:(id)a4
++ (id)libraryItemDataSectionManagerForLibrary:(id)library context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 px_virtualCollections];
-  v8 = [v7 photosCollection];
+  contextCopy = context;
+  px_virtualCollections = [library px_virtualCollections];
+  photosCollection = [px_virtualCollections photosCollection];
 
-  v9 = [a1 dataSectionManagerForCollection:v8 context:v6];
+  v9 = [self dataSectionManagerForCollection:photosCollection context:contextCopy];
 
-  v10 = PXNavigationListItemWithObject(v8, 0, 0, 0, 0);
+  v10 = PXNavigationListItemWithObject(photosCollection, 0, 0, 0, 0);
   [v9 setOutlineObject:v10];
 
   return v9;
 }
 
-+ (id)dataSectionManagerForCollection:(id)a3 context:(id)a4 enablementItem:(int64_t)a5
++ (id)dataSectionManagerForCollection:(id)collection context:(id)context enablementItem:(int64_t)item
 {
-  v8 = a4;
-  v9 = [a1 dataSectionManagerForCollection:a3 context:v8];
-  v10 = [v8 enablementProvider];
+  contextCopy = context;
+  v9 = [self dataSectionManagerForCollection:collection context:contextCopy];
+  enablementProvider = [contextCopy enablementProvider];
 
-  [v10 configureEnablementOfSectionManager:v9 enablementItem:a5];
+  [enablementProvider configureEnablementOfSectionManager:v9 enablementItem:item];
 
   return v9;
 }
 
-+ (id)dataSectionManagerForTransientCollection:(id)a3 context:(id)a4
++ (id)dataSectionManagerForTransientCollection:(id)collection context:(id)context
 {
-  v4 = [a1 dataSectionManagerForCollection:a3 context:a4];
+  v4 = [self dataSectionManagerForCollection:collection context:context];
   [v4 setHiddenWhenEmpty:1];
 
   return v4;
 }
 
-+ (id)dataSectionManagerForGroupCollectionList:(id)a3 context:(id)a4
++ (id)dataSectionManagerForGroupCollectionList:(id)list context:(id)context
 {
-  v6 = a3;
-  v7 = [a1 dataSectionManagerForCollectionList:v6 context:a4 topLevelIdentifier:0];
-  v8 = [[PXNavigationListGroupItem alloc] initWithCollectionList:v6];
+  listCopy = list;
+  v7 = [self dataSectionManagerForCollectionList:listCopy context:context topLevelIdentifier:0];
+  v8 = [[PXNavigationListGroupItem alloc] initWithCollectionList:listCopy];
 
   [v7 setOutlineObject:v8];
 
   return v7;
 }
 
-+ (id)dataSectionManagerForCollection:(id)a3 context:(id)a4
++ (id)dataSectionManagerForCollection:(id)collection context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PXNavigationListItemDataSectionManager alloc] initWithCollection:v6 context:v5];
+  contextCopy = context;
+  collectionCopy = collection;
+  v7 = [[PXNavigationListItemDataSectionManager alloc] initWithCollection:collectionCopy context:contextCopy];
 
   return v7;
 }

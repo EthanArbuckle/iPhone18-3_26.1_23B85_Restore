@@ -1,20 +1,20 @@
 @interface VSSubscriptionRegistry
-- (BOOL)_saveChangesToContext:(id)a3;
+- (BOOL)_saveChangesToContext:(id)context;
 - (VSRemoteNotifier)remoteNotifier;
 - (VSSubscriptionPersistentContainer)persistentContainer;
 - (VSSubscriptionPredicateFactory)predicateFactory;
 - (VSSubscriptionRegistry)init;
 - (id)_fetchRequest;
-- (id)_predicateForCurrentConnectionWithRequestKind:(int64_t)a3;
-- (id)_predicateForPersistentAttributesOfSubscriptions:(id)a3 withEntity:(id)a4 forFiltering:(BOOL)a5;
-- (int64_t)_saveChangesToContext:(id)a3 withDate:(id)a4;
-- (void)_installedAppsDidChange:(id)a3;
-- (void)_performBlock:(id)a3;
+- (id)_predicateForCurrentConnectionWithRequestKind:(int64_t)kind;
+- (id)_predicateForPersistentAttributesOfSubscriptions:(id)subscriptions withEntity:(id)entity forFiltering:(BOOL)filtering;
+- (int64_t)_saveChangesToContext:(id)context withDate:(id)date;
+- (void)_installedAppsDidChange:(id)change;
+- (void)_performBlock:(id)block;
 - (void)_sendRemoteNotification;
 - (void)dealloc;
-- (void)fetchActiveSubscriptionsWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)registerSubscription:(id)a3 withCompletionHandler:(id)a4;
-- (void)removeSubscriptions:(id)a3 withCompletionHandler:(id)a4;
+- (void)fetchActiveSubscriptionsWithOptions:(id)options completionHandler:(id)handler;
+- (void)registerSubscription:(id)subscription withCompletionHandler:(id)handler;
+- (void)removeSubscriptions:(id)subscriptions withCompletionHandler:(id)handler;
 @end
 
 @implementation VSSubscriptionRegistry
@@ -26,8 +26,8 @@
   v2 = [(VSSubscriptionRegistry *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__installedAppsDidChange_ name:@"VSInstalledApplicationsDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__installedAppsDidChange_ name:@"VSInstalledApplicationsDidChange" object:0];
   }
 
   return v2;
@@ -35,8 +35,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"VSInstalledApplicationsDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VSInstalledApplicationsDidChange" object:0];
 
   v4.receiver = self;
   v4.super_class = VSSubscriptionRegistry;
@@ -45,16 +45,16 @@
 
 - (VSSubscriptionPersistentContainer)persistentContainer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_persistentContainer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_persistentContainer;
   if (!v3)
   {
     v3 = objc_alloc_init(VSSubscriptionPersistentContainer);
-    objc_storeStrong(&v2->_persistentContainer, v3);
+    objc_storeStrong(&selfCopy->_persistentContainer, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -66,16 +66,16 @@
 
 - (VSSubscriptionPredicateFactory)predicateFactory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_predicateFactory;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_predicateFactory;
   if (!v3)
   {
     v3 = objc_alloc_init(VSSubscriptionPredicateFactory);
-    objc_storeStrong(&v2->_predicateFactory, v3);
+    objc_storeStrong(&selfCopy->_predicateFactory, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -87,16 +87,16 @@
 
 - (VSRemoteNotifier)remoteNotifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_remoteNotifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_remoteNotifier;
   if (!v3)
   {
     v3 = [[VSRemoteNotifier alloc] initWithNotificationName:@"VSActiveSubscriptionsDidChangeNotification"];
-    objc_storeStrong(&v2->_remoteNotifier, v3);
+    objc_storeStrong(&selfCopy->_remoteNotifier, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -108,13 +108,13 @@
 
 - (void)_sendRemoteNotification
 {
-  v2 = [(VSSubscriptionRegistry *)self remoteNotifier];
-  [v2 postNotification];
+  remoteNotifier = [(VSSubscriptionRegistry *)self remoteNotifier];
+  [remoteNotifier postNotification];
 }
 
-- (void)_installedAppsDidChange:(id)a3
+- (void)_installedAppsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_autoreleasePoolPush();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -125,18 +125,18 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_performBlock:(id)a3
+- (void)_performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(VSSubscriptionRegistry *)self persistentContainer];
+  persistentContainer = [(VSSubscriptionRegistry *)self persistentContainer];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__VSSubscriptionRegistry__performBlock___block_invoke;
   v8[3] = &unk_278B73BF8;
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
-  [v6 performBlockAndWait:v8];
+  [persistentContainer performBlockAndWait:v8];
 
   objc_autoreleasePoolPop(v5);
 }
@@ -184,17 +184,17 @@ void __40__VSSubscriptionRegistry__performBlock___block_invoke_3(uint64_t a1)
   (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)_saveChangesToContext:(id)a3
+- (BOOL)_saveChangesToContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEAA8] vs_currentDate];
-  v6 = v4;
+  vs_currentDate = [MEMORY[0x277CBEAA8] vs_currentDate];
+  parentContext = contextCopy;
   v19 = 0;
   v7 = 0;
   v20 = *MEMORY[0x277CBE660];
   v8 = *MEMORY[0x277CBE658];
-  v16 = v6;
+  v16 = parentContext;
   do
   {
     context = objc_autoreleasePoolPush();
@@ -202,18 +202,18 @@ void __40__VSSubscriptionRegistry__performBlock___block_invoke_3(uint64_t a1)
     do
     {
       v10 = objc_autoreleasePoolPush();
-      if (!v6)
+      if (!parentContext)
       {
         [MEMORY[0x277CBEAD8] raise:v20 format:@"The currentContextOrNil parameter must not be nil."];
       }
 
-      v11 = v6;
-      v12 = [(VSSubscriptionRegistry *)self _saveChangesToContext:v11 withDate:v5];
+      v11 = parentContext;
+      v12 = [(VSSubscriptionRegistry *)self _saveChangesToContext:v11 withDate:vs_currentDate];
       v13 = v12;
       if (v12 == 2)
       {
 
-        v6 = 0;
+        parentContext = 0;
         v7 = 0;
       }
 
@@ -231,7 +231,7 @@ void __40__VSSubscriptionRegistry__performBlock___block_invoke_3(uint64_t a1)
           ++v9;
 
 LABEL_13:
-          v6 = v11;
+          parentContext = v11;
           goto LABEL_17;
         }
 
@@ -240,9 +240,9 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v6 = [v11 parentContext];
+        parentContext = [v11 parentContext];
 
-        if (v6)
+        if (parentContext)
         {
           ++v19;
         }
@@ -273,18 +273,18 @@ LABEL_17:
     objc_autoreleasePoolPop(context);
   }
 
-  while (v6);
+  while (parentContext);
 
   objc_autoreleasePoolPop(v17);
   return v7 & 1;
 }
 
-- (int64_t)_saveChangesToContext:(id)a3 withDate:(id)a4
+- (int64_t)_saveChangesToContext:(id)context withDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  dateCopy = date;
   v7 = objc_autoreleasePoolPush();
-  if (!v5)
+  if (!contextCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The context parameter must not be nil."];
   }
@@ -297,9 +297,9 @@ LABEL_17:
   v12[1] = 3221225472;
   v12[2] = __57__VSSubscriptionRegistry__saveChangesToContext_withDate___block_invoke;
   v12[3] = &unk_278B747B0;
-  v8 = v5;
+  v8 = contextCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = dateCopy;
   v14 = v9;
   v15 = &v16;
   [v8 performBlockAndWait:v12];
@@ -638,14 +638,14 @@ uint64_t __57__VSSubscriptionRegistry__saveChangesToContext_withDate___block_inv
   return v2;
 }
 
-- (id)_predicateForCurrentConnectionWithRequestKind:(int64_t)a3
+- (id)_predicateForCurrentConnectionWithRequestKind:(int64_t)kind
 {
   v5 = [MEMORY[0x277CCAC30] predicateWithValue:0];
-  v6 = [(VSSubscriptionRegistry *)self _securityTaskForCurrentConnection];
-  if (v6)
+  _securityTaskForCurrentConnection = [(VSSubscriptionRegistry *)self _securityTaskForCurrentConnection];
+  if (_securityTaskForCurrentConnection)
   {
-    v7 = [(VSSubscriptionRegistry *)self predicateFactory];
-    v8 = [v7 allowedSubscriptionsPredicateForRequestKind:a3 fromTask:v6];
+    predicateFactory = [(VSSubscriptionRegistry *)self predicateFactory];
+    v8 = [predicateFactory allowedSubscriptionsPredicateForRequestKind:kind fromTask:_securityTaskForCurrentConnection];
 
     v5 = v8;
   }
@@ -653,15 +653,15 @@ uint64_t __57__VSSubscriptionRegistry__saveChangesToContext_withDate___block_inv
   return v5;
 }
 
-- (void)fetchActiveSubscriptionsWithOptions:(id)a3 completionHandler:(id)a4
+- (void)fetchActiveSubscriptionsWithOptions:(id)options completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  optionsCopy = options;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (optionsCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -686,29 +686,29 @@ LABEL_3:
     _os_log_impl(&dword_23AB8E000, v9, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v10 = [(VSSubscriptionRegistry *)self _securityTaskForCurrentConnection];
-  v11 = [v6 objectForKey:@"VSSubscriptionFetchOptionSubscriberIdentifierHashModifier"];
-  if (v11 && ([v10 shouldAllowAccessToSubscriberIdentifierHashModifier:v11] & 1) == 0)
+  _securityTaskForCurrentConnection = [(VSSubscriptionRegistry *)self _securityTaskForCurrentConnection];
+  v11 = [optionsCopy objectForKey:@"VSSubscriptionFetchOptionSubscriberIdentifierHashModifier"];
+  if (v11 && ([_securityTaskForCurrentConnection shouldAllowAccessToSubscriberIdentifierHashModifier:v11] & 1) == 0)
   {
 
     v11 = 0;
   }
 
-  v12 = [(VSSubscriptionRegistry *)self predicateFactory];
-  v13 = [v12 subscriptionFetchPredicateForTask:v10 withOptions:v6];
+  predicateFactory = [(VSSubscriptionRegistry *)self predicateFactory];
+  v13 = [predicateFactory subscriptionFetchPredicateForTask:_securityTaskForCurrentConnection withOptions:optionsCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__VSSubscriptionRegistry_fetchActiveSubscriptionsWithOptions_completionHandler___block_invoke;
   v18[3] = &unk_278B74828;
   v18[4] = self;
-  v19 = v12;
+  v19 = predicateFactory;
   v20 = v13;
   v21 = v11;
   v22 = v8;
   v14 = v8;
   v15 = v11;
   v16 = v13;
-  v17 = v12;
+  v17 = predicateFactory;
   [(VSSubscriptionRegistry *)self _performBlock:v18];
 }
 
@@ -983,12 +983,12 @@ void __80__VSSubscriptionRegistry_fetchActiveSubscriptionsWithOptions_completion
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)registerSubscription:(id)a3 withCompletionHandler:(id)a4
+- (void)registerSubscription:(id)subscription withCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  v8 = a3;
+  subscriptionCopy = subscription;
   v9 = VSDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -997,7 +997,7 @@ void __80__VSSubscriptionRegistry_fetchActiveSubscriptionsWithOptions_completion
     _os_log_impl(&dword_23AB8E000, v9, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v10 = [v8 copy];
+  v10 = [subscriptionCopy copy];
   v11 = VSDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1015,7 +1015,7 @@ void __80__VSSubscriptionRegistry_fetchActiveSubscriptionsWithOptions_completion
     v17[3] = &unk_278B74850;
     v17[4] = self;
     v18 = v10;
-    v19 = v6;
+    v19 = handlerCopy;
     [(VSSubscriptionRegistry *)self _performBlock:v17];
 
     v13 = v18;
@@ -1030,13 +1030,13 @@ LABEL_11:
     [VSSubscriptionRegistry registerSubscription:withCompletionHandler:];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __69__VSSubscriptionRegistry_registerSubscription_withCompletionHandler___block_invoke_90;
     v15[3] = &unk_278B73938;
-    v16 = v6;
+    v16 = handlerCopy;
     VSPerformCompletionHandler(v15);
     v13 = v16;
     goto LABEL_11;
@@ -1209,17 +1209,17 @@ void __69__VSSubscriptionRegistry_registerSubscription_withCompletionHandler___b
   }
 }
 
-- (id)_predicateForPersistentAttributesOfSubscriptions:(id)a3 withEntity:(id)a4 forFiltering:(BOOL)a5
+- (id)_predicateForPersistentAttributesOfSubscriptions:(id)subscriptions withEntity:(id)entity forFiltering:(BOOL)filtering
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v22 = a4;
+  subscriptionsCopy = subscriptions;
+  entityCopy = entity;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v7;
+  obj = subscriptionsCopy;
   v9 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
@@ -1237,16 +1237,16 @@ void __69__VSSubscriptionRegistry_registerSubscription_withCompletionHandler___b
         v13 = *(*(&v26 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
         v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v16 = [v22 attributesByName];
+        attributesByName = [entityCopy attributesByName];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __99__VSSubscriptionRegistry__predicateForPersistentAttributesOfSubscriptions_withEntity_forFiltering___block_invoke;
         v23[3] = &unk_278B74878;
-        v25 = a5;
+        filteringCopy = filtering;
         v23[4] = v13;
         v24 = v15;
         v17 = v15;
-        [v16 enumerateKeysAndObjectsUsingBlock:v23];
+        [attributesByName enumerateKeysAndObjectsUsingBlock:v23];
 
         v18 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v17];
         [v8 addObject:v18];
@@ -1294,11 +1294,11 @@ void __99__VSSubscriptionRegistry__predicateForPersistentAttributesOfSubscriptio
 LABEL_9:
 }
 
-- (void)removeSubscriptions:(id)a3 withCompletionHandler:(id)a4
+- (void)removeSubscriptions:(id)subscriptions withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  subscriptionsCopy = subscriptions;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1308,7 +1308,7 @@ LABEL_9:
   }
 
   v9 = [(VSSubscriptionRegistry *)self _predicateForCurrentConnectionWithRequestKind:1];
-  v10 = [v7 filteredArrayUsingPredicate:v9];
+  v10 = [subscriptionsCopy filteredArrayUsingPredicate:v9];
 
   if ([v10 count])
   {
@@ -1318,7 +1318,7 @@ LABEL_9:
     v15[3] = &unk_278B74850;
     v15[4] = self;
     v16 = v10;
-    v17 = v6;
+    v17 = handlerCopy;
     [(VSSubscriptionRegistry *)self _performBlock:v15];
 
     v11 = v16;
@@ -1333,13 +1333,13 @@ LABEL_9:
     [VSSubscriptionRegistry removeSubscriptions:withCompletionHandler:];
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __68__VSSubscriptionRegistry_removeSubscriptions_withCompletionHandler___block_invoke_102;
     v13[3] = &unk_278B73938;
-    v14 = v6;
+    v14 = handlerCopy;
     VSPerformCompletionHandler(v13);
     v11 = v14;
     goto LABEL_9;

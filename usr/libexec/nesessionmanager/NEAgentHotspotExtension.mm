@@ -1,38 +1,38 @@
 @interface NEAgentHotspotExtension
-- (NEAgentHotspotExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginInfo:(id)a5 queue:(id)a6 factory:(id)a7;
+- (NEAgentHotspotExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginInfo:(id)info queue:(id)queue factory:(id)factory;
 - (NSXPCInterface)driverInterface;
 - (NSXPCInterface)managerInterface;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)dealloc;
-- (void)handleAppsUninstalled:(id)a3;
-- (void)handleAppsUpdateBegins:(id)a3;
-- (void)handleAppsUpdateEnding:(id)a3;
-- (void)handleAppsUpdateEnds:(id)a3;
+- (void)handleAppsUninstalled:(id)uninstalled;
+- (void)handleAppsUpdateBegins:(id)begins;
+- (void)handleAppsUpdateEnding:(id)ending;
+- (void)handleAppsUpdateEnds:(id)ends;
 - (void)handleCancel;
-- (void)handleDisposeWithCompletionHandler:(id)a3;
-- (void)handleInitWithCompletionHandler:(id)a3;
+- (void)handleDisposeWithCompletionHandler:(id)handler;
+- (void)handleInitWithCompletionHandler:(id)handler;
 - (void)handleXPCError;
-- (void)sleepWithCompletionHandler:(id)a3;
+- (void)sleepWithCompletionHandler:(id)handler;
 - (void)startAuthenticationProvider;
 - (void)startEvaluationProvider;
-- (void)startWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)stopWithReason:(int)a3;
-- (void)updateConfiguration:(id)a3;
+- (void)startWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)stopWithReason:(int)reason;
+- (void)updateConfiguration:(id)configuration;
 - (void)wakeup;
 @end
 
 @implementation NEAgentHotspotExtension
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: hotspot provider cancelWithError %@", &v6, 0x16u);
   }
 }
@@ -70,7 +70,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%@ handleExtensionExit", buf, 0xCu);
     }
 
@@ -79,25 +79,25 @@
     *(&v16 + 1) = 3221225472;
     v17 = sub_100002040;
     v18 = &unk_1000EB198;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 0;
     dispatch_async(Property, &v16);
   }
 }
 
-- (void)stopWithReason:(int)a3
+- (void)stopWithReason:(int)reason
 {
   if (self)
   {
     if (objc_getProperty(self, a2, 80, 1))
     {
       Property = objc_getProperty(self, v5, 80, 1);
-      v7 = a3;
+      reasonCopy2 = reason;
       v15 = _NSConcreteStackBlock;
       v16 = 3221225472;
       v17 = sub_100002284;
       v18 = &unk_1000EAD98;
-      v19 = self;
+      selfCopy = self;
       v8 = &v15;
     }
 
@@ -109,22 +109,22 @@
       }
 
       Property = objc_getProperty(self, v9, 88, 1);
-      v7 = a3;
+      reasonCopy2 = reason;
       v10 = _NSConcreteStackBlock;
       v11 = 3221225472;
       v12 = sub_100002428;
       v13 = &unk_1000EAD98;
-      v14 = self;
+      selfCopy2 = self;
       v8 = &v10;
     }
 
-    [Property stopWithReason:v7 completion:{v8, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19}];
+    [Property stopWithReason:reasonCopy2 completion:{v8, v10, v11, v12, v13, selfCopy2, v15, v16, v17, v18, selfCopy}];
   }
 }
 
 - (void)startAuthenticationProvider
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
@@ -134,13 +134,13 @@
   block[1] = 3221225472;
   block[2] = sub_100002658;
   block[3] = &unk_1000EB1C0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
 - (void)startEvaluationProvider
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 24, 1);
@@ -150,18 +150,18 @@
   block[1] = 3221225472;
   block[2] = sub_100002938;
   block[3] = &unk_1000EB1C0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@: updateConfiguration", buf, 0xCu);
   }
 
@@ -180,8 +180,8 @@
   v9[2] = sub_100002CCC;
   v9[3] = &unk_1000EB198;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = configurationCopy;
+  v8 = configurationCopy;
   dispatch_async(Property, v9);
 }
 
@@ -191,7 +191,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%@: wakeup", buf, 0xCu);
   }
 
@@ -213,14 +213,14 @@
   dispatch_async(Property, block);
 }
 
-- (void)sleepWithCompletionHandler:(id)a3
+- (void)sleepWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@: sleepWithCompletionHandler", buf, 0xCu);
   }
 
@@ -239,22 +239,22 @@
   v9[2] = sub_10000322C;
   v9[3] = &unk_1000EB310;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(Property, v9);
 }
 
-- (void)startWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)startWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = ne_log_large_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v6;
+    v19 = configurationCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@: startWithConfiguration: %@", buf, 0x16u);
   }
 
@@ -273,10 +273,10 @@
   block[2] = sub_100003718;
   block[3] = &unk_1000EB2E8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = configurationCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = configurationCopy;
   dispatch_async(Property, block);
 }
 
@@ -304,14 +304,14 @@
   return v3;
 }
 
-- (void)handleAppsUpdateEnds:(id)a3
+- (void)handleAppsUpdateEnds:(id)ends
 {
-  v4 = a3;
+  endsCopy = ends;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ handleAppsUpdateEnds", buf, 0xCu);
   }
 
@@ -330,19 +330,19 @@
   v9[2] = sub_100004990;
   v9[3] = &unk_1000EB198;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = endsCopy;
+  v8 = endsCopy;
   dispatch_async(Property, v9);
 }
 
-- (void)handleAppsUpdateEnding:(id)a3
+- (void)handleAppsUpdateEnding:(id)ending
 {
-  v4 = a3;
+  endingCopy = ending;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ handleAppsUpdateEnding", buf, 0xCu);
   }
 
@@ -361,19 +361,19 @@
   v9[2] = sub_100004C08;
   v9[3] = &unk_1000EB198;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = endingCopy;
+  v8 = endingCopy;
   dispatch_async(Property, v9);
 }
 
-- (void)handleAppsUpdateBegins:(id)a3
+- (void)handleAppsUpdateBegins:(id)begins
 {
-  v4 = a3;
+  beginsCopy = begins;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ handleAppsUpdateBegins", buf, 0xCu);
   }
 
@@ -392,19 +392,19 @@
   v9[2] = sub_100004DE8;
   v9[3] = &unk_1000EB198;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = beginsCopy;
+  v8 = beginsCopy;
   dispatch_async(Property, v9);
 }
 
-- (void)handleAppsUninstalled:(id)a3
+- (void)handleAppsUninstalled:(id)uninstalled
 {
-  v4 = a3;
+  uninstalledCopy = uninstalled;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ handleAppsUninstalled", buf, 0xCu);
   }
 
@@ -422,9 +422,9 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000502C;
   v9[3] = &unk_1000EB198;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = uninstalledCopy;
+  selfCopy2 = self;
+  v8 = uninstalledCopy;
   dispatch_async(Property, v9);
 }
 
@@ -434,7 +434,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%@ handleCancel", buf, 0xCu);
   }
 
@@ -447,7 +447,7 @@
       v15 = 3221225472;
       v16 = sub_1000052A8;
       v17 = &unk_1000EAD98;
-      v18 = self;
+      selfCopy2 = self;
       v7 = &v14;
     }
 
@@ -463,22 +463,22 @@
       v10 = 3221225472;
       v11 = sub_1000053A4;
       v12 = &unk_1000EAD98;
-      v13 = self;
+      selfCopy3 = self;
       v7 = &v9;
     }
 
-    [Property stopWithReason:15 completion:{v7, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18}];
+    [Property stopWithReason:15 completion:{v7, v9, v10, v11, v12, selfCopy3, v14, v15, v16, v17, selfCopy2}];
   }
 }
 
-- (void)handleDisposeWithCompletionHandler:(id)a3
+- (void)handleDisposeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ handleDisposeWithCompletionHandler", buf, 0xCu);
   }
 
@@ -491,23 +491,23 @@
   block[1] = 3221225472;
   block[2] = sub_1000055D8;
   block[3] = &unk_1000EAAE8;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)handleInitWithCompletionHandler:(id)a3
+- (void)handleInitWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ handleInitWithCompletionHandler", &v6, 0xCu);
   }
 
-  v4[2](v4, 1, 1);
+  handlerCopy[2](handlerCopy, 1, 1);
 }
 
 - (void)dealloc
@@ -516,7 +516,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%@ dealloc", buf, 0xCu);
   }
 
@@ -525,12 +525,12 @@
   [(NEAgentHotspotExtension *)&v4 dealloc];
 }
 
-- (NEAgentHotspotExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginInfo:(id)a5 queue:(id)a6 factory:(id)a7
+- (NEAgentHotspotExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginInfo:(id)info queue:(id)queue factory:(id)factory
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  infoCopy = info;
+  queueCopy = queue;
+  factoryCopy = factory;
   v23.receiver = self;
   v23.super_class = NEAgentHotspotExtension;
   v17 = [(NEAgentHotspotExtension *)&v23 init];
@@ -542,22 +542,22 @@
       *buf = 138413058;
       v25 = v17;
       v26 = 2112;
-      v27 = v13;
+      v27 = typeCopy;
       v28 = 2048;
-      v29 = a4;
+      classCopy = class;
       v30 = 2112;
-      v31 = v14;
+      v31 = infoCopy;
       _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%@: pluginType: [%@] pluginClass: [%ld] pluginInfo: [%@]", buf, 0x2Au);
     }
 
-    objc_storeWeak(&v17->_managerObjectFactory, v16);
-    objc_storeStrong(&v17->_queue, a6);
-    objc_storeStrong(&v17->_pluginType, a3);
-    v19 = [v14 objectForKeyedSubscript:@"extension-identifier"];
+    objc_storeWeak(&v17->_managerObjectFactory, factoryCopy);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v17->_pluginType, type);
+    v19 = [infoCopy objectForKeyedSubscript:@"extension-identifier"];
     extensionIdentifier = v17->_extensionIdentifier;
     v17->_extensionIdentifier = v19;
 
-    v21 = [v14 objectForKeyedSubscript:@"hotspot-session-type"];
+    v21 = [infoCopy objectForKeyedSubscript:@"hotspot-session-type"];
     if (isa_nsnumber())
     {
       v17->_sessionrType = [v21 intValue];

@@ -1,8 +1,8 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50CompoundReader
 - (id)description;
 - (id)listAll;
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (int64_t)fileLengthWithNSString:(id)a3;
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (int64_t)fileLengthWithNSString:(id)string;
 - (void)close;
 - (void)dealloc;
 @end
@@ -16,10 +16,10 @@
   OrgApacheLuceneUtilIOUtils_closeWithJavaIoCloseableArray_(v2);
 }
 
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  [(OrgApacheLuceneStoreDirectory *)self ensureOpen:a3];
-  v6 = OrgApacheLuceneIndexIndexFileNames_stripSegmentNameWithNSString_(a3);
+  [(OrgApacheLuceneStoreDirectory *)self ensureOpen:string];
+  v6 = OrgApacheLuceneIndexIndexFileNames_stripSegmentNameWithNSString_(string);
   entries = self->entries_;
   if (!entries)
   {
@@ -45,7 +45,7 @@ LABEL_7:
   v10 = v8[2];
   handle = self->handle_;
 
-  return [(OrgApacheLuceneStoreIndexInput *)handle sliceWithNSString:a3 withLong:v9 withLong:v10];
+  return [(OrgApacheLuceneStoreIndexInput *)handle sliceWithNSString:string withLong:v9 withLong:v10];
 }
 
 - (id)listAll
@@ -74,7 +74,7 @@ LABEL_7:
   return v13;
 }
 
-- (int64_t)fileLengthWithNSString:(id)a3
+- (int64_t)fileLengthWithNSString:(id)string
 {
   [(OrgApacheLuceneStoreDirectory *)self ensureOpen];
   entries = self->entries_;
@@ -83,10 +83,10 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaUtilMap *)entries getWithId:OrgApacheLuceneIndexIndexFileNames_stripSegmentNameWithNSString_(a3)];
+  v6 = [(JavaUtilMap *)entries getWithId:OrgApacheLuceneIndexIndexFileNames_stripSegmentNameWithNSString_(string)];
   if (!v6)
   {
-    v8 = new_JavaIoFileNotFoundException_initWithNSString_(a3);
+    v8 = new_JavaIoFileNotFoundException_initWithNSString_(string);
     objc_exception_throw(v8);
   }
 

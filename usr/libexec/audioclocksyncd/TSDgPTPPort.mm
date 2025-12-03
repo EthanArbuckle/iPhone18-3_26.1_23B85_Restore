@@ -1,18 +1,18 @@
 @interface TSDgPTPPort
-+ (id)diagnosticInfoForService:(id)a3;
-+ (id)gPTPPortWithService:(id)a3;
++ (id)diagnosticInfoForService:(id)service;
++ (id)gPTPPortWithService:(id)service;
 - (BOOL)startAutomaticPropertyUpdates;
 - (BOOL)stopAutomaticPropertyUpdates;
 - (TSDgPTPPort)init;
-- (TSDgPTPPort)initWithService:(id)a3 pid:(int)a4;
+- (TSDgPTPPort)initWithService:(id)service pid:(int)pid;
 - (id)getMetrics;
-- (id)getMetricsWithDelta:(id)a3;
+- (id)getMetricsWithDelta:(id)delta;
 - (id)propertiesForXPC;
 - (int)_portRole;
 - (unint64_t)_clockIdentifier;
 - (unsigned)_portNumber;
 - (void)finalizeNotifications;
-- (void)setPropertyUpdateQueue:(id)a3;
+- (void)setPropertyUpdateQueue:(id)queue;
 - (void)updateProperties;
 @end
 
@@ -20,51 +20,51 @@
 
 - (unsigned)_portNumber
 {
-  v2 = [(TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"PortNumber"];
+  service = [(TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"PortNumber"];
 
   if (v3)
   {
-    v4 = [v3 unsignedShortValue];
+    unsignedShortValue = [v3 unsignedShortValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedShortValue = 0;
   }
 
-  return v4;
+  return unsignedShortValue;
 }
 
 - (unint64_t)_clockIdentifier
 {
-  v2 = [(TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"ClockIdentifier"];
+  service = [(TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"ClockIdentifier"];
 
   if (v3)
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (int)_portRole
 {
-  v2 = [(TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"PortRole"];
+  service = [(TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"PortRole"];
 
   if (v3)
   {
-    v4 = [v3 intValue];
-    if (v4 < 4)
+    intValue = [v3 intValue];
+    if (intValue < 4)
     {
-      v5 = v4 + 1;
+      v5 = intValue + 1;
     }
 
     else
@@ -89,66 +89,66 @@
   return 0;
 }
 
-+ (id)gPTPPortWithService:(id)a3
++ (id)gPTPPortWithService:(id)service
 {
-  v3 = a3;
-  if ([v3 conformsToIOClassName:@"IOTimeSyncEthernetPort"])
+  serviceCopy = service;
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncEthernetPort"])
   {
     v4 = off_10004C4B8;
 LABEL_21:
-    v5 = [objc_alloc(*v4) initWithService:v3];
+    v5 = [objc_alloc(*v4) initWithService:serviceCopy];
     goto LABEL_22;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncUnicastLinkLayerPtPPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncUnicastLinkLayerPtPPort"])
   {
     v4 = off_10004C4E0;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncUnicastUDPv4PtPPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncUnicastUDPv4PtPPort"])
   {
     v4 = off_10004C4F0;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncUnicastUDPv6PtPPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncUnicastUDPv6PtPPort"])
   {
     v4 = &off_10004C500;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncUnicastLinkLayerEtEPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncUnicastLinkLayerEtEPort"])
   {
     v4 = off_10004C4D8;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncUnicastUDPv4EtEPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncUnicastUDPv4EtEPort"])
   {
     v4 = off_10004C4E8;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncUnicastUDPv6EtEPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncUnicastUDPv6EtEPort"])
   {
     v4 = off_10004C4F8;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncLocalClockPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncLocalClockPort"])
   {
     v4 = off_10004C4C0;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncNetworkPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncNetworkPort"])
   {
     v4 = off_10004C4C8;
     goto LABEL_21;
   }
 
-  if ([v3 conformsToIOClassName:@"IOTimeSyncPort"])
+  if ([serviceCopy conformsToIOClassName:@"IOTimeSyncPort"])
   {
     v4 = off_10004C4D0;
     goto LABEL_21;
@@ -160,16 +160,16 @@ LABEL_22:
   return v5;
 }
 
-- (TSDgPTPPort)initWithService:(id)a3 pid:(int)a4
+- (TSDgPTPPort)initWithService:(id)service pid:(int)pid
 {
-  v6 = a3;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = TSDgPTPPort;
   v7 = [(TSDgPTPPort *)&v20 init];
   if (v7)
   {
     objc_initWeak(&location, v7);
-    objc_storeStrong(&v7->_service, a3);
+    objc_storeStrong(&v7->_service, service);
     if (v7->_service)
     {
       v7->_portNumber = [(TSDgPTPPort *)v7 _portNumber];
@@ -241,15 +241,15 @@ LABEL_9:
 
 - (void)updateProperties
 {
-  v3 = [(TSDgPTPPort *)self propertyUpdateQueue];
+  propertyUpdateQueue = [(TSDgPTPPort *)self propertyUpdateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D1FC;
   block[3] = &unk_10004C920;
-  v5 = [(TSDgPTPPort *)self _portRole];
+  _portRole = [(TSDgPTPPort *)self _portRole];
   block[4] = self;
   block[5] = [(TSDgPTPPort *)self _clockIdentifier];
-  dispatch_async(v3, block);
+  dispatch_async(propertyUpdateQueue, block);
 }
 
 - (BOOL)startAutomaticPropertyUpdates
@@ -266,16 +266,16 @@ LABEL_9:
   return 1;
 }
 
-- (void)setPropertyUpdateQueue:(id)a3
+- (void)setPropertyUpdateQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
-    v4 = qword_100058840;
+    queueCopy = qword_100058840;
   }
 
   propertyUpdateQueue = self->_propertyUpdateQueue;
-  self->_propertyUpdateQueue = v4;
+  self->_propertyUpdateQueue = queueCopy;
 
   _objc_release_x1();
 }
@@ -293,8 +293,8 @@ LABEL_9:
 - (id)propertiesForXPC
 {
   v3 = objc_opt_class();
-  v4 = [(TSDgPTPPort *)self service];
-  v5 = [v3 diagnosticInfoForService:v4];
+  service = [(TSDgPTPPort *)self service];
+  v5 = [v3 diagnosticInfoForService:service];
 
   v6 = [v5 objectForKeyedSubscript:@"PortRole"];
   if (!v6)
@@ -304,17 +304,17 @@ LABEL_9:
   }
 
   v7 = v6;
-  v8 = [v6 intValue];
-  if (v8 > 1)
+  intValue = [v6 intValue];
+  if (intValue > 1)
   {
-    if (v8 == 2)
+    if (intValue == 2)
     {
       v9 = 3;
     }
 
     else
     {
-      if (v8 != 3)
+      if (intValue != 3)
       {
         goto LABEL_13;
       }
@@ -323,9 +323,9 @@ LABEL_9:
     }
   }
 
-  else if (v8)
+  else if (intValue)
   {
-    if (v8 != 1)
+    if (intValue != 1)
     {
       goto LABEL_13;
     }
@@ -347,16 +347,16 @@ LABEL_13:
   return v5;
 }
 
-+ (id)diagnosticInfoForService:(id)a3
++ (id)diagnosticInfoForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 ioClassName];
-  [v4 setObject:v5 forKeyedSubscript:@"ClassName"];
+  ioClassName = [serviceCopy ioClassName];
+  [v4 setObject:ioClassName forKeyedSubscript:@"ClassName"];
 
-  v6 = [v3 iodProperties];
+  iodProperties = [serviceCopy iodProperties];
 
-  [v4 addEntriesFromDictionary:v6];
+  [v4 addEntriesFromDictionary:iodProperties];
   [v4 removeObjectForKey:@"IOUserClientClass"];
   [v4 removeObjectForKey:@"IOGeneralInterest"];
   [v4 removeObjectForKey:@"SourceMACAddress"];
@@ -375,11 +375,11 @@ LABEL_13:
   return v2;
 }
 
-- (id)getMetricsWithDelta:(id)a3
+- (id)getMetricsWithDelta:(id)delta
 {
-  v4 = a3;
-  v5 = [(TSDgPTPPort *)self getMetrics];
-  v6 = [v5 getDelta:v4];
+  deltaCopy = delta;
+  getMetrics = [(TSDgPTPPort *)self getMetrics];
+  v6 = [getMetrics getDelta:deltaCopy];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface HKTimePeriodWithSecondsNumberFormatter
 - (HKTimePeriodWithSecondsNumberFormatter)init;
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5;
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller;
 @end
 
 @implementation HKTimePeriodWithSecondsNumberFormatter
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (id)stringFromNumber:(id)a3 displayType:(id)a4 unitController:(id)a5
+- (id)stringFromNumber:(id)number displayType:(id)type unitController:(id)controller
 {
-  [a3 doubleValue];
+  [number doubleValue];
   v7 = v6;
   HKSeparateTimeIntervalComponents();
   if (v7 >= 2.22044605e-16 && 0.0 <= 2.22044605e-16)

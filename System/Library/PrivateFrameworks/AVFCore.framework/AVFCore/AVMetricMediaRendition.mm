@@ -1,8 +1,8 @@
 @interface AVMetricMediaRendition
-- (AVMetricMediaRendition)initWithCoder:(id)a3;
-- (AVMetricMediaRendition)initWithStableID:(id)a3 URL:(id)a4;
+- (AVMetricMediaRendition)initWithCoder:(id)coder;
+- (AVMetricMediaRendition)initWithStableID:(id)d URL:(id)l;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVMetricMediaRendition
@@ -14,31 +14,31 @@
   [(AVMetricMediaRendition *)&v3 dealloc];
 }
 
-- (AVMetricMediaRendition)initWithStableID:(id)a3 URL:(id)a4
+- (AVMetricMediaRendition)initWithStableID:(id)d URL:(id)l
 {
-  self->_stableID = a3;
-  self->_url = a4;
+  self->_stableID = d;
+  self->_url = l;
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"supports only keyed archivers", v6, v7, v8, v9, v10, v13), 0}];
     objc_exception_throw(v12);
   }
 
-  [a3 encodeObject:self->_stableID forKey:@"stableID"];
+  [coder encodeObject:self->_stableID forKey:@"stableID"];
   url = self->_url;
 
-  [a3 encodeObject:url forKey:@"renditionURL"];
+  [coder encodeObject:url forKey:@"renditionURL"];
 }
 
-- (AVMetricMediaRendition)initWithCoder:(id)a3
+- (AVMetricMediaRendition)initWithCoder:(id)coder
 {
-  self->_stableID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"stableID"];
-  self->_url = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"renditionURL"];
+  self->_stableID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"stableID"];
+  self->_url = [coder decodeObjectOfClass:objc_opt_class() forKey:@"renditionURL"];
   return self;
 }
 

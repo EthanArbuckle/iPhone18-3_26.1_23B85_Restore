@@ -16,11 +16,11 @@
   v7 = v6;
   v8 = a4;
   v9 = _Block_copy(aBlock);
-  v10 = [a1 _accessibilityUIFindAXDescendants:v9 byAddingElements:v8];
+  v10 = [self _accessibilityUIFindAXDescendants:v9 byAddingElements:v8];
 
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
 - (id)_accessibilityUIFindAXDescendants:()NSObjectAccessibilityUI byAddingElements:
@@ -28,18 +28,18 @@
   v6 = a3;
   v7 = a4;
   v8 = [objc_allocWithZone(MEMORY[0x1E695DF70]) init];
-  [v8 addObject:a1];
-  v9 = [MEMORY[0x1E695DF70] array];
+  [v8 addObject:self];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v8 count])
   {
     while (1)
     {
-      v10 = [v8 lastObject];
+      lastObject = [v8 lastObject];
       [v8 removeLastObject];
       v12 = 0;
-      if (v6[2](v6, v10, &v12))
+      if (v6[2](v6, lastObject, &v12))
       {
-        [v9 addObject:v10];
+        [array addObject:lastObject];
       }
 
       if (v12 == 1)
@@ -47,7 +47,7 @@
         break;
       }
 
-      v7[2](v7, v8, v10);
+      v7[2](v7, v8, lastObject);
 
       if (![v8 count])
       {
@@ -58,7 +58,7 @@
 
 LABEL_8:
 
-  return v9;
+  return array;
 }
 
 @end

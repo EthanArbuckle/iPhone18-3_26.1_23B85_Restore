@@ -1,16 +1,16 @@
 @interface AVKeyPathDependencyManager
-- (AVKeyPathDependencyManager)initWithDependencyHost:(id)a3;
+- (AVKeyPathDependencyManager)initWithDependencyHost:(id)host;
 - (void)dealloc;
 @end
 
 @implementation AVKeyPathDependencyManager
 
-- (AVKeyPathDependencyManager)initWithDependencyHost:(id)a3
+- (AVKeyPathDependencyManager)initWithDependencyHost:(id)host
 {
   v6 = objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = self;
+    selfCopy = self;
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
     v11 = objc_opt_class();
@@ -20,7 +20,7 @@
     objc_exception_throw(v18);
   }
 
-  [(AVKeyPathDependencyManager *)self initWithDependencyHost:a3, &v20];
+  [(AVKeyPathDependencyManager *)self initWithDependencyHost:host, &v20];
   return v20;
 }
 

@@ -1,21 +1,21 @@
 @interface DTGPUAGXCounterSourceGroup
-- (BOOL)request:(unint64_t)a3 vendorFeatures:(id)a4;
-- (DTGPUAGXCounterSourceGroup)initWithSourceGroup:(id)a3 selects:(id)a4 apsSelects:(id)a5 profile:(unint64_t)a6;
+- (BOOL)request:(unint64_t)request vendorFeatures:(id)features;
+- (DTGPUAGXCounterSourceGroup)initWithSourceGroup:(id)group selects:(id)selects apsSelects:(id)apsSelects profile:(unint64_t)profile;
 - (void)resume;
-- (void)sampleAPS:(id)a3;
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4;
+- (void)sampleAPS:(id)s;
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback;
 - (void)stop;
 @end
 
 @implementation DTGPUAGXCounterSourceGroup
 
-- (DTGPUAGXCounterSourceGroup)initWithSourceGroup:(id)a3 selects:(id)a4 apsSelects:(id)a5 profile:(unint64_t)a6
+- (DTGPUAGXCounterSourceGroup)initWithSourceGroup:(id)group selects:(id)selects apsSelects:(id)apsSelects profile:(unint64_t)profile
 {
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v58 = a4;
-  v63 = a4;
-  v64 = a5;
+  groupCopy = group;
+  selectsCopy = selects;
+  selectsCopy2 = selects;
+  apsSelectsCopy = apsSelects;
   v74.receiver = self;
   v74.super_class = DTGPUAGXCounterSourceGroup;
   v62 = [(DTGPUAGXCounterSourceGroup *)&v74 init];
@@ -25,15 +25,15 @@
   }
 
   v65 = objc_opt_new();
-  if ([v63 count] >= 6)
+  if ([selectsCopy2 count] >= 6)
   {
-    v60 = [v10 subDivideCounterList:v63 withOptions:0];
+    v60 = [groupCopy subDivideCounterList:selectsCopy2 withOptions:0];
     v61 = [v60 objectForKeyedSubscript:@"passNum"];
     v11 = [v60 objectForKeyedSubscript:@"passList"];
     v12 = [v11 objectAtIndexedSubscript:0];
     v13 = [v12 mutableCopy];
 
-    if ([v61 unsignedIntValue] != 1 || (v14 = objc_msgSend(v13, "count"), objc_msgSend(v10, "sourceList"), v15 = objc_claimAutoreleasedReturnValue(), v16 = v14 == objc_msgSend(v15, "count"), v15, !v16))
+    if ([v61 unsignedIntValue] != 1 || (v14 = objc_msgSend(v13, "count"), objc_msgSend(groupCopy, "sourceList"), v15 = objc_claimAutoreleasedReturnValue(), v16 = v14 == objc_msgSend(v15, "count"), v15, !v16))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -55,25 +55,25 @@ LABEL_50:
     v56 = 136315394;
     while ([v13 count] > v17)
     {
-      v19 = [v10 sourceList];
-      v20 = [v19 objectAtIndexedSubscript:v17];
+      sourceList = [groupCopy sourceList];
+      v20 = [sourceList objectAtIndexedSubscript:v17];
 
       v21 = [v13 objectAtIndexedSubscript:v17];
       if ([v21 count])
       {
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v22 = [v20 name];
-          v23 = v22;
-          v24 = [v22 UTF8String];
+          name = [v20 name];
+          v23 = name;
+          uTF8String = [name UTF8String];
           *buf = v56;
-          v78 = v24;
+          v78 = uTF8String;
           v79 = 2112;
           v80 = v21;
           _os_log_impl(&dword_247F67000, v18, OS_LOG_TYPE_INFO, "Created %s source\n. Counters: %@", buf, 0x16u);
         }
 
-        v25 = [[DTGPUAGXCounterSource alloc] initWithSource:v20 sourceGroup:v10 selects:v21 sourceIndex:[(NSArray *)v65 count]];
+        v25 = [[DTGPUAGXCounterSource alloc] initWithSource:v20 sourceGroup:groupCopy selects:v21 sourceIndex:[(NSArray *)v65 count]];
         [(NSArray *)v65 addObject:v25];
       }
 
@@ -81,15 +81,15 @@ LABEL_50:
     }
   }
 
-  if (![v64 count])
+  if (![apsSelectsCopy count])
   {
     goto LABEL_43;
   }
 
-  v29 = [v10 subDivideCounterList:v64 withOptions:0];
+  v29 = [groupCopy subDivideCounterList:apsSelectsCopy withOptions:0];
   v30 = [v29 objectForKeyedSubscript:@"passNum"];
   v31 = [v29 objectForKeyedSubscript:@"passList"];
-  v57 = a6;
+  profileCopy = profile;
   v13 = [v31 objectAtIndexedSubscript:0];
 
   if ([v30 unsignedIntValue] >= 2)
@@ -117,7 +117,7 @@ LABEL_50:
           {
             v37 = v36;
 
-            v64 = v37;
+            apsSelectsCopy = v37;
             goto LABEL_27;
           }
         }
@@ -135,7 +135,7 @@ LABEL_50:
 LABEL_27:
   }
 
-  v60 = [v10 subDivideCounterList:v64 withOptions:0];
+  v60 = [groupCopy subDivideCounterList:apsSelectsCopy withOptions:0];
 
   v61 = [v60 objectForKeyedSubscript:@"passNum"];
 
@@ -148,8 +148,8 @@ LABEL_27:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v38 = [v10 sourceList];
-  v39 = [v38 countByEnumeratingWithState:&v66 objects:v75 count:16];
+  sourceList2 = [groupCopy sourceList];
+  v39 = [sourceList2 countByEnumeratingWithState:&v66 objects:v75 count:16];
   if (!v39)
   {
 LABEL_46:
@@ -174,12 +174,12 @@ LABEL_31:
   {
     if (*v67 != v40)
     {
-      objc_enumerationMutation(v38);
+      objc_enumerationMutation(sourceList2);
     }
 
     v42 = *(*(&v66 + 1) + 8 * v41);
-    v43 = [v42 name];
-    v44 = [v43 hasPrefix:@"APS_USC"];
+    name2 = [v42 name];
+    v44 = [name2 hasPrefix:@"APS_USC"];
 
     if (v44)
     {
@@ -188,7 +188,7 @@ LABEL_31:
 
     if (v39 == ++v41)
     {
-      v39 = [v38 countByEnumeratingWithState:&v66 objects:v75 count:16];
+      v39 = [sourceList2 countByEnumeratingWithState:&v66 objects:v75 count:16];
       if (v39)
       {
         goto LABEL_31;
@@ -200,18 +200,18 @@ LABEL_31:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v45 = [v42 name];
-    v46 = v45;
-    v47 = [v45 UTF8String];
-    v48 = [v42 ringBufferNum];
+    name3 = [v42 name];
+    v46 = name3;
+    uTF8String2 = [name3 UTF8String];
+    ringBufferNum = [v42 ringBufferNum];
     *buf = 136315394;
-    v78 = v47;
+    v78 = uTF8String2;
     v79 = 1024;
-    LODWORD(v80) = v48;
+    LODWORD(v80) = ringBufferNum;
     _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Adding APS Source: %s, RING BUFFER %d\n", buf, 0x12u);
   }
 
-  v49 = [[DTGPUAPSCounterSource alloc] initWithSource:v42 sourceGroup:v10 selects:v64 sourceIndex:[(NSArray *)v65 count] profile:v57];
+  v49 = [[DTGPUAPSCounterSource alloc] initWithSource:v42 sourceGroup:groupCopy selects:apsSelectsCopy sourceIndex:[(NSArray *)v65 count] profile:profileCopy];
   if (!v49)
   {
     goto LABEL_46;
@@ -238,8 +238,8 @@ LABEL_51:
   v62->_sources = v65;
   v52 = v65;
 
-  objc_storeStrong(&v62->_sourceGroup, a3);
-  objc_storeStrong(&v62->_selects, v58);
+  objc_storeStrong(&v62->_sourceGroup, group);
+  objc_storeStrong(&v62->_selects, selectsCopy);
 
 LABEL_45:
   v53 = v62;
@@ -249,10 +249,10 @@ LABEL_52:
   return v53;
 }
 
-- (BOOL)request:(unint64_t)a3 vendorFeatures:(id)a4
+- (BOOL)request:(unint64_t)request vendorFeatures:(id)features
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  featuresCopy = features;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -271,7 +271,7 @@ LABEL_52:
           objc_enumerationMutation(v7);
         }
 
-        if (([*(*(&v14 + 1) + 8 * i) request:a3 vendorFeatures:{v6, v14}] & 1) == 0)
+        if (([*(*(&v14 + 1) + 8 * i) request:request vendorFeatures:{featuresCopy, v14}] & 1) == 0)
         {
           v11 = 0;
           goto LABEL_11;
@@ -365,10 +365,10 @@ LABEL_11:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  callbackCopy = callback;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -388,7 +388,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) sampleCounters:a3 callback:{v6, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) sampleCounters:counters callback:{callbackCopy, v12}];
       }
 
       while (v8 != v10);
@@ -401,10 +401,10 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sampleAPS:(id)a3
+- (void)sampleAPS:(id)s
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -424,7 +424,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) sampleAPS:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v8++) sampleAPS:{sCopy, v10}];
       }
 
       while (v6 != v8);

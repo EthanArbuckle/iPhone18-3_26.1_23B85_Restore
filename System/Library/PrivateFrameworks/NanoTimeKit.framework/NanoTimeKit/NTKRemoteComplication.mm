@@ -1,36 +1,36 @@
 @interface NTKRemoteComplication
-+ (id)_allComplicationConfigurationsWithType:(unint64_t)a3;
-+ (id)_remoteStocksComplicationDescriptorWithIdentifier:(id)a3 forDevice:(id)a4;
-+ (id)_remoteStocksComplicationWithIdentifier:(id)a3 forDevice:(id)a4;
-+ (id)complicationWithClientIdentifier:(id)a3 appBundleIdentifier:(id)a4 complicationDescriptor:(id)a5;
-- (NTKRemoteComplication)initWithCoder:(id)a3;
-- (NTKRemoteComplication)initWithComplicationType:(unint64_t)a3;
++ (id)_allComplicationConfigurationsWithType:(unint64_t)type;
++ (id)_remoteStocksComplicationDescriptorWithIdentifier:(id)identifier forDevice:(id)device;
++ (id)_remoteStocksComplicationWithIdentifier:(id)identifier forDevice:(id)device;
++ (id)complicationWithClientIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier complicationDescriptor:(id)descriptor;
+- (NTKRemoteComplication)initWithCoder:(id)coder;
+- (NTKRemoteComplication)initWithComplicationType:(unint64_t)type;
 - (id)_generateUniqueIdentifier;
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4;
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary;
 - (id)analyticsIdentifier;
 - (id)companionLocalizedKeylineLabelText;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)customDailySnapshotKeyForFamily:(int64_t)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)customDailySnapshotKeyForFamily:(int64_t)family device:(id)device;
 - (id)description;
-- (id)ntk_localizedNameWithOptions:(unint64_t)a3 forRichComplicationSlot:(BOOL)a4;
+- (id)ntk_localizedNameWithOptions:(unint64_t)options forRichComplicationSlot:(BOOL)slot;
 - (id)watchLocalizedKeylineLabelText;
-- (void)_addKeysToJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addKeysToJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetComplicationDescriptor;
 @end
 
 @implementation NTKRemoteComplication
 
-- (id)ntk_localizedNameWithOptions:(unint64_t)a3 forRichComplicationSlot:(BOOL)a4
+- (id)ntk_localizedNameWithOptions:(unint64_t)options forRichComplicationSlot:(BOOL)slot
 {
-  if (a3 <= 1)
+  if (options <= 1)
   {
-    v5 = 1;
+    optionsCopy = 1;
   }
 
   else
   {
-    v5 = a3;
+    optionsCopy = options;
   }
 
   v27 = 0;
@@ -48,31 +48,31 @@
   v7 = v6;
   v25 = v7;
   v8 = _Block_copy(&v21);
-  if ((v5 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v9 = [(NTKComplication *)self localizedSectionHeaderName:v21];
     v8[2](v8, v9);
   }
 
-  if (v5)
+  if (optionsCopy)
   {
-    v10 = [(NTKRemoteComplication *)self complicationDescriptor];
-    v11 = [v10 displayName];
-    v12 = [v28[5] localizedLowercaseString];
-    v13 = [v11 localizedLowercaseString];
-    v14 = NTKEqualObjects(v12, v13);
+    complicationDescriptor = [(NTKRemoteComplication *)self complicationDescriptor];
+    displayName = [complicationDescriptor displayName];
+    localizedLowercaseString = [v28[5] localizedLowercaseString];
+    localizedLowercaseString2 = [displayName localizedLowercaseString];
+    v14 = NTKEqualObjects(localizedLowercaseString, localizedLowercaseString2);
 
     if ((v14 & 1) == 0)
     {
-      v8[2](v8, v11);
+      v8[2](v8, displayName);
     }
   }
 
   if (![v28[5] length])
   {
     v15 = NTKSharedRemoteComplicationProvider();
-    v16 = [(NTKRemoteComplication *)self clientIdentifier];
-    v17 = [v15 localizedAppNameForClientIdentifier:v16];
+    clientIdentifier = [(NTKRemoteComplication *)self clientIdentifier];
+    v17 = [v15 localizedAppNameForClientIdentifier:clientIdentifier];
     v18 = v28[5];
     v28[5] = v17;
   }
@@ -107,15 +107,15 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
   }
 }
 
-- (NTKRemoteComplication)initWithComplicationType:(unint64_t)a3
+- (NTKRemoteComplication)initWithComplicationType:(unint64_t)type
 {
   v14.receiver = self;
   v14.super_class = NTKRemoteComplication;
   v4 = [(NTKComplication *)&v14 initWithComplicationType:31];
-  if (a3 == 9)
+  if (type == 9)
   {
-    v5 = [MEMORY[0x277CBBAE8] currentDevice];
-    if ([v5 pdrDeviceVersion] >> 16 <= 6)
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    if ([currentDevice pdrDeviceVersion] >> 16 <= 6)
     {
       v6 = @"com.apple.stocks.watchapp.watchextension";
     }
@@ -131,37 +131,37 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
     v4->_appBundleIdentifier = @"com.apple.stocks.watchapp";
 
     v8 = *MEMORY[0x277CBB688];
-    v9 = [MEMORY[0x277CBBAE8] currentDevice];
-    v10 = [NTKRemoteComplication _remoteStocksComplicationDescriptorWithIdentifier:v8 forDevice:v9];
+    currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+    v10 = [NTKRemoteComplication _remoteStocksComplicationDescriptorWithIdentifier:v8 forDevice:currentDevice2];
     complicationDescriptor = v4->_complicationDescriptor;
     v4->_complicationDescriptor = v10;
   }
 
-  v12 = [(NTKRemoteComplication *)v4 _generateUniqueIdentifier];
-  [(NTKComplication *)v4 setUniqueIdentifier:v12];
+  _generateUniqueIdentifier = [(NTKRemoteComplication *)v4 _generateUniqueIdentifier];
+  [(NTKComplication *)v4 setUniqueIdentifier:_generateUniqueIdentifier];
 
   return v4;
 }
 
-+ (id)complicationWithClientIdentifier:(id)a3 appBundleIdentifier:(id)a4 complicationDescriptor:(id)a5
++ (id)complicationWithClientIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier complicationDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithComplicationType:31];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  descriptorCopy = descriptor;
+  v11 = [[self alloc] initWithComplicationType:31];
   v12 = v11[4];
-  v11[4] = v8;
-  v13 = v8;
+  v11[4] = identifierCopy;
+  v13 = identifierCopy;
 
   v14 = v11[5];
-  v11[5] = v9;
-  v15 = v9;
+  v11[5] = bundleIdentifierCopy;
+  v15 = bundleIdentifierCopy;
 
   v16 = v11[6];
-  v11[6] = v10;
+  v11[6] = descriptorCopy;
 
-  v17 = [v11 _generateUniqueIdentifier];
-  [v11 setUniqueIdentifier:v17];
+  _generateUniqueIdentifier = [v11 _generateUniqueIdentifier];
+  [v11 setUniqueIdentifier:_generateUniqueIdentifier];
 
   return v11;
 }
@@ -170,9 +170,9 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NTKReportingValueForComplication(self);
-  v5 = [(NTKRemoteComplication *)self appBundleIdentifier];
-  v6 = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
-  v7 = [v3 stringWithFormat:@"%@:%@:%@", v4, v5, v6];
+  appBundleIdentifier = [(NTKRemoteComplication *)self appBundleIdentifier];
+  identifier = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
+  v7 = [v3 stringWithFormat:@"%@:%@:%@", v4, appBundleIdentifier, identifier];
 
   return v7;
 }
@@ -181,22 +181,22 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NTKComplication complicationType](self, "complicationType")}];
-  v5 = [v4 stringValue];
-  v6 = [(NTKRemoteComplication *)self appBundleIdentifier];
-  v7 = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
-  v8 = [v3 stringWithFormat:@"%@-%@-%@", v5, v6, v7];
+  stringValue = [v4 stringValue];
+  appBundleIdentifier = [(NTKRemoteComplication *)self appBundleIdentifier];
+  identifier = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
+  v8 = [v3 stringWithFormat:@"%@-%@-%@", stringValue, appBundleIdentifier, identifier];
 
   return v8;
 }
 
-+ (id)_allComplicationConfigurationsWithType:(unint64_t)a3
++ (id)_allComplicationConfigurationsWithType:(unint64_t)type
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 9)
+  if (type == 9)
   {
     v4 = *MEMORY[0x277CBB688];
-    v5 = [MEMORY[0x277CBBAE8] currentDevice];
-    v6 = [a1 _remoteStocksComplicationWithIdentifier:v4 forDevice:v5];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v6 = [self _remoteStocksComplicationWithIdentifier:v4 forDevice:currentDevice];
     v9[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   }
@@ -211,42 +211,42 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
 
 - (void)resetComplicationDescriptor
 {
-  v5 = [(CLKComplicationDescriptor *)self->_complicationDescriptor supportedFamilies];
-  v3 = [MEMORY[0x277CBB718] legacyComplicationDescriptorWithSupportedFamilies:v5];
+  supportedFamilies = [(CLKComplicationDescriptor *)self->_complicationDescriptor supportedFamilies];
+  v3 = [MEMORY[0x277CBB718] legacyComplicationDescriptorWithSupportedFamilies:supportedFamilies];
   complicationDescriptor = self->_complicationDescriptor;
   self->_complicationDescriptor = v3;
 }
 
 - (id)watchLocalizedKeylineLabelText
 {
-  v3 = [(NTKRemoteComplication *)self complicationDescriptor];
-  v4 = [v3 displayName];
-  if (![v4 length])
+  complicationDescriptor = [(NTKRemoteComplication *)self complicationDescriptor];
+  displayName = [complicationDescriptor displayName];
+  if (![displayName length])
   {
     v5 = NTKSharedRemoteComplicationProvider();
-    v6 = [(NTKRemoteComplication *)self clientIdentifier];
-    v7 = [v5 localizedAppNameForClientIdentifier:v6];
+    clientIdentifier = [(NTKRemoteComplication *)self clientIdentifier];
+    v7 = [v5 localizedAppNameForClientIdentifier:clientIdentifier];
 
-    v4 = v7;
+    displayName = v7;
   }
 
-  return v4;
+  return displayName;
 }
 
 - (id)companionLocalizedKeylineLabelText
 {
-  v3 = [(NTKRemoteComplication *)self complicationDescriptor];
-  v4 = [v3 displayName];
-  if (![v4 length])
+  complicationDescriptor = [(NTKRemoteComplication *)self complicationDescriptor];
+  displayName = [complicationDescriptor displayName];
+  if (![displayName length])
   {
     v5 = NTKSharedRemoteComplicationProvider();
-    v6 = [(NTKRemoteComplication *)self clientIdentifier];
-    v7 = [v5 localizedAppNameForClientIdentifier:v6];
+    clientIdentifier = [(NTKRemoteComplication *)self clientIdentifier];
+    v7 = [v5 localizedAppNameForClientIdentifier:clientIdentifier];
 
-    v4 = v7;
+    displayName = v7;
   }
 
-  return v4;
+  return displayName;
 }
 
 - (id)description
@@ -255,18 +255,18 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
   v9.receiver = self;
   v9.super_class = NTKRemoteComplication;
   v4 = [(NTKComplication *)&v9 description];
-  v5 = [(NTKRemoteComplication *)self clientIdentifier];
-  v6 = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
-  v7 = [v3 stringWithFormat:@"%@ (%@, %@)", v4, v5, v6];
+  clientIdentifier = [(NTKRemoteComplication *)self clientIdentifier];
+  identifier = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
+  v7 = [v3 stringWithFormat:@"%@ (%@, %@)", v4, clientIdentifier, identifier];
 
   return v7;
 }
 
-+ (id)_remoteStocksComplicationDescriptorWithIdentifier:(id)a3 forDevice:(id)a4
++ (id)_remoteStocksComplicationDescriptorWithIdentifier:(id)identifier forDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v5 isRunningGraceOrLater])
+  deviceCopy = device;
+  identifierCopy = identifier;
+  if ([deviceCopy isRunningGraceOrLater])
   {
     v7 = [&unk_28418AFA8 arrayByAddingObject:&unk_284182E78];
   }
@@ -276,7 +276,7 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
     v7 = &unk_28418AFA8;
   }
 
-  if ([v5 supportsPDRCapability:1675361835])
+  if ([deviceCopy supportsPDRCapability:1675361835])
   {
     v8 = [v7 arrayByAddingObject:&unk_284182E90];
 
@@ -284,18 +284,18 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
   }
 
   v9 = objc_alloc(MEMORY[0x277CBB718]);
-  v10 = [v9 initWithIdentifier:v6 displayName:&stru_284110E98 supportedFamilies:v7 userInfo:MEMORY[0x277CBEC10]];
+  v10 = [v9 initWithIdentifier:identifierCopy displayName:&stru_284110E98 supportedFamilies:v7 userInfo:MEMORY[0x277CBEC10]];
 
   return v10;
 }
 
-+ (id)_remoteStocksComplicationWithIdentifier:(id)a3 forDevice:(id)a4
++ (id)_remoteStocksComplicationWithIdentifier:(id)identifier forDevice:(id)device
 {
   v6 = MEMORY[0x277CBBAE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentDevice];
-  if ([v9 pdrDeviceVersion] >> 16 <= 6)
+  deviceCopy = device;
+  identifierCopy = identifier;
+  currentDevice = [v6 currentDevice];
+  if ([currentDevice pdrDeviceVersion] >> 16 <= 6)
   {
     v10 = @"com.apple.stocks.watchapp.watchextension";
   }
@@ -306,128 +306,128 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
   }
 
   v11 = v10;
-  v12 = [a1 _remoteStocksComplicationDescriptorWithIdentifier:v8 forDevice:v7];
+  v12 = [self _remoteStocksComplicationDescriptorWithIdentifier:identifierCopy forDevice:deviceCopy];
 
-  v13 = [a1 complicationWithClientIdentifier:v11 appBundleIdentifier:@"com.apple.stocks.watchapp" complicationDescriptor:v12];
+  v13 = [self complicationWithClientIdentifier:v11 appBundleIdentifier:@"com.apple.stocks.watchapp" complicationDescriptor:v12];
 
   return v13;
 }
 
-- (id)customDailySnapshotKeyForFamily:(int64_t)a3 device:(id)a4
+- (id)customDailySnapshotKeyForFamily:(int64_t)family device:(id)device
 {
-  v6 = [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:a4];
-  v7 = [(NTKRemoteComplication *)self clientIdentifier];
+  v6 = [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:device];
+  clientIdentifier = [(NTKRemoteComplication *)self clientIdentifier];
   complicationDescriptor = self->_complicationDescriptor;
-  v9 = [(NTKRemoteComplication *)self appBundleIdentifier];
-  v10 = [v6 sampleTemplateForClientIdentifier:v7 descriptor:complicationDescriptor applicationID:v9 family:a3];
+  appBundleIdentifier = [(NTKRemoteComplication *)self appBundleIdentifier];
+  v10 = [v6 sampleTemplateForClientIdentifier:clientIdentifier descriptor:complicationDescriptor applicationID:appBundleIdentifier family:family];
 
-  v11 = [v10 creationDate];
-  [v11 timeIntervalSinceReferenceDate];
+  creationDate = [v10 creationDate];
+  [creationDate timeIntervalSinceReferenceDate];
   v13 = v12;
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(NTKRemoteComplication *)self appBundleIdentifier];
-  v16 = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
-  v17 = [v14 stringWithFormat:@"%@, %@, %lx", v15, v16, v13];
+  appBundleIdentifier2 = [(NTKRemoteComplication *)self appBundleIdentifier];
+  identifier = [(CLKComplicationDescriptor *)self->_complicationDescriptor identifier];
+  v17 = [v14 stringWithFormat:@"%@, %@, %lx", appBundleIdentifier2, identifier, v13];
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NTKRemoteComplication;
-  v4 = [(NTKComplication *)&v10 copyWithZone:a3];
-  v5 = [(NTKRemoteComplication *)self clientIdentifier];
+  v4 = [(NTKComplication *)&v10 copyWithZone:zone];
+  clientIdentifier = [(NTKRemoteComplication *)self clientIdentifier];
   v6 = *(v4 + 4);
-  *(v4 + 4) = v5;
+  *(v4 + 4) = clientIdentifier;
 
-  v7 = [(NTKRemoteComplication *)self appBundleIdentifier];
+  appBundleIdentifier = [(NTKRemoteComplication *)self appBundleIdentifier];
   v8 = *(v4 + 5);
-  *(v4 + 5) = v7;
+  *(v4 + 5) = appBundleIdentifier;
 
   objc_storeStrong(v4 + 6, self->_complicationDescriptor);
   return v4;
 }
 
-- (NTKRemoteComplication)initWithCoder:(id)a3
+- (NTKRemoteComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = NTKRemoteComplication;
-  v5 = [(NTKComplication *)&v18 initWithCoder:v4];
+  v5 = [(NTKComplication *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteComplicationClientIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteComplicationClientIdentifierKey"];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 
-    v8 = [(NTKRemoteComplication *)v5 clientIdentifier];
+    clientIdentifier = [(NTKRemoteComplication *)v5 clientIdentifier];
 
-    if (!v8)
+    if (!clientIdentifier)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ cannot have nil client identifier", objc_opt_class()}];
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteComplicationAppBundleIdentifierKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteComplicationAppBundleIdentifierKey"];
     appBundleIdentifier = v5->_appBundleIdentifier;
     v5->_appBundleIdentifier = v9;
 
-    v11 = [(NTKRemoteComplication *)v5 appBundleIdentifier];
+    appBundleIdentifier = [(NTKRemoteComplication *)v5 appBundleIdentifier];
 
-    if (!v11)
+    if (!appBundleIdentifier)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCA2A8] format:{@"%@ cannot have nil app bundle identifier", objc_opt_class()}];
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RemoteComplicationComplicationDescriptorKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RemoteComplicationComplicationDescriptorKey"];
     complicationDescriptor = v5->_complicationDescriptor;
     v5->_complicationDescriptor = v12;
 
     if (!v5->_complicationDescriptor)
     {
-      v14 = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
+      legacyComplicationDescriptor = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
       v15 = v5->_complicationDescriptor;
-      v5->_complicationDescriptor = v14;
+      v5->_complicationDescriptor = legacyComplicationDescriptor;
     }
 
-    v16 = [(NTKRemoteComplication *)v5 _generateUniqueIdentifier];
-    [(NTKComplication *)v5 setUniqueIdentifier:v16];
+    _generateUniqueIdentifier = [(NTKRemoteComplication *)v5 _generateUniqueIdentifier];
+    [(NTKComplication *)v5 setUniqueIdentifier:_generateUniqueIdentifier];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = NTKRemoteComplication;
-  [(NTKThirdPartyComplication *)&v3 encodeWithCoder:a3];
+  [(NTKThirdPartyComplication *)&v3 encodeWithCoder:coder];
 }
 
-- (void)_addKeysToJSONDictionary:(id)a3
+- (void)_addKeysToJSONDictionary:(id)dictionary
 {
   v3.receiver = self;
   v3.super_class = NTKRemoteComplication;
-  [(NTKThirdPartyComplication *)&v3 _addKeysToJSONDictionary:a3];
+  [(NTKThirdPartyComplication *)&v3 _addKeysToJSONDictionary:dictionary];
 }
 
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = NTKRemoteComplication;
-  v7 = [(NTKComplication *)&v28 _initWithComplicationType:31 JSONDictionary:v6];
+  v7 = [(NTKComplication *)&v28 _initWithComplicationType:31 JSONDictionary:dictionaryCopy];
   v8 = v7;
   if (v7)
   {
-    if (a3 == 9)
+    if (type == 9)
     {
       v9 = v7[5];
       v7[5] = @"com.apple.stocks.watchapp";
 
-      v10 = [MEMORY[0x277CBBAE8] currentDevice];
-      if ([v10 pdrDeviceVersion] >> 16 <= 6)
+      currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+      if ([currentDevice pdrDeviceVersion] >> 16 <= 6)
       {
         v11 = @"com.apple.stocks.watchapp.watchextension";
       }
@@ -440,55 +440,55 @@ void __99__NTKRemoteComplication_NTKComplicationItem__ntk_localizedNameWithOptio
       objc_storeStrong(v8 + 4, v11);
 
       v12 = *MEMORY[0x277CBB688];
-      v13 = [MEMORY[0x277CBBAE8] currentDevice];
-      v14 = [NTKRemoteComplication _remoteStocksComplicationDescriptorWithIdentifier:v12 forDevice:v13];
+      currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+      v14 = [NTKRemoteComplication _remoteStocksComplicationDescriptorWithIdentifier:v12 forDevice:currentDevice2];
       v15 = v8[6];
       v8[6] = v14;
     }
 
     else
     {
-      v16 = [v6 objectForKeyedSubscript:@"app"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"app"];
       v17 = v8[5];
       v8[5] = v16;
 
-      v18 = [v6 objectForKeyedSubscript:@"extension"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"extension"];
       if (!v18)
       {
         v19 = MEMORY[0x277CBEAD8];
-        v20 = [v8 appBundleIdentifier];
-        [v19 raise:@"NTKFaceBundleException" format:{@"complication of type '%@' missing value for key '%@'", v20, @"extension"}];
+        appBundleIdentifier = [v8 appBundleIdentifier];
+        [v19 raise:@"NTKFaceBundleException" format:{@"complication of type '%@' missing value for key '%@'", appBundleIdentifier, @"extension"}];
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v21 = MEMORY[0x277CBEAD8];
-        v22 = [v8 appBundleIdentifier];
-        [v21 raise:@"NTKFaceBundleException" format:{@"complication of type '%@' value for key '%@' must be a string - invalid value: %@", v22, @"extension", v18}];
+        appBundleIdentifier2 = [v8 appBundleIdentifier];
+        [v21 raise:@"NTKFaceBundleException" format:{@"complication of type '%@' value for key '%@' must be a string - invalid value: %@", appBundleIdentifier2, @"extension", v18}];
       }
 
       v23 = v8[4];
       v8[4] = v18;
       v15 = v18;
 
-      v13 = [v6 objectForKeyedSubscript:@"complication descriptor"];
-      if (v13)
+      currentDevice2 = [dictionaryCopy objectForKeyedSubscript:@"complication descriptor"];
+      if (currentDevice2)
       {
-        v24 = [objc_alloc(MEMORY[0x277CBB718]) initWithJSONObjectRepresentation:v13];
+        legacyComplicationDescriptor = [objc_alloc(MEMORY[0x277CBB718]) initWithJSONObjectRepresentation:currentDevice2];
       }
 
       else
       {
-        v24 = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
+        legacyComplicationDescriptor = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
       }
 
       v25 = v8[6];
-      v8[6] = v24;
+      v8[6] = legacyComplicationDescriptor;
     }
 
-    v26 = [v8 _generateUniqueIdentifier];
-    [v8 setUniqueIdentifier:v26];
+    _generateUniqueIdentifier = [v8 _generateUniqueIdentifier];
+    [v8 setUniqueIdentifier:_generateUniqueIdentifier];
   }
 
   return v8;

@@ -1,17 +1,17 @@
 @interface PSDSyncSessionObserver
-- (PSDSyncSessionObserver)initWithXPCConnection:(id)a3;
-- (void)checkin:(id)a3;
-- (void)requestActiveSyncSessionWithCompletion:(id)a3;
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5;
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
+- (PSDSyncSessionObserver)initWithXPCConnection:(id)connection;
+- (void)checkin:(id)checkin;
+- (void)requestActiveSyncSessionWithCompletion:(id)completion;
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block;
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
 @end
 
 @implementation PSDSyncSessionObserver
 
-- (PSDSyncSessionObserver)initWithXPCConnection:(id)a3
+- (PSDSyncSessionObserver)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v26.receiver = self;
   v26.super_class = PSDSyncSessionObserver;
   v6 = [(PSDSyncSessionObserver *)&v26 init];
@@ -30,7 +30,7 @@
       }
     }
 
-    v10 = [v5 valueForEntitlement:@"com.apple.pairedsync.progressObserver"];
+    v10 = [connectionCopy valueForEntitlement:@"com.apple.pairedsync.progressObserver"];
     v6->_isClientEntitled = [v10 BOOLValue];
 
     if (v6->_isClientEntitled)
@@ -48,7 +48,7 @@
         v14 = psd_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          sub_10001B940(v5, v14);
+          sub_10001B940(connectionCopy, v14);
         }
       }
 
@@ -58,7 +58,7 @@
     scheduler = v6->_scheduler;
     v6->_scheduler = v11;
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("com.apple.syncsessionobserver", v16);
     queue = v6->_queue;
@@ -70,25 +70,25 @@
     v23[3] = &unk_10002C840;
     v19 = v6;
     v24 = v19;
-    [v5 setInvalidationHandler:v23];
+    [connectionCopy setInvalidationHandler:v23];
     v20 = PSYSyncSessionProviderXPCInterface();
-    [v5 setExportedInterface:v20];
+    [connectionCopy setExportedInterface:v20];
 
-    [v5 setExportedObject:v19];
+    [connectionCopy setExportedObject:v19];
     v21 = PSYSyncSessionObserverXPCInterface();
-    [v5 setRemoteObjectInterface:v21];
+    [connectionCopy setRemoteObjectInterface:v21];
 
-    [v5 resume];
+    [connectionCopy resume];
     [(PSDScheduler *)v6->_scheduler addSchedulerObserver:v19];
   }
 
   return v6;
 }
 
-- (void)checkin:(id)a3
+- (void)checkin:(id)checkin
 {
-  v4 = a3;
-  v5 = v4;
+  checkinCopy = checkin;
+  v5 = checkinCopy;
   if (self->_isClientEntitled)
   {
     queue = self->_queue;
@@ -97,72 +97,72 @@
     v7[2] = sub_100018174;
     v7[3] = &unk_10002CE68;
     v7[4] = self;
-    v8 = v4;
+    v8 = checkinCopy;
     dispatch_async(queue, v7);
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(checkinCopy + 2))(checkinCopy, 0);
   }
 }
 
-- (void)requestActiveSyncSessionWithCompletion:(id)a3
+- (void)requestActiveSyncSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000182C0;
   v7[3] = &unk_10002C6D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001860C;
   v8[3] = &unk_10002C8B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000186F8;
   v8[3] = &unk_10002C8B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001882C;
   block[3] = &unk_10002C908;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = sessionCopy;
+  v14 = blockCopy;
+  v10 = blockCopy;
+  v11 = sessionCopy;
   dispatch_async(queue, block);
 }
 

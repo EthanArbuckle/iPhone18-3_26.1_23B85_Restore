@@ -1,18 +1,18 @@
 @interface UIFont
-+ (id)appropriateContentSizeCategoryForCategory:(id)a3 maxCategory:(id)a4;
++ (id)appropriateContentSizeCategoryForCategory:(id)category maxCategory:(id)maxCategory;
 @end
 
 @implementation UIFont
 
-+ (id)appropriateContentSizeCategoryForCategory:(id)a3 maxCategory:(id)a4
++ (id)appropriateContentSizeCategoryForCategory:(id)category maxCategory:(id)maxCategory
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  categoryCopy = category;
+  maxCategoryCopy = maxCategory;
+  v7 = categoryCopy;
   v8 = v7;
-  if (UIContentSizeCategoryCompareToCategory(v7, v6) == NSOrderedDescending)
+  if (UIContentSizeCategoryCompareToCategory(v7, maxCategoryCopy) == NSOrderedDescending)
   {
-    v8 = v6;
+    v8 = maxCategoryCopy;
   }
 
   return v8;

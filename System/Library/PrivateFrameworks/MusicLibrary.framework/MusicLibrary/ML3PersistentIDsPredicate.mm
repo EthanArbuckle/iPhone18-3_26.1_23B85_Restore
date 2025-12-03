@@ -1,22 +1,22 @@
 @interface ML3PersistentIDsPredicate
-+ (id)predicateWithPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 shouldContain:(BOOL)a5;
-+ (id)predicateWithPersistentIDs:(id)a3 shouldContain:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (ML3PersistentIDsPredicate)initWithCoder:(id)a3;
-- (ML3PersistentIDsPredicate)initWithPersistentIDs:(id)a3 shouldContain:(BOOL)a4;
++ (id)predicateWithPersistentIDs:(const int64_t *)ds count:(unint64_t)count shouldContain:(BOOL)contain;
++ (id)predicateWithPersistentIDs:(id)ds shouldContain:(BOOL)contain;
+- (BOOL)isEqual:(id)equal;
+- (ML3PersistentIDsPredicate)initWithCoder:(id)coder;
+- (ML3PersistentIDsPredicate)initWithPersistentIDs:(id)ds shouldContain:(BOOL)contain;
 - (unint64_t)hash;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3PersistentIDsPredicate
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
-  v9 = a3;
-  v6 = [(objc_class *)a4 databaseTable];
-  [v9 appendString:v6];
+  stringCopy = string;
+  databaseTable = [(objc_class *)class databaseTable];
+  [stringCopy appendString:databaseTable];
 
   if (self->_shouldContain)
   {
@@ -28,10 +28,10 @@
     v7 = @" NOT";
   }
 
-  objc_msgSend(v9, "appendFormat:", @".ROWID%@ IN ("), v7;
+  objc_msgSend(stringCopy, "appendFormat:", @".ROWID%@ IN ("), v7;
   if ([(NSArray *)self->_persistentIDs count])
   {
-    [v9 appendString:@"?"];
+    [stringCopy appendString:@"?"];
   }
 
   if ([(NSArray *)self->_persistentIDs count]>= 2)
@@ -39,20 +39,20 @@
     v8 = 1;
     do
     {
-      [v9 appendString:{@", ?"}];
+      [stringCopy appendString:{@", ?"}];
       ++v8;
     }
 
     while (v8 < [(NSArray *)self->_persistentIDs count]);
   }
 
-  [v9 appendString:@""]);
+  [stringCopy appendString:@""]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -61,7 +61,7 @@
   {
     v8.receiver = self;
     v8.super_class = ML3PersistentIDsPredicate;
-    v6 = [(ML3Predicate *)&v8 isEqual:v4]&& (v5 = [(NSArray *)self->_persistentIDs count], v5 == [(NSArray *)v4->_persistentIDs count]) && self->_shouldContain == v4->_shouldContain && [(NSArray *)self->_persistentIDs isEqualToArray:v4->_persistentIDs];
+    v6 = [(ML3Predicate *)&v8 isEqual:equalCopy]&& (v5 = [(NSArray *)self->_persistentIDs count], v5 == [(NSArray *)equalCopy->_persistentIDs count]) && self->_shouldContain == equalCopy->_shouldContain && [(NSArray *)self->_persistentIDs isEqualToArray:equalCopy->_persistentIDs];
   }
 
   return v6;
@@ -75,29 +75,29 @@
   return v3 ^ [(NSArray *)self->_persistentIDs hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ML3PersistentIDsPredicate;
-  v4 = a3;
-  [(ML3Predicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_shouldContain forKey:{@"shouldContain", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_persistentIDs forKey:@"persistentIDs"];
+  coderCopy = coder;
+  [(ML3Predicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_shouldContain forKey:{@"shouldContain", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_persistentIDs forKey:@"persistentIDs"];
 }
 
-- (ML3PersistentIDsPredicate)initWithCoder:(id)a3
+- (ML3PersistentIDsPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ML3PersistentIDsPredicate;
-  v5 = [(ML3Predicate *)&v12 initWithCoder:v4];
+  v5 = [(ML3Predicate *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_shouldContain = [v4 decodeBoolForKey:@"shouldContain"];
+    v5->_shouldContain = [coderCopy decodeBoolForKey:@"shouldContain"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"persistentIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"persistentIDs"];
     persistentIDs = v5->_persistentIDs;
     v5->_persistentIDs = v9;
   }
@@ -112,43 +112,43 @@
   [(ML3PersistentIDsPredicate *)&v2 dealloc];
 }
 
-- (ML3PersistentIDsPredicate)initWithPersistentIDs:(id)a3 shouldContain:(BOOL)a4
+- (ML3PersistentIDsPredicate)initWithPersistentIDs:(id)ds shouldContain:(BOOL)contain
 {
-  v7 = a3;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = ML3PersistentIDsPredicate;
   v8 = [(ML3PersistentIDsPredicate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_shouldContain = a4;
-    objc_storeStrong(&v8->_persistentIDs, a3);
+    v8->_shouldContain = contain;
+    objc_storeStrong(&v8->_persistentIDs, ds);
   }
 
   return v9;
 }
 
-+ (id)predicateWithPersistentIDs:(id)a3 shouldContain:(BOOL)a4
++ (id)predicateWithPersistentIDs:(id)ds shouldContain:(BOOL)contain
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[ML3PersistentIDsPredicate alloc] initWithPersistentIDs:v5 shouldContain:v4];
+  containCopy = contain;
+  dsCopy = ds;
+  v6 = [[ML3PersistentIDsPredicate alloc] initWithPersistentIDs:dsCopy shouldContain:containCopy];
 
   return v6;
 }
 
-+ (id)predicateWithPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 shouldContain:(BOOL)a5
++ (id)predicateWithPersistentIDs:(const int64_t *)ds count:(unint64_t)count shouldContain:(BOOL)contain
 {
-  v5 = a5;
-  v6 = a4;
-  for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
+  containCopy = contain;
+  countCopy = count;
+  for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
   {
-    v9 = *a3++;
+    v9 = *ds++;
     v10 = [MEMORY[0x277CCABB0] numberWithLongLong:v9];
     [i addObject:v10];
   }
 
-  v11 = [[ML3PersistentIDsPredicate alloc] initWithPersistentIDs:i shouldContain:v5];
+  v11 = [[ML3PersistentIDsPredicate alloc] initWithPersistentIDs:i shouldContain:containCopy];
 
   return v11;
 }

@@ -1,16 +1,16 @@
 @interface MTL4RenderPipelineDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4RenderPipelineDescriptor)init;
 - (MTL4StaticLinkingDescriptor)fragmentStaticLinkingDescriptor;
 - (MTL4StaticLinkingDescriptor)vertexStaticLinkingDescriptor;
 - (MTLVertexDescriptor)vertexDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setFragmentStaticLinkingDescriptor:(id)a3;
-- (void)setVertexDescriptor:(id)a3;
-- (void)setVertexStaticLinkingDescriptor:(id)a3;
+- (void)setFragmentStaticLinkingDescriptor:(id)descriptor;
+- (void)setVertexDescriptor:(id)descriptor;
+- (void)setVertexStaticLinkingDescriptor:(id)descriptor;
 @end
 
 @implementation MTL4RenderPipelineDescriptor
@@ -36,9 +36,9 @@
   return result;
 }
 
-- (void)setVertexDescriptor:(id)a3
+- (void)setVertexDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -49,23 +49,23 @@
   }
 
   vertexDescriptor = self->_vertexDescriptor;
-  if (vertexDescriptor != a3)
+  if (vertexDescriptor != descriptor)
   {
 
-    self->_vertexDescriptor = [a3 copy];
+    self->_vertexDescriptor = [descriptor copy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MTL4RenderPipelineDescriptor;
   v5 = [(MTL4PipelineDescriptor *)&v7 copyWithZone:?];
-  *(v5 + 10) = [(MTL4FunctionDescriptor *)self->_vertexFunctionDescriptor copyWithZone:a3];
-  *(v5 + 11) = [(MTL4FunctionDescriptor *)self->_fragmentFunctionDescriptor copyWithZone:a3];
-  *(v5 + 8) = [(MTLVertexDescriptor *)self->_vertexDescriptor copyWithZone:a3];
+  *(v5 + 10) = [(MTL4FunctionDescriptor *)self->_vertexFunctionDescriptor copyWithZone:zone];
+  *(v5 + 11) = [(MTL4FunctionDescriptor *)self->_fragmentFunctionDescriptor copyWithZone:zone];
+  *(v5 + 8) = [(MTLVertexDescriptor *)self->_vertexDescriptor copyWithZone:zone];
 
-  *(v5 + 16) = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments copyWithZone:a3];
+  *(v5 + 16) = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments copyWithZone:zone];
   *(v5 + 18) = self->_colorAttachmentMappingState;
   *(v5 + 12) = self->_rasterSampleCount;
   *(v5 + 13) = self->_alphaToCoverageState;
@@ -75,8 +75,8 @@
   *(v5 + 17) = self->_inputPrimitiveTopology;
   *(v5 + 41) = self->_supportVertexBinaryLinking;
   *(v5 + 42) = self->_supportFragmentBinaryLinking;
-  *(v5 + 7) = [(MTL4StaticLinkingDescriptor *)self->_vertexStaticLinkingDescriptor copyWithZone:a3];
-  *(v5 + 6) = [(MTL4StaticLinkingDescriptor *)self->_fragmentStaticLinkingDescriptor copyWithZone:a3];
+  *(v5 + 7) = [(MTL4StaticLinkingDescriptor *)self->_vertexStaticLinkingDescriptor copyWithZone:zone];
+  *(v5 + 6) = [(MTL4StaticLinkingDescriptor *)self->_fragmentStaticLinkingDescriptor copyWithZone:zone];
   [v5 setSupportIndirectCommandBuffers:{-[MTL4RenderPipelineDescriptor supportIndirectCommandBuffers](self, "supportIndirectCommandBuffers")}];
   *(v5 + 19) = self->_colorSampleCount;
   return v5;
@@ -89,9 +89,9 @@
   [(MTL4PipelineDescriptor *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -100,37 +100,37 @@
   v16 = v3;
   v17 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v15.receiver = self;
   v15.super_class = MTL4RenderPipelineDescriptor;
-  v8 = [(MTL4PipelineDescriptor *)&v15 isEqual:a3];
+  v8 = [(MTL4PipelineDescriptor *)&v15 isEqual:equal];
   if (v8)
   {
-    v9 = *(a3 + 10);
+    v9 = *(equal + 10);
     if (v9 == self->_vertexFunctionDescriptor || (v8 = [(MTL4FunctionDescriptor *)v9 isEqual:?]) != 0)
     {
-      v10 = *(a3 + 11);
+      v10 = *(equal + 11);
       if (v10 == self->_fragmentFunctionDescriptor || (v8 = [(MTL4FunctionDescriptor *)v10 isEqual:?]) != 0)
       {
-        v8 = MTLVertexDescriptorEquivalent(self->_vertexDescriptor, *(a3 + 8));
+        v8 = MTLVertexDescriptorEquivalent(self->_vertexDescriptor, *(equal + 8));
         if (v8)
         {
           fragmentStaticLinkingDescriptor = self->_fragmentStaticLinkingDescriptor;
-          if (fragmentStaticLinkingDescriptor == *(a3 + 6) || (v8 = [(MTL4StaticLinkingDescriptor *)fragmentStaticLinkingDescriptor isEqual:?]) != 0)
+          if (fragmentStaticLinkingDescriptor == *(equal + 6) || (v8 = [(MTL4StaticLinkingDescriptor *)fragmentStaticLinkingDescriptor isEqual:?]) != 0)
           {
             vertexStaticLinkingDescriptor = self->_vertexStaticLinkingDescriptor;
-            if (vertexStaticLinkingDescriptor == *(a3 + 7) || (v8 = [(MTL4StaticLinkingDescriptor *)vertexStaticLinkingDescriptor isEqual:?]) != 0)
+            if (vertexStaticLinkingDescriptor == *(equal + 7) || (v8 = [(MTL4StaticLinkingDescriptor *)vertexStaticLinkingDescriptor isEqual:?]) != 0)
             {
               colorAttachments = self->_colorAttachments;
-              if (colorAttachments == *(a3 + 16) || (v8 = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)colorAttachments isEqual:?]) != 0)
+              if (colorAttachments == *(equal + 16) || (v8 = [(MTL4RenderPipelineColorAttachmentDescriptorArray *)colorAttachments isEqual:?]) != 0)
               {
-                if (*(a3 + 12) == self->_rasterSampleCount && *(a3 + 13) == self->_alphaToCoverageState && *(a3 + 14) == self->_alphaToOneState && *(a3 + 40) == self->_rasterizationEnabled && *(a3 + 15) == self->_maxVertexAmplificationCount && *(a3 + 17) == self->_inputPrimitiveTopology && *(a3 + 41) == self->_supportVertexBinaryLinking && *(a3 + 42) == self->_supportFragmentBinaryLinking && *(a3 + 18) == self->_colorAttachmentMappingState && *(a3 + 9) == self->_supportIndirectCommandBuffers)
+                if (*(equal + 12) == self->_rasterSampleCount && *(equal + 13) == self->_alphaToCoverageState && *(equal + 14) == self->_alphaToOneState && *(equal + 40) == self->_rasterizationEnabled && *(equal + 15) == self->_maxVertexAmplificationCount && *(equal + 17) == self->_inputPrimitiveTopology && *(equal + 41) == self->_supportVertexBinaryLinking && *(equal + 42) == self->_supportFragmentBinaryLinking && *(equal + 18) == self->_colorAttachmentMappingState && *(equal + 9) == self->_supportIndirectCommandBuffers)
                 {
-                  LOBYTE(v8) = *(a3 + 19) == self->_colorSampleCount;
+                  LOBYTE(v8) = *(equal + 19) == self->_colorSampleCount;
                   return v8;
                 }
 
@@ -233,9 +233,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setVertexStaticLinkingDescriptor:(id)a3
+- (void)setVertexStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -245,10 +245,10 @@ LABEL_3:
     }
   }
 
-  if (self->_vertexStaticLinkingDescriptor != a3)
+  if (self->_vertexStaticLinkingDescriptor != descriptor)
   {
     vertexStaticLinkingDescriptor = self->_vertexStaticLinkingDescriptor;
-    self->_vertexStaticLinkingDescriptor = [a3 copy];
+    self->_vertexStaticLinkingDescriptor = [descriptor copy];
   }
 }
 
@@ -275,9 +275,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setFragmentStaticLinkingDescriptor:(id)a3
+- (void)setFragmentStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -287,10 +287,10 @@ LABEL_3:
     }
   }
 
-  if (self->_fragmentStaticLinkingDescriptor != a3)
+  if (self->_fragmentStaticLinkingDescriptor != descriptor)
   {
     fragmentStaticLinkingDescriptor = self->_fragmentStaticLinkingDescriptor;
-    self->_fragmentStaticLinkingDescriptor = [a3 copy];
+    self->_fragmentStaticLinkingDescriptor = [descriptor copy];
   }
 }
 

@@ -1,47 +1,47 @@
 @interface HMDBackgroundTaskLogger
 + (id)logCategory;
 - (HMDBackgroundTaskLogger)init;
-- (HMDBackgroundTaskLogger)initWithLogEventSubmitter:(id)a3;
-- (void)submitLogEventForTask:(id)a3;
-- (void)submitNotFiredLogEventForTask:(id)a3;
+- (HMDBackgroundTaskLogger)initWithLogEventSubmitter:(id)submitter;
+- (void)submitLogEventForTask:(id)task;
+- (void)submitNotFiredLogEventForTask:(id)task;
 @end
 
 @implementation HMDBackgroundTaskLogger
 
-- (void)submitNotFiredLogEventForTask:(id)a3
+- (void)submitNotFiredLogEventForTask:(id)task
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 expectedFireDate];
+  expectedFireDate = [taskCopy expectedFireDate];
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [v6 compare:v7];
+  v8 = [expectedFireDate compare:v7];
 
   if (v8 != 1)
   {
     v9 = [HMDBackgroundTaskLogEvent alloc];
     v10 = [MEMORY[0x277CBEAA8] now];
-    v11 = [(HMDBackgroundTaskLogEvent *)v9 initWithTask:v4 didFire:0 now:v10];
+    v11 = [(HMDBackgroundTaskLogEvent *)v9 initWithTask:taskCopy didFire:0 now:v10];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v4 identifier];
+      identifier = [taskCopy identifier];
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
       v22 = v11;
       v23 = 2112;
-      v24 = v16;
+      v24 = identifier;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Submitting never fired log %@ with identifier %@", &v19, 0x20u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v17 = [(HMDBackgroundTaskLogger *)v13 submitter];
-    [v17 submitLogEvent:v11];
+    submitter = [(HMDBackgroundTaskLogger *)selfCopy submitter];
+    [submitter submitLogEvent:v11];
   }
 
   objc_autoreleasePoolPop(v5);
@@ -49,34 +49,34 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitLogEventForTask:(id)a3
+- (void)submitLogEventForTask:(id)task
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   v5 = objc_autoreleasePoolPush();
   v6 = [HMDBackgroundTaskLogEvent alloc];
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [(HMDBackgroundTaskLogEvent *)v6 initWithTask:v4 didFire:1 now:v7];
+  v8 = [(HMDBackgroundTaskLogEvent *)v6 initWithTask:taskCopy didFire:1 now:v7];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v4 identifier];
+    identifier = [taskCopy identifier];
     v16 = 138543874;
     v17 = v12;
     v18 = 2112;
     v19 = v8;
     v20 = 2112;
-    v21 = v13;
+    v21 = identifier;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Submitting log %@ with identifier %@", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [(HMDBackgroundTaskLogger *)v10 submitter];
-  [v14 submitLogEvent:v8];
+  submitter = [(HMDBackgroundTaskLogger *)selfCopy submitter];
+  [submitter submitLogEvent:v8];
 
   objc_autoreleasePoolPop(v5);
   v15 = *MEMORY[0x277D85DE8];
@@ -90,16 +90,16 @@
   return v4;
 }
 
-- (HMDBackgroundTaskLogger)initWithLogEventSubmitter:(id)a3
+- (HMDBackgroundTaskLogger)initWithLogEventSubmitter:(id)submitter
 {
-  v5 = a3;
+  submitterCopy = submitter;
   v9.receiver = self;
   v9.super_class = HMDBackgroundTaskLogger;
   v6 = [(HMDBackgroundTaskLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_submitter, a3);
+    objc_storeStrong(&v6->_submitter, submitter);
   }
 
   return v7;

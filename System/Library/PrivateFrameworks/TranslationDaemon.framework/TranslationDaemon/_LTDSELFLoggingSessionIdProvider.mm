@@ -7,26 +7,26 @@
 
 - (SISchemaUUID)sessionId
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = v2->_dateSessionIdMostRecentlyAccessesOrCreated;
-  objc_storeStrong(&v2->_dateSessionIdMostRecentlyAccessesOrCreated, v3);
+  v4 = selfCopy->_dateSessionIdMostRecentlyAccessesOrCreated;
+  objc_storeStrong(&selfCopy->_dateSessionIdMostRecentlyAccessesOrCreated, v3);
   if (!v4)
   {
 LABEL_6:
     v8 = objc_alloc(MEMORY[0x277D5AC78]);
     v9 = objc_alloc_init(MEMORY[0x277CCAD78]);
     v10 = [v8 initWithNSUUID:v9];
-    cachedSessionId = v2->_cachedSessionId;
-    v2->_cachedSessionId = v10;
+    cachedSessionId = selfCopy->_cachedSessionId;
+    selfCopy->_cachedSessionId = v10;
 
-    v6 = v2->_cachedSessionId;
+    v6 = selfCopy->_cachedSessionId;
     goto LABEL_7;
   }
 
   [v3 timeIntervalSinceDate:v4];
-  v6 = v2->_cachedSessionId;
+  v6 = selfCopy->_cachedSessionId;
   if (!v6 || v5 >= 480.0)
   {
     v7 = _LTOSLogSELFLogging();
@@ -41,7 +41,7 @@ LABEL_6:
 LABEL_7:
   v12 = v6;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }

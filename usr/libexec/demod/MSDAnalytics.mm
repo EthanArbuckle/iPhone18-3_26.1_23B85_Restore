@@ -4,7 +4,7 @@
 - (BOOL)rollOverCoreAnalyticsLogs;
 - (BOOL)uploadCoreAnalyticsLogs;
 - (MSDAnalytics)init;
-- (void)sendEvent:(id)a3 withPayload:(id)a4;
+- (void)sendEvent:(id)event withPayload:(id)payload;
 @end
 
 @implementation MSDAnalytics
@@ -44,28 +44,28 @@
   return v2;
 }
 
-- (void)sendEvent:(id)a3 withPayload:(id)a4
+- (void)sendEvent:(id)event withPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   if (os_variant_has_internal_content())
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [NSString stringWithFormat:@"Event triggered: %@, Payload: %@\n", v6, v7];
-    v10 = [(MSDAnalytics *)v8 testFileHandle];
-    [v10 seekToEndOfFile];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    payloadCopy = [NSString stringWithFormat:@"Event triggered: %@, Payload: %@\n", eventCopy, payloadCopy];
+    testFileHandle = [(MSDAnalytics *)selfCopy testFileHandle];
+    [testFileHandle seekToEndOfFile];
 
-    v11 = [(MSDAnalytics *)v8 testFileHandle];
-    v12 = [v9 dataUsingEncoding:4];
-    [v11 writeData:v12];
+    testFileHandle2 = [(MSDAnalytics *)selfCopy testFileHandle];
+    v12 = [payloadCopy dataUsingEncoding:4];
+    [testFileHandle2 writeData:v12];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
-  if (v6)
+  if (eventCopy)
   {
-    v13 = v7;
+    v13 = payloadCopy;
     AnalyticsSendEventLazy();
   }
 }
@@ -95,10 +95,10 @@
 - (BOOL)uploadCoreAnalyticsLogs
 {
   v2 = objc_alloc_init(OSASubmissionClient);
-  v3 = [v2 submit];
+  submit = [v2 submit];
   v4 = sub_100063A54();
   v5 = v4;
-  if (v3)
+  if (submit)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -112,7 +112,7 @@
     sub_1000C6D70(v4);
   }
 
-  return v3;
+  return submit;
 }
 
 - (BOOL)disableCoreAnalticsTransformSampling

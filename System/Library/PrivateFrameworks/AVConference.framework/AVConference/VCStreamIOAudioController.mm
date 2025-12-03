@@ -1,31 +1,31 @@
 @interface VCStreamIOAudioController
-- (BOOL)_packetThreadStartWithClientFormat:(const tagVCAudioFrameFormat *)a3;
-- (BOOL)dispatchedStartClient:(id)a3 error:(id *)a4;
+- (BOOL)_packetThreadStartWithClientFormat:(const tagVCAudioFrameFormat *)format;
+- (BOOL)dispatchedStartClient:(id)client error:(id *)error;
 - (BOOL)setupAndStartOutputClientThread;
-- (BOOL)startInputForClient:(id)a3 error:(id *)a4;
-- (BOOL)startOutputForClient:(id)a3 error:(id *)a4;
+- (BOOL)startInputForClient:(id)client error:(id *)error;
+- (BOOL)startOutputForClient:(id)client error:(id *)error;
 - (NSDictionary)reportingStats;
-- (VCStreamIOAudioController)initWithStreamInputID:(int64_t)a3 streamToken:(int64_t)a4 networkClockID:(unint64_t)a5;
+- (VCStreamIOAudioController)initWithStreamInputID:(int64_t)d streamToken:(int64_t)token networkClockID:(unint64_t)iD;
 - (VCStreamOutput)streamOutput;
 - (uint64_t)setupAndStartOutputClientThread;
 - (void)_packetThreadStop;
 - (void)cleanupOutputThread;
 - (void)cleanupStreamOutput;
 - (void)dealloc;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
 - (void)dispatchedStopClient;
-- (void)dispatchedUpdateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4;
+- (void)dispatchedUpdateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings;
 - (void)invalidate;
-- (void)setStreamOutput:(id)a3;
+- (void)setStreamOutput:(id)output;
 - (void)setupAndStartOutputClientThread;
-- (void)startClient:(id)a3;
-- (void)stopClient:(id)a3;
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4;
+- (void)startClient:(id)client;
+- (void)stopClient:(id)client;
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings;
 @end
 
 @implementation VCStreamIOAudioController
 
-- (VCStreamIOAudioController)initWithStreamInputID:(int64_t)a3 streamToken:(int64_t)a4 networkClockID:(unint64_t)a5
+- (VCStreamIOAudioController)initWithStreamInputID:(int64_t)d streamToken:(int64_t)token networkClockID:(unint64_t)iD
 {
   v35 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
@@ -33,7 +33,7 @@
   v8 = [(VCObject *)&v24 init];
   if (v8)
   {
-    -[VCObject setLogPrefix:](v8, "setLogPrefix:", [MEMORY[0x1E696AEC0] stringWithFormat:@"streamInputID=%ld", a3]);
+    -[VCObject setLogPrefix:](v8, "setLogPrefix:", [MEMORY[0x1E696AEC0] stringWithFormat:@"streamInputID=%ld", d]);
     if (objc_opt_class() == v8)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -93,28 +93,28 @@ LABEL_12:
       }
     }
 
-    if (a4)
+    if (token)
     {
-      v17 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.AVConference.streamIOAudioController_%ld", a3), "UTF8String"];
+      v17 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.AVConference.streamIOAudioController_%ld", d), "UTF8String"];
       CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
       v19 = dispatch_queue_create_with_target_V2(v17, 0, CustomRootQueue);
       v8->_stateQueue = v19;
       if (v19)
       {
-        if (a3 && ((v20 = [[VCStreamInputManager streamInputWithID:"streamInputWithID:" sharedInstance:objc_opt_class()]? (streamInput = v8->_streamInput) : (streamInput = v20, v8->_streamInput = streamInput), !streamInput))
+        if (d && ((v20 = [[VCStreamInputManager streamInputWithID:"streamInputWithID:" sharedInstance:objc_opt_class()]? (streamInput = v8->_streamInput) : (streamInput = v20, v8->_streamInput = streamInput), !streamInput))
         {
           [VCStreamIOAudioController initWithStreamInputID:v8 streamToken:? networkClockID:?];
         }
 
         else
         {
-          v8->_streamToken = a4;
+          v8->_streamToken = token;
           SampleBufferAllocator = VCAudioBufferList_CreateSampleBufferAllocator();
           v8->_audioSampleBufferAllocator = SampleBufferAllocator;
           if (SampleBufferAllocator)
           {
-            [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager registerStreamOutputSource:"registerStreamOutputSource:forStreamToken:" forStreamToken:v8, a4];
-            v8->_networkClockID = a5;
+            [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager registerStreamOutputSource:"registerStreamOutputSource:forStreamToken:" forStreamToken:v8, token];
+            v8->_networkClockID = iD;
             v8->_lastInputHealthPrintHostTime = NAN;
             return v8;
           }
@@ -193,7 +193,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = "VCStreamIOAudioController [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -234,7 +234,7 @@ LABEL_11:
   [(VCObject *)&v14 dealloc];
 }
 
-- (BOOL)_packetThreadStartWithClientFormat:(const tagVCAudioFrameFormat *)a3
+- (BOOL)_packetThreadStartWithClientFormat:(const tagVCAudioFrameFormat *)format
 {
   v36 = *MEMORY[0x1E69E9840];
   if (self->_packetThread)
@@ -243,11 +243,11 @@ LABEL_11:
     return LOBYTE(buf.mSampleRate);
   }
 
-  samplesPerFrame = a3->samplesPerFrame;
-  v6 = *&a3->format.mBytesPerPacket;
-  *&buf.mSampleRate = *&a3->format.mSampleRate;
+  samplesPerFrame = format->samplesPerFrame;
+  v6 = *&format->format.mBytesPerPacket;
+  *&buf.mSampleRate = *&format->format.mSampleRate;
   *&buf.mBytesPerPacket = v6;
-  *&buf.mBitsPerChannel = *&a3->format.mBitsPerChannel;
+  *&buf.mBitsPerChannel = *&format->format.mBitsPerChannel;
   v7 = VCAudioBufferList_Allocate(&buf, samplesPerFrame, &self->_inputSamples);
   *__str = 0u;
   v33 = 0u;
@@ -261,8 +261,8 @@ LABEL_11:
       v10 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v11 = FormatToCStr(a3, __str, 0x40uLL);
-        v12 = a3->samplesPerFrame;
+        v11 = FormatToCStr(format, __str, 0x40uLL);
+        v12 = format->samplesPerFrame;
         LODWORD(buf.mSampleRate) = 136316162;
         *(&buf.mSampleRate + 4) = v9;
         LOWORD(buf.mFormatFlags) = 2080;
@@ -272,7 +272,7 @@ LABEL_11:
         LOWORD(buf.mChannelsPerFrame) = 2080;
         *(&buf.mChannelsPerFrame + 2) = v11;
         HIWORD(buf.mReserved) = 1024;
-        LODWORD(v27) = v12;
+        LODWORD(selfCopy) = v12;
         v13 = "VCStreamIOAudioController [%s] %s:%d clientFormat=%s samplesPerFrame=%u";
         v14 = v10;
         v15 = 44;
@@ -300,8 +300,8 @@ LABEL_12:
       v17 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v18 = FormatToCStr(a3, __str, 0x40uLL);
-        v19 = a3->samplesPerFrame;
+        v18 = FormatToCStr(format, __str, 0x40uLL);
+        v19 = format->samplesPerFrame;
         LODWORD(buf.mSampleRate) = 136316674;
         *(&buf.mSampleRate + 4) = v16;
         LOWORD(buf.mFormatFlags) = 2080;
@@ -311,7 +311,7 @@ LABEL_12:
         LOWORD(buf.mChannelsPerFrame) = 2112;
         *(&buf.mChannelsPerFrame + 2) = v8;
         HIWORD(buf.mReserved) = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 2080;
         v29 = v18;
         v30 = 1024;
@@ -382,7 +382,7 @@ double *__64__VCStreamIOAudioController__packetThreadStartWithClientFormat___blo
   }
 }
 
-- (void)startClient:(id)a3
+- (void)startClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -435,7 +435,7 @@ LABEL_11:
         v24 = 2112;
         v25 = v5;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         v8 = "VCStreamIOAudioController [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;
@@ -444,7 +444,7 @@ LABEL_11:
     }
   }
 
-  if (a3)
+  if (client)
   {
     stateQueue = self->_stateQueue;
     v17[0] = MEMORY[0x1E69E9820];
@@ -452,7 +452,7 @@ LABEL_11:
     v17[2] = __41__VCStreamIOAudioController_startClient___block_invoke;
     v17[3] = &unk_1E85F37F0;
     v17[4] = self;
-    v17[5] = a3;
+    v17[5] = client;
     dispatch_async(stateQueue, v17);
   }
 
@@ -495,7 +495,7 @@ LABEL_11:
         v24 = 2112;
         v25 = v14;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, "VCStreamIOAudioController [%s] %s:%d %@(%p) nil client", buf, 0x30u);
       }
     }
@@ -511,7 +511,7 @@ uint64_t __41__VCStreamIOAudioController_startClient___block_invoke(uint64_t a1)
   return [v3 didStart:v2 error:v5[0]];
 }
 
-- (BOOL)startInputForClient:(id)a3 error:(id *)a4
+- (BOOL)startInputForClient:(id)client error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   *&v7 = 0xAAAAAAAAAAAAAAAALL;
@@ -525,27 +525,27 @@ uint64_t __41__VCStreamIOAudioController_startClient___block_invoke(uint64_t a1)
   *v30 = v7;
   v31 = v7;
   StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription([(VCStreamInput *)self->_streamInput streamFormat]);
-  if (!StreamBasicDescription || ![a3 clientFormat])
+  if (!StreamBasicDescription || ![client clientFormat])
   {
-    [(VCStreamIOAudioController *)a3 startInputForClient:StreamBasicDescription error:buf];
+    [(VCStreamIOAudioController *)client startInputForClient:StreamBasicDescription error:buf];
     v10 = *buf;
     v12 = 32000;
     goto LABEL_14;
   }
 
-  if (memcmp(StreamBasicDescription, [a3 clientFormat], 0x28uLL))
+  if (memcmp(StreamBasicDescription, [client clientFormat], 0x28uLL))
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = FormatToCStr([a3 clientFormat], __str, 0x40uLL);
-    v10 = [v13 stringWithFormat:@"Client (%p) format=%s does not match stream input format=%s for StreamInputID=%ld", a3, v14, FormatToCStr(StreamBasicDescription, v30, 0x40uLL), -[NSNumber longValue](-[VCStreamInput streamInputID](self->_streamInput, "streamInputID"), "longValue")];
+    v14 = FormatToCStr([client clientFormat], __str, 0x40uLL);
+    v10 = [v13 stringWithFormat:@"Client (%p) format=%s does not match stream input format=%s for StreamInputID=%ld", client, v14, FormatToCStr(StreamBasicDescription, v30, 0x40uLL), -[NSNumber longValue](-[VCStreamInput streamInputID](self->_streamInput, "streamInputID"), "longValue")];
 LABEL_12:
     v12 = 32016;
     goto LABEL_14;
   }
 
-  if (!*([a3 sinkIO] + 8))
+  if (!*([client sinkIO] + 8))
   {
-    [(VCStreamIOAudioController *)&self->_streamInput startInputForClient:a3 error:buf];
+    [(VCStreamIOAudioController *)&self->_streamInput startInputForClient:client error:buf];
     v10 = *buf;
     goto LABEL_12;
   }
@@ -556,9 +556,9 @@ LABEL_12:
   self->_lastSampleCount = 0;
   self->_nextExpectedSampleTime = 0;
   self->_timestampInitialized = 0;
-  if (!-[VCStreamIOAudioController _packetThreadStartWithClientFormat:](self, "_packetThreadStartWithClientFormat:", [a3 clientFormat]))
+  if (!-[VCStreamIOAudioController _packetThreadStartWithClientFormat:](self, "_packetThreadStartWithClientFormat:", [client clientFormat]))
   {
-    [(VCStreamIOAudioController *)&self->_streamInput startInputForClient:a3 error:buf];
+    [(VCStreamIOAudioController *)&self->_streamInput startInputForClient:client error:buf];
     v10 = *buf;
     v12 = 32015;
 LABEL_14:
@@ -575,12 +575,12 @@ LABEL_14:
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
           [VCStreamIOAudioController startInputForClient:error:];
-          if (a4)
+          if (error)
           {
 LABEL_26:
             v18 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:v12 detailCode:0 description:v10];
             LOBYTE(v10) = 0;
-            *a4 = v18;
+            *error = v18;
             return v10;
           }
 
@@ -618,11 +618,11 @@ LABEL_28:
           v24 = 2112;
           v25 = v15;
           v26 = 2048;
-          v27 = self;
+          selfCopy = self;
           v28 = 2112;
           v29 = v10;
           _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, "VCStreamIOAudioController [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
-          if (a4)
+          if (error)
           {
             goto LABEL_26;
           }
@@ -632,7 +632,7 @@ LABEL_28:
       }
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_26;
     }
@@ -648,29 +648,29 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)startOutputForClient:(id)a3 error:(id *)a4
+- (BOOL)startOutputForClient:(id)client error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (*([a3 sourceIO] + 8))
+  if (*([client sourceIO] + 8))
   {
-    self->_sourceIO = [a3 sourceIO];
+    self->_sourceIO = [client sourceIO];
     if ([(VCStreamIOAudioController *)self setupAndStartOutputClientThread])
     {
       return 1;
     }
 
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Client (%p) Failed to create the outputClientThread", a3];
+    client = [MEMORY[0x1E696AEC0] stringWithFormat:@"Client (%p) Failed to create the outputClientThread", client];
     v9 = 32025;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Client (%p) sourceIO is nil for StreamToken=%ld", a3, self->_streamToken];
+    client = [MEMORY[0x1E696AEC0] stringWithFormat:@"Client (%p) sourceIO is nil for StreamToken=%ld", client, self->_streamToken];
     v9 = 32016;
   }
 
   self->_sourceIO = 0;
-  if (!v8)
+  if (!client)
   {
     return 0;
   }
@@ -702,11 +702,11 @@ LABEL_7:
         v20 = 2112;
         v21 = v10;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2112;
-        v25 = v8;
+        v25 = client;
         _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, "VCStreamIOAudioController [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
-        if (a4)
+        if (error)
         {
           goto LABEL_18;
         }
@@ -721,7 +721,7 @@ LABEL_7:
   if (VRTraceGetErrorLogLevelForModule() < 3 || (VRTraceErrorLogLevelToCSTR(), !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
   {
 LABEL_17:
-    if (a4)
+    if (error)
     {
       goto LABEL_18;
     }
@@ -730,12 +730,12 @@ LABEL_17:
   }
 
   [VCStreamIOAudioController startOutputForClient:error:];
-  if (a4)
+  if (error)
   {
 LABEL_18:
-    v13 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:v9 detailCode:0 description:v8];
+    v13 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:v9 detailCode:0 description:client];
     result = 0;
-    *a4 = v13;
+    *error = v13;
     return result;
   }
 
@@ -811,7 +811,7 @@ LABEL_18:
           v20 = 2112;
           v21 = v8;
           v22 = 2048;
-          v23 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, "VCStreamIOAudioController [%s] %s:%d %@(%p) Failed to allocate output thread client", buf, 0x30u);
         }
       }
@@ -866,7 +866,7 @@ LABEL_24:
   }
 }
 
-- (void)stopClient:(id)a3
+- (void)stopClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -919,7 +919,7 @@ LABEL_11:
         v24 = 2112;
         v25 = v5;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         v8 = "VCStreamIOAudioController [%s] %s:%d %@(%p) ";
         v9 = v12;
         v10 = 48;
@@ -928,7 +928,7 @@ LABEL_11:
     }
   }
 
-  if (a3)
+  if (client)
   {
     stateQueue = self->_stateQueue;
     v17[0] = MEMORY[0x1E69E9820];
@@ -936,7 +936,7 @@ LABEL_11:
     v17[2] = __40__VCStreamIOAudioController_stopClient___block_invoke;
     v17[3] = &unk_1E85F37F0;
     v17[4] = self;
-    v17[5] = a3;
+    v17[5] = client;
     dispatch_async(stateQueue, v17);
   }
 
@@ -979,7 +979,7 @@ LABEL_11:
         v24 = 2112;
         v25 = v14;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, "VCStreamIOAudioController [%s] %s:%d %@(%p) nil client", buf, 0x30u);
       }
     }
@@ -1067,7 +1067,7 @@ uint64_t __40__VCStreamIOAudioController_stopClient___block_invoke(uint64_t a1)
   return [objc_msgSend(*(a1 + 40) "delegate")];
 }
 
-- (BOOL)dispatchedStartClient:(id)a3 error:(id *)a4
+- (BOOL)dispatchedStartClient:(id)client error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   if (self->_isRunning)
@@ -1078,7 +1078,7 @@ uint64_t __40__VCStreamIOAudioController_stopClient___block_invoke(uint64_t a1)
     goto LABEL_17;
   }
 
-  if (![a3 direction])
+  if (![client direction])
   {
     v9 = 0;
     v12 = @"Client (%p) direction is invalid";
@@ -1086,12 +1086,12 @@ uint64_t __40__VCStreamIOAudioController_stopClient___block_invoke(uint64_t a1)
     goto LABEL_17;
   }
 
-  [objc_msgSend(a3 "delegate")];
-  [(VCStreamIOAudioController *)self setRunningClient:a3];
-  v7 = [a3 direction];
-  if (v7)
+  [objc_msgSend(client "delegate")];
+  [(VCStreamIOAudioController *)self setRunningClient:client];
+  direction = [client direction];
+  if (direction)
   {
-    v8 = [(VCStreamIOAudioController *)self startOutputForClient:a3 error:a4];
+    v8 = [(VCStreamIOAudioController *)self startOutputForClient:client error:error];
     self->_sourceStarted = v8;
     if (!v8)
     {
@@ -1100,13 +1100,13 @@ uint64_t __40__VCStreamIOAudioController_stopClient___block_invoke(uint64_t a1)
 LABEL_16:
       v13 = 32005;
 LABEL_17:
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:v12, a3];
-      if (!v14)
+      client = [MEMORY[0x1E696AEC0] stringWithFormat:v12, client];
+      if (!client)
       {
         return v9;
       }
 
-      v15 = v14;
+      v15 = client;
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1115,7 +1115,7 @@ LABEL_17:
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
             [VCStreamIOAudioController dispatchedStartClient:error:];
-            if (!a4)
+            if (!error)
             {
               goto LABEL_30;
             }
@@ -1152,11 +1152,11 @@ LABEL_17:
             v25 = 2112;
             v26 = v16;
             v27 = 2048;
-            v28 = self;
+            selfCopy = self;
             v29 = 2112;
             v30 = v15;
             _os_log_error_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_ERROR, "VCStreamIOAudioController [%s] %s:%d %@(%p) error=%@", buf, 0x3Au);
-            if (!a4)
+            if (!error)
             {
               goto LABEL_30;
             }
@@ -1166,7 +1166,7 @@ LABEL_17:
         }
       }
 
-      if (!a4)
+      if (!error)
       {
 LABEL_30:
         [(VCStreamIOAudioController *)self dispatchedStopClient];
@@ -1174,15 +1174,15 @@ LABEL_30:
       }
 
 LABEL_29:
-      *a4 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:v13 detailCode:0 description:v15];
+      *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:v13 detailCode:0 description:v15];
       goto LABEL_30;
     }
   }
 
-  v9 = v7 & 1;
-  if (([a3 direction] & 2) != 0)
+  v9 = direction & 1;
+  if (([client direction] & 2) != 0)
   {
-    v10 = [(VCStreamIOAudioController *)self startInputForClient:a3 error:a4];
+    v10 = [(VCStreamIOAudioController *)self startInputForClient:client error:error];
     self->_sinkStarted = v10;
     if (v10)
     {
@@ -1197,7 +1197,7 @@ LABEL_29:
 LABEL_8:
   if (self->_sourceStarted || self->_sinkStarted)
   {
-    self->_clientDirection = [a3 direction];
+    self->_clientDirection = [client direction];
     self->_isRunning = 1;
   }
 
@@ -1226,24 +1226,24 @@ LABEL_8:
   [(VCStreamIOAudioController *)self setRunningClient:0];
 }
 
-- (void)dispatchedUpdateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4
+- (void)dispatchedUpdateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings
 {
   v33 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  v7 = [a3 direction];
-  var0 = a4->var0;
-  [a3 setDirection:a4->var0];
-  [a3 setSpatialAudioDisabled:a4->var1];
-  [a3 setIsVoiceActivityEnabled:a4->var2];
-  [a3 setIsMediaPriorityEnabled:a4->var3];
-  if (self->_runningClient == a3)
+  direction = [client direction];
+  var0 = settings->var0;
+  [client setDirection:settings->var0];
+  [client setSpatialAudioDisabled:settings->var1];
+  [client setIsVoiceActivityEnabled:settings->var2];
+  [client setIsMediaPriorityEnabled:settings->var3];
+  if (self->_runningClient == client)
   {
-    if ([(VCStreamIOAudioController *)self canSetDirection:a4->var0])
+    if ([(VCStreamIOAudioController *)self canSetDirection:settings->var0])
     {
-      if (self->_isRunning && v7 != var0)
+      if (self->_isRunning && direction != var0)
       {
         [(VCStreamIOAudioController *)self dispatchedStopClient];
-        [(VCStreamIOAudioController *)self dispatchedStartClient:a3 error:v20];
+        [(VCStreamIOAudioController *)self dispatchedStartClient:client error:v20];
       }
     }
 
@@ -1277,9 +1277,9 @@ LABEL_8:
     v23 = 1024;
     v24 = 398;
     v25 = 2048;
-    v26 = a3;
+    clientCopy = client;
     v27 = 2048;
-    v28 = runningClient;
+    selfCopy = runningClient;
     v14 = "VCStreamIOAudioController [%s] %s:%d client=%p != runningClient=%p";
     v15 = v12;
     v16 = 48;
@@ -1312,11 +1312,11 @@ LABEL_20:
       v23 = 1024;
       v24 = 398;
       v25 = 2112;
-      v26 = v10;
+      clientCopy = v10;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
-      v30 = a3;
+      clientCopy2 = client;
       v31 = 2048;
       v32 = v19;
       v14 = "VCStreamIOAudioController [%s] %s:%d %@(%p) client=%p != runningClient=%p";
@@ -1327,12 +1327,12 @@ LABEL_20:
   }
 }
 
-- (void)updateClient:(id)a3 settings:(const tagVCAudioIOControllerClientSettings *)a4
+- (void)updateClient:(id)client settings:(const tagVCAudioIOControllerClientSettings *)settings
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (client)
   {
-    if (a4)
+    if (settings)
     {
       stateQueue = self->_stateQueue;
       v5[0] = MEMORY[0x1E69E9820];
@@ -1340,8 +1340,8 @@ LABEL_20:
       v5[2] = __51__VCStreamIOAudioController_updateClient_settings___block_invoke;
       v5[3] = &unk_1E85F3890;
       v5[4] = self;
-      v5[5] = a3;
-      v6 = *a4;
+      v5[5] = client;
+      v6 = *settings;
       dispatch_async(stateQueue, v5);
     }
 
@@ -1384,11 +1384,11 @@ LABEL_20:
   return v3;
 }
 
-- (void)setStreamOutput:(id)a3
+- (void)setStreamOutput:(id)output
 {
   os_unfair_lock_lock(&self->_streamOutputLock);
 
-  streamOutput = a3;
+  streamOutput = output;
   self->_streamOutput = streamOutput;
   if (self->_backingBufferAllocator)
   {
@@ -1396,17 +1396,17 @@ LABEL_20:
     streamOutput = self->_streamOutput;
   }
 
-  v6 = [(VCStreamOutput *)streamOutput backingBufferAllocator];
-  self->_backingBufferAllocator = v6;
-  if (v6)
+  backingBufferAllocator = [(VCStreamOutput *)streamOutput backingBufferAllocator];
+  self->_backingBufferAllocator = backingBufferAllocator;
+  if (backingBufferAllocator)
   {
-    CFRetain(v6);
+    CFRetain(backingBufferAllocator);
   }
 
   os_unfair_lock_unlock(&self->_streamOutputLock);
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   v22 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1459,7 +1459,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v4;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v7 = "VCStreamIOAudioController [%s] %s:%d %@(%p) not handled";
         v8 = v11;
         v9 = 48;
@@ -1820,7 +1820,7 @@ LABEL_11:
 
 - (void)setupAndStartOutputClientThread
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {

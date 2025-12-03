@@ -1,27 +1,27 @@
 @interface WBSForYouTopicManager
-- (WBSForYouTopicManager)initWithHistory:(id)a3 contextClient:(id)a4;
+- (WBSForYouTopicManager)initWithHistory:(id)history contextClient:(id)client;
 - (void)_createInternalQueueIfNecessary;
-- (void)contextKitTopicsWithCompletionHandler:(id)a3;
-- (void)portraitNamedEntitiesWithCompletionHandler:(id)a3;
+- (void)contextKitTopicsWithCompletionHandler:(id)handler;
+- (void)portraitNamedEntitiesWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSForYouTopicManager
 
-- (WBSForYouTopicManager)initWithHistory:(id)a3 contextClient:(id)a4
+- (WBSForYouTopicManager)initWithHistory:(id)history contextClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  historyCopy = history;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = WBSForYouTopicManager;
   v9 = [(WBSForYouTopicManager *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_history, a3);
-    objc_storeStrong(&v10->_contextClient, a4);
-    v11 = [MEMORY[0x1E695DF00] distantPast];
+    objc_storeStrong(&v9->_history, history);
+    objc_storeStrong(&v10->_contextClient, client);
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     lastContextKitRequestDate = v10->_lastContextKitRequestDate;
-    v10->_lastContextKitRequestDate = v11;
+    v10->_lastContextKitRequestDate = distantPast;
 
     v13 = v10;
   }
@@ -29,15 +29,15 @@
   return v10;
 }
 
-- (void)contextKitTopicsWithCompletionHandler:(id)a3
+- (void)contextKitTopicsWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(NSDate *)self->_lastContextKitRequestDate timeIntervalSinceNow];
   v6 = v5;
   if (v5 >= -20.0)
   {
-    v4[2](v4, self->_mostRecentUserVisibleTopics);
+    handlerCopy[2](handlerCopy, self->_mostRecentUserVisibleTopics);
     v12 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -58,9 +58,9 @@
       [(WBSRecentHistoryTopicTagController *)self->_historyTopicTagController setMaximumNumberOfTopics:10];
     }
 
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastContextKitRequestDate = self->_lastContextKitRequestDate;
-    self->_lastContextKitRequestDate = v9;
+    self->_lastContextKitRequestDate = date;
 
     v11 = self->_historyTopicTagController;
     v13[0] = MEMORY[0x1E69E9820];
@@ -68,7 +68,7 @@
     v13[2] = __63__WBSForYouTopicManager_contextKitTopicsWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E8282F48;
     v13[4] = self;
-    v14 = v4;
+    v14 = handlerCopy;
     [(WBSRecentHistoryTopicTagController *)v11 loadTopicsWithCompletionHandler:v13];
   }
 }
@@ -170,9 +170,9 @@ uint64_t __63__WBSForYouTopicManager_contextKitTopicsWithCompletionHandler___blo
   return v5();
 }
 
-- (void)portraitNamedEntitiesWithCompletionHandler:(id)a3
+- (void)portraitNamedEntitiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WBSForYouTopicManager *)self _createInternalQueueIfNecessary];
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -180,8 +180,8 @@ uint64_t __63__WBSForYouTopicManager_contextKitTopicsWithCompletionHandler___blo
   v7[2] = __68__WBSForYouTopicManager_portraitNamedEntitiesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8283758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 

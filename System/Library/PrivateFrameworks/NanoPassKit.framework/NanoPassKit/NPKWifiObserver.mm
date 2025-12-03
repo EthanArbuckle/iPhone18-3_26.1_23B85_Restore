@@ -1,22 +1,22 @@
 @interface NPKWifiObserver
 - (NPKWiFiObserverDelegate)delegate;
-- (NPKWifiObserver)initWithCallbackQueue:(id)a3;
+- (NPKWifiObserver)initWithCallbackQueue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation NPKWifiObserver
 
-- (NPKWifiObserver)initWithCallbackQueue:(id)a3
+- (NPKWifiObserver)initWithCallbackQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = NPKWifiObserver;
   v5 = [(NPKWifiObserver *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
     }
 
     else

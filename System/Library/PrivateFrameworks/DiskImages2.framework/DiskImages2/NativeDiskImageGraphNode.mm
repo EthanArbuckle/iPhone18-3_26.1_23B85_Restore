@@ -1,26 +1,26 @@
 @interface NativeDiskImageGraphNode
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4;
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error;
 - (BOOL)deleteImage;
-- (BOOL)validateAppendedImageWithInfo:(id)a3 error:(id *)a4;
-- (NativeDiskImageGraphNode)initWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5;
+- (BOOL)validateAppendedImageWithInfo:(id)info error:(id *)error;
+- (NativeDiskImageGraphNode)initWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error;
 - (id)toDIShadowNode;
 - (id)toDictionary;
-- (void)setFilePath:(id)a3;
+- (void)setFilePath:(id)path;
 @end
 
 @implementation NativeDiskImageGraphNode
 
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
-  v10.receiver = a1;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionary];
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___NativeDiskImageGraphNode;
-  if (objc_msgSendSuper2(&v10, sel_validateWithDictionary_error_, v6, a4) && [v6 validateAndPopObjectForKey:@"FilePath" className:objc_opt_class() isOptional:0 error:a4])
+  if (objc_msgSendSuper2(&v10, sel_validateWithDictionary_error_, v6, error) && [v6 validateAndPopObjectForKey:@"FilePath" className:objc_opt_class() isOptional:0 error:error])
   {
     if ([v6 count])
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Validation failed, input contains unexpected data."];
-      v8 = [DIError failWithPOSIXCode:22 verboseInfo:v7 error:a4];
+      v8 = [DIError failWithPOSIXCode:22 verboseInfo:v7 error:error];
     }
 
     else
@@ -37,42 +37,42 @@
   return v8;
 }
 
-- (NativeDiskImageGraphNode)initWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5
+- (NativeDiskImageGraphNode)initWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([NativeDiskImageGraphNode validateWithDictionary:v8 error:a5])
+  dictionaryCopy = dictionary;
+  dirCopy = dir;
+  if ([NativeDiskImageGraphNode validateWithDictionary:dictionaryCopy error:error])
   {
     v18.receiver = self;
     v18.super_class = NativeDiskImageGraphNode;
-    self = [(DiskImageGraphNode *)&v18 initWithDictionary:v8 workDir:v9 error:a5];
+    self = [(DiskImageGraphNode *)&v18 initWithDictionary:dictionaryCopy workDir:dirCopy error:error];
     if (!self)
     {
       goto LABEL_4;
     }
 
     v10 = MEMORY[0x277CBEBC0];
-    v11 = [v8 objectForKey:@"FilePath"];
-    v12 = [v10 fileURLWithPath:v11 relativeToURL:v9];
+    v11 = [dictionaryCopy objectForKey:@"FilePath"];
+    v12 = [v10 fileURLWithPath:v11 relativeToURL:dirCopy];
     filePath = self->_filePath;
     self->_filePath = v12;
 
-    v14 = [(NativeDiskImageGraphNode *)self filePath];
-    LOBYTE(v11) = [v14 checkResourceIsReachableAndReturnError:a5];
+    filePath = [(NativeDiskImageGraphNode *)self filePath];
+    LOBYTE(v11) = [filePath checkResourceIsReachableAndReturnError:error];
 
     if ((v11 & 1) == 0)
     {
-      v15 = [DIError nilWithPOSIXCode:2 verboseInfo:@"Image referenced in the pstack is unreachable." error:a5];
+      selfCopy = [DIError nilWithPOSIXCode:2 verboseInfo:@"Image referenced in the pstack is unreachable." error:error];
     }
 
     else
     {
 LABEL_4:
-      v15 = self;
-      self = v15;
+      selfCopy = self;
+      self = selfCopy;
     }
 
-    v16 = v15;
+    v16 = selfCopy;
   }
 
   else
@@ -83,27 +83,27 @@ LABEL_4:
   return v16;
 }
 
-- (void)setFilePath:(id)a3
+- (void)setFilePath:(id)path
 {
-  v8 = a3;
-  objc_storeStrong(&self->_filePath, a3);
-  v5 = [(DiskImageGraphNode *)self pstackDict];
+  pathCopy = path;
+  objc_storeStrong(&self->_filePath, path);
+  pstackDict = [(DiskImageGraphNode *)self pstackDict];
 
-  if (v5)
+  if (pstackDict)
   {
-    v6 = [(DiskImageGraphNode *)self pstackDict];
-    v7 = [v8 relativeString];
-    [v6 setObject:v7 forKey:@"FilePath"];
+    pstackDict2 = [(DiskImageGraphNode *)self pstackDict];
+    relativeString = [pathCopy relativeString];
+    [pstackDict2 setObject:relativeString forKey:@"FilePath"];
   }
 }
 
 - (BOOL)deleteImage
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NativeDiskImageGraphNode *)self filePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  filePath = [(NativeDiskImageGraphNode *)self filePath];
   v17 = 0;
-  v5 = [v3 removeItemAtURL:v4 error:&v17];
+  v5 = [defaultManager removeItemAtURL:filePath error:&v17];
   v6 = v17;
 
   if ((v5 & 1) == 0)
@@ -113,14 +113,14 @@ LABEL_4:
     {
       v8 = getDIOSLog();
       os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
-      v9 = [(NativeDiskImageGraphNode *)self filePath];
+      filePath2 = [(NativeDiskImageGraphNode *)self filePath];
       v10 = [v6 description];
       *buf = 68158466;
       v19 = 39;
       v20 = 2080;
       v21 = "[NativeDiskImageGraphNode deleteImage]";
       v22 = 2112;
-      v23 = v9;
+      v23 = filePath2;
       v24 = 2112;
       v25 = v10;
       v11 = _os_log_send_and_compose_impl();
@@ -137,14 +137,14 @@ LABEL_4:
       v12 = getDIOSLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(NativeDiskImageGraphNode *)self filePath];
+        filePath3 = [(NativeDiskImageGraphNode *)self filePath];
         v14 = [v6 description];
         *buf = 68158466;
         v19 = 39;
         v20 = 2080;
         v21 = "[NativeDiskImageGraphNode deleteImage]";
         v22 = 2112;
-        v23 = v13;
+        v23 = filePath3;
         v24 = 2112;
         v25 = v14;
         _os_log_impl(&dword_248DE0000, v12, OS_LOG_TYPE_ERROR, "%.*s: Failed to delete %@: %@", buf, 0x26u);
@@ -162,12 +162,12 @@ LABEL_4:
 {
   v8.receiver = self;
   v8.super_class = NativeDiskImageGraphNode;
-  v3 = [(DiskImageGraphNode *)&v8 toDictionary];
-  v4 = [v3 mutableCopy];
+  toDictionary = [(DiskImageGraphNode *)&v8 toDictionary];
+  v4 = [toDictionary mutableCopy];
 
-  v5 = [(NativeDiskImageGraphNode *)self filePath];
-  v6 = [v5 relativePath];
-  [v4 setObject:v6 forKeyedSubscript:@"FilePath"];
+  filePath = [(NativeDiskImageGraphNode *)self filePath];
+  relativePath = [filePath relativePath];
+  [v4 setObject:relativePath forKeyedSubscript:@"FilePath"];
 
   return v4;
 }
@@ -175,18 +175,18 @@ LABEL_4:
 - (id)toDIShadowNode
 {
   v3 = [DIShadowNode alloc];
-  v4 = [(NativeDiskImageGraphNode *)self filePath];
-  v5 = [(DIShadowNode *)v3 initWithURL:v4 isCache:[(DiskImageGraphNode *)self isCache]];
+  filePath = [(NativeDiskImageGraphNode *)self filePath];
+  v5 = [(DIShadowNode *)v3 initWithURL:filePath isCache:[(DiskImageGraphNode *)self isCache]];
 
   return v5;
 }
 
-- (BOOL)validateAppendedImageWithInfo:(id)a3 error:(id *)a4
+- (BOOL)validateAppendedImageWithInfo:(id)info error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NativeDiskImageGraphNode *)self filePath];
-  v8 = [DiskImageGraph getImageInfoDictWithURL:v7 error:a4];
+  infoCopy = info;
+  filePath = [(NativeDiskImageGraphNode *)self filePath];
+  v8 = [DiskImageGraph getImageInfoDictWithURL:filePath error:error];
 
   if (v8)
   {
@@ -230,7 +230,7 @@ LABEL_4:
       goto LABEL_13;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"Identity Info"];
+    v15 = [infoCopy objectForKeyedSubscript:@"Identity Info"];
     v16 = [v15 objectForKeyedSubscript:@"Parent UUID"];
     v17 = [v8 objectForKeyedSubscript:@"Identity Info"];
     v18 = [v17 objectForKeyedSubscript:@"UUID"];
@@ -243,7 +243,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v14 = [DIError failWithPOSIXCode:22 verboseInfo:@"UUID validation failed for appended image." error:a4];
+    v14 = [DIError failWithPOSIXCode:22 verboseInfo:@"UUID validation failed for appended image." error:error];
   }
 
   else

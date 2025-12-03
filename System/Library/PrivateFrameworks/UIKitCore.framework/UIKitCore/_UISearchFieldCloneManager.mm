@@ -1,18 +1,18 @@
 @interface _UISearchFieldCloneManager
 - (id)description;
-- (void)addClone:(id)a3;
-- (void)cloneDidMoveToWindowNotification:(id)a3;
+- (void)addClone:(id)clone;
+- (void)cloneDidMoveToWindowNotification:(id)notification;
 - (void)refreshCloneAssignments;
-- (void)updateClonesOfSearchField:(id)a3 updates:(id)a4;
+- (void)updateClonesOfSearchField:(id)field updates:(id)updates;
 @end
 
 @implementation _UISearchFieldCloneManager
 
-- (void)addClone:(id)a3
+- (void)addClone:(id)clone
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  cloneCopy = clone;
+  if (cloneCopy)
   {
     recentClones = self->_recentClones;
     if (!recentClones)
@@ -24,9 +24,9 @@
       recentClones = self->_recentClones;
     }
 
-    [(NSMutableSet *)recentClones addObject:v4];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel_cloneDidMoveToWindowNotification_ name:@"_UISearchTextFieldMovedToWindowNotification" object:v4];
+    [(NSMutableSet *)recentClones addObject:cloneCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_cloneDidMoveToWindowNotification_ name:@"_UISearchTextFieldMovedToWindowNotification" object:cloneCopy];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -52,11 +52,11 @@
   }
 }
 
-- (void)cloneDidMoveToWindowNotification:(id)a3
+- (void)cloneDidMoveToWindowNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   activeClone = self->_activeClone;
-  self->_activeClone = v4;
+  self->_activeClone = object;
 
   [(_UISearchFieldCloneManager *)self refreshCloneAssignments];
 }
@@ -87,12 +87,12 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 superview];
+        superview = [v10 superview];
 
-        if (!v11)
+        if (!superview)
         {
-          v12 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v12 removeObserver:self name:@"_UISearchTextFieldMovedToWindowNotification" object:v10];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter removeObserver:self name:@"_UISearchTextFieldMovedToWindowNotification" object:v10];
 
           [v4 removeObject:v10];
         }
@@ -115,11 +115,11 @@
   }
 }
 
-- (void)updateClonesOfSearchField:(id)a3 updates:(id)a4
+- (void)updateClonesOfSearchField:(id)field updates:(id)updates
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  updatesCopy = updates;
   if (![(_UISearchFieldCloneManager *)self isUpdatingClone])
   {
     v17 = 0u;
@@ -143,10 +143,10 @@
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
-          if (v13 != v6)
+          if (v13 != fieldCopy)
           {
             objc_storeStrong(&self->_cloneUndergoingUpdates, *(*(&v15 + 1) + 8 * v12));
-            (v7)[2](v7, v13);
+            (updatesCopy)[2](updatesCopy, v13);
             cloneUndergoingUpdates = self->_cloneUndergoingUpdates;
             self->_cloneUndergoingUpdates = 0;
           }

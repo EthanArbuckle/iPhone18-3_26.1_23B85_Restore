@@ -1,32 +1,32 @@
 @interface RestoreBackupOperation
-+ (BOOL)cancelApplicationRestoreWithBundleID:(id)a3 error:(id *)a4;
-+ (BOOL)cancelApplicationRestoresWithBundleIDs:(id)a3;
-+ (BOOL)restoreDataExistsForApplicationWithBundleID:(id)a3 size:(unint64_t *)a4;
++ (BOOL)cancelApplicationRestoreWithBundleID:(id)d error:(id *)error;
++ (BOOL)cancelApplicationRestoresWithBundleIDs:(id)ds;
++ (BOOL)restoreDataExistsForApplicationWithBundleID:(id)d size:(unint64_t *)size;
 - (NSString)bundleIdentifier;
-- (RestoreBackupOperation)initWithBundleIdentifier:(id)a3 withPriority:(int64_t)a4 isFailed:(BOOL)a5;
+- (RestoreBackupOperation)initWithBundleIdentifier:(id)identifier withPriority:(int64_t)priority isFailed:(BOOL)failed;
 - (void)cancel;
 - (void)dealloc;
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4;
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4;
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5;
-- (void)managerDidFinishBackup:(id)a3;
-- (void)managerDidFinishRestore:(id)a3;
-- (void)managerDidLoseConnectionToService:(id)a3;
+- (void)manager:(id)manager didFailBackupWithError:(id)error;
+- (void)manager:(id)manager didFailRestoreWithError:(id)error;
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining;
+- (void)managerDidFinishBackup:(id)backup;
+- (void)managerDidFinishRestore:(id)restore;
+- (void)managerDidLoseConnectionToService:(id)service;
 - (void)run;
 @end
 
 @implementation RestoreBackupOperation
 
-- (RestoreBackupOperation)initWithBundleIdentifier:(id)a3 withPriority:(int64_t)a4 isFailed:(BOOL)a5
+- (RestoreBackupOperation)initWithBundleIdentifier:(id)identifier withPriority:(int64_t)priority isFailed:(BOOL)failed
 {
   v10.receiver = self;
   v10.super_class = RestoreBackupOperation;
   v8 = [(RestoreBackupOperation *)&v10 init];
   if (v8)
   {
-    v8->_bundleID = [a3 copy];
-    v8->_priority = a4;
-    v8->_isFailed = a5;
+    v8->_bundleID = [identifier copy];
+    v8->_priority = priority;
+    v8->_isFailed = failed;
     v8->_semaphore = dispatch_semaphore_create(0);
   }
 
@@ -46,21 +46,21 @@
   [(RestoreBackupOperation *)&v4 dealloc];
 }
 
-+ (BOOL)cancelApplicationRestoreWithBundleID:(id)a3 error:(id *)a4
++ (BOOL)cancelApplicationRestoreWithBundleID:(id)d error:(id *)error
 {
   v6 = objc_alloc_init(ISWeakLinkedClassForString());
-  v7 = [v6 cancelApplicationRestoreWithBundleID:a3 error:a4];
+  v7 = [v6 cancelApplicationRestoreWithBundleID:d error:error];
 
   return v7;
 }
 
-+ (BOOL)cancelApplicationRestoresWithBundleIDs:(id)a3
++ (BOOL)cancelApplicationRestoresWithBundleIDs:(id)ds
 {
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v3 = [a3 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  v3 = [ds countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (!v3)
   {
     return 1;
@@ -75,7 +75,7 @@
     {
       if (*v37 != v5)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(ds);
       }
 
       v8 = *(*(&v36 + 1) + 8 * i);
@@ -89,15 +89,15 @@
           v11 = +[SSLogConfig sharedConfig];
         }
 
-        v25 = [v11 shouldLog];
+        shouldLog = [v11 shouldLog];
         if ([v11 shouldLogToDisk])
         {
-          v26 = v25 | 2;
+          v26 = shouldLog | 2;
         }
 
         else
         {
-          v26 = v25;
+          v26 = shouldLog;
         }
 
         if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -131,18 +131,18 @@
         v11 = +[SSLogConfig sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
+      shouldLog2 = [v11 shouldLog];
       if ([v11 shouldLogToDisk])
       {
-        v12 |= 2u;
+        shouldLog2 |= 2u;
       }
 
       if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_INFO))
       {
-        v12 &= 2u;
+        shouldLog2 &= 2u;
       }
 
-      if (v12)
+      if (shouldLog2)
       {
         v13 = objc_opt_class();
         v40 = 138412546;
@@ -171,15 +171,15 @@
           v17 = +[SSLogConfig sharedConfig];
         }
 
-        v18 = [v17 shouldLog];
+        shouldLog3 = [v17 shouldLog];
         if ([v17 shouldLogToDisk])
         {
-          v19 = v18 | 2;
+          v19 = shouldLog3 | 2;
         }
 
         else
         {
-          v19 = v18;
+          v19 = shouldLog3;
         }
 
         if (os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -218,7 +218,7 @@
       }
     }
 
-    v4 = [a3 countByEnumeratingWithState:&v36 objects:v46 count:16];
+    v4 = [ds countByEnumeratingWithState:&v36 objects:v46 count:16];
     if (v4)
     {
       continue;
@@ -230,10 +230,10 @@
   return v6;
 }
 
-+ (BOOL)restoreDataExistsForApplicationWithBundleID:(id)a3 size:(unint64_t *)a4
++ (BOOL)restoreDataExistsForApplicationWithBundleID:(id)d size:(unint64_t *)size
 {
   v6 = objc_alloc_init(ISWeakLinkedClassForString());
-  v7 = [v6 restoreDataExistsForApplicationWithBundleID:a3 size:a4];
+  v7 = [v6 restoreDataExistsForApplicationWithBundleID:d size:size];
 
   return v7;
 }
@@ -267,15 +267,15 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -316,20 +316,20 @@
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
+      shouldLog2 = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v14 |= 2u;
+        shouldLog2 |= 2u;
       }
 
       if (os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
       {
-        v15 = v14;
+        v15 = shouldLog2;
       }
 
       else
       {
-        v15 = v14 & 2;
+        v15 = shouldLog2 & 2;
       }
 
       if (v15)
@@ -366,20 +366,20 @@
         v23 = +[SSLogConfig sharedConfig];
       }
 
-      v24 = [v23 shouldLog];
-      v25 = [v23 shouldLogToDisk];
-      v26 = [v23 OSLogObject];
-      if (v25)
+      shouldLog3 = [v23 shouldLog];
+      shouldLogToDisk = [v23 shouldLogToDisk];
+      oSLogObject = [v23 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v24 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      if (!os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
-        v24 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      if (v24)
+      if (shouldLog3)
       {
         v27 = objc_opt_class();
         priority = self->_priority;
@@ -408,20 +408,20 @@
           v32 = +[SSLogConfig sharedConfig];
         }
 
-        v33 = [v32 shouldLog];
-        v34 = [v32 shouldLogToDisk];
-        v35 = [v32 OSLogObject];
-        if (v34)
+        shouldLog4 = [v32 shouldLog];
+        shouldLogToDisk2 = [v32 shouldLogToDisk];
+        oSLogObject2 = [v32 OSLogObject];
+        if (shouldLogToDisk2)
         {
-          v33 |= 2u;
+          shouldLog4 |= 2u;
         }
 
-        if (!os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
         {
-          v33 &= 2u;
+          shouldLog4 &= 2u;
         }
 
-        if (v33)
+        if (shouldLog4)
         {
           v36 = objc_opt_class();
           v37 = self->_priority;
@@ -453,20 +453,20 @@
           v42 = +[SSLogConfig sharedConfig];
         }
 
-        v43 = [v42 shouldLog];
-        v44 = [v42 shouldLogToDisk];
-        v45 = [v42 OSLogObject];
-        if (v44)
+        shouldLog5 = [v42 shouldLog];
+        shouldLogToDisk3 = [v42 shouldLogToDisk];
+        oSLogObject3 = [v42 OSLogObject];
+        if (shouldLogToDisk3)
         {
-          v43 |= 2u;
+          shouldLog5 |= 2u;
         }
 
-        if (!os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
+        if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
         {
-          v43 &= 2u;
+          shouldLog5 &= 2u;
         }
 
-        if (v43)
+        if (shouldLog5)
         {
           v46 = objc_opt_class();
           v47 = self->_priority;
@@ -507,20 +507,20 @@
           v51 = +[SSLogConfig sharedConfig];
         }
 
-        v52 = [v51 shouldLog];
-        v53 = [v51 shouldLogToDisk];
-        v54 = [v51 OSLogObject];
-        if (v53)
+        shouldLog6 = [v51 shouldLog];
+        shouldLogToDisk4 = [v51 shouldLogToDisk];
+        oSLogObject4 = [v51 OSLogObject];
+        if (shouldLogToDisk4)
         {
-          v52 |= 2u;
+          shouldLog6 |= 2u;
         }
 
-        if (!os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
-          v52 &= 2u;
+          shouldLog6 &= 2u;
         }
 
-        if (v52)
+        if (shouldLog6)
         {
           v55 = objc_opt_class();
           v76 = 138412546;
@@ -556,8 +556,8 @@
         break;
       }
 
-      v59 = [(RestoreBackupOperation *)self isCancelled];
-      v60 = v12++ > 3 ? 1 : v59;
+      isCancelled = [(RestoreBackupOperation *)self isCancelled];
+      v60 = v12++ > 3 ? 1 : isCancelled;
     }
 
     while ((v60 & 1) == 0);
@@ -572,15 +572,15 @@
       v61 = +[SSLogConfig sharedConfig];
     }
 
-    v62 = [v61 shouldLog];
+    shouldLog7 = [v61 shouldLog];
     if ([v61 shouldLogToDisk])
     {
-      v63 = v62 | 2;
+      v63 = shouldLog7 | 2;
     }
 
     else
     {
-      v63 = v62;
+      v63 = shouldLog7;
     }
 
     if (!os_log_type_enabled([v61 OSLogObject], OS_LOG_TYPE_INFO))
@@ -612,7 +612,7 @@
   }
 }
 
-- (void)manager:(id)a3 didFailBackupWithError:(id)a4
+- (void)manager:(id)manager didFailBackupWithError:(id)error
 {
   v6 = +[SSLogConfig sharedDaemonConfig];
   if (!v6)
@@ -620,15 +620,15 @@
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -645,7 +645,7 @@
     v18 = 2112;
     v19 = bundleID;
     v20 = 2112;
-    v21 = a4;
+    errorCopy = error;
     LODWORD(v15) = 32;
     v14 = &v16;
     v11 = _os_log_send_and_compose_impl();
@@ -659,16 +659,16 @@
     }
   }
 
-  if (!a4)
+  if (!error)
   {
-    a4 = SSError();
+    error = SSError();
   }
 
-  [(RestoreBackupOperation *)self setError:a4, v14];
+  [(RestoreBackupOperation *)self setError:error, v14];
   dispatch_semaphore_signal(self->_semaphore);
 }
 
-- (void)manager:(id)a3 didFailRestoreWithError:(id)a4
+- (void)manager:(id)manager didFailRestoreWithError:(id)error
 {
   v6 = +[SSLogConfig sharedDaemonConfig];
   if (!v6)
@@ -676,15 +676,15 @@
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -701,7 +701,7 @@
     v18 = 2112;
     v19 = bundleID;
     v20 = 2112;
-    v21 = a4;
+    errorCopy = error;
     LODWORD(v15) = 32;
     v14 = &v16;
     v11 = _os_log_send_and_compose_impl();
@@ -715,32 +715,32 @@
     }
   }
 
-  if (!a4)
+  if (!error)
   {
-    a4 = SSError();
+    error = SSError();
   }
 
-  [(RestoreBackupOperation *)self setError:a4, v14];
+  [(RestoreBackupOperation *)self setError:error, v14];
   dispatch_semaphore_signal(self->_semaphore);
 }
 
-- (void)manager:(id)a3 didUpdateProgress:(float)a4 estimatedTimeRemaining:(unint64_t)a5
+- (void)manager:(id)manager didUpdateProgress:(float)progress estimatedTimeRemaining:(unint64_t)remaining
 {
-  v7 = [SSLogConfig sharedDaemonConfig:a3];
+  v7 = [SSLogConfig sharedDaemonConfig:manager];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
   if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -753,7 +753,7 @@
     v16 = 138412546;
     v17 = objc_opt_class();
     v18 = 2048;
-    v19 = a4;
+    progressCopy = progress;
     LODWORD(v15) = 22;
     v14 = &v16;
     v10 = _os_log_send_and_compose_impl();
@@ -769,13 +769,13 @@
 
   [(RestoreBackupOperation *)self lock];
   v13 = OBJC_IVAR___ISOperation__progress;
-  [*&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress] setCurrentValue:{(objc_msgSend(*&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress], "maxValue") * a4)}];
+  [*&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress] setCurrentValue:{(objc_msgSend(*&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress], "maxValue") * progress)}];
   [*&self->ISOperation_opaque[v13] snapshot];
   [(RestoreBackupOperation *)self unlock];
   [(RestoreBackupOperation *)self sendProgressToDelegate];
 }
 
-- (void)managerDidFinishBackup:(id)a3
+- (void)managerDidFinishBackup:(id)backup
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -783,15 +783,15 @@
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -824,7 +824,7 @@
   dispatch_semaphore_signal(self->_semaphore);
 }
 
-- (void)managerDidFinishRestore:(id)a3
+- (void)managerDidFinishRestore:(id)restore
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -832,15 +832,15 @@
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -873,7 +873,7 @@
   dispatch_semaphore_signal(self->_semaphore);
 }
 
-- (void)managerDidLoseConnectionToService:(id)a3
+- (void)managerDidLoseConnectionToService:(id)service
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -881,15 +881,15 @@
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEFAULT))

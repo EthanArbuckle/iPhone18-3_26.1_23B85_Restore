@@ -1,12 +1,12 @@
 @interface BSWatchdog
-- (BSWatchdog)initWithProvider:(id)a3 queue:(id)a4 completion:(id)a5;
-- (BSWatchdog)initWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5;
+- (BSWatchdog)initWithProvider:(id)provider queue:(id)queue completion:(id)completion;
+- (BSWatchdog)initWithTimeout:(double)timeout queue:(id)queue completion:(id)completion;
 - (id)description;
-- (void)_completeWatchdogAfterFiring:(void *)a1;
-- (void)_setupTimerWithInterval:(double)a3 handler:;
+- (void)_completeWatchdogAfterFiring:(void *)firing;
+- (void)_setupTimerWithInterval:(double)interval handler:;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 @end
 
@@ -66,8 +66,8 @@
 {
   if (!self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"BSWatchdog.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"_invalidated"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSWatchdog.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"_invalidated"}];
   }
 
   v5.receiver = self;
@@ -75,45 +75,45 @@
   [(BSWatchdog *)&v5 dealloc];
 }
 
-- (BSWatchdog)initWithProvider:(id)a3 queue:(id)a4 completion:(id)a5
+- (BSWatchdog)initWithProvider:(id)provider queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  providerCopy = provider;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!providerCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"BSWatchdog.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSWatchdog.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
   }
 
-  [v10 watchdogTimeout];
-  v13 = [(BSWatchdog *)self initWithTimeout:v11 queue:v12 completion:?];
+  [providerCopy watchdogTimeout];
+  v13 = [(BSWatchdog *)self initWithTimeout:queueCopy queue:completionCopy completion:?];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_provider, a3);
+    objc_storeStrong(&v13->_provider, provider);
   }
 
   return v14;
 }
 
-- (BSWatchdog)initWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5
+- (BSWatchdog)initWithTimeout:(double)timeout queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"BSWatchdog.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSWatchdog.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
   }
 
   v12 = [(BSWatchdog *)self init];
   v13 = v12;
   if (v12)
   {
-    v12->_timeout = a3;
-    objc_storeStrong(&v12->_queue, a4);
-    v14 = [v11 copy];
+    v12->_timeout = timeout;
+    objc_storeStrong(&v12->_queue, queue);
+    v14 = [completionCopy copy];
     completion = v13->_completion;
     v13->_completion = v14;
   }
@@ -146,37 +146,37 @@
     }
   }
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v8 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(self->_queue);
   delegate = self->_delegate;
   p_delegate = &self->_delegate;
-  v7 = v8;
-  if (delegate != v8)
+  v7 = delegateCopy;
+  if (delegate != delegateCopy)
   {
-    objc_storeStrong(p_delegate, a3);
-    v7 = v8;
+    objc_storeStrong(p_delegate, delegate);
+    v7 = delegateCopy;
   }
 }
 
-- (void)_completeWatchdogAfterFiring:(void *)a1
+- (void)_completeWatchdogAfterFiring:(void *)firing
 {
-  if (a1)
+  if (firing)
   {
-    v3 = a1;
-    v10 = v3;
-    if ((*(v3 + 25) & 1) == 0)
+    firingCopy = firing;
+    v10 = firingCopy;
+    if ((*(firingCopy + 25) & 1) == 0)
     {
-      *(v3 + 25) = 1;
+      *(firingCopy + 25) = 1;
       if ((a2 & 1) == 0)
       {
-        [v3 _watchdogInvalidated];
+        [firingCopy _watchdogInvalidated];
         if (objc_opt_respondsToSelector())
         {
           [v10[4] watchdogCancelled:?];
@@ -200,37 +200,37 @@
       v8 = v10[5];
       v10[5] = 0;
 
-      v3 = v10;
+      firingCopy = v10;
     }
 
-    [v3[1] invalidate];
+    [firingCopy[1] invalidate];
     v9 = v10[1];
     v10[1] = 0;
   }
 }
 
-- (void)_setupTimerWithInterval:(double)a3 handler:
+- (void)_setupTimerWithInterval:(double)interval handler:
 {
   v5 = a2;
-  [*(a1 + 8) invalidate];
-  v6 = *(a1 + 8);
-  *(a1 + 8) = 0;
+  [*(self + 8) invalidate];
+  v6 = *(self + 8);
+  *(self + 8) = 0;
 
   v7 = [BSAbsoluteMachTimer alloc];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<BSWatchdog:%@>", *(a1 + 32)];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<BSWatchdog:%@>", *(self + 32)];
   v9 = [(BSAbsoluteMachTimer *)v7 initWithIdentifier:v8];
-  v10 = *(a1 + 8);
-  *(a1 + 8) = v9;
+  v10 = *(self + 8);
+  *(self + 8) = v9;
 
-  v11 = *(a1 + 8);
-  v12 = *(a1 + 56);
+  v11 = *(self + 8);
+  v12 = *(self + 56);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__BSWatchdog__setupTimerWithInterval_handler___block_invoke;
   v14[3] = &unk_1E72CB7B0;
   v13 = v5;
   v15 = v13;
-  [v11 scheduleWithFireInterval:v12 leewayInterval:v14 queue:a3 handler:0.0];
+  [v11 scheduleWithFireInterval:v12 leewayInterval:v14 queue:interval handler:0.0];
 }
 
 uint64_t __46__BSWatchdog__setupTimerWithInterval_handler___block_invoke(uint64_t a1)

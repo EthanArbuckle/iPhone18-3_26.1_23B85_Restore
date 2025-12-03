@@ -1,16 +1,16 @@
 @interface ABVCardParser
-- (ABVCardParser)initWithData:(id)a3;
-- (ABVCardParser)initWithData:(id)a3 watchdogTimer:(id)a4;
-- (BOOL)_setDataValueOrNoteIfNull:(id)a3 forProperty:(unsigned int)a4;
-- (BOOL)_setMultiValuesOrNoteIfNull:(id)a3 forProperty:(unsigned int)a4 valueComparator:(id)a5;
-- (BOOL)_setPersonSounds:(void *)a3 identifier:(int)a4 fromActivity:(id)a5 alert:(id)a6 otherValue:(id)a7;
-- (BOOL)_setStringValueOrNoteIfNull:(id)a3 forProperty:(unsigned int)a4;
-- (BOOL)_usesRemainingLineForExternalPropKey:(id)a3;
-- (BOOL)addIMValueTo:(id)a3;
-- (BOOL)importToPerson:(void *)a3 foundProperties:(const __CFArray *)a4;
-- (BOOL)importToValueSetter:(id)a3;
+- (ABVCardParser)initWithData:(id)data;
+- (ABVCardParser)initWithData:(id)data watchdogTimer:(id)timer;
+- (BOOL)_setDataValueOrNoteIfNull:(id)null forProperty:(unsigned int)property;
+- (BOOL)_setMultiValuesOrNoteIfNull:(id)null forProperty:(unsigned int)property valueComparator:(id)comparator;
+- (BOOL)_setPersonSounds:(void *)sounds identifier:(int)identifier fromActivity:(id)activity alert:(id)alert otherValue:(id)value;
+- (BOOL)_setStringValueOrNoteIfNull:(id)null forProperty:(unsigned int)property;
+- (BOOL)_usesRemainingLineForExternalPropKey:(id)key;
+- (BOOL)addIMValueTo:(id)to;
+- (BOOL)importToPerson:(void *)person foundProperties:(const __CFArray *)properties;
+- (BOOL)importToValueSetter:(id)setter;
 - (BOOL)parseABDATE;
-- (BOOL)parseABExtensionType:(id)a3;
+- (BOOL)parseABExtensionType:(id)type;
 - (BOOL)parseABMaiden;
 - (BOOL)parseABReleatedNames;
 - (BOOL)parseABUID;
@@ -29,13 +29,13 @@
 - (BOOL)parseN;
 - (BOOL)parseNICKNAME;
 - (BOOL)parseORG;
-- (BOOL)parsePhoto:(id)a3;
+- (BOOL)parsePhoto:(id)photo;
 - (BOOL)parseSensitiveContentConfigurationData;
 - (BOOL)parseSocialProfiles;
 - (BOOL)parseTEL;
 - (BOOL)parseVERSION;
-- (BOOL)parseWallpaper:(id)a3;
-- (__CFArray)peopleAndProperties:(const __CFArray *)a3;
+- (BOOL)parseWallpaper:(id)wallpaper;
+- (__CFArray)peopleAndProperties:(const __CFArray *)properties;
 - (id)_genericLabel;
 - (id)_socialProfileBundleIdentifiers;
 - (id)_socialProfileDisplayName;
@@ -43,45 +43,45 @@
 - (id)_socialProfileTeamIdentifier;
 - (id)_socialProfileUserId;
 - (id)_socialProfileUsername;
-- (id)dateFromISO8601String:(id)a3;
+- (id)dateFromISO8601String:(id)string;
 - (id)genericLabel;
-- (id)parseInstantMessengerProfile:(id)a3;
+- (id)parseInstantMessengerProfile:(id)profile;
 - (id)parseRemainingLine;
 - (id)parseSingleValue;
 - (id)parseURL;
 - (id)parseValueArray;
 - (id)phoneLabel;
-- (id)sortedPeopleAndProperties:(const __CFArray *)a3;
-- (int)_addIMHandles:(id)a3 toService:(__CFString *)a4 multiValue:(void *)a5 uniquenessCheckingMultiValue:(void *)a6;
-- (int)_addIMPPProfiles:(id)a3 multiValue:(void *)a4 uniquenessCheckingMultiValue:(void *)a5;
-- (void)_setValueFromExtension:(id)a3 forKey:(id)a4 onAddress:(id)a5 toKey:(id)a6;
+- (id)sortedPeopleAndProperties:(const __CFArray *)properties;
+- (int)_addIMHandles:(id)handles toService:(__CFString *)service multiValue:(void *)value uniquenessCheckingMultiValue:(void *)multiValue;
+- (int)_addIMPPProfiles:(id)profiles multiValue:(void *)value uniquenessCheckingMultiValue:(void *)multiValue;
+- (void)_setValueFromExtension:(id)extension forKey:(id)key onAddress:(id)address toKey:(id)toKey;
 - (void)addActivityAlertMultiValues;
 - (void)addAddressMultiValues;
 - (void)addInstantMessageMultiValues;
-- (void)addMultiValues:(id)a3 toProperty:(unsigned int)a4 valueComparator:(id)a5;
+- (void)addMultiValues:(id)values toProperty:(unsigned int)property valueComparator:(id)comparator;
 - (void)addSocialProfileMultiValues;
 - (void)cleanUpCardState;
-- (void)copyNextPersonWithLength:(int *)a3 foundProperties:(const __CFArray *)a4;
+- (void)copyNextPersonWithLength:(int *)length foundProperties:(const __CFArray *)properties;
 - (void)dealloc;
 - (void)parseABShowAs;
 - (void)parseSharedPhotoDisplayPreference;
-- (void)setSource:(void *)a3;
+- (void)setSource:(void *)source;
 @end
 
 @implementation ABVCardParser
 
-- (ABVCardParser)initWithData:(id)a3
+- (ABVCardParser)initWithData:(id)data
 {
   v5 = [ABVCardWatchdogTimer timerWithTimeProvider:objc_alloc_init(_ABVCardTimeProvider)];
 
-  return [(ABVCardParser *)self initWithData:a3 watchdogTimer:v5];
+  return [(ABVCardParser *)self initWithData:data watchdogTimer:v5];
 }
 
-- (ABVCardParser)initWithData:(id)a3 watchdogTimer:(id)a4
+- (ABVCardParser)initWithData:(id)data watchdogTimer:(id)timer
 {
-  if (a3 && [a3 length] && (v11.receiver = self, v11.super_class = ABVCardParser, self = -[ABVCardParser init](&v11, sel_init), self->_data = a3, self->_timer = a4, v7 = -[ABVCardLexer initWithData:watchdogTimer:]([ABVCardLexer alloc], "initWithData:watchdogTimer:", a3, a4), (self->_lexer = v7) != 0))
+  if (data && [data length] && (v11.receiver = self, v11.super_class = ABVCardParser, self = -[ABVCardParser init](&v11, sel_init), self->_data = data, self->_timer = timer, v7 = -[ABVCardLexer initWithData:watchdogTimer:]([ABVCardLexer alloc], "initWithData:watchdogTimer:", data, timer), (self->_lexer = v7) != 0))
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a3 encoding:4];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:data encoding:4];
     if ([v8 hasPrefix:@"BEGIN:VCARD"] && objc_msgSend(v8, "rangeOfString:", @"VERSION:3.0") != 0x7FFFFFFFFFFFFFFFLL)
     {
       self->_defaultEncoding = 4;
@@ -95,7 +95,7 @@
 
   else
   {
-    v9 = self;
+    selfCopy = self;
     return 0;
   }
 
@@ -159,31 +159,31 @@
   self->_addressingGrammars = 0;
 }
 
-- (void)setSource:(void *)a3
+- (void)setSource:(void *)source
 {
   source = self->_source;
-  if (source != a3)
+  if (source != source)
   {
     if (source)
     {
       CFRelease(source);
     }
 
-    if (a3)
+    if (source)
     {
-      CFRetain(a3);
+      CFRetain(source);
     }
 
-    self->_source = a3;
+    self->_source = source;
   }
 }
 
-- (void)addMultiValues:(id)a3 toProperty:(unsigned int)a4 valueComparator:(id)a5
+- (void)addMultiValues:(id)values toProperty:(unsigned int)property valueComparator:(id)comparator
 {
-  v5 = *&a4;
-  if ([(ABVCardValueSetter *)self->_valueSetter propertyIsValidForPerson:*&a4])
+  v5 = *&property;
+  if ([(ABVCardValueSetter *)self->_valueSetter propertyIsValidForPerson:*&property])
   {
-    v8 = [a3 count];
+    v8 = [values count];
     TypeOfProperty = ABPersonGetTypeOfProperty(v5);
     v10 = [(ABVCardValueSetter *)self->_valueSetter valueForProperty:v5];
     if (v10)
@@ -208,16 +208,16 @@
       v15 = *MEMORY[0x1E695E738];
       do
       {
-        v16 = [a3 objectAtIndex:{v13, Count}];
-        v17 = [v16 grouping];
-        if (!v17 || (v18 = [-[NSMutableDictionary objectForKey:](self->_extensions objectForKey:{v17), "objectForKey:", @"X-ABLabel"}], !objc_msgSend(v18, "count")) || (v19 = objc_msgSend(v18, "objectAtIndex:", 0)) == 0)
+        v16 = [values objectAtIndex:{v13, Count}];
+        grouping = [v16 grouping];
+        if (!grouping || (v18 = [-[NSMutableDictionary objectForKey:](self->_extensions objectForKey:{grouping), "objectForKey:", @"X-ABLabel"}], !objc_msgSend(v18, "count")) || (name = objc_msgSend(v18, "objectAtIndex:", 0)) == 0)
         {
-          v19 = [v16 name];
+          name = [v16 name];
         }
 
-        if (v19)
+        if (name)
         {
-          v20 = v19 == v15;
+          v20 = name == v15;
         }
 
         else
@@ -228,18 +228,18 @@
         v21 = !v20;
         if (v20)
         {
-          v19 = [(ABVCardParser *)self defaultLabel];
+          name = [(ABVCardParser *)self defaultLabel];
         }
 
-        v22 = [v16 value];
-        if (v22 != v15)
+        value = [v16 value];
+        if (value != v15)
         {
-          v23 = v22;
-          if (v22)
+          v23 = value;
+          if (value)
           {
             if ((objc_opt_respondsToSelector() & 1) == 0 || [v23 length])
             {
-              v14 += !ABMultiValueAddValueAndLabelIfUnique(cf, v23, v19, v21, a5);
+              v14 += !ABMultiValueAddValueAndLabelIfUnique(cf, v23, name, v21, comparator);
             }
           }
         }
@@ -269,16 +269,16 @@
   }
 }
 
-- (void)_setValueFromExtension:(id)a3 forKey:(id)a4 onAddress:(id)a5 toKey:(id)a6
+- (void)_setValueFromExtension:(id)extension forKey:(id)key onAddress:(id)address toKey:(id)toKey
 {
-  v8 = [a3 objectForKey:a4];
+  v8 = [extension objectForKey:key];
   if ([v8 count])
   {
     v9 = [v8 objectAtIndex:0];
     if (v9)
     {
 
-      [a5 setObject:v9 forKey:a6];
+      [address setObject:v9 forKey:toKey];
     }
   }
 }
@@ -314,22 +314,22 @@
       do
       {
         v9 = [(NSMutableArray *)self->_addresses objectAtIndex:v7];
-        v10 = [v9 grouping];
-        v11 = [v9 value];
-        if (v10 && ((v12 = -[NSMutableDictionary objectForKey:](self->_extensions, "objectForKey:", v10), v13 = [v12 objectForKey:@"X-ABLabel"], !objc_msgSend(v13, "count")) ? (v14 = 0) : (v14 = objc_msgSend(v13, "objectAtIndex:", 0)), -[ABVCardParser _setValueFromExtension:forKey:onAddress:toKey:](self, "_setValueFromExtension:forKey:onAddress:toKey:", v12, @"X-ABADR", v11, @"CountryCode"), -[ABVCardParser _setValueFromExtension:forKey:onAddress:toKey:](self, "_setValueFromExtension:forKey:onAddress:toKey:", v12, @"X-APPLE-SUBLOCALITY", v11, @"SubLocality"), -[ABVCardParser _setValueFromExtension:forKey:onAddress:toKey:](self, "_setValueFromExtension:forKey:onAddress:toKey:", v12, @"X-APPLE-SUBADMINISTRATIVEAREA", v11, @"SubAdministrativeArea"), v14))
+        grouping = [v9 grouping];
+        value = [v9 value];
+        if (grouping && ((v12 = -[NSMutableDictionary objectForKey:](self->_extensions, "objectForKey:", grouping), v13 = [v12 objectForKey:@"X-ABLabel"], !objc_msgSend(v13, "count")) ? (name = 0) : (name = objc_msgSend(v13, "objectAtIndex:", 0)), -[ABVCardParser _setValueFromExtension:forKey:onAddress:toKey:](self, "_setValueFromExtension:forKey:onAddress:toKey:", v12, @"X-ABADR", value, @"CountryCode"), -[ABVCardParser _setValueFromExtension:forKey:onAddress:toKey:](self, "_setValueFromExtension:forKey:onAddress:toKey:", v12, @"X-APPLE-SUBLOCALITY", value, @"SubLocality"), -[ABVCardParser _setValueFromExtension:forKey:onAddress:toKey:](self, "_setValueFromExtension:forKey:onAddress:toKey:", v12, @"X-APPLE-SUBADMINISTRATIVEAREA", value, @"SubAdministrativeArea"), name))
         {
           v15 = 1;
         }
 
         else
         {
-          v14 = [v9 name];
+          name = [v9 name];
           v15 = 0;
         }
 
-        if ([v11 count])
+        if ([value count])
         {
-          v8 += !ABMultiValueAddValueAndLabelIfUnique(MutableCopy, v11, v14, v15, __block_literal_global_9);
+          v8 += !ABMultiValueAddValueAndLabelIfUnique(MutableCopy, value, name, v15, __block_literal_global_9);
         }
 
         ++v7;
@@ -377,18 +377,18 @@
       for (i = 0; i != v6; ++i)
       {
         v9 = [(NSMutableArray *)self->_socialProfiles objectAtIndex:i];
-        v10 = [v9 value];
-        v11 = [v9 name];
+        value = [v9 value];
+        name = [v9 name];
         if ([v9 grouping])
         {
           v12 = [-[NSMutableDictionary objectForKey:](self->_extensions objectForKey:{objc_msgSend(v9, "grouping")), "objectForKey:", @"X-SOCIALPROFILE-ABUSERID"}];
           if ([v12 count])
           {
-            [v10 setObject:objc_msgSend(v12 forKey:{"objectAtIndex:", 0), @"identifier"}];
+            [value setObject:objc_msgSend(v12 forKey:{"objectAtIndex:", 0), @"identifier"}];
           }
         }
 
-        v7 += !ABMultiValueAddValueAndLabelIfUnique(MutableCopy, v10, v11, 0, 0);
+        v7 += !ABMultiValueAddValueAndLabelIfUnique(MutableCopy, value, name, 0, 0);
       }
     }
 
@@ -406,14 +406,14 @@
   }
 }
 
-- (int)_addIMHandles:(id)a3 toService:(__CFString *)a4 multiValue:(void *)a5 uniquenessCheckingMultiValue:(void *)a6
+- (int)_addIMHandles:(id)handles toService:(__CFString *)service multiValue:(void *)value uniquenessCheckingMultiValue:(void *)multiValue
 {
   v39 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v7 = [handles countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v7)
   {
     v8 = v7;
@@ -426,24 +426,24 @@
       {
         if (*v35 != v33)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(handles);
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 value];
-        v13 = [v11 grouping];
-        if (v13)
+        value = [v11 value];
+        grouping = [v11 grouping];
+        if (grouping)
         {
-          v14 = [(NSMutableDictionary *)self->_extensions objectForKey:v13];
+          v14 = [(NSMutableDictionary *)self->_extensions objectForKey:grouping];
           v15 = [v14 objectForKey:@"X-ABLabel"];
           if ([v15 count])
           {
-            v16 = [v15 objectAtIndex:0];
+            name = [v15 objectAtIndex:0];
           }
 
           else
           {
-            v16 = 0;
+            name = 0;
           }
 
           v20 = [v14 objectForKey:@"x-teamidentifier"];
@@ -472,7 +472,7 @@
           if ([v22 count])
           {
             v17 = [v22 objectAtIndex:0];
-            if (v16)
+            if (name)
             {
               goto LABEL_21;
             }
@@ -481,10 +481,10 @@
           else
           {
             v17 = 0;
-            if (v16)
+            if (name)
             {
 LABEL_21:
-              if (v16 != v9)
+              if (name != v9)
               {
                 goto LABEL_23;
               }
@@ -499,11 +499,11 @@ LABEL_21:
           v19 = 0;
         }
 
-        v16 = [v11 name];
+        name = [v11 name];
 LABEL_23:
-        if (v16)
+        if (name)
         {
-          v23 = v16 == v9;
+          v23 = name == v9;
         }
 
         else
@@ -514,12 +514,12 @@ LABEL_23:
         v24 = !v23;
         if (v23)
         {
-          v16 = [(ABVCardParser *)self defaultLabel];
+          name = [(ABVCardParser *)self defaultLabel];
         }
 
-        if (v12)
+        if (value)
         {
-          v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v12, @"username", a4, @"service", 0}];
+          v25 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{value, @"username", service, @"service", 0}];
           v26 = v25;
           if (v19)
           {
@@ -536,14 +536,14 @@ LABEL_23:
             [v26 setObject:v17 forKey:@"identifier"];
           }
 
-          if (!ABMultiValueAddValueAndLabelIfUnique(a5, v26, v16, v24, 0))
+          if (!ABMultiValueAddValueAndLabelIfUnique(value, v26, name, v24, 0))
           {
-            v32 += ABMultiValueAddValueAndLabelIfUnique(a6, v26, v16, v24, 0);
+            v32 += ABMultiValueAddValueAndLabelIfUnique(multiValue, v26, name, v24, 0);
           }
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v8 = [handles countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (!v8)
       {
         return v32;
@@ -554,14 +554,14 @@ LABEL_23:
   return 0;
 }
 
-- (int)_addIMPPProfiles:(id)a3 multiValue:(void *)a4 uniquenessCheckingMultiValue:(void *)a5
+- (int)_addIMPPProfiles:(id)profiles multiValue:(void *)value uniquenessCheckingMultiValue:(void *)multiValue
 {
   v34 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v5 = [profiles countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v5)
   {
     return 0;
@@ -577,20 +577,20 @@ LABEL_23:
     {
       if (*v30 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(profiles);
       }
 
       v10 = *(*(&v29 + 1) + 8 * v9);
       v11 = [objc_msgSend(v10 "value")];
-      v12 = [v10 name];
-      v13 = [v10 grouping];
-      if (v13)
+      name = [v10 name];
+      grouping = [v10 grouping];
+      if (grouping)
       {
-        v14 = [(NSMutableDictionary *)self->_extensions objectForKey:v13];
+        v14 = [(NSMutableDictionary *)self->_extensions objectForKey:grouping];
         v15 = [v14 objectForKey:@"X-ABLabel"];
         if ([v15 count])
         {
-          v12 = [v15 objectAtIndex:0];
+          name = [v15 objectAtIndex:0];
         }
 
         v16 = [v14 objectForKey:@"x-teamidentifier"];
@@ -631,8 +631,8 @@ LABEL_23:
 
       v21 = 0;
 LABEL_19:
-      v22 = v12;
-      if (v12)
+      defaultLabel = name;
+      if (name)
       {
         if (!v17)
         {
@@ -644,7 +644,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v22 = [(ABVCardParser *)self defaultLabel];
+      defaultLabel = [(ABVCardParser *)self defaultLabel];
       if (v17)
       {
         goto LABEL_21;
@@ -661,16 +661,16 @@ LABEL_22:
         [v11 setObject:v21 forKey:@"identifier"];
       }
 
-      if (!ABMultiValueAddValueAndLabelIfUnique(a4, v11, v22, v12 != 0, 0))
+      if (!ABMultiValueAddValueAndLabelIfUnique(value, v11, defaultLabel, name != 0, 0))
       {
-        v7 += ABMultiValueAddValueAndLabelIfUnique(a5, v11, v22, v12 != 0, 0);
+        v7 += ABMultiValueAddValueAndLabelIfUnique(multiValue, v11, defaultLabel, name != 0, 0);
       }
 
       ++v9;
     }
 
     while (v6 != v9);
-    v23 = [a3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v23 = [profiles countByEnumeratingWithState:&v29 objects:v33 count:16];
     v6 = v23;
   }
 
@@ -715,17 +715,17 @@ LABEL_22:
   }
 }
 
-- (BOOL)_setPersonSounds:(void *)a3 identifier:(int)a4 fromActivity:(id)a5 alert:(id)a6 otherValue:(id)a7
+- (BOOL)_setPersonSounds:(void *)sounds identifier:(int)identifier fromActivity:(id)activity alert:(id)alert otherValue:(id)value
 {
-  v10 = a4;
-  v19 = a4;
-  if (a4 != -3 && (!a5 || !a6))
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  if (identifier != -3 && (!activity || !alert))
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Either identifier must be kABPersonSoundIdentifierOther or alert and activity must be non nil"];
     return 0;
   }
 
-  IndexForIdentifier = ABMultiValueGetIndexForIdentifier(a3, a4);
+  IndexForIdentifier = ABMultiValueGetIndexForIdentifier(sounds, identifier);
   if (IndexForIdentifier == -1)
   {
     v14 = 0;
@@ -733,19 +733,19 @@ LABEL_22:
 
   else
   {
-    v14 = ABMultiValueCopyValueAtIndex(a3, IndexForIdentifier);
+    v14 = ABMultiValueCopyValueAtIndex(sounds, IndexForIdentifier);
   }
 
-  if (v10 != -3)
+  if (identifierCopy != -3)
   {
-    a7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_activityAlerts objectForKeyedSubscript:{a5), "objectForKeyedSubscript:", a6}];
+    value = [-[NSMutableDictionary objectForKeyedSubscript:](self->_activityAlerts objectForKeyedSubscript:{activity), "objectForKeyedSubscript:", alert}];
   }
 
-  if (!a7 || v14)
+  if (!value || v14)
   {
-    if (a7)
+    if (value)
     {
-      if ([v14 caseInsensitiveCompare:a7])
+      if ([v14 caseInsensitiveCompare:value])
       {
         goto LABEL_13;
       }
@@ -753,7 +753,7 @@ LABEL_22:
 
     else if (IndexForIdentifier != -1)
     {
-      ABMultiValueRemoveValueAndLabelAtIndex(a3, IndexForIdentifier);
+      ABMultiValueRemoveValueAndLabelAtIndex(sounds, IndexForIdentifier);
 LABEL_28:
       v17 = 1;
       goto LABEL_29;
@@ -768,33 +768,33 @@ LABEL_29:
 LABEL_13:
   if (IndexForIdentifier == -1)
   {
-    Count = ABMultiValueGetCount(a3);
-    ABMultiValueInsertAndCreateIdentifier(a3, a7, 0, Count, 0, &v19, 0);
-    v10 = v19;
+    Count = ABMultiValueGetCount(sounds);
+    ABMultiValueInsertAndCreateIdentifier(sounds, value, 0, Count, 0, &identifierCopy2, 0);
+    identifierCopy = identifierCopy2;
   }
 
   else
   {
-    ABMultiValueReplaceValueAtIndex(a3, a7, IndexForIdentifier);
+    ABMultiValueReplaceValueAtIndex(sounds, value, IndexForIdentifier);
   }
 
-  if (v10 == -3)
+  if (identifierCopy == -3)
   {
     goto LABEL_28;
   }
 
-  if (a5 && a6)
+  if (activity && alert)
   {
-    if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_activityAlerts objectForKeyedSubscript:{a5), "count"}] < 2)
+    if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_activityAlerts objectForKeyedSubscript:{activity), "count"}] < 2)
     {
-      [(NSMutableDictionary *)self->_activityAlerts removeObjectForKey:a5];
+      [(NSMutableDictionary *)self->_activityAlerts removeObjectForKey:activity];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[NSMutableDictionary objectForKeyedSubscript:](self->_activityAlerts, "objectForKeyedSubscript:", a5)}];
-      [v16 removeObjectForKey:a6];
-      [(NSMutableDictionary *)self->_activityAlerts setObject:v16 forKeyedSubscript:a5];
+      v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[NSMutableDictionary objectForKeyedSubscript:](self->_activityAlerts, "objectForKeyedSubscript:", activity)}];
+      [v16 removeObjectForKey:alert];
+      [(NSMutableDictionary *)self->_activityAlerts setObject:v16 forKeyedSubscript:activity];
     }
 
     goto LABEL_28;
@@ -863,12 +863,12 @@ LABEL_13:
   return v4 != 0;
 }
 
-- (BOOL)_setDataValueOrNoteIfNull:(id)a3 forProperty:(unsigned int)a4
+- (BOOL)_setDataValueOrNoteIfNull:(id)null forProperty:(unsigned int)property
 {
-  v4 = *&a4;
-  if (a3 && [a3 length])
+  v4 = *&property;
+  if (null && [null length])
   {
-    [(ABVCardValueSetter *)self->_valueSetter setValue:a3 forProperty:v4];
+    [(ABVCardValueSetter *)self->_valueSetter setValue:null forProperty:v4];
     return 1;
   }
 
@@ -879,12 +879,12 @@ LABEL_13:
   }
 }
 
-- (BOOL)_setStringValueOrNoteIfNull:(id)a3 forProperty:(unsigned int)a4
+- (BOOL)_setStringValueOrNoteIfNull:(id)null forProperty:(unsigned int)property
 {
-  v4 = *&a4;
-  if (a3 && [a3 length])
+  v4 = *&property;
+  if (null && [null length])
   {
-    [(ABVCardValueSetter *)self->_valueSetter setValue:a3 forProperty:v4];
+    [(ABVCardValueSetter *)self->_valueSetter setValue:null forProperty:v4];
     return 1;
   }
 
@@ -895,19 +895,19 @@ LABEL_13:
   }
 }
 
-- (BOOL)_setMultiValuesOrNoteIfNull:(id)a3 forProperty:(unsigned int)a4 valueComparator:(id)a5
+- (BOOL)_setMultiValuesOrNoteIfNull:(id)null forProperty:(unsigned int)property valueComparator:(id)comparator
 {
-  if (a3)
+  if (null)
   {
-    [(ABVCardParser *)self addMultiValues:a3 toProperty:*&a4 valueComparator:a5];
+    [(ABVCardParser *)self addMultiValues:null toProperty:*&property valueComparator:comparator];
   }
 
   else
   {
-    [(ABVCardParser *)self noteLackOfValueForProperty:*&a4];
+    [(ABVCardParser *)self noteLackOfValueForProperty:*&property];
   }
 
-  return a3 != 0;
+  return null != 0;
 }
 
 - (BOOL)parseN
@@ -1129,7 +1129,7 @@ LABEL_9:
 
 - (id)phoneLabel
 {
-  v2 = self;
+  selfCopy = self;
   result = [(NSMutableArray *)self->_itemParameters count];
   v20 = result;
   if (result)
@@ -1141,10 +1141,10 @@ LABEL_9:
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    v19 = v2;
+    v19 = selfCopy;
     do
     {
-      v10 = [-[NSMutableArray objectAtIndex:](v2->_itemParameters objectAtIndex:{v9), "types"}];
+      v10 = [-[NSMutableArray objectAtIndex:](selfCopy->_itemParameters objectAtIndex:{v9), "types"}];
       v11 = [v10 count];
       if (v11)
       {
@@ -1239,7 +1239,7 @@ LABEL_9:
       }
 
       ++v9;
-      v2 = v19;
+      selfCopy = v19;
     }
 
     while (v9 != v20);
@@ -1307,11 +1307,11 @@ LABEL_50:
 
 - (BOOL)parseABUID
 {
-  v3 = [(ABVCardParser *)self parseSingleValue];
-  v4 = v3;
-  if (v3)
+  parseSingleValue = [(ABVCardParser *)self parseSingleValue];
+  v4 = parseSingleValue;
+  if (parseSingleValue)
   {
-    self->_uid = v3;
+    self->_uid = parseSingleValue;
   }
 
   return v4 != 0;
@@ -1324,11 +1324,11 @@ LABEL_50:
     self->_emails = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v3 = [(ABVCardParser *)self genericLabel];
+  genericLabel = [(ABVCardParser *)self genericLabel];
   while (1)
   {
     v4 = [(ABVCardLexer *)self->_lexer nextStringInEncoding:self->_encoding quotedPrintable:self->_quotedPrintable stopTokens:36864 trim:1];
-    v5 = [[ABVCardParameter alloc] initWithName:v3];
+    v5 = [[ABVCardParameter alloc] initWithName:genericLabel];
     [(ABVCardParameter *)v5 setValue:v4];
     if (self->_grouping)
     {
@@ -1355,11 +1355,11 @@ LABEL_50:
     self->_phones = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v3 = [(ABVCardParser *)self phoneLabel];
+  phoneLabel = [(ABVCardParser *)self phoneLabel];
   while (1)
   {
     v4 = [(ABVCardLexer *)self->_lexer nextStringInEncoding:self->_encoding quotedPrintable:self->_quotedPrintable stopTokens:36864 trim:1];
-    v5 = [[ABVCardParameter alloc] initWithName:v3];
+    v5 = [[ABVCardParameter alloc] initWithName:phoneLabel];
     [(ABVCardParameter *)v5 setValue:v4];
     if (self->_grouping)
     {
@@ -1664,7 +1664,7 @@ LABEL_25:
   return 1;
 }
 
-- (BOOL)parseABExtensionType:(id)a3
+- (BOOL)parseABExtensionType:(id)type
 {
   v5 = [(ABVCardLexer *)self->_lexer nextArraySeperatedByToken:4096 stoppingAt:0x8000 inEncoding:self->_encoding];
   if (v5 && self->_grouping)
@@ -1677,7 +1677,7 @@ LABEL_25:
       [(NSMutableDictionary *)self->_extensions setObject:v7 forKey:self->_grouping];
     }
 
-    [v7 setObject:v6 forKey:a3];
+    [v7 setObject:v6 forKey:type];
   }
 
   return 1;
@@ -1698,7 +1698,7 @@ LABEL_25:
   }
 
   v4 = v3;
-  v5 = 0;
+  value = 0;
   v6 = *v11;
   do
   {
@@ -1712,7 +1712,7 @@ LABEL_25:
       v8 = *(*(&v10 + 1) + 8 * i);
       if ([objc_msgSend(objc_msgSend(v8 "name")])
       {
-        v5 = [v8 value];
+        value = [v8 value];
       }
     }
 
@@ -1720,7 +1720,7 @@ LABEL_25:
   }
 
   while (v4);
-  return v5;
+  return value;
 }
 
 - (id)_socialProfileUsername
@@ -1738,7 +1738,7 @@ LABEL_25:
   }
 
   v4 = v3;
-  v5 = 0;
+  value = 0;
   v6 = *v11;
   do
   {
@@ -1752,7 +1752,7 @@ LABEL_25:
       v8 = *(*(&v10 + 1) + 8 * i);
       if ([objc_msgSend(objc_msgSend(v8 "name")])
       {
-        v5 = [v8 value];
+        value = [v8 value];
       }
     }
 
@@ -1760,7 +1760,7 @@ LABEL_25:
   }
 
   while (v4);
-  return v5;
+  return value;
 }
 
 - (id)_socialProfileDisplayName
@@ -1778,7 +1778,7 @@ LABEL_25:
   }
 
   v4 = v3;
-  v5 = 0;
+  value = 0;
   v6 = *v11;
   do
   {
@@ -1792,7 +1792,7 @@ LABEL_25:
       v8 = *(*(&v10 + 1) + 8 * i);
       if ([objc_msgSend(objc_msgSend(v8 "name")])
       {
-        v5 = [v8 value];
+        value = [v8 value];
       }
     }
 
@@ -1800,7 +1800,7 @@ LABEL_25:
   }
 
   while (v4);
-  return v5;
+  return value;
 }
 
 - (id)_socialProfileTeamIdentifier
@@ -1818,7 +1818,7 @@ LABEL_25:
   }
 
   v4 = v3;
-  v5 = 0;
+  value = 0;
   v6 = *v11;
   do
   {
@@ -1832,7 +1832,7 @@ LABEL_25:
       v8 = *(*(&v10 + 1) + 8 * i);
       if ([objc_msgSend(objc_msgSend(v8 "name")])
       {
-        v5 = [v8 value];
+        value = [v8 value];
       }
     }
 
@@ -1840,7 +1840,7 @@ LABEL_25:
   }
 
   while (v4);
-  return v5;
+  return value;
 }
 
 - (id)_socialProfileBundleIdentifiers
@@ -1858,7 +1858,7 @@ LABEL_25:
   }
 
   v4 = v3;
-  v5 = 0;
+  value = 0;
   v6 = *v11;
   do
   {
@@ -1872,7 +1872,7 @@ LABEL_25:
       v8 = *(*(&v10 + 1) + 8 * i);
       if ([objc_msgSend(objc_msgSend(v8 "name")])
       {
-        v5 = [v8 value];
+        value = [v8 value];
       }
     }
 
@@ -1880,7 +1880,7 @@ LABEL_25:
   }
 
   while (v4);
-  return v5;
+  return value;
 }
 
 - (id)_socialProfileService
@@ -1898,7 +1898,7 @@ LABEL_25:
   }
 
   v4 = v3;
-  v5 = 0;
+  value = 0;
   v6 = *v11;
   do
   {
@@ -1912,7 +1912,7 @@ LABEL_25:
       v8 = *(*(&v10 + 1) + 8 * i);
       if ([objc_msgSend(objc_msgSend(v8 "name")])
       {
-        v5 = [v8 value];
+        value = [v8 value];
       }
     }
 
@@ -1920,7 +1920,7 @@ LABEL_25:
   }
 
   while (v4);
-  return v5;
+  return value;
 }
 
 - (BOOL)parseSocialProfiles
@@ -1946,25 +1946,25 @@ LABEL_25:
   return 1;
 }
 
-- (id)parseInstantMessengerProfile:(id)a3
+- (id)parseInstantMessengerProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [a3 rangeOfString:@":"];
+  v5 = [profile rangeOfString:@":"];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v3 substringFromIndex:v5 + 1];
+    profileCopy = [profileCopy substringFromIndex:v5 + 1];
   }
 
-  v6 = [v3 stringByRemovingPercentEncoding];
-  if (v6)
+  stringByRemovingPercentEncoding = [profileCopy stringByRemovingPercentEncoding];
+  if (stringByRemovingPercentEncoding)
   {
-    v7 = v6;
+    v7 = stringByRemovingPercentEncoding;
   }
 
   else
   {
-    v7 = v3;
+    v7 = profileCopy;
   }
 
   v29 = v7;
@@ -1990,13 +1990,13 @@ LABEL_25:
         v13 = *(*(&v35 + 1) + 8 * i);
         if (![objc_msgSend(v13 "name")] || !objc_msgSend(objc_msgSend(v13, "name"), "compare:options:", @"X-SERVICE-TYPE", 1))
         {
-          v14 = [v13 value];
+          value = [v13 value];
           goto LABEL_18;
         }
       }
 
       v10 = [(NSMutableArray *)itemParameters countByEnumeratingWithState:&v35 objects:v40 count:16];
-      v14 = 0;
+      value = 0;
       if (v10)
       {
         continue;
@@ -2008,7 +2008,7 @@ LABEL_25:
 
   else
   {
-    v14 = 0;
+    value = 0;
   }
 
 LABEL_18:
@@ -2018,13 +2018,13 @@ LABEL_18:
   v32 = 0u;
   v15 = self->_itemParameters;
   v16 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
-  v28 = v14;
+  v28 = value;
   if (v16)
   {
     v17 = v16;
-    v18 = 0;
-    v19 = 0;
-    v30 = 0;
+    value4 = 0;
+    value3 = 0;
+    value2 = 0;
     v20 = *v32;
     do
     {
@@ -2042,19 +2042,19 @@ LABEL_18:
           {
             if (![objc_msgSend(v22 "name")])
             {
-              v30 = [v22 value];
+              value2 = [v22 value];
             }
           }
 
           else
           {
-            v19 = [v22 value];
+            value3 = [v22 value];
           }
         }
 
         else
         {
-          v18 = [v22 value];
+          value4 = [v22 value];
         }
       }
 
@@ -2066,9 +2066,9 @@ LABEL_18:
 
   else
   {
-    v18 = 0;
-    v19 = 0;
-    v30 = 0;
+    value4 = 0;
+    value3 = 0;
+    value2 = 0;
   }
 
   v23 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:{objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", @"InstantMessageCanonicalNames", @"plist"}];
@@ -2085,19 +2085,19 @@ LABEL_18:
     [v25 setObject:v24 forKey:@"service"];
   }
 
-  if (v18)
+  if (value4)
   {
-    [v26 setObject:v18 forKey:@"teamIdentifier"];
+    [v26 setObject:value4 forKey:@"teamIdentifier"];
   }
 
-  if (v19)
+  if (value3)
   {
-    [v26 setObject:v19 forKey:@"bundleIdentifiers"];
+    [v26 setObject:value3 forKey:@"bundleIdentifiers"];
   }
 
-  if (v30)
+  if (value2)
   {
-    [v26 setObject:v30 forKey:@"identifier"];
+    [v26 setObject:value2 forKey:@"identifier"];
   }
 
   return v26;
@@ -2147,12 +2147,12 @@ LABEL_18:
 
 - (BOOL)parseSensitiveContentConfigurationData
 {
-  v2 = self;
-  v3 = [(ABVCardParser *)self parseSingleValue];
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v3 options:0];
-  LOBYTE(v2) = [(ABVCardParser *)v2 _setDataValueOrNoteIfNull:v4 forProperty:kABPersonSensitiveContentConfigurationProperty];
+  selfCopy = self;
+  parseSingleValue = [(ABVCardParser *)self parseSingleValue];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:parseSingleValue options:0];
+  LOBYTE(selfCopy) = [(ABVCardParser *)selfCopy _setDataValueOrNoteIfNull:v4 forProperty:kABPersonSensitiveContentConfigurationProperty];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)parseIMAGETYPE
@@ -2180,19 +2180,19 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)addIMValueTo:(id)a3
+- (BOOL)addIMValueTo:(id)to
 {
-  v5 = [(ABVCardParser *)self genericLabel];
+  genericLabel = [(ABVCardParser *)self genericLabel];
   v6 = 1;
   while (1)
   {
     v7 = [(ABVCardLexer *)self->_lexer nextStringInEncoding:self->_encoding quotedPrintable:self->_quotedPrintable stopTokens:36864 trim:1];
-    v8 = [a3 count];
+    v8 = [to count];
     if (v8)
     {
       v9 = v8;
       v10 = 0;
-      while (([v7 isEqualToString:{objc_msgSend(objc_msgSend(a3, "objectAtIndex:", v10), "value")}] & 1) == 0)
+      while (([v7 isEqualToString:{objc_msgSend(objc_msgSend(to, "objectAtIndex:", v10), "value")}] & 1) == 0)
       {
         if (v9 == ++v10)
         {
@@ -2211,14 +2211,14 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    v11 = [[ABVCardParameter alloc] initWithName:v5];
+    v11 = [[ABVCardParameter alloc] initWithName:genericLabel];
     [(ABVCardParameter *)v11 setValue:v7];
     if (self->_grouping)
     {
       [(ABVCardParameter *)v11 setGrouping:?];
     }
 
-    [a3 addObject:v11];
+    [to addObject:v11];
 
     v6 = 1;
 LABEL_11:
@@ -2238,13 +2238,13 @@ LABEL_11:
     self->_activityAlerts = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v3 = [(ABVCardParser *)self parseRemainingLine];
+  parseRemainingLine = [(ABVCardParser *)self parseRemainingLine];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__ABVCardParser_parseActivityAlerts__block_invoke;
   v5[3] = &unk_1E7CCCEC0;
   v5[4] = self;
-  [ABVCardActivityAlertSerialization parseString:v3 intoTypeAndInfo:v5];
+  [ABVCardActivityAlertSerialization parseString:parseRemainingLine intoTypeAndInfo:v5];
   return 1;
 }
 
@@ -2267,26 +2267,26 @@ uint64_t __36__ABVCardParser_parseActivityAlerts__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (id)dateFromISO8601String:(id)a3
+- (id)dateFromISO8601String:(id)string
 {
-  v4 = [a3 length];
+  v4 = [string length];
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  if ([a3 rangeOfString:@"-"] == 0x7FFFFFFFFFFFFFFFLL && v4 == 8)
+  if ([string rangeOfString:@"-"] == 0x7FFFFFFFFFFFFFFFLL && v4 == 8)
   {
     [v5 setCalendar:{objc_msgSend(MEMORY[0x1E695DEE8], "calendarWithIdentifier:", *MEMORY[0x1E695D850])}];
     [v5 setTimeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "timeZoneWithName:", @"Zulu"}];
-    [v5 setYear:{objc_msgSend(objc_msgSend(a3, "substringWithRange:", 0, 4), "intValue")}];
-    [v5 setMonth:{objc_msgSend(objc_msgSend(a3, "substringWithRange:", 4, 2), "intValue")}];
-    v7 = a3;
+    [v5 setYear:{objc_msgSend(objc_msgSend(string, "substringWithRange:", 0, 4), "intValue")}];
+    [v5 setMonth:{objc_msgSend(objc_msgSend(string, "substringWithRange:", 4, 2), "intValue")}];
+    stringCopy2 = string;
     v8 = 6;
     goto LABEL_10;
   }
 
-  if (v4 != 6 || ![a3 _cn_hasPrefix:@"--"])
+  if (v4 != 6 || ![string _cn_hasPrefix:@"--"])
   {
     v16 = 0;
     v15 = 0uLL;
-    v12 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a3];
+    v12 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:string];
     [v12 scanInt:&v16 + 4];
     if ([v12 scanLocation] + 1 < v4)
     {
@@ -2327,11 +2327,11 @@ uint64_t __36__ABVCardParser_parseActivityAlerts__block_invoke(uint64_t a1, void
     }
 
 LABEL_18:
-    v11 = 0;
+    date = 0;
     goto LABEL_19;
   }
 
-  if (![objc_msgSend(a3 substringWithRange:{2, 4), "_cn_containsOnlyDigits"}])
+  if (![objc_msgSend(string substringWithRange:{2, 4), "_cn_containsOnlyDigits"}])
   {
     goto LABEL_18;
   }
@@ -2339,21 +2339,21 @@ LABEL_18:
   [v5 setCalendar:{objc_msgSend(MEMORY[0x1E695DEE8], "calendarWithIdentifier:", *MEMORY[0x1E695D850])}];
   [v5 setTimeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "timeZoneWithName:", @"Zulu"}];
   [v5 setYear:1604];
-  [v5 setMonth:{objc_msgSend(objc_msgSend(a3, "substringWithRange:", 2, 2), "intValue")}];
-  v7 = a3;
+  [v5 setMonth:{objc_msgSend(objc_msgSend(string, "substringWithRange:", 2, 2), "intValue")}];
+  stringCopy2 = string;
   v8 = 4;
 LABEL_10:
-  [v5 setDay:{objc_msgSend(objc_msgSend(v7, "substringWithRange:", v8, 2), "intValue")}];
+  [v5 setDay:{objc_msgSend(objc_msgSend(stringCopy2, "substringWithRange:", v8, 2), "intValue")}];
   [v5 setHour:12];
   [v5 setMinute:0];
   v9 = v5;
   v10 = 0;
 LABEL_11:
   [v9 setSecond:v10];
-  v11 = [v5 date];
+  date = [v5 date];
 LABEL_19:
 
-  return v11;
+  return date;
 }
 
 - (BOOL)parseBDAY
@@ -2410,7 +2410,7 @@ LABEL_19:
 
 - (BOOL)parseAlternateBirthday
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_itemParameters count]== 1)
   {
     v4 = [(NSMutableArray *)self->_itemParameters objectAtIndexedSubscript:0];
@@ -2418,7 +2418,7 @@ LABEL_19:
     {
       if ([objc_msgSend(v4 "value")])
       {
-        [v3 setObject:objc_msgSend(v4 forKeyedSubscript:{"value"), @"calendarIdentifier"}];
+        [dictionary setObject:objc_msgSend(v4 forKeyedSubscript:{"value"), @"calendarIdentifier"}];
       }
     }
   }
@@ -2433,34 +2433,34 @@ LABEL_19:
       v8 = [(ABVCardDateScanner *)v7 scanCalendarUnit:2];
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v8), @"era"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v8), @"era"}];
       }
 
       v9 = [(ABVCardDateScanner *)v7 scanCalendarUnit:4];
       if (v9 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v9), @"year"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v9), @"year"}];
       }
 
       v10 = [(ABVCardDateScanner *)v7 scanCalendarUnit:8];
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v10), @"month"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v10), @"month"}];
       }
 
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", -[ABVCardDateScanner scanLeapMarker](v7, "scanLeapMarker")), @"isLeapMonth"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", -[ABVCardDateScanner scanLeapMarker](v7, "scanLeapMarker")), @"isLeapMonth"}];
       v11 = [(ABVCardDateScanner *)v7 scanCalendarUnit:16];
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v11), @"day"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v11), @"day"}];
       }
     }
   }
 
-  v12 = ABValidateAlternateBirthday(v3);
+  v12 = ABValidateAlternateBirthday(dictionary);
   if (v12)
   {
-    [(ABVCardValueSetter *)self->_valueSetter setValue:v3 forProperty:kABPersonAlternateBirthdayProperty];
+    [(ABVCardValueSetter *)self->_valueSetter setValue:dictionary forProperty:kABPersonAlternateBirthdayProperty];
   }
 
   return v12;
@@ -2473,7 +2473,7 @@ LABEL_19:
     self->_dates = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v3 = [(ABVCardParser *)self defaultLabel];
+  defaultLabel = [(ABVCardParser *)self defaultLabel];
   v4 = [(ABVCardLexer *)self->_lexer nextStringInEncoding:self->_encoding quotedPrintable:self->_quotedPrintable stopTokens:36864 trim:1];
   if (v4)
   {
@@ -2484,7 +2484,7 @@ LABEL_19:
       if (v6)
       {
         v7 = v6;
-        v8 = [[ABVCardParameter alloc] initWithName:v3];
+        v8 = [[ABVCardParameter alloc] initWithName:defaultLabel];
         [(ABVCardParameter *)v8 setValue:v7];
         if (self->_grouping)
         {
@@ -2499,32 +2499,32 @@ LABEL_19:
   return 1;
 }
 
-- (BOOL)parsePhoto:(id)a3
+- (BOOL)parsePhoto:(id)photo
 {
-  if (a3)
+  if (photo)
   {
-    self->_imageData = [a3 abDecodeVCardBase64];
+    self->_imageData = [photo abDecodeVCardBase64];
   }
 
-  return a3 != 0;
+  return photo != 0;
 }
 
-- (BOOL)parseWallpaper:(id)a3
+- (BOOL)parseWallpaper:(id)wallpaper
 {
-  if (a3)
+  if (wallpaper)
   {
-    v4 = [a3 abDecodeVCardBase64];
+    abDecodeVCardBase64 = [wallpaper abDecodeVCardBase64];
     v5 = kABPersonWallpaperProperty;
 
-    return [(ABVCardParser *)self _setDataValueOrNoteIfNull:v4 forProperty:v5];
+    return [(ABVCardParser *)self _setDataValueOrNoteIfNull:abDecodeVCardBase64 forProperty:v5];
   }
 
   else
   {
-    v7 = [(ABVCardParser *)self parseSingleValue];
+    parseSingleValue = [(ABVCardParser *)self parseSingleValue];
     v8 = kABPersonWallpaperURIProperty;
 
-    return [(ABVCardParser *)self _setStringValueOrNoteIfNull:v7 forProperty:v8];
+    return [(ABVCardParser *)self _setStringValueOrNoteIfNull:parseSingleValue forProperty:v8];
   }
 }
 
@@ -2592,14 +2592,14 @@ LABEL_19:
     self->_relatedNames = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v3 = [(ABVCardParser *)self defaultLabel];
+  defaultLabel = [(ABVCardParser *)self defaultLabel];
   v4 = [(ABVCardLexer *)self->_lexer nextStringInEncoding:self->_encoding quotedPrintable:self->_quotedPrintable stopTokens:36864 trim:1];
   if (v4)
   {
     v5 = v4;
     if ([v4 length])
     {
-      v6 = [[ABVCardParameter alloc] initWithName:v3];
+      v6 = [[ABVCardParameter alloc] initWithName:defaultLabel];
       [(ABVCardParameter *)v6 setValue:v5];
       if (self->_grouping)
       {
@@ -2613,17 +2613,17 @@ LABEL_19:
   return 1;
 }
 
-- (BOOL)_usesRemainingLineForExternalPropKey:(id)a3
+- (BOOL)_usesRemainingLineForExternalPropKey:(id)key
 {
-  if ([a3 hasPrefix:@"X-APPLE-OL"])
+  if ([key hasPrefix:@"X-APPLE-OL"])
   {
     return 1;
   }
 
   v4 = 1;
-  if ([a3 compare:@"X-PHONETIC-COMPANY-NAME" options:1])
+  if ([key compare:@"X-PHONETIC-COMPANY-NAME" options:1])
   {
-    return [a3 compare:@"LABEL" options:1] == 0;
+    return [key compare:@"LABEL" options:1] == 0;
   }
 
   return v4;
@@ -2640,7 +2640,7 @@ LABEL_19:
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 lastObject];
+    lastObject = [v4 lastObject];
     if (v6 == 2)
     {
       self->_grouping = [v4 objectAtIndex:0];
@@ -2649,16 +2649,16 @@ LABEL_19:
 
   else
   {
-    v7 = 0;
+    lastObject = 0;
   }
 
-  v8 = [v7 compare:@"END" options:1];
+  v8 = [lastObject compare:@"END" options:1];
   if (!v8)
   {
     return v8;
   }
 
-  v63 = v7;
+  v63 = lastObject;
   p_base64 = &self->_base64;
   self->_itemParameters = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = [(ABVCardLexer *)self->_lexer nextTokenPeak:0];
@@ -2817,12 +2817,12 @@ LABEL_41:
 LABEL_7:
   if (*p_base64)
   {
-    v11 = [(ABVCardLexer *)self->_lexer nextBase64Data];
+    nextBase64Data = [(ABVCardLexer *)self->_lexer nextBase64Data];
   }
 
   else
   {
-    v11 = 0;
+    nextBase64Data = 0;
   }
 
   switch([v63 length])
@@ -2877,24 +2877,24 @@ LABEL_7:
 
               else
               {
-                v55 = [(ABVCardParser *)self parseURL];
-                if (v55)
+                parseURL = [(ABVCardParser *)self parseURL];
+                if (parseURL)
                 {
-                  v56 = v55;
-                  if ([v55 length])
+                  v56 = parseURL;
+                  if ([parseURL length])
                   {
                     if (!self->_urls)
                     {
                       self->_urls = objc_alloc_init(MEMORY[0x1E695DF70]);
                     }
 
-                    v57 = [(ABVCardParser *)self _genericLabel];
-                    if (!v57)
+                    _genericLabel = [(ABVCardParser *)self _genericLabel];
+                    if (!_genericLabel)
                     {
-                      v57 = [(ABVCardParser *)self defaultURLLabel];
+                      _genericLabel = [(ABVCardParser *)self defaultURLLabel];
                     }
 
-                    v58 = [[ABVCardParameter alloc] initWithName:v57];
+                    v58 = [[ABVCardParameter alloc] initWithName:_genericLabel];
                     [(ABVCardParameter *)v58 setValue:v56];
                     if (self->_grouping)
                     {
@@ -2979,7 +2979,7 @@ LABEL_7:
       {
         if (![v63 compare:@"TITLE" options:1])
         {
-          v35 = [(ABVCardParser *)self parseSingleValue];
+          parseSingleValue = [(ABVCardParser *)self parseSingleValue];
           v36 = &kABPersonJobTitleProperty;
           goto LABEL_179;
         }
@@ -2995,7 +2995,7 @@ LABEL_7:
                 goto LABEL_198;
               }
 
-              if (![(ABVCardParser *)self parsePhoto:v11])
+              if (![(ABVCardParser *)self parsePhoto:nextBase64Data])
               {
                 self->_imageURI = [(ABVCardParser *)self parseSingleValue];
               }
@@ -3008,11 +3008,11 @@ LABEL_7:
                   v40 = [(NSMutableArray *)self->_itemParameters objectAtIndex:v39];
                   if (![objc_msgSend(v40 "name")])
                   {
-                    v41 = [v40 value];
+                    value = [v40 value];
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v42 = [v41 componentsSeparatedByString:@"&"];
+                      v42 = [value componentsSeparatedByString:@"&"];
                       if ([v42 count] == 6)
                       {
                         if ([objc_msgSend(v42 objectAtIndex:{0), "isEqualToString:", @"ABClipRect_1"}])
@@ -3270,7 +3270,7 @@ LABEL_7:
           goto LABEL_198;
         }
 
-        v35 = [(ABVCardParser *)self parseSingleValue];
+        parseSingleValue = [(ABVCardParser *)self parseSingleValue];
         v36 = &kABPersonOrganizationPhoneticProperty;
         goto LABEL_179;
       }
@@ -3321,7 +3321,7 @@ LABEL_241:
 LABEL_146:
       if (![v63 compare:v37 options:1])
       {
-        [(ABVCardParser *)self parseWallpaper:v11];
+        [(ABVCardParser *)self parseWallpaper:nextBase64Data];
         goto LABEL_242;
       }
 
@@ -3332,13 +3332,13 @@ LABEL_146:
         goto LABEL_198;
       }
 
-      v35 = [(ABVCardParser *)self parseRemainingLine];
+      parseSingleValue = [(ABVCardParser *)self parseRemainingLine];
       v36 = &kABPersonMapsDataProperty;
       goto LABEL_179;
     case 19:
       if (![v63 compare:@"X-PRONUNCIATION-ORG" options:1])
       {
-        v35 = [(ABVCardParser *)self parseSingleValue];
+        parseSingleValue = [(ABVCardParser *)self parseSingleValue];
         v36 = &kABPersonOrganizationPronunciationProperty;
         goto LABEL_179;
       }
@@ -3355,7 +3355,7 @@ LABEL_196:
     case 20:
       if (![v63 compare:@"X-PHONETIC-LAST-NAME" options:1])
       {
-        v35 = [(ABVCardParser *)self parseSingleValue];
+        parseSingleValue = [(ABVCardParser *)self parseSingleValue];
         v36 = &kABPersonLastNamePhoneticProperty;
         goto LABEL_179;
       }
@@ -3373,7 +3373,7 @@ LABEL_196:
         goto LABEL_198;
       }
 
-      v35 = [(ABVCardParser *)self parseSingleValue];
+      parseSingleValue = [(ABVCardParser *)self parseSingleValue];
       v36 = &kABPersonFirstNamePhoneticProperty;
       goto LABEL_179;
     case 22:
@@ -3382,7 +3382,7 @@ LABEL_196:
         goto LABEL_198;
       }
 
-      v35 = [(ABVCardParser *)self parseSingleValue];
+      parseSingleValue = [(ABVCardParser *)self parseSingleValue];
       v36 = &kABPersonMiddleNamePhoneticProperty;
       goto LABEL_179;
     case 25:
@@ -3391,7 +3391,7 @@ LABEL_196:
         goto LABEL_198;
       }
 
-      v35 = [(ABVCardParser *)self parseSingleValue];
+      parseSingleValue = [(ABVCardParser *)self parseSingleValue];
       v36 = &kABPersonLastNamePronunciationProperty;
       goto LABEL_179;
     case 26:
@@ -3400,7 +3400,7 @@ LABEL_196:
         goto LABEL_198;
       }
 
-      v35 = [(ABVCardParser *)self parseSingleValue];
+      parseSingleValue = [(ABVCardParser *)self parseSingleValue];
       v36 = &kABPersonFirstNamePronunciationProperty;
       goto LABEL_179;
     case 27:
@@ -3416,28 +3416,28 @@ LABEL_198:
         v47 = [(ABVCardParser *)self _usesArrayForExternalPropKey:v63];
         if (v47)
         {
-          v48 = [(ABVCardParser *)self parseValueArray];
+          parseValueArray = [(ABVCardParser *)self parseValueArray];
         }
 
         else
         {
           if (![(ABVCardParser *)self _usesRemainingLineForExternalPropKey:v63])
           {
-            v49 = [(ABVCardParser *)self parseSingleValue];
-            if (![v49 length])
+            parseSingleValue2 = [(ABVCardParser *)self parseSingleValue];
+            if (![parseSingleValue2 length])
             {
-              v49 = 0;
+              parseSingleValue2 = 0;
             }
 
             goto LABEL_205;
           }
 
-          v48 = [(ABVCardParser *)self parseRemainingLine];
+          parseValueArray = [(ABVCardParser *)self parseRemainingLine];
         }
 
-        v49 = v48;
+        parseSingleValue2 = parseValueArray;
 LABEL_205:
-        if ([v63 compare:@"LOGO" options:1] && objc_msgSend(v63, "compare:options:", @"SOUND", 1) && objc_msgSend(v63, "compare:options:", @"LABEL", 1) && objc_msgSend(v63, "compare:options:", @"PRODID", 1) && objc_msgSend(v63, "compare:options:", @"SORT-STRING", 1) && objc_msgSend(v63, "compare:options:", @"UID", 1) && objc_msgSend(v63, "compare:options:", @"REV", 1) && v49 && !-[ABVCardParser _handleUnknownTag:withValue:](self, "_handleUnknownTag:withValue:", v63, v49))
+        if ([v63 compare:@"LOGO" options:1] && objc_msgSend(v63, "compare:options:", @"SOUND", 1) && objc_msgSend(v63, "compare:options:", @"LABEL", 1) && objc_msgSend(v63, "compare:options:", @"PRODID", 1) && objc_msgSend(v63, "compare:options:", @"SORT-STRING", 1) && objc_msgSend(v63, "compare:options:", @"UID", 1) && objc_msgSend(v63, "compare:options:", @"REV", 1) && parseSingleValue2 && !-[ABVCardParser _handleUnknownTag:withValue:](self, "_handleUnknownTag:withValue:", v63, parseSingleValue2))
         {
           otherNotes = self->_otherNotes;
           if (!otherNotes)
@@ -3456,14 +3456,14 @@ LABEL_205:
           v51 = self->_otherNotes;
           if (v47)
           {
-            v52 = [v49 componentsJoinedByString:{@", "}];
+            v52 = [parseSingleValue2 componentsJoinedByString:{@", "}];
             v53 = v51;
           }
 
           else
           {
             v53 = self->_otherNotes;
-            v52 = v49;
+            v52 = parseSingleValue2;
           }
 
           [(NSMutableString *)v53 appendString:v52];
@@ -3472,10 +3472,10 @@ LABEL_205:
         goto LABEL_242;
       }
 
-      v35 = [(ABVCardParser *)self parseSingleValue];
+      parseSingleValue = [(ABVCardParser *)self parseSingleValue];
       v36 = &kABPersonMiddleNamePronunciationProperty;
 LABEL_179:
-      [(ABVCardParser *)self _setStringValueOrNoteIfNull:v35 forProperty:*v36];
+      [(ABVCardParser *)self _setStringValueOrNoteIfNull:parseSingleValue forProperty:*v36];
 LABEL_242:
 
       if ([(ABVCardLexer *)self->_lexer advanceToEOL]&& [(ABVCardLexer *)self->_lexer advancePastEOL])
@@ -3527,7 +3527,7 @@ LABEL_245:
         goto LABEL_198;
       }
 
-      v35 = [(ABVCardParser *)self parseRemainingLine];
+      parseSingleValue = [(ABVCardParser *)self parseRemainingLine];
       v36 = &kABPersonPhonemeDataProperty;
       goto LABEL_179;
     default:
@@ -3537,29 +3537,29 @@ LABEL_245:
   return v8;
 }
 
-- (BOOL)importToPerson:(void *)a3 foundProperties:(const __CFArray *)a4
+- (BOOL)importToPerson:(void *)person foundProperties:(const __CFArray *)properties
 {
-  v6 = [[ABVCardPersonValueSetter alloc] initWithPerson:a3];
+  v6 = [[ABVCardPersonValueSetter alloc] initWithPerson:person];
   v7 = [(ABVCardParser *)self importToValueSetter:v6];
-  if (a4)
+  if (properties)
   {
-    v8 = [(ABVCardPersonValueSetter *)v6 foundProperties];
-    if (v8)
+    foundProperties = [(ABVCardPersonValueSetter *)v6 foundProperties];
+    if (foundProperties)
     {
-      v9 = v8;
-      CFRetain(v8);
-      *a4 = v9;
+      v9 = foundProperties;
+      CFRetain(foundProperties);
+      *properties = v9;
     }
   }
 
   return v7;
 }
 
-- (BOOL)importToValueSetter:(id)a3
+- (BOOL)importToValueSetter:(id)setter
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
 
-  self->_valueSetter = a3;
+  self->_valueSetter = setter;
   self->_extensions = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(ABVCardLexer *)self->_lexer advanceToString];
   if ([(ABVCardLexer *)self->_lexer nextTokenPeak:0]!= 5)
@@ -3800,7 +3800,7 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyNextPersonWithLength:(int *)a3 foundProperties:(const __CFArray *)a4
+- (void)copyNextPersonWithLength:(int *)length foundProperties:(const __CFArray *)properties
 {
   if (![(ABVCardWatchdogTimer *)self->_timer isStarted])
   {
@@ -3810,28 +3810,28 @@ LABEL_9:
   if ([(ABVCardLexer *)self->_lexer atEOF])
   {
     v7 = 0;
-    if (a3)
+    if (length)
     {
       v8 = 0;
 LABEL_11:
-      *a3 = v8;
+      *length = v8;
     }
   }
 
   else
   {
-    v9 = [(ABVCardLexer *)self->_lexer cursor];
+    cursor = [(ABVCardLexer *)self->_lexer cursor];
     v7 = ABPersonCreateInSource(self->_source);
-    if (v7 && ![(ABVCardParser *)self importToPerson:v7 foundProperties:a4])
+    if (v7 && ![(ABVCardParser *)self importToPerson:v7 foundProperties:properties])
     {
       self->_hasImportErrors = 1;
       CFRelease(v7);
       v7 = 0;
     }
 
-    if (a3)
+    if (length)
     {
-      v8 = [(ABVCardLexer *)self->_lexer cursor]- v9;
+      v8 = [(ABVCardLexer *)self->_lexer cursor]- cursor;
       goto LABEL_11;
     }
   }
@@ -3839,7 +3839,7 @@ LABEL_11:
   return v7;
 }
 
-- (__CFArray)peopleAndProperties:(const __CFArray *)a3
+- (__CFArray)peopleAndProperties:(const __CFArray *)properties
 {
   if (![(ABVCardWatchdogTimer *)self->_timer isStarted])
   {
@@ -3882,18 +3882,18 @@ LABEL_11:
 
     ABDiagnosticsEnabled();
     _ABLog2(4, "[ABVCardParser peopleAndProperties:]", 2876, 0, @"Aborting vCard parsing due to import errors.", v11, v12, v13, v15);
-    if (!a3)
+    if (!properties)
     {
       goto LABEL_13;
     }
 
 LABEL_11:
-    *a3 = v8;
+    *properties = v8;
     goto LABEL_15;
   }
 
 LABEL_10:
-  if (a3)
+  if (properties)
   {
     goto LABEL_11;
   }
@@ -3916,7 +3916,7 @@ LABEL_15:
   }
 }
 
-- (id)sortedPeopleAndProperties:(const __CFArray *)a3
+- (id)sortedPeopleAndProperties:(const __CFArray *)properties
 {
   cf = 0;
   v5 = [MEMORY[0x1E695DF70] arrayWithArray:{-[ABVCardParser peopleAndProperties:](self, "peopleAndProperties:", &cf)}];
@@ -3941,9 +3941,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (properties)
   {
-    *a3 = cf;
+    *properties = cf;
   }
 
   else if (cf)

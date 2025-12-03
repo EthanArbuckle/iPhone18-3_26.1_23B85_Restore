@@ -1,35 +1,35 @@
 @interface PRBTRangingSession
-- (PRBTRangingSession)initWithDelegate:(id)a3 queue:(id)a4;
+- (PRBTRangingSession)initWithDelegate:(id)delegate queue:(id)queue;
 - (PRBTRangingSessionDelegate)delegate;
 - (id)remoteObject;
 - (id)synchronousRemoteObject;
 - (void)connectToDaemon;
-- (void)didConnectDevice:(id)a3 error:(id)a4;
-- (void)didFailWithError:(id)a3;
-- (void)didFetchTxPower:(id)a3 fromDevice:(id)a4 withError:(id)a5;
-- (void)didReceiveNewBTRSSI:(id)a3;
-- (void)didStartRangingOnDevice:(id)a3 withError:(id)a4;
-- (void)didStopOwnerRangingOnDevice:(id)a3 withError:(id)a4;
-- (void)fetchTxPower:(id)a3 isUT:(id)a4;
+- (void)didConnectDevice:(id)device error:(id)error;
+- (void)didFailWithError:(id)error;
+- (void)didFetchTxPower:(id)power fromDevice:(id)device withError:(id)error;
+- (void)didReceiveNewBTRSSI:(id)i;
+- (void)didStartRangingOnDevice:(id)device withError:(id)error;
+- (void)didStopOwnerRangingOnDevice:(id)device withError:(id)error;
+- (void)fetchTxPower:(id)power isUT:(id)t;
 - (void)handleInterruption;
 - (void)handleInvalidation;
 - (void)invalidate;
-- (void)startOwnerRanging:(id)a3;
-- (void)startUTRanging:(id)a3;
-- (void)stopOwnerRanging:(id)a3;
-- (void)stopUTRanging:(id)a3;
+- (void)startOwnerRanging:(id)ranging;
+- (void)startUTRanging:(id)ranging;
+- (void)stopOwnerRanging:(id)ranging;
+- (void)stopUTRanging:(id)ranging;
 @end
 
 @implementation PRBTRangingSession
 
-- (PRBTRangingSession)initWithDelegate:(id)a3 queue:(id)a4
+- (PRBTRangingSession)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (delegateCopy)
   {
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -37,8 +37,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PRBTRangingSession.mm" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRBTRangingSession.mm" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
     if (v9)
     {
@@ -46,8 +46,8 @@
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PRBTRangingSession.mm" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PRBTRangingSession.mm" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -59,8 +59,8 @@ LABEL_3:
     logger = v10->_logger;
     v10->_logger = v11;
 
-    objc_storeWeak(&v10->_delegate, v7);
-    objc_storeStrong(&v10->_sessionQueue, a4);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_sessionQueue, queue);
     [(PRBTRangingSession *)v10 connectToDaemon];
   }
 
@@ -112,11 +112,11 @@ LABEL_3:
   objc_copyWeak(&v17, &location);
   [(NSXPCConnection *)v12 setInvalidationHandler:v16];
   [(NSXPCConnection *)self->_connection resume];
-  v13 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v15.receiver = self;
   v15.super_class = PRBTRangingSession;
-  v14 = [(PRRangingDevice *)&v15 clientInfo];
-  [v13 connectWithClientInfo:v14];
+  clientInfo = [(PRRangingDevice *)&v15 clientInfo];
+  [remoteObject connectWithClientInfo:clientInfo];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -148,11 +148,11 @@ void __37__PRBTRangingSession_connectToDaemon__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_230EB5000, v3, OS_LOG_TYPE_DEFAULT, "connection was interrupted: %@", buf, 0xCu);
   }
 
-  v5 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v11.receiver = self;
   v11.super_class = PRBTRangingSession;
-  v6 = [(PRRangingDevice *)&v11 clientInfo];
-  [v5 connectWithClientInfo:v6];
+  clientInfo = [(PRRangingDevice *)&v11 clientInfo];
+  [remoteObject connectWithClientInfo:clientInfo];
 
   v12 = *MEMORY[0x277CCA450];
   v13 = @"Generic companion ranging error.";
@@ -239,65 +239,65 @@ void __45__PRBTRangingSession_synchronousRemoteObject__block_invoke(uint64_t a1,
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didFailWithError:v4];
+  [WeakRetained didFailWithError:errorCopy];
 }
 
-- (void)didFetchTxPower:(id)a3 fromDevice:(id)a4 withError:(id)a5
+- (void)didFetchTxPower:(id)power fromDevice:(id)device withError:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  deviceCopy = device;
+  powerCopy = power;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didFetchTxPower:v10 fromDevice:v9 withError:v8];
+  [WeakRetained didFetchTxPower:powerCopy fromDevice:deviceCopy withError:errorCopy];
 }
 
-- (void)didConnectDevice:(id)a3 error:(id)a4
+- (void)didConnectDevice:(id)device error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didConnectDevice:v7 error:v6];
+  [WeakRetained didConnectDevice:deviceCopy error:errorCopy];
 }
 
-- (void)didStartRangingOnDevice:(id)a3 withError:(id)a4
+- (void)didStartRangingOnDevice:(id)device withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didStartRangingOnDevice:v7 withError:v6];
+  [WeakRetained didStartRangingOnDevice:deviceCopy withError:errorCopy];
 }
 
-- (void)didStopOwnerRangingOnDevice:(id)a3 withError:(id)a4
+- (void)didStopOwnerRangingOnDevice:(id)device withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didStopOwnerRangingOnDevice:v7 withError:v6];
+  [WeakRetained didStopOwnerRangingOnDevice:deviceCopy withError:errorCopy];
 }
 
-- (void)didReceiveNewBTRSSI:(id)a3
+- (void)didReceiveNewBTRSSI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didReceiveNewBTRSSI:v4];
+  [WeakRetained didReceiveNewBTRSSI:iCopy];
 }
 
-- (void)fetchTxPower:(id)a3 isUT:(id)a4
+- (void)fetchTxPower:(id)power isUT:(id)t
 {
-  v6 = a3;
-  v7 = a4;
+  powerCopy = power;
+  tCopy = t;
   objc_initWeak(&location, self);
-  v8 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__PRBTRangingSession_fetchTxPower_isUT___block_invoke;
   v9[3] = &unk_2788F4090;
   objc_copyWeak(&v10, &location);
-  [v8 fetchTxPower:v6 isUT:v7 reply:v9];
+  [remoteObject fetchTxPower:powerCopy isUT:tCopy reply:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -321,17 +321,17 @@ void __40__PRBTRangingSession_fetchTxPower_isUT___block_invoke(uint64_t a1, char
   }
 }
 
-- (void)startUTRanging:(id)a3
+- (void)startUTRanging:(id)ranging
 {
-  v4 = a3;
+  rangingCopy = ranging;
   objc_initWeak(&location, self);
-  v5 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__PRBTRangingSession_startUTRanging___block_invoke;
   v6[3] = &unk_2788F4090;
   objc_copyWeak(&v7, &location);
-  [v5 startUTRanging:v4 reply:v6];
+  [remoteObject startUTRanging:rangingCopy reply:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -355,17 +355,17 @@ void __37__PRBTRangingSession_startUTRanging___block_invoke(uint64_t a1, char a2
   }
 }
 
-- (void)stopUTRanging:(id)a3
+- (void)stopUTRanging:(id)ranging
 {
-  v4 = a3;
+  rangingCopy = ranging;
   objc_initWeak(&location, self);
-  v5 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__PRBTRangingSession_stopUTRanging___block_invoke;
   v6[3] = &unk_2788F4090;
   objc_copyWeak(&v7, &location);
-  [v5 stopUTRanging:v4 reply:v6];
+  [remoteObject stopUTRanging:rangingCopy reply:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -389,17 +389,17 @@ void __36__PRBTRangingSession_stopUTRanging___block_invoke(uint64_t a1, char a2,
   }
 }
 
-- (void)startOwnerRanging:(id)a3
+- (void)startOwnerRanging:(id)ranging
 {
-  v4 = a3;
+  rangingCopy = ranging;
   objc_initWeak(&location, self);
-  v5 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__PRBTRangingSession_startOwnerRanging___block_invoke;
   v6[3] = &unk_2788F4090;
   objc_copyWeak(&v7, &location);
-  [v5 startOwnerRanging:v4 reply:v6];
+  [remoteObject startOwnerRanging:rangingCopy reply:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -423,17 +423,17 @@ void __40__PRBTRangingSession_startOwnerRanging___block_invoke(uint64_t a1, char
   }
 }
 
-- (void)stopOwnerRanging:(id)a3
+- (void)stopOwnerRanging:(id)ranging
 {
-  v4 = a3;
+  rangingCopy = ranging;
   objc_initWeak(&location, self);
-  v5 = [(PRBTRangingSession *)self remoteObject];
+  remoteObject = [(PRBTRangingSession *)self remoteObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__PRBTRangingSession_stopOwnerRanging___block_invoke;
   v6[3] = &unk_2788F4090;
   objc_copyWeak(&v7, &location);
-  [v5 stopOwnerRanging:v4 reply:v6];
+  [remoteObject stopOwnerRanging:rangingCopy reply:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

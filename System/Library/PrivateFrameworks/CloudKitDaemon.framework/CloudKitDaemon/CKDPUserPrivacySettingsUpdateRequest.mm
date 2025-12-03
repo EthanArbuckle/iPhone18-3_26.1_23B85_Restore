@@ -1,12 +1,12 @@
 @interface CKDPUserPrivacySettingsUpdateRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPUserPrivacySettingsUpdateRequest
@@ -55,66 +55,66 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userPrivacySettings)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   bundleIdentifier = self->_bundleIdentifier;
-  v8 = v4;
+  v8 = toCopy;
   if (bundleIdentifier)
   {
-    objc_msgSend_setBundleIdentifier_(v4, v5, bundleIdentifier);
-    v4 = v8;
+    objc_msgSend_setBundleIdentifier_(toCopy, v5, bundleIdentifier);
+    toCopy = v8;
   }
 
   userPrivacySettings = self->_userPrivacySettings;
   if (userPrivacySettings)
   {
     objc_msgSend_setUserPrivacySettings_(v8, v5, userPrivacySettings);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_bundleIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_bundleIdentifier, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_userPrivacySettings, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_userPrivacySettings, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((bundleIdentifier = self->_bundleIdentifier, v9 = v4[1], !(bundleIdentifier | v9)) || objc_msgSend_isEqual_(bundleIdentifier, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((bundleIdentifier = self->_bundleIdentifier, v9 = equalCopy[1], !(bundleIdentifier | v9)) || objc_msgSend_isEqual_(bundleIdentifier, v7, v9)))
   {
     userPrivacySettings = self->_userPrivacySettings;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (userPrivacySettings | v11)
     {
       isEqual = objc_msgSend_isEqual_(userPrivacySettings, v7, v11);
@@ -134,30 +134,30 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[1];
-  v8 = v4;
+  fromCopy = from;
+  v5 = fromCopy[1];
+  v8 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setBundleIdentifier_(self, v4, v5);
-    v4 = v8;
+    objc_msgSend_setBundleIdentifier_(self, fromCopy, v5);
+    fromCopy = v8;
   }
 
   userPrivacySettings = self->_userPrivacySettings;
-  v7 = v4[2];
+  v7 = fromCopy[2];
   if (userPrivacySettings)
   {
     if (v7)
     {
-      objc_msgSend_mergeFrom_(userPrivacySettings, v4, v7);
+      objc_msgSend_mergeFrom_(userPrivacySettings, fromCopy, v7);
     }
   }
 
   else if (v7)
   {
-    objc_msgSend_setUserPrivacySettings_(self, v4, v7);
+    objc_msgSend_setUserPrivacySettings_(self, fromCopy, v7);
   }
 
   MEMORY[0x2821F96F8]();

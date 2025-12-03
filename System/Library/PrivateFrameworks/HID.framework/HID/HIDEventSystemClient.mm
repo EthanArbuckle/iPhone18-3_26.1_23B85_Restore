@@ -1,16 +1,16 @@
 @interface HIDEventSystemClient
-- (HIDEventSystemClient)initWithType:(int64_t)a3 andAttributes:(id)a4;
+- (HIDEventSystemClient)initWithType:(int64_t)type andAttributes:(id)attributes;
 - (NSArray)services;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (void)activate;
 - (void)dealloc;
-- (void)setCancelHandler:(id)a3;
-- (void)setEventFilterHandler:(id)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setMatching:(id)a3;
-- (void)setPropertyChangedHandler:(id)a3 matching:(id)a4;
-- (void)setResetHandler:(id)a3;
-- (void)setServiceNotificationHandler:(id)a3;
+- (void)setCancelHandler:(id)handler;
+- (void)setEventFilterHandler:(id)handler;
+- (void)setEventHandler:(id)handler;
+- (void)setMatching:(id)matching;
+- (void)setPropertyChangedHandler:(id)handler matching:(id)matching;
+- (void)setResetHandler:(id)handler;
+- (void)setServiceNotificationHandler:(id)handler;
 @end
 
 @implementation HIDEventSystemClient
@@ -51,9 +51,9 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   IOHIDEventSystemClientActivate();
 }
 
-- (HIDEventSystemClient)initWithType:(int64_t)a3 andAttributes:(id)a4
+- (HIDEventSystemClient)initWithType:(int64_t)type andAttributes:(id)attributes
 {
-  v5 = a4;
+  attributesCopy = attributes;
   v11.receiver = self;
   v11.super_class = HIDEventSystemClient;
   v6 = [(HIDEventSystemClient *)&v11 init];
@@ -70,17 +70,17 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v3 = IOHIDEventSystemClientCopyProperty(self->_client, a3);
+  v3 = IOHIDEventSystemClientCopyProperty(self->_client, key);
 
   return v3;
 }
 
-- (void)setMatching:(id)a3
+- (void)setMatching:(id)matching
 {
   v10 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  matchingCopy = matching;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -94,7 +94,7 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 count];
+    [matchingCopy count];
     client = self->_client;
     IOHIDEventSystemClientSetMatching();
   }
@@ -104,7 +104,7 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 count];
+      [matchingCopy count];
       v5 = self->_client;
       IOHIDEventSystemClientSetMatchingMultiple();
     }
@@ -120,9 +120,9 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_activated)
   {
@@ -136,9 +136,9 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_eventHandler)
   {
@@ -154,9 +154,9 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   IOHIDEventSystemClientRegisterEventCallback();
 }
 
-- (void)setResetHandler:(id)a3
+- (void)setResetHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_resetHandler)
   {
@@ -172,9 +172,9 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   IOHIDEventSystemClientRegisterResetCallback();
 }
 
-- (void)setEventFilterHandler:(id)a3
+- (void)setEventFilterHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_filterHandler)
   {
@@ -190,9 +190,9 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   IOHIDEventSystemClientRegisterEventFilterCallback();
 }
 
-- (void)setServiceNotificationHandler:(id)a3
+- (void)setServiceNotificationHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   os_unfair_recursive_lock_lock_with_options();
   if (self->_serviceHandler)
   {
@@ -208,11 +208,11 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
   IOHIDEventSystemClientRegisterDeviceMatchingCallback();
 }
 
-- (void)setPropertyChangedHandler:(id)a3 matching:(id)a4
+- (void)setPropertyChangedHandler:(id)handler matching:(id)matching
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  matchingCopy = matching;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -229,7 +229,7 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
     [HIDEventSystemClient setPropertyChangedHandler:matching:];
   }
 
-  v8 = _Block_copy(v6);
+  v8 = _Block_copy(handlerCopy);
   propertyChangedHandler = self->_propertyChangedHandler;
   self->_propertyChangedHandler = v8;
 
@@ -250,7 +250,7 @@ void __32__HIDEventSystemClient_activate__block_invoke(uint64_t a1)
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = v7;
+      v11 = matchingCopy;
       v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v12)
       {

@@ -1,13 +1,13 @@
 @interface ADSiriCapabilitiesStore
 + (id)sharedStore;
 - (ADAssetManager)assetManager;
-- (ADSiriCapabilitiesStore)initWithDispatchQueue:(id)a3 preferences:(id)a4 assetManager:(id)a5;
+- (ADSiriCapabilitiesStore)initWithDispatchQueue:(id)queue preferences:(id)preferences assetManager:(id)manager;
 - (BOOL)siriSystemAssistantExperienceEnabled;
 - (void)dealloc;
 - (void)emitAIR;
 - (void)refreshOrchestrationMode;
-- (void)siriEnabledStatusDidChange:(BOOL)a3;
-- (void)updateCapabilitiesWithAssetManager:(id)a3;
+- (void)siriEnabledStatusDidChange:(BOOL)change;
+- (void)updateCapabilitiesWithAssetManager:(id)manager;
 @end
 
 @implementation ADSiriCapabilitiesStore
@@ -53,14 +53,14 @@
   return v2 == 63;
 }
 
-- (void)siriEnabledStatusDidChange:(BOOL)a3
+- (void)siriEnabledStatusDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v5 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
     v7 = v5;
-    v8 = [NSNumber numberWithBool:v3];
+    v8 = [NSNumber numberWithBool:changeCopy];
     *location = 136315394;
     *&location[4] = "[ADSiriCapabilitiesStore siriEnabledStatusDidChange:]";
     v12 = 2112;
@@ -81,11 +81,11 @@
   objc_destroyWeak(location);
 }
 
-- (void)updateCapabilitiesWithAssetManager:(id)a3
+- (void)updateCapabilitiesWithAssetManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(ADSiriCapabilitiesStore *)self preferences];
-  v6 = [v5 languageCode];
+  managerCopy = manager;
+  preferences = [(ADSiriCapabilitiesStore *)self preferences];
+  languageCode = [preferences languageCode];
 
   objc_initWeak(&location, self);
   v7 = self->_dispatchQueue;
@@ -96,9 +96,9 @@
   v8 = v7;
   v11 = v8;
   objc_copyWeak(&v13, &location);
-  v9 = v6;
+  v9 = languageCode;
   v12 = v9;
-  [v4 fetchAssetsAvailabilityForLanguage:v9 completion:v10];
+  [managerCopy fetchAssetsAvailabilityForLanguage:v9 completion:v10];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -106,17 +106,17 @@
 
 - (void)emitAIR
 {
-  v3 = [(ADSiriCapabilitiesStore *)self preferences];
-  v4 = [v3 languageCode];
+  preferences = [(ADSiriCapabilitiesStore *)self preferences];
+  languageCode = [preferences languageCode];
 
-  v5 = [(ADSiriCapabilitiesStore *)self preferences];
-  v6 = [v5 countryCode];
+  preferences2 = [(ADSiriCapabilitiesStore *)self preferences];
+  countryCode = [preferences2 countryCode];
 
   v7 = +[AFPreferences sharedPreferences];
-  v8 = [v7 assistantIsEnabled];
+  assistantIsEnabled = [v7 assistantIsEnabled];
 
   [(ADSiriCapabilitiesStore *)self currentState];
-  if (v8)
+  if (assistantIsEnabled)
   {
     [(ADSiriCapabilitiesStore *)self currentState];
     if ((~v23 & 0x27) != 0)
@@ -162,7 +162,7 @@
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
     v19 = v12;
-    v20 = [NSNumber numberWithBool:v8];
+    v20 = [NSNumber numberWithBool:assistantIsEnabled];
     v15 = [NSNumber numberWithBool:v10];
     v18 = [NSNumber numberWithUnsignedInteger:v9];
     v16 = [NSNumber numberWithUnsignedInteger:v24];
@@ -183,15 +183,15 @@
   }
 
   v13 = +[ADCommandCenter sharedCommandCenter];
-  v14 = [v13 _requestDispatcherService];
-  [v14 emitAIREventForSiriAvailabiltyWithLocale:v4 countryCode:v6 isAvailable:v10 orchestrationMode:v9 unavailabilityReasons:v11];
+  _requestDispatcherService = [v13 _requestDispatcherService];
+  [_requestDispatcherService emitAIREventForSiriAvailabiltyWithLocale:languageCode countryCode:countryCode isAvailable:v10 orchestrationMode:v9 unavailabilityReasons:v11];
 }
 
-- (ADSiriCapabilitiesStore)initWithDispatchQueue:(id)a3 preferences:(id)a4 assetManager:(id)a5
+- (ADSiriCapabilitiesStore)initWithDispatchQueue:(id)queue preferences:(id)preferences assetManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  preferencesCopy = preferences;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = ADSiriCapabilitiesStore;
   v12 = [(ADSiriCapabilitiesStore *)&v20 init];
@@ -200,21 +200,21 @@
   {
     *(v12 + 56) = 0u;
     *(v12 + 40) = 0u;
-    objc_storeStrong(v12 + 1, a3);
-    objc_storeStrong(&v13->_preferences, a4);
-    objc_storeWeak(&v13->_assetManager, v11);
+    objc_storeStrong(v12 + 1, queue);
+    objc_storeStrong(&v13->_preferences, preferences);
+    objc_storeWeak(&v13->_assetManager, managerCopy);
     v14 = [[ADSiriCapabilitiesStoreAssetsAvailabilityObserver alloc] initWithSiriConfiguration:v13];
-    [v11 addAvailabilityObserver:v14];
+    [managerCopy addAvailabilityObserver:v14];
     v15 = [[ADWeakWrapper alloc] initWithWrapped:v13];
     [(ADSiriCapabilitiesStore *)v13 setWeakWrapper:v15];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v15, sub_100175D6C, @"com.apple.gms.availability.notification", 0, 0);
 
-    v17 = [(ADSiriCapabilitiesStore *)v13 preferences];
-    v18 = [v17 languageCode];
+    preferences = [(ADSiriCapabilitiesStore *)v13 preferences];
+    languageCode = [preferences languageCode];
 
-    sub_100174C68(v13, &__NSDictionary0__struct, v18);
-    [(ADSiriCapabilitiesStore *)v13 updateCapabilitiesWithAssetManager:v11];
+    sub_100174C68(v13, &__NSDictionary0__struct, languageCode);
+    [(ADSiriCapabilitiesStore *)v13 updateCapabilitiesWithAssetManager:managerCopy];
   }
 
   return v13;
@@ -224,16 +224,16 @@
 {
   if (self)
   {
-    v3 = [(ADSiriCapabilitiesStore *)self weakWrapper];
+    weakWrapper = [(ADSiriCapabilitiesStore *)self weakWrapper];
     [(ADSiriCapabilitiesStore *)self setWeakWrapper:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v3, 0, 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, weakWrapper, 0, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100176128;
     block[3] = &unk_10051DFE8;
-    v8 = v3;
-    v5 = v3;
+    v8 = weakWrapper;
+    v5 = weakWrapper;
     dispatch_async(&_dispatch_main_q, block);
   }
 

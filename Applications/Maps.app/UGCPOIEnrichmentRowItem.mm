@@ -1,39 +1,39 @@
 @interface UGCPOIEnrichmentRowItem
-+ (id)rowItemWithView:(id)a3;
-+ (id)rowItemWithView:(id)a3 bottomSpacing:(double)a4;
-- (UGCPOIEnrichmentRowItem)initWithView:(id)a3 bottomSpacing:(double)a4;
++ (id)rowItemWithView:(id)view;
++ (id)rowItemWithView:(id)view bottomSpacing:(double)spacing;
+- (UGCPOIEnrichmentRowItem)initWithView:(id)view bottomSpacing:(double)spacing;
 @end
 
 @implementation UGCPOIEnrichmentRowItem
 
-- (UGCPOIEnrichmentRowItem)initWithView:(id)a3 bottomSpacing:(double)a4
+- (UGCPOIEnrichmentRowItem)initWithView:(id)view bottomSpacing:(double)spacing
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = UGCPOIEnrichmentRowItem;
   v8 = [(UGCPOIEnrichmentRowItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rowView, a3);
-    v9->_bottomSpacing = a4;
+    objc_storeStrong(&v8->_rowView, view);
+    v9->_bottomSpacing = spacing;
   }
 
   return v9;
 }
 
-+ (id)rowItemWithView:(id)a3 bottomSpacing:(double)a4
++ (id)rowItemWithView:(id)view bottomSpacing:(double)spacing
 {
-  v5 = a3;
-  v6 = [[UGCPOIEnrichmentRowItem alloc] initWithView:v5 bottomSpacing:a4];
+  viewCopy = view;
+  v6 = [[UGCPOIEnrichmentRowItem alloc] initWithView:viewCopy bottomSpacing:spacing];
 
   return v6;
 }
 
-+ (id)rowItemWithView:(id)a3
++ (id)rowItemWithView:(id)view
 {
-  v3 = a3;
-  v4 = [[UGCPOIEnrichmentRowItem alloc] initWithView:v3 bottomSpacing:0.0];
+  viewCopy = view;
+  v4 = [[UGCPOIEnrichmentRowItem alloc] initWithView:viewCopy bottomSpacing:0.0];
 
   return v4;
 }

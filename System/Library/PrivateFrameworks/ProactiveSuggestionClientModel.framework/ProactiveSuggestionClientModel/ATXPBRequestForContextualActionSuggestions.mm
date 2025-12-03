@@ -1,20 +1,20 @@
 @interface ATXPBRequestForContextualActionSuggestions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMaxSuggestions:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMaxSuggestions:(BOOL)suggestions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBRequestForContextualActionSuggestions
 
-- (void)setHasMaxSuggestions:(BOOL)a3
+- (void)setHasMaxSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBRequestForContextualActionSuggestions;
   v4 = [(ATXPBRequestForContextualActionSuggestions *)&v8 description];
-  v5 = [(ATXPBRequestForContextualActionSuggestions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBRequestForContextualActionSuggestions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   originatorId = self->_originatorId;
@@ -85,32 +85,32 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_originatorId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_consumerSubTypeString)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_caxPredictionContext)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -118,7 +118,7 @@
   {
     maxSuggestions = self->_maxSuggestions;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -126,69 +126,69 @@
   {
     timeout = self->_timeout;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuidString)
   {
-    [v4 setUuidString:?];
-    v4 = v6;
+    [toCopy setUuidString:?];
+    toCopy = v6;
   }
 
   if (self->_originatorId)
   {
     [v6 setOriginatorId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_consumerSubTypeString)
   {
     [v6 setConsumerSubTypeString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_caxPredictionContext)
   {
     [v6 setCaxPredictionContext:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_maxSuggestions;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 8) = self->_maxSuggestions;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timeout;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_timeout;
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_originatorId copyWithZone:a3];
+  v8 = [(NSString *)self->_originatorId copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_consumerSubTypeString copyWithZone:a3];
+  v10 = [(NSString *)self->_consumerSubTypeString copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSData *)self->_caxPredictionContext copyWithZone:a3];
+  v12 = [(NSData *)self->_caxPredictionContext copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
@@ -209,16 +209,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 6))
+  if (uuidString | *(equalCopy + 6))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -227,7 +227,7 @@
   }
 
   originatorId = self->_originatorId;
-  if (originatorId | *(v4 + 5))
+  if (originatorId | *(equalCopy + 5))
   {
     if (![(NSString *)originatorId isEqual:?])
     {
@@ -236,7 +236,7 @@
   }
 
   consumerSubTypeString = self->_consumerSubTypeString;
-  if (consumerSubTypeString | *(v4 + 3))
+  if (consumerSubTypeString | *(equalCopy + 3))
   {
     if (![(NSString *)consumerSubTypeString isEqual:?])
     {
@@ -245,7 +245,7 @@
   }
 
   caxPredictionContext = self->_caxPredictionContext;
-  if (caxPredictionContext | *(v4 + 2))
+  if (caxPredictionContext | *(equalCopy + 2))
   {
     if (![(NSData *)caxPredictionContext isEqual:?])
     {
@@ -255,23 +255,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_maxSuggestions != *(v4 + 8))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_maxSuggestions != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_19:
     v9 = 0;
     goto LABEL_20;
   }
 
-  v9 = (*(v4 + 56) & 1) == 0;
+  v9 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_timeout != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_timeout != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -338,45 +338,45 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(ATXPBRequestForContextualActionSuggestions *)self setUuidString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXPBRequestForContextualActionSuggestions *)self setOriginatorId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXPBRequestForContextualActionSuggestions *)self setConsumerSubTypeString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXPBRequestForContextualActionSuggestions *)self setCaxPredictionContext:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) != 0)
   {
-    self->_maxSuggestions = *(v4 + 8);
+    self->_maxSuggestions = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if (v5)
   {
-    self->_timeout = *(v4 + 1);
+    self->_timeout = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

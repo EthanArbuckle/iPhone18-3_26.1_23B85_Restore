@@ -1,7 +1,7 @@
 @interface NESMURLFilterSessionStateRunning
 - (BOOL)handleSleep;
 - (NESMURLFilterSessionStateRunning)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleUpdateConfiguration;
 - (void)handleWakeup;
 @end
@@ -31,8 +31,8 @@
     v8 = 0;
   }
 
-  v9 = [v8 configuration];
-  sub_100019EA0(v6, v9);
+  configuration = [v8 configuration];
+  sub_100019EA0(v6, configuration);
 }
 
 - (void)handleWakeup
@@ -83,11 +83,11 @@
   return 1;
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = NESMURLFilterSessionStateRunning;
-  [(NESMURLFilterSessionState *)&v9 enterWithSession:a3];
+  [(NESMURLFilterSessionState *)&v9 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -98,7 +98,7 @@
     Property = 0;
   }
 
-  v7 = [Property server];
+  server = [Property server];
   if (self)
   {
     v8 = objc_getProperty(self, v6, 16, 1);
@@ -109,7 +109,7 @@
     v8 = 0;
   }
 
-  [v7 requestInstallForSession:v8 withParentSession:0 exclusive:1];
+  [server requestInstallForSession:v8 withParentSession:0 exclusive:1];
 }
 
 - (NESMURLFilterSessionStateRunning)init

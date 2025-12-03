@@ -1,17 +1,17 @@
 @interface SiriCoreZlibDataCompressor
 - (SiriCoreZlibDataCompressor)init;
-- (id)compressedDataForData:(id)a3 error:(id *)a4;
+- (id)compressedDataForData:(id)data error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation SiriCoreZlibDataCompressor
 
-- (id)compressedDataForData:(id)a3 error:(id *)a4
+- (id)compressedDataForData:(id)data error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && dispatch_data_get_size(v6))
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy && dispatch_data_get_size(dataCopy))
   {
     v23 = 0;
     v24 = &v23;
@@ -52,9 +52,9 @@
       v12 = v24[5];
       v24[5] = 0;
 
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreDataCompressorErrorDomain" code:*(v20 + 6) userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SiriCoreDataCompressorErrorDomain" code:*(v20 + 6) userInfo:0];
       }
     }
 

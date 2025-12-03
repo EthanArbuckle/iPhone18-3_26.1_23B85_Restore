@@ -2,25 +2,25 @@
 - (BOOL)_isRemoraSecondPassRunning;
 - (BOOL)handlePendingBuiltInVoiceTriggerIfNeeded;
 - (BOOL)handlePendingRemoraVoiceTriggerIfNeeded;
-- (BOOL)isBultInVoiceTriggerEvent:(id)a3;
-- (BOOL)isRemoraVoiceTriggerEvent:(id)a3;
+- (BOOL)isBultInVoiceTriggerEvent:(id)event;
+- (BOOL)isRemoraVoiceTriggerEvent:(id)event;
 - (CSPreMyriadCoordinator)init;
 - (CSSecondPassProgressProviding)builtInSeconPassProgressProvider;
 - (CSSecondPassProgressProviding)remoraSecondPassProgressProvider;
 - (CSVoiceTriggerDelegate)delegate;
 - (void)_clearPendingBuiltInVoiceTrigger;
 - (void)_clearPendingRemoraVoiceTrigger;
-- (void)_getHighestRemoraFirstPassGoodnessScore:(id)a3;
+- (void)_getHighestRemoraFirstPassGoodnessScore:(id)score;
 - (void)keywordDetectorDidDetectKeyword;
-- (void)raiseToSpeakDetected:(id)a3;
-- (void)secondPassDidStartForClient:(unint64_t)a3 deviceId:(id)a4 withFirstPassEstimate:(double)a5;
-- (void)secondPassDidStopForClient:(unint64_t)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)voiceTriggerDidDetectNearMiss:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidDetectSpeakerReject:(id)a3;
-- (void)voiceTriggerDidRejected:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerGotSuperVector:(id)a3;
+- (void)raiseToSpeakDetected:(id)detected;
+- (void)secondPassDidStartForClient:(unint64_t)client deviceId:(id)id withFirstPassEstimate:(double)estimate;
+- (void)secondPassDidStopForClient:(unint64_t)client deviceId:(id)id;
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id;
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id completion:(id)completion;
+- (void)voiceTriggerDidDetectNearMiss:(id)miss deviceId:(id)id;
+- (void)voiceTriggerDidDetectSpeakerReject:(id)reject;
+- (void)voiceTriggerDidRejected:(id)rejected deviceId:(id)id;
+- (void)voiceTriggerGotSuperVector:(id)vector;
 @end
 
 @implementation CSPreMyriadCoordinator
@@ -46,22 +46,22 @@
   return WeakRetained;
 }
 
-- (void)secondPassDidStartForClient:(unint64_t)a3 deviceId:(id)a4 withFirstPassEstimate:(double)a5
+- (void)secondPassDidStartForClient:(unint64_t)client deviceId:(id)id withFirstPassEstimate:(double)estimate
 {
-  v8 = a4;
+  idCopy = id;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"N/A";
     *buf = 136315651;
     v16 = "[CSPreMyriadCoordinator secondPassDidStartForClient:deviceId:withFirstPassEstimate:]";
-    if (v8)
+    if (idCopy)
     {
-      v10 = v8;
+      v10 = idCopy;
     }
 
     v17 = 2048;
-    v18 = a3;
+    clientCopy = client;
     v19 = 2113;
     v20 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s client: %lu, deviceId: %{private}@", buf, 0x20u);
@@ -76,9 +76,9 @@
     v12[2] = sub_1000274AC;
     v12[3] = &unk_10024E8A8;
     objc_copyWeak(v14, buf);
-    v14[1] = a3;
-    v14[2] = *&a5;
-    v13 = v8;
+    v14[1] = client;
+    v14[2] = *&estimate;
+    v13 = idCopy;
     dispatch_async(queue, v12);
 
     objc_destroyWeak(v14);
@@ -86,22 +86,22 @@
   }
 }
 
-- (void)secondPassDidStopForClient:(unint64_t)a3 deviceId:(id)a4
+- (void)secondPassDidStopForClient:(unint64_t)client deviceId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"N/A";
     *buf = 136315651;
     v14 = "[CSPreMyriadCoordinator secondPassDidStopForClient:deviceId:]";
-    if (v6)
+    if (idCopy)
     {
-      v8 = v6;
+      v8 = idCopy;
     }
 
     v15 = 2048;
-    v16 = a3;
+    clientCopy = client;
     v17 = 2113;
     v18 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s client: %lu, deviceId: %{private}@", buf, 0x20u);
@@ -116,8 +116,8 @@
     block[2] = sub_100027748;
     block[3] = &unk_100251DA0;
     objc_copyWeak(v12, buf);
-    v12[1] = a3;
-    v11 = v6;
+    v12[1] = client;
+    v11 = idCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(v12);
@@ -125,36 +125,36 @@
   }
 }
 
-- (void)voiceTriggerDidRejected:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidRejected:(id)rejected deviceId:(id)id
 {
-  v8 = a3;
-  v6 = a4;
-  if ([(CSPreMyriadCoordinator *)self isBultInVoiceTriggerEvent:v8])
+  rejectedCopy = rejected;
+  idCopy = id;
+  if ([(CSPreMyriadCoordinator *)self isBultInVoiceTriggerEvent:rejectedCopy])
   {
     [(CSPreMyriadCoordinator *)self handlePendingRemoraVoiceTriggerIfNeeded];
   }
 
-  else if ([(CSPreMyriadCoordinator *)self isRemoraVoiceTriggerEvent:v8])
+  else if ([(CSPreMyriadCoordinator *)self isRemoraVoiceTriggerEvent:rejectedCopy])
   {
     [(CSPreMyriadCoordinator *)self handlePendingBuiltInVoiceTriggerIfNeeded];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained voiceTriggerDidRejected:v8 deviceId:v6];
+  [WeakRetained voiceTriggerDidRejected:rejectedCopy deviceId:idCopy];
 }
 
-- (void)raiseToSpeakDetected:(id)a3
+- (void)raiseToSpeakDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained raiseToSpeakDetected:v4];
+  [WeakRetained raiseToSpeakDetected:detectedCopy];
 }
 
-- (void)voiceTriggerGotSuperVector:(id)a3
+- (void)voiceTriggerGotSuperVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained voiceTriggerGotSuperVector:v4];
+  [WeakRetained voiceTriggerGotSuperVector:vectorCopy];
 }
 
 - (void)keywordDetectorDidDetectKeyword
@@ -163,59 +163,59 @@
   [WeakRetained keywordDetectorDidDetectKeyword];
 }
 
-- (void)voiceTriggerDidDetectSpeakerReject:(id)a3
+- (void)voiceTriggerDidDetectSpeakerReject:(id)reject
 {
-  v4 = a3;
+  rejectCopy = reject;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained voiceTriggerDidDetectSpeakerReject:v4];
+  [WeakRetained voiceTriggerDidDetectSpeakerReject:rejectCopy];
 }
 
-- (void)voiceTriggerDidDetectNearMiss:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectNearMiss:(id)miss deviceId:(id)id
 {
-  v8 = a3;
-  v6 = a4;
-  if ([(CSPreMyriadCoordinator *)self isBultInVoiceTriggerEvent:v8])
+  missCopy = miss;
+  idCopy = id;
+  if ([(CSPreMyriadCoordinator *)self isBultInVoiceTriggerEvent:missCopy])
   {
     [(CSPreMyriadCoordinator *)self handlePendingRemoraVoiceTriggerIfNeeded];
   }
 
-  else if ([(CSPreMyriadCoordinator *)self isRemoraVoiceTriggerEvent:v8])
+  else if ([(CSPreMyriadCoordinator *)self isRemoraVoiceTriggerEvent:missCopy])
   {
     [(CSPreMyriadCoordinator *)self handlePendingBuiltInVoiceTriggerIfNeeded];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained voiceTriggerDidDetectNearMiss:v8 deviceId:v6];
+  [WeakRetained voiceTriggerDidDetectNearMiss:missCopy deviceId:idCopy];
 }
 
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  keywordCopy = keyword;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027B38;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keywordCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = keywordCopy;
   dispatch_async(queue, block);
 }
 
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  keywordCopy = keyword;
+  idCopy = id;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 voiceTriggerDidDetectKeyword:v12 deviceId:v8 completion:v9];
+    [v11 voiceTriggerDidDetectKeyword:keywordCopy deviceId:idCopy completion:completionCopy];
   }
 }
 
@@ -237,10 +237,10 @@
   return v3;
 }
 
-- (void)_getHighestRemoraFirstPassGoodnessScore:(id)a3
+- (void)_getHighestRemoraFirstPassGoodnessScore:(id)score
 {
-  v4 = a3;
-  if (v4)
+  scoreCopy = score;
+  if (scoreCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -260,7 +260,7 @@
     v6[4] = &v13;
     v6[5] = &v7;
     [(NSMutableDictionary *)accessoryVoiceTriggerMetaDataByDeviceId enumerateKeysAndObjectsUsingBlock:v6];
-    v4[2](v4, v8[5], v14[3]);
+    scoreCopy[2](scoreCopy, v8[5], v14[3]);
     _Block_object_dispose(&v7, 8);
 
     _Block_object_dispose(&v13, 8);
@@ -422,17 +422,17 @@
   }
 }
 
-- (BOOL)isRemoraVoiceTriggerEvent:(id)a3
+- (BOOL)isRemoraVoiceTriggerEvent:(id)event
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (!eventCopy)
   {
     goto LABEL_6;
   }
 
   v5 = kVTEIfirstPassTriggerSource;
-  v6 = [v3 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+  v6 = [eventCopy objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
   if (!v6)
   {
     goto LABEL_6;
@@ -465,17 +465,17 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)isBultInVoiceTriggerEvent:(id)a3
+- (BOOL)isBultInVoiceTriggerEvent:(id)event
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (!eventCopy)
   {
     goto LABEL_6;
   }
 
   v5 = kVTEIfirstPassTriggerSource;
-  v6 = [v3 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+  v6 = [eventCopy objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
   if (!v6)
   {
     goto LABEL_6;

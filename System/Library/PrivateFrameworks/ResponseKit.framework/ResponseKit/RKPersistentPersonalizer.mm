@@ -2,17 +2,17 @@
 + (id)nonEmptyStringsPredicate;
 - (NSDate)lastDynamicDataCreationCheckDate;
 - (NSDate)lastObservedDynamicDataCreationDate;
-- (RKPersistentPersonalizer)initWithLanguageIdentifier:(id)a3 andDynamicDataURL:(id)a4 displayStringsProvider:(id)a5;
+- (RKPersistentPersonalizer)initWithLanguageIdentifier:(id)identifier andDynamicDataURL:(id)l displayStringsProvider:(id)provider;
 - (id)dynamicDataCreationDate;
-- (id)headwordsForSynonym:(id)a3;
-- (id)headwordsForSynonymPrefix:(id)a3;
-- (id)topSynonymsForSpeechAct:(id)a3 headword:(id)a4 recipientContext:(id)a5 maxCount:(unint64_t)a6;
+- (id)headwordsForSynonym:(id)synonym;
+- (id)headwordsForSynonymPrefix:(id)prefix;
+- (id)topSynonymsForSpeechAct:(id)act headword:(id)headword recipientContext:(id)context maxCount:(unint64_t)count;
 - (void)createLanguageModel;
 - (void)dealloc;
 - (void)flushDynamicData;
 - (void)initializeDynamicLanguageModel;
 - (void)model;
-- (void)trainSynonymForSpeechAct:(id)a3 headword:(id)a4 userResponse:(id)a5 recipientContext:(id)a6 weight:(unint64_t)a7 effectiveDate:(id)a8;
+- (void)trainSynonymForSpeechAct:(id)act headword:(id)headword userResponse:(id)response recipientContext:(id)context weight:(unint64_t)weight effectiveDate:(id)date;
 @end
 
 @implementation RKPersistentPersonalizer
@@ -36,23 +36,23 @@ uint64_t __52__RKPersistentPersonalizer_nonEmptyStringsPredicate__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (RKPersistentPersonalizer)initWithLanguageIdentifier:(id)a3 andDynamicDataURL:(id)a4 displayStringsProvider:(id)a5
+- (RKPersistentPersonalizer)initWithLanguageIdentifier:(id)identifier andDynamicDataURL:(id)l displayStringsProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  providerCopy = provider;
   v30.receiver = self;
   v30.super_class = RKPersistentPersonalizer;
   v12 = [(RKPersistentPersonalizer *)&v30 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_languageID, a3);
-    v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v9];
+    objc_storeStrong(&v12->_languageID, identifier);
+    v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:identifierCopy];
     languageLocale = v13->_languageLocale;
     v13->_languageLocale = v14;
 
-    objc_storeStrong(&v13->_dynamicDataURL, a4);
+    objc_storeStrong(&v13->_dynamicDataURL, l);
     if (!v13->_dynamicDataURL)
     {
       v16 = NSHomeDirectory();
@@ -63,13 +63,13 @@ uint64_t __52__RKPersistentPersonalizer_nonEmptyStringsPredicate__block_invoke()
       v13->_dynamicDataURL = v18;
     }
 
-    objc_storeStrong(&v13->_displayStringsProvider, a5);
+    objc_storeStrong(&v13->_displayStringsProvider, provider);
     v13->_model = [(RKPersistentPersonalizer *)v13 createLanguageModel];
-    v20 = [(RKPersistentPersonalizer *)v13 dynamicDataCreationDate];
-    objc_storeWeak(&v13->_lastObservedDynamicDataCreationDate, v20);
+    dynamicDataCreationDate = [(RKPersistentPersonalizer *)v13 dynamicDataCreationDate];
+    objc_storeWeak(&v13->_lastObservedDynamicDataCreationDate, dynamicDataCreationDate);
 
-    v21 = [MEMORY[0x277CBEAA8] date];
-    objc_storeWeak(&v13->_lastDynamicDataCreationCheckDate, v21);
+    date = [MEMORY[0x277CBEAA8] date];
+    objc_storeWeak(&v13->_lastDynamicDataCreationCheckDate, date);
 
     if (!v13->_model)
     {
@@ -77,8 +77,8 @@ uint64_t __52__RKPersistentPersonalizer_nonEmptyStringsPredicate__block_invoke()
       goto LABEL_10;
     }
 
-    v22 = [(RKPersistentPersonalizer *)v13 languageID];
-    v23 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v22];
+    languageID = [(RKPersistentPersonalizer *)v13 languageID];
+    v23 = [RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:languageID];
 
     v24 = +[RKAssets synonyms];
     v25 = [v24 objectForKeyedSubscript:v23];
@@ -104,8 +104,8 @@ LABEL_10:
   v2 = LMLanguageModelCopyDynamicModelBundlePath();
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 attributesOfItemAtPath:v2 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [defaultManager attributesOfItemAtPath:v2 error:0];
 
     v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA108]];
   }
@@ -120,16 +120,16 @@ LABEL_10:
 
 - (void)model
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(RKPersistentPersonalizer *)self lastDynamicDataCreationCheckDate];
-  if (!v4 || (v5 = v4, -[RKPersistentPersonalizer lastDynamicDataCreationCheckDate](self, "lastDynamicDataCreationCheckDate"), v6 = objc_claimAutoreleasedReturnValue(), [v3 timeIntervalSinceDate:v6], v8 = v7, v6, v5, v8 > 3600.0))
+  date = [MEMORY[0x277CBEAA8] date];
+  lastDynamicDataCreationCheckDate = [(RKPersistentPersonalizer *)self lastDynamicDataCreationCheckDate];
+  if (!lastDynamicDataCreationCheckDate || (v5 = lastDynamicDataCreationCheckDate, -[RKPersistentPersonalizer lastDynamicDataCreationCheckDate](self, "lastDynamicDataCreationCheckDate"), v6 = objc_claimAutoreleasedReturnValue(), [date timeIntervalSinceDate:v6], v8 = v7, v6, v5, v8 > 3600.0))
   {
-    [(RKPersistentPersonalizer *)self setLastDynamicDataCreationCheckDate:v3];
-    v9 = [(RKPersistentPersonalizer *)self dynamicDataCreationDate];
-    if (v9)
+    [(RKPersistentPersonalizer *)self setLastDynamicDataCreationCheckDate:date];
+    dynamicDataCreationDate = [(RKPersistentPersonalizer *)self dynamicDataCreationDate];
+    if (dynamicDataCreationDate)
     {
-      v10 = [(RKPersistentPersonalizer *)self lastObservedDynamicDataCreationDate];
-      v11 = [v9 isEqualToDate:v10];
+      lastObservedDynamicDataCreationDate = [(RKPersistentPersonalizer *)self lastObservedDynamicDataCreationDate];
+      v11 = [dynamicDataCreationDate isEqualToDate:lastObservedDynamicDataCreationDate];
 
       if ((v11 & 1) == 0)
       {
@@ -141,7 +141,7 @@ LABEL_10:
         }
 
         self->_model = [(RKPersistentPersonalizer *)self createLanguageModel];
-        [(RKPersistentPersonalizer *)self setLastObservedDynamicDataCreationDate:v9];
+        [(RKPersistentPersonalizer *)self setLastObservedDynamicDataCreationDate:dynamicDataCreationDate];
       }
     }
 
@@ -167,25 +167,25 @@ LABEL_10:
   v55 = *MEMORY[0x277D85DE8];
   p_displayStringsProvider = &self->_displayStringsProvider;
   displayStringsProvider = self->_displayStringsProvider;
-  v5 = [(RKPersistentPersonalizer *)self languageID];
-  v32 = [(RKDisplayStringsProvider *)displayStringsProvider displayStringsForPlatform:@"iOS" languageID:v5];
+  languageID = [(RKPersistentPersonalizer *)self languageID];
+  v32 = [(RKDisplayStringsProvider *)displayStringsProvider displayStringsForPlatform:@"iOS" languageID:languageID];
 
   v6 = *p_displayStringsProvider;
-  v7 = [(RKPersistentPersonalizer *)self languageID];
-  v29 = [(RKDisplayStringsProvider *)v6 displayStringsForPlatform:@"watchOS" languageID:v7];
+  languageID2 = [(RKPersistentPersonalizer *)self languageID];
+  v29 = [(RKDisplayStringsProvider *)v6 displayStringsForPlatform:@"watchOS" languageID:languageID2];
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v32 allKeys];
-  v10 = [v8 setWithArray:v9];
-  v11 = [v29 allKeys];
-  v12 = [v10 setByAddingObjectsFromArray:v11];
-  v13 = [v12 allObjects];
+  allKeys = [v32 allKeys];
+  v10 = [v8 setWithArray:allKeys];
+  allKeys2 = [v29 allKeys];
+  v12 = [v10 setByAddingObjectsFromArray:allKeys2];
+  allObjects = [v12 allObjects];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v13;
+  obj = allObjects;
   v33 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v33)
   {
@@ -245,8 +245,8 @@ LABEL_10:
                 goto LABEL_13;
               }
 
-              v25 = [v22 allKeys];
-              v26 = [v25 objectAtIndexedSubscript:0];
+              allKeys3 = [v22 allKeys];
+              v26 = [allKeys3 objectAtIndexedSubscript:0];
               v27 = v40[5];
               v40[5] = v26;
 
@@ -294,24 +294,24 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
   }
 }
 
-- (void)trainSynonymForSpeechAct:(id)a3 headword:(id)a4 userResponse:(id)a5 recipientContext:(id)a6 weight:(unint64_t)a7 effectiveDate:(id)a8
+- (void)trainSynonymForSpeechAct:(id)act headword:(id)headword userResponse:(id)response recipientContext:(id)context weight:(unint64_t)weight effectiveDate:(id)date
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  actCopy = act;
+  headwordCopy = headword;
+  responseCopy = response;
+  contextCopy = context;
+  dateCopy = date;
   [(RKPersistentPersonalizer *)self model];
   v19 = *MEMORY[0x277D230F0];
   LMLanguageModelSetParameterValue();
-  v35 = v14;
-  v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"A:%@", v14];
-  v38[0] = v20;
-  v34 = v15;
-  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"H:%@", v15];
-  v38[1] = v21;
-  v38[2] = v16;
+  v35 = actCopy;
+  actCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"A:%@", actCopy];
+  v38[0] = actCopy;
+  v34 = headwordCopy;
+  headwordCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"H:%@", headwordCopy];
+  v38[1] = headwordCopy;
+  v38[2] = responseCopy;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
 
   v33[1] = v33;
@@ -341,7 +341,7 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
     while (v24 < [v22 count]);
   }
 
-  [v18 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v28 = [v22 count];
@@ -350,7 +350,7 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
     _os_log_impl(&dword_2620A2000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "updating dynamic lm with [%lu] candidate ngrams", buf, 0xCu);
   }
 
-  if (a7)
+  if (weight)
   {
     v29 = 0;
     do
@@ -362,7 +362,7 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
         {
           [(RKPersistentPersonalizer *)self model];
           v31 = *&v23[4 * v30];
-          if (v18)
+          if (dateCopy)
           {
             LMLanguageModelIncrementUsageCountWithEffectiveTime();
           }
@@ -381,27 +381,27 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
       ++v29;
     }
 
-    while (v29 != a7);
+    while (v29 != weight);
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)topSynonymsForSpeechAct:(id)a3 headword:(id)a4 recipientContext:(id)a5 maxCount:(unint64_t)a6
+- (id)topSynonymsForSpeechAct:(id)act headword:(id)headword recipientContext:(id)context maxCount:(unint64_t)count
 {
-  v29 = a6;
+  countCopy = count;
   v38[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBEB18] array];
+  actCopy = act;
+  headwordCopy = headword;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   [(RKPersistentPersonalizer *)self model];
   v13 = *MEMORY[0x277D230F0];
   LMLanguageModelSetParameterValue();
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"A:%@", v9];
-  v38[0] = v14;
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"H:%@", v10];
-  v38[1] = v15;
+  actCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"A:%@", actCopy];
+  v38[0] = actCopy;
+  headwordCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"H:%@", headwordCopy];
+  v38[1] = headwordCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
 
   v30 = &v27;
@@ -411,10 +411,10 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
     goto LABEL_5;
   }
 
-  v28 = v11;
-  v18 = v12;
-  v19 = v10;
-  v20 = v9;
+  v28 = contextCopy;
+  v18 = array;
+  v19 = headwordCopy;
+  v20 = actCopy;
   v21 = 0;
   v22 = 1;
   do
@@ -429,10 +429,10 @@ void __58__RKPersistentPersonalizer_initializeDynamicLanguageModel__block_invoke
   }
 
   while (v21 < [v16 count]);
-  v9 = v20;
-  v10 = v19;
-  v12 = v18;
-  v11 = v28;
+  actCopy = v20;
+  headwordCopy = v19;
+  array = v18;
+  contextCopy = v28;
   if (v22)
   {
 LABEL_5:
@@ -442,15 +442,15 @@ LABEL_5:
     v32 = 3221225472;
     v33 = __87__RKPersistentPersonalizer_topSynonymsForSpeechAct_headword_recipientContext_maxCount___block_invoke;
     v34 = &unk_279B103C0;
-    v35 = self;
-    v36 = v12;
-    v37 = v29;
+    selfCopy = self;
+    v36 = array;
+    v37 = countCopy;
     LMLanguageModelEnumeratePredictionsWithBlock();
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
 void __87__RKPersistentPersonalizer_topSynonymsForSpeechAct_headword_recipientContext_maxCount___block_invoke(uint64_t a1, unsigned int *a2, uint64_t a3, uint64_t a4, BOOL *a5)
@@ -469,8 +469,8 @@ void __87__RKPersistentPersonalizer_topSynonymsForSpeechAct_headword_recipientCo
 - (void)createLanguageModel
 {
   v3 = MEMORY[0x277CBEAF8];
-  v4 = [(RKPersistentPersonalizer *)self languageID];
-  v5 = [v3 localeWithLocaleIdentifier:v4];
+  languageID = [(RKPersistentPersonalizer *)self languageID];
+  v5 = [v3 localeWithLocaleIdentifier:languageID];
 
   if (v5)
   {
@@ -479,8 +479,8 @@ void __87__RKPersistentPersonalizer_topSynonymsForSpeechAct_headword_recipientCo
     [v6 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D23110]];
     [v6 setObject:v7 forKey:*MEMORY[0x277D23100]];
     [v6 setObject:@"com.apple.MobileSMS" forKey:*MEMORY[0x277D23088]];
-    v8 = [(RKPersistentPersonalizer *)self dynamicDataURL];
-    [v6 setObject:v8 forKey:*MEMORY[0x277D23098]];
+    dynamicDataURL = [(RKPersistentPersonalizer *)self dynamicDataURL];
+    [v6 setObject:dynamicDataURL forKey:*MEMORY[0x277D23098]];
 
     [v6 setObject:v7 forKey:*MEMORY[0x277D230D8]];
     v9 = LMLanguageModelCreate();
@@ -510,25 +510,25 @@ void __87__RKPersistentPersonalizer_topSynonymsForSpeechAct_headword_recipientCo
   [(RKPersistentPersonalizer *)&v4 dealloc];
 }
 
-- (id)headwordsForSynonym:(id)a3
+- (id)headwordsForSynonym:(id)synonym
 {
-  v4 = a3;
+  synonymCopy = synonym;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__0;
   v23 = __Block_byref_object_dispose__0;
   v24 = 0;
-  if ([v4 length])
+  if ([synonymCopy length])
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v6 = [v4 componentsSeparatedByCharactersInSet:v5];
-    v7 = [objc_opt_class() nonEmptyStringsPredicate];
-    v8 = [v6 filteredArrayUsingPredicate:v7];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v6 = [synonymCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
+    nonEmptyStringsPredicate = [objc_opt_class() nonEmptyStringsPredicate];
+    v8 = [v6 filteredArrayUsingPredicate:nonEmptyStringsPredicate];
     v9 = [v8 componentsJoinedByString:@" "];
 
     v10 = [RKUtilities normalizeForPersonalization:v9];
-    v11 = [(RKPersistentPersonalizer *)self synonyms];
+    synonyms = [(RKPersistentPersonalizer *)self synonyms];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __48__RKPersistentPersonalizer_headwordsForSynonym___block_invoke;
@@ -536,9 +536,9 @@ void __87__RKPersistentPersonalizer_topSynonymsForSpeechAct_headword_recipientCo
     v12 = v10;
     v16 = v12;
     v18 = &v19;
-    v4 = v9;
-    v17 = v4;
-    [v11 enumerateKeysAndObjectsUsingBlock:v15];
+    synonymCopy = v9;
+    v17 = synonymCopy;
+    [synonyms enumerateKeysAndObjectsUsingBlock:v15];
 
     v13 = v20[5];
   }
@@ -573,15 +573,15 @@ void __48__RKPersistentPersonalizer_headwordsForSynonym___block_invoke(void *a1,
   }
 }
 
-- (id)headwordsForSynonymPrefix:(id)a3
+- (id)headwordsForSynonymPrefix:(id)prefix
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
-  v7 = [v5 componentsSeparatedByCharactersInSet:v6];
+  prefixCopy = prefix;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
+  v7 = [prefixCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  v8 = [objc_opt_class() nonEmptyStringsPredicate];
-  v9 = [v7 filteredArrayUsingPredicate:v8];
+  nonEmptyStringsPredicate = [objc_opt_class() nonEmptyStringsPredicate];
+  v9 = [v7 filteredArrayUsingPredicate:nonEmptyStringsPredicate];
   v10 = [v9 componentsJoinedByString:@" "];
 
   v11 = [v10 componentsSeparatedByString:@" "];
@@ -603,8 +603,8 @@ void __48__RKPersistentPersonalizer_headwordsForSynonym___block_invoke(void *a1,
       v14 = [v11 subarrayWithRange:{0, v13}];
       v15 = [v14 componentsJoinedByString:@" "];
 
-      v16 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-      v17 = [v15 stringByTrimmingCharactersInSet:v16];
+      punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+      v17 = [v15 stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
       v18 = [(RKPersistentPersonalizer *)self headwordsForSynonym:v17];
 
@@ -631,9 +631,9 @@ LABEL_7:
 
 - (void)flushDynamicData
 {
-  v2 = [(RKPersistentPersonalizer *)self model];
+  model = [(RKPersistentPersonalizer *)self model];
 
-  MEMORY[0x282181938](v2, 0);
+  MEMORY[0x282181938](model, 0);
 }
 
 - (NSDate)lastObservedDynamicDataCreationDate

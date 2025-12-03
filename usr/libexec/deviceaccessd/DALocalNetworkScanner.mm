@@ -1,29 +1,29 @@
 @interface DALocalNetworkScanner
-- (DALocalNetworkScanner)initWithConfiguration:(id)a3 error:(id *)a4;
-- (void)_browserResultChangedFromOldResult:(id)a3 newResult:(id)a4 batchComplete:(BOOL)a5;
-- (void)_handleBrowseResults:(id)a3;
-- (void)discoverEndpointWithCompletion:(id)a3;
+- (DALocalNetworkScanner)initWithConfiguration:(id)configuration error:(id *)error;
+- (void)_browserResultChangedFromOldResult:(id)result newResult:(id)newResult batchComplete:(BOOL)complete;
+- (void)_handleBrowseResults:(id)results;
+- (void)discoverEndpointWithCompletion:(id)completion;
 @end
 
 @implementation DALocalNetworkScanner
 
-- (DALocalNetworkScanner)initWithConfiguration:(id)a3 error:(id *)a4
+- (DALocalNetworkScanner)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bonjourServiceTypes];
-  v8 = [v7 count];
+  configurationCopy = configuration;
+  bonjourServiceTypes = [configurationCopy bonjourServiceTypes];
+  v8 = [bonjourServiceTypes count];
 
   if (v8 <= 1)
   {
-    if (a4)
+    if (error)
     {
       DAErrorF();
-      *a4 = v11 = 0;
+      *error = selfCopy = 0;
       goto LABEL_7;
     }
 
 LABEL_6:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
@@ -35,28 +35,28 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = [v6 copy];
+  v9 = [configurationCopy copy];
   discoveryConfiguration = self->_discoveryConfiguration;
   self->_discoveryConfiguration = v9;
 
   objc_storeStrong(&self->_dispatchQueue, &_dispatch_main_q);
   self = self;
-  v11 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)discoverEndpointWithCompletion:(id)a3
+- (void)discoverEndpointWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DALocalNetworkScanner *)self discoveryConfiguration];
-  v6 = [v5 bonjourServiceTypes];
-  v7 = [v6 firstObject];
+  completionCopy = completion;
+  discoveryConfiguration = [(DALocalNetworkScanner *)self discoveryConfiguration];
+  bonjourServiceTypes = [discoveryConfiguration bonjourServiceTypes];
+  firstObject = [bonjourServiceTypes firstObject];
 
   v8 = nw_parameters_create();
   nw_parameters_set_include_peer_to_peer(v8, 1);
-  bonjour_service = nw_browse_descriptor_create_bonjour_service([v7 utf8ValueSafe], "local");
+  bonjour_service = nw_browse_descriptor_create_bonjour_service([firstObject utf8ValueSafe], "local");
   nw_browse_descriptor_set_include_txt_record(bonjour_service, 1);
   v10 = nw_browser_create(bonjour_service, v8);
   browser = self->_browser;
@@ -79,7 +79,7 @@ LABEL_7:
     handler[3] = &unk_100058AB8;
     objc_copyWeak(&v16, &location);
     nw_browser_set_browse_results_changed_handler(v13, handler);
-    [(DALocalNetworkScanner *)self setCompletionHandler:v4];
+    [(DALocalNetworkScanner *)self setCompletionHandler:completionCopy];
     nw_browser_set_queue(self->_browser, self->_dispatchQueue);
     nw_browser_start(self->_browser);
     objc_destroyWeak(&v16);
@@ -95,18 +95,18 @@ LABEL_7:
     }
 
     v14 = DAErrorF();
-    v4[2](v4, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 }
 
-- (void)_handleBrowseResults:(id)a3
+- (void)_handleBrowseResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [resultsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -118,22 +118,22 @@ LABEL_7:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
         if (([v9 change] & 2) != 0)
         {
-          v10 = [v9 freshResult];
-          v11 = nw_browse_result_copy_endpoint(v10);
+          freshResult = [v9 freshResult];
+          v11 = nw_browse_result_copy_endpoint(freshResult);
 
           if (dword_100060190 <= 50 && (dword_100060190 != -1 || _LogCategory_Initialize()))
           {
             sub_10002EA98();
           }
 
-          v12 = [(DALocalNetworkScanner *)self completionHandler];
-          (v12)[2](v12, v11, 0);
+          completionHandler = [(DALocalNetworkScanner *)self completionHandler];
+          (completionHandler)[2](completionHandler, v11, 0);
 
           nw_browser_cancel(self->_browser);
         }
@@ -142,7 +142,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v13 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v13 = [resultsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       v6 = v13;
     }
 
@@ -150,25 +150,25 @@ LABEL_7:
   }
 }
 
-- (void)_browserResultChangedFromOldResult:(id)a3 newResult:(id)a4 batchComplete:(BOOL)a5
+- (void)_browserResultChangedFromOldResult:(id)result newResult:(id)newResult batchComplete:(BOOL)complete
 {
-  v5 = a5;
-  old_result = a3;
-  v8 = a4;
-  changes = nw_browse_result_get_changes(old_result, v8);
+  completeCopy = complete;
+  old_result = result;
+  newResultCopy = newResult;
+  changes = nw_browse_result_get_changes(old_result, newResultCopy);
   if (changes <= 1)
   {
-    v10 = [[DABonjourBrowserResultChanges alloc] initWithOldResult:old_result freshResult:v8 change:changes];
-    v11 = [(DALocalNetworkScanner *)self resultChanges];
-    [v11 addObject:v10];
+    v10 = [[DABonjourBrowserResultChanges alloc] initWithOldResult:old_result freshResult:newResultCopy change:changes];
+    resultChanges = [(DALocalNetworkScanner *)self resultChanges];
+    [resultChanges addObject:v10];
 
-    if (v5)
+    if (completeCopy)
     {
-      v12 = [(DALocalNetworkScanner *)self resultChanges];
-      v13 = [v12 copy];
+      resultChanges2 = [(DALocalNetworkScanner *)self resultChanges];
+      v13 = [resultChanges2 copy];
 
-      v14 = [(DALocalNetworkScanner *)self resultChanges];
-      [v14 removeAllObjects];
+      resultChanges3 = [(DALocalNetworkScanner *)self resultChanges];
+      [resultChanges3 removeAllObjects];
 
       [(DALocalNetworkScanner *)self _handleBrowseResults:v13];
     }

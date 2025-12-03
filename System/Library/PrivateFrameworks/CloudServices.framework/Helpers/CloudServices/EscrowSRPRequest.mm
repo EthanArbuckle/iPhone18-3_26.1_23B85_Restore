@@ -10,20 +10,20 @@
 {
   v8.receiver = self;
   v8.super_class = EscrowSRPRequest;
-  v3 = [(EscrowGenericRequest *)&v8 validateInput];
-  if (!v3)
+  validateInput = [(EscrowGenericRequest *)&v8 validateInput];
+  if (!validateInput)
   {
-    v4 = [(EscrowGenericRequest *)self dsid];
-    v5 = [v4 length];
+    dsid = [(EscrowGenericRequest *)self dsid];
+    v5 = [dsid length];
 
     if (v5)
     {
-      v3 = 0;
+      validateInput = 0;
     }
 
     else
     {
-      v3 = [CloudServicesError errorWithCode:22 error:0 format:@"Missing DSID"];
+      validateInput = [CloudServicesError errorWithCode:22 error:0 format:@"Missing DSID"];
       v6 = CloudServicesLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
@@ -32,15 +32,15 @@
     }
   }
 
-  return v3;
+  return validateInput;
 }
 
 - (id)additionalHeaders
 {
   v6.receiver = self;
   v6.super_class = EscrowSRPRequest;
-  v3 = [(EscrowGenericRequest *)&v6 additionalHeaders];
-  v4 = [v3 mutableCopy];
+  additionalHeaders = [(EscrowGenericRequest *)&v6 additionalHeaders];
+  v4 = [additionalHeaders mutableCopy];
 
   if ([(EscrowGenericRequest *)self duplicate]|| [(EscrowGenericRequest *)self silentDoubleRecovery])
   {
@@ -54,37 +54,37 @@
 {
   v11.receiver = self;
   v11.super_class = EscrowSRPRequest;
-  v3 = [(EscrowGenericRequest *)&v11 bodyDictionary];
-  v4 = [(EscrowGenericRequest *)self blob];
-  v5 = [v4 base64EncodedStringWithOptions:0];
+  bodyDictionary = [(EscrowGenericRequest *)&v11 bodyDictionary];
+  blob = [(EscrowGenericRequest *)self blob];
+  v5 = [blob base64EncodedStringWithOptions:0];
 
   if (v5)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"blob"];
+    [bodyDictionary setObject:v5 forKeyedSubscript:@"blob"];
   }
 
-  v6 = [(EscrowGenericRequest *)self bypassToken];
+  bypassToken = [(EscrowGenericRequest *)self bypassToken];
 
-  if (v6)
+  if (bypassToken)
   {
-    v7 = [(EscrowGenericRequest *)self bypassToken];
-    [v3 setObject:v7 forKeyedSubscript:@"phoneNumberToken"];
+    bypassToken2 = [(EscrowGenericRequest *)self bypassToken];
+    [bodyDictionary setObject:bypassToken2 forKeyedSubscript:@"phoneNumberToken"];
   }
 
-  v8 = [(EscrowGenericRequest *)self challengeCode];
+  challengeCode = [(EscrowGenericRequest *)self challengeCode];
 
-  if (v8)
+  if (challengeCode)
   {
-    v9 = [(EscrowGenericRequest *)self challengeCode];
-    [v3 setObject:v9 forKeyedSubscript:@"smsChallengeCode"];
+    challengeCode2 = [(EscrowGenericRequest *)self challengeCode];
+    [bodyDictionary setObject:challengeCode2 forKeyedSubscript:@"smsChallengeCode"];
   }
 
   if ([(EscrowGenericRequest *)self silentAttempt])
   {
-    [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"silentAttempt"];
+    [bodyDictionary setObject:&__kCFBooleanTrue forKeyedSubscript:@"silentAttempt"];
   }
 
-  return v3;
+  return bodyDictionary;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface CNUIPRUISPosterSnapshotRequest
-+ (id)requestForConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5;
-+ (id)requestForConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5 windowScene:(id)a6 attachments:(id)a7;
-- (CNUIPRUISPosterSnapshotRequest)initWithPosterConfiguration:(id)a3 snapshotDescriptor:(id)a4;
-- (CNUIPRUISPosterSnapshotRequest)initWithWrappedRequest:(id)a3;
++ (id)requestForConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation;
++ (id)requestForConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation windowScene:(id)scene attachments:(id)attachments;
+- (CNUIPRUISPosterSnapshotRequest)initWithPosterConfiguration:(id)configuration snapshotDescriptor:(id)descriptor;
+- (CNUIPRUISPosterSnapshotRequest)initWithWrappedRequest:(id)request;
 @end
 
 @implementation CNUIPRUISPosterSnapshotRequest
 
-- (CNUIPRUISPosterSnapshotRequest)initWithPosterConfiguration:(id)a3 snapshotDescriptor:(id)a4
+- (CNUIPRUISPosterSnapshotRequest)initWithPosterConfiguration:(id)configuration snapshotDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
+  descriptorCopy = descriptor;
+  configurationCopy = configuration;
   v8 = objc_alloc(getPRUISPosterSnapshotRequestClass());
-  v9 = [v7 wrappedPosterConfiguration];
+  wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
 
-  v10 = [v6 wrappedDescriptor];
+  wrappedDescriptor = [descriptorCopy wrappedDescriptor];
 
-  v11 = [v8 initWithPoster:v9 snapshotDescriptor:v10];
+  v11 = [v8 initWithPoster:wrappedPosterConfiguration snapshotDescriptor:wrappedDescriptor];
   v12 = [CNUIPRUISPosterSnapshotRequest alloc];
   v13 = [v11 copy];
   v14 = [(CNUIPRUISPosterSnapshotRequest *)v12 initWithWrappedRequest:v13];
@@ -24,16 +24,16 @@
   return v14;
 }
 
-+ (id)requestForConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5
++ (id)requestForConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation
 {
-  v7 = a4;
-  v8 = a3;
+  definitionCopy = definition;
+  configurationCopy = configuration;
   PRUISPosterSnapshotRequestClass = getPRUISPosterSnapshotRequestClass();
-  v10 = [v8 wrappedPosterConfiguration];
+  wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
 
-  v11 = [v7 wrappedDefinition];
+  wrappedDefinition = [definitionCopy wrappedDefinition];
 
-  v12 = [PRUISPosterSnapshotRequestClass snapshotRequestForPRSPosterConfiguration:v10 definition:v11 interfaceOrientation:a5];
+  v12 = [PRUISPosterSnapshotRequestClass snapshotRequestForPRSPosterConfiguration:wrappedPosterConfiguration definition:wrappedDefinition interfaceOrientation:orientation];
 
   v13 = [CNUIPRUISPosterSnapshotRequest alloc];
   v14 = [v12 copy];
@@ -42,17 +42,17 @@
   return v15;
 }
 
-+ (id)requestForConfiguration:(id)a3 definition:(id)a4 interfaceOrientation:(int64_t)a5 windowScene:(id)a6 attachments:(id)a7
++ (id)requestForConfiguration:(id)configuration definition:(id)definition interfaceOrientation:(int64_t)orientation windowScene:(id)scene attachments:(id)attachments
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v14 _cn_map:&__block_literal_global_483];
+  configurationCopy = configuration;
+  definitionCopy = definition;
+  sceneCopy = scene;
+  attachmentsCopy = attachments;
+  v15 = [attachmentsCopy _cn_map:&__block_literal_global_483];
   PRUISPosterSnapshotRequestClass = getPRUISPosterSnapshotRequestClass();
-  v17 = [v11 wrappedPosterConfiguration];
-  v18 = [v12 wrappedDefinition];
-  v19 = [PRUISPosterSnapshotRequestClass snapshotRequestForPRSPosterConfiguration:v17 definition:v18 interfaceOrientation:a5];
+  wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
+  wrappedDefinition = [definitionCopy wrappedDefinition];
+  v19 = [PRUISPosterSnapshotRequestClass snapshotRequestForPRSPosterConfiguration:wrappedPosterConfiguration definition:wrappedDefinition interfaceOrientation:orientation];
 
   v20 = [v19 mutableCopy];
   v29 = 0;
@@ -73,7 +73,7 @@
 
   v22 = v21;
   _Block_object_dispose(&v29, 8);
-  v23 = [v21 attachmentConfigurationWithHostWindowScene:v13 attachments:v15];
+  v23 = [v21 attachmentConfigurationWithHostWindowScene:sceneCopy attachments:v15];
   [v20 setAttachmentConfiguration:v23];
   v24 = [CNUIPRUISPosterSnapshotRequest alloc];
   v25 = [v20 copy];
@@ -82,16 +82,16 @@
   return v26;
 }
 
-- (CNUIPRUISPosterSnapshotRequest)initWithWrappedRequest:(id)a3
+- (CNUIPRUISPosterSnapshotRequest)initWithWrappedRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CNUIPRUISPosterSnapshotRequest;
   v6 = [(CNUIPRUISPosterSnapshotRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedRequest, a3);
+    objc_storeStrong(&v6->_wrappedRequest, request);
   }
 
   return v7;

@@ -1,26 +1,26 @@
 @interface PKAppletSubcredentialPairingSession
-+ (id)createSessionWithDelegate:(id)a3;
-- (id)prewarmWithManufacturerIdentifier:(id)a3;
++ (id)createSessionWithDelegate:(id)delegate;
+- (id)prewarmWithManufacturerIdentifier:(id)identifier;
 - (id)probeTerminalForPairingStatus;
-- (id)startPairingWithKeyDisplayName:(id)a3 pairingPassword:(id)a4 radioTechnologies:(unint64_t)a5 bindingAttestation:(id)a6;
-- (id)trackSubcredential:(id)a3 encryptedContainer:(id)a4 withReceipt:(id)a5;
-- (void)didFinishFirstTransactionForSession:(id)a3 error:(id)a4;
-- (void)didFinishPreWarmWithResult:(id)a3;
-- (void)didFinishProbingWithBrandCode:(unint64_t)a3 error:(id)a4;
+- (id)startPairingWithKeyDisplayName:(id)name pairingPassword:(id)password radioTechnologies:(unint64_t)technologies bindingAttestation:(id)attestation;
+- (id)trackSubcredential:(id)subcredential encryptedContainer:(id)container withReceipt:(id)receipt;
+- (void)didFinishFirstTransactionForSession:(id)session error:(id)error;
+- (void)didFinishPreWarmWithResult:(id)result;
+- (void)didFinishProbingWithBrandCode:(unint64_t)code error:(id)error;
 - (void)didStartPairing;
-- (void)keyPairingSession:(id)a3 didFinishPairingWithKey:(id)a4 trackingRequest:(id)a5 error:(id)a6;
+- (void)keyPairingSession:(id)session didFinishPairingWithKey:(id)key trackingRequest:(id)request error:(id)error;
 @end
 
 @implementation PKAppletSubcredentialPairingSession
 
-+ (id)createSessionWithDelegate:(id)a3
++ (id)createSessionWithDelegate:(id)delegate
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [(PKDASession *)[PKAppletSubcredentialPairingSession alloc] initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [(PKDASession *)[PKAppletSubcredentialPairingSession alloc] initWithDelegate:delegateCopy];
 
-  v5 = [MEMORY[0x1E699A138] sharedManager];
-  v6 = [v5 createPairingSessionWithDelegate:v4];
+  mEMORY[0x1E699A138] = [MEMORY[0x1E699A138] sharedManager];
+  v6 = [mEMORY[0x1E699A138] createPairingSessionWithDelegate:v4];
 
   if (v6)
   {
@@ -52,10 +52,10 @@
   return v8;
 }
 
-- (id)prewarmWithManufacturerIdentifier:(id)a3
+- (id)prewarmWithManufacturerIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(PKDASession *)self state]!= 2)
   {
     v5 = PKLogFacilityTypeGetObject(0x17uLL);
@@ -66,8 +66,8 @@
     }
   }
 
-  v6 = [(PKDASession *)self session];
-  v7 = [v6 preWarmForManufacturer:v4];
+  session = [(PKDASession *)self session];
+  v7 = [session preWarmForManufacturer:identifierCopy];
 
   if (v7)
   {
@@ -96,29 +96,29 @@
     }
   }
 
-  v4 = [(PKDASession *)self session];
-  v5 = [v4 startProbing];
+  session = [(PKDASession *)self session];
+  startProbing = [session startProbing];
 
-  if (v5)
+  if (startProbing)
   {
     v6 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v5;
+      v9 = startProbing;
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Probing failed with error: %@", &v8, 0xCu);
     }
   }
 
-  return v5;
+  return startProbing;
 }
 
-- (id)startPairingWithKeyDisplayName:(id)a3 pairingPassword:(id)a4 radioTechnologies:(unint64_t)a5 bindingAttestation:(id)a6
+- (id)startPairingWithKeyDisplayName:(id)name pairingPassword:(id)password radioTechnologies:(unint64_t)technologies bindingAttestation:(id)attestation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  passwordCopy = password;
+  attestationCopy = attestation;
   if ([(PKDASession *)self state]!= 2)
   {
     v13 = PKLogFacilityTypeGetObject(0x17uLL);
@@ -129,9 +129,9 @@
     }
   }
 
-  if (a5)
+  if (technologies)
   {
-    if ((a5 & 2) != 0)
+    if ((technologies & 2) != 0)
     {
       v14 = 2;
     }
@@ -141,8 +141,8 @@
       v14 = 1;
     }
 
-    v15 = [(PKDASession *)self session];
-    v16 = [v15 startKeyPairingWithPassword:v11 displayName:v10 transport:v14 bindingAttestation:v12];
+    session = [(PKDASession *)self session];
+    v16 = [session startKeyPairingWithPassword:passwordCopy displayName:nameCopy transport:v14 bindingAttestation:attestationCopy];
 
     if (v16)
     {
@@ -171,17 +171,17 @@
   return v16;
 }
 
-- (id)trackSubcredential:(id)a3 encryptedContainer:(id)a4 withReceipt:(id)a5
+- (id)trackSubcredential:(id)subcredential encryptedContainer:(id)container withReceipt:(id)receipt
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subcredentialCopy = subcredential;
+  containerCopy = container;
+  receiptCopy = receipt;
   if ([(PKDASession *)self state]== 2)
   {
-    v11 = PKDAAlishaKeyEncryptedRequestFromSubcredentialEncryptedRequest(v9);
-    v12 = [(PKDASession *)self session];
-    v13 = [v8 identifier];
-    v14 = [v12 setTrackingReceipt:v10 vehicleMobilizationData:v11 forKeyWithIdentifier:v13];
+    v11 = PKDAAlishaKeyEncryptedRequestFromSubcredentialEncryptedRequest(containerCopy);
+    session = [(PKDASession *)self session];
+    identifier = [subcredentialCopy identifier];
+    v14 = [session setTrackingReceipt:receiptCopy vehicleMobilizationData:v11 forKeyWithIdentifier:identifier];
   }
 
   else
@@ -199,17 +199,17 @@
   return v14;
 }
 
-- (void)keyPairingSession:(id)a3 didFinishPairingWithKey:(id)a4 trackingRequest:(id)a5 error:(id)a6
+- (void)keyPairingSession:(id)session didFinishPairingWithKey:(id)key trackingRequest:(id)request error:(id)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11 || v13)
+  sessionCopy = session;
+  keyCopy = key;
+  requestCopy = request;
+  errorCopy = error;
+  v14 = errorCopy;
+  if (!keyCopy || errorCopy)
   {
-    if (!v13)
+    if (!errorCopy)
     {
       v17 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E696A278];
@@ -218,44 +218,44 @@
       v14 = [v17 errorWithDomain:@"PKSubcredentialProvisioningErrorDomain" code:1 userInfo:v18];
     }
 
-    v15 = [(PKDASession *)self delegate];
-    [(PKSubcredentialEncryptedContainer *)v15 appletSubcredentialPairingSession:self didEndPairingWithError:v14];
+    delegate = [(PKDASession *)self delegate];
+    [(PKSubcredentialEncryptedContainer *)delegate appletSubcredentialPairingSession:self didEndPairingWithError:v14];
   }
 
   else
   {
-    v14 = [[PKAppletSubcredential alloc] initWithKeyInformation:v11];
-    v15 = [[PKSubcredentialEncryptedContainer alloc] initWithRequest:v12];
-    v16 = [(PKDASession *)self delegate];
-    [v16 appletSubcredentialPairingSession:self didEndPairingWithSubcredential:v14 registrationData:v15];
+    v14 = [[PKAppletSubcredential alloc] initWithKeyInformation:keyCopy];
+    delegate = [[PKSubcredentialEncryptedContainer alloc] initWithRequest:requestCopy];
+    delegate2 = [(PKDASession *)self delegate];
+    [delegate2 appletSubcredentialPairingSession:self didEndPairingWithSubcredential:v14 registrationData:delegate];
   }
 }
 
-- (void)didFinishFirstTransactionForSession:(id)a3 error:(id)a4
+- (void)didFinishFirstTransactionForSession:(id)session error:(id)error
 {
-  v5 = a4;
-  v6 = [(PKDASession *)self delegate];
-  [v6 appletSubcredentialPairingSessionDidFirstTransaction:self withError:v5];
+  errorCopy = error;
+  delegate = [(PKDASession *)self delegate];
+  [delegate appletSubcredentialPairingSessionDidFirstTransaction:self withError:errorCopy];
 }
 
-- (void)didFinishPreWarmWithResult:(id)a3
+- (void)didFinishPreWarmWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(PKDASession *)self delegate];
-  [v5 appletSubcredentialPairingSession:self didFinishPreWarmWithResult:v4];
+  resultCopy = result;
+  delegate = [(PKDASession *)self delegate];
+  [delegate appletSubcredentialPairingSession:self didFinishPreWarmWithResult:resultCopy];
 }
 
-- (void)didFinishProbingWithBrandCode:(unint64_t)a3 error:(id)a4
+- (void)didFinishProbingWithBrandCode:(unint64_t)code error:(id)error
 {
-  v6 = a4;
-  v7 = [(PKDASession *)self delegate];
-  [v7 appletSubcredentialPairingSession:self didFinishProbingTerminalWithError:v6 brandCode:a3];
+  errorCopy = error;
+  delegate = [(PKDASession *)self delegate];
+  [delegate appletSubcredentialPairingSession:self didFinishProbingTerminalWithError:errorCopy brandCode:code];
 }
 
 - (void)didStartPairing
 {
-  v3 = [(PKDASession *)self delegate];
-  [v3 appletSubcredentialPairingSessionDidBeginPairing:self];
+  delegate = [(PKDASession *)self delegate];
+  [delegate appletSubcredentialPairingSessionDidBeginPairing:self];
 }
 
 @end

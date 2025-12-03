@@ -18,26 +18,26 @@
     +[NSString(TSUPersonNameComponents) tsu_localizedDisplayNameWithPersonNameComponents:];
   }
 
-  v4 = [v3 givenName];
-  v5 = [v4 length];
-  v6 = [v3 familyName];
-  v7 = [v6 length];
+  givenName = [v3 givenName];
+  v5 = [givenName length];
+  familyName = [v3 familyName];
+  v7 = [familyName length];
   if (v5 && v7)
   {
-    if (([v4 tsu_isCJKString] & 1) != 0 || objc_msgSend(v6, "tsu_isCJKString"))
+    if (([givenName tsu_isCJKString] & 1) != 0 || objc_msgSend(familyName, "tsu_isCJKString"))
     {
-      v8 = [v6 stringByAppendingString:v4];
+      v8 = [familyName stringByAppendingString:givenName];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v4, v6];
+      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", givenName, familyName];
     }
   }
 
   else if (v5)
   {
-    v8 = v4;
+    v8 = givenName;
   }
 
   else
@@ -48,7 +48,7 @@
       goto LABEL_16;
     }
 
-    v8 = v6;
+    v8 = familyName;
   }
 
   v9 = v8;

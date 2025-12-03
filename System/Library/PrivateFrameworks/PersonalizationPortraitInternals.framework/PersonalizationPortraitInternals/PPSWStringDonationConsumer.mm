@@ -1,42 +1,42 @@
 @interface PPSWStringDonationConsumer
-- (PPSWStringDonationConsumer)initWithTopicStore:(id)a3 entityStore:(id)a4 locationStore:(id)a5 entityDissector:(id)a6 topicDissector:(id)a7;
-- (PPSWStringDonationConsumer)initWithTopicStore:(id)a3 entityStore:(id)a4 locationStore:(id)a5 writebackDissector:(id)a6 entityDissector:(id)a7 topicDissector:(id)a8;
-- (void)consumeWithDonation:(PPSWStringDonation *)a3 completionHandler:(id)a4;
+- (PPSWStringDonationConsumer)initWithTopicStore:(id)store entityStore:(id)entityStore locationStore:(id)locationStore entityDissector:(id)dissector topicDissector:(id)topicDissector;
+- (PPSWStringDonationConsumer)initWithTopicStore:(id)store entityStore:(id)entityStore locationStore:(id)locationStore writebackDissector:(id)dissector entityDissector:(id)entityDissector topicDissector:(id)topicDissector;
+- (void)consumeWithDonation:(PPSWStringDonation *)donation completionHandler:(id)handler;
 @end
 
 @implementation PPSWStringDonationConsumer
 
-- (PPSWStringDonationConsumer)initWithTopicStore:(id)a3 entityStore:(id)a4 locationStore:(id)a5 entityDissector:(id)a6 topicDissector:(id)a7
+- (PPSWStringDonationConsumer)initWithTopicStore:(id)store entityStore:(id)entityStore locationStore:(id)locationStore entityDissector:(id)dissector topicDissector:(id)topicDissector
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  return StringDonationConsumer.init(topicStore:entityStore:locationStore:entityDissector:topicDissector:)(a3, a4, a5, a6, a7);
+  storeCopy = store;
+  entityStoreCopy = entityStore;
+  locationStoreCopy = locationStore;
+  dissectorCopy = dissector;
+  topicDissectorCopy = topicDissector;
+  return StringDonationConsumer.init(topicStore:entityStore:locationStore:entityDissector:topicDissector:)(store, entityStore, locationStore, dissector, topicDissector);
 }
 
-- (void)consumeWithDonation:(PPSWStringDonation *)a3 completionHandler:(id)a4
+- (void)consumeWithDonation:(PPSWStringDonation *)donation completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = donation;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  donationCopy = donation;
+  selfCopy = self;
 
   sub_23227313C(&unk_232417F08, v7);
 }
 
-- (PPSWStringDonationConsumer)initWithTopicStore:(id)a3 entityStore:(id)a4 locationStore:(id)a5 writebackDissector:(id)a6 entityDissector:(id)a7 topicDissector:(id)a8
+- (PPSWStringDonationConsumer)initWithTopicStore:(id)store entityStore:(id)entityStore locationStore:(id)locationStore writebackDissector:(id)dissector entityDissector:(id)entityDissector topicDissector:(id)topicDissector
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  storeCopy = store;
+  entityStoreCopy = entityStore;
+  locationStoreCopy = locationStore;
+  dissectorCopy = dissector;
+  entityDissectorCopy = entityDissector;
+  topicDissectorCopy = topicDissector;
   sub_23227324C();
 }
 

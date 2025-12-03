@@ -1,7 +1,7 @@
 @interface TESMatcherManager
 + (id)sharedManager;
 - (TESMatcherManager)init;
-- (id)_getOrCreateMatcherForLocale:(id)a3;
+- (id)_getOrCreateMatcherForLocale:(id)locale;
 @end
 
 @implementation TESMatcherManager
@@ -46,18 +46,18 @@ uint64_t __34__TESMatcherManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (id)_getOrCreateMatcherForLocale:(id)a3
+- (id)_getOrCreateMatcherForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [v4 localeIdentifier];
+  localeCopy = locale;
+  localeIdentifier = [localeCopy localeIdentifier];
   [(NSLock *)self->_matcherCacheLock lock];
-  v6 = [(NSMutableDictionary *)self->_matcherCache objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_matcherCache objectForKey:localeIdentifier];
   [(NSLock *)self->_matcherCacheLock unlock];
   if (!v6)
   {
-    v6 = [[TESMatcher alloc] initWithLocale:v4];
+    v6 = [[TESMatcher alloc] initWithLocale:localeCopy];
     [(NSLock *)self->_matcherCacheLock lock];
-    [(NSMutableDictionary *)self->_matcherCache setObject:v6 forKey:v5];
+    [(NSMutableDictionary *)self->_matcherCache setObject:v6 forKey:localeIdentifier];
     [(NSLock *)self->_matcherCacheLock unlock];
   }
 

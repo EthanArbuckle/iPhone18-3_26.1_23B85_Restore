@@ -1,13 +1,13 @@
 @interface ATXSettingsActionsServer
 + (id)sharedInstance;
 - (ATXSettingsActionsServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_dummyDayZeroSettingsActionsForDeduping;
 - (id)_dummyDayZeroWatchAppSettingsActionsForDeduping;
-- (id)_suggestedActionsWithDayZeroBackfillForDeduping:(id)a3 clientBundleID:(id)a4;
-- (id)_suggestedActionsWithRequest:(id)a3;
-- (void)recentActionsWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)suggestedActionsWithRequest:(id)a3 completionHandler:(id)a4;
+- (id)_suggestedActionsWithDayZeroBackfillForDeduping:(id)deduping clientBundleID:(id)d;
+- (id)_suggestedActionsWithRequest:(id)request;
+- (void)recentActionsWithRequest:(id)request completionHandler:(id)handler;
+- (void)suggestedActionsWithRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation ATXSettingsActionsServer
@@ -99,9 +99,9 @@ void __42__ATXSettingsActionsServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = __atxlog_handle_settings_actions();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -109,7 +109,7 @@ void __42__ATXSettingsActionsServer_sharedInstance__block_invoke()
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "Connection attempted", buf, 2u);
   }
 
-  v7 = [v5 valueForEntitlement:*MEMORY[0x277CEB278]];
+  v7 = [connectionCopy valueForEntitlement:*MEMORY[0x277CEB278]];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0)
   {
     v8 = __atxlog_handle_settings_actions();
@@ -120,12 +120,12 @@ void __42__ATXSettingsActionsServer_sharedInstance__block_invoke()
     }
 
     v9 = ATXSettingsActionsInterface();
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_18_2];
-    [v5 setInvalidationHandler:&__block_literal_global_21_7];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_18_2];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_21_7];
+    [connectionCopy resume];
     v10 = 1;
   }
 
@@ -161,16 +161,16 @@ void __63__ATXSettingsActionsServer_listener_shouldAcceptNewConnection___block_i
   }
 }
 
-- (id)_suggestedActionsWithRequest:(id)a3
+- (id)_suggestedActionsWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 limit];
-  v5 = [v3 clientBundleID];
+  requestCopy = request;
+  limit = [requestCopy limit];
+  clientBundleID = [requestCopy clientBundleID];
 
-  v6 = [v5 isEqualToString:@"com.apple.Bridge"];
-  if (v4)
+  v6 = [clientBundleID isEqualToString:@"com.apple.Bridge"];
+  if (limit)
   {
-    v7 = v4;
+    v7 = limit;
   }
 
   else
@@ -190,9 +190,9 @@ void __63__ATXSettingsActionsServer_listener_shouldAcceptNewConnection___block_i
   }
 
   v10 = [v8 initWithConsumerSubType:v9];
-  v11 = [v10 suggestionLayoutFromCache];
-  v12 = [v11 allSuggestionsInLayout];
-  v13 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_28_2];
+  suggestionLayoutFromCache = [v10 suggestionLayoutFromCache];
+  allSuggestionsInLayout = [suggestionLayoutFromCache allSuggestionsInLayout];
+  v13 = [allSuggestionsInLayout _pas_mappedArrayWithTransform:&__block_literal_global_28_2];
   v14 = v13;
   v15 = MEMORY[0x277CBEBF8];
   if (v13)
@@ -237,10 +237,10 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
   return v5;
 }
 
-- (void)suggestedActionsWithRequest:(id)a3 completionHandler:(id)a4
+- (void)suggestedActionsWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = __atxlog_handle_settings_actions();
   v9 = os_signpost_id_generate(v8);
 
@@ -252,16 +252,16 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "RetrieveSuggestedActions", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [v6 clientBundleID];
+  clientBundleID = [requestCopy clientBundleID];
 
-  if (!v12)
+  if (!clientBundleID)
   {
-    [v6 setClientBundleID:@"com.apple.Preferences"];
+    [requestCopy setClientBundleID:@"com.apple.Preferences"];
   }
 
-  v13 = [(ATXSettingsActionsServer *)self _suggestedActionsWithRequest:v6];
+  v13 = [(ATXSettingsActionsServer *)self _suggestedActionsWithRequest:requestCopy];
   v14 = [objc_alloc(MEMORY[0x277CEB810]) initWithActions:v13];
-  v7[2](v7, v14, 0);
+  handlerCopy[2](handlerCopy, v14, 0);
 
   v15 = __atxlog_handle_settings_actions();
   v16 = v15;
@@ -272,10 +272,10 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
   }
 }
 
-- (void)recentActionsWithRequest:(id)a3 completionHandler:(id)a4
+- (void)recentActionsWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = __atxlog_handle_settings_actions();
   v9 = os_signpost_id_generate(v8);
 
@@ -288,18 +288,18 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "RetrieveRecentActions", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v13 = [v6 clientBundleID];
+  clientBundleID = [requestCopy clientBundleID];
 
-  if (!v13)
+  if (!clientBundleID)
   {
-    [v6 setClientBundleID:@"com.apple.Preferences"];
+    [requestCopy setClientBundleID:@"com.apple.Preferences"];
   }
 
   spid = v9;
-  v14 = [v6 limit];
-  if (v14)
+  limit = [requestCopy limit];
+  if (limit)
   {
-    v15 = v14;
+    v15 = limit;
   }
 
   else
@@ -315,10 +315,10 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
   v54 = 0;
   v16 = objc_alloc_init(MEMORY[0x277D23CC0]);
   v17 = [MEMORY[0x277CBEAA8] now];
-  v18 = [v6 startDate];
+  startDate = [requestCopy startDate];
   v19 = (v53[0] + 40);
   obj = *(v53[0] + 40);
-  v20 = [v16 transcriptPublisherWithStreamName:0 fromDate:v17 toDate:v18 maxEvents:0 reversed:1 error:&obj];
+  v20 = [v16 transcriptPublisherWithStreamName:0 fromDate:v17 toDate:startDate maxEvents:0 reversed:1 error:&obj];
   objc_storeStrong(v19, obj);
 
   if (v20 && !*(v53[0] + 40))
@@ -333,7 +333,7 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
     v45[1] = 3221225472;
     v45[2] = __71__ATXSettingsActionsServer_recentActionsWithRequest_completionHandler___block_invoke_2;
     v45[3] = &unk_2785A1EF8;
-    v27 = v6;
+    v27 = requestCopy;
     v46 = v27;
     v25 = v26;
     v47 = v25;
@@ -354,7 +354,7 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
         v31 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATXSettingsActionsServer" code:-2 userInfo:0];
       }
 
-      v7[2](v7, 0, v31);
+      handlerCopy[2](handlerCopy, 0, v31);
       if (!v30)
       {
       }
@@ -371,19 +371,19 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
     else
     {
       v33 = objc_opt_new();
-      v34 = [v27 clientBundleID];
-      [v33 setClientBundleID:v34];
+      clientBundleID2 = [v27 clientBundleID];
+      [v33 setClientBundleID:clientBundleID2];
 
       v35 = [v43 _suggestedActionsWithRequest:v33];
-      v36 = [v27 clientBundleID];
-      v37 = [v43 _suggestedActionsWithDayZeroBackfillForDeduping:v35 clientBundleID:v36];
+      clientBundleID3 = [v27 clientBundleID];
+      v37 = [v43 _suggestedActionsWithDayZeroBackfillForDeduping:v35 clientBundleID:clientBundleID3];
       [v25 minusSet:v37];
 
       v38 = objc_alloc(MEMORY[0x277CEB810]);
-      v39 = [v25 array];
-      v40 = [v38 initWithActions:v39];
+      array = [v25 array];
+      v40 = [v38 initWithActions:array];
 
-      (v7)[2](v7, v40, 0);
+      (handlerCopy)[2](handlerCopy, v40, 0);
       v41 = __atxlog_handle_settings_actions();
       v42 = v41;
       if (v12 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v41))
@@ -409,7 +409,7 @@ id __57__ATXSettingsActionsServer__suggestedActionsWithRequest___block_invoke(ui
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATXSettingsActionsServer" code:-1 userInfo:0];
     }
 
-    v7[2](v7, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
     if (!v22)
     {
     }
@@ -504,22 +504,22 @@ LABEL_8:
   return v25;
 }
 
-- (id)_suggestedActionsWithDayZeroBackfillForDeduping:(id)a3 clientBundleID:(id)a4
+- (id)_suggestedActionsWithDayZeroBackfillForDeduping:(id)deduping clientBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v6];
-  if (v7 && [v7 isEqualToString:@"com.apple.Bridge"])
+  dedupingCopy = deduping;
+  dCopy = d;
+  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:dedupingCopy];
+  if (dCopy && [dCopy isEqualToString:@"com.apple.Bridge"])
   {
-    v9 = [(ATXSettingsActionsServer *)self _dummyDayZeroWatchAppSettingsActionsForDeduping];
+    _dummyDayZeroWatchAppSettingsActionsForDeduping = [(ATXSettingsActionsServer *)self _dummyDayZeroWatchAppSettingsActionsForDeduping];
   }
 
   else
   {
-    v9 = [(ATXSettingsActionsServer *)self _dummyDayZeroSettingsActionsForDeduping];
+    _dummyDayZeroWatchAppSettingsActionsForDeduping = [(ATXSettingsActionsServer *)self _dummyDayZeroSettingsActionsForDeduping];
   }
 
-  v10 = v9;
+  v10 = _dummyDayZeroWatchAppSettingsActionsForDeduping;
   if ([v8 count] <= 3)
   {
     do

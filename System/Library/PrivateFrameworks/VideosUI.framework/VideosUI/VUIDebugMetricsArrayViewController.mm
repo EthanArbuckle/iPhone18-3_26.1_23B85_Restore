@@ -1,13 +1,13 @@
 @interface VUIDebugMetricsArrayViewController
 - (VUIDebugMetricsArrayViewController)init;
 - (id)object;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)generateCachedKeys;
-- (void)setArray:(id)a3;
-- (void)setObject:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setArray:(id)array;
+- (void)setObject:(id)object;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -25,27 +25,27 @@
   v5.receiver = self;
   v5.super_class = VUIDebugMetricsArrayViewController;
   [(VUIDebugMetricsArrayViewController *)&v5 viewDidLoad];
-  v3 = [(VUIDebugMetricsArrayViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
+  tableView = [(VUIDebugMetricsArrayViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
 
-  v4 = [(VUIDebugMetricsArrayViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"detail"];
+  tableView2 = [(VUIDebugMetricsArrayViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"detail"];
 }
 
-- (void)setArray:(id)a3
+- (void)setArray:(id)array
 {
-  objc_storeStrong(&self->_array, a3);
+  objc_storeStrong(&self->_array, array);
   [(VUIDebugMetricsArrayViewController *)self generateCachedKeys];
-  v4 = [(VUIDebugMetricsArrayViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(VUIDebugMetricsArrayViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v8[0] = a3;
+  v8[0] = object;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  objectCopy = object;
   v6 = [v4 arrayWithObjects:v8 count:1];
   array = self->_array;
   self->_array = v6;
@@ -82,8 +82,8 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 allKeys];
-        v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+        allKeys = [v6 allKeys];
+        v8 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
         v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
         [v10 setObject:v8 forKeyedSubscript:v9];
@@ -94,7 +94,7 @@ LABEL_5:
   [(VUIDebugMetricsArrayViewController *)self setCachedKeysOrder:v10];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = [(NSArray *)self->_array objectAtIndexedSubscript:0];
   objc_opt_class();
@@ -111,14 +111,14 @@ LABEL_5:
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_array objectAtIndexedSubscript:a4];
+  v5 = [(NSArray *)self->_array objectAtIndexedSubscript:section];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 allKeys];
-    v7 = [v6 count];
+    allKeys = [v5 allKeys];
+    v7 = [allKeys count];
   }
 
   else
@@ -129,52 +129,52 @@ LABEL_5:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [pathCopy section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(VUIDebugMetricsArrayViewController *)self cachedKeysOrder];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "section")}];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    cachedKeysOrder = [(VUIDebugMetricsArrayViewController *)self cachedKeysOrder];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+    v11 = [cachedKeysOrder objectForKeyedSubscript:v10];
 
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v13 = [v8 objectForKeyedSubscript:v12];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v14 = [v6 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v7];
+      v14 = [viewCopy dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v12];
-      v16 = [v14 textLabel];
-      [v16 setText:v15];
+      textLabel = [v14 textLabel];
+      [textLabel setText:v15];
 
       [v14 setAccessoryType:1];
     }
 
     else
     {
-      v14 = [v6 dequeueReusableCellWithIdentifier:@"detail" forIndexPath:v7];
+      v14 = [viewCopy dequeueReusableCellWithIdentifier:@"detail" forIndexPath:pathCopy];
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v12];
-      v22 = [v14 textLabel];
-      [v22 setText:v21];
+      textLabel2 = [v14 textLabel];
+      [textLabel2 setText:v21];
 
       v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v13];
-      v24 = [v14 detailTextLabel];
-      [v24 setText:v23];
+      detailTextLabel = [v14 detailTextLabel];
+      [detailTextLabel setText:v23];
     }
   }
 
   else
   {
-    v14 = [v6 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v7];
+    v14 = [viewCopy dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
     v17 = MEMORY[0x1E696AEC0];
-    v18 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [v7 row]);
+    v18 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [pathCopy row]);
     v19 = [v17 stringWithFormat:@"%@", v18];
-    v20 = [v14 textLabel];
-    [v20 setText:v19];
+    textLabel3 = [v14 textLabel];
+    [textLabel3 setText:v19];
 
     [v14 setAccessoryType:0];
   }
@@ -182,17 +182,17 @@ LABEL_5:
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [v13 section]);
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [pathCopy section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(VUIDebugMetricsArrayViewController *)self cachedKeysOrder];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "section")}];
-    v8 = [v6 objectForKeyedSubscript:v7];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v13, "row")}];
+    cachedKeysOrder = [(VUIDebugMetricsArrayViewController *)self cachedKeysOrder];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
+    v8 = [cachedKeysOrder objectForKeyedSubscript:v7];
+    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v10 = [v5 objectForKeyedSubscript:v9];
     v11 = objc_alloc_init(VUIDebugMetricsArrayViewController);
@@ -215,8 +215,8 @@ LABEL_7:
       [(VUIDebugMetricsArrayViewController *)v11 setObject:v10];
     }
 
-    v12 = [(VUIDebugMetricsArrayViewController *)self navigationController];
-    [v12 pushViewController:v11 animated:1];
+    navigationController = [(VUIDebugMetricsArrayViewController *)self navigationController];
+    [navigationController pushViewController:v11 animated:1];
 
     goto LABEL_7;
   }

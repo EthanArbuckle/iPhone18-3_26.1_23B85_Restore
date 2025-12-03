@@ -1,25 +1,25 @@
 @interface RTPowerAssertion
-- (RTPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4;
+- (RTPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout;
 - (void)dealloc;
 @end
 
 @implementation RTPowerAssertion
 
-- (RTPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4
+- (RTPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout
 {
-  v5 = a3;
-  if (v5 && ((v9.receiver = self, v9.super_class = RTPowerAssertion, (self = [(RTPowerAssertion *)&v9 init]) == 0) || (v6 = CPPowerAssertionCreate(), (self->_powerAssertion = v6) != 0)))
+  identifierCopy = identifier;
+  if (identifierCopy && ((v9.receiver = self, v9.super_class = RTPowerAssertion, (self = [(RTPowerAssertion *)&v9 init]) == 0) || (v6 = CPPowerAssertionCreate(), (self->_powerAssertion = v6) != 0)))
   {
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc

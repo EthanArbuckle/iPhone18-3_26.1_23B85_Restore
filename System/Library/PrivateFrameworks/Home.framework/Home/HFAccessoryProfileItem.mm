@@ -1,33 +1,33 @@
 @interface HFAccessoryProfileItem
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4;
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source;
 - (HFAccessoryProfileItem)init;
-- (HFAccessoryProfileItem)initWithProfile:(id)a3 valueSource:(id)a4;
+- (HFAccessoryProfileItem)initWithProfile:(id)profile valueSource:(id)source;
 - (HMAccessory)accessory;
 - (HMHome)home;
 - (NSSet)services;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)namingComponentForHomeKitObject;
 - (id)profiles;
-- (id)serviceLikeBuilderInHome:(id)a3;
+- (id)serviceLikeBuilderInHome:(id)home;
 @end
 
 @implementation HFAccessoryProfileItem
 
-- (HFAccessoryProfileItem)initWithProfile:(id)a3 valueSource:(id)a4
+- (HFAccessoryProfileItem)initWithProfile:(id)profile valueSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HFAccessoryProfileItem;
   v9 = [(HFAccessoryProfileItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_profile, a3);
-    objc_storeStrong(&v10->_valueSource, a4);
+    objc_storeStrong(&v9->_profile, profile);
+    objc_storeStrong(&v10->_valueSource, source);
   }
 
   return v10;
@@ -35,43 +35,43 @@
 
 - (HFAccessoryProfileItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithProfile_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileItem.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileItem.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFAccessoryProfileItem *)self valueSource];
-  v5 = [(HFAccessoryProfileItem *)self copyWithValueSource:v4];
+  valueSource = [(HFAccessoryProfileItem *)self valueSource];
+  v5 = [(HFAccessoryProfileItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
 - (HMAccessory)accessory
 {
-  v2 = [(HFAccessoryProfileItem *)self profile];
-  v3 = [v2 accessory];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
 
-  return v3;
+  return accessory;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v6 = [HFServiceLikeItemUpdateRequest alloc];
-  v7 = [(HFAccessoryProfileItem *)self profile];
-  v8 = [v7 accessory];
-  v9 = [(HFAccessoryProfileItem *)self valueSource];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
+  valueSource = [(HFAccessoryProfileItem *)self valueSource];
   v10 = [MEMORY[0x277CBEB98] set];
-  v11 = [(HFServiceLikeItemUpdateRequest *)v6 initWithAccessory:v8 valueSource:v9 characteristics:v10];
+  v11 = [(HFServiceLikeItemUpdateRequest *)v6 initWithAccessory:accessory valueSource:valueSource characteristics:v10];
 
   if (v11)
   {
-    v12 = [(HFServiceLikeItemUpdateRequest *)v11 updateWithOptions:v5];
+    v12 = [(HFServiceLikeItemUpdateRequest *)v11 updateWithOptions:optionsCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __54__HFAccessoryProfileItem__subclass_updateWithOptions___block_invoke;
@@ -86,13 +86,13 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v19 = NSStringFromSelector(a2);
-      v20 = [(HFAccessoryProfileItem *)self profile];
+      profile2 = [(HFAccessoryProfileItem *)self profile];
       *buf = 138412802;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
       v25 = v19;
       v26 = 2112;
-      v27 = v20;
+      v27 = profile2;
       _os_log_error_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_ERROR, "%@:%@ Failed to create HFServiceLikeItemUpdateRequest. Profile: %@ ", buf, 0x20u);
     }
 
@@ -147,19 +147,19 @@ id __54__HFAccessoryProfileItem__subclass_updateWithOptions___block_invoke(uint6
 
 - (HMHome)home
 {
-  v2 = [(HFAccessoryProfileItem *)self profile];
-  v3 = [v2 accessory];
-  v4 = [v3 home];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
+  home = [accessory home];
 
-  return v4;
+  return home;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFAccessoryProfileItem *)self profile];
-  v4 = [v3 accessory];
-  v5 = [v2 setWithObject:v4];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
+  v5 = [v2 setWithObject:accessory];
 
   return v5;
 }
@@ -167,38 +167,38 @@ id __54__HFAccessoryProfileItem__subclass_updateWithOptions___block_invoke(uint6
 - (id)profiles
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFAccessoryProfileItem *)self profile];
-  v4 = [v2 setWithObject:v3];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  v4 = [v2 setWithObject:profile];
 
   return v4;
 }
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFAccessoryProfileItem *)self profile];
-  v3 = [v2 accessory];
-  v4 = [HFNamingComponents namingComponentFromAccessory:v3];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
+  v4 = [HFNamingComponents namingComponentFromAccessory:accessory];
 
   return v4;
 }
 
-- (id)serviceLikeBuilderInHome:(id)a3
+- (id)serviceLikeBuilderInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HFAccessoryBuilder alloc];
-  v6 = [(HFAccessoryProfileItem *)self profile];
-  v7 = [v6 accessory];
-  v8 = [(HFAccessoryBuilder *)v5 initWithExistingObject:v7 inHome:v4];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  accessory = [profile accessory];
+  v8 = [(HFAccessoryBuilder *)v5 initWithExistingObject:accessory inHome:homeCopy];
 
   return v8;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFAccessoryProfileItem *)self profile];
-  v7 = [v5 initWithProfile:v6 valueSource:v4];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  v7 = [v5 initWithProfile:profile valueSource:sourceCopy];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;
@@ -207,21 +207,21 @@ id __54__HFAccessoryProfileItem__subclass_updateWithOptions___block_invoke(uint6
 - (NSSet)services
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFAccessoryProfileItem *)self profile];
-  v4 = [v3 services];
-  v5 = [v2 setWithArray:v4];
+  profile = [(HFAccessoryProfileItem *)self profile];
+  services = [profile services];
+  v5 = [v2 setWithArray:services];
 
   return v5;
 }
 
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  objectCopy = object;
   v8 = objc_opt_class();
-  v9 = [v7 hf_homeKitObject];
+  hf_homeKitObject = [objectCopy hf_homeKitObject];
 
-  v10 = v9;
+  v10 = hf_homeKitObject;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -240,15 +240,15 @@ id __54__HFAccessoryProfileItem__subclass_updateWithOptions___block_invoke(uint6
       goto LABEL_8;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v12 = 0;
 LABEL_8:
 
-  v15 = [[a1 alloc] initWithProfile:v12 valueSource:v6];
+  v15 = [[self alloc] initWithProfile:v12 valueSource:sourceCopy];
 
   return v15;
 }

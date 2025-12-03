@@ -1,7 +1,7 @@
 @interface SCATModernMenuGestureFlickSheet
 - (SCATMenuFlickItemsViewDelegate)delegate;
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGestureFlickSheet
@@ -32,46 +32,46 @@
   return v3;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"gestures_flickUp"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"gestures_flickUp"])
   {
-    v6 = [(SCATModernMenuGestureFlickSheet *)self delegate];
-    [v6 didChooseFlickUp:self];
+    delegate = [(SCATModernMenuGestureFlickSheet *)self delegate];
+    [delegate didChooseFlickUp:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_flickDown"])
+  else if ([identifier isEqualToString:@"gestures_flickDown"])
   {
-    v6 = [(SCATModernMenuGestureFlickSheet *)self delegate];
-    [v6 didChooseFlickDown:self];
+    delegate = [(SCATModernMenuGestureFlickSheet *)self delegate];
+    [delegate didChooseFlickDown:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_flickLeft"])
+  else if ([identifier isEqualToString:@"gestures_flickLeft"])
   {
-    v6 = [(SCATModernMenuGestureFlickSheet *)self delegate];
-    [v6 didChooseFlickLeft:self];
+    delegate = [(SCATModernMenuGestureFlickSheet *)self delegate];
+    [delegate didChooseFlickLeft:self];
   }
 
-  else if ([v5 isEqualToString:@"gestures_flickRight"])
+  else if ([identifier isEqualToString:@"gestures_flickRight"])
   {
-    v6 = [(SCATModernMenuGestureFlickSheet *)self delegate];
-    [v6 didChooseFlickRight:self];
+    delegate = [(SCATModernMenuGestureFlickSheet *)self delegate];
+    [delegate didChooseFlickRight:self];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"gestures_flickCustom"])
+    if (![identifier isEqualToString:@"gestures_flickCustom"])
     {
       v7.receiver = self;
       v7.super_class = SCATModernMenuGestureFlickSheet;
-      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:v4];
+      [(SCATModernMenuSheet *)&v7 menuItemWasActivated:activatedCopy];
       goto LABEL_12;
     }
 
-    v6 = [(SCATModernMenuGestureFlickSheet *)self delegate];
-    [v6 didChooseArbitraryFlick:self];
+    delegate = [(SCATModernMenuGestureFlickSheet *)self delegate];
+    [delegate didChooseArbitraryFlick:self];
   }
 
 LABEL_12:

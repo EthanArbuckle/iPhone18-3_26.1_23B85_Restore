@@ -8,7 +8,7 @@
 
 - (id)sceneDelegate
 {
-  v1 = objc_alloc_init([a1 delegateClass]);
+  v1 = objc_alloc_init([self delegateClass]);
 
   return v1;
 }
@@ -40,9 +40,9 @@
 
   else
   {
-    v17 = [v11 role];
+    role = [v11 role];
 
-    v16 = [v15 _initWithRole:v17 bridgingID:v9 sceneDelegateWrapper:a6];
+    v16 = [v15 _initWithRole:role bridgingID:v9 sceneDelegateWrapper:a6];
     [v16 setDelegateClass:a4];
   }
 

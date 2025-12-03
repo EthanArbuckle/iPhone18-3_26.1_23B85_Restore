@@ -9,7 +9,7 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5)
   {
     objc_opt_class();
@@ -84,7 +84,7 @@ LABEL_18:
 - (id)ckmfi_numberForKey:()CKMultiFrameImage
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5)
   {
     objc_opt_class();

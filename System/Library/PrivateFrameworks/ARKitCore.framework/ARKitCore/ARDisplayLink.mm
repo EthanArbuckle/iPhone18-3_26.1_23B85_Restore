@@ -1,21 +1,21 @@
 @interface ARDisplayLink
 - (ARDisplayLink)init;
-- (ARDisplayLink)initWithPreferredFramesPerSecond:(int64_t)a3 callback:(id)a4;
+- (ARDisplayLink)initWithPreferredFramesPerSecond:(int64_t)second callback:(id)callback;
 - (double)vsyncOffset;
 - (int64_t)preferredFramesPerSecond;
-- (void)_recomputeActualVsyncOffsetWithVsyncOffset:(double)a3 preferredFramesPerSecond:(int64_t)a4;
+- (void)_recomputeActualVsyncOffsetWithVsyncOffset:(double)offset preferredFramesPerSecond:(int64_t)second;
 - (void)dealloc;
 - (void)displayLinkCallback;
 - (void)invalidate;
-- (void)setPreferredFramesPerSecond:(int64_t)a3;
-- (void)setVsyncOffset:(double)a3;
+- (void)setPreferredFramesPerSecond:(int64_t)second;
+- (void)setVsyncOffset:(double)offset;
 @end
 
 @implementation ARDisplayLink
 
-- (ARDisplayLink)initWithPreferredFramesPerSecond:(int64_t)a3 callback:(id)a4
+- (ARDisplayLink)initWithPreferredFramesPerSecond:(int64_t)second callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v20.receiver = self;
   v20.super_class = ARDisplayLink;
   v7 = [(ARDisplayLink *)&v20 init];
@@ -23,12 +23,12 @@
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    v9 = [v6 copy];
+    v9 = [callbackCopy copy];
     callback = v8->_callback;
     v8->_callback = v9;
 
     v8->_currentFramesPerSecond = 0.0;
-    v8->_preferredFramesPerSecond = a3;
+    v8->_preferredFramesPerSecond = second;
     v11 = [ARRunLoop alloc];
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.arkit.ardisplaylink.%p", v8];
     v13 = [(ARRunLoop *)v11 initWithName:v12];
@@ -43,7 +43,7 @@
     v17[2] = __59__ARDisplayLink_initWithPreferredFramesPerSecond_callback___block_invoke;
     v17[3] = &unk_1E817C4E8;
     objc_copyWeak(v18, &location);
-    v18[1] = a3;
+    v18[1] = second;
     [(ARRunLoop *)v15 runOnRunLoop:v17];
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -89,11 +89,11 @@ void __59__ARDisplayLink_initWithPreferredFramesPerSecond_callback___block_invok
   [(ARDisplayLink *)&v3 dealloc];
 }
 
-- (void)setVsyncOffset:(double)a3
+- (void)setVsyncOffset:(double)offset
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_vsyncOffset = a3;
-  [(ARDisplayLink *)self _recomputeActualVsyncOffsetWithVsyncOffset:self->_preferredFramesPerSecond preferredFramesPerSecond:a3];
+  self->_vsyncOffset = offset;
+  [(ARDisplayLink *)self _recomputeActualVsyncOffsetWithVsyncOffset:self->_preferredFramesPerSecond preferredFramesPerSecond:offset];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -114,12 +114,12 @@ void __59__ARDisplayLink_initWithPreferredFramesPerSecond_callback___block_invok
   return preferredFramesPerSecond;
 }
 
-- (void)setPreferredFramesPerSecond:(int64_t)a3
+- (void)setPreferredFramesPerSecond:(int64_t)second
 {
   os_unfair_lock_lock(&self->_lock);
-  if (self->_preferredFramesPerSecond != a3)
+  if (self->_preferredFramesPerSecond != second)
   {
-    self->_preferredFramesPerSecond = a3;
+    self->_preferredFramesPerSecond = second;
     v5 = self->_displayLink;
     runloop = self->_runloop;
     v8 = MEMORY[0x1E69E9820];
@@ -127,7 +127,7 @@ void __59__ARDisplayLink_initWithPreferredFramesPerSecond_callback___block_invok
     v10 = __45__ARDisplayLink_setPreferredFramesPerSecond___block_invoke;
     v11 = &unk_1E817BDD8;
     v12 = v5;
-    v13 = a3;
+    secondCopy = second;
     v7 = v5;
     [(ARRunLoop *)runloop runOnRunLoop:&v8];
     [(ARDisplayLink *)self _recomputeActualVsyncOffsetWithVsyncOffset:self->_preferredFramesPerSecond preferredFramesPerSecond:self->_vsyncOffset, v8, v9, v10, v11];
@@ -158,10 +158,10 @@ uint64_t __45__ARDisplayLink_setPreferredFramesPerSecond___block_invoke(uint64_t
   [(ARRunLoop *)self->_runloop cancel];
 }
 
-- (void)_recomputeActualVsyncOffsetWithVsyncOffset:(double)a3 preferredFramesPerSecond:(int64_t)a4
+- (void)_recomputeActualVsyncOffsetWithVsyncOffset:(double)offset preferredFramesPerSecond:(int64_t)second
 {
-  v5 = 1.0 / a4;
-  v6 = fmod(a3, v5);
+  v5 = 1.0 / second;
+  v6 = fmod(offset, v5);
   if (v6 >= 0.0)
   {
     v7 = v6;

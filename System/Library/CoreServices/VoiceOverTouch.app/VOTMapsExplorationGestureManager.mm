@@ -2,21 +2,21 @@
 - (BOOL)explorationIsActive;
 - (BOOL)explorationIsPending;
 - (BOOL)handleSelection;
-- (BOOL)handleTracking:(CGPoint)a3;
-- (BOOL)handleVerbosityChangeIncreasing:(BOOL)a3;
-- (BOOL)processEvent:(id)a3;
+- (BOOL)handleTracking:(CGPoint)tracking;
+- (BOOL)handleVerbosityChangeIncreasing:(BOOL)increasing;
+- (BOOL)processEvent:(id)event;
 - (VOTMapsExplorationGestureManager)init;
 - (VOTMapsExplorationGestureManagerDelegate)mapsExplorationGestureManagerDelegate;
 - (id)currentIntersectionInformation;
 - (id)currentMap;
-- (id)explorationSegmentsForRoadsWithAngles:(id)a3;
-- (int64_t)indexForPoint:(CGPoint)a3;
-- (void)_playSound:(id)a3;
-- (void)_speakText:(id)a3 doesNotInterrupt:(BOOL)a4 cannotBeInterrupted:(BOOL)a5;
+- (id)explorationSegmentsForRoadsWithAngles:(id)angles;
+- (int64_t)indexForPoint:(CGPoint)point;
+- (void)_playSound:(id)sound;
+- (void)_speakText:(id)text doesNotInterrupt:(BOOL)interrupt cannotBeInterrupted:(BOOL)interrupted;
 - (void)beginExploration;
 - (void)endExploration;
-- (void)processTouch:(CGPoint)a3;
-- (void)setActive:(BOOL)a3;
+- (void)processTouch:(CGPoint)touch;
+- (void)setActive:(BOOL)active;
 - (void)updateCurrentLocation;
 - (void)updateExplorationSegments;
 @end
@@ -56,22 +56,22 @@
 - (id)currentMap
 {
   v2 = +[VOTWorkspace sharedWorkspace];
-  v3 = [v2 currentElement];
+  currentElement = [v2 currentElement];
 
   v4 = kAXMapTrait;
-  if (([v3 doesHaveTraits:kAXMapTrait] & 1) != 0 || (objc_msgSend(v3, "touchContainer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "doesHaveTraits:", v4), v5, v6))
+  if (([currentElement doesHaveTraits:kAXMapTrait] & 1) != 0 || (objc_msgSend(currentElement, "touchContainer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "doesHaveTraits:", v4), v5, v6))
   {
     v7 = +[VOTWorkspace sharedWorkspace];
-    v8 = [v7 currentElement];
-    v9 = [v8 touchContainer];
+    currentElement2 = [v7 currentElement];
+    touchContainer = [currentElement2 touchContainer];
   }
 
   else
   {
-    v9 = 0;
+    touchContainer = 0;
   }
 
-  return v9;
+  return touchContainer;
 }
 
 - (void)updateExplorationSegments
@@ -79,10 +79,10 @@
   v3 = +[VOTWorkspace sharedWorkspace];
   if (v3 && (v4 = v3, +[VOTWorkspace sharedWorkspace](VOTWorkspace, "sharedWorkspace"), v5 = objc_claimAutoreleasedReturnValue(), [v5 currentElement], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, v6))
   {
-    v7 = [(VOTMapsExplorationGestureManager *)self currentMap];
-    v10 = [v7 mapsExplorationCurrentRoadsWithAngles];
+    currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+    mapsExplorationCurrentRoadsWithAngles = [currentMap mapsExplorationCurrentRoadsWithAngles];
 
-    v8 = [(VOTMapsExplorationGestureManager *)self explorationSegmentsForRoadsWithAngles:v10];
+    v8 = [(VOTMapsExplorationGestureManager *)self explorationSegmentsForRoadsWithAngles:mapsExplorationCurrentRoadsWithAngles];
     explorationSegments = self->_explorationSegments;
     self->_explorationSegments = v8;
   }
@@ -98,60 +98,60 @@
 - (void)updateCurrentLocation
 {
   p_currentLocation = &self->_currentLocation;
-  v5 = [(VOTMapsExplorationGestureManager *)self currentMap];
-  [v5 mapsExplorationCurrentLocation];
+  currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+  [currentMap mapsExplorationCurrentLocation];
   p_currentLocation->x = v3;
   p_currentLocation->y = v4;
 }
 
 - (id)currentIntersectionInformation
 {
-  v2 = [(VOTMapsExplorationGestureManager *)self currentMap];
-  v3 = [v2 mapsExplorationCurrentIntersectionDescription];
+  currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+  mapsExplorationCurrentIntersectionDescription = [currentMap mapsExplorationCurrentIntersectionDescription];
 
-  return v3;
+  return mapsExplorationCurrentIntersectionDescription;
 }
 
 - (BOOL)explorationIsActive
 {
-  v2 = [(VOTMapsExplorationGestureManager *)self currentMap];
-  v3 = [v2 mapsExplorationIsActive];
+  currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+  mapsExplorationIsActive = [currentMap mapsExplorationIsActive];
 
-  return v3;
+  return mapsExplorationIsActive;
 }
 
 - (BOOL)explorationIsPending
 {
-  v2 = [(VOTMapsExplorationGestureManager *)self currentMap];
-  v3 = [v2 mapsExplorationIsPending];
+  currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+  mapsExplorationIsPending = [currentMap mapsExplorationIsPending];
 
-  return v3;
+  return mapsExplorationIsPending;
 }
 
 - (void)beginExploration
 {
   v2 = +[VOTWorkspace sharedWorkspace];
-  v3 = [v2 currentElement];
+  currentElement = [v2 currentElement];
 
-  [v3 mapsExplorationBeginFromCurrentElement:{objc_msgSend(v3, "mapFeatureType") == 1}];
+  [currentElement mapsExplorationBeginFromCurrentElement:{objc_msgSend(currentElement, "mapFeatureType") == 1}];
 }
 
 - (void)endExploration
 {
-  v2 = [(VOTMapsExplorationGestureManager *)self currentMap];
-  [v2 mapsExplorationEnd];
+  currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+  [currentMap mapsExplorationEnd];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  v5 = [(VOTGesturedTextInputManager *)self isActive];
+  activeCopy = active;
+  isActive = [(VOTGesturedTextInputManager *)self isActive];
   v9.receiver = self;
   v9.super_class = VOTMapsExplorationGestureManager;
-  [(VOTGesturedTextInputManager *)&v9 setActive:v3];
-  if (!v3 || (v5 & 1) != 0)
+  [(VOTGesturedTextInputManager *)&v9 setActive:activeCopy];
+  if (!activeCopy || (isActive & 1) != 0)
   {
-    if (!v3 && ((v5 ^ 1) & 1) == 0)
+    if (!activeCopy && ((isActive ^ 1) & 1) == 0)
     {
       v8 = +[VOTDisplayManager displayManager];
       [v8 hideMapsExplorationUI];
@@ -180,10 +180,10 @@
   }
 }
 
-- (BOOL)handleTracking:(CGPoint)a3
+- (BOOL)handleTracking:(CGPoint)tracking
 {
-  y = a3.y;
-  x = a3.x;
+  y = tracking.y;
+  x = tracking.x;
   [(VOTMapsExplorationGestureManager *)self processTouch:?];
   v6 = [(VOTMapsExplorationGestureManager *)self indexForPoint:x, y];
   if (v6 != self->_currentIndex)
@@ -217,8 +217,8 @@
     v4 = +[VOSOutputEvent DidActivateElement];
     [v3 sendEvent:v4];
 
-    v5 = [(VOTMapsExplorationGestureManager *)self currentMap];
-    [v5 mapsExplorationContinueWithVertexIndex:self->_selectionIndex];
+    currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+    [currentMap mapsExplorationContinueWithVertexIndex:self->_selectionIndex];
 
     if ([(VOTMapsExplorationGestureManager *)self explorationIsPending])
     {
@@ -238,8 +238,8 @@
     v7 = +[VOTDisplayManager displayManager];
     [v7 updateMapsExplorationUIWithCurrentLocation:{self->_currentLocation.x, self->_currentLocation.y}];
 
-    v8 = [(VOTMapsExplorationGestureManager *)self currentIntersectionInformation];
-    [(VOTMapsExplorationGestureManager *)self _speakText:v8 doesNotInterrupt:0 cannotBeInterrupted:0];
+    currentIntersectionInformation = [(VOTMapsExplorationGestureManager *)self currentIntersectionInformation];
+    [(VOTMapsExplorationGestureManager *)self _speakText:currentIntersectionInformation doesNotInterrupt:0 cannotBeInterrupted:0];
 
     self->_recentlyMoved = 1;
     self->_movedAngle = self->_lastAngle;
@@ -251,88 +251,88 @@
   return 1;
 }
 
-- (BOOL)handleVerbosityChangeIncreasing:(BOOL)a3
+- (BOOL)handleVerbosityChangeIncreasing:(BOOL)increasing
 {
-  v3 = a3;
-  v5 = [(VOTMapsExplorationGestureManager *)self currentMap];
-  v6 = [v5 mapsExplorationChangeVerbosity:v3];
+  increasingCopy = increasing;
+  currentMap = [(VOTMapsExplorationGestureManager *)self currentMap];
+  v6 = [currentMap mapsExplorationChangeVerbosity:increasingCopy];
 
   [(VOTMapsExplorationGestureManager *)self _speakText:v6 doesNotInterrupt:0 cannotBeInterrupted:0];
   return 1;
 }
 
-- (BOOL)processEvent:(id)a3
+- (BOOL)processEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 command];
-  v6 = [v5 isEqualToString:kVOTEventCommandTracking];
+  eventCopy = event;
+  command = [eventCopy command];
+  v6 = [command isEqualToString:kVOTEventCommandTracking];
 
   if (v6)
   {
-    [v4 touchPoint];
-    v7 = [(VOTMapsExplorationGestureManager *)self handleTracking:?];
+    [eventCopy touchPoint];
+    handleSelection = [(VOTMapsExplorationGestureManager *)self handleTracking:?];
     goto LABEL_7;
   }
 
-  v8 = [v4 command];
-  if ([v8 isEqualToString:kVOTEventCommandSplitTapTap])
+  command2 = [eventCopy command];
+  if ([command2 isEqualToString:kVOTEventCommandSplitTapTap])
   {
 
 LABEL_6:
-    v7 = [(VOTMapsExplorationGestureManager *)self handleSelection];
+    handleSelection = [(VOTMapsExplorationGestureManager *)self handleSelection];
     goto LABEL_7;
   }
 
-  v9 = [v4 command];
-  v10 = [v9 isEqualToString:kVOTEventCommandSimpleTap];
+  command3 = [eventCopy command];
+  v10 = [command3 isEqualToString:kVOTEventCommandSimpleTap];
 
   if (v10)
   {
     goto LABEL_6;
   }
 
-  v13 = [v4 command];
-  v14 = [v13 isEqualToString:kVOTEventCommandSearchRotorUp];
+  command4 = [eventCopy command];
+  v14 = [command4 isEqualToString:kVOTEventCommandSearchRotorUp];
 
   if (v14)
   {
-    v15 = self;
+    selfCopy2 = self;
     v16 = 1;
   }
 
   else
   {
-    v17 = [v4 command];
-    v18 = [v17 isEqualToString:kVOTEventCommandSearchRotorDown];
+    command5 = [eventCopy command];
+    v18 = [command5 isEqualToString:kVOTEventCommandSearchRotorDown];
 
     if (!v18)
     {
       v19.receiver = self;
       v19.super_class = VOTMapsExplorationGestureManager;
-      v7 = [(VOTGesturedTextInputManager *)&v19 processEvent:v4];
+      handleSelection = [(VOTGesturedTextInputManager *)&v19 processEvent:eventCopy];
       goto LABEL_7;
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
   }
 
-  v7 = [(VOTMapsExplorationGestureManager *)v15 handleVerbosityChangeIncreasing:v16];
+  handleSelection = [(VOTMapsExplorationGestureManager *)selfCopy2 handleVerbosityChangeIncreasing:v16];
 LABEL_7:
-  v11 = v7;
+  v11 = handleSelection;
 
   return v11;
 }
 
-- (id)explorationSegmentsForRoadsWithAngles:(id)a3
+- (id)explorationSegmentsForRoadsWithAngles:(id)angles
 {
-  v3 = a3;
+  anglesCopy = angles;
   v4 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = anglesCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -368,8 +368,8 @@ LABEL_7:
     for (j = 0; j != v14; ++j)
     {
       v16 = [v5 objectAtIndex:{j, v25}];
-      v17 = [v16 firstObject];
-      [v17 floatValue];
+      firstObject = [v16 firstObject];
+      [firstObject floatValue];
       v19 = v18;
 
       v20 = [v4 objectAtIndex:j];
@@ -385,11 +385,11 @@ LABEL_7:
   return v4;
 }
 
-- (void)processTouch:(CGPoint)a3
+- (void)processTouch:(CGPoint)touch
 {
   p_currentCenter = &self->_currentCenter;
-  x = a3.x;
-  y = a3.y;
+  x = touch.x;
+  y = touch.y;
   SCRCMathGetDistanceBetweenPoints();
   if (*&v4 > 200.0)
   {
@@ -412,10 +412,10 @@ LABEL_7:
   }
 }
 
-- (int64_t)indexForPoint:(CGPoint)a3
+- (int64_t)indexForPoint:(CGPoint)point
 {
-  v4 = a3.x - self->_currentCenter.x;
-  v5 = a3.y - self->_currentCenter.y;
+  v4 = point.x - self->_currentCenter.x;
+  v5 = point.y - self->_currentCenter.y;
   v6 = v4;
   v7 = atan2f(v5, v6);
   if (v7 <= 0.0)
@@ -453,8 +453,8 @@ LABEL_19:
   while (1)
   {
     v12 = [(NSArray *)self->_explorationSegments objectAtIndex:v11, *&v29, *&v30];
-    v13 = [v12 firstObject];
-    [v13 floatValue];
+    firstObject = [v12 firstObject];
+    [firstObject floatValue];
     v32 = v14;
 
     v15 = [v12 objectAtIndex:1];
@@ -504,29 +504,29 @@ LABEL_19:
   return v11;
 }
 
-- (void)_speakText:(id)a3 doesNotInterrupt:(BOOL)a4 cannotBeInterrupted:(BOOL)a5
+- (void)_speakText:(id)text doesNotInterrupt:(BOOL)interrupt cannotBeInterrupted:(BOOL)interrupted
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (v7)
+  interruptedCopy = interrupted;
+  interruptCopy = interrupt;
+  textCopy = text;
+  if (textCopy)
   {
-    v10 = v7;
+    v10 = textCopy;
     v8 = objc_opt_new();
-    [v8 setDoesNotInterrupt:v6];
-    [v8 setCannotBeInterrupted:v5];
+    [v8 setDoesNotInterrupt:interruptCopy];
+    [v8 setCannotBeInterrupted:interruptedCopy];
     v9 = [v8 addString:v10];
     [v8 send];
 
-    v7 = v10;
+    textCopy = v10;
   }
 }
 
-- (void)_playSound:(id)a3
+- (void)_playSound:(id)sound
 {
-  v3 = a3;
+  soundCopy = sound;
   v4 = +[VOTOutputManager outputManager];
-  [v4 playSoundFast:v3];
+  [v4 playSoundFast:soundCopy];
 }
 
 - (VOTMapsExplorationGestureManagerDelegate)mapsExplorationGestureManagerDelegate

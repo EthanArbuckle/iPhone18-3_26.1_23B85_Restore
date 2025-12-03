@@ -3,12 +3,12 @@
 - (double)floatingDockHeight;
 - (id)_records;
 - (id)appLayout;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithAppLayout:(id *)a1;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithAppLayout:(id *)layout;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (uint64_t)updateWithContainerBounds:(int)a3 containerOrientation:(int)a4 floatingDockHeight:(void *)a5 hideStrips:(void *)a6 hideDock:(CGFloat)a7 preferredMinimumSizeMap:(CGFloat)a8 layoutAttributesMap:(CGFloat)a9;
+- (uint64_t)updateWithContainerBounds:(int)bounds containerOrientation:(int)orientation floatingDockHeight:(void *)height hideStrips:(void *)strips hideDock:(CGFloat)dock preferredMinimumSizeMap:(CGFloat)map layoutAttributesMap:(CGFloat)attributesMap;
 - (void)dealloc;
 @end
 
@@ -30,42 +30,42 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   WeakRetained = objc_loadWeakRetained(&self->_appLayout);
-  v5 = [WeakRetained allItems];
-  v6 = [v3 appendUnsignedInteger:objc_msgSend(v5 withName:{"count"), @"item(s)"}];
+  allItems = [WeakRetained allItems];
+  v6 = [v3 appendUnsignedInteger:objc_msgSend(allItems withName:{"count"), @"item(s)"}];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__SBAppLayoutAutoLayoutSpaceCacheKey_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_2783A92D8;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;
@@ -113,94 +113,94 @@ void __76__SBAppLayoutAutoLayoutSpaceCacheKey_descriptionBuilderWithMultilinePre
   [v15 appendString:v17 withName:@"slideOverConfiguration"];
 }
 
-- (id)initWithAppLayout:(id *)a1
+- (id)initWithAppLayout:(id *)layout
 {
   v3 = a2;
-  if (a1)
+  if (layout)
   {
-    v6.receiver = a1;
+    v6.receiver = layout;
     v6.super_class = SBAppLayoutAutoLayoutSpaceCacheKey;
-    a1 = objc_msgSendSuper2(&v6, sel_init);
-    if (a1)
+    layout = objc_msgSendSuper2(&v6, sel_init);
+    if (layout)
     {
       if (!v3)
       {
-        v5 = [MEMORY[0x277CCA890] currentHandler];
-        [v5 handleFailureInMethod:sel_initWithAppLayout_ object:a1 file:@"SBAppLayoutAutoLayoutSpaceCacheKey.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"appLayout"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel_initWithAppLayout_ object:layout file:@"SBAppLayoutAutoLayoutSpaceCacheKey.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"appLayout"}];
       }
 
-      objc_storeWeak(a1 + 3, v3);
+      objc_storeWeak(layout + 3, v3);
     }
   }
 
-  return a1;
+  return layout;
 }
 
-- (uint64_t)updateWithContainerBounds:(int)a3 containerOrientation:(int)a4 floatingDockHeight:(void *)a5 hideStrips:(void *)a6 hideDock:(CGFloat)a7 preferredMinimumSizeMap:(CGFloat)a8 layoutAttributesMap:(CGFloat)a9
+- (uint64_t)updateWithContainerBounds:(int)bounds containerOrientation:(int)orientation floatingDockHeight:(void *)height hideStrips:(void *)strips hideDock:(CGFloat)dock preferredMinimumSizeMap:(CGFloat)map layoutAttributesMap:(CGFloat)attributesMap
 {
-  v21 = a5;
-  v22 = a6;
-  if (a1)
+  heightCopy = height;
+  stripsCopy = strips;
+  if (self)
   {
-    v45.origin.x = a7;
-    v45.origin.y = a8;
-    v45.size.width = a9;
+    v45.origin.x = dock;
+    v45.origin.y = map;
+    v45.size.width = attributesMap;
     v45.size.height = a10;
-    v23 = CGRectEqualToRect(v45, *(a1 + 64));
+    v23 = CGRectEqualToRect(v45, *(self + 64));
     if (!v23)
     {
-      *(a1 + 64) = a7;
-      *(a1 + 72) = a8;
-      *(a1 + 80) = a9;
-      *(a1 + 88) = a10;
+      *(self + 64) = dock;
+      *(self + 72) = map;
+      *(self + 80) = attributesMap;
+      *(self + 88) = a10;
     }
 
-    if (*(a1 + 32) == a2)
+    if (*(self + 32) == a2)
     {
       v24 = !v23;
     }
 
     else
     {
-      *(a1 + 32) = a2;
+      *(self + 32) = a2;
       v24 = 1;
     }
 
-    if (*(a1 + 40) != a11)
+    if (*(self + 40) != a11)
     {
-      *(a1 + 40) = a11;
+      *(self + 40) = a11;
       v24 = 1;
     }
 
-    if (*(a1 + 16) != a3)
+    if (*(self + 16) != bounds)
     {
-      *(a1 + 16) = a3;
+      *(self + 16) = bounds;
       v24 = 1;
     }
 
-    if (*(a1 + 17) != a4)
+    if (*(self + 17) != orientation)
     {
-      *(a1 + 17) = a4;
+      *(self + 17) = orientation;
       v24 = 1;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v26 = [WeakRetained allItems];
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    allItems = [WeakRetained allItems];
 
-    v27 = [v26 count];
-    v28 = [(SBAppLayoutAutoLayoutSpaceCacheKey *)a1 _records];
+    v27 = [allItems count];
+    _records = [(SBAppLayoutAutoLayoutSpaceCacheKey *)self _records];
     if (v27 >= 1)
     {
-      v29 = v28;
+      v29 = _records;
       v30 = 0;
       v31 = *MEMORY[0x277CBF3A8];
       v32 = *(MEMORY[0x277CBF3A8] + 8);
       do
       {
-        v33 = [v26 objectAtIndex:v30];
+        v33 = [allItems objectAtIndex:v30];
         memcpy(__dst, v29, sizeof(__dst));
         memcpy(__s2, v29, sizeof(__s2));
-        v34 = [v21 objectForKey:v33];
+        v34 = [heightCopy objectForKey:v33];
         v35 = v32;
         v36 = v31;
         if (v34)
@@ -210,7 +210,7 @@ void __76__SBAppLayoutAutoLayoutSpaceCacheKey_descriptionBuilderWithMultilinePre
 
         *__s2 = v36;
         *&__s2[8] = v35;
-        v37 = [v22 objectForKey:v33];
+        v37 = [stripsCopy objectForKey:v33];
         [(SBDisplayItemLayoutAttributes *)v37 attributedSize];
         *&__s2[72] = [(SBDisplayItemLayoutAttributes *)v37 normalizedCenter];
         *&__s2[80] = v38;
@@ -256,8 +256,8 @@ void __76__SBAppLayoutAutoLayoutSpaceCacheKey_descriptionBuilderWithMultilinePre
     if (!result)
     {
       WeakRetained = objc_loadWeakRetained(v1 + 3);
-      v3 = [WeakRetained allItems];
-      v4 = [v3 count];
+      allItems = [WeakRetained allItems];
+      v4 = [allItems count];
 
       result = malloc_type_calloc(v4, 0xB8uLL, 0x100004076419E0CuLL);
       v1[1] = result;
@@ -321,9 +321,9 @@ void __76__SBAppLayoutAutoLayoutSpaceCacheKey_descriptionBuilderWithMultilinePre
 
 - (double)containerBounds
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else
@@ -334,9 +334,9 @@ void __76__SBAppLayoutAutoLayoutSpaceCacheKey_descriptionBuilderWithMultilinePre
 
 - (double)floatingDockHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 40);
+    return *(self + 40);
   }
 
   else

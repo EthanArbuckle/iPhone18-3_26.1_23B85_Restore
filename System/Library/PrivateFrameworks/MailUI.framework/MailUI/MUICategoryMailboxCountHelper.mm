@@ -1,8 +1,8 @@
 @interface MUICategoryMailboxCountHelper
 + (id)log;
-- (MUICategoryMailboxCountHelper)initWithMailboxes:(id)a3 messageRepository:(id)a4;
+- (MUICategoryMailboxCountHelper)initWithMailboxes:(id)mailboxes messageRepository:(id)repository;
 - (id)messageCount;
-- (void)_fetchCountForPrimaryOnly:(BOOL)a3 completion:(id)a4;
+- (void)_fetchCountForPrimaryOnly:(BOOL)only completion:(id)completion;
 @end
 
 @implementation MUICategoryMailboxCountHelper
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __36__MUICategoryMailboxCountHelper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_9 != -1)
   {
     dispatch_once(&log_onceToken_9, block);
@@ -33,18 +33,18 @@ void __36__MUICategoryMailboxCountHelper_log__block_invoke(uint64_t a1)
   log_log_9 = v2;
 }
 
-- (MUICategoryMailboxCountHelper)initWithMailboxes:(id)a3 messageRepository:(id)a4
+- (MUICategoryMailboxCountHelper)initWithMailboxes:(id)mailboxes messageRepository:(id)repository
 {
-  v7 = a3;
-  v8 = a4;
+  mailboxesCopy = mailboxes;
+  repositoryCopy = repository;
   v12.receiver = self;
   v12.super_class = MUICategoryMailboxCountHelper;
   v9 = [(MUICategoryMailboxCountHelper *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mailboxes, a3);
-    objc_storeStrong(&v10->_messageRepository, a4);
+    objc_storeStrong(&v9->_mailboxes, mailboxes);
+    objc_storeStrong(&v10->_messageRepository, repository);
   }
 
   return v10;
@@ -52,7 +52,7 @@ void __36__MUICategoryMailboxCountHelper_log__block_invoke(uint64_t a1)
 
 - (id)messageCount
 {
-  v3 = [MEMORY[0x277D071A8] promise];
+  promise = [MEMORY[0x277D071A8] promise];
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -87,16 +87,16 @@ void __36__MUICategoryMailboxCountHelper_log__block_invoke(uint64_t a1)
   block[3] = &unk_27818A518;
   v13 = v22;
   v14 = v21;
-  v8 = v3;
+  v8 = promise;
   v12 = v8;
   dispatch_group_notify(v6, v7, block);
 
-  v9 = [v8 future];
+  future = [v8 future];
 
   _Block_object_dispose(v21, 8);
   _Block_object_dispose(v22, 8);
 
-  return v9;
+  return future;
 }
 
 void __45__MUICategoryMailboxCountHelper_messageCount__block_invoke_3(uint64_t a1)
@@ -107,40 +107,40 @@ void __45__MUICategoryMailboxCountHelper_messageCount__block_invoke_3(uint64_t a
   [*(a1 + 32) finishWithResult:v2];
 }
 
-- (void)_fetchCountForPrimaryOnly:(BOOL)a3 completion:(id)a4
+- (void)_fetchCountForPrimaryOnly:(BOOL)only completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  onlyCopy = only;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = MEMORY[0x277D06E08];
-  v9 = [(MUICategoryMailboxCountHelper *)self mailboxes];
-  v10 = [v8 predicateForMessagesInMailboxes:v9];
-  [v7 addObject:v10];
+  mailboxes = [(MUICategoryMailboxCountHelper *)self mailboxes];
+  v10 = [v8 predicateForMessagesInMailboxes:mailboxes];
+  [array addObject:v10];
 
-  v11 = [MEMORY[0x277D06E08] predicateForUnreadMessages];
-  [v7 addObject:v11];
+  predicateForUnreadMessages = [MEMORY[0x277D06E08] predicateForUnreadMessages];
+  [array addObject:predicateForUnreadMessages];
 
-  if (v4)
+  if (onlyCopy)
   {
-    v12 = [MEMORY[0x277D06E08] predicateForPrimaryMessages];
-    [v7 addObject:v12];
+    predicateForPrimaryMessages = [MEMORY[0x277D06E08] predicateForPrimaryMessages];
+    [array addObject:predicateForPrimaryMessages];
   }
 
-  v13 = [MEMORY[0x277CCAC30] ef_andCompoundPredicateWithSubpredicates:v7];
+  v13 = [MEMORY[0x277CCAC30] ef_andCompoundPredicateWithSubpredicates:array];
   v14 = objc_alloc(MEMORY[0x277D06E80]);
   v15 = objc_opt_class();
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"MUICategoryMailboxCountHelper-%d", v4];
-  v17 = [v14 initWithTargetClass:v15 predicate:v13 sortDescriptors:MEMORY[0x277CBEBF8] queryOptions:0 label:v16];
+  onlyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"MUICategoryMailboxCountHelper-%d", onlyCopy];
+  v17 = [v14 initWithTargetClass:v15 predicate:v13 sortDescriptors:MEMORY[0x277CBEBF8] queryOptions:0 label:onlyCopy];
 
-  v18 = [(MUICategoryMailboxCountHelper *)self messageRepository];
+  messageRepository = [(MUICategoryMailboxCountHelper *)self messageRepository];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__MUICategoryMailboxCountHelper__fetchCountForPrimaryOnly_completion___block_invoke;
   v20[3] = &unk_27818A540;
-  v22 = v4;
-  v21 = v6;
-  v19 = v6;
-  [v18 performCountQuery:v17 completionHandler:v20];
+  v22 = onlyCopy;
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [messageRepository performCountQuery:v17 completionHandler:v20];
 }
 
 void __70__MUICategoryMailboxCountHelper__fetchCountForPrimaryOnly_completion___block_invoke(uint64_t a1, void *a2, void *a3)

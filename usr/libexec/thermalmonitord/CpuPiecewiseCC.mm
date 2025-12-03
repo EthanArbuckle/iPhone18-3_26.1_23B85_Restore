@@ -1,27 +1,27 @@
 @interface CpuPiecewiseCC
-- (int)maxLoadIndexToDVDFactor1:(int)a3;
+- (int)maxLoadIndexToDVDFactor1:(int)factor1;
 @end
 
 @implementation CpuPiecewiseCC
 
-- (int)maxLoadIndexToDVDFactor1:(int)a3
+- (int)maxLoadIndexToDVDFactor1:(int)factor1
 {
   v3 = &self->super._directMapIntercept + 1;
-  v4 = *(&self->super._directMapIntercept + 1);
+  factor1Copy = *(&self->super._directMapIntercept + 1);
   directMapIntercept_low = LODWORD(self->super._directMapIntercept);
-  if (v4 <= a3)
+  if (factor1Copy <= factor1)
   {
-    v4 = LODWORD(v3[directMapIntercept_low - 1]);
-    if (v4 >= a3)
+    factor1Copy = LODWORD(v3[directMapIntercept_low - 1]);
+    if (factor1Copy >= factor1)
     {
-      v4 = a3;
+      factor1Copy = factor1;
     }
   }
 
   v6 = 1;
   if (directMapIntercept_low >= 2)
   {
-    while (v4 >= SLODWORD(v3[v6]))
+    while (factor1Copy >= SLODWORD(v3[v6]))
     {
       if (directMapIntercept_low == ++v6)
       {
@@ -41,7 +41,7 @@
 
   else
   {
-    return ((((LODWORD(v9) - v4) * self->_maxLoadIndexLimits[v7 + 7]) + (self->_maxLoadIndexLimits[v6 + 7] * (v4 - LODWORD(v8)))) / (LODWORD(v9) - LODWORD(v8)));
+    return ((((LODWORD(v9) - factor1Copy) * self->_maxLoadIndexLimits[v7 + 7]) + (self->_maxLoadIndexLimits[v6 + 7] * (factor1Copy - LODWORD(v8)))) / (LODWORD(v9) - LODWORD(v8)));
   }
 }
 

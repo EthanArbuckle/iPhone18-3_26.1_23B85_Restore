@@ -1,13 +1,13 @@
 @interface WUWeatherPlatterViewController
-- (WUWeatherPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WUWeatherPlatterViewController)initWithURL:(id)a3;
+- (WUWeatherPlatterViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WUWeatherPlatterViewController)initWithURL:(id)l;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WUWeatherPlatterViewController
 
-- (WUWeatherPlatterViewController)initWithURL:(id)a3
+- (WUWeatherPlatterViewController)initWithURL:(id)l
 {
   v3 = sub_1BCE18E40();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -18,24 +18,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WeatherPlatterViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   WeatherPlatterViewController.viewWillLayoutSubviews()();
 }
 
-- (WUWeatherPlatterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WUWeatherPlatterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1BCE1D280();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WeatherPlatterViewController.init(nibName:bundle:)();
 }
 

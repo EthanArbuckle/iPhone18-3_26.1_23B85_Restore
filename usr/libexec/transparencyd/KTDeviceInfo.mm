@@ -30,9 +30,9 @@
   if (sysctlbyname("kern.osversion", v10, &v8, 0, 0) | v2 || (HIBYTE(v13) = 0, HIBYTE(v11) = 0, [NSString stringWithFormat:@"%s (%s)", v12, v10], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v3 = +[NSProcessInfo processInfo];
-    v4 = [v3 operatingSystemVersionString];
+    operatingSystemVersionString = [v3 operatingSystemVersionString];
 
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"Version" withString:&stru_10032E8E8];
+    v5 = [operatingSystemVersionString stringByReplacingOccurrencesOfString:@"Version" withString:&stru_10032E8E8];
   }
 
   v6 = [NSString stringWithFormat:@"%@", v5];

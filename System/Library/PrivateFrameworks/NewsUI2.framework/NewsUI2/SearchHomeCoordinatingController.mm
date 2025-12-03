@@ -1,21 +1,21 @@
 @interface SearchHomeCoordinatingController
-- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithCoder:(id)a3;
-- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didDismissSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithCoder:(id)coder;
+- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didDismissSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SearchHomeCoordinatingController
 
-- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithCoder:(id)a3
+- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC7NewsUI232SearchHomeCoordinatingController_delegate) = 0;
@@ -33,87 +33,87 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21903F744();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21903F85C(a3);
+  selfCopy = self;
+  sub_21903F85C(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(SearchHomeCoordinatingController *)&v8 viewDidDisappear:v3];
+  [(SearchHomeCoordinatingController *)&v8 viewDidDisappear:disappearCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = [Strong searchBar];
+    searchBar = [Strong searchBar];
 
-    [v7 resignFirstResponder];
+    [searchBar resignFirstResponder];
   }
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21903FAC8();
 }
 
-- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI232SearchHomeCoordinatingController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_21903FD08(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21903FD08(controllerCopy);
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_21903FE74(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21903FE74(controllerCopy);
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_21903FFE0(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21903FFE0(controllerCopy);
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_21904015C(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21904015C(controllerCopy);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v6 = sub_219BF5414();
   v8 = v7;
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI232SearchHomeCoordinatingController_searchHomeContainerController);
-  v15 = a3;
-  v10 = self;
-  v11 = [v9 parentViewController];
-  if (v11)
+  barCopy = bar;
+  selfCopy = self;
+  parentViewController = [v9 parentViewController];
+  if (parentViewController)
   {
-    v12 = v11;
+    v12 = parentViewController;
     sub_218805E54();
-    v13 = v10;
+    v13 = selfCopy;
     v14 = sub_219BF6DD4();
 
     if (v14)
@@ -123,10 +123,10 @@
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_219040418();
 }
 

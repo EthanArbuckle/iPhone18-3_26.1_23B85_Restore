@@ -1,21 +1,21 @@
 @interface HFIrrigationSystemStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFIrrigationSystemStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CD0E80];
   v5 = [objc_opt_class() characteristicTypesForServiceType:v4 includingAssociatedTypes:1];
   v16[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v7 = [v5 allObjects];
-  v8 = [(HFStatusItem *)self filteredServicesOfTypes:v6 containingCharacteristicTypes:v7];
+  allObjects = [v5 allObjects];
+  v8 = [(HFStatusItem *)self filteredServicesOfTypes:v6 containingCharacteristicTypes:allObjects];
 
-  v9 = [(HFStatusItem *)self valueSource];
-  v10 = [v9 readValuesForCharacteristicTypes:v5 inServices:v8];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v10 = [valueSource readValuesForCharacteristicTypes:v5 inServices:v8];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__HFIrrigationSystemStatusItem__subclass_updateWithOptions___block_invoke;

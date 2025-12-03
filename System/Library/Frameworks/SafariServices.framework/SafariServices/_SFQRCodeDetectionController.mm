@@ -1,12 +1,12 @@
 @interface _SFQRCodeDetectionController
 + (_SFQRCodeDetectionController)sharedController;
 - (_SFQRCodeDetectionController)init;
-- (id)actionForElement:(id)a3;
-- (id)adjustedCopyActionForAction:(id)a3 elementInfo:(id)a4;
-- (id)elementForAction:(id)a3;
-- (id)getActionForImageSynchronously:(id)a3 userInfo:(id *)a4;
-- (id)menuElementsForElementInfo:(id)a3;
-- (void)getActionForImage:(id)a3 completion:(id)a4;
+- (id)actionForElement:(id)element;
+- (id)adjustedCopyActionForAction:(id)action elementInfo:(id)info;
+- (id)elementForAction:(id)action;
+- (id)getActionForImageSynchronously:(id)synchronously userInfo:(id *)info;
+- (id)menuElementsForElementInfo:(id)info;
+- (void)getActionForImage:(id)image completion:(id)completion;
 @end
 
 @implementation _SFQRCodeDetectionController
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __48___SFQRCodeDetectionController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -67,24 +67,24 @@
   return v2;
 }
 
-- (void)getActionForImage:(id)a3 completion:(id)a4
+- (void)getActionForImage:(id)image completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   QRCodeParser = self->_QRCodeParser;
-  v8 = [a3 CGImage];
+  cGImage = [image CGImage];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61___SFQRCodeDetectionController_getActionForImage_completion___block_invoke;
   v10[3] = &unk_1E8494820;
-  v11 = v6;
-  v9 = v6;
-  [(BCSQRCodeParser *)QRCodeParser parseCodeFromImage:v8 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(BCSQRCodeParser *)QRCodeParser parseCodeFromImage:cGImage completionHandler:v10];
 }
 
-- (id)getActionForImageSynchronously:(id)a3 userInfo:(id *)a4
+- (id)getActionForImageSynchronously:(id)synchronously userInfo:(id *)info
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  synchronouslyCopy = synchronously;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -93,8 +93,8 @@
   v25 = 0;
   v7 = dispatch_semaphore_create(0);
   QRCodeParser = self->_QRCodeParser;
-  v9 = v6;
-  v10 = [v6 CGImage];
+  v9 = synchronouslyCopy;
+  cGImage = [synchronouslyCopy CGImage];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72___SFQRCodeDetectionController_getActionForImageSynchronously_userInfo___block_invoke;
@@ -102,10 +102,10 @@
   v19 = &v20;
   v11 = v7;
   v18 = v11;
-  [(BCSQRCodeParser *)QRCodeParser parseCodeFromImage:v10 completionHandler:v17];
+  [(BCSQRCodeParser *)QRCodeParser parseCodeFromImage:cGImage completionHandler:v17];
   v12 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v11, v12);
-  if (a4)
+  if (info)
   {
     v13 = v21[5];
     if (v13)
@@ -113,12 +113,12 @@
       v26 = @"action";
       v27[0] = v13;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      *a4 = v14;
+      *info = v14;
     }
 
     else
     {
-      *a4 = 0;
+      *info = 0;
     }
   }
 
@@ -129,38 +129,38 @@
   return v15;
 }
 
-- (id)elementForAction:(id)a3
+- (id)elementForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   cachedElements = self->_cachedElements;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49___SFQRCodeDetectionController_elementForAction___block_invoke;
   v9[3] = &unk_1E8494870;
-  v10 = v4;
-  v6 = v4;
+  v10 = actionCopy;
+  v6 = actionCopy;
   v7 = [(NSMutableSet *)cachedElements safari_anyObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)menuElementsForElementInfo:(id)a3
+- (id)menuElementsForElementInfo:(id)info
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"action"];
+  userInfo = [info userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"action"];
 
-  v5 = [v4 urlThatCanBeOpened];
+  urlThatCanBeOpened = [v4 urlThatCanBeOpened];
 
   v6 = MEMORY[0x1E695E0F0];
-  if (!v5 && v4)
+  if (!urlThatCanBeOpened && v4)
   {
-    v7 = [v4 actionPickerItems];
-    v8 = [v7 count];
+    actionPickerItems = [v4 actionPickerItems];
+    v8 = [actionPickerItems count];
 
     if (v8)
     {
-      v9 = [v4 actionPickerItems];
-      v6 = [v9 safari_mapObjectsUsingBlock:&__block_literal_global_47];
+      actionPickerItems2 = [v4 actionPickerItems];
+      v6 = [actionPickerItems2 safari_mapObjectsUsingBlock:&__block_literal_global_47];
     }
 
     else
@@ -172,23 +172,23 @@
   return v6;
 }
 
-- (id)actionForElement:(id)a3
+- (id)actionForElement:(id)element
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"action"];
+  userInfo = [element userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"action"];
 
   return v4;
 }
 
-- (id)adjustedCopyActionForAction:(id)a3 elementInfo:(id)a4
+- (id)adjustedCopyActionForAction:(id)action elementInfo:(id)info
 {
-  v6 = a3;
-  v7 = [(_SFQRCodeDetectionController *)self actionForElement:a4];
+  actionCopy = action;
+  v7 = [(_SFQRCodeDetectionController *)self actionForElement:info];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 urlThatCanBeOpened];
-    if (v9)
+    urlThatCanBeOpened = [v7 urlThatCanBeOpened];
+    if (urlThatCanBeOpened)
     {
       v10 = MEMORY[0x1E69DC628];
       v11 = _WBSLocalizedString();
@@ -197,14 +197,14 @@
       v17[1] = 3221225472;
       v17[2] = __72___SFQRCodeDetectionController_adjustedCopyActionForAction_elementInfo___block_invoke;
       v17[3] = &unk_1E848F480;
-      v18 = v9;
+      v18 = urlThatCanBeOpened;
       v13 = [v10 actionWithTitle:v11 image:v12 identifier:0 handler:v17];
     }
 
     else
     {
-      v14 = [v8 actionPickerItems];
-      v15 = [v14 safari_containsObjectPassingTest:&__block_literal_global_21_0];
+      actionPickerItems = [v8 actionPickerItems];
+      v15 = [actionPickerItems safari_containsObjectPassingTest:&__block_literal_global_21_0];
 
       if (v15)
       {
@@ -213,14 +213,14 @@
 
       else
       {
-        v13 = v6;
+        v13 = actionCopy;
       }
     }
   }
 
   else
   {
-    v13 = v6;
+    v13 = actionCopy;
   }
 
   return v13;

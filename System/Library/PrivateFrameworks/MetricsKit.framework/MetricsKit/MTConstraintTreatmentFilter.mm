@@ -1,21 +1,21 @@
 @interface MTConstraintTreatmentFilter
-- (id)apply:(id)a3;
+- (id)apply:(id)apply;
 @end
 
 @implementation MTConstraintTreatmentFilter
 
-- (id)apply:(id)a3
+- (id)apply:(id)apply
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTObject *)self metricsKit];
-  v6 = [v5 config];
-  v7 = [v6 sources];
+  applyCopy = apply;
+  metricsKit = [(MTObject *)self metricsKit];
+  config = [metricsKit config];
+  sources = [config sources];
 
-  if (v7)
+  if (sources)
   {
-    v14[0] = v4;
-    v14[1] = v7;
+    v14[0] = applyCopy;
+    v14[1] = sources;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v9 = [MTPromise promiseWithAll:v8];
     v13[0] = MEMORY[0x277D85DD0];
@@ -28,7 +28,7 @@
 
   else
   {
-    v10 = v4;
+    v10 = applyCopy;
   }
 
   v11 = *MEMORY[0x277D85DE8];

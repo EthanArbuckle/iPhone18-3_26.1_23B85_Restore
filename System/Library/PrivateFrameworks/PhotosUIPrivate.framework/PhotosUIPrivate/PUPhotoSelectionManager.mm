@@ -1,39 +1,39 @@
 @interface PUPhotoSelectionManager
-- (BOOL)areAllAssetsSelectedInAssetCollection:(id)a3;
-- (BOOL)areAllAssetsSelectedInAssetCollections:(id)a3;
+- (BOOL)areAllAssetsSelectedInAssetCollection:(id)collection;
+- (BOOL)areAllAssetsSelectedInAssetCollections:(id)collections;
 - (BOOL)isAnyAssetSelected;
-- (BOOL)isAnyAssetSelectedInAssetCollection:(id)a3;
-- (BOOL)isAnyAssetSelectedInAssetCollections:(id)a3;
-- (BOOL)isAssetAtIndexSelected:(unint64_t)a3 inAssetCollection:(id)a4;
+- (BOOL)isAnyAssetSelectedInAssetCollection:(id)collection;
+- (BOOL)isAnyAssetSelectedInAssetCollections:(id)collections;
+- (BOOL)isAssetAtIndexSelected:(unint64_t)selected inAssetCollection:(id)collection;
 - (NSArray)selectedAssetCollections;
 - (NSDictionary)selectedAssetsByAssetCollection;
 - (NSOrderedSet)orderedSelectedAssets;
 - (NSSet)selectedAssets;
 - (PHAssetCollectionDataSource)dataSource;
 - (PUPhotoSelectionManager)init;
-- (PUPhotoSelectionManager)initWithOptions:(int64_t)a3;
+- (PUPhotoSelectionManager)initWithOptions:(int64_t)options;
 - (PXAssetMediaTypeCount)requestAssetsMediaTypeCount;
 - (PXSelectionSnapshot)selectionSnapshot;
-- (id)_selectionEntryForAssetCollection:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_selectionEntryForAssetCollection:(id)collection createIfNeeded:(BOOL)needed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedSelectionString;
-- (id)selectedAssetIndexesWithAssetCollectionOrdering:(id)a3;
-- (id)selectedAssetsWithAssetCollectionOrdering:(id)a3;
+- (id)selectedAssetIndexesWithAssetCollectionOrdering:(id)ordering;
+- (id)selectedAssetsWithAssetCollectionOrdering:(id)ordering;
 - (void)_endSelectionChange;
-- (void)_selectFirstAssetInAssetCollections:(id)a3;
+- (void)_selectFirstAssetInAssetCollections:(id)collections;
 - (void)deselectAllAssets;
-- (void)deselectAllAssetsInAssetCollections:(id)a3;
-- (void)deselectAssetAtIndex:(unint64_t)a3 inAssetCollection:(id)a4;
-- (void)deselectAssetsAtIndexes:(id)a3 inAssetCollection:(id)a4;
-- (void)enumerateSelectedAssetsWithAssetCollectionOrdering:(id)a3 block:(id)a4;
-- (void)handlePhotoLibraryChange:(id)a3;
+- (void)deselectAllAssetsInAssetCollections:(id)collections;
+- (void)deselectAssetAtIndex:(unint64_t)index inAssetCollection:(id)collection;
+- (void)deselectAssetsAtIndexes:(id)indexes inAssetCollection:(id)collection;
+- (void)enumerateSelectedAssetsWithAssetCollectionOrdering:(id)ordering block:(id)block;
+- (void)handlePhotoLibraryChange:(id)change;
 - (void)invalidateAllAssetIndexes;
-- (void)registerChangeObserver:(id)a3;
-- (void)selectAllAssetsInAssetCollections:(id)a3;
-- (void)selectAssetAtIndex:(unint64_t)a3 inAssetCollection:(id)a4;
-- (void)selectAssetsAtIndexes:(id)a3 inAssetCollection:(id)a4;
-- (void)selectInitialAssetsInAssetCollections:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)registerChangeObserver:(id)observer;
+- (void)selectAllAssetsInAssetCollections:(id)collections;
+- (void)selectAssetAtIndex:(unint64_t)index inAssetCollection:(id)collection;
+- (void)selectAssetsAtIndexes:(id)indexes inAssetCollection:(id)collection;
+- (void)selectInitialAssetsInAssetCollections:(id)collections;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PUPhotoSelectionManager
@@ -45,11 +45,11 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
   v18 = [+[PUPhotoSelectionManager allocWithZone:](PUPhotoSelectionManager initWithOptions:"initWithOptions:", self->_options];
-  v5 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -71,8 +71,8 @@
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectForKey:v11];
-        v13 = [v12 copyWithZone:a3];
-        [v5 setObject:v13 forKey:v11];
+        v13 = [v12 copyWithZone:zone];
+        [weakToStrongObjectsMapTable setObject:v13 forKey:v11];
       }
 
       v8 = [(NSMapTable *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -81,7 +81,7 @@
     while (v8);
   }
 
-  objc_storeStrong(&v18->_selectionEntriesByAssetCollection, v5);
+  objc_storeStrong(&v18->_selectionEntriesByAssetCollection, weakToStrongObjectsMapTable);
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   objc_storeWeak(&v18->_dataSource, WeakRetained);
 
@@ -106,8 +106,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(NSHashTable *)self->_changeObservers allObjects];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allObjects = [(NSHashTable *)self->_changeObservers allObjects];
+    v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -119,14 +119,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) photoSelectionManagerSelectionDidChange:self];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -171,10 +171,10 @@
   }
 }
 
-- (void)handlePhotoLibraryChange:(id)a3
+- (void)handlePhotoLibraryChange:(id)change
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -184,7 +184,7 @@
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    array = 0;
     v9 = *v33;
     do
     {
@@ -196,15 +196,15 @@
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v4 changeDetailsForObject:v11];
+        v12 = [changeCopy changeDetailsForObject:v11];
         if ([v12 objectWasDeleted])
         {
-          if (!v8)
+          if (!array)
           {
-            v8 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v8 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -216,14 +216,14 @@
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v8;
+  v13 = array;
   v14 = [v13 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v14)
   {
@@ -272,7 +272,7 @@
         }
 
         v23 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:*(*(&v24 + 1) + 8 * k) createIfNeeded:0, v24];
-        [v23 handlePhotoLibraryChange:v4];
+        [v23 handlePhotoLibraryChange:changeCopy];
       }
 
       v20 = [(NSMapTable *)v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
@@ -314,10 +314,10 @@
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [v11 playbackStyle];
-        v13 = [v11 location];
+        playbackStyle = [v11 playbackStyle];
+        location = [v11 location];
 
-        if (v13)
+        if (location)
         {
           v14 = v4 + 1;
         }
@@ -327,9 +327,9 @@
           v14 = v4;
         }
 
-        v15 = [v11 descriptionProperties];
-        v16 = [v15 assetDescription];
-        v17 = [v16 length];
+        descriptionProperties = [v11 descriptionProperties];
+        assetDescription = [descriptionProperties assetDescription];
+        v17 = [assetDescription length];
 
         v18 = v17 == 0;
         v5 = v29;
@@ -338,9 +338,9 @@
           v5 = v29 + 1;
         }
 
-        v19 = [v11 descriptionProperties];
-        v20 = [v19 accessibilityDescription];
-        v21 = [v20 length];
+        descriptionProperties2 = [v11 descriptionProperties];
+        accessibilityDescription = [descriptionProperties2 accessibilityDescription];
+        v21 = [accessibilityDescription length];
 
         v18 = v21 == 0;
         v4 = v14;
@@ -351,22 +351,22 @@
           v6 = v27 + 1;
         }
 
-        if ((v12 - 1) < 3)
+        if ((playbackStyle - 1) < 3)
         {
           ++v9;
         }
 
-        if ((v12 & 0xFFFFFFFFFFFFFFFELL) == 4)
+        if ((playbackStyle & 0xFFFFFFFFFFFFFFFELL) == 4)
         {
           ++v8;
         }
 
-        if (v12 == 5)
+        if (playbackStyle == 5)
         {
           ++v7;
         }
 
-        if (v12 == 3)
+        if (playbackStyle == 3)
         {
           v3 = v28 + 1;
         }
@@ -392,8 +392,8 @@
 
 - (id)localizedSelectionString
 {
-  v2 = [(PUPhotoSelectionManager *)self selectedAssets];
-  v3 = [v2 allObjects];
+  selectedAssets = [(PUPhotoSelectionManager *)self selectedAssets];
+  allObjects = [selectedAssets allObjects];
 
   v4 = PLLocalizedSelectionMessageForItems();
 
@@ -403,16 +403,16 @@
 - (PXSelectionSnapshot)selectionSnapshot
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoSelectionManager *)self dataSource];
-  v4 = [v3 assetCollectionsFetchResult];
+  dataSource = [(PUPhotoSelectionManager *)self dataSource];
+  assetCollectionsFetchResult = [dataSource assetCollectionsFetchResult];
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = [(NSMapTable *)self->_selectionEntriesByAssetCollection keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  keyEnumerator = [(NSMapTable *)self->_selectionEntriesByAssetCollection keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v7)
   {
     v8 = v7;
@@ -423,29 +423,29 @@
       {
         if (*v41 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectForKey:*(*(&v40 + 1) + 8 * i)];
-        v12 = [v11 fetchResult];
-        v13 = [v11 assetCollection];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        fetchResult = [v11 fetchResult];
+        assetCollection = [v11 assetCollection];
+        [dictionary setObject:fetchResult forKeyedSubscript:assetCollection];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v40 objects:v45 count:16];
     }
 
     while (v8);
   }
 
-  v30 = v4;
-  v14 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:v4 options:4];
-  v29 = v5;
-  [v14 setExistingAssetCollectionFetchResults:v5];
+  v30 = assetCollectionsFetchResult;
+  v14 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:assetCollectionsFetchResult options:4];
+  v29 = dictionary;
+  [v14 setExistingAssetCollectionFetchResults:dictionary];
   v28 = v14;
   v15 = [objc_alloc(MEMORY[0x1E69C3870]) initWithPhotosDataSourceConfiguration:v14];
   v27 = [objc_alloc(MEMORY[0x1E69C37D0]) initWithImmutablePhotosDataSource:v15 withChange:0];
-  v31 = [v27 identifier];
+  identifier = [v27 identifier];
   v32 = objc_alloc_init(MEMORY[0x1E69C4580]);
   v36 = 0u;
   v37 = 0u;
@@ -469,9 +469,9 @@
         v20 = *(*(&v36 + 1) + 8 * j);
         v21 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectForKey:v20];
         v22 = [v15 sectionForAssetCollection:v20];
-        v23 = [v21 selectedIndexes];
+        selectedIndexes = [v21 selectedIndexes];
 
-        if (v23)
+        if (selectedIndexes)
         {
           v24 = v22 == 0x7FFFFFFFFFFFFFFFLL;
         }
@@ -488,7 +488,7 @@
           v34[2] = __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke;
           v34[3] = &unk_1E7B7C350;
           v35 = v21;
-          [v32 modifyItemIndexSetForDataSourceIdentifier:v31 section:v22 usingBlock:v34];
+          [v32 modifyItemIndexSetForDataSourceIdentifier:identifier section:v22 usingBlock:v34];
         }
       }
 
@@ -537,8 +537,8 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(NSMapTable *)self->_selectionEntriesByAssetCollection keyEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    keyEnumerator = [(NSMapTable *)self->_selectionEntriesByAssetCollection keyEnumerator];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -549,17 +549,17 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
           v11 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectForKey:v10];
-          v12 = [v11 selectedAssets];
-          v13 = [v12 copy];
+          selectedAssets = [v11 selectedAssets];
+          v13 = [selectedAssets copy];
           [v4 setObject:v13 forKeyedSubscript:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -582,8 +582,8 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -594,17 +594,17 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) selectedAssets];
-        if (v9)
+        selectedAssets = [*(*(&v11 + 1) + 8 * i) selectedAssets];
+        if (selectedAssets)
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:selectedAssets];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -622,23 +622,23 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
 
   else
   {
-    v4 = [(PUPhotoSelectionManager *)self orderedSelectedAssets];
-    v3 = [v4 set];
+    orderedSelectedAssets = [(PUPhotoSelectionManager *)self orderedSelectedAssets];
+    v3 = [orderedSelectedAssets set];
   }
 
   return v3;
 }
 
-- (id)selectedAssetsWithAssetCollectionOrdering:(id)a3
+- (id)selectedAssetsWithAssetCollectionOrdering:(id)ordering
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  orderingCopy = ordering;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = orderingCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -654,8 +654,8 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
         }
 
         v11 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:*(*(&v14 + 1) + 8 * i) createIfNeeded:0, v14];
-        v12 = [v11 selectedAssets];
-        [v5 addObjectsFromArray:v12];
+        selectedAssets = [v11 selectedAssets];
+        [array addObjectsFromArray:selectedAssets];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -664,14 +664,14 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)enumerateSelectedAssetsWithAssetCollectionOrdering:(id)a3 block:(id)a4
+- (void)enumerateSelectedAssetsWithAssetCollectionOrdering:(id)ordering block:(id)block
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  orderingCopy = ordering;
+  blockCopy = block;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -684,7 +684,7 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v6;
+  obj = orderingCopy;
   v8 = [obj countByEnumeratingWithState:&v17 objects:v29 count:16];
   if (v8)
   {
@@ -703,7 +703,7 @@ void __44__PUPhotoSelectionManager_selectionSnapshot__block_invoke(uint64_t a1, 
         v13[1] = 3221225472;
         v13[2] = __84__PUPhotoSelectionManager_enumerateSelectedAssetsWithAssetCollectionOrdering_block___block_invoke;
         v13[3] = &unk_1E7B7C328;
-        v14 = v7;
+        v14 = blockCopy;
         v15 = &v21;
         v16 = &v25;
         [v11 enumerateSelectedAssetsWithBlock:v13];
@@ -743,16 +743,16 @@ uint64_t __84__PUPhotoSelectionManager_enumerateSelectedAssetsWithAssetCollectio
   return result;
 }
 
-- (id)selectedAssetIndexesWithAssetCollectionOrdering:(id)a3
+- (id)selectedAssetIndexesWithAssetCollectionOrdering:(id)ordering
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  orderingCopy = ordering;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = orderingCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -768,21 +768,21 @@ uint64_t __84__PUPhotoSelectionManager_enumerateSelectedAssetsWithAssetCollectio
         }
 
         v11 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:*(*(&v17 + 1) + 8 * i) createIfNeeded:0, v17];
-        v12 = [v11 selectedIndexes];
-        v13 = v12;
-        if (v12)
+        selectedIndexes = [v11 selectedIndexes];
+        v13 = selectedIndexes;
+        if (selectedIndexes)
         {
-          v14 = v12;
+          indexSet = selectedIndexes;
         }
 
         else
         {
-          v14 = [MEMORY[0x1E696AC90] indexSet];
+          indexSet = [MEMORY[0x1E696AC90] indexSet];
         }
 
-        v15 = v14;
+        v15 = indexSet;
 
-        [v5 addObject:v15];
+        [array addObject:v15];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -791,18 +791,18 @@ uint64_t __84__PUPhotoSelectionManager_enumerateSelectedAssetsWithAssetCollectio
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)areAllAssetsSelectedInAssetCollections:(id)a3
+- (BOOL)areAllAssetsSelectedInAssetCollections:(id)collections
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  collectionsCopy = collections;
+  v5 = [collectionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -813,7 +813,7 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(collectionsCopy);
       }
 
       if (![(PUPhotoSelectionManager *)self areAllAssetsSelectedInAssetCollection:*(*(&v11 + 1) + 8 * v8), v11])
@@ -823,7 +823,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [collectionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -841,11 +841,11 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)areAllAssetsSelectedInAssetCollection:(id)a3
+- (BOOL)areAllAssetsSelectedInAssetCollection:(id)collection
 {
-  v3 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:a3 createIfNeeded:0];
-  v4 = [v3 selectedIndexes];
-  v5 = [v4 count];
+  v3 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:collection createIfNeeded:0];
+  selectedIndexes = [v3 selectedIndexes];
+  v5 = [selectedIndexes count];
 
   if (v5 < 1)
   {
@@ -854,8 +854,8 @@ LABEL_11:
 
   else
   {
-    v6 = [v3 fetchResult];
-    v7 = [v6 count];
+    fetchResult = [v3 fetchResult];
+    v7 = [fetchResult count];
 
     v8 = v7 == v5;
   }
@@ -863,15 +863,15 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isAnyAssetSelectedInAssetCollections:(id)a3
+- (BOOL)isAnyAssetSelectedInAssetCollections:(id)collections
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  collectionsCopy = collections;
+  v5 = [collectionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -882,7 +882,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionsCopy);
         }
 
         if ([(PUPhotoSelectionManager *)self isAnyAssetSelectedInAssetCollection:*(*(&v11 + 1) + 8 * i), v11])
@@ -892,7 +892,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [collectionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -908,21 +908,21 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isAnyAssetSelectedInAssetCollection:(id)a3
+- (BOOL)isAnyAssetSelectedInAssetCollection:(id)collection
 {
-  v3 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:a3 createIfNeeded:0];
-  v4 = [v3 selectedIndexes];
-  v5 = [v4 count] != 0;
+  v3 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:collection createIfNeeded:0];
+  selectedIndexes = [v3 selectedIndexes];
+  v5 = [selectedIndexes count] != 0;
 
   return v5;
 }
 
-- (BOOL)isAssetAtIndexSelected:(unint64_t)a3 inAssetCollection:(id)a4
+- (BOOL)isAssetAtIndexSelected:(unint64_t)selected inAssetCollection:(id)collection
 {
-  v5 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:a4 createIfNeeded:0];
-  LOBYTE(a3) = [v5 isIndexSelected:a3];
+  v5 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:collection createIfNeeded:0];
+  LOBYTE(selected) = [v5 isIndexSelected:selected];
 
-  return a3;
+  return selected;
 }
 
 - (BOOL)isAnyAssetSelected
@@ -939,8 +939,8 @@ LABEL_11:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
-    v3 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    objectEnumerator = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
+    v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v3)
     {
       v5 = *v11;
@@ -950,11 +950,11 @@ LABEL_11:
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v7 = [*(*(&v10 + 1) + 8 * i) selectedIndexes];
-          v8 = [v7 count];
+          selectedIndexes = [*(*(&v10 + 1) + 8 * i) selectedIndexes];
+          v8 = [selectedIndexes count];
 
           if (v8)
           {
@@ -963,7 +963,7 @@ LABEL_11:
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v3)
         {
           continue;
@@ -988,16 +988,16 @@ LABEL_13:
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)deselectAllAssetsInAssetCollections:(id)a3
+- (void)deselectAllAssetsInAssetCollections:(id)collections
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = collectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1015,8 +1015,8 @@ LABEL_13:
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:v10 createIfNeeded:0, v15];
         v12 = MEMORY[0x1E696AC90];
-        v13 = [v11 fetchResult];
-        v14 = [v12 indexSetWithIndexesInRange:{0, objc_msgSend(v13, "count")}];
+        fetchResult = [v11 fetchResult];
+        v14 = [v12 indexSetWithIndexesInRange:{0, objc_msgSend(fetchResult, "count")}];
 
         [(PUPhotoSelectionManager *)self deselectAssetsAtIndexes:v14 inAssetCollection:v10];
       }
@@ -1030,22 +1030,22 @@ LABEL_13:
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)deselectAssetsAtIndexes:(id)a3 inAssetCollection:(id)a4
+- (void)deselectAssetsAtIndexes:(id)indexes inAssetCollection:(id)collection
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  indexesCopy = indexes;
+  collectionCopy = collection;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
-  v8 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:v7 createIfNeeded:0];
-  [v8 deselectAssetsAtIndexes:v6];
+  v8 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:collectionCopy createIfNeeded:0];
+  [v8 deselectAssetsAtIndexes:indexesCopy];
   if ([(PUPhotoSelectionManager *)self _shouldUniqueAssets])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    objectEnumerator = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1057,7 +1057,7 @@ LABEL_13:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
@@ -1070,7 +1070,7 @@ LABEL_13:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -1080,26 +1080,26 @@ LABEL_13:
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)deselectAssetAtIndex:(unint64_t)a3 inAssetCollection:(id)a4
+- (void)deselectAssetAtIndex:(unint64_t)index inAssetCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
-  v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
-  [(PUPhotoSelectionManager *)self deselectAssetsAtIndexes:v7 inAssetCollection:v6];
+  v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
+  [(PUPhotoSelectionManager *)self deselectAssetsAtIndexes:v7 inAssetCollection:collectionCopy];
 
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)_selectFirstAssetInAssetCollections:(id)a3
+- (void)_selectFirstAssetInAssetCollections:(id)collections
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = collectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1116,8 +1116,8 @@ LABEL_13:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:v10 createIfNeeded:1, v15];
-        v12 = [v11 fetchResult];
-        v13 = [v12 count];
+        fetchResult = [v11 fetchResult];
+        v13 = [fetchResult count];
 
         if (v13)
         {
@@ -1143,32 +1143,32 @@ LABEL_11:
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)selectInitialAssetsInAssetCollections:(id)a3
+- (void)selectInitialAssetsInAssetCollections:(id)collections
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   memset(v5, 0, sizeof(v5));
-  if ([v4 countByEnumeratingWithState:v5 objects:v6 count:16] && !objc_msgSend(**(&v5[0] + 1), "px_shouldSelectAllAssetsWhenSharing"))
+  if ([collectionsCopy countByEnumeratingWithState:v5 objects:v6 count:16] && !objc_msgSend(**(&v5[0] + 1), "px_shouldSelectAllAssetsWhenSharing"))
   {
-    [(PUPhotoSelectionManager *)self _selectFirstAssetInAssetCollections:v4];
+    [(PUPhotoSelectionManager *)self _selectFirstAssetInAssetCollections:collectionsCopy];
   }
 
   else
   {
-    [(PUPhotoSelectionManager *)self selectAllAssetsInAssetCollections:v4];
+    [(PUPhotoSelectionManager *)self selectAllAssetsInAssetCollections:collectionsCopy];
   }
 }
 
-- (void)selectAllAssetsInAssetCollections:(id)a3
+- (void)selectAllAssetsInAssetCollections:(id)collections
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = collectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1186,8 +1186,8 @@ LABEL_11:
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:v10 createIfNeeded:1, v15];
         v12 = MEMORY[0x1E696AC90];
-        v13 = [v11 fetchResult];
-        v14 = [v12 indexSetWithIndexesInRange:{0, objc_msgSend(v13, "count")}];
+        fetchResult = [v11 fetchResult];
+        v14 = [v12 indexSetWithIndexesInRange:{0, objc_msgSend(fetchResult, "count")}];
 
         [(PUPhotoSelectionManager *)self selectAssetsAtIndexes:v14 inAssetCollection:v10];
       }
@@ -1201,22 +1201,22 @@ LABEL_11:
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)selectAssetsAtIndexes:(id)a3 inAssetCollection:(id)a4
+- (void)selectAssetsAtIndexes:(id)indexes inAssetCollection:(id)collection
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  indexesCopy = indexes;
+  collectionCopy = collection;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
-  v8 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:v7 createIfNeeded:1];
-  [v8 selectAssetsAtIndexes:v6];
+  v8 = [(PUPhotoSelectionManager *)self _selectionEntryForAssetCollection:collectionCopy createIfNeeded:1];
+  [v8 selectAssetsAtIndexes:indexesCopy];
   if ([(PUPhotoSelectionManager *)self _shouldUniqueAssets])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    objectEnumerator = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectEnumerator];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1228,7 +1228,7 @@ LABEL_11:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
@@ -1241,7 +1241,7 @@ LABEL_11:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -1251,27 +1251,27 @@ LABEL_11:
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (void)selectAssetAtIndex:(unint64_t)a3 inAssetCollection:(id)a4
+- (void)selectAssetAtIndex:(unint64_t)index inAssetCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   [(PUPhotoSelectionManager *)self _beginSelectionChange];
-  v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
-  [(PUPhotoSelectionManager *)self selectAssetsAtIndexes:v7 inAssetCollection:v6];
+  v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
+  [(PUPhotoSelectionManager *)self selectAssetsAtIndexes:v7 inAssetCollection:collectionCopy];
 
   [(PUPhotoSelectionManager *)self _endSelectionChange];
 }
 
-- (id)_selectionEntryForAssetCollection:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_selectionEntryForAssetCollection:(id)collection createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectForKey:v6];
-  v8 = [(PUPhotoSelectionManager *)self _shouldUniqueAssets];
+  neededCopy = needed;
+  collectionCopy = collection;
+  v7 = [(NSMapTable *)self->_selectionEntriesByAssetCollection objectForKey:collectionCopy];
+  _shouldUniqueAssets = [(PUPhotoSelectionManager *)self _shouldUniqueAssets];
   if (!v7)
   {
-    if (v4 || v8)
+    if (neededCopy || _shouldUniqueAssets)
     {
-      if (v8)
+      if (_shouldUniqueAssets)
       {
         uniqueAssetSelection = self->_uniqueAssetSelection;
       }
@@ -1283,21 +1283,21 @@ LABEL_11:
 
       v10 = MEMORY[0x1E6978830];
       v11 = uniqueAssetSelection;
-      v12 = [v10 fetchOptionsWithPhotoLibrary:0 orObject:v6];
+      v12 = [v10 fetchOptionsWithPhotoLibrary:0 orObject:collectionCopy];
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
       if (WeakRetained)
       {
         v14 = objc_loadWeakRetained(&self->_dataSource);
-        v15 = [v14 assetsInAssetCollection:v6];
+        v15 = [v14 assetsInAssetCollection:collectionCopy];
       }
 
       else
       {
-        v15 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v6 options:v12];
+        v15 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:v12];
       }
 
-      v7 = [[PUPhotoSelectionEntry alloc] initWithAssetCollection:v6 fetchResult:v15 uniqueSelectedAssets:v11];
-      [(NSMapTable *)self->_selectionEntriesByAssetCollection setObject:v7 forKey:v6];
+      v7 = [[PUPhotoSelectionEntry alloc] initWithAssetCollection:collectionCopy fetchResult:v15 uniqueSelectedAssets:v11];
+      [(NSMapTable *)self->_selectionEntriesByAssetCollection setObject:v7 forKey:collectionCopy];
     }
 
     else
@@ -1309,47 +1309,47 @@ LABEL_11:
   return v7;
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:94 description:{@"%s must be called on the main thread", "-[PUPhotoSelectionManager unregisterChangeObserver:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:94 description:{@"%s must be called on the main thread", "-[PUPhotoSelectionManager unregisterChangeObserver:]"}];
   }
 
-  [(NSHashTable *)self->_changeObservers removeObject:v6];
+  [(NSHashTable *)self->_changeObservers removeObject:observerCopy];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v10 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:85 description:{@"%s must be called on the main thread", "-[PUPhotoSelectionManager registerChangeObserver:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:85 description:{@"%s must be called on the main thread", "-[PUPhotoSelectionManager registerChangeObserver:]"}];
   }
 
   changeObservers = self->_changeObservers;
   if (!changeObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_changeObservers;
-    self->_changeObservers = v6;
+    self->_changeObservers = weakObjectsHashTable;
 
     changeObservers = self->_changeObservers;
   }
 
-  if ([(NSHashTable *)changeObservers containsObject:v10])
+  if ([(NSHashTable *)changeObservers containsObject:observerCopy])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:89 description:{@"can't register an observer instance more than once: %@", v10}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:89 description:{@"can't register an observer instance more than once: %@", observerCopy}];
   }
 
-  [(NSHashTable *)self->_changeObservers addObject:v10];
+  [(NSHashTable *)self->_changeObservers addObject:observerCopy];
 }
 
-- (PUPhotoSelectionManager)initWithOptions:(int64_t)a3
+- (PUPhotoSelectionManager)initWithOptions:(int64_t)options
 {
   v11.receiver = self;
   v11.super_class = PUPhotoSelectionManager;
@@ -1357,10 +1357,10 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    v4->_options = options;
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     selectionEntriesByAssetCollection = v5->_selectionEntriesByAssetCollection;
-    v5->_selectionEntriesByAssetCollection = v6;
+    v5->_selectionEntriesByAssetCollection = weakToStrongObjectsMapTable;
 
     if ([(PUPhotoSelectionManager *)v5 _shouldUniqueAssets])
     {
@@ -1375,8 +1375,8 @@ LABEL_11:
 
 - (PUPhotoSelectionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:66 description:{@"Do not use this initializer, use the designated one instead."}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoSelectionManager.m" lineNumber:66 description:{@"Do not use this initializer, use the designated one instead."}];
 
   return 0;
 }

@@ -1,8 +1,8 @@
 @interface HMDCameraNetworkConfig
 + (id)localIPAddress;
 - (HMDCameraNetworkConfig)init;
-- (HMDCameraNetworkConfig)initWithAddress:(id)a3 ipv6:(BOOL)a4 rtpPort:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HMDCameraNetworkConfig)initWithAddress:(id)address ipv6:(BOOL)ipv6 rtpPort:(id)port;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -11,44 +11,44 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCameraNetworkConfig *)self ipAddress];
+  ipAddress = [(HMDCameraNetworkConfig *)self ipAddress];
   [(HMDCameraNetworkConfig *)self ipv6];
   v5 = HMFBooleanToString();
-  v6 = [(HMDCameraNetworkConfig *)self rtpPort];
-  v7 = [v6 stringValue];
-  v8 = [v3 stringWithFormat:@"<%@, v6:%@ %@>", v4, v5, v7];
+  rtpPort = [(HMDCameraNetworkConfig *)self rtpPort];
+  stringValue = [rtpPort stringValue];
+  v8 = [v3 stringWithFormat:@"<%@, rtpPort:%@ %@>", ipAddress, v5, stringValue];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDCameraNetworkConfig allocWithZone:a3];
-  v5 = [(HMDCameraNetworkConfig *)self ipAddress];
-  v6 = [(HMDCameraNetworkConfig *)self ipv6];
-  v7 = [(HMDCameraNetworkConfig *)self rtpPort];
-  v8 = [(HMDCameraNetworkConfig *)v4 initWithAddress:v5 ipv6:v6 rtpPort:v7];
+  v4 = [HMDCameraNetworkConfig allocWithZone:zone];
+  ipAddress = [(HMDCameraNetworkConfig *)self ipAddress];
+  ipv6 = [(HMDCameraNetworkConfig *)self ipv6];
+  rtpPort = [(HMDCameraNetworkConfig *)self rtpPort];
+  v8 = [(HMDCameraNetworkConfig *)v4 initWithAddress:ipAddress ipv6:ipv6 rtpPort:rtpPort];
 
   sa = self->_ipv4SockAddress.sa;
-  *(v8 + 20) = *(&self->_ipv4SockAddress.v6.sin6_addr + 4);
+  *(v8 + 20) = *(&self->_ipv4SockAddress.ipv6.sin6_addr + 4);
   *(v8 + 8) = sa;
   v10 = self->_ipv6SockAddress.sa;
-  *(v8 + 48) = *(&self->_ipv6SockAddress.v6.sin6_addr + 4);
+  *(v8 + 48) = *(&self->_ipv6SockAddress.ipv6.sin6_addr + 4);
   *(v8 + 36) = v10;
   return v8;
 }
 
-- (HMDCameraNetworkConfig)initWithAddress:(id)a3 ipv6:(BOOL)a4 rtpPort:(id)a5
+- (HMDCameraNetworkConfig)initWithAddress:(id)address ipv6:(BOOL)ipv6 rtpPort:(id)port
 {
-  v9 = a3;
-  v10 = a5;
+  addressCopy = address;
+  portCopy = port;
   v11 = [(HMDCameraNetworkConfig *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_ipAddress, a3);
-    v12->_ipv6 = a4;
-    objc_storeStrong(&v12->_rtpPort, a5);
+    objc_storeStrong(&v11->_ipAddress, address);
+    v12->_ipv6 = ipv6;
+    objc_storeStrong(&v12->_rtpPort, port);
   }
 
   return v12;

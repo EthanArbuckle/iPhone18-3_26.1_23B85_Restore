@@ -1,14 +1,14 @@
 @interface ACXTimedIdentifierList
-- (ACXTimedIdentifierList)initWithTimeout:(double)a3;
-- (BOOL)addIdentifierIfNotPresent:(id)a3;
-- (BOOL)containsIdentifier:(id)a3;
-- (BOOL)removeIdentifier:(id)a3;
-- (void)updateTimeOnIdentifier:(id)a3;
+- (ACXTimedIdentifierList)initWithTimeout:(double)timeout;
+- (BOOL)addIdentifierIfNotPresent:(id)present;
+- (BOOL)containsIdentifier:(id)identifier;
+- (BOOL)removeIdentifier:(id)identifier;
+- (void)updateTimeOnIdentifier:(id)identifier;
 @end
 
 @implementation ACXTimedIdentifierList
 
-- (ACXTimedIdentifierList)initWithTimeout:(double)a3
+- (ACXTimedIdentifierList)initWithTimeout:(double)timeout
 {
   v12.receiver = self;
   v12.super_class = ACXTimedIdentifierList;
@@ -16,12 +16,12 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 <= 0.0)
+    if (timeout <= 0.0)
     {
       sub_10005A1A0();
     }
 
-    v4->_timeoutInSeconds = a3;
+    v4->_timeoutInSeconds = timeout;
     v6 = objc_opt_new();
     list = v5->_list;
     v5->_list = v6;
@@ -35,87 +35,87 @@
   return v5;
 }
 
-- (BOOL)addIdentifierIfNotPresent:(id)a3
+- (BOOL)addIdentifierIfNotPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ACXTimedIdentifierList *)self queue];
+  queue = [(ACXTimedIdentifierList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004EDE0;
   block[3] = &unk_10008CA70;
   block[4] = self;
-  v9 = v4;
+  v9 = presentCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = presentCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(presentCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return presentCopy;
 }
 
-- (void)updateTimeOnIdentifier:(id)a3
+- (void)updateTimeOnIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ACXTimedIdentifierList *)self queue];
+  identifierCopy = identifier;
+  queue = [(ACXTimedIdentifierList *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004F2B4;
   v7[3] = &unk_10008CC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (BOOL)removeIdentifier:(id)a3
+- (BOOL)removeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ACXTimedIdentifierList *)self queue];
+  queue = [(ACXTimedIdentifierList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004F46C;
   block[3] = &unk_10008CA70;
   block[4] = self;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(identifierCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return identifierCopy;
 }
 
-- (BOOL)containsIdentifier:(id)a3
+- (BOOL)containsIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ACXTimedIdentifierList *)self queue];
+  queue = [(ACXTimedIdentifierList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004F648;
   block[3] = &unk_10008CA20;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(identifierCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return identifierCopy;
 }
 
 @end

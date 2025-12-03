@@ -1,37 +1,37 @@
 @interface PTCinematographyFixedFocusTrack
-- (PTCinematographyFixedFocusTrack)initWithDetection:(id)a3;
-- (PTCinematographyFixedFocusTrack)initWithFocusDistance:(float)a3;
+- (PTCinematographyFixedFocusTrack)initWithDetection:(id)detection;
+- (PTCinematographyFixedFocusTrack)initWithFocusDistance:(float)distance;
 - (id)_asCinematographyDictionary;
 - (id)_calculateTimeRanges;
-- (id)_fixedFocusDetectionAtTime:(id *)a3;
-- (id)_initWithCinematographyDictionary:(id)a3;
-- (id)_initWithFixedFocusTrack:(id)a3;
-- (id)detectionAtOrBeforeTime:(id *)a3;
-- (id)detectionInFrame:(id)a3;
-- (id)detectionNearestTime:(id *)a3;
-- (id)detectionsInTimeRange:(id *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_fixedFocusDetectionAtTime:(id *)time;
+- (id)_initWithCinematographyDictionary:(id)dictionary;
+- (id)_initWithFixedFocusTrack:(id)track;
+- (id)detectionAtOrBeforeTime:(id *)time;
+- (id)detectionInFrame:(id)frame;
+- (id)detectionNearestTime:(id *)time;
+- (id)detectionsInTimeRange:(id *)range;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PTCinematographyFixedFocusTrack
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 _initWithFixedFocusTrack:self];
 }
 
-- (id)_initWithFixedFocusTrack:(id)a3
+- (id)_initWithFixedFocusTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   v10.receiver = self;
   v10.super_class = PTCinematographyFixedFocusTrack;
-  v5 = -[PTCinematographyTrack initWithDetectionType:](&v10, sel_initWithDetectionType_, [v4 detectionType]);
+  v5 = -[PTCinematographyTrack initWithDetectionType:](&v10, sel_initWithDetectionType_, [trackCopy detectionType]);
   if (v5)
   {
-    v6 = [v4 detection];
-    v7 = [v6 copy];
+    detection = [trackCopy detection];
+    v7 = [detection copy];
     detection = v5->_detection;
     v5->_detection = v7;
   }
@@ -39,13 +39,13 @@
   return v5;
 }
 
-- (PTCinematographyFixedFocusTrack)initWithDetection:(id)a3
+- (PTCinematographyFixedFocusTrack)initWithDetection:(id)detection
 {
-  v4 = a3;
-  v5 = -[PTCinematographyTrack initWithDetectionType:](self, "initWithDetectionType:", [v4 detectionType]);
+  detectionCopy = detection;
+  v5 = -[PTCinematographyTrack initWithDetectionType:](self, "initWithDetectionType:", [detectionCopy detectionType]);
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [detectionCopy copy];
     detection = v5->_detection;
     v5->_detection = v6;
   }
@@ -53,23 +53,23 @@
   return v5;
 }
 
-- (PTCinematographyFixedFocusTrack)initWithFocusDistance:(float)a3
+- (PTCinematographyFixedFocusTrack)initWithFocusDistance:(float)distance
 {
   v5 = [PTCinematographyDetection alloc];
   v10 = *MEMORY[0x277CC0888];
   v11 = *(MEMORY[0x277CC0888] + 16);
-  *&v6 = a3;
+  *&v6 = distance;
   v7 = [(PTCinematographyDetection *)v5 initWithTime:&v10 rect:*MEMORY[0x277CBF3A0] focusDistance:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), v6];
   v8 = [(PTCinematographyFixedFocusTrack *)self initWithDetection:v7];
 
   return v8;
 }
 
-- (id)_fixedFocusDetectionAtTime:(id *)a3
+- (id)_fixedFocusDetectionAtTime:(id *)time
 {
-  v5 = [(PTCinematographyFixedFocusTrack *)self detection];
-  v8 = *a3;
-  v6 = [v5 _detectionByChangingTime:&v8];
+  detection = [(PTCinematographyFixedFocusTrack *)self detection];
+  v8 = *time;
+  v6 = [detection _detectionByChangingTime:&v8];
 
   [v6 setDetectionType:101];
   [v6 setTrackIdentifier:{-[PTCinematographyTrack trackIdentifier](self, "trackIdentifier")}];
@@ -77,23 +77,23 @@
   return v6;
 }
 
-- (id)detectionNearestTime:(id *)a3
+- (id)detectionNearestTime:(id *)time
 {
-  v5 = *a3;
+  v5 = *time;
   v3 = [(PTCinematographyFixedFocusTrack *)self _fixedFocusDetectionAtTime:&v5];
 
   return v3;
 }
 
-- (id)detectionAtOrBeforeTime:(id *)a3
+- (id)detectionAtOrBeforeTime:(id *)time
 {
-  v5 = *a3;
+  v5 = *time;
   v3 = [(PTCinematographyFixedFocusTrack *)self _fixedFocusDetectionAtTime:&v5];
 
   return v3;
 }
 
-- (id)detectionsInTimeRange:(id *)a3
+- (id)detectionsInTimeRange:(id *)range
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = _PTLogSystem();
@@ -111,11 +111,11 @@
   return v6;
 }
 
-- (id)detectionInFrame:(id)a3
+- (id)detectionInFrame:(id)frame
 {
-  if (a3)
+  if (frame)
   {
-    [a3 time];
+    [frame time];
   }
 
   else
@@ -132,11 +132,11 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCAE60];
-  v3 = [(PTCinematographyTrack *)self script];
-  v4 = v3;
-  if (v3)
+  script = [(PTCinematographyTrack *)self script];
+  v4 = script;
+  if (script)
   {
-    [v3 timeRange];
+    [script timeRange];
   }
 
   else
@@ -156,22 +156,22 @@
   v10[1] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = PTCinematographyFixedFocusTrack;
-  v3 = [(PTCinematographyTrack *)&v9 _asMutableCinematographyDictionary];
-  v4 = [(PTCinematographyFixedFocusTrack *)self detection];
-  v5 = [v4 _asCinematographyDictionary];
-  v10[0] = v5;
+  _asMutableCinematographyDictionary = [(PTCinematographyTrack *)&v9 _asMutableCinematographyDictionary];
+  detection = [(PTCinematographyFixedFocusTrack *)self detection];
+  _asCinematographyDictionary = [detection _asCinematographyDictionary];
+  v10[0] = _asCinematographyDictionary;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  [v3 setObject:v6 forKeyedSubscript:@"detections"];
+  [_asMutableCinematographyDictionary setObject:v6 forKeyedSubscript:@"detections"];
 
-  v7 = [v3 copy];
+  v7 = [_asMutableCinematographyDictionary copy];
 
   return v7;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3
+- (id)_initWithCinematographyDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"detections"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"detections"];
   if ([v5 count])
   {
     v6 = [PTCinematographyDetection alloc];
@@ -180,7 +180,7 @@
 
     v13.receiver = self;
     v13.super_class = PTCinematographyFixedFocusTrack;
-    v9 = [(PTCinematographyTrack *)&v13 _initWithCinematographyDictionary:v4];
+    v9 = [(PTCinematographyTrack *)&v13 _initWithCinematographyDictionary:dictionaryCopy];
     v10 = v9;
     if (v9)
     {
@@ -189,15 +189,15 @@
 
     self = v10;
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)detectionsInTimeRange:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

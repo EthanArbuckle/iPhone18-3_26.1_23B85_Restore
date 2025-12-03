@@ -1,16 +1,16 @@
 @interface CSDParticipantUpdateSanitizerImpl
-- (void)sanitize:(id)a3 completion:(id)a4;
+- (void)sanitize:(id)sanitize completion:(id)completion;
 @end
 
 @implementation CSDParticipantUpdateSanitizerImpl
 
-- (void)sanitize:(id)a3 completion:(id)a4
+- (void)sanitize:(id)sanitize completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1003DAA64(v7, v8, v6);
+  sanitizeCopy = sanitize;
+  selfCopy = self;
+  sub_1003DAA64(sanitizeCopy, selfCopy, v6);
   _Block_release(v6);
 }
 

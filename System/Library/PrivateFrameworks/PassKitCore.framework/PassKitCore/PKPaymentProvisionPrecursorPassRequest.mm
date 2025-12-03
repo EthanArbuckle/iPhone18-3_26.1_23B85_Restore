@@ -1,41 +1,41 @@
 @interface PKPaymentProvisionPrecursorPassRequest
-- (PKPaymentProvisionPrecursorPassRequest)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4 actions:(id)a5;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentProvisionPrecursorPassRequest)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number actions:(id)actions;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentProvisionPrecursorPassRequest
 
-- (PKPaymentProvisionPrecursorPassRequest)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4 actions:(id)a5
+- (PKPaymentProvisionPrecursorPassRequest)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number actions:(id)actions
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  numberCopy = number;
+  actionsCopy = actions;
   v15.receiver = self;
   v15.super_class = PKPaymentProvisionPrecursorPassRequest;
   v12 = [(PKOverlayableWebServiceRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_passTypeIdentifier, a3);
-    objc_storeStrong(&v13->_passSerialNumber, a4);
-    objc_storeStrong(&v13->_actions, a5);
+    objc_storeStrong(&v12->_passTypeIdentifier, identifier);
+    objc_storeStrong(&v13->_passSerialNumber, number);
+    objc_storeStrong(&v13->_actions, actions);
   }
 
   return v13;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v22 = *MEMORY[0x1E69E9840];
   v19 = @"devices";
-  v20 = a4;
+  identifierCopy = identifier;
   v21 = @"getPrecursorPass";
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  informationCopy = information;
+  identifierCopy2 = identifier;
+  lCopy = l;
   v12 = [v8 arrayWithObjects:&v19 count:3];
-  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 version:@"1" endpointComponents:v12 queryParameters:0 appleAccountInformation:v9, v19, v20, v21, v22];
+  v13 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy version:@"1" endpointComponents:v12 queryParameters:0 appleAccountInformation:informationCopy, v19, identifierCopy, v21, v22];
 
   [v13 setHTTPMethod:@"POST"];
   [v13 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

@@ -1,15 +1,15 @@
 @interface _BlastDoorCKShareParticipant
 - (_TtC9BlastDoor28_BlastDoorCKShareParticipant)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorCKShareParticipant
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2146332D4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2146332D4(coderCopy);
 }
 
 - (_TtC9BlastDoor28_BlastDoorCKShareParticipant)init

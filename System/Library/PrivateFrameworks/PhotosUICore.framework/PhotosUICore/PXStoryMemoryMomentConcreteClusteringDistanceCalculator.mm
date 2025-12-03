@@ -1,27 +1,27 @@
 @interface PXStoryMemoryMomentConcreteClusteringDistanceCalculator
-- (PXStoryMemoryMomentConcreteClusteringDistanceCalculator)initWithWeights:(id)a3 locationsByAssetUUID:(id)a4 faceprintsByAssetUUID:(id)a5;
-- (id)densityClusteringDistanceBlockForAssets:(id)a3;
-- (void)clusteringDistanceForAssets:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5 resultHandler:(id)a6;
+- (PXStoryMemoryMomentConcreteClusteringDistanceCalculator)initWithWeights:(id)weights locationsByAssetUUID:(id)d faceprintsByAssetUUID:(id)iD;
+- (id)densityClusteringDistanceBlockForAssets:(id)assets;
+- (void)clusteringDistanceForAssets:(id)assets fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex resultHandler:(id)handler;
 @end
 
 @implementation PXStoryMemoryMomentConcreteClusteringDistanceCalculator
 
-- (void)clusteringDistanceForAssets:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5 resultHandler:(id)a6
+- (void)clusteringDistanceForAssets:(id)assets fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex resultHandler:(id)handler
 {
   v73 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v12 = objc_autoreleasePoolPush();
-  if (v11)
+  if (handlerCopy)
   {
-    v13 = [v10 objectAtIndex:a4];
-    v14 = [v10 objectAtIndex:a5];
+    v13 = [assetsCopy objectAtIndex:index];
+    v14 = [assetsCopy objectAtIndex:toIndex];
     v19 = v14;
     if (v13 && v14)
     {
-      v20 = [v13 creationDate];
-      v21 = [v19 creationDate];
-      [v20 timeIntervalSinceDate:v21];
+      creationDate = [v13 creationDate];
+      creationDate2 = [v19 creationDate];
+      [creationDate timeIntervalSinceDate:creationDate2];
       v23 = v22;
 
       if (v23 < 0.0)
@@ -34,12 +34,12 @@
       if (self->_locationWeight > 0.0)
       {
         locationsByAssetUUID = self->_locationsByAssetUUID;
-        v31 = [v13 uuid];
-        v32 = [(NSDictionary *)locationsByAssetUUID objectForKeyedSubscript:v31];
+        uuid = [v13 uuid];
+        v32 = [(NSDictionary *)locationsByAssetUUID objectForKeyedSubscript:uuid];
 
         v33 = self->_locationsByAssetUUID;
-        v34 = [v19 uuid];
-        v35 = [(NSDictionary *)v33 objectForKeyedSubscript:v34];
+        uuid2 = [v19 uuid];
+        v35 = [(NSDictionary *)v33 objectForKeyedSubscript:uuid2];
 
         if (v32 && v35)
         {
@@ -55,8 +55,8 @@
         v67 = 0u;
         v68 = 0u;
         faceprintsByAssetUUID = self->_faceprintsByAssetUUID;
-        v38 = [v13 uuid];
-        v39 = [(NSDictionary *)faceprintsByAssetUUID objectForKeyedSubscript:v38];
+        uuid3 = [v13 uuid];
+        v39 = [(NSDictionary *)faceprintsByAssetUUID objectForKeyedSubscript:uuid3];
 
         v40 = [v39 countByEnumeratingWithState:&v67 objects:v72 count:16];
         if (v40)
@@ -64,8 +64,8 @@
           v41 = v40;
           v56 = v13;
           v57 = v12;
-          v58 = v11;
-          v59 = v10;
+          v58 = handlerCopy;
+          v59 = assetsCopy;
           v42 = 0;
           v61 = *v68;
           v62 = v19;
@@ -85,10 +85,10 @@
               v64 = 0u;
               v65 = 0u;
               v66 = 0u;
-              v45 = self;
+              selfCopy = self;
               v46 = self->_faceprintsByAssetUUID;
-              v47 = [v62 uuid];
-              v48 = [(NSDictionary *)v46 objectForKeyedSubscript:v47];
+              uuid4 = [v62 uuid];
+              v48 = [(NSDictionary *)v46 objectForKeyedSubscript:uuid4];
 
               v49 = [v48 countByEnumeratingWithState:&v63 objects:v71 count:16];
               if (v49)
@@ -124,7 +124,7 @@
                 while (v50);
               }
 
-              self = v45;
+              self = selfCopy;
             }
 
             v41 = [obj countByEnumeratingWithState:&v67 objects:v72 count:16];
@@ -137,8 +137,8 @@
             v28 = 1.0;
           }
 
-          v11 = v58;
-          v10 = v59;
+          handlerCopy = v58;
+          assetsCopy = v59;
           v13 = v56;
           v12 = v57;
           v19 = v62;
@@ -153,7 +153,7 @@
       v25.n128_f64[0] = v29;
       v26.n128_f64[0] = v23;
       v27.n128_f64[0] = v28;
-      v11[2](v11, v24, v25, v26, v27);
+      handlerCopy[2](handlerCopy, v24, v25, v26, v27);
     }
 
     else
@@ -162,23 +162,23 @@
       v16.n128_u64[0] = 0;
       v17.n128_u64[0] = 0;
       v18.n128_u64[0] = 0;
-      v11[2](v11, v15, v16, v17, v18);
+      handlerCopy[2](handlerCopy, v15, v16, v17, v18);
     }
   }
 
   objc_autoreleasePoolPop(v12);
 }
 
-- (id)densityClusteringDistanceBlockForAssets:(id)a3
+- (id)densityClusteringDistanceBlockForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __99__PXStoryMemoryMomentConcreteClusteringDistanceCalculator_densityClusteringDistanceBlockForAssets___block_invoke;
   v8[3] = &unk_1E7734A90;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = assetsCopy;
+  v5 = assetsCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -208,20 +208,20 @@ double __99__PXStoryMemoryMomentConcreteClusteringDistanceCalculator_densityClus
   return v11;
 }
 
-- (PXStoryMemoryMomentConcreteClusteringDistanceCalculator)initWithWeights:(id)a3 locationsByAssetUUID:(id)a4 faceprintsByAssetUUID:(id)a5
+- (PXStoryMemoryMomentConcreteClusteringDistanceCalculator)initWithWeights:(id)weights locationsByAssetUUID:(id)d faceprintsByAssetUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  weightsCopy = weights;
+  dCopy = d;
+  iDCopy = iD;
   v24.receiver = self;
   v24.super_class = PXStoryMemoryMomentConcreteClusteringDistanceCalculator;
   v11 = [(PXStoryMemoryMomentConcreteClusteringDistanceCalculator *)&v24 init];
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:@"time"];
+    v12 = [weightsCopy objectForKeyedSubscript:@"time"];
     if (v12)
     {
-      v13 = [v8 objectForKeyedSubscript:@"time"];
+      v13 = [weightsCopy objectForKeyedSubscript:@"time"];
       [v13 doubleValue];
       *(v11 + 5) = v14;
     }
@@ -231,10 +231,10 @@ double __99__PXStoryMemoryMomentConcreteClusteringDistanceCalculator_densityClus
       *(v11 + 5) = 0x3FF0000000000000;
     }
 
-    v15 = [v8 objectForKeyedSubscript:@"location"];
+    v15 = [weightsCopy objectForKeyedSubscript:@"location"];
     if (v15)
     {
-      v16 = [v8 objectForKeyedSubscript:@"location"];
+      v16 = [weightsCopy objectForKeyedSubscript:@"location"];
       [v16 doubleValue];
       *(v11 + 6) = v17;
       v18 = v11 + 48;
@@ -246,10 +246,10 @@ double __99__PXStoryMemoryMomentConcreteClusteringDistanceCalculator_densityClus
       v18 = v11 + 48;
     }
 
-    v19 = [v8 objectForKeyedSubscript:@"face"];
+    v19 = [weightsCopy objectForKeyedSubscript:@"face"];
     if (v19)
     {
-      v20 = [v8 objectForKeyedSubscript:@"face"];
+      v20 = [weightsCopy objectForKeyedSubscript:@"face"];
       [v20 doubleValue];
       *(v11 + 7) = v21;
       v22 = v11 + 56;
@@ -261,18 +261,18 @@ double __99__PXStoryMemoryMomentConcreteClusteringDistanceCalculator_densityClus
       v22 = v11 + 56;
     }
 
-    if (!v10)
+    if (!iDCopy)
     {
       *v22 = 0;
     }
 
-    if ([v9 count] <= 1)
+    if ([dCopy count] <= 1)
     {
       *v18 = 0;
     }
 
-    objc_storeStrong(v11 + 3, a4);
-    objc_storeStrong(v11 + 4, a5);
+    objc_storeStrong(v11 + 3, d);
+    objc_storeStrong(v11 + 4, iD);
   }
 
   return v11;

@@ -1,28 +1,28 @@
 @interface SUUISubmitFieldSettingDescriptionView
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
 - (id)_currentControllerValue;
-- (void)_addInputWithElement:(id)a3;
-- (void)_addSubmitInputWithElement:(id)a3;
+- (void)_addInputWithElement:(id)element;
+- (void)_addSubmitInputWithElement:(id)element;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setEnabled:(BOOL)a3;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
+- (void)setEnabled:(BOOL)enabled;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUISubmitFieldSettingDescriptionView
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = SUUISubmitFieldSettingDescriptionView;
   [(SUUIFieldSettingDescriptionView *)&v7 setEnabled:?];
   label = self->_label;
   if (label)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(SUUISubmitFieldSettingDescriptionView *)self tintColor];
     }
@@ -36,7 +36,7 @@
   }
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -45,11 +45,11 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 viewElement];
+  descriptionCopy = description;
+  contextCopy = context;
+  viewElement = [descriptionCopy viewElement];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -61,7 +61,7 @@
   v9[2] = __90__SUUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescription_width_context___block_invoke;
   v9[3] = &unk_2798F5FB8;
   v9[4] = v10;
-  [v8 enumerateChildrenUsingBlock:v9];
+  [viewElement enumerateChildrenUsingBlock:v9];
   _Block_object_dispose(v10, 8);
 }
 
@@ -75,7 +75,7 @@ void __90__SUUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescript
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -84,17 +84,17 @@ void __90__SUUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescript
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  objc_storeStrong(&self->_settingDescription, a3);
-  v7 = a3;
-  v8 = [v7 viewElement];
+  objc_storeStrong(&self->_settingDescription, description);
+  descriptionCopy = description;
+  viewElement = [descriptionCopy viewElement];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__SUUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_width_context___block_invoke;
   v9[3] = &unk_2798F5B20;
   v9[4] = self;
-  [v8 enumerateChildrenUsingBlock:v9];
+  [viewElement enumerateChildrenUsingBlock:v9];
   [(SUUISubmitFieldSettingDescriptionView *)self setNeedsLayout];
 }
 
@@ -134,13 +134,13 @@ void __84__SUUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
   v12 = v10 - v11;
   [(UILabel *)self->_label sizeThatFits:v7, 1.0];
   [(UILabel *)self->_label setFrame:v4, v12, v7, v13];
-  v14 = [(SUUISubmitFieldSettingDescriptionView *)self _currentControllerValue];
+  _currentControllerValue = [(SUUISubmitFieldSettingDescriptionView *)self _currentControllerValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 BOOLValue];
+    bOOLValue = [_currentControllerValue BOOLValue];
     label = self->_label;
-    if (v15)
+    if (bOOLValue)
     {
       [(SUUISubmitFieldSettingDescriptionView *)self tintColor];
     }
@@ -154,31 +154,31 @@ void __84__SUUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
   }
 }
 
-- (void)_addInputWithElement:(id)a3
+- (void)_addInputWithElement:(id)element
 {
-  v5 = a3;
-  objc_storeStrong(&self->_inputViewElement, a3);
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  elementCopy = element;
+  objc_storeStrong(&self->_inputViewElement, element);
+  if ([elementCopy isMemberOfClass:objc_opt_class()])
   {
-    [(SUUISubmitFieldSettingDescriptionView *)self _addSubmitInputWithElement:v5];
+    [(SUUISubmitFieldSettingDescriptionView *)self _addSubmitInputWithElement:elementCopy];
   }
 }
 
-- (void)_addSubmitInputWithElement:(id)a3
+- (void)_addSubmitInputWithElement:(id)element
 {
   v4 = MEMORY[0x277D756B8];
-  v5 = a3;
+  elementCopy = element;
   v6 = objc_alloc_init(v4);
   label = self->_label;
   self->_label = v6;
 
   v8 = self->_label;
-  v9 = [v5 label];
+  label = [elementCopy label];
 
-  [(UILabel *)v8 setText:v9];
+  [(UILabel *)v8 setText:label];
   v10 = self->_label;
-  v11 = [MEMORY[0x277D75348] grayColor];
-  [(UILabel *)v10 setTextColor:v11];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [(UILabel *)v10 setTextColor:grayColor];
 
   v12 = self->_label;
 
@@ -187,10 +187,10 @@ void __84__SUUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
 
 - (id)_currentControllerValue
 {
-  v3 = [(SUUIFieldSettingDescription *)self->_settingDescription controller];
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  controller = [(SUUIFieldSettingDescription *)self->_settingDescription controller];
+  if ([controller isMemberOfClass:objc_opt_class()])
   {
-    v4 = [v3 valueForSettingDescription:self->_settingDescription];
+    v4 = [controller valueForSettingDescription:self->_settingDescription];
   }
 
   else

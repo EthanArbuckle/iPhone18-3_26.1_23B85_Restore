@@ -1,26 +1,26 @@
 @interface OS_dispatch_data
 - (BOOL)_isCompact;
 - (NSString)debugDescription;
-- (OS_dispatch_data)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 freeWhenDone:(BOOL)a6 bytesAreVM:(BOOL)a7;
+- (OS_dispatch_data)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy freeWhenDone:(BOOL)done bytesAreVM:(BOOL)m;
 - (uint64_t)debugDescription;
-- (void)_setFinalizer:(void *)a3;
+- (void)_setFinalizer:(void *)finalizer;
 - (void)dealloc;
 @end
 
 @implementation OS_dispatch_data
 
-- (OS_dispatch_data)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 freeWhenDone:(BOOL)a6 bytesAreVM:(BOOL)a7
+- (OS_dispatch_data)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy freeWhenDone:(BOOL)done bytesAreVM:(BOOL)m
 {
-  if (a5)
+  if (copy)
   {
     v9 = 0;
   }
 
   else
   {
-    if (a6)
+    if (done)
     {
-      if (a7)
+      if (m)
       {
         v10 = &_dispatch_data_destructor_vm_deallocate;
       }
@@ -39,7 +39,7 @@
     v9 = *v10;
   }
 
-  _dispatch_data_init_with_bytes(self, a3, a4, v9);
+  _dispatch_data_init_with_bytes(self, bytes, length, v9);
   return self;
 }
 
@@ -77,19 +77,19 @@
   }
 }
 
-- (void)_setFinalizer:(void *)a3
+- (void)_setFinalizer:(void *)finalizer
 {
-  if (a3)
+  if (finalizer)
   {
-    v3 = a3;
+    finalizerCopy = finalizer;
   }
 
   else
   {
-    v3 = 0;
+    finalizerCopy = 0;
   }
 
-  self[3].super.isa = v3;
+  self[3].super.isa = finalizerCopy;
 }
 
 - (NSString)debugDescription
@@ -123,11 +123,11 @@
 - (uint64_t)debugDescription
 {
   v9 = *MEMORY[0x1E69E9840];
-  _dispatch_data_debug(a1, __str, 0x800uLL);
+  _dispatch_data_debug(self, __str, 0x800uLL);
   result = [a2 stringWithUTF8String:"<%s: %s>"];
   if (result)
   {
-    result = [a2 stringWithFormat:result, object_getClassName(a1), __str];
+    result = [a2 stringWithFormat:result, object_getClassName(self), __str];
   }
 
   *a3 = result;

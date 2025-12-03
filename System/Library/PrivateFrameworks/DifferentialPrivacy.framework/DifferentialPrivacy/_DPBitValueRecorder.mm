@@ -1,50 +1,50 @@
 @interface _DPBitValueRecorder
-- (BOOL)record:(id)a3;
-- (BOOL)record:(id)a3 metadata:(id)a4;
-- (BOOL)recordBitVectors:(id)a3;
-- (BOOL)recordBitVectors:(id)a3 metadata:(id)a4;
+- (BOOL)record:(id)record;
+- (BOOL)record:(id)record metadata:(id)metadata;
+- (BOOL)recordBitVectors:(id)vectors;
+- (BOOL)recordBitVectors:(id)vectors metadata:(id)metadata;
 - (id)description;
 @end
 
 @implementation _DPBitValueRecorder
 
-- (BOOL)record:(id)a3
+- (BOOL)record:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordBitValues:v4];
+  [(_DPDataRecorder *)self->_recorder recordBitValues:recordCopy];
   objc_autoreleasePoolPop(v5);
 
   return 1;
 }
 
-- (BOOL)recordBitVectors:(id)a3
+- (BOOL)recordBitVectors:(id)vectors
 {
-  v4 = a3;
+  vectorsCopy = vectors;
   v5 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordBitVectors:v4];
+  [(_DPDataRecorder *)self->_recorder recordBitVectors:vectorsCopy];
   objc_autoreleasePoolPop(v5);
 
   return 1;
 }
 
-- (BOOL)record:(id)a3 metadata:(id)a4
+- (BOOL)record:(id)record metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  metadataCopy = metadata;
   v8 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordBitValues:v6 metadata:v7];
+  [(_DPDataRecorder *)self->_recorder recordBitValues:recordCopy metadata:metadataCopy];
   objc_autoreleasePoolPop(v8);
 
   return 1;
 }
 
-- (BOOL)recordBitVectors:(id)a3 metadata:(id)a4
+- (BOOL)recordBitVectors:(id)vectors metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
   v8 = objc_autoreleasePoolPush();
-  [(_DPDataRecorder *)self->_recorder recordBitVectors:v6 metadata:v7];
+  [(_DPDataRecorder *)self->_recorder recordBitVectors:vectorsCopy metadata:metadataCopy];
   objc_autoreleasePoolPop(v8);
 
   return 1;

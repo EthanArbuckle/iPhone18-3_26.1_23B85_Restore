@@ -1,9 +1,9 @@
 @interface CSDOrientationMonitor
 - (CSDOrientationMonitor)init;
-- (CSDOrientationMonitor)initWithCallCenterObserver:(id)a3;
+- (CSDOrientationMonitor)initWithCallCenterObserver:(id)observer;
 - (void)_updateCurrentOrientationValue;
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4;
-- (void)callCenterObserver:(id)a3 callChanged:(id)a4;
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation;
+- (void)callCenterObserver:(id)observer callChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (CSDOrientationMonitor)initWithCallCenterObserver:(id)a3
+- (CSDOrientationMonitor)initWithCallCenterObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v11.receiver = self;
   v11.super_class = CSDOrientationMonitor;
   v6 = [(CSDOrientationMonitor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callCenterObserver, a3);
+    objc_storeStrong(&v6->_callCenterObserver, observer);
     [(CSDCallCenterObserver *)v7->_callCenterObserver setTriggers:1];
     [(CSDCallCenterObserver *)v7->_callCenterObserver setDelegate:v7];
     v8 = objc_alloc_init(BKSAccelerometer);
@@ -55,19 +55,19 @@
 
 - (void)_updateCurrentOrientationValue
 {
-  v3 = [(CSDOrientationMonitor *)self accelerometer];
-  -[CSDOrientationMonitor setCurrentOrientation:](self, "setCurrentOrientation:", [v3 currentDeviceOrientation]);
+  accelerometer = [(CSDOrientationMonitor *)self accelerometer];
+  -[CSDOrientationMonitor setCurrentOrientation:](self, "setCurrentOrientation:", [accelerometer currentDeviceOrientation]);
 }
 
-- (void)callCenterObserver:(id)a3 callChanged:(id)a4
+- (void)callCenterObserver:(id)observer callChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 provider];
-    if (([v7 isSystemProvider] & 1) == 0 && objc_msgSend(v6, "isVideo"))
+    v6 = changedCopy;
+    provider = [v6 provider];
+    if (([provider isSystemProvider] & 1) == 0 && objc_msgSend(v6, "isVideo"))
     {
       [v6 callStatus];
     }
@@ -77,11 +77,11 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(CSDOrientationMonitor *)self callCenterObserver];
-  v9 = [v8 callContainer];
-  v10 = [v9 currentVideoCalls];
+  callCenterObserver = [(CSDOrientationMonitor *)self callCenterObserver];
+  callContainer = [callCenterObserver callContainer];
+  currentVideoCalls = [callContainer currentVideoCalls];
 
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [currentVideoCalls countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = *v18;
@@ -91,20 +91,20 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(currentVideoCalls);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v14 provider];
-        if ([v15 isSystemProvider])
+        provider2 = [v14 provider];
+        if ([provider2 isSystemProvider])
         {
         }
 
         else
         {
-          v16 = [v14 callStatus];
+          callStatus = [v14 callStatus];
 
-          if (v16 == 1)
+          if (callStatus == 1)
           {
             v11 = 1;
             goto LABEL_18;
@@ -112,7 +112,7 @@
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [currentVideoCalls countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         continue;
@@ -127,18 +127,18 @@ LABEL_18:
   [(CSDOrientationMonitor *)self setOrientationEventsEnabled:v11];
 }
 
-- (void)accelerometer:(id)a3 didChangeDeviceOrientation:(int64_t)a4
+- (void)accelerometer:(id)accelerometer didChangeDeviceOrientation:(int64_t)orientation
 {
   [(CSDOrientationMonitor *)self _updateCurrentOrientationValue];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(CSDOrientationMonitor *)self callCenterObserver];
-  v7 = [v6 callContainer];
-  v8 = [v7 currentVideoCalls];
+  callCenterObserver = [(CSDOrientationMonitor *)self callCenterObserver];
+  callContainer = [callCenterObserver callContainer];
+  currentVideoCalls = [callContainer currentVideoCalls];
 
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v9 = [currentVideoCalls countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v9)
   {
     v11 = v9;
@@ -151,26 +151,26 @@ LABEL_18:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(currentVideoCalls);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 provider];
-        if (([v15 isSystemProvider]& 1) != 0)
+        provider = [v14 provider];
+        if (([provider isSystemProvider]& 1) != 0)
         {
           goto LABEL_7;
         }
 
-        v16 = [v14 callStatus];
+        callStatus = [v14 callStatus];
 
-        if (v16 == 1)
+        if (callStatus == 1)
         {
-          v15 = sub_100004778();
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          provider = sub_100004778();
+          if (os_log_type_enabled(provider, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v17;
-            v23 = a4;
-            _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "accelerometer orientation changed to %ld", buf, 0xCu);
+            orientationCopy = orientation;
+            _os_log_impl(&_mh_execute_header, provider, OS_LOG_TYPE_DEFAULT, "accelerometer orientation changed to %ld", buf, 0xCu);
           }
 
 LABEL_7:
@@ -179,7 +179,7 @@ LABEL_7:
         }
       }
 
-      v11 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v11 = [currentVideoCalls countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v11);

@@ -19,13 +19,13 @@
 
 - (double)px_referenceSize
 {
-  if (![a1 isViewLoaded])
+  if (![self isViewLoaded])
   {
     return INFINITY;
   }
 
-  v2 = [a1 view];
-  [v2 bounds];
+  view = [self view];
+  [view bounds];
   v4 = v3;
 
   return v4;
@@ -33,8 +33,8 @@
 
 - (double)px_safeAreaInsets
 {
-  v1 = [a1 viewIfLoaded];
-  [v1 px_safeAreaInsets];
+  viewIfLoaded = [self viewIfLoaded];
+  [viewIfLoaded px_safeAreaInsets];
   v3 = v2;
 
   return v3;
@@ -42,8 +42,8 @@
 
 - (double)px_layoutMargins
 {
-  v1 = [a1 viewIfLoaded];
-  [v1 px_layoutMargins];
+  viewIfLoaded = [self viewIfLoaded];
+  [viewIfLoaded px_layoutMargins];
   v3 = v2;
 
   return v3;
@@ -51,8 +51,8 @@
 
 - (double)px_windowReferenceSize
 {
-  v1 = [a1 viewIfLoaded];
-  [v1 px_windowReferenceSize];
+  viewIfLoaded = [self viewIfLoaded];
+  [viewIfLoaded px_windowReferenceSize];
   v3 = v2;
 
   return v3;
@@ -60,64 +60,64 @@
 
 - (id)px_screen
 {
-  v1 = [a1 viewIfLoaded];
-  v2 = [v1 px_screen];
+  viewIfLoaded = [self viewIfLoaded];
+  px_screen = [viewIfLoaded px_screen];
 
-  if (v2)
+  if (px_screen)
   {
-    v3 = v2;
+    px_mainScreen = px_screen;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
   }
 
-  v4 = v3;
+  v4 = px_mainScreen;
 
   return v4;
 }
 
 - (uint64_t)px_containsViewControllerModalInPresentation
 {
-  if ([a1 isModalInPresentation])
+  if ([self isModalInPresentation])
   {
     return 1;
   }
 
-  v3 = [a1 px_childViewControllersForModalInPresentation];
-  v4 = PXExists(v3, &__block_literal_global_13054);
+  px_childViewControllersForModalInPresentation = [self px_childViewControllersForModalInPresentation];
+  v4 = PXExists(px_childViewControllersForModalInPresentation, &__block_literal_global_13054);
 
   return v4;
 }
 
 - (void)px_containedViewControllerModalStateChanged
 {
-  v2 = [a1 parentViewController];
-  v3 = v2;
-  if (v2)
+  parentViewController = [self parentViewController];
+  v3 = parentViewController;
+  if (parentViewController)
   {
-    v4 = v2;
+    presentingViewController = parentViewController;
   }
 
   else
   {
-    v4 = [a1 presentingViewController];
+    presentingViewController = [self presentingViewController];
   }
 
-  v5 = v4;
+  v5 = presentingViewController;
 
   [v5 px_containedViewControllerModalStateChanged];
 }
 
 - (uint64_t)px_setModalInPresentation:()PhotosUIFoundation
 {
-  result = [a1 isModalInPresentation];
+  result = [self isModalInPresentation];
   if (result != a3)
   {
-    [a1 setModalInPresentation:a3];
+    [self setModalInPresentation:a3];
 
-    return [a1 px_containedViewControllerModalStateChanged];
+    return [self px_containedViewControllerModalStateChanged];
   }
 
   return result;
@@ -137,7 +137,7 @@
   v5[3] = &unk_1E7BB76E0;
   v5[4] = &v6;
   v5[5] = a3;
-  [a1 px_enumerateDescendantViewControllersWithOptions:0 usingBlock:v5];
+  [self px_enumerateDescendantViewControllersWithOptions:0 usingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -147,17 +147,17 @@
 - (void)px_enumerateDescendantViewControllersWithOptions:()PhotosUIFoundation usingBlock:
 {
   v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithObject:a1];
-  v8 = [a1 childViewControllers];
-  [v7 addObjectsFromArray:v8];
+  v7 = [MEMORY[0x1E695DF70] arrayWithObject:self];
+  childViewControllers = [self childViewControllers];
+  [v7 addObjectsFromArray:childViewControllers];
 
-  v9 = [a1 presentedViewController];
-  v10 = v9;
-  if (v9)
+  presentedViewController = [self presentedViewController];
+  v10 = presentedViewController;
+  if (presentedViewController)
   {
-    v11 = [v9 presentingViewController];
-    v12 = v11;
-    if (v11 == a1)
+    presentingViewController = [presentedViewController presentingViewController];
+    v12 = presentingViewController;
+    if (presentingViewController == self)
     {
       v13 = [v7 containsObject:v10];
 
@@ -176,7 +176,7 @@
   v15[1] = 3221225472;
   v15[2] = __100__UIViewController_PhotosUIFoundation__px_enumerateDescendantViewControllersWithOptions_usingBlock___block_invoke;
   v15[3] = &unk_1E7BB76B8;
-  v15[4] = a1;
+  v15[4] = self;
   v16 = v6;
   v17 = a3;
   v14 = v6;
@@ -187,98 +187,98 @@
 {
   v8 = a5;
   v13 = a3;
-  v9 = [a1 px_topmostPresentedViewController];
-  v10 = v9;
-  if (v9)
+  px_topmostPresentedViewController = [self px_topmostPresentedViewController];
+  v10 = px_topmostPresentedViewController;
+  if (px_topmostPresentedViewController)
   {
-    v11 = v9;
+    selfCopy = px_topmostPresentedViewController;
   }
 
   else
   {
-    v11 = a1;
+    selfCopy = self;
   }
 
-  v12 = v11;
+  v12 = selfCopy;
 
   [v12 presentViewController:v13 animated:a4 completion:v8];
 }
 
 - (id)px_topmostPresentedViewController
 {
-  v1 = [a1 presentedViewController];
-  v2 = [v1 presentedViewController];
+  presentedViewController = [self presentedViewController];
+  v1PresentedViewController = [presentedViewController presentedViewController];
 
-  if (v2)
+  if (v1PresentedViewController)
   {
     do
     {
-      v3 = [v1 presentedViewController];
+      v1PresentedViewController2 = [presentedViewController presentedViewController];
 
-      v4 = [v3 presentedViewController];
+      v3PresentedViewController = [v1PresentedViewController2 presentedViewController];
 
-      v1 = v3;
+      presentedViewController = v1PresentedViewController2;
     }
 
-    while (v4);
+    while (v3PresentedViewController);
   }
 
   else
   {
-    v3 = v1;
+    v1PresentedViewController2 = presentedViewController;
   }
 
-  return v3;
+  return v1PresentedViewController2;
 }
 
 - (void)px_addOrReplaceChildViewController:()PhotosUIFoundation activateConstraints:
 {
   v32[4] = *MEMORY[0x1E69E9840];
   v7 = a3;
-  v8 = [a1 childViewControllers];
-  v9 = [v8 count];
+  childViewControllers = [self childViewControllers];
+  v9 = [childViewControllers count];
 
   if (v9 >= 2)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"UIViewController+PhotosUIFoundation.m" lineNumber:44 description:@"Only 0 or 1 child view controller is expected."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewController+PhotosUIFoundation.m" lineNumber:44 description:@"Only 0 or 1 child view controller is expected."];
   }
 
-  v10 = [a1 childViewControllers];
-  v11 = [v10 firstObject];
+  childViewControllers2 = [self childViewControllers];
+  firstObject = [childViewControllers2 firstObject];
 
-  if (v11)
+  if (firstObject)
   {
-    [v11 willMoveToParentViewController:0];
-    v12 = [v11 view];
-    [v12 removeFromSuperview];
+    [firstObject willMoveToParentViewController:0];
+    view = [firstObject view];
+    [view removeFromSuperview];
 
-    [v11 removeFromParentViewController];
+    [firstObject removeFromParentViewController];
   }
 
-  [a1 addChildViewController:v7];
-  v13 = [a1 view];
-  v14 = [v7 view];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v13 addSubview:v14];
+  [self addChildViewController:v7];
+  view2 = [self view];
+  view3 = [v7 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 addSubview:view3];
   if (a4)
   {
     v26 = MEMORY[0x1E696ACD8];
-    v31 = [v14 topAnchor];
-    v30 = [v13 topAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    topAnchor = [view3 topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[0] = v29;
-    v28 = [v14 bottomAnchor];
-    v27 = [v13 bottomAnchor];
-    v25 = [v28 constraintEqualToAnchor:v27];
+    bottomAnchor = [view3 bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v32[1] = v25;
-    v24 = [v14 leadingAnchor];
-    v23 = [v13 leadingAnchor];
-    v15 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [view3 leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v32[2] = v15;
-    v16 = [v14 trailingAnchor];
-    v17 = [v13 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [view3 trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
     [v26 activateConstraints:v19];
@@ -286,27 +286,27 @@
 
   else
   {
-    [v13 bounds];
-    [v14 setFrame:?];
+    [view2 bounds];
+    [view3 setFrame:?];
   }
 
-  [v7 didMoveToParentViewController:a1];
+  [v7 didMoveToParentViewController:self];
   v20 = [v7 contentScrollViewForEdge:1];
   v21 = [v7 contentScrollViewForEdge:4];
-  [a1 setContentScrollView:v20 forEdge:1];
-  [a1 setContentScrollView:v21 forEdge:4];
+  [self setContentScrollView:v20 forEdge:1];
+  [self setContentScrollView:v21 forEdge:4];
 }
 
 - (BOOL)px_isVisible
 {
-  if (![a1 isViewLoaded])
+  if (![self isViewLoaded])
   {
     return 0;
   }
 
-  v2 = [a1 view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [self view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }

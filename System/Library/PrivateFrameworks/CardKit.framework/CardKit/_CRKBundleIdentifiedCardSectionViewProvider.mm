@@ -1,12 +1,12 @@
 @interface _CRKBundleIdentifiedCardSectionViewProvider
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 @end
 
 @implementation _CRKBundleIdentifiedCardSectionViewProvider
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = NSStringFromSelector(a3);
+  v3 = NSStringFromSelector(selector);
   v4 = NSStringFromSelector(sel_providerIdentifier);
   v5 = [v3 isEqualToString:v4];
 

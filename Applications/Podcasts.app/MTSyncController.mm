@@ -4,13 +4,13 @@
 + (id)accountIdentifierForLastSync;
 + (id)playlistSyncVersion;
 + (id)sharedInstance;
-+ (int64_t)syncFlagsForSyncType:(int64_t)a3;
-+ (void)didUpdateSubscriptionsSyncVersionForSyncType:(int64_t)a3;
++ (int64_t)syncFlagsForSyncType:(int64_t)type;
++ (void)didUpdateSubscriptionsSyncVersionForSyncType:(int64_t)type;
 + (void)resetAllSubscriptionSyncVersion;
 + (void)resetMetadataToInitialState;
 + (void)resetPlaylistSyncVersion;
-+ (void)setAccountIdentifierForLastSync:(id)a3;
-+ (void)setPlaylistSyncVersion:(id)a3;
++ (void)setAccountIdentifierForLastSync:(id)sync;
++ (void)setPlaylistSyncVersion:(id)version;
 - (AMSPromise)UPPEnabled;
 - (BOOL)canScheduleSyncRequest;
 - (BOOL)checkViabilityOfSyncLibraryAndUPP;
@@ -21,44 +21,44 @@
 - (BOOL)hasPodcastSyncVersion;
 - (BOOL)isRunning;
 - (BOOL)isUserLoggedIn;
-- (BOOL)keyValueStoreController:(id)a3 transaction:(id)a4 didFailWithError:(id)a5;
-- (BOOL)resetToInitialStateForced:(BOOL)a3 completion:(id)a4;
+- (BOOL)keyValueStoreController:(id)controller transaction:(id)transaction didFailWithError:(id)error;
+- (BOOL)resetToInitialStateForced:(BOOL)forced completion:(id)completion;
 - (BOOL)resetToInitialStateIfIncomplete;
 - (MTSyncController)init;
 - (NSString)playlistSyncVersion;
-- (id)addEpisodeObserverUsingBlock:(id)a3;
-- (id)expandFeedUrls:(id)a3;
-- (id)operationInQueueWithType:(int64_t)a3;
-- (int64_t)timedOperationTypeForBookmarksSyncType:(int64_t)a3;
-- (int64_t)timedOperationTypeForSyncType:(int64_t)a3;
-- (void)_finaliseResetToInitial:(id)a3;
+- (id)addEpisodeObserverUsingBlock:(id)block;
+- (id)expandFeedUrls:(id)urls;
+- (id)operationInQueueWithType:(int64_t)type;
+- (int64_t)timedOperationTypeForBookmarksSyncType:(int64_t)type;
+- (int64_t)timedOperationTypeForSyncType:(int64_t)type;
+- (void)_finaliseResetToInitial:(id)initial;
 - (void)_setupUPP;
 - (void)_synchronousResetToInitialStateDatabase;
 - (void)_synchronousResetToInitialStateMetadata;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 - (void)applicationDidEnterBackground;
 - (void)dealloc;
-- (void)enableAssetDeletionIfPossible:(unint64_t)a3;
+- (void)enableAssetDeletionIfPossible:(unint64_t)possible;
 - (void)endBackgroundTask;
-- (void)keyValueStoreController:(id)a3 transaction:(id)a4 didCancelWithError:(id)a5;
-- (void)keyValueStoreController:(id)a3 transactionDidFinish:(id)a4;
-- (void)operationFinished:(id)a3;
+- (void)keyValueStoreController:(id)controller transaction:(id)transaction didCancelWithError:(id)error;
+- (void)keyValueStoreController:(id)controller transactionDidFinish:(id)finish;
+- (void)operationFinished:(id)finished;
 - (void)performUniversalPlaybackPositionSync;
-- (void)reachabilityChangedFrom:(BOOL)a3 to:(BOOL)a4;
-- (void)removeEpisodeObserver:(id)a3;
-- (void)scheduleEpisodeStateGetWithFeedUrls:(id)a3 priority:(int64_t)a4;
-- (void)scheduleEpisodeStatePutWithFeedUrls:(id)a3;
-- (void)setIsRunning:(BOOL)a3;
-- (void)setPlaylistSyncVersion:(id)a3;
-- (void)setResettingToInitialState:(BOOL)a3;
+- (void)reachabilityChangedFrom:(BOOL)from to:(BOOL)to;
+- (void)removeEpisodeObserver:(id)observer;
+- (void)scheduleEpisodeStateGetWithFeedUrls:(id)urls priority:(int64_t)priority;
+- (void)scheduleEpisodeStatePutWithFeedUrls:(id)urls;
+- (void)setIsRunning:(BOOL)running;
+- (void)setPlaylistSyncVersion:(id)version;
+- (void)setResettingToInitialState:(BOOL)state;
 - (void)start;
 - (void)startBackgroundTask;
 - (void)startUPPSyncTimerAfterPrivacy;
 - (void)syncAllBookkeeperKeys;
 - (void)syncCoreKeysIfDirty;
-- (void)syncCriticalBookkeeperKeysShouldSyncCleanKeys:(BOOL)a3;
+- (void)syncCriticalBookkeeperKeysShouldSyncCleanKeys:(BOOL)keys;
 - (void)syncEverything;
-- (void)syncMultipleKeysAndProcessors:(id)a3 shouldSyncCleanKeys:(BOOL)a4;
+- (void)syncMultipleKeysAndProcessors:(id)processors shouldSyncCleanKeys:(BOOL)keys;
 - (void)syncNonFollowedShows;
 - (void)syncNonFollowedShowsIfSyncDirty;
 - (void)syncSubscriptions;
@@ -74,7 +74,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000A790;
   block[3] = &unk_1004D86F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100583C98 != -1)
   {
     dispatch_once(&qword_100583C98, block);
@@ -147,8 +147,8 @@
 
   v7 = v6;
 
-  v8 = [v7 BOOLValue];
-  if (!v8)
+  bOOLValue = [v7 BOOLValue];
+  if (!bOOLValue)
   {
     return 0;
   }
@@ -205,11 +205,11 @@ LABEL_11:
       [v7 addObserver:self];
 
       v8 = +[MTReachability sharedInstance];
-      v9 = [v8 isReachable];
+      isReachable = [v8 isReachable];
 
       v5 = _MTLogCategoryCloudSync();
       v10 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-      if (v9)
+      if (isReachable)
       {
         if (v10)
         {
@@ -224,7 +224,7 @@ LABEL_11:
         v12[3] = &unk_1004DC0F0;
         v13 = v3;
         v14 = v4;
-        v15 = self;
+        selfCopy = self;
         [v11 asyncValueOnQueue:v14 withCompletion:v12];
 
         v5 = v13;
@@ -245,18 +245,18 @@ LABEL_12:
 
 - (BOOL)isRunning
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isRunning = v2->_isRunning;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   return isRunning;
 }
 
 - (void)_setupUPP
 {
-  v3 = [(MTSyncController *)self UPPStore];
-  [v3 setDataSource:0];
+  uPPStore = [(MTSyncController *)self UPPStore];
+  [uPPStore setDataSource:0];
 
   v4 = objc_alloc_init(MZUniversalPlaybackPositionStore);
   [(MTSyncController *)self setUPPStore:v4];
@@ -264,16 +264,16 @@ LABEL_12:
   v5 = objc_alloc_init(MTUniversalPlaybackPositionDataSource);
   [(MTSyncController *)self setUppDataSource:v5];
 
-  v6 = [(MTSyncController *)self UPPStore];
-  v7 = [(MTSyncController *)self uppDataSource];
-  [v6 setDataSource:v7];
+  uPPStore2 = [(MTSyncController *)self UPPStore];
+  uppDataSource = [(MTSyncController *)self uppDataSource];
+  [uPPStore2 setDataSource:uppDataSource];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(MTSyncController *)self episodeObservers];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  episodeObservers = [(MTSyncController *)self episodeObservers];
+  v9 = [episodeObservers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -285,18 +285,18 @@ LABEL_12:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(episodeObservers);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        v14 = [(MTSyncController *)self uppDataSource];
-        [v14 addEpisodeObserver:v13];
+        uppDataSource2 = [(MTSyncController *)self uppDataSource];
+        [uppDataSource2 addEpisodeObserver:v13];
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [episodeObservers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -314,10 +314,10 @@ LABEL_12:
 {
   if ([(MTSyncController *)self canScheduleSyncRequest])
   {
-    v3 = [(MTSyncController *)self keyProcessorPairProvider];
-    v4 = [v3 keysAndProcessorsForAllBookkeeperKeys];
+    keyProcessorPairProvider = [(MTSyncController *)self keyProcessorPairProvider];
+    keysAndProcessorsForAllBookkeeperKeys = [keyProcessorPairProvider keysAndProcessorsForAllBookkeeperKeys];
 
-    [(MTSyncController *)self syncMultipleKeysAndProcessors:v4 shouldSyncCleanKeys:1];
+    [(MTSyncController *)self syncMultipleKeysAndProcessors:keysAndProcessorsForAllBookkeeperKeys shouldSyncCleanKeys:1];
   }
 
   else
@@ -332,9 +332,9 @@ LABEL_12:
   if ([(MTSyncController *)self isRunning])
   {
     v3 = +[MTReachability sharedInstance];
-    v4 = [v3 isReachable];
+    isReachable = [v3 isReachable];
 
-    if (v4)
+    if (isReachable)
     {
       if ([(MTSyncController *)self isUserLoggedIn])
       {
@@ -436,12 +436,12 @@ LABEL_14:
 + (BOOL)isUserLoggedIn
 {
   v2 = +[MTAccountController sharedInstance];
-  v3 = [v2 activeAccount];
+  activeAccount = [v2 activeAccount];
 
   v4 = +[MTAccountController sharedInstance];
-  v5 = [v4 isUserLoggedIn];
+  isUserLoggedIn = [v4 isUserLoggedIn];
 
-  return v5;
+  return isUserLoggedIn;
 }
 
 - (BOOL)hasPodcastSyncVersion
@@ -464,8 +464,8 @@ LABEL_14:
 
 - (BOOL)hasPlaylistSyncVersion
 {
-  v2 = [(MTSyncController *)self playlistSyncVersion];
-  v3 = v2 != 0;
+  playlistSyncVersion = [(MTSyncController *)self playlistSyncVersion];
+  v3 = playlistSyncVersion != 0;
 
   return v3;
 }
@@ -539,14 +539,14 @@ LABEL_7:
 
   *(v13 + 3) = v6;
   objc_initWeak(&location, self);
-  v7 = [(MTSyncController *)self UPPEnabled];
+  uPPEnabled = [(MTSyncController *)self UPPEnabled];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F04D8;
   v8[3] = &unk_1004DC138;
   objc_copyWeak(&v9, &location);
   v8[4] = buf;
-  [v7 addFinishBlock:v8];
+  [uPPEnabled addFinishBlock:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -558,9 +558,9 @@ LABEL_7:
   if ([(MTSyncController *)self canScheduleSyncRequest])
   {
     v3 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-    v4 = [v3 isLibrarySyncEnabled];
+    isLibrarySyncEnabled = [v3 isLibrarySyncEnabled];
 
-    return v4;
+    return isLibrarySyncEnabled;
   }
 
   else
@@ -570,40 +570,40 @@ LABEL_7:
   }
 }
 
-- (id)addEpisodeObserverUsingBlock:(id)a3
+- (id)addEpisodeObserverUsingBlock:(id)block
 {
-  v4 = [MTSyncedEpisodeObserver observerWithBlock:a3];
+  v4 = [MTSyncedEpisodeObserver observerWithBlock:block];
   [(NSMutableArray *)self->_episodeObservers addObject:v4];
-  v5 = [(MTSyncController *)self uppDataSource];
-  [v5 addEpisodeObserver:v4];
+  uppDataSource = [(MTSyncController *)self uppDataSource];
+  [uppDataSource addEpisodeObserver:v4];
 
   return v4;
 }
 
-- (void)removeEpisodeObserver:(id)a3
+- (void)removeEpisodeObserver:(id)observer
 {
   episodeObservers = self->_episodeObservers;
-  v5 = a3;
-  [(NSMutableArray *)episodeObservers removeObject:v5];
-  v6 = [(MTSyncController *)self uppDataSource];
-  [v6 removeEpisodeObserver:v5];
+  observerCopy = observer;
+  [(NSMutableArray *)episodeObservers removeObject:observerCopy];
+  uppDataSource = [(MTSyncController *)self uppDataSource];
+  [uppDataSource removeEpisodeObserver:observerCopy];
 }
 
 - (void)startUPPSyncTimerAfterPrivacy
 {
-  v2 = [(MTSyncController *)self UPPStore];
-  [v2 startUPPSyncTimer];
+  uPPStore = [(MTSyncController *)self UPPStore];
+  [uPPStore startUPPSyncTimer];
 }
 
-- (void)operationFinished:(id)a3
+- (void)operationFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(NSOperationQueue *)self->_queue operationCount];
+  finishedCopy = finished;
+  operationCount = [(NSOperationQueue *)self->_queue operationCount];
   v6 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v19 = 134217984;
-    v20[0] = v5 - 1;
+    v20[0] = operationCount - 1;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "MTSyncController operation completed: Count is %lld", &v19, 0xCu);
   }
 
@@ -613,31 +613,31 @@ LABEL_7:
     [v7 registerPushNotifications];
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MTSyncController *)v8 resettingToInitialState];
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  resettingToInitialState = [(MTSyncController *)selfCopy resettingToInitialState];
+  objc_sync_exit(selfCopy);
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:@"MTTimedOperationIsCancelledKey"];
-  v12 = [v11 BOOLValue];
+  userInfo = [finishedCopy userInfo];
+  v11 = [userInfo objectForKey:@"MTTimedOperationIsCancelledKey"];
+  bOOLValue = [v11 BOOLValue];
 
-  if ((v9 | v12))
+  if ((resettingToInitialState | bOOLValue))
   {
     v13 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 67109376;
-      LODWORD(v20[0]) = v9;
+      LODWORD(v20[0]) = resettingToInitialState;
       WORD2(v20[0]) = 1024;
-      *(v20 + 6) = v12;
+      *(v20 + 6) = bOOLValue;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Didn't updateAccountForLastSync because resettingToInitialState = %d or operationIsCancelled = %d", &v19, 0xEu);
     }
   }
 
   else
   {
-    [(MTSyncController *)v8 updateAccountForLastSync];
+    [(MTSyncController *)selfCopy updateAccountForLastSync];
   }
 
   if ([(NSOperationQueue *)self->_queue operationCount]== 1)
@@ -649,10 +649,10 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Sync Operations Completed", &v19, 2u);
     }
 
-    [(MTSyncController *)v8 enableAssetDeletionIfPossible:1];
-    [(MTSyncController *)v8 endBackgroundTask];
+    [(MTSyncController *)selfCopy enableAssetDeletionIfPossible:1];
+    [(MTSyncController *)selfCopy endBackgroundTask];
     dispatch_async(&_dispatch_main_q, &stru_1004DC110);
-    v15 = v8;
+    v15 = selfCopy;
     objc_sync_enter(v15);
     if ([(MTSyncController *)v15 resyncWhenDone])
     {
@@ -672,7 +672,7 @@ LABEL_7:
 
   v17 = +[NSDate date];
   [v17 timeIntervalSince1970];
-  v8->_lastOperation = v18;
+  selfCopy->_lastOperation = v18;
 }
 
 - (void)applicationDidEnterBackground
@@ -680,9 +680,9 @@ LABEL_7:
   if ([(NSOperationQueue *)self->_queue operationCount])
   {
     v3 = +[PodcastsApplicationStateMonitor shared];
-    v4 = [v3 isActive];
+    isActive = [v3 isActive];
 
-    if (v4)
+    if (isActive)
     {
 
       [(MTSyncController *)self startBackgroundTask];
@@ -692,10 +692,10 @@ LABEL_7:
 
 - (void)startBackgroundTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(MTSyncController *)v2 endBackgroundTask];
-  objc_initWeak(&location, v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MTSyncController *)selfCopy endBackgroundTask];
+  objc_initWeak(&location, selfCopy);
   v3 = +[UIApplication sharedApplication];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
@@ -703,16 +703,16 @@ LABEL_7:
   v12 = &unk_1004D9E80;
   objc_copyWeak(&v13, &location);
   v4 = [v3 beginBackgroundTaskWithName:@"MTSyncController" expirationHandler:&v9];
-  [(MTSyncController *)v2 setBackgroundTask:v4, v9, v10, v11, v12];
+  [(MTSyncController *)selfCopy setBackgroundTask:v4, v9, v10, v11, v12];
 
-  v5 = [(MTSyncController *)v2 backgroundTask];
+  backgroundTask = [(MTSyncController *)selfCopy backgroundTask];
   +[PodcastsApplicationStateMonitor remainingBackgroundTime];
   v7 = v6;
   v8 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v16 = v5;
+    v16 = backgroundTask;
     v17 = 2048;
     v18 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "*** Start background task with id=%lu timeout=%f", buf, 0x16u);
@@ -720,25 +720,25 @@ LABEL_7:
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = -[MTSyncController operationInQueueWithType:](v5, "operationInQueueWithType:", [v4 operationType]);
-  if (!v6 || [v4 operationType] == 6 || objc_msgSend(v4, "operationType") == 7 || objc_msgSend(v4, "operationType") == 12)
+  operationCopy = operation;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = -[MTSyncController operationInQueueWithType:](selfCopy, "operationInQueueWithType:", [operationCopy operationType]);
+  if (!v6 || [operationCopy operationType] == 6 || objc_msgSend(operationCopy, "operationType") == 7 || objc_msgSend(operationCopy, "operationType") == 12)
   {
     v7 = +[PodcastsApplicationStateMonitor shared];
     if ([v7 isActive])
     {
-      v8 = [(MTSyncController *)v5 backgroundTask];
+      backgroundTask = [(MTSyncController *)selfCopy backgroundTask];
 
-      if (v8 == UIBackgroundTaskInvalid)
+      if (backgroundTask == UIBackgroundTaskInvalid)
       {
-        [(MTSyncController *)v5 startBackgroundTask];
+        [(MTSyncController *)selfCopy startBackgroundTask];
       }
     }
 
@@ -746,28 +746,28 @@ LABEL_7:
     {
     }
 
-    if ([v4 requiresStartDelayToAvoidClampErrors])
+    if ([operationCopy requiresStartDelayToAvoidClampErrors])
     {
       v9 = +[NSDate date];
       [v9 timeIntervalSince1970];
       v11 = v10;
 
-      lastOperation = v5->_lastOperation;
+      lastOperation = selfCopy->_lastOperation;
       if (lastOperation != 0.0)
       {
         v13 = _MTLogCategoryCloudSync();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = v11 - v5->_lastOperation;
+          v14 = v11 - selfCopy->_lastOperation;
           v25 = 134217984;
           v26 = v14;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Time since last operation %f", &v25, 0xCu);
         }
 
-        lastOperation = v5->_lastOperation;
+        lastOperation = selfCopy->_lastOperation;
       }
 
-      if ((lastOperation == 0.0 || v11 - lastOperation >= 6.0) && ![(NSOperationQueue *)v5->_queue operationCount])
+      if ((lastOperation == 0.0 || v11 - lastOperation >= 6.0) && ![(NSOperationQueue *)selfCopy->_queue operationCount])
       {
         v15 = 0.5;
       }
@@ -777,26 +777,26 @@ LABEL_7:
         v15 = 6.0;
       }
 
-      [v4 setStartDelay:v15];
+      [operationCopy setStartDelay:v15];
     }
 
-    [(NSOperationQueue *)v5->_queue addOperation:v4];
-    v16 = _MTLogCategoryCloudSync();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    [(NSOperationQueue *)selfCopy->_queue addOperation:operationCopy];
+    firstObject = _MTLogCategoryCloudSync();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 operationType];
-      [v4 startDelay];
+      operationType = [operationCopy operationType];
+      [operationCopy startDelay];
       v19 = v18;
-      v20 = [(NSOperationQueue *)v5->_queue operationCount];
+      operationCount = [(NSOperationQueue *)selfCopy->_queue operationCount];
       v25 = 134218754;
-      v26 = *&v17;
+      v26 = *&operationType;
       v27 = 2048;
       *v28 = v19;
       *&v28[8] = 2048;
-      v29 = v20;
+      v29 = operationCount;
       v30 = 2112;
-      v31 = v4;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Add operation with type: %ld with a timeout of %f. Total operation count is %li op=%@", &v25, 0x2Au);
+      v31 = operationCopy;
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "Add operation with type: %ld with a timeout of %f. Total operation count is %li op=%@", &v25, 0x2Au);
     }
   }
 
@@ -814,11 +814,11 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Dropping operation with type %ld as it's in the queue. isExecuting = %d, isFinished = %d", &v25, 0x18u);
     }
 
-    v22 = [(MTSyncController *)v5 queue];
-    v23 = [v22 operations];
-    v16 = [v23 firstObject];
+    queue = [(MTSyncController *)selfCopy queue];
+    operations = [queue operations];
+    firstObject = [operations firstObject];
 
-    if (([v16 isFinished]& 1) == 0 && [v16 isCancelled]&& ([v16 isExecuting]& 1) == 0)
+    if (([firstObject isFinished]& 1) == 0 && [firstObject isCancelled]&& ([firstObject isExecuting]& 1) == 0)
     {
       v24 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -829,38 +829,38 @@ LABEL_7:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setIsRunning:(BOOL)a3
+- (void)setIsRunning:(BOOL)running
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isRunning = a3;
+  obj->_isRunning = running;
   objc_sync_exit(obj);
 }
 
-- (void)setResettingToInitialState:(BOOL)a3
+- (void)setResettingToInitialState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   obj = self;
   objc_sync_enter(obj);
-  obj->_resettingToInitialState = v3;
+  obj->_resettingToInitialState = stateCopy;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [NSNumber numberWithBool:v3];
+  v5 = [NSNumber numberWithBool:stateCopy];
   [v4 setObject:v5 forKey:@"kMTSyncControllerResettingToInitialState"];
 
   objc_sync_exit(obj);
 }
 
-- (id)operationInQueueWithType:(int64_t)a3
+- (id)operationInQueueWithType:(int64_t)type
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSOperationQueue *)self->_queue operations];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  operations = [(NSOperationQueue *)self->_queue operations];
+  v5 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -871,18 +871,18 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 operationType] == a3)
+        if ([v9 operationType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -904,12 +904,12 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "<%p>", buf, 0xCu);
   }
 
-  v4 = [(MTSyncController *)self UPPStore];
-  [v4 setDataSource:0];
+  uPPStore = [(MTSyncController *)self UPPStore];
+  [uPPStore setDataSource:0];
 
   v5 = +[MTReachability sharedInstance];
   [v5 removeObserver:self];
@@ -919,9 +919,9 @@ LABEL_11:
   [(MTSyncController *)&v6 dealloc];
 }
 
-- (int64_t)timedOperationTypeForSyncType:(int64_t)a3
+- (int64_t)timedOperationTypeForSyncType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 13;
   }
@@ -932,9 +932,9 @@ LABEL_11:
   }
 }
 
-- (int64_t)timedOperationTypeForBookmarksSyncType:(int64_t)a3
+- (int64_t)timedOperationTypeForBookmarksSyncType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 14;
   }
@@ -984,10 +984,10 @@ LABEL_11:
 {
   if ([(MTSyncController *)self checkViabilityOfSyncLibraryAndUPP])
   {
-    v3 = [(MTSyncController *)self keyProcessorPairProvider];
-    v4 = [v3 keysAndProcessorsForSubscriptionsAndStationsSync];
+    keyProcessorPairProvider = [(MTSyncController *)self keyProcessorPairProvider];
+    keysAndProcessorsForSubscriptionsAndStationsSync = [keyProcessorPairProvider keysAndProcessorsForSubscriptionsAndStationsSync];
 
-    [(MTSyncController *)self syncMultipleKeysAndProcessors:v4 shouldSyncCleanKeys:1];
+    [(MTSyncController *)self syncMultipleKeysAndProcessors:keysAndProcessorsForSubscriptionsAndStationsSync shouldSyncCleanKeys:1];
   }
 }
 
@@ -1045,22 +1045,22 @@ LABEL_11:
   }
 }
 
-- (BOOL)keyValueStoreController:(id)a3 transaction:(id)a4 didFailWithError:(id)a5
+- (BOOL)keyValueStoreController:(id)controller transaction:(id)transaction didFailWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v8 code] != -1001)
+  transactionCopy = transaction;
+  errorCopy = error;
+  if ([errorCopy code] != -1001)
   {
     v9 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = errorCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "transaction did fail with error: %@", &v14, 0xCu);
     }
   }
 
-  if ([v8 isAccountsChangedError])
+  if ([errorCopy isAccountsChangedError])
   {
     [(MTSyncController *)self resetToInitialStateIfNeeded];
     [(MTSyncController *)self syncEverything];
@@ -1070,7 +1070,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if ([v8 isRecoverableError])
+  if ([errorCopy isRecoverableError])
   {
     goto LABEL_8;
   }
@@ -1079,12 +1079,12 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = transactionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@ Did fail with unrecoverable error. Cancelling all transactions", &v14, 0xCu);
   }
 
-  v12 = [(MTSyncController *)self cloudSyncController];
-  [v12 cancelAllTransactions];
+  cloudSyncController = [(MTSyncController *)self cloudSyncController];
+  [cloudSyncController cancelAllTransactions];
 
   v10 = 1;
 LABEL_12:
@@ -1092,13 +1092,13 @@ LABEL_12:
   return v10;
 }
 
-- (void)keyValueStoreController:(id)a3 transaction:(id)a4 didCancelWithError:(id)a5
+- (void)keyValueStoreController:(id)controller transaction:(id)transaction didCancelWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v6 description];
+    v8 = [errorCopy description];
     v9 = 138412290;
     v10 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@", &v9, 0xCu);
@@ -1107,9 +1107,9 @@ LABEL_12:
   [(MTSyncController *)self enableAssetDeletionIfPossible];
 }
 
-- (void)keyValueStoreController:(id)a3 transactionDidFinish:(id)a4
+- (void)keyValueStoreController:(id)controller transactionDidFinish:(id)finish
 {
-  v5 = [a4 processor];
+  processor = [finish processor];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1125,26 +1125,26 @@ LABEL_12:
   [(MTSyncController *)self enableAssetDeletionIfPossible];
 }
 
-- (void)enableAssetDeletionIfPossible:(unint64_t)a3
+- (void)enableAssetDeletionIfPossible:(unint64_t)possible
 {
-  v6 = [(MTSyncController *)self cloudSyncController];
-  if ([v6 isIdle])
+  cloudSyncController = [(MTSyncController *)self cloudSyncController];
+  if ([cloudSyncController isIdle])
   {
-    v5 = [(NSOperationQueue *)self->_queue operationCount];
+    operationCount = [(NSOperationQueue *)self->_queue operationCount];
 
-    if (v5 != a3)
+    if (operationCount != possible)
     {
       return;
     }
 
-    v6 = +[(MTBaseProcessor *)MTAssetRemovalProcessor];
-    [v6 enable];
+    cloudSyncController = +[(MTBaseProcessor *)MTAssetRemovalProcessor];
+    [cloudSyncController enable];
   }
 }
 
-- (void)scheduleEpisodeStatePutWithFeedUrls:(id)a3
+- (void)scheduleEpisodeStatePutWithFeedUrls:(id)urls
 {
-  v4 = a3;
+  urlsCopy = urls;
   if (+[PFClientUtil isRunningOnHomepod])
   {
     v5 = _MTLogCategoryCloudSync();
@@ -1157,7 +1157,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (-[MTSyncController checkViabilityOfSyncLibraryAndUPP](self, "checkViabilityOfSyncLibraryAndUPP") && [v4 count])
+  if (-[MTSyncController checkViabilityOfSyncLibraryAndUPP](self, "checkViabilityOfSyncLibraryAndUPP") && [urlsCopy count])
   {
     v5 = objc_opt_new();
     [v5 setOperationType:7];
@@ -1165,18 +1165,18 @@ LABEL_12:
     v7 = 3221225472;
     v8 = sub_1000F14A0;
     v9 = &unk_1004D8798;
-    v10 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = urlsCopy;
     [v5 setMainBlock:&v6];
-    [(MTSyncController *)self addOperation:v5, v6, v7, v8, v9, v10];
+    [(MTSyncController *)self addOperation:v5, v6, v7, v8, v9, selfCopy];
 
 LABEL_7:
   }
 }
 
-- (void)scheduleEpisodeStateGetWithFeedUrls:(id)a3 priority:(int64_t)a4
+- (void)scheduleEpisodeStateGetWithFeedUrls:(id)urls priority:(int64_t)priority
 {
-  v6 = a3;
+  urlsCopy = urls;
   if (+[PFClientUtil isRunningOnHomepod])
   {
     v7 = _MTLogCategoryCloudSync();
@@ -1189,17 +1189,17 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (-[MTSyncController checkViabilityOfSyncLibraryAndUPP](self, "checkViabilityOfSyncLibraryAndUPP") && [v6 count])
+  if (-[MTSyncController checkViabilityOfSyncLibraryAndUPP](self, "checkViabilityOfSyncLibraryAndUPP") && [urlsCopy count])
   {
     v7 = objc_opt_new();
     [v7 setOperationType:6];
-    [v7 setQueuePriority:a4];
+    [v7 setQueuePriority:priority];
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_1000F16F0;
     v11 = &unk_1004D8798;
-    v12 = v6;
-    v13 = self;
+    v12 = urlsCopy;
+    selfCopy = self;
     [v7 setMainBlock:&v8];
     [(MTSyncController *)self addOperation:v7, v8, v9, v10, v11];
 
@@ -1207,15 +1207,15 @@ LABEL_7:
   }
 }
 
-- (id)expandFeedUrls:(id)a3
+- (id)expandFeedUrls:(id)urls
 {
-  v4 = a3;
-  v5 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  urlsCopy = urls;
+  v5 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(urlsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = urlsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1231,8 +1231,8 @@ LABEL_7:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(MTSyncController *)self episodeSyncStorage];
-        v13 = [v12 modernKeyFromFeedUrl:v11];
+        episodeSyncStorage = [(MTSyncController *)self episodeSyncStorage];
+        v13 = [episodeSyncStorage modernKeyFromFeedUrl:v11];
         [v5 addObject:v13];
       }
 
@@ -1245,25 +1245,25 @@ LABEL_7:
   return v5;
 }
 
-- (void)syncCriticalBookkeeperKeysShouldSyncCleanKeys:(BOOL)a3
+- (void)syncCriticalBookkeeperKeysShouldSyncCleanKeys:(BOOL)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   if ([(MTSyncController *)self checkViabilityOfSyncLibraryAndUPP])
   {
-    v5 = [(MTSyncController *)self keyProcessorPairProvider];
-    v6 = [v5 keysAndProcessorsForCriticalBookkeeperKeys];
+    keyProcessorPairProvider = [(MTSyncController *)self keyProcessorPairProvider];
+    keysAndProcessorsForCriticalBookkeeperKeys = [keyProcessorPairProvider keysAndProcessorsForCriticalBookkeeperKeys];
 
-    [(MTSyncController *)self syncMultipleKeysAndProcessors:v6 shouldSyncCleanKeys:v3];
+    [(MTSyncController *)self syncMultipleKeysAndProcessors:keysAndProcessorsForCriticalBookkeeperKeys shouldSyncCleanKeys:keysCopy];
   }
 }
 
-- (void)syncMultipleKeysAndProcessors:(id)a3 shouldSyncCleanKeys:(BOOL)a4
+- (void)syncMultipleKeysAndProcessors:(id)processors shouldSyncCleanKeys:(BOOL)keys
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[MTMultiKeySyncProcessor alloc] initWithKeysAndProcessors:v6];
+  keysCopy = keys;
+  processorsCopy = processors;
+  v7 = [[MTMultiKeySyncProcessor alloc] initWithKeysAndProcessors:processorsCopy];
   objc_initWeak(&location, self);
-  if (v4)
+  if (keysCopy)
   {
     v8 = objc_alloc_init(MTTimedOperation);
     [(MTTimedOperation *)v8 setOperationType:16];
@@ -1286,7 +1286,7 @@ LABEL_7:
   v12 = v7;
   v10 = v7;
   objc_copyWeak(&v14, &location);
-  v13 = self;
+  selfCopy = self;
   dispatch_async(v9, v11);
 
   objc_destroyWeak(&v14);
@@ -1298,8 +1298,8 @@ LABEL_7:
   v3 = objc_opt_new();
   [v3 resetVersionForAllFeedUrls];
 
-  [a1 resetAllSubscriptionSyncVersion];
-  [a1 resetPlaylistSyncVersion];
+  [self resetAllSubscriptionSyncVersion];
+  [self resetPlaylistSyncVersion];
   +[MTBookmarksSyncStorage resetBookmarksSync];
   +[MTUniversalPlaybackPositionDataSource resetUppLastSyncTimeAndDomainVersion];
   +[_TtC8Podcasts27NonFollowedShowsSyncStorage resetNonFollowedShowsSync];
@@ -1312,9 +1312,9 @@ LABEL_7:
   }
 
   v5 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v6 = [v5 podcastsDomainVersion];
+  podcastsDomainVersion = [v5 podcastsDomainVersion];
 
-  if (v6)
+  if (podcastsDomainVersion)
   {
     v7 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
     [v7 setPodcastsDomainVersion:0];
@@ -1333,18 +1333,18 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Clearing account identifier for last sync", v11, 2u);
   }
 
-  [a1 resetAccountIdentifierForLastSync];
+  [self resetAccountIdentifierForLastSync];
 }
 
-- (BOOL)resetToInitialStateForced:(BOOL)a3 completion:(id)a4
+- (BOOL)resetToInitialStateForced:(BOOL)forced completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  forcedCopy = forced;
+  completionCopy = completion;
   if (!+[MTApplication localLibraryUpdatesDisabled])
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    if ([(MTSyncController *)v9 resettingToInitialState])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(MTSyncController *)selfCopy resettingToInitialState])
     {
       v10 = _MTLogCategoryCloudSync();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1356,17 +1356,17 @@ LABEL_26:
       }
     }
 
-    else if ([(MTSyncController *)v9 isRunning]|| v4)
+    else if ([(MTSyncController *)selfCopy isRunning]|| forcedCopy)
     {
       v12 = +[MTAccountController sharedInstance];
-      v13 = [v12 hasFetchedInitialAccount] | v4;
+      v13 = [v12 hasFetchedInitialAccount] | forcedCopy;
 
       if (v13)
       {
-        if (![(MTSyncController *)v9 hasPodcastSyncVersion]&& ![(MTSyncController *)v9 hasPodcastSyncV3Version])
+        if (![(MTSyncController *)selfCopy hasPodcastSyncVersion]&& ![(MTSyncController *)selfCopy hasPodcastSyncV3Version])
         {
           v14 = +[MTPrivacyUtil cloudSyncVersion];
-          if (v14 || [(MTSyncController *)v9 hasPlaylistSyncVersion])
+          if (v14 || [(MTSyncController *)selfCopy hasPlaylistSyncVersion])
           {
           }
 
@@ -1389,7 +1389,7 @@ LABEL_26:
           }
         }
 
-        if ([(MTSyncController *)v9 isUserLoggedIn]&& ![(MTSyncController *)v9 hasAccountChangedSinceLastSync]&& !v4)
+        if ([(MTSyncController *)selfCopy isUserLoggedIn]&& ![(MTSyncController *)selfCopy hasAccountChangedSinceLastSync]&& !forcedCopy)
         {
           v10 = _MTLogCategoryCloudSync();
           if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1404,7 +1404,7 @@ LABEL_26:
 
         if (!+[MTPrivacyUtil privacyAcknowledgementNeeded])
         {
-          [(MTSyncController *)v9 setResettingToInitialState:1];
+          [(MTSyncController *)selfCopy setResettingToInitialState:1];
           v16 = _MTLogCategoryCloudSync();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -1412,10 +1412,10 @@ LABEL_26:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Reset to Initial State - Started", buf, 2u);
           }
 
-          v17 = [(MTSyncController *)v9 cloudSyncController];
-          [v17 cancelAllTransactions];
+          cloudSyncController = [(MTSyncController *)selfCopy cloudSyncController];
+          [cloudSyncController cancelAllTransactions];
 
-          [(NSOperationQueue *)v9->_queue cancelAllOperations];
+          [(NSOperationQueue *)selfCopy->_queue cancelAllOperations];
           v18 = objc_opt_new();
           [v18 setOperationType:10];
           [v18 setStartDelay:0.0];
@@ -1423,10 +1423,10 @@ LABEL_26:
           v21 = 3221225472;
           v22 = sub_1000F263C;
           v23 = &unk_1004D8520;
-          v24 = v9;
-          v25 = v6;
+          v24 = selfCopy;
+          v25 = completionCopy;
           [v18 setMainBlock:&v20];
-          [(MTSyncController *)v9 addOperation:v18, v20, v21, v22, v23, v24];
+          [(MTSyncController *)selfCopy addOperation:v18, v20, v21, v22, v23, v24];
 
           v8 = 1;
           goto LABEL_30;
@@ -1466,14 +1466,14 @@ LABEL_26:
 
 LABEL_27:
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     v8 = 0;
 LABEL_30:
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_31;
   }
@@ -1485,9 +1485,9 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "DEMO MODE Trying to reset to initial state. We say no", buf, 2u);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v8 = 0;
@@ -1499,15 +1499,15 @@ LABEL_31:
 - (void)_synchronousResetToInitialStateDatabase
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 importContext];
+  importContext = [v3 importContext];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F2738;
   v6[3] = &unk_1004D8798;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = importContext;
+  v5 = importContext;
   [v5 performBlockAndWait:v6];
 }
 
@@ -1522,9 +1522,9 @@ LABEL_31:
   }
 
   v3 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v4 = [v3 podcastsDomainVersion];
+  podcastsDomainVersion = [v3 podcastsDomainVersion];
 
-  if (v4)
+  if (podcastsDomainVersion)
   {
     v5 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
     [v5 setPodcastsDomainVersion:0];
@@ -1546,12 +1546,12 @@ LABEL_31:
   [objc_opt_class() resetAccountIdentifierForLastSync];
 }
 
-- (void)_finaliseResetToInitial:(id)a3
+- (void)_finaliseResetToInitial:(id)initial
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(MTSyncController *)v5 setResettingToInitialState:0];
+  initialCopy = initial;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MTSyncController *)selfCopy setResettingToInitialState:0];
   v6 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1562,26 +1562,26 @@ LABEL_31:
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 postNotificationName:@"MTSyncControllerResetToInitialStateCompleted" object:0];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v8 = dispatch_get_global_queue(0, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000F2EA4;
   v10[3] = &unk_1004D9158;
-  v10[4] = v5;
-  v11 = v4;
-  v9 = v4;
+  v10[4] = selfCopy;
+  v11 = initialCopy;
+  v9 = initialCopy;
   dispatch_async(v8, v10);
 }
 
-+ (int64_t)syncFlagsForSyncType:(int64_t)a3
++ (int64_t)syncFlagsForSyncType:(int64_t)type
 {
   v4 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v5 = [v4 subscriptionsSyncVersionFor:a3];
+  v5 = [v4 subscriptionsSyncVersionFor:type];
 
   if (v5)
   {
-    v6 = 1 << a3;
+    v6 = 1 << type;
   }
 
   else
@@ -1592,17 +1592,17 @@ LABEL_31:
   return v6;
 }
 
-+ (void)didUpdateSubscriptionsSyncVersionForSyncType:(int64_t)a3
++ (void)didUpdateSubscriptionsSyncVersionForSyncType:(int64_t)type
 {
-  v3 = a3;
-  v5 = [a1 sharedInstance];
-  v6 = [v5 syncVersionFlags];
+  typeCopy = type;
+  sharedInstance = [self sharedInstance];
+  syncVersionFlags = [sharedInstance syncVersionFlags];
 
-  if (v6 != 3)
+  if (syncVersionFlags != 3)
   {
-    v7 = v6 | (1 << v3);
-    v8 = [a1 sharedInstance];
-    [v8 setSyncVersionFlags:v7];
+    v7 = syncVersionFlags | (1 << typeCopy);
+    sharedInstance2 = [self sharedInstance];
+    [sharedInstance2 setSyncVersionFlags:v7];
 
     v9 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1626,27 +1626,27 @@ LABEL_31:
 - (BOOL)hasInterestSyncVersion
 {
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v3 = [v2 interestSyncVersion];
-  v4 = v3 != 0;
+  interestSyncVersion = [v2 interestSyncVersion];
+  v4 = interestSyncVersion != 0;
 
   return v4;
 }
 
-- (void)setPlaylistSyncVersion:(id)a3
+- (void)setPlaylistSyncVersion:(id)version
 {
-  v3 = a3;
-  [objc_opt_class() setPlaylistSyncVersion:v3];
+  versionCopy = version;
+  [objc_opt_class() setPlaylistSyncVersion:versionCopy];
 }
 
-+ (void)setPlaylistSyncVersion:(id)a3
++ (void)setPlaylistSyncVersion:(id)version
 {
-  v6 = a3;
-  v3 = [v6 length];
+  versionCopy = version;
+  v3 = [versionCopy length];
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = v4;
   if (v3)
   {
-    [v4 setObject:v6 forKey:kMTPlaylistsKey];
+    [v4 setObject:versionCopy forKey:kMTPlaylistsKey];
   }
 
   else
@@ -1657,34 +1657,34 @@ LABEL_31:
 
 + (void)resetPlaylistSyncVersion
 {
-  [a1 setPlaylistSyncVersion:0];
+  [self setPlaylistSyncVersion:0];
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
   [v2 setIsPlaylistSyncDirty:1];
 }
 
-+ (void)setAccountIdentifierForLastSync:(id)a3
++ (void)setAccountIdentifierForLastSync:(id)sync
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [v5 accountIdentifierForLastSync];
-  v7 = v6;
-  if (v6 != v4 && ([v6 isEqualToString:v4] & 1) == 0)
+  syncCopy = sync;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accountIdentifierForLastSync = [selfCopy accountIdentifierForLastSync];
+  v7 = accountIdentifierForLastSync;
+  if (accountIdentifierForLastSync != syncCopy && ([accountIdentifierForLastSync isEqualToString:syncCopy] & 1) == 0)
   {
     v8 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v4;
+      v11 = syncCopy;
       v12 = 2112;
       v13 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Changing account identifier to %@ from %@", &v10, 0x16u);
     }
 
-    if ([v4 length])
+    if ([syncCopy length])
     {
       v9 = +[NSUserDefaults standardUserDefaults];
-      [v9 setObject:v4 forKey:@"SSAccountIdentifier"];
+      [v9 setObject:syncCopy forKey:@"SSAccountIdentifier"];
     }
 
     else
@@ -1694,31 +1694,31 @@ LABEL_31:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 + (BOOL)hasAccountChangedSinceLastSync
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [v2 accountIdentifierForLastSync];
-  if (![v3 length])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accountIdentifierForLastSync = [selfCopy accountIdentifierForLastSync];
+  if (![accountIdentifierForLastSync length])
   {
-    v6 = _MTLogCategoryCloudSync();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    stringValue = _MTLogCategoryCloudSync();
+    if (os_log_type_enabled(stringValue, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "hasAccountChangedSinceLastSync = NO since there was previously no account", buf, 2u);
+      _os_log_impl(&_mh_execute_header, stringValue, OS_LOG_TYPE_INFO, "hasAccountChangedSinceLastSync = NO since there was previously no account", buf, 2u);
     }
 
     goto LABEL_10;
   }
 
   v4 = +[MTAccountController sharedInstance];
-  v5 = [v4 activeDsid];
-  v6 = [v5 stringValue];
+  activeDsid = [v4 activeDsid];
+  stringValue = [activeDsid stringValue];
 
-  if (![v6 length])
+  if (![stringValue length])
   {
     v8 = _MTLogCategoryCloudSync();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1730,17 +1730,17 @@ LABEL_31:
     goto LABEL_10;
   }
 
-  if (v3 == v6)
+  if (accountIdentifierForLastSync == stringValue)
   {
 LABEL_10:
     LOBYTE(v7) = 0;
     goto LABEL_11;
   }
 
-  v7 = [v3 isEqualToString:v6]^ 1;
+  v7 = [accountIdentifierForLastSync isEqualToString:stringValue]^ 1;
 LABEL_11:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
@@ -1753,8 +1753,8 @@ LABEL_11:
 
 - (void)updateAccountForLastSync
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _MTLogCategoryCloudSync();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -1763,16 +1763,16 @@ LABEL_11:
   }
 
   v4 = +[MTAccountController sharedInstance];
-  v5 = [v4 activeDsid];
-  v6 = [v5 stringValue];
+  activeDsid = [v4 activeDsid];
+  stringValue = [activeDsid stringValue];
 
-  [objc_opt_class() setAccountIdentifierForLastSync:v6];
-  objc_sync_exit(v2);
+  [objc_opt_class() setAccountIdentifierForLastSync:stringValue];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)reachabilityChangedFrom:(BOOL)a3 to:(BOOL)a4
+- (void)reachabilityChangedFrom:(BOOL)from to:(BOOL)to
 {
-  if (a4 && !a3)
+  if (to && !from)
   {
     if ([(MTSyncController *)self isRunning])
     {

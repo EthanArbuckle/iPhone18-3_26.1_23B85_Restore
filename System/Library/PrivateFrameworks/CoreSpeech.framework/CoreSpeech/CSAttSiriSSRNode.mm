@@ -1,36 +1,36 @@
 @interface CSAttSiriSSRNode
 - (CSAttSiriController)attSiriController;
 - (CSAttSiriSSRNode)init;
-- (CSAttSiriSSRNode)initWithAttSiriController:(id)a3;
-- (CSAttSiriSSRNode)initWithDownloadMonitor:(id)a3 assetHandler:(id)a4;
-- (id)_mapScoresToSharedSiriId:(id)a3;
-- (id)_processSpeakerRecognitionResult:(id)a3;
-- (id)filteredVoiceProfileArray:(id)a3;
+- (CSAttSiriSSRNode)initWithAttSiriController:(id)controller;
+- (CSAttSiriSSRNode)initWithDownloadMonitor:(id)monitor assetHandler:(id)handler;
+- (id)_mapScoresToSharedSiriId:(id)id;
+- (id)_processSpeakerRecognitionResult:(id)result;
+- (id)filteredVoiceProfileArray:(id)array;
 - (id)getLeadingUtteranceLogger;
-- (id)getSharedUserIdWithHighestVoiceIdScore:(id)a3;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4 assetProviderType:(unint64_t)a5;
-- (void)_logSpeakerFalseTriggerMitigationScore:(id)a3 withSpeakerMatchScore:(float)a4 withSpeakerScoreThreshold:(float)a5 withAudioDuration:(double)a6 withSuccess:(BOOL)a7;
+- (id)getSharedUserIdWithHighestVoiceIdScore:(id)score;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset assetProviderType:(unint64_t)type;
+- (void)_logSpeakerFalseTriggerMitigationScore:(id)score withSpeakerMatchScore:(float)matchScore withSpeakerScoreThreshold:(float)threshold withAudioDuration:(double)duration withSuccess:(BOOL)success;
 - (void)_refreshSpeakerRecognitionAssets;
 - (void)_reportNoAudioProcessed;
 - (void)_setupLeadingUtteranceLogger;
-- (void)_setupSSRControllerWithAudioContext:(id)a3 withVoiceTriggerEventInfo:(id)a4;
-- (void)_setupSpeakerRecognitionForFollowUp:(id)a3 withVoiceTriggerInfo:(id)a4;
-- (void)_setupSpeakerRecognitionForProfiles:(id)a3 WithVTEventInfo:(id)a4 WithLocale:(id)a5;
-- (void)_setupWithDownloadMonitor:(id)a3 assetHandler:(id)a4;
+- (void)_setupSSRControllerWithAudioContext:(id)context withVoiceTriggerEventInfo:(id)info;
+- (void)_setupSpeakerRecognitionForFollowUp:(id)up withVoiceTriggerInfo:(id)info;
+- (void)_setupSpeakerRecognitionForProfiles:(id)profiles WithVTEventInfo:(id)info WithLocale:(id)locale;
+- (void)_setupWithDownloadMonitor:(id)monitor assetHandler:(id)handler;
 - (void)_stopProcessing;
-- (void)addReceiver:(id)a3;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
-- (void)cacheSharedUserInfos:(id)a3;
+- (void)addReceiver:(id)receiver;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
+- (void)cacheSharedUserInfos:(id)infos;
 - (void)handleSiriSessionEnd;
-- (void)logSpeakerFalseTriggerMitigationScore:(float)a3 withAudioDuration:(double)a4;
-- (void)removeReceiver:(id)a3;
-- (void)resetForNewRequestWithRecordContext:(id)a3 voiceTriggerInfo:(id)a4 withReqId:(id)a5;
-- (void)setPrefetchedAsset:(id)a3;
+- (void)logSpeakerFalseTriggerMitigationScore:(float)score withAudioDuration:(double)duration;
+- (void)removeReceiver:(id)receiver;
+- (void)resetForNewRequestWithRecordContext:(id)context voiceTriggerInfo:(id)info withReqId:(id)id;
+- (void)setPrefetchedAsset:(id)asset;
 - (void)setUpSpeakerProfileForFlexibleFollowup;
-- (void)speakerRecognitionController:(id)a3 hasSpeakerInfo:(id)a4;
-- (void)speakerRecognitionFinishedProcessing:(id)a3 withFinalSpeakerInfo:(id)a4;
+- (void)speakerRecognitionController:(id)controller hasSpeakerInfo:(id)info;
+- (void)speakerRecognitionFinishedProcessing:(id)processing withFinalSpeakerInfo:(id)info;
 - (void)startXPCConnection;
 - (void)stop;
 @end
@@ -77,10 +77,10 @@
   return v3;
 }
 
-- (void)_logSpeakerFalseTriggerMitigationScore:(id)a3 withSpeakerMatchScore:(float)a4 withSpeakerScoreThreshold:(float)a5 withAudioDuration:(double)a6 withSuccess:(BOOL)a7
+- (void)_logSpeakerFalseTriggerMitigationScore:(id)score withSpeakerMatchScore:(float)matchScore withSpeakerScoreThreshold:(float)threshold withAudioDuration:(double)duration withSuccess:(BOOL)success
 {
-  v7 = a7;
-  v12 = a3;
+  successCopy = success;
+  scoreCopy = score;
   if (self->_mhId)
   {
     v13 = [SISchemaUUID alloc];
@@ -88,13 +88,13 @@
     v15 = [v13 initWithNSUUID:v14];
 
     v16 = objc_alloc_init(MHSchemaMHSpeakerFalseTriggerMitigated);
-    [v16 setModelVersion:v12];
-    *&v17 = a4;
+    [v16 setModelVersion:scoreCopy];
+    *&v17 = matchScore;
     [v16 setSpeakerMatchScore:v17];
-    *&v18 = a5;
+    *&v18 = threshold;
     [v16 setThresholdScore:v18];
-    [v16 setProcessedAudioDurationInNs:a6];
-    if (v7)
+    [v16 setProcessedAudioDurationInNs:duration];
+    if (successCopy)
     {
       v19 = 0;
     }
@@ -123,9 +123,9 @@
       v28 = 2112;
       v29 = mhId;
       v30 = 2048;
-      v31 = a4;
+      matchScoreCopy = matchScore;
       v32 = 2048;
-      v33 = a6;
+      durationCopy = duration;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s Submit Speaker False Trigger Mitigation score msg to SELF metrics for MH ID: %@, speakerMatchScore: %f, audioProcessDuration: %f", &v26, 0x2Au);
     }
   }
@@ -142,7 +142,7 @@
   }
 }
 
-- (void)logSpeakerFalseTriggerMitigationScore:(float)a3 withAudioDuration:(double)a4
+- (void)logSpeakerFalseTriggerMitigationScore:(float)score withAudioDuration:(double)duration
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -150,26 +150,26 @@
   block[2] = sub_10002DEEC;
   block[3] = &unk_100251C60;
   block[4] = self;
-  v6 = a3;
-  *&block[5] = a4;
+  scoreCopy = score;
+  *&block[5] = duration;
   dispatch_async(queue, block);
 }
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002DFF0;
   v8[3] = &unk_100253C48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = chunkCopy;
+  selfCopy = self;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -180,33 +180,33 @@
   dispatch_async(queue, block);
 }
 
-- (void)speakerRecognitionFinishedProcessing:(id)a3 withFinalSpeakerInfo:(id)a4
+- (void)speakerRecognitionFinishedProcessing:(id)processing withFinalSpeakerInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  processingCopy = processing;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002E2C0;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = processingCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = processingCopy;
   dispatch_async(queue, block);
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = CSLogCategorySpkrId;
   if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v10 = "[CSAttSiriSSRNode CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s _currentLanguageCode changed: %{public}@", buf, 0x16u);
   }
 
@@ -219,12 +219,12 @@
   dispatch_async(queue, block);
 }
 
-- (void)speakerRecognitionController:(id)a3 hasSpeakerInfo:(id)a4
+- (void)speakerRecognitionController:(id)controller hasSpeakerInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  controllerCopy = controller;
+  infoCopy = info;
+  v8 = infoCopy;
+  if (controllerCopy && infoCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -232,14 +232,14 @@
     block[2] = sub_10002EA64;
     block[3] = &unk_100253680;
     block[4] = self;
-    v13 = v6;
+    v13 = controllerCopy;
     v14 = v8;
     dispatch_async(queue, block);
   }
 
   else
   {
-    if (!v6 && (v10 = CSLogCategorySpkrId, os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_ERROR)))
+    if (!controllerCopy && (v10 = CSLogCategorySpkrId, os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_ERROR)))
     {
       *buf = 136315138;
       v16 = "[CSAttSiriSSRNode speakerRecognitionController:hasSpeakerInfo:]";
@@ -267,7 +267,7 @@
 LABEL_9:
 }
 
-- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4 assetProviderType:(unint64_t)a5
+- (void)CSSpeakerRecognitionAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset assetProviderType:(unint64_t)type
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -371,11 +371,11 @@ LABEL_17:
         {
           v27 = self->_ccProfile;
           v28 = v14;
-          v29 = [(SSRVoiceProfile *)v27 profileID];
+          profileID = [(SSRVoiceProfile *)v27 profileID];
           *buf = 136315650;
           v40 = "[CSAttSiriSSRNode _stopProcessing]";
           v41 = 2114;
-          v42 = v29;
+          v42 = profileID;
           v43 = 2114;
           v44 = v13;
           _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s ERR: Failed to init retrainCtxt for profileID %{public}@ with error %{public}@", buf, 0x20u);
@@ -391,11 +391,11 @@ LABEL_17:
         {
           v18 = self->_ccProfile;
           v19 = v17;
-          v20 = [(SSRVoiceProfile *)v18 profileID];
+          profileID2 = [(SSRVoiceProfile *)v18 profileID];
           *buf = 136315394;
           v40 = "[CSAttSiriSSRNode _stopProcessing]";
           v41 = 2114;
-          v42 = v20;
+          v42 = profileID2;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s Creating Continuous Conversation voice profile %{public}@", buf, 0x16u);
         }
 
@@ -420,11 +420,11 @@ LABEL_17:
       {
         v30 = self->_ccProfile;
         v31 = v17;
-        v32 = [(SSRVoiceProfile *)v30 profileID];
+        profileID3 = [(SSRVoiceProfile *)v30 profileID];
         *buf = 136315394;
         v40 = "[CSAttSiriSSRNode _stopProcessing]";
         v41 = 2114;
-        v42 = v32;
+        v42 = profileID3;
         _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%s ERR: Failed to add utterance to profileID %{public}@ because the audio file couldn't be found", buf, 0x16u);
       }
 
@@ -446,12 +446,12 @@ LABEL_17:
   }
 }
 
-- (id)_mapScoresToSharedSiriId:(id)a3
+- (id)_mapScoresToSharedSiriId:(id)id
 {
-  v4 = a3;
-  if ([v4 count])
+  idCopy = id;
+  if ([idCopy count])
   {
-    v5 = [v4 count];
+    v5 = [idCopy count];
   }
 
   else
@@ -461,13 +461,13 @@ LABEL_17:
 
   v45 = [NSMutableDictionary dictionaryWithCapacity:v5];
   v6 = +[CSFPreferences sharedPreferences];
-  v44 = [v6 readSpeakerIdScoreOverrrideConfig];
+  readSpeakerIdScoreOverrrideConfig = [v6 readSpeakerIdScoreOverrrideConfig];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v7 = v4;
+  v7 = idCopy;
   v8 = [v7 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v8)
   {
@@ -504,42 +504,42 @@ LABEL_17:
           v17 = 0.0;
         }
 
-        v18 = vcvtpd_s64_f64(v17 * 100.0);
+        integerValue = vcvtpd_s64_f64(v17 * 100.0);
         v19 = [(SSRVoiceProfileManager *)self->_voiceProfileManager voiceProfileForId:v13];
         v20 = v19;
         if (v19)
         {
-          v21 = [v19 siriProfileId];
+          siriProfileId = [v19 siriProfileId];
 
-          if (v21)
+          if (siriProfileId)
           {
             if (CSIsInternalBuild())
             {
-              if (v44)
+              if (readSpeakerIdScoreOverrrideConfig)
               {
-                v22 = [v20 siriProfileId];
-                v23 = [v44 objectForKey:v22];
+                siriProfileId2 = [v20 siriProfileId];
+                v23 = [readSpeakerIdScoreOverrrideConfig objectForKey:siriProfileId2];
 
                 if (v23)
                 {
-                  v24 = [v20 siriProfileId];
-                  v25 = [v44 objectForKey:v24];
+                  siriProfileId3 = [v20 siriProfileId];
+                  v25 = [readSpeakerIdScoreOverrrideConfig objectForKey:siriProfileId3];
 
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v18 = [v25 integerValue];
+                    integerValue = [v25 integerValue];
                     v26 = CSLogCategorySpkrId;
                     if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
                     {
                       v27 = v26;
-                      v28 = [v20 siriProfileId];
+                      siriProfileId4 = [v20 siriProfileId];
                       *buf = v43;
                       v56 = "[CSAttSiriSSRNode _mapScoresToSharedSiriId:]";
                       v57 = 2112;
                       v58 = v25;
                       v59 = 2112;
-                      v60 = v28;
+                      v60 = siriProfileId4;
                       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%s Overriding score to %@ for profile %@", buf, 0x20u);
                     }
                   }
@@ -547,9 +547,9 @@ LABEL_17:
               }
             }
 
-            v29 = [NSNumber numberWithInteger:v18];
-            v30 = [v20 siriProfileId];
-            [v45 setObject:v29 forKey:v30];
+            v29 = [NSNumber numberWithInteger:integerValue];
+            siriProfileId5 = [v20 siriProfileId];
+            [v45 setObject:v29 forKey:siriProfileId5];
 
             goto LABEL_31;
           }
@@ -588,7 +588,7 @@ LABEL_28:
           goto LABEL_32;
         }
 
-        v29 = [NSNumber numberWithInteger:v18];
+        v29 = [NSNumber numberWithInteger:integerValue];
         [v45 setObject:v29 forKey:v13];
 LABEL_31:
 
@@ -629,12 +629,12 @@ LABEL_32:
   return v41;
 }
 
-- (id)_processSpeakerRecognitionResult:(id)a3
+- (id)_processSpeakerRecognitionResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  resultCopy = result;
+  v5 = [resultCopy mutableCopy];
   v6 = kSSRSpeakerRecognitionKnownUserScoresKey;
-  v7 = [v4 objectForKeyedSubscript:kSSRSpeakerRecognitionKnownUserScoresKey];
+  v7 = [resultCopy objectForKeyedSubscript:kSSRSpeakerRecognitionKnownUserScoresKey];
 
   v8 = [(CSAttSiriSSRNode *)self _mapScoresToSharedSiriId:v7];
 
@@ -666,30 +666,30 @@ LABEL_32:
     if (objc_opt_isKindOfClass())
     {
       v16 = [(NSDictionary *)self->_voiceTriggerEventInfo objectForKey:v14];
-      v17 = [v16 integerValue];
+      integerValue = [v16 integerValue];
 
       v9 = &OBJC_IVAR___CSAdBlockerAssetDownloadMonitor__lastUpdatedAssetType;
     }
 
     else
     {
-      v17 = 0;
+      integerValue = 0;
     }
 
-    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 + 830 classifyUserIdentityFor:v10 withScores:v8 withAsset:self->_asset withPhId:v17]);
+    v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 + 830 classifyUserIdentityFor:v10 withScores:v8 withAsset:self->_asset withPhId:integerValue]);
     [v5 setObject:v18 forKeyedSubscript:@"userIdentityClassification"];
 
     [v5 setObject:v8 forKeyedSubscript:v6];
-    v19 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserLowScoreThresholdForPhId:v17]];
+    v19 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserLowScoreThresholdForPhId:integerValue]];
     [v5 setObject:v19 forKeyedSubscript:kSSRSpeakerRecognitionLowScoreThresholdKey];
 
-    v20 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserHighScoreThresholdForPhId:v17]];
+    v20 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserHighScoreThresholdForPhId:integerValue]];
     [v5 setObject:v20 forKeyedSubscript:kSSRSpeakerRecognitionHighScoreThresholdKey];
 
-    v21 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserConfidentScoreThresholdForPhId:v17]];
+    v21 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserConfidentScoreThresholdForPhId:integerValue]];
     [v5 setObject:v21 forKeyedSubscript:kSSRSpeakerRecognitionConfidentScoreThresholdKey];
 
-    v22 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserDeltaScoreThresholdForPhId:v17]];
+    v22 = [NSNumber numberWithInteger:[(CSAsset *)self->_asset multiUserDeltaScoreThresholdForPhId:integerValue]];
     [v5 setObject:v22 forKeyedSubscript:kSSRSpeakerRecognitionDeltaScoreThresholdKey];
 
     v23 = CSLogCategorySpkrId;
@@ -698,21 +698,21 @@ LABEL_32:
       v24 = kSSRSpeakerRecognitionSegmentCounterKey;
       v25 = v23;
       v26 = [v5 objectForKeyedSubscript:v24];
-      v27 = [v26 intValue];
+      intValue = [v26 intValue];
       v28 = [v5 objectForKeyedSubscript:kSSRSpeakerRecognitionSegmentStartTimeKey];
       [v28 floatValue];
       v30 = v29;
       v31 = [v5 objectForKeyedSubscript:kSSRSpeakerRecognitionAudioProcessedDurationKey];
-      v32 = [v31 intValue];
+      intValue2 = [v31 intValue];
       v33 = [v5 objectForKeyedSubscript:v6];
       v35 = 136316162;
       v36 = "[CSAttSiriSSRNode _processSpeakerRecognitionResult:]";
       v37 = 1026;
-      *v38 = v27;
+      *v38 = intValue;
       *&v38[4] = 2050;
       *&v38[6] = v30;
       v39 = 1024;
-      v40 = v32;
+      v40 = intValue2;
       v41 = 2114;
       v42 = v33;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s mappedSpeakerIdInfo for {%{public}d, %{public}.2fsec %dms} - %{public}@", &v35, 0x2Cu);
@@ -797,18 +797,18 @@ LABEL_12:
   }
 }
 
-- (void)_setupSpeakerRecognitionForProfiles:(id)a3 WithVTEventInfo:(id)a4 WithLocale:(id)a5
+- (void)_setupSpeakerRecognitionForProfiles:(id)profiles WithVTEventInfo:(id)info WithLocale:(id)locale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSAudioRecordContext *)self->_audioRecordContext isBuiltInVoiceTriggered];
+  profilesCopy = profiles;
+  infoCopy = info;
+  localeCopy = locale;
+  isBuiltInVoiceTriggered = [(CSAudioRecordContext *)self->_audioRecordContext isBuiltInVoiceTriggered];
   v12 = 4.0;
-  if (v11)
+  if (isBuiltInVoiceTriggered)
   {
-    if (v9)
+    if (infoCopy)
     {
-      v13 = [v9 objectForKeyedSubscript:kVTEItriggerEndSeconds];
+      v13 = [infoCopy objectForKeyedSubscript:kVTEItriggerEndSeconds];
       [v13 floatValue];
       v12 = v14 + 4.0;
     }
@@ -824,7 +824,7 @@ LABEL_12:
   v16 = CSLogCategorySpkrId;
   if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
   {
-    if (v11)
+    if (isBuiltInVoiceTriggered)
     {
       v17 = @"VT";
     }
@@ -840,9 +840,9 @@ LABEL_12:
     v43 = 2114;
     v44 = v17;
     v45 = 2114;
-    v46 = v10;
+    v46 = localeCopy;
     v47 = 2050;
-    v48 = [v8 count];
+    v48 = [profilesCopy count];
     v49 = 2050;
     v50 = v12;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s Setting up SSR controller with {%{public}@, %{public}@, %{public}ldusers, %{public}fsecs}", buf, 0x34u);
@@ -851,29 +851,29 @@ LABEL_12:
   asset = self->_asset;
   if (SSRShouldUseTDTIWithAsset())
   {
-    v20 = 1;
+    isContinuousConversation = 1;
   }
 
   else
   {
-    v20 = [(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation];
+    isContinuousConversation = [(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation];
   }
 
   v39[0] = SSRSpeakerRecognitionStyleKey;
   v21 = [NSNumber numberWithUnsignedInteger:v15];
   v40[0] = v21;
-  v40[1] = v10;
+  v40[1] = localeCopy;
   v39[1] = SSRSpeakerRecognitionLocaleKey;
   v39[2] = SSRSpeakerRecognitionUsePayloadProfileKey;
-  v22 = [NSNumber numberWithBool:v20];
+  v22 = [NSNumber numberWithBool:isContinuousConversation];
   v40[2] = v22;
-  v40[3] = v8;
+  v40[3] = profilesCopy;
   v39[3] = SSRSpeakerRecognitionProfileArrayKey;
   v39[4] = SSRSpeakerRecognitionVTEventInfoKey;
   v24 = &__NSDictionary0__struct;
-  if (v9)
+  if (infoCopy)
   {
-    v24 = v9;
+    v24 = infoCopy;
   }
 
   v40[4] = v24;
@@ -897,11 +897,11 @@ LABEL_12:
     if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_ERROR))
     {
       v33 = v36;
-      v34 = [v29 localizedDescription];
+      localizedDescription = [v29 localizedDescription];
       *buf = 136315394;
       v42 = "[CSAttSiriSSRNode _setupSpeakerRecognitionForProfiles:WithVTEventInfo:WithLocale:]";
       v43 = 2112;
-      v44 = v34;
+      v44 = localizedDescription;
       v35 = "%s ERR: Failed to create SSR context with error %@";
       goto LABEL_26;
     }
@@ -923,11 +923,11 @@ LABEL_23:
     if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_ERROR))
     {
       v33 = v32;
-      v34 = [v29 localizedDescription];
+      localizedDescription = [v29 localizedDescription];
       *buf = 136315394;
       v42 = "[CSAttSiriSSRNode _setupSpeakerRecognitionForProfiles:WithVTEventInfo:WithLocale:]";
       v43 = 2112;
-      v44 = v34;
+      v44 = localizedDescription;
       v35 = "%s ERR: Failed to create SSR controller with error %@";
 LABEL_26:
       _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, v35, buf, 0x16u);
@@ -964,20 +964,20 @@ LABEL_24:
     v7 = self->_voiceProfileManager;
     self->_voiceProfileManager = v6;
 
-    v8 = [(NSArray *)self->_ssrAssets firstObject];
+    firstObject = [(NSArray *)self->_ssrAssets firstObject];
     asset = self->_asset;
-    self->_asset = v8;
+    self->_asset = firstObject;
 
     v10 = CSLogCategorySpkrId;
     if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
     {
       v11 = self->_asset;
       v12 = v10;
-      v13 = [(CSAsset *)v11 configVersion];
+      configVersion = [(CSAsset *)v11 configVersion];
       *buf = 136315394;
       v29 = "[CSAttSiriSSRNode _setupLeadingUtteranceLogger]";
       v30 = 2114;
-      v31 = v13;
+      v31 = configVersion;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s Asset Vers: %{public}@", buf, 0x16u);
     }
 
@@ -988,8 +988,8 @@ LABEL_24:
   [(SSRVoiceProfileManager *)voiceProfileManager deleteAllVoiceProfilesForAppDomain:SSRSpeakerRecognitionSiriCCAppDomain];
   v15 = [(SSRVoiceProfileManager *)self->_voiceProfileManager getCacheDirectoryForAppDomain:v14];
   v16 = +[NSUUID UUID];
-  v17 = [v16 UUIDString];
-  v18 = [v15 stringByAppendingPathComponent:v17];
+  uUIDString = [v16 UUIDString];
+  v18 = [v15 stringByAppendingPathComponent:uUIDString];
   v19 = [v18 stringByAppendingPathExtension:@"wav"];
   leadingUtteranceAudioFile = self->_leadingUtteranceAudioFile;
   self->_leadingUtteranceAudioFile = v19;
@@ -1014,15 +1014,15 @@ LABEL_24:
   }
 }
 
-- (void)_setupSpeakerRecognitionForFollowUp:(id)a3 withVoiceTriggerInfo:(id)a4
+- (void)_setupSpeakerRecognitionForFollowUp:(id)up withVoiceTriggerInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SSRVoiceProfileManager *)self->_voiceProfileManager provisionedVoiceProfilesForAppDomain:SSRSpeakerRecognitionSiriCCAppDomain withLocale:v6];
+  upCopy = up;
+  infoCopy = info;
+  v8 = [(SSRVoiceProfileManager *)self->_voiceProfileManager provisionedVoiceProfilesForAppDomain:SSRSpeakerRecognitionSiriCCAppDomain withLocale:upCopy];
   v9 = v8;
   if (v8 && [v8 count])
   {
-    [(CSAttSiriSSRNode *)self _setupSpeakerRecognitionForProfiles:v9 WithVTEventInfo:v7 WithLocale:v6];
+    [(CSAttSiriSSRNode *)self _setupSpeakerRecognitionForProfiles:v9 WithVTEventInfo:infoCopy WithLocale:upCopy];
   }
 
   else
@@ -1033,45 +1033,45 @@ LABEL_24:
       v11 = 136315394;
       v12 = "[CSAttSiriSSRNode _setupSpeakerRecognitionForFollowUp:withVoiceTriggerInfo:]";
       v13 = 2114;
-      v14 = v6;
+      v14 = upCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Voice Profiles not present for Continuous Conversation for %{public}@ - Bailing out", &v11, 0x16u);
     }
   }
 }
 
-- (void)_setupSSRControllerWithAudioContext:(id)a3 withVoiceTriggerEventInfo:(id)a4
+- (void)_setupSSRControllerWithAudioContext:(id)context withVoiceTriggerEventInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ((CSIsCommunalDevice() & 1) != 0 || ([v6 isContinuousConversation] & 1) != 0 || objc_msgSend(v6, "isBuiltInVoiceTriggered"))
+  contextCopy = context;
+  infoCopy = info;
+  if ((CSIsCommunalDevice() & 1) != 0 || ([contextCopy isContinuousConversation] & 1) != 0 || objc_msgSend(contextCopy, "isBuiltInVoiceTriggered"))
   {
     v8 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
     ssrAssets = self->_ssrAssets;
     if (ssrAssets)
     {
-      v10 = [(NSArray *)ssrAssets firstObject];
+      firstObject = [(NSArray *)ssrAssets firstObject];
       asset = self->_asset;
-      self->_asset = v10;
+      self->_asset = firstObject;
 
       v12 = CSLogCategorySpkrId;
       if (os_log_type_enabled(CSLogCategorySpkrId, OS_LOG_TYPE_DEFAULT))
       {
         v13 = self->_asset;
         v14 = v12;
-        v15 = [(CSAsset *)v13 configVersion];
+        configVersion = [(CSAsset *)v13 configVersion];
         v27 = 136315394;
         v28 = "[CSAttSiriSSRNode _setupSSRControllerWithAudioContext:withVoiceTriggerEventInfo:]";
         v29 = 2114;
-        v30 = v15;
+        v30 = configVersion;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s Asset Vers: %{public}@", &v27, 0x16u);
       }
 
-      v16 = [v6 isContinuousConversation];
+      isContinuousConversation = [contextCopy isContinuousConversation];
       v17 = +[SSRVoiceProfileManager sharedInstance];
       voiceProfileManager = self->_voiceProfileManager;
       self->_voiceProfileManager = v17;
 
-      if ((CSIsCommunalDevice() & 1) != 0 || ((CSIsIOS() & 1) != 0 || CSIsAppleSiliconMac()) && (([v6 isBuiltInVoiceTriggered] & 1) != 0 || objc_msgSend(v6, "isDarwinVoiceTriggered")))
+      if ((CSIsCommunalDevice() & 1) != 0 || ((CSIsIOS() & 1) != 0 || CSIsAppleSiliconMac()) && (([contextCopy isBuiltInVoiceTriggered] & 1) != 0 || objc_msgSend(contextCopy, "isDarwinVoiceTriggered")))
       {
         v19 = [(SSRVoiceProfileManager *)self->_voiceProfileManager provisionedVoiceProfilesForAppDomain:SSRSpeakerRecognitionSiriAppDomain withLocale:v8];
         v20 = v19;
@@ -1095,7 +1095,7 @@ LABEL_24:
             }
           }
 
-          [(CSAttSiriSSRNode *)self _setupSpeakerRecognitionForProfiles:v20 WithVTEventInfo:v7 WithLocale:v8];
+          [(CSAttSiriSSRNode *)self _setupSpeakerRecognitionForProfiles:v20 WithVTEventInfo:infoCopy WithLocale:v8];
         }
 
         else
@@ -1120,13 +1120,13 @@ LABEL_24:
           v27 = 136315394;
           v28 = "[CSAttSiriSSRNode _setupSSRControllerWithAudioContext:withVoiceTriggerEventInfo:]";
           v29 = 1024;
-          LODWORD(v30) = v16;
+          LODWORD(v30) = isContinuousConversation;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%s isCurReqTriggerFreeFollowOn:%u", &v27, 0x12u);
         }
 
-        if (v16)
+        if (isContinuousConversation)
         {
-          [(CSAttSiriSSRNode *)self _setupSpeakerRecognitionForFollowUp:v8 withVoiceTriggerInfo:v7];
+          [(CSAttSiriSSRNode *)self _setupSpeakerRecognitionForFollowUp:v8 withVoiceTriggerInfo:infoCopy];
         }
       }
     }
@@ -1157,15 +1157,15 @@ LABEL_24:
   dispatch_async(queue, block);
 }
 
-- (id)getSharedUserIdWithHighestVoiceIdScore:(id)a3
+- (id)getSharedUserIdWithHighestVoiceIdScore:(id)score
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  scoreCopy = score;
+  v5 = scoreCopy;
+  if (scoreCopy && [scoreCopy count])
   {
     if ([v5 count] == 1)
     {
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
     }
 
     else
@@ -1185,7 +1185,7 @@ LABEL_24:
       v10 = v5;
       v11 = &v12;
       dispatch_async_and_wait(queue, block);
-      v6 = v13[5];
+      firstObject = v13[5];
 
       _Block_object_dispose(&v12, 8);
     }
@@ -1193,36 +1193,36 @@ LABEL_24:
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (void)cacheSharedUserInfos:(id)a3
+- (void)cacheSharedUserInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100031C18;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = infosCopy;
+  selfCopy = self;
+  v6 = infosCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)filteredVoiceProfileArray:(id)a3
+- (id)filteredVoiceProfileArray:(id)array
 {
-  if (a3)
+  if (array)
   {
-    v4 = a3;
+    arrayCopy = array;
     v5 = [NSPredicate predicateWithBlock:&stru_10024EAC8];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    v6 = [arrayCopy filteredArrayUsingPredicate:v5];
 
     v7 = [v6 count];
-    v8 = [v4 count];
+    v8 = [arrayCopy count];
 
     self->_shouldCleanupVoiceProfile = v7 < v8;
     v9 = CSLogCategorySpkrId;
@@ -1244,45 +1244,45 @@ LABEL_24:
   return v6;
 }
 
-- (void)setPrefetchedAsset:(id)a3
+- (void)setPrefetchedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100031ED4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100032080;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003216C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1297,33 +1297,33 @@ LABEL_24:
   dispatch_async(queue, block);
 }
 
-- (void)resetForNewRequestWithRecordContext:(id)a3 voiceTriggerInfo:(id)a4 withReqId:(id)a5
+- (void)resetForNewRequestWithRecordContext:(id)context voiceTriggerInfo:(id)info withReqId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  infoCopy = info;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000324E4;
   v15[3] = &unk_100252F38;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = contextCopy;
+  v17 = infoCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = infoCopy;
+  v14 = contextCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_setupWithDownloadMonitor:(id)a3 assetHandler:(id)a4
+- (void)_setupWithDownloadMonitor:(id)monitor assetHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  monitorCopy = monitor;
+  handlerCopy = handler;
+  if (monitorCopy)
   {
-    v8 = v6;
+    v8 = monitorCopy;
   }
 
   else
@@ -1334,9 +1334,9 @@ LABEL_24:
   downloadMonitor = self->_downloadMonitor;
   self->_downloadMonitor = v8;
 
-  if (v7)
+  if (handlerCopy)
   {
-    v10 = v7;
+    v10 = handlerCopy;
   }
 
   else
@@ -1374,30 +1374,30 @@ LABEL_24:
   dispatch_async(v19, block);
 }
 
-- (CSAttSiriSSRNode)initWithAttSiriController:(id)a3
+- (CSAttSiriSSRNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriSSRNode *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;
 }
 
-- (CSAttSiriSSRNode)initWithDownloadMonitor:(id)a3 assetHandler:(id)a4
+- (CSAttSiriSSRNode)initWithDownloadMonitor:(id)monitor assetHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  monitorCopy = monitor;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = CSAttSiriSSRNode;
   v8 = [(CSAttSiriSSRNode *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CSAttSiriSSRNode *)v8 _setupWithDownloadMonitor:v6 assetHandler:v7];
+    [(CSAttSiriSSRNode *)v8 _setupWithDownloadMonitor:monitorCopy assetHandler:handlerCopy];
   }
 
   return v9;

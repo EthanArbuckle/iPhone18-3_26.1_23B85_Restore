@@ -2,7 +2,7 @@
 + (PXSharingSettings)sharedInstance;
 + (id)settingsControllerModule;
 - (id)debugDescription;
-- (void)defaultValueDidChangeForKey:(id)a3;
+- (void)defaultValueDidChangeForKey:(id)key;
 - (void)setDefaultValues;
 @end
 
@@ -298,9 +298,9 @@
   v4 = [(PXSharingSettings *)self description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(PXSharingSettings *)self showConfidentialityWarnings];
+  showConfidentialityWarnings = [(PXSharingSettings *)self showConfidentialityWarnings];
   v7 = @"NO";
-  if (v6)
+  if (showConfidentialityWarnings)
   {
     v7 = @"YES";
   }
@@ -313,10 +313,10 @@
   return v5;
 }
 
-- (void)defaultValueDidChangeForKey:(id)a3
+- (void)defaultValueDidChangeForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"confidentialityWarningsVersion"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"confidentialityWarningsVersion"])
   {
     [(PXSharingSettings *)self setShowConfidentialityWarnings:1];
   }
@@ -325,7 +325,7 @@
   {
     v5.receiver = self;
     v5.super_class = PXSharingSettings;
-    [(PXSettings *)&v5 defaultValueDidChangeForKey:v4];
+    [(PXSettings *)&v5 defaultValueDidChangeForKey:keyCopy];
   }
 }
 

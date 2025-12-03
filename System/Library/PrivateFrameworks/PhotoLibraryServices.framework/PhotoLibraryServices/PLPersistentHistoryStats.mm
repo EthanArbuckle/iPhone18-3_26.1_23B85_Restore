@@ -1,10 +1,10 @@
 @interface PLPersistentHistoryStats
-+ (BOOL)fetchEarliestTransactionDateFromDatabase:(id)a3 intoStats:(id)a4;
-+ (BOOL)fetchPageCountsOfPersistentHistoryTablesFromDatabase:(id)a3 intoStats:(id)a4;
-+ (BOOL)fetchTotalPageCountFromDatabase:(id)a3 intoStats:(id)a4;
-+ (BOOL)fetchTransactionCountFromDatabase:(id)a3 intoStats:(id)a4;
-+ (BOOL)fetchUnusedPageCountFromDatabase:(id)a3 intoStats:(id)a4;
-+ (id)statsFromDatabase:(id)a3;
++ (BOOL)fetchEarliestTransactionDateFromDatabase:(id)database intoStats:(id)stats;
++ (BOOL)fetchPageCountsOfPersistentHistoryTablesFromDatabase:(id)database intoStats:(id)stats;
++ (BOOL)fetchTotalPageCountFromDatabase:(id)database intoStats:(id)stats;
++ (BOOL)fetchTransactionCountFromDatabase:(id)database intoStats:(id)stats;
++ (BOOL)fetchUnusedPageCountFromDatabase:(id)database intoStats:(id)stats;
++ (id)statsFromDatabase:(id)database;
 - (double)persistentHistoryPageCountPercent;
 - (double)persistentHistoryPageCountPercentOfPayload;
 - (int64_t)daysSinceEarliestTransaction;
@@ -14,17 +14,17 @@
 
 - (double)persistentHistoryPageCountPercentOfPayload
 {
-  v3 = [(PLPersistentHistoryStats *)self persistentHistoryPageCount];
+  persistentHistoryPageCount = [(PLPersistentHistoryStats *)self persistentHistoryPageCount];
 
-  [(PLPersistentHistoryStats *)self _pageCountAsPercentOfPayload:v3];
+  [(PLPersistentHistoryStats *)self _pageCountAsPercentOfPayload:persistentHistoryPageCount];
   return result;
 }
 
 - (double)persistentHistoryPageCountPercent
 {
-  v3 = [(PLPersistentHistoryStats *)self persistentHistoryPageCount];
+  persistentHistoryPageCount = [(PLPersistentHistoryStats *)self persistentHistoryPageCount];
 
-  [(PLPersistentHistoryStats *)self _pageCountAsPercentOfFile:v3];
+  [(PLPersistentHistoryStats *)self _pageCountAsPercentOfFile:persistentHistoryPageCount];
   return result;
 }
 
@@ -40,18 +40,18 @@
   return result;
 }
 
-+ (BOOL)fetchEarliestTransactionDateFromDatabase:(id)a3 intoStats:(id)a4
++ (BOOL)fetchEarliestTransactionDateFromDatabase:(id)database intoStats:(id)stats
 {
-  v5 = a4;
+  statsCopy = stats;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__PLPersistentHistoryStats_fetchEarliestTransactionDateFromDatabase_intoStats___block_invoke;
   v8[3] = &unk_1E756DA68;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 prepareStatement:@"SELECT ZTIMESTAMP  FROM ATRANSACTION  ORDER BY ZTIMESTAMP ASC  LIMIT 1;" andStepThroughResultsWithBlock:v8];
+  v9 = statsCopy;
+  v6 = statsCopy;
+  LOBYTE(database) = [database prepareStatement:@"SELECT ZTIMESTAMP  FROM ATRANSACTION  ORDER BY ZTIMESTAMP ASC  LIMIT 1;" andStepThroughResultsWithBlock:v8];
 
-  return a3;
+  return database;
 }
 
 void __79__PLPersistentHistoryStats_fetchEarliestTransactionDateFromDatabase_intoStats___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -60,18 +60,18 @@ void __79__PLPersistentHistoryStats_fetchEarliestTransactionDateFromDatabase_int
   [*(a1 + 32) setEarliestTransactionDate:v3];
 }
 
-+ (BOOL)fetchTransactionCountFromDatabase:(id)a3 intoStats:(id)a4
++ (BOOL)fetchTransactionCountFromDatabase:(id)database intoStats:(id)stats
 {
-  v5 = a4;
+  statsCopy = stats;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__PLPersistentHistoryStats_fetchTransactionCountFromDatabase_intoStats___block_invoke;
   v8[3] = &unk_1E756DA68;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 prepareStatement:@"SELECT COUNT(*) from ATRANSACTION;" andStepThroughResultsWithBlock:v8];
+  v9 = statsCopy;
+  v6 = statsCopy;
+  LOBYTE(database) = [database prepareStatement:@"SELECT COUNT(*) from ATRANSACTION;" andStepThroughResultsWithBlock:v8];
 
-  return a3;
+  return database;
 }
 
 uint64_t __72__PLPersistentHistoryStats_fetchTransactionCountFromDatabase_intoStats___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -82,18 +82,18 @@ uint64_t __72__PLPersistentHistoryStats_fetchTransactionCountFromDatabase_intoSt
   return [v4 setTransactionCount:v3];
 }
 
-+ (BOOL)fetchUnusedPageCountFromDatabase:(id)a3 intoStats:(id)a4
++ (BOOL)fetchUnusedPageCountFromDatabase:(id)database intoStats:(id)stats
 {
-  v5 = a4;
+  statsCopy = stats;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__PLPersistentHistoryStats_fetchUnusedPageCountFromDatabase_intoStats___block_invoke;
   v8[3] = &unk_1E756DA68;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 prepareStatement:@"PRAGMA freelist_count;" andStepThroughResultsWithBlock:v8];
+  v9 = statsCopy;
+  v6 = statsCopy;
+  LOBYTE(database) = [database prepareStatement:@"PRAGMA freelist_count;" andStepThroughResultsWithBlock:v8];
 
-  return a3;
+  return database;
 }
 
 uint64_t __71__PLPersistentHistoryStats_fetchUnusedPageCountFromDatabase_intoStats___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -104,18 +104,18 @@ uint64_t __71__PLPersistentHistoryStats_fetchUnusedPageCountFromDatabase_intoSta
   return [v4 setUnusedPageCount:v3];
 }
 
-+ (BOOL)fetchTotalPageCountFromDatabase:(id)a3 intoStats:(id)a4
++ (BOOL)fetchTotalPageCountFromDatabase:(id)database intoStats:(id)stats
 {
-  v5 = a4;
+  statsCopy = stats;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__PLPersistentHistoryStats_fetchTotalPageCountFromDatabase_intoStats___block_invoke;
   v8[3] = &unk_1E756DA68;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 prepareStatement:@"PRAGMA page_count;" andStepThroughResultsWithBlock:v8];
+  v9 = statsCopy;
+  v6 = statsCopy;
+  LOBYTE(database) = [database prepareStatement:@"PRAGMA page_count;" andStepThroughResultsWithBlock:v8];
 
-  return a3;
+  return database;
 }
 
 uint64_t __70__PLPersistentHistoryStats_fetchTotalPageCountFromDatabase_intoStats___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -126,18 +126,18 @@ uint64_t __70__PLPersistentHistoryStats_fetchTotalPageCountFromDatabase_intoStat
   return [v4 setFilePageCount:v3];
 }
 
-+ (BOOL)fetchPageCountsOfPersistentHistoryTablesFromDatabase:(id)a3 intoStats:(id)a4
++ (BOOL)fetchPageCountsOfPersistentHistoryTablesFromDatabase:(id)database intoStats:(id)stats
 {
-  v5 = a4;
+  statsCopy = stats;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__PLPersistentHistoryStats_fetchPageCountsOfPersistentHistoryTablesFromDatabase_intoStats___block_invoke;
   v8[3] = &unk_1E756DA68;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 prepareStatement:@"SELECT m.tbl_name tbl_name andStepThroughResultsWithBlock:{sum(pageno) page_count  FROM   dbstat d, sqlite_master m  WHERE     d.name = m.name     AND m.tbl_name IN ('ACHANGE', 'ATRANSACTION', 'ATRANSACTIONSTRING')     AND d.aggregate = TRUE  GROUP BY m.tbl_name;", v8}];
+  v9 = statsCopy;
+  v6 = statsCopy;
+  LOBYTE(database) = [database prepareStatement:@"SELECT m.tbl_name tbl_name andStepThroughResultsWithBlock:{sum(pageno) page_count  FROM   dbstat d, sqlite_master m  WHERE     d.name = m.name     AND m.tbl_name IN ('ACHANGE', 'ATRANSACTION', 'ATRANSACTIONSTRING')     AND d.aggregate = TRUE  GROUP BY m.tbl_name;", v8}];
 
-  return a3;
+  return database;
 }
 
 uint64_t __91__PLPersistentHistoryStats_fetchPageCountsOfPersistentHistoryTablesFromDatabase_intoStats___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -172,11 +172,11 @@ uint64_t __91__PLPersistentHistoryStats_fetchPageCountsOfPersistentHistoryTables
   return result;
 }
 
-+ (id)statsFromDatabase:(id)a3
++ (id)statsFromDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_alloc_init(PLPersistentHistoryStats);
-  if ([a1 fetchPageCountsOfPersistentHistoryTablesFromDatabase:v4 intoStats:v5] && objc_msgSend(a1, "fetchTotalPageCountFromDatabase:intoStats:", v4, v5) && objc_msgSend(a1, "fetchUnusedPageCountFromDatabase:intoStats:", v4, v5) && objc_msgSend(a1, "fetchTransactionCountFromDatabase:intoStats:", v4, v5) && objc_msgSend(a1, "fetchEarliestTransactionDateFromDatabase:intoStats:", v4, v5))
+  if ([self fetchPageCountsOfPersistentHistoryTablesFromDatabase:databaseCopy intoStats:v5] && objc_msgSend(self, "fetchTotalPageCountFromDatabase:intoStats:", databaseCopy, v5) && objc_msgSend(self, "fetchUnusedPageCountFromDatabase:intoStats:", databaseCopy, v5) && objc_msgSend(self, "fetchTransactionCountFromDatabase:intoStats:", databaseCopy, v5) && objc_msgSend(self, "fetchEarliestTransactionDateFromDatabase:intoStats:", databaseCopy, v5))
   {
     v6 = v5;
   }

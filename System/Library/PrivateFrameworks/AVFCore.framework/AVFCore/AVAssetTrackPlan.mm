@@ -1,22 +1,22 @@
 @interface AVAssetTrackPlan
-- (AVAssetTrackPlan)initWithMediaType:(id)a3 segmentConfigurations:(id)a4 assemblyTrackID:(int)a5;
-- (BOOL)isEqual:(id)a3;
+- (AVAssetTrackPlan)initWithMediaType:(id)type segmentConfigurations:(id)configurations assemblyTrackID:(int)d;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVAssetTrackPlan
 
-- (AVAssetTrackPlan)initWithMediaType:(id)a3 segmentConfigurations:(id)a4 assemblyTrackID:(int)a5
+- (AVAssetTrackPlan)initWithMediaType:(id)type segmentConfigurations:(id)configurations assemblyTrackID:(int)d
 {
   v10.receiver = self;
   v10.super_class = AVAssetTrackPlan;
   v8 = [(AVAssetTrackPlan *)&v10 init];
   if (v8)
   {
-    v8->_mediaType = [a3 copy];
-    v8->_segmentConfigurations = [a4 copy];
-    v8->_assemblyTrackID = a5;
+    v8->_mediaType = [type copy];
+    v8->_segmentConfigurations = [configurations copy];
+    v8->_assemblyTrackID = d;
   }
 
   return v8;
@@ -29,14 +29,14 @@
   [(AVAssetTrackPlan *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -48,27 +48,27 @@
   }
 
   mediaType = self->_mediaType;
-  if (mediaType != [a3 mediaType])
+  if (mediaType != [equal mediaType])
   {
     return 0;
   }
 
   assemblyTrackID = self->_assemblyTrackID;
-  if (assemblyTrackID != [a3 assemblyTrackID])
+  if (assemblyTrackID != [equal assemblyTrackID])
   {
     return 0;
   }
 
-  v7 = [(AVAssetTrackPlan *)self requiresVideoCompression];
-  if (v7 != [a3 requiresVideoCompression])
+  requiresVideoCompression = [(AVAssetTrackPlan *)self requiresVideoCompression];
+  if (requiresVideoCompression != [equal requiresVideoCompression])
   {
     return 0;
   }
 
   segmentConfigurations = self->_segmentConfigurations;
-  v10 = [a3 segmentConfigurations];
+  segmentConfigurations = [equal segmentConfigurations];
 
-  return [(NSArray *)segmentConfigurations isEqual:v10];
+  return [(NSArray *)segmentConfigurations isEqual:segmentConfigurations];
 }
 
 - (id)description

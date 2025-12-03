@@ -1,81 +1,81 @@
 @interface STSchemaSTAnswerSynthesisPerfMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTAnswerSynthesisPerfMetrics)initWithDictionary:(id)a3;
-- (STSchemaSTAnswerSynthesisPerfMetrics)initWithJSON:(id)a3;
+- (STSchemaSTAnswerSynthesisPerfMetrics)initWithDictionary:(id)dictionary;
+- (STSchemaSTAnswerSynthesisPerfMetrics)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAnswerSynthesisModelInferenceTimeInMs:(BOOL)a3;
-- (void)setHasAnswerSynthesisModelPromptGenerationTimeInMs:(BOOL)a3;
-- (void)setHasAnswerSynthesisPCCPromptGenerationTimeInMs:(BOOL)a3;
-- (void)setHasAnswerSynthesisPostProcessingTimeInMs:(BOOL)a3;
-- (void)setHasAnswerSynthesisTotalHydrationTimeInMs:(BOOL)a3;
-- (void)setHasCollateAnswerSynthesisResultDurationInMs:(BOOL)a3;
-- (void)setHasDataFilteringDurationInMs:(BOOL)a3;
-- (void)setHasLlmInferenceDurationInMs:(BOOL)a3;
-- (void)setHasLlmPreWarmModelDurationInMs:(BOOL)a3;
-- (void)setHasPostProcessFilterDurationInMs:(BOOL)a3;
-- (void)setHasPqaModelInferenceTimeInMs:(BOOL)a3;
-- (void)setHasPqaModelPromptGenerationTimeInMs:(BOOL)a3;
-- (void)setHasPromptGenerationDurationInMs:(BOOL)a3;
-- (void)setHasSearchEntityPreProcessDurationInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAnswerSynthesisModelInferenceTimeInMs:(BOOL)ms;
+- (void)setHasAnswerSynthesisModelPromptGenerationTimeInMs:(BOOL)ms;
+- (void)setHasAnswerSynthesisPCCPromptGenerationTimeInMs:(BOOL)ms;
+- (void)setHasAnswerSynthesisPostProcessingTimeInMs:(BOOL)ms;
+- (void)setHasAnswerSynthesisTotalHydrationTimeInMs:(BOOL)ms;
+- (void)setHasCollateAnswerSynthesisResultDurationInMs:(BOOL)ms;
+- (void)setHasDataFilteringDurationInMs:(BOOL)ms;
+- (void)setHasLlmInferenceDurationInMs:(BOOL)ms;
+- (void)setHasLlmPreWarmModelDurationInMs:(BOOL)ms;
+- (void)setHasPostProcessFilterDurationInMs:(BOOL)ms;
+- (void)setHasPqaModelInferenceTimeInMs:(BOOL)ms;
+- (void)setHasPqaModelPromptGenerationTimeInMs:(BOOL)ms;
+- (void)setHasPromptGenerationDurationInMs:(BOOL)ms;
+- (void)setHasSearchEntityPreProcessDurationInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTAnswerSynthesisPerfMetrics
 
-- (STSchemaSTAnswerSynthesisPerfMetrics)initWithDictionary:(id)a3
+- (STSchemaSTAnswerSynthesisPerfMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = STSchemaSTAnswerSynthesisPerfMetrics;
   v5 = [(STSchemaSTAnswerSynthesisPerfMetrics *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"answerSynthesisOverallDurationInMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisOverallDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setAnswerSynthesisOverallDurationInMs:](v5, "setAnswerSynthesisOverallDurationInMs:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"promptGenerationDurationInMs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"promptGenerationDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setPromptGenerationDurationInMs:](v5, "setPromptGenerationDurationInMs:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"dataFilteringDurationInMs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dataFilteringDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setDataFilteringDurationInMs:](v5, "setDataFilteringDurationInMs:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"searchEntityPreProcessDurationInMs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"searchEntityPreProcessDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setSearchEntityPreProcessDurationInMs:](v5, "setSearchEntityPreProcessDurationInMs:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"llmPreWarmModelDurationInMs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"llmPreWarmModelDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setLlmPreWarmModelDurationInMs:](v5, "setLlmPreWarmModelDurationInMs:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"llmInferenceDurationInMs"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"llmInferenceDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setLlmInferenceDurationInMs:](v5, "setLlmInferenceDurationInMs:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"postProcessFilterDurationInMs"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"postProcessFilterDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
     }
 
     v31 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"collateAnswerSynthesisResultDurationInMs"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"collateAnswerSynthesisResultDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
     }
 
     v30 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"answerSynthesisTotalHydrationTimeInMs"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisTotalHydrationTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
     }
 
     v29 = v8;
-    v15 = [v4 objectForKeyedSubscript:{@"answerSynthesisModelPromptGenerationTimeInMs", v14}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"answerSynthesisModelPromptGenerationTimeInMs", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
     }
 
     v28 = v9;
-    v16 = [v4 objectForKeyedSubscript:@"answerSynthesisModelInferenceTimeInMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisModelInferenceTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@
     }
 
     v27 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"pqaModelPromptGenerationTimeInMs"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"pqaModelPromptGenerationTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
 
     v25 = v13;
     v26 = v11;
-    v18 = [v4 objectForKeyedSubscript:@"pqaModelInferenceTimeInMs"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"pqaModelInferenceTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,14 +132,14 @@
     }
 
     v19 = v12;
-    v20 = [v4 objectForKeyedSubscript:@"answerSynthesisPostProcessingTimeInMs"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisPostProcessingTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTAnswerSynthesisPerfMetrics setAnswerSynthesisPostProcessingTimeInMs:](v5, "setAnswerSynthesisPostProcessingTimeInMs:", [v20 intValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"answerSynthesisPCCPromptGenerationTimeInMs"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisPCCPromptGenerationTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -152,30 +152,30 @@
   return v5;
 }
 
-- (STSchemaSTAnswerSynthesisPerfMetrics)initWithJSON:(id)a3
+- (STSchemaSTAnswerSynthesisPerfMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTAnswerSynthesisPerfMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTAnswerSynthesisPerfMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTAnswerSynthesisPerfMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -188,12 +188,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics answerSynthesisModelInferenceTimeInMs](self, "answerSynthesisModelInferenceTimeInMs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"answerSynthesisModelInferenceTimeInMs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"answerSynthesisModelInferenceTimeInMs"];
 
     has = self->_has;
     if ((has & 0x200) == 0)
@@ -214,7 +214,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics answerSynthesisModelPromptGenerationTimeInMs](self, "answerSynthesisModelPromptGenerationTimeInMs")}];
-  [v3 setObject:v8 forKeyedSubscript:@"answerSynthesisModelPromptGenerationTimeInMs"];
+  [dictionary setObject:v8 forKeyedSubscript:@"answerSynthesisModelPromptGenerationTimeInMs"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -230,7 +230,7 @@ LABEL_4:
 
 LABEL_22:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics answerSynthesisOverallDurationInMs](self, "answerSynthesisOverallDurationInMs")}];
-  [v3 setObject:v9 forKeyedSubscript:@"answerSynthesisOverallDurationInMs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"answerSynthesisOverallDurationInMs"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -246,7 +246,7 @@ LABEL_5:
 
 LABEL_23:
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics answerSynthesisPCCPromptGenerationTimeInMs](self, "answerSynthesisPCCPromptGenerationTimeInMs")}];
-  [v3 setObject:v10 forKeyedSubscript:@"answerSynthesisPCCPromptGenerationTimeInMs"];
+  [dictionary setObject:v10 forKeyedSubscript:@"answerSynthesisPCCPromptGenerationTimeInMs"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -262,7 +262,7 @@ LABEL_6:
 
 LABEL_24:
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics answerSynthesisPostProcessingTimeInMs](self, "answerSynthesisPostProcessingTimeInMs")}];
-  [v3 setObject:v11 forKeyedSubscript:@"answerSynthesisPostProcessingTimeInMs"];
+  [dictionary setObject:v11 forKeyedSubscript:@"answerSynthesisPostProcessingTimeInMs"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -278,7 +278,7 @@ LABEL_7:
 
 LABEL_25:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics answerSynthesisTotalHydrationTimeInMs](self, "answerSynthesisTotalHydrationTimeInMs")}];
-  [v3 setObject:v12 forKeyedSubscript:@"answerSynthesisTotalHydrationTimeInMs"];
+  [dictionary setObject:v12 forKeyedSubscript:@"answerSynthesisTotalHydrationTimeInMs"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -294,7 +294,7 @@ LABEL_8:
 
 LABEL_26:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics collateAnswerSynthesisResultDurationInMs](self, "collateAnswerSynthesisResultDurationInMs")}];
-  [v3 setObject:v13 forKeyedSubscript:@"collateAnswerSynthesisResultDurationInMs"];
+  [dictionary setObject:v13 forKeyedSubscript:@"collateAnswerSynthesisResultDurationInMs"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -310,7 +310,7 @@ LABEL_9:
 
 LABEL_27:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics dataFilteringDurationInMs](self, "dataFilteringDurationInMs")}];
-  [v3 setObject:v14 forKeyedSubscript:@"dataFilteringDurationInMs"];
+  [dictionary setObject:v14 forKeyedSubscript:@"dataFilteringDurationInMs"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -326,7 +326,7 @@ LABEL_10:
 
 LABEL_28:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics llmInferenceDurationInMs](self, "llmInferenceDurationInMs")}];
-  [v3 setObject:v15 forKeyedSubscript:@"llmInferenceDurationInMs"];
+  [dictionary setObject:v15 forKeyedSubscript:@"llmInferenceDurationInMs"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -342,7 +342,7 @@ LABEL_11:
 
 LABEL_29:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics llmPreWarmModelDurationInMs](self, "llmPreWarmModelDurationInMs")}];
-  [v3 setObject:v16 forKeyedSubscript:@"llmPreWarmModelDurationInMs"];
+  [dictionary setObject:v16 forKeyedSubscript:@"llmPreWarmModelDurationInMs"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -358,7 +358,7 @@ LABEL_12:
 
 LABEL_30:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics postProcessFilterDurationInMs](self, "postProcessFilterDurationInMs")}];
-  [v3 setObject:v17 forKeyedSubscript:@"postProcessFilterDurationInMs"];
+  [dictionary setObject:v17 forKeyedSubscript:@"postProcessFilterDurationInMs"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -374,7 +374,7 @@ LABEL_13:
 
 LABEL_31:
   v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics pqaModelInferenceTimeInMs](self, "pqaModelInferenceTimeInMs")}];
-  [v3 setObject:v18 forKeyedSubscript:@"pqaModelInferenceTimeInMs"];
+  [dictionary setObject:v18 forKeyedSubscript:@"pqaModelInferenceTimeInMs"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -390,7 +390,7 @@ LABEL_14:
 
 LABEL_32:
   v19 = [MEMORY[0x1E696AD98] numberWithInt:{-[STSchemaSTAnswerSynthesisPerfMetrics pqaModelPromptGenerationTimeInMs](self, "pqaModelPromptGenerationTimeInMs")}];
-  [v3 setObject:v19 forKeyedSubscript:@"pqaModelPromptGenerationTimeInMs"];
+  [dictionary setObject:v19 forKeyedSubscript:@"pqaModelPromptGenerationTimeInMs"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -406,19 +406,19 @@ LABEL_15:
 
 LABEL_33:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics promptGenerationDurationInMs](self, "promptGenerationDurationInMs")}];
-  [v3 setObject:v20 forKeyedSubscript:@"promptGenerationDurationInMs"];
+  [dictionary setObject:v20 forKeyedSubscript:@"promptGenerationDurationInMs"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_16:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTAnswerSynthesisPerfMetrics searchEntityPreProcessDurationInMs](self, "searchEntityPreProcessDurationInMs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"searchEntityPreProcessDurationInMs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"searchEntityPreProcessDurationInMs"];
   }
 
 LABEL_17:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -630,16 +630,16 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
   has = self->_has;
-  v6 = v4[34];
+  v6 = equalCopy[34];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_62;
@@ -648,13 +648,13 @@ LABEL_16:
   if (*&has)
   {
     answerSynthesisOverallDurationInMs = self->_answerSynthesisOverallDurationInMs;
-    if (answerSynthesisOverallDurationInMs != [v4 answerSynthesisOverallDurationInMs])
+    if (answerSynthesisOverallDurationInMs != [equalCopy answerSynthesisOverallDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -666,13 +666,13 @@ LABEL_16:
   if (v8)
   {
     promptGenerationDurationInMs = self->_promptGenerationDurationInMs;
-    if (promptGenerationDurationInMs != [v4 promptGenerationDurationInMs])
+    if (promptGenerationDurationInMs != [equalCopy promptGenerationDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -684,13 +684,13 @@ LABEL_16:
   if (v10)
   {
     dataFilteringDurationInMs = self->_dataFilteringDurationInMs;
-    if (dataFilteringDurationInMs != [v4 dataFilteringDurationInMs])
+    if (dataFilteringDurationInMs != [equalCopy dataFilteringDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -702,13 +702,13 @@ LABEL_16:
   if (v12)
   {
     searchEntityPreProcessDurationInMs = self->_searchEntityPreProcessDurationInMs;
-    if (searchEntityPreProcessDurationInMs != [v4 searchEntityPreProcessDurationInMs])
+    if (searchEntityPreProcessDurationInMs != [equalCopy searchEntityPreProcessDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -720,13 +720,13 @@ LABEL_16:
   if (v14)
   {
     llmPreWarmModelDurationInMs = self->_llmPreWarmModelDurationInMs;
-    if (llmPreWarmModelDurationInMs != [v4 llmPreWarmModelDurationInMs])
+    if (llmPreWarmModelDurationInMs != [equalCopy llmPreWarmModelDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -738,13 +738,13 @@ LABEL_16:
   if (v16)
   {
     llmInferenceDurationInMs = self->_llmInferenceDurationInMs;
-    if (llmInferenceDurationInMs != [v4 llmInferenceDurationInMs])
+    if (llmInferenceDurationInMs != [equalCopy llmInferenceDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -756,13 +756,13 @@ LABEL_16:
   if (v18)
   {
     postProcessFilterDurationInMs = self->_postProcessFilterDurationInMs;
-    if (postProcessFilterDurationInMs != [v4 postProcessFilterDurationInMs])
+    if (postProcessFilterDurationInMs != [equalCopy postProcessFilterDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -774,13 +774,13 @@ LABEL_16:
   if (v20)
   {
     collateAnswerSynthesisResultDurationInMs = self->_collateAnswerSynthesisResultDurationInMs;
-    if (collateAnswerSynthesisResultDurationInMs != [v4 collateAnswerSynthesisResultDurationInMs])
+    if (collateAnswerSynthesisResultDurationInMs != [equalCopy collateAnswerSynthesisResultDurationInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -792,13 +792,13 @@ LABEL_16:
   if (v22)
   {
     answerSynthesisTotalHydrationTimeInMs = self->_answerSynthesisTotalHydrationTimeInMs;
-    if (answerSynthesisTotalHydrationTimeInMs != [v4 answerSynthesisTotalHydrationTimeInMs])
+    if (answerSynthesisTotalHydrationTimeInMs != [equalCopy answerSynthesisTotalHydrationTimeInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -810,13 +810,13 @@ LABEL_16:
   if (v24)
   {
     answerSynthesisModelPromptGenerationTimeInMs = self->_answerSynthesisModelPromptGenerationTimeInMs;
-    if (answerSynthesisModelPromptGenerationTimeInMs != [v4 answerSynthesisModelPromptGenerationTimeInMs])
+    if (answerSynthesisModelPromptGenerationTimeInMs != [equalCopy answerSynthesisModelPromptGenerationTimeInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -828,13 +828,13 @@ LABEL_16:
   if (v26)
   {
     answerSynthesisModelInferenceTimeInMs = self->_answerSynthesisModelInferenceTimeInMs;
-    if (answerSynthesisModelInferenceTimeInMs != [v4 answerSynthesisModelInferenceTimeInMs])
+    if (answerSynthesisModelInferenceTimeInMs != [equalCopy answerSynthesisModelInferenceTimeInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v28 = (*&has >> 11) & 1;
@@ -846,13 +846,13 @@ LABEL_16:
   if (v28)
   {
     pqaModelPromptGenerationTimeInMs = self->_pqaModelPromptGenerationTimeInMs;
-    if (pqaModelPromptGenerationTimeInMs != [v4 pqaModelPromptGenerationTimeInMs])
+    if (pqaModelPromptGenerationTimeInMs != [equalCopy pqaModelPromptGenerationTimeInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v30 = (*&has >> 12) & 1;
@@ -864,13 +864,13 @@ LABEL_16:
   if (v30)
   {
     pqaModelInferenceTimeInMs = self->_pqaModelInferenceTimeInMs;
-    if (pqaModelInferenceTimeInMs != [v4 pqaModelInferenceTimeInMs])
+    if (pqaModelInferenceTimeInMs != [equalCopy pqaModelInferenceTimeInMs])
     {
       goto LABEL_62;
     }
 
     has = self->_has;
-    v6 = v4[34];
+    v6 = equalCopy[34];
   }
 
   v32 = (*&has >> 13) & 1;
@@ -882,10 +882,10 @@ LABEL_16:
   if (v32)
   {
     answerSynthesisPostProcessingTimeInMs = self->_answerSynthesisPostProcessingTimeInMs;
-    if (answerSynthesisPostProcessingTimeInMs == [v4 answerSynthesisPostProcessingTimeInMs])
+    if (answerSynthesisPostProcessingTimeInMs == [equalCopy answerSynthesisPostProcessingTimeInMs])
     {
       has = self->_has;
-      v6 = v4[34];
+      v6 = equalCopy[34];
       goto LABEL_58;
     }
 
@@ -904,7 +904,7 @@ LABEL_58:
   if (v34)
   {
     answerSynthesisPCCPromptGenerationTimeInMs = self->_answerSynthesisPCCPromptGenerationTimeInMs;
-    if (answerSynthesisPCCPromptGenerationTimeInMs != [v4 answerSynthesisPCCPromptGenerationTimeInMs])
+    if (answerSynthesisPCCPromptGenerationTimeInMs != [equalCopy answerSynthesisPCCPromptGenerationTimeInMs])
     {
       goto LABEL_62;
     }
@@ -916,9 +916,9 @@ LABEL_63:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1119,9 +1119,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setHasAnswerSynthesisPCCPromptGenerationTimeInMs:(BOOL)a3
+- (void)setHasAnswerSynthesisPCCPromptGenerationTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x4000;
   }
@@ -1134,9 +1134,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasAnswerSynthesisPostProcessingTimeInMs:(BOOL)a3
+- (void)setHasAnswerSynthesisPostProcessingTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x2000;
   }
@@ -1149,9 +1149,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasPqaModelInferenceTimeInMs:(BOOL)a3
+- (void)setHasPqaModelInferenceTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4096;
   }
@@ -1164,9 +1164,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasPqaModelPromptGenerationTimeInMs:(BOOL)a3
+- (void)setHasPqaModelPromptGenerationTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2048;
   }
@@ -1179,9 +1179,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasAnswerSynthesisModelInferenceTimeInMs:(BOOL)a3
+- (void)setHasAnswerSynthesisModelInferenceTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 1024;
   }
@@ -1194,9 +1194,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasAnswerSynthesisModelPromptGenerationTimeInMs:(BOOL)a3
+- (void)setHasAnswerSynthesisModelPromptGenerationTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 512;
   }
@@ -1209,9 +1209,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasAnswerSynthesisTotalHydrationTimeInMs:(BOOL)a3
+- (void)setHasAnswerSynthesisTotalHydrationTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 256;
   }
@@ -1224,9 +1224,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasCollateAnswerSynthesisResultDurationInMs:(BOOL)a3
+- (void)setHasCollateAnswerSynthesisResultDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 128;
   }
@@ -1239,9 +1239,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPostProcessFilterDurationInMs:(BOOL)a3
+- (void)setHasPostProcessFilterDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 64;
   }
@@ -1254,9 +1254,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasLlmInferenceDurationInMs:(BOOL)a3
+- (void)setHasLlmInferenceDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 32;
   }
@@ -1269,9 +1269,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasLlmPreWarmModelDurationInMs:(BOOL)a3
+- (void)setHasLlmPreWarmModelDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -1284,9 +1284,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSearchEntityPreProcessDurationInMs:(BOOL)a3
+- (void)setHasSearchEntityPreProcessDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -1299,9 +1299,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDataFilteringDurationInMs:(BOOL)a3
+- (void)setHasDataFilteringDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -1314,9 +1314,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPromptGenerationDurationInMs:(BOOL)a3
+- (void)setHasPromptGenerationDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }

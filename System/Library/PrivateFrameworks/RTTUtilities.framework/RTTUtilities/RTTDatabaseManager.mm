@@ -1,16 +1,16 @@
 @interface RTTDatabaseManager
 + (id)sharedManager;
-- (BOOL)contactIDIsTTYContact:(id)a3;
-- (BOOL)contactIsTTYContact:(id)a3;
-- (BOOL)contactPathWasUsedForTTY:(id)a3;
-- (BOOL)deleteConversationWithCallUID:(id)a3;
-- (BOOL)deleteConversationsWithCallUIDs:(id)a3;
-- (BOOL)saveConversation:(id)a3;
+- (BOOL)contactIDIsTTYContact:(id)contact;
+- (BOOL)contactIsTTYContact:(id)contact;
+- (BOOL)contactPathWasUsedForTTY:(id)y;
+- (BOOL)deleteConversationWithCallUID:(id)d;
+- (BOOL)deleteConversationsWithCallUIDs:(id)ds;
+- (BOOL)saveConversation:(id)conversation;
 - (RTTDatabaseManager)init;
-- (id)conversationForCallUID:(id)a3;
-- (void)_callHistoryDBDidChange:(id)a3;
-- (void)callHistoryDBDidChange:(id)a3;
-- (void)logMessage:(id)a3;
+- (id)conversationForCallUID:(id)d;
+- (void)_callHistoryDBDidChange:(id)change;
+- (void)callHistoryDBDidChange:(id)change;
+- (void)logMessage:(id)message;
 @end
 
 @implementation RTTDatabaseManager
@@ -41,8 +41,8 @@ uint64_t __35__RTTDatabaseManager_sharedManager__block_invoke()
   v2 = [(HCDatabaseManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_callHistoryDBDidChange_ name:*MEMORY[0x277CF7E10] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_callHistoryDBDidChange_ name:*MEMORY[0x277CF7E10] object:0];
 
     v4 = objc_alloc_init(MEMORY[0x277CF7D38]);
     callHistoryManager = v2->_callHistoryManager;
@@ -54,37 +54,37 @@ uint64_t __35__RTTDatabaseManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = AXLogRTT();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_261754000, v4, OS_LOG_TYPE_INFO, "%@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callHistoryDBDidChange:(id)a3
+- (void)callHistoryDBDidChange:(id)change
 {
-  v4 = a3;
-  v3 = v4;
+  changeCopy = change;
+  v3 = changeCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
-- (void)_callHistoryDBDidChange:(id)a3
+- (void)_callHistoryDBDidChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = changeCopy;
     _os_log_impl(&dword_261754000, v5, OS_LOG_TYPE_INFO, "Call history changed: %@", &buf, 0xCu);
   }
 
@@ -95,23 +95,23 @@ uint64_t __35__RTTDatabaseManager_sharedManager__block_invoke()
   v24 = __Block_byref_object_copy__2;
   v25 = __Block_byref_object_dispose__2;
   v26 = 0;
-  v7 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __46__RTTDatabaseManager__callHistoryDBDidChange___block_invoke;
   v19[3] = &unk_279AE80C8;
   v19[4] = self;
   v19[5] = &buf;
-  [v7 performBlockAndWait:v19];
+  [managedObjectContext performBlockAndWait:v19];
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = *(*(&buf + 1) + 40);
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __46__RTTDatabaseManager__callHistoryDBDidChange___block_invoke_2;
   v16 = &unk_279AE80F0;
-  v17 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = array;
   v18 = v10;
   [v9 enumerateObjectsUsingBlock:&v13];
   v11 = AXLogRTT();
@@ -122,7 +122,7 @@ uint64_t __35__RTTDatabaseManager_sharedManager__block_invoke()
     _os_log_impl(&dword_261754000, v11, OS_LOG_TYPE_INFO, "Deleting %@", v20, 0xCu);
   }
 
-  [(RTTDatabaseManager *)self deleteConversationsWithCallUIDs:v10, v13, v14, v15, v16, v17];
+  [(RTTDatabaseManager *)self deleteConversationsWithCallUIDs:v10, v13, v14, v15, v16, selfCopy];
   _Block_object_dispose(&buf, 8);
 
   objc_autoreleasePoolPop(v6);
@@ -213,10 +213,10 @@ void __46__RTTDatabaseManager__callHistoryDBDidChange___block_invoke_3(uint64_t 
   *(v4 + 40) = v3;
 }
 
-- (id)conversationForCallUID:(id)a3
+- (id)conversationForCallUID:(id)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v32 = 0;
   v33[0] = &v32;
   v33[1] = 0x3032000000;
@@ -230,17 +230,17 @@ void __46__RTTDatabaseManager__callHistoryDBDidChange___block_invoke_3(uint64_t 
   v40 = __Block_byref_object_copy__2;
   v41 = __Block_byref_object_dispose__2;
   v42 = 0;
-  v6 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __45__RTTDatabaseManager_conversationForCallUID___block_invoke;
   v27[3] = &unk_279AE8118;
-  v7 = v4;
+  v7 = dCopy;
   v28 = v7;
-  v29 = self;
+  selfCopy = self;
   v30 = v39;
   v31 = &v32;
-  [v6 performBlockAndWait:v27];
+  [managedObjectContext performBlockAndWait:v27];
 
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -256,8 +256,8 @@ void __46__RTTDatabaseManager__callHistoryDBDidChange___block_invoke_3(uint64_t 
 
   if (*(v33[0] + 40))
   {
-    v11 = AXLogRTT();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    lastObject = AXLogRTT();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
       [RTTDatabaseManager conversationForCallUID:v33];
     }
@@ -276,15 +276,15 @@ LABEL_16:
     }
   }
 
-  v11 = [*(*&v39[8] + 40) lastObject];
-  v13 = [v11 data];
-  if (!v13)
+  lastObject = [*(*&v39[8] + 40) lastObject];
+  data = [lastObject data];
+  if (!data)
   {
     goto LABEL_16;
   }
 
-  v14 = [v11 version];
-  v15 = [v14 isEqualToNumber:&unk_2873FFE48];
+  version = [lastObject version];
+  v15 = [version isEqualToNumber:&unk_2873FFE48];
 
   if (!v15)
   {
@@ -292,10 +292,10 @@ LABEL_16:
   }
 
   v16 = objc_alloc(MEMORY[0x277CCAAC8]);
-  v17 = [v11 data];
+  data2 = [lastObject data];
   v18 = (v33[0] + 40);
   obj = *(v33[0] + 40);
-  v19 = [v16 initForReadingFromData:v17 error:&obj];
+  v19 = [v16 initForReadingFromData:data2 error:&obj];
   objc_storeStrong(v18, obj);
 
   if (*(v33[0] + 40))
@@ -352,13 +352,13 @@ void __45__RTTDatabaseManager_conversationForCallUID___block_invoke(uint64_t a1)
   *(v7 + 40) = v6;
 }
 
-- (BOOL)saveConversation:(id)a3
+- (BOOL)saveConversation:(id)conversation
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HCDatabaseManager *)self managedObjectContext];
+  conversationCopy = conversation;
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
 
-  if (v5)
+  if (managedObjectContext)
   {
     v45 = 0;
     v46 = &v45;
@@ -367,10 +367,10 @@ void __45__RTTDatabaseManager_conversationForCallUID___block_invoke(uint64_t a1)
     v49 = __Block_byref_object_dispose__2;
     v50 = 0;
     v6 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    [v6 encodeObject:v4 forKey:*MEMORY[0x277CCA308]];
+    [v6 encodeObject:conversationCopy forKey:*MEMORY[0x277CCA308]];
     [v6 finishEncoding];
-    v7 = [v6 encodedData];
-    if ([v7 length])
+    encodedData = [v6 encodedData];
+    if ([encodedData length])
     {
       v39 = 0;
       v40 = &v39;
@@ -378,37 +378,37 @@ void __45__RTTDatabaseManager_conversationForCallUID___block_invoke(uint64_t a1)
       v42 = __Block_byref_object_copy__2;
       v43 = __Block_byref_object_dispose__2;
       v44 = 0;
-      v8 = [(HCDatabaseManager *)self managedObjectContext];
+      managedObjectContext2 = [(HCDatabaseManager *)self managedObjectContext];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __39__RTTDatabaseManager_saveConversation___block_invoke;
       v34[3] = &unk_279AE8118;
-      v9 = v4;
+      v9 = conversationCopy;
       v35 = v9;
-      v36 = self;
+      selfCopy = self;
       v37 = &v39;
       v38 = &v45;
-      [v8 performBlockAndWait:v34];
+      [managedObjectContext2 performBlockAndWait:v34];
 
-      v10 = [v40[5] lastObject];
-      v11 = v10;
-      if (v10 && !v46[5])
+      lastObject = [v40[5] lastObject];
+      v11 = lastObject;
+      if (lastObject && !v46[5])
       {
-        v14 = v10;
+        v14 = lastObject;
       }
 
       else
       {
         v12 = MEMORY[0x277CBE408];
-        v13 = [(HCDatabaseManager *)self managedObjectContext];
-        v14 = [v12 insertNewObjectForEntityForName:@"TTYHistory" inManagedObjectContext:v13];
+        managedObjectContext3 = [(HCDatabaseManager *)self managedObjectContext];
+        v14 = [v12 insertNewObjectForEntityForName:@"TTYHistory" inManagedObjectContext:managedObjectContext3];
 
-        v15 = [v9 callIdentifier];
-        [v14 setCallUID:v15];
+        callIdentifier = [v9 callIdentifier];
+        [v14 setCallUID:callIdentifier];
       }
 
       [v14 setVersion:&unk_2873FFE48];
-      [v14 setData:v7];
+      [v14 setData:encodedData];
       [v14 setNeedsCloudKitUpload:MEMORY[0x277CBEC38]];
 
       _Block_object_dispose(&v39, 8);
@@ -418,34 +418,34 @@ void __45__RTTDatabaseManager_conversationForCallUID___block_invoke(uint64_t a1)
       v42 = __Block_byref_object_copy__2;
       v43 = __Block_byref_object_dispose__2;
       v44 = 0;
-      v17 = [(HCDatabaseManager *)self managedObjectContext];
+      managedObjectContext4 = [(HCDatabaseManager *)self managedObjectContext];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __39__RTTDatabaseManager_saveConversation___block_invoke_60;
       v30[3] = &unk_279AE8140;
       v18 = v9;
-      v32 = self;
+      selfCopy2 = self;
       v33 = &v39;
       v31 = v18;
-      [v17 performBlockAndWait:v30];
+      [managedObjectContext4 performBlockAndWait:v30];
 
-      v19 = [v40[5] lastObject];
-      if (!v19)
+      lastObject2 = [v40[5] lastObject];
+      if (!lastObject2)
       {
-        v20 = [v18 otherContactPath];
-        v21 = [v20 length] == 0;
+        otherContactPath = [v18 otherContactPath];
+        v21 = [otherContactPath length] == 0;
 
         if (!v21)
         {
           v22 = MEMORY[0x277CBE408];
-          v23 = [(HCDatabaseManager *)self managedObjectContext];
-          v24 = [v22 insertNewObjectForEntityForName:@"TTYContactList" inManagedObjectContext:v23];
+          managedObjectContext5 = [(HCDatabaseManager *)self managedObjectContext];
+          v24 = [v22 insertNewObjectForEntityForName:@"TTYContactList" inManagedObjectContext:managedObjectContext5];
 
-          v25 = [v18 callIdentifier];
-          [v24 setCallUID:v25];
+          callIdentifier2 = [v18 callIdentifier];
+          [v24 setCallUID:callIdentifier2];
 
-          v26 = [v18 otherContactPath];
-          [v24 setContactID:v26];
+          otherContactPath2 = [v18 otherContactPath];
+          [v24 setContactID:otherContactPath2];
         }
       }
 
@@ -454,7 +454,7 @@ void __45__RTTDatabaseManager_conversationForCallUID___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
-        v52 = self;
+        selfCopy3 = self;
         v53 = 2112;
         v54 = v18;
         _os_log_impl(&dword_261754000, v27, OS_LOG_TYPE_INFO, "Saved to database[%d]: %@", buf, 0x12u);
@@ -527,18 +527,18 @@ void __39__RTTDatabaseManager_saveConversation___block_invoke_60(uint64_t a1)
   *(v7 + 40) = v6;
 }
 
-- (BOOL)deleteConversationsWithCallUIDs:(id)a3
+- (BOOL)deleteConversationsWithCallUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HCDatabaseManager *)self managedObjectContext];
+  dsCopy = ds;
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __54__RTTDatabaseManager_deleteConversationsWithCallUIDs___block_invoke;
   v11 = &unk_279AE7760;
-  v12 = v4;
-  v13 = self;
-  v6 = v4;
-  [v5 performBlockAndWait:&v8];
+  v12 = dsCopy;
+  selfCopy = self;
+  v6 = dsCopy;
+  [managedObjectContext performBlockAndWait:&v8];
 
   LOBYTE(self) = [(HCDatabaseManager *)self saveIfPossible:v8];
   return self;
@@ -604,13 +604,13 @@ void __54__RTTDatabaseManager_deleteConversationsWithCallUIDs___block_invoke_2(u
   }
 }
 
-- (BOOL)deleteConversationWithCallUID:(id)a3
+- (BOOL)deleteConversationWithCallUID:(id)d
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v9[0] = v4;
+    v9[0] = dCopy;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     v6 = [(RTTDatabaseManager *)self deleteConversationsWithCallUIDs:v5];
   }
@@ -624,23 +624,23 @@ void __54__RTTDatabaseManager_deleteConversationsWithCallUIDs___block_invoke_2(u
   return v6;
 }
 
-- (BOOL)contactIDIsTTYContact:(id)a3
+- (BOOL)contactIDIsTTYContact:(id)contact
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   v5 = +[RTTTelephonyUtilities sharedUtilityProvider];
-  v6 = [v5 contactStore];
+  contactStore = [v5 contactStore];
   v7 = MEMORY[0x277CBDA58];
-  v20[0] = v4;
+  v20[0] = contactCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v9 = [v7 predicateForContactsWithIdentifiers:v8];
   v19 = *MEMORY[0x277CBD098];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-  v11 = [v6 unifiedContactsMatchingPredicate:v9 keysToFetch:v10 error:0];
+  v11 = [contactStore unifiedContactsMatchingPredicate:v9 keysToFetch:v10 error:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __44__RTTDatabaseManager_contactIDIsTTYContact___block_invoke;
@@ -684,17 +684,17 @@ void __44__RTTDatabaseManager_contactIDIsTTYContact___block_invoke_2(void *a1, v
   }
 }
 
-- (BOOL)contactIsTTYContact:(id)a3
+- (BOOL)contactIsTTYContact:(id)contact
 {
-  v4 = [a3 identifier];
-  LOBYTE(self) = [(RTTDatabaseManager *)self contactIDIsTTYContact:v4];
+  identifier = [contact identifier];
+  LOBYTE(self) = [(RTTDatabaseManager *)self contactIDIsTTYContact:identifier];
 
   return self;
 }
 
-- (BOOL)contactPathWasUsedForTTY:(id)a3
+- (BOOL)contactPathWasUsedForTTY:(id)y
 {
-  v4 = a3;
+  yCopy = y;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -707,17 +707,17 @@ void __44__RTTDatabaseManager_contactIDIsTTYContact___block_invoke_2(void *a1, v
   v20 = __Block_byref_object_copy__2;
   v21 = __Block_byref_object_dispose__2;
   v22 = 0;
-  v5 = [(HCDatabaseManager *)self managedObjectContext];
+  managedObjectContext = [(HCDatabaseManager *)self managedObjectContext];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __47__RTTDatabaseManager_contactPathWasUsedForTTY___block_invoke;
   v12 = &unk_279AE8118;
-  v6 = v4;
+  v6 = yCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   v16 = &v23;
-  [v5 performBlockAndWait:&v9];
+  [managedObjectContext performBlockAndWait:&v9];
 
   if ([v18[5] count])
   {

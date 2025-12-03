@@ -1,43 +1,43 @@
 @interface AXDisplayLinkManagerTargetAction
-- (AXDisplayLinkManagerTargetAction)initWithTarget:(id)a3 actionSelector:(SEL)a4;
-- (BOOL)isEqual:(id)a3;
+- (AXDisplayLinkManagerTargetAction)initWithTarget:(id)target actionSelector:(SEL)selector;
+- (BOOL)isEqual:(id)equal;
 - (SEL)actionSelector;
 - (unint64_t)hash;
-- (void)displayDidRefresh:(id)a3;
-- (void)setActionSelector:(SEL)a3;
+- (void)displayDidRefresh:(id)refresh;
+- (void)setActionSelector:(SEL)selector;
 @end
 
 @implementation AXDisplayLinkManagerTargetAction
 
-- (AXDisplayLinkManagerTargetAction)initWithTarget:(id)a3 actionSelector:(SEL)a4
+- (AXDisplayLinkManagerTargetAction)initWithTarget:(id)target actionSelector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = AXDisplayLinkManagerTargetAction;
   v7 = [(AXDisplayLinkManagerTargetAction *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(AXDisplayLinkManagerTargetAction *)v7 setTarget:v6];
-    [(AXDisplayLinkManagerTargetAction *)v8 setActionSelector:a4];
+    [(AXDisplayLinkManagerTargetAction *)v7 setTarget:targetCopy];
+    [(AXDisplayLinkManagerTargetAction *)v8 setActionSelector:selector];
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(AXDisplayLinkManagerTargetAction *)self actionSelector];
-    if (v6 == [v5 actionSelector])
+    v5 = equalCopy;
+    actionSelector = [(AXDisplayLinkManagerTargetAction *)self actionSelector];
+    if (actionSelector == [v5 actionSelector])
     {
-      v8 = [(AXDisplayLinkManagerTargetAction *)self target];
-      v9 = [v5 target];
-      v7 = [v8 isEqual:v9];
+      target = [(AXDisplayLinkManagerTargetAction *)self target];
+      target2 = [v5 target];
+      v7 = [target isEqual:target2];
     }
 
     else
@@ -56,30 +56,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AXDisplayLinkManagerTargetAction *)self target];
-  v4 = [v3 hash];
+  target = [(AXDisplayLinkManagerTargetAction *)self target];
+  v4 = [target hash];
   v5 = sel_getName([(AXDisplayLinkManagerTargetAction *)self actionSelector]) % 0x2710;
 
   return v5 + v4;
 }
 
-- (void)displayDidRefresh:(id)a3
+- (void)displayDidRefresh:(id)refresh
 {
-  v10 = a3;
-  v4 = [(AXDisplayLinkManagerTargetAction *)self displayDidRefreshCount];
-  v5 = [(AXDisplayLinkManagerTargetAction *)self target];
+  refreshCopy = refresh;
+  displayDidRefreshCount = [(AXDisplayLinkManagerTargetAction *)self displayDidRefreshCount];
+  target = [(AXDisplayLinkManagerTargetAction *)self target];
   [(AXDisplayLinkManagerTargetAction *)self actionSelector];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AXDisplayLinkManagerTargetAction *)self target];
-    v8 = [v7 methodForSelector:{-[AXDisplayLinkManagerTargetAction actionSelector](self, "actionSelector")}];
+    target2 = [(AXDisplayLinkManagerTargetAction *)self target];
+    v8 = [target2 methodForSelector:{-[AXDisplayLinkManagerTargetAction actionSelector](self, "actionSelector")}];
 
-    v9 = [(AXDisplayLinkManagerTargetAction *)self target];
-    v8(v9, [(AXDisplayLinkManagerTargetAction *)self actionSelector], v10);
+    target3 = [(AXDisplayLinkManagerTargetAction *)self target];
+    v8(target3, [(AXDisplayLinkManagerTargetAction *)self actionSelector], refreshCopy);
 
-    [(AXDisplayLinkManagerTargetAction *)self setDisplayDidRefreshCount:v4 + 1];
+    [(AXDisplayLinkManagerTargetAction *)self setDisplayDidRefreshCount:displayDidRefreshCount + 1];
   }
 }
 
@@ -96,19 +96,19 @@
   }
 }
 
-- (void)setActionSelector:(SEL)a3
+- (void)setActionSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_actionSelector = v3;
+  self->_actionSelector = selectorCopy;
 }
 
 @end

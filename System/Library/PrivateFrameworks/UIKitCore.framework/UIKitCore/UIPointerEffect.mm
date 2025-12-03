@@ -1,6 +1,6 @@
 @interface UIPointerEffect
 + (UIPointerEffect)effectWithPreview:(UITargetedPreview *)preview;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)_plasmaRubberbandFactor;
 - (CGPoint)slipFactor;
 - (UIViewSpringAnimationBehavior)liftProgressSpring;
@@ -16,7 +16,7 @@
 - (double)scaleUpAnimationDampingRatio;
 - (double)scaleUpAnimationResponse;
 - (double)scaleUpPoints;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)settings;
 - (id)tintColorMatrixProvider;
 - (unint64_t)constrainedAxes;
@@ -37,9 +37,9 @@
 - (id)settings
 {
   v2 = +[_UIPointerSettingsDomain rootSettings];
-  v3 = [v2 highlightEffectSettings];
+  highlightEffectSettings = [v2 highlightEffectSettings];
 
-  return v3;
+  return highlightEffectSettings;
 }
 
 - (unint64_t)constrainedAxes
@@ -57,11 +57,11 @@
 
 - (CGPoint)slipFactor
 {
-  v3 = [(UIPointerEffect *)self settings];
-  [v3 slipFactorX];
+  settings = [(UIPointerEffect *)self settings];
+  [settings slipFactorX];
   v5 = v4;
-  v6 = [(UIPointerEffect *)self settings];
-  [v6 slipFactorY];
+  settings2 = [(UIPointerEffect *)self settings];
+  [settings2 slipFactorY];
   v8 = v7;
 
   v9 = v5;
@@ -73,8 +73,8 @@
 
 - (double)maxSlip
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 maxSlipPoints];
+  settings = [(UIPointerEffect *)self settings];
+  [settings maxSlipPoints];
   v4 = v3;
 
   return v4;
@@ -82,8 +82,8 @@
 
 - (double)parallaxAmount
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 parallaxAmount];
+  settings = [(UIPointerEffect *)self settings];
+  [settings parallaxAmount];
   v4 = v3;
 
   return v4;
@@ -91,8 +91,8 @@
 
 - (double)scaleUpPoints
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 scaleUpPoints];
+  settings = [(UIPointerEffect *)self settings];
+  [settings scaleUpPoints];
   v4 = v3;
 
   return v4;
@@ -100,8 +100,8 @@
 
 - (double)defaultPointerCornerRadius
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 defaultPointerCornerRadius];
+  settings = [(UIPointerEffect *)self settings];
+  [settings defaultPointerCornerRadius];
   v4 = v3;
 
   return v4;
@@ -109,8 +109,8 @@
 
 - (double)scaleUpAnimationResponse
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 scaleUpAnimationResponse];
+  settings = [(UIPointerEffect *)self settings];
+  [settings scaleUpAnimationResponse];
   v4 = v3;
 
   return v4;
@@ -118,8 +118,8 @@
 
 - (double)scaleUpAnimationDampingRatio
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 scaleUpAnimationDampingRatio];
+  settings = [(UIPointerEffect *)self settings];
+  [settings scaleUpAnimationDampingRatio];
   v4 = v3;
 
   return v4;
@@ -127,8 +127,8 @@
 
 - (double)dampedAnimationResponse
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 dampedAnimationResponse];
+  settings = [(UIPointerEffect *)self settings];
+  [settings dampedAnimationResponse];
   v4 = v3;
 
   return v4;
@@ -136,8 +136,8 @@
 
 - (double)dampedAnimationDampingRatio
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 dampedAnimationDampingRatio];
+  settings = [(UIPointerEffect *)self settings];
+  [settings dampedAnimationDampingRatio];
   v4 = v3;
 
   return v4;
@@ -145,8 +145,8 @@
 
 - (double)liftProgressFloor
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 liftForceFloor];
+  settings = [(UIPointerEffect *)self settings];
+  [settings liftForceFloor];
   v4 = v3;
 
   return v4;
@@ -154,8 +154,8 @@
 
 - (double)liftForceExponent
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 liftForceExponent];
+  settings = [(UIPointerEffect *)self settings];
+  [settings liftForceExponent];
   v4 = v3;
 
   return v4;
@@ -163,21 +163,21 @@
 
 - (UIViewSpringAnimationBehavior)liftProgressSpring
 {
-  v2 = [(UIPointerEffect *)self settings];
-  v3 = [v2 liftProgress];
-  v4 = [v3 springAnimationBehavior];
+  settings = [(UIPointerEffect *)self settings];
+  liftProgress = [settings liftProgress];
+  springAnimationBehavior = [liftProgress springAnimationBehavior];
 
-  return v4;
+  return springAnimationBehavior;
 }
 
 - (id)tintColorMatrixProvider
 {
-  v2 = [(UIPointerEffect *)self options];
+  options = [(UIPointerEffect *)self options];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __42__UIPointerEffect_tintColorMatrixProvider__block_invoke;
   aBlock[3] = &__block_descriptor_33_e17___NSValue_16__0Q8l;
-  v6 = (v2 & 0x4000) != 0;
+  v6 = (options & 0x4000) != 0;
   v3 = _Block_copy(aBlock);
 
   return v3;
@@ -238,8 +238,8 @@ id __42__UIPointerEffect_tintColorMatrixProvider__block_invoke(uint64_t a1, uint
 
 - (CGPoint)_plasmaRubberbandFactor
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 plasmaRubberbandFactor];
+  settings = [(UIPointerEffect *)self settings];
+  [settings plasmaRubberbandFactor];
   v4 = v3;
   v6 = v5;
 
@@ -252,8 +252,8 @@ id __42__UIPointerEffect_tintColorMatrixProvider__block_invoke(uint64_t a1, uint
 
 - (double)_plasmaLensParallaxFactor
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 plasmaLensParallaxFactor];
+  settings = [(UIPointerEffect *)self settings];
+  [settings plasmaLensParallaxFactor];
   v4 = v3;
 
   return v4;
@@ -261,26 +261,26 @@ id __42__UIPointerEffect_tintColorMatrixProvider__block_invoke(uint64_t a1, uint
 
 - (double)_plasmaParallaxFactor
 {
-  v2 = [(UIPointerEffect *)self settings];
-  [v2 plasmaParallaxFactor];
+  settings = [(UIPointerEffect *)self settings];
+  [settings plasmaParallaxFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UIPointerEffect *)self preview];
-  [v4 setPreview:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  preview = [(UIPointerEffect *)self preview];
+  [v4 setPreview:preview];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -290,11 +290,11 @@ id __42__UIPointerEffect_tintColorMatrixProvider__block_invoke(uint64_t a1, uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIPointerEffect *)self preview];
-      v7 = [(UIPointerEffect *)v5 preview];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      preview = [(UIPointerEffect *)self preview];
+      preview2 = [(UIPointerEffect *)v5 preview];
+      v8 = preview;
+      v9 = preview2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -322,8 +322,8 @@ id __42__UIPointerEffect_tintColorMatrixProvider__block_invoke(uint64_t a1, uint
 
 - (unint64_t)hash
 {
-  v2 = [(UIPointerEffect *)self preview];
-  v3 = [v2 hash];
+  preview = [(UIPointerEffect *)self preview];
+  v3 = [preview hash];
 
   return v3;
 }

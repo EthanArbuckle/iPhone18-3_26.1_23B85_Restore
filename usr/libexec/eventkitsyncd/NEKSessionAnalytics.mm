@@ -1,20 +1,20 @@
 @interface NEKSessionAnalytics
-- (NEKSessionAnalytics)initWithFileManager:(id)a3;
+- (NEKSessionAnalytics)initWithFileManager:(id)manager;
 - (void)flush;
 @end
 
 @implementation NEKSessionAnalytics
 
-- (NEKSessionAnalytics)initWithFileManager:(id)a3
+- (NEKSessionAnalytics)initWithFileManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = NEKSessionAnalytics;
   v5 = [(NEKSessionAnalytics *)&v13 init];
   if (v5)
   {
     v6 = [NDTSQFile alloc];
-    v7 = [v4 syncStateDBPathFor:@"Analytics.sqlite"];
+    v7 = [managerCopy syncStateDBPathFor:@"Analytics.sqlite"];
     v8 = [(NDTSQFile *)v6 initWithPath:v7];
     storeFile = v5->_storeFile;
     v5->_storeFile = v8;
@@ -46,8 +46,8 @@
   do
   {
     v18 = 0;
-    v9 = [(NEKSessionAnalytics *)self store];
-    [v9 fetchHourlyTallies:&v16 hour:v5];
+    store = [(NEKSessionAnalytics *)self store];
+    [store fetchHourlyTallies:&v16 hour:v5];
 
     v10 = [NSNumber numberWithInt:v16];
     [v4 setValue:v10 forKey:@"hour"];
@@ -62,8 +62,8 @@
     [v4 setValue:v13 forKey:@"failures"];
 
     AnalyticsSendEvent();
-    v14 = [(NEKSessionAnalytics *)self store];
-    [v14 clearHour:v5];
+    store2 = [(NEKSessionAnalytics *)self store];
+    [store2 clearHour:v5];
 
     v7 += v18;
     v6 += v17;

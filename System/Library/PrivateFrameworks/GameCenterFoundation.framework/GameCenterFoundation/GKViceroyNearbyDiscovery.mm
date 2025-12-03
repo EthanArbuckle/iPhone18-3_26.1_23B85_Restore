@@ -1,10 +1,10 @@
 @interface GKViceroyNearbyDiscovery
 - (GKViceroyNearbyDiscovery)init;
-- (id)startAdvertisingWithDiscoveryInfo:(id)a3;
-- (void)forgetParticipant:(id)a3 deviceID:(id)a4;
-- (void)sendDataToParticipant:(id)a3 deviceID:(id)a4 data:(id)a5 handler:(id)a6;
-- (void)setupWithPlayerFoundHandler:(id)a3 playerLostHandler:(id)a4 receiveDataHandler:(id)a5;
-- (void)startBrowsingWithPlayerID:(id)a3;
+- (id)startAdvertisingWithDiscoveryInfo:(id)info;
+- (void)forgetParticipant:(id)participant deviceID:(id)d;
+- (void)sendDataToParticipant:(id)participant deviceID:(id)d data:(id)data handler:(id)handler;
+- (void)setupWithPlayerFoundHandler:(id)handler playerLostHandler:(id)lostHandler receiveDataHandler:(id)dataHandler;
+- (void)startBrowsingWithPlayerID:(id)d;
 - (void)stopAdvertising;
 - (void)stopBrowsing;
 @end
@@ -26,65 +26,65 @@
   return v2;
 }
 
-- (void)setupWithPlayerFoundHandler:(id)a3 playerLostHandler:(id)a4 receiveDataHandler:(id)a5
+- (void)setupWithPlayerFoundHandler:(id)handler playerLostHandler:(id)lostHandler receiveDataHandler:(id)dataHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v11 setPlayerFoundHandler:v10];
+  dataHandlerCopy = dataHandler;
+  lostHandlerCopy = lostHandler;
+  handlerCopy = handler;
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery setPlayerFoundHandler:handlerCopy];
 
-  v12 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v12 setPlayerLostHandler:v9];
+  discovery2 = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery2 setPlayerLostHandler:lostHandlerCopy];
 
-  v13 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v13 setReceiveDataHandler:v8];
+  discovery3 = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery3 setReceiveDataHandler:dataHandlerCopy];
 }
 
-- (void)startBrowsingWithPlayerID:(id)a3
+- (void)startBrowsingWithPlayerID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v5 startBrowsingLocalPlayer:v4];
+  dCopy = d;
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery startBrowsingLocalPlayer:dCopy];
 }
 
 - (void)stopBrowsing
 {
-  v2 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v2 stopBrowsing];
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery stopBrowsing];
 }
 
-- (id)startAdvertisingWithDiscoveryInfo:(id)a3
+- (id)startAdvertisingWithDiscoveryInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(GKViceroyNearbyDiscovery *)self discovery];
-  v6 = [v5 startAdvertisingLocalPlayer:0 discoveryInfo:v4];
+  infoCopy = info;
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  v6 = [discovery startAdvertisingLocalPlayer:0 discoveryInfo:infoCopy];
 
   return v6;
 }
 
 - (void)stopAdvertising
 {
-  v2 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v2 stopAdvertising];
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery stopAdvertising];
 }
 
-- (void)forgetParticipant:(id)a3 deviceID:(id)a4
+- (void)forgetParticipant:(id)participant deviceID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v8 forgetParticipant:v7 deviceID:v6];
+  dCopy = d;
+  participantCopy = participant;
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery forgetParticipant:participantCopy deviceID:dCopy];
 }
 
-- (void)sendDataToParticipant:(id)a3 deviceID:(id)a4 data:(id)a5 handler:(id)a6
+- (void)sendDataToParticipant:(id)participant deviceID:(id)d data:(id)data handler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(GKViceroyNearbyDiscovery *)self discovery];
-  [v14 sendDataToParticipant:v13 deviceID:v12 data:v11 withCompletionHandler:v10];
+  handlerCopy = handler;
+  dataCopy = data;
+  dCopy = d;
+  participantCopy = participant;
+  discovery = [(GKViceroyNearbyDiscovery *)self discovery];
+  [discovery sendDataToParticipant:participantCopy deviceID:dCopy data:dataCopy withCompletionHandler:handlerCopy];
 }
 
 @end

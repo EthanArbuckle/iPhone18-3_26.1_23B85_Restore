@@ -1,22 +1,22 @@
 @interface AKAuthorizationStoreManager
 + (id)sharedInstance;
 - (AKAuthorizationStoreManager)init;
-- (id)fetchAuthorizationListVersionWithAltDSID:(id)a3;
-- (id)storeForAltDSID:(id)a3;
-- (void)clearDatabaseWithAltDSID:(id)a3 error:(id *)a4;
-- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)a3 withCompletion:(id)a4;
-- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)a3 withCompletion:(id)a4;
-- (void)fetchDeveloperTeamWithClientID:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)fetchDeveloperTeamWithTeamID:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)perform:(id)a3;
-- (void)performUnsafeVerificationWithUserID:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)removeApplicationWithClientID:(id)a3 completion:(id)a4;
-- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)a3 completion:(id)a4;
-- (void)revokeAuthorizationForApplicationWithClientID:(id)a3 completion:(id)a4;
-- (void)setListVersionToVersion:(id)a3 withAltDSID:(id)a4;
-- (void)storeAuthorization:(id)a3 withAltDSID:(id)a4 forClient:(id)a5;
-- (void)updateAuthorizationListWithMetadataInfo:(id)a3 withAltDSID:(id)a4 completion:(id)a5;
-- (void)updatePrimaryAppsWithAMSAppMetadata:(id)a3 withAltDSID:(id)a4 withCompletion:(id)a5;
+- (id)fetchAuthorizationListVersionWithAltDSID:(id)d;
+- (id)storeForAltDSID:(id)d;
+- (void)clearDatabaseWithAltDSID:(id)d error:(id *)error;
+- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)d withCompletion:(id)completion;
+- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)d withCompletion:(id)completion;
+- (void)fetchDeveloperTeamWithClientID:(id)d withAltDSID:(id)iD completion:(id)completion;
+- (void)fetchDeveloperTeamWithTeamID:(id)d withAltDSID:(id)iD completion:(id)completion;
+- (void)perform:(id)perform;
+- (void)performUnsafeVerificationWithUserID:(id)d withAltDSID:(id)iD completion:(id)completion;
+- (void)removeApplicationWithClientID:(id)d completion:(id)completion;
+- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)d completion:(id)completion;
+- (void)revokeAuthorizationForApplicationWithClientID:(id)d completion:(id)completion;
+- (void)setListVersionToVersion:(id)version withAltDSID:(id)d;
+- (void)storeAuthorization:(id)authorization withAltDSID:(id)d forClient:(id)client;
+- (void)updateAuthorizationListWithMetadataInfo:(id)info withAltDSID:(id)d completion:(id)completion;
+- (void)updatePrimaryAppsWithAMSAppMetadata:(id)metadata withAltDSID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation AKAuthorizationStoreManager
@@ -63,12 +63,12 @@
   return v7;
 }
 
-- (id)storeForAltDSID:(id)a3
+- (id)storeForAltDSID:(id)d
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = _AKLogSiwa();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -78,24 +78,24 @@
   }
 
   objc_storeStrong(&v16, 0);
-  v9 = [(NSMutableDictionary *)v18->_stores objectForKeyedSubscript:location[0]];
+  v9 = [(NSMutableDictionary *)selfCopy->_stores objectForKeyedSubscript:location[0]];
   _objc_release(v9);
   if (v9)
   {
-    v19 = [(NSMutableDictionary *)v18->_stores objectForKeyedSubscript:location[0]];
+    v19 = [(NSMutableDictionary *)selfCopy->_stores objectForKeyedSubscript:location[0]];
     v14 = 1;
   }
 
   else
   {
-    v8 = [(AKAuthorizationStoreManager *)v18 storeProvider];
-    v13 = [(AKAuthorizationProviding *)v8 storeForAltDSID:location[0]];
-    _objc_release(v8);
+    storeProvider = [(AKAuthorizationStoreManager *)selfCopy storeProvider];
+    v13 = [(AKAuthorizationProviding *)storeProvider storeForAltDSID:location[0]];
+    _objc_release(storeProvider);
     if (location[0] && v13)
     {
-      v7 = [(AKAuthorizationStoreManager *)v18 stores];
-      [(NSMutableDictionary *)v7 setObject:v13 forKeyedSubscript:location[0]];
-      _objc_release(v7);
+      stores = [(AKAuthorizationStoreManager *)selfCopy stores];
+      [(NSMutableDictionary *)stores setObject:v13 forKeyedSubscript:location[0]];
+      _objc_release(stores);
     }
 
     else
@@ -124,17 +124,17 @@
   return v3;
 }
 
-- (void)updateAuthorizationListWithMetadataInfo:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)updateAuthorizationListWithMetadataInfo:(id)info withAltDSID:(id)d completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, d);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAuthorizationStoreManager *)v20 storeForAltDSID:v18];
+  objc_storeStrong(&v17, completion);
+  v16 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v18];
   v7 = v16;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -154,17 +154,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)updatePrimaryAppsWithAMSAppMetadata:(id)a3 withAltDSID:(id)a4 withCompletion:(id)a5
+- (void)updatePrimaryAppsWithAMSAppMetadata:(id)metadata withAltDSID:(id)d withCompletion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, metadata);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, d);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAuthorizationStoreManager *)v20 storeForAltDSID:v18];
+  objc_storeStrong(&v17, completion);
+  v16 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v18];
   v7 = v16;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -184,17 +184,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)storeAuthorization:(id)a3 withAltDSID:(id)a4 forClient:(id)a5
+- (void)storeAuthorization:(id)authorization withAltDSID:(id)d forClient:(id)client
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, d);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAuthorizationStoreManager *)v20 storeForAltDSID:v18];
+  objc_storeStrong(&v17, client);
+  v16 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v18];
   v7 = v16;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -214,17 +214,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchDeveloperTeamWithTeamID:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)fetchDeveloperTeamWithTeamID:(id)d withAltDSID:(id)iD completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, iD);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAuthorizationStoreManager *)v20 storeForAltDSID:v18];
+  objc_storeStrong(&v17, completion);
+  v16 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v18];
   v7 = v16;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -244,17 +244,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchDeveloperTeamWithClientID:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)fetchDeveloperTeamWithClientID:(id)d withAltDSID:(id)iD completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, iD);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAuthorizationStoreManager *)v20 storeForAltDSID:v18];
+  objc_storeStrong(&v17, completion);
+  v16 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v18];
   v7 = v16;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -274,17 +274,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)performUnsafeVerificationWithUserID:(id)a3 withAltDSID:(id)a4 completion:(id)a5
+- (void)performUnsafeVerificationWithUserID:(id)d withAltDSID:(id)iD completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, iD);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v16 = [(AKAuthorizationStoreManager *)v20 storeForAltDSID:v18];
+  objc_storeStrong(&v17, completion);
+  v16 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v18];
   v7 = v16;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -304,18 +304,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAuthorizationForApplicationWithClientID:(id)a3 completion:(id)a4
+- (void)revokeAuthorizationForApplicationWithClientID:(id)d completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v5 = +[AKAccountManager sharedInstance];
-  v15 = [(AKAccountManager *)v5 altDSIDForAuthKitAccountRequestingAuthorization];
+  altDSIDForAuthKitAccountRequestingAuthorization = [(AKAccountManager *)v5 altDSIDForAuthKitAccountRequestingAuthorization];
   _objc_release(v5);
-  v14 = [(AKAuthorizationStoreManager *)v18 storeForAltDSID:v15];
+  v14 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:altDSIDForAuthKitAccountRequestingAuthorization];
   v6 = v14;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -328,23 +328,23 @@
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&altDSIDForAuthKitAccountRequestingAuthorization, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeApplicationWithClientID:(id)a3 completion:(id)a4
+- (void)removeApplicationWithClientID:(id)d completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v5 = +[AKAccountManager sharedInstance];
-  v15 = [(AKAccountManager *)v5 altDSIDForAuthKitAccountRequestingAuthorization];
+  altDSIDForAuthKitAccountRequestingAuthorization = [(AKAccountManager *)v5 altDSIDForAuthKitAccountRequestingAuthorization];
   _objc_release(v5);
-  v14 = [(AKAuthorizationStoreManager *)v18 storeForAltDSID:v15];
+  v14 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:altDSIDForAuthKitAccountRequestingAuthorization];
   v6 = v14;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -357,20 +357,20 @@
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&altDSIDForAuthKitAccountRequestingAuthorization, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)a3 completion:(id)a4
+- (void)revokeAuthorizationForAllApplicationsWithAltDSID:(id)d completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = [(AKAuthorizationStoreManager *)v16 storeForAltDSID:location[0]];
+  objc_storeStrong(&v14, completion);
+  v13 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:location[0]];
   v5 = v13;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -387,15 +387,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)a3 withCompletion:(id)a4
+- (void)fetchAllDeveloperTeamsAndApplicationsForAltDSID:(id)d withCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = [(AKAuthorizationStoreManager *)v16 storeForAltDSID:location[0]];
+  objc_storeStrong(&v14, completion);
+  v13 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:location[0]];
   v5 = v13;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -412,15 +412,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)a3 withCompletion:(id)a4
+- (void)fetchAllPrimaryApplicationMetadataForAltDSID:(id)d withCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = [(AKAuthorizationStoreManager *)v16 storeForAltDSID:location[0]];
+  objc_storeStrong(&v14, completion);
+  v13 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:location[0]];
   v5 = v13;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -437,12 +437,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)fetchAuthorizationListVersionWithAltDSID:(id)a3
+- (id)fetchAuthorizationListVersionWithAltDSID:(id)d
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = 0;
   v14 = &v13;
   v15 = 838860800;
@@ -450,7 +450,7 @@
   v17 = sub_1000036C4;
   v18 = sub_100011020;
   v19 = 0;
-  v12 = [(AKAuthorizationStoreManager *)v21 storeForAltDSID:location[0]];
+  v12 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:location[0]];
   v5 = v12;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -470,15 +470,15 @@
   return v4;
 }
 
-- (void)setListVersionToVersion:(id)a3 withAltDSID:(id)a4
+- (void)setListVersionToVersion:(id)version withAltDSID:(id)d
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13 = [(AKAuthorizationStoreManager *)v16 storeForAltDSID:v14];
+  objc_storeStrong(&v14, d);
+  v13 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:v14];
   v5 = v13;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -495,14 +495,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)clearDatabaseWithAltDSID:(id)a3 error:(id *)a4
+- (void)clearDatabaseWithAltDSID:(id)d error:(id *)error
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
-  v12 = [(AKAuthorizationStoreManager *)v15 storeForAltDSID:location[0]];
+  objc_storeStrong(location, d);
+  errorCopy = error;
+  v12 = [(AKAuthorizationStoreManager *)selfCopy storeForAltDSID:location[0]];
   v5 = v12;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
@@ -510,19 +510,19 @@
   v9 = sub_10003B0BC;
   v10 = &unk_10031FA70;
   v11[0] = _objc_retain(location[0]);
-  v11[1] = v13;
+  v11[1] = errorCopy;
   [v5 perform:?];
   objc_storeStrong(v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, perform);
   objc_storeStrong(location, 0);
 }
 

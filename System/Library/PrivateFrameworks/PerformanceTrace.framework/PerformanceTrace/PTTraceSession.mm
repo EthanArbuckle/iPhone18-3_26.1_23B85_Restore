@@ -1,15 +1,15 @@
 @interface PTTraceSession
-+ (id)initWithConfig:(id)a3;
++ (id)initWithConfig:(id)config;
 - (PTTraceSession)init;
 - (id)_getRemoteObjectProxy;
-- (void)_didPingService:(id)a3;
+- (void)_didPingService:(id)service;
 - (void)_initConnection;
 - (void)_invalidateSession;
-- (void)_ping:(id)a3;
-- (void)displayTraceCompletedAlertWithTraceFileURL:(id)a3 additionalInfo:(id)a4 notificationTimeoutSecs:(id)a5 completionHandler:(id)a6;
-- (void)performanceTraceDidComplete:(id)a3 withToken:(id)a4 withError:(id)a5;
-- (void)performanceTraceDidStart:(id)a3;
-- (void)performanceTraceDidStop:(id)a3;
+- (void)_ping:(id)_ping;
+- (void)displayTraceCompletedAlertWithTraceFileURL:(id)l additionalInfo:(id)info notificationTimeoutSecs:(id)secs completionHandler:(id)handler;
+- (void)performanceTraceDidComplete:(id)complete withToken:(id)token withError:(id)error;
+- (void)performanceTraceDidStart:(id)start;
+- (void)performanceTraceDidStop:(id)stop;
 - (void)startPerformanceTrace;
 - (void)stopPerformanceTrace;
 @end
@@ -33,11 +33,11 @@
   return v3;
 }
 
-+ (id)initWithConfig:(id)a3
++ (id)initWithConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_alloc_init(PTTraceSession);
-  [(PTTraceSession *)v4 setConfig:v3];
+  [(PTTraceSession *)v4 setConfig:configCopy];
 
   [(PTTraceSession *)v4 setConnection:0];
 
@@ -55,22 +55,22 @@
 
   if ([(PTTraceSession *)self isValid])
   {
-    v4 = [(PTTraceSession *)self connection];
+    connection = [(PTTraceSession *)self connection];
 
-    if (!v4)
+    if (!connection)
     {
       [(PTTraceSession *)self _initConnection];
     }
 
-    v5 = [(PTTraceSession *)self _getRemoteObjectProxy];
-    v6 = [(PTTraceSession *)self config];
-    [v5 startPerformanceTrace:v6];
+    _getRemoteObjectProxy = [(PTTraceSession *)self _getRemoteObjectProxy];
+    config = [(PTTraceSession *)self config];
+    [_getRemoteObjectProxy startPerformanceTrace:config];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA9B8] error:1 description:@"Unable to start Performance Trace as the session is no longer valid"];
-    [(PTTraceSession *)self performanceTraceDidStart:v5];
+    _getRemoteObjectProxy = [MEMORY[0x277CCA9B8] error:1 description:@"Unable to start Performance Trace as the session is no longer valid"];
+    [(PTTraceSession *)self performanceTraceDidStart:_getRemoteObjectProxy];
   }
 }
 
@@ -83,38 +83,38 @@
     _os_log_impl(&dword_25E3D3000, v3, OS_LOG_TYPE_INFO, "Stopping Performance Trace", v6, 2u);
   }
 
-  v4 = [(PTTraceSession *)self connection];
+  connection = [(PTTraceSession *)self connection];
 
-  if (!v4)
+  if (!connection)
   {
     [(PTTraceSession *)self _initConnection];
   }
 
-  v5 = [(PTTraceSession *)self _getRemoteObjectProxy];
-  [v5 stopPerformanceTrace];
+  _getRemoteObjectProxy = [(PTTraceSession *)self _getRemoteObjectProxy];
+  [_getRemoteObjectProxy stopPerformanceTrace];
 }
 
-- (void)_ping:(id)a3
+- (void)_ping:(id)_ping
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  _pingCopy = _ping;
   v5 = _traceSessionClientHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = _pingCopy;
     _os_log_impl(&dword_25E3D3000, v5, OS_LOG_TYPE_INFO, "Sending Ping: %{public}@", &v9, 0xCu);
   }
 
-  v6 = [(PTTraceSession *)self connection];
+  connection = [(PTTraceSession *)self connection];
 
-  if (!v6)
+  if (!connection)
   {
     [(PTTraceSession *)self _initConnection];
   }
 
-  v7 = [(PTTraceSession *)self _getRemoteObjectProxy];
-  [v7 pingService:v4];
+  _getRemoteObjectProxy = [(PTTraceSession *)self _getRemoteObjectProxy];
+  [_getRemoteObjectProxy pingService:_pingCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -137,8 +137,8 @@
 
   [v3 setExportedObject:self];
   [(PTTraceSession *)self setConnection:v3];
-  v6 = [(PTTraceSession *)self connection];
-  [v6 resume];
+  connection = [(PTTraceSession *)self connection];
+  [connection resume];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -184,8 +184,8 @@ void __33__PTTraceSession__initConnection__block_invoke_31(uint64_t a1)
 
 - (id)_getRemoteObjectProxy
 {
-  v2 = [(PTTraceSession *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_89];
+  connection = [(PTTraceSession *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_89];
 
   return v3;
 }
@@ -203,65 +203,65 @@ void __39__PTTraceSession__getRemoteObjectProxy__block_invoke(uint64_t a1, void 
 - (void)_invalidateSession
 {
   self->_isValid = 0;
-  v3 = [(PTTraceSession *)self connection];
+  connection = [(PTTraceSession *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(PTTraceSession *)self connection];
-    [v4 invalidate];
+    connection2 = [(PTTraceSession *)self connection];
+    [connection2 invalidate];
   }
 }
 
-- (void)performanceTraceDidStart:(id)a3
+- (void)performanceTraceDidStart:(id)start
 {
-  v9 = a3;
-  v4 = [(PTTraceSession *)self delegate];
-  if (v4)
+  startCopy = start;
+  delegate = [(PTTraceSession *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PTTraceSession *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PTTraceSession *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PTTraceSession *)self delegate];
-      [v8 performanceTraceDidStart:v9];
+      delegate3 = [(PTTraceSession *)self delegate];
+      [delegate3 performanceTraceDidStart:startCopy];
     }
   }
 }
 
-- (void)performanceTraceDidStop:(id)a3
+- (void)performanceTraceDidStop:(id)stop
 {
-  v9 = a3;
-  v4 = [(PTTraceSession *)self delegate];
-  if (v4)
+  stopCopy = stop;
+  delegate = [(PTTraceSession *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PTTraceSession *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PTTraceSession *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PTTraceSession *)self delegate];
-      [v8 performanceTraceDidStop:v9];
+      delegate3 = [(PTTraceSession *)self delegate];
+      [delegate3 performanceTraceDidStop:stopCopy];
     }
   }
 }
 
-- (void)performanceTraceDidComplete:(id)a3 withToken:(id)a4 withError:(id)a5
+- (void)performanceTraceDidComplete:(id)complete withToken:(id)token withError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completeCopy = complete;
+  tokenCopy = token;
+  errorCopy = error;
   v11 = _traceSessionClientHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 path];
-    v13 = v12;
-    if (v12)
+    path = [completeCopy path];
+    v13 = path;
+    if (path)
     {
-      v14 = v12;
+      v14 = path;
     }
 
     else
@@ -269,11 +269,11 @@ void __39__PTTraceSession__getRemoteObjectProxy__block_invoke(uint64_t a1, void 
       v14 = @"-";
     }
 
-    v15 = [v10 localizedDescription];
-    v16 = v15;
-    if (v15)
+    localizedDescription = [errorCopy localizedDescription];
+    v16 = localizedDescription;
+    if (localizedDescription)
     {
-      v17 = v15;
+      v17 = localizedDescription;
     }
 
     else
@@ -288,17 +288,17 @@ void __39__PTTraceSession__getRemoteObjectProxy__block_invoke(uint64_t a1, void 
     _os_log_impl(&dword_25E3D3000, v11, OS_LOG_TYPE_DEFAULT, "Trace completed with URL: %{public}@, error: %{public}@", &v24, 0x16u);
   }
 
-  v18 = [(PTTraceSession *)self delegate];
-  if (v18)
+  delegate = [(PTTraceSession *)self delegate];
+  if (delegate)
   {
-    v19 = v18;
-    v20 = [(PTTraceSession *)self delegate];
+    v19 = delegate;
+    delegate2 = [(PTTraceSession *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(PTTraceSession *)self delegate];
-      [v22 performanceTraceDidComplete:v8 withToken:v9 withError:v10];
+      delegate3 = [(PTTraceSession *)self delegate];
+      [delegate3 performanceTraceDidComplete:completeCopy withToken:tokenCopy withError:errorCopy];
     }
   }
 
@@ -307,36 +307,36 @@ void __39__PTTraceSession__getRemoteObjectProxy__block_invoke(uint64_t a1, void 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didPingService:(id)a3
+- (void)_didPingService:(id)service
 {
-  v9 = a3;
-  v4 = [(PTTraceSession *)self delegate];
-  if (v4)
+  serviceCopy = service;
+  delegate = [(PTTraceSession *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PTTraceSession *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PTTraceSession *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PTTraceSession *)self delegate];
-      [v8 _didPingService:v9];
+      delegate3 = [(PTTraceSession *)self delegate];
+      [delegate3 _didPingService:serviceCopy];
     }
   }
 }
 
-- (void)displayTraceCompletedAlertWithTraceFileURL:(id)a3 additionalInfo:(id)a4 notificationTimeoutSecs:(id)a5 completionHandler:(id)a6
+- (void)displayTraceCompletedAlertWithTraceFileURL:(id)l additionalInfo:(id)info notificationTimeoutSecs:(id)secs completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v38 = a6;
+  lCopy = l;
+  infoCopy = info;
+  secsCopy = secs;
+  handlerCopy = handler;
   v12 = [MEMORY[0x277CCAB68] stringWithString:@"Summary:\n\n\nSteps to reproduce\n1.\n2.\n3.\n\n"];
-  v13 = [v10 objectForKeyedSubscript:@"StartingFGSceneIdentifiers"];
-  v14 = [v10 objectForKeyedSubscript:@"EndingFGSceneIdentifiers"];
-  if (v11)
+  v13 = [infoCopy objectForKeyedSubscript:@"StartingFGSceneIdentifiers"];
+  v14 = [infoCopy objectForKeyedSubscript:@"EndingFGSceneIdentifiers"];
+  if (secsCopy)
   {
-    [v11 doubleValue];
+    [secsCopy doubleValue];
     v16 = v15;
   }
 
@@ -345,20 +345,20 @@ void __39__PTTraceSession__getRemoteObjectProxy__block_invoke(uint64_t a1, void 
     v16 = 30.0;
   }
 
-  v39 = v11;
+  v39 = secsCopy;
   if (v13 && v14)
   {
     if ([v13 isEqualToArray:v14])
     {
       if (![v13 count])
       {
-        v17 = @"com.apple.springboard";
+        firstObject = @"com.apple.springboard";
         goto LABEL_31;
       }
 
       if ([v13 count] == 1)
       {
-        v17 = [v13 firstObject];
+        firstObject = [v13 firstObject];
         goto LABEL_31;
       }
 
@@ -369,12 +369,12 @@ void __39__PTTraceSession__getRemoteObjectProxy__block_invoke(uint64_t a1, void 
       }
     }
 
-    v17 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v17 = 0;
+    firstObject = 0;
     if (!v13)
     {
       if (!v14)
@@ -406,11 +406,11 @@ LABEL_13:
   v51 = __Block_byref_object_dispose__1;
   v52 = 0;
   v46 = 0;
-  v19 = [v9 path];
-  if (v9)
+  path = [lCopy path];
+  if (lCopy)
   {
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v20 fileExistsAtPath:v19 isDirectory:&v46])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:path isDirectory:&v46])
     {
       v21 = v46;
 
@@ -426,8 +426,8 @@ LABEL_13:
   }
 
   v22 = MEMORY[0x277CCACA8];
-  v23 = [v9 path];
-  v24 = [v22 stringWithFormat:@"Could not find trace file '%@'.", v23];
+  path2 = [lCopy path];
+  v24 = [v22 stringWithFormat:@"Could not find trace file '%@'.", path2];
 
   v25 = _traceSessionClientHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -441,20 +441,20 @@ LABEL_13:
   v27 = v48[5];
   v48[5] = v26;
 
-  v9 = 0;
+  lCopy = 0;
 LABEL_21:
   v28 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{@"Performance", @"Classification", @"Not Applicable", @"Reproducibility", v12, @"Description", 0}];
   v29 = v28;
-  if (v17)
+  if (firstObject)
   {
-    [v28 setObject:v17 forKey:@"bundleID"];
+    [v28 setObject:firstObject forKey:@"bundleID"];
   }
 
-  if (v19)
+  if (path)
   {
-    [v29 setObject:v19 forKey:@"Attachments"];
-    v30 = [v19 lastPathComponent];
-    [v12 appendFormat:@"Trace file: '%@'.\n", v30];
+    [v29 setObject:path forKey:@"Attachments"];
+    lastPathComponent = [path lastPathComponent];
+    [v12 appendFormat:@"Trace file: '%@'.\n", lastPathComponent];
   }
 
   queue = self->_queue;
@@ -463,13 +463,13 @@ LABEL_21:
   block[2] = __118__PTTraceSession_displayTraceCompletedAlertWithTraceFileURL_additionalInfo_notificationTimeoutSecs_completionHandler___block_invoke;
   block[3] = &unk_279A19028;
   v45 = v16;
-  v41 = v19;
+  v41 = path;
   v42 = v29;
   v44 = &v47;
-  v43 = v38;
-  v32 = v38;
+  v43 = handlerCopy;
+  v32 = handlerCopy;
   v33 = v29;
-  v34 = v19;
+  v34 = path;
   dispatch_async(queue, block);
 
   _Block_object_dispose(&v47, 8);

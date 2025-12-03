@@ -1,34 +1,34 @@
 @interface _NMRCommandInfoProtobuf
-- (BOOL)isEqual:(id)a3;
-- (double)preferredIntervalAtIndex:(unint64_t)a3;
-- (float)supportedPlaybackRateAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)preferredIntervalAtIndex:(unint64_t)index;
+- (float)supportedPlaybackRateAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCommand:(id)a3;
-- (int)StringAsCurrentQueueEndAction:(id)a3;
-- (int)StringAsRepeatMode:(id)a3;
-- (int)StringAsShuffleMode:(id)a3;
-- (int)StringAsSupportedQueueEndActions:(id)a3;
+- (int)StringAsCommand:(id)command;
+- (int)StringAsCurrentQueueEndAction:(id)action;
+- (int)StringAsRepeatMode:(id)mode;
+- (int)StringAsShuffleMode:(id)mode;
+- (int)StringAsSupportedQueueEndActions:(id)actions;
 - (int)command;
 - (int)currentQueueEndAction;
 - (int)repeatMode;
 - (int)shuffleMode;
-- (int)supportedQueueEndActionAtIndex:(unint64_t)a3;
+- (int)supportedQueueEndActionAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActive:(BOOL)a3;
-- (void)setHasCurrentQueueEndAction:(BOOL)a3;
-- (void)setHasEnabled:(BOOL)a3;
-- (void)setHasMaximumRating:(BOOL)a3;
-- (void)setHasMinimumRating:(BOOL)a3;
-- (void)setHasPreferredPlaybackRate:(BOOL)a3;
-- (void)setHasPresentationStyle:(BOOL)a3;
-- (void)setHasRepeatMode:(BOOL)a3;
-- (void)setHasShuffleMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasActive:(BOOL)active;
+- (void)setHasCurrentQueueEndAction:(BOOL)action;
+- (void)setHasEnabled:(BOOL)enabled;
+- (void)setHasMaximumRating:(BOOL)rating;
+- (void)setHasMinimumRating:(BOOL)rating;
+- (void)setHasPreferredPlaybackRate:(BOOL)rate;
+- (void)setHasPresentationStyle:(BOOL)style;
+- (void)setHasRepeatMode:(BOOL)mode;
+- (void)setHasShuffleMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _NMRCommandInfoProtobuf
@@ -56,235 +56,235 @@
   }
 }
 
-- (int)StringAsCommand:(id)a3
+- (int)StringAsCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  commandCopy = command;
+  if ([commandCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Play"])
+  else if ([commandCopy isEqualToString:@"Play"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Pause"])
+  else if ([commandCopy isEqualToString:@"Pause"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TogglePlayPause"])
+  else if ([commandCopy isEqualToString:@"TogglePlayPause"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Stop"])
+  else if ([commandCopy isEqualToString:@"Stop"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NextTrack"])
+  else if ([commandCopy isEqualToString:@"NextTrack"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PreviousTrack"])
+  else if ([commandCopy isEqualToString:@"PreviousTrack"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AdvanceShuffleMode"])
+  else if ([commandCopy isEqualToString:@"AdvanceShuffleMode"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AdvanceRepeatMode"])
+  else if ([commandCopy isEqualToString:@"AdvanceRepeatMode"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BeginFastForward"])
+  else if ([commandCopy isEqualToString:@"BeginFastForward"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"EndFastForward"])
+  else if ([commandCopy isEqualToString:@"EndFastForward"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BeginRewind"])
+  else if ([commandCopy isEqualToString:@"BeginRewind"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"EndRewind"])
+  else if ([commandCopy isEqualToString:@"EndRewind"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Rewind15Seconds"])
+  else if ([commandCopy isEqualToString:@"Rewind15Seconds"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"FastForward15Seconds"])
+  else if ([commandCopy isEqualToString:@"FastForward15Seconds"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Rewind30Seconds"])
+  else if ([commandCopy isEqualToString:@"Rewind30Seconds"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"FastForward30Seconds"])
+  else if ([commandCopy isEqualToString:@"FastForward30Seconds"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SkipForward"])
+  else if ([commandCopy isEqualToString:@"SkipForward"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SkipBackward"])
+  else if ([commandCopy isEqualToString:@"SkipBackward"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ChangePlaybackRate"])
+  else if ([commandCopy isEqualToString:@"ChangePlaybackRate"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"RateTrack"])
+  else if ([commandCopy isEqualToString:@"RateTrack"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"LikeTrack"])
+  else if ([commandCopy isEqualToString:@"LikeTrack"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"DislikeTrack"])
+  else if ([commandCopy isEqualToString:@"DislikeTrack"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"BookmarkTrack"])
+  else if ([commandCopy isEqualToString:@"BookmarkTrack"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SeekToPlaybackPosition"])
+  else if ([commandCopy isEqualToString:@"SeekToPlaybackPosition"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"ChangeRepeatMode"])
+  else if ([commandCopy isEqualToString:@"ChangeRepeatMode"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"ChangeShuffleMode"])
+  else if ([commandCopy isEqualToString:@"ChangeShuffleMode"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"NextChapter"])
+  else if ([commandCopy isEqualToString:@"NextChapter"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"PreviousChapter"])
+  else if ([commandCopy isEqualToString:@"PreviousChapter"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"NextAlbum"])
+  else if ([commandCopy isEqualToString:@"NextAlbum"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"PreviousAlbum"])
+  else if ([commandCopy isEqualToString:@"PreviousAlbum"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"NextPlaylist"])
+  else if ([commandCopy isEqualToString:@"NextPlaylist"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"PreviousPlaylist"])
+  else if ([commandCopy isEqualToString:@"PreviousPlaylist"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"BanTrack"])
+  else if ([commandCopy isEqualToString:@"BanTrack"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"AddTrackToWishList"])
+  else if ([commandCopy isEqualToString:@"AddTrackToWishList"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"RemoveTrackFromWishList"])
+  else if ([commandCopy isEqualToString:@"RemoveTrackFromWishList"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"NextInContext"])
+  else if ([commandCopy isEqualToString:@"NextInContext"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"PreviousInContext"])
+  else if ([commandCopy isEqualToString:@"PreviousInContext"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ResetPlaybackTimeout"])
+  else if ([commandCopy isEqualToString:@"ResetPlaybackTimeout"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"SetPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"SetPlaybackQueue"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"AddNowPlayingItemToLibrary"])
+  else if ([commandCopy isEqualToString:@"AddNowPlayingItemToLibrary"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"CreateRadioStation"])
+  else if ([commandCopy isEqualToString:@"CreateRadioStation"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"AddItemToLibrary"])
+  else if ([commandCopy isEqualToString:@"AddItemToLibrary"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"InsertIntoPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"InsertIntoPlaybackQueue"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"PlayItemInPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"PlayItemInPlaybackQueue"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"ChangeQueueEndAction"])
+  else if ([commandCopy isEqualToString:@"ChangeQueueEndAction"])
   {
     v4 = 135;
   }
@@ -297,9 +297,9 @@
   return v4;
 }
 
-- (void)setHasEnabled:(BOOL)a3
+- (void)setHasEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 512;
   }
@@ -312,9 +312,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasActive:(BOOL)a3
+- (void)setHasActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 256;
   }
@@ -327,23 +327,23 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (double)preferredIntervalAtIndex:(unint64_t)a3
+- (double)preferredIntervalAtIndex:(unint64_t)index
 {
   p_preferredIntervals = &self->_preferredIntervals;
   count = self->_preferredIntervals.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_preferredIntervals->list[a3];
+  return p_preferredIntervals->list[index];
 }
 
-- (void)setHasMinimumRating:(BOOL)a3
+- (void)setHasMinimumRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 8;
   }
@@ -356,9 +356,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasMaximumRating:(BOOL)a3
+- (void)setHasMaximumRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 4;
   }
@@ -371,18 +371,18 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (float)supportedPlaybackRateAtIndex:(unint64_t)a3
+- (float)supportedPlaybackRateAtIndex:(unint64_t)index
 {
   p_supportedPlaybackRates = &self->_supportedPlaybackRates;
   count = self->_supportedPlaybackRates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_supportedPlaybackRates->list[a3];
+  return p_supportedPlaybackRates->list[index];
 }
 
 - (int)repeatMode
@@ -398,9 +398,9 @@
   }
 }
 
-- (void)setHasRepeatMode:(BOOL)a3
+- (void)setHasRepeatMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 64;
   }
@@ -413,25 +413,25 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsRepeatMode:(id)a3
+- (int)StringAsRepeatMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"One"])
+  else if ([modeCopy isEqualToString:@"One"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"All"])
+  else if ([modeCopy isEqualToString:@"All"])
   {
     v4 = 3;
   }
@@ -457,9 +457,9 @@
   }
 }
 
-- (void)setHasShuffleMode:(BOOL)a3
+- (void)setHasShuffleMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 128;
   }
@@ -472,25 +472,25 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsShuffleMode:(id)a3
+- (int)StringAsShuffleMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Off"])
+  else if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Albums"])
+  else if ([modeCopy isEqualToString:@"Albums"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Songs"])
+  else if ([modeCopy isEqualToString:@"Songs"])
   {
     v4 = 3;
   }
@@ -503,9 +503,9 @@
   return v4;
 }
 
-- (void)setHasPresentationStyle:(BOOL)a3
+- (void)setHasPresentationStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 32;
   }
@@ -518,9 +518,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPreferredPlaybackRate:(BOOL)a3
+- (void)setHasPreferredPlaybackRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 16;
   }
@@ -546,9 +546,9 @@
   }
 }
 
-- (void)setHasCurrentQueueEndAction:(BOOL)a3
+- (void)setHasCurrentQueueEndAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -561,30 +561,30 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsCurrentQueueEndAction:(id)a3
+- (int)StringAsCurrentQueueEndAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Clear"])
+  else if ([actionCopy isEqualToString:@"Clear"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([actionCopy isEqualToString:@"None"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Reset"])
+  else if ([actionCopy isEqualToString:@"Reset"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AutoPlay"])
+  else if ([actionCopy isEqualToString:@"AutoPlay"])
   {
     v4 = 4;
   }
@@ -597,44 +597,44 @@
   return v4;
 }
 
-- (int)supportedQueueEndActionAtIndex:(unint64_t)a3
+- (int)supportedQueueEndActionAtIndex:(unint64_t)index
 {
   p_supportedQueueEndActions = &self->_supportedQueueEndActions;
   count = self->_supportedQueueEndActions.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_supportedQueueEndActions->list[a3];
+  return p_supportedQueueEndActions->list[index];
 }
 
-- (int)StringAsSupportedQueueEndActions:(id)a3
+- (int)StringAsSupportedQueueEndActions:(id)actions
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  actionsCopy = actions;
+  if ([actionsCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Clear"])
+  else if ([actionsCopy isEqualToString:@"Clear"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([actionsCopy isEqualToString:@"None"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Reset"])
+  else if ([actionsCopy isEqualToString:@"Reset"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AutoPlay"])
+  else if ([actionsCopy isEqualToString:@"AutoPlay"])
   {
     v4 = 4;
   }
@@ -652,8 +652,8 @@
   v7.receiver = self;
   v7.super_class = _NMRCommandInfoProtobuf;
   v3 = [(_NMRCommandInfoProtobuf *)&v7 description];
-  v4 = [(_NMRCommandInfoProtobuf *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_NMRCommandInfoProtobuf *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1015,16 +1015,16 @@ LABEL_83:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v25 = v4;
+  v25 = toCopy;
   if (has)
   {
     command = self->_command;
     PBDataWriterWriteInt32Field();
-    v4 = v25;
+    toCopy = v25;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -1045,13 +1045,13 @@ LABEL_3:
 
   enabled = self->_enabled;
   PBDataWriterWriteBOOLField();
-  v4 = v25;
+  toCopy = v25;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_4:
     active = self->_active;
     PBDataWriterWriteBOOLField();
-    v4 = v25;
+    toCopy = v25;
   }
 
 LABEL_5:
@@ -1062,7 +1062,7 @@ LABEL_5:
     {
       v8 = self->_preferredIntervals.list[v7];
       PBDataWriterWriteDoubleField();
-      v4 = v25;
+      toCopy = v25;
       ++v7;
     }
 
@@ -1072,7 +1072,7 @@ LABEL_5:
   if (self->_localizedTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v25;
+    toCopy = v25;
   }
 
   v9 = self->_has;
@@ -1080,7 +1080,7 @@ LABEL_5:
   {
     minimumRating = self->_minimumRating;
     PBDataWriterWriteFloatField();
-    v4 = v25;
+    toCopy = v25;
     v9 = self->_has;
   }
 
@@ -1088,7 +1088,7 @@ LABEL_5:
   {
     maximumRating = self->_maximumRating;
     PBDataWriterWriteFloatField();
-    v4 = v25;
+    toCopy = v25;
   }
 
   if (self->_supportedPlaybackRates.count)
@@ -1098,7 +1098,7 @@ LABEL_5:
     {
       v13 = self->_supportedPlaybackRates.list[v12];
       PBDataWriterWriteFloatField();
-      v4 = v25;
+      toCopy = v25;
       ++v12;
     }
 
@@ -1108,7 +1108,7 @@ LABEL_5:
   if (self->_localizedShortTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v25;
+    toCopy = v25;
   }
 
   v14 = self->_has;
@@ -1116,7 +1116,7 @@ LABEL_5:
   {
     repeatMode = self->_repeatMode;
     PBDataWriterWriteInt32Field();
-    v4 = v25;
+    toCopy = v25;
     v14 = self->_has;
     if ((v14 & 0x80) == 0)
     {
@@ -1137,7 +1137,7 @@ LABEL_21:
 
   shuffleMode = self->_shuffleMode;
   PBDataWriterWriteInt32Field();
-  v4 = v25;
+  toCopy = v25;
   v14 = self->_has;
   if ((v14 & 0x20) == 0)
   {
@@ -1153,7 +1153,7 @@ LABEL_22:
 LABEL_36:
   presentationStyle = self->_presentationStyle;
   PBDataWriterWriteInt32Field();
-  v4 = v25;
+  toCopy = v25;
   v14 = self->_has;
   if ((v14 & 0x10) == 0)
   {
@@ -1169,13 +1169,13 @@ LABEL_23:
 LABEL_37:
   preferredPlaybackRate = self->_preferredPlaybackRate;
   PBDataWriterWriteFloatField();
-  v4 = v25;
+  toCopy = v25;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_24:
     currentQueueEndAction = self->_currentQueueEndAction;
     PBDataWriterWriteInt32Field();
-    v4 = v25;
+    toCopy = v25;
   }
 
 LABEL_25:
@@ -1187,7 +1187,7 @@ LABEL_25:
     {
       v18 = p_supportedQueueEndActions->list[v17];
       PBDataWriterWriteInt32Field();
-      v4 = v25;
+      toCopy = v25;
       ++v17;
     }
 
@@ -1195,9 +1195,9 @@ LABEL_25:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1207,8 +1207,8 @@ LABEL_25:
     }
 
 LABEL_35:
-    v4[129] = self->_enabled;
-    *(v4 + 66) |= 0x200u;
+    toCopy[129] = self->_enabled;
+    *(toCopy + 66) |= 0x200u;
     if ((*&self->_has & 0x100) == 0)
     {
       goto LABEL_5;
@@ -1217,8 +1217,8 @@ LABEL_35:
     goto LABEL_4;
   }
 
-  *(v4 + 20) = self->_command;
-  *(v4 + 66) |= 1u;
+  *(toCopy + 20) = self->_command;
+  *(toCopy + 66) |= 1u;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -1229,19 +1229,19 @@ LABEL_3:
   if ((has & 0x100) != 0)
   {
 LABEL_4:
-    v4[128] = self->_active;
-    *(v4 + 66) |= 0x100u;
+    toCopy[128] = self->_active;
+    *(toCopy + 66) |= 0x100u;
   }
 
 LABEL_5:
-  v17 = v4;
+  v17 = toCopy;
   if ([(_NMRCommandInfoProtobuf *)self preferredIntervalsCount])
   {
     [v17 clearPreferredIntervals];
-    v6 = [(_NMRCommandInfoProtobuf *)self preferredIntervalsCount];
-    if (v6)
+    preferredIntervalsCount = [(_NMRCommandInfoProtobuf *)self preferredIntervalsCount];
+    if (preferredIntervalsCount)
     {
-      v7 = v6;
+      v7 = preferredIntervalsCount;
       for (i = 0; i != v7; ++i)
       {
         [(_NMRCommandInfoProtobuf *)self preferredIntervalAtIndex:i];
@@ -1272,10 +1272,10 @@ LABEL_5:
   if ([(_NMRCommandInfoProtobuf *)self supportedPlaybackRatesCount])
   {
     [v17 clearSupportedPlaybackRates];
-    v10 = [(_NMRCommandInfoProtobuf *)self supportedPlaybackRatesCount];
-    if (v10)
+    supportedPlaybackRatesCount = [(_NMRCommandInfoProtobuf *)self supportedPlaybackRatesCount];
+    if (supportedPlaybackRatesCount)
     {
-      v11 = v10;
+      v11 = supportedPlaybackRatesCount;
       for (j = 0; j != v11; ++j)
       {
         [(_NMRCommandInfoProtobuf *)self supportedPlaybackRateAtIndex:j];
@@ -1355,10 +1355,10 @@ LABEL_27:
   if ([(_NMRCommandInfoProtobuf *)self supportedQueueEndActionsCount])
   {
     [v17 clearSupportedQueueEndActions];
-    v14 = [(_NMRCommandInfoProtobuf *)self supportedQueueEndActionsCount];
-    if (v14)
+    supportedQueueEndActionsCount = [(_NMRCommandInfoProtobuf *)self supportedQueueEndActionsCount];
+    if (supportedQueueEndActionsCount)
     {
-      v15 = v14;
+      v15 = supportedQueueEndActionsCount;
       for (k = 0; k != v15; ++k)
       {
         [v17 addSupportedQueueEndAction:{-[_NMRCommandInfoProtobuf supportedQueueEndActionAtIndex:](self, "supportedQueueEndActionAtIndex:", k)}];
@@ -1367,9 +1367,9 @@ LABEL_27:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1405,7 +1405,7 @@ LABEL_4:
 
 LABEL_5:
   PBRepeatedDoubleCopy();
-  v8 = [(NSString *)self->_localizedTitle copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedTitle copyWithZone:zone];
   v9 = v6[12];
   v6[12] = v8;
 
@@ -1424,7 +1424,7 @@ LABEL_5:
   }
 
   PBRepeatedFloatCopy();
-  v11 = [(NSString *)self->_localizedShortTitle copyWithZone:a3];
+  v11 = [(NSString *)self->_localizedShortTitle copyWithZone:zone];
   v12 = v6[11];
   v6[11] = v11;
 
@@ -1495,18 +1495,18 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_65;
   }
 
-  v5 = *(v4 + 66);
+  v5 = *(equalCopy + 66);
   if (*&self->_has)
   {
-    if ((v5 & 1) == 0 || self->_command != *(v4 + 20))
+    if ((v5 & 1) == 0 || self->_command != *(equalCopy + 20))
     {
       goto LABEL_65;
     }
@@ -1519,34 +1519,34 @@ LABEL_15:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 66) & 0x200) == 0)
+    if ((*(equalCopy + 66) & 0x200) == 0)
     {
       goto LABEL_65;
     }
 
-    v9 = *(v4 + 129);
+    v9 = *(equalCopy + 129);
     if (self->_enabled)
     {
-      if ((*(v4 + 129) & 1) == 0)
+      if ((*(equalCopy + 129) & 1) == 0)
       {
         goto LABEL_65;
       }
     }
 
-    else if (*(v4 + 129))
+    else if (*(equalCopy + 129))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 66) & 0x200) != 0)
+  else if ((*(equalCopy + 66) & 0x200) != 0)
   {
     goto LABEL_65;
   }
 
   if ((*&self->_has & 0x100) == 0)
   {
-    if ((*(v4 + 66) & 0x100) == 0)
+    if ((*(equalCopy + 66) & 0x100) == 0)
     {
       goto LABEL_11;
     }
@@ -1556,21 +1556,21 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  if ((*(v4 + 66) & 0x100) == 0)
+  if ((*(equalCopy + 66) & 0x100) == 0)
   {
     goto LABEL_65;
   }
 
-  v10 = *(v4 + 128);
+  v10 = *(equalCopy + 128);
   if (self->_active)
   {
-    if ((*(v4 + 128) & 1) == 0)
+    if ((*(equalCopy + 128) & 1) == 0)
     {
       goto LABEL_65;
     }
   }
 
-  else if (*(v4 + 128))
+  else if (*(equalCopy + 128))
   {
     goto LABEL_65;
   }
@@ -1582,7 +1582,7 @@ LABEL_11:
   }
 
   localizedTitle = self->_localizedTitle;
-  if (localizedTitle | *(v4 + 12))
+  if (localizedTitle | *(equalCopy + 12))
   {
     if (![(NSString *)localizedTitle isEqual:?])
     {
@@ -1591,10 +1591,10 @@ LABEL_11:
   }
 
   has = self->_has;
-  v8 = *(v4 + 66);
+  v8 = *(equalCopy + 66);
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_minimumRating != *(v4 + 27))
+    if ((v8 & 8) == 0 || self->_minimumRating != *(equalCopy + 27))
     {
       goto LABEL_65;
     }
@@ -1607,7 +1607,7 @@ LABEL_11:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_maximumRating != *(v4 + 26))
+    if ((v8 & 4) == 0 || self->_maximumRating != *(equalCopy + 26))
     {
       goto LABEL_65;
     }
@@ -1624,7 +1624,7 @@ LABEL_11:
   }
 
   localizedShortTitle = self->_localizedShortTitle;
-  if (localizedShortTitle | *(v4 + 11))
+  if (localizedShortTitle | *(equalCopy + 11))
   {
     if (![(NSString *)localizedShortTitle isEqual:?])
     {
@@ -1633,10 +1633,10 @@ LABEL_11:
   }
 
   v12 = self->_has;
-  v13 = *(v4 + 66);
+  v13 = *(equalCopy + 66);
   if ((v12 & 0x40) != 0)
   {
-    if ((v13 & 0x40) == 0 || self->_repeatMode != *(v4 + 30))
+    if ((v13 & 0x40) == 0 || self->_repeatMode != *(equalCopy + 30))
     {
       goto LABEL_65;
     }
@@ -1649,7 +1649,7 @@ LABEL_11:
 
   if ((v12 & 0x80) != 0)
   {
-    if ((v13 & 0x80) == 0 || self->_shuffleMode != *(v4 + 31))
+    if ((v13 & 0x80) == 0 || self->_shuffleMode != *(equalCopy + 31))
     {
       goto LABEL_65;
     }
@@ -1662,7 +1662,7 @@ LABEL_11:
 
   if ((v12 & 0x20) != 0)
   {
-    if ((v13 & 0x20) == 0 || self->_presentationStyle != *(v4 + 29))
+    if ((v13 & 0x20) == 0 || self->_presentationStyle != *(equalCopy + 29))
     {
       goto LABEL_65;
     }
@@ -1675,7 +1675,7 @@ LABEL_11:
 
   if ((v12 & 0x10) != 0)
   {
-    if ((v13 & 0x10) == 0 || self->_preferredPlaybackRate != *(v4 + 28))
+    if ((v13 & 0x10) == 0 || self->_preferredPlaybackRate != *(equalCopy + 28))
     {
       goto LABEL_65;
     }
@@ -1688,7 +1688,7 @@ LABEL_11:
 
   if ((v12 & 2) != 0)
   {
-    if ((v13 & 2) == 0 || self->_currentQueueEndAction != *(v4 + 21))
+    if ((v13 & 2) == 0 || self->_currentQueueEndAction != *(equalCopy + 21))
     {
       goto LABEL_65;
     }
@@ -1903,15 +1903,15 @@ LABEL_36:
   return v3 ^ v32 ^ v4 ^ v5 ^ v10 ^ v14 ^ v18 ^ v6 ^ v19 ^ v23 ^ v24 ^ v25 ^ v29 ^ v30 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 66);
+  fromCopy = from;
+  v5 = *(fromCopy + 66);
   if (v5)
   {
-    self->_command = *(v4 + 20);
+    self->_command = *(fromCopy + 20);
     *&self->_has |= 1u;
-    v5 = *(v4 + 66);
+    v5 = *(fromCopy + 66);
     if ((v5 & 0x200) == 0)
     {
 LABEL_3:
@@ -1924,26 +1924,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 66) & 0x200) == 0)
+  else if ((*(fromCopy + 66) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_enabled = *(v4 + 129);
+  self->_enabled = *(fromCopy + 129);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 66) & 0x100) != 0)
+  if ((*(fromCopy + 66) & 0x100) != 0)
   {
 LABEL_4:
-    self->_active = *(v4 + 128);
+    self->_active = *(fromCopy + 128);
     *&self->_has |= 0x100u;
   }
 
 LABEL_5:
-  v19 = v4;
-  v6 = [v4 preferredIntervalsCount];
-  if (v6)
+  v19 = fromCopy;
+  preferredIntervalsCount = [fromCopy preferredIntervalsCount];
+  if (preferredIntervalsCount)
   {
-    v7 = v6;
+    v7 = preferredIntervalsCount;
     for (i = 0; i != v7; ++i)
     {
       [v19 preferredIntervalAtIndex:i];
@@ -1972,10 +1972,10 @@ LABEL_5:
     *&self->_has |= 4u;
   }
 
-  v11 = [v9 supportedPlaybackRatesCount];
-  if (v11)
+  supportedPlaybackRatesCount = [v9 supportedPlaybackRatesCount];
+  if (supportedPlaybackRatesCount)
   {
-    v12 = v11;
+    v12 = supportedPlaybackRatesCount;
     for (j = 0; j != v12; ++j)
     {
       [v19 supportedPlaybackRateAtIndex:j];
@@ -2053,10 +2053,10 @@ LABEL_24:
   }
 
 LABEL_25:
-  v16 = [v14 supportedQueueEndActionsCount];
-  if (v16)
+  supportedQueueEndActionsCount = [v14 supportedQueueEndActionsCount];
+  if (supportedQueueEndActionsCount)
   {
-    v17 = v16;
+    v17 = supportedQueueEndActionsCount;
     for (k = 0; k != v17; ++k)
     {
       -[_NMRCommandInfoProtobuf addSupportedQueueEndAction:](self, "addSupportedQueueEndAction:", [v19 supportedQueueEndActionAtIndex:k]);

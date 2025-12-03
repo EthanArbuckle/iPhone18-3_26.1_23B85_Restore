@@ -1,16 +1,16 @@
 @interface PXPhotosSearchBodyLayoutProvider
-- (PXPhotosSearchBodyLayoutProvider)initWithCollectionSectionProvider:(id)a3;
-- (PXPhotosSearchBodyLayoutProvider)initWithPhotoLibrary:(id)a3;
+- (PXPhotosSearchBodyLayoutProvider)initWithCollectionSectionProvider:(id)provider;
+- (PXPhotosSearchBodyLayoutProvider)initWithPhotoLibrary:(id)library;
 - (PXPhotosSectionBodyLayoutProviderInvalidationDelegate)invalidationDelegate;
 - (PXPhotosSelectionContainer)collectionsSelection;
 - (UIViewController)hostViewController;
-- (id)createSectionBodyLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outWantsDecoration:(BOOL *)a7;
-- (id)viewModelForPinchLocation:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (int64_t)_numberOfColumnsWithSpec:(id)a3;
+- (id)createSectionBodyLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outWantsDecoration:(BOOL *)decoration;
+- (id)viewModelForPinchLocation:(CGPoint)location inCoordinateSpace:(id)space;
+- (int64_t)_numberOfColumnsWithSpec:(id)spec;
 - (void)clearAssetSelections;
-- (void)configureSectionBodyLayout:(id)a3 inAssetSectionLayout:(id)a4 forSectionedLayout:(id)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setViewModel:(id)a3;
+- (void)configureSectionBodyLayout:(id)layout inAssetSectionLayout:(id)sectionLayout forSectionedLayout:(id)sectionedLayout;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation PXPhotosSearchBodyLayoutProvider
@@ -36,10 +36,10 @@
   return WeakRetained;
 }
 
-- (id)viewModelForPinchLocation:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)viewModelForPinchLocation:(CGPoint)location inCoordinateSpace:(id)space
 {
   allResultsLayout = self->_allResultsLayout;
-  v5 = a4;
+  spaceCopy = space;
   [(PXZoomablePhotosLayout *)allResultsLayout rootLayout];
   [objc_claimAutoreleasedReturnValue() coordinateSpace];
   objc_claimAutoreleasedReturnValue();
@@ -48,20 +48,20 @@
 
 - (void)clearAssetSelections
 {
-  v3 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
-  v2 = [v3 selectionManager];
-  [v2 performChanges:&__block_literal_global_444];
+  viewModel = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
+  selectionManager = [viewModel selectionManager];
+  [selectionManager performChanges:&__block_literal_global_444];
 }
 
-- (void)configureSectionBodyLayout:(id)a3 inAssetSectionLayout:(id)a4 forSectionedLayout:(id)a5
+- (void)configureSectionBodyLayout:(id)layout inAssetSectionLayout:(id)sectionLayout forSectionedLayout:(id)sectionedLayout
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 dataSource];
-  if (v10)
+  layoutCopy = layout;
+  sectionLayoutCopy = sectionLayout;
+  sectionedLayoutCopy = sectionedLayout;
+  dataSource = [sectionLayoutCopy dataSource];
+  if (sectionLayoutCopy)
   {
-    [v10 sectionIndexPath];
+    [sectionLayoutCopy sectionIndexPath];
   }
 
   else
@@ -69,7 +69,7 @@
     memset(v56, 0, sizeof(v56));
   }
 
-  v13 = [v12 assetCollectionAtSectionIndexPath:v56];
+  v13 = [dataSource assetCollectionAtSectionIndexPath:v56];
 
   if (v13)
   {
@@ -79,26 +79,26 @@
       goto LABEL_6;
     }
 
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v54 = objc_opt_class();
     v53 = NSStringFromClass(v54);
-    v55 = [v13 px_descriptionForAssertionMessage];
-    [v51 handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:286 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[assetsSectionLayout.dataSource assetCollectionAtSectionIndexPath:assetsSectionLayout.sectionIndexPath]", v53, v55}];
+    px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:286 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[assetsSectionLayout.dataSource assetCollectionAtSectionIndexPath:assetsSectionLayout.sectionIndexPath]", v53, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v52 = objc_opt_class();
     v53 = NSStringFromClass(v52);
-    [v51 handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:286 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[assetsSectionLayout.dataSource assetCollectionAtSectionIndexPath:assetsSectionLayout.sectionIndexPath]", v53}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:286 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[assetsSectionLayout.dataSource assetCollectionAtSectionIndexPath:assetsSectionLayout.sectionIndexPath]", v53}];
   }
 
 LABEL_6:
-  [v10 setRemovesContentLayoutWhenEmpty:1];
-  [v10 setRemovesHeaderLayoutWhenEmpty:1];
-  v14 = [v13 transientIdentifier];
-  v15 = [v14 isEqualToString:@"SearchCollectionsSection"];
+  [sectionLayoutCopy setRemovesContentLayoutWhenEmpty:1];
+  [sectionLayoutCopy setRemovesHeaderLayoutWhenEmpty:1];
+  transientIdentifier = [v13 transientIdentifier];
+  v15 = [transientIdentifier isEqualToString:@"SearchCollectionsSection"];
 
   if (v15)
   {
@@ -107,35 +107,35 @@ LABEL_6:
 
   if (!MEMORY[0x1A590D320]() || ([v13 transientIdentifier], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", @"SearchAllResultsSection"), v16, !v17))
   {
-    [v9 setContentSource:v10];
-    v25 = [v11 viewModel];
-    [v25 aspectFitContent];
+    [layoutCopy setContentSource:sectionLayoutCopy];
+    viewModel = [sectionedLayoutCopy viewModel];
+    [viewModel aspectFitContent];
 
-    v26 = v9;
+    v26 = layoutCopy;
     v27 = +[PXLemonadeSettings sharedInstance];
-    v28 = [v27 showSearchDebugBadges];
+    showSearchDebugBadges = [v27 showSearchDebugBadges];
 
-    if (v28)
+    if (showSearchDebugBadges)
     {
-      v29 = [v26 decoratingLayout];
-      [v29 addActiveDecorations:&unk_1F1910420];
+      decoratingLayout = [v26 decoratingLayout];
+      [decoratingLayout addActiveDecorations:&unk_1F1910420];
     }
 
-    [v26 setDelegate:v10];
-    v30 = [v10 spec];
-    [v26 setNumberOfColumns:{-[PXPhotosSearchBodyLayoutProvider _numberOfColumnsWithSpec:](self, "_numberOfColumnsWithSpec:", v30)}];
+    [v26 setDelegate:sectionLayoutCopy];
+    spec = [sectionLayoutCopy spec];
+    [v26 setNumberOfColumns:{-[PXPhotosSearchBodyLayoutProvider _numberOfColumnsWithSpec:](self, "_numberOfColumnsWithSpec:", spec)}];
 
     currentSpecOrientation = self->_currentSpecOrientation;
-    v32 = [v10 spec];
-    if (currentSpecOrientation == [v32 layoutOrientation])
+    spec2 = [sectionLayoutCopy spec];
+    if (currentSpecOrientation == [spec2 layoutOrientation])
     {
       currentSpecSizeClass = self->_currentSpecSizeClass;
-      v34 = [v10 spec];
-      v35 = self;
-      v36 = [v34 sizeClass];
+      spec3 = [sectionLayoutCopy spec];
+      selfCopy = self;
+      sizeClass = [spec3 sizeClass];
 
-      v37 = currentSpecSizeClass == v36;
-      self = v35;
+      v37 = currentSpecSizeClass == sizeClass;
+      self = selfCopy;
       if (v37)
       {
         goto LABEL_21;
@@ -146,37 +146,37 @@ LABEL_6:
     {
     }
 
-    v38 = [v10 spec];
-    self->_currentSpecOrientation = [v38 layoutOrientation];
+    spec4 = [sectionLayoutCopy spec];
+    self->_currentSpecOrientation = [spec4 layoutOrientation];
 
-    v39 = [v10 spec];
-    self->_currentSpecSizeClass = [v39 sizeClass];
+    spec5 = [sectionLayoutCopy spec];
+    self->_currentSpecSizeClass = [spec5 sizeClass];
 
-    v40 = [(PXPhotosSearchBodyLayoutProvider *)self layoutInformationChangedCallback];
+    layoutInformationChangedCallback = [(PXPhotosSearchBodyLayoutProvider *)self layoutInformationChangedCallback];
 
-    if (v40)
+    if (layoutInformationChangedCallback)
     {
-      v41 = [(PXPhotosSearchBodyLayoutProvider *)self layoutInformationChangedCallback];
-      v41[2]();
+      layoutInformationChangedCallback2 = [(PXPhotosSearchBodyLayoutProvider *)self layoutInformationChangedCallback];
+      layoutInformationChangedCallback2[2]();
     }
 
 LABEL_21:
-    v42 = [(PXZoomablePhotosViewModel *)self->_zoomableViewModel specManager];
-    v43 = [v42 spec];
+    specManager = [(PXZoomablePhotosViewModel *)self->_zoomableViewModel specManager];
+    spec6 = [specManager spec];
 
-    v44 = [(PXPhotosViewModel *)self->_viewModel aspectFitContent];
-    if (v44)
+    aspectFitContent = [(PXPhotosViewModel *)self->_viewModel aspectFitContent];
+    if (aspectFitContent)
     {
-      [v43 aspectFitInteritemSpacing];
+      [spec6 aspectFitInteritemSpacing];
       [v26 setInterItemSpacing:{v45, v45}];
-      [v43 aspectFitItemCornerRadius];
+      [spec6 aspectFitItemCornerRadius];
     }
 
     else
     {
-      [v43 interitemSpacing];
+      [spec6 interitemSpacing];
       [v26 setInterItemSpacing:{v50, v50}];
-      [v43 itemCornerRadius];
+      [spec6 itemCornerRadius];
     }
 
     *&v46 = v46;
@@ -184,49 +184,49 @@ LABEL_21:
     LODWORD(v48) = LODWORD(v46);
     LODWORD(v49) = LODWORD(v46);
     [v26 setItemCornerRadius:{v46, v47, v48, v49}];
-    if (v44)
+    if (aspectFitContent)
     {
-      [v43 aspectFitEdgeMargins];
+      [spec6 aspectFitEdgeMargins];
     }
 
     else
     {
-      [v43 squareEdgeMargins];
+      [spec6 squareEdgeMargins];
     }
 
-    [v10 safeAreaInsets];
+    [sectionLayoutCopy safeAreaInsets];
     PXEdgeInsetsAdd();
   }
 
-  v18 = v9;
+  v18 = layoutCopy;
   v19 = +[PXLemonadeSettings sharedInstance];
-  v20 = [v19 showSearchDebugBadges];
+  showSearchDebugBadges2 = [v19 showSearchDebugBadges];
 
-  if (v20)
+  if (showSearchDebugBadges2)
   {
     [(PXZoomablePhotosLayout *)self->_allResultsLayout addDecorationsToAllLayers:&unk_1F1910408];
   }
 
-  v21 = [v18 assetDecorationSource];
-  v22 = [v10 assetDecorationSource];
-  v23 = [v10 loadingStatusManager];
-  [v21 setLoadingStatusManager:v23];
+  assetDecorationSource = [v18 assetDecorationSource];
+  assetDecorationSource2 = [sectionLayoutCopy assetDecorationSource];
+  loadingStatusManager = [sectionLayoutCopy loadingStatusManager];
+  [assetDecorationSource setLoadingStatusManager:loadingStatusManager];
 
-  [v21 setHidesInteractiveFavoriteBadges:{objc_msgSend(v22, "hidesInteractiveFavoriteBadges")}];
-  [v21 setDecorationViewClass:{objc_msgSend(v22, "decorationViewClass")}];
-  v24 = [v22 decorationDataSource];
-  [v21 setDecorationDataSource:v24];
+  [assetDecorationSource setHidesInteractiveFavoriteBadges:{objc_msgSend(assetDecorationSource2, "hidesInteractiveFavoriteBadges")}];
+  [assetDecorationSource setDecorationViewClass:{objc_msgSend(assetDecorationSource2, "decorationViewClass")}];
+  decorationDataSource = [assetDecorationSource2 decorationDataSource];
+  [assetDecorationSource setDecorationDataSource:decorationDataSource];
 
 LABEL_28:
 }
 
-- (int64_t)_numberOfColumnsWithSpec:(id)a3
+- (int64_t)_numberOfColumnsWithSpec:(id)spec
 {
-  v3 = a3;
-  v4 = [v3 sizeClass];
-  v5 = [v3 layoutOrientation];
+  specCopy = spec;
+  sizeClass = [specCopy sizeClass];
+  layoutOrientation = [specCopy layoutOrientation];
 
-  if (v5 == 2 || v4 == 2)
+  if (layoutOrientation == 2 || sizeClass == 2)
   {
     return 5;
   }
@@ -237,13 +237,13 @@ LABEL_28:
   }
 }
 
-- (id)createSectionBodyLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outWantsDecoration:(BOOL *)a7
+- (id)createSectionBodyLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outWantsDecoration:(BOOL *)decoration
 {
-  v11 = a4;
-  v12 = *&a5->item;
-  v29[0] = *&a5->dataSourceIdentifier;
+  sourceCopy = source;
+  v12 = *&path->item;
+  v29[0] = *&path->dataSourceIdentifier;
   v29[1] = v12;
-  v13 = [v11 assetCollectionAtSectionIndexPath:v29];
+  v13 = [sourceCopy assetCollectionAtSectionIndexPath:v29];
   if (v13)
   {
     objc_opt_class();
@@ -252,31 +252,31 @@ LABEL_28:
       goto LABEL_3;
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_opt_class();
     v26 = NSStringFromClass(v27);
-    v28 = [v13 px_descriptionForAssertionMessage];
-    [v24 handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[dataSource assetCollectionAtSectionIndexPath:sectionIndexPath]", v26, v28}];
+    px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[dataSource assetCollectionAtSectionIndexPath:sectionIndexPath]", v26, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    [v24 handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[dataSource assetCollectionAtSectionIndexPath:sectionIndexPath]", v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[dataSource assetCollectionAtSectionIndexPath:sectionIndexPath]", v26}];
   }
 
 LABEL_3:
-  v14 = [v13 transientIdentifier];
-  v15 = [v14 isEqualToString:@"SearchCollectionsSection"];
+  transientIdentifier = [v13 transientIdentifier];
+  v15 = [transientIdentifier isEqualToString:@"SearchCollectionsSection"];
 
   if (v15)
   {
-    v16 = [(PXPhotosSearchBodyLayoutProvider *)self collectionSectionProvider];
-    v17 = [(PXPhotosSearchBodyLayoutProvider *)self hostViewController];
-    v18 = [(_PXPhotosSearchBodyCollectionSectionLayout *)self->_collectionSectionLayout containerInfo];
-    v19 = [PXPhotosSearchResultsCollectionsViewFactory createViewWithCollectionSectionProvider:v16 hostViewController:v17 containerInfo:v18 viewDelegate:self->_collectionSectionLayout selectionDelegate:self];
+    collectionSectionProvider = [(PXPhotosSearchBodyLayoutProvider *)self collectionSectionProvider];
+    hostViewController = [(PXPhotosSearchBodyLayoutProvider *)self hostViewController];
+    containerInfo = [(_PXPhotosSearchBodyCollectionSectionLayout *)self->_collectionSectionLayout containerInfo];
+    v19 = [PXPhotosSearchResultsCollectionsViewFactory createViewWithCollectionSectionProvider:collectionSectionProvider hostViewController:hostViewController containerInfo:containerInfo viewDelegate:self->_collectionSectionLayout selectionDelegate:self];
 
     [(PXGSingleViewLayout *)self->_collectionSectionLayout setContentView:v19];
     [(PXPhotosSearchBodyLayoutProvider *)self setCollectionsSelection:v19];
@@ -287,12 +287,12 @@ LABEL_3:
   {
     if (MEMORY[0x1A590D320]())
     {
-      v21 = [v13 transientIdentifier];
-      v22 = [v21 isEqualToString:@"SearchAllResultsSection"];
+      transientIdentifier2 = [v13 transientIdentifier];
+      v22 = [transientIdentifier2 isEqualToString:@"SearchAllResultsSection"];
 
       if (v22)
       {
-        *a7 = 0;
+        *decoration = 0;
         v20 = self->_allResultsLayout;
         goto LABEL_10;
       }
@@ -302,7 +302,7 @@ LABEL_3:
     [(_PXPhotosSearchBodyCollectionSectionLayout *)v20 setMediaKind:2];
     [(_PXPhotosSearchBodyCollectionSectionLayout *)v20 setPresentationType:0];
     [(_PXPhotosSearchBodyCollectionSectionLayout *)v20 setLazy:1];
-    -[_PXPhotosSearchBodyCollectionSectionLayout setNumberOfItems:](v20, "setNumberOfItems:", [v11 numberOfItemsInSection:a5->section]);
+    -[_PXPhotosSearchBodyCollectionSectionLayout setNumberOfItems:](v20, "setNumberOfItems:", [sourceCopy numberOfItemsInSection:path->section]);
     v19 = [[off_1E7721638 alloc] initWithStateHandler:&__block_literal_global_428];
     [(_PXPhotosSearchBodyCollectionSectionLayout *)v20 setSpriteModifier:v19];
   }
@@ -344,27 +344,27 @@ void __130__PXPhotosSearchBodyLayoutProvider_createSectionBodyLayoutForSectioned
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXSelectionManagerObservationContext_66201 != a5)
+  observableCopy = observable;
+  if (PXSelectionManagerObservationContext_66201 != context)
   {
-    if (PXZoomObservationContext != a5)
+    if (PXZoomObservationContext != context)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:228 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSearchBodyLayoutProvider.m" lineNumber:228 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
     isUpdatingPhotosViewModel = self->_isUpdatingPhotosViewModel;
     self->_isUpdatingPhotosViewModel = 1;
-    v11 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
-    v12 = [(PXPhotosSearchBodyLayoutProvider *)self zoomableViewModel];
-    [off_1E77219B8 updatePhotosViewModel:v11 fromZoomablePhotosViewModel:v12 changeDescriptor:a4];
+    viewModel = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
+    zoomableViewModel = [(PXPhotosSearchBodyLayoutProvider *)self zoomableViewModel];
+    [off_1E77219B8 updatePhotosViewModel:viewModel fromZoomablePhotosViewModel:zoomableViewModel changeDescriptor:change];
 
     self->_isUpdatingPhotosViewModel = isUpdatingPhotosViewModel;
-    if ((a4 & 0x80) != 0)
+    if ((change & 0x80) != 0)
     {
       self->_userChangedZoom = 1;
     }
@@ -372,44 +372,44 @@ void __130__PXPhotosSearchBodyLayoutProvider_createSectionBodyLayoutForSectioned
     goto LABEL_27;
   }
 
-  if ((a4 & 0x10000) != 0)
+  if ((change & 0x10000) != 0)
   {
-    v13 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
-    if ([v13 shouldAnimateZooming])
+    viewModel2 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
+    if ([viewModel2 shouldAnimateZooming])
     {
 
       goto LABEL_9;
     }
 
-    v14 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
-    v15 = [v14 isInteractiveZooming];
+    viewModel3 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
+    isInteractiveZooming = [viewModel3 isInteractiveZooming];
 
-    if (v15)
+    if (isInteractiveZooming)
     {
 LABEL_9:
-      v16 = [(PXZoomablePhotosLayout *)self->_allResultsLayout superlayout];
-      v17 = [v16 superlayout];
+      superlayout = [(PXZoomablePhotosLayout *)self->_allResultsLayout superlayout];
+      v16Superlayout = [superlayout superlayout];
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v17 numberOfSublayouts] >= 1)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [v16Superlayout numberOfSublayouts] >= 1)
       {
-        v18 = [v17 createAnimation];
-        [v18 setDuration:0.3];
-        [v18 setScope:2];
-        if ([v17 numberOfSublayouts] >= 2)
+        createAnimation = [v16Superlayout createAnimation];
+        [createAnimation setDuration:0.3];
+        [createAnimation setScope:2];
+        if ([v16Superlayout numberOfSublayouts] >= 2)
         {
           v19 = 0;
           do
           {
-            v20 = [v17 sublayoutAtIndex:v19 loadIfNeeded:0];
-            v21 = [v20 createAnimation];
-            [v21 setDuration:0.3];
-            [v21 setScope:1];
+            v20 = [v16Superlayout sublayoutAtIndex:v19 loadIfNeeded:0];
+            createAnimation2 = [v20 createAnimation];
+            [createAnimation2 setDuration:0.3];
+            [createAnimation2 setScope:1];
 
             ++v19;
           }
 
-          while (v19 < [v17 numberOfSublayouts] - 1);
+          while (v19 < [v16Superlayout numberOfSublayouts] - 1);
         }
       }
     }
@@ -417,16 +417,16 @@ LABEL_9:
 
   if (!self->_isUpdatingPhotosViewModel)
   {
-    if ((a4 & 2) != 0)
+    if ((change & 2) != 0)
     {
-      v22 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
-      v23 = [v22 selectionSnapshot];
-      v24 = [v23 isAnyItemSelected];
+      viewModel4 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
+      selectionSnapshot = [viewModel4 selectionSnapshot];
+      isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
 
-      if (v24)
+      if (isAnyItemSelected)
       {
-        v25 = [(PXPhotosSearchBodyLayoutProvider *)self collectionsSelection];
-        [v25 clearPhotosSelection];
+        collectionsSelection = [(PXPhotosSearchBodyLayoutProvider *)self collectionsSelection];
+        [collectionsSelection clearPhotosSelection];
       }
 
       zoomableViewModel = self->_zoomableViewModel;
@@ -438,7 +438,7 @@ LABEL_9:
       [(PXZoomablePhotosViewModel *)zoomableViewModel performChanges:v36];
     }
 
-    if ((a4 & 0x10000) != 0)
+    if ((change & 0x10000) != 0)
     {
       v27 = 0;
       self->_userChangedZoom = 1;
@@ -451,19 +451,19 @@ LABEL_9:
 
     else
     {
-      v28 = [(PXZoomablePhotosViewModel *)self->_zoomableViewModel specManager];
-      v29 = [v28 spec];
+      specManager = [(PXZoomablePhotosViewModel *)self->_zoomableViewModel specManager];
+      spec = [specManager spec];
 
-      v30 = [(PXPhotosSearchBodyLayoutProvider *)self _numberOfColumnsWithSpec:v29];
+      v30 = [(PXPhotosSearchBodyLayoutProvider *)self _numberOfColumnsWithSpec:spec];
       v31 = MEMORY[0x1E696AD98];
-      v32 = [v29 supportedColumns];
-      v27 = [v31 numberWithInteger:{objc_msgSend(v29, "bestColumnIndexForPreferredNumberOfColumns:allowedColumns:", v30, v32)}];
+      supportedColumns = [spec supportedColumns];
+      v27 = [v31 numberWithInteger:{objc_msgSend(spec, "bestColumnIndexForPreferredNumberOfColumns:allowedColumns:", v30, supportedColumns)}];
     }
 
     [(PXZoomablePhotosViewModel *)self->_zoomableViewModel unregisterChangeObserver:self context:PXZoomObservationContext];
-    v33 = [(PXPhotosSearchBodyLayoutProvider *)self zoomableViewModel];
-    v34 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
-    [off_1E77219B8 updateZoomablePhotosViewModel:v33 fromPhotosViewModel:v34 changeDescriptor:a4 overrideZoomColumn:v27];
+    zoomableViewModel2 = [(PXPhotosSearchBodyLayoutProvider *)self zoomableViewModel];
+    viewModel5 = [(PXPhotosSearchBodyLayoutProvider *)self viewModel];
+    [off_1E77219B8 updateZoomablePhotosViewModel:zoomableViewModel2 fromPhotosViewModel:viewModel5 changeDescriptor:change overrideZoomColumn:v27];
 
     [(PXZoomablePhotosViewModel *)self->_zoomableViewModel registerChangeObserver:self context:PXZoomObservationContext];
   }
@@ -479,27 +479,27 @@ void __65__PXPhotosSearchBodyLayoutProvider_observable_didChange_context___block
   [v3 setIsInSelectMode:{objc_msgSend(v4, "isInSelectMode")}];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v37 = v5;
+    v37 = modelCopy;
     [(PXPhotosViewModel *)viewModel unregisterChangeObserver:self context:PXSelectionManagerObservationContext_66201];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PXPhotosViewModel *)self->_viewModel performChanges:&__block_literal_global_66208];
     [(PXPhotosViewModel *)self->_viewModel registerChangeObserver:self context:PXSelectionManagerObservationContext_66201];
     v7 = [off_1E77219A0 alloc];
-    v8 = [(PXPhotosViewModel *)v37 specManager];
-    v9 = [v8 extendedTraitCollection];
-    v10 = [v7 initWithExtendedTraitCollection:v9 options:4];
+    specManager = [(PXPhotosViewModel *)v37 specManager];
+    extendedTraitCollection = [specManager extendedTraitCollection];
+    v10 = [v7 initWithExtendedTraitCollection:extendedTraitCollection options:4];
 
     if (([(PXPhotosViewModel *)v37 allowsUserDefaults]& 1) != 0)
     {
-      v11 = [off_1E7721948 standardUserDefaults];
-      v12 = [v11 searchGridsUserDefaults];
-      [v10 setUserDefaults:v12];
+      standardUserDefaults = [off_1E7721948 standardUserDefaults];
+      searchGridsUserDefaults = [standardUserDefaults searchGridsUserDefaults];
+      [v10 setUserDefaults:searchGridsUserDefaults];
     }
 
     else
@@ -507,32 +507,32 @@ void __65__PXPhotosSearchBodyLayoutProvider_observable_didChange_context___block
       [v10 setUserDefaults:0];
     }
 
-    v13 = [(PXPhotosViewModel *)v37 specManager];
-    v14 = [v13 availableThumbnailSizes];
-    [v10 setAvailableThumbnailSizes:v14];
+    specManager2 = [(PXPhotosViewModel *)v37 specManager];
+    availableThumbnailSizes = [specManager2 availableThumbnailSizes];
+    [v10 setAvailableThumbnailSizes:availableThumbnailSizes];
 
     [v10 setGridStyle:2];
     [v10 setPreferredUserInterfaceStyle:{-[PXPhotosViewModel preferredUserInterfaceStyle](v37, "preferredUserInterfaceStyle")}];
     [(PXPhotosViewModel *)v37 itemAspectRatio];
     [v10 setItemAspectRatio:?];
-    v15 = [(PXPhotosViewModel *)v37 preferredAssetCropDelegate];
-    [v10 setForceSaliency:v15 != 0];
+    preferredAssetCropDelegate = [(PXPhotosViewModel *)v37 preferredAssetCropDelegate];
+    [v10 setForceSaliency:preferredAssetCropDelegate != 0];
 
     [v10 setOverrideDefaultNumberOfColumns:{-[PXPhotosViewModel overrideDefaultNumberOfColumns](v37, "overrideDefaultNumberOfColumns")}];
-    v36 = [(PXPhotosViewModel *)v37 dataSourceManager];
-    v16 = [v36 dataSource];
-    v35 = [v16 numberOfSections] - 1;
+    dataSourceManager = [(PXPhotosViewModel *)v37 dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    v35 = [dataSource numberOfSections] - 1;
 
     v17 = [off_1E77219B0 alloc];
-    v18 = [(PXPhotosViewModel *)v37 selectionManager];
-    v19 = [(PXPhotosViewModel *)v37 mediaProvider];
-    v20 = [(PXPhotosViewModel *)v37 loadingStatusManager];
-    v21 = [(PXPhotosViewModel *)v37 badgesModifier];
-    v22 = [(PXPhotosViewModel *)v37 preferredAssetCropDelegate];
-    v23 = [(PXPhotosViewModel *)v37 preferredColumnCountsDelegate];
-    v24 = [(PXPhotosViewModel *)v37 inlinePlaybackController];
+    selectionManager = [(PXPhotosViewModel *)v37 selectionManager];
+    mediaProvider = [(PXPhotosViewModel *)v37 mediaProvider];
+    loadingStatusManager = [(PXPhotosViewModel *)v37 loadingStatusManager];
+    badgesModifier = [(PXPhotosViewModel *)v37 badgesModifier];
+    preferredAssetCropDelegate2 = [(PXPhotosViewModel *)v37 preferredAssetCropDelegate];
+    preferredColumnCountsDelegate = [(PXPhotosViewModel *)v37 preferredColumnCountsDelegate];
+    inlinePlaybackController = [(PXPhotosViewModel *)v37 inlinePlaybackController];
     LOBYTE(v34) = 0;
-    v25 = [v17 initWithDataSourceManager:v36 selectionManager:v18 mediaProvider:v19 specManager:v10 loadingStatusManager:v20 badgesModifier:v21 preferredAssetCropDelegate:v22 preferredColumnCountsDelegate:v23 inlinePlaybackController:v24 sectionIndex:v35 headersEnabled:v34];
+    v25 = [v17 initWithDataSourceManager:dataSourceManager selectionManager:selectionManager mediaProvider:mediaProvider specManager:v10 loadingStatusManager:loadingStatusManager badgesModifier:badgesModifier preferredAssetCropDelegate:preferredAssetCropDelegate2 preferredColumnCountsDelegate:preferredColumnCountsDelegate inlinePlaybackController:inlinePlaybackController sectionIndex:v35 headersEnabled:v34];
 
     [(PXZoomablePhotosViewModel *)self->_zoomableViewModel unregisterChangeObserver:self context:PXZoomObservationContext];
     zoomableViewModel = self->_zoomableViewModel;
@@ -557,19 +557,19 @@ void __65__PXPhotosSearchBodyLayoutProvider_observable_didChange_context___block
     self->_userChangedZoom = 0;
     *&self->_currentSpecSizeClass = vdupq_n_s64(2uLL);
 
-    v5 = v37;
+    modelCopy = v37;
   }
 }
 
-- (PXPhotosSearchBodyLayoutProvider)initWithPhotoLibrary:(id)a3
+- (PXPhotosSearchBodyLayoutProvider)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PXPhotosSearchBodyLayoutProvider;
   v5 = [(PXPhotosSearchBodyLayoutProvider *)&v9 init];
   if (v5)
   {
-    v6 = [[PXPhotosSearchCollectionSectionProvider alloc] initWithPhotoLibrary:v4];
+    v6 = [[PXPhotosSearchCollectionSectionProvider alloc] initWithPhotoLibrary:libraryCopy];
     collectionSectionProvider = v5->_collectionSectionProvider;
     v5->_collectionSectionProvider = v6;
   }
@@ -577,16 +577,16 @@ void __65__PXPhotosSearchBodyLayoutProvider_observable_didChange_context___block
   return v5;
 }
 
-- (PXPhotosSearchBodyLayoutProvider)initWithCollectionSectionProvider:(id)a3
+- (PXPhotosSearchBodyLayoutProvider)initWithCollectionSectionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = PXPhotosSearchBodyLayoutProvider;
   v6 = [(PXPhotosSearchBodyLayoutProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionSectionProvider, a3);
+    objc_storeStrong(&v6->_collectionSectionProvider, provider);
   }
 
   return v7;

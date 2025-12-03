@@ -3,21 +3,21 @@
 - (CGRect)displayViewport;
 - (CGRect)idealViewport;
 - (CGRect)outputFramingRectOfInterest;
-- (CGRect)processWithMetadata:(id)a3;
+- (CGRect)processWithMetadata:(id)metadata;
 - (CGRect)targetViewport;
-- (CGRect)warpBoundingBoxInFrameCoordinatesToDisplayCoordinates:(CGRect)a3;
+- (CGRect)warpBoundingBoxInFrameCoordinatesToDisplayCoordinates:(CGRect)coordinates;
 - (CinematicFramingSession)init;
-- (CinematicFramingSession)initWithOutputDimensions:(id)a3;
-- (CinematicFramingSession)initWithOutputDimensions:(id)a3 mode:(int)a4 portType:(id)a5 deviceModelName:(id)a6;
-- (CinematicFramingSession)initWithOutputDimensions:(id)a3 portType:(id)a4 deviceModelName:(id)a5;
+- (CinematicFramingSession)initWithOutputDimensions:(id)dimensions;
+- (CinematicFramingSession)initWithOutputDimensions:(id)dimensions mode:(int)mode portType:(id)type deviceModelName:(id)name;
+- (CinematicFramingSession)initWithOutputDimensions:(id)dimensions portType:(id)type deviceModelName:(id)name;
 - (NSArray)roiHeatMapCounts;
-- (int)processPixelBuffer:(__CVBuffer *)a3 outputPixelBuffer:(__CVBuffer *)a4;
+- (int)processPixelBuffer:(__CVBuffer *)buffer outputPixelBuffer:(__CVBuffer *)pixelBuffer;
 - (uint64_t)init;
-- (void)_updateROIHeatMapCountersWithCropRect:(CGRect)a3;
+- (void)_updateROIHeatMapCountersWithCropRect:(CGRect)rect;
 - (void)init;
-- (void)setCameraOrientation:(int)a3;
-- (void)setFramingStyle:(int)a3;
-- (void)setOutputFramingRectOfInterest:(CGRect)a3;
+- (void)setCameraOrientation:(int)orientation;
+- (void)setFramingStyle:(int)style;
+- (void)setOutputFramingRectOfInterest:(CGRect)interest;
 @end
 
 @implementation CinematicFramingSession
@@ -59,58 +59,58 @@ LABEL_8:
   return v8;
 }
 
-- (CinematicFramingSession)initWithOutputDimensions:(id)a3 mode:(int)a4 portType:(id)a5 deviceModelName:(id)a6
+- (CinematicFramingSession)initWithOutputDimensions:(id)dimensions mode:(int)mode portType:(id)type deviceModelName:(id)name
 {
-  v8 = a5;
-  v9 = [(CinematicFramingSession *)self initWithOutputDimensions:a3];
-  v10 = isCinematicFramingFrontCamera(v8);
+  typeCopy = type;
+  v9 = [(CinematicFramingSession *)self initWithOutputDimensions:dimensions];
+  v10 = isCinematicFramingFrontCamera(typeCopy);
 
   [(CinematicFramingRenderer *)v9->_renderer setIsFrontCamera:v10];
   return v9;
 }
 
-- (CinematicFramingSession)initWithOutputDimensions:(id)a3 portType:(id)a4 deviceModelName:(id)a5
+- (CinematicFramingSession)initWithOutputDimensions:(id)dimensions portType:(id)type deviceModelName:(id)name
 {
-  v7 = a4;
-  v8 = [(CinematicFramingSession *)self initWithOutputDimensions:a3];
-  v9 = isCinematicFramingFrontCamera(v7);
+  typeCopy = type;
+  v8 = [(CinematicFramingSession *)self initWithOutputDimensions:dimensions];
+  v9 = isCinematicFramingFrontCamera(typeCopy);
 
   [(CinematicFramingRenderer *)v8->_renderer setIsFrontCamera:v9];
   return v8;
 }
 
-- (CinematicFramingSession)initWithOutputDimensions:(id)a3
+- (CinematicFramingSession)initWithOutputDimensions:(id)dimensions
 {
-  v3 = self;
+  selfCopy = self;
   v4 = 0;
-  var1 = a3.var1;
-  if (a3.var1)
+  var1 = dimensions.var1;
+  if (dimensions.var1)
   {
-    var0 = a3.var0;
-    if (a3.var0)
+    var0 = dimensions.var0;
+    if (dimensions.var0)
     {
       v7 = [(CinematicFramingSession *)self init];
-      v3 = v7;
+      selfCopy = v7;
       if (v7)
       {
         v7->_outputDimensions.width = var0;
         v7->_outputDimensions.height = var1;
         v8 = [[CinematicFramingRenderer alloc] initWithOutputDimensions:*&v7->_outputDimensions];
-        renderer = v3->_renderer;
-        v3->_renderer = v8;
+        renderer = selfCopy->_renderer;
+        selfCopy->_renderer = v8;
 
-        if (v3->_renderer)
+        if (selfCopy->_renderer)
         {
-          v10 = [[CinematicFramingDirector alloc] initWithFramingSpaceManager:v3->_renderer];
-          director = v3->_director;
-          v3->_director = v10;
+          v10 = [[CinematicFramingDirector alloc] initWithFramingSpaceManager:selfCopy->_renderer];
+          director = selfCopy->_director;
+          selfCopy->_director = v10;
 
-          if (v3->_director)
+          if (selfCopy->_director)
           {
-            [(CinematicFramingSession *)v3 setFramingStyle:0];
-            v3->_calibrationDataRegistered = 0;
-            v3 = v3;
-            v4 = v3;
+            [(CinematicFramingSession *)selfCopy setFramingStyle:0];
+            selfCopy->_calibrationDataRegistered = 0;
+            selfCopy = selfCopy;
+            v4 = selfCopy;
             goto LABEL_10;
           }
 
@@ -150,11 +150,11 @@ LABEL_10:
   return v3;
 }
 
-- (void)setFramingStyle:(int)a3
+- (void)setFramingStyle:(int)style
 {
-  if (a3 <= 4)
+  if (style <= 4)
   {
-    self->_framingStyle = a3;
+    self->_framingStyle = style;
     v5 = [(CinematicFramingSessionOptions *)self->_options optionsForFramingStyle:?];
     [(CinematicFramingRenderer *)self->_renderer setOptions:v5];
 
@@ -198,10 +198,10 @@ LABEL_10:
   return result;
 }
 
-- (void)setCameraOrientation:(int)a3
+- (void)setCameraOrientation:(int)orientation
 {
-  v3 = *&a3;
-  if ([(CinematicFramingRenderer *)self->_renderer cameraOrientation]!= a3)
+  v3 = *&orientation;
+  if ([(CinematicFramingRenderer *)self->_renderer cameraOrientation]!= orientation)
   {
     renderer = self->_renderer;
     [(CinematicFramingDirector *)self->_director currentViewport];
@@ -217,14 +217,14 @@ LABEL_10:
   }
 }
 
-- (CGRect)processWithMetadata:(id)a3
+- (CGRect)processWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 portType];
-  v6 = v5;
-  if (v5)
+  metadataCopy = metadata;
+  portType = [metadataCopy portType];
+  v6 = portType;
+  if (portType)
   {
-    if ((isCinematicFramingAllowedCamera(v5) & 1) == 0)
+    if ((isCinematicFramingAllowedCamera(portType) & 1) == 0)
     {
       v32 = *MEMORY[0x277CBF398];
       v34 = *(MEMORY[0x277CBF398] + 8);
@@ -236,10 +236,10 @@ LABEL_10:
     [(CinematicFramingRenderer *)self->_renderer setIsFrontCamera:isCinematicFramingFrontCamera(v6)];
   }
 
-  -[CinematicFramingRenderer setFrontCameraHas180DegreesRotation:](self->_renderer, "setFrontCameraHas180DegreesRotation:", [v4 frontCameraHas180DegreesRotation]);
+  -[CinematicFramingRenderer setFrontCameraHas180DegreesRotation:](self->_renderer, "setFrontCameraHas180DegreesRotation:", [metadataCopy frontCameraHas180DegreesRotation]);
   renderer = self->_renderer;
-  v8 = [v4 calibrationDataDictionary];
-  v9 = [(CinematicFramingRenderer *)renderer registerCalibrationData:v8];
+  calibrationDataDictionary = [metadataCopy calibrationDataDictionary];
+  v9 = [(CinematicFramingRenderer *)renderer registerCalibrationData:calibrationDataDictionary];
 
   if (!self->_calibrationDataRegistered && !v9)
   {
@@ -248,24 +248,24 @@ LABEL_10:
   }
 
   v10 = self->_renderer;
-  [v4 gravityX];
+  [metadataCopy gravityX];
   v12 = v11;
-  [v4 gravityY];
+  [metadataCopy gravityY];
   v14 = v13;
-  [v4 gravityZ];
+  [metadataCopy gravityZ];
   LODWORD(v16) = v15;
   LODWORD(v17) = v12;
   LODWORD(v18) = v14;
   [(CinematicFramingRenderer *)v10 registerGravityX:v17 y:v18 z:v16];
   v19 = self->_renderer;
-  [v4 additionalCameraRotation];
+  [metadataCopy additionalCameraRotation];
   [(CinematicFramingRenderer *)v19 registerAdditionalCameraRotation:?];
-  [(CinematicFramingRenderer *)self->_renderer warpMetadataInInputImageCoordinatesToFramingSpace:v4];
-  v20 = [v4 cameraOrientation];
-  if (v20 != -1)
+  [(CinematicFramingRenderer *)self->_renderer warpMetadataInInputImageCoordinatesToFramingSpace:metadataCopy];
+  cameraOrientation = [metadataCopy cameraOrientation];
+  if (cameraOrientation != -1)
   {
-    v21 = v20;
-    if (v20 != [(CinematicFramingRenderer *)self->_renderer cameraOrientation])
+    v21 = cameraOrientation;
+    if (cameraOrientation != [(CinematicFramingRenderer *)self->_renderer cameraOrientation])
     {
       v22 = self->_renderer;
       [(CinematicFramingDirector *)self->_director currentViewport];
@@ -279,7 +279,7 @@ LABEL_10:
     }
   }
 
-  [(CinematicFramingDirector *)self->_director updateWithMetadata:v4];
+  [(CinematicFramingDirector *)self->_director updateWithMetadata:metadataCopy];
   [(CinematicFramingDirector *)self->_director currentViewport];
   v32 = v31;
   v34 = v33;
@@ -298,14 +298,14 @@ LABEL_12:
   return result;
 }
 
-- (int)processPixelBuffer:(__CVBuffer *)a3 outputPixelBuffer:(__CVBuffer *)a4
+- (int)processPixelBuffer:(__CVBuffer *)buffer outputPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   [(CinematicFramingSession *)self currentViewport];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CinematicFramingRenderer *)self->_renderer processBuffer:a3 cropRect:a4 outputPixelBuffer:?];
+  v15 = [(CinematicFramingRenderer *)self->_renderer processBuffer:buffer cropRect:pixelBuffer outputPixelBuffer:?];
   if (v15)
   {
     [CinematicFramingSession processPixelBuffer:outputPixelBuffer:];
@@ -319,9 +319,9 @@ LABEL_12:
   return v15;
 }
 
-- (CGRect)warpBoundingBoxInFrameCoordinatesToDisplayCoordinates:(CGRect)a3
+- (CGRect)warpBoundingBoxInFrameCoordinatesToDisplayCoordinates:(CGRect)coordinates
 {
-  [(CinematicFramingRenderer *)self->_renderer warpRectInInputImageCoordinatesToFramingSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CinematicFramingRenderer *)self->_renderer warpRectInInputImageCoordinatesToFramingSpace:coordinates.origin.x, coordinates.origin.y, coordinates.size.width, coordinates.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -363,12 +363,12 @@ LABEL_12:
   return result;
 }
 
-- (void)setOutputFramingRectOfInterest:(CGRect)a3
+- (void)setOutputFramingRectOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
   v12.size.width = 1.0;
@@ -395,12 +395,12 @@ LABEL_12:
   }
 }
 
-- (void)_updateROIHeatMapCountersWithCropRect:(CGRect)a3
+- (void)_updateROIHeatMapCountersWithCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CinematicFramingRenderer *)self->_renderer framingSpaceBounds];
   v9 = x - v8;
   [(CinematicFramingRenderer *)self->_renderer framingSpaceBounds];

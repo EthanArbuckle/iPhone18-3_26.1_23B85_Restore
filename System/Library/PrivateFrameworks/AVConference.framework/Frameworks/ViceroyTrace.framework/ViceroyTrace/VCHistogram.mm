@@ -1,19 +1,19 @@
 @interface VCHistogram
-- (BOOL)addOnlyExactMatchingValue:(unsigned int)a3 increment:(unsigned int)a4;
-- (BOOL)merge:(id)a3;
-- (VCHistogram)initWithRanges:(const unsigned int *)a3 bucketValues:(id)a4;
+- (BOOL)addOnlyExactMatchingValue:(unsigned int)value increment:(unsigned int)increment;
+- (BOOL)merge:(id)merge;
+- (VCHistogram)initWithRanges:(const unsigned int *)ranges bucketValues:(id)values;
 - (id)array;
 - (id)description;
-- (unsigned)bucketValueAtIndex:(unsigned int)a3;
-- (void)addValue:(unsigned int)a3 withIncrement:(unsigned int)a4;
-- (void)convertHistogramIntoComplementaryPercentage:(id)a3;
-- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)a3;
+- (unsigned)bucketValueAtIndex:(unsigned int)index;
+- (void)addValue:(unsigned int)value withIncrement:(unsigned int)increment;
+- (void)convertHistogramIntoComplementaryPercentage:(id)percentage;
+- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)from;
 - (void)dealloc;
 @end
 
 @implementation VCHistogram
 
-- (VCHistogram)initWithRanges:(const unsigned int *)a3 bucketValues:(id)a4
+- (VCHistogram)initWithRanges:(const unsigned int *)ranges bucketValues:(id)values
 {
   v14.receiver = self;
   v14.super_class = VCHistogram;
@@ -21,11 +21,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->_ranges = a3;
+    v6->_ranges = ranges;
     v6->_buckets = malloc_type_calloc(v6->_bucketCount, 4uLL, 0x100004052888210uLL);
-    if (a4)
+    if (values)
     {
-      v8 = [a4 componentsSeparatedByString:{@", "}];
+      v8 = [values componentsSeparatedByString:{@", "}];
       v9 = [v8 count];
       bucketCount = v7->_bucketCount;
       if (v9 == bucketCount && bucketCount != 0)
@@ -58,18 +58,18 @@
   [(VCHistogram *)&v4 dealloc];
 }
 
-- (BOOL)addOnlyExactMatchingValue:(unsigned int)a3 increment:(unsigned int)a4
+- (BOOL)addOnlyExactMatchingValue:(unsigned int)value increment:(unsigned int)increment
 {
   bucketCount = self->_bucketCount;
   if (bucketCount)
   {
     ranges = self->_ranges;
-    if (*ranges == a3)
+    if (*ranges == value)
     {
       v6 = 0;
       LOBYTE(bucketCount) = 1;
 LABEL_8:
-      self->_buckets[v6] += a4;
+      self->_buckets[v6] += increment;
     }
 
     else
@@ -79,7 +79,7 @@ LABEL_8:
       while (bucketCount - 1 != v6)
       {
         v8 = v7[v6++];
-        if (v8 == a3)
+        if (v8 == value)
         {
           LOBYTE(bucketCount) = v6 < bucketCount;
           goto LABEL_8;
@@ -93,7 +93,7 @@ LABEL_8:
   return bucketCount;
 }
 
-- (void)addValue:(unsigned int)a3 withIncrement:(unsigned int)a4
+- (void)addValue:(unsigned int)value withIncrement:(unsigned int)increment
 {
   v4 = self->_bucketCount - 1;
   if (self->_bucketCount == 1)
@@ -104,7 +104,7 @@ LABEL_8:
   else
   {
     v5 = 0;
-    while (self->_ranges[v5] < a3)
+    while (self->_ranges[v5] < value)
     {
       if (v4 == ++v5)
       {
@@ -117,14 +117,14 @@ LABEL_8:
     v4 = v4;
   }
 
-  self->_buckets[v4] += a4;
+  self->_buckets[v4] += increment;
 }
 
-- (unsigned)bucketValueAtIndex:(unsigned int)a3
+- (unsigned)bucketValueAtIndex:(unsigned int)index
 {
-  if (self->_bucketCount - 1 >= a3)
+  if (self->_bucketCount - 1 >= index)
   {
-    return self->_buckets[a3];
+    return self->_buckets[index];
   }
 
   else
@@ -133,11 +133,11 @@ LABEL_8:
   }
 }
 
-- (BOOL)merge:(id)a3
+- (BOOL)merge:(id)merge
 {
   ranges = self->_ranges;
-  v6 = [a3 ranges];
-  if (ranges == v6)
+  ranges = [merge ranges];
+  if (ranges == ranges)
   {
     bucketCount = self->_bucketCount;
     v8 = bucketCount - 1;
@@ -145,7 +145,7 @@ LABEL_8:
     {
       do
       {
-        self->_buckets[v8] += [a3 bucketValueAtIndex:v8];
+        self->_buckets[v8] += [merge bucketValueAtIndex:v8];
         --v8;
       }
 
@@ -153,13 +153,13 @@ LABEL_8:
     }
   }
 
-  return ranges == v6;
+  return ranges == ranges;
 }
 
-- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)a3
+- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)from
 {
   bucketCount = self->_bucketCount;
-  if (bucketCount == [a3 bucketCount])
+  if (bucketCount == [from bucketCount])
   {
     v6 = self->_bucketCount;
     v7 = v6 - 1;
@@ -167,7 +167,7 @@ LABEL_8:
     {
       do
       {
-        v8 = [a3 bucketValueAtIndex:v7];
+        v8 = [from bucketValueAtIndex:v7];
         buckets = self->_buckets;
         if (v8)
         {
@@ -192,10 +192,10 @@ LABEL_8:
   }
 }
 
-- (void)convertHistogramIntoComplementaryPercentage:(id)a3
+- (void)convertHistogramIntoComplementaryPercentage:(id)percentage
 {
   bucketCount = self->_bucketCount;
-  if (bucketCount == [a3 bucketCount])
+  if (bucketCount == [percentage bucketCount])
   {
     v6 = self->_bucketCount;
     v7 = v6 - 1;
@@ -203,7 +203,7 @@ LABEL_8:
     {
       do
       {
-        if ([a3 bucketValueAtIndex:v7])
+        if ([percentage bucketValueAtIndex:v7])
         {
           self->_buckets[v7] = 100 - self->_buckets[v7];
         }

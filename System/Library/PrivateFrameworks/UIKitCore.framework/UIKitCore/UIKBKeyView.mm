@@ -1,49 +1,49 @@
 @interface UIKBKeyView
 + (BOOL)_shouldShowDebugHitArea;
-+ (BOOL)isDotKey:(id)a3;
++ (BOOL)isDotKey:(id)key;
 + (BOOL)shouldUseOvalHitArea;
 + (int64_t)_hitAreaPercent;
 - (BOOL)_isActivePopupKey;
 - (BOOL)_shouldUpdateLayers;
-- (BOOL)allowBackgroundCachingForRenderFlags:(int64_t)a3;
+- (BOOL)allowBackgroundCachingForRenderFlags:(int64_t)flags;
 - (BOOL)hasRendered;
-- (BOOL)pointInsideTapActionRegion:(CGPoint)a3;
+- (BOOL)pointInsideTapActionRegion:(CGPoint)region;
 - (CGRect)drawFrame;
 - (CGRect)tapActionRegion;
 - (CGRect)variantFrame;
 - (NSString)cacheKey;
 - (UIEdgeInsets)displayInsets;
-- (UIKBKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
-- (UIKBKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6;
+- (UIKBKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
+- (UIKBKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits;
 - (UIKBRenderFactory)factory;
 - (UIKeyboardMenuView)popupMenu;
 - (id)_generateBackdropAndBorderMaskImage;
-- (id)cacheKeysForRenderFlags:(id)a3;
-- (id)layerForRenderFlags:(int64_t)a3;
-- (id)renderFlagsForTraits:(id)a3;
+- (id)cacheKeysForRenderFlags:(id)flags;
+- (id)layerForRenderFlags:(int64_t)flags;
+- (id)renderFlagsForTraits:(id)traits;
 - (int)textEffectsVisibilityLevel;
 - (int64_t)assetIdiom;
 - (int64_t)cachedRenderFlags;
-- (int64_t)imageOrientationForLayer:(id)a3;
+- (int64_t)imageOrientationForLayer:(id)layer;
 - (unint64_t)focusableVariantCount;
-- (void)_populateLayer:(id)a3 withContents:(id)a4;
+- (void)_populateLayer:(id)layer withContents:(id)contents;
 - (void)_updateDebugHitTargetLayer;
 - (void)changeBackgroundToActiveIfNecessary;
 - (void)changeBackgroundToEnabled;
-- (void)configureBackdropView:(id)a3 forRenderConfig:(id)a4;
+- (void)configureBackdropView:(id)view forRenderConfig:(id)config;
 - (void)dealloc;
-- (void)dimKeys:(id)a3;
-- (void)displayLayer:(id)a3;
-- (void)drawContentsOfRenderers:(id)a3;
-- (void)hideKeyCap:(BOOL)a3;
+- (void)dimKeys:(id)keys;
+- (void)displayLayer:(id)layer;
+- (void)drawContentsOfRenderers:(id)renderers;
+- (void)hideKeyCap:(BOOL)cap;
 - (void)layoutSubviews;
-- (void)orientKeyCap:(int64_t)a3;
+- (void)orientKeyCap:(int64_t)cap;
 - (void)prepareForDisplay;
 - (void)removeFromSuperview;
-- (void)setRenderConfig:(id)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
-- (void)willDisplayModalActionView:(id)a3 withSubTreeKeyView:(id)a4 completion:(id)a5;
+- (void)setRenderConfig:(id)config;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
+- (void)willDisplayModalActionView:(id)view withSubTreeKeyView:(id)keyView completion:(id)completion;
 @end
 
 @implementation UIKBKeyView
@@ -88,15 +88,15 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke(uint64_t a1, void *a2)
   v26[1] = v26;
   v26[2] = 0x2020000000;
   v27 = 0;
-  v3 = [(UIKBKeyView *)self factory];
-  v4 = [v3 traitsForKey:self->m_key onKeyplane:self->m_keyplane];
+  factory = [(UIKBKeyView *)self factory];
+  v4 = [factory traitsForKey:self->m_key onKeyplane:self->m_keyplane];
 
   v5 = [(UIKBKeyView *)self renderFlagsForTraits:v4];
   keyLayers = self->_keyLayers;
   if (!keyLayers || (v7 = MEMORY[0x1E695DFD8], -[NSMutableDictionary allKeys](keyLayers, "allKeys"), v8 = objc_claimAutoreleasedReturnValue(), [v7 setWithArray:v8], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", v5), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToSet:", v10), v10, v9, v8, !v11) || -[UIKBKeyView requiresSublayers](self, "requiresSublayers") && (renderedKeyState = self->_renderedKeyState, renderedKeyState != -[UIKBTree state](self->m_key, "state")))
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __32__UIKBKeyView_prepareForDisplay__block_invoke;
@@ -105,7 +105,7 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke(uint64_t a1, void *a2)
     v25 = v26;
     v15 = v13;
     v23 = v15;
-    v16 = v14;
+    v16 = array;
     v24 = v16;
     [v5 enumerateObjectsWithOptions:2 usingBlock:v22];
     v17 = self->_keyLayers;
@@ -132,12 +132,12 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke(uint64_t a1, void *a2)
   m_factory = self->m_factory;
   if (!m_factory)
   {
-    v4 = [(UIKBKeyView *)self renderConfig];
-    v5 = [UIKBRenderingContext renderingContextForRenderConfig:v4];
+    renderConfig = [(UIKBKeyView *)self renderConfig];
+    v5 = [UIKBRenderingContext renderingContextForRenderConfig:renderConfig];
 
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 textInputTraits];
-    [v5 setKeyboardType:{objc_msgSend(v7, "keyboardType")}];
+    textInputTraits = [v6 textInputTraits];
+    [v5 setKeyboardType:{objc_msgSend(textInputTraits, "keyboardType")}];
 
     [v5 setIsFloating:{-[UIKBTree isFloating](self->m_keyplane, "isFloating")}];
     v8 = [UIKBRenderFactory factoryForVisualStyle:[(UIKBTree *)self->m_keyplane visualStyling] renderingContext:v5];
@@ -173,9 +173,9 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke(uint64_t a1, void *a2)
   m_allowsCaching = self->m_allowsCaching;
   if (!m_allowsCaching)
   {
-    v4 = [(UIKBTree *)self->m_key displayType];
-    v5 = v4 > 0x37 || ((1 << v4) & 0x80003000001000) == 0;
-    if (!v5 || ((v12 = v4, v13 = -[UIKBTree visualStyling](self->m_keyplane, "visualStyling") & 0xFF00, v12 != 56) ? (v14 = v13 == 32512) : (v14 = 1), v14 || v12 == 4 && (-[UIKBKeyView renderConfig](self, "renderConfig"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 animatedBackground], v15, v16)))
+    displayType = [(UIKBTree *)self->m_key displayType];
+    v5 = displayType > 0x37 || ((1 << displayType) & 0x80003000001000) == 0;
+    if (!v5 || ((v12 = displayType, v13 = -[UIKBTree visualStyling](self->m_keyplane, "visualStyling") & 0xFF00, v12 != 56) ? (v14 = v13 == 32512) : (v14 = 1), v14 || v12 == 4 && (-[UIKBKeyView renderConfig](self, "renderConfig"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 animatedBackground], v15, v16)))
     {
       v6 = MEMORY[0x1E695E4C0];
     }
@@ -194,10 +194,10 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke(uint64_t a1, void *a2)
     return 0;
   }
 
-  v7 = [(UIKBTree *)self->m_key state];
+  state = [(UIKBTree *)self->m_key state];
   result = 255;
-  v9 = v7 - 4;
-  if ((v7 - 4) <= 0x3C)
+  v9 = state - 4;
+  if ((state - 4) <= 0x3C)
   {
     if (((1 << v9) & 0x1000000010000010) != 0)
     {
@@ -209,7 +209,7 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke(uint64_t a1, void *a2)
       goto LABEL_12;
     }
 
-    if (v7 == 4)
+    if (state == 4)
     {
       if ([(UIKBTree *)self->m_key displayType]!= 14 && [(UIKBTree *)self->m_key displayType]!= 11 && [(UIKBTree *)self->m_key displayType]!= 47 && [(UIKBTree *)self->m_key displayType]!= 48 && [(UIKBTree *)self->m_key interactionType]!= 16)
       {
@@ -234,18 +234,18 @@ LABEL_12:
     }
   }
 
-  if (v7 == 1)
+  if (state == 1)
   {
     return result;
   }
 
-  if (v7 != 2)
+  if (state != 2)
   {
     return 0;
   }
 
-  v10 = [(UIKBTree *)self->m_key name];
-  v11 = [v10 isEqualToString:@"LanguageIndicator"];
+  name = [(UIKBTree *)self->m_key name];
+  v11 = [name isEqualToString:@"LanguageIndicator"];
 
   if (v11)
   {
@@ -257,8 +257,8 @@ LABEL_12:
     return 255;
   }
 
-  v17 = [(UIKBTree *)self->m_key overrideDisplayString];
-  v18 = [v17 isEqualToString:@"emoji"];
+  overrideDisplayString = [(UIKBTree *)self->m_key overrideDisplayString];
+  v18 = [overrideDisplayString isEqualToString:@"emoji"];
 
   if (v18)
   {
@@ -316,8 +316,8 @@ void __32__UIKBKeyView_prepareForDisplay__block_invoke_2(uint64_t a1, uint64_t a
     return 0;
   }
 
-  v3 = [(UIKBKeyView *)self factory];
-  v4 = [v3 allowsPaddleForKey:self->m_key];
+  factory = [(UIKBKeyView *)self factory];
+  v4 = [factory allowsPaddleForKey:self->m_key];
 
   return v4;
 }
@@ -405,34 +405,34 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
   }
 }
 
-- (UIKBKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  keyplaneCopy = keyplane;
+  keyCopy = key;
   v21.receiver = self;
   v21.super_class = UIKBKeyView;
-  v14 = [(UIView *)&v21 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(UIView *)&v21 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    [(UIView *)v14 setEnabled:0];
+    [(UIView *)height setEnabled:0];
     v15->_cachedBackgroundOpacity = 1.0;
-    objc_storeStrong(&v15->m_keyplane, a4);
-    objc_storeStrong(&v15->m_key, a5);
+    objc_storeStrong(&v15->m_keyplane, keyplane);
+    objc_storeStrong(&v15->m_key, key);
     [(UIView *)v15 setOpaque:[(UIKBKeyView *)v15 _viewShouldBeOpaque]];
     v15->_containedInDynamicKey = 0;
-    if ([v13 interactionType] == 6)
+    if ([keyCopy interactionType] == 6)
     {
-      v16 = [v13 name];
-      if ([v16 rangeOfString:@"HWR"] == 0x7FFFFFFFFFFFFFFFLL)
+      name = [keyCopy name];
+      if ([name rangeOfString:@"HWR"] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [v13 displayTypeHint];
+        displayTypeHint = [keyCopy displayTypeHint];
 
-        if (v17 != 11)
+        if (displayTypeHint != 11)
         {
           if (+[UIKeyboardImpl rivenTranslationPreference])
           {
@@ -459,35 +459,35 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
   return v15;
 }
 
-- (UIKBKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6
+- (UIKBKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a6;
-  v15 = [(UIKBKeyView *)self initWithFrame:a4 keyplane:a5 key:x, y, width, height];
-  v16 = v15;
-  if (v15)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitsCopy = traits;
+  height = [(UIKBKeyView *)self initWithFrame:keyplane keyplane:key key:x, y, width, height];
+  v16 = height;
+  if (height)
   {
-    objc_storeStrong(&v15->_screenTraits, a6);
+    objc_storeStrong(&height->_screenTraits, traits);
   }
 
   return v16;
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
-  v8 = a3;
-  v7 = a4;
-  if (v7)
+  keyplaneCopy = keyplane;
+  keyCopy = key;
+  if (keyCopy)
   {
-    objc_storeStrong(&self->m_key, a4);
+    objc_storeStrong(&self->m_key, key);
   }
 
-  if (v8)
+  if (keyplaneCopy)
   {
-    objc_storeStrong(&self->m_keyplane, a3);
+    objc_storeStrong(&self->m_keyplane, keyplane);
   }
 
   [(UIView *)self setOpaque:[(UIKBKeyView *)self _viewShouldBeOpaque]];
@@ -547,13 +547,13 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
   }
 }
 
-+ (BOOL)isDotKey:(id)a3
++ (BOOL)isDotKey:(id)key
 {
-  v3 = a3;
-  if ([v3 displayType] == 27)
+  keyCopy = key;
+  if ([keyCopy displayType] == 27)
   {
-    v4 = [v3 name];
-    v5 = [v4 isEqualToString:@"Email-Dot-Key"];
+    name = [keyCopy name];
+    v5 = [name isEqualToString:@"Email-Dot-Key"];
   }
 
   else
@@ -584,9 +584,9 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
 
       if ([objc_opt_class() _shouldShowDebugHitArea])
       {
-        v7 = [MEMORY[0x1E69794A0] layer];
+        layer = [MEMORY[0x1E69794A0] layer];
         v8 = self->_debugHitTargetLayer;
-        self->_debugHitTargetLayer = v7;
+        self->_debugHitTargetLayer = layer;
 
         v9 = [UIBezierPath bezierPathWithOvalInRect:self->_tapActionRegion.origin.x, self->_tapActionRegion.origin.y, self->_tapActionRegion.size.width, self->_tapActionRegion.size.height];
         -[CAShapeLayer setPath:](self->_debugHitTargetLayer, "setPath:", [v9 CGPath]);
@@ -594,17 +594,17 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
         v10 = [UIColor colorWithRed:1.0 green:1.0 blue:0.0 alpha:0.4];
         -[CAShapeLayer setFillColor:](self->_debugHitTargetLayer, "setFillColor:", [v10 CGColor]);
 
-        v11 = [(UIView *)self layer];
-        [v11 insertSublayer:self->_debugHitTargetLayer atIndex:0];
+        layer2 = [(UIView *)self layer];
+        [layer2 insertSublayer:self->_debugHitTargetLayer atIndex:0];
       }
     }
   }
 }
 
-- (BOOL)pointInsideTapActionRegion:(CGPoint)a3
+- (BOOL)pointInsideTapActionRegion:(CGPoint)region
 {
-  y = a3.y;
-  x = a3.x;
+  y = region.y;
+  x = region.x;
   if ([objc_opt_class() shouldUseOvalHitArea] && (v6 = objc_opt_class(), -[UIKBKeyView key](self, "key"), v7 = objc_claimAutoreleasedReturnValue(), LOBYTE(v6) = objc_msgSend(v6, "isDotKey:", v7), v7, (v6 & 1) != 0))
   {
     v8 = [UIBezierPath bezierPathWithOvalInRect:self->_tapActionRegion.origin.x, self->_tapActionRegion.origin.y, self->_tapActionRegion.size.width, self->_tapActionRegion.size.height];
@@ -629,9 +629,9 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
 - (int)textEffectsVisibilityLevel
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 isDictationPopoverPresented];
+  isDictationPopoverPresented = [v2 isDictationPopoverPresented];
 
-  if (v3)
+  if (isDictationPopoverPresented)
   {
     return 301;
   }
@@ -645,14 +645,14 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
 - (CGRect)variantFrame
 {
   v3 = [(UIKBKeyView *)self key];
-  v4 = [v3 popupDirection];
+  popupDirection = [v3 popupDirection];
 
   [(UIKBKeyView *)self drawFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v4 != 3)
+  if (popupDirection != 3)
   {
     v13 = [(UIKBKeyView *)self key];
     [v13 frame];
@@ -672,12 +672,12 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = [UIInputSwitcherView sharedInstance:a3];
-  v5 = [v6 superview];
+  v6 = [UIInputSwitcherView sharedInstance:ended];
+  superview = [v6 superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
     [v6 hide];
   }
@@ -686,31 +686,31 @@ void __30__UIKBKeyView__hitAreaPercent__block_invoke()
 - (unint64_t)focusableVariantCount
 {
   v2 = [(UIKBKeyView *)self key];
-  v3 = [v2 subtrees];
-  v4 = [v3 count];
+  subtrees = [v2 subtrees];
+  v4 = [subtrees count];
 
   return v4;
 }
 
-- (void)willDisplayModalActionView:(id)a3 withSubTreeKeyView:(id)a4 completion:(id)a5
+- (void)willDisplayModalActionView:(id)view withSubTreeKeyView:(id)keyView completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)dimKeys:(id)a3
+- (void)dimKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   keyLayers = self->_keyLayers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __23__UIKBKeyView_dimKeys___block_invoke;
   v7[3] = &unk_1E7114068;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = keysCopy;
+  selfCopy = self;
+  v6 = keysCopy;
   [(NSMutableDictionary *)keyLayers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -749,14 +749,14 @@ void __23__UIKBKeyView_dimKeys___block_invoke_2(uint64_t a1, void *a2, void *a3,
   }
 }
 
-- (void)hideKeyCap:(BOOL)a3
+- (void)hideKeyCap:(BOOL)cap
 {
   keyLayers = self->_keyLayers;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __26__UIKBKeyView_hideKeyCap___block_invoke;
   v4[3] = &__block_descriptor_33_e34_v32__0__NSNumber_8__CALayer_16_B24l;
-  v5 = a3;
+  capCopy = cap;
   [(NSMutableDictionary *)keyLayers enumerateKeysAndObjectsUsingBlock:v4];
 }
 
@@ -770,7 +770,7 @@ void __26__UIKBKeyView_hideKeyCap___block_invoke(uint64_t a1, void *a2, void *a3
   }
 }
 
-- (void)orientKeyCap:(int64_t)a3
+- (void)orientKeyCap:(int64_t)cap
 {
   v18 = *MEMORY[0x1E69E9840];
   keyLayers = self->_keyLayers;
@@ -778,15 +778,15 @@ void __26__UIKBKeyView_hideKeyCap___block_invoke(uint64_t a1, void *a2, void *a3
   v16[1] = 3221225472;
   v16[2] = __28__UIKBKeyView_orientKeyCap___block_invoke;
   v16[3] = &__block_descriptor_40_e34_v32__0__NSNumber_8__CALayer_16_B24l;
-  v16[4] = a3;
+  v16[4] = cap;
   [(NSMutableDictionary *)keyLayers enumerateKeysAndObjectsUsingBlock:v16];
   [(UIKBKeyView *)self updateKeycapLayerOrientation];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(UIView *)self subviews];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  subviews = [(UIView *)self subviews];
+  v7 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -798,21 +798,21 @@ void __26__UIKBKeyView_hideKeyCap___block_invoke(uint64_t a1, void *a2, void *a3
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v11 orientKeyCap:a3];
+          [v11 orientKeyCap:cap];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
@@ -856,30 +856,30 @@ void __28__UIKBKeyView_orientKeyCap___block_invoke(uint64_t a1, void *a2, void *
   if (([(UIKBKeyView *)self cachedRenderFlags]& 4) != 0)
   {
     m_key = self->m_key;
-    v5 = [(UIKBTree *)self->m_keyplane visualStyling];
-    v6 = [(UIKBKeyView *)self renderConfig];
-    v7 = [UIKBCacheToken tokenForKey:m_key style:v5 renderConfig:v6];
-    v3 = [v7 string];
+    visualStyling = [(UIKBTree *)self->m_keyplane visualStyling];
+    renderConfig = [(UIKBKeyView *)self renderConfig];
+    v7 = [UIKBCacheToken tokenForKey:m_key style:visualStyling renderConfig:renderConfig];
+    string = [v7 string];
   }
 
   else
   {
-    v3 = 0;
+    string = 0;
   }
 
-  return v3;
+  return string;
 }
 
-- (id)cacheKeysForRenderFlags:(id)a3
+- (id)cacheKeysForRenderFlags:(id)flags
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKBKeyView *)self cachedRenderFlags];
+  flagsCopy = flags;
+  cachedRenderFlags = [(UIKBKeyView *)self cachedRenderFlags];
   v6 = [(UIKBTree *)self->m_key interactionType]== 2 && [(UIKBTree *)self->m_key state]== 16;
-  v53 = v5;
+  v53 = cachedRenderFlags;
   if (![(UIKBKeyView *)self renderAsMask]|| v6)
   {
-    if (!v5)
+    if (!cachedRenderFlags)
     {
 LABEL_62:
       v56 = 0;
@@ -887,17 +887,17 @@ LABEL_62:
     }
 
     m_key = self->m_key;
-    v12 = [(UIKBTree *)self->m_keyplane visualStyling];
-    v9 = [(UIKBKeyView *)self renderConfig];
-    if (v5 == 255)
+    visualStyling = [(UIKBTree *)self->m_keyplane visualStyling];
+    renderConfig = [(UIKBKeyView *)self renderConfig];
+    if (cachedRenderFlags == 255)
     {
-      [UIKBCacheToken tokenForKey:m_key style:v12 renderConfig:v9];
+      [UIKBCacheToken tokenForKey:m_key style:visualStyling renderConfig:renderConfig];
     }
 
     else
     {
       [(UIKBKeyView *)self displayInsets];
-      [UIKBCacheToken tokenForKey:m_key style:v12 renderConfig:v9 displayInsets:?];
+      [UIKBCacheToken tokenForKey:m_key style:visualStyling renderConfig:renderConfig displayInsets:?];
     }
     v10 = ;
   }
@@ -905,10 +905,10 @@ LABEL_62:
   else
   {
     v7 = self->m_key;
-    v8 = [(UIKBTree *)self->m_keyplane visualStyling];
-    v9 = [(UIKBKeyView *)self renderConfig];
+    visualStyling2 = [(UIKBTree *)self->m_keyplane visualStyling];
+    renderConfig = [(UIKBKeyView *)self renderConfig];
     [(UIKBKeyView *)self displayInsets];
-    v10 = [UIKBCacheToken tokenForKeyMask:v7 style:v8 renderConfig:v9 displayInsets:?];
+    v10 = [UIKBCacheToken tokenForKeyMask:v7 style:visualStyling2 renderConfig:renderConfig displayInsets:?];
   }
 
   v13 = v10;
@@ -922,11 +922,11 @@ LABEL_62:
   if ([(UIKBTree *)self->m_key isRightToLeftSensitive])
   {
     v14 = +[UIKeyboardInputModeController sharedInputModeController];
-    v15 = [v14 currentLinguisticInputMode];
-    [v13 annotateWithBool:{objc_msgSend(v15, "isDefaultRightToLeft")}];
+    currentLinguisticInputMode = [v14 currentLinguisticInputMode];
+    [v13 annotateWithBool:{objc_msgSend(currentLinguisticInputMode, "isDefaultRightToLeft")}];
   }
 
-  v16 = v5;
+  v16 = cachedRenderFlags;
   if (([v55 styling] & 0x3F) == 3)
   {
     [v55 annotateWithBool:UIKeyboardCarPlayIsRightHandDrive()];
@@ -958,8 +958,8 @@ LABEL_62:
   if ([(UIKBTree *)self->m_key displayType]== 7)
   {
     v17 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v18 = [v17 preferencesActions];
-    v19 = [v18 BOOLForPreferenceKey:@"GesturesEnabled"];
+    preferencesActions = [v17 preferencesActions];
+    v19 = [preferencesActions BOOLForPreferenceKey:@"GesturesEnabled"];
 
     if (v19)
     {
@@ -994,13 +994,13 @@ LABEL_62:
     [v55 annotateWithInt:v34];
   }
 
-  v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(flagsCopy, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v52 = v4;
-  obj = v4;
+  v52 = flagsCopy;
+  obj = flagsCopy;
   v35 = [obj countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v35)
   {
@@ -1018,22 +1018,22 @@ LABEL_62:
         }
 
         v39 = *(*(&v58 + 1) + 8 * v38);
-        v40 = [v39 integerValue];
+        integerValue = [v39 integerValue];
         if (!(v6 | ![(UIKBKeyView *)self renderAsMask]))
         {
-          v44 = [v32 string];
-          if (!v44)
+          string = [v32 string];
+          if (!string)
           {
             goto LABEL_52;
           }
 
 LABEL_51:
-          [v56 setObject:v44 forKey:v39];
+          [v56 setObject:string forKey:v39];
 
           goto LABEL_52;
         }
 
-        v41 = v40 & v16;
+        v41 = integerValue & v16;
         if (!v41)
         {
           goto LABEL_52;
@@ -1041,13 +1041,13 @@ LABEL_51:
 
         if ([(UIKBKeyView *)self allowBackgroundCachingForRenderFlags:v41])
         {
-          v42 = [(UIKBKeyView *)self cachedTraitsHashString];
-          v43 = [(UIKBKeyView *)self renderConfig];
+          cachedTraitsHashString = [(UIKBKeyView *)self cachedTraitsHashString];
+          renderConfig2 = [(UIKBKeyView *)self renderConfig];
           v6 = v54;
-          v44 = [UIKBRenderFactory cacheKeyForString:v42 withRenderFlags:v41 renderConfig:v43];
+          string = [UIKBRenderFactory cacheKeyForString:cachedTraitsHashString withRenderFlags:v41 renderConfig:renderConfig2];
 
           v32 = v55;
-          if (v44)
+          if (string)
           {
             goto LABEL_51;
           }
@@ -1057,26 +1057,26 @@ LABEL_51:
         {
           if (v41 <= 3 && [(UIKBKeyView *)self containedInDynamicKey])
           {
-            v45 = [v32 copyTokenWithoutContentProperties];
-            v46 = [v45 string];
-            v47 = [(UIKBKeyView *)self renderConfig];
+            copyTokenWithoutContentProperties = [v32 copyTokenWithoutContentProperties];
+            string2 = [copyTokenWithoutContentProperties string];
+            renderConfig3 = [(UIKBKeyView *)self renderConfig];
             v32 = v55;
-            v44 = [UIKBRenderFactory cacheKeyForString:v46 withRenderFlags:v41 renderConfig:v47];
+            string = [UIKBRenderFactory cacheKeyForString:string2 withRenderFlags:v41 renderConfig:renderConfig3];
 
             v6 = v54;
           }
 
           else
           {
-            v48 = [v32 string];
-            v49 = [(UIKBKeyView *)self renderConfig];
-            v44 = [UIKBRenderFactory cacheKeyForString:v48 withRenderFlags:v41 renderConfig:v49];
+            string3 = [v32 string];
+            renderConfig4 = [(UIKBKeyView *)self renderConfig];
+            string = [UIKBRenderFactory cacheKeyForString:string3 withRenderFlags:v41 renderConfig:renderConfig4];
 
             v32 = v55;
           }
 
           v16 = v53;
-          if (v44)
+          if (string)
           {
             goto LABEL_51;
           }
@@ -1094,21 +1094,21 @@ LABEL_52:
     while (v50);
   }
 
-  v4 = v52;
+  flagsCopy = v52;
 LABEL_63:
 
   return v56;
 }
 
-- (BOOL)allowBackgroundCachingForRenderFlags:(int64_t)a3
+- (BOOL)allowBackgroundCachingForRenderFlags:(int64_t)flags
 {
   if (UIKeyboardDeviceSupportsSplit())
   {
     return 0;
   }
 
-  v6 = [(UIKBKeyView *)self cachedTraitsHashString];
-  v5 = a3 < 4 && v6 != 0;
+  cachedTraitsHashString = [(UIKBKeyView *)self cachedTraitsHashString];
+  v5 = flags < 4 && cachedTraitsHashString != 0;
 
   return v5;
 }
@@ -1120,10 +1120,10 @@ LABEL_63:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIView *)self layer];
-  v4 = [v3 sublayers];
+  layer = [(UIView *)self layer];
+  sublayers = [layer sublayers];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -1133,19 +1133,19 @@ LABEL_63:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) contents];
+        contents = [*(*(&v11 + 1) + 8 * i) contents];
 
-        if (!v8)
+        if (!contents)
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -1179,7 +1179,7 @@ LABEL_11:
   [(UIView *)&v4 removeFromSuperview];
 }
 
-- (id)layerForRenderFlags:(int64_t)a3
+- (id)layerForRenderFlags:(int64_t)flags
 {
   v12 = 0;
   v13 = &v12;
@@ -1199,7 +1199,7 @@ LABEL_11:
     v11[2] = __35__UIKBKeyView_layerForRenderFlags___block_invoke;
     v11[3] = &unk_1E7114120;
     v11[4] = &v12;
-    v11[5] = a3;
+    v11[5] = flags;
     [(NSMutableDictionary *)v8 enumerateKeysAndObjectsUsingBlock:v11];
     v7 = v13[5];
   }
@@ -1220,35 +1220,35 @@ void __35__UIKBKeyView_layerForRenderFlags___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (int64_t)imageOrientationForLayer:(id)a3
+- (int64_t)imageOrientationForLayer:(id)layer
 {
-  v3 = a3;
+  layerCopy = layer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 imageOrientation];
+    imageOrientation = [layerCopy imageOrientation];
   }
 
   else
   {
-    v4 = 0;
+    imageOrientation = 0;
   }
 
-  return v4;
+  return imageOrientation;
 }
 
-- (void)_populateLayer:(id)a3 withContents:(id)a4
+- (void)_populateLayer:(id)layer withContents:(id)contents
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  layerCopy = layer;
+  contentsCopy = contents;
+  if (layerCopy)
   {
     memset(&v29, 0, sizeof(v29));
-    [v6 affineTransform];
+    [layerCopy affineTransform];
     v8 = *MEMORY[0x1E695EFF8];
     v9 = *(MEMORY[0x1E695EFF8] + 8);
-    v10 = [(UIView *)self layer];
-    [v10 frame];
+    layer = [(UIView *)self layer];
+    [layer frame];
     v12 = v11;
     v14 = v13;
 
@@ -1264,33 +1264,33 @@ void __35__UIKBKeyView_layerForRenderFlags___block_invoke(uint64_t a1, void *a2,
     [v17 frame];
     v19 = (v18 - width) * 0.5;
 
-    v20 = [(UIView *)self layer];
-    [v20 frame];
+    layer2 = [(UIView *)self layer];
+    [layer2 frame];
     v22 = (v21 - height) * 0.5;
 
-    [v6 setFrame:{v19, v22, width, height}];
-    if (!v7)
+    [layerCopy setFrame:{v19, v22, width, height}];
+    if (!contentsCopy)
     {
-      v23 = 0;
+      _imageThatSuppressesAccessibilityHairlineThickening = 0;
 LABEL_15:
-      v7 = v23;
+      contentsCopy = _imageThatSuppressesAccessibilityHairlineThickening;
       goto LABEL_16;
     }
 
-    [v6 setContents:{objc_msgSend(v7, "CGImage")}];
+    [layerCopy setContents:{objc_msgSend(contentsCopy, "CGImage")}];
     [(UIView *)self contentScaleFactor];
-    [v6 setContentsScale:?];
+    [layerCopy setContentsScale:?];
     [(UIView *)self contentScaleFactor];
-    [v6 setRasterizationScale:?];
-    v23 = [v7 _imageThatSuppressesAccessibilityHairlineThickening];
+    [layerCopy setRasterizationScale:?];
+    _imageThatSuppressesAccessibilityHairlineThickening = [contentsCopy _imageThatSuppressesAccessibilityHairlineThickening];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 setImageOrientation:{objc_msgSend(v23, "imageOrientation")}];
+      [layerCopy setImageOrientation:{objc_msgSend(_imageThatSuppressesAccessibilityHairlineThickening, "imageOrientation")}];
     }
 
-    if ([v23 imageOrientation] == 1)
+    if ([_imageThatSuppressesAccessibilityHairlineThickening imageOrientation] == 1)
     {
       if (v29.d < 0.0)
       {
@@ -1317,18 +1317,18 @@ LABEL_15:
     }
 
     *&v28.tx = v24;
-    [v6 setAffineTransform:&v28];
+    [layerCopy setAffineTransform:&v28];
 LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = [v23 formatColor];
-      [v6 setContentsMultiplyColor:{objc_msgSend(v26, "CGColor")}];
+      formatColor = [_imageThatSuppressesAccessibilityHairlineThickening formatColor];
+      [layerCopy setContentsMultiplyColor:{objc_msgSend(formatColor, "CGColor")}];
     }
 
     else
     {
-      [v6 setContentsMultiplyColor:UIKBGetNamedColor(@"UIKBColorWhite")];
+      [layerCopy setContentsMultiplyColor:UIKBGetNamedColor(@"UIKBColorWhite")];
     }
 
     goto LABEL_15;
@@ -1337,19 +1337,19 @@ LABEL_12:
 LABEL_16:
 }
 
-- (id)renderFlagsForTraits:(id)a3
+- (id)renderFlagsForTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   if (![(UIKBRenderConfig *)self->m_renderConfig colorAdaptiveBackground])
   {
-    if ([v4 blendForm] == 1)
+    if ([traitsCopy blendForm] == 1)
     {
-      v9 = [(UIKBTree *)self->m_key state];
+      state = [(UIKBTree *)self->m_key state];
       if ([(UIKBTree *)self->m_key displayType]== 3)
       {
         v10 = &unk_1EFE2C370;
         v11 = &unk_1EFE2C388;
-        v12 = (v9 & 3) == 0;
+        v12 = (state & 3) == 0;
 LABEL_9:
         if (v12)
         {
@@ -1366,7 +1366,7 @@ LABEL_9:
 
       if ([(UIKBTree *)self->m_key displayType]== 23)
       {
-        if (v9 == 8)
+        if (state == 8)
         {
           v13 = &unk_1EFE2C3A0;
           goto LABEL_22;
@@ -1374,14 +1374,14 @@ LABEL_9:
 
         v10 = &unk_1EFE2C3B8;
         v11 = &unk_1EFE2C3D0;
-        v12 = (v9 & 0x64) == 0;
+        v12 = (state & 0x64) == 0;
         goto LABEL_9;
       }
 
-      if ([v4 renderSecondarySymbolsSeparately])
+      if ([traitsCopy renderSecondarySymbolsSeparately])
       {
-        v25 = [v4 secondarySymbolStyles];
-        v26 = [v25 count];
+        secondarySymbolStyles = [traitsCopy secondarySymbolStyles];
+        v26 = [secondarySymbolStyles count];
 
         if (v26 == 1)
         {
@@ -1389,8 +1389,8 @@ LABEL_9:
           goto LABEL_5;
         }
 
-        v30 = [v4 secondarySymbolStyles];
-        v31 = [v30 count];
+        secondarySymbolStyles2 = [traitsCopy secondarySymbolStyles];
+        v31 = [secondarySymbolStyles2 count];
 
         if (v31 != 2)
         {
@@ -1403,33 +1403,33 @@ LABEL_9:
         goto LABEL_20;
       }
 
-      v14 = [v4 controlOpacities];
+      controlOpacities = [traitsCopy controlOpacities];
       v15 = &unk_1EFE2C430;
       v16 = &unk_1EFE2C418;
     }
 
     else
     {
-      if ([v4 blendForm] != 2)
+      if ([traitsCopy blendForm] != 2)
       {
-        if ((-[UIKBKeyView cachedRenderFlags](self, "cachedRenderFlags") & 4) != 0 && [v4 blendForm] != 3)
+        if ((-[UIKBKeyView cachedRenderFlags](self, "cachedRenderFlags") & 4) != 0 && [traitsCopy blendForm] != 3)
         {
-          v27 = [v4 renderFlags];
+          renderFlags = [traitsCopy renderFlags];
 
-          if (v27)
+          if (renderFlags)
           {
-            v8 = [v4 renderFlags];
+            renderFlags2 = [traitsCopy renderFlags];
             goto LABEL_21;
           }
 
-          if (![v4 renderSecondarySymbolsSeparately])
+          if (![traitsCopy renderSecondarySymbolsSeparately])
           {
             v13 = &unk_1EFE2C4D8;
             goto LABEL_22;
           }
 
-          v32 = [v4 secondarySymbolStyles];
-          v33 = [v32 count];
+          secondarySymbolStyles3 = [traitsCopy secondarySymbolStyles];
+          v33 = [secondarySymbolStyles3 count];
 
           if (v33 == 1)
           {
@@ -1437,8 +1437,8 @@ LABEL_9:
             goto LABEL_5;
           }
 
-          v34 = [v4 secondarySymbolStyles];
-          v35 = [v34 count];
+          secondarySymbolStyles4 = [traitsCopy secondarySymbolStyles];
+          v35 = [secondarySymbolStyles4 count];
 
           if (v35 != 2)
           {
@@ -1452,13 +1452,13 @@ LABEL_9:
 
         else
         {
-          if (![v4 renderSecondarySymbolsSeparately])
+          if (![traitsCopy renderSecondarySymbolsSeparately])
           {
             goto LABEL_41;
           }
 
-          v23 = [v4 secondarySymbolStyles];
-          v24 = [v23 count];
+          secondarySymbolStyles5 = [traitsCopy secondarySymbolStyles];
+          v24 = [secondarySymbolStyles5 count];
 
           if (v24 == 1)
           {
@@ -1466,8 +1466,8 @@ LABEL_9:
             goto LABEL_5;
           }
 
-          v28 = [v4 secondarySymbolStyles];
-          v29 = [v28 count];
+          secondarySymbolStyles6 = [traitsCopy secondarySymbolStyles];
+          v29 = [secondarySymbolStyles6 count];
 
           if (v29 != 2)
           {
@@ -1481,16 +1481,16 @@ LABEL_41:
         }
 
 LABEL_20:
-        v8 = [v19 arrayByAddingObjectsFromArray:v20];
+        renderFlags2 = [v19 arrayByAddingObjectsFromArray:v20];
         goto LABEL_21;
       }
 
-      v14 = [v4 controlOpacities];
+      controlOpacities = [traitsCopy controlOpacities];
       v15 = &unk_1EFE2C460;
       v16 = &unk_1EFE2C448;
     }
 
-    if (v14)
+    if (controlOpacities)
     {
       v13 = v16;
     }
@@ -1503,23 +1503,23 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if ([v4 renderSecondarySymbolsSeparately])
+  if ([traitsCopy renderSecondarySymbolsSeparately])
   {
-    v5 = [v4 secondarySymbolStyles];
-    v6 = [v5 count];
+    secondarySymbolStyles7 = [traitsCopy secondarySymbolStyles];
+    v6 = [secondarySymbolStyles7 count];
 
     if (v6 == 1)
     {
       v7 = &unk_1EFE2C340;
 LABEL_5:
-      v8 = [v7 arrayByAddingObject:&unk_1EFE31078];
+      renderFlags2 = [v7 arrayByAddingObject:&unk_1EFE31078];
 LABEL_21:
-      v13 = v8;
+      v13 = renderFlags2;
       goto LABEL_22;
     }
 
-    v17 = [v4 secondarySymbolStyles];
-    v18 = [v17 count];
+    secondarySymbolStyles8 = [traitsCopy secondarySymbolStyles];
+    v18 = [secondarySymbolStyles8 count];
 
     if (v18 != 2)
     {
@@ -1539,12 +1539,12 @@ LABEL_22:
   return v13;
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   v78[1] = *MEMORY[0x1E69E9840];
-  v4 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v4)
+  if (window)
   {
     if (![(UIKBKeyView *)self containedInDynamicKey]|| ![(UIView *)self isHidden]&& ([(UIView *)self alpha], v5 != 0.0))
     {
@@ -1553,32 +1553,32 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v6 = [(UIView *)self layer];
-      [v6 setContents:0];
+      layer = [(UIView *)self layer];
+      [layer setContents:0];
 
-      v7 = [(UIKBKeyView *)self factory];
-      v8 = [v7 traitsForKey:self->m_key onKeyplane:self->m_keyplane];
+      factory = [(UIKBKeyView *)self factory];
+      v8 = [factory traitsForKey:self->m_key onKeyplane:self->m_keyplane];
 
-      v9 = [v8 hashString];
-      [(UIKBKeyView *)self setCachedTraitsHashString:v9];
+      hashString = [v8 hashString];
+      [(UIKBKeyView *)self setCachedTraitsHashString:hashString];
 
-      v10 = [v8 symbolStyle];
-      -[UIKBKeyView setCachedAnchorCorner:](self, "setCachedAnchorCorner:", [v10 anchorCorner]);
+      symbolStyle = [v8 symbolStyle];
+      -[UIKBKeyView setCachedAnchorCorner:](self, "setCachedAnchorCorner:", [symbolStyle anchorCorner]);
 
-      v11 = [(UIKBKeyView *)self factory];
-      v12 = [v11 renderingContext];
-      -[UIKBKeyView setCachedShiftState:](self, "setCachedShiftState:", [v12 shiftState]);
+      factory2 = [(UIKBKeyView *)self factory];
+      renderingContext = [factory2 renderingContext];
+      -[UIKBKeyView setCachedShiftState:](self, "setCachedShiftState:", [renderingContext shiftState]);
 
-      v13 = [v8 symbolStyle];
-      -[UIKBKeyView setCachedSelector:](self, "setCachedSelector:", [v13 selector]);
+      symbolStyle2 = [v8 symbolStyle];
+      -[UIKBKeyView setCachedSelector:](self, "setCachedSelector:", [symbolStyle2 selector]);
 
-      v14 = [(UIKBKeyView *)self factory];
-      -[UIKBKeyView setCachedControlKeyRenderingPreference:](self, "setCachedControlKeyRenderingPreference:", [v14 preferStringKeycapOverImage]);
+      factory3 = [(UIKBKeyView *)self factory];
+      -[UIKBKeyView setCachedControlKeyRenderingPreference:](self, "setCachedControlKeyRenderingPreference:", [factory3 preferStringKeycapOverImage]);
 
       v15 = [(UIKBKeyView *)self renderFlagsForTraits:v8];
       v16 = +[UIKeyboardCache sharedInstance];
-      v17 = [(UIKBTree *)self->m_keyplane layoutName];
-      v18 = [v16 displayImagesForView:self fromLayout:v17 imageFlags:v15];
+      layoutName = [(UIKBTree *)self->m_keyplane layoutName];
+      v18 = [v16 displayImagesForView:self fromLayout:layoutName imageFlags:v15];
 
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setFrameStallSkipRequest:1];
@@ -1589,22 +1589,22 @@ LABEL_22:
       v54[3] = &unk_1E7114148;
       v19 = v18;
       v55 = v19;
-      v56 = self;
+      selfCopy = self;
       [v15 enumerateObjectsUsingBlock:v54];
-      v20 = [(UIView *)self layer];
-      [v20 setAllowsGroupBlending:0];
+      layer2 = [(UIView *)self layer];
+      [layer2 setAllowsGroupBlending:0];
 
       v21 = [(UIKBKeyView *)self layerForRenderFlags:1];
       cachedBackgroundOpacity = self->_cachedBackgroundOpacity;
-      v23 = [(UIKBKeyView *)self renderConfig];
-      if ([v23 lightKeyboard])
+      renderConfig = [(UIKBKeyView *)self renderConfig];
+      if ([renderConfig lightKeyboard])
       {
         if ([v8 blendForm] == 1 || objc_msgSend(v8, "blendForm") == 2)
         {
 
 LABEL_11:
-          v24 = [(UIKBKeyView *)self renderConfig];
-          [v24 lightKeycapOpacity];
+          renderConfig2 = [(UIKBKeyView *)self renderConfig];
+          [renderConfig2 lightKeycapOpacity];
 LABEL_17:
           v26 = v25;
 
@@ -1664,8 +1664,8 @@ LABEL_23:
               v73 = &unk_1EFE31060;
               v74 = *MEMORY[0x1E69798E8];
               v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-              v39 = [(UIView *)self layer];
-              [v39 setAllowsGroupBlending:1];
+              layer3 = [(UIView *)self layer];
+              [layer3 setAllowsGroupBlending:1];
 
               goto LABEL_22;
             }
@@ -1712,8 +1712,8 @@ LABEL_23:
               {
                 if ([v8 blendForm] == 8)
                 {
-                  v46 = [(UIKBKeyView *)self factory];
-                  v47 = [v46 useBlueThemingForKey:self->m_key];
+                  factory4 = [(UIKBKeyView *)self factory];
+                  v47 = [factory4 useBlueThemingForKey:self->m_key];
 
                   if ((v47 & 1) == 0)
                   {
@@ -1784,9 +1784,9 @@ LABEL_27:
           goto LABEL_21;
         }
 
-        v38 = [v8 blendForm];
+        blendForm = [v8 blendForm];
 
-        if (v38 == 7)
+        if (blendForm == 7)
         {
           goto LABEL_11;
         }
@@ -1796,8 +1796,8 @@ LABEL_27:
       {
       }
 
-      v24 = [(UIKBKeyView *)self renderConfig];
-      [v24 keycapOpacity];
+      renderConfig2 = [(UIKBKeyView *)self renderConfig];
+      [renderConfig2 keycapOpacity];
       goto LABEL_17;
     }
   }
@@ -1883,29 +1883,29 @@ LABEL_9:
 
 - (int64_t)assetIdiom
 {
-  v3 = [(UIKBKeyView *)self renderConfig];
-  v4 = [v3 isFloating];
+  renderConfig = [(UIKBKeyView *)self renderConfig];
+  isFloating = [renderConfig isFloating];
 
-  if (v4)
+  if (isFloating)
   {
     return 0;
   }
 
-  v6 = [(UIKBKeyView *)self factory];
-  v7 = [v6 assetIdiom];
+  factory = [(UIKBKeyView *)self factory];
+  assetIdiom = [factory assetIdiom];
 
-  return v7;
+  return assetIdiom;
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v21 = a3;
-  v5 = [(UIKBKeyView *)self renderConfig];
-  if (v5)
+  configCopy = config;
+  renderConfig = [(UIKBKeyView *)self renderConfig];
+  if (renderConfig)
   {
-    v6 = [(UIKBKeyView *)self renderConfig];
-    v7 = [v6 lightKeyboard];
-    v8 = v7 ^ [v21 lightKeyboard];
+    renderConfig2 = [(UIKBKeyView *)self renderConfig];
+    lightKeyboard = [renderConfig2 lightKeyboard];
+    v8 = lightKeyboard ^ [configCopy lightKeyboard];
   }
 
   else
@@ -1913,31 +1913,31 @@ LABEL_9:
     v8 = 1;
   }
 
-  v9 = [(UIKBTree *)self->m_keyplane visualStyling];
-  if ((v8 & 1) == 0 && (v9 & 0xFF00) == 0x7F00)
+  visualStyling = [(UIKBTree *)self->m_keyplane visualStyling];
+  if ((v8 & 1) == 0 && (visualStyling & 0xFF00) == 0x7F00)
   {
-    v10 = [(UIKBKeyView *)self renderConfig];
-    [v10 keycapOpacity];
+    renderConfig3 = [(UIKBKeyView *)self renderConfig];
+    [renderConfig3 keycapOpacity];
     v12 = v11;
-    [v21 keycapOpacity];
+    [configCopy keycapOpacity];
     v8 = v12 != v13;
   }
 
-  objc_storeStrong(&self->m_renderConfig, a3);
-  v14 = v21;
-  if (v21)
+  objc_storeStrong(&self->m_renderConfig, config);
+  v14 = configCopy;
+  if (configCopy)
   {
-    v15 = [(UIKBKeyView *)self popupMenu];
-    v16 = [(UIKBKeyView *)self renderConfig];
-    [v15 setRenderConfig:v16];
+    popupMenu = [(UIKBKeyView *)self popupMenu];
+    renderConfig4 = [(UIKBKeyView *)self renderConfig];
+    [popupMenu setRenderConfig:renderConfig4];
 
-    v17 = [(UIKBRenderFactory *)self->m_factory renderingContext];
+    renderingContext = [(UIKBRenderFactory *)self->m_factory renderingContext];
 
     [(UIKBKeyView *)self renderConfig];
-    if (v17)
+    if (renderingContext)
       v18 = {;
-      v19 = [(UIKBRenderFactory *)self->m_factory renderingContext];
-      [v19 setRenderConfig:v18];
+      renderingContext2 = [(UIKBRenderFactory *)self->m_factory renderingContext];
+      [renderingContext2 setRenderConfig:v18];
     }
 
     else
@@ -1948,36 +1948,36 @@ LABEL_9:
       [(UIKBRenderFactory *)self->m_factory setRenderingContext:v18];
     }
 
-    v14 = v21;
+    v14 = configCopy;
     if (v8)
     {
       self->_renderedKeyState = 0;
       [(UIView *)self setNeedsDisplay];
-      v14 = v21;
+      v14 = configCopy;
     }
   }
 }
 
-- (void)drawContentsOfRenderers:(id)a3
+- (void)drawContentsOfRenderers:(id)renderers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKBKeyView *)self factory];
-  v6 = [v5 traitsForKey:self->m_key onKeyplane:self->m_keyplane];
+  renderersCopy = renderers;
+  factory = [(UIKBKeyView *)self factory];
+  v6 = [factory traitsForKey:self->m_key onKeyplane:self->m_keyplane];
 
   if ([(UIKBKeyView *)self renderAsMask])
   {
     [v6 modifyForMasking];
   }
 
-  v7 = [(UIKBKeyView *)self factory];
-  v18 = [v7 displayContentsForKey:self->m_key];
+  factory2 = [(UIKBKeyView *)self factory];
+  v18 = [factory2 displayContentsForKey:self->m_key];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v4;
+  v8 = renderersCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -2005,8 +2005,8 @@ LABEL_9:
           v11 = !-[UIKBKeyView allowBackgroundCachingForRenderFlags:](self, "allowBackgroundCachingForRenderFlags:", [*(*(&v20 + 1) + 8 * v13) renderFlags]);
         }
 
-        v15 = [v6 hashString];
-        v16 = [v14 loadCachedImageForHashString:v15];
+        hashString = [v6 hashString];
+        v16 = [v14 loadCachedImageForHashString:hashString];
 
         if ((v16 & 1) == 0)
         {
@@ -2018,9 +2018,9 @@ LABEL_9:
           if ([v14 context])
           {
             CGContextSaveGState([v14 context]);
-            v17 = [v14 context];
+            context = [v14 context];
             CGAffineTransformMakeTranslation(&transform, -self->m_drawFrame.origin.x, -self->m_drawFrame.origin.y);
-            CGContextConcatCTM(v17, &transform);
+            CGContextConcatCTM(context, &transform);
           }
 
           [v14 renderKeyContents:v18 withTraits:v6];
@@ -2045,8 +2045,8 @@ LABEL_9:
 {
   [(UIKBKeyView *)self setRenderAsMask:1];
   v3 = +[UIKeyboardCache sharedInstance];
-  v4 = [(UIKBTree *)self->m_keyplane layoutName];
-  v5 = [v3 displayImagesForView:self fromLayout:v4 imageFlags:&unk_1EFE2C4F0];
+  layoutName = [(UIKBTree *)self->m_keyplane layoutName];
+  v5 = [v3 displayImagesForView:self fromLayout:layoutName imageFlags:&unk_1EFE2C4F0];
 
   [(UIKBKeyView *)self setRenderAsMask:0];
   if ([v5 count])
@@ -2062,45 +2062,45 @@ LABEL_9:
   return v6;
 }
 
-- (void)configureBackdropView:(id)a3 forRenderConfig:(id)a4
+- (void)configureBackdropView:(id)view forRenderConfig:(id)config
 {
-  v34 = a3;
-  v6 = a4;
-  v7 = [(UIKBKeyView *)self contentsKeyView];
-  v8 = [(UIKBKeyView *)self keyplane];
-  if (([v8 visualStyling] & 0xFF00) == 0x7F00)
+  viewCopy = view;
+  configCopy = config;
+  contentsKeyView = [(UIKBKeyView *)self contentsKeyView];
+  keyplane = [(UIKBKeyView *)self keyplane];
+  if (([keyplane visualStyling] & 0xFF00) == 0x7F00)
   {
-    v9 = 1;
+    colorAdaptiveBackground = 1;
   }
 
   else
   {
-    v10 = [(UIKBKeyView *)self keyplane];
-    if ([v10 visualStyle] == 5 || (objc_msgSend(v6, "emptyBackground") & 1) != 0 || (objc_msgSend(v6, "animatedBackground") & 1) != 0)
+    keyplane2 = [(UIKBKeyView *)self keyplane];
+    if ([keyplane2 visualStyle] == 5 || (objc_msgSend(configCopy, "emptyBackground") & 1) != 0 || (objc_msgSend(configCopy, "animatedBackground") & 1) != 0)
     {
-      v9 = 1;
+      colorAdaptiveBackground = 1;
     }
 
     else
     {
-      v9 = [v6 colorAdaptiveBackground];
+      colorAdaptiveBackground = [configCopy colorAdaptiveBackground];
     }
   }
 
   v11 = [(UIKBKeyView *)self key];
-  v12 = [v11 interactionType];
+  interactionType = [v11 interactionType];
 
   v13 = [(UIKBKeyView *)self key];
-  v33 = [v13 state];
+  state = [v13 state];
 
   v14 = [(UIKBKeyView *)self key];
-  v32 = [v14 state];
+  state2 = [v14 state];
 
   v15 = [(UIKBKeyView *)self key];
-  v16 = [v15 state];
+  state3 = [v15 state];
 
   v17 = [(UIKBKeyView *)self key];
-  v31 = [v17 displayTypeHint];
+  displayTypeHint = [v17 displayTypeHint];
 
   v18 = [(UIKBKeyView *)self key];
   if ([v18 interactionType] == 9)
@@ -2123,9 +2123,9 @@ LABEL_9:
     }
   }
 
-  if (v12 == 16)
+  if (interactionType == 16)
   {
-    v22 = [v7 key];
+    v22 = [contentsKeyView key];
     v23 = [v22 state] == 20;
   }
 
@@ -2134,24 +2134,24 @@ LABEL_9:
     v23 = 0;
   }
 
-  v24 = v9 & ((v16 & 0x10) >> 4) & v19 | v23;
+  v24 = colorAdaptiveBackground & ((state3 & 0x10) >> 4) & v19 | v23;
   if (v24)
   {
     [(UIView *)self bounds];
-    [v34 setFrame:?];
+    [viewCopy setFrame:?];
     [(UIView *)self bounds];
-    [v7 setFrame:?];
+    [contentsKeyView setFrame:?];
   }
 
-  v25 = v34;
-  if ((v16 & 0x10) == 0 || (v26 = (v12 == 16) | ~[v6 lightKeyboard], v25 = v34, ((v26 | v19) & 1) == 0))
+  v25 = viewCopy;
+  if ((state3 & 0x10) == 0 || (v26 = (interactionType == 16) | ~[configCopy lightKeyboard], v25 = viewCopy, ((v26 | v19) & 1) == 0))
   {
-    if (v33 & 4 | v32 & 8)
+    if (state & 4 | state2 & 8)
     {
-      if (v31 != 10)
+      if (displayTypeHint != 10)
       {
-        v27 = v9 | ~[v6 lightKeyboard];
-        v25 = v34;
+        v27 = colorAdaptiveBackground | ~[configCopy lightKeyboard];
+        v25 = viewCopy;
         if ((v27 & 1) == 0)
         {
           goto LABEL_24;
@@ -2159,35 +2159,35 @@ LABEL_9:
       }
     }
 
-    else if ((v9 & 1) == 0)
+    else if ((colorAdaptiveBackground & 1) == 0)
     {
 LABEL_24:
-      v28 = [v25 imageForCorners];
+      imageForCorners = [v25 imageForCorners];
       v29 = 0;
       goto LABEL_27;
     }
   }
 
-  v28 = [v25 _maskImage];
+  imageForCorners = [v25 _maskImage];
   v29 = 1;
 LABEL_27:
-  if (((v28 != 0) & ~v24) != 0)
+  if (((imageForCorners != 0) & ~v24) != 0)
   {
-    v30 = v28;
+    _generateBackdropAndBorderMaskImage = imageForCorners;
   }
 
   else
   {
-    v30 = [v7 _generateBackdropAndBorderMaskImage];
+    _generateBackdropAndBorderMaskImage = [contentsKeyView _generateBackdropAndBorderMaskImage];
 
     if (v29)
     {
-      [v34 _setMaskImage:v30];
+      [viewCopy _setMaskImage:_generateBackdropAndBorderMaskImage];
     }
 
     else
     {
-      [v34 setImageForCorners:v30];
+      [viewCopy setImageForCorners:_generateBackdropAndBorderMaskImage];
     }
   }
 }
@@ -2197,9 +2197,9 @@ LABEL_27:
   if (!self->_singleRerender)
   {
     v11 = [(UIKBKeyView *)self layerForRenderFlags:1];
-    v3 = [v11 contentsMultiplyColor];
-    v4 = [v11 compositingFilter];
-    if (v3)
+    contentsMultiplyColor = [v11 contentsMultiplyColor];
+    compositingFilter = [v11 compositingFilter];
+    if (contentsMultiplyColor)
     {
       activeBackgroundColor = self->_activeBackgroundColor;
       if (activeBackgroundColor)
@@ -2207,10 +2207,10 @@ LABEL_27:
         CGColorRelease(activeBackgroundColor);
       }
 
-      self->_activeBackgroundColor = CGColorRetain(v3);
+      self->_activeBackgroundColor = CGColorRetain(contentsMultiplyColor);
     }
 
-    if (v4)
+    if (compositingFilter)
     {
       activeCompositingFilter = self->_activeCompositingFilter;
       if (activeCompositingFilter)
@@ -2218,16 +2218,16 @@ LABEL_27:
         CFRelease(activeCompositingFilter);
       }
 
-      v7 = CFRetain(v4);
+      v7 = CFRetain(compositingFilter);
       v8 = self->_activeCompositingFilter;
       self->_activeCompositingFilter = v7;
     }
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v9 = [(UIKBKeyView *)self factory];
-    v10 = [v9 defaultKeyBackgroundColorName];
-    [v11 setContentsMultiplyColor:UIKBGetNamedColor(v10)];
+    factory = [(UIKBKeyView *)self factory];
+    defaultKeyBackgroundColorName = [factory defaultKeyBackgroundColorName];
+    [v11 setContentsMultiplyColor:UIKBGetNamedColor(defaultKeyBackgroundColorName)];
 
     [v11 setCompositingFilter:0];
     [MEMORY[0x1E6979518] commit];

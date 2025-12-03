@@ -1,133 +1,133 @@
 @interface BLPipelineDownloadTaskState
-- (BLPipelineDownloadTaskState)initWithPrepareDownloadResponse:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLPipelineDownloadTaskState)initWithPrepareDownloadResponse:(id)response;
+- (BOOL)isEqual:(id)equal;
 - (id)_overallProgress;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFinishProgress:(double)a3;
-- (void)setTransferProgress:(double)a3;
-- (void)setTransferProgressWithBytesWritten:(int64_t)a3 totalBytesExpected:(int64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFinishProgress:(double)progress;
+- (void)setTransferProgress:(double)progress;
+- (void)setTransferProgressWithBytesWritten:(int64_t)written totalBytesExpected:(int64_t)expected;
 @end
 
 @implementation BLPipelineDownloadTaskState
 
-- (BLPipelineDownloadTaskState)initWithPrepareDownloadResponse:(id)a3
+- (BLPipelineDownloadTaskState)initWithPrepareDownloadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v40.receiver = self;
   v40.super_class = BLPipelineDownloadTaskState;
   v5 = [(BLPipelineDownloadTaskState *)&v40 init];
   if (v5)
   {
-    v5->_assetIdentifier = [v4 assetIdentifier];
-    v6 = [v4 playlistIdentifier];
+    v5->_assetIdentifier = [responseCopy assetIdentifier];
+    playlistIdentifier = [responseCopy playlistIdentifier];
     playlistIdentifier = v5->_playlistIdentifier;
-    v5->_playlistIdentifier = v6;
+    v5->_playlistIdentifier = playlistIdentifier;
 
-    v8 = [v4 permLink];
+    permLink = [responseCopy permLink];
     permLink = v5->_permLink;
-    v5->_permLink = v8;
+    v5->_permLink = permLink;
 
-    v5->_automaticType = [v4 automaticType];
-    v10 = [v4 bundleIdentifier];
+    v5->_automaticType = [responseCopy automaticType];
+    bundleIdentifier = [responseCopy bundleIdentifier];
     bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v10;
+    v5->_bundleIdentifier = bundleIdentifier;
 
-    v12 = [v4 kind];
+    kind = [responseCopy kind];
     kind = v5->_kind;
-    v5->_kind = v12;
+    v5->_kind = kind;
 
-    v14 = [v4 downloadIdentifier];
+    downloadIdentifier = [responseCopy downloadIdentifier];
     downloadIdentifier = v5->_downloadIdentifier;
-    v5->_downloadIdentifier = v14;
+    v5->_downloadIdentifier = downloadIdentifier;
 
-    [v4 transferProgressFraction];
+    [responseCopy transferProgressFraction];
     v5->_transferProgressFraction = v16;
-    v17 = [v4 artistName];
+    artistName = [responseCopy artistName];
     artistName = v5->_artistName;
-    v5->_artistName = v17;
+    v5->_artistName = artistName;
 
-    v19 = [v4 title];
+    title = [responseCopy title];
     title = v5->_title;
-    v5->_title = v19;
+    v5->_title = title;
 
-    v21 = [v4 subtitle];
+    subtitle = [responseCopy subtitle];
     subtitle = v5->_subtitle;
-    v5->_subtitle = v21;
+    v5->_subtitle = subtitle;
 
-    v23 = [v4 collectionArtistName];
+    collectionArtistName = [responseCopy collectionArtistName];
     collectionArtistName = v5->_collectionArtistName;
-    v5->_collectionArtistName = v23;
+    v5->_collectionArtistName = collectionArtistName;
 
-    v25 = [v4 collectionTitle];
+    collectionTitle = [responseCopy collectionTitle];
     collectionTitle = v5->_collectionTitle;
-    v5->_collectionTitle = v25;
+    v5->_collectionTitle = collectionTitle;
 
-    v27 = [v4 genre];
+    genre = [responseCopy genre];
     genre = v5->_genre;
-    v5->_genre = v27;
+    v5->_genre = genre;
 
-    v29 = [v4 thumbnailImageURL];
+    thumbnailImageURL = [responseCopy thumbnailImageURL];
     thumbnailImageURL = v5->_thumbnailImageURL;
-    v5->_thumbnailImageURL = v29;
+    v5->_thumbnailImageURL = thumbnailImageURL;
 
-    v5->_isLocalCacheServer = [v4 isLocalCacheServer];
-    v31 = [v4 transactionIdentifier];
+    v5->_isLocalCacheServer = [responseCopy isLocalCacheServer];
+    transactionIdentifier = [responseCopy transactionIdentifier];
     transactionIdentifier = v5->_transactionIdentifier;
-    v5->_transactionIdentifier = v31;
+    v5->_transactionIdentifier = transactionIdentifier;
 
-    v33 = [v4 cancelDownloadURL];
+    cancelDownloadURL = [responseCopy cancelDownloadURL];
     cancelDownloadURL = v5->_cancelDownloadURL;
-    v5->_cancelDownloadURL = v33;
+    v5->_cancelDownloadURL = cancelDownloadURL;
 
-    v5->_isRestore = [v4 isRestore];
-    v5->_isSample = [v4 isSample];
-    v5->_isPurchase = [v4 isPurchase];
-    v35 = [v4 purchaseDate];
+    v5->_isRestore = [responseCopy isRestore];
+    v5->_isSample = [responseCopy isSample];
+    v5->_isPurchase = [responseCopy isPurchase];
+    purchaseDate = [responseCopy purchaseDate];
     purchaseDate = v5->_purchaseDate;
-    v5->_purchaseDate = v35;
+    v5->_purchaseDate = purchaseDate;
 
-    v5->_persistentIdentifier = [v4 persistentIdentifier];
-    v37 = [v4 storeAccountIdentifier];
+    v5->_persistentIdentifier = [responseCopy persistentIdentifier];
+    storeAccountIdentifier = [responseCopy storeAccountIdentifier];
     storeAccountIdentifier = v5->_storeAccountIdentifier;
-    v5->_storeAccountIdentifier = v37;
+    v5->_storeAccountIdentifier = storeAccountIdentifier;
   }
 
   return v5;
 }
 
-- (void)setFinishProgress:(double)a3
+- (void)setFinishProgress:(double)progress
 {
-  v3 = self->_transferProgressFraction + (1.0 - self->_transferProgressFraction) * a3;
-  v4 = [(BLPipelineDownloadTaskState *)self _overallProgress];
-  [v4 setCurrentValue:{(v3 * objc_msgSend(v4, "maxValue"))}];
+  v3 = self->_transferProgressFraction + (1.0 - self->_transferProgressFraction) * progress;
+  _overallProgress = [(BLPipelineDownloadTaskState *)self _overallProgress];
+  [_overallProgress setCurrentValue:{(v3 * objc_msgSend(_overallProgress, "maxValue"))}];
 }
 
-- (void)setTransferProgress:(double)a3
+- (void)setTransferProgress:(double)progress
 {
-  v3 = self->_transferProgressFraction * a3;
-  v4 = [(BLPipelineDownloadTaskState *)self _overallProgress];
-  [v4 setCurrentValue:{(v3 * objc_msgSend(v4, "maxValue"))}];
+  v3 = self->_transferProgressFraction * progress;
+  _overallProgress = [(BLPipelineDownloadTaskState *)self _overallProgress];
+  [_overallProgress setCurrentValue:{(v3 * objc_msgSend(_overallProgress, "maxValue"))}];
 }
 
-- (void)setTransferProgressWithBytesWritten:(int64_t)a3 totalBytesExpected:(int64_t)a4
+- (void)setTransferProgressWithBytesWritten:(int64_t)written totalBytesExpected:(int64_t)expected
 {
-  self->_transferBytesExpected = a4;
-  self->_transferBytesWritten = a3;
-  if (a4 >= 1)
+  self->_transferBytesExpected = expected;
+  self->_transferBytesWritten = written;
+  if (expected >= 1)
   {
-    [(BLPipelineDownloadTaskState *)self setTransferProgress:a3 / a4];
+    [(BLPipelineDownloadTaskState *)self setTransferProgress:written / expected];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(BLPipelineDownloadTaskState *)self downloadIdentifier];
-    v8 = [v4 downloadIdentifier];
-    v6 = [v7 isEqualToString:v8];
+    downloadIdentifier = [(BLPipelineDownloadTaskState *)self downloadIdentifier];
+    downloadIdentifier2 = [equalCopy downloadIdentifier];
+    v6 = [downloadIdentifier isEqualToString:downloadIdentifier2];
   }
 
   else
@@ -138,28 +138,28 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setAutomaticType:{-[BLPipelineDownloadTaskState automaticType](self, "automaticType")}];
-  v6 = [(BLPipelineDownloadTaskState *)self bundleIdentifier];
-  v7 = [v6 copyWithZone:a3];
+  bundleIdentifier = [(BLPipelineDownloadTaskState *)self bundleIdentifier];
+  v7 = [bundleIdentifier copyWithZone:zone];
   [v5 setBundleIdentifier:v7];
 
-  v8 = [(BLPipelineDownloadTaskState *)self downloadIdentifier];
-  v9 = [v8 copyWithZone:a3];
+  downloadIdentifier = [(BLPipelineDownloadTaskState *)self downloadIdentifier];
+  v9 = [downloadIdentifier copyWithZone:zone];
   [v5 setDownloadIdentifier:v9];
 
-  v10 = [(BLPipelineDownloadTaskState *)self kind];
-  v11 = [v10 copyWithZone:a3];
+  kind = [(BLPipelineDownloadTaskState *)self kind];
+  v11 = [kind copyWithZone:zone];
   [v5 setKind:v11];
 
   [v5 setAssetIdentifier:{-[BLPipelineDownloadTaskState assetIdentifier](self, "assetIdentifier")}];
-  v12 = [(BLPipelineDownloadTaskState *)self playlistIdentifier];
-  [v5 setPlaylistIdentifier:v12];
+  playlistIdentifier = [(BLPipelineDownloadTaskState *)self playlistIdentifier];
+  [v5 setPlaylistIdentifier:playlistIdentifier];
 
-  v13 = [(BLPipelineDownloadTaskState *)self overallProgress];
-  v14 = [v13 copyWithZone:a3];
+  overallProgress = [(BLPipelineDownloadTaskState *)self overallProgress];
+  v14 = [overallProgress copyWithZone:zone];
   [v5 setOverallProgress:v14];
 
   [v5 setRequiresDownloadHandler:{-[BLPipelineDownloadTaskState requiresDownloadHandler](self, "requiresDownloadHandler")}];
@@ -168,32 +168,32 @@
   [v5 setTransferBytesWritten:{-[BLPipelineDownloadTaskState transferBytesWritten](self, "transferBytesWritten")}];
   [(BLPipelineDownloadTaskState *)self transferProgressFraction];
   [v5 setTransferProgressFraction:?];
-  v15 = [(BLPipelineDownloadTaskState *)self artistName];
-  [v5 setArtistName:v15];
+  artistName = [(BLPipelineDownloadTaskState *)self artistName];
+  [v5 setArtistName:artistName];
 
-  v16 = [(BLPipelineDownloadTaskState *)self title];
-  [v5 setTitle:v16];
+  title = [(BLPipelineDownloadTaskState *)self title];
+  [v5 setTitle:title];
 
-  v17 = [(BLPipelineDownloadTaskState *)self subtitle];
-  [v5 setSubtitle:v17];
+  subtitle = [(BLPipelineDownloadTaskState *)self subtitle];
+  [v5 setSubtitle:subtitle];
 
-  v18 = [(BLPipelineDownloadTaskState *)self collectionArtistName];
-  [v5 setCollectionArtistName:v18];
+  collectionArtistName = [(BLPipelineDownloadTaskState *)self collectionArtistName];
+  [v5 setCollectionArtistName:collectionArtistName];
 
-  v19 = [(BLPipelineDownloadTaskState *)self collectionTitle];
-  [v5 setCollectionTitle:v19];
+  collectionTitle = [(BLPipelineDownloadTaskState *)self collectionTitle];
+  [v5 setCollectionTitle:collectionTitle];
 
-  v20 = [(BLPipelineDownloadTaskState *)self genre];
-  [v5 setGenre:v20];
+  genre = [(BLPipelineDownloadTaskState *)self genre];
+  [v5 setGenre:genre];
 
-  v21 = [(BLPipelineDownloadTaskState *)self thumbnailImageURL];
-  [v5 setThumbnailImageURL:v21];
+  thumbnailImageURL = [(BLPipelineDownloadTaskState *)self thumbnailImageURL];
+  [v5 setThumbnailImageURL:thumbnailImageURL];
 
-  v22 = [(BLPipelineDownloadTaskState *)self cancelDownloadURL];
-  [v5 setCancelDownloadURL:v22];
+  cancelDownloadURL = [(BLPipelineDownloadTaskState *)self cancelDownloadURL];
+  [v5 setCancelDownloadURL:cancelDownloadURL];
 
-  v23 = [(BLPipelineDownloadTaskState *)self transactionIdentifier];
-  [v5 setTransactionIdentifier:v23];
+  transactionIdentifier = [(BLPipelineDownloadTaskState *)self transactionIdentifier];
+  [v5 setTransactionIdentifier:transactionIdentifier];
 
   return v5;
 }

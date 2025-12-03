@@ -1,21 +1,21 @@
 @interface CASDFLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)mergeElements;
 - (CASDFEffect)effect;
-- (CASDFLayer)initWithLayer:(id)a3;
+- (CASDFLayer)initWithLayer:(id)layer;
 - (double)effectOffset;
 - (double)gaussianRadius;
 - (double)smoothness;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)reloadValueForKeyPath:(id)a3;
-- (void)setEffect:(id)a3;
-- (void)setEffectOffset:(double)a3;
-- (void)setGaussianRadius:(double)a3;
-- (void)setMergeElements:(BOOL)a3;
-- (void)setSmoothness:(double)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)reloadValueForKeyPath:(id)path;
+- (void)setEffect:(id)effect;
+- (void)setEffectOffset:(double)offset;
+- (void)setGaussianRadius:(double)radius;
+- (void)setMergeElements:(BOOL)elements;
+- (void)setSmoothness:(double)smoothness;
 @end
 
 @implementation CASDFLayer
@@ -44,11 +44,11 @@
   return *v3;
 }
 
-- (void)setMergeElements:(BOOL)a3
+- (void)setMergeElements:(BOOL)elements
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x202, 7, &v3);
+  elementsCopy = elements;
+  CA::Layer::setter(self->super._attr.layer, 0x202, 7, &elementsCopy);
 }
 
 - (BOOL)mergeElements
@@ -59,17 +59,17 @@
   return v3 != 0;
 }
 
-- (void)setEffectOffset:(double)a3
+- (void)setEffectOffset:(double)offset
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = offset;
   CA::Layer::setter(self->super._attr.layer, 0xDA, 0x12, v3);
 }
 
-- (void)setGaussianRadius:(double)a3
+- (void)setGaussianRadius:(double)radius
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = radius;
   CA::Layer::setter(self->super._attr.layer, 0x119, 0x12, v3);
 }
 
@@ -81,27 +81,27 @@
   return *v3;
 }
 
-- (void)setSmoothness:(double)a3
+- (void)setSmoothness:(double)smoothness
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = smoothness;
   CA::Layer::setter(self->super._attr.layer, 0x292, 0x12, v3);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = effect;
   CA::Layer::setter(self->super._attr.layer, 0xD9, 2, v3);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = CASDFLayer;
-  v8 = [(CALayer *)&v17 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v8 && (*(a5 + 2) & 1) != 0)
+  v8 = [(CALayer *)&v17 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v8 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -130,7 +130,7 @@
     v10[37] = LODWORD(v13);
     *(v10 + 152) = [(CASDFLayer *)self mergeElements];
     *(v10 + 2) = self;
-    [(CASDFEffect *)[(CASDFLayer *)self effect] configureLayer:v10 transaction:a3];
+    [(CASDFEffect *)[(CASDFLayer *)self effect] configureLayer:v10 transaction:layer];
     v14 = *(v10 + 136);
     if (v14 == 8)
     {
@@ -165,11 +165,11 @@
   return v8;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while ([CASDFLayer _renderLayerDefinesProperty:]::atoms[v3] != a3)
+  while ([CASDFLayer _renderLayerDefinesProperty:]::atoms[v3] != property)
   {
     if (++v3 == 5)
     {
@@ -182,10 +182,10 @@
   return 1;
 }
 
-- (void)reloadValueForKeyPath:(id)a3
+- (void)reloadValueForKeyPath:(id)path
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = [a3 hasPrefix:@"effect"];
+  v5 = [path hasPrefix:@"effect"];
   if (v5)
   {
     v6 = CA::Transaction::ensure_compat(v5);
@@ -198,14 +198,14 @@
   {
     v8.receiver = self;
     v8.super_class = CASDFLayer;
-    [(CALayer *)&v8 reloadValueForKeyPath:a3];
+    [(CALayer *)&v8 reloadValueForKeyPath:path];
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = 0;
   while (v5 != [CASDFLayer didChangeValueForKey:]::atoms[v6])
   {
@@ -220,10 +220,10 @@
 LABEL_6:
   v8.receiver = self;
   v8.super_class = CASDFLayer;
-  [(CASDFLayer *)&v8 didChangeValueForKey:a3];
+  [(CASDFLayer *)&v8 didChangeValueForKey:key];
 }
 
-- (CASDFLayer)initWithLayer:(id)a3
+- (CASDFLayer)initWithLayer:(id)layer
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -234,7 +234,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [objc_msgSend(a3 "effect")];
+      v5 = [objc_msgSend(layer "effect")];
       [(CASDFLayer *)v4 setEffect:v5];
     }
   }
@@ -242,35 +242,35 @@ LABEL_6:
   return v4;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CASDFLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"smoothness"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"gaussianRadius") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"effectOffset"))
+  if ([key isEqualToString:@"smoothness"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"gaussianRadius") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"effectOffset"))
   {
     return &unk_1EF22F918;
   }
 
-  if ([a3 isEqualToString:@"mergeElements"])
+  if ([key isEqualToString:@"mergeElements"])
   {
     return MEMORY[0x1E695E110];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CASDFLayer;
-  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
 }
 
 @end

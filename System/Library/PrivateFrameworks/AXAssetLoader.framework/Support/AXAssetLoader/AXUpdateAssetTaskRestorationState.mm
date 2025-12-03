@@ -11,24 +11,24 @@
 
 - (BOOL)isRefreshingAssets
 {
-  v2 = [(AXManagedAssetTaskRestorationState *)self phase];
-  v3 = [v2 isEqualToString:@"Refreshing Assets"];
+  phase = [(AXManagedAssetTaskRestorationState *)self phase];
+  v3 = [phase isEqualToString:@"Refreshing Assets"];
 
   return v3;
 }
 
 - (BOOL)isPurgingAssets
 {
-  v2 = [(AXManagedAssetTaskRestorationState *)self phase];
-  v3 = [v2 isEqualToString:@"Purging Assets"];
+  phase = [(AXManagedAssetTaskRestorationState *)self phase];
+  v3 = [phase isEqualToString:@"Purging Assets"];
 
   return v3;
 }
 
 - (BOOL)isDownloadingAssets
 {
-  v2 = [(AXManagedAssetTaskRestorationState *)self phase];
-  v3 = [v2 isEqualToString:@"Downloading Assets"];
+  phase = [(AXManagedAssetTaskRestorationState *)self phase];
+  v3 = [phase isEqualToString:@"Downloading Assets"];
 
   return v3;
 }
@@ -48,24 +48,24 @@
 
 - (BOOL)hasCompletedPurgingAssets
 {
-  v3 = [(AXUpdateAssetTaskRestorationState *)self hasCompletedRefreshingAssets];
-  if (v3)
+  hasCompletedRefreshingAssets = [(AXUpdateAssetTaskRestorationState *)self hasCompletedRefreshingAssets];
+  if (hasCompletedRefreshingAssets)
   {
-    LOBYTE(v3) = ![(AXUpdateAssetTaskRestorationState *)self isPurgingAssets];
+    LOBYTE(hasCompletedRefreshingAssets) = ![(AXUpdateAssetTaskRestorationState *)self isPurgingAssets];
   }
 
-  return v3;
+  return hasCompletedRefreshingAssets;
 }
 
 - (BOOL)hasCompletedDownloadingAssets
 {
-  v3 = [(AXUpdateAssetTaskRestorationState *)self hasCompletedPurgingAssets];
-  if (v3)
+  hasCompletedPurgingAssets = [(AXUpdateAssetTaskRestorationState *)self hasCompletedPurgingAssets];
+  if (hasCompletedPurgingAssets)
   {
-    LOBYTE(v3) = ![(AXUpdateAssetTaskRestorationState *)self isDownloadingAssets];
+    LOBYTE(hasCompletedPurgingAssets) = ![(AXUpdateAssetTaskRestorationState *)self isDownloadingAssets];
   }
 
-  return v3;
+  return hasCompletedPurgingAssets;
 }
 
 @end

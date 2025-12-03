@@ -1,16 +1,16 @@
 @interface WLKDictionaryResponseProcessor
-- (id)processResponseData:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)processResponseData:(id)data options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation WLKDictionaryResponseProcessor
 
-- (id)processResponseData:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)processResponseData:(id)data options:(unint64_t)options error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:a4 error:a5];
+    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:options error:error];
   }
 
   else
@@ -18,16 +18,16 @@
     v9 = 0;
   }
 
-  v10 = [(WLKDictionaryResponseProcessor *)self dictionaryKeyPath];
-  v11 = [v10 componentsSeparatedByString:@"."];
+  dictionaryKeyPath = [(WLKDictionaryResponseProcessor *)self dictionaryKeyPath];
+  v11 = [dictionaryKeyPath componentsSeparatedByString:@"."];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [(WLKDictionaryResponseProcessor *)self objectClass];
+    objectClass = [(WLKDictionaryResponseProcessor *)self objectClass];
     v12 = 0;
     v21 = 0;
-    if (v20)
+    if (objectClass)
     {
       goto LABEL_25;
     }
@@ -35,7 +35,7 @@
     goto LABEL_23;
   }
 
-  v28 = v8;
+  v28 = dataCopy;
   v12 = v9;
   v29 = 0u;
   v30 = 0u;
@@ -87,11 +87,11 @@
 
 LABEL_17:
 
-  v22 = [(WLKDictionaryResponseProcessor *)self objectClass];
-  if (!v22)
+  objectClass2 = [(WLKDictionaryResponseProcessor *)self objectClass];
+  if (!objectClass2)
   {
     v11 = v27;
-    v8 = v28;
+    dataCopy = v28;
 LABEL_23:
     v24 = v12;
     v12 = v24;
@@ -99,8 +99,8 @@ LABEL_23:
   }
 
   v11 = v27;
-  v8 = v28;
-  if (!v12 || (v23 = v22, ![(objc_class *)v22 instancesRespondToSelector:sel_initWithDictionary_]))
+  dataCopy = v28;
+  if (!v12 || (v23 = objectClass2, ![(objc_class *)objectClass2 instancesRespondToSelector:sel_initWithDictionary_]))
   {
     v21 = 0;
     goto LABEL_25;

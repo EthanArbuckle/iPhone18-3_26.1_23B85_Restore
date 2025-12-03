@@ -1,52 +1,52 @@
 @interface BWSmartStyleLearningNode
-+ (id)newISPSMGProcessingSession:(id)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)a3;
++ (id)newISPSMGProcessingSession:(id)session;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)stamp;
 - (BOOL)hasNonLiveConfigurationChanges;
-- (BWSmartStyleLearningNode)initWithOutputs:(unint64_t)a3 masksRefinerEnabled:(BOOL)a4 propagateMasks:(BOOL)a5 ispSMGProcessingSession:(id)a6 squareAspectRatioConfigEnabled:(BOOL)a7 subjectRelightingPreviewVersion:(int)a8;
-- (id)_blitMasksToOutputPools:(id)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 currentPTS:(id *)a5;
-- (id)_cropAndScaleMasks:(id)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 currentPTS:(id *)a5 applyGDC:(BOOL)a6 useIntermediatePool:(BOOL)a7;
-- (id)_deepCopyMasks:(id)a3;
-- (id)_runInferences:(opaqueCMSampleBuffer *)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 withMasks:(id)a5 currentPTS:(id *)a6;
-- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)a3 format:(id)a4;
-- (int)_createCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)a3 to:(opaqueCMSampleBuffer *)a4;
-- (int)_createIdentityCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)a3 to:(opaqueCMSampleBuffer *)a4;
-- (int)_createSmartStyleContainerFromSampleBuffer:(opaqueCMSampleBuffer *)a3 unstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a4 linearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a5 to:(opaqueCMSampleBuffer *)a6;
-- (int)_cropAndUndistortWeightSegmentMap:(__CVBuffer *)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 doGDC:(BOOL)a5 toPixelBuffer:(__CVBuffer *)a6;
-- (int)_extractANSTMasks:(opaqueCMSampleBuffer *)a3 forPTS:(id *)a4;
-- (int)_findCorrespondingSmartStyleContainerWithMasks:(id)a3 outputSmartStyleContainer:(opaqueCMSampleBuffer *)a4;
-- (int)_getContainerAssetsFromSampleBuffer:(opaqueCMSampleBuffer *)a3 outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a4 outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a5;
-- (int)_initVMRefinerInference:(BOOL)a3;
-- (int)_loadAndConfigureSmartStyleBundle:(BOOL)a3;
-- (int)_runFalsePositiveRejectionOnPixelBuffer:(__CVBuffer *)a3 unrefinedPixelBuffer:(__CVBuffer *)a4;
-- (int)processMaskSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (int)processVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 frameEmitted:(BOOL *)a4;
-- (opaqueCMSampleBuffer)_unpackSbufFromPrimaryCameraStream:(opaqueCMSampleBuffer *)a3;
+- (BWSmartStyleLearningNode)initWithOutputs:(unint64_t)outputs masksRefinerEnabled:(BOOL)enabled propagateMasks:(BOOL)masks ispSMGProcessingSession:(id)session squareAspectRatioConfigEnabled:(BOOL)configEnabled subjectRelightingPreviewVersion:(int)version;
+- (id)_blitMasksToOutputPools:(id)pools unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer currentPTS:(id *)s;
+- (id)_cropAndScaleMasks:(id)masks unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer currentPTS:(id *)s applyGDC:(BOOL)c useIntermediatePool:(BOOL)pool;
+- (id)_deepCopyMasks:(id)masks;
+- (id)_runInferences:(opaqueCMSampleBuffer *)inferences unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer withMasks:(id)masks currentPTS:(id *)s;
+- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)key format:(id)format;
+- (int)_createCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to;
+- (int)_createIdentityCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to;
+- (int)_createSmartStyleContainerFromSampleBuffer:(opaqueCMSampleBuffer *)buffer unstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer linearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)thumbnailSampleBuffer to:(opaqueCMSampleBuffer *)to;
+- (int)_cropAndUndistortWeightSegmentMap:(__CVBuffer *)map unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer doGDC:(BOOL)c toPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)_extractANSTMasks:(opaqueCMSampleBuffer *)masks forPTS:(id *)s;
+- (int)_findCorrespondingSmartStyleContainerWithMasks:(id)masks outputSmartStyleContainer:(opaqueCMSampleBuffer *)container;
+- (int)_getContainerAssetsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)thumbnailSampleBuffer;
+- (int)_initVMRefinerInference:(BOOL)inference;
+- (int)_loadAndConfigureSmartStyleBundle:(BOOL)bundle;
+- (int)_runFalsePositiveRejectionOnPixelBuffer:(__CVBuffer *)buffer unrefinedPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (int)processMaskSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)processVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer frameEmitted:(BOOL *)emitted;
+- (opaqueCMSampleBuffer)_unpackSbufFromPrimaryCameraStream:(opaqueCMSampleBuffer *)stream;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)_asynchronouslyDecrementLearnCount;
 - (void)_asynchronouslyDecrementRenderCount;
-- (void)_asynchronouslyLearnWithContainer:(opaqueCMSampleBuffer *)a3 inputUnstyledSampleBuffer:(opaqueCMSampleBuffer *)ImageBuffer withUnrefinedMasks:(id)a5 withStats:(id)a6 withStatsExtended:(id)a7 styleToLearn:(id)a8 shouldBypass:(BOOL)a9;
-- (void)_asynchronouslyRenderSampleBuffer:(opaqueCMSampleBuffer *)a3 outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a4 outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a5 synchronizingEvent:(id)a6;
-- (void)_asynchronouslySignalEvent:(id)a3;
+- (void)_asynchronouslyLearnWithContainer:(opaqueCMSampleBuffer *)container inputUnstyledSampleBuffer:(opaqueCMSampleBuffer *)ImageBuffer withUnrefinedMasks:(id)masks withStats:(id)stats withStatsExtended:(id)extended styleToLearn:(id)learn shouldBypass:(BOOL)bypass;
+- (void)_asynchronouslyRenderSampleBuffer:(opaqueCMSampleBuffer *)buffer outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)thumbnailSampleBuffer synchronizingEvent:(id)event;
+- (void)_asynchronouslySignalEvent:(id)event;
 - (void)_releaseResources;
-- (void)_updateCurrentSmartStyleMetadata:(id)a3 onSbuf:(opaqueCMSampleBuffer *)a4;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_updateCurrentSmartStyleMetadata:(id)metadata onSbuf:(opaqueCMSampleBuffer *)sbuf;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)loadInferenceNetwork;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)semanticStyleSceneTypeDidChange:(int)a3;
-- (void)setCameraInfoByPortType:(id)a3;
-- (void)setSmartStyle:(id)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)semanticStyleSceneTypeDidChange:(int)change;
+- (void)setCameraInfoByPortType:(id)type;
+- (void)setSmartStyle:(id)style;
 @end
 
 @implementation BWSmartStyleLearningNode
 
-- (BWSmartStyleLearningNode)initWithOutputs:(unint64_t)a3 masksRefinerEnabled:(BOOL)a4 propagateMasks:(BOOL)a5 ispSMGProcessingSession:(id)a6 squareAspectRatioConfigEnabled:(BOOL)a7 subjectRelightingPreviewVersion:(int)a8
+- (BWSmartStyleLearningNode)initWithOutputs:(unint64_t)outputs masksRefinerEnabled:(BOOL)enabled propagateMasks:(BOOL)masks ispSMGProcessingSession:(id)session squareAspectRatioConfigEnabled:(BOOL)configEnabled subjectRelightingPreviewVersion:(int)version
 {
-  v9 = a7;
-  v13 = a3;
+  configEnabledCopy = configEnabled;
+  outputsCopy = outputs;
   v62.receiver = self;
   v62.super_class = BWSmartStyleLearningNode;
   v14 = [(BWNode *)&v62 init];
@@ -54,15 +54,15 @@
   {
     v15 = [MEMORY[0x1E6991708] configurationForVariant:0];
     v16 = [MEMORY[0x1E6991708] tuningParametersForVariant:0];
-    v17 = [v16 learningRate];
-    if (v17 <= 2)
+    learningRate = [v16 learningRate];
+    if (learningRate <= 2)
     {
       v18 = 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = learningRate;
     }
 
     LODWORD(v14->_lastLearnedPortType) = v18;
@@ -72,12 +72,12 @@
     v14->_learningFramesPerSecondUnit = v19;
     [v16 anstMasksMatchingTimeInSecondsThreshold];
     v14->_learningMaxFramesPerSecond = v20;
-    BYTE4(v14->_previousPTS.epoch) = v13 & 1;
-    BYTE5(v14->_previousPTS.epoch) = (v13 & 2) != 0;
-    BYTE6(v14->_previousPTS.epoch) = a4;
-    HIBYTE(v14->_previousPTS.epoch) = a4;
+    BYTE4(v14->_previousPTS.epoch) = outputsCopy & 1;
+    BYTE5(v14->_previousPTS.epoch) = (outputsCopy & 2) != 0;
+    BYTE6(v14->_previousPTS.epoch) = enabled;
+    HIBYTE(v14->_previousPTS.epoch) = enabled;
     v14->_generateCoefficients = 1;
-    v14->_propagateMasks = a5;
+    v14->_propagateMasks = masks;
     v21 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v14];
     [(BWNodeInput *)v21 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeInput *)v21 setPassthroughMode:1];
@@ -100,7 +100,7 @@
       [(BWNodeInput *)v21 setMediaConfiguration:v23 forAttachedMediaKey:@"LTMThumbnail"];
     }
 
-    v55 = v9;
+    v55 = configEnabledCopy;
     if (FigCapturePlatformIdentifier() >= 12)
     {
       v24 = objc_alloc_init(BWNodeInputMediaConfiguration);
@@ -165,7 +165,7 @@
     [(BWNodeOutput *)v34 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutput *)v34 setPassthroughMode:1];
     [(BWNode *)v14 addOutput:v34];
-    v14->_ispSMGProcessingSession = a6;
+    v14->_ispSMGProcessingSession = session;
     if ([(BWSmartStyleLearningNode *)v14 _loadAndConfigureSmartStyleBundle:v55])
     {
       [BWSmartStyleLearningNode initWithOutputs:masksRefinerEnabled:propagateMasks:ispSMGProcessingSession:squareAspectRatioConfigEnabled:subjectRelightingPreviewVersion:];
@@ -221,7 +221,7 @@
                       if (v42)
                       {
                         v43 = v42;
-                        v44 = [v42 cast];
+                        cast = [v42 cast];
                         [v43 intensity];
                         v46 = v45;
                         [v43 toneBias];
@@ -230,15 +230,15 @@
                         LODWORD(v50) = v49;
                         LODWORD(v51) = v46;
                         LODWORD(v52) = v48;
-                        v53 = [FigCaptureSmartStyle styleWithCast:v44 intensity:v51 toneBias:v52 colorBias:v50];
+                        v53 = [FigCaptureSmartStyle styleWithCast:cast intensity:v51 toneBias:v52 colorBias:v50];
                         *&v14->_disableWaitForCoefficientsOnFirstFrame = v53;
                         if (v53)
                         {
                           v14->_semanticStyleSceneLock._os_unfair_lock_opaque = 0;
                           v14->_semanticStyleSceneType = 0;
                           LOBYTE(v14->_mostRecentLearnedSkyMaskSampleBuffer) = 1;
-                          HIDWORD(v14->_mostRecentLearnedSkyMaskSampleBuffer) = a8;
-                          BYTE1(v14->_mostRecentLearnedSkyMaskSampleBuffer) = a8 != 0;
+                          HIDWORD(v14->_mostRecentLearnedSkyMaskSampleBuffer) = version;
+                          BYTE1(v14->_mostRecentLearnedSkyMaskSampleBuffer) = version != 0;
                           [(BWNode *)v14 setSupportsLiveReconfiguration:1];
                           return v14;
                         }
@@ -301,14 +301,14 @@
   return v14;
 }
 
-- (void)setCameraInfoByPortType:(id)a3
+- (void)setCameraInfoByPortType:(id)type
 {
   intermediatePixelBufferPoolsByAttachedMediaKeys = self->_intermediatePixelBufferPoolsByAttachedMediaKeys;
   if (intermediatePixelBufferPoolsByAttachedMediaKeys)
   {
   }
 
-  self->_intermediatePixelBufferPoolsByAttachedMediaKeys = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:a3];
+  self->_intermediatePixelBufferPoolsByAttachedMediaKeys = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:type];
 }
 
 - (void)_releaseResources
@@ -376,24 +376,24 @@
 {
   v4.receiver = self;
   v4.super_class = BWSmartStyleLearningNode;
-  v2 = [(BWNode *)&v4 hasNonLiveConfigurationChanges];
-  if (v2)
+  hasNonLiveConfigurationChanges = [(BWNode *)&v4 hasNonLiveConfigurationChanges];
+  if (hasNonLiveConfigurationChanges)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Live reconfiguring BWSmartStyleLearningNode with changing formats is not supported", 0}]);
   }
 
-  return v2;
+  return hasNonLiveConfigurationChanges;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!format)
   {
     [BWSmartStyleLearningNode didSelectFormat:forInput:forAttachedMediaKey:];
     return;
   }
 
-  if (!a4)
+  if (!input)
   {
     [BWSmartStyleLearningNode didSelectFormat:forInput:forAttachedMediaKey:];
     return;
@@ -403,10 +403,10 @@
   [objc_msgSend(-[CMISmartStyleProcessor configuration](self->_smartStyleProcessor "configuration")];
   v11 = v10;
   v13 = v12;
-  if (-[NSArray objectAtIndexedSubscript:](-[BWNode inputs](self, "inputs"), "objectAtIndexedSubscript:", 0) == a4 && [a5 isEqualToString:@"PrimaryFormat"])
+  if (-[NSArray objectAtIndexedSubscript:](-[BWNode inputs](self, "inputs"), "objectAtIndexedSubscript:", 0) == input && [key isEqualToString:@"PrimaryFormat"])
   {
     v65 = v9 + 2;
-    [(BWNodeOutput *)self->super._output setFormat:a3];
+    [(BWNodeOutput *)self->super._output setFormat:format];
     v14 = objc_alloc_init(BWVideoFormatRequirements);
     if (!v14)
     {
@@ -416,7 +416,7 @@
 
     v15 = v14;
     v16 = MEMORY[0x1E696AD98];
-    v17 = FigCaptureUncompressedPixelFormatForPixelFormat([a3 pixelFormat]);
+    v17 = FigCaptureUncompressedPixelFormatForPixelFormat([format pixelFormat]);
     v18 = FigCaptureUnPackedPixelFormatForPixelFormat(v17);
     if ((v18 & 0xFFFFFFEF) == 0x34323066 || v18 == 2019963440 || v18 == 2016686640)
     {
@@ -449,7 +449,7 @@
 
     v26 = v25;
     v27 = MEMORY[0x1E696AD98];
-    v28 = FigCaptureUncompressedPixelFormatForPixelFormat([a3 pixelFormat]);
+    v28 = FigCaptureUncompressedPixelFormatForPixelFormat([format pixelFormat]);
     v29 = FigCaptureUnPackedPixelFormatForPixelFormat(v28);
     if ((v29 & 0xFFFFFFEF) == 0x34323066 || v29 == 2019963440 || v29 == 2016686640)
     {
@@ -600,7 +600,7 @@
 
   else
   {
-    if (([a5 isEqualToString:0x1F21AAED0] & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", 0x1F21AAEF0) & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", 0x1F21AAF10) & 1) != 0 || objc_msgSend(a5, "isEqualToString:", 0x1F21AAF30))
+    if (([key isEqualToString:0x1F21AAED0] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", 0x1F21AAEF0) & 1) != 0 || (objc_msgSend(key, "isEqualToString:", 0x1F21AAF10) & 1) != 0 || objc_msgSend(key, "isEqualToString:", 0x1F21AAF30))
     {
       if (!self->_inferenceEngine)
       {
@@ -612,8 +612,8 @@
         }
 
         v43 = v42;
-        -[BWVideoFormatRequirements setWidth:](v42, "setWidth:", [a3 width]);
-        -[BWVideoFormatRequirements setHeight:](v43, "setHeight:", [a3 height]);
+        -[BWVideoFormatRequirements setWidth:](v42, "setWidth:", [format width]);
+        -[BWVideoFormatRequirements setHeight:](v43, "setHeight:", [format height]);
         [(BWVideoFormatRequirements *)v43 setBytesPerRowAlignment:64];
         [(BWVideoFormatRequirements *)v43 setSupportedPixelFormats:&unk_1F2248850];
         v73 = v43;
@@ -635,20 +635,20 @@
         v68[1] = 0x1F219EEB0;
         v72[2] = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
         v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:v71 count:3];
-        if ([v44 objectForKeyedSubscript:a5])
+        if ([v44 objectForKeyedSubscript:key])
         {
-          v45 = [objc_msgSend(v44 objectForKeyedSubscript:{a5), "objectAtIndexedSubscript:", 0}];
-          v46 = [objc_msgSend(v44 objectForKeyedSubscript:{a5), "objectAtIndexedSubscript:", 1}];
+          v45 = [objc_msgSend(v44 objectForKeyedSubscript:{key), "objectAtIndexedSubscript:", 0}];
+          v46 = [objc_msgSend(v44 objectForKeyedSubscript:{key), "objectAtIndexedSubscript:", 1}];
           [(BWVideoFormat *)self->_anstMaskVideoFormat setObject:self->_inferenceEngine forKeyedSubscript:v45];
           [(BWVideoFormat *)self->_anstMaskVideoFormat setObject:self->_inferenceEngine forKeyedSubscript:v46];
         }
 
-        [(NSMutableDictionary *)self->_processorPixelBufferPoolsByAttachedMediaKeys setObject:self->_inferenceEngine forKeyedSubscript:a5];
+        [(NSMutableDictionary *)self->_processorPixelBufferPoolsByAttachedMediaKeys setObject:self->_inferenceEngine forKeyedSubscript:key];
       }
 
       if (self->_propagateMasks)
       {
-        v47 = -[BWVideoFormatRequirements initWithPixelBufferAttributes:]([BWVideoFormatRequirements alloc], "initWithPixelBufferAttributes:", [a3 pixelBufferAttributes]);
+        v47 = -[BWVideoFormatRequirements initWithPixelBufferAttributes:]([BWVideoFormatRequirements alloc], "initWithPixelBufferAttributes:", [format pixelBufferAttributes]);
         v48 = objc_alloc_init(BWNodeOutputMediaConfiguration);
         if (!v48)
         {
@@ -662,7 +662,7 @@
         [(BWNodeOutputMediaConfiguration *)v49 setProvidesPixelBufferPool:1];
         [(BWNodeOutputMediaConfiguration *)v49 setOwningNodeRetainedBufferCount:v9 + 2 + self->_propagateMasks];
         [(BWNodeOutputMediaConfiguration *)v49 setOwningNodeIndefinitelyHeldBufferCount:1];
-        [(BWNodeOutput *)self->super._output setMediaConfiguration:v49 forAttachedMediaKey:a5];
+        [(BWNodeOutput *)self->super._output setMediaConfiguration:v49 forAttachedMediaKey:key];
         v67 = v47;
         inferenceEngine = +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v67 count:1]);
         v51 = 328;
@@ -675,27 +675,27 @@
           return;
         }
 
-        [(NSMutableDictionary *)self->_refinedVideoFormatByAttachedMediaKey setObject:self->_inferenceEngine forKeyedSubscript:a5];
+        [(NSMutableDictionary *)self->_refinedVideoFormatByAttachedMediaKey setObject:self->_inferenceEngine forKeyedSubscript:key];
         inferenceEngine = self->_inferenceEngine;
         v51 = 344;
       }
 
-      [*(&self->super.super.isa + v51) setObject:inferenceEngine forKeyedSubscript:a5];
+      [*(&self->super.super.isa + v51) setObject:inferenceEngine forKeyedSubscript:key];
       return;
     }
 
-    if (([a5 isEqualToString:0x1F21AB1D0] & 1) == 0)
+    if (([key isEqualToString:0x1F21AB1D0] & 1) == 0)
     {
       v66.receiver = self;
       v66.super_class = BWSmartStyleLearningNode;
-      [(BWNode *)&v66 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+      [(BWNode *)&v66 didSelectFormat:format forInput:input forAttachedMediaKey:key];
     }
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(NSArray *)[(BWNode *)self inputs:a3] objectAtIndexedSubscript:0]== a5)
+  if ([(NSArray *)[(BWNode *)self inputs:d] objectAtIndexedSubscript:0]== input)
   {
     output = self->super._output;
 
@@ -703,13 +703,13 @@
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if ([(NSArray *)[(BWNode *)self inputs] objectAtIndexedSubscript:0]== a4)
+  if ([(NSArray *)[(BWNode *)self inputs] objectAtIndexedSubscript:0]== input)
   {
     dispatch_sync(*&self->_timeInSecondsUntilNextStatsUpdate, &__block_literal_global_65);
-    [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:a3];
-    if (!a3)
+    [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:d];
+    if (!d)
     {
       os_unfair_lock_lock(&self->_inputMasksSampleBufferQueueLock);
       [(NSMutableArray *)self->_inputMasksSampleBufferQueue removeAllObjects];
@@ -900,7 +900,7 @@ LABEL_53:
 
   v26 = v25;
   v27 = MEMORY[0x1E6991700];
-  v28 = [(FigCaptureSmartStyle *)v22 cast];
+  cast = [(FigCaptureSmartStyle *)v22 cast];
   [(FigCaptureSmartStyle *)v22 toneBias];
   v30 = v29;
   [(FigCaptureSmartStyle *)v22 colorBias];
@@ -910,7 +910,7 @@ LABEL_53:
   LODWORD(v35) = 1.0;
   LODWORD(v36) = v30;
   LODWORD(v37) = v32;
-  [v27 calculateStartupPriorCCMforCast:v28 tone:v36 color:v37 intensity:v34 priorStrength:v35];
+  [v27 calculateStartupPriorCCMforCast:cast tone:v36 color:v37 intensity:v34 priorStrength:v35];
   v70 = v39;
   v71 = v38;
   v68 = v40;
@@ -933,8 +933,8 @@ LABEL_53:
     v46 = v45;
     [v42 spotlightCount];
     v72 = v47;
-    v48 = [v42 weightPlaneCount];
-    v49 = [v42 createAndSolveGlobalLinearSystem];
+    weightPlaneCount = [v42 weightPlaneCount];
+    createAndSolveGlobalLinearSystem = [v42 createAndSolveGlobalLinearSystem];
     v50 = CVPixelBufferLockBaseAddress(v26, 0);
     if (v50)
     {
@@ -944,7 +944,7 @@ LABEL_53:
     else
     {
       BaseAddress = CVPixelBufferGetBaseAddress(v26);
-      v52 = (vmul_lane_s32(v46, v72, 1).u32[0] + v49) * v48;
+      v52 = (vmul_lane_s32(v46, v72, 1).u32[0] + createAndSolveGlobalLinearSystem) * weightPlaneCount;
       if (v44 == 1278226536)
       {
         if (v52 >= 1)
@@ -1138,7 +1138,7 @@ void __70__BWSmartStyleLearningNode_prepareForCurrentConfigurationToBecomeLive__
   os_unfair_lock_unlock(v3);
 }
 
-- (int)processMaskSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)processMaskSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (self && ([(BWSmartStyleLearningNode *)self _getSampleBufferPresentationTimeStamp:?], epoch = time.epoch, value = time.value, flags = time.flags, timescale = time.timescale, (time.flags & 1) != 0))
   {
@@ -1154,7 +1154,7 @@ void __70__BWSmartStyleLearningNode_prepareForCurrentConfigurationToBecomeLive__
     time.timescale = timescale;
     time.flags = flags;
     time.epoch = epoch;
-    v7 = [(BWSmartStyleLearningNode *)self _extractANSTMasks:a3 forPTS:&time];
+    v7 = [(BWSmartStyleLearningNode *)self _extractANSTMasks:buffer forPTS:&time];
     if (v7)
     {
       [BWSmartStyleLearningNode processMaskSampleBuffer:];
@@ -1170,7 +1170,7 @@ void __70__BWSmartStyleLearningNode_prepareForCurrentConfigurationToBecomeLive__
   return v7;
 }
 
-- (int)processVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 frameEmitted:(BOOL *)a4
+- (int)processVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer frameEmitted:(BOOL *)emitted
 {
   v96 = 0;
   v97 = 0;
@@ -1198,7 +1198,7 @@ LABEL_65:
     [BWSmartStyleLearningNode processVideoSampleBuffer:frameEmitted:];
 LABEL_66:
     v50 = 0;
-    v45 = 0;
+    lastObject = 0;
     v49 = 0;
     goto LABEL_125;
   }
@@ -1233,7 +1233,7 @@ LABEL_66:
   HIDWORD(self->_previousPTS.value) = timescale;
   self->_previousPTS.timescale = flags;
   *&self->_previousPTS.flags = epoch;
-  v13 = [(BWSmartStyleLearningNode *)self _unpackSbufFromPrimaryCameraStream:a3];
+  v13 = [(BWSmartStyleLearningNode *)self _unpackSbufFromPrimaryCameraStream:buffer];
   v14 = CMGetAttachment(v13, *off_1E798A3C8, 0);
   if (!v14)
   {
@@ -1255,9 +1255,9 @@ LABEL_66:
     v19 = 0;
   }
 
-  v20 = [*&self->_disableWaitForCoefficientsOnFirstFrame dictionaryRepresentation];
+  dictionaryRepresentation = [*&self->_disableWaitForCoefficientsOnFirstFrame dictionaryRepresentation];
   os_unfair_lock_unlock(&self->_styleUpdateLock);
-  [(BWSmartStyleLearningNode *)self _updateCurrentSmartStyleMetadata:v20 onSbuf:a3];
+  [(BWSmartStyleLearningNode *)self _updateCurrentSmartStyleMetadata:dictionaryRepresentation onSbuf:buffer];
   os_unfair_lock_lock(&self->_statsUpdateDeltaTimeThreshold);
   v21 = *&self->_timingLock._os_unfair_lock_opaque;
   anstMasksMatchingTimeInSecondsThreshold = self->_anstMasksMatchingTimeInSecondsThreshold;
@@ -1291,7 +1291,7 @@ LABEL_19:
     [BWSmartStyleLearningNode processVideoSampleBuffer:frameEmitted:];
 LABEL_150:
     v50 = 0;
-    v45 = 0;
+    lastObject = 0;
     goto LABEL_151;
   }
 
@@ -1365,7 +1365,7 @@ LABEL_30:
   {
     [BWSmartStyleLearningNode processVideoSampleBuffer:frameEmitted:];
     v50 = 0;
-    v45 = 0;
+    lastObject = 0;
     v49 = -12786;
 LABEL_151:
     v5 = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
@@ -1407,7 +1407,7 @@ LABEL_151:
     v49 = v35;
     [BWSmartStyleLearningNode processVideoSampleBuffer:frameEmitted:];
 LABEL_145:
-    v45 = 0;
+    lastObject = 0;
     goto LABEL_104;
   }
 
@@ -1470,14 +1470,14 @@ LABEL_145:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     [(BWNodeOutput *)self->super._output emitDroppedSample:v39];
 
-    v45 = 0;
+    lastObject = 0;
     v49 = 0;
-    *a4 = 1;
+    *emitted = 1;
     goto LABEL_124;
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
-  *a4 = 1;
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
+  *emitted = 1;
   v37 = [(BWSmartStyleLearningNode *)self _createSmartStyleContainerFromSampleBuffer:sampleBufferOut unstyledThumbnailSampleBuffer:v94 linearThumbnailSampleBuffer:v93 to:&v97];
   if (v37)
   {
@@ -1504,7 +1504,7 @@ LABEL_145:
   {
     v46 = 0;
     currentImageStats = 0;
-    v45 = 0;
+    lastObject = 0;
     goto LABEL_87;
   }
 
@@ -1517,10 +1517,10 @@ LABEL_145:
     os_unfair_lock_lock(&self->_inputMasksSampleBufferQueueLock);
     if (runVMRefiner)
     {
-      v45 = [(NSMutableArray *)self->_inputMasksSampleBufferQueue lastObject];
-      if (v45)
+      lastObject = [(NSMutableArray *)self->_inputMasksSampleBufferQueue lastObject];
+      if (lastObject)
       {
-        [(BWSmartStyleLearningNode *)self _findCorrespondingSmartStyleContainerWithMasks:v45 outputSmartStyleContainer:&v96];
+        [(BWSmartStyleLearningNode *)self _findCorrespondingSmartStyleContainerWithMasks:lastObject outputSmartStyleContainer:&v96];
       }
 
       goto LABEL_78;
@@ -1553,8 +1553,8 @@ LABEL_69:
         objc_enumerationMutation(inputMasksSampleBufferQueue);
       }
 
-      v45 = *(*(&v83 + 1) + 8 * v55);
-      if (![(BWSmartStyleLearningNode *)self _findCorrespondingSmartStyleContainerWithMasks:v45 outputSmartStyleContainer:&v96])
+      lastObject = *(*(&v83 + 1) + 8 * v55);
+      if (![(BWSmartStyleLearningNode *)self _findCorrespondingSmartStyleContainerWithMasks:lastObject outputSmartStyleContainer:&v96])
       {
         break;
       }
@@ -1567,7 +1567,7 @@ LABEL_69:
           goto LABEL_69;
         }
 
-        v45 = 0;
+        lastObject = 0;
         break;
       }
     }
@@ -1577,11 +1577,11 @@ LABEL_69:
 
   else
   {
-    v45 = 0;
+    lastObject = 0;
   }
 
 LABEL_78:
-  v56 = v45;
+  v56 = lastObject;
   os_unfair_lock_unlock(lock);
   os_unfair_lock_lock(&self->_statsUpdateDeltaTimeThreshold);
   *&self->_timingLock._os_unfair_lock_opaque = LODWORD(self->_lastLearnedPortType) / HIDWORD(self->_lastLearnedPortType);
@@ -1717,7 +1717,7 @@ LABEL_124:
 
     if (v96)
     {
-      v69 = [(BWSmartStyleLearningNode *)self _deepCopyMasks:v45];
+      v69 = [(BWSmartStyleLearningNode *)self _deepCopyMasks:lastObject];
       if (!v69)
       {
         [BWSmartStyleLearningNode processVideoSampleBuffer:frameEmitted:];
@@ -1775,7 +1775,7 @@ LABEL_154:
     if (v96)
     {
       os_unfair_lock_lock(&self->_inputMasksSampleBufferQueueLock);
-      [(NSMutableArray *)self->_inputMasksSampleBufferQueue removeObject:v45];
+      [(NSMutableArray *)self->_inputMasksSampleBufferQueue removeObject:lastObject];
       os_unfair_lock_unlock(&self->_inputMasksSampleBufferQueueLock);
     }
 
@@ -1916,7 +1916,7 @@ uint64_t __66__BWSmartStyleLearningNode_processVideoSampleBuffer_frameEmitted___
   }
 }
 
-- (id)_runInferences:(opaqueCMSampleBuffer *)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 withMasks:(id)a5 currentPTS:(id *)a6
+- (id)_runInferences:(opaqueCMSampleBuffer *)inferences unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer withMasks:(id)masks currentPTS:(id *)s
 {
   v49 = 0;
   v50 = 0;
@@ -1926,7 +1926,7 @@ uint64_t __66__BWSmartStyleLearningNode_processVideoSampleBuffer_frameEmitted___
   memset(&timingArrayOut, 0, sizeof(timingArrayOut));
   v11 = &unk_1E799A000;
   v12 = &unk_1E799A000;
-  if (!CMGetAttachment(a4, *off_1E798A3C8, 0))
+  if (!CMGetAttachment(buffer, *off_1E798A3C8, 0))
   {
     [BWSmartStyleLearningNode _runInferences:unstyledSampleBuffer:withMasks:currentPTS:];
 LABEL_43:
@@ -1938,7 +1938,7 @@ LABEL_54:
   }
 
   v13 = *off_1E798D298;
-  v14 = [a5 objectForKeyedSubscript:*off_1E798D298];
+  v14 = [masks objectForKeyedSubscript:*off_1E798D298];
   if (!v14)
   {
     [BWSmartStyleLearningNode _runInferences:unstyledSampleBuffer:withMasks:currentPTS:];
@@ -1946,7 +1946,7 @@ LABEL_54:
   }
 
   v15 = v14;
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AB0B0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(inferences, 0x1F21AB0B0);
   if (!AttachedMedia)
   {
     [BWSmartStyleLearningNode _runInferences:unstyledSampleBuffer:withMasks:currentPTS:];
@@ -1986,14 +1986,14 @@ LABEL_53:
   }
 
   v21 = v20;
-  if (CMSampleBufferGetSampleTimingInfoArray(a4, 1, &timingArrayOut, 0))
+  if (CMSampleBufferGetSampleTimingInfoArray(buffer, 1, &timingArrayOut, 0))
   {
     [BWSmartStyleLearningNode _runInferences:unstyledSampleBuffer:withMasks:currentPTS:];
     goto LABEL_53;
   }
 
   v37 = v13;
-  v38 = a6;
+  sCopy = s;
   BWSampleBufferSetAttachedMedia(AttachedMedia, 0x1F219EE10, v39);
   BWSampleBufferSetAttachedMedia(AttachedMedia, 0x1F219EE50, v18);
   BWSampleBufferSetAttachedMedia(AttachedMedia, 0x1F219EE30, v19);
@@ -2070,8 +2070,8 @@ LABEL_62:
     goto LABEL_62;
   }
 
-  v34 = [(CMISmartStyleProcessor *)self->_smartStyleProcessor utilities];
-  if ([v34 blitPixelBuffer:v33 inputValidBufferRect:v22 toPixelBuffer:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}])
+  utilities = [(CMISmartStyleProcessor *)self->_smartStyleProcessor utilities];
+  if ([utilities blitPixelBuffer:v33 inputValidBufferRect:v22 toPixelBuffer:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}])
   {
     [BWSmartStyleLearningNode _runInferences:unstyledSampleBuffer:withMasks:currentPTS:];
     goto LABEL_62;
@@ -2132,8 +2132,8 @@ LABEL_62:
             if (!BWCMSampleBufferCopyMetadataToSampleBuffer(v21, v47))
             {
               v42[0] = *off_1E798A420;
-              *&time.duration.value = *&v38->var0;
-              time.duration.epoch = v38->var3;
+              *&time.duration.value = *&sCopy->var0;
+              time.duration.epoch = sCopy->var3;
               v42[1] = v37;
               v43[0] = CMTimeCopyAsDictionary(&time.duration, v35);
               v40[0] = 0x1F21AAED0;
@@ -2199,9 +2199,9 @@ LABEL_28:
   return v19;
 }
 
-- (int)_loadAndConfigureSmartStyleBundle:(BOOL)a3
+- (int)_loadAndConfigureSmartStyleBundle:(BOOL)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v5 = NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMISmartStyleV%d", 1]);
   self->_smartStyleClass = v5;
   if (v5)
@@ -2212,11 +2212,11 @@ LABEL_28:
       v8 = FigDispatchQueueCreateWithPriority();
       if (v8)
       {
-        v9 = [(FigMetalContext *)self->_metalContext commandQueue];
-        if (v9)
+        commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+        if (commandQueue)
         {
-          v10 = v9;
-          [v9 setSubmissionQueue:v8];
+          v10 = commandQueue;
+          [commandQueue setSubmissionQueue:v8];
           [v10 setCompletionQueue:v8];
           [v10 setGPUPriority:4];
           v11 = [v6 classNamed:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CMISmartStyleProcessorV%d", 1)}];
@@ -2228,7 +2228,7 @@ LABEL_28:
             [(CMISmartStyleProcessor *)self->_smartStyleProcessor setUseLiveMetalAllocations:1];
             [(CMISmartStyleProcessor *)self->_smartStyleProcessor setUseSemanticSRLByDefault:HIDWORD(self->_mostRecentLearnedSkyMaskSampleBuffer) != 0];
             ispSMGProcessingSession = self->_ispSMGProcessingSession;
-            if (v3)
+            if (bundleCopy)
             {
               v14 = ispSMGProcessingSession ? [(objc_class *)v11 getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio]: [(objc_class *)v11 getDefaultProcessorConfigurationForStreamingSquareAspectRatio];
             }
@@ -2270,9 +2270,9 @@ LABEL_28:
   return -12786;
 }
 
-- (int)_extractANSTMasks:(opaqueCMSampleBuffer *)a3 forPTS:(id *)a4
+- (int)_extractANSTMasks:(opaqueCMSampleBuffer *)masks forPTS:(id *)s
 {
-  if (!a3)
+  if (!masks)
   {
     [BWSmartStyleLearningNode _extractANSTMasks:forPTS:];
 LABEL_21:
@@ -2282,7 +2282,7 @@ LABEL_21:
     return -12780;
   }
 
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAED0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(masks, 0x1F21AAED0);
   if (!AttachedMedia)
   {
     [BWSmartStyleLearningNode _extractANSTMasks:forPTS:];
@@ -2296,7 +2296,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v9 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAF10);
+  v9 = BWSampleBufferGetAttachedMedia(masks, 0x1F21AAF10);
   if (!v9)
   {
     [BWSmartStyleLearningNode _extractANSTMasks:forPTS:];
@@ -2310,7 +2310,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v11 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAEF0);
+  v11 = BWSampleBufferGetAttachedMedia(masks, 0x1F21AAEF0);
   if (!v11)
   {
     [BWSmartStyleLearningNode _extractANSTMasks:forPTS:];
@@ -2324,7 +2324,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v13 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAF30);
+  v13 = BWSampleBufferGetAttachedMedia(masks, 0x1F21AAF30);
   if (!v13)
   {
     [BWSmartStyleLearningNode _extractANSTMasks:forPTS:];
@@ -2342,7 +2342,7 @@ LABEL_21:
   inputMasksSampleBufferQueue = self->_inputMasksSampleBufferQueue;
   v21[0] = *off_1E798A420;
   v15 = *MEMORY[0x1E695E480];
-  time = *a4;
+  time = *s;
   v22[0] = CMTimeCopyAsDictionary(&time, v15);
   v21[1] = *off_1E798D298;
   v18[0] = 0x1F21AAED0;
@@ -2359,15 +2359,15 @@ LABEL_21:
   return 0;
 }
 
-- (id)_deepCopyMasks:(id)a3
+- (id)_deepCopyMasks:(id)masks
 {
   sampleBufferOut = 0;
   v27 = **&MEMORY[0x1E6960C70];
-  if (a3)
+  if (masks)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5 = *off_1E798D298;
-    v6 = [a3 objectForKeyedSubscript:*off_1E798D298];
+    v6 = [masks objectForKeyedSubscript:*off_1E798D298];
     if (v6)
     {
       v7 = v6;
@@ -2423,7 +2423,7 @@ LABEL_21:
       }
 
       v14 = *off_1E798A420;
-      CMTimeMakeFromDictionary(&v27, [a3 objectForKeyedSubscript:*off_1E798A420]);
+      CMTimeMakeFromDictionary(&v27, [masks objectForKeyedSubscript:*off_1E798A420]);
       v20[0] = v14;
       v15 = *MEMORY[0x1E695E480];
       v19 = v27;
@@ -2459,13 +2459,13 @@ LABEL_17:
   return v17;
 }
 
-- (id)_blitMasksToOutputPools:(id)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 currentPTS:(id *)a5
+- (id)_blitMasksToOutputPools:(id)pools unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer currentPTS:(id *)s
 {
   v43 = 0;
   formatDescriptionOut[0] = 0;
   v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = *off_1E798D298;
-  v10 = [a3 objectForKeyedSubscript:*off_1E798D298];
+  v10 = [pools objectForKeyedSubscript:*off_1E798D298];
   if (!v10)
   {
     [BWSmartStyleLearningNode _blitMasksToOutputPools:unstyledSampleBuffer:currentPTS:];
@@ -2475,7 +2475,7 @@ LABEL_35:
   }
 
   v11 = v10;
-  v32 = CMGetAttachment(a4, *off_1E798A3C8, 0);
+  v32 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v32)
   {
     [BWSmartStyleLearningNode _blitMasksToOutputPools:unstyledSampleBuffer:currentPTS:];
@@ -2483,7 +2483,7 @@ LABEL_35:
   }
 
   v30 = v9;
-  v31 = a5;
+  sCopy = s;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -2587,8 +2587,8 @@ LABEL_34:
 
 LABEL_21:
   v34[0] = *off_1E798A420;
-  *&timingArrayOut.duration.value = *&v31->var0;
-  timingArrayOut.duration.epoch = v31->var3;
+  *&timingArrayOut.duration.value = *&sCopy->var0;
+  timingArrayOut.duration.epoch = sCopy->var3;
   v34[1] = v30;
   v35[0] = CMTimeCopyAsDictionary(&timingArrayOut.duration, v13);
   v35[1] = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v33];
@@ -2609,11 +2609,11 @@ LABEL_22:
   return v28;
 }
 
-- (int)_cropAndUndistortWeightSegmentMap:(__CVBuffer *)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 doGDC:(BOOL)a5 toPixelBuffer:(__CVBuffer *)a6
+- (int)_cropAndUndistortWeightSegmentMap:(__CVBuffer *)map unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer doGDC:(BOOL)c toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  v7 = a5;
+  cCopy = c;
   v10 = *off_1E798A3C8;
-  v11 = CMGetAttachment(a4, *off_1E798A3C8, 0);
+  v11 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v11)
   {
     [BWSmartStyleLearningNode _cropAndUndistortWeightSegmentMap:unstyledSampleBuffer:doGDC:toPixelBuffer:];
@@ -2629,7 +2629,7 @@ LABEL_22:
   }
 
   v14 = v13;
-  if (!CMGetAttachment(a3, v10, 0))
+  if (!CMGetAttachment(map, v10, 0))
   {
     [BWSmartStyleLearningNode _cropAndUndistortWeightSegmentMap:unstyledSampleBuffer:doGDC:toPixelBuffer:];
 LABEL_23:
@@ -2654,19 +2654,19 @@ LABEL_23:
 
   else
   {
-    Width = CVPixelBufferGetWidth(a6);
+    Width = CVPixelBufferGetWidth(pixelBuffer);
     v23 = 0uLL;
     *&v24 = Width;
-    *(&v24 + 1) = CVPixelBufferGetHeight(a6);
+    *(&v24 + 1) = CVPixelBufferGetHeight(pixelBuffer);
   }
 
-  if (Width == CVPixelBufferGetWidth(a6) && *(&v24 + 1) == CVPixelBufferGetHeight(a6))
+  if (Width == CVPixelBufferGetWidth(pixelBuffer) && *(&v24 + 1) == CVPixelBufferGetHeight(pixelBuffer))
   {
     v18 = CVPixelBufferGetWidth(v14);
-    v19 = (v18 / CVPixelBufferGetWidth(a3));
+    v19 = (v18 / CVPixelBufferGetWidth(map));
     *&v23 = *&v23 * v19;
     *&v24 = *&v24 * v19;
-    if (v7)
+    if (cCopy)
     {
       v20 = -[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys, "objectForKeyedSubscript:", [v12 objectForKeyedSubscript:*off_1E798B540]);
       if (v20)
@@ -2706,15 +2706,15 @@ LABEL_23:
   return v21;
 }
 
-- (int)_runFalsePositiveRejectionOnPixelBuffer:(__CVBuffer *)a3 unrefinedPixelBuffer:(__CVBuffer *)a4
+- (int)_runFalsePositiveRejectionOnPixelBuffer:(__CVBuffer *)buffer unrefinedPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  if (a3)
+  if (buffer)
   {
-    v4 = a4;
-    if (a4)
+    pixelBufferCopy = pixelBuffer;
+    if (pixelBuffer)
     {
-      v4 = [-[CMISmartStyleProcessor utilities](self->_smartStyleProcessor "utilities")];
-      if (v4)
+      pixelBufferCopy = [-[CMISmartStyleProcessor utilities](self->_smartStyleProcessor "utilities")];
+      if (pixelBufferCopy)
       {
         [BWSmartStyleLearningNode _runFalsePositiveRejectionOnPixelBuffer:unrefinedPixelBuffer:];
       }
@@ -2732,10 +2732,10 @@ LABEL_23:
     return 0;
   }
 
-  return v4;
+  return pixelBufferCopy;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_getSampleBufferPresentationTimeStamp:(SEL)stamp
 {
   *retstr = **&MEMORY[0x1E6960C70];
   if (!a4)
@@ -2758,24 +2758,24 @@ LABEL_23:
   }
 }
 
-- (void)_updateCurrentSmartStyleMetadata:(id)a3 onSbuf:(opaqueCMSampleBuffer *)a4
+- (void)_updateCurrentSmartStyleMetadata:(id)metadata onSbuf:(opaqueCMSampleBuffer *)sbuf
 {
   v6 = *off_1E798A3C8;
-  v7 = CMGetAttachment(a4, *off_1E798A3C8, 0);
+  v7 = CMGetAttachment(sbuf, *off_1E798A3C8, 0);
   v8 = *off_1E798A8C0;
-  [v7 setObject:a3 forKeyedSubscript:*off_1E798A8C0];
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a4, @"SynchronizedSlaveFrame");
+  [v7 setObject:metadata forKeyedSubscript:*off_1E798A8C0];
+  AttachedMedia = BWSampleBufferGetAttachedMedia(sbuf, @"SynchronizedSlaveFrame");
   if (AttachedMedia)
   {
     v10 = CMGetAttachment(AttachedMedia, v6, 0);
 
-    [v10 setObject:a3 forKeyedSubscript:v8];
+    [v10 setObject:metadata forKeyedSubscript:v8];
   }
 }
 
-- (int)_initVMRefinerInference:(BOOL)a3
+- (int)_initVMRefinerInference:(BOOL)inference
 {
-  v3 = a3;
+  inferenceCopy = inference;
   *&self->_gdcAttachmentsEnabled = 0;
   v5 = objc_alloc_init(BWInferenceScheduler);
   *&self->_inferenceLock._os_unfair_lock_opaque = v5;
@@ -2795,7 +2795,7 @@ LABEL_23:
 
   v7 = [(BWInferenceConfiguration *)[BWVMRefinerInferenceConfiguration alloc] initWithInferenceType:118];
   [(BWInferenceConfiguration *)v7 setPriority:6];
-  if (v3)
+  if (inferenceCopy)
   {
     v8 = 0x10000000100;
   }
@@ -2841,14 +2841,14 @@ LABEL_23:
   }
 }
 
-- (void)_asynchronouslySignalEvent:(id)a3
+- (void)_asynchronouslySignalEvent:(id)event
 {
-  v5 = [(FigMetalContext *)self->_metalContext commandBuffer];
-  if (v5)
+  commandBuffer = [(FigMetalContext *)self->_metalContext commandBuffer];
+  if (commandBuffer)
   {
-    v6 = v5;
-    [v5 setLabel:@"asynchronouslySignalEvent"];
-    [v6 encodeSignalEvent:a3 value:1];
+    v6 = commandBuffer;
+    [commandBuffer setLabel:@"asynchronouslySignalEvent"];
+    [v6 encodeSignalEvent:event value:1];
     metalContext = self->_metalContext;
 
     [(FigMetalContext *)metalContext forceCommit];
@@ -2863,11 +2863,11 @@ LABEL_23:
 - (void)_asynchronouslyDecrementRenderCount
 {
   objc_initWeak(&location, self);
-  v3 = [(FigMetalContext *)self->_metalContext commandBuffer];
-  v4 = v3;
-  if (v3)
+  commandBuffer = [(FigMetalContext *)self->_metalContext commandBuffer];
+  v4 = commandBuffer;
+  if (commandBuffer)
   {
-    [v3 setLabel:@"asynchronouslyDecrementRenderCount"];
+    [commandBuffer setLabel:@"asynchronouslyDecrementRenderCount"];
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
     v7 = __63__BWSmartStyleLearningNode__asynchronouslyDecrementRenderCount__block_invoke;
@@ -2897,11 +2897,11 @@ void __63__BWSmartStyleLearningNode__asynchronouslyDecrementRenderCount__block_i
 - (void)_asynchronouslyDecrementLearnCount
 {
   objc_initWeak(&location, self);
-  v3 = [(FigMetalContext *)self->_metalContext commandBuffer];
-  v4 = v3;
-  if (v3)
+  commandBuffer = [(FigMetalContext *)self->_metalContext commandBuffer];
+  v4 = commandBuffer;
+  if (commandBuffer)
   {
-    [v3 setLabel:@"asynchronouslyDecrementLearnCount"];
+    [commandBuffer setLabel:@"asynchronouslyDecrementLearnCount"];
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
     v7 = __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_invoke;
@@ -2928,7 +2928,7 @@ void __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_in
   }
 }
 
-- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)a3 format:(id)a4
+- (id)preparedOutputPixelBufferPoolForAttachedMediaKey:(id)key format:(id)format
 {
   v6[0] = 0x1F219EE70;
   v6[1] = 0x1F219EEB0;
@@ -2936,7 +2936,7 @@ void __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_in
   v7[1] = 0x1F21AAEF0;
   v6[2] = 0x1F219EE90;
   v7[2] = 0x1F21AAF10;
-  result = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:{3), "objectForKeyedSubscript:", a3}];
+  result = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:{3), "objectForKeyedSubscript:", key}];
   if (result)
   {
     return [(NSMutableDictionary *)self->_intermediateVideoFormatsByAttachedMediaKeys objectForKeyedSubscript:result];
@@ -2945,22 +2945,22 @@ void __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_in
   return result;
 }
 
-- (void)semanticStyleSceneTypeDidChange:(int)a3
+- (void)semanticStyleSceneTypeDidChange:(int)change
 {
   os_unfair_lock_lock(&self->_semanticStyleSceneLock);
-  self->_semanticStyleSceneType = a3;
+  self->_semanticStyleSceneType = change;
 
   os_unfair_lock_unlock(&self->_semanticStyleSceneLock);
 }
 
-- (void)setSmartStyle:(id)a3
+- (void)setSmartStyle:(id)style
 {
-  if (a3 && ([a3 isEqual:*&self->_disableWaitForCoefficientsOnFirstFrame] & 1) == 0)
+  if (style && ([style isEqual:*&self->_disableWaitForCoefficientsOnFirstFrame] & 1) == 0)
   {
-    [a3 cast];
-    [a3 intensity];
-    [a3 toneBias];
-    [a3 colorBias];
+    [style cast];
+    [style intensity];
+    [style toneBias];
+    [style colorBias];
     v8 = OUTLINED_FUNCTION_27_8(v5, v6, v7);
     if (v8 && (v9 = v8, os_unfair_lock_lock(&self->_styleUpdateLock), *&self->_disableWaitForCoefficientsOnFirstFrame, [v9 cast], objc_msgSend(v9, "intensity"), objc_msgSend(v9, "toneBias"), objc_msgSend(v9, "colorBias"), *&self->_disableWaitForCoefficientsOnFirstFrame = OUTLINED_FUNCTION_27_8(v10, v11, v12), os_unfair_lock_unlock(&self->_styleUpdateLock), *&self->_disableWaitForCoefficientsOnFirstFrame))
     {
@@ -2979,10 +2979,10 @@ void __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_in
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v7 = 0;
-  if (!a3 || !a4)
+  if (!buffer || !input)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -2991,9 +2991,9 @@ void __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_in
 
   if (*&self->_disableWaitForCoefficientsOnFirstFrame)
   {
-    if ([(NSArray *)[(BWNode *)self inputs] objectAtIndexedSubscript:1]== a4)
+    if ([(NSArray *)[(BWNode *)self inputs] objectAtIndexedSubscript:1]== input)
     {
-      if ([(BWSmartStyleLearningNode *)self processMaskSampleBuffer:a3])
+      if ([(BWSmartStyleLearningNode *)self processMaskSampleBuffer:buffer])
       {
         fig_log_get_emitter();
         OUTLINED_FUNCTION_12_1();
@@ -3001,7 +3001,7 @@ void __62__BWSmartStyleLearningNode__asynchronouslyDecrementLearnCount__block_in
       }
     }
 
-    else if ([(BWSmartStyleLearningNode *)self processVideoSampleBuffer:a3 frameEmitted:&v7])
+    else if ([(BWSmartStyleLearningNode *)self processVideoSampleBuffer:buffer frameEmitted:&v7])
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_12_1();
@@ -3010,9 +3010,9 @@ LABEL_19:
     }
   }
 
-  if ((v7 & 1) == 0 && [(NSArray *)[(BWNode *)self inputs] objectAtIndexedSubscript:0]== a4)
+  if ((v7 & 1) == 0 && [(NSArray *)[(BWNode *)self inputs] objectAtIndexedSubscript:0]== input)
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     os_unfair_lock_lock(&self->_inputStyleContainerSampleBufferQueueLock);
     if ([(NSMutableArray *)self->_inputStyleContainerSampleBufferQueue count]>= (LODWORD(self->_lastLearnedPortType) * (self->_learningRate / HIDWORD(self->_lastLearnedPortType))))
     {
@@ -3031,17 +3031,17 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_inputMasksSampleBufferQueueLock);
 }
 
-- (int)_findCorrespondingSmartStyleContainerWithMasks:(id)a3 outputSmartStyleContainer:(opaqueCMSampleBuffer *)a4
+- (int)_findCorrespondingSmartStyleContainerWithMasks:(id)masks outputSmartStyleContainer:(opaqueCMSampleBuffer *)container
 {
   result = -12784;
-  if (!a3 || !a4)
+  if (!masks || !container)
   {
     return result;
   }
 
-  *a4 = 0;
+  *container = 0;
   memset(&v57, 0, sizeof(v57));
-  CMTimeMakeFromDictionary(&v57, [a3 objectForKeyedSubscript:*off_1E798A420]);
+  CMTimeMakeFromDictionary(&v57, [masks objectForKeyedSubscript:*off_1E798A420]);
   if ((v57.flags & 1) == 0)
   {
     fig_log_get_emitter();
@@ -3082,7 +3082,7 @@ LABEL_19:
           time = v36;
           if (vabdd_f64(Seconds, CMTimeGetSeconds(&time)) <= *&self->_learningMaxFramesPerSecond)
           {
-            *a4 = v21;
+            *container = v21;
             goto LABEL_17;
           }
 
@@ -3104,23 +3104,23 @@ LABEL_19:
     return -12784;
   }
 
-  *a4 = [(NSMutableArray *)self->_inputStyleContainerSampleBufferQueue lastObject];
+  *container = [(NSMutableArray *)self->_inputStyleContainerSampleBufferQueue lastObject];
 LABEL_17:
   os_unfair_lock_unlock(&self->_inputStyleContainerSampleBufferQueueLock);
   return 0;
 }
 
-- (id)_cropAndScaleMasks:(id)a3 unstyledSampleBuffer:(opaqueCMSampleBuffer *)a4 currentPTS:(id *)a5 applyGDC:(BOOL)a6 useIntermediatePool:(BOOL)a7
+- (id)_cropAndScaleMasks:(id)masks unstyledSampleBuffer:(opaqueCMSampleBuffer *)buffer currentPTS:(id *)s applyGDC:(BOOL)c useIntermediatePool:(BOOL)pool
 {
-  v7 = a7;
-  v59 = a6;
+  poolCopy = pool;
+  cCopy = c;
   v71 = 0;
   v72 = 0;
   memset(&__src, 0, sizeof(__src));
-  v60 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = *off_1E798A3C8;
-  v13 = CMGetAttachment(a4, *off_1E798A3C8, 0);
-  if (!v13 || (v14 = v13, v15 = *off_1E798D298, (v16 = [a3 objectForKeyedSubscript:*off_1E798D298]) == 0))
+  v13 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+  if (!v13 || (v14 = v13, v15 = *off_1E798D298, (v16 = [masks objectForKeyedSubscript:*off_1E798D298]) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -3133,7 +3133,7 @@ LABEL_34:
 
   v17 = v16;
   v54 = v15;
-  v55 = a5;
+  sCopy = s;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
@@ -3151,7 +3151,7 @@ LABEL_34:
   v20 = *(MEMORY[0x1E695F050] + 16);
   v21 = *(MEMORY[0x1E695F050] + 24);
   v22 = &OBJC_IVAR___BWSmartStyleLearningNode__processorPixelBufferPoolsByAttachedMediaKeys;
-  if (v7)
+  if (poolCopy)
   {
     v22 = &OBJC_IVAR___BWSmartStyleLearningNode__intermediatePixelBufferPoolsByAttachedMediaKeys;
   }
@@ -3197,7 +3197,7 @@ LABEL_28:
 
       v34 = v33;
       MaskValidBufferRectFromMetadata = ssln_getMaskValidBufferRectFromMetadata(v14, v29);
-      if (v59)
+      if (cCopy)
       {
         if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys, "objectForKeyedSubscript:", [v14 objectForKeyedSubscript:{v56, MaskValidBufferRectFromMetadata}]))
         {
@@ -3237,7 +3237,7 @@ LABEL_33:
       FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v45, v46, v42, v44, v47, v48, v49, v18, v19, v20, v21);
       FigCaptureMetadataUtilitiesPreventFurtherCropping(v43, v50);
       CMSetAttachment(v72, v12, v43, 1u);
-      [v60 setObject:v72 forKeyedSubscript:v24];
+      [dictionary setObject:v72 forKeyedSubscript:v24];
       CFRelease(v34);
       if (v71)
       {
@@ -3265,11 +3265,11 @@ LABEL_33:
 LABEL_27:
   v62[0] = *off_1E798A420;
   v51 = *MEMORY[0x1E695E480];
-  *&__dst.duration.value = *&v55->var0;
-  __dst.duration.epoch = v55->var3;
+  *&__dst.duration.value = *&sCopy->var0;
+  __dst.duration.epoch = sCopy->var3;
   v62[1] = v54;
   v63[0] = CMTimeCopyAsDictionary(&__dst.duration, v51);
-  v63[1] = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v60];
+  v63[1] = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:2];
 LABEL_35:
   if (v71)
@@ -3285,7 +3285,7 @@ LABEL_35:
   return v52;
 }
 
-- (int)_createCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)a3 to:(opaqueCMSampleBuffer *)a4
+- (int)_createCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to
 {
   v37 = 0;
   v38 = 0;
@@ -3367,8 +3367,8 @@ LABEL_25:
 
       else
       {
-        v27 = [MEMORY[0x1E695DF20] dictionary];
-        CMSetAttachment(v38, *off_1E798A3C8, v27, 1u);
+        dictionary = [MEMORY[0x1E695DF20] dictionary];
+        CMSetAttachment(v38, *off_1E798A3C8, dictionary, 1u);
         v4 = v38;
         if (v38)
         {
@@ -3415,12 +3415,12 @@ LABEL_16:
   return v28;
 }
 
-- (int)_createIdentityCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)a3 to:(opaqueCMSampleBuffer *)a4
+- (int)_createIdentityCoefficientsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer to:(opaqueCMSampleBuffer *)to
 {
   v20 = 0;
   v21 = 0;
   memset(&__src, 0, sizeof(__src));
-  if (!a3 || !a4)
+  if (!buffer || !to)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_4_8();
@@ -3432,7 +3432,7 @@ LABEL_26:
     goto LABEL_14;
   }
 
-  *a4 = 0;
+  *to = 0;
   if (!self)
   {
     goto LABEL_26;
@@ -3444,7 +3444,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v8 = OUTLINED_FUNCTION_26_9(a3, v7, &__src);
+  v8 = OUTLINED_FUNCTION_26_9(buffer, v7, &__src);
   if (v8)
   {
     v16 = v8;
@@ -3504,7 +3504,7 @@ LABEL_29:
     }
 
     v16 = 0;
-    *a4 = v15;
+    *to = v15;
   }
 
   else
@@ -3526,15 +3526,15 @@ LABEL_14:
   return v16;
 }
 
-- (int)_createSmartStyleContainerFromSampleBuffer:(opaqueCMSampleBuffer *)a3 unstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a4 linearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a5 to:(opaqueCMSampleBuffer *)a6
+- (int)_createSmartStyleContainerFromSampleBuffer:(opaqueCMSampleBuffer *)buffer unstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer linearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)thumbnailSampleBuffer to:(opaqueCMSampleBuffer *)to
 {
   target = 0;
   v6 = -12780;
-  if (a3 && a4 && a5 && a6)
+  if (buffer && sampleBuffer && thumbnailSampleBuffer && to)
   {
-    *a6 = 0;
+    *to = 0;
     v11 = *off_1E798A3C8;
-    v12 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v12 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (!v12)
     {
       fig_log_get_emitter();
@@ -3545,7 +3545,7 @@ LABEL_14:
 
     v14 = v12;
     memset(&sampleTimingArray, 0, sizeof(sampleTimingArray));
-    v15 = OUTLINED_FUNCTION_26_9(a3, v13, &sampleTimingArray);
+    v15 = OUTLINED_FUNCTION_26_9(buffer, v13, &sampleTimingArray);
     if (v15)
     {
       v6 = v15;
@@ -3569,8 +3569,8 @@ LABEL_14:
     }
 
     CMSetAttachment(target, v11, v14, 1u);
-    BWSampleBufferSetAttachedMedia(target, 0x1F21AB0D0, a4);
-    BWSampleBufferSetAttachedMedia(target, 0x1F21AB110, a5);
+    BWSampleBufferSetAttachedMedia(target, 0x1F21AB0D0, sampleBuffer);
+    BWSampleBufferSetAttachedMedia(target, 0x1F21AB110, thumbnailSampleBuffer);
     v22 = target;
     if (target)
     {
@@ -3584,7 +3584,7 @@ LABEL_14:
     }
 
     v6 = 0;
-    *a6 = v23;
+    *to = v23;
     if (v22)
     {
 LABEL_12:
@@ -3595,15 +3595,15 @@ LABEL_12:
   return v6;
 }
 
-- (opaqueCMSampleBuffer)_unpackSbufFromPrimaryCameraStream:(opaqueCMSampleBuffer *)a3
+- (opaqueCMSampleBuffer)_unpackSbufFromPrimaryCameraStream:(opaqueCMSampleBuffer *)stream
 {
-  v3 = a3;
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame");
+  streamCopy = stream;
+  AttachedMedia = BWSampleBufferGetAttachedMedia(stream, @"SynchronizedSlaveFrame");
   if (AttachedMedia)
   {
     v5 = AttachedMedia;
     v6 = *off_1E798A3C8;
-    v7 = CMGetAttachment(v3, *off_1E798A3C8, 0);
+    v7 = CMGetAttachment(streamCopy, *off_1E798A3C8, 0);
     CMGetAttachment(v5, v6, 0);
     if (([objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}] & 1) == 0)
     {
@@ -3614,25 +3614,25 @@ LABEL_12:
     }
   }
 
-  return v3;
+  return streamCopy;
 }
 
-+ (id)newISPSMGProcessingSession:(id)a3
++ (id)newISPSMGProcessingSession:(id)session
 {
   v6 = 0;
-  if (!a3)
+  if (!session)
   {
     return 0;
   }
 
-  v4 = [a3 supportsISPProcessingSessionType:8 error:&v6];
+  v4 = [session supportsISPProcessingSessionType:8 error:&v6];
   result = 0;
   if (!v6)
   {
     if (v4)
     {
       v7 = 0;
-      result = [a3 copyISPProcessingSessionWithType:8 error:&v7];
+      result = [session copyISPProcessingSessionWithType:8 error:&v7];
       if (v7 || !result)
       {
 
@@ -3644,7 +3644,7 @@ LABEL_12:
   return result;
 }
 
-- (int)_getContainerAssetsFromSampleBuffer:(opaqueCMSampleBuffer *)a3 outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a4 outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a5
+- (int)_getContainerAssetsFromSampleBuffer:(opaqueCMSampleBuffer *)buffer outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)thumbnailSampleBuffer
 {
   v9 = OUTLINED_FUNCTION_31_8();
   cf = 0;
@@ -3789,12 +3789,12 @@ LABEL_25:
   return v52;
 }
 
-- (void)_asynchronouslyRenderSampleBuffer:(opaqueCMSampleBuffer *)a3 outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a4 outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)a5 synchronizingEvent:(id)a6
+- (void)_asynchronouslyRenderSampleBuffer:(opaqueCMSampleBuffer *)buffer outputLinearThumbnailSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer outputUnstyledThumbnailSampleBuffer:(opaqueCMSampleBuffer *)thumbnailSampleBuffer synchronizingEvent:(id)event
 {
-  v52 = a6;
+  eventCopy = event;
   v58 = *MEMORY[0x1E6960CC0];
   v59 = *(MEMORY[0x1E6960CC0] + 16);
-  if (!a3 || !a4 || !a5)
+  if (!buffer || !sampleBuffer || !thumbnailSampleBuffer)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -3803,10 +3803,10 @@ LABEL_60:
     goto LABEL_47;
   }
 
-  v12 = self;
+  selfCopy = self;
   if (self)
   {
-    self = [(BWSmartStyleLearningNode *)self _getSampleBufferPresentationTimeStamp:a3];
+    self = [(BWSmartStyleLearningNode *)self _getSampleBufferPresentationTimeStamp:buffer];
   }
 
   else
@@ -3818,20 +3818,20 @@ LABEL_60:
   v59 = *&__dst[1];
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    OUTLINED_FUNCTION_25_8(self, a2, a3, a4, a5, a6, v6, v7, v48, v49, v50, v51, v52, v53, __dst[0], *&__dst[1]);
+    OUTLINED_FUNCTION_25_8(self, a2, buffer, sampleBuffer, thumbnailSampleBuffer, event, v6, v7, v48, v49, v50, v51, eventCopy, v53, __dst[0], *&__dst[1]);
     OUTLINED_FUNCTION_17_14();
     kdebug_trace();
   }
 
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"LTMThumbnail");
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"LTMThumbnail");
   if (!AttachedMedia)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"PreLTMThumbnail");
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"PreLTMThumbnail");
   }
 
-  v14 = BWSampleBufferGetAttachedMedia(a3, 0x1F21AB1D0);
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  if (!ImageBuffer || (v16 = ImageBuffer, (v17 = CMGetAttachment(a3, *off_1E798A3C8, 0)) == 0) || (v18 = v17, (v19 = CMSampleBufferGetImageBuffer(a5)) == 0))
+  v14 = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AB1D0);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+  if (!ImageBuffer || (v16 = ImageBuffer, (v17 = CMGetAttachment(buffer, *off_1E798A3C8, 0)) == 0) || (v18 = v17, (v19 = CMSampleBufferGetImageBuffer(thumbnailSampleBuffer)) == 0))
   {
 LABEL_52:
     fig_log_get_emitter();
@@ -3843,7 +3843,7 @@ LABEL_52:
   v57 = 0;
   if (AttachedMedia)
   {
-    v21 = [-[CMISmartStyleProcessor utilities](v12->_smartStyleProcessor "utilities")];
+    v21 = [-[CMISmartStyleProcessor utilities](selfCopy->_smartStyleProcessor "utilities")];
     if (v21)
     {
       v46 = v21;
@@ -3858,7 +3858,7 @@ LABEL_52:
   v56[0] = *off_1E798A0D0;
   v56[1] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
-  if (v12->_generateCoefficients)
+  if (selfCopy->_generateCoefficients)
   {
     HIDWORD(v53) = [v23 containsObject:{objc_msgSend(v18, "objectForKeyedSubscript:", *off_1E798B540)}];
   }
@@ -3883,14 +3883,14 @@ LABEL_52:
       v33 = v34;
       if (HIDWORD(v53))
       {
-        v35 = [MEMORY[0x1E69916C0] getGDCParams:__src cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](v12->_intermediatePixelBufferPoolsByAttachedMediaKeys metadata:{"objectForKeyedSubscript:", objc_msgSend(v18, "objectForKeyedSubscript:", *off_1E798B540)), v18}];
+        v35 = [MEMORY[0x1E69916C0] getGDCParams:__src cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_intermediatePixelBufferPoolsByAttachedMediaKeys metadata:{"objectForKeyedSubscript:", objc_msgSend(v18, "objectForKeyedSubscript:", *off_1E798B540)), v18}];
         if (v35)
         {
           goto LABEL_59;
         }
       }
 
-      v25 = [-[CMISmartStyleProcessor utilities](v12->_smartStyleProcessor "utilities")];
+      v25 = [-[CMISmartStyleProcessor utilities](selfCopy->_smartStyleProcessor "utilities")];
       if (v25)
       {
         goto LABEL_47;
@@ -3904,9 +3904,9 @@ LABEL_52:
       v33 = v16;
     }
 
-    v36 = [(CMISmartStyleProcessor *)v12->_smartStyleProcessor utilities];
+    utilities = [(CMISmartStyleProcessor *)selfCopy->_smartStyleProcessor utilities];
     memcpy(__dst, __src, sizeof(__dst));
-    v35 = [v36 downScalePixelBuffer:v33 toPixelBuffer:v20 propagateAttachments:1 gdcParams:__dst applyGDC:v14];
+    v35 = [utilities downScalePixelBuffer:v33 toPixelBuffer:v20 propagateAttachments:1 gdcParams:__dst applyGDC:v14];
     if (!v35)
     {
       goto LABEL_32;
@@ -3926,13 +3926,13 @@ LABEL_59:
     goto LABEL_52;
   }
 
-  v25 = [-[CMISmartStyleProcessor utilities](v12->_smartStyleProcessor "utilities")];
+  v25 = [-[CMISmartStyleProcessor utilities](selfCopy->_smartStyleProcessor "utilities")];
   if (v25)
   {
     goto LABEL_47;
   }
 
-  v25 = [-[CMISmartStyleProcessor utilities](v12->_smartStyleProcessor "utilities")];
+  v25 = [-[CMISmartStyleProcessor utilities](selfCopy->_smartStyleProcessor "utilities")];
   if (v25)
   {
     goto LABEL_47;
@@ -3941,14 +3941,14 @@ LABEL_59:
   v33 = 0;
   v14 = 0;
 LABEL_32:
-  v37 = CMSampleBufferGetImageBuffer(a4);
+  v37 = CMSampleBufferGetImageBuffer(sampleBuffer);
   if (!v37)
   {
     goto LABEL_52;
   }
 
   v38 = v37;
-  v25 = [-[CMISmartStyleProcessor utilities](v12->_smartStyleProcessor "utilities")];
+  v25 = [-[CMISmartStyleProcessor utilities](selfCopy->_smartStyleProcessor "utilities")];
   if (v25)
   {
     goto LABEL_47;
@@ -3961,11 +3961,11 @@ LABEL_32:
     {
       v40 = v39;
       v41 = v57;
-      v42 = [(CMISmartStyleProcessor *)v12->_smartStyleProcessor utilities];
-      v43 = -[NSMutableDictionary objectForKeyedSubscript:](v12->_intermediatePixelBufferPoolsByAttachedMediaKeys, "objectForKeyedSubscript:", [v18 objectForKeyedSubscript:*off_1E798B540]);
+      utilities2 = [(CMISmartStyleProcessor *)selfCopy->_smartStyleProcessor utilities];
+      v43 = -[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_intermediatePixelBufferPoolsByAttachedMediaKeys, "objectForKeyedSubscript:", [v18 objectForKeyedSubscript:*off_1E798B540]);
       if (v41)
       {
-        v25 = [v42 createLinearThumbnailFromMetadata:v18 ltmThumbnailPixelBuffer:v40 cameraInfo:v43 applyGDC:HIDWORD(v53) toPixelBuffer:v38];
+        v25 = [utilities2 createLinearThumbnailFromMetadata:v18 ltmThumbnailPixelBuffer:v40 cameraInfo:v43 applyGDC:HIDWORD(v53) toPixelBuffer:v38];
         if (v25)
         {
           goto LABEL_47;
@@ -3975,7 +3975,7 @@ LABEL_32:
       else
       {
         v48 = v38;
-        v25 = [v42 createLinearThumbnailFromMetadata:v18 preLTMThumbnailPixelBuffer:v40 postLTMThumbnailPixelBuffer:v20 cameraInfo:v43 applyGDC:HIDWORD(v53) cropToPreLTMBounds:0 toPixelBuffer:?];
+        v25 = [utilities2 createLinearThumbnailFromMetadata:v18 preLTMThumbnailPixelBuffer:v40 postLTMThumbnailPixelBuffer:v20 cameraInfo:v43 applyGDC:HIDWORD(v53) cropToPreLTMBounds:0 toPixelBuffer:?];
         if (v25)
         {
           goto LABEL_47;
@@ -3989,41 +3989,41 @@ LABEL_32:
   }
 
   v44 = [v18 objectForKeyedSubscript:*off_1E798B458];
-  v45 = [(CMISmartStyleProcessor *)v12->_smartStyleProcessor utilities];
+  utilities3 = [(CMISmartStyleProcessor *)selfCopy->_smartStyleProcessor utilities];
   if (!v44)
   {
     memcpy(__dst, __src, sizeof(__dst));
-    v25 = [v45 downScalePixelBuffer:v33 toPixelBuffer:v38 propagateAttachments:1 gdcParams:__dst applyGDC:v14];
+    v25 = [utilities3 downScalePixelBuffer:v33 toPixelBuffer:v38 propagateAttachments:1 gdcParams:__dst applyGDC:v14];
     goto LABEL_44;
   }
 
-  v25 = [v45 createLinearThumbnailFromMetadata:v18 postLTMThumbnailPixelBuffer:v20 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](v12->_intermediatePixelBufferPoolsByAttachedMediaKeys applyGDC:"objectForKeyedSubscript:" cropToPreLTMBounds:objc_msgSend(v18 toPixelBuffer:{"objectForKeyedSubscript:", *off_1E798B540)), HIDWORD(v53), 0, v38}];
+  v25 = [utilities3 createLinearThumbnailFromMetadata:v18 postLTMThumbnailPixelBuffer:v20 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_intermediatePixelBufferPoolsByAttachedMediaKeys applyGDC:"objectForKeyedSubscript:" cropToPreLTMBounds:objc_msgSend(v18 toPixelBuffer:{"objectForKeyedSubscript:", *off_1E798B540)), HIDWORD(v53), 0, v38}];
   if (v25)
   {
     goto LABEL_47;
   }
 
 LABEL_43:
-  v25 = [-[CMISmartStyleProcessor utilities](v12->_smartStyleProcessor "utilities")];
+  v25 = [-[CMISmartStyleProcessor utilities](selfCopy->_smartStyleProcessor "utilities")];
 LABEL_44:
-  if (v52 && !v25)
+  if (eventCopy && !v25)
   {
-    v25 = [(BWSmartStyleLearningNode *)v12 _asynchronouslySignalEvent:v52];
+    v25 = [(BWSmartStyleLearningNode *)selfCopy _asynchronouslySignalEvent:eventCopy];
   }
 
 LABEL_47:
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    OUTLINED_FUNCTION_25_8(v25, v26, v27, v28, v29, v30, v31, v32, v48, v49, v50, v51, v52, v53, __dst[0], *&__dst[1]);
+    OUTLINED_FUNCTION_25_8(v25, v26, v27, v28, v29, v30, v31, v32, v48, v49, v50, v51, eventCopy, v53, __dst[0], *&__dst[1]);
     OUTLINED_FUNCTION_17_14();
     kdebug_trace();
   }
 }
 
-- (void)_asynchronouslyLearnWithContainer:(opaqueCMSampleBuffer *)a3 inputUnstyledSampleBuffer:(opaqueCMSampleBuffer *)ImageBuffer withUnrefinedMasks:(id)a5 withStats:(id)a6 withStatsExtended:(id)a7 styleToLearn:(id)a8 shouldBypass:(BOOL)a9
+- (void)_asynchronouslyLearnWithContainer:(opaqueCMSampleBuffer *)container inputUnstyledSampleBuffer:(opaqueCMSampleBuffer *)ImageBuffer withUnrefinedMasks:(id)masks withStats:(id)stats withStatsExtended:(id)extended styleToLearn:(id)learn shouldBypass:(BOOL)bypass
 {
-  v12 = a5;
-  HIDWORD(v324) = a9;
+  masksCopy = masks;
+  HIDWORD(v324) = bypass;
   v348 = 0;
   v349[0] = 0;
   v347 = 0;
@@ -4033,9 +4033,9 @@ LABEL_47:
   v17 = *(MEMORY[0x1E695F050] + 16);
   v343 = *MEMORY[0x1E695F050];
   v344 = v17;
-  v18 = a5;
+  masksCopy2 = masks;
   v19 = MEMORY[0x1E695FF58];
-  if (!a3)
+  if (!container)
   {
     HIDWORD(v315) = *(v16 + 12);
     epoch = *(v16 + 16);
@@ -4053,11 +4053,11 @@ LABEL_236:
 
   if (!self)
   {
-    a8 = 0;
-    a7 = 0;
+    learn = 0;
+    extended = 0;
     epoch = 0;
     HIDWORD(v315) = 0;
-    a6 = 0;
+    stats = 0;
     cf = 0;
     OUTLINED_FUNCTION_19_12();
     LOBYTE(v30) = 0;
@@ -4066,7 +4066,7 @@ LABEL_236:
     goto LABEL_173;
   }
 
-  [(BWSmartStyleLearningNode *)self _getSampleBufferPresentationTimeStamp:a3];
+  [(BWSmartStyleLearningNode *)self _getSampleBufferPresentationTimeStamp:container];
   epoch = time.duration.epoch;
   value = time.duration.value;
   timescale = time.duration.timescale;
@@ -4081,25 +4081,25 @@ LABEL_236:
     OUTLINED_FUNCTION_10_25();
     time.duration.epoch = epoch;
     CMTimeGetSeconds(&time.duration);
-    OUTLINED_FUNCTION_29_5(v21, v22, v23, v24, v25, v26, v27, v28, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, a9);
+    OUTLINED_FUNCTION_29_5(v21, v22, v23, v24, v25, v26, v27, v28, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, bypass);
     OUTLINED_FUNCTION_17_14();
     kdebug_trace();
   }
 
-  v300 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v300 = CMGetAttachment(container, *off_1E798A3C8, 0);
   if (!v300)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_9();
     FigDebugAssert3();
 LABEL_198:
-    a8 = 0;
+    learn = 0;
 LABEL_200:
     OUTLINED_FUNCTION_11_24();
     goto LABEL_201;
   }
 
-  if (!a8)
+  if (!learn)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_9();
@@ -4107,12 +4107,12 @@ LABEL_200:
     goto LABEL_200;
   }
 
-  v285 = a3;
+  containerCopy = container;
   sbuf = BWSampleBufferGetAttachedMedia(ImageBuffer, 0x1F21AB1D0);
   AttachedMedia = BWSampleBufferGetAttachedMedia(ImageBuffer, @"LTMThumbnail");
-  a3 = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
-  v291 = v12;
-  v279 = a6;
+  container = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
+  v291 = masksCopy;
+  statsCopy = stats;
   v282 = ImageBuffer;
   if (AttachedMedia)
   {
@@ -4131,7 +4131,7 @@ LABEL_200:
       ImageBuffer = CMSampleBufferGetImageBuffer(ImageBuffer);
       v342 = 0;
       v31 = 1;
-      a6 = v300;
+      stats = v300;
       goto LABEL_14;
     }
   }
@@ -4147,7 +4147,7 @@ LABEL_200:
     goto LABEL_173;
   }
 
-  a6 = v300;
+  stats = v300;
   [-[CMISmartStyleProcessor utilities](self->_smartStyleProcessor "utilities")];
   ImageBuffer = CMSampleBufferGetImageBuffer(ImageBuffer);
   v342 = 0;
@@ -4189,7 +4189,7 @@ LABEL_206:
 
   else
   {
-    v47 = OUTLINED_FUNCTION_33_11(v36, v37, v38, v39, v40, v41, v42, v43, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, 352);
+    v47 = OUTLINED_FUNCTION_33_11(v36, v37, v38, v39, v40, v41, v42, v43, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, 352);
     v318 = [objc_msgSend(v47 objectForKeyedSubscript:{*(v48 + 1040)), "newPixelBuffer"}];
     if (!v318)
     {
@@ -4197,25 +4197,25 @@ LABEL_206:
       OUTLINED_FUNCTION_0_9();
       FigDebugAssert3();
       OUTLINED_FUNCTION_9_27();
-      a3 = 0;
+      container = 0;
       ImageBuffer = 0;
       LOBYTE(v30) = 0;
-      v12 = v291;
+      masksCopy = v291;
       v16 = v325;
       goto LABEL_173;
     }
   }
 
-  v276 = a7;
-  v294 = a8;
+  extendedCopy = extended;
+  learnCopy = learn;
   v49 = *off_1E798A0F8;
   v341[0] = *off_1E798A0D0;
   v341[1] = v49;
   v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v341 count:2];
-  a8 = off_1E798B540;
+  learn = off_1E798B540;
   if (self->_generateCoefficients)
   {
-    LODWORD(v306) = [v50 containsObject:{objc_msgSend(a6, "objectForKeyedSubscript:", *off_1E798B540)}];
+    LODWORD(v306) = [v50 containsObject:{objc_msgSend(stats, "objectForKeyedSubscript:", *off_1E798B540)}];
   }
 
   else
@@ -4223,7 +4223,7 @@ LABEL_206:
     LODWORD(v306) = 0;
   }
 
-  a7 = ImageBuffer;
+  extended = ImageBuffer;
   v339 = 0u;
   v340 = 0u;
   v337 = 0u;
@@ -4245,8 +4245,8 @@ LABEL_206:
       v61 = v59;
     }
 
-    a3 = CMSampleBufferGetImageBuffer(v16);
-    if (!a3)
+    container = CMSampleBufferGetImageBuffer(v16);
+    if (!container)
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_9();
@@ -4257,33 +4257,33 @@ LABEL_246:
       goto LABEL_247;
     }
 
-    a7 = 144;
-    a8 = [(CMISmartStyleProcessor *)self->_smartStyleProcessor utilities];
-    if ([a8 createUnstyledThumbnailFromMetadata:a6 ltmThumbnailPixelBuffer:a3 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys applyGDC:"objectForKeyedSubscript:" toPixelBuffer:{objc_msgSend(a6, "objectForKeyedSubscript:", *off_1E798B540)), v306, v61}])
+    extended = 144;
+    learn = [(CMISmartStyleProcessor *)self->_smartStyleProcessor utilities];
+    if ([learn createUnstyledThumbnailFromMetadata:stats ltmThumbnailPixelBuffer:container cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys applyGDC:"objectForKeyedSubscript:" toPixelBuffer:{objc_msgSend(stats, "objectForKeyedSubscript:", *off_1E798B540)), v306, v61}])
     {
       OUTLINED_FUNCTION_9_27();
-      a3 = 0;
+      container = 0;
       LOBYTE(v30) = 0;
-      v12 = v291;
+      masksCopy = v291;
 LABEL_172:
       OUTLINED_FUNCTION_22_10();
       goto LABEL_173;
     }
 
-    a7 = ImageBuffer;
+    extended = ImageBuffer;
     v62 = [-[CMISmartStyleProcessor utilities](self->_smartStyleProcessor "utilities")];
-    a8 = 0;
+    learn = 0;
     v30 = 0;
-    a6 = v300;
+    stats = v300;
     ImageBuffer = v282;
     if (v62)
     {
-      a7 = 0;
-      a6 = 0;
+      extended = 0;
+      stats = 0;
       cf = 0;
-      a3 = 0;
+      container = 0;
 LABEL_247:
-      v12 = v291;
+      masksCopy = v291;
       goto LABEL_172;
     }
   }
@@ -4294,7 +4294,7 @@ LABEL_247:
     if (sbuf)
     {
       v63 = CMSampleBufferGetImageBuffer(sbuf);
-      a8 = v63;
+      learn = v63;
       ImageBuffer = v282;
       if (!v63)
       {
@@ -4308,7 +4308,7 @@ LABEL_247:
 
       if (v306)
       {
-        v63 = [MEMORY[0x1E69916C0] getGDCParams:v334 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys metadata:{"objectForKeyedSubscript:", objc_msgSend(a6, "objectForKeyedSubscript:", *off_1E798B540)), a6}];
+        v63 = [MEMORY[0x1E69916C0] getGDCParams:v334 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys metadata:{"objectForKeyedSubscript:", objc_msgSend(stats, "objectForKeyedSubscript:", *off_1E798B540)), stats}];
         if (v63)
         {
           v263 = v63;
@@ -4330,24 +4330,24 @@ LABEL_247:
     else
     {
       v30 = 0;
-      a8 = ImageBuffer;
+      learn = ImageBuffer;
       ImageBuffer = v282;
     }
   }
 
   if (v46)
   {
-    v12 = v291;
+    masksCopy = v291;
     if (v342 != 2)
     {
-      CVPixelBufferGetWidth(a8);
+      CVPixelBufferGetWidth(learn);
       v71 = OUTLINED_FUNCTION_21_13();
       CVPixelBufferGetHeight(v71);
       OUTLINED_FUNCTION_13_20();
       OUTLINED_FUNCTION_2_3();
-      v80 = OUTLINED_FUNCTION_28_7(v72, v73, v74, v75, v76, v77, v78, v79, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321);
+      v80 = OUTLINED_FUNCTION_28_7(v72, v73, v74, v75, v76, v77, v78, v79, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321);
       OUTLINED_FUNCTION_16_17(v80, v81, v82, v83, v84, v85, v86, v87, v265, v268, v271, v274, v277, v280, v283, v286, sbufb, v292, v295, v298, v301, v304, v307, cfb, v313, v316, v319, v322, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
-      v62 = OUTLINED_FUNCTION_24_11(v80, v88, a8, v325, &time);
+      v62 = OUTLINED_FUNCTION_24_11(v80, v88, learn, v325, &time);
       if (v62)
       {
         goto LABEL_216;
@@ -4360,14 +4360,14 @@ LABEL_247:
   v89 = v321;
   if (v342 != 2)
   {
-    CVPixelBufferGetWidth(a8);
+    CVPixelBufferGetWidth(learn);
     v90 = OUTLINED_FUNCTION_21_13();
     CVPixelBufferGetHeight(v90);
     OUTLINED_FUNCTION_13_20();
     OUTLINED_FUNCTION_2_3();
-    v91 = [*(&self->super.super.isa + v321) utilities];
-    OUTLINED_FUNCTION_16_17(v91, v92, v93, v94, v95, v96, v97, v98, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
-    v100 = OUTLINED_FUNCTION_24_11(v91, v99, a8, v318, &time);
+    utilities = [*(&self->super.super.isa + v321) utilities];
+    OUTLINED_FUNCTION_16_17(utilities, v92, v93, v94, v95, v96, v97, v98, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
+    v100 = OUTLINED_FUNCTION_24_11(utilities, v99, learn, v318, &time);
     if (v100)
     {
       v258 = v100;
@@ -4378,15 +4378,15 @@ LABEL_244:
       FigDebugAssert3();
 LABEL_245:
       OUTLINED_FUNCTION_9_27();
-      a3 = 0;
+      container = 0;
       goto LABEL_246;
     }
   }
 
-  v101 = [*(&self->super.super.isa + v89) utilities];
-  OUTLINED_FUNCTION_16_17(v101, v102, v103, v104, v105, v106, v107, v108, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
-  v62 = [v101 downScalePixelBuffer:v318 toPixelBuffer:v325 propagateAttachments:1 gdcParams:&time applyGDC:0];
-  v12 = v291;
+  utilities2 = [*(&self->super.super.isa + v89) utilities];
+  OUTLINED_FUNCTION_16_17(utilities2, v102, v103, v104, v105, v106, v107, v108, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
+  v62 = [utilities2 downScalePixelBuffer:v318 toPixelBuffer:v325 propagateAttachments:1 gdcParams:&time applyGDC:0];
+  masksCopy = v291;
   if (v62)
   {
 LABEL_216:
@@ -4396,13 +4396,13 @@ LABEL_216:
     LODWORD(v264) = v257;
     FigDebugAssert3();
     OUTLINED_FUNCTION_9_27();
-    a3 = 0;
+    container = 0;
     goto LABEL_226;
   }
 
 LABEL_46:
   v109 = [objc_msgSend(OUTLINED_FUNCTION_33_11(v62 v51];
-  a3 = v109;
+  container = v109;
   if (!v109)
   {
     goto LABEL_224;
@@ -4416,24 +4416,24 @@ LABEL_46:
     {
       v16 = v126;
       v134 = v342;
-      v135 = OUTLINED_FUNCTION_28_7(v126, v127, v128, v129, v130, v131, v132, v133, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321);
-      v136 = -[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys, "objectForKeyedSubscript:", [a6 objectForKeyedSubscript:*off_1E798B540]);
+      v135 = OUTLINED_FUNCTION_28_7(v126, v127, v128, v129, v130, v131, v132, v133, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321);
+      v136 = -[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys, "objectForKeyedSubscript:", [stats objectForKeyedSubscript:*off_1E798B540]);
       if (v134)
       {
         v137 = v135;
-        a3 = v312;
-        v138 = [v137 createLinearThumbnailFromMetadata:a6 ltmThumbnailPixelBuffer:v16 cameraInfo:v136 applyGDC:v306 toPixelBuffer:v312];
+        container = v312;
+        v138 = [v137 createLinearThumbnailFromMetadata:stats ltmThumbnailPixelBuffer:v16 cameraInfo:v136 applyGDC:v306 toPixelBuffer:v312];
       }
 
       else
       {
         v264 = v312;
         v140 = v135;
-        a3 = v312;
-        v138 = [v140 createLinearThumbnailFromMetadata:a6 preLTMThumbnailPixelBuffer:v16 postLTMThumbnailPixelBuffer:v325 cameraInfo:v136 applyGDC:v306 cropToPreLTMBounds:1 toPixelBuffer:?];
+        container = v312;
+        v138 = [v140 createLinearThumbnailFromMetadata:stats preLTMThumbnailPixelBuffer:v16 postLTMThumbnailPixelBuffer:v325 cameraInfo:v136 applyGDC:v306 cropToPreLTMBounds:1 toPixelBuffer:?];
       }
 
-      v12 = v291;
+      masksCopy = v291;
       epoch = v303;
       if (v138)
       {
@@ -4450,14 +4450,14 @@ LABEL_224:
     goto LABEL_225;
   }
 
-  v110 = [a6 objectForKeyedSubscript:*off_1E798B458];
-  v118 = OUTLINED_FUNCTION_28_7(v110, v111, v112, v113, v114, v115, v116, v117, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321);
+  v110 = [stats objectForKeyedSubscript:*off_1E798B458];
+  v118 = OUTLINED_FUNCTION_28_7(v110, v111, v112, v113, v114, v115, v116, v117, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321);
   v16 = v118;
   if (!v110)
   {
-    OUTLINED_FUNCTION_16_17(v118, v119, v120, v121, v122, v123, v124, v125, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
-    a3 = v312;
-    v139 = [v16 downScalePixelBuffer:a8 toPixelBuffer:v312 propagateAttachments:1 gdcParams:&time applyGDC:v30];
+    OUTLINED_FUNCTION_16_17(v118, v119, v120, v121, v122, v123, v124, v125, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
+    container = v312;
+    v139 = [v16 downScalePixelBuffer:learn toPixelBuffer:v312 propagateAttachments:1 gdcParams:&time applyGDC:v30];
     v16 = v321;
     if (v139)
     {
@@ -4467,8 +4467,8 @@ LABEL_224:
     goto LABEL_59;
   }
 
-  a3 = v312;
-  if ([v118 createLinearThumbnailFromMetadata:a6 postLTMThumbnailPixelBuffer:v325 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys applyGDC:"objectForKeyedSubscript:" cropToPreLTMBounds:objc_msgSend(a6 toPixelBuffer:{"objectForKeyedSubscript:", *off_1E798B540)), v306, 0, v312}])
+  container = v312;
+  if ([v118 createLinearThumbnailFromMetadata:stats postLTMThumbnailPixelBuffer:v325 cameraInfo:-[NSMutableDictionary objectForKeyedSubscript:](self->_intermediatePixelBufferPoolsByAttachedMediaKeys applyGDC:"objectForKeyedSubscript:" cropToPreLTMBounds:objc_msgSend(stats toPixelBuffer:{"objectForKeyedSubscript:", *off_1E798B540)), v306, 0, v312}])
   {
     goto LABEL_225;
   }
@@ -4489,7 +4489,7 @@ LABEL_59:
   }
 
   v141 = BWSampleBufferGetAttachedMedia(ImageBuffer, 0x1F21AB1F0);
-  a6 = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
+  stats = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
   if (!v141)
   {
 LABEL_67:
@@ -4509,42 +4509,42 @@ LABEL_67:
   }
 
   v16 = v142;
-  v150 = [objc_msgSend(OUTLINED_FUNCTION_33_11(v142 v143];
-  if (!v150)
+  v143 = [objc_msgSend(OUTLINED_FUNCTION_33_11(v142 v143];
+  if (!v143)
   {
     goto LABEL_224;
   }
 
-  cf = v150;
+  cf = v143;
   if ([(BWSmartStyleLearningNode *)self _cropAndUndistortWeightSegmentMap:v16 unstyledSampleBuffer:ImageBuffer doGDC:0 toPixelBuffer:?])
   {
-    a8 = 0;
-    a7 = 0;
-    a6 = 0;
+    learn = 0;
+    extended = 0;
+    stats = 0;
 LABEL_226:
     LOBYTE(v30) = 0;
     goto LABEL_172;
   }
 
 LABEL_68:
-  if (v12)
+  if (masksCopy)
   {
     OUTLINED_FUNCTION_10_25();
     time.duration.epoch = epoch;
-    v151 = [(BWSmartStyleLearningNode *)self _cropAndScaleMasks:v12 unstyledSampleBuffer:ImageBuffer currentPTS:&time applyGDC:v306 useIntermediatePool:?];
+    v151 = [(BWSmartStyleLearningNode *)self _cropAndScaleMasks:masksCopy unstyledSampleBuffer:ImageBuffer currentPTS:&time applyGDC:v306 useIntermediatePool:?];
     if (v151)
     {
       v152 = v151;
 
-      v12 = v152;
+      masksCopy = v152;
     }
   }
 
   v16 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
-  a6 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
-  if (BYTE6(self->_previousPTS.epoch) != 1 || (OUTLINED_FUNCTION_33(), !_ZF) || !v12)
+  stats = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
+  if (BYTE6(self->_previousPTS.epoch) != 1 || (OUTLINED_FUNCTION_33(), !_ZF) || !masksCopy)
   {
-    if (!v12)
+    if (!masksCopy)
     {
       v203 = 0;
       v185 = 0;
@@ -4555,7 +4555,7 @@ LABEL_68:
       v273 = 0;
       v282 = 0;
       v198 = 0;
-      a8 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
+      learn = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
       v16 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
       goto LABEL_110;
     }
@@ -4563,15 +4563,15 @@ LABEL_68:
     v185 = 0;
     OUTLINED_FUNCTION_34_9();
     v30 = *off_1E798D298;
-    a8 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
+    learn = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
     v16 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
     goto LABEL_102;
   }
 
   memset(&__src, 0, sizeof(__src));
-  v161 = [objc_msgSend(OUTLINED_FUNCTION_33_11(v153 v154];
-  a6 = v161;
-  if (!v161)
+  v154 = [objc_msgSend(OUTLINED_FUNCTION_33_11(v153 v154];
+  stats = v154;
+  if (!v154)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_9();
@@ -4581,20 +4581,20 @@ LABEL_234:
     goto LABEL_235;
   }
 
-  v169 = OUTLINED_FUNCTION_28_7(v161, v162, v163, v164, v165, v166, v167, v168, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321);
+  v169 = OUTLINED_FUNCTION_28_7(v154, v162, v163, v164, v165, v166, v167, v168, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321);
   OUTLINED_FUNCTION_18_14();
   if (!_ZF)
   {
     v178 = v179;
   }
 
-  if (!a8)
+  if (!learn)
   {
-    a8 = v178;
+    learn = v178;
   }
 
   OUTLINED_FUNCTION_16_17(v170, v171, v172, v173, v174, v175, v176, v177, v266, v269, v272, v275, v278, v281, v284, v287, sbufa, v293, v296, v299, v302, v305, v308, cfa, v314, v317, v320, v323, v324, v325, __src.duration.value, *&__src.duration.timescale, __src.duration.epoch, __src.presentationTimeStamp.value, *&__src.presentationTimeStamp.timescale, __src.presentationTimeStamp.epoch, __src.decodeTimeStamp.value, *&__src.decodeTimeStamp.timescale, __src.decodeTimeStamp.epoch, v327, time.duration.value, *&time.duration.timescale, time.duration.epoch, time.presentationTimeStamp.value, *&time.presentationTimeStamp.timescale, time.presentationTimeStamp.epoch, time.decodeTimeStamp.value, *&time.decodeTimeStamp.timescale, time.decodeTimeStamp.epoch, v329, v330, v331, v332, v333, v334[0]);
-  v180 = [v169 downScalePixelBuffer:a8 toPixelBuffer:a6 propagateAttachments:1 gdcParams:&time applyGDC:v30];
+  v180 = [v169 downScalePixelBuffer:learn toPixelBuffer:stats propagateAttachments:1 gdcParams:&time applyGDC:v30];
   if (v180)
   {
     v259 = v180;
@@ -4604,11 +4604,11 @@ LABEL_234:
 LABEL_231:
     FigDebugAssert3();
     OUTLINED_FUNCTION_22_10();
-    a3 = v312;
+    container = v312;
 LABEL_235:
     epoch = v303;
-    a8 = 0;
-    a7 = 0;
+    learn = 0;
+    extended = 0;
     goto LABEL_236;
   }
 
@@ -4623,10 +4623,10 @@ LABEL_235:
     goto LABEL_231;
   }
 
-  a8 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
+  learn = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
   memcpy(&time, &__src, sizeof(time));
-  v183 = BWSampleBufferCreateFromPixelBufferWithTimingInfo(a6, &time, &v348, &v347);
-  a3 = v312;
+  v183 = BWSampleBufferCreateFromPixelBufferWithTimingInfo(stats, &time, &v348, &v347);
+  container = v312;
   if (v183)
   {
     v261 = v183;
@@ -4643,13 +4643,13 @@ LABEL_235:
     goto LABEL_234;
   }
 
-  BWSampleBufferSetAttachedMedia(v285, 0x1F21AB0B0, v347);
+  BWSampleBufferSetAttachedMedia(containerCopy, 0x1F21AB0B0, v347);
   OUTLINED_FUNCTION_10_25();
   epoch = v303;
   time.duration.epoch = v303;
-  v184 = [(BWSmartStyleLearningNode *)self _runInferences:v285 unstyledSampleBuffer:ImageBuffer withMasks:v12 currentPTS:&time];
+  v184 = [(BWSmartStyleLearningNode *)self _runInferences:containerCopy unstyledSampleBuffer:ImageBuffer withMasks:masksCopy currentPTS:&time];
   v185 = v184;
-  if (!v184 || (v186 = -[__CVBuffer count](v184, "count"), v186 != [v12 count]))
+  if (!v184 || (v186 = -[__CVBuffer count](v184, "count"), v186 != [masksCopy count]))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_9();
@@ -4668,14 +4668,14 @@ LABEL_235:
   }
 
   v16 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
-  CFRelease(a6);
+  CFRelease(stats);
   if (v348)
   {
     CFRelease(v348);
     v348 = 0;
   }
 
-  a6 = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
+  stats = &kBWNodeSampleBufferAttachmentKey_TotalZoomFactor;
   if (v347)
   {
     CFRelease(v347);
@@ -4708,7 +4708,7 @@ LABEL_207:
       epoch = v303;
 LABEL_208:
       OUTLINED_FUNCTION_22_10();
-      a7 = v306;
+      extended = v306;
       goto LABEL_173;
     }
 
@@ -4722,7 +4722,7 @@ LABEL_208:
   }
 
 LABEL_102:
-  v196 = [objc_msgSend(v12 objectForKeyedSubscript:{v30), "objectForKeyedSubscript:", 0x1F21AAED0}];
+  v196 = [objc_msgSend(masksCopy objectForKeyedSubscript:{v30), "objectForKeyedSubscript:", 0x1F21AAED0}];
   if (!v196)
   {
     goto LABEL_207;
@@ -4736,7 +4736,7 @@ LABEL_102:
   }
 
   v198 = v197;
-  v199 = [objc_msgSend(v12 objectForKeyedSubscript:{v30), "objectForKeyedSubscript:", 0x1F21AAEF0}];
+  v199 = [objc_msgSend(masksCopy objectForKeyedSubscript:{v30), "objectForKeyedSubscript:", 0x1F21AAEF0}];
   if (!v199)
   {
     goto LABEL_207;
@@ -4749,7 +4749,7 @@ LABEL_102:
   }
 
   v282 = v200;
-  v201 = [objc_msgSend(v12 objectForKeyedSubscript:{v30), "objectForKeyedSubscript:", 0x1F21AAF30}];
+  v201 = [objc_msgSend(masksCopy objectForKeyedSubscript:{v30), "objectForKeyedSubscript:", 0x1F21AAF30}];
   if (!v201)
   {
     goto LABEL_207;
@@ -4797,13 +4797,13 @@ LABEL_110:
     OUTLINED_FUNCTION_0_9();
 LABEL_238:
     FigDebugAssert3();
-    a8 = 0;
+    learn = 0;
     goto LABEL_239;
   }
 
   v206 = v205;
-  a8 = [OUTLINED_FUNCTION_37_8() objectForKeyedSubscript:0x1F21AAEF0];
-  if (!a8)
+  learn = [OUTLINED_FUNCTION_37_8() objectForKeyedSubscript:0x1F21AAEF0];
+  if (!learn)
   {
     goto LABEL_220;
   }
@@ -4814,12 +4814,12 @@ LABEL_238:
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_9();
     FigDebugAssert3();
-    a8 = 0;
-    a6 = 0;
+    learn = 0;
+    stats = 0;
     goto LABEL_240;
   }
 
-  a6 = v12;
+  stats = masksCopy;
   os_unfair_lock_lock(&self->_lastLearnedROI.size.height);
   BYTE4(self->_lastLearnedROI.size.height) = 1;
   v207 = *&self->_mostRecentMasksLock._os_unfair_lock_opaque;
@@ -4835,7 +4835,7 @@ LABEL_238:
     CFRelease(mostRecentLearnedPersonMaskSampleBuffer);
   }
 
-  self->_mostRecentLearnedPersonMaskSampleBuffer = CFRetain(a8);
+  self->_mostRecentLearnedPersonMaskSampleBuffer = CFRetain(learn);
   mostRecentLearnedSkinMaskSampleBuffer = self->_mostRecentLearnedSkinMaskSampleBuffer;
   if (mostRecentLearnedSkinMaskSampleBuffer)
   {
@@ -4864,7 +4864,7 @@ LABEL_140:
       goto LABEL_141;
     }
 
-    v213 = [(BWSmartStyleLearningNode *)self _createCoefficientsFromSampleBuffer:v285 to:v349];
+    v213 = [(BWSmartStyleLearningNode *)self _createCoefficientsFromSampleBuffer:containerCopy to:v349];
     if (v213)
     {
       LODWORD(v30) = v213;
@@ -4886,15 +4886,15 @@ LABEL_140:
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_9();
       FigDebugAssert3();
-      a8 = 0;
-      a6 = 0;
+      learn = 0;
+      stats = 0;
     }
 
     HIDWORD(v324) = 0;
     goto LABEL_240;
   }
 
-  a6 = v12;
+  stats = masksCopy;
   [(FigCaptureSmartStyle *)self->_smartStyleLearned floatValue];
   if (v210 >= 0.25)
   {
@@ -4910,11 +4910,11 @@ LABEL_140:
 
   LOBYTE(self->_srlCurveParameter) = 0;
 LABEL_131:
-  v211 = [(BWSmartStyleLearningNode *)self _createIdentityCoefficientsFromSampleBuffer:v285 to:v349];
+  v211 = [(BWSmartStyleLearningNode *)self _createIdentityCoefficientsFromSampleBuffer:containerCopy to:v349];
   if (!v211)
   {
     v30 = 0;
-    a8 = 0;
+    learn = 0;
     HIDWORD(v324) = 1;
     if (BYTE1(self->_mostRecentLearnedSkyMaskSampleBuffer) != 1)
     {
@@ -4942,7 +4942,7 @@ LABEL_141:
     }
 
     v217 = objc_alloc_init(self->_smartStyleProcessorInputOutputClass);
-    a8 = v217;
+    learn = v217;
     if (v217)
     {
       if (v318)
@@ -4956,10 +4956,10 @@ LABEL_141:
       }
 
       [v217 setInputUnstyledPixelBuffer:v218];
-      [a8 setInputUnstyledThumbnailPixelBuffer:v325];
-      [a8 setInputLinearPixelBuffer:v312];
-      [a8 setInputMetadataDict:v300];
-      [a8 setInputLinearMetadataDict:v300];
+      [learn setInputUnstyledThumbnailPixelBuffer:v325];
+      [learn setInputLinearPixelBuffer:v312];
+      [learn setInputMetadataDict:v300];
+      [learn setInputLinearMetadataDict:v300];
       if (v185)
       {
         v219 = v185;
@@ -4970,12 +4970,12 @@ LABEL_141:
         v219 = v198;
       }
 
-      [a8 setInputPersonMaskPixelBuffer:v219];
-      CVPixelBufferGetWidth([a8 inputPersonMaskPixelBuffer]);
-      v220 = [OUTLINED_FUNCTION_21_13() inputPersonMaskPixelBuffer];
-      CVPixelBufferGetHeight(v220);
+      [learn setInputPersonMaskPixelBuffer:v219];
+      CVPixelBufferGetWidth([learn inputPersonMaskPixelBuffer]);
+      inputPersonMaskPixelBuffer = [OUTLINED_FUNCTION_21_13() inputPersonMaskPixelBuffer];
+      CVPixelBufferGetHeight(inputPersonMaskPixelBuffer);
       OUTLINED_FUNCTION_13_20();
-      [a8 setInputPersonMaskCropRect:?];
+      [learn setInputPersonMaskCropRect:?];
       if (v291)
       {
         v221 = v291;
@@ -4986,12 +4986,12 @@ LABEL_141:
         v221 = v273;
       }
 
-      [a8 setInputSkyMaskPixelBuffer:v221];
-      CVPixelBufferGetWidth([a8 inputSkyMaskPixelBuffer]);
-      v222 = [OUTLINED_FUNCTION_21_13() inputSkyMaskPixelBuffer];
-      CVPixelBufferGetHeight(v222);
+      [learn setInputSkyMaskPixelBuffer:v221];
+      CVPixelBufferGetWidth([learn inputSkyMaskPixelBuffer]);
+      inputSkyMaskPixelBuffer = [OUTLINED_FUNCTION_21_13() inputSkyMaskPixelBuffer];
+      CVPixelBufferGetHeight(inputSkyMaskPixelBuffer);
       OUTLINED_FUNCTION_13_20();
-      [a8 setInputSkyMaskCropRect:?];
+      [learn setInputSkyMaskCropRect:?];
       if (v297)
       {
         v223 = v297;
@@ -5002,32 +5002,32 @@ LABEL_141:
         v223 = v282;
       }
 
-      [a8 setInputSkinMaskPixelBuffer:v223];
-      CVPixelBufferGetWidth([a8 inputSkinMaskPixelBuffer]);
-      v224 = [OUTLINED_FUNCTION_21_13() inputSkinMaskPixelBuffer];
-      CVPixelBufferGetHeight(v224);
+      [learn setInputSkinMaskPixelBuffer:v223];
+      CVPixelBufferGetWidth([learn inputSkinMaskPixelBuffer]);
+      inputSkinMaskPixelBuffer = [OUTLINED_FUNCTION_21_13() inputSkinMaskPixelBuffer];
+      CVPixelBufferGetHeight(inputSkinMaskPixelBuffer);
       OUTLINED_FUNCTION_13_20();
-      [a8 setInputSkinMaskCropRect:?];
-      [a8 setOutputLearnedStyleCoefficientsPixelBuffer:v30];
-      [a8 setInputSmartStyle:objc_alloc_init(self->_smartStyleClass)];
-      [objc_msgSend(a8 "inputSmartStyle")];
-      [v294 intensity];
+      [learn setInputSkinMaskCropRect:?];
+      [learn setOutputLearnedStyleCoefficientsPixelBuffer:v30];
+      [learn setInputSmartStyle:objc_alloc_init(self->_smartStyleClass)];
+      [objc_msgSend(learn "inputSmartStyle")];
+      [learnCopy intensity];
       v226 = v225;
-      v227 = [a8 inputSmartStyle];
+      inputSmartStyle = [learn inputSmartStyle];
       LODWORD(v228) = v226;
-      [v227 setCastIntensity:v228];
-      [v294 toneBias];
+      [inputSmartStyle setCastIntensity:v228];
+      [learnCopy toneBias];
       v230 = v229;
-      v231 = [a8 inputSmartStyle];
+      inputSmartStyle2 = [learn inputSmartStyle];
       LODWORD(v232) = v230;
-      [v231 setToneBias:v232];
-      [v294 colorBias];
+      [inputSmartStyle2 setToneBias:v232];
+      [learnCopy colorBias];
       v234 = v233;
-      v235 = [a8 inputSmartStyle];
+      inputSmartStyle3 = [learn inputSmartStyle];
       LODWORD(v236) = v234;
-      [v235 setColorBias:v236];
-      [a8 setInputTuningType:*MEMORY[0x1E69916A8]];
-      [a8 setInputSRLPixelBuffer:v214];
+      [inputSmartStyle3 setColorBias:v236];
+      [learn setInputTuningType:*MEMORY[0x1E69916A8]];
+      [learn setInputSRLPixelBuffer:v214];
       if (self->_generateImageStats)
       {
         v237 = cf;
@@ -5038,22 +5038,22 @@ LABEL_141:
         v237 = 0;
       }
 
-      [a8 setInputWeightPlanePixelBufferScaledForISPSMG:v237];
+      [learn setInputWeightPlanePixelBufferScaledForISPSMG:v237];
       os_unfair_lock_lock(&self->_semanticStyleSceneLock);
-      [a8 setSemanticStyleSceneType:self->_semanticStyleSceneType];
+      [learn setSemanticStyleSceneType:self->_semanticStyleSceneType];
       os_unfair_lock_unlock(&self->_semanticStyleSceneLock);
-      [a8 setOutputImageStatistics:v279];
-      [a8 setOutputImageStatisticsExtended:v276];
-      [a8 setSubjectRelightingEnabled:self->_runSrlStatsAndEnableStylesIfNeeded];
+      [learn setOutputImageStatistics:statsCopy];
+      [learn setOutputImageStatisticsExtended:extendedCopy];
+      [learn setSubjectRelightingEnabled:self->_runSrlStatsAndEnableStylesIfNeeded];
       if (HIDWORD(v324))
       {
-        [a8 setSubjectRelightingEnabled:1];
-        [a8 setComputeOnlySubjectRelighting:1];
+        [learn setSubjectRelightingEnabled:1];
+        [learn setComputeOnlySubjectRelighting:1];
       }
 
-      [*(&self->super.super.isa + v321) setInputOutput:a8];
-      v238 = [*(&self->super.super.isa + v321) process];
-      if (!v238)
+      [*(&self->super.super.isa + v321) setInputOutput:learn];
+      process = [*(&self->super.super.isa + v321) process];
+      if (!process)
       {
         [(FigMetalContext *)self->_metalContext waitForSchedule];
 LABEL_166:
@@ -5066,16 +5066,16 @@ LABEL_166:
 
         self->_learnedCoefficientsSampleBuffer = v349[0];
 
-        *&self->_workQueueLearnCount = v294;
+        *&self->_workQueueLearnCount = learnCopy;
         ImageBuffer = 448;
 
         epoch = v303;
-        a7 = v306;
-        a3 = v312;
-        if (a8)
+        extended = v306;
+        container = v312;
+        if (learn)
         {
           v240 = objc_alloc(MEMORY[0x1E696AD98]);
-          [a8 outputSRLCurveParameter];
+          [learn outputSRLCurveParameter];
           v241 = [v240 initWithFloat:?];
         }
 
@@ -5087,17 +5087,17 @@ LABEL_166:
         self->_smartStyleLearned = v241;
         v16 = 464;
 
-        *&self->_smartStyleRenderingRequiredForSRL = [a8 outputSRLStats];
+        *&self->_smartStyleRenderingRequiredForSRL = [learn outputSRLStats];
         v242 = v344;
         *&self->_srlStats = v343;
         *&self->_lastLearnedROI.origin.y = v242;
         os_unfair_lock_unlock(&self->_workQueue);
-        a6 = 0;
+        stats = 0;
         LOBYTE(v30) = 1;
         goto LABEL_172;
       }
 
-      v16 = v238;
+      v16 = process;
       fig_log_get_emitter();
       OUTLINED_FUNCTION_3_47();
       LODWORD(v264) = v16;
@@ -5110,7 +5110,7 @@ LABEL_220:
 LABEL_221:
     FigDebugAssert3();
 LABEL_239:
-    a6 = 0;
+    stats = 0;
     LOBYTE(v30) = 0;
     goto LABEL_240;
   }
@@ -5124,9 +5124,9 @@ LABEL_239:
   HIDWORD(v324) = 1;
 LABEL_240:
   epoch = v303;
-  a7 = v306;
+  extended = v306;
   OUTLINED_FUNCTION_22_10();
-  a3 = v312;
+  container = v312;
 LABEL_173:
   if (v348)
   {
@@ -5138,9 +5138,9 @@ LABEL_173:
     CFRelease(v347);
   }
 
-  if (a6)
+  if (stats)
   {
-    CFRelease(a6);
+    CFRelease(stats);
   }
 
   if (v16)
@@ -5153,9 +5153,9 @@ LABEL_173:
     CFRelease(ImageBuffer);
   }
 
-  if (a3)
+  if (container)
   {
-    CFRelease(a3);
+    CFRelease(container);
   }
 
   if (cf)
@@ -5182,7 +5182,7 @@ LABEL_173:
     OUTLINED_FUNCTION_10_25();
     time.duration.epoch = epoch;
     CMTimeGetSeconds(&time.duration);
-    OUTLINED_FUNCTION_29_5(v245, v246, v247, v248, v249, v250, v251, v252, v264, v267, v270, v273, v276, v279, v282, v285, sbuf, v291, v294, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, HIDWORD(v324));
+    OUTLINED_FUNCTION_29_5(v245, v246, v247, v248, v249, v250, v251, v252, v264, v267, v270, v273, extendedCopy, statsCopy, v282, containerCopy, sbuf, v291, learnCopy, v297, v300, v303, v306, cf, v312, v315, v318, v321, v324, HIDWORD(v324));
     OUTLINED_FUNCTION_17_14();
     kdebug_trace();
   }

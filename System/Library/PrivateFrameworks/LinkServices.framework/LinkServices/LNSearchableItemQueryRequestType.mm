@@ -1,30 +1,30 @@
 @interface LNSearchableItemQueryRequestType
-- (BOOL)isEqual:(id)a3;
-- (LNSearchableItemQueryRequestType)initWithCoder:(id)a3;
-- (LNSearchableItemQueryRequestType)initWithSearchableItems:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNSearchableItemQueryRequestType)initWithCoder:(id)coder;
+- (LNSearchableItemQueryRequestType)initWithSearchableItems:(id)items;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSearchableItemQueryRequestType
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNSearchableItemQueryRequestType *)self items];
-      v8 = [(LNSearchableItemQueryRequestType *)v6 items];
-      v9 = v7;
-      v10 = v8;
+      items = [(LNSearchableItemQueryRequestType *)self items];
+      items2 = [(LNSearchableItemQueryRequestType *)v6 items];
+      v9 = items;
+      v10 = items2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -52,51 +52,51 @@
   return v12;
 }
 
-- (LNSearchableItemQueryRequestType)initWithCoder:(id)a3
+- (LNSearchableItemQueryRequestType)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"items"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"items"];
 
   if (v8)
   {
     self = [(LNSearchableItemQueryRequestType *)self initWithSearchableItems:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSearchableItemQueryRequestType *)self items];
-  [v4 encodeObject:v5 forKey:@"items"];
+  coderCopy = coder;
+  items = [(LNSearchableItemQueryRequestType *)self items];
+  [coderCopy encodeObject:items forKey:@"items"];
 }
 
-- (LNSearchableItemQueryRequestType)initWithSearchableItems:(id)a3
+- (LNSearchableItemQueryRequestType)initWithSearchableItems:(id)items
 {
-  v6 = a3;
-  if (!v6)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNQueryRequestConfiguration.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryRequestConfiguration.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"items"}];
   }
 
   v12.receiver = self;
   v12.super_class = LNSearchableItemQueryRequestType;
-  v7 = [(LNQueryRequestTypeBase *)&v12 _init];
-  v8 = v7;
-  if (v7)
+  _init = [(LNQueryRequestTypeBase *)&v12 _init];
+  v8 = _init;
+  if (_init)
   {
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(_init + 1, items);
     v9 = v8;
   }
 

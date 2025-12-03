@@ -1,38 +1,38 @@
 @interface SBIconListViewDominoAnimator
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6;
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block;
 @end
 
 @implementation SBIconListViewDominoAnimator
 
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  blockCopy = block;
   v13 = MEMORY[0x1E69DD250];
   delay = self->_delay;
-  var7 = a5->var7;
+  var7 = parameters->var7;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
-  v16 = *&a5->var2.continuousCornerRadius;
-  v28 = *&a5->var2.size.height;
+  v16 = *&parameters->var2.continuousCornerRadius;
+  v28 = *&parameters->var2.size.height;
   v29 = v16;
-  v17 = *&a5->var5;
-  var4 = a5->var4;
+  v17 = *&parameters->var5;
+  var4 = parameters->var4;
   v31 = v17;
-  v18 = *&a5->var1;
-  var0 = a5->var0;
+  v18 = *&parameters->var1;
+  var0 = parameters->var0;
   v27 = v18;
   v22[2] = __115__SBIconListViewDominoAnimator_iconListView_wantsAnimatedLayoutForIconView_withParameters_alongsideAnimationBlock___block_invoke;
   v22[3] = &unk_1E808C7A0;
-  v23 = v11;
-  v24 = v10;
-  v25 = v12;
-  v19 = v12;
-  v20 = v10;
-  v21 = v11;
+  v23 = iconViewCopy;
+  v24 = viewCopy;
+  v25 = blockCopy;
+  v19 = blockCopy;
+  v20 = viewCopy;
+  v21 = iconViewCopy;
   [v13 animateWithDuration:var7 delay:v22 options:0 animations:0.3 completion:delay];
-  if (a5->var6)
+  if (parameters->var6)
   {
     self->_delay = self->_delay + 0.045;
   }

@@ -1,16 +1,16 @@
 @interface UIImageAccessibility__MapKit__UIKit
-+ (id)_mapkit_imageNamed:(id)a3;
++ (id)_mapkit_imageNamed:(id)named;
 @end
 
 @implementation UIImageAccessibility__MapKit__UIKit
 
-+ (id)_mapkit_imageNamed:(id)a3
++ (id)_mapkit_imageNamed:(id)named
 {
-  v4 = a3;
-  v12.receiver = a1;
+  namedCopy = named;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___UIImageAccessibility__MapKit__UIKit;
-  v5 = objc_msgSendSuper2(&v12, sel__mapkit_imageNamed_, v4);
-  v6 = [v4 isEqualToString:@"playpause"];
+  v5 = objc_msgSendSuper2(&v12, sel__mapkit_imageNamed_, namedCopy);
+  v6 = [namedCopy isEqualToString:@"playpause"];
   v7 = MEMORY[0x29EDC7FD0];
   if (v6)
   {
@@ -20,13 +20,13 @@
     [v5 setAccessibilityTraits:*v7];
   }
 
-  else if ([v4 hasPrefix:@"apple-pay"])
+  else if ([namedCopy hasPrefix:@"apple-pay"])
   {
     v9 = AXMapKitLocString(@"APPLE_PAY");
     [v5 setAccessibilityLabel:v9];
   }
 
-  if ([v4 isEqualToString:@"gamecontroller_xbutton"])
+  if ([namedCopy isEqualToString:@"gamecontroller_xbutton"])
   {
     v10 = AXMapKitLocString(@"x.button.image.label");
     [v5 setAccessibilityLabel:v10];

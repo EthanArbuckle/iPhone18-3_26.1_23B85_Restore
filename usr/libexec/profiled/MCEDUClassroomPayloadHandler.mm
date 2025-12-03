@@ -1,15 +1,15 @@
 @interface MCEDUClassroomPayloadHandler
-- (BOOL)_installWithError:(id *)a3;
+- (BOOL)_installWithError:(id *)error;
 - (BOOL)isInstalled;
-- (BOOL)setConfiguration:(id)a3 error:(id *)a4;
-- (id)_persistentIDForPayloadUUID:(id)a3 requireIdentity:(BOOL)a4 error:(id *)a5;
-- (id)configurationWithError:(id *)a3;
+- (BOOL)setConfiguration:(id)configuration error:(id *)error;
+- (id)_persistentIDForPayloadUUID:(id)d requireIdentity:(BOOL)identity error:(id *)error;
+- (id)configurationWithError:(id *)error;
 - (void)remove;
 @end
 
 @implementation MCEDUClassroomPayloadHandler
 
-- (id)configurationWithError:(id *)a3
+- (id)configurationWithError:(id *)error
 {
   if (objc_opt_class())
   {
@@ -35,32 +35,32 @@
     v9 = v4;
     [CRKClassroomConfiguration fetchConfiguration:v8];
     dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
-    if (a3)
+    if (error)
     {
-      *a3 = v13[5];
+      *error = v13[5];
     }
 
-    a3 = v19[5];
+    error = v19[5];
 
     _Block_object_dispose(&v12, 8);
     _Block_object_dispose(&v18, 8);
   }
 
-  else if (a3)
+  else if (error)
   {
     v5 = MCInternalErrorDomain;
     v6 = MCErrorArray();
-    *a3 = [NSError MCErrorWithDomain:v5 code:4 descriptionArray:v6 errorType:MCErrorTypeFatal, 0];
+    *error = [NSError MCErrorWithDomain:v5 code:4 descriptionArray:v6 errorType:MCErrorTypeFatal, 0];
 
-    a3 = 0;
+    error = 0;
   }
 
-  return a3;
+  return error;
 }
 
-- (BOOL)setConfiguration:(id)a3 error:(id *)a4
+- (BOOL)setConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (objc_opt_class())
   {
     v13 = 0;
@@ -76,62 +76,62 @@
     v12 = &v13;
     v6 = dispatch_semaphore_create(0);
     v11 = v6;
-    [CRKClassroomConfiguration setConfiguration:v5 completion:v10];
+    [CRKClassroomConfiguration setConfiguration:configurationCopy completion:v10];
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
-      *a4 = v14[5];
+      *error = v14[5];
     }
 
-    LOBYTE(a4) = v14[5] == 0;
+    LOBYTE(error) = v14[5] == 0;
 
     _Block_object_dispose(&v13, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v7 = MCInternalErrorDomain;
     v8 = MCErrorArray();
-    *a4 = [NSError MCErrorWithDomain:v7 code:4 descriptionArray:v8 errorType:MCErrorTypeFatal, 0];
+    *error = [NSError MCErrorWithDomain:v7 code:4 descriptionArray:v8 errorType:MCErrorTypeFatal, 0];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (id)_persistentIDForPayloadUUID:(id)a3 requireIdentity:(BOOL)a4 error:(id *)a5
+- (id)_persistentIDForPayloadUUID:(id)d requireIdentity:(BOOL)identity error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (!v8)
+  identityCopy = identity;
+  dCopy = d;
+  if (!dCopy)
   {
-    a5 = 0;
+    error = 0;
     goto LABEL_14;
   }
 
-  v9 = [(MCNewPayloadHandler *)self profileHandler];
-  v10 = [v9 persistentIDForCertificateUUID:v8];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v10 = [profileHandler persistentIDForCertificateUUID:dCopy];
 
   if (!v10)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
 
     v14 = MCEDUClassroomErrorDomain;
     v15 = MCErrorArray();
-    *a5 = [NSError MCErrorWithDomain:v14 code:45002 descriptionArray:v15 errorType:MCErrorTypeFatal, v8, 0];
+    *error = [NSError MCErrorWithDomain:v14 code:45002 descriptionArray:v15 errorType:MCErrorTypeFatal, dCopy, 0];
 
     goto LABEL_12;
   }
 
-  if (v6)
+  if (identityCopy)
   {
-    v11 = [(MCNewPayloadHandler *)self profileHandler];
-    v12 = [v11 profile];
-    v13 = +[MCKeychain copyIdentityWithPersistentID:useSystemKeychain:](MCKeychain, "copyIdentityWithPersistentID:useSystemKeychain:", v10, [v12 isInstalledForSystem]);
+    profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler2 profile];
+    v13 = +[MCKeychain copyIdentityWithPersistentID:useSystemKeychain:](MCKeychain, "copyIdentityWithPersistentID:useSystemKeychain:", v10, [profile isInstalledForSystem]);
 
     if (v13)
     {
@@ -139,34 +139,34 @@
       goto LABEL_6;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
 
     v16 = MCEDUClassroomErrorDomain;
-    v17 = [(MCNewPayloadHandler *)self payload];
-    v18 = [v17 friendlyName];
+    payload = [(MCNewPayloadHandler *)self payload];
+    friendlyName = [payload friendlyName];
     v19 = MCErrorArray();
-    *a5 = [NSError MCErrorWithDomain:v16 code:45003 descriptionArray:v19 errorType:MCErrorTypeFatal, v18, 0];
+    *error = [NSError MCErrorWithDomain:v16 code:45003 descriptionArray:v19 errorType:MCErrorTypeFatal, friendlyName, 0];
 
 LABEL_12:
-    a5 = 0;
+    error = 0;
     goto LABEL_13;
   }
 
 LABEL_6:
-  a5 = v10;
+  error = v10;
 LABEL_13:
 
 LABEL_14:
 
-  return a5;
+  return error;
 }
 
-- (BOOL)_installWithError:(id *)a3
+- (BOOL)_installWithError:(id *)error
 {
-  v5 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v50 = 0;
   v6 = [(MCEDUClassroomPayloadHandler *)self configurationWithError:&v50];
   v7 = v50;
@@ -175,11 +175,11 @@ LABEL_14:
   {
     if (v7)
     {
-      if (a3)
+      if (error)
       {
         v11 = MCEDUClassroomErrorDomain;
-        v9 = MCErrorArray();
-        v10 = [NSError MCErrorWithDomain:v11 code:45000 descriptionArray:v9 underlyingError:v7 errorType:MCErrorTypeFatal, 0];
+        configuration = MCErrorArray();
+        v10 = [NSError MCErrorWithDomain:v11 code:45000 descriptionArray:configuration underlyingError:v7 errorType:MCErrorTypeFatal, 0];
         goto LABEL_7;
       }
 
@@ -188,26 +188,26 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v13 = [v5 payloadCertificatePersistentID];
+    payloadCertificatePersistentID = [payload payloadCertificatePersistentID];
 
-    if (!v13)
+    if (!payloadCertificatePersistentID)
     {
-      v14 = [v5 payloadCertificateUUID];
-      v15 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:v14 requireIdentity:1 error:a3];
-      [v5 setPayloadCertificatePersistentID:v15];
+      payloadCertificateUUID = [payload payloadCertificateUUID];
+      v15 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:payloadCertificateUUID requireIdentity:1 error:error];
+      [payload setPayloadCertificatePersistentID:v15];
     }
 
-    v16 = [v5 leaderPayloadCertificateAnchorPersistentID];
+    leaderPayloadCertificateAnchorPersistentID = [payload leaderPayloadCertificateAnchorPersistentID];
 
-    if (!v16)
+    if (!leaderPayloadCertificateAnchorPersistentID)
     {
-      v9 = objc_opt_new();
+      configuration = objc_opt_new();
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v21 = [v5 leaderPayloadCertificateAnchorUUID];
-      v22 = [v21 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      leaderPayloadCertificateAnchorUUID = [payload leaderPayloadCertificateAnchorUUID];
+      v22 = [leaderPayloadCertificateAnchorUUID countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v22)
       {
         v23 = v22;
@@ -218,21 +218,21 @@ LABEL_20:
         {
           if (*v47 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(leaderPayloadCertificateAnchorUUID);
           }
 
-          v26 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:*(*(&v46 + 1) + 8 * v25) requireIdentity:0 error:a3];
+          v26 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:*(*(&v46 + 1) + 8 * v25) requireIdentity:0 error:error];
           if (!v26)
           {
             goto LABEL_36;
           }
 
           v27 = v26;
-          [v9 addObject:v26];
+          [configuration addObject:v26];
 
           if (v23 == ++v25)
           {
-            v23 = [v21 countByEnumeratingWithState:&v46 objects:v52 count:16];
+            v23 = [leaderPayloadCertificateAnchorUUID countByEnumeratingWithState:&v46 objects:v52 count:16];
             if (v23)
             {
               goto LABEL_20;
@@ -243,50 +243,50 @@ LABEL_20:
         }
       }
 
-      v28 = [v9 copy];
-      [v5 setLeaderPayloadCertificateAnchorPersistentID:v28];
+      v28 = [configuration copy];
+      [payload setLeaderPayloadCertificateAnchorPersistentID:v28];
     }
 
-    v17 = [v5 memberPayloadCertificateAnchorPersistentID];
+    memberPayloadCertificateAnchorPersistentID = [payload memberPayloadCertificateAnchorPersistentID];
 
-    if (v17)
+    if (memberPayloadCertificateAnchorPersistentID)
     {
       goto LABEL_13;
     }
 
-    v9 = objc_opt_new();
+    configuration = objc_opt_new();
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v21 = [v5 memberPayloadCertificateAnchorUUID];
-    v29 = [v21 countByEnumeratingWithState:&v42 objects:v51 count:16];
+    leaderPayloadCertificateAnchorUUID = [payload memberPayloadCertificateAnchorUUID];
+    v29 = [leaderPayloadCertificateAnchorUUID countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (!v29)
     {
 LABEL_35:
 
-      v35 = [v9 copy];
-      [v5 setMemberPayloadCertificateAnchorPersistentID:v35];
+      v35 = [configuration copy];
+      [payload setMemberPayloadCertificateAnchorPersistentID:v35];
 
 LABEL_13:
-      v18 = [v5 resourcePayloadCertificatePersistentID];
-      if (v18)
+      resourcePayloadCertificatePersistentID = [payload resourcePayloadCertificatePersistentID];
+      if (resourcePayloadCertificatePersistentID)
       {
       }
 
       else
       {
-        v36 = [v5 resourcePayloadCertificateUUID];
+        resourcePayloadCertificateUUID = [payload resourcePayloadCertificateUUID];
 
-        if (v36)
+        if (resourcePayloadCertificateUUID)
         {
-          v37 = [v5 resourcePayloadCertificateUUID];
-          v38 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:v37 requireIdentity:1 error:a3];
-          [v5 setResourcePayloadCertificatePersistentID:v38];
+          resourcePayloadCertificateUUID2 = [payload resourcePayloadCertificateUUID];
+          v38 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:resourcePayloadCertificateUUID2 requireIdentity:1 error:error];
+          [payload setResourcePayloadCertificatePersistentID:v38];
 
-          v39 = [v5 resourcePayloadCertificatePersistentID];
+          resourcePayloadCertificatePersistentID2 = [payload resourcePayloadCertificatePersistentID];
 
-          if (!v39)
+          if (!resourcePayloadCertificatePersistentID2)
           {
             v7 = 0;
             goto LABEL_40;
@@ -294,15 +294,15 @@ LABEL_13:
         }
       }
 
-      v9 = [v5 configuration];
+      configuration = [payload configuration];
       v41 = 0;
-      v12 = [(MCEDUClassroomPayloadHandler *)self setConfiguration:v9 error:&v41];
+      v12 = [(MCEDUClassroomPayloadHandler *)self setConfiguration:configuration error:&v41];
       v7 = v41;
-      if (a3 && !v12)
+      if (error && !v12)
       {
         v19 = MCEDUClassroomErrorDomain;
         v20 = MCErrorArray();
-        *a3 = [NSError MCErrorWithDomain:v19 code:45000 descriptionArray:v20 underlyingError:v7 errorType:MCErrorTypeFatal, 0];
+        *error = [NSError MCErrorWithDomain:v19 code:45000 descriptionArray:v20 underlyingError:v7 errorType:MCErrorTypeFatal, 0];
       }
 
       goto LABEL_8;
@@ -316,21 +316,21 @@ LABEL_29:
     {
       if (*v43 != v31)
       {
-        objc_enumerationMutation(v21);
+        objc_enumerationMutation(leaderPayloadCertificateAnchorUUID);
       }
 
-      v33 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:*(*(&v42 + 1) + 8 * v32) requireIdentity:0 error:a3];
+      v33 = [(MCEDUClassroomPayloadHandler *)self _persistentIDForPayloadUUID:*(*(&v42 + 1) + 8 * v32) requireIdentity:0 error:error];
       if (!v33)
       {
         break;
       }
 
       v34 = v33;
-      [v9 addObject:v33];
+      [configuration addObject:v33];
 
       if (v30 == ++v32)
       {
-        v30 = [v21 countByEnumeratingWithState:&v42 objects:v51 count:16];
+        v30 = [leaderPayloadCertificateAnchorUUID countByEnumeratingWithState:&v42 objects:v51 count:16];
         if (v30)
         {
           goto LABEL_29;
@@ -347,17 +347,17 @@ LABEL_36:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!error)
   {
     goto LABEL_40;
   }
 
   v8 = MCEDUClassroomErrorDomain;
-  v9 = MCErrorArray();
-  v10 = [NSError MCErrorWithDomain:v8 code:45001 descriptionArray:v9 errorType:MCErrorTypeFatal, 0];
+  configuration = MCErrorArray();
+  v10 = [NSError MCErrorWithDomain:v8 code:45001 descriptionArray:configuration errorType:MCErrorTypeFatal, 0];
 LABEL_7:
   v12 = 0;
-  *a3 = v10;
+  *error = v10;
 LABEL_8:
 
 LABEL_41:
@@ -366,10 +366,10 @@ LABEL_41:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
 
     [(MCEDUClassroomPayloadHandler *)self _remove];

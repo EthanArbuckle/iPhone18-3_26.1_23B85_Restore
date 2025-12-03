@@ -10,13 +10,13 @@
 + (int)getMaximumCapacity;
 - (BOOL)isSmartChargingTempDisabled;
 - (PLBatteryUIBackendModel)init;
-- (id)addQueryType:(int64_t)a3 withEndDate:(id)a4 withRange:(double)a5 withBucketSize:(double)a6 isDynamicEnd:(BOOL)a7;
-- (id)convertResultToLegacyFormat:(id)a3;
+- (id)addQueryType:(int64_t)type withEndDate:(id)date withRange:(double)range withBucketSize:(double)size isDynamicEnd:(BOOL)end;
+- (id)convertResultToLegacyFormat:(id)format;
 - (id)getSmartChargingSwitchState;
 - (void)addSkipPlistWriteKey;
 - (void)disableSmartCharging;
 - (void)enableSmartCharging;
-- (void)getOBCEngagedState:(BOOL *)a3 andDesktopMode:(BOOL *)a4;
+- (void)getOBCEngagedState:(BOOL *)state andDesktopMode:(BOOL *)mode;
 - (void)resetQuery;
 - (void)runQuery;
 - (void)tempDisableSmartCharging;
@@ -67,11 +67,11 @@
   return v2;
 }
 
-- (id)addQueryType:(int64_t)a3 withEndDate:(id)a4 withRange:(double)a5 withBucketSize:(double)a6 isDynamicEnd:(BOOL)a7
+- (id)addQueryType:(int64_t)type withEndDate:(id)date withRange:(double)range withBucketSize:(double)size isDynamicEnd:(BOOL)end
 {
-  v7 = a7;
-  v12 = a4;
-  if (v7)
+  endCopy = end;
+  dateCopy = date;
+  if (endCopy)
   {
     PLBatteryUsageUIDynamicEndConfiguration();
   }
@@ -86,18 +86,18 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v20 = 134218498;
-    v21 = a3;
+    typeCopy2 = type;
     v22 = 2112;
-    v23 = *&v14;
+    rangeCopy2 = *&v14;
     v24 = 2048;
-    v25 = a5;
+    sizeCopy = range;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "Requesting response type: %ld, key: %@, query range: %f", &v20, 0x20u);
   }
 
   if (v14)
   {
-    v16 = [(PLBatteryUIBackendModel *)self queryPayload];
-    [v16 setObject:v13 forKeyedSubscript:v14];
+    queryPayload = [(PLBatteryUIBackendModel *)self queryPayload];
+    [queryPayload setObject:v13 forKeyedSubscript:v14];
 
     v17 = v14;
   }
@@ -108,11 +108,11 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v20 = 134218496;
-      v21 = a3;
+      typeCopy2 = type;
       v22 = 2048;
-      v23 = a5;
+      rangeCopy2 = range;
       v24 = 2048;
-      v25 = a6;
+      sizeCopy = size;
       _os_log_error_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Failed to add response type:%ld range:%f bucket:%f", &v20, 0x20u);
     }
   }
@@ -122,8 +122,8 @@
 
 - (void)runQuery
 {
-  v3 = [(PLBatteryUIBackendModel *)self queryPayload];
-  v4 = [v3 count];
+  queryPayload = [(PLBatteryUIBackendModel *)self queryPayload];
+  v4 = [queryPayload count];
 
   v5 = BUILogCommon();
   v6 = v5;
@@ -131,13 +131,13 @@
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PLBatteryUIBackendModel *)self queryPayload];
+      queryPayload2 = [(PLBatteryUIBackendModel *)self queryPayload];
       v14 = 138412290;
-      v15 = v7;
+      v15 = queryPayload2;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "querying with %@", &v14, 0xCu);
     }
 
-    v8 = [(PLBatteryUIBackendModel *)self queryPayload];
+    queryPayload3 = [(PLBatteryUIBackendModel *)self queryPayload];
     v6 = PLQueryRegistered();
 
     v9 = BUILogCommon();
@@ -153,13 +153,13 @@
       v10 = BUILogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(PLBatteryUIBackendModel *)self queryPayload];
+        queryPayload4 = [(PLBatteryUIBackendModel *)self queryPayload];
         v14 = 138412290;
-        v15 = v11;
+        v15 = queryPayload4;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "no response: retrying query with %@", &v14, 0xCu);
       }
 
-      v12 = [(PLBatteryUIBackendModel *)self queryPayload];
+      queryPayload5 = [(PLBatteryUIBackendModel *)self queryPayload];
       v6 = PLQueryRegistered();
 
       v13 = BUILogCommon();
@@ -182,8 +182,8 @@
 
 - (void)resetQuery
 {
-  v3 = [(PLBatteryUIBackendModel *)self queryPayload];
-  [v3 removeAllObjects];
+  queryPayload = [(PLBatteryUIBackendModel *)self queryPayload];
+  [queryPayload removeAllObjects];
 
   v4 = PLCalculateEndOfHour();
   endOfHour = self->_endOfHour;
@@ -196,9 +196,9 @@
   _objc_release_x1();
 }
 
-- (id)convertResultToLegacyFormat:(id)a3
+- (id)convertResultToLegacyFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[NSMutableDictionary dictionary];
   [v5 setObject:v6 forKeyedSubscript:@"Graph"];
@@ -222,31 +222,31 @@
 
   [v6 setObject:v7 forKeyedSubscript:@"PLBatteryUIGraph24hrs"];
   [v6 setObject:v8 forKeyedSubscript:@"PLBatteryUIGraphDays"];
-  v12 = [(PLBatteryUIBackendModel *)self endOfHour];
-  [v12 timeIntervalSince1970];
+  endOfHour = [(PLBatteryUIBackendModel *)self endOfHour];
+  [endOfHour timeIntervalSince1970];
   v13 = [NSNumber numberWithDouble:?];
   [v5 setObject:v13 forKeyedSubscript:@"endOfHour"];
 
   v14 = BUILogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(PLBatteryUIBackendModel *)self endOfHour];
-    [v15 timeIntervalSince1970];
+    endOfHour2 = [(PLBatteryUIBackendModel *)self endOfHour];
+    [endOfHour2 timeIntervalSince1970];
     *buf = 134217984;
     v33 = v16;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "setting end of hour:%f", buf, 0xCu);
   }
 
-  v17 = [(PLBatteryUIBackendModel *)self endOfDay];
-  [v17 timeIntervalSince1970];
+  endOfDay = [(PLBatteryUIBackendModel *)self endOfDay];
+  [endOfDay timeIntervalSince1970];
   v18 = [NSNumber numberWithDouble:?];
   [v5 setObject:v18 forKeyedSubscript:@"endOfDay"];
 
   v19 = BUILogCommon();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(PLBatteryUIBackendModel *)self endOfDay];
-    [v20 timeIntervalSince1970];
+    endOfDay2 = [(PLBatteryUIBackendModel *)self endOfDay];
+    [endOfDay2 timeIntervalSince1970];
     *buf = 134217984;
     v33 = v21;
     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "setting end of day:%f", buf, 0xCu);
@@ -263,7 +263,7 @@
   v31 = v8;
   v23 = v8;
   v24 = v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v28];
+  [formatCopy enumerateKeysAndObjectsUsingBlock:v28];
   v25 = v31;
   v26 = v22;
 
@@ -272,7 +272,7 @@
 
 + (int)getBatteryHealthServiceState
 {
-  v2 = [a1 _getBatteryHealthServiceState];
+  _getBatteryHealthServiceState = [self _getBatteryHealthServiceState];
   if (+[PLBatteryUIUtilities inDemoMode])
   {
     v3 = [PLBatteryUIUtilities getDefaultValueForKey:@"BUI_DEMO_SVC"];
@@ -286,7 +286,7 @@
         _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "demo  mode: overriding svc", v8, 2u);
       }
 
-      v2 = [v3 intValue];
+      _getBatteryHealthServiceState = [v3 intValue];
     }
 
     else
@@ -302,16 +302,16 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v2;
+    v8[1] = _getBatteryHealthServiceState;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Svc State: %d", v8, 8u);
   }
 
-  return v2;
+  return _getBatteryHealthServiceState;
 }
 
 + (int)getMaximumCapacity
 {
-  v2 = [a1 _getMaximumCapacity];
+  _getMaximumCapacity = [self _getMaximumCapacity];
   if (+[PLBatteryUIUtilities inDemoMode])
   {
     v3 = [PLBatteryUIUtilities getDefaultValueForKey:@"BUI_DEMO_NCC"];
@@ -325,7 +325,7 @@
         _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "demo mode: overriding ncc", &v11, 2u);
       }
 
-      v2 = [v3 intValue];
+      _getMaximumCapacity = [v3 intValue];
     }
 
     else
@@ -341,11 +341,11 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 67109120;
-    v12 = v2;
+    v12 = _getMaximumCapacity;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "ncc: %d", &v11, 8u);
   }
 
-  if (v2 == -1)
+  if (_getMaximumCapacity == -1)
   {
     v9 = BUILogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -359,14 +359,14 @@
 
   else
   {
-    if (v2 >= 100)
+    if (_getMaximumCapacity >= 100)
     {
       v7 = 100;
     }
 
     else
     {
-      v7 = v2;
+      v7 = _getMaximumCapacity;
     }
 
     v8 = v7 & ~(v7 >> 31);
@@ -384,7 +384,7 @@
 
 + (int)getCurrentStateOfCharge
 {
-  v2 = [a1 _getCurrentStateOfCharge];
+  _getCurrentStateOfCharge = [self _getCurrentStateOfCharge];
   if (+[PLBatteryUIUtilities inDemoMode])
   {
     v3 = [PLBatteryUIUtilities getDefaultValueForKey:@"BUI_DEMO_SOC"];
@@ -398,7 +398,7 @@
         _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "demo mode: overriding uisoc", v8, 2u);
       }
 
-      v2 = [v3 intValue];
+      _getCurrentStateOfCharge = [v3 intValue];
     }
 
     else
@@ -414,18 +414,18 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v2;
+    v8[1] = _getCurrentStateOfCharge;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "UISoC: %d", v8, 8u);
   }
 
-  return v2;
+  return _getCurrentStateOfCharge;
 }
 
 - (void)updateSmartChargingState
 {
-  v3 = [(PLBatteryUIBackendModel *)self smartChargingClient];
+  smartChargingClient = [(PLBatteryUIBackendModel *)self smartChargingClient];
   v8 = 0;
-  v4 = [v3 isSmartChargingCurrentlyEnabled:&v8];
+  v4 = [smartChargingClient isSmartChargingCurrentlyEnabled:&v8];
   v5 = v8;
 
   v6 = BUILogCommon();
@@ -467,9 +467,9 @@
 
 - (void)enableSmartCharging
 {
-  v2 = [(PLBatteryUIBackendModel *)self smartChargingClient];
+  smartChargingClient = [(PLBatteryUIBackendModel *)self smartChargingClient];
   v8 = 0;
-  v3 = [v2 enableSmartCharging:&v8];
+  v3 = [smartChargingClient enableSmartCharging:&v8];
   v4 = v8;
 
   v5 = BUILogCommon();
@@ -491,9 +491,9 @@
 
 - (void)tempDisableSmartCharging
 {
-  v2 = [(PLBatteryUIBackendModel *)self smartChargingClient];
+  smartChargingClient = [(PLBatteryUIBackendModel *)self smartChargingClient];
   v8 = 0;
-  v3 = [v2 temporarilyDisableSmartCharging:&v8];
+  v3 = [smartChargingClient temporarilyDisableSmartCharging:&v8];
   v4 = v8;
 
   v5 = BUILogCommon();
@@ -515,9 +515,9 @@
 
 - (void)disableSmartCharging
 {
-  v2 = [(PLBatteryUIBackendModel *)self smartChargingClient];
+  smartChargingClient = [(PLBatteryUIBackendModel *)self smartChargingClient];
   v8 = 0;
-  v3 = [v2 disableSmartCharging:&v8];
+  v3 = [smartChargingClient disableSmartCharging:&v8];
   v4 = v8;
 
   v5 = BUILogCommon();
@@ -550,11 +550,11 @@
   }
 }
 
-- (void)getOBCEngagedState:(BOOL *)a3 andDesktopMode:(BOOL *)a4
+- (void)getOBCEngagedState:(BOOL *)state andDesktopMode:(BOOL *)mode
 {
-  v6 = [(PLBatteryUIBackendModel *)self smartChargingClient];
+  smartChargingClient = [(PLBatteryUIBackendModel *)self smartChargingClient];
   v10 = 0;
-  v7 = [v6 isOBCEngagedAsDesktopDevice:a4 chargingOverrideAllowed:0 withError:&v10];
+  v7 = [smartChargingClient isOBCEngagedAsDesktopDevice:mode chargingOverrideAllowed:0 withError:&v10];
   v8 = v10;
 
   if (v8)
@@ -565,13 +565,13 @@
       sub_10FFD0();
     }
 
-    *a3 = 0;
-    *a4 = 0;
+    *state = 0;
+    *mode = 0;
   }
 
   else
   {
-    *a3 = v7;
+    *state = v7;
   }
 }
 
@@ -579,12 +579,12 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [a1 supportsChargingFixedLimit];
+    supportsChargingFixedLimit = [self supportsChargingFixedLimit];
   }
 
   else
   {
-    v3 = 0;
+    supportsChargingFixedLimit = 0;
   }
 
   v4 = +[PLModelingUtilities isiPad];
@@ -600,33 +600,33 @@
     sub_1100B0();
   }
 
-  return v3 & v4;
+  return supportsChargingFixedLimit & v4;
 }
 
 + (BOOL)supportsChargingFixedLimit
 {
   v2 = [PowerUISmartChargeClient alloc];
   v3 = [v2 initWithClientName:PowerUISmartChargeClientSettings];
-  v4 = [v3 isMCLSupported];
+  isMCLSupported = [v3 isMCLSupported];
   v5 = BUILogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_110120();
   }
 
-  return v4;
+  return isMCLSupported;
 }
 
 + (BOOL)shouldShowChargingController
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [a1 supportsChargingFixedLimit];
+    supportsChargingFixedLimit = [self supportsChargingFixedLimit];
   }
 
   else
   {
-    v3 = 0;
+    supportsChargingFixedLimit = 0;
   }
 
   v4 = BUILogCommon();
@@ -635,13 +635,13 @@
     sub_110190();
   }
 
-  return v3 & +[PLModelingUtilities isiPhone];
+  return supportsChargingFixedLimit & +[PLModelingUtilities isiPhone];
 }
 
 - (void)addSkipPlistWriteKey
 {
-  v2 = [(PLBatteryUIBackendModel *)self queryPayload];
-  [v2 setObject:&__kCFBooleanTrue forKeyedSubscript:@"skipPlistWriteKey"];
+  queryPayload = [(PLBatteryUIBackendModel *)self queryPayload];
+  [queryPayload setObject:&__kCFBooleanTrue forKeyedSubscript:@"skipPlistWriteKey"];
 }
 
 + (int)_getCurrentStateOfCharge
@@ -676,7 +676,7 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 intValue];
+      intValue = [v6 intValue];
     }
 
     else
@@ -687,7 +687,7 @@
         sub_110274();
       }
 
-      v8 = -1;
+      intValue = -1;
     }
   }
 
@@ -699,10 +699,10 @@
       sub_1102B0();
     }
 
-    v8 = -1;
+    intValue = -1;
   }
 
-  return v8;
+  return intValue;
 }
 
 + (int)_getBatteryHealthServiceState
@@ -723,7 +723,7 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 intValue];
+      intValue = [v6 intValue];
     }
 
     else
@@ -734,7 +734,7 @@
         sub_1102EC();
       }
 
-      v8 = -1;
+      intValue = -1;
     }
   }
 
@@ -746,10 +746,10 @@
       sub_1102B0();
     }
 
-    v8 = -1;
+    intValue = -1;
   }
 
-  return v8;
+  return intValue;
 }
 
 @end

@@ -7,22 +7,22 @@
 
 - (id)codings
 {
-  v1 = [a1 procedureCodingCollection];
-  v2 = [v1 codings];
+  procedureCodingCollection = [self procedureCodingCollection];
+  codings = [procedureCodingCollection codings];
 
-  return v2;
+  return codings;
 }
 
 - (id)meaningfulDateTitle
 {
-  if ([a1 notPerformed])
+  if ([self notPerformed])
   {
     HRLocalizedString(@"PROCEDURE_RECORD_SORT_DATE_TITLE_NOT_PERFORMED");
   }
 
   else
   {
-    [a1 sortDateTitle];
+    [self sortDateTitle];
   }
   v2 = ;
 

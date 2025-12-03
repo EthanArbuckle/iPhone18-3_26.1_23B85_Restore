@@ -1,51 +1,51 @@
 @interface HUQuickControlSliderValueOverlayView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CAShapeLayer)secondaryGrabberShadowLayer;
-- (HUQuickControlSliderValueOverlayView)initWithFrame:(CGRect)a3;
+- (HUQuickControlSliderValueOverlayView)initWithFrame:(CGRect)frame;
 - (id)_createGrabberShadowLayer;
 - (void)_updateBlendMode;
 - (void)_updateShape;
 - (void)layoutSubviews;
-- (void)setControlSize:(unint64_t)a3;
-- (void)setHasSecondGrabber:(BOOL)a3;
-- (void)setLayerColor:(id)a3;
-- (void)setOff:(BOOL)a3;
-- (void)setPrimaryGrabberLocation:(unint64_t)a3;
-- (void)setShowGrabbers:(BOOL)a3;
+- (void)setControlSize:(unint64_t)size;
+- (void)setHasSecondGrabber:(BOOL)grabber;
+- (void)setLayerColor:(id)color;
+- (void)setOff:(BOOL)off;
+- (void)setPrimaryGrabberLocation:(unint64_t)location;
+- (void)setShowGrabbers:(BOOL)grabbers;
 @end
 
 @implementation HUQuickControlSliderValueOverlayView
 
-- (void)setLayerColor:(id)a3
+- (void)setLayerColor:(id)color
 {
-  objc_storeStrong(&self->_layerColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_layerColor, color);
+  colorCopy = color;
   [(HUQuickControlSliderValueOverlayView *)self _updateBlendMode];
-  v10 = [(HUQuickControlSliderValueOverlayView *)self traitCollection];
-  [v10 userInterfaceStyle];
-  v6 = [(HUQuickControlSliderValueOverlayView *)self isOff];
-  v8 = borderColorSurroundingColor(v5, v7, v6);
+  traitCollection = [(HUQuickControlSliderValueOverlayView *)self traitCollection];
+  [traitCollection userInterfaceStyle];
+  isOff = [(HUQuickControlSliderValueOverlayView *)self isOff];
+  v8 = borderColorSurroundingColor(colorCopy, v7, isOff);
 
-  v9 = [(HUQuickControlSliderValueOverlayView *)self topBorder];
-  [v9 setBackgroundColor:v8];
+  topBorder = [(HUQuickControlSliderValueOverlayView *)self topBorder];
+  [topBorder setBackgroundColor:v8];
 }
 
-- (HUQuickControlSliderValueOverlayView)initWithFrame:(CGRect)a3
+- (HUQuickControlSliderValueOverlayView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v12.receiver = self;
   v12.super_class = HUQuickControlSliderValueOverlayView;
-  v4 = [(HUQuickControlSliderValueOverlayView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(HUQuickControlSliderValueOverlayView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
     v4->_showGrabbers = 1;
     v6 = *MEMORY[0x277CDA248];
-    v7 = [(HUQuickControlSliderValueOverlayView *)v4 layer];
-    [v7 setFillRule:v6];
+    layer = [(HUQuickControlSliderValueOverlayView *)v4 layer];
+    [layer setFillRule:v6];
 
-    v8 = [(HUQuickControlSliderValueOverlayView *)v5 layer];
-    [v8 setMasksToBounds:1];
+    layer2 = [(HUQuickControlSliderValueOverlayView *)v5 layer];
+    [layer2 setMasksToBounds:1];
 
     [(HUQuickControlSliderValueOverlayView *)v5 setPrimaryGrabberLocation:0];
     v9 = objc_opt_new();
@@ -61,55 +61,55 @@
   return v5;
 }
 
-- (void)setOff:(BOOL)a3
+- (void)setOff:(BOOL)off
 {
-  if (self->_off != a3)
+  if (self->_off != off)
   {
-    self->_off = a3;
+    self->_off = off;
     [(HUQuickControlSliderValueOverlayView *)self _updateBlendMode];
   }
 
-  v9 = [(HUQuickControlSliderValueOverlayView *)self layerColor];
-  v4 = [(HUQuickControlSliderValueOverlayView *)self traitCollection];
-  [v4 userInterfaceStyle];
-  v5 = [(HUQuickControlSliderValueOverlayView *)self isOff];
-  v7 = borderColorSurroundingColor(v9, v6, v5);
-  v8 = [(HUQuickControlSliderValueOverlayView *)self topBorder];
-  [v8 setBackgroundColor:v7];
+  layerColor = [(HUQuickControlSliderValueOverlayView *)self layerColor];
+  traitCollection = [(HUQuickControlSliderValueOverlayView *)self traitCollection];
+  [traitCollection userInterfaceStyle];
+  isOff = [(HUQuickControlSliderValueOverlayView *)self isOff];
+  v7 = borderColorSurroundingColor(layerColor, v6, isOff);
+  topBorder = [(HUQuickControlSliderValueOverlayView *)self topBorder];
+  [topBorder setBackgroundColor:v7];
 }
 
-- (void)setShowGrabbers:(BOOL)a3
+- (void)setShowGrabbers:(BOOL)grabbers
 {
-  if (self->_showGrabbers != a3)
+  if (self->_showGrabbers != grabbers)
   {
-    self->_showGrabbers = a3;
+    self->_showGrabbers = grabbers;
     [(HUQuickControlSliderValueOverlayView *)self setNeedsLayout];
   }
 }
 
-- (void)setHasSecondGrabber:(BOOL)a3
+- (void)setHasSecondGrabber:(BOOL)grabber
 {
-  if (self->_hasSecondGrabber != a3)
+  if (self->_hasSecondGrabber != grabber)
   {
-    self->_hasSecondGrabber = a3;
+    self->_hasSecondGrabber = grabber;
     [(HUQuickControlSliderValueOverlayView *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimaryGrabberLocation:(unint64_t)a3
+- (void)setPrimaryGrabberLocation:(unint64_t)location
 {
-  if (self->_primaryGrabberLocation != a3)
+  if (self->_primaryGrabberLocation != location)
   {
-    self->_primaryGrabberLocation = a3;
+    self->_primaryGrabberLocation = location;
     [(HUQuickControlSliderValueOverlayView *)self setNeedsLayout];
   }
 }
 
-- (void)setControlSize:(unint64_t)a3
+- (void)setControlSize:(unint64_t)size
 {
-  if (self->_controlSize != a3)
+  if (self->_controlSize != size)
   {
-    self->_controlSize = a3;
+    self->_controlSize = size;
     [(HUQuickControlSliderValueOverlayView *)self setNeedsLayout];
   }
 }
@@ -121,10 +121,10 @@
   v4 = [v3 bezierPathWithRect:?];
   if ([(HUQuickControlSliderValueOverlayView *)self showGrabbers])
   {
-    v5 = [(HUQuickControlSliderValueOverlayView *)self controlSize];
+    controlSize = [(HUQuickControlSliderValueOverlayView *)self controlSize];
     [(HUQuickControlSliderValueOverlayView *)self bounds];
     v7 = 0.65;
-    if (v5 != 2)
+    if (controlSize != 2)
     {
       v7 = 0.75;
     }
@@ -145,20 +145,20 @@
     [(HUQuickControlSliderValueOverlayView *)self bounds];
     if (v14 > 0.0)
     {
-      v15 = [(HUQuickControlSliderValueOverlayView *)self primaryGrabberShadowLayer];
+      primaryGrabberShadowLayer = [(HUQuickControlSliderValueOverlayView *)self primaryGrabberShadowLayer];
 
-      if (!v15)
+      if (!primaryGrabberShadowLayer)
       {
-        v16 = [(HUQuickControlSliderValueOverlayView *)self _createGrabberShadowLayer];
-        [(HUQuickControlSliderValueOverlayView *)self setPrimaryGrabberShadowLayer:v16];
-        v17 = [(HUQuickControlSliderValueOverlayView *)self layer];
-        [v17 insertSublayer:v16 atIndex:0];
+        _createGrabberShadowLayer = [(HUQuickControlSliderValueOverlayView *)self _createGrabberShadowLayer];
+        [(HUQuickControlSliderValueOverlayView *)self setPrimaryGrabberShadowLayer:_createGrabberShadowLayer];
+        layer = [(HUQuickControlSliderValueOverlayView *)self layer];
+        [layer insertSublayer:_createGrabberShadowLayer atIndex:0];
       }
     }
 
-    v18 = [v13 CGPath];
-    v19 = [(HUQuickControlSliderValueOverlayView *)self primaryGrabberShadowLayer];
-    [v19 setPath:v18];
+    cGPath = [v13 CGPath];
+    primaryGrabberShadowLayer2 = [(HUQuickControlSliderValueOverlayView *)self primaryGrabberShadowLayer];
+    [primaryGrabberShadowLayer2 setPath:cGPath];
 
     if ([(HUQuickControlSliderValueOverlayView *)self hasSecondGrabber])
     {
@@ -168,32 +168,32 @@
       [(HUQuickControlSliderValueOverlayView *)self bounds];
       if (v21 > 0.0)
       {
-        v22 = [(HUQuickControlSliderValueOverlayView *)self secondaryGrabberShadowLayer];
+        secondaryGrabberShadowLayer = [(HUQuickControlSliderValueOverlayView *)self secondaryGrabberShadowLayer];
 
-        if (!v22)
+        if (!secondaryGrabberShadowLayer)
         {
-          v23 = [(HUQuickControlSliderValueOverlayView *)self _createGrabberShadowLayer];
-          [(HUQuickControlSliderValueOverlayView *)self setSecondaryGrabberShadowLayer:v23];
-          v24 = [(HUQuickControlSliderValueOverlayView *)self layer];
-          [v24 insertSublayer:v23 atIndex:0];
+          _createGrabberShadowLayer2 = [(HUQuickControlSliderValueOverlayView *)self _createGrabberShadowLayer];
+          [(HUQuickControlSliderValueOverlayView *)self setSecondaryGrabberShadowLayer:_createGrabberShadowLayer2];
+          layer2 = [(HUQuickControlSliderValueOverlayView *)self layer];
+          [layer2 insertSublayer:_createGrabberShadowLayer2 atIndex:0];
         }
       }
 
-      v25 = [v20 CGPath];
-      v26 = [(HUQuickControlSliderValueOverlayView *)self secondaryGrabberShadowLayer];
-      [v26 setPath:v25];
+      cGPath2 = [v20 CGPath];
+      secondaryGrabberShadowLayer2 = [(HUQuickControlSliderValueOverlayView *)self secondaryGrabberShadowLayer];
+      [secondaryGrabberShadowLayer2 setPath:cGPath2];
     }
 
-    v27 = [v4 CGPath];
-    v28 = [(HUQuickControlSliderValueOverlayView *)self layer];
-    [v28 setPath:v27];
+    cGPath3 = [v4 CGPath];
+    layer3 = [(HUQuickControlSliderValueOverlayView *)self layer];
+    [layer3 setPath:cGPath3];
   }
 
   else
   {
-    v29 = [v4 CGPath];
-    v30 = [(HUQuickControlSliderValueOverlayView *)self layer];
-    [v30 setPath:v29];
+    cGPath4 = [v4 CGPath];
+    layer4 = [(HUQuickControlSliderValueOverlayView *)self layer];
+    [layer4 setPath:cGPath4];
   }
 }
 
@@ -212,19 +212,19 @@ double __52__HUQuickControlSliderValueOverlayView__updateShape__block_invoke(uin
 
 - (id)_createGrabberShadowLayer
 {
-  v2 = [MEMORY[0x277CD9F90] layer];
-  [v2 setShadowRadius:10.0];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setShadowRadius:10.0];
   LODWORD(v3) = *"333?";
-  [v2 setShadowOpacity:v3];
-  v4 = [MEMORY[0x277D75348] darkGrayColor];
-  [v2 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+  [layer setShadowOpacity:v3];
+  darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+  [layer setShadowColor:{objc_msgSend(darkGrayColor, "CGColor")}];
 
-  v5 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v2 setFillColor:{objc_msgSend(v5, "CGColor")}];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [layer setFillColor:{objc_msgSend(systemWhiteColor, "CGColor")}];
 
-  [v2 setShadowOffset:{0.0, 5.0}];
+  [layer setShadowOffset:{0.0, 5.0}];
 
-  return v2;
+  return layer;
 }
 
 - (void)_updateBlendMode
@@ -240,9 +240,9 @@ double __52__HUQuickControlSliderValueOverlayView__updateShape__block_invoke(uin
   }
   v6 = ;
   v3 = v6;
-  v4 = [v6 CGColor];
-  v5 = [(HUQuickControlSliderValueOverlayView *)self layer];
-  [v5 setFillColor:v4];
+  cGColor = [v6 CGColor];
+  layer = [(HUQuickControlSliderValueOverlayView *)self layer];
+  [layer setFillColor:cGColor];
 }
 
 - (void)layoutSubviews
@@ -251,8 +251,8 @@ double __52__HUQuickControlSliderValueOverlayView__updateShape__block_invoke(uin
   v11.super_class = HUQuickControlSliderValueOverlayView;
   [(HUQuickControlSliderValueOverlayView *)&v11 layoutSubviews];
   [(HUQuickControlSliderValueOverlayView *)self _updateShape];
-  v3 = [(HUQuickControlSliderValueOverlayView *)self topBorder];
-  [v3 frame];
+  topBorder = [(HUQuickControlSliderValueOverlayView *)self topBorder];
+  [topBorder frame];
   v5 = v4;
   [(HUQuickControlSliderValueOverlayView *)self bounds];
   v7 = v6;
@@ -261,15 +261,15 @@ double __52__HUQuickControlSliderValueOverlayView__updateShape__block_invoke(uin
   {
     [(HUQuickControlSliderValueOverlayView *)self bounds];
     v9 = v8;
-    v10 = [(HUQuickControlSliderValueOverlayView *)self topBorder];
-    [v10 setFrame:{0.0, 0.0, v9, 1.0}];
+    topBorder2 = [(HUQuickControlSliderValueOverlayView *)self topBorder];
+    [topBorder2 setFrame:{0.0, 0.0, v9, 1.0}];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"fillColor"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"compositingFilter"))
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"fillColor"] & 1) != 0 || (objc_msgSend(keyCopy, "hasPrefix:", @"compositingFilter"))
   {
     v5 = 1;
   }
@@ -278,7 +278,7 @@ double __52__HUQuickControlSliderValueOverlayView__updateShape__block_invoke(uin
   {
     v7.receiver = self;
     v7.super_class = HUQuickControlSliderValueOverlayView;
-    v5 = [(HUQuickControlSliderValueOverlayView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(HUQuickControlSliderValueOverlayView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

@@ -1,13 +1,13 @@
 @interface CollectionAddOrRemoveSession
-- (void)_instrumentSaveOrRemoveFromCollectionWithMapItem:(id)a3 instrumentSave:(BOOL)a4;
-- (void)applyToCollection:(id)a3 completion:(id)a4;
+- (void)_instrumentSaveOrRemoveFromCollectionWithMapItem:(id)item instrumentSave:(BOOL)save;
+- (void)applyToCollection:(id)collection completion:(id)completion;
 @end
 
 @implementation CollectionAddOrRemoveSession
 
-- (void)_instrumentSaveOrRemoveFromCollectionWithMapItem:(id)a3 instrumentSave:(BOOL)a4
+- (void)_instrumentSaveOrRemoveFromCollectionWithMapItem:(id)item instrumentSave:(BOOL)save
 {
-  if (a4)
+  if (save)
   {
     v5 = 2073;
   }
@@ -17,48 +17,48 @@
     v5 = 476;
   }
 
-  v6 = a3;
-  v7 = [(CollectionEditSession *)self analyticsTarget];
-  v8 = [v6 _identifier];
+  itemCopy = item;
+  analyticsTarget = [(CollectionEditSession *)self analyticsTarget];
+  _identifier = [itemCopy _identifier];
 
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 muid]);
-  v12 = [v9 stringValue];
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [_identifier muid]);
+  stringValue = [v9 stringValue];
 
-  v10 = [(CollectionEditSession *)self analyticsHandler];
+  analyticsHandler = [(CollectionEditSession *)self analyticsHandler];
 
-  if (v10)
+  if (analyticsHandler)
   {
-    v11 = [(CollectionEditSession *)self analyticsHandler];
-    (v11)[2](v11, v5, v7, v12);
+    analyticsHandler2 = [(CollectionEditSession *)self analyticsHandler];
+    (analyticsHandler2)[2](analyticsHandler2, v5, analyticsTarget, stringValue);
   }
 
   else
   {
-    [GEOAPPortal captureUserAction:v5 target:v7 value:v12];
+    [GEOAPPortal captureUserAction:v5 target:analyticsTarget value:stringValue];
   }
 }
 
-- (void)applyToCollection:(id)a3 completion:(id)a4
+- (void)applyToCollection:(id)collection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(CollectionSaveSession *)self transitLine];
-  if ((v9 || ([(CollectionSaveSession *)self mapItem], (v9 = objc_claimAutoreleasedReturnValue()) != 0)) && (v9, v8))
+  collectionCopy = collection;
+  completionCopy = completion;
+  v8 = collectionCopy;
+  transitLine = [(CollectionSaveSession *)self transitLine];
+  if ((transitLine || ([(CollectionSaveSession *)self mapItem], (transitLine = objc_claimAutoreleasedReturnValue()) != 0)) && (transitLine, v8))
   {
-    v10 = [(CollectionSaveSession *)self mapItem];
-    v11 = [v8 containsItem:v10];
+    mapItem = [(CollectionSaveSession *)self mapItem];
+    v11 = [v8 containsItem:mapItem];
 
     if (v11)
     {
-      v12 = [(CollectionEditSession *)self selectedObjectSet];
+      selectedObjectSet = [(CollectionEditSession *)self selectedObjectSet];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100D1882C;
       v29[3] = &unk_10165E240;
       v29[4] = self;
-      v30 = v7;
-      [v8 removeObjects:v12 completion:v29];
+      v30 = completionCopy;
+      [v8 removeObjects:selectedObjectSet completion:v29];
 
       v13 = v30;
     }
@@ -71,8 +71,8 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v17 = [(CollectionEditSession *)self selectedObjectSet];
-        v18 = [v17 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        selectedObjectSet2 = [(CollectionEditSession *)self selectedObjectSet];
+        v18 = [selectedObjectSet2 countByEnumeratingWithState:&v25 objects:v31 count:16];
         if (v18)
         {
           v19 = v18;
@@ -83,27 +83,27 @@
             {
               if (*v26 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(selectedObjectSet2);
               }
 
               [(CollectionAddOrRemoveSession *)self _instrumentSaveOrRemoveFromCollectionWithMapItem:*(*(&v25 + 1) + 8 * i) instrumentSave:1];
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v25 objects:v31 count:16];
+            v19 = [selectedObjectSet2 countByEnumeratingWithState:&v25 objects:v31 count:16];
           }
 
           while (v19);
         }
       }
 
-      v22 = [(CollectionEditSession *)self selectedObjectSet];
+      selectedObjectSet3 = [(CollectionEditSession *)self selectedObjectSet];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_100D189C4;
       v23[3] = &unk_10165E240;
       v23[4] = self;
-      v24 = v7;
-      [v8 addObjects:v22 completion:v23];
+      v24 = completionCopy;
+      [v8 addObjects:selectedObjectSet3 completion:v23];
 
       v13 = v24;
     }
@@ -112,17 +112,17 @@
   else
   {
     v14 = [NSError GEOErrorWithCode:0 reason:@"Nil map item or collection"];
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, v14);
+      (*(completionCopy + 2))(completionCopy, v14);
     }
 
-    v15 = [(CollectionEditSession *)self resultBlock];
+    resultBlock = [(CollectionEditSession *)self resultBlock];
 
-    if (v15)
+    if (resultBlock)
     {
-      v16 = [(CollectionEditSession *)self resultBlock];
-      (v16)[2](v16, v14);
+      resultBlock2 = [(CollectionEditSession *)self resultBlock];
+      (resultBlock2)[2](resultBlock2, v14);
     }
   }
 }

@@ -1,8 +1,8 @@
 @interface UARPAccessoryHardwareHID
-- (BOOL)doesMatchVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)doesMatchVendorID:(unsigned __int16)d productID:(unsigned __int16)iD;
+- (BOOL)isEqual:(id)equal;
 - (UARPAccessoryHardwareHID)init;
-- (UARPAccessoryHardwareHID)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4;
+- (UARPAccessoryHardwareHID)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD;
 - (id)description;
 @end
 
@@ -15,7 +15,7 @@
   return 0;
 }
 
-- (UARPAccessoryHardwareHID)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4
+- (UARPAccessoryHardwareHID)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD
 {
   v12.receiver = self;
   v12.super_class = UARPAccessoryHardwareHID;
@@ -23,8 +23,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_vendorID = a3;
-    v6->_productID = a4;
+    v6->_vendorID = d;
+    v6->_productID = iD;
     v8 = objc_opt_new();
     personalities = v7->_personalities;
     v7->_personalities = v8;
@@ -36,13 +36,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -50,8 +50,8 @@
     else
     {
       personalities = self->_personalities;
-      v6 = [(UARPAccessoryHardwareHID *)v4 personalities];
-      v7 = [(NSMutableSet *)personalities isEqualToSet:v6];
+      personalities = [(UARPAccessoryHardwareHID *)equalCopy personalities];
+      v7 = [(NSMutableSet *)personalities isEqualToSet:personalities];
     }
   }
 
@@ -88,9 +88,9 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 vendorID];
-        v11 = [v9 productID];
-        [v3 appendFormat:@"<VID/PID = 0x%04x/0x%04x> ", v10, v11, v15];
+        vendorID = [v9 vendorID];
+        productID = [v9 productID];
+        [v3 appendFormat:@"<VID/PID = 0x%04x/0x%04x> ", vendorID, productID, v15];
       }
 
       v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -106,12 +106,12 @@
   return v12;
 }
 
-- (BOOL)doesMatchVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4
+- (BOOL)doesMatchVendorID:(unsigned __int16)d productID:(unsigned __int16)iD
 {
-  v4 = a4;
-  v5 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v20 = *MEMORY[0x277D85DE8];
-  if (self->_vendorID == a3 && self->_productID == a4)
+  if (self->_vendorID == d && self->_productID == iD)
   {
     v6 = 1;
   }
@@ -138,7 +138,7 @@
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([v12 vendorID] != v5 && objc_msgSend(v12, "productID") == v4)
+          if ([v12 vendorID] != dCopy && objc_msgSend(v12, "productID") == iDCopy)
           {
             v6 = 1;
             goto LABEL_15;

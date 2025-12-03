@@ -1,22 +1,22 @@
 @interface FSOperations
-- (FSOperations)initWithType:(unsigned __int8)a3;
-- (unsigned)fatEntryOffsetForCluster:(unsigned int)a3;
+- (FSOperations)initWithType:(unsigned __int8)type;
+- (unsigned)fatEntryOffsetForCluster:(unsigned int)cluster;
 - (unsigned)getDirtyBitMask;
-- (unsigned)getDirtyBitValueForEntry:(char *)a3;
-- (unsigned)getNextClusterFromEntryForCluster:(unsigned int)a3 entry:(char *)a4;
+- (unsigned)getDirtyBitValueForEntry:(char *)entry;
+- (unsigned)getNextClusterFromEntryForCluster:(unsigned int)cluster entry:(char *)entry;
 - (unsigned)numBytesPerClusterInFat;
-- (unsigned)setFatEntryForCluster:(unsigned int)a3 entry:(char *)a4 withValue:(unsigned int)a5;
-- (void)applyDirtyBitValueToEntry:(char *)a3 newValue:(unsigned __int8)a4;
+- (unsigned)setFatEntryForCluster:(unsigned int)cluster entry:(char *)entry withValue:(unsigned int)value;
+- (void)applyDirtyBitValueToEntry:(char *)entry newValue:(unsigned __int8)value;
 @end
 
 @implementation FSOperations
 
-- (FSOperations)initWithType:(unsigned __int8)a3
+- (FSOperations)initWithType:(unsigned __int8)type
 {
   v5.receiver = self;
   v5.super_class = FSOperations;
   result = [(FSOperations *)&v5 init];
-  result->_fatType = a3;
+  result->_fatType = type;
   return result;
 }
 
@@ -43,17 +43,17 @@
   }
 }
 
-- (unsigned)fatEntryOffsetForCluster:(unsigned int)a3
+- (unsigned)fatEntryOffsetForCluster:(unsigned int)cluster
 {
-  v3 = 4 * a3;
+  v3 = 4 * cluster;
   if (!self->_fatType)
   {
-    v3 = (3 * a3) >> 1;
+    v3 = (3 * cluster) >> 1;
   }
 
   if (self->_fatType == 1)
   {
-    return 2 * a3;
+    return 2 * cluster;
   }
 
   else
@@ -62,22 +62,22 @@
   }
 }
 
-- (unsigned)getNextClusterFromEntryForCluster:(unsigned int)a3 entry:(char *)a4
+- (unsigned)getNextClusterFromEntryForCluster:(unsigned int)cluster entry:(char *)entry
 {
   if (self->_fatType == 1)
   {
-    return *a4;
+    return *entry;
   }
 
   if (self->_fatType)
   {
-    return *a4 & 0xFFFFFFF;
+    return *entry & 0xFFFFFFF;
   }
 
-  v4 = *a4;
+  v4 = *entry;
   v5 = v4 >> 4;
   v6 = v4 & 0xFFF;
-  if (a3)
+  if (cluster)
   {
     return v5;
   }
@@ -88,35 +88,35 @@
   }
 }
 
-- (unsigned)setFatEntryForCluster:(unsigned int)a3 entry:(char *)a4 withValue:(unsigned int)a5
+- (unsigned)setFatEntryForCluster:(unsigned int)cluster entry:(char *)entry withValue:(unsigned int)value
 {
   if (self->_fatType == 1)
   {
-    result = *a4;
-    *a4 = a5;
+    result = *entry;
+    *entry = value;
   }
 
   else if (self->_fatType)
   {
-    result = *a4 & 0xFFFFFFF;
-    *a4 = *a4 & 0xF0000000 | a5 & 0xFFFFFFF;
+    result = *entry & 0xFFFFFFF;
+    *entry = *entry & 0xF0000000 | value & 0xFFFFFFF;
   }
 
   else
   {
-    v5 = a4[1];
-    v6 = *a4 | (a4[1] << 8);
-    if (a3)
+    v5 = entry[1];
+    v6 = *entry | (entry[1] << 8);
+    if (cluster)
     {
-      *a4 = *a4 & 0xF | (16 * a5);
-      a4[1] = a5 >> 4;
+      *entry = *entry & 0xF | (16 * value);
+      entry[1] = value >> 4;
       return v6 >> 4;
     }
 
     else
     {
-      *a4 = a5;
-      a4[1] = ((v5 << 8) & 0xF000 | a5 & 0xFFF) >> 8;
+      *entry = value;
+      entry[1] = ((v5 << 8) & 0xF000 | value & 0xFFF) >> 8;
       return v6 & 0xFFF;
     }
   }
@@ -126,22 +126,22 @@
 
 - (unsigned)getDirtyBitMask
 {
-  v2 = [(FSOperations *)self fatType];
-  if (v2 == 1)
+  fatType = [(FSOperations *)self fatType];
+  if (fatType == 1)
   {
     return 0x8000;
   }
 
   else
   {
-    return (v2 == 2) << 27;
+    return (fatType == 2) << 27;
   }
 }
 
-- (unsigned)getDirtyBitValueForEntry:(char *)a3
+- (unsigned)getDirtyBitValueForEntry:(char *)entry
 {
-  v4 = [(FSOperations *)self getNextClusterFromEntryForCluster:[(FSOperations *)self getDirtyBitCluster] entry:a3];
-  v5 = [(FSOperations *)self getDirtyBitMask];
+  v4 = [(FSOperations *)self getNextClusterFromEntryForCluster:[(FSOperations *)self getDirtyBitCluster] entry:entry];
+  getDirtyBitMask = [(FSOperations *)self getDirtyBitMask];
   if ([(FSOperations *)self fatType]- 1 >= 2)
   {
     return 2;
@@ -149,30 +149,30 @@
 
   else
   {
-    return (v5 & v4) == 0;
+    return (getDirtyBitMask & v4) == 0;
   }
 }
 
-- (void)applyDirtyBitValueToEntry:(char *)a3 newValue:(unsigned __int8)a4
+- (void)applyDirtyBitValueToEntry:(char *)entry newValue:(unsigned __int8)value
 {
-  v4 = a4;
-  v7 = [(FSOperations *)self getNextClusterFromEntryForCluster:[(FSOperations *)self getDirtyBitCluster] entry:a3];
-  v8 = [(FSOperations *)self getDirtyBitMask];
+  valueCopy = value;
+  v7 = [(FSOperations *)self getNextClusterFromEntryForCluster:[(FSOperations *)self getDirtyBitCluster] entry:entry];
+  getDirtyBitMask = [(FSOperations *)self getDirtyBitMask];
   if ([(FSOperations *)self fatType]- 1 <= 1)
   {
-    if (v4 == 1)
+    if (valueCopy == 1)
     {
-      v9 = v7 & ~v8;
+      v9 = v7 & ~getDirtyBitMask;
     }
 
     else
     {
-      v9 = v8 | v7;
+      v9 = getDirtyBitMask | v7;
     }
 
-    v10 = [(FSOperations *)self getDirtyBitCluster];
+    getDirtyBitCluster = [(FSOperations *)self getDirtyBitCluster];
 
-    [(FSOperations *)self setFatEntryForCluster:v10 entry:a3 withValue:v9];
+    [(FSOperations *)self setFatEntryForCluster:getDirtyBitCluster entry:entry withValue:v9];
   }
 }
 

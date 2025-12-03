@@ -1,9 +1,9 @@
 @interface NEIdentityKeychainItem
-+ (id)copyIdentities:(id)a3 fromDomain:(int64_t)a4;
-+ (id)importPKCS12Data:(id)a3 passphrase:(id)a4;
-+ (uint64_t)copyPropertiesForIdentity:(void *)a3 persistentReference:;
-- (id)copyQueryWithReturnTypes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)copyIdentities:(id)identities fromDomain:(int64_t)domain;
++ (id)importPKCS12Data:(id)data passphrase:(id)passphrase;
++ (uint64_t)copyPropertiesForIdentity:(void *)identity persistentReference:;
+- (id)copyQueryWithReturnTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)sync;
 @end
 
@@ -12,16 +12,16 @@
 - (void)sync
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v3 = [(NEKeychainItem *)self persistentReference];
-  if (v3)
+  persistentReference = [(NEKeychainItem *)self persistentReference];
+  if (persistentReference)
   {
   }
 
   else
   {
-    v4 = [(NEKeychainItem *)self identifier];
+    identifier = [(NEKeychainItem *)self identifier];
 
-    if (v4)
+    if (identifier)
     {
       v47 = 0;
       v5 = [NEKeychainItem copyDataFromKeychainItem:0 outData:0 outIdentifier:&v47 outPersistentReference:?];
@@ -33,9 +33,9 @@
     }
   }
 
-  v7 = [(NEKeychainItem *)self persistentReference];
+  persistentReference2 = [(NEKeychainItem *)self persistentReference];
 
-  if (v7)
+  if (persistentReference2)
   {
     result = 0;
     v62[0] = *MEMORY[0x1E697B328];
@@ -57,10 +57,10 @@
             v20 = v19;
             if (self)
             {
-              v21 = self;
-              objc_sync_enter(v21);
-              objc_storeStrong(&v21->super._identifier, v19);
-              objc_sync_exit(v21);
+              selfCopy = self;
+              objc_sync_enter(selfCopy);
+              objc_storeStrong(&selfCopy->super._identifier, v19);
+              objc_sync_exit(selfCopy);
             }
 
             CFRelease(*buf);
@@ -74,9 +74,9 @@
       CFRelease(result);
     }
 
-    v10 = [(NEKeychainItem *)self accessGroup];
+    accessGroup = [(NEKeychainItem *)self accessGroup];
 
-    if (!v10)
+    if (!accessGroup)
     {
       goto LABEL_40;
     }
@@ -93,9 +93,9 @@
       v15 = ne_log_obj();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [(NEKeychainItem *)self persistentReference];
+        persistentReference3 = [(NEKeychainItem *)self persistentReference];
         *buf = 138412546;
-        *&buf[4] = v16;
+        *&buf[4] = persistentReference3;
         v49 = 1024;
         LODWORD(v50) = v14;
         _os_log_error_impl(&dword_1BA83C000, v15, OS_LOG_TYPE_ERROR, "Cannot update access group, failed to find item with persistent reference %@: %d", buf, 0x12u);
@@ -121,7 +121,7 @@
         v26 = v58;
         v60 = *MEMORY[0x1E695E4D0];
         v27 = v60;
-        v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v57 count:3];
+        persistentReference4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v57 count:3];
         v29 = *MEMORY[0x1E697B020];
         v30 = *MEMORY[0x1E697AC40];
         v55[0] = v24;
@@ -132,20 +132,20 @@
         v56[2] = v27;
         v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:3];
         v53 = *MEMORY[0x1E697ABD0];
-        v32 = [(NEKeychainItem *)self accessGroup];
-        v54 = v32;
+        accessGroup2 = [(NEKeychainItem *)self accessGroup];
+        v54 = accessGroup2;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
 
-        v34 = SecItemUpdate(v28, v33);
+        v34 = SecItemUpdate(persistentReference4, v33);
         if (v34)
         {
           v35 = v34;
           v36 = ne_log_obj();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
-            v45 = [(NEKeychainItem *)self accessGroup];
+            accessGroup3 = [(NEKeychainItem *)self accessGroup];
             *buf = 138412802;
-            *&buf[4] = v45;
+            *&buf[4] = accessGroup3;
             v49 = 2112;
             v50 = v23;
             v51 = 1024;
@@ -170,9 +170,9 @@ LABEL_34:
           v36 = ne_log_obj();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
-            v45 = [(NEKeychainItem *)self accessGroup];
+            accessGroup3 = [(NEKeychainItem *)self accessGroup];
             *buf = 138412802;
-            *&buf[4] = v45;
+            *&buf[4] = accessGroup3;
             v49 = 2112;
             v50 = v23;
             v51 = 1024;
@@ -185,8 +185,8 @@ LABEL_34:
         goto LABEL_34;
       }
 
-      v28 = ne_log_obj();
-      if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      persistentReference4 = ne_log_obj();
+      if (!os_log_type_enabled(persistentReference4, OS_LOG_TYPE_ERROR))
       {
 LABEL_35:
 
@@ -195,7 +195,7 @@ LABEL_35:
 
       *buf = 0;
       v38 = "Cannot update access group, identity has no public key hash attribute";
-      v39 = v28;
+      v39 = persistentReference4;
       v40 = 2;
     }
 
@@ -217,9 +217,9 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v28 = [(NEKeychainItem *)self persistentReference];
+      persistentReference4 = [(NEKeychainItem *)self persistentReference];
       *buf = 138412290;
-      *&buf[4] = v28;
+      *&buf[4] = persistentReference4;
       v38 = "Cannot update access group, failed to fetch attributes for persistent reference %@";
       v39 = v23;
       v40 = 12;
@@ -239,46 +239,46 @@ LABEL_41:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyQueryWithReturnTypes:(id)a3
+- (id)copyQueryWithReturnTypes:(id)types
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(NEKeychainItem *)self persistentReference];
+  persistentReference = [(NEKeychainItem *)self persistentReference];
 
-  if (v6)
+  if (persistentReference)
   {
-    if (v4)
+    if (typesCopy)
     {
       [v5 setObject:*MEMORY[0x1E697B010] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
     }
 
-    v7 = [(NEKeychainItem *)self persistentReference];
+    persistentReference2 = [(NEKeychainItem *)self persistentReference];
     v8 = MEMORY[0x1E697B3C8];
   }
 
   else
   {
-    v9 = [(NEKeychainItem *)self identifier];
+    identifier = [(NEKeychainItem *)self identifier];
 
-    if (!v9)
+    if (!identifier)
     {
       goto LABEL_8;
     }
 
     [v5 setObject:*MEMORY[0x1E697B010] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-    v7 = [(NEKeychainItem *)self identifier];
+    persistentReference2 = [(NEKeychainItem *)self identifier];
     v8 = MEMORY[0x1E697ADC8];
   }
 
-  [v5 setObject:v7 forKeyedSubscript:*v8];
+  [v5 setObject:persistentReference2 forKeyedSubscript:*v8];
 
 LABEL_8:
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v4;
+  v10 = typesCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -310,31 +310,31 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NEKeychainItem *)self persistentReference];
-  v6 = [(NEKeychainItem *)self domain];
-  v7 = [(NEKeychainItem *)self accessGroup];
-  v8 = [v4 initWithPersistentReference:v5 domain:v6 accessGroup:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  persistentReference = [(NEKeychainItem *)self persistentReference];
+  domain = [(NEKeychainItem *)self domain];
+  accessGroup = [(NEKeychainItem *)self accessGroup];
+  v8 = [v4 initWithPersistentReference:persistentReference domain:domain accessGroup:accessGroup];
 
   return v8;
 }
 
-+ (id)importPKCS12Data:(id)a3 passphrase:(id)a4
++ (id)importPKCS12Data:(id)data passphrase:(id)passphrase
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dataCopy = data;
+  passphraseCopy = passphrase;
+  v7 = passphraseCopy;
+  if (passphraseCopy)
   {
     v8 = *MEMORY[0x1E697B0B0];
     items = 0;
     v32 = v8;
-    v33[0] = v6;
+    v33[0] = passphraseCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-    if (!v9 || SecPKCS12Import(v5, v9, &items) || ((v10 = *MEMORY[0x1E695E480], Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]), v12 = CFArrayCreateMutable(v10, 0, MEMORY[0x1E695E9C0]), Mutable) ? (v13 = v12 == 0) : (v13 = 1), v13 || (v14 = v12, !CFArrayGetCount(items))))
+    if (!v9 || SecPKCS12Import(dataCopy, v9, &items) || ((v10 = *MEMORY[0x1E695E480], Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]), v12 = CFArrayCreateMutable(v10, 0, MEMORY[0x1E695E9C0]), Mutable) ? (v13 = v12 == 0) : (v13 = 1), v13 || (v14 = v12, !CFArrayGetCount(items))))
     {
       v14 = 0;
     }
@@ -401,19 +401,19 @@ LABEL_8:
   return v14;
 }
 
-+ (id)copyIdentities:(id)a3 fromDomain:(int64_t)a4
++ (id)copyIdentities:(id)identities fromDomain:(int64_t)domain
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identitiesCopy = identities;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   result = 0;
   [v5 setObject:*MEMORY[0x1E697B010] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
   [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B328]];
-  if (v4)
+  if (identitiesCopy)
   {
     v6 = *MEMORY[0x1E697B3C8];
     v7 = v5;
-    v8 = v4;
+    v8 = identitiesCopy;
   }
 
   else
@@ -447,7 +447,7 @@ LABEL_8:
   TypeID = CFArrayGetTypeID();
   if (v15 && CFGetTypeID(v15) == TypeID)
   {
-    v35 = v4;
+    v35 = identitiesCopy;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v17 = 0;
     v12 = 0;
@@ -485,7 +485,7 @@ LABEL_8:
       ++v17;
     }
 
-    v4 = v35;
+    identitiesCopy = v35;
   }
 
   else
@@ -526,7 +526,7 @@ LABEL_35:
       goto LABEL_6;
     }
 
-    v11 = [NEIdentityKeychainItem copyPropertiesForIdentity:v4 persistentReference:?];
+    v11 = [NEIdentityKeychainItem copyPropertiesForIdentity:identitiesCopy persistentReference:?];
     if (!v11)
     {
       goto LABEL_6;
@@ -546,12 +546,12 @@ LABEL_7:
   return v12;
 }
 
-+ (uint64_t)copyPropertiesForIdentity:(void *)a3 persistentReference:
++ (uint64_t)copyPropertiesForIdentity:(void *)identity persistentReference:
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = objc_opt_self();
-  if (v4)
+  if (identityCopy)
   {
     goto LABEL_2;
   }
@@ -575,11 +575,11 @@ LABEL_7:
   TypeID = CFDataGetTypeID();
   if (!v12)
   {
-    v4 = result;
+    identityCopy = result;
 LABEL_14:
     v16 = ne_log_obj();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
-    if (v4)
+    if (identityCopy)
     {
       if (v17)
       {
@@ -609,19 +609,19 @@ LABEL_19:
       CFRelease(result);
     }
 
-    v4 = 0;
+    identityCopy = 0;
     goto LABEL_22;
   }
 
   v14 = TypeID;
   v15 = CFGetTypeID(v12);
-  v4 = result;
+  identityCopy = result;
   if (v15 != v14)
   {
     goto LABEL_14;
   }
 
-  if (!v4)
+  if (!identityCopy)
   {
 LABEL_22:
     v9 = 0;
@@ -653,7 +653,7 @@ LABEL_2:
     CFRelease(certificateRef[0]);
     v25[0] = @"persistent-reference";
     v25[1] = @"certificate-data";
-    v26[0] = v4;
+    v26[0] = identityCopy;
     v26[1] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
   }

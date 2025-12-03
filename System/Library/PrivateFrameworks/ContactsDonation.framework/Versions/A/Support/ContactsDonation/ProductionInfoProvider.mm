@@ -7,7 +7,7 @@
 
 - (void)meCardChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000147D0();
 }
 

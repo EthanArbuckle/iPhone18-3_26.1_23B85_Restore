@@ -1,14 +1,14 @@
 @interface DSProviderDevice
-- (DSProviderDevice)initWithRapportDevice:(id)a3 queue:(id)a4;
+- (DSProviderDevice)initWithRapportDevice:(id)device queue:(id)queue;
 @end
 
 @implementation DSProviderDevice
 
-- (DSProviderDevice)initWithRapportDevice:(id)a3 queue:(id)a4
+- (DSProviderDevice)initWithRapportDevice:(id)device queue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = DSProviderDevice;
-  result = [(DSRapportDevice *)&v5 initWithRapportDevice:a3 queue:a4];
+  result = [(DSRapportDevice *)&v5 initWithRapportDevice:device queue:queue];
   if (result)
   {
     result->_isResponsePending = 0;

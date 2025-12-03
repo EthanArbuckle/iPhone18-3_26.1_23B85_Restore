@@ -1,18 +1,18 @@
 @interface AOLAccount
 + (BOOL)deliveryAccountUsesSSL;
-+ (id)emailAddressWithUsername:(id)a3;
++ (id)emailAddressWithUsername:(id)username;
 + (unsigned)deliveryAccountPortNumber;
-- (id)_defaultSpecialMailboxNameForType:(int64_t)a3;
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3;
+- (id)_defaultSpecialMailboxNameForType:(int64_t)type;
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed;
 @end
 
 @implementation AOLAccount
 
-+ (id)emailAddressWithUsername:(id)a3
++ (id)emailAddressWithUsername:(id)username
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:&stru_1F273A5E0] & 1) == 0)
+  usernameCopy = username;
+  v4 = usernameCopy;
+  if (usernameCopy && ([usernameCopy isEqualToString:&stru_1F273A5E0] & 1) == 0)
   {
     if ([v4 rangeOfString:@"@"] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (id)_defaultSpecialMailboxNameForType:(int64_t)a3
+- (id)_defaultSpecialMailboxNameForType:(int64_t)type
 {
-  v5 = a3 - 1;
-  if (a3 - 1) < 5 && ((0x1Du >> v5))
+  v5 = type - 1;
+  if (type - 1) < 5 && ((0x1Du >> v5))
   {
     v6 = off_1E7AA2238[v5];
   }
@@ -55,9 +55,9 @@
   return v6;
 }
 
-- (id)_deliveryAccountCreateIfNeeded:(BOOL)a3
+- (id)_deliveryAccountCreateIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     v4 = objc_alloc_init(MFAOLSMTPAccount);
     [(MFAOLSMTPAccount *)v4 setMailAccount:self];
@@ -73,18 +73,18 @@
 
 + (BOOL)deliveryAccountUsesSSL
 {
-  v2 = [a1 standardAccountClass:a1 valueForKey:@"DeliverySSLEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [self standardAccountClass:self valueForKey:@"DeliverySSLEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (unsigned)deliveryAccountPortNumber
 {
-  v2 = [a1 standardAccountClass:a1 valueForKey:@"DeliveryPortNumber"];
-  v3 = [v2 unsignedIntValue];
+  v2 = [self standardAccountClass:self valueForKey:@"DeliveryPortNumber"];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 @end

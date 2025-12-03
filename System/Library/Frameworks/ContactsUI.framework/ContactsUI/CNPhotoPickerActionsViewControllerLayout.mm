@@ -1,11 +1,11 @@
 @interface CNPhotoPickerActionsViewControllerLayout
 + (double)buttonHeight;
-+ (double)heightForButtonsViewWithButtonCount:(int64_t)a3;
++ (double)heightForButtonsViewWithButtonCount:(int64_t)count;
 - (CGRect)actionButtonsViewFrame;
-- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)a3;
+- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)count;
 - (CGRect)imageContainerViewFrame;
 - (CGSize)containerSize;
-- (CNPhotoPickerActionsViewControllerLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 buttonCount:(int64_t)a5;
+- (CNPhotoPickerActionsViewControllerLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets buttonCount:(int64_t)count;
 - (UIEdgeInsets)edgeInsets;
 @end
 
@@ -71,9 +71,9 @@
 
 - (CGRect)actionButtonsViewFrame
 {
-  v3 = [(CNPhotoPickerActionsViewControllerLayout *)self buttonCount];
+  buttonCount = [(CNPhotoPickerActionsViewControllerLayout *)self buttonCount];
 
-  [(CNPhotoPickerActionsViewControllerLayout *)self actionButtonsViewFrameForButtonCount:v3];
+  [(CNPhotoPickerActionsViewControllerLayout *)self actionButtonsViewFrameForButtonCount:buttonCount];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -81,9 +81,9 @@
   return result;
 }
 
-- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)a3
+- (CGRect)actionButtonsViewFrameForButtonCount:(int64_t)count
 {
-  [objc_opt_class() heightForButtonsViewWithButtonCount:a3];
+  [objc_opt_class() heightForButtonsViewWithButtonCount:count];
   v5 = v4;
   [(CNPhotoPickerActionsViewControllerLayout *)self containerSize];
   v7 = v6 + -20.0;
@@ -101,14 +101,14 @@
   return result;
 }
 
-- (CNPhotoPickerActionsViewControllerLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 buttonCount:(int64_t)a5
+- (CNPhotoPickerActionsViewControllerLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets buttonCount:(int64_t)count
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = CNPhotoPickerActionsViewControllerLayout;
   v12 = [(CNPhotoPickerActionsViewControllerLayout *)&v16 init];
@@ -121,18 +121,18 @@
     v12->_edgeInsets.left = left;
     v12->_edgeInsets.bottom = bottom;
     v12->_edgeInsets.right = right;
-    v12->_buttonCount = a5;
+    v12->_buttonCount = count;
     v14 = v12;
   }
 
   return v13;
 }
 
-+ (double)heightForButtonsViewWithButtonCount:(int64_t)a3
++ (double)heightForButtonsViewWithButtonCount:(int64_t)count
 {
-  v4 = a3;
-  [a1 buttonHeight];
-  return (a3 - 1) * 10.0 + v4 * v5;
+  countCopy = count;
+  [self buttonHeight];
+  return (count - 1) * 10.0 + countCopy * v5;
 }
 
 + (double)buttonHeight

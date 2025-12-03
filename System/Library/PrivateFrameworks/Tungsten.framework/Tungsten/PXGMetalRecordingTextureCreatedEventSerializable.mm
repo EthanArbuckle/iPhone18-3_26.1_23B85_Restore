@@ -1,5 +1,5 @@
 @interface PXGMetalRecordingTextureCreatedEventSerializable
-- (PXGMetalRecordingTextureCreatedEventSerializable)initWithSerializableObject:(id)a3;
+- (PXGMetalRecordingTextureCreatedEventSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -9,27 +9,27 @@
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"texture";
-  v3 = [(PXGMetalRecordingTextureCreatedEventSerializable *)self texture];
-  v4 = [v3 createSerializableObject];
+  texture = [(PXGMetalRecordingTextureCreatedEventSerializable *)self texture];
+  createSerializableObject = [texture createSerializableObject];
   v9[1] = @"options";
-  v10[0] = v4;
-  v5 = [(PXGMetalRecordingTextureCreatedEventSerializable *)self options];
-  v6 = [v5 createSerializableObject];
-  v10[1] = v6;
+  v10[0] = createSerializableObject;
+  options = [(PXGMetalRecordingTextureCreatedEventSerializable *)self options];
+  createSerializableObject2 = [options createSerializableObject];
+  v10[1] = createSerializableObject2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   return v7;
 }
 
-- (PXGMetalRecordingTextureCreatedEventSerializable)initWithSerializableObject:(id)a3
+- (PXGMetalRecordingTextureCreatedEventSerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = PXGMetalRecordingTextureCreatedEventSerializable;
   v5 = [(PXGMetalRecordingTextureCreatedEventSerializable *)&v14 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [PXGMetalRecordingMetalSpriteTextureSerializable alloc];
     v8 = [v6 objectForKeyedSubscript:@"texture"];
     v9 = [(PXGMetalRecordingMetalSpriteTextureSerializable *)v7 initWithSerializableObject:v8];

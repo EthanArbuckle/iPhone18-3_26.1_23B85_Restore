@@ -1,38 +1,38 @@
 @interface CaptureMTLBuffer
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
 - (BOOL)isAliasable;
 - (BOOL)isPurgeable;
-- (CaptureMTLBuffer)initWithBaseObject:(id)a3 captureBuffer:(id)a4;
-- (CaptureMTLBuffer)initWithBaseObject:(id)a3 captureDevice:(id)a4;
-- (CaptureMTLBuffer)initWithBaseObject:(id)a3 captureHeap:(id)a4;
+- (CaptureMTLBuffer)initWithBaseObject:(id)object captureBuffer:(id)buffer;
+- (CaptureMTLBuffer)initWithBaseObject:(id)object captureDevice:(id)device;
+- (CaptureMTLBuffer)initWithBaseObject:(id)object captureHeap:(id)heap;
 - (NSString)description;
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6;
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
-- (void)addDebugMarker:(id)a3 range:(_NSRange)a4;
+- (void)addDebugMarker:(id)marker range:(_NSRange)range;
 - (void)contents;
 - (void)dealloc;
-- (void)didModifyRange:(_NSRange)a3;
+- (void)didModifyRange:(_NSRange)range;
 - (void)makeAliasable;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 @end
 
 @implementation CaptureMTLBuffer
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLBufferSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLBufferSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -16367;
   v8 = BYTE9(v19);
@@ -52,10 +52,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLBuffer *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -65,7 +65,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -73,13 +73,13 @@
   return v6;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   traceContext = self->_traceContext;
-  v9 = a3;
+  descriptorCopy = descriptor;
   v29 = traceContext;
   *&v30 = 0;
   *(&v30 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -92,8 +92,8 @@
   *(&v31 + 9) = 16400;
   *(&v31 + 11) = 0;
   HIBYTE(v31) = 0;
-  v14 = [(MTLBufferSPI *)self->_baseObject newTextureWithDescriptor:v9 offset:a4 bytesPerRow:a5];
-  v15 = [(MTLDevice *)self->_captureDevice dummyEncodeTextureIntoArgumentBufferForResourceIndex:v14 withDescriptor:v9];
+  v14 = [(MTLBufferSPI *)self->_baseObject newTextureWithDescriptor:descriptorCopy offset:offset bytesPerRow:row];
+  v15 = [(MTLDevice *)self->_captureDevice dummyEncodeTextureIntoArgumentBufferForResourceIndex:v14 withDescriptor:descriptorCopy];
 
   if (v14)
   {
@@ -126,10 +126,10 @@
 
   *(v17 + 13) = v18;
   SaveMTLTextureInfo(&v29, v14);
-  v22 = [(CaptureMTLBuffer *)self traceStream];
-  if (v22)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v22->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -137,10 +137,10 @@
     var0 = 0;
   }
 
-  v24 = [(CaptureMTLTexture *)v16 traceStream];
-  if (v24)
+  traceStream2 = [(CaptureMTLTexture *)v16 traceStream];
+  if (traceStream2)
   {
-    v25 = v24->var0;
+    v25 = traceStream2->var0;
   }
 
   else
@@ -151,8 +151,8 @@
   v26 = SaveMTLTextureDescriptor(&v29, v15);
   *v19 = var0;
   *(v19 + 1) = v25;
-  *(v19 + 2) = a4;
-  *(v19 + 3) = a5;
+  *(v19 + 2) = offset;
+  *(v19 + 3) = row;
   v19[32] = v26;
   *(v19 + 33) = 0;
   *(v19 + 9) = 0;
@@ -164,13 +164,13 @@
   return v16;
 }
 
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error
 {
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
   traceContext = self->_traceContext;
-  v9 = a3;
+  descriptorCopy = descriptor;
   v30 = traceContext;
   *&v31 = 0;
   *(&v31 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -183,8 +183,8 @@
   *(&v32 + 9) = 16400;
   *(&v32 + 11) = 0;
   HIBYTE(v32) = 0;
-  v14 = [(MTLBufferSPI *)self->_baseObject newTensorWithDescriptor:v9 offset:a4 error:a5];
-  v15 = [v9 copy];
+  v14 = [(MTLBufferSPI *)self->_baseObject newTensorWithDescriptor:descriptorCopy offset:offset error:error];
+  v15 = [descriptorCopy copy];
 
   v16 = DEVICEOBJECT(v14);
   [v15 setResourceIndex:{objc_msgSend(v16, "resourceIndex")}];
@@ -220,10 +220,10 @@
 
   *(v18 + 13) = v19;
   SaveMTLTensorInfo(&v30, v14);
-  v23 = [(CaptureMTLBuffer *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -231,11 +231,11 @@
     var0 = 0;
   }
 
-  v25 = [(CaptureMTLTensor *)v17 traceStream];
-  if (!v25)
+  traceStream2 = [(CaptureMTLTensor *)v17 traceStream];
+  if (!traceStream2)
   {
     v26 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -243,19 +243,19 @@
     goto LABEL_12;
   }
 
-  v26 = v25->var0;
-  if (a5)
+  v26 = traceStream2->var0;
+  if (error)
   {
 LABEL_12:
-    a5 = *a5;
+    error = *error;
   }
 
 LABEL_13:
   v27 = SaveMTLTensorDescriptor(&v30, v15);
   *v20 = var0;
   *(v20 + 1) = v26;
-  *(v20 + 2) = a4;
-  *(v20 + 3) = a5;
+  *(v20 + 2) = offset;
+  *(v20 + 3) = error;
   v20[32] = v27;
   *(v20 + 33) = 0;
   *(v20 + 9) = 0;
@@ -267,13 +267,13 @@ LABEL_13:
   return v17;
 }
 
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
   traceContext = self->_traceContext;
-  v11 = a3;
+  descriptorCopy = descriptor;
   v36 = traceContext;
   *&v37 = 0;
   *(&v37 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -286,8 +286,8 @@ LABEL_13:
   *(&v38 + 9) = 16400;
   *(&v38 + 11) = 0;
   HIBYTE(v38) = 0;
-  v16 = [(MTLBufferSPI *)self->_baseObject newLinearTextureWithDescriptor:v11 offset:a4 bytesPerRow:a5 bytesPerImage:a6];
-  v17 = [(MTLDevice *)self->_captureDevice dummyEncodeTextureIntoArgumentBufferForResourceIndex:v16 withDescriptor:v11];
+  v16 = [(MTLBufferSPI *)self->_baseObject newLinearTextureWithDescriptor:descriptorCopy offset:offset bytesPerRow:row bytesPerImage:image];
+  v17 = [(MTLDevice *)self->_captureDevice dummyEncodeTextureIntoArgumentBufferForResourceIndex:v16 withDescriptor:descriptorCopy];
 
   if (v16)
   {
@@ -308,16 +308,16 @@ LABEL_13:
     v22 = *(*(&v36 + 1) + 24);
     v35 = v18;
     v23 = v17;
-    v24 = a4;
-    v25 = a5;
-    v26 = a6;
+    offsetCopy = offset;
+    rowCopy = row;
+    imageCopy = image;
     v27 = BYTE10(v38);
     ++BYTE10(v38);
     v21 = GTTraceMemPool_allocateBytes(v22, *(&v37 + 1), v27 | 0x3000000000) + 16;
     v20 = v27;
-    a6 = v26;
-    a5 = v25;
-    a4 = v24;
+    image = imageCopy;
+    row = rowCopy;
+    offset = offsetCopy;
     v17 = v23;
     v18 = v35;
   }
@@ -330,10 +330,10 @@ LABEL_13:
 
   *(v19 + 13) = v20;
   SaveMTLTextureInfo(&v36, v16);
-  v28 = [(CaptureMTLBuffer *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -341,10 +341,10 @@ LABEL_13:
     var0 = 0;
   }
 
-  v30 = [(CaptureMTLTexture *)v18 traceStream];
-  if (v30)
+  traceStream2 = [(CaptureMTLTexture *)v18 traceStream];
+  if (traceStream2)
   {
-    v31 = v30->var0;
+    v31 = traceStream2->var0;
   }
 
   else
@@ -355,9 +355,9 @@ LABEL_13:
   v32 = SaveMTLTextureDescriptor(&v36, v17);
   *v21 = var0;
   *(v21 + 1) = v31;
-  *(v21 + 2) = a4;
-  *(v21 + 3) = a5;
-  *(v21 + 4) = a6;
+  *(v21 + 2) = offset;
+  *(v21 + 3) = row;
+  *(v21 + 4) = image;
   v21[40] = v32;
   *(v21 + 41) = 0;
   *(v21 + 11) = 0;
@@ -402,10 +402,10 @@ LABEL_13:
     }
 
     *(v6 + 13) = v7;
-    v11 = [(CaptureMTLBuffer *)self traceStream];
-    if (v11)
+    traceStream = [(CaptureMTLBuffer *)self traceStream];
+    if (traceStream)
     {
-      var0 = v11->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -428,7 +428,7 @@ LABEL_13:
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLBufferSPI *)self->_baseObject isPurgeable];
+  isPurgeable = [(MTLBufferSPI *)self->_baseObject isPurgeable];
   v5 = v16;
   *(v16 + 8) = -16366;
   v6 = BYTE9(v17);
@@ -448,10 +448,10 @@ LABEL_13:
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLBuffer *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -460,13 +460,13 @@ LABEL_13:
   }
 
   *v7 = var0;
-  *(v7 + 2) = v4;
+  *(v7 + 2) = isPurgeable;
   *(v7 + 3) = 0;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return isPurgeable;
 }
 
 - (BOOL)isAliasable
@@ -476,7 +476,7 @@ LABEL_13:
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLBufferSPI *)self->_baseObject isAliasable];
+  isAliasable = [(MTLBufferSPI *)self->_baseObject isAliasable];
   v5 = v16;
   *(v16 + 8) = -16113;
   v6 = BYTE9(v17);
@@ -496,10 +496,10 @@ LABEL_13:
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLBuffer *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -508,76 +508,76 @@ LABEL_13:
   }
 
   *v7 = var0;
-  *(v7 + 2) = v4;
+  *(v7 + 2) = isAliasable;
   *(v7 + 3) = 0;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return isAliasable;
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLBufferSPI *)baseObject doesAliasResource:v4];
+  baseObject = [resource baseObject];
+  LOBYTE(baseObject) = [(MTLBufferSPI *)baseObject doesAliasResource:baseObject];
 
   return baseObject;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLBufferSPI *)baseObject doesAliasAnyResources:v8 count:a4];
+  return [(MTLBufferSPI *)baseObject doesAliasAnyResources:v8 count:count];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLBufferSPI *)baseObject doesAliasAllResources:v8 count:a4];
+  return [(MTLBufferSPI *)baseObject doesAliasAllResources:v8 count:count];
 }
 
-- (void)didModifyRange:(_NSRange)a3
+- (void)didModifyRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v18 = 0u;
@@ -605,10 +605,10 @@ LABEL_13:
     }
 
     *(v7 + 13) = v8;
-    v13 = [(CaptureMTLBuffer *)self traceStream];
-    if (v13)
+    traceStream = [(CaptureMTLBuffer *)self traceStream];
+    if (traceStream)
     {
-      var0 = v13->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -633,17 +633,17 @@ LABEL_13:
   }
 }
 
-- (void)addDebugMarker:(id)a3 range:(_NSRange)a4
+- (void)addDebugMarker:(id)marker range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  markerCopy = marker;
   v22 = 0u;
   v23 = 0u;
   v21 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v21);
-  [(MTLBufferSPI *)self->_baseObject addDebugMarker:v7 range:location, length];
+  [(MTLBufferSPI *)self->_baseObject addDebugMarker:markerCopy range:location, length];
   v9 = v22;
   *(v22 + 8) = -16103;
   v10 = BYTE9(v23);
@@ -663,10 +663,10 @@ LABEL_13:
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLBuffer *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -674,18 +674,18 @@ LABEL_13:
     var0 = 0;
   }
 
-  v16 = [v7 UTF8String];
-  if (v16)
+  uTF8String = [markerCopy UTF8String];
+  if (uTF8String)
   {
-    v17 = [v7 UTF8String];
-    v18 = strlen([v7 UTF8String]);
-    LOBYTE(v16) = GTTraceEncoder_storeBytes(&v21, v17, v18 + 1);
+    uTF8String2 = [markerCopy UTF8String];
+    v18 = strlen([markerCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v21, uTF8String2, v18 + 1);
   }
 
   *v11 = var0;
   *(v11 + 1) = location;
   *(v11 + 2) = length;
-  v11[24] = v16;
+  v11[24] = uTF8String;
   *(v11 + 25) = 0;
   *(v11 + 7) = 0;
   s();
@@ -694,15 +694,15 @@ LABEL_13:
   *(v22 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLBufferSPI *)self->_baseObject setLabel:v4];
+  [(MTLBufferSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16372;
   v7 = BYTE9(v20);
@@ -722,10 +722,10 @@ LABEL_13:
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLBuffer *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -733,16 +733,16 @@ LABEL_13:
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -751,13 +751,13 @@ LABEL_13:
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLBufferSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLBufferSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -879,10 +879,10 @@ LABEL_13:
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLBuffer *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLBuffer *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -901,75 +901,75 @@ LABEL_13:
   [(CaptureMTLBuffer *)&v14 dealloc];
 }
 
-- (CaptureMTLBuffer)initWithBaseObject:(id)a3 captureBuffer:(id)a4
+- (CaptureMTLBuffer)initWithBaseObject:(id)object captureBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v16.receiver = self;
   v16.super_class = CaptureMTLBuffer;
   v9 = [(CaptureMTLBuffer *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [bufferCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    objc_storeStrong(&v10->_captureRemoteStorageBuffer, a4);
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, v10);
+    objc_storeStrong(&v10->_captureRemoteStorageBuffer, buffer);
+    traceContext = [bufferCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, v10);
   }
 
   return v10;
 }
 
-- (CaptureMTLBuffer)initWithBaseObject:(id)a3 captureHeap:(id)a4
+- (CaptureMTLBuffer)initWithBaseObject:(id)object captureHeap:(id)heap
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  heapCopy = heap;
   v16.receiver = self;
   v16.super_class = CaptureMTLBuffer;
   v9 = [(CaptureMTLBuffer *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [heapCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    objc_storeStrong(&v10->_captureHeap, a4);
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, v10);
+    objc_storeStrong(&v10->_captureHeap, heap);
+    traceContext = [heapCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, v10);
 
-    [v8 usedSize];
-    [v8 currentAllocatedSize];
+    [heapCopy usedSize];
+    [heapCopy currentAllocatedSize];
   }
 
   return v10;
 }
 
-- (CaptureMTLBuffer)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLBuffer)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLBuffer;
   v9 = [(CaptureMTLBuffer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

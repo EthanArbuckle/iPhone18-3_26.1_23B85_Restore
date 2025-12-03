@@ -1,8 +1,8 @@
 @interface HAPFragmentationPacket
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HAPFragmentationPacket)init;
-- (HAPFragmentationPacket)initWithData:(id)a3 transactionIdentifier:(unsigned __int16)a4 length:(unsigned int)a5 offset:(unsigned int)a6;
-- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)a3;
+- (HAPFragmentationPacket)initWithData:(id)data transactionIdentifier:(unsigned __int16)identifier length:(unsigned int)length offset:(unsigned int)offset;
+- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)data;
 - (id)debugDescription;
 - (id)description;
 - (id)serialize;
@@ -20,11 +20,11 @@
   objc_exception_throw(v4);
 }
 
-- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)a3
+- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v6 = sub_10007FAA0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -39,11 +39,11 @@
     }
 
 LABEL_8:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
-  if ([v4 length] <= 0xB)
+  if ([dataCopy length] <= 0xB)
   {
     v6 = sub_10007FAA0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -116,33 +116,33 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@[HAPFragmentationPacket] Failed to deserialize packet header with erorr: %@", buf, 0x16u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v23 = [v12 subdataWithRange:{12, objc_msgSend(v12, "length") - 12}];
     self = [(HAPFragmentationPacket *)self initWithData:v23 transactionIdentifier:v15 length:v16 offset:v17];
-    v11 = self;
+    selfCopy = self;
   }
 
 LABEL_20:
-  return v11;
+  return selfCopy;
 }
 
-- (HAPFragmentationPacket)initWithData:(id)a3 transactionIdentifier:(unsigned __int16)a4 length:(unsigned int)a5 offset:(unsigned int)a6
+- (HAPFragmentationPacket)initWithData:(id)data transactionIdentifier:(unsigned __int16)identifier length:(unsigned int)length offset:(unsigned int)offset
 {
-  v11 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = HAPFragmentationPacket;
   v12 = [(HAPFragmentationPacket *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    v13->_transactionIdentifier = a4;
-    v13->_length = a5;
-    v13->_offset = a6;
+    objc_storeStrong(&v12->_data, data);
+    v13->_transactionIdentifier = identifier;
+    v13->_length = length;
+    v13->_offset = offset;
   }
 
   return v13;
@@ -150,36 +150,36 @@ LABEL_20:
 
 - (id)debugDescription
 {
-  v3 = [(HAPFragmentationPacket *)self shortDescription];
-  v4 = [(HAPFragmentationPacket *)self transactionIdentifier];
+  shortDescription = [(HAPFragmentationPacket *)self shortDescription];
+  transactionIdentifier = [(HAPFragmentationPacket *)self transactionIdentifier];
   v5 = [(HAPFragmentationPacket *)self length];
-  v6 = [(HAPFragmentationPacket *)self offset];
-  v7 = [(HAPFragmentationPacket *)self data];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ %p, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", v3, self, v4, v5, v6, [v7 length]);
+  offset = [(HAPFragmentationPacket *)self offset];
+  data = [(HAPFragmentationPacket *)self data];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ %p, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", shortDescription, self, transactionIdentifier, v5, offset, [data length]);
 
   return v8;
 }
 
 - (id)description
 {
-  v3 = [(HAPFragmentationPacket *)self shortDescription];
-  v4 = [(HAPFragmentationPacket *)self transactionIdentifier];
+  shortDescription = [(HAPFragmentationPacket *)self shortDescription];
+  transactionIdentifier = [(HAPFragmentationPacket *)self transactionIdentifier];
   v5 = [(HAPFragmentationPacket *)self length];
-  v6 = [(HAPFragmentationPacket *)self offset];
-  v7 = [(HAPFragmentationPacket *)self data];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", v3, v4, v5, v6, [v7 length]);
+  offset = [(HAPFragmentationPacket *)self offset];
+  data = [(HAPFragmentationPacket *)self data];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", shortDescription, transactionIdentifier, v5, offset, [data length]);
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (v4 != self)
+  if (equalCopy != self)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = [(HAPFragmentationPacket *)self transactionIdentifier], v5 != [(HAPFragmentationPacket *)v4 transactionIdentifier]) || (v6 = [(HAPFragmentationPacket *)self offset], v6 != [(HAPFragmentationPacket *)v4 offset]))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = [(HAPFragmentationPacket *)self transactionIdentifier], v5 != [(HAPFragmentationPacket *)equalCopy transactionIdentifier]) || (v6 = [(HAPFragmentationPacket *)self offset], v6 != [(HAPFragmentationPacket *)equalCopy offset]))
     {
       v7 = 0;
     }
@@ -196,12 +196,12 @@ LABEL_20:
   v9 = v8;
   v10 = WORD4(v8);
   v3 = [NSData dataWithBytes:&v9 length:12];
-  v4 = [(HAPFragmentationPacket *)self data];
-  v5 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v4 length] + 12);
+  data = [(HAPFragmentationPacket *)self data];
+  v5 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [data length] + 12);
 
   [v5 appendData:v3];
-  v6 = [(HAPFragmentationPacket *)self data];
-  [v5 appendData:v6];
+  data2 = [(HAPFragmentationPacket *)self data];
+  [v5 appendData:data2];
 
   return v5;
 }

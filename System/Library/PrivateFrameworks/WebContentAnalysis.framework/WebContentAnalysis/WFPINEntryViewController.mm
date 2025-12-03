@@ -1,54 +1,54 @@
 @interface WFPINEntryViewController
-- (BOOL)hasUIWebViewSubView:(id)a3;
-- (WFPINEntryViewController)initWithURL:(id)a3 pageTitle:(id)a4 completion:(id)a5;
+- (BOOL)hasUIWebViewSubView:(id)view;
+- (WFPINEntryViewController)initWithURL:(id)l pageTitle:(id)title completion:(id)completion;
 - (void)dealloc;
-- (void)insertRemoteViewController:(id)a3;
+- (void)insertRemoteViewController:(id)controller;
 - (void)userDidCancel;
 - (void)userEnteredCorrectPIN;
 @end
 
 @implementation WFPINEntryViewController
 
-- (WFPINEntryViewController)initWithURL:(id)a3 pageTitle:(id)a4 completion:(id)a5
+- (WFPINEntryViewController)initWithURL:(id)l pageTitle:(id)title completion:(id)completion
 {
   v15.receiver = self;
   v15.super_class = WFPINEntryViewController;
   v9 = [(WFPINEntryViewController *)&v15 initWithNibName:0 bundle:0];
   if (v9)
   {
-    if (!a3)
+    if (!l)
     {
       [WFPINEntryViewController initWithURL:a2 pageTitle:v9 completion:?];
     }
 
-    v9->_URL = a3;
-    if (!a4)
+    v9->_URL = l;
+    if (!title)
     {
       [WFPINEntryViewController initWithURL:a2 pageTitle:v9 completion:?];
     }
 
-    v9->_pageTitle = [a4 copy];
-    if (!a5)
+    v9->_pageTitle = [title copy];
+    if (!completion)
     {
       [WFPINEntryViewController initWithURL:a2 pageTitle:v9 completion:?];
     }
 
-    v9->_completion = [a5 copy];
+    v9->_completion = [completion copy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__WFPINEntryViewController_initWithURL_pageTitle_completion___block_invoke;
     v14[3] = &unk_279E7DE00;
-    v14[4] = a5;
+    v14[4] = completion;
     [(WFPINEntryViewController *)v9 _beginDelayingPresentation:v14 cancellationHandler:3.0];
-    v10 = [objc_opt_class() remoteViewControllerClass];
-    v11 = [objc_opt_class() serviceViewControllerClassName];
+    remoteViewControllerClass = [objc_opt_class() remoteViewControllerClass];
+    serviceViewControllerClassName = [objc_opt_class() serviceViewControllerClassName];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __61__WFPINEntryViewController_initWithURL_pageTitle_completion___block_invoke_2;
     v13[3] = &unk_279E7DE28;
     v13[4] = v9;
-    v13[5] = a5;
-    [v10 requestViewController:v11 fromServiceWithBundleIdentifier:@"com.apple.WebContentFilter.remoteUI.WebContentAnalysisUI" connectionHandler:v13];
+    v13[5] = completion;
+    [remoteViewControllerClass requestViewController:serviceViewControllerClassName fromServiceWithBundleIdentifier:@"com.apple.WebContentFilter.remoteUI.WebContentAnalysisUI" connectionHandler:v13];
   }
 
   return v9;
@@ -97,7 +97,7 @@ uint64_t __61__WFPINEntryViewController_initWithURL_pageTitle_completion___block
   [(WFPINEntryViewController *)&v3 dealloc];
 }
 
-- (void)insertRemoteViewController:(id)a3
+- (void)insertRemoteViewController:(id)controller
 {
   if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
@@ -111,12 +111,12 @@ uint64_t __61__WFPINEntryViewController_initWithURL_pageTitle_completion___block
 
   [(WFPINEntryViewController *)self setModalPresentationStyle:v5];
   [(WFPINEntryViewController *)self view];
-  [(WFPINEntryViewController *)self addChildViewController:a3];
-  v6 = [a3 view];
+  [(WFPINEntryViewController *)self addChildViewController:controller];
+  view = [controller view];
   [-[WFPINEntryViewController view](self "view")];
-  [v6 setFrame:?];
+  [view setFrame:?];
   [-[WFPINEntryViewController view](self "view")];
-  objc_storeWeak(&self->_remoteViewController, a3);
+  objc_storeWeak(&self->_remoteViewController, controller);
   [objc_loadWeak(&self->_remoteViewController) setDelegate:self];
   [objc_loadWeak(&self->_remoteViewController) setURL:self->_URL];
   Weak = objc_loadWeak(&self->_remoteViewController);
@@ -125,7 +125,7 @@ uint64_t __61__WFPINEntryViewController_initWithURL_pageTitle_completion___block
   [Weak setPageTitle:pageTitle];
 }
 
-- (BOOL)hasUIWebViewSubView:(id)a3
+- (BOOL)hasUIWebViewSubView:(id)view
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -135,8 +135,8 @@ uint64_t __61__WFPINEntryViewController_initWithURL_pageTitle_completion___block
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [a3 subviews];
-    v5 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    subviews = [view subviews];
+    v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (!v5)
     {
       goto LABEL_3;
@@ -150,7 +150,7 @@ LABEL_6:
     {
       if (*v13 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(subviews);
       }
 
       if ([(WFPINEntryViewController *)self hasUIWebViewSubView:*(*(&v12 + 1) + 8 * v10)])
@@ -160,7 +160,7 @@ LABEL_6:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
         LOBYTE(v5) = 0;
         if (v8)
         {

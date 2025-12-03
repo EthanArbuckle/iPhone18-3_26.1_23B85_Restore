@@ -1,10 +1,10 @@
 @interface LPImageMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (LPImageMetadata)init;
-- (LPImageMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LPImageMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPImageMetadata
@@ -24,22 +24,22 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(LPImageMetadata *)self init];
-  if (v5 && (URLForKey(v4, @"LPMetadataImageURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
+  if (v5 && (URLForKey(dictionaryCopy, @"LPMetadataImageURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
   {
-    v8 = stringForKey(v4, @"LPMetadataImageType");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataImageType");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = stringForKey(v4, @"LPMetadataImageAccessibilityText");
+    v10 = stringForKey(dictionaryCopy, @"LPMetadataImageAccessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v10;
 
-    v12 = numberForKey(v4, @"LPMetadataImageWidth");
-    v13 = numberForKey(v4, @"LPMetadataImageHeight");
+    v12 = numberForKey(dictionaryCopy, @"LPMetadataImageWidth");
+    v13 = numberForKey(dictionaryCopy, @"LPMetadataImageHeight");
     v14 = v13;
     if (v12 && v13)
     {
@@ -61,27 +61,27 @@
   return v18;
 }
 
-- (LPImageMetadata)initWithCoder:(id)a3
+- (LPImageMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = LPImageMetadata;
   v5 = [(LPImageMetadata *)&v16 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"type");
+    v8 = decodeStringForKey(coderCopy, @"type");
     type = v5->_type;
     v5->_type = v8;
 
-    [v4 decodeCGSizeForKey:@"size"];
+    [coderCopy decodeCGSizeForKey:@"size"];
     v5->_size.width = v10;
     v5->_size.height = v11;
-    v12 = decodeStringForKey(v4, @"accessibilityText");
+    v12 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v12;
 
@@ -91,22 +91,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_version forKey:@"version"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v4 _lp_encodeStringIfNotNil:self->_type forKey:@"type"];
-  [v4 encodeCGSize:@"size" forKey:{self->_size.width, self->_size.height}];
-  [v4 _lp_encodeStringIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_version forKey:@"version"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_type forKey:@"type"];
+  [coderCopy encodeCGSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy _lp_encodeStringIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = LPImageMetadata;
-  if ([(LPImageMetadata *)&v9 isEqual:v4])
+  if ([(LPImageMetadata *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -116,7 +116,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && (objectsAreEqual_0(v6[2], self->_URL) & 1) != 0 && objectsAreEqual_0(v7[3], self->_type))
       {

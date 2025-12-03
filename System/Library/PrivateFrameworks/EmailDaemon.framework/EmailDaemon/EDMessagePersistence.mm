@@ -1,20 +1,20 @@
 @interface EDMessagePersistence
-- (id)deliveryInfoForMessage:(id)a3;
-- (int64_t)mailDropDeliveryStateForMessage:(id)a3;
-- (void)setDeliveryInfo:(id)a3 forMessage:(id)a4;
-- (void)setMailDropDeliveryState:(int64_t)a3 forMessage:(id)a4;
+- (id)deliveryInfoForMessage:(id)message;
+- (int64_t)mailDropDeliveryStateForMessage:(id)message;
+- (void)setDeliveryInfo:(id)info forMessage:(id)message;
+- (void)setMailDropDeliveryState:(int64_t)state forMessage:(id)message;
 @end
 
 @implementation EDMessagePersistence
 
-- (id)deliveryInfoForMessage:(id)a3
+- (id)deliveryInfoForMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v6 = [v4 objectID];
-    v7 = [(EDMessagePersistence *)self cachedMetadataJSONForKey:@"maild.deliveryInfo" messageID:v6];
+    objectID = [messageCopy objectID];
+    v7 = [(EDMessagePersistence *)self cachedMetadataJSONForKey:@"maild.deliveryInfo" messageID:objectID];
 
     v8 = [[MessageDeliveryInfo alloc] initWithJSON:v7];
   }
@@ -27,33 +27,33 @@
   return v8;
 }
 
-- (void)setDeliveryInfo:(id)a3 forMessage:(id)a4
+- (void)setDeliveryInfo:(id)info forMessage:(id)message
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  messageCopy = message;
+  if (messageCopy)
   {
-    v7 = [v9 encodedAsJSON];
-    v8 = [v6 objectID];
-    [(EDMessagePersistence *)self setCachedMetadataJSON:v7 forKey:@"maild.deliveryInfo" messageID:v8];
+    encodedAsJSON = [infoCopy encodedAsJSON];
+    objectID = [messageCopy objectID];
+    [(EDMessagePersistence *)self setCachedMetadataJSON:encodedAsJSON forKey:@"maild.deliveryInfo" messageID:objectID];
   }
 }
 
-- (int64_t)mailDropDeliveryStateForMessage:(id)a3
+- (int64_t)mailDropDeliveryStateForMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v6 = [v4 objectID];
-    v7 = [(EDMessagePersistence *)self cachedMetadataJSONForKey:@"maild.mailDropDeliveryState" messageID:v6];
+    objectID = [messageCopy objectID];
+    v7 = [(EDMessagePersistence *)self cachedMetadataJSONForKey:@"maild.mailDropDeliveryState" messageID:objectID];
 
     if (v7)
     {
-      v8 = [v7 intValue];
-      if (v8 - 9 >= 0xFFFFFFF8)
+      intValue = [v7 intValue];
+      if (intValue - 9 >= 0xFFFFFFF8)
       {
-        v9 = v8;
+        v9 = intValue;
       }
 
       else
@@ -78,22 +78,22 @@
   return v10;
 }
 
-- (void)setMailDropDeliveryState:(int64_t)a3 forMessage:(id)a4
+- (void)setMailDropDeliveryState:(int64_t)state forMessage:(id)message
 {
-  v6 = a4;
-  if (v6)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v8 = v6;
-    if (a3)
+    v8 = messageCopy;
+    if (state)
     {
-      a3 = [NSString stringWithFormat:@"%d", a3];
-      v6 = v8;
+      state = [NSString stringWithFormat:@"%d", state];
+      messageCopy = v8;
     }
 
-    v7 = [v6 objectID];
-    [(EDMessagePersistence *)self setCachedMetadataJSON:a3 forKey:@"maild.mailDropDeliveryState" messageID:v7];
+    objectID = [messageCopy objectID];
+    [(EDMessagePersistence *)self setCachedMetadataJSON:state forKey:@"maild.mailDropDeliveryState" messageID:objectID];
 
-    v6 = v8;
+    messageCopy = v8;
   }
 }
 

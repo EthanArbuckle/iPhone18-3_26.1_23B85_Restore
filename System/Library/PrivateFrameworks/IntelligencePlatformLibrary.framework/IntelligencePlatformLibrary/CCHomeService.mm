@@ -1,36 +1,36 @@
 @interface CCHomeService
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCHomeService)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCHomeService)initWithName:(id)a3 deviceType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCHomeService)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCHomeService)initWithName:(id)name deviceType:(unsigned int)type error:(id *)error;
 - (NSString)name;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCHomeService
 
-- (CCHomeService)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCHomeService)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"deviceType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v13 = [[CCHomeService alloc] initWithName:v9 deviceType:v12 error:a4];
+    v13 = [[CCHomeService alloc] initWithName:v9 deviceType:unsignedIntegerValue error:error];
   }
 
   else
@@ -47,8 +47,8 @@
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCHomeService *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCHomeService *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCHomeService deviceType](self, "deviceType")}];
@@ -59,17 +59,17 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_name)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7706 stringValue:self->_name];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7707 enumValue:self->_deviceType];
-  v7[2](v7, v6);
+  blockCopy[2](blockCopy, v6);
 }
 
 - (NSString)name
@@ -79,10 +79,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -93,7 +93,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v41 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -224,14 +224,14 @@ LABEL_38:
         {
           v31 = objc_opt_class();
           NSStringFromClass(v31);
-          v32 = v6;
-          v34 = v33 = a4;
+          v32 = dataCopy;
+          v34 = v33 = error;
           v35 = *&v7[*v10];
           v11 = CCSkipFieldErrorForMessage();
 
-          a4 = v33;
-          v6 = v32;
-          self = v41;
+          error = v33;
+          dataCopy = v32;
+          self = selfCopy;
           goto LABEL_38;
         }
       }
@@ -270,14 +270,14 @@ LABEL_45:
   return v39;
 }
 
-- (CCHomeService)initWithName:(id)a3 deviceType:(unsigned int)a4 error:(id *)a5
+- (CCHomeService)initWithName:(id)name deviceType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  nameCopy = name;
   v9 = objc_opt_new();
-  if (!v8)
+  if (!nameCopy)
   {
     v11 = 0;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_8;
     }
@@ -290,7 +290,7 @@ LABEL_6:
     if (!v12)
     {
       CCSetError();
-      v15 = 0;
+      selfCopy = 0;
       v11 = v13;
       goto LABEL_11;
     }
@@ -306,24 +306,24 @@ LABEL_6:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (a4)
+  if (type)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v14 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v14 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v15;
+  return selfCopy;
 }
 
 @end

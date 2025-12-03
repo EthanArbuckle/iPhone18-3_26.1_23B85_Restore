@@ -1,26 +1,26 @@
 @interface AVCameraSessionProvider
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 @end
 
 @implementation AVCameraSessionProvider
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_247CE4E14(v9);
+  outputCopy = output;
+  bufferCopy = buffer;
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_247CE4E14(bufferCopy);
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_247CE4F74(v9);
+  outputCopy = output;
+  photoCopy = photo;
+  selfCopy = self;
+  errorCopy = error;
+  sub_247CE4F74(photoCopy);
 }
 
 @end

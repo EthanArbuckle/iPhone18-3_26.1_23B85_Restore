@@ -1,52 +1,52 @@
 @interface _INPBAnnouncement
-- (BOOL)isEqual:(id)a3;
-- (_INPBAnnouncement)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAnnouncement)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setSpeechDataTranscription:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setIdentifier:(id)identifier;
+- (void)setSpeechDataTranscription:(id)transcription;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAnnouncement
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBAnnouncement *)self hasEndTime])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBAnnouncement endTime](self, "endTime")}];
-    [v3 setObject:v4 forKeyedSubscript:@"endTime"];
+    [dictionary setObject:v4 forKeyedSubscript:@"endTime"];
   }
 
   if (self->_identifier)
   {
-    v5 = [(_INPBAnnouncement *)self identifier];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBAnnouncement *)self identifier];
+    v6 = [identifier copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"identifier"];
   }
 
   if (self->_speechDataTranscription)
   {
-    v7 = [(_INPBAnnouncement *)self speechDataTranscription];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"speechDataTranscription"];
+    speechDataTranscription = [(_INPBAnnouncement *)self speechDataTranscription];
+    v8 = [speechDataTranscription copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"speechDataTranscription"];
   }
 
-  v9 = [(_INPBAnnouncement *)self speechDataURL];
-  v10 = [v9 dictionaryRepresentation];
-  [v3 setObject:v10 forKeyedSubscript:@"speechDataURL"];
+  speechDataURL = [(_INPBAnnouncement *)self speechDataURL];
+  dictionaryRepresentation = [speechDataURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"speechDataURL"];
 
   if ([(_INPBAnnouncement *)self hasStartTime])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBAnnouncement startTime](self, "startTime")}];
-    [v3 setObject:v11 forKeyedSubscript:@"startTime"];
+    [dictionary setObject:v11 forKeyedSubscript:@"startTime"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -77,46 +77,46 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBAnnouncement *)self hasEndTime];
-  if (v5 != [v4 hasEndTime])
+  hasEndTime = [(_INPBAnnouncement *)self hasEndTime];
+  if (hasEndTime != [equalCopy hasEndTime])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBAnnouncement *)self hasEndTime])
   {
-    if ([v4 hasEndTime])
+    if ([equalCopy hasEndTime])
     {
       endTime = self->_endTime;
-      if (endTime != [v4 endTime])
+      if (endTime != [equalCopy endTime])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v7 = [(_INPBAnnouncement *)self identifier];
-  v8 = [v4 identifier];
-  if ((v7 != 0) == (v8 == 0))
+  identifier = [(_INPBAnnouncement *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_20;
   }
 
-  v9 = [(_INPBAnnouncement *)self identifier];
-  if (v9)
+  identifier3 = [(_INPBAnnouncement *)self identifier];
+  if (identifier3)
   {
-    v10 = v9;
-    v11 = [(_INPBAnnouncement *)self identifier];
-    v12 = [v4 identifier];
-    v13 = [v11 isEqual:v12];
+    v10 = identifier3;
+    identifier4 = [(_INPBAnnouncement *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v13 = [identifier4 isEqual:identifier5];
 
     if (!v13)
     {
@@ -128,20 +128,20 @@
   {
   }
 
-  v7 = [(_INPBAnnouncement *)self speechDataTranscription];
-  v8 = [v4 speechDataTranscription];
-  if ((v7 != 0) == (v8 == 0))
+  identifier = [(_INPBAnnouncement *)self speechDataTranscription];
+  identifier2 = [equalCopy speechDataTranscription];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(_INPBAnnouncement *)self speechDataTranscription];
-  if (v14)
+  speechDataTranscription = [(_INPBAnnouncement *)self speechDataTranscription];
+  if (speechDataTranscription)
   {
-    v15 = v14;
-    v16 = [(_INPBAnnouncement *)self speechDataTranscription];
-    v17 = [v4 speechDataTranscription];
-    v18 = [v16 isEqual:v17];
+    v15 = speechDataTranscription;
+    speechDataTranscription2 = [(_INPBAnnouncement *)self speechDataTranscription];
+    speechDataTranscription3 = [equalCopy speechDataTranscription];
+    v18 = [speechDataTranscription2 isEqual:speechDataTranscription3];
 
     if (!v18)
     {
@@ -153,22 +153,22 @@
   {
   }
 
-  v7 = [(_INPBAnnouncement *)self speechDataURL];
-  v8 = [v4 speechDataURL];
-  if ((v7 != 0) == (v8 == 0))
+  identifier = [(_INPBAnnouncement *)self speechDataURL];
+  identifier2 = [equalCopy speechDataURL];
+  if ((identifier != 0) == (identifier2 == 0))
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v19 = [(_INPBAnnouncement *)self speechDataURL];
-  if (v19)
+  speechDataURL = [(_INPBAnnouncement *)self speechDataURL];
+  if (speechDataURL)
   {
-    v20 = v19;
-    v21 = [(_INPBAnnouncement *)self speechDataURL];
-    v22 = [v4 speechDataURL];
-    v23 = [v21 isEqual:v22];
+    v20 = speechDataURL;
+    speechDataURL2 = [(_INPBAnnouncement *)self speechDataURL];
+    speechDataURL3 = [equalCopy speechDataURL];
+    v23 = [speechDataURL2 isEqual:speechDataURL3];
 
     if (!v23)
     {
@@ -180,10 +180,10 @@ LABEL_20:
   {
   }
 
-  v26 = [(_INPBAnnouncement *)self hasStartTime];
-  if (v26 == [v4 hasStartTime])
+  hasStartTime = [(_INPBAnnouncement *)self hasStartTime];
+  if (hasStartTime == [equalCopy hasStartTime])
   {
-    if (!-[_INPBAnnouncement hasStartTime](self, "hasStartTime") || ![v4 hasStartTime] || (startTime = self->_startTime, startTime == objc_msgSend(v4, "startTime")))
+    if (!-[_INPBAnnouncement hasStartTime](self, "hasStartTime") || ![equalCopy hasStartTime] || (startTime = self->_startTime, startTime == objc_msgSend(equalCopy, "startTime")))
     {
       v24 = 1;
       goto LABEL_22;
@@ -197,7 +197,7 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAnnouncement allocWithZone:](_INPBAnnouncement init];
   if ([(_INPBAnnouncement *)self hasEndTime])
@@ -205,13 +205,13 @@ LABEL_22:
     [(_INPBAnnouncement *)v5 setEndTime:[(_INPBAnnouncement *)self endTime]];
   }
 
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBAnnouncement *)v5 setIdentifier:v6];
 
-  v7 = [(NSString *)self->_speechDataTranscription copyWithZone:a3];
+  v7 = [(NSString *)self->_speechDataTranscription copyWithZone:zone];
   [(_INPBAnnouncement *)v5 setSpeechDataTranscription:v7];
 
-  v8 = [(_INPBURLValue *)self->_speechDataURL copyWithZone:a3];
+  v8 = [(_INPBURLValue *)self->_speechDataURL copyWithZone:zone];
   [(_INPBAnnouncement *)v5 setSpeechDataURL:v8];
 
   if ([(_INPBAnnouncement *)self hasStartTime])
@@ -222,60 +222,60 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAnnouncement *)self data];
+  coderCopy = coder;
+  data = [(_INPBAnnouncement *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAnnouncement)initWithCoder:(id)a3
+- (_INPBAnnouncement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAnnouncement *)self initWithData:v6];
+    self = [(_INPBAnnouncement *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(_INPBAnnouncement *)self hasEndTime])
   {
     endTime = self->_endTime;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_INPBAnnouncement *)self identifier];
+  identifier = [(_INPBAnnouncement *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBAnnouncement *)self speechDataTranscription];
+  speechDataTranscription = [(_INPBAnnouncement *)self speechDataTranscription];
 
-  if (v7)
+  if (speechDataTranscription)
   {
     speechDataTranscription = self->_speechDataTranscription;
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_INPBAnnouncement *)self speechDataURL];
+  speechDataURL = [(_INPBAnnouncement *)self speechDataURL];
 
-  if (v9)
+  if (speechDataURL)
   {
-    v10 = [(_INPBAnnouncement *)self speechDataURL];
+    speechDataURL2 = [(_INPBAnnouncement *)self speechDataURL];
     PBDataWriterWriteSubmessage();
   }
 
@@ -286,9 +286,9 @@ LABEL_22:
   }
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -301,18 +301,18 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setSpeechDataTranscription:(id)a3
+- (void)setSpeechDataTranscription:(id)transcription
 {
-  v4 = [a3 copy];
+  v4 = [transcription copy];
   speechDataTranscription = self->_speechDataTranscription;
   self->_speechDataTranscription = v4;
 
   MEMORY[0x1EEE66BB8](v4, speechDataTranscription);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

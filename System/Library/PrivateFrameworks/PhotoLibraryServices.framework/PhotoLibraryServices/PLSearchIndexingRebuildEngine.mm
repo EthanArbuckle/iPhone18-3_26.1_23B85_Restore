@@ -1,28 +1,28 @@
 @interface PLSearchIndexingRebuildEngine
-+ (BOOL)hasRebuildWorkToDoForLibrary:(id)a3 identifier:(int64_t)a4 sceneTaxonomyDigests:(id)a5;
-+ (BOOL)requiresImmediateDropIndexForLibrary:(id)a3 reasons:(unint64_t *)a4;
-- (BOOL)_inq_isValidForCoreAnalyticsCaptureWithRebuildReason:(unint64_t)a3;
++ (BOOL)hasRebuildWorkToDoForLibrary:(id)library identifier:(int64_t)identifier sceneTaxonomyDigests:(id)digests;
++ (BOOL)requiresImmediateDropIndexForLibrary:(id)library reasons:(unint64_t *)reasons;
+- (BOOL)_inq_isValidForCoreAnalyticsCaptureWithRebuildReason:(unint64_t)reason;
 - (BOOL)_inq_rebuildAnalyticsEventIsValid;
-- (PLSearchIndexingRebuildEngine)initWithDelegate:(id)a3 provider:(id)a4;
+- (PLSearchIndexingRebuildEngine)initWithDelegate:(id)delegate provider:(id)provider;
 - (PLSearchIndexingRebuildEngineDelegate)delegate;
-- (id)_iteratorForSearchEntity:(unint64_t)a3 library:(id)a4 resumeObjectID:(id)a5;
+- (id)_iteratorForSearchEntity:(unint64_t)entity library:(id)library resumeObjectID:(id)d;
 - (id)_resumeObjectID;
 - (unint64_t)_currentEntity;
-- (unint64_t)_rebuildTypeForLibrary:(id)a3 entityInProgress:(unint64_t *)a4 resumeObjectID:(id *)a5 rebuildReasons:(unint64_t *)a6;
-- (void)_handleDonationFailureForRebuildWithManagedObjects:(id)a3 entity:(unint64_t)a4 library:(id)a5;
-- (void)_inq_rebuildAnalyticsCompletedWithResult:(id)a3;
+- (unint64_t)_rebuildTypeForLibrary:(id)library entityInProgress:(unint64_t *)progress resumeObjectID:(id *)d rebuildReasons:(unint64_t *)reasons;
+- (void)_handleDonationFailureForRebuildWithManagedObjects:(id)objects entity:(unint64_t)entity library:(id)library;
+- (void)_inq_rebuildAnalyticsCompletedWithResult:(id)result;
 - (void)_inq_rebuildAnalyticsPauseTimer;
-- (void)_inq_rebuildAnalyticsSetupAndPublishWithLibrary:(id)a3 rebuildType:(unint64_t)a4 rebuildInitiatedBy:(id)a5 rebuildReasons:(unint64_t)a6 spotlightReasonForReindexingAllItems:(id)a7;
-- (void)_inq_rebuildAnalyticsSetupDataWithRebuildType:(unint64_t)a3 rebuildInitiatedBy:(id)a4 rebuildReasons:(unint64_t)a5 mediaCount:(unint64_t)a6 uptimeSinceLastRebuild:(double)a7 spotlightReasonForReindexingAllItems:(id)a8;
+- (void)_inq_rebuildAnalyticsSetupAndPublishWithLibrary:(id)library rebuildType:(unint64_t)type rebuildInitiatedBy:(id)by rebuildReasons:(unint64_t)reasons spotlightReasonForReindexingAllItems:(id)items;
+- (void)_inq_rebuildAnalyticsSetupDataWithRebuildType:(unint64_t)type rebuildInitiatedBy:(id)by rebuildReasons:(unint64_t)reasons mediaCount:(unint64_t)count uptimeSinceLastRebuild:(double)rebuild spotlightReasonForReindexingAllItems:(id)items;
 - (void)_inq_rebuildAnalyticsStartTimer;
-- (void)_lock_startPrepareAndRebuildForLibrary:(id)a3 type:(unint64_t)a4 calledBy:(id)a5 rebuildReasons:(unint64_t)a6 spotlightReasonForReindexingAllItems:(id)a7;
-- (void)_prepareForRebuildForLibrary:(id)a3 type:(unint64_t)a4 sceneTaxonomyDigests:(id)a5 completion:(id)a6;
-- (void)_rebuildAllRemainingEntitiesForLibrary:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)_rebuildManagedObjectsFromIterator:(id)a3 ofEntity:(unint64_t)a4 queue:(id)a5 library:(id)a6 completion:(id)a7;
-- (void)_startRebuildForLibrary:(id)a3;
-- (void)fetchRemainingWorkWithLibrary:(id)a3 completion:(id)a4;
-- (void)pauseSearchIndexRebuildWithSourceName:(id)a3;
-- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)a3 calledBy:(id)a4 completion:(id)a5;
+- (void)_lock_startPrepareAndRebuildForLibrary:(id)library type:(unint64_t)type calledBy:(id)by rebuildReasons:(unint64_t)reasons spotlightReasonForReindexingAllItems:(id)items;
+- (void)_prepareForRebuildForLibrary:(id)library type:(unint64_t)type sceneTaxonomyDigests:(id)digests completion:(id)completion;
+- (void)_rebuildAllRemainingEntitiesForLibrary:(id)library queue:(id)queue completion:(id)completion;
+- (void)_rebuildManagedObjectsFromIterator:(id)iterator ofEntity:(unint64_t)entity queue:(id)queue library:(id)library completion:(id)completion;
+- (void)_startRebuildForLibrary:(id)library;
+- (void)fetchRemainingWorkWithLibrary:(id)library completion:(id)completion;
+- (void)pauseSearchIndexRebuildWithSourceName:(id)name;
+- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)library calledBy:(id)by completion:(id)completion;
 @end
 
 @implementation PLSearchIndexingRebuildEngine
@@ -41,19 +41,19 @@
     return 0;
   }
 
-  v3 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
-  v4 = [v3 hasEventWithName:*MEMORY[0x1E69BFBB8]];
+  analyticsEventManager = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+  v4 = [analyticsEventManager hasEventWithName:*MEMORY[0x1E69BFBB8]];
 
   return v4;
 }
 
-- (void)_inq_rebuildAnalyticsCompletedWithResult:(id)a3
+- (void)_inq_rebuildAnalyticsCompletedWithResult:(id)result
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   if ([(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsEventIsValid])
   {
-    if ([v4 isFailure] && (objc_msgSend(v4, "error"), v5 = objc_claimAutoreleasedReturnValue(), HasDomainAndCode = PLErrorOrUnderlyingErrorHasDomainAndCode(), v5, HasDomainAndCode))
+    if ([resultCopy isFailure] && (objc_msgSend(resultCopy, "error"), v5 = objc_claimAutoreleasedReturnValue(), HasDomainAndCode = PLErrorOrUnderlyingErrorHasDomainAndCode(), v5, HasDomainAndCode))
     {
       [(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsPauseTimer];
       v7 = PLSearchBackendIndexRebuildGetLog();
@@ -122,18 +122,18 @@
 
     else
     {
-      v11 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+      analyticsEventManager = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
       v12 = *MEMORY[0x1E69BFBB8];
-      [v11 addRecordingTimedEventSnippetWithToken:*MEMORY[0x1E69BFBA8] forKey:*MEMORY[0x1E69BFBB8] onEventWithName:self->_coreAnalyticsRebuildToken];
-      v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isSuccess")}];
-      [v11 setPayloadValue:v13 forKey:*MEMORY[0x1E69BFBF0] onEventWithName:v12];
+      [analyticsEventManager addRecordingTimedEventSnippetWithToken:*MEMORY[0x1E69BFBA8] forKey:*MEMORY[0x1E69BFBB8] onEventWithName:self->_coreAnalyticsRebuildToken];
+      v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(resultCopy, "isSuccess")}];
+      [analyticsEventManager setPayloadValue:v13 forKey:*MEMORY[0x1E69BFBF0] onEventWithName:v12];
 
-      if ([v4 isFailure])
+      if ([resultCopy isFailure])
       {
-        v14 = [v4 error];
+        error = [resultCopy error];
         v15 = PLErrorCodeStringOfTopLevelErrorAndAllUnderlyingErrors();
 
-        [v11 setPayloadValue:v15 forKey:*MEMORY[0x1E69BFBB0] onEventWithName:v12];
+        [analyticsEventManager setPayloadValue:v15 forKey:*MEMORY[0x1E69BFBB0] onEventWithName:v12];
       }
 
       v16 = PLSearchBackendIndexRebuildGetLog();
@@ -177,7 +177,7 @@
           v28 = 0u;
           v18 = PLSearchBackendIndexRebuildGetLog();
           os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-          v19 = [v11 descriptionForEventName:v12];
+          v19 = [analyticsEventManager descriptionForEventName:v12];
           v25 = 138543362;
           v26 = v19;
           LODWORD(v24) = 12;
@@ -195,7 +195,7 @@
           v21 = PLSearchBackendIndexRebuildGetLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v11 descriptionForEventName:v12];
+            v22 = [analyticsEventManager descriptionForEventName:v12];
             *buf = 138543362;
             *&buf[4] = v22;
             _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "End index rebuild event: %{public}@", buf, 0xCu);
@@ -203,7 +203,7 @@
         }
       }
 
-      [v11 publishEventWithName:v12];
+      [analyticsEventManager publishEventWithName:v12];
     }
   }
 }
@@ -212,59 +212,59 @@
 {
   if ([(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsEventIsValid])
   {
-    v8 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+    analyticsEventManager = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
     v3 = *MEMORY[0x1E69BFBD8];
     v4 = *MEMORY[0x1E69BFBB8];
-    v5 = [v8 valueForKey:*MEMORY[0x1E69BFBD8] onEventWithName:*MEMORY[0x1E69BFBB8]];
-    v6 = [v5 integerValue];
+    v5 = [analyticsEventManager valueForKey:*MEMORY[0x1E69BFBD8] onEventWithName:*MEMORY[0x1E69BFBB8]];
+    integerValue = [v5 integerValue];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:v6 + 1];
-    [v8 setPayloadValue:v7 forKey:v3 onEventWithName:v4];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+    [analyticsEventManager setPayloadValue:v7 forKey:v3 onEventWithName:v4];
   }
 }
 
 - (void)_inq_rebuildAnalyticsStartTimer
 {
-  v3 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
-  v4 = [v3 hasEventWithName:*MEMORY[0x1E69BFBB8]];
+  analyticsEventManager = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+  v4 = [analyticsEventManager hasEventWithName:*MEMORY[0x1E69BFBB8]];
 
   if (v4 && self->_coreAnalyticsRebuildToken == 0.0)
   {
-    v6 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
-    [v6 startRecordingTimedEventToken];
+    analyticsEventManager2 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+    [analyticsEventManager2 startRecordingTimedEventToken];
     self->_coreAnalyticsRebuildToken = v5;
   }
 }
 
-- (void)_inq_rebuildAnalyticsSetupDataWithRebuildType:(unint64_t)a3 rebuildInitiatedBy:(id)a4 rebuildReasons:(unint64_t)a5 mediaCount:(unint64_t)a6 uptimeSinceLastRebuild:(double)a7 spotlightReasonForReindexingAllItems:(id)a8
+- (void)_inq_rebuildAnalyticsSetupDataWithRebuildType:(unint64_t)type rebuildInitiatedBy:(id)by rebuildReasons:(unint64_t)reasons mediaCount:(unint64_t)count uptimeSinceLastRebuild:(double)rebuild spotlightReasonForReindexingAllItems:(id)items
 {
-  v14 = a8;
-  v15 = a4;
-  v16 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
-  if (a3 > 3)
+  itemsCopy = items;
+  byCopy = by;
+  analyticsEventManager = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+  if (type > 3)
   {
     v17 = @"invalid";
   }
 
   else
   {
-    v17 = *(&off_1E7566768 + a3);
+    v17 = *(&off_1E7566768 + type);
   }
 
   v18 = *MEMORY[0x1E69BFBB8];
-  v27 = v16;
-  [v16 setPayloadValue:v17 forKey:*MEMORY[0x1E69BFC00] onEventWithName:*MEMORY[0x1E69BFBB8]];
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v27 = analyticsEventManager;
+  [analyticsEventManager setPayloadValue:v17 forKey:*MEMORY[0x1E69BFC00] onEventWithName:*MEMORY[0x1E69BFBB8]];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [v27 setPayloadValue:v19 forKey:*MEMORY[0x1E69BFBF8] onEventWithName:v18];
 
-  [v27 setPayloadValue:v15 forKey:*MEMORY[0x1E69BFBD0] onEventWithName:v18];
-  v20 = PLSearchIndexRebuildReasonsDescriptionWithSpotlightReason(a5, v14);
+  [v27 setPayloadValue:byCopy forKey:*MEMORY[0x1E69BFBD0] onEventWithName:v18];
+  v20 = PLSearchIndexRebuildReasonsDescriptionWithSpotlightReason(reasons, itemsCopy);
 
   [v27 setPayloadValue:v20 forKey:*MEMORY[0x1E69BFBE8] onEventWithName:v18];
-  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reasons];
   [v27 setPayloadValue:v21 forKey:*MEMORY[0x1E69BFBE0] onEventWithName:v18];
 
-  v22 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
+  v22 = [MEMORY[0x1E696AD98] numberWithDouble:rebuild];
   [v27 setPayloadValue:v22 forKey:*MEMORY[0x1E69BFC08] onEventWithName:v18];
 
   v23 = MEMORY[0x1E696AD98];
@@ -283,9 +283,9 @@
   [v27 setPayloadValue:v26 forKey:*MEMORY[0x1E69BFBC8] onEventWithName:v18];
 }
 
-- (BOOL)_inq_isValidForCoreAnalyticsCaptureWithRebuildReason:(unint64_t)a3
+- (BOOL)_inq_isValidForCoreAnalyticsCaptureWithRebuildReason:(unint64_t)reason
 {
-  if ((a3 & 0x109) == 1)
+  if ((reason & 0x109) == 1)
   {
     return 0;
   }
@@ -296,18 +296,18 @@
   }
 }
 
-- (void)_inq_rebuildAnalyticsSetupAndPublishWithLibrary:(id)a3 rebuildType:(unint64_t)a4 rebuildInitiatedBy:(id)a5 rebuildReasons:(unint64_t)a6 spotlightReasonForReindexingAllItems:(id)a7
+- (void)_inq_rebuildAnalyticsSetupAndPublishWithLibrary:(id)library rebuildType:(unint64_t)type rebuildInitiatedBy:(id)by rebuildReasons:(unint64_t)reasons spotlightReasonForReindexingAllItems:(id)items
 {
   v77 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v12 = a5;
-  v13 = a7;
-  if (a4 - 1 <= 1)
+  libraryCopy = library;
+  byCopy = by;
+  itemsCopy = items;
+  if (type - 1 <= 1)
   {
-    v14 = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
+    analyticsEventManager = [(PLSearchIndexingRebuildEngine *)self analyticsEventManager];
     v15 = *MEMORY[0x1E69BFBB8];
-    [v14 removeEventWithName:*MEMORY[0x1E69BFBB8]];
-    [v14 setAllowEventPublish:{-[PLSearchIndexingRebuildEngine _inq_isValidForCoreAnalyticsCaptureWithRebuildReason:](self, "_inq_isValidForCoreAnalyticsCaptureWithRebuildReason:", a6)}];
+    [analyticsEventManager removeEventWithName:*MEMORY[0x1E69BFBB8]];
+    [analyticsEventManager setAllowEventPublish:{-[PLSearchIndexingRebuildEngine _inq_isValidForCoreAnalyticsCaptureWithRebuildReason:](self, "_inq_isValidForCoreAnalyticsCaptureWithRebuildReason:", reasons)}];
     self->_coreAnalyticsRebuildToken = 0.0;
     v39 = 0;
     v40 = &v39;
@@ -325,14 +325,14 @@
     v26[1] = 3221225472;
     v26[2] = __164__PLSearchIndexingRebuildEngine__inq_rebuildAnalyticsSetupAndPublishWithLibrary_rebuildType_rebuildInitiatedBy_rebuildReasons_spotlightReasonForReindexingAllItems___block_invoke;
     v26[3] = &unk_1E7574728;
-    v27 = v25;
+    v27 = libraryCopy;
     v28 = &v39;
     v29 = &v35;
     v30 = &v31;
     [v27 performBlockAndWait:v26];
-    [(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsSetupDataWithRebuildType:a4 rebuildInitiatedBy:v12 rebuildReasons:a6 mediaCount:v36[3] + v40[3] uptimeSinceLastRebuild:v13 spotlightReasonForReindexingAllItems:v32[3]];
+    [(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsSetupDataWithRebuildType:type rebuildInitiatedBy:byCopy rebuildReasons:reasons mediaCount:v36[3] + v40[3] uptimeSinceLastRebuild:itemsCopy spotlightReasonForReindexingAllItems:v32[3]];
     v24 = *MEMORY[0x1E69BFBC0];
-    [v14 setPayloadValue:&unk_1F0FBAF00 forKey:? onEventWithName:?];
+    [analyticsEventManager setPayloadValue:&unk_1F0FBAF00 forKey:? onEventWithName:?];
     v16 = PLSearchBackendIndexRebuildGetLog();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -374,7 +374,7 @@
         v46 = 0u;
         v18 = PLSearchBackendIndexRebuildGetLog();
         os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-        v19 = [v14 descriptionForEventName:v15];
+        v19 = [analyticsEventManager descriptionForEventName:v15];
         v43 = 138543362;
         v44 = v19;
         LODWORD(v23) = 12;
@@ -392,7 +392,7 @@
         v21 = PLSearchBackendIndexRebuildGetLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v14 descriptionForEventName:v15];
+          v22 = [analyticsEventManager descriptionForEventName:v15];
           *buf = 138543362;
           *&buf[4] = v22;
           _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Start index rebuild event: %{public}@", buf, 0xCu);
@@ -400,9 +400,9 @@
       }
     }
 
-    [v14 publishEventWithName:v15];
-    [(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsSetupDataWithRebuildType:a4 rebuildInitiatedBy:v12 rebuildReasons:a6 mediaCount:v36[3] + v40[3] uptimeSinceLastRebuild:v13 spotlightReasonForReindexingAllItems:v32[3]];
-    [v14 setPayloadValue:&unk_1F0FBAF18 forKey:v24 onEventWithName:v15];
+    [analyticsEventManager publishEventWithName:v15];
+    [(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsSetupDataWithRebuildType:type rebuildInitiatedBy:byCopy rebuildReasons:reasons mediaCount:v36[3] + v40[3] uptimeSinceLastRebuild:itemsCopy spotlightReasonForReindexingAllItems:v32[3]];
+    [analyticsEventManager setPayloadValue:&unk_1F0FBAF18 forKey:v24 onEventWithName:v15];
     [(PLFileBackedLogger *)self->_logger flush];
 
     _Block_object_dispose(&v31, 8);
@@ -419,23 +419,23 @@ void __164__PLSearchIndexingRebuildEngine__inq_rebuildAnalyticsSetupAndPublishWi
   *(*(*(a1 + 56) + 8) + 24) = v2;
 }
 
-- (void)_lock_startPrepareAndRebuildForLibrary:(id)a3 type:(unint64_t)a4 calledBy:(id)a5 rebuildReasons:(unint64_t)a6 spotlightReasonForReindexingAllItems:(id)a7
+- (void)_lock_startPrepareAndRebuildForLibrary:(id)library type:(unint64_t)type calledBy:(id)by rebuildReasons:(unint64_t)reasons spotlightReasonForReindexingAllItems:(id)items
 {
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  if (!a4)
+  libraryCopy = library;
+  byCopy = by;
+  itemsCopy = items;
+  if (!type)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PLSearchIndexingRebuildEngine.m" lineNumber:785 description:{@"Invalid parameter not satisfying: %@", @"rebuildType != PLSearchIndexRebuildTypeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchIndexingRebuildEngine.m" lineNumber:785 description:{@"Invalid parameter not satisfying: %@", @"rebuildType != PLSearchIndexRebuildTypeNone"}];
   }
 
   v16 = PLSearchBackendIndexRebuildGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = byCopy;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Resuming search index rebuild, called by: %{public}@", &buf, 0xCu);
   }
 
@@ -446,23 +446,23 @@ void __164__PLSearchIndexingRebuildEngine__inq_rebuildAnalyticsSetupAndPublishWi
   v42 = __Block_byref_object_copy__10378;
   v43 = __Block_byref_object_dispose__10379;
   v18 = MEMORY[0x1E69BF2D0];
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v20 = [v18 successWithResult:v19];
+  null = [MEMORY[0x1E695DFB0] null];
+  v20 = [v18 successWithResult:null];
 
   v44 = v20;
   v21 = self->_lock_currentEntity == 1 && self->_lock_resumeObjectID == 0;
-  if (a4 - 1 < 2 || v21)
+  if (type - 1 < 2 || v21)
   {
     dispatch_group_enter(v17);
-    v22 = [(PLSearchIndexingRebuildEngine *)self delegate];
-    v23 = [v22 sceneTaxonomyDigestsForSearchIndexingRebuildEngine:self];
+    delegate = [(PLSearchIndexingRebuildEngine *)self delegate];
+    v23 = [delegate sceneTaxonomyDigestsForSearchIndexingRebuildEngine:self];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __138__PLSearchIndexingRebuildEngine__lock_startPrepareAndRebuildForLibrary_type_calledBy_rebuildReasons_spotlightReasonForReindexingAllItems___block_invoke;
     v37[3] = &unk_1E756B380;
     p_buf = &buf;
     v38 = v17;
-    [(PLSearchIndexingRebuildEngine *)self _prepareForRebuildForLibrary:v13 type:a4 sceneTaxonomyDigests:v23 completion:v37];
+    [(PLSearchIndexingRebuildEngine *)self _prepareForRebuildForLibrary:libraryCopy type:type sceneTaxonomyDigests:v23 completion:v37];
   }
 
   v24 = +[PLConcurrencyLimiter sharedLimiter];
@@ -472,13 +472,13 @@ void __164__PLSearchIndexingRebuildEngine__inq_rebuildAnalyticsSetupAndPublishWi
   v30[2] = __138__PLSearchIndexingRebuildEngine__lock_startPrepareAndRebuildForLibrary_type_calledBy_rebuildReasons_spotlightReasonForReindexingAllItems___block_invoke_2;
   v30[3] = &unk_1E75754C8;
   v35 = &buf;
-  v26 = v13;
+  v26 = libraryCopy;
   v31 = v26;
-  v36 = a6;
-  v27 = v14;
+  reasonsCopy = reasons;
+  v27 = byCopy;
   v32 = v27;
-  v33 = self;
-  v28 = v15;
+  selfCopy = self;
+  v28 = itemsCopy;
   v34 = v28;
   [v24 groupNotify:v17 queue:queue block:v30];
 
@@ -575,9 +575,9 @@ void __138__PLSearchIndexingRebuildEngine__lock_startPrepareAndRebuildForLibrary
   dispatch_group_leave(v5);
 }
 
-- (void)_startRebuildForLibrary:(id)a3
+- (void)_startRebuildForLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   [(PLSearchIndexingRebuildEngine *)self _inq_rebuildAnalyticsStartTimer];
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -585,8 +585,8 @@ void __138__PLSearchIndexingRebuildEngine__lock_startPrepareAndRebuildForLibrary
   v7[2] = __57__PLSearchIndexingRebuildEngine__startRebuildForLibrary___block_invoke;
   v7[3] = &unk_1E756E060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   [(PLSearchIndexingRebuildEngine *)self _rebuildAllRemainingEntitiesForLibrary:v6 queue:queue completion:v7];
 }
 
@@ -695,40 +695,40 @@ void __57__PLSearchIndexingRebuildEngine__startRebuildForLibrary___block_invoke_
   [WeakRetained _startRebuildForLibrary:*(a1 + 32)];
 }
 
-- (void)_rebuildAllRemainingEntitiesForLibrary:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)_rebuildAllRemainingEntitiesForLibrary:(id)library queue:(id)queue completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLSearchIndexingRebuildEngine *)self _currentEntity];
-  if (v11 < 0xA)
+  libraryCopy = library;
+  queueCopy = queue;
+  completionCopy = completion;
+  _currentEntity = [(PLSearchIndexingRebuildEngine *)self _currentEntity];
+  if (_currentEntity < 0xA)
   {
-    v19 = v11;
-    if ((0x105uLL >> v11))
+    v19 = _currentEntity;
+    if ((0x105uLL >> _currentEntity))
     {
       v26 = MEMORY[0x1E69E9820];
       PLRunWithUnfairLock();
-      [(PLSearchIndexingRebuildEngine *)self _rebuildAllRemainingEntitiesForLibrary:v8 queue:v9 completion:v10, v26, 3221225472, __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_queue_completion___block_invoke_71, &unk_1E75781E8, self];
+      [(PLSearchIndexingRebuildEngine *)self _rebuildAllRemainingEntitiesForLibrary:libraryCopy queue:queueCopy completion:completionCopy, v26, 3221225472, __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_queue_completion___block_invoke_71, &unk_1E75781E8, self];
     }
 
     else
     {
-      v20 = [(PLSearchIndexingRebuildEngine *)self _resumeObjectID];
-      v21 = [(PLSearchIndexingRebuildEngine *)self _iteratorForSearchEntity:v19 library:v8 resumeObjectID:v20];
+      _resumeObjectID = [(PLSearchIndexingRebuildEngine *)self _resumeObjectID];
+      v21 = [(PLSearchIndexingRebuildEngine *)self _iteratorForSearchEntity:v19 library:libraryCopy resumeObjectID:_resumeObjectID];
 
       v22 = PLSearchBackendIndexRebuildGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = off_1E7571300[v19];
-        v24 = [v21 resumeObjectID];
-        v25 = [v8 libraryID];
+        resumeObjectID = [v21 resumeObjectID];
+        libraryID = [libraryCopy libraryID];
         *buf = 138543874;
         v34 = v23;
         v35 = 2114;
-        v36 = v24;
+        v36 = resumeObjectID;
         v37 = 2112;
-        v38 = v25;
+        v38 = libraryID;
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "Resuming search index rebuild from entity: %{public}@ token: %{public}@ for library %@", buf, 0x20u);
       }
 
@@ -737,10 +737,10 @@ void __57__PLSearchIndexingRebuildEngine__startRebuildForLibrary___block_invoke_
       v27[2] = __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_queue_completion___block_invoke;
       v27[3] = &unk_1E7566730;
       v32 = v19;
-      v28 = v8;
-      v29 = self;
-      v30 = v9;
-      v31 = v10;
+      v28 = libraryCopy;
+      selfCopy = self;
+      v30 = queueCopy;
+      v31 = completionCopy;
       [(PLSearchIndexingRebuildEngine *)self _rebuildManagedObjectsFromIterator:v21 ofEntity:v19 queue:v30 library:v28 completion:v27];
     }
   }
@@ -750,21 +750,21 @@ void __57__PLSearchIndexingRebuildEngine__startRebuildForLibrary___block_invoke_
     v12 = PLSearchBackendIndexRebuildGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 libraryID];
+      libraryID2 = [libraryCopy libraryID];
       *buf = 138412290;
-      v34 = v13;
+      v34 = libraryID2;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Search index rebuild completed for library %@", buf, 0xCu);
     }
 
-    v14 = [v8 libraryServicesManager];
-    v15 = [v14 availabilityComputer];
-    [v15 didFinishSearchIndexRebuidForPhotoLibrary:v8 error:0];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    availabilityComputer = [libraryServicesManager availabilityComputer];
+    [availabilityComputer didFinishSearchIndexRebuidForPhotoLibrary:libraryCopy error:0];
 
     v16 = MEMORY[0x1E69BF2D0];
-    v17 = [MEMORY[0x1E695DFB0] null];
-    v18 = [v16 successWithResult:v17];
+    null = [MEMORY[0x1E695DFB0] null];
+    v18 = [v16 successWithResult:null];
 
-    (*(v10 + 2))(v10, v18);
+    (*(completionCopy + 2))(completionCopy, v18);
   }
 }
 
@@ -847,21 +847,21 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
   *(v1 + 40) = 0;
 }
 
-- (void)_rebuildManagedObjectsFromIterator:(id)a3 ofEntity:(unint64_t)a4 queue:(id)a5 library:(id)a6 completion:(id)a7
+- (void)_rebuildManagedObjectsFromIterator:(id)iterator ofEntity:(unint64_t)entity queue:(id)queue library:(id)library completion:(id)completion
 {
   v128 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v65 = a6;
-  v14 = a7;
-  v64 = [[PLTimedDispatchGroup alloc] initWithQueue:v13 name:@"Rebuild donation"];
+  iteratorCopy = iterator;
+  queueCopy = queue;
+  libraryCopy = library;
+  completionCopy = completion;
+  v64 = [[PLTimedDispatchGroup alloc] initWithQueue:queueCopy name:@"Rebuild donation"];
   v15 = [(PLTimedDispatchGroup *)v64 enterWithName:@"Rebuild donation"];
   v16 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
   v86 = MEMORY[0x1E69E9820];
   v87 = 3221225472;
   v88 = __102__PLSearchIndexingRebuildEngine__rebuildManagedObjectsFromIterator_ofEntity_queue_library_completion___block_invoke;
   v89 = &unk_1E75666B8;
-  v90 = self;
+  selfCopy = self;
   v17 = v15;
   v91 = v17;
   v18 = v16;
@@ -872,24 +872,24 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
     v19 = MEMORY[0x1E69BF2D0];
     v20 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
     v21 = [v19 failureWithError:v20];
-    v14[2](v14, v21);
+    completionCopy[2](completionCopy, v21);
     v22 = v64;
     goto LABEL_30;
   }
 
-  v63 = v13;
+  v63 = queueCopy;
   v23 = atomic_load(sLocaleDidChange);
   if ((v23 & 1) == 0)
   {
     v20 = [MEMORY[0x1E695DF00] now];
-    v32 = [v65 managedObjectContext];
-    v21 = [v12 nextBatchWithManagedObjectContext:v32];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v21 = [iteratorCopy nextBatchWithManagedObjectContext:managedObjectContext];
 
     if (v21)
     {
       if (![v21 isFailure])
       {
-        v43 = [(PLSearchIndexingRebuildEngine *)self _rebuildTypeForLibrary:v65 entityInProgress:0 resumeObjectID:0 rebuildReasons:0];
+        v43 = [(PLSearchIndexingRebuildEngine *)self _rebuildTypeForLibrary:libraryCopy entityInProgress:0 resumeObjectID:0 rebuildReasons:0];
         if (v43 != 3)
         {
           v44 = v43;
@@ -912,8 +912,8 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
           }
         }
 
-        v53 = [v65 managedObjectContext];
-        v54 = [v12 countRemainingWithManagedObjectContext:v53 logger:self->_logger];
+        managedObjectContext2 = [libraryCopy managedObjectContext];
+        v54 = [iteratorCopy countRemainingWithManagedObjectContext:managedObjectContext2 logger:self->_logger];
 
         v76[0] = MEMORY[0x1E69E9820];
         v76[1] = 3221225472;
@@ -922,13 +922,13 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
         v62 = v21;
         v77 = v62;
         v78 = v18;
-        v60 = v12;
+        v60 = iteratorCopy;
         v79 = v60;
         v59 = v20;
         v80 = v59;
-        v81 = self;
-        v85 = a4;
-        v55 = v65;
+        selfCopy2 = self;
+        entityCopy = entity;
+        v55 = libraryCopy;
         v82 = v55;
         v58 = v63;
         v83 = v58;
@@ -940,18 +940,18 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
         v66[2] = __102__PLSearchIndexingRebuildEngine__rebuildManagedObjectsFromIterator_ofEntity_queue_library_completion___block_invoke_2;
         v66[3] = &unk_1E7566708;
         v67 = v56;
-        v74 = v14;
+        v74 = completionCopy;
         v68 = v62;
         v69 = v60;
         v70 = v59;
         v71 = v55;
-        v72 = self;
-        v75 = a4;
+        selfCopy3 = self;
+        entityCopy2 = entity;
         v73 = v58;
         v22 = v64;
         [(PLTimedDispatchGroup *)v64 notify:v66];
 
-        v37 = v77;
+        error2 = v77;
         goto LABEL_29;
       }
 
@@ -959,19 +959,19 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
       v33 = PLSearchBackendIndexRebuildGetLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v12 entityName];
-        v35 = [v21 error];
+        entityName = [iteratorCopy entityName];
+        error = [v21 error];
         *buf = 138543618;
-        *&buf[4] = v34;
+        *&buf[4] = entityName;
         *&buf[12] = 2112;
-        *&buf[14] = v35;
+        *&buf[14] = error;
         _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "Rebuild failed to enumerate objects of entity: %{public}@, error: %@", buf, 0x16u);
       }
 
       v36 = MEMORY[0x1E69BF2D0];
-      v37 = [v21 error];
-      v38 = [v36 failureWithError:v37];
-      v14[2](v14, v38);
+      error2 = [v21 error];
+      v38 = [v36 failureWithError:error2];
+      completionCopy[2](completionCopy, v38);
     }
 
     else
@@ -980,41 +980,41 @@ void __89__PLSearchIndexingRebuildEngine__rebuildAllRemainingEntitiesForLibrary_
       v39 = PLSearchBackendIndexRebuildGetLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
-        v40 = [v12 entityName];
+        entityName2 = [iteratorCopy entityName];
         *buf = 138543618;
-        *&buf[4] = v40;
+        *&buf[4] = entityName2;
         *&buf[12] = 2112;
-        *&buf[14] = v65;
+        *&buf[14] = libraryCopy;
         _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_INFO, "Search rebuild complete for entity: %{public}@ in library: %@", buf, 0x16u);
       }
 
       v41 = MEMORY[0x1E69BF2D0];
-      v42 = [MEMORY[0x1E695DFB0] null];
-      v37 = [v41 successWithResult:v42];
+      null = [MEMORY[0x1E695DFB0] null];
+      error2 = [v41 successWithResult:null];
 
-      v14[2](v14, v37);
+      completionCopy[2](completionCopy, error2);
     }
 
     v22 = v64;
 LABEL_29:
 
-    v13 = v63;
+    queueCopy = v63;
     goto LABEL_30;
   }
 
-  v61 = v12;
+  v61 = iteratorCopy;
   [v17 leave];
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [MEMORY[0x1E695DF58] currentLocale];
-  v26 = [v25 localeIdentifier];
-  v27 = [v65 globalValues];
-  v28 = [v27 searchIndexLocaleIdentifier];
-  v20 = [v24 stringWithFormat:@"Stopping search index rebuild due to system locale change (current locale: %@, search index locale: %@)", v26, v28];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  globalValues = [libraryCopy globalValues];
+  searchIndexLocaleIdentifier = [globalValues searchIndexLocaleIdentifier];
+  v20 = [v24 stringWithFormat:@"Stopping search index rebuild due to system locale change (current locale: %@, search index locale: %@)", localeIdentifier, searchIndexLocaleIdentifier];
 
   v29 = PLSearchBackendIndexRebuildGetLog();
-  LODWORD(v27) = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
+  LODWORD(globalValues) = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
 
-  if (v27)
+  if (globalValues)
   {
     if (self->_logger)
     {
@@ -1083,10 +1083,10 @@ LABEL_29:
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v94 forKeys:&v93 count:1];
   v51 = [v49 errorWithDomain:v50 code:45003 userInfo:v21];
   v52 = [v48 failureWithError:v51];
-  v14[2](v14, v52);
+  completionCopy[2](completionCopy, v52);
 
-  v12 = v61;
-  v13 = v63;
+  iteratorCopy = v61;
+  queueCopy = v63;
   v22 = v64;
 LABEL_30:
 }
@@ -1232,26 +1232,26 @@ void __102__PLSearchIndexingRebuildEngine__rebuildManagedObjectsFromIterator_ofE
   [v2 setSearchIndexRebuildResumeObjectID:v1];
 }
 
-- (void)_handleDonationFailureForRebuildWithManagedObjects:(id)a3 entity:(unint64_t)a4 library:(id)a5
+- (void)_handleDonationFailureForRebuildWithManagedObjects:(id)objects entity:(unint64_t)entity library:(id)library
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (a4 - 1 > 8)
+  objectsCopy = objects;
+  libraryCopy = library;
+  if (entity - 1 > 8)
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = qword_19C610090[a4 - 1];
+    v9 = qword_19C610090[entity - 1];
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v7;
+  v10 = objectsCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -1267,9 +1267,9 @@ void __102__PLSearchIndexingRebuildEngine__rebuildManagedObjectsFromIterator_ofE
           objc_enumerationMutation(v10);
         }
 
-        if (a4 <= 4)
+        if (entity <= 4)
         {
-          if (a4 == 1 || a4 == 3 || a4 == 4)
+          if (entity == 1 || entity == 3 || entity == 4)
           {
             goto LABEL_19;
           }
@@ -1277,35 +1277,35 @@ void __102__PLSearchIndexingRebuildEngine__rebuildManagedObjectsFromIterator_ofE
 
         else
         {
-          if (a4 <= 6)
+          if (entity <= 6)
           {
-            if (a4 == 5)
+            if (entity == 5)
             {
               goto LABEL_19;
             }
 
-            v15 = [*(*(&v21 + 1) + 8 * v14) personUUID];
+            personUUID = [*(*(&v21 + 1) + 8 * v14) personUUID];
             goto LABEL_20;
           }
 
-          if (a4 != 7)
+          if (entity != 7)
           {
-            if (a4 != 9)
+            if (entity != 9)
             {
               goto LABEL_22;
             }
 
 LABEL_19:
-            v15 = [*(*(&v21 + 1) + 8 * v14) uuid];
+            personUUID = [*(*(&v21 + 1) + 8 * v14) uuid];
 LABEL_20:
-            v16 = v15;
-            if (!v15)
+            encodedIdentifierString = personUUID;
+            if (!personUUID)
             {
               goto LABEL_22;
             }
 
 LABEL_21:
-            v17 = [v8 addBackgroundJobWorkItemWithIdentifier:v16 jobType:3 jobFlags:{v9, v21}];
+            v17 = [libraryCopy addBackgroundJobWorkItemWithIdentifier:encodedIdentifierString jobType:3 jobFlags:{v9, v21}];
             v18 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:300.0];
             [v17 setDelayUntilDate:v18];
 
@@ -1313,9 +1313,9 @@ LABEL_21:
           }
 
           v19 = [(PLGraphNodeContainer *)PLSearchEntity newNodeContainerWithNode:*(*(&v21 + 1) + 8 * v14), v21];
-          v16 = [v19 encodedIdentifierString];
+          encodedIdentifierString = [v19 encodedIdentifierString];
 
-          if (v16)
+          if (encodedIdentifierString)
           {
             goto LABEL_21;
           }
@@ -1334,25 +1334,25 @@ LABEL_22:
   }
 }
 
-- (unint64_t)_rebuildTypeForLibrary:(id)a3 entityInProgress:(unint64_t *)a4 resumeObjectID:(id *)a5 rebuildReasons:(unint64_t *)a6
+- (unint64_t)_rebuildTypeForLibrary:(id)library entityInProgress:(unint64_t *)progress resumeObjectID:(id *)d rebuildReasons:(unint64_t *)reasons
 {
   v99 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(PLSearchIndexingRebuildEngine *)self delegate];
-  v12 = +[PLSpotlightReindexing shouldReindexAllItemsForLibraryIdentifier:](PLSpotlightReindexing, "shouldReindexAllItemsForLibraryIdentifier:", [v11 wellKnownLibraryIdentifierForSearchIndexingRebuildEngine:self]);
+  libraryCopy = library;
+  delegate = [(PLSearchIndexingRebuildEngine *)self delegate];
+  v12 = +[PLSpotlightReindexing shouldReindexAllItemsForLibraryIdentifier:](PLSpotlightReindexing, "shouldReindexAllItemsForLibraryIdentifier:", [delegate wellKnownLibraryIdentifierForSearchIndexingRebuildEngine:self]);
 
-  v13 = [v10 globalValues];
-  v14 = [(PLSearchIndexingRebuildEngine *)self delegate];
-  v15 = [v14 sceneTaxonomyDigestsForSearchIndexingRebuildEngine:self];
-  v16 = [v10 pathManager];
-  v17 = [v13 searchIndexRebuildReasonsWithSceneTaxonomyDigests:v15 spotlightRequestedRebuild:v12 pathManager:v16];
+  globalValues = [libraryCopy globalValues];
+  delegate2 = [(PLSearchIndexingRebuildEngine *)self delegate];
+  v15 = [delegate2 sceneTaxonomyDigestsForSearchIndexingRebuildEngine:self];
+  pathManager = [libraryCopy pathManager];
+  v17 = [globalValues searchIndexRebuildReasonsWithSceneTaxonomyDigests:v15 spotlightRequestedRebuild:v12 pathManager:pathManager];
 
   if ((v17 & 0x22) != 0)
   {
     v18 = 2;
 LABEL_5:
-    v19 = PLSearchBackendIndexRebuildGetLog();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    searchIndexRebuildStartDate = PLSearchBackendIndexRebuildGetLog();
+    if (os_log_type_enabled(searchIndexRebuildStartDate, OS_LOG_TYPE_DEFAULT))
     {
       v20 = @"drop";
       if ((v17 & 0x22) == 0)
@@ -1366,11 +1366,11 @@ LABEL_5:
       *&buf[4] = v21;
       *&buf[12] = 2114;
       *&buf[14] = v22;
-      _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Detected search index rebuild required, type: %{public}@, reason: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_19BF1F000, searchIndexRebuildStartDate, OS_LOG_TYPE_DEFAULT, "Detected search index rebuild required, type: %{public}@, reason: %{public}@", buf, 0x16u);
     }
 
-    v23 = 0;
-    v24 = 1;
+    searchIndexRebuildResumeObjectID = 0;
+    searchIndexingEntityToRebuild = 1;
     goto LABEL_10;
   }
 
@@ -1382,22 +1382,22 @@ LABEL_5:
 
   if ((v17 & 0x10) != 0)
   {
-    v27 = [v10 globalValues];
-    v24 = [v27 searchIndexingEntityToRebuild];
+    globalValues2 = [libraryCopy globalValues];
+    searchIndexingEntityToRebuild = [globalValues2 searchIndexingEntityToRebuild];
 
-    if (v24)
+    if (searchIndexingEntityToRebuild)
     {
-      v28 = [v10 globalValues];
-      v23 = [v28 searchIndexRebuildResumeObjectID];
+      globalValues3 = [libraryCopy globalValues];
+      searchIndexRebuildResumeObjectID = [globalValues3 searchIndexRebuildResumeObjectID];
 
-      v29 = [v10 globalValues];
-      v19 = [v29 searchIndexRebuildStartDate];
+      globalValues4 = [libraryCopy globalValues];
+      searchIndexRebuildStartDate = [globalValues4 searchIndexRebuildStartDate];
 
-      v30 = [v10 globalValues];
-      v57 = [v30 searchIndexRebuildEndDate];
+      globalValues5 = [libraryCopy globalValues];
+      searchIndexRebuildEndDate = [globalValues5 searchIndexRebuildEndDate];
 
-      v31 = [v10 globalValues];
-      v51 = [v31 isSearchIndexRebuildFinished];
+      globalValues6 = [libraryCopy globalValues];
+      isSearchIndexRebuildFinished = [globalValues6 isSearchIndexRebuildFinished];
 
       v32 = PLSearchBackendIndexRebuildGetLog();
       v54 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
@@ -1438,27 +1438,27 @@ LABEL_5:
           v47 = PLSearchBackendIndexRebuildGetLog();
           os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
           v33 = @"YES";
-          if (v51)
+          if (isSearchIndexRebuildFinished)
           {
             v33 = @"NO";
           }
 
           v55 = v33;
-          v52 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:v19];
-          v49 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:v57];
-          if (v24 > 9)
+          v52 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:searchIndexRebuildStartDate];
+          v49 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:searchIndexRebuildEndDate];
+          if (searchIndexingEntityToRebuild > 9)
           {
             v34 = @"invalid";
           }
 
           else
           {
-            v34 = off_1E7571300[v24];
+            v34 = off_1E7571300[searchIndexingEntityToRebuild];
           }
 
           log = v34;
-          v43 = [v23 URIRepresentation];
-          v41 = [v43 absoluteString];
+          uRIRepresentation = [searchIndexRebuildResumeObjectID URIRepresentation];
+          absoluteString = [uRIRepresentation absoluteString];
           v42 = PLSearchIndexRebuildReasonsDescriptionWithSpotlightReason(v17, 0);
           v58 = 138544642;
           v59 = v55;
@@ -1469,7 +1469,7 @@ LABEL_5:
           v64 = 2114;
           v65 = log;
           v66 = 2114;
-          v67 = v41;
+          v67 = absoluteString;
           v68 = 2114;
           v69 = v42;
           LODWORD(v40) = 62;
@@ -1488,27 +1488,27 @@ LABEL_5:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
             v36 = @"YES";
-            if (v51)
+            if (isSearchIndexRebuildFinished)
             {
               v36 = @"NO";
             }
 
             v56 = v36;
-            v53 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:v19];
-            v50 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:v57];
-            if (v24 > 9)
+            v53 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:searchIndexRebuildStartDate];
+            v50 = [(NSISO8601DateFormatter *)self->_loggingDateFormatter stringFromDate:searchIndexRebuildEndDate];
+            if (searchIndexingEntityToRebuild > 9)
             {
               v37 = @"invalid";
             }
 
             else
             {
-              v37 = off_1E7571300[v24];
+              v37 = off_1E7571300[searchIndexingEntityToRebuild];
             }
 
             v45 = v37;
-            v48 = [v23 URIRepresentation];
-            v39 = [v48 absoluteString];
+            uRIRepresentation2 = [searchIndexRebuildResumeObjectID URIRepresentation];
+            absoluteString2 = [uRIRepresentation2 absoluteString];
             v44 = PLSearchIndexRebuildReasonsDescriptionWithSpotlightReason(v17, 0);
             *buf = 138544642;
             *&buf[4] = v56;
@@ -1519,7 +1519,7 @@ LABEL_5:
             *&buf[32] = 2114;
             *&buf[34] = v45;
             *&buf[42] = 2114;
-            *&buf[44] = v39;
+            *&buf[44] = absoluteString2;
             *&buf[52] = 2114;
             *&buf[54] = v44;
             _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "Detected search index rebuild in progress [%{public}@], start %{public}@ prev end %{public}@, entity: %{public}@, resume objectID: %{public}@ [%{public}@]", buf, 0x3Eu);
@@ -1532,21 +1532,21 @@ LABEL_5:
 
     else
     {
-      v19 = PLSearchBackendIndexRebuildGetLog();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      searchIndexRebuildStartDate = PLSearchBackendIndexRebuildGetLog();
+      if (os_log_type_enabled(searchIndexRebuildStartDate, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Detected rebuild in progress but no entity to rebuild, will not resume rebuild", buf, 2u);
+        _os_log_impl(&dword_19BF1F000, searchIndexRebuildStartDate, OS_LOG_TYPE_ERROR, "Detected rebuild in progress but no entity to rebuild, will not resume rebuild", buf, 2u);
       }
 
-      v23 = 0;
-      v24 = 0;
+      searchIndexRebuildResumeObjectID = 0;
+      searchIndexingEntityToRebuild = 0;
       v18 = 0;
     }
 
 LABEL_10:
 
-    if (!a4)
+    if (!progress)
     {
       goto LABEL_12;
     }
@@ -1554,42 +1554,42 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v23 = 0;
-  v24 = 0;
+  searchIndexRebuildResumeObjectID = 0;
+  searchIndexingEntityToRebuild = 0;
   v18 = 0;
-  if (a4)
+  if (progress)
   {
 LABEL_11:
-    *a4 = v24;
+    *progress = searchIndexingEntityToRebuild;
   }
 
 LABEL_12:
-  if (a5)
+  if (d)
   {
-    v25 = v23;
-    *a5 = v23;
+    v25 = searchIndexRebuildResumeObjectID;
+    *d = searchIndexRebuildResumeObjectID;
   }
 
-  if (a6)
+  if (reasons)
   {
-    *a6 = v17;
+    *reasons = v17;
   }
 
   return v18;
 }
 
-- (void)_prepareForRebuildForLibrary:(id)a3 type:(unint64_t)a4 sceneTaxonomyDigests:(id)a5 completion:(id)a6
+- (void)_prepareForRebuildForLibrary:(id)library type:(unint64_t)type sceneTaxonomyDigests:(id)digests completion:(id)completion
 {
   v86 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  libraryCopy = library;
+  digestsCopy = digests;
+  completionCopy = completion;
   v13 = PLSearchBackendIndexRebuildGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 libraryID];
+    libraryID = [libraryCopy libraryID];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = libraryID;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Preparing to rebuild search index for library: %@", &buf, 0xCu);
   }
 
@@ -1597,16 +1597,16 @@ LABEL_12:
   if (v15)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [MEMORY[0x1E695DF58] currentLocale];
-    v18 = [v17 localeIdentifier];
-    v19 = [v10 globalValues];
-    v20 = [v19 searchIndexLocaleIdentifier];
-    v21 = [v16 stringWithFormat:@"Cannot rebuild search index, the device locale has changed since daemon launch (current locale: %@, search index locale: %@)", v18, v20];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    globalValues = [libraryCopy globalValues];
+    searchIndexLocaleIdentifier = [globalValues searchIndexLocaleIdentifier];
+    v21 = [v16 stringWithFormat:@"Cannot rebuild search index, the device locale has changed since daemon launch (current locale: %@, search index locale: %@)", localeIdentifier, searchIndexLocaleIdentifier];
 
     v22 = PLSearchBackendIndexRebuildGetLog();
-    LODWORD(v18) = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
+    LODWORD(localeIdentifier) = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
 
-    if (v18)
+    if (localeIdentifier)
     {
       if (self->_logger)
       {
@@ -1675,7 +1675,7 @@ LABEL_12:
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
     v36 = [v34 errorWithDomain:*MEMORY[0x1E69BFF48] code:45003 userInfo:v35];
     v37 = [v33 failureWithError:v36];
-    v12[2](v12, v37);
+    completionCopy[2](completionCopy, v37);
   }
 
   else
@@ -1687,30 +1687,30 @@ LABEL_12:
     *(&v55 + 1) = __Block_byref_object_copy__10378;
     *&v56 = __Block_byref_object_dispose__10379;
     v25 = MEMORY[0x1E69BF2D0];
-    v26 = [MEMORY[0x1E695DFB0] null];
-    v27 = [v25 successWithResult:v26];
+    null = [MEMORY[0x1E695DFB0] null];
+    v27 = [v25 successWithResult:null];
 
     *(&v56 + 1) = v27;
-    if (a4 == 2)
+    if (type == 2)
     {
       v28 = PLSearchBackendIndexRebuildGetLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *v52 = 138412290;
-        v53 = v10;
+        v53 = libraryCopy;
         _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "Dropping search index for library %@", v52, 0xCu);
       }
 
       dispatch_group_enter(v21);
-      v29 = [(PLSearchIndexingRebuildEngine *)self delegate];
+      delegate = [(PLSearchIndexingRebuildEngine *)self delegate];
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_sceneTaxonomyDigests_completion___block_invoke;
       v46[3] = &unk_1E756DEA8;
-      v47 = v10;
+      v47 = libraryCopy;
       p_buf = &buf;
       v48 = v21;
-      [v29 dropSearchIndexForSearchIndexingRebuildEngine:self completion:v46];
+      [delegate dropSearchIndexForSearchIndexingRebuildEngine:self completion:v46];
     }
 
     v30 = +[PLConcurrencyLimiter sharedLimiter];
@@ -1720,11 +1720,11 @@ LABEL_12:
     v39[2] = __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_sceneTaxonomyDigests_completion___block_invoke_53;
     v39[3] = &unk_1E7566690;
     v43 = &buf;
-    v40 = v10;
-    v44 = a4;
-    v41 = v11;
-    v45 = a4 == 2;
-    v42 = v12;
+    v40 = libraryCopy;
+    typeCopy = type;
+    v41 = digestsCopy;
+    v45 = type == 2;
+    v42 = completionCopy;
     [v30 groupNotify:v21 queue:queue block:v39];
 
     _Block_object_dispose(&buf, 8);
@@ -1844,23 +1844,23 @@ void __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_scene
   v5 = [PLBackgroundJobWorkItem deleteAllSearchIndexJobsInManagedObjectContext:v6];
 }
 
-- (id)_iteratorForSearchEntity:(unint64_t)a3 library:(id)a4 resumeObjectID:(id)a5
+- (id)_iteratorForSearchEntity:(unint64_t)entity library:(id)library resumeObjectID:(id)d
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  dCopy = d;
   iteratorsBySearchEntity = self->_iteratorsBySearchEntity;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:entity];
   v10 = [(NSMutableDictionary *)iteratorsBySearchEntity objectForKeyedSubscript:v9];
 
   if (!v10)
   {
-    v11 = [(PLSearchIndexingRebuildEngine *)self delegate];
-    v12 = [v11 wellKnownLibraryIdentifierForSearchIndexingRebuildEngine:self];
-    v30 = v7;
-    v13 = 0;
-    if (a3 <= 4)
+    delegate = [(PLSearchIndexingRebuildEngine *)self delegate];
+    v12 = [delegate wellKnownLibraryIdentifierForSearchIndexingRebuildEngine:self];
+    v30 = dCopy;
+    relationshipKeyPathsToPrefetch = 0;
+    if (entity <= 4)
     {
-      if (a3 == 1)
+      if (entity == 1)
       {
         v14 = +[PLManagedAsset entityName];
         v21 = [PLManagedAsset isEligibleForSearchIndexingPredicateForLibraryIdentifier:v12];
@@ -1872,7 +1872,7 @@ void __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_scene
         goto LABEL_19;
       }
 
-      if (a3 == 3)
+      if (entity == 3)
       {
         v14 = +[PLGenericAlbum entityName];
         v24 = [PLGenericAlbum isEligibleForSearchIndexingPredicateForLibraryIdentifier:v12];
@@ -1888,7 +1888,7 @@ void __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_scene
       v16 = 0;
       v14 = 0;
       v10 = 0;
-      if (a3 == 4)
+      if (entity == 4)
       {
         v14 = +[PLPhotosHighlight entityName];
         v18 = [PLPhotosHighlight isEligibleForSearchIndexingPredicateForLibraryIdentifier:v12];
@@ -1903,9 +1903,9 @@ void __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_scene
 
     else
     {
-      if (a3 <= 6)
+      if (entity <= 6)
       {
-        if (a3 != 5)
+        if (entity != 5)
         {
           v14 = +[PLPerson entityName];
           v15 = [PLPerson isEligibleForSearchIndexingPredicateForLibraryIdentifier:v12];
@@ -1924,7 +1924,7 @@ void __99__PLSearchIndexingRebuildEngine__prepareForRebuildForLibrary_type_scene
         v17 = +[PLMemory propertiesToFetch];
         v19 = PLMemory;
 LABEL_19:
-        v13 = [(__objc2_class *)v19 relationshipKeyPathsToPrefetch];
+        relationshipKeyPathsToPrefetch = [(__objc2_class *)v19 relationshipKeyPathsToPrefetch];
         if (!v14)
         {
           goto LABEL_17;
@@ -1933,7 +1933,7 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      if (a3 == 7)
+      if (entity == 7)
       {
         v14 = +[PLGraphNode entityName];
         v23 = +[PLSearchEntity predicateForSearchEntitySourceNodes];
@@ -1942,7 +1942,7 @@ LABEL_19:
 
         v17 = 0;
 LABEL_16:
-        v13 = 0;
+        relationshipKeyPathsToPrefetch = 0;
         if (!v14)
         {
 LABEL_17:
@@ -1958,7 +1958,7 @@ LABEL_20:
           dispatch_once(&_PLRebuildPagingFetchLimit_onceToken, &__block_literal_global_10459);
         }
 
-        v10 = [(PLManagedObjectPagingIterator *)v26 initWithEntityName:v14 resultType:0 resumeObjectID:v30 additionalPredicate:v25 batchSize:_PLRebuildPagingFetchLimit__pagingFetchLimit propertiesToFetch:v17 relationshipKeyPathsToPrefetch:v13];
+        v10 = [(PLManagedObjectPagingIterator *)v26 initWithEntityName:v14 resultType:0 resumeObjectID:v30 additionalPredicate:v25 batchSize:_PLRebuildPagingFetchLimit__pagingFetchLimit propertiesToFetch:v17 relationshipKeyPathsToPrefetch:relationshipKeyPathsToPrefetch];
 
         goto LABEL_23;
       }
@@ -1967,7 +1967,7 @@ LABEL_20:
       v16 = 0;
       v14 = 0;
       v10 = 0;
-      if (a3 == 9)
+      if (entity == 9)
       {
         v14 = +[PLCollectionShare entityName];
         v20 = [PLCollectionShare isEligibleForSearchIndexingPredicateForLibraryIdentifier:v12];
@@ -1983,7 +1983,7 @@ LABEL_20:
 LABEL_23:
 
     v27 = self->_iteratorsBySearchEntity;
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:entity];
     [(NSMutableDictionary *)v27 setObject:v10 forKeyedSubscript:v28];
   }
 
@@ -2000,15 +2000,15 @@ LABEL_23:
 - (unint64_t)_currentEntity
 {
   v2 = PLSafeResultWithUnfairLock();
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)fetchRemainingWorkWithLibrary:(id)a3 completion:(id)a4
+- (void)fetchRemainingWorkWithLibrary:(id)library completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -2026,7 +2026,7 @@ LABEL_23:
   obj[5] = self;
   obj[6] = &v22;
   obj[7] = &v16;
-  if ((PLBoolResultWithUnfairLock() & 1) != 0 || (v8 = v17 + 5, obj[0] = v17[5], v9 = [(PLSearchIndexingRebuildEngine *)self _rebuildTypeForLibrary:v6 entityInProgress:v23 + 3 resumeObjectID:obj rebuildReasons:0], objc_storeStrong(v8, obj[0]), v9))
+  if ((PLBoolResultWithUnfairLock() & 1) != 0 || (v8 = v17 + 5, obj[0] = v17[5], v9 = [(PLSearchIndexingRebuildEngine *)self _rebuildTypeForLibrary:libraryCopy entityInProgress:v23 + 3 resumeObjectID:obj rebuildReasons:0], objc_storeStrong(v8, obj[0]), v9))
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -2035,14 +2035,14 @@ LABEL_23:
     v14 = &v16;
     v13 = &v22;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = libraryCopy;
+    v12 = completionCopy;
     [v11 performBlock:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0.0);
   }
 
   _Block_object_dispose(&v16, 8);
@@ -2147,10 +2147,10 @@ uint64_t __74__PLSearchIndexingRebuildEngine_fetchRemainingWorkWithLibrary_compl
   return v2 & 1;
 }
 
-- (void)pauseSearchIndexRebuildWithSourceName:(id)a3
+- (void)pauseSearchIndexRebuildWithSourceName:(id)name
 {
-  v4 = a3;
-  v3 = v4;
+  nameCopy = name;
+  v3 = nameCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -2208,20 +2208,20 @@ void __71__PLSearchIndexingRebuildEngine_pauseSearchIndexRebuildWithSourceName__
   }
 }
 
-- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)a3 calledBy:(id)a4 completion:(id)a5
+- (void)resumeSearchIndexRebuildIfNeededForLibrary:(id)library calledBy:(id)by completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  byCopy = by;
+  completionCopy = completion;
   v24 = 0;
   v25 = 0;
   v23 = 0;
-  v11 = [(PLSearchIndexingRebuildEngine *)self _rebuildTypeForLibrary:v8 entityInProgress:&v25 resumeObjectID:&v23 rebuildReasons:&v24];
+  v11 = [(PLSearchIndexingRebuildEngine *)self _rebuildTypeForLibrary:libraryCopy entityInProgress:&v25 resumeObjectID:&v23 rebuildReasons:&v24];
   v12 = v23;
   if ((v24 & 7) != 0)
   {
-    v13 = [(PLSearchIndexingRebuildEngine *)self delegate];
-    v14 = +[PLSpotlightReindexing spotlightReasonForReindexingAllItemsForLibraryIdentifier:](PLSpotlightReindexing, "spotlightReasonForReindexingAllItemsForLibraryIdentifier:", [v13 wellKnownLibraryIdentifierForSearchIndexingRebuildEngine:self]);
+    delegate = [(PLSearchIndexingRebuildEngine *)self delegate];
+    v14 = +[PLSpotlightReindexing spotlightReasonForReindexingAllItemsForLibraryIdentifier:](PLSpotlightReindexing, "spotlightReasonForReindexingAllItemsForLibraryIdentifier:", [delegate wellKnownLibraryIdentifierForSearchIndexingRebuildEngine:self]);
   }
 
   else
@@ -2233,20 +2233,20 @@ void __71__PLSearchIndexingRebuildEngine_pauseSearchIndexRebuildWithSourceName__
   PLRunWithUnfairLock();
   if (v11)
   {
-    v19 = v8;
-    v20 = v9;
+    v19 = libraryCopy;
+    v20 = byCopy;
     v21 = v14;
-    v22 = v10;
+    v22 = completionCopy;
     PLSafeRunWithUnfairLock();
   }
 
   else
   {
     v16 = MEMORY[0x1E69BF2D0];
-    v17 = [MEMORY[0x1E695DFB0] null];
-    v18 = [v16 successWithResult:v17];
+    null = [MEMORY[0x1E695DFB0] null];
+    v18 = [v16 successWithResult:null];
 
-    (*(v10 + 2))(v10, v18, 0);
+    (*(completionCopy + 2))(completionCopy, v18, 0);
   }
 }
 
@@ -2302,24 +2302,24 @@ void __96__PLSearchIndexingRebuildEngine_resumeSearchIndexRebuildIfNeededForLibr
   (*(*(a1 + 40) + 16))(*(a1 + 40), v2, [v2 isSuccess]);
 }
 
-- (PLSearchIndexingRebuildEngine)initWithDelegate:(id)a3 provider:(id)a4
+- (PLSearchIndexingRebuildEngine)initWithDelegate:(id)delegate provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v38.receiver = self;
   v38.super_class = PLSearchIndexingRebuildEngine;
   v8 = [(PLSearchIndexingRebuildEngine *)&v38 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v12 = [v11 stringByAppendingString:@".searchIndexRebuildCompletion"];
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = qos_class_self();
     v15 = dispatch_queue_attr_make_with_qos_class(0, v14, 0);
-    v16 = dispatch_queue_create(v13, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     queue = v9->_queue;
     v9->_queue = v16;
 
@@ -2342,9 +2342,9 @@ void __96__PLSearchIndexingRebuildEngine_resumeSearchIndexRebuildIfNeededForLibr
     v9->_lazyCoreAnalyticsEventManager = v22;
 
     v9->_coreAnalyticsRebuildToken = 0.0;
-    v24 = [v7 createLogger];
+    createLogger = [providerCopy createLogger];
     logger = v9->_logger;
-    v9->_logger = v24;
+    v9->_logger = createLogger;
 
     v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
     iteratorsBySearchEntity = v9->_iteratorsBySearchEntity;
@@ -2355,8 +2355,8 @@ void __96__PLSearchIndexingRebuildEngine_resumeSearchIndexRebuildIfNeededForLibr
     v9->_loggingDateFormatter = v28;
 
     [(NSISO8601DateFormatter *)v9->_loggingDateFormatter setFormatOptions:1907];
-    v30 = [MEMORY[0x1E695DFE8] localTimeZone];
-    [(NSISO8601DateFormatter *)v9->_loggingDateFormatter setTimeZone:v30];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    [(NSISO8601DateFormatter *)v9->_loggingDateFormatter setTimeZone:localTimeZone];
   }
 
   return v9;
@@ -2378,13 +2378,13 @@ id __59__PLSearchIndexingRebuildEngine_initWithDelegate_provider___block_invoke(
   return v2;
 }
 
-+ (BOOL)requiresImmediateDropIndexForLibrary:(id)a3 reasons:(unint64_t *)a4
++ (BOOL)requiresImmediateDropIndexForLibrary:(id)library reasons:(unint64_t *)reasons
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 globalValues];
-  v7 = [v5 pathManager];
-  v8 = [v6 searchIndexRebuildReasonsWithSceneTaxonomyDigests:0 spotlightRequestedRebuild:0 pathManager:v7];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  pathManager = [libraryCopy pathManager];
+  v8 = [globalValues searchIndexRebuildReasonsWithSceneTaxonomyDigests:0 spotlightRequestedRebuild:0 pathManager:pathManager];
 
   v9 = v8 & 0x22;
   if ((v8 & 0x22) != 0)
@@ -2397,28 +2397,28 @@ id __59__PLSearchIndexingRebuildEngine_initWithDelegate_provider___block_invoke(
       v14 = 138543618;
       v15 = v12;
       v16 = 2112;
-      v17 = v5;
+      v17 = libraryCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Immediate search index drop required for reasons: %{public}@ for library: %@", &v14, 0x16u);
     }
 
-    if (a4)
+    if (reasons)
     {
-      *a4 = v10;
+      *reasons = v10;
     }
   }
 
   return v9 != 0;
 }
 
-+ (BOOL)hasRebuildWorkToDoForLibrary:(id)a3 identifier:(int64_t)a4 sceneTaxonomyDigests:(id)a5
++ (BOOL)hasRebuildWorkToDoForLibrary:(id)library identifier:(int64_t)identifier sceneTaxonomyDigests:(id)digests
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [PLSpotlightReindexing shouldReindexAllItemsForLibraryIdentifier:a4];
-  v10 = [v7 globalValues];
-  v11 = [v7 pathManager];
-  v12 = [v10 searchIndexRebuildReasonsWithSceneTaxonomyDigests:v8 spotlightRequestedRebuild:v9 pathManager:v11];
+  libraryCopy = library;
+  digestsCopy = digests;
+  v9 = [PLSpotlightReindexing shouldReindexAllItemsForLibraryIdentifier:identifier];
+  globalValues = [libraryCopy globalValues];
+  pathManager = [libraryCopy pathManager];
+  v12 = [globalValues searchIndexRebuildReasonsWithSceneTaxonomyDigests:digestsCopy spotlightRequestedRebuild:v9 pathManager:pathManager];
 
   if (v12)
   {
@@ -2429,7 +2429,7 @@ id __59__PLSearchIndexingRebuildEngine_initWithDelegate_provider___block_invoke(
       v16 = 138543618;
       v17 = v14;
       v18 = 2112;
-      v19 = v7;
+      v19 = libraryCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Detected rebuild reasons: %{public}@ for library: %@", &v16, 0x16u);
     }
   }

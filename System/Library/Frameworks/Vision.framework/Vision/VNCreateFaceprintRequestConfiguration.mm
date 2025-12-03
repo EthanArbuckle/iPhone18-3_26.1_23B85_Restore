@@ -1,15 +1,15 @@
 @interface VNCreateFaceprintRequestConfiguration
-- (VNCreateFaceprintRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNCreateFaceprintRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNCreateFaceprintRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNCreateFaceprintRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -19,11 +19,11 @@
   return v5;
 }
 
-- (VNCreateFaceprintRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNCreateFaceprintRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNCreateFaceprintRequestConfiguration;
-  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:a3];
+  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:class];
   if (result)
   {
     result->_forceFaceprintCreation = 0;

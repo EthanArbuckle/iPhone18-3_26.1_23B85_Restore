@@ -1,5 +1,5 @@
 @interface _MNLocationSimulationState_ReturnToDestination
-- (void)_findParkingLocation:(id)a3;
+- (void)_findParkingLocation:(id)location;
 - (void)_handleReachedParkingLocation;
 @end
 
@@ -7,24 +7,24 @@
 
 - (void)_handleReachedParkingLocation
 {
-  v6 = [(_MNLocationSimulationState *)self delegate];
+  delegate = [(_MNLocationSimulationState *)self delegate];
   v3 = [_MNLocationSimulationState_WaitingAtWaypoint alloc];
-  v4 = [(_MNLocationSimulationState *)self data];
-  [v4 currentTime];
+  data = [(_MNLocationSimulationState *)self data];
+  [data currentTime];
   v5 = [_MNLocationSimulationState_WaitingAtWaypoint initWithStartTime:v3 waitDuration:"initWithStartTime:waitDuration:"];
-  [v6 changeState:v5];
+  [delegate changeState:v5];
 }
 
-- (void)_findParkingLocation:(id)a3
+- (void)_findParkingLocation:(id)location
 {
-  v10 = a3;
-  v4 = [(_MNLocationSimulationState *)self data];
-  v5 = [v4 routeInfo];
-  v6 = [v5 route];
+  locationCopy = location;
+  data = [(_MNLocationSimulationState *)self data];
+  routeInfo = [data routeInfo];
+  route = [routeInfo route];
 
-  if (v6 && [v6 pointCount] >= 2)
+  if (route && [route pointCount] >= 2)
   {
-    [v6 pointAt:{objc_msgSend(v6, "pointCount") - 1}];
+    [route pointAt:{objc_msgSend(route, "pointCount") - 1}];
     v9 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithGEOCoordinate:{v7, v8}];
   }
 
@@ -33,7 +33,7 @@
     v9 = 0;
   }
 
-  v10[2](v10, v9, v9 != 0);
+  locationCopy[2](locationCopy, v9, v9 != 0);
 }
 
 @end

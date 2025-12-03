@@ -1,130 +1,130 @@
 @interface RBSXPCMessageContext
 + (id)currentContext;
-+ (void)handoffContextOnQueue:(id)a3 block:(id)a4;
-+ (void)runWithoutContext:(id)a3;
-- (void)_initWithHandoffToken:(void *)a1;
++ (void)handoffContextOnQueue:(id)queue block:(id)block;
++ (void)runWithoutContext:(id)context;
+- (void)_initWithHandoffToken:(void *)token;
 - (void)_set;
 - (void)_unset;
-- (void)handoffToQueue:(id)a3 block:(id)a4;
+- (void)handoffToQueue:(id)queue block:(id)block;
 @end
 
 @implementation RBSXPCMessageContext
 
 - (void)_unset
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AF00] currentThread];
-    v4 = [v2 threadDictionary];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v3 = [v4 objectForKey:@"RBSXPCCurrentContext"];
+    v3 = [threadDictionary objectForKey:@"RBSXPCCurrentContext"];
 
-    if (v3 == a1)
+    if (v3 == self)
     {
-      [v4 removeObjectForKey:@"RBSXPCCurrentContext"];
+      [threadDictionary removeObjectForKey:@"RBSXPCCurrentContext"];
     }
   }
 }
 
 - (void)_set
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AF00] currentThread];
-    v5 = [v2 threadDictionary];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v3 = [v5 objectForKey:@"RBSXPCCurrentContext"];
+    v3 = [threadDictionary objectForKey:@"RBSXPCCurrentContext"];
 
     if (v3)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__set object:a1 file:@"RBSXPCUtilities.m" lineNumber:89 description:@"must not have an existing message context"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__set object:self file:@"RBSXPCUtilities.m" lineNumber:89 description:@"must not have an existing message context"];
     }
 
-    [v5 setObject:a1 forKey:@"RBSXPCCurrentContext"];
+    [threadDictionary setObject:self forKey:@"RBSXPCCurrentContext"];
   }
 }
 
 + (id)currentContext
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"RBSXPCCurrentContext"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"RBSXPCCurrentContext"];
 
   return v4;
 }
 
-+ (void)runWithoutContext:(id)a3
++ (void)runWithoutContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v3 = +[RBSXPCMessageContext currentContext];
   v4 = v3;
   if (v3)
   {
     [(RBSXPCMessageContext *)v3 _unset];
-    v5[2]();
+    contextCopy[2]();
     [(RBSXPCMessageContext *)v4 _set];
   }
 
   else
   {
-    v5[2]();
+    contextCopy[2]();
   }
 }
 
-+ (void)handoffContextOnQueue:(id)a3 block:(id)a4
++ (void)handoffContextOnQueue:(id)queue block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v7 = +[RBSXPCMessageContext currentContext];
   v8 = v7;
   if (v7)
   {
-    [v7 handoffToQueue:v6 block:v5];
+    [v7 handoffToQueue:queueCopy block:blockCopy];
   }
 
   else
   {
-    dispatch_async(v6, v5);
+    dispatch_async(queueCopy, blockCopy);
   }
 }
 
-- (void)_initWithHandoffToken:(void *)a1
+- (void)_initWithHandoffToken:(void *)token
 {
   v4 = a2;
-  if (a1)
+  if (token)
   {
-    v9.receiver = a1;
+    v9.receiver = token;
     v9.super_class = RBSXPCMessageContext;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    token = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = xpc_dictionary_get_remote_connection(v4);
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = token[2];
+      token[2] = v6;
     }
   }
 
-  return a1;
+  return token;
 }
 
-- (void)handoffToQueue:(id)a3 block:(id)a4
+- (void)handoffToQueue:(id)queue block:(id)block
 {
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v9 = +[RBSXPCMessageContext currentContext];
 
   if (v9 != self)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"RBSXPCUtilities.m" lineNumber:77 description:@"current context does not match context being handed off"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RBSXPCUtilities.m" lineNumber:77 description:@"current context does not match context being handed off"];
   }
 
   [(RBSXPCMessageContext *)self _unset];
   handoffToken = self->_handoffToken;
-  v11 = v7;
+  v11 = blockCopy;
   xpc_dictionary_handoff_reply();
 }
 

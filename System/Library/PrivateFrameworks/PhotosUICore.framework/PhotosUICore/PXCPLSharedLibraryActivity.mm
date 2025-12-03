@@ -1,17 +1,17 @@
 @interface PXCPLSharedLibraryActivity
 + (OS_dispatch_queue)sharedQueue;
 - (PXCPLSharedLibraryActivity)init;
-- (PXCPLSharedLibraryActivity)initWithPhotoLibrary:(id)a3;
-- (void)_queue_fetchLibraryScopeForPhotoLibrary:(id)a3;
-- (void)_queue_handleCloudStatusCounts:(id)a3 error:(id)a4 libraryScope:(id)a5;
+- (PXCPLSharedLibraryActivity)initWithPhotoLibrary:(id)library;
+- (void)_queue_fetchLibraryScopeForPhotoLibrary:(id)library;
+- (void)_queue_handleCloudStatusCounts:(id)counts error:(id)error libraryScope:(id)scope;
 - (void)_queue_updateScopeStatusCounts;
-- (void)_setMovingToShared:(unint64_t)a3 movingToPersonal:(unint64_t)a4;
-- (void)_setState:(int64_t)a3;
+- (void)_setMovingToShared:(unint64_t)shared movingToPersonal:(unint64_t)personal;
+- (void)_setState:(int64_t)state;
 - (void)_updateScopeStatusCounts;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)setMovingToPersonal:(unint64_t)a3;
-- (void)setMovingToShared:(unint64_t)a3;
-- (void)setState:(int64_t)a3;
+- (void)photoLibraryDidChange:(id)change;
+- (void)setMovingToPersonal:(unint64_t)personal;
+- (void)setMovingToShared:(unint64_t)shared;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation PXCPLSharedLibraryActivity
@@ -39,11 +39,11 @@ void __54__PXCPLSharedLibraryActivity__updateScopeStatusCounts__block_invoke(uin
 - (void)_queue_updateScopeStatusCounts
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(PHFetchResult *)self->_libraryScopeFetchResult firstObject];
-  v4 = v3;
-  if (v3)
+  firstObject = [(PHFetchResult *)self->_libraryScopeFetchResult firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    if (![v3 exitState])
+    if (![firstObject exitState])
     {
       objc_initWeak(buf, self);
       v7[0] = MEMORY[0x1E69E9820];
@@ -110,17 +110,17 @@ void __60__PXCPLSharedLibraryActivity__queue_updateScopeStatusCounts__block_invo
   [WeakRetained _queue_handleCloudStatusCounts:*(a1 + 32) error:*(a1 + 40) libraryScope:*(a1 + 48)];
 }
 
-- (void)_queue_handleCloudStatusCounts:(id)a3 error:(id)a4 libraryScope:(id)a5
+- (void)_queue_handleCloudStatusCounts:(id)counts error:(id)error libraryScope:(id)scope
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  countsCopy = counts;
+  errorCopy = error;
   serialQueue = self->_serialQueue;
-  v11 = a5;
+  scopeCopy = scope;
   dispatch_assert_queue_V2(serialQueue);
-  v12 = [(PHFetchResult *)self->_libraryScopeFetchResult firstObject];
+  firstObject = [(PHFetchResult *)self->_libraryScopeFetchResult firstObject];
 
-  if (v12 != v11)
+  if (firstObject != scopeCopy)
   {
     v13 = PLUserStatusGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -135,17 +135,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = v12;
-  if (!v11)
+  v15 = firstObject;
+  if (!scopeCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL _IsExiting(PHLibraryScope *__strong)"];
-    [v20 handleFailureInFunction:v21 file:@"PXCPLSharedLibraryActivity.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"libraryScope"}];
+    [currentHandler handleFailureInFunction:v21 file:@"PXCPLSharedLibraryActivity.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"libraryScope"}];
   }
 
-  v16 = [v15 exitState];
+  exitState = [v15 exitState];
 
-  if (v16)
+  if (exitState)
   {
     v13 = PLUserStatusGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -160,10 +160,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v8)
+  if (countsCopy)
   {
-    v17 = [v8 countOfSharingRecords];
-    v18 = [v8 countOfUnsharingRecords];
+    countOfSharingRecords = [countsCopy countOfSharingRecords];
+    countOfUnsharingRecords = [countsCopy countOfUnsharingRecords];
   }
 
   else
@@ -172,12 +172,12 @@ LABEL_10:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v25 = v9;
+      v25 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_ERROR, "PXCPLSharedLibraryActivity: Failed to fetch scope status counts: %@", buf, 0xCu);
     }
 
-    v18 = 0;
-    v17 = 0;
+    countOfUnsharingRecords = 0;
+    countOfSharingRecords = 0;
   }
 
   objc_initWeak(buf, self);
@@ -186,8 +186,8 @@ LABEL_10:
   block[2] = __80__PXCPLSharedLibraryActivity__queue_handleCloudStatusCounts_error_libraryScope___block_invoke;
   block[3] = &unk_1E773B348;
   objc_copyWeak(v23, buf);
-  v23[1] = v17;
-  v23[2] = v18;
+  v23[1] = countOfSharingRecords;
+  v23[2] = countOfUnsharingRecords;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(v23);
   objc_destroyWeak(buf);
@@ -200,17 +200,17 @@ void __80__PXCPLSharedLibraryActivity__queue_handleCloudStatusCounts_error_libra
   [WeakRetained _setMovingToShared:*(a1 + 40) movingToPersonal:*(a1 + 48)];
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PXCPLSharedLibraryActivity_photoLibraryDidChange___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -245,19 +245,19 @@ void __52__PXCPLSharedLibraryActivity_photoLibraryDidChange___block_invoke_2(uin
   [WeakRetained _setState:*(a1 + 40)];
 }
 
-- (void)_setMovingToShared:(unint64_t)a3 movingToPersonal:(unint64_t)a4
+- (void)_setMovingToShared:(unint64_t)shared movingToPersonal:(unint64_t)personal
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   state = self->_state;
   v8 = state == 1;
   if (state == 1)
   {
-    v9 = a3;
+    sharedCopy = shared;
   }
 
   else
   {
-    v9 = 0;
+    sharedCopy = 0;
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -266,17 +266,17 @@ void __52__PXCPLSharedLibraryActivity_photoLibraryDidChange___block_invoke_2(uin
   v11[3] = &unk_1E7746798;
   if (v8)
   {
-    v10 = a4;
+    personalCopy = personal;
   }
 
   else
   {
-    v10 = 0;
+    personalCopy = 0;
   }
 
   v11[4] = self;
-  v11[5] = v9;
-  v11[6] = v10;
+  v11[5] = sharedCopy;
+  v11[6] = personalCopy;
   [(PXCPLSharedLibraryActivity *)self performChanges:v11];
 }
 
@@ -332,17 +332,17 @@ void __66__PXCPLSharedLibraryActivity__setMovingToShared_movingToPersonal___bloc
   }
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(PXCPLSharedLibraryActivity *)self state];
+  state = [(PXCPLSharedLibraryActivity *)self state];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__PXCPLSharedLibraryActivity__setState___block_invoke;
   v6[3] = &unk_1E7746798;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = v5;
+  v6[5] = state;
+  v6[6] = state;
   [(PXCPLSharedLibraryActivity *)self performChanges:v6];
 }
 
@@ -416,24 +416,24 @@ void __40__PXCPLSharedLibraryActivity__setState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_fetchLibraryScopeForPhotoLibrary:(id)a3
+- (void)_queue_fetchLibraryScopeForPhotoLibrary:(id)library
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(self->_serialQueue);
   v6 = PLUserStatusGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v5;
+    v15 = libraryCopy;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "PXCPLSharedLibraryActivity { %{public}@ }", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_photoLibrary, a3);
+  objc_storeStrong(&self->_photoLibrary, library);
   [(PHPhotoLibrary *)self->_photoLibrary registerChangeObserver:self];
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v7 setIncludeExitingShares:1];
-  v8 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:v7];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeExitingShares:1];
+  v8 = [MEMORY[0x1E69788A0] fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
   libraryScopeFetchResult = self->_libraryScopeFetchResult;
   self->_libraryScopeFetchResult = v8;
 
@@ -458,46 +458,46 @@ void __70__PXCPLSharedLibraryActivity__queue_fetchLibraryScopeForPhotoLibrary___
   [WeakRetained _setState:*(a1 + 40)];
 }
 
-- (void)setMovingToPersonal:(unint64_t)a3
+- (void)setMovingToPersonal:(unint64_t)personal
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_movingToPersonal != a3)
+  if (self->_movingToPersonal != personal)
   {
-    self->_movingToPersonal = a3;
+    self->_movingToPersonal = personal;
 
     [(PXCPLSharedLibraryActivity *)self signalChange:4];
   }
 }
 
-- (void)setMovingToShared:(unint64_t)a3
+- (void)setMovingToShared:(unint64_t)shared
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_movingToShared != a3)
+  if (self->_movingToShared != shared)
   {
-    self->_movingToShared = a3;
+    self->_movingToShared = shared;
 
     [(PXCPLSharedLibraryActivity *)self signalChange:2];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
 
     [(PXCPLSharedLibraryActivity *)self signalChange:1];
   }
 }
 
-- (PXCPLSharedLibraryActivity)initWithPhotoLibrary:(id)a3
+- (PXCPLSharedLibraryActivity)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCPLSharedLibraryActivity.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLSharedLibraryActivity.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v17.receiver = self;
@@ -516,7 +516,7 @@ void __70__PXCPLSharedLibraryActivity__queue_fetchLibraryScopeForPhotoLibrary___
     block[2] = __51__PXCPLSharedLibraryActivity_initWithPhotoLibrary___block_invoke;
     block[3] = &unk_1E774B248;
     objc_copyWeak(&v15, &location);
-    v14 = v5;
+    v14 = libraryCopy;
     v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_DETACHED, QOS_CLASS_UTILITY, 0, block);
     dispatch_async(v9, v10);
 
@@ -535,8 +535,8 @@ void __51__PXCPLSharedLibraryActivity_initWithPhotoLibrary___block_invoke(uint64
 
 - (PXCPLSharedLibraryActivity)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLSharedLibraryActivity.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXCPLSharedLibraryActivity init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLSharedLibraryActivity.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXCPLSharedLibraryActivity init]"}];
 
   abort();
 }

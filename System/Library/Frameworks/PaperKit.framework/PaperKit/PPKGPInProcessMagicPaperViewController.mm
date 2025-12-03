@@ -1,17 +1,17 @@
 @interface PPKGPInProcessMagicPaperViewController
-+ (__CVBuffer)_createPixelBufferFromUIImage:(id)a3 pixelFormat:(unsigned int)a4;
-+ (id)_uiImageFromPixelBuffer:(__CVBuffer *)a3;
-+ (id)decodeRecipeData:(id)a3;
-+ (id)promptsFromRecipeData:(id)a3;
++ (__CVBuffer)_createPixelBufferFromUIImage:(id)image pixelFormat:(unsigned int)format;
++ (id)_uiImageFromPixelBuffer:(__CVBuffer *)buffer;
++ (id)decodeRecipeData:(id)data;
++ (id)promptsFromRecipeData:(id)data;
 + (void)preload;
-+ (void)prewarmEffectWithCompletion:(id)a3;
++ (void)prewarmEffectWithCompletion:(id)completion;
 - (BOOL)becomeFirstResponder;
 - (BOOL)generateCaptionFromImage;
 - (BOOL)isAnimating;
 - (BOOL)isUpscaleRequestSupported;
 - (CGRect)magicViewFullFrame;
 - (NSData)encodedRecipe;
-- (PPKGPInProcessMagicPaperViewController)initWithTokenProvider:(id)a3;
+- (PPKGPInProcessMagicPaperViewController)initWithTokenProvider:(id)provider;
 - (PPKGPInProcessMagicPaperViewControllerDelegate)delegate;
 - (PPKMagicGenerativePlaygroundTokenProvider)tokenProvider;
 - (UIImage)sketchImage;
@@ -27,35 +27,35 @@
 - (id)suggestions;
 - (int64_t)sanitizationCategory;
 - (void)_finalizeDueToFirstResponderChange;
-- (void)_handleFirstResponderDidChangeNotification:(id)a3;
-- (void)_setDrawOnImageRecipe:(id)a3;
-- (void)_setRecipe:(id)a3;
-- (void)addConcepts:(id)a3;
-- (void)addSuggestions:(id)a3;
+- (void)_handleFirstResponderDidChangeNotification:(id)notification;
+- (void)_setDrawOnImageRecipe:(id)recipe;
+- (void)_setRecipe:(id)recipe;
+- (void)addConcepts:(id)concepts;
+- (void)addSuggestions:(id)suggestions;
 - (void)beginRecipe;
 - (void)commitRecipe;
-- (void)finishSelectionWithPath:(CGPath *)a3 pencilLocation:(CGPoint)a4;
-- (void)magicPaperViewController:(id)a3 didGenerateImage:(id)a4;
-- (void)magicPaperViewControllerDidCancel:(id)a3;
-- (void)magicPaperViewControllerViewDidAppear:(id)a3;
-- (void)magicPaperViewControllerViewDidDisappear:(id)a3;
-- (void)setConcepts:(id)a3;
-- (void)setEncodedRecipe:(id)a3;
-- (void)setGenerateCaptionFromImage:(BOOL)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setPromptElements:(id)a3;
-- (void)setSanitizationCategory:(int64_t)a3;
-- (void)setSketchComplexityMeasure:(double)a3;
-- (void)setSketchImage:(id)a3;
-- (void)setSketchMask:(id)a3;
-- (void)setSourceImage:(id)a3;
-- (void)setSourceImageRatio:(double)a3;
-- (void)setState:(id)a3;
-- (void)setSuggestions:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)startSelectionWithPath:(CGPath *)a3 pencilLocation:(CGPoint)a4;
-- (void)updateSelectionWithPath:(CGPath *)a3 pencilLocation:(CGPoint)a4;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)finishSelectionWithPath:(CGPath *)path pencilLocation:(CGPoint)location;
+- (void)magicPaperViewController:(id)controller didGenerateImage:(id)image;
+- (void)magicPaperViewControllerDidCancel:(id)cancel;
+- (void)magicPaperViewControllerViewDidAppear:(id)appear;
+- (void)magicPaperViewControllerViewDidDisappear:(id)disappear;
+- (void)setConcepts:(id)concepts;
+- (void)setEncodedRecipe:(id)recipe;
+- (void)setGenerateCaptionFromImage:(BOOL)image;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setPromptElements:(id)elements;
+- (void)setSanitizationCategory:(int64_t)category;
+- (void)setSketchComplexityMeasure:(double)measure;
+- (void)setSketchImage:(id)image;
+- (void)setSketchMask:(id)mask;
+- (void)setSourceImage:(id)image;
+- (void)setSourceImageRatio:(double)ratio;
+- (void)setState:(id)state;
+- (void)setSuggestions:(id)suggestions;
+- (void)setTitle:(id)title;
+- (void)startSelectionWithPath:(CGPath *)path pencilLocation:(CGPoint)location;
+- (void)updateSelectionWithPath:(CGPath *)path pencilLocation:(CGPoint)location;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation PPKGPInProcessMagicPaperViewController
@@ -75,9 +75,9 @@ id __49__PPKGPInProcessMagicPaperViewController_preload__block_invoke()
   return getGPRecipeClass();
 }
 
-+ (void)prewarmEffectWithCompletion:(id)a3
++ (void)prewarmEffectWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   getGPInProcessMagicPaperViewControllerClass();
   if (objc_opt_respondsToSelector())
   {
@@ -86,19 +86,19 @@ id __49__PPKGPInProcessMagicPaperViewController_preload__block_invoke()
     v5[1] = 3221225472;
     v5[2] = __70__PPKGPInProcessMagicPaperViewController_prewarmEffectWithCompletion___block_invoke;
     v5[3] = &unk_1E845C3E8;
-    v6 = v3;
+    v6 = completionCopy;
     [GPInProcessMagicPaperViewControllerClass prewarmEffectAndKeepItInMemory:0 withCompletion:v5];
   }
 
   else
   {
-    (*(v3 + 2))(v3, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (PPKGPInProcessMagicPaperViewController)initWithTokenProvider:(id)a3
+- (PPKGPInProcessMagicPaperViewController)initWithTokenProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PPKGPInProcessMagicPaperViewController;
   v5 = [(PPKGPInProcessMagicPaperViewController *)&v14 initWithNibName:0 bundle:0];
@@ -108,19 +108,19 @@ id __49__PPKGPInProcessMagicPaperViewController_preload__block_invoke()
     discreteUndoManager = v5->_discreteUndoManager;
     v5->_discreteUndoManager = v6;
 
-    [(PPKGPInProcessMagicPaperViewController *)v5 setTokenProvider:v4];
+    [(PPKGPInProcessMagicPaperViewController *)v5 setTokenProvider:providerCopy];
     v8 = [objc_alloc(getGPInProcessMagicPaperViewControllerClass()) initWithUndoManager:v5->_discreteUndoManager];
     [v8 setDelegate:v5];
     [(PPKGPInProcessMagicPaperViewController *)v5 setMagicPaperVC:v8];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel__handleFirstResponderDidChangeNotification_ name:*MEMORY[0x1E69DEB18] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleFirstResponderDidChangeNotification_ name:*MEMORY[0x1E69DEB18] object:0];
 
     v10 = objc_alloc_init(PPKGPMagicPaperImageGenerationEvent);
     imageGenerationEvent = v5->_imageGenerationEvent;
     v5->_imageGenerationEvent = v10;
 
-    v12 = [MEMORY[0x1E696AFB0] UUID];
-    [(PPKGPMagicPaperImageGenerationEvent *)v5->_imageGenerationEvent setSessionID:v12];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(PPKGPMagicPaperImageGenerationEvent *)v5->_imageGenerationEvent setSessionID:uUID];
   }
 
   return v5;
@@ -130,31 +130,31 @@ id __49__PPKGPInProcessMagicPaperViewController_preload__block_invoke()
 {
   v5.receiver = self;
   v5.super_class = PPKGPInProcessMagicPaperViewController;
-  v3 = [(PPKGPInProcessMagicPaperViewController *)&v5 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(PPKGPInProcessMagicPaperViewController *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(PPKGPInProcessMagicPaperViewController *)self setWasFirstResponderAtLeastOnce:1];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (id)_getOrCreateRecipe
 {
-  v3 = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
-  v4 = v3;
-  if (v3)
+  influxRecipe = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
+  v4 = influxRecipe;
+  if (influxRecipe)
   {
-    v5 = v3;
+    v5 = influxRecipe;
 LABEL_3:
-    v6 = v5;
+    recipe = v5;
     goto LABEL_5;
   }
 
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v6 = [v7 recipe];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
 
-  if (!v6)
+  if (!recipe)
   {
     v5 = [objc_alloc(getGPRecipeClass()) initWithPromptElements:MEMORY[0x1E695E0F0]];
     goto LABEL_3;
@@ -162,14 +162,14 @@ LABEL_3:
 
 LABEL_5:
 
-  return v6;
+  return recipe;
 }
 
 - (id)_getOrCreateDrawOnImageRecipe
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
-  v3 = [v2 drawOnImageRecipe];
-  if (!v3)
+  _getOrCreateRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
+  drawOnImageRecipe = [_getOrCreateRecipe drawOnImageRecipe];
+  if (!drawOnImageRecipe)
   {
     v8 = 0;
     v9 = &v8;
@@ -189,144 +189,144 @@ LABEL_5:
 
     v5 = v4;
     _Block_object_dispose(&v8, 8);
-    v3 = [[v4 alloc] initWithBaseImage:0 sketchImage:0 sketchMask:0 baseImageRatio:1 sketchComplexityMeasure:0 generateCaptionFromImage:1 sanitizationCategory:1.0 drawOnImageAssignmentOptions:1.0];
+    drawOnImageRecipe = [[v4 alloc] initWithBaseImage:0 sketchImage:0 sketchMask:0 baseImageRatio:1 sketchComplexityMeasure:0 generateCaptionFromImage:1 sanitizationCategory:1.0 drawOnImageAssignmentOptions:1.0];
   }
 
-  return v3;
+  return drawOnImageRecipe;
 }
 
-- (void)_setDrawOnImageRecipe:(id)a3
+- (void)_setDrawOnImageRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
-  [v5 setDrawOnImageRecipe:v4];
+  recipeCopy = recipe;
+  _getOrCreateRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
+  [_getOrCreateRecipe setDrawOnImageRecipe:recipeCopy];
 
-  [(PPKGPInProcessMagicPaperViewController *)self _setRecipe:v5];
+  [(PPKGPInProcessMagicPaperViewController *)self _setRecipe:_getOrCreateRecipe];
 }
 
-- (void)_setRecipe:(id)a3
+- (void)_setRecipe:(id)recipe
 {
-  v6 = a3;
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
+  recipeCopy = recipe;
+  influxRecipe = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
 
-  if (v4)
+  if (influxRecipe)
   {
-    [(PPKGPInProcessMagicPaperViewController *)self setInfluxRecipe:v6];
+    [(PPKGPInProcessMagicPaperViewController *)self setInfluxRecipe:recipeCopy];
   }
 
   else
   {
-    v5 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-    [v5 setRecipe:v6];
+    magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+    [magicPaperVC setRecipe:recipeCopy];
   }
 }
 
 - (void)beginRecipe
 {
-  v3 = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
-  if (!v3)
+  influxRecipe = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
+  if (!influxRecipe)
   {
-    v4 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
-    [(PPKGPInProcessMagicPaperViewController *)self setInfluxRecipe:v4];
+    _getOrCreateRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
+    [(PPKGPInProcessMagicPaperViewController *)self setInfluxRecipe:_getOrCreateRecipe];
 
-    v3 = 0;
+    influxRecipe = 0;
   }
 }
 
 - (void)commitRecipe
 {
-  v3 = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
-  if (v3)
+  influxRecipe = [(PPKGPInProcessMagicPaperViewController *)self influxRecipe];
+  if (influxRecipe)
   {
-    v5 = v3;
-    v4 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-    [v4 setRecipe:v5];
+    v5 = influxRecipe;
+    magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+    [magicPaperVC setRecipe:v5];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v32[4] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = PPKGPInProcessMagicPaperViewController;
-  [(PPKGPInProcessMagicPaperViewController *)&v31 viewIsAppearing:a3];
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v5 = [v4 view];
-  v6 = [v5 superview];
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self view];
+  [(PPKGPInProcessMagicPaperViewController *)&v31 viewIsAppearing:appearing];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  view = [magicPaperVC view];
+  superview = [view superview];
+  view2 = [(PPKGPInProcessMagicPaperViewController *)self view];
 
-  if (v6 != v7)
+  if (superview != view2)
   {
-    v8 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-    v9 = [v8 view];
+    magicPaperVC2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+    view3 = [magicPaperVC2 view];
 
-    v10 = [(PPKGPInProcessMagicPaperViewController *)self view];
-    [v10 addSubview:v9];
+    view4 = [(PPKGPInProcessMagicPaperViewController *)self view];
+    [view4 addSubview:view3];
 
-    v11 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-    [(PPKGPInProcessMagicPaperViewController *)self addChildViewController:v11];
+    magicPaperVC3 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+    [(PPKGPInProcessMagicPaperViewController *)self addChildViewController:magicPaperVC3];
 
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = MEMORY[0x1E696ACD8];
-    v28 = [v9 bottomAnchor];
-    v29 = [(PPKGPInProcessMagicPaperViewController *)self view];
-    v27 = [v29 bottomAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    bottomAnchor = [view3 bottomAnchor];
+    view5 = [(PPKGPInProcessMagicPaperViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v32[0] = v26;
-    v24 = [v9 topAnchor];
-    v25 = [(PPKGPInProcessMagicPaperViewController *)self view];
-    v23 = [v25 topAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23];
+    topAnchor = [view3 topAnchor];
+    view6 = [(PPKGPInProcessMagicPaperViewController *)self view];
+    topAnchor2 = [view6 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[1] = v21;
-    [v9 leadingAnchor];
-    v12 = v30 = v4;
-    v13 = [(PPKGPInProcessMagicPaperViewController *)self view];
-    v14 = [v13 leadingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    [view3 leadingAnchor];
+    v12 = v30 = magicPaperVC;
+    view7 = [(PPKGPInProcessMagicPaperViewController *)self view];
+    leadingAnchor = [view7 leadingAnchor];
+    v15 = [v12 constraintEqualToAnchor:leadingAnchor];
     v32[2] = v15;
-    v16 = [v9 trailingAnchor];
-    v17 = [(PPKGPInProcessMagicPaperViewController *)self view];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    trailingAnchor = [view3 trailingAnchor];
+    view8 = [(PPKGPInProcessMagicPaperViewController *)self view];
+    trailingAnchor2 = [view8 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
     [v22 activateConstraints:v20];
 
-    v4 = v30;
+    magicPaperVC = v30;
   }
 }
 
 - (NSData)encodedRecipe
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 recipe];
-  v4 = [v3 additionalMetadata];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  additionalMetadata = [recipe additionalMetadata];
 
-  return v4;
+  return additionalMetadata;
 }
 
-- (void)setEncodedRecipe:(id)a3
+- (void)setEncodedRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
-  [v5 setAdditionalMetadata:v4];
+  recipeCopy = recipe;
+  _getOrCreateRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
+  [_getOrCreateRecipe setAdditionalMetadata:recipeCopy];
 
-  [(PPKGPInProcessMagicPaperViewController *)self _setRecipe:v5];
+  [(PPKGPInProcessMagicPaperViewController *)self _setRecipe:_getOrCreateRecipe];
 }
 
-+ (__CVBuffer)_createPixelBufferFromUIImage:(id)a3 pixelFormat:(unsigned int)a4
++ (__CVBuffer)_createPixelBufferFromUIImage:(id)image pixelFormat:(unsigned int)format
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 CIImage];
-  if (v6 || [v5 CGImage] && (v6 = objc_msgSend(objc_alloc(MEMORY[0x1E695F658]), "initWithCGImage:", objc_msgSend(v5, "CGImage"))) != 0)
+  imageCopy = image;
+  cIImage = [imageCopy CIImage];
+  if (cIImage || [imageCopy CGImage] && (cIImage = objc_msgSend(objc_alloc(MEMORY[0x1E695F658]), "initWithCGImage:", objc_msgSend(imageCopy, "CGImage"))) != 0)
   {
-    v7 = v6;
-    [v6 extent];
+    v7 = cIImage;
+    [cIImage extent];
     if (v8 != 512 || ([v7 extent], v9 != 512))
     {
-      v10 = [MEMORY[0x1E695F648] lanczosScaleTransformFilter];
-      [v10 setInputImage:v7];
+      lanczosScaleTransformFilter = [MEMORY[0x1E695F648] lanczosScaleTransformFilter];
+      [lanczosScaleTransformFilter setInputImage:v7];
       [v7 extent];
       v12 = v11;
       [v7 extent];
@@ -342,12 +342,12 @@ LABEL_5:
 
       v15 = 512.0 / v14;
       *&v15 = v15;
-      [v10 setScale:v15];
+      [lanczosScaleTransformFilter setScale:v15];
       LODWORD(v16) = 1.0;
-      [v10 setAspectRatio:v16];
-      v17 = [v10 outputImage];
+      [lanczosScaleTransformFilter setAspectRatio:v16];
+      outputImage = [lanczosScaleTransformFilter outputImage];
 
-      v7 = v17;
+      v7 = outputImage;
     }
 
     v25 = 0;
@@ -359,10 +359,10 @@ LABEL_5:
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
 
     v20 = 0;
-    if (!CVPixelBufferCreate(*MEMORY[0x1E695E480], 0x200uLL, 0x200uLL, a4, v19, &v25))
+    if (!CVPixelBufferCreate(*MEMORY[0x1E695E480], 0x200uLL, 0x200uLL, format, v19, &v25))
     {
       v21 = objc_alloc_init(MEMORY[0x1E695F620]);
-      if (a4 == 1111970369)
+      if (format == 1111970369)
       {
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
       }
@@ -395,34 +395,34 @@ LABEL_5:
   return v20;
 }
 
-+ (id)_uiImageFromPixelBuffer:(__CVBuffer *)a3
++ (id)_uiImageFromPixelBuffer:(__CVBuffer *)buffer
 {
-  v3 = a3;
-  if (a3)
+  bufferCopy = buffer;
+  if (buffer)
   {
-    v4 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a3];
+    v4 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:buffer];
     v5 = [MEMORY[0x1E695F620] contextWithOptions:0];
-    Width = CVPixelBufferGetWidth(v3);
-    v7 = [v5 createCGImage:v4 fromRect:{0.0, 0.0, Width, CVPixelBufferGetHeight(v3)}];
+    Width = CVPixelBufferGetWidth(bufferCopy);
+    v7 = [v5 createCGImage:v4 fromRect:{0.0, 0.0, Width, CVPixelBufferGetHeight(bufferCopy)}];
     if (v7)
     {
       v8 = v7;
-      v3 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v7];
+      bufferCopy = [MEMORY[0x1E69DCAB8] imageWithCGImage:v7];
       CGImageRelease(v8);
     }
 
     else
     {
-      v3 = 0;
+      bufferCopy = 0;
     }
   }
 
-  return v3;
+  return bufferCopy;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -442,44 +442,44 @@ LABEL_5:
   v6 = v5;
   _Block_object_dispose(&v15, 8);
   v7 = [v5 alloc];
-  [v4 frame];
-  v12 = [v7 initWithFrame:objc_msgSend(v4 isEditing:{"isEditing"), v8, v9, v10, v11}];
-  v13 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  [v13 setState:v12];
+  [stateCopy frame];
+  v12 = [v7 initWithFrame:objc_msgSend(stateCopy isEditing:{"isEditing"), v8, v9, v10, v11}];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  [magicPaperVC setState:v12];
 }
 
 - (BOOL)isAnimating
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 isAnimating];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  isAnimating = [magicPaperVC isAnimating];
 
-  return v3;
+  return isAnimating;
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  v3 = a3;
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  [v4 setIsAnimating:v3];
+  animatingCopy = animating;
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  [magicPaperVC setIsAnimating:animatingCopy];
 }
 
 - (UIImage)sourceImage
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 recipe];
-  v4 = [v3 drawOnImageRecipe];
-  v5 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [v4 baseImage]);
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
+  v5 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [drawOnImageRecipe baseImage]);
 
   return v5;
 }
 
-- (void)setSourceImage:(id)a3
+- (void)setSourceImage:(id)image
 {
-  v6 = a3;
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
-  if (v6)
+  imageCopy = image;
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  if (imageCopy)
   {
-    v5 = [PPKGPInProcessMagicPaperViewController _createPixelBufferFromUIImage:v6 pixelFormat:1111970369];
+    v5 = [PPKGPInProcessMagicPaperViewController _createPixelBufferFromUIImage:imageCopy pixelFormat:1111970369];
   }
 
   else
@@ -487,15 +487,15 @@ LABEL_5:
     v5 = 0;
   }
 
-  [v4 setBaseImage:v5];
-  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v4];
+  [_getOrCreateDrawOnImageRecipe setBaseImage:v5];
+  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
 }
 
 - (double)sourceImageRatio
 {
-  v3 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v4 = [v3 recipe];
-  v5 = [v4 drawOnImageRecipe];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -503,88 +503,88 @@ LABEL_5:
     return 1.0;
   }
 
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v8 = [v7 recipe];
-  v9 = [v8 drawOnImageRecipe];
-  [v9 baseImageRatio];
+  magicPaperVC2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe2 = [magicPaperVC2 recipe];
+  drawOnImageRecipe2 = [recipe2 drawOnImageRecipe];
+  [drawOnImageRecipe2 baseImageRatio];
   v11 = v10;
 
   return v11;
 }
 
-- (void)setSourceImageRatio:(double)a3
+- (void)setSourceImageRatio:(double)ratio
 {
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setBaseImageRatio:a3];
-    [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v5];
+    [_getOrCreateDrawOnImageRecipe setBaseImageRatio:ratio];
+    [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
   }
 }
 
 - (UIImage)sketchImage
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 recipe];
-  v4 = [v3 drawOnImageRecipe];
-  v5 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [v4 sketchImage]);
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
+  v5 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [drawOnImageRecipe sketchImage]);
 
   return v5;
 }
 
-- (void)setSketchImage:(id)a3
+- (void)setSketchImage:(id)image
 {
-  v4 = a3;
-  v6 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
-  v5 = [PPKGPInProcessMagicPaperViewController _createPixelBufferFromUIImage:v4 pixelFormat:1111970369];
+  imageCopy = image;
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  v5 = [PPKGPInProcessMagicPaperViewController _createPixelBufferFromUIImage:imageCopy pixelFormat:1111970369];
 
-  [v6 setSketchImage:v5];
-  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v6];
+  [_getOrCreateDrawOnImageRecipe setSketchImage:v5];
+  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
 }
 
 - (UIImage)sketchMask
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 recipe];
-  v4 = [v3 drawOnImageRecipe];
-  v5 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [v4 sketchMask]);
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
+  v5 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [drawOnImageRecipe sketchMask]);
 
   return v5;
 }
 
-- (void)setSketchMask:(id)a3
+- (void)setSketchMask:(id)mask
 {
-  v4 = a3;
-  v6 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
-  v5 = [PPKGPInProcessMagicPaperViewController _createPixelBufferFromUIImage:v4 pixelFormat:1278226488];
+  maskCopy = mask;
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  v5 = [PPKGPInProcessMagicPaperViewController _createPixelBufferFromUIImage:maskCopy pixelFormat:1278226488];
 
-  [v6 setSketchMask:v5];
-  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v6];
+  [_getOrCreateDrawOnImageRecipe setSketchMask:v5];
+  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
 }
 
 - (double)sketchComplexityMeasure
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 recipe];
-  v4 = [v3 drawOnImageRecipe];
-  [v4 sketchComplexityMeasure];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
+  [drawOnImageRecipe sketchComplexityMeasure];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setSketchComplexityMeasure:(double)a3
+- (void)setSketchComplexityMeasure:(double)measure
 {
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
-  [v5 setSketchComplexityMeasure:a3];
-  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v5];
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  [_getOrCreateDrawOnImageRecipe setSketchComplexityMeasure:measure];
+  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
 }
 
 - (BOOL)generateCaptionFromImage
 {
-  v3 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v4 = [v3 recipe];
-  v5 = [v4 drawOnImageRecipe];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -592,51 +592,51 @@ LABEL_5:
     return 0;
   }
 
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v8 = [v7 recipe];
-  v9 = [v8 drawOnImageRecipe];
-  v10 = [v9 generateCaptionFromImage];
+  magicPaperVC2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe2 = [magicPaperVC2 recipe];
+  drawOnImageRecipe2 = [recipe2 drawOnImageRecipe];
+  generateCaptionFromImage = [drawOnImageRecipe2 generateCaptionFromImage];
 
-  return v10;
+  return generateCaptionFromImage;
 }
 
-- (void)setGenerateCaptionFromImage:(BOOL)a3
+- (void)setGenerateCaptionFromImage:(BOOL)image
 {
-  v3 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  imageCopy = image;
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setGenerateCaptionFromImage:v3];
-    [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v5];
+    [_getOrCreateDrawOnImageRecipe setGenerateCaptionFromImage:imageCopy];
+    [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
   }
 }
 
 - (int64_t)sanitizationCategory
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  v3 = [v2 recipe];
-  v4 = [v3 drawOnImageRecipe];
-  v5 = [v4 sanitizationCategory];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  recipe = [magicPaperVC recipe];
+  drawOnImageRecipe = [recipe drawOnImageRecipe];
+  sanitizationCategory = [drawOnImageRecipe sanitizationCategory];
 
-  return v5;
+  return sanitizationCategory;
 }
 
-- (void)setSanitizationCategory:(int64_t)a3
+- (void)setSanitizationCategory:(int64_t)category
 {
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
-  [v5 setSanitizationCategory:a3];
-  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:v5];
+  _getOrCreateDrawOnImageRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateDrawOnImageRecipe];
+  [_getOrCreateDrawOnImageRecipe setSanitizationCategory:category];
+  [(PPKGPInProcessMagicPaperViewController *)self _setDrawOnImageRecipe:_getOrCreateDrawOnImageRecipe];
 }
 
 - (CGRect)magicViewFullFrame
 {
-  v3 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-    [v5 magicViewFullFrame];
+    magicPaperVC2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+    [magicPaperVC2 magicViewFullFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -662,57 +662,57 @@ LABEL_5:
   return result;
 }
 
-- (void)startSelectionWithPath:(CGPath *)a3 pencilLocation:(CGPoint)a4
+- (void)startSelectionWithPath:(CGPath *)path pencilLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  [v7 startSelectionWithPath:a3 atPencilLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  [magicPaperVC startSelectionWithPath:path atPencilLocation:{x, y}];
 }
 
-- (void)updateSelectionWithPath:(CGPath *)a3 pencilLocation:(CGPoint)a4
+- (void)updateSelectionWithPath:(CGPath *)path pencilLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  [v7 updateSelectionWithPath:a3 atPencilLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  [magicPaperVC updateSelectionWithPath:path atPencilLocation:{x, y}];
 }
 
-- (void)finishSelectionWithPath:(CGPath *)a3 pencilLocation:(CGPoint)a4
+- (void)finishSelectionWithPath:(CGPath *)path pencilLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  [v7 finishSelectionWithPath:a3 atPencilLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  [magicPaperVC finishSelectionWithPath:path atPencilLocation:{x, y}];
 }
 
 - (id)promptElements
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
-  v3 = [v2 promptElements];
+  _getOrCreateRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
+  promptElements = [_getOrCreateRecipe promptElements];
 
-  return v3;
+  return promptElements;
 }
 
-- (void)setPromptElements:(id)a3
+- (void)setPromptElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
-  [v5 setPromptElements:v4];
+  elementsCopy = elements;
+  _getOrCreateRecipe = [(PPKGPInProcessMagicPaperViewController *)self _getOrCreateRecipe];
+  [_getOrCreateRecipe setPromptElements:elementsCopy];
 
-  [(PPKGPInProcessMagicPaperViewController *)self _setRecipe:v5];
+  [(PPKGPInProcessMagicPaperViewController *)self _setRecipe:_getOrCreateRecipe];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  titleCopy = title;
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isTitle == false"];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [promptElements filteredArrayUsingPredicate:v6];
   v9 = [v7 mutableCopy];
 
-  v8 = [objc_alloc(getGPPromptElementClass()) initWithText:v4];
-  [v8 setTitle:v4];
+  v8 = [objc_alloc(getGPPromptElementClass()) initWithText:titleCopy];
+  [v8 setTitle:titleCopy];
 
   [v9 addObject:v8];
   [(PPKGPInProcessMagicPaperViewController *)self setPromptElements:v9];
@@ -720,16 +720,16 @@ LABEL_5:
 
 - (id)_titleElements
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  array = [MEMORY[0x1E695DF70] array];
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isTitle == true"];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [promptElements filteredArrayUsingPredicate:v5];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__PPKGPInProcessMagicPaperViewController__titleElements__block_invoke;
   v10[3] = &unk_1E845C528;
-  v11 = v3;
-  v7 = v3;
+  v11 = array;
+  v7 = array;
   [v6 enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
@@ -753,14 +753,14 @@ void __56__PPKGPInProcessMagicPaperViewController__titleElements__block_invoke(u
 - (id)suggestions
 {
   v3 = objc_opt_new();
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PPKGPInProcessMagicPaperViewController_suggestions__block_invoke;
   v7[3] = &unk_1E845C528;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [promptElements enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -775,18 +775,18 @@ void __53__PPKGPInProcessMagicPaperViewController_suggestions__block_invoke(uint
   }
 }
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
-  v6 = [v5 mutableCopy];
+  suggestionsCopy = suggestions;
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  v6 = [promptElements mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = suggestionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -819,20 +819,20 @@ void __53__PPKGPInProcessMagicPaperViewController_suggestions__block_invoke(uint
   [(PPKGPInProcessMagicPaperViewController *)self setPromptElements:v6];
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  suggestionsCopy = suggestions;
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"needsSuggestableConceptsExtraction == false"];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [promptElements filteredArrayUsingPredicate:v6];
   v8 = [v7 mutableCopy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v4;
+  v9 = suggestionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -868,14 +868,14 @@ void __53__PPKGPInProcessMagicPaperViewController_suggestions__block_invoke(uint
 - (id)concepts
 {
   v3 = objc_opt_new();
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PPKGPInProcessMagicPaperViewController_concepts__block_invoke;
   v7[3] = &unk_1E845C528;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [promptElements enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -890,18 +890,18 @@ void __50__PPKGPInProcessMagicPaperViewController_concepts__block_invoke(uint64_
   }
 }
 
-- (void)addConcepts:(id)a3
+- (void)addConcepts:(id)concepts
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
-  v6 = [v5 mutableCopy];
+  conceptsCopy = concepts;
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  v6 = [promptElements mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = conceptsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -934,20 +934,20 @@ void __50__PPKGPInProcessMagicPaperViewController_concepts__block_invoke(uint64_
   [(PPKGPInProcessMagicPaperViewController *)self setPromptElements:v6];
 }
 
-- (void)setConcepts:(id)a3
+- (void)setConcepts:(id)concepts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
+  conceptsCopy = concepts;
+  promptElements = [(PPKGPInProcessMagicPaperViewController *)self promptElements];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"needsConceptsExtraction == false"];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [promptElements filteredArrayUsingPredicate:v6];
   v8 = [v7 mutableCopy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v4;
+  v9 = conceptsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -1001,20 +1001,20 @@ void __67__PPKGPInProcessMagicPaperViewController_isUpscaleRequestSupported__blo
   isUpscaleRequestSupported_isSupported = objc_opt_respondsToSelector() & 1;
 }
 
-- (void)_handleFirstResponderDidChangeNotification:(id)a3
+- (void)_handleFirstResponderDidChangeNotification:(id)notification
 {
-  v19 = a3;
+  notificationCopy = notification;
   if ([(PPKGPInProcessMagicPaperViewController *)self wasFirstResponderAtLeastOnce])
   {
     if ([(PPKGPInProcessMagicPaperViewController *)self isViewLoaded])
     {
-      v4 = [(PPKGPInProcessMagicPaperViewController *)self view];
-      v5 = [v4 window];
+      view = [(PPKGPInProcessMagicPaperViewController *)self view];
+      window = [view window];
 
-      if (v5)
+      if (window)
       {
-        v6 = [v19 userInfo];
-        v7 = [v6 objectForKey:@"UIWindowFirstResponderUserInfoKey"];
+        userInfo = [notificationCopy userInfo];
+        v7 = [userInfo objectForKey:@"UIWindowFirstResponderUserInfoKey"];
 
         if (v7)
         {
@@ -1022,29 +1022,29 @@ void __67__PPKGPInProcessMagicPaperViewController_isUpscaleRequestSupported__blo
           if (objc_opt_isKindOfClass())
           {
             v8 = v7;
-            v9 = [(PPKGPInProcessMagicPaperViewController *)self view];
-            v10 = [v9 window];
-            v11 = [(PPKGPInProcessMagicPaperViewController *)v8 _responderWindow];
+            view2 = [(PPKGPInProcessMagicPaperViewController *)self view];
+            window2 = [view2 window];
+            _responderWindow = [(PPKGPInProcessMagicPaperViewController *)v8 _responderWindow];
 
-            if (v10 == v11 && [(PPKGPInProcessMagicPaperViewController *)self isUpscaleRequestSupported])
+            if (window2 == _responderWindow && [(PPKGPInProcessMagicPaperViewController *)self isUpscaleRequestSupported])
             {
-              v12 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-              v13 = v12;
-              if (v12)
+              magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+              v13 = magicPaperVC;
+              if (magicPaperVC)
               {
-                if ([v12 isViewLoaded])
+                if ([magicPaperVC isViewLoaded])
                 {
-                  v14 = [v13 view];
-                  v15 = [v14 window];
+                  view3 = [v13 view];
+                  window3 = [view3 window];
 
-                  if (v15)
+                  if (window3)
                   {
                     [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__finalizeDueToFirstResponderChange object:0];
                     while (v8 != self)
                     {
-                      v16 = [(PPKGPInProcessMagicPaperViewController *)self view];
+                      view4 = [(PPKGPInProcessMagicPaperViewController *)self view];
 
-                      if (v8 == v16)
+                      if (v8 == view4)
                       {
                         break;
                       }
@@ -1052,7 +1052,7 @@ void __67__PPKGPInProcessMagicPaperViewController_isUpscaleRequestSupported__blo
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        v17 = [(PPKGPInProcessMagicPaperViewController *)v8 superview];
+                        superview = [(PPKGPInProcessMagicPaperViewController *)v8 superview];
                       }
 
                       else
@@ -1067,10 +1067,10 @@ LABEL_21:
                           break;
                         }
 
-                        v17 = [(PPKGPInProcessMagicPaperViewController *)v8 parentViewController];
+                        superview = [(PPKGPInProcessMagicPaperViewController *)v8 parentViewController];
                       }
 
-                      v18 = v17;
+                      v18 = superview;
 
                       v8 = v18;
                       if (!v18)
@@ -1091,17 +1091,17 @@ LABEL_21:
 
 - (void)_finalizeDueToFirstResponderChange
 {
-  v2 = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
-  [v2 upscaleIfPossible];
+  magicPaperVC = [(PPKGPInProcessMagicPaperViewController *)self magicPaperVC];
+  [magicPaperVC upscaleIfPossible];
 }
 
-+ (id)promptsFromRecipeData:(id)a3
++ (id)promptsFromRecipeData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(getGPGenerationRecipeDataClass()) initWithUnderlyingData:v3];
+  dataCopy = data;
+  v4 = [objc_alloc(getGPGenerationRecipeDataClass()) initWithUnderlyingData:dataCopy];
 
-  v5 = [v4 getRecipeInfo];
-  v6 = [v5 objectForKey:@"prompt"];
+  getRecipeInfo = [v4 getRecipeInfo];
+  v6 = [getRecipeInfo objectForKey:@"prompt"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 firstObject], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, (isKindOfClass))
   {
@@ -1116,44 +1116,44 @@ LABEL_21:
   return v9;
 }
 
-+ (id)decodeRecipeData:(id)a3
++ (id)decodeRecipeData:(id)data
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [objc_alloc(getGPGenerationRecipeDataClass()) initWithUnderlyingData:v4];
+  dataCopy = data;
+  dictionary = [v3 dictionary];
+  v6 = [objc_alloc(getGPGenerationRecipeDataClass()) initWithUnderlyingData:dataCopy];
 
-  v7 = [v6 getRecipeInfo];
-  if (v7)
+  getRecipeInfo = [v6 getRecipeInfo];
+  if (getRecipeInfo)
   {
-    [v5 setObject:v7 forKeyedSubscript:@"inputDict"];
-    v8 = [v6 getDrawOnImageRecipe];
-    v9 = v8;
-    if (v8)
+    [dictionary setObject:getRecipeInfo forKeyedSubscript:@"inputDict"];
+    getDrawOnImageRecipe = [v6 getDrawOnImageRecipe];
+    v9 = getDrawOnImageRecipe;
+    if (getDrawOnImageRecipe)
     {
-      if ([v8 baseImage])
+      if ([getDrawOnImageRecipe baseImage])
       {
         v10 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [v9 baseImage]);
         v11 = UIImagePNGRepresentation(v10);
-        [v5 setObject:v11 forKeyedSubscript:@"sourceImage"];
+        [dictionary setObject:v11 forKeyedSubscript:@"sourceImage"];
       }
 
       if ([v9 sketchImage])
       {
         v12 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [v9 sketchImage]);
         v13 = UIImagePNGRepresentation(v12);
-        [v5 setObject:v13 forKeyedSubscript:@"sketchImage"];
+        [dictionary setObject:v13 forKeyedSubscript:@"sketchImage"];
       }
 
       if ([v9 sketchMask])
       {
         v14 = +[PPKGPInProcessMagicPaperViewController _uiImageFromPixelBuffer:](PPKGPInProcessMagicPaperViewController, "_uiImageFromPixelBuffer:", [v9 sketchMask]);
         v15 = UIImagePNGRepresentation(v14);
-        [v5 setObject:v15 forKeyedSubscript:@"sketchMask"];
+        [dictionary setObject:v15 forKeyedSubscript:@"sketchMask"];
       }
     }
 
-    v16 = v5;
+    v16 = dictionary;
   }
 
   else
@@ -1164,40 +1164,40 @@ LABEL_21:
   return v16;
 }
 
-- (void)magicPaperViewControllerViewDidAppear:(id)a3
+- (void)magicPaperViewControllerViewDidAppear:(id)appear
 {
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self delegate];
+  delegate = [(PPKGPInProcessMagicPaperViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 magicPaperViewControllerViewDidAppear:self];
+    [delegate magicPaperViewControllerViewDidAppear:self];
   }
 }
 
-- (void)magicPaperViewControllerViewDidDisappear:(id)a3
+- (void)magicPaperViewControllerViewDidDisappear:(id)disappear
 {
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self delegate];
+  delegate = [(PPKGPInProcessMagicPaperViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 magicPaperViewControllerViewDidDisappear:self];
+    [delegate magicPaperViewControllerViewDidDisappear:self];
   }
 }
 
-- (void)magicPaperViewController:(id)a3 didGenerateImage:(id)a4
+- (void)magicPaperViewController:(id)controller didGenerateImage:(id)image
 {
-  v6 = a4;
-  v5 = [(PPKGPInProcessMagicPaperViewController *)self delegate];
+  imageCopy = image;
+  delegate = [(PPKGPInProcessMagicPaperViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 magicPaperViewController:self didGenerateImage:v6];
+    [delegate magicPaperViewController:self didGenerateImage:imageCopy];
   }
 }
 
-- (void)magicPaperViewControllerDidCancel:(id)a3
+- (void)magicPaperViewControllerDidCancel:(id)cancel
 {
-  v4 = [(PPKGPInProcessMagicPaperViewController *)self delegate];
+  delegate = [(PPKGPInProcessMagicPaperViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 magicPaperViewControllerDidCancel:self];
+    [delegate magicPaperViewControllerDidCancel:self];
   }
 }
 

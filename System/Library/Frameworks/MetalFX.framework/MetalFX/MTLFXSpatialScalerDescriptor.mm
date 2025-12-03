@@ -1,12 +1,12 @@
 @interface MTLFXSpatialScalerDescriptor
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newSpatialScalerWithDevice:(id)a3 compiler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newSpatialScalerWithDevice:(id)device;
+- (id)newSpatialScalerWithDevice:(id)device compiler:(id)compiler;
 @end
 
 @implementation MTLFXSpatialScalerDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setVersion:{-[MTLFXSpatialScalerDescriptor version](self, "version")}];
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (id)newSpatialScalerWithDevice:(id)a3 compiler:(id)a4
+- (id)newSpatialScalerWithDevice:(id)device compiler:(id)compiler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([MTLFXSpatialScalerDescriptor supportsMetal4FX:v6])
+  deviceCopy = device;
+  compilerCopy = compiler;
+  if ([MTLFXSpatialScalerDescriptor supportsMetal4FX:deviceCopy])
   {
-    v8 = [[_MTL4FXSpatialScalingEffectEFFECT_NAME_V1 alloc] initWithDevice:v6 compiler:v7 descriptor:self];
+    v8 = [[_MTL4FXSpatialScalingEffectEFFECT_NAME_V1 alloc] initWithDevice:deviceCopy compiler:compilerCopy descriptor:self];
   }
 
   else

@@ -1,14 +1,14 @@
 @interface BLTObjectSerializer
-+ (id)serializeObject:(id)a3 nulls:(id *)a4 error:(id *)a5;
-+ (id)unserializeObject:(id)a3 nulls:(id)a4 error:(id *)a5;
++ (id)serializeObject:(id)object nulls:(id *)nulls error:(id *)error;
++ (id)unserializeObject:(id)object nulls:(id)nulls error:(id *)error;
 @end
 
 @implementation BLTObjectSerializer
 
-+ (id)serializeObject:(id)a3 nulls:(id *)a4 error:(id *)a5
++ (id)serializeObject:(id)object nulls:(id *)nulls error:(id *)error
 {
   v19 = 0;
-  v7 = [a3 objectWithNoNSNulls:&v19];
+  v7 = [object objectWithNoNSNulls:&v19];
   v8 = v19;
   if (v7)
   {
@@ -18,14 +18,14 @@
     v11 = Data;
     if (!v18 || Data)
     {
-      if (a4 && v8)
+      if (nulls && v8)
       {
         v13 = CFPropertyListCreateData(v9, v8, kCFPropertyListBinaryFormat_v1_0, 0, &v18);
         v14 = v13;
         if (!v18 || v13)
         {
           v16 = v13;
-          *a4 = v14;
+          *nulls = v14;
         }
 
         else
@@ -36,9 +36,9 @@
             [BLTObjectSerializer serializeObject:v15 nulls:? error:?];
           }
 
-          if (a5)
+          if (error)
           {
-            *a5 = v18;
+            *error = v18;
           }
 
           CFRelease(v18);
@@ -54,9 +54,9 @@
         [BLTObjectSerializer serializeObject:v7 nulls:&v18 error:?];
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = v18;
+        *error = v18;
       }
 
       CFRelease(v18);
@@ -71,11 +71,11 @@
   return v11;
 }
 
-+ (id)unserializeObject:(id)a3 nulls:(id)a4 error:(id *)a5
++ (id)unserializeObject:(id)object nulls:(id)nulls error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  objectCopy = object;
+  nullsCopy = nulls;
+  if (!objectCopy)
   {
 LABEL_9:
     v11 = 0;
@@ -84,29 +84,29 @@ LABEL_9:
 
   error = 0;
   v9 = *MEMORY[0x277CBECE8];
-  v10 = CFPropertyListCreateWithData(*MEMORY[0x277CBECE8], v7, 0, 0, &error);
+  v10 = CFPropertyListCreateWithData(*MEMORY[0x277CBECE8], objectCopy, 0, 0, &error);
   v11 = v10;
   if (error && !v10)
   {
     v12 = blt_general_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [BLTObjectSerializer unserializeObject:v7 nulls:&error error:?];
+      [BLTObjectSerializer unserializeObject:objectCopy nulls:&error error:?];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = error;
+      *error = error;
     }
 
     CFRelease(error);
     goto LABEL_9;
   }
 
-  if (v8)
+  if (nullsCopy)
   {
     v18 = 0;
-    v13 = CFPropertyListCreateWithData(v9, v8, 0, 0, &v18);
+    v13 = CFPropertyListCreateWithData(v9, nullsCopy, 0, 0, &v18);
     v14 = v13;
     if (!v18 || v13)
     {
@@ -120,12 +120,12 @@ LABEL_9:
       v15 = blt_general_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [BLTObjectSerializer unserializeObject:v8 nulls:&v18 error:?];
+        [BLTObjectSerializer unserializeObject:nullsCopy nulls:&v18 error:?];
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = v18;
+        *error = v18;
       }
 
       CFRelease(v18);

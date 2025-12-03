@@ -1,95 +1,95 @@
 @interface TopLevelSettingsController
-+ (id)_deeplinkForSpecifierName:(id)a3;
-+ (id)preferencesExtendedLocalizedName:(id)a3 defaultValue:(id)a4;
++ (id)_deeplinkForSpecifierName:(id)name;
++ (id)preferencesExtendedLocalizedName:(id)name defaultValue:(id)value;
 - (BOOL)_isDebugMode;
 - (BOOL)_okayToShowCellularPlaybackAndDownloadSettings;
 - (NSArray)preferredSubtitleLanguageCodes;
 - (NSArray)selectedAudioLanguages;
 - (NSNumber)useDefaultSubtitleLanguages;
 - (TopLevelSettingsController)init;
-- (TopLevelSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_accessStatusForSpecifier:(id)a3;
+- (TopLevelSettingsController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_accessStatusForSpecifier:(id)specifier;
 - (id)_autoPlayNextVideoPreferenceSpecifier;
-- (id)_descriptionForExternalScreenType:(unsigned int)a3;
+- (id)_descriptionForExternalScreenType:(unsigned int)type;
 - (id)_devicePreferenceSpecifiers;
 - (id)_gdprSpecifiers;
 - (id)_loadingSpecifiers;
 - (id)_permissionSpecifiersWithRedirect;
 - (id)accountModificationsAllowed;
-- (id)availableAudioLanguageTitles:(id)a3;
-- (id)downloadLanguageSpecifierSubtext:(id)a3;
+- (id)availableAudioLanguageTitles:(id)titles;
+- (id)downloadLanguageSpecifierSubtext:(id)subtext;
 - (id)downloadQualitySpecifier;
-- (id)downloadsCompatibleWithAVAdapter:(id)a3;
+- (id)downloadsCompatibleWithAVAdapter:(id)adapter;
 - (id)homeSharingAppleID;
 - (id)playbackQualityWifiSpecifier;
 - (id)postPlayAutoPlayNextVideo;
-- (id)preferredAudioLanguageCode:(id)a3;
+- (id)preferredAudioLanguageCode:(id)code;
 - (id)preferredPlaybackDimensionality;
-- (id)preferredPurchaseResolution:(id)a3;
-- (id)showAppAppearance:(id)a3;
-- (id)showDownloadQualityCellular:(id)a3;
-- (id)showDownloadQualityWifi:(id)a3;
-- (id)showPlaybackQualityCellular:(id)a3;
-- (id)showPlaybackQualityWifi:(id)a3;
+- (id)preferredPurchaseResolution:(id)resolution;
+- (id)showAppAppearance:(id)appearance;
+- (id)showDownloadQualityCellular:(id)cellular;
+- (id)showDownloadQualityWifi:(id)wifi;
+- (id)showPlaybackQualityCellular:(id)cellular;
+- (id)showPlaybackQualityWifi:(id)wifi;
 - (id)specifiers;
 - (id)sportsScoreSpoilersAllowed;
-- (id)systemAllowTVCellularDataEnabledForSpecifier:(id)a3;
+- (id)systemAllowTVCellularDataEnabledForSpecifier:(id)specifier;
 - (id)upNextEnabled;
 - (id)upNextLockupsUseCoverArt;
-- (id)useCellularDataDownload:(id)a3;
-- (id)useCellularDataPlayback:(id)a3;
+- (id)useCellularDataDownload:(id)download;
+- (id)useCellularDataPlayback:(id)playback;
 - (int64_t)_alertStyle;
-- (void)_addPrivacyFooterToGroup:(id)a3;
-- (void)_appAppearanceDidChange:(id)a3;
-- (void)_externalScreenTypeDidChange:(id)a3;
-- (void)_performSetOperationWithUndo:(id)a3 oldValue:(id)a4 specifier:(id)a5 actionName:(id)a6 setSelector:(SEL)a7;
-- (void)_sceneWillConnect:(id)a3;
-- (void)_setAppAppearance:(id)a3 specifier:(id)a4;
-- (void)_setDownloadsCompatibleWithAVAdapter:(id)a3 specifier:(id)a4;
-- (void)_setPlayHistoryEnabled:(id)a3;
-- (void)_setPostPlayAutoPlayNextVideo:(id)a3;
-- (void)_setPreferredAudioLanguageCode:(id)a3;
-- (void)_setPreferredPlaybackDimensionality:(id)a3;
-- (void)_setPreferredPurchaseResolution:(id)a3 specifier:(id)a4;
-- (void)_setPreferredSubtitleLanguageCodes:(id)a3;
-- (void)_setSelectedAudioLanguages:(id)a3;
-- (void)_setShowDownloadQualityCellular:(id)a3 specifier:(id)a4;
-- (void)_setShowDownloadQualityWifi:(id)a3 specifier:(id)a4;
-- (void)_setShowPlaybackQualityCellular:(id)a3 specifier:(id)a4;
-- (void)_setShowPlaybackQualityWifi:(id)a3 specifier:(id)a4;
-- (void)_setSportsScoreSpoilersAllowed:(id)a3;
-- (void)_setUpNextLockupsUseCoverArt:(id)a3;
-- (void)_setUseCellularDataDownload:(id)a3 specifier:(id)a4;
-- (void)_setUseCellularDataPlayback:(id)a3 specifier:(id)a4;
-- (void)_setUseDefaultSubtitleLanguages:(id)a3;
-- (void)_showPrivacySheet:(id)a3;
+- (void)_addPrivacyFooterToGroup:(id)group;
+- (void)_appAppearanceDidChange:(id)change;
+- (void)_externalScreenTypeDidChange:(id)change;
+- (void)_performSetOperationWithUndo:(id)undo oldValue:(id)value specifier:(id)specifier actionName:(id)name setSelector:(SEL)selector;
+- (void)_sceneWillConnect:(id)connect;
+- (void)_setAppAppearance:(id)appearance specifier:(id)specifier;
+- (void)_setDownloadsCompatibleWithAVAdapter:(id)adapter specifier:(id)specifier;
+- (void)_setPlayHistoryEnabled:(id)enabled;
+- (void)_setPostPlayAutoPlayNextVideo:(id)video;
+- (void)_setPreferredAudioLanguageCode:(id)code;
+- (void)_setPreferredPlaybackDimensionality:(id)dimensionality;
+- (void)_setPreferredPurchaseResolution:(id)resolution specifier:(id)specifier;
+- (void)_setPreferredSubtitleLanguageCodes:(id)codes;
+- (void)_setSelectedAudioLanguages:(id)languages;
+- (void)_setShowDownloadQualityCellular:(id)cellular specifier:(id)specifier;
+- (void)_setShowDownloadQualityWifi:(id)wifi specifier:(id)specifier;
+- (void)_setShowPlaybackQualityCellular:(id)cellular specifier:(id)specifier;
+- (void)_setShowPlaybackQualityWifi:(id)wifi specifier:(id)specifier;
+- (void)_setSportsScoreSpoilersAllowed:(id)allowed;
+- (void)_setUpNextLockupsUseCoverArt:(id)art;
+- (void)_setUseCellularDataDownload:(id)download specifier:(id)specifier;
+- (void)_setUseCellularDataPlayback:(id)playback specifier:(id)specifier;
+- (void)_setUseDefaultSubtitleLanguages:(id)languages;
+- (void)_showPrivacySheet:(id)sheet;
 - (void)_syncDevicePreferenceValues;
 - (void)_updateRestrictions;
-- (void)_updateUIAfterChangingCellularUse:(id)a3 specifier:(id)a4;
-- (void)checkSettingsAndReloadWithCompletion:(id)a3;
+- (void)_updateUIAfterChangingCellularUse:(id)use specifier:(id)specifier;
+- (void)checkSettingsAndReloadWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)homeSharingSignInButtonAction:(id)a3;
-- (void)homeSharingSignOutButtonAction:(id)a3;
-- (void)setAppAppearance:(id)a3 specifier:(id)a4;
-- (void)setDownloadsCompatibleWithAVAdapter:(id)a3 specifier:(id)a4;
-- (void)setPlayHistoryEnabled:(id)a3;
-- (void)setPostPlayAutoPlayNextVideo:(id)a3;
-- (void)setPreferredAudioLanguageCode:(id)a3;
-- (void)setPreferredPlaybackDimensionality:(id)a3;
-- (void)setPreferredPurchaseResolution:(id)a3 specifier:(id)a4;
-- (void)setPreferredSubtitleLanguageCodes:(id)a3;
-- (void)setSelectedAudioLanguages:(id)a3;
-- (void)setShowDownloadQualityCellular:(id)a3 specifier:(id)a4;
-- (void)setShowDownloadQualityWifi:(id)a3 specifier:(id)a4;
-- (void)setShowPlaybackQualityCellular:(id)a3 specifier:(id)a4;
-- (void)setShowPlaybackQualityWifi:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)setSportsScoreSpoilersAllowed:(id)a3;
-- (void)setSystemAllowTVCellularDataEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setUpNextLockupsUseCoverArt:(id)a3;
-- (void)setUseCellularDataDownload:(id)a3 specifier:(id)a4;
-- (void)setUseCellularDataPlayback:(id)a3 specifier:(id)a4;
-- (void)setUseDefaultSubtitleLanguages:(id)a3;
+- (void)homeSharingSignInButtonAction:(id)action;
+- (void)homeSharingSignOutButtonAction:(id)action;
+- (void)setAppAppearance:(id)appearance specifier:(id)specifier;
+- (void)setDownloadsCompatibleWithAVAdapter:(id)adapter specifier:(id)specifier;
+- (void)setPlayHistoryEnabled:(id)enabled;
+- (void)setPostPlayAutoPlayNextVideo:(id)video;
+- (void)setPreferredAudioLanguageCode:(id)code;
+- (void)setPreferredPlaybackDimensionality:(id)dimensionality;
+- (void)setPreferredPurchaseResolution:(id)resolution specifier:(id)specifier;
+- (void)setPreferredSubtitleLanguageCodes:(id)codes;
+- (void)setSelectedAudioLanguages:(id)languages;
+- (void)setShowDownloadQualityCellular:(id)cellular specifier:(id)specifier;
+- (void)setShowDownloadQualityWifi:(id)wifi specifier:(id)specifier;
+- (void)setShowPlaybackQualityCellular:(id)cellular specifier:(id)specifier;
+- (void)setShowPlaybackQualityWifi:(id)wifi specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)setSportsScoreSpoilersAllowed:(id)allowed;
+- (void)setSystemAllowTVCellularDataEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setUpNextLockupsUseCoverArt:(id)art;
+- (void)setUseCellularDataDownload:(id)download specifier:(id)specifier;
+- (void)setUseCellularDataPlayback:(id)playback specifier:(id)specifier;
+- (void)setUseDefaultSubtitleLanguages:(id)languages;
 - (void)sharedInit;
 @end
 
@@ -125,11 +125,11 @@
   return v3;
 }
 
-- (TopLevelSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (TopLevelSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = TopLevelSettingsController;
-  v4 = [(TVSettingsListMonitorController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(TVSettingsListMonitorController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -237,11 +237,11 @@
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v3.receiver = self;
   v3.super_class = TopLevelSettingsController;
-  [(TopLevelSettingsController *)&v3 setSpecifier:a3];
+  [(TopLevelSettingsController *)&v3 setSpecifier:specifier];
 }
 
 - (id)specifiers
@@ -255,11 +255,11 @@ LABEL_67:
   }
 
   v4 = +[WLKSettingsAMSBagTracker sharedTracker];
-  v5 = [v4 isNowPlayingEnabled];
-  *(&self->_libraryOnly + 4) = [v5 BOOLValue] ^ 1;
+  isNowPlayingEnabled = [v4 isNowPlayingEnabled];
+  *(&self->_libraryOnly + 4) = [isNowPlayingEnabled BOOLValue] ^ 1;
 
   v6 = +[SSAccountStore defaultStore];
-  v7 = [v6 activeAccount];
+  activeAccount = [v6 activeAccount];
 
   v8 = +[WLKSettingsStore sharedSettings];
   v9 = sub_7478();
@@ -269,7 +269,7 @@ LABEL_67:
     *buf = 67109376;
     v118 = v10;
     v119 = 1024;
-    v120 = v7 != 0;
+    v120 = activeAccount != 0;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Settings: Create specifier, libraryOnly = %d, activeAccount exist = %d", buf, 0xEu);
   }
 
@@ -322,8 +322,8 @@ LABEL_67:
     v100 = v13;
     [(TopLevelSettingsController *)self setTitle:v18];
     v24 = +[NSMutableArray array];
-    v104 = v7;
-    if (v7)
+    v104 = activeAccount;
+    if (activeAccount)
     {
       v116[0] = @"com.apple.videos:PurchaseResolutionGroup";
       v116[1] = @"com.apple.videos:PreferredPurchaseResolution";
@@ -369,12 +369,12 @@ LABEL_67:
       v32 = v104;
       if (!*(&self->_libraryOnly + 4))
       {
-        v33 = [(TopLevelSettingsController *)self _devicePreferenceSpecifiers];
-        [v12 addObjectsFromArray:v33];
+        _devicePreferenceSpecifiers = [(TopLevelSettingsController *)self _devicePreferenceSpecifiers];
+        [v12 addObjectsFromArray:_devicePreferenceSpecifiers];
       }
 
-      v34 = [(TopLevelSettingsController *)self _autoPlayNextVideoPreferenceSpecifier];
-      [v12 addObjectsFromArray:v34];
+      _autoPlayNextVideoPreferenceSpecifier = [(TopLevelSettingsController *)self _autoPlayNextVideoPreferenceSpecifier];
+      [v12 addObjectsFromArray:_autoPlayNextVideoPreferenceSpecifier];
 
       [v12 addObjectsFromArray:v24];
       if (!self->_didSyncDevicePreferenceValues)
@@ -427,8 +427,8 @@ LABEL_67:
         [v12 removeObject:v40];
       }
 
-      v41 = [(TopLevelSettingsController *)self _autoPlayNextVideoPreferenceSpecifier];
-      [v12 addObjectsFromArray:v41];
+      _autoPlayNextVideoPreferenceSpecifier2 = [(TopLevelSettingsController *)self _autoPlayNextVideoPreferenceSpecifier];
+      [v12 addObjectsFromArray:_autoPlayNextVideoPreferenceSpecifier2];
 
       [v12 addObjectsFromArray:v24];
       v32 = 0;
@@ -441,14 +441,14 @@ LABEL_67:
     }
 
     v103 = v18;
-    v43 = [(TopLevelSettingsController *)self _permissionSpecifiersWithRedirect];
-    if ([v43 count])
+    _permissionSpecifiersWithRedirect = [(TopLevelSettingsController *)self _permissionSpecifiersWithRedirect];
+    if ([_permissionSpecifiersWithRedirect count])
     {
-      v44 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v43 count]);
-      [v12 insertObjects:v43 atIndexes:v44];
+      v44 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [_permissionSpecifiersWithRedirect count]);
+      [v12 insertObjects:_permissionSpecifiersWithRedirect atIndexes:v44];
     }
 
-    v99 = v43;
+    v99 = _permissionSpecifiersWithRedirect;
     v45 = [v12 specifierForID:@"com.apple.videos:CellularDataMode"];
     v46 = *(&self->_playbackCellularSpecifier + 4);
     *(&self->_playbackCellularSpecifier + 4) = v45;
@@ -529,9 +529,9 @@ LABEL_67:
     [v71 setProperty:v73 forKey:v64];
 
     v74 = +[WLKSystemPreferencesStore sharedPreferences];
-    v75 = [v74 hasAVAdapterEvenBeenConnected];
+    hasAVAdapterEvenBeenConnected = [v74 hasAVAdapterEvenBeenConnected];
 
-    if (![(TopLevelSettingsController *)self _isDebugMode]&& (v75 & 1) == 0)
+    if (![(TopLevelSettingsController *)self _isDebugMode]&& (hasAVAdapterEvenBeenConnected & 1) == 0)
     {
       v76 = [v12 indexOfSpecifierWithID:@"com.apple.videos:AVAdapterGroup"];
       if (v76 != 0x7FFFFFFFFFFFFFFFLL)
@@ -562,12 +562,12 @@ LABEL_67:
     if ([(TopLevelSettingsController *)self _isDebugMode])
     {
       NSLog(@"TVSettingsLog - debug mode is enabled. All specifiers will be visible");
-      v85 = [(TopLevelSettingsController *)self homeSharingAppleID];
-      v86 = v85;
+      homeSharingAppleID = [(TopLevelSettingsController *)self homeSharingAppleID];
+      v86 = homeSharingAppleID;
       v87 = @"Sign Out";
-      if (v85)
+      if (homeSharingAppleID)
       {
-        v87 = v85;
+        v87 = homeSharingAppleID;
       }
 
       v88 = v87;
@@ -597,9 +597,9 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  v97 = [(TopLevelSettingsController *)self _loadingSpecifiers];
+  _loadingSpecifiers = [(TopLevelSettingsController *)self _loadingSpecifiers];
   v98 = *&self->super.PSListController_opaque[v3];
-  *&self->super.PSListController_opaque[v3] = v97;
+  *&self->super.PSListController_opaque[v3] = _loadingSpecifiers;
 
   [(TopLevelSettingsController *)self checkSettingsAndReloadWithCompletion:0];
   v95 = *&self->super.PSListController_opaque[v3];
@@ -612,9 +612,9 @@ LABEL_68:
 - (BOOL)_isDebugMode
 {
   v2 = WLKSystemSettingsDebugOverride();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_loadingSpecifiers
@@ -634,9 +634,9 @@ LABEL_68:
   return v7;
 }
 
-- (void)checkSettingsAndReloadWithCompletion:(id)a3
+- (void)checkSettingsAndReloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(2, 0);
   block[0] = _NSConcreteStackBlock;
@@ -644,8 +644,8 @@ LABEL_68:
   block[2] = sub_86E8;
   block[3] = &unk_20A78;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -663,32 +663,32 @@ LABEL_68:
   *(&self->_permissionsSpecifiers + 4) = v5;
 
   v7 = [*(&self->_appPolicy + 4) specifiersForPolicyOptions:0x8000 force:0];
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
 
-  if (v8)
+  if (lastObject)
   {
     v9 = *(&self->_permissionsSpecifiers + 4);
     if (v9)
     {
-      v10 = [v9 arrayByAddingObject:v8];
+      v10 = [v9 arrayByAddingObject:lastObject];
     }
 
     else
     {
-      v17 = v8;
+      v17 = lastObject;
       v10 = [NSArray arrayWithObjects:&v17 count:1];
     }
 
     v11 = *(&self->_permissionsSpecifiers + 4);
     *(&self->_permissionsSpecifiers + 4) = v10;
 
-    v12 = [[PSSpecifierRedirecter alloc] initWithSpecifier:v8];
+    v12 = [[PSSpecifierRedirecter alloc] initWithSpecifier:lastObject];
     v13 = *(&self->_permissionSpecifierRedirecter + 4);
     *(&self->_permissionSpecifierRedirecter + 4) = v12;
 
-    objc_storeWeak(&v8[OBJC_IVAR___PSSpecifier_target], self);
-    *&v8[OBJC_IVAR___PSSpecifier_getter] = "systemAllowTVCellularDataEnabledForSpecifier:";
-    *&v8[OBJC_IVAR___PSSpecifier_setter] = "setSystemAllowTVCellularDataEnabled:forSpecifier:";
+    objc_storeWeak(&lastObject[OBJC_IVAR___PSSpecifier_target], self);
+    *&lastObject[OBJC_IVAR___PSSpecifier_getter] = "systemAllowTVCellularDataEnabledForSpecifier:";
+    *&lastObject[OBJC_IVAR___PSSpecifier_setter] = "setSystemAllowTVCellularDataEnabled:forSpecifier:";
   }
 
   v14 = *(&self->_permissionsSpecifiers + 4);
@@ -697,31 +697,31 @@ LABEL_68:
   return v14;
 }
 
-- (void)_addPrivacyFooterToGroup:(id)a3
+- (void)_addPrivacyFooterToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setProperty:v6 forKey:PSFooterCellClassGroupKey];
+  [groupCopy setProperty:v6 forKey:PSFooterCellClassGroupKey];
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v15 = [v7 localizedStringForKey:@"PRIVACY_FOOTER_FORMAT_CONTINUE_WATCHING" value:&stru_21328 table:@"TVSettings"];
 
   v8 = [OBPrivacyLinkController linkWithBundleIdentifier:@"com.apple.onboarding.tvapp"];
-  v9 = [v8 flow];
-  v10 = [v9 localizedButtonTitle];
+  flow = [v8 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
-  v11 = [NSString stringWithFormat:v15, v10];
-  [v4 setProperty:v11 forKey:PSFooterHyperlinkViewTitleKey];
-  v17.location = [v11 rangeOfString:v10];
+  v11 = [NSString stringWithFormat:v15, localizedButtonTitle];
+  [groupCopy setProperty:v11 forKey:PSFooterHyperlinkViewTitleKey];
+  v17.location = [v11 rangeOfString:localizedButtonTitle];
   v12 = NSStringFromRange(v17);
-  [v4 setProperty:v12 forKey:PSFooterHyperlinkViewLinkRangeKey];
+  [groupCopy setProperty:v12 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
   v13 = [NSValue valueWithNonretainedObject:self];
-  [v4 setProperty:v13 forKey:PSFooterHyperlinkViewTargetKey];
+  [groupCopy setProperty:v13 forKey:PSFooterHyperlinkViewTargetKey];
 
   v14 = NSStringFromSelector("_showPrivacySheet:");
-  [v4 setProperty:v14 forKey:PSFooterHyperlinkViewActionKey];
+  [groupCopy setProperty:v14 forKey:PSFooterHyperlinkViewActionKey];
 }
 
 - (id)_gdprSpecifiers
@@ -891,7 +891,7 @@ LABEL_68:
   objc_destroyWeak(&location);
 }
 
-- (void)_showPrivacySheet:(id)a3
+- (void)_showPrivacySheet:(id)sheet
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.tvapp"];
   [v4 setPresentingViewController:self];
@@ -901,19 +901,19 @@ LABEL_68:
 - (int64_t)_alertStyle
 {
   v3 = [UITraitCollection traitCollectionWithHorizontalSizeClass:2];
-  v4 = [(TopLevelSettingsController *)self traitCollection];
-  v5 = [v4 containsTraitsInCollection:v3];
+  traitCollection = [(TopLevelSettingsController *)self traitCollection];
+  v5 = [traitCollection containsTraitsInCollection:v3];
 
   return v5;
 }
 
-- (id)_accessStatusForSpecifier:(id)a3
+- (id)_accessStatusForSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
+  userInfo = [specifier userInfo];
   v4 = +[WLKSettingsStore sharedSettings];
-  v5 = [v3 channelID];
-  v6 = [v3 externalID];
-  v7 = [v4 settingsForChannelID:v5 externalID:v6];
+  channelID = [userInfo channelID];
+  externalID = [userInfo externalID];
+  v7 = [v4 settingsForChannelID:channelID externalID:externalID];
 
   if ([v7 accessStatus] == &dword_0 + 1)
   {
@@ -936,22 +936,22 @@ LABEL_68:
   return v3;
 }
 
-- (void)_setPlayHistoryEnabled:(id)a3
+- (void)_setPlayHistoryEnabled:(id)enabled
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v4 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v4 setPrivateModeEnabled:v3 ^ 1];
+  [v4 setPrivateModeEnabled:bOOLValue ^ 1];
 }
 
-- (void)setPlayHistoryEnabled:(id)a3
+- (void)setPlayHistoryEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v5 privateModeEnabled];
+  privateModeEnabled = [v5 privateModeEnabled];
 
   v8 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_PRIVATE_MODE_ENABLED" defaultValue:@"Toggle Play History Enabled"];
-  v7 = [NSNumber numberWithBool:v6 ^ 1];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v8 setSelector:"_setPlayHistoryEnabled:"];
+  v7 = [NSNumber numberWithBool:privateModeEnabled ^ 1];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:enabledCopy oldValue:v7 specifier:0 actionName:v8 setSelector:"_setPlayHistoryEnabled:"];
 }
 
 - (id)sportsScoreSpoilersAllowed
@@ -962,36 +962,36 @@ LABEL_68:
   return v3;
 }
 
-- (void)_setSportsScoreSpoilersAllowed:(id)a3
+- (void)_setSportsScoreSpoilersAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [v4 BOOLValue];
+  allowedCopy = allowed;
+  bOOLValue = [allowedCopy BOOLValue];
   v6 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v6 setSportsScoreSpoilersAllowed:v5];
+  [v6 setSportsScoreSpoilersAllowed:bOOLValue];
 
   v7 = sub_7478();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v5;
+    v9[1] = bOOLValue;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Settings Show Sports Scores value changed to %d", v9, 8u);
   }
 
   v8 = +[PluginAnalytics sharedInstance];
-  [v8 recordSettingsChange:@"showSportsScores" value:v4];
+  [v8 recordSettingsChange:@"showSportsScores" value:allowedCopy];
 
   [(TopLevelSettingsController *)self reloadSpecifierID:@"com.apple.videos:SportsSpoilers"];
 }
 
-- (void)setSportsScoreSpoilersAllowed:(id)a3
+- (void)setSportsScoreSpoilersAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v5 sportsScoreSpoilersAllowed];
+  sportsScoreSpoilersAllowed = [v5 sportsScoreSpoilersAllowed];
 
   v8 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_SHOW_SPORTS_SCORES" defaultValue:@"Toggle Show Sports Scores"];
-  v7 = [NSNumber numberWithBool:v6];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v8 setSelector:"_setSportsScoreSpoilersAllowed:"];
+  v7 = [NSNumber numberWithBool:sportsScoreSpoilersAllowed];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:allowedCopy oldValue:v7 specifier:0 actionName:v8 setSelector:"_setSportsScoreSpoilersAllowed:"];
 }
 
 - (id)postPlayAutoPlayNextVideo
@@ -1002,24 +1002,24 @@ LABEL_68:
   return v3;
 }
 
-- (void)_setPostPlayAutoPlayNextVideo:(id)a3
+- (void)_setPostPlayAutoPlayNextVideo:(id)video
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [video BOOLValue];
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v5 setPostPlayAutoPlayNextVideo:v4];
+  [v5 setPostPlayAutoPlayNextVideo:bOOLValue];
 
   [(TopLevelSettingsController *)self reloadSpecifierID:@"com.apple.videos:AutoPlayNextVideo"];
 }
 
-- (void)setPostPlayAutoPlayNextVideo:(id)a3
+- (void)setPostPlayAutoPlayNextVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v5 postPlayAutoPlayNextVideo];
+  postPlayAutoPlayNextVideo = [v5 postPlayAutoPlayNextVideo];
 
   v8 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_AUTOPLAY_NEXT_VIDEO" defaultValue:@"Toggle Auto Play Next Video"];
-  v7 = [NSNumber numberWithBool:v6];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v8 setSelector:"_setPostPlayAutoPlayNextVideo:"];
+  v7 = [NSNumber numberWithBool:postPlayAutoPlayNextVideo];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:videoCopy oldValue:v7 specifier:0 actionName:v8 setSelector:"_setPostPlayAutoPlayNextVideo:"];
 }
 
 - (id)upNextLockupsUseCoverArt
@@ -1030,62 +1030,62 @@ LABEL_68:
   return v3;
 }
 
-- (void)_setUpNextLockupsUseCoverArt:(id)a3
+- (void)_setUpNextLockupsUseCoverArt:(id)art
 {
-  v4 = a3;
+  artCopy = art;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v4 BOOLValue];
+  bOOLValue = [artCopy BOOLValue];
 
-  [v5 setUpNextLockupsUseCoverArt:v6];
+  [v5 setUpNextLockupsUseCoverArt:bOOLValue];
 
   [(TopLevelSettingsController *)self reloadSpecifierID:@"com.apple.videos:UpNextDisplay"];
 }
 
-- (void)setUpNextLockupsUseCoverArt:(id)a3
+- (void)setUpNextLockupsUseCoverArt:(id)art
 {
-  v4 = a3;
+  artCopy = art;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v5 upNextLockupsUseCoverArt];
+  upNextLockupsUseCoverArt = [v5 upNextLockupsUseCoverArt];
 
   v8 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_CONTINUE_WATCHING_DISPLAY" defaultValue:@"Change Continue Watching Display Selection"];
-  v7 = [NSNumber numberWithBool:v6];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v8 setSelector:"_setUpNextLockupsUseCoverArt:"];
+  v7 = [NSNumber numberWithBool:upNextLockupsUseCoverArt];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:artCopy oldValue:v7 specifier:0 actionName:v8 setSelector:"_setUpNextLockupsUseCoverArt:"];
 }
 
 - (id)homeSharingAppleID
 {
   v2 = +[HSAccountStore defaultStore];
-  v3 = [v2 appleID];
+  appleID = [v2 appleID];
 
-  return v3;
+  return appleID;
 }
 
-- (id)systemAllowTVCellularDataEnabledForSpecifier:(id)a3
+- (id)systemAllowTVCellularDataEnabledForSpecifier:(id)specifier
 {
   v4 = *(&self->_permissionSpecifierRedirecter + 4);
   if (v4)
   {
-    v4 = [v4 performGetter:a3];
+    v4 = [v4 performGetter:specifier];
     v3 = vars8;
   }
 
   return v4;
 }
 
-- (void)setSystemAllowTVCellularDataEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSystemAllowTVCellularDataEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v8 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v7 = *(&self->_permissionSpecifierRedirecter + 4);
   if (v7)
   {
-    [v7 performSetter:v8 specifier:v6];
+    [v7 performSetter:enabledCopy specifier:specifierCopy];
   }
 
-  [(TopLevelSettingsController *)self _updateUIAfterChangingCellularUse:v8 specifier:v6];
+  [(TopLevelSettingsController *)self _updateUIAfterChangingCellularUse:enabledCopy specifier:specifierCopy];
 }
 
-- (id)useCellularDataPlayback:(id)a3
+- (id)useCellularDataPlayback:(id)playback
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 useCellularDataPlayback]);
@@ -1093,76 +1093,76 @@ LABEL_68:
   return v4;
 }
 
-+ (id)_deeplinkForSpecifierName:(id)a3
++ (id)_deeplinkForSpecifierName:(id)name
 {
-  v3 = [@"settings-navigation://com.apple.Settings.Apps/com.apple.tv/" stringByAppendingString:a3];
+  v3 = [@"settings-navigation://com.apple.Settings.Apps/com.apple.tv/" stringByAppendingString:name];
   v4 = [NSURL URLWithString:v3];
 
   return v4;
 }
 
-+ (id)preferencesExtendedLocalizedName:(id)a3 defaultValue:(id)a4
++ (id)preferencesExtendedLocalizedName:(id)name defaultValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
+  valueCopy = value;
+  nameCopy = name;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
+  bundleURL = [v7 bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
-  v11 = [v9 initWithKey:v6 defaultValue:v5 table:@"TVSettings" locale:v10 bundleURL:v8];
+  v11 = [v9 initWithKey:nameCopy defaultValue:valueCopy table:@"TVSettings" locale:v10 bundleURL:bundleURL];
 
   return v11;
 }
 
-- (void)_performSetOperationWithUndo:(id)a3 oldValue:(id)a4 specifier:(id)a5 actionName:(id)a6 setSelector:(SEL)a7
+- (void)_performSetOperationWithUndo:(id)undo oldValue:(id)value specifier:(id)specifier actionName:(id)name setSelector:(SEL)selector
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v13 != v12)
+  undoCopy = undo;
+  valueCopy = value;
+  specifierCopy = specifier;
+  nameCopy = name;
+  if (valueCopy != undoCopy)
   {
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_A4D4;
     v31[3] = &unk_20B18;
-    v16 = v14;
+    v16 = specifierCopy;
     v32 = v16;
-    v33 = a7;
+    selectorCopy = selector;
     v17 = objc_retainBlock(v31);
     if (v16)
     {
-      v18 = [v16 identifier];
+      identifier = [v16 identifier];
     }
 
     else
     {
-      v18 = @"NO_SPECIFIER";
+      identifier = @"NO_SPECIFIER";
     }
 
-    NSLog(@"TVSettingsLog - setting specifier %@ to value %@", v18, v12);
-    (v17[2])(v17, self, v12);
-    v19 = [(TopLevelSettingsController *)self navigationController];
-    v20 = [v19 visibleViewController];
+    NSLog(@"TVSettingsLog - setting specifier %@ to value %@", identifier, undoCopy);
+    (v17[2])(v17, self, undoCopy);
+    navigationController = [(TopLevelSettingsController *)self navigationController];
+    visibleViewController = [navigationController visibleViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = v20;
-      v21 = [v13 copy];
+      v24 = visibleViewController;
+      v21 = [valueCopy copy];
       objc_initWeak(&location, self);
-      v22 = [TopLevelSettingsController _deeplinkForSpecifierName:v18];
+      v22 = [TopLevelSettingsController _deeplinkForSpecifierName:identifier];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_A4F8;
       v25[3] = &unk_20B40;
       objc_copyWeak(&v29, &location);
-      v26 = v18;
+      v26 = identifier;
       v23 = v21;
       v27 = v23;
       v28 = v17;
-      [v24 pe_registerUndoActionName:v15 associatedDeepLink:v22 undoAction:v25];
+      [v24 pe_registerUndoActionName:nameCopy associatedDeepLink:v22 undoAction:v25];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&location);
@@ -1170,61 +1170,61 @@ LABEL_68:
   }
 }
 
-- (void)_setUseCellularDataPlayback:(id)a3 specifier:(id)a4
+- (void)_setUseCellularDataPlayback:(id)playback specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TopLevelSettingsController *)self rootController];
-  [v8 setPreferenceValue:v7 specifier:v6];
+  specifierCopy = specifier;
+  playbackCopy = playback;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:playbackCopy specifier:specifierCopy];
 
   v9 = +[WLKSystemPreferencesStore sharedPreferences];
-  v10 = [v7 BOOLValue];
+  bOOLValue = [playbackCopy BOOLValue];
 
-  [v9 setUseCellularDataPlayback:v10];
+  [v9 setUseCellularDataPlayback:bOOLValue];
 
   [(TopLevelSettingsController *)self _updateCellularQualitySpecifiersAnimated:1 shouldUpdateUsingTableView:1 forPlayback:1];
 }
 
-- (void)setUseCellularDataPlayback:(id)a3 specifier:(id)a4
+- (void)setUseCellularDataPlayback:(id)playback specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  playbackCopy = playback;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v8 useCellularDataPlayback];
+  useCellularDataPlayback = [v8 useCellularDataPlayback];
 
   v11 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_USE_CELLULAR_PLAYBACK" defaultValue:@"Toggle Use Cellular for Streaming"];
-  v10 = [NSNumber numberWithBool:v9];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v11 setSelector:"_setUseCellularDataPlayback:specifier:"];
+  v10 = [NSNumber numberWithBool:useCellularDataPlayback];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:playbackCopy oldValue:v10 specifier:specifierCopy actionName:v11 setSelector:"_setUseCellularDataPlayback:specifier:"];
 }
 
-- (id)showPlaybackQualityWifi:(id)a3
+- (id)showPlaybackQualityWifi:(id)wifi
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 wifiQualityPlayback];
+  wifiQualityPlayback = [v3 wifiQualityPlayback];
 
-  return v4;
+  return wifiQualityPlayback;
 }
 
-- (void)_setShowPlaybackQualityWifi:(id)a3 specifier:(id)a4
+- (void)_setShowPlaybackQualityWifi:(id)wifi specifier:(id)specifier
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(TopLevelSettingsController *)self rootController];
-  [v7 setPreferenceValue:v6 specifier:v10];
+  specifierCopy = specifier;
+  wifiCopy = wifi;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:wifiCopy specifier:specifierCopy];
 
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v6 stringValue];
+  stringValue = [wifiCopy stringValue];
 
-  [v8 setWifiQualityPlayback:v9];
-  [(TopLevelSettingsController *)self reloadSpecifier:v10];
+  [v8 setWifiQualityPlayback:stringValue];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setShowPlaybackQualityWifi:(id)a3 specifier:(id)a4
+- (void)setShowPlaybackQualityWifi:(id)wifi specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  wifiCopy = wifi;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v14 = [v8 wifiQualityPlayback];
+  wifiQualityPlayback = [v8 wifiQualityPlayback];
 
   v9 = WLKIsRegulatedSKU();
   v10 = @"UNDO_WIFI_QUALITY_PLAYBACK";
@@ -1246,43 +1246,43 @@ LABEL_68:
 
   v13 = [TopLevelSettingsController preferencesExtendedLocalizedName:v11 defaultValue:v12];
 
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v14 specifier:v6 actionName:v13 setSelector:"_setShowPlaybackQualityWifi:specifier:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:wifiCopy oldValue:wifiQualityPlayback specifier:specifierCopy actionName:v13 setSelector:"_setShowPlaybackQualityWifi:specifier:"];
 }
 
-- (id)showPlaybackQualityCellular:(id)a3
+- (id)showPlaybackQualityCellular:(id)cellular
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 cellularQualityPlayback];
+  cellularQualityPlayback = [v3 cellularQualityPlayback];
 
-  return v4;
+  return cellularQualityPlayback;
 }
 
-- (void)_setShowPlaybackQualityCellular:(id)a3 specifier:(id)a4
+- (void)_setShowPlaybackQualityCellular:(id)cellular specifier:(id)specifier
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(TopLevelSettingsController *)self rootController];
-  [v7 setPreferenceValue:v6 specifier:v10];
+  specifierCopy = specifier;
+  cellularCopy = cellular;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:cellularCopy specifier:specifierCopy];
 
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v6 stringValue];
+  stringValue = [cellularCopy stringValue];
 
-  [v8 setCellularQualityPlayback:v9];
-  [(TopLevelSettingsController *)self reloadSpecifier:v10];
+  [v8 setCellularQualityPlayback:stringValue];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setShowPlaybackQualityCellular:(id)a3 specifier:(id)a4
+- (void)setShowPlaybackQualityCellular:(id)cellular specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  cellularCopy = cellular;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v10 = [v8 cellularQualityPlayback];
+  cellularQualityPlayback = [v8 cellularQualityPlayback];
 
   v9 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_CELLULAR_QUALITY_PLAYBACK" defaultValue:@"Change Streaming Cellular Quality"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v9 setSelector:"_setShowPlaybackQualityCellular:specifier:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:cellularCopy oldValue:cellularQualityPlayback specifier:specifierCopy actionName:v9 setSelector:"_setShowPlaybackQualityCellular:specifier:"];
 }
 
-- (id)useCellularDataDownload:(id)a3
+- (id)useCellularDataDownload:(id)download
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 useCellularDataDownload]);
@@ -1290,53 +1290,53 @@ LABEL_68:
   return v4;
 }
 
-- (void)_setUseCellularDataDownload:(id)a3 specifier:(id)a4
+- (void)_setUseCellularDataDownload:(id)download specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TopLevelSettingsController *)self rootController];
-  [v8 setPreferenceValue:v7 specifier:v6];
+  specifierCopy = specifier;
+  downloadCopy = download;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:downloadCopy specifier:specifierCopy];
 
   v9 = +[WLKSystemPreferencesStore sharedPreferences];
-  v10 = [v7 BOOLValue];
+  bOOLValue = [downloadCopy BOOLValue];
 
-  [v9 setUseCellularDataDownload:v10];
+  [v9 setUseCellularDataDownload:bOOLValue];
 
   [(TopLevelSettingsController *)self _updateCellularQualitySpecifiersAnimated:1 shouldUpdateUsingTableView:1 forPlayback:0];
 }
 
-- (void)setUseCellularDataDownload:(id)a3 specifier:(id)a4
+- (void)setUseCellularDataDownload:(id)download specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  downloadCopy = download;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v8 useCellularDataDownload];
+  useCellularDataDownload = [v8 useCellularDataDownload];
 
   v11 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_USE_CELLULAR_DOWNLOADS" defaultValue:@"Toggle Use Cellular Data for Downloads"];
-  v10 = [NSNumber numberWithBool:v9];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v11 setSelector:"_setUseCellularDataDownload:specifier:"];
+  v10 = [NSNumber numberWithBool:useCellularDataDownload];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:downloadCopy oldValue:v10 specifier:specifierCopy actionName:v11 setSelector:"_setUseCellularDataDownload:specifier:"];
 }
 
-- (id)showDownloadQualityWifi:(id)a3
+- (id)showDownloadQualityWifi:(id)wifi
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 wifiQualityDownload];
+  wifiQualityDownload = [v3 wifiQualityDownload];
 
-  return v4;
+  return wifiQualityDownload;
 }
 
-- (void)_setShowDownloadQualityWifi:(id)a3 specifier:(id)a4
+- (void)_setShowDownloadQualityWifi:(id)wifi specifier:(id)specifier
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(TopLevelSettingsController *)self rootController];
-  [v7 setPreferenceValue:v6 specifier:v11];
+  specifierCopy = specifier;
+  wifiCopy = wifi;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:wifiCopy specifier:specifierCopy];
 
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v6 stringValue];
-  [v8 setWifiQualityDownload:v9];
+  stringValue = [wifiCopy stringValue];
+  [v8 setWifiQualityDownload:stringValue];
 
-  LODWORD(v8) = [VideosDownloadQualityValueBestQuality isEqualToString:v6];
+  LODWORD(v8) = [VideosDownloadQualityValueBestQuality isEqualToString:wifiCopy];
   if (v8)
   {
     v10 = &__kCFBooleanTrue;
@@ -1349,16 +1349,16 @@ LABEL_68:
 
   CFPreferencesSetAppValue(@"VideosAllowHDREnabledSetting", v10, @"com.apple.mobileipod");
   CFPreferencesAppSynchronize(@"com.apple.mobileipod");
-  [(TopLevelSettingsController *)self reloadSpecifier:v11];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
   notify_post("com.apple.mobileipod-prefsChanged");
 }
 
-- (void)setShowDownloadQualityWifi:(id)a3 specifier:(id)a4
+- (void)setShowDownloadQualityWifi:(id)wifi specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  wifiCopy = wifi;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v14 = [v8 wifiQualityDownload];
+  wifiQualityDownload = [v8 wifiQualityDownload];
 
   v9 = WLKIsRegulatedSKU();
   v10 = @"UNDO_WIFI_QUALITY_DOWNLOADS";
@@ -1380,109 +1380,109 @@ LABEL_68:
 
   v13 = [TopLevelSettingsController preferencesExtendedLocalizedName:v11 defaultValue:v12];
 
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v14 specifier:v6 actionName:v13 setSelector:"_setShowDownloadQualityWifi:specifier:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:wifiCopy oldValue:wifiQualityDownload specifier:specifierCopy actionName:v13 setSelector:"_setShowDownloadQualityWifi:specifier:"];
 }
 
-- (id)showDownloadQualityCellular:(id)a3
+- (id)showDownloadQualityCellular:(id)cellular
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 cellularQualityDownload];
+  cellularQualityDownload = [v3 cellularQualityDownload];
 
-  return v4;
+  return cellularQualityDownload;
 }
 
-- (void)_setShowDownloadQualityCellular:(id)a3 specifier:(id)a4
+- (void)_setShowDownloadQualityCellular:(id)cellular specifier:(id)specifier
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(TopLevelSettingsController *)self rootController];
-  [v7 setPreferenceValue:v6 specifier:v10];
+  specifierCopy = specifier;
+  cellularCopy = cellular;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:cellularCopy specifier:specifierCopy];
 
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v6 stringValue];
+  stringValue = [cellularCopy stringValue];
 
-  [v8 setCellularQualityDownload:v9];
-  [(TopLevelSettingsController *)self reloadSpecifier:v10];
+  [v8 setCellularQualityDownload:stringValue];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setShowDownloadQualityCellular:(id)a3 specifier:(id)a4
+- (void)setShowDownloadQualityCellular:(id)cellular specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  cellularCopy = cellular;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v10 = [v8 cellularQualityDownload];
+  cellularQualityDownload = [v8 cellularQualityDownload];
 
   v9 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_CELLULAR_QUALITY_DOWNLOAD" defaultValue:@"Change Download Cellular Quality"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v9 setSelector:"_setShowDownloadQualityCellular:specifier:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:cellularCopy oldValue:cellularQualityDownload specifier:specifierCopy actionName:v9 setSelector:"_setShowDownloadQualityCellular:specifier:"];
 }
 
-- (void)_setAppAppearance:(id)a3 specifier:(id)a4
+- (void)_setAppAppearance:(id)appearance specifier:(id)specifier
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(TopLevelSettingsController *)self rootController];
-  [v7 setPreferenceValue:v6 specifier:v10];
+  specifierCopy = specifier;
+  appearanceCopy = appearance;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:appearanceCopy specifier:specifierCopy];
 
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v6 stringValue];
+  stringValue = [appearanceCopy stringValue];
 
-  [v8 setAppAppearance:v9];
-  [(TopLevelSettingsController *)self reloadSpecifier:v10];
+  [v8 setAppAppearance:stringValue];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setAppAppearance:(id)a3 specifier:(id)a4
+- (void)setAppAppearance:(id)appearance specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  appearanceCopy = appearance;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v10 = [v8 appAppearance];
+  appAppearance = [v8 appAppearance];
 
   v9 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_APP_APPEARANCE" defaultValue:@"Change App Appearance Setting"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v9 setSelector:"_setAppAppearance:specifier:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:appearanceCopy oldValue:appAppearance specifier:specifierCopy actionName:v9 setSelector:"_setAppAppearance:specifier:"];
 }
 
-- (id)showAppAppearance:(id)a3
+- (id)showAppAppearance:(id)appearance
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 appAppearance];
+  appAppearance = [v3 appAppearance];
 
-  return v4;
+  return appAppearance;
 }
 
-- (id)preferredPurchaseResolution:(id)a3
+- (id)preferredPurchaseResolution:(id)resolution
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 purchaseResolution];
+  purchaseResolution = [v3 purchaseResolution];
 
-  return v4;
+  return purchaseResolution;
 }
 
-- (void)_setPreferredPurchaseResolution:(id)a3 specifier:(id)a4
+- (void)_setPreferredPurchaseResolution:(id)resolution specifier:(id)specifier
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(TopLevelSettingsController *)self rootController];
-  [v7 setPreferenceValue:v6 specifier:v10];
+  specifierCopy = specifier;
+  resolutionCopy = resolution;
+  rootController = [(TopLevelSettingsController *)self rootController];
+  [rootController setPreferenceValue:resolutionCopy specifier:specifierCopy];
 
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v6 stringValue];
+  stringValue = [resolutionCopy stringValue];
 
-  [v8 setPurchaseResolution:v9];
-  [(TopLevelSettingsController *)self reloadSpecifier:v10];
+  [v8 setPurchaseResolution:stringValue];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setPreferredPurchaseResolution:(id)a3 specifier:(id)a4
+- (void)setPreferredPurchaseResolution:(id)resolution specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  resolutionCopy = resolution;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v10 = [v8 purchaseResolution];
+  purchaseResolution = [v8 purchaseResolution];
 
   v9 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_VIDEO_DEFINITION" defaultValue:@"Change Video Defintion"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v9 setSelector:"_setPreferredPurchaseResolution:specifier:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:resolutionCopy oldValue:purchaseResolution specifier:specifierCopy actionName:v9 setSelector:"_setPreferredPurchaseResolution:specifier:"];
 }
 
-- (id)downloadsCompatibleWithAVAdapter:(id)a3
+- (id)downloadsCompatibleWithAVAdapter:(id)adapter
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 downloadsCompatibleWithAVAdapter]);
@@ -1490,27 +1490,27 @@ LABEL_68:
   return v4;
 }
 
-- (void)_setDownloadsCompatibleWithAVAdapter:(id)a3 specifier:(id)a4
+- (void)_setDownloadsCompatibleWithAVAdapter:(id)adapter specifier:(id)specifier
 {
-  v9 = a4;
-  v6 = a3;
+  specifierCopy = specifier;
+  adapterCopy = adapter;
   v7 = +[WLKSystemPreferencesStore sharedPreferences];
-  v8 = [v6 BOOLValue];
+  bOOLValue = [adapterCopy BOOLValue];
 
-  [v7 setDownloadsCompatibleWithAVAdapter:v8];
-  [(TopLevelSettingsController *)self reloadSpecifier:v9];
+  [v7 setDownloadsCompatibleWithAVAdapter:bOOLValue];
+  [(TopLevelSettingsController *)self reloadSpecifier:specifierCopy];
 }
 
-- (void)setDownloadsCompatibleWithAVAdapter:(id)a3 specifier:(id)a4
+- (void)setDownloadsCompatibleWithAVAdapter:(id)adapter specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  adapterCopy = adapter;
   v8 = +[WLKSystemPreferencesStore sharedPreferences];
-  v9 = [v8 downloadsCompatibleWithAVAdapter];
+  downloadsCompatibleWithAVAdapter = [v8 downloadsCompatibleWithAVAdapter];
 
   v11 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_DOWNLOADS_COMPATIBLE_WITH_AV" defaultValue:@"Toggle Downloads Compatible With AV Adapter"];
-  v10 = [NSNumber numberWithBool:v9];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v7 oldValue:v10 specifier:v6 actionName:v11 setSelector:"_setDownloadsCompatibleWithAVAdapter:specifier:"];
+  v10 = [NSNumber numberWithBool:downloadsCompatibleWithAVAdapter];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:adapterCopy oldValue:v10 specifier:specifierCopy actionName:v11 setSelector:"_setDownloadsCompatibleWithAVAdapter:specifier:"];
 }
 
 - (NSArray)selectedAudioLanguages
@@ -1522,9 +1522,9 @@ LABEL_68:
   }
 
   v4 = +[WLKSystemPreferencesStore sharedPreferences];
-  v5 = [v4 selectedAudioLanguagesDownload];
+  selectedAudioLanguagesDownload = [v4 selectedAudioLanguagesDownload];
 
-  if (![(NSArray *)v5 count])
+  if (![(NSArray *)selectedAudioLanguagesDownload count])
   {
     v12[0] = @"ORIGINAL_AUDIO_LANGUAGE";
     v12[1] = @"DEVICE_AUDIO_LANGUAGE";
@@ -1532,33 +1532,33 @@ LABEL_68:
     goto LABEL_6;
   }
 
-  if ([(NSArray *)v5 containsObject:@"DEFAULT_LANGUAGE"])
+  if ([(NSArray *)selectedAudioLanguagesDownload containsObject:@"DEFAULT_LANGUAGE"])
   {
-    v6 = [(NSArray *)v5 mutableCopy];
+    v6 = [(NSArray *)selectedAudioLanguagesDownload mutableCopy];
     [(NSArray *)v6 removeObject:@"DEFAULT_LANGUAGE"];
     [(NSArray *)v6 insertObject:@"ORIGINAL_AUDIO_LANGUAGE" atIndex:0];
     [(NSArray *)v6 insertObject:@"DEVICE_AUDIO_LANGUAGE" atIndex:1];
 LABEL_6:
 
-    v5 = v6;
+    selectedAudioLanguagesDownload = v6;
   }
 
-  if ([(NSArray *)v5 containsObject:@"DEVICE_AUDIO_LANGUAGE"])
+  if ([(NSArray *)selectedAudioLanguagesDownload containsObject:@"DEVICE_AUDIO_LANGUAGE"])
   {
     v7 = +[NSLocale preferredLanguages];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 
-    if (v8 && [(NSArray *)v5 containsObject:v8])
+    if (firstObject && [(NSArray *)selectedAudioLanguagesDownload containsObject:firstObject])
     {
-      v9 = [(NSArray *)v5 mutableCopy];
-      [(NSArray *)v9 removeObject:v8];
+      v9 = [(NSArray *)selectedAudioLanguagesDownload mutableCopy];
+      [(NSArray *)v9 removeObject:firstObject];
 
-      v5 = v9;
+      selectedAudioLanguagesDownload = v9;
     }
   }
 
   v10 = *(&self->_selectedAudioLanguages + 4);
-  *(&self->_selectedAudioLanguages + 4) = v5;
+  *(&self->_selectedAudioLanguages + 4) = selectedAudioLanguagesDownload;
 
   v3 = *(&self->_selectedAudioLanguages + 4);
 LABEL_13:
@@ -1566,15 +1566,15 @@ LABEL_13:
   return v3;
 }
 
-- (void)_setSelectedAudioLanguages:(id)a3
+- (void)_setSelectedAudioLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v5 setSelectedAudioLanguagesDownload:v4];
+  [v5 setSelectedAudioLanguagesDownload:languagesCopy];
 
   v6 = *(&self->_selectedAudioLanguages + 4);
-  *(&self->_selectedAudioLanguages + 4) = v4;
-  v7 = v4;
+  *(&self->_selectedAudioLanguages + 4) = languagesCopy;
+  v7 = languagesCopy;
 
   v8 = +[NSNotificationCenter defaultCenter];
 
@@ -1583,42 +1583,42 @@ LABEL_13:
   [(TopLevelSettingsController *)self reloadSpecifiers];
 }
 
-- (void)setSelectedAudioLanguages:(id)a3
+- (void)setSelectedAudioLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v7 = [v5 selectedAudioLanguagesDownload];
+  selectedAudioLanguagesDownload = [v5 selectedAudioLanguagesDownload];
 
   v6 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_AUDIO_LANGUAGE_OPERATION" defaultValue:@"Modify Audio Languages"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v6 setSelector:"_setSelectedAudioLanguages:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:languagesCopy oldValue:selectedAudioLanguagesDownload specifier:0 actionName:v6 setSelector:"_setSelectedAudioLanguages:"];
 }
 
 - (NSArray)preferredSubtitleLanguageCodes
 {
   v2 = +[WLKSystemPreferencesStore sharedPreferences];
-  v3 = [v2 subtitleAudioLanguagesDownload];
+  subtitleAudioLanguagesDownload = [v2 subtitleAudioLanguagesDownload];
 
-  return v3;
+  return subtitleAudioLanguagesDownload;
 }
 
-- (void)_setPreferredSubtitleLanguageCodes:(id)a3
+- (void)_setPreferredSubtitleLanguageCodes:(id)codes
 {
-  v4 = a3;
+  codesCopy = codes;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v5 setSubtitleAudioLanguagesDownload:v4];
+  [v5 setSubtitleAudioLanguagesDownload:codesCopy];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 postNotificationName:@"PreferredSubtitleLanguagesDidChangeNotification" object:self];
 }
 
-- (void)setPreferredSubtitleLanguageCodes:(id)a3
+- (void)setPreferredSubtitleLanguageCodes:(id)codes
 {
-  v4 = a3;
+  codesCopy = codes;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v7 = [v5 subtitleAudioLanguagesDownload];
+  subtitleAudioLanguagesDownload = [v5 subtitleAudioLanguagesDownload];
 
   v6 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_SUBTITLE_LANGUAGE_OPERATION" defaultValue:@"Modify Subtitle Languages"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v6 setSelector:"_setPreferredSubtitleLanguageCodes:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:codesCopy oldValue:subtitleAudioLanguagesDownload specifier:0 actionName:v6 setSelector:"_setPreferredSubtitleLanguageCodes:"];
 }
 
 - (NSNumber)useDefaultSubtitleLanguages
@@ -1629,69 +1629,69 @@ LABEL_13:
   return v3;
 }
 
-- (void)_setUseDefaultSubtitleLanguages:(id)a3
+- (void)_setUseDefaultSubtitleLanguages:(id)languages
 {
-  v3 = a3;
+  languagesCopy = languages;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [languagesCopy BOOLValue];
 
-  [v5 setSubtitleDefaultLanguageEnabledDownload:v4];
+  [v5 setSubtitleDefaultLanguageEnabledDownload:bOOLValue];
 }
 
-- (void)setUseDefaultSubtitleLanguages:(id)a3
+- (void)setUseDefaultSubtitleLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v5 subtitleDefaultLanguageEnabledDownload];
+  subtitleDefaultLanguageEnabledDownload = [v5 subtitleDefaultLanguageEnabledDownload];
 
   v8 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_DEFAULT_SUBTITLE_LANGUAGES" defaultValue:@"Toggle Default Subtitle Languages"];
-  v7 = [NSNumber numberWithBool:v6];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v8 setSelector:"_setUseDefaultSubtitleLanguages:"];
+  v7 = [NSNumber numberWithBool:subtitleDefaultLanguageEnabledDownload];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:languagesCopy oldValue:v7 specifier:0 actionName:v8 setSelector:"_setUseDefaultSubtitleLanguages:"];
 }
 
 - (id)preferredPlaybackDimensionality
 {
   v2 = +[WLKSystemPreferencesStore sharedPreferences];
-  v3 = [v2 preferredPlaybackDimensionality];
+  preferredPlaybackDimensionality = [v2 preferredPlaybackDimensionality];
 
-  return v3;
+  return preferredPlaybackDimensionality;
 }
 
-- (void)_setPreferredPlaybackDimensionality:(id)a3
+- (void)_setPreferredPlaybackDimensionality:(id)dimensionality
 {
-  v4 = a3;
+  dimensionalityCopy = dimensionality;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  [v5 setPreferredPlaybackDimensionality:v4];
+  [v5 setPreferredPlaybackDimensionality:dimensionalityCopy];
 
   [(TopLevelSettingsController *)self reloadSpecifierID:@"com.apple.videos:VideosPlaybackMode"];
 }
 
-- (void)setPreferredPlaybackDimensionality:(id)a3
+- (void)setPreferredPlaybackDimensionality:(id)dimensionality
 {
-  v4 = a3;
+  dimensionalityCopy = dimensionality;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v7 = [v5 preferredPlaybackDimensionality];
+  preferredPlaybackDimensionality = [v5 preferredPlaybackDimensionality];
 
   v6 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_PREFERRED_PLAYBACK" defaultValue:@"Toggle Preferred Playback Dimensionality"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v6 setSelector:"_setPreferredPlaybackDimensionality:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:dimensionalityCopy oldValue:preferredPlaybackDimensionality specifier:0 actionName:v6 setSelector:"_setPreferredPlaybackDimensionality:"];
 }
 
-- (void)homeSharingSignInButtonAction:(id)a3
+- (void)homeSharingSignInButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [(TopLevelSettingsController *)self parentController];
-  v6 = v5;
-  if (v5)
+  actionCopy = action;
+  parentController = [(TopLevelSettingsController *)self parentController];
+  v6 = parentController;
+  if (parentController)
   {
-    v7 = v5;
+    selfCopy = parentController;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   v9 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
   [v9 setIsEphemeral:1];
@@ -1716,28 +1716,28 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)homeSharingSignOutButtonAction:(id)a3
+- (void)homeSharingSignOutButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [(TopLevelSettingsController *)self parentController];
-  v6 = v5;
-  if (v5)
+  actionCopy = action;
+  parentController = [(TopLevelSettingsController *)self parentController];
+  v6 = parentController;
+  if (parentController)
   {
-    v7 = v5;
+    selfCopy = parentController;
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   objc_initWeak(&location, self);
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"HOME_SHARING_APPLE_ID" value:&stru_21328 table:@"TVSettings"];
-  v11 = [(TopLevelSettingsController *)self homeSharingAppleID];
-  v12 = [UIAlertController alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+  homeSharingAppleID = [(TopLevelSettingsController *)self homeSharingAppleID];
+  v12 = [UIAlertController alertControllerWithTitle:v10 message:homeSharingAppleID preferredStyle:1];
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"CANCEL" value:&stru_21328 table:@"TVSettings"];
@@ -1760,7 +1760,7 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateUIAfterChangingCellularUse:(id)a3 specifier:(id)a4
+- (void)_updateUIAfterChangingCellularUse:(id)use specifier:(id)specifier
 {
   [(TopLevelSettingsController *)self _updateCellularSpecifiersAnimated:1 shouldUpdateUsingTableView:1];
   [(TopLevelSettingsController *)self _updateCellularQualitySpecifiersAnimated:1 shouldUpdateUsingTableView:1 forPlayback:1];
@@ -1783,10 +1783,10 @@ LABEL_13:
   [v8 setProperty:v9 forKey:v7];
 }
 
-- (id)downloadLanguageSpecifierSubtext:(id)a3
+- (id)downloadLanguageSpecifierSubtext:(id)subtext
 {
-  v4 = [(TopLevelSettingsController *)self selectedAudioLanguages];
-  v5 = [v4 count];
+  selectedAudioLanguages = [(TopLevelSettingsController *)self selectedAudioLanguages];
+  v5 = [selectedAudioLanguages count];
 
   if (v5 != &dword_0 + 1)
   {
@@ -1805,17 +1805,17 @@ LABEL_13:
 
     v14 = v13;
 
-    v7 = [NSNumber numberWithInt:v5];
-    v15 = [NSNumberFormatter localizedStringFromNumber:v7 numberStyle:1];
+    firstObject = [NSNumber numberWithInt:v5];
+    v15 = [NSNumberFormatter localizedStringFromNumber:firstObject numberStyle:1];
     v9 = [NSString stringWithFormat:v14, v15];
 
     goto LABEL_12;
   }
 
-  v6 = [(TopLevelSettingsController *)self selectedAudioLanguages];
-  v7 = [v6 firstObject];
+  selectedAudioLanguages2 = [(TopLevelSettingsController *)self selectedAudioLanguages];
+  firstObject = [selectedAudioLanguages2 firstObject];
 
-  if ([v7 isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
+  if ([firstObject isEqualToString:@"ORIGINAL_AUDIO_LANGUAGE"])
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"ORIGINAL_AUDIO_LANGUAGE" value:&stru_21328 table:@"TVSettings"];
@@ -1824,56 +1824,56 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if ([v7 isEqualToString:@"DEVICE_AUDIO_LANGUAGE"])
+  if ([firstObject isEqualToString:@"DEVICE_AUDIO_LANGUAGE"])
   {
     v8 = +[NSLocale preferredLanguages];
-    v16 = [v8 firstObject];
-    v9 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v16];
+    firstObject2 = [v8 firstObject];
+    v9 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:firstObject2];
 
     goto LABEL_10;
   }
 
-  v9 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:v7];
+  v9 = [WLKSettingsLanguageUtilities localizedNameForLanguageCode:firstObject];
 LABEL_12:
 
   return v9;
 }
 
-- (id)preferredAudioLanguageCode:(id)a3
+- (id)preferredAudioLanguageCode:(id)code
 {
   v3 = +[WLKSystemPreferencesStore sharedPreferences];
-  v4 = [v3 audioLanguageCodeIncludingSentinel];
+  audioLanguageCodeIncludingSentinel = [v3 audioLanguageCodeIncludingSentinel];
 
-  return v4;
+  return audioLanguageCodeIncludingSentinel;
 }
 
-- (void)_setPreferredAudioLanguageCode:(id)a3
+- (void)_setPreferredAudioLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v6 = [v4 stringValue];
+  stringValue = [codeCopy stringValue];
 
-  [v5 setAudioLanguageCode:v6];
+  [v5 setAudioLanguageCode:stringValue];
 
   [(TopLevelSettingsController *)self reloadSpecifiers];
 }
 
-- (void)setPreferredAudioLanguageCode:(id)a3
+- (void)setPreferredAudioLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = +[WLKSystemPreferencesStore sharedPreferences];
-  v7 = [v5 audioLanguageCodeIncludingSentinel];
+  audioLanguageCodeIncludingSentinel = [v5 audioLanguageCodeIncludingSentinel];
 
   v6 = [TopLevelSettingsController preferencesExtendedLocalizedName:@"UNDO_SELECTED_AUDIO_LANGUAGE" defaultValue:@"Change Audio Language"];
-  [(TopLevelSettingsController *)self _performSetOperationWithUndo:v4 oldValue:v7 specifier:0 actionName:v6 setSelector:"_setPreferredAudioLanguageCode:"];
+  [(TopLevelSettingsController *)self _performSetOperationWithUndo:codeCopy oldValue:audioLanguageCodeIncludingSentinel specifier:0 actionName:v6 setSelector:"_setPreferredAudioLanguageCode:"];
 }
 
-- (id)availableAudioLanguageTitles:(id)a3
+- (id)availableAudioLanguageTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   v5 = objc_alloc_init(NSMutableArray);
-  v16 = v4;
-  v6 = [(TopLevelSettingsController *)self availableAudioLanguageCodes:v4];
+  v16 = titlesCopy;
+  v6 = [(TopLevelSettingsController *)self availableAudioLanguageCodes:titlesCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1928,16 +1928,16 @@ LABEL_11:
   return v5;
 }
 
-- (void)_externalScreenTypeDidChange:(id)a3
+- (void)_externalScreenTypeDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:kMRMediaRemoteExternalScreenTypeUserInfoKey];
-  v6 = [v5 unsignedIntValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:kMRMediaRemoteExternalScreenTypeUserInfoKey];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [(TopLevelSettingsController *)self _descriptionForExternalScreenType:v6];
+  v7 = [(TopLevelSettingsController *)self _descriptionForExternalScreenType:unsignedIntValue];
   NSLog(@"External screen type did change to %@", v7);
 
-  if (v6 == 2)
+  if (unsignedIntValue == 2)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -1951,16 +1951,16 @@ LABEL_11:
   }
 }
 
-- (void)_appAppearanceDidChange:(id)a3
+- (void)_appAppearanceDidChange:(id)change
 {
-  v4 = [(TopLevelSettingsController *)self appAppearanceSpecifier];
-  [(TopLevelSettingsController *)self reloadSpecifier:v4];
+  appAppearanceSpecifier = [(TopLevelSettingsController *)self appAppearanceSpecifier];
+  [(TopLevelSettingsController *)self reloadSpecifier:appAppearanceSpecifier];
 }
 
-- (void)_sceneWillConnect:(id)a3
+- (void)_sceneWillConnect:(id)connect
 {
-  v5 = [a3 object];
-  if ([v5 tvSettings_isNonLightningSecondScreenScene])
+  object = [connect object];
+  if ([object tvSettings_isNonLightningSecondScreenScene])
   {
     NSLog(@"A non-Lightning AV adapter was connected");
     v4 = +[WLKSystemPreferencesStore sharedPreferences];
@@ -1970,16 +1970,16 @@ LABEL_11:
   }
 }
 
-- (id)_descriptionForExternalScreenType:(unsigned int)a3
+- (id)_descriptionForExternalScreenType:(unsigned int)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_20C20[a3];
+    return off_20C20[type];
   }
 }
 
@@ -1988,29 +1988,29 @@ LABEL_11:
   v2 = MGGetBoolAnswer();
   v3 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:@"com.apple.tv"];
   v4 = [v3 specifiersForPolicyOptions:0x8000 force:0];
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
-  if (v5)
+  if (lastObject)
   {
-    v6 = [v5 performGetter];
+    performGetter = [lastObject performGetter];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [performGetter BOOLValue];
     }
 
     else
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v2 & v7;
+  return v2 & bOOLValue;
 }
 
 - (id)downloadQualitySpecifier

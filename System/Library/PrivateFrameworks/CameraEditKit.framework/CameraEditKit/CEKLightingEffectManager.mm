@@ -1,26 +1,26 @@
 @interface CEKLightingEffectManager
-+ (id)aggdNameForLightingType:(int64_t)a3;
-+ (id)ciFilterNameForLightingType:(int64_t)a3 version:(int64_t)a4;
-+ (id)displayImageForLightingType:(int64_t)a3;
-+ (id)displayNameForLightingType:(int64_t)a3;
-+ (id)filtersForLightingType:(int64_t)a3 applyDepthEffect:(BOOL)a4 version:(int64_t)a5;
++ (id)aggdNameForLightingType:(int64_t)type;
++ (id)ciFilterNameForLightingType:(int64_t)type version:(int64_t)version;
++ (id)displayImageForLightingType:(int64_t)type;
++ (id)displayNameForLightingType:(int64_t)type;
++ (id)filtersForLightingType:(int64_t)type applyDepthEffect:(BOOL)effect version:(int64_t)version;
 + (id)portraitOriginalPhotoFilters;
-+ (int64_t)ciLightingTypeForFilterName:(id)a3;
++ (int64_t)ciLightingTypeForFilterName:(id)name;
 @end
 
 @implementation CEKLightingEffectManager
 
-+ (id)filtersForLightingType:(int64_t)a3 applyDepthEffect:(BOOL)a4 version:(int64_t)a5
++ (id)filtersForLightingType:(int64_t)type applyDepthEffect:(BOOL)effect version:(int64_t)version
 {
-  v6 = a4;
+  effectCopy = effect;
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v10 = v9;
-  if (v6)
+  if (effectCopy)
   {
     [v9 addObject:@"CIDepthEffect"];
   }
 
-  v11 = [a1 ciFilterNameForLightingType:a3 version:a5];
+  v11 = [self ciFilterNameForLightingType:type version:version];
   if (v11)
   {
     [v10 addObject:v11];
@@ -72,21 +72,21 @@ uint64_t __76__CEKLightingEffectManager_filtersForLightingType_applyDepthEffect_
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)ciFilterNameForLightingType:(int64_t)a3 version:(int64_t)a4
++ (id)ciFilterNameForLightingType:(int64_t)type version:(int64_t)version
 {
-  if ((a3 - 2) > 4)
+  if ((type - 2) > 4)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E7CC6F48[a3 - 2];
+    v6 = off_1E7CC6F48[type - 2];
   }
 
-  if (a4 == 2)
+  if (version == 2)
   {
-    if (a3 != 6)
+    if (type != 6)
     {
       v6 = [(__CFString *)v6 stringByAppendingString:@"V2", v4];
     }
@@ -94,7 +94,7 @@ uint64_t __76__CEKLightingEffectManager_filtersForLightingType_applyDepthEffect_
 
   else
   {
-    if (!a4)
+    if (!version)
     {
       v6 = 0;
     }
@@ -103,9 +103,9 @@ uint64_t __76__CEKLightingEffectManager_filtersForLightingType_applyDepthEffect_
   return v6;
 }
 
-+ (int64_t)ciLightingTypeForFilterName:(id)a3
++ (int64_t)ciLightingTypeForFilterName:(id)name
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"V2" withString:&stru_1F2FD5B58];
+  v3 = [name stringByReplacingOccurrencesOfString:@"V2" withString:&stru_1F2FD5B58];
   if ([v3 isEqualToString:@"CIPortraitEffectStudio"])
   {
     v4 = 2;
@@ -139,44 +139,44 @@ uint64_t __76__CEKLightingEffectManager_filtersForLightingType_applyDepthEffect_
   return v4;
 }
 
-+ (id)displayNameForLightingType:(int64_t)a3
++ (id)displayNameForLightingType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = CEKLocalizedFrameworkString(off_1E7CC6F70[a3 - 1], 0);
+    v4 = CEKLocalizedFrameworkString(off_1E7CC6F70[type - 1], 0);
   }
 
   return v4;
 }
 
-+ (id)aggdNameForLightingType:(int64_t)a3
++ (id)aggdNameForLightingType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7CC6FA0[a3 - 1];
+    return off_1E7CC6FA0[type - 1];
   }
 }
 
-+ (id)displayImageForLightingType:(int64_t)a3
++ (id)displayImageForLightingType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     v6 = 0;
   }
 
   else
   {
-    v3 = off_1E7CC6FD0[a3 - 1];
+    v3 = off_1E7CC6FD0[type - 1];
     v4 = MEMORY[0x1E69DCAB8];
     v5 = CEKFrameworkBundle();
     v6 = [v4 imageNamed:v3 inBundle:v5];

@@ -10,7 +10,7 @@
   if (FigCFEqual())
   {
 
-    return [a1 markAsFinished];
+    return [self markAsFinished];
   }
 
   if (FigCFEqual())
@@ -23,7 +23,7 @@
     if (FigCFEqual())
     {
       v4 = *MEMORY[0x1E6958680];
-      v3 = a1;
+      selfCopy2 = self;
       goto LABEL_13;
     }
 
@@ -31,15 +31,15 @@
     {
 LABEL_6:
 
-      return [a1 markAsFailed];
+      return [self markAsFailed];
     }
   }
 
-  v3 = a1;
+  selfCopy2 = self;
   v4 = 0;
 LABEL_13:
 
-  return [v3 markAsCancelledWithReason:v4];
+  return [selfCopy2 markAsCancelledWithReason:v4];
 }
 
 - (uint64_t)changeToTerminalStatusBasedOnRouteConfigUpdatedReason:()FigRoutingContextAdditions
@@ -48,7 +48,7 @@ LABEL_13:
   {
 LABEL_2:
 
-    return [a1 markAsFinished];
+    return [self markAsFinished];
   }
 
   if (FigCFEqual())
@@ -58,7 +58,7 @@ LABEL_2:
 
   if (FigCFEqual())
   {
-    v3 = a1;
+    selfCopy2 = self;
     v4 = 0;
   }
 
@@ -73,14 +73,14 @@ LABEL_2:
 
 LABEL_6:
 
-      return [a1 markAsFailed];
+      return [self markAsFailed];
     }
 
     v4 = *MEMORY[0x1E6958680];
-    v3 = a1;
+    selfCopy2 = self;
   }
 
-  return [v3 markAsCancelledWithReason:v4];
+  return [selfCopy2 markAsCancelledWithReason:v4];
 }
 
 @end

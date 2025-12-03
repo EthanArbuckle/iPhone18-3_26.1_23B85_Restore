@@ -1,30 +1,30 @@
 @interface PROLegacyPluginManager
 + (id)pluginManager;
 - (PROLegacyPluginManager)init;
-- (id)apiForProtocol:(id)a3;
-- (int)addPluginProtocol:(id)a3;
-- (int)addPluginSearchDirectory:(id)a3;
-- (int)getBundlePath:(id *)a3 forPluginClassName:(id)a4;
-- (int)getNumPluginsForProtocol:(id)a3;
-- (int)getPluginClass:(Class *)a3 forPluginClassName:(id)a4;
-- (int)getPluginClass:(Class *)a3 forPluginDisplayName:(id)a4;
-- (int)getPluginClass:(Class *)a3 forPluginDisplayName:(id)a4 forProtocol:(id)a5;
-- (int)getPluginClassNames:(id)a3 forGroupName:(id)a4 forProtocol:(id)a5;
-- (int)getPluginClassNames:(id)a3 forProtocol:(id)a4;
-- (int)getPluginDisplayNames:(id)a3 forGroupName:(id)a4 forProtocol:(id)a5;
-- (int)getPluginDisplayNames:(id)a3 forProtocol:(id)a4;
-- (int)getPluginGroupNames:(id)a3 forProtocol:(id)a4;
-- (int)getPluginInfoDictionaries:(id)a3 forProtocol:(id)a4;
-- (int)loadPluginClass:(Class *)a3 withName:(id)a4 fromBundlePath:(id)a5;
-- (int)registerBundle:(id)a3 withPluginDictionaryList:(id)a4;
-- (int)registerPluginWithDictionary:(id)a3 withClassName:(id)a4 withBundle:(id)a5 withProtocolName:(id)a6;
-- (int)removeApiForProtocol:(id)a3;
-- (int)scanForPluginsInDirectory:(id)a3;
-- (int)setApiObject:(id)a3 forProtocol:(id)a4;
-- (int)setApiObjects:(id)a3 forProtocols:(id)a4;
-- (int)setPluginSearchDirectories:(id)a3;
+- (id)apiForProtocol:(id)protocol;
+- (int)addPluginProtocol:(id)protocol;
+- (int)addPluginSearchDirectory:(id)directory;
+- (int)getBundlePath:(id *)path forPluginClassName:(id)name;
+- (int)getNumPluginsForProtocol:(id)protocol;
+- (int)getPluginClass:(Class *)class forPluginClassName:(id)name;
+- (int)getPluginClass:(Class *)class forPluginDisplayName:(id)name;
+- (int)getPluginClass:(Class *)class forPluginDisplayName:(id)name forProtocol:(id)protocol;
+- (int)getPluginClassNames:(id)names forGroupName:(id)name forProtocol:(id)protocol;
+- (int)getPluginClassNames:(id)names forProtocol:(id)protocol;
+- (int)getPluginDisplayNames:(id)names forGroupName:(id)name forProtocol:(id)protocol;
+- (int)getPluginDisplayNames:(id)names forProtocol:(id)protocol;
+- (int)getPluginGroupNames:(id)names forProtocol:(id)protocol;
+- (int)getPluginInfoDictionaries:(id)dictionaries forProtocol:(id)protocol;
+- (int)loadPluginClass:(Class *)class withName:(id)name fromBundlePath:(id)path;
+- (int)registerBundle:(id)bundle withPluginDictionaryList:(id)list;
+- (int)registerPluginWithDictionary:(id)dictionary withClassName:(id)name withBundle:(id)bundle withProtocolName:(id)protocolName;
+- (int)removeApiForProtocol:(id)protocol;
+- (int)scanForPluginsInDirectory:(id)directory;
+- (int)setApiObject:(id)object forProtocol:(id)protocol;
+- (int)setApiObjects:(id)objects forProtocols:(id)protocols;
+- (int)setPluginSearchDirectories:(id)directories;
 - (void)dealloc;
-- (void)localizeKey:(id)a3 withDefault:(id)a4 forPlugin:(id)a5 fromBundle:(id)a6;
+- (void)localizeKey:(id)key withDefault:(id)default forPlugin:(id)plugin fromBundle:(id)bundle;
 @end
 
 @implementation PROLegacyPluginManager
@@ -34,7 +34,7 @@
   result = sharedPluginManager;
   if (!sharedPluginManager)
   {
-    result = objc_alloc_init(a1);
+    result = objc_alloc_init(self);
     sharedPluginManager = result;
   }
 
@@ -71,14 +71,14 @@
   [(PROLegacyPluginManager *)&v4 dealloc];
 }
 
-- (int)addPluginProtocol:(id)a3
+- (int)addPluginProtocol:(id)protocol
 {
-  if (!a3)
+  if (!protocol)
   {
     return 7;
   }
 
-  Name = protocol_getName(a3);
+  Name = protocol_getName(protocol);
   if (([(NSMutableArray *)self->_pluginProtocols containsObject:Name]& 1) == 0)
   {
     [(NSMutableArray *)self->_pluginProtocols addObject:Name];
@@ -87,9 +87,9 @@
   return 0;
 }
 
-- (int)addPluginSearchDirectory:(id)a3
+- (int)addPluginSearchDirectory:(id)directory
 {
-  if (!a3)
+  if (!directory)
   {
     return 7;
   }
@@ -98,32 +98,32 @@
   return 0;
 }
 
-- (int)setPluginSearchDirectories:(id)a3
+- (int)setPluginSearchDirectories:(id)directories
 {
-  if (!a3)
+  if (!directories)
   {
     return 7;
   }
 
-  if (![a3 count])
+  if (![directories count])
   {
     return 8;
   }
 
   [(NSMutableArray *)self->_pluginSearchDirectories removeAllObjects];
-  [(NSMutableArray *)self->_pluginSearchDirectories addObjectsFromArray:a3];
+  [(NSMutableArray *)self->_pluginSearchDirectories addObjectsFromArray:directories];
   return 0;
 }
 
-- (int)setApiObject:(id)a3 forProtocol:(id)a4
+- (int)setApiObject:(id)object forProtocol:(id)protocol
 {
   result = 7;
-  if (a3)
+  if (object)
   {
-    if (a4)
+    if (protocol)
     {
-      Name = protocol_getName(a4);
-      CFDictionarySetValue(self->_apiRegistry, Name, a3);
+      Name = protocol_getName(protocol);
+      CFDictionarySetValue(self->_apiRegistry, Name, object);
       return 0;
     }
   }
@@ -131,27 +131,27 @@
   return result;
 }
 
-- (int)setApiObjects:(id)a3 forProtocols:(id)a4
+- (int)setApiObjects:(id)objects forProtocols:(id)protocols
 {
-  v4 = self;
+  selfCopy = self;
   LODWORD(self) = 7;
-  if (a3)
+  if (objects)
   {
-    if (a4)
+    if (protocols)
     {
-      self = [a3 count];
+      self = [objects count];
       if (self)
       {
         v7 = 0;
         v8 = 1;
         do
         {
-          Name = protocol_getName([a4 objectAtIndex:v7]);
-          CFDictionarySetValue(v4->_apiRegistry, Name, [a3 objectAtIndex:v7]);
+          Name = protocol_getName([protocols objectAtIndex:v7]);
+          CFDictionarySetValue(selfCopy->_apiRegistry, Name, [objects objectAtIndex:v7]);
           v7 = v8;
         }
 
-        while ([a3 count] > v8++);
+        while ([objects count] > v8++);
         LODWORD(self) = 0;
       }
     }
@@ -160,17 +160,17 @@
   return self;
 }
 
-- (id)apiForProtocol:(id)a3
+- (id)apiForProtocol:(id)protocol
 {
-  Name = protocol_getName(a3);
+  Name = protocol_getName(protocol);
   apiRegistry = self->_apiRegistry;
 
   return CFDictionaryGetValue(apiRegistry, Name);
 }
 
-- (int)removeApiForProtocol:(id)a3
+- (int)removeApiForProtocol:(id)protocol
 {
-  Name = protocol_getName(a3);
+  Name = protocol_getName(protocol);
   if (!CFDictionaryGetValue(self->_apiRegistry, Name))
   {
     return 15;
@@ -180,61 +180,61 @@
   return 0;
 }
 
-- (void)localizeKey:(id)a3 withDefault:(id)a4 forPlugin:(id)a5 fromBundle:(id)a6
+- (void)localizeKey:(id)key withDefault:(id)default forPlugin:(id)plugin fromBundle:(id)bundle
 {
-  v10 = [a5 objectForKey:?];
+  v10 = [plugin objectForKey:?];
   v11 = v10;
-  if (v10 && (v12 = [v10 isEqual:&stru_2872E16E0], v13 = v11, !v12) || a4 && (v14 = objc_msgSend(a4, "isEqual:", &stru_2872E16E0), v13 = a4, (v14 & 1) == 0))
+  if (v10 && (v12 = [v10 isEqual:&stru_2872E16E0], v13 = v11, !v12) || default && (v14 = objc_msgSend(default, "isEqual:", &stru_2872E16E0), v13 = default, (v14 & 1) == 0))
   {
-    v15 = [a6 localizedStringForKey:v13 value:v13 table:0];
+    v15 = [bundle localizedStringForKey:v13 value:v13 table:0];
     if (v15 != v11)
     {
 
-      [a5 setObject:v15 forKey:a3];
+      [plugin setObject:v15 forKey:key];
     }
   }
 }
 
-- (int)registerPluginWithDictionary:(id)a3 withClassName:(id)a4 withBundle:(id)a5 withProtocolName:(id)a6
+- (int)registerPluginWithDictionary:(id)dictionary withClassName:(id)name withBundle:(id)bundle withProtocolName:(id)protocolName
 {
-  v11 = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:a6];
+  v11 = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocolName];
   if (v11)
   {
-    v12 = v11;
-    if ([v11 objectForKey:a4])
+    dictionary = v11;
+    if ([v11 objectForKey:name])
     {
-      printf("PROPluginManager: WARNING: Class name [%s] already registered. Processing bundle [%s]\n", [a4 UTF8String], objc_msgSend(objc_msgSend(a5, "bundlePath"), "UTF8String"));
+      printf("PROPluginManager: WARNING: Class name [%s] already registered. Processing bundle [%s]\n", [name UTF8String], objc_msgSend(objc_msgSend(bundle, "bundlePath"), "UTF8String"));
       return 3;
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    [(NSMutableDictionary *)self->_pluginRegistry setObject:v12 forKey:a6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NSMutableDictionary *)self->_pluginRegistry setObject:dictionary forKey:protocolName];
   }
 
-  v14 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
-  [(PROLegacyPluginManager *)self localizeKey:@"groupName" withDefault:0 forPlugin:v14 fromBundle:a5];
-  [(PROLegacyPluginManager *)self localizeKey:@"displayName" withDefault:a4 forPlugin:v14 fromBundle:a5];
-  [(PROLegacyPluginManager *)self localizeKey:@"infoString" withDefault:0 forPlugin:v14 fromBundle:a5];
-  [(PROLegacyPluginManager *)self localizeKey:@"helpURL" withDefault:0 forPlugin:v14 fromBundle:a5];
-  [(PROLegacyPluginManager *)self localizeKey:@"vendorName" withDefault:0 forPlugin:v14 fromBundle:a5];
-  [v14 setObject:objc_msgSend(a5 forKey:{"bundlePath"), @"bundlePath"}];
-  [v12 setObject:v14 forKey:a4];
+  v14 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionary];
+  [(PROLegacyPluginManager *)self localizeKey:@"groupName" withDefault:0 forPlugin:v14 fromBundle:bundle];
+  [(PROLegacyPluginManager *)self localizeKey:@"displayName" withDefault:name forPlugin:v14 fromBundle:bundle];
+  [(PROLegacyPluginManager *)self localizeKey:@"infoString" withDefault:0 forPlugin:v14 fromBundle:bundle];
+  [(PROLegacyPluginManager *)self localizeKey:@"helpURL" withDefault:0 forPlugin:v14 fromBundle:bundle];
+  [(PROLegacyPluginManager *)self localizeKey:@"vendorName" withDefault:0 forPlugin:v14 fromBundle:bundle];
+  [v14 setObject:objc_msgSend(bundle forKey:{"bundlePath"), @"bundlePath"}];
+  [dictionary setObject:v14 forKey:name];
   return 0;
 }
 
-- (int)registerBundle:(id)a3 withPluginDictionaryList:(id)a4
+- (int)registerBundle:(id)bundle withPluginDictionaryList:(id)list
 {
-  v7 = [a4 count];
+  v7 = [list count];
   v8 = v7;
   if (v7)
   {
     v9 = 0;
     while (1)
     {
-      v10 = [a4 objectAtIndex:v9];
+      v10 = [list objectAtIndex:v9];
       if (v10)
       {
         v11 = v10;
@@ -249,19 +249,19 @@
             LODWORD(v10) = [(NSMutableArray *)self->_pluginProtocols containsObject:v14];
             if (v10)
             {
-              LODWORD(v10) = [(PROLegacyPluginManager *)self registerPluginWithDictionary:v11 withClassName:v13 withBundle:a3 withProtocolName:v15];
+              LODWORD(v10) = [(PROLegacyPluginManager *)self registerPluginWithDictionary:v11 withClassName:v13 withBundle:bundle withProtocolName:v15];
             }
 
             goto LABEL_11;
           }
 
-          [objc_msgSend(a3 "bundlePath")];
+          [objc_msgSend(bundle "bundlePath")];
           printf("PROPluginManager: ERROR: Missing [protocolName] entry for item [%d] in bundle [%s]\n");
         }
 
         else
         {
-          [objc_msgSend(a3 "bundlePath")];
+          [objc_msgSend(bundle "bundlePath")];
           printf("PROPluginManager:  ERROR: Missing [className] entry for item [%d] in bundle [%s]\n");
         }
 
@@ -280,58 +280,58 @@ LABEL_11:
   return v10;
 }
 
-- (int)loadPluginClass:(Class *)a3 withName:(id)a4 fromBundlePath:(id)a5
+- (int)loadPluginClass:(Class *)class withName:(id)name fromBundlePath:(id)path
 {
-  v8 = [MEMORY[0x277CCA8D8] bundleWithPath:a5];
+  v8 = [MEMORY[0x277CCA8D8] bundleWithPath:path];
   if (v8)
   {
     [v8 load];
-    v9 = NSClassFromString(a4);
-    *a3 = v9;
+    v9 = NSClassFromString(name);
+    *class = v9;
     if (v9)
     {
       return 0;
     }
 
-    [a4 UTF8String];
-    [a5 UTF8String];
+    [name UTF8String];
+    [path UTF8String];
     printf("PROPluginManager: ERROR: Class [%s]  not found in bundle [%s]\n");
   }
 
   else
   {
-    [a5 UTF8String];
+    [path UTF8String];
     printf("PROPluginManager: ERROR: Unable to open bundle [%s]\n");
   }
 
   return 5;
 }
 
-- (int)scanForPluginsInDirectory:(id)a3
+- (int)scanForPluginsInDirectory:(id)directory
 {
-  if (a3)
+  if (directory)
   {
     v5 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
-    v6 = [v5 nextObject];
-    if (v6)
+    nextObject = [v5 nextObject];
+    if (nextObject)
     {
-      v7 = v6;
+      v7 = nextObject;
       while (![objc_msgSend(v7 "pathExtension")])
       {
 LABEL_15:
-        v6 = [v5 nextObject];
-        v7 = v6;
-        if (!v6)
+        nextObject = [v5 nextObject];
+        v7 = nextObject;
+        if (!nextObject)
         {
-          return v6;
+          return nextObject;
         }
       }
 
-      v8 = [a3 stringByAppendingPathComponent:v7];
+      v8 = [directory stringByAppendingPathComponent:v7];
       v9 = [MEMORY[0x277CCA8D8] bundleWithPath:v8];
-      v10 = [v9 infoDictionary];
-      v11 = [v10 objectForKey:@"ProPlugPluginList"];
-      v12 = [v10 objectForKey:@"ProPlugDynamicRegistration"];
+      infoDictionary = [v9 infoDictionary];
+      v11 = [infoDictionary objectForKey:@"ProPlugPluginList"];
+      v12 = [infoDictionary objectForKey:@"ProPlugDynamicRegistration"];
       if (v12)
       {
         if (([v12 BOOLValue] & 1) == 0 && v11)
@@ -361,15 +361,15 @@ LABEL_14:
 
   else
   {
-    LODWORD(v6) = 7;
+    LODWORD(nextObject) = 7;
   }
 
-  return v6;
+  return nextObject;
 }
 
-- (int)getNumPluginsForProtocol:(id)a3
+- (int)getNumPluginsForProtocol:(id)protocol
 {
-  v3 = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(a3)];
+  v3 = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(protocol)];
   if (v3)
   {
     LODWORD(v3) = [v3 count];
@@ -378,22 +378,22 @@ LABEL_14:
   return v3;
 }
 
-- (int)getPluginDisplayNames:(id)a3 forProtocol:(id)a4
+- (int)getPluginDisplayNames:(id)names forProtocol:(id)protocol
 {
-  v4 = self;
+  selfCopy = self;
   LODWORD(self) = 7;
-  if (a3 && a4)
+  if (names && protocol)
   {
-    v6 = [(NSMutableDictionary *)v4->_pluginRegistry objectForKey:protocol_getName(a4)];
+    v6 = [(NSMutableDictionary *)selfCopy->_pluginRegistry objectForKey:protocol_getName(protocol)];
     if (v6)
     {
-      v7 = [v6 objectEnumerator];
-      for (self = [v7 nextObject]; self; self = objc_msgSend(v7, "nextObject"))
+      objectEnumerator = [v6 objectEnumerator];
+      for (self = [objectEnumerator nextObject]; self; self = objc_msgSend(objectEnumerator, "nextObject"))
       {
         v8 = [(PROLegacyPluginManager *)self objectForKey:@"displayName"];
         if (v8)
         {
-          [a3 addObject:v8];
+          [names addObject:v8];
         }
       }
     }
@@ -407,22 +407,22 @@ LABEL_14:
   return self;
 }
 
-- (int)getPluginClassNames:(id)a3 forProtocol:(id)a4
+- (int)getPluginClassNames:(id)names forProtocol:(id)protocol
 {
-  v4 = self;
+  selfCopy = self;
   LODWORD(self) = 7;
-  if (a3 && a4)
+  if (names && protocol)
   {
-    v6 = [(NSMutableDictionary *)v4->_pluginRegistry objectForKey:protocol_getName(a4)];
+    v6 = [(NSMutableDictionary *)selfCopy->_pluginRegistry objectForKey:protocol_getName(protocol)];
     if (v6)
     {
-      v7 = [v6 objectEnumerator];
-      for (self = [v7 nextObject]; self; self = objc_msgSend(v7, "nextObject"))
+      objectEnumerator = [v6 objectEnumerator];
+      for (self = [objectEnumerator nextObject]; self; self = objc_msgSend(objectEnumerator, "nextObject"))
       {
         v8 = [(PROLegacyPluginManager *)self objectForKey:@"className"];
         if (v8)
         {
-          [a3 addObject:v8];
+          [names addObject:v8];
         }
       }
     }
@@ -436,25 +436,25 @@ LABEL_14:
   return self;
 }
 
-- (int)getPluginGroupNames:(id)a3 forProtocol:(id)a4
+- (int)getPluginGroupNames:(id)names forProtocol:(id)protocol
 {
-  if (a3)
+  if (names)
   {
-    if (a4)
+    if (protocol)
     {
-      i = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(a4)];
+      i = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(protocol)];
       if (i)
       {
-        v6 = [i objectEnumerator];
-        for (i = [v6 nextObject]; i; i = objc_msgSend(v6, "nextObject"))
+        objectEnumerator = [i objectEnumerator];
+        for (i = [objectEnumerator nextObject]; i; i = objc_msgSend(objectEnumerator, "nextObject"))
         {
           v7 = [i objectForKey:@"groupName"];
           if (v7)
           {
             v8 = v7;
-            if (([a3 containsObject:v7] & 1) == 0)
+            if (([names containsObject:v7] & 1) == 0)
             {
-              [a3 addObject:v8];
+              [names addObject:v8];
             }
           }
         }
@@ -463,25 +463,25 @@ LABEL_14:
 
     else
     {
-      v9 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
-      for (i = [v9 nextObject]; i; i = objc_msgSend(v9, "nextObject"))
+      objectEnumerator2 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
+      for (i = [objectEnumerator2 nextObject]; i; i = objc_msgSend(objectEnumerator2, "nextObject"))
       {
-        v10 = [i objectEnumerator];
-        for (j = v10; ; v10 = j)
+        objectEnumerator3 = [i objectEnumerator];
+        for (j = objectEnumerator3; ; objectEnumerator3 = j)
         {
-          v12 = [v10 nextObject];
-          if (!v12)
+          nextObject = [objectEnumerator3 nextObject];
+          if (!nextObject)
           {
             break;
           }
 
-          v13 = [v12 objectForKey:@"groupName"];
+          v13 = [nextObject objectForKey:@"groupName"];
           if (v13)
           {
             v14 = v13;
-            if (([a3 containsObject:v13] & 1) == 0)
+            if (([names containsObject:v13] & 1) == 0)
             {
-              [a3 addObject:v14];
+              [names addObject:v14];
             }
           }
         }
@@ -497,38 +497,38 @@ LABEL_14:
   return i;
 }
 
-- (int)getPluginClassNames:(id)a3 forGroupName:(id)a4 forProtocol:(id)a5
+- (int)getPluginClassNames:(id)names forGroupName:(id)name forProtocol:(id)protocol
 {
-  if (!a3)
+  if (!names)
   {
     LODWORD(i) = 7;
     return i;
   }
 
-  if (a5)
+  if (protocol)
   {
-    i = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(a5)];
+    i = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(protocol)];
     if (!i)
     {
       return i;
     }
 
-    v8 = [i objectEnumerator];
-    v9 = [v8 nextObject];
-    v10 = v9;
-    if (a4)
+    objectEnumerator = [i objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    v10 = nextObject;
+    if (name)
     {
-      if (v9)
+      if (nextObject)
       {
         do
         {
           v11 = [v10 objectForKey:@"groupName"];
-          if (v11 && [v11 isEqualToString:a4])
+          if (v11 && [v11 isEqualToString:name])
           {
-            [a3 addObject:{objc_msgSend(v10, "objectForKey:", @"className"}];
+            [names addObject:{objc_msgSend(v10, "objectForKey:", @"className"}];
           }
 
-          i = [v8 nextObject];
+          i = [objectEnumerator nextObject];
           v10 = i;
         }
 
@@ -541,7 +541,7 @@ LABEL_31:
       return i;
     }
 
-    if (!v9)
+    if (!nextObject)
     {
       goto LABEL_31;
     }
@@ -550,10 +550,10 @@ LABEL_31:
     {
       if (![v10 objectForKey:@"groupName"])
       {
-        [a3 addObject:{objc_msgSend(v10, "objectForKey:", @"className"}];
+        [names addObject:{objc_msgSend(v10, "objectForKey:", @"className"}];
       }
 
-      i = [v8 nextObject];
+      i = [objectEnumerator nextObject];
       v10 = i;
     }
 
@@ -562,44 +562,44 @@ LABEL_31:
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
-    for (i = [v12 nextObject]; i; i = objc_msgSend(v12, "nextObject"))
+    objectEnumerator2 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
+    for (i = [objectEnumerator2 nextObject]; i; i = objc_msgSend(objectEnumerator2, "nextObject"))
     {
-      v13 = [i objectEnumerator];
-      v14 = [v13 nextObject];
-      v15 = v14;
-      if (a4)
+      objectEnumerator3 = [i objectEnumerator];
+      nextObject2 = [objectEnumerator3 nextObject];
+      nextObject3 = nextObject2;
+      if (name)
       {
-        if (v14)
+        if (nextObject2)
         {
           do
           {
-            v16 = [v15 objectForKey:@"groupName"];
-            if (v16 && [v16 isEqualToString:a4])
+            v16 = [nextObject3 objectForKey:@"groupName"];
+            if (v16 && [v16 isEqualToString:name])
             {
-              [a3 addObject:{objc_msgSend(v15, "objectForKey:", @"className"}];
+              [names addObject:{objc_msgSend(nextObject3, "objectForKey:", @"className"}];
             }
 
-            v15 = [v13 nextObject];
+            nextObject3 = [objectEnumerator3 nextObject];
           }
 
-          while (v15);
+          while (nextObject3);
         }
       }
 
-      else if (v14)
+      else if (nextObject2)
       {
         do
         {
-          if (![v15 objectForKey:@"groupName"])
+          if (![nextObject3 objectForKey:@"groupName"])
           {
-            [a3 addObject:{objc_msgSend(v15, "objectForKey:", @"className"}];
+            [names addObject:{objc_msgSend(nextObject3, "objectForKey:", @"className"}];
           }
 
-          v15 = [v13 nextObject];
+          nextObject3 = [objectEnumerator3 nextObject];
         }
 
-        while (v15);
+        while (nextObject3);
       }
     }
   }
@@ -607,32 +607,32 @@ LABEL_31:
   return i;
 }
 
-- (int)getPluginDisplayNames:(id)a3 forGroupName:(id)a4 forProtocol:(id)a5
+- (int)getPluginDisplayNames:(id)names forGroupName:(id)name forProtocol:(id)protocol
 {
-  v5 = self;
+  selfCopy = self;
   LODWORD(self) = 7;
-  if (a3 && a4)
+  if (names && name)
   {
-    if (a5)
+    if (protocol)
     {
-      self = [(NSMutableDictionary *)v5->_pluginRegistry objectForKey:protocol_getName(a5)];
+      self = [(NSMutableDictionary *)selfCopy->_pluginRegistry objectForKey:protocol_getName(protocol)];
       if (self)
       {
-        v8 = [(PROLegacyPluginManager *)self objectEnumerator];
-        self = [v8 nextObject];
+        objectEnumerator = [(PROLegacyPluginManager *)self objectEnumerator];
+        self = [objectEnumerator nextObject];
         if (self)
         {
-          v9 = self;
+          selfCopy3 = self;
           do
           {
-            v10 = [(PROLegacyPluginManager *)v9 objectForKey:@"groupName"];
-            if (v10 && [v10 isEqualToString:a4])
+            v10 = [(PROLegacyPluginManager *)selfCopy3 objectForKey:@"groupName"];
+            if (v10 && [v10 isEqualToString:name])
             {
-              [a3 addObject:{-[PROLegacyPluginManager objectForKey:](v9, "objectForKey:", @"displayName"}];
+              [names addObject:{-[PROLegacyPluginManager objectForKey:](selfCopy3, "objectForKey:", @"displayName"}];
             }
 
-            self = [v8 nextObject];
-            v9 = self;
+            self = [objectEnumerator nextObject];
+            selfCopy3 = self;
           }
 
           while (self);
@@ -642,26 +642,26 @@ LABEL_31:
 
     else
     {
-      v11 = [(NSMutableDictionary *)v5->_pluginRegistry objectEnumerator];
-      for (self = [v11 nextObject]; self; self = objc_msgSend(v11, "nextObject"))
+      objectEnumerator2 = [(NSMutableDictionary *)selfCopy->_pluginRegistry objectEnumerator];
+      for (self = [objectEnumerator2 nextObject]; self; self = objc_msgSend(objectEnumerator2, "nextObject"))
       {
-        v12 = [(PROLegacyPluginManager *)self objectEnumerator];
-        v13 = [v12 nextObject];
-        if (v13)
+        objectEnumerator3 = [(PROLegacyPluginManager *)self objectEnumerator];
+        nextObject = [objectEnumerator3 nextObject];
+        if (nextObject)
         {
-          v14 = v13;
+          nextObject2 = nextObject;
           do
           {
-            v15 = [v14 objectForKey:@"groupName"];
-            if (v15 && [v15 isEqualToString:a4])
+            v15 = [nextObject2 objectForKey:@"groupName"];
+            if (v15 && [v15 isEqualToString:name])
             {
-              [a3 addObject:{objc_msgSend(v14, "objectForKey:", @"displayName"}];
+              [names addObject:{objc_msgSend(nextObject2, "objectForKey:", @"displayName"}];
             }
 
-            v14 = [v12 nextObject];
+            nextObject2 = [objectEnumerator3 nextObject];
           }
 
-          while (v14);
+          while (nextObject2);
         }
       }
     }
@@ -670,25 +670,25 @@ LABEL_31:
   return self;
 }
 
-- (int)getPluginInfoDictionaries:(id)a3 forProtocol:(id)a4
+- (int)getPluginInfoDictionaries:(id)dictionaries forProtocol:(id)protocol
 {
-  v4 = self;
+  selfCopy = self;
   LODWORD(self) = 7;
-  if (a3 && a4)
+  if (dictionaries && protocol)
   {
-    v6 = [(NSMutableDictionary *)v4->_pluginRegistry objectForKey:protocol_getName(a4)];
+    v6 = [(NSMutableDictionary *)selfCopy->_pluginRegistry objectForKey:protocol_getName(protocol)];
     if (v6)
     {
-      v7 = [v6 objectEnumerator];
-      self = [v7 nextObject];
+      objectEnumerator = [v6 objectEnumerator];
+      self = [objectEnumerator nextObject];
       if (self)
       {
-        v8 = self;
+        selfCopy3 = self;
         do
         {
-          [a3 addObject:v8];
-          self = [v7 nextObject];
-          v8 = self;
+          [dictionaries addObject:selfCopy3];
+          self = [objectEnumerator nextObject];
+          selfCopy3 = self;
         }
 
         while (self);
@@ -704,42 +704,42 @@ LABEL_31:
   return self;
 }
 
-- (int)getBundlePath:(id *)a3 forPluginClassName:(id)a4
+- (int)getBundlePath:(id *)path forPluginClassName:(id)name
 {
   result = 7;
-  if (a3 && a4)
+  if (path && name)
   {
-    v8 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
-    v9 = [v8 nextObject];
-    if (v9)
+    objectEnumerator = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v10 = v9;
+      nextObject3 = nextObject;
       do
       {
-        v11 = [v10 objectEnumerator];
+        objectEnumerator2 = [nextObject3 objectEnumerator];
         while (1)
         {
-          v12 = [v11 nextObject];
-          if (!v12)
+          nextObject2 = [objectEnumerator2 nextObject];
+          if (!nextObject2)
           {
             break;
           }
 
-          v13 = v12;
-          if ([objc_msgSend(v12 objectForKey:{@"className", "isEqualToString:", a4}])
+          v13 = nextObject2;
+          if ([objc_msgSend(nextObject2 objectForKey:{@"className", "isEqualToString:", name}])
           {
             v14 = [v13 objectForKey:@"bundlePath"];
             result = 0;
-            *a3 = v14;
+            *path = v14;
             return result;
           }
         }
 
-        v10 = [v8 nextObject];
+        nextObject3 = [objectEnumerator nextObject];
         result = 16;
       }
 
-      while (v10);
+      while (nextObject3);
     }
 
     else
@@ -751,13 +751,13 @@ LABEL_31:
   return result;
 }
 
-- (int)getPluginClass:(Class *)a3 forPluginClassName:(id)a4
+- (int)getPluginClass:(Class *)class forPluginClassName:(id)name
 {
   result = 7;
-  if (a3 && a4)
+  if (class && name)
   {
-    v8 = NSClassFromString(a4);
-    *a3 = v8;
+    v8 = NSClassFromString(name);
+    *class = v8;
     if (v8)
     {
       return 0;
@@ -765,34 +765,34 @@ LABEL_31:
 
     else
     {
-      v9 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
-      v10 = [v9 nextObject];
-      if (v10)
+      objectEnumerator = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v11 = v10;
+        nextObject3 = nextObject;
         while (2)
         {
-          v12 = [v11 objectEnumerator];
+          objectEnumerator2 = [nextObject3 objectEnumerator];
           while (1)
           {
-            v13 = [v12 nextObject];
-            if (!v13)
+            nextObject2 = [objectEnumerator2 nextObject];
+            if (!nextObject2)
             {
               break;
             }
 
-            v14 = v13;
-            if ([objc_msgSend(v13 objectForKey:{@"className", "isEqualToString:", a4}])
+            v14 = nextObject2;
+            if ([objc_msgSend(nextObject2 objectForKey:{@"className", "isEqualToString:", name}])
             {
               v15 = [v14 objectForKey:@"bundlePath"];
 
-              return [(PROLegacyPluginManager *)self loadPluginClass:a3 withName:a4 fromBundlePath:v15];
+              return [(PROLegacyPluginManager *)self loadPluginClass:class withName:name fromBundlePath:v15];
             }
           }
 
-          v11 = [v9 nextObject];
+          nextObject3 = [objectEnumerator nextObject];
           result = 16;
-          if (v11)
+          if (nextObject3)
           {
             continue;
           }
@@ -811,33 +811,33 @@ LABEL_31:
   return result;
 }
 
-- (int)getPluginClass:(Class *)a3 forPluginDisplayName:(id)a4
+- (int)getPluginClass:(Class *)class forPluginDisplayName:(id)name
 {
   result = 7;
-  if (a3 && a4)
+  if (class && name)
   {
-    v8 = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
-    v9 = [v8 nextObject];
-    if (v9)
+    objectEnumerator = [(NSMutableDictionary *)self->_pluginRegistry objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v10 = v9;
+      nextObject3 = nextObject;
       while (2)
       {
-        v11 = [v10 objectEnumerator];
+        objectEnumerator2 = [nextObject3 objectEnumerator];
         while (1)
         {
-          v12 = [v11 nextObject];
-          if (!v12)
+          nextObject2 = [objectEnumerator2 nextObject];
+          if (!nextObject2)
           {
             break;
           }
 
-          v13 = v12;
-          if ([objc_msgSend(v12 objectForKey:{@"displayName", "isEqualToString:", a4}])
+          v13 = nextObject2;
+          if ([objc_msgSend(nextObject2 objectForKey:{@"displayName", "isEqualToString:", name}])
           {
             v14 = [v13 objectForKey:@"className"];
             v15 = NSClassFromString(v14);
-            *a3 = v15;
+            *class = v15;
             if (v15)
             {
               return 0;
@@ -845,13 +845,13 @@ LABEL_31:
 
             v16 = [v13 objectForKey:@"bundlePath"];
 
-            return [(PROLegacyPluginManager *)self loadPluginClass:a3 withName:v14 fromBundlePath:v16];
+            return [(PROLegacyPluginManager *)self loadPluginClass:class withName:v14 fromBundlePath:v16];
           }
         }
 
-        v10 = [v8 nextObject];
+        nextObject3 = [objectEnumerator nextObject];
         result = 16;
-        if (v10)
+        if (nextObject3)
         {
           continue;
         }
@@ -869,42 +869,42 @@ LABEL_31:
   return result;
 }
 
-- (int)getPluginClass:(Class *)a3 forPluginDisplayName:(id)a4 forProtocol:(id)a5
+- (int)getPluginClass:(Class *)class forPluginDisplayName:(id)name forProtocol:(id)protocol
 {
   result = 7;
-  if (a3 && a4 && a5)
+  if (class && name && protocol)
   {
-    v9 = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(a5)];
+    v9 = [(NSMutableDictionary *)self->_pluginRegistry objectForKey:protocol_getName(protocol)];
     if (v9)
     {
-      v10 = [v9 objectEnumerator];
-      v11 = [v10 nextObject];
-      if (v11)
+      objectEnumerator = [v9 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v12 = v11;
+        nextObject2 = nextObject;
         while (1)
         {
-          if ([objc_msgSend(v12 objectForKey:{@"displayName", "isEqualToString:", a4}])
+          if ([objc_msgSend(nextObject2 objectForKey:{@"displayName", "isEqualToString:", name}])
           {
-            v13 = [v12 objectForKey:@"className"];
+            v13 = [nextObject2 objectForKey:@"className"];
             v14 = NSClassFromString(v13);
-            *a3 = v14;
+            *class = v14;
             if (v14)
             {
               break;
             }
           }
 
-          v12 = [v10 nextObject];
-          if (!v12)
+          nextObject2 = [objectEnumerator nextObject];
+          if (!nextObject2)
           {
             return 16;
           }
         }
 
-        v15 = [v12 objectForKey:@"bundlePath"];
+        v15 = [nextObject2 objectForKey:@"bundlePath"];
 
-        return [(PROLegacyPluginManager *)self loadPluginClass:a3 withName:v13 fromBundlePath:v15];
+        return [(PROLegacyPluginManager *)self loadPluginClass:class withName:v13 fromBundlePath:v15];
       }
 
       else

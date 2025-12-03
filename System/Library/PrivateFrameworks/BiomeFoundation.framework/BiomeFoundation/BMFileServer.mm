@@ -1,32 +1,32 @@
 @interface BMFileServer
-- (BMFileServer)initWithDirectory:(id)a3;
-- (BMFileServer)initWithDirectory:(id)a3 library:(id)a4;
-- (BOOL)allowedToAccessStream:(id)a3 withMode:(int)a4 error:(id *)a5;
-- (BOOL)entitledToAccessClientCompute:(id)a3 error:(id *)a4;
-- (BOOL)entitledToAccessSharedSyncWithError:(id *)a3;
+- (BMFileServer)initWithDirectory:(id)directory;
+- (BMFileServer)initWithDirectory:(id)directory library:(id)library;
+- (BOOL)allowedToAccessStream:(id)stream withMode:(int)mode error:(id *)error;
+- (BOOL)entitledToAccessClientCompute:(id)compute error:(id *)error;
+- (BOOL)entitledToAccessSharedSyncWithError:(id *)error;
 - (BOOL)isBiomeSyncDaemon;
 - (BOOL)isPrimaryDaemon;
 - (id)currentUseCase;
-- (void)createDirectoryAtPath:(id)a3 reply:(id)a4;
-- (void)removeDirectoryAtPath:(id)a3 reply:(id)a4;
-- (void)removeFileAtPath:(id)a3 reply:(id)a4;
-- (void)replaceFileAtPath:(id)a3 withFileHandle:(id)a4 protection:(int)a5 flags:(int)a6 reply:(id)a7;
+- (void)createDirectoryAtPath:(id)path reply:(id)reply;
+- (void)removeDirectoryAtPath:(id)path reply:(id)reply;
+- (void)removeFileAtPath:(id)path reply:(id)reply;
+- (void)replaceFileAtPath:(id)path withFileHandle:(id)handle protection:(int)protection flags:(int)flags reply:(id)reply;
 @end
 
 @implementation BMFileServer
 
 - (id)currentUseCase
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  v3 = [v2 bm_accessControlPolicy];
-  v4 = [v3 useCase];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  bm_accessControlPolicy = [currentConnection bm_accessControlPolicy];
+  useCase = [bm_accessControlPolicy useCase];
 
-  return v4;
+  return useCase;
 }
 
-- (BMFileServer)initWithDirectory:(id)a3
+- (BMFileServer)initWithDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -50,16 +50,16 @@
   }
 
   v6 = v5();
-  v7 = [(BMFileServer *)self initWithDirectory:v4 library:v6];
+  v7 = [(BMFileServer *)self initWithDirectory:directoryCopy library:v6];
 
   return v7;
 }
 
-- (BMFileServer)initWithDirectory:(id)a3 library:(id)a4
+- (BMFileServer)initWithDirectory:(id)directory library:(id)library
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = BMFileServer;
   v8 = [(BMFileServer *)&v16 init];
@@ -69,50 +69,50 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = directoryCopy;
       _os_log_impl(&dword_1AC15D000, v9, OS_LOG_TYPE_DEFAULT, "BMFileServer in %@", buf, 0xCu);
     }
 
-    v10 = [v6 copy];
+    v10 = [directoryCopy copy];
     directory = v8->_directory;
     v8->_directory = v10;
 
-    v12 = [BMFileManager fileManagerWithDirectAccessToDirectory:v6 cachingOptions:0];
+    v12 = [BMFileManager fileManagerWithDirectAccessToDirectory:directoryCopy cachingOptions:0];
     fileManager = v8->_fileManager;
     v8->_fileManager = v12;
 
-    [BMPaths getServiceDomain:&v8->_domain subpath:0 forPath:v6];
-    objc_storeStrong(&v8->_library, a4);
+    [BMPaths getServiceDomain:&v8->_domain subpath:0 forPath:directoryCopy];
+    objc_storeStrong(&v8->_library, library);
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (BOOL)allowedToAccessStream:(id)a3 withMode:(int)a4 error:(id *)a5
+- (BOOL)allowedToAccessStream:(id)stream withMode:(int)mode error:(id *)error
 {
-  v6 = a4;
+  modeCopy = mode;
   v63[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [MEMORY[0x1E696B0B8] currentConnection];
-  v10 = v9;
-  if (!v9)
+  streamCopy = stream;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v10 = currentConnection;
+  if (!currentConnection)
   {
-    v11 = __biome_log_for_category(6);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    bm_accessControlPolicy = __biome_log_for_category(6);
+    if (os_log_type_enabled(bm_accessControlPolicy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1AC15D000, v11, OS_LOG_TYPE_DEFAULT, "Connection invalidated before entitlement check, denying request", buf, 2u);
+      _os_log_impl(&dword_1AC15D000, bm_accessControlPolicy, OS_LOG_TYPE_DEFAULT, "Connection invalidated before entitlement check, denying request", buf, 2u);
     }
 
     v17 = 0;
     goto LABEL_46;
   }
 
-  if ((v6 & 1 | 2) == 2 || v6 < 0)
+  if ((modeCopy & 1 | 2) == 2 || modeCopy < 0)
   {
-    v11 = [v9 bm_accessControlPolicy];
-    if (v6 < 0 || (v6 & 3) == 0)
+    bm_accessControlPolicy = [currentConnection bm_accessControlPolicy];
+    if (modeCopy < 0 || (modeCopy & 3) == 0)
     {
       v13 = 1;
     }
@@ -122,20 +122,20 @@
       v13 = 3;
     }
 
-    v14 = [[BMResourceSpecifier alloc] initWithType:1 name:v8];
+    v14 = [[BMResourceSpecifier alloc] initWithType:1 name:streamCopy];
     if (!v14)
     {
-      if (a5)
+      if (error)
       {
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid stream identifier '%@'", v8];
+        streamCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid stream identifier '%@'", streamCopy];
         v20 = MEMORY[0x1E696ABC0];
         v60 = *MEMORY[0x1E696A578];
-        v61 = v19;
+        v61 = streamCopy;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
         v22 = v20;
         v23 = 7;
 LABEL_42:
-        *a5 = [v22 errorWithDomain:@"BiomeStorageError" code:v23 userInfo:v21];
+        *error = [v22 errorWithDomain:@"BiomeStorageError" code:v23 userInfo:v21];
         goto LABEL_43;
       }
 
@@ -144,15 +144,15 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    if (([v11 allowsAccessToResource:v14 withMode:v13]& 1) != 0)
+    if (([bm_accessControlPolicy allowsAccessToResource:v14 withMode:v13]& 1) != 0)
     {
-      if (([v8 isEqual:@"GenerativeExperiences.TransparencyLog"] & 1) == 0 && (objc_msgSend(v8, "isEqual:", @"PrivateCloudCompute.RequestLog") & 1) == 0 && !objc_msgSend(v8, "hasPrefix:", @"AppleIntelligenceReport."))
+      if (([streamCopy isEqual:@"GenerativeExperiences.TransparencyLog"] & 1) == 0 && (objc_msgSend(streamCopy, "isEqual:", @"PrivateCloudCompute.RequestLog") & 1) == 0 && !objc_msgSend(streamCopy, "hasPrefix:", @"AppleIntelligenceReport."))
       {
         goto LABEL_15;
       }
 
-      v15 = [(BMFileServer *)self currentUseCase];
-      v16 = [v15 isEqual:@"__pruner__"];
+      currentUseCase = [(BMFileServer *)self currentUseCase];
+      v16 = [currentUseCase isEqual:@"__pruner__"];
 
       if (v16)
       {
@@ -160,9 +160,9 @@ LABEL_44:
       }
 
       v35 = +[_BMManagedConfiguration shared];
-      v36 = [v35 allowAppleIntelligenceReport];
+      allowAppleIntelligenceReport = [v35 allowAppleIntelligenceReport];
 
-      if (v36)
+      if (allowAppleIntelligenceReport)
       {
         v37 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.AppleIntelligenceReport"];
         v38 = [v37 valueForKey:@"reportDuration"];
@@ -196,17 +196,17 @@ LABEL_45:
         }
       }
 
-      if (a5)
+      if (error)
       {
-        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stream '%@' is not enabled", v8];
+        streamCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stream '%@' is not enabled", streamCopy];
         v49 = MEMORY[0x1E696ABC0];
         v54[0] = *MEMORY[0x1E696A578];
         v54[1] = @"UserControlled";
-        v55[0] = v48;
+        v55[0] = streamCopy2;
         v55[1] = MEMORY[0x1E695E118];
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
         v22 = v49;
-        v19 = v48;
+        streamCopy = streamCopy2;
         v23 = 5;
         goto LABEL_42;
       }
@@ -214,20 +214,20 @@ LABEL_45:
       goto LABEL_44;
     }
 
-    v52 = [(_BMRootLibrary *)self->_library streamWithIdentifier:v8 error:0];
+    v52 = [(_BMRootLibrary *)self->_library streamWithIdentifier:streamCopy error:0];
     v21 = [v52 valueForKeyPath:@"configuration.allowedClients"];
-    if (v21 && (-[NSObject process](v11, "process"), v24 = objc_claimAutoreleasedReturnValue(), [v24 identifier], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v21, "containsObject:", v25), v25, v24, (v26 & 1) == 0))
+    if (v21 && (-[NSObject process](bm_accessControlPolicy, "process"), v24 = objc_claimAutoreleasedReturnValue(), [v24 identifier], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v21, "containsObject:", v25), v25, v24, (v26 & 1) == 0))
     {
-      if (a5)
+      if (error)
       {
         v44 = MEMORY[0x1E696AEC0];
-        v45 = [v11 process];
-        v46 = [v45 identifier];
-        v30 = [v44 stringWithFormat:@"'%@' is not present in allow-list for '%@'", v46, v8];
+        process = [bm_accessControlPolicy process];
+        identifier = [process identifier];
+        streamCopy3 = [v44 stringWithFormat:@"'%@' is not present in allow-list for '%@'", identifier, streamCopy];
 
         v31 = MEMORY[0x1E696ABC0];
         v58 = *MEMORY[0x1E696A578];
-        v59 = v30;
+        v59 = streamCopy3;
         v32 = MEMORY[0x1E695DF20];
         v33 = &v59;
         v34 = &v58;
@@ -235,38 +235,38 @@ LABEL_45:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v27 = MEMORY[0x1E696AEC0];
-      v28 = [v11 descriptionOfProcessAndUseCase];
+      descriptionOfProcessAndUseCase = [bm_accessControlPolicy descriptionOfProcessAndUseCase];
       v29 = BMAccessModePrintableDescription(v13);
-      v30 = [v27 stringWithFormat:@"%@ is not entitled for '%@' access to '%@'", v28, v29, v8];
+      streamCopy3 = [v27 stringWithFormat:@"%@ is not entitled for '%@' access to '%@'", descriptionOfProcessAndUseCase, v29, streamCopy];
 
       v31 = MEMORY[0x1E696ABC0];
       v56 = *MEMORY[0x1E696A578];
-      v57 = v30;
+      v57 = streamCopy3;
       v32 = MEMORY[0x1E695DF20];
       v33 = &v57;
       v34 = &v56;
 LABEL_36:
       v47 = [v32 dictionaryWithObjects:v33 forKeys:v34 count:1];
-      *a5 = [v31 errorWithDomain:@"BiomeStorageError" code:5 userInfo:v47];
+      *error = [v31 errorWithDomain:@"BiomeStorageError" code:5 userInfo:v47];
     }
 
-    v19 = v52;
+    streamCopy = v52;
 LABEL_43:
 
     goto LABEL_44;
   }
 
-  if (a5)
+  if (error)
   {
     v18 = MEMORY[0x1E696ABC0];
     v62 = *MEMORY[0x1E696A578];
     v63[0] = @"Invalid access mode";
-    v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:&v62 count:1];
-    [v18 errorWithDomain:@"BiomeStorageError" code:7 userInfo:v11];
-    *a5 = v17 = 0;
+    bm_accessControlPolicy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:&v62 count:1];
+    [v18 errorWithDomain:@"BiomeStorageError" code:7 userInfo:bm_accessControlPolicy];
+    *error = v17 = 0;
 LABEL_46:
 
     goto LABEL_47;
@@ -279,39 +279,39 @@ LABEL_47:
   return v17;
 }
 
-- (BOOL)entitledToAccessClientCompute:(id)a3 error:(id *)a4
+- (BOOL)entitledToAccessClientCompute:(id)compute error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696B0B8] currentConnection];
-  v7 = v6;
-  if (v6)
+  computeCopy = compute;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v7 = currentConnection;
+  if (currentConnection)
   {
-    v8 = [v6 bm_accessControlPolicy];
-    v9 = [v8 allowsAccessToClientCompute:v5];
+    bm_accessControlPolicy = [currentConnection bm_accessControlPolicy];
+    v9 = [bm_accessControlPolicy allowsAccessToClientCompute:computeCopy];
     v10 = v9;
-    if (a4 && (v9 & 1) == 0)
+    if (error && (v9 & 1) == 0)
     {
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [v7 bm_process];
-      v13 = [v12 executableName];
-      v14 = [v11 stringWithFormat:@"'%@' is not entitled to access compute as '%@'", v13, v5];
+      bm_process = [v7 bm_process];
+      executableName = [bm_process executableName];
+      computeCopy = [v11 stringWithFormat:@"'%@' is not entitled to access compute as '%@'", executableName, computeCopy];
 
       v15 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A578];
-      v21[0] = v14;
+      v21[0] = computeCopy;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a4 = [v15 errorWithDomain:@"BiomeStorageError" code:5 userInfo:v16];
+      *error = [v15 errorWithDomain:@"BiomeStorageError" code:5 userInfo:v16];
     }
   }
 
   else
   {
-    v8 = __biome_log_for_category(6);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    bm_accessControlPolicy = __biome_log_for_category(6);
+    if (os_log_type_enabled(bm_accessControlPolicy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1AC15D000, v8, OS_LOG_TYPE_DEFAULT, "Connection invalidated before entitlement check, denying request", buf, 2u);
+      _os_log_impl(&dword_1AC15D000, bm_accessControlPolicy, OS_LOG_TYPE_DEFAULT, "Connection invalidated before entitlement check, denying request", buf, 2u);
     }
 
     v10 = 0;
@@ -321,26 +321,26 @@ LABEL_47:
   return v10;
 }
 
-- (BOOL)entitledToAccessSharedSyncWithError:(id *)a3
+- (BOOL)entitledToAccessSharedSyncWithError:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
-  v5 = v4;
-  if (!v4)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v5 = currentConnection;
+  if (!currentConnection)
   {
-    v6 = __biome_log_for_category(6);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    bm_accessControlPolicy = __biome_log_for_category(6);
+    if (os_log_type_enabled(bm_accessControlPolicy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1AC15D000, v6, OS_LOG_TYPE_DEFAULT, "Connection invalidated before entitlement check, denying request", buf, 2u);
+      _os_log_impl(&dword_1AC15D000, bm_accessControlPolicy, OS_LOG_TYPE_DEFAULT, "Connection invalidated before entitlement check, denying request", buf, 2u);
     }
 
     goto LABEL_12;
   }
 
-  v6 = [v4 bm_accessControlPolicy];
-  v7 = [v6 process];
-  if ([v7 BOOLForEntitlement:@"com.apple.private.biome.sync"])
+  bm_accessControlPolicy = [currentConnection bm_accessControlPolicy];
+  process = [bm_accessControlPolicy process];
+  if ([process BOOLForEntitlement:@"com.apple.private.biome.sync"])
   {
 
     v8 = 1;
@@ -349,8 +349,8 @@ LABEL_47:
 
   if (os_variant_allows_internal_security_policies())
   {
-    v9 = [v6 process];
-    v8 = [v9 BOOLForEntitlement:@"com.apple.internal.biome.sync"];
+    process2 = [bm_accessControlPolicy process];
+    v8 = [process2 BOOLForEntitlement:@"com.apple.internal.biome.sync"];
   }
 
   else
@@ -358,18 +358,18 @@ LABEL_47:
     v8 = 0;
   }
 
-  if (a3 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v5 bm_process];
-    v12 = [v11 executableName];
-    v13 = [v10 stringWithFormat:@"'%@' is missing entitlement 'com.apple.private.biome.sync'", v12];
+    bm_process = [v5 bm_process];
+    executableName = [bm_process executableName];
+    v13 = [v10 stringWithFormat:@"'%@' is missing entitlement 'com.apple.private.biome.sync'", executableName];
 
     v14 = MEMORY[0x1E696ABC0];
     v19 = *MEMORY[0x1E696A578];
     v20[0] = v13;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    *a3 = [v14 errorWithDomain:@"BiomeStorageError" code:5 userInfo:v15];
+    *error = [v14 errorWithDomain:@"BiomeStorageError" code:5 userInfo:v15];
 
 LABEL_12:
     v8 = 0;
@@ -383,12 +383,12 @@ LABEL_13:
 
 - (BOOL)isBiomeSyncDaemon
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  v3 = v2;
-  if (v2)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v3 = currentConnection;
+  if (currentConnection)
   {
-    v4 = [v2 bm_process];
-    v5 = [v4 processType] == 3;
+    bm_process = [currentConnection bm_process];
+    v5 = [bm_process processType] == 3;
   }
 
   else
@@ -408,12 +408,12 @@ LABEL_13:
 
 - (BOOL)isPrimaryDaemon
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  v3 = v2;
-  if (v2)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v3 = currentConnection;
+  if (currentConnection)
   {
-    v4 = [v2 bm_process];
-    v5 = [v4 processType] == 2;
+    bm_process = [currentConnection bm_process];
+    v5 = [bm_process processType] == 2;
   }
 
   else
@@ -431,12 +431,12 @@ LABEL_13:
   return v5;
 }
 
-- (void)createDirectoryAtPath:(id)a3 reply:(id)a4
+- (void)createDirectoryAtPath:(id)path reply:(id)reply
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = BMFileServerValidateAndParsePath(v6);
+  pathCopy = path;
+  replyCopy = reply;
+  v8 = BMFileServerValidateAndParsePath(pathCopy);
   if (!v8)
   {
     v16 = __biome_log_for_category(6);
@@ -451,16 +451,16 @@ LABEL_13:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:&v56 count:1];
     v18 = [v17 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v9];
 LABEL_19:
-    v7[2](v7, v18);
+    replyCopy[2](replyCopy, v18);
     goto LABEL_20;
   }
 
-  v9 = [(NSString *)self->_directory stringByAppendingPathComponent:v6];
+  v9 = [(NSString *)self->_directory stringByAppendingPathComponent:pathCopy];
   v10 = __biome_log_for_category(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v55 = v6;
+    v55 = pathCopy;
     _os_log_impl(&dword_1AC15D000, v10, OS_LOG_TYPE_INFO, "-createDirectoryAtPath:reply: called with subpath: %{public}@", buf, 0xCu);
   }
 
@@ -500,7 +500,7 @@ LABEL_19:
         v53 = @"Invalid request";
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
         v41 = [v40 errorWithDomain:@"BiomeStorageError" code:3 userInfo:v18];
-        v7[2](v7, v41);
+        replyCopy[2](replyCopy, v41);
 
         goto LABEL_20;
       }
@@ -541,7 +541,7 @@ LABEL_19:
       v30 = 2;
 LABEL_30:
       v39 = [v29 errorWithDomain:@"BiomeStorageError" code:v30 userInfo:v28];
-      v7[2](v7, v39);
+      replyCopy[2](replyCopy, v39);
 
       goto LABEL_20;
     }
@@ -582,19 +582,19 @@ LABEL_30:
     v34 = [v35 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v36];
   }
 
-  v7[2](v7, v34);
+  replyCopy[2](replyCopy, v34);
   v18 = v34;
 LABEL_20:
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFileAtPath:(id)a3 reply:(id)a4
+- (void)removeFileAtPath:(id)path reply:(id)reply
 {
   v81[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = BMFileServerValidateAndParsePath(v6);
+  pathCopy = path;
+  replyCopy = reply;
+  v8 = BMFileServerValidateAndParsePath(pathCopy);
   if (!v8)
   {
     v18 = __biome_log_for_category(6);
@@ -609,16 +609,16 @@ LABEL_20:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:&v80 count:1];
     v15 = [v19 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v9];
 LABEL_21:
-    v7[2](v7, v15);
+    replyCopy[2](replyCopy, v15);
     goto LABEL_55;
   }
 
-  v9 = [(NSString *)self->_directory stringByAppendingPathComponent:v6];
+  v9 = [(NSString *)self->_directory stringByAppendingPathComponent:pathCopy];
   v10 = __biome_log_for_category(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v79 = v6;
+    v79 = pathCopy;
     _os_log_impl(&dword_1AC15D000, v10, OS_LOG_TYPE_INFO, "-removeFileAtPath:reply: called with subpath: %{public}@", buf, 0xCu);
   }
 
@@ -639,7 +639,7 @@ LABEL_21:
       v17 = 5;
 LABEL_26:
       v38 = [v16 errorWithDomain:@"BiomeStorageError" code:v17 userInfo:v15];
-      v7[2](v7, v38);
+      replyCopy[2](replyCopy, v38);
 
       goto LABEL_55;
     }
@@ -783,7 +783,7 @@ LABEL_23:
           v48 = [v49 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v50];
         }
 
-        v7[2](v7, v48);
+        replyCopy[2](replyCopy, v48);
         v15 = v48;
         goto LABEL_54;
       }
@@ -813,7 +813,7 @@ LABEL_23:
     }
 
     v57 = [v53 errorWithDomain:@"BiomeStorageError" code:v54 userInfo:v52];
-    v7[2](v7, v57);
+    replyCopy[2](replyCopy, v57);
 
 LABEL_54:
     v9 = v61;
@@ -839,7 +839,7 @@ LABEL_54:
   v73 = @"Invalid stream identifier";
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
   v33 = [v31 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v32];
-  v7[2](v7, v33);
+  replyCopy[2](replyCopy, v33);
 
   v9 = v61;
 LABEL_55:
@@ -847,12 +847,12 @@ LABEL_55:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDirectoryAtPath:(id)a3 reply:(id)a4
+- (void)removeDirectoryAtPath:(id)path reply:(id)reply
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = BMFileServerValidateAndParsePath(v6);
+  pathCopy = path;
+  replyCopy = reply;
+  v8 = BMFileServerValidateAndParsePath(pathCopy);
   if (!v8)
   {
     v18 = __biome_log_for_category(6);
@@ -867,16 +867,16 @@ LABEL_55:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:&v62 count:1];
     v15 = [v19 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v9];
 LABEL_21:
-    v7[2](v7, v15);
+    replyCopy[2](replyCopy, v15);
     goto LABEL_34;
   }
 
-  v9 = [(NSString *)self->_directory stringByAppendingPathComponent:v6];
+  v9 = [(NSString *)self->_directory stringByAppendingPathComponent:pathCopy];
   v10 = __biome_log_for_category(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v61 = v6;
+    v61 = pathCopy;
     _os_log_impl(&dword_1AC15D000, v10, OS_LOG_TYPE_INFO, "-removeDirectoryAtPath:reply: called with subpath: %{public}@", buf, 0xCu);
   }
 
@@ -897,7 +897,7 @@ LABEL_21:
       v17 = 5;
 LABEL_29:
       v41 = [v16 errorWithDomain:@"BiomeStorageError" code:v17 userInfo:v15];
-      v7[2](v7, v41);
+      replyCopy[2](replyCopy, v41);
 
       goto LABEL_34;
     }
@@ -973,7 +973,7 @@ LABEL_29:
       v34 = 2;
 LABEL_33:
       v44 = [v33 errorWithDomain:@"BiomeStorageError" code:v34 userInfo:v32];
-      v7[2](v7, v44);
+      replyCopy[2](replyCopy, v44);
 
       goto LABEL_34;
     }
@@ -1014,29 +1014,29 @@ LABEL_33:
     v37 = [v38 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v39];
   }
 
-  v7[2](v7, v37);
+  replyCopy[2](replyCopy, v37);
   v15 = v37;
 LABEL_34:
 
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceFileAtPath:(id)a3 withFileHandle:(id)a4 protection:(int)a5 flags:(int)a6 reply:(id)a7
+- (void)replaceFileAtPath:(id)path withFileHandle:(id)handle protection:(int)protection flags:(int)flags reply:(id)reply
 {
   v97[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = BMFileServerValidateAndParsePath(v11);
+  pathCopy = path;
+  handleCopy = handle;
+  replyCopy = reply;
+  v14 = BMFileServerValidateAndParsePath(pathCopy);
   if (v14)
   {
-    v74 = a5;
-    v15 = [(NSString *)self->_directory stringByAppendingPathComponent:v11];
+    protectionCopy = protection;
+    v15 = [(NSString *)self->_directory stringByAppendingPathComponent:pathCopy];
     v16 = __biome_log_for_category(6);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v95 = v11;
+      v95 = pathCopy;
       _os_log_impl(&dword_1AC15D000, v16, OS_LOG_TYPE_INFO, "-replaceFileAtPath:withFileHandle:protection:flags:reply: called with subpath: %{public}@", buf, 0xCu);
     }
 
@@ -1061,7 +1061,7 @@ LABEL_7:
         v26 = 5;
 LABEL_8:
         v27 = [v25 errorWithDomain:@"BiomeStorageError" code:v26 userInfo:v24];
-        v13[2](v13, 0, v27);
+        replyCopy[2](replyCopy, 0, v27);
 
         goto LABEL_50;
       }
@@ -1080,7 +1080,7 @@ LABEL_22:
       }
 
 LABEL_28:
-      v13[2](v13, 0, v24);
+      replyCopy[2](replyCopy, 0, v24);
       v15 = v73;
       goto LABEL_50;
     }
@@ -1126,7 +1126,7 @@ LABEL_52:
       [v14 objectForKeyedSubscript:@"segment"];
       v41 = v71 = v39;
 
-      if (v74 != 6 && v41)
+      if (protectionCopy != 6 && v41)
       {
         v39 = __biome_log_for_category(6);
         if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
@@ -1170,7 +1170,7 @@ LABEL_52:
     }
 
 LABEL_23:
-    v72 = v12;
+    v72 = handleCopy;
     v42 = [v14 objectForKeyedSubscript:@"streamType"];
     if ([v42 unsignedIntegerValue] == 1)
     {
@@ -1191,9 +1191,9 @@ LABEL_23:
         v87 = @"Invalid stream identifier";
         v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
         v48 = [v46 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v47];
-        v13[2](v13, 0, v48);
+        replyCopy[2](replyCopy, 0, v48);
 
-        v12 = v72;
+        handleCopy = v72;
         goto LABEL_50;
       }
     }
@@ -1224,7 +1224,7 @@ LABEL_23:
         }
 
 LABEL_34:
-        if ((v74 + 1) >= 9)
+        if ((protectionCopy + 1) >= 9)
         {
           v60 = MEMORY[0x1E696ABC0];
           v82 = *MEMORY[0x1E696A578];
@@ -1237,7 +1237,7 @@ LABEL_34:
         else
         {
           fileManager = self->_fileManager;
-          v12 = v72;
+          handleCopy = v72;
           if (fileManager)
           {
             v53 = [BMFileManager replaceFileAtPath:"replaceFileAtPath:withFileHandle:protection:flags:error:" withFileHandle:v73 protection:v72 flags:? error:?];
@@ -1250,13 +1250,13 @@ LABEL_34:
               v79 = @"Unspecified failure";
               v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
               v57 = v55;
-              v12 = v72;
+              handleCopy = v72;
               v54 = [v57 errorWithDomain:@"BiomeStorageError" code:0 userInfo:v56];
 
               v15 = v73;
             }
 
-            v13[2](v13, v53, v54);
+            replyCopy[2](replyCopy, v53, v54);
 
             v24 = v54;
             goto LABEL_50;
@@ -1278,9 +1278,9 @@ LABEL_34:
 
 LABEL_49:
         v69 = [v62 errorWithDomain:@"BiomeStorageError" code:v63 userInfo:v61];
-        v13[2](v13, 0, v69);
+        replyCopy[2](replyCopy, 0, v69);
 
-        v12 = v72;
+        handleCopy = v72;
         goto LABEL_50;
       }
     }
@@ -1299,7 +1299,7 @@ LABEL_49:
   v97[0] = @"Invalid path";
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:&v96 count:1];
   v24 = [v29 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v15];
-  v13[2](v13, 0, v24);
+  replyCopy[2](replyCopy, 0, v24);
 LABEL_50:
 
   v70 = *MEMORY[0x1E69E9840];

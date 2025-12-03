@@ -1,7 +1,7 @@
 @interface CKSyncEngineSendChangesContext
 - (CKSyncEngineSendChangesContext)init;
-- (CKSyncEngineSendChangesContext)initWithReason:(int64_t)a3 options:(id)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineSendChangesContext)initWithReason:(int64_t)reason options:(id)options;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineSendChangesContext
@@ -18,25 +18,25 @@
   objc_exception_throw(v7);
 }
 
-- (CKSyncEngineSendChangesContext)initWithReason:(int64_t)a3 options:(id)a4
+- (CKSyncEngineSendChangesContext)initWithReason:(int64_t)reason options:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = CKSyncEngineSendChangesContext;
   v8 = [(CKSyncEngineSendChangesContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_reason = a3;
-    objc_storeStrong(&v8->_options, a4);
+    v8->_reason = reason;
+    objc_storeStrong(&v8->_options, options);
   }
 
   return v9;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_reason(self, v5, v6);
   v9 = @"Unknown";
   if (v7 == 1)
@@ -46,16 +46,16 @@
 
   if (v7)
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"reason", v9, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"reason", v9, 0);
   }
 
   else
   {
-    objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"reason", @"Scheduled", 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"reason", @"Scheduled", 0);
   }
 
   v13 = objc_msgSend_options(self, v10, v11);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v12, @"options", v13, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v12, @"options", v13, 0);
 }
 
 @end

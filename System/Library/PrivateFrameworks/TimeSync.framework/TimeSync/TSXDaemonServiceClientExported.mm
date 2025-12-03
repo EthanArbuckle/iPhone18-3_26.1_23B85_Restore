@@ -1,7 +1,7 @@
 @interface TSXDaemonServiceClientExported
 - (TSXDaemonServiceClient)object;
 - (void)daemonClientRefresh;
-- (void)msgServiceNotification:(unsigned __int16)a3 arguments:(const ScalarArgsArrayUserReference *)a4;
+- (void)msgServiceNotification:(unsigned __int16)notification arguments:(const ScalarArgsArrayUserReference *)arguments;
 @end
 
 @implementation TSXDaemonServiceClientExported
@@ -23,28 +23,28 @@ void __53__TSXDaemonServiceClientExported_daemonClientRefresh__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)msgServiceNotification:(unsigned __int16)a3 arguments:(const ScalarArgsArrayUserReference *)a4
+- (void)msgServiceNotification:(unsigned __int16)notification arguments:(const ScalarArgsArrayUserReference *)arguments
 {
-  v4 = *&a4->var0[10];
-  v14 = *&a4->var0[8];
+  v4 = *&arguments->var0[10];
+  v14 = *&arguments->var0[8];
   v15 = v4;
-  v5 = *&a4->var0[14];
-  v16 = *&a4->var0[12];
+  v5 = *&arguments->var0[14];
+  v16 = *&arguments->var0[12];
   v17 = v5;
-  v6 = *a4->var0;
-  v7 = *&a4->var0[4];
-  v8 = *&a4->var0[6];
-  v11 = *&a4->var0[2];
+  v6 = *arguments->var0;
+  v7 = *&arguments->var0[4];
+  v8 = *&arguments->var0[6];
+  v11 = *&arguments->var0[2];
   v12 = v7;
   v13 = v8;
-  v18 = *&a4->var1;
+  v18 = *&arguments->var1;
   v10 = v6;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__TSXDaemonServiceClientExported_msgServiceNotification_arguments___block_invoke;
   block[3] = &__block_descriptor_178_e5_v8__0l;
-  block[4] = a4;
-  v19 = a3;
+  block[4] = arguments;
+  notificationCopy = notification;
   dispatch_async(_dispatchQueue_0, block);
 }
 

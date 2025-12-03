@@ -3,7 +3,7 @@
 - (void)dealloc;
 - (void)layoutLevels;
 - (void)layoutSubviews;
-- (void)updateWithExposure:(double)a3 withThreshold:(unint64_t)a4;
+- (void)updateWithExposure:(double)exposure withThreshold:(unint64_t)threshold;
 @end
 
 @implementation HUIHeadphoneLevelGroup
@@ -16,25 +16,25 @@
   v2 = [(HUIHeadphoneLevelGroup *)&v23 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_updateConstraints name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updateConstraints name:*MEMORY[0x277D76810] object:0];
 
     v2->_isRTL = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[HUIHeadphoneLevelGroup semanticContentAttribute](v2, "semanticContentAttribute")}] == 1;
-    v4 = [(HUIHeadphoneLevelGroup *)v2 isRTL];
+    isRTL = [(HUIHeadphoneLevelGroup *)v2 isRTL];
     v5 = 12;
-    if (v4)
+    if (isRTL)
     {
       v5 = 5;
     }
 
     v2->_pipFlagIndex = v5;
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     levels = v2->_levels;
-    v2->_levels = v6;
+    v2->_levels = array;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     inactiveLevels = v2->_inactiveLevels;
-    v2->_inactiveLevels = v8;
+    v2->_inactiveLevels = array2;
 
     v10 = *MEMORY[0x277CDA5D8];
     v11 = 18;
@@ -43,13 +43,13 @@
       v12 = objc_opt_new();
       [v12 setAccessibilityIdentifier:@"Pill"];
       [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v13 = [v12 layer];
+      layer = [v12 layer];
       v14 = [MEMORY[0x277CD9EA0] filterWithType:v10];
-      [v13 setCompositingFilter:v14];
+      [layer setCompositingFilter:v14];
 
-      v15 = [v12 layer];
+      layer2 = [v12 layer];
       v16 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.15];
-      [v15 setBackgroundColor:{objc_msgSend(v16, "CGColor")}];
+      [layer2 setBackgroundColor:{objc_msgSend(v16, "CGColor")}];
 
       [(HUIHeadphoneLevelGroup *)v2 addSubview:v12];
       [(NSMutableArray *)v2->_inactiveLevels addObject:v12];
@@ -63,8 +63,8 @@
 
     while (v11);
     v18 = MEMORY[0x277CCAAD0];
-    v19 = [(HUIHeadphoneLevelGroup *)v2 heightAnchor];
-    v20 = [v19 constraintEqualToConstant:34.0];
+    heightAnchor = [(HUIHeadphoneLevelGroup *)v2 heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:34.0];
     v24[0] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     [v18 activateConstraints:v21];
@@ -75,8 +75,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUIHeadphoneLevelGroup;
@@ -164,8 +164,8 @@ LABEL_12:
   [(HUIHeadphoneLevelGroup *)self layoutLevels];
   if (v3 != Layout)
   {
-    v12 = [(HUIHeadphoneLevelGroup *)self superview];
-    [v12 setNeedsLayout];
+    superview = [(HUIHeadphoneLevelGroup *)self superview];
+    [superview setNeedsLayout];
   }
 }
 
@@ -173,24 +173,24 @@ LABEL_12:
 {
   [(HUIHeadphoneLevelGroup *)self bounds];
   v3 = (CGRectGetWidth(v9) + *(&Layout + 1) * -18.0 + *&qword_27F4D4480 * -17.0) * 0.5;
-  v4 = [(HUIHeadphoneLevelGroup *)self pipFlagIndex];
-  v5 = [(HUIHeadphoneLevelGroup *)self inactiveLevels];
+  pipFlagIndex = [(HUIHeadphoneLevelGroup *)self pipFlagIndex];
+  inactiveLevels = [(HUIHeadphoneLevelGroup *)self inactiveLevels];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__HUIHeadphoneLevelGroup_layoutLevels__block_invoke;
   v8[3] = &__block_descriptor_48_e23_v32__0__UIView_8Q16_B24l;
-  v8[4] = v4;
+  v8[4] = pipFlagIndex;
   *&v8[5] = v3;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [inactiveLevels enumerateObjectsUsingBlock:v8];
 
-  v6 = [(HUIHeadphoneLevelGroup *)self levels];
+  levels = [(HUIHeadphoneLevelGroup *)self levels];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HUIHeadphoneLevelGroup_layoutLevels__block_invoke_2;
   v7[3] = &__block_descriptor_48_e23_v32__0__UIView_8Q16_B24l;
-  v7[4] = v4;
+  v7[4] = pipFlagIndex;
   *&v7[5] = v3;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [levels enumerateObjectsUsingBlock:v7];
 }
 
 void __38__HUIHeadphoneLevelGroup_layoutLevels__block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -244,28 +244,28 @@ void __38__HUIHeadphoneLevelGroup_layoutLevels__block_invoke_2(uint64_t a1, void
   [v11 setFrame:{*(a1 + 40) + a3 * *(&Layout + 1) + a3 * *&qword_27F4D4480, v9, *(&Layout + 1), v10}];
 }
 
-- (void)updateWithExposure:(double)a3 withThreshold:(unint64_t)a4
+- (void)updateWithExposure:(double)exposure withThreshold:(unint64_t)threshold
 {
-  if (a3 <= 20.0)
+  if (exposure <= 20.0)
   {
-    v7 = a3 / 20.0;
+    v7 = exposure / 20.0;
   }
 
   else
   {
-    v6 = (a3 + -20.0) / 90.0;
+    v6 = (exposure + -20.0) / 90.0;
     v7 = (v6 * 17.0) + 1.0;
   }
 
-  v8 = [(HUIHeadphoneLevelGroup *)self levels];
+  levels = [(HUIHeadphoneLevelGroup *)self levels];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__HUIHeadphoneLevelGroup_updateWithExposure_withThreshold___block_invoke;
   v9[3] = &unk_2796F7A28;
   v10 = v7;
   v9[4] = self;
-  v9[5] = a4;
-  [v8 enumerateObjectsUsingBlock:v9];
+  v9[5] = threshold;
+  [levels enumerateObjectsUsingBlock:v9];
 }
 
 void __59__HUIHeadphoneLevelGroup_updateWithExposure_withThreshold___block_invoke(uint64_t a1, void *a2, unint64_t a3)

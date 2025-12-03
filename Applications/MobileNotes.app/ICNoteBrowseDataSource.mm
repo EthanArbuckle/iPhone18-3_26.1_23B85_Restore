@@ -1,6 +1,6 @@
 @interface ICNoteBrowseDataSource
 - (BOOL)isTrashFolder;
-- (BOOL)needsReindexWithCollectionDifference:(id)a3 controller:(id)a4 identifiersToReload:(id)a5;
+- (BOOL)needsReindexWithCollectionDifference:(id)difference controller:(id)controller identifiersToReload:(id)reload;
 - (BOOL)shouldIncludeInvitations;
 - (BOOL)shouldIncludeSubfolders;
 - (BOOL)shouldIncludeTagDetail;
@@ -9,7 +9,7 @@
 - (ICFolderCustomNoteSortType)sortType;
 - (ICFolderDataSource)folderDataSource;
 - (ICNAViewController)presentingViewController;
-- (ICNoteBrowseDataSource)initWithCollectionView:(id)a3 presentingViewController:(id)a4 noteContainerViewMode:(int64_t)a5 folderDataSource:(id)a6 persistenceConfiguration:(id)a7;
+- (ICNoteBrowseDataSource)initWithCollectionView:(id)view presentingViewController:(id)controller noteContainerViewMode:(int64_t)mode folderDataSource:(id)source persistenceConfiguration:(id)configuration;
 - (ICNoteContainer)noteContainer;
 - (ICNoteCoreDataIndexer)indexer;
 - (ICQuery)noteQuery;
@@ -18,27 +18,27 @@
 - (NSManagedObjectContext)modernBackgroundContext;
 - (NSManagedObjectContext)modernViewContext;
 - (NoteCollectionObject)noteCollection;
-- (id)emptyConfigurationForNoteWithObjectID:(id)a3;
+- (id)emptyConfigurationForNoteWithObjectID:(id)d;
 - (int64_t)dateHeadersType;
 - (unint64_t)pinnedNotesSectionMinimumCount;
 - (unint64_t)totalFolderCount;
 - (unint64_t)totalInvitationsCount;
 - (unint64_t)totalNoteCount;
-- (void)accountHidesNotesInCustomFoldersDidChange:(id)a3;
+- (void)accountHidesNotesInCustomFoldersDidChange:(id)change;
 - (void)dealloc;
-- (void)managedObjectContextUpdaterDidMerge:(id)a3;
-- (void)noteLockManagerDidToggleLock:(id)a3;
-- (void)setDateHeadersType:(int64_t)a3;
-- (void)setNoteCollection:(id)a3;
-- (void)setNoteContainer:(id)a3;
-- (void)setNoteContainerViewMode:(int64_t)a3;
-- (void)setNoteQuery:(id)a3;
-- (void)setShouldIncludeInvitations:(BOOL)a3;
-- (void)setShouldIncludeSubfolders:(BOOL)a3;
-- (void)setShouldIncludeTagDetail:(BOOL)a3;
-- (void)setShouldIncludeTags:(BOOL)a3;
-- (void)setSortType:(id)a3 force:(BOOL)a4;
-- (void)setVirtualSmartFolder:(id)a3;
+- (void)managedObjectContextUpdaterDidMerge:(id)merge;
+- (void)noteLockManagerDidToggleLock:(id)lock;
+- (void)setDateHeadersType:(int64_t)type;
+- (void)setNoteCollection:(id)collection;
+- (void)setNoteContainer:(id)container;
+- (void)setNoteContainerViewMode:(int64_t)mode;
+- (void)setNoteQuery:(id)query;
+- (void)setShouldIncludeInvitations:(BOOL)invitations;
+- (void)setShouldIncludeSubfolders:(BOOL)subfolders;
+- (void)setShouldIncludeTagDetail:(BOOL)detail;
+- (void)setShouldIncludeTags:(BOOL)tags;
+- (void)setSortType:(id)type force:(BOOL)force;
+- (void)setVirtualSmartFolder:(id)folder;
 - (void)updateIndexerForCurrentNoteContainerViewMode;
 @end
 
@@ -46,26 +46,26 @@
 
 - (NSManagedObjectContext)legacyViewContext
 {
-  v2 = [(ICNoteBrowseDataSource *)self persistenceConfiguration];
-  v3 = [v2 legacyViewContext];
+  persistenceConfiguration = [(ICNoteBrowseDataSource *)self persistenceConfiguration];
+  legacyViewContext = [persistenceConfiguration legacyViewContext];
 
-  return v3;
+  return legacyViewContext;
 }
 
 - (NSManagedObjectContext)modernBackgroundContext
 {
-  v2 = [(ICNoteBrowseDataSource *)self persistenceConfiguration];
-  v3 = [v2 modernBackgroundContext];
+  persistenceConfiguration = [(ICNoteBrowseDataSource *)self persistenceConfiguration];
+  modernBackgroundContext = [persistenceConfiguration modernBackgroundContext];
 
-  return v3;
+  return modernBackgroundContext;
 }
 
 - (ICNoteContainer)noteContainer
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 noteContainer];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  noteContainer = [indexer noteContainer];
 
-  return v3;
+  return noteContainer;
 }
 
 - (ICNoteCoreDataIndexer)indexer
@@ -73,7 +73,7 @@
   objc_opt_class();
   v6.receiver = self;
   v6.super_class = ICNoteBrowseDataSource;
-  v3 = [(ICNoteBrowseDataSource *)&v6 indexer];
+  indexer = [(ICNoteBrowseDataSource *)&v6 indexer];
   v4 = ICDynamicCast();
 
   return v4;
@@ -81,41 +81,41 @@
 
 - (NoteCollectionObject)noteCollection
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 noteCollection];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  noteCollection = [indexer noteCollection];
 
-  return v3;
+  return noteCollection;
 }
 
 - (BOOL)shouldIncludeSubfolders
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 shouldIncludeSubfolders];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  shouldIncludeSubfolders = [indexer shouldIncludeSubfolders];
 
-  return v3;
+  return shouldIncludeSubfolders;
 }
 
 - (ICVirtualSmartFolderItemIdentifier)virtualSmartFolder
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 virtualSmartFolder];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  virtualSmartFolder = [indexer virtualSmartFolder];
 
-  return v3;
+  return virtualSmartFolder;
 }
 
 - (void)updateIndexerForCurrentNoteContainerViewMode
 {
-  v3 = [(ICNoteBrowseDataSource *)self pinnedNotesSectionMinimumCount];
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 setPinnedNotesSectionMinimumCount:v3];
+  pinnedNotesSectionMinimumCount = [(ICNoteBrowseDataSource *)self pinnedNotesSectionMinimumCount];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setPinnedNotesSectionMinimumCount:pinnedNotesSectionMinimumCount];
 
-  v5 = [(ICNoteBrowseDataSource *)self indexer];
-  [v5 setShouldIncludeOutlineParentItems:1];
+  indexer2 = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer2 setShouldIncludeOutlineParentItems:1];
 
   v6 = [(ICNoteBrowseDataSource *)self noteContainerViewMode]== 0;
-  v7 = [(ICNoteBrowseDataSource *)self indexer];
-  v8 = [v7 folderIndexer];
-  [v8 setShouldIncludeSubfolders:v6];
+  indexer3 = [(ICNoteBrowseDataSource *)self indexer];
+  folderIndexer = [indexer3 folderIndexer];
+  [folderIndexer setShouldIncludeSubfolders:v6];
 
   if ([(ICNoteBrowseDataSource *)self noteContainerViewMode]== 1)
   {
@@ -137,30 +137,30 @@
     return -1;
   }
 
-  v4 = [(ICNoteBrowseDataSource *)self noteContainer];
-  if ([v4 isShowingDateHeaders])
+  noteContainer = [(ICNoteBrowseDataSource *)self noteContainer];
+  if ([noteContainer isShowingDateHeaders])
   {
     goto LABEL_6;
   }
 
-  v5 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
-  if ([v5 isShowingDateHeaders])
+  virtualSmartFolder = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
+  if ([virtualSmartFolder isShowingDateHeaders])
   {
 
 LABEL_6:
     return 1;
   }
 
-  v6 = [(ICNoteBrowseDataSource *)self indexer];
-  v7 = [v6 isShowingDateHeaders];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  isShowingDateHeaders = [indexer isShowingDateHeaders];
 
-  if (v7)
+  if (isShowingDateHeaders)
   {
     return 1;
   }
 
-  v8 = [(ICNoteBrowseDataSource *)self noteContainerViewMode];
-  switch(v8)
+  noteContainerViewMode = [(ICNoteBrowseDataSource *)self noteContainerViewMode];
+  switch(noteContainerViewMode)
   {
     case -1:
       v9 = os_log_create("com.apple.notes", "UI");
@@ -181,89 +181,89 @@ LABEL_6:
 
 - (BOOL)isTrashFolder
 {
-  v3 = [(ICNoteBrowseDataSource *)self noteContainer];
-  if ([v3 isTrashFolder])
+  noteContainer = [(ICNoteBrowseDataSource *)self noteContainer];
+  if ([noteContainer isTrashFolder])
   {
-    v4 = 1;
+    isTrashFolder = 1;
   }
 
   else
   {
-    v5 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
-    v4 = [v5 isTrashFolder];
+    virtualSmartFolder = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
+    isTrashFolder = [virtualSmartFolder isTrashFolder];
   }
 
-  return v4;
+  return isTrashFolder;
 }
 
 - (unint64_t)totalNoteCount
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 totalNoteCount];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  totalNoteCount = [indexer totalNoteCount];
 
-  return v3;
+  return totalNoteCount;
 }
 
 - (unint64_t)totalFolderCount
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 totalFolderCount];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  totalFolderCount = [indexer totalFolderCount];
 
-  return v3;
+  return totalFolderCount;
 }
 
 - (unint64_t)totalInvitationsCount
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 totalInvitationsCount];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  totalInvitationsCount = [indexer totalInvitationsCount];
 
-  return v3;
+  return totalInvitationsCount;
 }
 
 - (ICQuery)noteQuery
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 noteQuery];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  noteQuery = [indexer noteQuery];
 
-  return v3;
+  return noteQuery;
 }
 
-- (ICNoteBrowseDataSource)initWithCollectionView:(id)a3 presentingViewController:(id)a4 noteContainerViewMode:(int64_t)a5 folderDataSource:(id)a6 persistenceConfiguration:(id)a7
+- (ICNoteBrowseDataSource)initWithCollectionView:(id)view presentingViewController:(id)controller noteContainerViewMode:(int64_t)mode folderDataSource:(id)source persistenceConfiguration:(id)configuration
 {
-  v12 = a3;
-  v13 = a4;
-  v82 = a6;
-  v14 = a7;
-  v84 = v12;
-  v15 = v12;
-  v16 = v14;
+  viewCopy = view;
+  controllerCopy = controller;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  v84 = viewCopy;
+  v15 = viewCopy;
+  v16 = configurationCopy;
   objc_initWeak(location, v15);
   objc_initWeak(&from, self);
   [(ICNoteBrowseDataSource *)self setPersistenceConfiguration:v16];
-  v17 = [v16 legacyViewContext];
-  [(ICNoteBrowseDataSource *)self setLegacyViewContext:v17];
+  legacyViewContext = [v16 legacyViewContext];
+  [(ICNoteBrowseDataSource *)self setLegacyViewContext:legacyViewContext];
 
-  v18 = [v16 modernViewContext];
-  [(ICNoteBrowseDataSource *)self setModernViewContext:v18];
+  modernViewContext = [v16 modernViewContext];
+  [(ICNoteBrowseDataSource *)self setModernViewContext:modernViewContext];
 
-  v19 = [v16 modernBackgroundContext];
-  [(ICNoteBrowseDataSource *)self setModernBackgroundContext:v19];
+  modernBackgroundContext = [v16 modernBackgroundContext];
+  [(ICNoteBrowseDataSource *)self setModernBackgroundContext:modernBackgroundContext];
 
   v20 = [ICNoteCoreDataIndexer alloc];
-  v21 = [(ICNoteBrowseDataSource *)self legacyViewContext];
-  v22 = [(ICNoteBrowseDataSource *)self modernBackgroundContext];
-  v83 = [v20 initWithLegacyManagedObjectContext:v21 modernManagedObjectContext:v22];
+  legacyViewContext2 = [(ICNoteBrowseDataSource *)self legacyViewContext];
+  modernBackgroundContext2 = [(ICNoteBrowseDataSource *)self modernBackgroundContext];
+  v83 = [v20 initWithLegacyManagedObjectContext:legacyViewContext2 modernManagedObjectContext:modernBackgroundContext2];
 
   v23 = objc_opt_class();
   v131[0] = _NSConcreteStackBlock;
   v131[1] = 3221225472;
   v131[2] = sub_10003D97C;
   v131[3] = &unk_100645610;
-  v132[1] = a5;
+  v132[1] = mode;
   objc_copyWeak(v132, &from);
   v24 = [UICollectionViewCellRegistration registrationWithCellClass:v23 configurationHandler:v131];
   v77 = v16;
-  objc_initWeak(&v130, v13);
+  objc_initWeak(&v130, controllerCopy);
   v25 = objc_opt_class();
   v126[0] = _NSConcreteStackBlock;
   v126[1] = 3221225472;
@@ -273,7 +273,7 @@ LABEL_6:
   objc_copyWeak(&v128, &v130);
   objc_copyWeak(&v129, location);
   v26 = [UICollectionViewCellRegistration registrationWithCellClass:v25 configurationHandler:v126];
-  v69 = a5;
+  modeCopy = mode;
   v27 = objc_opt_class();
   v123[0] = _NSConcreteStackBlock;
   v123[1] = 3221225472;
@@ -314,7 +314,7 @@ LABEL_6:
   objc_copyWeak(&v116, &from);
   v38 = [UICollectionViewCellRegistration registrationWithCellClass:v37 configurationHandler:v115];
   v39 = objc_opt_class();
-  obj = v13;
+  obj = controllerCopy;
   v113[0] = _NSConcreteStackBlock;
   v113[1] = 3221225472;
   v113[2] = sub_10003E2DC;
@@ -365,7 +365,7 @@ LABEL_6:
   if (v49)
   {
     objc_storeWeak(&v49->_presentingViewController, obj);
-    objc_storeWeak(&v50->_folderDataSource, v82);
+    objc_storeWeak(&v50->_folderDataSource, sourceCopy);
     v53 = objc_alloc_init(UICollectionViewDiffableDataSourceSectionSnapshotHandlers);
     v97[0] = _NSConcreteStackBlock;
     v97[1] = 3221225472;
@@ -391,20 +391,20 @@ LABEL_6:
     v91[3] = &unk_1006458D8;
     objc_copyWeak(&v92, &from);
     [v53 setWillCollapseItemHandler:v91];
-    v54 = [(ICNoteBrowseDataSource *)v50 collectionViewDiffableDataSource];
-    [v54 setSectionSnapshotHandlers:v53];
+    collectionViewDiffableDataSource = [(ICNoteBrowseDataSource *)v50 collectionViewDiffableDataSource];
+    [collectionViewDiffableDataSource setSectionSnapshotHandlers:v53];
 
     [(ICNoteBrowseDataSource *)v50 setSectionTypes:&off_10066E2C0];
-    v55 = [(ICNoteBrowseDataSource *)v50 collectionViewDiffableDataSource];
-    [v55 setSupplementaryViewProvider:v78];
+    collectionViewDiffableDataSource2 = [(ICNoteBrowseDataSource *)v50 collectionViewDiffableDataSource];
+    [collectionViewDiffableDataSource2 setSupplementaryViewProvider:v78];
 
-    [(ICNoteBrowseDataSource *)v50 setNoteContainerViewMode:v69];
+    [(ICNoteBrowseDataSource *)v50 setNoteContainerViewMode:modeCopy];
     v56 = [[ICSelectorDelayer alloc] initWithTarget:v50 selector:"reindexDataAnimatedYes" delay:1 waitToFireUntilRequestsStop:0 callOnMainThread:0.3];
     lockedNotesMigratorDidMigrateNoteDelayer = v50->_lockedNotesMigratorDidMigrateNoteDelayer;
     v50->_lockedNotesMigratorDidMigrateNoteDelayer = v56;
 
     v58 = +[ICNoteContext sharedContext];
-    v59 = [v58 crossProcessChangeCoordinator];
+    crossProcessChangeCoordinator = [v58 crossProcessChangeCoordinator];
     v60 = ICLockedNotesModeMigratorDidMigrateNoteNotification;
     v88[0] = _NSConcreteStackBlock;
     v88[1] = 3221225472;
@@ -412,19 +412,19 @@ LABEL_6:
     v88[3] = &unk_100645900;
     objc_copyWeak(&v89, location);
     objc_copyWeak(&v90, &from);
-    v61 = [v59 registerForCrossProcessNotificationName:v60 block:v88];
+    v61 = [crossProcessChangeCoordinator registerForCrossProcessNotificationName:v60 block:v88];
     noteMigrationObserver = v50->_noteMigrationObserver;
     v50->_noteMigrationObserver = v61;
 
     v63 = +[ICNoteContext sharedContext];
-    v64 = [v63 crossProcessChangeCoordinator];
+    crossProcessChangeCoordinator2 = [v63 crossProcessChangeCoordinator];
     v85[0] = _NSConcreteStackBlock;
     v85[1] = 3221225472;
     v85[2] = sub_10003EE4C;
     v85[3] = &unk_100645900;
     objc_copyWeak(&v86, location);
     objc_copyWeak(&v87, &from);
-    v65 = [v64 registerForEditorExtensionDidSaveNotificationWithBlock:v85];
+    v65 = [crossProcessChangeCoordinator2 registerForEditorExtensionDidSaveNotificationWithBlock:v85];
     editorExtensionDidSaveNotificationObserver = v50->_editorExtensionDidSaveNotificationObserver;
     v50->_editorExtensionDidSaveNotificationObserver = v65;
 
@@ -473,115 +473,115 @@ LABEL_6:
 - (void)dealloc
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 crossProcessChangeCoordinator];
-  v5 = [(ICNoteBrowseDataSource *)self noteMigrationObserver];
-  [v4 removeCrossProcessNotificationObserver:v5];
+  crossProcessChangeCoordinator = [v3 crossProcessChangeCoordinator];
+  noteMigrationObserver = [(ICNoteBrowseDataSource *)self noteMigrationObserver];
+  [crossProcessChangeCoordinator removeCrossProcessNotificationObserver:noteMigrationObserver];
 
   v6 = +[ICNoteContext sharedContext];
-  v7 = [v6 crossProcessChangeCoordinator];
-  v8 = [(ICNoteBrowseDataSource *)self editorExtensionDidSaveNotificationObserver];
-  [v7 removeCrossProcessNotificationObserver:v8];
+  crossProcessChangeCoordinator2 = [v6 crossProcessChangeCoordinator];
+  editorExtensionDidSaveNotificationObserver = [(ICNoteBrowseDataSource *)self editorExtensionDidSaveNotificationObserver];
+  [crossProcessChangeCoordinator2 removeCrossProcessNotificationObserver:editorExtensionDidSaveNotificationObserver];
 
   v9.receiver = self;
   v9.super_class = ICNoteBrowseDataSource;
   [(ICNoteBrowseDataSource *)&v9 dealloc];
 }
 
-- (void)setShouldIncludeSubfolders:(BOOL)a3
+- (void)setShouldIncludeSubfolders:(BOOL)subfolders
 {
-  v3 = a3;
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 setShouldIncludeSubfolders:v3];
+  subfoldersCopy = subfolders;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setShouldIncludeSubfolders:subfoldersCopy];
 }
 
 - (BOOL)shouldIncludeTags
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 shouldIncludeTags];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  shouldIncludeTags = [indexer shouldIncludeTags];
 
-  return v3;
+  return shouldIncludeTags;
 }
 
-- (void)setShouldIncludeTags:(BOOL)a3
+- (void)setShouldIncludeTags:(BOOL)tags
 {
-  v3 = a3;
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 setShouldIncludeTags:v3];
+  tagsCopy = tags;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setShouldIncludeTags:tagsCopy];
 }
 
 - (BOOL)shouldIncludeTagDetail
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 shouldIncludeTagDetail];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  shouldIncludeTagDetail = [indexer shouldIncludeTagDetail];
 
-  return v3;
+  return shouldIncludeTagDetail;
 }
 
-- (void)setShouldIncludeTagDetail:(BOOL)a3
+- (void)setShouldIncludeTagDetail:(BOOL)detail
 {
-  v3 = a3;
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 setShouldIncludeTagDetail:v3];
+  detailCopy = detail;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setShouldIncludeTagDetail:detailCopy];
 }
 
 - (BOOL)shouldIncludeInvitations
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 shouldIncludeInvitations];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  shouldIncludeInvitations = [indexer shouldIncludeInvitations];
 
-  return v3;
+  return shouldIncludeInvitations;
 }
 
-- (void)setShouldIncludeInvitations:(BOOL)a3
+- (void)setShouldIncludeInvitations:(BOOL)invitations
 {
-  v3 = a3;
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 setShouldIncludeInvitations:v3];
+  invitationsCopy = invitations;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setShouldIncludeInvitations:invitationsCopy];
 }
 
-- (void)setNoteContainer:(id)a3
+- (void)setNoteContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseDataSource *)self indexer];
-  [v5 setNoteContainer:v4];
+  containerCopy = container;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setNoteContainer:containerCopy];
 
   [(ICNoteBrowseDataSource *)self updateIndexerForCurrentNoteContainerViewMode];
 }
 
-- (void)setNoteCollection:(id)a3
+- (void)setNoteCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseDataSource *)self indexer];
-  [v5 setNoteCollection:v4];
+  collectionCopy = collection;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setNoteCollection:collectionCopy];
 
   [(ICNoteBrowseDataSource *)self updateIndexerForCurrentNoteContainerViewMode];
 }
 
-- (void)setNoteQuery:(id)a3
+- (void)setNoteQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseDataSource *)self indexer];
-  [v5 setNoteQuery:v4];
+  queryCopy = query;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setNoteQuery:queryCopy];
 
   [(ICNoteBrowseDataSource *)self updateIndexerForCurrentNoteContainerViewMode];
 }
 
-- (void)setVirtualSmartFolder:(id)a3
+- (void)setVirtualSmartFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseDataSource *)self indexer];
-  [v5 setVirtualSmartFolder:v4];
+  folderCopy = folder;
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setVirtualSmartFolder:folderCopy];
 
   [(ICNoteBrowseDataSource *)self updateIndexerForCurrentNoteContainerViewMode];
 }
 
-- (void)setNoteContainerViewMode:(int64_t)a3
+- (void)setNoteContainerViewMode:(int64_t)mode
 {
-  if (self->_noteContainerViewMode != a3)
+  if (self->_noteContainerViewMode != mode)
   {
-    self->_noteContainerViewMode = a3;
-    v6 = [(ICNoteBrowseDataSource *)self collectionView];
-    [v6 setNoteContainerViewMode:a3];
+    self->_noteContainerViewMode = mode;
+    collectionView = [(ICNoteBrowseDataSource *)self collectionView];
+    [collectionView setNoteContainerViewMode:mode];
 
     [(ICNoteBrowseDataSource *)self updateIndexerForCurrentNoteContainerViewMode];
   }
@@ -589,46 +589,46 @@ LABEL_6:
 
 - (ICFolderCustomNoteSortType)sortType
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 sortType];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  sortType = [indexer sortType];
 
-  return v3;
+  return sortType;
 }
 
-- (void)setSortType:(id)a3 force:(BOOL)a4
+- (void)setSortType:(id)type force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
+  forceCopy = force;
+  typeCopy = type;
   [(ICNoteBrowseDataSource *)self updateIndexerForCurrentNoteContainerViewMode];
-  v7 = [(ICNoteBrowseDataSource *)self indexer];
-  [v7 setSortType:v6 force:v4];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setSortType:typeCopy force:forceCopy];
 }
 
 - (int64_t)dateHeadersType
 {
-  v2 = [(ICNoteBrowseDataSource *)self indexer];
-  v3 = [v2 dateHeadersType];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  dateHeadersType = [indexer dateHeadersType];
 
-  return v3;
+  return dateHeadersType;
 }
 
-- (void)setDateHeadersType:(int64_t)a3
+- (void)setDateHeadersType:(int64_t)type
 {
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 setDateHeadersType:a3];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer setDateHeadersType:type];
 }
 
-- (BOOL)needsReindexWithCollectionDifference:(id)a3 controller:(id)a4 identifiersToReload:(id)a5
+- (BOOL)needsReindexWithCollectionDifference:(id)difference controller:(id)controller identifiersToReload:(id)reload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  differenceCopy = difference;
+  controllerCopy = controller;
+  reloadCopy = reload;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v25.receiver = self;
   v25.super_class = ICNoteBrowseDataSource;
-  v29 = [(ICNoteBrowseDataSource *)&v25 needsReindexWithCollectionDifference:v8 controller:v9 identifiersToReload:v10];
+  v29 = [(ICNoteBrowseDataSource *)&v25 needsReindexWithCollectionDifference:differenceCopy controller:controllerCopy identifiersToReload:reloadCopy];
   if (v27[3])
   {
     v11 = 1;
@@ -636,15 +636,15 @@ LABEL_6:
 
   else
   {
-    v12 = [(ICNoteBrowseDataSource *)self indexer];
-    v13 = [v12 isShowingDateHeaders];
+    indexer = [(ICNoteBrowseDataSource *)self indexer];
+    isShowingDateHeaders = [indexer isShowingDateHeaders];
 
-    if (v13)
+    if (isShowingDateHeaders)
     {
       v14 = +[NSMutableSet set];
-      v15 = [v8 insertions];
-      v16 = [v8 removals];
-      v17 = [v15 arrayByAddingObjectsFromArray:v16];
+      insertions = [differenceCopy insertions];
+      removals = [differenceCopy removals];
+      v17 = [insertions arrayByAddingObjectsFromArray:removals];
 
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
@@ -652,9 +652,9 @@ LABEL_6:
       v20[3] = &unk_100645950;
       v18 = v14;
       v21 = v18;
-      v23 = self;
+      selfCopy = self;
       v24 = &v26;
-      v22 = v9;
+      v22 = controllerCopy;
       [v17 enumerateObjectsUsingBlock:v20];
       v11 = *(v27 + 24);
     }
@@ -672,32 +672,32 @@ LABEL_6:
 
 - (NSManagedObjectContext)modernViewContext
 {
-  v2 = [(ICNoteBrowseDataSource *)self persistenceConfiguration];
-  v3 = [v2 modernViewContext];
+  persistenceConfiguration = [(ICNoteBrowseDataSource *)self persistenceConfiguration];
+  modernViewContext = [persistenceConfiguration modernViewContext];
 
-  return v3;
+  return modernViewContext;
 }
 
-- (id)emptyConfigurationForNoteWithObjectID:(id)a3
+- (id)emptyConfigurationForNoteWithObjectID:(id)d
 {
-  v4 = a3;
-  if ([v4 ic_isModernNoteType])
+  dCopy = d;
+  if ([dCopy ic_isModernNoteType])
   {
-    v5 = [(ICNoteBrowseDataSource *)self modernViewContext];
-    v6 = [v5 ic_existingObjectWithID:v4];
+    modernViewContext = [(ICNoteBrowseDataSource *)self modernViewContext];
+    v6 = [modernViewContext ic_existingObjectWithID:dCopy];
 
     v7 = [[ICNoteResultsCellConfiguration alloc] initWithNote:v6];
-    v8 = [(ICNoteBrowseDataSource *)self noteContainer];
-    v9 = [v8 customNoteSortType];
-    [(ICNoteResultsCellConfiguration *)v7 setFolderNoteSortType:v9];
+    noteContainer = [(ICNoteBrowseDataSource *)self noteContainer];
+    customNoteSortType = [noteContainer customNoteSortType];
+    [(ICNoteResultsCellConfiguration *)v7 setFolderNoteSortType:customNoteSortType];
 
-    v10 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
-    v11 = [v10 type];
-    -[ICNoteResultsCellConfiguration setShowParticipantsInfo:](v7, "setShowParticipantsInfo:", [v11 isEqual:ICVirtualSmartFolderItemIdentifierTypeSharedWithYou]);
+    virtualSmartFolder = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
+    type = [virtualSmartFolder type];
+    -[ICNoteResultsCellConfiguration setShowParticipantsInfo:](v7, "setShowParticipantsInfo:", [type isEqual:ICVirtualSmartFolderItemIdentifierTypeSharedWithYou]);
 
-    v12 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
-    v13 = [v12 type];
-    v14 = [v13 isEqualToString:ICVirtualSmartFolderItemIdentifierTypeSystemPaper];
+    virtualSmartFolder2 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
+    type2 = [virtualSmartFolder2 type];
+    v14 = [type2 isEqualToString:ICVirtualSmartFolderItemIdentifierTypeSystemPaper];
 
     if ([(ICNoteBrowseDataSource *)self shouldStyleForCalculator]|| (v14 & 1) != 0)
     {
@@ -706,12 +706,12 @@ LABEL_6:
 
     else
     {
-      v15 = [(ICNoteBrowseDataSource *)self noteContainer];
+      noteContainer2 = [(ICNoteBrowseDataSource *)self noteContainer];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         objc_opt_class();
-        v16 = [(ICNoteBrowseDataSource *)self noteContainer];
+        noteContainer3 = [(ICNoteBrowseDataSource *)self noteContainer];
         v17 = ICDynamicCast();
         if ([v17 isSmartFolder])
         {
@@ -720,8 +720,8 @@ LABEL_6:
 
         else
         {
-          v26 = [(ICNoteBrowseDataSource *)self noteQuery];
-          [(ICNoteResultsCellConfiguration *)v7 setShowFolderName:v26 != 0];
+          noteQuery = [(ICNoteBrowseDataSource *)self noteQuery];
+          [(ICNoteResultsCellConfiguration *)v7 setShowFolderName:noteQuery != 0];
         }
       }
 
@@ -732,22 +732,22 @@ LABEL_6:
     }
 
     objc_opt_class();
-    v27 = [(ICNoteBrowseDataSource *)self noteContainer];
+    noteContainer4 = [(ICNoteBrowseDataSource *)self noteContainer];
     v28 = ICDynamicCast();
     [(ICNoteResultsCellConfiguration *)v7 setIsDisplayedInFolder:v28 != 0];
 
-    v20 = [(ICNoteBrowseDataSource *)self folderDataSource];
-    if ([v20 countOfAllVisibleAccounts] >= 2)
+    folderDataSource = [(ICNoteBrowseDataSource *)self folderDataSource];
+    if ([folderDataSource countOfAllVisibleAccounts] >= 2)
     {
-      v21 = [(ICNoteBrowseDataSource *)self noteQuery];
-      if (!v21)
+      noteQuery2 = [(ICNoteBrowseDataSource *)self noteQuery];
+      if (!noteQuery2)
       {
-        v29 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
-        if (v29)
+        virtualSmartFolder3 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
+        if (virtualSmartFolder3)
         {
-          v30 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
-          v31 = [v30 accountObjectID];
-          [(ICNoteResultsCellConfiguration *)v7 setShowAccountName:v31 == 0];
+          virtualSmartFolder4 = [(ICNoteBrowseDataSource *)self virtualSmartFolder];
+          accountObjectID = [virtualSmartFolder4 accountObjectID];
+          [(ICNoteResultsCellConfiguration *)v7 setShowAccountName:accountObjectID == 0];
         }
 
         else
@@ -770,22 +770,22 @@ LABEL_27:
     goto LABEL_22;
   }
 
-  if ([v4 ic_isLegacyNoteType])
+  if ([dCopy ic_isLegacyNoteType])
   {
-    v18 = [(ICNoteBrowseDataSource *)self legacyViewContext];
-    v6 = [v18 ic_existingObjectWithID:v4];
+    legacyViewContext = [(ICNoteBrowseDataSource *)self legacyViewContext];
+    v6 = [legacyViewContext ic_existingObjectWithID:dCopy];
 
     v7 = [[ICNoteResultsCellConfiguration alloc] initWithNote:v6];
-    v19 = [(ICNoteBrowseDataSource *)self noteCollection];
+    noteCollection = [(ICNoteBrowseDataSource *)self noteCollection];
     objc_opt_class();
     [(ICNoteResultsCellConfiguration *)v7 setShowFolderName:objc_opt_isKindOfClass() & 1];
 
-    v20 = [(ICNoteBrowseDataSource *)self noteCollection];
+    folderDataSource = [(ICNoteBrowseDataSource *)self noteCollection];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [(ICNoteBrowseDataSource *)self folderDataSource];
-      v22 = [v21 countOfAllVisibleAccounts] > 1;
+      noteQuery2 = [(ICNoteBrowseDataSource *)self folderDataSource];
+      v22 = [noteQuery2 countOfAllVisibleAccounts] > 1;
       v23 = v7;
       goto LABEL_21;
     }
@@ -798,18 +798,18 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (![v4 ic_isInvitationType])
+  if (![dCopy ic_isInvitationType])
   {
     v7 = 0;
     goto LABEL_30;
   }
 
-  v24 = [(ICNoteBrowseDataSource *)self modernViewContext];
-  v6 = [v24 ic_existingObjectWithID:v4];
+  modernViewContext2 = [(ICNoteBrowseDataSource *)self modernViewContext];
+  v6 = [modernViewContext2 ic_existingObjectWithID:dCopy];
 
   v7 = [[ICNoteResultsCellConfiguration alloc] initWithInvitation:v6];
-  v25 = [(ICNoteBrowseDataSource *)self folderDataSource];
-  -[ICNoteResultsCellConfiguration setShowAccountName:](v7, "setShowAccountName:", [v25 countOfAllVisibleAccounts] > 1);
+  folderDataSource2 = [(ICNoteBrowseDataSource *)self folderDataSource];
+  -[ICNoteResultsCellConfiguration setShowAccountName:](v7, "setShowAccountName:", [folderDataSource2 countOfAllVisibleAccounts] > 1);
 
   [(ICNoteResultsCellConfiguration *)v7 setShowFolderName:0];
 LABEL_29:
@@ -821,29 +821,29 @@ LABEL_30:
 
 - (BOOL)shouldStyleForCalculator
 {
-  v2 = [(ICNoteBrowseDataSource *)self collectionView];
-  v3 = [v2 ic_behavior] == 1;
+  collectionView = [(ICNoteBrowseDataSource *)self collectionView];
+  v3 = [collectionView ic_behavior] == 1;
 
   return v3;
 }
 
-- (void)accountHidesNotesInCustomFoldersDidChange:(id)a3
+- (void)accountHidesNotesInCustomFoldersDidChange:(id)change
 {
   v19.receiver = self;
   v19.super_class = ICNoteBrowseDataSource;
-  [(ICNoteBrowseDataSource *)&v19 accountHidesNotesInCustomFoldersDidChange:a3];
-  v4 = [(ICNoteBrowseDataSource *)self indexer];
-  [v4 updateContainerPredicate];
+  [(ICNoteBrowseDataSource *)&v19 accountHidesNotesInCustomFoldersDidChange:change];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  [indexer updateContainerPredicate];
 
   [(ICNoteBrowseDataSource *)self reloadDataAnimated:1];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ICNoteBrowseDataSource *)self collectionView];
-  v6 = [v5 indexPathsForVisibleItems];
+  collectionView = [(ICNoteBrowseDataSource *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -855,13 +855,13 @@ LABEL_30:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
         objc_opt_class();
-        v12 = [(ICNoteBrowseDataSource *)self collectionView];
-        v13 = [v12 cellForItemAtIndexPath:v11];
+        collectionView2 = [(ICNoteBrowseDataSource *)self collectionView];
+        v13 = [collectionView2 cellForItemAtIndexPath:v11];
         v14 = ICDynamicCast();
 
         [v14 updateNoteCount];
@@ -869,33 +869,33 @@ LABEL_30:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)noteLockManagerDidToggleLock:(id)a3
+- (void)noteLockManagerDidToggleLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [lockCopy object];
   v6 = ICCheckedDynamicCast();
 
-  v7 = [v6 updatedNote];
+  updatedNote = [v6 updatedNote];
 
-  if (v7)
+  if (updatedNote)
   {
-    v8 = [v6 updatedNote];
-    v9 = [v8 objectID];
-    v10 = [NSSet setWithObject:v9];
+    updatedNote2 = [v6 updatedNote];
+    objectID = [updatedNote2 objectID];
+    v10 = [NSSet setWithObject:objectID];
     v11 = [(ICNoteBrowseDataSource *)self associatedCellsForItemIdentifiers:v10];
-    v12 = [v11 anyObject];
+    anyObject = [v11 anyObject];
 
-    v13 = [v6 updatedNote];
-    v14 = [v13 objectID];
-    v15 = [(ICNoteBrowseDataSource *)self emptyConfigurationForNoteWithObjectID:v14];
+    updatedNote3 = [v6 updatedNote];
+    objectID2 = [updatedNote3 objectID];
+    v15 = [(ICNoteBrowseDataSource *)self emptyConfigurationForNoteWithObjectID:objectID2];
     objc_opt_class();
     v16 = ICDynamicCast();
     [v16 setConfiguration:v15];
@@ -903,36 +903,36 @@ LABEL_30:
 
   v17.receiver = self;
   v17.super_class = ICNoteBrowseDataSource;
-  [(ICNoteBrowseDataSource *)&v17 noteLockManagerDidToggleLock:v4];
+  [(ICNoteBrowseDataSource *)&v17 noteLockManagerDidToggleLock:lockCopy];
 }
 
-- (void)managedObjectContextUpdaterDidMerge:(id)a3
+- (void)managedObjectContextUpdaterDidMerge:(id)merge
 {
-  v4 = a3;
+  mergeCopy = merge;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:ICManagedObjectContextUpdaterChangeDictionaryKey];
+  userInfo = [mergeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:ICManagedObjectContextUpdaterChangeDictionaryKey];
   v7 = ICCheckedDynamicCast();
 
   v8 = [v7 objectForKey:NSInsertedObjectIDsKey];
   v9 = [v7 objectForKey:NSDeletedObjectIDsKey];
   v10 = [v7 objectForKey:NSUpdatedObjectIDsKey];
-  v11 = [(ICNoteBrowseDataSource *)self indexer];
-  v12 = [v11 noteContainer];
-  v13 = [v12 isAllNotesContainer];
+  indexer = [(ICNoteBrowseDataSource *)self indexer];
+  noteContainer = [indexer noteContainer];
+  isAllNotesContainer = [noteContainer isAllNotesContainer];
 
-  if (!v13)
+  if (!isAllNotesContainer)
   {
-    v21 = [(ICNoteBrowseDataSource *)self indexer];
-    v22 = [v21 noteContainer];
+    indexer2 = [(ICNoteBrowseDataSource *)self indexer];
+    noteContainer2 = [indexer2 noteContainer];
 
-    v23 = [(ICNoteBrowseDataSource *)self indexer];
-    v24 = v23;
-    if (v22)
+    indexer3 = [(ICNoteBrowseDataSource *)self indexer];
+    v24 = indexer3;
+    if (noteContainer2)
     {
-      v25 = [v23 noteContainer];
-      v26 = [v25 objectID];
-      v27 = [v10 containsObject:v26];
+      noteContainer3 = [indexer3 noteContainer];
+      objectID = [noteContainer3 objectID];
+      v27 = [v10 containsObject:objectID];
 
       if ((v27 & 1) == 0)
       {
@@ -942,18 +942,18 @@ LABEL_30:
 
     else
     {
-      v31 = [v23 noteCollection];
+      noteCollection = [indexer3 noteCollection];
 
-      if (v31)
+      if (noteCollection)
       {
         goto LABEL_4;
       }
     }
 
 LABEL_10:
-    v28 = [(ICNoteBrowseDataSource *)self collectionView];
-    v29 = [v28 window];
-    v30 = v29 != 0;
+    collectionView = [(ICNoteBrowseDataSource *)self collectionView];
+    window = [collectionView window];
+    v30 = window != 0;
 
     [(ICNoteBrowseDataSource *)self reloadDataAnimated:v30];
     goto LABEL_11;
@@ -965,18 +965,18 @@ LABEL_10:
   }
 
 LABEL_4:
-  v14 = [(ICNoteBrowseDataSource *)self indexer];
-  v15 = [v14 noteCollection];
+  indexer4 = [(ICNoteBrowseDataSource *)self indexer];
+  noteCollection2 = [indexer4 noteCollection];
 
-  if (!v15)
+  if (!noteCollection2)
   {
     v32 = v9;
     v33 = [v10 objectsPassingTest:&stru_100645990];
     v16 = [v33 mutableCopy];
-    v17 = [(ICNoteBrowseDataSource *)self collectionViewDiffableDataSource];
-    v18 = [v17 snapshot];
-    v19 = [v18 itemIdentifiers];
-    v20 = [NSSet setWithArray:v19];
+    collectionViewDiffableDataSource = [(ICNoteBrowseDataSource *)self collectionViewDiffableDataSource];
+    snapshot = [collectionViewDiffableDataSource snapshot];
+    itemIdentifiers = [snapshot itemIdentifiers];
+    v20 = [NSSet setWithArray:itemIdentifiers];
     [v16 intersectSet:v20];
 
     if ([v16 count])

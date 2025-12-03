@@ -1,14 +1,14 @@
 @interface CAMAutoSmartFramingMonitorCommand
-- (CAMAutoSmartFramingMonitorCommand)initWithCoder:(id)a3;
-- (CAMAutoSmartFramingMonitorCommand)initWithSmartFramingMonitorEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMAutoSmartFramingMonitorCommand)initWithCoder:(id)coder;
+- (CAMAutoSmartFramingMonitorCommand)initWithSmartFramingMonitorEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMAutoSmartFramingMonitorCommand
 
-- (CAMAutoSmartFramingMonitorCommand)initWithSmartFramingMonitorEnabled:(BOOL)a3
+- (CAMAutoSmartFramingMonitorCommand)initWithSmartFramingMonitorEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMAutoSmartFramingMonitorCommand;
@@ -16,51 +16,51 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMAutoSmartFramingMonitorCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMAutoSmartFramingMonitorCommand *)self _enabled];
   return v4;
 }
 
-- (CAMAutoSmartFramingMonitorCommand)initWithCoder:(id)a3
+- (CAMAutoSmartFramingMonitorCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMAutoSmartFramingMonitorCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
-  v5 = [v4 smartFramingMonitor];
+  currentVideoDevice = [context currentVideoDevice];
+  smartFramingMonitor = [currentVideoDevice smartFramingMonitor];
 
-  if (v5)
+  if (smartFramingMonitor)
   {
-    v6 = [v4 smartFramingMonitor];
-    v7 = [v6 isMonitoring];
+    smartFramingMonitor2 = [currentVideoDevice smartFramingMonitor];
+    isMonitoring = [smartFramingMonitor2 isMonitoring];
 
-    v8 = [(CAMAutoSmartFramingMonitorCommand *)self _enabled];
-    if (v7)
+    _enabled = [(CAMAutoSmartFramingMonitorCommand *)self _enabled];
+    if (isMonitoring)
     {
-      if (!v8)
+      if (!_enabled)
       {
         v9 = os_log_create("com.apple.camera", "SmartFraming");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -69,13 +69,13 @@
           _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Smart framing: stopping smart framing monitor", v14, 2u);
         }
 
-        v10 = [v4 smartFramingMonitor];
-        [v10 stopMonitoring];
+        smartFramingMonitor3 = [currentVideoDevice smartFramingMonitor];
+        [smartFramingMonitor3 stopMonitoring];
 LABEL_14:
       }
     }
 
-    else if (v8)
+    else if (_enabled)
     {
       v11 = os_log_create("com.apple.camera", "SmartFraming");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -84,17 +84,17 @@ LABEL_14:
         _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "Smart framing: starting smart framing monitor", buf, 2u);
       }
 
-      v12 = [v4 smartFramingMonitor];
+      smartFramingMonitor4 = [currentVideoDevice smartFramingMonitor];
       v15 = 0;
-      [v12 startMonitoringWithError:&v15];
-      v10 = v15;
+      [smartFramingMonitor4 startMonitoringWithError:&v15];
+      smartFramingMonitor3 = v15;
 
-      if (v10)
+      if (smartFramingMonitor3)
       {
         v13 = os_log_create("com.apple.camera", "SmartFraming");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [(CAMAutoSmartFramingMonitorCommand *)v10 executeWithContext:v13];
+          [(CAMAutoSmartFramingMonitorCommand *)smartFramingMonitor3 executeWithContext:v13];
         }
       }
 

@@ -5,16 +5,16 @@
 - (UIEdgeInsets)preferredBackgroundInsets;
 - (UIEdgeInsets)preferredEdgeInsets;
 - (_UITraitEnvironmentInternal)_parentTraitEnvironmentForUserInterfaceStyle;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAllowsBackgroundInteractionAcrossProccesses:(BOOL)a3;
-- (void)setKeepsInputViewsVisible:(BOOL)a3;
-- (void)setPreferredAttachmentEdge:(unint64_t)a3;
-- (void)setPreferredMaximumMenuHeight:(double)a3;
-- (void)setPreferredMenuMaterial:(id)a3;
-- (void)setPreferredMenuWidth:(double)a3;
-- (void)setPrefersCenteredPreviewWhenActionsAreAbsent:(BOOL)a3;
-- (void)setPrefersStackedHierarchy:(BOOL)a3;
-- (void)set_preferredAnchor:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAllowsBackgroundInteractionAcrossProccesses:(BOOL)proccesses;
+- (void)setKeepsInputViewsVisible:(BOOL)visible;
+- (void)setPreferredAttachmentEdge:(unint64_t)edge;
+- (void)setPreferredMaximumMenuHeight:(double)height;
+- (void)setPreferredMenuMaterial:(id)material;
+- (void)setPreferredMenuWidth:(double)width;
+- (void)setPrefersCenteredPreviewWhenActionsAreAbsent:(BOOL)absent;
+- (void)setPrefersStackedHierarchy:(BOOL)hierarchy;
+- (void)set_preferredAnchor:(id *)anchor;
 @end
 
 @implementation _UIContextMenuStyle
@@ -31,12 +31,12 @@
   [v2 set_wantsTypeSelect:1];
   v2[13] = 0x7FFFFFFFFFFFFFFFLL;
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
-    v5 = [objc_opt_self() mainScreen];
-    [v5 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v7 = v6;
     v9 = v8;
 
@@ -97,15 +97,15 @@
   return WeakRetained;
 }
 
-- (void)setPrefersCenteredPreviewWhenActionsAreAbsent:(BOOL)a3
+- (void)setPrefersCenteredPreviewWhenActionsAreAbsent:(BOOL)absent
 {
-  v3 = a3;
+  absentCopy = absent;
   v10 = 0;
   v8 = 0u;
   v9 = 0u;
   [(_UIContextMenuStyle *)self _preferredAnchor];
   v5 = 1;
-  if (v3)
+  if (absentCopy)
   {
     v5 = 2;
   }
@@ -117,22 +117,22 @@
   [(_UIContextMenuStyle *)self set_preferredAnchor:v6];
 }
 
-- (void)setPrefersStackedHierarchy:(BOOL)a3
+- (void)setPrefersStackedHierarchy:(BOOL)hierarchy
 {
-  v3 = a3;
+  hierarchyCopy = hierarchy;
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIContextMenuStyle.m" lineNumber:70 description:@"This may only be used by SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContextMenuStyle.m" lineNumber:70 description:@"This may only be used by SpringBoard."];
   }
 
-  if (self->_prefersStackedHierarchy != v3)
+  if (self->_prefersStackedHierarchy != hierarchyCopy)
   {
-    self->_prefersStackedHierarchy = v3;
+    self->_prefersStackedHierarchy = hierarchyCopy;
   }
 }
 
-- (void)setPreferredAttachmentEdge:(unint64_t)a3
+- (void)setPreferredAttachmentEdge:(unint64_t)edge
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -145,47 +145,47 @@
     dispatch_once(&setPreferredAttachmentEdge__onceToken, v5);
   }
 
-  if (self->_preferredAttachmentEdge != a3)
+  if (self->_preferredAttachmentEdge != edge)
   {
-    self->_preferredAttachmentEdge = a3;
+    self->_preferredAttachmentEdge = edge;
   }
 }
 
-- (void)setPreferredMenuWidth:(double)a3
+- (void)setPreferredMenuWidth:(double)width
 {
   if (_UIContextMenuAssertIsSystemUI_onceToken != -1)
   {
     dispatch_once(&_UIContextMenuAssertIsSystemUI_onceToken, &__block_literal_global_1);
   }
 
-  if (self->_preferredMenuWidth != a3)
+  if (self->_preferredMenuWidth != width)
   {
-    self->_preferredMenuWidth = a3;
+    self->_preferredMenuWidth = width;
   }
 }
 
-- (void)setPreferredMaximumMenuHeight:(double)a3
+- (void)setPreferredMaximumMenuHeight:(double)height
 {
   if (_UIContextMenuAssertIsSystemUI_onceToken != -1)
   {
     dispatch_once(&_UIContextMenuAssertIsSystemUI_onceToken, &__block_literal_global_1);
   }
 
-  self->_preferredMaximumMenuHeight = a3;
+  self->_preferredMaximumMenuHeight = height;
 }
 
-- (void)setAllowsBackgroundInteractionAcrossProccesses:(BOOL)a3
+- (void)setAllowsBackgroundInteractionAcrossProccesses:(BOOL)proccesses
 {
-  v3 = a3;
+  proccessesCopy = proccesses;
   if (!+[UIKeyboard isInputUIProcess])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIContextMenuStyle.m" lineNumber:120 description:@"This may only be used by InputUI"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContextMenuStyle.m" lineNumber:120 description:@"This may only be used by InputUI"];
   }
 
-  if (((([(_UIContextMenuStyle *)self _backgroundInteractionStyle]!= 2) ^ v3) & 1) == 0)
+  if (((([(_UIContextMenuStyle *)self _backgroundInteractionStyle]!= 2) ^ proccessesCopy) & 1) == 0)
   {
-    if (v3)
+    if (proccessesCopy)
     {
       v6 = 2;
     }
@@ -199,9 +199,9 @@
   }
 }
 
-- (void)setKeepsInputViewsVisible:(BOOL)a3
+- (void)setKeepsInputViewsVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     v3 = 1;
   }
@@ -214,9 +214,9 @@
   [(_UIContextMenuStyle *)self setInputViewVisibility:v3];
 }
 
-- (void)setPreferredMenuMaterial:(id)a3
+- (void)setPreferredMenuMaterial:(id)material
 {
-  v5 = a3;
+  materialCopy = material;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48___UIContextMenuStyle_setPreferredMenuMaterial___block_invoke;
@@ -229,15 +229,15 @@
   }
 
   preferredMenuMaterial = self->_preferredMenuMaterial;
-  self->_preferredMenuMaterial = v5;
-  v7 = v5;
+  self->_preferredMenuMaterial = materialCopy;
+  v7 = materialCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(_UIContextMenuStyle *)self containerView];
-  [v4 setContainerView:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  containerView = [(_UIContextMenuStyle *)self containerView];
+  [v4 setContainerView:containerView];
 
   [v4 setPreferredLayout:{-[_UIContextMenuStyle preferredLayout](self, "preferredLayout")}];
   [v4 setHasInteractivePreview:{-[_UIContextMenuStyle hasInteractivePreview](self, "hasInteractivePreview")}];
@@ -246,12 +246,12 @@
   [v4 setIgnoresContainerSizeChange:{-[_UIContextMenuStyle ignoresContainerSizeChange](self, "ignoresContainerSizeChange")}];
   [(_UIContextMenuStyle *)self preferredEdgeInsets];
   [v4 setPreferredEdgeInsets:?];
-  v6 = [(_UIContextMenuStyle *)self preferredBackgroundEffects];
-  v7 = [v6 copy];
+  preferredBackgroundEffects = [(_UIContextMenuStyle *)self preferredBackgroundEffects];
+  v7 = [preferredBackgroundEffects copy];
   [v4 setPreferredBackgroundEffects:v7];
 
-  v8 = [(_UIContextMenuStyle *)self preferredBackgroundColor];
-  v9 = [v8 copy];
+  preferredBackgroundColor = [(_UIContextMenuStyle *)self preferredBackgroundColor];
+  v9 = [preferredBackgroundColor copy];
   [v4 setPreferredBackgroundColor:v9];
 
   [(_UIContextMenuStyle *)self preferredBackgroundInsets];
@@ -271,8 +271,8 @@
   [v4 set_shouldAvoidInputViews:{-[_UIContextMenuStyle _shouldAvoidInputViews](self, "_shouldAvoidInputViews")}];
   [v4 set_orderMenuBasedOnPriority:{-[_UIContextMenuStyle _orderMenuBasedOnPriority](self, "_orderMenuBasedOnPriority")}];
   [v4 set_backgroundInteractionStyle:{-[_UIContextMenuStyle _backgroundInteractionStyle](self, "_backgroundInteractionStyle")}];
-  v10 = [(_UIContextMenuStyle *)self _parentTraitEnvironmentForUserInterfaceStyle];
-  [v4 set_parentTraitEnvironmentForUserInterfaceStyle:v10];
+  _parentTraitEnvironmentForUserInterfaceStyle = [(_UIContextMenuStyle *)self _parentTraitEnvironmentForUserInterfaceStyle];
+  [v4 set_parentTraitEnvironmentForUserInterfaceStyle:_parentTraitEnvironmentForUserInterfaceStyle];
 
   [(_UIContextMenuStyle *)self _internalPreferredMenuWidth];
   [v4 set_internalPreferredMenuWidth:?];
@@ -285,11 +285,11 @@
   return v4;
 }
 
-- (void)set_preferredAnchor:(id *)a3
+- (void)set_preferredAnchor:(id *)anchor
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->gravity = a3->var4;
+  v3 = *&anchor->var0;
+  v4 = *&anchor->var2;
+  self->gravity = anchor->var4;
   *&self->attachment = v3;
   *&self->attachmentOffset = v4;
 }

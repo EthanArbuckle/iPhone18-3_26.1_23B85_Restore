@@ -1,14 +1,14 @@
 @interface ICGetGeniusItemsRequest
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation ICGetGeniusItemsRequest
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(ICDResponse *)ICGetGeniusItemsResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  v5 = [ICDResponseDataParser parseResponseData:v4];
+  v3 = [(ICDResponse *)ICGetGeniusItemsResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  v5 = [ICDResponseDataParser parseResponseData:responseData];
 
   v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
   v16 = 0u;

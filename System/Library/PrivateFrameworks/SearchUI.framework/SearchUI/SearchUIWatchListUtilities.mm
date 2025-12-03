@@ -1,40 +1,40 @@
 @interface SearchUIWatchListUtilities
-+ (BOOL)channelHasBeenSeen:(id)a3 seenChannels:(id)a4;
-+ (id)buttonForChannelDetails:(id)a3 punchoutURLs:(id)a4 tvAppDeeplinkURL:(id)a5 isEntitled:(BOOL)a6 isContinuing:(BOOL)a7 isContainerItem:(BOOL)a8 hasDescriptiveSeasonTitle:(BOOL)a9 seasonNumber:(id)a10 episodeNumber:(id)a11 isHorizontallySrollingStyle:(BOOL)a12;
-+ (id)buttonForChannelOffer:(id)a3 channel:(id)a4 episode:(id)a5;
-+ (id)buttonForOffer:(id)a3 playable:(id)a4;
-+ (id)buttonForPlayable:(id)a3 isHorizontallySrollingStyle:(BOOL)a4;
-+ (id)buttonWithTitle:(id)a3 subtitle:(id)a4 punchoutURL:(id)a5 type:(unint64_t)a6 image:(id)a7 storeIdentifier:(id)a8;
-+ (id)buttonsForPlayables:(id)a3 channels:(id)a4 currentEpisode:(id)a5 isUpNextable:(BOOL)a6 watchListState:(id)a7 isHorizontallySrollingStyle:(BOOL)a8;
-+ (int)watchListTypeForType:(int)a3 isMediaContainer:(BOOL)a4;
-+ (int64_t)wlkTypeForType:(int)a3;
-+ (void)computeButtonsForWatchListIdentifier:(id)a3 type:(int)a4 isHorizontallySrollingStyle:(BOOL)a5 completion:(id)a6;
-+ (void)fetchButtonsForWatchListIdentifier:(id)a3 type:(int)a4 isHorizontallySrollingStyle:(BOOL)a5 completion:(id)a6;
-+ (void)fetchButtonsForWatchListIdentifier:(id)a3 type:(int)a4 isHorizontallySrollingStyle:(BOOL)a5 fetchButtons:(BOOL)a6 completion:(id)a7;
-+ (void)fetchWatchListStateForWatchListIdentifier:(id)a3 type:(int)a4 completion:(id)a5;
-+ (void)generateMediaContainerWatchListReponseForWatchListIdentifier:(id)a3 type:(int)a4 completion:(id)a5;
-+ (void)generateWatchListReponseForWatchListIdentifier:(id)a3 type:(int)a4 completion:(id)a5;
-+ (void)updateStatusIsInWatchList:(BOOL)a3 watchListItemWithIdentifier:(id)a4 completion:(id)a5;
++ (BOOL)channelHasBeenSeen:(id)seen seenChannels:(id)channels;
++ (id)buttonForChannelDetails:(id)details punchoutURLs:(id)ls tvAppDeeplinkURL:(id)l isEntitled:(BOOL)entitled isContinuing:(BOOL)continuing isContainerItem:(BOOL)item hasDescriptiveSeasonTitle:(BOOL)title seasonNumber:(id)self0 episodeNumber:(id)self1 isHorizontallySrollingStyle:(BOOL)self2;
++ (id)buttonForChannelOffer:(id)offer channel:(id)channel episode:(id)episode;
++ (id)buttonForOffer:(id)offer playable:(id)playable;
++ (id)buttonForPlayable:(id)playable isHorizontallySrollingStyle:(BOOL)style;
++ (id)buttonWithTitle:(id)title subtitle:(id)subtitle punchoutURL:(id)l type:(unint64_t)type image:(id)image storeIdentifier:(id)identifier;
++ (id)buttonsForPlayables:(id)playables channels:(id)channels currentEpisode:(id)episode isUpNextable:(BOOL)nextable watchListState:(id)state isHorizontallySrollingStyle:(BOOL)style;
++ (int)watchListTypeForType:(int)type isMediaContainer:(BOOL)container;
++ (int64_t)wlkTypeForType:(int)type;
++ (void)computeButtonsForWatchListIdentifier:(id)identifier type:(int)type isHorizontallySrollingStyle:(BOOL)style completion:(id)completion;
++ (void)fetchButtonsForWatchListIdentifier:(id)identifier type:(int)type isHorizontallySrollingStyle:(BOOL)style completion:(id)completion;
++ (void)fetchButtonsForWatchListIdentifier:(id)identifier type:(int)type isHorizontallySrollingStyle:(BOOL)style fetchButtons:(BOOL)buttons completion:(id)completion;
++ (void)fetchWatchListStateForWatchListIdentifier:(id)identifier type:(int)type completion:(id)completion;
++ (void)generateMediaContainerWatchListReponseForWatchListIdentifier:(id)identifier type:(int)type completion:(id)completion;
++ (void)generateWatchListReponseForWatchListIdentifier:(id)identifier type:(int)type completion:(id)completion;
++ (void)updateStatusIsInWatchList:(BOOL)list watchListItemWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SearchUIWatchListUtilities
 
-+ (int64_t)wlkTypeForType:(int)a3
++ (int64_t)wlkTypeForType:(int)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return 1;
   }
 
   else
   {
-    return qword_1DA272998[a3 - 1];
+    return qword_1DA272998[type - 1];
   }
 }
 
-+ (int)watchListTypeForType:(int)a3 isMediaContainer:(BOOL)a4
++ (int)watchListTypeForType:(int)type isMediaContainer:(BOOL)container
 {
-  if (a4)
+  if (container)
   {
     v4 = 3;
   }
@@ -44,9 +44,9 @@
     v4 = 4;
   }
 
-  if (a3)
+  if (type)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -55,38 +55,38 @@
   }
 }
 
-+ (void)generateWatchListReponseForWatchListIdentifier:(id)a3 type:(int)a4 completion:(id)a5
++ (void)generateWatchListReponseForWatchListIdentifier:(id)identifier type:(int)type completion:(id)completion
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69E14E8];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithCanonicalID:v10];
+  identifierCopy = identifier;
+  v11 = [[v9 alloc] initWithCanonicalID:identifierCopy];
 
   [v11 setCaller:@"SearchUI"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__SearchUIWatchListUtilities_generateWatchListReponseForWatchListIdentifier_type_completion___block_invoke;
   v13[3] = &unk_1E85B2B70;
-  v14 = v8;
-  v12 = v8;
-  [v11 makeRequestWithCompletion:v13 canonicalType:{objc_msgSend(a1, "wlkTypeForType:", v5)}];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [v11 makeRequestWithCompletion:v13 canonicalType:{objc_msgSend(self, "wlkTypeForType:", v5)}];
 }
 
-+ (void)generateMediaContainerWatchListReponseForWatchListIdentifier:(id)a3 type:(int)a4 completion:(id)a5
++ (void)generateMediaContainerWatchListReponseForWatchListIdentifier:(id)identifier type:(int)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __107__SearchUIWatchListUtilities_generateMediaContainerWatchListReponseForWatchListIdentifier_type_completion___block_invoke;
   v12[3] = &unk_1E85B2C10;
-  v14 = v9;
-  v15 = a1;
-  v16 = a4;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = completionCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v13 = identifierCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v12];
 }
 
@@ -174,44 +174,44 @@ void __107__SearchUIWatchListUtilities_generateMediaContainerWatchListReponseFor
   dispatch_group_leave(v4);
 }
 
-+ (void)fetchWatchListStateForWatchListIdentifier:(id)a3 type:(int)a4 completion:(id)a5
++ (void)fetchWatchListStateForWatchListIdentifier:(id)identifier type:(int)type completion:(id)completion
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__SearchUIWatchListUtilities_fetchWatchListStateForWatchListIdentifier_type_completion___block_invoke;
   v10[3] = &unk_1E85B2AF0;
-  v11 = v8;
-  v9 = v8;
-  [a1 fetchButtonsForWatchListIdentifier:a3 type:v5 isHorizontallySrollingStyle:1 fetchButtons:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [self fetchButtonsForWatchListIdentifier:identifier type:v5 isHorizontallySrollingStyle:1 fetchButtons:0 completion:v10];
 }
 
-+ (void)fetchButtonsForWatchListIdentifier:(id)a3 type:(int)a4 isHorizontallySrollingStyle:(BOOL)a5 completion:(id)a6
++ (void)fetchButtonsForWatchListIdentifier:(id)identifier type:(int)type isHorizontallySrollingStyle:(BOOL)style completion:(id)completion
 {
-  v6 = a5;
-  v7 = *&a4;
-  v10 = a6;
+  styleCopy = style;
+  v7 = *&type;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __109__SearchUIWatchListUtilities_fetchButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_completion___block_invoke;
   v12[3] = &unk_1E85B2AF0;
-  v13 = v10;
-  v11 = v10;
-  [a1 fetchButtonsForWatchListIdentifier:a3 type:v7 isHorizontallySrollingStyle:v6 fetchButtons:1 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [self fetchButtonsForWatchListIdentifier:identifier type:v7 isHorizontallySrollingStyle:styleCopy fetchButtons:1 completion:v12];
 }
 
-+ (void)fetchButtonsForWatchListIdentifier:(id)a3 type:(int)a4 isHorizontallySrollingStyle:(BOOL)a5 fetchButtons:(BOOL)a6 completion:(id)a7
++ (void)fetchButtonsForWatchListIdentifier:(id)identifier type:(int)type isHorizontallySrollingStyle:(BOOL)style fetchButtons:(BOOL)buttons completion:(id)completion
 {
-  v7 = a5;
-  v8 = *&a4;
+  styleCopy = style;
+  v8 = *&type;
   v10 = fetchButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_fetchButtons_completion__onceToken;
-  v11 = a7;
-  v12 = a3;
-  v14 = v12;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  v14 = identifierCopy;
   if (v10 == -1)
   {
-    v13 = v12;
+    v13 = identifierCopy;
   }
 
   else
@@ -220,7 +220,7 @@ void __107__SearchUIWatchListUtilities_generateMediaContainerWatchListReponseFor
     v13 = v14;
   }
 
-  [fetchButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_fetchButtons_completion__cache getButtonsForWatchListIdentifier:v13 type:v8 isHorizontallySrollingStyle:v7 completion:v11];
+  [fetchButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_fetchButtons_completion__cache getButtonsForWatchListIdentifier:v13 type:v8 isHorizontallySrollingStyle:styleCopy completion:completionCopy];
 }
 
 uint64_t __122__SearchUIWatchListUtilities_fetchButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_fetchButtons_completion___block_invoke()
@@ -230,13 +230,13 @@ uint64_t __122__SearchUIWatchListUtilities_fetchButtonsForWatchListIdentifier_ty
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)computeButtonsForWatchListIdentifier:(id)a3 type:(int)a4 isHorizontallySrollingStyle:(BOOL)a5 completion:(id)a6
++ (void)computeButtonsForWatchListIdentifier:(id)identifier type:(int)type isHorizontallySrollingStyle:(BOOL)style completion:(id)completion
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (v10)
+  v8 = *&type;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (identifierCopy)
   {
     v13 = objc_opt_class();
     if ((v8 & 0xFFFFFFFE) == 2)
@@ -245,10 +245,10 @@ uint64_t __122__SearchUIWatchListUtilities_fetchButtonsForWatchListIdentifier_ty
       v19[1] = 3221225472;
       v19[2] = __111__SearchUIWatchListUtilities_computeButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_completion___block_invoke;
       v19[3] = &unk_1E85B2C38;
-      v21 = a1;
-      v22 = a5;
+      selfCopy = self;
+      styleCopy = style;
       v20 = v12;
-      [v13 generateMediaContainerWatchListReponseForWatchListIdentifier:v10 type:v8 completion:v19];
+      [v13 generateMediaContainerWatchListReponseForWatchListIdentifier:identifierCopy type:v8 completion:v19];
       v14 = v20;
     }
 
@@ -258,17 +258,17 @@ uint64_t __122__SearchUIWatchListUtilities_fetchButtonsForWatchListIdentifier_ty
       v15[1] = 3221225472;
       v15[2] = __111__SearchUIWatchListUtilities_computeButtonsForWatchListIdentifier_type_isHorizontallySrollingStyle_completion___block_invoke_2;
       v15[3] = &unk_1E85B2C60;
-      v17 = a1;
-      v18 = a5;
+      selfCopy2 = self;
+      styleCopy2 = style;
       v16 = v12;
-      [v13 generateWatchListReponseForWatchListIdentifier:v10 type:v8 completion:v15];
+      [v13 generateWatchListReponseForWatchListIdentifier:identifierCopy type:v8 completion:v15];
       v14 = v16;
     }
   }
 
   else
   {
-    (*(v11 + 2))(v11, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -315,18 +315,18 @@ void __111__SearchUIWatchListUtilities_computeButtonsForWatchListIdentifier_type
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)buttonsForPlayables:(id)a3 channels:(id)a4 currentEpisode:(id)a5 isUpNextable:(BOOL)a6 watchListState:(id)a7 isHorizontallySrollingStyle:(BOOL)a8
++ (id)buttonsForPlayables:(id)playables channels:(id)channels currentEpisode:(id)episode isUpNextable:(BOOL)nextable watchListState:(id)state isHorizontallySrollingStyle:(BOOL)style
 {
-  v8 = a8;
-  v83 = a6;
+  styleCopy = style;
+  nextableCopy = nextable;
   v105 = *MEMORY[0x1E69E9840];
-  v81 = a3;
-  v12 = a4;
-  v13 = a5;
-  v82 = a7;
-  v88 = v8;
+  playablesCopy = playables;
+  channelsCopy = channels;
+  episodeCopy = episode;
+  stateCopy = state;
+  v88 = styleCopy;
   v14 = 4;
-  if (v8)
+  if (styleCopy)
   {
     v14 = 0x7FFFFFFFLL;
   }
@@ -338,9 +338,9 @@ void __111__SearchUIWatchListUtilities_computeButtonsForWatchListIdentifier_type
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  obj = v12;
+  obj = channelsCopy;
   v15 = [obj countByEnumeratingWithState:&v99 objects:v104 count:16];
-  v89 = v13;
+  v89 = episodeCopy;
   if (!v15)
   {
     v92 = 0;
@@ -364,36 +364,36 @@ void __111__SearchUIWatchListUtilities_computeButtonsForWatchListIdentifier_type
       }
 
       v19 = *(*(&v99 + 1) + 8 * v18);
-      v20 = [v19 details];
-      if (v20 && ([a1 channelHasBeenSeen:v20 seenChannels:v93] & 1) == 0)
+      details = [v19 details];
+      if (details && ([self channelHasBeenSeen:details seenChannels:v93] & 1) == 0)
       {
-        v21 = [v13 playable];
-        v22 = [v19 punchoutUrls];
-        v23 = [v20 channelID];
-        v24 = [v21 channelID];
-        if ([v23 isEqual:v24])
+        playable = [episodeCopy playable];
+        punchoutUrls = [v19 punchoutUrls];
+        channelID = [details channelID];
+        channelID2 = [playable channelID];
+        if ([channelID isEqual:channelID2])
         {
-          v25 = [v19 seasonNumbers];
-          v26 = [v13 seasonNumber];
-          v27 = [v25 containsObject:v26];
+          seasonNumbers = [v19 seasonNumbers];
+          seasonNumber = [episodeCopy seasonNumber];
+          v27 = [seasonNumbers containsObject:seasonNumber];
 
           if (v27)
           {
-            v28 = [v21 punchoutUrls];
-            if (v28)
+            punchoutUrls2 = [playable punchoutUrls];
+            if (punchoutUrls2)
             {
-              v13 = v89;
-              v29 = [v89 seasonNumber];
-              v30 = [v89 episodeNumber];
-              v28 = v28;
-              v31 = v22;
-              v22 = v28;
+              episodeCopy = v89;
+              seasonNumber2 = [v89 seasonNumber];
+              episodeNumber = [v89 episodeNumber];
+              punchoutUrls2 = punchoutUrls2;
+              absoluteString = punchoutUrls;
+              punchoutUrls = punchoutUrls2;
               goto LABEL_20;
             }
 
-            v30 = 0;
-            v29 = 0;
-            v13 = v89;
+            episodeNumber = 0;
+            seasonNumber2 = 0;
+            episodeCopy = v89;
 LABEL_21:
 
             goto LABEL_22;
@@ -404,27 +404,27 @@ LABEL_21:
         {
         }
 
-        if ([v20 isiTunes])
+        if ([details isiTunes])
         {
-          v28 = [v22 mutableCopy];
-          v13 = v89;
-          v32 = [v89 tvAppDeeplinkURL];
-          v31 = [v32 absoluteString];
+          punchoutUrls2 = [punchoutUrls mutableCopy];
+          episodeCopy = v89;
+          tvAppDeeplinkURL = [v89 tvAppDeeplinkURL];
+          absoluteString = [tvAppDeeplinkURL absoluteString];
 
-          if (v31)
+          if (absoluteString)
           {
-            [v28 setObject:v31 forKey:v84];
-            v28 = v28;
+            [punchoutUrls2 setObject:absoluteString forKey:v84];
+            punchoutUrls2 = punchoutUrls2;
 
-            v30 = 0;
-            v29 = 0;
-            v22 = v28;
+            episodeNumber = 0;
+            seasonNumber2 = 0;
+            punchoutUrls = punchoutUrls2;
           }
 
           else
           {
-            v30 = 0;
-            v29 = 0;
+            episodeNumber = 0;
+            seasonNumber2 = 0;
           }
 
 LABEL_20:
@@ -432,33 +432,33 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v30 = 0;
-        v29 = 0;
-        v13 = v89;
+        episodeNumber = 0;
+        seasonNumber2 = 0;
+        episodeCopy = v89;
 LABEL_22:
-        v33 = [v19 subscriptionOffers];
-        v34 = [v33 firstObject];
+        subscriptionOffers = [v19 subscriptionOffers];
+        firstObject = [subscriptionOffers firstObject];
 
-        if (!v34 || v92)
+        if (!firstObject || v92)
         {
-          v35 = [v21 tvAppDeeplinkURL];
-          v36 = [v20 isSubscribed];
-          v37 = [v13 seasonTitle];
+          tvAppDeeplinkURL2 = [playable tvAppDeeplinkURL];
+          isSubscribed = [details isSubscribed];
+          seasonTitle = [episodeCopy seasonTitle];
           LOBYTE(v79) = v88;
-          LOBYTE(v78) = v37 != 0;
-          v38 = [a1 buttonForChannelDetails:v20 punchoutURLs:v22 tvAppDeeplinkURL:v35 isEntitled:v36 isContinuing:0 isContainerItem:1 hasDescriptiveSeasonTitle:v78 seasonNumber:v29 episodeNumber:v30 isHorizontallySrollingStyle:v79];
+          LOBYTE(v78) = seasonTitle != 0;
+          v38 = [self buttonForChannelDetails:details punchoutURLs:punchoutUrls tvAppDeeplinkURL:tvAppDeeplinkURL2 isEntitled:isSubscribed isContinuing:0 isContainerItem:1 hasDescriptiveSeasonTitle:v78 seasonNumber:seasonNumber2 episodeNumber:episodeNumber isHorizontallySrollingStyle:v79];
 
           if (v38)
           {
             [v90 addObject:v38];
           }
 
-          v13 = v89;
+          episodeCopy = v89;
         }
 
         else
         {
-          v92 = [a1 buttonForChannelOffer:v34 channel:v19 episode:v13];
+          v92 = [self buttonForChannelOffer:firstObject channel:v19 episode:episodeCopy];
         }
 
         v17 = v85;
@@ -480,7 +480,7 @@ LABEL_35:
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v40 = v81;
+  v40 = playablesCopy;
   v41 = [v40 countByEnumeratingWithState:&v95 objects:v103 count:16];
   if (v41)
   {
@@ -499,9 +499,9 @@ LABEL_35:
         }
 
         v47 = *(*(&v95 + 1) + 8 * i);
-        v48 = [v47 isEntitled];
-        v49 = [v47 channelDetails];
-        v50 = [a1 channelHasBeenSeen:v49 seenChannels:v93];
+        isEntitled = [v47 isEntitled];
+        channelDetails = [v47 channelDetails];
+        v50 = [self channelHasBeenSeen:channelDetails seenChannels:v93];
 
         if ((v50 & 1) == 0)
         {
@@ -515,7 +515,7 @@ LABEL_35:
 
           else if (v92 || ([v47 bestStoreSubscriptionOffer], v53 = objc_claimAutoreleasedReturnValue(), v53, !v53))
           {
-            v52 = [a1 buttonForPlayable:v47 isHorizontallySrollingStyle:v88];
+            v52 = [self buttonForPlayable:v47 isHorizontallySrollingStyle:v88];
             if (v52)
             {
               [v90 addObject:v52];
@@ -524,12 +524,12 @@ LABEL_35:
 
           else
           {
-            v54 = [v47 bestStoreSubscriptionOffer];
-            v92 = [a1 buttonForOffer:v54 playable:v47];
+            bestStoreSubscriptionOffer = [v47 bestStoreSubscriptionOffer];
+            v92 = [self buttonForOffer:bestStoreSubscriptionOffer playable:v47];
           }
         }
 
-        v43 |= v48;
+        v43 |= isEntitled;
       }
 
       v42 = [v40 countByEnumeratingWithState:&v95 objects:v103 count:16];
@@ -544,10 +544,10 @@ LABEL_35:
       v55 = 0;
     }
 
-    v13 = v89;
+    episodeCopy = v89;
     v92 = v55;
     v56 = v55 != 0;
-    v57 = v80 - v83 - v56;
+    v57 = v80 - nextableCopy - v56;
     if (v44)
     {
       v58 = [v90 count];
@@ -556,11 +556,11 @@ LABEL_35:
       if (v60 >= 1)
       {
         v61 = objc_opt_new();
-        v62 = [v44 bestStoreRentalOffer];
-        if (v62)
+        bestStoreRentalOffer = [v44 bestStoreRentalOffer];
+        if (bestStoreRentalOffer)
         {
-          v63 = [v44 bestStoreBuyOffer];
-          v65 = v60 == 1 && v63 != 0;
+          bestStoreBuyOffer = [v44 bestStoreBuyOffer];
+          v65 = v60 == 1 && bestStoreBuyOffer != 0;
         }
 
         else
@@ -568,25 +568,25 @@ LABEL_35:
           v65 = 0;
         }
 
-        v66 = [v44 isEntitled];
-        if (v65 || v66)
+        isEntitled2 = [v44 isEntitled];
+        if (v65 || isEntitled2)
         {
-          v68 = [a1 buttonForPlayable:v44 isHorizontallySrollingStyle:v88];
+          v68 = [self buttonForPlayable:v44 isHorizontallySrollingStyle:v88];
           [v61 addObject:v68];
         }
 
         else
         {
-          v67 = [v44 bestStoreRentalOffer];
-          v68 = [a1 buttonForOffer:v67 playable:v44];
+          bestStoreRentalOffer2 = [v44 bestStoreRentalOffer];
+          v68 = [self buttonForOffer:bestStoreRentalOffer2 playable:v44];
 
           if (v68)
           {
             [v61 addObject:v68];
           }
 
-          v69 = [v44 bestStoreBuyOffer];
-          v70 = [a1 buttonForOffer:v69 playable:v44];
+          bestStoreBuyOffer2 = [v44 bestStoreBuyOffer];
+          v70 = [self buttonForOffer:bestStoreBuyOffer2 playable:v44];
 
           if (v70)
           {
@@ -595,16 +595,16 @@ LABEL_35:
 
           if (![v61 count])
           {
-            v71 = [v44 storeOffers];
-            v72 = [v71 lastObject];
-            v73 = [a1 buttonForOffer:v72 playable:v44];
+            storeOffers = [v44 storeOffers];
+            lastObject = [storeOffers lastObject];
+            v73 = [self buttonForOffer:lastObject playable:v44];
 
             if (v73)
             {
               [v61 addObject:v73];
             }
 
-            v13 = v89;
+            episodeCopy = v89;
           }
         }
 
@@ -622,7 +622,7 @@ LABEL_35:
 
     v44 = 0;
     v56 = v92 != 0;
-    v57 = v80 - v83 - v56;
+    v57 = v80 - nextableCopy - v56;
   }
 
   while ([v90 count] > v57)
@@ -635,10 +635,10 @@ LABEL_35:
     [v90 addObject:v92];
   }
 
-  if (v83)
+  if (nextableCopy)
   {
     v75 = objc_opt_new();
-    [v75 setWatchListState:v82];
+    [v75 setWatchListState:stateCopy];
     [v75 setButtonType:3];
     [v90 addObject:v75];
   }
@@ -648,61 +648,61 @@ LABEL_35:
   return v90;
 }
 
-+ (BOOL)channelHasBeenSeen:(id)a3 seenChannels:(id)a4
++ (BOOL)channelHasBeenSeen:(id)seen seenChannels:(id)channels
 {
-  v5 = a4;
-  v6 = [a3 channelID];
-  v7 = [v5 containsObject:v6];
+  channelsCopy = channels;
+  channelID = [seen channelID];
+  v7 = [channelsCopy containsObject:channelID];
   if ((v7 & 1) == 0)
   {
-    [v5 addObject:v6];
+    [channelsCopy addObject:channelID];
   }
 
   return v7;
 }
 
-+ (id)buttonForPlayable:(id)a3 isHorizontallySrollingStyle:(BOOL)a4
++ (id)buttonForPlayable:(id)playable isHorizontallySrollingStyle:(BOOL)style
 {
-  v6 = a3;
-  v7 = [v6 channelDetails];
-  v8 = [v6 punchoutUrls];
-  v9 = [v6 tvAppDeeplinkURL];
-  v10 = [v6 isEntitled];
-  v11 = [v6 playEvent];
+  playableCopy = playable;
+  channelDetails = [playableCopy channelDetails];
+  punchoutUrls = [playableCopy punchoutUrls];
+  tvAppDeeplinkURL = [playableCopy tvAppDeeplinkURL];
+  isEntitled = [playableCopy isEntitled];
+  playEvent = [playableCopy playEvent];
 
-  LOBYTE(v15) = a4;
+  LOBYTE(v15) = style;
   LOBYTE(v14) = 0;
-  v12 = [a1 buttonForChannelDetails:v7 punchoutURLs:v8 tvAppDeeplinkURL:v9 isEntitled:v10 isContinuing:v11 != 0 isContainerItem:0 hasDescriptiveSeasonTitle:v14 seasonNumber:0 episodeNumber:0 isHorizontallySrollingStyle:v15];
+  v12 = [self buttonForChannelDetails:channelDetails punchoutURLs:punchoutUrls tvAppDeeplinkURL:tvAppDeeplinkURL isEntitled:isEntitled isContinuing:playEvent != 0 isContainerItem:0 hasDescriptiveSeasonTitle:v14 seasonNumber:0 episodeNumber:0 isHorizontallySrollingStyle:v15];
 
   return v12;
 }
 
-+ (id)buttonForChannelDetails:(id)a3 punchoutURLs:(id)a4 tvAppDeeplinkURL:(id)a5 isEntitled:(BOOL)a6 isContinuing:(BOOL)a7 isContainerItem:(BOOL)a8 hasDescriptiveSeasonTitle:(BOOL)a9 seasonNumber:(id)a10 episodeNumber:(id)a11 isHorizontallySrollingStyle:(BOOL)a12
++ (id)buttonForChannelDetails:(id)details punchoutURLs:(id)ls tvAppDeeplinkURL:(id)l isEntitled:(BOOL)entitled isContinuing:(BOOL)continuing isContainerItem:(BOOL)item hasDescriptiveSeasonTitle:(BOOL)title seasonNumber:(id)self0 episodeNumber:(id)self1 isHorizontallySrollingStyle:(BOOL)self2
 {
-  v12 = a8;
-  v13 = a7;
-  v14 = a6;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v64 = a10;
-  v20 = a11;
-  v61 = [v17 sui_channelName];
-  v63 = v20;
-  if (([v17 isAppInstalled] & 1) != 0 || objc_msgSend(v17, "isFirstParty"))
+  itemCopy = item;
+  continuingCopy = continuing;
+  entitledCopy = entitled;
+  detailsCopy = details;
+  lsCopy = ls;
+  lCopy = l;
+  numberCopy = number;
+  episodeNumberCopy = episodeNumber;
+  sui_channelName = [detailsCopy sui_channelName];
+  v63 = episodeNumberCopy;
+  if (([detailsCopy isAppInstalled] & 1) != 0 || objc_msgSend(detailsCopy, "isFirstParty"))
   {
-    v21 = [v18 objectForKeyedSubscript:*MEMORY[0x1E69E1710]];
-    v59 = v18;
-    v22 = [v18 objectForKeyedSubscript:*MEMORY[0x1E69E1708]];
+    v21 = [lsCopy objectForKeyedSubscript:*MEMORY[0x1E69E1710]];
+    v59 = lsCopy;
+    v22 = [lsCopy objectForKeyedSubscript:*MEMORY[0x1E69E1708]];
     v23 = v22;
-    if (!v14 || !v21 || (v20 ? (v24 = v64 == 0) : (v24 = 1), v24 && v12))
+    if (!entitledCopy || !v21 || (episodeNumberCopy ? (v24 = numberCopy == 0) : (v24 = 1), v24 && itemCopy))
     {
-      if (v19 | v22)
+      if (lCopy | v22)
       {
-        v25 = v61;
-        if (v19)
+        v25 = sui_channelName;
+        if (lCopy)
         {
-          v26 = v19;
+          v26 = lCopy;
         }
 
         else
@@ -710,8 +710,8 @@ LABEL_35:
           v26 = [MEMORY[0x1E695DFF8] URLWithString:v22];
         }
 
-        v29 = v26;
-        if ([v17 isApSubscription])
+        appStoreURL2 = v26;
+        if ([detailsCopy isApSubscription])
         {
           v43 = @"SUBSCRIBE_BUTTON_TITLE";
         }
@@ -728,41 +728,41 @@ LABEL_35:
 
       v27 = 0;
       v28 = 0;
-      v29 = 0;
+      appStoreURL2 = 0;
       goto LABEL_15;
     }
 
-    v29 = [MEMORY[0x1E695DFF8] URLWithString:v21];
-    if (v12)
+    appStoreURL2 = [MEMORY[0x1E695DFF8] URLWithString:v21];
+    if (itemCopy)
     {
       os_unfair_lock_lock(&sSeasonTitleLock);
       v37 = sSeasonTitlesEnabled;
       os_unfair_lock_unlock(&sSeasonTitleLock);
-      v38 = [v17 sui_seasonEpisodeLabel:v37 seasonTitleAvailable:a9 seasonNumber:v64 episodeNumber:v63];
+      v38 = [detailsCopy sui_seasonEpisodeLabel:v37 seasonTitleAvailable:title seasonNumber:numberCopy episodeNumber:v63];
       v39 = v38;
       v40 = MEMORY[0x1E696AEC0];
-      if (a12)
+      if (style)
       {
         v41 = [SearchUIUtilities localizedStringForKey:@"PLAY_EPISODE_FORMAT"];
         v42 = [SearchUIUtilities localizedStringForKey:@"PLAY"];
         v28 = [v40 stringWithValidatedFormat:v41 validFormatSpecifiers:@"%@ %@" error:0, v42, v39];
 
-        v25 = v61;
+        v25 = sui_channelName;
       }
 
       else
       {
-        v41 = v61;
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v38, v61];
+        v41 = sui_channelName;
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v38, sui_channelName];
         v25 = v28 = 0;
       }
     }
 
     else
     {
-      if (!v13)
+      if (!continuingCopy)
       {
-        if (a12)
+        if (style)
         {
           v28 = [SearchUIUtilities localizedStringForKey:@"PLAY"];
         }
@@ -774,57 +774,57 @@ LABEL_35:
 
         v27 = 1;
 LABEL_15:
-        v25 = v61;
+        v25 = sui_channelName;
 LABEL_36:
         v36 = objc_opt_new();
-        if ([v17 isFirstParty])
+        if ([detailsCopy isFirstParty])
         {
-          v47 = [SearchUIUtilities bundleIdentifierForApp:18];
-          [(SearchUIWatchListIconImage *)v36 setBundleIdentifier:v47];
+          appBundleIDs = [SearchUIUtilities bundleIdentifierForApp:18];
+          [(SearchUIWatchListIconImage *)v36 setBundleIdentifier:appBundleIDs];
         }
 
         else
         {
-          v47 = [v17 appBundleIDs];
-          [v47 firstObject];
-          v62 = v17;
+          appBundleIDs = [detailsCopy appBundleIDs];
+          [appBundleIDs firstObject];
+          v62 = detailsCopy;
           v48 = v27;
-          v49 = v29;
+          v49 = appStoreURL2;
           v50 = v28;
           v51 = v21;
           v52 = v23;
           v53 = v25;
-          v55 = v54 = v19;
+          v55 = v54 = lCopy;
           [(SearchUIWatchListIconImage *)v36 setBundleIdentifier:v55];
 
-          v19 = v54;
+          lCopy = v54;
           v25 = v53;
           v23 = v52;
           v21 = v51;
           v28 = v50;
-          v29 = v49;
+          appStoreURL2 = v49;
           v27 = v48;
-          v17 = v62;
+          detailsCopy = v62;
         }
 
-        v33 = 0;
-        v18 = v59;
+        firstObject = 0;
+        lsCopy = v59;
         goto LABEL_40;
       }
 
       v46 = [SearchUIUtilities localizedStringForKey:@"CONTINUE"];
       v39 = v46;
-      if (a12)
+      if (style)
       {
         v28 = v46;
-        v25 = v61;
+        v25 = sui_channelName;
       }
 
       else
       {
         v57 = MEMORY[0x1E696AEC0];
         v58 = [SearchUIUtilities localizedStringForKey:@"CONTINUE_IN_FORMAT"];
-        v25 = [v57 stringWithValidatedFormat:v58 validFormatSpecifiers:@"%@ %@" error:0, v39, v61];
+        v25 = [v57 stringWithValidatedFormat:v58 validFormatSpecifiers:@"%@ %@" error:0, v39, sui_channelName];
 
         v28 = 0;
       }
@@ -834,32 +834,32 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v30 = v19;
-  v31 = [v17 appStoreURL];
+  v30 = lCopy;
+  appStoreURL = [detailsCopy appStoreURL];
 
-  if (!v31)
+  if (!appStoreURL)
   {
-    v29 = 0;
+    appStoreURL2 = 0;
     v28 = 0;
     v36 = 0;
-    v33 = 0;
+    firstObject = 0;
     v44 = 0;
-    v19 = v30;
-    v25 = v61;
+    lCopy = v30;
+    v25 = sui_channelName;
     v45 = v63;
     goto LABEL_43;
   }
 
   v28 = [SearchUIUtilities localizedStringForKey:@"INSTALL_BUTTON_TITLE"];
-  v29 = [v17 appStoreURL];
-  v32 = [v17 appAdamIDs];
-  v33 = [v32 firstObject];
+  appStoreURL2 = [detailsCopy appStoreURL];
+  appAdamIDs = [detailsCopy appAdamIDs];
+  firstObject = [appAdamIDs firstObject];
 
-  if (a12)
+  if (style)
   {
     v34 = [SearchUIWatchListIconImage alloc];
-    v35 = [v17 images];
-    v36 = [(SearchUIWatchListIconImage *)v34 initWithArtwork:v35];
+    images = [detailsCopy images];
+    v36 = [(SearchUIWatchListIconImage *)v34 initWithArtwork:images];
 
     [(SearchUIWatchListIconImage *)v36 setSize:45.0, 45.0];
   }
@@ -870,13 +870,13 @@ LABEL_36:
   }
 
   v27 = 2;
-  v19 = v30;
-  v25 = v61;
+  lCopy = v30;
+  v25 = sui_channelName;
 LABEL_40:
   v45 = v63;
-  if (v29)
+  if (appStoreURL2)
   {
-    v44 = [a1 buttonWithTitle:v28 subtitle:v25 punchoutURL:v29 type:v27 image:v36 storeIdentifier:v33];
+    v44 = [self buttonWithTitle:v28 subtitle:v25 punchoutURL:appStoreURL2 type:v27 image:v36 storeIdentifier:firstObject];
   }
 
   else
@@ -889,25 +889,25 @@ LABEL_43:
   return v44;
 }
 
-+ (id)buttonForOffer:(id)a3 playable:(id)a4
++ (id)buttonForOffer:(id)offer playable:(id)playable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 channelDetails];
-  v9 = [v8 isFirstParty];
+  offerCopy = offer;
+  playableCopy = playable;
+  channelDetails = [playableCopy channelDetails];
+  isFirstParty = [channelDetails isFirstParty];
 
   v10 = MEMORY[0x1E695DFF8];
-  v11 = [v7 punchoutUrls];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69E1708]];
+  punchoutUrls = [playableCopy punchoutUrls];
+  v12 = [punchoutUrls objectForKeyedSubscript:*MEMORY[0x1E69E1708]];
   v13 = [v10 URLWithString:v12];
 
-  v14 = [v7 channelDetails];
-  v15 = [v14 appBundleIDs];
-  v16 = [v15 firstObject];
+  channelDetails2 = [playableCopy channelDetails];
+  appBundleIDs = [channelDetails2 appBundleIDs];
+  firstObject = [appBundleIDs firstObject];
 
   if (v13)
   {
-    v17 = v9 == 0;
+    v17 = isFirstParty == 0;
   }
 
   else
@@ -919,27 +919,27 @@ LABEL_43:
   {
     v18 = [SearchUIUtilities bundleIdentifierForApp:18];
 
-    v19 = [v7 tvAppDeeplinkURL];
+    tvAppDeeplinkURL = [playableCopy tvAppDeeplinkURL];
 
-    v16 = v18;
-    v13 = v19;
+    firstObject = v18;
+    v13 = tvAppDeeplinkURL;
   }
 
   v20 = 0;
-  if (v6 && v13)
+  if (offerCopy && v13)
   {
-    v21 = [v6 sui_buttonTitle];
-    v22 = [v7 channelDetails];
-    v23 = [v22 sui_channelName];
-    v24 = [v6 sui_buttonSubtitleWithServiceName:v23];
+    sui_buttonTitle = [offerCopy sui_buttonTitle];
+    channelDetails3 = [playableCopy channelDetails];
+    sui_channelName = [channelDetails3 sui_channelName];
+    v24 = [offerCopy sui_buttonSubtitleWithServiceName:sui_channelName];
 
-    if (v21)
+    if (sui_buttonTitle)
     {
       v25 = objc_opt_new();
-      [v25 setBundleIdentifier:v16];
-      v20 = [a1 buttonWithTitle:v21 subtitle:v24 punchoutURL:v13 type:0 image:v25 storeIdentifier:0];
+      [v25 setBundleIdentifier:firstObject];
+      v20 = [self buttonWithTitle:sui_buttonTitle subtitle:v24 punchoutURL:v13 type:0 image:v25 storeIdentifier:0];
 
-      v24 = v21;
+      v24 = sui_buttonTitle;
     }
 
     else
@@ -951,29 +951,29 @@ LABEL_43:
   return v20;
 }
 
-+ (id)buttonForChannelOffer:(id)a3 channel:(id)a4 episode:(id)a5
++ (id)buttonForChannelOffer:(id)offer channel:(id)channel episode:(id)episode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 tvAppDeeplinkURL];
-  v11 = v10;
+  offerCopy = offer;
+  channelCopy = channel;
+  tvAppDeeplinkURL = [episode tvAppDeeplinkURL];
+  v11 = tvAppDeeplinkURL;
   v12 = 0;
-  if (v8 && v10)
+  if (offerCopy && tvAppDeeplinkURL)
   {
-    v13 = [v8 sui_buttonTitle];
-    v14 = [v9 details];
-    v15 = [v14 sui_channelName];
-    v16 = [v8 sui_buttonSubtitleWithServiceName:v15];
+    sui_buttonTitle = [offerCopy sui_buttonTitle];
+    details = [channelCopy details];
+    sui_channelName = [details sui_channelName];
+    v16 = [offerCopy sui_buttonSubtitleWithServiceName:sui_channelName];
 
-    if (v13)
+    if (sui_buttonTitle)
     {
       v17 = objc_opt_new();
       v18 = [SearchUIUtilities bundleIdentifierForApp:18];
       [v17 setBundleIdentifier:v18];
 
-      v12 = [a1 buttonWithTitle:v13 subtitle:v16 punchoutURL:v11 type:0 image:v17 storeIdentifier:0];
+      v12 = [self buttonWithTitle:sui_buttonTitle subtitle:v16 punchoutURL:v11 type:0 image:v17 storeIdentifier:0];
 
-      v16 = v13;
+      v16 = sui_buttonTitle;
     }
 
     else
@@ -985,44 +985,44 @@ LABEL_43:
   return v12;
 }
 
-+ (id)buttonWithTitle:(id)a3 subtitle:(id)a4 punchoutURL:(id)a5 type:(unint64_t)a6 image:(id)a7 storeIdentifier:(id)a8
++ (id)buttonWithTitle:(id)title subtitle:(id)subtitle punchoutURL:(id)l type:(unint64_t)type image:(id)image storeIdentifier:(id)identifier
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  identifierCopy = identifier;
+  imageCopy = image;
+  lCopy = l;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v18 = objc_opt_new();
-  [v18 setTitle:v17];
+  [v18 setTitle:titleCopy];
 
-  [v18 setSubtitle:v16];
-  [v18 setPunchoutURL:v15];
+  [v18 setSubtitle:subtitleCopy];
+  [v18 setPunchoutURL:lCopy];
 
-  [v18 setButtonType:a6];
-  [v18 setThumbnailImage:v14];
+  [v18 setButtonType:type];
+  [v18 setThumbnailImage:imageCopy];
 
-  [v18 setStoreIdentifier:v13];
+  [v18 setStoreIdentifier:identifierCopy];
 
   return v18;
 }
 
-+ (void)updateStatusIsInWatchList:(BOOL)a3 watchListItemWithIdentifier:(id)a4 completion:(id)a5
++ (void)updateStatusIsInWatchList:(BOOL)list watchListItemWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  listCopy = list;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__SearchUIWatchListUtilities_updateStatusIsInWatchList_watchListItemWithIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E85B2B48;
-  v17 = v6;
-  v9 = v7;
+  v17 = listCopy;
+  v9 = identifierCopy;
   v15 = v9;
-  v10 = v8;
+  v10 = completionCopy;
   v16 = v10;
   v11 = _Block_copy(aBlock);
   v12 = 0x1E69E14C0;
-  if (!v6)
+  if (!listCopy)
   {
     v12 = 0x1E69E15B0;
   }

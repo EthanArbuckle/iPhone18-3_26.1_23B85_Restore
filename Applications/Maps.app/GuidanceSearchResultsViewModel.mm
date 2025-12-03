@@ -1,16 +1,16 @@
 @interface GuidanceSearchResultsViewModel
-- (GuidanceSearchResultsViewModel)initWithDataProvider:(id)a3 navActionCoordinator:(id)a4 routeInfoProvider:(id)a5 mapItemDisplayer:(id)a6;
+- (GuidanceSearchResultsViewModel)initWithDataProvider:(id)provider navActionCoordinator:(id)coordinator routeInfoProvider:(id)infoProvider mapItemDisplayer:(id)displayer;
 - (GuidanceSearchResultsViewModelDelegate)delegate;
 - (NSString)subtitle;
 - (NSString)title;
 - (UIImage)headerImage;
-- (void)_handleResults:(id)a3 error:(id)a4;
+- (void)_handleResults:(id)results error:(id)error;
 - (void)cancelResultsView;
 - (void)clearSelection;
 - (void)dealloc;
 - (void)loadDataIfNeeded;
-- (void)navigateToItemAtIndex:(unint64_t)a3;
-- (void)selectMapItemAtIndex:(unint64_t)a3;
+- (void)navigateToItemAtIndex:(unint64_t)index;
+- (void)selectMapItemAtIndex:(unint64_t)index;
 @end
 
 @implementation GuidanceSearchResultsViewModel
@@ -22,52 +22,52 @@
   return WeakRetained;
 }
 
-- (void)_handleResults:(id)a3 error:(id)a4
+- (void)_handleResults:(id)results error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  resultsCopy = results;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = sub_100067540();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v21 = 138412290;
-      v22 = v7;
+      v22 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "SAR: Error received: %@", &v21, 0xCu);
     }
 
     [(GuidanceSearchResultsViewModel *)self setResults:0];
-    v9 = [(GuidanceSearchResultsViewModel *)self delegate];
-    v10 = v9;
-    v11 = self;
-    v12 = v7;
+    delegate = [(GuidanceSearchResultsViewModel *)self delegate];
+    mapItemDisplayer = delegate;
+    selfCopy2 = self;
+    v12 = errorCopy;
     goto LABEL_17;
   }
 
   if (![(GuidanceSearchResultsViewModel *)self isLoading])
   {
-    v13 = [v6 count];
-    if (v6 && v13)
+    v13 = [resultsCopy count];
+    if (resultsCopy && v13)
     {
-      [(GuidanceSearchResultsViewModel *)self setResults:v6];
-      if ([v6 count] == 1)
+      [(GuidanceSearchResultsViewModel *)self setResults:resultsCopy];
+      if ([resultsCopy count] == 1)
       {
         v14 = +[MNNavigationService sharedService];
-        v15 = [v14 navigationTransportType];
+        navigationTransportType = [v14 navigationTransportType];
 
-        if (v15 != 3)
+        if (navigationTransportType != 3)
         {
           v19 = sub_100067540();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [(GuidanceSearchResultsViewModel *)self results];
+            results = [(GuidanceSearchResultsViewModel *)self results];
             v21 = 138412290;
-            v22 = v20;
+            v22 = results;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "SAR: Received only one result, will open placecard directly. Result: %@", &v21, 0xCu);
           }
 
-          v10 = [(GuidanceSearchResultsViewModel *)self mapItemDisplayer];
-          [v10 displayMapItems:v6];
+          mapItemDisplayer = [(GuidanceSearchResultsViewModel *)self mapItemDisplayer];
+          [mapItemDisplayer displayMapItems:resultsCopy];
           goto LABEL_18;
         }
       }
@@ -76,12 +76,12 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         v21 = 134217984;
-        v22 = [v6 count];
+        v22 = [resultsCopy count];
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "SAR: showing %ld search results", &v21, 0xCu);
       }
 
-      v17 = [(GuidanceSearchResultsViewModel *)self mapItemDisplayer];
-      [v17 displayMapItems:v6];
+      mapItemDisplayer2 = [(GuidanceSearchResultsViewModel *)self mapItemDisplayer];
+      [mapItemDisplayer2 displayMapItems:resultsCopy];
     }
 
     else
@@ -90,52 +90,52 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v21 = 138412290;
-        v22 = v6;
+        v22 = resultsCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "SAR: Empty results received: %@", &v21, 0xCu);
       }
 
       [(GuidanceSearchResultsViewModel *)self setResults:0];
     }
 
-    v9 = [(GuidanceSearchResultsViewModel *)self delegate];
-    v10 = v9;
-    v11 = self;
+    delegate = [(GuidanceSearchResultsViewModel *)self delegate];
+    mapItemDisplayer = delegate;
+    selfCopy2 = self;
     v12 = 0;
 LABEL_17:
-    [v9 viewModelDidFinishLoading:v11 error:v12];
+    [delegate viewModelDidFinishLoading:selfCopy2 error:v12];
 LABEL_18:
   }
 }
 
-- (void)selectMapItemAtIndex:(unint64_t)a3
+- (void)selectMapItemAtIndex:(unint64_t)index
 {
-  v5 = [(GuidanceSearchResultsViewModel *)self results];
-  v6 = [v5 count];
+  results = [(GuidanceSearchResultsViewModel *)self results];
+  v6 = [results count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(GuidanceSearchResultsViewModel *)self results];
-    v9 = [v7 objectAtIndexedSubscript:a3];
+    results2 = [(GuidanceSearchResultsViewModel *)self results];
+    v9 = [results2 objectAtIndexedSubscript:index];
 
-    v8 = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
-    [v8 selectMapItem:v9 shouldRemoveResults:0];
+    navActionCoordinator = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
+    [navActionCoordinator selectMapItem:v9 shouldRemoveResults:0];
   }
 }
 
-- (void)navigateToItemAtIndex:(unint64_t)a3
+- (void)navigateToItemAtIndex:(unint64_t)index
 {
   [(GuidanceSearchResultsViewModel *)self loadDataIfNeeded];
-  v5 = [(GuidanceSearchResultsViewModel *)self results];
-  v6 = [v5 count];
+  results = [(GuidanceSearchResultsViewModel *)self results];
+  v6 = [results count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(GuidanceSearchResultsViewModel *)self results];
-    v9 = [v7 objectAtIndexedSubscript:a3];
+    results2 = [(GuidanceSearchResultsViewModel *)self results];
+    v9 = [results2 objectAtIndexedSubscript:index];
 
-    [SARAnalytics captureListStartDetourToMapItem:v9 index:a3];
-    v8 = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
-    [v8 detourToMapItem:v9];
+    [SARAnalytics captureListStartDetourToMapItem:v9 index:index];
+    navActionCoordinator = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
+    [navActionCoordinator detourToMapItem:v9];
 
     [(NavigationMapItemDisplaying *)self->_mapItemDisplayer removeMapItems];
   }
@@ -145,51 +145,51 @@ LABEL_18:
 {
   [(GuidanceSearchResultsViewModel *)self clearSelection];
   [(NavigationMapItemDisplaying *)self->_mapItemDisplayer removeMapItems];
-  v3 = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
-  [v3 dismissSearchAlongRoute];
+  navActionCoordinator = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
+  [navActionCoordinator dismissSearchAlongRoute];
 }
 
 - (void)clearSelection
 {
-  v2 = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
-  [v2 selectMapItem:0 shouldRemoveResults:1];
+  navActionCoordinator = [(GuidanceSearchResultsViewModel *)self navActionCoordinator];
+  [navActionCoordinator selectMapItem:0 shouldRemoveResults:1];
 }
 
 - (void)loadDataIfNeeded
 {
-  v26 = [(GuidanceSearchResultsViewModel *)self results];
-  if ([v26 count])
+  results = [(GuidanceSearchResultsViewModel *)self results];
+  if ([results count])
   {
-    v3 = v26;
+    v3 = results;
 LABEL_3:
 
     return;
   }
 
-  v4 = [(GuidanceSearchResultsViewModel *)self isLoading];
+  isLoading = [(GuidanceSearchResultsViewModel *)self isLoading];
 
-  if (v4)
+  if (isLoading)
   {
     return;
   }
 
   [(GuidanceSearchResultsViewModel *)self setLoading:1];
-  v5 = [(GuidanceSearchResultsViewModel *)self delegate];
+  delegate = [(GuidanceSearchResultsViewModel *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(GuidanceSearchResultsViewModel *)self delegate];
-    [v7 viewModelWillStartLoading:self];
+    delegate2 = [(GuidanceSearchResultsViewModel *)self delegate];
+    [delegate2 viewModelWillStartLoading:self];
   }
 
   v8 = +[MNNavigationService sharedService];
-  v9 = [v8 navigationTransportType];
-  if (v9 <= 2)
+  navigationTransportType = [v8 navigationTransportType];
+  if (navigationTransportType <= 2)
   {
-    if (v9 != 1)
+    if (navigationTransportType != 1)
     {
-      if (v9 == 2)
+      if (navigationTransportType == 2)
       {
         IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps182();
         goto LABEL_20;
@@ -201,9 +201,9 @@ LABEL_3:
     goto LABEL_15;
   }
 
-  if (v9 != 3)
+  if (navigationTransportType != 3)
   {
-    if (v9 != 6)
+    if (navigationTransportType != 6)
     {
 LABEL_16:
       IsEnabled_DrivingMultiWaypointRoutes = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
@@ -215,14 +215,14 @@ LABEL_16:
 
 LABEL_17:
       objc_initWeak(location, self);
-      v12 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-      v13 = [(GuidanceSearchResultsViewModel *)self routeInfoProvider];
+      dataProvider = [(GuidanceSearchResultsViewModel *)self dataProvider];
+      routeInfoProvider = [(GuidanceSearchResultsViewModel *)self routeInfoProvider];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100E5749C;
       v28[3] = &unk_10165F290;
       objc_copyWeak(&v29, location);
-      [v12 loadSearchResultsWithRouteInfo:v13 completion:v28];
+      [dataProvider loadSearchResultsWithRouteInfo:routeInfoProvider completion:v28];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(location);
@@ -244,23 +244,23 @@ LABEL_20:
   }
 
 LABEL_21:
-  v15 = [(GuidanceSearchResultsViewModel *)self dataProvider];
+  dataProvider2 = [(GuidanceSearchResultsViewModel *)self dataProvider];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-    v17 = [v16 hasValidSearchResults];
+    dataProvider3 = [(GuidanceSearchResultsViewModel *)self dataProvider];
+    hasValidSearchResults = [dataProvider3 hasValidSearchResults];
 
-    if (v17)
+    if (hasValidSearchResults)
     {
       objc_initWeak(location, self);
-      v18 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-      v19 = [(GuidanceSearchResultsViewModel *)self routeInfoProvider];
+      dataProvider4 = [(GuidanceSearchResultsViewModel *)self dataProvider];
+      routeInfoProvider2 = [(GuidanceSearchResultsViewModel *)self routeInfoProvider];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_100E57418;
       v30[3] = &unk_10165F290;
       objc_copyWeak(&v31, location);
-      [v18 loadSearchResultsWithRouteInfo:v19 completion:v30];
+      [dataProvider4 loadSearchResultsWithRouteInfo:routeInfoProvider2 completion:v30];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(location);
@@ -272,25 +272,25 @@ LABEL_21:
   {
   }
 
-  v20 = [(GuidanceSearchResultsViewModel *)self dataProvider];
+  dataProvider5 = [(GuidanceSearchResultsViewModel *)self dataProvider];
   v21 = objc_opt_respondsToSelector();
 
   if (v21)
   {
-    v27 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-    v22 = [v27 error];
-    [(GuidanceSearchResultsViewModel *)self _handleResults:&__NSArray0__struct error:v22];
+    dataProvider6 = [(GuidanceSearchResultsViewModel *)self dataProvider];
+    error = [dataProvider6 error];
+    [(GuidanceSearchResultsViewModel *)self _handleResults:&__NSArray0__struct error:error];
 
-    v3 = v27;
+    v3 = dataProvider6;
     goto LABEL_3;
   }
 
   v23 = sub_100067540();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [(GuidanceSearchResultsViewModel *)self dataProvider];
+    dataProvider7 = [(GuidanceSearchResultsViewModel *)self dataProvider];
     LODWORD(location[0]) = 138412290;
-    *(location + 4) = v24;
+    *(location + 4) = dataProvider7;
   }
 
   v25 = [NSError errorWithDomain:@"SAR_Results" code:0 userInfo:0];
@@ -307,10 +307,10 @@ LABEL_21:
 
   else
   {
-    v5 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-    v6 = [v5 styleAttributes];
+    dataProvider = [(GuidanceSearchResultsViewModel *)self dataProvider];
+    styleAttributes = [dataProvider styleAttributes];
 
-    if (!v6 || (-[GuidanceSearchResultsViewModel dataProvider](self, "dataProvider"), v7 = objc_claimAutoreleasedReturnValue(), [v7 styleAttributes], v8 = objc_claimAutoreleasedReturnValue(), +[UIScreen mainScreen](UIScreen, "mainScreen"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "nativeScale"), +[MKIconManager imageForStyle:size:forScale:format:](MKIconManager, "imageForStyle:size:forScale:format:", v8, 4, 1), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v10))
+    if (!styleAttributes || (-[GuidanceSearchResultsViewModel dataProvider](self, "dataProvider"), v7 = objc_claimAutoreleasedReturnValue(), [v7 styleAttributes], v8 = objc_claimAutoreleasedReturnValue(), +[UIScreen mainScreen](UIScreen, "mainScreen"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "nativeScale"), +[MKIconManager imageForStyle:size:forScale:format:](MKIconManager, "imageForStyle:size:forScale:format:", v8, 4, 1), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v10))
     {
       v10 = [UIImage imageNamed:@"search"];
     }
@@ -329,15 +329,15 @@ LABEL_21:
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[Results] subtitle" value:@"localized string not found" table:0];
-  v5 = [(GuidanceSearchResultsViewModel *)self results];
-  v6 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v4, [v5 count]);
+  results = [(GuidanceSearchResultsViewModel *)self results];
+  v6 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v4, [results count]);
 
-  v7 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-  v8 = [v7 subtitle];
-  v9 = v8;
-  if (v8)
+  dataProvider = [(GuidanceSearchResultsViewModel *)self dataProvider];
+  subtitle = [dataProvider subtitle];
+  v9 = subtitle;
+  if (subtitle)
   {
-    v10 = v8;
+    v10 = subtitle;
   }
 
   else
@@ -349,14 +349,14 @@ LABEL_21:
 
   if ([v11 containsString:@"%[destination]"])
   {
-    v12 = [(NavActionCoordination *)self->_navActionCoordinator appCoordinator];
-    v13 = [v12 platformController];
-    v14 = [v13 currentSession];
+    appCoordinator = [(NavActionCoordination *)self->_navActionCoordinator appCoordinator];
+    platformController = [appCoordinator platformController];
+    currentSession = [platformController currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = currentSession;
     }
 
     else
@@ -366,11 +366,11 @@ LABEL_21:
 
     v16 = v15;
 
-    v17 = [v16 currentDestinationString];
+    currentDestinationString = [v16 currentDestinationString];
 
-    if (v17)
+    if (currentDestinationString)
     {
-      v18 = [v11 stringByReplacingOccurrencesOfString:@"%[destination]" withString:v17];
+      v18 = [v11 stringByReplacingOccurrencesOfString:@"%[destination]" withString:currentDestinationString];
     }
 
     else
@@ -391,23 +391,23 @@ LABEL_21:
 
 - (NSString)title
 {
-  v3 = [(GuidanceSearchResultsViewModel *)self dataProvider];
-  v4 = [v3 title];
+  dataProvider = [(GuidanceSearchResultsViewModel *)self dataProvider];
+  title = [dataProvider title];
 
-  v5 = [(GuidanceSearchResultsViewModel *)self results];
-  v6 = [v5 count];
+  results = [(GuidanceSearchResultsViewModel *)self results];
+  v6 = [results count];
 
-  if (![v4 length] && v6)
+  if (![title length] && v6)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"NAV_SAR_RESULT_TITLE" value:@"localized string not found" table:0];
 
     v9 = [NSString localizedStringWithFormat:v8, v6];
 
-    v4 = v9;
+    title = v9;
   }
 
-  return v4;
+  return title;
 }
 
 - (void)dealloc
@@ -419,22 +419,22 @@ LABEL_21:
   [(GuidanceSearchResultsViewModel *)&v3 dealloc];
 }
 
-- (GuidanceSearchResultsViewModel)initWithDataProvider:(id)a3 navActionCoordinator:(id)a4 routeInfoProvider:(id)a5 mapItemDisplayer:(id)a6
+- (GuidanceSearchResultsViewModel)initWithDataProvider:(id)provider navActionCoordinator:(id)coordinator routeInfoProvider:(id)infoProvider mapItemDisplayer:(id)displayer
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  coordinatorCopy = coordinator;
+  infoProviderCopy = infoProvider;
+  displayerCopy = displayer;
   v18.receiver = self;
   v18.super_class = GuidanceSearchResultsViewModel;
   v15 = [(GuidanceSearchResultsViewModel *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_dataProvider, a3);
-    objc_storeStrong(&v16->_navActionCoordinator, a4);
-    objc_storeStrong(&v16->_routeInfoProvider, a5);
-    objc_storeStrong(&v16->_mapItemDisplayer, a6);
+    objc_storeStrong(&v15->_dataProvider, provider);
+    objc_storeStrong(&v16->_navActionCoordinator, coordinator);
+    objc_storeStrong(&v16->_routeInfoProvider, infoProvider);
+    objc_storeStrong(&v16->_mapItemDisplayer, displayer);
   }
 
   return v16;

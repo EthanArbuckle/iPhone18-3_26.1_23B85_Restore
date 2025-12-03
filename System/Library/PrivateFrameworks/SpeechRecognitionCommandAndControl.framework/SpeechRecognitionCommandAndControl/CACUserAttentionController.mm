@@ -1,49 +1,49 @@
 @interface CACUserAttentionController
-- (BOOL)_detectionStartedForType:(unint64_t)a3;
-- (BOOL)_restartFaceAttentionAwarenessClient:(id *)a3;
-- (BOOL)_startFaceAttentionAwarenessClient:(id *)a3;
-- (BOOL)_startTouchAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopFaceAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopTouchAttentionAwarenessClient:(id *)a3;
-- (BOOL)startIfNeededForTypes:(unint64_t)a3 error:(id *)a4;
-- (BOOL)stopIfNeededForTypes:(unint64_t)a3 error:(id *)a4;
-- (CACUserAttentionController)initWithSamplingInterval:(double)a3 attentionLossTimeout:(double)a4 supportedAttentionAwarenessEvents:(unint64_t)a5 deviceSupportsRaiseGestureDetection:(BOOL)a6;
-- (CACUserAttentionController)initWithSignalProviderFactory:(id)a3 supportedAttentionAwarenessEvents:(unint64_t)a4 deviceSupportsRaiseGestureDetection:(BOOL)a5;
+- (BOOL)_detectionStartedForType:(unint64_t)type;
+- (BOOL)_restartFaceAttentionAwarenessClient:(id *)client;
+- (BOOL)_startFaceAttentionAwarenessClient:(id *)client;
+- (BOOL)_startTouchAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopFaceAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopTouchAttentionAwarenessClient:(id *)client;
+- (BOOL)startIfNeededForTypes:(unint64_t)types error:(id *)error;
+- (BOOL)stopIfNeededForTypes:(unint64_t)types error:(id *)error;
+- (CACUserAttentionController)initWithSamplingInterval:(double)interval attentionLossTimeout:(double)timeout supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection;
+- (CACUserAttentionController)initWithSignalProviderFactory:(id)factory supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection;
 - (CACUserAttentionControllerDelegate)delegate;
-- (void)_handleFaceAttentionEvent:(id)a3;
-- (void)_handleFaceInterruptNotification:(unint64_t)a3;
-- (void)_handleTouchAttentionEvent:(id)a3;
-- (void)_setDetectionStarted:(BOOL)a3 forType:(unint64_t)a4;
+- (void)_handleFaceAttentionEvent:(id)event;
+- (void)_handleFaceInterruptNotification:(unint64_t)notification;
+- (void)_handleTouchAttentionEvent:(id)event;
+- (void)_setDetectionStarted:(BOOL)started forType:(unint64_t)type;
 - (void)_startWakeGestureManagerIfNeeded;
 - (void)_stopWakeGestureManagerIfNeeded;
 - (void)dealloc;
-- (void)startIfNeededForTypes:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4;
+- (void)startIfNeededForTypes:(unint64_t)types completionQueue:(id)queue completion:(id)completion;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture;
 @end
 
 @implementation CACUserAttentionController
 
-- (CACUserAttentionController)initWithSamplingInterval:(double)a3 attentionLossTimeout:(double)a4 supportedAttentionAwarenessEvents:(unint64_t)a5 deviceSupportsRaiseGestureDetection:(BOOL)a6
+- (CACUserAttentionController)initWithSamplingInterval:(double)interval attentionLossTimeout:(double)timeout supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection
 {
-  v6 = a6;
-  v9 = [[CACUserAttentionSignalProviderFactory alloc] initWithSamplingInterval:a5 attentionLossTimeout:a3 supportedAttentionAwarenessEvents:a4];
-  v10 = [(CACUserAttentionController *)self initWithSignalProviderFactory:v9 supportedAttentionAwarenessEvents:a5 deviceSupportsRaiseGestureDetection:v6];
+  detectionCopy = detection;
+  v9 = [[CACUserAttentionSignalProviderFactory alloc] initWithSamplingInterval:events attentionLossTimeout:interval supportedAttentionAwarenessEvents:timeout];
+  v10 = [(CACUserAttentionController *)self initWithSignalProviderFactory:v9 supportedAttentionAwarenessEvents:events deviceSupportsRaiseGestureDetection:detectionCopy];
 
   return v10;
 }
 
-- (CACUserAttentionController)initWithSignalProviderFactory:(id)a3 supportedAttentionAwarenessEvents:(unint64_t)a4 deviceSupportsRaiseGestureDetection:(BOOL)a5
+- (CACUserAttentionController)initWithSignalProviderFactory:(id)factory supportedAttentionAwarenessEvents:(unint64_t)events deviceSupportsRaiseGestureDetection:(BOOL)detection
 {
-  v9 = a3;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = CACUserAttentionController;
   v10 = [(CACUserAttentionController *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_userAttentionSignalProviderFactory, a3);
-    v11->_supportedAttentionAwarenessEvents = a4;
-    v11->_deviceSupportsRaiseGestureDetection = a5;
+    objc_storeStrong(&v10->_userAttentionSignalProviderFactory, factory);
+    v11->_supportedAttentionAwarenessEvents = events;
+    v11->_deviceSupportsRaiseGestureDetection = detection;
     v11->_deviceLowered = 0;
     v12 = dispatch_queue_create("com.apple.SpeechRecognitionCore.AttentionAwarenessQueue", 0);
     attentionAwarenessHandlerQueue = v11->_attentionAwarenessHandlerQueue;
@@ -72,12 +72,12 @@
   [(CACUserAttentionController *)&v12 dealloc];
 }
 
-- (BOOL)startIfNeededForTypes:(unint64_t)a3 error:(id *)a4
+- (BOOL)startIfNeededForTypes:(unint64_t)types error:(id *)error
 {
-  v5 = a3;
-  if ((a3 & 1) != 0 && ![(CACUserAttentionController *)self _detectionStartedForType:1])
+  typesCopy = types;
+  if ((types & 1) != 0 && ![(CACUserAttentionController *)self _detectionStartedForType:1])
   {
-    if (![(CACUserAttentionController *)self _startFaceAttentionAwarenessClient:a4])
+    if (![(CACUserAttentionController *)self _startFaceAttentionAwarenessClient:error])
     {
       return 0;
     }
@@ -85,9 +85,9 @@
     [(CACUserAttentionController *)self _setDetectionStarted:1 forType:1];
   }
 
-  if ((v5 & 2) != 0 && ![(CACUserAttentionController *)self _detectionStartedForType:2])
+  if ((typesCopy & 2) != 0 && ![(CACUserAttentionController *)self _detectionStartedForType:2])
   {
-    if ([(CACUserAttentionController *)self _startTouchAttentionAwarenessClient:a4])
+    if ([(CACUserAttentionController *)self _startTouchAttentionAwarenessClient:error])
     {
       [(CACUserAttentionController *)self _setDetectionStarted:1 forType:2];
       goto LABEL_9;
@@ -97,7 +97,7 @@
   }
 
 LABEL_9:
-  if ((v5 & 4) == 0 || [(CACUserAttentionController *)self _detectionStartedForType:4])
+  if ((typesCopy & 4) == 0 || [(CACUserAttentionController *)self _detectionStartedForType:4])
   {
     return 1;
   }
@@ -108,12 +108,12 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)stopIfNeededForTypes:(unint64_t)a3 error:(id *)a4
+- (BOOL)stopIfNeededForTypes:(unint64_t)types error:(id *)error
 {
-  v5 = a3;
-  if ((a3 & 1) != 0 && [(CACUserAttentionController *)self _detectionStartedForType:1])
+  typesCopy = types;
+  if ((types & 1) != 0 && [(CACUserAttentionController *)self _detectionStartedForType:1])
   {
-    v7 = [(CACUserAttentionController *)self _stopFaceAttentionAwarenessClient:a4];
+    v7 = [(CACUserAttentionController *)self _stopFaceAttentionAwarenessClient:error];
     if (!v7)
     {
       return v7;
@@ -122,9 +122,9 @@ LABEL_9:
     [(CACUserAttentionController *)self _setDetectionStarted:0 forType:1];
   }
 
-  if ((v5 & 2) != 0 && [(CACUserAttentionController *)self _detectionStartedForType:2])
+  if ((typesCopy & 2) != 0 && [(CACUserAttentionController *)self _detectionStartedForType:2])
   {
-    v7 = [(CACUserAttentionController *)self _stopTouchAttentionAwarenessClient:a4];
+    v7 = [(CACUserAttentionController *)self _stopTouchAttentionAwarenessClient:error];
     if (!v7)
     {
       return v7;
@@ -133,7 +133,7 @@ LABEL_9:
     [(CACUserAttentionController *)self _setDetectionStarted:0 forType:2];
   }
 
-  if ((v5 & 4) != 0 && [(CACUserAttentionController *)self _detectionStartedForType:4])
+  if ((typesCopy & 4) != 0 && [(CACUserAttentionController *)self _detectionStartedForType:4])
   {
     [(CACUserAttentionController *)self _stopWakeGestureManagerIfNeeded];
     [(CACUserAttentionController *)self _setDetectionStarted:0 forType:4];
@@ -143,11 +143,11 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_startFaceAttentionAwarenessClient:(id *)a3
+- (BOOL)_startFaceAttentionAwarenessClient:(id *)client
 {
-  v5 = [(CACUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory faceAttentionAwarenessClient];
+  faceAttentionAwarenessClient = [(CACUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory faceAttentionAwarenessClient];
   faceAttentionAwarenessClient = self->_faceAttentionAwarenessClient;
-  self->_faceAttentionAwarenessClient = v5;
+  self->_faceAttentionAwarenessClient = faceAttentionAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_faceAttentionAwarenessClient;
@@ -168,11 +168,11 @@ LABEL_9:
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v9 setNotificationHandlerWithQueue:v10 block:v13];
 
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient resumeWithError:a3];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient resumeWithError:client];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
 void __65__CACUserAttentionController__startFaceAttentionAwarenessClient___block_invoke(uint64_t a1, void *a2)
@@ -188,11 +188,11 @@ void __65__CACUserAttentionController__startFaceAttentionAwarenessClient___block
   [WeakRetained _handleFaceInterruptNotification:a2];
 }
 
-- (BOOL)_startTouchAttentionAwarenessClient:(id *)a3
+- (BOOL)_startTouchAttentionAwarenessClient:(id *)client
 {
-  v5 = [(CACUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory touchAttentionAwarenessClient];
+  touchAttentionAwarenessClient = [(CACUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory touchAttentionAwarenessClient];
   touchAttentionAwarenessClient = self->_touchAttentionAwarenessClient;
-  self->_touchAttentionAwarenessClient = v5;
+  self->_touchAttentionAwarenessClient = touchAttentionAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_touchAttentionAwarenessClient;
@@ -203,10 +203,10 @@ void __65__CACUserAttentionController__startFaceAttentionAwarenessClient___block
   v13 = &unk_279CEC0C0;
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v7 setEventHandlerWithQueue:attentionAwarenessHandlerQueue block:&v10];
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient resumeWithError:a3, v10, v11, v12, v13];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient resumeWithError:client, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
 void __66__CACUserAttentionController__startTouchAttentionAwarenessClient___block_invoke(uint64_t a1, void *a2)
@@ -216,43 +216,43 @@ void __66__CACUserAttentionController__startTouchAttentionAwarenessClient___bloc
   [WeakRetained _handleTouchAttentionEvent:v3];
 }
 
-- (BOOL)_stopFaceAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopFaceAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_faceAttentionAwarenessClient invalidateWithError:client];
   faceAttentionAwarenessClient = self->_faceAttentionAwarenessClient;
   self->_faceAttentionAwarenessClient = 0;
 
   return v4;
 }
 
-- (BOOL)_stopTouchAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopTouchAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient invalidateWithError:client];
   touchAttentionAwarenessClient = self->_touchAttentionAwarenessClient;
   self->_touchAttentionAwarenessClient = 0;
 
   return v4;
 }
 
-- (BOOL)_restartFaceAttentionAwarenessClient:(id *)a3
+- (BOOL)_restartFaceAttentionAwarenessClient:(id *)client
 {
   if ([(CACUserAttentionController *)self _detectionStartedForType:1])
   {
     faceAttentionAwarenessClient = self->_faceAttentionAwarenessClient;
 
-    return [(AWAttentionAwarenessClient *)faceAttentionAwarenessClient resetAttentionLostTimeoutWithError:a3];
+    return [(AWAttentionAwarenessClient *)faceAttentionAwarenessClient resetAttentionLostTimeoutWithError:client];
   }
 
   else
   {
 
-    return [(CACUserAttentionController *)self startIfNeededForTypes:1 error:a3];
+    return [(CACUserAttentionController *)self startIfNeededForTypes:1 error:client];
   }
 }
 
-- (void)_handleFaceAttentionEvent:(id)a3
+- (void)_handleFaceAttentionEvent:(id)event
 {
-  v4 = [a3 eventMask];
+  eventMask = [event eventMask];
   if ([(CACUserAttentionController *)self _isDeviceLowered])
   {
     v5 = 0;
@@ -263,18 +263,18 @@ void __66__CACUserAttentionController__startTouchAttentionAwarenessClient___bloc
   {
     v7 = 1;
     v8 = 3;
-    if ((v4 & 8) == 0)
+    if ((eventMask & 8) == 0)
     {
-      v8 = (v4 >> 7) & 4;
+      v8 = (eventMask >> 7) & 4;
     }
 
-    if ((v4 & 0x80) == 0)
+    if ((eventMask & 0x80) == 0)
     {
       v7 = v8;
     }
 
-    v9 = (v4 & 1) == 0;
-    if (v4)
+    v9 = (eventMask & 1) == 0;
+    if (eventMask)
     {
       v5 = 0;
     }
@@ -324,37 +324,37 @@ void __56__CACUserAttentionController__handleFaceAttentionEvent___block_invoke(u
   }
 }
 
-- (void)_handleFaceInterruptNotification:(unint64_t)a3
+- (void)_handleFaceInterruptNotification:(unint64_t)notification
 {
-  if (a3 == 2)
+  if (notification == 2)
   {
-    v4 = [(CACUserAttentionController *)self delegate];
-    [v4 userAttentionControllerAttentionAwarenessInterruptionEnded:self];
+    delegate = [(CACUserAttentionController *)self delegate];
+    [delegate userAttentionControllerAttentionAwarenessInterruptionEnded:self];
   }
 
   else
   {
-    if (a3 != 1)
+    if (notification != 1)
     {
       return;
     }
 
-    v4 = [(CACUserAttentionController *)self delegate];
-    [v4 userAttentionControllerAttentionAwarenessInterrupted:self];
+    delegate = [(CACUserAttentionController *)self delegate];
+    [delegate userAttentionControllerAttentionAwarenessInterrupted:self];
   }
 }
 
-- (void)_handleTouchAttentionEvent:(id)a3
+- (void)_handleTouchAttentionEvent:(id)event
 {
-  v4 = [a3 eventMask];
-  if ((v4 & 8) != 0)
+  eventMask = [event eventMask];
+  if ((eventMask & 8) != 0)
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = (v4 >> 7) & 4;
+    v5 = (eventMask >> 7) & 4;
   }
 
   objc_initWeak(&location, self);
@@ -398,9 +398,9 @@ void __57__CACUserAttentionController__handleTouchAttentionEvent___block_invoke(
 {
   if (![(CACUserAttentionController *)self _deviceSupportsFaceDetection]&& self->_deviceSupportsRaiseGestureDetection)
   {
-    v3 = [(CACUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory wakeGestureManager];
+    wakeGestureManager = [(CACUserAttentionSignalProviderFactory *)self->_userAttentionSignalProviderFactory wakeGestureManager];
     wakeGestureManager = self->_wakeGestureManager;
-    self->_wakeGestureManager = v3;
+    self->_wakeGestureManager = wakeGestureManager;
 
     [(CMWakeGestureManager *)self->_wakeGestureManager setDelegate:self];
     v5 = self->_wakeGestureManager;
@@ -420,14 +420,14 @@ void __57__CACUserAttentionController__handleTouchAttentionEvent___block_invoke(
   }
 }
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__CACUserAttentionController_wakeGestureManager_didUpdateWakeGesture___block_invoke;
   block[3] = &unk_279CEC138;
-  v6[1] = a4;
+  v6[1] = gesture;
   objc_copyWeak(v6, &location);
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v6);
@@ -492,36 +492,36 @@ LABEL_11:
 LABEL_13:
 }
 
-- (BOOL)_detectionStartedForType:(unint64_t)a3
+- (BOOL)_detectionStartedForType:(unint64_t)type
 {
   attentionDetectionStatuses = self->_attentionDetectionStatuses;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v5 = [(NSMutableDictionary *)attentionDetectionStatuses objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)_setDetectionStarted:(BOOL)a3 forType:(unint64_t)a4
+- (void)_setDetectionStarted:(BOOL)started forType:(unint64_t)type
 {
-  v5 = a3;
+  startedCopy = started;
   attentionDetectionStatuses = self->_attentionDetectionStatuses;
   if (attentionDetectionStatuses)
   {
-    v8 = attentionDetectionStatuses;
+    dictionary = attentionDetectionStatuses;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v9 = self->_attentionDetectionStatuses;
-  self->_attentionDetectionStatuses = v8;
+  self->_attentionDetectionStatuses = dictionary;
 
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:startedCopy];
   v10 = self->_attentionDetectionStatuses;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)v10 setObject:v12 forKeyedSubscript:v11];
 }
 
@@ -532,12 +532,12 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)startIfNeededForTypes:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)startIfNeededForTypes:(unint64_t)types completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (queueCopy && completionCopy)
   {
     if (!self->_asynchronousCallQueue)
     {
@@ -553,8 +553,8 @@ LABEL_13:
     block[2] = __100__CACUserAttentionController_AsynchronousMethods__startIfNeededForTypes_completionQueue_completion___block_invoke;
     block[3] = &unk_279CEC188;
     objc_copyWeak(v17, &location);
-    v17[1] = a3;
-    v15 = v8;
+    v17[1] = types;
+    v15 = queueCopy;
     v16 = v10;
     dispatch_async(v13, block);
 

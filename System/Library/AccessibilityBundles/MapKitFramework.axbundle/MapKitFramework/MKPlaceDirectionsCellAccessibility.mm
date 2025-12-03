@@ -1,23 +1,23 @@
 @interface MKPlaceDirectionsCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axSpokenStringForDuration:(double)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axSpokenStringForDuration:(double)duration;
 - (void)_axUpdateElements;
-- (void)updateETAFor:(unint64_t)a3 button:(id)a4 label:(id)a5;
+- (void)updateETAFor:(unint64_t)for button:(id)button label:(id)label;
 @end
 
 @implementation MKPlaceDirectionsCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKPlaceDirectionsCell" hasInstanceMethod:@"updateETAFor: button: label:" withFullSignature:{"v", "Q", "@", "@", 0}];
-  [v3 validateClass:@"_MKRouteETA" hasInstanceMethod:@"travelTime" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"_MKQuickRouteManager" hasInstanceMethod:@"routeETAForTransportType:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_quickRouteManager" withType:"_MKQuickRouteManager"];
-  [v3 validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_directionsButton" withType:"UIButton"];
-  [v3 validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_walkButton" withType:"UIButton"];
-  [v3 validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_transitButton" withType:"UIButton"];
-  [v3 validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_driveButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKPlaceDirectionsCell" hasInstanceMethod:@"updateETAFor: button: label:" withFullSignature:{"v", "Q", "@", "@", 0}];
+  [validationsCopy validateClass:@"_MKRouteETA" hasInstanceMethod:@"travelTime" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"_MKQuickRouteManager" hasInstanceMethod:@"routeETAForTransportType:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_quickRouteManager" withType:"_MKQuickRouteManager"];
+  [validationsCopy validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_directionsButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_walkButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_transitButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MKPlaceDirectionsCell" hasInstanceVariable:@"_driveButton" withType:"UIButton"];
 }
 
 - (void)_axUpdateElements
@@ -46,7 +46,7 @@
   [(MKPlaceDirectionsCellAccessibility *)self setAccessibilityElements:v7];
 }
 
-- (id)_axSpokenStringForDuration:(double)a3
+- (id)_axSpokenStringForDuration:(double)duration
 {
   MNGetHoursAndMinutesForTimeInterval();
   v3 = objc_alloc_init(MEMORY[0x29EDB8DB8]);
@@ -57,16 +57,16 @@
   return v4;
 }
 
-- (void)updateETAFor:(unint64_t)a3 button:(id)a4 label:(id)a5
+- (void)updateETAFor:(unint64_t)for button:(id)button label:(id)label
 {
-  v8 = a4;
-  v9 = a5;
+  buttonCopy = button;
+  labelCopy = label;
   v22.receiver = self;
   v22.super_class = MKPlaceDirectionsCellAccessibility;
-  [(MKPlaceDirectionsCellAccessibility *)&v22 updateETAFor:a3 button:v8 label:v9];
-  if (([v8 isHidden] & 1) == 0)
+  [(MKPlaceDirectionsCellAccessibility *)&v22 updateETAFor:for button:buttonCopy label:labelCopy];
+  if (([buttonCopy isHidden] & 1) == 0)
   {
-    switch(a3)
+    switch(for)
     {
       case 4uLL:
         v10 = @"TRANSIT_TIME_FORMAT";
@@ -90,15 +90,15 @@ LABEL_10:
     v20 = 0x2020000000;
     v21 = 0;
     v16 = MEMORY[0x29EDCA5F8];
-    v17 = a3;
+    forCopy = for;
     AXPerformSafeBlock();
     v12 = v19[3];
     _Block_object_dispose(&v18, 8);
     v13 = MEMORY[0x29EDBA0F8];
     v14 = [(MKPlaceDirectionsCellAccessibility *)self _axSpokenStringForDuration:v12];
-    v15 = [v13 localizedStringWithFormat:v11, v14, v16, 3221225472, __64__MKPlaceDirectionsCellAccessibility_updateETAFor_button_label___block_invoke, &unk_29F2CB208, self, &v18, v17];
+    forCopy = [v13 localizedStringWithFormat:v11, v14, v16, 3221225472, __64__MKPlaceDirectionsCellAccessibility_updateETAFor_button_label___block_invoke, &unk_29F2CB208, self, &v18, forCopy];
 
-    [v8 setAccessibilityLabel:v15];
+    [buttonCopy setAccessibilityLabel:forCopy];
   }
 
   [(MKPlaceDirectionsCellAccessibility *)self _axUpdateElements];

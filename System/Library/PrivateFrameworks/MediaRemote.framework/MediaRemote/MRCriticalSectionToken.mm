@@ -27,8 +27,8 @@
 {
   if (![(MRCriticalSectionToken *)self invalidated])
   {
-    v3 = [(MRCriticalSectionToken *)self requestID];
-    v4 = [v3 copy];
+    requestID = [(MRCriticalSectionToken *)self requestID];
+    v4 = [requestID copy];
 
     [MRCriticalSectionCoordinator exitCriticalSectionUsingRequestID:v4];
   }
@@ -41,9 +41,9 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MRCriticalSectionToken *)self requestID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringWithFormat:@"requestID: %@", v4];
+  requestID = [(MRCriticalSectionToken *)self requestID];
+  uUIDString = [requestID UUIDString];
+  v5 = [v2 stringWithFormat:@"requestID: %@", uUIDString];
 
   return v5;
 }

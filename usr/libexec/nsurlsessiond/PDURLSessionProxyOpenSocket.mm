@@ -1,23 +1,23 @@
 @interface PDURLSessionProxyOpenSocket
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyOpenSocket
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   session = self->_session;
-  v6 = *(v4 + 3);
-  v7 = v4;
+  v6 = *(fromCopy + 3);
+  v7 = fromCopy;
   if (session)
   {
     if (!v6)
@@ -38,23 +38,23 @@
     [(PDURLSessionProxyOpenSocket *)self setSession:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDURLSessionProxyOpenSocket *)self setSocketUUID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDURLSessionProxyOpenSocket *)self setHost:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_port = *(v4 + 4);
+    self->_port = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }
@@ -77,16 +77,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   session = self->_session;
-  if (session | *(v4 + 3))
+  if (session | *(equalCopy + 3))
   {
     if (![(PDURLSessionProxySessionMessage *)session isEqual:?])
     {
@@ -95,7 +95,7 @@ LABEL_7:
   }
 
   socketUUID = self->_socketUUID;
-  if (socketUUID | *(v4 + 4))
+  if (socketUUID | *(equalCopy + 4))
   {
     if (![(NSString *)socketUUID isEqual:?])
     {
@@ -104,7 +104,7 @@ LABEL_7:
   }
 
   host = self->_host;
-  if (host | *(v4 + 1))
+  if (host | *(equalCopy + 1))
   {
     if (![(NSString *)host isEqual:?])
     {
@@ -112,10 +112,10 @@ LABEL_7:
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_port == *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_port == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -130,18 +130,18 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxySessionMessage *)self->_session copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_socketUUID copyWithZone:a3];
+  v8 = [(NSString *)self->_socketUUID copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_host copyWithZone:a3];
+  v10 = [(NSString *)self->_host copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
@@ -154,75 +154,75 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_session)
   {
-    [v4 setSession:?];
-    v4 = v5;
+    [toCopy setSession:?];
+    toCopy = v5;
   }
 
   if (self->_socketUUID)
   {
     [v5 setSocketUUID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_host)
   {
     [v5 setHost:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_port;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 4) = self->_port;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_session)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_socketUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_host)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     port = self->_port;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -231,18 +231,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v28[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v28 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v28 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v28[0] & 0x7F) << v6;
@@ -260,11 +260,11 @@ LABEL_13:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -299,7 +299,7 @@ LABEL_32:
       objc_storeStrong(&self->_session, v24);
       v28[0] = 0;
       v28[1] = 0;
-      if (!PBReaderPlaceMark() || !sub_100077B9C(v24, a3))
+      if (!PBReaderPlaceMark() || !sub_100077B9C(v24, from))
       {
 
         return 0;
@@ -308,10 +308,10 @@ LABEL_32:
       PBReaderRecallMark();
 
 LABEL_43:
-      v26 = [a3 position];
-      if (v26 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -331,18 +331,18 @@ LABEL_43:
       while (1)
       {
         LOBYTE(v28[0]) = 0;
-        v20 = [a3 position] + 1;
-        if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+        v20 = [from position] + 1;
+        if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
         {
-          v22 = [a3 data];
-          [v22 getBytes:v28 range:{objc_msgSend(a3, "position"), 1}];
+          data2 = [from data];
+          [data2 getBytes:v28 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v19 |= (v28[0] & 0x7F) << v17;
@@ -360,7 +360,7 @@ LABEL_43:
         }
       }
 
-      if ([a3 hasError])
+      if ([from hasError])
       {
         v23 = 0;
       }
@@ -378,7 +378,7 @@ LABEL_42:
     goto LABEL_32;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -387,8 +387,8 @@ LABEL_42:
   session = self->_session;
   if (session)
   {
-    v5 = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"session"];
+    dictionaryRepresentation = [(PDURLSessionProxySessionMessage *)session dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"session"];
   }
 
   socketUUID = self->_socketUUID;
@@ -417,8 +417,8 @@ LABEL_42:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyOpenSocket;
   v3 = [(PDURLSessionProxyOpenSocket *)&v7 description];
-  v4 = [(PDURLSessionProxyOpenSocket *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyOpenSocket *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

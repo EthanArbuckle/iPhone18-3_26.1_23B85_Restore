@@ -1,50 +1,50 @@
 @interface _HKWorkoutBuilderSampleQueryConfiguration
-- (_HKWorkoutBuilderSampleQueryConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_HKWorkoutBuilderSampleQueryConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKWorkoutBuilderSampleQueryConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _HKWorkoutBuilderSampleQueryConfiguration;
-  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:zone];
   [v4 setNeedsHistoricalData:self->_needsHistoricalData];
   [v4 setWorkoutBuilderIdentifier:self->_workoutBuilderIdentifier];
   [v4 setDeliverQuantities:self->_deliverQuantities];
   return v4;
 }
 
-- (_HKWorkoutBuilderSampleQueryConfiguration)initWithCoder:(id)a3
+- (_HKWorkoutBuilderSampleQueryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HKWorkoutBuilderSampleQueryConfiguration;
-  v5 = [(HKQueryServerConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(HKQueryServerConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_needsHistoricalData = [v4 decodeBoolForKey:@"needs_historical"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"builder_identifier"];
+    v5->_needsHistoricalData = [coderCopy decodeBoolForKey:@"needs_historical"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"builder_identifier"];
     workoutBuilderIdentifier = v5->_workoutBuilderIdentifier;
     v5->_workoutBuilderIdentifier = v6;
 
-    v5->_deliverQuantities = [v4 decodeBoolForKey:@"deliver_quantities"];
+    v5->_deliverQuantities = [coderCopy decodeBoolForKey:@"deliver_quantities"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKWorkoutBuilderSampleQueryConfiguration;
-  v4 = a3;
-  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_needsHistoricalData forKey:{@"needs_historical", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_workoutBuilderIdentifier forKey:@"builder_identifier"];
-  [v4 encodeBool:self->_deliverQuantities forKey:@"deliver_quantities"];
+  coderCopy = coder;
+  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_needsHistoricalData forKey:{@"needs_historical", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_workoutBuilderIdentifier forKey:@"builder_identifier"];
+  [coderCopy encodeBool:self->_deliverQuantities forKey:@"deliver_quantities"];
 }
 
 @end

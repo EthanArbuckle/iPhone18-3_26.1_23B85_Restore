@@ -1,14 +1,14 @@
 @interface PKDashboardBankConnectPresenter
-- (BOOL)_useAccessibilityLayoutForCollectionView:(id)a3;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (BOOL)_useAccessibilityLayoutForCollectionView:(id)view;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardBankConnectPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureBalanceView:(id)a3 withItem:(id)a4;
-- (void)_configureSpendingSummaryView:(id)a3 withItem:(id)a4;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6;
+- (void)_configureBalanceView:(id)view withItem:(id)item;
+- (void)_configureSpendingSummaryView:(id)view withItem:(id)item;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKDashboardBankConnectPresenter
@@ -49,68 +49,68 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = [v11 type];
-  if (v12 == 1)
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  v11 = itemCopy;
+  type = [v11 type];
+  if (type == 1)
   {
-    v8 = [v9 dequeueReusableCellWithReuseIdentifier:@"spendingSummaryReuseIdentifier" forIndexPath:v10];
-    [(PKDashboardBankConnectPresenter *)self _configureSpendingSummaryView:v8 withItem:v11];
+    itemCopy = [viewCopy dequeueReusableCellWithReuseIdentifier:@"spendingSummaryReuseIdentifier" forIndexPath:pathCopy];
+    [(PKDashboardBankConnectPresenter *)self _configureSpendingSummaryView:itemCopy withItem:v11];
   }
 
   else
   {
-    if (v12)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v8 = [v9 dequeueReusableCellWithReuseIdentifier:@"balanceCellReuseIdentifier" forIndexPath:v10];
-    [(PKDashboardBankConnectPresenter *)self _configureBalanceView:v8 withItem:v11];
+    itemCopy = [viewCopy dequeueReusableCellWithReuseIdentifier:@"balanceCellReuseIdentifier" forIndexPath:pathCopy];
+    [(PKDashboardBankConnectPresenter *)self _configureBalanceView:itemCopy withItem:v11];
   }
 
   [objc_opt_class() defaultHorizontalInset];
   v14 = v13;
   [objc_opt_class() defaultHorizontalInset];
-  [v9 pkui_readableContentBoundsWithMargins:{0.0, v14, 0.0, v15}];
-  [v8 setHorizontalInset:?];
+  [viewCopy pkui_readableContentBoundsWithMargins:{0.0, v14, 0.0, v15}];
+  [itemCopy setHorizontalInset:?];
 LABEL_6:
 
-  return v8;
+  return itemCopy;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 atIndexPath:(id)a6
+- (void)updateCell:(id)cell forItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [v8 type];
-  if (v9 == 1)
+  cellCopy = cell;
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type == 1)
   {
-    [(PKDashboardBankConnectPresenter *)self _configureSpendingSummaryView:v10 withItem:v8];
+    [(PKDashboardBankConnectPresenter *)self _configureSpendingSummaryView:cellCopy withItem:itemCopy];
   }
 
-  else if (!v9)
+  else if (!type)
   {
-    [(PKDashboardBankConnectPresenter *)self _configureBalanceView:v10 withItem:v8];
+    [(PKDashboardBankConnectPresenter *)self _configureBalanceView:cellCopy withItem:itemCopy];
   }
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v9 = a3;
+  itemCopy = item;
   v10 = *MEMORY[0x1E69DDC50];
-  v11 = [a4 traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  v13 = UIContentSizeCategoryCompareToCategory(v10, v12);
+  traitCollection = [view traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v13 = UIContentSizeCategoryCompareToCategory(v10, preferredContentSizeCategory);
 
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
   v15.n128_u64[0] = -2.0;
-  v16 = a5 + v14.n128_f64[0] * -2.0;
-  if (v13 == NSOrderedDescending && [v9 hasAccountBalance] && objc_msgSend(v9, "isPersonalizedInsightsEnabled"))
+  v16 = width + v14.n128_f64[0] * -2.0;
+  if (v13 == NSOrderedDescending && [itemCopy hasAccountBalance] && objc_msgSend(itemCopy, "isPersonalizedInsightsEnabled"))
   {
     v15.n128_u64[0] = 0.5;
     v16 = (v16 + -10.0) * 0.5;
@@ -125,7 +125,7 @@ LABEL_6:
   aBlock[2] = __90__PKDashboardBankConnectPresenter_sizeForItem_inCollectionView_safeAreaWidth_atIndexPath___block_invoke;
   aBlock[3] = &unk_1E8012B60;
   aBlock[4] = self;
-  v20 = v9;
+  v20 = itemCopy;
   v39 = v20;
   v40 = v18;
   v41 = 0x47EFFFFFE0000000;
@@ -134,14 +134,14 @@ LABEL_6:
   v31 = 3221225472;
   v32 = __90__PKDashboardBankConnectPresenter_sizeForItem_inCollectionView_safeAreaWidth_atIndexPath___block_invoke_2;
   v33 = &unk_1E8012B60;
-  v34 = self;
+  selfCopy = self;
   v22 = v20;
   v35 = v22;
   v36 = v18;
   v37 = 0x47EFFFFFE0000000;
   v23 = _Block_copy(&v30);
-  v24 = [v22 type];
-  if (v24 == 1)
+  type = [v22 type];
+  if (type == 1)
   {
     v18 = v23[2](v23);
     v19 = v26;
@@ -152,7 +152,7 @@ LABEL_6:
     }
   }
 
-  else if (!v24)
+  else if (!type)
   {
     v18 = (v21[2])(v21);
     v19 = v25;
@@ -179,19 +179,19 @@ double __90__PKDashboardBankConnectPresenter_sizeForItem_inCollectionView_safeAr
   return *(a1 + 48);
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a6;
-  v10 = v8;
-  v11 = [v10 type];
-  if (v11 == 1)
+  itemCopy = item;
+  controllerCopy = controller;
+  v10 = itemCopy;
+  type = [v10 type];
+  if (type == 1)
   {
-    v23 = [v10 dataProvider];
-    v12 = [_TtC9PassKitUI49FinanceKitSpendingSummariesViewControllerProvider makeViewControllerForDataProvider:v23 navigationController:v9];
+    dataProvider = [v10 dataProvider];
+    v12 = [_TtC9PassKitUI49FinanceKitSpendingSummariesViewControllerProvider makeViewControllerForDataProvider:dataProvider navigationController:controllerCopy];
 
-    [v9 pushViewController:v12 animated:1];
+    [controllerCopy pushViewController:v12 animated:1];
     v15 = MEMORY[0x1E69B8540];
     v16 = *MEMORY[0x1E69BB6F8];
     v24 = *MEMORY[0x1E69BA6F0];
@@ -209,16 +209,16 @@ double __90__PKDashboardBankConnectPresenter_sizeForItem_inCollectionView_safeAr
     goto LABEL_5;
   }
 
-  if (!v11)
+  if (!type)
   {
     v12 = [_TtC9PassKitUI47BankConnectBalanceDetailsViewControllerProvider makeViewControllerWithBankConnectItem:v10];
-    v13 = [v9 navigationBar];
-    [v13 setPrefersLargeTitles:1];
+    navigationBar = [controllerCopy navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
-    v14 = [v12 navigationItem];
-    [v14 setLargeTitleDisplayMode:1];
+    navigationItem = [v12 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:1];
 
-    [v9 pushViewController:v12 animated:1];
+    [controllerCopy pushViewController:v12 animated:1];
     v15 = MEMORY[0x1E69B8540];
     v16 = *MEMORY[0x1E69BB6F8];
     v17 = *MEMORY[0x1E69BA6F0];
@@ -239,17 +239,17 @@ LABEL_5:
   }
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [_TtC9PassKitUI33PKDashboardBankConnectBalanceCell alloc];
@@ -269,37 +269,37 @@ LABEL_5:
   }
 }
 
-- (BOOL)_useAccessibilityLayoutForCollectionView:(id)a3
+- (BOOL)_useAccessibilityLayoutForCollectionView:(id)view
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC50]) != NSOrderedAscending;
+  traitCollection = [view traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) != NSOrderedAscending;
 
   return v5;
 }
 
-- (void)_configureBalanceView:(id)a3 withItem:(id)a4
+- (void)_configureBalanceView:(id)view withItem:(id)item
 {
-  v5 = a3;
-  [v5 configureWithBankConnectItem:a4];
-  [v5 setWantsCustomAppearance:1];
-  [v5 setWantsDefaultHighlightBehavior:1];
-  [v5 setMaskType:3];
-  v6 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  viewCopy = view;
+  [viewCopy configureWithBankConnectItem:item];
+  [viewCopy setWantsCustomAppearance:1];
+  [viewCopy setWantsDefaultHighlightBehavior:1];
+  [viewCopy setMaskType:3];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [viewCopy setBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
-- (void)_configureSpendingSummaryView:(id)a3 withItem:(id)a4
+- (void)_configureSpendingSummaryView:(id)view withItem:(id)item
 {
-  v5 = a3;
-  v6 = [a4 dataProvider];
-  [v5 configureWithSpendingSummaryDataProvider:v6];
+  viewCopy = view;
+  dataProvider = [item dataProvider];
+  [viewCopy configureWithSpendingSummaryDataProvider:dataProvider];
 
-  [v5 setWantsCustomAppearance:1];
-  [v5 setWantsDefaultHighlightBehavior:1];
-  [v5 setMaskType:3];
-  v7 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [v5 setBackgroundColor:v7];
+  [viewCopy setWantsCustomAppearance:1];
+  [viewCopy setWantsDefaultHighlightBehavior:1];
+  [viewCopy setMaskType:3];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [viewCopy setBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
 @end

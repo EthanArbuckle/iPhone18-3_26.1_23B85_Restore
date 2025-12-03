@@ -1,7 +1,7 @@
 @interface SOConfigurationManager
 + (id)defaultManager;
 - (SOConfigurationManager)init;
-- (void)saveConfigurationData:(id)a3 completion:(id)a4;
+- (void)saveConfigurationData:(id)data completion:(id)completion;
 @end
 
 @implementation SOConfigurationManager
@@ -44,7 +44,7 @@ uint64_t __40__SOConfigurationManager_defaultManager__block_invoke()
     *buf = 136315394;
     v8 = "[SOConfigurationManager init]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -55,18 +55,18 @@ uint64_t __40__SOConfigurationManager_defaultManager__block_invoke()
   return result;
 }
 
-- (void)saveConfigurationData:(id)a3 completion:(id)a4
+- (void)saveConfigurationData:(id)data completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = SO_LOG_SOConfigurationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[SOConfigurationManager saveConfigurationData:completion:]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -75,10 +75,10 @@ uint64_t __40__SOConfigurationManager_defaultManager__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __59__SOConfigurationManager_saveConfigurationData_completion___block_invoke;
   v13[3] = &unk_1E813E450;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = dataCopy;
   dispatch_async(v9, v13);
 
   v12 = *MEMORY[0x1E69E9840];

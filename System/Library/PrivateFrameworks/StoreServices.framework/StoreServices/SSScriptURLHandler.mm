@@ -1,14 +1,14 @@
 @interface SSScriptURLHandler
-+ (BOOL)shouldHandleSafariScriptURL:(id)a3;
++ (BOOL)shouldHandleSafariScriptURL:(id)l;
 @end
 
 @implementation SSScriptURLHandler
 
-+ (BOOL)shouldHandleSafariScriptURL:(id)a3
++ (BOOL)shouldHandleSafariScriptURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  v5 = [v4 length];
+  lCopy = l;
+  host = [lCopy host];
+  v5 = [host length];
 
   if (v5)
   {
@@ -17,18 +17,18 @@
 
   else
   {
-    v7 = [MEMORY[0x1E696AF20] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v7 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"name=%@", @"action"];
-    v9 = [v7 queryItems];
-    v10 = [v9 mutableCopy];
+    queryItems = [v7 queryItems];
+    v10 = [queryItems mutableCopy];
 
     v11 = [v10 filteredArrayUsingPredicate:v8];
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      v13 = [v12 value];
-      v6 = [v13 isEqualToString:@"safariscriptdataupdate"];
+      value = [firstObject value];
+      v6 = [value isEqualToString:@"safariscriptdataupdate"];
     }
 
     else

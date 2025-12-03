@@ -1,10 +1,10 @@
 @interface UbiquitousKeyValueStoreController
-- (void)storeDidChangeExternallyWithNotification:(id)a3;
+- (void)storeDidChangeExternallyWithNotification:(id)notification;
 @end
 
 @implementation UbiquitousKeyValueStoreController
 
-- (void)storeDidChangeExternallyWithNotification:(id)a3
+- (void)storeDidChangeExternallyWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

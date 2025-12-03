@@ -10,15 +10,15 @@
   {
     v5.receiver = self;
     v5.super_class = HomeScreenConfigurationBlurControlContentViewAccessibility;
-    v3 = [(HomeScreenConfigurationBlurControlContentViewAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(HomeScreenConfigurationBlurControlContentViewAccessibility *)&v5 accessibilityHint];
   }
 
   else
   {
-    v3 = accessibilityLocalizedString(@"home.configuration.blur.hint");
+    accessibilityHint = accessibilityLocalizedString(@"home.configuration.blur.hint");
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 @end

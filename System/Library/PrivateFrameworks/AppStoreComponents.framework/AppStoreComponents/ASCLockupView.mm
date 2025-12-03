@@ -1,8 +1,8 @@
 @interface ASCLockupView
 - (ASCLockup)lockup;
 - (ASCLockupRequest)request;
-- (ASCLockupView)initWithCoder:(id)a3;
-- (ASCLockupView)initWithFrame:(CGRect)a3;
+- (ASCLockupView)initWithCoder:(id)coder;
+- (ASCLockupView)initWithFrame:(CGRect)frame;
 - (ASCLockupViewDelegate)delegate;
 - (ASCLockupViewGroup)group;
 - (ASCMetricsActivity)appearMetricsActivity;
@@ -12,7 +12,7 @@
 - (BOOL)isHighlighted;
 - (BOOL)showsPlaceholderContent;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
 - (NSString)lockupSize;
 - (NSString)presentingSceneBundleIdentifier;
@@ -29,30 +29,30 @@
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)lockupPresenterDidBeginRequest;
-- (void)lockupPresenterDidFailRequestWithError:(id)a3;
+- (void)lockupPresenterDidFailRequestWithError:(id)error;
 - (void)lockupPresenterDidFinishRequest;
-- (void)offerPresenterDidObserveChangeToState:(id)a3;
-- (void)offerPresenterPreprocessOffer:(id)a3 inState:(id)a4 completionBlock:(id)a5;
-- (void)offerPresenterWillPerformActionOfOffer:(id)a3 inState:(id)a4 withActivity:(id *)a5 inContext:(id *)a6 withPaymentSheetView:(id)a7;
+- (void)offerPresenterDidObserveChangeToState:(id)state;
+- (void)offerPresenterPreprocessOffer:(id)offer inState:(id)state completionBlock:(id)block;
+- (void)offerPresenterWillPerformActionOfOffer:(id)offer inState:(id)state withActivity:(id *)activity inContext:(id *)context withPaymentSheetView:(id)view;
 - (void)performLockupAction;
 - (void)presentProductDetailsViewController;
 - (void)presentingViewController;
-- (void)productDetailsUserDidInteractWithApp:(id)a3 interactionType:(id)a4;
-- (void)setAppearMetricsActivity:(id)a3;
-- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)a3;
-- (void)setCampaignToken:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)setLockup:(id)a3;
-- (void)setLockupSize:(id)a3;
-- (void)setOfferTheme:(id)a3;
-- (void)setProviderToken:(id)a3;
-- (void)setRequest:(id)a3;
-- (void)setShowsPlaceholderContent:(BOOL)a3;
-- (void)setViewRenderSpanProvider:(id)a3;
+- (void)productDetailsUserDidInteractWithApp:(id)app interactionType:(id)type;
+- (void)setAppearMetricsActivity:(id)activity;
+- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)metrics;
+- (void)setCampaignToken:(id)token;
+- (void)setDelegate:(id)delegate;
+- (void)setGroup:(id)group;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)setLockup:(id)lockup;
+- (void)setLockupSize:(id)size;
+- (void)setOfferTheme:(id)theme;
+- (void)setProviderToken:(id)token;
+- (void)setRequest:(id)request;
+- (void)setShowsPlaceholderContent:(BOOL)content;
+- (void)setViewRenderSpanProvider:(id)provider;
 @end
 
 @implementation ASCLockupView
@@ -62,11 +62,11 @@
   v8.receiver = self;
   v8.super_class = ASCLockupView;
   v3 = *MEMORY[0x277D76548] | [(ASCLockupView *)&v8 accessibilityTraits];
-  v4 = [(ASCLockupView *)self contentView];
-  v5 = [v4 isEnabled];
+  contentView = [(ASCLockupView *)self contentView];
+  isEnabled = [contentView isEnabled];
 
   v6 = *MEMORY[0x277D76580];
-  if (v5)
+  if (isEnabled)
   {
     v6 = 0;
   }
@@ -76,37 +76,37 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ASCLockupView *)self contentView];
+  contentView = [(ASCLockupView *)self contentView];
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-  if ([v2 isOfferButtonOnlyLockup])
+  if ([contentView isOfferButtonOnlyLockup])
   {
-    v4 = [v2 offerButton];
+    offerButton = [contentView offerButton];
 LABEL_7:
-    v10 = v4;
-    [v3 addObject:v4];
+    v10 = offerButton;
+    [v3 addObject:offerButton];
 
     goto LABEL_8;
   }
 
-  v5 = [v2 headingLabelIfLoaded];
+  headingLabelIfLoaded = [contentView headingLabelIfLoaded];
 
-  if (v5)
+  if (headingLabelIfLoaded)
   {
-    v6 = [v2 headingLabelIfLoaded];
-    [v3 addObject:v6];
+    headingLabelIfLoaded2 = [contentView headingLabelIfLoaded];
+    [v3 addObject:headingLabelIfLoaded2];
   }
 
-  v7 = [v2 titleLabel];
-  [v3 addObject:v7];
+  titleLabel = [contentView titleLabel];
+  [v3 addObject:titleLabel];
 
-  v8 = [v2 subtitleLabel];
-  [v3 addObject:v8];
+  subtitleLabel = [contentView subtitleLabel];
+  [v3 addObject:subtitleLabel];
 
-  v9 = [v2 offerStatusLabelIfLoaded];
+  offerStatusLabelIfLoaded = [contentView offerStatusLabelIfLoaded];
 
-  if (v9)
+  if (offerStatusLabelIfLoaded)
   {
-    v4 = [v2 offerStatusLabelIfLoaded];
+    offerButton = [contentView offerStatusLabelIfLoaded];
     goto LABEL_7;
   }
 
@@ -119,17 +119,17 @@ LABEL_8:
 - (id)_accessibilitySupplementaryFooterViews
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ASCLockupView *)self contentView];
-  if ([v3 isOfferButtonOnlyLockup])
+  contentView = [(ASCLockupView *)self contentView];
+  if ([contentView isOfferButtonOnlyLockup])
   {
     v4 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v5 = [(ASCLockupView *)self contentView];
-    v6 = [v5 offerButton];
-    v8[0] = v6;
+    contentView2 = [(ASCLockupView *)self contentView];
+    offerButton = [contentView2 offerButton];
+    v8[0] = offerButton;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
@@ -138,30 +138,30 @@ LABEL_8:
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ASCLockupView *)self contentView];
-  v4 = [v3 isEnabled];
+  contentView = [(ASCLockupView *)self contentView];
+  isEnabled = [contentView isEnabled];
 
-  if (!v4)
+  if (!isEnabled)
   {
     return 0;
   }
 
-  v5 = [(ASCLockupView *)self contentView];
-  v6 = [v5 isOfferButtonOnlyLockup];
+  contentView2 = [(ASCLockupView *)self contentView];
+  isOfferButtonOnlyLockup = [contentView2 isOfferButtonOnlyLockup];
 
-  v7 = [(ASCLockupView *)self contentView];
-  v8 = v7;
-  if (v6)
+  contentView3 = [(ASCLockupView *)self contentView];
+  v8 = contentView3;
+  if (isOfferButtonOnlyLockup)
   {
-    v9 = [v7 offerButton];
-    [v9 sendActionsForControlEvents:64];
+    offerButton = [contentView3 offerButton];
+    [offerButton sendActionsForControlEvents:64];
 
     return 1;
   }
 
   else
   {
-    [v7 sendActionsForControlEvents:64];
+    [contentView3 sendActionsForControlEvents:64];
 
     return [(ASCLockupView *)self automaticallyPresentsProductDetails];
   }
@@ -169,43 +169,43 @@ LABEL_8:
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(ASCLockupView *)self lockup];
-  v4 = [v3 id];
-  v5 = [v4 stringValue];
+  lockup = [(ASCLockupView *)self lockup];
+  v4 = [lockup id];
+  stringValue = [v4 stringValue];
 
   v6 = MEMORY[0x277CCACA8];
-  if (v5)
+  if (stringValue)
   {
-    v7 = [(ASCLockupView *)self lockup];
-    v8 = [v7 id];
-    v9 = [v8 stringValue];
-    v10 = [v6 stringWithFormat:@"Lockup[id=%@]", v9];
+    lockup2 = [(ASCLockupView *)self lockup];
+    v8 = [lockup2 id];
+    stringValue2 = [v8 stringValue];
+    v10 = [v6 stringWithFormat:@"Lockup[id=%@]", stringValue2];
     v11 = ASCAXIdentifierWithSuffix(v10);
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Lockup"];
-    v11 = ASCAXIdentifierWithSuffix(v7);
+    lockup2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Lockup"];
+    v11 = ASCAXIdentifierWithSuffix(lockup2);
   }
 
   return v11;
 }
 
-- (ASCLockupView)initWithFrame:(CGRect)a3
+- (ASCLockupView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   +[ASCEligibility assertCurrentProcessEligibility];
   v22.receiver = self;
   v22.super_class = ASCLockupView;
-  v8 = [(ASCLockupView *)&v22 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(ASCLockupView *)&v22 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_automaticallyPresentsProductDetails = 1;
+    height->_automaticallyPresentsProductDetails = 1;
     v10 = [ASCLockupContentView alloc];
     v11 = [(ASCLockupContentView *)v10 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     contentView = v9->_contentView;
@@ -239,7 +239,7 @@ LABEL_8:
   return v9;
 }
 
-- (ASCLockupView)initWithCoder:(id)a3
+- (ASCLockupView)initWithCoder:(id)coder
 {
   [(ASCLockupView *)self doesNotRecognizeSelector:a2];
 
@@ -249,29 +249,29 @@ LABEL_8:
 - (UIViewController)presentingViewController
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(ASCLockupView *)self delegate];
-  v4 = [v3 presentingViewControllerForLockupView:self];
+  delegate = [(ASCLockupView *)self delegate];
+  v4 = [delegate presentingViewControllerForLockupView:self];
 
   if (v4)
   {
-    v5 = v4;
+    rootViewController = v4;
   }
 
   else
   {
-    v6 = [(ASCLockupView *)self window];
-    v5 = [v6 rootViewController];
+    window = [(ASCLockupView *)self window];
+    rootViewController = [window rootViewController];
 
-    if (v5)
+    if (rootViewController)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Lockup view %@ is presenting from root view controller", &v9, 0xCu);
       }
 
-      v7 = v5;
+      v7 = rootViewController;
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -280,100 +280,100 @@ LABEL_8:
     }
   }
 
-  return v5;
+  return rootViewController;
 }
 
 - (NSString)lockupSize
 {
-  v2 = [(ASCLockupView *)self contentView];
-  v3 = [v2 lockupSize];
+  contentView = [(ASCLockupView *)self contentView];
+  lockupSize = [contentView lockupSize];
 
-  return v3;
+  return lockupSize;
 }
 
-- (void)setLockupSize:(id)a3
+- (void)setLockupSize:(id)size
 {
-  v7 = a3;
-  if (([ASCEligibility currentClientIsEligibleToUseLockupViewSize:v7]& 1) == 0)
+  sizeCopy = size;
+  if (([ASCEligibility currentClientIsEligibleToUseLockupViewSize:sizeCopy]& 1) == 0)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Current process is not eligible to use %@ lockup view size", v7];
+    sizeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Current process is not eligible to use %@ lockup view size", sizeCopy];
     v6 = objc_alloc(MEMORY[0x277CBEAD8]);
-    objc_exception_throw([v6 initWithName:*MEMORY[0x277CBE658] reason:v5 userInfo:0]);
+    objc_exception_throw([v6 initWithName:*MEMORY[0x277CBE658] reason:sizeCopy userInfo:0]);
   }
 
-  v4 = [(ASCLockupView *)self contentView];
-  [v4 setLockupSize:v7];
+  contentView = [(ASCLockupView *)self contentView];
+  [contentView setLockupSize:sizeCopy];
 
   [(ASCLockupView *)self setNeedsLayout];
 }
 
 - (ASCLockup)lockup
 {
-  v2 = [(ASCLockupView *)self lockupPresenter];
-  v3 = [v2 lockup];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  lockup = [lockupPresenter lockup];
 
-  return v3;
+  return lockup;
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  v4 = a3;
-  v5 = [(ASCLockupView *)self lockupPresenter];
-  [v5 setLockup:v4];
+  lockupCopy = lockup;
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  [lockupPresenter setLockup:lockupCopy];
 }
 
 - (ASCLockupViewGroup)group
 {
-  v2 = [(ASCLockupView *)self lockupPresenter];
-  v3 = [v2 group];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  group = [lockupPresenter group];
 
-  return v3;
+  return group;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(ASCLockupView *)self lockupPresenter];
-  [v5 setGroup:v4];
+  groupCopy = group;
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  [lockupPresenter setGroup:groupCopy];
 }
 
 - (ASCLockupRequest)request
 {
-  v2 = [(ASCLockupView *)self lockupPresenter];
-  v3 = [v2 request];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  request = [lockupPresenter request];
 
-  return v3;
+  return request;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 context];
-  IsWebBrowserContext = ASCLockupContextIsWebBrowserContext(v5, v6);
+  requestCopy = request;
+  context = [requestCopy context];
+  IsWebBrowserContext = ASCLockupContextIsWebBrowserContext(context, v6);
 
   if (IsWebBrowserContext)
   {
-    v8 = +[ASCStaticLockupTheme webBrowserTheme];
-    v9 = [(ASCLockupView *)self contentView];
-    [v9 setLockupTheme:v8];
+    contentView2 = +[ASCStaticLockupTheme webBrowserTheme];
+    contentView = [(ASCLockupView *)self contentView];
+    [contentView setLockupTheme:contentView2];
   }
 
   else
   {
-    v8 = [(ASCLockupView *)self contentView];
-    [v8 setLockupTheme:0];
+    contentView2 = [(ASCLockupView *)self contentView];
+    [contentView2 setLockupTheme:0];
   }
 
-  v10 = [(ASCLockupView *)self lockupPresenter];
-  [v10 setRequest:v4];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  [lockupPresenter setRequest:requestCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v17 = a3;
-  objc_storeWeak(&self->_delegate, v17);
-  v4 = v17;
-  if (v17)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v4 = delegateCopy;
+  if (delegateCopy)
   {
     *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -487,7 +487,7 @@ LABEL_8:
 
     *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFBFF | v14;
     v15 = (objc_opt_respondsToSelector() & 1) == 0;
-    v4 = v17;
+    v4 = delegateCopy;
     if (v15)
     {
       v16 = 0;
@@ -509,77 +509,77 @@ LABEL_8:
 
 - (BOOL)isHighlighted
 {
-  v2 = [(ASCLockupView *)self contentView];
-  v3 = [v2 isHighlighted];
+  contentView = [(ASCLockupView *)self contentView];
+  isHighlighted = [contentView isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(ASCLockupView *)self contentView];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  contentView = [(ASCLockupView *)self contentView];
+  [contentView setHighlighted:highlightedCopy];
 }
 
 - (BOOL)automaticallyGeneratesAppearMetrics
 {
-  v2 = [(ASCLockupView *)self metricsPresenter];
-  v3 = [v2 isEnabled];
+  metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+  isEnabled = [metricsPresenter isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)a3
+- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)metrics
 {
-  v3 = a3;
-  v4 = [(ASCLockupView *)self metricsPresenter];
-  [v4 setEnabled:v3];
+  metricsCopy = metrics;
+  metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+  [metricsPresenter setEnabled:metricsCopy];
 }
 
 - (ASCMetricsActivity)appearMetricsActivity
 {
-  v2 = [(ASCLockupView *)self metricsPresenter];
-  v3 = [v2 activity];
+  metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+  activity = [metricsPresenter activity];
 
-  return v3;
+  return activity;
 }
 
-- (void)setAppearMetricsActivity:(id)a3
+- (void)setAppearMetricsActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ASCLockupView *)self metricsPresenter];
-  [v5 setActivity:v4];
+  activityCopy = activity;
+  metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+  [metricsPresenter setActivity:activityCopy];
 }
 
 - (ASCOfferTheme)offerTheme
 {
-  v2 = [(ASCLockupView *)self contentView];
-  v3 = [v2 offerTheme];
+  contentView = [(ASCLockupView *)self contentView];
+  offerTheme = [contentView offerTheme];
 
-  return v3;
+  return offerTheme;
 }
 
-- (void)setOfferTheme:(id)a3
+- (void)setOfferTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(ASCLockupView *)self contentView];
-  [v5 setOfferTheme:v4];
+  themeCopy = theme;
+  contentView = [(ASCLockupView *)self contentView];
+  [contentView setOfferTheme:themeCopy];
 }
 
-- (void)setShowsPlaceholderContent:(BOOL)a3
+- (void)setShowsPlaceholderContent:(BOOL)content
 {
-  v3 = a3;
-  v4 = [(ASCLockupView *)self lockupPresenter];
-  [v4 setShowsPlaceholderContent:v3];
+  contentCopy = content;
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  [lockupPresenter setShowsPlaceholderContent:contentCopy];
 }
 
 - (BOOL)showsPlaceholderContent
 {
-  v2 = [(ASCLockupView *)self lockupPresenter];
-  v3 = [v2 showsPlaceholderContent];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  showsPlaceholderContent = [lockupPresenter showsPlaceholderContent];
 
-  return v3;
+  return showsPlaceholderContent;
 }
 
 - (void)layoutMarginsDidChange
@@ -591,27 +591,27 @@ LABEL_8:
   [(ASCLockupView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(ASCLockupView *)self contentView];
-  [v8 setLayoutMargins:{top, left, bottom, right}];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  contentView = [(ASCLockupView *)self contentView];
+  [contentView setLayoutMargins:{top, left, bottom, right}];
 
   v9.receiver = self;
   v9.super_class = ASCLockupView;
   [(ASCLockupView *)&v9 setLayoutMargins:top, left, bottom, right];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = ASCLockupView;
-  [(ASCLockupView *)&v5 setHidden:a3];
-  v4 = [(ASCLockupView *)self metricsPresenter];
-  [v4 viewDidSetHidden];
+  [(ASCLockupView *)&v5 setHidden:hidden];
+  metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+  [metricsPresenter viewDidSetHidden];
 }
 
 - (void)didMoveToWindow
@@ -619,8 +619,8 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = ASCLockupView;
   [(ASCLockupView *)&v4 didMoveToWindow];
-  v3 = [(ASCLockupView *)self metricsPresenter];
-  [v3 viewDidMoveToWindow];
+  metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+  [metricsPresenter viewDidMoveToWindow];
 }
 
 - (void)invalidateIntrinsicContentSize
@@ -637,8 +637,8 @@ LABEL_8:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(ASCLockupView *)self contentView];
-  [v2 intrinsicContentSize];
+  contentView = [(ASCLockupView *)self contentView];
+  [contentView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -649,12 +649,12 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(ASCLockupView *)self contentView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(ASCLockupView *)self contentView];
+  [contentView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -673,8 +673,8 @@ LABEL_8:
   width = v22.size.width;
   height = v22.size.height;
   IsEmpty = CGRectIsEmpty(v22);
-  v8 = [(ASCLockupView *)self contentView];
-  v9 = v8;
+  contentView = [(ASCLockupView *)self contentView];
+  v9 = contentView;
   if (IsEmpty)
   {
     v10 = x;
@@ -685,7 +685,7 @@ LABEL_8:
 
   else
   {
-    [v8 sizeThatFits:{width, height}];
+    [contentView sizeThatFits:{width, height}];
     v15 = v14;
     v17 = v16;
 
@@ -711,18 +711,18 @@ LABEL_8:
     v26.size.width = width;
     v26.size.height = height;
     v19 = floor(CGRectGetMidY(v26) + v17 * -0.5);
-    v8 = [(ASCLockupView *)self contentView];
-    v9 = v8;
+    contentView = [(ASCLockupView *)self contentView];
+    v9 = contentView;
     v10 = MinX;
     v11 = v19;
     v12 = v15;
     v13 = v17;
   }
 
-  [v8 setFrame:{v10, v11, v12, v13}];
+  [contentView setFrame:{v10, v11, v12, v13}];
 
-  v20 = [(ASCLockupView *)self contentView];
-  [v20 layoutSubviews];
+  contentView2 = [(ASCLockupView *)self contentView];
+  [contentView2 layoutSubviews];
 }
 
 void __34__ASCLockupView_layoutContentView__block_invoke()
@@ -747,26 +747,26 @@ void __34__ASCLockupView_layoutContentView__block_invoke()
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupView *)self contentView];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"contentView"];
+  contentView = [(ASCLockupView *)self contentView];
+  [(ASCDescriber *)v3 addObject:contentView withName:@"contentView"];
 
-  v5 = [(ASCLockupView *)self offerPresenter];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"offerPresenter"];
+  offerPresenter = [(ASCLockupView *)self offerPresenter];
+  [(ASCDescriber *)v3 addObject:offerPresenter withName:@"offerPresenter"];
 
-  v6 = [(ASCLockupView *)self lockupPresenter];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"lockupPresenter"];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  [(ASCDescriber *)v3 addObject:lockupPresenter withName:@"lockupPresenter"];
 
-  v7 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v7;
+  return finalizeDescription;
 }
 
 - (id)preferredProductDetailsPresentationContext
 {
   if ((*&self->_delegateRespondsTo & 0x100) != 0)
   {
-    v4 = [(ASCLockupView *)self delegate];
-    v2 = [v4 productDetailsPresentationContextForLockupView:self];
+    delegate = [(ASCLockupView *)self delegate];
+    v2 = [delegate productDetailsPresentationContextForLockupView:self];
   }
 
   else
@@ -779,31 +779,31 @@ void __34__ASCLockupView_layoutContentView__block_invoke()
 
 - (void)presentProductDetailsViewController
 {
-  v3 = [(ASCLockupView *)self lockup];
-  if (v3)
+  lockup = [(ASCLockupView *)self lockup];
+  if (lockup)
   {
-    v4 = [(ASCLockupView *)self preferredProductDetailsPresentationContext];
+    preferredProductDetailsPresentationContext = [(ASCLockupView *)self preferredProductDetailsPresentationContext];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       [ASCLockupView presentProductDetailsViewController];
     }
 
-    if ([v4 presentationStyle])
+    if ([preferredProductDetailsPresentationContext presentationStyle])
     {
       v5 = [ASCLockupProductDetails alloc];
-      v6 = [(ASCLockupView *)self storeSheetHostBundleID];
-      v7 = [(ASCLockupView *)self storeSheetUsageContext];
-      v8 = [(ASCLockupProductDetails *)v5 initWithLockup:v3 storeSheetHostBundleID:v6 storeSheetUsageContext:v7];
+      storeSheetHostBundleID = [(ASCLockupView *)self storeSheetHostBundleID];
+      storeSheetUsageContext = [(ASCLockupView *)self storeSheetUsageContext];
+      presentingViewController = [(ASCLockupProductDetails *)v5 initWithLockup:lockup storeSheetHostBundleID:storeSheetHostBundleID storeSheetUsageContext:storeSheetUsageContext];
 
-      [(ASCLockupProductDetails *)v8 present:0];
-      v9 = [(ASCLockupView *)self metricsPresenter];
-      [(ASCLockupProductDetails *)v9 viewDidAction];
+      [(ASCLockupProductDetails *)presentingViewController present:0];
+      metricsPresenter = [(ASCLockupView *)self metricsPresenter];
+      [(ASCLockupProductDetails *)metricsPresenter viewDidAction];
     }
 
     else
     {
-      v8 = [(ASCLockupView *)self presentingViewController];
-      if (!v8)
+      presentingViewController = [(ASCLockupView *)self presentingViewController];
+      if (!presentingViewController)
       {
 LABEL_9:
 
@@ -811,21 +811,21 @@ LABEL_9:
       }
 
       v10 = [ASCLockupProductDetails alloc];
-      v11 = [(ASCLockupView *)self storeSheetHostBundleID];
-      v12 = [(ASCLockupView *)self storeSheetUsageContext];
-      v9 = [(ASCLockupProductDetails *)v10 initWithLockup:v3 storeSheetHostBundleID:v11 storeSheetUsageContext:v12];
+      storeSheetHostBundleID2 = [(ASCLockupView *)self storeSheetHostBundleID];
+      storeSheetUsageContext2 = [(ASCLockupView *)self storeSheetUsageContext];
+      metricsPresenter = [(ASCLockupProductDetails *)v10 initWithLockup:lockup storeSheetHostBundleID:storeSheetHostBundleID2 storeSheetUsageContext:storeSheetUsageContext2];
 
-      v13 = [(ASCLockupView *)self request];
-      v14 = [v13 context];
-      IsWebBrowserContext = ASCLockupContextIsWebBrowserContext(v14, v15);
+      request = [(ASCLockupView *)self request];
+      context = [request context];
+      IsWebBrowserContext = ASCLockupContextIsWebBrowserContext(context, v15);
 
-      [(ASCLockupProductDetails *)v9 setOpenAppCallbackEnabled:IsWebBrowserContext];
-      [(ASCLockupProductDetails *)v9 setWebBrowser:IsWebBrowserContext];
-      [(ASCLockupProductDetails *)v9 setObserver:self];
-      [(ASCLockupProductDetails *)v9 presentFromViewController:v8 animated:1 completion:0];
-      [(ASCLockupView *)self setLockupProductDetails:v9];
-      v17 = [(ASCLockupView *)self metricsPresenter];
-      [v17 viewDidAction];
+      [(ASCLockupProductDetails *)metricsPresenter setOpenAppCallbackEnabled:IsWebBrowserContext];
+      [(ASCLockupProductDetails *)metricsPresenter setWebBrowser:IsWebBrowserContext];
+      [(ASCLockupProductDetails *)metricsPresenter setObserver:self];
+      [(ASCLockupProductDetails *)metricsPresenter presentFromViewController:presentingViewController animated:1 completion:0];
+      [(ASCLockupView *)self setLockupProductDetails:metricsPresenter];
+      metricsPresenter2 = [(ASCLockupView *)self metricsPresenter];
+      [metricsPresenter2 viewDidAction];
     }
 
     goto LABEL_9;
@@ -836,13 +836,13 @@ LABEL_10:
 
 - (void)performLockupAction
 {
-  v3 = [(ASCLockupView *)self lockupPresenter];
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__ASCLockupView_performLockupAction__block_invoke;
   v4[3] = &unk_2781CCA98;
   v4[4] = self;
-  [v3 retryRequestIfNeeded:v4];
+  [lockupPresenter retryRequestIfNeeded:v4];
 }
 
 void __36__ASCLockupView_performLockupAction__block_invoke(uint64_t a1, char a2)
@@ -868,8 +868,8 @@ void __36__ASCLockupView_performLockupAction__block_invoke(uint64_t a1, char a2)
 {
   if (*&self->_delegateRespondsTo)
   {
-    v4 = [(ASCLockupView *)self delegate];
-    [v4 lockupViewDidBeginRequest:self];
+    delegate = [(ASCLockupView *)self delegate];
+    [delegate lockupViewDidBeginRequest:self];
   }
 }
 
@@ -877,49 +877,49 @@ void __36__ASCLockupView_performLockupAction__block_invoke(uint64_t a1, char a2)
 {
   if ((*&self->_delegateRespondsTo & 2) != 0)
   {
-    v4 = [(ASCLockupView *)self delegate];
-    [v4 lockupViewDidFinishRequest:self];
+    delegate = [(ASCLockupView *)self delegate];
+    [delegate lockupViewDidFinishRequest:self];
   }
 }
 
-- (void)lockupPresenterDidFailRequestWithError:(id)a3
+- (void)lockupPresenterDidFailRequestWithError:(id)error
 {
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
-    v5 = a3;
-    v6 = [(ASCLockupView *)self delegate];
-    [v6 lockupView:self didFailRequestWithError:v5];
+    errorCopy = error;
+    delegate = [(ASCLockupView *)self delegate];
+    [delegate lockupView:self didFailRequestWithError:errorCopy];
   }
 }
 
-- (void)offerPresenterDidObserveChangeToState:(id)a3
+- (void)offerPresenterDidObserveChangeToState:(id)state
 {
   if ((*&self->_delegateRespondsTo & 8) != 0)
   {
-    v5 = a3;
-    v6 = [(ASCLockupView *)self delegate];
-    [v6 lockupView:self appStateDidChange:v5];
+    stateCopy = state;
+    delegate = [(ASCLockupView *)self delegate];
+    [delegate lockupView:self appStateDidChange:stateCopy];
   }
 }
 
-- (void)offerPresenterWillPerformActionOfOffer:(id)a3 inState:(id)a4 withActivity:(id *)a5 inContext:(id *)a6 withPaymentSheetView:(id)a7
+- (void)offerPresenterWillPerformActionOfOffer:(id)offer inState:(id)state withActivity:(id *)activity inContext:(id *)context withPaymentSheetView:(id)view
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  offerCopy = offer;
+  stateCopy = state;
+  viewCopy = view;
   delegateRespondsTo = self->_delegateRespondsTo;
   if ((delegateRespondsTo & 0x10) != 0)
   {
-    v16 = [(ASCLockupView *)self delegate];
-    *a5 = [v16 metricsActivityForLockupView:self toPerformActionOfOffer:v12];
+    delegate = [(ASCLockupView *)self delegate];
+    *activity = [delegate metricsActivityForLockupView:self toPerformActionOfOffer:offerCopy];
 
     delegateRespondsTo = self->_delegateRespondsTo;
   }
 
   if ((delegateRespondsTo & 0x20) != 0)
   {
-    v21 = [(ASCLockupView *)self delegate];
-    v18 = [v21 lockupViewPerformAdAttributionForState:v13];
+    delegate2 = [(ASCLockupView *)self delegate];
+    v18 = [delegate2 lockupViewPerformAdAttributionForState:stateCopy];
     v17 = 4 * (v18 != 0);
 
     if ((*&self->_delegateRespondsTo & 0x80) != 0)
@@ -935,8 +935,8 @@ void __36__ASCLockupView_performLockupAction__block_invoke(uint64_t a1, char a2)
     if ((delegateRespondsTo & 0x80) != 0)
     {
 LABEL_5:
-      v19 = [(ASCLockupView *)self delegate];
-      v20 = [v19 lockupViewShouldSupportDSIDLessInstalls:self];
+      delegate3 = [(ASCLockupView *)self delegate];
+      v20 = [delegate3 lockupViewShouldSupportDSIDLessInstalls:self];
 
       goto LABEL_8;
     }
@@ -944,26 +944,26 @@ LABEL_5:
 
   v20 = 0;
 LABEL_8:
-  v22 = *a6;
-  v23 = [(ASCLockupView *)self presentingSceneIdentifier];
-  v24 = [(ASCLockupView *)self presentingSceneBundleIdentifier];
-  *a6 = [v22 offerContextWithPresentingSceneIdentifier:v23 presentingSceneBundleIdentifier:v24 externalDeepLinkURL:v18];
+  v22 = *context;
+  presentingSceneIdentifier = [(ASCLockupView *)self presentingSceneIdentifier];
+  presentingSceneBundleIdentifier = [(ASCLockupView *)self presentingSceneBundleIdentifier];
+  *context = [v22 offerContextWithPresentingSceneIdentifier:presentingSceneIdentifier presentingSceneBundleIdentifier:presentingSceneBundleIdentifier externalDeepLinkURL:v18];
 
-  v25 = [*a6 offerContextByAddingFlags:v17];
-  *a6 = v25;
-  *a6 = [v25 offerContextByAddingFlags:v20];
+  v25 = [*context offerContextByAddingFlags:v17];
+  *context = v25;
+  *context = [v25 offerContextByAddingFlags:v20];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [(ASCLockupView *)a6 offerPresenterWillPerformActionOfOffer:v26 inState:v27 withActivity:v28 inContext:v29 withPaymentSheetView:v30, v31, v32];
+    [(ASCLockupView *)context offerPresenterWillPerformActionOfOffer:v26 inState:v27 withActivity:v28 inContext:v29 withPaymentSheetView:v30, v31, v32];
   }
 }
 
-- (void)offerPresenterPreprocessOffer:(id)a3 inState:(id)a4 completionBlock:(id)a5
+- (void)offerPresenterPreprocessOffer:(id)offer inState:(id)state completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  offerCopy = offer;
+  stateCopy = state;
+  blockCopy = block;
+  v11 = blockCopy;
   if ((*&self->_delegateRespondsTo & 0x200) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -971,13 +971,13 @@ LABEL_8:
       [ASCLockupView offerPresenterPreprocessOffer:inState:completionBlock:];
     }
 
-    v12 = [(ASCLockupView *)self delegate];
-    [v12 lockupView:self preprocessOffer:v8 inState:v9 completionBlock:v11];
+    delegate = [(ASCLockupView *)self delegate];
+    [delegate lockupView:self preprocessOffer:offerCopy inState:stateCopy completionBlock:v11];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -986,17 +986,17 @@ LABEL_8:
   presentingSceneIdentifier = self->_presentingSceneIdentifier;
   if (presentingSceneIdentifier)
   {
-    v3 = presentingSceneIdentifier;
+    _sceneIdentifier = presentingSceneIdentifier;
   }
 
   else
   {
-    v4 = [(ASCLockupView *)self window];
-    v5 = [v4 windowScene];
-    v3 = [v5 _sceneIdentifier];
+    window = [(ASCLockupView *)self window];
+    windowScene = [window windowScene];
+    _sceneIdentifier = [windowScene _sceneIdentifier];
   }
 
-  return v3;
+  return _sceneIdentifier;
 }
 
 - (NSString)presentingSceneBundleIdentifier
@@ -1004,22 +1004,22 @@ LABEL_8:
   presentingSceneBundleIdentifier = self->_presentingSceneBundleIdentifier;
   if (presentingSceneBundleIdentifier)
   {
-    v3 = presentingSceneBundleIdentifier;
+    bundleIdentifier = presentingSceneBundleIdentifier;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCA8D8] asc_realMainBundle];
-    v3 = [v4 bundleIdentifier];
+    asc_realMainBundle = [MEMORY[0x277CCA8D8] asc_realMainBundle];
+    bundleIdentifier = [asc_realMainBundle bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)productDetailsUserDidInteractWithApp:(id)a3 interactionType:(id)a4
+- (void)productDetailsUserDidInteractWithApp:(id)app interactionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  typeCopy = type;
   if ((*&self->_delegateRespondsTo & 0x800) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -1027,11 +1027,11 @@ LABEL_8:
       [ASCLockupView productDetailsUserDidInteractWithApp:interactionType:];
     }
 
-    v8 = [(ASCLockupView *)self delegate];
-    [v8 productDetailsUserDidInteractWithApp:self interactionType:v7];
+    delegate = [(ASCLockupView *)self delegate];
+    [delegate productDetailsUserDidInteractWithApp:self interactionType:typeCopy];
   }
 
-  if ([v7 isEqualToString:@"dismissed"])
+  if ([typeCopy isEqualToString:@"dismissed"])
   {
     [(ASCLockupView *)self setLockupProductDetails:0];
   }
@@ -1044,32 +1044,32 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)setViewRenderSpanProvider:(id)a3
+- (void)setViewRenderSpanProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(ASCLockupView *)self lockupPresenter];
-  [v5 setViewRenderSpanProvider:v4];
+  providerCopy = provider;
+  lockupPresenter = [(ASCLockupView *)self lockupPresenter];
+  [lockupPresenter setViewRenderSpanProvider:providerCopy];
 }
 
-- (void)setCampaignToken:(id)a3
+- (void)setCampaignToken:(id)token
 {
-  v4 = a3;
-  if (_campaignToken != v4)
+  tokenCopy = token;
+  if (_campaignToken != tokenCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&_campaignToken, a3);
-    v4 = v5;
+    v5 = tokenCopy;
+    objc_storeStrong(&_campaignToken, token);
+    tokenCopy = v5;
   }
 }
 
-- (void)setProviderToken:(id)a3
+- (void)setProviderToken:(id)token
 {
-  v4 = a3;
-  if (_providerToken != v4)
+  tokenCopy = token;
+  if (_providerToken != tokenCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&_providerToken, a3);
-    v4 = v5;
+    v5 = tokenCopy;
+    objc_storeStrong(&_providerToken, token);
+    tokenCopy = v5;
   }
 }
 

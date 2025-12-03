@@ -1,54 +1,54 @@
 @interface TransitArtworkListView
-+ ($8502DCEA08BBBE1AB2005217B3838BBD)_metricsForIdiom:(SEL)a3;
++ ($8502DCEA08BBBE1AB2005217B3838BBD)_metricsForIdiom:(SEL)idiom;
 + (double)transitArtworkListHeight;
 - ($8502DCEA08BBBE1AB2005217B3838BBD)_metrics;
 - (CGSize)intrinsicContentSize;
-- (TransitArtworkListView)initWithCoder:(id)a3;
-- (TransitArtworkListView)initWithFrame:(CGRect)a3;
+- (TransitArtworkListView)initWithCoder:(id)coder;
+- (TransitArtworkListView)initWithFrame:(CGRect)frame;
 - (UIImage)arrowImage;
-- (id)_addViewForArtwork:(id)a3 inContainer:(id)a4 constraints:(id)a5 previousViewInSegment:(id)a6 leadingSpacing:(double)a7;
+- (id)_addViewForArtwork:(id)artwork inContainer:(id)container constraints:(id)constraints previousViewInSegment:(id)segment leadingSpacing:(double)spacing;
 - (id)_arrowImageView;
-- (id)_createSizeConstraintsForArtworkViews:(id)a3;
+- (id)_createSizeConstraintsForArtworkViews:(id)views;
 - (id)_segmentContainer;
 - (void)_commonInit;
-- (void)_configureContainerWithBackgroundIfNeeded:(id)a3 constraints:(id)a4;
+- (void)_configureContainerWithBackgroundIfNeeded:(id)needed constraints:(id)constraints;
 - (void)_createNewMultilineShieldView;
 - (void)_updateArtworkImageViewWithArtworks;
-- (void)_updateTintColor:(id)a3;
-- (void)_updateTintColorForArrowImageView:(id)a3;
-- (void)_updateTintColorForView:(id)a3;
+- (void)_updateTintColor:(id)color;
+- (void)_updateTintColorForArrowImageView:(id)view;
+- (void)_updateTintColorForView:(id)view;
 - (void)layoutSubviews;
-- (void)setArtworkData:(id)a3;
-- (void)setForcedWidth:(double)a3;
-- (void)setMaxWidth:(double)a3;
-- (void)setOverrideTintColor:(id)a3;
-- (void)setVerticalContentCompressionResistancePriority:(float)a3;
-- (void)setVerticalContentHuggingPriority:(float)a3;
+- (void)setArtworkData:(id)data;
+- (void)setForcedWidth:(double)width;
+- (void)setMaxWidth:(double)width;
+- (void)setOverrideTintColor:(id)color;
+- (void)setVerticalContentCompressionResistancePriority:(float)priority;
+- (void)setVerticalContentHuggingPriority:(float)priority;
 @end
 
 @implementation TransitArtworkListView
 
-- (void)setVerticalContentCompressionResistancePriority:(float)a3
+- (void)setVerticalContentCompressionResistancePriority:(float)priority
 {
-  if (self->_verticalContentCompressionResistancePriority != a3)
+  if (self->_verticalContentCompressionResistancePriority != priority)
   {
-    self->_verticalContentCompressionResistancePriority = a3;
+    self->_verticalContentCompressionResistancePriority = priority;
     [(MultilineWrappingListView *)self->_multilineWrappingStackView setContentCompressionResistancePriority:1 forAxis:?];
   }
 }
 
-- (void)setVerticalContentHuggingPriority:(float)a3
+- (void)setVerticalContentHuggingPriority:(float)priority
 {
-  if (self->_verticalContentHuggingPriority != a3)
+  if (self->_verticalContentHuggingPriority != priority)
   {
-    self->_verticalContentHuggingPriority = a3;
+    self->_verticalContentHuggingPriority = priority;
     [(MultilineWrappingListView *)self->_multilineWrappingStackView setContentHuggingPriority:1 forAxis:?];
   }
 }
 
-- (id)_createSizeConstraintsForArtworkViews:(id)a3
+- (id)_createSizeConstraintsForArtworkViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -59,7 +59,7 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = v4;
+  v6 = viewsCopy;
   v42 = [v6 countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (v42)
   {
@@ -84,27 +84,27 @@
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v26 = [v9 heightAnchor];
-          v15 = v26;
+          heightAnchor = [v9 heightAnchor];
+          v15 = heightAnchor;
           if (isKindOfClass)
           {
-            v22 = [v26 constraintEqualToConstant:*(&v49 + 1)];
-            v52[0] = v22;
-            v27 = [v9 widthAnchor];
-            v28 = [v27 constraintEqualToConstant:0.0];
-            v52[1] = v28;
-            v29 = [NSArray arrayWithObjects:v52 count:2];
-            [v5 addObjectsFromArray:v29];
+            superview3 = [heightAnchor constraintEqualToConstant:*(&v49 + 1)];
+            v52[0] = superview3;
+            widthAnchor = [v9 widthAnchor];
+            superview = [widthAnchor constraintEqualToConstant:0.0];
+            v52[1] = superview;
+            centerYAnchor = [NSArray arrayWithObjects:v52 count:2];
+            [v5 addObjectsFromArray:centerYAnchor];
           }
 
           else
           {
-            v22 = [v26 constraintLessThanOrEqualToConstant:*(&v49 + 1)];
-            v51[0] = v22;
-            v27 = [v9 centerYAnchor];
-            v28 = [v9 superview];
-            v29 = [v28 centerYAnchor];
-            v30 = [v27 constraintEqualToAnchor:v29];
+            superview3 = [heightAnchor constraintLessThanOrEqualToConstant:*(&v49 + 1)];
+            v51[0] = superview3;
+            widthAnchor = [v9 centerYAnchor];
+            superview = [v9 superview];
+            centerYAnchor = [superview centerYAnchor];
+            v30 = [widthAnchor constraintEqualToAnchor:centerYAnchor];
             v51[1] = v30;
             v31 = [NSArray arrayWithObjects:v51 count:2];
             [v5 addObjectsFromArray:v31];
@@ -116,8 +116,8 @@
         }
 
         v15 = v9;
-        v16 = [v15 image];
-        [v16 size];
+        image = [v15 image];
+        [image size];
         v18 = v17;
         v20 = v19;
 
@@ -126,17 +126,17 @@
           goto LABEL_18;
         }
 
-        v21 = [v15 superview];
+        superview2 = [v15 superview];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [v15 superview];
+          superview3 = [v15 superview];
 
-          if (v22)
+          if (superview3)
           {
-            v23 = [v22 showBackground];
+            showBackground = [superview3 showBackground];
             v24 = v38;
-            if (v23)
+            if (showBackground)
             {
               goto LABEL_22;
             }
@@ -146,18 +146,18 @@
         else
         {
 
-          v22 = 0;
+          superview3 = 0;
         }
 
         v24 = &v49 + 1;
 LABEL_22:
         v32 = fmin(*v24, v20);
-        v27 = [v15 heightAnchor];
-        v28 = [v27 constraintEqualToConstant:v32];
-        v53[0] = v28;
-        v29 = [v15 widthAnchor];
-        v33 = [v15 heightAnchor];
-        v34 = [v29 constraintEqualToAnchor:v33 multiplier:v18 / v20];
+        widthAnchor = [v15 heightAnchor];
+        superview = [widthAnchor constraintEqualToConstant:v32];
+        v53[0] = superview;
+        centerYAnchor = [v15 widthAnchor];
+        heightAnchor2 = [v15 heightAnchor];
+        v34 = [centerYAnchor constraintEqualToAnchor:heightAnchor2 multiplier:v18 / v20];
         v53[1] = v34;
         v35 = [NSArray arrayWithObjects:v53 count:2];
         v5 = v40;
@@ -182,28 +182,28 @@ LABEL_18:
   return v5;
 }
 
-- (void)_configureContainerWithBackgroundIfNeeded:(id)a3 constraints:(id)a4
+- (void)_configureContainerWithBackgroundIfNeeded:(id)needed constraints:(id)constraints
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 subviews];
-  if (![v8 count])
+  neededCopy = needed;
+  constraintsCopy = constraints;
+  subviews = [neededCopy subviews];
+  if (![subviews count])
   {
     goto LABEL_4;
   }
 
-  v9 = [v6 subviews];
-  v10 = [v9 lastObject];
+  subviews2 = [neededCopy subviews];
+  lastObject = [subviews2 lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [v6 setShowBackground:1];
-    v8 = [v6 heightAnchor];
+    [neededCopy setShowBackground:1];
+    subviews = [neededCopy heightAnchor];
     [(TransitArtworkListView *)self _metrics];
-    v12 = [v8 constraintEqualToConstant:v13];
-    [v7 addObject:v12];
+    v12 = [subviews constraintEqualToConstant:v13];
+    [constraintsCopy addObject:v12];
 
 LABEL_4:
   }
@@ -214,8 +214,8 @@ LABEL_4:
   arrowImage = self->_arrowImage;
   if (!arrowImage)
   {
-    v4 = [(TransitArtworkListView *)self traitCollection];
-    if ([v4 userInterfaceIdiom] == 5)
+    traitCollection = [(TransitArtworkListView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 5)
     {
       v5 = 5.0;
     }
@@ -249,8 +249,8 @@ LABEL_4:
   [v3 _mapkit_setContentCompressionResistancePriority:0 forAxis:v6];
   LODWORD(v7) = 1148846080;
   [v3 _mapkit_setContentCompressionResistancePriority:1 forAxis:v7];
-  v8 = [(TransitArtworkListView *)self arrowImage];
-  [v3 setImage:v8];
+  arrowImage = [(TransitArtworkListView *)self arrowImage];
+  [v3 setImage:arrowImage];
 
   [(TransitArtworkListView *)self _updateTintColorForArrowImageView:v3];
   [v3 setAccessibilityIdentifier:@"ArrowImageView"];
@@ -270,19 +270,19 @@ LABEL_4:
   return v2;
 }
 
-- (id)_addViewForArtwork:(id)a3 inContainer:(id)a4 constraints:(id)a5 previousViewInSegment:(id)a6 leadingSpacing:(double)a7
+- (id)_addViewForArtwork:(id)artwork inContainer:(id)container constraints:(id)constraints previousViewInSegment:(id)segment leadingSpacing:(double)spacing
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v12 artworkSourceType] == 3)
+  artworkCopy = artwork;
+  containerCopy = container;
+  constraintsCopy = constraints;
+  segmentCopy = segment;
+  if ([artworkCopy artworkSourceType] == 3)
   {
     v16 = [[MKArtworkLabelView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     v17 = [GEOComposedString alloc];
-    v18 = [v12 textDataSource];
-    v19 = [v18 text];
-    v20 = [v17 initWithGeoFormattedString:v19];
+    textDataSource = [artworkCopy textDataSource];
+    text = [textDataSource text];
+    v20 = [v17 initWithGeoFormattedString:text];
 
     v21 = [[MKServerFormattedString alloc] initWithComposedString:v20];
     [v16 setFormattedString:v21];
@@ -292,17 +292,17 @@ LABEL_3:
   }
 
   v16 = [[MKArtworkImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v20 = [[MKSizedTransitArtwork alloc] initWithArtwork:v12 shieldSize:{-[TransitArtworkListView shieldSize](self, "shieldSize")}];
+  v20 = [[MKSizedTransitArtwork alloc] initWithArtwork:artworkCopy shieldSize:{-[TransitArtworkListView shieldSize](self, "shieldSize")}];
   [v16 setImageSource:v20];
-  v22 = [v16 image];
+  image = [v16 image];
 
-  if (!v22)
+  if (!image)
   {
     v21 = sub_100035E6C();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v33 = 138412290;
-      v34 = v12;
+      v34 = artworkCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to construct an image for artwork: %@", &v33, 0xCu);
     }
 
@@ -313,38 +313,38 @@ LABEL_5:
 
   [(TransitArtworkListView *)self _updateTintColorForView:v16];
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  if (v13)
+  if (containerCopy)
   {
-    [v13 addSubview:v16];
-    v23 = [v16 leadingAnchor];
-    if (v15)
+    [containerCopy addSubview:v16];
+    leadingAnchor = [v16 leadingAnchor];
+    if (segmentCopy)
     {
-      v24 = [v15 trailingAnchor];
-      [v23 constraintEqualToAnchor:v24 constant:a7];
+      trailingAnchor = [segmentCopy trailingAnchor];
+      [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:spacing];
     }
 
     else
     {
-      v24 = [v13 leadingAnchor];
-      [v23 constraintEqualToAnchor:v24];
+      trailingAnchor = [containerCopy leadingAnchor];
+      [leadingAnchor constraintEqualToAnchor:trailingAnchor];
     }
     v25 = ;
 
-    [v14 addObject:v25];
-    v26 = [v16 centerYAnchor];
-    v27 = [v13 centerYAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
-    [v14 addObject:v28];
+    [constraintsCopy addObject:v25];
+    centerYAnchor = [v16 centerYAnchor];
+    centerYAnchor2 = [containerCopy centerYAnchor];
+    v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [constraintsCopy addObject:v28];
 
-    v29 = [v16 topAnchor];
-    v30 = [v13 topAnchor];
-    v31 = [v29 constraintGreaterThanOrEqualToAnchor:v30];
-    [v14 addObject:v31];
+    topAnchor = [v16 topAnchor];
+    topAnchor2 = [containerCopy topAnchor];
+    v31 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
+    [constraintsCopy addObject:v31];
   }
 
   else
   {
-    [(MultilineWrappingListView *)self->_multilineWrappingStackView addArrangedSubview:v16 withCustomHorizontalSpacing:a7];
+    [(MultilineWrappingListView *)self->_multilineWrappingStackView addArrangedSubview:v16 withCustomHorizontalSpacing:spacing];
   }
 
   [v16 setAccessibilityIdentifier:@"ArtworkView"];
@@ -374,33 +374,33 @@ LABEL_5:
   [(MultilineWrappingListView *)self->_multilineWrappingStackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MultilineWrappingListView *)self->_multilineWrappingStackView setAccessibilityIdentifier:@"MultilineWrappingStackView"];
   [(TransitArtworkListView *)self addSubview:self->_multilineWrappingStackView];
-  v7 = [(MultilineWrappingListView *)self->_multilineWrappingStackView widthAnchor];
-  v8 = [v7 constraintLessThanOrEqualToConstant:self->_maxWidth];
+  widthAnchor = [(MultilineWrappingListView *)self->_multilineWrappingStackView widthAnchor];
+  v8 = [widthAnchor constraintLessThanOrEqualToConstant:self->_maxWidth];
   maxWidthConstraint = self->_maxWidthConstraint;
   self->_maxWidthConstraint = v8;
 
-  v10 = [(MultilineWrappingListView *)self->_multilineWrappingStackView widthAnchor];
-  v11 = [v10 constraintEqualToConstant:self->_forcedWidth];
+  widthAnchor2 = [(MultilineWrappingListView *)self->_multilineWrappingStackView widthAnchor];
+  v11 = [widthAnchor2 constraintEqualToConstant:self->_forcedWidth];
   widthConstraint = self->_widthConstraint;
   self->_widthConstraint = v11;
 
   [(NSLayoutConstraint *)self->_maxWidthConstraint setActive:self->_maxWidth > 0.0];
   [(NSLayoutConstraint *)self->_widthConstraint setActive:self->_forcedWidth > 0.0];
-  v25 = [(MultilineWrappingListView *)self->_multilineWrappingStackView leadingAnchor];
-  v24 = [(TransitArtworkListView *)self leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [(MultilineWrappingListView *)self->_multilineWrappingStackView leadingAnchor];
+  leadingAnchor2 = [(TransitArtworkListView *)self leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[0] = v23;
-  v13 = [(MultilineWrappingListView *)self->_multilineWrappingStackView trailingAnchor];
-  v14 = [(TransitArtworkListView *)self trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [(MultilineWrappingListView *)self->_multilineWrappingStackView trailingAnchor];
+  trailingAnchor2 = [(TransitArtworkListView *)self trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[1] = v15;
-  v16 = [(MultilineWrappingListView *)self->_multilineWrappingStackView topAnchor];
-  v17 = [(TransitArtworkListView *)self topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  topAnchor = [(MultilineWrappingListView *)self->_multilineWrappingStackView topAnchor];
+  topAnchor2 = [(TransitArtworkListView *)self topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v18;
-  v19 = [(MultilineWrappingListView *)self->_multilineWrappingStackView bottomAnchor];
-  v20 = [(TransitArtworkListView *)self bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor = [(MultilineWrappingListView *)self->_multilineWrappingStackView bottomAnchor];
+  bottomAnchor2 = [(TransitArtworkListView *)self bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v21;
   v22 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v22];
@@ -424,11 +424,11 @@ LABEL_5:
   v48 = [(NSArray *)obj countByEnumeratingWithState:&v71 objects:v81 count:16];
   if (!v48)
   {
-    v45 = 0;
+    showBackground = 0;
     goto LABEL_59;
   }
 
-  v45 = 0;
+  showBackground = 0;
   v3 = 0;
   v47 = *v72;
   do
@@ -473,7 +473,7 @@ LABEL_5:
         if (v9 > 2)
         {
 LABEL_17:
-          v14 = 0;
+          _segmentContainer = 0;
           v49 = 0;
           goto LABEL_19;
         }
@@ -483,15 +483,15 @@ LABEL_17:
       {
       }
 
-      v12 = [(TransitArtworkListView *)self traitCollection];
-      v13 = [v12 userInterfaceIdiom];
+      traitCollection = [(TransitArtworkListView *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v13 == 5)
+      if (userInterfaceIdiom == 5)
       {
         goto LABEL_17;
       }
 
-      v14 = [(TransitArtworkListView *)self _segmentContainer];
+      _segmentContainer = [(TransitArtworkListView *)self _segmentContainer];
       v49 = 1;
 LABEL_19:
       v65 = 0u;
@@ -540,13 +540,13 @@ LABEL_19:
                   v25 = *(*(&v59 + 1) + 8 * m);
                   if ((([(TransitArtworkListView *)self separatorStyle]== 0) & v16) == 1 && v3 != 0)
                   {
-                    v27 = [(TransitArtworkListView *)self arrowImage];
+                    arrowImage = [(TransitArtworkListView *)self arrowImage];
 
-                    if (v27)
+                    if (arrowImage)
                     {
-                      v28 = [(TransitArtworkListView *)self _arrowImageView];
-                      [(MultilineWrappingListView *)self->_multilineWrappingStackView addArrangedSubview:v28];
-                      [v55 addObject:v28];
+                      _arrowImageView = [(TransitArtworkListView *)self _arrowImageView];
+                      [(MultilineWrappingListView *)self->_multilineWrappingStackView addArrangedSubview:_arrowImageView];
+                      [v55 addObject:_arrowImageView];
                       ++v3;
                     }
                   }
@@ -575,7 +575,7 @@ LABEL_19:
                     v29 = *&v75;
                   }
 
-                  v31 = [(TransitArtworkListView *)self _addViewForArtwork:v25 inContainer:v14 constraints:v58 previousViewInSegment:v24 leadingSpacing:v29];
+                  v31 = [(TransitArtworkListView *)self _addViewForArtwork:v25 inContainer:_segmentContainer constraints:v58 previousViewInSegment:v24 leadingSpacing:v29];
                   [v57 addObject:v31];
                   v15 = v31;
 
@@ -604,27 +604,27 @@ LABEL_19:
 
       if (v49)
       {
-        v32 = v14;
-        v33 = [v14 subviews];
-        v34 = [v33 count];
+        v32 = _segmentContainer;
+        subviews = [_segmentContainer subviews];
+        v34 = [subviews count];
 
         if (v34 && v15)
         {
           [(TransitArtworkListView *)self _configureContainerWithBackgroundIfNeeded:v32 constraints:v58];
-          v35 = [v32 trailingAnchor];
-          v36 = [v15 trailingAnchor];
-          v37 = [v35 constraintEqualToAnchor:v36];
+          trailingAnchor = [v32 trailingAnchor];
+          trailingAnchor2 = [v15 trailingAnchor];
+          v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
           [v58 addObject:v37];
 
           [(MultilineWrappingListView *)self->_multilineWrappingStackView addArrangedSubview:v32];
-          if (v45)
+          if (showBackground)
           {
-            v45 = 1;
+            showBackground = 1;
           }
 
           else
           {
-            v45 = [v32 showBackground];
+            showBackground = [v32 showBackground];
           }
         }
 
@@ -634,7 +634,7 @@ LABEL_19:
       else
       {
         v38 = v50;
-        v32 = v14;
+        v32 = _segmentContainer;
       }
     }
 
@@ -650,7 +650,7 @@ LABEL_59:
     [v58 addObjectsFromArray:v39];
   }
 
-  if (v45)
+  if (showBackground)
   {
     [(MultilineWrappingListView *)self->_multilineWrappingStackView setMaxLineHeight:*&v77];
   }
@@ -663,17 +663,17 @@ LABEL_59:
   arrowImageViews = self->_arrowImageViews;
   self->_arrowImageViews = v42;
 
-  v44 = [(TransitArtworkListView *)self overrideTintColor];
-  [(TransitArtworkListView *)self _updateTintColor:v44];
+  overrideTintColor = [(TransitArtworkListView *)self overrideTintColor];
+  [(TransitArtworkListView *)self _updateTintColor:overrideTintColor];
 
   [NSLayoutConstraint activateConstraints:v58];
 }
 
-- (void)_updateTintColorForArrowImageView:(id)a3
+- (void)_updateTintColorForArrowImageView:(id)view
 {
-  v4 = a3;
-  v6 = [(TransitArtworkListView *)self traitCollection];
-  if ([v6 userInterfaceIdiom] == 5)
+  viewCopy = view;
+  traitCollection = [(TransitArtworkListView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     +[UIColor secondaryLabelColor];
   }
@@ -683,25 +683,25 @@ LABEL_59:
     +[UIColor labelColor];
   }
   v5 = ;
-  [v4 setTintColor:v5];
+  [viewCopy setTintColor:v5];
 }
 
-- (void)_updateTintColorForView:(id)a3
+- (void)_updateTintColorForView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v3 = v5;
+    v3 = viewCopy;
     v4 = +[UIColor secondaryLabelColor];
     [v3 setTintColor:v4];
   }
 }
 
-- (void)_updateTintColor:(id)a3
+- (void)_updateTintColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
     v41 = 0uLL;
     v42 = 0uLL;
@@ -723,15 +723,15 @@ LABEL_59:
           }
 
           v10 = *(*(&v39 + 1) + 8 * i);
-          v11 = [(TransitArtworkListView *)self traitCollection];
-          if ([v11 userInterfaceIdiom] == 5)
+          traitCollection = [(TransitArtworkListView *)self traitCollection];
+          if ([traitCollection userInterfaceIdiom] == 5)
           {
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              [v10 setTextColor:v4];
+              [v10 setTextColor:colorCopy];
               continue;
             }
           }
@@ -740,7 +740,7 @@ LABEL_59:
           {
           }
 
-          [v10 setTintColor:v4];
+          [v10 setTintColor:colorCopy];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v39 objects:v46 count:16];
@@ -768,7 +768,7 @@ LABEL_59:
             objc_enumerationMutation(v13);
           }
 
-          [*(*(&v35 + 1) + 8 * j) setTintColor:v4];
+          [*(*(&v35 + 1) + 8 * j) setTintColor:colorCopy];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -838,11 +838,11 @@ LABEL_59:
   }
 }
 
-- (void)setOverrideTintColor:(id)a3
+- (void)setOverrideTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_overrideTintColor;
-  v7 = v5;
+  v7 = colorCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -851,33 +851,33 @@ LABEL_59:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_overrideTintColor, a3);
+      objc_storeStrong(&self->_overrideTintColor, color);
       [(TransitArtworkListView *)self _updateTintColor:v9];
       v7 = v9;
     }
   }
 }
 
-- (void)setForcedWidth:(double)a3
+- (void)setForcedWidth:(double)width
 {
-  if (vabdd_f64(a3, self->_forcedWidth) > 2.22044605e-16)
+  if (vabdd_f64(width, self->_forcedWidth) > 2.22044605e-16)
   {
-    self->_forcedWidth = a3;
-    [(NSLayoutConstraint *)self->_widthConstraint setConstant:a3];
-    [(NSLayoutConstraint *)self->_widthConstraint setActive:a3 > 0.0];
+    self->_forcedWidth = width;
+    [(NSLayoutConstraint *)self->_widthConstraint setConstant:width];
+    [(NSLayoutConstraint *)self->_widthConstraint setActive:width > 0.0];
     [(MultilineWrappingListView *)self->_multilineWrappingStackView invalidateIntrinsicContentSize];
 
     [(TransitArtworkListView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setMaxWidth:(double)a3
+- (void)setMaxWidth:(double)width
 {
-  if (self->_maxWidth != a3)
+  if (self->_maxWidth != width)
   {
-    self->_maxWidth = a3;
-    [(NSLayoutConstraint *)self->_maxWidthConstraint setConstant:a3];
-    [(NSLayoutConstraint *)self->_maxWidthConstraint setActive:a3 > 0.0];
+    self->_maxWidth = width;
+    [(NSLayoutConstraint *)self->_maxWidthConstraint setConstant:width];
+    [(NSLayoutConstraint *)self->_maxWidthConstraint setActive:width > 0.0];
     [(MultilineWrappingListView *)self->_multilineWrappingStackView invalidateIntrinsicContentSize];
 
     [(TransitArtworkListView *)self invalidateIntrinsicContentSize];
@@ -912,26 +912,26 @@ LABEL_59:
   }
 }
 
-- (void)setArtworkData:(id)a3
+- (void)setArtworkData:(id)data
 {
-  v5 = a3;
-  if (self->_artworkData != v5)
+  dataCopy = data;
+  if (self->_artworkData != dataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_artworkData, a3);
+    v6 = dataCopy;
+    objc_storeStrong(&self->_artworkData, data);
     [(TransitArtworkListView *)self _updateArtworkImageViewWithArtworks];
-    v5 = v6;
+    dataCopy = v6;
   }
 }
 
 - ($8502DCEA08BBBE1AB2005217B3838BBD)_metrics
 {
   v5 = objc_opt_class();
-  v8 = [(TransitArtworkListView *)self traitCollection];
-  v6 = [v8 userInterfaceIdiom];
+  traitCollection = [(TransitArtworkListView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   if (v5)
   {
-    [v5 _metricsForIdiom:v6];
+    [v5 _metricsForIdiom:userInterfaceIdiom];
   }
 
   else
@@ -954,11 +954,11 @@ LABEL_59:
   [(TransitArtworkListView *)self setAccessibilityIdentifier:@"TransitArtworkList"];
 }
 
-- (TransitArtworkListView)initWithCoder:(id)a3
+- (TransitArtworkListView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TransitArtworkListView;
-  v3 = [(TransitArtworkListView *)&v7 initWithCoder:a3];
+  v3 = [(TransitArtworkListView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -969,11 +969,11 @@ LABEL_59:
   return v4;
 }
 
-- (TransitArtworkListView)initWithFrame:(CGRect)a3
+- (TransitArtworkListView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = TransitArtworkListView;
-  v3 = [(TransitArtworkListView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitArtworkListView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -987,12 +987,12 @@ LABEL_59:
 + (double)transitArtworkListHeight
 {
   v3 = +[UIDevice currentDevice];
-  [a1 _metricsForIdiom:{objc_msgSend(v3, "userInterfaceIdiom")}];
+  [self _metricsForIdiom:{objc_msgSend(v3, "userInterfaceIdiom")}];
 
   return v5;
 }
 
-+ ($8502DCEA08BBBE1AB2005217B3838BBD)_metricsForIdiom:(SEL)a3
++ ($8502DCEA08BBBE1AB2005217B3838BBD)_metricsForIdiom:(SEL)idiom
 {
   if (a4 == 4)
   {

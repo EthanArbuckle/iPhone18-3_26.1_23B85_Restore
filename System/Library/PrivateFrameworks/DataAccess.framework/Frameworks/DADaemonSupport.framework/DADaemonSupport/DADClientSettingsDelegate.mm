@@ -3,8 +3,8 @@
 - (void)beginSettingsRequest;
 - (void)dealloc;
 - (void)disable;
-- (void)finishWithError:(id)a3;
-- (void)settingsRequestFinishedWithResults:(id)a3 status:(int64_t)a4 error:(id)a5;
+- (void)finishWithError:(id)error;
+- (void)settingsRequestFinishedWithResults:(id)results status:(int64_t)status error:(id)error;
 @end
 
 @implementation DADClientSettingsDelegate
@@ -29,8 +29,8 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[DADAgentManager sharedManager];
-  v4 = [(DADClientDelegate *)self accountID];
-  v5 = [v3 accountWithAccountID:v4];
+  accountID = [(DADClientDelegate *)self accountID];
+  v5 = [v3 accountWithAccountID:accountID];
 
   if (v5)
   {
@@ -40,8 +40,8 @@
       goto LABEL_9;
     }
 
-    v6 = [(DADClientSettingsDelegate *)self requestParams];
-    [v5 updateOofSettingsWithParams:v6 consumer:self];
+    requestParams = [(DADClientSettingsDelegate *)self requestParams];
+    [v5 updateOofSettingsWithParams:requestParams consumer:self];
   }
 
   else
@@ -50,14 +50,14 @@
     v8 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v7, v8))
     {
-      v9 = [(DADClientDelegate *)self accountID];
+      accountID2 = [(DADClientDelegate *)self accountID];
       v11 = 138543362;
-      v12 = v9;
+      v12 = accountID2;
       _os_log_impl(&dword_248524000, v7, v8, "Could not get an account with the ID %{public}@", &v11, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:55 userInfo:0];
-    [(DADClientSettingsDelegate *)self finishWithError:v6];
+    requestParams = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:55 userInfo:0];
+    [(DADClientSettingsDelegate *)self finishWithError:requestParams];
   }
 
 LABEL_9:
@@ -67,25 +67,25 @@ LABEL_9:
 - (BOOL)isOofSupported
 {
   v3 = +[DADAgentManager sharedManager];
-  v4 = [(DADClientDelegate *)self accountID];
-  v5 = [v3 accountWithAccountID:v4];
+  accountID = [(DADClientDelegate *)self accountID];
+  v5 = [v3 accountWithAccountID:accountID];
 
   LOBYTE(v3) = [v5 isOofSupported];
-  v6 = [(DADClientDelegate *)self client];
-  [v6 noteBlockedClientCallChange:1];
+  client = [(DADClientDelegate *)self client];
+  [client noteBlockedClientCallChange:1];
 
   return v3;
 }
 
-- (void)settingsRequestFinishedWithResults:(id)a3 status:(int64_t)a4 error:(id)a5
+- (void)settingsRequestFinishedWithResults:(id)results status:(int64_t)status error:(id)error
 {
-  v7 = a5;
-  if (a3)
+  errorCopy = error;
+  if (results)
   {
-    [(DADClientSettingsDelegate *)self setResponseParams:a3];
+    [(DADClientSettingsDelegate *)self setResponseParams:results];
   }
 
-  [(DADClientSettingsDelegate *)self finishWithError:v7];
+  [(DADClientSettingsDelegate *)self finishWithError:errorCopy];
 }
 
 - (void)disable
@@ -98,10 +98,10 @@ LABEL_9:
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADClientDelegate *)self finished])
   {
     [(DADClientDelegate *)self setFinished:1];
@@ -110,14 +110,14 @@ LABEL_9:
     if (os_log_type_enabled(v5, v6))
     {
       *buf = 134217984;
-      v32 = [v4 code];
+      code = [errorCopy code];
       _os_log_impl(&dword_248524000, v5, v6, "DADClientSettingsDelegate finished with status %ld.", buf, 0xCu);
     }
 
-    v7 = [(DADClientDelegate *)self client];
-    v8 = [v7 rawConnection];
+    client = [(DADClientDelegate *)self client];
+    rawConnection = [client rawConnection];
 
-    if (v8)
+    if (rawConnection)
     {
       v9 = *MEMORY[0x277D03C88];
       v30[0] = *MEMORY[0x277D03CD8];
@@ -125,46 +125,46 @@ LABEL_9:
       v26 = v9;
       v27 = v10;
       v11 = MEMORY[0x277CCABB0];
-      if (v4)
+      if (errorCopy)
       {
-        v12 = [v4 code];
+        code2 = [errorCopy code];
       }
 
       else
       {
-        v12 = 2;
+        code2 = 2;
       }
 
-      v13 = [v11 numberWithInteger:{v12, v26, v27}];
+      v13 = [v11 numberWithInteger:{code2, v26, v27}];
       v30[1] = v13;
       v28 = *MEMORY[0x277D03CC8];
-      v14 = [(DADClientDelegate *)self delegateID];
-      v30[2] = v14;
+      delegateID = [(DADClientDelegate *)self delegateID];
+      v30[2] = delegateID;
       v29 = *MEMORY[0x277D03CC0];
       v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[DADClientSettingsDelegate isUpdate](self, "isUpdate")}];
       v30[3] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v26 count:4];
       v17 = [v16 mutableCopy];
 
-      v18 = [(DADClientSettingsDelegate *)self responseParams];
+      responseParams = [(DADClientSettingsDelegate *)self responseParams];
 
-      if (v18)
+      if (responseParams)
       {
-        v19 = [(DADClientSettingsDelegate *)self responseParams];
-        v20 = [v19 dictionaryRepresentation];
-        [v17 setObject:v20 forKeyedSubscript:*MEMORY[0x277D03CE8]];
+        responseParams2 = [(DADClientSettingsDelegate *)self responseParams];
+        dictionaryRepresentation = [responseParams2 dictionaryRepresentation];
+        [v17 setObject:dictionaryRepresentation forKeyedSubscript:*MEMORY[0x277D03CE8]];
       }
 
       v21 = _CFXPCCreateXPCObjectFromCFObject();
-      xpc_connection_send_message(v8, v21);
+      xpc_connection_send_message(rawConnection, v21);
     }
 
-    v22 = [(DADClientDelegate *)self client];
-    [v22 noteBlockedClientCallChange:1];
+    client2 = [(DADClientDelegate *)self client];
+    [client2 noteBlockedClientCallChange:1];
 
-    v23 = [(DADClientDelegate *)self client];
-    v24 = [(DADClientDelegate *)self delegateID];
-    [v23 delegateWithIDIsGoingAway:v24];
+    client3 = [(DADClientDelegate *)self client];
+    delegateID2 = [(DADClientDelegate *)self delegateID];
+    [client3 delegateWithIDIsGoingAway:delegateID2];
   }
 
   v25 = *MEMORY[0x277D85DE8];

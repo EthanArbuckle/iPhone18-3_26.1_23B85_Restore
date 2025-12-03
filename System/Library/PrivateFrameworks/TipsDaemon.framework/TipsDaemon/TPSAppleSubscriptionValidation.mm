@@ -1,21 +1,21 @@
 @interface TPSAppleSubscriptionValidation
 - (TPSAppleSubscriptionValidation)init;
-- (TPSAppleSubscriptionValidation)initWithTargetContext:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (TPSAppleSubscriptionValidation)initWithTargetContext:(id)context;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSAppleSubscriptionValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_232DDEC50(sub_232DDF68C, v5);
 }
 
-- (TPSAppleSubscriptionValidation)initWithTargetContext:(id)a3
+- (TPSAppleSubscriptionValidation)initWithTargetContext:(id)context
 {
   sub_232E01470();
   v4 = OBJC_IVAR___TPSAppleSubscriptionValidation_subscriptionEntitlements;

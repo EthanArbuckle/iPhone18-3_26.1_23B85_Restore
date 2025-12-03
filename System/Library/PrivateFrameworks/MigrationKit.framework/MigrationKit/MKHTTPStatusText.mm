@@ -1,8 +1,8 @@
 @interface MKHTTPStatusText
 + (id)sharedInstance;
-+ (id)statusText:(unint64_t)a3;
++ (id)statusText:(unint64_t)text;
 - (MKHTTPStatusText)init;
-- (id)statusText:(unint64_t)a3;
+- (id)statusText:(unint64_t)text;
 @end
 
 @implementation MKHTTPStatusText
@@ -150,10 +150,10 @@
   return v2;
 }
 
-- (id)statusText:(unint64_t)a3
+- (id)statusText:(unint64_t)text
 {
   statusTexts = self->_statusTexts;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:text];
   v5 = [(NSDictionary *)statusTexts objectForKey:v4];
 
   return v5;
@@ -178,10 +178,10 @@ uint64_t __34__MKHTTPStatusText_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)statusText:(unint64_t)a3
++ (id)statusText:(unint64_t)text
 {
   v4 = +[MKHTTPStatusText sharedInstance];
-  v5 = [v4 statusText:a3];
+  v5 = [v4 statusText:text];
 
   return v5;
 }

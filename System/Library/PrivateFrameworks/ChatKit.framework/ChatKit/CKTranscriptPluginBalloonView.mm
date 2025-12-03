@@ -1,95 +1,95 @@
 @interface CKTranscriptPluginBalloonView
 - (BOOL)canUseOpaqueMask;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)hasBalloonShape;
 - (BOOL)needsGlassPlatter;
 - (BOOL)shouldShowBackdropBalloonLayer;
 - (BOOL)shouldShowPluginOverlayBalloonLayer;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (CKBalloonDescriptor_t)backdropBalloonDescriptor;
 - (CKBalloonDescriptor_t)pluginContainerMaskBalloonDescriptor;
 - (CKBalloonDescriptor_t)pluginOverlayBalloonDescriptor;
-- (CKTranscriptPluginBalloonView)initWithFrame:(CGRect)a3;
+- (CKTranscriptPluginBalloonView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)pluginInsets;
 - (UIViewController)pluginViewController;
 - (id)highlightOverlayColor;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)imageForInvisibleInkEffectView;
-- (void)_pluginViewReadyForSnapshot:(id)a3;
+- (void)_pluginViewReadyForSnapshot:(id)snapshot;
 - (void)_reparentCurrentPluginView;
-- (void)_setAndAddPluginViewAsSubview:(id)a3;
-- (void)addFilter:(id)a3;
+- (void)_setAndAddPluginViewAsSubview:(id)subview;
+- (void)addFilter:(id)filter;
 - (void)attachInvisibleInkEffectView;
 - (void)clearFilters;
-- (void)configureForComposition:(id)a3;
-- (void)configureForTranscriptPlugin:(id)a3 context:(id)a4;
+- (void)configureForComposition:(id)composition;
+- (void)configureForTranscriptPlugin:(id)plugin context:(id)context;
 - (void)detachInvisibleInkEffectView;
 - (void)invisibleInkEffectViewWasUncovered;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setBackgroundLuminance:(double)a3;
-- (void)setCanUseOpaqueMask:(BOOL)a3;
-- (void)setHasHighlightOverlay:(BOOL)a3 animated:(BOOL)a4 autoDismiss:(BOOL)a5;
-- (void)setHasTail:(BOOL)a3;
-- (void)setPluginSnapshotView:(id)a3;
-- (void)setPluginSnapshotViewForThrowAnimation:(id)a3;
-- (void)setPluginView:(id)a3;
-- (void)setPluginView:(id)a3 pluginController:(id)a4;
+- (void)setBackgroundLuminance:(double)luminance;
+- (void)setCanUseOpaqueMask:(BOOL)mask;
+- (void)setHasHighlightOverlay:(BOOL)overlay animated:(BOOL)animated autoDismiss:(BOOL)dismiss;
+- (void)setHasTail:(BOOL)tail;
+- (void)setPluginSnapshotView:(id)view;
+- (void)setPluginSnapshotViewForThrowAnimation:(id)animation;
+- (void)setPluginView:(id)view;
+- (void)setPluginView:(id)view pluginController:(id)controller;
 - (void)setShouldPerformSendAnimationOnAppear;
-- (void)setSuggestedActionsBackgroundColor:(id)a3;
-- (void)setSuppressMask:(BOOL)a3;
-- (void)setUserInterfaceLevel:(int64_t)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)setSuggestedActionsBackgroundColor:(id)color;
+- (void)setSuppressMask:(BOOL)mask;
+- (void)setUserInterfaceLevel:(int64_t)level;
+- (void)setUserInterfaceStyle:(int64_t)style;
 - (void)updateBalloonMasks;
 @end
 
 @implementation CKTranscriptPluginBalloonView
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v15.receiver = self;
   v15.super_class = CKTranscriptPluginBalloonView;
-  [(CKBalloonView *)&v15 configureForComposition:v4];
-  v5 = [v4 shelfPluginPayload];
-  if (!v5)
+  [(CKBalloonView *)&v15 configureForComposition:compositionCopy];
+  shelfPluginPayload = [compositionCopy shelfPluginPayload];
+  if (!shelfPluginPayload)
   {
-    v7 = [v4 pluginDisplayContainers];
-    v8 = [v7 lastObject];
+    pluginDisplayContainers = [compositionCopy pluginDisplayContainers];
+    lastObject = [pluginDisplayContainers lastObject];
 
-    v6 = [v8 pluginPayload];
+    pluginPayload = [lastObject pluginPayload];
 
-    if (v6)
+    if (pluginPayload)
     {
       goto LABEL_4;
     }
 
-    v5 = [v4 firstEmbeddedPluginPayload];
+    shelfPluginPayload = [compositionCopy firstEmbeddedPluginPayload];
   }
 
-  v6 = v5;
+  pluginPayload = shelfPluginPayload;
 LABEL_4:
-  [v6 setIsFromMe:1];
-  v9 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v10 = [v6 pluginBundleID];
-  v11 = [v9 balloonPluginForBundleID:v10];
+  [pluginPayload setIsFromMe:1];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  pluginBundleID = [pluginPayload pluginBundleID];
+  v11 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:pluginBundleID];
 
   v12 = [objc_alloc(objc_msgSend(v11 "dataSourceClass"))];
   v13 = [objc_alloc(objc_msgSend(v11 "bubbleClass"))];
-  v14 = [v13 pluginContentView];
-  [(CKTranscriptPluginBalloonView *)self setPluginView:v14 pluginController:v13];
+  pluginContentView = [v13 pluginContentView];
+  [(CKTranscriptPluginBalloonView *)self setPluginView:pluginContentView pluginController:v13];
 
   [(CKTranscriptPluginBalloonView *)self setDataSource:v12];
 }
 
-- (CKTranscriptPluginBalloonView)initWithFrame:(CGRect)a3
+- (CKTranscriptPluginBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v34.receiver = self;
   v34.super_class = CKTranscriptPluginBalloonView;
   v7 = [(CKBalloonView *)&v34 initWithFrame:?];
@@ -99,8 +99,8 @@ LABEL_4:
     [(CKBalloonImageView *)v7 setContentsTransformAnimationEnabled:1];
     [(CKTranscriptPluginBalloonView *)v8 setMayReparentPluginViews:1];
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 theme];
-    v11 = [v10 unfilledBalloonColorForColorType:0xFFFFFFFFLL];
+    theme = [v9 theme];
+    v11 = [theme unfilledBalloonColorForColorType:0xFFFFFFFFLL];
     [v11 ck_imColorComponents];
     [(CKBalloonView *)v8 setStrokeColor:?];
 
@@ -132,11 +132,11 @@ LABEL_4:
     v8->_pluginContainerMaskLayer = v15;
 
     v17 = v8->_pluginContainerMaskLayer;
-    v18 = [(UIView *)v8->_pluginContainerView layer];
-    [v18 setMask:v17];
+    layer = [(UIView *)v8->_pluginContainerView layer];
+    [layer setMask:v17];
 
-    v19 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v20 = [v19 mutableCopy];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v20 = [systemTraitsAffectingColorAppearance mutableCopy];
 
     [v20 addObject:objc_opt_class()];
     v21 = [v20 copy];
@@ -151,9 +151,9 @@ LABEL_4:
 {
   if ([(CKTranscriptPluginBalloonView *)self isScheduled])
   {
-    v3 = [(CKBalloonView *)self bubblePath];
+    bubblePath = [(CKBalloonView *)self bubblePath];
     [(CKTranscriptPluginBalloonView *)self maskFrame];
-    [v3 tailInsetsForBubbleSize:{v4, v5}];
+    [bubblePath tailInsetsForBubbleSize:{v4, v5}];
     v6 = +[CKUIBehavior sharedBehaviors];
     [v6 linkPreviewSendLaterInsets];
 
@@ -162,8 +162,8 @@ LABEL_4:
 
   else
   {
-    v3 = [(CKTranscriptPluginBalloonView *)self pluginContainerMaskLayer];
-    [v3 tailInsets];
+    bubblePath = [(CKTranscriptPluginBalloonView *)self pluginContainerMaskLayer];
+    [bubblePath tailInsets];
   }
 
   v11 = v7;
@@ -182,11 +182,11 @@ LABEL_4:
   return result;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v23.receiver = self;
   v23.super_class = CKTranscriptPluginBalloonView;
-  [(CKBalloonView *)&v23 layoutSublayersOfLayer:a3];
+  [(CKBalloonView *)&v23 layoutSublayersOfLayer:layer];
   [(CKTranscriptPluginBalloonView *)self maskFrame];
   v5 = v4;
   v7 = v6;
@@ -232,8 +232,8 @@ LABEL_4:
     pluginContainerMaskLayer = 0;
   }
 
-  v4 = [(UIView *)self->_pluginContainerView layer];
-  [v4 setMask:pluginContainerMaskLayer];
+  layer = [(UIView *)self->_pluginContainerView layer];
+  [layer setMask:pluginContainerMaskLayer];
 
   [(CKTranscriptPluginBalloonView *)self bounds];
   v6 = v5;
@@ -264,17 +264,17 @@ LABEL_4:
   }
 
   [(CKTranscriptPluginView *)self->_pluginView setFrame:v18, v20, v22, v24];
-  v26 = [(CKBalloonView *)self invisibleInkEffectController];
-  v27 = [v26 effectView];
-  [v27 setFrame:{v18, v20, v22, v24}];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
+  [effectView setFrame:{v18, v20, v22, v24}];
 
-  v28 = [(CKTranscriptPluginBalloonView *)self isScheduled];
+  isScheduled = [(CKTranscriptPluginBalloonView *)self isScheduled];
   v29 = 1.0;
-  if (v28)
+  if (isScheduled)
   {
-    v30 = [(CKBalloonView *)self isTranscriptBackgroundActive];
+    isTranscriptBackgroundActive = [(CKBalloonView *)self isTranscriptBackgroundActive];
     v29 = 0.5;
-    if (v30)
+    if (isTranscriptBackgroundActive)
     {
       v29 = 1.0;
     }
@@ -289,8 +289,8 @@ LABEL_4:
     v34 = v33 - v32;
     [(CKTranscriptPluginBalloonView *)self bounds];
     v36 = v35;
-    v37 = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
-    [v37 setFrame:{0.0, v34, v36, v32}];
+    suggestedActionsBackgroundView = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
+    [suggestedActionsBackgroundView setFrame:{0.0, v34, v36, v32}];
   }
 }
 
@@ -300,8 +300,8 @@ LABEL_4:
   v20.super_class = CKTranscriptPluginBalloonView;
   [(CKBalloonView *)&v20 prepareForDisplay];
   [(CKTranscriptPluginBalloonView *)self updateBalloonMasks];
-  v3 = [(CKTranscriptPluginBalloonView *)self pluginView];
-  [v3 layoutMargins];
+  pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
+  [pluginView layoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -313,21 +313,21 @@ LABEL_4:
   v18 = v17;
   if (!CKFloatApproximatelyEqualToFloatWithTolerance(v11, v5, 0.001) || !CKFloatApproximatelyEqualToFloatWithTolerance(v14, v7, 0.001) || !CKFloatApproximatelyEqualToFloatWithTolerance(v16, v9, 0.001) || !CKFloatApproximatelyEqualToFloatWithTolerance(v18, v19, 0.001))
   {
-    [v3 setLayoutMargins:{v12, v14, v16, v18}];
-    [v3 layoutMarginsDidChange];
+    [pluginView setLayoutMargins:{v12, v14, v16, v18}];
+    [pluginView layoutMarginsDidChange];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 setPluginViewDelegate:self];
+    [pluginView setPluginViewDelegate:self];
   }
 }
 
 - (BOOL)shouldShowBackdropBalloonLayer
 {
-  v3 = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
+  bundleID = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [bundleID isEqualToString:v4];
 
   if (v5)
   {
@@ -339,9 +339,9 @@ LABEL_4:
 
 - (BOOL)shouldShowPluginOverlayBalloonLayer
 {
-  v3 = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
+  bundleID = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [bundleID isEqualToString:v4];
 
   if (v5)
   {
@@ -364,10 +364,10 @@ LABEL_4:
     return 0;
   }
 
-  v7 = [(CKTranscriptPluginBalloonView *)self traitCollection];
-  v8 = [v7 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptPluginBalloonView *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  return v8 ^ 1;
+  return isTranscriptBackgroundActive ^ 1;
 }
 
 - (CKBalloonDescriptor_t)backdropBalloonDescriptor
@@ -441,10 +441,10 @@ LABEL_4:
     {
       if (var2 == 5)
       {
-        v8 = [(CKTranscriptPluginBalloonView *)self traitCollection];
-        v9 = [v8 isTranscriptBackgroundActive];
+        traitCollection = [(CKTranscriptPluginBalloonView *)self traitCollection];
+        isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-        v6 = v9 ^ 1;
+        v6 = isTranscriptBackgroundActive ^ 1;
       }
     }
 
@@ -495,7 +495,7 @@ LABEL_4:
 
 - (void)updateBalloonMasks
 {
-  v3 = [(CKTranscriptPluginBalloonView *)self traitCollection];
+  traitCollection = [(CKTranscriptPluginBalloonView *)self traitCollection];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -537,7 +537,7 @@ LABEL_4:
       v18 = v26;
       v19 = v27;
       v20 = v28;
-      [(CKBalloonLayer *)backdropBalloonLayer updateDescriptor:&v17 traitCollection:v3];
+      [(CKBalloonLayer *)backdropBalloonLayer updateDescriptor:&v17 traitCollection:traitCollection];
     }
 
     else
@@ -551,12 +551,12 @@ LABEL_4:
       v18 = v26;
       v19 = v27;
       v20 = v28;
-      v8 = [(CKBalloonLayer *)v7 initWithDescriptor:&v17 traitCollection:v3];
+      v8 = [(CKBalloonLayer *)v7 initWithDescriptor:&v17 traitCollection:traitCollection];
       v9 = self->_backdropBalloonLayer;
       self->_backdropBalloonLayer = v8;
 
-      v10 = [(CKTranscriptPluginBalloonView *)self layer];
-      [v10 insertSublayer:self->_backdropBalloonLayer atIndex:0];
+      layer = [(CKTranscriptPluginBalloonView *)self layer];
+      [layer insertSublayer:self->_backdropBalloonLayer atIndex:0];
     }
   }
 
@@ -589,7 +589,7 @@ LABEL_4:
       v18 = v26;
       v19 = v27;
       v20 = v28;
-      [(CKBalloonLayer *)pluginOverlayBalloonLayer updateDescriptor:&v17 traitCollection:v3];
+      [(CKBalloonLayer *)pluginOverlayBalloonLayer updateDescriptor:&v17 traitCollection:traitCollection];
     }
 
     else
@@ -603,13 +603,13 @@ LABEL_4:
       v18 = v26;
       v19 = v27;
       v20 = v28;
-      v14 = [(CKBalloonLayer *)v13 initWithDescriptor:&v17 traitCollection:v3];
+      v14 = [(CKBalloonLayer *)v13 initWithDescriptor:&v17 traitCollection:traitCollection];
       v15 = self->_pluginOverlayBalloonLayer;
       self->_pluginOverlayBalloonLayer = v14;
 
       [(CKBalloonLayer *)self->_pluginOverlayBalloonLayer setAllowsHitTesting:0];
-      v16 = [(CKTranscriptPluginBalloonView *)self layer];
-      [v16 addSublayer:self->_pluginOverlayBalloonLayer];
+      layer2 = [(CKTranscriptPluginBalloonView *)self layer];
+      [layer2 addSublayer:self->_pluginOverlayBalloonLayer];
     }
   }
 
@@ -621,51 +621,51 @@ LABEL_4:
   }
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(CKTranscriptPluginBalloonView *)self updateBalloonMasks];
   }
 }
 
-- (void)setUserInterfaceLevel:(int64_t)a3
+- (void)setUserInterfaceLevel:(int64_t)level
 {
-  if (self->_userInterfaceLevel != a3)
+  if (self->_userInterfaceLevel != level)
   {
-    self->_userInterfaceLevel = a3;
+    self->_userInterfaceLevel = level;
     [(CKTranscriptPluginBalloonView *)self updateBalloonMasks];
   }
 }
 
-- (void)setHasTail:(BOOL)a3
+- (void)setHasTail:(BOOL)tail
 {
-  v3 = a3;
-  if ([(CKBalloonView *)self hasTail]!= a3)
+  tailCopy = tail;
+  if ([(CKBalloonView *)self hasTail]!= tail)
   {
     v5.receiver = self;
     v5.super_class = CKTranscriptPluginBalloonView;
-    [(CKBalloonView *)&v5 setHasTail:v3];
+    [(CKBalloonView *)&v5 setHasTail:tailCopy];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
 - (BOOL)hasBalloonShape
 {
-  v3 = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
+  bundleID = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [bundleID isEqualToString:v4];
 
   v8 = 0;
   if ([(CKBalloonView *)self isStagedForSend]|| !v5)
   {
     v6 = IMBalloonExtensionIDWithSuffix();
-    v7 = [v3 isEqualToString:v6];
+    v7 = [bundleID isEqualToString:v6];
 
     if ((v7 & 1) == 0)
     {
-      if (![v3 isEqualToString:*MEMORY[0x1E69A69E0]] || (-[CKTranscriptPluginBalloonView traitCollection](self, "traitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isTranscriptBackgroundActive"), v10, v11))
+      if (![bundleID isEqualToString:*MEMORY[0x1E69A69E0]] || (-[CKTranscriptPluginBalloonView traitCollection](self, "traitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isTranscriptBackgroundActive"), v10, v11))
       {
         v8 = 1;
       }
@@ -682,8 +682,8 @@ LABEL_4:
   [(CKBalloonView *)&v4 prepareForReuse];
   [(CKTranscriptPluginBalloonView *)self setPluginView:0 pluginController:0];
   [(CKTranscriptPluginBalloonView *)self setPluginSnapshotView:0];
-  v3 = [(CKTranscriptPluginBalloonView *)self pluginSnapshotViewForThrowAnimation];
-  [v3 removeFromSuperview];
+  pluginSnapshotViewForThrowAnimation = [(CKTranscriptPluginBalloonView *)self pluginSnapshotViewForThrowAnimation];
+  [pluginSnapshotViewForThrowAnimation removeFromSuperview];
 
   [(CKTranscriptPluginBalloonView *)self setPluginSnapshotViewForThrowAnimation:0];
   [(CKTranscriptPluginBalloonView *)self setDataSource:0];
@@ -704,9 +704,9 @@ LABEL_4:
   }
 
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 canPluginBalloonsUseOpaqueMask];
+  canPluginBalloonsUseOpaqueMask = [v4 canPluginBalloonsUseOpaqueMask];
 
-  if (v5)
+  if (canPluginBalloonsUseOpaqueMask)
   {
     goto LABEL_4;
   }
@@ -714,9 +714,9 @@ LABEL_4:
   return 0;
 }
 
-- (void)setCanUseOpaqueMask:(BOOL)a3
+- (void)setCanUseOpaqueMask:(BOOL)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v5 = +[CKPrintController sharedInstance];
   if ([v5 isPrinting])
   {
@@ -725,44 +725,44 @@ LABEL_4:
   else
   {
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 canPluginBalloonsUseOpaqueMask];
+    canPluginBalloonsUseOpaqueMask = [v6 canPluginBalloonsUseOpaqueMask];
 
-    if (!v7)
+    if (!canPluginBalloonsUseOpaqueMask)
     {
       return;
     }
   }
 
-  if ([(CKTranscriptPluginBalloonView *)self canUseOpaqueMask]!= v3)
+  if ([(CKTranscriptPluginBalloonView *)self canUseOpaqueMask]!= maskCopy)
   {
     v8.receiver = self;
     v8.super_class = CKTranscriptPluginBalloonView;
-    [(CKBalloonView *)&v8 setCanUseOpaqueMask:v3];
+    [(CKBalloonView *)&v8 setCanUseOpaqueMask:maskCopy];
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
     [(CKTranscriptPluginBalloonView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v8 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v8;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v8;
   }
 
-  v9 = [(CKTranscriptPluginBalloonView *)self dataSource];
+  dataSource = [(CKTranscriptPluginBalloonView *)self dataSource];
 
-  if (v9)
+  if (dataSource)
   {
     [(CKTranscriptPluginBalloonView *)self pluginInsets];
     v12 = width - (v10 + v11);
     v15 = height - (v13 + v14);
-    v16 = [(CKTranscriptPluginBalloonView *)self dataSource];
-    [v16 sizeThatFits:{v12, v15}];
+    dataSource2 = [(CKTranscriptPluginBalloonView *)self dataSource];
+    [dataSource2 sizeThatFits:{v12, v15}];
     v18 = v17;
     v20 = v19;
 
@@ -786,68 +786,68 @@ LABEL_4:
 - (id)highlightOverlayColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 pluginBalloonSelectionOverlayColor];
+  pluginBalloonSelectionOverlayColor = [v2 pluginBalloonSelectionOverlayColor];
 
-  return v3;
+  return pluginBalloonSelectionOverlayColor;
 }
 
-- (void)setBackgroundLuminance:(double)a3
+- (void)setBackgroundLuminance:(double)luminance
 {
   v8.receiver = self;
   v8.super_class = CKTranscriptPluginBalloonView;
   [(CKBalloonView *)&v8 setBackgroundLuminance:?];
-  v5 = [(CKTranscriptPluginBalloonView *)self pluginViewController];
+  pluginViewController = [(CKTranscriptPluginBalloonView *)self pluginViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKTranscriptPluginBalloonView *)self pluginViewController];
-    [v7 didChangeBackgroundLuminance:a3];
+    pluginViewController2 = [(CKTranscriptPluginBalloonView *)self pluginViewController];
+    [pluginViewController2 didChangeBackgroundLuminance:luminance];
   }
 }
 
 - (BOOL)needsGlassPlatter
 {
-  v3 = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
+  bundleID = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [bundleID isEqualToString:v4];
 
   if (v5)
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isTranscriptPortalEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptPortalEnabled = [mEMORY[0x1E69A8070] isTranscriptPortalEnabled];
 
-  if (!v7)
+  if (!isTranscriptPortalEnabled)
   {
     return 0;
   }
 
-  v8 = [(CKTranscriptPluginBalloonView *)self traitCollection];
-  v9 = [v8 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptPluginBalloonView *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  return v9;
+  return isTranscriptBackgroundActive;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v32.receiver = self;
   v32.super_class = CKTranscriptPluginBalloonView;
-  v8 = [(CKTranscriptPluginBalloonView *)&v32 hitTest:v7 withEvent:x, y];
+  v8 = [(CKTranscriptPluginBalloonView *)&v32 hitTest:eventCopy withEvent:x, y];
   if ([(CKBalloonView *)self invisibleInkEffectEnabled]&& [(CKTranscriptPluginBalloonView *)self isInteractive])
   {
-    v9 = [(CKBalloonView *)self invisibleInkEffectController];
-    v10 = [v9 effectView];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    effectView = [invisibleInkEffectController effectView];
 
-    v11 = [v10 coverageTracker];
-    v12 = v11;
-    if (v11 && ([v11 isUncovered] & 1) == 0)
+    coverageTracker = [effectView coverageTracker];
+    v12 = coverageTracker;
+    if (coverageTracker && ([coverageTracker isUncovered] & 1) == 0)
     {
 
       goto LABEL_21;
@@ -856,14 +856,14 @@ LABEL_4:
 
   if ([(CKTranscriptPluginBalloonView *)self isInteractive])
   {
-    v13 = [(CKTranscriptPluginBalloonView *)self pluginView];
+    pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(CKTranscriptPluginBalloonView *)self pluginView];
-      v16 = [v15 interactiveViews];
-      v17 = [v16 count];
+      pluginView2 = [(CKTranscriptPluginBalloonView *)self pluginView];
+      interactiveViews = [pluginView2 interactiveViews];
+      v17 = [interactiveViews count];
 
       if (v17)
       {
@@ -871,10 +871,10 @@ LABEL_4:
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v18 = [(CKTranscriptPluginBalloonView *)self pluginView];
-        v19 = [v18 interactiveViews];
+        pluginView3 = [(CKTranscriptPluginBalloonView *)self pluginView];
+        interactiveViews2 = [pluginView3 interactiveViews];
 
-        v20 = [v19 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v20 = [interactiveViews2 countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v20)
         {
           v21 = v20;
@@ -885,12 +885,12 @@ LABEL_4:
             {
               if (*v29 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(interactiveViews2);
               }
 
               v24 = *(*(&v28 + 1) + 8 * i);
               [v24 convertPoint:self fromView:{x, y}];
-              v25 = [v24 hitTest:v7 withEvent:?];
+              v25 = [v24 hitTest:eventCopy withEvent:?];
               if (v25)
               {
                 v26 = v25;
@@ -900,7 +900,7 @@ LABEL_4:
               }
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v28 objects:v33 count:16];
+            v21 = [interactiveViews2 countByEnumeratingWithState:&v28 objects:v33 count:16];
             if (v21)
             {
               continue;
@@ -916,38 +916,38 @@ LABEL_19:
   }
 
   v8 = v8;
-  v10 = v8;
+  effectView = v8;
 LABEL_21:
 
-  return v10;
+  return effectView;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 view];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  view = [touchCopy view];
   v9 = objc_opt_class();
   if (v9 == objc_opt_class())
   {
     goto LABEL_18;
   }
 
-  v10 = [(CKBalloonView *)self delegate];
-  [v10 liveBalloonTouched:self];
+  delegate = [(CKBalloonView *)self delegate];
+  [delegate liveBalloonTouched:self];
 
   if ([(CKTranscriptPluginBalloonView *)self isInteractive])
   {
-    v11 = [(CKTranscriptPluginBalloonView *)self pluginView];
+    pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CKTranscriptPluginBalloonView *)self pluginView];
-      v14 = [v13 interactiveViews];
+      pluginView2 = [(CKTranscriptPluginBalloonView *)self pluginView];
+      interactiveViews = [pluginView2 interactiveViews];
 
-      if ([v14 containsObject:v8])
+      if ([interactiveViews containsObject:view])
       {
 
 LABEL_18:
@@ -959,7 +959,7 @@ LABEL_18:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v15 = v14;
+      v15 = interactiveViews;
       v16 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v16)
       {
@@ -973,7 +973,7 @@ LABEL_18:
               objc_enumerationMutation(v15);
             }
 
-            if ([v8 isDescendantOfView:*(*(&v25 + 1) + 8 * i)] && !CKIsRunningInMessagesNotificationExtension())
+            if ([view isDescendantOfView:*(*(&v25 + 1) + 8 * i)] && !CKIsRunningInMessagesNotificationExtension())
             {
               objc_initWeak(&location, self);
               v22 = MEMORY[0x1E69E9820];
@@ -1024,51 +1024,51 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
 
 - (void)attachInvisibleInkEffectView
 {
-  v3 = [(CKBalloonView *)self invisibleInkEffectController];
-  v7 = [v3 effectView];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  v4 = [(CKTranscriptPluginBalloonView *)self pluginView];
-  v5 = [v4 superview];
+  pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
+  superview = [pluginView superview];
 
   pluginContainerView = self->_pluginContainerView;
-  if (v5)
+  if (superview)
   {
-    [(UIView *)pluginContainerView insertSubview:v7 aboveSubview:v4];
+    [(UIView *)pluginContainerView insertSubview:effectView aboveSubview:pluginView];
   }
 
   else
   {
-    [(UIView *)pluginContainerView insertSubview:v7 atIndex:0];
+    [(UIView *)pluginContainerView insertSubview:effectView atIndex:0];
   }
 }
 
 - (void)detachInvisibleInkEffectView
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  v3 = [v2 effectView];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
-  [v3 removeFromSuperview];
+  [effectView removeFromSuperview];
 }
 
 - (id)imageForInvisibleInkEffectView
 {
-  v3 = [(CKTranscriptPluginBalloonView *)self pluginView];
-  v4 = v3;
-  if (v3)
+  pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
+  v4 = pluginView;
+  if (pluginView)
   {
-    [v3 layoutSubviews];
+    [pluginView layoutSubviews];
     [(CKTranscriptPluginBalloonView *)self bounds];
     v13.width = v5;
     v13.height = v6;
     UIGraphicsBeginImageContextWithOptions(v13, 1, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    CGContextSetFillColorWithColor(CurrentContext, [v8 CGColor]);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    CGContextSetFillColorWithColor(CurrentContext, [whiteColor CGColor]);
 
     [(CKTranscriptPluginBalloonView *)self bounds];
     CGContextFillRect(CurrentContext, v14);
-    v9 = [v4 layer];
-    [v9 renderInContext:CurrentContext];
+    layer = [v4 layer];
+    [layer renderInContext:CurrentContext];
 
     v10 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -1084,19 +1084,19 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
 
 - (void)invisibleInkEffectViewWasUncovered
 {
-  v2 = [(CKBalloonView *)self invisibleInkEffectController];
-  [v2 suspendForTimeInterval:5.0];
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  [invisibleInkEffectController suspendForTimeInterval:5.0];
 }
 
-- (void)_pluginViewReadyForSnapshot:(id)a3
+- (void)_pluginViewReadyForSnapshot:(id)snapshot
 {
-  v21 = a3;
-  v4 = [(CKBalloonView *)self invisibleInkEffectEnabled];
-  v5 = v21;
-  if (v4)
+  snapshotCopy = snapshot;
+  invisibleInkEffectEnabled = [(CKBalloonView *)self invisibleInkEffectEnabled];
+  v5 = snapshotCopy;
+  if (invisibleInkEffectEnabled)
   {
-    v6 = [v21 userInfo];
-    v7 = [v6 objectForKey:@"CKTranscriptPluginViewSnapshotUserInfoKey"];
+    userInfo = [snapshotCopy userInfo];
+    v7 = [userInfo objectForKey:@"CKTranscriptPluginViewSnapshotUserInfoKey"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1112,8 +1112,8 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
       v23.width = v13;
       v23.height = v15;
       UIGraphicsBeginImageContextWithOptions(v23, 1, v17);
-      v18 = [MEMORY[0x1E69DC888] whiteColor];
-      [v18 set];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [whiteColor set];
 
       v24.size.width = ceil(v9);
       v24.size.height = ceil(v11);
@@ -1121,20 +1121,20 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
       v24.origin.y = 0.0;
       UIRectFill(v24);
       [v7 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-      v19 = UIGraphicsGetImageFromCurrentImageContext();
+      imageForInvisibleInkEffectView = UIGraphicsGetImageFromCurrentImageContext();
 
       UIGraphicsEndImageContext();
     }
 
     else
     {
-      v19 = [(CKTranscriptPluginBalloonView *)self imageForInvisibleInkEffectView];
+      imageForInvisibleInkEffectView = [(CKTranscriptPluginBalloonView *)self imageForInvisibleInkEffectView];
     }
 
-    v20 = [(CKBalloonView *)self invisibleInkEffectController];
-    [v20 hostViewDidUpdateSnapshot:v19];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    [invisibleInkEffectController hostViewDidUpdateSnapshot:imageForInvisibleInkEffectView];
 
-    v5 = v21;
+    v5 = snapshotCopy;
   }
 }
 
@@ -1142,10 +1142,10 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
 {
   if ([(CKTranscriptPluginBalloonView *)self mayReparentPluginViews]|| ([(CKTranscriptPluginView *)self->_pluginView superview], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
   {
-    v4 = [(CKTranscriptPluginView *)self->_pluginView superview];
+    superview = [(CKTranscriptPluginView *)self->_pluginView superview];
     pluginContainerView = self->_pluginContainerView;
 
-    if (v4 != pluginContainerView)
+    if (superview != pluginContainerView)
     {
       [(CKTranscriptPluginView *)self->_pluginView removeFromSuperview];
       pluginView = self->_pluginView;
@@ -1155,27 +1155,27 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
   }
 }
 
-- (void)_setAndAddPluginViewAsSubview:(id)a3
+- (void)_setAndAddPluginViewAsSubview:(id)subview
 {
-  v13 = a3;
-  v5 = [(CKBalloonView *)self delegate];
+  subviewCopy = subview;
+  delegate = [(CKBalloonView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKBalloonView *)self delegate];
-    [v7 balloonView:self willInsertPluginViewAsSubview:v13];
+    delegate2 = [(CKBalloonView *)self delegate];
+    [delegate2 balloonView:self willInsertPluginViewAsSubview:subviewCopy];
   }
 
-  objc_storeStrong(&self->_pluginView, a3);
-  v8 = [(CKBalloonView *)self invisibleInkEffectController];
-  v9 = [v8 effectView];
+  objc_storeStrong(&self->_pluginView, subview);
+  invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+  effectView = [invisibleInkEffectController effectView];
 
   pluginContainerView = self->_pluginContainerView;
   pluginView = self->_pluginView;
-  if (v9)
+  if (effectView)
   {
-    [(UIView *)pluginContainerView insertSubview:pluginView belowSubview:v9];
+    [(UIView *)pluginContainerView insertSubview:pluginView belowSubview:effectView];
   }
 
   else
@@ -1185,52 +1185,52 @@ void __70__CKTranscriptPluginBalloonView_gestureRecognizer_shouldReceiveTouch___
 
   [(CKTranscriptPluginBalloonView *)self setNeedsLayout];
   [(CKBalloonView *)self setNeedsPrepareForDisplay];
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 removeObserver:self name:@"CKTranscriptPluginViewReadyForSnapshotNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"CKTranscriptPluginViewReadyForSnapshotNotification" object:0];
   if (self->_pluginView)
   {
-    [v12 addObserver:self selector:sel__pluginViewReadyForSnapshot_ name:@"CKTranscriptPluginViewReadyForSnapshotNotification" object:?];
+    [defaultCenter addObserver:self selector:sel__pluginViewReadyForSnapshot_ name:@"CKTranscriptPluginViewReadyForSnapshotNotification" object:?];
   }
 }
 
-- (void)setPluginView:(id)a3
+- (void)setPluginView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [CKTranscriptPluginBalloonView setPluginView:v5];
   }
 
-  [(CKTranscriptPluginBalloonView *)self setPluginView:v4 pluginController:0];
+  [(CKTranscriptPluginBalloonView *)self setPluginView:viewCopy pluginController:0];
 }
 
-- (void)setPluginView:(id)a3 pluginController:(id)a4
+- (void)setPluginView:(id)view pluginController:(id)controller
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   pluginView = self->_pluginView;
-  if (pluginView == v6 && pluginView != 0)
+  if (pluginView == viewCopy && pluginView != 0)
   {
     [(CKTranscriptPluginBalloonView *)self _reparentCurrentPluginView];
     goto LABEL_36;
   }
 
-  if (pluginView == v6)
+  if (pluginView == viewCopy)
   {
     goto LABEL_36;
   }
 
-  if ([(CKTranscriptPluginBalloonView *)self mayReparentPluginViews]|| ([(CKTranscriptPluginView *)v6 superview], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  if ([(CKTranscriptPluginBalloonView *)self mayReparentPluginViews]|| ([(CKTranscriptPluginView *)viewCopy superview], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     if (!IMIsRunningInMessagesTranscriptExtension() || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 LABEL_19:
-      v18 = [(CKTranscriptPluginView *)self->_pluginView superview];
+      superview = [(CKTranscriptPluginView *)self->_pluginView superview];
       pluginContainerView = self->_pluginContainerView;
 
-      if (v18 == pluginContainerView && [(CKTranscriptPluginView *)self->_pluginView isDescendantOfView:self->_pluginContainerView])
+      if (superview == pluginContainerView && [(CKTranscriptPluginView *)self->_pluginView isDescendantOfView:self->_pluginContainerView])
       {
         WeakRetained = objc_loadWeakRetained(&self->_pluginViewController);
         v21 = objc_opt_respondsToSelector();
@@ -1263,13 +1263,13 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v7 view];
+        view = [controllerCopy view];
 
-        if (v27 == v6)
+        if (view == viewCopy)
         {
 LABEL_35:
-          objc_storeWeak(&self->_pluginViewController, v7);
-          [(CKTranscriptPluginBalloonView *)self _setAndAddPluginViewAsSubview:v6];
+          objc_storeWeak(&self->_pluginViewController, controllerCopy);
+          [(CKTranscriptPluginBalloonView *)self _setAndAddPluginViewAsSubview:viewCopy];
           goto LABEL_36;
         }
 
@@ -1279,11 +1279,11 @@ LABEL_35:
           v29 = 136315906;
           v30 = "[CKTranscriptPluginBalloonView setPluginView:pluginController:]";
           v31 = 2112;
-          v32 = self;
+          selfCopy = self;
           v33 = 2112;
-          v34 = v6;
+          v34 = viewCopy;
           v35 = 2112;
-          v36 = v7;
+          v36 = controllerCopy;
           _os_log_error_impl(&dword_19020E000, v28, OS_LOG_TYPE_ERROR, "%s: %@ passing in a plugin view %@ that doesn't match the plugin view controller view %@", &v29, 0x2Au);
         }
       }
@@ -1293,16 +1293,16 @@ LABEL_35:
         v28 = IMLogHandleForCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          [(CKTranscriptPluginBalloonView *)self setPluginView:v7 pluginController:v28];
+          [(CKTranscriptPluginBalloonView *)self setPluginView:controllerCopy pluginController:v28];
         }
       }
 
       goto LABEL_35;
     }
 
-    v12 = v6;
-    v13 = [(CKTranscriptPluginView *)v12 metadata];
-    v14 = [v13 specialization];
+    v12 = viewCopy;
+    metadata = [(CKTranscriptPluginView *)v12 metadata];
+    specialization = [metadata specialization];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1310,8 +1310,8 @@ LABEL_35:
 
     else
     {
-      v15 = [(CKTranscriptPluginView *)v12 metadata];
-      v16 = [v15 specialization];
+      metadata2 = [(CKTranscriptPluginView *)v12 metadata];
+      specialization2 = [metadata2 specialization];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1330,43 +1330,43 @@ LABEL_18:
   v11 = IMLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [(CKTranscriptPluginBalloonView *)self setPluginView:v6 pluginController:v11];
+    [(CKTranscriptPluginBalloonView *)self setPluginView:viewCopy pluginController:v11];
   }
 
 LABEL_36:
 }
 
-- (void)setPluginSnapshotView:(id)a3
+- (void)setPluginSnapshotView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   pluginSnapshotView = self->_pluginSnapshotView;
-  v10 = v5;
-  if (pluginSnapshotView != v5)
+  v10 = viewCopy;
+  if (pluginSnapshotView != viewCopy)
   {
     [(UIView *)pluginSnapshotView removeFromSuperview];
-    v7 = [(CKTranscriptPluginBalloonView *)self pluginView];
-    [v7 setAlpha:1.0];
+    pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
+    [pluginView setAlpha:1.0];
 
-    objc_storeStrong(&self->_pluginSnapshotView, a3);
+    objc_storeStrong(&self->_pluginSnapshotView, view);
     v8 = self->_pluginSnapshotView;
     if (v8)
     {
       [(UIView *)self->_pluginContainerView insertSubview:v8 atIndex:0];
-      v9 = [(CKTranscriptPluginBalloonView *)self pluginView];
-      [v9 setAlpha:0.0];
+      pluginView2 = [(CKTranscriptPluginBalloonView *)self pluginView];
+      [pluginView2 setAlpha:0.0];
     }
   }
 }
 
-- (void)setPluginSnapshotViewForThrowAnimation:(id)a3
+- (void)setPluginSnapshotViewForThrowAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   pluginSnapshotViewForThrowAnimation = self->_pluginSnapshotViewForThrowAnimation;
-  if (pluginSnapshotViewForThrowAnimation != v5)
+  if (pluginSnapshotViewForThrowAnimation != animationCopy)
   {
-    v8 = v5;
+    v8 = animationCopy;
     [(UIView *)pluginSnapshotViewForThrowAnimation removeFromSuperview];
-    objc_storeStrong(&self->_pluginSnapshotViewForThrowAnimation, a3);
+    objc_storeStrong(&self->_pluginSnapshotViewForThrowAnimation, animation);
     if (self->_pluginSnapshotViewForThrowAnimation)
     {
       [(CKTranscriptPluginBalloonView *)self setPluginView:0 pluginController:0];
@@ -1383,15 +1383,15 @@ LABEL_36:
     [(UIView *)self->_pluginSnapshotViewForThrowAnimation setAutoresizingMask:18];
     [(UIView *)self->_pluginContainerView addSubview:self->_pluginSnapshotViewForThrowAnimation];
     [(UIView *)self->_pluginContainerView bringSubviewToFront:self->_pluginSnapshotViewForThrowAnimation];
-    v5 = v8;
+    animationCopy = v8;
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [v4 balloonBackdropFilters];
-  v6 = [v5 count];
+  filterCopy = filter;
+  balloonBackdropFilters = [filterCopy balloonBackdropFilters];
+  v6 = [balloonBackdropFilters count];
 
   if (v6)
   {
@@ -1408,132 +1408,132 @@ LABEL_36:
 
     if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
     {
-      v8 = [(CKBalloonView *)self backdropFilterLayer];
-      _CKAssert(v8 == 0);
+      backdropFilterLayer = [(CKBalloonView *)self backdropFilterLayer];
+      _CKAssert(backdropFilterLayer == 0);
     }
 
-    v9 = [(CKBalloonView *)self backdropFilterLayer];
+    backdropFilterLayer2 = [(CKBalloonView *)self backdropFilterLayer];
 
-    if (v9)
+    if (backdropFilterLayer2)
     {
-      v10 = [(CKBalloonView *)self backdropFilterLayer];
-      [v10 removeFromSuperlayer];
+      backdropFilterLayer3 = [(CKBalloonView *)self backdropFilterLayer];
+      [backdropFilterLayer3 removeFromSuperlayer];
 
       [(CKBalloonView *)self setBackdropFilterLayer:0];
     }
 
-    v11 = [(CKTranscriptPluginBalloonView *)self pluginView];
-    [v11 setHidden:1];
+    pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
+    [pluginView setHidden:1];
 
     [(CKTranscriptPluginBalloonView *)self setSuppressMask:1];
-    v12 = [(UIView *)self->_pluginContainerView layer];
-    [v12 setAllowsGroupBlending:0];
+    layer = [(UIView *)self->_pluginContainerView layer];
+    [layer setAllowsGroupBlending:0];
 
     v13 = objc_alloc_init(MEMORY[0x1E6979310]);
     [v13 setGroupName:@"FSMBackdropGroup"];
-    v14 = [v4 balloonBackdropFilters];
-    [v13 setFilters:v14];
+    balloonBackdropFilters2 = [filterCopy balloonBackdropFilters];
+    [v13 setFilters:balloonBackdropFilters2];
 
     [v13 setScale:0.25];
     [(UIView *)self->_pluginContainerView bounds];
     [v13 setFrame:?];
     [(CKBalloonView *)self setBackdropFilterLayer:v13];
-    v15 = [(UIView *)self->_pluginContainerView layer];
-    [v15 addSublayer:v13];
+    layer2 = [(UIView *)self->_pluginContainerView layer];
+    [layer2 addSublayer:v13];
   }
 
-  v16 = [(CKTranscriptPluginBalloonView *)self layer];
-  v17 = [v4 balloonFilters];
-  [v16 setFilters:v17];
+  layer3 = [(CKTranscriptPluginBalloonView *)self layer];
+  balloonFilters = [filterCopy balloonFilters];
+  [layer3 setFilters:balloonFilters];
 
-  v18 = [(CKTranscriptPluginBalloonView *)self layer];
-  v19 = [v4 balloonCompositingFilter];
-  [v18 setCompositingFilter:v19];
+  layer4 = [(CKTranscriptPluginBalloonView *)self layer];
+  balloonCompositingFilter = [filterCopy balloonCompositingFilter];
+  [layer4 setCompositingFilter:balloonCompositingFilter];
 
   v20.receiver = self;
   v20.super_class = CKTranscriptPluginBalloonView;
-  [(CKBalloonView *)&v20 addFilter:v4];
+  [(CKBalloonView *)&v20 addFilter:filterCopy];
 }
 
 - (void)clearFilters
 {
-  v3 = [(CKTranscriptPluginBalloonView *)self pluginView];
-  [v3 setHidden:0];
+  pluginView = [(CKTranscriptPluginBalloonView *)self pluginView];
+  [pluginView setHidden:0];
 
   [(CKTranscriptPluginBalloonView *)self setSuppressMask:0];
-  v4 = [(UIView *)self->_pluginContainerView layer];
-  [v4 setAllowsGroupBlending:1];
+  layer = [(UIView *)self->_pluginContainerView layer];
+  [layer setAllowsGroupBlending:1];
 
-  v5 = [(CKBalloonView *)self backdropFilterLayer];
-  [v5 removeFromSuperlayer];
+  backdropFilterLayer = [(CKBalloonView *)self backdropFilterLayer];
+  [backdropFilterLayer removeFromSuperlayer];
 
   [(CKBalloonView *)self setBackdropFilterLayer:0];
-  v6 = [(CKTranscriptPluginBalloonView *)self layer];
-  [v6 setFilters:0];
+  layer2 = [(CKTranscriptPluginBalloonView *)self layer];
+  [layer2 setFilters:0];
 
-  v7 = [(CKTranscriptPluginBalloonView *)self layer];
-  [v7 setCompositingFilter:0];
+  layer3 = [(CKTranscriptPluginBalloonView *)self layer];
+  [layer3 setCompositingFilter:0];
 
   v8.receiver = self;
   v8.super_class = CKTranscriptPluginBalloonView;
   [(CKBalloonView *)&v8 clearFilters];
 }
 
-- (void)setHasHighlightOverlay:(BOOL)a3 animated:(BOOL)a4 autoDismiss:(BOOL)a5
+- (void)setHasHighlightOverlay:(BOOL)overlay animated:(BOOL)animated autoDismiss:(BOOL)dismiss
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
+  dismissCopy = dismiss;
+  animatedCopy = animated;
+  overlayCopy = overlay;
+  bundleID = [(IMBalloonPluginDataSource *)self->_dataSource bundleID];
   v10 = IMBalloonExtensionIDWithSuffix();
-  v11 = [v9 isEqualToString:v10];
+  v11 = [bundleID isEqualToString:v10];
 
   if ((v11 & 1) == 0)
   {
     v12.receiver = self;
     v12.super_class = CKTranscriptPluginBalloonView;
-    [(CKBalloonView *)&v12 setHasHighlightOverlay:v7 animated:v6 autoDismiss:v5];
+    [(CKBalloonView *)&v12 setHasHighlightOverlay:overlayCopy animated:animatedCopy autoDismiss:dismissCopy];
   }
 }
 
-- (void)setSuppressMask:(BOOL)a3
+- (void)setSuppressMask:(BOOL)mask
 {
-  if (self->_suppressMask != a3)
+  if (self->_suppressMask != mask)
   {
-    self->_suppressMask = a3;
+    self->_suppressMask = mask;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
 
     [(CKBalloonView *)self prepareForDisplayIfNeeded];
   }
 }
 
-- (void)setSuggestedActionsBackgroundColor:(id)a3
+- (void)setSuggestedActionsBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
+  colorCopy = color;
+  suggestedActionsBackgroundView = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
 
-  if (!v5)
+  if (!suggestedActionsBackgroundView)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(CKTranscriptPluginBalloonView *)self setSuggestedActionsBackgroundView:v6];
 
-    v7 = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
-    [(CKTranscriptPluginBalloonView *)self addSubview:v7];
+    suggestedActionsBackgroundView2 = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
+    [(CKTranscriptPluginBalloonView *)self addSubview:suggestedActionsBackgroundView2];
   }
 
-  v8 = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
-  [v8 setBackgroundColor:v4];
+  suggestedActionsBackgroundView3 = [(CKTranscriptPluginBalloonView *)self suggestedActionsBackgroundView];
+  [suggestedActionsBackgroundView3 setBackgroundColor:colorCopy];
 }
 
 - (void)setShouldPerformSendAnimationOnAppear
 {
-  v3 = [(CKTranscriptPluginBalloonView *)self pluginViewController];
+  pluginViewController = [(CKTranscriptPluginBalloonView *)self pluginViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKTranscriptPluginBalloonView *)self pluginViewController];
-    [v5 setShouldPerformSendAnimationOnAppear];
+    pluginViewController2 = [(CKTranscriptPluginBalloonView *)self pluginViewController];
+    [pluginViewController2 setShouldPerformSendAnimationOnAppear];
   }
 }
 
@@ -1544,47 +1544,47 @@ LABEL_36:
   return WeakRetained;
 }
 
-- (void)configureForTranscriptPlugin:(id)a3 context:(id)a4
+- (void)configureForTranscriptPlugin:(id)plugin context:(id)context
 {
-  v6 = a3;
+  pluginCopy = plugin;
   v31.receiver = self;
   v31.super_class = CKTranscriptPluginBalloonView;
-  v7 = a4;
-  [(CKBalloonView *)&v31 configureForMessagePart:v6];
-  -[CKBalloonView setOrientation:](self, "setOrientation:", [v6 balloonOrientation]);
-  v8 = [v6 extensibleViewForContext:v7];
-  v9 = [v6 extensibleViewControllerForContext:v7];
+  contextCopy = context;
+  [(CKBalloonView *)&v31 configureForMessagePart:pluginCopy];
+  -[CKBalloonView setOrientation:](self, "setOrientation:", [pluginCopy balloonOrientation]);
+  v8 = [pluginCopy extensibleViewForContext:contextCopy];
+  v9 = [pluginCopy extensibleViewControllerForContext:contextCopy];
   [(CKTranscriptPluginBalloonView *)self setPluginView:v8 pluginController:v9];
 
-  v10 = [v6 bundleIdentifier];
-  [(CKTranscriptPluginBalloonView *)self setAccessibilityIdentifier:v10];
+  bundleIdentifier = [pluginCopy bundleIdentifier];
+  [(CKTranscriptPluginBalloonView *)self setAccessibilityIdentifier:bundleIdentifier];
 
-  v11 = [v6 IMChatItem];
-  v12 = [v11 dataSource];
-  [(CKTranscriptPluginBalloonView *)self setDataSource:v12];
+  iMChatItem = [pluginCopy IMChatItem];
+  dataSource = [iMChatItem dataSource];
+  [(CKTranscriptPluginBalloonView *)self setDataSource:dataSource];
 
-  v13 = [v6 balloonControllerForContext:v7];
+  v13 = [pluginCopy balloonControllerForContext:contextCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v13 isInteractive];
+    isInteractive = [v13 isInteractive];
   }
 
   else
   {
-    v14 = 0;
+    isInteractive = 0;
   }
 
-  [(CKTranscriptPluginBalloonView *)self setIsInteractive:v14];
+  [(CKTranscriptPluginBalloonView *)self setIsInteractive:isInteractive];
   v15 = *MEMORY[0x1E69A6E08];
   v16 = *(MEMORY[0x1E69A6E08] + 8);
   v17 = *(MEMORY[0x1E69A6E08] + 16);
   v18 = *(MEMORY[0x1E69A6E08] + 24);
   if (objc_opt_respondsToSelector())
   {
-    v19 = [v13 messageTintColor];
-    v20 = [(CKTranscriptPluginBalloonView *)self traitCollection];
-    v21 = [v19 resolvedColorWithTraitCollection:v20];
+    messageTintColor = [v13 messageTintColor];
+    traitCollection = [(CKTranscriptPluginBalloonView *)self traitCollection];
+    v21 = [messageTintColor resolvedColorWithTraitCollection:traitCollection];
     v22 = v21;
     if (v21)
     {
@@ -1597,22 +1597,22 @@ LABEL_36:
   }
 
   [(CKBalloonView *)self setDynamicFillColor:v15, v16, v17, v18];
-  -[CKTranscriptPluginBalloonView setScheduled:](self, "setScheduled:", [v6 wantsPendingMessageStyle]);
-  if ([v6 wantsPendingMessageStyle])
+  -[CKTranscriptPluginBalloonView setScheduled:](self, "setScheduled:", [pluginCopy wantsPendingMessageStyle]);
+  if ([pluginCopy wantsPendingMessageStyle])
   {
-    v27 = 3;
+    balloonStyle = 3;
   }
 
   else
   {
-    v27 = [v6 balloonStyle];
+    balloonStyle = [pluginCopy balloonStyle];
   }
 
-  [(CKBalloonView *)self setBalloonStyle:v27];
-  if ([v6 wantsPendingMessageStyle] && (objc_opt_respondsToSelector() & 1) != 0)
+  [(CKBalloonView *)self setBalloonStyle:balloonStyle];
+  if ([pluginCopy wantsPendingMessageStyle] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v28 = [v13 balloonOutlineColor];
-    v29 = [v28 colorWithAlphaComponent:0.5];
+    balloonOutlineColor = [v13 balloonOutlineColor];
+    v29 = [balloonOutlineColor colorWithAlphaComponent:0.5];
 
     [v29 ck_imColorComponents];
     [(CKBalloonView *)self setStrokeColor:?];
@@ -1625,8 +1625,8 @@ LABEL_36:
 
   if ([(CKBalloonView *)self hasSuggestedActionsMenu]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v30 = [v13 balloonOutlineColor];
-    [(CKTranscriptPluginBalloonView *)self setSuggestedActionsBackgroundColor:v30];
+    balloonOutlineColor2 = [v13 balloonOutlineColor];
+    [(CKTranscriptPluginBalloonView *)self setSuggestedActionsBackgroundColor:balloonOutlineColor2];
   }
 }
 

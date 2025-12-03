@@ -1,27 +1,27 @@
 @interface CloudBookmarkSyncMigrationPositionGenerator
-- (CloudBookmarkSyncMigrationPositionGenerator)initWithDatabase:(void *)a3 databaseAccessor:(id)a4;
-- (id)_childRecordNamesInParentServerSyncId:(id)a3;
-- (id)_existingPositionForRecordWithName:(id)a3 getIsFolder:(BOOL *)a4;
-- (id)_generatePositionsForChildRecordNames:(id)a3 withStartingPosition:(id)a4;
-- (id)_recordNamesToGeneratePositionsForInRecordNames:(id)a3 inParentRecordName:(id)a4 getFolderRecordNames:(id *)a5 getLastValidPosition:(id *)a6;
+- (CloudBookmarkSyncMigrationPositionGenerator)initWithDatabase:(void *)database databaseAccessor:(id)accessor;
+- (id)_childRecordNamesInParentServerSyncId:(id)id;
+- (id)_existingPositionForRecordWithName:(id)name getIsFolder:(BOOL *)folder;
+- (id)_generatePositionsForChildRecordNames:(id)names withStartingPosition:(id)position;
+- (id)_recordNamesToGeneratePositionsForInRecordNames:(id)names inParentRecordName:(id)name getFolderRecordNames:(id *)recordNames getLastValidPosition:(id *)position;
 - (id)recordNameEnumerator;
 - (void)_generateRecordPositions;
 - (void)dealloc;
-- (void)setRootRecordName:(id)a3;
+- (void)setRootRecordName:(id)name;
 @end
 
 @implementation CloudBookmarkSyncMigrationPositionGenerator
 
-- (CloudBookmarkSyncMigrationPositionGenerator)initWithDatabase:(void *)a3 databaseAccessor:(id)a4
+- (CloudBookmarkSyncMigrationPositionGenerator)initWithDatabase:(void *)database databaseAccessor:(id)accessor
 {
-  v7 = a4;
+  accessorCopy = accessor;
   v11.receiver = self;
   v11.super_class = CloudBookmarkSyncMigrationPositionGenerator;
   v8 = [(CloudBookmarkSyncMigrationPositionGenerator *)&v11 init];
   if (v8)
   {
-    v8->_databaseRef = CFRetain(a3);
-    objc_storeStrong(&v8->_databaseAccessor, a4);
+    v8->_databaseRef = CFRetain(database);
+    objc_storeStrong(&v8->_databaseAccessor, accessor);
     v9 = v8;
   }
 
@@ -41,18 +41,18 @@
   [(CloudBookmarkSyncMigrationPositionGenerator *)&v4 dealloc];
 }
 
-- (void)setRootRecordName:(id)a3
+- (void)setRootRecordName:(id)name
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_rootRecordName != v5)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (self->_rootRecordName != nameCopy)
   {
-    v12 = v5;
-    v7 = [(NSString *)v5 isEqualToString:?];
+    v12 = nameCopy;
+    v7 = [(NSString *)nameCopy isEqualToString:?];
     v6 = v12;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_rootRecordName, a3);
+      objc_storeStrong(&self->_rootRecordName, name);
       recordNamesToChildRecordNames = self->_recordNamesToChildRecordNames;
       self->_recordNamesToChildRecordNames = 0;
 
@@ -80,10 +80,10 @@
   v26 = +[NSMutableDictionary dictionary];
   v3 = +[NSMutableDictionary dictionary];
   v4 = [NSMutableArray arrayWithObject:self->_rootRecordName];
-  v5 = [v4 firstObject];
-  if (v5)
+  firstObject = [v4 firstObject];
+  if (firstObject)
   {
-    v6 = v5;
+    v6 = firstObject;
     v25 = WBSCloudBookmarkListRecordNameTopBookmark;
     do
     {
@@ -119,12 +119,12 @@
 
       [v4 addObjectsFromArray:v11];
       objc_autoreleasePoolPop(context);
-      v17 = [v4 firstObject];
+      firstObject2 = [v4 firstObject];
 
-      v6 = v17;
+      v6 = firstObject2;
     }
 
-    while (v17);
+    while (firstObject2);
   }
 
   v18 = [v27 copy];
@@ -142,11 +142,11 @@
   objc_autoreleasePoolPop(v24);
 }
 
-- (id)_childRecordNamesInParentServerSyncId:(id)a3
+- (id)_childRecordNamesInParentServerSyncId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[NSMutableArray array];
-  v6 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyFirstServerIdInFolderWithServerId:v4 database:self->_databaseRef];
+  v6 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyFirstServerIdInFolderWithServerId:idCopy database:self->_databaseRef];
   if (v6)
   {
     v7 = v6;
@@ -164,23 +164,23 @@
   return v5;
 }
 
-- (id)_generatePositionsForChildRecordNames:(id)a3 withStartingPosition:(id)a4
+- (id)_generatePositionsForChildRecordNames:(id)names withStartingPosition:(id)position
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  namesCopy = names;
+  positionCopy = position;
+  if ([namesCopy count])
   {
     v8 = sub_1000328C4(self->_databaseAccessor);
     v9 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:self->_databaseRef databaseAccessor:self->_databaseAccessor];
     v10 = +[NSMutableDictionary dictionary];
-    v19 = v7;
-    v11 = v7;
+    v19 = positionCopy;
+    v11 = positionCopy;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v6;
-    obj = v6;
+    v20 = namesCopy;
+    obj = namesCopy;
     v12 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -213,8 +213,8 @@
     }
 
     [v9 writeToDatabase:self->_databaseRef databaseAccessor:self->_databaseAccessor];
-    v7 = v19;
-    v6 = v20;
+    positionCopy = v19;
+    namesCopy = v20;
   }
 
   else
@@ -225,18 +225,18 @@
   return v10;
 }
 
-- (id)_recordNamesToGeneratePositionsForInRecordNames:(id)a3 inParentRecordName:(id)a4 getFolderRecordNames:(id *)a5 getLastValidPosition:(id *)a6
+- (id)_recordNamesToGeneratePositionsForInRecordNames:(id)names inParentRecordName:(id)name getFolderRecordNames:(id *)recordNames getLastValidPosition:(id *)position
 {
-  v28 = a5;
-  v7 = a3;
-  v30 = a4;
+  recordNamesCopy = recordNames;
+  namesCopy = names;
+  nameCopy = name;
   v32 = +[NSMutableArray array];
   v8 = +[NSMutableArray array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v7;
+  v9 = namesCopy;
   v10 = [v9 countByEnumeratingWithState:&v35 objects:v49 count:16];
   if (v10)
   {
@@ -254,7 +254,7 @@
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        if ([CKRecord safari_folderTypeForRecordName:v15, v28])
+        if ([CKRecord safari_folderTypeForRecordName:v15, recordNamesCopy])
         {
           [v8 addObject:v15];
         }
@@ -295,7 +295,7 @@
                   v45 = 2114;
                   v46 = v12;
                   v47 = 2114;
-                  v48 = v30;
+                  v48 = nameCopy;
                   _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Found record %{public}@ with position %{public}@ after record %{public}@ with position %{public}@, folder %{public}@ should have been sorted before!", buf, 0x34u);
                 }
               }
@@ -330,7 +330,7 @@
               *buf = 138543618;
               v40 = v15;
               v41 = 2114;
-              v42 = v30;
+              v42 = nameCopy;
               _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Record %{public}@ has no position and needs saving in folder %{public}@", buf, 0x16u);
             }
 
@@ -352,23 +352,23 @@
   }
 
   v24 = v8;
-  *v28 = v8;
+  *recordNamesCopy = v8;
   v25 = v12;
-  *a6 = v12;
+  *position = v12;
   v26 = v32;
 
   return v32;
 }
 
-- (id)_existingPositionForRecordWithName:(id)a3 getIsFolder:(BOOL *)a4
+- (id)_existingPositionForRecordWithName:(id)name getIsFolder:(BOOL *)folder
 {
-  v6 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyItemWithServerId:a3 database:self->_databaseRef];
+  v6 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyItemWithServerId:name database:self->_databaseRef];
   if (v6)
   {
     v7 = v6;
-    if (a4)
+    if (folder)
     {
-      *a4 = [(WBSBookmarkDBAccess *)self->_databaseAccessor itemTypeWithItem:v6]== 1;
+      *folder = [(WBSBookmarkDBAccess *)self->_databaseAccessor itemTypeWithItem:v6]== 1;
     }
 
     v8 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copySyncDataWithItem:v7];

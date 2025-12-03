@@ -1,28 +1,28 @@
 @interface HDFHIRCredentialedSession
-- (HDFHIRCredentialedSession)initWithSpecification:(id)a3 credentialVendor:(id)a4;
+- (HDFHIRCredentialedSession)initWithSpecification:(id)specification credentialVendor:(id)vendor;
 - (id)consumeRefreshResult;
-- (void)credentialVendor:(id)a3 refreshCredential:(id)a4 completion:(id)a5;
+- (void)credentialVendor:(id)vendor refreshCredential:(id)credential completion:(id)completion;
 @end
 
 @implementation HDFHIRCredentialedSession
 
-- (HDFHIRCredentialedSession)initWithSpecification:(id)a3 credentialVendor:(id)a4
+- (HDFHIRCredentialedSession)initWithSpecification:(id)specification credentialVendor:(id)vendor
 {
-  v8 = a4;
+  vendorCopy = vendor;
   v12.receiver = self;
   v12.super_class = HDFHIRCredentialedSession;
-  v9 = [(HDFHIRSession *)&v12 initWithSpecification:a3];
+  v9 = [(HDFHIRSession *)&v12 initWithSpecification:specification];
   if (v9)
   {
-    v10 = [v8 delegate];
+    delegate = [vendorCopy delegate];
 
-    if (v10)
+    if (delegate)
     {
       sub_10000C020(a2, v9);
     }
 
-    [v8 setDelegate:v9];
-    objc_storeStrong(&v9->_credentialVendor, a4);
+    [vendorCopy setDelegate:v9];
+    objc_storeStrong(&v9->_credentialVendor, vendor);
     v9->_refreshLock._os_unfair_lock_opaque = 0;
   }
 
@@ -41,19 +41,19 @@
   return v3;
 }
 
-- (void)credentialVendor:(id)a3 refreshCredential:(id)a4 completion:(id)a5
+- (void)credentialVendor:(id)vendor refreshCredential:(id)credential completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  credentialCopy = credential;
+  completionCopy = completion;
   v9 = [HDFHIRRefreshTokenTask alloc];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100008814;
   v17[3] = &unk_100018680;
-  v10 = v7;
+  v10 = credentialCopy;
   v18 = v10;
-  v19 = self;
-  v11 = v8;
+  selfCopy = self;
+  v11 = completionCopy;
   v20 = v11;
   v12 = [(HDFHIRRefreshTokenTask *)v9 initWithSession:self credential:v10 completion:v17];
   _HKInitializeLogging();

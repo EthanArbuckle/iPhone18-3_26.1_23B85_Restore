@@ -1,5 +1,5 @@
 @interface UIAlertControllerVisualStyleAlert
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 - (UIEdgeInsets)textFieldContentInset;
 - (double)_topItemsViewBottomMargin;
 - (double)accessibilityWidth;
@@ -11,10 +11,10 @@
 - (double)maximumWidth;
 - (id)messageLabelColor;
 - (id)messageLabelFont;
-- (id)textFieldContainingViewWithTextField:(id)a3 position:(int64_t)a4;
+- (id)textFieldContainingViewWithTextField:(id)field position:(int64_t)position;
 - (id)titleLabelFont;
 - (int64_t)permittedActionLayoutDirection;
-- (void)animateAlertControllerView:(id)a3 ofAlertController:(id)a4 forPresentation:(BOOL)a5 inContainerView:(id)a6 descendantOfContainerView:(id)a7 duration:(double)a8 completionBlock:(id)a9;
+- (void)animateAlertControllerView:(id)view ofAlertController:(id)controller forPresentation:(BOOL)presentation inContainerView:(id)containerView descendantOfContainerView:(id)ofContainerView duration:(double)duration completionBlock:(id)block;
 @end
 
 @implementation UIAlertControllerVisualStyleAlert
@@ -24,10 +24,10 @@
   v3 = @"UICTFontTextStyleHeadline";
   if (_UISolariumEnabled())
   {
-    v4 = [(UIAlertControllerVisualStyle *)self descriptor];
-    v5 = [v4 hasMessage];
+    descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+    hasMessage = [descriptor hasMessage];
 
-    if ((v5 & 1) == 0)
+    if ((hasMessage & 1) == 0)
     {
       v6 = @"UICTFontTextStyleBody";
 
@@ -35,8 +35,8 @@
     }
   }
 
-  v7 = [(UIAlertControllerVisualStyle *)self traitCollection];
-  v8 = _traitCollectionByFlooringContentSizeCategoryToLarge(v7);
+  traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+  v8 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection);
   v9 = [off_1E70ECC18 preferredFontForTextStyle:v3 compatibleWithTraitCollection:v8];
 
   return v9;
@@ -49,32 +49,32 @@
     return 36.0;
   }
 
-  v3 = [(UIAlertControllerVisualStyle *)self descriptor];
-  if ([v3 hasContentViewController])
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  if ([descriptor hasContentViewController])
   {
     v4 = 0;
   }
 
   else
   {
-    v6 = [(UIAlertControllerVisualStyle *)self descriptor];
-    if ([v6 hasTextfields])
+    descriptor2 = [(UIAlertControllerVisualStyle *)self descriptor];
+    if ([descriptor2 hasTextfields])
     {
       v4 = 0;
     }
 
     else
     {
-      v7 = [(UIAlertControllerVisualStyle *)self descriptor];
-      v4 = [v7 hasMessage] ^ 1;
+      descriptor3 = [(UIAlertControllerVisualStyle *)self descriptor];
+      v4 = [descriptor3 hasMessage] ^ 1;
     }
   }
 
-  v8 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v9 = [v8 numberOfActions];
+  descriptor4 = [(UIAlertControllerVisualStyle *)self descriptor];
+  numberOfActions = [descriptor4 numberOfActions];
 
   v10 = 18.0;
-  if (!v9)
+  if (!numberOfActions)
   {
     if (v4)
     {
@@ -83,8 +83,8 @@
     }
   }
 
-  v12 = [(UIAlertControllerVisualStyleAlert *)self titleLabelFont];
-  [v12 lineHeight];
+  titleLabelFont = [(UIAlertControllerVisualStyleAlert *)self titleLabelFont];
+  [titleLabelFont lineHeight];
   v14 = v13;
 
   return v10 + v14;
@@ -97,10 +97,10 @@
     return 24.0;
   }
 
-  v3 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v4 = [v3 hasMessage];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasMessage = [descriptor hasMessage];
 
-  if (v4)
+  if (hasMessage)
   {
 
     [(UIAlertControllerVisualStyleAlert *)self _topItemsViewBottomMargin];
@@ -118,22 +118,22 @@
 - (id)messageLabelFont
 {
   v3 = _UISolariumEnabled();
-  v4 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v5 = [v4 hasTitle];
-  v6 = v5;
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasTitle = [descriptor hasTitle];
+  v6 = hasTitle;
   if (v3)
   {
     v7 = &UIFontTextStyleSubheadline;
-    if (!v5)
+    if (!hasTitle)
     {
       v7 = &UIFontTextStyleBody;
     }
 
     v8 = *v7;
 
-    v9 = [(UIAlertControllerVisualStyle *)self traitCollection];
-    v10 = _traitCollectionByFlooringContentSizeCategoryToLarge(v9);
-    v11 = [off_1E70ECC18 preferredFontForTextStyle:v8 compatibleWithTraitCollection:v10];
+    traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+    v10 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection);
+    titleLabelFont = [off_1E70ECC18 preferredFontForTextStyle:v8 compatibleWithTraitCollection:v10];
   }
 
   else
@@ -141,47 +141,47 @@
 
     if (v6)
     {
-      v12 = [(UIAlertControllerVisualStyle *)self traitCollection];
-      v13 = _traitCollectionByFlooringContentSizeCategoryToLarge(v12);
+      traitCollection2 = [(UIAlertControllerVisualStyle *)self traitCollection];
+      v13 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection2);
       v14 = [off_1E70ECC20 _preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleFootnote" addingSymbolicTraits:0x8000 compatibleWithTraitCollection:v13];
 
-      v11 = [off_1E70ECC18 fontWithDescriptor:v14 size:0.0];
+      titleLabelFont = [off_1E70ECC18 fontWithDescriptor:v14 size:0.0];
     }
 
     else
     {
-      v11 = [(UIAlertControllerVisualStyleAlert *)self titleLabelFont];
+      titleLabelFont = [(UIAlertControllerVisualStyleAlert *)self titleLabelFont];
     }
   }
 
-  return v11;
+  return titleLabelFont;
 }
 
 - (id)messageLabelColor
 {
   if (_UISolariumEnabled() && (-[UIAlertControllerVisualStyle descriptor](self, "descriptor"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 hasTitle], v3, v4))
   {
-    v5 = +[UIColor secondaryLabelColor];
+    titleLabelColor = +[UIColor secondaryLabelColor];
   }
 
   else
   {
-    v5 = [(UIAlertControllerVisualStyleAlert *)self titleLabelColor];
+    titleLabelColor = [(UIAlertControllerVisualStyleAlert *)self titleLabelColor];
   }
 
-  return v5;
+  return titleLabelColor;
 }
 
 - (double)marginAboveMessageLabelFirstBaseline
 {
-  v3 = [(UIAlertControllerVisualStyleAlert *)self messageLabelFont];
-  [v3 lineHeight];
+  messageLabelFont = [(UIAlertControllerVisualStyleAlert *)self messageLabelFont];
+  [messageLabelFont lineHeight];
   v5 = v4;
 
-  v6 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v7 = [v6 hasTitle];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasTitle = [descriptor hasTitle];
 
-  if (v7)
+  if (hasTitle)
   {
     v8 = 20.0;
     if (!_UISolariumEnabled())
@@ -193,22 +193,22 @@
     return v5 + v9;
   }
 
-  v10 = [(UIAlertControllerVisualStyle *)self descriptor];
-  if ([v10 hasContentViewController])
+  descriptor2 = [(UIAlertControllerVisualStyle *)self descriptor];
+  if ([descriptor2 hasContentViewController])
   {
     LOBYTE(v11) = 0;
   }
 
   else
   {
-    v12 = [(UIAlertControllerVisualStyle *)self descriptor];
-    v11 = [v12 hasTextfields] ^ 1;
+    descriptor3 = [(UIAlertControllerVisualStyle *)self descriptor];
+    v11 = [descriptor3 hasTextfields] ^ 1;
   }
 
   if (_UISolariumEnabled())
   {
-    v13 = [(UIAlertControllerVisualStyle *)self descriptor];
-    v14 = ([v13 numberOfActions] == 0) & v11;
+    descriptor4 = [(UIAlertControllerVisualStyle *)self descriptor];
+    v14 = ([descriptor4 numberOfActions] == 0) & v11;
 
     if (v14 == 1)
     {
@@ -240,26 +240,26 @@
     return v3;
   }
 
-  v4 = [(UIAlertControllerVisualStyle *)self descriptor];
-  if ([v4 hasContentViewController])
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  if ([descriptor hasContentViewController])
   {
 
     return 20.0;
   }
 
-  v5 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v6 = [v5 hasTextfields];
+  descriptor2 = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasTextfields = [descriptor2 hasTextfields];
 
   v3 = 20.0;
-  if (v6)
+  if (hasTextfields)
   {
     return v3;
   }
 
-  v8 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v9 = [v8 numberOfActions];
+  descriptor3 = [(UIAlertControllerVisualStyle *)self descriptor];
+  numberOfActions = [descriptor3 numberOfActions];
 
-  if (v9)
+  if (numberOfActions)
   {
 
     [(UIAlertControllerVisualStyleAlert *)self _topItemsViewBottomMargin];
@@ -288,13 +288,13 @@
 
 - (double)maximumWidth
 {
-  v3 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v5 = [(UIAlertControllerVisualStyle *)self window];
-    v6 = _accessibilityMaximumWidthWhenUsingAccessibilitySizes(v5);
+    window = [(UIAlertControllerVisualStyle *)self window];
+    v6 = _accessibilityMaximumWidthWhenUsingAccessibilitySizes(window);
 
     return v6;
   }
@@ -311,9 +311,9 @@
       v8 = 270.0;
     }
 
-    v9 = [(UIAlertControllerVisualStyleAlert *)self shouldCenterVertically];
+    shouldCenterVertically = [(UIAlertControllerVisualStyleAlert *)self shouldCenterVertically];
     result = 0.0;
-    if (v9)
+    if (shouldCenterVertically)
     {
       return v8;
     }
@@ -324,15 +324,15 @@
 
 - (double)accessibilityWidth
 {
-  v2 = [(UIAlertControllerVisualStyle *)self window];
-  v3 = _accessibilityMaximumWidthWhenUsingAccessibilitySizes(v2);
+  window = [(UIAlertControllerVisualStyle *)self window];
+  v3 = _accessibilityMaximumWidthWhenUsingAccessibilitySizes(window);
 
   return v3;
 }
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = _UISolariumEnabled();
   v5 = 24.0;
   if (!v4)
@@ -340,7 +340,7 @@
     v5 = 0.0;
   }
 
-  v6 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(v3, 8.0, v5, 8.0, v5);
+  v6 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(viewCopy, 8.0, v5, 8.0, v5);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -384,11 +384,11 @@
   return result;
 }
 
-- (id)textFieldContainingViewWithTextField:(id)a3 position:(int64_t)a4
+- (id)textFieldContainingViewWithTextField:(id)field position:(int64_t)position
 {
   v54[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  switch(a4)
+  fieldCopy = field;
+  switch(position)
   {
     case 3:
       v7 = 12;
@@ -445,14 +445,14 @@ LABEL_9:
   if ((v9 & 1) == 0)
   {
     [(UIView *)v19 _setContinuousCornerRadius:v8];
-    v20 = [(UIView *)v19 layer];
-    [v20 setMaskedCorners:v7];
+    layer = [(UIView *)v19 layer];
+    [layer setMaskedCorners:v7];
   }
 
   [(UIView *)v16 addSubview:v19];
-  [(UIView *)v19 addSubview:v6];
+  [(UIView *)v19 addSubview:fieldCopy];
   v21 = _UISolariumEnabled();
-  if ((a4 - 1) < 2)
+  if ((position - 1) < 2)
   {
     v22 = v21;
   }
@@ -482,12 +482,12 @@ LABEL_9:
   v25 = 0.0;
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    [v6 _currentScreenScale];
-    UIRoundToViewScale(v6);
+    [fieldCopy _currentScreenScale];
+    UIRoundToViewScale(fieldCopy);
     v25 = v26;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((position & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v27 = 0.0;
   }
@@ -507,12 +507,12 @@ LABEL_9:
     v28 = 7.0;
   }
 
-  v29 = _NSDictionaryOfVariableBindings(&cfstr_TextfieldTextf.isa, v6, v19, 0);
+  v29 = _NSDictionaryOfVariableBindings(&cfstr_TextfieldTextf.isa, fieldCopy, v19, 0);
   v51 = v18;
-  v52 = v6;
+  v52 = fieldCopy;
   if ((v17 & 1) == 0)
   {
-    v30 = _NSDictionaryOfVariableBindings(&cfstr_TextfieldVibra.isa, v6, v18, v19, 0);
+    v30 = _NSDictionaryOfVariableBindings(&cfstr_TextfieldVibra.isa, fieldCopy, v18, v19, 0);
 
     v29 = v30;
   }
@@ -575,10 +575,10 @@ LABEL_9:
 
 - (int64_t)permittedActionLayoutDirection
 {
-  v2 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v3 = [v2 numberOfActions];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  numberOfActions = [descriptor numberOfActions];
 
-  if (v3 >= 3)
+  if (numberOfActions >= 3)
   {
     return 1;
   }
@@ -589,14 +589,14 @@ LABEL_9:
   }
 }
 
-- (void)animateAlertControllerView:(id)a3 ofAlertController:(id)a4 forPresentation:(BOOL)a5 inContainerView:(id)a6 descendantOfContainerView:(id)a7 duration:(double)a8 completionBlock:(id)a9
+- (void)animateAlertControllerView:(id)view ofAlertController:(id)controller forPresentation:(BOOL)presentation inContainerView:(id)containerView descendantOfContainerView:(id)ofContainerView duration:(double)duration completionBlock:(id)block
 {
-  v12 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  presentationCopy = presentation;
+  viewCopy = view;
+  controllerCopy = controller;
+  containerViewCopy = containerView;
+  ofContainerViewCopy = ofContainerView;
+  blockCopy = block;
   v19 = *(MEMORY[0x1E695EFD0] + 16);
   v47 = *MEMORY[0x1E695EFD0];
   v48 = v19;
@@ -604,7 +604,7 @@ LABEL_9:
   *&v46.a = v47;
   *&v46.c = v19;
   *&v46.tx = v49;
-  if (v12 && !_AXSReduceMotionEnabled())
+  if (presentationCopy && !_AXSReduceMotionEnabled())
   {
     v21 = 1.2;
     v20 = &v47;
@@ -619,7 +619,7 @@ LABEL_9:
   }
 
   CGAffineTransformMakeScale(v20, v21, v22);
-  if (v12)
+  if (presentationCopy)
   {
     v23 = 0.0;
   }
@@ -629,7 +629,7 @@ LABEL_9:
     v23 = 1.0;
   }
 
-  if (v12)
+  if (presentationCopy)
   {
     v24 = 1.0;
   }
@@ -642,26 +642,26 @@ LABEL_9:
   v45[0] = v47;
   v45[1] = v48;
   v45[2] = v49;
-  [v14 setTransform:v45];
-  v26 = [(UIView *)v14 _backing_outermostLayer];
+  [viewCopy setTransform:v45];
+  _backing_outermostLayer = [(UIView *)viewCopy _backing_outermostLayer];
   v25 = v23;
   *&v27 = v25;
-  [v26 setOpacity:v27];
+  [_backing_outermostLayer setOpacity:v27];
 
-  v28 = [v15 _dimmingView];
-  [v28 setAlpha:v23];
+  _dimmingView = [controllerCopy _dimmingView];
+  [_dimmingView setAlpha:v23];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __165__UIAlertControllerVisualStyleAlert_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke;
   aBlock[3] = &unk_1E711B698;
-  v29 = v14;
+  v29 = viewCopy;
   v43 = v46;
   v44 = v24;
   v41 = v29;
-  v42 = v28;
-  v30 = v28;
+  v42 = _dimmingView;
+  v30 = _dimmingView;
   v31 = _Block_copy(aBlock);
-  v37 = v18;
+  v37 = blockCopy;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __165__UIAlertControllerVisualStyleAlert_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_2;
@@ -672,7 +672,7 @@ LABEL_9:
   v35[2] = __165__UIAlertControllerVisualStyleAlert_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_3;
   v35[3] = &unk_1E70FE248;
   v36 = v29;
-  v32 = v18;
+  v32 = blockCopy;
   v33 = v29;
   v34 = v31;
   [UIView animateWithDuration:6 delay:v38 usingSpringWithDamping:v35 initialSpringVelocity:0.404 options:0.0 animations:600.0 completion:0.0];

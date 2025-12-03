@@ -1,22 +1,22 @@
 @interface SBAppResizeGrabberView
 - (CGRect)_pillViewContainerViewFrame;
 - (CGRect)_pointerRegionRect;
-- (CGRect)frameInContentRect:(CGRect)a3;
-- (SBAppResizeGrabberView)initWithCorner:(unint64_t)a3 cornerRadius:(double)a4;
+- (CGRect)frameInContentRect:(CGRect)rect;
+- (SBAppResizeGrabberView)initWithCorner:(unint64_t)corner cornerRadius:(double)radius;
 - (double)_grabberCurve;
 - (double)_grabberRotation;
-- (id)_grabberPathForLength:(double)a3 curve:(double)a4 rotation:(double)a5;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_updateGrabberPathAnimated:(BOOL)a3;
+- (id)_grabberPathForLength:(double)length curve:(double)curve rotation:(double)rotation;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_updateGrabberPathAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)lumaDodgePillDidDetectBackgroundLuminanceChange:(id)a3;
-- (void)setCornerRadius:(double)a3;
+- (void)lumaDodgePillDidDetectBackgroundLuminanceChange:(id)change;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation SBAppResizeGrabberView
 
-- (SBAppResizeGrabberView)initWithCorner:(unint64_t)a3 cornerRadius:(double)a4
+- (SBAppResizeGrabberView)initWithCorner:(unint64_t)corner cornerRadius:(double)radius
 {
   v28.receiver = self;
   v28.super_class = SBAppResizeGrabberView;
@@ -28,16 +28,16 @@
   if (v10)
   {
     v11 = objc_alloc(MEMORY[0x277D26710]);
-    v12 = [MEMORY[0x277D26708] sharedInstance];
-    v13 = [v11 initWithFrame:v12 settings:-100 graphicsQuality:{v6, v7, v8, v9}];
+    mEMORY[0x277D26708] = [MEMORY[0x277D26708] sharedInstance];
+    v13 = [v11 initWithFrame:mEMORY[0x277D26708] settings:-100 graphicsQuality:{v6, v7, v8, v9}];
 
     [v13 setStyle:1];
     [v13 setBackgroundLumninanceObserver:v10];
     [v13 bs_setHitTestingDisabled:1];
     [v13 setClipsToBounds:0];
-    v14 = [v13 layer];
+    layer = [v13 layer];
     v15 = objc_opt_class();
-    v16 = v14;
+    v16 = layer;
     if (v15)
     {
       if (objc_opt_isKindOfClass())
@@ -66,19 +66,19 @@
     [(UIView *)v20 bs_setHitTestingDisabled:1];
     [(SBAppResizeGrabberView *)v10 addSubview:v20];
     [(SBAppResizeGrabberView *)v10 setAlpha:0.0];
-    v21 = [(SBAppResizeGrabberView *)v10 layer];
-    [v21 setHitTestsAsOpaque:1];
+    layer2 = [(SBAppResizeGrabberView *)v10 layer];
+    [layer2 setHitTestsAsOpaque:1];
 
     v22 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v10];
     [(SBAppResizeGrabberView *)v10 addInteraction:v22];
-    v10->_corner = a3;
-    v23 = 18.0;
-    if (a4 >= 18.0)
+    v10->_corner = corner;
+    radiusCopy = 18.0;
+    if (radius >= 18.0)
     {
-      v23 = a4;
+      radiusCopy = radius;
     }
 
-    v10->_cornerRadius = v23;
+    v10->_cornerRadius = radiusCopy;
     pillViewContainerView = v10->_pillViewContainerView;
     v10->_pillViewContainerView = v20;
     v25 = v20;
@@ -107,30 +107,30 @@
   [(MTLumaDodgePillView *)pillView setFrame:?];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
     v8 = v3;
-    if (a3 < 18.0)
+    if (radius < 18.0)
     {
-      a3 = 18.0;
+      radius = 18.0;
     }
 
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(SBAppResizeGrabberView *)self _updateGrabberPathAnimated:1, v4, v8, v5];
 
     [(SBAppResizeGrabberView *)self setNeedsLayout];
   }
 }
 
-- (CGRect)frameInContentRect:(CGRect)a3
+- (CGRect)frameInContentRect:(CGRect)rect
 {
   corner = self->_corner;
   if (corner == 3)
   {
-    v4 = a3.size.width + -20.0;
-    v5 = a3.size.height + -20.0;
+    v4 = rect.size.width + -20.0;
+    v5 = rect.size.height + -20.0;
   }
 
   else
@@ -138,7 +138,7 @@
     v4 = -20.0;
     if (corner == 2)
     {
-      v5 = a3.size.height + -20.0;
+      v5 = rect.size.height + -20.0;
     }
 
     else
@@ -146,7 +146,7 @@
       v5 = -20.0;
       if (corner == 1)
       {
-        v4 = a3.size.width + -20.0;
+        v4 = rect.size.width + -20.0;
       }
     }
   }
@@ -160,17 +160,17 @@
   return result;
 }
 
-- (void)lumaDodgePillDidDetectBackgroundLuminanceChange:(id)a3
+- (void)lumaDodgePillDidDetectBackgroundLuminanceChange:(id)change
 {
-  v6 = a3;
-  v3 = [v6 backgroundLuminance];
+  changeCopy = change;
+  backgroundLuminance = [changeCopy backgroundLuminance];
   v4 = 2;
-  if (v3 == 1)
+  if (backgroundLuminance == 1)
   {
     v4 = 4;
   }
 
-  if (v3 == 2)
+  if (backgroundLuminance == 2)
   {
     v5 = 3;
   }
@@ -180,13 +180,13 @@
     v5 = v4;
   }
 
-  [v6 setStyle:v5];
+  [changeCopy setStyle:v5];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a5;
-  if ([a4 _isPencilInitiated])
+  regionCopy = region;
+  if ([request _isPencilInitiated])
   {
     v8 = 0;
   }
@@ -199,14 +199,14 @@
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v7 identifier];
-    v8 = [v9 regionWithRect:v18 identifier:{v11, v13, v15, v17}];
+    identifier = [regionCopy identifier];
+    v8 = [v9 regionWithRect:identifier identifier:{v11, v13, v15, v17}];
   }
 
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self->_pillViewContainerView];
   v6 = [MEMORY[0x277D75878] effectWithPreview:v5];
@@ -217,16 +217,16 @@
   return v9;
 }
 
-- (id)_grabberPathForLength:(double)a3 curve:(double)a4 rotation:(double)a5
+- (id)_grabberPathForLength:(double)length curve:(double)curve rotation:(double)rotation
 {
-  v8 = a4 * 0.5;
-  v9 = round(a4 * 3.14159265 + a4 * 3.14159265);
-  if (v9 * 0.25 <= a3)
+  v8 = curve * 0.5;
+  v9 = round(curve * 3.14159265 + curve * 3.14159265);
+  if (v9 * 0.25 <= length)
   {
-    a3 = v9 * 0.25;
+    length = v9 * 0.25;
   }
 
-  v10 = a3 / v9 * 3.14159265 + a3 / v9 * 3.14159265;
+  v10 = length / v9 * 3.14159265 + length / v9 * 3.14159265;
   v11 = 1.57079633;
   if (v10 <= 1.57079633)
   {
@@ -237,7 +237,7 @@
 
   else
   {
-    v12 = floor((a3 - v9 * 0.25) * 0.5);
+    v12 = floor((length - v9 * 0.25) * 0.5);
     v13 = v12 + v12;
     v14 = 0.0;
   }
@@ -248,26 +248,26 @@
   if (v13 <= 0.0)
   {
     v20 = __sincos_stret(v11);
-    v21 = a4 * v20.__sinval - v8;
-    [v17 moveToPoint:{a4 * v20.__cosval - v8, v21}];
-    [v17 addLineToPoint:{a4 * v20.__cosval - v8, v21}];
-    [v17 addArcWithCenter:0 radius:v15 startAngle:v15 endAngle:a4 clockwise:{v11, v14}];
+    v21 = curve * v20.__sinval - v8;
+    [v17 moveToPoint:{curve * v20.__cosval - v8, v21}];
+    [v17 addLineToPoint:{curve * v20.__cosval - v8, v21}];
+    [v17 addArcWithCenter:0 radius:v15 startAngle:v15 endAngle:curve clockwise:{v11, v14}];
     v22 = __sincos_stret(v14);
-    v8 = a4 * v22.__cosval - v8;
-    v19 = v15 + a4 * v22.__sinval;
+    v8 = curve * v22.__cosval - v8;
+    v19 = v15 + curve * v22.__sinval;
   }
 
   else
   {
     v18 = v13 * 0.5;
-    [v16 moveToPoint:{v15 - v18, a4 * 0.5}];
-    [v17 addLineToPoint:{-v8, a4 * 0.5}];
-    [v17 addArcWithCenter:0 radius:-v8 startAngle:-v8 endAngle:a4 clockwise:{v11, v14}];
+    [v16 moveToPoint:{v15 - v18, curve * 0.5}];
+    [v17 addLineToPoint:{-v8, curve * 0.5}];
+    [v17 addArcWithCenter:0 radius:-v8 startAngle:-v8 endAngle:curve clockwise:{v11, v14}];
     v19 = v15 / v18;
   }
 
   [v17 addLineToPoint:{v8, v19}];
-  CGAffineTransformMakeRotation(&v34, a5);
+  CGAffineTransformMakeRotation(&v34, rotation);
   [v17 applyTransform:&v34];
   v23 = *(MEMORY[0x277CBF2C0] + 16);
   *&v33.a = *MEMORY[0x277CBF2C0];
@@ -332,14 +332,14 @@ LABEL_20:
   return v17;
 }
 
-- (void)_updateGrabberPathAnimated:(BOOL)a3
+- (void)_updateGrabberPathAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(SBAppResizeGrabberView *)self _grabberCurve];
   v6 = v5;
   [(SBAppResizeGrabberView *)self _grabberRotation];
   v8 = [(SBAppResizeGrabberView *)self _grabberPathForLength:30.0 curve:v6 rotation:v7];
-  [(MTLumaDodgePillView *)self->_pillView setCustomPillShapePath:v8 animated:v3];
+  [(MTLumaDodgePillView *)self->_pillView setCustomPillShapePath:v8 animated:animatedCopy];
   grabberPath = self->_grabberPath;
   self->_grabberPath = v8;
 }

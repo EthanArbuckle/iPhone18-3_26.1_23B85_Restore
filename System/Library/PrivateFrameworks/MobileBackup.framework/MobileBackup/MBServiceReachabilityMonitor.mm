@@ -1,11 +1,11 @@
 @interface MBServiceReachabilityMonitor
 - (BOOL)isInternetReachableViaWiFi;
 - (MBServiceReachabilityMonitor)init;
-- (void)_reachabilityCallback:(unsigned int)a3;
+- (void)_reachabilityCallback:(unsigned int)callback;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
 - (void)dealloc;
-- (void)setMonitoring:(BOOL)a3;
+- (void)setMonitoring:(BOOL)monitoring;
 @end
 
 @implementation MBServiceReachabilityMonitor
@@ -41,11 +41,11 @@
   [(MBServiceReachabilityMonitor *)&v3 dealloc];
 }
 
-- (void)setMonitoring:(BOOL)a3
+- (void)setMonitoring:(BOOL)monitoring
 {
-  if (self->_isMonitoring != a3)
+  if (self->_isMonitoring != monitoring)
   {
-    if (a3)
+    if (monitoring)
     {
       [(MBServiceReachabilityMonitor *)self _startMonitoring];
     }
@@ -83,9 +83,9 @@
   return v3;
 }
 
-- (void)_reachabilityCallback:(unsigned int)a3
+- (void)_reachabilityCallback:(unsigned int)callback
 {
-  self->_isInternetReachableViaWiFi = (a3 & 0x40002) == 2;
+  self->_isInternetReachableViaWiFi = (callback & 0x40002) == 2;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {

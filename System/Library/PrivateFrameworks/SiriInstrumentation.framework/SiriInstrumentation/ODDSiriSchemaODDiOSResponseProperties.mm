@@ -1,33 +1,33 @@
 @interface ODDSiriSchemaODDiOSResponseProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDiOSResponseProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDiOSResponseProperties)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDiOSResponseProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDiOSResponseProperties)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDiOSResponseProperties
 
-- (ODDSiriSchemaODDiOSResponseProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDiOSResponseProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ODDSiriSchemaODDiOSResponseProperties;
   v5 = [(ODDSiriSchemaODDiOSResponseProperties *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDiOSResponseProperties setIsAlwaysShowSiriCaptionsEnabled:](v5, "setIsAlwaysShowSiriCaptionsEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDiOSResponseProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDiOSResponseProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDiOSResponseProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDiOSResponseProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDiOSResponseProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isAlwaysShowSpeechEnabled + 1);
   if (v4)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSResponseProperties isAlwaysShowSiriCaptionsEnabled](self, "isAlwaysShowSiriCaptionsEnabled")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isAlwaysShowSiriCaptionsEnabled"];
 
     v4 = *(&self->_isAlwaysShowSpeechEnabled + 1);
   }
@@ -89,12 +89,12 @@
   if ((v4 & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDiOSResponseProperties isAlwaysShowSpeechEnabled](self, "isAlwaysShowSpeechEnabled")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isAlwaysShowSpeechEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -123,16 +123,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   v5 = *(&self->_isAlwaysShowSpeechEnabled + 1);
-  v6 = v4[10];
+  v6 = equalCopy[10];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -141,7 +141,7 @@ LABEL_3:
   if (v5)
   {
     isAlwaysShowSiriCaptionsEnabled = self->_isAlwaysShowSiriCaptionsEnabled;
-    if (isAlwaysShowSiriCaptionsEnabled != [v4 isAlwaysShowSiriCaptionsEnabled])
+    if (isAlwaysShowSiriCaptionsEnabled != [equalCopy isAlwaysShowSiriCaptionsEnabled])
     {
 LABEL_10:
       v10 = 0;
@@ -149,7 +149,7 @@ LABEL_10:
     }
 
     v5 = *(&self->_isAlwaysShowSpeechEnabled + 1);
-    v6 = v4[10];
+    v6 = equalCopy[10];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -161,7 +161,7 @@ LABEL_10:
   if (v8)
   {
     isAlwaysShowSpeechEnabled = self->_isAlwaysShowSpeechEnabled;
-    if (isAlwaysShowSpeechEnabled != [v4 isAlwaysShowSpeechEnabled])
+    if (isAlwaysShowSpeechEnabled != [equalCopy isAlwaysShowSpeechEnabled])
     {
       goto LABEL_10;
     }
@@ -173,28 +173,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isAlwaysShowSpeechEnabled + 1);
-  v6 = v4;
+  v6 = toCopy;
   if (v5)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     v5 = *(&self->_isAlwaysShowSpeechEnabled + 1);
   }
 
   if ((v5 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)a3
+- (void)setHasIsAlwaysShowSpeechEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }

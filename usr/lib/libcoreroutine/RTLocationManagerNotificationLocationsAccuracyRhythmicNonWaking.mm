@@ -1,19 +1,19 @@
 @interface RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking
-- (RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking)initWithLocations:(id)a3;
+- (RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking)initWithLocations:(id)locations;
 @end
 
 @implementation RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking
 
-- (RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking)initWithLocations:(id)a3
+- (RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking)initWithLocations:(id)locations
 {
-  v5 = a3;
+  locationsCopy = locations;
   v9.receiver = self;
   v9.super_class = RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking;
   v6 = [(RTNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locations, a3);
+    objc_storeStrong(&v6->_locations, locations);
   }
 
   return v7;

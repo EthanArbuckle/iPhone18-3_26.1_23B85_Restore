@@ -1,20 +1,20 @@
 @interface AMSAccountsChangedResult
-- (AMSAccountsChangedResult)initWithAccount:(id)a3;
+- (AMSAccountsChangedResult)initWithAccount:(id)account;
 - (NSString)hashedDescription;
 @end
 
 @implementation AMSAccountsChangedResult
 
-- (AMSAccountsChangedResult)initWithAccount:(id)a3
+- (AMSAccountsChangedResult)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AMSAccountsChangedResult;
   v6 = [(AMSAccountsChangedResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -22,10 +22,10 @@
 
 - (NSString)hashedDescription
 {
-  v2 = [(AMSAccountsChangedResult *)self account];
-  v3 = [v2 hashedDescription];
+  account = [(AMSAccountsChangedResult *)self account];
+  hashedDescription = [account hashedDescription];
 
-  return v3;
+  return hashedDescription;
 }
 
 @end

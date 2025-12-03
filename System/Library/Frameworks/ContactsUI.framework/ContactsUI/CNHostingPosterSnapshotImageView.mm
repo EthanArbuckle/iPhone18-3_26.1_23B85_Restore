@@ -2,8 +2,8 @@
 - (BOOL)isSensitiveContent;
 - (UIImage)image;
 - (UIView)view;
-- (void)setImage:(id)a3;
-- (void)setIsSensitiveContent:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setIsSensitiveContent:(BOOL)content;
 @end
 
 @implementation CNHostingPosterSnapshotImageView
@@ -12,18 +12,18 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
 
   sub_199DF841C();
 
   return v5;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = a3;
+  imageCopy = image;
 
   sub_199DF842C();
 }
@@ -32,14 +32,14 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
 
   sub_199DF841C();
 
   return v5;
 }
 
-- (void)setIsSensitiveContent:(BOOL)a3
+- (void)setIsSensitiveContent:(BOOL)content
 {
   swift_getKeyPath();
   swift_getKeyPath();
@@ -50,7 +50,7 @@
 - (UIView)view
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC10ContactsUI32CNHostingPosterSnapshotImageView_hostingController);
-  v3 = self;
+  selfCopy = self;
   result = [v2 view];
   if (result)
   {

@@ -1,7 +1,7 @@
 @interface MTSiriAnalyticsController
 - (MTSiriAnalyticsController)init;
-- (void)observePlaybackStartEventForRefId:(id)a3;
-- (void)playerRateChanged:(id)a3;
+- (void)observePlaybackStartEventForRefId:(id)id;
+- (void)playerRateChanged:(id)changed;
 @end
 
 @implementation MTSiriAnalyticsController
@@ -20,31 +20,31 @@
   return v2;
 }
 
-- (void)observePlaybackStartEventForRefId:(id)a3
+- (void)observePlaybackStartEventForRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   kdebug_trace();
-  [(MTSiriAnalyticsController *)self setPendingRequest:v4];
+  [(MTSiriAnalyticsController *)self setPendingRequest:idCopy];
 }
 
-- (void)playerRateChanged:(id)a3
+- (void)playerRateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    if ([v5 loadState] == 1)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([object loadState] == 1)
     {
-      [v5 actualRate];
+      [object actualRate];
       if (v7 > 0.0)
       {
-        v8 = [(MTSiriAnalyticsController *)v6 pendingRequest];
+        pendingRequest = [(MTSiriAnalyticsController *)selfCopy pendingRequest];
 
-        if (v8)
+        if (pendingRequest)
         {
           kdebug_trace();
           v15 = 0;
@@ -65,21 +65,21 @@
 
           v10 = v9;
           _Block_object_dispose(&v15, 8);
-          v11 = [v9 sharedAnalytics];
+          sharedAnalytics = [v9 sharedAnalytics];
           v19[0] = @"refId";
-          v12 = [(MTSiriAnalyticsController *)v6 pendingRequest];
+          pendingRequest2 = [(MTSiriAnalyticsController *)selfCopy pendingRequest];
           v19[1] = @"bundleId";
-          v20[0] = v12;
+          v20[0] = pendingRequest2;
           v20[1] = kMTApplicationBundleIdentifier;
           v13 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
-          [v11 logEventWithType:2901 context:v13];
+          [sharedAnalytics logEventWithType:2901 context:v13];
 
-          [(MTSiriAnalyticsController *)v6 setPendingRequest:0];
+          [(MTSiriAnalyticsController *)selfCopy setPendingRequest:0];
         }
       }
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 

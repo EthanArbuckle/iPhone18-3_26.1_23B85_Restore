@@ -1,11 +1,11 @@
 @interface DPCTelemetry
 + (DPCTelemetry)sharedInstance;
 - (DPCTelemetry)init;
-- (void)registerError:(unint64_t)a3;
-- (void)registerWatchConnectivity:(BOOL)a3;
-- (void)registerWatchEvent:(unint64_t)a3 rssiValue:(int64_t)a4;
+- (void)registerError:(unint64_t)error;
+- (void)registerWatchConnectivity:(BOOL)connectivity;
+- (void)registerWatchEvent:(unint64_t)event rssiValue:(int64_t)value;
 - (void)registerWatchSwitch;
-- (void)registerWatchWristEvent:(int64_t)a3;
+- (void)registerWatchWristEvent:(int64_t)event;
 @end
 
 @implementation DPCTelemetry
@@ -36,13 +36,13 @@
   return result;
 }
 
-- (void)registerWatchEvent:(unint64_t)a3 rssiValue:(int64_t)a4
+- (void)registerWatchEvent:(unint64_t)event rssiValue:(int64_t)value
 {
   v14[0] = @"Timestamp";
   v7 = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
   v8 = v7;
   v9 = @"WatchPresence";
-  if (a3 == 2)
+  if (event == 2)
   {
     v9 = @"WatchAbsence";
   }
@@ -51,7 +51,7 @@
   v15[1] = v9;
   v14[1] = @"Event";
   v14[2] = @"RSSI";
-  v10 = [NSNumber numberWithInteger:a4];
+  v10 = [NSNumber numberWithInteger:value];
   v15[2] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
@@ -60,15 +60,15 @@
   PLLogRegisteredEvent();
 }
 
-- (void)registerWatchConnectivity:(BOOL)a3
+- (void)registerWatchConnectivity:(BOOL)connectivity
 {
-  v3 = a3;
+  connectivityCopy = connectivity;
   v10[0] = @"Timestamp";
   v5 = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
   v10[1] = @"Event";
   v11[0] = v5;
   v6 = @"WatchDisconnected";
-  if (v3)
+  if (connectivityCopy)
   {
     v6 = @"WatchConnected";
   }
@@ -81,9 +81,9 @@
   PLLogRegisteredEvent();
 }
 
-- (void)registerError:(unint64_t)a3
+- (void)registerError:(unint64_t)error
 {
-  if (a3 == 4)
+  if (error == 4)
   {
     v4 = @"WatchUnreachable";
   }
@@ -93,7 +93,7 @@
     v4 = @"Unknown";
   }
 
-  if (a3 == 2)
+  if (error == 2)
   {
     v4 = @"WatchUnavailable";
   }
@@ -111,9 +111,9 @@
   PLLogRegisteredEvent();
 }
 
-- (void)registerWatchWristEvent:(int64_t)a3
+- (void)registerWatchWristEvent:(int64_t)event
 {
-  if (a3 == 3)
+  if (event == 3)
   {
     v4 = @"WatchWristStatusOnWrist";
   }
@@ -123,12 +123,12 @@
     v4 = @"WatchWristStatusUnknown";
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v4 = @"WatchWristStatusOffWrist";
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     v4 = @"WatchWristStatusDisabled";
   }

@@ -16,7 +16,7 @@
   v3[2] = __84__PKExpressPassInformation_NanoPassKit__npk_hasImmediateAutomaticSelectionCriterion__block_invoke;
   v3[3] = &unk_27994B190;
   v3[4] = &v4;
-  [a1 enumerateCriteriaWithHandler:v3];
+  [self enumerateCriteriaWithHandler:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -31,7 +31,7 @@
   v6[3] = &unk_27994B1B8;
   v7 = v2;
   v3 = v2;
-  [a1 enumerateCredentialsWithHandler:v6];
+  [self enumerateCredentialsWithHandler:v6];
   v4 = [v3 copy];
 
   return v4;

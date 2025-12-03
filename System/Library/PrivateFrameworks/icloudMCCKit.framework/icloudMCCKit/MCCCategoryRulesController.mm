@@ -1,17 +1,17 @@
 @interface MCCCategoryRulesController
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)notifyWebRuleWithSender:(id)a3 category:(id)a4 lastModified:(double)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)notifyWebRuleWithSender:(id)sender category:(id)category lastModified:(double)modified;
 - (MCCCategoryRulesController)init;
 - (MCCCategoryRulesDelegate)delegate;
 - (void)_checkConnection;
 - (void)agentIsAlive;
 - (void)dealloc;
-- (void)newOldCategoryTimestampsChanged:(id)a3;
-- (void)overrideRulesChanged:(id)a3;
+- (void)newOldCategoryTimestampsChanged:(id)changed;
+- (void)overrideRulesChanged:(id)changed;
 - (void)registerForWebRuleNotifications;
-- (void)registerForWebRuleNotifications:(unint64_t)a3;
+- (void)registerForWebRuleNotifications:(unint64_t)notifications;
 - (void)setupReconnectTimer;
-- (void)syncAllCategoryOverrides:(id)a3;
+- (void)syncAllCategoryOverrides:(id)overrides;
 @end
 
 @implementation MCCCategoryRulesController
@@ -23,9 +23,9 @@
   v2 = [(MCCCategoryRulesController *)&v21 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     callbackListener = v2->_callbackListener;
-    v2->_callbackListener = v3;
+    v2->_callbackListener = anonymousListener;
 
     [(NSXPCListener *)v2->_callbackListener setDelegate:v2];
     v5 = [[MCCSecretAgentController alloc] initWithCallbackListener:v2->_callbackListener];
@@ -85,9 +85,9 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
 
 - (void)registerForWebRuleNotifications
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 caseInsensitiveCompare:@"com.apple.mobilemail"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier caseInsensitiveCompare:@"com.apple.mobilemail"];
 
   v6 = _MCCLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -117,24 +117,24 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
   [(MCCCategoryRulesController *)self registerForWebRuleNotifications:v8];
 }
 
-- (void)registerForWebRuleNotifications:(unint64_t)a3
+- (void)registerForWebRuleNotifications:(unint64_t)notifications
 {
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastCheckin = self->_lastCheckin;
-  self->_lastCheckin = v5;
+  self->_lastCheckin = date;
 
   agentController = self->_agentController;
 
-  [(MCCSecretAgentController *)agentController registerCategoryRulesCallbackWithNotificationTypes:a3];
+  [(MCCSecretAgentController *)agentController registerCategoryRulesCallbackWithNotificationTypes:notifications];
 }
 
-- (BOOL)notifyWebRuleWithSender:(id)a3 category:(id)a4 lastModified:(double)a5
+- (BOOL)notifyWebRuleWithSender:(id)sender category:(id)category lastModified:(double)modified
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RCAddress alloc] initWithAddress:v9 displayName:&stru_1F4F3D0E0];
+  categoryCopy = category;
+  senderCopy = sender;
+  v10 = [[RCAddress alloc] initWithAddress:senderCopy displayName:&stru_1F4F3D0E0];
 
-  v11 = [[RCOverrideRule alloc] initWithEmailAddress:v10 overrideIdentifier:0 category:v8 categoryUpdateTime:a5];
+  v11 = [[RCOverrideRule alloc] initWithEmailAddress:v10 overrideIdentifier:0 category:categoryCopy categoryUpdateTime:modified];
   [(MCCSecretAgentController *)self->_agentController notifyWebRule:v11];
 
   return 1;
@@ -143,7 +143,7 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
 - (void)_checkConnection
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 24);
+  v3 = *(self + 24);
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;
@@ -154,9 +154,9 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
 
 - (void)agentIsAlive
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastCheckin = self->_lastCheckin;
-  self->_lastCheckin = v3;
+  self->_lastCheckin = date;
 
   v5 = _MCCLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -165,9 +165,9 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)overrideRulesChanged:(id)a3
+- (void)overrideRulesChanged:(id)changed
 {
-  v8 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -178,14 +178,14 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 categoryRulesController:self didReceiveOverrideRules:v8];
+      [v7 categoryRulesController:self didReceiveOverrideRules:changedCopy];
     }
   }
 }
 
-- (void)newOldCategoryTimestampsChanged:(id)a3
+- (void)newOldCategoryTimestampsChanged:(id)changed
 {
-  v8 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -196,14 +196,14 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 categoryRulesController:self didReceiveNewOldTimestamps:v8];
+      [v7 categoryRulesController:self didReceiveNewOldTimestamps:changedCopy];
     }
   }
 }
 
-- (void)syncAllCategoryOverrides:(id)a3
+- (void)syncAllCategoryOverrides:(id)overrides
 {
-  v8 = a3;
+  overridesCopy = overrides;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -214,17 +214,17 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 categoryRulesController:self didReceiveSyncAllOverrideRules:v8];
+      [v7 categoryRulesController:self didReceiveSyncAllOverrideRules:overridesCopy];
     }
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   callbackListener = self->_callbackListener;
-  if (callbackListener == v6)
+  if (callbackListener == listenerCopy)
   {
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4F40AC0];
     v10 = MEMORY[0x1E695DFD8];
@@ -249,22 +249,22 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
     v25 = [v20 setWithObjects:{v21, v22, v23, v24, objc_opt_class(), 0}];
     [v9 setClasses:v25 forSelector:sel_syncAllCategoryOverrides_ argumentIndex:0 ofReply:0];
 
-    [v7 setExportedInterface:v9];
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedInterface:v9];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(&location, self);
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __65__MCCCategoryRulesController_listener_shouldAcceptNewConnection___block_invoke;
     v29[3] = &unk_1E8458168;
     objc_copyWeak(&v30, &location);
-    [v7 setInterruptionHandler:v29];
+    [connectionCopy setInterruptionHandler:v29];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __65__MCCCategoryRulesController_listener_shouldAcceptNewConnection___block_invoke_95;
     v27[3] = &unk_1E8458168;
     objc_copyWeak(&v28, &location);
-    [v7 setInvalidationHandler:v27];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v27];
+    [connectionCopy resume];
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v30);
     objc_destroyWeak(&location);
@@ -275,11 +275,11 @@ void __34__MCCCategoryRulesController_init__block_invoke(uint64_t a1)
     v9 = _MCCLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(MCCCategoryRulesController *)v6 listener:v9 shouldAcceptNewConnection:?];
+      [(MCCCategoryRulesController *)listenerCopy listener:v9 shouldAcceptNewConnection:?];
     }
   }
 
-  return callbackListener == v6;
+  return callbackListener == listenerCopy;
 }
 
 void __65__MCCCategoryRulesController_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)

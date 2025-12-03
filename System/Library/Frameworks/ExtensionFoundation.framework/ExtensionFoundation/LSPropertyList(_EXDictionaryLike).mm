@@ -7,7 +7,7 @@
 - (id)_EX_dictionaryForKey:()_EXDictionaryLike
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4 ofClass:objc_opt_class()];
+  v5 = [self objectForKey:v4 ofClass:objc_opt_class()];
 
   return v5;
 }

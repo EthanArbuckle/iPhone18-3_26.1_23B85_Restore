@@ -1,19 +1,19 @@
 @interface SBSADefaultsContextMutator
-- (SBSADefaultsContextMutator)initWithDefaultsContext:(id)a3;
+- (SBSADefaultsContextMutator)initWithDefaultsContext:(id)context;
 @end
 
 @implementation SBSADefaultsContextMutator
 
-- (SBSADefaultsContextMutator)initWithDefaultsContext:(id)a3
+- (SBSADefaultsContextMutator)initWithDefaultsContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SBSADefaultsContextMutator;
   v6 = [(SBSADefaultsContextMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mutatable, a3);
+    objc_storeStrong(&v6->_mutatable, context);
   }
 
   return v7;

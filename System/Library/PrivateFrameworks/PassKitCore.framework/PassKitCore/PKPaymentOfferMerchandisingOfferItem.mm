@@ -1,29 +1,29 @@
 @interface PKPaymentOfferMerchandisingOfferItem
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferMerchandisingOfferItem)initWithCoder:(id)a3;
-- (PKPaymentOfferMerchandisingOfferItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferMerchandisingOfferItem)initWithCoder:(id)coder;
+- (PKPaymentOfferMerchandisingOfferItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferMerchandisingOfferItem
 
-- (PKPaymentOfferMerchandisingOfferItem)initWithDictionary:(id)a3
+- (PKPaymentOfferMerchandisingOfferItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKPaymentOfferMerchandisingOfferItem;
   v5 = [(PKPaymentOfferMerchandisingOfferItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKDictionaryForKey:@"dynamicContent"];
+    v8 = [dictionaryCopy PKDictionaryForKey:@"dynamicContent"];
     if ([v8 count])
     {
       v9 = [[PKPaymentOfferDynamicContent alloc] initWithDictionary:v8];
@@ -39,26 +39,26 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_identifier forKeyedSubscript:@"identifier"];
-  v4 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"dynamicContent"];
+  dictionaryRepresentation = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"dynamicContent"];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -137,19 +137,19 @@ LABEL_19:
   return v3;
 }
 
-- (PKPaymentOfferMerchandisingOfferItem)initWithCoder:(id)a3
+- (PKPaymentOfferMerchandisingOfferItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferMerchandisingOfferItem;
   v5 = [(PKPaymentOfferMerchandisingOfferItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
     dynamicContent = v5->_dynamicContent;
     v5->_dynamicContent = v8;
   }
@@ -157,22 +157,22 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferMerchandisingOfferItem allocWithZone:](PKPaymentOfferMerchandisingOfferItem init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:a3];
+  v8 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:zone];
   dynamicContent = v5->_dynamicContent;
   v5->_dynamicContent = v8;
 

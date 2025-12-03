@@ -1,26 +1,26 @@
 @interface PXAssetActionMenuBuilder
-+ (id)_actionTypesGroupedBySectionForActionManager:(id)a3 excludedActionTypes:(id)a4;
-+ (id)_buildCompactTopSectionForActionManager:(id)a3 excludedActionTypes:(id)a4;
-+ (id)_contextMenuTopRowActionsForManager:(id)a3 excludedActionTypes:(id)a4;
-+ (id)_internalActionTypesForActionManager:(id)a3;
-+ (id)menuElementsForActionManager:(id)a3 excludedActionTypes:(id)a4;
-+ (id)pxMenuElementsForActionManager:(id)a3 excludedActionTypes:(id)a4 handler:(id)a5;
++ (id)_actionTypesGroupedBySectionForActionManager:(id)manager excludedActionTypes:(id)types;
++ (id)_buildCompactTopSectionForActionManager:(id)manager excludedActionTypes:(id)types;
++ (id)_contextMenuTopRowActionsForManager:(id)manager excludedActionTypes:(id)types;
++ (id)_internalActionTypesForActionManager:(id)manager;
++ (id)menuElementsForActionManager:(id)manager excludedActionTypes:(id)types;
++ (id)pxMenuElementsForActionManager:(id)manager excludedActionTypes:(id)types handler:(id)handler;
 @end
 
 @implementation PXAssetActionMenuBuilder
 
-+ (id)_internalActionTypesForActionManager:(id)a3
++ (id)_internalActionTypesForActionManager:(id)manager
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  managerCopy = manager;
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PXAssetActionMenuBuilder__internalActionTypesForActionManager___block_invoke;
   v10[3] = &unk_1E7BB6350;
-  v11 = v3;
-  v5 = v4;
+  v11 = managerCopy;
+  v5 = array;
   v12 = v5;
-  v6 = v3;
+  v6 = managerCopy;
   v7 = _Block_copy(v10);
   v7[2](v7, @"PXAssetActionTypeInternalContentSyndicationPromoteToGuest");
   v7[2](v7, @"PXAssetActionTypeInternalContentSyndicationFileRadar");
@@ -45,19 +45,19 @@ void __65__PXAssetActionMenuBuilder__internalActionTypesForActionManager___block
   }
 }
 
-+ (id)_actionTypesGroupedBySectionForActionManager:(id)a3 excludedActionTypes:(id)a4
++ (id)_actionTypesGroupedBySectionForActionManager:(id)manager excludedActionTypes:(id)types
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  typesCopy = types;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager_excludedActionTypes___block_invoke;
   aBlock[3] = &unk_1E7BB6328;
-  v8 = v6;
+  v8 = typesCopy;
   v27 = v8;
-  v9 = v5;
+  v9 = managerCopy;
   v28 = v9;
   v10 = _Block_copy(aBlock);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -65,14 +65,14 @@ void __65__PXAssetActionMenuBuilder__internalActionTypesForActionManager___block
   if (objc_opt_isKindOfClass())
   {
     v12 = v9;
-    v13 = [v12 selectionManager];
-    v14 = [v13 dataSourceManager];
-    v15 = [v14 dataSource];
+    selectionManager = [v12 selectionManager];
+    dataSourceManager = [selectionManager dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
 
-    v16 = [v15 containerCollection];
-    LODWORD(v14) = [v16 px_isRecentlyDeletedSmartAlbum];
+    containerCollection = [dataSource containerCollection];
+    LODWORD(dataSourceManager) = [containerCollection px_isRecentlyDeletedSmartAlbum];
 
-    if (v14)
+    if (dataSourceManager)
     {
       v10[2](v10, @"PXAssetActionTypeDelete", v11);
       v10[2](v10, @"PXAssetActionTypeRestore", v11);
@@ -83,10 +83,10 @@ LABEL_6:
       goto LABEL_21;
     }
 
-    v18 = [v15 containerCollection];
-    v19 = [v18 px_isRecoveredSmartAlbum];
+    containerCollection2 = [dataSource containerCollection];
+    px_isRecoveredSmartAlbum = [containerCollection2 px_isRecoveredSmartAlbum];
 
-    if (v19)
+    if (px_isRecoveredSmartAlbum)
     {
       v10[2](v10, @"PXAssetActionTypeDelete", v11);
       v10[2](v10, @"PXAssetActionTypeRecover", v11);
@@ -124,14 +124,14 @@ LABEL_6:
     [v7 addObject:v12];
   }
 
-  v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10[2](v10, @"PXAssetActionTypeSaveVideoFrame", v15);
-  v10[2](v10, @"PXAssetActionTypeCopyAdjustments", v15);
-  v10[2](v10, @"PXAssetActionTypePasteAdjustments", v15);
-  v10[2](v10, @"PXAssetActionTypeRevertAdjustments", v15);
-  if ([v15 count])
+  dataSource = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v10[2](v10, @"PXAssetActionTypeSaveVideoFrame", dataSource);
+  v10[2](v10, @"PXAssetActionTypeCopyAdjustments", dataSource);
+  v10[2](v10, @"PXAssetActionTypePasteAdjustments", dataSource);
+  v10[2](v10, @"PXAssetActionTypeRevertAdjustments", dataSource);
+  if ([dataSource count])
   {
-    [v7 addObject:v15];
+    [v7 addObject:dataSource];
   }
 
   v25 = v8;
@@ -182,11 +182,11 @@ void __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager
   }
 }
 
-+ (id)_contextMenuTopRowActionsForManager:(id)a3 excludedActionTypes:(id)a4
++ (id)_contextMenuTopRowActionsForManager:(id)manager excludedActionTypes:(id)types
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _actionTypesGroupedBySectionForActionManager:v6 excludedActionTypes:a4];
+  managerCopy = manager;
+  v7 = [self _actionTypesGroupedBySectionForActionManager:managerCopy excludedActionTypes:types];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v39 = 0u;
   v40 = 0u;
@@ -240,18 +240,18 @@ void __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager
         }
 
         v19 = *(*(&v35 + 1) + 8 * j);
-        v20 = [v6 contextMenuCompactTopRowPriorityForActionType:v19];
+        v20 = [managerCopy contextMenuCompactTopRowPriorityForActionType:v19];
         if (v20)
         {
           v21 = v20;
-          v22 = [v6 contextMenuCompactTopRowPositionForActionType:v19];
+          v22 = [managerCopy contextMenuCompactTopRowPositionForActionType:v19];
           if (v22 <= 2)
           {
             v23 = v22;
             v24 = [v34 objectAtIndexedSubscript:v22];
-            v25 = [v24 integerValue];
+            integerValue = [v24 integerValue];
 
-            if (v21 > v25)
+            if (v21 > integerValue)
             {
               [v33 setObject:v19 atIndexedSubscript:v23];
               v26 = [MEMORY[0x1E696AD98] numberWithInteger:v21];
@@ -282,11 +282,11 @@ void __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager
   return v30;
 }
 
-+ (id)_buildCompactTopSectionForActionManager:(id)a3 excludedActionTypes:(id)a4
++ (id)_buildCompactTopSectionForActionManager:(id)manager excludedActionTypes:(id)types
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _contextMenuTopRowActionsForManager:v6 excludedActionTypes:a4];
+  managerCopy = manager;
+  v7 = [self _contextMenuTopRowActionsForManager:managerCopy excludedActionTypes:types];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
   v21 = 0u;
   v22 = 0u;
@@ -308,9 +308,9 @@ void __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v6 systemImageNameForActionType:v13];
+        v14 = [managerCopy systemImageNameForActionType:v13];
         v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:v14];
-        v16 = [v6 previewActionForActionType:v13 image:v15];
+        v16 = [managerCopy previewActionForActionType:v13 image:v15];
 
         if ([v13 isEqualToString:@"PXAssetActionTypeTrash"])
         {
@@ -347,24 +347,24 @@ void __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager
   return v18;
 }
 
-+ (id)pxMenuElementsForActionManager:(id)a3 excludedActionTypes:(id)a4 handler:(id)a5
++ (id)pxMenuElementsForActionManager:(id)manager excludedActionTypes:(id)types handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  managerCopy = manager;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a4;
-  v12 = [v10 array];
-  v13 = [a1 _actionTypesGroupedBySectionForActionManager:v8 excludedActionTypes:v11];
+  typesCopy = types;
+  array = [v10 array];
+  v13 = [self _actionTypesGroupedBySectionForActionManager:managerCopy excludedActionTypes:typesCopy];
 
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __87__PXAssetActionMenuBuilder_pxMenuElementsForActionManager_excludedActionTypes_handler___block_invoke;
   v28 = &unk_1E7BB6300;
-  v14 = v12;
+  v14 = array;
   v29 = v14;
-  v15 = v8;
+  v15 = managerCopy;
   v30 = v15;
-  v16 = v9;
+  v16 = handlerCopy;
   v32 = v16;
   v17 = v13;
   v31 = v17;
@@ -374,7 +374,7 @@ void __93__PXAssetActionMenuBuilder__actionTypesGroupedBySectionForActionManager
     v18 = objc_opt_new();
     [v14 addObject:{v18, v25, v26, v27, v28, v29, v30}];
 
-    v19 = [a1 _internalActionTypesForActionManager:v15];
+    v19 = [self _internalActionTypesForActionManager:v15];
     v20 = [v15 actionItemsForActionTypes:v19 handler:v16];
     v21 = [PXActionMenu menuWithTitle:@" Internal" childElements:v20];
     [v14 addObject:v21];
@@ -400,23 +400,23 @@ void __87__PXAssetActionMenuBuilder_pxMenuElementsForActionManager_excludedActio
   }
 }
 
-+ (id)menuElementsForActionManager:(id)a3 excludedActionTypes:(id)a4
++ (id)menuElementsForActionManager:(id)manager excludedActionTypes:(id)types
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  typesCopy = types;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v27 = v7;
-  v9 = [a1 _buildCompactTopSectionForActionManager:v6 excludedActionTypes:v7];
+  v27 = typesCopy;
+  v9 = [self _buildCompactTopSectionForActionManager:managerCopy excludedActionTypes:typesCopy];
   if (v9)
   {
     [v8 addObject:v9];
   }
 
   v26 = v9;
-  v25 = [a1 _contextMenuTopRowActionsForManager:v6 excludedActionTypes:v27];
+  v25 = [self _contextMenuTopRowActionsForManager:managerCopy excludedActionTypes:v27];
   v10 = [MEMORY[0x1E695DFD8] setWithArray:?];
-  [a1 _actionTypesGroupedBySectionForActionManager:v6 excludedActionTypes:v27];
+  [self _actionTypesGroupedBySectionForActionManager:managerCopy excludedActionTypes:v27];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -462,9 +462,9 @@ void __87__PXAssetActionMenuBuilder_pxMenuElementsForActionManager_excludedActio
                 v19 = *(*(&v33 + 1) + 8 * j);
                 if (([v10 containsObject:v19] & 1) == 0)
                 {
-                  v20 = [v6 systemImageNameForActionType:v19];
+                  v20 = [managerCopy systemImageNameForActionType:v19];
                   v21 = [MEMORY[0x1E69DCAB8] systemImageNamed:v20];
-                  v22 = [v6 previewActionForActionType:v19 image:v21];
+                  v22 = [managerCopy previewActionForActionType:v19 image:v21];
 
                   [v13 addObject:v22];
                 }

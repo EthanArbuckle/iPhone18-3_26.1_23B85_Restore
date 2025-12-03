@@ -1,6 +1,6 @@
 @interface FCHideMyEmailSignupConfig
 + (id)defaultConfig;
-- (FCHideMyEmailSignupConfig)initWithConfigDictionary:(id)a3;
+- (FCHideMyEmailSignupConfig)initWithConfigDictionary:(id)dictionary;
 - (id)initDefault;
 @end
 
@@ -55,35 +55,35 @@ uint64_t __42__FCHideMyEmailSignupConfig_defaultConfig__block_invoke()
   return v3;
 }
 
-- (FCHideMyEmailSignupConfig)initWithConfigDictionary:(id)a3
+- (FCHideMyEmailSignupConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = FCHideMyEmailSignupConfig;
   v5 = [(FCHideMyEmailSignupConfig *)&v36 init];
   if (v5)
   {
-    v5->_isEnabled = FCAppConfigurationBoolValue(v4, @"isEnabled", 0);
+    v5->_isEnabled = FCAppConfigurationBoolValue(dictionaryCopy, @"isEnabled", 0);
     v6 = +[FCHideMyEmailSignupConfig defaultConfig];
-    v7 = [v6 headline];
-    v8 = FCAppConfigurationStringValue(v4, @"headline", v7);
+    headline = [v6 headline];
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"headline", headline);
     headline = v5->_headline;
     v5->_headline = v8;
 
-    v5->_headlineLineSpacing = FCAppConfigurationDoubleValue(v4, @"headlineLineSpacing", 1.0);
+    v5->_headlineLineSpacing = FCAppConfigurationDoubleValue(dictionaryCopy, @"headlineLineSpacing", 1.0);
     v10 = +[FCHideMyEmailSignupConfig defaultConfig];
-    v11 = [v10 subheadline];
-    v12 = FCAppConfigurationStringValue(v4, @"subheadline", v11);
+    subheadline = [v10 subheadline];
+    v12 = FCAppConfigurationStringValue(dictionaryCopy, @"subheadline", subheadline);
     subheadline = v5->_subheadline;
     v5->_subheadline = v12;
 
     v14 = +[FCHideMyEmailSignupConfig defaultConfig];
-    v15 = [v14 ctaButtonText];
-    v16 = FCAppConfigurationStringValue(v4, @"ctaButtonText", v15);
+    ctaButtonText = [v14 ctaButtonText];
+    v16 = FCAppConfigurationStringValue(dictionaryCopy, @"ctaButtonText", ctaButtonText);
     ctaButtonText = v5->_ctaButtonText;
     v5->_ctaButtonText = v16;
 
-    v18 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"policyText", 0);
+    v18 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"policyText", 0);
     if (v18)
     {
       v19 = [[FCConfigHyperlinkText alloc] initWithConfigDictionary:v18];
@@ -94,28 +94,28 @@ uint64_t __42__FCHideMyEmailSignupConfig_defaultConfig__block_invoke()
     else
     {
       policyText = +[FCHideMyEmailSignupConfig defaultConfig];
-      v21 = [policyText policyText];
+      policyText = [policyText policyText];
       v22 = v5->_policyText;
-      v5->_policyText = v21;
+      v5->_policyText = policyText;
     }
 
-    v5->_useChannelFont = FCAppConfigurationBoolValue(v4, @"useChannelFont", 1);
-    v23 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"primaryColor", 0);
+    v5->_useChannelFont = FCAppConfigurationBoolValue(dictionaryCopy, @"useChannelFont", 1);
+    v23 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"primaryColor", 0);
     v24 = [FCContentColorPair colorPairWithDictionary:v23];
     primaryColor = v5->_primaryColor;
     v5->_primaryColor = v24;
 
-    v26 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"secondaryColor", 0);
+    v26 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"secondaryColor", 0);
     v27 = [FCContentColorPair colorPairWithDictionary:v26];
     secondaryColor = v5->_secondaryColor;
     v5->_secondaryColor = v27;
 
-    v29 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"tertiaryColor", 0);
+    v29 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"tertiaryColor", 0);
     v30 = [FCContentColorPair colorPairWithDictionary:v29];
     tertiaryColor = v5->_tertiaryColor;
     v5->_tertiaryColor = v30;
 
-    v32 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"backgroundColor", 0);
+    v32 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"backgroundColor", 0);
     v33 = [FCContentColorPair colorPairWithDictionary:v32];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v33;

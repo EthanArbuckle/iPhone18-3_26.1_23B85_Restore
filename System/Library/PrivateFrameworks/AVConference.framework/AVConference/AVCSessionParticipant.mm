@@ -1,78 +1,78 @@
 @interface AVCSessionParticipant
-+ (id)archiveMediaStates:(id)a3;
-+ (id)loopbackNegotiationDataWithData:(id)a3;
-+ (id)unarchiveMediaStatesWithData:(id)a3;
-+ (unsigned)defaultStateForMediaType:(unsigned int)a3 isLocal:(BOOL)a4;
-- (AVCSessionParticipant)initWithParticipantID:(unint64_t)a3 data:(id)a4 delegate:(id)a5 queue:(id)a6;
-- (BOOL)generateMediaStateEntryForMediaType:(unsigned int)a3;
++ (id)archiveMediaStates:(id)states;
++ (id)loopbackNegotiationDataWithData:(id)data;
++ (id)unarchiveMediaStatesWithData:(id)data;
++ (unsigned)defaultStateForMediaType:(unsigned int)type isLocal:(BOOL)local;
+- (AVCSessionParticipant)initWithParticipantID:(unint64_t)d data:(id)data delegate:(id)delegate queue:(id)queue;
+- (BOOL)generateMediaStateEntryForMediaType:(unsigned int)type;
 - (BOOL)hasPendingChanges;
-- (BOOL)isEnabledMediaType:(unsigned int)a3;
-- (BOOL)isPausedMediaType:(unsigned int)a3;
+- (BOOL)isEnabledMediaType:(unsigned int)type;
+- (BOOL)isPausedMediaType:(unsigned int)type;
 - (BOOL)isStateQueueSet;
 - (BOOL)setupMediaStates;
 - (NSString)description;
 - (NSString)dispatchedParticipantStatus;
 - (NSUUID)playbackSynchronizationGroupUUID;
 - (id)copyStateQueue;
-- (id)newNSErrorWithErrorDictionary:(id)a3;
-- (int64_t)streamTokenForStreamGroupID:(unsigned int)a3;
+- (id)newNSErrorWithErrorDictionary:(id)dictionary;
+- (int64_t)streamTokenForStreamGroupID:(unsigned int)d;
 - (tagAVCPositionalInfo)videoPositionalInfo;
-- (unint64_t)spatialAudioSourceIDForMediaType:(unsigned int)a3;
+- (unint64_t)spatialAudioSourceIDForMediaType:(unsigned int)type;
 - (unsigned)dispatchedProminenceIndex;
-- (unsigned)mediaStateForMediaType:(unsigned int)a3;
-- (unsigned)uint32ValueForPropertyName:(id)a3;
-- (void)accessPropertyWithName:(id)a3 block:(id)a4;
-- (void)appendConfigurationToXPCConfiguration:(id)a3;
-- (void)completeAudioEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)completeAudioPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)completeScreenEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)completeSetMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)completeVideoEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)completeVideoPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
+- (unsigned)mediaStateForMediaType:(unsigned int)type;
+- (unsigned)uint32ValueForPropertyName:(id)name;
+- (void)accessPropertyWithName:(id)name block:(id)block;
+- (void)appendConfigurationToXPCConfiguration:(id)configuration;
+- (void)completeAudioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)completeAudioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)completeScreenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)completeSetMediaState:(unsigned int)state forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error;
+- (void)completeVideoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)completeVideoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
 - (void)dealloc;
 - (void)deregisterFromNotifications;
-- (void)dispatchedCompleteAudioEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)dispatchedCompleteAudioPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)dispatchedCompleteScreenEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)dispatchedCompleteVideoEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)dispatchedCompleteVideoPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5;
-- (void)dispatchedLegacySetMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4;
-- (void)dispatchedSetMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4;
-- (void)handleLegacyTransitionsForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4 previousState:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7;
+- (void)dispatchedCompleteAudioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)dispatchedCompleteAudioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)dispatchedCompleteScreenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)dispatchedCompleteVideoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)dispatchedCompleteVideoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)dispatchedLegacySetMediaState:(unsigned int)state forMediaType:(unsigned int)type;
+- (void)dispatchedSetMediaState:(unsigned int)state forMediaType:(unsigned int)type;
+- (void)handleLegacyTransitionsForMediaType:(unsigned int)type mediaState:(unsigned int)state previousState:(unsigned int)previousState didSucceed:(BOOL)succeed error:(id)error;
 - (void)printMediaStates;
 - (void)registerBlocksForNotifications;
-- (void)setAudioEnabled:(BOOL)a3;
-- (void)setAudioMuted:(BOOL)a3;
-- (void)setAudioPaused:(BOOL)a3;
-- (void)setIsPlaybackSynchronizationGroupMember:(BOOL)a3;
-- (void)setMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4;
-- (void)setMediaType:(unsigned int)a3 enabled:(BOOL)a4 mediaString:(const char *)a5 xpcMessageKey:(char *)a6 xpcOperationKey:(id)a7 completionBlock:(id)a8;
-- (void)setMediaType:(unsigned int)a3 paused:(BOOL)a4 mediaString:(const char *)a5 xpcMessageKey:(char *)a6 xpcOperationKey:(id)a7 completionBlock:(id)a8;
-- (void)setMediaTypeToSpatialSourceIDMap:(id)a3;
-- (void)setPlaybackSynchronizationGroupUUID:(id)a3;
-- (void)setProminenceIndex:(unsigned int)a3;
-- (void)setPropertyValue:(id)a3 forPropertyName:(id)a4 xpcKey:(id)a5 xpcMessageName:(const char *)a6 batchSupported:(BOOL)a7;
-- (void)setScreenControlEnabled:(BOOL)a3;
-- (void)setSharedXPCConnection:(id)a3;
+- (void)setAudioEnabled:(BOOL)enabled;
+- (void)setAudioMuted:(BOOL)muted;
+- (void)setAudioPaused:(BOOL)paused;
+- (void)setIsPlaybackSynchronizationGroupMember:(BOOL)member;
+- (void)setMediaState:(unsigned int)state forMediaType:(unsigned int)type;
+- (void)setMediaType:(unsigned int)type enabled:(BOOL)enabled mediaString:(const char *)string xpcMessageKey:(char *)key xpcOperationKey:(id)operationKey completionBlock:(id)block;
+- (void)setMediaType:(unsigned int)type paused:(BOOL)paused mediaString:(const char *)string xpcMessageKey:(char *)key xpcOperationKey:(id)operationKey completionBlock:(id)block;
+- (void)setMediaTypeToSpatialSourceIDMap:(id)map;
+- (void)setPlaybackSynchronizationGroupUUID:(id)d;
+- (void)setProminenceIndex:(unsigned int)index;
+- (void)setPropertyValue:(id)value forPropertyName:(id)name xpcKey:(id)key xpcMessageName:(const char *)messageName batchSupported:(BOOL)supported;
+- (void)setScreenControlEnabled:(BOOL)enabled;
+- (void)setSharedXPCConnection:(id)connection;
 - (void)setStateQueue:(id)localStateQueue;
-- (void)setStreamTokens:(id)a3;
+- (void)setStreamTokens:(id)tokens;
 - (void)setUpConfig;
-- (void)setVideoEnabled:(BOOL)a3;
-- (void)setVideoPaused:(BOOL)a3;
-- (void)setVideoPositionalInfo:(tagAVCPositionalInfo *)a3;
-- (void)setVideoQuality:(unsigned __int8)a3;
-- (void)setVisibilityIndex:(unsigned int)a3;
-- (void)setVolume:(float)a3;
+- (void)setVideoEnabled:(BOOL)enabled;
+- (void)setVideoPaused:(BOOL)paused;
+- (void)setVideoPositionalInfo:(tagAVCPositionalInfo *)info;
+- (void)setVideoQuality:(unsigned __int8)quality;
+- (void)setVisibilityIndex:(unsigned int)index;
+- (void)setVolume:(float)volume;
 - (void)setupMediaStates;
-- (void)setupNotificationQueue:(id)a3;
-- (void)stateTransitionForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4 previousState:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)storeMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4;
+- (void)setupNotificationQueue:(id)queue;
+- (void)stateTransitionForMediaType:(unsigned int)type mediaState:(unsigned int)state previousState:(unsigned int)previousState didSucceed:(BOOL)succeed error:(id)error;
+- (void)storeMediaState:(unsigned int)state forMediaType:(unsigned int)type;
 - (void)updateLegacyStates;
 @end
 
 @implementation AVCSessionParticipant
 
-- (AVCSessionParticipant)initWithParticipantID:(unint64_t)a3 data:(id)a4 delegate:(id)a5 queue:(id)a6
+- (AVCSessionParticipant)initWithParticipantID:(unint64_t)d data:(id)data delegate:(id)delegate queue:(id)queue
 {
   v38 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -139,9 +139,9 @@ LABEL_12:
       }
     }
 
-    v10->_idsParticipantID = a3;
-    v10->_isLocal = a3 == 0;
-    if (a4)
+    v10->_idsParticipantID = d;
+    v10->_isLocal = d == 0;
+    if (data)
     {
       v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v10->_mediaStates = v19;
@@ -149,14 +149,14 @@ LABEL_12:
       {
         if (VCDefaults_GetBoolValueForKey(@"forceLoopback", 0))
         {
-          a4 = [AVCSessionParticipant loopbackNegotiationDataWithData:a4];
+          data = [AVCSessionParticipant loopbackNegotiationDataWithData:data];
         }
 
-        v20 = [objc_msgSend(+[VCSessionParticipant participantInfoWithParticipantData:](VCSessionParticipant participantInfoWithParticipantData:{a4), "objectForKeyedSubscript:", @"vcSessionParticipantKeyUUID", "copy"}];
+        v20 = [objc_msgSend(+[VCSessionParticipant participantInfoWithParticipantData:](VCSessionParticipant participantInfoWithParticipantData:{data), "objectForKeyedSubscript:", @"vcSessionParticipantKeyUUID", "copy"}];
         v10->_participantID = v20;
         if (v20)
         {
-          v21 = [VCSessionParticipant participantDataWithParticipantData:a4 isReinit:a3 == 0];
+          v21 = [VCSessionParticipant participantDataWithParticipantData:data isReinit:d == 0];
           v10->_participantData = v21;
           if (v21)
           {
@@ -176,8 +176,8 @@ LABEL_12:
                   v10->_stateQueue = v25;
                   pthread_mutex_init(&v10->_mediaStateMutex, 0);
                   pthread_rwlock_init(&v10->_stateQueueLock, 0);
-                  objc_storeWeak(&v10->_delegate, a5);
-                  [(AVCSessionParticipant *)v10 setupNotificationQueue:a6];
+                  objc_storeWeak(&v10->_delegate, delegate);
+                  [(AVCSessionParticipant *)v10 setupNotificationQueue:queue];
                   [(AVCSessionParticipant *)v10 setUpConfig];
                   return v10;
                 }
@@ -266,11 +266,11 @@ LABEL_12:
   return [v5 stringWithFormat:@"%@[%p] idsParticipantID[%llu] _participantID[%@] audioEnabled[%d] videoEnabled[%d] participantData[%@] %@", NSStringFromClass(v6), self, self->_idsParticipantID, self->_participantID, v3, v4, self->_participantData, -[VCSessionParticipantUpdateConfig description](self->_updateConfig, "description")];
 }
 
-- (void)setMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4
+- (void)setMediaState:(unsigned int)state forMediaType:(unsigned int)type
 {
-  v4 = *&a3;
+  v4 = *&state;
   v11 = *MEMORY[0x1E69E9840];
-  v6 = VCSessionMediaType_FromAVCSessionMediaType(a4);
+  v6 = VCSessionMediaType_FromAVCSessionMediaType(type);
   v7 = VCSessionMediaState_FromAVCSessionMediaState(v4);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -661,9 +661,9 @@ LABEL_38:
   }
 }
 
-- (unsigned)mediaStateForMediaType:(unsigned int)a3
+- (unsigned)mediaStateForMediaType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   pthread_mutex_lock(&self->_mediaStateMutex);
   v5 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v3)), "unsignedIntValue"}];
   pthread_mutex_unlock(&self->_mediaStateMutex);
@@ -671,64 +671,64 @@ LABEL_38:
   return VCSessionMediaState_FromAVCSessionMediaState(v5);
 }
 
-- (void)setAudioMuted:(BOOL)a3
+- (void)setAudioMuted:(BOOL)muted
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:muted];
   v5 = !self->_isLocal;
 
   [(AVCSessionParticipant *)self setPropertyValue:v4 forPropertyName:@"microphoneMuted" xpcKey:@"vcSessionParameterMute" xpcMessageName:"vcSessionSetMute" batchSupported:v5];
 }
 
-- (void)setAudioEnabled:(BOOL)a3
+- (void)setAudioEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7[5] = *MEMORY[0x1E69E9840];
   v5 = [(AVCSessionParticipant *)self mediaStateForMediaType:0];
-  if (v3 && v5 == 2)
+  if (enabledCopy && v5 == 2)
   {
-    v6 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+    delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__AVCSessionParticipant_setAudioEnabled___block_invoke;
     v7[3] = &unk_1E85F3778;
     v7[4] = self;
-    dispatch_async(v6, v7);
+    dispatch_async(delegateNotificationQueue, v7);
   }
 
   else
   {
 
-    [(AVCSessionParticipant *)self setMediaState:v3 forMediaType:0];
+    [(AVCSessionParticipant *)self setMediaState:enabledCopy forMediaType:0];
   }
 }
 
-- (void)setVideoEnabled:(BOOL)a3
+- (void)setVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7[5] = *MEMORY[0x1E69E9840];
   v5 = [(AVCSessionParticipant *)self mediaStateForMediaType:1];
-  if (v3 && v5 == 2)
+  if (enabledCopy && v5 == 2)
   {
-    v6 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+    delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__AVCSessionParticipant_setVideoEnabled___block_invoke;
     v7[3] = &unk_1E85F3778;
     v7[4] = self;
-    dispatch_async(v6, v7);
+    dispatch_async(delegateNotificationQueue, v7);
   }
 
   else
   {
 
-    [(AVCSessionParticipant *)self setMediaState:v3 forMediaType:1];
+    [(AVCSessionParticipant *)self setMediaState:enabledCopy forMediaType:1];
   }
 }
 
-- (void)setAudioPaused:(BOOL)a3
+- (void)setAudioPaused:(BOOL)paused
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (paused)
   {
     v5 = 2;
   }
@@ -742,7 +742,7 @@ LABEL_38:
   if (!v6)
   {
     v9 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32026 detailCode:0 description:@"Invalid transition"];
-    v7 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+    delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__AVCSessionParticipant_setAudioPaused___block_invoke;
@@ -753,9 +753,9 @@ LABEL_38:
     goto LABEL_9;
   }
 
-  if (v6 == 1 && !a3)
+  if (v6 == 1 && !paused)
   {
-    v7 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+    delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __40__AVCSessionParticipant_setAudioPaused___block_invoke_2;
@@ -763,17 +763,17 @@ LABEL_38:
     v10[4] = self;
     v8 = v10;
 LABEL_9:
-    dispatch_async(v7, v8);
+    dispatch_async(delegateNotificationQueue, v8);
     return;
   }
 
   [(AVCSessionParticipant *)self setMediaState:v5 forMediaType:0];
 }
 
-- (void)setVideoPaused:(BOOL)a3
+- (void)setVideoPaused:(BOOL)paused
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (paused)
   {
     v5 = 2;
   }
@@ -787,7 +787,7 @@ LABEL_9:
   if (!v6)
   {
     v9 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32026 detailCode:0 description:@"Invalid transition"];
-    v7 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+    delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__AVCSessionParticipant_setVideoPaused___block_invoke;
@@ -798,9 +798,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v6 == 1 && !a3)
+  if (v6 == 1 && !paused)
   {
-    v7 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+    delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __40__AVCSessionParticipant_setVideoPaused___block_invoke_2;
@@ -808,14 +808,14 @@ LABEL_9:
     v10[4] = self;
     v8 = v10;
 LABEL_9:
-    dispatch_async(v7, v8);
+    dispatch_async(delegateNotificationQueue, v8);
     return;
   }
 
   [(AVCSessionParticipant *)self setMediaState:v5 forMediaType:1];
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v6 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -823,7 +823,7 @@ LABEL_9:
   block[2] = __35__AVCSessionParticipant_setVolume___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  volumeCopy = volume;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, block);
   pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -1000,23 +1000,23 @@ LABEL_19:
   }
 }
 
-- (void)setVideoQuality:(unsigned __int8)a3
+- (void)setVideoQuality:(unsigned __int8)quality
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:quality];
   v5 = !self->_isLocal;
 
   [(AVCSessionParticipant *)self setPropertyValue:v4 forPropertyName:@"videoQuality" xpcKey:@"vcSessionParameterVideoQuality" xpcMessageName:"vcSessionSetVideoQuality" batchSupported:v5];
 }
 
-- (void)setVisibilityIndex:(unsigned int)a3
+- (void)setVisibilityIndex:(unsigned int)index
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v5 = !self->_isLocal;
 
   [(AVCSessionParticipant *)self setPropertyValue:v4 forPropertyName:@"visibilityIndex" xpcKey:@"vcSessionParameterVisibilityIndex" xpcMessageName:"vcSessionSetVisibilityIndex" batchSupported:v5];
 }
 
-- (void)setScreenControlEnabled:(BOOL)a3
+- (void)setScreenControlEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -1024,7 +1024,7 @@ LABEL_19:
   block[2] = __49__AVCSessionParticipant_setScreenControlEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, block);
   pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -1235,9 +1235,9 @@ LABEL_30:
   return [v3 unsignedIntValue];
 }
 
-- (void)setProminenceIndex:(unsigned int)a3
+- (void)setProminenceIndex:(unsigned int)index
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&index];
   v5 = !self->_isLocal;
 
   [(AVCSessionParticipant *)self setPropertyValue:v4 forPropertyName:@"prominenceIndex" xpcKey:@"vcSessionParameterProminenceIndex" xpcMessageName:"vcSessionSetProminenceIndex" batchSupported:v5];
@@ -1290,10 +1290,10 @@ __n128 __44__AVCSessionParticipant_videoPositionalInfo__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setVideoPositionalInfo:(tagAVCPositionalInfo *)a3
+- (void)setVideoPositionalInfo:(tagAVCPositionalInfo *)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3->var0 >= 2)
+  if (info->var0 >= 2)
   {
     if (objc_opt_class() == self)
     {
@@ -1325,7 +1325,7 @@ __n128 __44__AVCSessionParticipant_videoPositionalInfo__block_invoke(uint64_t a1
         v8 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          var0 = a3->var0;
+          var0 = info->var0;
           *buf = 136316418;
           v15 = v7;
           v16 = 2080;
@@ -1335,7 +1335,7 @@ __n128 __44__AVCSessionParticipant_videoPositionalInfo__block_invoke(uint64_t a1
           v20 = 2112;
           v21 = v6;
           v22 = 2048;
-          v23 = self;
+          selfCopy = self;
           v24 = 1024;
           v25 = var0;
           _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) [AVC SPATIAL AUDIO] Invalid flags=%08x", buf, 0x36u);
@@ -1348,13 +1348,13 @@ __n128 __44__AVCSessionParticipant_videoPositionalInfo__block_invoke(uint64_t a1
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
-    v5 = *&a3->var1.height;
-    v11 = *&a3->var0;
+    v5 = *&info->var1.height;
+    v11 = *&info->var0;
     v12 = v5;
     block[2] = __48__AVCSessionParticipant_setVideoPositionalInfo___block_invoke;
     block[3] = &unk_1E85F7F08;
     block[4] = self;
-    v13 = *&a3->var3;
+    v13 = *&info->var3;
     pthread_rwlock_rdlock(&self->_stateQueueLock);
     dispatch_async(self->_stateQueue, block);
     pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -1483,9 +1483,9 @@ uint64_t __48__AVCSessionParticipant_setVideoPositionalInfo___block_invoke_3(_OW
   return [a2 setAvcPositionalInfo:v4];
 }
 
-- (void)setIsPlaybackSynchronizationGroupMember:(BOOL)a3
+- (void)setIsPlaybackSynchronizationGroupMember:(BOOL)member
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:member];
   v5 = !self->_isLocal;
 
   [(AVCSessionParticipant *)self setPropertyValue:v4 forPropertyName:@"isSynchronizationGroupMember" xpcKey:@"vcSessionParameterIsPlaybackSyncGroupMember" xpcMessageName:"vcSessionSetPlaybackSyncGroupMember" batchSupported:v5];
@@ -1524,26 +1524,26 @@ uint64_t __57__AVCSessionParticipant_playbackSynchronizationGroupUUID__block_inv
   return result;
 }
 
-- (void)setPlaybackSynchronizationGroupUUID:(id)a3
+- (void)setPlaybackSynchronizationGroupUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [a3 UUIDString];
+    uUIDString = [d UUIDString];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    uUIDString = [MEMORY[0x1E695DFB0] null];
   }
 
   isLocal = self->_isLocal;
 
-  [(AVCSessionParticipant *)self setPropertyValue:v4 forPropertyName:@"synchronizationGroupUUID" xpcKey:@"vcSessionParameterIsPlaybackSyncGroupUUID" xpcMessageName:"vcSessionSetPlaybackSyncGroupUUID" batchSupported:isLocal];
+  [(AVCSessionParticipant *)self setPropertyValue:uUIDString forPropertyName:@"synchronizationGroupUUID" xpcKey:@"vcSessionParameterIsPlaybackSyncGroupUUID" xpcMessageName:"vcSessionSetPlaybackSyncGroupUUID" batchSupported:isLocal];
 }
 
 - (BOOL)hasPendingChanges
 {
-  v2 = self;
+  selfCopy = self;
   block[6] = *MEMORY[0x1E69E9840];
   v6 = 0;
   v7 = &v6;
@@ -1556,17 +1556,17 @@ uint64_t __57__AVCSessionParticipant_playbackSynchronizationGroupUUID__block_inv
   v5[4] = self;
   v5[5] = &v6;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
-  stateQueue = v2->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = ___AVCSessionParticipant_DispatchSyncToStateQueue_block_invoke;
   block[3] = &unk_1E85F4E98;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = v5;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __42__AVCSessionParticipant_hasPendingChanges__block_invoke(uint64_t a1)
@@ -1576,23 +1576,23 @@ uint64_t __42__AVCSessionParticipant_hasPendingChanges__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)dispatchedSetMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4
+- (void)dispatchedSetMediaState:(unsigned int)state forMediaType:(unsigned int)type
 {
-  v4 = *&a3;
+  v4 = *&state;
   v7[3] = *MEMORY[0x1E69E9840];
   v7[0] = self->_participantID;
   v6[0] = @"vcSessionParticipantID";
   v6[1] = @"vcSessionParameterMediaType";
-  v7[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v7[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   v6[2] = @"vcSessionParameterMediaState";
   v7[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
   -[AVConferenceXPCClient sendMessageAsync:arguments:](-[AVCSessionParticipant sharedXPCConnection](self, "sharedXPCConnection"), "sendMessageAsync:arguments:", "vcSessionSetMediaState", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:3]);
 }
 
-- (void)dispatchedLegacySetMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4
+- (void)dispatchedLegacySetMediaState:(unsigned int)state forMediaType:(unsigned int)type
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&type;
+  v5 = *&state;
   v25 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_mediaStateMutex);
   v7 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v4)), "unsignedIntValue"}];
@@ -1627,7 +1627,7 @@ LABEL_30:
       }
 
       v14 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32026 detailCode:0 description:@"Screen doesn't support pause/resume"];
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2;
       break;
     case 1:
@@ -1698,26 +1698,26 @@ LABEL_27:
       return;
     default:
       v14 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32016 detailCode:0 description:@"Unsupported media type pause/resume"];
-      v15 = self;
+      selfCopy2 = self;
       v16 = v4;
       break;
   }
 
-  [(AVCSessionParticipant *)v15 stateTransitionForMediaType:v16 mediaState:v5 previousState:v7 didSucceed:0 error:v14];
+  [(AVCSessionParticipant *)selfCopy2 stateTransitionForMediaType:v16 mediaState:v5 previousState:v7 didSucceed:0 error:v14];
 }
 
-- (void)completeSetMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)completeSetMediaState:(unsigned int)state forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__AVCSessionParticipant_completeSetMediaState_forMediaType_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F63A0;
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
+  typeCopy = type;
+  stateCopy = state;
+  succeedCopy = succeed;
   block[4] = self;
-  block[5] = a6;
+  block[5] = error;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, block);
   pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -1821,9 +1821,9 @@ LABEL_12:
   return [*(a1 + 32) stateTransitionForMediaType:*(a1 + 48) mediaState:*(a1 + 52) previousState:v4 didSucceed:*(a1 + 56) error:*(a1 + 40)];
 }
 
-- (BOOL)generateMediaStateEntryForMediaType:(unsigned int)a3
+- (BOOL)generateMediaStateEntryForMediaType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   if (![(NSMutableDictionary *)self->_mediaStates objectForKeyedSubscript:v5])
   {
@@ -1836,13 +1836,13 @@ LABEL_12:
 - (void)printMediaStates
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   mediaStates = self->_mediaStates;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __41__AVCSessionParticipant_printMediaStates__block_invoke;
   v13[3] = &unk_1E85F7F58;
-  v13[4] = v3;
+  v13[4] = string;
   [(NSMutableDictionary *)mediaStates enumerateKeysAndObjectsUsingBlock:v13];
   if (objc_opt_class() == self)
   {
@@ -1859,7 +1859,7 @@ LABEL_12:
         v18 = 1024;
         v19 = 604;
         v20 = 2112;
-        v21 = v3;
+        v21 = string;
         v8 = " [%s] %s:%d Media state update: %@";
         v9 = v7;
         v10 = 38;
@@ -1896,9 +1896,9 @@ LABEL_11:
         v20 = 2112;
         v21 = v5;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2112;
-        v25 = v3;
+        v25 = string;
         v8 = " [%s] %s:%d %@(%p) Media state update: %@";
         v9 = v12;
         v10 = 58;
@@ -1915,18 +1915,18 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
   return [v4 appendFormat:@"%@[%@] ", v5, VCSessionMediaState_Name(objc_msgSend(a3, "unsignedIntValue"))];
 }
 
-- (void)handleLegacyTransitionsForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4 previousState:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)handleLegacyTransitionsForMediaType:(unsigned int)type mediaState:(unsigned int)state previousState:(unsigned int)previousState didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
-  v12 = a5 == 2 && a4 == 1;
-  v13 = (a4 == 1) ^ v12;
-  v14 = [(AVCSessionParticipant *)self delegate];
-  if (a3)
+  succeedCopy = succeed;
+  v12 = previousState == 2 && state == 1;
+  v13 = (state == 1) ^ v12;
+  delegate = [(AVCSessionParticipant *)self delegate];
+  if (type)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v16 = v13 ^ 1;
-      if (!a4)
+      if (!state)
       {
         v16 = 0;
       }
@@ -1934,14 +1934,14 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
       if (v16 & 1) == 0 && (objc_opt_respondsToSelector())
       {
 
-        [(AVCSessionParticipantDelegate *)v14 participant:self screenEnabled:v13 didSucceed:v8 error:a7];
+        [(AVCSessionParticipantDelegate *)delegate participant:self screenEnabled:v13 didSucceed:succeedCopy error:error];
       }
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
       v15 = !v12;
-      if (a4 == 2)
+      if (state == 2)
       {
         v15 = 0;
       }
@@ -1949,7 +1949,7 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
       if (v15 || (objc_opt_respondsToSelector() & 1) == 0)
       {
         v19 = v13 ^ 1;
-        if (!a4)
+        if (!state)
         {
           v19 = 0;
         }
@@ -1957,14 +1957,14 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
         if (v19 & 1) == 0 && (objc_opt_respondsToSelector())
         {
 
-          [(AVCSessionParticipantDelegate *)v14 participant:self videoEnabled:v13 didSucceed:v8 error:a7];
+          [(AVCSessionParticipantDelegate *)delegate participant:self videoEnabled:v13 didSucceed:succeedCopy error:error];
         }
       }
 
       else
       {
 
-        [(AVCSessionParticipantDelegate *)v14 participant:self videoPaused:a4 == 2 didSucceed:v8 error:a7];
+        [(AVCSessionParticipantDelegate *)delegate participant:self videoPaused:state == 2 didSucceed:succeedCopy error:error];
       }
     }
   }
@@ -1972,7 +1972,7 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
   else
   {
     v17 = !v12;
-    if (a4 == 2)
+    if (state == 2)
     {
       v17 = 0;
     }
@@ -1980,7 +1980,7 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
     if (v17 || (objc_opt_respondsToSelector() & 1) == 0)
     {
       v18 = v13 ^ 1;
-      if (!a4)
+      if (!state)
       {
         v18 = 0;
       }
@@ -1988,33 +1988,33 @@ uint64_t __41__AVCSessionParticipant_printMediaStates__block_invoke(uint64_t a1,
       if (v18 & 1) == 0 && (objc_opt_respondsToSelector())
       {
 
-        [(AVCSessionParticipantDelegate *)v14 participant:self audioEnabled:v13 didSucceed:v8 error:a7];
+        [(AVCSessionParticipantDelegate *)delegate participant:self audioEnabled:v13 didSucceed:succeedCopy error:error];
       }
     }
 
     else
     {
 
-      [(AVCSessionParticipantDelegate *)v14 participant:self audioPaused:a4 == 2 didSucceed:v8 error:a7];
+      [(AVCSessionParticipantDelegate *)delegate participant:self audioPaused:state == 2 didSucceed:succeedCopy error:error];
     }
   }
 }
 
-- (void)stateTransitionForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4 previousState:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)stateTransitionForMediaType:(unsigned int)type mediaState:(unsigned int)state previousState:(unsigned int)previousState didSucceed:(BOOL)succeed error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v13 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+  delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__AVCSessionParticipant_stateTransitionForMediaType_mediaState_previousState_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F7F80;
-  v15 = a3;
-  v16 = a4;
-  v18 = a6;
+  typeCopy = type;
+  stateCopy = state;
+  succeedCopy = succeed;
   block[4] = self;
-  block[5] = a7;
-  v17 = a5;
-  dispatch_async(v13, block);
+  block[5] = error;
+  previousStateCopy = previousState;
+  dispatch_async(delegateNotificationQueue, block);
 }
 
 uint64_t __95__AVCSessionParticipant_stateTransitionForMediaType_mediaState_previousState_didSucceed_error___block_invoke(uint64_t a1)
@@ -2036,20 +2036,20 @@ uint64_t __95__AVCSessionParticipant_stateTransitionForMediaType_mediaState_prev
   return [v8 handleLegacyTransitionsForMediaType:v4 mediaState:v5 previousState:v6 didSucceed:v7 error:v9];
 }
 
-- (void)setMediaType:(unsigned int)a3 enabled:(BOOL)a4 mediaString:(const char *)a5 xpcMessageKey:(char *)a6 xpcOperationKey:(id)a7 completionBlock:(id)a8
+- (void)setMediaType:(unsigned int)type enabled:(BOOL)enabled mediaString:(const char *)string xpcMessageKey:(char *)key xpcOperationKey:(id)operationKey completionBlock:(id)block
 {
   v12 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__AVCSessionParticipant_setMediaType_enabled_mediaString_xpcMessageKey_xpcOperationKey_completionBlock___block_invoke;
   block[3] = &unk_1E85F7FA8;
-  v11 = a4;
-  block[6] = a8;
-  block[7] = a5;
-  v10 = a3;
+  enabledCopy = enabled;
+  block[6] = block;
+  block[7] = string;
+  typeCopy = type;
   block[4] = self;
-  block[5] = a7;
-  block[8] = a6;
+  block[5] = operationKey;
+  block[8] = key;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, block);
   pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -2305,20 +2305,20 @@ LABEL_38:
   return [objc_msgSend(*(a1 + 32) "sharedXPCConnection")];
 }
 
-- (void)setMediaType:(unsigned int)a3 paused:(BOOL)a4 mediaString:(const char *)a5 xpcMessageKey:(char *)a6 xpcOperationKey:(id)a7 completionBlock:(id)a8
+- (void)setMediaType:(unsigned int)type paused:(BOOL)paused mediaString:(const char *)string xpcMessageKey:(char *)key xpcOperationKey:(id)operationKey completionBlock:(id)block
 {
   v12 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __103__AVCSessionParticipant_setMediaType_paused_mediaString_xpcMessageKey_xpcOperationKey_completionBlock___block_invoke;
   block[3] = &unk_1E85F7FA8;
-  v11 = a4;
-  v10 = a3;
-  block[6] = a8;
-  block[7] = a5;
+  pausedCopy = paused;
+  typeCopy = type;
+  block[6] = block;
+  block[7] = string;
   block[4] = self;
-  block[5] = a7;
-  block[8] = a6;
+  block[5] = operationKey;
+  block[8] = key;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, block);
   pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -2614,9 +2614,9 @@ LABEL_48:
   return v8();
 }
 
-- (BOOL)isEnabledMediaType:(unsigned int)a3
+- (BOOL)isEnabledMediaType:(unsigned int)type
 {
-  v3 = self;
+  selfCopy = self;
   block[6] = *MEMORY[0x1E69E9840];
   v8 = 0;
   v9 = &v8;
@@ -2626,21 +2626,21 @@ LABEL_48:
   v6[1] = 3221225472;
   v6[2] = __44__AVCSessionParticipant_isEnabledMediaType___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  typeCopy = type;
   v6[4] = self;
   v6[5] = &v8;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
-  stateQueue = v3->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = ___AVCSessionParticipant_DispatchSyncToStateQueue_block_invoke;
   block[3] = &unk_1E85F4E98;
-  block[4] = v3;
+  block[4] = selfCopy;
   block[5] = v6;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v3) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __44__AVCSessionParticipant_isEnabledMediaType___block_invoke(uint64_t a1)
@@ -2650,9 +2650,9 @@ uint64_t __44__AVCSessionParticipant_isEnabledMediaType___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)isPausedMediaType:(unsigned int)a3
+- (BOOL)isPausedMediaType:(unsigned int)type
 {
-  v3 = self;
+  selfCopy = self;
   block[6] = *MEMORY[0x1E69E9840];
   v8 = 0;
   v9 = &v8;
@@ -2662,21 +2662,21 @@ uint64_t __44__AVCSessionParticipant_isEnabledMediaType___block_invoke(uint64_t 
   v6[1] = 3221225472;
   v6[2] = __43__AVCSessionParticipant_isPausedMediaType___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  typeCopy = type;
   v6[4] = self;
   v6[5] = &v8;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
-  stateQueue = v3->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = ___AVCSessionParticipant_DispatchSyncToStateQueue_block_invoke;
   block[3] = &unk_1E85F4E98;
-  block[4] = v3;
+  block[4] = selfCopy;
   block[5] = v6;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v3) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __43__AVCSessionParticipant_isPausedMediaType___block_invoke(uint64_t a1)
@@ -2686,10 +2686,10 @@ uint64_t __43__AVCSessionParticipant_isPausedMediaType___block_invoke(uint64_t a
   return result;
 }
 
-- (void)dispatchedCompleteAudioEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)dispatchedCompleteAudioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
   if ([(AVCSessionParticipant *)self isConnectedToSession])
   {
@@ -2697,24 +2697,24 @@ uint64_t __43__AVCSessionParticipant_isPausedMediaType___block_invoke(uint64_t a
   }
 
   v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{&unk_1F579A2D8), "unsignedIntValue"}];
-  if (v6)
+  if (succeedCopy)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], &unk_1F579A2D8);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:v7], @"vcSessionParameterAudioEnabled");
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:enabledCopy], &unk_1F579A2D8);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], @"vcSessionParameterAudioEnabled");
   }
 
-  v10 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+  delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__AVCSessionParticipant_dispatchedCompleteAudioEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F6C20;
   v12 = v9;
-  v13 = v7;
-  v14 = v6;
+  v13 = enabledCopy;
+  v14 = succeedCopy;
   block[4] = self;
-  block[5] = a5;
-  v15 = v7;
-  dispatch_async(v10, block);
+  block[5] = error;
+  v15 = enabledCopy;
+  dispatch_async(delegateNotificationQueue, block);
 }
 
 uint64_t __73__AVCSessionParticipant_dispatchedCompleteAudioEnabled_didSucceed_error___block_invoke(uint64_t a1)
@@ -2751,26 +2751,26 @@ uint64_t __73__AVCSessionParticipant_dispatchedCompleteAudioEnabled_didSucceed_e
   return result;
 }
 
-- (void)completeAudioEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeAudioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__AVCSessionParticipant_completeAudioEnabled_didSucceed_error___block_invoke;
   v6[3] = &unk_1E85F63F0;
-  v7 = a3;
-  v8 = a4;
+  enabledCopy = enabled;
+  succeedCopy = succeed;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = error;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, v6);
   pthread_rwlock_unlock(&self->_stateQueueLock);
 }
 
-- (void)dispatchedCompleteAudioPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)dispatchedCompleteAudioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  succeedCopy = succeed;
+  pausedCopy = paused;
   v17 = *MEMORY[0x1E69E9840];
   if ([(AVCSessionParticipant *)self isConnectedToSession])
   {
@@ -2778,7 +2778,7 @@ uint64_t __73__AVCSessionParticipant_dispatchedCompleteAudioEnabled_didSucceed_e
   }
 
   v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{&unk_1F579A2D8), "unsignedIntValue"}];
-  if (v7)
+  if (pausedCopy)
   {
     v10 = 2;
   }
@@ -2788,24 +2788,24 @@ uint64_t __73__AVCSessionParticipant_dispatchedCompleteAudioEnabled_didSucceed_e
     v10 = 1;
   }
 
-  if (v6)
+  if (succeedCopy)
   {
     -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10], &unk_1F579A2D8);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:v7], @"vcSessionParameterAudioPaused");
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:pausedCopy], @"vcSessionParameterAudioPaused");
   }
 
-  v11 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+  delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__AVCSessionParticipant_dispatchedCompleteAudioPaused_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F6C20;
   v13 = v9;
   v14 = v10;
-  v15 = v6;
+  v15 = succeedCopy;
   block[4] = self;
-  block[5] = a5;
-  v16 = v7;
-  dispatch_async(v11, block);
+  block[5] = error;
+  v16 = pausedCopy;
+  dispatch_async(delegateNotificationQueue, block);
 }
 
 uint64_t __72__AVCSessionParticipant_dispatchedCompleteAudioPaused_didSucceed_error___block_invoke(uint64_t a1)
@@ -2835,26 +2835,26 @@ uint64_t __72__AVCSessionParticipant_dispatchedCompleteAudioPaused_didSucceed_er
   return result;
 }
 
-- (void)completeAudioPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeAudioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__AVCSessionParticipant_completeAudioPaused_didSucceed_error___block_invoke;
   v6[3] = &unk_1E85F63F0;
-  v7 = a3;
-  v8 = a4;
+  pausedCopy = paused;
+  succeedCopy = succeed;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = error;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, v6);
   pthread_rwlock_unlock(&self->_stateQueueLock);
 }
 
-- (void)dispatchedCompleteVideoEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)dispatchedCompleteVideoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
   if ([(AVCSessionParticipant *)self isConnectedToSession])
   {
@@ -2862,24 +2862,24 @@ uint64_t __72__AVCSessionParticipant_dispatchedCompleteAudioPaused_didSucceed_er
   }
 
   v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{&unk_1F579A2F0), "unsignedIntValue"}];
-  if (v6)
+  if (succeedCopy)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], &unk_1F579A2F0);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:v7], @"vcSessionParameterVideoEnabled");
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:enabledCopy], &unk_1F579A2F0);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], @"vcSessionParameterVideoEnabled");
   }
 
-  v10 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+  delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__AVCSessionParticipant_dispatchedCompleteVideoEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F6C20;
   v12 = v9;
-  v13 = v7;
-  v14 = v6;
+  v13 = enabledCopy;
+  v14 = succeedCopy;
   block[4] = self;
-  block[5] = a5;
-  v15 = v7;
-  dispatch_async(v10, block);
+  block[5] = error;
+  v15 = enabledCopy;
+  dispatch_async(delegateNotificationQueue, block);
 }
 
 uint64_t __73__AVCSessionParticipant_dispatchedCompleteVideoEnabled_didSucceed_error___block_invoke(uint64_t a1)
@@ -2916,26 +2916,26 @@ uint64_t __73__AVCSessionParticipant_dispatchedCompleteVideoEnabled_didSucceed_e
   return result;
 }
 
-- (void)completeVideoEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeVideoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__AVCSessionParticipant_completeVideoEnabled_didSucceed_error___block_invoke;
   v6[3] = &unk_1E85F63F0;
-  v7 = a3;
-  v8 = a4;
+  enabledCopy = enabled;
+  succeedCopy = succeed;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = error;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, v6);
   pthread_rwlock_unlock(&self->_stateQueueLock);
 }
 
-- (void)dispatchedCompleteVideoPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)dispatchedCompleteVideoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  succeedCopy = succeed;
+  pausedCopy = paused;
   v17 = *MEMORY[0x1E69E9840];
   if ([(AVCSessionParticipant *)self isConnectedToSession])
   {
@@ -2943,7 +2943,7 @@ uint64_t __73__AVCSessionParticipant_dispatchedCompleteVideoEnabled_didSucceed_e
   }
 
   v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{&unk_1F579A2F0), "unsignedIntValue"}];
-  if (v7)
+  if (pausedCopy)
   {
     v10 = 2;
   }
@@ -2953,24 +2953,24 @@ uint64_t __73__AVCSessionParticipant_dispatchedCompleteVideoEnabled_didSucceed_e
     v10 = 1;
   }
 
-  if (v6)
+  if (succeedCopy)
   {
     -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10], &unk_1F579A2F0);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:v7], @"vcSessionParameterVideoPaused");
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:pausedCopy], @"vcSessionParameterVideoPaused");
   }
 
-  v11 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+  delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__AVCSessionParticipant_dispatchedCompleteVideoPaused_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F6C20;
   v13 = v9;
   v14 = v10;
-  v15 = v6;
+  v15 = succeedCopy;
   block[4] = self;
-  block[5] = a5;
-  v16 = v7;
-  dispatch_async(v11, block);
+  block[5] = error;
+  v16 = pausedCopy;
+  dispatch_async(delegateNotificationQueue, block);
 }
 
 uint64_t __72__AVCSessionParticipant_dispatchedCompleteVideoPaused_didSucceed_error___block_invoke(uint64_t a1)
@@ -3000,26 +3000,26 @@ uint64_t __72__AVCSessionParticipant_dispatchedCompleteVideoPaused_didSucceed_er
   return result;
 }
 
-- (void)completeVideoPaused:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeVideoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__AVCSessionParticipant_completeVideoPaused_didSucceed_error___block_invoke;
   v6[3] = &unk_1E85F63F0;
-  v7 = a3;
-  v8 = a4;
+  pausedCopy = paused;
+  succeedCopy = succeed;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = error;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, v6);
   pthread_rwlock_unlock(&self->_stateQueueLock);
 }
 
-- (void)dispatchedCompleteScreenEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)dispatchedCompleteScreenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
   if ([(AVCSessionParticipant *)self isConnectedToSession])
   {
@@ -3027,25 +3027,25 @@ uint64_t __72__AVCSessionParticipant_dispatchedCompleteVideoPaused_didSucceed_er
   }
 
   v9 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_mediaStates objectForKeyedSubscript:{&unk_1F579A308), "unsignedIntValue"}];
-  if (v6)
+  if (succeedCopy)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], &unk_1F579A308);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], &unk_1F579A320);
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:v7], @"vcSessionParameterScreenEnabled");
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:enabledCopy], &unk_1F579A308);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:enabledCopy], &unk_1F579A320);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_participantConfig, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithBool:enabledCopy], @"vcSessionParameterScreenEnabled");
   }
 
-  v10 = [(AVCSessionParticipant *)self delegateNotificationQueue];
+  delegateNotificationQueue = [(AVCSessionParticipant *)self delegateNotificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__AVCSessionParticipant_dispatchedCompleteScreenEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F6C20;
   v12 = v9;
-  v13 = v7;
-  v14 = v6;
+  v13 = enabledCopy;
+  v14 = succeedCopy;
   block[4] = self;
-  block[5] = a5;
-  v15 = v7;
-  dispatch_async(v10, block);
+  block[5] = error;
+  v15 = enabledCopy;
+  dispatch_async(delegateNotificationQueue, block);
 }
 
 uint64_t __74__AVCSessionParticipant_dispatchedCompleteScreenEnabled_didSucceed_error___block_invoke(uint64_t a1)
@@ -3073,23 +3073,23 @@ uint64_t __74__AVCSessionParticipant_dispatchedCompleteScreenEnabled_didSucceed_
   return result;
 }
 
-- (void)completeScreenEnabled:(BOOL)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)completeScreenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__AVCSessionParticipant_completeScreenEnabled_didSucceed_error___block_invoke;
   v6[3] = &unk_1E85F63F0;
-  v7 = a3;
-  v8 = a4;
+  enabledCopy = enabled;
+  succeedCopy = succeed;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = error;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, v6);
   pthread_rwlock_unlock(&self->_stateQueueLock);
 }
 
-- (void)setSharedXPCConnection:(id)a3
+- (void)setSharedXPCConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
   pthread_rwlock_rdlock(&self->_stateQueueLock);
@@ -3097,8 +3097,8 @@ uint64_t __74__AVCSessionParticipant_dispatchedCompleteScreenEnabled_didSucceed_
   v7[1] = 3221225472;
   v8 = __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke;
   v9 = &unk_1E85F37F0;
-  v10 = a3;
-  v11 = self;
+  connectionCopy = connection;
+  selfCopy = self;
   stateQueue = self->_stateQueue;
   if (stateQueue == self->_localStateQueue)
   {
@@ -3139,30 +3139,30 @@ id __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setStreamTokens:(id)a3
+- (void)setStreamTokens:(id)tokens
 {
   streamGroupIDToStreamTokenMap = self->_streamGroupIDToStreamTokenMap;
-  if (streamGroupIDToStreamTokenMap != a3)
+  if (streamGroupIDToStreamTokenMap != tokens)
   {
 
-    self->_streamGroupIDToStreamTokenMap = a3;
+    self->_streamGroupIDToStreamTokenMap = tokens;
   }
 }
 
-- (void)setMediaTypeToSpatialSourceIDMap:(id)a3
+- (void)setMediaTypeToSpatialSourceIDMap:(id)map
 {
   mediaTypeToSpatialSourceIDMap = self->_mediaTypeToSpatialSourceIDMap;
-  if (mediaTypeToSpatialSourceIDMap != a3)
+  if (mediaTypeToSpatialSourceIDMap != map)
   {
 
-    self->_mediaTypeToSpatialSourceIDMap = a3;
+    self->_mediaTypeToSpatialSourceIDMap = map;
   }
 }
 
-- (int64_t)streamTokenForStreamGroupID:(unsigned int)a3
+- (int64_t)streamTokenForStreamGroupID:(unsigned int)d
 {
   streamGroupIDToStreamTokenMap = self->_streamGroupIDToStreamTokenMap;
-  if (a3 == 1835623282)
+  if (d == 1835623282)
   {
     v4 = &unk_1F579A338;
   }
@@ -3175,10 +3175,10 @@ id __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke(uint64_t a1
   return [-[NSDictionary objectForKeyedSubscript:](streamGroupIDToStreamTokenMap objectForKeyedSubscript:{v4), "unsignedIntValue"}];
 }
 
-- (unint64_t)spatialAudioSourceIDForMediaType:(unsigned int)a3
+- (unint64_t)spatialAudioSourceIDForMediaType:(unsigned int)type
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = VCSessionMediaType_FromAVCSessionMediaType(a3);
+  v5 = VCSessionMediaType_FromAVCSessionMediaType(type);
   if (v5 == -1)
   {
     if (objc_opt_class() == self)
@@ -3220,9 +3220,9 @@ id __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke(uint64_t a1
           v25 = 2112;
           v26 = v8;
           v27 = 2048;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 1024;
-          v30 = a3;
+          typeCopy2 = type;
           _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid mediaType=%d", &v19, 0x36u);
         }
       }
@@ -3255,7 +3255,7 @@ id __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke(uint64_t a1
       v23 = 1024;
       v24 = 1000;
       v25 = 1024;
-      LODWORD(v26) = a3;
+      LODWORD(v26) = type;
       v12 = " [%s] %s:%d Source ID not found for mediaType=%d";
       v13 = v11;
       v14 = 34;
@@ -3294,9 +3294,9 @@ id __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke(uint64_t a1
       v25 = 2112;
       v26 = v9;
       v27 = 2048;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 1024;
-      v30 = a3;
+      typeCopy2 = type;
       v12 = " [%s] %s:%d %@(%p) Source ID not found for mediaType=%d";
       v13 = v18;
       v14 = 54;
@@ -3309,15 +3309,15 @@ id __48__AVCSessionParticipant_setSharedXPCConnection___block_invoke(uint64_t a1
   return [v6 unsignedLongLongValue];
 }
 
-- (void)accessPropertyWithName:(id)a3 block:(id)a4
+- (void)accessPropertyWithName:(id)name block:(id)block
 {
   block[6] = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__AVCSessionParticipant_accessPropertyWithName_block___block_invoke;
   v6[3] = &unk_1E85F4C78;
-  v6[5] = a3;
-  v6[6] = a4;
+  v6[5] = name;
+  v6[6] = block;
   v6[4] = self;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   stateQueue = self->_stateQueue;
@@ -3339,7 +3339,7 @@ uint64_t __54__AVCSessionParticipant_accessPropertyWithName_block___block_invoke
   return v3(v1, v2);
 }
 
-- (unsigned)uint32ValueForPropertyName:(id)a3
+- (unsigned)uint32ValueForPropertyName:(id)name
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = 0;
@@ -3351,7 +3351,7 @@ uint64_t __54__AVCSessionParticipant_accessPropertyWithName_block___block_invoke
   v5[2] = __52__AVCSessionParticipant_uint32ValueForPropertyName___block_invoke;
   v5[3] = &unk_1E85F7E98;
   v5[4] = &v6;
-  [(AVCSessionParticipant *)self accessPropertyWithName:a3 block:v5];
+  [(AVCSessionParticipant *)self accessPropertyWithName:name block:v5];
   v3 = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -3364,7 +3364,7 @@ uint64_t __52__AVCSessionParticipant_uint32ValueForPropertyName___block_invoke(u
   return result;
 }
 
-- (void)setPropertyValue:(id)a3 forPropertyName:(id)a4 xpcKey:(id)a5 xpcMessageName:(const char *)a6 batchSupported:(BOOL)a7
+- (void)setPropertyValue:(id)value forPropertyName:(id)name xpcKey:(id)key xpcMessageName:(const char *)messageName batchSupported:(BOOL)supported
 {
   v10 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -3372,11 +3372,11 @@ uint64_t __52__AVCSessionParticipant_uint32ValueForPropertyName___block_invoke(u
   block[2] = __95__AVCSessionParticipant_setPropertyValue_forPropertyName_xpcKey_xpcMessageName_batchSupported___block_invoke;
   block[3] = &unk_1E85F6310;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
-  block[7] = a5;
-  v9 = a7;
-  block[8] = a6;
+  block[5] = name;
+  block[6] = value;
+  block[7] = key;
+  supportedCopy = supported;
+  block[8] = messageName;
   pthread_rwlock_rdlock(&self->_stateQueueLock);
   dispatch_async(self->_stateQueue, block);
   pthread_rwlock_unlock(&self->_stateQueueLock);
@@ -3784,26 +3784,26 @@ LABEL_53:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"audioEnabled=%d, audioPaused=%d, audioMuted=%d, videoEnabled=%d, videoPaused=%d, screenEnabled=%d", v3 != 0, v3 == 2, objc_msgSend(v6, "intValue"), v4 != 0, v4 == 2, v5 != 0];
 }
 
-+ (id)loopbackNegotiationDataWithData:(id)a3
++ (id)loopbackNegotiationDataWithData:(id)data
 {
-  v3 = [VCSessionParticipant participantInfoWithParticipantData:a3];
+  v3 = [VCSessionParticipant participantInfoWithParticipantData:data];
   v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v3];
   [v4 setObject:objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0] forKeyedSubscript:{"UUID"), "UUIDString"), @"vcSessionParticipantKeyUUID"}];
 
   return [VCSessionParticipant participantDataWithParticipantInfo:v4];
 }
 
-- (id)newNSErrorWithErrorDictionary:(id)a3
+- (id)newNSErrorWithErrorDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v5 = [a3 objectForKeyedSubscript:@"ERROR_DOMAIN"];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"ERROR_USERINFO"];
+  v5 = [dictionary objectForKeyedSubscript:@"ERROR_DOMAIN"];
+  v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
+  v7 = [dictionary objectForKeyedSubscript:@"ERROR_USERINFO"];
 
   return [v4 initWithDomain:v5 code:v6 userInfo:v7];
 }
@@ -6013,19 +6013,19 @@ LABEL_14:
   [(VCXPCClientShared *)[(AVCSessionParticipant *)self sharedXPCConnection] deregisterWithUUID:self->_participantID service:"vcSessionMediaStateDidChange"];
   [(VCXPCClientShared *)[(AVCSessionParticipant *)self sharedXPCConnection] deregisterWithUUID:self->_participantID service:"vcSessionRemoteMediaStateDidChange"];
   [(VCXPCClientShared *)[(AVCSessionParticipant *)self sharedXPCConnection] deregisterWithUUID:self->_participantID service:"vcSessionReactionDidStart"];
-  v3 = [(AVCSessionParticipant *)self sharedXPCConnection];
+  sharedXPCConnection = [(AVCSessionParticipant *)self sharedXPCConnection];
   participantID = self->_participantID;
 
-  [(VCXPCClientShared *)v3 deregisterWithUUID:participantID service:"vcSessionReactionDidStopReacting"];
+  [(VCXPCClientShared *)sharedXPCConnection deregisterWithUUID:participantID service:"vcSessionReactionDidStopReacting"];
 }
 
-- (void)setupNotificationQueue:(id)a3
+- (void)setupNotificationQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
-    self->_delegateNotificationQueue = a3;
+    self->_delegateNotificationQueue = queue;
 
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   else
@@ -6073,8 +6073,8 @@ LABEL_14:
         objc_enumerationMutation(obj);
       }
 
-      v10 = [*(*(&v76 + 1) + 8 * v9) unsignedIntValue];
-      v11 = [VCSessionParticipant mediaTypesFromStreamGroupID:v10];
+      unsignedIntValue = [*(*(&v76 + 1) + 8 * v9) unsignedIntValue];
+      v11 = [VCSessionParticipant mediaTypesFromStreamGroupID:unsignedIntValue];
       if (![v11 count])
       {
         if (objc_opt_class() == self)
@@ -6091,7 +6091,7 @@ LABEL_14:
             goto LABEL_27;
           }
 
-          v26 = FourccToCStr(v10);
+          v26 = FourccToCStr(unsignedIntValue);
           *buf = v48;
           v57 = v24;
           v58 = 2080;
@@ -6125,7 +6125,7 @@ LABEL_14:
             goto LABEL_27;
           }
 
-          v20 = FourccToCStr(v10);
+          v20 = FourccToCStr(unsignedIntValue);
           *buf = 136316418;
           v57 = v18;
           v58 = 2080;
@@ -6135,7 +6135,7 @@ LABEL_14:
           v62 = 2112;
           v63 = v17;
           v64 = 2048;
-          v65 = self;
+          selfCopy2 = self;
           v66 = 2080;
           v67 = v20;
           v21 = v19;
@@ -6168,8 +6168,8 @@ LABEL_14:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v71 + 1) + 8 * i) unsignedIntValue];
-          if (![(AVCSessionParticipant *)self generateMediaStateEntryForMediaType:v16])
+          unsignedIntValue2 = [*(*(&v71 + 1) + 8 * i) unsignedIntValue];
+          if (![(AVCSessionParticipant *)self generateMediaStateEntryForMediaType:unsignedIntValue2])
           {
             if (objc_opt_class() == self)
             {
@@ -6183,8 +6183,8 @@ LABEL_14:
                   return v34;
                 }
 
-                v38 = FourccToCStr(v10);
-                v39 = VCSessionMediaType_Name(v16);
+                v38 = FourccToCStr(unsignedIntValue);
+                v39 = VCSessionMediaType_Name(unsignedIntValue2);
                 *buf = 136316162;
                 v57 = v36;
                 v58 = 2080;
@@ -6194,7 +6194,7 @@ LABEL_14:
                 v62 = 2080;
                 v63 = v38;
                 v64 = 2112;
-                v65 = v39;
+                selfCopy2 = v39;
                 v40 = " [%s] %s:%d Failed to add streamGroupID=%s for mediaType=%@";
                 v41 = v37;
                 v42 = 48;
@@ -6224,8 +6224,8 @@ LABEL_14:
                   return v34;
                 }
 
-                v45 = FourccToCStr(v10);
-                v46 = VCSessionMediaType_Name(v16);
+                v45 = FourccToCStr(unsignedIntValue);
+                v46 = VCSessionMediaType_Name(unsignedIntValue2);
                 *buf = 136316674;
                 v57 = v43;
                 v58 = 2080;
@@ -6235,7 +6235,7 @@ LABEL_14:
                 v62 = 2112;
                 v63 = v35;
                 v64 = 2048;
-                v65 = self;
+                selfCopy2 = self;
                 v66 = 2080;
                 v67 = v45;
                 v68 = 2112;
@@ -6277,8 +6277,8 @@ LABEL_29:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v27 = [(NSMutableDictionary *)self->_mediaStates allKeys];
-  v28 = [v27 countByEnumeratingWithState:&v52 objects:v51 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mediaStates allKeys];
+  v28 = [allKeys countByEnumeratingWithState:&v52 objects:v51 count:16];
   if (v28)
   {
     v29 = v28;
@@ -6289,7 +6289,7 @@ LABEL_29:
       {
         if (*v53 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(allKeys);
         }
 
         v32 = *(*(&v52 + 1) + 8 * j);
@@ -6297,7 +6297,7 @@ LABEL_29:
         -[NSMutableDictionary setObject:forKeyedSubscript:](self->_mediaStates, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v33], v32);
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v52 objects:v51 count:16];
+      v29 = [allKeys countByEnumeratingWithState:&v52 objects:v51 count:16];
     }
 
     while (v29);
@@ -6307,16 +6307,16 @@ LABEL_29:
   return v34;
 }
 
-+ (unsigned)defaultStateForMediaType:(unsigned int)a3 isLocal:(BOOL)a4
++ (unsigned)defaultStateForMediaType:(unsigned int)type isLocal:(BOOL)local
 {
-  if (a3 >= 3)
+  if (type >= 3)
   {
-    return !a4;
+    return !local;
   }
 
   else
   {
-    return dword_1DBD49E28[a3];
+    return dword_1DBD49E28[type];
   }
 }
 
@@ -6359,7 +6359,7 @@ LABEL_29:
   [(NSMutableDictionary *)participantConfig setObject:v6 forKeyedSubscript:@"vcSessionParameterVideoPaused"];
 }
 
-- (void)appendConfigurationToXPCConfiguration:(id)a3
+- (void)appendConfigurationToXPCConfiguration:(id)configuration
 {
   v42 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -6391,7 +6391,7 @@ LABEL_29:
           v34 = 2112;
           v35 = updateConfig;
           v36 = 2112;
-          v37 = v27;
+          selfCopy2 = v27;
           v21 = " [%s] %s:%d Failed to serialize configuration=%@ with error=%@";
           v22 = v19;
           v23 = 48;
@@ -6429,7 +6429,7 @@ LABEL_28:
           v34 = 2112;
           v35 = v8;
           v36 = 2048;
-          v37 = self;
+          selfCopy2 = self;
           v38 = 2112;
           v39 = v26;
           v40 = 2112;
@@ -6508,7 +6508,7 @@ LABEL_3:
       v34 = 2112;
       v35 = v7;
       v36 = 2048;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2112;
       v39 = v17;
       v12 = " [%s] %s:%d %@(%p) uuid=%@";
@@ -6519,7 +6519,7 @@ LABEL_3:
     _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
 LABEL_19:
     [v5 setObject:self->_participantID forKeyedSubscript:@"vcSessionParticipantID"];
-    [a3 addObject:v5];
+    [configuration addObject:v5];
   }
 
   [(VCSessionParticipantUpdateConfig *)self->_updateConfig setUseCache:0];
@@ -6580,11 +6580,11 @@ LABEL_19:
   return v3;
 }
 
-+ (id)archiveMediaStates:(id)a3
++ (id)archiveMediaStates:(id)states
 {
   v30 = *MEMORY[0x1E69E9840];
   v15 = 0;
-  result = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v15];
+  result = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:states requiringSecureCoding:1 error:&v15];
   if (result)
   {
     v6 = v15 == 0;
@@ -6597,7 +6597,7 @@ LABEL_19:
 
   if (!v6)
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 3)
       {
@@ -6618,9 +6618,9 @@ LABEL_19:
       v20 = 1024;
       v21 = 1560;
       v22 = 2112;
-      v23 = a3;
+      statesCopy = states;
       v24 = 2112;
-      v25 = v15;
+      selfCopy = v15;
       v10 = " [%s] %s:%d Failed to archive mediaStates=%@. error=%@";
       v11 = v9;
       v12 = 48;
@@ -6630,7 +6630,7 @@ LABEL_19:
     {
       if (objc_opt_respondsToSelector())
       {
-        v7 = [a1 performSelector:sel_logPrefix];
+        v7 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -6657,11 +6657,11 @@ LABEL_19:
       v20 = 1024;
       v21 = 1560;
       v22 = 2112;
-      v23 = v7;
+      statesCopy = v7;
       v24 = 2048;
-      v25 = a1;
+      selfCopy = self;
       v26 = 2112;
-      v27 = a3;
+      statesCopy2 = states;
       v28 = 2112;
       v29 = v15;
       v10 = " [%s] %s:%d %@(%p) Failed to archive mediaStates=%@. error=%@";
@@ -6676,19 +6676,19 @@ LABEL_19:
   return result;
 }
 
-+ (id)unarchiveMediaStatesWithData:(id)a3
++ (id)unarchiveMediaStatesWithData:(id)data
 {
   v30 = *MEMORY[0x1E69E9840];
   v17 = 0;
   v5 = MEMORY[0x1E695DFA8];
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:objc_msgSend(v5 fromData:"setWithObjects:" error:{v6, objc_opt_class(), 0), a3, &v17}];
+  v7 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:objc_msgSend(v5 fromData:"setWithObjects:" error:{v6, objc_opt_class(), 0), data, &v17}];
   if (v7)
   {
     return v7;
   }
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
@@ -6720,7 +6720,7 @@ LABEL_13:
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [a1 performSelector:sel_logPrefix];
+    v9 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -6743,7 +6743,7 @@ LABEL_13:
       v24 = 2112;
       v25 = v9;
       v26 = 2048;
-      v27 = a1;
+      selfCopy = self;
       v28 = 2112;
       v29 = v17;
       v12 = " [%s] %s:%d %@(%p) Failed to decode the media state dictionary. error=%@";
@@ -6764,12 +6764,12 @@ uint64_t ___AVCSessionParticipant_DispatchSyncToStateQueue_block_invoke(uint64_t
   return v2();
 }
 
-- (void)storeMediaState:(unsigned int)a3 forMediaType:(unsigned int)a4
+- (void)storeMediaState:(unsigned int)state forMediaType:(unsigned int)type
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&type;
+  v5 = *&state;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   [(AVCSessionParticipant *)self generateMediaStateEntryForMediaType:v4];
   v8 = [(NSMutableDictionary *)self->_mediaStates objectForKeyedSubscript:v7];
   if (!v8)
@@ -6834,7 +6834,7 @@ uint64_t ___AVCSessionParticipant_DispatchSyncToStateQueue_block_invoke(uint64_t
       OUTLINED_FUNCTION_29();
       v27 = v10;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = v23;
       v31 = v24;
       v14 = &dword_1DB56E000;
@@ -7245,7 +7245,7 @@ void __55__AVCSessionParticipant_registerBlocksForNotifications__block_invoke_23
 - (void)setupMediaStates
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -7270,7 +7270,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 performSelector:sel_logPrefix];
+    v4 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -7290,7 +7290,7 @@ LABEL_12:
       OUTLINED_FUNCTION_29();
       v17 = v4;
       v18 = 2048;
-      v19 = a1;
+      selfCopy = self;
       v6 = &dword_1DB56E000;
       v9 = " [%s] %s:%d %@(%p) No stream groups found";
       v10 = &v14;

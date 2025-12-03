@@ -1,23 +1,23 @@
 @interface GAXSBIdleTimerGlobalStateMonitorOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isBatterySaverModeActive;
 - (id)autoLockTimeout;
 @end
 
 @implementation GAXSBIdleTimerGlobalStateMonitorOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIdleTimerGlobalStateMonitor" hasInstanceMethod:@"autoLockTimeout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIdleTimerGlobalStateMonitor" hasInstanceMethod:@"isBatterySaverModeActive" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIdleTimerGlobalStateMonitor" hasInstanceMethod:@"autoLockTimeout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIdleTimerGlobalStateMonitor" hasInstanceMethod:@"isBatterySaverModeActive" withFullSignature:{"B", 0}];
 }
 
 - (id)autoLockTimeout
 {
   v18.receiver = self;
   v18.super_class = GAXSBIdleTimerGlobalStateMonitorOverride;
-  v2 = [(GAXSBIdleTimerGlobalStateMonitorOverride *)&v18 autoLockTimeout];
+  autoLockTimeout = [(GAXSBIdleTimerGlobalStateMonitorOverride *)&v18 autoLockTimeout];
   v3 = +[GAXSpringboard sharedInstance];
   if (![v3 isActive])
   {
@@ -25,9 +25,9 @@
   }
 
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 guestPassSessionIsActive];
+  guestPassSessionIsActive = [v4 guestPassSessionIsActive];
 
-  if (!v5)
+  if (!guestPassSessionIsActive)
   {
     if ([v3 allowsAutolock])
     {
@@ -44,15 +44,15 @@
 LABEL_18:
 
 LABEL_19:
-        v2 = v2;
-        v7 = v2;
+        autoLockTimeout = autoLockTimeout;
+        v7 = autoLockTimeout;
         goto LABEL_20;
       }
 
       v8 = +[AXSettings sharedInstance];
-      v9 = [v8 guidedAccessAutoLockTimeInSeconds];
+      guidedAccessAutoLockTimeInSeconds = [v8 guidedAccessAutoLockTimeInSeconds];
 
-      if (v9 == AXSGuidedAccessAutoLockTimeMirrorSystem)
+      if (guidedAccessAutoLockTimeInSeconds == AXSGuidedAccessAutoLockTimeMirrorSystem)
       {
         v10 = GAXLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -67,7 +67,7 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      if (v9 == AXSGuidedAccessAutoLockTimeNever)
+      if (guidedAccessAutoLockTimeInSeconds == AXSGuidedAccessAutoLockTimeNever)
       {
         v12 = GAXLogCommon();
         if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -82,21 +82,21 @@ LABEL_17:
       else
       {
         v15 = +[AXSettings sharedInstance];
-        v16 = [v15 gaxInternalSettingsTimeRestrictionHasExpired];
+        gaxInternalSettingsTimeRestrictionHasExpired = [v15 gaxInternalSettingsTimeRestrictionHasExpired];
 
         v12 = GAXLogCommon();
         v17 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-        if ((v16 & 1) == 0)
+        if ((gaxInternalSettingsTimeRestrictionHasExpired & 1) == 0)
         {
           if (v17)
           {
             *buf = 134217984;
-            v20 = v9;
+            v20 = guidedAccessAutoLockTimeInSeconds;
             _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Using custom time %ld for idle timer.", buf, 0xCu);
           }
 
-          [NSNumber numberWithInteger:v9];
-          v2 = v10 = v2;
+          [NSNumber numberWithInteger:guidedAccessAutoLockTimeInSeconds];
+          autoLockTimeout = v10 = autoLockTimeout;
           goto LABEL_18;
         }
 
@@ -117,8 +117,8 @@ LABEL_17:
       {
 LABEL_14:
 
-        v10 = v2;
-        v2 = &off_32840;
+        v10 = autoLockTimeout;
+        autoLockTimeout = &off_32840;
         goto LABEL_18;
       }
 
@@ -148,17 +148,17 @@ LABEL_20:
   v3 = +[GAXSpringboard sharedInstance];
   if ([v3 isActive])
   {
-    v4 = 0;
+    isBatterySaverModeActive = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = GAXSBIdleTimerGlobalStateMonitorOverride;
-    v4 = [(GAXSBIdleTimerGlobalStateMonitorOverride *)&v6 isBatterySaverModeActive];
+    isBatterySaverModeActive = [(GAXSBIdleTimerGlobalStateMonitorOverride *)&v6 isBatterySaverModeActive];
   }
 
-  return v4;
+  return isBatterySaverModeActive;
 }
 
 @end

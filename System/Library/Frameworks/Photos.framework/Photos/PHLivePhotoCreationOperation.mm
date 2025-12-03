@@ -1,7 +1,7 @@
 @interface PHLivePhotoCreationOperation
 - (CGSize)targetSize;
-- (PHLivePhotoCreationOperation)initWithResourceURLs:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 prefersHDR:(BOOL)a6 resultHandler:(id)a7;
-- (id)_createImageOnlyLivePhotoWithImageURL:(id)a3;
+- (PHLivePhotoCreationOperation)initWithResourceURLs:(id)ls targetSize:(CGSize)size contentMode:(int64_t)mode prefersHDR:(BOOL)r resultHandler:(id)handler;
+- (id)_createImageOnlyLivePhotoWithImageURL:(id)l;
 - (void)main;
 @end
 
@@ -16,10 +16,10 @@
   return result;
 }
 
-- (id)_createImageOnlyLivePhotoWithImageURL:(id)a3
+- (id)_createImageOnlyLivePhotoWithImageURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PHLivePhotoCreationOperation *)self contentMode];
+  lCopy = l;
+  contentMode = [(PHLivePhotoCreationOperation *)self contentMode];
   [(PHLivePhotoCreationOperation *)self targetSize];
   v7 = v6;
   v9 = v8;
@@ -28,7 +28,7 @@
   DCIM_sizeFromPLImage();
   if ((v7 != *MEMORY[0x1E695F060] || v9 != *(MEMORY[0x1E695F060] + 8)) && (v11 > v7 || v12 > v9))
   {
-    if (v5 == 1)
+    if (contentMode == 1)
     {
       DCIM_sizeScaleToFillSize();
     }
@@ -58,12 +58,12 @@
 - (void)main
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHLivePhotoCreationOperation *)self resourceURLs];
-  v4 = [(PHLivePhotoCreationOperation *)self resultHandler];
+  resourceURLs = [(PHLivePhotoCreationOperation *)self resourceURLs];
+  resultHandler = [(PHLivePhotoCreationOperation *)self resultHandler];
   v29 = 0;
   v30 = 0;
   v28 = 0;
-  v5 = [PHLivePhoto _identifyResourceURLs:v3 outImageURL:&v30 outVideoURL:&v29 error:&v28];
+  v5 = [PHLivePhoto _identifyResourceURLs:resourceURLs outImageURL:&v30 outVideoURL:&v29 error:&v28];
   v6 = v30;
   v7 = v29;
   v8 = v28;
@@ -73,7 +73,7 @@
     v35 = @"PHLivePhotoInfoIsDegradedKey";
     v36[0] = MEMORY[0x1E695E118];
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-    (v4)[2](v4, v10, v11, 0);
+    (resultHandler)[2](resultHandler, v10, v11, 0);
 
     if (([(PHLivePhotoCreationOperation *)self isCancelled]& 1) != 0)
     {
@@ -83,16 +83,16 @@
     else
     {
       v26 = v10;
-      v12 = [v7 path];
+      path = [v7 path];
       v27[1] = 0;
       v13 = PFVideoComplementMetadataForVideoAtPath();
       v14 = 0;
 
       v27[0] = v14;
-      LODWORD(v12) = [PHLivePhoto _canCreateLivePhotoWithURLs:v3 videoComplementMetadata:v13 outError:v27];
+      LODWORD(path) = [PHLivePhoto _canCreateLivePhotoWithURLs:resourceURLs videoComplementMetadata:v13 outError:v27];
       v25 = v27[0];
 
-      if (v12 && ([(PHLivePhotoCreationOperation *)self isCancelled]& 1) == 0)
+      if (path && ([(PHLivePhotoCreationOperation *)self isCancelled]& 1) == 0)
       {
         v16 = [PHLivePhoto alloc];
         [(PHLivePhotoCreationOperation *)self targetSize];
@@ -141,32 +141,32 @@
 
   v24 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:{v23, v25}];
 
-  (v4)[2](v4, v9, v24, 1);
+  (resultHandler)[2](resultHandler, v9, v24, 1);
 }
 
-- (PHLivePhotoCreationOperation)initWithResourceURLs:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 prefersHDR:(BOOL)a6 resultHandler:(id)a7
+- (PHLivePhotoCreationOperation)initWithResourceURLs:(id)ls targetSize:(CGSize)size contentMode:(int64_t)mode prefersHDR:(BOOL)r resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a7;
+  height = size.height;
+  width = size.width;
+  lsCopy = ls;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = PHLivePhotoCreationOperation;
   v15 = [(PHLivePhotoCreationOperation *)&v21 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [lsCopy copy];
     resourceURLs = v15->_resourceURLs;
     v15->_resourceURLs = v16;
 
-    v15->_contentMode = a5;
-    v18 = [v14 copy];
+    v15->_contentMode = mode;
+    v18 = [handlerCopy copy];
     resultHandler = v15->_resultHandler;
     v15->_resultHandler = v18;
 
     v15->_targetSize.width = width;
     v15->_targetSize.height = height;
-    v15->_prefersHDR = a6;
+    v15->_prefersHDR = r;
   }
 
   return v15;

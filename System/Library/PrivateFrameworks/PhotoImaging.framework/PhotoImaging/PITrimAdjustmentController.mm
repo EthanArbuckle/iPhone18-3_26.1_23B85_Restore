@@ -1,75 +1,75 @@
 @interface PITrimAdjustmentController
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTime;
-- (void)setEndTime:(id *)a3;
-- (void)setStartTime:(id *)a3;
+- (void)setEndTime:(id *)time;
+- (void)setStartTime:(id *)time;
 @end
 
 @implementation PITrimAdjustmentController
 
-- (void)setEndTime:(id *)a3
+- (void)setEndTime:(id *)time
 {
-  if (a3->var2)
+  if (time->var2)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0];
-    v9 = [(PIAdjustmentController *)self adjustment];
+    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:time->var0];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v10 = +[PITrimAdjustmentController endKey];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    [adjustment setObject:v8 forKeyedSubscript:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1];
-    v6 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:time->var1];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v11 = +[PITrimAdjustmentController endScaleKey];
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [adjustment2 setObject:adjustment4 forKeyedSubscript:v11];
   }
 
   else
   {
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v5 = +[PITrimAdjustmentController endKey];
-    [v4 setObject:0 forKeyedSubscript:v5];
+    [adjustment3 setObject:0 forKeyedSubscript:v5];
 
-    v12 = [(PIAdjustmentController *)self adjustment];
-    v6 = +[PITrimAdjustmentController endScaleKey];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = +[PITrimAdjustmentController endScaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment2];
   }
 }
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
-  if (a3->var2)
+  if (time->var2)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0];
-    v9 = [(PIAdjustmentController *)self adjustment];
+    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:time->var0];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v10 = +[PITrimAdjustmentController startKey];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    [adjustment setObject:v8 forKeyedSubscript:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1];
-    v6 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:time->var1];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v11 = +[PITrimAdjustmentController startScaleKey];
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [adjustment2 setObject:adjustment4 forKeyedSubscript:v11];
   }
 
   else
   {
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v5 = +[PITrimAdjustmentController startKey];
-    [v4 setObject:0 forKeyedSubscript:v5];
+    [adjustment3 setObject:0 forKeyedSubscript:v5];
 
-    v12 = [(PIAdjustmentController *)self adjustment];
-    v6 = +[PITrimAdjustmentController startScaleKey];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = +[PITrimAdjustmentController startScaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment2];
   }
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTime
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PITrimAdjustmentController endKey];
-  v13 = [v5 objectForKeyedSubscript:v6];
+  v13 = [adjustment objectForKeyedSubscript:v6];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PITrimAdjustmentController endScaleKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
 
   if (v13)
   {
@@ -98,13 +98,13 @@
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTime
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PITrimAdjustmentController startKey];
-  v13 = [v5 objectForKeyedSubscript:v6];
+  v13 = [adjustment objectForKeyedSubscript:v6];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PITrimAdjustmentController startScaleKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
 
   if (v13)
   {

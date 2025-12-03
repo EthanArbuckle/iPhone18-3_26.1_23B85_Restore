@@ -1,93 +1,93 @@
 @interface HMBLocalZone
-+ (BOOL)shouldMirrorInputExternalData:(id)a3 overwriteExistingExternalData:(id)a4;
++ (BOOL)shouldMirrorInputExternalData:(id)data overwriteExistingExternalData:(id)externalData;
 + (id)logCategory;
-+ (id)outputBlockRowForTuple:(id)a3 activity:(id)a4;
-+ (id)outputModelFromUpdateModel:(id)a3 mergedModel:(id)a4;
-- (BOOL)_insertDeletionItemsForModelsAndDescendantModelsWithBlockRow:(unint64_t)a3 context:(id)a4 type:(unint64_t)a5 modelIDs:(id)a6 currentDepth:(unint64_t)a7 maximumDepth:(unint64_t)a8 options:(id)a9 error:(id *)a10;
-- (BOOL)destroyWithError:(id *)a3;
-- (BOOL)removeAllRecordsWithError:(id *)a3;
-- (BOOL)removeBlockWithRow:(unint64_t)a3 error:(id *)a4;
-- (BOOL)removeOutputBlockWithRow:(unint64_t)a3 error:(id *)a4;
++ (id)outputBlockRowForTuple:(id)tuple activity:(id)activity;
++ (id)outputModelFromUpdateModel:(id)model mergedModel:(id)mergedModel;
+- (BOOL)_insertDeletionItemsForModelsAndDescendantModelsWithBlockRow:(unint64_t)row context:(id)context type:(unint64_t)type modelIDs:(id)ds currentDepth:(unint64_t)depth maximumDepth:(unint64_t)maximumDepth options:(id)options error:(id *)self0;
+- (BOOL)destroyWithError:(id *)error;
+- (BOOL)removeAllRecordsWithError:(id *)error;
+- (BOOL)removeBlockWithRow:(unint64_t)row error:(id *)error;
+- (BOOL)removeOutputBlockWithRow:(unint64_t)row error:(id *)error;
 - (HMBLocalDatabase)localDatabase;
-- (HMBLocalZone)initWithLocalDatabase:(id)a3 zoneID:(id)a4 zoneRow:(unint64_t)a5 configuration:(id)a6 mirror:(id)a7;
+- (HMBLocalZone)initWithLocalDatabase:(id)database zoneID:(id)d zoneRow:(unint64_t)row configuration:(id)configuration mirror:(id)mirror;
 - (HMBLocalZoneDelegate)delegate;
-- (id)_processItemsForBlockRow:(unint64_t)a3 error:(id *)a4;
-- (id)addModels:(id)a3 andRemoveModelIDs:(id)a4 options:(id)a5;
-- (id)addModels:(id)a3 options:(id)a4;
+- (id)_processItemsForBlockRow:(unint64_t)row error:(id *)error;
+- (id)addModels:(id)models andRemoveModelIDs:(id)ds options:(id)options;
+- (id)addModels:(id)models options:(id)options;
 - (id)allMirrorOutputObservers;
 - (id)attributeDescriptions;
-- (id)createInputBlockWithType:(unint64_t)a3 error:(id *)a4;
-- (id)createLocalInputWithError:(id *)a3;
-- (id)createMirrorInputWithError:(id *)a3;
-- (id)createModels:(id)a3 options:(id)a4;
-- (id)createOutputBlockWithError:(id *)a3;
-- (id)externalDataForExternalID:(id)a3 error:(id *)a4;
-- (id)externalDataForModelID:(id)a3 error:(id *)a4;
-- (id)externalIDForModelID:(id)a3 error:(id *)a4;
-- (id)fetchAllModelsWithError:(id *)a3;
-- (id)fetchExternalIDsForModelIDs:(id)a3 error:(id *)a4;
-- (id)fetchItemsInBlock:(id)a3 error:(id *)a4;
-- (id)fetchModelWithModelID:(id)a3 ofType:(Class)a4 error:(id *)a5;
-- (id)fetchModelWithModelID:(id)a3 recordRow:(unint64_t *)a4 error:(id *)a5;
-- (id)fetchModelWithRecordRow:(unint64_t)a3 error:(id *)a4;
+- (id)createInputBlockWithType:(unint64_t)type error:(id *)error;
+- (id)createLocalInputWithError:(id *)error;
+- (id)createMirrorInputWithError:(id *)error;
+- (id)createModels:(id)models options:(id)options;
+- (id)createOutputBlockWithError:(id *)error;
+- (id)externalDataForExternalID:(id)d error:(id *)error;
+- (id)externalDataForModelID:(id)d error:(id *)error;
+- (id)externalIDForModelID:(id)d error:(id *)error;
+- (id)fetchAllModelsWithError:(id *)error;
+- (id)fetchExternalIDsForModelIDs:(id)ds error:(id *)error;
+- (id)fetchItemsInBlock:(id)block error:(id *)error;
+- (id)fetchModelWithModelID:(id)d ofType:(Class)type error:(id *)error;
+- (id)fetchModelWithModelID:(id)d recordRow:(unint64_t *)row error:(id *)error;
+- (id)fetchModelWithRecordRow:(unint64_t)row error:(id *)error;
 - (id)fetchModels;
-- (id)fetchModelsOfType:(Class)a3 error:(id *)a4;
-- (id)fetchModelsWithParentModelID:(id)a3 error:(id *)a4;
-- (id)fetchModelsWithParentModelID:(id)a3 ofType:(Class)a4 error:(id *)a5;
-- (id)fetchOptionsForOutputBlock:(unint64_t)a3 error:(id *)a4;
-- (id)fetchReadyBlocksWithType:(unint64_t)a3 error:(id *)a4;
-- (id)fetchRecordRowWithExternalID:(id)a3 returning:(unint64_t)a4 error:(id *)a5;
-- (id)fetchRecordRowWithModelID:(id)a3 returning:(unint64_t)a4 error:(id *)a5;
-- (id)fetchRecordsForOutputBlock:(unint64_t)a3 error:(id *)a4;
+- (id)fetchModelsOfType:(Class)type error:(id *)error;
+- (id)fetchModelsWithParentModelID:(id)d error:(id *)error;
+- (id)fetchModelsWithParentModelID:(id)d ofType:(Class)type error:(id *)error;
+- (id)fetchOptionsForOutputBlock:(unint64_t)block error:(id *)error;
+- (id)fetchReadyBlocksWithType:(unint64_t)type error:(id *)error;
+- (id)fetchRecordRowWithExternalID:(id)d returning:(unint64_t)returning error:(id *)error;
+- (id)fetchRecordRowWithModelID:(id)d returning:(unint64_t)returning error:(id *)error;
+- (id)fetchRecordsForOutputBlock:(unint64_t)block error:(id *)error;
 - (id)flush;
 - (id)logIdentifier;
-- (id)markGroupAsSentWithOutputBlock:(unint64_t)a3 tuples:(id)a4;
-- (id)modelFromData:(id)a3 encoding:(unint64_t)a4 storageLocation:(unint64_t)a5 recordRowID:(unint64_t)a6 error:(id *)a7;
-- (id)modelFromRecord:(id)a3 storageLocation:(unint64_t)a4 error:(id *)a5;
-- (id)modelIDForExternalID:(id)a3 error:(id *)a4;
-- (id)observersForModelWithID:(id)a3;
-- (id)queryAllRowRecordsReturning:(unint64_t)a3;
-- (id)queryModelsOfType:(Class)a3;
-- (id)queryModelsOfType:(Class)a3 filter:(id)a4;
-- (id)queryModelsOfType:(Class)a3 predicate:(id)a4;
-- (id)queryModelsOfType:(Class)a3 properties:(id)a4 filter:(id)a5;
-- (id)queryModelsRecursivelyStartingWithModelID:(id)a3;
-- (id)queryModelsWithParentModelID:(id)a3;
-- (id)queryModelsWithParentModelID:(id)a3 ofType:(Class)a4;
-- (id)removeAllModelsOfTypes:(id)a3 options:(id)a4;
-- (id)removeModelIDs:(id)a3 options:(id)a4;
-- (id)removeModelsAndDescendantModelsWithIDs:(id)a3 depth:(unint64_t)a4 options:(id)a5;
-- (id)removeModelsWithParentModelID:(id)a3 options:(id)a4;
-- (id)setExternalData:(id)a3 forExternalID:(id)a4;
-- (id)setExternalData:(id)a3 forModelID:(id)a4;
-- (id)setExternalID:(id)a3 externalData:(id)a4 forRecordRow:(unint64_t)a5;
+- (id)markGroupAsSentWithOutputBlock:(unint64_t)block tuples:(id)tuples;
+- (id)modelFromData:(id)data encoding:(unint64_t)encoding storageLocation:(unint64_t)location recordRowID:(unint64_t)d error:(id *)error;
+- (id)modelFromRecord:(id)record storageLocation:(unint64_t)location error:(id *)error;
+- (id)modelIDForExternalID:(id)d error:(id *)error;
+- (id)observersForModelWithID:(id)d;
+- (id)queryAllRowRecordsReturning:(unint64_t)returning;
+- (id)queryModelsOfType:(Class)type;
+- (id)queryModelsOfType:(Class)type filter:(id)filter;
+- (id)queryModelsOfType:(Class)type predicate:(id)predicate;
+- (id)queryModelsOfType:(Class)type properties:(id)properties filter:(id)filter;
+- (id)queryModelsRecursivelyStartingWithModelID:(id)d;
+- (id)queryModelsWithParentModelID:(id)d;
+- (id)queryModelsWithParentModelID:(id)d ofType:(Class)type;
+- (id)removeAllModelsOfTypes:(id)types options:(id)options;
+- (id)removeModelIDs:(id)ds options:(id)options;
+- (id)removeModelsAndDescendantModelsWithIDs:(id)ds depth:(unint64_t)depth options:(id)options;
+- (id)removeModelsWithParentModelID:(id)d options:(id)options;
+- (id)setExternalData:(id)data forExternalID:(id)d;
+- (id)setExternalData:(id)data forModelID:(id)d;
+- (id)setExternalID:(id)d externalData:(id)data forRecordRow:(unint64_t)row;
 - (id)shutdown;
-- (id)triggerProcessForBlockRow:(unint64_t)a3;
-- (id)update:(id)a3 remove:(id)a4;
-- (id)updateModels:(id)a3 andRemoveModelIDs:(id)a4 options:(id)a5;
-- (id)updateModels:(id)a3 options:(id)a4;
-- (unint64_t)insertBlockToRemoveAllModelsWithType:(unint64_t)a3 modelTypes:(id)a4 options:(id)a5 error:(id *)a6;
-- (unint64_t)insertBlockToRemoveChildModelsWithType:(unint64_t)a3 parentModelID:(id)a4 options:(id)a5 error:(id *)a6;
-- (unint64_t)insertBlockToRemoveModelsAndDescendantModelsWithType:(unint64_t)a3 modelIDs:(id)a4 depth:(unint64_t)a5 options:(id)a6 error:(id *)a7;
-- (unint64_t)insertBlockWithType:(unint64_t)a3 options:(id)a4 items:(id)a5 error:(id *)a6;
+- (id)triggerProcessForBlockRow:(unint64_t)row;
+- (id)update:(id)update remove:(id)remove;
+- (id)updateModels:(id)models andRemoveModelIDs:(id)ds options:(id)options;
+- (id)updateModels:(id)models options:(id)options;
+- (unint64_t)insertBlockToRemoveAllModelsWithType:(unint64_t)type modelTypes:(id)types options:(id)options error:(id *)error;
+- (unint64_t)insertBlockToRemoveChildModelsWithType:(unint64_t)type parentModelID:(id)d options:(id)options error:(id *)error;
+- (unint64_t)insertBlockToRemoveModelsAndDescendantModelsWithType:(unint64_t)type modelIDs:(id)ds depth:(unint64_t)depth options:(id)options error:(id *)error;
+- (unint64_t)insertBlockWithType:(unint64_t)type options:(id)options items:(id)items error:(id *)error;
 - (unint64_t)zoneRow;
-- (void)addMirrorOutputObserver:(id)a3;
-- (void)addObserver:(id)a3 forModelWithID:(id)a4;
-- (void)addObserverForAllModels:(id)a3;
+- (void)addMirrorOutputObserver:(id)observer;
+- (void)addObserver:(id)observer forModelWithID:(id)d;
+- (void)addObserverForAllModels:(id)models;
 - (void)dealloc;
 - (void)migrateUnsupportedModels;
 - (void)queueIncompleteProcesses;
 - (void)rebuildIndexesIfNeeded;
-- (void)removeMirrorOutputObserver:(id)a3;
-- (void)removeObserver:(id)a3 forModelWithID:(id)a4;
-- (void)removeObserverForAllModels:(id)a3;
-- (void)setZoneRow:(unint64_t)a3;
+- (void)removeMirrorOutputObserver:(id)observer;
+- (void)removeObserver:(id)observer forModelWithID:(id)d;
+- (void)removeObserverForAllModels:(id)models;
+- (void)setZoneRow:(unint64_t)row;
 - (void)startUp;
 @end
 
 @implementation HMBLocalZone
 
-- (id)triggerProcessForBlockRow:(unint64_t)a3
+- (id)triggerProcessForBlockRow:(unint64_t)row
 {
   v5 = objc_alloc_init(MEMORY[0x277D2C918]);
   objc_initWeak(&location, self);
@@ -99,18 +99,18 @@
   objc_copyWeak(v18, &location);
   v7 = v5;
   v17 = v7;
-  v18[1] = a3;
+  v18[1] = row;
   v8 = [v6 blockOperationWithBlock:&v13];
   v9 = [(HMBLocalZone *)self localDatabase:v13];
-  v10 = [v9 queue];
-  [v10 addOperation:v8];
+  queue = [v9 queue];
+  [queue addOperation:v8];
 
-  v11 = [v7 future];
+  future = [v7 future];
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
 
-  return v11;
+  return future;
 }
 
 void __51__HMBLocalZone_Process__triggerProcessForBlockRow___block_invoke(uint64_t a1)
@@ -157,39 +157,39 @@ void __51__HMBLocalZone_Process__triggerProcessForBlockRow___block_invoke(uint64
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processItemsForBlockRow:(unint64_t)a3 error:(id *)a4
+- (id)_processItemsForBlockRow:(unint64_t)row error:(id *)error
 {
   v609 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABD8] currentQueue];
-  v6 = [(HMBLocalZone *)self localDatabase];
-  v7 = [v6 queue];
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+  localDatabase = [(HMBLocalZone *)self localDatabase];
+  queue = [localDatabase queue];
 
-  if (v5 != v7)
+  if (currentQueue != queue)
   {
     _HMFPreconditionFailure();
   }
 
-  v456 = [(HMBLocalZone *)self localDatabase];
-  v473 = [v456 local];
-  v469 = [(HMBLocalZone *)self zoneRow];
+  localDatabase2 = [(HMBLocalZone *)self localDatabase];
+  local = [localDatabase2 local];
+  zoneRow = [(HMBLocalZone *)self zoneRow];
   v8 = objc_alloc(MEMORY[0x277D0F770]);
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[HMBLocalZone(Process) _processItemsForBlockRow:error:]"];
   v492 = [v8 initWithName:v9 options:1];
 
   v10 = objc_autoreleasePoolPush();
-  v463 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v492 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v492 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     *&buf[4] = v12;
     *&buf[12] = 2114;
-    *&buf[14] = v14;
+    *&buf[14] = shortDescription;
     *&buf[22] = 2048;
-    v604 = a3;
+    rowCopy6 = row;
     _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Beginning processing of block %lu", buf, 0x20u);
   }
 
@@ -206,25 +206,25 @@ void __51__HMBLocalZone_Process__triggerProcessForBlockRow___block_invoke(uint64
   v583[2] = __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke;
   v583[3] = &unk_2786E23A0;
   v583[4] = &v585;
-  v583[5] = a3;
-  v15 = [v473 sqlBlockWithActivity:v492 error:&v584 block:v583];
+  v583[5] = row;
+  v15 = [local sqlBlockWithActivity:v492 error:&v584 block:v583];
   v455 = v584;
   if ((v15 & 1) == 0)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v463;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v492 identifier];
-      v29 = [v28 shortDescription];
+      identifier2 = [v492 identifier];
+      shortDescription2 = [identifier2 shortDescription];
       *buf = 138544386;
       *&buf[4] = v27;
       *&buf[12] = 2114;
-      *&buf[14] = v29;
+      *&buf[14] = shortDescription2;
       *&buf[22] = 2048;
-      v604 = a3;
+      rowCopy6 = row;
       *v605 = 2112;
       *&v605[2] = v25;
       *&v605[10] = 2112;
@@ -233,11 +233,11 @@ void __51__HMBLocalZone_Process__triggerProcessForBlockRow___block_invoke(uint64
     }
 
     objc_autoreleasePoolPop(v24);
-    if (a4)
+    if (error)
     {
       v30 = v455;
       v31 = 0;
-      *a4 = v455;
+      *error = v455;
       goto LABEL_273;
     }
 
@@ -248,29 +248,29 @@ void __51__HMBLocalZone_Process__triggerProcessForBlockRow___block_invoke(uint64
   if (!v16)
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = v463;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       v35 = HMFGetLogIdentifier();
-      v36 = [v492 identifier];
-      v37 = [v36 shortDescription];
+      identifier3 = [v492 identifier];
+      shortDescription3 = [identifier3 shortDescription];
       *buf = 138543874;
       *&buf[4] = v35;
       *&buf[12] = 2114;
-      *&buf[14] = v37;
+      *&buf[14] = shortDescription3;
       *&buf[22] = 2048;
-      v604 = a3;
+      rowCopy6 = row;
       _os_log_impl(&dword_22AD27000, v34, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Could not find block with row %lu", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v32);
-    if (a4)
+    if (error)
     {
       v38 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
 LABEL_25:
       v31 = 0;
-      *a4 = v38;
+      *error = v38;
       goto LABEL_273;
     }
 
@@ -279,30 +279,30 @@ LABEL_26:
     goto LABEL_273;
   }
 
-  v17 = [v16 optionsData];
-  v18 = v17 == 0;
+  optionsData = [v16 optionsData];
+  v18 = optionsData == 0;
 
   if (v18)
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = v463;
+    v40 = selfCopy;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       v42 = HMFGetLogIdentifier();
-      v43 = [v492 identifier];
-      v44 = [v43 shortDescription];
+      identifier4 = [v492 identifier];
+      shortDescription4 = [identifier4 shortDescription];
       *buf = 138543874;
       *&buf[4] = v42;
       *&buf[12] = 2114;
-      *&buf[14] = v44;
+      *&buf[14] = shortDescription4;
       *&buf[22] = 2048;
-      v604 = a3;
+      rowCopy6 = row;
       _os_log_impl(&dword_22AD27000, v41, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Block %lu has not been committed. Ignoring process request.", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v39);
-    if (a4)
+    if (error)
     {
       v38 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
       goto LABEL_25;
@@ -313,33 +313,33 @@ LABEL_26:
 
   v19 = MEMORY[0x277CCAAC8];
   v20 = objc_opt_class();
-  v21 = [v586[5] optionsData];
+  optionsData2 = [v586[5] optionsData];
   v582 = 0;
-  v466 = [v19 unarchivedObjectOfClass:v20 fromData:v21 error:&v582];
+  v466 = [v19 unarchivedObjectOfClass:v20 fromData:optionsData2 error:&v582];
   v453 = v582;
 
   if (!v466)
   {
     v45 = objc_autoreleasePoolPush();
-    v46 = v463;
+    v46 = selfCopy;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
       v48 = HMFGetLogIdentifier();
-      v49 = [v492 identifier];
-      v50 = [v49 shortDescription];
+      identifier5 = [v492 identifier];
+      shortDescription5 = [identifier5 shortDescription];
       *buf = 138543874;
       *&buf[4] = v48;
       *&buf[12] = 2114;
-      *&buf[14] = v50;
+      *&buf[14] = shortDescription5;
       *&buf[22] = 2112;
-      v604 = v453;
+      rowCopy6 = v453;
       _os_log_impl(&dword_22AD27000, v47, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to unarchive processing options from options data: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v45);
     v581 = 0;
-    v51 = [(HMBLocalZone *)v46 removeBlockWithRow:a3 error:&v581];
+    v51 = [(HMBLocalZone *)v46 removeBlockWithRow:row error:&v581];
     v52 = v581;
     if (!v51)
     {
@@ -349,24 +349,24 @@ LABEL_26:
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
         v56 = HMFGetLogIdentifier();
-        v57 = [v492 identifier];
-        v58 = [v57 shortDescription];
+        identifier6 = [v492 identifier];
+        shortDescription6 = [identifier6 shortDescription];
         *buf = 138543874;
         *&buf[4] = v56;
         *&buf[12] = 2114;
-        *&buf[14] = v58;
+        *&buf[14] = shortDescription6;
         *&buf[22] = 2112;
-        v604 = v52;
+        rowCopy6 = v52;
         _os_log_impl(&dword_22AD27000, v55, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to cleanup corrupt block: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v53);
     }
 
-    if (a4)
+    if (error)
     {
       v59 = v453;
-      *a4 = v453;
+      *error = v453;
     }
 
     v31 = 0;
@@ -386,35 +386,35 @@ LABEL_26:
     v573[1] = 3221225472;
     v573[2] = __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_101;
     v573[3] = &unk_2786E23A0;
-    v573[5] = v469;
+    v573[5] = zoneRow;
     v573[4] = &v575;
-    v22 = [v473 sqlBlockWithActivity:v492 error:&v574 block:v573];
+    v22 = [local sqlBlockWithActivity:v492 error:&v574 block:v573];
     v23 = v574;
     if ((v22 & 1) == 0)
     {
-      v465 = v23;
+      array = v23;
       v385 = objc_autoreleasePoolPush();
-      v386 = v463;
+      v386 = selfCopy;
       v387 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v387, OS_LOG_TYPE_ERROR))
       {
         v388 = HMFGetLogIdentifier();
-        v389 = [v492 identifier];
-        v390 = [v389 shortDescription];
+        identifier7 = [v492 identifier];
+        shortDescription7 = [identifier7 shortDescription];
         *buf = 138544130;
         *&buf[4] = v388;
         *&buf[12] = 2114;
-        *&buf[14] = v390;
+        *&buf[14] = shortDescription7;
         *&buf[22] = 2048;
-        v604 = v469;
+        rowCopy6 = zoneRow;
         *v605 = 2112;
-        *&v605[2] = v465;
+        *&v605[2] = array;
         _os_log_impl(&dword_22AD27000, v387, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to insert output block for zone row %lu: %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v385);
       v572 = 0;
-      v391 = [(HMBLocalZone *)v386 removeBlockWithRow:a3 error:&v572];
+      v391 = [(HMBLocalZone *)v386 removeBlockWithRow:row error:&v572];
       v462 = v572;
       if (!v391)
       {
@@ -424,25 +424,25 @@ LABEL_26:
         if (os_log_type_enabled(v394, OS_LOG_TYPE_ERROR))
         {
           v395 = HMFGetLogIdentifier();
-          v396 = [v492 identifier];
-          v397 = [v396 shortDescription];
+          identifier8 = [v492 identifier];
+          shortDescription8 = [identifier8 shortDescription];
           *buf = 138543874;
           *&buf[4] = v395;
           *&buf[12] = 2114;
-          *&buf[14] = v397;
+          *&buf[14] = shortDescription8;
           *&buf[22] = 2112;
-          v604 = v462;
+          rowCopy6 = v462;
           _os_log_impl(&dword_22AD27000, v394, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to clean up corrupt block: %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v392);
       }
 
-      if (a4)
+      if (error)
       {
         v398 = v462;
         v31 = 0;
-        *a4 = v462;
+        *error = v462;
       }
 
       else
@@ -456,12 +456,12 @@ LABEL_26:
 
   if ([v466 shouldRollBackIfMirrorOutputFails])
   {
-    v465 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v465 = 0;
+    array = 0;
   }
 
   if (v576[5])
@@ -474,8 +474,8 @@ LABEL_26:
     v462 = 0;
   }
 
-  v470 = 0;
-  v460 = [v586[5] type];
+  itemRow = 0;
+  type = [v586[5] type];
   v461 = 0;
   v566 = 0;
   v567 = &v566;
@@ -487,43 +487,43 @@ LABEL_26:
   {
     context = objc_autoreleasePoolPush();
     v60 = objc_autoreleasePoolPush();
-    v458 = v463;
+    v458 = selfCopy;
     v61 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
     {
       v62 = HMFGetLogIdentifier();
-      v63 = [v492 identifier];
-      v64 = [v63 shortDescription];
+      identifier9 = [v492 identifier];
+      shortDescription9 = [identifier9 shortDescription];
       *buf = 138544386;
       *&buf[4] = v62;
       *&buf[12] = 2114;
-      *&buf[14] = v64;
+      *&buf[14] = shortDescription9;
       *&buf[22] = 2048;
-      v604 = a3;
+      rowCopy6 = row;
       *v605 = 2112;
       *&v605[2] = v466;
       *&v605[10] = 2048;
-      *&v605[12] = v470;
+      *&v605[12] = itemRow;
       _os_log_impl(&dword_22AD27000, v61, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Fetching objects for blockRow: %lu options: %@ lastItemRowID: %lu", buf, 0x34u);
     }
 
     objc_autoreleasePoolPop(v60);
-    v65 = [v466 transactionItemsBatchLimit];
+    transactionItemsBatchLimit = [v466 transactionItemsBatchLimit];
     v565[0] = MEMORY[0x277D85DD0];
     v565[1] = 3221225472;
     v66 = 100;
-    if (v65)
+    if (transactionItemsBatchLimit)
     {
-      v66 = v65;
+      v66 = transactionItemsBatchLimit;
     }
 
     v565[2] = __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_105;
     v565[3] = &unk_2786E0410;
     v565[4] = &v566;
-    v565[5] = a3;
-    v565[6] = v470;
+    v565[5] = row;
+    v565[6] = itemRow;
     v565[7] = v66;
-    v501 = [v473 sqlBlockWithActivity:v492 block:v565];
+    v501 = [local sqlBlockWithActivity:v492 block:v565];
     if (!v501)
     {
       v82 = [v567[5] count] == 0;
@@ -535,12 +535,12 @@ LABEL_26:
         if (os_log_type_enabled(v265, OS_LOG_TYPE_DEBUG))
         {
           v266 = HMFGetLogIdentifier();
-          v267 = [v492 identifier];
-          v268 = [v267 shortDescription];
+          identifier10 = [v492 identifier];
+          shortDescription10 = [identifier10 shortDescription];
           *buf = 138543618;
           *&buf[4] = v266;
           *&buf[12] = 2114;
-          *&buf[14] = v268;
+          *&buf[14] = shortDescription10;
           _os_log_impl(&dword_22AD27000, v265, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] No more rows to process", buf, 0x16u);
         }
 
@@ -553,17 +553,17 @@ LABEL_26:
       if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
       {
         v85 = HMFGetLogIdentifier();
-        v86 = [v492 identifier];
-        v87 = [v86 shortDescription];
+        identifier11 = [v492 identifier];
+        shortDescription11 = [identifier11 shortDescription];
         v88 = [v567[5] count];
         *buf = 138544386;
         *&buf[4] = v85;
         *&buf[12] = 2114;
-        *&buf[14] = v87;
+        *&buf[14] = shortDescription11;
         *&buf[22] = 2048;
-        v604 = v88;
+        rowCopy6 = v88;
         *v605 = 2048;
-        *&v605[2] = a3;
+        *&v605[2] = row;
         *&v605[10] = 2112;
         *&v605[12] = v466;
         _os_log_impl(&dword_22AD27000, v84, OS_LOG_TYPE_DEFAULT, "%{public}@[%{public}@] Fetched %lu object(s) to process for blockRow: %lu options: %@", buf, 0x34u);
@@ -598,30 +598,30 @@ LABEL_26:
           }
 
           v90 = *(*(&v560 + 1) + 8 * v489);
-          v470 = [v90 itemRow];
+          itemRow = [v90 itemRow];
           v592 = 0;
           v593 = &v592;
           v594 = 0x3032000000;
           v595 = __Block_byref_object_copy__688;
           v596 = __Block_byref_object_dispose__689;
           v597 = 0;
-          v91 = [v90 modelEncoding];
-          if (v91)
+          modelEncoding = [v90 modelEncoding];
+          if (modelEncoding)
           {
-            v92 = [v90 modelData];
-            v93 = [v90 modelEncoding];
+            modelData = [v90 modelData];
+            modelEncoding2 = [v90 modelEncoding];
             v557 = v501;
-            v493 = [(HMBLocalZone *)v499 modelFromData:v92 encoding:v93 storageLocation:2 recordRowID:0 error:&v557];
+            v493 = [(HMBLocalZone *)v499 modelFromData:modelData encoding:modelEncoding2 storageLocation:2 recordRowID:0 error:&v557];
             v94 = v557;
 
             if (v493)
             {
-              v95 = [v473 queryContextsByClass];
-              v480 = [v95 objectForKey:objc_opt_class()];
+              queryContextsByClass = [local queryContextsByClass];
+              v480 = [queryContextsByClass objectForKey:objc_opt_class()];
 
-              v96 = [v493 hmbModelID];
+              hmbModelID = [v493 hmbModelID];
               v97 = *(v593 + 40);
-              *(v593 + 40) = v96;
+              *(v593 + 40) = hmbModelID;
 
               v501 = v94;
               goto LABEL_68;
@@ -633,17 +633,17 @@ LABEL_26:
             if (os_log_type_enabled(v147, OS_LOG_TYPE_ERROR))
             {
               v148 = HMFGetLogIdentifier();
-              v149 = [v492 identifier];
-              v150 = [v149 shortDescription];
-              v151 = [v90 itemRow];
+              identifier12 = [v492 identifier];
+              shortDescription12 = [identifier12 shortDescription];
+              itemRow2 = [v90 itemRow];
               *buf = 138544386;
               *&buf[4] = v148;
               *&buf[12] = 2114;
-              *&buf[14] = v150;
+              *&buf[14] = shortDescription12;
               *&buf[22] = 2048;
-              v604 = v151;
+              rowCopy6 = itemRow2;
               *v605 = 2112;
-              *&v605[2] = v463;
+              *&v605[2] = selfCopy;
               *&v605[10] = 2112;
               *&v605[12] = v94;
               _os_log_impl(&dword_22AD27000, v147, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to unarchive object for %lu / %@: %@", buf, 0x34u);
@@ -655,7 +655,7 @@ LABEL_26:
             v556[2] = __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_109;
             v556[3] = &unk_2786E24B0;
             v556[4] = v90;
-            v501 = [v473 sqlBlockWithActivity:v492 block:v556];
+            v501 = [local sqlBlockWithActivity:v492 block:v556];
 
             if (v501)
             {
@@ -665,17 +665,17 @@ LABEL_26:
               if (os_log_type_enabled(v154, OS_LOG_TYPE_ERROR))
               {
                 v155 = HMFGetLogIdentifier();
-                v156 = [v492 identifier];
-                v157 = [v156 shortDescription];
-                v158 = [v90 itemRow];
+                identifier13 = [v492 identifier];
+                shortDescription13 = [identifier13 shortDescription];
+                itemRow3 = [v90 itemRow];
                 *buf = 138544386;
                 *&buf[4] = v155;
                 *&buf[12] = 2114;
-                *&buf[14] = v157;
+                *&buf[14] = shortDescription13;
                 *&buf[22] = 2048;
-                v604 = v158;
+                rowCopy6 = itemRow3;
                 *v605 = 2112;
-                *&v605[2] = v463;
+                *&v605[2] = selfCopy;
                 *&v605[10] = 2112;
                 *&v605[12] = v501;
                 _os_log_impl(&dword_22AD27000, v154, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to flush bogus row for %lu / %@: %@", buf, 0x34u);
@@ -687,15 +687,15 @@ LABEL_26:
 
           else
           {
-            v98 = [v90 modelData];
-            v99 = v98 == 0;
+            modelData2 = [v90 modelData];
+            v99 = modelData2 == 0;
 
             if (!v99)
             {
               v100 = objc_alloc(MEMORY[0x277CCAD78]);
-              v101 = [v90 modelData];
-              v102 = v101;
-              v103 = [v100 initWithUUIDBytes:{objc_msgSend(v101, "bytes")}];
+              modelData3 = [v90 modelData];
+              v102 = modelData3;
+              v103 = [v100 initWithUUIDBytes:{objc_msgSend(modelData3, "bytes")}];
               v104 = *(v593 + 40);
               *(v593 + 40) = v103;
 
@@ -708,10 +708,10 @@ LABEL_26:
             v559[1] = 3221225472;
             v559[2] = __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_107;
             v559[3] = &unk_2786E2140;
-            v559[6] = v469;
+            v559[6] = zoneRow;
             v559[5] = &v592;
             v559[4] = v90;
-            v159 = [v473 sqlBlockWithActivity:v492 block:v559];
+            v159 = [local sqlBlockWithActivity:v492 block:v559];
 
             if (v159)
             {
@@ -721,17 +721,17 @@ LABEL_26:
               if (os_log_type_enabled(v162, OS_LOG_TYPE_ERROR))
               {
                 v163 = HMFGetLogIdentifier();
-                v164 = [v492 identifier];
-                v165 = [v164 shortDescription];
-                v166 = [v90 externalID];
+                identifier14 = [v492 identifier];
+                shortDescription14 = [identifier14 shortDescription];
+                externalID = [v90 externalID];
                 *buf = 138544386;
                 *&buf[4] = v163;
                 *&buf[12] = 2114;
-                *&buf[14] = v165;
+                *&buf[14] = shortDescription14;
                 *&buf[22] = 2048;
-                v604 = v469;
+                rowCopy6 = zoneRow;
                 *v605 = 2112;
-                *&v605[2] = v166;
+                *&v605[2] = externalID;
                 *&v605[10] = 2112;
                 *&v605[12] = v159;
                 _os_log_impl(&dword_22AD27000, v162, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to determine modelID for %lu / %@: %@", buf, 0x34u);
@@ -752,12 +752,12 @@ LABEL_68:
               if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
               {
                 v108 = HMFGetLogIdentifier();
-                v109 = [v492 identifier];
-                v110 = [v109 shortDescription];
-                v111 = v110;
+                identifier15 = [v492 identifier];
+                shortDescription15 = [identifier15 shortDescription];
+                v111 = shortDescription15;
                 v112 = *(v593 + 40);
                 v113 = @"update/insert";
-                if (!v91)
+                if (!modelEncoding)
                 {
                   v113 = @"delete";
                 }
@@ -765,9 +765,9 @@ LABEL_68:
                 *buf = 138544386;
                 *&buf[4] = v108;
                 *&buf[12] = 2114;
-                *&buf[14] = v110;
+                *&buf[14] = shortDescription15;
                 *&buf[22] = 2112;
-                v604 = v112;
+                rowCopy6 = v112;
                 *v605 = 2112;
                 *&v605[2] = v113;
                 *&v605[10] = 2112;
@@ -789,15 +789,15 @@ LABEL_68:
                 if (os_log_type_enabled(v118, OS_LOG_TYPE_DEBUG))
                 {
                   v119 = HMFGetLogIdentifier();
-                  v120 = [v492 identifier];
-                  v121 = [v120 shortDescription];
+                  identifier16 = [v492 identifier];
+                  shortDescription16 = [identifier16 shortDescription];
                   v122 = *(v593 + 40);
                   *buf = 138544130;
                   *&buf[4] = v119;
                   *&buf[12] = 2114;
-                  *&buf[14] = v121;
+                  *&buf[14] = shortDescription16;
                   *&buf[22] = 2112;
-                  v604 = v122;
+                  rowCopy6 = v122;
                   *v605 = 2112;
                   *&v605[2] = v496;
                   _os_log_impl(&dword_22AD27000, v118, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Found existing record for modelID %@: %@", buf, 0x2Au);
@@ -815,20 +815,20 @@ LABEL_68:
                 if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
                 {
                   v136 = HMFGetLogIdentifier();
-                  v137 = [v492 identifier];
-                  v138 = [v137 shortDescription];
+                  identifier17 = [v492 identifier];
+                  shortDescription17 = [identifier17 shortDescription];
                   v139 = *(v593 + 40);
-                  v140 = [v90 externalID];
+                  externalID2 = [v90 externalID];
                   *buf = 138544642;
                   *&buf[4] = v136;
                   *&buf[12] = 2114;
-                  *&buf[14] = v138;
+                  *&buf[14] = shortDescription17;
                   *&buf[22] = 2112;
-                  v604 = v139;
+                  rowCopy6 = v139;
                   *v605 = 2048;
-                  *&v605[2] = v469;
+                  *&v605[2] = zoneRow;
                   *&v605[10] = 2112;
-                  *&v605[12] = v140;
+                  *&v605[12] = externalID2;
                   v606 = 2112;
                   v607 = v484;
                   _os_log_impl(&dword_22AD27000, v135, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to find existing model with modelID %@ for %lu / %@: %@", buf, 0x3Eu);
@@ -836,11 +836,11 @@ LABEL_68:
 
                 objc_autoreleasePoolPop(v116);
                 v141 = [HMBLocalSQLContextRowItem alloc];
-                v482 = [MEMORY[0x277CCAD78] UUID];
-                v142 = [v482 data];
-                v143 = [*(v593 + 40) data];
-                v144 = [(HMBLocalSQLContextRowItem *)v141 initWithItemRow:0 externalID:v142 externalData:v143 modelEncoding:0 modelData:0];
-                [v465 addObject:v144];
+                uUID = [MEMORY[0x277CCAD78] UUID];
+                data = [uUID data];
+                data2 = [*(v593 + 40) data];
+                v144 = [(HMBLocalSQLContextRowItem *)v141 initWithItemRow:0 externalID:data externalData:data2 modelEncoding:0 modelData:0];
+                [array addObject:v144];
 LABEL_138:
 
 LABEL_139:
@@ -854,15 +854,15 @@ LABEL_140:
               if (os_log_type_enabled(v118, OS_LOG_TYPE_DEBUG))
               {
                 v174 = HMFGetLogIdentifier();
-                v175 = [v492 identifier];
-                v176 = [v175 shortDescription];
+                identifier18 = [v492 identifier];
+                shortDescription18 = [identifier18 shortDescription];
                 v177 = *(v593 + 40);
                 *buf = 138543874;
                 *&buf[4] = v174;
                 *&buf[12] = 2114;
-                *&buf[14] = v176;
+                *&buf[14] = shortDescription18;
                 *&buf[22] = 2112;
-                v604 = v177;
+                rowCopy6 = v177;
                 _os_log_impl(&dword_22AD27000, v118, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Did not find existing record for modelID %@", buf, 0x20u);
               }
 
@@ -871,37 +871,37 @@ LABEL_75:
               objc_autoreleasePoolPop(v116);
               if ([v496 modelEncoding])
               {
-                v123 = [v496 modelData];
-                v124 = [v123 length] == 0;
+                modelData4 = [v496 modelData];
+                v124 = [modelData4 length] == 0;
 
                 if (!v124)
                 {
                   v554 = v484;
-                  v482 = [(HMBLocalZone *)v106 modelFromRecord:v496 storageLocation:2 error:&v554];
+                  uUID = [(HMBLocalZone *)v106 modelFromRecord:v496 storageLocation:2 error:&v554];
                   v501 = v554;
 
-                  if (v482)
+                  if (uUID)
                   {
                     if (v493)
                     {
-                      v125 = [v466 requiresModelCreation];
+                      requiresModelCreation = [v466 requiresModelCreation];
                       v126 = objc_autoreleasePoolPush();
                       v127 = v106;
-                      if (v125)
+                      if (requiresModelCreation)
                       {
                         v128 = HMFGetOSLogHandle();
                         if (os_log_type_enabled(v128, OS_LOG_TYPE_INFO))
                         {
                           v129 = HMFGetLogIdentifier();
-                          v130 = [v492 identifier];
-                          v131 = [v130 shortDescription];
-                          v132 = [v493 hmbDescription];
+                          identifier19 = [v492 identifier];
+                          shortDescription19 = [identifier19 shortDescription];
+                          hmbDescription = [v493 hmbDescription];
                           *buf = 138543874;
                           *&buf[4] = v129;
                           *&buf[12] = 2114;
-                          *&buf[14] = v131;
+                          *&buf[14] = shortDescription19;
                           *&buf[22] = 2112;
-                          v604 = v132;
+                          rowCopy6 = hmbDescription;
                           _os_log_impl(&dword_22AD27000, v128, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Not updating model because model creation is required: %@", buf, 0x20u);
                         }
 
@@ -913,28 +913,28 @@ LABEL_75:
                       if (os_log_type_enabled(v226, OS_LOG_TYPE_DEBUG))
                       {
                         v227 = HMFGetLogIdentifier();
-                        v486 = [v492 identifier];
-                        v228 = [v486 shortDescription];
-                        v229 = [v496 recordRow];
-                        v230 = [v493 hmbDescription];
-                        v231 = [v90 externalID];
-                        v232 = [v231 hmbDescription];
+                        identifier20 = [v492 identifier];
+                        shortDescription20 = [identifier20 shortDescription];
+                        recordRow = [v496 recordRow];
+                        hmbDescription2 = [v493 hmbDescription];
+                        externalID3 = [v90 externalID];
+                        hmbDescription3 = [externalID3 hmbDescription];
                         *buf = 138544386;
                         *&buf[4] = v227;
                         *&buf[12] = 2114;
-                        *&buf[14] = v228;
+                        *&buf[14] = shortDescription20;
                         *&buf[22] = 2048;
-                        v604 = v229;
+                        rowCopy6 = recordRow;
                         *v605 = 2112;
-                        *&v605[2] = v230;
+                        *&v605[2] = hmbDescription2;
                         *&v605[10] = 2112;
-                        *&v605[12] = v232;
+                        *&v605[12] = hmbDescription3;
                         _os_log_impl(&dword_22AD27000, v226, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Updating model %lu / %@ / %@", buf, 0x34u);
                       }
 
                       objc_autoreleasePoolPop(v126);
                       v550 = v501;
-                      v233 = [v482 hmbModelByMergingFromModel:v493 isFromCloud:v460 == 1 error:&v550];
+                      v233 = [uUID hmbModelByMergingFromModel:v493 isFromCloud:type == 1 error:&v550];
                       v484 = v550;
 
                       if (!v233)
@@ -945,18 +945,18 @@ LABEL_75:
                         if (os_log_type_enabled(v259, OS_LOG_TYPE_ERROR))
                         {
                           v260 = HMFGetLogIdentifier();
-                          v261 = [v492 identifier];
-                          v262 = [v261 shortDescription];
-                          v263 = [v482 hmbDescription];
-                          v264 = [v493 hmbDescription];
+                          identifier21 = [v492 identifier];
+                          shortDescription21 = [identifier21 shortDescription];
+                          hmbDescription4 = [uUID hmbDescription];
+                          hmbDescription5 = [v493 hmbDescription];
                           *buf = 138544386;
                           *&buf[4] = v260;
                           *&buf[12] = 2114;
-                          *&buf[14] = v262;
+                          *&buf[14] = shortDescription21;
                           *&buf[22] = 2112;
-                          v604 = v263;
+                          rowCopy6 = hmbDescription4;
                           *v605 = 2112;
-                          *&v605[2] = v264;
+                          *&v605[2] = hmbDescription5;
                           *&v605[10] = 2112;
                           *&v605[12] = v484;
                           _os_log_impl(&dword_22AD27000, v259, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to merge old record with new values %@ / %@: %@", buf, 0x34u);
@@ -969,13 +969,13 @@ LABEL_75:
 
                       v234 = [HMBLocalZoneProcessModelContext alloc];
                       v235 = v576[5];
-                      v236 = [v90 externalData];
-                      v143 = [(HMBLocalZoneProcessModelContext *)v234 initWithModel:v233 outputBlockRow:v235 externalData:v236];
+                      externalData = [v90 externalData];
+                      data2 = [(HMBLocalZoneProcessModelContext *)v234 initWithModel:v233 outputBlockRow:v235 externalData:externalData];
 
                       v237 = [HMBLocalZoneProcessModelContext alloc];
-                      v238 = [v496 pushBlockRow];
-                      v239 = [v496 externalData];
-                      v142 = [(HMBLocalZoneProcessModelContext *)v237 initWithModel:v482 outputBlockRow:v238 externalData:v239];
+                      pushBlockRow = [v496 pushBlockRow];
+                      externalData2 = [v496 externalData];
+                      data = [(HMBLocalZoneProcessModelContext *)v237 initWithModel:uUID outputBlockRow:pushBlockRow externalData:externalData2];
 
                       v144 = [objc_opt_class() outputModelFromUpdateModel:v493 mergedModel:v233];
                     }
@@ -988,80 +988,80 @@ LABEL_75:
                       if (os_log_type_enabled(v216, OS_LOG_TYPE_DEBUG))
                       {
                         v217 = HMFGetLogIdentifier();
-                        v485 = [v492 identifier];
-                        v218 = [v485 shortDescription];
-                        v219 = [v496 recordRow];
-                        v220 = [v482 hmbDescription];
-                        v221 = [v90 externalID];
-                        v222 = [v221 hmbDescription];
+                        identifier22 = [v492 identifier];
+                        shortDescription22 = [identifier22 shortDescription];
+                        recordRow2 = [v496 recordRow];
+                        hmbDescription6 = [uUID hmbDescription];
+                        externalID4 = [v90 externalID];
+                        hmbDescription7 = [externalID4 hmbDescription];
                         *buf = 138544386;
                         *&buf[4] = v217;
                         *&buf[12] = 2114;
-                        *&buf[14] = v218;
+                        *&buf[14] = shortDescription22;
                         *&buf[22] = 2048;
-                        v604 = v219;
+                        rowCopy6 = recordRow2;
                         *v605 = 2112;
-                        *&v605[2] = v220;
+                        *&v605[2] = hmbDescription6;
                         *&v605[10] = 2112;
-                        *&v605[12] = v222;
+                        *&v605[12] = hmbDescription7;
                         _os_log_impl(&dword_22AD27000, v216, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Deleting model %lu / %@ / %@", buf, 0x34u);
                       }
 
                       objc_autoreleasePoolPop(v214);
                       v223 = [HMBLocalZoneProcessModelContext alloc];
-                      v224 = [v496 pushBlockRow];
-                      v225 = [v496 externalData];
-                      v142 = [(HMBLocalZoneProcessModelContext *)v223 initWithModel:v482 outputBlockRow:v224 externalData:v225];
+                      pushBlockRow2 = [v496 pushBlockRow];
+                      externalData3 = [v496 externalData];
+                      data = [(HMBLocalZoneProcessModelContext *)v223 initWithModel:uUID outputBlockRow:pushBlockRow2 externalData:externalData3];
 
                       v144 = 0;
-                      v143 = 0;
+                      data2 = 0;
                       v484 = v501;
                     }
 
 LABEL_129:
-                    if (v465)
+                    if (array)
                     {
                       if ([v496 modelEncoding])
                       {
                         v240 = [HMBLocalSQLContextRowItem alloc];
-                        v241 = [MEMORY[0x277CCAD78] UUID];
-                        v242 = [v241 data];
-                        v243 = [*(v593 + 40) data];
-                        v244 = [v496 modelEncoding];
-                        v245 = [v496 modelData];
-                        v246 = [(HMBLocalSQLContextRowItem *)v240 initWithItemRow:0 externalID:v242 externalData:v243 modelEncoding:v244 modelData:v245];
-                        [v465 addObject:v246];
+                        uUID2 = [MEMORY[0x277CCAD78] UUID];
+                        data3 = [uUID2 data];
+                        data4 = [*(v593 + 40) data];
+                        modelEncoding3 = [v496 modelEncoding];
+                        modelData5 = [v496 modelData];
+                        v246 = [(HMBLocalSQLContextRowItem *)v240 initWithItemRow:0 externalID:data3 externalData:data4 modelEncoding:modelEncoding3 modelData:modelData5];
+                        [array addObject:v246];
                       }
 
                       else
                       {
                         v247 = [HMBLocalSQLContextRowItem alloc];
-                        v241 = [MEMORY[0x277CCAD78] UUID];
-                        v242 = [v241 data];
-                        v243 = [*(v593 + 40) data];
-                        v245 = [(HMBLocalSQLContextRowItem *)v247 initWithItemRow:0 externalID:v242 externalData:v243 modelEncoding:0 modelData:0];
-                        [v465 addObject:v245];
+                        uUID2 = [MEMORY[0x277CCAD78] UUID];
+                        data3 = [uUID2 data];
+                        data4 = [*(v593 + 40) data];
+                        modelData5 = [(HMBLocalSQLContextRowItem *)v247 initWithItemRow:0 externalID:data3 externalData:data4 modelEncoding:0 modelData:0];
+                        [array addObject:modelData5];
                       }
                     }
 
-                    v248 = [v90 externalData];
-                    if (v248)
+                    externalData4 = [v90 externalData];
+                    if (externalData4)
                     {
-                      v249 = [v90 externalID];
+                      externalID5 = [v90 externalID];
                     }
 
                     else
                     {
-                      v249 = 0;
+                      externalID5 = 0;
                     }
 
                     v250 = [HMBLocalZoneProcessTuple alloc];
                     v251 = v576[5];
-                    v252 = [v496 recordRow];
-                    v253 = [v90 itemRow];
-                    v254 = [v496 modelSchema];
-                    v255 = [v496 modelType];
-                    v256 = [(HMBLocalZoneProcessTuple *)v250 initWithPreviousContext:v142 mergedContext:v143 updateModel:v493 outputModel:v144 outputBlockRow:v251 recordRow:v252 itemRow:v253 modelSchema:v254 modelType:v255 externalID:v249 queryTable:v480];
+                    recordRow3 = [v496 recordRow];
+                    itemRow4 = [v90 itemRow];
+                    modelSchema = [v496 modelSchema];
+                    modelType = [v496 modelType];
+                    v256 = [(HMBLocalZoneProcessTuple *)v250 initWithPreviousContext:data mergedContext:data2 updateModel:v493 outputModel:v144 outputBlockRow:v251 recordRow:recordRow3 itemRow:itemRow4 modelSchema:modelSchema modelType:modelType externalID:externalID5 queryTable:v480];
                     [v471 addObject:v256];
 
                     goto LABEL_138;
@@ -1073,15 +1073,15 @@ LABEL_129:
                   if (os_log_type_enabled(v180, OS_LOG_TYPE_ERROR))
                   {
                     v181 = HMFGetLogIdentifier();
-                    v182 = [v492 identifier];
-                    v183 = [v182 shortDescription];
-                    v184 = [v496 recordRow];
+                    identifier23 = [v492 identifier];
+                    shortDescription23 = [identifier23 shortDescription];
+                    recordRow4 = [v496 recordRow];
                     *buf = 138544130;
                     *&buf[4] = v181;
                     *&buf[12] = 2114;
-                    *&buf[14] = v183;
+                    *&buf[14] = shortDescription23;
                     *&buf[22] = 2048;
-                    v604 = v184;
+                    rowCopy6 = recordRow4;
                     *v605 = 2112;
                     *&v605[2] = v501;
                     _os_log_impl(&dword_22AD27000, v180, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to unarchive record row %lu: %@", buf, 0x2Au);
@@ -1095,7 +1095,7 @@ LABEL_129:
                   v185 = v496;
                   v552 = v185;
                   v553 = v480;
-                  v484 = [v473 sqlBlockWithActivity:v492 block:v551];
+                  v484 = [local sqlBlockWithActivity:v492 block:v551];
 
                   if (v484)
                   {
@@ -1105,15 +1105,15 @@ LABEL_129:
                     if (os_log_type_enabled(v188, OS_LOG_TYPE_ERROR))
                     {
                       v189 = HMFGetLogIdentifier();
-                      v190 = [v492 identifier];
-                      v191 = [v190 shortDescription];
-                      v192 = [v185 recordRow];
+                      identifier24 = [v492 identifier];
+                      shortDescription24 = [identifier24 shortDescription];
+                      recordRow5 = [v185 recordRow];
                       *buf = 138544130;
                       *&buf[4] = v189;
                       *&buf[12] = 2114;
-                      *&buf[14] = v191;
+                      *&buf[14] = shortDescription24;
                       *&buf[22] = 2048;
-                      v604 = v192;
+                      rowCopy6 = recordRow5;
                       *v605 = 2112;
                       *&v605[2] = v484;
                       _os_log_impl(&dword_22AD27000, v188, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to remove corrupt record row %lu: %@", buf, 0x2Au);
@@ -1126,36 +1126,36 @@ LABEL_129:
 
               if (v493)
               {
-                v193 = [v466 disallowsModelCreation];
+                disallowsModelCreation = [v466 disallowsModelCreation];
                 v194 = objc_autoreleasePoolPush();
                 v195 = v106;
-                if (!v193)
+                if (!disallowsModelCreation)
                 {
                   v206 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v206, OS_LOG_TYPE_DEBUG))
                   {
                     v207 = HMFGetLogIdentifier();
-                    v208 = [v492 identifier];
-                    v209 = [v208 shortDescription];
-                    v210 = [v493 hmbDescription];
+                    identifier25 = [v492 identifier];
+                    shortDescription25 = [identifier25 shortDescription];
+                    hmbDescription8 = [v493 hmbDescription];
                     *buf = 138543874;
                     *&buf[4] = v207;
                     *&buf[12] = 2114;
-                    *&buf[14] = v209;
+                    *&buf[14] = shortDescription25;
                     *&buf[22] = 2112;
-                    v604 = v210;
+                    rowCopy6 = hmbDescription8;
                     _os_log_impl(&dword_22AD27000, v206, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Inserting model %@", buf, 0x20u);
                   }
 
                   objc_autoreleasePoolPop(v194);
                   v211 = [HMBLocalZoneProcessModelContext alloc];
                   v212 = v576[5];
-                  v213 = [v90 externalData];
-                  v143 = [(HMBLocalZoneProcessModelContext *)v211 initWithModel:v493 outputBlockRow:v212 externalData:v213];
+                  externalData5 = [v90 externalData];
+                  data2 = [(HMBLocalZoneProcessModelContext *)v211 initWithModel:v493 outputBlockRow:v212 externalData:externalData5];
 
                   v144 = v493;
-                  v482 = 0;
-                  v142 = 0;
+                  uUID = 0;
+                  data = 0;
                   goto LABEL_129;
                 }
 
@@ -1163,15 +1163,15 @@ LABEL_129:
                 if (os_log_type_enabled(v196, OS_LOG_TYPE_INFO))
                 {
                   v197 = HMFGetLogIdentifier();
-                  v198 = [v492 identifier];
-                  v199 = [v198 shortDescription];
-                  v200 = [v493 hmbDescription];
+                  identifier26 = [v492 identifier];
+                  shortDescription26 = [identifier26 shortDescription];
+                  hmbDescription9 = [v493 hmbDescription];
                   *buf = 138543874;
                   *&buf[4] = v197;
                   *&buf[12] = 2114;
-                  *&buf[14] = v199;
+                  *&buf[14] = shortDescription26;
                   *&buf[22] = 2112;
-                  v604 = v200;
+                  rowCopy6 = hmbDescription9;
                   _os_log_impl(&dword_22AD27000, v196, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Not creating model because model creation is disallowed: %@", buf, 0x20u);
                 }
               }
@@ -1184,21 +1184,21 @@ LABEL_129:
                 if (os_log_type_enabled(v196, OS_LOG_TYPE_INFO))
                 {
                   v202 = HMFGetLogIdentifier();
-                  v203 = [v492 identifier];
-                  v204 = [v203 shortDescription];
+                  identifier27 = [v492 identifier];
+                  shortDescription27 = [identifier27 shortDescription];
                   v205 = *(v593 + 40);
                   *buf = 138543874;
                   *&buf[4] = v202;
                   *&buf[12] = 2114;
-                  *&buf[14] = v204;
+                  *&buf[14] = shortDescription27;
                   *&buf[22] = 2112;
-                  v604 = v205;
+                  rowCopy6 = v205;
                   _os_log_impl(&dword_22AD27000, v196, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] No previous or updated value found for model with ID %@", buf, 0x20u);
                 }
               }
 
               objc_autoreleasePoolPop(v194);
-              v482 = 0;
+              uUID = 0;
               goto LABEL_139;
             }
 
@@ -1207,7 +1207,7 @@ LABEL_129:
             v558[2] = __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_108;
             v558[3] = &unk_2786E24B0;
             v558[4] = v90;
-            v501 = [v473 sqlBlockWithActivity:v492 block:v558];
+            v501 = [local sqlBlockWithActivity:v492 block:v558];
 
             if (v501)
             {
@@ -1217,17 +1217,17 @@ LABEL_129:
               if (os_log_type_enabled(v169, OS_LOG_TYPE_ERROR))
               {
                 v170 = HMFGetLogIdentifier();
-                v171 = [v492 identifier];
-                v172 = [v171 shortDescription];
-                v173 = [v90 itemRow];
+                identifier28 = [v492 identifier];
+                shortDescription28 = [identifier28 shortDescription];
+                itemRow5 = [v90 itemRow];
                 *buf = 138544386;
                 *&buf[4] = v170;
                 *&buf[12] = 2114;
-                *&buf[14] = v172;
+                *&buf[14] = shortDescription28;
                 *&buf[22] = 2048;
-                v604 = v173;
+                rowCopy6 = itemRow5;
                 *v605 = 2112;
-                *&v605[2] = v463;
+                *&v605[2] = selfCopy;
                 *&v605[10] = 2112;
                 *&v605[12] = v501;
                 _os_log_impl(&dword_22AD27000, v169, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to flush bogus row for %lu / %@: %@", buf, 0x34u);
@@ -1271,13 +1271,13 @@ LABEL_152:
               }
 
               v269 = *(*(&v546 + 1) + 8 * i);
-              v481 = [v269 previousContext];
-              v497 = [v269 mergedContext];
-              v477 = [v269 externalID];
-              v490 = [v497 externalData];
+              previousContext = [v269 previousContext];
+              mergedContext = [v269 mergedContext];
+              externalID6 = [v269 externalID];
+              externalData6 = [mergedContext externalData];
               v270 = [objc_opt_class() outputBlockRowForTuple:v269 activity:v492];
               v494 = v270;
-              if (v490)
+              if (externalData6)
               {
                 v271 = 1;
               }
@@ -1290,17 +1290,17 @@ LABEL_152:
               if (v271)
               {
                 v272 = 0;
-                v487 = 0;
+                data5 = 0;
                 goto LABEL_171;
               }
 
-              v273 = [v269 outputModel];
-              v274 = v273;
-              if (!v273)
+              outputModel = [v269 outputModel];
+              v274 = outputModel;
+              if (!outputModel)
               {
-                v284 = [v481 model];
-                v285 = [v284 hmbModelID];
-                v487 = [v285 data];
+                model = [previousContext model];
+                hmbModelID2 = [model hmbModelID];
+                data5 = [hmbModelID2 data];
 
                 v272 = 0;
                 v277 = v501;
@@ -1309,15 +1309,15 @@ LABEL_169:
                 goto LABEL_170;
               }
 
-              v275 = [(HMBLocalZone *)v499 modelContainer];
-              v272 = [v275 bestModelEncodingForStorageLocation:3];
+              modelContainer = [(HMBLocalZone *)v499 modelContainer];
+              v272 = [modelContainer bestModelEncodingForStorageLocation:3];
 
-              v276 = [(HMBLocalZone *)v499 modelContainer];
+              modelContainer2 = [(HMBLocalZone *)v499 modelContainer];
               v545 = v501;
-              v487 = [v276 dataFromModel:v274 encoding:v272 storageLocation:3 updatedModelIDs:0 error:&v545];
+              data5 = [modelContainer2 dataFromModel:v274 encoding:v272 storageLocation:3 updatedModelIDs:0 error:&v545];
               v277 = v545;
 
-              if (!v487)
+              if (!data5)
               {
                 v278 = objc_autoreleasePoolPush();
                 v279 = v499;
@@ -1325,24 +1325,24 @@ LABEL_169:
                 if (os_log_type_enabled(v280, OS_LOG_TYPE_ERROR))
                 {
                   v502 = HMFGetLogIdentifier();
-                  v488 = [v492 identifier];
-                  v281 = [v488 shortDescription];
-                  v282 = [v497 model];
-                  v283 = [v282 hmbDescription];
+                  identifier29 = [v492 identifier];
+                  shortDescription29 = [identifier29 shortDescription];
+                  model2 = [mergedContext model];
+                  hmbDescription10 = [model2 hmbDescription];
                   *buf = 138544130;
                   *&buf[4] = v502;
                   *&buf[12] = 2114;
-                  *&buf[14] = v281;
+                  *&buf[14] = shortDescription29;
                   *&buf[22] = 2112;
-                  v604 = v283;
+                  rowCopy6 = hmbDescription10;
                   *v605 = 2112;
                   *&v605[2] = v277;
                   _os_log_impl(&dword_22AD27000, v280, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to encode object %@ (not attempting to push): %@", buf, 0x2Au);
                 }
 
                 objc_autoreleasePoolPop(v278);
-                v487 = 0;
-                v284 = v494;
+                data5 = 0;
+                model = v494;
                 v494 = 0;
                 goto LABEL_169;
               }
@@ -1351,21 +1351,21 @@ LABEL_170:
 
               v501 = v277;
 LABEL_171:
-              if (!v497)
+              if (!mergedContext)
               {
-                v299 = [v269 modelSchema];
-                v300 = v299 == 0;
+                modelSchema2 = [v269 modelSchema];
+                v300 = modelSchema2 == 0;
 
                 if (v300)
                 {
-                  v295 = 0;
-                  v293 = 0;
+                  hmbType = 0;
+                  modelSchema3 = 0;
                 }
 
                 else
                 {
-                  v293 = [v269 modelSchema];
-                  v295 = 0;
+                  modelSchema3 = [v269 modelSchema];
+                  hmbType = 0;
                 }
 
                 v290 = 0;
@@ -1373,39 +1373,39 @@ LABEL_171:
                 goto LABEL_185;
               }
 
-              v286 = [(HMBLocalZone *)v499 modelContainer];
-              v287 = [v286 bestModelEncodingForStorageLocation:2];
+              modelContainer3 = [(HMBLocalZone *)v499 modelContainer];
+              v287 = [modelContainer3 bestModelEncodingForStorageLocation:2];
 
-              v288 = [(HMBLocalZone *)v499 modelContainer];
-              v289 = [v497 model];
+              modelContainer4 = [(HMBLocalZone *)v499 modelContainer];
+              model3 = [mergedContext model];
               v544 = 0;
-              v290 = [v288 dataFromModel:v289 encoding:v287 storageLocation:2 updatedModelIDs:0 error:&v544];
+              v290 = [modelContainer4 dataFromModel:model3 encoding:v287 storageLocation:2 updatedModelIDs:0 error:&v544];
               v479 = v544;
 
               if (v290)
               {
-                v291 = [(HMBLocalZone *)v499 modelContainer];
-                v292 = [v497 model];
-                v293 = [v291 schemaHashForModel:v292];
+                modelContainer5 = [(HMBLocalZone *)v499 modelContainer];
+                model4 = [mergedContext model];
+                modelSchema3 = [modelContainer5 schemaHashForModel:model4];
 
-                v294 = [v497 model];
-                v295 = [v294 hmbType];
+                model5 = [mergedContext model];
+                hmbType = [model5 hmbType];
 
-                v296 = [v269 modelSchema];
-                if (![v293 isEqual:v296])
+                modelSchema4 = [v269 modelSchema];
+                if (![modelSchema3 isEqual:modelSchema4])
                 {
                   goto LABEL_176;
                 }
 
-                v297 = [v269 modelType];
-                v298 = [v295 isEqual:v297];
+                modelType2 = [v269 modelType];
+                v298 = [hmbType isEqual:modelType2];
 
                 if (v298)
                 {
 
-                  v293 = 0;
-                  v296 = v295;
-                  v295 = 0;
+                  modelSchema3 = 0;
+                  modelSchema4 = hmbType;
+                  hmbType = 0;
 LABEL_176:
                 }
 
@@ -1421,22 +1421,22 @@ LABEL_185:
                 v531 = v499;
                 v309 = v492;
                 v532 = v309;
-                v472 = v295;
+                v472 = hmbType;
                 v533 = v472;
-                v310 = v481;
+                v310 = previousContext;
                 v534 = v310;
                 v540 = v272;
-                v535 = v487;
-                v536 = v477;
-                v537 = v490;
+                v535 = data5;
+                v536 = externalID6;
+                v537 = externalData6;
                 v541 = v287;
-                v311 = v293;
+                v311 = modelSchema3;
                 v538 = v311;
-                v543 = v460 == 1;
-                v312 = v497;
+                v543 = type == 1;
+                v312 = mergedContext;
                 v539 = v312;
-                v542 = v469;
-                obja = [v473 sqlTransactionWithActivity:v309 block:v528];
+                v542 = zoneRow;
+                obja = [local sqlTransactionWithActivity:v309 block:v528];
 
                 if (obja)
                 {
@@ -1447,19 +1447,19 @@ LABEL_185:
                   {
                     v316 = v311;
                     v317 = HMFGetLogIdentifier();
-                    v318 = [v309 identifier];
-                    v319 = [v318 shortDescription];
-                    v320 = [v269 itemRow];
-                    v321 = [(HMBLocalZone *)v314 zoneID];
-                    v322 = [v321 name];
+                    identifier30 = [v309 identifier];
+                    shortDescription30 = [identifier30 shortDescription];
+                    itemRow6 = [v269 itemRow];
+                    zoneID = [(HMBLocalZone *)v314 zoneID];
+                    name = [zoneID name];
                     *buf = 138544386;
                     *&buf[4] = v317;
                     *&buf[12] = 2114;
-                    *&buf[14] = v319;
+                    *&buf[14] = shortDescription30;
                     *&buf[22] = 2048;
-                    v604 = v320;
+                    rowCopy6 = itemRow6;
                     *v605 = 2112;
-                    *&v605[2] = v322;
+                    *&v605[2] = name;
                     *&v605[10] = 2112;
                     *&v605[12] = obja;
                     _os_log_impl(&dword_22AD27000, v315, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] unable to update / insert row for %lu / %@: %@", buf, 0x34u);
@@ -1472,7 +1472,7 @@ LABEL_185:
 
                 else
                 {
-                  if (v497)
+                  if (mergedContext)
                   {
                     v323 = objc_autoreleasePoolPush();
                     v324 = v499;
@@ -1482,27 +1482,27 @@ LABEL_185:
                       if (os_log_type_enabled(v325, OS_LOG_TYPE_DEBUG))
                       {
                         v326 = HMFGetLogIdentifier();
-                        v327 = [v309 identifier];
-                        v328 = [v327 shortDescription];
-                        v329 = [v312 model];
+                        identifier31 = [v309 identifier];
+                        shortDescription31 = [identifier31 shortDescription];
+                        model6 = [v312 model];
                         *buf = 138543874;
                         *&buf[4] = v326;
                         *&buf[12] = 2114;
-                        *&buf[14] = v328;
+                        *&buf[14] = shortDescription31;
                         *&buf[22] = 2112;
-                        v604 = v329;
+                        rowCopy6 = model6;
                         _os_log_impl(&dword_22AD27000, v325, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Sending update delegate callback for model: %@", buf, 0x20u);
                       }
 
                       objc_autoreleasePoolPop(v323);
                       v330 = [HMBProcessingModelUpdate alloc];
-                      v331 = [v312 model];
-                      v332 = [v310 model];
-                      v333 = [(HMBProcessingModelUpdate *)v330 initWithModel:v331 previousModel:v332 options:v466 mirrorOutputFuture:v462];
+                      model7 = [v312 model];
+                      model8 = [v310 model];
+                      v333 = [(HMBProcessingModelUpdate *)v330 initWithModel:model7 previousModel:model8 options:v466 mirrorOutputFuture:v462];
 
-                      v334 = [v312 model];
-                      v335 = [v334 hmbModelID];
-                      v336 = [(HMBLocalZone *)v324 observersForModelWithID:v335];
+                      model9 = [v312 model];
+                      hmbModelID3 = [model9 hmbModelID];
+                      v336 = [(HMBLocalZone *)v324 observersForModelWithID:hmbModelID3];
 
                       v518 = 0u;
                       v519 = 0u;
@@ -1538,26 +1538,26 @@ LABEL_185:
                       if (os_log_type_enabled(v356, OS_LOG_TYPE_DEBUG))
                       {
                         v357 = HMFGetLogIdentifier();
-                        v358 = [v309 identifier];
-                        v359 = [v358 shortDescription];
-                        v360 = [v312 model];
+                        identifier32 = [v309 identifier];
+                        shortDescription32 = [identifier32 shortDescription];
+                        model10 = [v312 model];
                         *buf = 138543874;
                         *&buf[4] = v357;
                         *&buf[12] = 2114;
-                        *&buf[14] = v359;
+                        *&buf[14] = shortDescription32;
                         *&buf[22] = 2112;
-                        v604 = v360;
+                        rowCopy6 = model10;
                         _os_log_impl(&dword_22AD27000, v356, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Sending creation delegate callback for model: %@", buf, 0x20u);
                       }
 
                       objc_autoreleasePoolPop(v323);
                       v361 = [HMBProcessingModelCreation alloc];
-                      v362 = [v312 model];
-                      v333 = [(HMBProcessingModelResult *)v361 initWithModel:v362 options:v466 mirrorOutputFuture:v462];
+                      model11 = [v312 model];
+                      v333 = [(HMBProcessingModelResult *)v361 initWithModel:model11 options:v466 mirrorOutputFuture:v462];
 
-                      v363 = [v312 model];
-                      v364 = [v363 hmbModelID];
-                      v365 = [(HMBLocalZone *)v324 observersForModelWithID:v364];
+                      model12 = [v312 model];
+                      hmbModelID4 = [model12 hmbModelID];
+                      v365 = [(HMBLocalZone *)v324 observersForModelWithID:hmbModelID4];
 
                       v522 = 0u;
                       v523 = 0u;
@@ -1596,26 +1596,26 @@ LABEL_185:
                     if (os_log_type_enabled(v343, OS_LOG_TYPE_DEBUG))
                     {
                       v344 = HMFGetLogIdentifier();
-                      v345 = [v309 identifier];
-                      v346 = [v345 shortDescription];
-                      v347 = [v310 model];
+                      identifier33 = [v309 identifier];
+                      shortDescription33 = [identifier33 shortDescription];
+                      model13 = [v310 model];
                       *buf = 138543874;
                       *&buf[4] = v344;
                       *&buf[12] = 2114;
-                      *&buf[14] = v346;
+                      *&buf[14] = shortDescription33;
                       *&buf[22] = 2112;
-                      v604 = v347;
+                      rowCopy6 = model13;
                       _os_log_impl(&dword_22AD27000, v343, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Sending deletion delegate callback for model: %@", buf, 0x20u);
                     }
 
                     objc_autoreleasePoolPop(v341);
                     v348 = [HMBProcessingModelDeletion alloc];
-                    v349 = [v310 model];
-                    v333 = [(HMBProcessingModelResult *)v348 initWithModel:v349 options:v466 mirrorOutputFuture:v462];
+                    model14 = [v310 model];
+                    v333 = [(HMBProcessingModelResult *)v348 initWithModel:model14 options:v466 mirrorOutputFuture:v462];
 
-                    v350 = [v310 model];
-                    v351 = [v350 hmbParentModelID];
-                    v352 = [(HMBLocalZone *)v342 observersForModelWithID:v351];
+                    model15 = [v310 model];
+                    hmbParentModelID = [model15 hmbParentModelID];
+                    v352 = [(HMBLocalZone *)v342 observersForModelWithID:hmbParentModelID];
 
                     v526 = 0u;
                     v527 = 0u;
@@ -1656,16 +1656,16 @@ LABEL_185:
               if (os_log_type_enabled(v303, OS_LOG_TYPE_ERROR))
               {
                 v304 = HMFGetLogIdentifier();
-                v305 = [v492 identifier];
-                v306 = [v305 shortDescription];
-                v307 = [v497 model];
-                v308 = [v307 hmbDescription];
+                identifier34 = [v492 identifier];
+                shortDescription34 = [identifier34 shortDescription];
+                model16 = [mergedContext model];
+                hmbDescription11 = [model16 hmbDescription];
                 *buf = 138544130;
                 *&buf[4] = v304;
                 *&buf[12] = 2114;
-                *&buf[14] = v306;
+                *&buf[14] = shortDescription34;
                 *&buf[22] = 2112;
-                v604 = v308;
+                rowCopy6 = hmbDescription11;
                 *v605 = 2112;
                 *&v605[2] = v479;
                 _os_log_impl(&dword_22AD27000, v303, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to encode model %@: %@", buf, 0x2Au);
@@ -1694,16 +1694,16 @@ LABEL_224:
     if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
     {
       v70 = HMFGetLogIdentifier();
-      v71 = [v492 identifier];
-      v72 = [v71 shortDescription];
+      identifier35 = [v492 identifier];
+      shortDescription35 = [identifier35 shortDescription];
       *buf = 138544386;
       *&buf[4] = v70;
       *&buf[12] = 2114;
-      *&buf[14] = v72;
+      *&buf[14] = shortDescription35;
       *&buf[22] = 2048;
-      v604 = a3;
+      rowCopy6 = row;
       *v605 = 2112;
-      *&v605[2] = v463;
+      *&v605[2] = selfCopy;
       *&v605[10] = 2112;
       *&v605[12] = v501;
       _os_log_impl(&dword_22AD27000, v69, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to fetch transaction entries for %lu / %@: %@", buf, 0x34u);
@@ -1711,7 +1711,7 @@ LABEL_224:
 
     objc_autoreleasePoolPop(v67);
     v564 = 0;
-    v73 = [(HMBLocalZone *)v68 removeBlockWithRow:a3 error:&v564];
+    v73 = [(HMBLocalZone *)v68 removeBlockWithRow:row error:&v564];
     v464 = v564;
     if (!v73)
     {
@@ -1721,24 +1721,24 @@ LABEL_224:
       if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
       {
         v77 = HMFGetLogIdentifier();
-        v78 = [v492 identifier];
-        v79 = [v78 shortDescription];
+        identifier36 = [v492 identifier];
+        shortDescription36 = [identifier36 shortDescription];
         *buf = 138543874;
         *&buf[4] = v77;
         *&buf[12] = 2114;
-        *&buf[14] = v79;
+        *&buf[14] = shortDescription36;
         *&buf[22] = 2112;
-        v604 = v464;
+        rowCopy6 = v464;
         _os_log_impl(&dword_22AD27000, v76, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to clean up corrupt block: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v74);
     }
 
-    if (a4)
+    if (error)
     {
       v80 = v501;
-      *a4 = v501;
+      *error = v501;
     }
 
     v81 = 1;
@@ -1760,7 +1760,7 @@ LABEL_226:
   v513 = __Block_byref_object_copy__688;
   v514 = __Block_byref_object_dispose__689;
   v515 = 0;
-  if (!v465)
+  if (!array)
   {
     goto LABEL_232;
   }
@@ -1772,9 +1772,9 @@ LABEL_226:
   v505[3] = &unk_2786E0460;
   v505[4] = v458;
   v507 = &v585;
-  v506 = v465;
+  v506 = array;
   v508 = &v510;
-  v369 = [v473 sqlTransactionWithActivity:v492 error:&v509 block:v505];
+  v369 = [local sqlTransactionWithActivity:v492 error:&v509 block:v505];
   v370 = v509;
   if (v369)
   {
@@ -1789,8 +1789,8 @@ LABEL_232:
       v495 = v371;
       v503 = v466;
       v373 = v492;
-      v374 = [(HMBLocalZone *)v372 localDatabase];
-      v500 = [v374 local];
+      localDatabase3 = [(HMBLocalZone *)v372 localDatabase];
+      local2 = [localDatabase3 local];
 
       v598 = 0;
       v375 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v503 requiringSecureCoding:1 error:&v598];
@@ -1804,7 +1804,7 @@ LABEL_232:
         v377 = v498;
         v596 = v377;
         v597 = v375;
-        v378 = [v500 sqlTransactionWithActivity:v373 block:&v592];
+        v378 = [local2 sqlTransactionWithActivity:v373 block:&v592];
 
         if (v378)
         {
@@ -1814,14 +1814,14 @@ LABEL_232:
           if (os_log_type_enabled(v381, OS_LOG_TYPE_ERROR))
           {
             v382 = HMFGetLogIdentifier();
-            v383 = [v373 identifier];
-            v384 = [v383 shortDescription];
+            identifier37 = [v373 identifier];
+            shortDescription37 = [identifier37 shortDescription];
             *buf = 138543874;
             *&buf[4] = v382;
             *&buf[12] = 2114;
-            *&buf[14] = v384;
+            *&buf[14] = shortDescription37;
             *&buf[22] = 2112;
-            v604 = v378;
+            rowCopy6 = v378;
             _os_log_impl(&dword_22AD27000, v381, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to update block to enqueue output: %@", buf, 0x20u);
           }
 
@@ -1831,32 +1831,32 @@ LABEL_232:
 
         else
         {
-          v438 = [(HMBLocalZone *)v372 mirror];
+          mirror = [(HMBLocalZone *)v372 mirror];
 
           v491 = objc_autoreleasePoolPush();
           v439 = v372;
           v440 = HMFGetOSLogHandle();
           v441 = os_log_type_enabled(v440, OS_LOG_TYPE_INFO);
-          if (v438)
+          if (mirror)
           {
             if (v441)
             {
               v442 = HMFGetLogIdentifier();
-              v443 = [v373 identifier];
-              v444 = [v443 shortDescription];
-              v445 = [v377 unsignedIntegerValue];
+              identifier38 = [v373 identifier];
+              shortDescription38 = [identifier38 shortDescription];
+              unsignedIntegerValue = [v377 unsignedIntegerValue];
               *buf = 138543874;
               *&buf[4] = v442;
               *&buf[12] = 2114;
-              *&buf[14] = v444;
+              *&buf[14] = shortDescription38;
               *&buf[22] = 2048;
-              v604 = v445;
+              rowCopy6 = unsignedIntegerValue;
               _os_log_impl(&dword_22AD27000, v440, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Triggering output for output block row: %lu", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v491);
-            v446 = [(HMBLocalZone *)v439 mirror];
-            v370 = [v446 triggerOutputForOutputRow:objc_msgSend(v377 options:{"unsignedIntegerValue"), v503}];
+            mirror2 = [(HMBLocalZone *)v439 mirror];
+            v370 = [mirror2 triggerOutputForOutputRow:objc_msgSend(v377 options:{"unsignedIntegerValue"), v503}];
 
             if (v495)
             {
@@ -1864,7 +1864,7 @@ LABEL_232:
               *buf = MEMORY[0x277D85DD0];
               *&buf[8] = 3221225472;
               *&buf[16] = ____finishEnqueueForOutput_block_invoke_143;
-              v604 = &unk_2786E04B0;
+              rowCopy6 = &unk_2786E04B0;
               objc_copyWeak(&v605[16], &location);
               *v605 = v373;
               *&v605[8] = v495;
@@ -1880,12 +1880,12 @@ LABEL_232:
             if (v441)
             {
               v448 = HMFGetLogIdentifier();
-              v449 = [v373 identifier];
-              v450 = [v449 shortDescription];
+              identifier39 = [v373 identifier];
+              shortDescription39 = [identifier39 shortDescription];
               *buf = 138543618;
               *&buf[4] = v448;
               *&buf[12] = 2114;
-              *&buf[14] = v450;
+              *&buf[14] = shortDescription39;
               _os_log_impl(&dword_22AD27000, v440, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Unable to trigger output because self.mirror is nil", buf, 0x16u);
             }
 
@@ -1907,14 +1907,14 @@ LABEL_232:
         if (os_log_type_enabled(v408, OS_LOG_TYPE_ERROR))
         {
           v409 = HMFGetLogIdentifier();
-          v410 = [v373 identifier];
-          v411 = [v410 shortDescription];
+          identifier40 = [v373 identifier];
+          shortDescription40 = [identifier40 shortDescription];
           *buf = 138543874;
           *&buf[4] = v409;
           *&buf[12] = 2114;
-          *&buf[14] = v411;
+          *&buf[14] = shortDescription40;
           *&buf[22] = 2112;
-          v604 = v376;
+          rowCopy6 = v376;
           _os_log_impl(&dword_22AD27000, v408, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to encode options for output: %@", buf, 0x20u);
         }
 
@@ -1922,12 +1922,12 @@ LABEL_232:
         v370 = [MEMORY[0x277D2C900] futureWithError:v376];
       }
 
-      v412 = [v462 completionHandlerAdapter];
-      v413 = [v370 addCompletionBlock:v412];
+      completionHandlerAdapter = [v462 completionHandlerAdapter];
+      v413 = [v370 addCompletionBlock:completionHandlerAdapter];
     }
 
     v504 = 0;
-    v414 = [(HMBLocalZone *)v458 removeBlockWithRow:a3 error:&v504];
+    v414 = [(HMBLocalZone *)v458 removeBlockWithRow:row error:&v504];
     v415 = v504;
     if (!v414)
     {
@@ -1937,14 +1937,14 @@ LABEL_232:
       if (os_log_type_enabled(v418, OS_LOG_TYPE_ERROR))
       {
         v419 = HMFGetLogIdentifier();
-        v420 = [v492 identifier];
-        v421 = [v420 shortDescription];
+        identifier41 = [v492 identifier];
+        shortDescription41 = [identifier41 shortDescription];
         *buf = 138543874;
         *&buf[4] = v419;
         *&buf[12] = 2114;
-        *&buf[14] = v421;
+        *&buf[14] = shortDescription41;
         *&buf[22] = 2112;
-        v604 = v415;
+        rowCopy6 = v415;
         _os_log_impl(&dword_22AD27000, v418, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to clean up processed block: %@", buf, 0x20u);
       }
 
@@ -1952,7 +1952,7 @@ LABEL_232:
     }
 
     v422 = [[HMBProcessingResult alloc] initWithOptions:v466 mirrorOutputResult:v370];
-    v423 = [(HMBLocalZone *)v458 delegate];
+    delegate = [(HMBLocalZone *)v458 delegate];
     if (objc_opt_respondsToSelector())
     {
       v424 = objc_autoreleasePoolPush();
@@ -1961,19 +1961,19 @@ LABEL_232:
       if (os_log_type_enabled(v426, OS_LOG_TYPE_DEBUG))
       {
         v427 = HMFGetLogIdentifier();
-        v428 = [v492 identifier];
-        v429 = [v428 shortDescription];
+        identifier42 = [v492 identifier];
+        shortDescription42 = [identifier42 shortDescription];
         *buf = 138543874;
         *&buf[4] = v427;
         *&buf[12] = 2114;
-        *&buf[14] = v429;
+        *&buf[14] = shortDescription42;
         *&buf[22] = 2112;
-        v604 = v422;
+        rowCopy6 = v422;
         _os_log_impl(&dword_22AD27000, v426, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Sending processing complete callback with result: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v424);
-      [v423 localZone:v425 didCompleteProcessingWithResult:v422];
+      [delegate localZone:v425 didCompleteProcessingWithResult:v422];
     }
 
     v430 = objc_autoreleasePoolPush();
@@ -1982,16 +1982,16 @@ LABEL_232:
     if (os_log_type_enabled(v432, OS_LOG_TYPE_DEFAULT))
     {
       v433 = HMFGetLogIdentifier();
-      v434 = [v492 identifier];
-      v435 = [v434 shortDescription];
+      identifier43 = [v492 identifier];
+      shortDescription43 = [identifier43 shortDescription];
       *buf = 138544130;
       *&buf[4] = v433;
       *&buf[12] = 2114;
-      *&buf[14] = v435;
+      *&buf[14] = shortDescription43;
       *&buf[22] = 2048;
-      v604 = v461;
+      rowCopy6 = v461;
       *v605 = 2048;
-      *&v605[2] = a3;
+      *&v605[2] = row;
       _os_log_impl(&dword_22AD27000, v432, OS_LOG_TYPE_DEFAULT, "%{public}@[%{public}@] Finished processing %lu row(s) for blockRow: %lu", buf, 0x2Au);
     }
 
@@ -2007,22 +2007,22 @@ LABEL_232:
     if (os_log_type_enabled(v401, OS_LOG_TYPE_ERROR))
     {
       v402 = HMFGetLogIdentifier();
-      v403 = [v492 identifier];
-      v404 = [v403 shortDescription];
+      identifier44 = [v492 identifier];
+      shortDescription44 = [identifier44 shortDescription];
       *buf = 138543874;
       *&buf[4] = v402;
       *&buf[12] = 2114;
-      *&buf[14] = v404;
+      *&buf[14] = shortDescription44;
       *&buf[22] = 2112;
-      v604 = v370;
+      rowCopy6 = v370;
       _os_log_impl(&dword_22AD27000, v401, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Unable to write rollback entries: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v399);
-    if (a4)
+    if (error)
     {
       v405 = v370;
-      *a4 = v370;
+      *error = v370;
     }
 
     v31 = 0;
@@ -2518,7 +2518,7 @@ id __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_124
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -2559,7 +2559,7 @@ id __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_124
 
         v16 = *(*(&v49 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        v18 = self;
+        selfCopy2 = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
@@ -2572,7 +2572,7 @@ id __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_124
         }
 
         objc_autoreleasePoolPop(v17);
-        __rollbackBlock(v18, v16);
+        __rollbackBlock(selfCopy2, v16);
       }
 
       v13 = [(HMBLocalSQLIteratorRowRollbackBlock *)obj countByEnumeratingWithState:&v49 objects:v55 count:16];
@@ -2592,7 +2592,7 @@ id __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_124
   if (v22)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -2631,17 +2631,17 @@ id __56__HMBLocalZone_Process___processItemsForBlockRow_error___block_invoke_124
           objc_enumerationMutation(v41);
         }
 
-        v34 = [*(*(&v44 + 1) + 8 * j) blockRow];
+        blockRow = [*(*(&v44 + 1) + 8 * j) blockRow];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84;
         v43[3] = &unk_2786E03C8;
         v43[4] = self;
-        v43[5] = v34;
+        v43[5] = blockRow;
         v35 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v43];
-        v36 = [(HMBLocalZone *)self localDatabase];
-        v37 = [v36 queue];
-        [v37 addOperation:v35];
+        localDatabase = [(HMBLocalZone *)self localDatabase];
+        queue = [localDatabase queue];
+        [queue addOperation:v35];
       }
 
       v31 = [(HMBLocalSQLIteratorRowInputBlock *)v41 countByEnumeratingWithState:&v44 objects:v54 count:16];
@@ -2705,35 +2705,35 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
   return result;
 }
 
-- (id)observersForModelWithID:(id)a3
+- (id)observersForModelWithID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x277CBEB58] set];
   os_unfair_lock_lock_with_options();
-  v6 = [(HMBLocalZone *)self modelObserversByModelID];
-  v7 = [v6 objectForKeyedSubscript:v4];
-  v8 = [v7 allObjects];
-  [v5 addObjectsFromArray:v8];
+  modelObserversByModelID = [(HMBLocalZone *)self modelObserversByModelID];
+  v7 = [modelObserversByModelID objectForKeyedSubscript:dCopy];
+  allObjects = [v7 allObjects];
+  [v5 addObjectsFromArray:allObjects];
 
-  v9 = [(HMBLocalZone *)self observersForAllModels];
-  v10 = [v9 allObjects];
-  [v5 addObjectsFromArray:v10];
+  observersForAllModels = [(HMBLocalZone *)self observersForAllModels];
+  allObjects2 = [observersForAllModels allObjects];
+  [v5 addObjectsFromArray:allObjects2];
 
   os_unfair_lock_unlock(&self->_propertyLock);
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v5 hmbDescription];
+    hmbDescription = [v5 hmbDescription];
     v19 = 138543874;
     v20 = v14;
     v21 = 2112;
-    v22 = v4;
+    v22 = dCopy;
     v23 = 2112;
-    v24 = v15;
+    v24 = hmbDescription;
     _os_log_impl(&dword_22AD27000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Notifying observers for model ID %@: %@", &v19, 0x20u);
   }
 
@@ -2745,17 +2745,17 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
   return v16;
 }
 
-+ (id)outputModelFromUpdateModel:(id)a3 mergedModel:(id)a4
++ (id)outputModelFromUpdateModel:(id)model mergedModel:(id)mergedModel
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 copy];
+  modelCopy = model;
+  v6 = [mergedModel copy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [objc_opt_class() hmbExternalProperties];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  hmbExternalProperties = [objc_opt_class() hmbExternalProperties];
+  v8 = [hmbExternalProperties countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2766,12 +2766,12 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(hmbExternalProperties);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v5 hmbSetProperties];
-        v14 = [v13 containsObject:v12];
+        hmbSetProperties = [modelCopy hmbSetProperties];
+        v14 = [hmbSetProperties containsObject:v12];
 
         if ((v14 & 1) == 0)
         {
@@ -2779,7 +2779,7 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [hmbExternalProperties countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -2790,18 +2790,18 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
   return v6;
 }
 
-+ (BOOL)shouldMirrorInputExternalData:(id)a3 overwriteExistingExternalData:(id)a4
++ (BOOL)shouldMirrorInputExternalData:(id)data overwriteExistingExternalData:(id)externalData
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dataCopy = data;
+  externalDataCopy = externalData;
+  v8 = externalDataCopy;
+  if (dataCopy)
   {
-    if (v7)
+    if (externalDataCopy)
     {
       v40 = 0;
-      v9 = [MEMORY[0x277CBC5A0] recordFromExternalData:v6 error:&v40];
+      v9 = [MEMORY[0x277CBC5A0] recordFromExternalData:dataCopy error:&v40];
       v10 = v40;
       if (v9)
       {
@@ -2810,7 +2810,7 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
         v12 = v39;
 
         v13 = objc_autoreleasePoolPush();
-        v14 = a1;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         v16 = v15;
         if (v11)
@@ -2820,22 +2820,22 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
             v17 = HMFGetLogIdentifier();
             [v9 modificationDate];
             v18 = v38 = v12;
-            v19 = [v11 modificationDate];
+            modificationDate = [v11 modificationDate];
             *buf = 138543874;
             v42 = v17;
             v43 = 2112;
             v44 = v18;
             v45 = 2112;
-            v46 = v19;
+            v46 = modificationDate;
             _os_log_impl(&dword_22AD27000, v16, OS_LOG_TYPE_INFO, "%{public}@Comparing mirror input modification date %@ with existing record modification date %@", buf, 0x20u);
 
             v12 = v38;
           }
 
           objc_autoreleasePoolPop(v13);
-          v20 = [v9 modificationDate];
-          v21 = [v11 modificationDate];
-          v22 = [v20 compare:v21] == 1;
+          modificationDate2 = [v9 modificationDate];
+          modificationDate3 = [v11 modificationDate];
+          v22 = [modificationDate2 compare:modificationDate3] == 1;
         }
 
         else
@@ -2860,7 +2860,7 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
       else
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = a1;
+        selfCopy2 = self;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -2880,7 +2880,7 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = a1;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
@@ -2898,7 +2898,7 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = a1;
+    selfCopy4 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -2916,15 +2916,15 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
   return v22;
 }
 
-+ (id)outputBlockRowForTuple:(id)a3 activity:(id)a4
++ (id)outputBlockRowForTuple:(id)tuple activity:(id)activity
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 previousContext];
-  v9 = [v8 model];
+  tupleCopy = tuple;
+  activityCopy = activity;
+  previousContext = [tupleCopy previousContext];
+  model = [previousContext model];
 
-  v10 = [v6 updateModel];
+  updateModel = [tupleCopy updateModel];
   v11 = objc_opt_class();
   if (!v11)
   {
@@ -2934,87 +2934,87 @@ id __49__HMBLocalZone_Process__queueIncompleteProcesses__block_invoke_84(uint64_
   if ([v11 hmbExcludeFromCloudStorage])
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v29 = HMFGetLogIdentifier();
-      v30 = v7;
-      v15 = [v7 identifier];
-      v16 = [v15 shortDescription];
-      v17 = [v9 hmbModelID];
-      v18 = v17;
-      if (!v17)
+      v30 = activityCopy;
+      identifier = [activityCopy identifier];
+      shortDescription = [identifier shortDescription];
+      hmbModelID = [model hmbModelID];
+      hmbModelID2 = hmbModelID;
+      if (!hmbModelID)
       {
-        v18 = [v10 hmbModelID];
+        hmbModelID2 = [updateModel hmbModelID];
       }
 
       *buf = 138544130;
       v34 = v29;
       v35 = 2114;
-      v36 = v16;
+      v36 = shortDescription;
       v37 = 2112;
-      v38 = v18;
+      v38 = hmbModelID2;
       v39 = 2048;
-      v40 = [v6 itemRow];
+      itemRow = [tupleCopy itemRow];
       _os_log_impl(&dword_22AD27000, v14, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Skipping mirror output push for model ID %@ and row %ld since the model is set to exclude cloud storage", buf, 0x2Au);
-      if (!v17)
+      if (!hmbModelID)
       {
       }
 
-      v7 = v30;
+      activityCopy = v30;
     }
 
 LABEL_13:
 
     objc_autoreleasePoolPop(v12);
-    v26 = 0;
+    outputBlockRow = 0;
     goto LABEL_15;
   }
 
-  v19 = [v10 hmbSetProperties];
+  hmbSetProperties = [updateModel hmbSetProperties];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __57__HMBLocalZone_Process__outputBlockRowForTuple_activity___block_invoke;
   v32[3] = &__block_descriptor_40_e18_B16__0__NSString_8lu32l8;
   v32[4] = v11;
-  v20 = [v19 na_all:v32];
+  v20 = [hmbSetProperties na_all:v32];
 
   if (v20)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v7 identifier];
-      [v22 shortDescription];
-      v23 = v31 = v7;
-      v24 = [v10 hmbModelID];
-      v25 = [v6 itemRow];
+      identifier2 = [activityCopy identifier];
+      [identifier2 shortDescription];
+      v23 = v31 = activityCopy;
+      hmbModelID3 = [updateModel hmbModelID];
+      itemRow2 = [tupleCopy itemRow];
       *buf = 138544130;
       v34 = v21;
       v35 = 2114;
       v36 = v23;
       v37 = 2112;
-      v38 = v24;
+      v38 = hmbModelID3;
       v39 = 2048;
-      v40 = v25;
+      itemRow = itemRow2;
       _os_log_impl(&dword_22AD27000, v14, OS_LOG_TYPE_DEBUG, "%{public}@[%{public}@] Skipping mirror output push for updated model ID %@ and row %ld since the only set properties are excluded from cloud storage", buf, 0x2Au);
 
-      v7 = v31;
+      activityCopy = v31;
     }
 
     goto LABEL_13;
   }
 
-  v26 = [v6 outputBlockRow];
+  outputBlockRow = [tupleCopy outputBlockRow];
 LABEL_15:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return outputBlockRow;
 }
 
 BOOL __57__HMBLocalZone_Process__outputBlockRowForTuple_activity___block_invoke(uint64_t a1, void *a2)
@@ -3056,13 +3056,13 @@ BOOL __57__HMBLocalZone_Process__outputBlockRowForTuple_activity___block_invoke(
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBLocalZone *)self localDatabase];
-  v5 = [v4 logIdentifier];
-  v6 = [v3 initWithName:@"Database" value:v5];
+  localDatabase = [(HMBLocalZone *)self localDatabase];
+  logIdentifier = [localDatabase logIdentifier];
+  v6 = [v3 initWithName:@"Database" value:logIdentifier];
   v13[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMBLocalZone *)self zoneID];
-  v9 = [v7 initWithName:@"Zone ID" value:v8];
+  zoneID = [(HMBLocalZone *)self zoneID];
+  v9 = [v7 initWithName:@"Zone ID" value:zoneID];
   v13[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
@@ -3073,18 +3073,18 @@ BOOL __57__HMBLocalZone_Process__outputBlockRowForTuple_activity___block_invoke(
 
 - (id)logIdentifier
 {
-  v2 = [(HMBLocalZone *)self zoneID];
-  v3 = [v2 shortDescription];
+  zoneID = [(HMBLocalZone *)self zoneID];
+  shortDescription = [zoneID shortDescription];
 
-  return v3;
+  return shortDescription;
 }
 
 - (id)shutdown
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMBLocalZone *)self shutdownFuture];
+  shutdownFuture = [(HMBLocalZone *)self shutdownFuture];
 
-  if (!v3)
+  if (!shutdownFuture)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -3095,17 +3095,17 @@ BOOL __57__HMBLocalZone_Process__outputBlockRowForTuple_activity___block_invoke(
     [(HMBLocalZone *)self setShutdownFuture:v4];
   }
 
-  v5 = [(HMBLocalZone *)self shutdownFuture];
+  shutdownFuture2 = [(HMBLocalZone *)self shutdownFuture];
   os_unfair_lock_unlock(&self->_propertyLock);
-  if (!v3)
+  if (!shutdownFuture)
   {
-    v6 = [(HMBLocalZone *)self localDatabase];
-    [v6 handleLocalZoneShutdown:self];
+    localDatabase = [(HMBLocalZone *)self localDatabase];
+    [localDatabase handleLocalZoneShutdown:self];
 
-    v7 = [v5 recoverIgnoringError];
+    recoverIgnoringError = [shutdownFuture2 recoverIgnoringError];
   }
 
-  return v5;
+  return shutdownFuture2;
 }
 
 void __24__HMBLocalZone_shutdown__block_invoke(uint64_t a1, void *a2)
@@ -3145,9 +3145,9 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
   v4 = [v2 addCompletionBlock:v3];
 }
 
-- (id)createLocalInputWithError:(id *)a3
+- (id)createLocalInputWithError:(id *)error
 {
-  v4 = [(HMBLocalZone *)self createInputBlockWithType:2 error:a3];
+  v4 = [(HMBLocalZone *)self createInputBlockWithType:2 error:error];
   if (v4)
   {
     v5 = [(HMBLocalZoneInput *)[HMBLocalZoneLocalInput alloc] initWithLocalZone:self inputBlock:v4];
@@ -3161,34 +3161,34 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (id)removeAllModelsOfTypes:(id)a3 options:(id)a4
+- (id)removeAllModelsOfTypes:(id)types options:(id)options
 {
   v56 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v6 = a4;
+  typesCopy = types;
+  optionsCopy = options;
   v7 = objc_alloc(MEMORY[0x277D0F770]);
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[HMBLocalZone removeAllModelsOfTypes:options:]"];
   v9 = [v7 initWithName:v8];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
-    [v44 hmbDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
+    [typesCopy hmbDescription];
     v17 = v16 = v9;
-    v18 = [v6 label];
+    label = [optionsCopy label];
     *buf = 138544130;
     v49 = v13;
     v50 = 2114;
-    v51 = v15;
+    v51 = shortDescription;
     v52 = 2112;
     v53 = v17;
     v54 = 2112;
-    v55 = v18;
+    v55 = label;
     _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing all models of types: %@, options label: %@", buf, 0x2Au);
 
     v9 = v16;
@@ -3196,7 +3196,7 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
 
   objc_autoreleasePoolPop(v10);
   v47 = 0;
-  v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v47];
+  v19 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:optionsCopy requiringSecureCoding:1 error:&v47];
   v20 = v47;
   if (v19)
   {
@@ -3204,36 +3204,36 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
     v46[1] = 3221225472;
     v46[2] = __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke;
     v46[3] = &unk_2786E07C0;
-    v46[4] = v11;
-    v21 = [v44 na_map:v46];
+    v46[4] = selfCopy;
+    v21 = [typesCopy na_map:v46];
     v45 = v20;
-    v22 = [(HMBLocalZone *)v11 insertBlockToRemoveAllModelsWithType:2 modelTypes:v21 options:v19 error:&v45];
+    v22 = [(HMBLocalZone *)selfCopy insertBlockToRemoveAllModelsWithType:2 modelTypes:v21 options:v19 error:&v45];
     v23 = v45;
 
     if (v23)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v11;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = HMFGetLogIdentifier();
         [v9 identifier];
-        v43 = v6;
+        v43 = optionsCopy;
         v29 = v28 = v9;
-        v30 = [v29 shortDescription];
+        shortDescription2 = [v29 shortDescription];
         *buf = 138544130;
         v49 = v27;
         v50 = 2114;
-        v51 = v30;
+        v51 = shortDescription2;
         v52 = 2112;
-        v53 = v44;
+        v53 = typesCopy;
         v54 = 2112;
         v55 = v23;
         _os_log_impl(&dword_22AD27000, v26, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to stage removal for all models of types %@: %@", buf, 0x2Au);
 
         v9 = v28;
-        v6 = v43;
+        optionsCopy = v43;
       }
 
       objc_autoreleasePoolPop(v24);
@@ -3242,7 +3242,7 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
 
     else
     {
-      v31 = [(HMBLocalZone *)v11 triggerProcessForBlockRow:v22];
+      v31 = [(HMBLocalZone *)selfCopy triggerProcessForBlockRow:v22];
     }
 
     v40 = v31;
@@ -3253,14 +3253,14 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
   else
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = v11;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       v35 = HMFGetLogIdentifier();
-      v36 = [v9 identifier];
-      [v36 shortDescription];
-      v37 = v6;
+      identifier2 = [v9 identifier];
+      [identifier2 shortDescription];
+      v37 = optionsCopy;
       v39 = v38 = v9;
       *buf = 138544130;
       v49 = v35;
@@ -3273,7 +3273,7 @@ void __24__HMBLocalZone_shutdown__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_22AD27000, v34, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to encode processing options %@: %@", buf, 0x2Au);
 
       v9 = v38;
-      v6 = v37;
+      optionsCopy = v37;
     }
 
     objc_autoreleasePoolPop(v32);
@@ -3293,30 +3293,30 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
   return v4;
 }
 
-- (id)removeModelsAndDescendantModelsWithIDs:(id)a3 depth:(unint64_t)a4 options:(id)a5
+- (id)removeModelsAndDescendantModelsWithIDs:(id)ds depth:(unint64_t)depth options:(id)options
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  optionsCopy = options;
   v10 = objc_alloc(MEMORY[0x277D0F770]);
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[HMBLocalZone removeModelsAndDescendantModelsWithIDs:depth:options:]"];
   v12 = [v10 initWithName:v11];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 identifier];
-    [v17 shortDescription];
-    v18 = v9;
-    v20 = v19 = v8;
+    identifier = [v12 identifier];
+    [identifier shortDescription];
+    v18 = optionsCopy;
+    v20 = v19 = dsCopy;
     [v19 hmbDescription];
     v21 = v45 = v12;
     [v18 label];
     v44 = v13;
-    v23 = v22 = a4;
+    v23 = v22 = depth;
     *buf = 138544386;
     v51 = v16;
     v52 = 2114;
@@ -3329,42 +3329,42 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
     v59 = v23;
     _os_log_impl(&dword_22AD27000, v15, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing models and descendant models with IDs: %@, depth: %lu, options label: %@", buf, 0x34u);
 
-    a4 = v22;
+    depth = v22;
     v13 = v44;
 
     v12 = v45;
-    v8 = v19;
-    v9 = v18;
+    dsCopy = v19;
+    optionsCopy = v18;
   }
 
   objc_autoreleasePoolPop(v13);
   v49 = 0;
-  v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v49];
+  v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:optionsCopy requiringSecureCoding:1 error:&v49];
   v25 = v49;
   v26 = v25;
   if (v24)
   {
     v48 = v25;
-    v27 = [(HMBLocalZone *)v14 insertBlockToRemoveModelsAndDescendantModelsWithType:2 modelIDs:v8 depth:a4 options:v24 error:&v48];
+    v27 = [(HMBLocalZone *)selfCopy insertBlockToRemoveModelsAndDescendantModelsWithType:2 modelIDs:dsCopy depth:depth options:v24 error:&v48];
     v28 = v48;
 
     if (v28)
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v14;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         v32 = HMFGetLogIdentifier();
         [v12 identifier];
         v33 = v46 = v12;
-        v34 = [v33 shortDescription];
+        shortDescription = [v33 shortDescription];
         *buf = 138544130;
         v51 = v32;
         v52 = 2114;
-        v53 = v34;
+        v53 = shortDescription;
         v54 = 2112;
-        v55 = v8;
+        v55 = dsCopy;
         v56 = 2112;
         v57 = v28;
         _os_log_impl(&dword_22AD27000, v31, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to stage removal for models and descendant models with IDs %@: %@", buf, 0x2Au);
@@ -3378,27 +3378,27 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
 
     else
     {
-      v35 = [(HMBLocalZone *)v14 triggerProcessForBlockRow:v27];
+      v35 = [(HMBLocalZone *)selfCopy triggerProcessForBlockRow:v27];
     }
   }
 
   else
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = v14;
+    v37 = selfCopy;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       v39 = HMFGetLogIdentifier();
       [v12 identifier];
       v40 = v47 = v12;
-      v41 = [v40 shortDescription];
+      shortDescription2 = [v40 shortDescription];
       *buf = 138544130;
       v51 = v39;
       v52 = 2114;
-      v53 = v41;
+      v53 = shortDescription2;
       v54 = 2112;
-      v55 = v9;
+      v55 = optionsCopy;
       v56 = 2112;
       v57 = v26;
       _os_log_impl(&dword_22AD27000, v38, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to encode processing options %@: %@", buf, 0x2Au);
@@ -3415,63 +3415,63 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
   return v35;
 }
 
-- (id)removeModelsWithParentModelID:(id)a3 options:(id)a4
+- (id)removeModelsWithParentModelID:(id)d options:(id)options
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v8 = objc_alloc(MEMORY[0x277D0F770]);
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[HMBLocalZone removeModelsWithParentModelID:options:]"];
   v10 = [v8 initWithName:v9];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 identifier];
-    v16 = [v15 shortDescription];
-    v17 = [v7 label];
+    identifier = [v10 identifier];
+    shortDescription = [identifier shortDescription];
+    label = [optionsCopy label];
     *buf = 138544130;
     v43 = v14;
     v44 = 2114;
-    v45 = v16;
+    v45 = shortDescription;
     v46 = 2112;
-    v47 = v6;
+    v47 = dCopy;
     v48 = 2112;
-    v49 = v17;
+    v49 = label;
     _os_log_impl(&dword_22AD27000, v13, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing models with parent model ID: %@, options label: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v11);
   v41 = 0;
-  v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v41];
+  v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:optionsCopy requiringSecureCoding:1 error:&v41];
   v19 = v41;
   v20 = v19;
   if (v18)
   {
     v40 = v19;
-    v21 = [(HMBLocalZone *)v12 insertBlockToRemoveChildModelsWithType:2 parentModelID:v6 options:v18 error:&v40];
+    v21 = [(HMBLocalZone *)selfCopy insertBlockToRemoveChildModelsWithType:2 parentModelID:dCopy options:v18 error:&v40];
     v22 = v40;
 
     if (v22)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v12;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v10 identifier];
-        [v27 shortDescription];
+        identifier2 = [v10 identifier];
+        [identifier2 shortDescription];
         v28 = v38 = v10;
         *buf = 138544130;
         v43 = v26;
         v44 = 2114;
         v45 = v28;
         v46 = 2112;
-        v47 = v6;
+        v47 = dCopy;
         v48 = 2112;
         v49 = v22;
         _os_log_impl(&dword_22AD27000, v25, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to stage removal for models with parent model ID %@: %@", buf, 0x2Au);
@@ -3485,27 +3485,27 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
 
     else
     {
-      v29 = [(HMBLocalZone *)v12 triggerProcessForBlockRow:v21];
+      v29 = [(HMBLocalZone *)selfCopy triggerProcessForBlockRow:v21];
     }
   }
 
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = v12;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [v10 identifier];
-      [v34 shortDescription];
+      identifier3 = [v10 identifier];
+      [identifier3 shortDescription];
       v35 = v39 = v30;
       *buf = 138544130;
       v43 = v33;
       v44 = 2114;
       v45 = v35;
       v46 = 2112;
-      v47 = v7;
+      v47 = optionsCopy;
       v48 = 2112;
       v49 = v20;
       _os_log_impl(&dword_22AD27000, v32, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to encode processing options %@: %@", buf, 0x2Au);
@@ -3522,85 +3522,85 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
   return v29;
 }
 
-- (id)removeModelIDs:(id)a3 options:(id)a4
+- (id)removeModelIDs:(id)ds options:(id)options
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  dsCopy = ds;
   v9 = [v6 set];
-  v10 = [(HMBLocalZone *)self addModels:v9 andRemoveModelIDs:v8 options:v7];
+  v10 = [(HMBLocalZone *)self addModels:v9 andRemoveModelIDs:dsCopy options:optionsCopy];
 
   return v10;
 }
 
-- (id)updateModels:(id)a3 options:(id)a4
+- (id)updateModels:(id)models options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 setDisallowsModelCreation:1];
-  v8 = [(HMBLocalZone *)self addModels:v7 options:v6];
+  optionsCopy = options;
+  modelsCopy = models;
+  [optionsCopy setDisallowsModelCreation:1];
+  v8 = [(HMBLocalZone *)self addModels:modelsCopy options:optionsCopy];
 
   return v8;
 }
 
-- (id)addModels:(id)a3 options:(id)a4
+- (id)addModels:(id)models options:(id)options
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  modelsCopy = models;
   v9 = [v6 set];
-  v10 = [(HMBLocalZone *)self addModels:v8 andRemoveModelIDs:v9 options:v7];
+  v10 = [(HMBLocalZone *)self addModels:modelsCopy andRemoveModelIDs:v9 options:optionsCopy];
 
   return v10;
 }
 
-- (id)createModels:(id)a3 options:(id)a4
+- (id)createModels:(id)models options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 setRequiresModelCreation:1];
-  v8 = [(HMBLocalZone *)self addModels:v7 options:v6];
+  optionsCopy = options;
+  modelsCopy = models;
+  [optionsCopy setRequiresModelCreation:1];
+  v8 = [(HMBLocalZone *)self addModels:modelsCopy options:optionsCopy];
 
   return v8;
 }
 
-- (id)updateModels:(id)a3 andRemoveModelIDs:(id)a4 options:(id)a5
+- (id)updateModels:(id)models andRemoveModelIDs:(id)ds options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v8 setDisallowsModelCreation:1];
-  v11 = [(HMBLocalZone *)self addModels:v10 andRemoveModelIDs:v9 options:v8];
+  optionsCopy = options;
+  dsCopy = ds;
+  modelsCopy = models;
+  [optionsCopy setDisallowsModelCreation:1];
+  v11 = [(HMBLocalZone *)self addModels:modelsCopy andRemoveModelIDs:dsCopy options:optionsCopy];
 
   return v11;
 }
 
-- (id)addModels:(id)a3 andRemoveModelIDs:(id)a4 options:(id)a5
+- (id)addModels:(id)models andRemoveModelIDs:(id)ds options:(id)options
 {
   v143 = *MEMORY[0x277D85DE8];
-  v108 = a3;
-  v8 = a4;
-  v9 = a5;
+  modelsCopy = models;
+  dsCopy = ds;
+  optionsCopy = options;
   v10 = objc_alloc(MEMORY[0x277D0F770]);
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[HMBLocalZone addModels:andRemoveModelIDs:options:]"];
   v12 = [v10 initWithName:v11];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
     [v12 identifier];
-    v18 = v17 = v8;
+    v18 = v17 = dsCopy;
     [v18 shortDescription];
     v19 = v111 = v13;
-    [v108 hmbDescription];
-    v20 = v109 = v14;
+    [modelsCopy hmbDescription];
+    v20 = v109 = selfCopy;
     [v17 hmbDescription];
     v21 = v12;
-    v23 = v22 = v9;
-    v24 = [v22 label];
+    v23 = v22 = optionsCopy;
+    label = [v22 label];
     *buf = 138544386;
     v134 = v16;
     v135 = 2114;
@@ -3610,68 +3610,68 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
     v139 = 2112;
     v140 = v23;
     v141 = 2112;
-    v142 = v24;
+    v142 = label;
     _os_log_impl(&dword_22AD27000, v15, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Submitting models to add: %@, model IDs to remove: %@, options label: %@", buf, 0x34u);
 
-    v9 = v22;
+    optionsCopy = v22;
     v12 = v21;
 
-    v14 = v109;
+    selfCopy = v109;
     v13 = v111;
 
-    v8 = v17;
+    dsCopy = v17;
   }
 
   objc_autoreleasePoolPop(v13);
   v127 = 0;
-  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v127];
+  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:optionsCopy requiringSecureCoding:1 error:&v127];
   v26 = v127;
   if (v26)
   {
     v27 = v26;
     v28 = objc_autoreleasePoolPush();
-    v29 = v14;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = HMFGetLogIdentifier();
       [v12 identifier];
-      v32 = v104 = v8;
-      v33 = [v32 shortDescription];
+      v32 = v104 = dsCopy;
+      shortDescription = [v32 shortDescription];
       *buf = 138544130;
       v134 = v31;
       v135 = 2114;
-      v136 = v33;
+      v136 = shortDescription;
       v137 = 2112;
-      v138 = v9;
+      v138 = optionsCopy;
       v139 = 2112;
       v140 = v27;
       _os_log_impl(&dword_22AD27000, v30, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Failed to archive options %@: %@", buf, 0x2Au);
 
-      v8 = v104;
+      dsCopy = v104;
     }
 
     objc_autoreleasePoolPop(v28);
     v34 = [MEMORY[0x277D2C900] futureWithError:v27];
-    v35 = v108;
+    v35 = modelsCopy;
   }
 
   else
   {
     v101 = v25;
-    v102 = v9;
+    v102 = optionsCopy;
     v103 = v12;
-    v110 = v14;
-    v36 = [(HMBLocalZone *)v14 modelContainer];
-    v100 = [v36 bestModelEncodingForStorageLocation:3];
+    v110 = selfCopy;
+    modelContainer = [(HMBLocalZone *)selfCopy modelContainer];
+    v100 = [modelContainer bestModelEncodingForStorageLocation:3];
 
-    v112 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count") + objc_msgSend(v108, "count")}];
+    v112 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count") + objc_msgSend(modelsCopy, "count")}];
     v123 = 0u;
     v124 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v105 = v8;
-    v37 = v8;
+    v105 = dsCopy;
+    v37 = dsCopy;
     v38 = [v37 countByEnumeratingWithState:&v123 objects:v132 count:16];
     if (v38)
     {
@@ -3688,10 +3688,10 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
 
           v42 = *(*(&v123 + 1) + 8 * i);
           v43 = [HMBLocalSQLContextRowItem alloc];
-          v44 = [MEMORY[0x277CCAD78] UUID];
-          v45 = [v44 data];
-          v46 = [v42 data];
-          v47 = [(HMBLocalSQLContextRowItem *)v43 initWithItemRow:0 externalID:v45 externalData:0 modelEncoding:0 modelData:v46];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          data = [uUID data];
+          data2 = [v42 data];
+          v47 = [(HMBLocalSQLContextRowItem *)v43 initWithItemRow:0 externalID:data externalData:0 modelEncoding:0 modelData:data2];
 
           [v112 addObject:v47];
         }
@@ -3707,7 +3707,7 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
     v120 = 0u;
     v121 = 0u;
     v122 = 0u;
-    v49 = v108;
+    v49 = modelsCopy;
     v50 = [v49 countByEnumeratingWithState:&v119 objects:v131 count:16];
     if (v50)
     {
@@ -3723,8 +3723,8 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
           }
 
           v54 = *(*(&v119 + 1) + 8 * j);
-          v55 = [v54 hmbModelID];
-          if (!v55 || (v56 = v55, [v54 hmbParentModelID], v57 = objc_claimAutoreleasedReturnValue(), v57, v56, !v57))
+          hmbModelID = [v54 hmbModelID];
+          if (!hmbModelID || (v56 = hmbModelID, [v54 hmbParentModelID], v57 = objc_claimAutoreleasedReturnValue(), v57, v56, !v57))
           {
             v72 = objc_autoreleasePoolPush();
             v73 = v110;
@@ -3732,12 +3732,12 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
             if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
             {
               v75 = HMFGetLogIdentifier();
-              v76 = [v103 identifier];
-              v77 = [v76 shortDescription];
+              identifier = [v103 identifier];
+              shortDescription2 = [identifier shortDescription];
               *buf = 138543874;
               v134 = v75;
               v135 = 2114;
-              v136 = v77;
+              v136 = shortDescription2;
               v137 = 2112;
               v138 = v54;
               _os_log_impl(&dword_22AD27000, v74, OS_LOG_TYPE_ERROR, "%{public}@[%{public}@] Cannot update a model with a nil hmbModelID or hmbParentModelID: %@", buf, 0x20u);
@@ -3750,21 +3750,21 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
             v129[0] = @"info";
             v129[1] = @"model";
             v130[0] = @"Cannot update a model with a nil hmbModelID or hmbParentModelID";
-            v81 = [v54 hmbDescription];
-            v130[1] = v81;
+            hmbDescription = [v54 hmbDescription];
+            v130[1] = hmbDescription;
             v82 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v130 forKeys:v129 count:2];
             v83 = [v79 errorWithDomain:v80 code:3 userInfo:v82];
             v34 = [v78 futureWithError:v83];
 
             v27 = 0;
-            v8 = v105;
+            dsCopy = v105;
             v25 = v101;
-            v9 = v102;
+            optionsCopy = v102;
             goto LABEL_42;
           }
 
-          v58 = [v54 hmbModelID];
-          [v48 addObject:v58];
+          hmbModelID2 = [v54 hmbModelID];
+          [v48 addObject:hmbModelID2];
         }
 
         v51 = [v49 countByEnumeratingWithState:&v119 objects:v131 count:16];
@@ -3802,9 +3802,9 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
           }
 
           v65 = *(*(&v115 + 1) + 8 * v63);
-          v66 = [(HMBLocalZone *)v110 modelContainer];
+          modelContainer2 = [(HMBLocalZone *)v110 modelContainer];
           v114 = v64;
-          v67 = [v66 dataFromModel:v65 encoding:v62 storageLocation:3 updatedModelIDs:v107 error:&v114];
+          v67 = [modelContainer2 dataFromModel:v65 encoding:v62 storageLocation:3 updatedModelIDs:v107 error:&v114];
           v27 = v114;
 
           if (!v67)
@@ -3815,12 +3815,12 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
             if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
             {
               v87 = HMFGetLogIdentifier();
-              v88 = [v103 identifier];
-              v89 = [v88 shortDescription];
+              identifier2 = [v103 identifier];
+              shortDescription3 = [identifier2 shortDescription];
               *buf = 138544130;
               v134 = v87;
               v135 = 2114;
-              v136 = v89;
+              v136 = shortDescription3;
               v137 = 2112;
               v138 = v65;
               v139 = 2112;
@@ -3831,16 +3831,16 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
             objc_autoreleasePoolPop(v84);
             v34 = [MEMORY[0x277D2C900] futureWithError:v27];
 
-            v8 = v105;
+            dsCopy = v105;
             v25 = v101;
-            v9 = v102;
+            optionsCopy = v102;
             goto LABEL_41;
           }
 
           v68 = [HMBLocalSQLContextRowItem alloc];
-          v69 = [MEMORY[0x277CCAD78] UUID];
-          v70 = [v69 data];
-          v71 = [(HMBLocalSQLContextRowItem *)v68 initWithItemRow:0 externalID:v70 externalData:0 modelEncoding:v62 modelData:v67];
+          uUID2 = [MEMORY[0x277CCAD78] UUID];
+          data3 = [uUID2 data];
+          v71 = [(HMBLocalSQLContextRowItem *)v68 initWithItemRow:0 externalID:data3 externalData:0 modelEncoding:v62 modelData:v67];
 
           [v112 addObject:v71];
           ++v63;
@@ -3872,7 +3872,7 @@ id __47__HMBLocalZone_removeAllModelsOfTypes_options___block_invoke(uint64_t a1,
     {
       v34 = [MEMORY[0x277D2C900] futureWithError:v91];
       v27 = v91;
-      v8 = v105;
+      dsCopy = v105;
 LABEL_41:
       v48 = v107;
     }
@@ -3886,29 +3886,29 @@ LABEL_41:
       if (os_log_type_enabled(v96, OS_LOG_TYPE_INFO))
       {
         v97 = HMFGetLogIdentifier();
-        v98 = [v103 identifier];
-        v99 = [v98 shortDescription];
+        identifier3 = [v103 identifier];
+        shortDescription4 = [identifier3 shortDescription];
         *buf = 138543874;
         v134 = v97;
         v135 = 2114;
-        v136 = v99;
+        v136 = shortDescription4;
         v137 = 2048;
         v138 = v90;
         _os_log_impl(&dword_22AD27000, v96, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Submitted models with block row: %lu", buf, 0x20u);
 
-        v9 = v102;
+        optionsCopy = v102;
         v25 = v101;
       }
 
       objc_autoreleasePoolPop(v94);
       v34 = [(HMBLocalZone *)v95 triggerProcessForBlockRow:v90];
       v27 = 0;
-      v8 = v105;
+      dsCopy = v105;
     }
 
 LABEL_42:
 
-    v35 = v108;
+    v35 = modelsCopy;
     v12 = v103;
   }
 
@@ -3920,8 +3920,8 @@ LABEL_42:
 - (id)flush
 {
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HMBLocalZone *)self localDatabase];
-  v5 = [v4 queue];
+  localDatabase = [(HMBLocalZone *)self localDatabase];
+  queue = [localDatabase queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __21__HMBLocalZone_flush__block_invoke;
@@ -3929,7 +3929,7 @@ LABEL_42:
   v10[4] = self;
   v6 = v3;
   v11 = v6;
-  [v5 addOperationWithBlock:v10];
+  [queue addOperationWithBlock:v10];
 
   v7 = v11;
   v8 = v6;
@@ -3954,21 +3954,21 @@ void __21__HMBLocalZone_flush__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)destroyWithError:(id *)a3
+- (BOOL)destroyWithError:(id *)error
 {
   if (![(HMBLocalZone *)self removeAllRecordsWithError:?])
   {
     return 0;
   }
 
-  v5 = [(HMBLocalZone *)self localDatabase];
-  v6 = [v5 local];
+  localDatabase = [(HMBLocalZone *)self localDatabase];
+  local = [localDatabase local];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__HMBLocalZone_destroyWithError___block_invoke;
   v9[3] = &unk_2786E24B0;
   v9[4] = self;
-  v7 = [v6 sqlTransactionWithActivity:0 error:a3 block:v9];
+  v7 = [local sqlTransactionWithActivity:0 error:error block:v9];
 
   return v7;
 }
@@ -3989,14 +3989,14 @@ id __33__HMBLocalZone_destroyWithError___block_invoke(uint64_t a1, void *a2)
 {
   v14 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(HMBLocalZone *)self hasStartedUp];
+  hasStartedUp = [(HMBLocalZone *)self hasStartedUp];
   [(HMBLocalZone *)self setHasStartedUp:1];
   os_unfair_lock_unlock(&self->_propertyLock);
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (hasStartedUp)
   {
     if (v7)
     {
@@ -4020,30 +4020,30 @@ id __33__HMBLocalZone_destroyWithError___block_invoke(uint64_t a1, void *a2)
     }
 
     objc_autoreleasePoolPop(v4);
-    [(HMBLocalZone *)v5 migrateUnsupportedModels];
-    [(HMBLocalZone *)v5 rebuildIndexesIfNeeded];
-    [(HMBLocalZone *)v5 queueIncompleteProcesses];
-    v10 = [(HMBLocalZone *)v5 mirror];
-    [v10 startUpWithLocalZone:v5];
+    [(HMBLocalZone *)selfCopy migrateUnsupportedModels];
+    [(HMBLocalZone *)selfCopy rebuildIndexesIfNeeded];
+    [(HMBLocalZone *)selfCopy queueIncompleteProcesses];
+    mirror = [(HMBLocalZone *)selfCopy mirror];
+    [mirror startUpWithLocalZone:selfCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setExternalData:(id)a3 forExternalID:(id)a4
+- (id)setExternalData:(id)data forExternalID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v8 = [(HMBLocalZone *)self sql];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__HMBLocalZone_setExternalData_forExternalID___block_invoke;
   v13[3] = &unk_2786E2418;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
+  v14 = dCopy;
+  v15 = dataCopy;
+  v9 = dataCopy;
+  v10 = dCopy;
   v11 = [v8 sqlBlockWithActivity:0 block:v13];
 
   return v11;
@@ -4064,20 +4064,20 @@ id __46__HMBLocalZone_setExternalData_forExternalID___block_invoke(void *a1, voi
   return v8;
 }
 
-- (id)setExternalData:(id)a3 forModelID:(id)a4
+- (id)setExternalData:(id)data forModelID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v8 = [(HMBLocalZone *)self sql];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __43__HMBLocalZone_setExternalData_forModelID___block_invoke;
   v13[3] = &unk_2786E2418;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
+  v14 = dCopy;
+  v15 = dataCopy;
+  v9 = dataCopy;
+  v10 = dCopy;
   v11 = [v8 sqlBlockWithActivity:0 block:v13];
 
   return v11;
@@ -4098,136 +4098,136 @@ id __43__HMBLocalZone_setExternalData_forModelID___block_invoke(void *a1, void *
   return v8;
 }
 
-- (id)modelIDForExternalID:(id)a3 error:(id *)a4
+- (id)modelIDForExternalID:(id)d error:(id *)error
 {
-  v4 = [(HMBLocalZone *)self fetchRecordRowWithExternalID:a3 returning:0 error:a4];
+  v4 = [(HMBLocalZone *)self fetchRecordRowWithExternalID:d returning:0 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 modelID];
+    modelID = [v4 modelID];
   }
 
   else
   {
-    v6 = 0;
+    modelID = 0;
   }
 
-  return v6;
+  return modelID;
 }
 
-- (id)externalIDForModelID:(id)a3 error:(id *)a4
+- (id)externalIDForModelID:(id)d error:(id *)error
 {
-  v4 = [(HMBLocalZone *)self fetchRecordRowWithModelID:a3 returning:1 error:a4];
+  v4 = [(HMBLocalZone *)self fetchRecordRowWithModelID:d returning:1 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 externalID];
+    externalID = [v4 externalID];
   }
 
   else
   {
-    v6 = 0;
+    externalID = 0;
   }
 
-  return v6;
+  return externalID;
 }
 
-- (id)externalDataForExternalID:(id)a3 error:(id *)a4
+- (id)externalDataForExternalID:(id)d error:(id *)error
 {
-  v4 = [(HMBLocalZone *)self fetchRecordRowWithExternalID:a3 returning:1 error:a4];
+  v4 = [(HMBLocalZone *)self fetchRecordRowWithExternalID:d returning:1 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 externalData];
+    externalData = [v4 externalData];
   }
 
   else
   {
-    v6 = 0;
+    externalData = 0;
   }
 
-  return v6;
+  return externalData;
 }
 
-- (id)externalDataForModelID:(id)a3 error:(id *)a4
+- (id)externalDataForModelID:(id)d error:(id *)error
 {
-  v4 = [(HMBLocalZone *)self fetchRecordRowWithModelID:a3 returning:1 error:a4];
+  v4 = [(HMBLocalZone *)self fetchRecordRowWithModelID:d returning:1 error:error];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 externalData];
+    externalData = [v4 externalData];
   }
 
   else
   {
-    v6 = 0;
+    externalData = 0;
   }
 
-  return v6;
+  return externalData;
 }
 
-- (void)removeObserver:(id)a3 forModelWithID:(id)a4
+- (void)removeObserver:(id)observer forModelWithID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMBLocalZone *)self modelObserversByModelID];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  modelObserversByModelID = [(HMBLocalZone *)self modelObserversByModelID];
+  v8 = [modelObserversByModelID objectForKeyedSubscript:dCopy];
 
-  [v8 removeObject:v10];
+  [v8 removeObject:observerCopy];
   if (![v8 count])
   {
-    v9 = [(HMBLocalZone *)self modelObserversByModelID];
-    [v9 setObject:0 forKeyedSubscript:v6];
+    modelObserversByModelID2 = [(HMBLocalZone *)self modelObserversByModelID];
+    [modelObserversByModelID2 setObject:0 forKeyedSubscript:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
 
-- (void)removeObserverForAllModels:(id)a3
+- (void)removeObserverForAllModels:(id)models
 {
-  v5 = a3;
+  modelsCopy = models;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMBLocalZone *)self observersForAllModels];
-  [v4 removeObject:v5];
+  observersForAllModels = [(HMBLocalZone *)self observersForAllModels];
+  [observersForAllModels removeObject:modelsCopy];
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
 
-- (void)addObserver:(id)a3 forModelWithID:(id)a4
+- (void)addObserver:(id)observer forModelWithID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMBLocalZone *)self modelObserversByModelID];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  modelObserversByModelID = [(HMBLocalZone *)self modelObserversByModelID];
+  weakObjectsHashTable = [modelObserversByModelID objectForKeyedSubscript:dCopy];
 
-  if (!v8)
+  if (!weakObjectsHashTable)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    v9 = [(HMBLocalZone *)self modelObserversByModelID];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    modelObserversByModelID2 = [(HMBLocalZone *)self modelObserversByModelID];
+    [modelObserversByModelID2 setObject:weakObjectsHashTable forKeyedSubscript:dCopy];
   }
 
-  [v8 addObject:v10];
+  [weakObjectsHashTable addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
 
-- (void)addObserverForAllModels:(id)a3
+- (void)addObserverForAllModels:(id)models
 {
-  v5 = a3;
+  modelsCopy = models;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMBLocalZone *)self observersForAllModels];
-  [v4 addObject:v5];
+  observersForAllModels = [(HMBLocalZone *)self observersForAllModels];
+  [observersForAllModels addObject:modelsCopy];
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
 
-- (void)setZoneRow:(unint64_t)a3
+- (void)setZoneRow:(unint64_t)row
 {
   os_unfair_lock_lock_with_options();
-  self->_zoneRow = a3;
+  self->_zoneRow = row;
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
@@ -4244,7 +4244,7 @@ id __43__HMBLocalZone_setExternalData_forModelID___block_invoke(void *a1, void *
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4255,72 +4255,72 @@ id __43__HMBLocalZone_setExternalData_forModelID___block_invoke(void *a1, void *
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMBLocalZone;
   [(HMBLocalZone *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMBLocalZone)initWithLocalDatabase:(id)a3 zoneID:(id)a4 zoneRow:(unint64_t)a5 configuration:(id)a6 mirror:(id)a7
+- (HMBLocalZone)initWithLocalDatabase:(id)database zoneID:(id)d zoneRow:(unint64_t)row configuration:(id)configuration mirror:(id)mirror
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  databaseCopy = database;
+  dCopy = d;
+  configurationCopy = configuration;
+  mirrorCopy = mirror;
   v35.receiver = self;
   v35.super_class = HMBLocalZone;
   v16 = [(HMBLocalZone *)&v35 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_localDatabase, v12);
-    v18 = [v12 local];
+    objc_storeWeak(&v16->_localDatabase, databaseCopy);
+    local = [databaseCopy local];
     sql = v17->_sql;
-    v17->_sql = v18;
+    v17->_sql = local;
 
-    objc_storeStrong(&v17->_zoneID, a4);
-    v17->_zoneRow = a5;
-    v20 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v17->_zoneID, d);
+    v17->_zoneRow = row;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observersForAllModels = v17->_observersForAllModels;
-    v17->_observersForAllModels = v20;
+    v17->_observersForAllModels = weakObjectsHashTable;
 
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     modelObserversByModelID = v17->_modelObserversByModelID;
-    v17->_modelObserversByModelID = v22;
+    v17->_modelObserversByModelID = dictionary;
 
-    v24 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     mirrorOutputObservers = v17->_mirrorOutputObservers;
-    v17->_mirrorOutputObservers = v24;
+    v17->_mirrorOutputObservers = weakObjectsHashTable2;
 
-    objc_storeStrong(&v17->_mirror, a7);
-    v26 = [v14 delegate];
-    objc_storeWeak(&v17->_delegate, v26);
+    objc_storeStrong(&v17->_mirror, mirror);
+    delegate = [configurationCopy delegate];
+    objc_storeWeak(&v17->_delegate, delegate);
 
-    v27 = [v14 copy];
+    v27 = [configurationCopy copy];
     configuration = v17->_configuration;
     v17->_configuration = v27;
 
-    v29 = [v14 modelContainer];
+    modelContainer = [configurationCopy modelContainer];
 
-    if (v29)
+    if (modelContainer)
     {
-      v30 = v14;
+      v30 = configurationCopy;
     }
 
     else
     {
-      v30 = v12;
+      v30 = databaseCopy;
     }
 
-    v31 = [v30 modelContainer];
-    v32 = [v31 copy];
+    modelContainer2 = [v30 modelContainer];
+    v32 = [modelContainer2 copy];
     modelContainer = v17->_modelContainer;
     v17->_modelContainer = v32;
 
     [(HMBModelContainer *)v17->_modelContainer updateLocalZone:v17];
-    if (v15)
+    if (mirrorCopy)
     {
-      [(HMBModelContainer *)v17->_modelContainer updateMirror:v15];
+      [(HMBModelContainer *)v17->_modelContainer updateMirror:mirrorCopy];
     }
   }
 
@@ -4353,10 +4353,10 @@ uint64_t __27__HMBLocalZone_logCategory__block_invoke()
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = [HMBLocalZoneQueryResultAllOfTypeRaw alloc];
-  v4 = [(HMBLocalZone *)self zoneRow];
+  zoneRow = [(HMBLocalZone *)self zoneRow];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(HMBLocalZoneQueryResultAllOfTypeRaw *)v3 initWithLocalZone:self zoneRow:v4 modelType:v6 returning:-1];
+  v7 = [(HMBLocalZoneQueryResultAllOfTypeRaw *)v3 initWithLocalZone:self zoneRow:zoneRow modelType:v6 returning:-1];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -4364,21 +4364,21 @@ uint64_t __27__HMBLocalZone_logCategory__block_invoke()
   v15[3] = &unk_2786E0840;
   v15[4] = self;
   [(HMBSQLQueryIterator *)v7 enumerateObjectsUsingBlock:v15];
-  v8 = [(HMBSQLQueryIterator *)v7 error];
+  error = [(HMBSQLQueryIterator *)v7 error];
 
-  if (v8)
+  if (error)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMBSQLQueryIterator *)v7 error];
+      error2 = [(HMBSQLQueryIterator *)v7 error];
       *buf = 138543618;
       v17 = v12;
       v18 = 2112;
-      v19 = v13;
+      v19 = error2;
       _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to iterate through unknown models in zone: %@", buf, 0x16u);
     }
 
@@ -4476,9 +4476,9 @@ id __60__HMBLocalZone_MigrateUnsupported__migrateUnsupportedModels__block_invoke
   return v8;
 }
 
-- (id)createMirrorInputWithError:(id *)a3
+- (id)createMirrorInputWithError:(id *)error
 {
-  v4 = [(HMBLocalZone *)self createInputBlockWithType:1 error:a3];
+  v4 = [(HMBLocalZone *)self createInputBlockWithType:1 error:error];
   if (v4)
   {
     v5 = [(HMBLocalZoneInput *)[HMBLocalZoneMirrorInput alloc] initWithLocalZone:self inputBlock:v4];
@@ -4492,7 +4492,7 @@ id __60__HMBLocalZone_MigrateUnsupported__migrateUnsupportedModels__block_invoke
   return v5;
 }
 
-- (BOOL)removeOutputBlockWithRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)removeOutputBlockWithRow:(unint64_t)row error:(id *)error
 {
   v7 = [(HMBLocalZone *)self sql];
   v9[0] = MEMORY[0x277D85DD0];
@@ -4500,10 +4500,10 @@ id __60__HMBLocalZone_MigrateUnsupported__migrateUnsupportedModels__block_invoke
   v9[2] = __61__HMBLocalZone_MirrorOutput__removeOutputBlockWithRow_error___block_invoke;
   v9[3] = &unk_2786E2460;
   v9[4] = self;
-  v9[5] = a3;
-  LOBYTE(a4) = [v7 sqlTransactionWithActivity:0 error:a4 block:v9];
+  v9[5] = row;
+  LOBYTE(error) = [v7 sqlTransactionWithActivity:0 error:error block:v9];
 
-  return a4;
+  return error;
 }
 
 id __61__HMBLocalZone_MirrorOutput__removeOutputBlockWithRow_error___block_invoke(uint64_t a1, void *a2)
@@ -4566,17 +4566,17 @@ id __61__HMBLocalZone_MirrorOutput__removeOutputBlockWithRow_error___block_invok
   return v14;
 }
 
-- (id)markGroupAsSentWithOutputBlock:(unint64_t)a3 tuples:(id)a4
+- (id)markGroupAsSentWithOutputBlock:(unint64_t)block tuples:(id)tuples
 {
-  v6 = a4;
+  tuplesCopy = tuples;
   v7 = [(HMBLocalZone *)self sql];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__HMBLocalZone_MirrorOutput__markGroupAsSentWithOutputBlock_tuples___block_invoke;
   v11[3] = &unk_2786E2460;
-  v12 = v6;
-  v13 = a3;
-  v8 = v6;
+  v12 = tuplesCopy;
+  blockCopy = block;
+  v8 = tuplesCopy;
   v9 = [v7 sqlTransactionWithActivity:0 block:v11];
 
   return v9;
@@ -4786,10 +4786,10 @@ LABEL_31:
   return v40;
 }
 
-- (id)fetchRecordsForOutputBlock:(unint64_t)a3 error:(id *)a4
+- (id)fetchRecordsForOutputBlock:(unint64_t)block error:(id *)error
 {
   v7 = [(HMBLocalZone *)self sql];
-  v8 = [v7 queryContextsByModelType];
+  queryContextsByModelType = [v7 queryContextsByModelType];
 
   v33 = 0;
   v34 = &v33;
@@ -4802,11 +4802,11 @@ LABEL_31:
   v32[1] = 3221225472;
   v32[2] = __63__HMBLocalZone_MirrorOutput__fetchRecordsForOutputBlock_error___block_invoke;
   v32[3] = &unk_2786E1508;
-  v32[6] = a3;
+  v32[6] = block;
   v32[7] = 7;
   v32[4] = self;
   v32[5] = &v33;
-  v10 = [v9 sqlBlockWithActivity:0 error:a4 block:v32];
+  v10 = [v9 sqlBlockWithActivity:0 error:error block:v32];
 
   if (v10)
   {
@@ -4828,14 +4828,14 @@ LABEL_31:
     v14[2] = __63__HMBLocalZone_MirrorOutput__fetchRecordsForOutputBlock_error___block_invoke_82;
     v14[3] = &unk_2786E1530;
     v18 = &v20;
-    v19 = a3;
-    v15 = v8;
-    v16 = self;
+    blockCopy = block;
+    v15 = queryContextsByModelType;
+    selfCopy = self;
     v17 = &v26;
     [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
-    if (a4)
+    if (error)
     {
-      *a4 = v21[5];
+      *error = v21[5];
     }
 
     v12 = v27[5];
@@ -4997,7 +4997,7 @@ void __63__HMBLocalZone_MirrorOutput__fetchRecordsForOutputBlock_error___block_i
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchOptionsForOutputBlock:(unint64_t)a3 error:(id *)a4
+- (id)fetchOptionsForOutputBlock:(unint64_t)block error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v28 = 0;
@@ -5012,13 +5012,13 @@ void __63__HMBLocalZone_MirrorOutput__fetchRecordsForOutputBlock_error___block_i
   v27[2] = __63__HMBLocalZone_MirrorOutput__fetchOptionsForOutputBlock_error___block_invoke;
   v27[3] = &unk_2786E23A0;
   v27[4] = &v28;
-  v27[5] = a3;
+  v27[5] = block;
   v8 = [v7 sqlBlockWithActivity:0 block:v27];
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -5026,20 +5026,20 @@ void __63__HMBLocalZone_MirrorOutput__fetchRecordsForOutputBlock_error___block_i
       *buf = 138544130;
       v35 = v12;
       v36 = 2048;
-      v37 = a3;
+      blockCopy2 = block;
       v38 = 2112;
-      v39 = v10;
+      v39 = selfCopy;
       v40 = 2112;
       v41 = v8;
       _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to fetch options for block at row %lu.%@: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v9);
-    if (a4)
+    if (error)
     {
       v13 = v8;
       v14 = 0;
-      *a4 = v8;
+      *error = v8;
       goto LABEL_17;
     }
 
@@ -5056,15 +5056,15 @@ LABEL_13:
 
   v15 = MEMORY[0x277CCAAC8];
   v16 = objc_opt_class();
-  v17 = [v29[5] optionsData];
+  optionsData = [v29[5] optionsData];
   v26 = 0;
-  v18 = [v15 unarchivedObjectOfClass:v16 fromData:v17 error:&v26];
+  v18 = [v15 unarchivedObjectOfClass:v16 fromData:optionsData error:&v26];
   v8 = v26;
 
   if (v8)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -5072,20 +5072,20 @@ LABEL_13:
       *buf = 138544130;
       v35 = v22;
       v36 = 2048;
-      v37 = a3;
+      blockCopy2 = block;
       v38 = 2112;
-      v39 = v20;
+      v39 = selfCopy2;
       v40 = 2112;
       v41 = v8;
       _os_log_impl(&dword_22AD27000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive transaction options from options data: %lu.%@: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v19);
-    if (a4)
+    if (error)
     {
       v23 = v8;
       v14 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -5125,9 +5125,9 @@ id __63__HMBLocalZone_MirrorOutput__fetchOptionsForOutputBlock_error___block_inv
 {
   v3 = [MEMORY[0x277CBEB58] set];
   os_unfair_lock_lock_with_options();
-  v4 = [(HMBLocalZone *)self mirrorOutputObservers];
-  v5 = [v4 allObjects];
-  [v3 addObjectsFromArray:v5];
+  mirrorOutputObservers = [(HMBLocalZone *)self mirrorOutputObservers];
+  allObjects = [mirrorOutputObservers allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
   os_unfair_lock_unlock(&self->_propertyLock);
   v6 = [v3 copy];
@@ -5135,22 +5135,22 @@ id __63__HMBLocalZone_MirrorOutput__fetchOptionsForOutputBlock_error___block_inv
   return v6;
 }
 
-- (void)removeMirrorOutputObserver:(id)a3
+- (void)removeMirrorOutputObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMBLocalZone *)self mirrorOutputObservers];
-  [v4 removeObject:v5];
+  mirrorOutputObservers = [(HMBLocalZone *)self mirrorOutputObservers];
+  [mirrorOutputObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
 
-- (void)addMirrorOutputObserver:(id)a3
+- (void)addMirrorOutputObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMBLocalZone *)self mirrorOutputObservers];
-  [v4 addObject:v5];
+  mirrorOutputObservers = [(HMBLocalZone *)self mirrorOutputObservers];
+  [mirrorOutputObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_propertyLock);
 }
@@ -5158,13 +5158,13 @@ id __63__HMBLocalZone_MirrorOutput__fetchOptionsForOutputBlock_error___block_inv
 - (void)rebuildIndexesIfNeeded
 {
   v3 = [(HMBLocalZone *)self sql];
-  v4 = [v3 queryContextsByModelType];
+  queryContextsByModelType = [v3 queryContextsByModelType];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__HMBLocalZone_Queryable__rebuildIndexesIfNeeded__block_invoke;
   v5[3] = &unk_2786E1A38;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [queryContextsByModelType enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __49__HMBLocalZone_Queryable__rebuildIndexesIfNeeded__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5406,36 +5406,36 @@ id __49__HMBLocalZone_Queryable__rebuildIndexesIfNeeded__block_invoke_2(uint64_t
   return v8;
 }
 
-- (id)queryModelsRecursivelyStartingWithModelID:(id)a3
+- (id)queryModelsRecursivelyStartingWithModelID:(id)d
 {
-  v4 = a3;
-  v5 = [[HMBLocalZoneQueryResultRecursiveModelID alloc] initWithLocalZone:self modelID:v4];
+  dCopy = d;
+  v5 = [[HMBLocalZoneQueryResultRecursiveModelID alloc] initWithLocalZone:self modelID:dCopy];
 
   return v5;
 }
 
-- (id)queryModelsWithParentModelID:(id)a3 ofType:(Class)a4
+- (id)queryModelsWithParentModelID:(id)d ofType:(Class)type
 {
-  v6 = a3;
+  dCopy = d;
   v7 = [HMBLocalZoneQueryResultParentModelIDOfType alloc];
-  v8 = NSStringFromClass(a4);
-  v9 = [(HMBLocalZoneQueryResultParentModelIDOfType *)v7 initWithLocalZone:self parentModelID:v6 modelClassName:v8];
+  v8 = NSStringFromClass(type);
+  v9 = [(HMBLocalZoneQueryResultParentModelIDOfType *)v7 initWithLocalZone:self parentModelID:dCopy modelClassName:v8];
 
   return v9;
 }
 
-- (id)queryModelsWithParentModelID:(id)a3
+- (id)queryModelsWithParentModelID:(id)d
 {
-  v4 = a3;
-  v5 = [[HMBLocalZoneQueryResultParentModelID alloc] initWithLocalZone:self parentModelID:v4];
+  dCopy = d;
+  v5 = [[HMBLocalZoneQueryResultParentModelID alloc] initWithLocalZone:self parentModelID:dCopy];
 
   return v5;
 }
 
-- (id)queryModelsOfType:(Class)a3
+- (id)queryModelsOfType:(Class)type
 {
   v5 = [HMBLocalZoneQueryResultAllOfType alloc];
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(type);
   v7 = [(HMBLocalZoneQueryResultAllOfType *)v5 initWithLocalZone:self modelClassName:v6];
 
   return v7;
@@ -5476,17 +5476,17 @@ uint64_t __38__HMBLocalZone_Queryable__fetchModels__block_invoke(uint64_t a1, vo
   return 0;
 }
 
-- (id)queryModelsOfType:(Class)a3 properties:(id)a4 filter:(id)a5
+- (id)queryModelsOfType:(Class)type properties:(id)properties filter:(id)filter
 {
-  v8 = a4;
-  v9 = a5;
+  propertiesCopy = properties;
+  filterCopy = filter;
   v10 = [(HMBLocalZone *)self sql];
-  v11 = [v10 queryContextsByClass];
-  v12 = [v11 objectForKey:a3];
+  queryContextsByClass = [v10 queryContextsByClass];
+  v12 = [queryContextsByClass objectForKey:type];
 
   if (v12)
   {
-    v13 = [v12 performQueryOn:self properties:v8 filter:v9];
+    v13 = [v12 performQueryOn:self properties:propertiesCopy filter:filterCopy];
 
     return v13;
   }
@@ -5498,16 +5498,16 @@ uint64_t __38__HMBLocalZone_Queryable__fetchModels__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)queryModelsOfType:(Class)a3 filter:(id)a4
+- (id)queryModelsOfType:(Class)type filter:(id)filter
 {
-  v6 = a4;
+  filterCopy = filter;
   v7 = [(HMBLocalZone *)self sql];
-  v8 = [v7 queryContextsByClass];
-  v9 = [v8 objectForKey:a3];
+  queryContextsByClass = [v7 queryContextsByClass];
+  v9 = [queryContextsByClass objectForKey:type];
 
   if (v9)
   {
-    v10 = [v9 performQueryOn:self properties:0 filter:v6];
+    v10 = [v9 performQueryOn:self properties:0 filter:filterCopy];
 
     return v10;
   }
@@ -5519,25 +5519,25 @@ uint64_t __38__HMBLocalZone_Queryable__fetchModels__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)queryModelsOfType:(Class)a3 predicate:(id)a4
+- (id)queryModelsOfType:(Class)type predicate:(id)predicate
 {
-  v6 = a4;
+  predicateCopy = predicate;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__HMBLocalZone_Queryable__queryModelsOfType_predicate___block_invoke;
   v10[3] = &unk_2786E19E8;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(HMBLocalZone *)self queryModelsOfType:a3 filter:v10];
+  v11 = predicateCopy;
+  v7 = predicateCopy;
+  v8 = [(HMBLocalZone *)self queryModelsOfType:type filter:v10];
 
   return v8;
 }
 
-- (BOOL)removeBlockWithRow:(unint64_t)a3 error:(id *)a4
+- (BOOL)removeBlockWithRow:(unint64_t)row error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -5545,18 +5545,18 @@ uint64_t __38__HMBLocalZone_Queryable__fetchModels__block_invoke(uint64_t a1, vo
     *buf = 138543618;
     v17 = v10;
     v18 = 2048;
-    v19 = a3;
+    rowCopy = row;
     _os_log_impl(&dword_22AD27000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Removing block with row %lu", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMBLocalZone *)v8 sql];
+  v11 = [(HMBLocalZone *)selfCopy sql];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__HMBLocalZone_Block__removeBlockWithRow_error___block_invoke;
   v15[3] = &__block_descriptor_40_e37___NSError_16__0__HMBLocalSQLContext_8l;
-  v15[4] = a3;
-  v12 = [v11 sqlBlockWithActivity:0 error:a4 block:v15];
+  v15[4] = row;
+  v12 = [v11 sqlBlockWithActivity:0 error:error block:v15];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
@@ -5579,9 +5579,9 @@ id __48__HMBLocalZone_Block__removeBlockWithRow_error___block_invoke(uint64_t a1
   return v7;
 }
 
-- (id)fetchItemsInBlock:(id)a3 error:(id *)a4
+- (id)fetchItemsInBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -5594,11 +5594,11 @@ id __48__HMBLocalZone_Block__removeBlockWithRow_error___block_invoke(uint64_t a1
   v11[2] = __47__HMBLocalZone_Block__fetchItemsInBlock_error___block_invoke;
   v11[3] = &unk_2786E2500;
   v13 = &v14;
-  v8 = v6;
+  v8 = blockCopy;
   v12 = v8;
-  LODWORD(a4) = [v7 sqlBlockWithActivity:0 error:a4 block:v11];
+  LODWORD(error) = [v7 sqlBlockWithActivity:0 error:error block:v11];
 
-  if (a4)
+  if (error)
   {
     v9 = v15[5];
   }
@@ -5629,7 +5629,7 @@ id __47__HMBLocalZone_Block__fetchItemsInBlock_error___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (id)fetchReadyBlocksWithType:(unint64_t)a3 error:(id *)a4
+- (id)fetchReadyBlocksWithType:(unint64_t)type error:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -5644,10 +5644,10 @@ id __47__HMBLocalZone_Block__fetchItemsInBlock_error___block_invoke(uint64_t a1,
   v10[3] = &unk_2786E2140;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a3;
-  LODWORD(a4) = [v7 sqlTransactionWithActivity:0 error:a4 block:v10];
+  v10[6] = type;
+  LODWORD(error) = [v7 sqlTransactionWithActivity:0 error:error block:v10];
 
-  if (a4)
+  if (error)
   {
     v8 = v12[5];
   }
@@ -5680,25 +5680,25 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
   return v8;
 }
 
-- (BOOL)_insertDeletionItemsForModelsAndDescendantModelsWithBlockRow:(unint64_t)a3 context:(id)a4 type:(unint64_t)a5 modelIDs:(id)a6 currentDepth:(unint64_t)a7 maximumDepth:(unint64_t)a8 options:(id)a9 error:(id *)a10
+- (BOOL)_insertDeletionItemsForModelsAndDescendantModelsWithBlockRow:(unint64_t)row context:(id)context type:(unint64_t)type modelIDs:(id)ds currentDepth:(unint64_t)depth maximumDepth:(unint64_t)maximumDepth options:(id)options error:(id *)self0
 {
   v67 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a6;
-  v43 = a9;
+  contextCopy = context;
+  dsCopy = ds;
+  optionsCopy = options;
   v46 = [MEMORY[0x277CBEB58] set];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v16 = v15;
+  v16 = dsCopy;
   v49 = [v16 countByEnumeratingWithState:&v52 objects:v66 count:16];
   if (v49)
   {
     v48 = *v53;
     v44 = v16;
-    v45 = a3;
-    v47 = self;
+    rowCopy = row;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v49; ++i)
@@ -5709,14 +5709,14 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
         }
 
         v18 = *(*(&v52 + 1) + 8 * i);
-        v19 = [(HMBLocalZone *)self zoneRow];
+        zoneRow = [(HMBLocalZone *)self zoneRow];
         v51 = 0;
-        v20 = [v14 _insertDeletionItemWithZoneRow:v19 blockRow:a3 type:a5 modelID:v18 error:&v51];
+        v20 = [contextCopy _insertDeletionItemWithZoneRow:zoneRow blockRow:row type:type modelID:v18 error:&v51];
         v21 = v51;
         if (!v20)
         {
           v34 = objc_autoreleasePoolPush();
-          v35 = self;
+          selfCopy2 = self;
           v36 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
@@ -5724,9 +5724,9 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
             *buf = 138544386;
             v57 = v37;
             v58 = 2048;
-            v59 = v45;
+            v59 = rowCopy;
             v60 = 2048;
-            v61 = a5;
+            typeCopy = type;
             v62 = 2112;
             v63 = v18;
             v64 = 2112;
@@ -5735,11 +5735,11 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
           }
 
           objc_autoreleasePoolPop(v34);
-          v32 = v43;
-          if (a10)
+          v32 = optionsCopy;
+          if (error)
           {
             v38 = v21;
-            *a10 = v21;
+            *error = v21;
           }
 
           v16 = v44;
@@ -5747,9 +5747,9 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
           goto LABEL_24;
         }
 
-        v22 = [(HMBLocalZone *)self zoneRow];
+        zoneRow2 = [(HMBLocalZone *)self zoneRow];
         v50 = v21;
-        v23 = [v14 _selectRecordsWithZoneRow:v22 parentModelID:v18 returning:0 error:&v50];
+        v23 = [contextCopy _selectRecordsWithZoneRow:zoneRow2 parentModelID:v18 returning:0 error:&v50];
         v24 = v50;
 
         if (v23)
@@ -5760,32 +5760,32 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
 
         else
         {
-          v26 = a5;
+          typeCopy2 = type;
           v27 = objc_autoreleasePoolPush();
-          v28 = self;
+          selfCopy3 = self;
           v29 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
-            v31 = v30 = v14;
+            v31 = v30 = contextCopy;
             *buf = 138543874;
             v57 = v31;
             v58 = 2112;
             v59 = v18;
             v60 = 2112;
-            v61 = v24;
+            typeCopy = v24;
             _os_log_impl(&dword_22AD27000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to select records with parentModelID: %@: %@", buf, 0x20u);
 
-            v14 = v30;
+            contextCopy = v30;
             v16 = v44;
           }
 
           objc_autoreleasePoolPop(v27);
-          a5 = v26;
-          a3 = v45;
+          type = typeCopy2;
+          row = rowCopy;
         }
 
-        self = v47;
+        self = selfCopy;
       }
 
       v49 = [v16 countByEnumeratingWithState:&v52 objects:v66 count:16];
@@ -5798,18 +5798,18 @@ id __54__HMBLocalZone_Block__fetchReadyBlocksWithType_error___block_invoke(void 
     }
   }
 
-  if (a7 >= a8)
+  if (depth >= maximumDepth)
   {
     v33 = 1;
-    v32 = v43;
+    v32 = optionsCopy;
   }
 
   else
   {
-    v32 = v43;
+    v32 = optionsCopy;
     if ([v46 count])
     {
-      v33 = [(HMBLocalZone *)self _insertDeletionItemsForModelsAndDescendantModelsWithBlockRow:a3 context:v14 type:a5 modelIDs:v46 currentDepth:a7 + 1 maximumDepth:a8 options:v43 error:a10];
+      v33 = [(HMBLocalZone *)self _insertDeletionItemsForModelsAndDescendantModelsWithBlockRow:row context:contextCopy type:type modelIDs:v46 currentDepth:depth + 1 maximumDepth:maximumDepth options:optionsCopy error:error];
     }
 
     else
@@ -5824,10 +5824,10 @@ LABEL_24:
   return v33;
 }
 
-- (unint64_t)insertBlockToRemoveModelsAndDescendantModelsWithType:(unint64_t)a3 modelIDs:(id)a4 depth:(unint64_t)a5 options:(id)a6 error:(id *)a7
+- (unint64_t)insertBlockToRemoveModelsAndDescendantModelsWithType:(unint64_t)type modelIDs:(id)ds depth:(unint64_t)depth options:(id)options error:(id *)error
 {
-  v12 = a4;
-  v13 = a6;
+  dsCopy = ds;
+  optionsCopy = options;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -5838,16 +5838,16 @@ LABEL_24:
   v19[2] = __105__HMBLocalZone_Block__insertBlockToRemoveModelsAndDescendantModelsWithType_modelIDs_depth_options_error___block_invoke;
   v19[3] = &unk_2786E2190;
   v22 = &v25;
-  v23 = a3;
+  typeCopy = type;
   v19[4] = self;
-  v15 = v12;
+  v15 = dsCopy;
   v20 = v15;
-  v24 = a5;
-  v16 = v13;
+  depthCopy = depth;
+  v16 = optionsCopy;
   v21 = v16;
-  LODWORD(a7) = [v14 sqlTransactionWithActivity:0 error:a7 block:v19];
+  LODWORD(error) = [v14 sqlTransactionWithActivity:0 error:error block:v19];
 
-  if (a7)
+  if (error)
   {
     v17 = v26[3];
   }
@@ -5892,10 +5892,10 @@ id __105__HMBLocalZone_Block__insertBlockToRemoveModelsAndDescendantModelsWithTy
   return v18;
 }
 
-- (unint64_t)insertBlockToRemoveChildModelsWithType:(unint64_t)a3 parentModelID:(id)a4 options:(id)a5 error:(id *)a6
+- (unint64_t)insertBlockToRemoveChildModelsWithType:(unint64_t)type parentModelID:(id)d options:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  optionsCopy = options;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -5906,15 +5906,15 @@ id __105__HMBLocalZone_Block__insertBlockToRemoveModelsAndDescendantModelsWithTy
   v17[2] = __90__HMBLocalZone_Block__insertBlockToRemoveChildModelsWithType_parentModelID_options_error___block_invoke;
   v17[3] = &unk_2786E2168;
   v20 = &v22;
-  v21 = a3;
+  typeCopy = type;
   v17[4] = self;
-  v13 = v10;
+  v13 = dCopy;
   v18 = v13;
-  v14 = v11;
+  v14 = optionsCopy;
   v19 = v14;
-  LODWORD(a6) = [v12 sqlTransactionWithActivity:0 error:a6 block:v17];
+  LODWORD(error) = [v12 sqlTransactionWithActivity:0 error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v15 = v23[3];
   }
@@ -5957,10 +5957,10 @@ id __90__HMBLocalZone_Block__insertBlockToRemoveChildModelsWithType_parentModelI
   return v16;
 }
 
-- (unint64_t)insertBlockToRemoveAllModelsWithType:(unint64_t)a3 modelTypes:(id)a4 options:(id)a5 error:(id *)a6
+- (unint64_t)insertBlockToRemoveAllModelsWithType:(unint64_t)type modelTypes:(id)types options:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  typesCopy = types;
+  optionsCopy = options;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -5971,15 +5971,15 @@ id __90__HMBLocalZone_Block__insertBlockToRemoveChildModelsWithType_parentModelI
   v17[2] = __85__HMBLocalZone_Block__insertBlockToRemoveAllModelsWithType_modelTypes_options_error___block_invoke;
   v17[3] = &unk_2786E2168;
   v20 = &v22;
-  v21 = a3;
+  typeCopy = type;
   v17[4] = self;
-  v13 = v10;
+  v13 = typesCopy;
   v18 = v13;
-  v14 = v11;
+  v14 = optionsCopy;
   v19 = v14;
-  LODWORD(a6) = [v12 sqlTransactionWithActivity:0 error:a6 block:v17];
+  LODWORD(error) = [v12 sqlTransactionWithActivity:0 error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v15 = v23[3];
   }
@@ -6054,10 +6054,10 @@ id __85__HMBLocalZone_Block__insertBlockToRemoveAllModelsWithType_modelTypes_opt
   return v20;
 }
 
-- (unint64_t)insertBlockWithType:(unint64_t)a3 options:(id)a4 items:(id)a5 error:(id *)a6
+- (unint64_t)insertBlockWithType:(unint64_t)type options:(id)options items:(id)items error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  itemsCopy = items;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -6068,15 +6068,15 @@ id __85__HMBLocalZone_Block__insertBlockToRemoveAllModelsWithType_modelTypes_opt
   v17[2] = __63__HMBLocalZone_Block__insertBlockWithType_options_items_error___block_invoke;
   v17[3] = &unk_2786E2168;
   v20 = &v22;
-  v21 = a3;
+  typeCopy = type;
   v17[4] = self;
-  v13 = v10;
+  v13 = optionsCopy;
   v18 = v13;
-  v14 = v11;
+  v14 = itemsCopy;
   v19 = v14;
-  LODWORD(a6) = [v12 sqlTransactionWithActivity:0 error:a6 block:v17];
+  LODWORD(error) = [v12 sqlTransactionWithActivity:0 error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v15 = v23[3];
   }
@@ -6106,7 +6106,7 @@ id __63__HMBLocalZone_Block__insertBlockWithType_options_items_error___block_inv
   return result;
 }
 
-- (id)createInputBlockWithType:(unint64_t)a3 error:(id *)a4
+- (id)createInputBlockWithType:(unint64_t)type error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -6119,17 +6119,17 @@ id __63__HMBLocalZone_Block__insertBlockWithType_options_items_error___block_inv
   v15[3] = &unk_2786E2140;
   v15[4] = self;
   v15[5] = &v16;
-  v15[6] = a3;
-  LODWORD(a4) = [v7 sqlBlockWithActivity:0 error:a4 block:v15];
+  v15[6] = type;
+  LODWORD(error) = [v7 sqlBlockWithActivity:0 error:error block:v15];
 
-  if (a4)
+  if (error)
   {
     v8 = [HMBLocalSQLContextInputBlock alloc];
     v9 = [(HMBLocalZone *)self sql];
-    v10 = [(HMBLocalZone *)self zoneID];
-    v11 = [v10 name];
-    v12 = [(HMBLocalZone *)self zoneRow];
-    v13 = [(HMBLocalSQLContextInputBlock *)v8 initWithOwner:v9 identifier:v11 zoneRow:v12 blockRow:v17[3] type:a3];
+    zoneID = [(HMBLocalZone *)self zoneID];
+    name = [zoneID name];
+    zoneRow = [(HMBLocalZone *)self zoneRow];
+    v13 = [(HMBLocalSQLContextInputBlock *)v8 initWithOwner:v9 identifier:name zoneRow:zoneRow blockRow:v17[3] type:type];
   }
 
   else
@@ -6156,7 +6156,7 @@ id __54__HMBLocalZone_Block__createInputBlockWithType_error___block_invoke(void 
   return result;
 }
 
-- (id)createOutputBlockWithError:(id *)a3
+- (id)createOutputBlockWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -6169,16 +6169,16 @@ id __54__HMBLocalZone_Block__createInputBlockWithType_error___block_invoke(void 
   v13[3] = &unk_2786E2500;
   v13[4] = self;
   v13[5] = &v14;
-  LODWORD(a3) = [v5 sqlBlockWithActivity:0 error:a3 block:v13];
+  LODWORD(error) = [v5 sqlBlockWithActivity:0 error:error block:v13];
 
-  if (a3)
+  if (error)
   {
     v6 = [HMBLocalSQLContextOutputBlock alloc];
     v7 = [(HMBLocalZone *)self sql];
-    v8 = [(HMBLocalZone *)self zoneID];
-    v9 = [v8 name];
-    v10 = [(HMBLocalZone *)self zoneRow];
-    v11 = [(HMBLocalSQLContextOutputBlock *)v6 initWithOwner:v7 identifier:v9 zoneRow:v10 blockRow:v15[3]];
+    zoneID = [(HMBLocalZone *)self zoneID];
+    name = [zoneID name];
+    zoneRow = [(HMBLocalZone *)self zoneRow];
+    v11 = [(HMBLocalSQLContextOutputBlock *)v6 initWithOwner:v7 identifier:name zoneRow:zoneRow blockRow:v15[3]];
   }
 
   else
@@ -6203,13 +6203,13 @@ id __50__HMBLocalZone_Block__createOutputBlockWithError___block_invoke(uint64_t 
   return result;
 }
 
-- (id)update:(id)a3 remove:(id)a4
+- (id)update:(id)update remove:(id)remove
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  removeCopy = remove;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -6217,21 +6217,21 @@ id __50__HMBLocalZone_Block__createOutputBlockWithError___block_invoke(uint64_t 
     *buf = 138543874;
     v45 = v11;
     v46 = 2112;
-    v47 = v6;
+    v47 = updateCopy;
     v48 = 2112;
-    v49 = v7;
+    v49 = removeCopy;
     _os_log_impl(&dword_22AD27000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Asked to update models: %@ remove model IDs: %@", buf, 0x20u);
   }
 
-  v32 = v7;
+  v32 = removeCopy;
 
   objc_autoreleasePoolPop(v8);
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(updateCopy, "count")}];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v13 = v6;
+  v13 = updateCopy;
   v14 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v14)
   {
@@ -6248,15 +6248,15 @@ id __50__HMBLocalZone_Block__createOutputBlockWithError___block_invoke(uint64_t 
         }
 
         v18 = *(*(&v39 + 1) + 8 * i);
-        v19 = [(HMBLocalZone *)v9 modelContainer];
+        modelContainer = [(HMBLocalZone *)selfCopy modelContainer];
         v38 = 0;
-        v20 = [v19 dataFromModel:v18 encoding:2 storageLocation:3 updatedModelIDs:0 error:&v38];
+        v20 = [modelContainer dataFromModel:v18 encoding:2 storageLocation:3 updatedModelIDs:0 error:&v38];
         v21 = v38;
 
         if (!v20)
         {
           v26 = objc_autoreleasePoolPush();
-          v27 = v9;
+          v27 = selfCopy;
           v28 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
@@ -6273,7 +6273,7 @@ id __50__HMBLocalZone_Block__createOutputBlockWithError___block_invoke(uint64_t 
           objc_autoreleasePoolPop(v26);
           v25 = v32;
           v13 = obj;
-          v23 = obj;
+          localDatabase = obj;
           goto LABEL_15;
         }
 
@@ -6292,17 +6292,17 @@ id __50__HMBLocalZone_Block__createOutputBlockWithError___block_invoke(uint64_t 
     }
   }
 
-  v23 = [(HMBLocalZone *)v9 localDatabase];
-  v24 = [v23 local];
+  localDatabase = [(HMBLocalZone *)selfCopy localDatabase];
+  local = [localDatabase local];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __37__HMBLocalZone_Model__update_remove___block_invoke;
   v34[3] = &unk_2786E2418;
   v35 = v12;
-  v36 = v9;
+  v36 = selfCopy;
   v25 = v32;
   v37 = v32;
-  v21 = [v24 sqlTransactionWithActivity:0 block:v34];
+  v21 = [local sqlTransactionWithActivity:0 block:v34];
 
 LABEL_15:
   v30 = *MEMORY[0x277D85DE8];
@@ -6434,30 +6434,30 @@ LABEL_21:
   return v27;
 }
 
-- (id)modelFromData:(id)a3 encoding:(unint64_t)a4 storageLocation:(unint64_t)a5 recordRowID:(unint64_t)a6 error:(id *)a7
+- (id)modelFromData:(id)data encoding:(unint64_t)encoding storageLocation:(unint64_t)location recordRowID:(unint64_t)d error:(id *)error
 {
-  v12 = a3;
-  v13 = [(HMBLocalZone *)self modelContainer];
-  v14 = [v13 modelFromData:v12 encoding:a4 storageLocation:a5 error:a7];
+  dataCopy = data;
+  modelContainer = [(HMBLocalZone *)self modelContainer];
+  v14 = [modelContainer modelFromData:dataCopy encoding:encoding storageLocation:location error:error];
 
-  [v14 setHmbRecordRow:a6];
+  [v14 setHmbRecordRow:d];
 
   return v14;
 }
 
-- (id)modelFromRecord:(id)a3 storageLocation:(unint64_t)a4 error:(id *)a5
+- (id)modelFromRecord:(id)record storageLocation:(unint64_t)location error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 modelData];
-  if (v8 && [v7 modelEncoding])
+  recordCopy = record;
+  modelData = [recordCopy modelData];
+  if (modelData && [recordCopy modelEncoding])
   {
-    v9 = -[HMBLocalZone modelFromData:encoding:storageLocation:recordRowID:error:](self, "modelFromData:encoding:storageLocation:recordRowID:error:", v8, [v7 modelEncoding], 2, objc_msgSend(v7, "recordRow"), a5);
+    v9 = -[HMBLocalZone modelFromData:encoding:storageLocation:recordRowID:error:](self, "modelFromData:encoding:storageLocation:recordRowID:error:", modelData, [recordCopy modelEncoding], 2, objc_msgSend(recordCopy, "recordRow"), error);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    *a5 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -6468,7 +6468,7 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)removeAllRecordsWithError:(id *)a3
+- (BOOL)removeAllRecordsWithError:(id *)error
 {
   v5 = [(HMBLocalZone *)self sql];
   v7[0] = MEMORY[0x277D85DD0];
@@ -6476,9 +6476,9 @@ LABEL_21:
   v7[2] = __59__HMBLocalZone_Record_Internal__removeAllRecordsWithError___block_invoke;
   v7[3] = &unk_2786E24B0;
   v7[4] = self;
-  LOBYTE(a3) = [v5 sqlTransactionWithActivity:0 error:a3 block:v7];
+  LOBYTE(error) = [v5 sqlTransactionWithActivity:0 error:error block:v7];
 
-  return a3;
+  return error;
 }
 
 id __59__HMBLocalZone_Record_Internal__removeAllRecordsWithError___block_invoke(uint64_t a1, void *a2)
@@ -6537,17 +6537,17 @@ void __59__HMBLocalZone_Record_Internal__removeAllRecordsWithError___block_invok
   objc_storeStrong((v7 + 40), obj);
 }
 
-- (id)setExternalID:(id)a3 externalData:(id)a4 forRecordRow:(unint64_t)a5
+- (id)setExternalID:(id)d externalData:(id)data forRecordRow:(unint64_t)row
 {
-  v7 = a3;
+  dCopy = d;
   v8 = [(HMBLocalZone *)self sql];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__HMBLocalZone_Record_Internal__setExternalID_externalData_forRecordRow___block_invoke;
   v12[3] = &unk_2786E2460;
-  v13 = v7;
-  v14 = a5;
-  v9 = v7;
+  v13 = dCopy;
+  rowCopy = row;
+  v9 = dCopy;
   v10 = [v8 sqlBlockWithActivity:0 block:v12];
 
   return v10;
@@ -6564,29 +6564,29 @@ id __73__HMBLocalZone_Record_Internal__setExternalID_externalData_forRecordRow__
   return v4;
 }
 
-- (id)queryAllRowRecordsReturning:(unint64_t)a3
+- (id)queryAllRowRecordsReturning:(unint64_t)returning
 {
   v5 = [(HMBLocalZone *)self sql];
-  v6 = [v5 selectAllRecordsWithZoneRow:-[HMBLocalZone zoneRow](self returning:{"zoneRow"), a3}];
+  v6 = [v5 selectAllRecordsWithZoneRow:-[HMBLocalZone zoneRow](self returning:{"zoneRow"), returning}];
 
   return v6;
 }
 
-- (id)fetchExternalIDsForModelIDs:(id)a3 error:(id *)a4
+- (id)fetchExternalIDsForModelIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  dsCopy = ds;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v8 = [(HMBLocalZone *)self sql];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__HMBLocalZone_Record_Internal__fetchExternalIDsForModelIDs_error___block_invoke;
   v15[3] = &unk_2786E2418;
-  v9 = v6;
+  v9 = dsCopy;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v10 = v7;
   v18 = v10;
-  LODWORD(v7) = [v8 sqlBlockWithActivity:0 error:a4 block:v15];
+  LODWORD(v7) = [v8 sqlBlockWithActivity:0 error:error block:v15];
 
   v11 = 0;
   if (v7)
@@ -6667,9 +6667,9 @@ id __67__HMBLocalZone_Record_Internal__fetchExternalIDsForModelIDs_error___block
   return v7;
 }
 
-- (id)fetchRecordRowWithExternalID:(id)a3 returning:(unint64_t)a4 error:(id *)a5
+- (id)fetchRecordRowWithExternalID:(id)d returning:(unint64_t)returning error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -6683,12 +6683,12 @@ id __67__HMBLocalZone_Record_Internal__fetchExternalIDsForModelIDs_error___block
   v13[3] = &unk_2786E23F0;
   v15 = &v17;
   v13[4] = self;
-  v10 = v8;
+  v10 = dCopy;
   v14 = v10;
-  v16 = a4;
-  LODWORD(a5) = [v9 sqlBlockWithActivity:0 error:a5 block:v13];
+  returningCopy = returning;
+  LODWORD(error) = [v9 sqlBlockWithActivity:0 error:error block:v13];
 
-  if (a5)
+  if (error)
   {
     v11 = v18[5];
   }
@@ -6722,9 +6722,9 @@ id __78__HMBLocalZone_Record_Internal__fetchRecordRowWithExternalID_returning_er
   return v9;
 }
 
-- (id)fetchRecordRowWithModelID:(id)a3 returning:(unint64_t)a4 error:(id *)a5
+- (id)fetchRecordRowWithModelID:(id)d returning:(unint64_t)returning error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -6738,12 +6738,12 @@ id __78__HMBLocalZone_Record_Internal__fetchRecordRowWithExternalID_returning_er
   v13[3] = &unk_2786E23F0;
   v15 = &v17;
   v13[4] = self;
-  v10 = v8;
+  v10 = dCopy;
   v14 = v10;
-  v16 = a4;
-  LODWORD(a5) = [v9 sqlBlockWithActivity:0 error:a5 block:v13];
+  returningCopy = returning;
+  LODWORD(error) = [v9 sqlBlockWithActivity:0 error:error block:v13];
 
-  if (a5)
+  if (error)
   {
     v11 = v18[5];
   }
@@ -6777,12 +6777,12 @@ id __75__HMBLocalZone_Record_Internal__fetchRecordRowWithModelID_returning_error
   return v9;
 }
 
-- (id)fetchModelWithModelID:(id)a3 recordRow:(unint64_t *)a4 error:(id *)a5
+- (id)fetchModelWithModelID:(id)d recordRow:(unint64_t *)row error:(id *)error
 {
-  v8 = a3;
-  if (a4)
+  dCopy = d;
+  if (row)
   {
-    *a4 = 0;
+    *row = 0;
   }
 
   v17 = 0;
@@ -6798,18 +6798,18 @@ id __75__HMBLocalZone_Record_Internal__fetchRecordRowWithModelID_returning_error
   v14[3] = &unk_2786E23C8;
   v16 = &v17;
   v14[4] = self;
-  v10 = v8;
+  v10 = dCopy;
   v15 = v10;
-  v11 = [v9 sqlBlockWithActivity:0 error:a5 block:v14];
+  v11 = [v9 sqlBlockWithActivity:0 error:error block:v14];
 
   if (v11)
   {
-    if (a4)
+    if (row)
     {
-      *a4 = [v18[5] recordRow];
+      *row = [v18[5] recordRow];
     }
 
-    v12 = [(HMBLocalZone *)self modelFromRecord:v18[5] storageLocation:2 error:a5];
+    v12 = [(HMBLocalZone *)self modelFromRecord:v18[5] storageLocation:2 error:error];
   }
 
   else
@@ -6840,7 +6840,7 @@ id __71__HMBLocalZone_Record_Internal__fetchModelWithModelID_recordRow_error___b
   return v8;
 }
 
-- (id)fetchModelWithRecordRow:(unint64_t)a3 error:(id *)a4
+- (id)fetchModelWithRecordRow:(unint64_t)row error:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -6854,12 +6854,12 @@ id __71__HMBLocalZone_Record_Internal__fetchModelWithModelID_recordRow_error___b
   v10[2] = __63__HMBLocalZone_Record_Internal__fetchModelWithRecordRow_error___block_invoke;
   v10[3] = &unk_2786E23A0;
   v10[4] = &v11;
-  v10[5] = a3;
-  LODWORD(a3) = [v7 sqlBlockWithActivity:0 error:a4 block:v10];
+  v10[5] = row;
+  LODWORD(row) = [v7 sqlBlockWithActivity:0 error:error block:v10];
 
-  if (a3)
+  if (row)
   {
-    v8 = [(HMBLocalZone *)self modelFromRecord:v12[5] storageLocation:2 error:a4];
+    v8 = [(HMBLocalZone *)self modelFromRecord:v12[5] storageLocation:2 error:error];
   }
 
   else
@@ -6886,9 +6886,9 @@ id __63__HMBLocalZone_Record_Internal__fetchModelWithRecordRow_error___block_inv
   return v5;
 }
 
-- (id)fetchModelsOfType:(Class)a3 error:(id *)a4
+- (id)fetchModelsOfType:(Class)type error:(id *)error
 {
-  v7 = NSStringFromClass(a3);
+  v7 = NSStringFromClass(type);
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -6904,11 +6904,11 @@ id __63__HMBLocalZone_Record_Internal__fetchModelWithRecordRow_error___block_inv
   v13[4] = self;
   v9 = v7;
   v14 = v9;
-  v10 = [v8 sqlBlockWithActivity:0 error:a4 block:v13];
+  v10 = [v8 sqlBlockWithActivity:0 error:error block:v13];
 
   if (v10)
   {
-    v11 = __modelsFromRecords(self, v17[5], a3, a4);
+    v11 = __modelsFromRecords(self, v17[5], type, error);
   }
 
   else
@@ -6939,7 +6939,7 @@ id __48__HMBLocalZone_Record__fetchModelsOfType_error___block_invoke(void *a1, v
   return v8;
 }
 
-- (id)fetchAllModelsWithError:(id *)a3
+- (id)fetchAllModelsWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -6954,11 +6954,11 @@ id __48__HMBLocalZone_Record__fetchModelsOfType_error___block_invoke(void *a1, v
   v9[3] = &unk_2786E2500;
   v9[4] = self;
   v9[5] = &v10;
-  v6 = [v5 sqlBlockWithActivity:0 error:a3 block:v9];
+  v6 = [v5 sqlBlockWithActivity:0 error:error block:v9];
 
   if (v6)
   {
-    v7 = __modelsFromRecords(self, v11[5], 0, a3);
+    v7 = __modelsFromRecords(self, v11[5], 0, error);
   }
 
   else
@@ -6987,9 +6987,9 @@ id __48__HMBLocalZone_Record__fetchAllModelsWithError___block_invoke(uint64_t a1
   return v6;
 }
 
-- (id)fetchModelsWithParentModelID:(id)a3 error:(id *)a4
+- (id)fetchModelsWithParentModelID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -7003,13 +7003,13 @@ id __48__HMBLocalZone_Record__fetchAllModelsWithError___block_invoke(uint64_t a1
   v12[3] = &unk_2786E23C8;
   v14 = &v15;
   v12[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
-  v9 = [v7 sqlBlockWithActivity:0 error:a4 block:v12];
+  v9 = [v7 sqlBlockWithActivity:0 error:error block:v12];
 
   if (v9)
   {
-    v10 = __modelsFromRecords(self, v16[5], 0, a4);
+    v10 = __modelsFromRecords(self, v16[5], 0, error);
   }
 
   else
@@ -7040,9 +7040,9 @@ id __59__HMBLocalZone_Record__fetchModelsWithParentModelID_error___block_invoke(
   return v8;
 }
 
-- (id)fetchModelsWithParentModelID:(id)a3 ofType:(Class)a4 error:(id *)a5
+- (id)fetchModelsWithParentModelID:(id)d ofType:(Class)type error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v21 = 0;
@@ -7058,15 +7058,15 @@ id __59__HMBLocalZone_Record__fetchModelsWithParentModelID_error___block_invoke(
   v17[3] = &unk_2786E24D8;
   v20 = &v21;
   v17[4] = self;
-  v12 = v8;
+  v12 = dCopy;
   v18 = v12;
   v13 = v10;
   v19 = v13;
-  v14 = [v11 sqlBlockWithActivity:0 error:a5 block:v17];
+  v14 = [v11 sqlBlockWithActivity:0 error:error block:v17];
 
   if (v14)
   {
-    v15 = __modelsFromRecords(self, v22[5], a4, a5);
+    v15 = __modelsFromRecords(self, v22[5], type, error);
   }
 
   else
@@ -7098,27 +7098,27 @@ id __66__HMBLocalZone_Record__fetchModelsWithParentModelID_ofType_error___block_
   return v9;
 }
 
-- (id)fetchModelWithModelID:(id)a3 ofType:(Class)a4 error:(id *)a5
+- (id)fetchModelWithModelID:(id)d ofType:(Class)type error:(id *)error
 {
-  v6 = [(HMBLocalZone *)self fetchModelWithModelID:a3 recordRow:0 error:?];
+  v6 = [(HMBLocalZone *)self fetchModelWithModelID:d recordRow:0 error:?];
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v7 = MEMORY[0x277CCA9B8];
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Model had unexpected type: %@", objc_opt_class()];
-      *a5 = [v7 hmfErrorWithCode:15 reason:v8];
+      *error = [v7 hmfErrorWithCode:15 reason:v8];
 
-      a5 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a5 = v6;
+    error = v6;
   }
 
-  return a5;
+  return error;
 }
 
 @end

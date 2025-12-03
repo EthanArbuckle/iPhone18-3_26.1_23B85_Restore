@@ -1,23 +1,23 @@
 @interface SPRVASResponse
-- (SPRVASResponse)initWithCoder:(id)a3;
-- (SPRVASResponse)initWithStatus:(unsigned __int16)a3 vasData:(id)a4 mobileToken:(id)a5;
+- (SPRVASResponse)initWithCoder:(id)coder;
+- (SPRVASResponse)initWithStatus:(unsigned __int16)status vasData:(id)data mobileToken:(id)token;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPRVASResponse
 
-- (SPRVASResponse)initWithStatus:(unsigned __int16)a3 vasData:(id)a4 mobileToken:(id)a5
+- (SPRVASResponse)initWithStatus:(unsigned __int16)status vasData:(id)data mobileToken:(id)token
 {
-  v8 = a4;
-  v9 = a5;
-  self->_status = a3;
+  dataCopy = data;
+  tokenCopy = token;
+  self->_status = status;
   vasData = self->_vasData;
-  self->_vasData = v8;
-  v11 = v8;
+  self->_vasData = dataCopy;
+  v11 = dataCopy;
 
   mobileToken = self->_mobileToken;
-  self->_mobileToken = v9;
+  self->_mobileToken = tokenCopy;
 
   return self;
 }
@@ -40,17 +40,17 @@
   return v12;
 }
 
-- (SPRVASResponse)initWithCoder:(id)a3
+- (SPRVASResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_status = objc_msgSend_decodeIntForKey_(v4, v5, @"status", v6, v7);
+  coderCopy = coder;
+  self->_status = objc_msgSend_decodeIntForKey_(coderCopy, v5, @"status", v6, v7);
   v8 = objc_opt_class();
-  v11 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"vasData", v10);
+  v11 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"vasData", v10);
   vasData = self->_vasData;
   self->_vasData = v11;
 
   v13 = objc_opt_class();
-  v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"mobileToken", v15);
+  v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"mobileToken", v15);
 
   mobileToken = self->_mobileToken;
   self->_mobileToken = v16;
@@ -58,13 +58,13 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v11 = a3;
-  objc_msgSend_encodeInt_forKey_(v11, v5, status, @"status", v6);
-  objc_msgSend_encodeObject_forKey_(v11, v7, self->_vasData, @"vasData", v8);
-  objc_msgSend_encodeObject_forKey_(v11, v9, self->_mobileToken, @"mobileToken", v10);
+  coderCopy = coder;
+  objc_msgSend_encodeInt_forKey_(coderCopy, v5, status, @"status", v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_vasData, @"vasData", v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_mobileToken, @"mobileToken", v10);
 }
 
 @end

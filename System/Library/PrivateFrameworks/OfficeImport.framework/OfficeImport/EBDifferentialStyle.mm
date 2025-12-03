@@ -1,65 +1,65 @@
 @interface EBDifferentialStyle
-+ (id)edDifferentialStyleFromXlDXf:(XlDXf *)a3 edResources:(id)a4;
-+ (unsigned)xlDXfBordersFlagsFromEDDifferentialStyle:(id)a3;
-+ (unsigned)xlDXfPatternFlagsFromEDDifferentialStyle:(id)a3;
++ (id)edDifferentialStyleFromXlDXf:(XlDXf *)xf edResources:(id)resources;
++ (unsigned)xlDXfBordersFlagsFromEDDifferentialStyle:(id)style;
++ (unsigned)xlDXfPatternFlagsFromEDDifferentialStyle:(id)style;
 @end
 
 @implementation EBDifferentialStyle
 
-+ (id)edDifferentialStyleFromXlDXf:(XlDXf *)a3 edResources:(id)a4
++ (id)edDifferentialStyleFromXlDXf:(XlDXf *)xf edResources:(id)resources
 {
-  v5 = a4;
+  resourcesCopy = resources;
   v6 = +[EDDifferentialStyle differentialStyle];
-  var3 = a3->var3;
+  var3 = xf->var3;
   if ((var3 & 2) != 0)
   {
-    v8 = [EBContentFormat edContentFormatFromXlDXfUserFmt:a3->var6 edResources:v5];
+    v8 = [EBContentFormat edContentFormatFromXlDXfUserFmt:xf->var6 edResources:resourcesCopy];
     [v6 setContentFormat:v8];
 
-    var3 = a3->var3;
+    var3 = xf->var3;
   }
 
   if ((var3 & 4) != 0)
   {
-    v9 = [EBFont edFontFromXlDXfFont:a3->var7 edResources:v5];
+    v9 = [EBFont edFontFromXlDXfFont:xf->var7 edResources:resourcesCopy];
     [v6 setFont:v9];
 
-    var3 = a3->var3;
+    var3 = xf->var3;
   }
 
   if ((var3 & 0x10) != 0)
   {
-    v10 = [EBBorders edBordersFromXlDXf:a3 edResources:v5];
+    v10 = [EBBorders edBordersFromXlDXf:xf edResources:resourcesCopy];
     [v6 setBorders:v10];
 
-    var3 = a3->var3;
+    var3 = xf->var3;
   }
 
   if ((var3 & 0x20) != 0)
   {
-    v11 = [EBFill edFillFromXlDXf:a3 edResources:v5];
+    v11 = [EBFill edFillFromXlDXf:xf edResources:resourcesCopy];
     [v6 setFill:v11];
   }
 
   return v6;
 }
 
-+ (unsigned)xlDXfPatternFlagsFromEDDifferentialStyle:(id)a3
++ (unsigned)xlDXfPatternFlagsFromEDDifferentialStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 fill];
+  styleCopy = style;
+  fill = [styleCopy fill];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 fill];
-    v7 = [v6 type];
-    v8 = [v6 foreColor];
+    fill2 = [styleCopy fill];
+    type = [fill2 type];
+    foreColor = [fill2 foreColor];
 
-    v9 = [v6 backColor];
-    v10 = v9;
-    if (v7)
+    backColor = [fill2 backColor];
+    v10 = backColor;
+    if (type)
     {
       v11 = 62;
     }
@@ -69,7 +69,7 @@
       v11 = 63;
     }
 
-    if (v8)
+    if (foreColor)
     {
       v12 = v11 & 0x3D;
     }
@@ -93,22 +93,22 @@
   return v12;
 }
 
-+ (unsigned)xlDXfBordersFlagsFromEDDifferentialStyle:(id)a3
++ (unsigned)xlDXfBordersFlagsFromEDDifferentialStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 borders];
-  v5 = [v4 leftBorder];
+  styleCopy = style;
+  borders = [styleCopy borders];
+  leftBorder = [borders leftBorder];
 
-  v6 = [v3 borders];
-  v7 = [v6 rightBorder];
+  borders2 = [styleCopy borders];
+  rightBorder = [borders2 rightBorder];
 
-  v8 = [v3 borders];
-  v9 = [v8 topBorder];
+  borders3 = [styleCopy borders];
+  topBorder = [borders3 topBorder];
 
-  v10 = [v3 borders];
-  v11 = [v10 bottomBorder];
-  v12 = v11;
-  if (v5)
+  borders4 = [styleCopy borders];
+  bottomBorder = [borders4 bottomBorder];
+  v12 = bottomBorder;
+  if (leftBorder)
   {
     v13 = -5;
   }
@@ -118,12 +118,12 @@
     v13 = -1;
   }
 
-  if (v7)
+  if (rightBorder)
   {
     v13 &= ~8u;
   }
 
-  if (v9)
+  if (topBorder)
   {
     v14 = v13 & 0xEF;
   }

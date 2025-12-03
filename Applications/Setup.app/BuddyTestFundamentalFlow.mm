@@ -2,11 +2,11 @@
 + (id)allowedFlowItems;
 + (id)classes;
 - (BuddyTestFundamentalFlow)init;
-- (BuddyTestFundamentalFlow)initWithClasses:(id)a3;
+- (BuddyTestFundamentalFlow)initWithClasses:(id)classes;
 - (Class)initialFlowItemClass;
-- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)a3;
-- (void)configureFlowItem:(id)a3;
-- (void)prepareWithCompletion:(id)a3;
+- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)class;
+- (void)configureFlowItem:(id)item;
+- (void)prepareWithCompletion:(id)completion;
 @end
 
 @implementation BuddyTestFundamentalFlow
@@ -22,21 +22,21 @@
   return v4;
 }
 
-- (BuddyTestFundamentalFlow)initWithClasses:(id)a3
+- (BuddyTestFundamentalFlow)initWithClasses:(id)classes
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v18;
-  v18 = 0;
+  objc_storeStrong(location, classes);
+  v3 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v3;
   v16.super_class = BuddyTestFundamentalFlow;
-  v18 = [(BuddyTestFundamentalFlow *)&v16 init];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyTestFundamentalFlow *)&v16 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v18 + 2, location[0]);
+    objc_storeStrong(selfCopy + 2, location[0]);
     v15 = 0;
     obj = objc_alloc_init(NSMutableDictionary);
     memset(__b, 0, sizeof(__b));
@@ -72,20 +72,20 @@
       while (v5);
     }
 
-    objc_storeStrong(v18 + 3, obj);
+    objc_storeStrong(selfCopy + 3, obj);
     objc_storeStrong(&obj, 0);
     objc_storeStrong(&v15, 0);
   }
 
-  v10 = v18;
+  v10 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
 + (id)classes
 {
-  v12[2] = a1;
+  v12[2] = self;
   v12[1] = a2;
   v2 = +[BYPreferencesController buddyPreferencesInternal];
   v12[0] = [v2 objectForKey:@"DebugFlowItemClassNames"];
@@ -122,12 +122,12 @@
   return v7;
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   if (location[0])
   {
     (*(location[0] + 2))();
@@ -138,16 +138,16 @@
 
 - (Class)initialFlowItemClass
 {
-  v2 = [(BuddyTestFundamentalFlow *)self classes];
-  v8 = [(NSArray *)v2 firstObject];
+  classes = [(BuddyTestFundamentalFlow *)self classes];
+  firstObject = [(NSArray *)classes firstObject];
 
   v6 = 0;
   v3 = 0;
-  if (v8)
+  if (firstObject)
   {
-    v7 = [(BuddyTestFundamentalFlow *)self willSupplyInitialFlowItemClass];
+    willSupplyInitialFlowItemClass = [(BuddyTestFundamentalFlow *)self willSupplyInitialFlowItemClass];
     v6 = 1;
-    v3 = v7 != 0;
+    v3 = willSupplyInitialFlowItemClass != 0;
   }
 
   if (v6)
@@ -156,27 +156,27 @@
 
   if (v3)
   {
-    v4 = [(BuddyTestFundamentalFlow *)self willSupplyInitialFlowItemClass];
-    v4[2](v4, v8);
+    willSupplyInitialFlowItemClass2 = [(BuddyTestFundamentalFlow *)self willSupplyInitialFlowItemClass];
+    willSupplyInitialFlowItemClass2[2](willSupplyInitialFlowItemClass2, firstObject);
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (void)configureFlowItem:(id)a3
+- (void)configureFlowItem:(id)item
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   objc_storeStrong(location, 0);
 }
 
-- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)a3
+- (Class)potentialNextFlowItemClassFollowingFlowItemClass:(Class)class
 {
-  v3 = [(BuddyTestFundamentalFlow *)self nextClassByCurrentClassNameMap];
-  v4 = NSStringFromClass(a3);
-  v5 = [(NSDictionary *)v3 objectForKeyedSubscript:v4];
+  nextClassByCurrentClassNameMap = [(BuddyTestFundamentalFlow *)self nextClassByCurrentClassNameMap];
+  v4 = NSStringFromClass(class);
+  v5 = [(NSDictionary *)nextClassByCurrentClassNameMap objectForKeyedSubscript:v4];
 
   return v5;
 }

@@ -1,17 +1,17 @@
 @interface MTATimerRecentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 @end
 
 @implementation MTATimerRecentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTATimerRecentView" hasInstanceMethod:@"durationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTATimerRecentView" hasInstanceMethod:@"controlButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTATimerRecentView" hasInstanceMethod:@"duration" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTATimerRecentView" hasInstanceMethod:@"durationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTATimerRecentView" hasInstanceMethod:@"controlButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTATimerRecentView" hasInstanceMethod:@"duration" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -21,7 +21,7 @@
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [(MTATimerRecentViewAccessibility *)self safeUIViewForKey:@"durationLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
   [v4 duration];
   v9 = AXDurationStringForDuration();
   v7 = __AXStringForVariables();

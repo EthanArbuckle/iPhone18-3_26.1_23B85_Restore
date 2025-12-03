@@ -13,27 +13,27 @@
 - (NSArray)allWorkAddresses;
 - (NSArray)properties;
 - (NSURL)meCardPunchOutURL;
-- (id)_contactWithCacheIdentifier:(id)a3 predicate:(id)a4;
-- (id)addressForAddressObject:(id)a3;
-- (id)addressForIdentifier:(id)a3;
-- (id)contactForCNContactIdentifier:(id)a3;
-- (id)contactForRecordId:(int)a3;
-- (id)contactWithEmailAddress:(id)a3;
-- (id)contactWithPhoneNumber:(id)a3;
-- (id)mapItemFormShortcutForCNIdentifier:(id)a3;
-- (id)senderNameForAddress:(id)a3 ofType:(id)a4;
-- (id)spokenContactNameForAddress:(id)a3 ofType:(id)a4;
+- (id)_contactWithCacheIdentifier:(id)identifier predicate:(id)predicate;
+- (id)addressForAddressObject:(id)object;
+- (id)addressForIdentifier:(id)identifier;
+- (id)contactForCNContactIdentifier:(id)identifier;
+- (id)contactForRecordId:(int)id;
+- (id)contactWithEmailAddress:(id)address;
+- (id)contactWithPhoneNumber:(id)number;
+- (id)mapItemFormShortcutForCNIdentifier:(id)identifier;
+- (id)senderNameForAddress:(id)address ofType:(id)type;
+- (id)spokenContactNameForAddress:(id)address ofType:(id)type;
 - (void)_cancelAddressCollectionTimerIfNeeded;
-- (void)_deferredAddressCollectionTimerFired:(id)a3;
-- (void)_enumerateContactsWithAddress:(id)a3 ofType:(id)a4 handler:(id)a5;
-- (void)_updateStoreWithCoalescing:(BOOL)a3;
+- (void)_deferredAddressCollectionTimerFired:(id)fired;
+- (void)_enumerateContactsWithAddress:(id)address ofType:(id)type handler:(id)handler;
+- (void)_updateStoreWithCoalescing:(BOOL)coalescing;
 - (void)collectAddresses;
-- (void)createMeCardWithContact:(id)a3 completion:(id)a4;
-- (void)performBlockAfterFirstCollection:(id)a3;
+- (void)createMeCardWithContact:(id)contact completion:(id)completion;
+- (void)performBlockAfterFirstCollection:(id)collection;
 - (void)setNeedsAddressCollection;
-- (void)updateContact:(id)a3 completion:(id)a4;
-- (void)updateStore:(id)a3;
-- (void)updateStoreImmediately:(id)a3;
+- (void)updateContact:(id)contact completion:(id)completion;
+- (void)updateStore:(id)store;
+- (void)updateStoreImmediately:(id)immediately;
 @end
 
 @implementation AddressBookManager
@@ -125,10 +125,10 @@ LABEL_8:
   v3 = sub_10006515C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -136,21 +136,21 @@ LABEL_8:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(AddressBookManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ([v7 isEqualToString:v6] & 1) == 0)
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v10 = v9;
+    v10 = selfCopy;
     GEOConfigGetDouble();
     *buf = 138543618;
     v21 = v10;
@@ -194,28 +194,28 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(AddressBookManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
-    v10 = [(GCDTimer *)self->_deferredAddressCollectionTimer fireDate];
-    [v10 timeIntervalSinceNow];
+    fireDate = [(GCDTimer *)self->_deferredAddressCollectionTimer fireDate];
+    [fireDate timeIntervalSinceNow];
     *buf = 138543618;
-    v14 = v9;
+    v14 = selfCopy;
     v15 = 2048;
     v16 = v11;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] cancelling previous deferred address collection timer (had %#.1lfs to go)", buf, 0x16u);
@@ -229,17 +229,17 @@ LABEL_10:
 
 - (AddressBookAddress)meCardSchoolAddress
 {
-  v2 = [(AddressBookManager *)self allSchoolAddresses];
-  v3 = [v2 firstObject];
+  allSchoolAddresses = [(AddressBookManager *)self allSchoolAddresses];
+  firstObject = [allSchoolAddresses firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)allSchoolAddresses
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSDictionary *)self->_schoolAddresses allValues];
-  v4 = [v3 copy];
+  allValues = [(NSDictionary *)self->_schoolAddresses allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -248,17 +248,17 @@ LABEL_10:
 
 - (AddressBookAddress)meCardWorkAddress
 {
-  v2 = [(AddressBookManager *)self allWorkAddresses];
-  v3 = [v2 firstObject];
+  allWorkAddresses = [(AddressBookManager *)self allWorkAddresses];
+  firstObject = [allWorkAddresses firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)allWorkAddresses
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSDictionary *)self->_workAddresses allValues];
-  v4 = [v3 copy];
+  allValues = [(NSDictionary *)self->_workAddresses allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -267,27 +267,27 @@ LABEL_10:
 
 - (AddressBookAddress)meCardHomeAddress
 {
-  v2 = [(AddressBookManager *)self allHomeAddresses];
-  v3 = [v2 firstObject];
+  allHomeAddresses = [(AddressBookManager *)self allHomeAddresses];
+  firstObject = [allHomeAddresses firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)allHomeAddresses
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSDictionary *)self->_homeAddresses allValues];
-  v4 = [v3 copy];
+  allValues = [(NSDictionary *)self->_homeAddresses allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (id)addressForAddressObject:(id)a3
+- (id)addressForAddressObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v36 = 0;
     goto LABEL_44;
@@ -297,13 +297,13 @@ LABEL_10:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v5 = [(NSDictionary *)self->_homeAddresses allValues];
-  v57[0] = v5;
-  v6 = [(NSDictionary *)self->_workAddresses allValues];
-  v57[1] = v6;
-  v40 = self;
-  v7 = [(NSDictionary *)self->_schoolAddresses allValues];
-  v57[2] = v7;
+  allValues = [(NSDictionary *)self->_homeAddresses allValues];
+  v57[0] = allValues;
+  allValues2 = [(NSDictionary *)self->_workAddresses allValues];
+  v57[1] = allValues2;
+  selfCopy = self;
+  allValues3 = [(NSDictionary *)self->_schoolAddresses allValues];
+  v57[2] = allValues3;
   v8 = [NSArray arrayWithObjects:v57 count:3];
 
   v39 = [v8 countByEnumeratingWithState:&v46 objects:v58 count:16];
@@ -342,20 +342,20 @@ LABEL_10:
               }
 
               v17 = *(*(&v42 + 1) + 8 * j);
-              v18 = [v17 geocodedMapItem];
+              geocodedMapItem = [v17 geocodedMapItem];
 
-              if (v18)
+              if (geocodedMapItem)
               {
-                v19 = [v17 geocodedMapItem];
-                v20 = [v19 _geoMapItem];
-                v21 = [v20 addressObject];
+                geocodedMapItem2 = [v17 geocodedMapItem];
+                _geoMapItem = [geocodedMapItem2 _geoMapItem];
+                addressObject = [_geoMapItem addressObject];
 
-                if (v21 && [v21 isEqual:v4])
+                if (addressObject && [addressObject isEqual:objectCopy])
                 {
                   v29 = sub_10006515C();
                   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
                   {
-                    v30 = v40;
+                    v30 = selfCopy;
                     if (v30)
                     {
                       v31 = objc_opt_class();
@@ -388,7 +388,7 @@ LABEL_34:
                     *buf = 138543875;
                     v51 = v35;
                     v52 = 2113;
-                    v53 = v4;
+                    v53 = objectCopy;
                     v54 = 2113;
                     v55 = v17;
                     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[%{public}@] found match for address object %{private}@: %{private}@", buf, 0x20u);
@@ -424,7 +424,7 @@ LABEL_34:
   v22 = sub_10006515C();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = v40;
+    v23 = selfCopy;
     if (!v23)
     {
       v28 = @"<nil>";
@@ -452,7 +452,7 @@ LABEL_41:
     *buf = 138543619;
     v51 = v28;
     v52 = 2113;
-    v53 = v4;
+    v53 = objectCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}@] no match found for address object %{private}@", buf, 0x16u);
   }
 
@@ -464,10 +464,10 @@ LABEL_44:
   return v36;
 }
 
-- (id)addressForIdentifier:(id)a3
+- (id)addressForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v11 = 0;
     goto LABEL_24;
@@ -494,7 +494,7 @@ LABEL_44:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) objectForKeyedSubscript:v4];
+        v10 = [*(*(&v20 + 1) + 8 * i) objectForKeyedSubscript:identifierCopy];
         if (v10)
         {
           v11 = v10;
@@ -518,10 +518,10 @@ LABEL_12:
   v12 = sub_10006515C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = self;
-    if (!v13)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v18 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_22;
     }
 
@@ -529,24 +529,24 @@ LABEL_12:
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(AddressBookManager *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
         goto LABEL_19;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_19:
 
 LABEL_22:
     *buf = 138543875;
-    v25 = v18;
+    v25 = selfCopy;
     v26 = 2113;
-    v27 = v4;
+    v27 = identifierCopy;
     v28 = 2113;
     v29 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}@] found match for %{private}@: %{private}@", buf, 0x20u);
@@ -557,11 +557,11 @@ LABEL_24:
   return v11;
 }
 
-- (void)_enumerateContactsWithAddress:(id)a3 ofType:(id)a4 handler:(id)a5
+- (void)_enumerateContactsWithAddress:(id)address ofType:(id)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  typeCopy = type;
+  handlerCopy = handler;
   if (!+[AddressBookManager addressBookAllowed])
   {
     goto LABEL_18;
@@ -570,10 +570,10 @@ LABEL_24:
   v11 = sub_10006515C();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = self;
-    if (!v12)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v17 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -581,41 +581,41 @@ LABEL_24:
     v14 = NSStringFromClass(v13);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(AddressBookManager *)v12 performSelector:"accessibilityIdentifier"];
+      v15 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v16 = v15;
       if (v15 && ![v15 isEqualToString:v14])
       {
-        v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
         goto LABEL_9;
       }
     }
 
-    v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_9:
 
 LABEL_11:
     *buf = 138543875;
-    v26 = v17;
+    v26 = selfCopy;
     v27 = 2113;
-    v28 = v8;
+    v28 = addressCopy;
     v29 = 2113;
-    v30 = v9;
+    v30 = typeCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] will enumerate contacts with address %{private}@, type %{private}@...", buf, 0x20u);
   }
 
   v18 = [CNContactFetchRequest alloc];
-  v19 = [(AddressBookManager *)self properties];
-  v20 = [v18 initWithKeysToFetch:v19];
+  properties = [(AddressBookManager *)self properties];
+  v20 = [v18 initWithKeysToFetch:properties];
 
-  if ([v9 isEqualToString:CNContactEmailAddressesKey])
+  if ([typeCopy isEqualToString:CNContactEmailAddressesKey])
   {
-    v21 = [CNContact predicateForContactsMatchingEmailAddress:v8];
+    v21 = [CNContact predicateForContactsMatchingEmailAddress:addressCopy];
   }
 
-  else if ([v9 isEqualToString:CNContactPhoneNumbersKey])
+  else if ([typeCopy isEqualToString:CNContactPhoneNumbersKey])
   {
-    v22 = [CNPhoneNumber phoneNumberWithStringValue:v8];
+    v22 = [CNPhoneNumber phoneNumberWithStringValue:addressCopy];
     v21 = [CNContact predicateForContactsMatchingPhoneNumber:v22];
   }
 
@@ -626,17 +626,17 @@ LABEL_11:
 
   [v20 setPredicate:v21];
   [v20 setSortOrder:1];
-  v23 = [(AddressBookManager *)self contactStore];
+  contactStore = [(AddressBookManager *)self contactStore];
   v24 = 0;
-  [v23 enumerateContactsWithFetchRequest:v20 error:&v24 usingBlock:v10];
+  [contactStore enumerateContactsWithFetchRequest:v20 error:&v24 usingBlock:handlerCopy];
 
 LABEL_18:
 }
 
-- (id)spokenContactNameForAddress:(id)a3 ofType:(id)a4
+- (id)spokenContactNameForAddress:(id)address ofType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  typeCopy = type;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -648,14 +648,14 @@ LABEL_18:
   v18[2] = sub_10076EBD4;
   v18[3] = &unk_101628700;
   v18[4] = &v19;
-  [(AddressBookManager *)self _enumerateContactsWithAddress:v6 ofType:v7 handler:v18];
+  [(AddressBookManager *)self _enumerateContactsWithAddress:addressCopy ofType:typeCopy handler:v18];
   v8 = sub_10006515C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -663,29 +663,29 @@ LABEL_18:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(AddressBookManager *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ([v12 isEqualToString:v11] & 1) == 0)
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_8;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
 LABEL_10:
     v15 = v20[5];
     *buf = 138544131;
-    v26 = v14;
+    v26 = selfCopy;
     v27 = 2113;
     v28 = v15;
     v29 = 2113;
-    v30 = v6;
+    v30 = addressCopy;
     v31 = 2113;
-    v32 = v7;
+    v32 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] resolved spoken name %{private}@ for address %{private}@, type %{private}@", buf, 0x2Au);
   }
 
@@ -695,10 +695,10 @@ LABEL_10:
   return v16;
 }
 
-- (id)senderNameForAddress:(id)a3 ofType:(id)a4
+- (id)senderNameForAddress:(id)address ofType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  typeCopy = type;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -710,14 +710,14 @@ LABEL_10:
   v18[2] = sub_10076EED8;
   v18[3] = &unk_101628700;
   v18[4] = &v19;
-  [(AddressBookManager *)self _enumerateContactsWithAddress:v6 ofType:v7 handler:v18];
+  [(AddressBookManager *)self _enumerateContactsWithAddress:addressCopy ofType:typeCopy handler:v18];
   v8 = sub_10006515C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -725,29 +725,29 @@ LABEL_10:
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(AddressBookManager *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ([v12 isEqualToString:v11] & 1) == 0)
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_8;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
 LABEL_10:
     v15 = v20[5];
     *buf = 138544131;
-    v26 = v14;
+    v26 = selfCopy;
     v27 = 2113;
     v28 = v15;
     v29 = 2113;
-    v30 = v6;
+    v30 = addressCopy;
     v31 = 2113;
-    v32 = v7;
+    v32 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] resolved sender name %{private}@ for address %{private}@, type %{private}@", buf, 0x2Au);
   }
 
@@ -757,11 +757,11 @@ LABEL_10:
   return v16;
 }
 
-- (id)_contactWithCacheIdentifier:(id)a3 predicate:(id)a4
+- (id)_contactWithCacheIdentifier:(id)identifier predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     if (+[AddressBookManager addressBookAllowed])
     {
@@ -772,9 +772,9 @@ LABEL_10:
       *(&v58 + 1) = sub_10076EBCC;
       v59 = 0;
       os_unfair_lock_lock(&self->_lock);
-      if (v6)
+      if (identifierCopy)
       {
-        v8 = [(NSMutableDictionary *)self->_contactCache objectForKeyedSubscript:v6];
+        v8 = [(NSMutableDictionary *)self->_contactCache objectForKeyedSubscript:identifierCopy];
         v9 = *(*&v57[8] + 40);
         *(*&v57[8] + 40) = v8;
       }
@@ -796,10 +796,10 @@ LABEL_53:
           goto LABEL_65;
         }
 
-        v13 = self;
-        if (!v13)
+        selfCopy = self;
+        if (!selfCopy)
         {
-          v18 = @"<nil>";
+          selfCopy = @"<nil>";
           goto LABEL_23;
         }
 
@@ -807,24 +807,24 @@ LABEL_53:
         v15 = NSStringFromClass(v14);
         if (objc_opt_respondsToSelector())
         {
-          v16 = [(AddressBookManager *)v13 performSelector:"accessibilityIdentifier"];
+          v16 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
           v17 = v16;
           if (v16 && ([v16 isEqualToString:v15] & 1) == 0)
           {
-            v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+            selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
             goto LABEL_13;
           }
         }
 
-        v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_13:
 
 LABEL_23:
         *buf = 138543618;
-        v54 = v18;
+        v54 = selfCopy;
         v55 = 2114;
-        v56 = v6;
+        v56 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] fetched cached contact with identifier %{public}@", buf, 0x16u);
 
         goto LABEL_24;
@@ -835,25 +835,25 @@ LABEL_23:
 LABEL_27:
 
         v26 = [CNContactFetchRequest alloc];
-        v27 = [(AddressBookManager *)self properties];
-        v28 = [v26 initWithKeysToFetch:v27];
+        properties = [(AddressBookManager *)self properties];
+        v28 = [v26 initWithKeysToFetch:properties];
 
-        [v28 setPredicate:v7];
+        [v28 setPredicate:predicateCopy];
         [v28 setSortOrder:1];
-        v29 = [(AddressBookManager *)self contactStore];
+        contactStore = [(AddressBookManager *)self contactStore];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = sub_10076F758;
         v51[3] = &unk_101628700;
         v51[4] = v57;
         v52 = 0;
-        [v29 enumerateContactsWithFetchRequest:v28 error:&v52 usingBlock:v51];
+        [contactStore enumerateContactsWithFetchRequest:v28 error:&v52 usingBlock:v51];
         v30 = v52;
 
         v31 = *(*&v57[8] + 40);
         v32 = sub_10006515C();
         v33 = os_log_type_enabled(v32, OS_LOG_TYPE_INFO);
-        v34 = v6 == 0;
+        v34 = identifierCopy == 0;
         if (!v31)
         {
           v34 = 1;
@@ -866,7 +866,7 @@ LABEL_27:
 LABEL_48:
 
             os_unfair_lock_lock(&self->_lock);
-            [(NSMutableDictionary *)self->_contactCache setObject:*(*&v57[8] + 40) forKeyedSubscript:v6];
+            [(NSMutableDictionary *)self->_contactCache setObject:*(*&v57[8] + 40) forKeyedSubscript:identifierCopy];
             os_unfair_lock_unlock(&self->_lock);
 LABEL_52:
             v25 = *(*&v57[8] + 40);
@@ -874,10 +874,10 @@ LABEL_52:
             goto LABEL_53;
           }
 
-          v35 = self;
-          if (!v35)
+          selfCopy2 = self;
+          if (!selfCopy2)
           {
-            v40 = @"<nil>";
+            selfCopy2 = @"<nil>";
             goto LABEL_47;
           }
 
@@ -885,24 +885,24 @@ LABEL_52:
           v37 = NSStringFromClass(v36);
           if (objc_opt_respondsToSelector())
           {
-            v38 = [(AddressBookManager *)v35 performSelector:"accessibilityIdentifier"];
+            v38 = [(AddressBookManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
             v39 = v38;
             if (v38 && ([v38 isEqualToString:v37] & 1) == 0)
             {
-              v40 = [NSString stringWithFormat:@"%@<%p, %@>", v37, v35, v39];
+              selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v37, selfCopy2, v39];
 
               goto LABEL_37;
             }
           }
 
-          v40 = [NSString stringWithFormat:@"%@<%p>", v37, v35];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v37, selfCopy2];
 LABEL_37:
 
 LABEL_47:
           *buf = 138543618;
-          v54 = v40;
+          v54 = selfCopy2;
           v55 = 2114;
-          v56 = v6;
+          v56 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "[%{public}@] will cache contact with identifier %{public}@", buf, 0x16u);
 
           goto LABEL_48;
@@ -915,10 +915,10 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        v41 = self;
-        if (!v41)
+        selfCopy3 = self;
+        if (!selfCopy3)
         {
-          v46 = @"<nil>";
+          selfCopy3 = @"<nil>";
           goto LABEL_50;
         }
 
@@ -926,33 +926,33 @@ LABEL_51:
         v43 = NSStringFromClass(v42);
         if (objc_opt_respondsToSelector())
         {
-          v44 = [(AddressBookManager *)v41 performSelector:"accessibilityIdentifier"];
+          v44 = [(AddressBookManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
           v45 = v44;
           if (v44 && ([v44 isEqualToString:v43] & 1) == 0)
           {
-            v46 = [NSString stringWithFormat:@"%@<%p, %@>", v43, v41, v45];
+            selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v43, selfCopy3, v45];
 
             goto LABEL_45;
           }
         }
 
-        v46 = [NSString stringWithFormat:@"%@<%p>", v43, v41];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v43, selfCopy3];
 LABEL_45:
 
 LABEL_50:
         *buf = 138543618;
-        v54 = v46;
+        v54 = selfCopy3;
         v55 = 2114;
-        v56 = v6;
+        v56 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "[%{public}@] no contact found for identifier %{public}@", buf, 0x16u);
 
         goto LABEL_51;
       }
 
-      v19 = self;
-      if (!v19)
+      selfCopy4 = self;
+      if (!selfCopy4)
       {
-        v24 = @"<nil>";
+        selfCopy4 = @"<nil>";
         goto LABEL_26;
       }
 
@@ -960,24 +960,24 @@ LABEL_50:
       v21 = NSStringFromClass(v20);
       if (objc_opt_respondsToSelector())
       {
-        v22 = [(AddressBookManager *)v19 performSelector:"accessibilityIdentifier"];
+        v22 = [(AddressBookManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
         v23 = v22;
         if (v22 && ([v22 isEqualToString:v21] & 1) == 0)
         {
-          v24 = [NSString stringWithFormat:@"%@<%p, %@>", v21, v19, v23];
+          selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v21, selfCopy4, v23];
 
           goto LABEL_21;
         }
       }
 
-      v24 = [NSString stringWithFormat:@"%@<%p>", v21, v19];
+      selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v21, selfCopy4];
 LABEL_21:
 
 LABEL_26:
       *buf = 138543618;
-      v54 = v24;
+      v54 = selfCopy4;
       v55 = 2114;
-      v56 = v6;
+      v56 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] need to fetch uncached contact with identifier %{public}@", buf, 0x16u);
 
       goto LABEL_27;
@@ -1019,10 +1019,10 @@ LABEL_65:
   return v25;
 }
 
-- (id)contactWithPhoneNumber:(id)a3
+- (id)contactWithPhoneNumber:(id)number
 {
-  v4 = a3;
-  if (!v4)
+  numberCopy = number;
+  if (!numberCopy)
   {
     v16 = sub_10006D178();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1051,7 +1051,7 @@ LABEL_65:
     }
   }
 
-  if (![v4 length])
+  if (![numberCopy length])
   {
     v12 = 0;
     goto LABEL_15;
@@ -1060,10 +1060,10 @@ LABEL_65:
   v5 = sub_10006515C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_13;
     }
 
@@ -1071,40 +1071,40 @@ LABEL_65:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_10;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_10:
 
 LABEL_13:
     *buf = 138543619;
-    v20 = v11;
+    v20 = selfCopy;
     v21 = 2113;
-    v22 = v4;
+    v22 = numberCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] will fetch contact for phone %{private}@", buf, 0x16u);
   }
 
-  v13 = [CNPhoneNumber phoneNumberWithStringValue:v4];
+  v13 = [CNPhoneNumber phoneNumberWithStringValue:numberCopy];
   v14 = [CNContact predicateForContactsMatchingPhoneNumber:v13];
-  v12 = [(AddressBookManager *)self _contactWithCacheIdentifier:v4 predicate:v14];
+  v12 = [(AddressBookManager *)self _contactWithCacheIdentifier:numberCopy predicate:v14];
 
 LABEL_15:
 
   return v12;
 }
 
-- (id)contactWithEmailAddress:(id)a3
+- (id)contactWithEmailAddress:(id)address
 {
-  v4 = a3;
-  if (!v4)
+  addressCopy = address;
+  if (!addressCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1133,7 +1133,7 @@ LABEL_15:
     }
   }
 
-  if (![v4 length])
+  if (![addressCopy length])
   {
     v12 = 0;
     goto LABEL_15;
@@ -1142,10 +1142,10 @@ LABEL_15:
   v5 = sub_10006515C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_13;
     }
 
@@ -1153,39 +1153,39 @@ LABEL_15:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_10;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_10:
 
 LABEL_13:
     *buf = 138543619;
-    v19 = v11;
+    v19 = selfCopy;
     v20 = 2113;
-    v21 = v4;
+    v21 = addressCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] will fetch contact for email %{private}@", buf, 0x16u);
   }
 
-  v13 = [CNContact predicateForContactsMatchingEmailAddress:v4];
-  v12 = [(AddressBookManager *)self _contactWithCacheIdentifier:v4 predicate:v13];
+  v13 = [CNContact predicateForContactsMatchingEmailAddress:addressCopy];
+  v12 = [(AddressBookManager *)self _contactWithCacheIdentifier:addressCopy predicate:v13];
 
 LABEL_15:
 
   return v12;
 }
 
-- (id)contactForCNContactIdentifier:(id)a3
+- (id)contactForCNContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v12 = 0;
     goto LABEL_14;
@@ -1194,10 +1194,10 @@ LABEL_15:
   v5 = sub_10006515C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_12;
     }
 
@@ -1205,40 +1205,40 @@ LABEL_15:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_9;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_9:
 
 LABEL_12:
     *buf = 138543618;
-    v18 = v11;
+    v18 = selfCopy;
     v19 = 2114;
-    v20 = v4;
+    v20 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] will fetch contact identifier %{public}@", buf, 0x16u);
   }
 
-  v16 = v4;
+  v16 = identifierCopy;
   v13 = [NSArray arrayWithObjects:&v16 count:1];
   v14 = [CNContact predicateForContactsWithIdentifiers:v13];
-  v12 = [(AddressBookManager *)self _contactWithCacheIdentifier:v4 predicate:v14];
+  v12 = [(AddressBookManager *)self _contactWithCacheIdentifier:identifierCopy predicate:v14];
 
 LABEL_14:
 
   return v12;
 }
 
-- (id)contactForRecordId:(int)a3
+- (id)contactForRecordId:(int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   if (!+[AddressBookManager addressBookAllowed])
   {
     v12 = 0;
@@ -1248,10 +1248,10 @@ LABEL_14:
   v5 = sub_10006515C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_12;
     }
 
@@ -1259,22 +1259,22 @@ LABEL_14:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_9;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_9:
 
 LABEL_12:
     *buf = 138543618;
-    *&buf[4] = v11;
+    *&buf[4] = selfCopy;
     *&buf[12] = 2048;
     *&buf[14] = v3;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] will fetch contact for record: %ld...", buf, 0x16u);
@@ -1288,33 +1288,33 @@ LABEL_12:
   v49 = 0;
   v13 = [CNContactFetchRequest alloc];
   v14 = +[AddressBookManager sharedManager];
-  v15 = [v14 properties];
-  v16 = [v13 initWithKeysToFetch:v15];
+  properties = [v14 properties];
+  v16 = [v13 initWithKeysToFetch:properties];
 
   v17 = [CNContact predicateForLegacyIdentifier:v3];
   [v16 setPredicate:v17];
 
   [v16 setSortOrder:1];
-  v18 = [(AddressBookManager *)self contactStore];
+  contactStore = [(AddressBookManager *)self contactStore];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100770528;
   v36[3] = &unk_101628700;
   v36[4] = buf;
   v37 = 0;
-  [v18 enumerateContactsWithFetchRequest:v16 error:&v37 usingBlock:v36];
+  [contactStore enumerateContactsWithFetchRequest:v16 error:&v37 usingBlock:v36];
   v19 = v37;
 
   v20 = sub_10006515C();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = self;
-    if (!v21)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v26 = @"<nil>";
+      selfCopy2 = @"<nil>";
 LABEL_22:
 
-      v27 = v26;
+      v27 = selfCopy2;
       v28 = *(*&buf[8] + 40);
       if (!v28)
       {
@@ -1358,17 +1358,17 @@ LABEL_30:
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(AddressBookManager *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(AddressBookManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ([v24 isEqualToString:v23] & 1) == 0)
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_20;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_20:
 
     goto LABEL_22;
@@ -1384,13 +1384,13 @@ LABEL_32:
   return v12;
 }
 
-- (id)mapItemFormShortcutForCNIdentifier:(id)a3
+- (id)mapItemFormShortcutForCNIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(AddressBookManager *)self msgCorrectedMapItemProvider];
-    v6 = [v5 mapItemFormShortcutForCNIdentifier:v4];
+    msgCorrectedMapItemProvider = [(AddressBookManager *)self msgCorrectedMapItemProvider];
+    v6 = [msgCorrectedMapItemProvider mapItemFormShortcutForCNIdentifier:identifierCopy];
 
     if (v6)
     {
@@ -1419,10 +1419,10 @@ LABEL_32:
     goto LABEL_11;
   }
 
-  v4 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v9 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -1430,32 +1430,32 @@ LABEL_32:
   v6 = NSStringFromClass(v5);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(AddressBookManager *)v4 performSelector:"accessibilityIdentifier"];
+    v7 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v8 = v7;
     if (v7 && ![v7 isEqualToString:v6])
     {
-      v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
       goto LABEL_8;
     }
   }
 
-  v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
   *buf = 138543362;
-  v163 = v9;
+  v163 = selfCopy;
   _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] will collect address...", buf, 0xCu);
 
 LABEL_11:
   [(AddressBookManager *)self _cancelAddressCollectionTimerIfNeeded];
   if (+[AddressBookManager addressBookAllowed])
   {
-    v10 = [(AddressBookManager *)self contactStore];
-    v11 = [(AddressBookManager *)self properties];
+    contactStore = [(AddressBookManager *)self contactStore];
+    properties = [(AddressBookManager *)self properties];
     v156 = 0;
-    v12 = [v10 _ios_meContactWithKeysToFetch:v11 error:&v156];
+    v12 = [contactStore _ios_meContactWithKeysToFetch:properties error:&v156];
     v138 = v156;
   }
 
@@ -1468,7 +1468,7 @@ LABEL_11:
   v146 = objc_alloc_init(NSMutableDictionary);
   v144 = objc_alloc_init(NSMutableDictionary);
   v141 = objc_alloc_init(NSMutableDictionary);
-  v139 = self;
+  selfCopy2 = self;
   v140 = objc_alloc_init(NSMutableDictionary);
   v13 = v12;
   v143 = v12;
@@ -1478,8 +1478,8 @@ LABEL_11:
     v155 = 0u;
     v152 = 0u;
     v153 = 0u;
-    v14 = [v12 postalAddresses];
-    v15 = [v14 countByEnumeratingWithState:&v152 objects:v161 count:16];
+    postalAddresses = [v12 postalAddresses];
+    v15 = [postalAddresses countByEnumeratingWithState:&v152 objects:v161 count:16];
     if (!v15)
     {
       goto LABEL_34;
@@ -1493,7 +1493,7 @@ LABEL_11:
       {
         if (*v153 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(postalAddresses);
         }
 
         v19 = *(*(&v152 + 1) + 8 * i);
@@ -1501,41 +1501,41 @@ LABEL_11:
         [(AddressBookAddress *)v20 _setSuppressStoreUpdateNotifications:1];
         if (v20)
         {
-          v21 = [(AddressBookAddress *)v20 addressValue];
-          v22 = [v21 identifier];
+          addressValue = [(AddressBookAddress *)v20 addressValue];
+          identifier = [addressValue identifier];
 
-          if (v22)
+          if (identifier)
           {
-            v23 = [v19 label];
-            v24 = [v23 isEqualToString:CNLabelHome];
+            label = [v19 label];
+            v24 = [label isEqualToString:CNLabelHome];
 
             if (v24)
             {
-              v25 = [(AddressBookAddress *)v20 addressValue];
-              v26 = [v25 identifier];
+              addressValue2 = [(AddressBookAddress *)v20 addressValue];
+              identifier2 = [addressValue2 identifier];
               v27 = v146;
               goto LABEL_26;
             }
 
-            v28 = [v19 label];
-            v29 = [v28 isEqualToString:CNLabelWork];
+            label2 = [v19 label];
+            v29 = [label2 isEqualToString:CNLabelWork];
 
             if (v29)
             {
-              v25 = [(AddressBookAddress *)v20 addressValue];
-              v26 = [v25 identifier];
+              addressValue2 = [(AddressBookAddress *)v20 addressValue];
+              identifier2 = [addressValue2 identifier];
               v27 = v144;
 LABEL_26:
-              [v27 setObject:v20 forKey:v26];
+              [v27 setObject:v20 forKey:identifier2];
             }
 
             else
             {
-              v30 = [v19 label];
-              v31 = [v30 isEqualToString:CNLabelSchool];
+              label3 = [v19 label];
+              v31 = [label3 isEqualToString:CNLabelSchool];
 
-              v25 = [(AddressBookAddress *)v20 addressValue];
-              v26 = [v25 identifier];
+              addressValue2 = [(AddressBookAddress *)v20 addressValue];
+              identifier2 = [addressValue2 identifier];
               if (v31)
               {
                 v32 = v141;
@@ -1546,19 +1546,19 @@ LABEL_26:
                 v32 = v140;
               }
 
-              [v32 setObject:v20 forKey:v26];
+              [v32 setObject:v20 forKey:identifier2];
               v13 = v143;
             }
           }
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v152 objects:v161 count:16];
+      v16 = [postalAddresses countByEnumeratingWithState:&v152 objects:v161 count:16];
       if (!v16)
       {
 LABEL_34:
 
-        self = v139;
+        self = selfCopy2;
         break;
       }
     }
@@ -1569,10 +1569,10 @@ LABEL_34:
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
     log = v33;
-    v34 = self;
-    if (!v34)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v39 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_44;
     }
 
@@ -1580,21 +1580,21 @@ LABEL_34:
     v36 = NSStringFromClass(v35);
     if (objc_opt_respondsToSelector())
     {
-      v37 = [(AddressBookManager *)v34 performSelector:"accessibilityIdentifier"];
+      v37 = [(AddressBookManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v38 = v37;
       if (v37 && ![v37 isEqualToString:v36])
       {
-        v39 = [NSString stringWithFormat:@"%@<%p, %@>", v36, v34, v38];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v36, selfCopy3, v38];
 
         goto LABEL_42;
       }
     }
 
-    v39 = [NSString stringWithFormat:@"%@<%p>", v36, v34];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v36, selfCopy3];
 LABEL_42:
 
 LABEL_44:
-    v142 = v39;
+    v142 = selfCopy3;
     v137 = [v146 count];
     v40 = v146;
     v41 = v40;
@@ -1608,8 +1608,8 @@ LABEL_44:
         v158 = 0u;
         v159 = 0u;
         v160 = 0u;
-        v44 = [v41 allKeys];
-        v45 = [v44 sortedArrayUsingSelector:"compare:"];
+        allKeys = [v41 allKeys];
+        v45 = [allKeys sortedArrayUsingSelector:"compare:"];
 
         obj = v45;
         v46 = [v45 countByEnumeratingWithState:&v157 objects:buf count:16];
@@ -1642,7 +1642,7 @@ LABEL_44:
         v54 = [v43 componentsJoinedByString:{@", "}];
         v55 = [NSString stringWithFormat:@"<%p> {%@}", v41, v54];
 
-        self = v139;
+        self = selfCopy2;
       }
 
       else
@@ -1670,8 +1670,8 @@ LABEL_44:
         v158 = 0u;
         v159 = 0u;
         v160 = 0u;
-        v60 = [v57 allKeys];
-        v61 = [v60 sortedArrayUsingSelector:"compare:"];
+        allKeys2 = [v57 allKeys];
+        v61 = [allKeys2 sortedArrayUsingSelector:"compare:"];
 
         obja = v61;
         v62 = [v61 countByEnumeratingWithState:&v157 objects:buf count:16];
@@ -1704,7 +1704,7 @@ LABEL_44:
         v70 = [v59 componentsJoinedByString:{@", "}];
         v71 = [NSString stringWithFormat:@"<%p> {%@}", v57, v70];
 
-        self = v139;
+        self = selfCopy2;
       }
 
       else
@@ -1735,8 +1735,8 @@ LABEL_44:
         v159 = 0u;
         v160 = 0u;
         v78 = v75;
-        v79 = [v75 allKeys];
-        v80 = [v79 sortedArrayUsingSelector:"compare:"];
+        allKeys3 = [v75 allKeys];
+        v80 = [allKeys3 sortedArrayUsingSelector:"compare:"];
 
         objb = v80;
         v81 = [v80 countByEnumeratingWithState:&v157 objects:buf count:16];
@@ -1770,7 +1770,7 @@ LABEL_44:
         v75 = v78;
         v90 = [NSString stringWithFormat:@"<%p> {%@}", v78, v89];
 
-        self = v139;
+        self = selfCopy2;
         v73 = v131;
         v72 = v133;
       }
@@ -1804,8 +1804,8 @@ LABEL_44:
         v159 = 0u;
         v160 = 0u;
         v97 = v94;
-        v98 = [v94 allKeys];
-        v99 = [v98 sortedArrayUsingSelector:"compare:"];
+        allKeys4 = [v94 allKeys];
+        v99 = [allKeys4 sortedArrayUsingSelector:"compare:"];
 
         objc = v99;
         v100 = [v99 countByEnumeratingWithState:&v157 objects:buf count:16];
@@ -1825,8 +1825,8 @@ LABEL_44:
               v104 = *(*(&v157 + 1) + 8 * n);
               v105 = [NSString alloc];
               v106 = [v97 objectForKeyedSubscript:v104];
-              v107 = [v105 initWithFormat:@"%@: %@", v104, v106];
-              [v96 addObject:v107];
+              v106 = [v105 initWithFormat:@"%@: %@", v104, v106];
+              [v96 addObject:v106];
             }
 
             v101 = [objc countByEnumeratingWithState:&v157 objects:buf count:16];
@@ -1837,9 +1837,9 @@ LABEL_44:
 
         v108 = [v96 componentsJoinedByString:{@", "}];
         v94 = v97;
-        v109 = [NSString stringWithFormat:@"<%p> {%@}", v97, v108];
+        v108 = [NSString stringWithFormat:@"<%p> {%@}", v97, v108];
 
-        self = v139;
+        self = selfCopy2;
         v73 = v132;
         v72 = v134;
         v92 = v130;
@@ -1847,13 +1847,13 @@ LABEL_44:
 
       else
       {
-        v109 = [NSString stringWithFormat:@"<%p> (empty)", v94];
+        v108 = [NSString stringWithFormat:@"<%p> (empty)", v94];
       }
     }
 
     else
     {
-      v109 = @"<nil>";
+      v108 = @"<nil>";
     }
 
     *buf = 138545410;
@@ -1873,7 +1873,7 @@ LABEL_44:
     v176 = 2048;
     v177 = v92;
     v178 = 2114;
-    v179 = v109;
+    v179 = v108;
     v33 = log;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "[%{public}@] storing addresses:\n\t%lu Home: %{public}@\n\t%lu Work: %{public}@\n\t%lu School: %{public}@\n\t%lu Other: %{public}@", buf, 0x5Cu);
 
@@ -1921,29 +1921,29 @@ LABEL_101:
       goto LABEL_102;
     }
 
-    v123 = self;
+    selfCopy4 = self;
     v124 = objc_opt_class();
     v125 = NSStringFromClass(v124);
     if (objc_opt_respondsToSelector())
     {
-      v126 = [(AddressBookManager *)v123 performSelector:"accessibilityIdentifier"];
+      v126 = [(AddressBookManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v127 = v126;
       if (v126 && ![v126 isEqualToString:v125])
       {
-        v128 = [NSString stringWithFormat:@"%@<%p, %@>", v125, v123, v127];
+        v127 = [NSString stringWithFormat:@"%@<%p, %@>", v125, selfCopy4, v127];
 
         goto LABEL_100;
       }
     }
 
-    v128 = [NSString stringWithFormat:@"%@<%p>", v125, v123];
+    v127 = [NSString stringWithFormat:@"%@<%p>", v125, selfCopy4];
 LABEL_100:
 
     *buf = 138543362;
-    v163 = v128;
+    v163 = v127;
     _os_log_impl(&_mh_execute_header, v122, OS_LOG_TYPE_INFO, "[%{public}@] completed first address collection", buf, 0xCu);
 
-    self = v139;
+    self = selfCopy2;
     goto LABEL_101;
   }
 
@@ -1959,18 +1959,18 @@ LABEL_102:
 - (NSArray)allOtherAddresses
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSDictionary *)self->_otherAddresses allValues];
-  v4 = [v3 copy];
+  allValues = [(NSDictionary *)self->_otherAddresses allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (void)updateContact:(id)a3 completion:(id)a4
+- (void)updateContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_contactStoreQueue);
   objc_initWeak(&location, self);
   contactStoreQueue = self->_contactStoreQueue;
@@ -1979,20 +1979,20 @@ LABEL_102:
   v11[2] = sub_100776B58;
   v11[3] = &unk_10165DEA0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = contactCopy;
+  v13 = completionCopy;
+  v9 = contactCopy;
+  v10 = completionCopy;
   dispatch_async(contactStoreQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)createMeCardWithContact:(id)a3 completion:(id)a4
+- (void)createMeCardWithContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_contactStoreQueue);
   objc_initWeak(&location, self);
   contactStoreQueue = self->_contactStoreQueue;
@@ -2001,10 +2001,10 @@ LABEL_102:
   v11[2] = sub_1007770C4;
   v11[3] = &unk_10165DEA0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = contactCopy;
+  v13 = completionCopy;
+  v9 = contactCopy;
+  v10 = completionCopy;
   dispatch_async(contactStoreQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -2060,26 +2060,26 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v5 = self;
+    selfCopy = self;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(AddressBookManager *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_8;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v16 = v10;
+    v16 = selfCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] initialising CNContactStore", buf, 0xCu);
 
     goto LABEL_9;
@@ -2092,15 +2092,15 @@ LABEL_10:
   return v13;
 }
 
-- (void)_deferredAddressCollectionTimerFired:(id)a3
+- (void)_deferredAddressCollectionTimerFired:(id)fired
 {
   contactStoreQueue = self->_contactStoreQueue;
-  v5 = a3;
+  firedCopy = fired;
   dispatch_assert_queue_V2(contactStoreQueue);
   os_unfair_lock_lock(&self->_lock);
   deferredAddressCollectionTimer = self->_deferredAddressCollectionTimer;
 
-  if (deferredAddressCollectionTimer == v5)
+  if (deferredAddressCollectionTimer == firedCopy)
   {
     self->_deferredAddressCollectionTimer = 0;
   }
@@ -2110,19 +2110,19 @@ LABEL_10:
   [(AddressBookManager *)self collectAddresses];
 }
 
-- (void)_updateStoreWithCoalescing:(BOOL)a3
+- (void)_updateStoreWithCoalescing:(BOOL)coalescing
 {
-  v3 = a3;
+  coalescingCopy = coalescing;
   v5 = sub_10006515C();
   if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     goto LABEL_13;
   }
 
-  v6 = self;
-  if (!v6)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v11 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -2130,29 +2130,29 @@ LABEL_10:
   v8 = NSStringFromClass(v7);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+    v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v10 = v9;
     if (v9 && ![v9 isEqualToString:v8])
     {
-      v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
       goto LABEL_8;
     }
   }
 
-  v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
   v12 = @"NO";
-  if (v3)
+  if (coalescingCopy)
   {
     v12 = @"YES";
   }
 
   v13 = v12;
   *buf = 138543618;
-  v17 = v11;
+  v17 = selfCopy;
   v18 = 2114;
   v19 = v13;
   _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] updateStoreWithCoalescing: %{public}@", buf, 0x16u);
@@ -2161,7 +2161,7 @@ LABEL_13:
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_contactCache removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (coalescingCopy)
   {
     [(AddressBookManager *)self setNeedsAddressCollection];
   }
@@ -2178,16 +2178,16 @@ LABEL_13:
   }
 }
 
-- (void)updateStoreImmediately:(id)a3
+- (void)updateStoreImmediately:(id)immediately
 {
-  v4 = a3;
+  immediatelyCopy = immediately;
   v5 = sub_10006515C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -2195,41 +2195,41 @@ LABEL_13:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v12 = [v4 name];
+    name = [immediatelyCopy name];
     *buf = 138543618;
-    v14 = v11;
+    v14 = selfCopy;
     v15 = 2114;
-    v16 = v12;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] received notification %{public}@", buf, 0x16u);
   }
 
   [(AddressBookManager *)self _updateStoreWithCoalescing:0];
 }
 
-- (void)updateStore:(id)a3
+- (void)updateStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = sub_10006515C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -2237,25 +2237,25 @@ LABEL_10:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(AddressBookManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v12 = [v4 name];
+    name = [storeCopy name];
     *buf = 138543618;
-    v14 = v11;
+    v14 = selfCopy;
     v15 = 2114;
-    v16 = v12;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] received notification %{public}@", buf, 0x16u);
   }
 
@@ -2264,9 +2264,9 @@ LABEL_10:
 
 - (MapsSuggestionsCorrectedMapItemProvider)msgCorrectedMapItemProvider
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  msgCorrectedMapItemProvider = v2->_msgCorrectedMapItemProvider;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  msgCorrectedMapItemProvider = selfCopy->_msgCorrectedMapItemProvider;
   if (!msgCorrectedMapItemProvider)
   {
     v4 = sub_10006515C();
@@ -2275,29 +2275,29 @@ LABEL_10:
 LABEL_9:
 
       v11 = MapsSuggestionsResourceDepotForMapsProcess();
-      v12 = [v11 oneFavorites];
-      shortcutManager = v2->_shortcutManager;
-      v2->_shortcutManager = v12;
+      oneFavorites = [v11 oneFavorites];
+      shortcutManager = selfCopy->_shortcutManager;
+      selfCopy->_shortcutManager = oneFavorites;
 
-      objc_initWeak(buf, v2);
+      objc_initWeak(buf, selfCopy);
       v14 = [MapsSuggestionsCorrectedMapItemProvider alloc];
-      v15 = v2->_shortcutManager;
+      v15 = selfCopy->_shortcutManager;
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_100778728;
       v20[3] = &unk_101661B98;
       objc_copyWeak(&v21, buf);
       v16 = [v14 initWithMeCardReader:v15 handler:v20];
-      v17 = v2->_msgCorrectedMapItemProvider;
-      v2->_msgCorrectedMapItemProvider = v16;
+      v17 = selfCopy->_msgCorrectedMapItemProvider;
+      selfCopy->_msgCorrectedMapItemProvider = v16;
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(buf);
-      msgCorrectedMapItemProvider = v2->_msgCorrectedMapItemProvider;
+      msgCorrectedMapItemProvider = selfCopy->_msgCorrectedMapItemProvider;
       goto LABEL_10;
     }
 
-    v5 = v2;
+    v5 = selfCopy;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
@@ -2324,22 +2324,22 @@ LABEL_8:
 
 LABEL_10:
   v18 = msgCorrectedMapItemProvider;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
-- (void)performBlockAfterFirstCollection:(id)a3
+- (void)performBlockAfterFirstCollection:(id)collection
 {
-  v4 = a3;
-  if (v4)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_collectGroup;
     os_unfair_lock_unlock(&self->_lock);
     if (!v5)
     {
-      v4[2](v4);
+      collectionCopy[2](collectionCopy);
       goto LABEL_12;
     }
 
@@ -2348,32 +2348,32 @@ LABEL_10:
     {
 LABEL_10:
 
-      dispatch_group_notify(v5, &_dispatch_main_q, v4);
+      dispatch_group_notify(v5, &_dispatch_main_q, collectionCopy);
 LABEL_12:
 
       goto LABEL_13;
     }
 
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(AddressBookManager *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(AddressBookManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_9:
 
     *buf = 138543362;
-    v14 = v12;
+    v14 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] scheduling post-collection block", buf, 0xCu);
 
     goto LABEL_10;
@@ -2384,45 +2384,45 @@ LABEL_13:
 
 - (BOOL)shouldAllowMeCardWrites
 {
-  v3 = [(AddressBookManager *)self meCard];
+  meCard = [(AddressBookManager *)self meCard];
 
-  if (v3)
+  if (meCard)
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(defaultContainerIdentifier) = 1;
   }
 
   else
   {
-    v5 = [(AddressBookManager *)self contactStore];
-    v4 = [v5 defaultContainerIdentifier];
+    contactStore = [(AddressBookManager *)self contactStore];
+    defaultContainerIdentifier = [contactStore defaultContainerIdentifier];
 
-    if (v4)
+    if (defaultContainerIdentifier)
     {
-      v6 = [(AddressBookManager *)self contactStore];
-      v7 = [v6 defaultContainerIdentifier];
-      v16 = v7;
+      contactStore2 = [(AddressBookManager *)self contactStore];
+      defaultContainerIdentifier2 = [contactStore2 defaultContainerIdentifier];
+      v16 = defaultContainerIdentifier2;
       v8 = [NSArray arrayWithObjects:&v16 count:1];
       v9 = [CNContainer predicateForContainersWithIdentifiers:v8];
 
-      v10 = [(AddressBookManager *)self contactStore];
-      v11 = [v10 containersMatchingPredicate:v9 error:0];
-      v12 = [v11 firstObject];
+      contactStore3 = [(AddressBookManager *)self contactStore];
+      v11 = [contactStore3 containersMatchingPredicate:v9 error:0];
+      firstObject = [v11 firstObject];
 
-      v13 = [v12 type];
-      if (v13 >= 3)
+      type = [firstObject type];
+      if (type >= 3)
       {
-        v14 = [v12 lastSyncDate];
-        LOBYTE(v4) = v14 != 0;
+        lastSyncDate = [firstObject lastSyncDate];
+        LOBYTE(defaultContainerIdentifier) = lastSyncDate != 0;
       }
 
       else
       {
-        LOBYTE(v4) = v13;
+        LOBYTE(defaultContainerIdentifier) = type;
       }
     }
   }
 
-  return v4 & 1;
+  return defaultContainerIdentifier & 1;
 }
 
 @end

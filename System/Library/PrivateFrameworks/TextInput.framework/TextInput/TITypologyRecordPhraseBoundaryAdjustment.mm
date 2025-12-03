@@ -1,18 +1,18 @@
 @interface TITypologyRecordPhraseBoundaryAdjustment
-- (TITypologyRecordPhraseBoundaryAdjustment)initWithCoder:(id)a3;
+- (TITypologyRecordPhraseBoundaryAdjustment)initWithCoder:(id)coder;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeContextFromKeyboardState;
-- (void)replaceDocumentState:(id)a3;
+- (void)replaceDocumentState:(id)state;
 @end
 
 @implementation TITypologyRecordPhraseBoundaryAdjustment
 
-- (void)replaceDocumentState:(id)a3
+- (void)replaceDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(TITypologyRecordPhraseBoundaryAdjustment *)self keyboardState];
-  [v5 setDocumentState:v4];
+  stateCopy = state;
+  keyboardState = [(TITypologyRecordPhraseBoundaryAdjustment *)self keyboardState];
+  [keyboardState setDocumentState:stateCopy];
 }
 
 - (id)shortDescription
@@ -28,50 +28,50 @@
     v4 = "NO";
   }
 
-  v5 = [(TITypologyRecordPhraseBoundaryAdjustment *)self granularity];
-  v6 = [(TITypologyRecordPhraseBoundaryAdjustment *)self keyboardConfig];
-  v7 = [v6 intermediateText];
-  v8 = [v3 stringWithFormat:@"ADJUST PHRASE BOUNDARY forward = %s granularity = %d; %@", v4, v5, v7];;
+  granularity = [(TITypologyRecordPhraseBoundaryAdjustment *)self granularity];
+  keyboardConfig = [(TITypologyRecordPhraseBoundaryAdjustment *)self keyboardConfig];
+  intermediateText = [keyboardConfig intermediateText];
+  v8 = [v3 stringWithFormat:@"ADJUST PHRASE BOUNDARY forward = %s granularity = %d; %@", v4, granularity, intermediateText];;
 
   return v8;
 }
 
 - (void)removeContextFromKeyboardState
 {
-  v3 = [(TITypologyRecordPhraseBoundaryAdjustment *)self keyboardState];
-  v4 = [v3 copy];
+  keyboardState = [(TITypologyRecordPhraseBoundaryAdjustment *)self keyboardState];
+  v4 = [keyboardState copy];
 
   [v4 setInputContextHistory:0];
   [(TITypologyRecordPhraseBoundaryAdjustment *)self setKeyboardState:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TITypologyRecordPhraseBoundaryAdjustment;
-  v4 = a3;
-  [(TITypologyRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_forwardAdjustment forKey:{@"forwardAdjustment", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_granularity forKey:@"granularity"];
-  [v4 encodeObject:self->_keyboardState forKey:@"keyboardState"];
-  [v4 encodeObject:self->_keyboardConfig forKey:@"keyboardConfig"];
+  coderCopy = coder;
+  [(TITypologyRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_forwardAdjustment forKey:{@"forwardAdjustment", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_granularity forKey:@"granularity"];
+  [coderCopy encodeObject:self->_keyboardState forKey:@"keyboardState"];
+  [coderCopy encodeObject:self->_keyboardConfig forKey:@"keyboardConfig"];
 }
 
-- (TITypologyRecordPhraseBoundaryAdjustment)initWithCoder:(id)a3
+- (TITypologyRecordPhraseBoundaryAdjustment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TITypologyRecordPhraseBoundaryAdjustment;
-  v5 = [(TITypologyRecord *)&v11 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_forwardAdjustment = [v4 decodeBoolForKey:@"forwardAdjustment"];
-    v5->_granularity = [v4 decodeIntegerForKey:@"granularity"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
+    v5->_forwardAdjustment = [coderCopy decodeBoolForKey:@"forwardAdjustment"];
+    v5->_granularity = [coderCopy decodeIntegerForKey:@"granularity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardConfig"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardConfig"];
     keyboardConfig = v5->_keyboardConfig;
     v5->_keyboardConfig = v8;
   }

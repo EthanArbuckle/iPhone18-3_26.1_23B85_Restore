@@ -22,8 +22,8 @@
 
 - (BOOL)isCallPresent
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 currentAudioAndVideoCallCount] != 0;
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  v3 = [mEMORY[0x277D6EDF8] currentAudioAndVideoCallCount] != 0;
 
   return v3;
 }

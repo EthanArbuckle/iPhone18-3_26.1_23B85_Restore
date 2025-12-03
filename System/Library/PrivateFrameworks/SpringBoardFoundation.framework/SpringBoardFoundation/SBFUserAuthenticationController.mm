@@ -6,57 +6,57 @@
 - (BOOL)_isUserAuthenticated;
 - (BOOL)_isUserRequestedEraseEnabled;
 - (BOOL)_performNilPasscodeCheck;
-- (BOOL)_processAuthenticationRequest:(id)a3 responder:(id)a4;
+- (BOOL)_processAuthenticationRequest:(id)request responder:(id)responder;
 - (BOOL)_shouldRevokeAuthenticationNow;
-- (SBFUserAuthenticationController)initWithAssertionManager:(id)a3 policy:(id)a4 keybag:(id)a5 model:(id)a6;
+- (SBFUserAuthenticationController)initWithAssertionManager:(id)manager policy:(id)policy keybag:(id)keybag model:(id)model;
 - (double)_timeUntilUnblockedSinceReferenceDate;
 - (id)_cachedLockStateExtended;
-- (id)authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:(BOOL)a3;
-- (id)createGracePeriodAssertionWithReason:(id)a3;
-- (id)createKeybagUnlockAssertionWithReason:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:(BOOL)unlocked;
+- (id)createGracePeriodAssertionWithReason:(id)reason;
+- (id)createKeybagUnlockAssertionWithReason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)publicDescription;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)_evaluateAuthenticationAttempt:(id)a3 outError:(id *)a4;
-- (int64_t)_evaluateBiometricAttempt:(id)a3;
-- (int64_t)_evaluatePasscodeAttempt:(id)a3 outError:(id *)a4;
-- (void)_addAsFirstResponder:(id)a3;
-- (void)_addAuthenticationAssertion:(id)a3;
-- (void)_addPrivateAuthenticationObserver:(id)a3;
+- (int64_t)_evaluateAuthenticationAttempt:(id)attempt outError:(id *)error;
+- (int64_t)_evaluateBiometricAttempt:(id)attempt;
+- (int64_t)_evaluatePasscodeAttempt:(id)attempt outError:(id *)error;
+- (void)_addAsFirstResponder:(id)responder;
+- (void)_addAuthenticationAssertion:(id)assertion;
+- (void)_addPrivateAuthenticationObserver:(id)observer;
 - (void)_authenticateIfInGracePeriod;
 - (void)_clearBlockedState;
 - (void)_clearUnblockTimer;
-- (void)_handleFailedAuthentication:(id)a3 error:(id)a4 responder:(id)a5;
-- (void)_handleSuccessfulAuthentication:(id)a3 responder:(id)a4;
+- (void)_handleFailedAuthentication:(id)authentication error:(id)error responder:(id)responder;
+- (void)_handleSuccessfulAuthentication:(id)authentication responder:(id)responder;
 - (void)_invalidateCachedPasscodeLockState;
 - (void)_isUserAuthenticated;
 - (void)_noteDeviceLockStateMayHaveChangedForExternalReasons;
 - (void)_notifyAboutTemporaryBlockStatusChanged;
-- (void)_notifyClientsOfAuthenticationResult:(int64_t)a3 forRequest:(id)a4 error:(id)a5 withResponder:(id)a6;
+- (void)_notifyClientsOfAuthenticationResult:(int64_t)result forRequest:(id)request error:(id)error withResponder:(id)responder;
 - (void)_refreshModelCacheIfNeeded;
-- (void)_removeAuthResponder:(id)a3;
-- (void)_removeAuthenticationAssertion:(id)a3;
-- (void)_removePrivateAuthenticationObserver:(id)a3;
-- (void)_revokeAuthenticationImmediately:(BOOL)a3 forPublicReason:(id)a4;
+- (void)_removeAuthResponder:(id)responder;
+- (void)_removeAuthenticationAssertion:(id)assertion;
+- (void)_removePrivateAuthenticationObserver:(id)observer;
+- (void)_revokeAuthenticationImmediately:(BOOL)immediately forPublicReason:(id)reason;
 - (void)_scheduleUnblockTimer;
-- (void)_setAuthState:(int64_t)a3;
-- (void)_setModel:(id)a3;
-- (void)_setupPolicy:(id)a3;
+- (void)_setAuthState:(int64_t)state;
+- (void)_setModel:(id)model;
+- (void)_setupPolicy:(id)policy;
 - (void)_setup_runLoopObserverIfNecessary;
 - (void)_unblockTimerFired;
 - (void)_uncachePasscodeIfNecessary;
-- (void)_updateAuthenticationStateAndDateForLockState:(id)a3;
-- (void)_updateAuthenticationStateImmediately:(BOOL)a3 forPublicReason:(id)a4;
+- (void)_updateAuthenticationStateAndDateForLockState:(id)state;
+- (void)_updateAuthenticationStateImmediately:(BOOL)immediately forPublicReason:(id)reason;
 - (void)_updateSecureModeIfNecessaryForNewAuthState;
 - (void)dealloc;
-- (void)deviceLockStateMayHaveChangedForModel:(id)a3;
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4;
-- (void)processAuthenticationRequest:(id)a3;
-- (void)revokeAuthenticationIfNecessaryForPublicReason:(id)a3;
-- (void)revokeAuthenticationImmediatelyForPublicReason:(id)a3;
-- (void)revokeAuthenticationImmediatelyIfNecessaryForPublicReason:(id)a3;
+- (void)deviceLockStateMayHaveChangedForModel:(id)model;
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change;
+- (void)processAuthenticationRequest:(id)request;
+- (void)revokeAuthenticationIfNecessaryForPublicReason:(id)reason;
+- (void)revokeAuthenticationImmediatelyForPublicReason:(id)reason;
+- (void)revokeAuthenticationImmediatelyIfNecessaryForPublicReason:(id)reason;
 @end
 
 @implementation SBFUserAuthenticationController
@@ -90,8 +90,8 @@
 
     else
     {
-      v6 = [(SBFUserAuthenticationController *)self _cachedLockStateExtended];
-      [v6 isEffectivelyLocked];
+      _cachedLockStateExtended = [(SBFUserAuthenticationController *)self _cachedLockStateExtended];
+      [_cachedLockStateExtended isEffectivelyLocked];
       self->_cachedAuthFlag = BSSettingFlagForBool();
     }
 
@@ -137,7 +137,7 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1BEA11000, a2, OS_LOG_TYPE_DEBUG, "Finished invalidated cached authentication state after %ld loops.", &v2, 0xCu);
 }
 
@@ -145,9 +145,9 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
 {
   if (!self->_cachedExtendedState)
   {
-    v3 = [(SBFMobileKeyBag *)self->_keybag extendedState];
+    extendedState = [(SBFMobileKeyBag *)self->_keybag extendedState];
     cachedExtendedState = self->_cachedExtendedState;
-    self->_cachedExtendedState = v3;
+    self->_cachedExtendedState = extendedState;
   }
 
   [(SBFUserAuthenticationController *)self _setup_runLoopObserverIfNecessary];
@@ -283,8 +283,8 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
 
     [(PCPersistentTimer *)self->_unblockTimer setMinimumEarlyFireProportion:1.0];
     v8 = self->_unblockTimer;
-    v9 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(PCPersistentTimer *)v8 scheduleInRunLoop:v9];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(PCPersistentTimer *)v8 scheduleInRunLoop:currentRunLoop];
   }
 }
 
@@ -320,13 +320,13 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
   }
 }
 
-- (SBFUserAuthenticationController)initWithAssertionManager:(id)a3 policy:(id)a4 keybag:(id)a5 model:(id)a6
+- (SBFUserAuthenticationController)initWithAssertionManager:(id)manager policy:(id)policy keybag:(id)keybag model:(id)model
 {
   v41 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  policyCopy = policy;
+  keybagCopy = keybag;
+  modelCopy = model;
   v38.receiver = self;
   v38.super_class = SBFUserAuthenticationController;
   v15 = [(SBFUserAuthenticationController *)&v38 init];
@@ -335,9 +335,9 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
     goto LABEL_22;
   }
 
-  if (v13)
+  if (keybagCopy)
   {
-    v16 = v13;
+    v16 = keybagCopy;
   }
 
   else
@@ -349,7 +349,7 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
   v15->_keybag = v16;
 
   [(SBFMobileKeyBag *)v15->_keybag addObserver:v15];
-  if (!v14)
+  if (!modelCopy)
   {
     if (MGGetBoolAnswer())
     {
@@ -361,12 +361,12 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
       v18 = objc_alloc_init(SBFUserAuthenticationModelJournaledDefaults);
     }
 
-    v14 = v18;
+    modelCopy = v18;
   }
 
-  [(SBFUserAuthenticationController *)v15 _setModel:v14];
-  objc_storeStrong(&v15->_assertionManager, a3);
-  objc_storeStrong(&v15->_policy, a4);
+  [(SBFUserAuthenticationController *)v15 _setModel:modelCopy];
+  objc_storeStrong(&v15->_assertionManager, manager);
+  objc_storeStrong(&v15->_policy, policy);
   if ([(SBFAuthenticationPolicy *)v15->_policy usesSecureMode])
   {
     v19 = objc_alloc_init(SBFSecureDisplayCoordinator);
@@ -374,25 +374,25 @@ void __68__SBFUserAuthenticationController__setup_runLoopObserverIfNecessary__bl
     v15->_secureDisplayCoordinator = v19;
   }
 
-  v21 = [(SBFMobileKeyBag *)v15->_keybag state];
-  v22 = [v21 lockState];
+  state = [(SBFMobileKeyBag *)v15->_keybag state];
+  lockState = [state lockState];
   v15->_cachedAuthFlag = 0x7FFFFFFFFFFFFFFFLL;
   v15->_authenticationState = 1;
   if ([(SBFMobileKeyBag *)v15->_keybag hasPasscodeSet])
   {
-    if (v22 == 2)
+    if (lockState == 2)
     {
       v23 = 0;
     }
 
     else
     {
-      if (v22 != 1)
+      if (lockState != 1)
       {
 LABEL_18:
-        v24 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         lastRevokedAuthenticationDate = v15->_lastRevokedAuthenticationDate;
-        v15->_lastRevokedAuthenticationDate = v24;
+        v15->_lastRevokedAuthenticationDate = date;
 
         goto LABEL_19;
       }
@@ -405,7 +405,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  [(SBFUserAuthenticationController *)v15 _setupPolicy:v12];
+  [(SBFUserAuthenticationController *)v15 _setupPolicy:policyCopy];
   [(SBFUserAuthenticationController *)v15 _scheduleUnblockTimer];
   objc_initWeak(&location, v15);
   v26 = MEMORY[0x1E698E658];
@@ -450,91 +450,91 @@ void __80__SBFUserAuthenticationController_initWithAssertionManager_policy_keyba
   [(SBFUserAuthenticationController *)&v3 dealloc];
 }
 
-- (void)processAuthenticationRequest:(id)a3
+- (void)processAuthenticationRequest:(id)request
 {
   responders = self->_responders;
-  v5 = a3;
-  v6 = [(NSMutableArray *)responders firstObject];
-  [(SBFUserAuthenticationController *)self _processAuthenticationRequest:v5 responder:v6];
+  requestCopy = request;
+  firstObject = [(NSMutableArray *)responders firstObject];
+  [(SBFUserAuthenticationController *)self _processAuthenticationRequest:requestCopy responder:firstObject];
 }
 
-- (id)createKeybagUnlockAssertionWithReason:(id)a3
+- (id)createKeybagUnlockAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[SBFAuthenticationAssertion alloc] initWithIdentifier:v4 type:1 withController:self];
+  reasonCopy = reason;
+  v5 = [[SBFAuthenticationAssertion alloc] initWithIdentifier:reasonCopy type:1 withController:self];
 
   return v5;
 }
 
-- (id)createGracePeriodAssertionWithReason:(id)a3
+- (id)createGracePeriodAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [[SBFAuthenticationAssertion alloc] initWithIdentifier:v4 type:2 withController:self];
+  reasonCopy = reason;
+  v5 = [[SBFAuthenticationAssertion alloc] initWithIdentifier:reasonCopy type:2 withController:self];
 
   return v5;
 }
 
-- (id)authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:(BOOL)a3
+- (id)authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:(BOOL)unlocked
 {
-  if (a3)
+  if (unlocked)
   {
-    v3 = [[_SBFContinuityUnlockAuthenticationStatusProvider alloc] initWithMobileKeyBag:self->_keybag underlyingProvider:self];
+    selfCopy = [[_SBFContinuityUnlockAuthenticationStatusProvider alloc] initWithMobileKeyBag:self->_keybag underlyingProvider:self];
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)revokeAuthenticationImmediatelyForPublicReason:(id)a3
+- (void)revokeAuthenticationImmediatelyForPublicReason:(id)reason
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogAuthenticationController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = reasonCopy;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_INFO, "Revoke authentication immediately requested for reason: %{public}@", &v6, 0xCu);
   }
 
-  [(SBFUserAuthenticationController *)self _revokeAuthenticationImmediately:1 forPublicReason:v4];
+  [(SBFUserAuthenticationController *)self _revokeAuthenticationImmediately:1 forPublicReason:reasonCopy];
 }
 
-- (void)revokeAuthenticationImmediatelyIfNecessaryForPublicReason:(id)a3
+- (void)revokeAuthenticationImmediatelyIfNecessaryForPublicReason:(id)reason
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogAuthenticationController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = reasonCopy;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_INFO, "Revoke authentication immediately if necessary requested for reason: %{public}@", &v6, 0xCu);
   }
 
-  [(SBFUserAuthenticationController *)self _updateAuthenticationStateImmediately:1 forPublicReason:v4];
+  [(SBFUserAuthenticationController *)self _updateAuthenticationStateImmediately:1 forPublicReason:reasonCopy];
 }
 
-- (void)revokeAuthenticationIfNecessaryForPublicReason:(id)a3
+- (void)revokeAuthenticationIfNecessaryForPublicReason:(id)reason
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogAuthenticationController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = reasonCopy;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_INFO, "Revoke authentication requested for reason: %{public}@", &v6, 0xCu);
   }
 
-  [(SBFUserAuthenticationController *)self _updateAuthenticationStateImmediately:0 forPublicReason:v4];
+  [(SBFUserAuthenticationController *)self _updateAuthenticationStateImmediately:0 forPublicReason:reasonCopy];
 }
 
-- (void)deviceLockStateMayHaveChangedForModel:(id)a3
+- (void)deviceLockStateMayHaveChangedForModel:(id)model
 {
   [(SBFUserAuthenticationController *)self _notifyAboutTemporaryBlockStatusChanged];
 
@@ -575,26 +575,26 @@ void __80__SBFUserAuthenticationController_initWithAssertionManager_policy_keyba
 
   if (self->_lastRevokedAuthenticationDate)
   {
-    v12 = [MEMORY[0x1E698E670] sharedInstance];
-    v13 = [v12 formatDateAsLongYMDHMSZWithDate:self->_lastRevokedAuthenticationDate];
+    mEMORY[0x1E698E670] = [MEMORY[0x1E698E670] sharedInstance];
+    v13 = [mEMORY[0x1E698E670] formatDateAsLongYMDHMSZWithDate:self->_lastRevokedAuthenticationDate];
     v14 = [v4 appendObject:v13 withName:@"revokedAuthDate"];
   }
 
   v15 = [MEMORY[0x1E698E680] builderWithObject:self->_model];
-  v16 = [v15 build];
-  v17 = [v4 appendObject:v16 withName:@"model"];
+  build = [v15 build];
+  v17 = [v4 appendObject:build withName:@"model"];
 
-  v18 = [v4 build];
+  build2 = [v4 build];
 
-  return v18;
+  return build2;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBFUserAuthenticationController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFUserAuthenticationController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -618,26 +618,26 @@ void __80__SBFUserAuthenticationController_initWithAssertionManager_policy_keyba
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFUserAuthenticationController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFUserAuthenticationController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFUserAuthenticationController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFUserAuthenticationController *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__SBFUserAuthenticationController_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E807F290;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -667,10 +667,10 @@ void __66__SBFUserAuthenticationController_keybagDidUnlockForTheFirstTime___bloc
   [v0 postNotificationName:@"SBFUserAuthenticatedForFirstTimeNotification" object:0 userInfo:0];
 }
 
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change
 {
-  v5 = a3;
-  v4 = v5;
+  keybagCopy = keybag;
+  v4 = keybagCopy;
   BSDispatchMain();
 }
 
@@ -681,41 +681,41 @@ void __65__SBFUserAuthenticationController_keybag_extendedStateDidChange___block
   [v1 _updateAuthenticationStateAndDateForLockState:v2];
 }
 
-- (void)_setModel:(id)a3
+- (void)_setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   p_model = &self->_model;
-  if (self->_model != v5)
+  if (self->_model != modelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_model, a3);
+    v7 = modelCopy;
+    objc_storeStrong(p_model, model);
     p_model = [(SBFUserAuthenticationModel *)self->_model setDelegate:self];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_model, v5);
+  MEMORY[0x1EEE66BB8](p_model, modelCopy);
 }
 
-- (void)_setupPolicy:(id)a3
+- (void)_setupPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v5 = self->_policy;
   if ([(SBFAuthenticationPolicy *)v5 shouldClearBlockStateOnSync])
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __48__SBFUserAuthenticationController__setupPolicy___block_invoke;
     v11 = &unk_1E807F470;
     objc_copyWeak(&v12, &location);
-    v7 = [v6 addObserverForName:@"kSBSyncSessionBegan" object:0 queue:0 usingBlock:&v8];
+    v7 = [defaultCenter addObserverForName:@"kSBSyncSessionBegan" object:0 queue:0 usingBlock:&v8];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      [v6 addObserver:self selector:sel__uncachePasscodeIfNecessary name:@"SBSetupBuddyCompletedNotification" object:{0, v8, v9, v10, v11}];
+      [defaultCenter addObserver:self selector:sel__uncachePasscodeIfNecessary name:@"SBSetupBuddyCompletedNotification" object:{0, v8, v9, v10, v11}];
     }
 
-    if ([v4 usesSecureMode] && !-[SBFUserAuthenticationController isAuthenticatedCached](self, "isAuthenticatedCached"))
+    if ([policyCopy usesSecureMode] && !-[SBFUserAuthenticationController isAuthenticatedCached](self, "isAuthenticatedCached"))
     {
       [(SBFSecureDisplayCoordinator *)self->_secureDisplayCoordinator setSecureMode:1 postNotification:0];
     }
@@ -740,14 +740,14 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
   }
 }
 
-- (void)_addAuthenticationAssertion:(id)a3
+- (void)_addAuthenticationAssertion:(id)assertion
 {
   assertionManager = self->_assertionManager;
-  v5 = a3;
-  [(SBFAuthenticationAssertionManager *)assertionManager addAssertion:v5];
-  v6 = [v5 type];
+  assertionCopy = assertion;
+  [(SBFAuthenticationAssertionManager *)assertionManager addAssertion:assertionCopy];
+  type = [assertionCopy type];
 
-  if (v6 == 1 && self->_authenticationState != 1)
+  if (type == 1 && self->_authenticationState != 1)
   {
     [(SBFUserAuthenticationController *)self _authenticateIfInGracePeriod];
 
@@ -755,17 +755,17 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
   }
 }
 
-- (void)_removeAuthenticationAssertion:(id)a3
+- (void)_removeAuthenticationAssertion:(id)assertion
 {
-  v6 = a3;
+  assertionCopy = assertion;
   [(SBFAuthenticationAssertionManager *)self->_assertionManager removeAssertion:?];
   if (![(SBFAuthenticationAssertionManager *)self->_assertionManager hasActiveAssertions])
   {
     v4 = SBLogAuthenticationController();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"remove authentication assertion: %@", v6];
-      [(SBFUserAuthenticationController *)self _updateAuthenticationStateForPublicReason:v5];
+      assertionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"remove authentication assertion: %@", assertionCopy];
+      [(SBFUserAuthenticationController *)self _updateAuthenticationStateForPublicReason:assertionCopy];
     }
 
     else
@@ -775,33 +775,33 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
   }
 }
 
-- (void)_addPrivateAuthenticationObserver:(id)a3
+- (void)_addPrivateAuthenticationObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v9 = v5;
     if (!observers)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    v4 = [(NSHashTable *)observers addObject:v9];
+    observerCopy = [(NSHashTable *)observers addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](observerCopy, v5);
 }
 
-- (void)_removePrivateAuthenticationObserver:(id)a3
+- (void)_removePrivateAuthenticationObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -809,38 +809,38 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
 
 - (BOOL)_isInBioUnlockState
 {
-  v2 = [(SBFUserAuthenticationController *)self _cachedLockStateExtended];
-  v3 = [v2 lockState] == 7;
+  _cachedLockStateExtended = [(SBFUserAuthenticationController *)self _cachedLockStateExtended];
+  v3 = [_cachedLockStateExtended lockState] == 7;
 
   return v3;
 }
 
 - (BOOL)_isInGracePeriodState
 {
-  v2 = [(SBFUserAuthenticationController *)self _cachedLockStateExtended];
-  v3 = [v2 lockState] == 5;
+  _cachedLockStateExtended = [(SBFUserAuthenticationController *)self _cachedLockStateExtended];
+  v3 = [_cachedLockStateExtended lockState] == 5;
 
   return v3;
 }
 
-- (void)_setAuthState:(int64_t)a3
+- (void)_setAuthState:(int64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
   authenticationState = self->_authenticationState;
-  if (authenticationState != a3)
+  if (authenticationState != state)
   {
     v6 = SBLogAuthenticationController();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 2)
+      if (state > 2)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = off_1E807F770[a3];
+        v7 = off_1E807F770[state];
       }
 
       *buf = 138543362;
@@ -848,17 +848,17 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
       _os_log_impl(&dword_1BEA11000, v6, OS_LOG_TYPE_DEFAULT, "State changed to %{public}@", buf, 0xCu);
     }
 
-    self->_authenticationState = a3;
+    self->_authenticationState = state;
     [(SBFUserAuthenticationController *)self _invalidateCachedPasscodeLockState];
     [(SBFUserAuthenticationController *)self _notifyAboutTemporaryBlockStatusChanged];
     [(SBFUserAuthenticationController *)self _updateSecureModeIfNecessaryForNewAuthState];
-    if (a3 >= 2)
+    if (state >= 2)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
-        v13 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         lastRevokedAuthenticationDate = self->_lastRevokedAuthenticationDate;
-        self->_lastRevokedAuthenticationDate = v13;
+        self->_lastRevokedAuthenticationDate = date;
       }
     }
 
@@ -870,11 +870,11 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
         [SBFUserAuthenticationController _setAuthState:];
       }
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v10 = [MEMORY[0x1E696AD98] numberWithInt:{authenticationState != 0, @"SBFUserAuthenticationStateWasAuthenticatedKey"}];
       v16 = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      [v9 postNotificationName:@"SBFUserAuthenticationStateDidChangeNotification" object:0 userInfo:v11];
+      [defaultCenter postNotificationName:@"SBFUserAuthenticationStateDidChangeNotification" object:0 userInfo:v11];
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.springboard.DeviceLockStatusChanged", 0, 0, 0);
@@ -882,13 +882,13 @@ void __48__SBFUserAuthenticationController__setupPolicy___block_invoke(uint64_t 
   }
 }
 
-- (void)_updateAuthenticationStateAndDateForLockState:(id)a3
+- (void)_updateAuthenticationStateAndDateForLockState:(id)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 lockState];
-  v6 = [v4 isEffectivelyLocked];
-  if (v6)
+  stateCopy = state;
+  lockState = [stateCopy lockState];
+  isEffectivelyLocked = [stateCopy isEffectivelyLocked];
+  if (isEffectivelyLocked)
   {
     v7 = 0;
 LABEL_6:
@@ -896,7 +896,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v5 <= 7 && ((1 << v5) & 0x89) != 0)
+  if (lockState <= 7 && ((1 << lockState) & 0x89) != 0)
   {
     v7 = 1;
     goto LABEL_6;
@@ -926,7 +926,7 @@ LABEL_7:
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 extendedKeybagLockStateChanged:{v6, v14}];
+          [v13 extendedKeybagLockStateChanged:{isEffectivelyLocked, v14}];
         }
 
         ++v12;
@@ -941,28 +941,28 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    [(SBFUserAuthenticationModel *)self->_model noteNewMkbDeviceLockState:v4];
+    [(SBFUserAuthenticationModel *)self->_model noteNewMkbDeviceLockState:stateCopy];
   }
 }
 
-- (void)_updateAuthenticationStateImmediately:(BOOL)a3 forPublicReason:(id)a4
+- (void)_updateAuthenticationStateImmediately:(BOOL)immediately forPublicReason:(id)reason
 {
-  v4 = a3;
+  immediatelyCopy = immediately;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  reasonCopy = reason;
   if (![(SBFUserAuthenticationController *)self hasPasscodeSet])
   {
-    v7 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    [v7 recomputeUserComplianceWarning];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    [mEMORY[0x1E69ADFB8] recomputeUserComplianceWarning];
   }
 
-  if (-[SBFUserAuthenticationController hasPasscodeSet](self, "hasPasscodeSet") && !-[SBFAuthenticationAssertionManager hasActiveAssertions](self->_assertionManager, "hasActiveAssertions") && -[SBFUserAuthenticationController _shouldRevokeAuthenticationNow](self, "_shouldRevokeAuthenticationNow") && (-[SBFUserAuthenticationController authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:](self, "authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:", v4), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isAuthenticated], v8, v9))
+  if (-[SBFUserAuthenticationController hasPasscodeSet](self, "hasPasscodeSet") && !-[SBFAuthenticationAssertionManager hasActiveAssertions](self->_assertionManager, "hasActiveAssertions") && -[SBFUserAuthenticationController _shouldRevokeAuthenticationNow](self, "_shouldRevokeAuthenticationNow") && (-[SBFUserAuthenticationController authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:](self, "authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:", immediatelyCopy), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isAuthenticated], v8, v9))
   {
     v10 = SBLogAuthenticationController();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = &stru_1F3D19FF0;
-      if (v4)
+      if (immediatelyCopy)
       {
         v11 = @"immediately";
       }
@@ -970,11 +970,11 @@ LABEL_7:
       v13 = 138412546;
       v14 = v11;
       v15 = 2114;
-      v16 = v6;
+      v16 = reasonCopy;
       _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_DEFAULT, "Update authentication state - needs authentication revoked; revoking %@ for reason: %{public}@", &v13, 0x16u);
     }
 
-    [(SBFUserAuthenticationController *)self _revokeAuthenticationImmediately:v4 forPublicReason:v6];
+    [(SBFUserAuthenticationController *)self _revokeAuthenticationImmediately:immediatelyCopy forPublicReason:reasonCopy];
   }
 
   else
@@ -989,8 +989,8 @@ LABEL_7:
 
 - (BOOL)_shouldRevokeAuthenticationNow
 {
-  v2 = [(SBFAuthenticationPolicy *)self->_policy allowAuthenticationRevocation];
-  if (v2)
+  allowAuthenticationRevocation = [(SBFAuthenticationPolicy *)self->_policy allowAuthenticationRevocation];
+  if (allowAuthenticationRevocation)
   {
     v3 = SBLogAuthenticationController();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -1000,26 +1000,26 @@ LABEL_7:
     }
   }
 
-  return v2;
+  return allowAuthenticationRevocation;
 }
 
-- (void)_revokeAuthenticationImmediately:(BOOL)a3 forPublicReason:(id)a4
+- (void)_revokeAuthenticationImmediately:(BOOL)immediately forPublicReason:(id)reason
 {
-  v5 = a3;
+  immediatelyCopy = immediately;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  reasonCopy = reason;
   if ([(SBFUserAuthenticationController *)self hasPasscodeSet])
   {
-    v8 = [(SBFUserAuthenticationController *)self authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:v5];
-    v9 = [v8 isAuthenticated];
+    v8 = [(SBFUserAuthenticationController *)self authenticationStatusProviderTreatingContinuityUnlockedAsUnlocked:immediatelyCopy];
+    isAuthenticated = [v8 isAuthenticated];
 
-    if (v9)
+    if (isAuthenticated)
     {
       v10 = SBLogAuthenticationController();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = &stru_1F3D19FF0;
-        if (v5)
+        if (immediatelyCopy)
         {
           v12 = @"immediately";
         }
@@ -1034,14 +1034,14 @@ LABEL_7:
         if (v14)
         {
           v15 = MEMORY[0x1E696AEC0];
-          v4 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v11 = [v15 stringWithFormat:@", caller: %@", v4];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+          v11 = [v15 stringWithFormat:@", caller: %@", callStackSymbols];
         }
 
         *buf = 138543874;
         v21 = v12;
         v22 = 2114;
-        v23 = v7;
+        v23 = reasonCopy;
         v24 = 2114;
         v25 = v11;
         _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_DEFAULT, "Revoking authentication%{public}@ - reason: %{public}@ %{public}@", buf, 0x20u);
@@ -1051,7 +1051,7 @@ LABEL_7:
       }
 
       authenticationState = self->_authenticationState;
-      [(SBFMobileKeyBag *)self->_keybag lockSkippingGracePeriod:v5];
+      [(SBFMobileKeyBag *)self->_keybag lockSkippingGracePeriod:immediatelyCopy];
       [(SBFUserAuthenticationController *)self _invalidateCachedPasscodeLockState];
       if (authenticationState)
       {
@@ -1067,27 +1067,27 @@ LABEL_7:
         }
       }
 
-      v18 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       lastRevokedAuthenticationDate = self->_lastRevokedAuthenticationDate;
-      self->_lastRevokedAuthenticationDate = v18;
+      self->_lastRevokedAuthenticationDate = date;
     }
   }
 }
 
-- (void)_addAsFirstResponder:(id)a3
+- (void)_addAsFirstResponder:(id)responder
 {
-  v4 = a3;
-  if (v4)
+  responderCopy = responder;
+  if (responderCopy)
   {
     if (self->_responders)
     {
-      [(SBFUserAuthenticationController *)self _removeAuthResponder:v4];
-      [(NSMutableArray *)self->_responders insertObject:v4 atIndex:0];
+      [(SBFUserAuthenticationController *)self _removeAuthResponder:responderCopy];
+      [(NSMutableArray *)self->_responders insertObject:responderCopy atIndex:0];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DF70] arrayWithObject:v4];
+      v5 = [MEMORY[0x1E695DF70] arrayWithObject:responderCopy];
       responders = self->_responders;
       self->_responders = v5;
     }
@@ -1100,98 +1100,98 @@ LABEL_7:
   }
 }
 
-- (void)_removeAuthResponder:(id)a3
+- (void)_removeAuthResponder:(id)responder
 {
-  if (a3)
+  if (responder)
   {
-    v4 = a3;
+    responderCopy = responder;
     v5 = SBLogAuthenticationRequests();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [SBFUserAuthenticationController _removeAuthResponder:?];
     }
 
-    [(NSMutableArray *)self->_responders removeObject:v4];
+    [(NSMutableArray *)self->_responders removeObject:responderCopy];
   }
 }
 
-- (BOOL)_processAuthenticationRequest:(id)a3 responder:(id)a4
+- (BOOL)_processAuthenticationRequest:(id)request responder:(id)responder
 {
   v11 = 0;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBFUserAuthenticationController *)self _evaluateAuthenticationAttempt:v7 outError:&v11];
+  responderCopy = responder;
+  requestCopy = request;
+  v8 = [(SBFUserAuthenticationController *)self _evaluateAuthenticationAttempt:requestCopy outError:&v11];
   v9 = v11;
-  [(SBFUserAuthenticationController *)self _notifyClientsOfAuthenticationResult:v8 forRequest:v7 error:v9 withResponder:v6];
+  [(SBFUserAuthenticationController *)self _notifyClientsOfAuthenticationResult:v8 forRequest:requestCopy error:v9 withResponder:responderCopy];
 
-  LOBYTE(v7) = [(SBFUserAuthenticationController *)self _BOOLForAuthenticationResult:v8];
-  return v7;
+  LOBYTE(requestCopy) = [(SBFUserAuthenticationController *)self _BOOLForAuthenticationResult:v8];
+  return requestCopy;
 }
 
-- (void)_notifyClientsOfAuthenticationResult:(int64_t)a3 forRequest:(id)a4 error:(id)a5 withResponder:(id)a6
+- (void)_notifyClientsOfAuthenticationResult:(int64_t)result forRequest:(id)request error:(id)error withResponder:(id)responder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ((a3 - 1) > 2)
+  requestCopy = request;
+  errorCopy = error;
+  responderCopy = responder;
+  if ((result - 1) > 2)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = off_1E807F788[a3 - 1];
+    v13 = off_1E807F788[result - 1];
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v20[0] = @"SBFUserAuthenticationRequestCompletedAuthenticationTypeKey";
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "type")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(requestCopy, "type")}];
   v20[1] = @"SBFUserAuthenticationRequestCompletedResultKey";
   v21[0] = v15;
   v21[1] = v13;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-  [v14 postNotificationName:@"SBFUserAuthenticationRequestCompletedNotification" object:self userInfo:v16];
+  [defaultCenter postNotificationName:@"SBFUserAuthenticationRequestCompletedNotification" object:self userInfo:v16];
 
-  if (v12 || ([v10 handler], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+  if (responderCopy || ([requestCopy handler], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
   {
-    switch(a3)
+    switch(result)
     {
       case 1:
-        [(SBFUserAuthenticationController *)self _handleFailedAuthentication:v10 error:v11 responder:v12];
+        [(SBFUserAuthenticationController *)self _handleFailedAuthentication:requestCopy error:errorCopy responder:responderCopy];
         break;
       case 3:
-        [(SBFUserAuthenticationController *)self _handleInvalidAuthentication:v10 responder:v12];
+        [(SBFUserAuthenticationController *)self _handleInvalidAuthentication:requestCopy responder:responderCopy];
         break;
       case 2:
-        [(SBFUserAuthenticationController *)self _handleSuccessfulAuthentication:v10 responder:v12];
+        [(SBFUserAuthenticationController *)self _handleSuccessfulAuthentication:requestCopy responder:responderCopy];
         break;
     }
 
-    v18 = [v10 handler];
+    handler = [requestCopy handler];
 
-    if (v18)
+    if (handler)
     {
-      v19 = [v10 handler];
-      (v19)[2](v19, [(SBFUserAuthenticationController *)self _BOOLForAuthenticationResult:a3]);
+      handler2 = [requestCopy handler];
+      (handler2)[2](handler2, [(SBFUserAuthenticationController *)self _BOOLForAuthenticationResult:result]);
     }
   }
 }
 
-- (void)_handleSuccessfulAuthentication:(id)a3 responder:(id)a4
+- (void)_handleSuccessfulAuthentication:(id)authentication responder:(id)responder
 {
-  v6 = a3;
+  authenticationCopy = authentication;
   model = self->_model;
-  v8 = a4;
+  responderCopy = responder;
   [(SBFUserAuthenticationModel *)model notePasscodeUnlockSucceeded];
   [(SBFUserAuthenticationController *)self _scheduleUnblockTimer];
-  if ([v6 type] == 1 && !objc_msgSend(v6, "source"))
+  if ([authenticationCopy type] == 1 && !objc_msgSend(authenticationCopy, "source"))
   {
     v9 = self->_policy;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v6 passcode];
-      [(SBFAuthenticationPolicy *)v9 cachePasscode:v10];
+      passcode = [authenticationCopy passcode];
+      [(SBFAuthenticationPolicy *)v9 cachePasscode:passcode];
     }
   }
 
@@ -1202,23 +1202,23 @@ LABEL_7:
   block[3] = &unk_1E807F178;
   block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
-  [v8 handleSuccessfulAuthenticationRequest:v6];
+  [responderCopy handleSuccessfulAuthenticationRequest:authenticationCopy];
 }
 
-- (void)_handleFailedAuthentication:(id)a3 error:(id)a4 responder:(id)a5
+- (void)_handleFailedAuthentication:(id)authentication error:(id)error responder:(id)responder
 {
-  v11 = a4;
+  errorCopy = error;
   model = self->_model;
-  v9 = a5;
-  v10 = a3;
-  [(SBFUserAuthenticationModel *)model notePasscodeUnlockFailedWithError:v11];
+  responderCopy = responder;
+  authenticationCopy = authentication;
+  [(SBFUserAuthenticationModel *)model notePasscodeUnlockFailedWithError:errorCopy];
   if (objc_opt_respondsToSelector())
   {
-    [(SBFAuthenticationPolicy *)self->_policy passcodeAuthenticationFailedWithError:v11];
+    [(SBFAuthenticationPolicy *)self->_policy passcodeAuthenticationFailedWithError:errorCopy];
   }
 
   [(SBFUserAuthenticationController *)self _scheduleUnblockTimer];
-  [v9 handleFailedAuthenticationRequest:v10 error:v11];
+  [responderCopy handleFailedAuthenticationRequest:authenticationCopy error:errorCopy];
 }
 
 - (BOOL)_performNilPasscodeCheck
@@ -1262,20 +1262,20 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)_evaluateAuthenticationAttempt:(id)a3 outError:(id *)a4
+- (int64_t)_evaluateAuthenticationAttempt:(id)attempt outError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 type];
-  if (v7 == 2)
+  attemptCopy = attempt;
+  type = [attemptCopy type];
+  if (type == 2)
   {
-    v8 = [(SBFUserAuthenticationController *)self _evaluateBiometricAttempt:v6];
+    v8 = [(SBFUserAuthenticationController *)self _evaluateBiometricAttempt:attemptCopy];
     goto LABEL_5;
   }
 
-  if (v7 == 1)
+  if (type == 1)
   {
-    v8 = [(SBFUserAuthenticationController *)self _evaluatePasscodeAttempt:v6 outError:a4];
+    v8 = [(SBFUserAuthenticationController *)self _evaluatePasscodeAttempt:attemptCopy outError:error];
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
@@ -1287,27 +1287,27 @@ LABEL_7:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = MEMORY[0x1BFB4C500](v9 != 0);
-    v12 = [v6 publicDescription];
+    publicDescription = [attemptCopy publicDescription];
     v14 = 138543618;
     v15 = v11;
     v16 = 2114;
-    v17 = v12;
+    v17 = publicDescription;
     _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_DEFAULT, "Processed authentication request (success=%{public}@): %{public}@", &v14, 0x16u);
   }
 
   return v9;
 }
 
-- (int64_t)_evaluatePasscodeAttempt:(id)a3 outError:(id *)a4
+- (int64_t)_evaluatePasscodeAttempt:(id)attempt outError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 source] == 0;
-  v8 = [v6 passcode];
-  v9 = v8;
-  if (v8 && [v8 length])
+  attemptCopy = attempt;
+  v7 = [attemptCopy source] == 0;
+  passcode = [attemptCopy passcode];
+  v9 = passcode;
+  if (passcode && [passcode length])
   {
-    v10 = [(SBFUserAuthenticationController *)self hasPasscodeSet];
-    v11 = [(SBFUserAuthenticationController *)self _isPermanentlyBlocked]|| [(SBFUserAuthenticationController *)self _isTemporarilyBlocked];
+    hasPasscodeSet = [(SBFUserAuthenticationController *)self hasPasscodeSet];
+    _isTemporarilyBlocked = [(SBFUserAuthenticationController *)self _isPermanentlyBlocked]|| [(SBFUserAuthenticationController *)self _isTemporarilyBlocked];
     v42 = 0;
     v43 = &v42;
     v44 = 0x2020000000;
@@ -1328,15 +1328,15 @@ LABEL_7:
     v21 = __69__SBFUserAuthenticationController__evaluatePasscodeAttempt_outError___block_invoke;
     v22 = &unk_1E807F738;
     v29 = v7;
-    v23 = self;
+    selfCopy = self;
     v14 = v9;
     v24 = v14;
     v26 = &v38;
-    v30 = v11;
-    v25 = v6;
+    v30 = _isTemporarilyBlocked;
+    v25 = attemptCopy;
     v27 = &v42;
     v28 = &v32;
-    v31 = v10;
+    v31 = hasPasscodeSet;
     [(SBFUserAuthenticationModel *)model performPasswordTest:&v19];
     if (v39[3])
     {
@@ -1369,9 +1369,9 @@ LABEL_20:
     self->_lastIncorrectPasscodeAttempt = v15;
 
 LABEL_15:
-    if (a4)
+    if (error)
     {
-      *a4 = v33[5];
+      *error = v33[5];
     }
 
     if (*(v43 + 24))
@@ -1445,7 +1445,7 @@ LABEL_14:
   *a2 = *(*(*(a1 + 56) + 8) + 24);
 }
 
-- (int64_t)_evaluateBiometricAttempt:(id)a3
+- (int64_t)_evaluateBiometricAttempt:(id)attempt
 {
   if ([(SBFUserAuthenticationController *)self _isInBioUnlockState])
   {
@@ -1501,10 +1501,10 @@ LABEL_14:
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [v5 isEnabled];
+  sharedInstance = [v3 sharedInstance];
+  isEnabled = [sharedInstance isEnabled];
 
-  return v6;
+  return isEnabled;
 }
 
 - (double)_timeUntilUnblockedSinceReferenceDate
@@ -1561,8 +1561,8 @@ LABEL_14:
 
 - (void)_isUserAuthenticated
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBFUserAuthenticationController.m" lineNumber:468 description:@"transient auth assertion must be nil"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBFUserAuthenticationController.m" lineNumber:468 description:@"transient auth assertion must be nil"];
 }
 
 - (void)_addAsFirstResponder:(uint64_t)a1 .cold.1(uint64_t a1)
@@ -1581,8 +1581,8 @@ LABEL_14:
 
 - (void)_authenticateIfInGracePeriod
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBFUserAuthenticationController.m" lineNumber:792 description:@"-[SBFUserAuthenticationController _authenticateIfInGracePeriod]'s return value is different from its internal authentication state."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBFUserAuthenticationController.m" lineNumber:792 description:@"-[SBFUserAuthenticationController _authenticateIfInGracePeriod]'s return value is different from its internal authentication state."];
 }
 
 @end

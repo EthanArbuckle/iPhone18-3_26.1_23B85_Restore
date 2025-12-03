@@ -1,12 +1,12 @@
 @interface NPKProtoInsertBridgeNotificationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoInsertBridgeNotificationRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoInsertBridgeNotificationRequest;
   v4 = [(NPKProtoInsertBridgeNotificationRequest *)&v8 description];
-  v5 = [(NPKProtoInsertBridgeNotificationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoInsertBridgeNotificationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   message = self->_message;
@@ -72,15 +72,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_title)
   {
     [NPKProtoInsertBridgeNotificationRequest writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_message)
   {
@@ -119,57 +119,57 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setTitle:self->_title];
-  [v5 setMessage:self->_message];
+  toCopy = to;
+  [toCopy setTitle:self->_title];
+  [toCopy setMessage:self->_message];
   if (self->_actionURLString)
   {
-    [v5 setActionURLString:?];
+    [toCopy setActionURLString:?];
   }
 
   if (self->_passUniqueID)
   {
-    [v5 setPassUniqueID:?];
+    [toCopy setPassUniqueID:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (*&self->_has)
   {
-    v5[56] = self->_playSound;
-    v5[60] |= 1u;
+    toCopy[56] = self->_playSound;
+    toCopy[60] |= 1u;
   }
 
   if (self->_notificationIdentifier)
   {
-    [v5 setNotificationIdentifier:?];
-    v4 = v5;
+    [toCopy setNotificationIdentifier:?];
+    v4 = toCopy;
   }
 
   if (self->_expirationDateData)
   {
-    [v5 setExpirationDateData:?];
-    v4 = v5;
+    [toCopy setExpirationDateData:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_message copyWithZone:a3];
+  v8 = [(NSString *)self->_message copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_actionURLString copyWithZone:a3];
+  v10 = [(NSString *)self->_actionURLString copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSString *)self->_passUniqueID copyWithZone:a3];
+  v12 = [(NSString *)self->_passUniqueID copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -179,27 +179,27 @@
     *(v5 + 60) |= 1u;
   }
 
-  v14 = [(NSString *)self->_notificationIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_notificationIdentifier copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
-  v16 = [(NSData *)self->_expirationDateData copyWithZone:a3];
+  v16 = [(NSData *)self->_expirationDateData copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   title = self->_title;
-  if (title | *(v4 + 6))
+  if (title | *(equalCopy + 6))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -208,7 +208,7 @@
   }
 
   message = self->_message;
-  if (message | *(v4 + 3))
+  if (message | *(equalCopy + 3))
   {
     if (![(NSString *)message isEqual:?])
     {
@@ -217,7 +217,7 @@
   }
 
   actionURLString = self->_actionURLString;
-  if (actionURLString | *(v4 + 1))
+  if (actionURLString | *(equalCopy + 1))
   {
     if (![(NSString *)actionURLString isEqual:?])
     {
@@ -226,7 +226,7 @@
   }
 
   passUniqueID = self->_passUniqueID;
-  if (passUniqueID | *(v4 + 5))
+  if (passUniqueID | *(equalCopy + 5))
   {
     if (![(NSString *)passUniqueID isEqual:?])
     {
@@ -234,18 +234,18 @@
     }
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0)
+    if ((*(equalCopy + 60) & 1) == 0)
     {
       goto LABEL_17;
     }
 
-    v9 = *(v4 + 56);
+    v9 = *(equalCopy + 56);
     if (self->_playSound)
     {
-      if (*(v4 + 56))
+      if (*(equalCopy + 56))
       {
         goto LABEL_12;
       }
@@ -263,13 +263,13 @@ LABEL_17:
 
 LABEL_12:
   notificationIdentifier = self->_notificationIdentifier;
-  if (notificationIdentifier | *(v4 + 4) && ![(NSString *)notificationIdentifier isEqual:?])
+  if (notificationIdentifier | *(equalCopy + 4) && ![(NSString *)notificationIdentifier isEqual:?])
   {
     goto LABEL_17;
   }
 
   expirationDateData = self->_expirationDateData;
-  if (expirationDateData | *(v4 + 2))
+  if (expirationDateData | *(equalCopy + 2))
   {
     v12 = [(NSData *)expirationDateData isEqual:?];
   }
@@ -305,50 +305,50 @@ LABEL_18:
   return v8 ^ v9 ^ [(NSData *)self->_expirationDateData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(NPKProtoInsertBridgeNotificationRequest *)self setTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoInsertBridgeNotificationRequest *)self setMessage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoInsertBridgeNotificationRequest *)self setActionURLString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NPKProtoInsertBridgeNotificationRequest *)self setPassUniqueID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[60])
+  if (fromCopy[60])
   {
-    self->_playSound = v4[56];
+    self->_playSound = fromCopy[56];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NPKProtoInsertBridgeNotificationRequest *)self setNotificationIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoInsertBridgeNotificationRequest *)self setExpirationDateData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

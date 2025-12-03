@@ -1,22 +1,22 @@
 @interface WLKContentPlayResponse
 - (WLKContentPlayResponse)init;
-- (WLKContentPlayResponse)initWithDictionary:(id)a3;
+- (WLKContentPlayResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKContentPlayResponse
 
-- (WLKContentPlayResponse)initWithDictionary:(id)a3
+- (WLKContentPlayResponse)initWithDictionary:(id)dictionary
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = WLKContentPlayResponse;
   v6 = [(WLKContentPlayResponse *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
-    v8 = [v5 wlk_dictionaryForKey:@"data"];
+    objc_storeStrong(&v6->_dictionary, dictionary);
+    v8 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v9 = [WLKChannelsResponse parseChannelsFromPayload:v8];
     v10 = v9;
     if (v9)

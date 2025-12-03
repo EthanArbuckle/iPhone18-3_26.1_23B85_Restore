@@ -1,9 +1,9 @@
 @interface XPCNSServiceConnection
-- (XPCNSServiceConnection)initWithXPCServiceConnection:(id)a3;
+- (XPCNSServiceConnection)initWithXPCServiceConnection:(id)connection;
 - (XPCNSServiceConnectionDelegate)delegate;
-- (void)XPCServiceConnection:(id)a3 didReceiveRequest:(id)a4 sequenceNumber:(unint64_t)a5;
-- (void)XPCServiceConnectionDidDisconnect:(id)a3;
-- (void)sendMessage:(id)a3 withHandler:(id)a4;
+- (void)XPCServiceConnection:(id)connection didReceiveRequest:(id)request sequenceNumber:(unint64_t)number;
+- (void)XPCServiceConnectionDidDisconnect:(id)disconnect;
+- (void)sendMessage:(id)message withHandler:(id)handler;
 @end
 
 @implementation XPCNSServiceConnection
@@ -15,27 +15,27 @@
   return WeakRetained;
 }
 
-- (void)XPCServiceConnectionDidDisconnect:(id)a3
+- (void)XPCServiceConnectionDidDisconnect:(id)disconnect
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained XPCNSServiceConnectionDidDisconnect:self];
 }
 
-- (void)XPCServiceConnection:(id)a3 didReceiveRequest:(id)a4 sequenceNumber:(unint64_t)a5
+- (void)XPCServiceConnection:(id)connection didReceiveRequest:(id)request sequenceNumber:(unint64_t)number
 {
-  v7 = a4;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [[XPCNSRequest alloc] initWithXPCRequest:v7];
+  v8 = [[XPCNSRequest alloc] initWithXPCRequest:requestCopy];
 
-  [WeakRetained XPCNSServiceConnection:self didReceiveRequest:v8 sequenceNumber:a5];
+  [WeakRetained XPCNSServiceConnection:self didReceiveRequest:v8 sequenceNumber:number];
 }
 
-- (void)sendMessage:(id)a3 withHandler:(id)a4
+- (void)sendMessage:(id)message withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
   v8 = xpc_dictionary_create(0, 0, 0);
-  inserted = _insertMessage(v8, v7, 0, 0, 0);
+  inserted = _insertMessage(v8, messageCopy, 0, 0, 0);
 
   if (inserted)
   {
@@ -45,7 +45,7 @@
     v11[2] = __50__XPCNSServiceConnection_sendMessage_withHandler___block_invoke;
     v11[3] = &unk_2798A52D8;
     v11[4] = self;
-    v12 = v6;
+    v12 = handlerCopy;
     [(XPCServiceConnection *)serviceConnection sendMessage:v8 withHandler:v11];
   }
 }
@@ -71,16 +71,16 @@ void __50__XPCNSServiceConnection_sendMessage_withHandler___block_invoke(uint64_
   (*(*(a1 + 40) + 16))();
 }
 
-- (XPCNSServiceConnection)initWithXPCServiceConnection:(id)a3
+- (XPCNSServiceConnection)initWithXPCServiceConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = XPCNSServiceConnection;
   v6 = [(XPCNSServiceConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceConnection, a3);
+    objc_storeStrong(&v6->_serviceConnection, connection);
     [(XPCServiceConnection *)v7->_serviceConnection setDelegate:v7];
     [(XPCServiceConnection *)v7->_serviceConnection setContext:v7];
   }

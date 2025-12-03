@@ -1,14 +1,14 @@
 @interface CMProxPDP
-- (CMProxPDP)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMProxPDP)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMProxPDP
 
-- (CMProxPDP)initWithCoder:(id)a3
+- (CMProxPDP)initWithCoder:(id)coder
 {
   v26.receiver = self;
   v26.super_class = CMProxPDP;
@@ -16,50 +16,50 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fTimestamp = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMProxPDPTimestamp");
+    v4->fTimestamp = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMProxPDPTimestamp");
     v7 = objc_opt_class();
-    v4->fIntensity = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMProxPDPIntensity");
+    v4->fIntensity = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMProxPDPIntensity");
     v9 = objc_opt_class();
-    v4->fIntensityCalDelta = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"kCMProxPDPIntensityCalDelta");
+    v4->fIntensityCalDelta = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"kCMProxPDPIntensityCalDelta");
     v11 = objc_opt_class();
-    v4->fIntensityBaselineDelta = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"kCMProxPDPIntensityBaselineDelta");
+    v4->fIntensityBaselineDelta = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"kCMProxPDPIntensityBaselineDelta");
     v13 = objc_opt_class();
-    v4->fAmbient = objc_msgSend_decodeObjectOfClass_forKey_(a3, v14, v13, @"kCMProxPDPAmbient");
+    v4->fAmbient = objc_msgSend_decodeObjectOfClass_forKey_(coder, v14, v13, @"kCMProxPDPAmbient");
     v15 = objc_opt_class();
-    v4->fPocketProbability = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"kCMProxPDPPocketProbability");
+    v4->fPocketProbability = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"kCMProxPDPPocketProbability");
     v17 = objc_opt_class();
-    v4->fBaselineConfidence = objc_msgSend_decodeObjectOfClass_forKey_(a3, v18, v17, @"kCMProxPDPBaselineConfidence");
+    v4->fBaselineConfidence = objc_msgSend_decodeObjectOfClass_forKey_(coder, v18, v17, @"kCMProxPDPBaselineConfidence");
     v19 = objc_opt_class();
-    v4->fRxNtcC = objc_msgSend_decodeObjectOfClass_forKey_(a3, v20, v19, @"kCMProxPDPRxNtcC");
+    v4->fRxNtcC = objc_msgSend_decodeObjectOfClass_forKey_(coder, v20, v19, @"kCMProxPDPRxNtcC");
     v21 = objc_opt_class();
-    v4->fScanFlags = objc_msgSend_decodeObjectOfClass_forKey_(a3, v22, v21, @"kCMProxPDPScanFlags");
+    v4->fScanFlags = objc_msgSend_decodeObjectOfClass_forKey_(coder, v22, v21, @"kCMProxPDPScanFlags");
     v23 = objc_opt_class();
-    v4->fPocketFlag = objc_msgSend_decodeObjectOfClass_forKey_(a3, v24, v23, @"kCMProxPDPPocketFlag");
+    v4->fPocketFlag = objc_msgSend_decodeObjectOfClass_forKey_(coder, v24, v23, @"kCMProxPDPPocketFlag");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fTimestamp, @"kCMProxPDPTimestamp");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fIntensity, @"kCMProxPDPIntensity");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->fIntensityCalDelta, @"kCMProxPDPIntensityCalDelta");
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->fIntensityBaselineDelta, @"kCMProxPDPIntensityBaselineDelta");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->fAmbient, @"kCMProxPDPAmbient");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->fPocketProbability, @"kCMProxPDPPocketProbability");
-  objc_msgSend_encodeObject_forKey_(a3, v10, self->fBaselineConfidence, @"kCMProxPDPBaselineConfidence");
-  objc_msgSend_encodeObject_forKey_(a3, v11, self->fRxNtcC, @"kCMProxPDPRxNtcC");
-  objc_msgSend_encodeObject_forKey_(a3, v12, self->fScanFlags, @"kCMProxPDPScanFlags");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fTimestamp, @"kCMProxPDPTimestamp");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fIntensity, @"kCMProxPDPIntensity");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->fIntensityCalDelta, @"kCMProxPDPIntensityCalDelta");
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->fIntensityBaselineDelta, @"kCMProxPDPIntensityBaselineDelta");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->fAmbient, @"kCMProxPDPAmbient");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->fPocketProbability, @"kCMProxPDPPocketProbability");
+  objc_msgSend_encodeObject_forKey_(coder, v10, self->fBaselineConfidence, @"kCMProxPDPBaselineConfidence");
+  objc_msgSend_encodeObject_forKey_(coder, v11, self->fRxNtcC, @"kCMProxPDPRxNtcC");
+  objc_msgSend_encodeObject_forKey_(coder, v12, self->fScanFlags, @"kCMProxPDPScanFlags");
   fPocketFlag = self->fPocketFlag;
 
-  objc_msgSend_encodeObject_forKey_(a3, v13, fPocketFlag, @"kCMProxPDPPocketFlag");
+  objc_msgSend_encodeObject_forKey_(coder, v13, fPocketFlag, @"kCMProxPDPPocketFlag");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend_init(v7, v8, v9);
   if (v12)
   {

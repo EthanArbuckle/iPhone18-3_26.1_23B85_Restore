@@ -3,15 +3,15 @@
 + (id)categoryIdentifiers;
 + (id)pauseLoopCategory;
 + (id)promptCategory;
-- (BOOL)_postNotificationOfType:(unint64_t)a3 forTrigger:(id)a4 workflowReference:(id)a5 removeDeliveredNotifications:(BOOL)a6 pendingTriggerEventIDs:(id)a7 actionIcons:(id)a8 error:(id *)a9;
-- (BOOL)postBackgroundRunningNotificationWithConfiguredTriggers:(id)a3 userInfo:(id)a4 error:(id *)a5;
+- (BOOL)_postNotificationOfType:(unint64_t)type forTrigger:(id)trigger workflowReference:(id)reference removeDeliveredNotifications:(BOOL)notifications pendingTriggerEventIDs:(id)ds actionIcons:(id)icons error:(id *)error;
+- (BOOL)postBackgroundRunningNotificationWithConfiguredTriggers:(id)triggers userInfo:(id)info error:(id *)error;
 - (WFTriggerNotificationDebouncer)debouncer;
-- (WFTriggerUserNotificationManager)initWithUserNotificationManager:(id)a3;
+- (WFTriggerUserNotificationManager)initWithUserNotificationManager:(id)manager;
 - (WFTriggerUserNotificationManagerDelegate)delegate;
-- (void)postActionRequiredNotificationForTrigger:(id)a3 notificationType:(unint64_t)a4 workflowReference:(id)a5 pendingTriggerEventIDs:(id)a6;
-- (void)postNotificationThatTrigger:(id)a3 failedWithError:(id)a4 notificationRequestIdentifier:(id)a5;
-- (void)removeNotificationsWithTriggerIdentifier:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)postActionRequiredNotificationForTrigger:(id)trigger notificationType:(unint64_t)type workflowReference:(id)reference pendingTriggerEventIDs:(id)ds;
+- (void)postNotificationThatTrigger:(id)trigger failedWithError:(id)error notificationRequestIdentifier:(id)identifier;
+- (void)removeNotificationsWithTriggerIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WFTriggerUserNotificationManager
@@ -23,16 +23,16 @@
   return WeakRetained;
 }
 
-- (void)postActionRequiredNotificationForTrigger:(id)a3 notificationType:(unint64_t)a4 workflowReference:(id)a5 pendingTriggerEventIDs:(id)a6
+- (void)postActionRequiredNotificationForTrigger:(id)trigger notificationType:(unint64_t)type workflowReference:(id)reference pendingTriggerEventIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  triggerCopy = trigger;
+  dsCopy = ds;
   v18 = 0;
-  LOBYTE(a4) = [(WFTriggerUserNotificationManager *)self _postNotificationOfType:a4 forTrigger:v10 workflowReference:a5 removeDeliveredNotifications:a4 == 2 pendingTriggerEventIDs:v11 actionIcons:0 error:&v18];
+  LOBYTE(type) = [(WFTriggerUserNotificationManager *)self _postNotificationOfType:type forTrigger:triggerCopy workflowReference:reference removeDeliveredNotifications:type == 2 pendingTriggerEventIDs:dsCopy actionIcons:0 error:&v18];
   v12 = v18;
   v13 = v12;
-  if ((a4 & 1) == 0)
+  if ((type & 1) == 0)
   {
     if (v12)
     {
@@ -47,48 +47,48 @@
       }
     }
 
-    v15 = [(WFTriggerUserNotificationManager *)self delegate];
-    v16 = [v10 identifier];
-    [v15 notificationManager:self didFailToPostActionRequiredNotificationWithTriggerIdentifier:v16 pendingTriggerEventIDs:v11];
+    delegate = [(WFTriggerUserNotificationManager *)self delegate];
+    identifier = [triggerCopy identifier];
+    [delegate notificationManager:self didFailToPostActionRequiredNotificationWithTriggerIdentifier:identifier pendingTriggerEventIDs:dsCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"completionHandler", v40}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"completionHandler", centerCopy}];
   }
 
   v11 = getWFTriggersLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     *buf = 136315394;
     v42 = "[WFTriggerUserNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]";
     v43 = 2114;
-    v44 = v12;
+    v44 = actionIdentifier;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s daemon didReceiveNotificationResponse with action (%{public}@)", buf, 0x16u);
   }
 
-  v13 = [v9 actionIdentifier];
-  v14 = [v9 notification];
-  v15 = [v14 request];
-  v16 = [v15 content];
-  v17 = [v16 userInfo];
+  actionIdentifier2 = [responseCopy actionIdentifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v18 = [v9 notification];
-  v19 = [v18 request];
-  v20 = [v19 content];
-  v21 = [v20 categoryIdentifier];
-  v22 = [v21 isEqualToString:*MEMORY[0x277D7CDB0]];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  content2 = [request2 content];
+  categoryIdentifier = [content2 categoryIdentifier];
+  v22 = [categoryIdentifier isEqualToString:*MEMORY[0x277D7CDB0]];
 
   if (v22)
   {
@@ -97,33 +97,33 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![v13 isEqualToString:*MEMORY[0x277CE20F0]])
+      if (![actionIdentifier2 isEqualToString:*MEMORY[0x277CE20F0]])
       {
-        if ([v13 isEqualToString:@"runAction"])
+        if ([actionIdentifier2 isEqualToString:@"runAction"])
         {
-          v25 = [(WFTriggerUserNotificationManager *)self delegate];
-          [v25 notificationManager:self receivedConfirmationToRunTriggerWithIdentifier:v23 pendingTriggerEventIDs:v24];
+          delegate = [(WFTriggerUserNotificationManager *)self delegate];
+          [delegate notificationManager:self receivedConfirmationToRunTriggerWithIdentifier:v23 pendingTriggerEventIDs:v24];
 LABEL_22:
 
-          v10[2](v10);
+          handlerCopy[2](handlerCopy);
           goto LABEL_23;
         }
 
-        v25 = getWFTriggersLogObject();
-        if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+        delegate = getWFTriggersLogObject();
+        if (!os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_22;
         }
 
 LABEL_26:
-        v38 = [v9 actionIdentifier];
+        actionIdentifier3 = [responseCopy actionIdentifier];
         *buf = 136315650;
         v42 = "[WFTriggerUserNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]";
         v43 = 2114;
-        v44 = v38;
+        v44 = actionIdentifier3;
         v45 = 2114;
-        v46 = v9;
-        _os_log_impl(&dword_23103C000, v25, OS_LOG_TYPE_ERROR, "%s unexpected actionIdentifier (%{public}@) from notification reponse (%{public}@)", buf, 0x20u);
+        v46 = responseCopy;
+        _os_log_impl(&dword_23103C000, delegate, OS_LOG_TYPE_ERROR, "%s unexpected actionIdentifier (%{public}@) from notification reponse (%{public}@)", buf, 0x20u);
 
         goto LABEL_22;
       }
@@ -131,8 +131,8 @@ LABEL_26:
       goto LABEL_19;
     }
 
-    v25 = getWFTriggersLogObject();
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    delegate = getWFTriggersLogObject();
+    if (!os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_22;
     }
@@ -140,21 +140,21 @@ LABEL_26:
     goto LABEL_21;
   }
 
-  v26 = [v9 notification];
-  v27 = [v26 request];
-  v28 = [v27 content];
-  v29 = [v28 categoryIdentifier];
-  if ([v29 isEqualToString:*MEMORY[0x277D7CDA0]])
+  notification3 = [responseCopy notification];
+  request3 = [notification3 request];
+  content3 = [request3 content];
+  categoryIdentifier2 = [content3 categoryIdentifier];
+  if ([categoryIdentifier2 isEqualToString:*MEMORY[0x277D7CDA0]])
   {
-    v30 = [v13 isEqualToString:@"disableAction"];
+    v30 = [actionIdentifier2 isEqualToString:@"disableAction"];
 
     if (v30)
     {
       v23 = WFTriggerIDsToDisableFromNotificationUserInfo();
-      v31 = [(WFTriggerUserNotificationManager *)self delegate];
-      [v31 notificationManager:self didRequestDisablementOfTriggersWithIdentifiers:v23];
+      delegate2 = [(WFTriggerUserNotificationManager *)self delegate];
+      [delegate2 notificationManager:self didRequestDisablementOfTriggersWithIdentifiers:v23];
 
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
 LABEL_23:
 
       goto LABEL_24;
@@ -165,11 +165,11 @@ LABEL_23:
   {
   }
 
-  v32 = [v9 notification];
-  v33 = [v32 request];
-  v34 = [v33 content];
-  v35 = [v34 categoryIdentifier];
-  v36 = [v35 isEqualToString:*MEMORY[0x277D7CDA8]];
+  notification4 = [responseCopy notification];
+  request4 = [notification4 request];
+  content4 = [request4 content];
+  categoryIdentifier3 = [content4 categoryIdentifier];
+  v36 = [categoryIdentifier3 isEqualToString:*MEMORY[0x277D7CDA8]];
 
   if (v36)
   {
@@ -178,24 +178,24 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![v13 isEqualToString:*MEMORY[0x277CE20F0]])
+      if (![actionIdentifier2 isEqualToString:*MEMORY[0x277CE20F0]])
       {
-        if ([v13 isEqualToString:@"continueAction"])
+        if ([actionIdentifier2 isEqualToString:@"continueAction"])
         {
-          v25 = [(WFTriggerUserNotificationManager *)self delegate];
-          [v25 notificationManager:self receivedContinuePotentialLoopForTriggerWithIdentifier:v23 pendingTriggerEventIDs:v24];
+          delegate = [(WFTriggerUserNotificationManager *)self delegate];
+          [delegate notificationManager:self receivedContinuePotentialLoopForTriggerWithIdentifier:v23 pendingTriggerEventIDs:v24];
           goto LABEL_22;
         }
 
-        if ([v13 isEqualToString:@"stopAction"])
+        if ([actionIdentifier2 isEqualToString:@"stopAction"])
         {
-          v25 = [(WFTriggerUserNotificationManager *)self delegate];
-          [v25 notificationManager:self receivedStopPotentialLoopForTriggerWithIdentifier:v23];
+          delegate = [(WFTriggerUserNotificationManager *)self delegate];
+          [delegate notificationManager:self receivedStopPotentialLoopForTriggerWithIdentifier:v23];
           goto LABEL_22;
         }
 
-        v25 = getWFTriggersLogObject();
-        if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+        delegate = getWFTriggersLogObject();
+        if (!os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_22;
         }
@@ -204,13 +204,13 @@ LABEL_23:
       }
 
 LABEL_19:
-      v25 = [(WFTriggerUserNotificationManager *)self delegate];
-      [v25 notificationManager:self didDismissTriggerWithIdentifier:v23 pendingTriggerEventIDs:v24];
+      delegate = [(WFTriggerUserNotificationManager *)self delegate];
+      [delegate notificationManager:self didDismissTriggerWithIdentifier:v23 pendingTriggerEventIDs:v24];
       goto LABEL_22;
     }
 
-    v25 = getWFTriggersLogObject();
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    delegate = getWFTriggersLogObject();
+    if (!os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_22;
     }
@@ -219,8 +219,8 @@ LABEL_21:
     *buf = 136315394;
     v42 = "[WFTriggerUserNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]";
     v43 = 2114;
-    v44 = v17;
-    _os_log_impl(&dword_23103C000, v25, OS_LOG_TYPE_ERROR, "%s Missing or invalid triggerID from notification reponse userInfo: %{public}@", buf, 0x16u);
+    v44 = userInfo;
+    _os_log_impl(&dword_23103C000, delegate, OS_LOG_TYPE_ERROR, "%s Missing or invalid triggerID from notification reponse userInfo: %{public}@", buf, 0x16u);
     goto LABEL_22;
   }
 
@@ -229,30 +229,30 @@ LABEL_24:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNotificationsWithTriggerIdentifier:(id)a3
+- (void)removeNotificationsWithTriggerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFTriggerUserNotificationManager *)self userNotificationManager];
-  v6 = [v5 notificationCenter];
+  identifierCopy = identifier;
+  userNotificationManager = [(WFTriggerUserNotificationManager *)self userNotificationManager];
+  notificationCenter = [userNotificationManager notificationCenter];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__WFTriggerUserNotificationManager_removeNotificationsWithTriggerIdentifier___block_invoke;
   v14[3] = &unk_2788FED70;
-  v7 = v4;
+  v7 = identifierCopy;
   v15 = v7;
-  v16 = self;
-  [v6 getDeliveredNotificationsWithCompletionHandler:v14];
+  selfCopy = self;
+  [notificationCenter getDeliveredNotificationsWithCompletionHandler:v14];
 
-  v8 = [(WFTriggerUserNotificationManager *)self userNotificationManager];
-  v9 = [v8 notificationCenter];
+  userNotificationManager2 = [(WFTriggerUserNotificationManager *)self userNotificationManager];
+  notificationCenter2 = [userNotificationManager2 notificationCenter];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__WFTriggerUserNotificationManager_removeNotificationsWithTriggerIdentifier___block_invoke_2;
   v11[3] = &unk_2788FED70;
   v12 = v7;
-  v13 = self;
+  selfCopy2 = self;
   v10 = v7;
-  [v9 getPendingNotificationRequestsWithCompletionHandler:v11];
+  [notificationCenter2 getPendingNotificationRequestsWithCompletionHandler:v11];
 }
 
 void __77__WFTriggerUserNotificationManager_removeNotificationsWithTriggerIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -353,29 +353,29 @@ void __77__WFTriggerUserNotificationManager_removeNotificationsWithTriggerIdenti
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)postBackgroundRunningNotificationWithConfiguredTriggers:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (BOOL)postBackgroundRunningNotificationWithConfiguredTriggers:(id)triggers userInfo:(id)info error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  triggersCopy = triggers;
+  infoCopy = info;
   v10 = objc_alloc_init(MEMORY[0x277CE1F60]);
   v11 = WFLocalizedString(@"Shortcuts");
   [v10 setTitle:v11];
 
   v12 = MEMORY[0x277CCACA8];
   v13 = WFLocalizedPluralString(@"%lu automations recently ran in the background.");
-  v14 = [v12 localizedStringWithFormat:v13, objc_msgSend(v8, "count")];
+  v14 = [v12 localizedStringWithFormat:v13, objc_msgSend(triggersCopy, "count")];
   [v10 setBody:v14];
 
-  v15 = [MEMORY[0x277CE1FE0] defaultSound];
-  [v10 setSound:v15];
+  defaultSound = [MEMORY[0x277CE1FE0] defaultSound];
+  [v10 setSound:defaultSound];
 
   [v10 setCategoryIdentifier:*MEMORY[0x277D7CDA0]];
   [v10 setInterruptionLevel:1];
   [v10 setShouldSuppressDefaultAction:1];
   [v10 setShouldAuthenticateDefaultAction:0];
   [v10 setShouldHideDate:1];
-  [v10 setUserInfo:v9];
+  [v10 setUserInfo:infoCopy];
   v16 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"com.apple.siriactionsd.TriggerBackgroundRunning" content:v10 trigger:0 destinations:15];
   v17 = getWFTriggerNotificationsLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -392,8 +392,8 @@ void __77__WFTriggerUserNotificationManager_removeNotificationsWithTriggerIdenti
   v31 = __Block_byref_object_copy__3650;
   v32 = __Block_byref_object_dispose__3651;
   v33 = 0;
-  v19 = [(WFTriggerUserNotificationManager *)self userNotificationManager];
-  v20 = [v19 notificationCenter];
+  userNotificationManager = [(WFTriggerUserNotificationManager *)self userNotificationManager];
+  notificationCenter = [userNotificationManager notificationCenter];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __107__WFTriggerUserNotificationManager_postBackgroundRunningNotificationWithConfiguredTriggers_userInfo_error___block_invoke;
@@ -401,13 +401,13 @@ void __77__WFTriggerUserNotificationManager_removeNotificationsWithTriggerIdenti
   p_buf = &buf;
   v21 = v18;
   v27 = v21;
-  [v20 addNotificationRequest:v16 withCompletionHandler:v26];
+  [notificationCenter addNotificationRequest:v16 withCompletionHandler:v26];
 
   v22 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v21, v22);
-  if (a5)
+  if (error)
   {
-    *a5 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   v23 = *(*(&buf + 1) + 40) == 0;
@@ -428,15 +428,15 @@ void __107__WFTriggerUserNotificationManager_postBackgroundRunningNotificationWi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)postNotificationThatTrigger:(id)a3 failedWithError:(id)a4 notificationRequestIdentifier:(id)a5
+- (void)postNotificationThatTrigger:(id)trigger failedWithError:(id)error notificationRequestIdentifier:(id)identifier
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  triggerCopy = trigger;
+  errorCopy = error;
+  identifierCopy = identifier;
+  if (triggerCopy)
   {
-    if (v10)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -444,24 +444,24 @@ void __107__WFTriggerUserNotificationManager_postBackgroundRunningNotificationWi
 
   else
   {
-    v46 = [MEMORY[0x277CCA890] currentHandler];
-    [v46 handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:254 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:254 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
 
-    if (v10)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v47 = [MEMORY[0x277CCA890] currentHandler];
-  [v47 handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"error"}];
 
 LABEL_3:
-  v48 = self;
-  v12 = v10;
-  v13 = [v12 userInfo];
+  selfCopy = self;
+  v12 = errorCopy;
+  userInfo = [v12 userInfo];
   v14 = *MEMORY[0x277CCA7E8];
-  v15 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   v16 = v12;
   if (v15)
@@ -469,11 +469,11 @@ LABEL_3:
     v17 = v12;
     do
     {
-      v18 = [v17 userInfo];
-      v16 = [v18 objectForKeyedSubscript:v14];
+      userInfo2 = [v17 userInfo];
+      v16 = [userInfo2 objectForKeyedSubscript:v14];
 
-      v19 = [v16 userInfo];
-      v20 = [v19 objectForKeyedSubscript:v14];
+      userInfo3 = [v16 userInfo];
+      v20 = [userInfo3 objectForKeyedSubscript:v14];
 
       v17 = v16;
     }
@@ -481,20 +481,20 @@ LABEL_3:
     while (v20);
   }
 
-  v21 = [v16 localizedFailureReason];
-  if (v21 && (v22 = v21, [v16 localizedDescription], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
+  localizedFailureReason = [v16 localizedFailureReason];
+  if (localizedFailureReason && (v22 = localizedFailureReason, [v16 localizedDescription], v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
   {
     v24 = MEMORY[0x277CCACA8];
-    v25 = [v16 localizedFailureReason];
-    v26 = [v16 localizedDescription];
-    v27 = [v24 stringWithFormat:@"%@\n\n%@", v25, v26];
+    localizedFailureReason2 = [v16 localizedFailureReason];
+    localizedDescription = [v16 localizedDescription];
+    v27 = [v24 stringWithFormat:@"%@\n\n%@", localizedFailureReason2, localizedDescription];
   }
 
   else
   {
-    v28 = [v16 localizedFailureReason];
+    localizedFailureReason3 = [v16 localizedFailureReason];
 
-    if (v28)
+    if (localizedFailureReason3)
     {
       [v16 localizedFailureReason];
     }
@@ -517,33 +517,33 @@ LABEL_3:
 
   v32 = MEMORY[0x277CCACA8];
   v33 = WFLocalizedString(@"“%1$@” encountered an error: %2$@");
-  v34 = [v9 trigger];
-  v35 = [v34 localizedDescriptionWithConfigurationSummary];
-  v36 = [v32 localizedStringWithFormat:v33, v35, v27];
+  trigger = [triggerCopy trigger];
+  localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
+  v36 = [v32 localizedStringWithFormat:v33, localizedDescriptionWithConfigurationSummary, v27];
   [v29 setBody:v36];
 
-  v37 = [v9 identifier];
+  identifier = [triggerCopy identifier];
   v38 = WFTriggerNotificationUserInfo();
   [v29 setUserInfo:v38];
 
-  v39 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v11 content:v29 trigger:0 destinations:15];
+  v39 = [MEMORY[0x277CE1FC0] requestWithIdentifier:identifierCopy content:v29 trigger:0 destinations:15];
   v40 = getWFTriggersLogObject();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [v9 identifier];
-    v42 = [v39 identifier];
+    identifier2 = [triggerCopy identifier];
+    identifier3 = [v39 identifier];
     *buf = 136315650;
     v50 = "[WFTriggerUserNotificationManager postNotificationThatTrigger:failedWithError:notificationRequestIdentifier:]";
     v51 = 2114;
-    v52 = v41;
+    v52 = identifier2;
     v53 = 2114;
-    v54 = v42;
+    v54 = identifier3;
     _os_log_impl(&dword_23103C000, v40, OS_LOG_TYPE_DEFAULT, "%s Showing error alert for trigger (%{public}@), request id (%{public}@)", buf, 0x20u);
   }
 
-  v43 = [(WFTriggerUserNotificationManager *)v48 userNotificationManager];
-  v44 = [v43 notificationCenter];
-  [v44 addNotificationRequest:v39 withCompletionHandler:&__block_literal_global_3665];
+  userNotificationManager = [(WFTriggerUserNotificationManager *)selfCopy userNotificationManager];
+  notificationCenter = [userNotificationManager notificationCenter];
+  [notificationCenter addNotificationRequest:v39 withCompletionHandler:&__block_literal_global_3665];
 
   v45 = *MEMORY[0x277D85DE8];
 }
@@ -568,22 +568,22 @@ void __110__WFTriggerUserNotificationManager_postNotificationThatTrigger_failedW
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_postNotificationOfType:(unint64_t)a3 forTrigger:(id)a4 workflowReference:(id)a5 removeDeliveredNotifications:(BOOL)a6 pendingTriggerEventIDs:(id)a7 actionIcons:(id)a8 error:(id *)a9
+- (BOOL)_postNotificationOfType:(unint64_t)type forTrigger:(id)trigger workflowReference:(id)reference removeDeliveredNotifications:(BOOL)notifications pendingTriggerEventIDs:(id)ds actionIcons:(id)icons error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v43 = a5;
-  v46 = a7;
-  v45 = a8;
-  v16 = [v15 identifier];
-  v44 = [v15 trigger];
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  dsCopy = ds;
+  iconsCopy = icons;
+  identifier = [triggerCopy identifier];
+  trigger = [triggerCopy trigger];
   v17 = getWFTriggersLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[WFTriggerUserNotificationManager _postNotificationOfType:forTrigger:workflowReference:removeDeliveredNotifications:pendingTriggerEventIDs:actionIcons:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = identifier;
     _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_DEFAULT, "%s Notify trigger for ID: %@", buf, 0x16u);
   }
 
@@ -596,20 +596,20 @@ void __110__WFTriggerUserNotificationManager_postNotificationThatTrigger_failedW
 
   [v18 setShouldHideDate:0];
   [v18 setShouldIgnoreDoNotDisturb:1];
-  if (a3 == 2)
+  if (type == 2)
   {
-    v29 = [v44 localizedDescriptionWithConfigurationSummary];
-    [v18 setTitle:v29];
+    localizedDescriptionWithConfigurationSummary = [trigger localizedDescriptionWithConfigurationSummary];
+    [v18 setTitle:localizedDescriptionWithConfigurationSummary];
 
     v30 = WFLocalizedString(@"Potential recursive behavior encountered");
     [v18 setBody:v30];
 
-    v31 = [MEMORY[0x277CE1FE0] defaultSound];
-    [v18 setSound:v31];
+    defaultSound = [MEMORY[0x277CE1FE0] defaultSound];
+    [v18 setSound:defaultSound];
 
     [v18 setCategoryIdentifier:*MEMORY[0x277D7CDA8]];
     [v18 setInterruptionLevel:2];
-    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"pauseLoop:%@", v16];
+    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"pauseLoop:%@", identifier];
     [v18 setThreadIdentifier:v32];
 
     [v18 setShouldSuppressDefaultAction:1];
@@ -627,39 +627,39 @@ void __110__WFTriggerUserNotificationManager_postNotificationThatTrigger_failedW
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       [v18 setSound:0];
-      v26 = [v44 localizedPastTenseDescription];
-      [v18 setTitle:v26];
+      localizedPastTenseDescription = [trigger localizedPastTenseDescription];
+      [v18 setTitle:localizedPastTenseDescription];
 
       v27 = WFLocalizedString(@"Running your automation");
       [v18 setBody:v27];
 
       [v18 setCategoryIdentifier:@"triggerAlertCategory"];
-      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"alert:%@", v16];
+      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"alert:%@", identifier];
       [v18 setThreadIdentifier:v28];
 
       goto LABEL_14;
     }
 
-    if (a3)
+    if (type)
     {
       goto LABEL_14;
     }
 
-    v21 = VCPromptNotificationTitleForTriggerWithPendingCount(v44, [v46 count]);
+    v21 = VCPromptNotificationTitleForTriggerWithPendingCount(trigger, [dsCopy count]);
     [v18 setSubtitle:v21];
 
-    v22 = [v43 actionsDescription];
-    [v18 setBody:v22];
+    actionsDescription = [referenceCopy actionsDescription];
+    [v18 setBody:actionsDescription];
 
-    v23 = [MEMORY[0x277CE1FE0] defaultSound];
-    [v18 setSound:v23];
+    defaultSound2 = [MEMORY[0x277CE1FE0] defaultSound];
+    [v18 setSound:defaultSound2];
 
     [v18 setCategoryIdentifier:*MEMORY[0x277D7CDB0]];
     [v18 setInterruptionLevel:2];
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"prompt:%@", v16];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"prompt:%@", identifier];
     [v18 setThreadIdentifier:v24];
 
     [v18 setShouldSuppressDefaultAction:1];
@@ -685,29 +685,29 @@ LABEL_14:
   v57 = __Block_byref_object_dispose__3651;
   v58 = 0;
   objc_initWeak(&location, self);
-  v34 = [(WFTriggerUserNotificationManager *)self userNotificationManager];
-  v35 = [v34 notificationCenter];
+  userNotificationManager = [(WFTriggerUserNotificationManager *)self userNotificationManager];
+  notificationCenter = [userNotificationManager notificationCenter];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __159__WFTriggerUserNotificationManager__postNotificationOfType_forTrigger_workflowReference_removeDeliveredNotifications_pendingTriggerEventIDs_actionIcons_error___block_invoke;
   v47[3] = &unk_2788FED20;
   objc_copyWeak(v52, &location);
-  v53 = a6;
-  v36 = v16;
+  notificationsCopy = notifications;
+  v36 = identifier;
   v48 = v36;
   v37 = v18;
-  v52[1] = a3;
+  v52[1] = type;
   v49 = v37;
   v51 = buf;
   v38 = v33;
   v50 = v38;
-  [v35 getDeliveredNotificationsWithCompletionHandler:v47];
+  [notificationCenter getDeliveredNotificationsWithCompletionHandler:v47];
 
   v39 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v38, v39);
-  if (a9)
+  if (error)
   {
-    *a9 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v40 = *(*&buf[8] + 40) == 0;
@@ -900,14 +900,14 @@ LABEL_10:
   return debouncer;
 }
 
-- (WFTriggerUserNotificationManager)initWithUserNotificationManager:(id)a3
+- (WFTriggerUserNotificationManager)initWithUserNotificationManager:(id)manager
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"userNotificationManager"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerUserNotificationManager.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"userNotificationManager"}];
   }
 
   v27.receiver = self;
@@ -916,7 +916,7 @@ LABEL_10:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_userNotificationManager, a3);
+    objc_storeStrong(&v7->_userNotificationManager, manager);
     userNotificationManager = v8->_userNotificationManager;
     v10 = +[WFTriggerUserNotificationManager alertCategory];
     v28[0] = v10;

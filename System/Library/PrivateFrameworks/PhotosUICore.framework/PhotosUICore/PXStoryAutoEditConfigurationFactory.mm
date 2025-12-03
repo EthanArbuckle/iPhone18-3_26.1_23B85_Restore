@@ -13,16 +13,16 @@
     goto LABEL_13;
   }
 
-  v3 = [MEMORY[0x1E69BF238] defaultSystemPhotoDataDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"Configuration"];
+  defaultSystemPhotoDataDirectory = [MEMORY[0x1E69BF238] defaultSystemPhotoDataDirectory];
+  v4 = [defaultSystemPhotoDataDirectory stringByAppendingPathComponent:@"Configuration"];
 
   v5 = MEMORY[0x1E695DFF8];
   v6 = [v4 stringByAppendingPathComponent:@"PFStoryAutoEditDefaultConfig.plist"];
   v7 = [v5 fileURLWithPath:v6];
 
   v8 = objc_opt_new();
-  v9 = [v7 path];
-  if ([v8 isReadableFileAtPath:v9])
+  path = [v7 path];
+  if ([v8 isReadableFileAtPath:path])
   {
     v2 = [objc_alloc(MEMORY[0x1E69C08A0]) initWithConfigurationFileAtURL:v7];
     v10 = PLStoryGetLog();

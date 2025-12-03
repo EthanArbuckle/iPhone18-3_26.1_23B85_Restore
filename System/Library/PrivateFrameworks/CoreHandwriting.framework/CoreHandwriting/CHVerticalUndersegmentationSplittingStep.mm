@@ -1,21 +1,21 @@
 @interface CHVerticalUndersegmentationSplittingStep
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHVerticalUndersegmentationSplittingStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v505[16] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v476 = a4;
+  processCopy = process;
+  optionsCopy = options;
   v496 = 0u;
   v497 = 0u;
   v498 = 0u;
   v499 = 0u;
-  if (v5)
+  if (processCopy)
   {
-    v11 = v5[9];
+    v11 = processCopy[9];
   }
 
   else
@@ -23,7 +23,7 @@
     v11 = 0;
   }
 
-  v486 = v5;
+  v486 = processCopy;
   v12 = objc_msgSend_copy(v11, v6, v7, v8, v9, v10);
   v483 = v12;
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v496, v504, 16, v14);

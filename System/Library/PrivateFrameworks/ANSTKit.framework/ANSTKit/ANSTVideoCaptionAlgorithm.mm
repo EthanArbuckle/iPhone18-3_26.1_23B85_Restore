@@ -1,22 +1,22 @@
 @interface ANSTVideoCaptionAlgorithm
-- (ANSTVideoCaptionAlgorithm)initWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)updateCaptionState:(id)a3 withPixelBuffer:(__CVBuffer *)a4 error:(id *)a5;
+- (ANSTVideoCaptionAlgorithm)initWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)updateCaptionState:(id)state withPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 - (id)newEmptyCaptionState;
 @end
 
 @implementation ANSTVideoCaptionAlgorithm
 
-- (ANSTVideoCaptionAlgorithm)initWithConfiguration:(id)a3 error:(id *)a4
+- (ANSTVideoCaptionAlgorithm)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = ANSTVideoCaptionAlgorithm;
-  v7 = [(ANSTAlgorithm *)&v13 initWithConfiguration:v6];
+  v7 = [(ANSTAlgorithm *)&v13 initWithConfiguration:configurationCopy];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
     v10 = objc_msgSend_descriptorWithName_width_height_pixelFormatType_(ANSTPixelBufferDescriptor, v9, @"input_image", 224, 224, 1111970369);
     inputPixelBufferDescriptor = v8->_inputPixelBufferDescriptor;
     v8->_inputPixelBufferDescriptor = v10;
@@ -37,7 +37,7 @@
   return v7;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   if (!self->_readyForInference)
   {
@@ -47,13 +47,13 @@
   return 1;
 }
 
-- (BOOL)updateCaptionState:(id)a3 withPixelBuffer:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)updateCaptionState:(id)state withPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  stateCopy = state;
   if (!self->_readyForInference)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -69,15 +69,15 @@
     v28[0] = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v15, v28, &v27, 1);
     v21 = LABEL_12:;
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v22, @"ANSTErrorDomain", 4, v21);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v22, @"ANSTErrorDomain", 4, v21);
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_13;
   }
 
-  if ((objc_msgSend_validatePixelBuffer_(self->_inputPixelBufferDescriptor, v8, a4) & 1) == 0)
+  if ((objc_msgSend_validatePixelBuffer_(self->_inputPixelBufferDescriptor, v8, buffer) & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -99,11 +99,11 @@
     goto LABEL_12;
   }
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_13:
 
   v23 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 @end

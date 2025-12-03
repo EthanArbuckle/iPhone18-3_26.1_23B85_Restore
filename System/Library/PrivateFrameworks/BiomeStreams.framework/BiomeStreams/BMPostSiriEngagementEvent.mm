@@ -1,64 +1,64 @@
 @interface BMPostSiriEngagementEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPostSiriEngagementEvent)initWithUISessionID:(id)a3 taskID:(id)a4 taskType:(id)a5 conversationPath:(id)a6 taskSuccess:(int)a7 isUserAbandoned:(BOOL)a8 isUserCancelled:(BOOL)a9 pseEvents:(id)a10;
-- (BMPostSiriEngagementEvent)initWithUISessionId:(id)a3 domain:(id)a4 action:(id)a5 isPostSiriEngagement:(BOOL)a6 pseDeltaDuration:(double)a7 pseDeltaSinceUIStart:(double)a8 pseDeltaSinceUIEnd:(double)a9 pseContents:(id)a10;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPostSiriEngagementEvent)initWithUISessionID:(id)d taskID:(id)iD taskType:(id)type conversationPath:(id)path taskSuccess:(int)success isUserAbandoned:(BOOL)abandoned isUserCancelled:(BOOL)cancelled pseEvents:(id)self0;
+- (BMPostSiriEngagementEvent)initWithUISessionId:(id)id domain:(id)domain action:(id)action isPostSiriEngagement:(BOOL)engagement pseDeltaDuration:(double)duration pseDeltaSinceUIStart:(double)start pseDeltaSinceUIEnd:(double)end pseContents:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPostSiriEngagementEvent
 
-- (BMPostSiriEngagementEvent)initWithUISessionID:(id)a3 taskID:(id)a4 taskType:(id)a5 conversationPath:(id)a6 taskSuccess:(int)a7 isUserAbandoned:(BOOL)a8 isUserCancelled:(BOOL)a9 pseEvents:(id)a10
+- (BMPostSiriEngagementEvent)initWithUISessionID:(id)d taskID:(id)iD taskType:(id)type conversationPath:(id)path taskSuccess:(int)success isUserAbandoned:(BOOL)abandoned isUserCancelled:(BOOL)cancelled pseEvents:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v24 = a5;
-  v17 = a6;
-  v18 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
+  pathCopy = path;
+  eventsCopy = events;
   v25.receiver = self;
   v25.super_class = BMPostSiriEngagementEvent;
   v19 = [(BMEventBase *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_UISessionID, a3);
-    objc_storeStrong(&v20->_taskID, a4);
-    objc_storeStrong(&v20->_taskType, a5);
-    objc_storeStrong(&v20->_conversationPath, a6);
+    objc_storeStrong(&v19->_UISessionID, d);
+    objc_storeStrong(&v20->_taskID, iD);
+    objc_storeStrong(&v20->_taskType, type);
+    objc_storeStrong(&v20->_conversationPath, path);
     v20->_hasTaskSuccess = 1;
-    v20->_taskSuccess = a7;
+    v20->_taskSuccess = success;
     v20->_hasIsUserAbandoned = 1;
-    v20->_isUserAbandoned = a8;
+    v20->_isUserAbandoned = abandoned;
     v20->_hasIsUserCancelled = 1;
-    v20->_isUserCancelled = a9;
-    objc_storeStrong(&v20->_pseEvents, a10);
+    v20->_isUserCancelled = cancelled;
+    objc_storeStrong(&v20->_pseEvents, events);
   }
 
   return v20;
 }
 
-- (BMPostSiriEngagementEvent)initWithUISessionId:(id)a3 domain:(id)a4 action:(id)a5 isPostSiriEngagement:(BOOL)a6 pseDeltaDuration:(double)a7 pseDeltaSinceUIStart:(double)a8 pseDeltaSinceUIEnd:(double)a9 pseContents:(id)a10
+- (BMPostSiriEngagementEvent)initWithUISessionId:(id)id domain:(id)domain action:(id)action isPostSiriEngagement:(BOOL)engagement pseDeltaDuration:(double)duration pseDeltaSinceUIStart:(double)start pseDeltaSinceUIEnd:(double)end pseContents:(id)self0
 {
-  v14 = a6;
+  engagementCopy = engagement;
   v55 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a10;
+  idCopy = id;
+  domainCopy = domain;
+  actionCopy = action;
+  contentsCopy = contents;
   v52.receiver = self;
   v52.super_class = BMPostSiriEngagementEvent;
   v23 = [(BMEventBase *)&v52 init];
   v24 = v23;
   if (v23)
   {
-    v44 = v14;
-    v45 = v21;
-    v46 = v20;
-    v47 = v19;
-    objc_storeStrong(&v23->_UISessionID, a3);
+    v44 = engagementCopy;
+    v45 = actionCopy;
+    v46 = domainCopy;
+    v47 = idCopy;
+    objc_storeStrong(&v23->_UISessionID, id);
     taskID = v24->_taskID;
     v24->_taskID = 0;
 
@@ -71,13 +71,13 @@
     v24->_hasTaskSuccess = 0;
     v24->_hasIsUserAbandoned = 0;
     v24->_hasIsUserCancelled = 0;
-    v43 = [[BMPostSiriEngagementEventSignalDeltaEvent alloc] initWithDuration:a7 sinceUIEnd:a9 sinceUIStart:a8];
+    v43 = [[BMPostSiriEngagementEventSignalDeltaEvent alloc] initWithDuration:duration sinceUIEnd:end sinceUIStart:start];
     v28 = objc_opt_new();
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v29 = v22;
+    v29 = contentsCopy;
     v30 = [v29 countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v30)
     {
@@ -106,15 +106,15 @@
       while (v31);
     }
 
-    v21 = v45;
-    v20 = v46;
+    actionCopy = v45;
+    domainCopy = v46;
     v38 = [[BMPostSiriEngagementEventSignal alloc] initWithDomain:v46 action:v45 isPostSiriEngagement:v44 pseDelta:v43 pseContents:v28];
     v53 = v38;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
     pseEvents = v24->_pseEvents;
     v24->_pseEvents = v39;
 
-    v19 = v47;
+    idCopy = v47;
   }
 
   v41 = *MEMORY[0x1E69E9840];
@@ -124,32 +124,32 @@
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPostSiriEngagementEvent *)self UISessionID];
-  v5 = [(BMPostSiriEngagementEvent *)self taskID];
-  v6 = [(BMPostSiriEngagementEvent *)self taskType];
-  v7 = [(BMPostSiriEngagementEvent *)self conversationPath];
-  v8 = [(BMPostSiriEngagementEvent *)self taskSuccess];
-  if (v8 >= 5)
+  uISessionID = [(BMPostSiriEngagementEvent *)self UISessionID];
+  taskID = [(BMPostSiriEngagementEvent *)self taskID];
+  taskType = [(BMPostSiriEngagementEvent *)self taskType];
+  conversationPath = [(BMPostSiriEngagementEvent *)self conversationPath];
+  taskSuccess = [(BMPostSiriEngagementEvent *)self taskSuccess];
+  if (taskSuccess >= 5)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", taskSuccess];
   }
 
   else
   {
-    v9 = off_1E6E53768[v8];
+    v9 = off_1E6E53768[taskSuccess];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPostSiriEngagementEvent isUserAbandoned](self, "isUserAbandoned")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMPostSiriEngagementEvent isUserCancelled](self, "isUserCancelled")}];
-  v12 = [(BMPostSiriEngagementEvent *)self pseEvents];
-  v13 = [v3 initWithFormat:@"BMPostSiriEngagementEvent with UISessionID: %@, taskID: %@, taskType: %@, conversationPath: %@, taskSuccess: %@, isUserAbandoned: %@, isUserCancelled: %@, pseEvents: %@", v4, v5, v6, v7, v9, v10, v11, v12];
+  pseEvents = [(BMPostSiriEngagementEvent *)self pseEvents];
+  v13 = [v3 initWithFormat:@"BMPostSiriEngagementEvent with UISessionID: %@, taskID: %@, taskType: %@, conversationPath: %@, taskSuccess: %@, isUserAbandoned: %@, isUserCancelled: %@, pseEvents: %@", uISessionID, taskID, taskType, conversationPath, v9, v10, v11, pseEvents];
 
   return v13;
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMPostSiriEngagementEvent;
   v5 = [(BMEventBase *)&v49 init];
@@ -159,12 +159,12 @@
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_76;
       }
@@ -175,18 +175,18 @@
       while (1)
       {
         LOBYTE(v50[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v50[0] & 0x7F) << v8;
@@ -204,9 +204,9 @@
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_76;
       }
@@ -228,18 +228,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v50[0]) = 0;
-            v31 = [v4 position] + 1;
-            if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+            v31 = [fromCopy position] + 1;
+            if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
             {
-              v33 = [v4 data];
-              [v33 getBytes:v50 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v30 |= (v50[0] & 0x7F) << v28;
@@ -257,7 +257,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v34 = 0;
           }
@@ -281,18 +281,18 @@ LABEL_69:
           while (1)
           {
             LOBYTE(v50[0]) = 0;
-            v22 = [v4 position] + 1;
-            if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+            v22 = [fromCopy position] + 1;
+            if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
             {
-              v24 = [v4 data];
-              [v24 getBytes:v50 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v21 |= (v50[0] & 0x7F) << v19;
@@ -310,7 +310,7 @@ LABEL_69:
             }
           }
 
-          v25 = (v21 != 0) & ~[v4 hasError];
+          v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_73:
           v42 = 18;
 LABEL_74:
@@ -336,18 +336,18 @@ LABEL_64:
         while (1)
         {
           LOBYTE(v50[0]) = 0;
-          v39 = [v4 position] + 1;
-          if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+          v39 = [fromCopy position] + 1;
+          if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 1, v40 <= objc_msgSend(fromCopy, "length")))
           {
-            v41 = [v4 data];
-            [v41 getBytes:v50 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v38 |= (v50[0] & 0x7F) << v36;
@@ -365,7 +365,7 @@ LABEL_64:
           }
         }
 
-        v25 = (v38 != 0) & ~[v4 hasError];
+        v25 = (v38 != 0) & ~[fromCopy hasError];
 LABEL_71:
         v42 = 20;
         goto LABEL_74;
@@ -378,7 +378,7 @@ LABEL_71:
 
       v50[0] = 0;
       v50[1] = 0;
-      if (!PBReaderPlaceMark() || (v26 = [[BMPostSiriEngagementEventSignal alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v26 = [[BMPostSiriEngagementEventSignal alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_80:
 
@@ -390,8 +390,8 @@ LABEL_80:
       PBReaderRecallMark();
 
 LABEL_75:
-      v43 = [v4 position];
-      if (v43 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_76;
       }
@@ -443,8 +443,8 @@ LABEL_76:
   pseEvents = v5->_pseEvents;
   v5->_pseEvents = v44;
 
-  v46 = [v4 hasError];
-  if (v46)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_77:
     v47 = 0;
@@ -459,10 +459,10 @@ LABEL_78:
   return v47;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_UISessionID)
   {
     PBDataWriterWriteStringField();
@@ -522,7 +522,7 @@ LABEL_78:
 
         v13 = *(*(&v15 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v13 writeTo:v4];
+        [v13 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -535,13 +535,13 @@ LABEL_78:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMPostSiriEngagementEvent alloc] initByReadFrom:v6];
   }
@@ -558,80 +558,80 @@ LABEL_78:
 {
   v3 = objc_opt_new();
   [(BMPostSiriEngagementEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPostSiriEngagementEvent *)self UISessionID];
-    v7 = [v5 UISessionID];
-    if (v6 == v7)
+    v5 = equalCopy;
+    uISessionID = [(BMPostSiriEngagementEvent *)self UISessionID];
+    uISessionID2 = [v5 UISessionID];
+    if (uISessionID == uISessionID2)
     {
       v39 = 1;
     }
 
     else
     {
-      v8 = [(BMPostSiriEngagementEvent *)self UISessionID];
-      v9 = [v5 UISessionID];
-      v39 = [v8 isEqual:v9];
+      uISessionID3 = [(BMPostSiriEngagementEvent *)self UISessionID];
+      uISessionID4 = [v5 UISessionID];
+      v39 = [uISessionID3 isEqual:uISessionID4];
     }
 
-    v11 = [(BMPostSiriEngagementEvent *)self taskID];
-    v12 = [v5 taskID];
-    if (v11 == v12)
+    taskID = [(BMPostSiriEngagementEvent *)self taskID];
+    taskID2 = [v5 taskID];
+    if (taskID == taskID2)
     {
       v38 = 1;
     }
 
     else
     {
-      v13 = [(BMPostSiriEngagementEvent *)self taskID];
-      v14 = [v5 taskID];
-      v38 = [v13 isEqual:v14];
+      taskID3 = [(BMPostSiriEngagementEvent *)self taskID];
+      taskID4 = [v5 taskID];
+      v38 = [taskID3 isEqual:taskID4];
     }
 
-    v15 = [(BMPostSiriEngagementEvent *)self taskType];
-    v16 = [v5 taskType];
-    if (v15 == v16)
+    taskType = [(BMPostSiriEngagementEvent *)self taskType];
+    taskType2 = [v5 taskType];
+    if (taskType == taskType2)
     {
       HIDWORD(v35) = 1;
     }
 
     else
     {
-      v17 = [(BMPostSiriEngagementEvent *)self taskType];
-      v18 = [v5 taskType];
-      HIDWORD(v35) = [v17 isEqual:v18];
+      taskType3 = [(BMPostSiriEngagementEvent *)self taskType];
+      taskType4 = [v5 taskType];
+      HIDWORD(v35) = [taskType3 isEqual:taskType4];
     }
 
-    v19 = [(BMPostSiriEngagementEvent *)self conversationPath];
-    v20 = [v5 conversationPath];
-    if (v19 == v20)
+    conversationPath = [(BMPostSiriEngagementEvent *)self conversationPath];
+    conversationPath2 = [v5 conversationPath];
+    if (conversationPath == conversationPath2)
     {
       LODWORD(v35) = 1;
     }
 
     else
     {
-      v21 = [(BMPostSiriEngagementEvent *)self conversationPath];
-      v22 = [v5 conversationPath];
-      LODWORD(v35) = [v21 isEqual:v22];
+      conversationPath3 = [(BMPostSiriEngagementEvent *)self conversationPath];
+      conversationPath4 = [v5 conversationPath];
+      LODWORD(v35) = [conversationPath3 isEqual:conversationPath4];
     }
 
     if (-[BMPostSiriEngagementEvent hasTaskSuccess](self, "hasTaskSuccess") || [v5 hasTaskSuccess])
     {
       if (-[BMPostSiriEngagementEvent hasTaskSuccess](self, "hasTaskSuccess", v35) && [v5 hasTaskSuccess])
       {
-        v23 = [(BMPostSiriEngagementEvent *)self taskSuccess];
-        v24 = v23 == [v5 taskSuccess];
+        taskSuccess = [(BMPostSiriEngagementEvent *)self taskSuccess];
+        v24 = taskSuccess == [v5 taskSuccess];
       }
 
       else
@@ -649,8 +649,8 @@ LABEL_78:
     {
       if (-[BMPostSiriEngagementEvent hasIsUserAbandoned](self, "hasIsUserAbandoned") && [v5 hasIsUserAbandoned])
       {
-        v25 = [(BMPostSiriEngagementEvent *)self isUserAbandoned];
-        v26 = v25 ^ [v5 isUserAbandoned] ^ 1;
+        isUserAbandoned = [(BMPostSiriEngagementEvent *)self isUserAbandoned];
+        v26 = isUserAbandoned ^ [v5 isUserAbandoned] ^ 1;
       }
 
       else
@@ -668,8 +668,8 @@ LABEL_78:
     {
       if (-[BMPostSiriEngagementEvent hasIsUserCancelled](self, "hasIsUserCancelled") && [v5 hasIsUserCancelled])
       {
-        v27 = [(BMPostSiriEngagementEvent *)self isUserCancelled];
-        v28 = v27 ^ [v5 isUserCancelled] ^ 1;
+        isUserCancelled = [(BMPostSiriEngagementEvent *)self isUserCancelled];
+        v28 = isUserCancelled ^ [v5 isUserCancelled] ^ 1;
       }
 
       else
@@ -683,18 +683,18 @@ LABEL_78:
       LOBYTE(v28) = 1;
     }
 
-    v29 = [(BMPostSiriEngagementEvent *)self pseEvents];
-    v30 = [v5 pseEvents];
-    if (v29 == v30)
+    pseEvents = [(BMPostSiriEngagementEvent *)self pseEvents];
+    pseEvents2 = [v5 pseEvents];
+    if (pseEvents == pseEvents2)
     {
       v33 = 1;
     }
 
     else
     {
-      v31 = [(BMPostSiriEngagementEvent *)self pseEvents];
-      v32 = [v5 pseEvents];
-      v33 = [v31 isEqual:v32];
+      pseEvents3 = [(BMPostSiriEngagementEvent *)self pseEvents];
+      pseEvents4 = [v5 pseEvents];
+      v33 = [pseEvents3 isEqual:pseEvents4];
     }
 
     v10 = v39 & v38 & v37 & v36 & v24 & v26 & v28 & v33;

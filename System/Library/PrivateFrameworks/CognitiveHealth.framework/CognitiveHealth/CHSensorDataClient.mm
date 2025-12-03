@@ -1,15 +1,15 @@
 @interface CHSensorDataClient
 - (CHSensorDataClient)init;
-- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)a3 toDate:(id)a4 completion:(id)a5;
-- (void)embeddingVectorForBundleId:(id)a3 completion:(id)a4;
+- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)date toDate:(id)toDate completion:(id)completion;
+- (void)embeddingVectorForBundleId:(id)id completion:(id)completion;
 @end
 
 @implementation CHSensorDataClient
 
-- (void)embeddingVectorForBundleId:(id)a3 completion:(id)a4
+- (void)embeddingVectorForBundleId:(id)id completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  idCopy = id;
   v8 = ch_sensor_data_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,10 +22,10 @@
   v12[1] = 3221225472;
   v12[2] = __60__CHSensorDataClient_embeddingVectorForBundleId_completion___block_invoke;
   v12[3] = &unk_278DE5008;
-  v13 = v6;
-  v10 = v6;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [(CHXPCClientHelper *)clientHelper remoteObjectProxyWithErrorHandler:v12];
-  [v11 embeddingVectorForBundleId:v7 completion:v10];
+  [v11 embeddingVectorForBundleId:idCopy completion:v10];
 }
 
 void __60__CHSensorDataClient_embeddingVectorForBundleId_completion___block_invoke(uint64_t a1, void *a2)
@@ -45,11 +45,11 @@ void __60__CHSensorDataClient_embeddingVectorForBundleId_completion___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)a3 toDate:(id)a4 completion:(id)a5
+- (void)aggregatedMotionAndAppLaunchDataFromDate:(id)date toDate:(id)toDate completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  toDateCopy = toDate;
+  dateCopy = date;
   v11 = ch_sensor_data_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -62,10 +62,10 @@ void __60__CHSensorDataClient_embeddingVectorForBundleId_completion___block_invo
   v15[1] = 3221225472;
   v15[2] = __81__CHSensorDataClient_aggregatedMotionAndAppLaunchDataFromDate_toDate_completion___block_invoke;
   v15[3] = &unk_278DE5008;
-  v16 = v8;
-  v13 = v8;
+  v16 = completionCopy;
+  v13 = completionCopy;
   v14 = [(CHXPCClientHelper *)clientHelper remoteObjectProxyWithErrorHandler:v15];
-  [v14 aggregatedMotionAndAppLaunchDataFromDate:v10 toDate:v9 completion:v13];
+  [v14 aggregatedMotionAndAppLaunchDataFromDate:dateCopy toDate:toDateCopy completion:v13];
 }
 
 void __81__CHSensorDataClient_aggregatedMotionAndAppLaunchDataFromDate_toDate_completion___block_invoke(uint64_t a1, void *a2)

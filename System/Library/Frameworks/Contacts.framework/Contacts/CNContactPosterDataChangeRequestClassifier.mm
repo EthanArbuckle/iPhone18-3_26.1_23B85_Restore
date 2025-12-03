@@ -1,20 +1,20 @@
 @interface CNContactPosterDataChangeRequestClassifier
-+ (id)classifyRequests:(id)a3;
++ (id)classifyRequests:(id)requests;
 - (CNContactPosterDataChangeRequestClassifier)init;
 @end
 
 @implementation CNContactPosterDataChangeRequestClassifier
 
-+ (id)classifyRequests:(id)a3
++ (id)classifyRequests:(id)requests
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  requestsCopy = requests;
+  v5 = objc_alloc_init(self);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = requestsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

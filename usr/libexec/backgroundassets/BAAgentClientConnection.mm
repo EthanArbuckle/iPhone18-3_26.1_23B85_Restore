@@ -1,36 +1,36 @@
 @interface BAAgentClientConnection
-- (BAAgentClientConnection)initWithNSXPCConnection:(id)a3 error:(id *)a4;
-- (BOOL)_entitledForCloudKitWithDownload:(id)a3 outError:(id *)a4;
+- (BAAgentClientConnection)initWithNSXPCConnection:(id)connection error:(id *)error;
+- (BOOL)_entitledForCloudKitWithDownload:(id)download outError:(id *)error;
 - (BOOL)isActive;
 - (NSString)debugDescription;
-- (id)extendClientSandboxForStagedURL:(id)a3 allowWrites:(BOOL)a4;
+- (id)extendClientSandboxForStagedURL:(id)l allowWrites:(BOOL)writes;
 - (void)_validateAndSetClientIdentifier;
-- (void)callBlockWhenConnectionReady:(id)a3 onQueue:(id)a4;
-- (void)cancelDownload:(id)a3 reply:(id)a4;
+- (void)callBlockWhenConnectionReady:(id)ready onQueue:(id)queue;
+- (void)cancelDownload:(id)download reply:(id)reply;
 - (void)connectionInvalidated;
-- (void)currentDownloads:(id)a3;
+- (void)currentDownloads:(id)downloads;
 - (void)dealloc;
-- (void)downloadIdentifier:(id)a3 didFailWithError:(id)a4 wasHandled:(id)a5;
-- (void)downloadIdentifier:(id)a3 didReceiveChallenge:(id)a4 authChallengeHandler:(id)a5 withCompletion:(id)a6;
-- (void)downloadIdentifier:(id)a3 didWriteBytes:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
-- (void)downloadIdentifierDidBegin:(id)a3;
-- (void)downloadIdentifierDidFinish:(id)a3 sandboxExtensionToken:(id)a4 wasHandled:(id)a5;
-- (void)downloadIdentifierDidPause:(id)a3;
-- (void)exclusiveControlExitedWithToken:(id)a3;
-- (void)markPurgeableWithFileURL:(id)a3 sandboxToken:(id)a4 reply:(id)a5;
-- (void)performWithExclusiveControlBeforeDate:(id)a3 handler:(id)a4;
-- (void)performWithExclusiveControlWithHandler:(id)a3;
-- (void)removeDownloadIdentifier:(id)a3;
-- (void)scheduleDownload:(id)a3 reply:(id)a4;
-- (void)startForegroundDownload:(id)a3 reply:(id)a4;
-- (void)syncDownloads:(id)a3;
+- (void)downloadIdentifier:(id)identifier didFailWithError:(id)error wasHandled:(id)handled;
+- (void)downloadIdentifier:(id)identifier didReceiveChallenge:(id)challenge authChallengeHandler:(id)handler withCompletion:(id)completion;
+- (void)downloadIdentifier:(id)identifier didWriteBytes:(int64_t)bytes totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)downloadIdentifierDidBegin:(id)begin;
+- (void)downloadIdentifierDidFinish:(id)finish sandboxExtensionToken:(id)token wasHandled:(id)handled;
+- (void)downloadIdentifierDidPause:(id)pause;
+- (void)exclusiveControlExitedWithToken:(id)token;
+- (void)markPurgeableWithFileURL:(id)l sandboxToken:(id)token reply:(id)reply;
+- (void)performWithExclusiveControlBeforeDate:(id)date handler:(id)handler;
+- (void)performWithExclusiveControlWithHandler:(id)handler;
+- (void)removeDownloadIdentifier:(id)identifier;
+- (void)scheduleDownload:(id)download reply:(id)reply;
+- (void)startForegroundDownload:(id)download reply:(id)reply;
+- (void)syncDownloads:(id)downloads;
 @end
 
 @implementation BAAgentClientConnection
 
-- (BAAgentClientConnection)initWithNSXPCConnection:(id)a3 error:(id *)a4
+- (BAAgentClientConnection)initWithNSXPCConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
+  connectionCopy = connection;
   if (qword_100089CC8 != -1)
   {
     sub_10004C824();
@@ -38,7 +38,7 @@
 
   v65.receiver = self;
   v65.super_class = BAAgentClientConnection;
-  v7 = [(BAAgentConnection *)&v65 initWithNSXPCConnection:v6 error:a4];
+  v7 = [(BAAgentConnection *)&v65 initWithNSXPCConnection:connectionCopy error:error];
   if (v7)
   {
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BAAgentClientXPCProtocol];
@@ -68,23 +68,23 @@
     v16 = [NSSet setWithArray:v15];
     [v8 setClasses:v16 forSelector:"startForegroundDownload:reply:" argumentIndex:0 ofReply:0];
 
-    v17 = [(BAAgentConnection *)v7 connection];
-    [v17 setExportedInterface:v8];
+    connection = [(BAAgentConnection *)v7 connection];
+    [connection setExportedInterface:v8];
 
-    v18 = [(BAAgentConnection *)v7 connection];
-    [v18 setExportedObject:v7];
+    connection2 = [(BAAgentConnection *)v7 connection];
+    [connection2 setExportedObject:v7];
 
-    v19 = [(BAAgentConnection *)v7 connection];
-    v20 = [v19 processIdentifier];
+    connection3 = [(BAAgentConnection *)v7 connection];
+    processIdentifier = [connection3 processIdentifier];
     v21 = +[NSUUID UUID];
-    v22 = [v21 UUIDString];
-    v23 = [NSString stringWithFormat:@"%d.%@.worker", v20, v22];
+    uUIDString = [v21 UUIDString];
+    v23 = [NSString stringWithFormat:@"%d.%@.worker", processIdentifier, uUIDString];
 
-    v24 = [(BAAgentConnection *)v7 connection];
-    v25 = [v24 processIdentifier];
+    connection4 = [(BAAgentConnection *)v7 connection];
+    processIdentifier2 = [connection4 processIdentifier];
     v26 = +[NSUUID UUID];
-    v27 = [v26 UUIDString];
-    v28 = [NSString stringWithFormat:@"%d.%@.handler", v25, v27];
+    uUIDString2 = [v26 UUIDString];
+    v28 = [NSString stringWithFormat:@"%d.%@.handler", processIdentifier2, uUIDString2];
 
     v29 = dispatch_queue_create([v23 UTF8String], 0);
     [(BAAgentClientConnection *)v7 setClientWorkQueue:v29];
@@ -92,18 +92,18 @@
     v30 = dispatch_queue_create([v28 UTF8String], 0);
     [(BAAgentClientConnection *)v7 setClientHandlerQueue:v30];
 
-    v31 = [(BAAgentClientConnection *)v7 clientWorkQueue];
+    clientWorkQueue = [(BAAgentClientConnection *)v7 clientWorkQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100032ED8;
     block[3] = &unk_100079260;
     v32 = v7;
     v64 = v32;
-    dispatch_async(v31, block);
+    dispatch_async(clientWorkQueue, block);
 
-    v33 = [(BAAgentConnection *)v32 connection];
-    v34 = [(BAAgentClientConnection *)v32 clientHandlerQueue];
-    [v33 _setQueue:v34];
+    connection5 = [(BAAgentConnection *)v32 connection];
+    clientHandlerQueue = [(BAAgentClientConnection *)v32 clientHandlerQueue];
+    [connection5 _setQueue:clientHandlerQueue];
 
     v35 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BADownloadManagerSyncProtocol];
     v77[0] = objc_opt_class();
@@ -169,8 +169,8 @@
     v59 = [NSSet setWithArray:v58];
     [v35 setClasses:v59 forSelector:"downloadIdentifierDidFinish:sandboxExtensionToken:wasHandled:" argumentIndex:1 ofReply:0];
 
-    v60 = [(BAAgentConnection *)v32 connection];
-    [v60 setRemoteObjectInterface:v35];
+    connection6 = [(BAAgentConnection *)v32 connection];
+    [connection6 setRemoteObjectInterface:v35];
   }
 
   return v7;
@@ -181,24 +181,24 @@
   v5.receiver = self;
   v5.super_class = BAAgentClientConnection;
   [(BAAgentConnection *)&v5 connectionInvalidated];
-  v3 = [(BAAgentClientConnection *)self clientWorkQueue];
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100033028;
   block[3] = &unk_100079260;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientWorkQueue, block);
 }
 
 - (void)dealloc
 {
-  v3 = [(BAAgentClientConnection *)self exclusiveAccessBlockQueue];
+  exclusiveAccessBlockQueue = [(BAAgentClientConnection *)self exclusiveAccessBlockQueue];
 
-  if (v3)
+  if (exclusiveAccessBlockQueue)
   {
     v4 = qword_100089CD0;
-    v5 = [(BAAgentClientConnection *)self exclusiveAccessBlockQueue];
-    [v4 invalidateBlockQueue:v5];
+    exclusiveAccessBlockQueue2 = [(BAAgentClientConnection *)self exclusiveAccessBlockQueue];
+    [v4 invalidateBlockQueue:exclusiveAccessBlockQueue2];
   }
 
   v6.receiver = self;
@@ -206,90 +206,90 @@
   [(BAAgentClientConnection *)&v6 dealloc];
 }
 
-- (void)currentDownloads:(id)a3
+- (void)currentDownloads:(id)downloads
 {
-  v4 = a3;
-  v5 = [(BAAgentClientConnection *)self clientWorkQueue];
+  downloadsCopy = downloads;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000331F8;
   v7[3] = &unk_10007A2C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = downloadsCopy;
+  v6 = downloadsCopy;
+  dispatch_async(clientWorkQueue, v7);
 }
 
-- (void)scheduleDownload:(id)a3 reply:(id)a4
+- (void)scheduleDownload:(id)download reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentClientConnection *)self clientWorkQueue];
+  downloadCopy = download;
+  replyCopy = reply;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000333D4;
   block[3] = &unk_10007A2E8;
-  v12 = v6;
-  v13 = v7;
+  v12 = downloadCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = downloadCopy;
+  v10 = replyCopy;
+  dispatch_async(clientWorkQueue, block);
 }
 
-- (void)performWithExclusiveControlWithHandler:(id)a3
+- (void)performWithExclusiveControlWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BAAgentClientConnection *)self clientWorkQueue];
+  handlerCopy = handler;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100033720;
   v7[3] = &unk_10007A2C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(clientWorkQueue, v7);
 }
 
-- (void)performWithExclusiveControlBeforeDate:(id)a3 handler:(id)a4
+- (void)performWithExclusiveControlBeforeDate:(id)date handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentClientConnection *)self clientWorkQueue];
+  dateCopy = date;
+  handlerCopy = handler;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100033A0C;
   block[3] = &unk_10007A2E8;
-  v12 = v6;
-  v13 = v7;
+  v12 = dateCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = dateCopy;
+  v10 = handlerCopy;
+  dispatch_async(clientWorkQueue, block);
 }
 
-- (void)exclusiveControlExitedWithToken:(id)a3
+- (void)exclusiveControlExitedWithToken:(id)token
 {
-  v4 = a3;
-  v5 = [(BAAgentClientConnection *)self clientWorkQueue];
+  tokenCopy = token;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100033CD8;
   v7[3] = &unk_100079300;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  dispatch_async(clientWorkQueue, v7);
 }
 
 - (void)_validateAndSetClientIdentifier
 {
   memset(&audittoken, 0, sizeof(audittoken));
-  v3 = [(BAAgentConnection *)self connection];
-  v4 = v3;
-  if (v3)
+  connection = [(BAAgentConnection *)self connection];
+  v4 = connection;
+  if (connection)
   {
-    [v3 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -412,13 +412,13 @@ LABEL_33:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v18 bundleIdentifier];
-        [(BAAgentClientConnection *)self setClientBundleIdentifier:v20];
+        bundleIdentifier = [v18 bundleIdentifier];
+        [(BAAgentClientConnection *)self setClientBundleIdentifier:bundleIdentifier];
 
-        v21 = [(BAAgentClientConnection *)self clientBundleIdentifier];
-        if (v21)
+        clientBundleIdentifier = [(BAAgentClientConnection *)self clientBundleIdentifier];
+        if (clientBundleIdentifier)
         {
-          v22 = v21;
+          v22 = clientBundleIdentifier;
           [(BAAgentClientConnection *)self clientBundleIdentifier];
           v23 = v61 = v19;
           v24 = [v23 length];
@@ -426,9 +426,9 @@ LABEL_33:
           v19 = v61;
           if (v24)
           {
-            v25 = [v18 containingBundleRecord];
+            containingBundleRecord = [v18 containingBundleRecord];
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || ([v25 bundleIdentifier], (v26 = objc_claimAutoreleasedReturnValue()) == 0))
+            if ((objc_opt_isKindOfClass() & 1) == 0 || ([containingBundleRecord bundleIdentifier], (_baassets_stringByRemovingLastIdentifierComponent = objc_claimAutoreleasedReturnValue()) == 0))
             {
               v27 = sub_100010584();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -436,19 +436,19 @@ LABEL_33:
                 sub_10004CA54();
               }
 
-              v26 = [v17 _baassets_stringByRemovingLastIdentifierComponent];
+              _baassets_stringByRemovingLastIdentifierComponent = [v17 _baassets_stringByRemovingLastIdentifierComponent];
             }
 
-            [(BAAgentClientConnection *)self setApplicationBundleIdentifier:v26];
-            v28 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-            if (v28)
+            [(BAAgentClientConnection *)self setApplicationBundleIdentifier:_baassets_stringByRemovingLastIdentifierComponent];
+            applicationBundleIdentifier = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+            if (applicationBundleIdentifier)
             {
-              v29 = v28;
+              v29 = applicationBundleIdentifier;
               [(BAAgentClientConnection *)self applicationBundleIdentifier];
-              v30 = v60 = v25;
+              v30 = v60 = containingBundleRecord;
               v59 = [v30 length];
 
-              v25 = v60;
+              containingBundleRecord = v60;
               if (v59)
               {
                 -[BAAgentClientConnection setIsAppClip:](self, "setIsAppClip:", [v60 ba_isAppClip]);
@@ -500,9 +500,9 @@ LABEL_81:
 
   v64 = 0;
   token = audittoken;
-  v26 = [LSBundleRecord bundleRecordForAuditToken:&token error:&v64];
+  _baassets_stringByRemovingLastIdentifierComponent = [LSBundleRecord bundleRecordForAuditToken:&token error:&v64];
   v17 = v64;
-  if (!v26)
+  if (!_baassets_stringByRemovingLastIdentifierComponent)
   {
     v52 = sub_100010584();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -525,15 +525,15 @@ LABEL_81:
     goto LABEL_80;
   }
 
-  v32 = [v26 bundleIdentifier];
-  [(BAAgentClientConnection *)self setApplicationBundleIdentifier:v32];
+  bundleIdentifier2 = [_baassets_stringByRemovingLastIdentifierComponent bundleIdentifier];
+  [(BAAgentClientConnection *)self setApplicationBundleIdentifier:bundleIdentifier2];
 
-  v33 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-  [(BAAgentClientConnection *)self setClientBundleIdentifier:v33];
+  applicationBundleIdentifier2 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+  [(BAAgentClientConnection *)self setClientBundleIdentifier:applicationBundleIdentifier2];
 
-  v34 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+  applicationBundleIdentifier3 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
 
-  if (!v34)
+  if (!applicationBundleIdentifier3)
   {
     v52 = sub_100010584();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -546,12 +546,12 @@ LABEL_80:
     goto LABEL_81;
   }
 
-  -[BAAgentClientConnection setIsAppClip:](self, "setIsAppClip:", [v26 ba_isAppClip]);
+  -[BAAgentClientConnection setIsAppClip:](self, "setIsAppClip:", [_baassets_stringByRemovingLastIdentifierComponent ba_isAppClip]);
   [(BAAgentClientConnection *)self setIsApplication:1];
 LABEL_56:
 
-  v35 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-  v17 = [LSApplicationProxy applicationProxyForIdentifier:v35];
+  applicationBundleIdentifier4 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+  v17 = [LSApplicationProxy applicationProxyForIdentifier:applicationBundleIdentifier4];
 
   if (v17)
   {
@@ -562,17 +562,17 @@ LABEL_56:
       if ([v36 unauthoritativeTrustState]== 8)
       {
         v62 = v37;
-        v38 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-        v39 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-        v40 = [v39 _baassets_validUTI];
-        v41 = [v38 isEqualToString:v40];
+        applicationBundleIdentifier5 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+        applicationBundleIdentifier6 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+        _baassets_validUTI = [applicationBundleIdentifier6 _baassets_validUTI];
+        v41 = [applicationBundleIdentifier5 isEqualToString:_baassets_validUTI];
 
         if (v41)
         {
-          v42 = [(BAAgentClientConnection *)self clientBundleIdentifier];
-          v43 = [(BAAgentClientConnection *)self clientBundleIdentifier];
-          v44 = [v43 _baassets_validUTI];
-          v45 = [v42 isEqualToString:v44];
+          clientBundleIdentifier2 = [(BAAgentClientConnection *)self clientBundleIdentifier];
+          clientBundleIdentifier3 = [(BAAgentClientConnection *)self clientBundleIdentifier];
+          _baassets_validUTI2 = [clientBundleIdentifier3 _baassets_validUTI];
+          v45 = [clientBundleIdentifier2 isEqualToString:_baassets_validUTI2];
 
           if (v45)
           {
@@ -580,27 +580,27 @@ LABEL_56:
             v46 = SecTaskCopySigningIdentifier(v8, &error);
             [(BAAgentClientConnection *)self setSigningIdentifier:v46];
 
-            v47 = [(BAAgentClientConnection *)self signingIdentifier];
+            signingIdentifier = [(BAAgentClientConnection *)self signingIdentifier];
 
             v48 = error;
-            if (v47)
+            if (signingIdentifier)
             {
               if (error)
               {
                 CFRelease(error);
               }
 
-              v49 = [(BAAgentClientConnection *)self isApplication];
+              isApplication = [(BAAgentClientConnection *)self isApplication];
               v50 = +[BAAgentCore sharedCore];
-              v51 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-              if (v49)
+              applicationBundleIdentifier7 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+              if (isApplication)
               {
-                [v50 handleApplicationLaunched:v51];
+                [v50 handleApplicationLaunched:applicationBundleIdentifier7];
               }
 
               else
               {
-                v58 = [v50 applicationInfoForIdentifier:v51];
+                v58 = [v50 applicationInfoForIdentifier:applicationBundleIdentifier7];
 
                 [v58 setApplicationExtensionState:4];
               }
@@ -691,11 +691,11 @@ LABEL_17:
   [(BAAgentClientConnection *)self setConnectionIsValid:v12, v59];
 }
 
-- (BOOL)_entitledForCloudKitWithDownload:(id)a3 outError:(id *)a4
+- (BOOL)_entitledForCloudKitWithDownload:(id)download outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(BAAgentConnection *)self connection];
-  v8 = [v7 valueForEntitlement:@"com.apple.developer.icloud-services"];
+  downloadCopy = download;
+  connection = [(BAAgentConnection *)self connection];
+  v8 = [connection valueForEntitlement:@"com.apple.developer.icloud-services"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -743,10 +743,10 @@ LABEL_17:
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v8 caseInsensitiveCompare:@"CloudKit"])
   {
 LABEL_13:
-    if (a4)
+    if (error)
     {
       sub_100027BE4(-52);
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -758,13 +758,13 @@ LABEL_13:
   }
 
 LABEL_16:
-  v15 = [(BAAgentConnection *)self connection];
-  v16 = [v15 valueForEntitlement:@"com.apple.developer.icloud-container-identifiers"];
+  connection2 = [(BAAgentConnection *)self connection];
+  v16 = [connection2 valueForEntitlement:@"com.apple.developer.icloud-container-identifiers"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v16 count])
   {
-    v27 = a4;
+    errorCopy = error;
     v28 = v16;
     v31 = 0u;
     v32 = 0u;
@@ -786,15 +786,15 @@ LABEL_16:
           }
 
           v22 = *(*(&v29 + 1) + 8 * j);
-          v23 = [v6 containerID];
-          v24 = [v23 containerIdentifier];
-          LOBYTE(v22) = [v24 isEqualToString:v22];
+          containerID = [downloadCopy containerID];
+          containerIdentifier = [containerID containerIdentifier];
+          LOBYTE(v22) = [containerIdentifier isEqualToString:v22];
 
           if (v22)
           {
 
-            v25 = [(BAAgentClientConnection *)self signingIdentifier];
-            [v6 setMasqueradeIdentifier:v25];
+            signingIdentifier = [(BAAgentClientConnection *)self signingIdentifier];
+            [downloadCopy setMasqueradeIdentifier:signingIdentifier];
 
             v14 = 1;
             goto LABEL_33;
@@ -811,10 +811,10 @@ LABEL_16:
       }
     }
 
-    if (v27)
+    if (errorCopy)
     {
       sub_100027BE4(-54);
-      *v27 = v14 = 0;
+      *errorCopy = v14 = 0;
     }
 
     else
@@ -826,10 +826,10 @@ LABEL_33:
     v16 = v28;
   }
 
-  else if (a4)
+  else if (error)
   {
     sub_100027BE4(-53);
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -843,17 +843,17 @@ LABEL_35:
 
 - (BOOL)isActive
 {
-  v3 = [(BAAgentClientConnection *)self isApplication];
+  isApplication = [(BAAgentClientConnection *)self isApplication];
   v4 = +[BAAgentCore sharedCore];
-  v5 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-  if (v3)
+  applicationBundleIdentifier = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+  if (isApplication)
   {
-    v6 = [v4 applicationStateForIdentifier:v5];
+    v6 = [v4 applicationStateForIdentifier:applicationBundleIdentifier];
   }
 
   else
   {
-    v6 = [v4 applicationExtensionStateForIdentifier:v5];
+    v6 = [v4 applicationExtensionStateForIdentifier:applicationBundleIdentifier];
   }
 
   v7 = v6;
@@ -861,228 +861,228 @@ LABEL_35:
   return (v7 & 0xFFFFFFFFFFFFFFFELL) == 4;
 }
 
-- (void)startForegroundDownload:(id)a3 reply:(id)a4
+- (void)startForegroundDownload:(id)download reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentClientConnection *)self clientWorkQueue];
+  downloadCopy = download;
+  replyCopy = reply;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100034C1C;
   block[3] = &unk_10007A2E8;
-  v12 = v6;
-  v13 = v7;
+  v12 = downloadCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = downloadCopy;
+  v10 = replyCopy;
+  dispatch_async(clientWorkQueue, block);
 }
 
-- (void)cancelDownload:(id)a3 reply:(id)a4
+- (void)cancelDownload:(id)download reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentClientConnection *)self clientWorkQueue];
+  downloadCopy = download;
+  replyCopy = reply;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100034EA4;
   block[3] = &unk_100079AA8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = downloadCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = downloadCopy;
+  dispatch_async(clientWorkQueue, block);
 }
 
-- (void)markPurgeableWithFileURL:(id)a3 sandboxToken:(id)a4 reply:(id)a5
+- (void)markPurgeableWithFileURL:(id)l sandboxToken:(id)token reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BAAgentClientConnection *)self clientWorkQueue];
+  lCopy = l;
+  tokenCopy = token;
+  replyCopy = reply;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100035134;
   v15[3] = &unk_10007A360;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = tokenCopy;
+  v17 = lCopy;
+  v18 = replyCopy;
+  v12 = lCopy;
+  v13 = tokenCopy;
+  v14 = replyCopy;
+  dispatch_async(clientWorkQueue, v15);
 }
 
-- (void)syncDownloads:(id)a3
+- (void)syncDownloads:(id)downloads
 {
-  v4 = a3;
-  v6 = [(BAAgentConnection *)self connection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&stru_10007A380];
-  [v5 syncDownloads:v4];
+  downloadsCopy = downloads;
+  connection = [(BAAgentConnection *)self connection];
+  v5 = [connection remoteObjectProxyWithErrorHandler:&stru_10007A380];
+  [v5 syncDownloads:downloadsCopy];
 }
 
-- (void)callBlockWhenConnectionReady:(id)a3 onQueue:(id)a4
+- (void)callBlockWhenConnectionReady:(id)ready onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAAgentClientConnection *)self clientWorkQueue];
+  readyCopy = ready;
+  queueCopy = queue;
+  clientWorkQueue = [(BAAgentClientConnection *)self clientWorkQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000355F0;
   block[3] = &unk_100079AA8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = readyCopy;
+  v9 = readyCopy;
+  v10 = queueCopy;
+  dispatch_async(clientWorkQueue, block);
 }
 
-- (void)removeDownloadIdentifier:(id)a3
+- (void)removeDownloadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BAAgentConnection *)self connection];
+  identifierCopy = identifier;
+  connection = [(BAAgentConnection *)self connection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100035774;
   v8[3] = &unk_100079328;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
   [v7 removeDownloadIdentifier:v6];
 }
 
-- (void)downloadIdentifierDidBegin:(id)a3
+- (void)downloadIdentifierDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(BAAgentConnection *)self connection];
+  beginCopy = begin;
+  connection = [(BAAgentConnection *)self connection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000358A0;
   v8[3] = &unk_100079328;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = beginCopy;
+  v6 = beginCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
   [v7 downloadIdentifierDidBegin:v6];
 }
 
-- (void)downloadIdentifierDidPause:(id)a3
+- (void)downloadIdentifierDidPause:(id)pause
 {
-  v4 = a3;
-  v5 = [(BAAgentConnection *)self connection];
+  pauseCopy = pause;
+  connection = [(BAAgentConnection *)self connection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000359CC;
   v8[3] = &unk_100079328;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = pauseCopy;
+  v6 = pauseCopy;
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
   [v7 downloadIdentifierDidPause:v6];
 }
 
-- (void)downloadIdentifier:(id)a3 didWriteBytes:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)downloadIdentifier:(id)identifier didWriteBytes:(int64_t)bytes totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v10 = a3;
-  v11 = [(BAAgentConnection *)self connection];
+  identifierCopy = identifier;
+  connection = [(BAAgentConnection *)self connection];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100035B18;
   v14[3] = &unk_100079328;
-  v15 = v10;
-  v12 = v10;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v14];
-  [v13 downloadIdentifier:v12 didWriteBytes:a4 totalBytesWritten:a5 totalBytesExpectedToWrite:a6];
+  v15 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = [connection remoteObjectProxyWithErrorHandler:v14];
+  [v13 downloadIdentifier:v12 didWriteBytes:bytes totalBytesWritten:written totalBytesExpectedToWrite:write];
 }
 
-- (void)downloadIdentifier:(id)a3 didReceiveChallenge:(id)a4 authChallengeHandler:(id)a5 withCompletion:(id)a6
+- (void)downloadIdentifier:(id)identifier didReceiveChallenge:(id)challenge authChallengeHandler:(id)handler withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  completionCopy = completion;
   v14 = dispatch_queue_create("com.apple.BAAgentClientConnection.AuthChallengeWaiter", 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100035CA4;
   block[3] = &unk_10007A3D0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = identifierCopy;
+  v21 = challengeCopy;
+  v22 = handlerCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = handlerCopy;
+  v17 = challengeCopy;
+  v18 = identifierCopy;
   dispatch_async(v14, block);
 }
 
-- (void)downloadIdentifier:(id)a3 didFailWithError:(id)a4 wasHandled:(id)a5
+- (void)downloadIdentifier:(id)identifier didFailWithError:(id)error wasHandled:(id)handled
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(BAAgentConnection *)self connection];
+  identifierCopy = identifier;
+  handledCopy = handled;
+  errorCopy = error;
+  connection = [(BAAgentConnection *)self connection];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100035F9C;
   v18[3] = &unk_100079378;
-  v19 = v8;
-  v12 = v9;
+  v19 = identifierCopy;
+  v12 = handledCopy;
   v20 = v12;
-  v13 = v8;
-  v14 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v13 = identifierCopy;
+  v14 = [connection remoteObjectProxyWithErrorHandler:v18];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100036014;
   v16[3] = &unk_10007A3F8;
   v17 = v12;
   v15 = v12;
-  [v14 downloadIdentifier:v13 didFailWithError:v10 wasHandled:v16];
+  [v14 downloadIdentifier:v13 didFailWithError:errorCopy wasHandled:v16];
 }
 
-- (void)downloadIdentifierDidFinish:(id)a3 sandboxExtensionToken:(id)a4 wasHandled:(id)a5
+- (void)downloadIdentifierDidFinish:(id)finish sandboxExtensionToken:(id)token wasHandled:(id)handled
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(BAAgentConnection *)self connection];
+  finishCopy = finish;
+  handledCopy = handled;
+  tokenCopy = token;
+  connection = [(BAAgentConnection *)self connection];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10003618C;
   v18[3] = &unk_100079378;
-  v19 = v8;
-  v12 = v9;
+  v19 = finishCopy;
+  v12 = handledCopy;
   v20 = v12;
-  v13 = v8;
-  v14 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v13 = finishCopy;
+  v14 = [connection remoteObjectProxyWithErrorHandler:v18];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100036204;
   v16[3] = &unk_10007A3F8;
   v17 = v12;
   v15 = v12;
-  [v14 downloadIdentifierDidFinish:v13 sandboxExtensionToken:v10 wasHandled:v16];
+  [v14 downloadIdentifierDidFinish:v13 sandboxExtensionToken:tokenCopy wasHandled:v16];
 }
 
-- (id)extendClientSandboxForStagedURL:(id)a3 allowWrites:(BOOL)a4
+- (id)extendClientSandboxForStagedURL:(id)l allowWrites:(BOOL)writes
 {
   v6 = &APP_SANDBOX_READ_WRITE;
-  if (!a4)
+  if (!writes)
   {
     v6 = &APP_SANDBOX_READ;
   }
 
   v7 = *v6;
-  v8 = a3;
-  [a3 fileSystemRepresentation];
-  v9 = [(BAAgentConnection *)self connection];
-  v10 = v9;
-  if (v9)
+  lCopy = l;
+  [l fileSystemRepresentation];
+  connection = [(BAAgentConnection *)self connection];
+  v10 = connection;
+  if (connection)
   {
-    [v9 auditToken];
+    [connection auditToken];
   }
 
   v11 = sandbox_extension_issue_file_to_process();
@@ -1106,18 +1106,18 @@ LABEL_35:
 
 - (NSString)debugDescription
 {
-  v3 = [(BAAgentClientConnection *)self applicationBundleIdentifier];
-  v4 = [(BAAgentClientConnection *)self clientBundleIdentifier];
-  v5 = [(BAAgentConnection *)self connection];
-  v6 = [v5 processIdentifier];
-  v7 = [(BAAgentClientConnection *)self isApplication];
+  applicationBundleIdentifier = [(BAAgentClientConnection *)self applicationBundleIdentifier];
+  clientBundleIdentifier = [(BAAgentClientConnection *)self clientBundleIdentifier];
+  connection = [(BAAgentConnection *)self connection];
+  processIdentifier = [connection processIdentifier];
+  isApplication = [(BAAgentClientConnection *)self isApplication];
   v8 = @"NO";
-  if (v7)
+  if (isApplication)
   {
     v8 = @"YES";
   }
 
-  v9 = [NSString stringWithFormat:@"Client Connection\nApp Identifier: %@\nClient Identifier: %@\nPID: %d\nIs Client App: %@", v3, v4, v6, v8];
+  v9 = [NSString stringWithFormat:@"Client Connection\nApp Identifier: %@\nClient Identifier: %@\nPID: %d\nIs Client App: %@", applicationBundleIdentifier, clientBundleIdentifier, processIdentifier, v8];
 
   return v9;
 }

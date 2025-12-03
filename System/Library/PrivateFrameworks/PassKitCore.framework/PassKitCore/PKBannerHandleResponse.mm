@@ -1,10 +1,10 @@
 @interface PKBannerHandleResponse
-+ (PKBannerHandleResponse)createWithResult:(uint64_t)a1;
++ (PKBannerHandleResponse)createWithResult:(uint64_t)result;
 @end
 
 @implementation PKBannerHandleResponse
 
-+ (PKBannerHandleResponse)createWithResult:(uint64_t)a1
++ (PKBannerHandleResponse)createWithResult:(uint64_t)result
 {
   objc_opt_self();
   result = [PKBannerHandleResponse alloc];

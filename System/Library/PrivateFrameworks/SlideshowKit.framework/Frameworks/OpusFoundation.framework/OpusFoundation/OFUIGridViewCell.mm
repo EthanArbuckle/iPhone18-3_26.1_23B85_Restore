@@ -1,38 +1,38 @@
 @interface OFUIGridViewCell
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasOperations;
-- (OFUIGridViewCell)initWithFrame:(CGRect)a3;
-- (OFUIGridViewCell)initWithReuseIdentifier:(id)a3;
+- (OFUIGridViewCell)initWithFrame:(CGRect)frame;
+- (OFUIGridViewCell)initWithReuseIdentifier:(id)identifier;
 - (id)gridView;
 - (id)newDraggingItem;
 - (unint64_t)countOperations;
-- (void)_setHighlightedOnCell:(BOOL)a3;
-- (void)addOperation:(id)a3;
+- (void)_setHighlightedOnCell:(BOOL)cell;
+- (void)addOperation:(id)operation;
 - (void)cancelAllOperations;
 - (void)commonInit;
 - (void)dealloc;
-- (void)enumerateOperations:(id)a3;
-- (void)handleSelectAll:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)removeOperation:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setOperationsPriority:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)showSelectionBorder:(BOOL)a3;
-- (void)startDragging:(id)a3;
+- (void)enumerateOperations:(id)operations;
+- (void)handleSelectAll:(id)all;
+- (void)handleTap:(id)tap;
+- (void)removeOperation:(id)operation;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItem:(id)item;
+- (void)setOperationsPriority:(int64_t)priority;
+- (void)setSelected:(BOOL)selected;
+- (void)showSelectionBorder:(BOOL)border;
+- (void)startDragging:(id)dragging;
 @end
 
 @implementation OFUIGridViewCell
 
-- (OFUIGridViewCell)initWithReuseIdentifier:(id)a3
+- (OFUIGridViewCell)initWithReuseIdentifier:(id)identifier
 {
   v4 = [(OFUIGridViewCell *)self initWithFrame:0.0, 0.0, 128.0, 128.0];
   if (v4)
   {
-    v4->_reuseIdentifier = [a3 copy];
+    v4->_reuseIdentifier = [identifier copy];
   }
 
   return v4;
@@ -68,11 +68,11 @@
   self->_selected = 0;
 }
 
-- (OFUIGridViewCell)initWithFrame:(CGRect)a3
+- (OFUIGridViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OFUIGridViewCell;
-  v3 = [(OFUIGridViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OFUIGridViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -132,12 +132,12 @@
   [(OFUIGridViewCell *)&v9 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OFUIGridViewCell *)self bounds];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -157,12 +157,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OFUIGridViewCell *)self frame];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -184,11 +184,11 @@
 
 - (id)gridView
 {
-  v2 = [(OFUIGridViewCell *)self superview];
+  superview = [(OFUIGridViewCell *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return superview;
   }
 
   else
@@ -197,7 +197,7 @@
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   item = self->_item;
   if (item)
@@ -206,29 +206,29 @@
     self->_item = 0;
   }
 
-  if (a3)
+  if (item)
   {
-    self->_item = a3;
-    -[OFUIGridViewCell setHighlighted:](self, "setHighlighted:", [a3 isHighlighted]);
-    v6 = [a3 isSelected];
+    self->_item = item;
+    -[OFUIGridViewCell setHighlighted:](self, "setHighlighted:", [item isHighlighted]);
+    isSelected = [item isSelected];
   }
 
   else
   {
     [(OFUIGridViewCell *)self setHighlighted:0];
-    v6 = 0;
+    isSelected = 0;
   }
 
-  [(OFUIGridViewCell *)self setSelected:v6];
+  [(OFUIGridViewCell *)self setSelected:isSelected];
 }
 
-- (void)_setHighlightedOnCell:(BOOL)a3
+- (void)_setHighlightedOnCell:(BOOL)cell
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke;
   v3[3] = &unk_279C8A190;
-  v4 = a3;
+  cellCopy = cell;
   v3[4] = self;
   [self performBlockWithoutAnimations:v3];
 }
@@ -250,61 +250,61 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(OFUIGridViewItem *)self->_item setHighlighted:?];
 
-  [(OFUIGridViewCell *)self _setHighlightedOnCell:v3];
+  [(OFUIGridViewCell *)self _setHighlightedOnCell:highlightedCopy];
 }
 
-- (void)showSelectionBorder:(BOOL)a3
+- (void)showSelectionBorder:(BOOL)border
 {
-  v3 = a3;
-  v5 = [(OFUIGridViewCell *)self layer];
-  if (v3)
+  borderCopy = border;
+  layer = [(OFUIGridViewCell *)self layer];
+  if (borderCopy)
   {
-    [v5 setBorderWidth:2.0];
+    [layer setBorderWidth:2.0];
     [-[OFUIGridViewCell layer](self "layer")];
     [-[OFUIGridViewCell layer](self "layer")];
     [-[OFUIGridViewCell layer](self "layer")];
     [-[OFUIGridViewCell layer](self "layer")];
-    v6 = [(OFUIGridViewCell *)self layer];
+    layer2 = [(OFUIGridViewCell *)self layer];
     LODWORD(v7) = 1.0;
-    [v6 setShadowOpacity:v7];
+    [layer2 setShadowOpacity:v7];
     v8 = MEMORY[0x277D75208];
     [(OFUIGridViewCell *)self bounds];
     [-[OFUIGridViewCell layer](self "layer")];
-    v9 = [(OFUIGridViewCell *)self layer];
+    layer3 = [(OFUIGridViewCell *)self layer];
 
-    [v9 setOpaque:1];
+    [layer3 setOpaque:1];
   }
 
   else
   {
-    [v5 setBorderWidth:0.0];
-    v10 = [(OFUIGridViewCell *)self layer];
+    [layer setBorderWidth:0.0];
+    layer4 = [(OFUIGridViewCell *)self layer];
 
-    [v10 setShadowOpacity:0.0];
+    [layer4 setShadowOpacity:0.0];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   if (self->_item)
   {
-    v3 = a3;
+    selectedCopy = selected;
     if (!-[OFUIGridViewCell gridView](self, "gridView") || ![-[OFUIGridViewCell gridView](self "gridView")] || (objc_msgSend(-[OFUIGridViewCell gridView](self, "gridView"), "gridViewDelegate"), (objc_opt_respondsToSelector() & 1) == 0) || objc_msgSend(objc_msgSend(-[OFUIGridViewCell gridView](self, "gridView"), "gridViewDelegate"), "gridView:canSelectCell:", -[OFUIGridViewCell gridView](self, "gridView"), self))
     {
-      if (self->_selected != v3)
+      if (self->_selected != selectedCopy)
       {
-        self->_selected = v3;
-        [(OFUIGridViewItem *)self->_item setSelected:v3];
-        [(OFUIGridViewCell *)self showSelectionBorder:v3];
-        v5 = [(OFUIGridViewCell *)self gridView];
-        if (v3)
+        self->_selected = selectedCopy;
+        [(OFUIGridViewItem *)self->_item setSelected:selectedCopy];
+        [(OFUIGridViewCell *)self showSelectionBorder:selectedCopy];
+        gridView = [(OFUIGridViewCell *)self gridView];
+        if (selectedCopy)
         {
-          if (v5)
+          if (gridView)
           {
             if ([-[OFUIGridViewCell gridView](self "gridView")])
             {
@@ -312,15 +312,15 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
               if (objc_opt_respondsToSelector())
               {
                 v6 = [-[OFUIGridViewCell gridView](self "gridView")];
-                v7 = [(OFUIGridViewCell *)self gridView];
+                gridView2 = [(OFUIGridViewCell *)self gridView];
 
-                [v6 gridView:v7 cellWasSelected:self];
+                [v6 gridView:gridView2 cellWasSelected:self];
               }
             }
           }
         }
 
-        else if (v5)
+        else if (gridView)
         {
           if ([-[OFUIGridViewCell gridView](self "gridView")])
           {
@@ -328,9 +328,9 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
             if (objc_opt_respondsToSelector())
             {
               v8 = [-[OFUIGridViewCell gridView](self "gridView")];
-              v9 = [(OFUIGridViewCell *)self gridView];
+              gridView3 = [(OFUIGridViewCell *)self gridView];
 
-              [v8 gridView:v9 cellWasDeselected:self];
+              [v8 gridView:gridView3 cellWasDeselected:self];
             }
           }
         }
@@ -342,19 +342,19 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
 - (id)newDraggingItem
 {
   v3 = [OFUIWindowDraggingItem alloc];
-  v4 = [(OFUIGridViewCell *)self item];
-  v5 = [(UIView *)self snapshot];
+  item = [(OFUIGridViewCell *)self item];
+  snapshot = [(UIView *)self snapshot];
 
-  return [(OFUIWindowDraggingItem *)v3 initWithObject:v4 image:v5];
+  return [(OFUIWindowDraggingItem *)v3 initWithObject:item image:snapshot];
 }
 
-- (void)startDragging:(id)a3
+- (void)startDragging:(id)dragging
 {
-  if ([a3 state] != 5)
+  if ([dragging state] != 5)
   {
-    if ([a3 state] == 1)
+    if ([dragging state] == 1)
     {
-      if ([a3 numberOfTouches] == 1 && -[OFUIGridViewCell gridView](self, "gridView") && objc_msgSend(-[OFUIGridViewCell gridView](self, "gridView"), "draggingSource") && (-[OFUIGridViewCell window](self, "window"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(-[OFUIGridViewCell window](self, "window"), "isDragging") & 1) == 0)
+      if ([dragging numberOfTouches] == 1 && -[OFUIGridViewCell gridView](self, "gridView") && objc_msgSend(-[OFUIGridViewCell gridView](self, "gridView"), "draggingSource") && (-[OFUIGridViewCell window](self, "window"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(-[OFUIGridViewCell window](self, "window"), "isDragging") & 1) == 0)
       {
         [-[OFUIGridViewCell gridView](self "gridView")];
         if ((objc_opt_respondsToSelector() & 1) != 0 && ![objc_msgSend(-[OFUIGridViewCell gridView](self "gridView")])
@@ -362,11 +362,11 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
           return;
         }
 
-        v17 = [(OFUIGridViewCell *)self window];
-        v18 = [(OFUIGridViewCell *)self newDraggingItem];
-        v19 = [MEMORY[0x277CBEA60] arrayWithObjects:{v18, 0}];
-        [a3 locationInView:v17];
-        v22 = [v17 beginDraggingItems:v19 position:objc_msgSend(-[OFUIGridViewCell gridView](self source:{"gridView"), "draggingSource"), v20, v21}];
+        window = [(OFUIGridViewCell *)self window];
+        newDraggingItem = [(OFUIGridViewCell *)self newDraggingItem];
+        v19 = [MEMORY[0x277CBEA60] arrayWithObjects:{newDraggingItem, 0}];
+        [dragging locationInView:window];
+        v22 = [window beginDraggingItems:v19 position:objc_msgSend(-[OFUIGridViewCell gridView](self source:{"gridView"), "draggingSource"), v20, v21}];
         [-[OFUIGridViewCell gridView](self "gridView")];
         [v22 setPresentationViewSize:?];
       }
@@ -378,11 +378,11 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
           if ([(OFUIGridViewItem *)[(OFUIGridViewCell *)self item] isSelected])
           {
             [(OFUIGridViewCell *)self showSelectionBorder:0];
-            v5 = [MEMORY[0x277CBEB88] mainRunLoop];
-            [v5 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
+            mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+            [mainRunLoop runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
             [(OFUIGridViewCell *)self showSelectionBorder:1];
-            v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-            [v6 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
+            mainRunLoop2 = [MEMORY[0x277CBEB88] mainRunLoop];
+            [mainRunLoop2 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
             [(OFUIGridViewCell *)self setSelected:0];
             self->_continuousSelection = 0;
           }
@@ -390,11 +390,11 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
           else
           {
             [(OFUIGridViewCell *)self showSelectionBorder:1];
-            v15 = [MEMORY[0x277CBEB88] mainRunLoop];
-            [v15 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
+            mainRunLoop3 = [MEMORY[0x277CBEB88] mainRunLoop];
+            [mainRunLoop3 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
             [(OFUIGridViewCell *)self showSelectionBorder:0];
-            v16 = [MEMORY[0x277CBEB88] mainRunLoop];
-            [v16 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
+            mainRunLoop4 = [MEMORY[0x277CBEB88] mainRunLoop];
+            [mainRunLoop4 runUntilDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSinceNow:", 0.100000001)}];
             [(OFUIGridViewCell *)self setSelected:1];
             self->_continuousSelection = 1;
           }
@@ -403,16 +403,16 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
         }
       }
 
-      [a3 setEnabled:0];
+      [dragging setEnabled:0];
 
-      [a3 setEnabled:1];
+      [dragging setEnabled:1];
     }
 
-    else if ([a3 state] == 2)
+    else if ([dragging state] == 2)
     {
       if ([-[OFUIGridViewCell gridView](self "gridView")])
       {
-        [a3 locationOfTouch:0 inView:{-[OFUIGridViewCell gridView](self, "gridView")}];
+        [dragging locationOfTouch:0 inView:{-[OFUIGridViewCell gridView](self, "gridView")}];
         v9 = [-[OFUIGridViewCell gridView](self "gridView")];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -449,24 +449,24 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
       }
     }
 
-    else if ([a3 state] == 3 || objc_msgSend(a3, "state") == 4)
+    else if ([dragging state] == 3 || objc_msgSend(dragging, "state") == 4)
     {
-      v14 = [(OFUIGridViewCell *)self gridView];
+      gridView = [(OFUIGridViewCell *)self gridView];
 
-      [v14 allowContinuousSelection];
+      [gridView allowContinuousSelection];
     }
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
     if (-[OFUIGridViewCell gridView](self, "gridView") && [-[OFUIGridViewCell gridView](self "gridView")] && (-[OFUIGridViewCell window](self, "window"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && objc_msgSend(-[OFUIGridViewCell window](self, "window"), "isDragging") && (v4 = objc_msgSend(objc_msgSend(-[OFUIGridViewCell window](self, "window"), "draggingSession"), "source"), v4 == objc_msgSend(-[OFUIGridViewCell gridView](self, "gridView"), "draggingSource")))
     {
-      v7 = [(OFUIGridViewCell *)self window];
-      v8 = [(OFUIGridViewCell *)self newDraggingItem];
-      [objc_msgSend(v7 "draggingSession")];
+      window = [(OFUIGridViewCell *)self window];
+      newDraggingItem = [(OFUIGridViewCell *)self newDraggingItem];
+      [objc_msgSend(window "draggingSession")];
     }
 
     else if ([(OFUIGridViewCell *)self gridView])
@@ -477,18 +477,18 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
         if (objc_opt_respondsToSelector())
         {
           v5 = [-[OFUIGridViewCell gridView](self "gridView")];
-          v6 = [(OFUIGridViewCell *)self gridView];
+          gridView = [(OFUIGridViewCell *)self gridView];
 
-          [v5 gridView:v6 cellWasTapped:self];
+          [v5 gridView:gridView cellWasTapped:self];
         }
       }
     }
   }
 }
 
-- (void)handleSelectAll:(id)a3
+- (void)handleSelectAll:(id)all
 {
-  if ([a3 state] == 3)
+  if ([all state] == 3)
   {
     if ([(OFUIGridViewCell *)self gridView])
     {
@@ -498,25 +498,25 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
         if (objc_opt_respondsToSelector())
         {
           v4 = [-[OFUIGridViewCell gridView](self "gridView")];
-          v5 = [(OFUIGridViewCell *)self gridView];
+          gridView = [(OFUIGridViewCell *)self gridView];
 
-          [v4 gridViewDidToggleSelectAll:v5];
+          [v4 gridViewDidToggleSelectAll:gridView];
         }
       }
     }
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   if ([-[OFUIGridViewCell gridView](self "gridView")] & 1) != 0 || (objc_msgSend(-[OFUIGridViewCell gridView](self, "gridView"), "isDecelerating"))
   {
     return 0;
   }
 
-  if (self->_selectAllRecognizer != a3)
+  if (self->_selectAllRecognizer != begin)
   {
-    return self->_longPressRecognizer == a3 || self->_singleTapRecognizer == a3;
+    return self->_longPressRecognizer == begin || self->_singleTapRecognizer == begin;
   }
 
   return ([-[OFUIGridViewCell gridView](self "gridView")] & 1) != 0;
@@ -524,29 +524,29 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
 
 - (BOOL)hasOperations
 {
-  v2 = self;
+  selfCopy = self;
   operations = self->_operations;
   objc_sync_enter(operations);
-  LOBYTE(v2) = [(NSMutableArray *)v2->_operations count]!= 0;
+  LOBYTE(selfCopy) = [(NSMutableArray *)selfCopy->_operations count]!= 0;
   objc_sync_exit(operations);
-  return v2;
+  return selfCopy;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   operations = self->_operations;
   objc_sync_enter(operations);
-  [(NSMutableArray *)self->_operations addObject:a3];
+  [(NSMutableArray *)self->_operations addObject:operation];
 
   objc_sync_exit(operations);
 }
 
-- (void)removeOperation:(id)a3
+- (void)removeOperation:(id)operation
 {
   operations = self->_operations;
   objc_sync_enter(operations);
-  [a3 cancel];
-  [(NSMutableArray *)self->_operations removeObject:a3];
+  [operation cancel];
+  [(NSMutableArray *)self->_operations removeObject:operation];
 
   objc_sync_exit(operations);
 }
@@ -560,7 +560,7 @@ void __42__OFUIGridViewCell__setHighlightedOnCell___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)enumerateOperations:(id)a3
+- (void)enumerateOperations:(id)operations
 {
   v16 = *MEMORY[0x277D85DE8];
   operations = self->_operations;
@@ -584,7 +584,7 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      (*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * v9), &v14);
+      (*(operations + 2))(operations, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -606,13 +606,13 @@ LABEL_3:
   else
   {
 LABEL_9:
-    (*(a3 + 2))(a3, 0, &v14);
+    (*(operations + 2))(operations, 0, &v14);
   }
 
   objc_sync_exit(operations);
 }
 
-- (void)setOperationsPriority:(int64_t)a3
+- (void)setOperationsPriority:(int64_t)priority
 {
   v15 = *MEMORY[0x277D85DE8];
   operations = self->_operations;
@@ -635,7 +635,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v10 + 1) + 8 * i) setQueuePriority:a3];
+        [*(*(&v10 + 1) + 8 * i) setQueuePriority:priority];
       }
 
       v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v10 objects:v14 count:16];

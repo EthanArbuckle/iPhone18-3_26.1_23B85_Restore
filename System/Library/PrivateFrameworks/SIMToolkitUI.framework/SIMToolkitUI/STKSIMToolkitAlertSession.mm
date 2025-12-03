@@ -1,46 +1,46 @@
 @interface STKSIMToolkitAlertSession
-- (STKSIMToolkitAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 event:(int64_t)a5 options:(id)a6 behavior:(id)a7 sound:(id)a8;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)sendResponse:(int64_t)a3 withBOOLResult:(BOOL)a4;
-- (void)sendSuccessWithSelectedIndex:(unint64_t)a3;
+- (STKSIMToolkitAlertSession)initWithLogger:(id)logger responseProvider:(id)provider event:(int64_t)event options:(id)options behavior:(id)behavior sound:(id)sound;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)sendResponse:(int64_t)response withBOOLResult:(BOOL)result;
+- (void)sendSuccessWithSelectedIndex:(unint64_t)index;
 @end
 
 @implementation STKSIMToolkitAlertSession
 
-- (STKSIMToolkitAlertSession)initWithLogger:(id)a3 responseProvider:(id)a4 event:(int64_t)a5 options:(id)a6 behavior:(id)a7 sound:(id)a8
+- (STKSIMToolkitAlertSession)initWithLogger:(id)logger responseProvider:(id)provider event:(int64_t)event options:(id)options behavior:(id)behavior sound:(id)sound
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v17)
+  loggerCopy = logger;
+  providerCopy = provider;
+  optionsCopy = options;
+  behaviorCopy = behavior;
+  soundCopy = sound;
+  if (!behaviorCopy)
   {
     [STKSIMToolkitAlertSession initWithLogger:responseProvider:event:options:behavior:sound:];
   }
 
   v22.receiver = self;
   v22.super_class = STKSIMToolkitAlertSession;
-  v19 = [(STKAlertSession *)&v22 initWithLogger:v14 responseProvider:v15 options:v16 sound:v18];
+  v19 = [(STKAlertSession *)&v22 initWithLogger:loggerCopy responseProvider:providerCopy options:optionsCopy sound:soundCopy];
   v20 = v19;
   if (v19)
   {
-    v19->_event = a5;
-    objc_storeStrong(&v19->_behavior, a7);
+    v19->_event = event;
+    objc_storeStrong(&v19->_behavior, behavior);
   }
 
   return v20;
 }
 
-- (void)sendResponse:(int64_t)a3 withBOOLResult:(BOOL)a4
+- (void)sendResponse:(int64_t)response withBOOLResult:(BOOL)result
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__STKSIMToolkitAlertSession_sendResponse_withBOOLResult___block_invoke;
   v4[3] = &unk_279B4C820;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = response;
+  resultCopy = result;
   _STKWithLock(self, v4);
 }
 
@@ -75,14 +75,14 @@ uint64_t __57__STKSIMToolkitAlertSession_sendResponse_withBOOLResult___block_inv
   return result;
 }
 
-- (void)sendSuccessWithSelectedIndex:(unint64_t)a3
+- (void)sendSuccessWithSelectedIndex:(unint64_t)index
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __58__STKSIMToolkitAlertSession_sendSuccessWithSelectedIndex___block_invoke;
   v3[3] = &unk_279B4C390;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = index;
   _STKWithLock(self, v3);
 }
 
@@ -114,24 +114,24 @@ uint64_t __58__STKSIMToolkitAlertSession_sendSuccessWithSelectedIndex___block_in
   return result;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v11 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = STKSIMToolkitAlertSession;
-  [(STKAlertSession *)&v8 remoteAlertHandleDidActivate:a3];
+  [(STKAlertSession *)&v8 remoteAlertHandleDidActivate:activate];
   logger = self->super._logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_262BB4000, logger, OS_LOG_TYPE_DEFAULT, "Session <%p> - UI was presented.", buf, 0xCu);
   }
 
-  v5 = [(STKSIMToolkitAlertSession *)self behavior];
-  v6 = [v5 shouldSendResponseUponDisplay];
+  behavior = [(STKSIMToolkitAlertSession *)self behavior];
+  shouldSendResponseUponDisplay = [behavior shouldSendResponseUponDisplay];
 
-  if (v6)
+  if (shouldSendResponseUponDisplay)
   {
     [(STKAlertSession *)self sendResponse:0];
   }

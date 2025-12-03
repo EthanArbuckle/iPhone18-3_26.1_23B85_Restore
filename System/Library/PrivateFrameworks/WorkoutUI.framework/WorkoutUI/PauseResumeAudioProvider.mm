@@ -1,14 +1,14 @@
 @interface PauseResumeAudioProvider
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 @end
 
 @implementation PauseResumeAudioProvider
 
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
+  activityCopy = activity;
 
-  PauseResumeAudioProvider.sessionActivity(_:didChangeFrom:to:)(v7, a4, a5);
+  PauseResumeAudioProvider.sessionActivity(_:didChangeFrom:to:)(activityCopy, state, toState);
 }
 
 @end

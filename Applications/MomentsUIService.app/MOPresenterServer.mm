@@ -1,13 +1,13 @@
 @interface MOPresenterServer
 - (id)getConnectionID;
-- (id)retrieveUrlForToken:(id)a3 type:(id)a4;
+- (id)retrieveUrlForToken:(id)token type:(id)type;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)requestPresentationFor:(id)a3 with:(id)a4;
-- (void)retrieveNotificationAvailabilityWithCompletionHandler:(id)a3;
-- (void)retrieveNotificationScheduleTypeWithConnectionID:(NSUUID *)a3 completionHandler:(id)a4;
-- (void)retrieveOnboardingStateWithCompletionHandler:(id)a3;
-- (void)updatePickerWith:(id)a3 animated:(id)a4;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)requestPresentationFor:(id)for with:(id)with;
+- (void)retrieveNotificationAvailabilityWithCompletionHandler:(id)handler;
+- (void)retrieveNotificationScheduleTypeWithConnectionID:(NSUUID *)d completionHandler:(id)handler;
+- (void)retrieveOnboardingStateWithCompletionHandler:(id)handler;
+- (void)updatePickerWith:(id)with animated:(id)animated;
 @end
 
 @implementation MOPresenterServer
@@ -15,34 +15,34 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC16MomentsUIService17MOPresenterServer_lock);
-  v3 = self;
+  selfCopy = self;
   [v2 lock];
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC16MomentsUIService17MOPresenterServer__listener);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16MomentsUIService17MOPresenterServer__listener);
   [v2 unlock];
   [v4 invalidate];
 
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for MOPresenterServer();
   [(MOPresenterServer *)&v5 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   swift_unknownObjectRetain();
-  v9 = self;
-  specialized MOPresenterServer.listener(_:didReceive:withContext:)(v8);
+  selfCopy = self;
+  specialized MOPresenterServer.listener(_:didReceive:withContext:)(connectionCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)retrieveOnboardingStateWithCompletionHandler:(id)a3
+- (void)retrieveOnboardingStateWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -58,34 +58,34 @@
   v12[3] = 0;
   v12[4] = &_sIeghH_IeAgH_TRTA_89Tu;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v7, &_sIeAgH_ytIeAgHr_TRTA_94Tu, v12);
 }
 
-- (void)requestPresentationFor:(id)a3 with:(id)a4
+- (void)requestPresentationFor:(id)for with:(id)with
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  MOPresenterServer.requestPresentation(for:with:)(a3, v8);
+  forCopy = for;
+  withCopy = with;
+  selfCopy = self;
+  MOPresenterServer.requestPresentation(for:with:)(for, withCopy);
 }
 
-- (void)updatePickerWith:(id)a3 animated:(id)a4
+- (void)updatePickerWith:(id)with animated:(id)animated
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  MOPresenterServer.updatePicker(with:animated:)(v6, v7);
+  withCopy = with;
+  animatedCopy = animated;
+  selfCopy = self;
+  MOPresenterServer.updatePicker(with:animated:)(withCopy, animatedCopy);
 }
 
-- (void)retrieveNotificationScheduleTypeWithConnectionID:(NSUUID *)a3 completionHandler:(id)a4
+- (void)retrieveNotificationScheduleTypeWithConnectionID:(NSUUID *)d completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -100,17 +100,17 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_74Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dCopy = d;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_79Tu, v14);
 }
 
-- (void)retrieveNotificationAvailabilityWithCompletionHandler:(id)a3
+- (void)retrieveNotificationAvailabilityWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -126,7 +126,7 @@
   v12[3] = 0;
   v12[4] = &_sIeghH_IeAgH_TRTATu;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v7, &_sIeAgH_ytIeAgHr_TRTATu, v12);
 }
 
@@ -135,7 +135,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   MOPresenterServer.getConnectionID()(v5);
 
   v7 = type metadata accessor for UUID();
@@ -152,7 +152,7 @@
   return v10;
 }
 
-- (id)retrieveUrlForToken:(id)a3 type:(id)a4
+- (id)retrieveUrlForToken:(id)token type:(id)type
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   __chkstk_darwin(v5 - 8);
@@ -160,7 +160,7 @@
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   MOPresenterServer.retrieveUrlForToken(_:type:)(v8, v10, v7);
 
   v12 = type metadata accessor for URL();

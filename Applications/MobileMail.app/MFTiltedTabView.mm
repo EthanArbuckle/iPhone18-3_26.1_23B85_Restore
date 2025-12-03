@@ -1,70 +1,70 @@
 @interface MFTiltedTabView
-- (BOOL)_gestureRecognizer:(id)a3 shouldInteractWithItem:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_hitRectForItem:(id)a3;
-- (CGSize)_contentSizeForItemCount:(double)a3;
-- (MFTiltedTabView)initWithFrame:(CGRect)a3;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldInteractWithItem:(id)item;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_hitRectForItem:(id)item;
+- (CGSize)_contentSizeForItemCount:(double)count;
+- (MFTiltedTabView)initWithFrame:(CGRect)frame;
 - (MFTiltedTabViewDelegate)delegate;
-- (double)_baseOffsetForItem:(id)a3 index:(unint64_t *)a4 count:(double *)a5;
-- (double)_spaceBetweenTabsWithCount:(double)a3;
+- (double)_baseOffsetForItem:(id)item index:(unint64_t *)index count:(double *)count;
+- (double)_spaceBetweenTabsWithCount:(double)count;
 - (double)_statusBarHeight;
 - (double)_tabCloseAnimationSlideDistance;
-- (double)_topAreaHeightForTabsWithCount:(double)a3;
+- (double)_topAreaHeightForTabsWithCount:(double)count;
 - (double)_velocityForSpringAnimations;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
-- (id)_makeReorderAnimationWithDirection:(int64_t)a3 springDuration:(double)a4 tabCount:(double)a5;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
+- (id)_makeReorderAnimationWithDirection:(int64_t)direction springDuration:(double)duration tabCount:(double)count;
 - (id)_tabItem;
-- (id)_tiltedTabItemForLocation:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)tabItemAtIndex:(unint64_t)a3;
+- (id)_tiltedTabItemForLocation:(CGPoint)location;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)tabItemAtIndex:(unint64_t)index;
 - (id)visibleIndexSet;
 - (int64_t)_currentOrientation;
 - (unint64_t)_numberOfItems;
-- (void)_addSpringAnimationWithKeyPath:(id)a3 toLayer:(id)a4 fromValue:(id)a5 toValue:(id)a6;
-- (void)_closeButtonPressed:(id)a3;
-- (void)_closeItem:(id)a3;
-- (void)_configureVelocityForSpringAnimation:(id)a3 withKeyPath:(id)a4;
+- (void)_addSpringAnimationWithKeyPath:(id)path toLayer:(id)layer fromValue:(id)value toValue:(id)toValue;
+- (void)_closeButtonPressed:(id)pressed;
+- (void)_closeItem:(id)item;
+- (void)_configureVelocityForSpringAnimation:(id)animation withKeyPath:(id)path;
 - (void)_finishAnimations;
 - (void)_installMotionEffectOntoScrollView;
-- (void)_invalidateAllSnapshotsForce:(BOOL)a3;
+- (void)_invalidateAllSnapshotsForce:(BOOL)force;
 - (void)_relinquishBorrowedViews;
-- (void)_reorderScroll:(id)a3;
-- (void)_resetInteractiveReorderOffsetAtLocation:(CGPoint)a3;
-- (void)_resetItem:(id)a3;
+- (void)_reorderScroll:(id)scroll;
+- (void)_resetInteractiveReorderOffsetAtLocation:(CGPoint)location;
+- (void)_resetItem:(id)item;
 - (void)_sendPresentedStateDidChangeToDelegateIfNeeded;
-- (void)_setPressedItem:(id)a3 animated:(BOOL)a4;
-- (void)_setReorderScrollVelocity:(double)a3;
-- (void)_stopReorderingItem:(id)a3 withFinalTimeAdjustment:(double)a4 tabCount:(double)a5;
-- (void)_tabCloseRecognized:(id)a3;
-- (void)_tabPressUpdated:(id)a3;
-- (void)_tabReorderRecognized:(id)a3;
-- (void)_tabSelectionRecognized:(id)a3;
+- (void)_setPressedItem:(id)item animated:(BOOL)animated;
+- (void)_setReorderScrollVelocity:(double)velocity;
+- (void)_stopReorderingItem:(id)item withFinalTimeAdjustment:(double)adjustment tabCount:(double)count;
+- (void)_tabCloseRecognized:(id)recognized;
+- (void)_tabPressUpdated:(id)updated;
+- (void)_tabReorderRecognized:(id)recognized;
+- (void)_tabSelectionRecognized:(id)recognized;
 - (void)_updateItemsInvolvedInAnimation;
-- (void)_updateReorderAnimationBeginTimeForLayer:(id)a3 withTimeAdjustment:(double)a4;
-- (void)_updateReorderAnimationsForItem:(id)a3 withTimeAdjustment:(double)a4 tabCount:(double)a5 createIfNecessary:(BOOL)a6;
+- (void)_updateReorderAnimationBeginTimeForLayer:(id)layer withTimeAdjustment:(double)adjustment;
+- (void)_updateReorderAnimationsForItem:(id)item withTimeAdjustment:(double)adjustment tabCount:(double)count createIfNecessary:(BOOL)necessary;
 - (void)_updateReorderGesture;
-- (void)_updateSpringAnimationForView:(id)a3 withBounds:(CGRect)a4 animated:(BOOL)a5;
-- (void)_updateSpringAnimationForView:(id)a3 withFrame:(CGRect)a4 transform:(CATransform3D *)a5 userTransform:(CATransform3D *)a6 opacity:(double)a7 verticalScrollAdjustment:(double)a8 animated:(BOOL)a9;
-- (void)_updateSpringAnimationForView:(id)a3 withFrame:(CGRect)a4 verticalScrollAdjustment:(double)a5 animated:(BOOL)a6;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)layoutItemsAnimated:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectItemAtIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPresented:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_updateSpringAnimationForView:(id)view withBounds:(CGRect)bounds animated:(BOOL)animated;
+- (void)_updateSpringAnimationForView:(id)view withFrame:(CGRect)frame transform:(CATransform3D *)transform userTransform:(CATransform3D *)userTransform opacity:(double)opacity verticalScrollAdjustment:(double)adjustment animated:(BOOL)animated;
+- (void)_updateSpringAnimationForView:(id)view withFrame:(CGRect)frame verticalScrollAdjustment:(double)adjustment animated:(BOOL)animated;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)layoutItemsAnimated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectItemAtIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setPresented:(BOOL)presented animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateSnapshotsIfNecessary;
 @end
 
 @implementation MFTiltedTabView
 
-- (MFTiltedTabView)initWithFrame:(CGRect)a3
+- (MFTiltedTabView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = MFTiltedTabView;
-  v3 = [(MFTiltedTabView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFTiltedTabView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIScrollView);
@@ -74,7 +74,7 @@
     [(UIScrollView *)v3->_scrollView setAlwaysBounceVertical:1];
     [(UIScrollView *)v3->_scrollView setClipsToBounds:0];
     v6 = qword_1006D52C8;
-    v7 = [(UIScrollView *)v3->_scrollView layer];
+    layer = [(UIScrollView *)v3->_scrollView layer];
     v8 = *&CATransform3DIdentity.m23;
     v33 = *&CATransform3DIdentity.m21;
     v34 = v8;
@@ -87,7 +87,7 @@
     v10 = *&CATransform3DIdentity.m43;
     v38 = *&CATransform3DIdentity.m41;
     v39 = v10;
-    [v7 setSublayerTransform:location];
+    [layer setSublayerTransform:location];
 
     [(UIScrollView *)v3->_scrollView setDelegate:v3];
     [(UIScrollView *)v3->_scrollView setShowsHorizontalScrollIndicator:0];
@@ -97,8 +97,8 @@
     statusBarGradient = v3->_statusBarGradient;
     v3->_statusBarGradient = v11;
 
-    v13 = [(_TabGradientView *)v3->_statusBarGradient gradientLayer];
-    [MFSafariTabsClassConstants configureStatusBarGradientLayer:v13];
+    gradientLayer = [(_TabGradientView *)v3->_statusBarGradient gradientLayer];
+    [MFSafariTabsClassConstants configureStatusBarGradientLayer:gradientLayer];
     [(MFTiltedTabView *)v3 insertSubview:v3->_statusBarGradient aboveSubview:v3->_scrollView];
     v14 = [[_MFTouchDownTapRecognizer alloc] initWithTarget:v3 action:"_tabPressUpdated:"];
     pressRecognizer = v3->_pressRecognizer;
@@ -238,9 +238,9 @@
   [(UIScrollView *)self->_scrollView addMotionEffect:parallaxMotionEffectGroup];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -251,12 +251,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MFTiltedTabView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -287,21 +287,21 @@
   }
 }
 
-- (double)_topAreaHeightForTabsWithCount:(double)a3
+- (double)_topAreaHeightForTabsWithCount:(double)count
 {
-  [(MFTiltedTabView *)self _scrollingEffectFactorForTabsWithCount:a3];
+  [(MFTiltedTabView *)self _scrollingEffectFactorForTabsWithCount:count];
   v5 = (1.0 - v4) * unk_1006D5220 + v4 * *&qword_1006D5218;
   [(MFTiltedTabView *)self _statusBarHeight];
   return v6 + v5;
 }
 
-- (CGRect)_hitRectForItem:(id)a3
+- (CGRect)_hitRectForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v18 = 0.0;
-  [(MFTiltedTabView *)self _baseOffsetForItem:v4 index:0 count:&v18];
+  [(MFTiltedTabView *)self _baseOffsetForItem:itemCopy index:0 count:&v18];
   v6 = v5;
-  v7 = [(NSMutableArray *)self->_visibleItems indexOfObject:v4];
+  v7 = [(NSMutableArray *)self->_visibleItems indexOfObject:itemCopy];
   if (v7 == [(MFTiltedTabView *)self _numberOfItems]- 1)
   {
     v8 = v6;
@@ -331,20 +331,20 @@
 
 - (double)_statusBarHeight
 {
-  v2 = [(MFTiltedTabView *)self window];
-  v3 = [v2 windowScene];
-  v4 = [v3 statusBarManager];
-  [v4 statusBarFrame];
+  window = [(MFTiltedTabView *)self window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v6 = v5;
 
   return v6;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(MFTiltedTabView *)self convertPoint:self->_scrollView toView:x, y];
   v9 = v8;
   v11 = v10;
@@ -372,7 +372,7 @@
         v28.y = v11;
         if (CGRectContainsPoint(v29, v28))
         {
-          v18 = [v16 closeButton];
+          closeButton = [v16 closeButton];
           goto LABEL_13;
         }
       }
@@ -389,26 +389,26 @@
 
   v21.receiver = self;
   v21.super_class = MFTiltedTabView;
-  v12 = [(MFTiltedTabView *)&v21 hitTest:v7 withEvent:x, y];
+  v12 = [(MFTiltedTabView *)&v21 hitTest:eventCopy withEvent:x, y];
   scrollView = v12;
   if (v12 == self)
   {
     scrollView = self->_scrollView;
   }
 
-  v18 = scrollView;
+  closeButton = scrollView;
 LABEL_13:
-  v19 = v18;
+  v19 = closeButton;
 
   return v19;
 }
 
-- (id)_tiltedTabItemForLocation:(CGPoint)a3
+- (id)_tiltedTabItemForLocation:(CGPoint)location
 {
   if (self->_presented)
   {
-    y = a3.y;
-    x = a3.x;
+    y = location.y;
+    x = location.x;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -504,33 +504,33 @@ LABEL_21:
   return v14;
 }
 
-- (void)_setPressedItem:(id)a3 animated:(BOOL)a4
+- (void)_setPressedItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_pressedItem != v7)
+  animatedCopy = animated;
+  itemCopy = item;
+  if (self->_pressedItem != itemCopy)
   {
-    if (v4)
+    if (animatedCopy)
     {
       [(MFTiltedTabView *)self layoutBelowIfNeeded];
-      objc_storeStrong(&self->_pressedItem, a3);
+      objc_storeStrong(&self->_pressedItem, item);
       [(MFTiltedTabView *)self layoutItemsAnimated:1];
     }
 
     else
     {
-      objc_storeStrong(&self->_pressedItem, a3);
+      objc_storeStrong(&self->_pressedItem, item);
       [(MFTiltedTabView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)_tabPressUpdated:(id)a3
+- (void)_tabPressUpdated:(id)updated
 {
-  v5 = a3;
-  if ([v5 numberOfTouches] && objc_msgSend(v5, "state") != 5)
+  updatedCopy = updated;
+  if ([updatedCopy numberOfTouches] && objc_msgSend(updatedCopy, "state") != 5)
   {
-    [v5 locationInView:self->_scrollView];
+    [updatedCopy locationInView:self->_scrollView];
     v4 = [(MFTiltedTabView *)self _tiltedTabItemForLocation:?];
     [(MFTiltedTabView *)self _setPressedItem:v4 animated:1];
   }
@@ -541,35 +541,35 @@ LABEL_21:
   }
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldInteractWithItem:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldInteractWithItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_tabSelectionRecognizer != v6 && self->_tabCloseRecognizer != v6 && self->_tabReorderRecognizer != v6)
+  recognizerCopy = recognizer;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (self->_tabSelectionRecognizer != recognizerCopy && self->_tabCloseRecognizer != recognizerCopy && self->_tabReorderRecognizer != recognizerCopy)
   {
     __assert_rtn("[MFTiltedTabView _gestureRecognizer:shouldInteractWithItem:]", "MFTiltedTabView.m", 630, "gestureRecognizer == _tabSelectionRecognizer || gestureRecognizer == _tabCloseRecognizer || gestureRecognizer == _tabReorderRecognizer");
   }
 
-  v9 = v7 && (self->_tabReorderRecognizer != v6 || [(MFTiltedTabView *)self _numberOfItems]>= 2);
+  v9 = itemCopy && (self->_tabReorderRecognizer != recognizerCopy || [(MFTiltedTabView *)self _numberOfItems]>= 2);
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if (([(MFTiltedTabView *)self isUserInteractionEnabled]& 1) != 0)
   {
-    if (self->_tabSelectionRecognizer != v6 && self->_tabCloseRecognizer != v6 && self->_tabReorderRecognizer != v6)
+    if (self->_tabSelectionRecognizer != recognizerCopy && self->_tabCloseRecognizer != recognizerCopy && self->_tabReorderRecognizer != recognizerCopy)
     {
       __assert_rtn("[MFTiltedTabView gestureRecognizer:shouldReceiveTouch:]", "MFTiltedTabView.m", 643, "gestureRecognizer == _tabSelectionRecognizer || gestureRecognizer == _tabCloseRecognizer || gestureRecognizer == _tabReorderRecognizer");
     }
 
-    [v7 locationInView:self->_scrollView];
+    [touchCopy locationInView:self->_scrollView];
     v8 = [(MFTiltedTabView *)self _tiltedTabItemForLocation:?];
-    v9 = [(MFTiltedTabView *)self _gestureRecognizer:v6 shouldInteractWithItem:v8];
+    v9 = [(MFTiltedTabView *)self _gestureRecognizer:recognizerCopy shouldInteractWithItem:v8];
   }
 
   else
@@ -580,16 +580,16 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_tabSelectionRecognizer != v4 && self->_tabCloseRecognizer != v4 && self->_tabReorderRecognizer != v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_tabSelectionRecognizer != beginCopy && self->_tabCloseRecognizer != beginCopy && self->_tabReorderRecognizer != beginCopy)
   {
     __assert_rtn("[MFTiltedTabView gestureRecognizerShouldBegin:]", "MFTiltedTabView.m", 649, "gestureRecognizer == _tabSelectionRecognizer || gestureRecognizer == _tabCloseRecognizer || gestureRecognizer == _tabReorderRecognizer");
   }
 
-  [(UITapGestureRecognizer *)v4 locationInView:self->_scrollView];
+  [(UITapGestureRecognizer *)beginCopy locationInView:self->_scrollView];
   v6 = [(MFTiltedTabView *)self _tiltedTabItemForLocation:?];
   v7 = [(MFTiltedTabView *)self _gestureRecognizer:v5 shouldInteractWithItem:v6];
 
@@ -603,24 +603,24 @@ LABEL_21:
   return v2 + CGRectGetMaxX(v4);
 }
 
-- (void)_closeItem:(id)a3
+- (void)_closeItem:(id)item
 {
-  v5 = a3;
-  v6 = [(NSMutableArray *)self->_visibleItems indexOfObject:v5];
+  itemCopy = item;
+  v6 = [(NSMutableArray *)self->_visibleItems indexOfObject:itemCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained tiltedTabView:self canCloseItemAtIndex:v6])
   {
-    v8 = [(MFTiltedTabView *)self _numberOfItems];
-    [v5 setClosing:1];
-    [WeakRetained tiltedTabView:self closeItemAtIndex:{-[MFTiltedTabView _indexOfVisibleItem:](self, "_indexOfVisibleItem:", v5)}];
+    _numberOfItems = [(MFTiltedTabView *)self _numberOfItems];
+    [itemCopy setClosing:1];
+    [WeakRetained tiltedTabView:self closeItemAtIndex:{-[MFTiltedTabView _indexOfVisibleItem:](self, "_indexOfVisibleItem:", itemCopy)}];
     v9 = [WeakRetained numberOfItemsInTiltedTabView:self];
-    if (v9 >= v8)
+    if (v9 >= _numberOfItems)
     {
       v11 = +[NSAssertionHandler currentHandler];
       [v11 handleFailureInMethod:a2 object:self file:@"MFTiltedTabView.m" lineNumber:671 description:@"Number of items should be less than before when closing tabs."];
     }
 
-    [(NSMutableArray *)self->_visibleItems removeObject:v5];
+    [(NSMutableArray *)self->_visibleItems removeObject:itemCopy];
     visibleItems = self->_visibleItems;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -632,41 +632,41 @@ LABEL_21:
   }
 }
 
-- (id)tabItemAtIndex:(unint64_t)a3
+- (id)tabItemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_visibleItems count]<= a3)
+  if ([(NSMutableArray *)self->_visibleItems count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_visibleItems objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_visibleItems objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-- (void)_tabCloseRecognized:(id)a3
+- (void)_tabCloseRecognized:(id)recognized
 {
-  v23 = a3;
-  if (self->_tabCloseRecognizer != v23)
+  recognizedCopy = recognized;
+  if (self->_tabCloseRecognizer != recognizedCopy)
   {
     __assert_rtn("[MFTiltedTabView _tabCloseRecognized:]", "MFTiltedTabView.m", 692, "gestureRecognizer == _tabCloseRecognizer");
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(UIPanGestureRecognizer *)v23 state];
-  if (v5 <= 2)
+  state = [(UIPanGestureRecognizer *)recognizedCopy state];
+  if (state <= 2)
   {
-    if (v5 != 1)
+    if (state != 1)
     {
-      if (v5 != 2)
+      if (state != 2)
       {
         goto LABEL_28;
       }
 
-      [(UIPanGestureRecognizer *)v23 translationInView:self];
+      [(UIPanGestureRecognizer *)recognizedCopy translationInView:self];
       v7 = v6;
       [(MFTiltedTabView *)self _tabCloseAnimationSlideDistance];
       v9 = -v7 / v8;
@@ -692,7 +692,7 @@ LABEL_27:
       goto LABEL_27;
     }
 
-    [(UIPanGestureRecognizer *)v23 locationInView:self->_scrollView];
+    [(UIPanGestureRecognizer *)recognizedCopy locationInView:self->_scrollView];
     onlyHorizontalVelocityItem = [(MFTiltedTabView *)self _tiltedTabItemForLocation:?];
     if (onlyHorizontalVelocityItem)
     {
@@ -720,26 +720,26 @@ LABEL_23:
     __assert_rtn("[MFTiltedTabView _tabCloseRecognized:]", "MFTiltedTabView.m", v22, v21);
   }
 
-  if (v5 == 3)
+  if (state == 3)
   {
-    [(UIPanGestureRecognizer *)v23 translationInView:self];
+    [(UIPanGestureRecognizer *)recognizedCopy translationInView:self];
     v13 = v12;
-    [(UIPanGestureRecognizer *)v23 velocityInView:self];
+    [(UIPanGestureRecognizer *)recognizedCopy velocityInView:self];
     v15 = v14;
     [(MFTiltedTabView *)self _tabCloseAnimationSlideDistance];
     if (v13 + v15 < v16 * -0.75)
     {
       v17 = [WeakRetained tiltedTabView:self canCloseItemAtIndex:{-[MFTiltedTabView _indexOfVisibleItem:](self, "_indexOfVisibleItem:", self->_interactivelyClosingItem)}];
 LABEL_16:
-      [(UIPanGestureRecognizer *)v23 velocityInView:self];
+      [(UIPanGestureRecognizer *)recognizedCopy velocityInView:self];
       self->_interactiveCloseVelocity = v18;
       if (v17)
       {
         [(MFTiltedTabView *)self _closeItem:self->_interactivelyClosingItem];
       }
 
-      v19 = [(_MFTiltedTabItemView *)self->_interactivelyClosingItem isClosing];
-      if ((v19 & 1) == 0)
+      isClosing = [(_MFTiltedTabItemView *)self->_interactivelyClosingItem isClosing];
+      if ((isClosing & 1) == 0)
       {
         [(_MFTiltedTabItemView *)self->_interactivelyClosingItem setCountForLayout:0x7FFFFFFFFFFFFFFFLL];
         [(_MFTiltedTabItemView *)self->_interactivelyClosingItem setIndexForLayout:0x7FFFFFFFFFFFFFFFLL];
@@ -749,7 +749,7 @@ LABEL_16:
       interactivelyClosingItem = self->_interactivelyClosingItem;
       self->_interactivelyClosingItem = 0;
 
-      if ((v19 & 1) == 0)
+      if ((isClosing & 1) == 0)
       {
         [(MFTiltedTabView *)self layoutItemsAnimated:1];
       }
@@ -766,7 +766,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v5 == 4)
+  if (state == 4)
   {
     goto LABEL_15;
   }
@@ -774,10 +774,10 @@ LABEL_15:
 LABEL_28:
 }
 
-- (void)_setReorderScrollVelocity:(double)a3
+- (void)_setReorderScrollVelocity:(double)velocity
 {
   reorderScrollDisplayLink = self->_reorderScrollDisplayLink;
-  if (fabs(a3) >= 0.01)
+  if (fabs(velocity) >= 0.01)
   {
     if (!reorderScrollDisplayLink)
     {
@@ -790,7 +790,7 @@ LABEL_28:
       [(CADisplayLink *)v9 addToRunLoop:v10 forMode:NSRunLoopCommonModes];
     }
 
-    self->_reorderScrollVelocity = a3;
+    self->_reorderScrollVelocity = velocity;
   }
 
   else
@@ -801,9 +801,9 @@ LABEL_28:
   }
 }
 
-- (void)_reorderScroll:(id)a3
+- (void)_reorderScroll:(id)scroll
 {
-  [a3 duration];
+  [scroll duration];
   v5 = v4;
   reorderScrollVelocity = self->_reorderScrollVelocity;
   reorderScrollOffsetError = self->_reorderScrollOffsetError;
@@ -910,9 +910,9 @@ LABEL_15:
   [(MFTiltedTabView *)self setNeedsLayout];
 }
 
-- (void)_resetInteractiveReorderOffsetAtLocation:(CGPoint)a3
+- (void)_resetInteractiveReorderOffsetAtLocation:(CGPoint)location
 {
-  y = a3.y;
+  y = location.y;
   [(MFTiltedTabView *)self _spaceBetweenTabsWithCount:[(MFTiltedTabView *)self _numberOfItems]];
   v6 = v5;
   v7 = [(MFTiltedTabView *)self _indexOfVisibleItem:self->_interactivelyReorderingItem];
@@ -926,17 +926,17 @@ LABEL_15:
   self->_interactiveReorderOffsetDistanceFromTouch = y - v8;
 }
 
-- (void)_tabReorderRecognized:(id)a3
+- (void)_tabReorderRecognized:(id)recognized
 {
-  v4 = a3;
-  v14 = v4;
-  if (self->_tabReorderRecognizer != v4)
+  recognizedCopy = recognized;
+  v14 = recognizedCopy;
+  if (self->_tabReorderRecognizer != recognizedCopy)
   {
     __assert_rtn("[MFTiltedTabView _tabReorderRecognized:]", "MFTiltedTabView.m", 835, "gestureRecognizer == _tabReorderRecognizer");
   }
 
-  v5 = [(UILongPressGestureRecognizer *)v4 state];
-  if ((v5 - 3) < 2)
+  state = [(UILongPressGestureRecognizer *)recognizedCopy state];
+  if ((state - 3) < 2)
   {
     interactivelyReorderingItem = self->_interactivelyReorderingItem;
     self->_interactivelyReorderingItem = 0;
@@ -950,9 +950,9 @@ LABEL_15:
 
   else
   {
-    if (v5 != 2)
+    if (state != 2)
     {
-      if (v5 != 1)
+      if (state != 1)
       {
         goto LABEL_10;
       }
@@ -992,18 +992,18 @@ LABEL_15:
 LABEL_10:
 }
 
-- (void)selectItemAtIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)selectItemAtIndex:(unint64_t)index animated:(BOOL)animated
 {
-  if ([(NSMutableArray *)self->_visibleItems count:a3]> a3)
+  if ([(NSMutableArray *)self->_visibleItems count:index]> index)
   {
-    v6 = [(NSMutableArray *)self->_visibleItems objectAtIndex:a3];
+    v6 = [(NSMutableArray *)self->_visibleItems objectAtIndex:index];
     objc_storeStrong(&self->_selectedItem, v6);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained tiltedTabView:self contentViewForItemAtIndex:a3];
+    v8 = [WeakRetained tiltedTabView:self contentViewForItemAtIndex:index];
     if (v8)
     {
-      v9 = [(_MFTiltedTabItemView *)self->_selectedItem borrowedContentView];
-      [WeakRetained tiltedTabView:self relinquishSnapshotView:v9 forItemAtIndex:a3];
+      borrowedContentView = [(_MFTiltedTabItemView *)self->_selectedItem borrowedContentView];
+      [WeakRetained tiltedTabView:self relinquishSnapshotView:borrowedContentView forItemAtIndex:index];
 
       v10 = *&CGAffineTransformIdentity.c;
       v11[0] = *&CGAffineTransformIdentity.a;
@@ -1014,20 +1014,20 @@ LABEL_10:
       [(_MFTiltedTabItemView *)self->_selectedItem setContentViewType:0];
     }
 
-    [WeakRetained tiltedTabView:self didSelectItemAtIndex:a3];
+    [WeakRetained tiltedTabView:self didSelectItemAtIndex:index];
   }
 }
 
-- (void)_tabSelectionRecognized:(id)a3
+- (void)_tabSelectionRecognized:(id)recognized
 {
-  v4 = a3;
-  v6 = v4;
-  if (self->_tabSelectionRecognizer != v4)
+  recognizedCopy = recognized;
+  v6 = recognizedCopy;
+  if (self->_tabSelectionRecognizer != recognizedCopy)
   {
     __assert_rtn("[MFTiltedTabView _tabSelectionRecognized:]", "MFTiltedTabView.m", 891, "gestureRecognizer == _tabSelectionRecognizer");
   }
 
-  [(UITapGestureRecognizer *)v4 locationInView:self->_scrollView];
+  [(UITapGestureRecognizer *)recognizedCopy locationInView:self->_scrollView];
   v5 = [(MFTiltedTabView *)self _tiltedTabItemForLocation:?];
   [(MFTiltedTabView *)self selectItemAtIndex:[(MFTiltedTabView *)self _indexOfVisibleItem:v5] animated:1];
 }
@@ -1162,15 +1162,15 @@ LABEL_10:
   return v3;
 }
 
-- (void)setPresented:(BOOL)a3 animated:(BOOL)a4
+- (void)setPresented:(BOOL)presented animated:(BOOL)animated
 {
-  if (self->_presented == !a3)
+  if (self->_presented == !presented)
   {
-    v4 = a3;
+    presentedCopy = presented;
     v34 = 8;
-    v35 = a4;
+    animatedCopy = animated;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (v4)
+    if (presentedCopy)
     {
       [(MFTiltedTabView *)self setHidden:0];
       [(MFTiltedTabView *)self _installMotionEffectOntoScrollView];
@@ -1180,27 +1180,27 @@ LABEL_10:
       self->_sentDidPresentToDelegate = 0;
       [(MFTiltedTabView *)self _relinquishBorrowedViews];
       [(NSMutableArray *)self->_visibleItems removeAllObjects];
-      v36 = [(MFTiltedTabView *)self rotationStyle];
+      rotationStyle = [(MFTiltedTabView *)self rotationStyle];
       v8 = [WeakRetained numberOfItemsInTiltedTabView:self];
       if (v8)
       {
         for (i = 0; i != v8; ++i)
         {
           v10 = [WeakRetained tiltedTabView:self snapshotViewForItemAtIndex:{i, v34}];
-          v11 = [(MFTiltedTabView *)self _tabItem];
-          [v11 setIndexForLayout:i];
-          [v11 setCountForLayout:v8];
-          [v11 setBorrowedContentView:v10];
-          [v11 setContentViewType:1];
-          [v11 setCapturedInterfaceOrientation:{-[MFTiltedTabView _currentOrientation](self, "_currentOrientation")}];
-          [v11 setAutoresizesContentView:v36 == 2];
-          v12 = [v11 contentClipperView];
+          _tabItem = [(MFTiltedTabView *)self _tabItem];
+          [_tabItem setIndexForLayout:i];
+          [_tabItem setCountForLayout:v8];
+          [_tabItem setBorrowedContentView:v10];
+          [_tabItem setContentViewType:1];
+          [_tabItem setCapturedInterfaceOrientation:{-[MFTiltedTabView _currentOrientation](self, "_currentOrientation")}];
+          [_tabItem setAutoresizesContentView:rotationStyle == 2];
+          contentClipperView = [_tabItem contentClipperView];
           [v10 bounds];
-          [v12 setBounds:?];
+          [contentClipperView setBounds:?];
 
-          [v11 setClipsToBounds:{objc_msgSend(v10, "clipsToBounds")}];
+          [_tabItem setClipsToBounds:{objc_msgSend(v10, "clipsToBounds")}];
           [v10 _continuousCornerRadius];
-          [v11 _setContinuousCornerRadius:?];
+          [_tabItem _setContinuousCornerRadius:?];
           objc_initWeak(location, self);
           v13 = [UISpringLoadedInteraction alloc];
           v38[0] = _NSConcreteStackBlock;
@@ -1210,36 +1210,36 @@ LABEL_10:
           objc_copyWeak(v39, location);
           v39[1] = i;
           v14 = [v13 initWithActivationHandler:v38];
-          [v11 addInteraction:v14];
+          [_tabItem addInteraction:v14];
 
           if (i)
           {
             v15 = WeakRetained;
             v16 = [WeakRetained tiltedTabView:self headerViewForItemAtIndex:i];
-            v17 = [v11 headerView];
-            [v17 frame];
+            headerView = [_tabItem headerView];
+            [headerView frame];
             v19 = v18;
             v21 = v20;
             v23 = v22;
 
             [v16 frame];
             Height = CGRectGetHeight(v41);
-            v25 = [v11 headerView];
-            [v25 setFrame:{v19, v21, v23, Height}];
+            headerView2 = [_tabItem headerView];
+            [headerView2 setFrame:{v19, v21, v23, Height}];
 
-            v26 = [v16 title];
-            v27 = [v11 headerView];
-            [v27 setTitle:v26];
+            title = [v16 title];
+            headerView3 = [_tabItem headerView];
+            [headerView3 setTitle:title];
 
             [v16 bottomInset];
             v29 = v28;
-            v30 = [v11 headerView];
-            [v30 setBottomInset:v29];
+            headerView4 = [_tabItem headerView];
+            [headerView4 setBottomInset:v29];
 
             WeakRetained = v15;
           }
 
-          [(NSMutableArray *)self->_visibleItems addObject:v11];
+          [(NSMutableArray *)self->_visibleItems addObject:_tabItem];
           objc_destroyWeak(v39);
           objc_destroyWeak(location);
         }
@@ -1256,14 +1256,14 @@ LABEL_10:
       [WeakRetained tiltedTabViewWillDismiss:self];
     }
 
-    if (v35)
+    if (animatedCopy)
     {
       self->_animating = 1;
       [(MFTiltedTabView *)self setNeedsLayout];
       [(MFTiltedTabView *)self layoutBelowIfNeeded];
     }
 
-    if ((!self->_selectedItem || ![(MFTiltedTabView *)self _indexOfVisibleItem:?]) && !v4)
+    if ((!self->_selectedItem || ![(MFTiltedTabView *)self _indexOfVisibleItem:?]) && !presentedCopy)
     {
       visibleItems = self->_visibleItems;
       v37[0] = _NSConcreteStackBlock;
@@ -1274,50 +1274,50 @@ LABEL_10:
       [(NSMutableArray *)visibleItems enumerateObjectsUsingBlock:v37];
     }
 
-    *(&self->super.super.super.isa + v34) = v4;
+    *(&self->super.super.super.isa + v34) = presentedCopy;
     [WeakRetained tiltedTabViewDidLayoutItems:{self, v34}];
-    if (v4)
+    if (presentedCopy)
     {
       v32 = [WeakRetained tiltedTabView:self maskCutoutViewForItemAtIndex:0];
       if (v32)
       {
-        v33 = [(NSMutableArray *)self->_visibleItems firstObject];
-        [v33 installMaskCutoutView:v32];
+        firstObject = [(NSMutableArray *)self->_visibleItems firstObject];
+        [firstObject installMaskCutoutView:v32];
       }
     }
 
-    [(MFTiltedTabView *)self layoutItemsAnimated:v35];
+    [(MFTiltedTabView *)self layoutItemsAnimated:animatedCopy];
     if (!self->_activeAnimationCount)
     {
       [(MFTiltedTabView *)self _finishAnimations];
     }
 
-    [(_MFTouchDownTapRecognizer *)self->_pressRecognizer setEnabled:v4];
-    [(UIPanGestureRecognizer *)self->_tabCloseRecognizer setEnabled:v4];
+    [(_MFTouchDownTapRecognizer *)self->_pressRecognizer setEnabled:presentedCopy];
+    [(UIPanGestureRecognizer *)self->_tabCloseRecognizer setEnabled:presentedCopy];
     [(UILongPressGestureRecognizer *)self->_tabReorderRecognizer setEnabled:self->_reorderingEnabled];
-    [(UITapGestureRecognizer *)self->_tabSelectionRecognizer setEnabled:v4];
+    [(UITapGestureRecognizer *)self->_tabSelectionRecognizer setEnabled:presentedCopy];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v17 = a3;
-  v5 = [v17 valueForKey:@"reordering-item"];
+  stopCopy = stop;
+  v5 = [stopCopy valueForKey:@"reordering-item"];
   if (v5)
   {
-    v6 = [v17 valueForKey:@"being-replaced"];
-    v7 = [v6 BOOLValue];
+    v6 = [stopCopy valueForKey:@"being-replaced"];
+    bOOLValue = [v6 BOOLValue];
 
-    if ((v7 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v8 = [v17 valueForKey:@"base-begin-time"];
+      v8 = [stopCopy valueForKey:@"base-begin-time"];
       [v8 doubleValue];
       v10 = v9;
 
-      [v17 beginTime];
+      [stopCopy beginTime];
       v12 = v11;
       v13 = *&qword_1006D5210;
-      v14 = [v17 valueForKey:@"tab-count"];
+      v14 = [stopCopy valueForKey:@"tab-count"];
       [v14 doubleValue];
       [(MFTiltedTabView *)self _stopReorderingItem:v5 withFinalTimeAdjustment:(v10 - v12) / v13 tabCount:v15];
     }
@@ -1334,14 +1334,14 @@ LABEL_10:
   }
 }
 
-- (void)_resetItem:(id)a3
+- (void)_resetItem:(id)item
 {
-  v3 = a3;
-  [v3 setClosing:0];
-  [v3 setFinishedClosing:0];
-  [v3 setCountForLayout:0x7FFFFFFFFFFFFFFFLL];
-  [v3 setIndexForLayout:0x7FFFFFFFFFFFFFFFLL];
-  [v3 setVerticalScrollAdjustment:0.0];
+  itemCopy = item;
+  [itemCopy setClosing:0];
+  [itemCopy setFinishedClosing:0];
+  [itemCopy setCountForLayout:0x7FFFFFFFFFFFFFFFLL];
+  [itemCopy setIndexForLayout:0x7FFFFFFFFFFFFFFFLL];
+  [itemCopy setVerticalScrollAdjustment:0.0];
 }
 
 - (void)_updateItemsInvolvedInAnimation
@@ -1372,8 +1372,8 @@ LABEL_10:
           if (![(MFTiltedTabView *)self _shouldContinueAnimatingItem:v8])
           {
             [v8 removeFromSuperview];
-            v9 = [v8 closeButton];
-            [v9 removeTarget:self action:"_closeButtonPressed:" forControlEvents:64];
+            closeButton = [v8 closeButton];
+            [closeButton removeTarget:self action:"_closeButtonPressed:" forControlEvents:64];
           }
         }
 
@@ -1409,8 +1409,8 @@ LABEL_10:
 
         v14 = *(*(&v19 + 1) + 8 * j);
         [(UIScrollView *)self->_scrollView addSubview:v14];
-        v15 = [v14 closeButton];
-        [v15 addTarget:self action:"_closeButtonPressed:" forControlEvents:64];
+        closeButton2 = [v14 closeButton];
+        [closeButton2 addTarget:self action:"_closeButtonPressed:" forControlEvents:64];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -1424,33 +1424,33 @@ LABEL_10:
   self->_itemsInvolvedInAnimation = v16;
 }
 
-- (void)_closeButtonPressed:(id)a3
+- (void)_closeButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   visibleItems = self->_visibleItems;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100221678;
   v7[3] = &unk_100655D48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = pressedCopy;
+  selfCopy = self;
+  v6 = pressedCopy;
   [(NSMutableArray *)visibleItems enumerateObjectsUsingBlock:v7];
 }
 
-- (void)_updateSpringAnimationForView:(id)a3 withFrame:(CGRect)a4 verticalScrollAdjustment:(double)a5 animated:(BOOL)a6
+- (void)_updateSpringAnimationForView:(id)view withFrame:(CGRect)frame verticalScrollAdjustment:(double)adjustment animated:(BOOL)animated
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = [v13 layer];
-  v15 = v14;
-  if (v14)
+  animatedCopy = animated;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  layer = [viewCopy layer];
+  v15 = layer;
+  if (layer)
   {
-    [v14 transform];
+    [layer transform];
   }
 
   else
@@ -1470,17 +1470,17 @@ LABEL_10:
   v19 = *&CATransform3DIdentity.m23;
   v20[2] = *&CATransform3DIdentity.m21;
   v20[3] = v19;
-  [(MFTiltedTabView *)self _updateSpringAnimationForView:v13 withFrame:v21 transform:v20 userTransform:v6 opacity:x verticalScrollAdjustment:y animated:width, height, 1.0, a5];
+  [(MFTiltedTabView *)self _updateSpringAnimationForView:viewCopy withFrame:v21 transform:v20 userTransform:animatedCopy opacity:x verticalScrollAdjustment:y animated:width, height, 1.0, adjustment];
 }
 
 - (double)_velocityForSpringAnimations
 {
   [(MFTiltedTabView *)self _tabCloseAnimationSlideDistance];
   v4 = v3;
-  v5 = [(_MFTiltedTabItemView *)self->_interactivelyClosingItem isClosing];
+  isClosing = [(_MFTiltedTabItemView *)self->_interactivelyClosingItem isClosing];
   v6 = -v4;
   result = 0.0;
-  if (!v5)
+  if (!isClosing)
   {
     v6 = 0.0;
   }
@@ -1494,15 +1494,15 @@ LABEL_10:
   return result;
 }
 
-- (void)_configureVelocityForSpringAnimation:(id)a3 withKeyPath:(id)a4
+- (void)_configureVelocityForSpringAnimation:(id)animation withKeyPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
+  animationCopy = animation;
+  pathCopy = path;
   [(MFTiltedTabView *)self _velocityForSpringAnimations];
   v8 = v7;
   if (v7 != 0.0)
   {
-    if (([v6 isEqualToString:@"position.x"] & 1) == 0)
+    if (([pathCopy isEqualToString:@"position.x"] & 1) == 0)
     {
       if (self->_applyVelocityOnlyToHorizontalPosition)
       {
@@ -1512,52 +1512,52 @@ LABEL_10:
       v8 = v8 + v8;
     }
 
-    [v9 setVelocity:v8];
+    [animationCopy setVelocity:v8];
   }
 
 LABEL_6:
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = objc_alloc_init(MFSpringAnimation);
-  [v6 setKeyPath:v5];
-  [(MFTiltedTabView *)self _configureVelocityForSpringAnimation:v6 withKeyPath:v5];
+  [v6 setKeyPath:pathCopy];
+  [(MFTiltedTabView *)self _configureVelocityForSpringAnimation:v6 withKeyPath:pathCopy];
 
   return v6;
 }
 
-- (void)_addSpringAnimationWithKeyPath:(id)a3 toLayer:(id)a4 fromValue:(id)a5 toValue:(id)a6
+- (void)_addSpringAnimationWithKeyPath:(id)path toLayer:(id)layer fromValue:(id)value toValue:(id)toValue
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = [MFSpringAnimation springAnimationWithKeyPath:v14 fromValue:a5 toValue:a6];
+  pathCopy = path;
+  layerCopy = layer;
+  v11 = [MFSpringAnimation springAnimationWithKeyPath:pathCopy fromValue:value toValue:toValue];
   [(MFTiltedTabView *)self _velocityForSpringAnimations];
   if (v12 != 0.0)
   {
     v13 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     [v11 setTimingFunction:v13];
 
-    [(MFTiltedTabView *)self _configureVelocityForSpringAnimation:v11 withKeyPath:v14];
+    [(MFTiltedTabView *)self _configureVelocityForSpringAnimation:v11 withKeyPath:pathCopy];
   }
 
   [v11 setDelegate:self];
   ++self->_activeAnimationCount;
-  [v10 addAnimation:v11 forKey:0];
+  [layerCopy addAnimation:v11 forKey:0];
 }
 
-- (void)_updateSpringAnimationForView:(id)a3 withFrame:(CGRect)a4 transform:(CATransform3D *)a5 userTransform:(CATransform3D *)a6 opacity:(double)a7 verticalScrollAdjustment:(double)a8 animated:(BOOL)a9
+- (void)_updateSpringAnimationForView:(id)view withFrame:(CGRect)frame transform:(CATransform3D *)transform userTransform:(CATransform3D *)userTransform opacity:(double)opacity verticalScrollAdjustment:(double)adjustment animated:(BOOL)animated
 {
-  v9 = a9;
-  rect = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v17 = [v16 layer];
-  [v17 anchorPoint];
-  [v17 position];
+  animatedCopy = animated;
+  rect = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer anchorPoint];
+  [layer position];
   v84 = v18;
   v20 = v19;
   *&v21 = -1;
@@ -1565,20 +1565,20 @@ LABEL_6:
   *&v94.c = v21;
   *&v94.tx = v21;
   *&v94.a = v21;
-  v22 = *&a6->m33;
-  *&v93.m31 = *&a6->m31;
+  v22 = *&userTransform->m33;
+  *&v93.m31 = *&userTransform->m31;
   *&v93.m33 = v22;
-  v23 = *&a6->m43;
-  *&v93.m41 = *&a6->m41;
+  v23 = *&userTransform->m43;
+  *&v93.m41 = *&userTransform->m41;
   *&v93.m43 = v23;
-  v24 = *&a6->m13;
-  *&v93.m11 = *&a6->m11;
+  v24 = *&userTransform->m13;
+  *&v93.m11 = *&userTransform->m11;
   *&v93.m13 = v24;
-  v25 = *&a6->m23;
-  *&v93.m21 = *&a6->m21;
+  v25 = *&userTransform->m23;
+  *&v93.m21 = *&userTransform->m21;
   *&v93.m23 = v25;
   CATransform3DGetAffineTransform(&v94, &v93);
-  [v16 bounds];
+  [viewCopy bounds];
   v26 = CGRectGetWidth(v95);
   v27 = 0.0;
   if (v26 > 0.0)
@@ -1587,7 +1587,7 @@ LABEL_6:
   }
 
   v94.tx = v27;
-  [v16 bounds];
+  [viewCopy bounds];
   Height = CGRectGetHeight(v96);
   v29 = 0.0;
   if (Height > 0.0)
@@ -1597,17 +1597,17 @@ LABEL_6:
 
   v82 = v20;
   v94.ty = v29;
-  v30 = *&a6->m33;
-  *&v93.m31 = *&a6->m31;
+  v30 = *&userTransform->m33;
+  *&v93.m31 = *&userTransform->m31;
   *&v93.m33 = v30;
-  v31 = *&a6->m43;
-  *&v93.m41 = *&a6->m41;
+  v31 = *&userTransform->m43;
+  *&v93.m41 = *&userTransform->m41;
   *&v93.m43 = v31;
-  v32 = *&a6->m13;
-  *&v93.m11 = *&a6->m11;
+  v32 = *&userTransform->m13;
+  *&v93.m11 = *&userTransform->m11;
   *&v93.m13 = v32;
-  v33 = *&a6->m23;
-  *&v93.m21 = *&a6->m21;
+  v33 = *&userTransform->m23;
+  *&v93.m21 = *&userTransform->m21;
   *&v93.m23 = v33;
   CATransform3DGetAffineTransform(&v92, &v93);
   v97.origin.x = x;
@@ -1634,9 +1634,9 @@ LABEL_6:
   *&v93.m23 = v39;
   *&v93.m11 = v39;
   *&v93.m13 = v39;
-  if (v17)
+  if (layer)
   {
-    [v17 transform];
+    [layer transform];
   }
 
   else
@@ -1644,27 +1644,27 @@ LABEL_6:
     memset(&v93, 0, sizeof(v93));
   }
 
-  [v17 opacity];
+  [layer opacity];
   v41 = v40;
-  [v17 bounds];
+  [layer bounds];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  v83 = v82 + a8;
+  v83 = v82 + adjustment;
   v50 = v83 != v87 || v84 != v38;
   v92 = v93;
-  v51 = *&a5->m33;
-  *&b.m31 = *&a5->m31;
+  v51 = *&transform->m33;
+  *&b.m31 = *&transform->m31;
   *&b.m33 = v51;
-  v52 = *&a5->m43;
-  *&b.m41 = *&a5->m41;
+  v52 = *&transform->m43;
+  *&b.m41 = *&transform->m41;
   *&b.m43 = v52;
-  v53 = *&a5->m13;
-  *&b.m11 = *&a5->m11;
+  v53 = *&transform->m13;
+  *&b.m11 = *&transform->m11;
   *&b.m13 = v53;
-  v54 = *&a5->m23;
-  *&b.m21 = *&a5->m21;
+  v54 = *&transform->m23;
+  *&b.m21 = *&transform->m21;
   *&b.m23 = v54;
   v55 = CATransform3DEqualToTransform(&v92, &b);
   v98.origin.x = v43;
@@ -1677,31 +1677,31 @@ LABEL_6:
   v99.size.height = rect;
   v56 = CGRectEqualToRect(v98, v99);
   v57 = v41;
-  if (v50 || !v55 || v57 != a7 || !v56)
+  if (v50 || !v55 || v57 != opacity || !v56)
   {
     if (!v56)
     {
-      [(MFTiltedTabView *)self _updateSpringAnimationForView:v16 withBounds:v9 animated:v43, v45, v88, rect];
+      [(MFTiltedTabView *)self _updateSpringAnimationForView:viewCopy withBounds:animatedCopy animated:v43, v45, v88, rect];
     }
 
-    [v17 setPosition:{v38, v87}];
-    v58 = *&a5->m33;
-    *&v92.m31 = *&a5->m31;
+    [layer setPosition:{v38, v87}];
+    v58 = *&transform->m33;
+    *&v92.m31 = *&transform->m31;
     *&v92.m33 = v58;
-    v59 = *&a5->m43;
-    *&v92.m41 = *&a5->m41;
+    v59 = *&transform->m43;
+    *&v92.m41 = *&transform->m41;
     *&v92.m43 = v59;
-    v60 = *&a5->m13;
-    *&v92.m11 = *&a5->m11;
+    v60 = *&transform->m13;
+    *&v92.m11 = *&transform->m11;
     *&v92.m13 = v60;
-    v61 = *&a5->m23;
-    *&v92.m21 = *&a5->m21;
+    v61 = *&transform->m23;
+    *&v92.m21 = *&transform->m21;
     *&v92.m23 = v61;
-    [v17 setTransform:&v92];
-    HIDWORD(v62) = HIDWORD(a7);
-    *&v62 = a7;
-    [v17 setOpacity:v62];
-    if (v9)
+    [layer setTransform:&v92];
+    HIDWORD(v62) = HIDWORD(opacity);
+    *&v62 = opacity;
+    [layer setOpacity:v62];
+    if (animatedCopy)
     {
       if (v50)
       {
@@ -1711,16 +1711,16 @@ LABEL_6:
         {
           v67 = [NSValue valueWithCGPoint:v63, v64];
           v68 = [NSValue valueWithCGPoint:CGPointZero.x, CGPointZero.y];
-          [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position" toLayer:v17 fromValue:v67 toValue:v68];
+          [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position" toLayer:layer fromValue:v67 toValue:v68];
         }
 
         else
         {
           v66 = [NSNumber numberWithDouble:v63];
-          [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position.x" toLayer:v17 fromValue:v66 toValue:&off_1006743F0];
+          [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position.x" toLayer:layer fromValue:v66 toValue:&off_1006743F0];
 
           v67 = [NSNumber numberWithDouble:v64];
-          [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position.y" toLayer:v17 fromValue:v67 toValue:&off_1006743F0];
+          [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position.y" toLayer:layer fromValue:v67 toValue:&off_1006743F0];
         }
       }
 
@@ -1736,17 +1736,17 @@ LABEL_6:
         *&v92.m23 = v69;
         *&v92.m11 = v69;
         *&v92.m13 = v69;
-        v70 = *&a5->m33;
-        *&a.m31 = *&a5->m31;
+        v70 = *&transform->m33;
+        *&a.m31 = *&transform->m31;
         *&a.m33 = v70;
-        v71 = *&a5->m43;
-        *&a.m41 = *&a5->m41;
+        v71 = *&transform->m43;
+        *&a.m41 = *&transform->m41;
         *&a.m43 = v71;
-        v72 = *&a5->m13;
-        *&a.m11 = *&a5->m11;
+        v72 = *&transform->m13;
+        *&a.m11 = *&transform->m11;
         *&a.m13 = v72;
-        v73 = *&a5->m23;
-        *&a.m21 = *&a5->m21;
+        v73 = *&transform->m23;
+        *&a.m21 = *&transform->m21;
         *&a.m23 = v73;
         CATransform3DInvert(&b, &a);
         a = v93;
@@ -1766,32 +1766,32 @@ LABEL_6:
         *&b.m21 = *&CATransform3DIdentity.m21;
         *&b.m23 = v78;
         v79 = [NSValue valueWithCATransform3D:&b];
-        [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"transform" toLayer:v17 fromValue:v74 toValue:v79];
+        [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"transform" toLayer:layer fromValue:v74 toValue:v79];
       }
 
-      if (v57 != a7)
+      if (v57 != opacity)
       {
-        v80 = [NSNumber numberWithDouble:v57 - a7];
-        [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"opacity" toLayer:v17 fromValue:v80 toValue:&off_1006743F0];
+        opacity = [NSNumber numberWithDouble:v57 - opacity];
+        [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"opacity" toLayer:layer fromValue:opacity toValue:&off_1006743F0];
       }
     }
   }
 
-  else if (a8 != 0.0)
+  else if (adjustment != 0.0)
   {
-    [v17 setPosition:{v38, v87}];
+    [layer setPosition:{v38, v87}];
   }
 }
 
-- (void)_updateSpringAnimationForView:(id)a3 withBounds:(CGRect)a4 animated:(BOOL)a5
+- (void)_updateSpringAnimationForView:(id)view withBounds:(CGRect)bounds animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v21 = a3;
-  [v21 bounds];
+  animatedCopy = animated;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  [viewCopy bounds];
   v11 = v23.origin.x;
   v12 = v23.origin.y;
   v13 = v23.size.width;
@@ -1802,25 +1802,25 @@ LABEL_6:
   v24.size.height = height;
   if (!CGRectEqualToRect(v23, v24))
   {
-    [v21 setBounds:{x, y, width, height}];
-    if (v5)
+    [viewCopy setBounds:{x, y, width, height}];
+    if (animatedCopy)
     {
-      v15 = [v21 layer];
+      layer = [viewCopy layer];
       v16 = [NSValue valueWithCGPoint:v11 - x, v12 - y];
       v17 = [NSValue valueWithCGPoint:CGPointZero.x, CGPointZero.y];
-      [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"bounds.origin" toLayer:v15 fromValue:v16 toValue:v17];
+      [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"bounds.origin" toLayer:layer fromValue:v16 toValue:v17];
 
-      v18 = [v21 layer];
-      v19 = [NSValue valueWithCGSize:v13 - width, v14 - height];
+      layer2 = [viewCopy layer];
+      height = [NSValue valueWithCGSize:v13 - width, v14 - height];
       v20 = [NSValue valueWithCGSize:CGSizeZero.width, CGSizeZero.height];
-      [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"bounds.size" toLayer:v18 fromValue:v19 toValue:v20];
+      [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"bounds.size" toLayer:layer2 fromValue:height toValue:v20];
     }
   }
 }
 
-- (id)_makeReorderAnimationWithDirection:(int64_t)a3 springDuration:(double)a4 tabCount:(double)a5
+- (id)_makeReorderAnimationWithDirection:(int64_t)direction springDuration:(double)duration tabCount:(double)count
 {
-  v7 = sub_10020B914(a5);
+  v7 = sub_10020B914(count);
   v8 = __sincos_stret(v7 * 3.14159265 / 180.0);
   v9 = *&qword_1006D5258;
   v10 = [CASpringAnimation animationWithKeyPath:@"position"];
@@ -1832,9 +1832,9 @@ LABEL_6:
 
   v12 = [NSValue valueWithCGPoint:0.0, v9 * v8.__cosval];
   v13 = [NSValue valueWithCGPoint:CGPointZero.x, CGPointZero.y];
-  sub_10022283C(v10, v12, v13, a3);
+  sub_10022283C(v10, v12, v13, direction);
 
-  [v10 setDuration:a4];
+  [v10 setDuration:duration];
   [v10 setFillMode:kCAFillModeBoth];
   [v10 setAdditive:1];
   v14 = [CASpringAnimation animationWithKeyPath:@"zPosition"];
@@ -1845,14 +1845,14 @@ LABEL_6:
   [v14 setTimingFunction:v15];
 
   v16 = [NSNumber numberWithDouble:-(v8.__sinval * v9)];
-  sub_10022283C(v14, v16, &off_1006743F0, a3);
+  sub_10022283C(v14, v16, &off_1006743F0, direction);
 
-  [v14 setDuration:a4];
+  [v14 setDuration:duration];
   [v14 setFillMode:kCAFillModeBoth];
   [v14 setAdditive:1];
   v17 = [CABasicAnimation animationWithKeyPath:@"opacity"];
-  sub_10022283C(v17, &off_100674408, &off_1006743F0, a3);
-  if (a3 < 1)
+  sub_10022283C(v17, &off_100674408, &off_1006743F0, direction);
+  if (direction < 1)
   {
     [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
   }
@@ -1874,7 +1874,7 @@ LABEL_6:
   v20 = [NSArray arrayWithObjects:v24 count:3];
   [v19 setAnimations:v20];
 
-  [v19 setDuration:a4];
+  [v19 setDuration:duration];
   UIAnimationDragCoefficient();
   *&v22 = 1.0 / v21;
   [v19 setSpeed:v22];
@@ -1883,46 +1883,46 @@ LABEL_6:
   return v19;
 }
 
-- (void)_stopReorderingItem:(id)a3 withFinalTimeAdjustment:(double)a4 tabCount:(double)a5
+- (void)_stopReorderingItem:(id)item withFinalTimeAdjustment:(double)adjustment tabCount:(double)count
 {
-  v13 = a3;
-  [v13 setReordering:0];
-  [v13 setIndexForLayout:0x7FFFFFFFFFFFFFFFLL];
-  v8 = [v13 layer];
-  [v8 removeAnimationForKey:@"reorder-animation"];
+  itemCopy = item;
+  [itemCopy setReordering:0];
+  [itemCopy setIndexForLayout:0x7FFFFFFFFFFFFFFFLL];
+  layer = [itemCopy layer];
+  [layer removeAnimationForKey:@"reorder-animation"];
   [(MFTiltedTabView *)self setNeedsLayout];
-  if (a4 <= 1.0)
+  if (adjustment <= 1.0)
   {
-    v9 = a4;
+    adjustmentCopy = adjustment;
   }
 
   else
   {
-    v9 = 1.0;
+    adjustmentCopy = 1.0;
   }
 
-  v10 = fmin(*&qword_1006D5200 / *&qword_1006D5210 + (1.0 - v9) * 2.0, 1.0);
+  v10 = fmin(*&qword_1006D5200 / *&qword_1006D5210 + (1.0 - adjustmentCopy) * 2.0, 1.0);
   if (v10 > 0.001)
   {
-    v11 = [(MFTiltedTabView *)self _makeReorderAnimationWithDirection:1 springDuration:*&qword_1006D5208 tabCount:a5];
+    v11 = [(MFTiltedTabView *)self _makeReorderAnimationWithDirection:1 springDuration:*&qword_1006D5208 tabCount:count];
     v12 = 1.0 / v10;
     *&v12 = 1.0 / v10;
     [v11 setSpeed:v12];
-    [v8 addAnimation:v11 forKey:0];
+    [layer addAnimation:v11 forKey:0];
   }
 }
 
-- (void)_updateReorderAnimationBeginTimeForLayer:(id)a3 withTimeAdjustment:(double)a4
+- (void)_updateReorderAnimationBeginTimeForLayer:(id)layer withTimeAdjustment:(double)adjustment
 {
-  v13 = a3;
-  v5 = [v13 animationForKey:@"reorder-animation"];
+  layerCopy = layer;
+  v5 = [layerCopy animationForKey:@"reorder-animation"];
   v6 = [v5 valueForKey:@"base-begin-time"];
   [v6 doubleValue];
   v8 = v7;
 
   v9 = *&qword_1006D5210;
   [v5 beginTime];
-  v11 = v8 - a4 * v9;
+  v11 = v8 - adjustment * v9;
   if (v10 == 0.0 || v11 < v10)
   {
     [v5 setValue:&__kCFBooleanTrue forKey:@"being-replaced"];
@@ -1930,7 +1930,7 @@ LABEL_6:
 
     [v12 setValue:&__kCFBooleanFalse forKey:@"being-replaced"];
     [v12 setBeginTime:v11];
-    [v13 addAnimation:v12 forKey:@"reorder-animation"];
+    [layerCopy addAnimation:v12 forKey:@"reorder-animation"];
   }
 
   else
@@ -1939,36 +1939,36 @@ LABEL_6:
   }
 }
 
-- (void)_updateReorderAnimationsForItem:(id)a3 withTimeAdjustment:(double)a4 tabCount:(double)a5 createIfNecessary:(BOOL)a6
+- (void)_updateReorderAnimationsForItem:(id)item withTimeAdjustment:(double)adjustment tabCount:(double)count createIfNecessary:(BOOL)necessary
 {
-  v11 = a3;
-  v8 = [v11 layer];
-  v9 = [v8 animationForKey:@"reorder-animation"];
+  itemCopy = item;
+  layer = [itemCopy layer];
+  v9 = [layer animationForKey:@"reorder-animation"];
   if (v9)
   {
     v10 = 0.0;
-    if (a4 >= 0.0 && (v10 = a4, a4 >= 1.0))
+    if (adjustment >= 0.0 && (v10 = adjustment, adjustment >= 1.0))
     {
-      [MFTiltedTabView _stopReorderingItem:"_stopReorderingItem:withFinalTimeAdjustment:tabCount:" withFinalTimeAdjustment:v11 tabCount:?];
+      [MFTiltedTabView _stopReorderingItem:"_stopReorderingItem:withFinalTimeAdjustment:tabCount:" withFinalTimeAdjustment:itemCopy tabCount:?];
     }
 
     else
     {
       CACurrentMediaTime();
-      [(MFTiltedTabView *)self _updateReorderAnimationBeginTimeForLayer:v8 withTimeAdjustment:v10];
+      [(MFTiltedTabView *)self _updateReorderAnimationBeginTimeForLayer:layer withTimeAdjustment:v10];
     }
   }
 }
 
-- (double)_spaceBetweenTabsWithCount:(double)a3
+- (double)_spaceBetweenTabsWithCount:(double)count
 {
   [(MFTiltedTabView *)self _tabLayoutBounds];
   v6 = v5 * 0.07 + 77.0;
-  if (a3 >= 1.0)
+  if (count >= 1.0)
   {
     v7 = v5;
-    [(MFTiltedTabView *)self _topAreaHeightForTabsWithCount:a3];
-    v9 = (v7 - v8 - *&qword_1006D52A0 + unk_1006D52A8) / a3;
+    [(MFTiltedTabView *)self _topAreaHeightForTabsWithCount:count];
+    v9 = (v7 - v8 - *&qword_1006D52A0 + unk_1006D52A8) / count;
     if (v9 >= v6)
     {
       return v9;
@@ -1978,53 +1978,53 @@ LABEL_6:
   return v6;
 }
 
-- (CGSize)_contentSizeForItemCount:(double)a3
+- (CGSize)_contentSizeForItemCount:(double)count
 {
   [(MFTiltedTabView *)self _tabLayoutBounds];
   v6 = v5;
-  [(MFTiltedTabView *)self _spaceBetweenTabsWithCount:a3];
+  [(MFTiltedTabView *)self _spaceBetweenTabsWithCount:count];
   v8 = v7;
-  [(MFTiltedTabView *)self _topAreaHeightForTabsWithCount:a3];
-  v10 = v9 + v8 * a3 + *&qword_1006D52A0;
+  [(MFTiltedTabView *)self _topAreaHeightForTabsWithCount:count];
+  v10 = v9 + v8 * count + *&qword_1006D52A0;
   v11 = v6;
   result.height = v10;
   result.width = v11;
   return result;
 }
 
-- (double)_baseOffsetForItem:(id)a3 index:(unint64_t *)a4 count:(double *)a5
+- (double)_baseOffsetForItem:(id)item index:(unint64_t *)index count:(double *)count
 {
-  v8 = a3;
-  v9 = [(_MFTiltedTabItemView *)v8 indexForLayout];
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  itemCopy = item;
+  indexForLayout = [(_MFTiltedTabItemView *)itemCopy indexForLayout];
+  if (indexForLayout == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(MFTiltedTabView *)self _indexOfVisibleItem:v8];
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    indexForLayout = [(MFTiltedTabView *)self _indexOfVisibleItem:itemCopy];
+    if (indexForLayout == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [(MFTiltedTabView *)self _numberOfItems];
-      if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+      indexForLayout = [(MFTiltedTabView *)self _numberOfItems];
+      if (indexForLayout == 0x7FFFFFFFFFFFFFFFLL)
       {
         __assert_rtn("[MFTiltedTabView _baseOffsetForItem:index:count:]", "MFTiltedTabView.m", 1515, "itemIndex != NSNotFound");
       }
     }
   }
 
-  if ([(_MFTiltedTabItemView *)v8 countForLayout]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(_MFTiltedTabItemView *)itemCopy countForLayout]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(MFTiltedTabView *)self _numberOfItems];
+    _numberOfItems = [(MFTiltedTabView *)self _numberOfItems];
   }
 
   else
   {
-    v10 = [(_MFTiltedTabItemView *)v8 countForLayout];
+    _numberOfItems = [(_MFTiltedTabItemView *)itemCopy countForLayout];
   }
 
-  v11 = v10;
-  if (self->_interactivelyReorderingItem != v8)
+  v11 = _numberOfItems;
+  if (self->_interactivelyReorderingItem != itemCopy)
   {
-    [(MFTiltedTabView *)self _baseOffsetForItemAtIndex:v9 withItemCountForLayout:v11];
+    [(MFTiltedTabView *)self _baseOffsetForItemAtIndex:indexForLayout withItemCountForLayout:v11];
     interactiveReorderOffset = v12;
-    if (!a4)
+    if (!index)
     {
       goto LABEL_10;
     }
@@ -2033,26 +2033,26 @@ LABEL_6:
   }
 
   interactiveReorderOffset = self->_interactiveReorderOffset;
-  if (a4)
+  if (index)
   {
 LABEL_9:
-    *a4 = v9;
+    *index = indexForLayout;
   }
 
 LABEL_10:
-  if (a5)
+  if (count)
   {
-    *a5 = v11;
+    *count = v11;
   }
 
   return interactiveReorderOffset;
 }
 
-- (void)_invalidateAllSnapshotsForce:(BOOL)a3
+- (void)_invalidateAllSnapshotsForce:(BOOL)force
 {
   if (self->_presented)
   {
-    v3 = a3;
+    forceCopy = force;
     if ([(NSArray *)self->_itemsInvolvedInAnimation count])
     {
       v22 = 0u;
@@ -2081,16 +2081,16 @@ LABEL_10:
             [WeakRetained tiltedTabView:self frameForItemAtIndex:v10];
             v15 = v14;
 
-            if (v15 != v12 || v3)
+            if (v15 != v12 || forceCopy)
             {
               if ([(MFTiltedTabView *)self rotationStyle])
               {
-                v17 = [v9 borrowedContentView];
-                [v17 setAlpha:0.0];
+                borrowedContentView = [v9 borrowedContentView];
+                [borrowedContentView setAlpha:0.0];
 
                 v18 = +[UIColor systemBackgroundColor];
-                v19 = [v9 contentClipperView];
-                [v19 setBackgroundColor:v18];
+                contentClipperView = [v9 contentClipperView];
+                [contentClipperView setBackgroundColor:v18];
               }
             }
           }
@@ -2104,17 +2104,17 @@ LABEL_10:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = MFTiltedTabView;
-  [(MFTiltedTabView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(MFTiltedTabView *)self traitCollection];
-  v6 = [v5 mf_traitDifferenceAffectsTextLayout:v4];
+  [(MFTiltedTabView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MFTiltedTabView *)self traitCollection];
+  v6 = [traitCollection mf_traitDifferenceAffectsTextLayout:changeCopy];
 
-  v7 = [(MFTiltedTabView *)self traitCollection];
-  v8 = [v7 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  traitCollection2 = [(MFTiltedTabView *)self traitCollection];
+  v8 = [traitCollection2 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if ((v6 | v8))
   {
@@ -2125,19 +2125,19 @@ LABEL_10:
 
 - (int64_t)_currentOrientation
 {
-  v4 = [(MFTiltedTabView *)self window];
+  window = [(MFTiltedTabView *)self window];
 
-  if (!v4)
+  if (!window)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MFTiltedTabView.m" lineNumber:1577 description:@"Asking for currentOrientation without a window is not supported."];
   }
 
-  v5 = [(MFTiltedTabView *)self window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  window2 = [(MFTiltedTabView *)self window];
+  windowScene = [window2 windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v7;
+  return interfaceOrientation;
 }
 
 - (id)visibleIndexSet
@@ -2184,14 +2184,14 @@ LABEL_10:
         }
 
         v5 = *(*(&v35 + 1) + 8 * i);
-        v6 = [v5 contentClipperView];
-        v7 = [v6 snapshotViewAfterScreenUpdates:0];
+        contentClipperView = [v5 contentClipperView];
+        v7 = [contentClipperView snapshotViewAfterScreenUpdates:0];
 
-        v8 = [v5 contentClipperView];
-        v9 = v8;
-        if (v8)
+        contentClipperView2 = [v5 contentClipperView];
+        v9 = contentClipperView2;
+        if (contentClipperView2)
         {
-          [v8 transform];
+          [contentClipperView2 transform];
         }
 
         else
@@ -2206,12 +2206,12 @@ LABEL_10:
         v31[2] = v34;
         [v7 setTransform:v31];
 
-        v10 = [v5 contentClipperView];
-        [v10 frame];
+        contentClipperView3 = [v5 contentClipperView];
+        [contentClipperView3 frame];
         [v7 setFrame:?];
 
-        v11 = [v5 contentClipperView];
-        [v5 insertSubview:v7 aboveSubview:v11];
+        contentClipperView4 = [v5 contentClipperView];
+        [v5 insertSubview:v7 aboveSubview:contentClipperView4];
 
         v12 = [(MFTiltedTabView *)self _indexOfVisibleItem:v5];
         v30[0] = _NSConcreteStackBlock;
@@ -2254,9 +2254,9 @@ LABEL_10:
   [(MFTiltedTabView *)self layoutItemsAnimated:0];
 }
 
-- (void)layoutItemsAnimated:(BOOL)a3
+- (void)layoutItemsAnimated:(BOOL)animated
 {
-  v217 = a3;
+  animatedCopy = animated;
   [(MFTiltedTabView *)self bounds];
   if (self->_suppressingScrollViewDidScroll)
   {
@@ -2284,11 +2284,11 @@ LABEL_10:
     [(UIScrollView *)self->_scrollView setFrame:v8, v9, v11, v10];
   }
 
-  v16 = [(MFTiltedTabView *)self _numberOfItems];
+  _numberOfItems = [(MFTiltedTabView *)self _numberOfItems];
   [(UIScrollView *)self->_scrollView contentOffset];
   v18 = v17;
   scrollView = self->_scrollView;
-  v179 = v16;
+  v179 = _numberOfItems;
   [(MFTiltedTabView *)self _contentSizeForItemCount:?];
   [(UIScrollView *)scrollView setContentSize:?];
   [(UIScrollView *)self->_scrollView contentOffset];
@@ -2405,14 +2405,14 @@ LABEL_10:
 
         else
         {
-          v43 = [(_MFTiltedTabItemView *)v24 superview];
+          superview = [(_MFTiltedTabItemView *)v24 superview];
           [WeakRetained tiltedTabView:self frameForItemAtIndex:v25];
           v45 = v44;
           v47 = v46;
           v49 = v48;
           v51 = v50;
-          v52 = [(MFTiltedTabView *)self superview];
-          [v43 convertRect:v52 fromView:{v45, v47, v49, v51}];
+          superview2 = [(MFTiltedTabView *)self superview];
+          [superview convertRect:superview2 fromView:{v45, v47, v49, v51}];
           v216 = v53;
           rect = v54;
           v40 = v55;
@@ -2421,23 +2421,23 @@ LABEL_10:
 
         if ([(MFTiltedTabView *)self rotationStyle]!= 2)
         {
-          v58 = [(_MFTiltedTabItemView *)v24 capturedInterfaceOrientation];
-          v59 = [(MFTiltedTabView *)self _currentOrientation];
+          capturedInterfaceOrientation = [(_MFTiltedTabItemView *)v24 capturedInterfaceOrientation];
+          _currentOrientation = [(MFTiltedTabView *)self _currentOrientation];
           LOBYTE(v60) = 0;
           v61 = 0;
           *&v239.m11 = xmmword_1004FC5E0;
           *&v239.m13 = xmmword_1004FC5F0;
           v62 = 0.0;
-          for (j = 1; ; j = v58)
+          for (j = 1; ; j = capturedInterfaceOrientation)
           {
-            while (j != v58)
+            while (j != capturedInterfaceOrientation)
             {
               v60 = (v60 + 1) & 3;
               v62 = v62 + -1.57079633;
               j = *(&v239.m11 + v60);
             }
 
-            if (*(&v239.m11 + v61) == v59)
+            if (*(&v239.m11 + v61) == _currentOrientation)
             {
               break;
             }
@@ -2487,47 +2487,47 @@ LABEL_10:
           v69 = v27 + v72;
         }
 
-        v73 = [(_MFTiltedTabItemView *)v24 borrowedContentView];
-        v74 = [v73 layer];
+        borrowedContentView = [(_MFTiltedTabItemView *)v24 borrowedContentView];
+        layer = [borrowedContentView layer];
 
-        v75 = [(_MFTiltedTabItemView *)v24 borrowedContentView];
-        [v75 bounds];
+        borrowedContentView2 = [(_MFTiltedTabItemView *)v24 borrowedContentView];
+        [borrowedContentView2 bounds];
         MidX = CGRectGetMidX(v243);
-        v77 = [(_MFTiltedTabItemView *)v24 borrowedContentView];
-        [v77 bounds];
+        borrowedContentView3 = [(_MFTiltedTabItemView *)v24 borrowedContentView];
+        [borrowedContentView3 bounds];
         MidY = CGRectGetMidY(v244);
 
         [(_MFTiltedTabItemView *)v24 contentClippingInsets];
         v80 = v79;
         [(_MFTiltedTabItemView *)v24 contentClippingInsets];
         v82 = v81;
-        [v74 position];
+        [layer position];
         v84 = v83;
-        [v74 position];
+        [layer position];
         v85 = MidX - v80;
         v86 = MidY - v82;
         v88 = [NSValue valueWithCGPoint:v84 - v85, v87 - v86];
         v89 = [NSValue valueWithCGPoint:CGPointZero.x, y];
-        [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position" toLayer:v74 fromValue:v88 toValue:v89];
+        [(MFTiltedTabView *)self _addSpringAnimationWithKeyPath:@"position" toLayer:layer fromValue:v88 toValue:v89];
 
-        [v74 setPosition:{v85, v86}];
-        v210 = [(_MFTiltedTabItemView *)v24 contentClipperView];
+        [layer setPosition:{v85, v86}];
+        contentClipperView = [(_MFTiltedTabItemView *)v24 contentClipperView];
         [(_MFTiltedTabItemView *)v24 bounds];
         v91 = v90;
         v93 = v92;
         [(_MFTiltedTabItemView *)v24 contentClippingInsets];
-        [(MFTiltedTabView *)self _updateSpringAnimationForView:v210 withBounds:v217 animated:CGPointZero.x, y, v91 - (v94 + v95), v93 - (v96 + v97)];
-        v98 = [(_MFTiltedTabItemView *)v24 maskCutoutView];
-        if (v98)
+        [(MFTiltedTabView *)self _updateSpringAnimationForView:contentClipperView withBounds:animatedCopy animated:CGPointZero.x, y, v91 - (v94 + v95), v93 - (v96 + v97)];
+        maskCutoutView = [(_MFTiltedTabItemView *)v24 maskCutoutView];
+        if (maskCutoutView)
         {
-          [v210 frame];
-          [v98 setFrame:?];
-          if (v217)
+          [contentClipperView frame];
+          [maskCutoutView setFrame:?];
+          if (animatedCopy)
           {
             v99 = [MFSpringAnimation springAnimationWithKeyPath:@"path" fromValue:0 toValue:0];
             [v99 setAdditive:0];
-            v100 = [v98 layer];
-            [v100 addAnimation:v99 forKey:0];
+            layer2 = [maskCutoutView layer];
+            [layer2 addAnimation:v99 forKey:0];
           }
         }
 
@@ -2547,7 +2547,7 @@ LABEL_10:
             v102 = 1.0;
           }
 
-          [(MFTiltedTabView *)self _updateReorderAnimationsForItem:v24 withTimeAdjustment:v217 tabCount:1.0 - (self->_interactiveReorderOffset - v69) * v102 / *&qword_1006D5250 createIfNecessary:v233];
+          [(MFTiltedTabView *)self _updateReorderAnimationsForItem:v24 withTimeAdjustment:animatedCopy tabCount:1.0 - (self->_interactiveReorderOffset - v69) * v102 / *&qword_1006D5250 createIfNecessary:v233];
           v199 = 1;
         }
 
@@ -2701,11 +2701,11 @@ LABEL_10:
           v246.size.width = v126 - (v132 + v136);
           v246.size.height = v128 - (v130 + v134);
           v137 = CGRectGetWidth(v246);
-          v138 = [(UIScrollView *)self->_scrollView layer];
-          v139 = v138;
-          if (v138)
+          layer3 = [(UIScrollView *)self->_scrollView layer];
+          v139 = layer3;
+          if (layer3)
           {
-            [v138 sublayerTransform];
+            [layer3 sublayerTransform];
             v140 = *(&v225 + 1);
           }
 
@@ -2751,15 +2751,15 @@ LABEL_10:
 
         v231 = v239;
         v230 = v232;
-        [(MFTiltedTabView *)self _updateSpringAnimationForView:v24 withFrame:&v231 transform:&v230 userTransform:v217 opacity:v211 verticalScrollAdjustment:v197 animated:v216, rect, 1.0, v195];
+        [(MFTiltedTabView *)self _updateSpringAnimationForView:v24 withFrame:&v231 transform:&v230 userTransform:animatedCopy opacity:v211 verticalScrollAdjustment:v197 animated:v216, rect, 1.0, v195];
         [(_MFTiltedTabItemView *)v24 layoutSubviews];
         [WeakRetained tiltedTabView:self headerHeightForItemAtIndex:v25];
         v144 = v143;
         [(_MFTiltedTabItemView *)v24 setTopBackdropHeight:?];
         [(_MFTiltedTabItemView *)v24 setTopBackdropScaled:self->_presented];
-        v145 = [(_MFTiltedTabItemView *)v24 closeButtonWrapperView];
-        v146 = [v145 superview];
-        [v146 bounds];
+        closeButtonWrapperView = [(_MFTiltedTabItemView *)v24 closeButtonWrapperView];
+        superview3 = [closeButtonWrapperView superview];
+        [superview3 bounds];
         v148 = v147;
         v149 = sub_10020B8F0();
 
@@ -2784,7 +2784,7 @@ LABEL_10:
         *&v230.m13 = v204;
         *&v230.m21 = v203;
         *&v230.m23 = v202;
-        [(MFTiltedTabView *)self _updateSpringAnimationForView:v145 withFrame:&v231 transform:&v230 userTransform:v217 opacity:0.0 verticalScrollAdjustment:v151 animated:v148, v149, 1.0, 0.0];
+        [(MFTiltedTabView *)self _updateSpringAnimationForView:closeButtonWrapperView withFrame:&v231 transform:&v230 userTransform:animatedCopy opacity:0.0 verticalScrollAdjustment:v151 animated:v148, v149, 1.0, 0.0];
         if (self->_presented)
         {
           v152 = [WeakRetained tiltedTabView:self canCloseItemAtIndex:v25];
@@ -2795,7 +2795,7 @@ LABEL_10:
           v152 = 0;
         }
 
-        [(_MFTiltedTabItemView *)v24 layoutHeaderViewAnimated:v217 closeButton:v152];
+        [(_MFTiltedTabItemView *)v24 layoutHeaderViewAnimated:animatedCopy closeButton:v152];
         v154 = height;
         v153 = width;
         v156 = v186;
@@ -2826,7 +2826,7 @@ LABEL_10:
         [(_MFTiltedTabItemView *)v24 setCloseButtonHitRect:x, v156, v153, v154];
         [(_MFTiltedTabItemView *)v24 contentClippingInsets];
         v163 = v162;
-        v164 = [(_MFTiltedTabItemView *)v24 contentShadowView];
+        contentShadowView = [(_MFTiltedTabItemView *)v24 contentShadowView];
         v165 = 0.0;
         if (self->_presented)
         {
@@ -2850,14 +2850,14 @@ LABEL_10:
         *&v230.m13 = v204;
         *&v230.m21 = v203;
         *&v230.m23 = v202;
-        [(MFTiltedTabView *)self _updateSpringAnimationForView:v164 withFrame:&v231 transform:&v230 userTransform:v217 opacity:CGRectZero.origin.x verticalScrollAdjustment:v183 animated:v216, rect - v163, v165, 0.0];
+        [(MFTiltedTabView *)self _updateSpringAnimationForView:contentShadowView withFrame:&v231 transform:&v230 userTransform:animatedCopy opacity:CGRectZero.origin.x verticalScrollAdjustment:v183 animated:v216, rect - v163, v165, 0.0];
         if (v25)
         {
-          v167 = [(DockedPlaceholderView *)v24 headerView];
-          [(_MFTiltedTabItemView *)v24 bringSubviewToFront:v167];
+          headerView = [(DockedPlaceholderView *)v24 headerView];
+          [(_MFTiltedTabItemView *)v24 bringSubviewToFront:headerView];
 
-          v168 = [(_MFTiltedTabItemView *)v24 closeButtonWrapperView];
-          [(_MFTiltedTabItemView *)v24 bringSubviewToFront:v168];
+          closeButtonWrapperView2 = [(_MFTiltedTabItemView *)v24 closeButtonWrapperView];
+          [(_MFTiltedTabItemView *)v24 bringSubviewToFront:closeButtonWrapperView2];
 
           v219[0] = _NSConcreteStackBlock;
           v219[1] = 3221225472;
@@ -2867,7 +2867,7 @@ LABEL_10:
           v219[5] = v24;
           v169 = objc_retainBlock(v219);
           v170 = v169;
-          if (v217)
+          if (animatedCopy)
           {
             [UIView animateWithDuration:327680 delay:v169 options:0 animations:0.22 completion:0.0];
           }
@@ -2906,7 +2906,7 @@ LABEL_10:
   *&v218[5] = v171;
   v173 = objc_retainBlock(v218);
   v174 = v173;
-  if (v217)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v173 animations:0.25];
   }
@@ -2924,16 +2924,16 @@ LABEL_10:
   v248 = CGRectInset(v247, -v180, 0.0);
   v176 = v248.size.height;
   [(_TabGradientView *)self->_statusBarGradient setFrame:v248.origin.x, v248.origin.y, v248.size.width];
-  v177 = [(_TabGradientView *)self->_statusBarGradient gradientLayer];
-  [v177 setStartPoint:{0.5, 1.0 - *&qword_1006D5298 / v176}];
-  [v177 setEndPoint:{0.5, 1.0}];
-  v178 = [(UIScrollView *)self->_scrollView layer];
-  [v178 setSortsSublayers:v199 & 1];
+  gradientLayer = [(_TabGradientView *)self->_statusBarGradient gradientLayer];
+  [gradientLayer setStartPoint:{0.5, 1.0 - *&qword_1006D5298 / v176}];
+  [gradientLayer setEndPoint:{0.5, 1.0}];
+  layer4 = [(UIScrollView *)self->_scrollView layer];
+  [layer4 setSortsSublayers:v199 & 1];
 
   sub_1002254E4(self);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (!self->_suppressingScrollViewDidScroll)
   {

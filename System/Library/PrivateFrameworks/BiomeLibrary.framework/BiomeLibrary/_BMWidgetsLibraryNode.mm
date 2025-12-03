@@ -5,26 +5,26 @@
 + (id)configurationForViewed;
 + (id)storeConfigurationForRefresh;
 + (id)storeConfigurationForViewed;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMWidgetsLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Refresh"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Refresh"])
   {
-    v5 = [a1 Refresh];
+    refresh = [self Refresh];
 LABEL_5:
-    v6 = v5;
+    v6 = refresh;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Viewed"])
+  if ([nameCopy isEqualToString:@"Viewed"])
   {
-    v5 = [a1 Viewed];
+    refresh = [self Viewed];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForViewed
 {
-  v3 = [a1 storeConfigurationForViewed];
-  v4 = [a1 syncPolicyForViewed];
+  storeConfigurationForViewed = [self storeConfigurationForViewed];
+  syncPolicyForViewed = [self syncPolicyForViewed];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8932B1FE-6092-461C-B22F-B22250C861CE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Widgets.Viewed" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Widgets.Viewed" eventClass:objc_opt_class() storeConfig:storeConfigurationForViewed syncPolicy:syncPolicyForViewed legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForRefresh
 {
-  v3 = [a1 storeConfigurationForRefresh];
-  v4 = [a1 syncPolicyForRefresh];
+  storeConfigurationForRefresh = [self storeConfigurationForRefresh];
+  syncPolicyForRefresh = [self syncPolicyForRefresh];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"0FBD99DB-A28E-455B-AA65-E79D198906F4"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Widgets.Refresh" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Widgets.Refresh" eventClass:objc_opt_class() storeConfig:storeConfigurationForRefresh syncPolicy:syncPolicyForRefresh legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -94,7 +94,7 @@ LABEL_7:
 + (id)Viewed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForViewed];
+  configurationForViewed = [self configurationForViewed];
   v3 = +[BMWidgetsViewed columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -106,7 +106,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Widgets.Viewed" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Widgets.Viewed" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Widgets.Viewed" schema:v9 configuration:configurationForViewed];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -116,7 +116,7 @@ LABEL_7:
 + (id)Refresh
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRefresh];
+  configurationForRefresh = [self configurationForRefresh];
   v3 = +[BMWidgetsRefresh columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -128,7 +128,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Widgets.Refresh" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Widgets.Refresh" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Widgets.Refresh" schema:v9 configuration:configurationForRefresh];
 
   v11 = *MEMORY[0x1E69E9840];
 

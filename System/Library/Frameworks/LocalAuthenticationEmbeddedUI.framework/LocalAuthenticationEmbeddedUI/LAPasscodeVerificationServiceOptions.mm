@@ -10,27 +10,27 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v15[0] = @"title";
-  v5 = [(LAPasscodeVerificationServiceOptions *)self title];
-  v6 = v5;
-  if (!v5)
+  title = [(LAPasscodeVerificationServiceOptions *)self title];
+  null = title;
+  if (!title)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[0] = v6;
+  v16[0] = null;
   v15[1] = @"passcodePrompt";
-  v7 = [(LAPasscodeVerificationServiceOptions *)self passcodePrompt];
-  v8 = v7;
-  if (!v7)
+  passcodePrompt = [(LAPasscodeVerificationServiceOptions *)self passcodePrompt];
+  null2 = passcodePrompt;
+  if (!passcodePrompt)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v16[1] = v8;
+  v16[1] = null2;
   v15[2] = @"dismissUIAfterCompletion";
-  v9 = [(LAPasscodeVerificationServiceOptions *)self dismissUIAfterCompletion];
+  dismissUIAfterCompletion = [(LAPasscodeVerificationServiceOptions *)self dismissUIAfterCompletion];
   v10 = @"NO";
-  if (v9)
+  if (dismissUIAfterCompletion)
   {
     v10 = @"YES";
   }
@@ -39,11 +39,11 @@
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v12 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, v11];;
 
-  if (!v7)
+  if (!passcodePrompt)
   {
   }
 
-  if (!v5)
+  if (!title)
   {
   }
 

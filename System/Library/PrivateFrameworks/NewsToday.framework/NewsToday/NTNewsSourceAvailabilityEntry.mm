@@ -1,6 +1,6 @@
 @interface NTNewsSourceAvailabilityEntry
 - (NTNewsSourceAvailabilityEntry)init;
-- (NTNewsSourceAvailabilityEntry)initWithNetworkReachability:(id)a3 queue:(id)a4;
+- (NTNewsSourceAvailabilityEntry)initWithNetworkReachability:(id)reachability queue:(id)queue;
 @end
 
 @implementation NTNewsSourceAvailabilityEntry
@@ -31,20 +31,20 @@
   objc_exception_throw(v6);
 }
 
-- (NTNewsSourceAvailabilityEntry)initWithNetworkReachability:(id)a3 queue:(id)a4
+- (NTNewsSourceAvailabilityEntry)initWithNetworkReachability:(id)reachability queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  reachabilityCopy = reachability;
+  queueCopy = queue;
+  if (!reachabilityCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsSourceAvailabilityEntry initWithNetworkReachability:queue:];
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (queueCopy)
   {
     goto LABEL_6;
   }
@@ -61,9 +61,9 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_networkReachability, a3);
-    objc_storeStrong(&v10->_queue, a4);
-    v10->_available = [v7 offlineReason] != 3;
+    objc_storeStrong(&v9->_networkReachability, reachability);
+    objc_storeStrong(&v10->_queue, queue);
+    v10->_available = [reachabilityCopy offlineReason] != 3;
   }
 
   return v10;

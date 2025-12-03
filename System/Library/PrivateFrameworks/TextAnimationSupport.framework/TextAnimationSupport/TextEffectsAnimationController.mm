@@ -1,14 +1,14 @@
 @interface TextEffectsAnimationController
-- (void)displayLink:(id)a3;
+- (void)displayLink:(id)link;
 @end
 
 @implementation TextEffectsAnimationController
 
-- (void)displayLink:(id)a3
+- (void)displayLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
 
-  [v3 targetTimestamp];
+  [linkCopy targetTimestamp];
   TextEffectsAnimationController.displayLinkUpdate(at:removeFinished:)(1, v4);
 }
 

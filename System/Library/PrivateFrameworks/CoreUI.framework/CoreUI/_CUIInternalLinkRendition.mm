@@ -6,11 +6,11 @@
 - (CGRect)alphaCroppedRect;
 - (CGSize)originalUncroppedSize;
 - (CGSize)unslicedSize;
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (id)_sourceRendition;
 - (id)data;
-- (id)imageForSliceIndex:(int64_t)a3;
-- (id)maskForSliceIndex:(int64_t)a3;
+- (id)imageForSliceIndex:(int64_t)index;
+- (id)maskForSliceIndex:(int64_t)index;
 - (id)metrics;
 - (id)properties;
 - (int)bitmapEncoding;
@@ -107,9 +107,9 @@ LABEL_9:
 - (id)_sourceRendition
 {
   Weak = objc_loadWeak(&self->_sourceProvider);
-  v4 = [(CUIRenditionKey *)self->_referenceKey keyList];
+  keyList = [(CUIRenditionKey *)self->_referenceKey keyList];
 
-  return [Weak renditionWithKey:v4];
+  return [Weak renditionWithKey:keyList];
 }
 
 - (void)dealloc
@@ -159,28 +159,28 @@ LABEL_9:
   return result;
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
-  v4 = a3;
+  headerCopy = header;
   v78.receiver = self;
   v78.super_class = _CUIInternalLinkRendition;
-  v5 = [(CUIThemeRendition *)&v78 _initWithCSIHeader:a3 version:*&a4];
-  var0 = v4->var11.var0;
+  v5 = [(CUIThemeRendition *)&v78 _initWithCSIHeader:header version:*&version];
+  var0 = headerCopy->var11.var0;
   if (var0)
   {
     v7 = 0;
-    v8 = &v4->var11.var1[var0 + 1] + v4->var10;
+    v8 = &headerCopy->var11.var1[var0 + 1] + headerCopy->var10;
     height = NSZeroSize.height;
     while (1)
     {
-      var10 = v4->var10;
+      var10 = headerCopy->var10;
       memset(v79, 0, 92);
       if (!var10)
       {
         break;
       }
 
-      v11 = v4;
+      v11 = headerCopy;
       v12 = 0;
       v13 = 0;
       v14 = v8 - var10;
@@ -249,11 +249,11 @@ LABEL_9:
         break;
       }
 
-      v25 = [v5 unslicedImage];
+      unslicedImage = [v5 unslicedImage];
       v76 = 0.0;
       v77 = 0.0;
-      Width = CGImageGetWidth(v25);
-      v27 = CGImageGetHeight(v25);
+      Width = CGImageGetWidth(unslicedImage);
+      v27 = CGImageGetHeight(unslicedImage);
       v76 = Width;
       v77 = v27;
       v74 = NSZeroSize;
@@ -280,7 +280,7 @@ LABEL_9:
       }
 
       v29 = *v12;
-      v4 = v11;
+      headerCopy = v11;
       if (v29)
       {
         v30 = 0;
@@ -364,14 +364,14 @@ LABEL_9:
         v52 = [v5 type] == 1 || objc_msgSend(v5, "type") == 3;
         [v5 scale];
         *(v5 + 109) = [(CUIRenditionMetrics *)v49 initWithImageSize:v51 defaultImageSize:v52 edgeBottomLeft:Width edgeTopRight:v27 contentBottomLeft:v76 contentTopRight:v77 baseline:v75.width auxiliary1BottomLeft:v75.height auxiliary1TopRight:v74.width auxiliary2BottomLeft:v74.height auxiliary2TopRight:v53 scalesVertically:v54 scalesHorizontally:v55 scale:v56, v57, *&v73.width, *&v73.height, *&v72.width, *&v72.height, v50, *&v70.width, *&v70.height, *&v69.width, *&v69.height, *&v68.width, *&v68.height, *&v67.width, *&v67.height, v58];
-        v4 = v11;
+        headerCopy = v11;
       }
 
       if ([v5 type] == 3 || objc_msgSend(v5, "type") == 2 || objc_msgSend(v5, "type") == 1)
       {
-        v59 = [v5 type];
+        type = [v5 type];
         v60 = 64;
-        if (v59 == 3)
+        if (type == 3)
         {
           v60 = 256;
         }
@@ -439,7 +439,7 @@ LABEL_9:
         *(v5 + 110) = -[CUIRenditionSliceInformation initWithRenditionType:destinationRect:topLeftInset:bottomRightInset:]([CUIRenditionSliceInformation alloc], "initWithRenditionType:destinationRect:topLeftInset:bottomRightInset:", [v5 type], 0.0, 0.0, Width, v27, v61, v62, v64, v65);
       }
 
-      if (++v7 >= v4->var11.var0)
+      if (++v7 >= headerCopy->var11.var0)
       {
         return v5;
       }
@@ -453,50 +453,50 @@ LABEL_9:
 
 - (int)bitmapEncoding
 {
-  v2 = [(_CUIInternalLinkRendition *)self _sourceRendition];
+  _sourceRendition = [(_CUIInternalLinkRendition *)self _sourceRendition];
 
-  return [v2 bitmapEncoding];
+  return [_sourceRendition bitmapEncoding];
 }
 
 - (BOOL)isOpaque
 {
-  v2 = [(_CUIInternalLinkRendition *)self _sourceRendition];
+  _sourceRendition = [(_CUIInternalLinkRendition *)self _sourceRendition];
 
-  return [v2 isOpaque];
+  return [_sourceRendition isOpaque];
 }
 
 - (int)pixelFormat
 {
-  v2 = [(_CUIInternalLinkRendition *)self _sourceRendition];
+  _sourceRendition = [(_CUIInternalLinkRendition *)self _sourceRendition];
 
-  return [v2 pixelFormat];
+  return [_sourceRendition pixelFormat];
 }
 
 - (id)data
 {
-  v2 = [(_CUIInternalLinkRendition *)self _sourceRendition];
+  _sourceRendition = [(_CUIInternalLinkRendition *)self _sourceRendition];
 
-  return [v2 data];
+  return [_sourceRendition data];
 }
 
 - (id)properties
 {
   v8.receiver = self;
   v8.super_class = _CUIInternalLinkRendition;
-  v3 = [(CUIThemeRendition *)&v8 properties];
+  properties = [(CUIThemeRendition *)&v8 properties];
   v4 = [-[_CUIInternalLinkRendition _sourceRendition](self "_sourceRendition")];
   v5 = v4;
-  if (v3)
+  if (properties)
   {
     if ([v4 count])
     {
-      v6 = [[NSMutableDictionary alloc] initWithDictionary:v3];
+      v6 = [[NSMutableDictionary alloc] initWithDictionary:properties];
       [v6 addEntriesFromDictionary:v5];
     }
 
     else
     {
-      v6 = [v3 copy];
+      v6 = [properties copy];
     }
 
     return v6;
@@ -515,8 +515,8 @@ LABEL_9:
     {
       if (v1[54])
       {
-        v2 = [v1 unslicedImage];
-        Height = CGImageGetHeight(v2);
+        unslicedImage = [v1 unslicedImage];
+        Height = CGImageGetHeight(unslicedImage);
         if (v1[54])
         {
           v4 = 0;
@@ -529,7 +529,7 @@ LABEL_9:
             v9.size.width = v7[30];
             v9.size.height = v7[31];
             v9.origin.y = v5 - (v7[29] + v9.size.height);
-            *(v6 + 92) = CGImageCreateWithImageInRect(v2, v9);
+            *(v6 + 92) = CGImageCreateWithImageInRect(unslicedImage, v9);
             ++v4;
             v7 += 4;
             v6 += 2;
@@ -546,27 +546,27 @@ LABEL_9:
   return result;
 }
 
-- (id)imageForSliceIndex:(int64_t)a3
+- (id)imageForSliceIndex:(int64_t)index
 {
   [(_CUIInternalLinkRendition *)self _fillOutImageSlices];
-  v5 = self->_image[a3];
+  v5 = self->_image[index];
 
   return [CUIImage imageWithCGImage:v5];
 }
 
-- (id)maskForSliceIndex:(int64_t)a3
+- (id)maskForSliceIndex:(int64_t)index
 {
   *decode = xmmword_18E021C10;
-  if (a3 < 0 || self->_nimages <= a3)
+  if (index < 0 || self->_nimages <= index)
   {
-    _CUILog(4, "Invalid slice index %ld for rendition", a3, v3, v4, v5, v6, v7, a3);
+    _CUILog(4, "Invalid slice index %ld for rendition", index, v3, v4, v5, v6, v7, index);
     return 0;
   }
 
   else
   {
     [(_CUIInternalLinkRendition *)self _fillOutImageSlices];
-    v10 = self->_image[a3];
+    v10 = self->_image[index];
     Width = CGImageGetWidth(v10);
     Height = CGImageGetHeight(v10);
     BitsPerComponent = CGImageGetBitsPerComponent(v10);
@@ -589,8 +589,8 @@ LABEL_9:
     return [(CUIThemeRendition *)self subtype]== 30 || [(CUIThemeRendition *)self subtype]== 11;
   }
 
-  v4 = [(CUIThemeRendition *)self name];
-  _CUILog(1, "WARNING: -isTiled called on rendition named: %@, which is not a one-part or nine-part image, but the method is only meaningful for one-part and nine-part images. Returning NO.", v5, v6, v7, v8, v9, v10, v4);
+  name = [(CUIThemeRendition *)self name];
+  _CUILog(1, "WARNING: -isTiled called on rendition named: %@, which is not a one-part or nine-part image, but the method is only meaningful for one-part and nine-part images. Returning NO.", v5, v6, v7, v8, v9, v10, name);
   return 0;
 }
 

@@ -1,45 +1,45 @@
 @interface WFNextHourPrecipitationDescription
-- (BOOL)isValidAtDate:(id)a3;
+- (BOOL)isValidAtDate:(id)date;
 - (NSString)longDescription;
 - (NSString)shortDescription;
-- (WFNextHourPrecipitationDescription)initWithCoder:(id)a3;
-- (WFNextHourPrecipitationDescription)initWithToken:(id)a3 shortTemplate:(id)a4 longTemplate:(id)a5 parameters:(id)a6 validUntil:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fillTemplate:(id)a3 withDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (WFNextHourPrecipitationDescription)initWithCoder:(id)coder;
+- (WFNextHourPrecipitationDescription)initWithToken:(id)token shortTemplate:(id)template longTemplate:(id)longTemplate parameters:(id)parameters validUntil:(id)until;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fillTemplate:(id)template withDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFNextHourPrecipitationDescription
 
-- (WFNextHourPrecipitationDescription)initWithToken:(id)a3 shortTemplate:(id)a4 longTemplate:(id)a5 parameters:(id)a6 validUntil:(id)a7
+- (WFNextHourPrecipitationDescription)initWithToken:(id)token shortTemplate:(id)template longTemplate:(id)longTemplate parameters:(id)parameters validUntil:(id)until
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  templateCopy = template;
+  longTemplateCopy = longTemplate;
+  parametersCopy = parameters;
+  untilCopy = until;
   v29.receiver = self;
   v29.super_class = WFNextHourPrecipitationDescription;
   v17 = [(WFNextHourPrecipitationDescription *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [tokenCopy copy];
     token = v17->_token;
     v17->_token = v18;
 
-    v20 = [v13 copy];
+    v20 = [templateCopy copy];
     shortTemplate = v17->_shortTemplate;
     v17->_shortTemplate = v20;
 
-    v22 = [v14 copy];
+    v22 = [longTemplateCopy copy];
     longTemplate = v17->_longTemplate;
     v17->_longTemplate = v22;
 
-    v24 = [v15 copy];
+    v24 = [parametersCopy copy];
     parameters = v17->_parameters;
     v17->_parameters = v24;
 
-    v26 = [v16 copy];
+    v26 = [untilCopy copy];
     validUntil = v17->_validUntil;
     v17->_validUntil = v26;
   }
@@ -47,9 +47,9 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSString *)self->_token copy];
   v6 = [(NSString *)self->_shortTemplate copy];
   v7 = [(NSString *)self->_longTemplate copy];
@@ -62,21 +62,21 @@
 
 - (NSString)shortDescription
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(WFNextHourPrecipitationDescription *)self fillTemplate:self->_shortTemplate withDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(WFNextHourPrecipitationDescription *)self fillTemplate:self->_shortTemplate withDate:date];
 
   return v4;
 }
 
 - (NSString)longDescription
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(WFNextHourPrecipitationDescription *)self fillTemplate:self->_longTemplate withDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(WFNextHourPrecipitationDescription *)self fillTemplate:self->_longTemplate withDate:date];
 
   return v4;
 }
 
-- (BOOL)isValidAtDate:(id)a3
+- (BOOL)isValidAtDate:(id)date
 {
   validUntil = self->_validUntil;
   if (!validUntil)
@@ -84,19 +84,19 @@
     return 1;
   }
 
-  [(NSDate *)validUntil timeIntervalSinceDate:a3];
+  [(NSDate *)validUntil timeIntervalSinceDate:date];
   return v4 > 91.0;
 }
 
-- (id)fillTemplate:(id)a3 withDate:(id)a4
+- (id)fillTemplate:(id)template withDate:(id)date
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  dateCopy = date;
+  v7 = [template mutableCopy];
   v8 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:@"firstAt"];
   if (v8)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%@}", @"firstAt"];
-    [v8 timeIntervalSinceDate:v6];
+    [v8 timeIntervalSinceDate:dateCopy];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%0.0f", round(v10 / 60.0)];
     [v7 replaceOccurrencesOfString:v9 withString:v11 options:0 range:{0, objc_msgSend(v7, "length")}];
     v12 = [(NSDictionary *)self->_parameters objectForKeyedSubscript:@"secondAt"];
@@ -112,38 +112,38 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFNextHourPrecipitationDescription *)self token];
-  [v4 encodeObject:v5 forKey:@"WFNextHourPrecipitationDescriptionTokenKey"];
+  coderCopy = coder;
+  token = [(WFNextHourPrecipitationDescription *)self token];
+  [coderCopy encodeObject:token forKey:@"WFNextHourPrecipitationDescriptionTokenKey"];
 
-  v6 = [(WFNextHourPrecipitationDescription *)self shortTemplate];
-  [v4 encodeObject:v6 forKey:@"WFNextHourPrecipitationDescriptionShortTemplateKey"];
+  shortTemplate = [(WFNextHourPrecipitationDescription *)self shortTemplate];
+  [coderCopy encodeObject:shortTemplate forKey:@"WFNextHourPrecipitationDescriptionShortTemplateKey"];
 
-  v7 = [(WFNextHourPrecipitationDescription *)self longTemplate];
-  [v4 encodeObject:v7 forKey:@"WFNextHourPrecipitationDescriptionLongTemplateKey"];
+  longTemplate = [(WFNextHourPrecipitationDescription *)self longTemplate];
+  [coderCopy encodeObject:longTemplate forKey:@"WFNextHourPrecipitationDescriptionLongTemplateKey"];
 
-  v8 = [(WFNextHourPrecipitationDescription *)self parameters];
-  [v4 encodeObject:v8 forKey:@"WFNextHourPrecipitationDescriptionParametersKey"];
+  parameters = [(WFNextHourPrecipitationDescription *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"WFNextHourPrecipitationDescriptionParametersKey"];
 
-  v9 = [(WFNextHourPrecipitationDescription *)self validUntil];
-  [v4 encodeObject:v9 forKey:@"WFNextHourPrecipitationDescriptionValidUntilKey"];
+  validUntil = [(WFNextHourPrecipitationDescription *)self validUntil];
+  [coderCopy encodeObject:validUntil forKey:@"WFNextHourPrecipitationDescriptionValidUntilKey"];
 }
 
-- (WFNextHourPrecipitationDescription)initWithCoder:(id)a3
+- (WFNextHourPrecipitationDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionTokenKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionShortTemplateKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionLongTemplateKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionTokenKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionShortTemplateKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionLongTemplateKey"];
   if (initWithCoder__onceToken_3 != -1)
   {
     [WFNextHourPrecipitationDescription initWithCoder:];
   }
 
-  v8 = [v4 decodeObjectOfClasses:initWithCoder__classes_2 forKey:@"WFNextHourPrecipitationDescriptionParametersKey"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionValidUntilKey"];
+  v8 = [coderCopy decodeObjectOfClasses:initWithCoder__classes_2 forKey:@"WFNextHourPrecipitationDescriptionParametersKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationDescriptionValidUntilKey"];
   v10 = [(WFNextHourPrecipitationDescription *)self initWithToken:v5 shortTemplate:v6 longTemplate:v7 parameters:v8 validUntil:v9];
 
   return v10;

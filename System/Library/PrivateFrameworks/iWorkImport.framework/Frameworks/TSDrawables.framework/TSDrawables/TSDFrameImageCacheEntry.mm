@@ -1,30 +1,30 @@
 @interface TSDFrameImageCacheEntry
-- (CGImage)newImageForCALayer:(BOOL)a3 mask:(BOOL)a4;
+- (CGImage)newImageForCALayer:(BOOL)layer mask:(BOOL)mask;
 - (CGSize)size;
-- (TSDFrameImageCacheEntry)initWithFrame:(id)a3 size:(CGSize)a4 viewScale:(double)a5;
-- (int)p_cacheIndexForCALayer:(BOOL)a3 mask:(BOOL)a4;
+- (TSDFrameImageCacheEntry)initWithFrame:(id)frame size:(CGSize)size viewScale:(double)scale;
+- (int)p_cacheIndexForCALayer:(BOOL)layer mask:(BOOL)mask;
 - (void)dealloc;
-- (void)setImage:(CGImage *)a3 forCALayer:(BOOL)a4 mask:(BOOL)a5;
+- (void)setImage:(CGImage *)image forCALayer:(BOOL)layer mask:(BOOL)mask;
 @end
 
 @implementation TSDFrameImageCacheEntry
 
-- (TSDFrameImageCacheEntry)initWithFrame:(id)a3 size:(CGSize)a4 viewScale:(double)a5
+- (TSDFrameImageCacheEntry)initWithFrame:(id)frame size:(CGSize)size viewScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  frameCopy = frame;
   v17.receiver = self;
   v17.super_class = TSDFrameImageCacheEntry;
   v12 = [(TSDFrameImageCacheEntry *)&v17 init];
   if (v12)
   {
-    v12->mFrameSpec = objc_msgSend_frameSpec(v9, v10, v11);
-    objc_msgSend_assetScale(v9, v13, v14);
+    v12->mFrameSpec = objc_msgSend_frameSpec(frameCopy, v10, v11);
+    objc_msgSend_assetScale(frameCopy, v13, v14);
     v12->mSize.width = width;
     v12->mSize.height = height;
     v12->mAssetScale = v15;
-    v12->mViewScale = a5;
+    v12->mViewScale = scale;
   }
 
   return v12;
@@ -42,9 +42,9 @@
   [(TSDFrameImageCacheEntry *)&v4 dealloc];
 }
 
-- (int)p_cacheIndexForCALayer:(BOOL)a3 mask:(BOOL)a4
+- (int)p_cacheIndexForCALayer:(BOOL)layer mask:(BOOL)mask
 {
-  if (a3)
+  if (layer)
   {
     v4 = 2;
   }
@@ -54,12 +54,12 @@
     v4 = 0;
   }
 
-  return v4 | a4;
+  return v4 | mask;
 }
 
-- (CGImage)newImageForCALayer:(BOOL)a3 mask:(BOOL)a4
+- (CGImage)newImageForCALayer:(BOOL)layer mask:(BOOL)mask
 {
-  v4 = &self->super.isa + objc_msgSend_p_cacheIndexForCALayer_mask_(self, a2, a3, a4);
+  v4 = &self->super.isa + objc_msgSend_p_cacheIndexForCALayer_mask_(self, a2, layer, mask);
   v5 = v4[1];
   if (v5)
   {
@@ -69,11 +69,11 @@
   return v5;
 }
 
-- (void)setImage:(CGImage *)a3 forCALayer:(BOOL)a4 mask:(BOOL)a5
+- (void)setImage:(CGImage *)image forCALayer:(BOOL)layer mask:(BOOL)mask
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a3)
+  maskCopy = mask;
+  layerCopy = layer;
+  if (!image)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDFrameImageCacheEntry setImage:forCALayer:mask:]");
@@ -83,11 +83,11 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  v16 = objc_msgSend_p_cacheIndexForCALayer_mask_(self, a2, v6, v5);
+  v16 = objc_msgSend_p_cacheIndexForCALayer_mask_(self, a2, layerCopy, maskCopy);
   mImages = self->mImages;
   if (!mImages[v16])
   {
-    mImages[v16] = CGImageRetain(a3);
+    mImages[v16] = CGImageRetain(image);
   }
 }
 

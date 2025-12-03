@@ -1,18 +1,18 @@
 @interface VSKeychainStore
-- (BOOL)_fixUpdateConflictForItemWithAttributes:(id)a3 andAttributesToUpdate:(id)a4;
-- (BOOL)deleteItemsMatchingQuery:(id)a3 error:(id *)a4;
-- (BOOL)updateAttributes:(id)a3 ofItemsMatchingQuery:(id)a4 attemptCount:(int64_t)a5 error:(id *)a6;
-- (id)addItem:(id)a3 error:(id *)a4;
-- (id)findItemsMatchingQuery:(id)a3 error:(id *)a4;
+- (BOOL)_fixUpdateConflictForItemWithAttributes:(id)attributes andAttributesToUpdate:(id)update;
+- (BOOL)deleteItemsMatchingQuery:(id)query error:(id *)error;
+- (BOOL)updateAttributes:(id)attributes ofItemsMatchingQuery:(id)query attemptCount:(int64_t)count error:(id *)error;
+- (id)addItem:(id)item error:(id *)error;
+- (id)findItemsMatchingQuery:(id)query error:(id *)error;
 @end
 
 @implementation VSKeychainStore
 
-- (id)addItem:(id)a3 error:(id *)a4
+- (id)addItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   result = 0;
-  v7 = SecItemAdd(v6, &result);
+  v7 = SecItemAdd(itemCopy, &result);
   if (v7 != -25299)
   {
     if (!v7)
@@ -32,7 +32,7 @@
       goto LABEL_15;
     }
 
-    if (a4)
+    if (error)
     {
       v14 = *MEMORY[0x277CCA590];
       v15 = v7;
@@ -43,7 +43,7 @@
     goto LABEL_15;
   }
 
-  v10 = SecItemDelete(v6);
+  v10 = SecItemDelete(itemCopy);
   if (v10)
   {
     v11 = v10;
@@ -53,14 +53,14 @@
       [VSKeychainStore addItem:v11 error:v12];
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277CCA590];
       v15 = -25299;
 LABEL_14:
       [v13 errorWithDomain:v14 code:v15 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_19;
     }
 
@@ -76,16 +76,16 @@ LABEL_15:
     _os_log_impl(&dword_23AB8E000, v16, OS_LOG_TYPE_DEFAULT, "Successfully deleted conflicting item, re-attempting insertion.", v18, 2u);
   }
 
-  v8 = [(VSKeychainStore *)self addItem:v6 error:a4];
+  v8 = [(VSKeychainStore *)self addItem:itemCopy error:error];
 LABEL_19:
 
   return v8;
 }
 
-- (id)findItemsMatchingQuery:(id)a3 error:(id *)a4
+- (id)findItemsMatchingQuery:(id)query error:(id *)error
 {
   result = 0;
-  v5 = SecItemCopyMatching(a3, &result);
+  v5 = SecItemCopyMatching(query, &result);
   if (v5 == -25300)
   {
     v6 = MEMORY[0x277CBEBF8];
@@ -94,12 +94,12 @@ LABEL_19:
 
   if (v5)
   {
-    if (a4)
+    if (error)
     {
       v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
       v9 = v8;
       v6 = 0;
-      *a4 = v8;
+      *error = v8;
       goto LABEL_11;
     }
   }
@@ -125,11 +125,11 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)updateAttributes:(id)a3 ofItemsMatchingQuery:(id)a4 attemptCount:(int64_t)a5 error:(id *)a6
+- (BOOL)updateAttributes:(id)attributes ofItemsMatchingQuery:(id)query attemptCount:(int64_t)count error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = SecItemUpdate(v11, v10);
+  attributesCopy = attributes;
+  queryCopy = query;
+  v12 = SecItemUpdate(queryCopy, attributesCopy);
   if (!v12)
   {
     v14 = 1;
@@ -138,14 +138,14 @@ LABEL_11:
 
   if (v12 != -25299)
   {
-    if (a6)
+    if (error)
     {
       v15 = *MEMORY[0x277CCA590];
       v16 = v12;
       v17 = MEMORY[0x277CCA9B8];
 LABEL_15:
       [v17 errorWithDomain:v15 code:v16 userInfo:0];
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_17;
     }
 
@@ -154,10 +154,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = [(VSKeychainStore *)self _fixUpdateConflictForItemWithAttributes:v11 andAttributesToUpdate:v10];
-  if (a5 > 4 || !v13)
+  v13 = [(VSKeychainStore *)self _fixUpdateConflictForItemWithAttributes:queryCopy andAttributesToUpdate:attributesCopy];
+  if (count > 4 || !v13)
   {
-    if (a5 >= 5)
+    if (count >= 5)
     {
       v18 = VSErrorLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -166,7 +166,7 @@ LABEL_16:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v17 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277CCA590];
@@ -177,17 +177,17 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v14 = [(VSKeychainStore *)self updateAttributes:v10 ofItemsMatchingQuery:v11 attemptCount:a5 + 1 error:a6];
+  v14 = [(VSKeychainStore *)self updateAttributes:attributesCopy ofItemsMatchingQuery:queryCopy attemptCount:count + 1 error:error];
 LABEL_17:
 
   return v14;
 }
 
-- (BOOL)deleteItemsMatchingQuery:(id)a3 error:(id *)a4
+- (BOOL)deleteItemsMatchingQuery:(id)query error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = SecItemDelete(v5);
+  queryCopy = query;
+  v6 = SecItemDelete(queryCopy);
   if (!v6)
   {
 LABEL_6:
@@ -201,17 +201,17 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = queryCopy;
       _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Failed to find item to delete with query %@", &v10, 0xCu);
     }
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v6 userInfo:0];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -224,12 +224,12 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_fixUpdateConflictForItemWithAttributes:(id)a3 andAttributesToUpdate:(id)a4
+- (BOOL)_fixUpdateConflictForItemWithAttributes:(id)attributes andAttributesToUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  [v7 addEntriesFromDictionary:v6];
+  updateCopy = update;
+  v7 = [attributes mutableCopy];
+  [v7 addEntriesFromDictionary:updateCopy];
 
   [v7 removeObjectForKey:*MEMORY[0x277CDBF90]];
   [v7 removeObjectForKey:*MEMORY[0x277CDC088]];

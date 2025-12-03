@@ -1,15 +1,15 @@
 @interface _MRSetStateMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPlaybackState:(id)a3;
+- (int)StringAsPlaybackState:(id)state;
 - (int)playbackState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPlaybackState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPlaybackState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSetStateMessageProtobuf
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasPlaybackState:(BOOL)a3
+- (void)setHasPlaybackState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -42,35 +42,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsPlaybackState:(id)a3
+- (int)StringAsPlaybackState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Playing"])
+  else if ([stateCopy isEqualToString:@"Playing"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Paused"])
+  else if ([stateCopy isEqualToString:@"Paused"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Stopped"])
+  else if ([stateCopy isEqualToString:@"Stopped"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Interrupted"])
+  else if ([stateCopy isEqualToString:@"Interrupted"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Seeking"])
+  else if ([stateCopy isEqualToString:@"Seeking"])
   {
     v4 = 5;
   }
@@ -89,46 +89,46 @@
   v8.receiver = self;
   v8.super_class = _MRSetStateMessageProtobuf;
   v4 = [(_MRSetStateMessageProtobuf *)&v8 description];
-  v5 = [(_MRSetStateMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSetStateMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   nowPlayingInfo = self->_nowPlayingInfo;
   if (nowPlayingInfo)
   {
-    v5 = [(_MRNowPlayingInfoProtobuf *)nowPlayingInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"nowPlayingInfo"];
+    dictionaryRepresentation = [(_MRNowPlayingInfoProtobuf *)nowPlayingInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"nowPlayingInfo"];
   }
 
   supportedCommands = self->_supportedCommands;
   if (supportedCommands)
   {
-    v7 = [(_MRSupportedCommandsProtobuf *)supportedCommands dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"supportedCommands"];
+    dictionaryRepresentation2 = [(_MRSupportedCommandsProtobuf *)supportedCommands dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"supportedCommands"];
   }
 
   playbackQueue = self->_playbackQueue;
   if (playbackQueue)
   {
-    v9 = [(_MRPlaybackQueueProtobuf *)playbackQueue dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"playbackQueue"];
+    dictionaryRepresentation3 = [(_MRPlaybackQueueProtobuf *)playbackQueue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"playbackQueue"];
   }
 
   displayID = self->_displayID;
   if (displayID)
   {
-    [v3 setObject:displayID forKey:@"displayID"];
+    [dictionary setObject:displayID forKey:@"displayID"];
   }
 
   displayName = self->_displayName;
   if (displayName)
   {
-    [v3 setObject:displayName forKey:@"displayName"];
+    [dictionary setObject:displayName forKey:@"displayName"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -144,191 +144,191 @@
       v13 = off_1E769B7F8[playbackState];
     }
 
-    [v3 setObject:v13 forKey:@"playbackState"];
+    [dictionary setObject:v13 forKey:@"playbackState"];
   }
 
   playbackQueueCapabilities = self->_playbackQueueCapabilities;
   if (playbackQueueCapabilities)
   {
-    v15 = [(_MRPlaybackQueueCapabilitiesProtobuf *)playbackQueueCapabilities dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"playbackQueueCapabilities"];
+    dictionaryRepresentation4 = [(_MRPlaybackQueueCapabilitiesProtobuf *)playbackQueueCapabilities dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"playbackQueueCapabilities"];
   }
 
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v17 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"playerPath"];
+    dictionaryRepresentation5 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"playerPath"];
   }
 
   request = self->_request;
   if (request)
   {
-    v19 = [(_MRPlaybackQueueRequestProtobuf *)request dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"request"];
+    dictionaryRepresentation6 = [(_MRPlaybackQueueRequestProtobuf *)request dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"request"];
   }
 
   if (*&self->_has)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithDouble:self->_playbackStateTimestamp];
-    [v3 setObject:v20 forKey:@"playbackStateTimestamp"];
+    [dictionary setObject:v20 forKey:@"playbackStateTimestamp"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_nowPlayingInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_supportedCommands)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_playbackQueue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_displayID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     playbackState = self->_playbackState;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_playbackQueueCapabilities)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_playerPath)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     playbackStateTimestamp = self->_playbackStateTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_nowPlayingInfo)
   {
-    [v4 setNowPlayingInfo:?];
-    v4 = v5;
+    [toCopy setNowPlayingInfo:?];
+    toCopy = v5;
   }
 
   if (self->_supportedCommands)
   {
     [v5 setSupportedCommands:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playbackQueue)
   {
     [v5 setPlaybackQueue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayID)
   {
     [v5 setDisplayID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     [v5 setDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 14) = self->_playbackState;
-    *(v4 + 88) |= 2u;
+    *(toCopy + 14) = self->_playbackState;
+    *(toCopy + 88) |= 2u;
   }
 
   if (self->_playbackQueueCapabilities)
   {
     [v5 setPlaybackQueueCapabilities:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playerPath)
   {
     [v5 setPlayerPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_request)
   {
     [v5 setRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_playbackStateTimestamp;
-    *(v4 + 88) |= 1u;
+    *(toCopy + 1) = *&self->_playbackStateTimestamp;
+    *(toCopy + 88) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRNowPlayingInfoProtobuf *)self->_nowPlayingInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRNowPlayingInfoProtobuf *)self->_nowPlayingInfo copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(_MRSupportedCommandsProtobuf *)self->_supportedCommands copyWithZone:a3];
+  v8 = [(_MRSupportedCommandsProtobuf *)self->_supportedCommands copyWithZone:zone];
   v9 = *(v5 + 80);
   *(v5 + 80) = v8;
 
-  v10 = [(_MRPlaybackQueueProtobuf *)self->_playbackQueue copyWithZone:a3];
+  v10 = [(_MRPlaybackQueueProtobuf *)self->_playbackQueue copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_displayID copyWithZone:a3];
+  v12 = [(NSString *)self->_displayID copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_displayName copyWithZone:a3];
+  v14 = [(NSString *)self->_displayName copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -338,15 +338,15 @@
     *(v5 + 88) |= 2u;
   }
 
-  v16 = [(_MRPlaybackQueueCapabilitiesProtobuf *)self->_playbackQueueCapabilities copyWithZone:a3];
+  v16 = [(_MRPlaybackQueueCapabilitiesProtobuf *)self->_playbackQueueCapabilities copyWithZone:zone];
   v17 = *(v5 + 48);
   *(v5 + 48) = v16;
 
-  v18 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v18 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 
-  v20 = [(_MRPlaybackQueueRequestProtobuf *)self->_request copyWithZone:a3];
+  v20 = [(_MRPlaybackQueueRequestProtobuf *)self->_request copyWithZone:zone];
   v21 = *(v5 + 72);
   *(v5 + 72) = v20;
 
@@ -359,16 +359,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   nowPlayingInfo = self->_nowPlayingInfo;
-  if (nowPlayingInfo | *(v4 + 4))
+  if (nowPlayingInfo | *(equalCopy + 4))
   {
     if (![(_MRNowPlayingInfoProtobuf *)nowPlayingInfo isEqual:?])
     {
@@ -377,7 +377,7 @@
   }
 
   supportedCommands = self->_supportedCommands;
-  if (supportedCommands | *(v4 + 10))
+  if (supportedCommands | *(equalCopy + 10))
   {
     if (![(_MRSupportedCommandsProtobuf *)supportedCommands isEqual:?])
     {
@@ -386,7 +386,7 @@
   }
 
   playbackQueue = self->_playbackQueue;
-  if (playbackQueue | *(v4 + 5))
+  if (playbackQueue | *(equalCopy + 5))
   {
     if (![(_MRPlaybackQueueProtobuf *)playbackQueue isEqual:?])
     {
@@ -395,7 +395,7 @@
   }
 
   displayID = self->_displayID;
-  if (displayID | *(v4 + 2))
+  if (displayID | *(equalCopy + 2))
   {
     if (![(NSString *)displayID isEqual:?])
     {
@@ -404,7 +404,7 @@
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 3))
+  if (displayName | *(equalCopy + 3))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -412,16 +412,16 @@
     }
   }
 
-  v10 = *(v4 + 88);
+  v10 = *(equalCopy + 88);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_playbackState != *(v4 + 14))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_playbackState != *(equalCopy + 14))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
 LABEL_27:
     v14 = 0;
@@ -429,13 +429,13 @@ LABEL_27:
   }
 
   playbackQueueCapabilities = self->_playbackQueueCapabilities;
-  if (playbackQueueCapabilities | *(v4 + 6) && ![(_MRPlaybackQueueCapabilitiesProtobuf *)playbackQueueCapabilities isEqual:?])
+  if (playbackQueueCapabilities | *(equalCopy + 6) && ![(_MRPlaybackQueueCapabilitiesProtobuf *)playbackQueueCapabilities isEqual:?])
   {
     goto LABEL_27;
   }
 
   playerPath = self->_playerPath;
-  if (playerPath | *(v4 + 8))
+  if (playerPath | *(equalCopy + 8))
   {
     if (![(_MRNowPlayingPlayerPathProtobuf *)playerPath isEqual:?])
     {
@@ -444,7 +444,7 @@ LABEL_27:
   }
 
   request = self->_request;
-  if (request | *(v4 + 9))
+  if (request | *(equalCopy + 9))
   {
     if (![(_MRPlaybackQueueRequestProtobuf *)request isEqual:?])
     {
@@ -452,10 +452,10 @@ LABEL_27:
     }
   }
 
-  v14 = (*(v4 + 88) & 1) == 0;
+  v14 = (*(equalCopy + 88) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_playbackStateTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_playbackStateTimestamp != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
@@ -524,12 +524,12 @@ LABEL_28:
   return v3 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   nowPlayingInfo = self->_nowPlayingInfo;
-  v6 = *(v4 + 4);
-  v17 = v4;
+  v6 = *(fromCopy + 4);
+  v17 = fromCopy;
   if (nowPlayingInfo)
   {
     if (!v6)
@@ -550,10 +550,10 @@ LABEL_28:
     [(_MRSetStateMessageProtobuf *)self setNowPlayingInfo:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_7:
   supportedCommands = self->_supportedCommands;
-  v8 = *(v4 + 10);
+  v8 = *(fromCopy + 10);
   if (supportedCommands)
   {
     if (!v8)
@@ -574,10 +574,10 @@ LABEL_7:
     [(_MRSetStateMessageProtobuf *)self setSupportedCommands:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_13:
   playbackQueue = self->_playbackQueue;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   if (playbackQueue)
   {
     if (!v10)
@@ -598,28 +598,28 @@ LABEL_13:
     [(_MRSetStateMessageProtobuf *)self setPlaybackQueue:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_19:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_MRSetStateMessageProtobuf *)self setDisplayID:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_MRSetStateMessageProtobuf *)self setDisplayName:?];
-    v4 = v17;
+    fromCopy = v17;
   }
 
-  if ((*(v4 + 88) & 2) != 0)
+  if ((*(fromCopy + 88) & 2) != 0)
   {
-    self->_playbackState = *(v4 + 14);
+    self->_playbackState = *(fromCopy + 14);
     *&self->_has |= 2u;
   }
 
   playbackQueueCapabilities = self->_playbackQueueCapabilities;
-  v12 = *(v4 + 6);
+  v12 = *(fromCopy + 6);
   if (playbackQueueCapabilities)
   {
     if (!v12)
@@ -640,10 +640,10 @@ LABEL_19:
     [(_MRSetStateMessageProtobuf *)self setPlaybackQueueCapabilities:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_31:
   playerPath = self->_playerPath;
-  v14 = *(v4 + 8);
+  v14 = *(fromCopy + 8);
   if (playerPath)
   {
     if (!v14)
@@ -664,10 +664,10 @@ LABEL_31:
     [(_MRSetStateMessageProtobuf *)self setPlayerPath:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_37:
   request = self->_request;
-  v16 = *(v4 + 9);
+  v16 = *(fromCopy + 9);
   if (request)
   {
     if (!v16)
@@ -688,11 +688,11 @@ LABEL_37:
     [(_MRSetStateMessageProtobuf *)self setRequest:?];
   }
 
-  v4 = v17;
+  fromCopy = v17;
 LABEL_43:
-  if (*(v4 + 88))
+  if (*(fromCopy + 88))
   {
-    self->_playbackStateTimestamp = *(v4 + 1);
+    self->_playbackStateTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

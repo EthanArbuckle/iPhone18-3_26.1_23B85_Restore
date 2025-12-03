@@ -1,11 +1,11 @@
 @interface WFFocusConfigurationServiceViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (WFFocusConfigurationServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFFocusConfigurationServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)startConfigurationWithRequest:(WFFocusConfigurationRequest *)a3 completion:(id)a4;
+- (void)startConfigurationWithRequest:(WFFocusConfigurationRequest *)request completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WFFocusConfigurationServiceViewController
@@ -26,38 +26,38 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017074();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018FC0(&selRef_viewDidLoad);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000176EC(a3);
+  selfCopy = self;
+  sub_1000176EC(disappear);
 }
 
-- (void)startConfigurationWithRequest:(WFFocusConfigurationRequest *)a3 completion:(id)a4
+- (void)startConfigurationWithRequest:(WFFocusConfigurationRequest *)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = request;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  requestCopy = request;
+  selfCopy = self;
 
   sub_100018CC4(&unk_100020EE0, v7);
 }
 
-- (WFFocusConfigurationServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFFocusConfigurationServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10001DD14();
     v7 = v6;
@@ -69,8 +69,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100018DD4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100018DD4(v5, v7, bundle);
 }
 
 @end

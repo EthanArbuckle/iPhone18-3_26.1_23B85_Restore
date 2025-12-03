@@ -1,30 +1,30 @@
 @interface PXPhotosHighlightsOverlayController
-- (BOOL)canHandleObjectReference:(id)a3;
+- (BOOL)canHandleObjectReference:(id)reference;
 - (NSArray)availableLenses;
 - (PXPhotosHighlightsOverlayController)init;
-- (PXPhotosHighlightsOverlayController)initWithPhotoLibrary:(id)a3;
+- (PXPhotosHighlightsOverlayController)initWithPhotoLibrary:(id)library;
 - (PXPhotosLensControlItem)currentLens;
 - (PXPhotosOverlayControllerDelegate)delegate;
 - (PXPhotosViewModel)photosViewModel;
 - (id)overlayLayoutProvider;
-- (void)handleTap:(id)a3;
-- (void)setCurrentLens:(id)a3;
-- (void)setPhotosViewModel:(id)a3;
+- (void)handleTap:(id)tap;
+- (void)setCurrentLens:(id)lens;
+- (void)setPhotosViewModel:(id)model;
 @end
 
 @implementation PXPhotosHighlightsOverlayController
 
-- (PXPhotosHighlightsOverlayController)initWithPhotoLibrary:(id)a3
+- (PXPhotosHighlightsOverlayController)initWithPhotoLibrary:(id)library
 {
   *(self + OBJC_IVAR___PXPhotosHighlightsOverlayController____lazy_storage___rootLayout) = 0;
   *(self + OBJC_IVAR___PXPhotosHighlightsOverlayController_currentLens) = 0;
   *(self + OBJC_IVAR___PXPhotosHighlightsOverlayController_photosViewModel) = 0;
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___PXPhotosHighlightsOverlayController_isSwitchingLens) = 0;
-  *(self + OBJC_IVAR___PXPhotosHighlightsOverlayController_photoLibrary) = a3;
+  *(self + OBJC_IVAR___PXPhotosHighlightsOverlayController_photoLibrary) = library;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PhotosHighlightsOverlayController();
-  v5 = a3;
+  libraryCopy = library;
   return [(PXPhotosHighlightsOverlayController *)&v7 init];
 }
 
@@ -39,7 +39,7 @@
   v7[2] = sub_1A3F6EAB4;
   v7[3] = &block_descriptor_273;
   v4 = _Block_copy(v7);
-  v5 = self;
+  selfCopy = self;
 
   return v4;
 }
@@ -80,14 +80,14 @@
   return v2;
 }
 
-- (void)setCurrentLens:(id)a3
+- (void)setCurrentLens:(id)lens
 {
   v5 = OBJC_IVAR___PXPhotosHighlightsOverlayController_currentLens;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = lens;
   swift_unknownObjectRetain_n();
-  v7 = self;
+  selfCopy = self;
   sub_1A47BD724(v6);
   swift_unknownObjectRelease();
 
@@ -101,13 +101,13 @@
   return *(self + v3);
 }
 
-- (void)setPhotosViewModel:(id)a3
+- (void)setPhotosViewModel:(id)model
 {
   v5 = OBJC_IVAR___PXPhotosHighlightsOverlayController_photosViewModel;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = model;
+  modelCopy = model;
 }
 
 - (PXPhotosOverlayControllerDelegate)delegate
@@ -118,14 +118,14 @@
   return Strong;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A47BE660(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_1A47BE660(tapCopy);
 }
 
-- (BOOL)canHandleObjectReference:(id)a3
+- (BOOL)canHandleObjectReference:(id)reference
 {
   swift_unknownObjectRetain();
   sub_1A524E0B4();

@@ -6,7 +6,7 @@
 
 - (id)hmf_zeroingCopy
 {
-  v1 = [MEMORY[0x277CBEA90] _newZeroingDataWithBytes:objc_msgSend(a1 length:{"bytes"), objc_msgSend(a1, "length")}];
+  v1 = [MEMORY[0x277CBEA90] _newZeroingDataWithBytes:objc_msgSend(self length:{"bytes"), objc_msgSend(self, "length")}];
 
   return v1;
 }

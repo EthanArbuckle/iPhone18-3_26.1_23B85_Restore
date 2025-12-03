@@ -1,11 +1,11 @@
 @interface WKIdentityDocumentRawRequestValidator
 - (WKIdentityDocumentRawRequestValidator)init;
-- (id)validateISO18013Request:(id)a3 origin:(id)a4 error:(id *)a5;
+- (id)validateISO18013Request:(id)request origin:(id)origin error:(id *)error;
 @end
 
 @implementation WKIdentityDocumentRawRequestValidator
 
-- (id)validateISO18013Request:(id)a3 origin:(id)a4 error:(id *)a5
+- (id)validateISO18013Request:(id)request origin:(id)origin error:(id *)error
 {
   v7 = sub_23B59D2D0();
   v8 = *(v7 - 8);
@@ -13,9 +13,9 @@
   MEMORY[0x28223BE20](v7);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23B59D2C0();
-  v12 = a3;
-  v13 = self;
-  v14 = sub_23B5839F4(v12, v11);
+  requestCopy = request;
+  selfCopy = self;
+  v14 = sub_23B5839F4(requestCopy, v11);
   (*(v8 + 8))(v11, v7);
 
   return v14;

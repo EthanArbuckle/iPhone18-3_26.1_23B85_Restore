@@ -1,43 +1,43 @@
 @interface SHLError
-+ (BOOL)canRetryForError:(id)a3;
-+ (BOOL)canRetryForPartialError:(id)a3;
-+ (double)retrySecondsForError:(id)a3;
-+ (id)errorCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)errorWithUnderlyingError:(id)a3;
-+ (id)localizedDescriptionForSyncError:(int64_t)a3;
-+ (id)localizedFailureReasonForSyncError:(int64_t)a3;
-+ (id)localizedRecoverySuggestionForSyncError:(int64_t)a3;
-+ (id)userInfoForErrorCode:(int64_t)a3 withUnderlyingError:(id)a4;
-+ (int64_t)errorCodeForError:(id)a3;
++ (BOOL)canRetryForError:(id)error;
++ (BOOL)canRetryForPartialError:(id)error;
++ (double)retrySecondsForError:(id)error;
++ (id)errorCode:(int64_t)code underlyingError:(id)error;
++ (id)errorWithUnderlyingError:(id)error;
++ (id)localizedDescriptionForSyncError:(int64_t)error;
++ (id)localizedFailureReasonForSyncError:(int64_t)error;
++ (id)localizedRecoverySuggestionForSyncError:(int64_t)error;
++ (id)userInfoForErrorCode:(int64_t)code withUnderlyingError:(id)error;
++ (int64_t)errorCodeForError:(id)error;
 @end
 
 @implementation SHLError
 
-+ (id)errorWithUnderlyingError:(id)a3
++ (id)errorWithUnderlyingError:(id)error
 {
-  v4 = a3;
-  v5 = +[SHLError errorCode:underlyingError:](SHLError, "errorCode:underlyingError:", [a1 errorCodeForError:v4], v4);
+  errorCopy = error;
+  v5 = +[SHLError errorCode:underlyingError:](SHLError, "errorCode:underlyingError:", [self errorCodeForError:errorCopy], errorCopy);
 
   return v5;
 }
 
-+ (double)retrySecondsForError:(id)a3
++ (double)retrySecondsForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:CKErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:CKErrorDomain];
 
   v6 = 0.0;
   if (v5)
   {
-    if ([v3 code] == 2)
+    if ([errorCopy code] == 2)
     {
       v14 = 0;
       v15 = &v14;
       v16 = 0x2020000000;
       v17 = 0;
-      v7 = [v3 userInfo];
-      v8 = [v7 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      userInfo = [errorCopy userInfo];
+      v8 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
@@ -52,8 +52,8 @@
 
     else
     {
-      v9 = [v3 userInfo];
-      v10 = [v9 objectForKeyedSubscript:CKErrorRetryAfterKey];
+      userInfo2 = [errorCopy userInfo];
+      v10 = [userInfo2 objectForKeyedSubscript:CKErrorRetryAfterKey];
       [v10 doubleValue];
       v6 = v11;
     }
@@ -62,11 +62,11 @@
   return v6;
 }
 
-+ (BOOL)canRetryForError:(id)a3
++ (BOOL)canRetryForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:CKErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:CKErrorDomain];
 
   if (!v6)
   {
@@ -74,26 +74,26 @@
     goto LABEL_7;
   }
 
-  v7 = [v4 code];
+  code = [errorCopy code];
   v8 = 1;
-  if (v7 > 0x24)
+  if (code > 0x24)
   {
     goto LABEL_8;
   }
 
-  if (((1 << v7) & 0x1008B000D8) == 0)
+  if (((1 << code) & 0x1008B000D8) == 0)
   {
-    if (v7 == 2)
+    if (code == 2)
     {
-      v9 = [v4 userInfo];
-      v10 = [v9 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
-      v8 = [a1 canRetryForPartialError:v10];
+      userInfo = [errorCopy userInfo];
+      v10 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      v8 = [self canRetryForPartialError:v10];
 
       goto LABEL_7;
     }
 
 LABEL_8:
-    v8 = v7 == 111;
+    v8 = code == 111;
   }
 
 LABEL_7:
@@ -101,9 +101,9 @@ LABEL_7:
   return v8;
 }
 
-+ (BOOL)canRetryForPartialError:(id)a3
++ (BOOL)canRetryForPartialError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -113,35 +113,35 @@ LABEL_7:
   v6[2] = sub_100024AA0;
   v6[3] = &unk_10007D890;
   v6[4] = &v7;
-  v6[5] = a1;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
-  LOBYTE(a1) = *(v8 + 24);
+  v6[5] = self;
+  [errorCopy enumerateKeysAndObjectsUsingBlock:v6];
+  LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return a1;
+  return self;
 }
 
-+ (id)errorCode:(int64_t)a3 underlyingError:(id)a4
++ (id)errorCode:(int64_t)code underlyingError:(id)error
 {
-  v5 = [a1 userInfoForErrorCode:a3 withUnderlyingError:a4];
-  v6 = [[NSError alloc] initWithDomain:@"com.shazam.library" code:a3 userInfo:v5];
+  v5 = [self userInfoForErrorCode:code withUnderlyingError:error];
+  v6 = [[NSError alloc] initWithDomain:@"com.shazam.library" code:code userInfo:v5];
 
   return v6;
 }
 
-+ (id)userInfoForErrorCode:(int64_t)a3 withUnderlyingError:(id)a4
++ (id)userInfoForErrorCode:(int64_t)code withUnderlyingError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = +[NSMutableDictionary dictionary];
-  [v7 setValue:v6 forKey:NSUnderlyingErrorKey];
+  [v7 setValue:errorCopy forKey:NSUnderlyingErrorKey];
 
-  v8 = [a1 localizedDescriptionForSyncError:a3];
+  v8 = [self localizedDescriptionForSyncError:code];
   [v7 setObject:v8 forKey:NSLocalizedDescriptionKey];
 
-  v9 = [a1 localizedFailureReasonForSyncError:a3];
+  v9 = [self localizedFailureReasonForSyncError:code];
   [v7 setObject:v9 forKey:NSLocalizedFailureReasonErrorKey];
 
-  v10 = [a1 localizedRecoverySuggestionForSyncError:a3];
+  v10 = [self localizedRecoverySuggestionForSyncError:code];
   [v7 setObject:v10 forKey:NSLocalizedRecoverySuggestionErrorKey];
 
   v11 = [v7 copy];
@@ -149,20 +149,20 @@ LABEL_7:
   return v11;
 }
 
-+ (int64_t)errorCodeForError:(id)a3
++ (int64_t)errorCodeForError:(id)error
 {
-  v3 = [a3 code];
-  if (v3 <= 24)
+  code = [error code];
+  if (code <= 24)
   {
-    if (v3 > 5)
+    if (code > 5)
     {
-      if (v3 == 9)
+      if (code == 9)
       {
         return 0;
       }
     }
 
-    else if ((v3 - 3) < 2)
+    else if ((code - 3) < 2)
     {
       return 4;
     }
@@ -170,11 +170,11 @@ LABEL_7:
     return 5;
   }
 
-  if (v3 <= 27)
+  if (code <= 27)
   {
-    if (v3 != 25)
+    if (code != 25)
     {
-      if (v3 == 26)
+      if (code == 26)
       {
         return 7;
       }
@@ -187,7 +187,7 @@ LABEL_7:
 
   else
   {
-    switch(v3)
+    switch(code)
     {
       case 28:
         return 8;
@@ -201,42 +201,42 @@ LABEL_7:
   }
 }
 
-+ (id)localizedDescriptionForSyncError:(int64_t)a3
++ (id)localizedDescriptionForSyncError:(int64_t)error
 {
-  if ((a3 - 1) > 7)
+  if ((error - 1) > 7)
   {
     return @"No account logged in on this device.";
   }
 
   else
   {
-    return off_10007D8B0[a3 - 1];
+    return off_10007D8B0[error - 1];
   }
 }
 
-+ (id)localizedFailureReasonForSyncError:(int64_t)a3
++ (id)localizedFailureReasonForSyncError:(int64_t)error
 {
-  if ((a3 - 1) > 7)
+  if ((error - 1) > 7)
   {
     return @"Shazam history saves to the user's private database, which requires an authenticated session.";
   }
 
   else
   {
-    return off_10007D8F0[a3 - 1];
+    return off_10007D8F0[error - 1];
   }
 }
 
-+ (id)localizedRecoverySuggestionForSyncError:(int64_t)a3
++ (id)localizedRecoverySuggestionForSyncError:(int64_t)error
 {
-  if ((a3 - 1) > 7)
+  if ((error - 1) > 7)
   {
     return @"The user should manually log in.";
   }
 
   else
   {
-    return off_10007D930[a3 - 1];
+    return off_10007D930[error - 1];
   }
 }
 

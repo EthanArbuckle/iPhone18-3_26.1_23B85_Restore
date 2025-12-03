@@ -1,59 +1,59 @@
 @interface ICLiveLink
-+ (ICLiveLink)linkWithIdentity:(id)a3;
-+ (ICLiveLink)linkWithSessionIdentifier:(id)a3 identity:(id)a4;
++ (ICLiveLink)linkWithIdentity:(id)identity;
++ (ICLiveLink)linkWithSessionIdentifier:(id)identifier identity:(id)identity;
 - (BOOL)isStarted;
-- (ICLiveLink)initWithSharedListeningSessionIdentifier:(id)a3 identity:(id)a4;
+- (ICLiveLink)initWithSharedListeningSessionIdentifier:(id)identifier identity:(id)identity;
 - (ICLiveLinkDelegate)delegate;
 - (ICLiveLinkIdentity)identity;
 - (ICSharedListeningQueue)queue;
 - (NSArray)participants;
 - (NSURL)invitationURL;
-- (id)_participantForAction:(id)a3;
-- (id)_participantForParticipantID:(int64_t)a3;
-- (id)participantForParticipantUUID:(id)a3;
-- (void)_didReceiveAddItemsAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveCurrentItemChangeAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveCurrentItemTransitionAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveMoveItemAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveParticipantChangeAction:(id)a3 completion:(id)a4;
-- (void)_didReceivePlayNowQueueItemsAction:(id)a3 completion:(id)a4;
-- (void)_didReceivePlaybackSyncAction:(id)a3 completion:(id)a4;
-- (void)_didReceivePluginErrorMessage:(id)a3;
-- (void)_didReceiveQueueSyncAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveReactionAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveRemoveItemAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveReplaceQueueItemsAction:(id)a3 completion:(id)a4;
-- (void)_didReceiveServerNoticeAction:(id)a3 completion:(id)a4;
-- (void)_emitSessionEventIfNeededForAction:(id)a3 disconnectedParticipant:(id)a4;
-- (void)_handlePotentiallyRecoverableError:(id)a3;
-- (void)_handleReceivedMessage:(id)a3;
-- (void)_handleUpdatedParticipantQuery:(id)a3;
-- (void)_handleUpdatedQueue:(id)a3 playbackControlSettings:(id)a4 serverQueueContext:(id)a5;
+- (id)_participantForAction:(id)action;
+- (id)_participantForParticipantID:(int64_t)d;
+- (id)participantForParticipantUUID:(id)d;
+- (void)_didReceiveAddItemsAction:(id)action completion:(id)completion;
+- (void)_didReceiveCurrentItemChangeAction:(id)action completion:(id)completion;
+- (void)_didReceiveCurrentItemTransitionAction:(id)action completion:(id)completion;
+- (void)_didReceiveMoveItemAction:(id)action completion:(id)completion;
+- (void)_didReceiveParticipantChangeAction:(id)action completion:(id)completion;
+- (void)_didReceivePlayNowQueueItemsAction:(id)action completion:(id)completion;
+- (void)_didReceivePlaybackSyncAction:(id)action completion:(id)completion;
+- (void)_didReceivePluginErrorMessage:(id)message;
+- (void)_didReceiveQueueSyncAction:(id)action completion:(id)completion;
+- (void)_didReceiveReactionAction:(id)action completion:(id)completion;
+- (void)_didReceiveRemoveItemAction:(id)action completion:(id)completion;
+- (void)_didReceiveReplaceQueueItemsAction:(id)action completion:(id)completion;
+- (void)_didReceiveServerNoticeAction:(id)action completion:(id)completion;
+- (void)_emitSessionEventIfNeededForAction:(id)action disconnectedParticipant:(id)participant;
+- (void)_handlePotentiallyRecoverableError:(id)error;
+- (void)_handleReceivedMessage:(id)message;
+- (void)_handleUpdatedParticipantQuery:(id)query;
+- (void)_handleUpdatedQueue:(id)queue playbackControlSettings:(id)settings serverQueueContext:(id)context;
 - (void)_performClientInfoExchangeAndInitializeQueue;
 - (void)_processPendingActions;
-- (void)_storeTraceID:(id)a3 completion:(id)a4;
-- (void)_updateParticipantsWithReason:(id)a3 completion:(id)a4;
-- (void)_updatePlaybackControlSettingsWithReason:(id)a3 completion:(id)a4;
-- (void)_updateQueueWithReason:(id)a3 completion:(id)a4;
-- (void)beginSynchronizedPlaybackWithAVCFPlaybackCoordinator:(void *)a3;
-- (void)beginSynchronizedPlaybackWithAVPlaybackCoordinator:(id)a3;
-- (void)broadcastDirectCurrentItemChangedToItemIdentifier:(id)a3;
-- (void)connectionController:(id)a3 connectionDidEndWithError:(id)a4;
-- (void)connectionController:(id)a3 didEncounterFatalError:(id)a4;
-- (void)connectionControllerConnectionDidStart:(id)a3;
+- (void)_storeTraceID:(id)d completion:(id)completion;
+- (void)_updateParticipantsWithReason:(id)reason completion:(id)completion;
+- (void)_updatePlaybackControlSettingsWithReason:(id)reason completion:(id)completion;
+- (void)_updateQueueWithReason:(id)reason completion:(id)completion;
+- (void)beginSynchronizedPlaybackWithAVCFPlaybackCoordinator:(void *)coordinator;
+- (void)beginSynchronizedPlaybackWithAVPlaybackCoordinator:(id)coordinator;
+- (void)broadcastDirectCurrentItemChangedToItemIdentifier:(id)identifier;
+- (void)connectionController:(id)controller connectionDidEndWithError:(id)error;
+- (void)connectionController:(id)controller didEncounterFatalError:(id)error;
+- (void)connectionControllerConnectionDidStart:(id)start;
 - (void)dealloc;
 - (void)endSynchronizedPlayback;
-- (void)expectingToJoinWithStartItem:(id)a3 asInitiator:(BOOL)a4;
-- (void)fetchPlaybackSyncStateForMediumWithCompletion:(id)a3;
-- (void)fetchPlaybackSyncStateWithCompletion:(id)a3;
-- (void)receivedCurrentItemIdentifier:(id)a3 fromParticipant:(id)a4;
-- (void)receivedEvent:(id)a3;
-- (void)reconnectWithReason:(id)a3 options:(id)a4;
-- (void)sendMessage:(id)a3 completion:(id)a4;
-- (void)sendPlaybackSyncPayload:(id)a3;
+- (void)expectingToJoinWithStartItem:(id)item asInitiator:(BOOL)initiator;
+- (void)fetchPlaybackSyncStateForMediumWithCompletion:(id)completion;
+- (void)fetchPlaybackSyncStateWithCompletion:(id)completion;
+- (void)receivedCurrentItemIdentifier:(id)identifier fromParticipant:(id)participant;
+- (void)receivedEvent:(id)event;
+- (void)reconnectWithReason:(id)reason options:(id)options;
+- (void)sendMessage:(id)message completion:(id)completion;
+- (void)sendPlaybackSyncPayload:(id)payload;
 - (void)start;
 - (void)stop;
-- (void)updateWithIdentity:(id)a3;
+- (void)updateWithIdentity:(id)identity;
 @end
 
 @implementation ICLiveLink
@@ -65,46 +65,46 @@
   return WeakRetained;
 }
 
-- (void)_handlePotentiallyRecoverableError:(id)a3
+- (void)_handlePotentiallyRecoverableError:(id)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_starting || self->_started;
-  v6 = [(ICLiveLink *)self currentRetryCount];
-  [(ICLiveLink *)self setCurrentRetryCount:(v6 + 1) % ([(ICLiveLink *)self maxRetries]+ 1)];
+  currentRetryCount = [(ICLiveLink *)self currentRetryCount];
+  [(ICLiveLink *)self setCurrentRetryCount:(currentRetryCount + 1) % ([(ICLiveLink *)self maxRetries]+ 1)];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v7 = [(ICLiveLink *)self maxRetries];
+    maxRetries = [(ICLiveLink *)self maxRetries];
     v8 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2114;
-      v26 = v4;
+      v26 = errorCopy;
       v27 = 1024;
-      v28 = v6 < v7;
+      v28 = currentRetryCount < maxRetries;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "ILL %p: QRConnection encountered error %{public}@, willRetry: %{BOOL}u", buf, 0x1Cu);
     }
 
-    v9 = [(ICLiveLink *)self delegate];
+    delegate = [(ICLiveLink *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(ICLiveLink *)self delegateQueue];
+      delegateQueue = [(ICLiveLink *)self delegateQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __49__ICLiveLink__handlePotentiallyRecoverableError___block_invoke;
       block[3] = &unk_1E7BF5288;
-      v19 = v9;
-      v20 = self;
-      v21 = v4;
-      v22 = v6 < v7;
-      dispatch_async(v10, block);
+      v19 = delegate;
+      selfCopy2 = self;
+      v21 = errorCopy;
+      v22 = currentRetryCount < maxRetries;
+      dispatch_async(delegateQueue, block);
     }
 
-    if (v6 >= v7)
+    if (currentRetryCount >= maxRetries)
     {
       if ([(ICLiveLink *)self isStarted])
       {
@@ -114,21 +114,21 @@
 
     else
     {
-      if (v6 >= 1)
+      if (currentRetryCount >= 1)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = v6;
+        v11 = currentRetryCount;
       }
 
-      v12 = v11 << v6;
-      v13 = [(ICLiveLink *)self maxRetryWaitPeriod];
-      if (v12 >= v13)
+      v12 = v11 << currentRetryCount;
+      maxRetryWaitPeriod = [(ICLiveLink *)self maxRetryWaitPeriod];
+      if (v12 >= maxRetryWaitPeriod)
       {
-        v14 = v13;
+        v14 = maxRetryWaitPeriod;
       }
 
       else
@@ -140,7 +140,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v24 = self;
+        selfCopy3 = self;
         v25 = 2048;
         v26 = v14;
         _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "ILL %p: QRConnection will retry connection after %ld seconds.", buf, 0x16u);
@@ -152,7 +152,7 @@
       v17[2] = __49__ICLiveLink__handlePotentiallyRecoverableError___block_invoke_211;
       v17[3] = &unk_1E7BF9890;
       v17[4] = self;
-      v17[5] = v6;
+      v17[5] = currentRetryCount;
       dispatch_after(v16, MEMORY[0x1E69E96A0], v17);
     }
   }
@@ -179,12 +179,12 @@ void __49__ICLiveLink__handlePotentiallyRecoverableError___block_invoke_211(uint
   [v5 start];
 }
 
-- (void)_didReceivePluginErrorMessage:(id)a3
+- (void)_didReceivePluginErrorMessage:(id)message
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v4[24] & 1) == 0)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (!messageCopy || (messageCopy[24] & 1) == 0)
   {
     v6 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -200,7 +200,7 @@ void __49__ICLiveLink__handlePotentiallyRecoverableError___block_invoke_211(uint
     goto LABEL_18;
   }
 
-  v7 = *(v4 + 2);
+  v7 = *(messageCopy + 2);
   v8 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   v6 = v8;
   if (v7 != 10)
@@ -227,7 +227,7 @@ LABEL_14:
         v10 = off_1E7BF5550[v9];
 LABEL_17:
         *buf = 134218498;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2112;
         v14 = v10;
         v15 = 2114;
@@ -250,7 +250,7 @@ LABEL_18:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "ILL %p: Server restart. Will retry connection after termination.", buf, 0xCu);
   }
 
@@ -260,18 +260,18 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)connectionController:(id)a3 connectionDidEndWithError:(id)a4
+- (void)connectionController:(id)controller connectionDidEndWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(ICLiveLink *)self forcedReconnectReason];
+  forcedReconnectReason = [(ICLiveLink *)self forcedReconnectReason];
   v7 = [(NSMutableDictionary *)self->_pendingRequests copy];
   [(NSMutableArray *)self->_pendingActions removeAllObjects];
   [(NSMutableDictionary *)self->_pendingRequests removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
-  if (v5)
+  if (errorCopy)
   {
-    v8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICLiveLinkErrorDomain" code:8620 underlyingError:v5 debugDescription:@"Connection ended with error."];
+    v8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICLiveLinkErrorDomain" code:8620 underlyingError:errorCopy debugDescription:@"Connection ended with error."];
   }
 
   else
@@ -286,14 +286,14 @@ LABEL_19:
   v15 = v8;
   v9 = v8;
   [v7 enumerateKeysAndObjectsUsingBlock:&v11];
-  if (v5)
+  if (errorCopy)
   {
-    [(ICLiveLink *)self _handlePotentiallyRecoverableError:v5];
+    [(ICLiveLink *)self _handlePotentiallyRecoverableError:errorCopy];
   }
 
-  else if (v6)
+  else if (forcedReconnectReason)
   {
-    v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICLiveLinkErrorDomain" code:100 debugDescription:{@"Requested reconnection because %@.", v6, v11, v12, v13, v14, v15}];
+    v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICLiveLinkErrorDomain" code:100 debugDescription:{@"Requested reconnection because %@.", forcedReconnectReason, v11, v12, v13, v14, v15}];
     [(ICLiveLink *)self _handlePotentiallyRecoverableError:v10];
   }
 
@@ -303,61 +303,61 @@ LABEL_19:
   }
 }
 
-- (void)connectionController:(id)a3 didEncounterFatalError:(id)a4
+- (void)connectionController:(id)controller didEncounterFatalError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v5;
+    v16 = errorCopy;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_ERROR, "ILL %p: Stopping because connection controller encountered fatal error: %{public}@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(ICLiveLink *)self delegateQueue];
+    delegateQueue = [(ICLiveLink *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__ICLiveLink_connectionController_didEncounterFatalError___block_invoke;
     block[3] = &unk_1E7BFA178;
     v10 = WeakRetained;
-    v11 = self;
-    v12 = v5;
-    dispatch_async(v8, block);
+    selfCopy2 = self;
+    v12 = errorCopy;
+    dispatch_async(delegateQueue, block);
   }
 
   [(ICLiveLink *)self stop];
 }
 
-- (void)connectionControllerConnectionDidStart:(id)a3
+- (void)connectionControllerConnectionDidStart:(id)start
 {
   v30 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   started = self->_started;
-  v5 = [(ICLiveLink *)self currentRetryCount];
+  currentRetryCount = [(ICLiveLink *)self currentRetryCount];
   [(ICLiveLink *)self setReceivedDisconnectionNotice:0];
   [(ICLiveLink *)self setStarted:1];
   [(ICLiveLink *)self setStarting:0];
-  v6 = [(ICLiveLink *)self deferredReconnectReason];
+  deferredReconnectReason = [(ICLiveLink *)self deferredReconnectReason];
   [(ICLiveLink *)self setForcedReconnectReason:0];
   [(ICLiveLink *)self setDeferredReconnectReason:0];
-  v7 = [(ICLiveLink *)self connectionController];
-  v8 = [v7 sessionIdentifier];
+  connectionController = [(ICLiveLink *)self connectionController];
+  sessionIdentifier = [connectionController sessionIdentifier];
   identifier = self->_identifier;
-  self->_identifier = v8;
+  self->_identifier = sessionIdentifier;
 
   os_unfair_lock_unlock(&self->_lock);
-  if (!v6)
+  if (!deferredReconnectReason)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (started || (objc_opt_respondsToSelector() & 1) == 0)
     {
-      if (v5 < 1 || (objc_opt_respondsToSelector() & 1) == 0)
+      if (currentRetryCount < 1 || (objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_14;
       }
@@ -366,18 +366,18 @@ LABEL_19:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v29 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "ILL %p: calling delegate liveLinkDidReconnect", buf, 0xCu);
       }
 
-      v12 = [(ICLiveLink *)self delegateQueue];
+      delegateQueue = [(ICLiveLink *)self delegateQueue];
       v16 = MEMORY[0x1E69E9820];
       v17 = 3221225472;
       v18 = __53__ICLiveLink_connectionControllerConnectionDidStart___block_invoke_203;
       v19 = &unk_1E7BFA078;
       v13 = &v20;
       v20 = WeakRetained;
-      v21 = self;
+      selfCopy2 = self;
       v14 = &v16;
     }
 
@@ -387,22 +387,22 @@ LABEL_19:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v29 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "ILL %p: calling delegate didStartLiveLink", buf, 0xCu);
       }
 
-      v12 = [(ICLiveLink *)self delegateQueue];
+      delegateQueue = [(ICLiveLink *)self delegateQueue];
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __53__ICLiveLink_connectionControllerConnectionDidStart___block_invoke;
       v25 = &unk_1E7BFA078;
       v13 = &v26;
       v26 = WeakRetained;
-      v27 = self;
+      selfCopy4 = self;
       v14 = &v22;
     }
 
-    dispatch_async(v12, v14);
+    dispatch_async(delegateQueue, v14);
 
 LABEL_14:
     [(ICLiveLink *)self _performClientInfoExchangeAndInitializeQueue:v16];
@@ -410,7 +410,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [(ICLiveLink *)self reconnectWithReason:v6 options:0];
+  [(ICLiveLink *)self reconnectWithReason:deferredReconnectReason options:0];
 LABEL_15:
 }
 
@@ -455,8 +455,8 @@ LABEL_15:
   v9 = v8;
   [(_ICLLCommandMessage *)v9 setClientInfo:v7];
 
-  v10 = [(ICLiveLink *)self connectionController];
-  v11 = [v10 sessionToken];
+  connectionController = [(ICLiveLink *)self connectionController];
+  sessionToken = [connectionController sessionToken];
   if (v4)
   {
     v12 = v4[2];
@@ -476,10 +476,10 @@ LABEL_15:
   v14 = 0;
 LABEL_9:
   v15 = v14;
-  [(_ICLLClientInfoCommand *)v15 setSharedSessionToken:v11];
+  [(_ICLLClientInfoCommand *)v15 setSharedSessionToken:sessionToken];
 
-  v16 = [(ICLiveLink *)self identity];
-  v17 = [v16 externalIdentifier];
+  identity = [(ICLiveLink *)self identity];
+  externalIdentifier = [identity externalIdentifier];
   if (!v4)
   {
     v19 = 0;
@@ -498,7 +498,7 @@ LABEL_18:
   v20 = *(v18 + 2);
 LABEL_12:
   v21 = v20;
-  [(_ICLLClientInfoCommand *)v21 setExternalId:v17];
+  [(_ICLLClientInfoCommand *)v21 setExternalId:externalIdentifier];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -776,11 +776,11 @@ void __58__ICLiveLink__performClientInfoExchangeAndInitializeQueue__block_invoke
 LABEL_12:
 }
 
-- (void)_updatePlaybackControlSettingsWithReason:(id)a3 completion:(id)a4
+- (void)_updatePlaybackControlSettingsWithReason:(id)reason completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = v8;
   if (v8)
@@ -827,19 +827,19 @@ LABEL_12:
     objc_storeStrong(v14 + 2, v12);
   }
 
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(_ICLLProtocolMessage *)v9 setTraceId:v17];
+  [(_ICLLProtocolMessage *)v9 setTraceId:uUIDString];
   v18 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v6;
+    v30 = reasonCopy;
     v31 = 2114;
-    v32 = v17;
+    v32 = uUIDString;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "ILL %p: _updatePlaybackControlSettingsWithReason [requesting] reason=%{public}@ traceID=%{public}@", buf, 0x20u);
   }
 
@@ -848,12 +848,12 @@ LABEL_12:
   v23[2] = __66__ICLiveLink__updatePlaybackControlSettingsWithReason_completion___block_invoke;
   v23[3] = &unk_1E7BF5350;
   v23[4] = self;
-  v24 = v6;
-  v25 = v17;
-  v26 = v7;
-  v19 = v17;
-  v20 = v6;
-  v21 = v7;
+  v24 = reasonCopy;
+  v25 = uUIDString;
+  v26 = completionCopy;
+  v19 = uUIDString;
+  v20 = reasonCopy;
+  v21 = completionCopy;
   [(ICLiveLink *)self sendMessage:v9 completion:v23];
 }
 
@@ -938,11 +938,11 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)_updateQueueWithReason:(id)a3 completion:(id)a4
+- (void)_updateQueueWithReason:(id)reason completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = v8;
   if (v8)
@@ -989,19 +989,19 @@ LABEL_18:
     objc_storeStrong(v14 + 5, v12);
   }
 
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(_ICLLProtocolMessage *)v9 setTraceId:v17];
+  [(_ICLLProtocolMessage *)v9 setTraceId:uUIDString];
   v18 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v6;
+    v30 = reasonCopy;
     v31 = 2114;
-    v32 = v17;
+    v32 = uUIDString;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "ILL %p: _updateQueueWithReason [requesting] reason=%{public}@ traceID=%{public}@", buf, 0x20u);
   }
 
@@ -1010,12 +1010,12 @@ LABEL_18:
   v23[2] = __48__ICLiveLink__updateQueueWithReason_completion___block_invoke;
   v23[3] = &unk_1E7BF5350;
   v23[4] = self;
-  v24 = v6;
-  v25 = v17;
-  v26 = v7;
-  v19 = v17;
-  v20 = v6;
-  v21 = v7;
+  v24 = reasonCopy;
+  v25 = uUIDString;
+  v26 = completionCopy;
+  v19 = uUIDString;
+  v20 = reasonCopy;
+  v21 = completionCopy;
   [(ICLiveLink *)self sendMessage:v9 completion:v23];
 }
 
@@ -1144,11 +1144,11 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)_updateParticipantsWithReason:(id)a3 completion:(id)a4
+- (void)_updateParticipantsWithReason:(id)reason completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = v8;
   if (v8)
@@ -1195,19 +1195,19 @@ LABEL_24:
     objc_storeStrong(v14 + 1, v12);
   }
 
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(_ICLLProtocolMessage *)v9 setTraceId:v17];
+  [(_ICLLProtocolMessage *)v9 setTraceId:uUIDString];
   v18 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v6;
+    v30 = reasonCopy;
     v31 = 2114;
-    v32 = v17;
+    v32 = uUIDString;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "ILL %p: _updateParticipantsWithReason [requesting] reason=%{public}@ traceID=%{public}@", buf, 0x20u);
   }
 
@@ -1216,12 +1216,12 @@ LABEL_24:
   v23[2] = __55__ICLiveLink__updateParticipantsWithReason_completion___block_invoke;
   v23[3] = &unk_1E7BF5350;
   v23[4] = self;
-  v24 = v6;
-  v25 = v17;
-  v26 = v7;
-  v19 = v17;
-  v20 = v6;
-  v21 = v7;
+  v24 = reasonCopy;
+  v25 = uUIDString;
+  v26 = completionCopy;
+  v19 = uUIDString;
+  v20 = reasonCopy;
+  v21 = completionCopy;
   [(ICLiveLink *)self sendMessage:v9 completion:v23];
 }
 
@@ -1328,13 +1328,13 @@ LABEL_7:
 LABEL_21:
 }
 
-- (void)_storeTraceID:(id)a3 completion:(id)a4
+- (void)_storeTraceID:(id)d completion:(id)completion
 {
-  v13 = a3;
-  v7 = a4;
-  if (v13)
+  dCopy = d;
+  completionCopy = completion;
+  if (dCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -1342,30 +1342,30 @@ LABEL_21:
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1337 description:{@"Invalid parameter not satisfying: %@", @"traceID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1337 description:{@"Invalid parameter not satisfying: %@", @"traceID"}];
 
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1338 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1338 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_pendingRequests objectForKeyedSubscript:v13];
+  v8 = [(NSMutableDictionary *)self->_pendingRequests objectForKeyedSubscript:dCopy];
 
   if (v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1340 description:{@"Attempted to overwrite completion handler for traceID %@", v13}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:1340 description:{@"Attempted to overwrite completion handler for traceID %@", dCopy}];
   }
 
-  v9 = MEMORY[0x1B8C781E0](v7);
-  [(NSMutableDictionary *)self->_pendingRequests setObject:v9 forKeyedSubscript:v13];
+  v9 = MEMORY[0x1B8C781E0](completionCopy);
+  [(NSMutableDictionary *)self->_pendingRequests setObject:v9 forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1386,7 +1386,7 @@ LABEL_3:
     self->_processingAction = 1;
   }
 
-  v6 = [(NSMutableArray *)self->_pendingActions firstObject];
+  firstObject = [(NSMutableArray *)self->_pendingActions firstObject];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
@@ -1394,9 +1394,9 @@ LABEL_3:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2048;
-      v28 = v6;
+      v28 = firstObject;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEBUG, "ILL %p: _processPendingActions: [processing action] action=%p", buf, 0x16u);
     }
 
@@ -1407,7 +1407,7 @@ LABEL_3:
     v22[3] = &unk_1E7BF58E0;
     v24 = a2;
     v22[4] = self;
-    v9 = v6;
+    v9 = firstObject;
     v23 = v9;
     v10 = [v8 initWithDeallocHandler:v22];
     v17[0] = MEMORY[0x1E69E9820];
@@ -1415,7 +1415,7 @@ LABEL_3:
     v17[2] = __36__ICLiveLink__processPendingActions__block_invoke_2;
     v17[3] = &unk_1E7BF51E8;
     v18 = v10;
-    v19 = self;
+    selfCopy2 = self;
     v11 = v9;
     v20 = v11;
     v21 = a2;
@@ -1459,7 +1459,7 @@ LABEL_3:
           }
 
           *buf = 134218242;
-          v26 = self;
+          selfCopy6 = self;
           v27 = 2114;
           v28 = v11;
           v15 = "ILL %p: Received ClientInfo action with no matching completion %{public}@";
@@ -1484,7 +1484,7 @@ LABEL_3:
           }
 
           *buf = 134218242;
-          v26 = self;
+          selfCopy6 = self;
           v27 = 2114;
           v28 = v11;
           v15 = "ILL %p: Received unknown action %{public}@";
@@ -1496,7 +1496,7 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2114;
       v28 = v11;
       v15 = "ILL %p: Received invalid action %{public}@";
@@ -1510,15 +1510,15 @@ LABEL_13:
 LABEL_14:
   }
 
-  else if (v6)
+  else if (firstObject)
   {
     v16 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218496;
-      v26 = self;
+      selfCopy6 = self;
       v27 = 2048;
-      v28 = v6;
+      v28 = firstObject;
       v29 = 2048;
       v30 = v4;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEBUG, "ILL %p: _processPendingActions: [action already in flight] action=%p pendingActionCount=%ld", buf, 0x20u);
@@ -1595,7 +1595,7 @@ uint64_t __36__ICLiveLink__processPendingActions__block_invoke_2(uint64_t a1)
   return [*(a1 + 40) _processPendingActions];
 }
 
-- (id)_participantForParticipantID:(int64_t)a3
+- (id)_participantForParticipantID:(int64_t)d
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -1620,7 +1620,7 @@ uint64_t __36__ICLiveLink__processPendingActions__block_invoke_2(uint64_t a1)
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 serverID] == a3)
+        if ([v11 serverID] == d)
         {
           v12 = [v11 copy];
 
@@ -1644,33 +1644,33 @@ uint64_t __36__ICLiveLink__processPendingActions__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (id)_participantForAction:(id)a3
+- (id)_participantForAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    a3 = *(a3 + 1);
+    action = *(action + 1);
   }
 
-  return [(ICLiveLink *)self _participantForParticipantID:a3];
+  return [(ICLiveLink *)self _participantForParticipantID:action];
 }
 
-- (void)_handleUpdatedQueue:(id)a3 playbackControlSettings:(id)a4 serverQueueContext:(id)a5
+- (void)_handleUpdatedQueue:(id)queue playbackControlSettings:(id)settings serverQueueContext:(id)context
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[ICSharedListeningQueue alloc] initWithProtobuf:v10 serverQueueContext:v8 liveLink:self playbackControlSettings:v9];
+  contextCopy = context;
+  settingsCopy = settings;
+  queueCopy = queue;
+  v11 = [[ICSharedListeningQueue alloc] initWithProtobuf:queueCopy serverQueueContext:contextCopy liveLink:self playbackControlSettings:settingsCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(ICSharedListeningQueue *)self->_queue serverRevision];
-  v13 = [(ICSharedListeningQueue *)v11 serverRevision];
-  v14 = [(ICSharedListeningQueue *)self->_queue isAutoPlayEnabled];
-  v15 = [(ICSharedListeningQueue *)v11 isAutoPlayEnabled];
-  v16 = [(ICSharedListeningQueue *)self->_queue isAutoPlayAvailable];
-  v17 = [(ICSharedListeningQueue *)v11 isAutoPlayAvailable];
-  v18 = v17;
-  if (v13 > v12 || ((v14 ^ v15) & 1) != 0 || v16 != v17)
+  serverRevision = [(ICSharedListeningQueue *)self->_queue serverRevision];
+  serverRevision2 = [(ICSharedListeningQueue *)v11 serverRevision];
+  isAutoPlayEnabled = [(ICSharedListeningQueue *)self->_queue isAutoPlayEnabled];
+  isAutoPlayEnabled2 = [(ICSharedListeningQueue *)v11 isAutoPlayEnabled];
+  isAutoPlayAvailable = [(ICSharedListeningQueue *)self->_queue isAutoPlayAvailable];
+  isAutoPlayAvailable2 = [(ICSharedListeningQueue *)v11 isAutoPlayAvailable];
+  v18 = isAutoPlayAvailable2;
+  if (serverRevision2 > serverRevision || ((isAutoPlayEnabled ^ isAutoPlayEnabled2) & 1) != 0 || isAutoPlayAvailable != isAutoPlayAvailable2)
   {
     objc_storeStrong(&self->_queue, v11);
     os_unfair_lock_unlock(&self->_lock);
@@ -1678,61 +1678,61 @@ uint64_t __36__ICLiveLink__processPendingActions__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134219520;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2048;
-      v29 = v12;
+      v29 = serverRevision;
       v30 = 2048;
-      v31 = v13;
+      v31 = serverRevision2;
       v32 = 1024;
-      v33 = v16;
+      v33 = isAutoPlayAvailable;
       v34 = 1024;
       v35 = v18;
       v36 = 1024;
-      v37 = v14;
+      v37 = isAutoPlayEnabled;
       v38 = 1024;
-      v39 = v15;
+      v39 = isAutoPlayEnabled2;
       _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_DEFAULT, "ILL %p: _handleUpdatedQueue [serverRevision:(%ld --> %ld), isAutoPlayAvailable:(%{BOOL}u --> %{BOOL}u), isAutoPlayEnabled:(%{BOOL}u --> %{BOOL}u)]", buf, 0x38u);
     }
 
-    v19 = [(ICLiveLink *)self delegate];
+    delegate = [(ICLiveLink *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v21 = [(ICLiveLink *)self delegateQueue];
+      delegateQueue = [(ICLiveLink *)self delegateQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __77__ICLiveLink__handleUpdatedQueue_playbackControlSettings_serverQueueContext___block_invoke;
       block[3] = &unk_1E7BFA178;
-      v19 = v19;
-      v23 = v19;
-      v24 = self;
+      delegate = delegate;
+      v23 = delegate;
+      selfCopy2 = self;
       v25 = v11;
-      dispatch_async(v21, block);
+      dispatch_async(delegateQueue, block);
     }
   }
 
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v19 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    delegate = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2048;
-      v29 = v12;
+      v29 = serverRevision;
       v30 = 2048;
-      v31 = v13;
-      _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_DEFAULT, "ILL %p: _handleUpdatedQueue dropping queue update [client already has newer revision] currentRevision=%ld updatedRevision=%ld", buf, 0x20u);
+      v31 = serverRevision2;
+      _os_log_impl(&dword_1B4491000, delegate, OS_LOG_TYPE_DEFAULT, "ILL %p: _handleUpdatedQueue dropping queue update [client already has newer revision] currentRevision=%ld updatedRevision=%ld", buf, 0x20u);
     }
   }
 }
 
-- (void)_handleUpdatedParticipantQuery:(id)a3
+- (void)_handleUpdatedParticipantQuery:(id)query
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (query)
   {
-    v5 = *(a3 + 1);
+    v5 = *(query + 1);
   }
 
   else
@@ -1758,18 +1758,18 @@ uint64_t __36__ICLiveLink__processPendingActions__block_invoke_2(uint64_t a1)
     v9 = [MEMORY[0x1E695DFD8] setWithArray:v7];
     if (([v8 isEqual:v9]& 1) == 0)
     {
-      v10 = [(ICLiveLink *)self delegate];
+      delegate = [(ICLiveLink *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(ICLiveLink *)self delegateQueue];
+        delegateQueue = [(ICLiveLink *)self delegateQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __45__ICLiveLink__handleUpdatedParticipantQuery___block_invoke_3;
         block[3] = &unk_1E7BFA178;
-        v13 = v10;
-        v14 = self;
+        v13 = delegate;
+        selfCopy = self;
         v15 = v7;
-        dispatch_async(v11, block);
+        dispatch_async(delegateQueue, block);
       }
     }
   }
@@ -1781,7 +1781,7 @@ uint64_t __36__ICLiveLink__processPendingActions__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
       v20 = v7;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "ILL %p: Dropping participants [waiting for clientInfo] %{public}@", buf, 0x16u);
@@ -1856,14 +1856,14 @@ void __45__ICLiveLink__handleUpdatedParticipantQuery___block_invoke_2(void *a1, 
   [v16 setExternalIdentifier:v10];
 }
 
-- (void)_handleReceivedMessage:(id)a3
+- (void)_handleReceivedMessage:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    v6 = v4[5];
+    v6 = messageCopy[5];
   }
 
   else
@@ -1913,7 +1913,7 @@ LABEL_22:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           v17 = 134218242;
-          v18 = self;
+          selfCopy2 = self;
           v19 = 2114;
           v20 = v11;
           _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEBUG, "ILL %p: _handleReceivedMessage enqueuing action: %{public}@", &v17, 0x16u);
@@ -1934,7 +1934,7 @@ LABEL_20:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
       v20 = v5;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "ILL %p: Received unhandled message %{public}@", &v17, 0x16u);
@@ -1958,12 +1958,12 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)_emitSessionEventIfNeededForAction:(id)a3 disconnectedParticipant:(id)a4
+- (void)_emitSessionEventIfNeededForAction:(id)action disconnectedParticipant:(id)participant
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (*(v6 + 144) & 1) == 0)
+  actionCopy = action;
+  participantCopy = participant;
+  if (!actionCopy || (*(actionCopy + 144) & 1) == 0)
   {
     v10 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1971,9 +1971,9 @@ LABEL_23:
       goto LABEL_28;
     }
 
-    if (v6)
+    if (actionCopy)
     {
-      v11 = *(v6 + 10);
+      v11 = *(actionCopy + 10);
     }
 
     else
@@ -1983,7 +1983,7 @@ LABEL_23:
 
     v12 = v11;
     v20 = 134218242;
-    v21 = self;
+    selfCopy3 = self;
     v22 = 2114;
     v23 = v12;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "ILL %p: Received ParticipantChangeAction with displayNotice=NO %{public}@", &v20, 0x16u);
@@ -1994,7 +1994,7 @@ LABEL_27:
 
   os_unfair_lock_lock(&self->_lock);
   localParticipantServerID = self->_localParticipantServerID;
-  v9 = *(v6 + 1);
+  v9 = *(actionCopy + 1);
   os_unfair_lock_unlock(&self->_lock);
   if (v9 == localParticipantServerID)
   {
@@ -2002,7 +2002,7 @@ LABEL_27:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 134218240;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2048;
       v23 = localParticipantServerID;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "ILL %p: Received ParticipantChangeAction for the local participant: %lld", &v20, 0x16u);
@@ -2011,13 +2011,13 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v13 = *(v6 + 10);
+  v13 = *(actionCopy + 10);
   if (!v13 || (v13[7] & 2) == 0)
   {
     v14 = 0;
 LABEL_24:
 
-    v16 = v7;
+    v16 = participantCopy;
     goto LABEL_25;
   }
 
@@ -2066,7 +2066,7 @@ LABEL_24:
     v14 = 2;
   }
 
-  v16 = [(ICLiveLink *)self _participantForAction:v6];
+  v16 = [(ICLiveLink *)self _participantForAction:actionCopy];
 LABEL_25:
   v10 = v16;
   if (v16)
@@ -2081,9 +2081,9 @@ LABEL_25:
   v18 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    v19 = *(v6 + 1);
+    v19 = *(actionCopy + 1);
     v20 = 134218240;
-    v21 = self;
+    selfCopy3 = self;
     v22 = 2048;
     v23 = v19;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_ERROR, "ILL %p: Received Participant Join/Connect for unknown participant ID = %ld", &v20, 0x16u);
@@ -2093,25 +2093,25 @@ LABEL_25:
 LABEL_28:
 }
 
-- (void)_didReceiveServerNoticeAction:(id)a3 completion:(id)a4
+- (void)_didReceiveServerNoticeAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = *(v6 + 17)) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = *(actionCopy + 17)) != 0)
   {
     v9 = v8;
-    if (*(v6 + 144))
+    if (*(actionCopy + 144))
     {
       v10 = [ICLiveLinkCustomEvent alloc];
       v11 = v9[1];
       v12 = [(ICLiveLinkCustomEvent *)v10 initWithLocalizedMessage:v11];
 
-      v13 = [(ICLiveLink *)self _participantForAction:v6];
+      v13 = [(ICLiveLink *)self _participantForAction:actionCopy];
       v14 = [ICLiveLinkEvent eventWithCustomEvent:v12 participant:v13];
 
       [(ICLiveLink *)self receivedEvent:v14];
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
 
     else
@@ -2120,13 +2120,13 @@ LABEL_28:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v17 = 134218242;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2114;
         v20 = v9;
         _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_ERROR, "ILL %p: Received ServerNoticeAction with displayNotice=NO %{public}@", &v17, 0x16u);
       }
 
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -2136,34 +2136,34 @@ LABEL_28:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = actionCopy;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid ServerNoticeAction %{public}@", &v17, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v9 = 0;
   }
 }
 
-- (void)_didReceiveReplaceQueueItemsAction:(id)a3 completion:(id)a4
+- (void)_didReceiveReplaceQueueItemsAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v6[16]) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = actionCopy[16]) != 0)
   {
     v9 = v8;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invoke;
     v12[3] = &unk_1E7BF8058;
-    v16 = v7;
+    v16 = completionCopy;
     v10 = v9;
     v13 = v10;
-    v14 = self;
-    v15 = v6;
+    selfCopy = self;
+    v15 = actionCopy;
     [(ICLiveLink *)self _updateQueueWithReason:@"ServerAction[ReplaceQueueItems]" completion:v12];
   }
 
@@ -2173,13 +2173,13 @@ LABEL_28:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = actionCopy;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid ReplaceQueueItemsAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v10 = 0;
   }
 }
@@ -2284,22 +2284,22 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
   return v3 == v4;
 }
 
-- (void)_didReceiveRemoveItemAction:(id)a3 completion:(id)a4
+- (void)_didReceiveRemoveItemAction:(id)action completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = *(v6 + 15)) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = *(actionCopy + 15)) != 0)
   {
     v9 = v8;
-    if (*(v6 + 144) == 1)
+    if (*(actionCopy + 144) == 1)
     {
       v10 = [ICLiveLinkQueueEventContentRemoved alloc];
       v11 = v9[1];
       v12 = [(ICLiveLinkQueueEventContentRemoved *)v10 initWithItemIdentifier:v11];
 
       v13 = [ICLiveLinkQueueEvent queueEventWithContentRemoved:v12];
-      v14 = [(ICLiveLink *)self _participantForAction:v6];
+      v14 = [(ICLiveLink *)self _participantForAction:actionCopy];
       v15 = [ICLiveLinkEvent eventWithQueueEvent:v13 participant:v14];
 
       [(ICLiveLink *)self receivedEvent:v15];
@@ -2311,7 +2311,7 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2114;
         v22 = v9;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "ILL %p: Received RemoveItemAction with displayNotice=NO %{public}@", buf, 0x16u);
@@ -2322,7 +2322,7 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
     v17[1] = 3221225472;
     v17[2] = __53__ICLiveLink__didReceiveRemoveItemAction_completion___block_invoke;
     v17[3] = &unk_1E7BF77C0;
-    v18 = v7;
+    v18 = completionCopy;
     [(ICLiveLink *)self _updateQueueWithReason:@"ServerAction[RemoveItem]" completion:v17];
   }
 
@@ -2332,26 +2332,26 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v6;
+      v22 = actionCopy;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid RemoveItemAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v9 = 0;
   }
 }
 
-- (void)_didReceiveReactionAction:(id)a3 completion:(id)a4
+- (void)_didReceiveReactionAction:(id)action completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = *(v6 + 14)) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = *(actionCopy + 14)) != 0)
   {
     v9 = v8;
-    if (*(v6 + 144))
+    if (*(actionCopy + 144))
     {
       v10 = [ICLiveLinkReactionEvent alloc];
       v11 = v9[2];
@@ -2359,11 +2359,11 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
       v13 = v9[1];
       v14 = [(ICLiveLinkReactionEvent *)v10 initWithReaction:v11 reactionIdentifier:v12 itemIdentifier:v13];
 
-      v15 = [(ICLiveLink *)self _participantForAction:v6];
+      v15 = [(ICLiveLink *)self _participantForAction:actionCopy];
       v16 = [ICLiveLinkEvent eventWithReactionEvent:v14 participant:v15];
 
       [(ICLiveLink *)self receivedEvent:v16];
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
 
     else
@@ -2372,13 +2372,13 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v19 = 134218242;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2114;
         v22 = v9;
         _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "ILL %p: Received ReactionAction with displayNotice=NO %{public}@", &v19, 0x16u);
       }
 
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -2388,25 +2388,25 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = 134218242;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v6;
+      v22 = actionCopy;
       _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid ReactionAction %{public}@", &v19, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v9 = 0;
   }
 }
 
-- (void)_didReceiveQueueSyncAction:(id)a3 completion:(id)a4
+- (void)_didReceiveQueueSyncAction:(id)action completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy)
   {
-    v8 = v6[13];
+    v8 = actionCopy[13];
     if (v8)
     {
       v9 = v8;
@@ -2415,9 +2415,9 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
       v12 = v9[3];
       [(ICLiveLink *)self _handleUpdatedQueue:v10 playbackControlSettings:v11 serverQueueContext:v12];
 
-      if (v6[18])
+      if (actionCopy[18])
       {
-        v13 = v6[7];
+        v13 = actionCopy[7];
         if (v13)
         {
           v14 = v13;
@@ -2427,7 +2427,7 @@ BOOL __60__ICLiveLink__didReceiveReplaceQueueItemsAction_completion___block_invo
           v18 = [(ICLiveLinkQueueEventContentUpdatedMessage *)v15 initWithLocalizedTitle:v16 localizedMessage:v17];
 
           v19 = [ICLiveLinkQueueEvent queueEventWithContentUpdatedMessage:v18];
-          v20 = [(ICLiveLink *)self _participantForAction:v6];
+          v20 = [(ICLiveLink *)self _participantForAction:actionCopy];
           v21 = [ICLiveLinkEvent eventWithQueueEvent:v19 participant:v20];
 
           [(ICLiveLink *)self receivedEvent:v21];
@@ -2443,7 +2443,7 @@ LABEL_11:
         }
 
         v24 = 134218242;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2114;
         v27 = v9;
         v22 = "ILL %p: Received QueueSyncAction with displayNotice=YES but no DisplayMessage %{public}@";
@@ -2458,7 +2458,7 @@ LABEL_11:
         }
 
         v24 = 134218242;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2114;
         v27 = v9;
         v22 = "ILL %p: Received QueueSyncAction with displayNotice=NO %{public}@";
@@ -2473,34 +2473,34 @@ LABEL_11:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v24 = 134218242;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2114;
-    v27 = v6;
+    v27 = actionCopy;
     _os_log_impl(&dword_1B4491000, v23, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid QueueSyncAction %{public}@", &v24, 0x16u);
   }
 
   v9 = 0;
 LABEL_15:
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
-- (void)_didReceivePlayNowQueueItemsAction:(id)a3 completion:(id)a4
+- (void)_didReceivePlayNowQueueItemsAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v6[11]) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = actionCopy[11]) != 0)
   {
     v9 = v8;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__ICLiveLink__didReceivePlayNowQueueItemsAction_completion___block_invoke;
     v12[3] = &unk_1E7BF8058;
-    v16 = v7;
+    v16 = completionCopy;
     v10 = v9;
     v13 = v10;
-    v14 = self;
-    v15 = v6;
+    selfCopy = self;
+    v15 = actionCopy;
     [(ICLiveLink *)self _updateQueueWithReason:@"ServerAction[PlayNowQueueItems]" completion:v12];
   }
 
@@ -2510,13 +2510,13 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = actionCopy;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid PlayNowQueueItemsAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v10 = 0;
   }
 }
@@ -2752,14 +2752,14 @@ LABEL_17:
   return v14;
 }
 
-- (void)_didReceivePlaybackSyncAction:(id)a3 completion:(id)a4
+- (void)_didReceivePlaybackSyncAction:(id)action completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy)
   {
-    v8 = v6[12];
+    v8 = actionCopy[12];
     if (v8)
     {
       v9 = v8;
@@ -2785,7 +2785,7 @@ LABEL_8:
               if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218242;
-                v29 = self;
+                selfCopy3 = self;
                 v30 = 2114;
                 v31 = v9;
                 _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "ILL %p: Could not construct payload for sync message %{public}@", buf, 0x16u);
@@ -2807,13 +2807,13 @@ LABEL_8:
 
               v19 = v15;
               v16 = [v19 objectForKeyedSubscript:@"Identifier"];
-              v20 = [(ICLiveLink *)self participants];
+              participants = [(ICLiveLink *)self participants];
               v23[0] = MEMORY[0x1E69E9820];
               v23[1] = 3221225472;
               v23[2] = __55__ICLiveLink__didReceivePlaybackSyncAction_completion___block_invoke;
               v23[3] = &unk_1E7BF5170;
-              v24 = v6;
-              v21 = [v20 msv_firstWhere:v23];
+              v24 = actionCopy;
+              v21 = [participants msv_firstWhere:v23];
 
               [(ICLiveLink *)self receivedCurrentItemIdentifier:v16 fromParticipant:v21];
             }
@@ -2838,7 +2838,7 @@ LABEL_13:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2114;
         v31 = v9;
         _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_ERROR, "ILL %p: No payload for sync message %{public}@", buf, 0x16u);
@@ -2852,16 +2852,16 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2114;
-    v31 = v6;
+    v31 = actionCopy;
     _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid PlaybackSyncAction %{public}@", buf, 0x16u);
   }
 
   v9 = 0;
 LABEL_24:
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
 BOOL __55__ICLiveLink__didReceivePlaybackSyncAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -2876,14 +2876,14 @@ BOOL __55__ICLiveLink__didReceivePlaybackSyncAction_completion___block_invoke(ui
   return v3 == v4;
 }
 
-- (void)_didReceiveParticipantChangeAction:(id)a3 completion:(id)a4
+- (void)_didReceiveParticipantChangeAction:(id)action completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy)
   {
-    v8 = v6[10];
+    v8 = actionCopy[10];
     if (v8)
     {
       v9 = v8;
@@ -2892,13 +2892,13 @@ BOOL __55__ICLiveLink__didReceivePlaybackSyncAction_completion___block_invoke(ui
         v10 = *(v8 + 6);
         if (v10 == 4 || v10 == 2)
         {
-          v12 = [(ICLiveLink *)self _participantForAction:v6];
+          v12 = [(ICLiveLink *)self _participantForAction:actionCopy];
           if (v12)
           {
             v13 = v12;
             playbackCoordinatorMedium = self->_playbackCoordinatorMedium;
-            v15 = [v12 identifier];
-            [(ICLiveLinkPlaybackCoordinatorMedium *)playbackCoordinatorMedium removeParticipant:v15];
+            identifier = [v12 identifier];
+            [(ICLiveLinkPlaybackCoordinatorMedium *)playbackCoordinatorMedium removeParticipant:identifier];
 
 LABEL_15:
             v18 = v9[2];
@@ -2906,8 +2906,8 @@ LABEL_15:
             {
               v19 = v18;
               [(ICLiveLink *)self _handleUpdatedParticipantQuery:v19];
-              [(ICLiveLink *)self _emitSessionEventIfNeededForAction:v6 disconnectedParticipant:v13];
-              v7[2](v7);
+              [(ICLiveLink *)self _emitSessionEventIfNeededForAction:actionCopy disconnectedParticipant:v13];
+              completionCopy[2](completionCopy);
             }
 
             else
@@ -2917,9 +2917,9 @@ LABEL_15:
               v21[2] = __60__ICLiveLink__didReceiveParticipantChangeAction_completion___block_invoke;
               v21[3] = &unk_1E7BF8058;
               v21[4] = self;
-              v22 = v6;
+              v22 = actionCopy;
               v23 = v13;
-              v24 = v7;
+              v24 = completionCopy;
               [(ICLiveLink *)self _updateParticipantsWithReason:@"ParticipantChangeAction" completion:v21];
             }
 
@@ -2929,9 +2929,9 @@ LABEL_15:
           v16 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v17 = v6[1];
+            v17 = actionCopy[1];
             *buf = 134218240;
-            v26 = self;
+            selfCopy2 = self;
             v27 = 2048;
             v28 = v17;
             _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "ILL %p: Received Participant Leave/Disconnect for unknown participant ID = %ld", buf, 0x16u);
@@ -2948,13 +2948,13 @@ LABEL_15:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = actionCopy;
     _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid ParticipantChangeAction %{public}@", buf, 0x16u);
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
   v9 = 0;
 LABEL_22:
 }
@@ -2967,23 +2967,23 @@ uint64_t __60__ICLiveLink__didReceiveParticipantChangeAction_completion___block_
   return v2();
 }
 
-- (void)_didReceiveMoveItemAction:(id)a3 completion:(id)a4
+- (void)_didReceiveMoveItemAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v6[8]) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = actionCopy[8]) != 0)
   {
     v9 = v8;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__ICLiveLink__didReceiveMoveItemAction_completion___block_invoke;
     v12[3] = &unk_1E7BF8058;
-    v13 = v6;
-    v14 = self;
+    v13 = actionCopy;
+    selfCopy = self;
     v10 = v9;
     v15 = v10;
-    v16 = v7;
+    v16 = completionCopy;
     [(ICLiveLink *)self _updateQueueWithReason:@"ServerAction[MoveItem]" completion:v12];
   }
 
@@ -2993,13 +2993,13 @@ uint64_t __60__ICLiveLink__didReceiveParticipantChangeAction_completion___block_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = actionCopy;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid MoveItemAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v10 = 0;
   }
 }
@@ -3046,29 +3046,29 @@ void __51__ICLiveLink__didReceiveMoveItemAction_completion___block_invoke(uint64
   }
 }
 
-- (void)_didReceiveCurrentItemTransitionAction:(id)a3 completion:(id)a4
+- (void)_didReceiveCurrentItemTransitionAction:(id)action completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v6[6]) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = actionCopy[6]) != 0)
   {
     v9 = v8;
     v10 = v8[2];
     v11 = v9[1];
-    v12 = [(ICLiveLink *)self participants];
+    participants = [(ICLiveLink *)self participants];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __64__ICLiveLink__didReceiveCurrentItemTransitionAction_completion___block_invoke;
     v16[3] = &unk_1E7BF5170;
-    v17 = v6;
-    v13 = [v12 msv_firstWhere:v16];
+    v17 = actionCopy;
+    v13 = [participants msv_firstWhere:v16];
 
     v14 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218754;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
       v21 = v11;
       v22 = 2114;
@@ -3078,8 +3078,8 @@ void __51__ICLiveLink__didReceiveMoveItemAction_completion___block_invoke(uint64
       _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "ILL %p: [received current item transition - INFORMATIONAL ONLY] fromItemID=%{public}@ toItemID=%{public}@ originator=%{public}@", buf, 0x2Au);
     }
 
-    v7[2](v7);
-    v7 = v10;
+    completionCopy[2](completionCopy);
+    completionCopy = v10;
   }
 
   else
@@ -3088,13 +3088,13 @@ void __51__ICLiveLink__didReceiveMoveItemAction_completion___block_invoke(uint64
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v6;
+      v21 = actionCopy;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid CurrentItemTransitionAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v9 = 0;
   }
 }
@@ -3111,29 +3111,29 @@ BOOL __64__ICLiveLink__didReceiveCurrentItemTransitionAction_completion___block_
   return v3 == v4;
 }
 
-- (void)_didReceiveCurrentItemChangeAction:(id)a3 completion:(id)a4
+- (void)_didReceiveCurrentItemChangeAction:(id)action completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v6[5]) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = actionCopy[5]) != 0)
   {
     v9 = v8;
     v10 = v8[1];
-    v11 = [(ICLiveLink *)self participants];
+    participants = [(ICLiveLink *)self participants];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __60__ICLiveLink__didReceiveCurrentItemChangeAction_completion___block_invoke;
     v20[3] = &unk_1E7BF5170;
-    v12 = v6;
+    v12 = actionCopy;
     v21 = v12;
-    v13 = [v11 msv_firstWhere:v20];
+    v13 = [participants msv_firstWhere:v20];
 
     v14 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
       v25 = v10;
       v26 = 2114;
@@ -3149,7 +3149,7 @@ BOOL __64__ICLiveLink__didReceiveCurrentItemTransitionAction_completion___block_
       v17 = [ICLiveLinkEvent eventWithPlaybackEvent:v15 participant:v16];
 
       [(ICLiveLink *)self receivedEvent:v17];
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
 
     else
@@ -3158,13 +3158,13 @@ BOOL __64__ICLiveLink__didReceiveCurrentItemTransitionAction_completion___block_
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v23 = self;
+        selfCopy3 = self;
         v24 = 2114;
         v25 = v9;
         _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "ILL %p: Received CurrentItemChangeAction with displayNotice=NO %{public}@", buf, 0x16u);
       }
 
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -3174,13 +3174,13 @@ BOOL __64__ICLiveLink__didReceiveCurrentItemTransitionAction_completion___block_
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
-      v25 = v6;
+      v25 = actionCopy;
       _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid CurrentItemChangeAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v9 = 0;
   }
 }
@@ -3197,23 +3197,23 @@ BOOL __60__ICLiveLink__didReceiveCurrentItemChangeAction_completion___block_invo
   return v3 == v4;
 }
 
-- (void)_didReceiveAddItemsAction:(id)a3 completion:(id)a4
+- (void)_didReceiveAddItemsAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = v6[3]) != 0)
+  actionCopy = action;
+  completionCopy = completion;
+  if (actionCopy && (v8 = actionCopy[3]) != 0)
   {
     v9 = v8;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__ICLiveLink__didReceiveAddItemsAction_completion___block_invoke;
     v12[3] = &unk_1E7BF8058;
-    v13 = v6;
-    v14 = self;
+    v13 = actionCopy;
+    selfCopy = self;
     v10 = v9;
     v15 = v10;
-    v16 = v7;
+    v16 = completionCopy;
     [(ICLiveLink *)self _updateQueueWithReason:@"ServerAction[AddItems]" completion:v12];
   }
 
@@ -3223,13 +3223,13 @@ BOOL __60__ICLiveLink__didReceiveCurrentItemChangeAction_completion___block_invo
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = actionCopy;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "ILL %p: Received invalid AddItemsAction %{public}@", buf, 0x16u);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     v10 = 0;
   }
 }
@@ -3400,13 +3400,13 @@ LABEL_17:
   return v14;
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  messageCopy = message;
+  completionCopy = completion;
+  if (messageCopy)
   {
-    v7 = v12[5];
+    v7 = messageCopy[5];
   }
 
   else
@@ -3417,22 +3417,22 @@ LABEL_17:
   v8 = v7;
   if (![v8 length])
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(_ICLLProtocolMessage *)v12 setTraceId:v10];
-    v8 = v10;
+    [(_ICLLProtocolMessage *)messageCopy setTraceId:uUIDString];
+    v8 = uUIDString;
   }
 
-  [(ICLiveLink *)self _storeTraceID:v8 completion:v6];
-  v11 = [(ICLiveLink *)self connectionController];
-  [v11 sendMessage:v12];
+  [(ICLiveLink *)self _storeTraceID:v8 completion:completionCopy];
+  connectionController = [(ICLiveLink *)self connectionController];
+  [connectionController sendMessage:messageCopy];
 }
 
-- (void)sendPlaybackSyncPayload:(id)a3
+- (void)sendPlaybackSyncPayload:(id)payload
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -3482,11 +3482,11 @@ LABEL_17:
     v13 = 0;
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"ICLiveLinkTransportControlStateKey"];
+  v15 = [payloadCopy objectForKeyedSubscript:@"ICLiveLinkTransportControlStateKey"];
 
   if (v15)
   {
-    v16 = [v4 objectForKeyedSubscript:@"ICLiveLinkTransportControlStateKey"];
+    v16 = [payloadCopy objectForKeyedSubscript:@"ICLiveLinkTransportControlStateKey"];
     v37 = 0;
     v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v16 options:0 error:&v37];
     v18 = v37;
@@ -3496,7 +3496,7 @@ LABEL_17:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v39 = self;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = v18;
         v42 = 2114;
@@ -3555,11 +3555,11 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"ICLiveLinkPlaybackSyncParticipantStateKey"];
+  v21 = [payloadCopy objectForKeyedSubscript:@"ICLiveLinkPlaybackSyncParticipantStateKey"];
 
   if (v21)
   {
-    v16 = [v4 objectForKeyedSubscript:@"ICLiveLinkPlaybackSyncParticipantStateKey"];
+    v16 = [payloadCopy objectForKeyedSubscript:@"ICLiveLinkPlaybackSyncParticipantStateKey"];
     v36 = 0;
     v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v16 options:0 error:&v36];
     v18 = v36;
@@ -3569,7 +3569,7 @@ LABEL_40:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v39 = self;
+        selfCopy3 = self;
         v40 = 2114;
         v41 = v18;
         v42 = 2114;
@@ -3632,9 +3632,9 @@ LABEL_41:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v39 = self;
+    selfCopy3 = self;
     v40 = 2114;
-    v41 = v4;
+    v41 = payloadCopy;
     _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "ILL %p: Playback sync payload had no recognized key. Payload: %{public}@", buf, 0x16u);
   }
 
@@ -3643,70 +3643,70 @@ LABEL_43:
   [(ICLiveLink *)self sendMessage:v6 completion:&__block_literal_global_91];
 }
 
-- (void)receivedEvent:(id)a3
+- (void)receivedEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICLiveLink *)self delegate];
+  eventCopy = event;
+  delegate = [(ICLiveLink *)self delegate];
   v6 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = objc_opt_class();
     v17 = 2048;
-    v18 = v5;
+    v18 = delegate;
     v19 = 2114;
-    v20 = v4;
+    v20 = eventCopy;
     v7 = v16;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "ILL %p: receivedEvent delegate=<%{public}@ %p> event=%{public}@", buf, 0x2Au);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(ICLiveLink *)self delegateQueue];
+    delegateQueue = [(ICLiveLink *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __28__ICLiveLink_receivedEvent___block_invoke;
     block[3] = &unk_1E7BFA178;
-    v10 = v5;
-    v11 = self;
-    v12 = v4;
-    dispatch_async(v8, block);
+    v10 = delegate;
+    selfCopy2 = self;
+    v12 = eventCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)receivedCurrentItemIdentifier:(id)a3 fromParticipant:(id)a4
+- (void)receivedCurrentItemIdentifier:(id)identifier fromParticipant:(id)participant
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  participantCopy = participant;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(ICSharedListeningQueue *)self->_queue itemForIdentifier:v7];
+  v9 = [(ICSharedListeningQueue *)self->_queue itemForIdentifier:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v9)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:618 description:{@"Received current item ID not in queue: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:618 description:{@"Received current item ID not in queue: %@", identifierCopy}];
   }
 
-  v10 = [(ICLiveLink *)self delegate];
+  delegate = [(ICLiveLink *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(ICLiveLink *)self delegateQueue];
+    delegateQueue = [(ICLiveLink *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__ICLiveLink_receivedCurrentItemIdentifier_fromParticipant___block_invoke;
     block[3] = &unk_1E7BFA1F0;
     v12 = v20;
-    v20[0] = v10;
+    v20[0] = delegate;
     v20[1] = self;
     v13 = &v21;
     v21 = v9;
-    v22 = v8;
-    dispatch_async(v11, block);
+    v22 = participantCopy;
+    dispatch_async(delegateQueue, block);
 
-    v14 = v22;
+    delegateQueue2 = v22;
 LABEL_7:
 
     goto LABEL_8;
@@ -3714,27 +3714,27 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(ICLiveLink *)self delegateQueue];
+    delegateQueue2 = [(ICLiveLink *)self delegateQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __60__ICLiveLink_receivedCurrentItemIdentifier_fromParticipant___block_invoke_2;
     v16[3] = &unk_1E7BFA178;
     v12 = v17;
-    v17[0] = v10;
+    v17[0] = delegate;
     v17[1] = self;
     v13 = &v18;
     v18 = v9;
-    dispatch_async(v14, v16);
+    dispatch_async(delegateQueue2, v16);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (id)participantForParticipantUUID:(id)a3
+- (id)participantForParticipantUUID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_participants;
   v16 = 0u;
@@ -3756,8 +3756,8 @@ LABEL_8:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqual:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqual:dCopy];
 
         if (v12)
         {
@@ -3786,9 +3786,9 @@ LABEL_11:
     {
       participants = self->_participants;
       *buf = 134218498;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
-      v23 = v4;
+      v23 = dCopy;
       v24 = 2114;
       v25 = participants;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_ERROR, "ILL %p: Failed to find participant with UUID: %{public}@, in participants: %{public}@", buf, 0x20u);
@@ -3798,9 +3798,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)fetchPlaybackSyncStateWithCompletion:(id)a3
+- (void)fetchPlaybackSyncStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -3845,8 +3845,8 @@ LABEL_11:
   v14[2] = __51__ICLiveLink_fetchPlaybackSyncStateWithCompletion___block_invoke;
   v14[3] = &unk_1E7BF5238;
   v14[4] = self;
-  v15 = v4;
-  v12 = v4;
+  v15 = completionCopy;
+  v12 = completionCopy;
   [(ICLiveLink *)self sendMessage:v6 completion:v14];
 }
 
@@ -3899,10 +3899,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)fetchPlaybackSyncStateForMediumWithCompletion:(id)a3
+- (void)fetchPlaybackSyncStateForMediumWithCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -3950,7 +3950,7 @@ LABEL_8:
       expectingToJoinStartItemIdentifier = self->_expectingToJoinStartItemIdentifier;
       expectingToJoinAsInitiator = self->_expectingToJoinAsInitiator;
       *buf = 134218498;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
       v32 = expectingToJoinStartItemIdentifier;
       v33 = 1024;
@@ -4003,8 +4003,8 @@ LABEL_17:
   v27[2] = __60__ICLiveLink_fetchPlaybackSyncStateForMediumWithCompletion___block_invoke;
   v27[3] = &unk_1E7BF5238;
   v27[4] = self;
-  v28 = v4;
-  v25 = v4;
+  v28 = completionCopy;
+  v25 = completionCopy;
   [(ICLiveLink *)self sendMessage:v6 completion:v27];
 }
 
@@ -4137,52 +4137,52 @@ LABEL_12:
   return v10;
 }
 
-- (void)expectingToJoinWithStartItem:(id)a3 asInitiator:(BOOL)a4
+- (void)expectingToJoinWithStartItem:(id)item asInitiator:(BOOL)initiator
 {
-  v4 = a4;
+  initiatorCopy = initiator;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218498;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v6;
+    v12 = itemCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = initiatorCopy;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "ILL %p: expectingToJoin startItem=%{public}@ asInitiator=%{BOOL}u", &v9, 0x1Cu);
   }
 
   expectingToJoinStartItemIdentifier = self->_expectingToJoinStartItemIdentifier;
-  self->_expectingToJoinStartItemIdentifier = v6;
+  self->_expectingToJoinStartItemIdentifier = itemCopy;
 
-  self->_expectingToJoinAsInitiator = v4;
+  self->_expectingToJoinAsInitiator = initiatorCopy;
 }
 
-- (void)updateWithIdentity:(id)a3
+- (void)updateWithIdentity:(id)identity
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ICLiveLinkIdentity *)self->_clientSpecifiedIdentity externalIdentifier];
-  v6 = [v4 externalIdentifier];
-  if (v5 == v6)
+  externalIdentifier = [(ICLiveLinkIdentity *)self->_clientSpecifiedIdentity externalIdentifier];
+  externalIdentifier2 = [identityCopy externalIdentifier];
+  if (externalIdentifier == externalIdentifier2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [externalIdentifier isEqual:externalIdentifier2];
   }
 
-  v8 = [v4 copy];
+  v8 = [identityCopy copy];
   clientSpecifiedIdentity = self->_clientSpecifiedIdentity;
   self->_clientSpecifiedIdentity = v8;
 
   started = self->_started;
-  v11 = [(ICLiveLinkIdentity *)self->_clientSpecifiedIdentity externalIdentifier];
+  externalIdentifier3 = [(ICLiveLinkIdentity *)self->_clientSpecifiedIdentity externalIdentifier];
   os_unfair_lock_unlock(&self->_lock);
   if (started && (v7 & 1) == 0)
   {
@@ -4190,9 +4190,9 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 134218242;
-      v32 = self;
+      selfCopy = self;
       v33 = 2114;
-      v34 = v11;
+      v34 = externalIdentifier3;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "ILL %p: Notifying server of updated externalID: %{public}@", &v31, 0x16u);
     }
 
@@ -4235,8 +4235,8 @@ LABEL_12:
     v19 = v18;
     [(_ICLLCommandMessage *)v19 setClientInfo:v17];
 
-    v20 = [(ICLiveLink *)self connectionController];
-    v21 = [v20 sessionToken];
+    connectionController = [(ICLiveLink *)self connectionController];
+    sessionToken = [connectionController sessionToken];
     if (v14)
     {
       v22 = v14[2];
@@ -4256,7 +4256,7 @@ LABEL_12:
     v24 = 0;
 LABEL_16:
     v25 = v24;
-    [(_ICLLClientInfoCommand *)v25 setSharedSessionToken:v21];
+    [(_ICLLClientInfoCommand *)v25 setSharedSessionToken:sessionToken];
 
     if (v14)
     {
@@ -4267,7 +4267,7 @@ LABEL_16:
         v28 = *(v26 + 2);
 LABEL_19:
         v29 = v28;
-        [(_ICLLClientInfoCommand *)v29 setExternalId:v11];
+        [(_ICLLClientInfoCommand *)v29 setExternalId:externalIdentifier3];
 
         [(ICLiveLink *)self sendMessage:v14 completion:&__block_literal_global_76];
         goto LABEL_20;
@@ -4286,10 +4286,10 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)broadcastDirectCurrentItemChangedToItemIdentifier:(id)a3
+- (void)broadcastDirectCurrentItemChangedToItemIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_new();
   v6 = v5;
   if (v5)
@@ -4343,7 +4343,7 @@ LABEL_20:
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(v15 + 1, a3);
+      objc_storeStrong(v15 + 1, identifier);
     }
   }
 
@@ -4357,9 +4357,9 @@ LABEL_20:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v4;
+    v23 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_DEFAULT, "ILL %p: broadcastDirectCurrentItemChangedToItemIdentifier itemId=%{public}@", buf, 0x16u);
   }
 
@@ -4373,7 +4373,7 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "ILL %p: ending playback sync", &v5, 0xCu);
   }
 
@@ -4382,22 +4382,22 @@ LABEL_20:
   self->_playbackCoordinatorMedium = 0;
 }
 
-- (void)beginSynchronizedPlaybackWithAVCFPlaybackCoordinator:(void *)a3
+- (void)beginSynchronizedPlaybackWithAVCFPlaybackCoordinator:(void *)coordinator
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_ERROR, "ILL %p: failed to begin playback sync with AVCFPlaybackCoordinator [ICLiveLink compiled without AVCFPlaybackCoordinator.h]", &v5, 0xCu);
   }
 }
 
-- (void)beginSynchronizedPlaybackWithAVPlaybackCoordinator:(id)a3
+- (void)beginSynchronizedPlaybackWithAVPlaybackCoordinator:(id)coordinator
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coordinatorCopy = coordinator;
   if (!self->_playbackCoordinatorMedium)
   {
     goto LABEL_5;
@@ -4410,9 +4410,9 @@ LABEL_20:
   }
 
   playbackCoordinatorMedium = self->_playbackCoordinatorMedium;
-  v6 = [(ICLiveLinkPlaybackCoordinatorMedium *)playbackCoordinatorMedium playbackCoordinator];
+  playbackCoordinator = [(ICLiveLinkPlaybackCoordinatorMedium *)playbackCoordinatorMedium playbackCoordinator];
 
-  if (v6 != v4)
+  if (playbackCoordinator != coordinatorCopy)
   {
 
 LABEL_5:
@@ -4420,13 +4420,13 @@ LABEL_5:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2114;
-      v13 = v4;
+      v13 = coordinatorCopy;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "ILL %p: beginning playback sync with coordinator: %{public}@", &v10, 0x16u);
     }
 
-    v8 = [[ICLinkLinkAVPlaybackCoordinatorMedium alloc] initWithPlaybackCoordinator:v4 liveLink:self];
+    v8 = [[ICLinkLinkAVPlaybackCoordinatorMedium alloc] initWithPlaybackCoordinator:coordinatorCopy liveLink:self];
     playbackCoordinatorMedium = self->_playbackCoordinatorMedium;
     self->_playbackCoordinatorMedium = &v8->super;
     goto LABEL_8;
@@ -4436,45 +4436,45 @@ LABEL_5:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = coordinatorCopy;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "ILL %p: already syncing playback with coordinator: %{public}@", &v10, 0x16u);
   }
 
 LABEL_8:
 }
 
-- (void)reconnectWithReason:(id)a3 options:(id)a4
+- (void)reconnectWithReason:(id)reason options:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v5;
+    v12 = reasonCopy;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "ILL %p: forcing reconnect because: %{public}@", &v9, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(ICLiveLink *)self forcedReconnectReason];
+  forcedReconnectReason = [(ICLiveLink *)self forcedReconnectReason];
 
-  if (v7)
+  if (forcedReconnectReason)
   {
-    [(ICLiveLink *)self setDeferredReconnectReason:v5];
+    [(ICLiveLink *)self setDeferredReconnectReason:reasonCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
     [(ICLiveLink *)self setCurrentRetryCount:0];
-    [(ICLiveLink *)self setForcedReconnectReason:v5];
+    [(ICLiveLink *)self setForcedReconnectReason:reasonCopy];
     os_unfair_lock_unlock(&self->_lock);
-    v8 = [(ICLiveLink *)self connectionController];
-    [v8 stop];
+    connectionController = [(ICLiveLink *)self connectionController];
+    [connectionController stop];
   }
 }
 
@@ -4484,8 +4484,8 @@ LABEL_8:
   started = self->_started;
   [(ICLiveLink *)self setStarted:0];
   [(ICLiveLink *)self setStarting:0];
-  v4 = [(ICLiveLink *)self connectionController];
-  [v4 stop];
+  connectionController = [(ICLiveLink *)self connectionController];
+  [connectionController stop];
 
   [(ICLiveLink *)self setConnectionController:0];
   [(ICLiveLink *)self setForcedReconnectReason:0];
@@ -4496,14 +4496,14 @@ LABEL_8:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(ICLiveLink *)self delegateQueue];
+      delegateQueue = [(ICLiveLink *)self delegateQueue];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __18__ICLiveLink_stop__block_invoke;
       v7[3] = &unk_1E7BFA078;
       v8 = WeakRetained;
-      v9 = self;
-      dispatch_async(v6, v7);
+      selfCopy = self;
+      dispatch_async(delegateQueue, v7);
     }
   }
 }
@@ -4513,60 +4513,60 @@ LABEL_8:
   v20 = *MEMORY[0x1E69E9840];
   if ([(ICLiveLink *)self isStarted])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:372 description:@"Attempted to start an already started live link"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICLiveLink.m" lineNumber:372 description:@"Attempted to start an already started live link"];
   }
 
   v4 = os_log_create("com.apple.amp.iTunesCloud", "LiveLink");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134217984;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "ILL %p: Starting.", &v18, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
   [(ICLiveLink *)self setStarting:1];
-  v5 = [(ICLiveLink *)self connectionController];
+  connectionController = [(ICLiveLink *)self connectionController];
 
-  if (!v5)
+  if (!connectionController)
   {
     v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileipod"];
     v7 = [v6 BOOLForKey:@"forceExternalQR"];
 
     if (v7)
     {
-      v8 = [(ICLiveLink *)self identifier];
-      v9 = [(ICLiveLink *)self clientSpecifiedIdentity];
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
-      v11 = [v10 bundleIdentifier];
+      identifier = [(ICLiveLink *)self identifier];
+      clientSpecifiedIdentity = [(ICLiveLink *)self clientSpecifiedIdentity];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
     }
 
     else
     {
       v12 = [MEMORY[0x1E69B1418] hasBoolEntitlement:@"com.apple.itunescloud.quic.inprocess"];
-      v8 = [(ICLiveLink *)self identifier];
-      v9 = [(ICLiveLink *)self clientSpecifiedIdentity];
-      v10 = [MEMORY[0x1E696AAE8] mainBundle];
-      v11 = [v10 bundleIdentifier];
+      identifier = [(ICLiveLink *)self identifier];
+      clientSpecifiedIdentity = [(ICLiveLink *)self clientSpecifiedIdentity];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       if (v12)
       {
-        v13 = [ICSharedListeningConnectionController sharedListeningConnectionWithSessionIdentifier:v8 identity:v9 bundleID:v11];
+        v13 = [ICSharedListeningConnectionController sharedListeningConnectionWithSessionIdentifier:identifier identity:clientSpecifiedIdentity bundleID:bundleIdentifier];
 LABEL_11:
         v14 = v13;
         [(ICLiveLink *)self setConnectionController:v13];
 
-        v15 = [(ICLiveLink *)self connectionController];
-        [v15 setDelegate:self];
+        connectionController2 = [(ICLiveLink *)self connectionController];
+        [connectionController2 setDelegate:self];
 
-        v16 = [(ICLiveLink *)self connectionController];
-        [v16 start];
+        connectionController3 = [(ICLiveLink *)self connectionController];
+        [connectionController3 start];
 
         goto LABEL_12;
       }
     }
 
-    v13 = [ICSharedListeningConnectionController externalSharedListeningConnectionWithSessionIdentifier:v8 identity:v9 bundleID:v11];
+    v13 = [ICSharedListeningConnectionController externalSharedListeningConnectionWithSessionIdentifier:identifier identity:clientSpecifiedIdentity bundleID:bundleIdentifier];
     goto LABEL_11;
   }
 
@@ -4576,10 +4576,10 @@ LABEL_12:
 
 - (NSURL)invitationURL
 {
-  v2 = [(ICLiveLink *)self connectionController];
-  v3 = [v2 inviteURL];
+  connectionController = [(ICLiveLink *)self connectionController];
+  inviteURL = [connectionController inviteURL];
 
-  return v3;
+  return inviteURL;
 }
 
 - (BOOL)isStarted
@@ -4597,7 +4597,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "ILL %p: Deallocating.", buf, 0xCu);
   }
 
@@ -4606,20 +4606,20 @@ LABEL_12:
   [(ICLiveLink *)&v4 dealloc];
 }
 
-- (ICLiveLink)initWithSharedListeningSessionIdentifier:(id)a3 identity:(id)a4
+- (ICLiveLink)initWithSharedListeningSessionIdentifier:(id)identifier identity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v27.receiver = self;
   v27.super_class = ICLiveLink;
   v8 = [(ICLiveLink *)&v27 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [identityCopy copy];
     clientSpecifiedIdentity = v8->_clientSpecifiedIdentity;
     v8->_clientSpecifiedIdentity = v11;
 
@@ -4647,13 +4647,13 @@ LABEL_12:
 
     v8->_maxRetryWaitPeriod = v18;
     v8->_lock._os_unfair_lock_opaque = 0;
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingRequests = v8->_pendingRequests;
-    v8->_pendingRequests = v19;
+    v8->_pendingRequests = dictionary;
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingActions = v8->_pendingActions;
-    v8->_pendingActions = v21;
+    v8->_pendingActions = array;
 
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v24 = dispatch_queue_create("com.apple.amp.MediaServices.LiveLink.delegateQueue", v23);
@@ -4664,19 +4664,19 @@ LABEL_12:
   return v8;
 }
 
-+ (ICLiveLink)linkWithSessionIdentifier:(id)a3 identity:(id)a4
++ (ICLiveLink)linkWithSessionIdentifier:(id)identifier identity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICLiveLink alloc] initWithSharedListeningSessionIdentifier:v6 identity:v5];
+  identityCopy = identity;
+  identifierCopy = identifier;
+  v7 = [[ICLiveLink alloc] initWithSharedListeningSessionIdentifier:identifierCopy identity:identityCopy];
 
   return v7;
 }
 
-+ (ICLiveLink)linkWithIdentity:(id)a3
++ (ICLiveLink)linkWithIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [[ICLiveLink alloc] initWithSharedListeningSessionIdentifier:0 identity:v3];
+  identityCopy = identity;
+  v4 = [[ICLiveLink alloc] initWithSharedListeningSessionIdentifier:0 identity:identityCopy];
 
   return v4;
 }

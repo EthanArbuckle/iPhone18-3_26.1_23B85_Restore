@@ -1,29 +1,29 @@
 @interface CNFAccountRegistrar
-- (CNFAccountRegistrar)initWithServiceType:(int64_t)a3 presentationViewController:(id)a4;
-- (void)_accountRegistrationStatusChanged:(id)a3;
-- (void)_configureAliasesForAccount:(id)a3;
-- (void)_continueRegisteringAuthenticatedAccount:(id)a3;
-- (void)_registrationTimerFired:(id)a3;
+- (CNFAccountRegistrar)initWithServiceType:(int64_t)type presentationViewController:(id)controller;
+- (void)_accountRegistrationStatusChanged:(id)changed;
+- (void)_configureAliasesForAccount:(id)account;
+- (void)_continueRegisteringAuthenticatedAccount:(id)account;
+- (void)_registrationTimerFired:(id)fired;
 - (void)_startTimer;
 - (void)_stopTimer;
-- (void)continueRegistrationForAccount:(id)a3 completionBlock:(id)a4;
+- (void)continueRegistrationForAccount:(id)account completionBlock:(id)block;
 - (void)dealloc;
-- (void)registerAccountWithUsername:(id)a3 password:(id)a4 service:(id)a5 completionBlock:(id)a6;
+- (void)registerAccountWithUsername:(id)username password:(id)password service:(id)service completionBlock:(id)block;
 @end
 
 @implementation CNFAccountRegistrar
 
-- (CNFAccountRegistrar)initWithServiceType:(int64_t)a3 presentationViewController:(id)a4
+- (CNFAccountRegistrar)initWithServiceType:(int64_t)type presentationViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CNFAccountRegistrar;
   v7 = [(CNFAccountRegistrar *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(CNFAccountRegistrar *)v7 setServiceType:a3];
-    [(CNFAccountRegistrar *)v8 setPresentationViewController:v6];
+    [(CNFAccountRegistrar *)v7 setServiceType:type];
+    [(CNFAccountRegistrar *)v8 setPresentationViewController:controllerCopy];
   }
 
   return v8;
@@ -31,11 +31,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277D18D68] sharedInstance];
-  [v4 removeListenerID:@"CNFAccountRegistrar"];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  [mEMORY[0x277D18D68] removeListenerID:@"CNFAccountRegistrar"];
 
   v5.receiver = self;
   v5.super_class = CNFAccountRegistrar;
@@ -48,34 +48,34 @@
   v3 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel__registrationTimerFired_ selector:0 userInfo:0 repeats:180.0];
   [(CNFAccountRegistrar *)self setRegistrationTimer:v3];
 
-  v5 = [MEMORY[0x277CBEB88] mainRunLoop];
-  v4 = [(CNFAccountRegistrar *)self registrationTimer];
-  [v5 addTimer:v4 forMode:*MEMORY[0x277CBE640]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  registrationTimer = [(CNFAccountRegistrar *)self registrationTimer];
+  [mainRunLoop addTimer:registrationTimer forMode:*MEMORY[0x277CBE640]];
 }
 
 - (void)_stopTimer
 {
-  v3 = [(CNFAccountRegistrar *)self registrationTimer];
-  [v3 invalidate];
+  registrationTimer = [(CNFAccountRegistrar *)self registrationTimer];
+  [registrationTimer invalidate];
 
   [(CNFAccountRegistrar *)self setRegistrationTimer:0];
 }
 
-- (void)_configureAliasesForAccount:(id)a3
+- (void)_configureAliasesForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 aliasesToRegister];
-  [v3 addAliases:v4];
+  accountCopy = account;
+  aliasesToRegister = [accountCopy aliasesToRegister];
+  [accountCopy addAliases:aliasesToRegister];
 
-  v5 = [v3 aliasesToRegister];
-  [v3 validateAliases:v5];
+  aliasesToRegister2 = [accountCopy aliasesToRegister];
+  [accountCopy validateAliases:aliasesToRegister2];
 
-  v6 = [MEMORY[0x277D07DB0] sharedInstance];
-  if ([v6 supportsSMS])
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  if ([mEMORY[0x277D07DB0] supportsSMS])
   {
-    v7 = [v3 accountType];
+    accountType = [accountCopy accountType];
 
-    if (v7 == 1)
+    if (accountType == 1)
     {
       v8 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -89,7 +89,7 @@
         IMLogString();
       }
 
-      [v3 addAlias:*MEMORY[0x277D18AB8]];
+      [accountCopy addAlias:*MEMORY[0x277D18AB8]];
     }
   }
 
@@ -98,52 +98,52 @@
   }
 }
 
-- (void)_continueRegisteringAuthenticatedAccount:(id)a3
+- (void)_continueRegisteringAuthenticatedAccount:(id)account
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = accountCopy;
     _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Continuing registration for authenticated account: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v22 = v4;
+    v22 = accountCopy;
     IMLogString();
   }
 
-  if ([v4 profileValidationStatus] != 3)
+  if ([accountCopy profileValidationStatus] != 3)
   {
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 profileValidationStatus];
+      profileValidationStatus = [accountCopy profileValidationStatus];
       *buf = 134217984;
-      v28 = v8;
+      v28 = profileValidationStatus;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_DEFAULT, "Profile is not validated. Current status: %ld", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v23 = [v4 profileValidationStatus];
+      profileValidationStatus2 = [accountCopy profileValidationStatus];
       IMLogString();
     }
 
     [(CNFAccountRegistrar *)self _stopTimer];
     v9 = [CNFRegLocaleController alloc];
     v10 = [CNFRegController controllerForServiceType:[(CNFAccountRegistrar *)self serviceType]];
-    v11 = [(CNFRegFirstRunController *)v9 initWithRegController:v10 account:v4];
+    v11 = [(CNFRegFirstRunController *)v9 initWithRegController:v10 account:accountCopy];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __64__CNFAccountRegistrar__continueRegisteringAuthenticatedAccount___block_invoke;
     v24[3] = &unk_278DE8640;
     v24[4] = self;
-    v25 = v4;
+    v25 = accountCopy;
     [(CNFRegLocaleController *)v11 setCompletionBlock:v24];
     v12 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -168,28 +168,28 @@
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
     [v13 setViewControllers:v16];
 
-    v17 = [(CNFAccountRegistrar *)self presentationViewController];
-    v18 = [v17 presentedViewController];
+    presentationViewController = [(CNFAccountRegistrar *)self presentationViewController];
+    presentedViewController = [presentationViewController presentedViewController];
 
-    if (v18)
+    if (presentedViewController)
     {
-      v19 = [(CNFAccountRegistrar *)self completionBlock];
+      completionBlock = [(CNFAccountRegistrar *)self completionBlock];
 
-      if (!v19)
+      if (!completionBlock)
       {
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      v20 = [(CNFAccountRegistrar *)self completionBlock];
-      (v20)[2](v20, 0, v13);
+      completionBlock2 = [(CNFAccountRegistrar *)self completionBlock];
+      (completionBlock2)[2](completionBlock2, 0, v13);
     }
 
     else
     {
-      v20 = [(CNFAccountRegistrar *)self presentationViewController];
-      [v20 presentModalViewController:v13 withTransition:3];
+      completionBlock2 = [(CNFAccountRegistrar *)self presentationViewController];
+      [completionBlock2 presentModalViewController:v13 withTransition:3];
     }
 
     goto LABEL_28;
@@ -207,8 +207,8 @@ LABEL_28:
     IMLogString();
   }
 
-  [(CNFAccountRegistrar *)self _configureAliasesForAccount:v4];
-  [v4 registerAccount];
+  [(CNFAccountRegistrar *)self _configureAliasesForAccount:accountCopy];
+  [accountCopy registerAccount];
 LABEL_29:
 
   v21 = *MEMORY[0x277D85DE8];
@@ -275,44 +275,44 @@ void __64__CNFAccountRegistrar__continueRegisteringAuthenticatedAccount___block_
   }
 }
 
-- (void)continueRegistrationForAccount:(id)a3 completionBlock:(id)a4
+- (void)continueRegistrationForAccount:(id)account completionBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  blockCopy = block;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = accountCopy;
     _os_log_impl(&dword_243BE5000, v8, OS_LOG_TYPE_DEFAULT, "Continuing registration for account: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v12 = v6;
+    v12 = accountCopy;
     IMLogString();
   }
 
-  [(CNFAccountRegistrar *)self setAccount:v6, v12];
-  [(CNFAccountRegistrar *)self setCompletionBlock:v7];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 removeObserver:self];
-  [v9 addObserver:self selector:sel__accountRegistrationStatusChanged_ name:*MEMORY[0x277D18CA8] object:0];
-  v10 = [MEMORY[0x277D18D28] sharedInstance];
-  [v10 activateAccount:v6];
+  [(CNFAccountRegistrar *)self setAccount:accountCopy, v12];
+  [(CNFAccountRegistrar *)self setCompletionBlock:blockCopy];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
+  [defaultCenter addObserver:self selector:sel__accountRegistrationStatusChanged_ name:*MEMORY[0x277D18CA8] object:0];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  [mEMORY[0x277D18D28] activateAccount:accountCopy];
 
-  if ([v6 registrationStatus] > 1)
+  if ([accountCopy registrationStatus] > 1)
   {
-    if ([v6 registrationStatus] == 3)
+    if ([accountCopy registrationStatus] == 3)
     {
-      [(CNFAccountRegistrar *)self _continueRegisteringAuthenticatedAccount:v6];
+      [(CNFAccountRegistrar *)self _continueRegisteringAuthenticatedAccount:accountCopy];
     }
   }
 
   else
   {
-    [v6 authenticateAccount];
+    [accountCopy authenticateAccount];
   }
 
   [(CNFAccountRegistrar *)self _startTimer];
@@ -320,43 +320,43 @@ void __64__CNFAccountRegistrar__continueRegisteringAuthenticatedAccount___block_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerAccountWithUsername:(id)a3 password:(id)a4 service:(id)a5 completionBlock:(id)a6
+- (void)registerAccountWithUsername:(id)username password:(id)password service:(id)service completionBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && v11 && v12)
+  usernameCopy = username;
+  passwordCopy = password;
+  serviceCopy = service;
+  blockCopy = block;
+  if (usernameCopy && passwordCopy && serviceCopy)
   {
     v14 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v10;
+      v28 = usernameCopy;
       v29 = 2112;
-      v30 = v12;
+      v30 = serviceCopy;
       _os_log_impl(&dword_243BE5000, v14, OS_LOG_TYPE_DEFAULT, "Registering account: %@ (service: %@)", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v18 = v10;
-      v19 = v12;
+      v18 = usernameCopy;
+      v19 = serviceCopy;
       IMLogString();
     }
 
-    [(CNFAccountRegistrar *)self setCompletionBlock:v13, v18, v19];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:self selector:sel__accountRegistrationStatusChanged_ name:*MEMORY[0x277D18CA8] object:0];
+    [(CNFAccountRegistrar *)self setCompletionBlock:blockCopy, v18, v19];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__accountRegistrationStatusChanged_ name:*MEMORY[0x277D18CA8] object:0];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __84__CNFAccountRegistrar_registerAccountWithUsername_password_service_completionBlock___block_invoke;
     v22[3] = &unk_278DE8668;
-    v23 = v12;
-    v24 = v10;
-    v25 = v11;
-    v26 = self;
+    v23 = serviceCopy;
+    v24 = usernameCopy;
+    v25 = passwordCopy;
+    selfCopy = self;
     v16 = MEMORY[0x245D4D850](v22);
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
@@ -402,9 +402,9 @@ void __84__CNFAccountRegistrar_registerAccountWithUsername_password_service_comp
   [*(a1 + 56) setAccount:v6];
 }
 
-- (void)_registrationTimerFired:(id)a3
+- (void)_registrationTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -418,21 +418,21 @@ void __84__CNFAccountRegistrar_registerAccountWithUsername_password_service_comp
   }
 
   [(CNFAccountRegistrar *)self _stopTimer];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v7 = [MEMORY[0x277D18D28] sharedInstance];
-  v8 = [(CNFAccountRegistrar *)self account];
-  [v7 deactivateAccount:v8];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  account = [(CNFAccountRegistrar *)self account];
+  [mEMORY[0x277D18D28] deactivateAccount:account];
 
-  v9 = [MEMORY[0x277D18D28] sharedInstance];
-  v10 = [(CNFAccountRegistrar *)self account];
-  [v9 deleteAccount:v10];
+  mEMORY[0x277D18D28]2 = [MEMORY[0x277D18D28] sharedInstance];
+  account2 = [(CNFAccountRegistrar *)self account];
+  [mEMORY[0x277D18D28]2 deleteAccount:account2];
 
   [(CNFAccountRegistrar *)self setAccount:0];
-  v11 = [(CNFAccountRegistrar *)self completionBlock];
+  completionBlock = [(CNFAccountRegistrar *)self completionBlock];
 
-  if (v11)
+  if (completionBlock)
   {
     v12 = CommunicationsSetupUIBundle();
     v13 = CNFRegStringTableName();
@@ -450,8 +450,8 @@ void __84__CNFAccountRegistrar_registerAccountWithUsername_password_service_comp
     v22 = [MEMORY[0x277D750F8] actionWithTitle:v20 style:0 handler:0];
     [v21 addAction:v22];
 
-    v23 = [(CNFAccountRegistrar *)self completionBlock];
-    (v23)[2](v23, 0, v21);
+    completionBlock2 = [(CNFAccountRegistrar *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, 0, v21);
   }
 
   if (_registrationTimerFired__onceToken != -1)
@@ -478,27 +478,27 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
   [v1 killDaemon];
 }
 
-- (void)_accountRegistrationStatusChanged:(id)a3
+- (void)_accountRegistrationStatusChanged:(id)changed
 {
   v105 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(CNFAccountRegistrar *)self account];
+  changedCopy = changed;
+  object = [changedCopy object];
+  account = [(CNFAccountRegistrar *)self account];
 
   v7 = 0x277CCA000uLL;
-  if (v5 != v6)
+  if (object != account)
   {
     goto LABEL_2;
   }
 
-  v10 = [v5 registrationStatus];
-  if (v10 <= 1)
+  registrationStatus = [object registrationStatus];
+  if (registrationStatus <= 1)
   {
-    if (v10 != -1)
+    if (registrationStatus != -1)
     {
-      if (v10)
+      if (registrationStatus)
       {
-        if (v10 == 1)
+        if (registrationStatus == 1)
         {
           v13 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -549,33 +549,33 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
     v23 = CNFRegStringTableNameForServiceType([(CNFAccountRegistrar *)self serviceType]);
     v93 = [v22 localizedStringForKey:@"FACETIME_ALERT_OK" value:&stru_2856D3978 table:v23];
 
-    v24 = [v5 registrationFailureReason];
-    v94 = [v5 registrationFailureAlertInfo];
+    registrationFailureReason = [object registrationFailureReason];
+    registrationFailureAlertInfo = [object registrationFailureAlertInfo];
     v25 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [MEMORY[0x277CCABB0] numberWithInteger:v24];
+      v26 = [MEMORY[0x277CCABB0] numberWithInteger:registrationFailureReason];
       *buf = 138412802;
-      v100 = v5;
+      v100 = object;
       v101 = 2112;
       v102 = v26;
       v103 = 2112;
-      v104 = v94;
+      v104 = registrationFailureAlertInfo;
       _os_log_impl(&dword_243BE5000, v25, OS_LOG_TYPE_DEFAULT, "Account (%@) failed with failure reason: %@ and alert info %@.", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v88 = [MEMORY[0x277CCABB0] numberWithInteger:v24];
-      v89 = v94;
-      v87 = v5;
+      v88 = [MEMORY[0x277CCABB0] numberWithInteger:registrationFailureReason];
+      v89 = registrationFailureAlertInfo;
+      v87 = object;
       IMLogString();
     }
 
-    v91 = v94 == 0;
-    if (v94)
+    v91 = registrationFailureAlertInfo == 0;
+    if (registrationFailureAlertInfo)
     {
-      v27 = [v94 objectForKey:*MEMORY[0x277D18C98]];
+      v27 = [registrationFailureAlertInfo objectForKey:*MEMORY[0x277D18C98]];
       v28 = v27;
       if (v27)
       {
@@ -591,7 +591,7 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
         v19 = v47;
       }
 
-      v49 = [v94 objectForKey:*MEMORY[0x277D18C90]];
+      v49 = [registrationFailureAlertInfo objectForKey:*MEMORY[0x277D18C90]];
       v50 = v49;
       if (v49)
       {
@@ -606,7 +606,7 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
         v90 = [v51 localizedStringForKey:@"FACETIME_SIGNIN_ERROR_GENERIC" value:&stru_2856D3978 table:v52];
       }
 
-      v53 = [v94 objectForKey:*MEMORY[0x277D18C88]];
+      v53 = [registrationFailureAlertInfo objectForKey:*MEMORY[0x277D18C88]];
       v54 = v53;
       if (v53)
       {
@@ -621,7 +621,7 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
         v39 = [v55 localizedStringForKey:@"FACETIME_ALERT_CANCEL" value:&stru_2856D3978 table:v56];
       }
 
-      v40 = [v94 objectForKey:*MEMORY[0x277D18C70]];
+      v40 = [registrationFailureAlertInfo objectForKey:*MEMORY[0x277D18C70]];
       v45 = [v40 valueForKey:*MEMORY[0x277D18C68]];
       v44 = [v40 valueForKey:*MEMORY[0x277D18C80]];
       v41 = [v40 valueForKey:*MEMORY[0x277D18C78]];
@@ -631,7 +631,7 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
 
     if (_os_feature_enabled_impl())
     {
-      if (v24 == 28)
+      if (registrationFailureReason == 28)
       {
         v81 = CommunicationsSetupUIBundle();
         v82 = CNFRegStringTableNameForServiceType([(CNFAccountRegistrar *)self serviceType]);
@@ -651,7 +651,7 @@ void __47__CNFAccountRegistrar__registrationTimerFired___block_invoke_2()
         goto LABEL_80;
       }
 
-      if (v24 == 29)
+      if (registrationFailureReason == 29)
       {
         v33 = CommunicationsSetupUIBundle();
         v34 = CNFRegStringTableNameForServiceType([(CNFAccountRegistrar *)self serviceType]);
@@ -718,30 +718,30 @@ LABEL_67:
 LABEL_73:
     v16 = 0;
 LABEL_74:
-    v62 = [(CNFAccountRegistrar *)self registrationTimer];
-    [v62 invalidate];
+    registrationTimer = [(CNFAccountRegistrar *)self registrationTimer];
+    [registrationTimer invalidate];
 
     [(CNFAccountRegistrar *)self setRegistrationTimer:0];
-    v63 = [(CNFAccountRegistrar *)self completionBlock];
+    completionBlock = [(CNFAccountRegistrar *)self completionBlock];
 
-    if (v63)
+    if (completionBlock)
     {
-      v64 = [(CNFAccountRegistrar *)self completionBlock];
-      (v64)[2](v64, v16, v15);
+      completionBlock2 = [(CNFAccountRegistrar *)self completionBlock];
+      (completionBlock2)[2](completionBlock2, v16, v15);
     }
 
     [(CNFAccountRegistrar *)self setAccount:0];
-    v65 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v65 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     goto LABEL_77;
   }
 
-  if (v10 > 3)
+  if (registrationStatus > 3)
   {
-    if (v10 != 4)
+    if (registrationStatus != 4)
     {
-      if (v10 != 5)
+      if (registrationStatus != 5)
       {
         goto LABEL_2;
       }
@@ -779,7 +779,7 @@ LABEL_74:
 
   else
   {
-    if (v10 != 2)
+    if (registrationStatus != 2)
     {
       v11 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -793,10 +793,10 @@ LABEL_74:
         IMLogString();
       }
 
-      v12 = [v5 aliasesToRegister];
-      if ([v12 count] || (objc_msgSend(v5, "canSendMessages") & 1) != 0)
+      aliasesToRegister = [object aliasesToRegister];
+      if ([aliasesToRegister count] || (objc_msgSend(object, "canSendMessages") & 1) != 0)
       {
-        [(CNFAccountRegistrar *)self _continueRegisteringAuthenticatedAccount:v5];
+        [(CNFAccountRegistrar *)self _continueRegisteringAuthenticatedAccount:object];
 
 LABEL_77:
         v7 = 0x277CCA000;
@@ -827,11 +827,11 @@ LABEL_77:
       [v15 addAction:v78];
 
       [(CNFAccountRegistrar *)self setAccount:0];
-      v79 = [MEMORY[0x277D18D28] sharedInstance];
-      [v79 deactivateAccount:v5];
+      mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+      [mEMORY[0x277D18D28] deactivateAccount:object];
 
-      v80 = [MEMORY[0x277D18D28] sharedInstance];
-      [v80 deleteAccount:v5];
+      mEMORY[0x277D18D28]2 = [MEMORY[0x277D18D28] sharedInstance];
+      [mEMORY[0x277D18D28]2 deleteAccount:object];
 
       goto LABEL_73;
     }
@@ -852,8 +852,8 @@ LABEL_52:
   }
 
 LABEL_2:
-  v8 = [*(v7 + 2968) defaultCenter];
-  [v8 postNotificationName:@"CNFAccountRegistarStateChangedNotification" object:0];
+  defaultCenter2 = [*(v7 + 2968) defaultCenter];
+  [defaultCenter2 postNotificationName:@"CNFAccountRegistarStateChangedNotification" object:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }

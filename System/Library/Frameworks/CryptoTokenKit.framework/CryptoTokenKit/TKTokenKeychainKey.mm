@@ -1,7 +1,7 @@
 @interface TKTokenKeychainKey
-- (BOOL)setupWithPublicKey:(__SecKey *)a3 label:(id)a4;
+- (BOOL)setupWithPublicKey:(__SecKey *)key label:(id)label;
 - (TKTokenKeychainKey)initWithCertificate:(SecCertificateRef)certificateRef objectID:(TKTokenObjectID)objectID;
-- (TKTokenKeychainKey)initWithItemInfo:(id)a3;
+- (TKTokenKeychainKey)initWithItemInfo:(id)info;
 - (id)encodedObjectID;
 - (id)keychainAttributes;
 - (unint64_t)keyUsage;
@@ -22,11 +22,11 @@
     if (v8)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:SecCertificateGetKeyUsage()];
-      v10 = [v9 unsignedCharValue];
+      unsignedCharValue = [v9 unsignedCharValue];
 
-      [(TKTokenKeychainKey *)v6 setCanSign:[TKTokenKeychainKey canSign:v10]];
-      [(TKTokenKeychainKey *)v6 setCanDecrypt:[TKTokenKeychainKey canDecrypt:v10]];
-      [(TKTokenKeychainKey *)v6 setCanPerformKeyExchange:[TKTokenKeychainKey canPerformKeyExchange:v10]];
+      [(TKTokenKeychainKey *)v6 setCanSign:[TKTokenKeychainKey canSign:unsignedCharValue]];
+      [(TKTokenKeychainKey *)v6 setCanDecrypt:[TKTokenKeychainKey canDecrypt:unsignedCharValue]];
+      [(TKTokenKeychainKey *)v6 setCanPerformKeyExchange:[TKTokenKeychainKey canPerformKeyExchange:unsignedCharValue]];
       [(TKTokenKeychainKey *)v6 setSuitableForLogin:[(TKTokenKeychainKey *)v6 canSign]];
       if ([(TKTokenKeychainKey *)v6 setupWithPublicKey:v8 label:v7])
       {
@@ -56,10 +56,10 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)setupWithPublicKey:(__SecKey *)a3 label:(id)a4
+- (BOOL)setupWithPublicKey:(__SecKey *)key label:(id)label
 {
-  [(TKTokenKeychainItem *)self setLabel:a4];
-  v6 = SecKeyCopyAttributes(a3);
+  [(TKTokenKeychainItem *)self setLabel:label];
+  v6 = SecKeyCopyAttributes(key);
   v7 = [(__CFDictionary *)v6 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
   publicKeyData = self->_publicKeyData;
   self->_publicKeyData = v7;
@@ -114,106 +114,106 @@ LABEL_12:
 {
   v18.receiver = self;
   v18.super_class = TKTokenKeychainKey;
-  v3 = [(TKTokenKeychainItem *)&v18 keychainAttributes];
-  [v3 setObject:*MEMORY[0x1E697B020] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
-  [v3 setObject:*MEMORY[0x1E697AD38] forKeyedSubscript:*MEMORY[0x1E697AD30]];
-  [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697AD20]];
-  v4 = [(TKTokenKeychainKey *)self keyType];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E697AD68]];
+  keychainAttributes = [(TKTokenKeychainItem *)&v18 keychainAttributes];
+  [keychainAttributes setObject:*MEMORY[0x1E697B020] forKeyedSubscript:*MEMORY[0x1E697AFF8]];
+  [keychainAttributes setObject:*MEMORY[0x1E697AD38] forKeyedSubscript:*MEMORY[0x1E697AD30]];
+  [keychainAttributes setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697AD20]];
+  keyType = [(TKTokenKeychainKey *)self keyType];
+  [keychainAttributes setObject:keyType forKeyedSubscript:*MEMORY[0x1E697AD68]];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[TKTokenKeychainKey keySizeInBits](self, "keySizeInBits")}];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E697AD50]];
+  [keychainAttributes setObject:v5 forKeyedSubscript:*MEMORY[0x1E697AD50]];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[TKTokenKeychainKey canDecrypt](self, "canDecrypt")}];
-  [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x1E697AC80]];
+  [keychainAttributes setObject:v6 forKeyedSubscript:*MEMORY[0x1E697AC80]];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[TKTokenKeychainKey canSign](self, "canSign")}];
-  [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E697AC98]];
+  [keychainAttributes setObject:v7 forKeyedSubscript:*MEMORY[0x1E697AC98]];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[TKTokenKeychainKey canDecrypt](self, "canDecrypt")}];
-  [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E697ACA0]];
+  [keychainAttributes setObject:v8 forKeyedSubscript:*MEMORY[0x1E697ACA0]];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[TKTokenKeychainKey canPerformKeyExchange](self, "canPerformKeyExchange")}];
-  [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697AC88]];
+  [keychainAttributes setObject:v9 forKeyedSubscript:*MEMORY[0x1E697AC88]];
 
-  v10 = [(TKTokenKeychainKey *)self applicationTag];
+  applicationTag = [(TKTokenKeychainKey *)self applicationTag];
 
-  if (v10)
+  if (applicationTag)
   {
-    v11 = [(TKTokenKeychainKey *)self applicationTag];
-    [v3 setObject:v11 forKeyedSubscript:*MEMORY[0x1E697AC48]];
+    applicationTag2 = [(TKTokenKeychainKey *)self applicationTag];
+    [keychainAttributes setObject:applicationTag2 forKeyedSubscript:*MEMORY[0x1E697AC48]];
   }
 
-  v12 = [(TKTokenKeychainKey *)self publicKeyHash];
+  publicKeyHash = [(TKTokenKeychainKey *)self publicKeyHash];
 
-  if (v12)
+  if (publicKeyHash)
   {
-    v13 = [(TKTokenKeychainKey *)self publicKeyHash];
-    [v3 setObject:v13 forKeyedSubscript:*MEMORY[0x1E697AC40]];
+    publicKeyHash2 = [(TKTokenKeychainKey *)self publicKeyHash];
+    [keychainAttributes setObject:publicKeyHash2 forKeyedSubscript:*MEMORY[0x1E697AC40]];
   }
 
-  v14 = [(TKTokenKeychainKey *)self publicKeyData];
+  publicKeyData = [(TKTokenKeychainKey *)self publicKeyData];
 
-  if (v14)
+  if (publicKeyData)
   {
-    v15 = [(TKTokenKeychainKey *)self publicKeyData];
-    [v3 setObject:v15 forKeyedSubscript:@"pubk"];
+    publicKeyData2 = [(TKTokenKeychainKey *)self publicKeyData];
+    [keychainAttributes setObject:publicKeyData2 forKeyedSubscript:@"pubk"];
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[TKTokenKeychainKey keyUsage](self, "keyUsage")}];
-  [v3 setObject:v16 forKeyedSubscript:@"keyUsage"];
+  [keychainAttributes setObject:v16 forKeyedSubscript:@"keyUsage"];
 
-  return v3;
+  return keychainAttributes;
 }
 
 - (id)encodedObjectID
 {
-  v2 = [(TKTokenKeychainItem *)self objectID];
-  v3 = [TKTokenID encodedKeyID:v2];
+  objectID = [(TKTokenKeychainItem *)self objectID];
+  v3 = [TKTokenID encodedKeyID:objectID];
 
   return v3;
 }
 
-- (TKTokenKeychainKey)initWithItemInfo:(id)a3
+- (TKTokenKeychainKey)initWithItemInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = TKTokenKeychainKey;
-  v5 = [(TKTokenKeychainItem *)&v21 initWithItemInfo:v4];
+  v5 = [(TKTokenKeychainItem *)&v21 initWithItemInfo:infoCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
+    v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
     publicKeyData = v5->_publicKeyData;
     v5->_publicKeyData = v6;
 
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AD68]];
+    v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697AD68]];
     keyType = v5->_keyType;
     v5->_keyType = v8;
 
-    v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AD50]];
+    v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697AD50]];
     v5->_keySizeInBits = [v10 integerValue];
 
-    v11 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AC40]];
+    v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697AC40]];
     publicKeyHash = v5->_publicKeyHash;
     v5->_publicKeyHash = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"pubk"];
+    v13 = [infoCopy objectForKeyedSubscript:@"pubk"];
     v14 = v5->_publicKeyData;
     v5->_publicKeyData = v13;
 
-    v15 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AC80]];
+    v15 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697AC80]];
     v5->_canDecrypt = [v15 BOOLValue];
 
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AC98]];
+    v16 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697AC98]];
     v5->_canSign = [v16 BOOLValue];
 
-    v17 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697ACA0]];
+    v17 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697ACA0]];
     v5->_canDecrypt = [v17 BOOLValue];
 
-    v18 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AC88]];
+    v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E697AC88]];
     v5->_canPerformKeyExchange = [v18 BOOLValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"keyUsage"];
+    v19 = [infoCopy objectForKeyedSubscript:@"keyUsage"];
     v5->_suitableForLogin = [v19 integerValue] & 1;
   }
 
@@ -222,25 +222,25 @@ LABEL_12:
 
 - (unint64_t)keyUsage
 {
-  v3 = [(TKTokenKeychainKey *)self isSuitableForLogin];
+  isSuitableForLogin = [(TKTokenKeychainKey *)self isSuitableForLogin];
   if ([(TKTokenKeychainKey *)self canSign])
   {
-    v3 |= 8uLL;
+    isSuitableForLogin |= 8uLL;
   }
 
   if ([(TKTokenKeychainKey *)self canDecrypt])
   {
-    v3 |= 2uLL;
+    isSuitableForLogin |= 2uLL;
   }
 
   if ([(TKTokenKeychainKey *)self canPerformKeyExchange])
   {
-    return v3 | 4;
+    return isSuitableForLogin | 4;
   }
 
   else
   {
-    return v3;
+    return isSuitableForLogin;
   }
 }
 

@@ -1,6 +1,6 @@
 @interface CPSContentRatingContainerView
 - (CPSContentRatingContainerView)init;
-- (void)setImage:(id)a3 usesVibrantAppearance:(BOOL)a4;
+- (void)setImage:(id)image usesVibrantAppearance:(BOOL)appearance;
 @end
 
 @implementation CPSContentRatingContainerView
@@ -19,7 +19,7 @@
 
     [(UIVisualEffectView *)v2->_visualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CPSContentRatingContainerView *)v2 addSubview:v2->_visualEffectView];
-    v5 = [(UIVisualEffectView *)v2->_visualEffectView contentView];
+    contentView = [(UIVisualEffectView *)v2->_visualEffectView contentView];
     v6 = objc_alloc_init(CPSScaledImageView);
     contentRatingImageView = v2->_contentRatingImageView;
     v2->_contentRatingImageView = v6;
@@ -29,40 +29,40 @@
     [(CPSScaledImageView *)v2->_contentRatingImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v8) = 1148846080;
     [(CPSScaledImageView *)v2->_contentRatingImageView setContentCompressionResistancePriority:0 forAxis:v8];
-    [v5 addSubview:v2->_contentRatingImageView];
+    [contentView addSubview:v2->_contentRatingImageView];
     v28 = MEMORY[0x277CCAAD0];
-    v37 = [(UIVisualEffectView *)v2->_visualEffectView leadingAnchor];
-    v36 = [(CPSContentRatingContainerView *)v2 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    leadingAnchor = [(UIVisualEffectView *)v2->_visualEffectView leadingAnchor];
+    leadingAnchor2 = [(CPSContentRatingContainerView *)v2 leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v39[0] = v35;
-    v34 = [(UIVisualEffectView *)v2->_visualEffectView topAnchor];
-    v33 = [(CPSContentRatingContainerView *)v2 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    topAnchor = [(UIVisualEffectView *)v2->_visualEffectView topAnchor];
+    topAnchor2 = [(CPSContentRatingContainerView *)v2 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v39[1] = v32;
-    v31 = [(UIVisualEffectView *)v2->_visualEffectView trailingAnchor];
-    v30 = [(CPSContentRatingContainerView *)v2 trailingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    trailingAnchor = [(UIVisualEffectView *)v2->_visualEffectView trailingAnchor];
+    trailingAnchor2 = [(CPSContentRatingContainerView *)v2 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v39[2] = v29;
-    v27 = [(UIVisualEffectView *)v2->_visualEffectView bottomAnchor];
-    v26 = [(CPSContentRatingContainerView *)v2 bottomAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    bottomAnchor = [(UIVisualEffectView *)v2->_visualEffectView bottomAnchor];
+    bottomAnchor2 = [(CPSContentRatingContainerView *)v2 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39[3] = v25;
-    v23 = [(CPSScaledImageView *)v2->_contentRatingImageView leadingAnchor];
-    v22 = [v5 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    leadingAnchor3 = [(CPSScaledImageView *)v2->_contentRatingImageView leadingAnchor];
+    leadingAnchor4 = [contentView leadingAnchor];
+    v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v39[4] = v21;
-    v20 = [(CPSScaledImageView *)v2->_contentRatingImageView topAnchor];
-    v9 = [v5 topAnchor];
-    v10 = [v20 constraintEqualToAnchor:v9];
+    topAnchor3 = [(CPSScaledImageView *)v2->_contentRatingImageView topAnchor];
+    topAnchor4 = [contentView topAnchor];
+    v10 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v39[5] = v10;
-    v11 = [(CPSScaledImageView *)v2->_contentRatingImageView trailingAnchor];
-    v24 = v5;
-    v12 = [v5 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor3 = [(CPSScaledImageView *)v2->_contentRatingImageView trailingAnchor];
+    v24 = contentView;
+    trailingAnchor4 = [contentView trailingAnchor];
+    v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v39[6] = v13;
-    v14 = [(CPSScaledImageView *)v2->_contentRatingImageView bottomAnchor];
-    v15 = [v5 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor3 = [(CPSScaledImageView *)v2->_contentRatingImageView bottomAnchor];
+    bottomAnchor4 = [contentView bottomAnchor];
+    v16 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v39[7] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:8];
     [v28 activateConstraints:v17];
@@ -73,11 +73,11 @@
   return v2;
 }
 
-- (void)setImage:(id)a3 usesVibrantAppearance:(BOOL)a4
+- (void)setImage:(id)image usesVibrantAppearance:(BOOL)appearance
 {
-  v4 = a4;
-  [(CPSScaledImageView *)self->_contentRatingImageView setImage:a3];
-  if (v4)
+  appearanceCopy = appearance;
+  [(CPSScaledImageView *)self->_contentRatingImageView setImage:image];
+  if (appearanceCopy)
   {
     v6 = [MEMORY[0x277D75210] effectWithStyle:8];
     v7 = [MEMORY[0x277D75D00] effectForBlurEffect:v6 style:1];
@@ -91,7 +91,7 @@
 
   contentRatingImageView = self->_contentRatingImageView;
 
-  [(CPSScaledImageView *)contentRatingImageView setAccessibilityIgnoresInvertColors:!v4];
+  [(CPSScaledImageView *)contentRatingImageView setAccessibilityIgnoresInvertColors:!appearanceCopy];
 }
 
 @end

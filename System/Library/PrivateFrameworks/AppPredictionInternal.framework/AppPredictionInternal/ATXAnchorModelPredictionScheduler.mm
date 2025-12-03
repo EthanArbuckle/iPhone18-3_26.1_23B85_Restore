@@ -1,27 +1,27 @@
 @interface ATXAnchorModelPredictionScheduler
 - (ATXAnchorModelPredictionScheduler)init;
-- (ATXAnchorModelPredictionScheduler)initWithPredictionForwarder:(id)a3 hyperParameters:(id)a4 tracker:(id)a5 now:(id)a6 maxPredictions:(unint64_t)a7;
-- (BOOL)dateIsInFuture:(id)a3 now:(id)a4;
+- (ATXAnchorModelPredictionScheduler)initWithPredictionForwarder:(id)forwarder hyperParameters:(id)parameters tracker:(id)tracker now:(id)now maxPredictions:(unint64_t)predictions;
+- (BOOL)dateIsInFuture:(id)future now:(id)now;
 - (id)_cache;
 - (id)_readPredictionsFromCache;
-- (id)criteriaForJobOnDate:(id)a3;
+- (id)criteriaForJobOnDate:(id)date;
 - (id)dateOfSoonestUpcomingPredictionChange;
-- (id)deduplicatedPredictions:(id)a3;
-- (id)earlierDateInFuture:(id)a3 earliestDateSoFar:(id)a4 now:(id)a5;
+- (id)deduplicatedPredictions:(id)predictions;
+- (id)earlierDateInFuture:(id)future earliestDateSoFar:(id)far now:(id)now;
 - (id)now;
 - (id)predictions;
-- (id)predictionsAfterFilteringInactiveAnchors:(id)a3;
+- (id)predictionsAfterFilteringInactiveAnchors:(id)anchors;
 - (id)predictionsValidNow;
 - (id)predictionsWithTimeIntervalOverlappingWithCurrentTime;
-- (void)clearPredictionsForAnchor:(id)a3;
+- (void)clearPredictionsForAnchor:(id)anchor;
 - (void)forwardPredictionUpdates;
-- (void)forwardPredictionUpdatesOnDate:(id)a3;
+- (void)forwardPredictionUpdatesOnDate:(id)date;
 - (void)initializeLock;
-- (void)logPredictionsGeneratedMetricsWithAnchorModelPredictions:(id)a3;
-- (void)persistPredictions:(id)a3 anchor:(id)a4;
-- (void)registerXPCActivityForPredictionUpdateWithCriteria:(id)a3;
+- (void)logPredictionsGeneratedMetricsWithAnchorModelPredictions:(id)predictions;
+- (void)persistPredictions:(id)predictions anchor:(id)anchor;
+- (void)registerXPCActivityForPredictionUpdateWithCriteria:(id)criteria;
 - (void)scheduleNextPredictionUpdate;
-- (void)schedulePredictions:(id)a3 anchor:(id)a4;
+- (void)schedulePredictions:(id)predictions anchor:(id)anchor;
 @end
 
 @implementation ATXAnchorModelPredictionScheduler
@@ -36,12 +36,12 @@
   return v6;
 }
 
-- (ATXAnchorModelPredictionScheduler)initWithPredictionForwarder:(id)a3 hyperParameters:(id)a4 tracker:(id)a5 now:(id)a6 maxPredictions:(unint64_t)a7
+- (ATXAnchorModelPredictionScheduler)initWithPredictionForwarder:(id)forwarder hyperParameters:(id)parameters tracker:(id)tracker now:(id)now maxPredictions:(unint64_t)predictions
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  forwarderCopy = forwarder;
+  parametersCopy = parameters;
+  trackerCopy = tracker;
+  nowCopy = now;
   v23.receiver = self;
   v23.super_class = ATXAnchorModelPredictionScheduler;
   v17 = [(ATXAnchorModelPredictionScheduler *)&v23 init];
@@ -49,11 +49,11 @@
   if (v17)
   {
     [(ATXAnchorModelPredictionScheduler *)v17 initializeLock];
-    objc_storeStrong(&v18->_predictionForwarder, a3);
-    objc_storeStrong(&v18->_hyperParameters, a4);
-    objc_storeStrong(&v18->_tracker, a5);
-    objc_storeStrong(&v18->_now, a6);
-    v18->_maxPredictions = a7;
+    objc_storeStrong(&v18->_predictionForwarder, forwarder);
+    objc_storeStrong(&v18->_hyperParameters, parameters);
+    objc_storeStrong(&v18->_tracker, tracker);
+    objc_storeStrong(&v18->_now, now);
+    v18->_maxPredictions = predictions;
     v19 = objc_alloc(MEMORY[0x277CBEBD0]);
     v20 = [v19 initWithSuiteName:*MEMORY[0x277CEBD00]];
     defaults = v18->_defaults;
@@ -87,27 +87,27 @@
   return v3;
 }
 
-- (void)clearPredictionsForAnchor:(id)a3
+- (void)clearPredictionsForAnchor:(id)anchor
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = anchorCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Scheduler clearing predictions for anchor %@.", &v7, 0xCu);
   }
 
-  [(ATXAnchorModelPredictionScheduler *)self schedulePredictions:MEMORY[0x277CBEBF8] anchor:v4];
+  [(ATXAnchorModelPredictionScheduler *)self schedulePredictions:MEMORY[0x277CBEBF8] anchor:anchorCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)schedulePredictions:(id)a3 anchor:(id)a4
+- (void)schedulePredictions:(id)predictions anchor:(id)anchor
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predictionsCopy = predictions;
+  anchorCopy = anchor;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,15 +118,15 @@
   v9 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 count];
+    v10 = [predictionsCopy count];
     *buf = 134218242;
     v39 = v10;
     v40 = 2112;
-    v41 = v7;
+    v41 = anchorCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Scheduler received %lu predictions for anchor %@. Predictions:", buf, 0x16u);
   }
 
-  v11 = [v6 mutableCopy];
+  v11 = [predictionsCopy mutableCopy];
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:0];
   v37 = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
@@ -149,8 +149,8 @@
   }
 
   v29 = v14;
-  v30 = v7;
-  v31 = self;
+  v30 = anchorCopy;
+  selfCopy = self;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -203,17 +203,17 @@
     _os_log_impl(&dword_2263AA000, v27, OS_LOG_TYPE_DEFAULT, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", buf, 2u);
   }
 
-  [(ATXAnchorModelPredictionScheduler *)v31 persistPredictions:v18 anchor:v30];
-  [(ATXAnchorModelPredictionScheduler *)v31 forwardPredictionUpdates];
-  [(ATXAnchorModelPredictionScheduler *)v31 logPredictionsGeneratedMetricsWithAnchorModelPredictions:v18];
+  [(ATXAnchorModelPredictionScheduler *)selfCopy persistPredictions:v18 anchor:v30];
+  [(ATXAnchorModelPredictionScheduler *)selfCopy forwardPredictionUpdates];
+  [(ATXAnchorModelPredictionScheduler *)selfCopy logPredictionsGeneratedMetricsWithAnchorModelPredictions:v18];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistPredictions:(id)a3 anchor:(id)a4
+- (void)persistPredictions:(id)predictions anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  predictionsCopy = predictions;
+  anchorCopy = anchor;
   v8 = objc_autoreleasePoolPush();
   schedulerLock = self->_schedulerLock;
   v12[0] = MEMORY[0x277D85DD0];
@@ -221,9 +221,9 @@
   v12[2] = __63__ATXAnchorModelPredictionScheduler_persistPredictions_anchor___block_invoke;
   v12[3] = &unk_2785984B0;
   v12[4] = self;
-  v10 = v6;
+  v10 = predictionsCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = anchorCopy;
   v14 = v11;
   [(_PASLock *)schedulerLock runWithLockAcquired:v12];
 
@@ -244,8 +244,8 @@ void __63__ATXAnchorModelPredictionScheduler_persistPredictions_anchor___block_i
 
 - (id)_cache
 {
-  v2 = [MEMORY[0x277CEBCB0] appPredictionCacheDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"anchorModelSchedulerCurrentPredictions"];
+  appPredictionCacheDirectory = [MEMORY[0x277CEBCB0] appPredictionCacheDirectory];
+  v3 = [appPredictionCacheDirectory stringByAppendingPathComponent:@"anchorModelSchedulerCurrentPredictions"];
 
   v4 = objc_alloc(MEMORY[0x277CEBC68]);
   v5 = __atxlog_handle_anchor();
@@ -256,14 +256,14 @@ void __63__ATXAnchorModelPredictionScheduler_persistPredictions_anchor___block_i
 
 - (void)scheduleNextPredictionUpdate
 {
-  v3 = [(ATXAnchorModelPredictionScheduler *)self dateOfSoonestUpcomingPredictionChange];
-  [(ATXAnchorModelPredictionScheduler *)self forwardPredictionUpdatesOnDate:v3];
+  dateOfSoonestUpcomingPredictionChange = [(ATXAnchorModelPredictionScheduler *)self dateOfSoonestUpcomingPredictionChange];
+  [(ATXAnchorModelPredictionScheduler *)self forwardPredictionUpdatesOnDate:dateOfSoonestUpcomingPredictionChange];
 }
 
 - (id)dateOfSoonestUpcomingPredictionChange
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -285,15 +285,15 @@ void __63__ATXAnchorModelPredictionScheduler_persistPredictions_anchor___block_i
 
         v7 = *(*(&v20 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = [v7 dateIntervalForPrediction];
-        v10 = [v9 startDate];
+        dateIntervalForPrediction = [v7 dateIntervalForPrediction];
+        startDate = [dateIntervalForPrediction startDate];
         v11 = [(ATXAnchorModelPredictionScheduler *)self now];
-        v12 = [(ATXAnchorModelPredictionScheduler *)self earlierDateInFuture:v10 earliestDateSoFar:v3 now:v11];
+        v12 = [(ATXAnchorModelPredictionScheduler *)self earlierDateInFuture:startDate earliestDateSoFar:distantFuture now:v11];
 
-        v13 = [v7 dateIntervalForPrediction];
-        v14 = [v13 endDate];
+        dateIntervalForPrediction2 = [v7 dateIntervalForPrediction];
+        endDate = [dateIntervalForPrediction2 endDate];
         v15 = [(ATXAnchorModelPredictionScheduler *)self now];
-        v3 = [(ATXAnchorModelPredictionScheduler *)self earlierDateInFuture:v14 earliestDateSoFar:v12 now:v15];
+        distantFuture = [(ATXAnchorModelPredictionScheduler *)self earlierDateInFuture:endDate earliestDateSoFar:v12 now:v15];
 
         objc_autoreleasePoolPop(v8);
       }
@@ -306,27 +306,27 @@ void __63__ATXAnchorModelPredictionScheduler_persistPredictions_anchor___block_i
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return distantFuture;
 }
 
-- (id)earlierDateInFuture:(id)a3 earliestDateSoFar:(id)a4 now:(id)a5
+- (id)earlierDateInFuture:(id)future earliestDateSoFar:(id)far now:(id)now
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ATXAnchorModelPredictionScheduler *)self dateIsInFuture:v8 now:a5];
-  v11 = v9;
+  futureCopy = future;
+  farCopy = far;
+  v10 = [(ATXAnchorModelPredictionScheduler *)self dateIsInFuture:futureCopy now:now];
+  v11 = farCopy;
   if (v10)
   {
-    v12 = [v9 earlierDate:v8];
+    v12 = [farCopy earlierDate:futureCopy];
 
-    if (v12 == v9)
+    if (v12 == farCopy)
     {
-      v11 = v9;
+      v11 = farCopy;
     }
 
     else
     {
-      v11 = v8;
+      v11 = futureCopy;
     }
   }
 
@@ -335,12 +335,12 @@ void __63__ATXAnchorModelPredictionScheduler_persistPredictions_anchor___block_i
   return v11;
 }
 
-- (BOOL)dateIsInFuture:(id)a3 now:(id)a4
+- (BOOL)dateIsInFuture:(id)future now:(id)now
 {
-  v5 = a4;
-  v6 = [v5 earlierDate:a3];
+  nowCopy = now;
+  v6 = [nowCopy earlierDate:future];
 
-  return v6 == v5;
+  return v6 == nowCopy;
 }
 
 - (id)predictions
@@ -400,7 +400,7 @@ void __48__ATXAnchorModelPredictionScheduler_predictions__block_invoke(uint64_t 
 
 - (id)_readPredictionsFromCache
 {
-  v2 = [(ATXAnchorModelPredictionScheduler *)self _cache];
+  _cache = [(ATXAnchorModelPredictionScheduler *)self _cache];
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
   v5 = objc_opt_class();
@@ -408,7 +408,7 @@ void __48__ATXAnchorModelPredictionScheduler_predictions__block_invoke(uint64_t 
   v7 = objc_opt_class();
   v8 = [v4 initWithObjects:{v5, v6, v7, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v3);
-  v9 = [v2 readSecureCodedObjectWithMaxValidAge:v8 allowableClasses:0 error:-1.0];
+  v9 = [_cache readSecureCodedObjectWithMaxValidAge:v8 allowableClasses:0 error:-1.0];
   v10 = [v9 mutableCopy];
   v11 = v10;
   if (v10)
@@ -426,12 +426,12 @@ void __48__ATXAnchorModelPredictionScheduler_predictions__block_invoke(uint64_t 
   return v13;
 }
 
-- (void)forwardPredictionUpdatesOnDate:(id)a3
+- (void)forwardPredictionUpdatesOnDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = [(ATXAnchorModelPredictionScheduler *)self now];
-  v6 = [(ATXAnchorModelPredictionScheduler *)self dateIsInFuture:v4 now:v5];
+  v6 = [(ATXAnchorModelPredictionScheduler *)self dateIsInFuture:dateCopy now:v5];
 
   if (v6)
   {
@@ -439,11 +439,11 @@ void __48__ATXAnchorModelPredictionScheduler_predictions__block_invoke(uint64_t 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dateCopy;
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_INFO, "Scheduler scheduling next update on %@", &v10, 0xCu);
     }
 
-    v8 = [(ATXAnchorModelPredictionScheduler *)self criteriaForJobOnDate:v4];
+    v8 = [(ATXAnchorModelPredictionScheduler *)self criteriaForJobOnDate:dateCopy];
     [(ATXAnchorModelPredictionScheduler *)self registerXPCActivityForPredictionUpdateWithCriteria:v8];
   }
 
@@ -455,14 +455,14 @@ void __48__ATXAnchorModelPredictionScheduler_predictions__block_invoke(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerXPCActivityForPredictionUpdateWithCriteria:(id)a3
+- (void)registerXPCActivityForPredictionUpdateWithCriteria:(id)criteria
 {
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __88__ATXAnchorModelPredictionScheduler_registerXPCActivityForPredictionUpdateWithCriteria___block_invoke;
   handler[3] = &unk_278598500;
   handler[4] = self;
-  xpc_activity_register("com.apple.duetexpertd.anchor-model-prediction-scheduler", a3, handler);
+  xpc_activity_register("com.apple.duetexpertd.anchor-model-prediction-scheduler", criteria, handler);
 }
 
 void __88__ATXAnchorModelPredictionScheduler_registerXPCActivityForPredictionUpdateWithCriteria___block_invoke(uint64_t a1, void *a2)
@@ -483,11 +483,11 @@ void __88__ATXAnchorModelPredictionScheduler_registerXPCActivityForPredictionUpd
   }
 }
 
-- (id)criteriaForJobOnDate:(id)a3
+- (id)criteriaForJobOnDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(ATXAnchorModelPredictionScheduler *)self now];
-  [v4 timeIntervalSinceDate:v5];
+  [dateCopy timeIntervalSinceDate:v5];
   v7 = v6;
 
   v8 = xpc_dictionary_create(0, 0, 0);
@@ -503,8 +503,8 @@ void __88__ATXAnchorModelPredictionScheduler_registerXPCActivityForPredictionUpd
 
 - (void)forwardPredictionUpdates
 {
-  v3 = [(ATXAnchorModelPredictionScheduler *)self predictionsValidNow];
-  [(ATXAnchorModelPredictionForwarderProtocol *)self->_predictionForwarder forwardPredictions:v3];
+  predictionsValidNow = [(ATXAnchorModelPredictionScheduler *)self predictionsValidNow];
+  [(ATXAnchorModelPredictionForwarderProtocol *)self->_predictionForwarder forwardPredictions:predictionsValidNow];
   v4 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -518,8 +518,8 @@ void __88__ATXAnchorModelPredictionScheduler_registerXPCActivityForPredictionUpd
 - (id)predictionsValidNow
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ATXAnchorModelPredictionScheduler *)self predictionsWithTimeIntervalOverlappingWithCurrentTime];
-  v4 = [v3 mutableCopy];
+  predictionsWithTimeIntervalOverlappingWithCurrentTime = [(ATXAnchorModelPredictionScheduler *)self predictionsWithTimeIntervalOverlappingWithCurrentTime];
+  v4 = [predictionsWithTimeIntervalOverlappingWithCurrentTime mutableCopy];
 
   v5 = [(ATXAnchorModelPredictionScheduler *)self predictionsAfterFilteringInactiveAnchors:v4];
   v6 = [v5 mutableCopy];
@@ -538,13 +538,13 @@ void __88__ATXAnchorModelPredictionScheduler_registerXPCActivityForPredictionUpd
 
 - (id)predictionsWithTimeIntervalOverlappingWithCurrentTime
 {
-  v3 = [(ATXAnchorModelPredictionScheduler *)self predictions];
+  predictions = [(ATXAnchorModelPredictionScheduler *)self predictions];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __90__ATXAnchorModelPredictionScheduler_predictionsWithTimeIntervalOverlappingWithCurrentTime__block_invoke;
   v6[3] = &unk_278598528;
   v6[4] = self;
-  v4 = [v3 _pas_filteredArrayWithTest:v6];
+  v4 = [predictions _pas_filteredArrayWithTest:v6];
 
   return v4;
 }
@@ -561,14 +561,14 @@ uint64_t __90__ATXAnchorModelPredictionScheduler_predictionsWithTimeIntervalOver
   return v7;
 }
 
-- (id)predictionsAfterFilteringInactiveAnchors:(id)a3
+- (id)predictionsAfterFilteringInactiveAnchors:(id)anchors
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __78__ATXAnchorModelPredictionScheduler_predictionsAfterFilteringInactiveAnchors___block_invoke;
   v5[3] = &unk_278598528;
   v5[4] = self;
-  v3 = [a3 _pas_filteredArrayWithTest:v5];
+  v3 = [anchors _pas_filteredArrayWithTest:v5];
 
   return v3;
 }
@@ -599,9 +599,9 @@ uint64_t __78__ATXAnchorModelPredictionScheduler_predictionsAfterFilteringInacti
   return v6;
 }
 
-- (id)deduplicatedPredictions:(id)a3
+- (id)deduplicatedPredictions:(id)predictions
 {
-  v3 = a3;
+  predictionsCopy = predictions;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v10 = MEMORY[0x277D85DD0];
@@ -612,8 +612,8 @@ uint64_t __78__ATXAnchorModelPredictionScheduler_predictionsAfterFilteringInacti
   v15 = v5;
   v6 = v5;
   v7 = v4;
-  [v3 enumerateObjectsUsingBlock:&v10];
-  v8 = [v3 objectsAtIndexes:{v6, v10, v11, v12, v13}];
+  [predictionsCopy enumerateObjectsUsingBlock:&v10];
+  v8 = [predictionsCopy objectsAtIndexes:{v6, v10, v11, v12, v13}];
 
   return v8;
 }
@@ -635,21 +635,21 @@ void __61__ATXAnchorModelPredictionScheduler_deduplicatedPredictions___block_inv
   }
 }
 
-- (void)logPredictionsGeneratedMetricsWithAnchorModelPredictions:(id)a3
+- (void)logPredictionsGeneratedMetricsWithAnchorModelPredictions:(id)predictions
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v33 objects:v51 count:16];
+  v5 = [predictionsCopy countByEnumeratingWithState:&v33 objects:v51 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v34;
     v8 = off_278593000;
-    v29 = v4;
+    v29 = predictionsCopy;
     do
     {
       v9 = 0;
@@ -657,30 +657,30 @@ void __61__ATXAnchorModelPredictionScheduler_deduplicatedPredictions___block_inv
       {
         if (*v34 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(predictionsCopy);
         }
 
         v10 = *(*(&v33 + 1) + 8 * v9);
         v11 = v8[352];
         v12 = objc_opt_new();
-        v13 = [v10 anchorType];
-        [v12 setAnchorType:v13];
+        anchorType = [v10 anchorType];
+        [v12 setAnchorType:anchorType];
 
         [v10 score];
         [v12 setScore:?];
-        v14 = [v10 candidateType];
-        [v12 setCandidateType:v14];
+        candidateType = [v10 candidateType];
+        [v12 setCandidateType:candidateType];
 
-        v15 = [v10 offsetFromAnchorToShowPrediction];
-        [v15 startSecondsAfterAnchor];
+        offsetFromAnchorToShowPrediction = [v10 offsetFromAnchorToShowPrediction];
+        [offsetFromAnchorToShowPrediction startSecondsAfterAnchor];
         [v12 setSecondsAfterAnchorStart:v16];
 
-        v17 = [v10 offsetFromAnchorToShowPrediction];
-        [v17 endSecondsAfterAnchor];
+        offsetFromAnchorToShowPrediction2 = [v10 offsetFromAnchorToShowPrediction];
+        [offsetFromAnchorToShowPrediction2 endSecondsAfterAnchor];
         [v12 setSecondsAfterAnchorEnd:v18];
 
-        v19 = [(ATXAnchorModelHyperParameters *)self->_hyperParameters abGroup];
-        [v12 setAbGroup:v19];
+        abGroup = [(ATXAnchorModelHyperParameters *)self->_hyperParameters abGroup];
+        [v12 setAbGroup:abGroup];
 
         [(ATXPETEventTracker2Protocol *)self->_tracker logMessage:v12];
         v20 = __atxlog_handle_metrics();
@@ -688,39 +688,39 @@ void __61__ATXAnchorModelPredictionScheduler_deduplicatedPredictions___block_inv
         {
           v21 = objc_opt_class();
           v32 = NSStringFromClass(v21);
-          v22 = [v12 anchorType];
-          v23 = [v12 candidateType];
+          anchorType2 = [v12 anchorType];
+          candidateType2 = [v12 candidateType];
           [v12 score];
           v25 = v24;
-          v31 = [v12 secondsAfterAnchorStart];
-          v30 = [v12 secondsAfterAnchorEnd];
-          v26 = [v12 abGroup];
+          secondsAfterAnchorStart = [v12 secondsAfterAnchorStart];
+          secondsAfterAnchorEnd = [v12 secondsAfterAnchorEnd];
+          abGroup2 = [v12 abGroup];
           *buf = 138413826;
           v38 = v32;
           v39 = 2112;
-          v40 = v22;
-          v27 = v22;
+          v40 = anchorType2;
+          v27 = anchorType2;
           v41 = 2112;
-          v42 = v23;
+          v42 = candidateType2;
           v43 = 2048;
           v44 = v25;
           v45 = 1024;
-          v46 = v31;
+          v46 = secondsAfterAnchorStart;
           v8 = off_278593000;
           v47 = 1024;
-          v48 = v30;
+          v48 = secondsAfterAnchorEnd;
           v49 = 2112;
-          v50 = v26;
+          v50 = abGroup2;
           _os_log_debug_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEBUG, "LOGGED: %@ - ATXMPBAnchorModelPredictionsGeneratedTracker with anchorType: %@ candidateType: %@ score: %f secondsAfterAnchorStart: %u secondsAfterAnchorEnd: %u abGroup: %@", buf, 0x40u);
 
-          v4 = v29;
+          predictionsCopy = v29;
         }
 
         ++v9;
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v33 objects:v51 count:16];
+      v6 = [predictionsCopy countByEnumeratingWithState:&v33 objects:v51 count:16];
     }
 
     while (v6);

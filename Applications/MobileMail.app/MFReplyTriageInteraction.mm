@@ -29,14 +29,14 @@
 
 - (void)_performInteraction_Internal
 {
-  v8 = [(MFMessageCompositionTriageInteraction *)self emailMessage];
-  v3 = [(MFMessageCompositionTriageInteraction *)self daemonInterface];
-  v4 = [v3 interactionLogger];
-  [v4 composeReplyStartedForMessage:v8];
+  emailMessage = [(MFMessageCompositionTriageInteraction *)self emailMessage];
+  daemonInterface = [(MFMessageCompositionTriageInteraction *)self daemonInterface];
+  interactionLogger = [daemonInterface interactionLogger];
+  [interactionLogger composeReplyStartedForMessage:emailMessage];
 
   v5 = [_MFMailCompositionContext alloc];
-  v6 = [(MFMessageCompositionTriageInteraction *)self message];
-  v7 = [v5 initReplyToMessage:v8 legacyMessage:v6 isEML:{-[MFMessageCompositionTriageInteraction isActingOnEML](self, "isActingOnEML")}];
+  message = [(MFMessageCompositionTriageInteraction *)self message];
+  v7 = [v5 initReplyToMessage:emailMessage legacyMessage:message isEML:{-[MFMessageCompositionTriageInteraction isActingOnEML](self, "isActingOnEML")}];
 
   [(MFMessageCompositionTriageInteraction *)self presentComposeWithContext:v7];
 }

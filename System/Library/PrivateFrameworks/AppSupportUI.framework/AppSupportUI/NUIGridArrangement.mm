@@ -1,25 +1,25 @@
 @interface NUIGridArrangement
-- (CGRect)frameForColumns:(_NSRange)a3 rows:(_NSRange)a4 inBounds:(CGRect)a5;
-- (CGRect)layoutFrameForArrangedSubview:(id)a3 withProposedContentFrame:(CGRect)a4;
-- (CGRect)unionFrameForItemsInColumns:(_NSRange)a3 rows:(_NSRange)a4 inBounds:(CGRect)a5;
-- (CGSize)contentLayoutSizeFittingSize:(CGSize)a3 forArrangedSubview:(id)a4;
-- (CGSize)layoutSizeFittingSize:(CGSize)a3;
-- (NUIGridArrangement)initWithContainer:(id)a3 dataSource:(id)a4;
+- (CGRect)frameForColumns:(_NSRange)columns rows:(_NSRange)rows inBounds:(CGRect)bounds;
+- (CGRect)layoutFrameForArrangedSubview:(id)subview withProposedContentFrame:(CGRect)frame;
+- (CGRect)unionFrameForItemsInColumns:(_NSRange)columns rows:(_NSRange)rows inBounds:(CGRect)bounds;
+- (CGSize)contentLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
+- (CGSize)layoutSizeFittingSize:(CGSize)size;
+- (NUIGridArrangement)initWithContainer:(id)container dataSource:(id)source;
 - (double)_cacheDisplayScaleIfNeeded;
 - (void)dealloc;
-- (void)populateGridArrangementCells:(void *)a3;
-- (void)populateGridArrangementDimension:(void *)a3 withCells:(const void *)a4 axis:(int64_t)a5;
-- (void)positionItemsInBounds:(CGRect)a3 block:(id)a4;
-- (void)positionItemsInColumns:(_NSRange)a3 rows:(_NSRange)a4 inBounds:(CGRect)a5 block:(id)a6;
+- (void)populateGridArrangementCells:(void *)cells;
+- (void)populateGridArrangementDimension:(void *)dimension withCells:(const void *)cells axis:(int64_t)axis;
+- (void)positionItemsInBounds:(CGRect)bounds block:(id)block;
+- (void)positionItemsInColumns:(_NSRange)columns rows:(_NSRange)rows inBounds:(CGRect)bounds block:(id)block;
 @end
 
 @implementation NUIGridArrangement
 
-- (NUIGridArrangement)initWithContainer:(id)a3 dataSource:(id)a4
+- (NUIGridArrangement)initWithContainer:(id)container dataSource:(id)source
 {
   if (_NUIEnableAPIMisuseAssertions)
   {
-    if (a3)
+    if (container)
     {
       goto LABEL_6;
     }
@@ -28,7 +28,7 @@
   }
 
   v8 = _NUIIsDebuggerAttached();
-  if (!a3 && (v8 & 1) != 0)
+  if (!container && (v8 & 1) != 0)
   {
 LABEL_20:
     [NUIGridArrangement initWithContainer:a2 dataSource:self];
@@ -37,7 +37,7 @@ LABEL_20:
 LABEL_6:
   if (_NUIEnableAPIMisuseAssertions)
   {
-    if (a4)
+    if (source)
     {
       goto LABEL_11;
     }
@@ -46,7 +46,7 @@ LABEL_6:
   }
 
   v9 = _NUIIsDebuggerAttached();
-  if (!a4 && (v9 & 1) != 0)
+  if (!source && (v9 & 1) != 0)
   {
 LABEL_21:
     [NUIGridArrangement initWithContainer:a2 dataSource:self];
@@ -59,8 +59,8 @@ LABEL_11:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_container, a3);
-    objc_storeWeak(&v11->_dataSource, a4);
+    objc_storeWeak(&v10->_container, container);
+    objc_storeWeak(&v11->_dataSource, source);
     *&v11->_flags = *&v11->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -100,10 +100,10 @@ LABEL_11:
   [(NUIGridArrangement *)&v3 dealloc];
 }
 
-- (CGSize)layoutSizeFittingSize:(CGSize)a3
+- (CGSize)layoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   _NUIGridArrangement::resetForInvalidation(&self->_arrangement, 0);
   v6 = width;
   v7 = height;
@@ -114,9 +114,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)unionFrameForItemsInColumns:(_NSRange)a3 rows:(_NSRange)a4 inBounds:(CGRect)a5
+- (CGRect)unionFrameForItemsInColumns:(_NSRange)columns rows:(_NSRange)rows inBounds:(CGRect)bounds
 {
-  v5 = _NUIGridArrangement::unionFrameForSubsetCells(&self->_arrangement, a3, a4, a5);
+  v5 = _NUIGridArrangement::unionFrameForSubsetCells(&self->_arrangement, columns, rows, bounds);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -124,9 +124,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)frameForColumns:(_NSRange)a3 rows:(_NSRange)a4 inBounds:(CGRect)a5
+- (CGRect)frameForColumns:(_NSRange)columns rows:(_NSRange)rows inBounds:(CGRect)bounds
 {
-  v5 = _NUIGridArrangement::frameForColumnsAndRows(&self->_arrangement, a3, a4, a5);
+  v5 = _NUIGridArrangement::frameForColumnsAndRows(&self->_arrangement, columns, rows, bounds);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -134,10 +134,10 @@ LABEL_11:
   return result;
 }
 
-- (void)populateGridArrangementCells:(void *)a3
+- (void)populateGridArrangementCells:(void *)cells
 {
-  v5 = [(NUIGridArrangement *)self dataSource];
-  v6 = [(NUIGridArrangementDataSource *)v5 numberOfItemsInGridArrangement:self];
+  dataSource = [(NUIGridArrangement *)self dataSource];
+  v6 = [(NUIGridArrangementDataSource *)dataSource numberOfItemsInGridArrangement:self];
   if (v6 >= 1)
   {
     v7 = v6;
@@ -150,22 +150,22 @@ LABEL_11:
       v16 = v12;
       v14 = 1;
       v15 = 1;
-      v9 = [(NUIGridArrangementDataSource *)v5 gridArrangement:self itemAtIndex:v8 columns:&v17 rows:&v16 horizontalAlignment:&v15 verticalAlignment:&v14, v12];
+      v9 = [(NUIGridArrangementDataSource *)dataSource gridArrangement:self itemAtIndex:v8 columns:&v17 rows:&v16 horizontalAlignment:&v15 verticalAlignment:&v14, v12];
       v13 = v9;
-      v10 = *(a3 + 1);
-      if (v10 >= *(a3 + 2))
+      v10 = *(cells + 1);
+      if (v10 >= *(cells + 2))
       {
-        v11 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<objc_object  {objcproto18NUIArrangementItem}*&,_NSRange &,_NSRange,NUIContainerAlignment &,NUIContainerAlignment>(a3, &v13, &v17, &v16, &v15, &v14);
+        v11 = std::vector<_NUIGridArrangementCell>::__emplace_back_slow_path<objc_object  {objcproto18NUIArrangementItem}*&,_NSRange &,_NSRange,NUIContainerAlignment &,NUIContainerAlignment>(cells, &v13, &v17, &v16, &v15, &v14);
       }
 
       else
       {
-        _NUIGridArrangementCell::_NUIGridArrangementCell(*(a3 + 1), v9, v17, v18, v16, *(&v16 + 1), v15, v14);
+        _NUIGridArrangementCell::_NUIGridArrangementCell(*(cells + 1), v9, v17, v18, v16, *(&v16 + 1), v15, v14);
         v11 = v10 + 112;
-        *(a3 + 1) = v10 + 112;
+        *(cells + 1) = v10 + 112;
       }
 
-      *(a3 + 1) = v11;
+      *(cells + 1) = v11;
       ++v8;
     }
 
@@ -173,23 +173,23 @@ LABEL_11:
   }
 }
 
-- (void)populateGridArrangementDimension:(void *)a3 withCells:(const void *)a4 axis:(int64_t)a5
+- (void)populateGridArrangementDimension:(void *)dimension withCells:(const void *)cells axis:(int64_t)axis
 {
-  v8 = self;
-  v31 = [(NUIGridArrangement *)self dataSource];
-  v9 = *a4;
-  v10 = *(a4 + 1);
-  if (*a4 != v10)
+  selfCopy = self;
+  dataSource = [(NUIGridArrangement *)self dataSource];
+  v9 = *cells;
+  v10 = *(cells + 1);
+  if (*cells != v10)
   {
     v11 = 0;
     v12 = 72;
-    if (!a5)
+    if (!axis)
     {
       v12 = 56;
     }
 
     v13 = 80;
-    if (!a5)
+    if (!axis)
     {
       v13 = 64;
     }
@@ -210,38 +210,38 @@ LABEL_11:
       v14 = 0;
       v15 = v11;
       v16 = v11 - 1;
-      v30 = v8;
+      v30 = selfCopy;
       do
       {
         v32 = 0.0;
         v17 = 1.79769313e308;
-        if (a5)
+        if (axis)
         {
-          if ((*&v8->_flags & 2) != 0)
+          if ((*&selfCopy->_flags & 2) != 0)
           {
-            [(NUIGridArrangementDataSource *)v31 gridArrangement:v8 heightOfRowAtIndex:v14 spacingAfter:&v32];
+            [(NUIGridArrangementDataSource *)dataSource gridArrangement:selfCopy heightOfRowAtIndex:v14 spacingAfter:&v32];
 LABEL_16:
             v17 = v18;
           }
         }
 
-        else if (*&v8->_flags)
+        else if (*&selfCopy->_flags)
         {
-          [(NUIGridArrangementDataSource *)v31 gridArrangement:v8 widthOfColumnAtIndex:v14 spacingAfter:&v32];
+          [(NUIGridArrangementDataSource *)dataSource gridArrangement:selfCopy widthOfColumnAtIndex:v14 spacingAfter:&v32];
           goto LABEL_16;
         }
 
-        v20 = *(a3 + 1);
-        v19 = *(a3 + 2);
+        v20 = *(dimension + 1);
+        v19 = *(dimension + 2);
         if (v20 >= v19)
         {
-          v22 = 0x6DB6DB6DB6DB6DB7 * ((v20 - *a3) >> 3) + 1;
+          v22 = 0x6DB6DB6DB6DB6DB7 * ((v20 - *dimension) >> 3) + 1;
           if (v22 > 0x492492492492492)
           {
             std::vector<std::pair<CGSize,CGSize>>::__throw_length_error[abi:nn200100]();
           }
 
-          v23 = 0x6DB6DB6DB6DB6DB7 * ((v19 - *a3) >> 3);
+          v23 = 0x6DB6DB6DB6DB6DB7 * ((v19 - *dimension) >> 3);
           if (2 * v23 > v22)
           {
             v22 = 2 * v23;
@@ -259,41 +259,41 @@ LABEL_16:
 
           if (v24)
           {
-            std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIGridArrangementDimension>>(a3, v24);
+            std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIGridArrangementDimension>>(dimension, v24);
           }
 
-          _NUIGridArrangementDimension::_NUIGridArrangementDimension((8 * ((v20 - *a3) >> 3)), v14, v17);
+          _NUIGridArrangementDimension::_NUIGridArrangementDimension((8 * ((v20 - *dimension) >> 3)), v14, v17);
           v21 = v25 + 56;
-          v26 = *(a3 + 1) - *a3;
+          v26 = *(dimension + 1) - *dimension;
           v27 = v25 - v26;
-          memcpy((v25 - v26), *a3, v26);
-          v28 = *a3;
-          *a3 = v27;
-          *(a3 + 1) = v21;
-          *(a3 + 2) = 0;
+          memcpy((v25 - v26), *dimension, v26);
+          v28 = *dimension;
+          *dimension = v27;
+          *(dimension + 1) = v21;
+          *(dimension + 2) = 0;
           if (v28)
           {
             operator delete(v28);
           }
 
-          v8 = v30;
+          selfCopy = v30;
         }
 
         else
         {
-          _NUIGridArrangementDimension::_NUIGridArrangementDimension(*(a3 + 1), v14, v17);
+          _NUIGridArrangementDimension::_NUIGridArrangementDimension(*(dimension + 1), v14, v17);
           v21 = v20 + 56;
-          *(a3 + 1) = v20 + 56;
+          *(dimension + 1) = v20 + 56;
         }
 
-        *(a3 + 1) = v21;
+        *(dimension + 1) = v21;
         v29 = v32;
         if (v14 >= v16)
         {
           v29 = 0.0;
         }
 
-        *(*a3 + 56 * v14++) = v29;
+        *(*dimension + 56 * v14++) = v29;
       }
 
       while (v14 != v15);
@@ -301,21 +301,21 @@ LABEL_16:
   }
 }
 
-- (CGSize)contentLayoutSizeFittingSize:(CGSize)a3 forArrangedSubview:(id)a4
+- (CGSize)contentLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(NUIGridArrangement *)self container];
+  height = size.height;
+  width = size.width;
+  container = [(NUIGridArrangement *)self container];
 
-  [(NUIArrangementContainer *)v7 contentLayoutSizeFittingSize:a4 forArrangedSubview:width, height];
+  [(NUIArrangementContainer *)container contentLayoutSizeFittingSize:subview forArrangedSubview:width, height];
   result.height = v9;
   result.width = v8;
   return result;
 }
 
-- (CGRect)layoutFrameForArrangedSubview:(id)a3 withProposedContentFrame:(CGRect)a4
+- (CGRect)layoutFrameForArrangedSubview:(id)subview withProposedContentFrame:(CGRect)frame
 {
-  [(NUIArrangementContainer *)[(NUIGridArrangement *)self container] layoutFrameForArrangedSubview:a3 withProposedContentFrame:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(NUIArrangementContainer *)[(NUIGridArrangement *)self container] layoutFrameForArrangedSubview:subview withProposedContentFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   x = v58.origin.x;
   y = v58.origin.y;
   width = v58.size.width;
@@ -513,7 +513,7 @@ LABEL_16:
   return result;
 }
 
-- (void)positionItemsInBounds:(CGRect)a3 block:(id)a4
+- (void)positionItemsInBounds:(CGRect)bounds block:(id)block
 {
   OUTLINED_FUNCTION_0_2();
   v10 = v9;
@@ -528,10 +528,10 @@ LABEL_16:
   v10[22] = v4;
   v12 = OUTLINED_FUNCTION_4();
 
-  _NUIGridArrangement::positionCells(v11, a4, v12, v13, v14, v15);
+  _NUIGridArrangement::positionCells(v11, block, v12, v13, v14, v15);
 }
 
-- (void)positionItemsInColumns:(_NSRange)a3 rows:(_NSRange)a4 inBounds:(CGRect)a5 block:(id)a6
+- (void)positionItemsInColumns:(_NSRange)columns rows:(_NSRange)rows inBounds:(CGRect)bounds block:(id)block
 {
   OUTLINED_FUNCTION_0_2();
   v12 = v11;
@@ -546,7 +546,7 @@ LABEL_16:
   v12[22] = v6;
   v18 = OUTLINED_FUNCTION_4();
 
-  _NUIGridArrangement::positionSubsetCells(v13, v14, v15, v16, v17, a6, v18, v19, v20, v21);
+  _NUIGridArrangement::positionSubsetCells(v13, v14, v15, v16, v17, block, v18, v19, v20, v21);
 }
 
 - (uint64_t)initWithContainer:(uint64_t)a1 dataSource:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

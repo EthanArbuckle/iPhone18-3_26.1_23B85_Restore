@@ -1,9 +1,9 @@
 @interface CTLazuliChatBotPostbackData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotPostbackData:(id)a3;
-- (CTLazuliChatBotPostbackData)initWithCoder:(id)a3;
-- (CTLazuliChatBotPostbackData)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotPostbackData:(id)data;
+- (CTLazuliChatBotPostbackData)initWithCoder:(id)coder;
+- (CTLazuliChatBotPostbackData)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -12,69 +12,69 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotPostbackData *)self data];
-  [v3 appendFormat:@", data = %@", v4];
+  data = [(CTLazuliChatBotPostbackData *)self data];
+  [v3 appendFormat:@", data = %@", data];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotPostbackData:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotPostbackData:(id)data
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotPostbackData *)self data];
-  v6 = [v4 data];
-  if (v5 == v6)
+  dataCopy = data;
+  data = [(CTLazuliChatBotPostbackData *)self data];
+  data2 = [dataCopy data];
+  if (data == data2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(CTLazuliChatBotPostbackData *)self data];
-    v8 = [v4 data];
-    v9 = [v7 isEqualToString:v8];
+    data3 = [(CTLazuliChatBotPostbackData *)self data];
+    data4 = [dataCopy data];
+    v9 = [data3 isEqualToString:data4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotPostbackData *)self isEqualToCTLazuliChatBotPostbackData:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotPostbackData *)self isEqualToCTLazuliChatBotPostbackData:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotPostbackData allocWithZone:?];
-  v6 = [(NSString *)self->_data copyWithZone:a3];
+  v6 = [(NSString *)self->_data copyWithZone:zone];
   [(CTLazuliChatBotPostbackData *)v5 setData:v6];
 
   return v5;
 }
 
-- (CTLazuliChatBotPostbackData)initWithCoder:(id)a3
+- (CTLazuliChatBotPostbackData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTLazuliChatBotPostbackData;
   v5 = [(CTLazuliChatBotPostbackData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kDataKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kDataKey"];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -82,24 +82,24 @@
   return v5;
 }
 
-- (CTLazuliChatBotPostbackData)initWithReflection:(const void *)a3
+- (CTLazuliChatBotPostbackData)initWithReflection:(const void *)reflection
 {
   v9.receiver = self;
   v9.super_class = CTLazuliChatBotPostbackData;
   v4 = [(CTLazuliChatBotPostbackData *)&v9 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     data = v4->_data;
     v4->_data = v6;
   }

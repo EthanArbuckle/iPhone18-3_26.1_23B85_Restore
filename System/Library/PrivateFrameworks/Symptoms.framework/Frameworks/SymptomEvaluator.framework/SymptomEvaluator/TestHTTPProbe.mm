@@ -1,27 +1,27 @@
 @interface TestHTTPProbe
-- (BOOL)isEqual:(id)a3;
-- (TestHTTPProbe)initWithQueue:(id)a3;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TestHTTPProbe)initWithQueue:(id)queue;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
 - (void)stopTest;
-- (void)testURL:(id)a3 timeout:(double)a4 interfaceName:(id)a5 userAgent:(id)a6 reply:(id)a7;
+- (void)testURL:(id)l timeout:(double)timeout interfaceName:(id)name userAgent:(id)agent reply:(id)reply;
 @end
 
 @implementation TestHTTPProbe
 
-- (TestHTTPProbe)initWithQueue:(id)a3
+- (TestHTTPProbe)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = TestHTTPProbe;
-  v5 = [(TestProbe *)&v12 initWithQueue:v4];
+  v5 = [(TestProbe *)&v12 initWithQueue:queueCopy];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
       v6 = objc_alloc_init(MEMORY[0x277CCABD8]);
       [v6 setName:@"TestHTTPQueue"];
       [v6 setMaxConcurrentOperationCount:1];
-      [v6 setUnderlyingQueue:v4];
+      [v6 setUnderlyingQueue:queueCopy];
     }
 
     else
@@ -30,8 +30,8 @@
     }
 
     v7 = MEMORY[0x277CBABB8];
-    v8 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
-    v9 = [v7 sessionWithConfiguration:v8 delegate:v5 delegateQueue:v6];
+    ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+    v9 = [v7 sessionWithConfiguration:ephemeralSessionConfiguration delegate:v5 delegateQueue:v6];
     urlSession = v5->_urlSession;
     v5->_urlSession = v9;
   }
@@ -39,20 +39,20 @@
   return v5;
 }
 
-- (void)testURL:(id)a3 timeout:(double)a4 interfaceName:(id)a5 userAgent:(id)a6 reply:(id)a7
+- (void)testURL:(id)l timeout:(double)timeout interfaceName:(id)name userAgent:(id)agent reply:(id)reply
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  objc_storeStrong(&self->_urlToTest, a3);
-  v16 = a5;
-  v17 = [MEMORY[0x277CBAB50] requestWithURL:self->_urlToTest cachePolicy:1 timeoutInterval:a4];
-  v18 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceName:v16];
+  lCopy = l;
+  agentCopy = agent;
+  replyCopy = reply;
+  objc_storeStrong(&self->_urlToTest, l);
+  nameCopy = name;
+  v17 = [MEMORY[0x277CBAB50] requestWithURL:self->_urlToTest cachePolicy:1 timeoutInterval:timeout];
+  v18 = [objc_alloc(MEMORY[0x277CD91D8]) initWithInterfaceName:nameCopy];
 
   [v17 setAllowsCellularAccess:{objc_msgSend(v18, "type") == 2}];
-  if (v14)
+  if (agentCopy)
   {
-    [v17 setValue:v14 forHTTPHeaderField:@"User-Agent"];
+    [v17 setValue:agentCopy forHTTPHeaderField:@"User-Agent"];
   }
 
   [(TestProbe *)self setStatus:1];
@@ -61,9 +61,9 @@
   v24 = 3221225472;
   v25 = __63__TestHTTPProbe_testURL_timeout_interfaceName_userAgent_reply___block_invoke;
   v26 = &unk_27898A8F0;
-  v27 = self;
-  v28 = v15;
-  v20 = v15;
+  selfCopy = self;
+  v28 = replyCopy;
+  v20 = replyCopy;
   v21 = [(NSURLSession *)urlSession dataTaskWithRequest:v17 completionHandler:&v23];
   urlSessionTask = self->_urlSessionTask;
   self->_urlSessionTask = v21;
@@ -117,18 +117,18 @@ void __63__TestHTTPProbe_testURL_timeout_interfaceName_userAgent_reply___block_i
   }
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_urlSession == v6)
+  sessionCopy = session;
+  errorCopy = error;
+  if (self->_urlSession == sessionCopy)
   {
     v8 = debuggabilityLogHandle;
     if (os_log_type_enabled(debuggabilityLogHandle, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = errorCopy;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "TestHTTPProbe: didBecomeInvalidWithError, %@", &v10, 0xCu);
     }
   }
@@ -136,12 +136,12 @@ void __63__TestHTTPProbe_testURL_timeout_interfaceName_userAgent_reply___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = TestHTTPProbe;
-  if ([(TestProbe *)&v9 isEqual:v4])
+  if ([(TestProbe *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -151,9 +151,9 @@ void __63__TestHTTPProbe_testURL_timeout_interfaceName_userAgent_reply___block_i
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 urlToTest];
-      v7 = [(TestHTTPProbe *)self urlToTest];
-      v5 = [v6 isEqual:v7];
+      urlToTest = [equalCopy urlToTest];
+      urlToTest2 = [(TestHTTPProbe *)self urlToTest];
+      v5 = [urlToTest isEqual:urlToTest2];
     }
 
     else

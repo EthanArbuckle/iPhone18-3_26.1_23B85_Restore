@@ -1,24 +1,24 @@
 @interface PXBasicMessagesStackItemEffectView
 - (PXBasicMessagesStackItemEffectView)init;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation PXBasicMessagesStackItemEffectView
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(PXBasicMessagesStackItemEffectView *)self bounds];
     [(UIView *)v7 setFrame:?];
     [(UIView *)v7 setAutoresizingMask:18];
     [(PXBasicMessagesStackItemEffectView *)self addSubview:v7];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 

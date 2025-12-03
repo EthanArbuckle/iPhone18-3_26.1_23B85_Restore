@@ -1,21 +1,21 @@
 @interface _CNDistinctObservable
-- (BOOL)_resultIsDistinct:(id)a3;
-- (_CNDistinctObservable)initWithObservable:(id)a3;
-- (id)subscribe:(id)a3;
+- (BOOL)_resultIsDistinct:(id)distinct;
+- (_CNDistinctObservable)initWithObservable:(id)observable;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _CNDistinctObservable
 
-- (_CNDistinctObservable)initWithObservable:(id)a3
+- (_CNDistinctObservable)initWithObservable:(id)observable
 {
-  v5 = a3;
+  observableCopy = observable;
   v12.receiver = self;
   v12.super_class = _CNDistinctObservable;
   v6 = [(_CNDistinctObservable *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observable, a3);
+    objc_storeStrong(&v6->_observable, observable);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     previouslyObservedResults = v7->_previouslyObservedResults;
     v7->_previouslyObservedResults = v8;
@@ -26,9 +26,9 @@
   return v7;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   observable = self->_observable;
   v6 = objc_opt_class();
   v18[0] = MEMORY[0x1E69E9820];
@@ -36,7 +36,7 @@
   v18[2] = __35___CNDistinctObservable_subscribe___block_invoke;
   v18[3] = &unk_1E6ED63C8;
   v18[4] = self;
-  v19 = v4;
+  v19 = subscribeCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __35___CNDistinctObservable_subscribe___block_invoke_2;
@@ -54,18 +54,18 @@
   return v9;
 }
 
-- (BOOL)_resultIsDistinct:(id)a3
+- (BOOL)_resultIsDistinct:(id)distinct
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableSet *)v5->_previouslyObservedResults containsObject:v4];
+  distinctCopy = distinct;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableSet *)selfCopy->_previouslyObservedResults containsObject:distinctCopy];
   if ((v6 & 1) == 0)
   {
-    [(NSMutableSet *)v5->_previouslyObservedResults addObject:v4];
+    [(NSMutableSet *)selfCopy->_previouslyObservedResults addObject:distinctCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6 ^ 1;
 }

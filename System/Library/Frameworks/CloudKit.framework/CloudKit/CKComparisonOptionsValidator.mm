@@ -1,25 +1,25 @@
 @interface CKComparisonOptionsValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKComparisonOptionsValidator
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
 
     v13 = MEMORY[0x1E696ABC0];
     v33[0] = *MEMORY[0x1E696A578];
-    v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not a comparison predicate", v6);
+    v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not a comparison predicate", validateCopy);
     v33[1] = @"ck_isComparisonError";
     v34[0] = v14;
     v34[1] = MEMORY[0x1E695E118];
@@ -28,13 +28,13 @@
 LABEL_11:
 
     v28 = v18;
-    *a4 = v18;
+    *error = v18;
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_12;
   }
 
-  v9 = objc_msgSend_options(v6, v7, v8);
+  v9 = objc_msgSend_options(validateCopy, v7, v8);
   if (!self)
   {
     goto LABEL_8;
@@ -44,7 +44,7 @@ LABEL_11:
   if ((options & ~v9) != 0)
   {
 LABEL_9:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -52,7 +52,7 @@ LABEL_9:
     v19 = MEMORY[0x1E696ABC0];
     v31[0] = *MEMORY[0x1E696A578];
     v20 = MEMORY[0x1E696AEC0];
-    v21 = objc_msgSend_options(v6, v10, v11);
+    v21 = objc_msgSend_options(validateCopy, v10, v11);
     v14 = sub_18869C238(v21, v22, v23);
     v16 = objc_msgSend_stringWithFormat_(v20, v24, @"Unsupported comparison options: %@", v14);
     v31[1] = @"ck_isComparisonError";
@@ -67,7 +67,7 @@ LABEL_9:
   if (!options)
   {
 LABEL_8:
-    if (!objc_msgSend_options(v6, v10, v11))
+    if (!objc_msgSend_options(validateCopy, v10, v11))
     {
       goto LABEL_5;
     }
@@ -76,11 +76,11 @@ LABEL_8:
   }
 
 LABEL_5:
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_12:
 
   v29 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)CKPropertiesDescription

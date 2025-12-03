@@ -1,12 +1,12 @@
 @interface CACCommandSearchResultsViewController
 - (CACSearchResultPresenter)delegate;
 - (id)specifiers;
-- (void)keyboardWasShown:(id)a3;
-- (void)keyboardWillBeHidden:(id)a3;
-- (void)presentCustomAction:(id)a3;
+- (void)keyboardWasShown:(id)shown;
+- (void)keyboardWillBeHidden:(id)hidden;
+- (void)presentCustomAction:(id)action;
 - (void)registerForKeyboardNotifications;
-- (void)setSearchResults:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSearchResults:(id)results;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -27,7 +27,7 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = self;
+  selfCopy = self;
   obj = [(CACCommandSearchResultsViewController *)self searchResults];
   v26 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v26)
@@ -45,9 +45,9 @@
 
         v28 = v4;
         v5 = *(*(&v35 + 1) + 8 * v4);
-        v6 = [v5 commandGroup];
-        v7 = [v6 displayString];
-        v8 = [PSSpecifier groupSpecifierWithName:v7];
+        commandGroup = [v5 commandGroup];
+        displayString = [commandGroup displayString];
+        v8 = [PSSpecifier groupSpecifierWithName:displayString];
 
         v27 = v8;
         [v30 addObject:v8];
@@ -55,8 +55,8 @@
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v29 = [v5 commandItems];
-        v9 = [v29 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        commandItems = [v5 commandItems];
+        v9 = [commandItems countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v9)
         {
           v10 = v9;
@@ -67,7 +67,7 @@
             {
               if (*v32 != v11)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(commandItems);
               }
 
               v13 = *(*(&v31 + 1) + 8 * i);
@@ -81,8 +81,8 @@
                 v14 = objc_opt_class();
               }
 
-              v15 = [v13 displayString];
-              v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:v3 set:0 get:0 detail:v14 cell:2 edit:0];
+              displayString2 = [v13 displayString];
+              v16 = [PSSpecifier preferenceSpecifierNamed:displayString2 target:selfCopy set:0 get:0 detail:v14 cell:2 edit:0];
 
               if ([v13 isCustom])
               {
@@ -93,7 +93,7 @@
               [v30 addObject:v16];
             }
 
-            v10 = [v29 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v10 = [commandItems countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v10);
@@ -110,9 +110,9 @@
   }
 
   v17 = OBJC_IVAR___PSListController__specifiers;
-  v18 = v3;
-  v19 = *&v3->AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers];
-  *&v3->AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers] = v30;
+  v18 = selfCopy;
+  v19 = *&selfCopy->AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  *&selfCopy->AXUISettingsListController_opaque[OBJC_IVAR___PSListController__specifiers] = v30;
   v20 = v30;
 
   v21 = *&v18->AXUISettingsListController_opaque[v17];
@@ -121,34 +121,34 @@
   return v21;
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  searchResults = v5->_searchResults;
-  v5->_searchResults = v4;
-  v7 = v4;
+  resultsCopy = results;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  searchResults = selfCopy->_searchResults;
+  selfCopy->_searchResults = resultsCopy;
+  v7 = resultsCopy;
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_89A4;
   block[3] = &unk_28EE8;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(&_dispatch_main_q, block);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a4;
-  v6 = a3;
-  v7 = [(CACCommandSearchResultsViewController *)self searchResults];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v15, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  searchResults = [(CACCommandSearchResultsViewController *)self searchResults];
+  v8 = [searchResults objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v9 = [v8 commandItems];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v15, "row")}];
+  commandItems = [v8 commandItems];
+  v10 = [commandItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if ([v10 isCustom])
   {
@@ -160,8 +160,8 @@
     v11 = objc_opt_class();
   }
 
-  v12 = [v10 displayString];
-  v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:v11 cell:2 edit:0];
+  displayString = [v10 displayString];
+  v13 = [PSSpecifier preferenceSpecifierNamed:displayString target:self set:0 get:0 detail:v11 cell:2 edit:0];
 
   if ([v10 isCustom])
   {
@@ -169,10 +169,10 @@
   }
 
   [v13 setProperty:v10 forKey:@"CACCommandItem"];
-  [v6 deselectRowAtIndexPath:v15 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
-  v14 = [(CACCommandSearchResultsViewController *)self delegate];
-  [v14 searchResultSpecifierSelected:v13];
+  delegate = [(CACCommandSearchResultsViewController *)self delegate];
+  [delegate searchResultSpecifierSelected:v13];
 }
 
 - (void)registerForKeyboardNotifications
@@ -184,37 +184,37 @@
   [v4 addObserver:self selector:"keyboardWillBeHidden:" name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)keyboardWasShown:(id)a3
+- (void)keyboardWasShown:(id)shown
 {
-  v9 = [a3 userInfo];
-  v4 = [v9 objectForKey:UIKeyboardFrameBeginUserInfoKey];
+  userInfo = [shown userInfo];
+  v4 = [userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey];
   [v4 CGRectValue];
   v6 = v5;
 
-  v7 = [(CACCommandSearchResultsViewController *)self contentScrollView];
-  [v7 setContentInset:{0.0, 0.0, v6, 0.0}];
+  contentScrollView = [(CACCommandSearchResultsViewController *)self contentScrollView];
+  [contentScrollView setContentInset:{0.0, 0.0, v6, 0.0}];
 
-  v8 = [(CACCommandSearchResultsViewController *)self contentScrollView];
-  [v8 setScrollIndicatorInsets:{0.0, 0.0, v6, 0.0}];
+  contentScrollView2 = [(CACCommandSearchResultsViewController *)self contentScrollView];
+  [contentScrollView2 setScrollIndicatorInsets:{0.0, 0.0, v6, 0.0}];
 }
 
-- (void)keyboardWillBeHidden:(id)a3
+- (void)keyboardWillBeHidden:(id)hidden
 {
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v7 = [(CACCommandSearchResultsViewController *)self contentScrollView];
-  [v7 setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+  contentScrollView = [(CACCommandSearchResultsViewController *)self contentScrollView];
+  [contentScrollView setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-  v8 = [(CACCommandSearchResultsViewController *)self contentScrollView];
-  [v8 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
+  contentScrollView2 = [(CACCommandSearchResultsViewController *)self contentScrollView];
+  [contentScrollView2 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
 }
 
-- (void)presentCustomAction:(id)a3
+- (void)presentCustomAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v7 = objc_alloc_init(CACCustomCommandEditorViewController);
-  v5 = [v4 propertyForKey:@"CACCommandItem"];
+  v5 = [actionCopy propertyForKey:@"CACCommandItem"];
 
   [v7 setCommandItem:v5];
   v6 = [[UINavigationController alloc] initWithRootViewController:v7];

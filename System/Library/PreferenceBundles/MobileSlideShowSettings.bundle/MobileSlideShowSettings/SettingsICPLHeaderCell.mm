@@ -1,53 +1,53 @@
 @interface SettingsICPLHeaderCell
-- (SettingsICPLHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SettingsICPLHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation SettingsICPLHeaderCell
 
-- (SettingsICPLHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SettingsICPLHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v67.receiver = self;
   v67.super_class = SettingsICPLHeaderCell;
-  v4 = [(SettingsICPLHeaderCell *)&v67 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SettingsICPLHeaderCell *)&v67 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(SettingsICPLHeaderCell *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(SettingsICPLHeaderCell *)v5 titleLabel];
-    [v6 setHidden:1];
+    titleLabel = [(SettingsICPLHeaderCell *)v5 titleLabel];
+    [titleLabel setHidden:1];
 
-    v7 = [(SettingsICPLHeaderCell *)v5 detailTextLabel];
-    [v7 setHidden:1];
+    detailTextLabel = [(SettingsICPLHeaderCell *)v5 detailTextLabel];
+    [detailTextLabel setHidden:1];
 
     v8 = objc_alloc_init(UIStackView);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setAxis:1];
     [v8 setAlignment:3];
     [v8 setSpacing:10.0];
-    v9 = [(SettingsICPLHeaderCell *)v5 contentView];
-    [v9 addSubview:v8];
+    contentView = [(SettingsICPLHeaderCell *)v5 contentView];
+    [contentView addSubview:v8];
 
-    v61 = [v8 topAnchor];
-    v63 = [(SettingsICPLHeaderCell *)v5 contentView];
-    v59 = [v63 topAnchor];
-    v57 = [v61 constraintEqualToAnchor:v59 constant:25.0];
+    topAnchor = [v8 topAnchor];
+    contentView2 = [(SettingsICPLHeaderCell *)v5 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v57 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:25.0];
     v68[0] = v57;
-    v53 = [v8 leadingAnchor];
-    v55 = [(SettingsICPLHeaderCell *)v5 contentView];
-    v52 = [v55 leadingAnchor];
-    v10 = [v53 constraintEqualToAnchor:v52 constant:25.0];
+    leadingAnchor = [v8 leadingAnchor];
+    contentView3 = [(SettingsICPLHeaderCell *)v5 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:25.0];
     v68[1] = v10;
-    v11 = [v8 trailingAnchor];
-    v12 = [(SettingsICPLHeaderCell *)v5 contentView];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:-25.0];
+    trailingAnchor = [v8 trailingAnchor];
+    contentView4 = [(SettingsICPLHeaderCell *)v5 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-25.0];
     v68[2] = v14;
     v66 = v8;
-    v15 = [v8 bottomAnchor];
+    bottomAnchor = [v8 bottomAnchor];
     v65 = v5;
-    v16 = [(SettingsICPLHeaderCell *)v5 contentView];
-    v17 = [v16 bottomAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:-15.0];
+    contentView5 = [(SettingsICPLHeaderCell *)v5 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
     v68[3] = v18;
     v19 = [NSArray arrayWithObjects:v68 count:4];
     [NSLayoutConstraint activateConstraints:v19];
@@ -56,27 +56,27 @@
     v62 = [[ISImageDescriptor alloc] initWithSize:60.0 scale:{60.0, 2.0}];
     v64 = v20;
     v21 = [v20 prepareImageForDescriptor:?];
-    v22 = [v21 CGImage];
+    cGImage = [v21 CGImage];
 
-    v60 = [[UIImage alloc] initWithCGImage:v22 scale:0 orientation:2.0];
+    v60 = [[UIImage alloc] initWithCGImage:cGImage scale:0 orientation:2.0];
     v23 = [[UIImageView alloc] initWithImage:v60];
     [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v23 setContentMode:4];
     if ((PXSolariumEnabled() & 1) == 0)
     {
-      v24 = [v23 layer];
-      [v24 setMasksToBounds:1];
+      layer = [v23 layer];
+      [layer setMasksToBounds:1];
 
       v25 = +[UIColor systemExtraLightGrayColor];
-      v26 = [v25 cgColor];
-      v27 = [v23 layer];
-      [v27 setBorderColor:v26];
+      cgColor = [v25 cgColor];
+      layer2 = [v23 layer];
+      [layer2 setBorderColor:cgColor];
 
-      v28 = [v23 layer];
-      [v28 setBorderWidth:1.0];
+      layer3 = [v23 layer];
+      [layer3 setBorderWidth:1.0];
 
-      v29 = [v23 layer];
-      [v29 setCornerRadius:13.0];
+      layer4 = [v23 layer];
+      [layer4 setCornerRadius:13.0];
     }
 
     [v66 addArrangedSubview:v23];
@@ -88,8 +88,8 @@
     [v30 setText:v32];
 
     v33 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-    v34 = [v33 fontDescriptor];
-    v58 = [v34 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v33 fontDescriptor];
+    v58 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
     v35 = [UIFont fontWithDescriptor:v58 size:0.0];
     [v30 setFont:v35];

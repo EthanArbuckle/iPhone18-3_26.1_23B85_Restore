@@ -1,21 +1,21 @@
 @interface BNBannerSourceListenerPresentableRejectionAction
-- (BNBannerSourceListenerPresentableRejectionAction)initWithReason:(id)a3;
+- (BNBannerSourceListenerPresentableRejectionAction)initWithReason:(id)reason;
 - (NSString)rejectionReason;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation BNBannerSourceListenerPresentableRejectionAction
 
-- (BNBannerSourceListenerPresentableRejectionAction)initWithReason:(id)a3
+- (BNBannerSourceListenerPresentableRejectionAction)initWithReason:(id)reason
 {
-  v5 = a3;
-  if (![v5 length])
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
     [(BNBannerSourceListenerPresentableRejectionAction *)a2 initWithReason:?];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-  [v6 setObject:v5 forSetting:1];
+  [v6 setObject:reasonCopy forSetting:1];
 
   v9.receiver = self;
   v9.super_class = BNBannerSourceListenerPresentableRejectionAction;
@@ -26,15 +26,15 @@
 
 - (NSString)rejectionReason
 {
-  v2 = [(BNBannerSourceListenerPresentableRejectionAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(BNBannerSourceListenerPresentableRejectionAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"rejectionReason";
   }

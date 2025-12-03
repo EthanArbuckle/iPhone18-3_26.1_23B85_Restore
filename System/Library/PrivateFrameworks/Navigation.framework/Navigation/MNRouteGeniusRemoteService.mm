@@ -1,9 +1,9 @@
 @interface MNRouteGeniusRemoteService
 - (BOOL)_q_openConnectionIfNecessary;
-- (MNRouteGeniusRemoteService)initWithDelegate:(id)a3;
+- (MNRouteGeniusRemoteService)initWithDelegate:(id)delegate;
 - (void)_q_closeConnection;
 - (void)dealloc;
-- (void)didUpdateRouteGenius:(id)a3;
+- (void)didUpdateRouteGenius:(id)genius;
 - (void)forceReroute;
 - (void)start;
 - (void)stop;
@@ -11,9 +11,9 @@
 
 @implementation MNRouteGeniusRemoteService
 
-- (void)didUpdateRouteGenius:(id)a3
+- (void)didUpdateRouteGenius:(id)genius
 {
-  v4 = a3;
+  geniusCopy = genius;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -21,8 +21,8 @@
   block[2] = __51__MNRouteGeniusRemoteService_didUpdateRouteGenius___block_invoke;
   block[3] = &unk_1E8430100;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = geniusCopy;
+  v6 = geniusCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -339,16 +339,16 @@ void __42__MNRouteGeniusRemoteService_forceReroute__block_invoke_62(uint64_t a1)
   [(MNRouteGeniusRemoteService *)&v5 dealloc];
 }
 
-- (MNRouteGeniusRemoteService)initWithDelegate:(id)a3
+- (MNRouteGeniusRemoteService)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = MNRouteGeniusRemoteService;
   v6 = [(MNRouteGeniusRemoteService *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("MNRouteGeniusRemoteQueue", v8);
     queue = v7->_queue;

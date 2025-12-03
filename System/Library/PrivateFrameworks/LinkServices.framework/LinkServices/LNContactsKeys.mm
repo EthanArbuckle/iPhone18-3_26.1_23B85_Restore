@@ -31,9 +31,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCNContactInstantMessageAddressesKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"LNContactsKeys.m" lineNumber:16 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"LNContactsKeys.m" lineNumber:16 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -66,9 +66,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCNContactPhoneNumbersKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"LNContactsKeys.m" lineNumber:14 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"LNContactsKeys.m" lineNumber:14 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -101,9 +101,9 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCNContactEmailAddressesKey(void)"];
-    [v6 handleFailureInFunction:v7 file:@"LNContactsKeys.m" lineNumber:15 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v7 file:@"LNContactsKeys.m" lineNumber:15 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

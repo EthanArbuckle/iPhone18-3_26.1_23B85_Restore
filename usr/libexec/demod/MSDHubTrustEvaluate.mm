@@ -1,12 +1,12 @@
 @interface MSDHubTrustEvaluate
 + (id)getTrustObject;
-- (BOOL)trustDAServer:(__SecTrust *)a3;
-- (BOOL)trustServer:(__SecTrust *)a3 forRequestType:(BOOL)a4 typeOfCommand:(unint64_t)a5;
-- (BOOL)trustServer:(__SecTrust *)a3 withRootCA:(__SecCertificate *)a4 withHostName:(id)a5;
-- (BOOL)trustServerWithApplePKI:(__SecTrust *)a3;
-- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)a3;
-- (id)hashForCertificate:(__SecCertificate *)a3;
-- (id)identifierFor:(__SecCertificate *)a3 applePKI:(BOOL)a4;
+- (BOOL)trustDAServer:(__SecTrust *)server;
+- (BOOL)trustServer:(__SecTrust *)server forRequestType:(BOOL)type typeOfCommand:(unint64_t)command;
+- (BOOL)trustServer:(__SecTrust *)server withRootCA:(__SecCertificate *)a withHostName:(id)name;
+- (BOOL)trustServerWithApplePKI:(__SecTrust *)i;
+- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)i;
+- (id)hashForCertificate:(__SecCertificate *)certificate;
+- (id)identifierFor:(__SecCertificate *)for applePKI:(BOOL)i;
 @end
 
 @implementation MSDHubTrustEvaluate
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (BOOL)trustServer:(__SecTrust *)a3 forRequestType:(BOOL)a4 typeOfCommand:(unint64_t)a5
+- (BOOL)trustServer:(__SecTrust *)server forRequestType:(BOOL)type typeOfCommand:(unint64_t)command
 {
-  v6 = a4;
+  typeCopy = type;
   v9 = +[MSDTargetDevice sharedInstance];
-  if (!a5)
+  if (!command)
   {
     v12 = sub_100063A54();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -30,21 +30,21 @@
       sub_1000DBAC4();
     }
 
-    v10 = [(MSDHubTrustEvaluate *)self trustDAServer:a3];
+    v10 = [(MSDHubTrustEvaluate *)self trustDAServer:server];
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!typeCopy)
   {
-    v14 = [(MSDHubTrustEvaluate *)self trustServerWithApplePKI:a3];
-    if (v14 || [(MSDHubTrustEvaluate *)self trustServerWithAxinoePKI:a3])
+    v14 = [(MSDHubTrustEvaluate *)self trustServerWithApplePKI:server];
+    if (v14 || [(MSDHubTrustEvaluate *)self trustServerWithAxinoePKI:server])
     {
-      CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, 0);
+      CertificateAtIndex = SecTrustGetCertificateAtIndex(server, 0);
       if (CertificateAtIndex)
       {
         v16 = CertificateAtIndex;
-        v13 = [v9 certificateHash];
-        if (v13)
+        certificateHash = [v9 certificateHash];
+        if (certificateHash)
         {
           v17 = v14;
         }
@@ -56,9 +56,9 @@
 
         if (v17)
         {
-          if (a5 != 3)
+          if (command != 3)
           {
-            if (a5 == 1 && ![(MSDHubTrustEvaluate *)self saveHubCertificateIdentifer:v16 applePKI:v14])
+            if (command == 1 && ![(MSDHubTrustEvaluate *)self saveHubCertificateIdentifer:v16 applePKI:v14])
             {
               goto LABEL_39;
             }
@@ -83,7 +83,7 @@ LABEL_32:
         else
         {
           v18 = [(MSDHubTrustEvaluate *)self hashForCertificate:v16];
-          v19 = [v13 isEqualToData:v18];
+          v19 = [certificateHash isEqualToData:v18];
 
           v20 = sub_100063A54();
           v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -109,13 +109,13 @@ LABEL_32:
 
           else if (v21)
           {
-            v23 = [v13 hexStringRepresentation];
+            hexStringRepresentation = [certificateHash hexStringRepresentation];
             v24 = [(MSDHubTrustEvaluate *)self hashForCertificate:v16];
-            v25 = [v24 hexStringRepresentation];
+            hexStringRepresentation2 = [v24 hexStringRepresentation];
             v26 = 138543618;
-            v27 = v23;
+            v27 = hexStringRepresentation;
             v28 = 2114;
-            v29 = v25;
+            v29 = hexStringRepresentation2;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Certificate hash does not match the saved one - Saved:  %{public}@ - Current:  %{public}@", &v26, 0x16u);
           }
         }
@@ -129,13 +129,13 @@ LABEL_32:
           sub_1000DBA90();
         }
 
-        v13 = 0;
+        certificateHash = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      certificateHash = 0;
     }
 
 LABEL_39:
@@ -145,19 +145,19 @@ LABEL_39:
 
   v26 = 0;
   v10 = 0;
-  if (!SecTrustEvaluate(a3, &v26))
+  if (!SecTrustEvaluate(server, &v26))
   {
     v10 = v26 == 4 || v26 == 1;
   }
 
 LABEL_13:
-  v13 = 0;
+  certificateHash = 0;
 LABEL_33:
 
   return v10;
 }
 
-- (BOOL)trustDAServer:(__SecTrust *)a3
+- (BOOL)trustDAServer:(__SecTrust *)server
 {
   v4 = CFDataCreate(kCFAllocatorDefault, byte_1001A4CB8, dword_1001A5040);
   if (!v4)
@@ -176,7 +176,7 @@ LABEL_33:
 
   v7 = v6;
   v8 = [NSArray arrayWithObjects:v6, 0];
-  v9 = SecTrustSetAnchorCertificates(a3, v8);
+  v9 = SecTrustSetAnchorCertificates(server, v8);
   if (v9)
   {
     v14 = v9;
@@ -194,7 +194,7 @@ LABEL_33:
   }
 
   result = kSecTrustResultInvalid;
-  v10 = SecTrustEvaluate(a3, &result);
+  v10 = SecTrustEvaluate(server, &result);
   if (v10)
   {
     v15 = v10;
@@ -232,7 +232,7 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)trustServerWithApplePKI:(__SecTrust *)a3
+- (BOOL)trustServerWithApplePKI:(__SecTrust *)i
 {
   commonName = 0;
   v5 = CFDataCreate(kCFAllocatorDefault, byte_1001A4CB8, dword_1001A5040);
@@ -251,7 +251,7 @@ LABEL_12:
   }
 
   v8 = v7;
-  if (![(MSDHubTrustEvaluate *)self trustServer:a3 withRootCA:v7 withHostName:0])
+  if (![(MSDHubTrustEvaluate *)self trustServer:i withRootCA:v7 withHostName:0])
   {
     v10 = 0;
 LABEL_22:
@@ -259,7 +259,7 @@ LABEL_22:
     goto LABEL_8;
   }
 
-  CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, 0);
+  CertificateAtIndex = SecTrustGetCertificateAtIndex(i, 0);
   if (!CertificateAtIndex)
   {
     v13 = sub_100063A54();
@@ -306,7 +306,7 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)a3
+- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)i
 {
   v5 = CFDataCreate(kCFAllocatorDefault, byte_1001A48A8, dword_1001A4CB4);
   if (!v5)
@@ -324,14 +324,14 @@ LABEL_8:
   }
 
   v8 = v7;
-  if ([(MSDHubTrustEvaluate *)self trustServer:a3 withRootCA:v7 withHostName:@"hub.iosdm.local"])
+  if ([(MSDHubTrustEvaluate *)self trustServer:i withRootCA:v7 withHostName:@"hub.iosdm.local"])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [(MSDHubTrustEvaluate *)self trustServer:a3 withRootCA:v8 withHostName:@"hub.iosdm.net"];
+    v9 = [(MSDHubTrustEvaluate *)self trustServer:i withRootCA:v8 withHostName:@"hub.iosdm.net"];
   }
 
   CFRelease(v6);
@@ -339,10 +339,10 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)trustServer:(__SecTrust *)a3 withRootCA:(__SecCertificate *)a4 withHostName:(id)a5
+- (BOOL)trustServer:(__SecTrust *)server withRootCA:(__SecCertificate *)a withHostName:(id)name
 {
   trust = 0;
-  SSL = SecPolicyCreateSSL(1u, a5);
+  SSL = SecPolicyCreateSSL(1u, name);
   if (!SSL)
   {
     sub_1000DC1E4();
@@ -353,13 +353,13 @@ LABEL_8:
 
   v8 = SSL;
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(server);
   if (CertificateCount >= 1)
   {
     v11 = CertificateCount;
     for (i = 0; i != v11; ++i)
     {
-      CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, i);
+      CertificateAtIndex = SecTrustGetCertificateAtIndex(server, i);
       CFArrayAppendValue(Mutable, CertificateAtIndex);
     }
   }
@@ -373,7 +373,7 @@ LABEL_8:
 
   else
   {
-    v14 = [NSArray arrayWithObjects:a4, 0];
+    v14 = [NSArray arrayWithObjects:a, 0];
     v15 = SecTrustSetAnchorCertificates(trust, v14);
     if (v15)
     {
@@ -414,9 +414,9 @@ LABEL_18:
   return v16;
 }
 
-- (id)hashForCertificate:(__SecCertificate *)a3
+- (id)hashForCertificate:(__SecCertificate *)certificate
 {
-  v3 = SecCertificateCopyData(a3);
+  v3 = SecCertificateCopyData(certificate);
   if (v3)
   {
     v4 = malloc_type_calloc(1uLL, 0x14uLL, 0x100004077774924uLL);
@@ -434,10 +434,10 @@ LABEL_18:
   return v5;
 }
 
-- (id)identifierFor:(__SecCertificate *)a3 applePKI:(BOOL)a4
+- (id)identifierFor:(__SecCertificate *)for applePKI:(BOOL)i
 {
   commonName = 0;
-  if (!a4)
+  if (!i)
   {
     v30 = 0u;
     v31 = 0u;
@@ -522,7 +522,7 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  if (SecCertificateCopyCommonName(a3, &commonName))
+  if (SecCertificateCopyCommonName(for, &commonName))
   {
 LABEL_23:
     v4 = 0;

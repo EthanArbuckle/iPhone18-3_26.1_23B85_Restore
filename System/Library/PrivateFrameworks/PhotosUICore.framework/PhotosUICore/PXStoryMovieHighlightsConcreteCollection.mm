@@ -1,35 +1,35 @@
 @interface PXStoryMovieHighlightsConcreteCollection
 - (PXStoryMovieHighlightsConcreteCollection)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)movieHighlightsForDisplayAsset:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)movieHighlightsForDisplayAsset:(id)asset;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXStoryMovieHighlightsConcreteCollection
 
-- (id)movieHighlightsForDisplayAsset:(id)a3
+- (id)movieHighlightsForDisplayAsset:(id)asset
 {
   highlightsByAssetId = self->_highlightsByAssetId;
-  v4 = [a3 uuid];
-  v5 = [(NSMutableDictionary *)highlightsByAssetId objectForKeyedSubscript:v4];
+  uuid = [asset uuid];
+  v5 = [(NSMutableDictionary *)highlightsByAssetId objectForKeyedSubscript:uuid];
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [PXStoryMovieHighlightsConcreteMutableCollection allocWithZone:?];
-  v6 = [(NSMutableDictionary *)self->_highlightsByAssetId mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_highlightsByAssetId mutableCopyWithZone:zone];
   highlightsByAssetId = v5->super._highlightsByAssetId;
   v5->super._highlightsByAssetId = v6;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PXStoryMovieHighlightsConcreteCollection allocWithZone:?];
-  v6 = [(NSMutableDictionary *)self->_highlightsByAssetId mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_highlightsByAssetId mutableCopyWithZone:zone];
   highlightsByAssetId = v5->_highlightsByAssetId;
   v5->_highlightsByAssetId = v6;
 

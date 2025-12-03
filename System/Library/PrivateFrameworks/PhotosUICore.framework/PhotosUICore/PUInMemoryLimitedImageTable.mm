@@ -1,30 +1,30 @@
 @interface PUInMemoryLimitedImageTable
-- (id)imageForItemAtIndex:(unint64_t)a3;
-- (void)removeItemAtIndex:(unint64_t)a3;
-- (void)setImage:(id)a3 forItemAtIndex:(unint64_t)a4;
+- (id)imageForItemAtIndex:(unint64_t)index;
+- (void)removeItemAtIndex:(unint64_t)index;
+- (void)setImage:(id)image forItemAtIndex:(unint64_t)index;
 @end
 
 @implementation PUInMemoryLimitedImageTable
 
-- (void)removeItemAtIndex:(unint64_t)a3
+- (void)removeItemAtIndex:(unint64_t)index
 {
   v3 = *&self->super._indexCounter;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   [v3 removeObjectForKey:v4];
 }
 
-- (id)imageForItemAtIndex:(unint64_t)a3
+- (id)imageForItemAtIndex:(unint64_t)index
 {
   v3 = *&self->super._indexCounter;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v5 = [v3 objectForKey:v4];
 
   return v5;
 }
 
-- (void)setImage:(id)a3 forItemAtIndex:(unint64_t)a4
+- (void)setImage:(id)image forItemAtIndex:(unint64_t)index
 {
-  v10 = a3;
+  imageCopy = image;
   v6 = *&self->super._indexCounter;
   if (!v6)
   {
@@ -36,8 +36,8 @@
     v6 = *&self->super._indexCounter;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v6 setObject:v10 forKey:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  [v6 setObject:imageCopy forKey:v9];
 }
 
 @end

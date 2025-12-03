@@ -1,18 +1,18 @@
 @interface EKEventMapCell
-- (EKEventMapCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKEventMapCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (EKEventMapDetailItem)detailItem;
 - (void)layoutSubviews;
 @end
 
 @implementation EKEventMapCell
 
-- (EKEventMapCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKEventMapCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = EKEventMapCell;
-  v7 = [(EKEventMapCell *)&v14 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(EKEventMapCell *)&v14 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     objc_initWeak(&location, v7);

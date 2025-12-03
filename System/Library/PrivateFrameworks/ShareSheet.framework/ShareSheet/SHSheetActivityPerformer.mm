@@ -1,48 +1,48 @@
 @interface SHSheetActivityPerformer
 - (BOOL)_enqueueBackgroundOperationsIfNeeded;
 - (BOOL)_presentPopoverContentViewController;
-- (BOOL)_shouldExecuteItemOperation:(id)a3;
+- (BOOL)_shouldExecuteItemOperation:(id)operation;
 - (BOOL)isRunning;
-- (SHSheetActivityPerformer)initWithActivity:(id)a3 session:(id)a4;
+- (SHSheetActivityPerformer)initWithActivity:(id)activity session:(id)session;
 - (SHSheetActivityPerformerDelegate)delegate;
 - (SHSheetActivityPerformerPresentationInterface)presentationController;
 - (SHSheetSession)session;
 - (UIActivityViewController)activityViewController;
 - (id)_resolvedActivityItems;
-- (void)_completePerformingActivityWithState:(int64_t)a3 returnedItems:(id)a4 error:(id)a5;
+- (void)_completePerformingActivityWithState:(int64_t)state returnedItems:(id)items error:(id)error;
 - (void)_configureActivityAfterPreparation;
 - (void)_configureActivityBeforePreparation;
 - (void)_didFinishAllBackgroundOperations;
 - (void)_executeActivity;
-- (void)_finishWithState:(int64_t)a3;
+- (void)_finishWithState:(int64_t)state;
 - (void)_handlePresentationCompletion;
-- (void)_performPresentationWithViewController:(id)a3;
+- (void)_performPresentationWithViewController:(id)controller;
 - (void)_prepareActivityPresentation;
-- (void)_prepareActivityWithCompletion:(id)a3;
+- (void)_prepareActivityWithCompletion:(id)completion;
 - (void)_start;
 - (void)cancel;
 - (void)dealloc;
-- (void)finishWithSuccess:(BOOL)a3;
-- (void)performWithCompletionHandler:(id)a3;
-- (void)setActivityItemProviderOperationQueue:(id)a3;
+- (void)finishWithSuccess:(BOOL)success;
+- (void)performWithCompletionHandler:(id)handler;
+- (void)setActivityItemProviderOperationQueue:(id)queue;
 @end
 
 @implementation SHSheetActivityPerformer
 
-- (SHSheetActivityPerformer)initWithActivity:(id)a3 session:(id)a4
+- (SHSheetActivityPerformer)initWithActivity:(id)activity session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  activityCopy = activity;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = SHSheetActivityPerformer;
   v9 = [(SHSheetActivityPerformer *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activity, a3);
-    objc_storeWeak(&v10->_session, v8);
-    v11 = [v8 activityViewController];
-    objc_storeWeak(&v10->_activityViewController, v11);
+    objc_storeStrong(&v9->_activity, activity);
+    objc_storeWeak(&v10->_session, sessionCopy);
+    activityViewController = [sessionCopy activityViewController];
+    objc_storeWeak(&v10->_activityViewController, activityViewController);
 
     v10->_backgroundTaskIdentifier = *MEMORY[0x1E69DDBE8];
   }
@@ -52,83 +52,83 @@
 
 - (void)dealloc
 {
-  v3 = [(SHSheetActivityPerformer *)self activity];
-  [v3 _cleanup];
+  activity = [(SHSheetActivityPerformer *)self activity];
+  [activity _cleanup];
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 endBackgroundTask:self->_backgroundTaskIdentifier];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] endBackgroundTask:self->_backgroundTaskIdentifier];
 
-  v5 = [(SHSheetActivityPerformer *)self presentationController];
-  [v5 activityPerformCleanUpPresentation:self];
+  presentationController = [(SHSheetActivityPerformer *)self presentationController];
+  [presentationController activityPerformCleanUpPresentation:self];
 
   v6.receiver = self;
   v6.super_class = SHSheetActivityPerformer;
   [(SHSheetActivityPerformer *)&v6 dealloc];
 }
 
-- (void)setActivityItemProviderOperationQueue:(id)a3
+- (void)setActivityItemProviderOperationQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   activityItemProviderOperationQueue = self->_activityItemProviderOperationQueue;
   p_activityItemProviderOperationQueue = &self->_activityItemProviderOperationQueue;
   v6 = activityItemProviderOperationQueue;
-  if (activityItemProviderOperationQueue != v5)
+  if (activityItemProviderOperationQueue != queueCopy)
   {
-    v9 = v5;
+    v9 = queueCopy;
     [(NSOperationQueue *)v6 cancelAllOperations];
-    objc_storeStrong(p_activityItemProviderOperationQueue, a3);
-    v5 = v9;
+    objc_storeStrong(p_activityItemProviderOperationQueue, queue);
+    queueCopy = v9;
   }
 }
 
 - (BOOL)isRunning
 {
-  v3 = [(SHSheetActivityPerformer *)self state];
-  if (v3 != 1)
+  state = [(SHSheetActivityPerformer *)self state];
+  if (state != 1)
   {
-    LOBYTE(v3) = [(SHSheetActivityPerformer *)self state]== 2;
+    LOBYTE(state) = [(SHSheetActivityPerformer *)self state]== 2;
   }
 
-  return v3;
+  return state;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(SHSheetActivityPerformer *)self setState:1];
-  v5 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   [(SHSheetActivityPerformer *)self setBeginPerformingActivityTimestamp:mach_continuous_time()];
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 activityType];
+    activityType = [activity activityType];
     *buf = 138543618;
-    v15 = v5;
+    v15 = activity;
     v16 = 2114;
-    v17 = v7;
+    v17 = activityType;
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "Performing activity %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  [(SHSheetActivityPerformer *)self setCompletionHandler:v4];
+  [(SHSheetActivityPerformer *)self setCompletionHandler:handlerCopy];
   objc_initWeak(buf, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E71FACE0;
   objc_copyWeak(&v13, buf);
-  [v5 setDidFinishPerformingActivityHandler:v12];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  v9 = [(SHSheetActivityPerformer *)self activityViewController];
-  [v8 addObserver:self selector:sel__start name:@"_UIActivityViewControllerExecuteActivityNotification" object:v9];
+  [activity setDidFinishPerformingActivityHandler:v12];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  activityViewController = [(SHSheetActivityPerformer *)self activityViewController];
+  [defaultCenter addObserver:self selector:sel__start name:@"_UIActivityViewControllerExecuteActivityNotification" object:activityViewController];
 
-  if (![v5 _needsResolvedActivityItems])
+  if (![activity _needsResolvedActivityItems])
   {
     goto LABEL_7;
   }
 
-  v10 = [v5 activityType];
-  if ([v10 isEqualToString:@"com.apple.DocumentManagerUICore.AddTagsActionExtension"])
+  activityType2 = [activity activityType];
+  if ([activityType2 isEqualToString:@"com.apple.DocumentManagerUICore.AddTagsActionExtension"])
   {
 
 LABEL_7:
@@ -136,9 +136,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(SHSheetActivityPerformer *)self _enqueueBackgroundOperationsIfNeeded];
+  _enqueueBackgroundOperationsIfNeeded = [(SHSheetActivityPerformer *)self _enqueueBackgroundOperationsIfNeeded];
 
-  if (!v11)
+  if (!_enqueueBackgroundOperationsIfNeeded)
   {
     goto LABEL_7;
   }
@@ -172,40 +172,40 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
   v3 = share_sheet_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SHSheetActivityPerformer *)self activity];
-    v5 = [(SHSheetActivityPerformer *)self activity];
-    v6 = [v5 activityType];
+    activity = [(SHSheetActivityPerformer *)self activity];
+    activity2 = [(SHSheetActivityPerformer *)self activity];
+    activityType = [activity2 activityType];
     v7 = 138543618;
-    v8 = v4;
+    v8 = activity;
     v9 = 2114;
-    v10 = v6;
+    v10 = activityType;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling activity %{public}@ (%{public}@)", &v7, 0x16u);
   }
 
   [(SHSheetActivityPerformer *)self _finishWithState:3];
 }
 
-- (void)finishWithSuccess:(BOOL)a3
+- (void)finishWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v17 = *MEMORY[0x1E69E9840];
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SHSheetActivityPerformer *)self activity];
-    v7 = [(SHSheetActivityPerformer *)self activity];
-    v8 = [v7 activityType];
+    activity = [(SHSheetActivityPerformer *)self activity];
+    activity2 = [(SHSheetActivityPerformer *)self activity];
+    activityType = [activity2 activityType];
     v9 = NSStringFromBOOL();
     v11 = 138543874;
-    v12 = v6;
+    v12 = activity;
     v13 = 2114;
-    v14 = v8;
+    v14 = activityType;
     v15 = 2112;
     v16 = v9;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Finishing activity %{public}@ (%{public}@) with success:%@", &v11, 0x20u);
   }
 
-  if (v3)
+  if (successCopy)
   {
     v10 = 5;
   }
@@ -218,61 +218,61 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
   [(SHSheetActivityPerformer *)self _finishWithState:v10];
 }
 
-- (void)_finishWithState:(int64_t)a3
+- (void)_finishWithState:(int64_t)state
 {
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 endBackgroundTask:{-[SHSheetActivityPerformer backgroundTaskIdentifier](self, "backgroundTaskIdentifier")}];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] endBackgroundTask:{-[SHSheetActivityPerformer backgroundTaskIdentifier](self, "backgroundTaskIdentifier")}];
 
   [(SHSheetActivityPerformer *)self setBackgroundTaskIdentifier:*MEMORY[0x1E69DDBE8]];
   v6 = MEMORY[0x1E69E58C0];
-  v7 = [(SHSheetActivityPerformer *)self activityViewController];
-  [v6 cancelPreviousPerformRequestsWithTarget:v7];
+  activityViewController = [(SHSheetActivityPerformer *)self activityViewController];
+  [v6 cancelPreviousPerformRequestsWithTarget:activityViewController];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:@"_UIActivityViewControllerExecuteActivityNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIActivityViewControllerExecuteActivityNotification" object:0];
 
   [(SHSheetActivityPerformer *)self setActivityItemProviderOperationQueue:0];
 
-  [(SHSheetActivityPerformer *)self _completePerformingActivityWithState:a3 returnedItems:0 error:0];
+  [(SHSheetActivityPerformer *)self _completePerformingActivityWithState:state returnedItems:0 error:0];
 }
 
-- (void)_completePerformingActivityWithState:(int64_t)a3 returnedItems:(id)a4 error:(id)a5
+- (void)_completePerformingActivityWithState:(int64_t)state returnedItems:(id)items error:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  errorCopy = error;
   v10 = share_sheet_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = SHSheetActivityPerformerStateDescription(a3);
-    v12 = [(SHSheetActivityPerformer *)self activity];
-    v13 = [(SHSheetActivityPerformer *)self activity];
-    v14 = [v13 activityType];
+    v11 = SHSheetActivityPerformerStateDescription(state);
+    activity = [(SHSheetActivityPerformer *)self activity];
+    activity2 = [(SHSheetActivityPerformer *)self activity];
+    activityType = [activity2 activityType];
     v21 = 138412802;
-    v22 = v11;
+    selfCopy = v11;
     v23 = 2114;
-    v24 = v12;
+    stateCopy = activity;
     v25 = 2114;
-    v26 = v14;
+    v26 = activityType;
     _os_log_impl(&dword_18B359000, v10, OS_LOG_TYPE_DEFAULT, "Completing with state:%@ %{public}@ (%{public}@)", &v21, 0x20u);
   }
 
   if ([(SHSheetActivityPerformer *)self state]< 3)
   {
-    [(SHSheetActivityPerformer *)self setState:a3];
-    v16 = [(SHSheetActivityPerformer *)self activity];
-    [v16 setDidFinishPerformingActivityHandler:0];
+    [(SHSheetActivityPerformer *)self setState:state];
+    activity3 = [(SHSheetActivityPerformer *)self activity];
+    [activity3 setDidFinishPerformingActivityHandler:0];
 
-    v17 = [(SHSheetActivityPerformer *)self presentationController];
-    [v17 activityPerformerStopListeningForDismissalTransition:self];
+    presentationController = [(SHSheetActivityPerformer *)self presentationController];
+    [presentationController activityPerformerStopListeningForDismissalTransition:self];
 
     v18 = [SHSheetActivityPerformerResult alloc];
-    v19 = [(SHSheetActivityPerformer *)self activity];
-    v15 = [(SHSheetActivityPerformerResult *)v18 initWithActivity:v19 completedState:a3 returnedItems:v8 error:v9];
+    activity4 = [(SHSheetActivityPerformer *)self activity];
+    v15 = [(SHSheetActivityPerformerResult *)v18 initWithActivity:activity4 completedState:state returnedItems:itemsCopy error:errorCopy];
 
     [(SHSheetActivityPerformer *)self setResult:v15];
-    v20 = [(SHSheetActivityPerformer *)self completionHandler];
-    (v20)[2](v20, v15);
+    completionHandler = [(SHSheetActivityPerformer *)self completionHandler];
+    (completionHandler)[2](completionHandler, v15);
     [(SHSheetActivityPerformer *)self setCompletionHandler:0];
     [(SHSheetActivityPerformer *)self setRetainedActivityViewController:0];
   }
@@ -283,9 +283,9 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
-      v22 = self;
+      selfCopy = self;
       v23 = 2048;
-      v24 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_18B359000, v15, OS_LOG_TYPE_DEFAULT, "Activity Performer:%@ is already completed with state:%ld", &v21, 0x16u);
     }
   }
@@ -294,10 +294,10 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
 - (id)_resolvedActivityItems
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   v4 = share_sheet_log();
   v5 = share_sheet_log();
-  v6 = os_signpost_id_make_with_pointer(v5, v3);
+  v6 = os_signpost_id_make_with_pointer(v5, activity);
 
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v4))
   {
@@ -307,23 +307,23 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
 
   v7 = share_sheet_log();
   v8 = share_sheet_log();
-  v9 = os_signpost_id_make_with_pointer(v8, v3);
+  v9 = os_signpost_id_make_with_pointer(v8, activity);
 
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
-    v10 = [v3 activityType];
+    activityType = [activity activityType];
     v21 = 138543362;
-    v22 = v10;
+    v22 = activityType;
     _os_signpost_emit_with_name_impl(&dword_18B359000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v9, "ResolveActivityItemValuesWithType", "activityType=%{public, signpost.telemetry:string1}@", &v21, 0xCu);
   }
 
-  v11 = [(SHSheetActivityPerformer *)self session];
-  v12 = [v11 activityItemsManager];
-  v13 = [v12 activityItemValuesForActivity:v3];
+  session = [(SHSheetActivityPerformer *)self session];
+  activityItemsManager = [session activityItemsManager];
+  v13 = [activityItemsManager activityItemValuesForActivity:activity];
 
   v14 = share_sheet_log();
   v15 = share_sheet_log();
-  v16 = os_signpost_id_make_with_pointer(v15, v3);
+  v16 = os_signpost_id_make_with_pointer(v15, activity);
 
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
@@ -333,7 +333,7 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
 
   v17 = share_sheet_log();
   v18 = share_sheet_log();
-  v19 = os_signpost_id_make_with_pointer(v18, v3);
+  v19 = os_signpost_id_make_with_pointer(v18, activity);
 
   if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
@@ -346,37 +346,37 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
 
 - (void)_executeActivity
 {
-  v3 = [(SHSheetActivityPerformer *)self session];
-  v2 = [v3 activityViewController];
-  [v2 _executeActivity];
+  session = [(SHSheetActivityPerformer *)self session];
+  activityViewController = [session activityViewController];
+  [activityViewController _executeActivity];
 }
 
 - (void)_start
 {
   v38 = *MEMORY[0x1E69E9840];
   [(SHSheetActivityPerformer *)self setState:2];
-  v3 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 activityType];
+    activityType = [activity activityType];
     *buf = 138543618;
-    v30 = v3;
+    v30 = activity;
     v31 = 2114;
-    v32 = v5;
+    v32 = activityType;
     _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "Executing activity %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v6 endBackgroundTask:self->_backgroundTaskIdentifier];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] endBackgroundTask:self->_backgroundTaskIdentifier];
 
   self->_backgroundTaskIdentifier = *MEMORY[0x1E69DDBE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(SHSheetActivityPerformer *)self activityItemProviderOperations];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  activityItemProviderOperations = [(SHSheetActivityPerformer *)self activityItemProviderOperations];
+  v8 = [activityItemProviderOperations countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -386,7 +386,7 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(activityItemProviderOperations);
         }
 
         if ([*(*(&v25 + 1) + 8 * i) isCancelled])
@@ -396,7 +396,7 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v8 = [activityItemProviderOperations countByEnumeratingWithState:&v25 objects:v37 count:16];
       if (v8)
       {
         continue;
@@ -409,32 +409,32 @@ void __57__SHSheetActivityPerformer_performWithCompletionHandler___block_invoke(
 LABEL_13:
 
   [(SHSheetActivityPerformer *)self setActivityItemProviderOperations:0];
-  v11 = [(SHSheetActivityPerformer *)self presentationController];
-  v12 = [v11 activityPerformerCanPresent:self];
+  presentationController = [(SHSheetActivityPerformer *)self presentationController];
+  v12 = [presentationController activityPerformerCanPresent:self];
 
   if ((v8 & 1) != 0 || !v12)
   {
-    v13 = [(SHSheetActivityPerformer *)self session];
-    v14 = [v13 testingReferenceSnapshot];
+    session = [(SHSheetActivityPerformer *)self session];
+    testingReferenceSnapshot = [session testingReferenceSnapshot];
 
-    if (v14)
+    if (testingReferenceSnapshot)
     {
-      v15 = [(SHSheetActivityPerformer *)self _resolvedActivityItems];
-      v16 = [(SHSheetActivityPerformer *)self session];
-      v17 = [v3 activityType];
-      [v16 _updateTestingSnapshotIfNeededForResolvedItems:v15 activityType:v17];
+      _resolvedActivityItems = [(SHSheetActivityPerformer *)self _resolvedActivityItems];
+      session2 = [(SHSheetActivityPerformer *)self session];
+      activityType2 = [activity activityType];
+      [session2 _updateTestingSnapshotIfNeededForResolvedItems:_resolvedActivityItems activityType:activityType2];
     }
 
     v18 = share_sheet_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v3 activityType];
+      activityType3 = [activity activityType];
       v20 = NSStringFromBOOL();
       v21 = NSStringFromBOOL();
       *buf = 138544130;
-      v30 = v3;
+      v30 = activity;
       v31 = 2114;
-      v32 = v19;
+      v32 = activityType3;
       v33 = 2112;
       v34 = v20;
       v35 = 2112;
@@ -451,8 +451,8 @@ LABEL_13:
     v22[1] = 3221225472;
     v22[2] = __34__SHSheetActivityPerformer__start__block_invoke;
     v22[3] = &unk_1E71F91A0;
-    v23 = v3;
-    v24 = self;
+    v23 = activity;
+    selfCopy = self;
     [(SHSheetActivityPerformer *)self _prepareActivityWithCompletion:v22];
   }
 }
@@ -475,28 +475,28 @@ uint64_t __34__SHSheetActivityPerformer__start__block_invoke(uint64_t a1)
   return [*(a1 + 40) _prepareActivityPresentation];
 }
 
-- (void)_prepareActivityWithCompletion:(id)a3
+- (void)_prepareActivityWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SHSheetActivityPerformer *)self _resolvedActivityItems];
-  v6 = [(SHSheetActivityPerformer *)self activity];
-  v7 = [(SHSheetActivityPerformer *)self activityViewController];
-  v8 = [(SHSheetActivityPerformer *)self session];
-  v9 = [v6 activityType];
-  [v8 _updateTestingSnapshotIfNeededForResolvedItems:v5 activityType:v9];
+  completionCopy = completion;
+  _resolvedActivityItems = [(SHSheetActivityPerformer *)self _resolvedActivityItems];
+  activity = [(SHSheetActivityPerformer *)self activity];
+  activityViewController = [(SHSheetActivityPerformer *)self activityViewController];
+  session = [(SHSheetActivityPerformer *)self session];
+  activityType = [activity activityType];
+  [session _updateTestingSnapshotIfNeededForResolvedItems:_resolvedActivityItems activityType:activityType];
 
   v10 = share_sheet_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 activityType];
+    activityType2 = [activity activityType];
     v12 = SFGenerateTypeList();
     *buf = 138544131;
-    v29 = v6;
+    v29 = activity;
     v30 = 2114;
-    v31 = v11;
+    v31 = activityType2;
     v32 = 2117;
-    v33 = v5;
+    v33 = _resolvedActivityItems;
     v34 = 2114;
     v35 = v12;
     _os_log_impl(&dword_18B359000, v10, OS_LOG_TYPE_DEFAULT, "Preparing activity %{public}@ (%{public}@) with activity items:%{sensitive}@ of types:%{public}@", buf, 0x2Au);
@@ -505,7 +505,7 @@ uint64_t __34__SHSheetActivityPerformer__start__block_invoke(uint64_t a1)
   [(SHSheetActivityPerformer *)self _configureActivityBeforePreparation];
   v13 = share_sheet_log();
   v14 = share_sheet_log();
-  v15 = os_signpost_id_make_with_pointer(v14, v6);
+  v15 = os_signpost_id_make_with_pointer(v14, activity);
 
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
@@ -515,13 +515,13 @@ uint64_t __34__SHSheetActivityPerformer__start__block_invoke(uint64_t a1)
 
   v16 = share_sheet_log();
   v17 = share_sheet_log();
-  v18 = os_signpost_id_make_with_pointer(v17, v6);
+  v18 = os_signpost_id_make_with_pointer(v17, activity);
 
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v19 = [v6 activityType];
+    activityType3 = [activity activityType];
     *buf = 138543362;
-    v29 = v19;
+    v29 = activityType3;
     _os_signpost_emit_with_name_impl(&dword_18B359000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PrepareActivityWithType", "activityType=%{public, signpost.telemetry:string1}@", buf, 0xCu);
   }
 
@@ -531,13 +531,13 @@ uint64_t __34__SHSheetActivityPerformer__start__block_invoke(uint64_t a1)
   v23[2] = __59__SHSheetActivityPerformer__prepareActivityWithCompletion___block_invoke;
   v23[3] = &unk_1E71FA700;
   objc_copyWeak(&v27, buf);
-  v20 = v6;
+  v20 = activity;
   v24 = v20;
-  v21 = v7;
+  v21 = activityViewController;
   v25 = v21;
-  v22 = v4;
+  v22 = completionCopy;
   v26 = v22;
-  [v20 _prepareWithActivityItems:v5 completion:v23];
+  [v20 _prepareWithActivityItems:_resolvedActivityItems completion:v23];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(buf);
@@ -592,11 +592,11 @@ void __59__SHSheetActivityPerformer__prepareActivityWithCompletion___block_invok
 
 - (BOOL)_presentPopoverContentViewController
 {
-  v3 = [(SHSheetActivityPerformer *)self activityViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  activityViewController = [(SHSheetActivityPerformer *)self activityViewController];
+  traitCollection = [activityViewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 6)
+  if (userInterfaceIdiom == 6)
   {
     return 0;
   }
@@ -606,16 +606,16 @@ void __59__SHSheetActivityPerformer__prepareActivityWithCompletion___block_invok
     return 0;
   }
 
-  v6 = [(SHSheetActivityPerformer *)self activity];
-  v7 = [v6 _embeddedActivityViewController];
+  activity = [(SHSheetActivityPerformer *)self activity];
+  _embeddedActivityViewController = [activity _embeddedActivityViewController];
 
-  if (!v7)
+  if (!_embeddedActivityViewController)
   {
     return 0;
   }
 
-  v8 = [(SHSheetActivityPerformer *)self presentationController];
-  v9 = [v8 activityPerformer:self presentPopoverContentViewController:v7];
+  presentationController = [(SHSheetActivityPerformer *)self presentationController];
+  v9 = [presentationController activityPerformer:self presentPopoverContentViewController:_embeddedActivityViewController];
 
   return v9;
 }
@@ -623,82 +623,82 @@ void __59__SHSheetActivityPerformer__prepareActivityWithCompletion___block_invok
 - (void)_prepareActivityPresentation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   if ([(SHSheetActivityPerformer *)self _presentPopoverContentViewController])
   {
     v4 = share_sheet_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 activityType];
+      activityType = [activity activityType];
       *buf = 138543618;
-      v33 = v3;
+      v33 = activity;
       v34 = 2114;
-      v35 = v5;
+      v35 = activityType;
       _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "Did present popover content for activity %{public}@ (%{public}@)", buf, 0x16u);
     }
   }
 
   else
   {
-    v6 = [(SHSheetActivityPerformer *)self activityViewController];
-    v7 = [v6 traitCollection];
-    v8 = [v7 userInterfaceIdiom] == 6;
+    activityViewController = [(SHSheetActivityPerformer *)self activityViewController];
+    traitCollection = [activityViewController traitCollection];
+    v8 = [traitCollection userInterfaceIdiom] == 6;
 
-    v9 = [v3 activityViewController];
-    v4 = v9;
+    activityViewController2 = [activity activityViewController];
+    v4 = activityViewController2;
     if (v8)
     {
-      if (v9)
+      if (activityViewController2)
       {
-        v10 = v9;
+        _embeddedActivityViewController = activityViewController2;
       }
 
       else
       {
-        v10 = [v3 _embeddedActivityViewController];
+        _embeddedActivityViewController = [activity _embeddedActivityViewController];
       }
 
-      v11 = v10;
+      v11 = _embeddedActivityViewController;
 
       v4 = v11;
     }
 
-    v12 = [(SHSheetActivityPerformer *)self activityViewController];
-    v13 = [v3 activityType];
-    v14 = [v13 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
+    activityViewController3 = [(SHSheetActivityPerformer *)self activityViewController];
+    activityType2 = [activity activityType];
+    v14 = [activityType2 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
 
     v15 = share_sheet_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v3 activityType];
+      activityType3 = [activity activityType];
       *buf = 138412802;
       v33 = v4;
       v34 = 2114;
-      v35 = v3;
+      v35 = activity;
       v36 = 2114;
-      v37 = v16;
+      v37 = activityType3;
       _os_log_impl(&dword_18B359000, v15, OS_LOG_TYPE_DEFAULT, "Prepare activity presentation for view controller:%@ %{public}@ (%{public}@)", buf, 0x20u);
     }
 
     objc_initWeak(buf, self);
-    v17 = [(SHSheetActivityPerformer *)self presentationController];
+    presentationController = [(SHSheetActivityPerformer *)self presentationController];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __56__SHSheetActivityPerformer__prepareActivityPresentation__block_invoke;
     v29[3] = &unk_1E71F96C8;
-    v18 = v3;
+    v18 = activity;
     v30 = v18;
     objc_copyWeak(&v31, buf);
-    [v17 activityPerformer:self startListeningForDismissalTransitionWithCompletion:v29];
+    [presentationController activityPerformer:self startListeningForDismissalTransitionWithCompletion:v29];
 
     if (_ShareSheetIsSupportedPrintActivity(v18))
     {
-      v19 = [v12 _window];
-      [v18 setWindowHoldingActivityViewController:v19];
+      _window = [activityViewController3 _window];
+      [v18 setWindowHoldingActivityViewController:_window];
     }
 
-    v20 = [(SHSheetActivityPerformer *)self session];
-    v21 = [v20 allowsEmbedding];
+    session = [(SHSheetActivityPerformer *)self session];
+    allowsEmbedding = [session allowsEmbedding];
     if (v4)
     {
       v22 = 1;
@@ -706,39 +706,39 @@ void __59__SHSheetActivityPerformer__prepareActivityWithCompletion___block_invok
 
     else
     {
-      v22 = v21;
+      v22 = allowsEmbedding;
     }
 
     if (v22)
     {
-      v23 = 1;
+      _managesOwnPresentation = 1;
     }
 
     else
     {
-      v23 = [v18 _managesOwnPresentation];
+      _managesOwnPresentation = [v18 _managesOwnPresentation];
     }
 
     [v18 _willBePerformedOrPresented];
     v24 = objc_alloc_init(SHSheetActivityPresentationContext);
     [(SHSheetActivityPresentationContext *)v24 setShouldDismissBeforePresentation:v14 ^ 1u];
-    [(SHSheetActivityPresentationContext *)v24 setShouldPresentOverCurrentContext:v23];
-    v25 = [(SHSheetActivityPerformer *)self session];
-    -[SHSheetActivityPresentationContext setIsCloudSharing:](v24, "setIsCloudSharing:", [v25 configureForCloudSharing]);
+    [(SHSheetActivityPresentationContext *)v24 setShouldPresentOverCurrentContext:_managesOwnPresentation];
+    session2 = [(SHSheetActivityPerformer *)self session];
+    -[SHSheetActivityPresentationContext setIsCloudSharing:](v24, "setIsCloudSharing:", [session2 configureForCloudSharing]);
 
     if ([(SHSheetActivityPresentationContext *)v24 shouldDismissBeforePresentation]&& ![(SHSheetActivityPresentationContext *)v24 shouldPresentOverCurrentContext])
     {
-      v26 = [(SHSheetActivityPerformer *)self activityViewController];
-      [(SHSheetActivityPerformer *)self setRetainedActivityViewController:v26];
+      activityViewController4 = [(SHSheetActivityPerformer *)self activityViewController];
+      [(SHSheetActivityPerformer *)self setRetainedActivityViewController:activityViewController4];
     }
 
-    v27 = [(SHSheetActivityPerformer *)self presentationController];
+    presentationController2 = [(SHSheetActivityPerformer *)self presentationController];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __56__SHSheetActivityPerformer__prepareActivityPresentation__block_invoke_2;
     v28[3] = &unk_1E71FAD08;
     v28[4] = self;
-    [v27 activityPerformer:self preparePresentationWithContext:v24 completion:v28];
+    [presentationController2 activityPerformer:self preparePresentationWithContext:v24 completion:v28];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
@@ -754,69 +754,69 @@ void __56__SHSheetActivityPerformer__prepareActivityPresentation__block_invoke(u
   }
 }
 
-- (void)_performPresentationWithViewController:(id)a3
+- (void)_performPresentationWithViewController:(id)controller
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SHSheetActivityPerformer *)self activity];
+  controllerCopy = controller;
+  activity = [(SHSheetActivityPerformer *)self activity];
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 activityType];
+    activityType = [activity activityType];
     *buf = 138412802;
-    v38 = v4;
+    v38 = controllerCopy;
     v39 = 2114;
-    v40 = v5;
+    v40 = activity;
     v41 = 2114;
-    v42 = v7;
+    v42 = activityType;
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "Perform presentation with view controller:%@ %{public}@ (%{public}@)", buf, 0x20u);
   }
 
   objc_initWeak(&location, self);
-  v8 = [(SHSheetActivityPerformer *)self activity];
+  activity2 = [(SHSheetActivityPerformer *)self activity];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __67__SHSheetActivityPerformer__performPresentationWithViewController___block_invoke;
   v34[3] = &unk_1E71F95A8;
   objc_copyWeak(&v35, &location);
-  v9 = [v8 _presentActivityOnViewController:v4 animated:1 completion:v34];
+  v9 = [activity2 _presentActivityOnViewController:controllerCopy animated:1 completion:v34];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v5 activityViewController];
-    IsSupportedPrintActivity = _ShareSheetIsSupportedPrintActivity(v5);
-    v12 = [v5 activityType];
-    v13 = [v12 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
+    activityViewController = [activity activityViewController];
+    IsSupportedPrintActivity = _ShareSheetIsSupportedPrintActivity(activity);
+    activityType2 = [activity activityType];
+    v13 = [activityType2 isEqualToString:@"com.apple.UIKit.activity.AirDrop"];
 
-    if ((v10 == 0) | IsSupportedPrintActivity & 1 | v13 & 1)
+    if ((activityViewController == 0) | IsSupportedPrintActivity & 1 | v13 & 1)
     {
-      [v5 performActivity];
+      [activity performActivity];
       v14 = share_sheet_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v5 activityType];
+        activityType3 = [activity activityType];
         *buf = 138543618;
-        v38 = v5;
+        v38 = activity;
         v39 = 2114;
-        v40 = v15;
+        v40 = activityType3;
         _os_log_impl(&dword_18B359000, v14, OS_LOG_TYPE_DEFAULT, "Performed non-UI activity %{public}@ (%{public}@)", buf, 0x16u);
       }
 
       v16 = share_sheet_log();
       v17 = share_sheet_log();
-      v18 = os_signpost_id_make_with_pointer(v17, v5);
+      v18 = os_signpost_id_make_with_pointer(v17, activity);
 
       if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
       {
-        v19 = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
+        beginPerformingActivityTimestamp = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
         *buf = 134349056;
-        v38 = v19;
+        v38 = beginPerformingActivityTimestamp;
         _os_signpost_emit_with_name_impl(&dword_18B359000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PerformNonUIActivity", "%{public, signpost.description:begin_time}llu", buf, 0xCu);
       }
 
       v20 = share_sheet_log();
       v21 = share_sheet_log();
-      v22 = os_signpost_id_make_with_pointer(v21, v5);
+      v22 = os_signpost_id_make_with_pointer(v21, activity);
 
       if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
       {
@@ -826,22 +826,22 @@ void __56__SHSheetActivityPerformer__prepareActivityPresentation__block_invoke(u
 
       v23 = share_sheet_log();
       v24 = share_sheet_log();
-      v25 = os_signpost_id_make_with_pointer(v24, v5);
+      v25 = os_signpost_id_make_with_pointer(v24, activity);
 
       if (v25 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
       {
-        v26 = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
-        v27 = [v5 activityType];
+        beginPerformingActivityTimestamp2 = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
+        activityType4 = [activity activityType];
         *buf = 134349314;
-        v38 = v26;
+        v38 = beginPerformingActivityTimestamp2;
         v39 = 2114;
-        v40 = v27;
+        v40 = activityType4;
         _os_signpost_emit_with_name_impl(&dword_18B359000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v25, "PerformNonUIActivityWithType", "%{public, signpost.description:begin_time}llu activityType=%{public, signpost.telemetry:string1}@", buf, 0x16u);
       }
 
       v28 = share_sheet_log();
       v29 = share_sheet_log();
-      v30 = os_signpost_id_make_with_pointer(v29, v5);
+      v30 = os_signpost_id_make_with_pointer(v29, activity);
 
       if (v30 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
       {
@@ -852,13 +852,13 @@ void __56__SHSheetActivityPerformer__prepareActivityPresentation__block_invoke(u
 
     else
     {
-      v31 = [(SHSheetActivityPerformer *)self presentationController];
+      presentationController = [(SHSheetActivityPerformer *)self presentationController];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __67__SHSheetActivityPerformer__performPresentationWithViewController___block_invoke_75;
       v32[3] = &unk_1E71F95A8;
       objc_copyWeak(&v33, &location);
-      [v31 activityPerformer:self presentViewController:v10 completion:v32];
+      [presentationController activityPerformer:self presentViewController:activityViewController completion:v32];
 
       objc_destroyWeak(&v33);
     }
@@ -883,36 +883,36 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
 - (void)_handlePresentationCompletion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 activityViewController];
-    v6 = [v3 activityType];
+    activityViewController = [activity activityViewController];
+    activityType = [activity activityType];
     v24 = 138412802;
-    v25 = v5;
+    v25 = activityViewController;
     v26 = 2114;
-    v27 = v3;
+    v27 = activity;
     v28 = 2114;
-    v29 = v6;
+    v29 = activityType;
     _os_log_impl(&dword_18B359000, v4, OS_LOG_TYPE_DEFAULT, "Presented view controller:%@ for UI activity %{public}@ (%{public}@)", &v24, 0x20u);
   }
 
   v7 = share_sheet_log();
   v8 = share_sheet_log();
-  v9 = os_signpost_id_make_with_pointer(v8, v3);
+  v9 = os_signpost_id_make_with_pointer(v8, activity);
 
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
-    v10 = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
+    beginPerformingActivityTimestamp = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
     v24 = 134349056;
-    v25 = v10;
+    v25 = beginPerformingActivityTimestamp;
     _os_signpost_emit_with_name_impl(&dword_18B359000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PerformUIActivity", "%{public, signpost.description:begin_time}llu", &v24, 0xCu);
   }
 
   v11 = share_sheet_log();
   v12 = share_sheet_log();
-  v13 = os_signpost_id_make_with_pointer(v12, v3);
+  v13 = os_signpost_id_make_with_pointer(v12, activity);
 
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
@@ -922,22 +922,22 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
 
   v14 = share_sheet_log();
   v15 = share_sheet_log();
-  v16 = os_signpost_id_make_with_pointer(v15, v3);
+  v16 = os_signpost_id_make_with_pointer(v15, activity);
 
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v17 = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
-    v18 = [v3 activityType];
+    beginPerformingActivityTimestamp2 = [(SHSheetActivityPerformer *)self beginPerformingActivityTimestamp];
+    activityType2 = [activity activityType];
     v24 = 134349314;
-    v25 = v17;
+    v25 = beginPerformingActivityTimestamp2;
     v26 = 2114;
-    v27 = v18;
+    v27 = activityType2;
     _os_signpost_emit_with_name_impl(&dword_18B359000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PerformUIActivityWithType", "%{public, signpost.description:begin_time}llu activityType=%{public, signpost.telemetry:string1}@", &v24, 0x16u);
   }
 
   v19 = share_sheet_log();
   v20 = share_sheet_log();
-  v21 = os_signpost_id_make_with_pointer(v20, v3);
+  v21 = os_signpost_id_make_with_pointer(v20, activity);
 
   if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
@@ -945,73 +945,73 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
     _os_signpost_emit_with_name_impl(&dword_18B359000, v19, OS_SIGNPOST_INTERVAL_END, v21, "PerformUIActivityWithType", " enableTelemetry=YES ", &v24, 2u);
   }
 
-  v22 = [(SHSheetActivityPerformer *)self activityViewController];
-  v23 = [v22 _activityPresentationCompletionHandler];
-  if (v23)
+  activityViewController2 = [(SHSheetActivityPerformer *)self activityViewController];
+  _activityPresentationCompletionHandler = [activityViewController2 _activityPresentationCompletionHandler];
+  if (_activityPresentationCompletionHandler)
   {
-    [v22 _setActivityPresentationCompletionHandler:0];
-    v23[2](v23);
+    [activityViewController2 _setActivityPresentationCompletionHandler:0];
+    _activityPresentationCompletionHandler[2](_activityPresentationCompletionHandler);
   }
 }
 
 - (void)_configureActivityBeforePreparation
 {
-  v27 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SHSheetActivityPerformer *)self session];
-    v4 = [v3 identifier];
-    [v27 setSessionIdentifier:v4];
+    session = [(SHSheetActivityPerformer *)self session];
+    identifier = [session identifier];
+    [activity setSessionIdentifier:identifier];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v27;
-    v6 = [(SHSheetActivityPerformer *)self session];
-    [v5 setKeyboardVisible:{objc_msgSend(v6, "showKeyboardAutomatically")}];
+    v5 = activity;
+    session2 = [(SHSheetActivityPerformer *)self session];
+    [v5 setKeyboardVisible:{objc_msgSend(session2, "showKeyboardAutomatically")}];
   }
 
-  v7 = [v27 activityType];
-  v8 = [v7 isEqualToString:@"com.apple.UIKit.activity.Message"];
+  activityType = [activity activityType];
+  v8 = [activityType isEqualToString:@"com.apple.UIKit.activity.Message"];
 
   if (v8)
   {
-    v9 = v27;
-    v10 = [(SHSheetActivityPerformer *)self delegate];
-    v11 = [v10 linkMetadataForActivityPerformer:self];
+    v9 = activity;
+    delegate = [(SHSheetActivityPerformer *)self delegate];
+    v11 = [delegate linkMetadataForActivityPerformer:self];
     [v9 setLinkMetadata:v11];
 
-    v12 = [(SHSheetActivityPerformer *)self session];
-    v13 = [v12 currentPeopleSuggestion];
-    [v9 setPeopleSuggestion:v13];
+    session3 = [(SHSheetActivityPerformer *)self session];
+    currentPeopleSuggestion = [session3 currentPeopleSuggestion];
+    [v9 setPeopleSuggestion:currentPeopleSuggestion];
   }
 
-  v14 = [(SHSheetActivityPerformer *)self session];
-  v15 = [v14 supportsCollaboration];
+  session4 = [(SHSheetActivityPerformer *)self session];
+  supportsCollaboration = [session4 supportsCollaboration];
 
-  if (v15)
+  if (supportsCollaboration)
   {
-    v16 = [(SHSheetActivityPerformer *)self session];
-    v17 = [v16 collaborationItem];
+    session5 = [(SHSheetActivityPerformer *)self session];
+    collaborationItem = [session5 collaborationItem];
 
     if (objc_opt_respondsToSelector())
     {
-      [v27 setCollaborationItem:v17];
+      [activity setCollaborationItem:collaborationItem];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = v27;
-      v19 = [(SHSheetActivityPerformer *)self session];
-      [v18 setIsCollaborative:{objc_msgSend(v19, "isCollaborative")}];
+      v18 = activity;
+      session6 = [(SHSheetActivityPerformer *)self session];
+      [v18 setIsCollaborative:{objc_msgSend(session6, "isCollaborative")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = v27;
-      v21 = [(SHSheetActivityPerformer *)self delegate];
-      v22 = [v21 collaborationServiceForActivityPerformer:self];
+      v20 = activity;
+      delegate2 = [(SHSheetActivityPerformer *)self delegate];
+      v22 = [delegate2 collaborationServiceForActivityPerformer:self];
 
       [v20 setCollaborationService:v22];
     }
@@ -1019,16 +1019,16 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v27 activityType];
-      v24 = [v23 isEqualToString:*MEMORY[0x1E69CDF30]];
+      activityType2 = [activity activityType];
+      v24 = [activityType2 isEqualToString:*MEMORY[0x1E69CDF30]];
 
       if (v24)
       {
-        if (![v17 type])
+        if (![collaborationItem type])
         {
-          v25 = v27;
-          v26 = [v17 fileURL];
-          [v25 setOriginalFileURL:v26];
+          v25 = activity;
+          fileURL = [collaborationItem fileURL];
+          [v25 setOriginalFileURL:fileURL];
         }
       }
     }
@@ -1037,74 +1037,74 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
 
 - (void)_configureActivityAfterPreparation
 {
-  v14 = [(SHSheetActivityPerformer *)self activity];
+  activity = [(SHSheetActivityPerformer *)self activity];
   if (objc_opt_respondsToSelector())
   {
-    v3 = v14;
-    v4 = [(SHSheetActivityPerformer *)self session];
-    v5 = [v4 activityItemsManager];
-    v6 = [v5 recipientsHandlesForActivity:v3];
+    v3 = activity;
+    session = [(SHSheetActivityPerformer *)self session];
+    activityItemsManager = [session activityItemsManager];
+    v6 = [activityItemsManager recipientsHandlesForActivity:v3];
     [v3 setRecipients:v6];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(SHSheetActivityPerformer *)self session];
-    v8 = [v7 activityItemsManager];
-    v9 = [v8 subjectForActivity:v14];
+    session2 = [(SHSheetActivityPerformer *)self session];
+    activityItemsManager2 = [session2 activityItemsManager];
+    v9 = [activityItemsManager2 subjectForActivity:activity];
 
     if (v9 || (-[SHSheetActivityPerformer activityViewController](self, "activityViewController"), v10 = objc_claimAutoreleasedReturnValue(), [v10 subject], v9 = objc_claimAutoreleasedReturnValue(), v10, v9))
     {
-      [v14 _setMailSubject:v9];
+      [activity _setMailSubject:v9];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(SHSheetActivityPerformer *)self session];
-    v12 = [v11 activityItemsManager];
-    v13 = [v12 initialSocialTextForActivity:v14];
+    session3 = [(SHSheetActivityPerformer *)self session];
+    activityItemsManager3 = [session3 activityItemsManager];
+    v13 = [activityItemsManager3 initialSocialTextForActivity:activity];
 
-    [v14 setInitialText:v13];
+    [activity setInitialText:v13];
   }
 }
 
 - (BOOL)_enqueueBackgroundOperationsIfNeeded
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SHSheetActivityPerformer *)self activity];
-  v5 = [(SHSheetActivityPerformer *)self session];
-  v6 = [v5 activityItemsManager];
+  array = [MEMORY[0x1E695DF70] array];
+  activity = [(SHSheetActivityPerformer *)self activity];
+  session = [(SHSheetActivityPerformer *)self session];
+  activityItemsManager = [session activityItemsManager];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __64__SHSheetActivityPerformer__enqueueBackgroundOperationsIfNeeded__block_invoke;
   v29[3] = &unk_1E71FAD30;
-  v7 = v4;
+  v7 = activity;
   v30 = v7;
-  v31 = self;
-  v8 = v3;
+  selfCopy = self;
+  v8 = array;
   v32 = v8;
-  [v6 enumerateBackgroundOperationsForActivity:v7 enumerator:v29];
+  [activityItemsManager enumerateBackgroundOperationsForActivity:v7 enumerator:v29];
 
-  v9 = [(SHSheetActivityPerformer *)self activityItemProviderOperationQueue];
+  activityItemProviderOperationQueue = [(SHSheetActivityPerformer *)self activityItemProviderOperationQueue];
 
-  if (v9)
+  if (activityItemProviderOperationQueue)
   {
     v10 = [v8 copy];
     [(SHSheetActivityPerformer *)self setActivityItemProviderOperations:v10];
 
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    -[SHSheetActivityPerformer setBackgroundTaskIdentifier:](self, "setBackgroundTaskIdentifier:", [v11 beginBackgroundTaskWithExpirationHandler:&__block_literal_global_33]);
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    -[SHSheetActivityPerformer setBackgroundTaskIdentifier:](self, "setBackgroundTaskIdentifier:", [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:&__block_literal_global_33]);
 
     v12 = share_sheet_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(NSOperationQueue *)self->_activityItemProviderOperationQueue operationCount];
+      operationCount = [(NSOperationQueue *)self->_activityItemProviderOperationQueue operationCount];
       *buf = 134349056;
-      v34 = v13;
+      v34 = operationCount;
       _os_log_impl(&dword_18B359000, v12, OS_LOG_TYPE_DEFAULT, "Starting load of %{public}ld activity item providers", buf, 0xCu);
     }
 
@@ -1124,20 +1124,20 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
 
     if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
     {
-      v20 = [v7 activityType];
+      activityType = [v7 activityType];
       *buf = 138543362;
-      v34 = v20;
+      v34 = activityType;
       _os_signpost_emit_with_name_impl(&dword_18B359000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v19, "LoadActivityItemProvidersWithType", "activityType=%{public, signpost.telemetry:string1}@", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v21 = [(SHSheetActivityPerformer *)self activityItemProviderOperationQueue];
+    activityItemProviderOperationQueue2 = [(SHSheetActivityPerformer *)self activityItemProviderOperationQueue];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __64__SHSheetActivityPerformer__enqueueBackgroundOperationsIfNeeded__block_invoke_97;
     v27 = &unk_1E71F95A8;
     objc_copyWeak(&v28, buf);
-    [v21 addOperationWithBlock:&v24];
+    [activityItemProviderOperationQueue2 addOperationWithBlock:&v24];
 
     v22 = [(SHSheetActivityPerformer *)self activityItemProviderOperationQueue:v24];
     [v22 setSuspended:0];
@@ -1146,7 +1146,7 @@ void __67__SHSheetActivityPerformer__performPresentationWithViewController___blo
     objc_destroyWeak(buf);
   }
 
-  return v9 != 0;
+  return activityItemProviderOperationQueue != 0;
 }
 
 void __64__SHSheetActivityPerformer__enqueueBackgroundOperationsIfNeeded__block_invoke(id *a1, void *a2, void *a3)
@@ -1213,15 +1213,15 @@ void __64__SHSheetActivityPerformer__enqueueBackgroundOperationsIfNeeded__block_
   [WeakRetained _didFinishAllBackgroundOperations];
 }
 
-- (BOOL)_shouldExecuteItemOperation:(id)a3
+- (BOOL)_shouldExecuteItemOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SHSheetActivityPerformer *)self activity];
-    v7 = [v5 _shouldExecuteItemOperationForActivity:v6];
+    v5 = operationCopy;
+    activity = [(SHSheetActivityPerformer *)self activity];
+    v7 = [v5 _shouldExecuteItemOperationForActivity:activity];
   }
 
   else

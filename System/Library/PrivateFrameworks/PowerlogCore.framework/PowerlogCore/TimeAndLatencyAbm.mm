@@ -1,20 +1,20 @@
 @interface TimeAndLatencyAbm
-- (TimeAndLatencyAbm)initWithTime:(id)a3 andLatency:(double)a4;
+- (TimeAndLatencyAbm)initWithTime:(id)time andLatency:(double)latency;
 @end
 
 @implementation TimeAndLatencyAbm
 
-- (TimeAndLatencyAbm)initWithTime:(id)a3 andLatency:(double)a4
+- (TimeAndLatencyAbm)initWithTime:(id)time andLatency:(double)latency
 {
-  v7 = a3;
+  timeCopy = time;
   v11.receiver = self;
   v11.super_class = TimeAndLatencyAbm;
   v8 = [(TimeAndLatencyAbm *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_time, a3);
-    v9->_latency = a4;
+    objc_storeStrong(&v8->_time, time);
+    v9->_latency = latency;
   }
 
   return v9;

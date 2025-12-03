@@ -1,9 +1,9 @@
 @interface SPCertificationAssistantSession
-+ (id)beaconsChanges:(id)a3;
++ (id)beaconsChanges:(id)changes;
 - (SPCertificationAssistantSession)init;
-- (void)registerSimpleBeaconInterfaceWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5;
-- (void)startUpdatingBeaconsWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5;
-- (void)stopUpdatingBeaconsWithCompletion:(id)a3;
+- (void)registerSimpleBeaconInterfaceWithContext:(id)context collectionDifference:(id)difference completion:(id)completion;
+- (void)startUpdatingBeaconsWithContext:(id)context collectionDifference:(id)difference completion:(id)completion;
+- (void)stopUpdatingBeaconsWithCompletion:(id)completion;
 @end
 
 @implementation SPCertificationAssistantSession
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (void)startUpdatingBeaconsWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5
+- (void)startUpdatingBeaconsWithContext:(id)context collectionDifference:(id)difference completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  differenceCopy = difference;
+  completionCopy = completion;
   v11 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,19 +39,19 @@
     _os_log_impl(&dword_2643D0000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v12 = [(SPCertificationAssistantSession *)self queue];
+  queue = [(SPCertificationAssistantSession *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __99__SPCertificationAssistantSession_startUpdatingBeaconsWithContext_collectionDifference_completion___block_invoke;
   v17[3] = &unk_279B58E30;
   v17[4] = self;
-  v18 = v8;
-  v19 = v10;
-  v20 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
-  dispatch_async(v12, v17);
+  v18 = contextCopy;
+  v19 = completionCopy;
+  v20 = differenceCopy;
+  v13 = differenceCopy;
+  v14 = contextCopy;
+  v15 = completionCopy;
+  dispatch_async(queue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -77,10 +77,10 @@ void __99__SPCertificationAssistantSession_startUpdatingBeaconsWithContext_colle
   }
 }
 
-- (void)stopUpdatingBeaconsWithCompletion:(id)a3
+- (void)stopUpdatingBeaconsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -89,15 +89,15 @@ void __99__SPCertificationAssistantSession_startUpdatingBeaconsWithContext_colle
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(SPCertificationAssistantSession *)self queue];
+  queue = [(SPCertificationAssistantSession *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__SPCertificationAssistantSession_stopUpdatingBeaconsWithCompletion___block_invoke;
   v9[3] = &unk_279B58B80;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -117,13 +117,13 @@ void __69__SPCertificationAssistantSession_stopUpdatingBeaconsWithCompletion___b
   }
 }
 
-+ (id)beaconsChanges:(id)a3
++ (id)beaconsChanges:(id)changes
 {
-  v3 = a3;
-  v4 = [v3 insertions];
-  v5 = [v3 removals];
+  changesCopy = changes;
+  insertions = [changesCopy insertions];
+  removals = [changesCopy removals];
 
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  v6 = [insertions arrayByAddingObjectsFromArray:removals];
   v7 = [v6 fm_map:&__block_literal_global_5];
 
   return v7;
@@ -153,21 +153,21 @@ SPCertificationAssistantBeacon *__50__SPCertificationAssistantSession_unifiedBea
   return v3;
 }
 
-- (void)registerSimpleBeaconInterfaceWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5
+- (void)registerSimpleBeaconInterfaceWithContext:(id)context collectionDifference:(id)difference completion:(id)completion
 {
-  v8 = a4;
+  differenceCopy = difference;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __108__SPCertificationAssistantSession_registerSimpleBeaconInterfaceWithContext_collectionDifference_completion___block_invoke;
   aBlock[3] = &unk_279B58E78;
-  v15 = v8;
-  v9 = v8;
-  v10 = a5;
-  v11 = a3;
+  v15 = differenceCopy;
+  v9 = differenceCopy;
+  completionCopy = completion;
+  contextCopy = context;
   v12 = _Block_copy(aBlock);
   v13 = objc_opt_new();
   [v13 setSimpleBeaconDifferenceBlock:v12];
-  [v13 startUpdatingSimpleBeaconsWithContext:v11 completion:v10];
+  [v13 startUpdatingSimpleBeaconsWithContext:contextCopy completion:completionCopy];
 
   [(SPCertificationAssistantSession *)self setSimpleBeaconUpdateInterface:v13];
 }

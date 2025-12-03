@@ -1,8 +1,8 @@
 @interface BDSNotificationConnection
 + (BOOL)isWithinConnectionDateRange;
 - (BDSNotificationConnection)init;
-- (void)didAcceptConnection:(id)a3;
-- (void)handleNotification:(id)a3;
+- (void)didAcceptConnection:(id)connection;
+- (void)handleNotification:(id)notification;
 - (void)startListeningForNotifications;
 @end
 
@@ -44,12 +44,12 @@
   {
     v3 = objc_alloc_init(NSMutableOrderedSet);
     v4 = +[BCCloudKitController sharedInstance];
-    v5 = [v4 configuration];
-    [v3 addObject:v5];
+    configuration = [v4 configuration];
+    [v3 addObject:configuration];
 
     v6 = +[BCCloudKitController secureSharedInstance];
-    v7 = [v6 configuration];
-    [v3 addObject:v7];
+    configuration2 = [v6 configuration];
+    [v3 addObject:configuration2];
 
     v8 = [[_BDSNotificationConnectionListener alloc] initWithContainerConfigurations:v3 delegate:v2];
     listener = v2->_listener;
@@ -84,19 +84,19 @@
 
 - (void)startListeningForNotifications
 {
-  v2 = [(BDSNotificationConnection *)self listener];
-  [v2 startListeningForNotifications];
+  listener = [(BDSNotificationConnection *)self listener];
+  [listener startListeningForNotifications];
 }
 
-- (void)didAcceptConnection:(id)a3
+- (void)didAcceptConnection:(id)connection
 {
   os_unfair_lock_lock(&self->_unfairLock);
   v4 = +[NSDate date];
   [(BDSNotificationConnection *)self setLastConnectionDate:v4];
 
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [(BDSNotificationConnection *)self lastConnectionDate];
-  [v5 setObject:v6 forKey:@"BookDataStore.ConnectionDate"];
+  lastConnectionDate = [(BDSNotificationConnection *)self lastConnectionDate];
+  [v5 setObject:lastConnectionDate forKey:@"BookDataStore.ConnectionDate"];
 
   v7 = sub_100002660();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -107,15 +107,15 @@
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   os_unfair_lock_lock(&self->_unfairLock);
   v5 = +[NSDate date];
   [v5 timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(BDSNotificationConnection *)self lastConnectionDate];
-  [v8 timeIntervalSinceReferenceDate];
+  lastConnectionDate = [(BDSNotificationConnection *)self lastConnectionDate];
+  [lastConnectionDate timeIntervalSinceReferenceDate];
   v10 = v7 - v9;
 
   os_unfair_lock_unlock(&self->_unfairLock);
@@ -137,8 +137,8 @@
       sub_1001C2260(v12);
     }
 
-    v12 = [BCCloudKitController instanceForCKNotification:v4];
-    [v12 handleRemoteCKNotification:v4];
+    v12 = [BCCloudKitController instanceForCKNotification:notificationCopy];
+    [v12 handleRemoteCKNotification:notificationCopy];
   }
 }
 

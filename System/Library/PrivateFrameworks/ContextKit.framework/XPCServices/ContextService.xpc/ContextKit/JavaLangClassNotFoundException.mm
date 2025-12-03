@@ -1,14 +1,14 @@
 @interface JavaLangClassNotFoundException
-- (JavaLangClassNotFoundException)initWithNSString:(id)a3 withJavaLangThrowable:(id)a4;
+- (JavaLangClassNotFoundException)initWithNSString:(id)string withJavaLangThrowable:(id)throwable;
 - (void)dealloc;
 @end
 
 @implementation JavaLangClassNotFoundException
 
-- (JavaLangClassNotFoundException)initWithNSString:(id)a3 withJavaLangThrowable:(id)a4
+- (JavaLangClassNotFoundException)initWithNSString:(id)string withJavaLangThrowable:(id)throwable
 {
-  JavaLangReflectiveOperationException_initWithNSString_(self, a3);
-  JreStrongAssign(&self->ex_, a4);
+  JavaLangReflectiveOperationException_initWithNSString_(self, string);
+  JreStrongAssign(&self->ex_, throwable);
   return self;
 }
 

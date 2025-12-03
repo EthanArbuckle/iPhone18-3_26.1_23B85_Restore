@@ -1,5 +1,5 @@
 @interface PGPhotosChallengeMetricEventFetchHelper
-- (BOOL)_migrationStepNeededForTripTitlingQuestions:(id)a3;
+- (BOOL)_migrationStepNeededForTripTitlingQuestions:(id)questions;
 - (NSDictionary)activePersonUUIDByPersonUUID;
 - (NSDictionary)assetByAssetIdentifier;
 - (NSDictionary)assetByAssetSyndicationIdentifier;
@@ -8,9 +8,9 @@
 - (NSSet)dayHighlightAssetIdentifiers;
 - (NSSet)momentUUIDsForExhaustiveMomentLabelingQuestion;
 - (NSSet)tripKeyAssetIdentifiers;
-- (PGPhotosChallengeMetricEventFetchHelper)initWithGraphManager:(id)a3;
-- (id)initForTestingWithQuestions:(id)a3 assetsByAssetId:(id)a4 momentUUIDByAssetIdentifier:(id)a5 activePersonUUIDByPersonUUID:(id)a6 tripKeyAssetIdentifiers:(id)a7 momentUUIDsForExhaustiveMomentLabeling:(id)a8 dayHighlightAssetIdentifiers:(id)a9;
-- (void)_buildQuestionsByQuestionTypeByEntityTypeFromQuestions:(id)a3;
+- (PGPhotosChallengeMetricEventFetchHelper)initWithGraphManager:(id)manager;
+- (id)initForTestingWithQuestions:(id)questions assetsByAssetId:(id)id momentUUIDByAssetIdentifier:(id)identifier activePersonUUIDByPersonUUID:(id)d tripKeyAssetIdentifiers:(id)identifiers momentUUIDsForExhaustiveMomentLabeling:(id)labeling dayHighlightAssetIdentifiers:(id)assetIdentifiers;
+- (void)_buildQuestionsByQuestionTypeByEntityTypeFromQuestions:(id)questions;
 - (void)_prefetchActivePersonUUIDByPersonUUID;
 - (void)_prefetchAssetByAssetIdentifier;
 - (void)_prefetchAssetByAssetSyndicationIdentifier;
@@ -29,15 +29,15 @@
   v21[1] = *MEMORY[0x277D85DE8];
   if (!self->_dayHighlightAssetIdentifiers)
   {
-    v3 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v21[0] = *MEMORY[0x277CD9AA8];
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-    [v3 setFetchPropertySets:v4];
+    [librarySpecificFetchOptions setFetchPropertySets:v4];
 
     v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"highlightBeingKeyAssetPrivate.kind = %d || highlightBeingKeyAssetShared.kind = %d", 0, 0];
-    [v3 setInternalPredicate:v5];
+    [librarySpecificFetchOptions setInternalPredicate:v5];
 
-    v6 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v3];
+    v6 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v16 = 0u;
     v17 = 0u;
@@ -59,8 +59,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v12) uuid];
-          [(NSSet *)v7 addObject:v13];
+          uuid = [*(*(&v16 + 1) + 8 * v12) uuid];
+          [(NSSet *)v7 addObject:uuid];
 
           ++v12;
         }
@@ -96,15 +96,15 @@
   v21[1] = *MEMORY[0x277D85DE8];
   if (!self->_tripKeyAssetIdentifiers)
   {
-    v3 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v21[0] = *MEMORY[0x277CD9AA8];
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-    [v3 setFetchPropertySets:v4];
+    [librarySpecificFetchOptions setFetchPropertySets:v4];
 
     v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dayGroupHighlightBeingKeyAssetPrivate.type = %d || dayGroupHighlightBeingKeyAssetPrivate.type = %d", 1, 2];
-    [v3 setInternalPredicate:v5];
+    [librarySpecificFetchOptions setInternalPredicate:v5];
 
-    v6 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v3];
+    v6 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v16 = 0u;
     v17 = 0u;
@@ -126,8 +126,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v12) uuid];
-          [(NSSet *)v7 addObject:v13];
+          uuid = [*(*(&v16 + 1) + 8 * v12) uuid];
+          [(NSSet *)v7 addObject:uuid];
 
           ++v12;
         }
@@ -168,11 +168,11 @@
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v30 = self;
+    selfCopy = self;
     v4 = [(NSDictionary *)self->_questionsByQuestionTypeByEntityType objectForKeyedSubscript:&unk_284483768];
-    v5 = [v4 allValues];
+    allValues = [v4 allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v6)
     {
       v7 = v6;
@@ -183,7 +183,7 @@
         {
           if (*v40 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v39 + 1) + 8 * i);
@@ -206,8 +206,8 @@
                   objc_enumerationMutation(v11);
                 }
 
-                v16 = [*(*(&v35 + 1) + 8 * j) entityIdentifier];
-                [v3 addObject:v16];
+                entityIdentifier = [*(*(&v35 + 1) + 8 * j) entityIdentifier];
+                [v3 addObject:entityIdentifier];
               }
 
               v13 = [v11 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -217,18 +217,18 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v39 objects:v45 count:16];
       }
 
       while (v7);
     }
 
-    v17 = [(PHPhotoLibrary *)v30->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
     v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid IN (%@)", v3];
-    [v17 setPredicate:v18];
+    [librarySpecificFetchOptions setPredicate:v18];
 
-    v19 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v17];
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    v19 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -249,8 +249,8 @@
           }
 
           v26 = *(*(&v31 + 1) + 8 * k);
-          v27 = [v26 uuid];
-          [(NSDictionary *)v20 setObject:v26 forKeyedSubscript:v27];
+          uuid = [v26 uuid];
+          [(NSDictionary *)dictionary setObject:v26 forKeyedSubscript:uuid];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -259,8 +259,8 @@
       while (v23);
     }
 
-    memoryByMemoryIdentifier = v30->_memoryByMemoryIdentifier;
-    v30->_memoryByMemoryIdentifier = v20;
+    memoryByMemoryIdentifier = selfCopy->_memoryByMemoryIdentifier;
+    selfCopy->_memoryByMemoryIdentifier = dictionary;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -286,11 +286,11 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v37 = self;
+  selfCopy = self;
   v4 = [(NSDictionary *)self->_questionsByQuestionTypeByEntityType objectForKeyedSubscript:&unk_284483750];
-  v5 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v6)
   {
     v7 = v6;
@@ -301,7 +301,7 @@
       {
         if (*v48 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v47 + 1) + 8 * i);
@@ -324,8 +324,8 @@
                 objc_enumerationMutation(v11);
               }
 
-              v16 = [*(*(&v43 + 1) + 8 * j) entityIdentifier];
-              [v3 addObject:v16];
+              entityIdentifier = [*(*(&v43 + 1) + 8 * j) entityIdentifier];
+              [v3 addObject:entityIdentifier];
             }
 
             v13 = [v11 countByEnumeratingWithState:&v43 objects:v54 count:16];
@@ -335,21 +335,21 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v47 objects:v55 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v47 objects:v55 count:16];
     }
 
     while (v7);
   }
 
-  v17 = [(PHPhotoLibrary *)v37->_photoLibrary librarySpecificFetchOptions];
-  [v17 setPersonContext:5];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:5];
   v18 = MEMORY[0x277CD9938];
-  v19 = [v3 allObjects];
-  v36 = v17;
-  v20 = [v18 fetchPersonsWithLocalIdentifiers:v19 options:v17];
+  allObjects = [v3 allObjects];
+  v36 = librarySpecificFetchOptions;
+  v20 = [v18 fetchPersonsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
-  v38 = [(PHPhotoLibrary *)v37->_photoLibrary librarySpecificFetchOptions];
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  librarySpecificFetchOptions2 = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -371,17 +371,17 @@
         }
 
         v27 = *(*(&v39 + 1) + 8 * v26);
-        v28 = [v27 uuid];
-        if ([v27 verifiedType] == -2 && (objc_msgSend(MEMORY[0x277CD9938], "fetchFinalMergeTargetPersonsForPersonWithUUID:options:", v28, v38), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "firstObject"), v30 = objc_claimAutoreleasedReturnValue(), v27, v29, (v27 = v30) == 0))
+        uuid = [v27 uuid];
+        if ([v27 verifiedType] == -2 && (objc_msgSend(MEMORY[0x277CD9938], "fetchFinalMergeTargetPersonsForPersonWithUUID:options:", uuid, librarySpecificFetchOptions2), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "firstObject"), v30 = objc_claimAutoreleasedReturnValue(), v27, v29, (v27 = v30) == 0))
         {
           v32 = +[PGLogging sharedLogging];
-          v31 = [v32 loggingConnection];
+          loggingConnection = [v32 loggingConnection];
 
-          if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v52 = v28;
-            _os_log_error_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_ERROR, "Failed to find final merge target person for person with UUID: '%@'", buf, 0xCu);
+            v52 = uuid;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find final merge target person for person with UUID: '%@'", buf, 0xCu);
           }
 
           v27 = 0;
@@ -389,8 +389,8 @@
 
         else
         {
-          v31 = [v27 uuid];
-          [(NSDictionary *)v21 setObject:v31 forKeyedSubscript:v28];
+          loggingConnection = [v27 uuid];
+          [(NSDictionary *)dictionary setObject:loggingConnection forKeyedSubscript:uuid];
         }
 
         ++v26;
@@ -404,8 +404,8 @@
     while (v33);
   }
 
-  activePersonUUIDByPersonUUID = v37->_activePersonUUIDByPersonUUID;
-  v37->_activePersonUUIDByPersonUUID = v21;
+  activePersonUUIDByPersonUUID = selfCopy->_activePersonUUIDByPersonUUID;
+  selfCopy->_activePersonUUIDByPersonUUID = dictionary;
 
   v35 = *MEMORY[0x277D85DE8];
 }
@@ -424,11 +424,11 @@
 
 - (void)_prefetchMomentUUIDByAssetIdentifier
 {
-  v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v3 = MEMORY[0x277CD98F8];
-  v4 = [(PGPhotosChallengeMetricEventFetchHelper *)self assetByAssetIdentifier];
-  v5 = [v4 allValues];
-  v6 = [v3 fetchMomentUUIDByAssetUUIDForAssets:v5 options:v8];
+  assetByAssetIdentifier = [(PGPhotosChallengeMetricEventFetchHelper *)self assetByAssetIdentifier];
+  allValues = [assetByAssetIdentifier allValues];
+  v6 = [v3 fetchMomentUUIDByAssetUUIDForAssets:allValues options:librarySpecificFetchOptions];
   momentUUIDByAssetIdentifier = self->_momentUUIDByAssetIdentifier;
   self->_momentUUIDByAssetIdentifier = v6;
 }
@@ -460,11 +460,11 @@
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v42 = self;
+    selfCopy = self;
     v4 = [(NSDictionary *)self->_questionsByQuestionTypeByEntityType objectForKeyedSubscript:&unk_284483738];
-    v5 = [v4 allValues];
+    allValues = [v4 allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v52 objects:v61 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v52 objects:v61 count:16];
     if (v6)
     {
       v7 = v6;
@@ -475,7 +475,7 @@
         {
           if (*v53 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v52 + 1) + 8 * i);
@@ -501,8 +501,8 @@
                 v16 = *(*(&v48 + 1) + 8 * j);
                 if (![v16 entityType] && objc_msgSend(v16, "type") == 18)
                 {
-                  v17 = [v16 entityIdentifier];
-                  [v3 addObject:v17];
+                  entityIdentifier = [v16 entityIdentifier];
+                  [v3 addObject:entityIdentifier];
                 }
               }
 
@@ -513,7 +513,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v52 objects:v61 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v52 objects:v61 count:16];
       }
 
       while (v7);
@@ -527,20 +527,20 @@
     {
       v40 = v19;
       v41 = v18;
-      v21 = [v18 librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [v18 librarySpecificFetchOptions];
       v22 = *MEMORY[0x277CD9AD0];
       v57[0] = *MEMORY[0x277CD9B10];
       v57[1] = v22;
       v57[2] = *MEMORY[0x277CD9A80];
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:3];
-      [v21 setFetchPropertySets:v23];
+      [librarySpecificFetchOptions setFetchPropertySets:v23];
 
-      [v21 setIncludeGuestAssets:1];
+      [librarySpecificFetchOptions setIncludeGuestAssets:1];
       v24 = MEMORY[0x277CD97A8];
-      v25 = [v3 allObjects];
-      v26 = [v24 fetchAssetsWithSyndicationIdentifiers:v25 options:v21];
+      allObjects = [v3 allObjects];
+      v26 = [v24 fetchAssetsWithSyndicationIdentifiers:allObjects options:librarySpecificFetchOptions];
 
-      v27 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
@@ -561,9 +561,9 @@
             }
 
             v33 = *(*(&v43 + 1) + 8 * k);
-            v34 = [v33 curationProperties];
-            v35 = [v34 syndicationIdentifier];
-            [(NSDictionary *)v27 setObject:v33 forKeyedSubscript:v35];
+            curationProperties = [v33 curationProperties];
+            syndicationIdentifier = [curationProperties syndicationIdentifier];
+            [(NSDictionary *)dictionary setObject:v33 forKeyedSubscript:syndicationIdentifier];
           }
 
           v30 = [v28 countByEnumeratingWithState:&v43 objects:v56 count:16];
@@ -572,8 +572,8 @@
         while (v30);
       }
 
-      assetByAssetSyndicationIdentifier = v42->_assetByAssetSyndicationIdentifier;
-      v42->_assetByAssetSyndicationIdentifier = v27;
+      assetByAssetSyndicationIdentifier = selfCopy->_assetByAssetSyndicationIdentifier;
+      selfCopy->_assetByAssetSyndicationIdentifier = dictionary;
 
       v20 = v40;
       v18 = v41;
@@ -582,17 +582,17 @@
     else
     {
       v37 = +[PGLogging sharedLogging];
-      v38 = [v37 loggingConnection];
+      loggingConnection = [v37 loggingConnection];
 
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v59 = v20;
-        _os_log_error_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_ERROR, "PGPhotosChallengeMetricEventFetchHelper: Failed to open syndicated library: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "PGPhotosChallengeMetricEventFetchHelper: Failed to open syndicated library: %@", buf, 0xCu);
       }
 
-      v21 = v42->_assetByAssetSyndicationIdentifier;
-      v42->_assetByAssetSyndicationIdentifier = MEMORY[0x277CBEC10];
+      librarySpecificFetchOptions = selfCopy->_assetByAssetSyndicationIdentifier;
+      selfCopy->_assetByAssetSyndicationIdentifier = MEMORY[0x277CBEC10];
     }
   }
 
@@ -621,11 +621,11 @@
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v35 = self;
+    selfCopy = self;
     v4 = [(NSDictionary *)self->_questionsByQuestionTypeByEntityType objectForKeyedSubscript:&unk_284483738];
-    v5 = [v4 allValues];
+    allValues = [v4 allValues];
 
-    v6 = [v5 countByEnumeratingWithState:&v44 objects:v50 count:16];
+    v6 = [allValues countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v6)
     {
       v7 = v6;
@@ -636,7 +636,7 @@
         {
           if (*v45 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v44 + 1) + 8 * i);
@@ -662,8 +662,8 @@
                 v16 = *(*(&v40 + 1) + 8 * j);
                 if (![v16 entityType] && objc_msgSend(v16, "type") != 18)
                 {
-                  v17 = [v16 entityIdentifier];
-                  [v3 addObject:v17];
+                  entityIdentifier = [v16 entityIdentifier];
+                  [v3 addObject:entityIdentifier];
                 }
               }
 
@@ -674,24 +674,24 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v44 objects:v50 count:16];
       }
 
       while (v7);
     }
 
-    v18 = [(PHPhotoLibrary *)v35->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)selfCopy->_photoLibrary librarySpecificFetchOptions];
     v19 = MEMORY[0x277CBEB18];
     v20 = +[PGCurationManager assetPropertySetsForCuration];
     v21 = [v19 arrayWithArray:v20];
 
     [v21 addObject:*MEMORY[0x277CD9AA0]];
-    [v18 setFetchPropertySets:v21];
+    [librarySpecificFetchOptions setFetchPropertySets:v21];
     v22 = MEMORY[0x277CD97A8];
-    v23 = [v3 allObjects];
-    v24 = [v22 fetchAssetsWithLocalIdentifiers:v23 options:v18];
+    allObjects = [v3 allObjects];
+    v24 = [v22 fetchAssetsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -712,8 +712,8 @@
           }
 
           v31 = *(*(&v36 + 1) + 8 * k);
-          v32 = [v31 uuid];
-          [(NSDictionary *)v25 setObject:v31 forKeyedSubscript:v32];
+          uuid = [v31 uuid];
+          [(NSDictionary *)dictionary setObject:v31 forKeyedSubscript:uuid];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -722,8 +722,8 @@
       while (v28);
     }
 
-    assetByAssetIdentifier = v35->_assetByAssetIdentifier;
-    v35->_assetByAssetIdentifier = v25;
+    assetByAssetIdentifier = selfCopy->_assetByAssetIdentifier;
+    selfCopy->_assetByAssetIdentifier = dictionary;
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -770,8 +770,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) entityIdentifier];
-          [(NSSet *)v3 addObject:v11];
+          entityIdentifier = [*(*(&v14 + 1) + 8 * v10) entityIdentifier];
+          [(NSSet *)v3 addObject:entityIdentifier];
 
           ++v10;
         }
@@ -802,17 +802,17 @@
   return momentUUIDsForExhaustiveMomentLabelingQuestion;
 }
 
-- (void)_buildQuestionsByQuestionTypeByEntityTypeFromQuestions:(id)a3
+- (void)_buildQuestionsByQuestionTypeByEntityTypeFromQuestions:(id)questions
 {
-  v20 = self;
+  selfCopy = self;
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -828,29 +828,29 @@
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v9 entityType];
-        v11 = [v9 type];
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v10];
-        v13 = [(NSDictionary *)v4 objectForKeyedSubscript:v12];
+        entityType = [v9 entityType];
+        type = [v9 type];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:entityType];
+        dictionary2 = [(NSDictionary *)dictionary objectForKeyedSubscript:v12];
 
-        if (!v13)
+        if (!dictionary2)
         {
-          v13 = [MEMORY[0x277CBEB38] dictionary];
-          v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v10];
-          [(NSDictionary *)v4 setObject:v13 forKeyedSubscript:v14];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:entityType];
+          [(NSDictionary *)dictionary setObject:dictionary2 forKeyedSubscript:v14];
         }
 
-        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v11];
-        v16 = [v13 objectForKeyedSubscript:v15];
+        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:type];
+        array = [dictionary2 objectForKeyedSubscript:v15];
 
-        if (!v16)
+        if (!array)
         {
-          v16 = [MEMORY[0x277CBEB18] array];
-          v17 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v11];
-          [v13 setObject:v16 forKeyedSubscript:v17];
+          array = [MEMORY[0x277CBEB18] array];
+          v17 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:type];
+          [dictionary2 setObject:array forKeyedSubscript:v17];
         }
 
-        [v16 addObject:v9];
+        [array addObject:v9];
       }
 
       v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -859,22 +859,22 @@
     while (v6);
   }
 
-  questionsByQuestionTypeByEntityType = v20->_questionsByQuestionTypeByEntityType;
-  v20->_questionsByQuestionTypeByEntityType = v4;
+  questionsByQuestionTypeByEntityType = selfCopy->_questionsByQuestionTypeByEntityType;
+  selfCopy->_questionsByQuestionTypeByEntityType = dictionary;
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_migrationStepNeededForTripTitlingQuestions:(id)a3
+- (BOOL)_migrationStepNeededForTripTitlingQuestions:(id)questions
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  questionsCopy = questions;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = questionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -918,12 +918,12 @@
     if (v15)
     {
       v17 = +[PGLogging sharedLogging];
-      v18 = [v17 loggingConnection];
+      loggingConnection = [v17 loggingConnection];
 
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *v21 = 0;
-        _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_INFO, "[Questions] Succeeded performing changes on Trip Titling Questions with duplicate titles", v21, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[Questions] Succeeded performing changes on Trip Titling Questions with duplicate titles", v21, 2u);
       }
     }
   }
@@ -1008,11 +1008,11 @@ void __87__PGPhotosChallengeMetricEventFetchHelper__migrationStepNeededForTripTi
 
 - (void)_prefetchQuestions
 {
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v3 = [MEMORY[0x277CD9970] fetchAnsweredYesOrNoQuestionsWithOptions:? validQuestionsOnly:?];
   if ([(PGPhotosChallengeMetricEventFetchHelper *)self _migrationStepNeededForTripTitlingQuestions:v3])
   {
-    v4 = [MEMORY[0x277CD9970] fetchAnsweredYesOrNoQuestionsWithOptions:v5 validQuestionsOnly:1];
+    v4 = [MEMORY[0x277CD9970] fetchAnsweredYesOrNoQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:1];
 
     v3 = v4;
   }
@@ -1020,49 +1020,49 @@ void __87__PGPhotosChallengeMetricEventFetchHelper__migrationStepNeededForTripTi
   [(PGPhotosChallengeMetricEventFetchHelper *)self _buildQuestionsByQuestionTypeByEntityTypeFromQuestions:v3];
 }
 
-- (id)initForTestingWithQuestions:(id)a3 assetsByAssetId:(id)a4 momentUUIDByAssetIdentifier:(id)a5 activePersonUUIDByPersonUUID:(id)a6 tripKeyAssetIdentifiers:(id)a7 momentUUIDsForExhaustiveMomentLabeling:(id)a8 dayHighlightAssetIdentifiers:(id)a9
+- (id)initForTestingWithQuestions:(id)questions assetsByAssetId:(id)id momentUUIDByAssetIdentifier:(id)identifier activePersonUUIDByPersonUUID:(id)d tripKeyAssetIdentifiers:(id)identifiers momentUUIDsForExhaustiveMomentLabeling:(id)labeling dayHighlightAssetIdentifiers:(id)assetIdentifiers
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  questionsCopy = questions;
+  idCopy = id;
+  identifierCopy = identifier;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  labelingCopy = labeling;
+  assetIdentifiersCopy = assetIdentifiers;
   v25.receiver = self;
   v25.super_class = PGPhotosChallengeMetricEventFetchHelper;
   v18 = [(PGPhotosChallengeMetricEventFetchHelper *)&v25 init];
   p_isa = &v18->super.isa;
   if (v18)
   {
-    [(PGPhotosChallengeMetricEventFetchHelper *)v18 _buildQuestionsByQuestionTypeByEntityTypeFromQuestions:v24, v21, v22, v23];
-    objc_storeStrong(p_isa + 5, a4);
-    objc_storeStrong(p_isa + 8, a5);
-    objc_storeStrong(p_isa + 9, a6);
-    objc_storeStrong(p_isa + 11, a7);
-    objc_storeStrong(p_isa + 6, a8);
-    objc_storeStrong(p_isa + 12, a9);
+    [(PGPhotosChallengeMetricEventFetchHelper *)v18 _buildQuestionsByQuestionTypeByEntityTypeFromQuestions:questionsCopy, dCopy, identifierCopy, idCopy];
+    objc_storeStrong(p_isa + 5, id);
+    objc_storeStrong(p_isa + 8, identifier);
+    objc_storeStrong(p_isa + 9, d);
+    objc_storeStrong(p_isa + 11, identifiers);
+    objc_storeStrong(p_isa + 6, labeling);
+    objc_storeStrong(p_isa + 12, assetIdentifiers);
   }
 
   return p_isa;
 }
 
-- (PGPhotosChallengeMetricEventFetchHelper)initWithGraphManager:(id)a3
+- (PGPhotosChallengeMetricEventFetchHelper)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = PGPhotosChallengeMetricEventFetchHelper;
   v6 = [(PGPhotosChallengeMetricEventFetchHelper *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(&v6->_manager, manager);
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
 
-    v10 = [v5 workingContextForSuggestions];
-    v11 = [[PGSuggestionSession alloc] initWithProfile:5 workingContext:v10];
+    workingContextForSuggestions = [managerCopy workingContextForSuggestions];
+    v11 = [[PGSuggestionSession alloc] initWithProfile:5 workingContext:workingContextForSuggestions];
     featuredPhotosSuggestionSession = v7->_featuredPhotosSuggestionSession;
     v7->_featuredPhotosSuggestionSession = v11;
   }

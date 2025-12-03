@@ -2,9 +2,9 @@
 + (id)current;
 + (id)english;
 + (id)log;
-- (BOOL)isRealWord:(id)a3;
-- (EDLexicon)initWithLocale:(id)a3 options:(__CFDictionary *)a4;
-- (void)_lexiconEnumerateEntries:(_LXLexicon *)a3 forString:(id)a4 completionHandler:(id)a5;
+- (BOOL)isRealWord:(id)word;
+- (EDLexicon)initWithLocale:(id)locale options:(__CFDictionary *)options;
+- (void)_lexiconEnumerateEntries:(_LXLexicon *)entries forString:(id)string completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __16__EDLexicon_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_36 != -1)
   {
     dispatch_once(&log_onceToken_36, block);
@@ -89,10 +89,10 @@ void __20__EDLexicon_current__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (EDLexicon)initWithLocale:(id)a3 options:(__CFDictionary *)a4
+- (EDLexicon)initWithLocale:(id)locale options:(__CFDictionary *)options
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = EDLexicon;
   v6 = [(EDLexicon *)&v12 init];
@@ -105,8 +105,8 @@ void __20__EDLexicon_current__block_invoke()
       v8 = +[EDLexicon log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [0 ef_publicDescription];
-        [(EDLexicon *)v5 initWithLocale:v9 options:buf, v8];
+        ef_publicDescription = [0 ef_publicDescription];
+        [(EDLexicon *)localeCopy initWithLocale:ef_publicDescription options:buf, v8];
       }
     }
   }
@@ -115,10 +115,10 @@ void __20__EDLexicon_current__block_invoke()
   return v6;
 }
 
-- (void)_lexiconEnumerateEntries:(_LXLexicon *)a3 forString:(id)a4 completionHandler:(id)a5
+- (void)_lexiconEnumerateEntries:(_LXLexicon *)entries forString:(id)string completionHandler:(id)handler
 {
-  v6 = a5;
-  v5 = v6;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   LXLexiconEnumerateEntriesForString();
 }
 
@@ -129,9 +129,9 @@ void __66__EDLexicon__lexiconEnumerateEntries_forString_completionHandler___bloc
   (*(v1 + 16))(v1);
 }
 
-- (BOOL)isRealWord:(id)a3
+- (BOOL)isRealWord:(id)word
 {
-  v4 = a3;
+  wordCopy = word;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -140,7 +140,7 @@ void __66__EDLexicon__lexiconEnumerateEntries_forString_completionHandler___bloc
   v11 = 3221225472;
   v12 = __24__EDLexicon_isRealWord___block_invoke;
   v13 = &unk_1E82520B8;
-  v5 = v4;
+  v5 = wordCopy;
   v14 = v5;
   v15 = &v16;
   v6 = _Block_copy(&v10);

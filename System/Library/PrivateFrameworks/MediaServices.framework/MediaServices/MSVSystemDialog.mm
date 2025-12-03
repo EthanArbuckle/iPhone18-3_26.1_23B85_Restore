@@ -1,14 +1,14 @@
 @interface MSVSystemDialog
-+ (id)systemDialogWithOptions:(id)a3;
-- (MSVSystemDialog)initWithCFUserNotification:(__CFUserNotification *)a3;
-- (MSVSystemDialog)initWithOptions:(id)a3;
++ (id)systemDialogWithOptions:(id)options;
+- (MSVSystemDialog)initWithCFUserNotification:(__CFUserNotification *)notification;
+- (MSVSystemDialog)initWithOptions:(id)options;
 - (id)pendingCompletion;
 - (void)dealloc;
 - (void)dismiss;
-- (void)presentWithCompletion:(id)a3;
-- (void)setActiveRunLoopSource:(__CFRunLoopSource *)a3;
-- (void)setPendingCompletion:(id)a3;
-- (void)setPresentedUserNotification:(__CFUserNotification *)a3;
+- (void)presentWithCompletion:(id)completion;
+- (void)setActiveRunLoopSource:(__CFRunLoopSource *)source;
+- (void)setPendingCompletion:(id)completion;
+- (void)setPresentedUserNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation MSVSystemDialog
@@ -22,10 +22,10 @@
   }
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -38,44 +38,44 @@
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(MSVSystemDialogOptions *)self->_options alertHeader];
+  alertHeader = [(MSVSystemDialogOptions *)self->_options alertHeader];
 
-  if (v8)
+  if (alertHeader)
   {
-    v9 = [(MSVSystemDialogOptions *)self->_options alertHeader];
-    [v7 setObject:v9 forKey:*MEMORY[0x1E695EE58]];
+    alertHeader2 = [(MSVSystemDialogOptions *)self->_options alertHeader];
+    [v7 setObject:alertHeader2 forKey:*MEMORY[0x1E695EE58]];
   }
 
-  v10 = [(MSVSystemDialogOptions *)self->_options alertMessage];
+  alertMessage = [(MSVSystemDialogOptions *)self->_options alertMessage];
 
-  if (v10)
+  if (alertMessage)
   {
-    v11 = [(MSVSystemDialogOptions *)self->_options alertMessage];
-    [v7 setObject:v11 forKey:*MEMORY[0x1E695EE60]];
+    alertMessage2 = [(MSVSystemDialogOptions *)self->_options alertMessage];
+    [v7 setObject:alertMessage2 forKey:*MEMORY[0x1E695EE60]];
   }
 
-  v12 = [(MSVSystemDialogOptions *)self->_options alertIconURL];
+  alertIconURL = [(MSVSystemDialogOptions *)self->_options alertIconURL];
 
-  if (v12)
+  if (alertIconURL)
   {
-    v13 = [(MSVSystemDialogOptions *)self->_options alertIconURL];
-    [v7 setObject:v13 forKey:*MEMORY[0x1E695EE80]];
+    alertIconURL2 = [(MSVSystemDialogOptions *)self->_options alertIconURL];
+    [v7 setObject:alertIconURL2 forKey:*MEMORY[0x1E695EE80]];
   }
 
-  v14 = [(MSVSystemDialogOptions *)self->_options defaultButtonTitle];
+  defaultButtonTitle = [(MSVSystemDialogOptions *)self->_options defaultButtonTitle];
 
-  if (v14)
+  if (defaultButtonTitle)
   {
-    v15 = [(MSVSystemDialogOptions *)self->_options defaultButtonTitle];
-    [v7 setObject:v15 forKey:*MEMORY[0x1E695EE78]];
+    defaultButtonTitle2 = [(MSVSystemDialogOptions *)self->_options defaultButtonTitle];
+    [v7 setObject:defaultButtonTitle2 forKey:*MEMORY[0x1E695EE78]];
   }
 
-  v16 = [(MSVSystemDialogOptions *)self->_options alternateButtonTitle];
+  alternateButtonTitle = [(MSVSystemDialogOptions *)self->_options alternateButtonTitle];
 
-  if (v16)
+  if (alternateButtonTitle)
   {
-    v17 = [(MSVSystemDialogOptions *)self->_options alternateButtonTitle];
-    [v7 setObject:v17 forKey:*MEMORY[0x1E695EE70]];
+    alternateButtonTitle2 = [(MSVSystemDialogOptions *)self->_options alternateButtonTitle];
+    [v7 setObject:alternateButtonTitle2 forKey:*MEMORY[0x1E695EE70]];
   }
 
   if ([(MSVSystemDialogOptions *)self->_options showAsTopmost])
@@ -107,9 +107,9 @@
     _Block_object_dispose(&v72, 8);
     if (!v18)
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBUserNotificationForcesModalAlertAppearance(void)"];
-      [v50 handleFailureInFunction:v51 file:@"MSVSystemDialog.m" lineNumber:19 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v51 file:@"MSVSystemDialog.m" lineNumber:19 description:{@"%s", dlerror()}];
 
       goto LABEL_60;
     }
@@ -142,9 +142,9 @@
     _Block_object_dispose(&v72, 8);
     if (!v22)
     {
-      v52 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBUserNotificationDisplayActionButtonOnLockScreen(void)"];
-      [v52 handleFailureInFunction:v53 file:@"MSVSystemDialog.m" lineNumber:20 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v53 file:@"MSVSystemDialog.m" lineNumber:20 description:{@"%s", dlerror()}];
 
       goto LABEL_60;
     }
@@ -177,9 +177,9 @@
     _Block_object_dispose(&v72, 8);
     if (!v26)
     {
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBUserNotificationDismissesOverlaysInLockScreen(void)"];
-      [v54 handleFailureInFunction:v55 file:@"MSVSystemDialog.m" lineNumber:21 description:{@"%s", dlerror()}];
+      [currentHandler3 handleFailureInFunction:v55 file:@"MSVSystemDialog.m" lineNumber:21 description:{@"%s", dlerror()}];
 
       goto LABEL_60;
     }
@@ -188,8 +188,8 @@
     [v7 setObject:MEMORY[0x1E695E118] forKey:v29];
   }
 
-  v30 = [(MSVSystemDialogOptions *)self->_options allowedApplicationBundleIDs];
-  if ([v30 count])
+  allowedApplicationBundleIDs = [(MSVSystemDialogOptions *)self->_options allowedApplicationBundleIDs];
+  if ([allowedApplicationBundleIDs count])
   {
     v72 = 0;
     v73 = &v72;
@@ -214,14 +214,14 @@
     if (v31)
     {
       v34 = *v31;
-      [v7 setObject:v30 forKey:v34];
+      [v7 setObject:allowedApplicationBundleIDs forKey:v34];
 
       goto LABEL_35;
     }
 
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSBUserNotificationAllowedApplicationsKey(void)"];
-    [v48 handleFailureInFunction:v49 file:@"MSVSystemDialog.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v49 file:@"MSVSystemDialog.m" lineNumber:22 description:{@"%s", dlerror()}];
 
 LABEL_60:
     __break(1u);
@@ -250,10 +250,10 @@ LABEL_35:
             objc_enumerationMutation(v36);
           }
 
-          v40 = [*(*(&v59 + 1) + 8 * v39) title];
-          if (v40)
+          title = [*(*(&v59 + 1) + 8 * v39) title];
+          if (title)
           {
-            [v35 addObject:v40];
+            [v35 addObject:title];
           }
 
           ++v39;
@@ -299,14 +299,14 @@ LABEL_51:
     CFRunLoopAddSource(Main, RunLoopSource, *MEMORY[0x1E695E8E0]);
     CFRelease(RunLoopSource);
     [(MSVSystemDialog *)self setPresentedUserNotification:v6];
-    [(MSVSystemDialog *)self setPendingCompletion:v4];
+    [(MSVSystemDialog *)self setPendingCompletion:completionCopy];
     [(MSVSystemDialog *)self setActiveRunLoopSource:RunLoopSource];
     CFRelease(v6);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   _Block_object_dispose(&v63, 8);
@@ -349,9 +349,9 @@ void __41__MSVSystemDialog_presentWithCompletion___block_invoke(uint64_t a1, voi
   [v9 addObject:v10];
 }
 
-- (void)setPendingCompletion:(id)a3
+- (void)setPendingCompletion:(id)completion
 {
-  v4 = [a3 copy];
+  v4 = [completion copy];
   pendingCompletion = self->_pendingCompletion;
   self->_pendingCompletion = v4;
 
@@ -365,7 +365,7 @@ void __41__MSVSystemDialog_presentWithCompletion___block_invoke(uint64_t a1, voi
   return v2;
 }
 
-- (void)setActiveRunLoopSource:(__CFRunLoopSource *)a3
+- (void)setActiveRunLoopSource:(__CFRunLoopSource *)source
 {
   activeRunLoopSource = self->_activeRunLoopSource;
   if (activeRunLoopSource)
@@ -374,15 +374,15 @@ void __41__MSVSystemDialog_presentWithCompletion___block_invoke(uint64_t a1, voi
     CFRelease(self->_activeRunLoopSource);
   }
 
-  self->_activeRunLoopSource = a3;
-  if (a3)
+  self->_activeRunLoopSource = source;
+  if (source)
   {
 
-    CFRetain(a3);
+    CFRetain(source);
   }
 }
 
-- (void)setPresentedUserNotification:(__CFUserNotification *)a3
+- (void)setPresentedUserNotification:(__CFUserNotification *)notification
 {
   presentedUserNotification = self->_presentedUserNotification;
   if (presentedUserNotification)
@@ -390,11 +390,11 @@ void __41__MSVSystemDialog_presentWithCompletion___block_invoke(uint64_t a1, voi
     CFRelease(presentedUserNotification);
   }
 
-  self->_presentedUserNotification = a3;
-  if (a3)
+  self->_presentedUserNotification = notification;
+  if (notification)
   {
 
-    CFRetain(a3);
+    CFRetain(notification);
   }
 }
 
@@ -424,29 +424,29 @@ void __41__MSVSystemDialog_presentWithCompletion___block_invoke(uint64_t a1, voi
   [(MSVSystemDialog *)&v6 dealloc];
 }
 
-- (MSVSystemDialog)initWithCFUserNotification:(__CFUserNotification *)a3
+- (MSVSystemDialog)initWithCFUserNotification:(__CFUserNotification *)notification
 {
   v6.receiver = self;
   v6.super_class = MSVSystemDialog;
   v4 = [(MSVSystemDialog *)&v6 init];
   if (v4)
   {
-    v4->_preparedUserNotification = CFRetain(a3);
+    v4->_preparedUserNotification = CFRetain(notification);
   }
 
   return v4;
 }
 
-- (MSVSystemDialog)initWithOptions:(id)a3
+- (MSVSystemDialog)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = MSVSystemDialog;
   v6 = [(MSVSystemDialog *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     textFields = v7->_textFields;
     v7->_textFields = v8;
@@ -455,10 +455,10 @@ void __41__MSVSystemDialog_presentWithCompletion___block_invoke(uint64_t a1, voi
   return v7;
 }
 
-+ (id)systemDialogWithOptions:(id)a3
++ (id)systemDialogWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [[MSVSystemDialog alloc] initWithOptions:v3];
+  optionsCopy = options;
+  v4 = [[MSVSystemDialog alloc] initWithOptions:optionsCopy];
 
   return v4;
 }

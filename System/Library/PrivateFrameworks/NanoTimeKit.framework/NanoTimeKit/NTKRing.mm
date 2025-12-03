@@ -1,9 +1,9 @@
 @interface NTKRing
-+ (id)_fillFractionStringForFillFraction:(float)a3 withFormatter:(id)a4;
-+ (id)fillFractionStringForFillFraction:(float)a3;
-+ (id)fillFractionStringWithSymbolForFillFraction:(float)a3;
-- (NTKRing)initWithFillFraction:(double)a3 style:(int64_t)a4 radius:(double)a5 strokeWidth:(double)a6;
-- (double)_validFillFraction:(double)a3;
++ (id)_fillFractionStringForFillFraction:(float)fraction withFormatter:(id)formatter;
++ (id)fillFractionStringForFillFraction:(float)fraction;
++ (id)fillFractionStringWithSymbolForFillFraction:(float)fraction;
+- (NTKRing)initWithFillFraction:(double)fraction style:(int64_t)style radius:(double)radius strokeWidth:(double)width;
+- (double)_validFillFraction:(double)fraction;
 - (id)fillFractionString;
 - (id)fillFractionStringWithSymbol;
 - (id)ringImage;
@@ -11,7 +11,7 @@
 
 @implementation NTKRing
 
-- (NTKRing)initWithFillFraction:(double)a3 style:(int64_t)a4 radius:(double)a5 strokeWidth:(double)a6
+- (NTKRing)initWithFillFraction:(double)fraction style:(int64_t)style radius:(double)radius strokeWidth:(double)width
 {
   v14.receiver = self;
   v14.super_class = NTKRing;
@@ -19,11 +19,11 @@
   v11 = v10;
   if (v10)
   {
-    [(NTKRing *)v10 _validFillFraction:a3];
-    v11->_ringStyle = a4;
-    v11->_radius = a5;
+    [(NTKRing *)v10 _validFillFraction:fraction];
+    v11->_ringStyle = style;
+    v11->_radius = radius;
     v11->_fillFraction = v12;
-    v11->_strokeWidth = a6;
+    v11->_strokeWidth = width;
     v11->_backgroundRingAlpha = 0.18;
   }
 
@@ -59,17 +59,17 @@
   }
 
   v11 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v12 = [v11 device];
+  device = [v11 device];
 
-  [v12 screenScale];
+  [device screenScale];
   v14 = v13;
   v22.width = radius + radius;
   v22.height = radius + radius;
   UIGraphicsBeginImageContextWithOptions(v22, 0, v14);
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineWidth(CurrentContext, self->_strokeWidth);
-  v16 = [MEMORY[0x277D75348] blackColor];
-  [v16 setStroke];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [blackColor setStroke];
 
   CGContextAddArc(CurrentContext, radius, radius, v5, v10, v9, 0);
   CGContextStrokePath(CurrentContext);
@@ -103,36 +103,36 @@
   return [NTKRing fillFractionStringWithSymbolForFillFraction:fillFraction];
 }
 
-- (double)_validFillFraction:(double)a3
+- (double)_validFillFraction:(double)fraction
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  fractionCopy = 1.0;
+  if (fraction <= 1.0)
   {
-    v3 = a3;
+    fractionCopy = fraction;
   }
 
-  v4 = a3 < 0.0;
+  v4 = fraction < 0.0;
   result = 0.0;
   if (!v4)
   {
-    return v3;
+    return fractionCopy;
   }
 
   return result;
 }
 
-+ (id)fillFractionStringForFillFraction:(float)a3
++ (id)fillFractionStringForFillFraction:(float)fraction
 {
-  v3 = a3;
+  fractionCopy = fraction;
   if (fillFractionStringForFillFraction__onceToken != -1)
   {
     +[NTKRing fillFractionStringForFillFraction:];
   }
 
   v5 = fillFractionStringForFillFraction__percentageFormatter;
-  a3 = v3;
+  fraction = fractionCopy;
 
-  return [a1 _fillFractionStringForFillFraction:v5 withFormatter:*&a3];
+  return [self _fillFractionStringForFillFraction:v5 withFormatter:*&fraction];
 }
 
 uint64_t __45__NTKRing_fillFractionStringForFillFraction___block_invoke()
@@ -147,18 +147,18 @@ uint64_t __45__NTKRing_fillFractionStringForFillFraction___block_invoke()
   return [v2 setPercentSymbol:&stru_284110E98];
 }
 
-+ (id)fillFractionStringWithSymbolForFillFraction:(float)a3
++ (id)fillFractionStringWithSymbolForFillFraction:(float)fraction
 {
-  v3 = a3;
+  fractionCopy = fraction;
   if (fillFractionStringWithSymbolForFillFraction__onceToken != -1)
   {
     +[NTKRing fillFractionStringWithSymbolForFillFraction:];
   }
 
   v5 = fillFractionStringWithSymbolForFillFraction__percentageFormatter;
-  a3 = v3;
+  fraction = fractionCopy;
 
-  return [a1 _fillFractionStringForFillFraction:v5 withFormatter:*&a3];
+  return [self _fillFractionStringForFillFraction:v5 withFormatter:*&fraction];
 }
 
 uint64_t __55__NTKRing_fillFractionStringWithSymbolForFillFraction___block_invoke()
@@ -172,9 +172,9 @@ uint64_t __55__NTKRing_fillFractionStringWithSymbolForFillFraction___block_invok
   return [v2 setNumberStyle:3];
 }
 
-+ (id)_fillFractionStringForFillFraction:(float)a3 withFormatter:(id)a4
++ (id)_fillFractionStringForFillFraction:(float)fraction withFormatter:(id)formatter
 {
-  if (a3 == -1.0)
+  if (fraction == -1.0)
   {
     v5 = @"--";
   }
@@ -182,13 +182,13 @@ uint64_t __55__NTKRing_fillFractionStringWithSymbolForFillFraction___block_invok
   else
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = a4;
-    *&v8 = a3;
+    formatterCopy = formatter;
+    *&v8 = fraction;
     v9 = [v6 numberWithFloat:v8];
-    v10 = [v7 stringFromNumber:v9];
+    v10 = [formatterCopy stringFromNumber:v9];
 
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [v10 stringByTrimmingCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   return v5;

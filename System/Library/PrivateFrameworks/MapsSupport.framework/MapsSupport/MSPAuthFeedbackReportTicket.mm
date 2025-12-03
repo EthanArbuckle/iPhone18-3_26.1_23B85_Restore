@@ -1,29 +1,29 @@
 @interface MSPAuthFeedbackReportTicket
 - (id)_dataToSign;
-- (void)submitWithCallbackQueue:(id)a3 handler:(id)a4 networkActivity:(id)a5;
+- (void)submitWithCallbackQueue:(id)queue handler:(id)handler networkActivity:(id)activity;
 @end
 
 @implementation MSPAuthFeedbackReportTicket
 
 - (id)_dataToSign
 {
-  v3 = [(MSPBaseFeedbackReportTicket *)self userInfoType];
-  if (v3 == 2)
+  userInfoType = [(MSPBaseFeedbackReportTicket *)self userInfoType];
+  if (userInfoType == 2)
   {
-    v4 = [(MSPBaseFeedbackReportTicket *)self userInfo];
-    v5 = [v4 tdmUserInfo];
-    v6 = [v5 anonymousUserId];
+    userInfo = [(MSPBaseFeedbackReportTicket *)self userInfo];
+    tdmUserInfo = [userInfo tdmUserInfo];
+    anonymousUserId = [tdmUserInfo anonymousUserId];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (userInfoType == 1)
   {
-    v4 = [(MSPBaseFeedbackReportTicket *)self userInfo];
-    v5 = [v4 userCredentials];
-    v6 = [v5 icloudUserPersonId];
+    userInfo = [(MSPBaseFeedbackReportTicket *)self userInfo];
+    tdmUserInfo = [userInfo userCredentials];
+    anonymousUserId = [tdmUserInfo icloudUserPersonId];
 LABEL_5:
-    v7 = v6;
-    v8 = [v6 dataUsingEncoding:4];
+    v7 = anonymousUserId;
+    v8 = [anonymousUserId dataUsingEncoding:4];
 
     goto LABEL_7;
   }
@@ -34,13 +34,13 @@ LABEL_7:
   return v8;
 }
 
-- (void)submitWithCallbackQueue:(id)a3 handler:(id)a4 networkActivity:(id)a5
+- (void)submitWithCallbackQueue:(id)queue handler:(id)handler networkActivity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSPAuthFeedbackReportTicket *)self _dataToSign];
-  if ([v11 length])
+  queueCopy = queue;
+  handlerCopy = handler;
+  activityCopy = activity;
+  _dataToSign = [(MSPAuthFeedbackReportTicket *)self _dataToSign];
+  if ([_dataToSign length])
   {
     BOOL = GEOConfigGetBOOL();
     GEOConfigGetDouble();
@@ -49,11 +49,11 @@ LABEL_7:
     v17[1] = 3221225472;
     v17[2] = __79__MSPAuthFeedbackReportTicket_submitWithCallbackQueue_handler_networkActivity___block_invoke;
     v17[3] = &unk_279868648;
-    v19 = v9;
+    v19 = handlerCopy;
     v17[4] = self;
-    v18 = v8;
-    v20 = v10;
-    MSPUGCFetchClientCertificate(@"com.apple.Maps.CommunityID", v11, v11, BOOL, v17, v14);
+    v18 = queueCopy;
+    v20 = activityCopy;
+    MSPUGCFetchClientCertificate(@"com.apple.Maps.CommunityID", _dataToSign, _dataToSign, BOOL, v17, v14);
 
     v15 = v19;
   }
@@ -68,7 +68,7 @@ LABEL_7:
     }
 
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"No data to sign" code:-1 userInfo:0];
-    (*(v9 + 2))(v9, 0, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v15);
   }
 }
 

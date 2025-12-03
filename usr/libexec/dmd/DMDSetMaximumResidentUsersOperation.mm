@@ -1,6 +1,6 @@
 @interface DMDSetMaximumResidentUsersOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,10 +20,10 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = kMCMaximumResidentUsersKey;
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a3 count]);
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [request count]);
   v6 = kMCNotBackedUpPreferencesDomain;
   CFPreferencesSetAppValue(v4, v5, kMCNotBackedUpPreferencesDomain);
   CFPreferencesAppSynchronize(v6);

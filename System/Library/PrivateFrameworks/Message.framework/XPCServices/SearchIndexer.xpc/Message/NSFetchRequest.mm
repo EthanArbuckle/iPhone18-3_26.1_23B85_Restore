@@ -1,14 +1,14 @@
 @interface NSFetchRequest
-- (void)appendPredicate:(id)a3;
+- (void)appendPredicate:(id)predicate;
 @end
 
 @implementation NSFetchRequest
 
-- (void)appendPredicate:(id)a3
+- (void)appendPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = self;
-  sub_10031E42C(v4);
+  predicateCopy = predicate;
+  selfCopy = self;
+  sub_10031E42C(predicateCopy);
 }
 
 @end

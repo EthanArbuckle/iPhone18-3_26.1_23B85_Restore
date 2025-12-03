@@ -1,50 +1,50 @@
 @interface TSTCellChooserControlSpec
-+ (id)cellSpecFromTSKFormat:(id)a3;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)popupCellSpec:(id)a3 startWithFirstItem:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateFormatAndValue:(id)a3;
++ (id)cellSpecFromTSKFormat:(id)format;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)popupCellSpec:(id)spec startWithFirstItem:(BOOL)item;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateFormatAndValue:(id)value;
 - (NSArray)displayChoicesForInspector;
-- (TSTCellChooserControlSpec)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSTCellChooserControlSpec)initWithPopupModel:(id)a3 startWithFirstItem:(BOOL)a4;
+- (TSTCellChooserControlSpec)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSTCellChooserControlSpec)initWithPopupModel:(id)model startWithFirstItem:(BOOL)item;
 - (id)tskMultipleChoiceListFormat;
-- (id)valueForIndex:(unint64_t)a3;
-- (unint64_t)indexForValue:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)valueForIndex:(unint64_t)index;
+- (unint64_t)indexForValue:(id)value;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTCellChooserControlSpec
 
-- (TSTCellChooserControlSpec)initWithPopupModel:(id)a3 startWithFirstItem:(BOOL)a4
+- (TSTCellChooserControlSpec)initWithPopupModel:(id)model startWithFirstItem:(BOOL)item
 {
-  v7 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = TSTCellChooserControlSpec;
   v8 = [(TSTCellSpec *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_popupModel, a3);
-    v9->_startWithFirstItem = a4;
+    objc_storeStrong(&v8->_popupModel, model);
+    v9->_startWithFirstItem = item;
   }
 
   return v9;
 }
 
-+ (id)popupCellSpec:(id)a3 startWithFirstItem:(BOOL)a4
++ (id)popupCellSpec:(id)spec startWithFirstItem:(BOOL)item
 {
-  v4 = a4;
-  v5 = a3;
+  itemCopy = item;
+  specCopy = spec;
   v6 = [TSTCellChooserControlSpec alloc];
-  Item = objc_msgSend_initWithPopupModel_startWithFirstItem_(v6, v7, v5, v4, v8);
+  Item = objc_msgSend_initWithPopupModel_startWithFirstItem_(v6, v7, specCopy, itemCopy, v8);
 
   return Item;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -72,14 +72,14 @@
 
 - (NSArray)displayChoicesForInspector
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_displayChoices)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_displayChoices)
   {
     v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v3, v4, v5, v6);
     for (i = 1; ; ++i)
     {
-      v13 = objc_msgSend_choices(v2->_popupModel, v7, v8, v9, v10);
+      v13 = objc_msgSend_choices(selfCopy->_popupModel, v7, v8, v9, v10);
       v18 = objc_msgSend_count(v13, v14, v15, v16, v17);
 
       if (i >= v18)
@@ -87,53 +87,53 @@
         break;
       }
 
-      v23 = objc_msgSend_displayStringAtIndex_(v2->_popupModel, v19, i, v21, v22);
+      v23 = objc_msgSend_displayStringAtIndex_(selfCopy->_popupModel, v19, i, v21, v22);
       objc_msgSend_addObject_(v11, v24, v23, v25, v26);
     }
 
     v27 = objc_msgSend_copy(v11, v19, v20, v21, v22);
-    displayChoices = v2->_displayChoices;
-    v2->_displayChoices = v27;
+    displayChoices = selfCopy->_displayChoices;
+    selfCopy->_displayChoices = v27;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v29 = v2->_displayChoices;
+  v29 = selfCopy->_displayChoices;
 
   return v29;
 }
 
-- (unint64_t)indexForValue:(id)a3
+- (unint64_t)indexForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9 = objc_msgSend_choices(self->_popupModel, v5, v6, v7, v8);
-  v13 = objc_msgSend_indexOfObject_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_indexOfObject_(v9, v10, valueCopy, v11, v12);
 
   return v13;
 }
 
-- (id)valueForIndex:(unint64_t)a3
+- (id)valueForIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_choices(self->_popupModel, a2, a3, v3, v4);
-  v10 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, a3, v8, v9);
+  v6 = objc_msgSend_choices(self->_popupModel, a2, index, v3, v4);
+  v10 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, index, v8, v9);
 
   return v10;
 }
 
-- (BOOL)validateFormatAndValue:(id)a3
+- (BOOL)validateFormatAndValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9 = objc_msgSend_popupModel(self, v5, v6, v7, v8);
   v14 = objc_msgSend_objectLocale(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_cellValueWithLocale_(v4, v15, v14, v16, v17);
+  v18 = objc_msgSend_cellValueWithLocale_(valueCopy, v15, v14, v16, v17);
 
   LOBYTE(v9) = objc_msgSend_indexForValue_(self, v19, v18, v20, v21) != 0x7FFFFFFFFFFFFFFFLL;
   return v9;
 }
 
-+ (id)cellSpecFromTSKFormat:(id)a3
++ (id)cellSpecFromTSKFormat:(id)format
 {
-  v8 = objc_msgSend_asMultipleChoiceListFormat(a3, a2, a3, v3, v4);
+  v8 = objc_msgSend_asMultipleChoiceListFormat(format, a2, format, v3, v4);
   if (v8)
   {
     v9 = [TSTCellChooserControlSpec alloc];
@@ -166,19 +166,19 @@
   return v15;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSTCellChooserControlSpec alloc];
-  v9 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5, v8);
+  v9 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy, v8);
 
   return v9;
 }
 
-- (TSTCellChooserControlSpec)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTCellChooserControlSpec)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v9 = a4;
-  if (*(a3 + 16) != 7)
+  unarchiverCopy = unarchiver;
+  if (*(archive + 16) != 7)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTCellChooserControlSpec initWithArchive:unarchiver:]", v7, v8);
@@ -188,15 +188,15 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  Item = objc_msgSend_initWithPopupModel_startWithFirstItem_(self, v6, 0, *(a3 + 68), v8);
-  v22 = *(a3 + 4);
+  Item = objc_msgSend_initWithPopupModel_startWithFirstItem_(self, v6, 0, *(archive + 68), v8);
+  v22 = *(archive + 4);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = sub_221259434;
   v28[3] = &unk_278461EE0;
   v23 = Item;
   v29 = v23;
-  v24 = v9;
+  v24 = unarchiverCopy;
   v26 = objc_opt_class();
   if (v22)
   {
@@ -211,32 +211,32 @@
   return v23;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v18 = a4;
+  archiverCopy = archiver;
   v10 = objc_msgSend_interactionType(self, v6, v7, v8, v9);
-  v13 = *(a3 + 4);
-  *(a3 + 4) = v13 | 0x20;
-  *(a3 + 16) = v10;
+  v13 = *(archive + 4);
+  *(archive + 4) = v13 | 0x20;
+  *(archive + 16) = v10;
   popupModel = self->_popupModel;
-  *(a3 + 4) = v13 | 0x22;
-  v15 = *(a3 + 4);
+  *(archive + 4) = v13 | 0x22;
+  v15 = *(archive + 4);
   if (!v15)
   {
-    v16 = *(a3 + 1);
+    v16 = *(archive + 1);
     if (v16)
     {
       v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v15 = MEMORY[0x223DA0390](v16);
-    *(a3 + 4) = v15;
+    *(archive + 4) = v15;
   }
 
-  objc_msgSend_setStrongReference_message_(v18, v11, popupModel, v15, v12);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v11, popupModel, v15, v12);
   startWithFirstItem = self->_startWithFirstItem;
-  *(a3 + 4) |= 0x40u;
-  *(a3 + 68) = startWithFirstItem;
+  *(archive + 4) |= 0x40u;
+  *(archive + 68) = startWithFirstItem;
 }
 
 @end

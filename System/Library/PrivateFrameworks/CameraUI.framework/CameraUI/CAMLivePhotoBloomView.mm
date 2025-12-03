@@ -1,27 +1,27 @@
 @interface CAMLivePhotoBloomView
-- (CAMLivePhotoBloomView)initWithFrame:(CGRect)a3;
-- (CGPath)_pathForDiameter:(double)a3 center:(CGPoint)a4;
-- (CGPath)_pathForRing:(int64_t)a3 center:(CGPoint)a4;
+- (CAMLivePhotoBloomView)initWithFrame:(CGRect)frame;
+- (CGPath)_pathForDiameter:(double)diameter center:(CGPoint)center;
+- (CGPath)_pathForRing:(int64_t)ring center:(CGPoint)center;
 - (CGSize)intrinsicContentSize;
-- (double)_diameterForRing:(int64_t)a3;
-- (double)_strokeWidthForRing:(int64_t)a3;
+- (double)_diameterForRing:(int64_t)ring;
+- (double)_strokeWidthForRing:(int64_t)ring;
 - (void)_updateDefaultImage;
 - (void)_updateRingColors;
 - (void)animateBloom;
 - (void)layoutSubviews;
-- (void)setIsOff:(BOOL)a3;
+- (void)setIsOff:(BOOL)off;
 - (void)stopAnimating;
 - (void)tintColorDidChange;
 @end
 
 @implementation CAMLivePhotoBloomView
 
-- (CAMLivePhotoBloomView)initWithFrame:(CGRect)a3
+- (CAMLivePhotoBloomView)initWithFrame:(CGRect)frame
 {
   v35[2] = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = CAMLivePhotoBloomView;
-  v3 = [(CAMLivePhotoBloomView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMLivePhotoBloomView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [MEMORY[0x1E6979518] begin];
@@ -42,12 +42,12 @@
     centerRing = v3->__centerRing;
     v3->__centerRing = v10;
 
-    v12 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     ringContainer = v3->__ringContainer;
-    v3->__ringContainer = v12;
+    v3->__ringContainer = layer;
 
-    v14 = [(CAMLivePhotoBloomView *)v3 layer];
-    [v14 addSublayer:v3->__ringContainer];
+    layer2 = [(CAMLivePhotoBloomView *)v3 layer];
+    [layer2 addSublayer:v3->__ringContainer];
 
     v34[0] = &unk_1F16C7BB0;
     v35[0] = v3->__innerRing;
@@ -136,18 +136,18 @@ void __39__CAMLivePhotoBloomView_initWithFrame___block_invoke_2(uint64_t a1, voi
   UIRectGetCenter();
   v10 = v9;
   v12 = v11;
-  v13 = [(CAMLivePhotoBloomView *)self _defaultImageView];
+  _defaultImageView = [(CAMLivePhotoBloomView *)self _defaultImageView];
   v14 = *MEMORY[0x1E695EFF8];
   v15 = *(MEMORY[0x1E695EFF8] + 8);
-  [v13 intrinsicContentSize];
-  [v13 frameForAlignmentRect:{v14, v15, v16, v17}];
-  [v13 setBounds:{v14, v15}];
+  [_defaultImageView intrinsicContentSize];
+  [_defaultImageView frameForAlignmentRect:{v14, v15, v16, v17}];
+  [_defaultImageView setBounds:{v14, v15}];
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
   v19 = v18;
   v21 = v20;
-  [v13 setCenter:?];
-  v22 = [(CAMLivePhotoBloomView *)self _shapeLayersByRing];
+  [_defaultImageView setCenter:?];
+  _shapeLayersByRing = [(CAMLivePhotoBloomView *)self _shapeLayersByRing];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke;
@@ -161,16 +161,16 @@ void __39__CAMLivePhotoBloomView_initWithFrame___block_invoke_2(uint64_t a1, voi
   v27[10] = v8;
   v27[11] = v19;
   v27[12] = v21;
-  [v22 enumerateKeysAndObjectsUsingBlock:v27];
+  [_shapeLayersByRing enumerateKeysAndObjectsUsingBlock:v27];
 
-  v23 = [(CAMLivePhotoBloomView *)self _layersByRing];
+  _layersByRing = [(CAMLivePhotoBloomView *)self _layersByRing];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke_2;
   v26[3] = &__block_descriptor_48_e34_v32__0__NSNumber_8__CALayer_16_B24l;
   v26[4] = v19;
   v26[5] = v21;
-  [v23 enumerateKeysAndObjectsUsingBlock:v26];
+  [_layersByRing enumerateKeysAndObjectsUsingBlock:v26];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -206,11 +206,11 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
 {
   v141[3] = *MEMORY[0x1E69E9840];
   [(CAMLivePhotoBloomView *)self layoutIfNeeded];
-  v125 = [(CAMLivePhotoBloomView *)self _outerRing];
-  v122 = [(CAMLivePhotoBloomView *)self _middleRing];
-  v124 = [(CAMLivePhotoBloomView *)self _innerRing];
-  v3 = [(CAMLivePhotoBloomView *)self _centerRing];
-  v106 = self;
+  _outerRing = [(CAMLivePhotoBloomView *)self _outerRing];
+  _middleRing = [(CAMLivePhotoBloomView *)self _middleRing];
+  _innerRing = [(CAMLivePhotoBloomView *)self _innerRing];
+  _centerRing = [(CAMLivePhotoBloomView *)self _centerRing];
+  selfCopy = self;
   [(CAMLivePhotoBloomView *)self bounds];
   UIRectGetCenter();
   v5 = v4;
@@ -245,15 +245,15 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   [v12 setKeyTimes:v18];
 
   v19 = MEMORY[0x1E696B098];
-  v20 = v3;
-  v120 = v3;
-  [v3 bounds];
+  v20 = _centerRing;
+  v120 = _centerRing;
+  [_centerRing bounds];
   v23 = [v19 valueWithCGSize:{v21, v22}];
   v139[0] = v23;
   v24 = [MEMORY[0x1E696B098] valueWithCGSize:{v15, v15}];
   v139[1] = v24;
   v25 = MEMORY[0x1E696B098];
-  [v124 bounds];
+  [_innerRing bounds];
   v28 = [v25 valueWithCGSize:{v26, v27}];
   v139[2] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v139 count:3];
@@ -274,27 +274,27 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   v34 = [MEMORY[0x1E696AD98] numberWithDouble:v15 * 0.5];
   v137[1] = v34;
   v35 = MEMORY[0x1E696AD98];
-  [v124 bounds];
+  [_innerRing bounds];
   v37 = [v35 numberWithDouble:v36 * 0.5];
   v137[2] = v37;
   v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v137 count:3];
   v116 = v31;
   [v31 setValues:v38];
 
-  v115 = [MEMORY[0x1E6979308] animation];
-  [v115 setDuration:1.5];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setDuration:1.5];
   v136[0] = v12;
   v136[1] = v121;
   v136[2] = v31;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v136 count:3];
-  [v115 setAnimations:v39];
+  [animation setAnimations:v39];
 
   v40 = [MEMORY[0x1E6979390] animationWithKeyPath:@"bounds.size"];
   LODWORD(v41) = 0.5;
   LODWORD(v42) = 1.0;
   LODWORD(v43) = 1058642330;
   v114 = [MEMORY[0x1E69793D0] functionWithControlPoints:v41 :0.0 :v43 :v42];
-  [(CAMLivePhotoBloomView *)v106 _diameterForRing:2];
+  [(CAMLivePhotoBloomView *)selfCopy _diameterForRing:2];
   v45 = v44;
   v135[0] = &unk_1F16C7C10;
   v46 = [MEMORY[0x1E696AD98] numberWithDouble:0.611111111];
@@ -305,7 +305,7 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   [v40 setKeyTimes:v48];
 
   v49 = MEMORY[0x1E696B098];
-  [v124 bounds];
+  [_innerRing bounds];
   v52 = [v49 valueWithCGSize:{v50, v51}];
   v134[0] = v52;
   v53 = [MEMORY[0x1E696B098] valueWithCGSize:{18.0, 18.0}];
@@ -325,7 +325,7 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   v58 = [v40 copy];
   [v58 setKeyPath:@"cornerRadius"];
   v59 = MEMORY[0x1E696AD98];
-  [v124 cornerRadius];
+  [_innerRing cornerRadius];
   v60 = [v59 numberWithDouble:?];
   v132[0] = v60;
   v61 = [MEMORY[0x1E696AD98] numberWithDouble:9.0];
@@ -337,26 +337,26 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
 
   v64 = [MEMORY[0x1E6979318] animationWithKeyPath:@"borderWidth"];
   v65 = MEMORY[0x1E696AD98];
-  [(CAMLivePhotoBloomView *)v106 _strokeWidthForRing:2];
+  [(CAMLivePhotoBloomView *)selfCopy _strokeWidthForRing:2];
   v66 = [v65 numberWithDouble:?];
   [v64 setToValue:v66];
 
   [v64 setDuration:0.916666667];
   v112 = v64;
   [v64 setFillMode:*MEMORY[0x1E69797E8]];
-  v111 = [MEMORY[0x1E6979308] animation];
-  [v111 setDuration:1.5];
+  animation2 = [MEMORY[0x1E6979308] animation];
+  [animation2 setDuration:1.5];
   v131[0] = v64;
   v131[1] = v57;
   v131[2] = v58;
   v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:3];
-  [v111 setAnimations:v67];
+  [animation2 setAnimations:v67];
 
   LODWORD(v68) = 1059984507;
   LODWORD(v69) = 1.0;
   LODWORD(v70) = 1058642330;
   v71 = [MEMORY[0x1E69793D0] functionWithControlPoints:v68 :0.0 :v70 :v69];
-  v110 = [MEMORY[0x1E6979308] animation];
+  animation3 = [MEMORY[0x1E6979308] animation];
   v72 = [MEMORY[0x1E6979390] animationWithKeyPath:@"path"];
   v73 = [MEMORY[0x1E6979318] animationWithKeyPath:@"lineWidth"];
   v74 = [MEMORY[0x1E6979318] animationWithKeyPath:@"lineDashPattern"];
@@ -368,9 +368,9 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   v130[2] = v74;
   v130[3] = v75;
   v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:4];
-  [v110 setAnimations:v77];
+  [animation3 setAnimations:v77];
 
-  [v110 setDuration:1.5];
+  [animation3 setDuration:1.5];
   v129[0] = &unk_1F16C7C10;
   v78 = [MEMORY[0x1E696AD98] numberWithDouble:0.722222222];
   v129[1] = v78;
@@ -378,9 +378,9 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:3];
   [v76 setKeyTimes:v79];
 
-  v128[0] = [v122 path];
-  v128[1] = [(CAMLivePhotoBloomView *)v106 _pathForDiameter:25.6666667 center:v5, v7];
-  v128[2] = [v125 path];
+  v128[0] = [_middleRing path];
+  v128[1] = [(CAMLivePhotoBloomView *)selfCopy _pathForDiameter:25.6666667 center:v5, v7];
+  v128[2] = [_outerRing path];
   v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:3];
   v109 = v76;
   [v76 setValues:v80];
@@ -391,7 +391,7 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   [v76 setTimingFunctions:v81];
 
   v82 = MEMORY[0x1E696AD98];
-  [(CAMLivePhotoBloomView *)v106 _strokeWidthForRing:3];
+  [(CAMLivePhotoBloomView *)selfCopy _strokeWidthForRing:3];
   v83 = [v82 numberWithDouble:?];
   [v73 setToValue:v83];
 
@@ -403,14 +403,14 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   [v75 setDuration:0.416666667];
   v105 = v75;
   [v75 setBeginTime:1.08333333];
-  v84 = [v74 toValue];
-  [v75 setFromValue:v84];
+  toValue = [v74 toValue];
+  [v75 setFromValue:toValue];
 
-  v85 = [v125 lineDashPattern];
-  [v75 setToValue:v85];
+  lineDashPattern = [_outerRing lineDashPattern];
+  [v75 setToValue:lineDashPattern];
 
   [v75 setTimingFunction:v123];
-  v86 = [MEMORY[0x1E6979308] animation];
+  animation4 = [MEMORY[0x1E6979308] animation];
   v87 = [MEMORY[0x1E6979318] animationWithKeyPath:@"path"];
   v88 = [MEMORY[0x1E6979318] animationWithKeyPath:@"lineDashPattern"];
   v89 = [MEMORY[0x1E6979318] animationWithKeyPath:@"lineWidth"];
@@ -418,12 +418,12 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   v126[1] = v88;
   v126[2] = v89;
   v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:3];
-  [v86 setAnimations:v90];
+  [animation4 setAnimations:v90];
 
-  [v86 setDuration:1.32];
-  [v125 convertTime:0 fromLayer:CACurrentMediaTime()];
-  [v86 setBeginTime:v91 + 0.2];
-  [v87 setToValue:{-[CAMLivePhotoBloomView _pathForRing:center:](v106, "_pathForRing:center:", 4, v5, v7)}];
+  [animation4 setDuration:1.32];
+  [_outerRing convertTime:0 fromLayer:CACurrentMediaTime()];
+  [animation4 setBeginTime:v91 + 0.2];
+  [v87 setToValue:{-[CAMLivePhotoBloomView _pathForRing:center:](selfCopy, "_pathForRing:center:", 4, v5, v7)}];
   LODWORD(v92) = 1061997773;
   LODWORD(v93) = 1059145646;
   LODWORD(v94) = *"=\nW>";
@@ -433,12 +433,12 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
 
   v104 = v88;
   [v88 setToValue:&unk_1F16C9710];
-  v97 = [v87 timingFunction];
-  [v88 setTimingFunction:v97];
+  timingFunction = [v87 timingFunction];
+  [v88 setTimingFunction:timingFunction];
 
   [v89 setToValue:&unk_1F16C7C10];
   [v89 setBeginTime:1.0];
-  [v86 duration];
+  [animation4 duration];
   [v89 setDuration:v98 + -1.0];
   v99 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
   [v99 setCalculationMode:v118];
@@ -447,67 +447,67 @@ void __39__CAMLivePhotoBloomView_layoutSubviews__block_invoke(uint64_t a1, void 
   [v99 setDuration:1.5];
   v100 = [v99 copy];
   [v100 setValues:&unk_1F16C9758];
-  v101 = [(CAMLivePhotoBloomView *)v106 _defaultImageView];
-  v102 = [v101 layer];
-  [v102 addAnimation:v100 forKey:@"bloom"];
+  _defaultImageView = [(CAMLivePhotoBloomView *)selfCopy _defaultImageView];
+  layer = [_defaultImageView layer];
+  [layer addAnimation:v100 forKey:@"bloom"];
 
-  v103 = [(CAMLivePhotoBloomView *)v106 _ringContainer];
-  [v103 addAnimation:v99 forKey:@"bloom"];
+  _ringContainer = [(CAMLivePhotoBloomView *)selfCopy _ringContainer];
+  [_ringContainer addAnimation:v99 forKey:@"bloom"];
 
-  [v120 addAnimation:v115 forKey:@"bloom"];
-  [v124 addAnimation:v111 forKey:@"bloom"];
-  [v122 addAnimation:v110 forKey:@"bloom"];
-  [v125 addAnimation:v86 forKey:@"bloom"];
+  [v120 addAnimation:animation forKey:@"bloom"];
+  [_innerRing addAnimation:animation2 forKey:@"bloom"];
+  [_middleRing addAnimation:animation3 forKey:@"bloom"];
+  [_outerRing addAnimation:animation4 forKey:@"bloom"];
 }
 
 - (void)stopAnimating
 {
-  v3 = [(CAMLivePhotoBloomView *)self _defaultImageView];
-  v4 = [v3 layer];
-  [v4 removeAllAnimations];
+  _defaultImageView = [(CAMLivePhotoBloomView *)self _defaultImageView];
+  layer = [_defaultImageView layer];
+  [layer removeAllAnimations];
 
-  v5 = [(CAMLivePhotoBloomView *)self _ringContainer];
-  [v5 removeAllAnimations];
+  _ringContainer = [(CAMLivePhotoBloomView *)self _ringContainer];
+  [_ringContainer removeAllAnimations];
 
-  v6 = [(CAMLivePhotoBloomView *)self _centerRing];
-  [v6 removeAllAnimations];
+  _centerRing = [(CAMLivePhotoBloomView *)self _centerRing];
+  [_centerRing removeAllAnimations];
 
-  v7 = [(CAMLivePhotoBloomView *)self _innerRing];
-  [v7 removeAllAnimations];
+  _innerRing = [(CAMLivePhotoBloomView *)self _innerRing];
+  [_innerRing removeAllAnimations];
 
-  v8 = [(CAMLivePhotoBloomView *)self _middleRing];
-  [v8 removeAllAnimations];
+  _middleRing = [(CAMLivePhotoBloomView *)self _middleRing];
+  [_middleRing removeAllAnimations];
 
-  v9 = [(CAMLivePhotoBloomView *)self _outerRing];
-  [v9 removeAllAnimations];
+  _outerRing = [(CAMLivePhotoBloomView *)self _outerRing];
+  [_outerRing removeAllAnimations];
 }
 
-- (void)setIsOff:(BOOL)a3
+- (void)setIsOff:(BOOL)off
 {
-  if (self->_isOff != a3)
+  if (self->_isOff != off)
   {
-    self->_isOff = a3;
+    self->_isOff = off;
     [(CAMLivePhotoBloomView *)self _updateDefaultImage];
   }
 }
 
 - (void)_updateRingColors
 {
-  v3 = [(CAMLivePhotoBloomView *)self _shapeLayersByRing];
+  _shapeLayersByRing = [(CAMLivePhotoBloomView *)self _shapeLayersByRing];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__CAMLivePhotoBloomView__updateRingColors__block_invoke;
   v6[3] = &unk_1E76FB0B8;
   v6[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [_shapeLayersByRing enumerateKeysAndObjectsUsingBlock:v6];
 
-  v4 = [(CAMLivePhotoBloomView *)self _layersByRing];
+  _layersByRing = [(CAMLivePhotoBloomView *)self _layersByRing];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__CAMLivePhotoBloomView__updateRingColors__block_invoke_2;
   v5[3] = &unk_1E76FB090;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [_layersByRing enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __42__CAMLivePhotoBloomView__updateRingColors__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -530,9 +530,9 @@ void __42__CAMLivePhotoBloomView__updateRingColors__block_invoke_2(uint64_t a1, 
 
 - (void)_updateDefaultImage
 {
-  v3 = [(CAMLivePhotoBloomView *)self isOff];
+  isOff = [(CAMLivePhotoBloomView *)self isOff];
   v4 = @"CAMIrisButton-0-PhotoIris";
-  if (v3)
+  if (isOff)
   {
     v4 = @"CAMIrisButtonInactive";
   }
@@ -544,50 +544,50 @@ void __42__CAMLivePhotoBloomView__updateRingColors__block_invoke_2(uint64_t a1, 
 
   v10 = [v8 imageWithRenderingMode:2];
 
-  v9 = [(CAMLivePhotoBloomView *)self _defaultImageView];
-  [v9 setImage:v10];
+  _defaultImageView = [(CAMLivePhotoBloomView *)self _defaultImageView];
+  [_defaultImageView setImage:v10];
 }
 
-- (double)_strokeWidthForRing:(int64_t)a3
+- (double)_strokeWidthForRing:(int64_t)ring
 {
   result = 2.0;
-  if ((a3 - 2) <= 2)
+  if ((ring - 2) <= 2)
   {
-    return dbl_1A3A69C58[a3 - 2];
+    return dbl_1A3A69C58[ring - 2];
   }
 
   return result;
 }
 
-- (double)_diameterForRing:(int64_t)a3
+- (double)_diameterForRing:(int64_t)ring
 {
   result = 0.0;
-  if (a3 <= 4)
+  if (ring <= 4)
   {
-    return dbl_1A3A69C70[a3];
+    return dbl_1A3A69C70[ring];
   }
 
   return result;
 }
 
-- (CGPath)_pathForRing:(int64_t)a3 center:(CGPoint)a4
+- (CGPath)_pathForRing:(int64_t)ring center:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   [(CAMLivePhotoBloomView *)self _diameterForRing:?];
   v9 = v8;
-  [(CAMLivePhotoBloomView *)self _strokeWidthForRing:a3];
+  [(CAMLivePhotoBloomView *)self _strokeWidthForRing:ring];
   v11 = v9 - v10;
 
   return [(CAMLivePhotoBloomView *)self _pathForDiameter:v11 center:x, y];
 }
 
-- (CGPath)_pathForDiameter:(double)a3 center:(CGPoint)a4
+- (CGPath)_pathForDiameter:(double)diameter center:(CGPoint)center
 {
-  v4 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:a4.x startAngle:a4.y endAngle:a3 * 0.5 clockwise:{0.0, 6.28318531}];
-  v5 = [v4 CGPath];
+  v4 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:center.x startAngle:center.y endAngle:diameter * 0.5 clockwise:{0.0, 6.28318531}];
+  cGPath = [v4 CGPath];
 
-  return v5;
+  return cGPath;
 }
 
 @end

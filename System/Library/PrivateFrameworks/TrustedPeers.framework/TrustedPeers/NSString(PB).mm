@@ -6,17 +6,17 @@
 
 - (id)pbToNullable
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

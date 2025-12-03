@@ -2,11 +2,11 @@
 - (BKUIPearlCrossHairsManager)init;
 - (BOOL)grayscale;
 - (id).cxx_construct;
-- (void)addInstance:(id)a3;
-- (void)setSpringsStates:(unint64_t)a3;
+- (void)addInstance:(id)instance;
+- (void)setSpringsStates:(unint64_t)states;
 - (void)setTarget:(BKUIPearlCrossHairsManager *)self;
 - (void)setValue:(BKUIPearlCrossHairsManager *)self;
-- (void)update:(double)a3;
+- (void)update:(double)update;
 @end
 
 @implementation BKUIPearlCrossHairsManager
@@ -77,23 +77,23 @@
 
 - (BOOL)grayscale
 {
-  v2 = [(BKUIPearlCrossHairsManager *)self springInstances];
-  v3 = [v2 firstObject];
-  v4 = [v3 grayscale];
+  springInstances = [(BKUIPearlCrossHairsManager *)self springInstances];
+  firstObject = [springInstances firstObject];
+  grayscale = [firstObject grayscale];
 
-  return v4;
+  return grayscale;
 }
 
-- (void)addInstance:(id)a3
+- (void)addInstance:(id)instance
 {
-  v26 = a3;
+  instanceCopy = instance;
   [(NSMutableArray *)self->_springInstances addObject:?];
-  [v26 matrix];
+  [instanceCopy matrix];
   v22 = v4;
   v23 = v5;
   v24 = v6;
   v25 = v7;
-  [v26 color];
+  [instanceCopy color];
   end = self->_instanceVector.__end_;
   cap = self->_instanceVector.__cap_;
   if (end >= cap)
@@ -233,7 +233,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSpringsStates:(unint64_t)a3
+- (void)setSpringsStates:(unint64_t)states
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -255,7 +255,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v7++) setSpringState:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v7++) setSpringState:{states, v9}];
       }
 
       while (v5 != v7);
@@ -268,23 +268,23 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   v5 = 0;
   for (i = 0; ; ++i)
   {
-    v7 = [(BKUIPearlCrossHairsManager *)self springInstances];
-    v8 = [v7 count];
+    springInstances = [(BKUIPearlCrossHairsManager *)self springInstances];
+    v8 = [springInstances count];
 
     if (v8 <= i)
     {
       break;
     }
 
-    v9 = [(BKUIPearlCrossHairsManager *)self springInstances];
-    v10 = [v9 objectAtIndexedSubscript:i];
+    springInstances2 = [(BKUIPearlCrossHairsManager *)self springInstances];
+    v10 = [springInstances2 objectAtIndexedSubscript:i];
 
-    [v10 step:a3];
+    [v10 step:update];
     [v10 matrix];
     v19 = v12;
     v20 = v11;

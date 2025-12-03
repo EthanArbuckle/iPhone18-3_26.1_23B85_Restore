@@ -1,15 +1,15 @@
 @interface VSSubscriptionSource
 + (id)currentSource;
-+ (id)subscriptionSourceForAppWithBundleID:(id)a3;
-+ (id)subscriptionSourceForWebsiteWithDomainName:(id)a3;
-+ (id)subscriptionSourceForWebsiteWithURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)subscriptionSourceForAppWithBundleID:(id)d;
++ (id)subscriptionSourceForWebsiteWithDomainName:(id)name;
++ (id)subscriptionSourceForWebsiteWithURL:(id)l;
+- (BOOL)isEqual:(id)equal;
 - (VSSubscriptionSource)init;
-- (VSSubscriptionSource)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VSSubscriptionSource)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSSubscriptionSource
@@ -22,9 +22,9 @@
   v13 = __Block_byref_object_copy__6;
   v14 = __Block_byref_object_dispose__6;
   v15 = 0;
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [VSOptional optionalWithObject:v3];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [VSOptional optionalWithObject:bundleIdentifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__VSSubscriptionSource_currentSource__block_invoke;
@@ -72,11 +72,11 @@ void __37__VSSubscriptionSource_currentSource__block_invoke_2(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-+ (id)subscriptionSourceForWebsiteWithURL:(id)a3
++ (id)subscriptionSourceForWebsiteWithURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The webURL parameter must not be nil."];
   }
@@ -87,24 +87,24 @@ void __37__VSSubscriptionSource_currentSource__block_invoke_2(uint64_t a1)
     v11 = 136315394;
     v12 = "+[VSSubscriptionSource subscriptionSourceForWebsiteWithURL:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = lCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "%s: Generated webURL: %@", &v11, 0x16u);
   }
 
-  v6 = [v4 host];
-  v7 = [VSOptional optionalWithObject:v6];
+  host = [lCopy host];
+  v7 = [VSOptional optionalWithObject:host];
 
-  v8 = [v7 forceUnwrapObject];
-  v9 = [a1 subscriptionSourceForWebsiteWithDomainName:v8];
+  forceUnwrapObject = [v7 forceUnwrapObject];
+  v9 = [self subscriptionSourceForWebsiteWithDomainName:forceUnwrapObject];
 
   return v9;
 }
 
-+ (id)subscriptionSourceForWebsiteWithDomainName:(id)a3
++ (id)subscriptionSourceForWebsiteWithDomainName:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The domainName parameter must not be nil."];
   }
@@ -115,22 +115,22 @@ void __37__VSSubscriptionSource_currentSource__block_invoke_2(uint64_t a1)
     v8 = 136315394;
     v9 = "+[VSSubscriptionSource subscriptionSourceForWebsiteWithDomainName:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = nameCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setKind:1];
-  [v6 setIdentifier:v4];
+  [v6 setIdentifier:nameCopy];
 
   return v6;
 }
 
-+ (id)subscriptionSourceForAppWithBundleID:(id)a3
++ (id)subscriptionSourceForAppWithBundleID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The bundleID parameter must not be nil."];
   }
@@ -141,13 +141,13 @@ void __37__VSSubscriptionSource_currentSource__block_invoke_2(uint64_t a1)
     v8 = 136315394;
     v9 = "+[VSSubscriptionSource subscriptionSourceForAppWithBundleID:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v8, 0x16u);
   }
 
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   [v6 setKind:0];
-  [v6 setIdentifier:v4];
+  [v6 setIdentifier:dCopy];
 
   return v6;
 }
@@ -166,32 +166,32 @@ void __37__VSSubscriptionSource_currentSource__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (VSSubscriptionSource)initWithCoder:(id)a3
+- (VSSubscriptionSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSSubscriptionSource;
   v5 = [(VSSubscriptionSource *)&v8 init];
   if (v5)
   {
     v6 = VSSubscriptionSourceValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSSubscriptionSourceValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSSubscriptionSourceValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -204,11 +204,11 @@ void __37__VSSubscriptionSource_currentSource__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSSubscriptionSourceValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }

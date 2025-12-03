@@ -1,47 +1,47 @@
 @interface PHContentEditingOutputRequestOptions
-- (PHContentEditingOutputRequestOptions)initWithCoder:(id)a3;
+- (PHContentEditingOutputRequestOptions)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOnlyChangingOriginalChoice:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOnlyChangingOriginalChoice:(BOOL)choice;
 @end
 
 @implementation PHContentEditingOutputRequestOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   asyncAdjustment = self->_asyncAdjustment;
-  v5 = a3;
-  [v5 encodeBool:asyncAdjustment forKey:@"asyncAdjustment"];
-  [v5 encodeBool:self->_onlyChangingOriginalChoice forKey:@"onlyChangingOriginalChoice"];
-  [v5 encodeInteger:self->_playbackStyle forKey:@"playbackStyle"];
-  [v5 encodeBool:self->_preferHEICForRenderedImages forKey:@"preferHEICForRenderedImages"];
+  coderCopy = coder;
+  [coderCopy encodeBool:asyncAdjustment forKey:@"asyncAdjustment"];
+  [coderCopy encodeBool:self->_onlyChangingOriginalChoice forKey:@"onlyChangingOriginalChoice"];
+  [coderCopy encodeInteger:self->_playbackStyle forKey:@"playbackStyle"];
+  [coderCopy encodeBool:self->_preferHEICForRenderedImages forKey:@"preferHEICForRenderedImages"];
 }
 
-- (PHContentEditingOutputRequestOptions)initWithCoder:(id)a3
+- (PHContentEditingOutputRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PHContentEditingOutputRequestOptions;
   v5 = [(PHContentEditingOutputRequestOptions *)&v7 init];
   if (v5)
   {
-    v5->_asyncAdjustment = [v4 decodeBoolForKey:@"asyncAdjustment"];
-    v5->_onlyChangingOriginalChoice = [v4 decodeBoolForKey:@"onlyChangingOriginalChoice"];
-    v5->_playbackStyle = [v4 decodeIntegerForKey:@"playbackStyle"];
-    v5->_preferHEICForRenderedImages = [v4 decodeBoolForKey:@"preferHEICForRenderedImages"];
+    v5->_asyncAdjustment = [coderCopy decodeBoolForKey:@"asyncAdjustment"];
+    v5->_onlyChangingOriginalChoice = [coderCopy decodeBoolForKey:@"onlyChangingOriginalChoice"];
+    v5->_playbackStyle = [coderCopy decodeIntegerForKey:@"playbackStyle"];
+    v5->_preferHEICForRenderedImages = [coderCopy decodeBoolForKey:@"preferHEICForRenderedImages"];
   }
 
   return v5;
 }
 
-- (void)setOnlyChangingOriginalChoice:(BOOL)a3
+- (void)setOnlyChangingOriginalChoice:(BOOL)choice
 {
-  if (a3)
+  if (choice)
   {
     self->_asyncAdjustment = 1;
   }
 
-  self->_onlyChangingOriginalChoice = a3;
+  self->_onlyChangingOriginalChoice = choice;
 }
 
 - (id)description

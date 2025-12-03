@@ -2,8 +2,8 @@
 - (CGRect)portraitUpSourceRect;
 - (UIPopoverPresentationControllerDelegate)popoverPresentationDelegate;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CACPopoverPresentingViewController
@@ -11,51 +11,51 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [(CACPopoverPresentingViewController *)self setView:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = CACPopoverPresentingViewController;
-  [(CACPopoverPresentingViewController *)&v19 viewDidAppear:a3];
+  [(CACPopoverPresentingViewController *)&v19 viewDidAppear:appear];
   [MEMORY[0x277D758A8] _setAlwaysAllowPopoverPresentations:1];
-  v4 = [(CACPopoverPresentingViewController *)self viewControllerInPopover];
-  [v4 setModalPresentationStyle:7];
+  viewControllerInPopover = [(CACPopoverPresentingViewController *)self viewControllerInPopover];
+  [viewControllerInPopover setModalPresentationStyle:7];
 
-  v5 = [(CACPopoverPresentingViewController *)self viewControllerInPopover];
-  v6 = [v5 popoverPresentationController];
+  viewControllerInPopover2 = [(CACPopoverPresentingViewController *)self viewControllerInPopover];
+  popoverPresentationController = [viewControllerInPopover2 popoverPresentationController];
 
-  v7 = [(CACPopoverPresentingViewController *)self view];
-  [v6 setSourceView:v7];
+  view = [(CACPopoverPresentingViewController *)self view];
+  [popoverPresentationController setSourceView:view];
 
   [(CACPopoverPresentingViewController *)self portraitUpSourceRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(CACPopoverPresentingViewController *)self view];
-  [v6 setSourceRect:{CACViewRectFromPortraitUpRect(v16, v9, v11, v13, v15)}];
+  view2 = [(CACPopoverPresentingViewController *)self view];
+  [popoverPresentationController setSourceRect:{CACViewRectFromPortraitUpRect(view2, v9, v11, v13, v15)}];
 
-  [v6 setCanOverlapSourceViewRect:1];
-  v17 = [(CACPopoverPresentingViewController *)self popoverPresentationDelegate];
-  [v6 setDelegate:v17];
+  [popoverPresentationController setCanOverlapSourceViewRect:1];
+  popoverPresentationDelegate = [(CACPopoverPresentingViewController *)self popoverPresentationDelegate];
+  [popoverPresentationController setDelegate:popoverPresentationDelegate];
 
-  [v6 setPermittedArrowDirections:{-[CACPopoverPresentingViewController permittedArrowDirections](self, "permittedArrowDirections")}];
-  v18 = [(CACPopoverPresentingViewController *)self viewControllerInPopover];
-  [(CACPopoverPresentingViewController *)self presentViewController:v18 animated:1 completion:0];
+  [popoverPresentationController setPermittedArrowDirections:{-[CACPopoverPresentingViewController permittedArrowDirections](self, "permittedArrowDirections")}];
+  viewControllerInPopover3 = [(CACPopoverPresentingViewController *)self viewControllerInPopover];
+  [(CACPopoverPresentingViewController *)self presentViewController:viewControllerInPopover3 animated:1 completion:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [MEMORY[0x277D758A8] _setAlwaysAllowPopoverPresentations:0];
   v5.receiver = self;
   v5.super_class = CACPopoverPresentingViewController;
-  [(CACPopoverPresentingViewController *)&v5 viewWillDisappear:v3];
+  [(CACPopoverPresentingViewController *)&v5 viewWillDisappear:disappearCopy];
   [(CACPopoverPresentingViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 

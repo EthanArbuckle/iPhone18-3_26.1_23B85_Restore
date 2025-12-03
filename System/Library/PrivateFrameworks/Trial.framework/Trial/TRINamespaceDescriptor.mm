@@ -1,41 +1,41 @@
 @interface TRINamespaceDescriptor
-+ (BOOL)removeDescriptorWithNamespaceName:(id)a3 fromDirectory:(id)a4;
-+ (id)descriptorPathForNamespaceName:(id)a3 fromDirectory:(id)a4;
-+ (id)descriptorsForDirectory:(id)a3 filterBlock:(id)a4;
-+ (id)factorsURLFromPath:(id)a3;
-+ (id)loadFromFile:(id)a3;
-+ (id)loadWithNamespaceName:(id)a3 fromDirectory:(id)a4;
-+ (void)enumerateDescriptorsInDirectory:(id)a3 block:(id)a4;
-- (BOOL)_isEqualToNamespaceDescriptor:(id)a3;
-- (BOOL)_upgradeNCVsArePositiveIntegers:(id)a3;
-- (BOOL)_upgradeNCVsIsValid:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeFromDirectory:(id)a3;
-- (BOOL)saveToDirectory:(id)a3;
-- (BOOL)writeToFile:(id)a3;
-- (TRINamespaceDescriptor)initWithDictionary:(id)a3;
-- (TRINamespaceDescriptor)initWithNamespaceName:(id)a3 downloadNCV:(unsigned int)a4 optionalParams:(id)a5;
++ (BOOL)removeDescriptorWithNamespaceName:(id)name fromDirectory:(id)directory;
++ (id)descriptorPathForNamespaceName:(id)name fromDirectory:(id)directory;
++ (id)descriptorsForDirectory:(id)directory filterBlock:(id)block;
++ (id)factorsURLFromPath:(id)path;
++ (id)loadFromFile:(id)file;
++ (id)loadWithNamespaceName:(id)name fromDirectory:(id)directory;
++ (void)enumerateDescriptorsInDirectory:(id)directory block:(id)block;
+- (BOOL)_isEqualToNamespaceDescriptor:(id)descriptor;
+- (BOOL)_upgradeNCVsArePositiveIntegers:(id)integers;
+- (BOOL)_upgradeNCVsIsValid:(id)valid;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeFromDirectory:(id)directory;
+- (BOOL)saveToDirectory:(id)directory;
+- (BOOL)writeToFile:(id)file;
+- (TRINamespaceDescriptor)initWithDictionary:(id)dictionary;
+- (TRINamespaceDescriptor)initWithNamespaceName:(id)name downloadNCV:(unsigned int)v optionalParams:(id)params;
 - (id)dictionary;
 - (unint64_t)hash;
 @end
 
 @implementation TRINamespaceDescriptor
 
-+ (id)descriptorPathForNamespaceName:(id)a3 fromDirectory:(id)a4
++ (id)descriptorPathForNamespaceName:(id)name fromDirectory:(id)directory
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  directoryCopy = directory;
   v7 = objc_autoreleasePoolPush();
   location = 0;
-  v8 = [v5 triSanitizedPathComponentWithMaxLength:128 addHash:1 error:&location];
+  v8 = [nameCopy triSanitizedPathComponentWithMaxLength:128 addHash:1 error:&location];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"NamespaceDescriptor.%@.plist", v8];
-    v11 = [v6 stringByAppendingPathComponent:v10];
+    v11 = [directoryCopy stringByAppendingPathComponent:v10];
 
-    if (-[NSObject fileExistsAtPath:](v9, "fileExistsAtPath:", v11) || (v12 = [MEMORY[0x277D73B50] namespaceIdFromName:v5], !v12))
+    if (-[NSObject fileExistsAtPath:](defaultManager, "fileExistsAtPath:", v11) || (v12 = [MEMORY[0x277D73B50] namespaceIdFromName:nameCopy], !v12))
     {
       v16 = v11;
 LABEL_30:
@@ -45,7 +45,7 @@ LABEL_30:
 
     v13 = v12;
     v35 = 0;
-    if ([v9 fileExistsAtPath:v6 isDirectory:&v35])
+    if ([defaultManager fileExistsAtPath:directoryCopy isDirectory:&v35])
     {
       if ((v35 & 1) == 0)
       {
@@ -53,7 +53,7 @@ LABEL_30:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v39 = v6;
+          v39 = directoryCopy;
           _os_log_error_impl(&dword_22EA6B000, v15, OS_LOG_TYPE_ERROR, "Tried to look for namespace descriptors at this path, but it is a file and not a directory: %@", buf, 0xCu);
         }
 
@@ -62,7 +62,7 @@ LABEL_30:
 
       v29 = v11;
       obj = location;
-      v14 = [v9 contentsOfDirectoryAtPath:v6 error:&obj];
+      v14 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&obj];
       objc_storeStrong(&location, obj);
       if (!v14)
       {
@@ -70,7 +70,7 @@ LABEL_30:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v39 = v6;
+          v39 = directoryCopy;
           v40 = 2112;
           v41 = location;
           _os_log_error_impl(&dword_22EA6B000, v15, OS_LOG_TYPE_ERROR, "cannot access files in directory: %@ -- %@", buf, 0x16u);
@@ -92,7 +92,7 @@ LABEL_29:
 
     v28 = v7;
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.Trial.NamespaceDescriptor.%d.", v13];
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.Trial.NamespaceDescriptor.%@.", v5];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.Trial.NamespaceDescriptor.%@.", nameCopy];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -103,7 +103,7 @@ LABEL_29:
     {
       v21 = v20;
       v22 = *v31;
-      v27 = v6;
+      v27 = directoryCopy;
       while (2)
       {
         for (i = 0; i != v21; ++i)
@@ -114,9 +114,9 @@ LABEL_29:
           }
 
           v24 = *(*(&v30 + 1) + 8 * i);
-          if ([v24 hasPrefix:v17] & 1) != 0 || (objc_msgSend(v24, "hasPrefix:", v18))
+          if ([v24 hasPrefix:v17] & 1) != 0 || (objc_msgSend(v24, "hasPrefix:", nameCopy))
           {
-            v6 = v27;
+            directoryCopy = v27;
             v16 = [v27 stringByAppendingPathComponent:v24];
 
             goto LABEL_26;
@@ -124,7 +124,7 @@ LABEL_29:
         }
 
         v21 = [v19 countByEnumeratingWithState:&v30 objects:v37 count:16];
-        v6 = v27;
+        directoryCopy = v27;
         if (v21)
         {
           continue;
@@ -142,14 +142,14 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  v9 = TRILogCategory_ClientFramework();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  defaultManager = TRILogCategory_ClientFramework();
+  if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v39 = v5;
+    v39 = nameCopy;
     v40 = 2112;
     v41 = location;
-    _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "could not sanitize namespace %@ -- %@", buf, 0x16u);
+    _os_log_error_impl(&dword_22EA6B000, defaultManager, OS_LOG_TYPE_ERROR, "could not sanitize namespace %@ -- %@", buf, 0x16u);
   }
 
   v16 = 0;
@@ -161,25 +161,25 @@ LABEL_31:
   return v16;
 }
 
-+ (id)loadFromFile:(id)a3
++ (id)loadFromFile:(id)file
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fileCopy = file;
   v4 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = v3;
+    v17 = fileCopy;
     _os_log_debug_impl(&dword_22EA6B000, v4, OS_LOG_TYPE_DEBUG, "Loading namespace descriptor from path: %@", buf, 0xCu);
   }
 
-  if (!v3)
+  if (!fileCopy)
   {
     v9 = 0;
     goto LABEL_17;
   }
 
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3 isDirectory:0];
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:fileCopy isDirectory:0];
   v15 = 0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v5 error:&v15];
   v7 = v15;
@@ -188,12 +188,12 @@ LABEL_31:
   {
     if (v7)
     {
-      v10 = [v7 domain];
-      if ([v10 isEqualToString:*MEMORY[0x277CCA050]])
+      domain = [v7 domain];
+      if ([domain isEqualToString:*MEMORY[0x277CCA050]])
       {
-        v11 = [v8 code];
+        code = [v8 code];
 
-        if (v11 == 260)
+        if (code == 260)
         {
 LABEL_15:
           v9 = 0;
@@ -228,23 +228,23 @@ LABEL_17:
   return v9;
 }
 
-+ (id)loadWithNamespaceName:(id)a3 fromDirectory:(id)a4
++ (id)loadWithNamespaceName:(id)name fromDirectory:(id)directory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 descriptorPathForNamespaceName:v6 fromDirectory:a4];
-  v8 = [a1 loadFromFile:v7];
+  nameCopy = name;
+  v7 = [self descriptorPathForNamespaceName:nameCopy fromDirectory:directory];
+  v8 = [self loadFromFile:v7];
 
-  if (v8 && ([v8 namespaceName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v6, "isEqualToString:", v9), v9, (v10 & 1) == 0))
+  if (v8 && ([v8 namespaceName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(nameCopy, "isEqualToString:", v9), v9, (v10 & 1) == 0))
   {
     v12 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v8 namespaceName];
+      namespaceName = [v8 namespaceName];
       v16 = 138412546;
-      v17 = v6;
+      v17 = nameCopy;
       v18 = 2112;
-      v19 = v15;
+      v19 = namespaceName;
       _os_log_error_impl(&dword_22EA6B000, v12, OS_LOG_TYPE_ERROR, "namespace descriptor loaded from file has unexpected namespace name: %@ != %@", &v16, 0x16u);
     }
 
@@ -261,14 +261,14 @@ LABEL_17:
   return v11;
 }
 
-- (TRINamespaceDescriptor)initWithNamespaceName:(id)a3 downloadNCV:(unsigned int)a4 optionalParams:(id)a5
+- (TRINamespaceDescriptor)initWithNamespaceName:(id)name downloadNCV:(unsigned int)v optionalParams:(id)params
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  nameCopy = name;
+  paramsCopy = params;
+  if (!paramsCopy)
   {
-    v10 = objc_opt_new();
+    paramsCopy = objc_opt_new();
   }
 
   v25.receiver = self;
@@ -277,18 +277,18 @@ LABEL_17:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_namespaceName, a3);
-    v13 = [v10 factorsURL];
+    objc_storeStrong(&v11->_namespaceName, name);
+    factorsURL = [paramsCopy factorsURL];
     factorsURL = v12->_factorsURL;
-    v12->_factorsURL = v13;
+    v12->_factorsURL = factorsURL;
 
-    v15 = [v10 appContainer];
+    appContainer = [paramsCopy appContainer];
     appContainer = v12->_appContainer;
-    v12->_appContainer = v15;
+    v12->_appContainer = appContainer;
 
-    v12->_downloadNCV = a4;
-    v17 = [v10 upgradeNCVs];
-    if (v17 && ![(TRINamespaceDescriptor *)v12 _upgradeNCVsIsValid:v17])
+    v12->_downloadNCV = v;
+    upgradeNCVs = [paramsCopy upgradeNCVs];
+    if (upgradeNCVs && ![(TRINamespaceDescriptor *)v12 _upgradeNCVsIsValid:upgradeNCVs])
     {
       v20 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -296,7 +296,7 @@ LABEL_17:
         *buf = 138412546;
         v27 = @"Namespace Upgrade Compatibility Versions";
         v28 = 2112;
-        v29 = v17;
+        v29 = upgradeNCVs;
         _os_log_error_impl(&dword_22EA6B000, v20, OS_LOG_TYPE_ERROR, "%@ %@ is not valid. Setting it to nil", buf, 0x16u);
       }
 
@@ -306,20 +306,20 @@ LABEL_17:
 
     else
     {
-      v18 = v17;
+      v18 = upgradeNCVs;
       upgradeNCVs = v12->_upgradeNCVs;
       v12->_upgradeNCVs = v18;
     }
 
-    v12->_cloudKitContainerId = [v10 cloudKitContainerId];
-    v21 = [v10 resourceAttributionIdentifier];
+    v12->_cloudKitContainerId = [paramsCopy cloudKitContainerId];
+    resourceAttributionIdentifier = [paramsCopy resourceAttributionIdentifier];
     resourceAttributionIdentifier = v12->_resourceAttributionIdentifier;
-    v12->_resourceAttributionIdentifier = v21;
+    v12->_resourceAttributionIdentifier = resourceAttributionIdentifier;
 
-    v12->_expensiveNetworkingAllowed = [v10 expensiveNetworkingAllowed];
-    v12->_enableFetchDuringSetupAssistant = [v10 enableFetchDuringSetupAssistant];
-    v12->_purgeabilityLevel = [v10 purgeabilityLevel];
-    v12->_availableToRootUser = [v10 availableToRootUser];
+    v12->_expensiveNetworkingAllowed = [paramsCopy expensiveNetworkingAllowed];
+    v12->_enableFetchDuringSetupAssistant = [paramsCopy enableFetchDuringSetupAssistant];
+    v12->_purgeabilityLevel = [paramsCopy purgeabilityLevel];
+    v12->_availableToRootUser = [paramsCopy availableToRootUser];
     v12->_optedOutOfDefaults = 0;
   }
 
@@ -327,17 +327,17 @@ LABEL_17:
   return v12;
 }
 
-- (TRINamespaceDescriptor)initWithDictionary:(id)a3
+- (TRINamespaceDescriptor)initWithDictionary:(id)dictionary
 {
   v102 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"Namespace Compatibility Version"];
-  v7 = [v6 unsignedIntValue];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Namespace Compatibility Version"];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  v84 = [v5 objectForKeyedSubscript:@"Namespace Name"];
+  v84 = [dictionaryCopy objectForKeyedSubscript:@"Namespace Name"];
   if (!v84)
   {
-    v8 = [v5 objectForKeyedSubscript:@"Namespace Id"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"Namespace Id"];
     if (!v8)
     {
       v9 = TRILogCategory_ClientFramework();
@@ -353,16 +353,16 @@ LABEL_17:
     v84 = [MEMORY[0x277D73B50] namespaceNameFromId:{objc_msgSend(v8, "unsignedIntValue")}];
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"App Container Id"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"App Container Id"];
   v83 = v10;
   if (v10)
   {
     v11 = v10;
-    v12 = [v5 objectForKeyedSubscript:@"App Container Type"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"App Container Type"];
     if (!v12)
     {
-      v70 = [MEMORY[0x277CCA890] currentHandler];
-      [v70 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptor.m" lineNumber:182 description:@"app container id provided but unspecified container type"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptor.m" lineNumber:182 description:@"app container id provided but unspecified container type"];
     }
 
     v85 = +[TRIAppContainer containerWithIdentifier:type:](TRIAppContainer, "containerWithIdentifier:type:", v11, [v12 integerValue]);
@@ -373,7 +373,7 @@ LABEL_17:
     v85 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"Factor Path"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"Factor Path"];
   v82 = v13;
   if (v13)
   {
@@ -384,8 +384,8 @@ LABEL_17:
       v15 = [TRIStandardPaths resolveHardCodedPath:v14];
     }
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    v17 = [v16 fileExistsAtPath:v15];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v17 = [defaultManager fileExistsAtPath:v15];
 
     if (v17)
     {
@@ -399,15 +399,15 @@ LABEL_17:
 
     else
     {
-      v19 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v20 = objc_alloc(MEMORY[0x277CCACA8]);
       v21 = v15;
-      v22 = [v15 stringByDeletingLastPathComponent];
-      v23 = [v20 initWithFormat:@"%@/Resources", v22];
-      v24 = [v23 stringByAppendingPathComponent:v19];
+      stringByDeletingLastPathComponent = [v15 stringByDeletingLastPathComponent];
+      v23 = [v20 initWithFormat:@"%@/Resources", stringByDeletingLastPathComponent];
+      v24 = [v23 stringByAppendingPathComponent:lastPathComponent];
 
-      v25 = [MEMORY[0x277CCAA00] defaultManager];
-      LODWORD(v23) = [v25 fileExistsAtPath:v24];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      LODWORD(v23) = [defaultManager2 fileExistsAtPath:v24];
 
       if (v23)
       {
@@ -448,7 +448,7 @@ LABEL_17:
   v18 = 0;
   v15 = 0;
 LABEL_28:
-  v28 = [v5 objectForKeyedSubscript:@"ResourceAttributionBundleIdentifier"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"ResourceAttributionBundleIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -479,13 +479,13 @@ LABEL_28:
     }
   }
 
-  v34 = [v5 objectForKeyedSubscript:@"Namespace Upgrade Compatibility Versions"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"Namespace Upgrade Compatibility Versions"];
   objc_opt_class();
   v80 = v28;
   v81 = v15;
   if (objc_opt_isKindOfClass())
   {
-    v35 = self;
+    selfCopy5 = self;
     v36 = v34;
   }
 
@@ -496,8 +496,8 @@ LABEL_28:
     {
       v72 = v29;
       v74 = v18;
-      v76 = v7;
-      v78 = self;
+      v76 = unsignedIntValue;
+      selfCopy2 = self;
       v37 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v34, "count")}];
       v90 = 0u;
       v91 = 0u;
@@ -529,8 +529,8 @@ LABEL_28:
       }
 
       v36 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v37];
-      v35 = v78;
-      v7 = v76;
+      selfCopy5 = selfCopy2;
+      unsignedIntValue = v76;
       v29 = v72;
       v18 = v74;
     }
@@ -545,8 +545,8 @@ LABEL_28:
         {
           v73 = v29;
           v75 = v18;
-          v77 = v7;
-          v79 = self;
+          v77 = unsignedIntValue;
+          selfCopy3 = self;
           v45 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v44, "count")}];
           v86 = 0u;
           v87 = 0u;
@@ -579,8 +579,8 @@ LABEL_28:
           }
 
           v36 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v45];
-          v35 = v79;
-          v7 = v77;
+          selfCopy5 = selfCopy3;
+          unsignedIntValue = v77;
           v29 = v73;
           v18 = v75;
           v44 = v71;
@@ -588,14 +588,14 @@ LABEL_28:
 
         else
         {
-          v35 = self;
+          selfCopy5 = self;
           v36 = 0;
         }
       }
 
       else
       {
-        v35 = self;
+        selfCopy5 = self;
         v36 = 0;
       }
     }
@@ -607,53 +607,53 @@ LABEL_28:
   [v52 setAppContainer:v85];
   [v52 setUpgradeNCVs:v36];
   [v52 setResourceAttributionIdentifier:v29];
-  v54 = [v5 objectForKeyedSubscript:@"CloudKit Container Id"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"CloudKit Container Id"];
   v55 = v54;
   v56 = v29;
   if (v54)
   {
-    v57 = [v54 unsignedIntValue];
+    unsignedIntValue2 = [v54 unsignedIntValue];
   }
 
   else
   {
-    v57 = 0;
+    unsignedIntValue2 = 0;
   }
 
-  [v52 setCloudKitContainerId:v57];
-  v58 = [v5 objectForKeyedSubscript:@"Expensive Networking Allowed"];
+  [v52 setCloudKitContainerId:unsignedIntValue2];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"Expensive Networking Allowed"];
 
   if (v58)
   {
-    v59 = [v5 objectForKeyedSubscript:@"Expensive Networking Allowed"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"Expensive Networking Allowed"];
     [v52 setExpensiveNetworkingAllowed:{objc_msgSend(v59, "BOOLValue")}];
   }
 
-  v60 = [v5 objectForKeyedSubscript:@"Enable Fetch During Setup Assistant"];
+  v60 = [dictionaryCopy objectForKeyedSubscript:@"Enable Fetch During Setup Assistant"];
 
   if (v60)
   {
-    v61 = [v5 objectForKeyedSubscript:@"Enable Fetch During Setup Assistant"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"Enable Fetch During Setup Assistant"];
     [v52 setEnableFetchDuringSetupAssistant:{objc_msgSend(v61, "BOOLValue")}];
   }
 
-  v62 = [v5 objectForKeyedSubscript:@"Purgeability Level"];
+  v62 = [dictionaryCopy objectForKeyedSubscript:@"Purgeability Level"];
 
   if (v62)
   {
-    v63 = [v5 objectForKeyedSubscript:@"Purgeability Level"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"Purgeability Level"];
     [v52 setPurgeabilityLevel:{objc_msgSend(v63, "unsignedIntValue")}];
   }
 
-  v64 = [v5 objectForKeyedSubscript:@"Available To Root User"];
+  v64 = [dictionaryCopy objectForKeyedSubscript:@"Available To Root User"];
 
   if (v64)
   {
-    v65 = [v5 objectForKeyedSubscript:@"Available To Root User"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"Available To Root User"];
     [v52 setAvailableToRootUser:{objc_msgSend(v65, "BOOLValue")}];
   }
 
-  v66 = [(TRINamespaceDescriptor *)v35 initWithNamespaceName:v84 downloadNCV:v7 optionalParams:v52];
+  v66 = [(TRINamespaceDescriptor *)selfCopy5 initWithNamespaceName:v84 downloadNCV:unsignedIntValue optionalParams:v52];
   v67 = v66;
   if (!v82)
   {
@@ -664,26 +664,26 @@ LABEL_28:
   return v67;
 }
 
-+ (id)factorsURLFromPath:(id)a3
++ (id)factorsURLFromPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"TRINamespaceDescriptor.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"factorsPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptor.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"factorsPath"}];
   }
 
-  v7 = [MEMORY[0x277CBEBC0] triParseURLFromString:v5 isDirectory:0];
-  v8 = [v7 pathExtension];
-  v9 = [v8 isEqualToString:@"bin"];
+  v7 = [MEMORY[0x277CBEBC0] triParseURLFromString:pathCopy isDirectory:0];
+  pathExtension = [v7 pathExtension];
+  v9 = [pathExtension isEqualToString:@"bin"];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v5 stringByDeletingPathExtension];
-    v11 = [v10 stringByAppendingString:@"_fbs.bin"];
+    stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+    v11 = [stringByDeletingPathExtension stringByAppendingString:@"_fbs.bin"];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 fileExistsAtPath:v11];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:v11];
 
     if (v13)
     {
@@ -700,8 +700,8 @@ LABEL_28:
 {
   v29[4] = *MEMORY[0x277D85DE8];
   v28[0] = @"Namespace Name";
-  v3 = [(TRINamespaceDescriptor *)self namespaceName];
-  v29[0] = v3;
+  namespaceName = [(TRINamespaceDescriptor *)self namespaceName];
+  v29[0] = namespaceName;
   v28[1] = @"Namespace Compatibility Version";
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[TRINamespaceDescriptor downloadNCV](self, "downloadNCV")}];
   v29[1] = v4;
@@ -714,44 +714,44 @@ LABEL_28:
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
   v8 = [v7 mutableCopy];
 
-  v9 = [(TRINamespaceDescriptor *)self factorsURL];
+  factorsURL = [(TRINamespaceDescriptor *)self factorsURL];
 
-  if (v9)
+  if (factorsURL)
   {
-    v10 = [(TRINamespaceDescriptor *)self factorsURL];
-    v11 = [v10 absoluteString];
-    [v8 setObject:v11 forKeyedSubscript:@"Factor Path"];
+    factorsURL2 = [(TRINamespaceDescriptor *)self factorsURL];
+    absoluteString = [factorsURL2 absoluteString];
+    [v8 setObject:absoluteString forKeyedSubscript:@"Factor Path"];
   }
 
-  v12 = [(TRINamespaceDescriptor *)self appContainer];
+  appContainer = [(TRINamespaceDescriptor *)self appContainer];
 
-  if (v12)
+  if (appContainer)
   {
-    v13 = [(TRINamespaceDescriptor *)self appContainer];
-    v14 = [v13 identifier];
-    [v8 setObject:v14 forKeyedSubscript:@"App Container Id"];
+    appContainer2 = [(TRINamespaceDescriptor *)self appContainer];
+    identifier = [appContainer2 identifier];
+    [v8 setObject:identifier forKeyedSubscript:@"App Container Id"];
 
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(TRINamespaceDescriptor *)self appContainer];
-    v17 = [v15 numberWithInteger:{objc_msgSend(v16, "type")}];
+    appContainer3 = [(TRINamespaceDescriptor *)self appContainer];
+    v17 = [v15 numberWithInteger:{objc_msgSend(appContainer3, "type")}];
     [v8 setObject:v17 forKeyedSubscript:@"App Container Type"];
   }
 
-  v18 = [(TRINamespaceDescriptor *)self resourceAttributionIdentifier];
+  resourceAttributionIdentifier = [(TRINamespaceDescriptor *)self resourceAttributionIdentifier];
 
-  if (v18)
+  if (resourceAttributionIdentifier)
   {
-    v19 = [(TRINamespaceDescriptor *)self resourceAttributionIdentifier];
-    [v8 setObject:v19 forKeyedSubscript:@"ResourceAttributionBundleIdentifier"];
+    resourceAttributionIdentifier2 = [(TRINamespaceDescriptor *)self resourceAttributionIdentifier];
+    [v8 setObject:resourceAttributionIdentifier2 forKeyedSubscript:@"ResourceAttributionBundleIdentifier"];
   }
 
-  v20 = [(TRINamespaceDescriptor *)self upgradeNCVs];
+  upgradeNCVs = [(TRINamespaceDescriptor *)self upgradeNCVs];
 
-  if (v20)
+  if (upgradeNCVs)
   {
-    v21 = [(TRINamespaceDescriptor *)self upgradeNCVs];
-    v22 = [v21 allObjects];
-    [v8 setObject:v22 forKeyedSubscript:@"Namespace Upgrade Compatibility Versions"];
+    upgradeNCVs2 = [(TRINamespaceDescriptor *)self upgradeNCVs];
+    allObjects = [upgradeNCVs2 allObjects];
+    [v8 setObject:allObjects forKeyedSubscript:@"Namespace Upgrade Compatibility Versions"];
   }
 
   if ([(TRINamespaceDescriptor *)self expensiveNetworkingAllowed])
@@ -777,28 +777,28 @@ LABEL_28:
   return v8;
 }
 
-- (BOOL)writeToFile:(id)a3
+- (BOOL)writeToFile:(id)file
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringByDeletingLastPathComponent];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  fileCopy = file;
+  stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v20 = 0;
-  v7 = [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v20];
+  v7 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v20];
   v8 = v20;
 
   if (v7)
   {
     v9 = MEMORY[0x277CCAC58];
-    v10 = [(TRINamespaceDescriptor *)self dictionary];
+    dictionary = [(TRINamespaceDescriptor *)self dictionary];
     v19 = 0;
-    v11 = [v9 dataWithPropertyList:v10 format:100 options:0 error:&v19];
+    v11 = [v9 dataWithPropertyList:dictionary format:100 options:0 error:&v19];
     v12 = v19;
 
     if (v11)
     {
       v18 = v12;
-      v13 = [v11 writeToFile:v4 options:268435457 error:&v18];
+      v13 = [v11 writeToFile:fileCopy options:268435457 error:&v18];
       v8 = v18;
 
       if (v13)
@@ -811,7 +811,7 @@ LABEL_28:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v22 = v4;
+        v22 = fileCopy;
         v23 = 2112;
         v24 = v8;
         _os_log_error_impl(&dword_22EA6B000, v15, OS_LOG_TYPE_ERROR, "failed to write namespace descriptor to file: %@ -- %@", buf, 0x16u);
@@ -840,7 +840,7 @@ LABEL_28:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v22 = v5;
+    v22 = stringByDeletingLastPathComponent;
     v23 = 2112;
     v24 = v8;
     _os_log_error_impl(&dword_22EA6B000, v11, OS_LOG_TYPE_ERROR, "failed to create directory for namespace descriptor: %@ -- %@", buf, 0x16u);
@@ -853,11 +853,11 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)saveToDirectory:(id)a3
+- (BOOL)saveToDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(TRINamespaceDescriptor *)self namespaceName];
-  v6 = [TRINamespaceDescriptor descriptorPathForNamespaceName:v5 fromDirectory:v4];
+  directoryCopy = directory;
+  namespaceName = [(TRINamespaceDescriptor *)self namespaceName];
+  v6 = [TRINamespaceDescriptor descriptorPathForNamespaceName:namespaceName fromDirectory:directoryCopy];
 
   if (v6)
   {
@@ -879,20 +879,20 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)removeFromDirectory:(id)a3
+- (BOOL)removeFromDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(TRINamespaceDescriptor *)self namespaceName];
-  v6 = [TRINamespaceDescriptor removeDescriptorWithNamespaceName:v5 fromDirectory:v4];
+  directoryCopy = directory;
+  namespaceName = [(TRINamespaceDescriptor *)self namespaceName];
+  v6 = [TRINamespaceDescriptor removeDescriptorWithNamespaceName:namespaceName fromDirectory:directoryCopy];
 
   return v6;
 }
 
-- (BOOL)_upgradeNCVsIsValid:(id)a3
+- (BOOL)_upgradeNCVsIsValid:(id)valid
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TRINamespaceDescriptor *)self _upgradeNCVsArePositiveIntegers:v4];
+  validCopy = valid;
+  v5 = [(TRINamespaceDescriptor *)self _upgradeNCVsArePositiveIntegers:validCopy];
   if (!v5)
   {
     v6 = TRILogCategory_ClientFramework();
@@ -901,7 +901,7 @@ LABEL_14:
       v9 = 138412546;
       v10 = @"Namespace Upgrade Compatibility Versions";
       v11 = 2112;
-      v12 = v4;
+      v12 = validCopy;
       _os_log_error_impl(&dword_22EA6B000, v6, OS_LOG_TYPE_ERROR, "%@ %@ must consist of positive integers", &v9, 0x16u);
     }
   }
@@ -910,15 +910,15 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_upgradeNCVsArePositiveIntegers:(id)a3
+- (BOOL)_upgradeNCVsArePositiveIntegers:(id)integers
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  integersCopy = integers;
+  v4 = [integersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -929,7 +929,7 @@ LABEL_14:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(integersCopy);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) intValue] < 1)
@@ -939,7 +939,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [integersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -956,19 +956,19 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)removeDescriptorWithNamespaceName:(id)a3 fromDirectory:(id)a4
++ (BOOL)removeDescriptorWithNamespaceName:(id)name fromDirectory:(id)directory
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAA00];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultManager];
-  v9 = [TRINamespaceDescriptor descriptorPathForNamespaceName:v7 fromDirectory:v6];
+  directoryCopy = directory;
+  nameCopy = name;
+  defaultManager = [v5 defaultManager];
+  v9 = [TRINamespaceDescriptor descriptorPathForNamespaceName:nameCopy fromDirectory:directoryCopy];
 
   if (v9)
   {
     v17 = 0;
-    if ([v8 fileExistsAtPath:v9 isDirectory:&v17])
+    if ([defaultManager fileExistsAtPath:v9 isDirectory:&v17])
     {
       if (v17 == 1)
       {
@@ -982,7 +982,7 @@ LABEL_11:
       }
 
       v16 = 0;
-      v11 = [v8 removeItemAtPath:v9 error:&v16];
+      v11 = [defaultManager removeItemAtPath:v9 error:&v16];
       v12 = v16;
       if (v12)
       {
@@ -1013,10 +1013,10 @@ LABEL_11:
   return v11;
 }
 
-+ (id)descriptorsForDirectory:(id)a3 filterBlock:(id)a4
++ (id)descriptorsForDirectory:(id)directory filterBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1028,10 +1028,10 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = __62__TRINamespaceDescriptor_descriptorsForDirectory_filterBlock___block_invoke;
   v11[3] = &unk_27885E5A0;
-  v8 = v6;
+  v8 = blockCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateDescriptorsInDirectory:v5 block:v11];
+  [v7 enumerateDescriptorsInDirectory:directoryCopy block:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -1070,14 +1070,14 @@ uint64_t __62__TRINamespaceDescriptor_descriptorsForDirectory_filterBlock___bloc
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-+ (void)enumerateDescriptorsInDirectory:(id)a3 block:(id)a4
++ (void)enumerateDescriptorsInDirectory:(id)directory block:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  blockCopy = block;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
-  v8 = [v7 contentsOfDirectoryAtPath:v5 error:&v25];
+  v8 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v25];
   v9 = v25;
   if (v8)
   {
@@ -1103,12 +1103,12 @@ uint64_t __62__TRINamespaceDescriptor_descriptorsForDirectory_filterBlock___bloc
 
           v14 = *(*(&v21 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
-          v16 = [v5 stringByAppendingPathComponent:v14];
+          v16 = [directoryCopy stringByAppendingPathComponent:v14];
           v17 = [TRINamespaceDescriptor loadFromFile:v16];
           if (v17)
           {
             buf[0] = 0;
-            v6[2](v6, v17, buf);
+            blockCopy[2](blockCopy, v17, buf);
             if (buf[0])
             {
 
@@ -1140,7 +1140,7 @@ LABEL_15:
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v28 = v5;
+      v28 = directoryCopy;
       v29 = 2112;
       v30 = v9;
       _os_log_error_impl(&dword_22EA6B000, obj, OS_LOG_TYPE_ERROR, "failed to read contents of directory %@: %@", buf, 0x16u);
@@ -1150,28 +1150,28 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isEqualToNamespaceDescriptor:(id)a3
+- (BOOL)_isEqualToNamespaceDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(TRINamespaceDescriptor *)self namespaceName];
-  v6 = [v4 namespaceName];
-  if ([v5 isEqualToString:v6])
+  descriptorCopy = descriptor;
+  namespaceName = [(TRINamespaceDescriptor *)self namespaceName];
+  namespaceName2 = [descriptorCopy namespaceName];
+  if ([namespaceName isEqualToString:namespaceName2])
   {
-    v7 = [(TRINamespaceDescriptor *)self factorsURL];
-    v8 = [v4 factorsURL];
-    if (v7 != v8)
+    factorsURL = [(TRINamespaceDescriptor *)self factorsURL];
+    factorsURL2 = [descriptorCopy factorsURL];
+    if (factorsURL != factorsURL2)
     {
-      v9 = [v4 factorsURL];
-      if (!v9)
+      factorsURL3 = [descriptorCopy factorsURL];
+      if (!factorsURL3)
       {
         LOBYTE(v13) = 0;
         goto LABEL_39;
       }
 
-      v10 = v9;
-      v11 = [(TRINamespaceDescriptor *)self factorsURL];
-      v12 = [v4 factorsURL];
-      if (![v11 triIsEqual:v12])
+      v10 = factorsURL3;
+      factorsURL4 = [(TRINamespaceDescriptor *)self factorsURL];
+      factorsURL5 = [descriptorCopy factorsURL];
+      if (![factorsURL4 triIsEqual:factorsURL5])
       {
         LOBYTE(v13) = 0;
 LABEL_38:
@@ -1180,21 +1180,21 @@ LABEL_38:
       }
 
       v41 = v10;
-      v42 = v12;
-      v43 = v11;
+      v42 = factorsURL5;
+      v43 = factorsURL4;
     }
 
-    v14 = [(TRINamespaceDescriptor *)self appContainer];
-    v15 = [v4 appContainer];
-    if (v14 == v15)
+    appContainer = [(TRINamespaceDescriptor *)self appContainer];
+    appContainer2 = [descriptorCopy appContainer];
+    if (appContainer == appContainer2)
     {
-      v44 = v14;
+      v44 = appContainer;
     }
 
     else
     {
-      v16 = [v4 appContainer];
-      if (!v16)
+      appContainer3 = [descriptorCopy appContainer];
+      if (!appContainer3)
       {
         LOBYTE(v13) = 0;
 LABEL_22:
@@ -1202,39 +1202,39 @@ LABEL_22:
         goto LABEL_37;
       }
 
-      v17 = v16;
-      v44 = v14;
-      v18 = [(TRINamespaceDescriptor *)self appContainer];
-      v19 = [v4 appContainer];
-      if (([v18 isEqualToContainer:v19] & 1) == 0)
+      v17 = appContainer3;
+      v44 = appContainer;
+      appContainer4 = [(TRINamespaceDescriptor *)self appContainer];
+      appContainer5 = [descriptorCopy appContainer];
+      if (([appContainer4 isEqualToContainer:appContainer5] & 1) == 0)
       {
 
         LOBYTE(v13) = 0;
         goto LABEL_37;
       }
 
-      v38 = v19;
-      v39 = v18;
+      v38 = appContainer5;
+      v39 = appContainer4;
       v40 = v17;
     }
 
-    v20 = [(TRINamespaceDescriptor *)self downloadNCV];
-    if (v20 != [v4 downloadNCV])
+    downloadNCV = [(TRINamespaceDescriptor *)self downloadNCV];
+    if (downloadNCV != [descriptorCopy downloadNCV])
     {
       goto LABEL_33;
     }
 
-    v21 = [(TRINamespaceDescriptor *)self upgradeNCVs];
-    v22 = [v4 upgradeNCVs];
-    if (v21 == v22)
+    upgradeNCVs = [(TRINamespaceDescriptor *)self upgradeNCVs];
+    upgradeNCVs2 = [descriptorCopy upgradeNCVs];
+    if (upgradeNCVs == upgradeNCVs2)
     {
-      v26 = v21;
+      v26 = upgradeNCVs;
     }
 
     else
     {
-      v23 = [v4 upgradeNCVs];
-      if (!v23)
+      upgradeNCVs3 = [descriptorCopy upgradeNCVs];
+      if (!upgradeNCVs3)
       {
 LABEL_32:
 
@@ -1242,17 +1242,17 @@ LABEL_33:
         v32 = 0;
         LOBYTE(v13) = 0;
 LABEL_34:
-        if (v44 != v15)
+        if (v44 != appContainer2)
         {
 
           LOBYTE(v13) = v32;
         }
 
 LABEL_37:
-        v12 = v42;
-        v11 = v43;
+        factorsURL5 = v42;
+        factorsURL4 = v43;
         v10 = v41;
-        if (v7 != v8)
+        if (factorsURL != factorsURL2)
         {
           goto LABEL_38;
         }
@@ -1262,12 +1262,12 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v37 = v23;
-      v24 = [(TRINamespaceDescriptor *)self upgradeNCVs];
-      v35 = [v4 upgradeNCVs];
-      v36 = v24;
-      v25 = [v24 isEqualToSet:v35];
-      v26 = v21;
+      v37 = upgradeNCVs3;
+      upgradeNCVs4 = [(TRINamespaceDescriptor *)self upgradeNCVs];
+      upgradeNCVs5 = [descriptorCopy upgradeNCVs];
+      v36 = upgradeNCVs4;
+      v25 = [upgradeNCVs4 isEqualToSet:upgradeNCVs5];
+      v26 = upgradeNCVs;
       if (!v25)
       {
         LOBYTE(v13) = 0;
@@ -1275,18 +1275,18 @@ LABEL_39:
       }
     }
 
-    v27 = [(TRINamespaceDescriptor *)self cloudKitContainerId];
-    if (v27 == [v4 cloudKitContainerId] && (v28 = -[TRINamespaceDescriptor expensiveNetworkingAllowed](self, "expensiveNetworkingAllowed"), v28 == objc_msgSend(v4, "expensiveNetworkingAllowed")) && (v29 = -[TRINamespaceDescriptor enableFetchDuringSetupAssistant](self, "enableFetchDuringSetupAssistant"), v29 == objc_msgSend(v4, "enableFetchDuringSetupAssistant")) && (v30 = -[TRINamespaceDescriptor purgeabilityLevel](self, "purgeabilityLevel"), v30 == objc_msgSend(v4, "purgeabilityLevel")) && (v31 = -[TRINamespaceDescriptor availableToRootUser](self, "availableToRootUser"), v31 == objc_msgSend(v4, "availableToRootUser")))
+    cloudKitContainerId = [(TRINamespaceDescriptor *)self cloudKitContainerId];
+    if (cloudKitContainerId == [descriptorCopy cloudKitContainerId] && (v28 = -[TRINamespaceDescriptor expensiveNetworkingAllowed](self, "expensiveNetworkingAllowed"), v28 == objc_msgSend(descriptorCopy, "expensiveNetworkingAllowed")) && (v29 = -[TRINamespaceDescriptor enableFetchDuringSetupAssistant](self, "enableFetchDuringSetupAssistant"), v29 == objc_msgSend(descriptorCopy, "enableFetchDuringSetupAssistant")) && (v30 = -[TRINamespaceDescriptor purgeabilityLevel](self, "purgeabilityLevel"), v30 == objc_msgSend(descriptorCopy, "purgeabilityLevel")) && (v31 = -[TRINamespaceDescriptor availableToRootUser](self, "availableToRootUser"), v31 == objc_msgSend(descriptorCopy, "availableToRootUser")))
     {
-      v34 = [(TRINamespaceDescriptor *)self optedOutOfDefaults];
-      v13 = v34 ^ [v4 optedOutOfDefaults] ^ 1;
+      optedOutOfDefaults = [(TRINamespaceDescriptor *)self optedOutOfDefaults];
+      v13 = optedOutOfDefaults ^ [descriptorCopy optedOutOfDefaults] ^ 1;
       v32 = v13;
-      if (v26 != v22)
+      if (v26 != upgradeNCVs2)
       {
 LABEL_18:
 
-        v14 = v44;
-        if (v44 != v15)
+        appContainer = v44;
+        if (v44 != appContainer2)
         {
         }
 
@@ -1296,8 +1296,8 @@ LABEL_18:
 
     else
     {
-      v21 = v26;
-      if (v26 != v22)
+      upgradeNCVs = v26;
+      if (v26 != upgradeNCVs2)
       {
 
         goto LABEL_32;
@@ -1316,10 +1316,10 @@ LABEL_40:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -1327,7 +1327,7 @@ LABEL_40:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRINamespaceDescriptor *)self _isEqualToNamespaceDescriptor:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRINamespaceDescriptor *)self _isEqualToNamespaceDescriptor:equalCopy];
   }
 
   return v5;
@@ -1335,14 +1335,14 @@ LABEL_40:
 
 - (unint64_t)hash
 {
-  v3 = [(TRINamespaceDescriptor *)self namespaceName];
-  v4 = [v3 hash];
+  namespaceName = [(TRINamespaceDescriptor *)self namespaceName];
+  v4 = [namespaceName hash];
 
-  v5 = [(TRINamespaceDescriptor *)self factorsURL];
-  if (v5)
+  factorsURL = [(TRINamespaceDescriptor *)self factorsURL];
+  if (factorsURL)
   {
-    v6 = [(TRINamespaceDescriptor *)self factorsURL];
-    v7 = [v6 hash];
+    factorsURL2 = [(TRINamespaceDescriptor *)self factorsURL];
+    v7 = [factorsURL2 hash];
   }
 
   else
@@ -1350,11 +1350,11 @@ LABEL_40:
     v7 = 0;
   }
 
-  v8 = [(TRINamespaceDescriptor *)self appContainer];
-  if (v8)
+  appContainer = [(TRINamespaceDescriptor *)self appContainer];
+  if (appContainer)
   {
-    v9 = [(TRINamespaceDescriptor *)self appContainer];
-    v10 = [v9 hash];
+    appContainer2 = [(TRINamespaceDescriptor *)self appContainer];
+    v10 = [appContainer2 hash];
   }
 
   else
@@ -1362,12 +1362,12 @@ LABEL_40:
     v10 = 0;
   }
 
-  v11 = [(TRINamespaceDescriptor *)self downloadNCV];
-  v12 = [(TRINamespaceDescriptor *)self upgradeNCVs];
-  if (v12)
+  downloadNCV = [(TRINamespaceDescriptor *)self downloadNCV];
+  upgradeNCVs = [(TRINamespaceDescriptor *)self upgradeNCVs];
+  if (upgradeNCVs)
   {
-    v13 = [(TRINamespaceDescriptor *)self upgradeNCVs];
-    v14 = [v13 hash];
+    upgradeNCVs2 = [(TRINamespaceDescriptor *)self upgradeNCVs];
+    v14 = [upgradeNCVs2 hash];
   }
 
   else
@@ -1375,7 +1375,7 @@ LABEL_40:
     v14 = 0;
   }
 
-  v15 = 37 * (37 * (v14 + 37 * (37 * (v10 + 37 * (v7 + 37 * v4)) + v11)) + [(TRINamespaceDescriptor *)self cloudKitContainerId]);
+  v15 = 37 * (37 * (v14 + 37 * (37 * (v10 + 37 * (v7 + 37 * v4)) + downloadNCV)) + [(TRINamespaceDescriptor *)self cloudKitContainerId]);
   v16 = 37 * (v15 + [(TRINamespaceDescriptor *)self expensiveNetworkingAllowed]);
   v17 = 37 * (v16 + [(TRINamespaceDescriptor *)self enableFetchDuringSetupAssistant]);
   v18 = 37 * (v17 + [(TRINamespaceDescriptor *)self purgeabilityLevel]);

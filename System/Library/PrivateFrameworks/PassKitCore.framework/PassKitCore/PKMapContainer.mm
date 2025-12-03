@@ -1,9 +1,9 @@
 @interface PKMapContainer
 - (PKMapContainer)init;
-- (PKMapContainer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKMapContainer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeAllObjects;
-- (void)updateWithContainer:(id)a3;
+- (void)updateWithContainer:(id)container;
 @end
 
 @implementation PKMapContainer
@@ -17,28 +17,28 @@
   if (v2)
   {
     v2->_version = 2;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     recipientMap = v3->_recipientMap;
-    v3->_recipientMap = v4;
+    v3->_recipientMap = dictionary;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     scoreMap = v3->_scoreMap;
-    v3->_scoreMap = v6;
+    v3->_scoreMap = dictionary2;
   }
 
   return v3;
 }
 
-- (PKMapContainer)initWithCoder:(id)a3
+- (PKMapContainer)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = PKMapContainer;
   v5 = [(PKMapContainer *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"version"];
+    v6 = [coderCopy decodeIntegerForKey:@"version"];
     v5->_version = v6;
     if (v6 == 2)
     {
@@ -46,7 +46,7 @@
       v8 = objc_opt_class();
       v9 = objc_opt_class();
       v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-      v11 = [v4 decodeObjectOfClasses:v10 forKey:@"recipientMap"];
+      v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"recipientMap"];
       recipientMap = v5->_recipientMap;
       v5->_recipientMap = v11;
 
@@ -54,7 +54,7 @@
       v14 = objc_opt_class();
       v15 = objc_opt_class();
       v16 = [v13 setWithObjects:{v14, v15, objc_opt_class(), 0}];
-      v17 = [v4 decodeObjectOfClasses:v16 forKey:@"scoreMap"];
+      v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"scoreMap"];
       scoreMap = v5->_scoreMap;
       v5->_scoreMap = v17;
     }
@@ -75,44 +75,44 @@
 
     if (!v5->_recipientMap)
     {
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v21 = v5->_recipientMap;
-      v5->_recipientMap = v20;
+      v5->_recipientMap = dictionary;
     }
 
     if (!v5->_scoreMap)
     {
-      v22 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v23 = v5->_scoreMap;
-      v5->_scoreMap = v22;
+      v5->_scoreMap = dictionary2;
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:2 forKey:@"version"];
-  [v4 encodeObject:self->_recipientMap forKey:@"recipientMap"];
-  [v4 encodeObject:self->_scoreMap forKey:@"scoreMap"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:2 forKey:@"version"];
+  [coderCopy encodeObject:self->_recipientMap forKey:@"recipientMap"];
+  [coderCopy encodeObject:self->_scoreMap forKey:@"scoreMap"];
 }
 
-- (void)updateWithContainer:(id)a3
+- (void)updateWithContainer:(id)container
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 version] == 2)
+  containerCopy = container;
+  if ([containerCopy version] == 2)
   {
-    v5 = [v4 recipientMap];
+    recipientMap = [containerCopy recipientMap];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v6 = [v5 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v55 objects:v62 count:16];
-    v40 = v4;
+    allKeys = [recipientMap allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v55 objects:v62 count:16];
+    v40 = containerCopy;
     if (v7)
     {
       v8 = v7;
@@ -124,14 +124,14 @@
         {
           if (*v56 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v55 + 1) + 8 * i);
-          v13 = [v5 objectForKey:v12, v40];
+          v13 = [recipientMap objectForKey:v12, v40];
           if ([v13 hasExpired])
           {
-            [v5 removeObjectForKey:v12];
+            [recipientMap removeObjectForKey:v12];
           }
 
           else
@@ -140,7 +140,7 @@
             v15 = v14;
             if (v14 && [v14 isNewerThan:v13])
             {
-              [v5 removeObjectForKey:v12];
+              [recipientMap removeObjectForKey:v12];
             }
 
             else
@@ -150,22 +150,22 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v55 objects:v62 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v55 objects:v62 count:16];
       }
 
       while (v8);
 
-      v4 = v40;
+      containerCopy = v40;
       if (!v9)
       {
 LABEL_27:
-        v23 = [v4 scoreMap];
+        scoreMap = [containerCopy scoreMap];
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v24 = [v23 allKeys];
-        v25 = [v24 countByEnumeratingWithState:&v47 objects:v60 count:16];
+        allKeys2 = [scoreMap allKeys];
+        v25 = [allKeys2 countByEnumeratingWithState:&v47 objects:v60 count:16];
         if (v25)
         {
           v26 = v25;
@@ -177,14 +177,14 @@ LABEL_27:
             {
               if (*v48 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(allKeys2);
               }
 
               v29 = *(*(&v47 + 1) + 8 * j);
-              v30 = [v23 objectForKey:v29];
+              v30 = [scoreMap objectForKey:v29];
               if ([v30 hasExpired])
               {
-                [v23 removeObjectForKey:v29];
+                [scoreMap removeObjectForKey:v29];
               }
 
               else
@@ -193,7 +193,7 @@ LABEL_27:
                 v32 = v31;
                 if (v31 && [v31 isNewerThan:v30])
                 {
-                  [v23 removeObjectForKey:v29];
+                  [scoreMap removeObjectForKey:v29];
                 }
 
                 else
@@ -203,12 +203,12 @@ LABEL_27:
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v47 objects:v60 count:16];
+            v26 = [allKeys2 countByEnumeratingWithState:&v47 objects:v60 count:16];
           }
 
           while (v26);
 
-          v4 = v41;
+          containerCopy = v41;
           if (!v42)
           {
             goto LABEL_52;
@@ -218,8 +218,8 @@ LABEL_27:
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v33 = [v23 allKeys];
-          v34 = [v33 countByEnumeratingWithState:&v43 objects:v59 count:16];
+          allKeys3 = [scoreMap allKeys];
+          v34 = [allKeys3 countByEnumeratingWithState:&v43 objects:v59 count:16];
           if (v34)
           {
             v35 = v34;
@@ -230,26 +230,26 @@ LABEL_27:
               {
                 if (*v44 != v36)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(allKeys3);
                 }
 
                 v38 = *(*(&v43 + 1) + 8 * k);
-                v39 = [v23 objectForKey:v38];
+                v39 = [scoreMap objectForKey:v38];
                 [(NSMutableDictionary *)self->_scoreMap setObject:v39 forKey:v38];
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v43 objects:v59 count:16];
+              v35 = [allKeys3 countByEnumeratingWithState:&v43 objects:v59 count:16];
             }
 
             while (v35);
           }
 
-          v24 = PKLogFacilityTypeGetObject(0xCuLL);
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+          allKeys2 = PKLogFacilityTypeGetObject(0xCuLL);
+          if (os_log_type_enabled(allKeys2, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134217984;
-            v64 = v42;
-            _os_log_debug_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEBUG, "Loaded %lu new cached score submission dates.", buf, 0xCu);
+            version = v42;
+            _os_log_debug_impl(&dword_1AD337000, allKeys2, OS_LOG_TYPE_DEBUG, "Loaded %lu new cached score submission dates.", buf, 0xCu);
           }
         }
 
@@ -261,8 +261,8 @@ LABEL_52:
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v16 = [v5 allKeys];
-      v17 = [v16 countByEnumeratingWithState:&v51 objects:v61 count:16];
+      allKeys4 = [recipientMap allKeys];
+      v17 = [allKeys4 countByEnumeratingWithState:&v51 objects:v61 count:16];
       if (v17)
       {
         v18 = v17;
@@ -273,40 +273,40 @@ LABEL_52:
           {
             if (*v52 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(allKeys4);
             }
 
             v21 = *(*(&v51 + 1) + 8 * m);
-            v22 = [v5 objectForKey:v21];
+            v22 = [recipientMap objectForKey:v21];
             [(NSMutableDictionary *)self->_recipientMap setObject:v22 forKey:v21];
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v51 objects:v61 count:16];
+          v18 = [allKeys4 countByEnumeratingWithState:&v51 objects:v61 count:16];
         }
 
         while (v18);
       }
 
-      v6 = PKLogFacilityTypeGetObject(0xCuLL);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+      allKeys = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(allKeys, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v64 = v9;
-        _os_log_debug_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEBUG, "Loaded %lu new cached recipients.", buf, 0xCu);
+        version = v9;
+        _os_log_debug_impl(&dword_1AD337000, allKeys, OS_LOG_TYPE_DEBUG, "Loaded %lu new cached recipients.", buf, 0xCu);
       }
     }
 
     goto LABEL_27;
   }
 
-  v5 = PKLogFacilityTypeGetObject(0xCuLL);
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  recipientMap = PKLogFacilityTypeGetObject(0xCuLL);
+  if (os_log_type_enabled(recipientMap, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v64 = [v4 version];
+    version = [containerCopy version];
     v65 = 2048;
     v66 = 2;
-    _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_INFO, "Refusing to update map container with container (version %li) that does not match current version (%li).", buf, 0x16u);
+    _os_log_impl(&dword_1AD337000, recipientMap, OS_LOG_TYPE_INFO, "Refusing to update map container with container (version %li) that does not match current version (%li).", buf, 0x16u);
   }
 
 LABEL_55:

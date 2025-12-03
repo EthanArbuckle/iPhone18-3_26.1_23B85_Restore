@@ -1,20 +1,20 @@
 @interface CertUIConnectionDelegate
-+ (id)defaultServiceForProtocol:(id)a3;
-- (BOOL)connection:(id)a3 canAuthenticateAgainstProtectionSpace:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
++ (id)defaultServiceForProtocol:(id)protocol;
+- (BOOL)connection:(id)connection canAuthenticateAgainstProtectionSpace:(id)space;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (id)forwardingDelegate;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)_continueConnectionWithResponse:(int)a3 challenge:(id)a4 service:(id)a5;
-- (void)connection:(id)a3 didReceiveAuthenticationChallenge:(id)a4;
-- (void)setForwardingDelegate:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)_continueConnectionWithResponse:(int)response challenge:(id)challenge service:(id)service;
+- (void)connection:(id)connection didReceiveAuthenticationChallenge:(id)challenge;
+- (void)setForwardingDelegate:(id)delegate;
 @end
 
 @implementation CertUIConnectionDelegate
 
-- (void)setForwardingDelegate:(id)a3
+- (void)setForwardingDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = objc_storeWeak(&self->_forwardingDelegate, v8);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_forwardingDelegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFE | v5 & 1;
@@ -32,9 +32,9 @@
   *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFD | v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_connection_canAuthenticateAgainstProtectionSpace_ == a3 || sel_connection_didReceiveAuthenticationChallenge_ == a3)
+  if (sel_connection_canAuthenticateAgainstProtectionSpace_ == selector || sel_connection_didReceiveAuthenticationChallenge_ == selector)
   {
     v5 = 1;
   }
@@ -48,17 +48,17 @@
   return v5 & 1;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_forwardingDelegate);
 
   return WeakRetained;
 }
 
-+ (id)defaultServiceForProtocol:(id)a3
++ (id)defaultServiceForProtocol:(id)protocol
 {
-  v3 = a3;
-  if (v3)
+  protocolCopy = protocol;
+  if (protocolCopy)
   {
     v4 = defaultServiceForProtocol__sServiceDict;
     if (!defaultServiceForProtocol__sServiceDict)
@@ -70,7 +70,7 @@
       v4 = defaultServiceForProtocol__sServiceDict;
     }
 
-    v7 = [v4 objectForKey:v3];
+    v7 = [v4 objectForKey:protocolCopy];
   }
 
   else
@@ -81,11 +81,11 @@
   return v7;
 }
 
-- (BOOL)connection:(id)a3 canAuthenticateAgainstProtectionSpace:(id)a4
+- (BOOL)connection:(id)connection canAuthenticateAgainstProtectionSpace:(id)space
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  spaceCopy = space;
   v9 = _CertUILogObjects;
   if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_INFO))
   {
@@ -94,14 +94,14 @@
     v18 = 138412546;
     v19 = v11;
     v20 = 2112;
-    v21 = v8;
+    v21 = spaceCopy;
     _os_log_impl(&dword_2433D3000, v10, OS_LOG_TYPE_INFO, "%@ %@", &v18, 0x16u);
   }
 
-  v12 = [v8 authenticationMethod];
+  authenticationMethod = [spaceCopy authenticationMethod];
   v13 = *MEMORY[0x277CCA720];
 
-  if (v12 == v13)
+  if (authenticationMethod == v13)
   {
     v14 = 1;
   }
@@ -109,7 +109,7 @@
   else if (*&self->_delegateRespondsTo)
   {
     WeakRetained = objc_loadWeakRetained(&self->_forwardingDelegate);
-    v14 = [WeakRetained connection:v7 canAuthenticateAgainstProtectionSpace:v8];
+    v14 = [WeakRetained connection:connectionCopy canAuthenticateAgainstProtectionSpace:spaceCopy];
   }
 
   else
@@ -121,11 +121,11 @@
   return v14;
 }
 
-- (void)_continueConnectionWithResponse:(int)a3 challenge:(id)a4 service:(id)a5
+- (void)_continueConnectionWithResponse:(int)response challenge:(id)challenge service:(id)service
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  challengeCopy = challenge;
+  serviceCopy = service;
   v10 = _CertUILogObjects;
   if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_INFO))
   {
@@ -134,52 +134,52 @@
     v24 = 138412546;
     v25 = v12;
     v26 = 1024;
-    v27 = a3;
+    responseCopy = response;
     _os_log_impl(&dword_2433D3000, v11, OS_LOG_TYPE_INFO, "%@ %d", &v24, 0x12u);
   }
 
-  if (a3 == 1)
+  if (response == 1)
   {
     v21 = objc_alloc(MEMORY[0x277CCACF0]);
-    v22 = [v8 protectionSpace];
-    v13 = [v21 initWithTrust:{objc_msgSend(v22, "serverTrust")}];
+    protectionSpace = [challengeCopy protectionSpace];
+    sender2 = [v21 initWithTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
 
-    v19 = [v8 sender];
-    [v19 useCredential:v13 forAuthenticationChallenge:v8];
+    sender = [challengeCopy sender];
+    [sender useCredential:sender2 forAuthenticationChallenge:challengeCopy];
   }
 
   else
   {
-    if (a3 != 2)
+    if (response != 2)
     {
-      v13 = [v8 sender];
-      [v13 cancelAuthenticationChallenge:v8];
+      sender2 = [challengeCopy sender];
+      [sender2 cancelAuthenticationChallenge:challengeCopy];
       goto LABEL_9;
     }
 
-    v13 = [v8 protectionSpace];
+    sender2 = [challengeCopy protectionSpace];
     v14 = +[CertUITrustManager defaultTrustManager];
-    v15 = [v13 serverTrust];
-    v16 = [v13 host];
-    [v14 allowTrust:v15 forHost:v16 service:v9];
+    serverTrust = [sender2 serverTrust];
+    host = [sender2 host];
+    [v14 allowTrust:serverTrust forHost:host service:serviceCopy];
 
     v17 = objc_alloc(MEMORY[0x277CCACF0]);
-    v18 = [v8 protectionSpace];
-    v19 = [v17 initWithTrust:{objc_msgSend(v18, "serverTrust")}];
+    protectionSpace2 = [challengeCopy protectionSpace];
+    sender = [v17 initWithTrust:{objc_msgSend(protectionSpace2, "serverTrust")}];
 
-    v20 = [v8 sender];
-    [v20 useCredential:v19 forAuthenticationChallenge:v8];
+    sender3 = [challengeCopy sender];
+    [sender3 useCredential:sender forAuthenticationChallenge:challengeCopy];
   }
 
 LABEL_9:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection didReceiveAuthenticationChallenge:(id)challenge
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  challengeCopy = challenge;
   v9 = _CertUILogObjects;
   if (os_log_type_enabled(_CertUILogObjects, OS_LOG_TYPE_INFO))
   {
@@ -188,74 +188,74 @@ LABEL_9:
     *buf = 138412546;
     v35 = v11;
     v36 = 2112;
-    v37 = v8;
+    v37 = challengeCopy;
     _os_log_impl(&dword_2433D3000, v10, OS_LOG_TYPE_INFO, "%@ %@", buf, 0x16u);
   }
 
-  v12 = [v8 protectionSpace];
-  v13 = [v12 authenticationMethod];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
   v14 = *MEMORY[0x277CCA720];
 
-  if (v13 == v14)
+  if (authenticationMethod == v14)
   {
-    WeakRetained = [v8 protectionSpace];
+    WeakRetained = [challengeCopy protectionSpace];
     v16 = objc_opt_class();
-    v17 = [WeakRetained protocol];
-    v18 = [v16 defaultServiceForProtocol:v17];
+    protocol = [WeakRetained protocol];
+    v18 = [v16 defaultServiceForProtocol:protocol];
 
     v19 = +[CertUITrustManager defaultTrustManager];
-    v20 = [WeakRetained serverTrust];
-    v21 = [WeakRetained host];
-    v22 = [v19 actionForTrust:v20 forHost:v21 andService:v18];
+    serverTrust = [WeakRetained serverTrust];
+    host = [WeakRetained host];
+    v22 = [v19 actionForTrust:serverTrust forHost:host andService:v18];
 
     if (v22 == 2)
     {
-      v25 = objc_alloc_init(CertUIPrompt);
-      v27 = [v8 protectionSpace];
-      -[CertUIPrompt setTrust:](v25, "setTrust:", [v27 serverTrust]);
+      sender2 = objc_alloc_init(CertUIPrompt);
+      protectionSpace2 = [challengeCopy protectionSpace];
+      -[CertUIPrompt setTrust:](sender2, "setTrust:", [protectionSpace2 serverTrust]);
 
-      v28 = [v8 protectionSpace];
-      v29 = [v28 host];
-      [(CertUIPrompt *)v25 setHost:v29];
+      protectionSpace3 = [challengeCopy protectionSpace];
+      host2 = [protectionSpace3 host];
+      [(CertUIPrompt *)sender2 setHost:host2];
 
-      [(CertUIPrompt *)v25 setService:v18];
+      [(CertUIPrompt *)sender2 setService:v18];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __73__CertUIConnectionDelegate_connection_didReceiveAuthenticationChallenge___block_invoke;
       v31[3] = &unk_278DB2798;
       v31[4] = self;
-      v32 = v8;
+      v32 = challengeCopy;
       v33 = v18;
-      [(CertUIPrompt *)v25 showPromptWithResponseBlock:v31];
+      [(CertUIPrompt *)sender2 showPromptWithResponseBlock:v31];
     }
 
     else if (v22 == 1)
     {
       v23 = objc_alloc(MEMORY[0x277CCACF0]);
-      v24 = [v8 protectionSpace];
-      v25 = [v23 initWithTrust:{objc_msgSend(v24, "serverTrust")}];
+      protectionSpace4 = [challengeCopy protectionSpace];
+      sender2 = [v23 initWithTrust:{objc_msgSend(protectionSpace4, "serverTrust")}];
 
-      v26 = [v8 sender];
-      [v26 useCredential:v25 forAuthenticationChallenge:v8];
+      sender = [challengeCopy sender];
+      [sender useCredential:sender2 forAuthenticationChallenge:challengeCopy];
     }
 
     else
     {
-      v25 = [v8 sender];
-      [(CertUIPrompt *)v25 cancelAuthenticationChallenge:v8];
+      sender2 = [challengeCopy sender];
+      [(CertUIPrompt *)sender2 cancelAuthenticationChallenge:challengeCopy];
     }
   }
 
   else if ((*&self->_delegateRespondsTo & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_forwardingDelegate);
-    [WeakRetained connection:v7 didReceiveAuthenticationChallenge:v8];
+    [WeakRetained connection:connectionCopy didReceiveAuthenticationChallenge:challengeCopy];
   }
 
   else
   {
-    WeakRetained = [v8 sender];
-    [WeakRetained continueWithoutCredentialForAuthenticationChallenge:v8];
+    WeakRetained = [challengeCopy sender];
+    [WeakRetained continueWithoutCredentialForAuthenticationChallenge:challengeCopy];
   }
 
   v30 = *MEMORY[0x277D85DE8];

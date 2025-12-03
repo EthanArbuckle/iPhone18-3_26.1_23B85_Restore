@@ -1,22 +1,22 @@
 @interface MFAudioSessionConfiguration
-- (void)setAllowEnhanceDialogue:(BOOL)a3;
-- (void)setAudioSessionMXProperties:(id)a3;
+- (void)setAllowEnhanceDialogue:(BOOL)dialogue;
+- (void)setAudioSessionMXProperties:(id)properties;
 @end
 
 @implementation MFAudioSessionConfiguration
 
-- (void)setAudioSessionMXProperties:(id)a3
+- (void)setAudioSessionMXProperties:(id)properties
 {
   sub_1C5D2AA10(0, &qword_1EC1A93B8);
   v4 = sub_1C6016860();
-  v5 = self;
+  selfCopy = self;
   sub_1C5DCAEBC(v4);
 }
 
-- (void)setAllowEnhanceDialogue:(BOOL)a3
+- (void)setAllowEnhanceDialogue:(BOOL)dialogue
 {
-  v4 = self;
-  sub_1C5DCAF84(a3);
+  selfCopy = self;
+  sub_1C5DCAF84(dialogue);
 }
 
 @end

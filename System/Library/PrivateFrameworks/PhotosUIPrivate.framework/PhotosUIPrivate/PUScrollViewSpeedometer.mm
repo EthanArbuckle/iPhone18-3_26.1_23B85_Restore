@@ -4,14 +4,14 @@
 - (CGSize)_lastContentSize;
 - (PUScrollViewSpeedometerDelegate)delegate;
 - (UIScrollView)_lastScrollView;
-- (int64_t)_newRegimeForScrollSpeed:(CGPoint)a3;
-- (void)_handleTimeoutTimer:(id)a3;
+- (int64_t)_newRegimeForScrollSpeed:(CGPoint)speed;
+- (void)_handleTimeoutTimer:(id)timer;
 - (void)_rescheduleTimeout;
-- (void)_setRegime:(int64_t)a3;
-- (void)_setScrollSpeed:(CGPoint)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)_setRegime:(int64_t)regime;
+- (void)_setScrollSpeed:(CGPoint)speed;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PUScrollViewSpeedometer
@@ -57,17 +57,17 @@
   return WeakRetained;
 }
 
-- (int64_t)_newRegimeForScrollSpeed:(CGPoint)a3
+- (int64_t)_newRegimeForScrollSpeed:(CGPoint)speed
 {
-  v3 = fmax(fabs(a3.x), fabs(a3.y));
+  v3 = fmax(fabs(speed.x), fabs(speed.y));
   if (v3 != 0.0)
   {
-    v7 = [(PUScrollViewSpeedometer *)self regime];
-    v4 = v7;
+    regime = [(PUScrollViewSpeedometer *)self regime];
+    v4 = regime;
     v8 = 0.0;
-    if (v7 > 1)
+    if (regime > 1)
     {
-      if (v7 == 2)
+      if (regime == 2)
       {
         [(PUScrollViewSpeedometer *)self mediumLowerThreshold];
         v8 = v18;
@@ -77,7 +77,7 @@
       else
       {
         v15 = 0.0;
-        if (v7 == 3)
+        if (regime == 3)
         {
           [(PUScrollViewSpeedometer *)self mediumLowerThreshold];
           v8 = v16;
@@ -88,7 +88,7 @@
 
     else
     {
-      if (v7 < 2)
+      if (regime < 2)
       {
         [(PUScrollViewSpeedometer *)self mediumUpperThreshold];
         v10 = v9;
@@ -122,9 +122,9 @@ LABEL_29:
 LABEL_24:
         if (v13 == [(PUScrollViewSpeedometer *)self _nextRegime])
         {
-          v20 = [(PUScrollViewSpeedometer *)self _nextRegimeCount];
-          v14 = v20 + 1;
-          if (v20 >= 2)
+          _nextRegimeCount = [(PUScrollViewSpeedometer *)self _nextRegimeCount];
+          v14 = _nextRegimeCount + 1;
+          if (_nextRegimeCount >= 2)
           {
             v4 = v13;
           }
@@ -138,10 +138,10 @@ LABEL_24:
         goto LABEL_29;
       }
 
-      if (v7 == -1)
+      if (regime == -1)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:a2 object:self file:@"PUScrollViewSpeedometer.m" lineNumber:165 description:@"undefined regime"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUScrollViewSpeedometer.m" lineNumber:165 description:@"undefined regime"];
       }
 
       v15 = 0.0;
@@ -169,52 +169,52 @@ LABEL_24:
   return 0;
 }
 
-- (void)_setRegime:(int64_t)a3
+- (void)_setRegime:(int64_t)regime
 {
   regime = self->_regime;
-  if (regime != a3)
+  if (regime != regime)
   {
-    self->_regime = a3;
+    self->_regime = regime;
     if (self->_delegateSupportsRegimeChange)
     {
-      v6 = [(PUScrollViewSpeedometer *)self delegate];
-      [v6 scrollViewSpeedometer:self regimeDidChange:a3 from:regime];
+      delegate = [(PUScrollViewSpeedometer *)self delegate];
+      [delegate scrollViewSpeedometer:self regimeDidChange:regime from:regime];
     }
   }
 }
 
-- (void)_setScrollSpeed:(CGPoint)a3
+- (void)_setScrollSpeed:(CGPoint)speed
 {
-  if (a3.x != self->_scrollSpeed.x || a3.y != self->_scrollSpeed.y)
+  if (speed.x != self->_scrollSpeed.x || speed.y != self->_scrollSpeed.y)
   {
-    self->_scrollSpeed = a3;
+    self->_scrollSpeed = speed;
     v6 = [(PUScrollViewSpeedometer *)self _newRegimeForScrollSpeed:?];
 
     [(PUScrollViewSpeedometer *)self _setRegime:v6];
   }
 }
 
-- (void)_handleTimeoutTimer:(id)a3
+- (void)_handleTimeoutTimer:(id)timer
 {
-  [(PUScrollViewSpeedometer *)self _setScrollSpeed:a3, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  [(PUScrollViewSpeedometer *)self _setScrollSpeed:timer, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
 
   [(PUScrollViewSpeedometer *)self _setTimeoutTimer:0];
 }
 
 - (void)_rescheduleTimeout
 {
-  v3 = [(PUScrollViewSpeedometer *)self _timeoutTimer];
-  if (v3)
+  _timeoutTimer = [(PUScrollViewSpeedometer *)self _timeoutTimer];
+  if (_timeoutTimer)
   {
-    v7 = v3;
-    v4 = [v3 fireDate];
-    [v4 timeIntervalSinceNow];
+    v7 = _timeoutTimer;
+    fireDate = [_timeoutTimer fireDate];
+    [fireDate timeIntervalSinceNow];
     if (v5 < 0.5)
     {
       v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:1.5];
 
       [v7 setFireDate:v6];
-      v4 = v6;
+      fireDate = v6;
     }
   }
 
@@ -225,33 +225,33 @@ LABEL_24:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    [(PUScrollViewSpeedometer *)self _setScrollSpeed:a3, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+    [(PUScrollViewSpeedometer *)self _setScrollSpeed:dragging, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v28 = a3;
+  scrollCopy = scroll;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v5 = v4;
-  [v28 contentOffset];
+  [scrollCopy contentOffset];
   v7 = v6;
   v9 = v8;
-  [v28 contentSize];
+  [scrollCopy contentSize];
   v11 = v10;
   v13 = v12;
-  v14 = [(PUScrollViewSpeedometer *)self _lastScrollView];
-  if (v14 != v28 || (([(PUScrollViewSpeedometer *)self _lastContentSize], v11 == v16) ? (v17 = v13 == v15) : (v17 = 0), !v17))
+  _lastScrollView = [(PUScrollViewSpeedometer *)self _lastScrollView];
+  if (_lastScrollView != scrollCopy || (([(PUScrollViewSpeedometer *)self _lastContentSize], v11 == v16) ? (v17 = v13 == v15) : (v17 = 0), !v17))
   {
 
 LABEL_7:
     v18 = *MEMORY[0x1E695EFF8];
     v19 = *(MEMORY[0x1E695EFF8] + 8);
-    [(PUScrollViewSpeedometer *)self _setLastScrollView:v28];
+    [(PUScrollViewSpeedometer *)self _setLastScrollView:scrollCopy];
     [(PUScrollViewSpeedometer *)self _setLastContentSize:v11, v13];
     goto LABEL_8;
   }
@@ -277,9 +277,9 @@ LABEL_8:
   [(PUScrollViewSpeedometer *)self _rescheduleTimeout];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

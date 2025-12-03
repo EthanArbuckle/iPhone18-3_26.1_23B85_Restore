@@ -1,23 +1,23 @@
 @interface SBNewsIconStateMigrator
 - (SBNewsIconStateMigrator)init;
-- (SBNewsIconStateMigrator)initWithModelStore:(id)a3;
-- (id)_maybeMigratedListFromList:(id)a3;
-- (id)_performGridSizeClassMigration:(id)a3;
-- (id)_performNewsWidgetRestoration:(id)a3;
-- (void)_migrateIconStateWithBlock:(id)a3;
-- (void)migrateGridSizeClassIfNecessaryFromBuildVersion:(id)a3 isInternalInstall:(BOOL)a4;
-- (void)restoreNewsWidgetInTodayListFromBuildVersion:(id)a3;
+- (SBNewsIconStateMigrator)initWithModelStore:(id)store;
+- (id)_maybeMigratedListFromList:(id)list;
+- (id)_performGridSizeClassMigration:(id)migration;
+- (id)_performNewsWidgetRestoration:(id)restoration;
+- (void)_migrateIconStateWithBlock:(id)block;
+- (void)migrateGridSizeClassIfNecessaryFromBuildVersion:(id)version isInternalInstall:(BOOL)install;
+- (void)restoreNewsWidgetInTodayListFromBuildVersion:(id)version;
 @end
 
 @implementation SBNewsIconStateMigrator
 
 - (SBNewsIconStateMigrator)init
 {
-  v3 = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
-  v4 = [NSURL fileURLWithPath:v3];
+  stringByExpandingTildeInPath = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
+  v4 = [NSURL fileURLWithPath:stringByExpandingTildeInPath];
 
-  v5 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
-  v6 = [NSURL fileURLWithPath:v5];
+  stringByExpandingTildeInPath2 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
+  v6 = [NSURL fileURLWithPath:stringByExpandingTildeInPath2];
 
   v7 = [[SBIconModelPropertyListFileStore alloc] initWithIconStateURL:v4 desiredIconStateURL:v6];
   v8 = [(SBNewsIconStateMigrator *)self initWithModelStore:v7];
@@ -25,29 +25,29 @@
   return v8;
 }
 
-- (SBNewsIconStateMigrator)initWithModelStore:(id)a3
+- (SBNewsIconStateMigrator)initWithModelStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = SBNewsIconStateMigrator;
   v6 = [(SBNewsIconStateMigrator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (void)migrateGridSizeClassIfNecessaryFromBuildVersion:(id)a3 isInternalInstall:(BOOL)a4
+- (void)migrateGridSizeClassIfNecessaryFromBuildVersion:(id)version isInternalInstall:(BOOL)install
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 majorBuildNumber];
-  if (v7 < 19 || !v4)
+  installCopy = install;
+  versionCopy = version;
+  majorBuildNumber = [versionCopy majorBuildNumber];
+  if (majorBuildNumber < 19 || !installCopy)
   {
-    if (v7 <= 18)
+    if (majorBuildNumber <= 18)
     {
 LABEL_10:
       v11 = SBLogCommon();
@@ -67,10 +67,10 @@ LABEL_10:
     }
   }
 
-  else if ([v6 majorBuildNumber] == &dword_10 + 3)
+  else if ([versionCopy majorBuildNumber] == &dword_10 + 3)
   {
-    v9 = [v6 majorBuildLetterString];
-    v10 = [v9 isEqualToString:@"A"];
+    majorBuildLetterString = [versionCopy majorBuildLetterString];
+    v10 = [majorBuildLetterString isEqualToString:@"A"];
 
     if (v10)
     {
@@ -88,15 +88,15 @@ LABEL_10:
 LABEL_16:
 }
 
-- (void)restoreNewsWidgetInTodayListFromBuildVersion:(id)a3
+- (void)restoreNewsWidgetInTodayListFromBuildVersion:(id)version
 {
-  v4 = a3;
-  v5 = [v4 majorBuildNumber];
-  v6 = [v4 compareBuildVersionString:@"19C9999" withPrecision:2];
+  versionCopy = version;
+  majorBuildNumber = [versionCopy majorBuildNumber];
+  v6 = [versionCopy compareBuildVersionString:@"19C9999" withPrecision:2];
 
   v7 = SBLogCommon();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v5 < 19 || v6 == &dword_0 + 1)
+  if (majorBuildNumber < 19 || v6 == &dword_0 + 1)
   {
     if (v8)
     {
@@ -122,19 +122,19 @@ LABEL_16:
   }
 }
 
-- (id)_performGridSizeClassMigration:(id)a3
+- (id)_performGridSizeClassMigration:(id)migration
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  migrationCopy = migration;
+  v5 = [migrationCopy mutableCopy];
   v6 = kSBIconStateIconLists;
-  v7 = [v4 objectForKeyedSubscript:kSBIconStateIconLists];
+  v7 = [migrationCopy objectForKeyedSubscript:kSBIconStateIconLists];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v28 = v6;
     v29 = v7;
     v30 = v5;
-    v31 = v4;
+    v31 = migrationCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -195,7 +195,7 @@ LABEL_16:
 
     v5 = v30;
     [v30 setObject:v11 forKeyedSubscript:v28];
-    v4 = v31;
+    migrationCopy = v31;
     v7 = v29;
   }
 
@@ -206,7 +206,7 @@ LABEL_16:
   }
 
   v20 = kSBIconStateTodayPageList;
-  v21 = [v4 objectForKeyedSubscript:{kSBIconStateTodayPageList, v28}];
+  v21 = [migrationCopy objectForKeyedSubscript:{kSBIconStateTodayPageList, v28}];
   if (v21)
   {
     v22 = [(SBNewsIconStateMigrator *)self _maybeMigratedListFromList:v21];
@@ -240,16 +240,16 @@ LABEL_16:
   return v25;
 }
 
-- (id)_performNewsWidgetRestoration:(id)a3
+- (id)_performNewsWidgetRestoration:(id)restoration
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  restorationCopy = restoration;
+  v5 = [restorationCopy mutableCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
   v6 = kSBIconStateTodayPageList;
-  v7 = [v4 objectForKeyedSubscript:kSBIconStateTodayPageList];
+  v7 = [restorationCopy objectForKeyedSubscript:kSBIconStateTodayPageList];
   v8 = v7;
   if (v7)
   {
@@ -288,14 +288,14 @@ LABEL_16:
     v27[3] = @"com.apple.news.widget";
     v26[4] = kSBIconStateLeafIdentifier;
     v10 = +[NSUUID UUID];
-    v11 = [v10 UUIDString];
-    v27[4] = v11;
+    uUIDString = [v10 UUIDString];
+    v27[4] = uUIDString;
     v27[5] = &__kCFBooleanFalse;
     v26[5] = kSBIconStateAllowsExternalSuggestionsKey;
     v26[6] = kSBIconStateUniqueIdentifier;
     v12 = +[NSUUID UUID];
-    v13 = [v12 UUIDString];
-    v27[6] = v13;
+    uUIDString2 = [v12 UUIDString];
+    v27[6] = uUIDString2;
     v27[7] = &__kCFBooleanTrue;
     v26[7] = kSBIconStateAllowsSuggestionsKey;
     v26[8] = kSBIconStateGridSizeClassIdentifier;
@@ -337,9 +337,9 @@ LABEL_16:
   return v18;
 }
 
-- (void)_migrateIconStateWithBlock:(id)a3
+- (void)_migrateIconStateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   store = self->_store;
   v29 = 0;
   v6 = [(SBIconModelStore *)store loadCurrentIconState:&v29];
@@ -372,7 +372,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v10 = v4[2](v4, v6);
+  v10 = blockCopy[2](blockCopy, v6);
 
   if (v10)
   {
@@ -417,7 +417,7 @@ LABEL_6:
 
   else if (v12)
   {
-    v20 = v4[2](v4, v12);
+    v20 = blockCopy[2](blockCopy, v12);
 
     if (!v20)
     {
@@ -457,9 +457,9 @@ LABEL_6:
 LABEL_11:
 }
 
-- (id)_maybeMigratedListFromList:(id)a3
+- (id)_maybeMigratedListFromList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -472,7 +472,7 @@ LABEL_11:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = v3;
+  v5 = listCopy;
   v6 = [v5 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v6)
   {
@@ -482,7 +482,7 @@ LABEL_11:
   }
 
   v7 = v6;
-  v29 = v3;
+  v29 = listCopy;
   v30 = 0;
   v8 = *v37;
   v9 = kSBIconStateCustomIconElementTypeKey;
@@ -581,7 +581,7 @@ LABEL_18:
     v26 = 0;
   }
 
-  v3 = v29;
+  listCopy = v29;
 LABEL_27:
   v27 = v26;
 

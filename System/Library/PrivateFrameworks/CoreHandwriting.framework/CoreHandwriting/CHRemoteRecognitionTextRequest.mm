@@ -1,36 +1,36 @@
 @interface CHRemoteRecognitionTextRequest
-+ (id)loadFromFile:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteRecognitionTextRequest:(id)a3;
-- (CHRemoteRecognitionTextRequest)initWithCoder:(id)a3;
-- (CHRemoteRecognitionTextRequest)initWithLocales:(id)a3 recognitionMode:(int)a4 drawing:(id)a5 options:(id)a6 priority:(int64_t)a7;
++ (id)loadFromFile:(id)file;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteRecognitionTextRequest:(id)request;
+- (CHRemoteRecognitionTextRequest)initWithCoder:(id)coder;
+- (CHRemoteRecognitionTextRequest)initWithLocales:(id)locales recognitionMode:(int)mode drawing:(id)drawing options:(id)options priority:(int64_t)priority;
 - (id)description;
-- (id)recognizerConfigurationKeyWithLocale:(id)a3;
+- (id)recognizerConfigurationKeyWithLocale:(id)locale;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActiveCharacterSetPerLocale:(id)a3;
-- (void)setAutoCapitalizationMode:(int)a3;
-- (void)setAutoCorrectionMode:(int)a3;
-- (void)setBaseWritingDirection:(int)a3;
-- (void)setContentType:(int)a3;
-- (void)setCustomLexiconEntries:(id)a3;
-- (void)setEnableGen2CharacterLMIfAvailable:(BOOL)a3;
-- (void)setEnableGen2ModelIfAvailable:(BOOL)a3;
-- (void)setEnableStrokeReordering:(BOOL)a3;
-- (void)setLocales:(id)a3;
-- (void)setRecognitionMode:(int)a3;
-- (void)setShouldUseTextReplacements:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActiveCharacterSetPerLocale:(id)locale;
+- (void)setAutoCapitalizationMode:(int)mode;
+- (void)setAutoCorrectionMode:(int)mode;
+- (void)setBaseWritingDirection:(int)direction;
+- (void)setContentType:(int)type;
+- (void)setCustomLexiconEntries:(id)entries;
+- (void)setEnableGen2CharacterLMIfAvailable:(BOOL)available;
+- (void)setEnableGen2ModelIfAvailable:(BOOL)available;
+- (void)setEnableStrokeReordering:(BOOL)reordering;
+- (void)setLocales:(id)locales;
+- (void)setRecognitionMode:(int)mode;
+- (void)setShouldUseTextReplacements:(BOOL)replacements;
 @end
 
 @implementation CHRemoteRecognitionTextRequest
 
-- (CHRemoteRecognitionTextRequest)initWithLocales:(id)a3 recognitionMode:(int)a4 drawing:(id)a5 options:(id)a6 priority:(int64_t)a7
+- (CHRemoteRecognitionTextRequest)initWithLocales:(id)locales recognitionMode:(int)mode drawing:(id)drawing options:(id)options priority:(int64_t)priority
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (!objc_msgSend_count(v12, v15, v16, v17, v18, v19))
+  v10 = *&mode;
+  localesCopy = locales;
+  drawingCopy = drawing;
+  optionsCopy = options;
+  if (!objc_msgSend_count(localesCopy, v15, v16, v17, v18, v19))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -45,7 +45,7 @@
     }
   }
 
-  if (!objc_msgSend_count(v12, v20, v21, v22, v23, v24))
+  if (!objc_msgSend_count(localesCopy, v20, v21, v22, v23, v24))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -62,8 +62,8 @@
 
   v53.receiver = self;
   v53.super_class = CHRemoteRecognitionTextRequest;
-  v27 = [(CHRemoteRecognitionRequest *)&v53 initWithDrawing:v13 options:v14 priority:a7];
-  objc_msgSend_setLocales_(v27, v28, v12, v29, v30, v31);
+  v27 = [(CHRemoteRecognitionRequest *)&v53 initWithDrawing:drawingCopy options:optionsCopy priority:priority];
+  objc_msgSend_setLocales_(v27, v28, localesCopy, v29, v30, v31);
   objc_msgSend_setRecognitionMode_(v27, v32, v10, v33, v34, v35);
   v41 = objc_msgSend_parametersOverride(CHRecognizerConfiguration, v36, v37, v38, v39, v40);
   v47 = objc_msgSend_copy(v41, v42, v43, v44, v45, v46);
@@ -72,13 +72,13 @@
   return v27;
 }
 
-- (CHRemoteRecognitionTextRequest)initWithCoder:(id)a3
+- (CHRemoteRecognitionTextRequest)initWithCoder:(id)coder
 {
   v112[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v108.receiver = self;
   v108.super_class = CHRemoteRecognitionTextRequest;
-  v5 = [(CHRemoteRecognitionRequest *)&v108 initWithCoder:v4];
+  v5 = [(CHRemoteRecognitionRequest *)&v108 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -86,37 +86,37 @@
     v112[1] = objc_opt_class();
     v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v7, v112, 2, v8, v9);
     v15 = objc_msgSend_setWithArray_(v6, v11, v10, v12, v13, v14);
-    v19 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v16, v15, @"locales", v17, v18);
+    v19 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v16, v15, @"locales", v17, v18);
 
     if (v19 && objc_msgSend_count(v19, v20, v21, v22, v23, v24))
     {
       objc_storeStrong(&v5->_locales, v19);
-      v5->_recognitionMode = objc_msgSend_decodeIntegerForKey_(v4, v25, @"recognitionMode", v26, v27, v28);
-      v5->_contentType = objc_msgSend_decodeIntegerForKey_(v4, v29, @"contentType", v30, v31, v32);
-      v5->_autoCapitalizationMode = objc_msgSend_decodeIntegerForKey_(v4, v33, @"autoCapitalizationMode", v34, v35, v36);
-      v5->_autoCorrectionMode = objc_msgSend_decodeIntegerForKey_(v4, v37, @"autoCorrectionMode", v38, v39, v40);
-      *&v5->_baseWritingDirection = objc_msgSend_decodeIntegerForKey_(v4, v41, @"baseWritingDirection", v42, v43, v44);
+      v5->_recognitionMode = objc_msgSend_decodeIntegerForKey_(coderCopy, v25, @"recognitionMode", v26, v27, v28);
+      v5->_contentType = objc_msgSend_decodeIntegerForKey_(coderCopy, v29, @"contentType", v30, v31, v32);
+      v5->_autoCapitalizationMode = objc_msgSend_decodeIntegerForKey_(coderCopy, v33, @"autoCapitalizationMode", v34, v35, v36);
+      v5->_autoCorrectionMode = objc_msgSend_decodeIntegerForKey_(coderCopy, v37, @"autoCorrectionMode", v38, v39, v40);
+      *&v5->_baseWritingDirection = objc_msgSend_decodeIntegerForKey_(coderCopy, v41, @"baseWritingDirection", v42, v43, v44);
       v45 = MEMORY[0x1E695DFD8];
       v111[0] = objc_opt_class();
       v111[1] = objc_opt_class();
       v111[2] = objc_opt_class();
       v49 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v46, v111, 3, v47, v48);
       v54 = objc_msgSend_setWithArray_(v45, v50, v49, v51, v52, v53);
-      v58 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v55, v54, @"activeCharacterSetPerLocale", v56, v57);
+      v58 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v55, v54, @"activeCharacterSetPerLocale", v56, v57);
       activeCharacterSetPerLocale = v5->_activeCharacterSetPerLocale;
       v5->_activeCharacterSetPerLocale = v58;
 
-      v5->_shouldUseTextReplacements = objc_msgSend_decodeBoolForKey_(v4, v60, @"shouldUseTextReplacements", v61, v62, v63);
-      v5->_enableGen2ModelIfAvailable = objc_msgSend_decodeBoolForKey_(v4, v64, @"enableGen2ModelIfAvailable", v65, v66, v67);
-      v5->_enableGen2CharacterLMIfAvailable = objc_msgSend_decodeBoolForKey_(v4, v68, @"enableGen2CharacterLMIfAvailable", v69, v70, v71);
-      v5->_enableStrokeReordering = objc_msgSend_decodeBoolForKey_(v4, v72, @"enableStrokeReordering", v73, v74, v75);
+      v5->_shouldUseTextReplacements = objc_msgSend_decodeBoolForKey_(coderCopy, v60, @"shouldUseTextReplacements", v61, v62, v63);
+      v5->_enableGen2ModelIfAvailable = objc_msgSend_decodeBoolForKey_(coderCopy, v64, @"enableGen2ModelIfAvailable", v65, v66, v67);
+      v5->_enableGen2CharacterLMIfAvailable = objc_msgSend_decodeBoolForKey_(coderCopy, v68, @"enableGen2CharacterLMIfAvailable", v69, v70, v71);
+      v5->_enableStrokeReordering = objc_msgSend_decodeBoolForKey_(coderCopy, v72, @"enableStrokeReordering", v73, v74, v75);
       v76 = MEMORY[0x1E695DFD8];
       v110[0] = objc_opt_class();
       v110[1] = objc_opt_class();
       v110[2] = objc_opt_class();
       v80 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v77, v110, 3, v78, v79);
       v85 = objc_msgSend_setWithArray_(v76, v81, v80, v82, v83, v84);
-      v89 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v86, v85, @"parameterOverride", v87, v88);
+      v89 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v86, v85, @"parameterOverride", v87, v88);
       parametersOverride = v5->_parametersOverride;
       v5->_parametersOverride = v89;
 
@@ -125,7 +125,7 @@
       v109[1] = objc_opt_class();
       v95 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v92, v109, 2, v93, v94);
       v100 = objc_msgSend_setWithArray_(v91, v96, v95, v97, v98, v99);
-      v104 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v101, v100, @"customLexiconEntries", v102, v103);
+      v104 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v101, v100, @"customLexiconEntries", v102, v103);
       customLexiconEntries = v5->_customLexiconEntries;
       v5->_customLexiconEntries = v104;
 
@@ -151,30 +151,30 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = CHRemoteRecognitionTextRequest;
-  [(CHRemoteRecognitionRequest *)&v44 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_locales, @"locales", v6, v7);
-  objc_msgSend_encodeInteger_forKey_(v4, v8, self->_recognitionMode, @"recognitionMode", v9, v10);
-  objc_msgSend_encodeInteger_forKey_(v4, v11, self->_contentType, @"contentType", v12, v13);
-  objc_msgSend_encodeInteger_forKey_(v4, v14, self->_autoCapitalizationMode, @"autoCapitalizationMode", v15, v16);
-  objc_msgSend_encodeInteger_forKey_(v4, v17, self->_autoCorrectionMode, @"autoCorrectionMode", v18, v19);
-  objc_msgSend_encodeInteger_forKey_(v4, v20, *&self->_baseWritingDirection, @"baseWritingDirection", v21, v22);
-  objc_msgSend_encodeObject_forKey_(v4, v23, self->_activeCharacterSetPerLocale, @"activeCharacterSetPerLocale", v24, v25);
-  objc_msgSend_encodeBool_forKey_(v4, v26, self->_shouldUseTextReplacements, @"shouldUseTextReplacements", v27, v28);
-  objc_msgSend_encodeBool_forKey_(v4, v29, self->_enableGen2ModelIfAvailable, @"enableGen2ModelIfAvailable", v30, v31);
-  objc_msgSend_encodeBool_forKey_(v4, v32, self->_enableGen2CharacterLMIfAvailable, @"enableGen2CharacterLMIfAvailable", v33, v34);
-  objc_msgSend_encodeBool_forKey_(v4, v35, self->_enableStrokeReordering, @"enableStrokeReordering", v36, v37);
-  objc_msgSend_encodeObject_forKey_(v4, v38, self->_parametersOverride, @"parameterOverride", v39, v40);
-  objc_msgSend_encodeObject_forKey_(v4, v41, self->_customLexiconEntries, @"customLexiconEntries", v42, v43);
+  [(CHRemoteRecognitionRequest *)&v44 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_locales, @"locales", v6, v7);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v8, self->_recognitionMode, @"recognitionMode", v9, v10);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, self->_contentType, @"contentType", v12, v13);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v14, self->_autoCapitalizationMode, @"autoCapitalizationMode", v15, v16);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v17, self->_autoCorrectionMode, @"autoCorrectionMode", v18, v19);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v20, *&self->_baseWritingDirection, @"baseWritingDirection", v21, v22);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, self->_activeCharacterSetPerLocale, @"activeCharacterSetPerLocale", v24, v25);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v26, self->_shouldUseTextReplacements, @"shouldUseTextReplacements", v27, v28);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v29, self->_enableGen2ModelIfAvailable, @"enableGen2ModelIfAvailable", v30, v31);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v32, self->_enableGen2CharacterLMIfAvailable, @"enableGen2CharacterLMIfAvailable", v33, v34);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v35, self->_enableStrokeReordering, @"enableStrokeReordering", v36, v37);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v38, self->_parametersOverride, @"parameterOverride", v39, v40);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v41, self->_customLexiconEntries, @"customLexiconEntries", v42, v43);
 }
 
-+ (id)loadFromFile:(id)a3
++ (id)loadFromFile:(id)file
 {
-  v6 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, file, v3, v4, v5);
   v7 = MEMORY[0x1E696ACD0];
   v8 = objc_opt_class();
   v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v7, v9, v8, v6, 0, v10);
@@ -182,9 +182,9 @@ LABEL_11:
   return v11;
 }
 
-- (id)recognizerConfigurationKeyWithLocale:(id)a3
+- (id)recognizerConfigurationKeyWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v5 = [CHRecognizerConfiguration alloc];
   recognitionMode = self->_recognitionMode;
   autoCapitalizationMode = self->_autoCapitalizationMode;
@@ -194,15 +194,15 @@ LABEL_11:
   BYTE2(v25) = self->_enableGen2CharacterLMIfAvailable;
   BYTE1(v25) = self->_enableGen2ModelIfAvailable;
   LOBYTE(v25) = v15;
-  v17 = objc_msgSend_initWithMode_locale_contentType_autoCapitalizationMode_autoCorrectionMode_baseWritingDirection_enableCachingIfAvailable_enableGen2ModelIfAvailable_enableGen2CharacterLMIfAvailable_(v5, v16, recognitionMode, v4, 0, autoCapitalizationMode, autoCorrectionMode, v9, v25);
+  v17 = objc_msgSend_initWithMode_locale_contentType_autoCapitalizationMode_autoCorrectionMode_baseWritingDirection_enableCachingIfAvailable_enableGen2ModelIfAvailable_enableGen2CharacterLMIfAvailable_(v5, v16, recognitionMode, localeCopy, 0, autoCapitalizationMode, autoCorrectionMode, v9, v25);
   v23 = objc_msgSend_configurationKey(v17, v18, v19, v20, v21, v22);
 
   return v23;
 }
 
-- (void)setLocales:(id)a3
+- (void)setLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   if (objc_msgSend_hasBeenSubmitted(self, v5, v6, v7, v8, v9))
   {
     if (qword_1EA84DC48 != -1)
@@ -233,17 +233,17 @@ LABEL_11:
     }
   }
 
-  if (self->_locales != v4)
+  if (self->_locales != localesCopy)
   {
-    v22 = objc_msgSend_copy(v4, v16, v17, v18, v19, v20);
+    v22 = objc_msgSend_copy(localesCopy, v16, v17, v18, v19, v20);
     locales = self->_locales;
     self->_locales = v22;
   }
 }
 
-- (void)setRecognitionMode:(int)a3
+- (void)setRecognitionMode:(int)mode
 {
-  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&a3, v3, v4, v5))
+  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&mode, v3, v4, v5))
   {
     if (!objc_msgSend_hasBeenSubmitted(self, v8, v9, v10, v11, v12))
     {
@@ -278,13 +278,13 @@ LABEL_8:
   if (!objc_msgSend_hasBeenSubmitted(self, v14, v15, v16, v17, v18))
   {
 LABEL_3:
-    if (self->_recognitionMode == a3)
+    if (self->_recognitionMode == mode)
     {
       return;
     }
 
 LABEL_13:
-    self->_recognitionMode = a3;
+    self->_recognitionMode = mode;
     return;
   }
 
@@ -311,15 +311,15 @@ LABEL_11:
 
 LABEL_12:
 
-  if (self->_recognitionMode != a3)
+  if (self->_recognitionMode != mode)
   {
     goto LABEL_13;
   }
 }
 
-- (void)setContentType:(int)a3
+- (void)setContentType:(int)type
 {
-  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&a3, v3, v4, v5))
+  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&type, v3, v4, v5))
   {
     if (!objc_msgSend_hasBeenSubmitted(self, v8, v9, v10, v11, v12))
     {
@@ -354,13 +354,13 @@ LABEL_8:
   if (!objc_msgSend_hasBeenSubmitted(self, v14, v15, v16, v17, v18))
   {
 LABEL_3:
-    if (self->_contentType == a3)
+    if (self->_contentType == type)
     {
       return;
     }
 
 LABEL_13:
-    self->_contentType = a3;
+    self->_contentType = type;
     return;
   }
 
@@ -387,15 +387,15 @@ LABEL_11:
 
 LABEL_12:
 
-  if (self->_contentType != a3)
+  if (self->_contentType != type)
   {
     goto LABEL_13;
   }
 }
 
-- (void)setAutoCapitalizationMode:(int)a3
+- (void)setAutoCapitalizationMode:(int)mode
 {
-  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&a3, v3, v4, v5))
+  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&mode, v3, v4, v5))
   {
     if (!objc_msgSend_hasBeenSubmitted(self, v8, v9, v10, v11, v12))
     {
@@ -430,13 +430,13 @@ LABEL_8:
   if (!objc_msgSend_hasBeenSubmitted(self, v14, v15, v16, v17, v18))
   {
 LABEL_3:
-    if (self->_autoCapitalizationMode == a3)
+    if (self->_autoCapitalizationMode == mode)
     {
       return;
     }
 
 LABEL_13:
-    self->_autoCapitalizationMode = a3;
+    self->_autoCapitalizationMode = mode;
     return;
   }
 
@@ -463,15 +463,15 @@ LABEL_11:
 
 LABEL_12:
 
-  if (self->_autoCapitalizationMode != a3)
+  if (self->_autoCapitalizationMode != mode)
   {
     goto LABEL_13;
   }
 }
 
-- (void)setAutoCorrectionMode:(int)a3
+- (void)setAutoCorrectionMode:(int)mode
 {
-  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&a3, v3, v4, v5))
+  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&mode, v3, v4, v5))
   {
     if (!objc_msgSend_hasBeenSubmitted(self, v8, v9, v10, v11, v12))
     {
@@ -506,13 +506,13 @@ LABEL_8:
   if (!objc_msgSend_hasBeenSubmitted(self, v14, v15, v16, v17, v18))
   {
 LABEL_3:
-    if (self->_autoCorrectionMode == a3)
+    if (self->_autoCorrectionMode == mode)
     {
       return;
     }
 
 LABEL_13:
-    self->_autoCorrectionMode = a3;
+    self->_autoCorrectionMode = mode;
     return;
   }
 
@@ -539,16 +539,16 @@ LABEL_11:
 
 LABEL_12:
 
-  if (self->_autoCorrectionMode != a3)
+  if (self->_autoCorrectionMode != mode)
   {
     goto LABEL_13;
   }
 }
 
-- (void)setBaseWritingDirection:(int)a3
+- (void)setBaseWritingDirection:(int)direction
 {
-  v6 = *&a3;
-  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&a3, v3, v4, v5))
+  v6 = *&direction;
+  if (!objc_msgSend_hasBeenSubmitted(self, a2, *&direction, v3, v4, v5))
   {
     if (!objc_msgSend_hasBeenSubmitted(self, v8, v9, v10, v11, v12))
     {
@@ -622,9 +622,9 @@ LABEL_12:
   }
 }
 
-- (void)setActiveCharacterSetPerLocale:(id)a3
+- (void)setActiveCharacterSetPerLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   if (objc_msgSend_hasBeenSubmitted(self, v5, v6, v7, v8, v9))
   {
     if (qword_1EA84DC48 != -1)
@@ -655,17 +655,17 @@ LABEL_12:
     }
   }
 
-  if (self->_activeCharacterSetPerLocale != v4)
+  if (self->_activeCharacterSetPerLocale != localeCopy)
   {
-    v22 = objc_msgSend_copy(v4, v16, v17, v18, v19, v20);
+    v22 = objc_msgSend_copy(localeCopy, v16, v17, v18, v19, v20);
     activeCharacterSetPerLocale = self->_activeCharacterSetPerLocale;
     self->_activeCharacterSetPerLocale = v22;
   }
 }
 
-- (void)setShouldUseTextReplacements:(BOOL)a3
+- (void)setShouldUseTextReplacements:(BOOL)replacements
 {
-  if (objc_msgSend_hasBeenSubmitted(self, a2, a3, v3, v4, v5))
+  if (objc_msgSend_hasBeenSubmitted(self, a2, replacements, v3, v4, v5))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -723,12 +723,12 @@ LABEL_10:
   }
 
 LABEL_11:
-  self->_shouldUseTextReplacements = a3;
+  self->_shouldUseTextReplacements = replacements;
 }
 
-- (void)setEnableGen2ModelIfAvailable:(BOOL)a3
+- (void)setEnableGen2ModelIfAvailable:(BOOL)available
 {
-  if (objc_msgSend_hasBeenSubmitted(self, a2, a3, v3, v4, v5))
+  if (objc_msgSend_hasBeenSubmitted(self, a2, available, v3, v4, v5))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -786,12 +786,12 @@ LABEL_10:
   }
 
 LABEL_11:
-  self->_enableGen2ModelIfAvailable = a3;
+  self->_enableGen2ModelIfAvailable = available;
 }
 
-- (void)setEnableGen2CharacterLMIfAvailable:(BOOL)a3
+- (void)setEnableGen2CharacterLMIfAvailable:(BOOL)available
 {
-  if (objc_msgSend_hasBeenSubmitted(self, a2, a3, v3, v4, v5))
+  if (objc_msgSend_hasBeenSubmitted(self, a2, available, v3, v4, v5))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -849,12 +849,12 @@ LABEL_10:
   }
 
 LABEL_11:
-  self->_enableGen2CharacterLMIfAvailable = a3;
+  self->_enableGen2CharacterLMIfAvailable = available;
 }
 
-- (void)setEnableStrokeReordering:(BOOL)a3
+- (void)setEnableStrokeReordering:(BOOL)reordering
 {
-  if (objc_msgSend_hasBeenSubmitted(self, a2, a3, v3, v4, v5))
+  if (objc_msgSend_hasBeenSubmitted(self, a2, reordering, v3, v4, v5))
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -912,12 +912,12 @@ LABEL_10:
   }
 
 LABEL_11:
-  self->_enableStrokeReordering = a3;
+  self->_enableStrokeReordering = reordering;
 }
 
-- (void)setCustomLexiconEntries:(id)a3
+- (void)setCustomLexiconEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   if (objc_msgSend_hasBeenSubmitted(self, v5, v6, v7, v8, v9))
   {
     if (qword_1EA84DC48 != -1)
@@ -948,18 +948,18 @@ LABEL_11:
     }
   }
 
-  if (self->_customLexiconEntries != v4)
+  if (self->_customLexiconEntries != entriesCopy)
   {
-    v22 = objc_msgSend_copy(v4, v16, v17, v18, v19, v20);
+    v22 = objc_msgSend_copy(entriesCopy, v16, v17, v18, v19, v20);
     customLexiconEntries = self->_customLexiconEntries;
     self->_customLexiconEntries = v22;
   }
 }
 
-- (BOOL)isEqualToRemoteRecognitionTextRequest:(id)a3
+- (BOOL)isEqualToRemoteRecognitionTextRequest:(id)request
 {
-  v4 = a3;
-  if (self == v4)
+  requestCopy = request;
+  if (self == requestCopy)
   {
     isEqualToSet = 1;
   }
@@ -968,61 +968,61 @@ LABEL_11:
   {
     v183.receiver = self;
     v183.super_class = CHRemoteRecognitionTextRequest;
-    if (![(CHRemoteRecognitionRequest *)&v183 isEqualToRemoteRecognitionRequest:v4])
+    if (![(CHRemoteRecognitionRequest *)&v183 isEqualToRemoteRecognitionRequest:requestCopy])
     {
       goto LABEL_18;
     }
 
     v10 = objc_msgSend_recognitionMode(self, v5, v6, v7, v8, v9);
-    if (v10 != objc_msgSend_recognitionMode(v4, v11, v12, v13, v14, v15))
+    if (v10 != objc_msgSend_recognitionMode(requestCopy, v11, v12, v13, v14, v15))
     {
       goto LABEL_18;
     }
 
     v21 = objc_msgSend_contentType(self, v16, v17, v18, v19, v20);
-    if (v21 != objc_msgSend_contentType(v4, v22, v23, v24, v25, v26))
+    if (v21 != objc_msgSend_contentType(requestCopy, v22, v23, v24, v25, v26))
     {
       goto LABEL_18;
     }
 
     v32 = objc_msgSend_autoCapitalizationMode(self, v27, v28, v29, v30, v31);
-    if (v32 != objc_msgSend_autoCapitalizationMode(v4, v33, v34, v35, v36, v37))
+    if (v32 != objc_msgSend_autoCapitalizationMode(requestCopy, v33, v34, v35, v36, v37))
     {
       goto LABEL_18;
     }
 
     v43 = objc_msgSend_autoCorrectionMode(self, v38, v39, v40, v41, v42);
-    if (v43 != objc_msgSend_autoCorrectionMode(v4, v44, v45, v46, v47, v48))
+    if (v43 != objc_msgSend_autoCorrectionMode(requestCopy, v44, v45, v46, v47, v48))
     {
       goto LABEL_18;
     }
 
     v54 = objc_msgSend_baseWritingDirection(self, v49, v50, v51, v52, v53);
-    if (v54 != objc_msgSend_baseWritingDirection(v4, v55, v56, v57, v58, v59))
+    if (v54 != objc_msgSend_baseWritingDirection(requestCopy, v55, v56, v57, v58, v59))
     {
       goto LABEL_18;
     }
 
     shouldUseTextReplacements = objc_msgSend_shouldUseTextReplacements(self, v60, v61, v62, v63, v64);
-    if (shouldUseTextReplacements != objc_msgSend_shouldUseTextReplacements(v4, v66, v67, v68, v69, v70))
+    if (shouldUseTextReplacements != objc_msgSend_shouldUseTextReplacements(requestCopy, v66, v67, v68, v69, v70))
     {
       goto LABEL_18;
     }
 
     v76 = objc_msgSend_enableGen2ModelIfAvailable(self, v71, v72, v73, v74, v75);
-    if (v76 != objc_msgSend_enableGen2ModelIfAvailable(v4, v77, v78, v79, v80, v81))
+    if (v76 != objc_msgSend_enableGen2ModelIfAvailable(requestCopy, v77, v78, v79, v80, v81))
     {
       goto LABEL_18;
     }
 
     v87 = objc_msgSend_enableGen2CharacterLMIfAvailable(self, v82, v83, v84, v85, v86);
-    if (v87 != objc_msgSend_enableGen2CharacterLMIfAvailable(v4, v88, v89, v90, v91, v92))
+    if (v87 != objc_msgSend_enableGen2CharacterLMIfAvailable(requestCopy, v88, v89, v90, v91, v92))
     {
       goto LABEL_18;
     }
 
     v98 = objc_msgSend_locales(self, v93, v94, v95, v96, v97);
-    v104 = objc_msgSend_locales(v4, v99, v100, v101, v102, v103);
+    v104 = objc_msgSend_locales(requestCopy, v99, v100, v101, v102, v103);
     v110 = v104;
     if (v98 == v104)
     {
@@ -1031,7 +1031,7 @@ LABEL_11:
     else
     {
       v111 = objc_msgSend_locales(self, v105, v106, v107, v108, v109);
-      v117 = objc_msgSend_locales(v4, v112, v113, v114, v115, v116);
+      v117 = objc_msgSend_locales(requestCopy, v112, v113, v114, v115, v116);
       isEqualToArray = objc_msgSend_isEqualToArray_(v111, v118, v117, v119, v120, v121);
 
       if (!isEqualToArray)
@@ -1043,7 +1043,7 @@ LABEL_18:
     }
 
     v129 = objc_msgSend_activeCharacterSetPerLocale(self, v123, v124, v125, v126, v127);
-    v135 = objc_msgSend_activeCharacterSetPerLocale(v4, v130, v131, v132, v133, v134);
+    v135 = objc_msgSend_activeCharacterSetPerLocale(requestCopy, v130, v131, v132, v133, v134);
     v141 = v135;
     if (v129 == v135)
     {
@@ -1052,7 +1052,7 @@ LABEL_18:
     else
     {
       v142 = objc_msgSend_activeCharacterSetPerLocale(self, v136, v137, v138, v139, v140);
-      v148 = objc_msgSend_activeCharacterSetPerLocale(v4, v143, v144, v145, v146, v147);
+      v148 = objc_msgSend_activeCharacterSetPerLocale(requestCopy, v143, v144, v145, v146, v147);
       isEqualToDictionary = objc_msgSend_isEqualToDictionary_(v142, v149, v148, v150, v151, v152);
 
       if (!isEqualToDictionary)
@@ -1062,7 +1062,7 @@ LABEL_18:
     }
 
     v160 = objc_msgSend_customLexiconEntries(self, v154, v155, v156, v157, v158);
-    v171 = objc_msgSend_customLexiconEntries(v4, v161, v162, v163, v164, v165);
+    v171 = objc_msgSend_customLexiconEntries(requestCopy, v161, v162, v163, v164, v165);
     if (v160 == v171)
     {
       isEqualToSet = 1;
@@ -1071,7 +1071,7 @@ LABEL_18:
     else
     {
       v172 = objc_msgSend_customLexiconEntries(self, v166, v167, v168, v169, v170);
-      v178 = objc_msgSend_customLexiconEntries(v4, v173, v174, v175, v176, v177);
+      v178 = objc_msgSend_customLexiconEntries(requestCopy, v173, v174, v175, v176, v177);
       isEqualToSet = objc_msgSend_isEqualToSet_(v172, v179, v178, v180, v181, v182);
     }
   }
@@ -1081,13 +1081,13 @@ LABEL_19:
   return isEqualToSet;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToRemoteRecognitionTextRequest = objc_msgSend_isEqualToRemoteRecognitionTextRequest_(self, v5, v4, v6, v7, v8);
+    isEqualToRemoteRecognitionTextRequest = objc_msgSend_isEqualToRemoteRecognitionTextRequest_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToRemoteRecognitionTextRequest;
   }

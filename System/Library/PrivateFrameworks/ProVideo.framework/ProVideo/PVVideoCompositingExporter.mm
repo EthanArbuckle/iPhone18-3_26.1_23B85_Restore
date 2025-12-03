@@ -17,15 +17,15 @@
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     if (+[PVEnvironment PV_ENABLE_BGRA_OUTPUT_EXPORT])
     {
-      v5 = &unk_28732D298;
+      preferredDestinationPixelBufferFormat = &unk_28732D298;
     }
 
     else
     {
-      v5 = [(PVVideoCompositingExporter *)self preferredDestinationPixelBufferFormat];
+      preferredDestinationPixelBufferFormat = [(PVVideoCompositingExporter *)self preferredDestinationPixelBufferFormat];
     }
 
-    v9[0] = v5;
+    v9[0] = preferredDestinationPixelBufferFormat;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     [(NSDictionary *)v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CC4E30]];
 
@@ -41,14 +41,14 @@
 
 - (id)preferredDestinationPixelBufferFormat
 {
-  v3 = [(PVRendererBase *)self compositingContext];
-  v4 = [v3 outputColorSpace];
-  if ([v4 isHDRSpace])
+  compositingContext = [(PVRendererBase *)self compositingContext];
+  outputColorSpace = [compositingContext outputColorSpace];
+  if ([outputColorSpace isHDRSpace])
   {
-    v5 = [(PVRendererBase *)self compositingContext];
-    v6 = [v5 gpuRenderAPI];
+    compositingContext2 = [(PVRendererBase *)self compositingContext];
+    gpuRenderAPI = [compositingContext2 gpuRenderAPI];
 
-    if (v6)
+    if (gpuRenderAPI)
     {
       return &unk_28732D310;
     }
@@ -76,35 +76,35 @@
     if (+[PVDeviceCharacteristics isLowMemDevice])
     {
       v3 = +[PVEnvironment PVPageSizeLowMemExport];
-      v4 = [(PVRendererBase *)v2 compositingContext];
-      [v4 setPageSize:v3];
+      compositingContext = [(PVRendererBase *)v2 compositingContext];
+      [compositingContext setPageSize:v3];
     }
 
     v5 = +[PVHostApplicationDelegateHandler sharedInstance];
-    v6 = [v5 preferredExportColorSpace];
-    [(PVRendererBase *)v2 setOutputColorSpace:v6];
+    preferredExportColorSpace = [v5 preferredExportColorSpace];
+    [(PVRendererBase *)v2 setOutputColorSpace:preferredExportColorSpace];
 
     v7 = [[PVTaskTokenPool alloc] initWithOffset:+[PVAVFRenderJobDelegate jobTypeTag]+ 100];
     tokenPool = v2->super._tokenPool;
     v2->super._tokenPool = v7;
 
     v9 = +[PVHostApplicationDelegateHandler sharedInstance];
-    v10 = [v9 preferredExportColorSpace];
-    v11 = [v10 isHDRSpace];
+    preferredExportColorSpace2 = [v9 preferredExportColorSpace];
+    isHDRSpace = [preferredExportColorSpace2 isHDRSpace];
 
-    if (v11)
+    if (isHDRSpace)
     {
       v12 = +[PVColorSpace rec2020LinearColorSpace];
-      v13 = [(PVRendererBase *)v2 compositingContext];
-      [v13 setWorkingColorSpace:v12];
+      compositingContext2 = [(PVRendererBase *)v2 compositingContext];
+      [compositingContext2 setWorkingColorSpace:v12];
     }
 
     else
     {
       v12 = +[PVHostApplicationDelegateHandler sharedInstance];
-      v13 = [v12 preferredExportColorSpace];
-      v14 = [(PVRendererBase *)v2 compositingContext];
-      [v14 setWorkingColorSpace:v13];
+      compositingContext2 = [v12 preferredExportColorSpace];
+      compositingContext3 = [(PVRendererBase *)v2 compositingContext];
+      [compositingContext3 setWorkingColorSpace:compositingContext2];
     }
   }
 

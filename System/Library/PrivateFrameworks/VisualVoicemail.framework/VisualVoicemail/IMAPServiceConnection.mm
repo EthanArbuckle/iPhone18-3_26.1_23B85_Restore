@@ -1,11 +1,11 @@
 @interface IMAPServiceConnection
 + (id)heldConnectionsForCheckingIn;
-- (BOOL)changePassword:(id)a3;
+- (BOOL)changePassword:(id)password;
 - (BOOL)checkIn;
-- (IMAPServiceConnection)initWithMambaID:(const char *)a3;
+- (IMAPServiceConnection)initWithMambaID:(const char *)d;
 - (void)checkInForcefully;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation IMAPServiceConnection
@@ -17,11 +17,11 @@
   [(IMAPServiceConnection *)&v2 dealloc];
 }
 
-- (IMAPServiceConnection)initWithMambaID:(const char *)a3
+- (IMAPServiceConnection)initWithMambaID:(const char *)d
 {
   v7.receiver = self;
   v7.super_class = IMAPServiceConnection;
-  v3 = [(IMAPServiceConnection *)&v7 initWithMambaID:a3];
+  v3 = [(IMAPServiceConnection *)&v7 initWithMambaID:d];
   if (v3)
   {
     v4 = objc_alloc_init(NSLock);
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (BOOL)changePassword:(id)a3
+- (BOOL)changePassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v5 = sub_1000025EC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IMAPServiceConnection *)self mambaID];
-    v7 = [(IMAPServiceConnection *)self rumbaID];
+    mambaID = [(IMAPServiceConnection *)self mambaID];
+    rumbaID = [(IMAPServiceConnection *)self rumbaID];
     *buf = 136316162;
-    v22 = v6;
+    v22 = mambaID;
     v23 = 2080;
     v24 = " ";
     v25 = 2114;
-    v26 = v7;
+    v26 = rumbaID;
     v27 = 2080;
     v28 = " ";
     v29 = 2112;
@@ -54,42 +54,42 @@
   }
 
   v20[0] = @"PIN";
-  v20[1] = v4;
+  v20[1] = passwordCopy;
   v8 = [NSArray arrayWithObjects:v20 count:2];
   v9 = [(IMAPServiceConnection *)self performCustomCommand:@"XCHANGEPASSWORD" withArguments:v8];
 
   if ((v9 & 1) == 0)
   {
     v10 = +[MFActivityMonitor currentTracebleMonitor];
-    v11 = [v10 error];
-    if (v11)
+    error = [v10 error];
+    if (error)
     {
       v12 = sub_1000025EC();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_10009BFE0(self, v11, v12);
+        sub_10009BFE0(self, error, v12);
       }
 
-      v13 = [v11 domain];
-      if (![v13 isEqualToString:MFMessageErrorDomain])
+      domain = [error domain];
+      if (![domain isEqualToString:MFMessageErrorDomain])
       {
         goto LABEL_14;
       }
 
-      v14 = [v11 code];
+      code = [error code];
 
-      if (v14 == 1033)
+      if (code == 1033)
       {
-        v13 = [v11 localizedDescription];
-        if (!v13 || (pthread_once(&stru_10010CAB0, sub_100014C74), [qword_10010D770 objectForKey:v13], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, v17 = objc_msgSend(v15, "intValue"), v16, v17 == -1))
+        domain = [error localizedDescription];
+        if (!domain || (pthread_once(&stru_10010CAB0, sub_100014C74), [qword_10010D770 objectForKey:domain], (v15 = objc_claimAutoreleasedReturnValue()) == 0) || (v16 = v15, v17 = objc_msgSend(v15, "intValue"), v16, v17 == -1))
         {
           v17 = 1016;
         }
 
-        v18 = [NSError errorWithDomain:kVVErrorDomain code:v17 localizedDescription:v13];
+        v18 = [NSError errorWithDomain:kVVErrorDomain code:v17 localizedDescription:domain];
 
         [v10 setError:v18];
-        v11 = v18;
+        error = v18;
 LABEL_14:
       }
     }
@@ -101,12 +101,12 @@ LABEL_14:
 + (id)heldConnectionsForCheckingIn
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
+  threadDictionary = [v2 threadDictionary];
 
-  v4 = [v3 objectForKey:@"_IMAPServiceConnections"];
+  v4 = [threadDictionary objectForKey:@"_IMAPServiceConnections"];
   if ([v4 count])
   {
-    [v3 removeObjectForKey:@"_IMAPServiceConnections"];
+    [threadDictionary removeObjectForKey:@"_IMAPServiceConnections"];
   }
 
   else
@@ -123,8 +123,8 @@ LABEL_14:
   v3 = +[NSThread currentThread];
   [(NSLock *)self->_checkedOutThreadsLock lock];
   [(NSMutableSet *)self->_checkedOutThreads removeObject:v3];
-  v4 = [v3 threadDictionary];
-  v5 = [v4 objectForKey:@"_IMAPServiceConnections"];
+  threadDictionary = [v3 threadDictionary];
+  v5 = [threadDictionary objectForKey:@"_IMAPServiceConnections"];
 
   [v5 removeObject:self];
   v6 = [(NSMutableSet *)self->_checkedOutThreads count];
@@ -148,20 +148,20 @@ LABEL_14:
   [(IMAPServiceConnection *)self checkIn];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(IMAPServiceConnection *)self delegate];
-  v6 = v5;
-  if (v4 || !v5)
+  delegateCopy = delegate;
+  delegate = [(IMAPServiceConnection *)self delegate];
+  v6 = delegate;
+  if (delegateCopy || !delegate)
   {
-    if (v4)
+    if (delegateCopy)
     {
       [(NSLock *)self->_checkedOutThreadsLock lock];
       checkedOutThreads = self->_checkedOutThreads;
       if (checkedOutThreads)
       {
-        if (v6 != v4)
+        if (v6 != delegateCopy)
         {
           [(NSMutableSet *)checkedOutThreads removeAllObjects];
         }
@@ -176,19 +176,19 @@ LABEL_14:
 
       v10 = +[NSThread currentThread];
       [(NSMutableSet *)self->_checkedOutThreads addObject:v10];
-      v11 = [v10 threadDictionary];
-      v12 = [v11 objectForKey:@"_IMAPServiceConnections"];
+      threadDictionary = [v10 threadDictionary];
+      v12 = [threadDictionary objectForKey:@"_IMAPServiceConnections"];
       if (!v12)
       {
         v12 = objc_alloc_init(NSMutableSet);
-        [v11 setObject:v12 forKey:@"_IMAPServiceConnections"];
+        [threadDictionary setObject:v12 forKey:@"_IMAPServiceConnections"];
       }
 
       [v12 addObject:self];
       [(NSLock *)self->_checkedOutThreadsLock unlock];
       v13.receiver = self;
       v13.super_class = IMAPServiceConnection;
-      [(IMAPServiceConnection *)&v13 setDelegate:v4];
+      [(IMAPServiceConnection *)&v13 setDelegate:delegateCopy];
     }
   }
 

@@ -1,8 +1,8 @@
 @interface DummyOperationClient
 - (_TtC18FileProviderDaemon20DummyOperationClient)init;
 - (id)proxifiedDescription;
-- (void)operationDidProgressWithInfo:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)setCancellationHandler:(id)a3;
+- (void)operationDidProgressWithInfo:(id)info error:(id)error completionHandler:(id)handler;
+- (void)setCancellationHandler:(id)handler;
 @end
 
 @implementation DummyOperationClient
@@ -14,23 +14,23 @@
   return v2;
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18FileProviderDaemon20DummyOperationClient_cancellationHandler);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC18FileProviderDaemon20DummyOperationClient_cancellationHandler) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC18FileProviderDaemon20DummyOperationClient_cancellationHandler) = handler;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)operationDidProgressWithInfo:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)operationDidProgressWithInfo:(id)info error:(id)error completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_1CF9E6638();
   _Block_copy(v7);
-  v9 = self;
-  v10 = a4;
-  sub_1CF2F3C10(v8, a4, v9, v7);
+  selfCopy = self;
+  errorCopy = error;
+  sub_1CF2F3C10(v8, error, selfCopy, v7);
   _Block_release(v7);
   _Block_release(v7);
 }

@@ -1,7 +1,7 @@
 @interface PDProtobufParser
 - (BOOL)supportsStreamedParsing;
 - (PDProtobufParser)init;
-- (id)parseData:(id)a3 expectedClass:(Class)a4 error:(id *)a5;
+- (id)parseData:(id)data expectedClass:(Class)class error:(id *)error;
 @end
 
 @implementation PDProtobufParser
@@ -22,11 +22,11 @@
 
 - (BOOL)supportsStreamedParsing
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_provider);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_provider);
   }
 
   else
@@ -50,20 +50,20 @@
   return v7;
 }
 
-- (id)parseData:(id)a3 expectedClass:(Class)a4 error:(id *)a5
+- (id)parseData:(id)data expectedClass:(Class)class error:(id *)error
 {
-  v8 = a3;
-  v9 = objc_alloc_init(a4);
+  dataCopy = data;
+  v9 = objc_alloc_init(class);
   if ([(PDProtobufParser *)self supportsStreamedParsing])
   {
-    v10 = v8;
+    v10 = dataCopy;
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_provider);
       if (WeakRetained)
       {
         v12 = WeakRetained;
-        v44 = a5;
+        errorCopy = error;
         v45 = v9;
         v43 = v10;
         v13 = [[PBDataReader alloc] initWithData:v10];
@@ -71,8 +71,8 @@
         v50 = 0;
         while (1)
         {
-          v15 = [v13 position];
-          if (v15 >= [v13 length] || (objc_msgSend(v13, "hasError") & 1) != 0)
+          position = [v13 position];
+          if (position >= [v13 length] || (objc_msgSend(v13, "hasError") & 1) != 0)
           {
             goto LABEL_43;
           }
@@ -87,8 +87,8 @@
             v20 = [v13 position] + 1;
             if (v20 >= [v13 position] && (v21 = objc_msgSend(v13, "position") + 1, v21 <= objc_msgSend(v13, "length")))
             {
-              v22 = [v13 data];
-              [v22 getBytes:buf range:{objc_msgSend(v13, "position"), 1}];
+              data = [v13 data];
+              [data getBytes:buf range:{objc_msgSend(v13, "position"), 1}];
 
               [v13 setPosition:{objc_msgSend(v13, "position") + 1}];
             }
@@ -194,7 +194,7 @@ LABEL_38:
 
 LABEL_44:
             v31 = [v13 hasError] ^ 1;
-            a5 = v44;
+            error = errorCopy;
             v9 = v45;
             goto LABEL_45;
           }
@@ -219,13 +219,13 @@ LABEL_43:
         }
 
 LABEL_28:
-        a5 = v44;
+        error = errorCopy;
         v9 = v45;
-        if (v44)
+        if (errorCopy)
         {
           v30 = v27;
           v31 = 0;
-          *v44 = v27;
+          *errorCopy = v27;
         }
 
         else
@@ -245,14 +245,14 @@ LABEL_45:
         goto LABEL_47;
       }
 
-      [NSError cls_assignError:a5 code:300 format:@"PDProtobuf Parser provider is missing."];
+      [NSError cls_assignError:error code:300 format:@"PDProtobuf Parser provider is missing."];
     }
 
     goto LABEL_47;
   }
 
   v32 = objc_autoreleasePoolPush();
-  v33 = [[PBDataReader alloc] initWithData:v8];
+  v33 = [[PBDataReader alloc] initWithData:dataCopy];
   v34 = [v9 readFrom:v33];
 
   objc_autoreleasePoolPop(v32);
@@ -264,12 +264,12 @@ LABEL_46:
   }
 
 LABEL_47:
-  [NSError cls_assignError:a5 code:300 format:@"Error parsing message of class %@ from data %@.", objc_opt_class(), v8];
+  [NSError cls_assignError:error code:300 format:@"Error parsing message of class %@ from data %@.", objc_opt_class(), dataCopy];
   CLSInitLog();
   v40 = CLSLogOperations;
   if (os_log_type_enabled(CLSLogOperations, OS_LOG_TYPE_INFO))
   {
-    v41 = *a5;
+    v41 = *error;
     *buf = 138543362;
     *&buf[4] = v41;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "Parser failed: %{public}@", buf, 0xCu);

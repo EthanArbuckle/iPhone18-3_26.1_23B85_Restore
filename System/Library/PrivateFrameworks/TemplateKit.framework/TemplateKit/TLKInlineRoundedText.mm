@@ -1,26 +1,26 @@
 @interface TLKInlineRoundedText
-- (void)setString:(id)a3;
+- (void)setString:(id)string;
 @end
 
 @implementation TLKInlineRoundedText
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v10 = a3;
-  if (self->_string != v10)
+  stringCopy = string;
+  if (self->_string != stringCopy)
   {
-    objc_storeStrong(&self->_string, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_string, string);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }

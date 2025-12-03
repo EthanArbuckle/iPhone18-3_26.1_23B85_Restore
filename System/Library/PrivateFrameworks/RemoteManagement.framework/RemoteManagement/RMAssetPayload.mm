@@ -1,7 +1,7 @@
 @interface RMAssetPayload
-- (BOOL)_loadAnyDeclaration:(id)a3 error:(id *)a4;
-- (BOOL)loadPayload:(id)a3 error:(id *)a4;
-- (BOOL)reloadReturningError:(id *)a3;
+- (BOOL)_loadAnyDeclaration:(id)declaration error:(id *)error;
+- (BOOL)loadPayload:(id)payload error:(id *)error;
+- (BOOL)reloadReturningError:(id *)error;
 - (id)reportDetails;
 @end
 
@@ -11,8 +11,8 @@
 {
   v8.receiver = self;
   v8.super_class = RMAssetPayload;
-  v3 = [(RMDeclarationPayload *)&v8 reportDetails];
-  v4 = [v3 mutableCopy];
+  reportDetails = [(RMDeclarationPayload *)&v8 reportDetails];
+  v4 = [reportDetails mutableCopy];
 
   v5 = [NSNumber numberWithBool:[(RMAssetPayload *)self prefetch]];
   [v4 setObject:v5 forKeyedSubscript:@"prefetch"];
@@ -22,13 +22,13 @@
   return v6;
 }
 
-- (BOOL)loadPayload:(id)a3 error:(id *)a4
+- (BOOL)loadPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(RMAssetPayload *)self _loadAnyDeclaration:v6 error:a4];
+    v7 = [(RMAssetPayload *)self _loadAnyDeclaration:payloadCopy error:error];
   }
 
   else
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = payloadCopy;
       v21 = 0;
       v9 = [v8 serializeAsDataWithType:0 error:&v21];
       v10 = v21;
@@ -45,14 +45,14 @@
       if (v9)
       {
         [(RMAssetPayload *)self setPayload:v9];
-        v12 = [v8 declarationType];
-        [(RMAssetPayload *)self setDeclarationType:v12];
+        declarationType = [v8 declarationType];
+        [(RMAssetPayload *)self setDeclarationType:declarationType];
 
-        v13 = [(RMAssetPayload *)self serverToken];
-        v14 = [v8 declarationServerToken];
-        if (v13 != v14 && ([v13 isEqualToString:v14] & 1) == 0)
+        serverToken = [(RMAssetPayload *)self serverToken];
+        declarationServerToken = [v8 declarationServerToken];
+        if (serverToken != declarationServerToken && ([serverToken isEqualToString:declarationServerToken] & 1) == 0)
         {
-          [(RMAssetPayload *)self setServerToken:v14];
+          [(RMAssetPayload *)self setServerToken:declarationServerToken];
         }
 
         [(RMAssetPayload *)self setLoadState:1];
@@ -60,10 +60,10 @@
 
       else
       {
-        if (a4 && v10)
+        if (error && v10)
         {
           v19 = v10;
-          *a4 = v11;
+          *error = v11;
         }
 
         [(RMAssetPayload *)self failedLoadingWithError:v11];
@@ -73,13 +73,13 @@
     else
     {
       v15 = +[RMModelAssetBase rm_payloadTypeName];
-      v16 = [objc_opt_class() rm_payloadTypeName];
-      v17 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v15 actualType:v16];
+      rm_payloadTypeName = [objc_opt_class() rm_payloadTypeName];
+      v17 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v15 actualType:rm_payloadTypeName];
 
-      if (a4 && v17)
+      if (error && v17)
       {
         v18 = v17;
-        *a4 = v17;
+        *error = v17;
       }
 
       [(RMAssetPayload *)self failedLoadingWithError:v17];
@@ -91,11 +91,11 @@
   return v7;
 }
 
-- (BOOL)reloadReturningError:(id *)a3
+- (BOOL)reloadReturningError:(id *)error
 {
-  v5 = [(RMAssetPayload *)self payload];
+  payload = [(RMAssetPayload *)self payload];
   v14 = 0;
-  v6 = [RMModelDeclarationBase loadData:v5 serializationType:0 error:&v14];
+  v6 = [RMModelDeclarationBase loadData:payload serializationType:0 error:&v14];
   v7 = v14;
 
   objc_opt_class();
@@ -116,13 +116,13 @@
     else
     {
       v9 = +[RMModelAssetBase rm_payloadTypeName];
-      v10 = [objc_opt_class() rm_payloadTypeName];
-      v11 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v9 actualType:v10];
+      rm_payloadTypeName = [objc_opt_class() rm_payloadTypeName];
+      v11 = [RMErrorUtilities createIncorrectPayloadTypeErrorWithExpectedType:v9 actualType:rm_payloadTypeName];
 
-      if (a3 && v11)
+      if (error && v11)
       {
         v12 = v11;
-        *a3 = v11;
+        *error = v11;
       }
 
       [(RMAssetPayload *)self failedLoadingWithError:v11];
@@ -134,24 +134,24 @@
   return v8;
 }
 
-- (BOOL)_loadAnyDeclaration:(id)a3 error:(id *)a4
+- (BOOL)_loadAnyDeclaration:(id)declaration error:(id *)error
 {
-  v6 = a3;
+  declarationCopy = declaration;
   v15 = 0;
-  v7 = [v6 serializeAsDataWithType:0 error:&v15];
+  v7 = [declarationCopy serializeAsDataWithType:0 error:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
   {
     [(RMAssetPayload *)self setPayload:v7];
-    v10 = [v6 declarationType];
-    [(RMAssetPayload *)self setDeclarationType:v10];
+    declarationType = [declarationCopy declarationType];
+    [(RMAssetPayload *)self setDeclarationType:declarationType];
 
-    v11 = [(RMAssetPayload *)self serverToken];
-    v12 = [v6 declarationServerToken];
-    if (v11 != v12 && ([v11 isEqualToString:v12] & 1) == 0)
+    serverToken = [(RMAssetPayload *)self serverToken];
+    declarationServerToken = [declarationCopy declarationServerToken];
+    if (serverToken != declarationServerToken && ([serverToken isEqualToString:declarationServerToken] & 1) == 0)
     {
-      [(RMAssetPayload *)self setServerToken:v12];
+      [(RMAssetPayload *)self setServerToken:declarationServerToken];
     }
 
     [(RMAssetPayload *)self setLoadState:4];
@@ -159,10 +159,10 @@
 
   else
   {
-    if (a4 && v8)
+    if (error && v8)
     {
       v13 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     [(RMAssetPayload *)self failedLoadingWithError:v9];

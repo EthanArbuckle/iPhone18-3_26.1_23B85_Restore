@@ -1,12 +1,12 @@
 @interface MOTrendBundlerAnnotatorRecentEvent
-- (BOOL)_isStringUnique:(id)a3 inThis:(id)a4;
-- (BOOL)configure:(id)a3;
+- (BOOL)_isStringUnique:(id)unique inThis:(id)this;
+- (BOOL)configure:(id)configure;
 - (MOTrendBundlerAnnotatorRecentEvent)init;
-- (id)_actionFromEvent:(id)a3;
-- (id)_annotateEvents:(id)a3 withSourceEventForSet:(id)a4;
-- (id)_personsFromEvent:(id)a3;
-- (id)createTrendBundlesFrom:(id)a3 withEvents:(id)a4;
-- (void)_assignResourcePriorityScore:(id)a3;
+- (id)_actionFromEvent:(id)event;
+- (id)_annotateEvents:(id)events withSourceEventForSet:(id)set;
+- (id)_personsFromEvent:(id)event;
+- (id)createTrendBundlesFrom:(id)from withEvents:(id)events;
+- (void)_assignResourcePriorityScore:(id)score;
 @end
 
 @implementation MOTrendBundlerAnnotatorRecentEvent
@@ -26,19 +26,19 @@
   return v3;
 }
 
-- (id)createTrendBundlesFrom:(id)a3 withEvents:(id)a4
+- (id)createTrendBundlesFrom:(id)from withEvents:(id)events
 {
-  v5 = a3;
-  v45 = a4;
+  fromCopy = from;
+  eventsCopy = events;
   v42 = objc_opt_new();
-  if ([v5 count])
+  if ([fromCopy count])
   {
     v6 = 0;
-    v44 = v5;
+    v44 = fromCopy;
     while (1)
     {
       v7 = objc_opt_new();
-      v8 = [v5 objectAtIndex:v6];
+      v8 = [fromCopy objectAtIndex:v6];
       v46 = v8;
       v47 = v6;
       if (v8)
@@ -103,7 +103,7 @@ LABEL_20:
       }
 
       v34 = [NSPredicate predicateWithFormat:@"eventIdentifier IN %@", v26];
-      v35 = [v45 filteredArrayUsingPredicate:v34];
+      v35 = [eventsCopy filteredArrayUsingPredicate:v34];
       v36 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:0];
       v57 = v36;
       v37 = [NSArray arrayWithObjects:&v57 count:1];
@@ -111,8 +111,8 @@ LABEL_20:
 
       if ([v38 count])
       {
-        v39 = [v38 firstObject];
-        [v11 addObject:v39];
+        firstObject = [v38 firstObject];
+        [v11 addObject:firstObject];
 
         v40 = [(MOTrendBundlerAnnotatorRecentEvent *)self _annotateEvents:v11 withSourceEventForSet:v38];
         if (v40)
@@ -132,7 +132,7 @@ LABEL_20:
       }
 
       v6 = v47 + 1;
-      v5 = v44;
+      fromCopy = v44;
       if ([v44 count] <= v47 + 1)
       {
         goto LABEL_33;
@@ -151,24 +151,24 @@ LABEL_10:
       }
 
       v16 = *(*(&v52 + 1) + 8 * v15);
-      v17 = [v16 patterns];
-      v18 = [v17 objectForKeyedSubscript:@"kEventPatternType"];
-      v19 = [v18 intValue];
+      patterns = [v16 patterns];
+      v18 = [patterns objectForKeyedSubscript:@"kEventPatternType"];
+      intValue = [v18 intValue];
 
-      v20 = [v16 patterns];
-      v21 = v20;
-      if (v19 == 1)
+      patterns2 = [v16 patterns];
+      v21 = patterns2;
+      if (intValue == 1)
       {
         break;
       }
 
-      v23 = [v20 objectForKeyedSubscript:@"kEventPatternType"];
-      v24 = [v23 intValue];
+      v23 = [patterns2 objectForKeyedSubscript:@"kEventPatternType"];
+      intValue2 = [v23 intValue];
 
-      if (v24 == 2)
+      if (intValue2 == 2)
       {
-        v20 = [v16 patterns];
-        v21 = v20;
+        patterns2 = [v16 patterns];
+        v21 = patterns2;
         v22 = @"kEventPatternRoutineEventIdentifierList";
         goto LABEL_17;
       }
@@ -188,7 +188,7 @@ LABEL_18:
 
     v22 = @"kEventPatternTrendEventIdentifierList";
 LABEL_17:
-    v25 = [v20 objectForKeyedSubscript:v22];
+    v25 = [patterns2 objectForKeyedSubscript:v22];
     [v10 addObjectsFromArray:v25];
 
     goto LABEL_18;
@@ -199,42 +199,42 @@ LABEL_33:
   return v42;
 }
 
-- (id)_annotateEvents:(id)a3 withSourceEventForSet:(id)a4
+- (id)_annotateEvents:(id)events withSourceEventForSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  setCopy = set;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v129 = "[MOTrendBundlerAnnotatorRecentEvent _annotateEvents:withSourceEventForSet:]";
     v130 = 2048;
-    v131 = [v5 count];
+    v131 = [eventsCopy count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s, event count, %lu", buf, 0x16u);
   }
 
-  if (![v5 count] || !objc_msgSend(v6, "count"))
+  if (![eventsCopy count] || !objc_msgSend(setCopy, "count"))
   {
     v30 = 0;
     goto LABEL_69;
   }
 
   v8 = [MOEventBundle alloc];
-  v9 = [[NSSet alloc] initWithArray:v5];
+  v9 = [[NSSet alloc] initWithArray:eventsCopy];
   v10 = [(MOEventBundle *)v8 initWithEventSet:v9 filtered:0];
 
   [(MOEventBundle *)v10 setInterfaceType:9];
-  v11 = [v6 firstObject];
-  v12 = [v11 category];
+  firstObject = [setCopy firstObject];
+  category = [firstObject category];
 
   v99 = v10;
-  if (v12 == 2)
+  if (category == 2)
   {
     [(MOEventBundle *)v10 setBundleSuperType:2];
     [(MOEventBundle *)v10 setBundleSubType:203];
     [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 5];
-    v98 = v96 = v5;
-    v13 = [v5 filteredArrayUsingPredicate:?];
+    v98 = v96 = eventsCopy;
+    v13 = [eventsCopy filteredArrayUsingPredicate:?];
     if ([v13 count])
     {
       v14 = [v13 objectAtIndex:0];
@@ -244,7 +244,7 @@ LABEL_33:
 
     v110 = v13;
     v104 = objc_opt_new();
-    [v6 valueForKeyPath:@"@distinctUnionOfObjects.workoutType"];
+    [setCopy valueForKeyPath:@"@distinctUnionOfObjects.workoutType"];
     v124 = 0u;
     v125 = 0u;
     v126 = 0u;
@@ -264,17 +264,17 @@ LABEL_33:
           }
 
           v20 = [NSPredicate predicateWithFormat:@"%K = %@", @"workoutType", *(*(&v124 + 1) + 8 * i)];
-          v21 = [v6 filteredArrayUsingPredicate:v20];
-          v22 = v6;
+          v21 = [setCopy filteredArrayUsingPredicate:v20];
+          v22 = setCopy;
           v23 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:0];
           v137 = v23;
           v24 = [NSArray arrayWithObjects:&v137 count:1];
           v25 = [v21 sortedArrayUsingDescriptors:v24];
 
-          v26 = [v25 firstObject];
-          [v104 addObject:v26];
+          firstObject2 = [v25 firstObject];
+          [v104 addObject:firstObject2];
 
-          v6 = v22;
+          setCopy = v22;
         }
 
         v17 = [obj countByEnumeratingWithState:&v124 objects:v138 count:16];
@@ -283,11 +283,11 @@ LABEL_33:
       while (v17);
     }
 
-    v27 = [(MOEventBundle *)v99 resources];
-    if (v27)
+    resources = [(MOEventBundle *)v99 resources];
+    if (resources)
     {
-      v28 = [(MOEventBundle *)v99 resources];
-      v108 = [v28 mutableCopy];
+      resources2 = [(MOEventBundle *)v99 resources];
+      v108 = [resources2 mutableCopy];
 
       v29 = &GEOPOICategoryGasStation_ptr;
     }
@@ -341,8 +341,8 @@ LABEL_33:
               v119 = 0u;
               v116 = 0u;
               v117 = 0u;
-              v69 = [v66 patterns];
-              v70 = [v69 objectForKeyedSubscript:@"kEventResourcePatternWorkoutInfoDictArray"];
+              patterns = [v66 patterns];
+              v70 = [patterns objectForKeyedSubscript:@"kEventResourcePatternWorkoutInfoDictArray"];
 
               v109 = v70;
               v71 = [v70 countByEnumeratingWithState:&v116 objects:v135 count:16];
@@ -389,8 +389,8 @@ LABEL_33:
 
                       [v77 setObject:v76 forKey:@"MOWorkoutMetaDataKeyWorkoutID"];
                       v83 = [[MOResource alloc] initWithName:@"Workout" type:10 dict:v77 value:0.0];
-                      v84 = [v77 allKeys];
-                      v85 = [v84 containsObject:@"kEventResourcePatternWorkoutIdentifierFromProvider"];
+                      allKeys = [v77 allKeys];
+                      v85 = [allKeys containsObject:@"kEventResourcePatternWorkoutIdentifierFromProvider"];
 
                       if (v85)
                       {
@@ -444,32 +444,32 @@ LABEL_33:
       [(MOEventBundle *)v99 setActions:v61];
     }
 
-    v5 = v96;
+    eventsCopy = v96;
     v40 = v104;
     goto LABEL_64;
   }
 
-  v31 = [v6 firstObject];
-  v32 = [v31 category];
+  firstObject3 = [setCopy firstObject];
+  category2 = [firstObject3 category];
 
-  if (v32 == 10)
+  if (category2 == 10)
   {
     [(MOEventBundle *)v10 setBundleSuperType:3];
     [(MOEventBundle *)v10 setBundleSubType:303];
     v33 = [[MOAction alloc] initWithActionName:@"Conversations" actionType:1 actionSubtype:4];
     [(MOEventBundle *)v10 setAction:v33];
 
-    v34 = [v6 firstObject];
-    v35 = [v34 eventIdentifier];
-    v36 = [(MOEventBundle *)v10 action];
-    [v36 setSourceEventIdentifier:v35];
+    firstObject4 = [setCopy firstObject];
+    eventIdentifier = [firstObject4 eventIdentifier];
+    action = [(MOEventBundle *)v10 action];
+    [action setSourceEventIdentifier:eventIdentifier];
 
-    v37 = [v6 firstObject];
-    v38 = [(MOTrendBundlerAnnotatorRecentEvent *)self _personsFromEvent:v37];
+    firstObject5 = [setCopy firstObject];
+    v38 = [(MOTrendBundlerAnnotatorRecentEvent *)self _personsFromEvent:firstObject5];
     [(MOEventBundle *)v10 setPersons:v38];
 
     v98 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 5];
-    v39 = [v5 filteredArrayUsingPredicate:?];
+    v39 = [eventsCopy filteredArrayUsingPredicate:?];
     if (![v39 count])
     {
       v57 = v10;
@@ -478,14 +478,14 @@ LABEL_65:
       v91 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
       if (os_log_type_enabled(v91, OS_LOG_TYPE_INFO))
       {
-        v92 = [v6 firstObject];
-        v93 = [v92 category];
+        firstObject6 = [setCopy firstObject];
+        category3 = [firstObject6 category];
         *buf = 136315650;
         v129 = "[MOTrendBundlerAnnotatorRecentEvent _annotateEvents:withSourceEventForSet:]";
         v130 = 2112;
         v131 = v99;
         v132 = 2048;
-        v133 = v93;
+        v133 = category3;
         _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_INFO, "%s, bundle, %@, event category, %lu", buf, 0x20u);
 
         v57 = v99;
@@ -504,8 +504,8 @@ LABEL_65:
     if (v41)
     {
       v42 = v41;
-      v95 = v6;
-      v97 = v5;
+      v95 = setCopy;
+      v97 = eventsCopy;
       v43 = *v113;
       do
       {
@@ -517,20 +517,20 @@ LABEL_65:
           }
 
           v45 = *(*(&v112 + 1) + 8 * k);
-          v46 = [v45 patterns];
-          v47 = [v46 objectForKeyedSubscript:@"kEventPatternType"];
-          v48 = [v47 intValue];
+          patterns2 = [v45 patterns];
+          v47 = [patterns2 objectForKeyedSubscript:@"kEventPatternType"];
+          intValue = [v47 intValue];
 
-          if (v48 == 1)
+          if (intValue == 1)
           {
-            v49 = [v45 patterns];
-            v50 = [v49 objectForKeyedSubscript:@"kEventPatternTrendFeatureType"];
-            v51 = [v50 intValue];
+            patterns3 = [v45 patterns];
+            v50 = [patterns3 objectForKeyedSubscript:@"kEventPatternTrendFeatureType"];
+            intValue2 = [v50 intValue];
 
-            if (v51 == 2)
+            if (intValue2 == 2)
             {
-              v52 = [v45 patterns];
-              v53 = [v52 objectForKeyedSubscript:@"kEventPatternTrendNumFeatures"];
+              patterns4 = [v45 patterns];
+              v53 = [patterns4 objectForKeyedSubscript:@"kEventPatternTrendNumFeatures"];
               [v53 doubleValue];
               v55 = v54;
               maximumFeatureCountForFrequencyTrend = self->_maximumFeatureCountForFrequencyTrend;
@@ -548,8 +548,8 @@ LABEL_65:
 
       while (v42);
       v39 = v40;
-      v6 = v95;
-      v5 = v97;
+      setCopy = v95;
+      eventsCopy = v97;
     }
 
     else
@@ -572,15 +572,15 @@ LABEL_69:
   return v30;
 }
 
-- (void)_assignResourcePriorityScore:(id)a3
+- (void)_assignResourcePriorityScore:(id)score
 {
-  v3 = a3;
+  scoreCopy = score;
   v19 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = scoreCopy;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v4)
   {
@@ -599,8 +599,8 @@ LABEL_69:
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 getDictionary];
-        v12 = [v11 objectForKeyedSubscript:@"MOWorkoutMetaDataKeyActivityType"];
+        getDictionary = [v9 getDictionary];
+        v12 = [getDictionary objectForKeyedSubscript:@"MOWorkoutMetaDataKeyActivityType"];
         if ([(MOTrendBundlerAnnotatorRecentEvent *)self _isStringUnique:v12 inThis:v19])
         {
           [v19 addObject:v12];
@@ -635,42 +635,42 @@ LABEL_69:
   }
 }
 
-- (id)_actionFromEvent:(id)a3
+- (id)_actionFromEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 patterns];
-  v5 = [v4 objectForKeyedSubscript:@"kEventPatternOverallWorkoutType"];
+  eventCopy = event;
+  patterns = [eventCopy patterns];
+  v5 = [patterns objectForKeyedSubscript:@"kEventPatternOverallWorkoutType"];
 
   v6 = [[MOAction alloc] initWithActionName:v5 actionType:4 actionSubtype:0];
-  v7 = [v3 eventIdentifier];
+  eventIdentifier = [eventCopy eventIdentifier];
 
-  [(MOAction *)v6 setSourceEventIdentifier:v7];
+  [(MOAction *)v6 setSourceEventIdentifier:eventIdentifier];
 
   return v6;
 }
 
-- (id)_personsFromEvent:(id)a3
+- (id)_personsFromEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
-  v5 = [v3 interactionScoredContact];
-  v6 = [v5 contact];
-  v7 = [v6 identifier];
-  v8 = [MOContactUtilities cNContactIdentifierFromPPContactIdentifier:v7];
+  interactionScoredContact = [eventCopy interactionScoredContact];
+  contact = [interactionScoredContact contact];
+  identifier = [contact identifier];
+  v8 = [MOContactUtilities cNContactIdentifierFromPPContactIdentifier:identifier];
 
   if (v8)
   {
     v9 = [MOPerson alloc];
-    v10 = [v5 contact];
-    v11 = [v10 givenName];
-    v12 = [v5 contact];
-    v13 = [v12 identifier];
-    v14 = [MOContactUtilities cNContactIdentifierFromPPContactIdentifier:v13];
-    [v5 score];
-    v16 = [(MOPerson *)v9 initWithLocalIdentifier:0 name:v11 contactIdentifier:v14 family:0 priorityScore:100.0 significanceScore:v15];
+    contact2 = [interactionScoredContact contact];
+    givenName = [contact2 givenName];
+    contact3 = [interactionScoredContact contact];
+    identifier2 = [contact3 identifier];
+    v14 = [MOContactUtilities cNContactIdentifierFromPPContactIdentifier:identifier2];
+    [interactionScoredContact score];
+    v16 = [(MOPerson *)v9 initWithLocalIdentifier:0 name:givenName contactIdentifier:v14 family:0 priorityScore:100.0 significanceScore:v15];
 
-    v17 = [v3 eventIdentifier];
-    [(MOPerson *)v16 setSourceEventIdentifier:v17];
+    eventIdentifier = [eventCopy eventIdentifier];
+    [(MOPerson *)v16 setSourceEventIdentifier:eventIdentifier];
 
     [(MOPerson *)v16 setSourceEventAccessType:3];
     [v4 addObject:v16];
@@ -685,14 +685,14 @@ LABEL_69:
   return v18;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"maximumFeatureCountForFrequencyTrend"];
+  configureCopy = configure;
+  v5 = [configureCopy objectForKey:@"maximumFeatureCountForFrequencyTrend"];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"maximumFeatureCountForFrequencyTrend"];
+    v6 = [configureCopy objectForKeyedSubscript:@"maximumFeatureCountForFrequencyTrend"];
     [v6 doubleValue];
     self->_maximumFeatureCountForFrequencyTrend = v7;
   }
@@ -700,15 +700,15 @@ LABEL_69:
   return 1;
 }
 
-- (BOOL)_isStringUnique:(id)a3 inThis:(id)a4
+- (BOOL)_isStringUnique:(id)unique inThis:(id)this
 {
-  v5 = a3;
+  uniqueCopy = unique;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  thisCopy = this;
+  v7 = [thisCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -719,17 +719,17 @@ LABEL_69:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(thisCopy);
         }
 
-        if ([v5 isEqualToString:{*(*(&v13 + 1) + 8 * i), v13}])
+        if ([uniqueCopy isEqualToString:{*(*(&v13 + 1) + 8 * i), v13}])
         {
           v11 = 0;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [thisCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;

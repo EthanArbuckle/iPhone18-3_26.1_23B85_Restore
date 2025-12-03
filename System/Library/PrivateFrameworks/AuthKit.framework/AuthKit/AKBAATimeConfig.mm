@@ -1,86 +1,86 @@
 @interface AKBAATimeConfig
-- (AKBAATimeConfig)initWithCoder:(id)a3;
-- (AKBAATimeConfig)initWithServerTimeInterval:(double)a3 localTimeInterval:(double)a4 bootSessionUUID:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (AKBAATimeConfig)initWithCoder:(id)coder;
+- (AKBAATimeConfig)initWithServerTimeInterval:(double)interval localTimeInterval:(double)timeInterval bootSessionUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKBAATimeConfig
 
-- (AKBAATimeConfig)initWithServerTimeInterval:(double)a3 localTimeInterval:(double)a4 bootSessionUUID:(id)a5
+- (AKBAATimeConfig)initWithServerTimeInterval:(double)interval localTimeInterval:(double)timeInterval bootSessionUUID:(id)d
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  intervalCopy = interval;
+  timeIntervalCopy = timeInterval;
   location = 0;
-  objc_storeStrong(&location, a5);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&location, d);
+  v5 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v5;
   v9.super_class = AKBAATimeConfig;
   v8 = [(AKBAATimeConfig *)&v9 init];
-  v14 = v8;
-  objc_storeStrong(&v14, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    v14->_lastServerTimeInterval = v12;
-    v14->_lastLocalTimeInterval = v11;
-    objc_storeStrong(&v14->_bootSessionUUID, location);
+    selfCopy->_lastServerTimeInterval = intervalCopy;
+    selfCopy->_lastLocalTimeInterval = timeIntervalCopy;
+    objc_storeStrong(&selfCopy->_bootSessionUUID, location);
   }
 
-  v7 = _objc_retain(v14);
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKBAATimeConfig)initWithCoder:(id)a3
+- (AKBAATimeConfig)initWithCoder:(id)coder
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AKBAATimeConfig;
   v10 = [(AKBAATimeConfig *)&v11 init];
-  v13 = v10;
-  objc_storeStrong(&v13, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     [location[0] decodeDoubleForKey:@"lastLocalTimeInterval"];
-    v13->_lastLocalTimeInterval = v4;
+    selfCopy->_lastLocalTimeInterval = v4;
     [location[0] decodeDoubleForKey:@"lastServerTimeInterval"];
-    v13->_lastServerTimeInterval = v5;
+    selfCopy->_lastServerTimeInterval = v5;
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"bootSessionUUID"];
-    bootSessionUUID = v13->_bootSessionUUID;
-    v13->_bootSessionUUID = v6;
+    bootSessionUUID = selfCopy->_bootSessionUUID;
+    selfCopy->_bootSessionUUID = v6;
     _objc_release(bootSessionUUID);
   }
 
-  v9 = _objc_retain(v13);
+  v9 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = location[0];
-  [(AKBAATimeConfig *)v8 lastLocalTimeInterval];
+  [(AKBAATimeConfig *)selfCopy lastLocalTimeInterval];
   [v3 encodeDouble:@"lastLocalTimeInterval" forKey:?];
   v4 = location[0];
-  [(AKBAATimeConfig *)v8 lastServerTimeInterval];
+  [(AKBAATimeConfig *)selfCopy lastServerTimeInterval];
   [v4 encodeDouble:@"lastServerTimeInterval" forKey:?];
   v5 = location[0];
-  v6 = [(AKBAATimeConfig *)v8 bootSessionUUID];
+  bootSessionUUID = [(AKBAATimeConfig *)selfCopy bootSessionUUID];
   [v5 encodeObject:? forKey:?];
-  _objc_release(v6);
+  _objc_release(bootSessionUUID);
   objc_storeStrong(location, 0);
 }
 

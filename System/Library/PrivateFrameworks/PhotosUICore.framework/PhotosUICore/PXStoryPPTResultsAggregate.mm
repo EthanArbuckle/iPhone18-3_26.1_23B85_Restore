@@ -1,9 +1,9 @@
 @interface PXStoryPPTResultsAggregate
 - (NSDictionary)extraResultsDictionaryRepresentation;
 - (PXStoryPPTResultsAggregate)init;
-- (id)_keyForMeasure:(id)a3 configuration:(id)a4;
-- (void)_addExtraResultsValue:(double)a3 metric:(int64_t)a4 forMeasure:(id)a5 configuration:(id)a6;
-- (void)addValue:(double)a3 metric:(int64_t)a4 forMeasure:(id)a5 configuration:(id)a6;
+- (id)_keyForMeasure:(id)measure configuration:(id)configuration;
+- (void)_addExtraResultsValue:(double)value metric:(int64_t)metric forMeasure:(id)measure configuration:(id)configuration;
+- (void)addValue:(double)value metric:(int64_t)metric forMeasure:(id)measure configuration:(id)configuration;
 @end
 
 @implementation PXStoryPPTResultsAggregate
@@ -47,36 +47,36 @@ void __66__PXStoryPPTResultsAggregate_extraResultsDictionaryRepresentation__bloc
   [v15 _addExtraResultsValue:v18 metric:v6 forMeasure:@"first" configuration:v17];
 }
 
-- (id)_keyForMeasure:(id)a3 configuration:(id)a4
+- (id)_keyForMeasure:(id)measure configuration:(id)configuration
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
-  v7 = a4;
+  measureCopy = measure;
+  configurationCopy = configuration;
   v8 = [v5 alloc];
-  v9 = [v6 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F1741150];
+  v9 = [measureCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_1F1741150];
 
-  v10 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F1741150];
+  v10 = [configurationCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_1F1741150];
 
   v11 = [v8 initWithFormat:@"sub:%@:%@", v9, v10];
 
   return v11;
 }
 
-- (void)_addExtraResultsValue:(double)a3 metric:(int64_t)a4 forMeasure:(id)a5 configuration:(id)a6
+- (void)_addExtraResultsValue:(double)value metric:(int64_t)metric forMeasure:(id)measure configuration:(id)configuration
 {
-  v18 = a5;
-  v11 = a6;
-  switch(a4)
+  measureCopy = measure;
+  configurationCopy = configuration;
+  switch(metric)
   {
     case 1:
-      if (a3 >= 0.1)
+      if (value >= 0.1)
       {
         v12 = @"s";
       }
 
       else
       {
-        a3 = a3 * 1000.0;
+        value = value * 1000.0;
         v12 = @"ms";
       }
 
@@ -85,18 +85,18 @@ void __66__PXStoryPPTResultsAggregate_extraResultsDictionaryRepresentation__bloc
       v12 = @"fps";
       break;
     case 0:
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PXStoryPPTResultsAggregate.m" lineNumber:53 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTResultsAggregate.m" lineNumber:53 description:@"Code which should be unreachable has been reached"];
 
       abort();
     default:
       v12 = 0;
-      a3 = 0.0;
+      value = 0.0;
       break;
   }
 
-  v13 = [(PXStoryPPTResultsAggregate *)self _keyForMeasure:v18 configuration:v11];
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v13 = [(PXStoryPPTResultsAggregate *)self _keyForMeasure:measureCopy configuration:configurationCopy];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [(NSMutableDictionary *)self->_extraResultsDictionaryRepresentation setObject:v14 forKeyedSubscript:v13];
 
   extraResultsDictionaryRepresentation = self->_extraResultsDictionaryRepresentation;
@@ -104,30 +104,30 @@ void __66__PXStoryPPTResultsAggregate_extraResultsDictionaryRepresentation__bloc
   [(NSMutableDictionary *)extraResultsDictionaryRepresentation setObject:v12 forKeyedSubscript:v16];
 }
 
-- (void)addValue:(double)a3 metric:(int64_t)a4 forMeasure:(id)a5 configuration:(id)a6
+- (void)addValue:(double)value metric:(int64_t)metric forMeasure:(id)measure configuration:(id)configuration
 {
-  v16 = a5;
-  v11 = a6;
-  v12 = [(NSMutableDictionary *)self->_measureInfos objectForKeyedSubscript:v16];
+  measureCopy = measure;
+  configurationCopy = configuration;
+  v12 = [(NSMutableDictionary *)self->_measureInfos objectForKeyedSubscript:measureCopy];
   if (v12)
   {
     v13 = v12;
-    if ([(_PXStoryPPTMeasureInfo *)v12 metric]!= a4)
+    if ([(_PXStoryPPTMeasureInfo *)v12 metric]!= metric)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXStoryPPTResultsAggregate.m" lineNumber:41 description:{@"metric mismatch for %@:%@", v16, v11}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTResultsAggregate.m" lineNumber:41 description:{@"metric mismatch for %@:%@", measureCopy, configurationCopy}];
     }
   }
 
   else
   {
-    v13 = [[_PXStoryPPTMeasureInfo alloc] initWithMetric:a4];
-    [(NSMutableDictionary *)self->_measureInfos setObject:v13 forKeyedSubscript:v16];
+    v13 = [[_PXStoryPPTMeasureInfo alloc] initWithMetric:metric];
+    [(NSMutableDictionary *)self->_measureInfos setObject:v13 forKeyedSubscript:measureCopy];
   }
 
-  [(PXStoryPPTResultsAggregate *)self _addExtraResultsValue:a4 metric:v16 forMeasure:v11 configuration:a3];
-  v15 = [(_PXStoryPPTMeasureInfo *)v13 statistics];
-  [v15 addValue:a3];
+  [(PXStoryPPTResultsAggregate *)self _addExtraResultsValue:metric metric:measureCopy forMeasure:configurationCopy configuration:value];
+  statistics = [(_PXStoryPPTMeasureInfo *)v13 statistics];
+  [statistics addValue:value];
 }
 
 - (PXStoryPPTResultsAggregate)init

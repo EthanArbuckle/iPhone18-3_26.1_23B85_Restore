@@ -1,35 +1,35 @@
 @interface STUIStatusBarElectronicTollCollectionItem
-- (id)imageForUpdate:(id)a3;
+- (id)imageForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarElectronicTollCollectionItem
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v3 = a3;
-  v4 = [v3 data];
-  v5 = [v4 electronicTollCollectionEntry];
+  updateCopy = update;
+  data = [updateCopy data];
+  electronicTollCollectionEntry = [data electronicTollCollectionEntry];
 
   v6 = MEMORY[0x277D755B8];
   v7 = DashBoardFrameworkBundle();
-  v8 = [v3 styleAttributes];
-  v9 = [v8 traitCollection];
-  v10 = [v6 imageNamed:@"Black_JapanETC" inBundle:v7 compatibleWithTraitCollection:v9];
+  styleAttributes = [updateCopy styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  v10 = [v6 imageNamed:@"Black_JapanETC" inBundle:v7 compatibleWithTraitCollection:traitCollection];
 
   v11 = [v10 imageWithRenderingMode:2];
 
-  v12 = [v3 styleAttributes];
+  styleAttributes2 = [updateCopy styleAttributes];
 
-  v13 = [v12 imageTintColor];
+  imageTintColor = [styleAttributes2 imageTintColor];
 
-  if (([v5 BOOLValue] & 1) == 0)
+  if (([electronicTollCollectionEntry BOOLValue] & 1) == 0)
   {
-    v14 = [v13 colorWithAlphaComponent:0.4];
+    v14 = [imageTintColor colorWithAlphaComponent:0.4];
 
-    v13 = v14;
+    imageTintColor = v14;
   }
 
-  v15 = [v11 _flatImageWithColor:v13];
+  v15 = [v11 _flatImageWithColor:imageTintColor];
 
   return v15;
 }

@@ -1,29 +1,29 @@
 @interface PICropStraightenPipelineBuilder
-- (BOOL)buildPipeline:(id)a3 error:(id *)a4;
+- (BOOL)buildPipeline:(id)pipeline error:(id *)error;
 - (PICropStraightenPipelineBuilder)init;
-- (PICropStraightenPipelineBuilder)initWithChannelFormat:(id)a3;
-- (id)_buildCropPipeline:(id)a3 input:(id)a4 adjustment:(id)a5 error:(id *)a6;
-- (id)_buildStraightenPipeline:(id)a3 input:(id)a4 adjustment:(id)a5 error:(id *)a6;
+- (PICropStraightenPipelineBuilder)initWithChannelFormat:(id)format;
+- (id)_buildCropPipeline:(id)pipeline input:(id)input adjustment:(id)adjustment error:(id *)error;
+- (id)_buildStraightenPipeline:(id)pipeline input:(id)input adjustment:(id)adjustment error:(id *)error;
 @end
 
 @implementation PICropStraightenPipelineBuilder
 
-- (id)_buildCropPipeline:(id)a3 input:(id)a4 adjustment:(id)a5 error:(id *)a6
+- (id)_buildCropPipeline:(id)pipeline input:(id)input adjustment:(id)adjustment error:(id *)error
 {
   v8 = MEMORY[0x1E69B39E0];
-  v9 = a5;
-  v26 = a4;
-  v25 = a3;
-  v24 = [v9 objectForKeyedSubscript:@"xOrigin"];
+  adjustmentCopy = adjustment;
+  inputCopy = input;
+  pipelineCopy = pipeline;
+  v24 = [adjustmentCopy objectForKeyedSubscript:@"xOrigin"];
   v10 = [v8 staticExpression:v24];
   v11 = MEMORY[0x1E69B39E0];
-  v12 = [v9 objectForKeyedSubscript:@"yOrigin"];
+  v12 = [adjustmentCopy objectForKeyedSubscript:@"yOrigin"];
   v13 = [v11 staticExpression:v12];
   v14 = MEMORY[0x1E69B39E0];
-  v15 = [v9 objectForKeyedSubscript:@"width"];
+  v15 = [adjustmentCopy objectForKeyedSubscript:@"width"];
   v16 = [v14 staticExpression:v15];
   v17 = MEMORY[0x1E69B39E0];
-  v18 = [v9 objectForKeyedSubscript:@"height"];
+  v18 = [adjustmentCopy objectForKeyedSubscript:@"height"];
 
   v19 = [v17 staticExpression:v18];
   v20 = [v8 rectWithX:v10 y:v13 width:v16 height:v19];
@@ -33,9 +33,9 @@
   v28[2] = __77__PICropStraightenPipelineBuilder__buildCropPipeline_input_adjustment_error___block_invoke;
   v28[3] = &unk_1E82AA600;
   v29 = v20;
-  v30 = a6;
+  errorCopy = error;
   v21 = v20;
-  v22 = [v25 processContainer:v26 forEachComponent:v28 error:a6];
+  v22 = [pipelineCopy processContainer:inputCopy forEachComponent:v28 error:error];
 
   return v22;
 }
@@ -77,16 +77,16 @@ LABEL_7:
   return v14;
 }
 
-- (id)_buildStraightenPipeline:(id)a3 input:(id)a4 adjustment:(id)a5 error:(id *)a6
+- (id)_buildStraightenPipeline:(id)pipeline input:(id)input adjustment:(id)adjustment error:(id *)error
 {
-  v9 = a5;
+  adjustmentCopy = adjustment;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__PICropStraightenPipelineBuilder__buildStraightenPipeline_input_adjustment_error___block_invoke;
   v13[3] = &unk_1E82AA5D8;
-  v14 = v9;
-  v10 = v9;
-  v11 = [a3 processContainer:a4 forEachComponent:v13 error:a6];
+  v14 = adjustmentCopy;
+  v10 = adjustmentCopy;
+  v11 = [pipeline processContainer:input forEachComponent:v13 error:error];
 
   return v11;
 }
@@ -174,36 +174,36 @@ LABEL_13:
   return v23;
 }
 
-- (BOOL)buildPipeline:(id)a3 error:(id *)a4
+- (BOOL)buildPipeline:(id)pipeline error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69B3CA8] sharedRegistry];
-  v7 = [(PICropStraightenPipelineBuilder *)self identifier];
-  v8 = [v6 schemaWithIdentifier:v7];
+  pipelineCopy = pipeline;
+  mEMORY[0x1E69B3CA8] = [MEMORY[0x1E69B3CA8] sharedRegistry];
+  identifier = [(PICropStraightenPipelineBuilder *)self identifier];
+  v8 = [mEMORY[0x1E69B3CA8] schemaWithIdentifier:identifier];
 
   v29 = v8;
   v9 = [MEMORY[0x1E69B39D0] controlChannelWithSchema:v8 name:@"adjustment"];
   v36 = 0;
-  v10 = [v5 addInputChannel:v9 error:&v36];
+  v10 = [pipelineCopy addInputChannel:v9 error:&v36];
   v11 = v36;
 
   v12 = objc_alloc(MEMORY[0x1E69B39D0]);
-  v13 = [(PICropStraightenPipelineBuilder *)self format];
-  v14 = [v12 initWithName:@"media" format:v13];
+  format = [(PICropStraightenPipelineBuilder *)self format];
+  v14 = [v12 initWithName:@"media" format:format];
 
   v35 = 0;
-  v15 = [v5 addInputChannel:v14 error:&v35];
+  v15 = [pipelineCopy addInputChannel:v14 error:&v35];
   v16 = v35;
 
   v34 = 0;
-  v17 = [v5 addOutputChannel:v14 error:&v34];
+  v17 = [pipelineCopy addOutputChannel:v14 error:&v34];
   v18 = v34;
 
   if (v10 && v15 && v17)
   {
     v19 = MEMORY[0x1E69B39E0];
     v20 = [v10 objectForKeyedSubscript:@"enabled"];
-    v21 = [v19 staticExpression:v20];
+    identifier2 = [v19 staticExpression:v20];
 
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -211,13 +211,13 @@ LABEL_13:
     v30[3] = &unk_1E82AA5B0;
     v30[4] = self;
     v31 = v10;
-    v33 = a4;
-    v22 = v5;
+    errorCopy = error;
+    v22 = pipelineCopy;
     v32 = v22;
-    v23 = [v22 switchOn:v21 with:v15 block:v30 error:a4];
+    v23 = [v22 switchOn:identifier2 with:v15 block:v30 error:error];
     if (v23)
     {
-      v24 = [v22 connectInputPort:v17 toOutputPort:v23 error:a4];
+      v24 = [v22 connectInputPort:v17 toOutputPort:v23 error:error];
     }
 
     else
@@ -231,10 +231,10 @@ LABEL_13:
   else
   {
     v25 = MEMORY[0x1E69B3A48];
-    v21 = [v5 identifier];
-    [v25 errorWithCode:1 reason:@"Failed to setup pipeline input and output ports" object:v21 underlyingError:v18];
+    identifier2 = [pipelineCopy identifier];
+    [v25 errorWithCode:1 reason:@"Failed to setup pipeline input and output ports" object:identifier2 underlyingError:v18];
     v24 = 0;
-    *a4 = v26 = v29;
+    *error = v26 = v29;
   }
 
   return v24;
@@ -286,11 +286,11 @@ id __55__PICropStraightenPipelineBuilder_buildPipeline_error___block_invoke(uint
   return v15;
 }
 
-- (PICropStraightenPipelineBuilder)initWithChannelFormat:(id)a3
+- (PICropStraightenPipelineBuilder)initWithChannelFormat:(id)format
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v9 = NUAssertLogger_7848();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -312,8 +312,8 @@ id __55__PICropStraightenPipelineBuilder_buildPipeline_error___block_invoke(uint
         v17 = dispatch_get_specific(*v11);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v17;
         v25 = 2114;
@@ -324,8 +324,8 @@ id __55__PICropStraightenPipelineBuilder_buildPipeline_error___block_invoke(uint
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v16;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -334,7 +334,7 @@ id __55__PICropStraightenPipelineBuilder_buildPipeline_error___block_invoke(uint
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = formatCopy;
   v22.receiver = self;
   v22.super_class = PICropStraightenPipelineBuilder;
   v6 = [(PICropStraightenPipelineBuilder *)&v22 init];
@@ -385,8 +385,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -413,8 +413,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

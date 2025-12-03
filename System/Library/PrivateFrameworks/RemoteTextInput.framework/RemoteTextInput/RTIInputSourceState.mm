@@ -1,50 +1,50 @@
 @interface RTIInputSourceState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)leftSplitFrame;
 - (CGRect)rightSplitFrame;
 - (RTIInputSourceState)init;
-- (RTIInputSourceState)initWithCoder:(id)a3;
+- (RTIInputSourceState)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCenterFilled:(BOOL)a3;
-- (void)setFloating:(BOOL)a3;
-- (void)setHardwareKeyboardMode:(BOOL)a3;
-- (void)setShowingEmojiSearch:(BOOL)a3;
-- (void)setShowsCandidateBar:(BOOL)a3;
-- (void)setSplit:(BOOL)a3;
-- (void)setSupportsSetPhraseBoundary:(BOOL)a3;
-- (void)setUsesCandidateSelection:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCenterFilled:(BOOL)filled;
+- (void)setFloating:(BOOL)floating;
+- (void)setHardwareKeyboardMode:(BOOL)mode;
+- (void)setShowingEmojiSearch:(BOOL)search;
+- (void)setShowsCandidateBar:(BOOL)bar;
+- (void)setSplit:(BOOL)split;
+- (void)setSupportsSetPhraseBoundary:(BOOL)boundary;
+- (void)setUsesCandidateSelection:(BOOL)selection;
 @end
 
 @implementation RTIInputSourceState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  if (([v8 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
 
   inputMode = self->_inputMode;
-  v5 = v8;
+  v5 = coderCopy;
   if (inputMode)
   {
-    [v8 encodeObject:inputMode forKey:@"im"];
-    v5 = v8;
+    [coderCopy encodeObject:inputMode forKey:@"im"];
+    v5 = coderCopy;
   }
 
   [v5 encodeInt32:self->_inputSourceStateMask.integerValue forKey:@"mask"];
   if (!CGRectIsNull(self->_leftSplitFrame))
   {
     v6 = [MEMORY[0x1E696B098] valueWithRect:{self->_leftSplitFrame.origin.x, self->_leftSplitFrame.origin.y, self->_leftSplitFrame.size.width, self->_leftSplitFrame.size.height}];
-    [v8 encodeObject:v6 forKey:@"lsf"];
+    [coderCopy encodeObject:v6 forKey:@"lsf"];
   }
 
   if (!CGRectIsNull(self->_rightSplitFrame))
   {
     v7 = [MEMORY[0x1E696B098] valueWithRect:{self->_rightSplitFrame.origin.x, self->_rightSplitFrame.origin.y, self->_rightSplitFrame.size.width, self->_rightSplitFrame.size.height}];
-    [v8 encodeObject:v7 forKey:@"rsf"];
+    [coderCopy encodeObject:v7 forKey:@"rsf"];
   }
 }
 
@@ -67,10 +67,10 @@
   return result;
 }
 
-- (RTIInputSourceState)initWithCoder:(id)a3
+- (RTIInputSourceState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -80,12 +80,12 @@
   v5 = [(RTIInputSourceState *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"im"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"im"];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
-    *(v5 + 2) = [v4 decodeInt32ForKey:@"mask"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lsf"];
+    *(v5 + 2) = [coderCopy decodeInt32ForKey:@"mask"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lsf"];
     v9 = v8;
     if (v8)
     {
@@ -103,7 +103,7 @@
       *(v5 + 40) = v14;
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rsf"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rsf"];
     v16 = v15;
     if (v15)
     {
@@ -128,8 +128,8 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(RTIInputSourceState *)self inputMode];
-  [v3 appendFormat:@"; inputMode = %@", v4];
+  inputMode = [(RTIInputSourceState *)self inputMode];
+  [v3 appendFormat:@"; inputMode = %@", inputMode];
 
   if ([(RTIInputSourceState *)self minimized])
   {
@@ -196,10 +196,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -209,19 +209,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTIInputSourceState *)self inputMode];
-      v7 = [(RTIInputSourceState *)v5 inputMode];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      inputMode = [(RTIInputSourceState *)self inputMode];
+      inputMode2 = [(RTIInputSourceState *)v5 inputMode];
+      v8 = inputMode2;
+      if (inputMode == inputMode2)
       {
       }
 
       else
       {
-        v9 = [(RTIInputSourceState *)self inputMode];
-        v10 = [(RTIInputSourceState *)v5 inputMode];
-        v11 = [v9 isEqual:v10];
+        inputMode3 = [(RTIInputSourceState *)self inputMode];
+        inputMode4 = [(RTIInputSourceState *)v5 inputMode];
+        v11 = [inputMode3 isEqual:inputMode4];
 
         if (!v11)
         {
@@ -229,17 +229,17 @@
         }
       }
 
-      v13 = [(RTIInputSourceState *)self minimized];
-      if (v13 == [(RTIInputSourceState *)v5 minimized])
+      minimized = [(RTIInputSourceState *)self minimized];
+      if (minimized == [(RTIInputSourceState *)v5 minimized])
       {
-        v14 = [(RTIInputSourceState *)self hardwareKeyboardMode];
-        if (v14 == [(RTIInputSourceState *)v5 hardwareKeyboardMode])
+        hardwareKeyboardMode = [(RTIInputSourceState *)self hardwareKeyboardMode];
+        if (hardwareKeyboardMode == [(RTIInputSourceState *)v5 hardwareKeyboardMode])
         {
-          v15 = [(RTIInputSourceState *)self centerFilled];
-          if (v15 == [(RTIInputSourceState *)v5 centerFilled])
+          centerFilled = [(RTIInputSourceState *)self centerFilled];
+          if (centerFilled == [(RTIInputSourceState *)v5 centerFilled])
           {
-            v16 = [(RTIInputSourceState *)self split];
-            if (v16 == [(RTIInputSourceState *)v5 split])
+            split = [(RTIInputSourceState *)self split];
+            if (split == [(RTIInputSourceState *)v5 split])
             {
               [(RTIInputSourceState *)self leftSplitFrame];
               v18 = v17;
@@ -273,20 +273,20 @@
                 v48.size.height = v36;
                 if (CGRectEqualToRect(v48, v50))
                 {
-                  v41 = [(RTIInputSourceState *)self floating];
-                  if (v41 == [(RTIInputSourceState *)v5 floating])
+                  floating = [(RTIInputSourceState *)self floating];
+                  if (floating == [(RTIInputSourceState *)v5 floating])
                   {
-                    v42 = [(RTIInputSourceState *)self showingEmojiSearch];
-                    if (v42 == [(RTIInputSourceState *)v5 showingEmojiSearch])
+                    showingEmojiSearch = [(RTIInputSourceState *)self showingEmojiSearch];
+                    if (showingEmojiSearch == [(RTIInputSourceState *)v5 showingEmojiSearch])
                     {
-                      v43 = [(RTIInputSourceState *)self usesCandidateSelection];
-                      if (v43 == [(RTIInputSourceState *)v5 usesCandidateSelection])
+                      usesCandidateSelection = [(RTIInputSourceState *)self usesCandidateSelection];
+                      if (usesCandidateSelection == [(RTIInputSourceState *)v5 usesCandidateSelection])
                       {
-                        v44 = [(RTIInputSourceState *)self showsCandidateBar];
-                        if (v44 == [(RTIInputSourceState *)v5 showsCandidateBar])
+                        showsCandidateBar = [(RTIInputSourceState *)self showsCandidateBar];
+                        if (showsCandidateBar == [(RTIInputSourceState *)v5 showsCandidateBar])
                         {
-                          v46 = [(RTIInputSourceState *)self supportsSetPhraseBoundary];
-                          v12 = v46 ^ [(RTIInputSourceState *)v5 supportsSetPhraseBoundary]^ 1;
+                          supportsSetPhraseBoundary = [(RTIInputSourceState *)self supportsSetPhraseBoundary];
+                          v12 = supportsSetPhraseBoundary ^ [(RTIInputSourceState *)v5 supportsSetPhraseBoundary]^ 1;
                           goto LABEL_20;
                         }
                       }
@@ -314,9 +314,9 @@ LABEL_21:
   return v12;
 }
 
-- (void)setHardwareKeyboardMode:(BOOL)a3
+- (void)setHardwareKeyboardMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -329,9 +329,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFFFD | v3;
 }
 
-- (void)setCenterFilled:(BOOL)a3
+- (void)setCenterFilled:(BOOL)filled
 {
-  if (a3)
+  if (filled)
   {
     v3 = 4;
   }
@@ -344,9 +344,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFFFB | v3;
 }
 
-- (void)setSplit:(BOOL)a3
+- (void)setSplit:(BOOL)split
 {
-  if (a3)
+  if (split)
   {
     v3 = 8;
   }
@@ -359,9 +359,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFFF7 | v3;
 }
 
-- (void)setFloating:(BOOL)a3
+- (void)setFloating:(BOOL)floating
 {
-  if (a3)
+  if (floating)
   {
     v3 = 16;
   }
@@ -374,9 +374,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFFEF | v3;
 }
 
-- (void)setShowingEmojiSearch:(BOOL)a3
+- (void)setShowingEmojiSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 32;
   }
@@ -389,9 +389,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFFDF | v3;
 }
 
-- (void)setUsesCandidateSelection:(BOOL)a3
+- (void)setUsesCandidateSelection:(BOOL)selection
 {
-  if (a3)
+  if (selection)
   {
     v3 = 128;
   }
@@ -404,9 +404,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFF7F | v3;
 }
 
-- (void)setShowsCandidateBar:(BOOL)a3
+- (void)setShowsCandidateBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     v3 = 64;
   }
@@ -419,9 +419,9 @@ LABEL_21:
   LOWORD(self->_inputSourceStateMask.integerValue) = self->_inputSourceStateMask.integerValue & 0xFFBF | v3;
 }
 
-- (void)setSupportsSetPhraseBoundary:(BOOL)a3
+- (void)setSupportsSetPhraseBoundary:(BOOL)boundary
 {
-  if (a3)
+  if (boundary)
   {
     v3 = 256;
   }

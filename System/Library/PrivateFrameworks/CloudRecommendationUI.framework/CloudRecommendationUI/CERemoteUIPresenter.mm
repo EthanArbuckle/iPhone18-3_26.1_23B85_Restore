@@ -1,15 +1,15 @@
 @interface CERemoteUIPresenter
-- (CERemoteUIPresenter)initWithAccount:(id)a3 presenter:(id)a4;
+- (CERemoteUIPresenter)initWithAccount:(id)account presenter:(id)presenter;
 - (CERemoteUIPresenterDelegate)delegate;
-- (void)remoteUIFlowManager:(id)a3 didDismissWithError:(id)a4;
+- (void)remoteUIFlowManager:(id)manager didDismissWithError:(id)error;
 @end
 
 @implementation CERemoteUIPresenter
 
-- (CERemoteUIPresenter)initWithAccount:(id)a3 presenter:(id)a4
+- (CERemoteUIPresenter)initWithAccount:(id)account presenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  presenterCopy = presenter;
   v14.receiver = self;
   v14.super_class = CERemoteUIPresenter;
   v8 = [(CERemoteUIPresenter *)&v14 init];
@@ -33,7 +33,7 @@
 
     v10 = v9;
     _Block_object_dispose(&v16, 8);
-    v11 = [[v9 alloc] initWithAccount:v6 presenter:v7];
+    v11 = [[v9 alloc] initWithAccount:accountCopy presenter:presenterCopy];
     remoteUIPresenter = v8->_remoteUIPresenter;
     v8->_remoteUIPresenter = v11;
 
@@ -43,12 +43,12 @@
   return v8;
 }
 
-- (void)remoteUIFlowManager:(id)a3 didDismissWithError:(id)a4
+- (void)remoteUIFlowManager:(id)manager didDismissWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CERemoteUIPresenter *)self delegate];
-  [v8 remoteUIFlowManager:v7 didDismissWithError:v6];
+  errorCopy = error;
+  managerCopy = manager;
+  delegate = [(CERemoteUIPresenter *)self delegate];
+  [delegate remoteUIFlowManager:managerCopy didDismissWithError:errorCopy];
 }
 
 - (CERemoteUIPresenterDelegate)delegate

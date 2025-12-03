@@ -1,61 +1,61 @@
 @interface _MPCMusicPlayerControllerServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MPCPlaybackEngine)playbackEngine;
-- (_MPCMusicPlayerControllerServer)initWithPlaybackEngine:(id)a3;
-- (id)_nowPlayingWithItem:(id)a3;
+- (_MPCMusicPlayerControllerServer)initWithPlaybackEngine:(id)engine;
+- (id)_nowPlayingWithItem:(id)item;
 - (id)_remoteCommandSenderIDForCurrentXPCConnection;
-- (id)_timeSnapshotWithElapsedTime:(double)a3 rate:(float)a4;
-- (void)_addContentItemIDsToUpdateRecord:(id)a3;
-- (void)_appendPlaybackContexts:(id)a3 remoteCommandSenderID:(id)a4 completion:(id)a5;
-- (void)_applyServerStateUpdateRecord:(id)a3;
-- (void)_invokeServerCommandEvent:(id)a3 remoteCommandSenderID:(id)a4 completion:(id)a5;
-- (void)_onQueue_setNowPlayingItem:(id)a3 itemIdentifier:(id)a4 remoteCommandSenderID:(id)a5 completion:(id)a6;
-- (void)_prependPlaybackContexts:(id)a3 remoteCommandSenderID:(id)a4 completion:(id)a5;
+- (id)_timeSnapshotWithElapsedTime:(double)time rate:(float)rate;
+- (void)_addContentItemIDsToUpdateRecord:(id)record;
+- (void)_appendPlaybackContexts:(id)contexts remoteCommandSenderID:(id)d completion:(id)completion;
+- (void)_applyServerStateUpdateRecord:(id)record;
+- (void)_invokeServerCommandEvent:(id)event remoteCommandSenderID:(id)d completion:(id)completion;
+- (void)_onQueue_setNowPlayingItem:(id)item itemIdentifier:(id)identifier remoteCommandSenderID:(id)d completion:(id)completion;
+- (void)_prependPlaybackContexts:(id)contexts remoteCommandSenderID:(id)d completion:(id)completion;
 - (void)_registerForCommandHandlersRegisteredNotification;
 - (void)_registerForMPAVItemTitlesDidChangeNotification;
-- (void)appendDescriptor:(id)a3 completion:(id)a4;
-- (void)beginPlaybackAtHostTime:(id)a3;
-- (void)beginSeekWithDirection:(int64_t)a3;
+- (void)appendDescriptor:(id)descriptor completion:(id)completion;
+- (void)beginPlaybackAtHostTime:(id)time;
+- (void)beginSeekWithDirection:(int64_t)direction;
 - (void)endSeek;
-- (void)engine:(id)a3 didChangeCurrentItemVariantID:(id)a4;
-- (void)engine:(id)a3 didChangeItemElapsedTime:(double)a4 rate:(float)a5;
-- (void)engine:(id)a3 didChangeQueueWithReason:(id)a4;
-- (void)engine:(id)a3 didChangeRepeatType:(int64_t)a4;
-- (void)engine:(id)a3 didChangeShuffleType:(int64_t)a4;
-- (void)engine:(id)a3 didChangeToItem:(id)a4;
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4;
-- (void)engine:(id)a3 didEndPlaybackOfItem:(id)a4;
-- (void)engine:(id)a3 didReachEndOfQueueWithReason:(id)a4;
-- (void)engine:(id)a3 didResetQueueWithPlaybackContext:(id)a4 error:(id)a5;
-- (void)getDescriptorWithReply:(id)a3;
-- (void)getImageForArtworkIdentifier:(id)a3 itemIdentifier:(id)a4 atSize:(CGSize)a5 reply:(id)a6;
-- (void)getNowPlayingAtIndex:(int64_t)a3 reply:(id)a4;
-- (void)getNowPlayingWithReply:(id)a3;
-- (void)getNowPlayingsForContentItemIDs:(id)a3 reply:(id)a4;
-- (void)getRepeatModeWithReply:(id)a3;
-- (void)getShuffleModeWithReply:(id)a3;
-- (void)getTimeSnapshotWithReply:(id)a3;
-- (void)pauseWithFadeDuration:(int64_t)a3;
-- (void)performQueueModifications:(id)a3 completion:(id)a4;
+- (void)engine:(id)engine didChangeCurrentItemVariantID:(id)d;
+- (void)engine:(id)engine didChangeItemElapsedTime:(double)time rate:(float)rate;
+- (void)engine:(id)engine didChangeQueueWithReason:(id)reason;
+- (void)engine:(id)engine didChangeRepeatType:(int64_t)type;
+- (void)engine:(id)engine didChangeShuffleType:(int64_t)type;
+- (void)engine:(id)engine didChangeToItem:(id)item;
+- (void)engine:(id)engine didChangeToState:(unint64_t)state;
+- (void)engine:(id)engine didEndPlaybackOfItem:(id)item;
+- (void)engine:(id)engine didReachEndOfQueueWithReason:(id)reason;
+- (void)engine:(id)engine didResetQueueWithPlaybackContext:(id)context error:(id)error;
+- (void)getDescriptorWithReply:(id)reply;
+- (void)getImageForArtworkIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier atSize:(CGSize)size reply:(id)reply;
+- (void)getNowPlayingAtIndex:(int64_t)index reply:(id)reply;
+- (void)getNowPlayingWithReply:(id)reply;
+- (void)getNowPlayingsForContentItemIDs:(id)ds reply:(id)reply;
+- (void)getRepeatModeWithReply:(id)reply;
+- (void)getShuffleModeWithReply:(id)reply;
+- (void)getTimeSnapshotWithReply:(id)reply;
+- (void)pauseWithFadeDuration:(int64_t)duration;
+- (void)performQueueModifications:(id)modifications completion:(id)completion;
 - (void)play;
-- (void)prependDescriptor:(id)a3 completion:(id)a4;
-- (void)prerollWithCompletion:(id)a3;
+- (void)prependDescriptor:(id)descriptor completion:(id)completion;
+- (void)prerollWithCompletion:(id)completion;
 - (void)reshuffle;
 - (void)resumeIfNeeded;
-- (void)setApplicationMusicPlayerTransitionType:(int64_t)a3 withDuration:(double)a4;
-- (void)setDescriptor:(id)a3 completion:(id)a4;
-- (void)setDisableAutoPlay:(BOOL)a3;
-- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)a3;
-- (void)setDisableRepeat:(BOOL)a3;
-- (void)setDisableShuffle:(BOOL)a3;
-- (void)setElapsedTime:(double)a3 completion:(id)a4;
-- (void)setNowPlayingItem:(id)a3 itemIdentifier:(id)a4 completion:(id)a5;
-- (void)setNowPlayingUID:(unint64_t)a3 completion:(id)a4;
-- (void)setPlaybackRate:(float)a3 completion:(id)a4;
-- (void)setRelativeVolume:(float)a3;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setShuffleMode:(int64_t)a3;
-- (void)skipWithBehavior:(int64_t)a3;
+- (void)setApplicationMusicPlayerTransitionType:(int64_t)type withDuration:(double)duration;
+- (void)setDescriptor:(id)descriptor completion:(id)completion;
+- (void)setDisableAutoPlay:(BOOL)play;
+- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)playing;
+- (void)setDisableRepeat:(BOOL)repeat;
+- (void)setDisableShuffle:(BOOL)shuffle;
+- (void)setElapsedTime:(double)time completion:(id)completion;
+- (void)setNowPlayingItem:(id)item itemIdentifier:(id)identifier completion:(id)completion;
+- (void)setNowPlayingUID:(unint64_t)d completion:(id)completion;
+- (void)setPlaybackRate:(float)rate completion:(id)completion;
+- (void)setRelativeVolume:(float)volume;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setShuffleMode:(int64_t)mode;
+- (void)skipWithBehavior:(int64_t)behavior;
 - (void)startServer;
 - (void)stopServer;
 @end
@@ -71,12 +71,12 @@
 
 - (void)_registerForCommandHandlersRegisteredNotification
 {
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v3 = *MEMORY[0x1E6970390];
-  v4 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v5 = [v4 mediaRemotePublisher];
-  v6 = [v5 commandCenter];
-  [v7 addObserver:self selector:sel__handleCommandHandlersRegistered_ name:v3 object:v6];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+  commandCenter = [mediaRemotePublisher commandCenter];
+  [defaultCenter addObserver:self selector:sel__handleCommandHandlersRegistered_ name:v3 object:commandCenter];
 }
 
 - (void)startServer
@@ -88,23 +88,23 @@
     listener = self->_listener;
     self->_listener = v4;
 
-    v6 = [MEMORY[0x1E6970800] sharedCache];
+    mEMORY[0x1E6970800] = [MEMORY[0x1E6970800] sharedCache];
     v7 = 56;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696B0D8] anonymousListener];
+    mEMORY[0x1E6970800] = [MEMORY[0x1E696B0D8] anonymousListener];
     v7 = 64;
   }
 
   v8 = *(&self->super.isa + v7);
-  *(&self->super.isa + v7) = v6;
+  *(&self->super.isa + v7) = mEMORY[0x1E6970800];
 
   [(NSXPCListener *)self->_listener setDelegate:self];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   activeConnections = self->_activeConnections;
-  self->_activeConnections = v9;
+  self->_activeConnections = array;
 
   self->_resumed = 0;
   [(_MPCMusicPlayerControllerServer *)self _registerForMPAVItemTitlesDidChangeNotification];
@@ -114,8 +114,8 @@
 
 - (void)_registerForMPAVItemTitlesDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleMPAVItemTitlesDidChange_ name:*MEMORY[0x1E696F810] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleMPAVItemTitlesDidChange_ name:*MEMORY[0x1E696F810] object:0];
 }
 
 - (void)resumeIfNeeded
@@ -123,12 +123,12 @@
   v11 = *MEMORY[0x1E69E9840];
   if (self->_listener && !self->_resumed)
   {
-    v3 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-    v4 = [v3 mediaRemotePublisher];
-    v5 = [v4 commandCenter];
-    v6 = [v5 commandHandlersRegistered];
+    playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+    mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+    commandCenter = [mediaRemotePublisher commandCenter];
+    commandHandlersRegistered = [commandCenter commandHandlersRegistered];
 
-    if (v6)
+    if (commandHandlersRegistered)
     {
       [(NSXPCListener *)self->_listener resume];
       self->_resumed = 1;
@@ -159,11 +159,11 @@ LABEL_8:
 
 - (id)_remoteCommandSenderIDForCurrentXPCConnection
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  v3 = v2;
-  if (v2)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v3 = currentConnection;
+  if (currentConnection)
   {
-    [v2 auditToken];
+    [currentConnection auditToken];
     v4 = MSVBundleIDForAuditToken();
   }
 
@@ -177,44 +177,44 @@ LABEL_8:
   return v5;
 }
 
-- (void)_invokeServerCommandEvent:(id)a3 remoteCommandSenderID:(id)a4 completion:(id)a5
+- (void)_invokeServerCommandEvent:(id)event remoteCommandSenderID:(id)d completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 mediaRemoteOptions];
-  v12 = [v11 mutableCopy];
+  eventCopy = event;
+  completionCopy = completion;
+  dCopy = d;
+  mediaRemoteOptions = [eventCopy mediaRemoteOptions];
+  v12 = [mediaRemoteOptions mutableCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    dictionary = v12;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v15 = v14;
+  v15 = dictionary;
 
   v16 = MSVNanoIDCreateTaggedPointer();
   v17 = [@"MPMusicPlayer-" stringByAppendingString:v16];
 
   [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69B10B0]];
   [v15 setObject:@"MPCMusicPlayerControllerServer" forKeyedSubscript:*MEMORY[0x1E69B1200]];
-  [v15 setObject:v10 forKeyedSubscript:@"kMRMediaRemoteOptionSenderID"];
+  [v15 setObject:dCopy forKeyedSubscript:@"kMRMediaRemoteOptionSenderID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v8;
-    v19 = [v18 playbackQueue];
-    [v19 setMediaRemoteOptions:v15];
+    v18 = eventCopy;
+    playbackQueue = [v18 playbackQueue];
+    [playbackQueue setMediaRemoteOptions:v15];
     v20 = objc_alloc(MEMORY[0x1E6970970]);
-    v21 = [v18 command];
+    command = [v18 command];
 
-    v22 = [v20 initWithCommand:v21 playbackQueue:v19];
+    v22 = [v20 initWithCommand:command playbackQueue:playbackQueue];
   }
 
   else
@@ -222,20 +222,20 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v8;
-      v19 = [v23 playbackQueue];
+      v23 = eventCopy;
+      playbackQueue = [v23 playbackQueue];
       v24 = objc_alloc(MEMORY[0x1E6970558]);
-      v21 = [v23 command];
+      command = [v23 command];
 
-      v22 = [v24 initWithCommand:v21 playbackQueue:v19 options:v15];
+      v22 = [v24 initWithCommand:command playbackQueue:playbackQueue options:v15];
     }
 
     else
     {
       v25 = objc_alloc(objc_opt_class());
-      v19 = [v8 command];
-      v21 = [v8 command];
-      v22 = [v25 initWithCommand:v19 mediaRemoteType:objc_msgSend(v21 options:{"mediaRemoteCommandType"), v15}];
+      playbackQueue = [eventCopy command];
+      command = [eventCopy command];
+      v22 = [v25 initWithCommand:playbackQueue mediaRemoteType:objc_msgSend(command options:{"mediaRemoteCommandType"), v15}];
     }
   }
 
@@ -249,24 +249,24 @@ LABEL_8:
     _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_DEFAULT, "MPMusicPlayerControllerServer: _invokeServerCommandEvent:… start dispatch [] serverEvent=%{public}@", buf, 0xCu);
   }
 
-  v28 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v29 = [v28 mediaRemotePublisher];
-  v30 = [v29 commandCenter];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+  commandCenter = [mediaRemotePublisher commandCenter];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __94___MPCMusicPlayerControllerServer__invokeServerCommandEvent_remoteCommandSenderID_completion___block_invoke;
   v33[3] = &unk_1E8237070;
   v34 = v26;
-  v35 = v9;
-  v31 = v9;
+  v35 = completionCopy;
+  v31 = completionCopy;
   v32 = v26;
-  [v30 dispatchCommandEvent:v32 completion:v33];
+  [commandCenter dispatchCommandEvent:v32 completion:v33];
 }
 
-- (void)_applyServerStateUpdateRecord:(id)a3
+- (void)_applyServerStateUpdateRecord:(id)record
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -287,8 +287,8 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) remoteObjectProxy];
-        [v10 applyServerStateUpdateRecord:v4];
+        remoteObjectProxy = [*(*(&v11 + 1) + 8 * v9) remoteObjectProxy];
+        [remoteObjectProxy applyServerStateUpdateRecord:recordCopy];
 
         ++v9;
       }
@@ -301,49 +301,49 @@ LABEL_8:
   }
 }
 
-- (void)_addContentItemIDsToUpdateRecord:(id)a3
+- (void)_addContentItemIDsToUpdateRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  recordCopy = record;
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
   if (!+[MPCPlaybackEngine isSystemMusic])
   {
-    v6 = [v5 queueController];
-    v7 = [v6 displayItemCount];
+    queueController = [playbackEngine queueController];
+    displayItemCount = [queueController displayItemCount];
     v9 = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [v6 contentItemIDsFromOffset:-v7 toOffset:v7 mode:1 nowPlayingIndex:&v9];
-    [v4 setHasContentItemIDs:1];
-    [v4 setContentItemIDs:v8];
+    v8 = [queueController contentItemIDsFromOffset:-displayItemCount toOffset:displayItemCount mode:1 nowPlayingIndex:&v9];
+    [recordCopy setHasContentItemIDs:1];
+    [recordCopy setContentItemIDs:v8];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70___MPCMusicPlayerControllerServer_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_1E82392C0;
   block[4] = self;
-  v8 = v7;
+  v8 = connectionCopy;
   v36 = v8;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_initWeak(&location, self);
   objc_initWeak(&from, v8);
-  v9 = [v8 processIdentifier];
+  processIdentifier = [v8 processIdentifier];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __70___MPCMusicPlayerControllerServer_listener_shouldAcceptNewConnection___block_invoke_2;
   v29[3] = &unk_1E8237270;
-  v32 = v9;
+  v32 = processIdentifier;
   objc_copyWeak(&v30, &location);
   objc_copyWeak(&v31, &from);
   [v8 setInvalidationHandler:v29];
   if (+[MPCPlaybackEngine isSystemMusic])
   {
-    v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F45C1010];
-    [v8 setExportedInterface:v10];
+    exportedInterface = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F45C1010];
+    [v8 setExportedInterface:exportedInterface];
   }
 
   else
@@ -351,28 +351,28 @@ LABEL_8:
     v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F45C1288];
     [v8 setExportedInterface:v11];
 
-    v12 = [v8 remoteObjectInterface];
+    remoteObjectInterface = [v8 remoteObjectInterface];
     v13 = MEMORY[0x1E695DFD8];
     v40[0] = objc_opt_class();
     v40[1] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v15 = [v13 setWithArray:v14];
-    [v12 setClasses:v15 forSelector:sel_getNowPlayingsForContentItemIDs_reply_ argumentIndex:0 ofReply:1];
+    [remoteObjectInterface setClasses:v15 forSelector:sel_getNowPlayingsForContentItemIDs_reply_ argumentIndex:0 ofReply:1];
 
-    v10 = [v8 exportedInterface];
+    exportedInterface = [v8 exportedInterface];
     v16 = MEMORY[0x1E695DFD8];
     v39[0] = objc_opt_class();
     v39[1] = objc_opt_class();
     v39[2] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
     v18 = [v16 setWithArray:v17];
-    [v10 setClasses:v18 forSelector:sel_beginPlaybackAtHostTime_ argumentIndex:0 ofReply:0];
+    [exportedInterface setClasses:v18 forSelector:sel_beginPlaybackAtHostTime_ argumentIndex:0 ofReply:0];
   }
 
   v19 = MEMORY[0x1E69B14E8];
-  v20 = [v8 exportedInterface];
-  v21 = [v20 protocol];
-  v22 = [v19 proxyWithObject:self protocol:v21];
+  exportedInterface2 = [v8 exportedInterface];
+  protocol = [exportedInterface2 protocol];
+  v22 = [v19 proxyWithObject:self protocol:protocol];
   [v8 setExportedObject:v22];
 
   v23 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F45FD218];
@@ -380,8 +380,8 @@ LABEL_8:
 
   if (MSVDeviceOSIsInternalInstall())
   {
-    v24 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v25 = [v24 integerForKey:@"DelayMusicServerConnection"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v25 = [standardUserDefaults integerForKey:@"DelayMusicServerConnection"];
 
     if (v25 >= 1)
     {
@@ -416,15 +416,15 @@ LABEL_8:
   return 1;
 }
 
-- (void)engine:(id)a3 didChangeCurrentItemVariantID:(id)a4
+- (void)engine:(id)engine didChangeCurrentItemVariantID:(id)d
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self playbackEngine:a3];
-  v9 = [v5 queueController];
+  v5 = [(_MPCMusicPlayerControllerServer *)self playbackEngine:engine];
+  queueController = [v5 queueController];
 
-  v6 = [v9 currentItem];
-  if (([v6 isPlaceholder] & 1) == 0)
+  currentItem = [queueController currentItem];
+  if (([currentItem isPlaceholder] & 1) == 0)
   {
-    v7 = [(_MPCMusicPlayerControllerServer *)self _nowPlayingWithItem:v6];
+    v7 = [(_MPCMusicPlayerControllerServer *)self _nowPlayingWithItem:currentItem];
     v8 = objc_alloc_init(MEMORY[0x1E6970808]);
     [v8 setHasNowPlaying:1];
     [v8 setNowPlaying:v7];
@@ -433,32 +433,32 @@ LABEL_8:
   }
 }
 
-- (void)engine:(id)a3 didChangeItemElapsedTime:(double)a4 rate:(float)a5
+- (void)engine:(id)engine didChangeItemElapsedTime:(double)time rate:(float)rate
 {
   v10 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v10 setHasTimeSnapshot:1];
-  *&v8 = a5;
-  v9 = [(_MPCMusicPlayerControllerServer *)self _timeSnapshotWithElapsedTime:a4 rate:v8];
+  *&v8 = rate;
+  v9 = [(_MPCMusicPlayerControllerServer *)self _timeSnapshotWithElapsedTime:time rate:v8];
   [v10 setTimeSnapshot:v9];
 
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v10];
 }
 
-- (void)engine:(id)a3 didEndPlaybackOfItem:(id)a4
+- (void)engine:(id)engine didEndPlaybackOfItem:(id)item
 {
   v5 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v5 setItemDidEnd:1];
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v5];
 }
 
-- (void)engine:(id)a3 didReachEndOfQueueWithReason:(id)a4
+- (void)engine:(id)engine didReachEndOfQueueWithReason:(id)reason
 {
   v5 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v5 setQueueDidEnd:1];
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v5];
 }
 
-- (void)engine:(id)a3 didChangeShuffleType:(int64_t)a4
+- (void)engine:(id)engine didChangeShuffleType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v5 setHasShuffleMode:1];
@@ -468,19 +468,19 @@ LABEL_8:
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v5];
 }
 
-- (void)engine:(id)a3 didChangeRepeatType:(int64_t)a4
+- (void)engine:(id)engine didChangeRepeatType:(int64_t)type
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v9 = [v5 queueController];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  queueController = [playbackEngine queueController];
 
-  v6 = [v9 music];
-  v7 = [v6 autoPlayEnabled];
+  music = [queueController music];
+  autoPlayEnabled = [music autoPlayEnabled];
 
   v8 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v8 setHasRepeatMode:1];
   [v8 setRepeatMode:MPMusicRepeatModeForMPRepeatType()];
-  [v8 setQueueDidChange:v7];
-  if (v7)
+  [v8 setQueueDidChange:autoPlayEnabled];
+  if (autoPlayEnabled)
   {
     [(_MPCMusicPlayerControllerServer *)self _addContentItemIDsToUpdateRecord:v8];
   }
@@ -488,19 +488,19 @@ LABEL_8:
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v8];
 }
 
-- (void)engine:(id)a3 didResetQueueWithPlaybackContext:(id)a4 error:(id)a5
+- (void)engine:(id)engine didResetQueueWithPlaybackContext:(id)context error:(id)error
 {
-  v16 = a5;
-  v7 = [a4 queueDescriptor];
-  objc_storeStrong(&self->_queueDescriptor, v7);
+  errorCopy = error;
+  queueDescriptor = [context queueDescriptor];
+  objc_storeStrong(&self->_queueDescriptor, queueDescriptor);
   if (self->_prepareCompletionHandler)
   {
     v8 = self->_preparingDescriptor;
     v9 = v8;
-    if (v8 == v7)
+    if (v8 == queueDescriptor)
     {
 
-      if (!v16)
+      if (!errorCopy)
       {
         goto LABEL_10;
       }
@@ -508,9 +508,9 @@ LABEL_8:
 
     else
     {
-      v10 = [(MPMusicPlayerQueueDescriptor *)v8 isEqual:v7];
+      v10 = [(MPMusicPlayerQueueDescriptor *)v8 isEqual:queueDescriptor];
 
-      if (!v16 || (v10 & 1) == 0)
+      if (!errorCopy || (v10 & 1) == 0)
       {
         if (v10)
         {
@@ -535,49 +535,49 @@ LABEL_9:
   }
 
 LABEL_10:
-  [(MPMusicPlayerControllerSystemCache *)self->_systemCache setQueueDescriptor:v7];
+  [(MPMusicPlayerControllerSystemCache *)self->_systemCache setQueueDescriptor:queueDescriptor];
   v15 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v15 setHasQueueDescriptor:1];
-  [v15 setQueueDescriptor:v7];
+  [v15 setQueueDescriptor:queueDescriptor];
   [v15 setQueueDidChange:1];
   [(_MPCMusicPlayerControllerServer *)self _addContentItemIDsToUpdateRecord:v15];
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v15];
 }
 
-- (void)engine:(id)a3 didChangeToItem:(id)a4
+- (void)engine:(id)engine didChangeToItem:(id)item
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  itemCopy = item;
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 player];
+    player = [engineCopy player];
     v23 = 138543618;
-    v24 = v7;
+    v24 = itemCopy;
     v25 = 1024;
-    v26 = [v9 isReloadingPlaybackContext];
+    isReloadingPlaybackContext = [player isReloadingPlaybackContext];
     _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "MPMusicPlayerControllerServer: engine:didChangeToItem: - %{public}@ - reloading:%{BOOL}u", &v23, 0x12u);
   }
 
-  v10 = [v6 player];
-  v11 = [v10 isReloadingPlaybackContext];
+  player2 = [engineCopy player];
+  isReloadingPlaybackContext2 = [player2 isReloadingPlaybackContext];
 
-  if ((v11 & 1) == 0)
+  if ((isReloadingPlaybackContext2 & 1) == 0)
   {
-    v12 = [v7 isPlaceholder];
+    isPlaceholder = [itemCopy isPlaceholder];
     v13 = 0;
-    if (!v7)
+    if (!itemCopy)
     {
       goto LABEL_14;
     }
 
-    if (v12)
+    if (isPlaceholder)
     {
       goto LABEL_14;
     }
 
-    v13 = [(_MPCMusicPlayerControllerServer *)self _nowPlayingWithItem:v7];
+    v13 = [(_MPCMusicPlayerControllerServer *)self _nowPlayingWithItem:itemCopy];
     if (!self->_prepareCompletionHandler)
     {
       goto LABEL_14;
@@ -609,7 +609,7 @@ LABEL_14:
       }
     }
 
-    if (![(MPMusicPlayerQueueDescriptor *)self->_queueDescriptor matchesStartItem:v7]&& !self->_waitingForAdditionalPlaybackContexts)
+    if (![(MPMusicPlayerQueueDescriptor *)self->_queueDescriptor matchesStartItem:itemCopy]&& !self->_waitingForAdditionalPlaybackContexts)
     {
       prepareCompletionHandler = self->_prepareCompletionHandler;
       v19 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:6 debugDescription:@"Prepare queue failed with unexpected start item"];
@@ -628,20 +628,20 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)engine:(id)a3 didChangeQueueWithReason:(id)a4
+- (void)engine:(id)engine didChangeQueueWithReason:(id)reason
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self playbackEngine:a3];
-  v6 = [v5 queueController];
+  v5 = [(_MPCMusicPlayerControllerServer *)self playbackEngine:engine];
+  queueController = [v5 queueController];
 
-  v7 = [v6 currentItem];
-  if ([v7 isPlaceholder])
+  currentItem = [queueController currentItem];
+  if ([currentItem isPlaceholder])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(_MPCMusicPlayerControllerServer *)self _nowPlayingWithItem:v7];
+    v8 = [(_MPCMusicPlayerControllerServer *)self _nowPlayingWithItem:currentItem];
   }
 
   v10 = v8;
@@ -654,7 +654,7 @@ LABEL_15:
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v9];
 }
 
-- (void)engine:(id)a3 didChangeToState:(unint64_t)a4
+- (void)engine:(id)engine didChangeToState:(unint64_t)state
 {
   v7 = objc_alloc_init(MEMORY[0x1E6970808]);
   [v7 setHasTimeSnapshot:1];
@@ -665,58 +665,58 @@ LABEL_15:
   [(_MPCMusicPlayerControllerServer *)self _applyServerStateUpdateRecord:v7];
 }
 
-- (void)setApplicationMusicPlayerTransitionType:(int64_t)a3 withDuration:(double)a4
+- (void)setApplicationMusicPlayerTransitionType:(int64_t)type withDuration:(double)duration
 {
-  v7 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v6 = [v7 player];
-  [v6 setApplicationMusicPlayerTransitionType:a3 withDuration:a4];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  player = [playbackEngine player];
+  [player setApplicationMusicPlayerTransitionType:type withDuration:duration];
 }
 
-- (void)setDisableShuffle:(BOOL)a3
+- (void)setDisableShuffle:(BOOL)shuffle
 {
-  v3 = a3;
-  v4 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  [v4 setDisableShuffle:v3];
+  shuffleCopy = shuffle;
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  [playbackEngine setDisableShuffle:shuffleCopy];
 }
 
-- (void)setDisableRepeat:(BOOL)a3
+- (void)setDisableRepeat:(BOOL)repeat
 {
-  v3 = a3;
-  v4 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  [v4 setDisableRepeat:v3];
+  repeatCopy = repeat;
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  [playbackEngine setDisableRepeat:repeatCopy];
 }
 
-- (void)setDisableAutoPlay:(BOOL)a3
+- (void)setDisableAutoPlay:(BOOL)play
 {
-  v3 = a3;
-  v4 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  [v4 setDisableAutoPlay:v3];
+  playCopy = play;
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  [playbackEngine setDisableAutoPlay:playCopy];
 }
 
-- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)a3
+- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)playing
 {
-  v3 = a3;
-  v6 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v4 = [v6 mediaRemotePublisher];
-  v5 = [v4 commandCenter];
-  [v5 setDisableAutomaticCanBeNowPlaying:v3];
+  playingCopy = playing;
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+  commandCenter = [mediaRemotePublisher commandCenter];
+  [commandCenter setDisableAutomaticCanBeNowPlaying:playingCopy];
 }
 
-- (void)setRelativeVolume:(float)a3
+- (void)setRelativeVolume:(float)volume
 {
-  v8 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v4 = [v8 player];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  player = [playbackEngine player];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v8 player];
-    *&v7 = a3;
-    [v6 setRelativeVolume:v7];
+    player2 = [playbackEngine player];
+    *&v7 = volume;
+    [player2 setRelativeVolume:v7];
   }
 }
 
-- (void)beginPlaybackAtHostTime:(id)a3
+- (void)beginPlaybackAtHostTime:(id)time
 {
   v3 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -726,9 +726,9 @@ LABEL_15:
   }
 }
 
-- (void)prerollWithCompletion:(id)a3
+- (void)prerollWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -736,13 +736,13 @@ LABEL_15:
     _os_log_impl(&dword_1C5C61000, v4, OS_LOG_TYPE_ERROR, "MPMusicPlayerControllerServer: prerollWithCompletion FAILED [not implemented]", v5, 2u);
   }
 
-  v3[2](v3, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)performQueueModifications:(id)a3 completion:(id)a4
+- (void)performQueueModifications:(id)modifications completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  modificationsCopy = modifications;
+  completionCopy = completion;
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v10 = os_signpost_id_generate(v9);
 
@@ -754,35 +754,35 @@ LABEL_15:
     _os_signpost_emit_with_name_impl(&dword_1C5C61000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "performQueueModifications", "", buf, 2u);
   }
 
-  v13 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
   if (+[MPCPlaybackEngine isSystemMusic])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_MPCMusicPlayerControllerServer.m" lineNumber:890 description:@"performQueueModifications is not supported for the system music application"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCMusicPlayerControllerServer.m" lineNumber:890 description:@"performQueueModifications is not supported for the system music application"];
   }
 
-  v14 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72___MPCMusicPlayerControllerServer_performQueueModifications_completion___block_invoke;
   v20[3] = &unk_1E82393D8;
-  v21 = v13;
-  v22 = v7;
-  v23 = self;
-  v24 = v14;
-  v25 = v8;
+  v21 = playbackEngine;
+  v22 = modificationsCopy;
+  selfCopy = self;
+  v24 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v25 = completionCopy;
   v26 = v10;
-  v15 = v8;
-  v16 = v14;
-  v17 = v7;
-  v18 = v13;
+  v15 = completionCopy;
+  v16 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v17 = modificationsCopy;
+  v18 = playbackEngine;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 }
 
-- (void)setPlaybackRate:(float)a3 completion:(id)a4
+- (void)setPlaybackRate:(float)rate completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  completionCopy = completion;
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v9 = os_signpost_id_generate(v8);
 
@@ -798,20 +798,20 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __62___MPCMusicPlayerControllerServer_setPlaybackRate_completion___block_invoke;
   block[3] = &unk_1E8237220;
-  v18 = a3;
+  rateCopy = rate;
   block[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v16 = completionCopy;
   v17 = v9;
-  v12 = v6;
-  v13 = v7;
+  v12 = completionCopy;
+  v13 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setElapsedTime:(double)a3 completion:(id)a4
+- (void)setElapsedTime:(double)time completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  completionCopy = completion;
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v9 = os_signpost_id_generate(v8);
 
@@ -827,19 +827,19 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __61___MPCMusicPlayerControllerServer_setElapsedTime_completion___block_invoke;
   block[3] = &unk_1E82371F8;
-  v17 = a3;
+  timeCopy = time;
   block[4] = self;
-  v15 = v7;
-  v16 = v6;
+  v15 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v16 = completionCopy;
   v18 = v9;
-  v12 = v6;
-  v13 = v7;
+  v12 = completionCopy;
+  v13 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)getShuffleModeWithReply:(id)a3
+- (void)getShuffleModeWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v6 = os_signpost_id_generate(v5);
 
@@ -856,8 +856,8 @@ LABEL_15:
   v12[2] = __59___MPCMusicPlayerControllerServer_getShuffleModeWithReply___block_invoke;
   v12[3] = &unk_1E8239170;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = replyCopy;
+  v9 = replyCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v12);
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v11 = v10;
@@ -868,9 +868,9 @@ LABEL_15:
   }
 }
 
-- (void)setShuffleMode:(int64_t)a3
+- (void)setShuffleMode:(int64_t)mode
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v7 = os_signpost_id_generate(v6);
 
@@ -886,10 +886,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __50___MPCMusicPlayerControllerServer_setShuffleMode___block_invoke;
   block[3] = &unk_1E82391E8;
-  v14 = v5;
-  v15 = a3;
+  v14 = _remoteCommandSenderIDForCurrentXPCConnection;
+  modeCopy = mode;
   block[4] = self;
-  v10 = v5;
+  v10 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v12 = v11;
@@ -900,9 +900,9 @@ LABEL_15:
   }
 }
 
-- (void)getRepeatModeWithReply:(id)a3
+- (void)getRepeatModeWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v6 = os_signpost_id_generate(v5);
 
@@ -919,8 +919,8 @@ LABEL_15:
   v12[2] = __58___MPCMusicPlayerControllerServer_getRepeatModeWithReply___block_invoke;
   v12[3] = &unk_1E8239170;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = replyCopy;
+  v9 = replyCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v12);
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v11 = v10;
@@ -931,9 +931,9 @@ LABEL_15:
   }
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v7 = os_signpost_id_generate(v6);
 
@@ -949,10 +949,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __49___MPCMusicPlayerControllerServer_setRepeatMode___block_invoke;
   block[3] = &unk_1E82391E8;
-  v14 = v5;
-  v15 = a3;
+  v14 = _remoteCommandSenderIDForCurrentXPCConnection;
+  modeCopy = mode;
   block[4] = self;
-  v10 = v5;
+  v10 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v12 = v11;
@@ -965,7 +965,7 @@ LABEL_15:
 
 - (void)endSeek
 {
-  v3 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v5 = os_signpost_id_generate(v4);
 
@@ -982,8 +982,8 @@ LABEL_15:
   v11[2] = __42___MPCMusicPlayerControllerServer_endSeek__block_invoke;
   v11[3] = &unk_1E82392C0;
   v11[4] = self;
-  v12 = v3;
-  v8 = v3;
+  v12 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v8 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], v11);
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v10 = v9;
@@ -994,9 +994,9 @@ LABEL_15:
   }
 }
 
-- (void)beginSeekWithDirection:(int64_t)a3
+- (void)beginSeekWithDirection:(int64_t)direction
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v7 = os_signpost_id_generate(v6);
 
@@ -1012,10 +1012,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __58___MPCMusicPlayerControllerServer_beginSeekWithDirection___block_invoke;
   block[3] = &unk_1E82391E8;
-  v14 = v5;
-  v15 = a3;
+  v14 = _remoteCommandSenderIDForCurrentXPCConnection;
+  directionCopy = direction;
   block[4] = self;
-  v10 = v5;
+  v10 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v12 = v11;
@@ -1028,7 +1028,7 @@ LABEL_15:
 
 - (void)reshuffle
 {
-  v3 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v5 = os_signpost_id_generate(v4);
 
@@ -1045,8 +1045,8 @@ LABEL_15:
   v11[2] = __44___MPCMusicPlayerControllerServer_reshuffle__block_invoke;
   v11[3] = &unk_1E82392C0;
   v11[4] = self;
-  v12 = v3;
-  v8 = v3;
+  v12 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v8 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], v11);
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v10 = v9;
@@ -1057,9 +1057,9 @@ LABEL_15:
   }
 }
 
-- (void)skipWithBehavior:(int64_t)a3
+- (void)skipWithBehavior:(int64_t)behavior
 {
-  v5 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v7 = os_signpost_id_generate(v6);
 
@@ -1075,10 +1075,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __52___MPCMusicPlayerControllerServer_skipWithBehavior___block_invoke;
   block[3] = &unk_1E82391E8;
-  v14 = v5;
-  v15 = a3;
+  v14 = _remoteCommandSenderIDForCurrentXPCConnection;
+  behaviorCopy = behavior;
   block[4] = self;
-  v10 = v5;
+  v10 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v12 = v11;
@@ -1089,9 +1089,9 @@ LABEL_15:
   }
 }
 
-- (void)pauseWithFadeDuration:(int64_t)a3
+- (void)pauseWithFadeDuration:(int64_t)duration
 {
-  v4 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v6 = os_signpost_id_generate(v5);
 
@@ -1108,8 +1108,8 @@ LABEL_15:
   v12[2] = __57___MPCMusicPlayerControllerServer_pauseWithFadeDuration___block_invoke;
   v12[3] = &unk_1E82392C0;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v9 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], v12);
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v11 = v10;
@@ -1122,7 +1122,7 @@ LABEL_15:
 
 - (void)play
 {
-  v3 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v5 = os_signpost_id_generate(v4);
 
@@ -1139,8 +1139,8 @@ LABEL_15:
   v11[2] = __39___MPCMusicPlayerControllerServer_play__block_invoke;
   v11[3] = &unk_1E82392C0;
   v11[4] = self;
-  v12 = v3;
-  v8 = v3;
+  v12 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v8 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], v11);
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v10 = v9;
@@ -1151,25 +1151,25 @@ LABEL_15:
   }
 }
 
-- (void)_appendPlaybackContexts:(id)a3 remoteCommandSenderID:(id)a4 completion:(id)a5
+- (void)_appendPlaybackContexts:(id)contexts remoteCommandSenderID:(id)d completion:(id)completion
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextsCopy = contexts;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v11 = [v8 firstObject];
-  if (v11)
+  firstObject = [contextsCopy firstObject];
+  if (firstObject)
   {
-    v12 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-    v13 = [v12 mediaRemotePublisher];
-    v14 = [v13 commandCenter];
+    playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+    mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+    commandCenter = [mediaRemotePublisher commandCenter];
 
-    v15 = [v14 insertIntoPlaybackQueueCommand];
-    if ([v15 isSupportedAndEnabled])
+    insertIntoPlaybackQueueCommand = [commandCenter insertIntoPlaybackQueueCommand];
+    if ([insertIntoPlaybackQueueCommand isSupportedAndEnabled])
     {
-      [v11 setActionAfterQueueLoad:10];
-      v16 = [[MPCPlaybackContextRemotePlaybackQueue alloc] initWithPlaybackContext:v11];
+      [firstObject setActionAfterQueueLoad:10];
+      v16 = [[MPCPlaybackContextRemotePlaybackQueue alloc] initWithPlaybackContext:firstObject];
       [(MPCPlaybackContextRemotePlaybackQueue *)v16 setReplaceIntent:1];
       v17 = objc_alloc(MEMORY[0x1E6970558]);
       v26[0] = *MEMORY[0x1E69B1178];
@@ -1179,129 +1179,129 @@ LABEL_15:
       v26[2] = @"_MPCOverrideAllowsInsertionPositionLast";
       v27[2] = MEMORY[0x1E695E118];
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
-      v19 = [v17 initWithCommand:v15 playbackQueue:v16 options:v18];
+      v19 = [v17 initWithCommand:insertIntoPlaybackQueueCommand playbackQueue:v16 options:v18];
 
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __92___MPCMusicPlayerControllerServer__appendPlaybackContexts_remoteCommandSenderID_completion___block_invoke;
       v21[3] = &unk_1E8237188;
-      v25 = v10;
-      v22 = v8;
-      v23 = self;
-      v24 = v9;
+      v25 = completionCopy;
+      v22 = contextsCopy;
+      selfCopy = self;
+      v24 = dCopy;
       [(_MPCMusicPlayerControllerServer *)self _invokeServerCommandEvent:v19 remoteCommandSenderID:v24 completion:v21];
     }
 
     else
     {
       v20 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:7 debugDescription:@"InsertIntoPlaybackQueue is currently not enabled or the playback engine is not ready"];
-      (*(v10 + 2))(v10, v20);
+      (*(completionCopy + 2))(completionCopy, v20);
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:1 debugDescription:@"Playback context not found when appending contexts."];
-    (*(v10 + 2))(v10, v14);
+    commandCenter = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:1 debugDescription:@"Playback context not found when appending contexts."];
+    (*(completionCopy + 2))(completionCopy, commandCenter);
   }
 }
 
-- (void)appendDescriptor:(id)a3 completion:(id)a4
+- (void)appendDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 playbackContexts];
-  self->_waitingForAdditionalPlaybackContexts = [v7 count] > 1;
-  v8 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v8;
-  v11 = v7;
+  completionCopy = completion;
+  playbackContexts = [descriptor playbackContexts];
+  self->_waitingForAdditionalPlaybackContexts = [playbackContexts count] > 1;
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  v12 = playbackContexts;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v11 = playbackContexts;
   msv_dispatch_on_main_queue();
 }
 
-- (void)_prependPlaybackContexts:(id)a3 remoteCommandSenderID:(id)a4 completion:(id)a5
+- (void)_prependPlaybackContexts:(id)contexts remoteCommandSenderID:(id)d completion:(id)completion
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 lastObject];
-  if (v11)
+  contextsCopy = contexts;
+  dCopy = d;
+  completionCopy = completion;
+  lastObject = [contextsCopy lastObject];
+  if (lastObject)
   {
-    v12 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-    v13 = [v12 mediaRemotePublisher];
-    v14 = [v13 commandCenter];
+    playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+    mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+    commandCenter = [mediaRemotePublisher commandCenter];
 
-    v15 = [v14 insertIntoPlaybackQueueCommand];
-    if ([v15 isSupportedAndEnabled])
+    insertIntoPlaybackQueueCommand = [commandCenter insertIntoPlaybackQueueCommand];
+    if ([insertIntoPlaybackQueueCommand isSupportedAndEnabled])
     {
-      [v11 setActionAfterQueueLoad:10];
-      v16 = [[MPCPlaybackContextRemotePlaybackQueue alloc] initWithPlaybackContext:v11];
+      [lastObject setActionAfterQueueLoad:10];
+      v16 = [[MPCPlaybackContextRemotePlaybackQueue alloc] initWithPlaybackContext:lastObject];
       [(MPCPlaybackContextRemotePlaybackQueue *)v16 setReplaceIntent:1];
       v17 = objc_alloc(MEMORY[0x1E6970558]);
       v26 = *MEMORY[0x1E69B1178];
       v27[0] = &unk_1F45994F0;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      v19 = [v17 initWithCommand:v15 playbackQueue:v16 options:v18];
+      v19 = [v17 initWithCommand:insertIntoPlaybackQueueCommand playbackQueue:v16 options:v18];
 
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __93___MPCMusicPlayerControllerServer__prependPlaybackContexts_remoteCommandSenderID_completion___block_invoke;
       v21[3] = &unk_1E8237188;
-      v25 = v10;
-      v22 = v8;
-      v23 = self;
-      v24 = v9;
+      v25 = completionCopy;
+      v22 = contextsCopy;
+      selfCopy = self;
+      v24 = dCopy;
       [(_MPCMusicPlayerControllerServer *)self _invokeServerCommandEvent:v19 remoteCommandSenderID:v24 completion:v21];
     }
 
     else
     {
       v20 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:7 debugDescription:@"InsertIntoPlaybackQueue is currently not enabled or the playback engine is not ready"];
-      (*(v10 + 2))(v10, v20);
+      (*(completionCopy + 2))(completionCopy, v20);
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:1 debugDescription:@"Playback context not found when prepending contexts."];
-    (*(v10 + 2))(v10, v14);
+    commandCenter = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:1 debugDescription:@"Playback context not found when prepending contexts."];
+    (*(completionCopy + 2))(completionCopy, commandCenter);
   }
 }
 
-- (void)prependDescriptor:(id)a3 completion:(id)a4
+- (void)prependDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 playbackContexts];
-  self->_waitingForAdditionalPlaybackContexts = [v7 count] > 1;
-  v8 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v8;
-  v11 = v7;
+  completionCopy = completion;
+  playbackContexts = [descriptor playbackContexts];
+  self->_waitingForAdditionalPlaybackContexts = [playbackContexts count] > 1;
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  v12 = playbackContexts;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v11 = playbackContexts;
   msv_dispatch_on_main_queue();
 }
 
-- (void)getDescriptorWithReply:(id)a3
+- (void)getDescriptorWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58___MPCMusicPlayerControllerServer_getDescriptorWithReply___block_invoke;
   v6[3] = &unk_1E8239170;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = replyCopy;
+  v5 = replyCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)setDescriptor:(id)a3 completion:(id)a4
+- (void)setDescriptor:(id)descriptor completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v9 = os_signpost_id_generate(v8);
 
@@ -1313,27 +1313,27 @@ LABEL_15:
     _os_signpost_emit_with_name_impl(&dword_1C5C61000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "setDescriptor", "", buf, 2u);
   }
 
-  v12 = [v6 playbackContexts];
-  v13 = [v12 firstObject];
-  v14 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  if ([v14 disableRepeat])
+  playbackContexts = [descriptorCopy playbackContexts];
+  firstObject = [playbackContexts firstObject];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  if ([playbackEngine disableRepeat])
   {
-    [v13 setRepeatType:0];
+    [firstObject setRepeatType:0];
   }
 
-  if ([v14 disableShuffle])
+  if ([playbackEngine disableShuffle])
   {
-    [v13 setShuffleType:0];
+    [firstObject setShuffleType:0];
   }
 
-  [v13 setQueueEndAction:2];
-  if (v13)
+  [firstObject setQueueEndAction:2];
+  if (firstObject)
   {
-    v15 = [MEMORY[0x1E696B0B8] currentConnection];
-    v16 = v15;
-    if (v15)
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+    v16 = currentConnection;
+    if (currentConnection)
     {
-      [v15 auditToken];
+      [currentConnection auditToken];
       v17 = MSVBundleIDForAuditToken();
     }
 
@@ -1342,21 +1342,21 @@ LABEL_15:
       v17 = 0;
     }
 
-    v21 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+    _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60___MPCMusicPlayerControllerServer_setDescriptor_completion___block_invoke;
     block[3] = &unk_1E8237138;
     block[4] = self;
-    v25 = v6;
-    v31 = v7;
+    v25 = descriptorCopy;
+    v31 = completionCopy;
     v32 = v9;
-    v26 = v12;
+    v26 = playbackContexts;
     v27 = v17;
-    v28 = v13;
-    v29 = v21;
-    v30 = v14;
-    v22 = v21;
+    v28 = firstObject;
+    v29 = _remoteCommandSenderIDForCurrentXPCConnection;
+    v30 = playbackEngine;
+    v22 = _remoteCommandSenderIDForCurrentXPCConnection;
     v23 = v17;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
@@ -1367,12 +1367,12 @@ LABEL_15:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v34 = v6;
+      v34 = descriptorCopy;
       _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "MusicKit: No playback contexts found for descriptor %{public}@", buf, 0xCu);
     }
 
     v19 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E6970248] code:1 debugDescription:@"Playback context not found when setting descriptor."];
-    (*(v7 + 2))(v7, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
 
     v20 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
     v16 = v20;
@@ -1384,9 +1384,9 @@ LABEL_15:
   }
 }
 
-- (void)getTimeSnapshotWithReply:(id)a3
+- (void)getTimeSnapshotWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v6 = os_signpost_id_generate(v5);
 
@@ -1403,8 +1403,8 @@ LABEL_15:
   v12[2] = __60___MPCMusicPlayerControllerServer_getTimeSnapshotWithReply___block_invoke;
   v12[3] = &unk_1E8239170;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = replyCopy;
+  v9 = replyCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v12);
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v11 = v10;
@@ -1415,28 +1415,28 @@ LABEL_15:
   }
 }
 
-- (id)_timeSnapshotWithElapsedTime:(double)a3 rate:(float)a4
+- (id)_timeSnapshotWithElapsedTime:(double)time rate:(float)rate
 {
-  v6 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v7 = [v6 player];
-  v8 = [v7 currentItem];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  player = [playbackEngine player];
+  currentItem = [player currentItem];
 
-  v9 = [v6 player];
-  v10 = [v9 state];
+  player2 = [playbackEngine player];
+  state = [player2 state];
 
   v11 = 4;
-  if (a4 < 0.0)
+  if (rate < 0.0)
   {
     v11 = 5;
   }
 
   v12 = 3;
-  if (v10 != 6)
+  if (state != 6)
   {
     v12 = 0;
   }
 
-  if ((v10 - 3) >= 3)
+  if ((state - 3) >= 3)
   {
     v13 = v12;
   }
@@ -1447,12 +1447,12 @@ LABEL_15:
   }
 
   v14 = 2;
-  if (v10 != 1)
+  if (state != 1)
   {
-    v14 = v10 == 2;
+    v14 = state == 2;
   }
 
-  if (v10 <= 2)
+  if (state <= 2)
   {
     v15 = v14;
   }
@@ -1462,9 +1462,9 @@ LABEL_15:
     v15 = v13;
   }
 
-  if ([v8 isAlwaysLive])
+  if ([currentItem isAlwaysLive])
   {
-    *&v16 = a4;
+    *&v16 = rate;
     [MEMORY[0x1E69707F8] liveSnapshotWithRate:v15 state:v16];
   }
 
@@ -1473,42 +1473,42 @@ LABEL_15:
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v18 = v17;
     v19 = MEMORY[0x1E69707F8];
-    [v8 durationIfAvailable];
-    *&v20 = a4;
-    [v19 snapshotWithElapsedTime:v15 duration:a3 rate:v21 atTimestamp:v20 state:v18];
+    [currentItem durationIfAvailable];
+    *&v20 = rate;
+    [v19 snapshotWithElapsedTime:v15 duration:time rate:v21 atTimestamp:v20 state:v18];
   }
   v22 = ;
 
   return v22;
 }
 
-- (void)getImageForArtworkIdentifier:(id)a3 itemIdentifier:(id)a4 atSize:(CGSize)a5 reply:(id)a6
+- (void)getImageForArtworkIdentifier:(id)identifier itemIdentifier:(id)itemIdentifier atSize:(CGSize)size reply:(id)reply
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __92___MPCMusicPlayerControllerServer_getImageForArtworkIdentifier_itemIdentifier_atSize_reply___block_invoke;
   v17[3] = &unk_1E82370E8;
   v17[4] = self;
-  v18 = v12;
+  v18 = itemIdentifierCopy;
   v21 = width;
   v22 = height;
-  v19 = v11;
-  v20 = v13;
-  v14 = v11;
-  v15 = v13;
-  v16 = v12;
+  v19 = identifierCopy;
+  v20 = replyCopy;
+  v14 = identifierCopy;
+  v15 = replyCopy;
+  v16 = itemIdentifierCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v17);
 }
 
-- (void)setNowPlayingUID:(unint64_t)a3 completion:(id)a4
+- (void)setNowPlayingUID:(unint64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  completionCopy = completion;
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v9 = os_signpost_id_generate(v8);
 
@@ -1525,11 +1525,11 @@ LABEL_15:
   v16[2] = __63___MPCMusicPlayerControllerServer_setNowPlayingUID_completion___block_invoke;
   v16[3] = &unk_1E8238C70;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
-  v19 = a3;
-  v12 = v6;
-  v13 = v7;
+  v17 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v18 = completionCopy;
+  dCopy = d;
+  v12 = completionCopy;
+  v13 = _remoteCommandSenderIDForCurrentXPCConnection;
   dispatch_sync(MEMORY[0x1E69E96A0], v16);
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v15 = v14;
@@ -1540,20 +1540,20 @@ LABEL_15:
   }
 }
 
-- (void)_onQueue_setNowPlayingItem:(id)a3 itemIdentifier:(id)a4 remoteCommandSenderID:(id)a5 completion:(id)a6
+- (void)_onQueue_setNowPlayingItem:(id)item itemIdentifier:(id)identifier remoteCommandSenderID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v14 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-  v15 = [v14 mediaRemotePublisher];
-  v16 = [v15 commandCenter];
+  playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+  mediaRemotePublisher = [playbackEngine mediaRemotePublisher];
+  commandCenter = [mediaRemotePublisher commandCenter];
 
-  v17 = [v16 playItemInQueueCommand];
-  v18 = v17;
-  if (!(v10 | v11))
+  playItemInQueueCommand = [commandCenter playItemInQueueCommand];
+  v18 = playItemInQueueCommand;
+  if (!(itemCopy | identifierCopy))
   {
     v19 = MEMORY[0x1E696ABC0];
     v20 = *MEMORY[0x1E6970248];
@@ -1561,12 +1561,12 @@ LABEL_15:
     v22 = 5;
 LABEL_7:
     v26 = [v19 msv_errorWithDomain:v20 code:v22 debugDescription:v21];
-    v13[2](v13, v26);
+    completionCopy[2](completionCopy, v26);
 
     goto LABEL_15;
   }
 
-  if (![v17 isSupportedAndEnabled])
+  if (![playItemInQueueCommand isSupportedAndEnabled])
   {
     v19 = MEMORY[0x1E696ABC0];
     v20 = *MEMORY[0x1E6970248];
@@ -1575,11 +1575,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v23 = [MEMORY[0x1E695DF90] dictionary];
-  v24 = v11;
-  if (v11)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v24 = identifierCopy;
+  if (identifierCopy)
   {
-    v25 = v24;
+    contentItemID = v24;
   }
 
   else
@@ -1587,46 +1587,46 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v10 modelObject];
-      v27 = [v30 identifiers];
-      v25 = [v27 contentItemID];
+      modelObject = [itemCopy modelObject];
+      identifiers = [modelObject identifiers];
+      contentItemID = [identifiers contentItemID];
     }
 
     else
     {
-      v25 = 0;
+      contentItemID = 0;
     }
   }
 
-  if ([v25 length])
+  if ([contentItemID length])
   {
-    [v23 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69B10C8]];
+    [dictionary setObject:contentItemID forKeyedSubscript:*MEMORY[0x1E69B10C8]];
   }
 
   else
   {
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v10, "persistentID")}];
-    [v23 setObject:v28 forKeyedSubscript:*MEMORY[0x1E69B1270]];
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(itemCopy, "persistentID")}];
+    [dictionary setObject:v28 forKeyedSubscript:*MEMORY[0x1E69B1270]];
   }
 
-  v29 = [v18 newCommandEventWithCommandType:131 options:v23];
+  v29 = [v18 newCommandEventWithCommandType:131 options:dictionary];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __110___MPCMusicPlayerControllerServer__onQueue_setNowPlayingItem_itemIdentifier_remoteCommandSenderID_completion___block_invoke;
   v31[3] = &unk_1E8237070;
-  v32 = v10;
-  v33 = v13;
-  [(_MPCMusicPlayerControllerServer *)self _invokeServerCommandEvent:v29 remoteCommandSenderID:v12 completion:v31];
+  v32 = itemCopy;
+  v33 = completionCopy;
+  [(_MPCMusicPlayerControllerServer *)self _invokeServerCommandEvent:v29 remoteCommandSenderID:dCopy completion:v31];
 
 LABEL_15:
 }
 
-- (void)setNowPlayingItem:(id)a3 itemIdentifier:(id)a4 completion:(id)a5
+- (void)setNowPlayingItem:(id)item itemIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
+  itemCopy = item;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  _remoteCommandSenderIDForCurrentXPCConnection = [(_MPCMusicPlayerControllerServer *)self _remoteCommandSenderIDForCurrentXPCConnection];
   v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v13 = os_signpost_id_generate(v12);
 
@@ -1643,14 +1643,14 @@ LABEL_15:
   block[2] = __79___MPCMusicPlayerControllerServer_setNowPlayingItem_itemIdentifier_completion___block_invoke;
   block[3] = &unk_1E8237048;
   block[4] = self;
-  v23 = v8;
-  v24 = v9;
-  v25 = v11;
-  v26 = v10;
-  v16 = v10;
-  v17 = v11;
-  v18 = v9;
-  v19 = v8;
+  v23 = itemCopy;
+  v24 = identifierCopy;
+  v25 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v26 = completionCopy;
+  v16 = completionCopy;
+  v17 = _remoteCommandSenderIDForCurrentXPCConnection;
+  v18 = identifierCopy;
+  v19 = itemCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v20 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v21 = v20;
@@ -1661,9 +1661,9 @@ LABEL_15:
   }
 }
 
-- (void)getNowPlayingAtIndex:(int64_t)a3 reply:(id)a4
+- (void)getNowPlayingAtIndex:(int64_t)index reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v8 = os_signpost_id_generate(v7);
 
@@ -1679,10 +1679,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __62___MPCMusicPlayerControllerServer_getNowPlayingAtIndex_reply___block_invoke;
   block[3] = &unk_1E8237020;
-  v15 = v6;
-  v16 = a3;
+  v15 = replyCopy;
+  indexCopy = index;
   block[4] = self;
-  v11 = v6;
+  v11 = replyCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v12 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v13 = v12;
@@ -1693,77 +1693,77 @@ LABEL_15:
   }
 }
 
-- (id)_nowPlayingWithItem:(id)a3
+- (id)_nowPlayingWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (itemCopy)
   {
-    v5 = [v4 mediaItem];
-    v38 = v4;
-    v6 = [v4 contentItem];
+    mediaItem = [itemCopy mediaItem];
+    v38 = itemCopy;
+    contentItem = [itemCopy contentItem];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v5;
-      v8 = [v7 modelObject];
-      v9 = [v8 identifiers];
-      v10 = [v9 contentItemID];
-      v11 = [v10 length];
+      v7 = mediaItem;
+      modelObject = [v7 modelObject];
+      identifiers = [modelObject identifiers];
+      contentItemID = [identifiers contentItemID];
+      v11 = [contentItemID length];
 
-      v5 = v7;
+      mediaItem = v7;
       if (!v11)
       {
-        v12 = [v7 modelObject];
+        modelObject2 = [v7 modelObject];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v13 = MEMORY[0x1E6970670];
-          v14 = v12;
-          v15 = [v14 anyObject];
-          v16 = [v14 identifiers];
+          v14 = modelObject2;
+          anyObject = [v14 anyObject];
+          identifiers2 = [v14 identifiers];
 
           v41[0] = MEMORY[0x1E69E9820];
           v41[1] = 3221225472;
           v41[2] = __55___MPCMusicPlayerControllerServer__nowPlayingWithItem___block_invoke;
           v41[3] = &unk_1E82389D8;
-          v42 = v6;
-          v17 = [v16 copyWithSource:@"MPMusicPlayerControllerServer" block:v41];
-          v18 = v6;
-          v19 = [v15 copyWithIdentifiers:v17 block:&__block_literal_global_21230];
+          v42 = contentItem;
+          v17 = [identifiers2 copyWithSource:@"MPMusicPlayerControllerServer" block:v41];
+          v18 = contentItem;
+          v19 = [anyObject copyWithIdentifiers:v17 block:&__block_literal_global_21230];
           v20 = [v13 genericObjectWithModelObject:v19];
 
-          v6 = v18;
+          contentItem = v18;
         }
 
         else
         {
-          v22 = [v12 identifiers];
+          identifiers3 = [modelObject2 identifiers];
           v39[0] = MEMORY[0x1E69E9820];
           v39[1] = 3221225472;
           v39[2] = __55___MPCMusicPlayerControllerServer__nowPlayingWithItem___block_invoke_3;
           v39[3] = &unk_1E82389D8;
-          v40 = v6;
-          v23 = [v22 copyWithSource:@"MPMusicPlayerControllerServer" block:v39];
-          v20 = [v12 copyWithIdentifiers:v23 block:&__block_literal_global_14_21231];
+          v40 = contentItem;
+          v23 = [identifiers3 copyWithSource:@"MPMusicPlayerControllerServer" block:v39];
+          v20 = [modelObject2 copyWithIdentifiers:v23 block:&__block_literal_global_14_21231];
 
           v14 = v40;
         }
 
-        v5 = [objc_alloc(MEMORY[0x1E6970700]) initWithModelObject:v20];
+        mediaItem = [objc_alloc(MEMORY[0x1E6970700]) initWithModelObject:v20];
       }
     }
 
-    v24 = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
-    v25 = [v24 queueController];
+    playbackEngine = [(_MPCMusicPlayerControllerServer *)self playbackEngine];
+    queueController = [playbackEngine queueController];
 
-    v26 = [v6 identifier];
-    v37 = [v25 displayIndexForContentItemID:v26];
+    identifier = [contentItem identifier];
+    v37 = [queueController displayIndexForContentItemID:identifier];
 
-    v27 = [v25 displayItemCount];
-    v28 = [v25 behaviorImpl];
-    v29 = [v6 identifier];
-    v30 = [v28 componentsForContentItemID:v29];
+    displayItemCount = [queueController displayItemCount];
+    behaviorImpl = [queueController behaviorImpl];
+    identifier2 = [contentItem identifier];
+    v30 = [behaviorImpl componentsForContentItemID:identifier2];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1777,12 +1777,12 @@ LABEL_15:
     }
 
     v32 = MEMORY[0x1E69707F0];
-    v33 = [v6 identifier];
-    v34 = [v6 artworkIdentifier];
-    v35 = [v6 activeFormat];
-    v21 = [v32 nowPlayingWithItem:v5 itemIdentifier:v33 itemUID:v31 artworkIdentifier:v34 audioFormat:v35 index:v37 count:v27];
+    identifier3 = [contentItem identifier];
+    artworkIdentifier = [contentItem artworkIdentifier];
+    activeFormat = [contentItem activeFormat];
+    v21 = [v32 nowPlayingWithItem:mediaItem itemIdentifier:identifier3 itemUID:v31 artworkIdentifier:artworkIdentifier audioFormat:activeFormat index:v37 count:displayItemCount];
 
-    v4 = v38;
+    itemCopy = v38;
   }
 
   else
@@ -1793,10 +1793,10 @@ LABEL_15:
   return v21;
 }
 
-- (void)getNowPlayingsForContentItemIDs:(id)a3 reply:(id)a4
+- (void)getNowPlayingsForContentItemIDs:(id)ds reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  replyCopy = reply;
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v9 = os_signpost_id_generate(v8);
 
@@ -1813,10 +1813,10 @@ LABEL_15:
   block[2] = __73___MPCMusicPlayerControllerServer_getNowPlayingsForContentItemIDs_reply___block_invoke;
   block[3] = &unk_1E8239198;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
+  v17 = dsCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = dsCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v15 = v14;
@@ -1827,9 +1827,9 @@ LABEL_15:
   }
 }
 
-- (void)getNowPlayingWithReply:(id)a3
+- (void)getNowPlayingWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Default");
   v6 = os_signpost_id_generate(v5);
 
@@ -1846,8 +1846,8 @@ LABEL_15:
   v12[2] = __58___MPCMusicPlayerControllerServer_getNowPlayingWithReply___block_invoke;
   v12[3] = &unk_1E8239170;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = replyCopy;
+  v9 = replyCopy;
   dispatch_sync(MEMORY[0x1E69E96A0], v12);
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "SDKPlayback");
   v11 = v10;
@@ -1872,17 +1872,17 @@ LABEL_15:
   }
 }
 
-- (_MPCMusicPlayerControllerServer)initWithPlaybackEngine:(id)a3
+- (_MPCMusicPlayerControllerServer)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v8.receiver = self;
   v8.super_class = _MPCMusicPlayerControllerServer;
   v5 = [(_MPCMusicPlayerControllerServer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
-    [v4 addEngineObserver:v6];
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
+    [engineCopy addEngineObserver:v6];
     [(_MPCMusicPlayerControllerServer *)v6 _registerForCommandHandlersRegisteredNotification];
   }
 

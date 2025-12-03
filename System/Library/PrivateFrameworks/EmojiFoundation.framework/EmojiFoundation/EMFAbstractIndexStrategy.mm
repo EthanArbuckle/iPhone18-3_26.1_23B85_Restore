@@ -1,21 +1,21 @@
 @interface EMFAbstractIndexStrategy
-- (EMFAbstractIndexStrategy)initWithTermIndex:(id)a3 andDocumentIndex:(id)a4;
+- (EMFAbstractIndexStrategy)initWithTermIndex:(id)index andDocumentIndex:(id)documentIndex;
 @end
 
 @implementation EMFAbstractIndexStrategy
 
-- (EMFAbstractIndexStrategy)initWithTermIndex:(id)a3 andDocumentIndex:(id)a4
+- (EMFAbstractIndexStrategy)initWithTermIndex:(id)index andDocumentIndex:(id)documentIndex
 {
-  v7 = a3;
-  v8 = a4;
+  indexCopy = index;
+  documentIndexCopy = documentIndex;
   v12.receiver = self;
   v12.super_class = EMFAbstractIndexStrategy;
   v9 = [(EMFAbstractIndexStrategy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_termIndex, a3);
-    objc_storeStrong(&v10->_documentIndex, a4);
+    objc_storeStrong(&v9->_termIndex, index);
+    objc_storeStrong(&v10->_documentIndex, documentIndex);
   }
 
   return v10;

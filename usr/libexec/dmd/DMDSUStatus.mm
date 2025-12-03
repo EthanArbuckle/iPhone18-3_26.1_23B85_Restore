@@ -10,46 +10,46 @@
 
 - (BOOL)isInstalling
 {
-  v2 = [(DMDSUStatus *)self autoInstallOperation];
-  v3 = v2 != 0;
+  autoInstallOperation = [(DMDSUStatus *)self autoInstallOperation];
+  v3 = autoInstallOperation != 0;
 
   return v3;
 }
 
 - (BOOL)isDownloading
 {
-  v2 = [(DMDSUStatus *)self download];
-  v3 = v2 != 0;
+  download = [(DMDSUStatus *)self download];
+  v3 = download != 0;
 
   return v3;
 }
 
 - (BOOL)isDownloadComplete
 {
-  v3 = [(DMDSUStatus *)self download];
-  if (v3)
+  download = [(DMDSUStatus *)self download];
+  if (download)
   {
-    v4 = [(DMDSUStatus *)self download];
-    v5 = [v4 progress];
-    v6 = [v5 isDone];
+    download2 = [(DMDSUStatus *)self download];
+    progress = [download2 progress];
+    isDone = [progress isDone];
   }
 
   else
   {
-    v6 = 0;
+    isDone = 0;
   }
 
-  return v6;
+  return isDone;
 }
 
 - (double)downloadPercentComplete
 {
-  v3 = [(DMDSUStatus *)self download];
-  if (v3)
+  download = [(DMDSUStatus *)self download];
+  if (download)
   {
-    v4 = [(DMDSUStatus *)self download];
-    v5 = [v4 progress];
-    [v5 normalizedPercentComplete];
+    download2 = [(DMDSUStatus *)self download];
+    progress = [download2 progress];
+    [progress normalizedPercentComplete];
     v7 = v6;
   }
 
@@ -63,11 +63,11 @@
 
 - (NSString)productBuildVersion
 {
-  v2 = [(DMDSUStatus *)self download];
-  v3 = [v2 descriptor];
-  v4 = [v3 productBuildVersion];
+  download = [(DMDSUStatus *)self download];
+  descriptor = [download descriptor];
+  productBuildVersion = [descriptor productBuildVersion];
 
-  return v4;
+  return productBuildVersion;
 }
 
 @end

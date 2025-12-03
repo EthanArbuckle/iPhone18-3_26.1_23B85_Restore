@@ -15,7 +15,7 @@
   v10 = 0;
   v7 = 0;
   v8 = 0;
-  [objc_opt_class() __ec_extractFirstName:&v10 middleName:&v9 lastName:&v8 extension:&v7 fromString:a1];
+  [objc_opt_class() __ec_extractFirstName:&v10 middleName:&v9 lastName:&v8 extension:&v7 fromString:self];
   v1 = v10;
   v2 = v9;
   v3 = v8;
@@ -37,11 +37,11 @@
   v54 = v7;
   if ([v7 count] >= 2)
   {
-    v9 = [MEMORY[0x277CCACA8] ec_nameExtensions];
-    v10 = [v7 lastObject];
-    v11 = [v10 ec_trimCommasSpacesQuotes];
-    v12 = [v11 lowercaseString];
-    v13 = [v9 containsObject:v12];
+    ec_nameExtensions = [MEMORY[0x277CCACA8] ec_nameExtensions];
+    lastObject = [v7 lastObject];
+    ec_trimCommasSpacesQuotes = [lastObject ec_trimCommasSpacesQuotes];
+    lowercaseString = [ec_trimCommasSpacesQuotes lowercaseString];
+    v13 = [ec_nameExtensions containsObject:lowercaseString];
 
     v8 = v55;
     if ((v13 & 1) == 0)
@@ -50,8 +50,8 @@
       {
         v18 = MEMORY[0x277CCACA8];
         v14 = [v7 objectAtIndex:1];
-        v16 = [v7 objectAtIndex:0];
-        v8 = [v18 stringWithFormat:@"%@ %@", v14, v16];
+        lastObject2 = [v7 objectAtIndex:0];
+        v8 = [v18 stringWithFormat:@"%@ %@", v14, lastObject2];
         v17 = v55;
       }
 
@@ -60,9 +60,9 @@
         v14 = [v7 mutableCopy];
         [v14 removeLastObject];
         v15 = MEMORY[0x277CCACA8];
-        v16 = [v7 lastObject];
+        lastObject2 = [v7 lastObject];
         v17 = [v14 componentsJoinedByString:@" "];
-        v8 = [v15 stringWithFormat:@"%@ %@", v16, v17];
+        v8 = [v15 stringWithFormat:@"%@ %@", lastObject2, v17];
       }
     }
   }
@@ -192,12 +192,12 @@ LABEL_41:
     goto LABEL_59;
   }
 
-  v29 = [v20 lastObject];
-  v30 = [MEMORY[0x277CCACA8] ec_nameExtensions];
-  v31 = v29;
-  v49 = v29;
-  v32 = [v29 lowercaseString];
-  v33 = [v30 containsObject:v32];
+  lastObject3 = [v20 lastObject];
+  ec_nameExtensions2 = [MEMORY[0x277CCACA8] ec_nameExtensions];
+  v31 = lastObject3;
+  v49 = lastObject3;
+  lowercaseString2 = [lastObject3 lowercaseString];
+  v33 = [ec_nameExtensions2 containsObject:lowercaseString2];
 
   if (v33)
   {
@@ -222,9 +222,9 @@ LABEL_41:
 
     v19 = [v20 objectAtIndex:j];
 
-    v38 = [MEMORY[0x277CCACA8] ec_partialSurnames];
-    v39 = [v19 lowercaseString];
-    v40 = [v38 containsObject:v39];
+    ec_partialSurnames = [MEMORY[0x277CCACA8] ec_partialSurnames];
+    lowercaseString3 = [v19 lowercaseString];
+    v40 = [ec_partialSurnames containsObject:lowercaseString3];
 
     if (v40)
     {
@@ -259,12 +259,12 @@ LABEL_41:
 
     else
     {
-      v47 = [v20 lastObject];
+      lastObject4 = [v20 lastObject];
 
-      *a5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v45, v47];
+      *a5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v45, lastObject4];
       [v20 removeLastObject];
       v19 = v45;
-      v46 = v47;
+      v46 = lastObject4;
     }
 
     [v20 removeLastObject];
@@ -309,7 +309,7 @@ LABEL_59:
 
 - (uint64_t)ec_appearsToBeAnInitial
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 == 1)
   {
     return 1;
@@ -321,10 +321,10 @@ LABEL_59:
   }
 
   v3 = 1;
-  if ([a1 characterAtIndex:1] != 46)
+  if ([self characterAtIndex:1] != 46)
   {
     v3 = 1;
-    if ([a1 characterAtIndex:1] != 93)
+    if ([self characterAtIndex:1] != 93)
     {
       return 0;
     }
@@ -335,13 +335,13 @@ LABEL_59:
 
 - (__CFString)ec_trimCommasSpacesQuotes
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     goto LABEL_15;
   }
 
-  v3 = [a1 characterAtIndex:0];
+  v3 = [self characterAtIndex:0];
   v4 = 0;
   v5 = 1;
   while (v3 <= 0x2Cu && ((1 << v3) & 0x100500000000) != 0)
@@ -353,13 +353,13 @@ LABEL_59:
       goto LABEL_9;
     }
 
-    v3 = [a1 characterAtIndex:v5++];
+    v3 = [self characterAtIndex:v5++];
   }
 
   v6 = v5 - 1;
 LABEL_9:
   v7 = v2 - 1;
-  v8 = [a1 characterAtIndex:v7];
+  v8 = [self characterAtIndex:v7];
   v9 = 0;
   while (v8 <= 0x2Cu)
   {
@@ -375,7 +375,7 @@ LABEL_9:
       break;
     }
 
-    v8 = [a1 characterAtIndex:v7];
+    v8 = [self characterAtIndex:v7];
   }
 
   if (v7 < v6)
@@ -385,7 +385,7 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  v10 = [a1 substringWithRange:{v6, v7 - v6 + 1}];
+  v10 = [self substringWithRange:{v6, v7 - v6 + 1}];
   if (v9 & 1 | ((v4 & 1) == 0))
   {
     if (v4 & 1 | ((v9 & 1) == 0))

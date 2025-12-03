@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationContextAcceptCandidate
-- (TIWordSearchOperationContextAcceptCandidate)initWithWordSearch:(id)a3 mecabraCandidate:(void *)a4 isPartial:(BOOL)a5 isPrediction:(BOOL)a6;
+- (TIWordSearchOperationContextAcceptCandidate)initWithWordSearch:(id)search mecabraCandidate:(void *)candidate isPartial:(BOOL)partial isPrediction:(BOOL)prediction;
 - (void)dealloc;
 - (void)perform;
 @end
@@ -12,24 +12,24 @@
   {
     if ([(TIWordSearchOperationContextAcceptCandidate *)self isPrediction])
     {
-      v6 = [(TIWordSearchOperationContextAcceptCandidate *)self mecabraEnvironment];
-      [v6 commitPredictionCandidate:self->_mecabraCandidate];
+      mecabraEnvironment = [(TIWordSearchOperationContextAcceptCandidate *)self mecabraEnvironment];
+      [mecabraEnvironment commitPredictionCandidate:self->_mecabraCandidate];
     }
 
     else
     {
-      v3 = [(TIWordSearchOperationContextAcceptCandidate *)self isPartialCandidate];
-      v4 = [(TIWordSearchOperationContextAcceptCandidate *)self mecabraEnvironment];
+      isPartialCandidate = [(TIWordSearchOperationContextAcceptCandidate *)self isPartialCandidate];
+      mecabraEnvironment2 = [(TIWordSearchOperationContextAcceptCandidate *)self mecabraEnvironment];
       mecabraCandidate = self->_mecabraCandidate;
-      v6 = v4;
-      if (v3)
+      mecabraEnvironment = mecabraEnvironment2;
+      if (isPartialCandidate)
       {
-        [v4 partiallyCommitInlineCandidate:mecabraCandidate];
+        [mecabraEnvironment2 partiallyCommitInlineCandidate:mecabraCandidate];
       }
 
       else
       {
-        [v4 completelyCommitInlineCandidate:mecabraCandidate];
+        [mecabraEnvironment2 completelyCommitInlineCandidate:mecabraCandidate];
       }
     }
   }
@@ -47,31 +47,31 @@
   [(TIWordSearchOperationContextAcceptCandidate *)&v4 dealloc];
 }
 
-- (TIWordSearchOperationContextAcceptCandidate)initWithWordSearch:(id)a3 mecabraCandidate:(void *)a4 isPartial:(BOOL)a5 isPrediction:(BOOL)a6
+- (TIWordSearchOperationContextAcceptCandidate)initWithWordSearch:(id)search mecabraCandidate:(void *)candidate isPartial:(BOOL)partial isPrediction:(BOOL)prediction
 {
-  v10 = a3;
+  searchCopy = search;
   v16.receiver = self;
   v16.super_class = TIWordSearchOperationContextAcceptCandidate;
   v11 = [(TIWordSearchOperationContextAcceptCandidate *)&v16 init];
   if (v11)
   {
-    v12 = [v10 mecabraEnvironment];
+    mecabraEnvironment = [searchCopy mecabraEnvironment];
     mecabraEnvironment = v11->_mecabraEnvironment;
-    v11->_mecabraEnvironment = v12;
+    v11->_mecabraEnvironment = mecabraEnvironment;
 
-    if (a4)
+    if (candidate)
     {
-      v14 = a4;
+      candidateCopy = candidate;
     }
 
     else
     {
-      v14 = 0;
+      candidateCopy = 0;
     }
 
-    v11->_mecabraCandidate = v14;
-    v11->_partialCandidate = a5;
-    v11->_prediction = a6;
+    v11->_mecabraCandidate = candidateCopy;
+    v11->_partialCandidate = partial;
+    v11->_prediction = prediction;
   }
 
   return v11;

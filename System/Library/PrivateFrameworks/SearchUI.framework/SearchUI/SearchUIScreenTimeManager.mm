@@ -1,9 +1,9 @@
 @interface SearchUIScreenTimeManager
 + (id)sharedInstance;
 - (SearchUIScreenTimeManager)init;
-- (id)getCachedObjectIfAvailableForKey:(id)a3;
-- (id)itemsToBatchPreFetchForRowModel:(id)a3;
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4;
+- (id)getCachedObjectIfAvailableForKey:(id)key;
+- (id)itemsToBatchPreFetchForRowModel:(id)model;
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation SearchUIScreenTimeManager
@@ -38,13 +38,13 @@ void __33__SearchUIScreenTimeManager_init__block_invoke(uint64_t a1)
     v5 = objc_opt_new();
     [(SearchUIScreenTimeManager *)v2 setPossiblyCorrectCache:v5];
 
-    v6 = [(SearchUIScreenTimeManager *)v2 serialQueue];
+    serialQueue = [(SearchUIScreenTimeManager *)v2 serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __33__SearchUIScreenTimeManager_init__block_invoke;
     block[3] = &unk_1E85B24C8;
     v9 = v2;
-    dispatch_async(v6, block);
+    dispatch_async(serialQueue, block);
   }
 
   return v2;
@@ -85,14 +85,14 @@ void __33__SearchUIScreenTimeManager_init__block_invoke_3()
   [v0 postNotificationName:@"SearchUIScreenTimeChangeNotification" object:0];
 }
 
-- (id)getCachedObjectIfAvailableForKey:(id)a3
+- (id)getCachedObjectIfAvailableForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v25.receiver = self;
   v25.super_class = SearchUIScreenTimeManager;
-  v5 = [(TLKAsyncCache *)&v25 getCachedObjectIfAvailableForKey:v4];
+  v5 = [(TLKAsyncCache *)&v25 getCachedObjectIfAvailableForKey:keyCopy];
   v6 = v5;
-  if (!v4 || v5)
+  if (!keyCopy || v5)
   {
     v12 = v5;
   }
@@ -104,8 +104,8 @@ void __33__SearchUIScreenTimeManager_init__block_invoke_3()
     v20 = 3221225472;
     v21 = __62__SearchUIScreenTimeManager_getCachedObjectIfAvailableForKey___block_invoke;
     v22 = &unk_1E85B2540;
-    v23 = self;
-    v8 = v4;
+    selfCopy = self;
+    v8 = keyCopy;
     v24 = v8;
     dispatch_after(v7, MEMORY[0x1E69E96A0], &v19);
     v9 = [(SearchUIScreenTimeManager *)self possiblyCorrectCache:v19];
@@ -119,12 +119,12 @@ void __33__SearchUIScreenTimeManager_init__block_invoke_3()
     else
     {
       v13 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v8 allowPlaceholder:1 error:0];
-      v14 = [v13 compatibilityObject];
-      v15 = [v14 deviceManagementPolicy] != 0;
+      compatibilityObject = [v13 compatibilityObject];
+      v15 = [compatibilityObject deviceManagementPolicy] != 0;
 
-      v16 = [(SearchUIScreenTimeManager *)self possiblyCorrectCache];
+      possiblyCorrectCache = [(SearchUIScreenTimeManager *)self possiblyCorrectCache];
       v17 = [MEMORY[0x1E696AD98] numberWithBool:v15];
-      [v16 setObject:v17 forKey:v8];
+      [possiblyCorrectCache setObject:v17 forKey:v8];
 
       v11 = [MEMORY[0x1E696AD98] numberWithBool:v15];
     }
@@ -135,17 +135,17 @@ void __33__SearchUIScreenTimeManager_init__block_invoke_3()
   return v12;
 }
 
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -173,16 +173,16 @@ void __33__SearchUIScreenTimeManager_init__block_invoke_3()
     while (v11);
   }
 
-  v15 = [(SearchUIScreenTimeManager *)self monitor];
+  monitor = [(SearchUIScreenTimeManager *)self monitor];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __69__SearchUIScreenTimeManager_computeObjectsForKeys_completionHandler___block_invoke;
   v18[3] = &unk_1E85B46F0;
   v19 = v9;
-  v20 = v7;
-  v16 = v7;
+  v20 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v9;
-  [v15 requestPoliciesForBundleIdentifiers:v8 completionHandler:v18];
+  [monitor requestPoliciesForBundleIdentifiers:v8 completionHandler:v18];
 }
 
 void __69__SearchUIScreenTimeManager_computeObjectsForKeys_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -233,17 +233,17 @@ void __69__SearchUIScreenTimeManager_computeObjectsForKeys_completionHandler___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)itemsToBatchPreFetchForRowModel:(id)a3
+- (id)itemsToBatchPreFetchForRowModel:(id)model
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  modelCopy = model;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 results];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  results = [modelCopy results];
+  v6 = [results countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -254,27 +254,27 @@ void __69__SearchUIScreenTimeManager_computeObjectsForKeys_completionHandler___b
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(results);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (![v10 isLocalApplicationResult] || (objc_msgSend(v10, "renderHorizontallyWithOtherResultsInCategory") & 1) == 0)
         {
-          v11 = [v10 applicationBundleIdentifier];
-          v12 = [v10 sectionBundleIdentifier];
-          if (v11)
+          applicationBundleIdentifier = [v10 applicationBundleIdentifier];
+          sectionBundleIdentifier = [v10 sectionBundleIdentifier];
+          if (applicationBundleIdentifier)
           {
-            [v4 addObject:v11];
+            [v4 addObject:applicationBundleIdentifier];
           }
 
-          if (v12)
+          if (sectionBundleIdentifier)
           {
-            [v4 addObject:v12];
+            [v4 addObject:sectionBundleIdentifier];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [results countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

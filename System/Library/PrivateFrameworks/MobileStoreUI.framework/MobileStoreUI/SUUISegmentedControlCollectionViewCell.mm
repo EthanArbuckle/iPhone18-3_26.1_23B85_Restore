@@ -1,13 +1,13 @@
 @interface SUUISegmentedControlCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUISegmentedControlCollectionViewCell
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -16,22 +16,22 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [a5 sizeForViewElement:a4 width:?];
-  v7 = a3;
+  [context sizeForViewElement:element width:?];
+  widthCopy = width;
   result.height = v6;
-  result.width = v7;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(SUUISegmentedControlViewElementController *)self->_elementController viewElement];
+  elementCopy = element;
+  contextCopy = context;
+  viewElement = [(SUUISegmentedControlViewElementController *)self->_elementController viewElement];
 
-  if (v9 == v7)
+  if (viewElement == elementCopy)
   {
     [(SUUISegmentedControlViewElementController *)self->_elementController reloadAfterDocumentUpdate];
   }
@@ -48,9 +48,9 @@
     v12[1] = 3221225472;
     v12[2] = __78__SUUISegmentedControlCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
     v12[3] = &unk_2798F7950;
-    v13 = v7;
-    v14 = v8;
-    v15 = self;
+    v13 = elementCopy;
+    v14 = contextCopy;
+    selfCopy = self;
     [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v12];
   }
 }
@@ -100,8 +100,8 @@ void __78__SUUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   v28.receiver = self;
   v28.super_class = SUUISegmentedControlCollectionViewCell;
   [(SUUICollectionViewCell *)&v28 layoutSubviews];
-  v3 = [(SUUISegmentedControlCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUISegmentedControlCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -112,17 +112,17 @@ void __78__SUUISegmentedControlCollectionViewCell_reloadWithViewElement_width_co
   v15 = v7 + v14;
   v17 = v9 - (v12 + v16);
   v19 = v11 - (v14 + v18);
-  v20 = [(SUUISegmentedControlViewElementController *)self->_elementController segmentedControlView];
-  [v20 sizeThatFits:{v17, v19}];
+  segmentedControlView = [(SUUISegmentedControlViewElementController *)self->_elementController segmentedControlView];
+  [segmentedControlView sizeThatFits:{v17, v19}];
   v22 = v21;
   v24 = v23;
   *&v21 = v13 + (v17 - v21) * 0.5;
   *&v23 = v15 + (v19 - v23) * 0.5;
-  [v20 setFrame:{SUUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(floorf(*&v21), floorf(*&v23), v22, v24, v5, v7, v9, v11)}];
+  [segmentedControlView setFrame:{SUUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(floorf(*&v21), floorf(*&v23), v22, v24, v5, v7, v9, v11)}];
   if (self->_bottomDividerView)
   {
-    v25 = [MEMORY[0x277D759A0] mainScreen];
-    [v25 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v27 = 1.0 / v26;
 
     [(SUUIDividerView *)self->_bottomDividerView setFrame:SUUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(0.0, v11 - v27, v9, v27, v5, v7, v9, v11)];

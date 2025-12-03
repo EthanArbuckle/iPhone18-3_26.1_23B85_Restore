@@ -1,24 +1,24 @@
 @interface HMDVideoResolution
-+ (id)arrayWithResolutions:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDVideoResolution)initWithCoder:(id)a3;
-- (HMDVideoResolution)initWithResolution:(unint64_t)a3;
-- (HMDVideoResolution)initWithTLVData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)arrayWithResolutions:(id)resolutions;
+- (BOOL)isEqual:(id)equal;
+- (HMDVideoResolution)initWithCoder:(id)coder;
+- (HMDVideoResolution)initWithResolution:(unint64_t)resolution;
+- (HMDVideoResolution)initWithTLVData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_extractWidthAndHeight;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDVideoResolution
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDVideoResolution allocWithZone:a3];
-  v5 = [(HMDVideoResolution *)self resolutionType];
+  v4 = [HMDVideoResolution allocWithZone:zone];
+  resolutionType = [(HMDVideoResolution *)self resolutionType];
 
-  return [(HMDVideoResolution *)v4 initWithResolution:v5];
+  return [(HMDVideoResolution *)v4 initWithResolution:resolutionType];
 }
 
 - (void)_extractWidthAndHeight
@@ -36,7 +36,7 @@
   self->_imageHeight = v4;
 }
 
-- (HMDVideoResolution)initWithResolution:(unint64_t)a3
+- (HMDVideoResolution)initWithResolution:(unint64_t)resolution
 {
   v7.receiver = self;
   v7.super_class = HMDVideoResolution;
@@ -44,18 +44,18 @@
   v5 = v4;
   if (v4)
   {
-    v4->_resolutionType = a3;
+    v4->_resolutionType = resolution;
     [(HMDVideoResolution *)v4 _extractWidthAndHeight];
   }
 
   return v5;
 }
 
-- (HMDVideoResolution)initWithTLVData:(id)a3
+- (HMDVideoResolution)initWithTLVData:(id)data
 {
   v6.receiver = self;
   v6.super_class = HMDVideoResolution;
-  v3 = [(HAPNumberParser *)&v6 initWithTLVData:a3];
+  v3 = [(HAPNumberParser *)&v6 initWithTLVData:data];
   v4 = v3;
   if (v3)
   {
@@ -66,12 +66,12 @@
   return v4;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
+  indentCopy = indent;
+  descriptionCopy = description;
   v8 = HMDVideoResolutionTypeAsString([(HMDVideoResolution *)self resolutionType]);
-  [v7 appendFormat:@"\n%@ resolutionType = %@", v6, v8];
+  [descriptionCopy appendFormat:@"\n%@ resolutionType = %@", indentCopy, v8];
 }
 
 - (id)description
@@ -83,10 +83,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -96,8 +96,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDVideoResolution *)self resolutionType];
-      v6 = v5 == [(HMDVideoResolution *)v4 resolutionType];
+      resolutionType = [(HMDVideoResolution *)self resolutionType];
+      v6 = resolutionType == [(HMDVideoResolution *)equalCopy resolutionType];
     }
 
     else
@@ -109,39 +109,39 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDVideoResolution *)self resolutionType];
+  coderCopy = coder;
+  resolutionType = [(HMDVideoResolution *)self resolutionType];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s_%s", "HMDVideoResolution", "resolutionType"];
-  [v4 encodeInt32:v5 forKey:v6];
+  [coderCopy encodeInt32:resolutionType forKey:v6];
 }
 
-- (HMDVideoResolution)initWithCoder:(id)a3
+- (HMDVideoResolution)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HMDVideoResolution;
   v5 = [(HMDVideoResolution *)&v8 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s_%s", "HMDVideoResolution", "resolutionType"];
-    v5->_resolutionType = [v4 decodeInt32ForKey:v6];
+    v5->_resolutionType = [coderCopy decodeInt32ForKey:v6];
   }
 
   return v5;
 }
 
-+ (id)arrayWithResolutions:(id)a3
++ (id)arrayWithResolutions:(id)resolutions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  resolutionsCopy = resolutions;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(resolutionsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = resolutionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

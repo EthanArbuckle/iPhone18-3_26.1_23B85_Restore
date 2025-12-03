@@ -1,18 +1,18 @@
 @interface PBFGalleryViewController
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3;
-- (void)_fetchNewGalleryFromProactive:(unint64_t)a3;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller;
+- (void)_fetchNewGalleryFromProactive:(unint64_t)proactive;
 - (void)_reload;
 - (void)_selectEditingEnvironment;
 - (void)_selectPreviewingEnvironment;
 - (void)_selectRenderingEnvironment;
 - (void)_setupDataProvider;
 - (void)dealloc;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5;
-- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view;
+- (void)posterExtensionDataStore:(id)store didUpdateGalleryConfiguration:(id)configuration;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PBFGalleryViewController
@@ -38,8 +38,8 @@
   glue = self->_glue;
   self->_glue = v3;
 
-  v5 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-  [v5 addObserver:self];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  [dataStore addObserver:self];
 
   [(PBFGalleryViewController *)self _setupDataProvider];
   previewViewController = self->_previewViewController;
@@ -102,8 +102,8 @@
   environmentItem = self->_environmentItem;
   self->_environmentItem = v25;
 
-  v27 = [(PBFGalleryViewController *)self navigationItem];
-  [v27 setLeftBarButtonItem:self->_environmentItem];
+  navigationItem = [(PBFGalleryViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:self->_environmentItem];
 
   v28 = MEMORY[0x277D75710];
   v29 = MEMORY[0x277D750C8];
@@ -119,8 +119,8 @@
   v33 = [v28 menuWithTitle:@"Reload" children:v32];
 
   v34 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:@"Reload" menu:v33];
-  v35 = [(PBFGalleryViewController *)self navigationItem];
-  [v35 setRightBarButtonItem:v34];
+  navigationItem2 = [(PBFGalleryViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v34];
 
   [(PBFGalleryViewController *)self _selectEditingEnvironment];
   objc_destroyWeak(&v37);
@@ -155,40 +155,40 @@ void __39__PBFGalleryViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   [WeakRetained _reloadGalleryUsingProactive:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PBFGalleryViewController;
-  [(PBFGalleryViewController *)&v3 viewWillAppear:a3];
+  [(PBFGalleryViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PBFGalleryViewController;
-  [(PBFGalleryViewController *)&v5 viewDidDisappear:a3];
+  [(PBFGalleryViewController *)&v5 viewDidDisappear:disappear];
   [(BSInvalidatable *)self->_inUseAssertion invalidate];
   inUseAssertion = self->_inUseAssertion;
   self->_inUseAssertion = 0;
 }
 
-- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4
+- (void)posterExtensionDataStore:(id)store didUpdateGalleryConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__PBFGalleryViewController_posterExtensionDataStore_didUpdateGalleryConfiguration___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view
 {
-  v9 = a4;
-  v7 = a5;
+  previewCopy = preview;
+  viewCopy = view;
   if ([(UIAction *)self->_renderingAction state])
   {
     if ([(UIAction *)self->_previewingAction state])
@@ -207,23 +207,23 @@ void __39__PBFGalleryViewController_viewDidLoad__block_invoke_4(uint64_t a1)
     v8 = 0;
   }
 
-  [(PBFPosterGalleryPreviewViewController *)self->_previewViewController presentPreview:v9 withMode:v8 fromView:v7];
+  [(PBFPosterGalleryPreviewViewController *)self->_previewViewController presentPreview:previewCopy withMode:v8 fromView:viewCopy];
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller
 {
-  v5 = [(PBFGalleryViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v7 _FBSScene];
-  v18 = [v8 settings];
+  view = [(PBFGalleryViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
 
-  [v18 prui_leadingTopButtonFrame];
+  [settings prui_leadingTopButtonFrame];
   retstr->leadingTopButtonFrame.origin.x = v9;
   retstr->leadingTopButtonFrame.origin.y = v10;
   retstr->leadingTopButtonFrame.size.width = v11;
   retstr->leadingTopButtonFrame.size.height = v12;
-  [v18 prui_trailingTopButtonFrame];
+  [settings prui_trailingTopButtonFrame];
   retstr->trailingTopButtonFrame.origin.x = v13;
   retstr->trailingTopButtonFrame.origin.y = v14;
   retstr->trailingTopButtonFrame.size.width = v15;
@@ -232,44 +232,44 @@ void __39__PBFGalleryViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   return result;
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (a4 == 1)
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  if (action == 1)
   {
-    v15 = [v11 contentsIdentity];
+    contentsIdentity = [controllerCopy contentsIdentity];
     v16 = +[PBFPosterExtensionDataStoreXPCServiceGlue sharedInstance];
-    v17 = [v16 dataStore];
+    dataStore = [v16 dataStore];
 
     v18 = objc_alloc(MEMORY[0x277D3ECE0]);
-    v19 = [v12 _path];
-    v20 = [v18 initWithNewPath:v19 destinationPosterUUID:0 sourceIdentity:v15 configuredProperties:v13 attributes:0];
+    _path = [configurationCopy _path];
+    v20 = [v18 initWithNewPath:_path destinationPosterUUID:0 sourceIdentity:contentsIdentity configuredProperties:propertiesCopy attributes:0];
 
-    v21 = [v17 switcherConfiguration];
-    v22 = [v21 mutableCopy];
+    switcherConfiguration = [dataStore switcherConfiguration];
+    v22 = [switcherConfiguration mutableCopy];
 
     [v22 ingestNewPosterConfiguration:v20];
     v30 = 0;
-    v23 = [v17 updateDataStoreForSwitcherConfiguration:v22 reason:@"ingest new poster from gallery" error:&v30];
+    v23 = [dataStore updateDataStoreForSwitcherConfiguration:v22 reason:@"ingest new poster from gallery" error:&v30];
     v24 = v30;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __140__PBFGalleryViewController_editingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke;
     v26[3] = &unk_2782C8EB0;
-    v27 = v11;
+    v27 = controllerCopy;
     v28 = v24;
-    v29 = v14;
+    v29 = completionCopy;
     v25 = v24;
     dispatch_async(MEMORY[0x277D85CD0], v26);
   }
 
   else
   {
-    [v11 dismissViewControllerAnimated:1 completion:0];
-    (*(v14 + 2))(v14, 0);
+    [controllerCopy dismissViewControllerAnimated:1 completion:0];
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -293,15 +293,15 @@ uint64_t __140__PBFGalleryViewController_editingSceneViewController_userDidDismi
   }
 }
 
-- (void)_fetchNewGalleryFromProactive:(unint64_t)a3
+- (void)_fetchNewGalleryFromProactive:(unint64_t)proactive
 {
-  v5 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__PBFGalleryViewController__fetchNewGalleryFromProactive___block_invoke;
   v6[3] = &unk_2782C66B8;
   v6[4] = self;
-  [v5 fetchGalleryConfigurationWithOptions:a3 completion:v6];
+  [dataStore fetchGalleryConfigurationWithOptions:proactive completion:v6];
 }
 
 void __58__PBFGalleryViewController__fetchNewGalleryFromProactive___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)
@@ -326,10 +326,10 @@ void __58__PBFGalleryViewController__fetchNewGalleryFromProactive___block_invoke
 
 - (void)_reload
 {
-  v3 = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
-  v4 = [v3 currentGalleryConfiguration];
+  dataStore = [(PBFPosterExtensionDataStoreXPCServiceGlue *)self->_glue dataStore];
+  currentGalleryConfiguration = [dataStore currentGalleryConfiguration];
 
-  [(PBFGalleryMutableDataProvider *)self->_dataProvider configureForGallery:v4];
+  [(PBFGalleryMutableDataProvider *)self->_dataProvider configureForGallery:currentGalleryConfiguration];
 }
 
 - (void)_selectRenderingEnvironment

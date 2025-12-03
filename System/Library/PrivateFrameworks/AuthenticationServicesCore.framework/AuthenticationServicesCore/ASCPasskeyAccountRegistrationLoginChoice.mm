@@ -1,25 +1,25 @@
 @interface ASCPasskeyAccountRegistrationLoginChoice
 - (_TtC26AuthenticationServicesCore40ASCPasskeyAccountRegistrationLoginChoice)init;
-- (void)contactIdentifierValueWithCompletionHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)contactIdentifierValueWithCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCPasskeyAccountRegistrationLoginChoice
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C20DAA7C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C20DAA7C(coderCopy);
 }
 
-- (void)contactIdentifierValueWithCompletionHandler:(id)a3
+- (void)contactIdentifierValueWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -35,7 +35,7 @@
   v13[3] = 0;
   v13[4] = &unk_1C21799C0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1C2166D88(0, 0, v8, &unk_1C21768B0, v13);
 }
 

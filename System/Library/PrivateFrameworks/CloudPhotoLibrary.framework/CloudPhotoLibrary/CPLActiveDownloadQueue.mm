@@ -1,10 +1,10 @@
 @interface CPLActiveDownloadQueue
-- (CPLActiveDownloadQueue)initWithName:(id)a3 type:(unint64_t)a4 FIFOQueue:(BOOL)a5 maximumBatchSize:(unint64_t)a6 maximumConcurrentTransportTasks:(unint64_t)a7 coalescingInterval:(int64_t)a8 groupConstructor:(id)a9;
-- (id)dequeueBatchOfTransferTasksDequeuedSize:(unint64_t *)a3;
+- (CPLActiveDownloadQueue)initWithName:(id)name type:(unint64_t)type FIFOQueue:(BOOL)queue maximumBatchSize:(unint64_t)size maximumConcurrentTransportTasks:(unint64_t)tasks coalescingInterval:(int64_t)interval groupConstructor:(id)constructor;
+- (id)dequeueBatchOfTransferTasksDequeuedSize:(unint64_t *)size;
 - (id)dequeueLastTransportTask;
 - (id)status;
 - (unint64_t)countOfTransferTasksInTransportTasks;
-- (void)addTransferTask:(id)a3;
+- (void)addTransferTask:(id)task;
 @end
 
 @implementation CPLActiveDownloadQueue
@@ -13,10 +13,10 @@
 {
   v3 = [(NSMutableArray *)self->_transferTasks count];
   v4 = [(NSMutableArray *)self->_transportTasks count];
-  v5 = [(CPLActiveDownloadQueue *)self countOfTransferTasksInTransportTasks];
+  countOfTransferTasksInTransportTasks = [(CPLActiveDownloadQueue *)self countOfTransferTasksInTransportTasks];
   if (v4)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ queued: %lu - transport: %lu for %lu resources", self->_name, v3, v4, v5];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ queued: %lu - transport: %lu for %lu resources", self->_name, v3, v4, countOfTransferTasksInTransportTasks];
     v6 = LABEL_5:;
     goto LABEL_6;
   }
@@ -35,13 +35,13 @@ LABEL_6:
 
 - (id)dequeueLastTransportTask
 {
-  v3 = [(NSMutableArray *)self->_transportTasks lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_transportTasks lastObject];
+  if (lastObject)
   {
     [(NSMutableArray *)self->_transportTasks removeLastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (unint64_t)countOfTransferTasksInTransportTasks
@@ -67,8 +67,8 @@ LABEL_6:
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) downloadTasks];
-        v5 += [v8 count];
+        downloadTasks = [*(*(&v11 + 1) + 8 * i) downloadTasks];
+        v5 += [downloadTasks count];
       }
 
       v4 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -86,11 +86,11 @@ LABEL_6:
   return v5;
 }
 
-- (id)dequeueBatchOfTransferTasksDequeuedSize:(unint64_t *)a3
+- (id)dequeueBatchOfTransferTasksDequeuedSize:(unint64_t *)size
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v29 = self;
+  selfCopy = self;
   transferTasks = self->_transferTasks;
   if (self->_FIFOQueue)
   {
@@ -110,7 +110,7 @@ LABEL_6:
   if (v8)
   {
     v9 = v8;
-    v27 = a3;
+    sizeCopy = size;
     v10 = 0;
     v11 = 0;
     v12 = *v31;
@@ -127,13 +127,13 @@ LABEL_6:
         }
 
         v15 = *(*(&v30 + 1) + 8 * v14);
-        v16 = [v15 cloudResource];
-        v17 = [v16 estimatedResourceSize];
+        cloudResource = [v15 cloudResource];
+        estimatedResourceSize = [cloudResource estimatedResourceSize];
 
-        maximumBatchSize = v29->_maximumBatchSize;
+        maximumBatchSize = selfCopy->_maximumBatchSize;
         v19 = maximumBatchSize > v10;
         v20 = maximumBatchSize - v10;
-        v21 = v19 && v20 >= v17;
+        v21 = v19 && v20 >= estimatedResourceSize;
         if (!v21 && [v5 count])
         {
           v7 = v13;
@@ -141,7 +141,7 @@ LABEL_6:
         }
 
         [v5 addObject:v15];
-        v10 += v17;
+        v10 += estimatedResourceSize;
         ++v11;
         ++v14;
       }
@@ -162,21 +162,21 @@ LABEL_18:
 
     if (v11)
     {
-      if (v27)
+      if (sizeCopy)
       {
-        *v27 = v10;
+        *sizeCopy = v10;
       }
 
-      v22 = v29->_transferTasks;
-      if (v29->_FIFOQueue)
+      v22 = selfCopy->_transferTasks;
+      if (selfCopy->_FIFOQueue)
       {
-        v23 = v29->_transferTasks;
+        v23 = selfCopy->_transferTasks;
         v24 = 0;
       }
 
       else
       {
-        v24 = [(NSMutableArray *)v29->_transferTasks count]- v11;
+        v24 = [(NSMutableArray *)selfCopy->_transferTasks count]- v11;
         v23 = v22;
       }
 
@@ -193,12 +193,12 @@ LABEL_18:
   return v5;
 }
 
-- (void)addTransferTask:(id)a3
+- (void)addTransferTask:(id)task
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!self->_FIFOQueue && [v4 willGenerateReport])
+  taskCopy = task;
+  v5 = taskCopy;
+  if (!self->_FIFOQueue && [taskCopy willGenerateReport])
   {
     v14 = 0u;
     v15 = 0u;
@@ -236,33 +236,33 @@ LABEL_18:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (CPLActiveDownloadQueue)initWithName:(id)a3 type:(unint64_t)a4 FIFOQueue:(BOOL)a5 maximumBatchSize:(unint64_t)a6 maximumConcurrentTransportTasks:(unint64_t)a7 coalescingInterval:(int64_t)a8 groupConstructor:(id)a9
+- (CPLActiveDownloadQueue)initWithName:(id)name type:(unint64_t)type FIFOQueue:(BOOL)queue maximumBatchSize:(unint64_t)size maximumConcurrentTransportTasks:(unint64_t)tasks coalescingInterval:(int64_t)interval groupConstructor:(id)constructor
 {
-  v15 = a3;
-  v16 = a9;
+  nameCopy = name;
+  constructorCopy = constructor;
   v27.receiver = self;
   v27.super_class = CPLActiveDownloadQueue;
   v17 = [(CPLActiveDownloadQueue *)&v27 init];
   if (v17)
   {
-    v18 = [v15 copy];
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    v17->_FIFOQueue = a5;
-    v17->_type = a4;
-    v17->_maximumBatchSize = a6;
+    v17->_FIFOQueue = queue;
+    v17->_type = type;
+    v17->_maximumBatchSize = size;
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     transferTasks = v17->_transferTasks;
     v17->_transferTasks = v20;
 
-    v17->_maximumConcurrentTransportTasks = a7;
+    v17->_maximumConcurrentTransportTasks = tasks;
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
     transportTasks = v17->_transportTasks;
     v17->_transportTasks = v22;
 
-    v17->_coalescingInterval = a8;
-    v24 = MEMORY[0x1E128EBA0](v16);
+    v17->_coalescingInterval = interval;
+    v24 = MEMORY[0x1E128EBA0](constructorCopy);
     groupConstructor = v17->_groupConstructor;
     v17->_groupConstructor = v24;
   }

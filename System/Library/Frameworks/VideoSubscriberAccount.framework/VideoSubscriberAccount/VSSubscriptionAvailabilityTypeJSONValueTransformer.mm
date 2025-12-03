@@ -1,20 +1,20 @@
 @interface VSSubscriptionAvailabilityTypeJSONValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSSubscriptionAvailabilityTypeJSONValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = [a3 integerValue];
+  integerValue = [value integerValue];
   v4 = @"Account";
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3 == 2)
+  if (integerValue == 2)
   {
     return @"Subscription";
   }
@@ -25,15 +25,15 @@
   }
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqual:@"Account"])
+  valueCopy = value;
+  if ([valueCopy isEqual:@"Account"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"Subscription"])
+  else if ([valueCopy isEqual:@"Subscription"])
   {
     v4 = 2;
   }

@@ -1,64 +1,64 @@
 @interface HomeStore
-- (void)home:(void *)a3 didAddMediaSystem:(void *)a4;
-- (void)homeDidUpdateName:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateAssistantIdentifiers:(id)a3;
-- (void)homeManagerDidUpdateCurrentHome:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)home:(void *)home didAddMediaSystem:(void *)system;
+- (void)homeDidUpdateName:(id)name;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateAssistantIdentifiers:(id)identifiers;
+- (void)homeManagerDidUpdateCurrentHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeStore
 
-- (void)home:(void *)a3 didAddMediaSystem:(void *)a4
+- (void)home:(void *)home didAddMediaSystem:(void *)system
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
-  sub_2529E4B50(v7);
+  homeCopy = home;
+  systemCopy = system;
+  selfCopy = self;
+  sub_2529E4B50(systemCopy);
 }
 
-- (void)homeManagerDidUpdateCurrentHome:(id)a3
+- (void)homeManagerDidUpdateCurrentHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
+  homeCopy = home;
+  selfCopy = self;
   sub_2529E4684();
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  sub_2529DEAE8(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  sub_2529DEAE8(homesCopy);
 }
 
-- (void)homeDidUpdateName:(id)a3
+- (void)homeDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_2529E490C();
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2529E4A20(v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_2529E4A20(homeCopy);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
   sub_2529E490C();
 }
 
-- (void)homeManagerDidUpdateAssistantIdentifiers:(id)a3
+- (void)homeManagerDidUpdateAssistantIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = self;
+  identifiersCopy = identifiers;
+  selfCopy = self;
   sub_2529E490C();
 }
 

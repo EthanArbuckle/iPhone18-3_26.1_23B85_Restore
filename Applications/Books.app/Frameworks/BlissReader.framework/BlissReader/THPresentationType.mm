@@ -1,50 +1,50 @@
 @interface THPresentationType
-+ (id)flowPresentationTypeInContext:(id)a3;
-+ (id)flowPresentationTypeInContext:(id)a3 pageSize:(CGSize)a4;
-+ (id)paginatedPresentationTypeInContext:(id)a3;
-+ (id)paginatedPresentationTypeInContext:(id)a3 pageSize:(CGSize)a4;
++ (id)flowPresentationTypeInContext:(id)context;
++ (id)flowPresentationTypeInContext:(id)context pageSize:(CGSize)size;
++ (id)paginatedPresentationTypeInContext:(id)context;
++ (id)paginatedPresentationTypeInContext:(id)context pageSize:(CGSize)size;
 - (BOOL)isCompactHeight;
 - (BOOL)isCompactWidth;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIncludingSize:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIncludingSize:(id)size;
 - (BOOL)isFlow;
 - (BOOL)isMutableViaDelegate;
 - (BOOL)isPaginated;
 - (CGSize)pageSize;
-- (THPresentationType)initWithCoder:(id)a3;
-- (THPresentationType)initWithString:(id)a3 context:(id)a4;
+- (THPresentationType)initWithCoder:(id)coder;
+- (THPresentationType)initWithString:(id)string context:(id)context;
 - (UIEdgeInsets)contentInsets;
 - (double)gutterWidth;
 - (id)copyFixingSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)columnCount;
 - (unint64_t)fontSize;
 - (unint64_t)hash;
 - (unint64_t)hashIncludingSize;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
 @end
 
 @implementation THPresentationType
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(THPresentationType *)self willModify];
-  v5 = [a3 copy];
+  v5 = [name copy];
 
   self->mName = v5;
 }
 
-- (THPresentationType)initWithString:(id)a3 context:(id)a4
+- (THPresentationType)initWithString:(id)string context:(id)context
 {
   v9.receiver = self;
   v9.super_class = THPresentationType;
-  v5 = [(THPresentationType *)&v9 initWithContext:a4];
+  v5 = [(THPresentationType *)&v9 initWithContext:context];
   v6 = v5;
   if (v5)
   {
-    [(THPresentationType *)v5 setName:a3];
+    [(THPresentationType *)v5 setName:string];
     v6->_pageSize = CGSizeZero;
     v6->_fontSize = 0;
     v6->_columnCount = 0;
@@ -89,9 +89,9 @@
     result = [(THPresentationType *)self pageSizeDelegate];
     if (result)
     {
-      v4 = [(THPresentationType *)self pageSizeDelegate];
+      pageSizeDelegate = [(THPresentationType *)self pageSizeDelegate];
 
-      return [(THPresentationTypePageSizeDelegate *)v4 fontSizeForPresentationType:self];
+      return [(THPresentationTypePageSizeDelegate *)pageSizeDelegate fontSizeForPresentationType:self];
     }
   }
 
@@ -106,9 +106,9 @@
     result = [(THPresentationType *)self pageSizeDelegate];
     if (result)
     {
-      v4 = [(THPresentationType *)self pageSizeDelegate];
+      pageSizeDelegate = [(THPresentationType *)self pageSizeDelegate];
 
-      return [(THPresentationTypePageSizeDelegate *)v4 columnCountForPresentationType:self];
+      return [(THPresentationTypePageSizeDelegate *)pageSizeDelegate columnCountForPresentationType:self];
     }
   }
 
@@ -123,9 +123,9 @@
     return gutterWidth;
   }
 
-  v4 = [(THPresentationType *)self pageSizeDelegate];
+  pageSizeDelegate = [(THPresentationType *)self pageSizeDelegate];
 
-  [(THPresentationTypePageSizeDelegate *)v4 gutterWidthForPresentationType:self];
+  [(THPresentationTypePageSizeDelegate *)pageSizeDelegate gutterWidthForPresentationType:self];
   return result;
 }
 
@@ -139,10 +139,10 @@
   {
     v12 = *&self->_contentInsets.bottom;
     v13 = *&self->_contentInsets.top;
-    v7 = [(THPresentationType *)self pageSizeDelegate];
+    pageSizeDelegate = [(THPresentationType *)self pageSizeDelegate];
     *&v3.f64[0] = v12;
     *&v2.f64[0] = v13;
-    if (v7)
+    if (pageSizeDelegate)
     {
       [(THPresentationTypePageSizeDelegate *)[(THPresentationType *)self pageSizeDelegate] contentInsetsForPresentationType:self];
       left = v8;
@@ -203,9 +203,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithString:context:", -[THPresentationType name](self, "name"), -[THPresentationType context](self, "context")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithString:context:", -[THPresentationType name](self, "name"), -[THPresentationType context](self, "context")}];
   [v4 setPageSizeDelegate:self->_pageSizeDelegate];
   [v4 setPageSize:{self->_pageSize.width, self->_pageSize.height}];
   [v4 setFontSize:self->_fontSize];
@@ -217,98 +217,98 @@
   return v4;
 }
 
-+ (id)flowPresentationTypeInContext:(id)a3
++ (id)flowPresentationTypeInContext:(id)context
 {
-  v3 = [[a1 alloc] initWithString:@"THFlowPresentationType" context:a3];
+  v3 = [[self alloc] initWithString:@"THFlowPresentationType" context:context];
 
   return v3;
 }
 
-+ (id)paginatedPresentationTypeInContext:(id)a3
++ (id)paginatedPresentationTypeInContext:(id)context
 {
-  v3 = [[a1 alloc] initWithString:@"THPaginatedPresentationType" context:a3];
+  v3 = [[self alloc] initWithString:@"THPaginatedPresentationType" context:context];
 
   return v3;
 }
 
-+ (id)flowPresentationTypeInContext:(id)a3 pageSize:(CGSize)a4
++ (id)flowPresentationTypeInContext:(id)context pageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a1 flowPresentationTypeInContext:a3];
+  height = size.height;
+  width = size.width;
+  v6 = [self flowPresentationTypeInContext:context];
   [v6 setPageSize:{width, height}];
   return v6;
 }
 
-+ (id)paginatedPresentationTypeInContext:(id)a3 pageSize:(CGSize)a4
++ (id)paginatedPresentationTypeInContext:(id)context pageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a1 paginatedPresentationTypeInContext:a3];
+  height = size.height;
+  width = size.width;
+  v6 = [self paginatedPresentationTypeInContext:context];
   [v6 setPageSize:{width, height}];
   return v6;
 }
 
 - (BOOL)isFlow
 {
-  v2 = [(THPresentationType *)self name];
+  name = [(THPresentationType *)self name];
 
-  return [(NSString *)v2 isEqualToString:@"THFlowPresentationType"];
+  return [(NSString *)name isEqualToString:@"THFlowPresentationType"];
 }
 
 - (BOOL)isPaginated
 {
-  v2 = [(THPresentationType *)self name];
+  name = [(THPresentationType *)self name];
 
-  return [(NSString *)v2 isEqualToString:@"THPaginatedPresentationType"];
+  return [(NSString *)name isEqualToString:@"THPaginatedPresentationType"];
 }
 
 - (BOOL)isMutableViaDelegate
 {
-  v3 = [(THPresentationType *)self pageSizeDelegate];
-  if (v3)
+  pageSizeDelegate = [(THPresentationType *)self pageSizeDelegate];
+  if (pageSizeDelegate)
   {
-    LOBYTE(v3) = self->_pageSize.height == CGSizeZero.height && self->_pageSize.width == CGSizeZero.width;
+    LOBYTE(pageSizeDelegate) = self->_pageSize.height == CGSizeZero.height && self->_pageSize.width == CGSizeZero.width;
   }
 
-  return v3;
+  return pageSizeDelegate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
-  v5 = [(THPresentationType *)self name];
-  v6 = [v4 name];
+  name = [(THPresentationType *)self name];
+  name2 = [v4 name];
 
-  return [(NSString *)v5 isEqualToString:v6];
+  return [(NSString *)name isEqualToString:name2];
 }
 
-- (BOOL)isEqualIncludingSize:(id)a3
+- (BOOL)isEqualIncludingSize:(id)size
 {
-  v5 = -[NSString isEqualToString:](-[THPresentationType name](self, "name"), "isEqualToString:", [a3 name]);
+  v5 = -[NSString isEqualToString:](-[THPresentationType name](self, "name"), "isEqualToString:", [size name]);
   if (v5)
   {
     [(THPresentationType *)self pageSize];
-    [a3 pageSize];
+    [size pageSize];
     v5 = TSDNearlyEqualSizes();
     if (v5)
     {
-      v6 = [(THPresentationType *)self fontSize];
-      if (v6 != [a3 fontSize])
+      fontSize = [(THPresentationType *)self fontSize];
+      if (fontSize != [size fontSize])
       {
         goto LABEL_11;
       }
 
-      v7 = [(THPresentationType *)self columnCount];
-      if (v7 != [a3 columnCount])
+      columnCount = [(THPresentationType *)self columnCount];
+      if (columnCount != [size columnCount])
       {
         goto LABEL_11;
       }
 
       [(THPresentationType *)self gutterWidth];
       v9 = v8;
-      [a3 gutterWidth];
+      [size gutterWidth];
       if (v9 != v10)
       {
         goto LABEL_11;
@@ -319,20 +319,20 @@
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      [a3 contentInsets];
+      [size contentInsets];
       LOBYTE(v5) = 0;
       if (v14 == v22 && v12 == v19 && v18 == v21 && v16 == v20)
       {
-        v23 = [(THPresentationType *)self isCompactWidth];
-        if (v23 != [a3 isCompactWidth])
+        isCompactWidth = [(THPresentationType *)self isCompactWidth];
+        if (isCompactWidth != [size isCompactWidth])
         {
 LABEL_11:
           LOBYTE(v5) = 0;
           return v5;
         }
 
-        v24 = [(THPresentationType *)self isCompactHeight];
-        LOBYTE(v5) = v24 ^ [a3 isCompactHeight] ^ 1;
+        isCompactHeight = [(THPresentationType *)self isCompactHeight];
+        LOBYTE(v5) = isCompactHeight ^ [size isCompactHeight] ^ 1;
       }
     }
   }
@@ -342,9 +342,9 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(THPresentationType *)self name];
+  name = [(THPresentationType *)self name];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)name hash];
 }
 
 - (unint64_t)hashIncludingSize
@@ -354,15 +354,15 @@ LABEL_11:
   return (v4 + [(THPresentationType *)self isCompactHeight]);
 }
 
-- (THPresentationType)initWithCoder:(id)a3
+- (THPresentationType)initWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = THPresentationType;
   v4 = [(THPresentationType *)&v17 initWithContext:0];
   if (v4)
   {
-    -[THPresentationType setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"pageSize"];
+    -[THPresentationType setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"pageSize"];
     p_pageSize = &v4->_pageSize;
     if (v5)
     {
@@ -376,12 +376,12 @@ LABEL_11:
       *p_pageSize = CGSizeZero;
     }
 
-    [a3 decodeFloatForKey:@"fontSize"];
+    [coder decodeFloatForKey:@"fontSize"];
     v4->_fontSize = v9;
-    v4->_columnCount = [a3 decodeIntegerForKey:@"columnCount"];
-    [a3 decodeFloatForKey:@"gutterWidth"];
+    v4->_columnCount = [coder decodeIntegerForKey:@"columnCount"];
+    [coder decodeFloatForKey:@"gutterWidth"];
     v4->_gutterWidth = v10;
-    v11 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"contentInsets"];
+    v11 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"contentInsets"];
     if (v11)
     {
       [v11 TSDEdgeInsetsValue];
@@ -391,30 +391,30 @@ LABEL_11:
       v4->_contentInsets.right = v15;
     }
 
-    v4->_compactWidth = [a3 decodeBoolForKey:@"compactWidth"];
-    v4->_compactHeight = [a3 decodeBoolForKey:@"compactHeight"];
+    v4->_compactWidth = [coder decodeBoolForKey:@"compactWidth"];
+    v4->_compactHeight = [coder decodeBoolForKey:@"compactHeight"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[THPresentationType name](self forKey:{"name"), @"name"}];
+  [coder encodeObject:-[THPresentationType name](self forKey:{"name"), @"name"}];
   [(THPresentationType *)self pageSize];
-  [a3 encodeObject:+[NSValue valueWithCGSize:](NSValue forKey:{"valueWithCGSize:"), @"pageSize"}];
+  [coder encodeObject:+[NSValue valueWithCGSize:](NSValue forKey:{"valueWithCGSize:"), @"pageSize"}];
   *&v5 = [(THPresentationType *)self fontSize];
-  [a3 encodeFloat:@"fontSize" forKey:v5];
-  [a3 encodeInteger:-[THPresentationType columnCount](self forKey:{"columnCount"), @"columnCount"}];
+  [coder encodeFloat:@"fontSize" forKey:v5];
+  [coder encodeInteger:-[THPresentationType columnCount](self forKey:{"columnCount"), @"columnCount"}];
   [(THPresentationType *)self gutterWidth];
   *&v6 = v6;
-  [a3 encodeFloat:@"gutterWidth" forKey:v6];
+  [coder encodeFloat:@"gutterWidth" forKey:v6];
   [(THPresentationType *)self contentInsets];
-  [a3 encodeObject:+[NSValue valueWithTSDEdgeInsets:](NSValue forKey:{"valueWithTSDEdgeInsets:"), @"contentInsets"}];
-  [a3 encodeBool:-[THPresentationType isCompactWidth](self forKey:{"isCompactWidth"), @"compactWidth"}];
-  v7 = [(THPresentationType *)self isCompactHeight];
+  [coder encodeObject:+[NSValue valueWithTSDEdgeInsets:](NSValue forKey:{"valueWithTSDEdgeInsets:"), @"contentInsets"}];
+  [coder encodeBool:-[THPresentationType isCompactWidth](self forKey:{"isCompactWidth"), @"compactWidth"}];
+  isCompactHeight = [(THPresentationType *)self isCompactHeight];
 
-  [a3 encodeBool:v7 forKey:@"compactHeight"];
+  [coder encodeBool:isCompactHeight forKey:@"compactHeight"];
 }
 
 @end

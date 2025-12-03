@@ -10,46 +10,46 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setBillPayee:(id)a3;
-- (void)setBillType:(int64_t)a3;
-- (void)setDueDate:(id)a3;
-- (void)setFromAccount:(id)a3;
-- (void)setTransactionAmount:(id)a3;
-- (void)setTransactionNote:(id)a3;
-- (void)setTransactionScheduledDate:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setBillPayee:(id)payee;
+- (void)setBillType:(int64_t)type;
+- (void)setDueDate:(id)date;
+- (void)setFromAccount:(id)account;
+- (void)setTransactionAmount:(id)amount;
+- (void)setTransactionNote:(id)note;
+- (void)setTransactionScheduledDate:(id)date;
 @end
 
 @implementation INPayBillIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INPayBillIntent *)self _typedBackingStore];
-  v20 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 billPayee];
-  v10 = INIntentSlotValueRedactedBillPayeeValueFromBillPayeeValue(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v20 = idCopy;
+  v8 = [_typedBackingStore copy];
+  billPayee = [_typedBackingStore billPayee];
+  v10 = INIntentSlotValueRedactedBillPayeeValueFromBillPayeeValue(billPayee, options);
   [v8 setBillPayee:v10];
 
-  v11 = [v7 fromAccount];
-  v12 = INIntentSlotValueRedactedFinancialAccountValueFromFinancialAccountValue(v11, a3, v20);
+  fromAccount = [_typedBackingStore fromAccount];
+  v12 = INIntentSlotValueRedactedFinancialAccountValueFromFinancialAccountValue(fromAccount, options, v20);
   [v8 setFromAccount:v12];
 
-  v13 = [v7 transactionAmount];
-  [v8 setTransactionAmount:v13];
+  transactionAmount = [_typedBackingStore transactionAmount];
+  [v8 setTransactionAmount:transactionAmount];
 
-  v14 = [v7 transactionScheduledDate];
-  v15 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v14, a3);
+  transactionScheduledDate = [_typedBackingStore transactionScheduledDate];
+  v15 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(transactionScheduledDate, options);
   [v8 setTransactionScheduledDate:v15];
 
-  v16 = [v7 transactionNote];
-  v17 = INIntentSlotValueRedactedStringFromString(v16, a3, v20);
+  transactionNote = [_typedBackingStore transactionNote];
+  v17 = INIntentSlotValueRedactedStringFromString(transactionNote, options, v20);
   [v8 setTransactionNote:v17];
 
-  v18 = [v7 dueDate];
-  v19 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v18, a3);
+  dueDate = [_typedBackingStore dueDate];
+  v19 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(dueDate, options);
 
   [v8 setDueDate:v19];
   [(INIntent *)self setBackingStore:v8];
@@ -59,82 +59,82 @@
 {
   v26[7] = *MEMORY[0x1E69E9840];
   v25[0] = @"billPayee";
-  v3 = [(INPayBillIntent *)self billPayee];
-  v4 = v3;
-  if (!v3)
+  billPayee = [(INPayBillIntent *)self billPayee];
+  v4 = billPayee;
+  if (!billPayee)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    billPayee = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v3;
-  v26[0] = v3;
+  v24 = billPayee;
+  v26[0] = billPayee;
   v25[1] = @"fromAccount";
-  v5 = [(INPayBillIntent *)self fromAccount];
-  v6 = v5;
-  if (!v5)
+  fromAccount = [(INPayBillIntent *)self fromAccount];
+  v6 = fromAccount;
+  if (!fromAccount)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    fromAccount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v5;
-  v26[1] = v5;
+  v23 = fromAccount;
+  v26[1] = fromAccount;
   v25[2] = @"transactionAmount";
-  v7 = [(INPayBillIntent *)self transactionAmount];
-  v8 = v7;
-  if (!v7)
+  transactionAmount = [(INPayBillIntent *)self transactionAmount];
+  v8 = transactionAmount;
+  if (!transactionAmount)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    transactionAmount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v7;
-  v26[2] = v7;
+  v22 = transactionAmount;
+  v26[2] = transactionAmount;
   v25[3] = @"transactionScheduledDate";
-  v9 = [(INPayBillIntent *)self transactionScheduledDate];
-  v10 = v9;
-  if (!v9)
+  transactionScheduledDate = [(INPayBillIntent *)self transactionScheduledDate];
+  v10 = transactionScheduledDate;
+  if (!transactionScheduledDate)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    transactionScheduledDate = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v9;
+  v26[3] = transactionScheduledDate;
   v25[4] = @"transactionNote";
-  v11 = [(INPayBillIntent *)self transactionNote];
-  v12 = v11;
-  if (!v11)
+  transactionNote = [(INPayBillIntent *)self transactionNote];
+  null = transactionNote;
+  if (!transactionNote)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v12;
+  v26[4] = null;
   v25[5] = @"billType";
-  v13 = [(INPayBillIntent *)self billType];
-  if ((v13 - 1) > 0x15)
+  billType = [(INPayBillIntent *)self billType];
+  if ((billType - 1) > 0x15)
   {
     v14 = @"unknown";
   }
 
   else
   {
-    v14 = off_1E7280DF0[v13 - 1];
+    v14 = off_1E7280DF0[billType - 1];
   }
 
   v15 = v14;
   v26[5] = v15;
   v25[6] = @"dueDate";
-  v16 = [(INPayBillIntent *)self dueDate];
-  v17 = v16;
-  if (!v16)
+  dueDate = [(INPayBillIntent *)self dueDate];
+  null2 = dueDate;
+  if (!dueDate)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v17;
+  v26[6] = null2;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
-  if (!v16)
+  if (!dueDate)
   {
   }
 
-  if (!v11)
+  if (!transactionNote)
   {
   }
 
@@ -159,49 +159,49 @@
   return v18;
 }
 
-- (void)setDueDate:(id)a3
+- (void)setDueDate:(id)date
 {
-  v4 = a3;
-  v6 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  dateCopy = date;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(dateCopy);
 
-  [v6 setDueDate:v5];
+  [_typedBackingStore setDueDate:v5];
 }
 
 - (INDateComponentsRange)dueDate
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 dueDate];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  dueDate = [_typedBackingStore dueDate];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(dueDate);
 
   return v4;
 }
 
-- (void)setBillType:(int64_t)a3
+- (void)setBillType:(int64_t)type
 {
-  v3 = a3 - 1;
-  v4 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = type - 1;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 0x15)
   {
-    [v4 setHasBillType:0];
+    [_typedBackingStore setHasBillType:0];
   }
 
   else
   {
-    [v4 setBillType:?];
+    [_typedBackingStore setBillType:?];
   }
 }
 
 - (INBillType)billType
 {
-  v3 = [(INPayBillIntent *)self _typedBackingStore];
-  v4 = [v3 hasBillType];
-  v5 = [(INPayBillIntent *)self _typedBackingStore];
-  v6 = [v5 billType];
-  if (((v6 - 1 < 0x16) & v4) != 0)
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  hasBillType = [_typedBackingStore hasBillType];
+  _typedBackingStore2 = [(INPayBillIntent *)self _typedBackingStore];
+  billType = [_typedBackingStore2 billType];
+  if (((billType - 1 < 0x16) & hasBillType) != 0)
   {
-    v7 = v6;
+    v7 = billType;
   }
 
   else
@@ -212,92 +212,92 @@
   return v7;
 }
 
-- (void)setTransactionNote:(id)a3
+- (void)setTransactionNote:(id)note
 {
-  v4 = a3;
-  v6 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  noteCopy = note;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(noteCopy);
 
-  [v6 setTransactionNote:v5];
+  [_typedBackingStore setTransactionNote:v5];
 }
 
 - (NSString)transactionNote
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 transactionNote];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  transactionNote = [_typedBackingStore transactionNote];
+  v4 = INIntentSlotValueTransformFromString(transactionNote);
 
   return v4;
 }
 
-- (void)setTransactionScheduledDate:(id)a3
+- (void)setTransactionScheduledDate:(id)date
 {
-  v4 = a3;
-  v6 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  dateCopy = date;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(dateCopy);
 
-  [v6 setTransactionScheduledDate:v5];
+  [_typedBackingStore setTransactionScheduledDate:v5];
 }
 
 - (INDateComponentsRange)transactionScheduledDate
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 transactionScheduledDate];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  transactionScheduledDate = [_typedBackingStore transactionScheduledDate];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(transactionScheduledDate);
 
   return v4;
 }
 
-- (void)setTransactionAmount:(id)a3
+- (void)setTransactionAmount:(id)amount
 {
-  v4 = a3;
-  v6 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToPaymentAmountValue(v4);
+  amountCopy = amount;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToPaymentAmountValue(amountCopy);
 
-  [v6 setTransactionAmount:v5];
+  [_typedBackingStore setTransactionAmount:v5];
 }
 
 - (INPaymentAmount)transactionAmount
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 transactionAmount];
-  v4 = INIntentSlotValueTransformFromPaymentAmountValue(v3);
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  transactionAmount = [_typedBackingStore transactionAmount];
+  v4 = INIntentSlotValueTransformFromPaymentAmountValue(transactionAmount);
 
   return v4;
 }
 
-- (void)setFromAccount:(id)a3
+- (void)setFromAccount:(id)account
 {
-  v4 = a3;
-  v6 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToFinancialAccountValue(v4);
+  accountCopy = account;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToFinancialAccountValue(accountCopy);
 
-  [v6 setFromAccount:v5];
+  [_typedBackingStore setFromAccount:v5];
 }
 
 - (INPaymentAccount)fromAccount
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 fromAccount];
-  v4 = INIntentSlotValueTransformFromFinancialAccountValue(v3);
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  fromAccount = [_typedBackingStore fromAccount];
+  v4 = INIntentSlotValueTransformFromFinancialAccountValue(fromAccount);
 
   return v4;
 }
 
-- (void)setBillPayee:(id)a3
+- (void)setBillPayee:(id)payee
 {
-  v4 = a3;
-  v6 = [(INPayBillIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToBillPayeeValue(v4);
+  payeeCopy = payee;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToBillPayeeValue(payeeCopy);
 
-  [v6 setBillPayee:v5];
+  [_typedBackingStore setBillPayee:v5];
 }
 
 - (INBillPayee)billPayee
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 billPayee];
-  v4 = INIntentSlotValueTransformFromBillPayeeValue(v3);
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  billPayee = [_typedBackingStore billPayee];
+  v4 = INIntentSlotValueTransformFromBillPayeeValue(billPayee);
 
   return v4;
 }
@@ -328,28 +328,28 @@
   return v22;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INPayBillIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INPayBillIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INPayBillIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

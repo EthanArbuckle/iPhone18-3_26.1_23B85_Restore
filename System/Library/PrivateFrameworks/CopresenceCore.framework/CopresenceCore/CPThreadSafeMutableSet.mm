@@ -1,9 +1,9 @@
 @interface CPThreadSafeMutableSet
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (CPThreadSafeMutableSet)init;
 - (id)description;
-- (void)addObject:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)addObject:(id)object;
+- (void)unionSet:(id)set;
 @end
 
 @implementation CPThreadSafeMutableSet
@@ -36,27 +36,27 @@
   return v5;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_operationLock);
-  [(NSMutableSet *)self->_mutableSet addObject:v4];
+  [(NSMutableSet *)self->_mutableSet addObject:objectCopy];
   os_unfair_lock_unlock(&self->_operationLock);
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   os_unfair_lock_lock(&self->_operationLock);
-  [(NSMutableSet *)self->_mutableSet unionSet:v4];
+  [(NSMutableSet *)self->_mutableSet unionSet:setCopy];
   os_unfair_lock_unlock(&self->_operationLock);
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_operationLock);
-  v5 = [(NSMutableSet *)self->_mutableSet containsObject:v4];
+  v5 = [(NSMutableSet *)self->_mutableSet containsObject:objectCopy];
   os_unfair_lock_unlock(&self->_operationLock);
 
   return v5;

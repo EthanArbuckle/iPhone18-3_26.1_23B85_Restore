@@ -1,13 +1,13 @@
 @interface LearnPronunciationIntent
-- (LearnPronunciationIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (LearnPronunciationIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (LearnPronunciationIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (LearnPronunciationIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation LearnPronunciationIntent
 
-- (LearnPronunciationIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (LearnPronunciationIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return LearnPronunciationIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return LearnPronunciationIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (LearnPronunciationIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (LearnPronunciationIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (name)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

@@ -1,19 +1,19 @@
 @interface _CDContextualChangeRegistration
-+ (id)localNonWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 callback:(id)a5;
-+ (id)localNonWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 clientIdentifier:(id)a5 callback:(id)a6;
-+ (id)localWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 callback:(id)a5;
-+ (id)localWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 clientIdentifier:(id)a5 callback:(id)a6;
-+ (id)registrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 deviceTypes:(unint64_t)a5 clientIdentifier:(id)a6 mustWake:(BOOL)a7 qualityOfService:(unsigned int)a8 callback:(id)a9;
-+ (id)registrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 clientIdentifier:(id)a7 mustWake:(BOOL)a8 qualityOfService:(unsigned int)a9 callback:(id)a10;
-+ (id)registrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 mustWake:(BOOL)a7 callback:(id)a8;
-- (BOOL)isEqual:(id)a3;
++ (id)localNonWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate callback:(id)callback;
++ (id)localNonWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate clientIdentifier:(id)clientIdentifier callback:(id)callback;
++ (id)localWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate callback:(id)callback;
++ (id)localWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate clientIdentifier:(id)clientIdentifier callback:(id)callback;
++ (id)registrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate deviceTypes:(unint64_t)types clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake qualityOfService:(unsigned int)service callback:(id)callback;
++ (id)registrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake qualityOfService:(unsigned int)service callback:(id)self0;
++ (id)registrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set mustWake:(BOOL)wake callback:(id)callback;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMultiDeviceRegistration;
-- (_CDContextualChangeRegistration)initWithCoder:(id)a3;
-- (_CDContextualChangeRegistration)initWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 deviceTypes:(unint64_t)a7 clientIdentifier:(id)a8 mustWake:(BOOL)a9 callback:(id)a10;
-- (_CDContextualChangeRegistration)initWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 deviceTypes:(unint64_t)a7 clientIdentifier:(id)a8 mustWake:(BOOL)a9 qualityOfService:(unsigned int)a10 informativeCallback:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CDContextualChangeRegistration)initWithCoder:(id)coder;
+- (_CDContextualChangeRegistration)initWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set deviceTypes:(unint64_t)types clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake callback:(id)self0;
+- (_CDContextualChangeRegistration)initWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set deviceTypes:(unint64_t)types clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake qualityOfService:(unsigned int)self0 informativeCallback:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDContextualChangeRegistration
@@ -25,71 +25,71 @@
   return objc_opt_isKindOfClass() & 1;
 }
 
-- (_CDContextualChangeRegistration)initWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 deviceTypes:(unint64_t)a7 clientIdentifier:(id)a8 mustWake:(BOOL)a9 callback:(id)a10
+- (_CDContextualChangeRegistration)initWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set deviceTypes:(unint64_t)types clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake callback:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a10;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  policyCopy = policy;
+  clientIdentifierCopy = clientIdentifier;
+  callbackCopy = callback;
   v27.receiver = self;
   v27.super_class = _CDContextualChangeRegistration;
   v20 = [(_CDContextualChangeRegistration *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_identifier, a3);
-    objc_storeStrong(&v21->_predicate, a4);
-    objc_storeStrong(&v21->_dismissalPolicy, a5);
-    v21->_deviceSet = a6;
-    v21->_deviceTypes = a7;
-    objc_storeStrong(&v21->_clientIdentifier, a8);
-    v21->_mustWake = a9;
+    objc_storeStrong(&v20->_identifier, identifier);
+    objc_storeStrong(&v21->_predicate, predicate);
+    objc_storeStrong(&v21->_dismissalPolicy, policy);
+    v21->_deviceSet = set;
+    v21->_deviceTypes = types;
+    objc_storeStrong(&v21->_clientIdentifier, clientIdentifier);
+    v21->_mustWake = wake;
     v21->_qualityOfService = 9;
-    v22 = MEMORY[0x1AC5886D0](v19);
+    v22 = MEMORY[0x1AC5886D0](callbackCopy);
     callback = v21->_callback;
     v21->_callback = v22;
 
-    v21->_isDeserialized = v19 != 0;
+    v21->_isDeserialized = callbackCopy != 0;
   }
 
   return v21;
 }
 
-- (_CDContextualChangeRegistration)initWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 deviceTypes:(unint64_t)a7 clientIdentifier:(id)a8 mustWake:(BOOL)a9 qualityOfService:(unsigned int)a10 informativeCallback:(id)a11
+- (_CDContextualChangeRegistration)initWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set deviceTypes:(unint64_t)types clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake qualityOfService:(unsigned int)self0 informativeCallback:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v27 = a8;
-  v20 = a11;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  policyCopy = policy;
+  clientIdentifierCopy = clientIdentifier;
+  callbackCopy = callback;
   v28.receiver = self;
   v28.super_class = _CDContextualChangeRegistration;
   v21 = [(_CDContextualChangeRegistration *)&v28 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_identifier, a3);
-    objc_storeStrong(&v22->_predicate, a4);
-    objc_storeStrong(&v22->_dismissalPolicy, a5);
-    v22->_deviceSet = a6;
-    v22->_deviceTypes = a7;
-    objc_storeStrong(&v22->_clientIdentifier, a8);
-    v22->_mustWake = a9;
-    v22->_qualityOfService = a10;
-    v23 = MEMORY[0x1AC5886D0](v20);
+    objc_storeStrong(&v21->_identifier, identifier);
+    objc_storeStrong(&v22->_predicate, predicate);
+    objc_storeStrong(&v22->_dismissalPolicy, policy);
+    v22->_deviceSet = set;
+    v22->_deviceTypes = types;
+    objc_storeStrong(&v22->_clientIdentifier, clientIdentifier);
+    v22->_mustWake = wake;
+    v22->_qualityOfService = service;
+    v23 = MEMORY[0x1AC5886D0](callbackCopy);
     informativeCallback = v22->_informativeCallback;
     v22->_informativeCallback = v23;
 
-    v22->_isDeserialized = v20 != 0;
+    v22->_isDeserialized = callbackCopy != 0;
   }
 
   return v22;
 }
 
-+ (id)registrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 mustWake:(BOOL)a7 callback:(id)a8
++ (id)registrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set mustWake:(BOOL)wake callback:(id)callback
 {
-  if (a6 == 1)
+  if (set == 1)
   {
     v14 = 0xFFFFLL;
   }
@@ -99,19 +99,19 @@
     v14 = 0;
   }
 
-  v15 = a8;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  LOBYTE(v21) = a7;
-  v19 = [[a1 alloc] initWithIdentifier:v18 contextualPredicate:v17 dismissalPolicy:v16 deviceSet:a6 deviceTypes:v14 clientIdentifier:0 mustWake:v21 callback:v15];
+  callbackCopy = callback;
+  policyCopy = policy;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
+  LOBYTE(v21) = wake;
+  v19 = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:policyCopy deviceSet:set deviceTypes:v14 clientIdentifier:0 mustWake:v21 callback:callbackCopy];
 
   return v19;
 }
 
-+ (id)registrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 dismissalPolicy:(id)a5 deviceSet:(unint64_t)a6 clientIdentifier:(id)a7 mustWake:(BOOL)a8 qualityOfService:(unsigned int)a9 callback:(id)a10
++ (id)registrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate dismissalPolicy:(id)policy deviceSet:(unint64_t)set clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake qualityOfService:(unsigned int)service callback:(id)self0
 {
-  if (a6 == 1)
+  if (set == 1)
   {
     v17 = 0xFFFFLL;
   }
@@ -121,95 +121,95 @@
     v17 = 0;
   }
 
-  v18 = a10;
-  v19 = a7;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  HIDWORD(v25) = a9;
-  LOBYTE(v25) = a8;
-  v23 = [[a1 alloc] initWithIdentifier:v22 contextualPredicate:v21 dismissalPolicy:v20 deviceSet:a6 deviceTypes:v17 clientIdentifier:v19 mustWake:v25 qualityOfService:v18 informativeCallback:?];
+  callbackCopy = callback;
+  clientIdentifierCopy = clientIdentifier;
+  policyCopy = policy;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
+  HIDWORD(v25) = service;
+  LOBYTE(v25) = wake;
+  v23 = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:policyCopy deviceSet:set deviceTypes:v17 clientIdentifier:clientIdentifierCopy mustWake:v25 qualityOfService:callbackCopy informativeCallback:?];
 
   return v23;
 }
 
-+ (id)registrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 deviceTypes:(unint64_t)a5 clientIdentifier:(id)a6 mustWake:(BOOL)a7 qualityOfService:(unsigned int)a8 callback:(id)a9
++ (id)registrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate deviceTypes:(unint64_t)types clientIdentifier:(id)clientIdentifier mustWake:(BOOL)wake qualityOfService:(unsigned int)service callback:(id)callback
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
-  if (a5)
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  clientIdentifierCopy = clientIdentifier;
+  callbackCopy = callback;
+  if (types)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      HIDWORD(v20) = a8;
-      LOBYTE(v20) = a7;
-      a5 = [[a1 alloc] initWithIdentifier:v15 contextualPredicate:v16 dismissalPolicy:0 deviceSet:1 deviceTypes:a5 clientIdentifier:v17 mustWake:v20 qualityOfService:v18 informativeCallback:?];
+      HIDWORD(v20) = service;
+      LOBYTE(v20) = wake;
+      types = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:0 deviceSet:1 deviceTypes:types clientIdentifier:clientIdentifierCopy mustWake:v20 qualityOfService:callbackCopy informativeCallback:?];
     }
 
     else
     {
-      a5 = 0;
+      types = 0;
     }
   }
 
-  return a5;
+  return types;
 }
 
-+ (id)localWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 callback:(id)a5
++ (id)localWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate callback:(id)callback
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  callbackCopy = callback;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   LOBYTE(v13) = 1;
-  v11 = [[a1 alloc] initWithIdentifier:v10 contextualPredicate:v9 dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:0 mustWake:v13 callback:v8];
+  v11 = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:0 mustWake:v13 callback:callbackCopy];
 
   return v11;
 }
 
-+ (id)localWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 clientIdentifier:(id)a5 callback:(id)a6
++ (id)localWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate clientIdentifier:(id)clientIdentifier callback:(id)callback
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  callbackCopy = callback;
+  clientIdentifierCopy = clientIdentifier;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   HIDWORD(v16) = 9;
   LOBYTE(v16) = 1;
-  v14 = [[a1 alloc] initWithIdentifier:v13 contextualPredicate:v12 dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:v11 mustWake:v16 qualityOfService:v10 informativeCallback:?];
+  v14 = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:clientIdentifierCopy mustWake:v16 qualityOfService:callbackCopy informativeCallback:?];
 
   return v14;
 }
 
-+ (id)localNonWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 callback:(id)a5
++ (id)localNonWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate callback:(id)callback
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  callbackCopy = callback;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   LOBYTE(v13) = 0;
-  v11 = [[a1 alloc] initWithIdentifier:v10 contextualPredicate:v9 dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:0 mustWake:v13 callback:v8];
+  v11 = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:0 mustWake:v13 callback:callbackCopy];
 
   return v11;
 }
 
-+ (id)localNonWakingRegistrationWithIdentifier:(id)a3 contextualPredicate:(id)a4 clientIdentifier:(id)a5 callback:(id)a6
++ (id)localNonWakingRegistrationWithIdentifier:(id)identifier contextualPredicate:(id)predicate clientIdentifier:(id)clientIdentifier callback:(id)callback
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  callbackCopy = callback;
+  clientIdentifierCopy = clientIdentifier;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   HIDWORD(v16) = 9;
   LOBYTE(v16) = 0;
-  v14 = [[a1 alloc] initWithIdentifier:v13 contextualPredicate:v12 dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:v11 mustWake:v16 qualityOfService:v10 informativeCallback:?];
+  v14 = [[self alloc] initWithIdentifier:identifierCopy contextualPredicate:predicateCopy dismissalPolicy:0 deviceSet:0 deviceTypes:0 clientIdentifier:clientIdentifierCopy mustWake:v16 qualityOfService:callbackCopy informativeCallback:?];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   informativeCallback = self->_informativeCallback;
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   predicate = self->_predicate;
   dismissalPolicy = self->_dismissalPolicy;
@@ -236,40 +236,40 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_predicate forKey:@"predicate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_predicate forKey:@"predicate"];
   dismissalPolicy = self->_dismissalPolicy;
   if (dismissalPolicy)
   {
-    [v6 encodeObject:dismissalPolicy forKey:@"dismissal"];
+    [coderCopy encodeObject:dismissalPolicy forKey:@"dismissal"];
   }
 
-  [v6 encodeInteger:self->_deviceSet forKey:@"deviceSet"];
-  [v6 encodeInteger:self->_deviceTypes forKey:@"deviceTypes"];
+  [coderCopy encodeInteger:self->_deviceSet forKey:@"deviceSet"];
+  [coderCopy encodeInteger:self->_deviceTypes forKey:@"deviceTypes"];
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v6 encodeObject:clientIdentifier forKey:@"clientIdentifier"];
+    [coderCopy encodeObject:clientIdentifier forKey:@"clientIdentifier"];
   }
 
   if (self->_mustWake)
   {
-    [v6 encodeBool:1 forKey:@"mustWake"];
+    [coderCopy encodeBool:1 forKey:@"mustWake"];
   }
 
-  [v6 encodeInteger:self->_qualityOfService forKey:@"qualityOfService"];
-  [v6 encodeObject:self->_locationManagerEffectiveBundleID forKey:@"locationManagerEffectiveBundleID"];
-  [v6 encodeObject:self->_locationManagerEffectiveBundlePath forKey:@"locationManagerEffectiveBundlePath"];
+  [coderCopy encodeInteger:self->_qualityOfService forKey:@"qualityOfService"];
+  [coderCopy encodeObject:self->_locationManagerEffectiveBundleID forKey:@"locationManagerEffectiveBundleID"];
+  [coderCopy encodeObject:self->_locationManagerEffectiveBundlePath forKey:@"locationManagerEffectiveBundlePath"];
 }
 
-- (_CDContextualChangeRegistration)initWithCoder:(id)a3
+- (_CDContextualChangeRegistration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
   v7 = v6;
   if (v5)
   {
@@ -283,9 +283,9 @@
 
   if (!v8)
   {
-    if ([v4 containsValueForKey:@"dismissal"])
+    if ([coderCopy containsValueForKey:@"dismissal"])
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dismissal"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dismissal"];
       if (!v10)
       {
         goto LABEL_14;
@@ -297,16 +297,16 @@
       v10 = 0;
     }
 
-    v11 = [v4 decodeIntegerForKey:@"deviceSet"];
-    v12 = [v4 decodeIntegerForKey:@"deviceTypes"];
+    v11 = [coderCopy decodeIntegerForKey:@"deviceSet"];
+    v12 = [coderCopy decodeIntegerForKey:@"deviceTypes"];
     if (v11 <= 1)
     {
       v13 = v12;
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
-      v19 = [v4 containsValueForKey:@"mustWake"];
-      if ([v4 containsValueForKey:@"qualityOfService"])
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+      v19 = [coderCopy containsValueForKey:@"mustWake"];
+      if ([coderCopy containsValueForKey:@"qualityOfService"])
       {
-        v14 = [v4 decodeIntegerForKey:@"qualityOfService"];
+        v14 = [coderCopy decodeIntegerForKey:@"qualityOfService"];
       }
 
       else
@@ -314,8 +314,8 @@
         v14 = 9;
       }
 
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationManagerEffectiveBundleID"];
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationManagerEffectiveBundlePath"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationManagerEffectiveBundleID"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationManagerEffectiveBundlePath"];
       HIDWORD(v18) = v14;
       LOBYTE(v18) = v19;
       v9 = [objc_alloc(objc_opt_class()) initWithIdentifier:v5 contextualPredicate:v7 dismissalPolicy:v10 deviceSet:v11 deviceTypes:v13 clientIdentifier:v20 mustWake:v18 qualityOfService:0 informativeCallback:?];
@@ -338,10 +338,10 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -352,8 +352,8 @@ LABEL_18:
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(_CDContextualChangeRegistration *)v4 identifier];
-      v7 = [(NSString *)identifier isEqual:v6];
+      identifier = [(_CDContextualChangeRegistration *)equalCopy identifier];
+      v7 = [(NSString *)identifier isEqual:identifier];
     }
 
     else

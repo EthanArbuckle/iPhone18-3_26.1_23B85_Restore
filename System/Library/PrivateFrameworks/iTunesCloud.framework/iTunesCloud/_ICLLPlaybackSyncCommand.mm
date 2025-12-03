@@ -1,11 +1,11 @@
 @interface _ICLLPlaybackSyncCommand
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPayload;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlaybackSyncCommand
@@ -26,23 +26,23 @@
   return v4 ^ [(NSString *)self->_transportControlState hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_payload != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_payload != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -50,13 +50,13 @@ LABEL_11:
   }
 
   participantState = self->_participantState;
-  if (participantState | *(v4 + 1) && ![(NSString *)participantState isEqual:?])
+  if (participantState | *(equalCopy + 1) && ![(NSString *)participantState isEqual:?])
   {
     goto LABEL_11;
   }
 
   transportControlState = self->_transportControlState;
-  if (transportControlState | *(v4 + 3))
+  if (transportControlState | *(equalCopy + 3))
   {
     v7 = [(NSString *)transportControlState isEqual:?];
   }
@@ -71,9 +71,9 @@ LABEL_12:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -81,56 +81,56 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(NSString *)self->_participantState copyWithZone:a3];
+  v7 = [(NSString *)self->_participantState copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSString *)self->_transportControlState copyWithZone:a3];
+  v9 = [(NSString *)self->_transportControlState copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_participantState)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_transportControlState)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (void)clearOneofValuesForPayload
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 32) &= ~1u;
-    *(a1 + 16) = 0;
-    v2 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    *(self + 32) &= ~1u;
+    *(self + 16) = 0;
+    v2 = *(self + 8);
+    *(self + 8) = 0;
 
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v3 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   participantState = self->_participantState;
   if (participantState)
   {
-    [v3 setObject:participantState forKey:@"participantState"];
+    [dictionary setObject:participantState forKey:@"participantState"];
   }
 
   transportControlState = self->_transportControlState;
@@ -154,8 +154,8 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = _ICLLPlaybackSyncCommand;
   v4 = [(_ICLLPlaybackSyncCommand *)&v8 description];
-  v5 = [(_ICLLPlaybackSyncCommand *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlaybackSyncCommand *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

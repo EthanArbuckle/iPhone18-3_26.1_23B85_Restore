@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneSearchPhraseQuery_Builder
 - (OrgApacheLuceneSearchPhraseQuery_Builder)init;
-- (id)addWithOrgApacheLuceneIndexTerm:(id)a3;
-- (id)addWithOrgApacheLuceneIndexTerm:(id)a3 withInt:(int)a4;
+- (id)addWithOrgApacheLuceneIndexTerm:(id)term;
+- (id)addWithOrgApacheLuceneIndexTerm:(id)term withInt:(int)int;
 - (id)build;
 - (void)dealloc;
 @end
@@ -18,7 +18,7 @@
   return self;
 }
 
-- (id)addWithOrgApacheLuceneIndexTerm:(id)a3
+- (id)addWithOrgApacheLuceneIndexTerm:(id)term
 {
   positions = self->positions_;
   if (!positions)
@@ -42,20 +42,20 @@ LABEL_9:
   v6 = [v7 intValue] + 1;
 LABEL_6:
 
-  return [(OrgApacheLuceneSearchPhraseQuery_Builder *)self addWithOrgApacheLuceneIndexTerm:a3 withInt:v6];
+  return [(OrgApacheLuceneSearchPhraseQuery_Builder *)self addWithOrgApacheLuceneIndexTerm:term withInt:v6];
 }
 
-- (id)addWithOrgApacheLuceneIndexTerm:(id)a3 withInt:(int)a4
+- (id)addWithOrgApacheLuceneIndexTerm:(id)term withInt:(int)int
 {
-  if (!a3)
+  if (!term)
   {
     goto LABEL_18;
   }
 
-  v7 = [a3 field];
-  v8 = OrgApacheLuceneUtilBytesRef_deepCopyOfWithOrgApacheLuceneUtilBytesRef_([a3 bytes]);
-  v9 = new_OrgApacheLuceneIndexTerm_initWithNSString_withOrgApacheLuceneUtilBytesRef_(v7, v8);
-  if (a4 < 0)
+  field = [term field];
+  v8 = OrgApacheLuceneUtilBytesRef_deepCopyOfWithOrgApacheLuceneUtilBytesRef_([term bytes]);
+  v9 = new_OrgApacheLuceneIndexTerm_initWithNSString_withOrgApacheLuceneUtilBytesRef_(field, v8);
+  if (int < 0)
   {
     v32 = JreStrcat("$I", v10, v11, v12, v13, v14, v15, v16, @"Positions must be >= 0, got ");
     goto LABEL_17;
@@ -76,7 +76,7 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    if ([v19 intValue] > a4)
+    if ([v19 intValue] > int)
     {
       v32 = JreStrcat("$I$I", v20, v21, v22, v23, v24, v25, v26, @"Positions must be added in order, got ");
       goto LABEL_17;
@@ -92,10 +92,10 @@ LABEL_18:
 
   if (([(JavaUtilList *)terms isEmpty]& 1) == 0)
   {
-    v28 = [(OrgApacheLuceneIndexTerm *)v17 field];
-    if (v28)
+    field2 = [(OrgApacheLuceneIndexTerm *)v17 field];
+    if (field2)
     {
-      v29 = v28;
+      v29 = field2;
       v30 = [(JavaUtilList *)self->terms_ getWithInt:0];
       if (v30)
       {
@@ -122,7 +122,7 @@ LABEL_17:
 
 LABEL_12:
   [(JavaUtilList *)self->terms_ addWithId:v17];
-  [(JavaUtilList *)self->positions_ addWithId:JavaLangInteger_valueOfWithInt_(a4)];
+  [(JavaUtilList *)self->positions_ addWithId:JavaLangInteger_valueOfWithInt_(int)];
   return self;
 }
 
@@ -155,14 +155,14 @@ LABEL_12:
         break;
       }
 
-      v11 = [v10 intValue];
+      intValue = [v10 intValue];
       v12 = *(v7 + 8);
       if (v8 >= v12)
       {
         IOSArray_throwOutOfBoundsWithMsg(v12, v8);
       }
 
-      *(&v9->super.size_ + 1) = v11;
+      *(&v9->super.size_ + 1) = intValue;
       ++v8;
       v9 = (v9 + 4);
       if (v8 >= *(v7 + 8))

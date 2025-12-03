@@ -1,26 +1,26 @@
 @interface WFTrafficEngManager
 - (BOOL)__configureRapportDiscoveryClient;
-- (WFTrafficEngManager)initWithTrafficEngDelegate:(id)a3;
+- (WFTrafficEngManager)initWithTrafficEngDelegate:(id)delegate;
 - (id)__collectCriticalAppInfo;
 - (void)__activateDiscovery;
-- (void)__configureRapportSessionClient:(id)a3;
+- (void)__configureRapportSessionClient:(id)client;
 - (void)__invalidateDiscovery;
 - (void)__invalidateSession;
 - (void)__registerCallbacksAndActivate;
 - (void)__registerRequestHandler;
-- (void)__requestCriticalAppInfo:(id)a3 completionBlock:(id)a4;
+- (void)__requestCriticalAppInfo:(id)info completionBlock:(id)block;
 - (void)__sendEventToPeers;
-- (void)__sendPeriodicEvent:(id)a3;
+- (void)__sendPeriodicEvent:(id)event;
 - (void)cleanup;
 - (void)dealloc;
 @end
 
 @implementation WFTrafficEngManager
 
-- (WFTrafficEngManager)initWithTrafficEngDelegate:(id)a3
+- (WFTrafficEngManager)initWithTrafficEngDelegate:(id)delegate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = WFTrafficEngManager;
   v5 = [(WFTrafficEngManager *)&v19 init];
@@ -28,9 +28,9 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     *buf = 136446210;
-    *&buf[4] = v8;
+    *&buf[4] = uTF8String;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -54,7 +54,7 @@ LABEL_18:
 
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    [(WFTrafficEngManager *)v5 setTrafficEngDelegate:v4];
+    [(WFTrafficEngManager *)v5 setTrafficEngDelegate:delegateCopy];
     goto LABEL_13;
   }
 
@@ -62,9 +62,9 @@ LABEL_18:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v11, "UTF8String")];
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
     *buf = 136446210;
-    *&buf[4] = v13;
+    *&buf[4] = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
   }
 
@@ -76,9 +76,9 @@ LABEL_13:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v14, "UTF8String")];
-    v16 = [v15 UTF8String];
+    uTF8String3 = [v15 UTF8String];
     *buf = 136446210;
-    *&buf[4] = v16;
+    *&buf[4] = uTF8String3;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -94,7 +94,7 @@ LABEL_13:
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v12 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -108,9 +108,9 @@ LABEL_13:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
-    v8 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     *buf = 136446210;
-    v12 = v8;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -134,9 +134,9 @@ LABEL_13:
     v7 = v3;
     v8 = [v6 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     v9 = v8;
-    v10 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     *buf = 136446210;
-    v49 = v10;
+    v49 = uTF8String;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -149,9 +149,9 @@ LABEL_13:
     v15 = v11;
     v16 = [v14 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v11, "UTF8String")];
     v17 = v16;
-    v18 = [v16 UTF8String];
+    uTF8String2 = [v16 UTF8String];
     *buf = 136446210;
-    v49 = v18;
+    v49 = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
   }
 
@@ -196,9 +196,9 @@ LABEL_13:
       v26 = v22;
       v27 = [v25 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v22, "UTF8String")];
       v28 = v27;
-      v29 = [v27 UTF8String];
+      uTF8String3 = [v27 UTF8String];
       *buf = 136446210;
-      v49 = v29;
+      v49 = uTF8String3;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
     }
 
@@ -217,9 +217,9 @@ LABEL_13:
     v34 = v30;
     v35 = [v33 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v30, "UTF8String")];
     v36 = v35;
-    v37 = [v35 UTF8String];
+    uTF8String4 = [v35 UTF8String];
     *buf = 136446210;
-    v49 = v37;
+    v49 = uTF8String4;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -293,7 +293,7 @@ void __56__WFTrafficEngManager___configureRapportDiscoveryClient__block_invoke_4
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v10 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -302,9 +302,9 @@ void __56__WFTrafficEngManager___configureRapportDiscoveryClient__block_invoke_4
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v5, "UTF8String")];
-    v7 = [v6 UTF8String];
+    uTF8String2 = [v6 UTF8String];
     *buf = 136446210;
-    v10 = v7;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -319,7 +319,7 @@ void __56__WFTrafficEngManager___configureRapportDiscoveryClient__block_invoke_4
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v12 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -334,9 +334,9 @@ void __56__WFTrafficEngManager___configureRapportDiscoveryClient__block_invoke_4
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
-    v8 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     *buf = 136446210;
-    v12 = v8;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -407,7 +407,7 @@ void __53__WFTrafficEngManager___registerCallbacksAndActivate__block_invoke_56(u
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v12 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -422,9 +422,9 @@ void __53__WFTrafficEngManager___registerCallbacksAndActivate__block_invoke_56(u
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
-    v8 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     *buf = 136446210;
-    v12 = v8;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -454,7 +454,7 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v11 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -469,9 +469,9 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
-    v8 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     *buf = 136446210;
-    v11 = v8;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -486,7 +486,7 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v11 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -497,16 +497,16 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
-    v8 = [v7 UTF8String];
+    uTF8String2 = [v7 UTF8String];
     *buf = 136446210;
-    v11 = v8;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__configureRapportSessionClient:(id)a3
+- (void)__configureRapportSessionClient:(id)client
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Enter %s", "-[WFTrafficEngManager __configureRapportSessionClient:]"];
@@ -514,7 +514,7 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v3, "UTF8String")];
     *buf = 136446210;
-    v10 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -522,9 +522,9 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v5, "UTF8String")];
-    v7 = [v6 UTF8String];
+    uTF8String2 = [v6 UTF8String];
     *buf = 136446210;
-    v10 = v7;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -539,7 +539,7 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v2, "UTF8String")];
     *buf = 136446210;
-    v9 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -547,9 +547,9 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v4, "UTF8String")];
-    v6 = [v5 UTF8String];
+    uTF8String2 = [v5 UTF8String];
     *buf = 136446210;
-    v9 = v6;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -559,24 +559,24 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
 - (void)__sendEventToPeers
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(WFTrafficEngManager *)self trafficEngDelegate];
+  trafficEngDelegate = [(WFTrafficEngManager *)self trafficEngDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFTrafficEngManager *)self trafficEngDelegate];
-    v6 = [v5 retrieveEventDetails];
+    trafficEngDelegate2 = [(WFTrafficEngManager *)self trafficEngDelegate];
+    retrieveEventDetails = [trafficEngDelegate2 retrieveEventDetails];
 
-    if (v6)
+    if (retrieveEventDetails)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = v6;
+      v8 = retrieveEventDetails;
       v9 = [v7 stringWithFormat:@"[TrafficEngineering]: EventData %@", v8];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v9, "UTF8String")];
         *buf = 136446210;
-        v13 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
       }
 
@@ -587,12 +587,12 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__sendPeriodicEvent:(id)a3
+- (void)__sendPeriodicEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-  v6 = [v5 count];
+  eventCopy = event;
+  activeDevices = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+  v6 = [activeDevices count];
 
   if (v6)
   {
@@ -600,8 +600,8 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    activeDevices2 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+    v8 = [activeDevices2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -613,7 +613,7 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(activeDevices2);
           }
 
           v12 = *(*(&v17 + 1) + 8 * v11);
@@ -624,14 +624,14 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
           block[3] = &unk_2789C6C70;
           block[4] = self;
           block[5] = v12;
-          v16 = v4;
+          v16 = eventCopy;
           dispatch_async(traffic_engr_queue, block);
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v9 = [activeDevices2 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v9);
@@ -641,7 +641,7 @@ void __47__WFTrafficEngManager___registerRequestHandler__block_invoke(uint64_t a
   else
   {
     [WFTrafficEngManager __sendPeriodicEvent:?];
-    v7 = v21;
+    activeDevices2 = v21;
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -665,17 +665,17 @@ void __55__WFTrafficEngManager___sendKeepAliveEvent_dictionary___block_invoke(ui
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__requestCriticalAppInfo:(id)a3 completionBlock:(id)a4
+- (void)__requestCriticalAppInfo:(id)info completionBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  blockCopy = block;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Enter %s", "-[WFTrafficEngManager __requestCriticalAppInfo:completionBlock:]"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v7, "UTF8String")];
     *buf = 136446210;
-    v24 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -686,18 +686,18 @@ void __55__WFTrafficEngManager___sendKeepAliveEvent_dictionary___block_invoke(ui
     if (v9)
     {
       [v9 setControlFlags:{objc_msgSend(v9, "controlFlags") | 0x1004}];
-      [v10 setDestinationDevice:v5];
+      [v10 setDestinationDevice:infoCopy];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_invoke;
       v21[3] = &unk_2789C6630;
-      v22 = v5;
+      v22 = infoCopy;
       [v10 setInvalidationHandler:v21];
       v15 = MEMORY[0x277D85DD0];
       v16 = 3221225472;
       v17 = __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_invoke_72;
       v18 = &unk_2789C78A8;
-      v20 = v6;
+      v20 = blockCopy;
       v10 = v10;
       v19 = v10;
       [v10 activateWithCompletion:&v15];
@@ -713,9 +713,9 @@ void __55__WFTrafficEngManager___sendKeepAliveEvent_dictionary___block_invoke(ui
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v11, "UTF8String")];
-    v13 = [v12 UTF8String];
+    uTF8String2 = [v12 UTF8String];
     *buf = 136446210;
-    v24 = v13;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -779,7 +779,7 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v2, "UTF8String")];
     *buf = 136446210;
-    v76 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
@@ -790,8 +790,8 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
   v74 = 0;
   group = dispatch_group_create();
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-  v6 = [v4 stringWithFormat:@"Number of Peers %lu", objc_msgSend(v5, "count")];
+  activeDevices = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+  v6 = [v4 stringWithFormat:@"Number of Peers %lu", objc_msgSend(activeDevices, "count")];
 
   v7 = MEMORY[0x277D86220];
   v8 = MEMORY[0x277D86220];
@@ -801,14 +801,14 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
     v10 = v6;
     v11 = [v9 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v6, "UTF8String")];
     v12 = v11;
-    v13 = [v11 UTF8String];
+    uTF8String2 = [v11 UTF8String];
     *buf = 136446210;
-    v76 = v13;
+    uTF8String = uTF8String2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-  v15 = [v14 count] == 0;
+  activeDevices2 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+  v15 = [activeDevices2 count] == 0;
 
   if (v15)
   {
@@ -821,9 +821,9 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
       v55 = v31;
       v56 = [v54 stringWithFormat:@"[WiFiPolicy] %s", -[NSObject UTF8String](v31, "UTF8String")];
       v57 = v56;
-      v58 = [v56 UTF8String];
+      uTF8String3 = [v56 UTF8String];
       *buf = 136446210;
-      v76 = v58;
+      uTF8String = uTF8String3;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s", buf, 0xCu);
     }
   }
@@ -834,8 +834,8 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v16 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-    v17 = [v16 countByEnumeratingWithState:&v67 objects:v91 count:16];
+    activeDevices3 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+    v17 = [activeDevices3 countByEnumeratingWithState:&v67 objects:v91 count:16];
     if (v17)
     {
       v59 = 0;
@@ -848,7 +848,7 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
         {
           if (*v68 != v18)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(activeDevices3);
           }
 
           v20 = *(*(&v67 + 1) + 8 * v19);
@@ -869,7 +869,7 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
         }
 
         while (v17 != v19);
-        v17 = [v16 countByEnumeratingWithState:&v67 objects:v91 count:16];
+        v17 = [activeDevices3 countByEnumeratingWithState:&v67 objects:v91 count:16];
       }
 
       while (v17);
@@ -892,9 +892,9 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
         v27 = v23;
         v28 = [v26 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v23, "UTF8String")];
         v29 = v28;
-        v30 = [v28 UTF8String];
+        uTF8String4 = [v28 UTF8String];
         *buf = 136446210;
-        v76 = v30;
+        uTF8String = uTF8String4;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
       }
     }
@@ -904,16 +904,16 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/WiFiPolicy/frameworks/Sources/TrafficEngineering/WFTrafficEngManager.m"];
-      v34 = [v33 lastPathComponent];
-      v35 = v34;
-      v36 = [v34 UTF8String];
-      v37 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-      v38 = [v37 count];
+      lastPathComponent = [v33 lastPathComponent];
+      v35 = lastPathComponent;
+      uTF8String5 = [lastPathComponent UTF8String];
+      activeDevices4 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+      v38 = [activeDevices4 count];
       v39 = v72[3];
       *buf = 141559810;
-      v76 = 1752392040;
+      uTF8String = 1752392040;
       v77 = 2080;
-      v78 = v36;
+      v78 = uTF8String5;
       v79 = 2160;
       v80 = 1752392040;
       v81 = 1024;
@@ -932,10 +932,10 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
     }
   }
 
-  v40 = self;
-  objc_sync_enter(v40);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v41 = [v61 copy];
-  objc_sync_exit(v40);
+  objc_sync_exit(selfCopy);
 
   v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"Leave %s", "-[WFTrafficEngManager __collectCriticalAppInfo]"];
   v43 = MEMORY[0x277D86220];
@@ -946,9 +946,9 @@ void __64__WFTrafficEngManager___requestCriticalAppInfo_completionBlock___block_
     v46 = v42;
     v47 = [v45 stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v42, "UTF8String")];
     v48 = v47;
-    v49 = [v47 UTF8String];
+    uTF8String6 = [v47 UTF8String];
     *buf = 136446210;
-    v76 = v49;
+    uTF8String = uTF8String6;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 

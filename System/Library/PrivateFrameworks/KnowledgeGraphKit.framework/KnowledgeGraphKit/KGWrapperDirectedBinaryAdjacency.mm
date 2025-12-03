@@ -1,25 +1,25 @@
 @interface KGWrapperDirectedBinaryAdjacency
-+ (id)identityWith:(id)a3;
-- (BOOL)containsSource:(unint64_t)a3 target:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)identityWith:(id)with;
+- (BOOL)containsSource:(unint64_t)source target:(unint64_t)target;
+- (BOOL)isEqual:(id)equal;
 - (KGElementIdentifierSet)sources;
 - (KGElementIdentifierSet)targets;
 - (NSString)description;
 - (_TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency)init;
-- (id)differenceWith:(id)a3;
-- (id)intersectingSourcesWith:(id)a3;
-- (id)intersectingTargetsWith:(id)a3;
-- (id)joinOnTargetsOfAdjacency:(id)a3;
+- (id)differenceWith:(id)with;
+- (id)intersectingSourcesWith:(id)with;
+- (id)intersectingTargetsWith:(id)with;
+- (id)joinOnTargetsOfAdjacency:(id)adjacency;
 - (id)mutableCopy;
-- (id)subtractingSourcesWith:(id)a3;
-- (id)subtractingTargetsWith:(id)a3;
-- (id)targetsForSourceIdentifier:(unint64_t)a3;
-- (id)targetsForSources:(id)a3;
-- (id)targetsWithMinimumCount:(unint64_t)a3;
+- (id)subtractingSourcesWith:(id)with;
+- (id)subtractingTargetsWith:(id)with;
+- (id)targetsForSourceIdentifier:(unint64_t)identifier;
+- (id)targetsForSources:(id)sources;
+- (id)targetsWithMinimumCount:(unint64_t)count;
 - (id)transposed;
-- (id)unionWith:(id)a3;
+- (id)unionWith:(id)with;
 - (int64_t)hash;
-- (void)enumerateTargetsBySourceWith:(id)a3;
+- (void)enumerateTargetsBySourceWith:(id)with;
 @end
 
 @implementation KGWrapperDirectedBinaryAdjacency
@@ -32,17 +32,17 @@
   return [(KGWrapperDirectedBinaryAdjacency *)&v4 init];
 }
 
-+ (id)identityWith:(id)a3
++ (id)identityWith:(id)with
 {
-  v3 = a3;
-  v4 = sub_255889D6C(v3);
+  withCopy = with;
+  v4 = sub_255889D6C(withCopy);
 
   return v4;
 }
 
 - (KGElementIdentifierSet)sources
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_255888570();
 
   return v3;
@@ -50,94 +50,94 @@
 
 - (KGElementIdentifierSet)targets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_255888674();
 
   return v3;
 }
 
-- (id)intersectingTargetsWith:(id)a3
+- (id)intersectingTargetsWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2558888FC(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = sub_2558888FC(withCopy);
 
   return v6;
 }
 
-- (id)intersectingSourcesWith:(id)a3
+- (id)intersectingSourcesWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_255888974(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = sub_255888974(withCopy);
 
   return v6;
 }
 
-- (id)subtractingTargetsWith:(id)a3
+- (id)subtractingTargetsWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_255888AE8(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = sub_255888AE8(withCopy);
 
   return v6;
 }
 
-- (id)subtractingSourcesWith:(id)a3
+- (id)subtractingSourcesWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_255888C90(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = sub_255888C90(withCopy);
 
   return v6;
 }
 
-- (id)joinOnTargetsOfAdjacency:(id)a3
+- (id)joinOnTargetsOfAdjacency:(id)adjacency
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_255888E10(v4);
+  adjacencyCopy = adjacency;
+  selfCopy = self;
+  v6 = sub_255888E10(adjacencyCopy);
 
   return v6;
 }
 
-- (void)enumerateTargetsBySourceWith:(id)a3
+- (void)enumerateTargetsBySourceWith:(id)with
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(with);
   _Block_copy(v4);
-  v5 = self;
-  sub_255889E54(v5, v4);
+  selfCopy = self;
+  sub_255889E54(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (BOOL)containsSource:(unint64_t)a3 target:(unint64_t)a4
+- (BOOL)containsSource:(unint64_t)source target:(unint64_t)target
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
-  v9[0] = a3;
+  v9[0] = source;
   v9[1] = v4;
-  v8 = a4;
+  targetCopy = target;
 
   v5._0.rawValue = v9;
-  v5._1.rawValue = &v8;
+  v5._1.rawValue = &targetCopy;
   v6 = ElementIdentifierTupleSet.contains(_:)(v5);
 
   return v6;
 }
 
-- (id)targetsForSources:(id)a3
+- (id)targetsForSources:(id)sources
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_255888FD4(v4);
+  sourcesCopy = sources;
+  selfCopy = self;
+  v6 = sub_255888FD4(sourcesCopy);
 
   return v6;
 }
 
-- (id)targetsForSourceIdentifier:(unint64_t)a3
+- (id)targetsForSourceIdentifier:(unint64_t)identifier
 {
-  v4 = self;
-  v5 = sub_255889190(a3);
+  selfCopy = self;
+  v5 = sub_255889190(identifier);
 
   return v5;
 }
@@ -145,7 +145,7 @@
 - (id)transposed
 {
   v8 = *(&self->super.isa + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
-  v2 = self;
+  selfCopy = self;
 
   DirectedBinaryAdjacency.transposed()();
 
@@ -159,13 +159,13 @@
   return v5;
 }
 
-- (id)differenceWith:(id)a3
+- (id)differenceWith:(id)with
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
-  v13 = *(a3 + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
+  v13 = *(with + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
   v14 = v4;
-  v5 = a3;
-  v6 = self;
+  withCopy = with;
+  selfCopy = self;
 
   ElementIdentifierTupleSet.subtract(_:)(&v13);
   v7 = v14;
@@ -179,28 +179,28 @@
   return v10;
 }
 
-- (id)unionWith:(id)a3
+- (id)unionWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_255889458(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = sub_255889458(withCopy);
 
   return v6;
 }
 
-- (id)targetsWithMinimumCount:(unint64_t)a3
+- (id)targetsWithMinimumCount:(unint64_t)count
 {
-  v4 = self;
-  v5 = sub_255889540(a3);
+  selfCopy = self;
+  v5 = sub_255889540(count);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2559658F0();
     swift_unknownObjectRelease();
@@ -209,7 +209,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_255889664(v8);
@@ -222,7 +222,7 @@
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
   sub_255965D50();
-  v4 = self;
+  selfCopy = self;
 
   sub_255897194(v7, v3);
   v5 = sub_255965D90();
@@ -234,7 +234,7 @@
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC17KnowledgeGraphKit32KGWrapperDirectedBinaryAdjacency_wrappedValue);
   sub_255889D18();
-  v4 = self;
+  selfCopy = self;
 
   sub_2559652A0();
 

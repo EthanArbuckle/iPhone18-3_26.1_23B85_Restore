@@ -1,6 +1,6 @@
 @interface MPStoreModelPlaylistBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelPlaylistBuilder
@@ -69,18 +69,18 @@
   return v7;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   p_requestedPlaylistProperties = &self->_requestedPlaylistProperties;
-  v137 = v8;
+  v137 = metadataCopy;
   if ((*&self->_requestedPlaylistProperties & 1) == 0)
   {
-    v12 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v13 = [v12 properties];
-    v14 = [v13 containsObject:@"MPModelPropertyPlaylistName"];
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    v14 = [properties containsObject:@"MPModelPropertyPlaylistName"];
     v15 = 2;
     if (!v14)
     {
@@ -88,7 +88,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFFFDLL | v15;
-    v16 = [v13 containsObject:@"MPModelPropertyPlaylistTrackCount"];
+    v16 = [properties containsObject:@"MPModelPropertyPlaylistTrackCount"];
     v17 = 4;
     if (!v16)
     {
@@ -96,7 +96,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFFFBLL | v17;
-    v18 = [v13 containsObject:@"MPModelPropertyPlaylistEditorNotes"];
+    v18 = [properties containsObject:@"MPModelPropertyPlaylistEditorNotes"];
     v19 = 8;
     if (!v18)
     {
@@ -104,7 +104,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFFF7 | v19;
-    v20 = [v13 containsObject:@"MPModelPropertyPlaylistShortEditorNotes"];
+    v20 = [properties containsObject:@"MPModelPropertyPlaylistShortEditorNotes"];
     v21 = 16;
     if (!v20)
     {
@@ -112,7 +112,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFFEFLL | v21;
-    v22 = [v13 containsObject:@"MPModelPropertyPlaylistReleaseDateComponents"];
+    v22 = [properties containsObject:@"MPModelPropertyPlaylistReleaseDateComponents"];
     v23 = 32;
     if (!v22)
     {
@@ -120,7 +120,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFFDFLL | v23;
-    v24 = [v13 containsObject:@"MPModelPropertyPlaylistLastModifiedDateComponents"];
+    v24 = [properties containsObject:@"MPModelPropertyPlaylistLastModifiedDateComponents"];
     v25 = 64;
     if (!v24)
     {
@@ -128,7 +128,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFFBFLL | v25;
-    v26 = [v13 containsObject:@"MPModelPropertyPlaylistArtwork"];
+    v26 = [properties containsObject:@"MPModelPropertyPlaylistArtwork"];
     v27 = 128;
     if (!v26)
     {
@@ -136,7 +136,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFF7FLL | v27;
-    v28 = [v13 containsObject:@"MPModelPropertyPlaylistStaticTallEditorialArtwork"];
+    v28 = [properties containsObject:@"MPModelPropertyPlaylistStaticTallEditorialArtwork"];
     v29 = 256;
     if (!v28)
     {
@@ -144,7 +144,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFEFFLL | v29;
-    v30 = [v13 containsObject:@"MPModelPropertyPlaylistSuperHeroTallEditorialArtwork"];
+    v30 = [properties containsObject:@"MPModelPropertyPlaylistSuperHeroTallEditorialArtwork"];
     v31 = 512;
     if (!v30)
     {
@@ -152,7 +152,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFDFFLL | v31;
-    v32 = [v13 containsObject:@"MPModelPropertyPlaylistEditorialArtwork"];
+    v32 = [properties containsObject:@"MPModelPropertyPlaylistEditorialArtwork"];
     v33 = 1024;
     if (!v32)
     {
@@ -160,7 +160,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFFBFFLL | v33;
-    v34 = [v13 containsObject:@"MPModelPropertyPlaylistTracksTiledArtwork"];
+    v34 = [properties containsObject:@"MPModelPropertyPlaylistTracksTiledArtwork"];
     v35 = 2048;
     if (!v34)
     {
@@ -168,7 +168,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFF7FFLL | v35;
-    v36 = [v13 containsObject:@"MPModelPropertyPlaylistLibraryAdded"];
+    v36 = [properties containsObject:@"MPModelPropertyPlaylistLibraryAdded"];
     v37 = 0x8000;
     if (!v36)
     {
@@ -176,7 +176,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFF7FFFLL | v37;
-    v38 = [v13 containsObject:@"MPModelPropertyPlaylistKeepLocalEnableState"];
+    v38 = [properties containsObject:@"MPModelPropertyPlaylistKeepLocalEnableState"];
     v39 = 0x10000;
     if (!v38)
     {
@@ -184,7 +184,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFEFFFFLL | v39;
-    v40 = [v13 containsObject:@"MPModelPropertyPlaylistKeepLocalManagedStatus"];
+    v40 = [properties containsObject:@"MPModelPropertyPlaylistKeepLocalManagedStatus"];
     v41 = 0x20000;
     if (!v40)
     {
@@ -192,7 +192,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFDFFFFLL | v41;
-    v42 = [v13 containsObject:@"MPModelPropertyPlaylistKeepLocalManagedStatusReason"];
+    v42 = [properties containsObject:@"MPModelPropertyPlaylistKeepLocalManagedStatusReason"];
     v43 = 0x40000;
     if (!v42)
     {
@@ -200,7 +200,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFBFFFFLL | v43;
-    v44 = [v13 containsObject:@"MPModelPropertyPlaylistKeepLocalConstraints"];
+    v44 = [properties containsObject:@"MPModelPropertyPlaylistKeepLocalConstraints"];
     v45 = 0x80000;
     if (!v44)
     {
@@ -208,7 +208,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFF7FFFFLL | v45;
-    v46 = [v13 containsObject:@"MPModelPropertyPlaylistHasCleanContent"];
+    v46 = [properties containsObject:@"MPModelPropertyPlaylistHasCleanContent"];
     v47 = 4096;
     if (!v46)
     {
@@ -216,7 +216,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFEFFFLL | v47;
-    v48 = [v13 containsObject:@"MPModelPropertyPlaylistHasExplicitContent"];
+    v48 = [properties containsObject:@"MPModelPropertyPlaylistHasExplicitContent"];
     v49 = 0x2000;
     if (!v48)
     {
@@ -224,7 +224,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFDFFFLL | v49;
-    v50 = [v13 containsObject:@"MPModelPropertyPlaylistType"];
+    v50 = [properties containsObject:@"MPModelPropertyPlaylistType"];
     v51 = 0x4000;
     if (!v50)
     {
@@ -232,7 +232,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFFFBFFFLL | v51;
-    v52 = [v13 containsObject:@"MPModelPropertyPlaylistIsOwner"];
+    v52 = [properties containsObject:@"MPModelPropertyPlaylistIsOwner"];
     v53 = 0x200000;
     if (!v52)
     {
@@ -240,7 +240,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFDFFFFFLL | v53;
-    v54 = [v13 containsObject:@"MPModelPropertyPlaylistCuratorPlaylist"];
+    v54 = [properties containsObject:@"MPModelPropertyPlaylistCuratorPlaylist"];
     v55 = 0x100000;
     if (!v54)
     {
@@ -248,7 +248,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFEFFFFFLL | v55;
-    v56 = [v13 containsObject:@"MPModelPropertyPlaylistPublicPlaylist"];
+    v56 = [properties containsObject:@"MPModelPropertyPlaylistPublicPlaylist"];
     v57 = 0x400000;
     if (!v56)
     {
@@ -256,7 +256,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFFBFFFFFLL | v57;
-    v58 = [v13 containsObject:@"MPModelPropertyPlaylistVisiblePlaylist"];
+    v58 = [properties containsObject:@"MPModelPropertyPlaylistVisiblePlaylist"];
     v59 = 0x800000;
     if (!v58)
     {
@@ -264,7 +264,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFF7FFFFFLL | v59;
-    v60 = [v13 containsObject:@"MPModelPropertyPlaylistSubscribed"];
+    v60 = [properties containsObject:@"MPModelPropertyPlaylistSubscribed"];
     v61 = 0x1000000;
     if (!v60)
     {
@@ -272,7 +272,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFEFFFFFFLL | v61;
-    v62 = [v13 containsObject:@"MPModelPropertyPlaylistUserEditableComponents"];
+    v62 = [properties containsObject:@"MPModelPropertyPlaylistUserEditableComponents"];
     v63 = 0x2000000;
     if (!v62)
     {
@@ -280,7 +280,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFDFFFFFFLL | v63;
-    v64 = [v13 containsObject:@"MPModelPropertyPlaylistShareURL"];
+    v64 = [properties containsObject:@"MPModelPropertyPlaylistShareURL"];
     v65 = 0x4000000;
     if (!v64)
     {
@@ -288,7 +288,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFFBFFFFFFLL | v65;
-    v66 = [v13 containsObject:@"MPModelPropertyPlaylistShareShortURL"];
+    v66 = [properties containsObject:@"MPModelPropertyPlaylistShareShortURL"];
     v67 = 0x8000000;
     if (!v66)
     {
@@ -296,7 +296,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFF7FFFFFFLL | v67;
-    v68 = [v13 containsObject:@"MPModelPropertyPlaylistDescriptionText"];
+    v68 = [properties containsObject:@"MPModelPropertyPlaylistDescriptionText"];
     v69 = 0x10000000;
     if (!v68)
     {
@@ -304,7 +304,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFEFFFFFFFLL | v69;
-    v70 = [v13 containsObject:@"MPModelPropertyPlaylistCloudVersionHash"];
+    v70 = [properties containsObject:@"MPModelPropertyPlaylistCloudVersionHash"];
     v71 = 0x20000000;
     if (!v70)
     {
@@ -312,7 +312,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFDFFFFFFFLL | v71;
-    v72 = [v13 containsObject:@"MPModelPropertyPlaylistTraits"];
+    v72 = [properties containsObject:@"MPModelPropertyPlaylistTraits"];
     v73 = 0x40000000;
     if (!v72)
     {
@@ -320,7 +320,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFFBFFFFFFFLL | v73;
-    v74 = [v13 containsObject:@"MPModelPropertyPlaylistVersionHash"];
+    v74 = [properties containsObject:@"MPModelPropertyPlaylistVersionHash"];
     v75 = 0x80000000;
     if (!v74)
     {
@@ -328,7 +328,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFF7FFFFFFFLL | v75;
-    v76 = [v13 containsObject:@"MPModelPropertyPlaylistIsFavorite"];
+    v76 = [properties containsObject:@"MPModelPropertyPlaylistIsFavorite"];
     v77 = 0x100000000;
     if (!v76)
     {
@@ -336,7 +336,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFEFFFFFFFFLL | v77;
-    v78 = [v13 containsObject:@"MPModelPropertyPlaylistIsDisliked"];
+    v78 = [properties containsObject:@"MPModelPropertyPlaylistIsDisliked"];
     v79 = 0x200000000;
     if (!v78)
     {
@@ -344,7 +344,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFDFFFFFFFFLL | v79;
-    v80 = [v13 containsObject:@"MPModelPropertyPlaylistDateFavorited"];
+    v80 = [properties containsObject:@"MPModelPropertyPlaylistDateFavorited"];
     v81 = 0x400000000;
     if (!v80)
     {
@@ -352,7 +352,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFFBFFFFFFFFLL | v81;
-    v82 = [v13 containsObject:@"MPModelPropertyPlaylistIsFavoriteSongsPlaylist"];
+    v82 = [properties containsObject:@"MPModelPropertyPlaylistIsFavoriteSongsPlaylist"];
     v83 = 0x800000000;
     if (!v82)
     {
@@ -360,7 +360,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFF7FFFFFFFFLL | v83;
-    v84 = [v13 containsObject:@"MPModelPropertyPlaylistCoverArtworkRecipe"];
+    v84 = [properties containsObject:@"MPModelPropertyPlaylistCoverArtworkRecipe"];
     v85 = 0x1000000000;
     if (!v84)
     {
@@ -368,7 +368,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFEFFFFFFFFFLL | v85;
-    v86 = [v13 containsObject:@"MPModelPropertyPlaylistIsCollaborative"];
+    v86 = [properties containsObject:@"MPModelPropertyPlaylistIsCollaborative"];
     v87 = 0x2000000000;
     if (!v86)
     {
@@ -376,7 +376,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFDFFFFFFFFFLL | v87;
-    v88 = [v13 containsObject:@"MPModelPropertyPlaylistCollaborationSharingMode"];
+    v88 = [properties containsObject:@"MPModelPropertyPlaylistCollaborationSharingMode"];
     v89 = 0x4000000000;
     if (!v88)
     {
@@ -384,7 +384,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFFBFFFFFFFFFLL | v89;
-    v90 = [v13 containsObject:@"MPModelPropertyPlaylistCollaborationMode"];
+    v90 = [properties containsObject:@"MPModelPropertyPlaylistCollaborationMode"];
     v91 = 0x8000000000;
     if (!v90)
     {
@@ -392,7 +392,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFF7FFFFFFFFFLL | v91;
-    v92 = [v13 containsObject:@"MPModelPropertyPlaylistCollaboratorPermissions"];
+    v92 = [properties containsObject:@"MPModelPropertyPlaylistCollaboratorPermissions"];
     v93 = 0x10000000000;
     if (!v92)
     {
@@ -400,7 +400,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFEFFFFFFFFFFLL | v93;
-    v94 = [v13 containsObject:@"MPModelPropertyPlaylistCollaborationInvitationURL"];
+    v94 = [properties containsObject:@"MPModelPropertyPlaylistCollaborationInvitationURL"];
     v95 = 0x20000000000;
     if (!v94)
     {
@@ -408,7 +408,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFDFFFFFFFFFFLL | v95;
-    v96 = [v13 containsObject:@"MPModelPropertyPlaylistCollaborationInvitationURLExpirationDate"];
+    v96 = [properties containsObject:@"MPModelPropertyPlaylistCollaborationInvitationURLExpirationDate"];
     v97 = 0x40000000000;
     if (!v96)
     {
@@ -416,7 +416,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFFBFFFFFFFFFFLL | v97;
-    v98 = [v13 containsObject:@"MPModelPropertyPlaylistCollaborationJoinRequestIsPending"];
+    v98 = [properties containsObject:@"MPModelPropertyPlaylistCollaborationJoinRequestIsPending"];
     v99 = 0x80000000000;
     if (!v98)
     {
@@ -424,7 +424,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFF7FFFFFFFFFFLL | v99;
-    v100 = [v13 containsObject:@"MPModelPropertyPlaylistCollaboratorStatus"];
+    v100 = [properties containsObject:@"MPModelPropertyPlaylistCollaboratorStatus"];
     v101 = 0x100000000000;
     if (!v100)
     {
@@ -432,7 +432,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFEFFFFFFFFFFFLL | v101;
-    v102 = [v13 containsObject:@"MPModelPropertyPlaylistIsStoreRedownloadable"];
+    v102 = [properties containsObject:@"MPModelPropertyPlaylistIsStoreRedownloadable"];
     v103 = 0x200000000000;
     if (!v102)
     {
@@ -440,7 +440,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFDFFFFFFFFFFFLL | v103;
-    v104 = [v13 containsObject:@"MPModelPropertyPlaylistIsPinned"];
+    v104 = [properties containsObject:@"MPModelPropertyPlaylistIsPinned"];
     v105 = 0x400000000000;
     if (!v104)
     {
@@ -448,7 +448,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFFBFFFFFFFFFFFLL | v105;
-    v106 = [v13 containsObject:@"MPModelPropertyPlaylistHasAnyCleanTracks"];
+    v106 = [properties containsObject:@"MPModelPropertyPlaylistHasAnyCleanTracks"];
     v107 = 0x800000000000;
     if (!v106)
     {
@@ -456,7 +456,7 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFF7FFFFFFFFFFFLL | v107;
-    v108 = [v13 containsObject:@"MPModelPropertyPlaylistHasAnyCleanDownloadedTracks"];
+    v108 = [properties containsObject:@"MPModelPropertyPlaylistHasAnyCleanDownloadedTracks"];
     v109 = 0x1000000000000;
     if (!v108)
     {
@@ -464,14 +464,14 @@
     }
 
     *p_requestedPlaylistProperties = *p_requestedPlaylistProperties & 0xFFFEFFFFFFFFFFFFLL | v109;
-    v110 = [v12 relationships];
-    v111 = [v110 objectForKey:@"MPModelRelationshipPlaylistCurator"];
+    relationships = [requestedPropertySet relationships];
+    v111 = [relationships objectForKey:@"MPModelRelationshipPlaylistCurator"];
     v112 = v111;
     if (v111)
     {
       [v111 properties];
-      v113 = v10;
-      v115 = v114 = v9;
+      v113 = identityCopy;
+      v115 = v114 = objectCopy;
       *&self->_requestedPlaylistProperties.curator |= 1u;
       if ([v115 containsObject:@"MPModelPropertyPersonName"])
       {
@@ -496,48 +496,48 @@
 
       *&self->_requestedPlaylistProperties.curator = *&self->_requestedPlaylistProperties.curator & 0xFB | v117;
 
-      v9 = v114;
-      v10 = v113;
+      objectCopy = v114;
+      identityCopy = v113;
     }
 
     *p_requestedPlaylistProperties |= 1uLL;
 
-    v8 = v137;
+    metadataCopy = v137;
   }
 
-  v118 = [v8 cloudUniversalLibraryID];
-  v119 = [v8 storeID];
-  v120 = MPStoreItemMetadataStringNormalizeStoreIDValue(v119);
+  cloudUniversalLibraryID = [metadataCopy cloudUniversalLibraryID];
+  storeID = [metadataCopy storeID];
+  v120 = MPStoreItemMetadataStringNormalizeStoreIDValue(storeID);
 
-  if ([v120 length] || objc_msgSend(v118, "length"))
+  if ([v120 length] || objc_msgSend(cloudUniversalLibraryID, "length"))
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __95__MPStoreModelPlaylistBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
     aBlock[3] = &unk_1E767EAE8;
     v142 = v120;
-    v143 = v118;
-    v136 = v10;
-    v144 = v10;
-    v121 = v8;
+    v143 = cloudUniversalLibraryID;
+    v136 = identityCopy;
+    v144 = identityCopy;
+    v121 = metadataCopy;
     v145 = v121;
     v122 = _Block_copy(aBlock);
     v138[0] = MEMORY[0x1E69E9820];
     v138[1] = 3221225472;
     v138[2] = __95__MPStoreModelPlaylistBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_4;
     v138[3] = &unk_1E767EBB0;
-    v123 = self;
+    selfCopy = self;
     v138[4] = self;
     v124 = v121;
     v139 = v124;
-    v125 = v9;
-    v126 = v9;
+    v125 = objectCopy;
+    v126 = objectCopy;
     v140 = v126;
     v127 = _Block_copy(v138);
     if (v126)
     {
-      v128 = [v126 identifiers];
-      v129 = [v128 copyWithSource:@"StorePlatform" block:v122];
+      identifiers = [v126 identifiers];
+      v129 = [identifiers copyWithSource:@"StorePlatform" block:v122];
       v130 = [v126 copyWithIdentifiers:v129 block:v127];
     }
 
@@ -545,22 +545,22 @@
     {
       v131 = [MPModelPlaylist alloc];
       v132 = [MPIdentifierSet alloc];
-      v128 = +[MPModelPlaylistKind identityKind];
-      v129 = [(MPIdentifierSet *)v132 initWithSource:@"StorePlatform" modelKind:v128 block:v122];
+      identifiers = +[MPModelPlaylistKind identityKind];
+      v129 = [(MPIdentifierSet *)v132 initWithSource:@"StorePlatform" modelKind:identifiers block:v122];
       v130 = [(MPModelObject *)v131 initWithIdentifiers:v129 block:v127];
     }
 
     v133 = v130;
 
-    if (![(MPStoreModelObjectBuilder *)v123 preventStoreItemMetadataCaching])
+    if (![(MPStoreModelObjectBuilder *)selfCopy preventStoreItemMetadataCaching])
     {
       v134 = +[MPStoreItemMetadataRequestController sharedStoreItemMetadataRequestController];
       [v134 addStoreItemMetadata:v124];
     }
 
-    v9 = v125;
-    v10 = v136;
-    v8 = v137;
+    objectCopy = v125;
+    identityCopy = v136;
+    metadataCopy = v137;
   }
 
   else

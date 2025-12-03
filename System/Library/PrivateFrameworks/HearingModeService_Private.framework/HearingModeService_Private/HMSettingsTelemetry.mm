@@ -1,8 +1,8 @@
 @interface HMSettingsTelemetry
 + (id)sharedInstance;
 - (HMSettingsTelemetry)init;
-- (void)_sendSettingsChanges:(id)a3 record:(id)a4;
-- (void)sendSettingsChanges:(id)a3 record:(id)a4;
+- (void)_sendSettingsChanges:(id)changes record:(id)record;
+- (void)sendSettingsChanges:(id)changes record:(id)record;
 @end
 
 @implementation HMSettingsTelemetry
@@ -44,107 +44,107 @@ uint64_t __37__HMSettingsTelemetry_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)sendSettingsChanges:(id)a3 record:(id)a4
+- (void)sendSettingsChanges:(id)changes record:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  recordCopy = record;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__HMSettingsTelemetry_sendSettingsChanges_record___block_invoke;
   block[3] = &unk_2796F00A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changesCopy;
+  v13 = recordCopy;
+  v9 = recordCopy;
+  v10 = changesCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_sendSettingsChanges:(id)a3 record:(id)a4
+- (void)_sendSettingsChanges:(id)changes record:(id)record
 {
-  v25 = a3;
-  v6 = a4;
-  if (v25 && v6)
+  changesCopy = changes;
+  recordCopy = record;
+  if (changesCopy && recordCopy)
   {
-    if ([v25 allowListeningModeOff])
+    if ([changesCopy allowListeningModeOff])
     {
-      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v25 allowListeningModeOff], @"OffListeningMode", v6);
+      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy allowListeningModeOff], @"OffListeningMode", recordCopy);
     }
 
-    v7 = [v25 amplification];
+    amplification = [changesCopy amplification];
 
-    if (v7)
+    if (amplification)
     {
-      v8 = [v25 amplification];
-      v9 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:v8];
+      amplification2 = [changesCopy amplification];
+      v9 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:amplification2];
 
-      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v9 forFeature:@"Amplification" forDevice:v6];
+      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v9 forFeature:@"Amplification" forDevice:recordCopy];
     }
 
-    v10 = [v25 balance];
+    balance = [changesCopy balance];
 
-    if (v10)
+    if (balance)
     {
-      v11 = [v25 balance];
-      v12 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:v11];
+      balance2 = [changesCopy balance];
+      v12 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:balance2];
 
-      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v12 forFeature:@"Balance" forDevice:v6];
+      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v12 forFeature:@"Balance" forDevice:recordCopy];
     }
 
-    v13 = [v25 beamFormer];
+    beamFormer = [changesCopy beamFormer];
 
-    if (v13)
+    if (beamFormer)
     {
-      v14 = [v25 beamFormer];
-      v15 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:v14];
+      beamFormer2 = [changesCopy beamFormer];
+      v15 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:beamFormer2];
 
-      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v15 forFeature:@"ConversationBoost" forDevice:v6];
+      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v15 forFeature:@"ConversationBoost" forDevice:recordCopy];
     }
 
-    if ([v25 enableMediaAssist])
+    if ([changesCopy enableMediaAssist])
     {
-      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v25 enableMediaAssist], @"MediaAssist", v6);
+      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enableMediaAssist], @"MediaAssist", recordCopy);
     }
 
-    if ([v25 enablePMEMedia])
+    if ([changesCopy enablePMEMedia])
     {
-      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v25 enablePMEMedia], @"PMEMedia", v6);
+      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enablePMEMedia], @"PMEMedia", recordCopy);
     }
 
-    if ([v25 enablePMEVoice])
+    if ([changesCopy enablePMEVoice])
     {
-      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [v25 enablePMEVoice], @"PMEVoice", v6);
+      -[HMSettingsTelemetry _submitFeaturesChangeMetrics:forFeature:forDevice:](self, "_submitFeaturesChangeMetrics:forFeature:forDevice:", [changesCopy enablePMEVoice], @"PMEVoice", recordCopy);
     }
 
-    v16 = [v25 noiseSuppression];
+    noiseSuppression = [changesCopy noiseSuppression];
 
-    if (v16)
+    if (noiseSuppression)
     {
-      v17 = [v25 noiseSuppression];
-      v18 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:v17];
+      noiseSuppression2 = [changesCopy noiseSuppression];
+      v18 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:noiseSuppression2];
 
-      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v18 forFeature:@"AmbientNoiseReduction" forDevice:v6];
+      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v18 forFeature:@"AmbientNoiseReduction" forDevice:recordCopy];
     }
 
-    v19 = [v25 ownVoiceLevelGain];
+    ownVoiceLevelGain = [changesCopy ownVoiceLevelGain];
 
-    if (v19)
+    if (ownVoiceLevelGain)
     {
-      v20 = [v25 ownVoiceLevelGain];
-      v21 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:v20];
+      ownVoiceLevelGain2 = [changesCopy ownVoiceLevelGain];
+      v21 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:ownVoiceLevelGain2];
 
-      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v21 forFeature:@"OwnVoiceLevelGain" forDevice:v6];
+      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v21 forFeature:@"OwnVoiceLevelGain" forDevice:recordCopy];
     }
 
-    v22 = [v25 tone];
+    tone = [changesCopy tone];
 
-    if (v22)
+    if (tone)
     {
-      v23 = [v25 tone];
-      v24 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:v23];
+      tone2 = [changesCopy tone];
+      v24 = [(HMSettingsTelemetry *)self _convertToServerBucketValue:tone2];
 
-      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v24 forFeature:@"Tone" forDevice:v6];
+      [(HMSettingsTelemetry *)self _submitFeaturesChangeMetrics:v24 forFeature:@"Tone" forDevice:recordCopy];
     }
   }
 

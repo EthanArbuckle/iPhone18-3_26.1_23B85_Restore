@@ -1,51 +1,51 @@
 @interface OZFxPlugTimingAPI
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOffsetForImageParameter:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOffsetForImageParameter:(SEL)parameter;
 - ($43B88956A48E07FA4329DDDD387A1517)invalidTime;
 - ($43B88956A48E07FA4329DDDD387A1517)zeroTime;
-- (OZFxPlugTimingAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3;
-- (double)durationForEffect:(id)a3;
-- (double)durationOfImageParm:(unsigned int)a3 forEffect:(id)a4;
-- (double)durationOfInputToFilter:(id)a3;
-- (double)imageTimeForParmId:(unsigned int)a3 forEffect:(id)a4 fromTimelineTime:(double)a5;
-- (double)inPointOfTimelineForEffect:(id)a3;
-- (double)inputTimeForFilter:(id)a3 fromTimelineTime:(double)a4;
-- (double)outPointOfTimelineForEffect:(id)a3;
-- (double)startTimeForEffect:(id)a3;
-- (double)startTimeOfImageParm:(unsigned int)a3 forEffect:(id)a4;
-- (double)startTimeOfInputToFilter:(id)a3;
-- (double)timelineDurationForEffect:(id)a3;
-- (double)timelineTimeFromImageTime:(double)a3 forParmId:(unsigned int)a4 forEffect:(id)a5;
-- (double)timelineTimeFromInputTime:(double)a3 forFilter:(id)a4;
+- (OZFxPlugTimingAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock;
+- (double)durationForEffect:(id)effect;
+- (double)durationOfImageParm:(unsigned int)parm forEffect:(id)effect;
+- (double)durationOfInputToFilter:(id)filter;
+- (double)imageTimeForParmId:(unsigned int)id forEffect:(id)effect fromTimelineTime:(double)time;
+- (double)inPointOfTimelineForEffect:(id)effect;
+- (double)inputTimeForFilter:(id)filter fromTimelineTime:(double)time;
+- (double)outPointOfTimelineForEffect:(id)effect;
+- (double)startTimeForEffect:(id)effect;
+- (double)startTimeOfImageParm:(unsigned int)parm forEffect:(id)effect;
+- (double)startTimeOfInputToFilter:(id)filter;
+- (double)timelineDurationForEffect:(id)effect;
+- (double)timelineTimeFromImageTime:(double)time forParmId:(unsigned int)id forEffect:(id)effect;
+- (double)timelineTimeFromInputTime:(double)time forFilter:(id)filter;
 - (id).cxx_construct;
-- (unint64_t)fieldOrderForImageParm:(unsigned int)a3 forEffect:(id)a4;
-- (unint64_t)fieldOrderForInputToFilter:(id)a3;
-- (unint64_t)timelineFpsDenominatorForEffect:(id)a3;
-- (unint64_t)timelineFpsNumeratorForEffect:(id)a3;
-- (void)copyFxTime:(id)a3 toFxTime:(id *)a4;
-- (void)durationFxTime:(id *)a3 ofImageParm:(unsigned int)a4;
-- (void)durationFxTimeForEffect:(id *)a3;
-- (void)durationFxTimeOfInputToFilter:(id *)a3;
-- (void)imageFxTime:(id *)a3 forParmId:(unsigned int)a4 fromTimelineTime:(id)a5;
-- (void)inPointFxTimeOfTimelineForEffect:(id *)a3;
-- (void)inputFxTime:(id *)a3 fromTimelineTime:(id)a4;
-- (void)outPointFxTimeOfTimelineForEffect:(id *)a3;
-- (void)sampleDuration:(id *)a3;
+- (unint64_t)fieldOrderForImageParm:(unsigned int)parm forEffect:(id)effect;
+- (unint64_t)fieldOrderForInputToFilter:(id)filter;
+- (unint64_t)timelineFpsDenominatorForEffect:(id)effect;
+- (unint64_t)timelineFpsNumeratorForEffect:(id)effect;
+- (void)copyFxTime:(id)time toFxTime:(id *)fxTime;
+- (void)durationFxTime:(id *)time ofImageParm:(unsigned int)parm;
+- (void)durationFxTimeForEffect:(id *)effect;
+- (void)durationFxTimeOfInputToFilter:(id *)filter;
+- (void)imageFxTime:(id *)time forParmId:(unsigned int)id fromTimelineTime:(id)timelineTime;
+- (void)inPointFxTimeOfTimelineForEffect:(id *)effect;
+- (void)inputFxTime:(id *)time fromTimelineTime:(id)timelineTime;
+- (void)outPointFxTimeOfTimelineForEffect:(id *)effect;
+- (void)sampleDuration:(id *)duration;
 - (void)scene;
-- (void)startFxTime:(id *)a3 ofImageParam:(unsigned int)a4;
-- (void)startFxTimeForEffect:(id *)a3;
-- (void)startFxTimeOfInputToFilter:(id *)a3;
-- (void)timelineFxTime:(id *)a3 fromImageTime:(id)a4 forParmId:(unsigned int)a5;
-- (void)timelineFxTime:(id *)a3 fromInputTime:(id)a4;
+- (void)startFxTime:(id *)time ofImageParam:(unsigned int)param;
+- (void)startFxTimeForEffect:(id *)effect;
+- (void)startFxTimeOfInputToFilter:(id *)filter;
+- (void)timelineFxTime:(id *)time fromImageTime:(id)imageTime forParmId:(unsigned int)id;
+- (void)timelineFxTime:(id *)time fromInputTime:(id)inputTime;
 @end
 
 @implementation OZFxPlugTimingAPI
 
-- (OZFxPlugTimingAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3
+- (OZFxPlugTimingAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock
 {
-  ptr = a3.__ptr_;
+  ptr = lock.__ptr_;
   v10.receiver = self;
   v10.super_class = OZFxPlugTimingAPI;
-  v4 = [(OZFxPlugTimingAPI *)&v10 init:a3.__ptr_];
+  v4 = [(OZFxPlugTimingAPI *)&v10 init:lock.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -68,7 +68,7 @@
   return v5;
 }
 
-- (void)copyFxTime:(id)a3 toFxTime:(id *)a4
+- (void)copyFxTime:(id)time toFxTime:(id *)fxTime
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -88,15 +88,15 @@
   {
     if ((*(**v11[0] + 160))(*v11[0]))
     {
-      var1 = a4->var1;
-      v8 = *a3.var1;
-      *(var1 + 2) = *(a3.var1 + 2);
+      var1 = fxTime->var1;
+      v8 = *time.var1;
+      *(var1 + 2) = *(time.var1 + 2);
       *var1 = v8;
     }
 
     else
     {
-      a4->var0 = a3.var0;
+      fxTime->var0 = time.var0;
     }
   }
 
@@ -163,7 +163,7 @@
   return FxTimeZero;
 }
 
-- (double)startTimeOfInputToFilter:(id)a3
+- (double)startTimeOfInputToFilter:(id)filter
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -208,7 +208,7 @@ LABEL_10:
   return v6;
 }
 
-- (double)startTimeOfImageParm:(unsigned int)a3 forEffect:(id)a4
+- (double)startTimeOfImageParm:(unsigned int)parm forEffect:(id)effect
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -247,9 +247,9 @@ LABEL_8:
   ProCore_Impl::PCNSRefImpl::operator=(&v28, &v22[0].var0);
   ProCore_Impl::PCNSRefImpl::release(&v22[0].var0);
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v24);
-  v10 = [v28 channelMap];
-  v13 = *(v10 + 8);
-  v11 = v10 + 8;
+  channelMap = [v28 channelMap];
+  v13 = *(channelMap + 8);
+  v11 = channelMap + 8;
   v12 = v13;
   v8 = 0.0;
   if (v13)
@@ -258,8 +258,8 @@ LABEL_8:
     do
     {
       v15 = *(v12 + 32);
-      v16 = v15 >= a3;
-      v17 = v15 < a3;
+      v16 = v15 >= parm;
+      v17 = v15 < parm;
       if (v16)
       {
         v14 = v12;
@@ -269,7 +269,7 @@ LABEL_8:
     }
 
     while (v12);
-    if (v14 != v11 && *(v14 + 32) <= a3)
+    if (v14 != v11 && *(v14 + 32) <= parm)
     {
       v18 = *(v14 + 40);
       if (v18)
@@ -296,7 +296,7 @@ LABEL_9:
   return v8;
 }
 
-- (double)durationOfInputToFilter:(id)a3
+- (double)durationOfInputToFilter:(id)filter
 {
   v16 = *MEMORY[0x277CC08F0];
   v17 = *(MEMORY[0x277CC08F0] + 16);
@@ -345,7 +345,7 @@ LABEL_10:
   return v7;
 }
 
-- (double)durationOfImageParm:(unsigned int)a3 forEffect:(id)a4
+- (double)durationOfImageParm:(unsigned int)parm forEffect:(id)effect
 {
   v32 = 0;
   v33 = 0;
@@ -384,9 +384,9 @@ LABEL_8:
   PCMakeNSRefAndRetain<EAGLContext *>(v6[4].var0, &v25[0].var0);
   ProCore_Impl::PCNSRefImpl::operator=(&v33, &v25[0].var0);
   ProCore_Impl::PCNSRefImpl::release(&v25[0].var0);
-  v10 = [v33 channelMap];
-  v14 = *(v10 + 8);
-  v12 = v10 + 8;
+  channelMap = [v33 channelMap];
+  v14 = *(channelMap + 8);
+  v12 = channelMap + 8;
   v13 = v14;
   if (!v14)
   {
@@ -397,8 +397,8 @@ LABEL_8:
   do
   {
     v16 = *(v13 + 32);
-    v17 = v16 >= a3;
-    v18 = v16 < a3;
+    v17 = v16 >= parm;
+    v18 = v16 < parm;
     if (v17)
     {
       v15 = v13;
@@ -408,7 +408,7 @@ LABEL_8:
   }
 
   while (v13);
-  if (v15 != v12 && *(v15 + 32) <= a3 && (v19 = *(v15 + 40)) != 0)
+  if (v15 != v12 && *(v15 + 32) <= parm && (v19 = *(v15 + 40)) != 0)
   {
   }
 
@@ -447,18 +447,18 @@ LABEL_9:
   return v8;
 }
 
-- (unint64_t)timelineFpsNumeratorForEffect:(id)a3
+- (unint64_t)timelineFpsNumeratorForEffect:(id)effect
 {
   if (![(OZFxPlugTimingAPI *)self scene])
   {
     return 30;
   }
 
-  v4 = [(OZFxPlugTimingAPI *)self sceneSettings];
-  v5 = v4[4];
+  sceneSettings = [(OZFxPlugTimingAPI *)self sceneSettings];
+  v5 = sceneSettings[4];
   v6 = ceil(v5) * 1000.0;
   v7 = v5 * 600.0;
-  if (*(v4 + 40))
+  if (*(sceneSettings + 40))
   {
     return v6;
   }
@@ -466,7 +466,7 @@ LABEL_9:
   return v7;
 }
 
-- (unint64_t)timelineFpsDenominatorForEffect:(id)a3
+- (unint64_t)timelineFpsDenominatorForEffect:(id)effect
 {
   if (![(OZFxPlugTimingAPI *)self scene])
   {
@@ -481,7 +481,7 @@ LABEL_9:
   return 600;
 }
 
-- (double)inPointOfTimelineForEffect:(id)a3
+- (double)inPointOfTimelineForEffect:(id)effect
 {
   v15 = 0;
   v14 = 0;
@@ -531,7 +531,7 @@ LABEL_10:
   return v6;
 }
 
-- (double)outPointOfTimelineForEffect:(id)a3
+- (double)outPointOfTimelineForEffect:(id)effect
 {
   v19 = 0;
   v20 = 0;
@@ -561,11 +561,11 @@ LABEL_10:
       PCMakeNSRefAndRetain<EAGLContext *>(Instance, &v22);
       ProCore_Impl::PCNSRefImpl::operator=(&v20, &v22);
       ProCore_Impl::PCNSRefImpl::release(&v22);
-      v10 = [v19 getScene];
+      getScene = [v19 getScene];
       OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v23);
-      PlayRange = OZScene::getPlayRange(v10);
+      PlayRange = OZScene::getPlayRange(getScene);
       memset(v16, 0, sizeof(v16));
-      OZSceneSettings::getFrameDuration((v10 + 336), &v14);
+      OZSceneSettings::getFrameDuration((getScene + 336), &v14);
       v23 = *PlayRange;
       v22 = *(PlayRange + 24);
       PC_CMTimeSaferAdd(&v23, &v22, &v21);
@@ -591,7 +591,7 @@ LABEL_10:
   return v7;
 }
 
-- (double)timelineDurationForEffect:(id)a3
+- (double)timelineDurationForEffect:(id)effect
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -633,7 +633,7 @@ LABEL_10:
   return v6;
 }
 
-- (double)startTimeForEffect:(id)a3
+- (double)startTimeForEffect:(id)effect
 {
   v20 = 0;
   v16 = *MEMORY[0x277CC08F0];
@@ -698,7 +698,7 @@ LABEL_13:
   return v6;
 }
 
-- (double)durationForEffect:(id)a3
+- (double)durationForEffect:(id)effect
 {
   *&v22.value = *MEMORY[0x277CC08F0];
   v3 = *(MEMORY[0x277CC08F0] + 16);
@@ -782,7 +782,7 @@ LABEL_15:
   return v7;
 }
 
-- (double)timelineTimeFromInputTime:(double)a3 forFilter:(id)a4
+- (double)timelineTimeFromInputTime:(double)time forFilter:(id)filter
 {
   v26 = 0;
   v27 = 0;
@@ -815,7 +815,7 @@ LABEL_15:
     PCString::~PCString(v20);
 LABEL_20:
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v22);
-    a3 = v8;
+    time = v8;
     goto LABEL_21;
   }
 
@@ -838,7 +838,7 @@ LABEL_20:
     v23 = 0;
     if (v26)
     {
-      [v26 fxTimeToFigTime:*&a3 withConversionData:0];
+      [v26 fxTimeToFigTime:*&time withConversionData:0];
     }
 
     v12 = self->_fxPlugLock.__cntrl_;
@@ -863,16 +863,16 @@ LABEL_20:
     }
 
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v19);
-    a3 = COERCE_DOUBLE([v26 figTimeToFxTime:v20 withConversionData:0]);
+    time = COERCE_DOUBLE([v26 figTimeToFxTime:v20 withConversionData:0]);
   }
 
 LABEL_21:
   ProCore_Impl::PCNSRefImpl::release(&v26);
   ProCore_Impl::PCNSRefImpl::release(&v27);
-  return a3;
+  return time;
 }
 
-- (double)timelineTimeFromImageTime:(double)a3 forParmId:(unsigned int)a4 forEffect:(id)a5
+- (double)timelineTimeFromImageTime:(double)time forParmId:(unsigned int)id forEffect:(id)effect
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -903,16 +903,16 @@ LABEL_21:
     PCString::~PCString(v32);
 LABEL_8:
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v26);
-    a3 = -1.0;
+    time = -1.0;
     goto LABEL_25;
   }
 
   PCMakeNSRefAndRetain<EAGLContext *>(v8[4].var0, &v32[0].var0);
   ProCore_Impl::PCNSRefImpl::operator=(&v29, &v32[0].var0);
   ProCore_Impl::PCNSRefImpl::release(&v32[0].var0);
-  v11 = [v29 channelMap];
-  v14 = *(v11 + 8);
-  v12 = v11 + 8;
+  channelMap = [v29 channelMap];
+  v14 = *(channelMap + 8);
+  v12 = channelMap + 8;
   v13 = v14;
   if (!v14)
   {
@@ -923,8 +923,8 @@ LABEL_8:
   do
   {
     v16 = *(v13 + 32);
-    v17 = v16 >= a4;
-    v18 = v16 < a4;
+    v17 = v16 >= id;
+    v18 = v16 < id;
     if (v17)
     {
       v15 = v13;
@@ -934,7 +934,7 @@ LABEL_8:
   }
 
   while (v13);
-  if (v15 != v12 && *(v15 + 32) <= a4 && (v19 = *(v15 + 40)) != 0)
+  if (v15 != v12 && *(v15 + 32) <= id && (v19 = *(v15 + 40)) != 0)
   {
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v26);
     if (v20)
@@ -950,7 +950,7 @@ LABEL_8:
           memset(&v25, 0, sizeof(v25));
           if (v29)
           {
-            [v29 fxTimeToFigTime:*&a3 withConversionData:0];
+            [v29 fxTimeToFigTime:*&time withConversionData:0];
           }
 
           v30 = v26[0];
@@ -958,7 +958,7 @@ LABEL_8:
           PC_CMTimeSaferAdd(&v31, &v30, v32);
           *&v25.value = *&v32[0].var0;
           v25.epoch = v33;
-          a3 = COERCE_DOUBLE([v29 figTimeToFxTime:&v25 withConversionData:0]);
+          time = COERCE_DOUBLE([v29 figTimeToFxTime:&v25 withConversionData:0]);
         }
       }
     }
@@ -972,10 +972,10 @@ LABEL_24:
 
 LABEL_25:
   ProCore_Impl::PCNSRefImpl::release(&v29);
-  return a3;
+  return time;
 }
 
-- (double)inputTimeForFilter:(id)a3 fromTimelineTime:(double)a4
+- (double)inputTimeForFilter:(id)filter fromTimelineTime:(double)time
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -993,7 +993,7 @@ LABEL_25:
   }
 
   v7 = *v23;
-  v8 = -1.0;
+  timeCopy = -1.0;
   if (!*v23)
   {
     goto LABEL_10;
@@ -1012,7 +1012,7 @@ LABEL_10:
 
   if (TXParagraphStyleFolder_Factory::createInstance(v7, v9))
   {
-    v8 = a4;
+    timeCopy = time;
     goto LABEL_10;
   }
 
@@ -1024,7 +1024,7 @@ LABEL_10:
   v24 = 0;
   if (v27)
   {
-    [v27 fxTimeToFigTime:*&a4 withConversionData:0];
+    [v27 fxTimeToFigTime:*&time withConversionData:0];
   }
 
   v12 = self->_fxPlugLock.__cntrl_;
@@ -1057,21 +1057,21 @@ LABEL_10:
     *&v21[0].var0 = v16;
     v22 = v17;
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v20);
-    v8 = COERCE_DOUBLE([v27 figTimeToFxTime:v21 withConversionData:0]);
+    timeCopy = COERCE_DOUBLE([v27 figTimeToFxTime:v21 withConversionData:0]);
   }
 
   else
   {
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v20);
-    v8 = 0.0;
+    timeCopy = 0.0;
   }
 
 LABEL_11:
   ProCore_Impl::PCNSRefImpl::release(&v27);
-  return v8;
+  return timeCopy;
 }
 
-- (double)imageTimeForParmId:(unsigned int)a3 forEffect:(id)a4 fromTimelineTime:(double)a5
+- (double)imageTimeForParmId:(unsigned int)id forEffect:(id)effect fromTimelineTime:(double)time
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -1102,16 +1102,16 @@ LABEL_11:
     PCString::~PCString(v32);
 LABEL_8:
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v26);
-    a5 = -1.0;
+    time = -1.0;
     goto LABEL_25;
   }
 
   PCMakeNSRefAndRetain<EAGLContext *>(v8[4].var0, &v32[0].var0);
   ProCore_Impl::PCNSRefImpl::operator=(&v29, &v32[0].var0);
   ProCore_Impl::PCNSRefImpl::release(&v32[0].var0);
-  v11 = [v29 channelMap];
-  v14 = *(v11 + 8);
-  v12 = v11 + 8;
+  channelMap = [v29 channelMap];
+  v14 = *(channelMap + 8);
+  v12 = channelMap + 8;
   v13 = v14;
   if (!v14)
   {
@@ -1122,8 +1122,8 @@ LABEL_8:
   do
   {
     v16 = *(v13 + 32);
-    v17 = v16 >= a3;
-    v18 = v16 < a3;
+    v17 = v16 >= id;
+    v18 = v16 < id;
     if (v17)
     {
       v15 = v13;
@@ -1133,7 +1133,7 @@ LABEL_8:
   }
 
   while (v13);
-  if (v15 != v12 && *(v15 + 32) <= a3 && (v19 = *(v15 + 40)) != 0)
+  if (v15 != v12 && *(v15 + 32) <= id && (v19 = *(v15 + 40)) != 0)
   {
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v26);
     if (v20)
@@ -1149,7 +1149,7 @@ LABEL_8:
           memset(&v25, 0, sizeof(v25));
           if (v29)
           {
-            [v29 fxTimeToFigTime:*&a5 withConversionData:0];
+            [v29 fxTimeToFigTime:*&time withConversionData:0];
           }
 
           v30 = v26[0];
@@ -1157,7 +1157,7 @@ LABEL_8:
           PC_CMTimeSaferSubtract(&v31, &v30, v32);
           *&v25.value = *&v32[0].var0;
           v25.epoch = v33;
-          a5 = COERCE_DOUBLE([v29 figTimeToFxTime:&v25 withConversionData:0]);
+          time = COERCE_DOUBLE([v29 figTimeToFxTime:&v25 withConversionData:0]);
         }
       }
     }
@@ -1171,10 +1171,10 @@ LABEL_24:
 
 LABEL_25:
   ProCore_Impl::PCNSRefImpl::release(&v29);
-  return a5;
+  return time;
 }
 
-- (unint64_t)fieldOrderForInputToFilter:(id)a3
+- (unint64_t)fieldOrderForInputToFilter:(id)filter
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -1213,7 +1213,7 @@ LABEL_25:
   return v9;
 }
 
-- (unint64_t)fieldOrderForImageParm:(unsigned int)a3 forEffect:(id)a4
+- (unint64_t)fieldOrderForImageParm:(unsigned int)parm forEffect:(id)effect
 {
   v23 = 0;
   cntrl = self->_fxPlugLock.__cntrl_;
@@ -1247,9 +1247,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v6 = [v23 channelMap];
-  v9 = *(v6 + 8);
-  v7 = v6 + 8;
+  channelMap = [v23 channelMap];
+  v9 = *(channelMap + 8);
+  v7 = channelMap + 8;
   v8 = v9;
   if (!v9)
   {
@@ -1260,8 +1260,8 @@ LABEL_21:
   do
   {
     v11 = *(v8 + 32);
-    v12 = v11 >= a3;
-    v13 = v11 < a3;
+    v12 = v11 >= parm;
+    v13 = v11 < parm;
     if (v12)
     {
       v10 = v8;
@@ -1276,7 +1276,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (*(v10 + 32) > a3)
+  if (*(v10 + 32) > parm)
   {
     goto LABEL_21;
   }
@@ -1309,7 +1309,7 @@ LABEL_22:
   return v17;
 }
 
-- (void)sampleDuration:(id *)a3
+- (void)sampleDuration:(id *)duration
 {
   v18 = 0;
   cntrl = self->_fxPlugLock.__cntrl_;
@@ -1365,7 +1365,7 @@ LABEL_22:
             v12 = 0x3FF0000000000000;
           }
 
-          a3->var1 = v12;
+          duration->var1 = v12;
         }
       }
     }
@@ -1379,7 +1379,7 @@ LABEL_22:
   ProCore_Impl::PCNSRefImpl::release(&v18);
 }
 
-- (void)startFxTimeForEffect:(id *)a3
+- (void)startFxTimeForEffect:(id *)effect
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -1423,7 +1423,7 @@ LABEL_22:
         v12 = &v17;
       }
 
-      var1 = a3->var1;
+      var1 = effect->var1;
       v14 = *v12;
       *(var1 + 2) = *(v12 + 2);
       *var1 = v14;
@@ -1432,14 +1432,14 @@ LABEL_22:
     else
     {
       [(OZFxPlugTimingAPI *)self startTimeForEffect:*(v6 + 24)];
-      a3->var1 = v11;
+      effect->var1 = v11;
     }
   }
 
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v21);
 }
 
-- (void)durationFxTimeForEffect:(id *)a3
+- (void)durationFxTimeForEffect:(id *)effect
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -1487,7 +1487,7 @@ LABEL_22:
         v20[0] = v17;
         v26 = v18;
         PC_CMTimeSaferSubtract(v20, &v26, &v15);
-        var1 = a3->var1;
+        var1 = effect->var1;
         v14 = v15;
         *(var1 + 2) = v16;
         *var1 = v14;
@@ -1495,21 +1495,21 @@ LABEL_22:
 
       else
       {
-        *a3->var1 = v22;
+        *effect->var1 = v22;
       }
     }
 
     else
     {
       [(OZFxPlugTimingAPI *)self durationForEffect:v6[3]];
-      a3->var1 = v11;
+      effect->var1 = v11;
     }
   }
 
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v25);
 }
 
-- (void)startFxTimeOfInputToFilter:(id *)a3
+- (void)startFxTimeOfInputToFilter:(id *)filter
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -1535,7 +1535,7 @@ LABEL_22:
     v7 = [v6 figTimeToFxTime:&v10 withConversionData:0];
     if ((*(*v5 + 160))(v5))
     {
-      var1 = a3->var1;
+      var1 = filter->var1;
       v9 = *v7;
       *(var1 + 2) = *(v7 + 16);
       *var1 = v9;
@@ -1543,14 +1543,14 @@ LABEL_22:
 
     else
     {
-      a3->var1 = v7;
+      filter->var1 = v7;
     }
   }
 
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v16);
 }
 
-- (void)durationFxTimeOfInputToFilter:(id *)a3
+- (void)durationFxTimeOfInputToFilter:(id *)filter
 {
   v20 = 0;
   v21 = 0;
@@ -1587,7 +1587,7 @@ LABEL_22:
     if (v7)
     {
       (*(*[v21 getSceneNode] + 1128))(v13);
-      var1 = a3->var1;
+      var1 = filter->var1;
       v11 = v14;
       *(var1 + 2) = v15;
       *var1 = v11;
@@ -1596,7 +1596,7 @@ LABEL_22:
     else
     {
       [(OZFxPlugTimingAPI *)self durationOfInputToFilter:v19];
-      a3->var1 = v12;
+      filter->var1 = v12;
     }
   }
 
@@ -1610,7 +1610,7 @@ LABEL_22:
   ProCore_Impl::PCNSRefImpl::release(&v21);
 }
 
-- (void)startFxTime:(id *)a3 ofImageParam:(unsigned int)a4
+- (void)startFxTime:(id *)time ofImageParam:(unsigned int)param
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -1635,9 +1635,9 @@ LABEL_22:
   PCMakeNSRefAndRetain<EAGLContext *>(*(*v22 + 32), &v20);
   ProCore_Impl::PCNSRefImpl::operator=(&v26, &v20);
   ProCore_Impl::PCNSRefImpl::release(&v20);
-  v8 = [v26 channelMap];
-  v11 = *(v8 + 8);
-  v9 = v8 + 8;
+  channelMap = [v26 channelMap];
+  v11 = *(channelMap + 8);
+  v9 = channelMap + 8;
   v10 = v11;
   if (!v11)
   {
@@ -1648,8 +1648,8 @@ LABEL_22:
   do
   {
     v13 = *(v10 + 32);
-    v14 = v13 >= a4;
-    v15 = v13 < a4;
+    v14 = v13 >= param;
+    v15 = v13 < param;
     if (v14)
     {
       v12 = v10;
@@ -1659,7 +1659,7 @@ LABEL_22:
   }
 
   while (v10);
-  if (v12 != v9 && *(v12 + 32) <= a4)
+  if (v12 != v9 && *(v12 + 32) <= param)
   {
     v16 = *(v12 + 40);
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v22);
@@ -1671,12 +1671,12 @@ LABEL_22:
         (*(*Node + 1128))(&v22);
         v20 = v22;
         v21 = v23;
-        -[OZFxPlugTimingAPI copyFxTime:toFxTime:](self, "copyFxTime:toFxTime:", [v26 figTimeToFxTime:&v20 withConversionData:0], a3);
+        -[OZFxPlugTimingAPI copyFxTime:toFxTime:](self, "copyFxTime:toFxTime:", [v26 figTimeToFxTime:&v20 withConversionData:0], time);
       }
 
       else
       {
-        var1 = a3->var1;
+        var1 = time->var1;
         v19 = *MEMORY[0x277CC0898];
         *(var1 + 2) = *(MEMORY[0x277CC0898] + 16);
         *var1 = v19;
@@ -1693,9 +1693,9 @@ LABEL_14:
   ProCore_Impl::PCNSRefImpl::release(&v26);
 }
 
-- (void)durationFxTime:(id *)a3 ofImageParm:(unsigned int)a4
+- (void)durationFxTime:(id *)time ofImageParm:(unsigned int)parm
 {
-  v4 = *&a4;
+  v4 = *&parm;
   v36 = 0;
   v37 = 0;
   cntrl = self->_fxPlugLock.__cntrl_;
@@ -1721,7 +1721,7 @@ LABEL_14:
   if (((*(*v8 + 160))(*v33[0].value) & 1) == 0)
   {
     [(OZFxPlugTimingAPI *)self durationOfImageParm:v4 forEffect:*(v8 + 3)];
-    a3->var1 = v20;
+    time->var1 = v20;
 LABEL_18:
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v33);
     goto LABEL_29;
@@ -1730,9 +1730,9 @@ LABEL_18:
   PCMakeNSRefAndRetain<EAGLContext *>(*(v8 + 4), &v39);
   ProCore_Impl::PCNSRefImpl::operator=(&v36, &v39);
   ProCore_Impl::PCNSRefImpl::release(&v39);
-  v9 = [v36 channelMap];
-  v13 = *(v9 + 8);
-  v11 = v9 + 8;
+  channelMap = [v36 channelMap];
+  v13 = *(channelMap + 8);
+  v11 = channelMap + 8;
   v12 = v13;
   if (!v13)
   {
@@ -1798,7 +1798,7 @@ LABEL_19:
       v39 = v31;
       v38 = v32;
       PC_CMTimeSaferSubtract(&v39, &v38, &v29);
-      var1 = a3->var1;
+      var1 = time->var1;
       v27 = v29;
       v28 = v30;
     }
@@ -1806,7 +1806,7 @@ LABEL_19:
     else
     {
 LABEL_27:
-      var1 = a3->var1;
+      var1 = time->var1;
       v27 = *MEMORY[0x277CC0898];
       v28 = *(MEMORY[0x277CC0898] + 16);
     }
@@ -1820,7 +1820,7 @@ LABEL_29:
   ProCore_Impl::PCNSRefImpl::release(&v37);
 }
 
-- (void)inPointFxTimeOfTimelineForEffect:(id *)a3
+- (void)inPointFxTimeOfTimelineForEffect:(id *)effect
 {
   v17 = 0;
   cntrl = self->_fxPlugLock.__cntrl_;
@@ -1847,7 +1847,7 @@ LABEL_29:
   {
     if ((*(*v7 + 20))(v7))
     {
-      var1 = a3->var1;
+      var1 = effect->var1;
       v9 = *MEMORY[0x277CC08F0];
       *(var1 + 2) = *(MEMORY[0x277CC08F0] + 16);
       *var1 = v9;
@@ -1855,7 +1855,7 @@ LABEL_29:
 
     else
     {
-      a3->var1 = 0;
+      effect->var1 = 0;
     }
 
 LABEL_12:
@@ -1866,21 +1866,21 @@ LABEL_12:
   PCMakeNSRefAndRetain<EAGLContext *>(v7[4], &v14);
   ProCore_Impl::PCNSRefImpl::operator=(&v17, &v14);
   ProCore_Impl::PCNSRefImpl::release(&v14);
-  v10 = [v17 getScene];
+  getScene = [v17 getScene];
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v12);
-  if (v10)
+  if (getScene)
   {
-    PlayRange = OZScene::getPlayRange(v10);
+    PlayRange = OZScene::getPlayRange(getScene);
     v12 = *PlayRange;
     v13 = *(PlayRange + 16);
-    -[OZFxPlugTimingAPI copyFxTime:toFxTime:](self, "copyFxTime:toFxTime:", [v17 figTimeToFxTime:&v12 withConversionData:0], a3);
+    -[OZFxPlugTimingAPI copyFxTime:toFxTime:](self, "copyFxTime:toFxTime:", [v17 figTimeToFxTime:&v12 withConversionData:0], effect);
   }
 
 LABEL_13:
   ProCore_Impl::PCNSRefImpl::release(&v17);
 }
 
-- (void)outPointFxTimeOfTimelineForEffect:(id *)a3
+- (void)outPointFxTimeOfTimelineForEffect:(id *)effect
 {
   v20 = 0;
   v21 = 0;
@@ -1907,7 +1907,7 @@ LABEL_13:
   if (((*(*v6 + 20))(v6) & 1) == 0)
   {
     [(OZFxPlugTimingAPI *)self outPointOfTimelineForEffect:v6[3]];
-    a3->var1 = v15;
+    effect->var1 = v15;
 LABEL_10:
     OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v23);
     goto LABEL_13;
@@ -1921,24 +1921,24 @@ LABEL_10:
   ProCore_Impl::PCNSRefImpl::operator=(&v20, &v22);
   ProCore_Impl::PCNSRefImpl::release(&v22);
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v23);
-  v9 = [(OZFxPlugTimingAPI *)self scene];
-  if (v9)
+  scene = [(OZFxPlugTimingAPI *)self scene];
+  if (scene)
   {
-    PlayRange = OZScene::getPlayRange(v9);
+    PlayRange = OZScene::getPlayRange(scene);
     v22 = *PlayRange;
     v16 = 0uLL;
     v17 = 0;
     v23 = *(PlayRange + 24);
     v11 = PC_CMTimeSaferAdd(&v23, &v22, &v16);
     [v20 figTimeToFxTime:&v16 withConversionData:{0, v11}];
-    var1 = a3->var1;
+    var1 = effect->var1;
     v13 = v16;
     v14 = v17;
   }
 
   else
   {
-    var1 = a3->var1;
+    var1 = effect->var1;
     v13 = *MEMORY[0x277CC08F0];
     v14 = *(MEMORY[0x277CC08F0] + 16);
   }
@@ -1950,7 +1950,7 @@ LABEL_13:
   ProCore_Impl::PCNSRefImpl::release(&v21);
 }
 
-- (void)timelineFxTime:(id *)a3 fromInputTime:(id)a4
+- (void)timelineFxTime:(id *)time fromInputTime:(id)inputTime
 {
   v29 = 0;
   v30 = 0;
@@ -1992,7 +1992,7 @@ LABEL_13:
     v24 = 0;
     if (v30)
     {
-      [v30 fxTimeToFigTime:a4.var1 withConversionData:0];
+      [v30 fxTimeToFigTime:inputTime.var1 withConversionData:0];
     }
 
     v13 = self->_fxPlugLock.__cntrl_;
@@ -2028,13 +2028,13 @@ LABEL_18:
   }
 
 LABEL_15:
-  [(OZFxPlugTimingAPI *)self copyFxTime:v12.var1 toFxTime:a3];
+  [(OZFxPlugTimingAPI *)self copyFxTime:v12.var1 toFxTime:time];
 LABEL_19:
   ProCore_Impl::PCNSRefImpl::release(&v29);
   ProCore_Impl::PCNSRefImpl::release(&v30);
 }
 
-- (void)timelineFxTime:(id *)a3 fromImageTime:(id)a4 forParmId:(unsigned int)a5
+- (void)timelineFxTime:(id *)time fromImageTime:(id)imageTime forParmId:(unsigned int)id
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -2056,9 +2056,9 @@ LABEL_19:
     PCMakeNSRefAndRetain<EAGLContext *>(*(*v24[0].value + 32), &v30);
     ProCore_Impl::PCNSRefImpl::operator=(&v27, &v30);
     ProCore_Impl::PCNSRefImpl::release(&v30);
-    v10 = [v27 channelMap];
-    v13 = *(v10 + 8);
-    v11 = v10 + 8;
+    channelMap = [v27 channelMap];
+    v13 = *(channelMap + 8);
+    v11 = channelMap + 8;
     v12 = v13;
     if (!v13)
     {
@@ -2069,8 +2069,8 @@ LABEL_19:
     do
     {
       v15 = *(v12 + 32);
-      v16 = v15 >= a5;
-      v17 = v15 < a5;
+      v16 = v15 >= id;
+      v17 = v15 < id;
       if (v16)
       {
         v14 = v12;
@@ -2080,7 +2080,7 @@ LABEL_19:
     }
 
     while (v12);
-    if (v14 != v11 && *(v14 + 32) <= a5 && (v18 = *(v14 + 40)) != 0)
+    if (v14 != v11 && *(v14 + 32) <= id && (v18 = *(v14 + 40)) != 0)
     {
       OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v24);
       if (v19)
@@ -2096,14 +2096,14 @@ LABEL_19:
             memset(&v23, 0, sizeof(v23));
             if (v27)
             {
-              [v27 fxTimeToFigTime:a4.var1 withConversionData:0];
+              [v27 fxTimeToFigTime:imageTime.var1 withConversionData:0];
             }
 
             v28 = v24[0];
             v29 = v23;
             PC_CMTimeSaferAdd(&v29, &v28, &v30);
             v23 = v30;
-            a4.var1 = [v27 figTimeToFxTime:&v23 withConversionData:0];
+            imageTime.var1 = [v27 figTimeToFxTime:&v23 withConversionData:0];
           }
         }
       }
@@ -2115,7 +2115,7 @@ LABEL_21:
       OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v24);
     }
 
-    [(OZFxPlugTimingAPI *)self copyFxTime:a4.var1 toFxTime:a3];
+    [(OZFxPlugTimingAPI *)self copyFxTime:imageTime.var1 toFxTime:time];
   }
 
   else
@@ -2126,7 +2126,7 @@ LABEL_21:
   ProCore_Impl::PCNSRefImpl::release(&v27);
 }
 
-- (void)inputFxTime:(id *)a3 fromTimelineTime:(id)a4
+- (void)inputFxTime:(id *)time fromTimelineTime:(id)timelineTime
 {
   v27 = 0;
   v28 = 0;
@@ -2163,7 +2163,7 @@ LABEL_18:
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(&v23);
   if (v28)
   {
-    [v28 fxTimeToFigTime:a4.var1 withConversionData:0];
+    [v28 fxTimeToFigTime:timelineTime.var1 withConversionData:0];
   }
 
   else
@@ -2208,13 +2208,13 @@ LABEL_18:
   v21 = v19;
   v22 = v20;
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v18);
-  -[OZFxPlugTimingAPI copyFxTime:toFxTime:](self, "copyFxTime:toFxTime:", [v28 figTimeToFxTime:&v21 withConversionData:0], a3);
+  -[OZFxPlugTimingAPI copyFxTime:toFxTime:](self, "copyFxTime:toFxTime:", [v28 figTimeToFxTime:&v21 withConversionData:0], time);
 LABEL_21:
   ProCore_Impl::PCNSRefImpl::release(&v27);
   ProCore_Impl::PCNSRefImpl::release(&v28);
 }
 
-- (void)imageFxTime:(id *)a3 forParmId:(unsigned int)a4 fromTimelineTime:(id)a5
+- (void)imageFxTime:(id *)time forParmId:(unsigned int)id fromTimelineTime:(id)timelineTime
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -2236,9 +2236,9 @@ LABEL_21:
     PCMakeNSRefAndRetain<EAGLContext *>(*(*v24[0].value + 32), &v30);
     ProCore_Impl::PCNSRefImpl::operator=(&v27, &v30);
     ProCore_Impl::PCNSRefImpl::release(&v30);
-    v10 = [v27 channelMap];
-    v13 = *(v10 + 8);
-    v11 = v10 + 8;
+    channelMap = [v27 channelMap];
+    v13 = *(channelMap + 8);
+    v11 = channelMap + 8;
     v12 = v13;
     if (!v13)
     {
@@ -2249,8 +2249,8 @@ LABEL_21:
     do
     {
       v15 = *(v12 + 32);
-      v16 = v15 >= a4;
-      v17 = v15 < a4;
+      v16 = v15 >= id;
+      v17 = v15 < id;
       if (v16)
       {
         v14 = v12;
@@ -2260,7 +2260,7 @@ LABEL_21:
     }
 
     while (v12);
-    if (v14 != v11 && *(v14 + 32) <= a4 && (v18 = *(v14 + 40)) != 0)
+    if (v14 != v11 && *(v14 + 32) <= id && (v18 = *(v14 + 40)) != 0)
     {
       OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v24);
       if (v19)
@@ -2276,14 +2276,14 @@ LABEL_21:
             memset(&v23, 0, sizeof(v23));
             if (v27)
             {
-              [v27 fxTimeToFigTime:a5.var1 withConversionData:0];
+              [v27 fxTimeToFigTime:timelineTime.var1 withConversionData:0];
             }
 
             v28 = v24[0];
             v29 = v23;
             PC_CMTimeSaferSubtract(&v29, &v28, &v30);
             v23 = v30;
-            a5.var1 = [v27 figTimeToFxTime:&v23 withConversionData:0];
+            timelineTime.var1 = [v27 figTimeToFxTime:&v23 withConversionData:0];
           }
         }
       }
@@ -2295,7 +2295,7 @@ LABEL_21:
       OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v24);
     }
 
-    [(OZFxPlugTimingAPI *)self copyFxTime:a5.var1 toFxTime:a3];
+    [(OZFxPlugTimingAPI *)self copyFxTime:timelineTime.var1 toFxTime:time];
   }
 
   else
@@ -2306,7 +2306,7 @@ LABEL_21:
   ProCore_Impl::PCNSRefImpl::release(&v27);
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOffsetForImageParameter:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeOffsetForImageParameter:(SEL)parameter
 {
   cntrl = self->_fxPlugLock.__cntrl_;
   ptr = self->_fxPlugLock.__ptr_;
@@ -2327,9 +2327,9 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v7 = [*(*v26[0] + 32) channelMap];
-  v10 = *(v7 + 8);
-  v8 = v7 + 8;
+  channelMap = [*(*v26[0] + 32) channelMap];
+  v10 = *(channelMap + 8);
+  v8 = channelMap + 8;
   v9 = v10;
   if (!v10)
   {
@@ -2398,16 +2398,16 @@ LABEL_19:
 
   if (*v7[0])
   {
-    v3 = [*(*v7[0] + 32) getScene];
+    getScene = [*(*v7[0] + 32) getScene];
   }
 
   else
   {
-    v3 = 0;
+    getScene = 0;
   }
 
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v7);
-  return v3;
+  return getScene;
 }
 
 - (id).cxx_construct

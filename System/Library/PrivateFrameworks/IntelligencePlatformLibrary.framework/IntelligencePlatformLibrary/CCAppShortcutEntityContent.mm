@@ -1,33 +1,33 @@
 @interface CCAppShortcutEntityContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppShortcutEntityContent)initWithEntityTitle:(id)a3 entityInstanceIdentifier:(id)a4 entityTypeIdentifier:(id)a5 providerClass:(id)a6 entitySynonyms:(id)a7 error:(id *)a8;
-- (CCAppShortcutEntityContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppShortcutEntityContent)initWithEntityTitle:(id)title entityInstanceIdentifier:(id)identifier entityTypeIdentifier:(id)typeIdentifier providerClass:(id)class entitySynonyms:(id)synonyms error:(id *)error;
+- (CCAppShortcutEntityContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSArray)entitySynonyms;
 - (NSString)entityInstanceIdentifier;
 - (NSString)entityTitle;
 - (NSString)entityTypeIdentifier;
 - (NSString)providerClass;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppShortcutEntityContent
 
-- (CCAppShortcutEntityContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppShortcutEntityContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"entityTitle"];
-    v10 = [v6 objectForKeyedSubscript:@"entityInstanceIdentifier"];
-    v11 = [v6 objectForKeyedSubscript:@"entityTypeIdentifier"];
-    v12 = [v6 objectForKeyedSubscript:@"providerClass"];
-    v13 = [v6 objectForKeyedSubscript:@"entitySynonyms"];
-    v14 = [[CCAppShortcutEntityContent alloc] initWithEntityTitle:v9 entityInstanceIdentifier:v10 entityTypeIdentifier:v11 providerClass:v12 entitySynonyms:v13 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"entityTitle"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityInstanceIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"entityTypeIdentifier"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"providerClass"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"entitySynonyms"];
+    v14 = [[CCAppShortcutEntityContent alloc] initWithEntityTitle:v9 entityInstanceIdentifier:v10 entityTypeIdentifier:v11 providerClass:v12 entitySynonyms:v13 error:error];
   }
 
   else
@@ -44,32 +44,32 @@
   v3 = objc_opt_new();
   if (self->_entityTitle)
   {
-    v4 = [(CCAppShortcutEntityContent *)self entityTitle];
-    [v3 setObject:v4 forKeyedSubscript:@"entityTitle"];
+    entityTitle = [(CCAppShortcutEntityContent *)self entityTitle];
+    [v3 setObject:entityTitle forKeyedSubscript:@"entityTitle"];
   }
 
   if (self->_entityInstanceIdentifier)
   {
-    v5 = [(CCAppShortcutEntityContent *)self entityInstanceIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"entityInstanceIdentifier"];
+    entityInstanceIdentifier = [(CCAppShortcutEntityContent *)self entityInstanceIdentifier];
+    [v3 setObject:entityInstanceIdentifier forKeyedSubscript:@"entityInstanceIdentifier"];
   }
 
   if (self->_entityTypeIdentifier)
   {
-    v6 = [(CCAppShortcutEntityContent *)self entityTypeIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"entityTypeIdentifier"];
+    entityTypeIdentifier = [(CCAppShortcutEntityContent *)self entityTypeIdentifier];
+    [v3 setObject:entityTypeIdentifier forKeyedSubscript:@"entityTypeIdentifier"];
   }
 
   if (self->_providerClass)
   {
-    v7 = [(CCAppShortcutEntityContent *)self providerClass];
-    [v3 setObject:v7 forKeyedSubscript:@"providerClass"];
+    providerClass = [(CCAppShortcutEntityContent *)self providerClass];
+    [v3 setObject:providerClass forKeyedSubscript:@"providerClass"];
   }
 
   if (self->_entitySynonyms)
   {
-    v8 = [(CCAppShortcutEntityContent *)self entitySynonyms];
-    [v3 setObject:v8 forKeyedSubscript:@"entitySynonyms"];
+    entitySynonyms = [(CCAppShortcutEntityContent *)self entitySynonyms];
+    [v3 setObject:entitySynonyms forKeyedSubscript:@"entitySynonyms"];
   }
 
   v9 = [v3 copy];
@@ -77,40 +77,40 @@
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v11 = a3;
+  blockCopy = block;
   if (self->_entityTitle)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7825 stringValue:self->_entityTitle];
-    v11[2](v11, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_entityInstanceIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7826 stringValue:self->_entityInstanceIdentifier];
-    v11[2](v11, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_entityTypeIdentifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7827 stringValue:self->_entityTypeIdentifier];
-    v11[2](v11, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_providerClass)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7828 stringValue:self->_providerClass];
-    v11[2](v11, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
-  v9 = v11;
+  v9 = blockCopy;
   if (self->_entitySynonyms)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:7830 repeatedStringValue:self->_entitySynonyms];
-    v11[2](v11, v10);
+    blockCopy[2](blockCopy, v10);
 
-    v9 = v11;
+    v9 = blockCopy;
   }
 }
 
@@ -149,10 +149,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v39 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v39];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -325,13 +325,13 @@ LABEL_45:
   {
     CCSetError();
     v30 = 0;
-    v31 = v39;
+    v31 = dataCopy;
   }
 
   else
   {
     v32 = MEMORY[0x1E6993AA8];
-    v31 = v39;
+    v31 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v33 = objc_opt_class();
@@ -352,21 +352,21 @@ LABEL_45:
   return v30;
 }
 
-- (CCAppShortcutEntityContent)initWithEntityTitle:(id)a3 entityInstanceIdentifier:(id)a4 entityTypeIdentifier:(id)a5 providerClass:(id)a6 entitySynonyms:(id)a7 error:(id *)a8
+- (CCAppShortcutEntityContent)initWithEntityTitle:(id)title entityInstanceIdentifier:(id)identifier entityTypeIdentifier:(id)typeIdentifier providerClass:(id)class entitySynonyms:(id)synonyms error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  titleCopy = title;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  classCopy = class;
+  synonymsCopy = synonyms;
   v18 = objc_opt_new();
-  if (!v13)
+  if (!titleCopy)
   {
     v20 = 0;
 LABEL_5:
-    v37 = self;
-    if (v14)
+    selfCopy = self;
+    if (identifierCopy)
     {
       objc_opt_class();
       v46 = v20;
@@ -379,11 +379,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v15)
+      if (!typeIdentifierCopy)
       {
 LABEL_8:
         v20 = v22;
-        if (v16)
+        if (classCopy)
         {
           goto LABEL_9;
         }
@@ -395,7 +395,7 @@ LABEL_8:
     else
     {
       v22 = v20;
-      if (!v15)
+      if (!typeIdentifierCopy)
       {
         goto LABEL_8;
       }
@@ -410,12 +410,12 @@ LABEL_8:
     {
 LABEL_28:
       CCSetError();
-      v24 = 0;
+      selfCopy2 = 0;
       goto LABEL_29;
     }
 
     CCPBDataWriterWriteStringField();
-    if (v16)
+    if (classCopy)
     {
 LABEL_9:
       objc_opt_class();
@@ -426,15 +426,15 @@ LABEL_9:
       if (v23)
       {
         CCPBDataWriterWriteStringField();
-        if (!v17)
+        if (!synonymsCopy)
         {
 LABEL_11:
           v20 = v22;
 LABEL_27:
-          v33 = [v18 immutableData];
-          self = [(CCItemMessage *)v37 initWithData:v33 error:a8];
+          immutableData = [v18 immutableData];
+          self = [(CCItemMessage *)selfCopy initWithData:immutableData error:error];
 
-          v24 = self;
+          selfCopy2 = self;
           goto LABEL_30;
         }
 
@@ -443,16 +443,16 @@ LABEL_27:
 
 LABEL_12:
       CCSetError();
-      v24 = 0;
+      selfCopy2 = 0;
       v20 = v22;
 LABEL_29:
-      self = v37;
+      self = selfCopy;
       goto LABEL_30;
     }
 
 LABEL_17:
     v22 = v20;
-    if (!v17)
+    if (!synonymsCopy)
     {
       goto LABEL_11;
     }
@@ -469,8 +469,8 @@ LABEL_18:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v36 = v17;
-      v27 = v17;
+      v36 = synonymsCopy;
+      v27 = synonymsCopy;
       v28 = [v27 countByEnumeratingWithState:&v39 objects:v48 count:16];
       if (v28)
       {
@@ -498,7 +498,7 @@ LABEL_18:
         while (v29);
       }
 
-      v17 = v36;
+      synonymsCopy = v36;
       goto LABEL_27;
     }
 
@@ -516,23 +516,23 @@ LABEL_18:
   }
 
   CCSetError();
-  v24 = 0;
+  selfCopy2 = 0;
 LABEL_30:
 
   v34 = *MEMORY[0x1E69E9840];
-  return v24;
+  return selfCopy2;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 - 7822) > 8)
+  if ((identifier - 7822) > 8)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E6DE8 + (a3 - 7822));
+    return *(&off_1E73E6DE8 + (identifier - 7822));
   }
 }
 

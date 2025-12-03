@@ -1,27 +1,27 @@
 @interface LNQueryRequest
-- (BOOL)isEqual:(id)a3;
-- (LNQueryRequest)initWithCoder:(id)a3;
-- (LNQueryRequest)initWithRequestType:(int64_t)a3 identifiersToMatch:(id)a4 stringToMatch:(id)a5 propertyQuery:(id)a6 maximumResultCount:(id)a7 entityIdentifier:(id)a8 entityMangledTypeName:(id)a9 queryIdentifier:(id)a10 queryMangledTypeName:(id)a11 intentMangledTypeNames:(id)a12 sortingOptions:(id)a13;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryRequest)initWithCoder:(id)coder;
+- (LNQueryRequest)initWithRequestType:(int64_t)type identifiersToMatch:(id)match stringToMatch:(id)toMatch propertyQuery:(id)query maximumResultCount:(id)count entityIdentifier:(id)identifier entityMangledTypeName:(id)name queryIdentifier:(id)self0 queryMangledTypeName:(id)self1 intentMangledTypeNames:(id)self2 sortingOptions:(id)self3;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNQueryRequest *)self requestType];
-        if (v7 != [(LNQueryRequest *)v6 requestType])
+        requestType = [(LNQueryRequest *)self requestType];
+        if (requestType != [(LNQueryRequest *)v6 requestType])
         {
           LOBYTE(v13) = 0;
 LABEL_89:
@@ -29,10 +29,10 @@ LABEL_89:
           goto LABEL_90;
         }
 
-        v8 = [(LNQueryRequest *)self entityIdentifier];
-        v9 = [(LNQueryRequest *)v6 entityIdentifier];
-        v10 = v8;
-        v11 = v9;
+        entityIdentifier = [(LNQueryRequest *)self entityIdentifier];
+        entityIdentifier2 = [(LNQueryRequest *)v6 entityIdentifier];
+        v10 = entityIdentifier;
+        v11 = entityIdentifier2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -59,10 +59,10 @@ LABEL_87:
           }
         }
 
-        v17 = [(LNQueryRequest *)self entityMangledTypeName];
-        v18 = [(LNQueryRequest *)v6 entityMangledTypeName];
-        v15 = v17;
-        v19 = v18;
+        entityMangledTypeName = [(LNQueryRequest *)self entityMangledTypeName];
+        entityMangledTypeName2 = [(LNQueryRequest *)v6 entityMangledTypeName];
+        v15 = entityMangledTypeName;
+        v19 = entityMangledTypeName2;
         v14 = v19;
         if (v15 == v19)
         {
@@ -89,10 +89,10 @@ LABEL_86:
           }
         }
 
-        v23 = [(LNQueryRequest *)self identifiersToMatch];
-        v24 = [(LNQueryRequest *)v6 identifiersToMatch];
-        v21 = v23;
-        v25 = v24;
+        identifiersToMatch = [(LNQueryRequest *)self identifiersToMatch];
+        identifiersToMatch2 = [(LNQueryRequest *)v6 identifiersToMatch];
+        v21 = identifiersToMatch;
+        v25 = identifiersToMatch2;
         v20 = v25;
         v81 = v21;
         if (v21 == v25)
@@ -117,10 +117,10 @@ LABEL_86:
         }
 
         v80 = v20;
-        v27 = [(LNQueryRequest *)self maximumResultCount];
-        v28 = [(LNQueryRequest *)v6 maximumResultCount];
-        v29 = v27;
-        v30 = v28;
+        maximumResultCount = [(LNQueryRequest *)self maximumResultCount];
+        maximumResultCount2 = [(LNQueryRequest *)v6 maximumResultCount];
+        v29 = maximumResultCount;
+        v30 = maximumResultCount2;
         v78 = v30;
         v79 = v29;
         if (v29 == v30)
@@ -164,10 +164,10 @@ LABEL_85:
           }
         }
 
-        v33 = [(LNQueryRequest *)self propertyQuery];
-        v34 = [(LNQueryRequest *)v6 propertyQuery];
-        v29 = v33;
-        v35 = v34;
+        propertyQuery = [(LNQueryRequest *)self propertyQuery];
+        propertyQuery2 = [(LNQueryRequest *)v6 propertyQuery];
+        v29 = propertyQuery;
+        v35 = propertyQuery2;
         v76 = v29;
         v77 = v35;
         if (v29 != v35)
@@ -190,10 +190,10 @@ LABEL_85:
               }
 
 LABEL_39:
-              v38 = [(LNQueryRequest *)self queryIdentifier];
-              v39 = [(LNQueryRequest *)v6 queryIdentifier];
-              v40 = v38;
-              v41 = v39;
+              queryIdentifier = [(LNQueryRequest *)self queryIdentifier];
+              queryIdentifier2 = [(LNQueryRequest *)v6 queryIdentifier];
+              v40 = queryIdentifier;
+              v41 = queryIdentifier2;
               v74 = v41;
               v75 = v40;
               if (v40 == v41)
@@ -232,10 +232,10 @@ LABEL_80:
                 }
               }
 
-              v44 = [(LNQueryRequest *)self queryMangledTypeName];
-              v45 = [(LNQueryRequest *)v6 queryMangledTypeName];
-              v40 = v44;
-              v46 = v45;
+              queryMangledTypeName = [(LNQueryRequest *)self queryMangledTypeName];
+              queryMangledTypeName2 = [(LNQueryRequest *)v6 queryMangledTypeName];
+              v40 = queryMangledTypeName;
+              v46 = queryMangledTypeName2;
               v72 = v40;
               v73 = v46;
               if (v40 != v46)
@@ -258,10 +258,10 @@ LABEL_80:
                     }
 
 LABEL_53:
-                    v49 = [(LNQueryRequest *)self stringToMatch];
-                    v50 = [(LNQueryRequest *)v6 stringToMatch];
-                    v51 = v49;
-                    v52 = v50;
+                    stringToMatch = [(LNQueryRequest *)self stringToMatch];
+                    stringToMatch2 = [(LNQueryRequest *)v6 stringToMatch];
+                    v51 = stringToMatch;
+                    v52 = stringToMatch2;
                     v70 = v52;
                     v71 = v51;
                     if (v51 == v52)
@@ -300,10 +300,10 @@ LABEL_77:
                       }
                     }
 
-                    v55 = [(LNQueryRequest *)self sortingOptions];
-                    v56 = [(LNQueryRequest *)v6 sortingOptions];
-                    v51 = v55;
-                    v57 = v56;
+                    sortingOptions = [(LNQueryRequest *)self sortingOptions];
+                    sortingOptions2 = [(LNQueryRequest *)v6 sortingOptions];
+                    v51 = sortingOptions;
+                    v57 = sortingOptions2;
                     v68 = v51;
                     v69 = v57;
                     if (v51 != v57)
@@ -343,10 +343,10 @@ LABEL_75:
                     }
 
 LABEL_67:
-                    v60 = [(LNQueryRequest *)self intentMangledTypeNames];
-                    v61 = [(LNQueryRequest *)v6 intentMangledTypeNames];
-                    v62 = v60;
-                    v63 = v61;
+                    intentMangledTypeNames = [(LNQueryRequest *)self intentMangledTypeNames];
+                    intentMangledTypeNames2 = [(LNQueryRequest *)v6 intentMangledTypeNames];
+                    v62 = intentMangledTypeNames;
+                    v63 = intentMangledTypeNames2;
                     v64 = v62;
                     v65 = v62 == v63;
                     v66 = v63;
@@ -429,119 +429,119 @@ LABEL_90:
 
 - (unint64_t)hash
 {
-  v3 = [(LNQueryRequest *)self requestType];
-  v24 = [(LNQueryRequest *)self entityIdentifier];
-  v4 = [v24 hash] + v3;
-  v5 = [(LNQueryRequest *)self identifiersToMatch];
-  v6 = [v5 hash];
-  v7 = [(LNQueryRequest *)self maximumResultCount];
-  v8 = v6 ^ [v7 hash] ^ v4;
-  v9 = [(LNQueryRequest *)self propertyQuery];
-  v10 = [v9 hash];
-  v11 = [(LNQueryRequest *)self queryIdentifier];
-  v12 = v10 ^ [v11 hash];
-  v13 = [(LNQueryRequest *)self stringToMatch];
-  v23 = v8 ^ v12 ^ [v13 hash];
-  v14 = [(LNQueryRequest *)self intentMangledTypeNames];
-  v15 = [v14 hash];
-  v16 = [(LNQueryRequest *)self sortingOptions];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(LNQueryRequest *)self entityMangledTypeName];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(LNQueryRequest *)self queryMangledTypeName];
-  v21 = v19 ^ [v20 hash];
+  requestType = [(LNQueryRequest *)self requestType];
+  entityIdentifier = [(LNQueryRequest *)self entityIdentifier];
+  v4 = [entityIdentifier hash] + requestType;
+  identifiersToMatch = [(LNQueryRequest *)self identifiersToMatch];
+  v6 = [identifiersToMatch hash];
+  maximumResultCount = [(LNQueryRequest *)self maximumResultCount];
+  v8 = v6 ^ [maximumResultCount hash] ^ v4;
+  propertyQuery = [(LNQueryRequest *)self propertyQuery];
+  v10 = [propertyQuery hash];
+  queryIdentifier = [(LNQueryRequest *)self queryIdentifier];
+  v12 = v10 ^ [queryIdentifier hash];
+  stringToMatch = [(LNQueryRequest *)self stringToMatch];
+  v23 = v8 ^ v12 ^ [stringToMatch hash];
+  intentMangledTypeNames = [(LNQueryRequest *)self intentMangledTypeNames];
+  v15 = [intentMangledTypeNames hash];
+  sortingOptions = [(LNQueryRequest *)self sortingOptions];
+  v17 = v15 ^ [sortingOptions hash];
+  entityMangledTypeName = [(LNQueryRequest *)self entityMangledTypeName];
+  v19 = v17 ^ [entityMangledTypeName hash];
+  queryMangledTypeName = [(LNQueryRequest *)self queryMangledTypeName];
+  v21 = v19 ^ [queryMangledTypeName hash];
 
   return v23 ^ v21;
 }
 
-- (LNQueryRequest)initWithCoder:(id)a3
+- (LNQueryRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entityIdentifier"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"entityMangledTypeName"];
+  coderCopy = coder;
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityIdentifier"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityMangledTypeName"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v7 = [v3 decodeObjectOfClasses:v6 forKey:@"intentMangledTypeNames"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"intentMangledTypeNames"];
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v3 decodeObjectOfClasses:v10 forKey:@"identifiersToMatch"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"identifiersToMatch"];
 
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"maximumResultCount"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"propertyQuery"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"queryIdentifier"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"queryMangledTypeName"];
-  v15 = [v3 decodeIntegerForKey:@"requestType"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"stringToMatch"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumResultCount"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyQuery"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryIdentifier"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryMangledTypeName"];
+  v15 = [coderCopy decodeIntegerForKey:@"requestType"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringToMatch"];
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v3 decodeObjectOfClasses:v19 forKey:@"sortingOptions"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"sortingOptions"];
 
   v26 = [(LNQueryRequest *)self initWithRequestType:v15 identifiersToMatch:v11 stringToMatch:v16 propertyQuery:v12 maximumResultCount:v22 entityIdentifier:v24 entityMangledTypeName:v23 queryIdentifier:v13 queryMangledTypeName:v14 intentMangledTypeNames:v7 sortingOptions:v20];
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryRequest *)self entityIdentifier];
-  [v4 encodeObject:v5 forKey:@"entityIdentifier"];
+  coderCopy = coder;
+  entityIdentifier = [(LNQueryRequest *)self entityIdentifier];
+  [coderCopy encodeObject:entityIdentifier forKey:@"entityIdentifier"];
 
-  v6 = [(LNQueryRequest *)self entityMangledTypeName];
-  [v4 encodeObject:v6 forKey:@"entityMangledTypeName"];
+  entityMangledTypeName = [(LNQueryRequest *)self entityMangledTypeName];
+  [coderCopy encodeObject:entityMangledTypeName forKey:@"entityMangledTypeName"];
 
-  v7 = [(LNQueryRequest *)self intentMangledTypeNames];
-  [v4 encodeObject:v7 forKey:@"intentMangledTypeNames"];
+  intentMangledTypeNames = [(LNQueryRequest *)self intentMangledTypeNames];
+  [coderCopy encodeObject:intentMangledTypeNames forKey:@"intentMangledTypeNames"];
 
-  v8 = [(LNQueryRequest *)self identifiersToMatch];
-  [v4 encodeObject:v8 forKey:@"identifiersToMatch"];
+  identifiersToMatch = [(LNQueryRequest *)self identifiersToMatch];
+  [coderCopy encodeObject:identifiersToMatch forKey:@"identifiersToMatch"];
 
-  v9 = [(LNQueryRequest *)self maximumResultCount];
-  [v4 encodeObject:v9 forKey:@"maximumResultCount"];
+  maximumResultCount = [(LNQueryRequest *)self maximumResultCount];
+  [coderCopy encodeObject:maximumResultCount forKey:@"maximumResultCount"];
 
-  v10 = [(LNQueryRequest *)self propertyQuery];
-  [v4 encodeObject:v10 forKey:@"propertyQuery"];
+  propertyQuery = [(LNQueryRequest *)self propertyQuery];
+  [coderCopy encodeObject:propertyQuery forKey:@"propertyQuery"];
 
-  v11 = [(LNQueryRequest *)self queryIdentifier];
-  [v4 encodeObject:v11 forKey:@"queryIdentifier"];
+  queryIdentifier = [(LNQueryRequest *)self queryIdentifier];
+  [coderCopy encodeObject:queryIdentifier forKey:@"queryIdentifier"];
 
-  v12 = [(LNQueryRequest *)self queryMangledTypeName];
-  [v4 encodeObject:v12 forKey:@"queryMangledTypeName"];
+  queryMangledTypeName = [(LNQueryRequest *)self queryMangledTypeName];
+  [coderCopy encodeObject:queryMangledTypeName forKey:@"queryMangledTypeName"];
 
-  [v4 encodeInteger:-[LNQueryRequest requestType](self forKey:{"requestType"), @"requestType"}];
-  v13 = [(LNQueryRequest *)self stringToMatch];
-  [v4 encodeObject:v13 forKey:@"stringToMatch"];
+  [coderCopy encodeInteger:-[LNQueryRequest requestType](self forKey:{"requestType"), @"requestType"}];
+  stringToMatch = [(LNQueryRequest *)self stringToMatch];
+  [coderCopy encodeObject:stringToMatch forKey:@"stringToMatch"];
 
-  v14 = [(LNQueryRequest *)self sortingOptions];
-  [v4 encodeObject:v14 forKey:@"sortingOptions"];
+  sortingOptions = [(LNQueryRequest *)self sortingOptions];
+  [coderCopy encodeObject:sortingOptions forKey:@"sortingOptions"];
 }
 
-- (LNQueryRequest)initWithRequestType:(int64_t)a3 identifiersToMatch:(id)a4 stringToMatch:(id)a5 propertyQuery:(id)a6 maximumResultCount:(id)a7 entityIdentifier:(id)a8 entityMangledTypeName:(id)a9 queryIdentifier:(id)a10 queryMangledTypeName:(id)a11 intentMangledTypeNames:(id)a12 sortingOptions:(id)a13
+- (LNQueryRequest)initWithRequestType:(int64_t)type identifiersToMatch:(id)match stringToMatch:(id)toMatch propertyQuery:(id)query maximumResultCount:(id)count entityIdentifier:(id)identifier entityMangledTypeName:(id)name queryIdentifier:(id)self0 queryMangledTypeName:(id)self1 intentMangledTypeNames:(id)self2 sortingOptions:(id)self3
 {
-  v17 = a4;
-  v18 = a5;
-  obj = a6;
-  v49 = a6;
-  v46 = a7;
-  v48 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = v18;
-  v24 = a12;
-  v25 = a13;
+  matchCopy = match;
+  toMatchCopy = toMatch;
+  obj = query;
+  queryCopy = query;
+  countCopy = count;
+  countCopy2 = count;
+  identifierCopy = identifier;
+  nameCopy = name;
+  queryIdentifierCopy = queryIdentifier;
+  typeNameCopy = typeName;
+  v23 = toMatchCopy;
+  namesCopy = names;
+  optionsCopy = options;
   v50.receiver = self;
   v50.super_class = LNQueryRequest;
   v26 = [(LNQueryRequest *)&v50 init];
   v27 = v26;
   if (v26)
   {
-    v26->_requestType = a3;
-    v28 = [v17 copy];
+    v26->_requestType = type;
+    v28 = [matchCopy copy];
     identifiersToMatch = v27->_identifiersToMatch;
     v27->_identifiersToMatch = v28;
 
@@ -550,28 +550,28 @@ LABEL_90:
     v27->_stringToMatch = v30;
 
     objc_storeStrong(&v27->_propertyQuery, obj);
-    objc_storeStrong(&v27->_maximumResultCount, v46);
-    v32 = [v19 copy];
+    objc_storeStrong(&v27->_maximumResultCount, countCopy);
+    v32 = [identifierCopy copy];
     entityIdentifier = v27->_entityIdentifier;
     v27->_entityIdentifier = v32;
 
-    v34 = [v20 copy];
+    v34 = [nameCopy copy];
     entityMangledTypeName = v27->_entityMangledTypeName;
     v27->_entityMangledTypeName = v34;
 
-    v36 = [v21 copy];
+    v36 = [queryIdentifierCopy copy];
     queryIdentifier = v27->_queryIdentifier;
     v27->_queryIdentifier = v36;
 
-    v38 = [v22 copy];
+    v38 = [typeNameCopy copy];
     queryMangledTypeName = v27->_queryMangledTypeName;
     v27->_queryMangledTypeName = v38;
 
-    v40 = [v24 copy];
+    v40 = [namesCopy copy];
     intentMangledTypeNames = v27->_intentMangledTypeNames;
     v27->_intentMangledTypeNames = v40;
 
-    objc_storeStrong(&v27->_sortingOptions, a13);
+    objc_storeStrong(&v27->_sortingOptions, options);
     v42 = v27;
   }
 

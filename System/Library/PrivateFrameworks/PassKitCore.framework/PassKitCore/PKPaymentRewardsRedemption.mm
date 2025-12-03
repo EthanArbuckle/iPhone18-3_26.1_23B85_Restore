@@ -1,71 +1,71 @@
 @interface PKPaymentRewardsRedemption
 - (BOOL)hasOriginalTransactionDetails;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)createdAt;
-- (PKPaymentRewardsRedemption)initWithCoder:(id)a3;
-- (PKPaymentRewardsRedemption)initWithDictionary:(id)a3;
-- (PKPaymentRewardsRedemption)initWithIdentifier:(id)a3 balanceIdentifier:(id)a4 status:(unint64_t)a5 statusLink:(id)a6 paymentHash:(id)a7;
-- (PKPaymentRewardsRedemption)initWithIdentifier:(id)a3 balanceIdentifier:(id)a4 status:(unint64_t)a5 statusLink:(id)a6 paymentHash:(id)a7 createdAt:(id)a8 updatedAt:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentRewardsRedemption)initWithCoder:(id)coder;
+- (PKPaymentRewardsRedemption)initWithDictionary:(id)dictionary;
+- (PKPaymentRewardsRedemption)initWithIdentifier:(id)identifier balanceIdentifier:(id)balanceIdentifier status:(unint64_t)status statusLink:(id)link paymentHash:(id)hash;
+- (PKPaymentRewardsRedemption)initWithIdentifier:(id)identifier balanceIdentifier:(id)balanceIdentifier status:(unint64_t)status statusLink:(id)link paymentHash:(id)hash createdAt:(id)at updatedAt:(id)updatedAt;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOriginalTransactionDetails:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOriginalTransactionDetails:(id)details;
 @end
 
 @implementation PKPaymentRewardsRedemption
 
-- (PKPaymentRewardsRedemption)initWithIdentifier:(id)a3 balanceIdentifier:(id)a4 status:(unint64_t)a5 statusLink:(id)a6 paymentHash:(id)a7
+- (PKPaymentRewardsRedemption)initWithIdentifier:(id)identifier balanceIdentifier:(id)balanceIdentifier status:(unint64_t)status statusLink:(id)link paymentHash:(id)hash
 {
   v12 = MEMORY[0x1E695DF00];
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  hashCopy = hash;
+  linkCopy = link;
+  balanceIdentifierCopy = balanceIdentifier;
+  identifierCopy = identifier;
   v17 = [v12 now];
-  v18 = [(PKPaymentRewardsRedemption *)self initWithIdentifier:v16 balanceIdentifier:v15 status:a5 statusLink:v14 paymentHash:v13 createdAt:v17 updatedAt:v17];
+  v18 = [(PKPaymentRewardsRedemption *)self initWithIdentifier:identifierCopy balanceIdentifier:balanceIdentifierCopy status:status statusLink:linkCopy paymentHash:hashCopy createdAt:v17 updatedAt:v17];
 
   return v18;
 }
 
-- (PKPaymentRewardsRedemption)initWithIdentifier:(id)a3 balanceIdentifier:(id)a4 status:(unint64_t)a5 statusLink:(id)a6 paymentHash:(id)a7 createdAt:(id)a8 updatedAt:(id)a9
+- (PKPaymentRewardsRedemption)initWithIdentifier:(id)identifier balanceIdentifier:(id)balanceIdentifier status:(unint64_t)status statusLink:(id)link paymentHash:(id)hash createdAt:(id)at updatedAt:(id)updatedAt
 {
   v44 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  identifierCopy = identifier;
+  balanceIdentifierCopy = balanceIdentifier;
+  linkCopy = link;
+  hashCopy = hash;
+  atCopy = at;
+  updatedAtCopy = updatedAt;
   v39.receiver = self;
   v39.super_class = PKPaymentRewardsRedemption;
   v21 = [(PKPaymentRewardsRedemption *)&v39 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [balanceIdentifierCopy copy];
     balanceIdentifier = v21->_balanceIdentifier;
     v21->_balanceIdentifier = v24;
 
-    v21->_status = a5;
-    v26 = [v17 copy];
+    v21->_status = status;
+    v26 = [linkCopy copy];
     statusLink = v21->_statusLink;
     v21->_statusLink = v26;
 
-    v28 = [v18 copy];
+    v28 = [hashCopy copy];
     paymentHash = v21->_paymentHash;
     v21->_paymentHash = v28;
 
-    v30 = [v19 copy];
+    v30 = [atCopy copy];
     createdAt = v21->_createdAt;
     v21->_createdAt = v30;
 
-    v32 = [v20 copy];
+    v32 = [updatedAtCopy copy];
     updatedAt = v21->_updatedAt;
     v21->_updatedAt = v32;
   }
@@ -95,45 +95,45 @@
   return v35;
 }
 
-- (PKPaymentRewardsRedemption)initWithDictionary:(id)a3
+- (PKPaymentRewardsRedemption)initWithDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = PKPaymentRewardsRedemption;
   v5 = [(PKPaymentRewardsRedemption *)&v39 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"balanceIdentifier"];
+    v8 = [dictionaryCopy PKStringForKey:@"balanceIdentifier"];
     balanceIdentifier = v5->_balanceIdentifier;
     v5->_balanceIdentifier = v8;
 
-    v10 = [v4 PKStringForKey:@"status"];
+    v10 = [dictionaryCopy PKStringForKey:@"status"];
     v5->_status = PKPaymentRewardsRedemptionStatusFromString(v10);
 
-    v11 = [v4 PKURLForKey:@"statusLink"];
+    v11 = [dictionaryCopy PKURLForKey:@"statusLink"];
     statusLink = v5->_statusLink;
     v5->_statusLink = v11;
 
-    v13 = [v4 PKStringForKey:@"paymentHash"];
+    v13 = [dictionaryCopy PKStringForKey:@"paymentHash"];
     paymentHash = v5->_paymentHash;
     v5->_paymentHash = v13;
 
-    v15 = [[PKPaymentRewardsRedemptionDetails alloc] initWithDictionary:v4];
+    v15 = [[PKPaymentRewardsRedemptionDetails alloc] initWithDictionary:dictionaryCopy];
     details = v5->_details;
     v5->_details = v15;
 
-    v17 = [v4 PKDateForKey:@"lastUpdatedAt"];
+    v17 = [dictionaryCopy PKDateForKey:@"lastUpdatedAt"];
     updatedAt = v5->_updatedAt;
     v5->_updatedAt = v17;
 
     if (!v5->_updatedAt)
     {
-      v19 = [v4 PKStringForKey:@"lastUpdatedAt"];
+      v19 = [dictionaryCopy PKStringForKey:@"lastUpdatedAt"];
       v20 = PKISO8601DateFromDateStringContainingFractionalSeconds(v19);
       v21 = v5->_updatedAt;
       v5->_updatedAt = v20;
@@ -146,23 +146,23 @@
       }
     }
 
-    v24 = [v4 PKDateForKey:@"createdAt"];
+    v24 = [dictionaryCopy PKDateForKey:@"createdAt"];
     createdAt = v5->_createdAt;
     v5->_createdAt = v24;
 
     if (!v5->_createdAt)
     {
-      v26 = [v4 PKStringForKey:@"createdAt"];
+      v26 = [dictionaryCopy PKStringForKey:@"createdAt"];
       v27 = PKISO8601DateFromDateStringContainingFractionalSeconds(v26);
       v28 = v5->_createdAt;
       v5->_createdAt = v27;
 
       if (!v5->_createdAt)
       {
-        v29 = [(PKPaymentRewardsRedemptionDetails *)v5->_details originalTransaction];
-        v30 = [v29 timestamp];
+        originalTransaction = [(PKPaymentRewardsRedemptionDetails *)v5->_details originalTransaction];
+        timestamp = [originalTransaction timestamp];
         v31 = v5->_createdAt;
-        v5->_createdAt = v30;
+        v5->_createdAt = timestamp;
 
         if (!v5->_createdAt)
         {
@@ -207,8 +207,8 @@
   v4 = PKPaymentRewardsRedemptionStatusToString(self->_status);
   [v3 setObject:v4 forKeyedSubscript:@"status"];
 
-  v5 = [(NSURL *)self->_statusLink absoluteString];
-  [v3 setObject:v5 forKeyedSubscript:@"statusLink"];
+  absoluteString = [(NSURL *)self->_statusLink absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"statusLink"];
 
   [v3 setObject:self->_paymentHash forKeyedSubscript:@"paymentHash"];
   v6 = PKW3CDateStringFromDate(self->_createdAt);
@@ -217,26 +217,26 @@
   v7 = PKW3CDateStringFromDate(self->_updatedAt);
   [v3 setObject:v7 forKeyedSubscript:@"lastUpdatedAt"];
 
-  v8 = [(PKPaymentRewardsRedemptionDetails *)self->_details dictionaryRepresentation];
-  [v3 addEntriesFromDictionary:v8];
+  dictionaryRepresentation = [(PKPaymentRewardsRedemptionDetails *)self->_details dictionaryRepresentation];
+  [v3 addEntriesFromDictionary:dictionaryRepresentation];
 
   v9 = [v3 copy];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -422,40 +422,40 @@ LABEL_43:
   return v8;
 }
 
-- (PKPaymentRewardsRedemption)initWithCoder:(id)a3
+- (PKPaymentRewardsRedemption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKPaymentRewardsRedemption;
   v5 = [(PKPaymentRewardsRedemption *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balanceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balanceIdentifier"];
     balanceIdentifier = v5->_balanceIdentifier;
     v5->_balanceIdentifier = v8;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusLink"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusLink"];
     statusLink = v5->_statusLink;
     v5->_statusLink = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentHash"];
     paymentHash = v5->_paymentHash;
     v5->_paymentHash = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"createdAt"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"createdAt"];
     createdAt = v5->_createdAt;
     v5->_createdAt = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedAt"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedAt"];
     updatedAt = v5->_updatedAt;
     v5->_updatedAt = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"details"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"details"];
     details = v5->_details;
     v5->_details = v18;
   }
@@ -463,49 +463,49 @@ LABEL_43:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_balanceIdentifier forKey:@"balanceIdentifier"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeObject:self->_statusLink forKey:@"statusLink"];
-  [v5 encodeObject:self->_paymentHash forKey:@"paymentHash"];
-  [v5 encodeObject:self->_createdAt forKey:@"createdAt"];
-  [v5 encodeObject:self->_updatedAt forKey:@"lastUpdatedAt"];
-  [v5 encodeObject:self->_details forKey:@"details"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_balanceIdentifier forKey:@"balanceIdentifier"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_statusLink forKey:@"statusLink"];
+  [coderCopy encodeObject:self->_paymentHash forKey:@"paymentHash"];
+  [coderCopy encodeObject:self->_createdAt forKey:@"createdAt"];
+  [coderCopy encodeObject:self->_updatedAt forKey:@"lastUpdatedAt"];
+  [coderCopy encodeObject:self->_details forKey:@"details"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_balanceIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_balanceIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   v5[3] = self->_status;
-  v10 = [(NSURL *)self->_statusLink copyWithZone:a3];
+  v10 = [(NSURL *)self->_statusLink copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_paymentHash copyWithZone:a3];
+  v12 = [(NSString *)self->_paymentHash copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSDate *)self->_createdAt copyWithZone:a3];
+  v14 = [(NSDate *)self->_createdAt copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSDate *)self->_updatedAt copyWithZone:a3];
+  v16 = [(NSDate *)self->_updatedAt copyWithZone:zone];
   v17 = v5[7];
   v5[7] = v16;
 
-  v18 = [(PKPaymentRewardsRedemptionDetails *)self->_details copyWithZone:a3];
+  v18 = [(PKPaymentRewardsRedemptionDetails *)self->_details copyWithZone:zone];
   v19 = v5[8];
   v5[8] = v18;
 
@@ -517,10 +517,10 @@ LABEL_43:
   createdAt = self->_createdAt;
   if (!createdAt)
   {
-    v4 = [(PKPaymentRewardsRedemptionDetails *)self->_details originalTransaction];
-    v5 = [v4 timestamp];
+    originalTransaction = [(PKPaymentRewardsRedemptionDetails *)self->_details originalTransaction];
+    timestamp = [originalTransaction timestamp];
     v6 = self->_createdAt;
-    self->_createdAt = v5;
+    self->_createdAt = timestamp;
 
     createdAt = self->_createdAt;
   }
@@ -530,13 +530,13 @@ LABEL_43:
 
 - (BOOL)hasOriginalTransactionDetails
 {
-  v2 = [(PKPaymentRewardsRedemption *)self details];
-  v3 = [v2 originalTransaction];
+  details = [(PKPaymentRewardsRedemption *)self details];
+  originalTransaction = [details originalTransaction];
 
-  if (v3)
+  if (originalTransaction)
   {
-    v4 = [v3 identifier];
-    v5 = v4 != 0;
+    identifier = [originalTransaction identifier];
+    v5 = identifier != 0;
   }
 
   else
@@ -547,20 +547,20 @@ LABEL_43:
   return v5;
 }
 
-- (void)setOriginalTransactionDetails:(id)a3
+- (void)setOriginalTransactionDetails:(id)details
 {
   details = self->_details;
-  if (!a3 || details)
+  if (!details || details)
   {
-    v8 = a3;
-    [(PKPaymentRewardsRedemptionDetails *)details setOriginalTransaction:v8];
-    v7 = v8;
+    detailsCopy = details;
+    [(PKPaymentRewardsRedemptionDetails *)details setOriginalTransaction:detailsCopy];
+    v7 = detailsCopy;
   }
 
   else
   {
-    v5 = a3;
-    v6 = [[PKPaymentRewardsRedemptionDetails alloc] initWithIntended:0 redeemed:0 originalTransactionDetails:v5];
+    detailsCopy2 = details;
+    v6 = [[PKPaymentRewardsRedemptionDetails alloc] initWithIntended:0 redeemed:0 originalTransactionDetails:detailsCopy2];
 
     v7 = self->_details;
     self->_details = v6;

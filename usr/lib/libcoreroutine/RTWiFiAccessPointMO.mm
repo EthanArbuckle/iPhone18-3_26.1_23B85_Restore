@@ -1,34 +1,34 @@
 @interface RTWiFiAccessPointMO
 + (id)fetchRequest;
-+ (id)managedObjectWithAccessPoint:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithAccessPoint:(id)point inManagedObjectContext:(id)context;
 @end
 
 @implementation RTWiFiAccessPointMO
 
-+ (id)managedObjectWithAccessPoint:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithAccessPoint:(id)point inManagedObjectContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  pointCopy = point;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v7 = [[RTWiFiAccessPointMO alloc] initWithContext:v6];
-    v8 = [v5 mac];
+    v7 = [[RTWiFiAccessPointMO alloc] initWithContext:contextCopy];
+    v8 = [pointCopy mac];
     [(RTWiFiAccessPointMO *)v7 setMac:v8];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "rssi")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pointCopy, "rssi")}];
     [(RTWiFiAccessPointMO *)v7 setRssi:v9];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "channel")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pointCopy, "channel")}];
     [(RTWiFiAccessPointMO *)v7 setChannel:v10];
 
     v11 = MEMORY[0x277CCABB0];
-    [v5 age];
+    [pointCopy age];
     v12 = [v11 numberWithDouble:?];
     [(RTWiFiAccessPointMO *)v7 setAge:v12];
 
-    v13 = [v5 date];
-    [(RTWiFiAccessPointMO *)v7 setDate:v13];
+    date = [pointCopy date];
+    [(RTWiFiAccessPointMO *)v7 setDate:date];
   }
 
   else

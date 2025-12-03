@@ -1,24 +1,24 @@
 @interface APPCControllerMetricCoordinator
-+ (void)startWithLegacyInterface:(id)a3;
++ (void)startWithLegacyInterface:(id)interface;
 + (void)stop;
-- (APPCControllerMetricCoordinator)initWithTokens:(id)a3 legacyInterface:(id)a4;
-- (BOOL)_processContentIdOverrideIfNecessaryForMetric:(id)a3;
-- (id)_loadOverrideContextForMetric:(id)a3;
-- (id)_provideEnvironmentForMetric:(id)a3;
-- (void)_setRateLimit:(id)a3;
-- (void)handleMetricForTesting:(id)a3;
-- (void)internalMetricReceived:(id)a3;
-- (void)internalSignalReceived:(id)a3;
-- (void)metricReceived:(id)a3;
-- (void)processInternalMetric:(id)a3;
-- (void)processMetric:(id)a3;
+- (APPCControllerMetricCoordinator)initWithTokens:(id)tokens legacyInterface:(id)interface;
+- (BOOL)_processContentIdOverrideIfNecessaryForMetric:(id)metric;
+- (id)_loadOverrideContextForMetric:(id)metric;
+- (id)_provideEnvironmentForMetric:(id)metric;
+- (void)_setRateLimit:(id)limit;
+- (void)handleMetricForTesting:(id)testing;
+- (void)internalMetricReceived:(id)received;
+- (void)internalSignalReceived:(id)received;
+- (void)metricReceived:(id)received;
+- (void)processInternalMetric:(id)metric;
+- (void)processMetric:(id)metric;
 @end
 
 @implementation APPCControllerMetricCoordinator
 
-+ (void)startWithLegacyInterface:(id)a3
++ (void)startWithLegacyInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -54,7 +54,7 @@
 
   v12 = [APPCControllerMetricCoordinator alloc];
   v13 = [NSArray arrayWithArray:v5];
-  v14 = [(APPCControllerMetricCoordinator *)v12 initWithTokens:v13 legacyInterface:v3];
+  v14 = [(APPCControllerMetricCoordinator *)v12 initWithTokens:v13 legacyInterface:interfaceCopy];
 
   v15 = qword_1004EA1F8;
   qword_1004EA1F8 = v14;
@@ -70,8 +70,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [qword_1004EA1F8 registrationTokens];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  registrationTokens = [qword_1004EA1F8 registrationTokens];
+  v3 = [registrationTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -83,19 +83,19 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(registrationTokens);
         }
 
         v7 = *(*(&v12 + 1) + 8 * v6);
         v8 = +[MetricsModule storage];
-        v9 = [v8 notificationRegistrar];
-        [v9 removeHandlerWithIdentifier:{objc_msgSend(v7, "integerValue")}];
+        notificationRegistrar = [v8 notificationRegistrar];
+        [notificationRegistrar removeHandlerWithIdentifier:{objc_msgSend(v7, "integerValue")}];
 
         v6 = v6 + 1;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [registrationTokens countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -108,26 +108,26 @@
   qword_1004EA200 = 0;
 }
 
-- (APPCControllerMetricCoordinator)initWithTokens:(id)a3 legacyInterface:(id)a4
+- (APPCControllerMetricCoordinator)initWithTokens:(id)tokens legacyInterface:(id)interface
 {
-  v7 = a3;
-  v8 = a4;
+  tokensCopy = tokens;
+  interfaceCopy = interface;
   v12.receiver = self;
   v12.super_class = APPCControllerMetricCoordinator;
   v9 = [(APPCControllerMetricCoordinator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_registrationTokens, a3);
-    objc_storeStrong(&v10->_legacyMetrics, a4);
+    objc_storeStrong(&v9->_registrationTokens, tokens);
+    objc_storeStrong(&v10->_legacyMetrics, interface);
   }
 
   return v10;
 }
 
-- (void)internalMetricReceived:(id)a3
+- (void)internalMetricReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = os_transaction_create();
   v6 = qword_1004EA200;
   block[0] = _NSConcreteStackBlock;
@@ -135,16 +135,16 @@
   block[2] = sub_1003821BC;
   block[3] = &unk_10047E550;
   block[4] = self;
-  v10 = v4;
+  v10 = receivedCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = receivedCopy;
   dispatch_async(v6, block);
 }
 
-- (void)metricReceived:(id)a3
+- (void)metricReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = os_transaction_create();
   v6 = qword_1004EA200;
   block[0] = _NSConcreteStackBlock;
@@ -152,16 +152,16 @@
   block[2] = sub_100382294;
   block[3] = &unk_10047E550;
   block[4] = self;
-  v10 = v4;
+  v10 = receivedCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = receivedCopy;
   dispatch_async(v6, block);
 }
 
-- (void)internalSignalReceived:(id)a3
+- (void)internalSignalReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = os_transaction_create();
   v6 = qword_1004EA200;
   block[0] = _NSConcreteStackBlock;
@@ -169,20 +169,20 @@
   block[2] = sub_10038236C;
   block[3] = &unk_10047E550;
   block[4] = self;
-  v10 = v4;
+  v10 = receivedCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = receivedCopy;
   dispatch_async(v6, block);
 }
 
-- (void)handleMetricForTesting:(id)a3
+- (void)handleMetricForTesting:(id)testing
 {
-  v4 = a3;
+  testingCopy = testing;
   v5 = os_transaction_create();
-  v6 = [(APPCControllerMetricCoordinator *)self host];
+  host = [(APPCControllerMetricCoordinator *)self host];
 
-  if (!v6)
+  if (!host)
   {
     v7 = [NSUserDefaults alloc];
     v8 = [v7 initWithSuiteName:APDefaultsBundleID];
@@ -190,8 +190,8 @@
     [(APPCControllerMetricCoordinator *)self setHost:v9];
   }
 
-  v10 = [(APPCControllerMetricCoordinator *)self host];
-  v11 = [v10 componentsSeparatedByString:@":"];
+  host2 = [(APPCControllerMetricCoordinator *)self host];
+  v11 = [host2 componentsSeparatedByString:@":"];
 
   if ([v11 count] > 1)
   {
@@ -202,7 +202,7 @@
     v14[3] = &unk_100480AE8;
     v14[4] = self;
     v15 = v11;
-    v16 = v4;
+    v16 = testingCopy;
     v17 = v5;
     dispatch_async(v13, v14);
   }
@@ -218,49 +218,49 @@
   }
 }
 
-- (void)processInternalMetric:(id)a3
+- (void)processInternalMetric:(id)metric
 {
-  v4 = a3;
-  if ([v4 metric] == 77000)
+  metricCopy = metric;
+  if ([metricCopy metric] == 77000)
   {
-    [(APPCControllerMetricCoordinator *)self _setRateLimit:v4];
+    [(APPCControllerMetricCoordinator *)self _setRateLimit:metricCopy];
   }
 
-  v5 = [(APPCControllerMetricCoordinator *)self legacyMetrics];
+  legacyMetrics = [(APPCControllerMetricCoordinator *)self legacyMetrics];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100382840;
   v7[3] = &unk_100480B10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 processMetric:v6 environmentProvider:v7];
+  v8 = metricCopy;
+  v6 = metricCopy;
+  [legacyMetrics processMetric:v6 environmentProvider:v7];
 }
 
-- (id)_provideEnvironmentForMetric:(id)a3
+- (id)_provideEnvironmentForMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [v4 internalProperties];
-  v6 = [v5 objectForKeyedSubscript:kAPMetricClientInfoKey];
+  metricCopy = metric;
+  internalProperties = [metricCopy internalProperties];
+  v6 = [internalProperties objectForKeyedSubscript:kAPMetricClientInfoKey];
 
   if (v6)
   {
     v7 = v6;
   }
 
-  v8 = [v4 contextIdentifier];
+  contextIdentifier = [metricCopy contextIdentifier];
 
-  if (v8 && ([v4 contextIdentifier], v9 = objc_claimAutoreleasedReturnValue(), +[APManagedContext findManagedContextByFingerprint:](APManagedContext, "findManagedContextByFingerprint:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
+  if (contextIdentifier && ([metricCopy contextIdentifier], v9 = objc_claimAutoreleasedReturnValue(), +[APManagedContext findManagedContextByFingerprint:](APManagedContext, "findManagedContextByFingerprint:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
   {
     v11 = APLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 contextIdentifier];
-      v13 = [v4 contentIdentifier];
+      contextIdentifier2 = [metricCopy contextIdentifier];
+      contentIdentifier = [metricCopy contentIdentifier];
       v40 = 138543618;
-      v41 = v12;
+      v41 = contextIdentifier2;
       v42 = 2114;
-      v43 = v13;
+      v43 = contentIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Successfully retrieved cached context data %{public}@ for content identifier %{public}@.", &v40, 0x16u);
     }
 
@@ -272,12 +272,12 @@
     v11 = APLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 contextIdentifier];
-      v16 = [v4 contentIdentifier];
+      contextIdentifier3 = [metricCopy contextIdentifier];
+      contentIdentifier2 = [metricCopy contentIdentifier];
       v40 = 138543618;
-      v41 = v15;
+      v41 = contextIdentifier3;
       v42 = 2114;
-      v43 = v16;
+      v43 = contentIdentifier2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unable to find context with identifier %{public}@ for content %{public}@. Metric may not contain all required fields.", &v40, 0x16u);
     }
 
@@ -285,30 +285,30 @@
     v14 = 1;
   }
 
-  v17 = [v10 idAccount];
-  if (!v17)
+  idAccount = [v10 idAccount];
+  if (!idAccount)
   {
-    v17 = +[APIDAccountProvider privateUserAccount];
+    idAccount = +[APIDAccountProvider privateUserAccount];
   }
 
-  v18 = [v4 contentIdentifier];
-  v19 = [APManagedContentData findById:v18];
+  contentIdentifier3 = [metricCopy contentIdentifier];
+  v19 = [APManagedContentData findById:contentIdentifier3];
 
   if (!v19)
   {
-    v20 = [v4 handle];
-    v19 = [APManagedContentData findById:v20];
+    handle = [metricCopy handle];
+    v19 = [APManagedContentData findById:handle];
 
     if (!v19)
     {
-      if (!-[APPCControllerMetricCoordinator _processContentIdOverrideIfNecessaryForMetric:](self, "_processContentIdOverrideIfNecessaryForMetric:", v4) || ([v4 contentIdentifier], v31 = objc_claimAutoreleasedReturnValue(), +[APManagedContentData findById:](APManagedContentData, "findById:", v31), v19 = objc_claimAutoreleasedReturnValue(), v31, !v19))
+      if (!-[APPCControllerMetricCoordinator _processContentIdOverrideIfNecessaryForMetric:](self, "_processContentIdOverrideIfNecessaryForMetric:", metricCopy) || ([metricCopy contentIdentifier], v31 = objc_claimAutoreleasedReturnValue(), +[APManagedContentData findById:](APManagedContentData, "findById:", v31), v19 = objc_claimAutoreleasedReturnValue(), v31, !v19))
       {
         v32 = APLogForCategory();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [v4 contentIdentifier];
+          contentIdentifier4 = [metricCopy contentIdentifier];
           v40 = 138543362;
-          v41 = v33;
+          v41 = contentIdentifier4;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "No managed content found for content identifier %{public}@. Assuming there was no response from server for ad request with that identifier.", &v40, 0xCu);
         }
 
@@ -317,12 +317,12 @@
           v26 = APLogForCategory();
           if (os_log_type_enabled(&v26->super, OS_LOG_TYPE_ERROR))
           {
-            v34 = [v4 contextIdentifier];
-            v35 = [v4 contentIdentifier];
+            contextIdentifier4 = [metricCopy contextIdentifier];
+            contentIdentifier5 = [metricCopy contentIdentifier];
             v40 = 138543618;
-            v41 = v34;
+            v41 = contextIdentifier4;
             v42 = 2114;
-            v43 = v35;
+            v43 = contentIdentifier5;
             _os_log_impl(&_mh_execute_header, &v26->super, OS_LOG_TYPE_ERROR, "Unable to find managed context %{public}@ for content %{public}@. Cannot continue, metric ignored.", &v40, 0x16u);
           }
 
@@ -330,17 +330,17 @@
           goto LABEL_28;
         }
 
-        v22 = objc_alloc_init(APContentData);
-        v36 = [v4 contentIdentifier];
-        [v22 setIdentifier:v36];
+        contentIdentifier7 = objc_alloc_init(APContentData);
+        contentIdentifier6 = [metricCopy contentIdentifier];
+        [contentIdentifier7 setIdentifier:contentIdentifier6];
 
         v37 = [NSUUID alloc];
-        v38 = [v4 contextIdentifier];
-        v39 = [v37 initWithUUIDString:v38];
-        [v22 setContextIdentifier:v39];
+        contextIdentifier5 = [metricCopy contextIdentifier];
+        v39 = [v37 initWithUUIDString:contextIdentifier5];
+        [contentIdentifier7 setContextIdentifier:v39];
 
-        [v22 setServerUnfilledReason:1010];
-        v21 = [[APContentDataInternal alloc] initWithContent:v22];
+        [contentIdentifier7 setServerUnfilledReason:1010];
+        v21 = [[APContentDataInternal alloc] initWithContent:contentIdentifier7];
         v19 = [v10 addContentData:v21];
         goto LABEL_17;
       }
@@ -350,22 +350,22 @@
   v21 = APLogForCategory();
   if (os_log_type_enabled(&v21->super, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v4 contentIdentifier];
+    contentIdentifier7 = [metricCopy contentIdentifier];
     v40 = 138543362;
-    v41 = v22;
+    v41 = contentIdentifier7;
     _os_log_impl(&_mh_execute_header, &v21->super, OS_LOG_TYPE_DEFAULT, "Successfully retrieved cached content data for identifier %{public}@.", &v40, 0xCu);
 LABEL_17:
   }
 
-  v23 = [(APPCControllerMetricCoordinator *)self _loadOverrideContextForMetric:v4];
+  v23 = [(APPCControllerMetricCoordinator *)self _loadOverrideContextForMetric:metricCopy];
   if (v23)
   {
     v24 = APLogForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v4 contentIdentifier];
+      contentIdentifier8 = [metricCopy contentIdentifier];
       v40 = 138543362;
-      v41 = v25;
+      v41 = contentIdentifier8;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Successfully loaded override context for metric %{public}@", &v40, 0xCu);
     }
   }
@@ -380,15 +380,15 @@ LABEL_17:
 
   else
   {
-    v28 = [v10 context];
-    [(APMetricEnvironment *)v27 setContext:v28];
+    context = [v10 context];
+    [(APMetricEnvironment *)v27 setContext:context];
   }
 
   [(APMetricEnvironment *)v27 setClientInfo:v6];
-  [(APMetricEnvironment *)v27 setIdAccount:v17];
-  v29 = [(APMetricEnvironment *)v27 idAccount];
+  [(APMetricEnvironment *)v27 setIdAccount:idAccount];
+  idAccount2 = [(APMetricEnvironment *)v27 idAccount];
 
-  if (!v29)
+  if (!idAccount2)
   {
     CreateDiagnosticReport();
   }
@@ -398,28 +398,28 @@ LABEL_28:
   return v27;
 }
 
-- (void)processMetric:(id)a3
+- (void)processMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [(APPCControllerMetricCoordinator *)self legacyMetrics];
+  metricCopy = metric;
+  legacyMetrics = [(APPCControllerMetricCoordinator *)self legacyMetrics];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100382F54;
   v7[3] = &unk_100480B10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 processMetric:v6 environmentProvider:v7];
+  v8 = metricCopy;
+  v6 = metricCopy;
+  [legacyMetrics processMetric:v6 environmentProvider:v7];
 }
 
-- (BOOL)_processContentIdOverrideIfNecessaryForMetric:(id)a3
+- (BOOL)_processContentIdOverrideIfNecessaryForMetric:(id)metric
 {
-  v3 = a3;
-  v4 = [v3 internalProperties];
-  v5 = [v4 objectForKeyedSubscript:kAPOriginalContentIdentifier];
+  metricCopy = metric;
+  internalProperties = [metricCopy internalProperties];
+  v5 = [internalProperties objectForKeyedSubscript:kAPOriginalContentIdentifier];
 
-  v6 = [v3 internalProperties];
-  v7 = [v6 objectForKeyedSubscript:kAPServerUnfilledReason];
+  internalProperties2 = [metricCopy internalProperties];
+  v7 = [internalProperties2 objectForKeyedSubscript:kAPServerUnfilledReason];
 
   if ([v5 length])
   {
@@ -432,8 +432,8 @@ LABEL_28:
     }
 
     v9 = objc_alloc_init(APSponsorshipAdTransformer);
-    v10 = [v3 contentIdentifier];
-    LOBYTE(v11) = [(APSponsorshipAdTransformer *)v9 copyContentDataId:v5 toNewContentDataId:v10];
+    contentIdentifier = [metricCopy contentIdentifier];
+    LOBYTE(v11) = [(APSponsorshipAdTransformer *)v9 copyContentDataId:v5 toNewContentDataId:contentIdentifier];
 
     if (v11)
     {
@@ -462,8 +462,8 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v15 = [v3 contextIdentifier];
-  v11 = [v15 length];
+  contextIdentifier = [metricCopy contextIdentifier];
+  v11 = [contextIdentifier length];
 
   if (v11)
   {
@@ -476,9 +476,9 @@ LABEL_7:
     }
 
     v9 = objc_alloc_init(APSponsorshipAdTransformer);
-    v17 = [v3 contextIdentifier];
-    v18 = [v3 contentIdentifier];
-    LOBYTE(v11) = -[APSponsorshipAdTransformer createContentDataForContextId:contentId:withServerUnfilledReason:](v9, "createContentDataForContextId:contentId:withServerUnfilledReason:", v17, v18, [v7 intValue]);
+    contextIdentifier2 = [metricCopy contextIdentifier];
+    contentIdentifier2 = [metricCopy contentIdentifier];
+    LOBYTE(v11) = -[APSponsorshipAdTransformer createContentDataForContextId:contentId:withServerUnfilledReason:](v9, "createContentDataForContextId:contentId:withServerUnfilledReason:", contextIdentifier2, contentIdentifier2, [v7 intValue]);
 
     if (v11)
     {
@@ -501,11 +501,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)_loadOverrideContextForMetric:(id)a3
+- (id)_loadOverrideContextForMetric:(id)metric
 {
-  v3 = a3;
-  v4 = [v3 internalProperties];
-  v5 = [v4 objectForKeyedSubscript:kAPSupplementalContext];
+  metricCopy = metric;
+  internalProperties = [metricCopy internalProperties];
+  v5 = [internalProperties objectForKeyedSubscript:kAPSupplementalContext];
 
   if (!v5)
   {
@@ -513,8 +513,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [v3 contextIdentifier];
-  v7 = [v6 length];
+  contextIdentifier = [metricCopy contextIdentifier];
+  v7 = [contextIdentifier length];
 
   if (!v7)
   {
@@ -522,17 +522,17 @@ LABEL_10:
   }
 
   v8 = [NSUUID alloc];
-  v9 = [v3 contextIdentifier];
-  v10 = [v8 initWithUUIDString:v9];
+  contextIdentifier2 = [metricCopy contextIdentifier];
+  v10 = [v8 initWithUUIDString:contextIdentifier2];
 
   if (!v10)
   {
     v13 = APLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v3 contextIdentifier];
+      contextIdentifier3 = [metricCopy contextIdentifier];
       v17 = 138543362;
-      v18 = v14;
+      v18 = contextIdentifier3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Metric context ID has invalid format. %{public}@", &v17, 0xCu);
     }
 
@@ -552,11 +552,11 @@ LABEL_11:
   return v12;
 }
 
-- (void)_setRateLimit:(id)a3
+- (void)_setRateLimit:(id)limit
 {
-  v3 = a3;
+  limitCopy = limit;
   v28 = +[APPromotedContentLegacyInterface sharedInstance];
-  v4 = [v3 properties];
+  properties = [limitCopy properties];
 
   v5 = sub_10000797C();
   v7 = sub_100396D18(v5, v6);

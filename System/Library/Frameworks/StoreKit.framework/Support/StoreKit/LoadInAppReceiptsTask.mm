@@ -1,32 +1,32 @@
 @interface LoadInAppReceiptsTask
-- (LoadInAppReceiptsTask)initWithLocalRevision:(id)a3 reason:(int64_t)a4 includeFinishedConsumables:(BOOL)a5 client:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)_runRequestWithAccount:(id)a3 revision:(id)a4;
+- (LoadInAppReceiptsTask)initWithLocalRevision:(id)revision reason:(int64_t)reason includeFinishedConsumables:(BOOL)consumables client:(id)client;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)_runRequestWithAccount:(id)account revision:(id)revision;
 - (void)main;
-- (void)processResult:(id)a3 error:(id)a4 forAccount:(id)a5;
+- (void)processResult:(id)result error:(id)error forAccount:(id)account;
 @end
 
 @implementation LoadInAppReceiptsTask
 
-- (LoadInAppReceiptsTask)initWithLocalRevision:(id)a3 reason:(int64_t)a4 includeFinishedConsumables:(BOOL)a5 client:(id)a6
+- (LoadInAppReceiptsTask)initWithLocalRevision:(id)revision reason:(int64_t)reason includeFinishedConsumables:(BOOL)consumables client:(id)client
 {
-  v11 = a3;
-  v12 = a6;
+  revisionCopy = revision;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = LoadInAppReceiptsTask;
   v13 = [(Task *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong((v13 + 50), a6);
+    objc_storeStrong((v13 + 50), client);
     v14[43] = 0;
-    v14[42] = a5;
-    objc_storeStrong((v14 + 58), a3);
+    v14[42] = consumables;
+    objc_storeStrong((v14 + 58), revision);
     v15 = +[NSUUID lib_shortLogKey];
     v16 = *(v14 + 66);
     *(v14 + 66) = v15;
 
-    *(v14 + 74) = a4;
+    *(v14 + 74) = reason;
   }
 
   return v14;
@@ -34,42 +34,42 @@
 
 - (void)main
 {
-  v3 = [(LoadInAppReceiptsTask *)self client];
-  v4 = [v3 objc_clientType];
+  client = [(LoadInAppReceiptsTask *)self client];
+  objc_clientType = [client objc_clientType];
 
-  if (v4 == 3)
+  if (objc_clientType == 3)
   {
-    v6 = [(LoadInAppReceiptsTask *)self localRevision];
-    [(LoadInAppReceiptsTask *)self _runRequestWithAccount:0 revision:v6];
+    localRevision = [(LoadInAppReceiptsTask *)self localRevision];
+    [(LoadInAppReceiptsTask *)self _runRequestWithAccount:0 revision:localRevision];
   }
 
   else
   {
-    v5 = [(LoadInAppReceiptsTask *)self client];
+    client2 = [(LoadInAppReceiptsTask *)self client];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100005C2C;
     v7[3] = &unk_10037F890;
     v7[4] = self;
-    [_TtC9storekitd19objc_AccountManager accountWithClient:v5 completionHandler:v7];
+    [_TtC9storekitd19objc_AccountManager accountWithClient:client2 completionHandler:v7];
   }
 }
 
-- (void)_runRequestWithAccount:(id)a3 revision:(id)a4
+- (void)_runRequestWithAccount:(id)account revision:(id)revision
 {
-  v6 = a3;
-  v62 = a4;
-  v7 = [(LoadInAppReceiptsTask *)self client];
-  v8 = [v7 bag];
+  accountCopy = account;
+  revisionCopy = revision;
+  client = [(LoadInAppReceiptsTask *)self client];
+  v8 = [client bag];
 
-  v9 = [(LoadInAppReceiptsTask *)self client];
-  v10 = [v9 urlSession];
+  client2 = [(LoadInAppReceiptsTask *)self client];
+  urlSession = [client2 urlSession];
 
-  [v10 setDelegate:self];
-  v11 = [(LoadInAppReceiptsTask *)self client];
-  v12 = [v11 urlRequestEncoder];
+  [urlSession setDelegate:self];
+  client3 = [(LoadInAppReceiptsTask *)self client];
+  urlRequestEncoder = [client3 urlRequestEncoder];
 
-  [v12 setRequestEncoding:3];
+  [urlRequestEncoder setRequestEncoding:3];
   if ([(LoadInAppReceiptsTask *)self includeFinishedConsumables])
   {
     +[_TtC9storekitd6BagKey transactionReceiptsURLv2];
@@ -112,56 +112,56 @@
   v19 = [v14 lib_URLByAppendingQueryDictionary:v16];
 
   v20 = objc_alloc_init(NSMutableDictionary);
-  v21 = [(LoadInAppReceiptsTask *)self client];
-  if ([v21 storeItemID])
+  client4 = [(LoadInAppReceiptsTask *)self client];
+  if ([client4 storeItemID])
   {
   }
 
   else
   {
-    v22 = [(LoadInAppReceiptsTask *)self client];
-    [v22 requestBundleID];
-    v23 = v12;
-    v24 = v10;
+    client5 = [(LoadInAppReceiptsTask *)self client];
+    [client5 requestBundleID];
+    v23 = urlRequestEncoder;
+    v24 = urlSession;
     v25 = v8;
     v26 = v19;
-    v28 = v27 = v6;
+    v28 = v27 = accountCopy;
     v59 = [v28 caseInsensitiveCompare:@"com.apple.freeform"];
 
-    v6 = v27;
+    accountCopy = v27;
     v19 = v26;
     v8 = v25;
-    v10 = v24;
-    v12 = v23;
+    urlSession = v24;
+    urlRequestEncoder = v23;
 
     if (!v59)
     {
-      v30 = 0x18013B54BLL;
+      storeItemID = 0x18013B54BLL;
       goto LABEL_14;
     }
   }
 
-  v29 = [(LoadInAppReceiptsTask *)self client];
-  v30 = [v29 storeItemID];
+  client6 = [(LoadInAppReceiptsTask *)self client];
+  storeItemID = [client6 storeItemID];
 
 LABEL_14:
-  v60 = v6;
-  v31 = [v6 ams_DSID];
-  v32 = [v31 stringValue];
-  [v20 setObject:v32 forKeyedSubscript:@"dsid"];
+  v60 = accountCopy;
+  ams_DSID = [accountCopy ams_DSID];
+  stringValue = [ams_DSID stringValue];
+  [v20 setObject:stringValue forKeyedSubscript:@"dsid"];
 
-  v33 = [NSString stringWithFormat:@"%lld", v30];
+  v33 = [NSString stringWithFormat:@"%lld", storeItemID];
   [v20 setObject:v33 forKeyedSubscript:@"appAdamId"];
 
-  v34 = [(LoadInAppReceiptsTask *)self client];
-  v35 = [v34 requestBundleID];
-  [v20 setObject:v35 forKeyedSubscript:@"bundleId"];
+  client7 = [(LoadInAppReceiptsTask *)self client];
+  requestBundleID = [client7 requestBundleID];
+  [v20 setObject:requestBundleID forKeyedSubscript:@"bundleId"];
 
-  v36 = [(LoadInAppReceiptsTask *)self client];
-  v37 = [v36 deviceVendorID];
-  v38 = [v37 UUIDString];
-  v39 = [v38 lowercaseString];
-  [v20 setObject:v39 forKeyedSubscript:@"deviceVerification"];
+  client8 = [(LoadInAppReceiptsTask *)self client];
+  deviceVendorID = [client8 deviceVendorID];
+  uUIDString = [deviceVendorID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
+  [v20 setObject:lowercaseString forKeyedSubscript:@"deviceVerification"];
 
   v40 = +[AMSDevice deviceGUID];
   [v20 setObject:v40 forKeyedSubscript:@"guid"];
@@ -169,13 +169,13 @@ LABEL_14:
   v41 = sub_100028E70([(LoadInAppReceiptsTask *)self reason]);
   [v20 setObject:v41 forKeyedSubscript:@"reason"];
 
-  [v20 setObject:v62 forKeyedSubscript:@"revision"];
+  [v20 setObject:revisionCopy forKeyedSubscript:@"revision"];
   v42 = +[_TtC9storekitd6BagKey transactionReceiptsMaxCount];
   v43 = [v8 integerForKey:v42];
 
   v44 = [v43 valueWithError:0];
-  v45 = [v44 stringValue];
-  [v20 setObject:v45 forKeyedSubscript:@"limit"];
+  stringValue2 = [v44 stringValue];
+  [v20 setObject:stringValue2 forKeyedSubscript:@"limit"];
 
   if (qword_1003D39F8 != -1)
   {
@@ -186,16 +186,16 @@ LABEL_14:
   if (os_log_type_enabled(qword_1003D39D8, OS_LOG_TYPE_DEFAULT))
   {
     v47 = v46;
-    v48 = [(LoadInAppReceiptsTask *)self logKey];
+    logKey = [(LoadInAppReceiptsTask *)self logKey];
     v49 = objc_opt_class();
     v55 = v49;
-    v56 = v10;
+    v56 = urlSession;
     [(LoadInAppReceiptsTask *)self localRevision];
     v50 = v43;
     v51 = v8;
     v53 = v52 = v19;
     *buf = 138543874;
-    v68 = v48;
+    v68 = logKey;
     v69 = 2114;
     v70 = v49;
     v71 = 2114;
@@ -206,18 +206,18 @@ LABEL_14:
     v8 = v51;
     v43 = v50;
 
-    v10 = v56;
+    urlSession = v56;
   }
 
-  v54 = [v12 requestWithMethod:4 URL:v19 headers:&off_1003A12F0 parameters:v20];
+  v54 = [urlRequestEncoder requestWithMethod:4 URL:v19 headers:&off_1003A12F0 parameters:v20];
   v63[0] = _NSConcreteStackBlock;
   v63[1] = 3221225472;
   v63[2] = sub_1000064AC;
   v63[3] = &unk_10037F8E0;
   v63[4] = self;
-  v6 = v60;
+  accountCopy = v60;
   v64 = v60;
-  v65 = v10;
+  v65 = urlSession;
   [v54 resultWithCompletion:v63];
 
   v14 = v19;
@@ -226,12 +226,12 @@ LABEL_14:
 LABEL_19:
 }
 
-- (void)processResult:(id)a3 error:(id)a4 forAccount:(id)a5
+- (void)processResult:(id)result error:(id)error forAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  resultCopy = result;
+  errorCopy = error;
+  accountCopy = account;
+  if (!errorCopy)
   {
     if (qword_1003D39F8 != -1)
     {
@@ -242,16 +242,16 @@ LABEL_19:
     if (os_log_type_enabled(qword_1003D39D8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(LoadInAppReceiptsTask *)self logKey];
+      logKey = [(LoadInAppReceiptsTask *)self logKey];
       *buf = 138543618;
-      v50 = v13;
+      v50 = logKey;
       v51 = 2114;
       v52 = objc_opt_class();
       v14 = v52;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@]: Finished receipt request", buf, 0x16u);
     }
 
-    v15 = [v8 object];
+    object = [resultCopy object];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -265,11 +265,11 @@ LABEL_19:
         sub_1002C74AC();
       }
 
-      v9 = ASDErrorWithTitleAndMessage();
+      errorCopy = ASDErrorWithTitleAndMessage();
       goto LABEL_51;
     }
 
-    v16 = v15;
+    v16 = object;
     v17 = [v16 objectForKeyedSubscript:@"signedTransactions"];
     v18 = [v16 objectForKeyedSubscript:@"revision"];
     objc_opt_class();
@@ -285,8 +285,8 @@ LABEL_19:
         sub_1002C754C();
       }
 
-      v9 = ASDErrorWithTitleAndMessage();
-      [(AsyncTask *)self completeWithError:v9];
+      errorCopy = ASDErrorWithTitleAndMessage();
+      [(AsyncTask *)self completeWithError:errorCopy];
       goto LABEL_50;
     }
 
@@ -308,12 +308,12 @@ LABEL_19:
       if (os_log_type_enabled(qword_1003D39D8, OS_LOG_TYPE_DEFAULT))
       {
         loga = v21;
-        v43 = [(LoadInAppReceiptsTask *)self logKey];
+        logKey2 = [(LoadInAppReceiptsTask *)self logKey];
         v22 = objc_opt_class();
         v36 = v22;
         v23 = [v48 count];
         *buf = 138543874;
-        v50 = v43;
+        v50 = logKey2;
         v51 = 2114;
         v52 = v22;
         v53 = 2048;
@@ -337,10 +337,10 @@ LABEL_19:
       if (os_log_type_enabled(qword_1003D39D8, OS_LOG_TYPE_DEFAULT))
       {
         v44 = v25;
-        v26 = [(LoadInAppReceiptsTask *)self logKey];
+        logKey3 = [(LoadInAppReceiptsTask *)self logKey];
         v27 = objc_opt_class();
         *buf = 138543618;
-        v50 = v26;
+        v50 = logKey3;
         v51 = 2114;
         v52 = v27;
         logb = v27;
@@ -364,19 +364,19 @@ LABEL_19:
       {
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [(LoadInAppReceiptsTask *)self logKey];
+          logKey4 = [(LoadInAppReceiptsTask *)self logKey];
           logc = [(LoadInAppReceiptsTask *)self client];
-          v32 = [logc requestBundleID];
+          requestBundleID = [logc requestBundleID];
           *buf = 138543874;
-          v50 = v31;
+          v50 = logKey4;
           v51 = 2114;
           v52 = v18;
           v53 = 2114;
-          v54 = v32;
+          v54 = requestBundleID;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updated receipts to revision %{public}@. Syncing more receipts for %{public}@", buf, 0x20u);
         }
 
-        [(LoadInAppReceiptsTask *)self _runRequestWithAccount:v10 revision:v18];
+        [(LoadInAppReceiptsTask *)self _runRequestWithAccount:accountCopy revision:v18];
         goto LABEL_49;
       }
 
@@ -400,15 +400,15 @@ LABEL_19:
       }
 
       logd = v33;
-      v37 = [(LoadInAppReceiptsTask *)self logKey];
-      v34 = [(LoadInAppReceiptsTask *)self client];
-      v35 = [v34 requestBundleID];
+      logKey5 = [(LoadInAppReceiptsTask *)self logKey];
+      client = [(LoadInAppReceiptsTask *)self client];
+      requestBundleID2 = [client requestBundleID];
       *buf = 138543874;
-      v50 = v37;
+      v50 = logKey5;
       v51 = 2114;
       v52 = v18;
       v53 = 2114;
-      v54 = v35;
+      v54 = requestBundleID2;
       v30 = logd;
       _os_log_impl(&_mh_execute_header, logd, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updated receipts to revision %{public}@ for %{public}@", buf, 0x20u);
     }
@@ -417,7 +417,7 @@ LABEL_48:
     [(AsyncTask *)self completeWithSuccess];
 LABEL_49:
 
-    v9 = 0;
+    errorCopy = 0;
 LABEL_50:
 
 LABEL_51:
@@ -434,18 +434,18 @@ LABEL_51:
     sub_1002C740C();
   }
 
-  [(AsyncTask *)self completeWithError:v9];
+  [(AsyncTask *)self completeWithError:errorCopy];
 LABEL_52:
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [v8 options];
-  v11 = [v10 authenticationType];
+  requestCopy = request;
+  completionCopy = completion;
+  options = [requestCopy options];
+  authenticationType = [options authenticationType];
 
-  if (v11 == 1)
+  if (authenticationType == 1)
   {
     if (qword_1003D39F8 != -1)
     {
@@ -456,27 +456,27 @@ LABEL_52:
     if (os_log_type_enabled(qword_1003D39D8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(LoadInAppReceiptsTask *)self logKey];
-      v15 = [(LoadInAppReceiptsTask *)self client];
-      v16 = [v15 requestBundleID];
+      logKey = [(LoadInAppReceiptsTask *)self logKey];
+      client = [(LoadInAppReceiptsTask *)self client];
+      requestBundleID = [client requestBundleID];
       v26 = 138543618;
-      v27 = v14;
+      v27 = logKey;
       v28 = 2114;
-      v29 = v16;
+      v29 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Handling silent authentication request", &v26, 0x16u);
     }
 
     v17 = [_TtC9storekitd13DialogContext alloc];
-    v18 = [(LoadInAppReceiptsTask *)self client];
-    v19 = [v18 callerBundleID];
-    v20 = [(LoadInAppReceiptsTask *)self client];
-    v21 = [v20 callerBundleURL];
-    v22 = [(LoadInAppReceiptsTask *)self client];
-    v23 = [v22 processInfo];
-    v24 = [(DialogContext *)v17 initWithBundleID:v19 bundleURL:v21 processInfo:v23 dialogObserver:0];
+    client2 = [(LoadInAppReceiptsTask *)self client];
+    callerBundleID = [client2 callerBundleID];
+    client3 = [(LoadInAppReceiptsTask *)self client];
+    callerBundleURL = [client3 callerBundleURL];
+    client4 = [(LoadInAppReceiptsTask *)self client];
+    processInfo = [client4 processInfo];
+    v24 = [(DialogContext *)v17 initWithBundleID:callerBundleID bundleURL:callerBundleURL processInfo:processInfo dialogObserver:0];
 
-    v25 = [(LoadInAppReceiptsTask *)self logKey];
-    [_TtC9storekitd19objc_AccountManager authenticateWithRequest:v8 dialogContext:v24 logKey:v25 completionHandler:v9];
+    logKey2 = [(LoadInAppReceiptsTask *)self logKey];
+    [_TtC9storekitd19objc_AccountManager authenticateWithRequest:requestCopy dialogContext:v24 logKey:logKey2 completionHandler:completionCopy];
   }
 }
 

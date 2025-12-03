@@ -1,62 +1,62 @@
 @interface __NSCFStringAccessibility
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)appendString:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)appendString:(id)string;
 @end
 
 @implementation __NSCFStringAccessibility
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
   v9.receiver = self;
   v9.super_class = __NSCFStringAccessibility;
-  v4 = a3;
-  [(__NSCFStringAccessibility *)&v9 appendString:v4];
-  v5 = [v4 _accessibilityAttributedLocalizedString];
+  stringCopy = string;
+  [(__NSCFStringAccessibility *)&v9 appendString:stringCopy];
+  _accessibilityAttributedLocalizedString = [stringCopy _accessibilityAttributedLocalizedString];
 
-  if (v5)
+  if (_accessibilityAttributedLocalizedString)
   {
-    v6 = [(__NSCFStringAccessibility *)self _accessibilityAttributedLocalizedString];
-    v7 = v6;
-    if (v6)
+    _accessibilityAttributedLocalizedString2 = [(__NSCFStringAccessibility *)self _accessibilityAttributedLocalizedString];
+    v7 = _accessibilityAttributedLocalizedString2;
+    if (_accessibilityAttributedLocalizedString2)
     {
-      [v6 appendAXAttributedString:v5];
+      [_accessibilityAttributedLocalizedString2 appendAXAttributedString:_accessibilityAttributedLocalizedString];
     }
 
     else
     {
-      v8 = [v5 copy];
+      v8 = [_accessibilityAttributedLocalizedString copy];
       [(__NSCFStringAccessibility *)self _setAccessibilityAttributedLocalizedString:v8];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = __NSCFStringAccessibility;
   v5 = [(__NSCFStringAccessibility *)&v10 copyWithZone:?];
-  v6 = [(__NSCFStringAccessibility *)self _accessibilityAttributedLocalizedString];
-  v7 = v6;
-  if (v6)
+  _accessibilityAttributedLocalizedString = [(__NSCFStringAccessibility *)self _accessibilityAttributedLocalizedString];
+  v7 = _accessibilityAttributedLocalizedString;
+  if (_accessibilityAttributedLocalizedString)
   {
-    v8 = [v6 copyWithZone:a3];
+    v8 = [_accessibilityAttributedLocalizedString copyWithZone:zone];
     [v5 _setAccessibilityAttributedLocalizedString:v8];
   }
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = __NSCFStringAccessibility;
   v5 = [(__NSCFStringAccessibility *)&v10 mutableCopyWithZone:?];
-  v6 = [(__NSCFStringAccessibility *)self _accessibilityAttributedLocalizedString];
-  v7 = v6;
-  if (v6)
+  _accessibilityAttributedLocalizedString = [(__NSCFStringAccessibility *)self _accessibilityAttributedLocalizedString];
+  v7 = _accessibilityAttributedLocalizedString;
+  if (_accessibilityAttributedLocalizedString)
   {
-    v8 = [v6 copyWithZone:a3];
+    v8 = [_accessibilityAttributedLocalizedString copyWithZone:zone];
     [v5 _setAccessibilityAttributedLocalizedString:v8];
   }
 

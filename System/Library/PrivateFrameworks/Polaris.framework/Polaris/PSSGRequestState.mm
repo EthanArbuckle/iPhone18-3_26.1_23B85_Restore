@@ -1,27 +1,27 @@
 @interface PSSGRequestState
 - (NSSet)pendingKeys;
-- (PSSGRequestState)initWithRequestType:(id)a3 requestedKeys:(id)a4;
+- (PSSGRequestState)initWithRequestType:(id)type requestedKeys:(id)keys;
 - (id)description;
-- (id)withLockReturningObject:(id)a3;
-- (void)markCompleted:(id)a3;
-- (void)withLock:(id)a3;
+- (id)withLockReturningObject:(id)object;
+- (void)markCompleted:(id)completed;
+- (void)withLock:(id)lock;
 @end
 
 @implementation PSSGRequestState
 
-- (PSSGRequestState)initWithRequestType:(id)a3 requestedKeys:(id)a4
+- (PSSGRequestState)initWithRequestType:(id)type requestedKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  keysCopy = keys;
   v13.receiver = self;
   v13.super_class = PSSGRequestState;
   v8 = [(PSSGRequestState *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(PSSGRequestState *)v8 setRequestType:v6];
-    [(PSSGRequestState *)v9 setRequestedKeys:v7];
-    v10 = [MEMORY[0x277CBEB58] setWithSet:v7];
+    [(PSSGRequestState *)v8 setRequestType:typeCopy];
+    [(PSSGRequestState *)v9 setRequestedKeys:keysCopy];
+    v10 = [MEMORY[0x277CBEB58] setWithSet:keysCopy];
     pendingKeys = v9->_pendingKeys;
     v9->_pendingKeys = v10;
   }
@@ -29,16 +29,16 @@
   return v9;
 }
 
-- (void)markCompleted:(id)a3
+- (void)markCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__PSSGRequestState_markCompleted___block_invoke;
   v6[3] = &unk_279A483F0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completedCopy;
+  v5 = completedCopy;
   [(PSSGRequestState *)self withLock:v6];
 }
 
@@ -61,20 +61,20 @@ id __31__PSSGRequestState_pendingKeys__block_invoke(uint64_t a1)
   return v1;
 }
 
-- (void)withLock:(id)a3
+- (void)withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)withLockReturningObject:(id)a3
+- (id)withLockReturningObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  v5 = v4[2](v4);
+  v5 = objectCopy[2](objectCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 

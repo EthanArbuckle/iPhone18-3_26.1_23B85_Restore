@@ -1,25 +1,25 @@
 @interface _MLCANEModel
-- (_MLCANEModel)initWithModel:(id)a3 options:(id)a4 qos:(unsigned int)a5 plist:(id)a6;
+- (_MLCANEModel)initWithModel:(id)model options:(id)options qos:(unsigned int)qos plist:(id)plist;
 - (void)dealloc;
 @end
 
 @implementation _MLCANEModel
 
-- (_MLCANEModel)initWithModel:(id)a3 options:(id)a4 qos:(unsigned int)a5 plist:(id)a6
+- (_MLCANEModel)initWithModel:(id)model options:(id)options qos:(unsigned int)qos plist:(id)plist
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  modelCopy = model;
+  optionsCopy = options;
+  plistCopy = plist;
   v17.receiver = self;
   v17.super_class = _MLCANEModel;
   v14 = [(_MLCANEModel *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_anefModel, a3);
-    objc_storeStrong(&v15->_options, a4);
-    v15->_qos = a5;
-    objc_storeStrong(&v15->_plist, a6);
+    objc_storeStrong(&v14->_anefModel, model);
+    objc_storeStrong(&v15->_options, options);
+    v15->_qos = qos;
+    objc_storeStrong(&v15->_plist, plist);
   }
 
   return v15;

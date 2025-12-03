@@ -1,25 +1,25 @@
 @interface BCHIDBrtControl
 + (id)copyAvailableControls;
-+ (id)newMonitorWithHandler:(id)a3 error:(id *)a4;
++ (id)newMonitorWithHandler:(id)handler error:(id *)error;
 - (BCHIDBrtControl)init;
-- (BCHIDBrtControl)initWithService:(unsigned int)a3;
-- (BOOL)_getDeviceNits:(double *)a3;
+- (BCHIDBrtControl)initWithService:(unsigned int)service;
+- (BOOL)_getDeviceNits:(double *)nits;
 - (BOOL)_setDeviceNits:(double)minNits;
-- (BOOL)setNits:(double)a3 error:(id *)a4;
-- (double)getNitsWithError:(id *)a3;
+- (BOOL)setNits:(double)nits error:(id *)error;
+- (double)getNitsWithError:(id *)error;
 - (id)copyModuleIdentifier;
-- (id)copyProperty:(id)a3 error:(id *)a4;
+- (id)copyProperty:(id)property error:(id *)error;
 - (unint64_t)registryID;
-- (void)addDisplayService:(unsigned int)a3;
+- (void)addDisplayService:(unsigned int)service;
 - (void)dealloc;
 - (void)refreshBoostFactor;
 - (void)removeDisplayService;
-- (void)setBoostFactor:(float)a3;
+- (void)setBoostFactor:(float)factor;
 @end
 
 @implementation BCHIDBrtControl
 
-+ (id)newMonitorWithHandler:(id)a3 error:(id *)a4
++ (id)newMonitorWithHandler:(id)handler error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   v6 = _copyMatchingDict();
@@ -44,7 +44,7 @@
   v25[1] = 3221225472;
   v25[2] = __47__BCHIDBrtControl_newMonitorWithHandler_error___block_invoke;
   v25[3] = &unk_2784F8CE0;
-  v25[4] = a3;
+  v25[4] = handler;
   v10 = _newBlockWrapper(v25);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -78,7 +78,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     +[BCHIDBrtControl newMonitorWithHandler:error:];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -86,10 +86,10 @@
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
-    *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:v12];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithIOKitError:v12];
   }
 
 LABEL_11:
@@ -179,10 +179,10 @@ void __47__BCHIDBrtControl_newMonitorWithHandler_error___block_invoke_3(uint64_t
   return [v2 initWithString:@"com.apple.BCBrtControl.HID"];
 }
 
-- (BCHIDBrtControl)initWithService:(unsigned int)a3
+- (BCHIDBrtControl)initWithService:(unsigned int)service
 {
   v73 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!service)
   {
     if ([(BCBrtControl *)self logHandle])
     {
@@ -220,13 +220,13 @@ LABEL_11:
 
   v6 = objc_autoreleasePoolPush();
   v5[49] = 1065353216;
-  v5[29] = a3;
+  v5[29] = service;
   v52 = 200;
-  if (IORegistryEntryGetRegistryEntryID(a3, v5 + 25))
+  if (IORegistryEntryGetRegistryEntryID(service, v5 + 25))
   {
     if ([v5 logHandle])
     {
-      v7 = [v5 logHandle];
+      logHandle = [v5 logHandle];
     }
 
     else
@@ -243,10 +243,10 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v7 = init_default_corebrightness_log();
+      logHandle = init_default_corebrightness_log();
     }
 
-    v8 = v7;
+    v8 = logHandle;
     goto LABEL_14;
   }
 
@@ -262,16 +262,16 @@ LABEL_16:
   *(v5 + 9) = 0;
   if ([v5 logHandle])
   {
-    v12 = [v5 logHandle];
+    logHandle2 = [v5 logHandle];
 LABEL_20:
-    v13 = v12;
+    v13 = logHandle2;
     goto LABEL_22;
   }
 
   v13 = _COREBRIGHTNESS_LOG_DEFAULT;
   if (!_COREBRIGHTNESS_LOG_DEFAULT)
   {
-    v12 = init_default_corebrightness_log();
+    logHandle2 = init_default_corebrightness_log();
     goto LABEL_20;
   }
 
@@ -291,7 +291,7 @@ LABEL_24:
 
   if ([v5 logHandle])
   {
-    v15 = [v5 logHandle];
+    logHandle3 = [v5 logHandle];
   }
 
   else
@@ -302,10 +302,10 @@ LABEL_24:
       goto LABEL_29;
     }
 
-    v15 = init_default_corebrightness_log();
+    logHandle3 = init_default_corebrightness_log();
   }
 
-  v16 = v15;
+  v16 = logHandle3;
 LABEL_29:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
@@ -326,7 +326,7 @@ LABEL_32:
   {
     if ([v5 logHandle])
     {
-      v29 = [v5 logHandle];
+      logHandle4 = [v5 logHandle];
     }
 
     else
@@ -337,10 +337,10 @@ LABEL_32:
         goto LABEL_67;
       }
 
-      v29 = init_default_corebrightness_log();
+      logHandle4 = init_default_corebrightness_log();
     }
 
-    v30 = v29;
+    v30 = logHandle4;
 LABEL_67:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -411,7 +411,7 @@ LABEL_49:
   {
     if ([v5 logHandle])
     {
-      v33 = [v5 logHandle];
+      logHandle5 = [v5 logHandle];
     }
 
     else
@@ -422,10 +422,10 @@ LABEL_49:
         goto LABEL_73;
       }
 
-      v33 = init_default_corebrightness_log();
+      logHandle5 = init_default_corebrightness_log();
     }
 
-    v34 = v33;
+    v34 = logHandle5;
 LABEL_73:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -444,9 +444,9 @@ LABEL_77:
   if ([*(v5 + 16) physicalMax] < 2001 || objc_msgSend(*(v5 + 16), "unitExponent") < 1)
   {
     *(v5 + 6) = [*(v5 + 16) physicalMax];
-    v28 = [*(v5 + 16) physicalMin];
+    physicalMin = [*(v5 + 16) physicalMin];
 LABEL_58:
-    *(v5 + 8) = v28;
+    *(v5 + 8) = physicalMin;
   }
 
   else
@@ -456,7 +456,7 @@ LABEL_58:
     if (v27 > 0.0)
     {
       *(v5 + 6) = ([*(v5 + 16) physicalMax] / *(v5 + 36));
-      v28 = ([*(v5 + 16) physicalMin] / *(v5 + 36));
+      physicalMin = ([*(v5 + 16) physicalMin] / *(v5 + 36));
       goto LABEL_58;
     }
   }
@@ -465,16 +465,16 @@ LABEL_58:
   {
     if ([v5 logHandle])
     {
-      v31 = [v5 logHandle];
+      logHandle6 = [v5 logHandle];
       goto LABEL_62;
     }
 
     v32 = _COREBRIGHTNESS_LOG_DEFAULT;
     if (!_COREBRIGHTNESS_LOG_DEFAULT)
     {
-      v31 = init_default_corebrightness_log();
+      logHandle6 = init_default_corebrightness_log();
 LABEL_62:
-      v32 = v31;
+      v32 = logHandle6;
     }
 
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -487,16 +487,16 @@ LABEL_62:
 
   if ([v5 logHandle])
   {
-    v37 = [v5 logHandle];
+    logHandle7 = [v5 logHandle];
     goto LABEL_85;
   }
 
   v38 = _COREBRIGHTNESS_LOG_DEFAULT;
   if (!_COREBRIGHTNESS_LOG_DEFAULT)
   {
-    v37 = init_default_corebrightness_log();
+    logHandle7 = init_default_corebrightness_log();
 LABEL_85:
-    v38 = v37;
+    v38 = logHandle7;
   }
 
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -505,7 +505,7 @@ LABEL_85:
     v40 = *(v5 + 6);
     v41 = *(v5 + 8);
     v42 = *(v5 + 36);
-    v43 = [*(v5 + 16) unitExponent];
+    unitExponent = [*(v5 + 16) unitExponent];
     *buf = 134219008;
     v63 = v39;
     v64 = 2048;
@@ -515,7 +515,7 @@ LABEL_85:
     v68 = 2048;
     v69 = v42;
     v70 = 2048;
-    v71 = v43;
+    v71 = unitExponent;
     _os_log_impl(&dword_223D10000, v38, OS_LOG_TYPE_DEFAULT, "nits = %f, maxNits = %f, minNits = %f, nitsScaler = %f, exponent = %ld", buf, 0x34u);
     v6 = v54;
   }
@@ -534,16 +534,16 @@ LABEL_85:
   *(v5 + 32) = 1;
   if ([v5 logHandle])
   {
-    v45 = [v5 logHandle];
+    logHandle8 = [v5 logHandle];
     goto LABEL_93;
   }
 
   v46 = _COREBRIGHTNESS_LOG_DEFAULT;
   if (!_COREBRIGHTNESS_LOG_DEFAULT)
   {
-    v45 = init_default_corebrightness_log();
+    logHandle8 = init_default_corebrightness_log();
 LABEL_93:
-    v46 = v45;
+    v46 = logHandle8;
   }
 
   if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
@@ -559,16 +559,16 @@ LABEL_93:
 
   if ([v5 logHandle])
   {
-    v49 = [v5 logHandle];
+    logHandle9 = [v5 logHandle];
     goto LABEL_99;
   }
 
   v50 = _COREBRIGHTNESS_LOG_DEFAULT;
   if (!_COREBRIGHTNESS_LOG_DEFAULT)
   {
-    v49 = init_default_corebrightness_log();
+    logHandle9 = init_default_corebrightness_log();
 LABEL_99:
-    v50 = v49;
+    v50 = logHandle9;
   }
 
   if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
@@ -726,20 +726,20 @@ LABEL_5:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(BCBrtControl *)self queue];
+  queue = [(BCBrtControl *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__BCHIDBrtControl_registryID__block_invoke;
   v6[3] = &unk_2784F8E18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (BOOL)_getDeviceNits:(double *)a3
+- (BOOL)_getDeviceNits:(double *)nits
 {
   v4 = 0;
   v27 = *MEMORY[0x277D85DE8];
@@ -787,16 +787,16 @@ LABEL_7:
 
     if ([(BCBrtControl *)self logHandle])
     {
-      v8 = [(BCBrtControl *)self logHandle];
+      logHandle = [(BCBrtControl *)self logHandle];
 LABEL_14:
-      v9 = v8;
+      v9 = logHandle;
       goto LABEL_16;
     }
 
     v9 = _COREBRIGHTNESS_LOG_DEFAULT;
     if (!_COREBRIGHTNESS_LOG_DEFAULT)
     {
-      v8 = init_default_corebrightness_log();
+      logHandle = init_default_corebrightness_log();
       goto LABEL_14;
     }
 
@@ -818,7 +818,7 @@ LABEL_16:
   v11 = *&v10;
   if (self->super._maxNits >= *&v10 && self->super._minNits <= v11)
   {
-    *a3 = v11;
+    *nits = v11;
     LOBYTE(v14) = 1;
   }
 
@@ -826,16 +826,16 @@ LABEL_16:
   {
     if ([(BCBrtControl *)self logHandle])
     {
-      v12 = [(BCBrtControl *)self logHandle];
+      logHandle2 = [(BCBrtControl *)self logHandle];
       goto LABEL_25;
     }
 
     v13 = _COREBRIGHTNESS_LOG_DEFAULT;
     if (!_COREBRIGHTNESS_LOG_DEFAULT)
     {
-      v12 = init_default_corebrightness_log();
+      logHandle2 = init_default_corebrightness_log();
 LABEL_25:
-      v13 = v12;
+      v13 = logHandle2;
     }
 
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -1019,20 +1019,20 @@ void *__34__BCHIDBrtControl__setDeviceNits___block_invoke_2(void *result)
   return result;
 }
 
-- (BOOL)setNits:(double)a3 error:(id *)a4
+- (BOOL)setNits:(double)nits error:(id *)error
 {
-  v6 = [(BCBrtControl *)self queue];
+  queue = [(BCBrtControl *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__BCHIDBrtControl_setNits_error___block_invoke;
   v8[3] = &unk_2784F8E68;
   v8[4] = self;
-  *&v8[5] = a3;
-  dispatch_sync(v6, v8);
+  *&v8[5] = nits;
+  dispatch_sync(queue, v8);
   return 1;
 }
 
-- (double)getNitsWithError:(id *)a3
+- (double)getNitsWithError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -1042,7 +1042,7 @@ void *__34__BCHIDBrtControl__setDeviceNits___block_invoke_2(void *result)
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0xBFF0000000000000;
-  v5 = [(BCBrtControl *)self queue];
+  queue = [(BCBrtControl *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__BCHIDBrtControl_getNitsWithError___block_invoke;
@@ -1050,10 +1050,10 @@ void *__34__BCHIDBrtControl__setDeviceNits___block_invoke_2(void *result)
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  dispatch_sync(v5, block);
-  if (a3 && (v14[3] & 1) == 0)
+  dispatch_sync(queue, block);
+  if (error && (v14[3] & 1) == 0)
   {
-    *a3 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:19];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:19];
   }
 
   v6 = v10[3];
@@ -1069,7 +1069,7 @@ uint64_t __36__BCHIDBrtControl_getNitsWithError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyProperty:(id)a3 error:(id *)a4
+- (id)copyProperty:(id)property error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -1077,14 +1077,14 @@ uint64_t __36__BCHIDBrtControl_getNitsWithError___block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v6 = [(BCBrtControl *)self queue:a3];
+  v6 = [(BCBrtControl *)self queue:property];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__BCHIDBrtControl_copyProperty_error___block_invoke;
   block[3] = &unk_2784F8EB8;
   block[5] = self;
   block[6] = &v10;
-  block[4] = a3;
+  block[4] = property;
   dispatch_sync(v6, block);
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1130,9 +1130,9 @@ uint64_t __38__BCHIDBrtControl_copyProperty_error___block_invoke(uint64_t a1)
   self->_nitsBoostFactor = 1.0;
 }
 
-- (void)addDisplayService:(unsigned int)a3
+- (void)addDisplayService:(unsigned int)service
 {
-  self->super._displayService = a3;
+  self->super._displayService = service;
   v4 = IONotificationPortCreate(*MEMORY[0x277CD2898]);
   self->_boostFactorNotificationPort = v4;
   if (v4)
@@ -1148,10 +1148,10 @@ uint64_t __38__BCHIDBrtControl_copyProperty_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBoostFactor:(float)a3
+- (void)setBoostFactor:(float)factor
 {
   p_nitsBoostFactor = &self->_nitsBoostFactor;
-  self->_nitsBoostFactor = a3;
+  self->_nitsBoostFactor = factor;
   if ([(BCBrtControl *)self logHandle])
   {
     inited = [(BCBrtControl *)self logHandle];

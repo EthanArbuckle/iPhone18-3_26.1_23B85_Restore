@@ -1,14 +1,14 @@
 @interface PushToTalkTalkButtonController
-- (void)pressGestureChangedWithGestureRecognizer:(id)a3;
+- (void)pressGestureChangedWithGestureRecognizer:(id)recognizer;
 @end
 
 @implementation PushToTalkTalkButtonController
 
-- (void)pressGestureChangedWithGestureRecognizer:(id)a3
+- (void)pressGestureChangedWithGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
 
-  PushToTalkTalkButtonController.pressGestureChanged(gestureRecognizer:)(v3);
+  PushToTalkTalkButtonController.pressGestureChanged(gestureRecognizer:)(recognizerCopy);
 }
 
 @end

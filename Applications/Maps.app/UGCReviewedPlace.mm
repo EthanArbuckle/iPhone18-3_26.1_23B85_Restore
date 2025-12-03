@@ -1,29 +1,29 @@
 @interface UGCReviewedPlace
-- (UGCReviewedPlace)initWithMUID:(unint64_t)a3;
-- (UGCReviewedPlace)initWithMUID:(unint64_t)a3 originallySavedMUID:(unint64_t)a4;
+- (UGCReviewedPlace)initWithMUID:(unint64_t)d;
+- (UGCReviewedPlace)initWithMUID:(unint64_t)d originallySavedMUID:(unint64_t)iD;
 @end
 
 @implementation UGCReviewedPlace
 
-- (UGCReviewedPlace)initWithMUID:(unint64_t)a3 originallySavedMUID:(unint64_t)a4
+- (UGCReviewedPlace)initWithMUID:(unint64_t)d originallySavedMUID:(unint64_t)iD
 {
-  result = [(UGCReviewedPlace *)self initWithMUID:a3];
+  result = [(UGCReviewedPlace *)self initWithMUID:d];
   if (result)
   {
-    result->_originallySavedMUID = a4;
+    result->_originallySavedMUID = iD;
   }
 
   return result;
 }
 
-- (UGCReviewedPlace)initWithMUID:(unint64_t)a3
+- (UGCReviewedPlace)initWithMUID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = UGCReviewedPlace;
   result = [(UGCReviewedPlace *)&v5 init];
   if (result)
   {
-    result->_muid = a3;
+    result->_muid = d;
     result->_originallySavedMUID = 0;
     result->_isDeleted = 0;
     result->_recommendState = 0;

@@ -7,17 +7,17 @@
 - (void)performTask
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
-  v3 = [(UserActivityHandlingTask *)self userActivity];
-  v4 = [v3 userInfo];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  userInfo = [userActivity userInfo];
 
-  v5 = [v4 objectForKeyedSubscript:@"MapsActivity"];
+  v5 = [userInfo objectForKeyedSubscript:@"MapsActivity"];
   if (v5)
   {
     v6 = [[MapsActivity alloc] initWithData:v5];
     if (v6)
     {
       v7 = v6;
-      v8 = [v4 objectForKeyedSubscript:@"MapsActivityTimestamp"];
+      v8 = [userInfo objectForKeyedSubscript:@"MapsActivityTimestamp"];
       Integer = GEOConfigGetInteger();
       if (v8)
       {
@@ -34,10 +34,10 @@
       {
         v48 = Integer;
         v14 = v11;
-        v15 = [(MapsActivity *)v7 directionsPlan];
-        v16 = [v15 hasExpiryTime];
+        directionsPlan = [(MapsActivity *)v7 directionsPlan];
+        hasExpiryTime = [directionsPlan hasExpiryTime];
 
-        if (v16 && (-[MapsActivity directionsPlan](v7, "directionsPlan"), v17 = objc_claimAutoreleasedReturnValue(), [v17 expiryTime], +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:"), v18 = objc_claimAutoreleasedReturnValue(), v17, objc_msgSend(v18, "timeIntervalSinceNow"), v20 = v19, v18, v20 < 0.0))
+        if (hasExpiryTime && (-[MapsActivity directionsPlan](v7, "directionsPlan"), v17 = objc_claimAutoreleasedReturnValue(), [v17 expiryTime], +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:"), v18 = objc_claimAutoreleasedReturnValue(), v17, objc_msgSend(v18, "timeIntervalSinceNow"), v20 = v19, v18, v20 < 0.0))
         {
           v21 = sub_100005610();
           v11 = v14;
@@ -79,8 +79,8 @@
 
       if ([(MapsActivity *)v7 hasDirectionsPlan])
       {
-        v23 = [(MapsActivity *)v7 directionsPlan];
-        if ([v23 displayMethod] != 1)
+        directionsPlan2 = [(MapsActivity *)v7 directionsPlan];
+        if ([directionsPlan2 displayMethod] != 1)
         {
 LABEL_25:
 
@@ -91,22 +91,22 @@ LABEL_25:
         v24 = v49 = v11;
         [v24 routeRequestStorage];
         v25 = v5;
-        v26 = v4;
+        v26 = userInfo;
         v27 = Integer;
         v29 = v28 = v8;
-        v47 = [v29 transportType];
+        transportType = [v29 transportType];
 
         v8 = v28;
         Integer = v27;
-        v4 = v26;
+        userInfo = v26;
         v5 = v25;
 
         v11 = v49;
-        if (v47 != 1)
+        if (transportType != 1)
         {
-          v23 = [(MapsActivity *)v7 directionsPlan];
-          v30 = [v23 routeRequestStorage];
-          [v30 setRouteHandle:0];
+          directionsPlan2 = [(MapsActivity *)v7 directionsPlan];
+          routeRequestStorage = [directionsPlan2 routeRequestStorage];
+          [routeRequestStorage setRouteHandle:0];
 
           v11 = v49;
           goto LABEL_25;
@@ -134,16 +134,16 @@ LABEL_26:
           v50 = Integer;
           v35 = v8;
           v36 = objc_alloc_init(GEOURLOptions);
-          v37 = [(MapsActivity *)v7 displayOptions];
-          [v36 setMapType:{objc_msgSend(v37, "mapType")}];
+          displayOptions = [(MapsActivity *)v7 displayOptions];
+          [v36 setMapType:{objc_msgSend(displayOptions, "mapType")}];
 
-          v38 = [(MapsActivity *)v7 displayOptions];
-          v39 = [v38 hasEnableTraffic];
+          displayOptions2 = [(MapsActivity *)v7 displayOptions];
+          hasEnableTraffic = [displayOptions2 hasEnableTraffic];
 
-          if (v39)
+          if (hasEnableTraffic)
           {
-            v40 = [(MapsActivity *)v7 displayOptions];
-            [v36 setEnableTraffic:{objc_msgSend(v40, "enableTraffic")}];
+            displayOptions3 = [(MapsActivity *)v7 displayOptions];
+            [v36 setEnableTraffic:{objc_msgSend(displayOptions3, "enableTraffic")}];
           }
 
           [v33 setDisplayOptions:v36];
@@ -178,16 +178,16 @@ LABEL_26:
 LABEL_36:
       if ([v33 hasDisplayOptions])
       {
-        v41 = [v33 displayOptions];
-        if ([v41 hasCamera])
+        displayOptions4 = [v33 displayOptions];
+        if ([displayOptions4 hasCamera])
         {
           v42 = 0;
         }
 
         else
         {
-          v45 = [v33 displayOptions];
-          v42 = [v45 hasCenterSpan] ^ 1;
+          displayOptions5 = [v33 displayOptions];
+          v42 = [displayOptions5 hasCenterSpan] ^ 1;
         }
 
         v43 = objc_alloc_init(RestorationAction);

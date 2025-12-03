@@ -1,5 +1,5 @@
 @interface CalFileSensor
-- (CalFileSensor)initWithPath:(id)a3 eventBlock:(id)a4;
+- (CalFileSensor)initWithPath:(id)path eventBlock:(id)block;
 - (id)description;
 - (void)dealloc;
 - (void)start;
@@ -8,11 +8,11 @@
 
 @implementation CalFileSensor
 
-- (CalFileSensor)initWithPath:(id)a3 eventBlock:(id)a4
+- (CalFileSensor)initWithPath:(id)path eventBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || (v9 = v8, ![v7 length]))
+  pathCopy = path;
+  blockCopy = block;
+  if (!pathCopy || (v9 = blockCopy, ![pathCopy length]))
   {
     v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"The 'path' parameter must be non-nil and non-empty" userInfo:0];
     objc_exception_throw(v18);
@@ -24,7 +24,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_path, a3);
+    objc_storeStrong(&v10->_path, path);
     v12 = _Block_copy(v9);
     eventBlock = v11->_eventBlock;
     v11->_eventBlock = v12;
@@ -67,9 +67,9 @@
   [(CalDescriptionBuilder *)v5 setKey:@"_eventBlock" withObject:v6];
 
   [(CalDescriptionBuilder *)v5 setKey:@"_started" withBoolean:self->_started];
-  v7 = [(CalDescriptionBuilder *)v5 build];
+  build = [(CalDescriptionBuilder *)v5 build];
 
-  return v7;
+  return build;
 }
 
 - (void)start

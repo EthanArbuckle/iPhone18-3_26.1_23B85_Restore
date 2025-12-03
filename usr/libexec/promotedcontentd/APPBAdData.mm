@@ -1,79 +1,79 @@
 @interface APPBAdData
-- (BOOL)isEqual:(id)a3;
-- (id)adPrivacyMarkPositionAsString:(int)a3;
-- (id)adPrivacyMarkerTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)adPrivacyMarkPositionAsString:(int)string;
+- (id)adPrivacyMarkerTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)desiredPositionAsString:(int)a3;
+- (id)desiredPositionAsString:(int)string;
 - (id)dictionaryRepresentation;
-- (id)unfilledReasonCodeAsString:(int)a3;
-- (int)StringAsAdPrivacyMarkPosition:(id)a3;
-- (int)StringAsAdPrivacyMarkerType:(id)a3;
-- (int)StringAsDesiredPosition:(id)a3;
-- (int)StringAsUnfilledReasonCode:(id)a3;
+- (id)unfilledReasonCodeAsString:(int)string;
+- (int)StringAsAdPrivacyMarkPosition:(id)position;
+- (int)StringAsAdPrivacyMarkerType:(id)type;
+- (int)StringAsDesiredPosition:(id)position;
+- (int)StringAsUnfilledReasonCode:(id)code;
 - (int)adPrivacyMarkPosition;
 - (int)adPrivacyMarkerType;
 - (int)desiredPosition;
 - (int)unfilledReasonCode;
 - (unint64_t)hash;
-- (void)addActions:(id)a3;
-- (void)addAdLayoutData:(id)a3;
-- (void)addConfirmedClickPixelURLs:(id)a3;
-- (void)addCreativeSizes:(id)a3;
-- (void)addExcludeTag:(id)a3;
-- (void)addGeofences:(id)a3;
-- (void)addITunesMetadata:(id)a3;
-- (void)addJourneyStartRelayValues:(id)a3;
-- (void)addMatchTagClause:(id)a3;
-- (void)addNativeMetadata:(id)a3;
-- (void)addRewardTokens:(id)a3;
-- (void)addScreenSaverImageURL:(id)a3;
-- (void)addTrackingURL:(id)a3;
-- (void)addVideoAsset:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdPrivacyMarkPosition:(BOOL)a3;
-- (void)setHasAdPrivacyMarkerType:(BOOL)a3;
-- (void)setHasBannerImpressionThreshold:(BOOL)a3;
-- (void)setHasBannerNewContentCandidacyThreshold:(BOOL)a3;
-- (void)setHasDesiredPosition:(BOOL)a3;
-- (void)setHasDoesNotResetListeningTime:(BOOL)a3;
-- (void)setHasDownloadWebArchivesBeforeShowingBanner:(BOOL)a3;
-- (void)setHasLetterboxCreativeColor:(BOOL)a3;
-- (void)setHasMaximumPretapRequestCount:(BOOL)a3;
-- (void)setHasMinimumIntervalBetweenPresentations:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasRewardTokensExpiration:(BOOL)a3;
-- (void)setHasSkipThreshold:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)setHasUnbranded:(BOOL)a3;
-- (void)setHasUnfilledReasonCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActions:(id)actions;
+- (void)addAdLayoutData:(id)data;
+- (void)addConfirmedClickPixelURLs:(id)ls;
+- (void)addCreativeSizes:(id)sizes;
+- (void)addExcludeTag:(id)tag;
+- (void)addGeofences:(id)geofences;
+- (void)addITunesMetadata:(id)metadata;
+- (void)addJourneyStartRelayValues:(id)values;
+- (void)addMatchTagClause:(id)clause;
+- (void)addNativeMetadata:(id)metadata;
+- (void)addRewardTokens:(id)tokens;
+- (void)addScreenSaverImageURL:(id)l;
+- (void)addTrackingURL:(id)l;
+- (void)addVideoAsset:(id)asset;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdPrivacyMarkPosition:(BOOL)position;
+- (void)setHasAdPrivacyMarkerType:(BOOL)type;
+- (void)setHasBannerImpressionThreshold:(BOOL)threshold;
+- (void)setHasBannerNewContentCandidacyThreshold:(BOOL)threshold;
+- (void)setHasDesiredPosition:(BOOL)position;
+- (void)setHasDoesNotResetListeningTime:(BOOL)time;
+- (void)setHasDownloadWebArchivesBeforeShowingBanner:(BOOL)banner;
+- (void)setHasLetterboxCreativeColor:(BOOL)color;
+- (void)setHasMaximumPretapRequestCount:(BOOL)count;
+- (void)setHasMinimumIntervalBetweenPresentations:(BOOL)presentations;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasRewardTokensExpiration:(BOOL)expiration;
+- (void)setHasSkipThreshold:(BOOL)threshold;
+- (void)setHasStartDate:(BOOL)date;
+- (void)setHasUnbranded:(BOOL)unbranded;
+- (void)setHasUnfilledReasonCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdData
 
-- (void)addTrackingURL:(id)a3
+- (void)addTrackingURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   trackingURLs = self->_trackingURLs;
-  v8 = v4;
+  v8 = lCopy;
   if (!trackingURLs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_trackingURLs;
     self->_trackingURLs = v6;
 
-    v4 = v8;
+    lCopy = v8;
     trackingURLs = self->_trackingURLs;
   }
 
-  [(NSMutableArray *)trackingURLs addObject:v4];
+  [(NSMutableArray *)trackingURLs addObject:lCopy];
 }
 
-- (void)setHasUnbranded:(BOOL)a3
+- (void)setHasUnbranded:(BOOL)unbranded
 {
-  if (a3)
+  if (unbranded)
   {
     v3 = 0x10000;
   }
@@ -86,45 +86,45 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)addConfirmedClickPixelURLs:(id)a3
+- (void)addConfirmedClickPixelURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   confirmedClickPixelURLs = self->_confirmedClickPixelURLs;
-  v8 = v4;
+  v8 = lsCopy;
   if (!confirmedClickPixelURLs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_confirmedClickPixelURLs;
     self->_confirmedClickPixelURLs = v6;
 
-    v4 = v8;
+    lsCopy = v8;
     confirmedClickPixelURLs = self->_confirmedClickPixelURLs;
   }
 
-  [(NSMutableArray *)confirmedClickPixelURLs addObject:v4];
+  [(NSMutableArray *)confirmedClickPixelURLs addObject:lsCopy];
 }
 
-- (void)addVideoAsset:(id)a3
+- (void)addVideoAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   videoAssets = self->_videoAssets;
-  v8 = v4;
+  v8 = assetCopy;
   if (!videoAssets)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_videoAssets;
     self->_videoAssets = v6;
 
-    v4 = v8;
+    assetCopy = v8;
     videoAssets = self->_videoAssets;
   }
 
-  [(NSMutableArray *)videoAssets addObject:v4];
+  [(NSMutableArray *)videoAssets addObject:assetCopy];
 }
 
-- (void)setHasDownloadWebArchivesBeforeShowingBanner:(BOOL)a3
+- (void)setHasDownloadWebArchivesBeforeShowingBanner:(BOOL)banner
 {
-  if (a3)
+  if (banner)
   {
     v3 = 0x8000;
   }
@@ -137,9 +137,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasBannerImpressionThreshold:(BOOL)a3
+- (void)setHasBannerImpressionThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 256;
   }
@@ -152,9 +152,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasBannerNewContentCandidacyThreshold:(BOOL)a3
+- (void)setHasBannerNewContentCandidacyThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 512;
   }
@@ -167,63 +167,63 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)addScreenSaverImageURL:(id)a3
+- (void)addScreenSaverImageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   screenSaverImageURLs = self->_screenSaverImageURLs;
-  v8 = v4;
+  v8 = lCopy;
   if (!screenSaverImageURLs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_screenSaverImageURLs;
     self->_screenSaverImageURLs = v6;
 
-    v4 = v8;
+    lCopy = v8;
     screenSaverImageURLs = self->_screenSaverImageURLs;
   }
 
-  [(NSMutableArray *)screenSaverImageURLs addObject:v4];
+  [(NSMutableArray *)screenSaverImageURLs addObject:lCopy];
 }
 
-- (void)addExcludeTag:(id)a3
+- (void)addExcludeTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   excludeTags = self->_excludeTags;
-  v8 = v4;
+  v8 = tagCopy;
   if (!excludeTags)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_excludeTags;
     self->_excludeTags = v6;
 
-    v4 = v8;
+    tagCopy = v8;
     excludeTags = self->_excludeTags;
   }
 
-  [(NSMutableArray *)excludeTags addObject:v4];
+  [(NSMutableArray *)excludeTags addObject:tagCopy];
 }
 
-- (void)addRewardTokens:(id)a3
+- (void)addRewardTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   rewardTokens = self->_rewardTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!rewardTokens)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_rewardTokens;
     self->_rewardTokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     rewardTokens = self->_rewardTokens;
   }
 
-  [(NSMutableArray *)rewardTokens addObject:v4];
+  [(NSMutableArray *)rewardTokens addObject:tokensCopy];
 }
 
-- (void)setHasRewardTokensExpiration:(BOOL)a3
+- (void)setHasRewardTokensExpiration:(BOOL)expiration
 {
-  if (a3)
+  if (expiration)
   {
     v3 = 8;
   }
@@ -236,27 +236,27 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)addMatchTagClause:(id)a3
+- (void)addMatchTagClause:(id)clause
 {
-  v4 = a3;
+  clauseCopy = clause;
   matchTagClauses = self->_matchTagClauses;
-  v8 = v4;
+  v8 = clauseCopy;
   if (!matchTagClauses)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_matchTagClauses;
     self->_matchTagClauses = v6;
 
-    v4 = v8;
+    clauseCopy = v8;
     matchTagClauses = self->_matchTagClauses;
   }
 
-  [(NSMutableArray *)matchTagClauses addObject:v4];
+  [(NSMutableArray *)matchTagClauses addObject:clauseCopy];
 }
 
-- (void)setHasSkipThreshold:(BOOL)a3
+- (void)setHasSkipThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 16;
   }
@@ -269,9 +269,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 4;
   }
@@ -284,45 +284,45 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)addGeofences:(id)a3
+- (void)addGeofences:(id)geofences
 {
-  v4 = a3;
+  geofencesCopy = geofences;
   geofences = self->_geofences;
-  v8 = v4;
+  v8 = geofencesCopy;
   if (!geofences)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_geofences;
     self->_geofences = v6;
 
-    v4 = v8;
+    geofencesCopy = v8;
     geofences = self->_geofences;
   }
 
-  [(NSMutableArray *)geofences addObject:v4];
+  [(NSMutableArray *)geofences addObject:geofencesCopy];
 }
 
-- (void)addCreativeSizes:(id)a3
+- (void)addCreativeSizes:(id)sizes
 {
-  v4 = a3;
+  sizesCopy = sizes;
   creativeSizes = self->_creativeSizes;
-  v8 = v4;
+  v8 = sizesCopy;
   if (!creativeSizes)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_creativeSizes;
     self->_creativeSizes = v6;
 
-    v4 = v8;
+    sizesCopy = v8;
     creativeSizes = self->_creativeSizes;
   }
 
-  [(NSMutableArray *)creativeSizes addObject:v4];
+  [(NSMutableArray *)creativeSizes addObject:sizesCopy];
 }
 
-- (void)setHasLetterboxCreativeColor:(BOOL)a3
+- (void)setHasLetterboxCreativeColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 2048;
   }
@@ -335,9 +335,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasMinimumIntervalBetweenPresentations:(BOOL)a3
+- (void)setHasMinimumIntervalBetweenPresentations:(BOOL)presentations
 {
-  if (a3)
+  if (presentations)
   {
     v3 = 2;
   }
@@ -350,9 +350,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasDoesNotResetListeningTime:(BOOL)a3
+- (void)setHasDoesNotResetListeningTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 0x4000;
   }
@@ -365,22 +365,22 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)addNativeMetadata:(id)a3
+- (void)addNativeMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   nativeMetadatas = self->_nativeMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!nativeMetadatas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_nativeMetadatas;
     self->_nativeMetadatas = v6;
 
-    v4 = v8;
+    metadataCopy = v8;
     nativeMetadatas = self->_nativeMetadatas;
   }
 
-  [(NSMutableArray *)nativeMetadatas addObject:v4];
+  [(NSMutableArray *)nativeMetadatas addObject:metadataCopy];
 }
 
 - (int)desiredPosition
@@ -396,9 +396,9 @@
   }
 }
 
-- (void)setHasDesiredPosition:(BOOL)a3
+- (void)setHasDesiredPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 1024;
   }
@@ -411,33 +411,33 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (id)desiredPositionAsString:(int)a3
+- (id)desiredPositionAsString:(int)string
 {
-  if (a3 == 1101)
+  if (string == 1101)
   {
     v4 = @"ResellerNative";
   }
 
-  else if (a3 == 1102)
+  else if (string == 1102)
   {
     v4 = @"PublisherNative";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsDesiredPosition:(id)a3
+- (int)StringAsDesiredPosition:(id)position
 {
-  v3 = a3;
+  positionCopy = position;
   v4 = 1101;
-  if (([v3 isEqualToString:@"ResellerNative"] & 1) == 0)
+  if (([positionCopy isEqualToString:@"ResellerNative"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"PublisherNative"])
+    if ([positionCopy isEqualToString:@"PublisherNative"])
     {
       v4 = 1102;
     }
@@ -451,45 +451,45 @@
   return v4;
 }
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   actions = self->_actions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!actions)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_actions;
     self->_actions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     actions = self->_actions;
   }
 
-  [(NSMutableArray *)actions addObject:v4];
+  [(NSMutableArray *)actions addObject:actionsCopy];
 }
 
-- (void)addITunesMetadata:(id)a3
+- (void)addITunesMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   iTunesMetadatas = self->_iTunesMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!iTunesMetadatas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_iTunesMetadatas;
     self->_iTunesMetadatas = v6;
 
-    v4 = v8;
+    metadataCopy = v8;
     iTunesMetadatas = self->_iTunesMetadatas;
   }
 
-  [(NSMutableArray *)iTunesMetadatas addObject:v4];
+  [(NSMutableArray *)iTunesMetadatas addObject:metadataCopy];
 }
 
-- (void)setHasMaximumPretapRequestCount:(BOOL)a3
+- (void)setHasMaximumPretapRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4096;
   }
@@ -515,9 +515,9 @@
   }
 }
 
-- (void)setHasAdPrivacyMarkPosition:(BOOL)a3
+- (void)setHasAdPrivacyMarkPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 64;
   }
@@ -530,45 +530,45 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (id)adPrivacyMarkPositionAsString:(int)a3
+- (id)adPrivacyMarkPositionAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047E078 + a3);
+    v4 = *(&off_10047E078 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsAdPrivacyMarkPosition:(id)a3
+- (int)StringAsAdPrivacyMarkPosition:(id)position
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BottomRight"])
+  positionCopy = position;
+  if ([positionCopy isEqualToString:@"BottomRight"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TopRight"])
+  else if ([positionCopy isEqualToString:@"TopRight"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TopLeft"])
+  else if ([positionCopy isEqualToString:@"TopLeft"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BottomLeft"])
+  else if ([positionCopy isEqualToString:@"BottomLeft"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NoAdPrivacyMark"])
+  else if ([positionCopy isEqualToString:@"NoAdPrivacyMark"])
   {
     v4 = 4;
   }
@@ -594,9 +594,9 @@
   }
 }
 
-- (void)setHasUnfilledReasonCode:(BOOL)a3
+- (void)setHasUnfilledReasonCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x2000;
   }
@@ -609,45 +609,45 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (id)unfilledReasonCodeAsString:(int)a3
+- (id)unfilledReasonCodeAsString:(int)string
 {
-  if ((a3 - 201) >= 5)
+  if ((string - 201) >= 5)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047E0A0 + (a3 - 201));
+    v4 = *(&off_10047E0A0 + (string - 201));
   }
 
   return v4;
 }
 
-- (int)StringAsUnfilledReasonCode:(id)a3
+- (int)StringAsUnfilledReasonCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"InventoryUnavailable"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"InventoryUnavailable"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"GlobalExclusion"])
+  else if ([codeCopy isEqualToString:@"GlobalExclusion"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"PolicyExclusion"])
+  else if ([codeCopy isEqualToString:@"PolicyExclusion"])
   {
     v4 = 203;
   }
 
-  else if ([v3 isEqualToString:@"LimitExceeded"])
+  else if ([codeCopy isEqualToString:@"LimitExceeded"])
   {
     v4 = 204;
   }
 
-  else if ([v3 isEqualToString:@"AdsDisabledInIssue"])
+  else if ([codeCopy isEqualToString:@"AdsDisabledInIssue"])
   {
     v4 = 205;
   }
@@ -660,45 +660,45 @@
   return v4;
 }
 
-- (void)addJourneyStartRelayValues:(id)a3
+- (void)addJourneyStartRelayValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   journeyStartRelayValues = self->_journeyStartRelayValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!journeyStartRelayValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_journeyStartRelayValues;
     self->_journeyStartRelayValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     journeyStartRelayValues = self->_journeyStartRelayValues;
   }
 
-  [(NSMutableArray *)journeyStartRelayValues addObject:v4];
+  [(NSMutableArray *)journeyStartRelayValues addObject:valuesCopy];
 }
 
-- (void)addAdLayoutData:(id)a3
+- (void)addAdLayoutData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   adLayoutDatas = self->_adLayoutDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!adLayoutDatas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_adLayoutDatas;
     self->_adLayoutDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     adLayoutDatas = self->_adLayoutDatas;
   }
 
-  [(NSMutableArray *)adLayoutDatas addObject:v4];
+  [(NSMutableArray *)adLayoutDatas addObject:dataCopy];
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 32;
   }
@@ -724,9 +724,9 @@
   }
 }
 
-- (void)setHasAdPrivacyMarkerType:(BOOL)a3
+- (void)setHasAdPrivacyMarkerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -739,18 +739,18 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (id)adPrivacyMarkerTypeAsString:(int)a3
+- (id)adPrivacyMarkerTypeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"Large";
     }
 
     else
     {
-      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -762,17 +762,17 @@
   return v4;
 }
 
-- (int)StringAsAdPrivacyMarkerType:(id)a3
+- (int)StringAsAdPrivacyMarkerType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Standard"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Standard"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Large"];
+    v4 = [typeCopy isEqualToString:@"Large"];
   }
 
   return v4;
@@ -783,8 +783,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdData;
   v3 = [(APPBAdData *)&v7 description];
-  v4 = [(APPBAdData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -890,8 +890,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v177 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation = [*(*(&v177 + 1) + 8 * i) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v177 objects:v189 count:16];
@@ -906,8 +906,8 @@
   mediaFiles = self->_mediaFiles;
   if (mediaFiles)
   {
-    v27 = [(APPBMediaFiles *)mediaFiles dictionaryRepresentation];
-    [v4 setObject:v27 forKey:@"mediaFiles"];
+    dictionaryRepresentation2 = [(APPBMediaFiles *)mediaFiles dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"mediaFiles"];
   }
 
   audioURL = self->_audioURL;
@@ -1023,8 +1023,8 @@ LABEL_46:
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v173 + 1) + 8 * j) dictionaryRepresentation];
-          [v39 addObject:v45];
+          dictionaryRepresentation3 = [*(*(&v173 + 1) + 8 * j) dictionaryRepresentation];
+          [v39 addObject:dictionaryRepresentation3];
         }
 
         v42 = [(NSMutableArray *)v40 countByEnumeratingWithState:&v173 objects:v188 count:16];
@@ -1088,8 +1088,8 @@ LABEL_46:
             objc_enumerationMutation(v52);
           }
 
-          v57 = [*(*(&v169 + 1) + 8 * k) dictionaryRepresentation];
-          [v51 addObject:v57];
+          dictionaryRepresentation4 = [*(*(&v169 + 1) + 8 * k) dictionaryRepresentation];
+          [v51 addObject:dictionaryRepresentation4];
         }
 
         v54 = [(NSMutableArray *)v52 countByEnumeratingWithState:&v169 objects:v187 count:16];
@@ -1135,8 +1135,8 @@ LABEL_46:
             objc_enumerationMutation(v61);
           }
 
-          v66 = [*(*(&v165 + 1) + 8 * m) dictionaryRepresentation];
-          [v60 addObject:v66];
+          dictionaryRepresentation5 = [*(*(&v165 + 1) + 8 * m) dictionaryRepresentation];
+          [v60 addObject:dictionaryRepresentation5];
         }
 
         v63 = [(NSMutableArray *)v61 countByEnumeratingWithState:&v165 objects:v186 count:16];
@@ -1157,15 +1157,15 @@ LABEL_46:
   installAttribution = self->_installAttribution;
   if (installAttribution)
   {
-    v69 = [(APPBInstallAttribution *)installAttribution dictionaryRepresentation];
-    [v4 setObject:v69 forKey:@"installAttribution"];
+    dictionaryRepresentation6 = [(APPBInstallAttribution *)installAttribution dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"installAttribution"];
   }
 
   specification = self->_specification;
   if (specification)
   {
-    v71 = [(APPBAdSpecification *)specification dictionaryRepresentation];
-    [v4 setObject:v71 forKey:@"specification"];
+    dictionaryRepresentation7 = [(APPBAdSpecification *)specification dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation7 forKey:@"specification"];
   }
 
   v72 = self->_has;
@@ -1186,8 +1186,8 @@ LABEL_46:
   merchant = self->_merchant;
   if (merchant)
   {
-    v76 = [(APPBMerchant *)merchant dictionaryRepresentation];
-    [v4 setObject:v76 forKey:@"merchant"];
+    dictionaryRepresentation8 = [(APPBMerchant *)merchant dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation8 forKey:@"merchant"];
   }
 
   if ([(NSMutableArray *)self->_nativeMetadatas count])
@@ -1212,8 +1212,8 @@ LABEL_46:
             objc_enumerationMutation(v78);
           }
 
-          v83 = [*(*(&v161 + 1) + 8 * n) dictionaryRepresentation];
-          [v77 addObject:v83];
+          dictionaryRepresentation9 = [*(*(&v161 + 1) + 8 * n) dictionaryRepresentation];
+          [v77 addObject:dictionaryRepresentation9];
         }
 
         v80 = [(NSMutableArray *)v78 countByEnumeratingWithState:&v161 objects:v185 count:16];
@@ -1268,8 +1268,8 @@ LABEL_46:
             objc_enumerationMutation(v89);
           }
 
-          v94 = [*(*(&v157 + 1) + 8 * ii) dictionaryRepresentation];
-          [v88 addObject:v94];
+          dictionaryRepresentation10 = [*(*(&v157 + 1) + 8 * ii) dictionaryRepresentation];
+          [v88 addObject:dictionaryRepresentation10];
         }
 
         v91 = [(NSMutableArray *)v89 countByEnumeratingWithState:&v157 objects:v184 count:16];
@@ -1303,8 +1303,8 @@ LABEL_46:
             objc_enumerationMutation(v96);
           }
 
-          v101 = [*(*(&v153 + 1) + 8 * jj) dictionaryRepresentation];
-          [v95 addObject:v101];
+          dictionaryRepresentation11 = [*(*(&v153 + 1) + 8 * jj) dictionaryRepresentation];
+          [v95 addObject:dictionaryRepresentation11];
         }
 
         v98 = [(NSMutableArray *)v96 countByEnumeratingWithState:&v153 objects:v183 count:16];
@@ -1319,15 +1319,15 @@ LABEL_46:
   transparencyDetails = self->_transparencyDetails;
   if (transparencyDetails)
   {
-    v103 = [(APPBTransparencyDetails *)transparencyDetails dictionaryRepresentation];
-    [v4 setObject:v103 forKey:@"transparencyDetails"];
+    dictionaryRepresentation12 = [(APPBTransparencyDetails *)transparencyDetails dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation12 forKey:@"transparencyDetails"];
   }
 
   nativeMediaCreativeMetadata = self->_nativeMediaCreativeMetadata;
   if (nativeMediaCreativeMetadata)
   {
-    v105 = [(APPBNativeMediaCreativeMetadata *)nativeMediaCreativeMetadata dictionaryRepresentation];
-    [v4 setObject:v105 forKey:@"nativeMediaCreativeMetadata"];
+    dictionaryRepresentation13 = [(APPBNativeMediaCreativeMetadata *)nativeMediaCreativeMetadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation13 forKey:@"nativeMediaCreativeMetadata"];
   }
 
   adTagContentString = self->_adTagContentString;
@@ -1423,8 +1423,8 @@ LABEL_46:
             objc_enumerationMutation(v118);
           }
 
-          v123 = [*(*(&v149 + 1) + 8 * kk) dictionaryRepresentation];
-          [v117 addObject:v123];
+          dictionaryRepresentation14 = [*(*(&v149 + 1) + 8 * kk) dictionaryRepresentation];
+          [v117 addObject:dictionaryRepresentation14];
         }
 
         v120 = [(NSMutableArray *)v118 countByEnumeratingWithState:&v149 objects:v182 count:16];
@@ -1458,8 +1458,8 @@ LABEL_46:
             objc_enumerationMutation(v125);
           }
 
-          v130 = [*(*(&v145 + 1) + 8 * mm) dictionaryRepresentation];
-          [v124 addObject:v130];
+          dictionaryRepresentation15 = [*(*(&v145 + 1) + 8 * mm) dictionaryRepresentation];
+          [v124 addObject:dictionaryRepresentation15];
         }
 
         v127 = [(NSMutableArray *)v125 countByEnumeratingWithState:&v145 objects:v181 count:16];
@@ -1486,22 +1486,22 @@ LABEL_46:
   adFrequencyCapData = self->_adFrequencyCapData;
   if (adFrequencyCapData)
   {
-    v134 = [(APPBAdFrequencyCapData *)adFrequencyCapData dictionaryRepresentation];
-    [v4 setObject:v134 forKey:@"adFrequencyCapData"];
+    dictionaryRepresentation16 = [(APPBAdFrequencyCapData *)adFrequencyCapData dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation16 forKey:@"adFrequencyCapData"];
   }
 
   policyData = self->_policyData;
   if (policyData)
   {
-    v136 = [(APPBPolicyData *)policyData dictionaryRepresentation];
-    [v4 setObject:v136 forKey:@"policyData"];
+    dictionaryRepresentation17 = [(APPBPolicyData *)policyData dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation17 forKey:@"policyData"];
   }
 
   targetingDimensions = self->_targetingDimensions;
   if (targetingDimensions)
   {
-    v138 = [(APPBTargetingDimensions *)targetingDimensions dictionaryRepresentation];
-    [v4 setObject:v138 forKey:@"targetingDimensions"];
+    dictionaryRepresentation18 = [(APPBTargetingDimensions *)targetingDimensions dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation18 forKey:@"targetingDimensions"];
   }
 
   v139 = self->_has;
@@ -1542,9 +1542,9 @@ LABEL_46:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_bannerURL)
   {
     PBDataWriterWriteStringField();
@@ -2257,54 +2257,54 @@ LABEL_54:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v70 = v4;
+  toCopy = to;
+  v70 = toCopy;
   if (self->_bannerURL)
   {
-    [v4 setBannerURL:?];
-    v4 = v70;
+    [toCopy setBannerURL:?];
+    toCopy = v70;
   }
 
   if (self->_bannerWebArchiveURL)
   {
     [v70 setBannerWebArchiveURL:?];
-    v4 = v70;
+    toCopy = v70;
   }
 
   if (self->_uniqueIdentifier)
   {
     [v70 setUniqueIdentifier:?];
-    v4 = v70;
+    toCopy = v70;
   }
 
   if (self->_impressionIdentifierData)
   {
     [v70 setImpressionIdentifierData:?];
-    v4 = v70;
+    toCopy = v70;
   }
 
   if (self->_humanReadableName)
   {
     [v70 setHumanReadableName:?];
-    v4 = v70;
+    toCopy = v70;
   }
 
-  *(v4 + 70) = self->_impressionCount;
+  *(toCopy + 70) = self->_impressionCount;
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_expirationDate;
-    *(v4 + 125) |= 1u;
+    *(toCopy + 1) = *&self->_expirationDate;
+    *(toCopy + 125) |= 1u;
   }
 
   if ([(APPBAdData *)self trackingURLsCount])
   {
     [v70 clearTrackingURLs];
-    v5 = [(APPBAdData *)self trackingURLsCount];
-    if (v5)
+    trackingURLsCount = [(APPBAdData *)self trackingURLsCount];
+    if (trackingURLsCount)
     {
-      v6 = v5;
+      v6 = trackingURLsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBAdData *)self trackingURLAtIndex:i];
@@ -2332,10 +2332,10 @@ LABEL_54:
   if ([(APPBAdData *)self confirmedClickPixelURLsCount])
   {
     [v70 clearConfirmedClickPixelURLs];
-    v9 = [(APPBAdData *)self confirmedClickPixelURLsCount];
-    if (v9)
+    confirmedClickPixelURLsCount = [(APPBAdData *)self confirmedClickPixelURLsCount];
+    if (confirmedClickPixelURLsCount)
     {
-      v10 = v9;
+      v10 = confirmedClickPixelURLsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(APPBAdData *)self confirmedClickPixelURLsAtIndex:j];
@@ -2352,10 +2352,10 @@ LABEL_54:
   if ([(APPBAdData *)self videoAssetsCount])
   {
     [v70 clearVideoAssets];
-    v13 = [(APPBAdData *)self videoAssetsCount];
-    if (v13)
+    videoAssetsCount = [(APPBAdData *)self videoAssetsCount];
+    if (videoAssetsCount)
     {
-      v14 = v13;
+      v14 = videoAssetsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(APPBAdData *)self videoAssetAtIndex:k];
@@ -2427,10 +2427,10 @@ LABEL_45:
   if ([(APPBAdData *)self screenSaverImageURLsCount])
   {
     [v70 clearScreenSaverImageURLs];
-    v19 = [(APPBAdData *)self screenSaverImageURLsCount];
-    if (v19)
+    screenSaverImageURLsCount = [(APPBAdData *)self screenSaverImageURLsCount];
+    if (screenSaverImageURLsCount)
     {
-      v20 = v19;
+      v20 = screenSaverImageURLsCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(APPBAdData *)self screenSaverImageURLAtIndex:m];
@@ -2442,10 +2442,10 @@ LABEL_45:
   if ([(APPBAdData *)self excludeTagsCount])
   {
     [v70 clearExcludeTags];
-    v23 = [(APPBAdData *)self excludeTagsCount];
-    if (v23)
+    excludeTagsCount = [(APPBAdData *)self excludeTagsCount];
+    if (excludeTagsCount)
     {
-      v24 = v23;
+      v24 = excludeTagsCount;
       for (n = 0; n != v24; ++n)
       {
         v26 = [(APPBAdData *)self excludeTagAtIndex:n];
@@ -2467,10 +2467,10 @@ LABEL_45:
   if ([(APPBAdData *)self rewardTokensCount])
   {
     [v70 clearRewardTokens];
-    v27 = [(APPBAdData *)self rewardTokensCount];
-    if (v27)
+    rewardTokensCount = [(APPBAdData *)self rewardTokensCount];
+    if (rewardTokensCount)
     {
-      v28 = v27;
+      v28 = rewardTokensCount;
       for (ii = 0; ii != v28; ++ii)
       {
         v30 = [(APPBAdData *)self rewardTokensAtIndex:ii];
@@ -2488,10 +2488,10 @@ LABEL_45:
   if ([(APPBAdData *)self matchTagClausesCount])
   {
     [v70 clearMatchTagClauses];
-    v31 = [(APPBAdData *)self matchTagClausesCount];
-    if (v31)
+    matchTagClausesCount = [(APPBAdData *)self matchTagClausesCount];
+    if (matchTagClausesCount)
     {
-      v32 = v31;
+      v32 = matchTagClausesCount;
       for (jj = 0; jj != v32; ++jj)
       {
         v34 = [(APPBAdData *)self matchTagClauseAtIndex:jj];
@@ -2534,10 +2534,10 @@ LABEL_45:
   if ([(APPBAdData *)self geofencesCount])
   {
     [v70 clearGeofences];
-    v36 = [(APPBAdData *)self geofencesCount];
-    if (v36)
+    geofencesCount = [(APPBAdData *)self geofencesCount];
+    if (geofencesCount)
     {
-      v37 = v36;
+      v37 = geofencesCount;
       for (kk = 0; kk != v37; ++kk)
       {
         v39 = [(APPBAdData *)self geofencesAtIndex:kk];
@@ -2559,10 +2559,10 @@ LABEL_45:
   if ([(APPBAdData *)self creativeSizesCount])
   {
     [v70 clearCreativeSizes];
-    v40 = [(APPBAdData *)self creativeSizesCount];
-    if (v40)
+    creativeSizesCount = [(APPBAdData *)self creativeSizesCount];
+    if (creativeSizesCount)
     {
-      v41 = v40;
+      v41 = creativeSizesCount;
       for (mm = 0; mm != v41; ++mm)
       {
         v43 = [(APPBAdData *)self creativeSizesAtIndex:mm];
@@ -2612,10 +2612,10 @@ LABEL_45:
   if ([(APPBAdData *)self nativeMetadatasCount])
   {
     [v70 clearNativeMetadatas];
-    v46 = [(APPBAdData *)self nativeMetadatasCount];
-    if (v46)
+    nativeMetadatasCount = [(APPBAdData *)self nativeMetadatasCount];
+    if (nativeMetadatasCount)
     {
-      v47 = v46;
+      v47 = nativeMetadatasCount;
       for (nn = 0; nn != v47; ++nn)
       {
         v49 = [(APPBAdData *)self nativeMetadataAtIndex:nn];
@@ -2633,10 +2633,10 @@ LABEL_45:
   if ([(APPBAdData *)self actionsCount])
   {
     [v70 clearActions];
-    v50 = [(APPBAdData *)self actionsCount];
-    if (v50)
+    actionsCount = [(APPBAdData *)self actionsCount];
+    if (actionsCount)
     {
-      v51 = v50;
+      v51 = actionsCount;
       for (i1 = 0; i1 != v51; ++i1)
       {
         v53 = [(APPBAdData *)self actionsAtIndex:i1];
@@ -2648,10 +2648,10 @@ LABEL_45:
   if ([(APPBAdData *)self iTunesMetadatasCount])
   {
     [v70 clearITunesMetadatas];
-    v54 = [(APPBAdData *)self iTunesMetadatasCount];
-    if (v54)
+    iTunesMetadatasCount = [(APPBAdData *)self iTunesMetadatasCount];
+    if (iTunesMetadatasCount)
     {
-      v55 = v54;
+      v55 = iTunesMetadatasCount;
       for (i2 = 0; i2 != v55; ++i2)
       {
         v57 = [(APPBAdData *)self iTunesMetadataAtIndex:i2];
@@ -2722,10 +2722,10 @@ LABEL_45:
   if ([(APPBAdData *)self journeyStartRelayValuesCount])
   {
     [v70 clearJourneyStartRelayValues];
-    v60 = [(APPBAdData *)self journeyStartRelayValuesCount];
-    if (v60)
+    journeyStartRelayValuesCount = [(APPBAdData *)self journeyStartRelayValuesCount];
+    if (journeyStartRelayValuesCount)
     {
-      v61 = v60;
+      v61 = journeyStartRelayValuesCount;
       for (i3 = 0; i3 != v61; ++i3)
       {
         v63 = [(APPBAdData *)self journeyStartRelayValuesAtIndex:i3];
@@ -2737,10 +2737,10 @@ LABEL_45:
   if ([(APPBAdData *)self adLayoutDatasCount])
   {
     [v70 clearAdLayoutDatas];
-    v64 = [(APPBAdData *)self adLayoutDatasCount];
-    if (v64)
+    adLayoutDatasCount = [(APPBAdData *)self adLayoutDatasCount];
+    if (adLayoutDatasCount)
     {
-      v65 = v64;
+      v65 = adLayoutDatasCount;
       for (i4 = 0; i4 != v65; ++i4)
       {
         v67 = [(APPBAdData *)self adLayoutDataAtIndex:i4];
@@ -2794,26 +2794,26 @@ LABEL_45:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bannerURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bannerURL copyWithZone:zone];
   v7 = v5[21];
   v5[21] = v6;
 
-  v8 = [(NSString *)self->_bannerWebArchiveURL copyWithZone:a3];
+  v8 = [(NSString *)self->_bannerWebArchiveURL copyWithZone:zone];
   v9 = v5[22];
   v5[22] = v8;
 
-  v10 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v11 = v5[60];
   v5[60] = v10;
 
-  v12 = [(NSData *)self->_impressionIdentifierData copyWithZone:a3];
+  v12 = [(NSData *)self->_impressionIdentifierData copyWithZone:zone];
   v13 = v5[36];
   v5[36] = v12;
 
-  v14 = [(NSString *)self->_humanReadableName copyWithZone:a3];
+  v14 = [(NSString *)self->_humanReadableName copyWithZone:zone];
   v15 = v5[31];
   v5[31] = v14;
 
@@ -2844,7 +2844,7 @@ LABEL_45:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v216 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v216 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addTrackingURL:v21];
 
         v20 = v20 + 1;
@@ -2857,7 +2857,7 @@ LABEL_45:
     while (v18);
   }
 
-  v22 = [(NSString *)self->_trackingURLSubstitutionParameter copyWithZone:a3];
+  v22 = [(NSString *)self->_trackingURLSubstitutionParameter copyWithZone:zone];
   v23 = v5[55];
   v5[55] = v22;
 
@@ -2867,7 +2867,7 @@ LABEL_45:
     *(v5 + 125) |= 0x10000u;
   }
 
-  v24 = [(NSString *)self->_accessibilityDescription copyWithZone:a3];
+  v24 = [(NSString *)self->_accessibilityDescription copyWithZone:zone];
   v25 = v5[8];
   v5[8] = v24;
 
@@ -2891,7 +2891,7 @@ LABEL_45:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v212 + 1) + 8 * v30) copyWithZone:a3];
+        v31 = [*(*(&v212 + 1) + 8 * v30) copyWithZone:zone];
         [v5 addConfirmedClickPixelURLs:v31];
 
         v30 = v30 + 1;
@@ -2904,7 +2904,7 @@ LABEL_45:
     while (v28);
   }
 
-  v32 = [(NSString *)self->_bannerQueryString copyWithZone:a3];
+  v32 = [(NSString *)self->_bannerQueryString copyWithZone:zone];
   v33 = v5[20];
   v5[20] = v32;
 
@@ -2928,7 +2928,7 @@ LABEL_45:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v208 + 1) + 8 * v38) copyWithZone:a3];
+        v39 = [*(*(&v208 + 1) + 8 * v38) copyWithZone:zone];
         [v5 addVideoAsset:v39];
 
         v38 = v38 + 1;
@@ -2941,19 +2941,19 @@ LABEL_45:
     while (v36);
   }
 
-  v40 = [(APPBMediaFiles *)self->_mediaFiles copyWithZone:a3];
+  v40 = [(APPBMediaFiles *)self->_mediaFiles copyWithZone:zone];
   v41 = v5[43];
   v5[43] = v40;
 
-  v42 = [(NSString *)self->_audioURL copyWithZone:a3];
+  v42 = [(NSString *)self->_audioURL copyWithZone:zone];
   v43 = v5[18];
   v5[18] = v42;
 
-  v44 = [(NSString *)self->_slateImageURL copyWithZone:a3];
+  v44 = [(NSString *)self->_slateImageURL copyWithZone:zone];
   v45 = v5[50];
   v5[50] = v44;
 
-  v46 = [(NSString *)self->_aTVTunerImageURL copyWithZone:a3];
+  v46 = [(NSString *)self->_aTVTunerImageURL copyWithZone:zone];
   v47 = v5[7];
   v5[7] = v46;
 
@@ -3010,7 +3010,7 @@ LABEL_30:
           objc_enumerationMutation(v49);
         }
 
-        v54 = [*(*(&v204 + 1) + 8 * v53) copyWithZone:a3];
+        v54 = [*(*(&v204 + 1) + 8 * v53) copyWithZone:zone];
         [v5 addScreenSaverImageURL:v54];
 
         v53 = v53 + 1;
@@ -3043,7 +3043,7 @@ LABEL_30:
           objc_enumerationMutation(v55);
         }
 
-        v60 = [*(*(&v200 + 1) + 8 * v59) copyWithZone:a3];
+        v60 = [*(*(&v200 + 1) + 8 * v59) copyWithZone:zone];
         [v5 addExcludeTag:v60];
 
         v59 = v59 + 1;
@@ -3056,11 +3056,11 @@ LABEL_30:
     while (v57);
   }
 
-  v61 = [(NSString *)self->_iAdJSVersion copyWithZone:a3];
+  v61 = [(NSString *)self->_iAdJSVersion copyWithZone:zone];
   v62 = v5[33];
   v5[33] = v61;
 
-  v63 = [(NSString *)self->_iAdJSURL copyWithZone:a3];
+  v63 = [(NSString *)self->_iAdJSURL copyWithZone:zone];
   v64 = v5[32];
   v5[32] = v63;
 
@@ -3084,7 +3084,7 @@ LABEL_30:
           objc_enumerationMutation(v65);
         }
 
-        v70 = [*(*(&v196 + 1) + 8 * v69) copyWithZone:a3];
+        v70 = [*(*(&v196 + 1) + 8 * v69) copyWithZone:zone];
         [v5 addRewardTokens:v70];
 
         v69 = v69 + 1;
@@ -3123,7 +3123,7 @@ LABEL_30:
           objc_enumerationMutation(v71);
         }
 
-        v76 = [*(*(&v192 + 1) + 8 * v75) copyWithZone:a3];
+        v76 = [*(*(&v192 + 1) + 8 * v75) copyWithZone:zone];
         [v5 addMatchTagClause:v76];
 
         v75 = v75 + 1;
@@ -3142,15 +3142,15 @@ LABEL_30:
     *(v5 + 125) |= 0x10u;
   }
 
-  v77 = [(NSString *)self->_logoImageURL copyWithZone:a3];
+  v77 = [(NSString *)self->_logoImageURL copyWithZone:zone];
   v78 = v5[40];
   v5[40] = v77;
 
-  v79 = [(NSString *)self->_headlineForLCD copyWithZone:a3];
+  v79 = [(NSString *)self->_headlineForLCD copyWithZone:zone];
   v80 = v5[30];
   v5[30] = v79;
 
-  v81 = [(NSString *)self->_descriptionForLCD copyWithZone:a3];
+  v81 = [(NSString *)self->_descriptionForLCD copyWithZone:zone];
   v82 = v5[25];
   v5[25] = v81;
 
@@ -3180,7 +3180,7 @@ LABEL_30:
           objc_enumerationMutation(v83);
         }
 
-        v88 = [*(*(&v188 + 1) + 8 * v87) copyWithZone:a3];
+        v88 = [*(*(&v188 + 1) + 8 * v87) copyWithZone:zone];
         [v5 addGeofences:v88];
 
         v87 = v87 + 1;
@@ -3193,11 +3193,11 @@ LABEL_30:
     while (v85);
   }
 
-  v89 = [(NSString *)self->_targetAppBundleID copyWithZone:a3];
+  v89 = [(NSString *)self->_targetAppBundleID copyWithZone:zone];
   v90 = v5[52];
   v5[52] = v89;
 
-  v91 = [(NSString *)self->_targetAppURLScheme copyWithZone:a3];
+  v91 = [(NSString *)self->_targetAppURLScheme copyWithZone:zone];
   v92 = v5[53];
   v5[53] = v91;
 
@@ -3221,7 +3221,7 @@ LABEL_30:
           objc_enumerationMutation(v93);
         }
 
-        v98 = [*(*(&v184 + 1) + 8 * v97) copyWithZone:a3];
+        v98 = [*(*(&v184 + 1) + 8 * v97) copyWithZone:zone];
         [v5 addCreativeSizes:v98];
 
         v97 = v97 + 1;
@@ -3240,11 +3240,11 @@ LABEL_30:
     *(v5 + 125) |= 0x800u;
   }
 
-  v99 = [(APPBInstallAttribution *)self->_installAttribution copyWithZone:a3];
+  v99 = [(APPBInstallAttribution *)self->_installAttribution copyWithZone:zone];
   v100 = v5[37];
   v5[37] = v99;
 
-  v101 = [(APPBAdSpecification *)self->_specification copyWithZone:a3];
+  v101 = [(APPBAdSpecification *)self->_specification copyWithZone:zone];
   v102 = v5[51];
   v5[51] = v101;
 
@@ -3262,7 +3262,7 @@ LABEL_30:
     *(v5 + 125) |= 0x4000u;
   }
 
-  v104 = [(APPBMerchant *)self->_merchant copyWithZone:a3];
+  v104 = [(APPBMerchant *)self->_merchant copyWithZone:zone];
   v105 = v5[44];
   v5[44] = v104;
 
@@ -3286,7 +3286,7 @@ LABEL_30:
           objc_enumerationMutation(v106);
         }
 
-        v111 = [*(*(&v180 + 1) + 8 * v110) copyWithZone:a3];
+        v111 = [*(*(&v180 + 1) + 8 * v110) copyWithZone:zone];
         [v5 addNativeMetadata:v111];
 
         v110 = v110 + 1;
@@ -3325,7 +3325,7 @@ LABEL_30:
           objc_enumerationMutation(v112);
         }
 
-        v117 = [*(*(&v176 + 1) + 8 * v116) copyWithZone:a3];
+        v117 = [*(*(&v176 + 1) + 8 * v116) copyWithZone:zone];
         [v5 addActions:v117];
 
         v116 = v116 + 1;
@@ -3358,7 +3358,7 @@ LABEL_30:
           objc_enumerationMutation(v118);
         }
 
-        v123 = [*(*(&v172 + 1) + 8 * v122) copyWithZone:a3];
+        v123 = [*(*(&v172 + 1) + 8 * v122) copyWithZone:zone];
         [v5 addITunesMetadata:v123];
 
         v122 = v122 + 1;
@@ -3371,15 +3371,15 @@ LABEL_30:
     while (v120);
   }
 
-  v124 = [(APPBTransparencyDetails *)self->_transparencyDetails copyWithZone:a3];
+  v124 = [(APPBTransparencyDetails *)self->_transparencyDetails copyWithZone:zone];
   v125 = v5[57];
   v5[57] = v124;
 
-  v126 = [(APPBNativeMediaCreativeMetadata *)self->_nativeMediaCreativeMetadata copyWithZone:a3];
+  v126 = [(APPBNativeMediaCreativeMetadata *)self->_nativeMediaCreativeMetadata copyWithZone:zone];
   v127 = v5[45];
   v5[45] = v126;
 
-  v128 = [(NSString *)self->_adTagContentString copyWithZone:a3];
+  v128 = [(NSString *)self->_adTagContentString copyWithZone:zone];
   v129 = v5[16];
   v5[16] = v128;
 
@@ -3397,7 +3397,7 @@ LABEL_30:
     *(v5 + 125) |= 0x40u;
   }
 
-  v131 = [(NSString *)self->_adDataResponseIdentifier copyWithZone:a3];
+  v131 = [(NSString *)self->_adDataResponseIdentifier copyWithZone:zone];
   v132 = v5[10];
   v5[10] = v131;
 
@@ -3407,15 +3407,15 @@ LABEL_30:
     *(v5 + 125) |= 0x2000u;
   }
 
-  v133 = [(NSString *)self->_unfilledReasonInfo copyWithZone:a3];
+  v133 = [(NSString *)self->_unfilledReasonInfo copyWithZone:zone];
   v134 = v5[59];
   v5[59] = v133;
 
-  v135 = [(NSString *)self->_adOriginalRequesterId copyWithZone:a3];
+  v135 = [(NSString *)self->_adOriginalRequesterId copyWithZone:zone];
   v136 = v5[14];
   v5[14] = v135;
 
-  v137 = [(NSString *)self->_expressionToEvaluate copyWithZone:a3];
+  v137 = [(NSString *)self->_expressionToEvaluate copyWithZone:zone];
   v138 = v5[28];
   v5[28] = v137;
 
@@ -3439,7 +3439,7 @@ LABEL_30:
           objc_enumerationMutation(v139);
         }
 
-        v144 = [*(*(&v168 + 1) + 8 * v143) copyWithZone:a3];
+        v144 = [*(*(&v168 + 1) + 8 * v143) copyWithZone:zone];
         [v5 addJourneyStartRelayValues:v144];
 
         v143 = v143 + 1;
@@ -3472,7 +3472,7 @@ LABEL_30:
           objc_enumerationMutation(v145);
         }
 
-        v150 = [*(*(&v164 + 1) + 8 * v149) copyWithZone:{a3, v164}];
+        v150 = [*(*(&v164 + 1) + 8 * v149) copyWithZone:{zone, v164}];
         [v5 addAdLayoutData:v150];
 
         v149 = v149 + 1;
@@ -3485,23 +3485,23 @@ LABEL_30:
     while (v147);
   }
 
-  v151 = [(NSString *)self->_adType copyWithZone:a3];
+  v151 = [(NSString *)self->_adType copyWithZone:zone];
   v152 = v5[17];
   v5[17] = v151;
 
-  v153 = [(NSString *)self->_adFormatType copyWithZone:a3];
+  v153 = [(NSString *)self->_adFormatType copyWithZone:zone];
   v154 = v5[11];
   v5[11] = v153;
 
-  v155 = [(APPBAdFrequencyCapData *)self->_adFrequencyCapData copyWithZone:a3];
+  v155 = [(APPBAdFrequencyCapData *)self->_adFrequencyCapData copyWithZone:zone];
   v156 = v5[12];
   v5[12] = v155;
 
-  v157 = [(APPBPolicyData *)self->_policyData copyWithZone:a3];
+  v157 = [(APPBPolicyData *)self->_policyData copyWithZone:zone];
   v158 = v5[47];
   v5[47] = v157;
 
-  v159 = [(APPBTargetingDimensions *)self->_targetingDimensions copyWithZone:a3];
+  v159 = [(APPBTargetingDimensions *)self->_targetingDimensions copyWithZone:zone];
   v160 = v5[54];
   v5[54] = v159;
 
@@ -3524,16 +3524,16 @@ LABEL_30:
   return v162;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   bannerURL = self->_bannerURL;
-  if (bannerURL | *(v4 + 21))
+  if (bannerURL | *(equalCopy + 21))
   {
     if (![(NSString *)bannerURL isEqual:?])
     {
@@ -3542,7 +3542,7 @@ LABEL_30:
   }
 
   bannerWebArchiveURL = self->_bannerWebArchiveURL;
-  if (bannerWebArchiveURL | *(v4 + 22))
+  if (bannerWebArchiveURL | *(equalCopy + 22))
   {
     if (![(NSString *)bannerWebArchiveURL isEqual:?])
     {
@@ -3551,7 +3551,7 @@ LABEL_30:
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 60))
+  if (uniqueIdentifier | *(equalCopy + 60))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -3560,7 +3560,7 @@ LABEL_30:
   }
 
   impressionIdentifierData = self->_impressionIdentifierData;
-  if (impressionIdentifierData | *(v4 + 36))
+  if (impressionIdentifierData | *(equalCopy + 36))
   {
     if (![(NSData *)impressionIdentifierData isEqual:?])
     {
@@ -3569,7 +3569,7 @@ LABEL_30:
   }
 
   humanReadableName = self->_humanReadableName;
-  if (humanReadableName | *(v4 + 31))
+  if (humanReadableName | *(equalCopy + 31))
   {
     if (![(NSString *)humanReadableName isEqual:?])
     {
@@ -3577,15 +3577,15 @@ LABEL_30:
     }
   }
 
-  if (self->_impressionCount != *(v4 + 70))
+  if (self->_impressionCount != *(equalCopy + 70))
   {
     goto LABEL_46;
   }
 
-  v10 = *(v4 + 125);
+  v10 = *(equalCopy + 125);
   if (*&self->_has)
   {
-    if ((v10 & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_46;
     }
@@ -3597,13 +3597,13 @@ LABEL_30:
   }
 
   trackingURLs = self->_trackingURLs;
-  if (trackingURLs | *(v4 + 56) && ![(NSMutableArray *)trackingURLs isEqual:?])
+  if (trackingURLs | *(equalCopy + 56) && ![(NSMutableArray *)trackingURLs isEqual:?])
   {
     goto LABEL_46;
   }
 
   trackingURLSubstitutionParameter = self->_trackingURLSubstitutionParameter;
-  if (trackingURLSubstitutionParameter | *(v4 + 55))
+  if (trackingURLSubstitutionParameter | *(equalCopy + 55))
   {
     if (![(NSString *)trackingURLSubstitutionParameter isEqual:?])
     {
@@ -3611,7 +3611,7 @@ LABEL_30:
     }
   }
 
-  v13 = *(v4 + 125);
+  v13 = *(equalCopy + 125);
   if (*(&self->_has + 2))
   {
     if ((v13 & 0x10000) == 0)
@@ -3621,13 +3621,13 @@ LABEL_30:
 
     if (self->_unbranded)
     {
-      if ((*(v4 + 498) & 1) == 0)
+      if ((*(equalCopy + 498) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 498))
+    else if (*(equalCopy + 498))
     {
       goto LABEL_46;
     }
@@ -3639,13 +3639,13 @@ LABEL_30:
   }
 
   accessibilityDescription = self->_accessibilityDescription;
-  if (accessibilityDescription | *(v4 + 8) && ![(NSString *)accessibilityDescription isEqual:?])
+  if (accessibilityDescription | *(equalCopy + 8) && ![(NSString *)accessibilityDescription isEqual:?])
   {
     goto LABEL_46;
   }
 
   confirmedClickPixelURLs = self->_confirmedClickPixelURLs;
-  if (confirmedClickPixelURLs | *(v4 + 23))
+  if (confirmedClickPixelURLs | *(equalCopy + 23))
   {
     if (![(NSMutableArray *)confirmedClickPixelURLs isEqual:?])
     {
@@ -3654,7 +3654,7 @@ LABEL_30:
   }
 
   bannerQueryString = self->_bannerQueryString;
-  if (bannerQueryString | *(v4 + 20))
+  if (bannerQueryString | *(equalCopy + 20))
   {
     if (![(NSString *)bannerQueryString isEqual:?])
     {
@@ -3663,7 +3663,7 @@ LABEL_30:
   }
 
   videoAssets = self->_videoAssets;
-  if (videoAssets | *(v4 + 61))
+  if (videoAssets | *(equalCopy + 61))
   {
     if (![(NSMutableArray *)videoAssets isEqual:?])
     {
@@ -3672,7 +3672,7 @@ LABEL_30:
   }
 
   mediaFiles = self->_mediaFiles;
-  if (mediaFiles | *(v4 + 43))
+  if (mediaFiles | *(equalCopy + 43))
   {
     if (![(APPBMediaFiles *)mediaFiles isEqual:?])
     {
@@ -3681,7 +3681,7 @@ LABEL_30:
   }
 
   audioURL = self->_audioURL;
-  if (audioURL | *(v4 + 18))
+  if (audioURL | *(equalCopy + 18))
   {
     if (![(NSString *)audioURL isEqual:?])
     {
@@ -3690,7 +3690,7 @@ LABEL_30:
   }
 
   slateImageURL = self->_slateImageURL;
-  if (slateImageURL | *(v4 + 50))
+  if (slateImageURL | *(equalCopy + 50))
   {
     if (![(NSString *)slateImageURL isEqual:?])
     {
@@ -3699,7 +3699,7 @@ LABEL_30:
   }
 
   aTVTunerImageURL = self->_aTVTunerImageURL;
-  if (aTVTunerImageURL | *(v4 + 7))
+  if (aTVTunerImageURL | *(equalCopy + 7))
   {
     if (![(NSString *)aTVTunerImageURL isEqual:?])
     {
@@ -3708,7 +3708,7 @@ LABEL_30:
   }
 
   has = self->_has;
-  v23 = *(v4 + 125);
+  v23 = *(equalCopy + 125);
   if ((*&has & 0x8000) != 0)
   {
     if ((v23 & 0x8000) == 0)
@@ -3718,13 +3718,13 @@ LABEL_30:
 
     if (self->_downloadWebArchivesBeforeShowingBanner)
     {
-      if ((*(v4 + 497) & 1) == 0)
+      if ((*(equalCopy + 497) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 497))
+    else if (*(equalCopy + 497))
     {
       goto LABEL_46;
     }
@@ -3737,7 +3737,7 @@ LABEL_30:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v23 & 0x100) == 0 || self->_bannerImpressionThreshold != *(v4 + 38))
+    if ((v23 & 0x100) == 0 || self->_bannerImpressionThreshold != *(equalCopy + 38))
     {
       goto LABEL_46;
     }
@@ -3750,7 +3750,7 @@ LABEL_30:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v23 & 0x200) == 0 || self->_bannerNewContentCandidacyThreshold != *(v4 + 39))
+    if ((v23 & 0x200) == 0 || self->_bannerNewContentCandidacyThreshold != *(equalCopy + 39))
     {
       goto LABEL_46;
     }
@@ -3762,13 +3762,13 @@ LABEL_30:
   }
 
   screenSaverImageURLs = self->_screenSaverImageURLs;
-  if (screenSaverImageURLs | *(v4 + 49) && ![(NSMutableArray *)screenSaverImageURLs isEqual:?])
+  if (screenSaverImageURLs | *(equalCopy + 49) && ![(NSMutableArray *)screenSaverImageURLs isEqual:?])
   {
     goto LABEL_46;
   }
 
   excludeTags = self->_excludeTags;
-  if (excludeTags | *(v4 + 27))
+  if (excludeTags | *(equalCopy + 27))
   {
     if (![(NSMutableArray *)excludeTags isEqual:?])
     {
@@ -3777,7 +3777,7 @@ LABEL_30:
   }
 
   iAdJSVersion = self->_iAdJSVersion;
-  if (iAdJSVersion | *(v4 + 33))
+  if (iAdJSVersion | *(equalCopy + 33))
   {
     if (![(NSString *)iAdJSVersion isEqual:?])
     {
@@ -3786,7 +3786,7 @@ LABEL_30:
   }
 
   iAdJSURL = self->_iAdJSURL;
-  if (iAdJSURL | *(v4 + 32))
+  if (iAdJSURL | *(equalCopy + 32))
   {
     if (![(NSString *)iAdJSURL isEqual:?])
     {
@@ -3795,7 +3795,7 @@ LABEL_30:
   }
 
   rewardTokens = self->_rewardTokens;
-  if (rewardTokens | *(v4 + 48))
+  if (rewardTokens | *(equalCopy + 48))
   {
     if (![(NSMutableArray *)rewardTokens isEqual:?])
     {
@@ -3804,10 +3804,10 @@ LABEL_30:
   }
 
   v31 = self->_has;
-  v32 = *(v4 + 125);
+  v32 = *(equalCopy + 125);
   if ((*&v31 & 8) != 0)
   {
-    if ((v32 & 8) == 0 || self->_rewardTokensExpiration != *(v4 + 4))
+    if ((v32 & 8) == 0 || self->_rewardTokensExpiration != *(equalCopy + 4))
     {
       goto LABEL_46;
     }
@@ -3819,7 +3819,7 @@ LABEL_30:
   }
 
   matchTagClauses = self->_matchTagClauses;
-  if (matchTagClauses | *(v4 + 41))
+  if (matchTagClauses | *(equalCopy + 41))
   {
     if (![(NSMutableArray *)matchTagClauses isEqual:?])
     {
@@ -3829,10 +3829,10 @@ LABEL_30:
     v31 = self->_has;
   }
 
-  v34 = *(v4 + 125);
+  v34 = *(equalCopy + 125);
   if ((*&v31 & 0x10) != 0)
   {
-    if ((v34 & 0x10) == 0 || self->_skipThreshold != *(v4 + 5))
+    if ((v34 & 0x10) == 0 || self->_skipThreshold != *(equalCopy + 5))
     {
       goto LABEL_46;
     }
@@ -3844,13 +3844,13 @@ LABEL_30:
   }
 
   logoImageURL = self->_logoImageURL;
-  if (logoImageURL | *(v4 + 40) && ![(NSString *)logoImageURL isEqual:?])
+  if (logoImageURL | *(equalCopy + 40) && ![(NSString *)logoImageURL isEqual:?])
   {
     goto LABEL_46;
   }
 
   headlineForLCD = self->_headlineForLCD;
-  if (headlineForLCD | *(v4 + 30))
+  if (headlineForLCD | *(equalCopy + 30))
   {
     if (![(NSString *)headlineForLCD isEqual:?])
     {
@@ -3859,7 +3859,7 @@ LABEL_30:
   }
 
   descriptionForLCD = self->_descriptionForLCD;
-  if (descriptionForLCD | *(v4 + 25))
+  if (descriptionForLCD | *(equalCopy + 25))
   {
     if (![(NSString *)descriptionForLCD isEqual:?])
     {
@@ -3867,10 +3867,10 @@ LABEL_30:
     }
   }
 
-  v38 = *(v4 + 125);
+  v38 = *(equalCopy + 125);
   if ((*&self->_has & 4) != 0)
   {
-    if ((v38 & 4) == 0 || self->_priority != *(v4 + 3))
+    if ((v38 & 4) == 0 || self->_priority != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
@@ -3882,13 +3882,13 @@ LABEL_30:
   }
 
   geofences = self->_geofences;
-  if (geofences | *(v4 + 29) && ![(NSMutableArray *)geofences isEqual:?])
+  if (geofences | *(equalCopy + 29) && ![(NSMutableArray *)geofences isEqual:?])
   {
     goto LABEL_46;
   }
 
   targetAppBundleID = self->_targetAppBundleID;
-  if (targetAppBundleID | *(v4 + 52))
+  if (targetAppBundleID | *(equalCopy + 52))
   {
     if (![(NSString *)targetAppBundleID isEqual:?])
     {
@@ -3897,7 +3897,7 @@ LABEL_30:
   }
 
   targetAppURLScheme = self->_targetAppURLScheme;
-  if (targetAppURLScheme | *(v4 + 53))
+  if (targetAppURLScheme | *(equalCopy + 53))
   {
     if (![(NSString *)targetAppURLScheme isEqual:?])
     {
@@ -3906,7 +3906,7 @@ LABEL_30:
   }
 
   creativeSizes = self->_creativeSizes;
-  if (creativeSizes | *(v4 + 24))
+  if (creativeSizes | *(equalCopy + 24))
   {
     if (![(NSMutableArray *)creativeSizes isEqual:?])
     {
@@ -3914,10 +3914,10 @@ LABEL_30:
     }
   }
 
-  v43 = *(v4 + 125);
+  v43 = *(equalCopy + 125);
   if ((*(&self->_has + 1) & 8) != 0)
   {
-    if ((v43 & 0x800) == 0 || self->_letterboxCreativeColor != *(v4 + 78))
+    if ((v43 & 0x800) == 0 || self->_letterboxCreativeColor != *(equalCopy + 78))
     {
       goto LABEL_46;
     }
@@ -3929,13 +3929,13 @@ LABEL_30:
   }
 
   installAttribution = self->_installAttribution;
-  if (installAttribution | *(v4 + 37) && ![(APPBInstallAttribution *)installAttribution isEqual:?])
+  if (installAttribution | *(equalCopy + 37) && ![(APPBInstallAttribution *)installAttribution isEqual:?])
   {
     goto LABEL_46;
   }
 
   specification = self->_specification;
-  if (specification | *(v4 + 51))
+  if (specification | *(equalCopy + 51))
   {
     if (![(APPBAdSpecification *)specification isEqual:?])
     {
@@ -3944,10 +3944,10 @@ LABEL_30:
   }
 
   v46 = self->_has;
-  v47 = *(v4 + 125);
+  v47 = *(equalCopy + 125);
   if ((*&v46 & 2) != 0)
   {
-    if ((v47 & 2) == 0 || self->_minimumIntervalBetweenPresentations != *(v4 + 2))
+    if ((v47 & 2) == 0 || self->_minimumIntervalBetweenPresentations != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
@@ -3967,13 +3967,13 @@ LABEL_30:
 
     if (self->_doesNotResetListeningTime)
     {
-      if ((*(v4 + 496) & 1) == 0)
+      if ((*(equalCopy + 496) & 1) == 0)
       {
         goto LABEL_46;
       }
     }
 
-    else if (*(v4 + 496))
+    else if (*(equalCopy + 496))
     {
       goto LABEL_46;
     }
@@ -3985,13 +3985,13 @@ LABEL_30:
   }
 
   merchant = self->_merchant;
-  if (merchant | *(v4 + 44) && ![(APPBMerchant *)merchant isEqual:?])
+  if (merchant | *(equalCopy + 44) && ![(APPBMerchant *)merchant isEqual:?])
   {
     goto LABEL_46;
   }
 
   nativeMetadatas = self->_nativeMetadatas;
-  if (nativeMetadatas | *(v4 + 46))
+  if (nativeMetadatas | *(equalCopy + 46))
   {
     if (![(NSMutableArray *)nativeMetadatas isEqual:?])
     {
@@ -3999,10 +3999,10 @@ LABEL_30:
     }
   }
 
-  v50 = *(v4 + 125);
+  v50 = *(equalCopy + 125);
   if ((*(&self->_has + 1) & 4) != 0)
   {
-    if ((v50 & 0x400) == 0 || self->_desiredPosition != *(v4 + 52))
+    if ((v50 & 0x400) == 0 || self->_desiredPosition != *(equalCopy + 52))
     {
       goto LABEL_46;
     }
@@ -4014,13 +4014,13 @@ LABEL_30:
   }
 
   actions = self->_actions;
-  if (actions | *(v4 + 9) && ![(NSMutableArray *)actions isEqual:?])
+  if (actions | *(equalCopy + 9) && ![(NSMutableArray *)actions isEqual:?])
   {
     goto LABEL_46;
   }
 
   iTunesMetadatas = self->_iTunesMetadatas;
-  if (iTunesMetadatas | *(v4 + 34))
+  if (iTunesMetadatas | *(equalCopy + 34))
   {
     if (![(NSMutableArray *)iTunesMetadatas isEqual:?])
     {
@@ -4029,7 +4029,7 @@ LABEL_30:
   }
 
   transparencyDetails = self->_transparencyDetails;
-  if (transparencyDetails | *(v4 + 57))
+  if (transparencyDetails | *(equalCopy + 57))
   {
     if (![(APPBTransparencyDetails *)transparencyDetails isEqual:?])
     {
@@ -4038,7 +4038,7 @@ LABEL_30:
   }
 
   nativeMediaCreativeMetadata = self->_nativeMediaCreativeMetadata;
-  if (nativeMediaCreativeMetadata | *(v4 + 45))
+  if (nativeMediaCreativeMetadata | *(equalCopy + 45))
   {
     if (![(APPBNativeMediaCreativeMetadata *)nativeMediaCreativeMetadata isEqual:?])
     {
@@ -4047,7 +4047,7 @@ LABEL_30:
   }
 
   adTagContentString = self->_adTagContentString;
-  if (adTagContentString | *(v4 + 16))
+  if (adTagContentString | *(equalCopy + 16))
   {
     if (![(NSString *)adTagContentString isEqual:?])
     {
@@ -4056,10 +4056,10 @@ LABEL_30:
   }
 
   v56 = self->_has;
-  v57 = *(v4 + 125);
+  v57 = *(equalCopy + 125);
   if ((*&v56 & 0x1000) != 0)
   {
-    if ((v57 & 0x1000) == 0 || self->_maximumPretapRequestCount != *(v4 + 84))
+    if ((v57 & 0x1000) == 0 || self->_maximumPretapRequestCount != *(equalCopy + 84))
     {
       goto LABEL_46;
     }
@@ -4072,7 +4072,7 @@ LABEL_30:
 
   if ((*&v56 & 0x40) != 0)
   {
-    if ((v57 & 0x40) == 0 || self->_adPrivacyMarkPosition != *(v4 + 30))
+    if ((v57 & 0x40) == 0 || self->_adPrivacyMarkPosition != *(equalCopy + 30))
     {
       goto LABEL_46;
     }
@@ -4084,7 +4084,7 @@ LABEL_30:
   }
 
   adDataResponseIdentifier = self->_adDataResponseIdentifier;
-  if (adDataResponseIdentifier | *(v4 + 10))
+  if (adDataResponseIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)adDataResponseIdentifier isEqual:?])
     {
@@ -4094,10 +4094,10 @@ LABEL_30:
     v56 = self->_has;
   }
 
-  v59 = *(v4 + 125);
+  v59 = *(equalCopy + 125);
   if ((*&v56 & 0x2000) != 0)
   {
-    if ((v59 & 0x2000) == 0 || self->_unfilledReasonCode != *(v4 + 116))
+    if ((v59 & 0x2000) == 0 || self->_unfilledReasonCode != *(equalCopy + 116))
     {
       goto LABEL_46;
     }
@@ -4109,13 +4109,13 @@ LABEL_30:
   }
 
   unfilledReasonInfo = self->_unfilledReasonInfo;
-  if (unfilledReasonInfo | *(v4 + 59) && ![(NSString *)unfilledReasonInfo isEqual:?])
+  if (unfilledReasonInfo | *(equalCopy + 59) && ![(NSString *)unfilledReasonInfo isEqual:?])
   {
     goto LABEL_46;
   }
 
   adOriginalRequesterId = self->_adOriginalRequesterId;
-  if (adOriginalRequesterId | *(v4 + 14))
+  if (adOriginalRequesterId | *(equalCopy + 14))
   {
     if (![(NSString *)adOriginalRequesterId isEqual:?])
     {
@@ -4124,7 +4124,7 @@ LABEL_30:
   }
 
   expressionToEvaluate = self->_expressionToEvaluate;
-  if (expressionToEvaluate | *(v4 + 28))
+  if (expressionToEvaluate | *(equalCopy + 28))
   {
     if (![(NSString *)expressionToEvaluate isEqual:?])
     {
@@ -4133,7 +4133,7 @@ LABEL_30:
   }
 
   journeyStartRelayValues = self->_journeyStartRelayValues;
-  if (journeyStartRelayValues | *(v4 + 38))
+  if (journeyStartRelayValues | *(equalCopy + 38))
   {
     if (![(NSMutableArray *)journeyStartRelayValues isEqual:?])
     {
@@ -4142,7 +4142,7 @@ LABEL_30:
   }
 
   adLayoutDatas = self->_adLayoutDatas;
-  if (adLayoutDatas | *(v4 + 13))
+  if (adLayoutDatas | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)adLayoutDatas isEqual:?])
     {
@@ -4151,7 +4151,7 @@ LABEL_30:
   }
 
   adType = self->_adType;
-  if (adType | *(v4 + 17))
+  if (adType | *(equalCopy + 17))
   {
     if (![(NSString *)adType isEqual:?])
     {
@@ -4160,7 +4160,7 @@ LABEL_30:
   }
 
   adFormatType = self->_adFormatType;
-  if (adFormatType | *(v4 + 11))
+  if (adFormatType | *(equalCopy + 11))
   {
     if (![(NSString *)adFormatType isEqual:?])
     {
@@ -4169,7 +4169,7 @@ LABEL_30:
   }
 
   adFrequencyCapData = self->_adFrequencyCapData;
-  if (adFrequencyCapData | *(v4 + 12))
+  if (adFrequencyCapData | *(equalCopy + 12))
   {
     if (![(APPBAdFrequencyCapData *)adFrequencyCapData isEqual:?])
     {
@@ -4178,7 +4178,7 @@ LABEL_30:
   }
 
   policyData = self->_policyData;
-  if (policyData | *(v4 + 47))
+  if (policyData | *(equalCopy + 47))
   {
     if (![(APPBPolicyData *)policyData isEqual:?])
     {
@@ -4187,7 +4187,7 @@ LABEL_30:
   }
 
   targetingDimensions = self->_targetingDimensions;
-  if (targetingDimensions | *(v4 + 54))
+  if (targetingDimensions | *(equalCopy + 54))
   {
     if (![(APPBTargetingDimensions *)targetingDimensions isEqual:?])
     {
@@ -4196,10 +4196,10 @@ LABEL_30:
   }
 
   v70 = self->_has;
-  v71 = *(v4 + 125);
+  v71 = *(equalCopy + 125);
   if ((*&v70 & 0x20) != 0)
   {
-    if ((v71 & 0x20) == 0 || self->_startDate != *(v4 + 6))
+    if ((v71 & 0x20) == 0 || self->_startDate != *(equalCopy + 6))
     {
       goto LABEL_46;
     }
@@ -4212,11 +4212,11 @@ LABEL_30:
 
   if ((*&v70 & 0x80) == 0)
   {
-    v24 = (*(v4 + 125) & 0x80) == 0;
+    v24 = (*(equalCopy + 125) & 0x80) == 0;
     goto LABEL_47;
   }
 
-  if ((v71 & 0x80) != 0 && self->_adPrivacyMarkerType == *(v4 + 31))
+  if ((v71 & 0x80) != 0 && self->_adPrivacyMarkerType == *(equalCopy + 31))
   {
     v24 = 1;
     goto LABEL_47;
@@ -4630,38 +4630,38 @@ LABEL_71:
   return v111 ^ v112 ^ v110 ^ v109 ^ v108 ^ v107 ^ (2654435761 * impressionCount) ^ v105 ^ v104 ^ v103 ^ v102 ^ v101 ^ v100 ^ v99 ^ v98 ^ v97 ^ v96 ^ v95 ^ v94 ^ v93 ^ v92 ^ v91 ^ v90 ^ v89 ^ v88 ^ v87 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v40 ^ v41 ^ v42 ^ v43 ^ v44 ^ v45 ^ v46 ^ v47 ^ v51 ^ v55;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 21))
+  fromCopy = from;
+  if (*(fromCopy + 21))
   {
     [(APPBAdData *)self setBannerURL:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(APPBAdData *)self setBannerWebArchiveURL:?];
   }
 
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
     [(APPBAdData *)self setUniqueIdentifier:?];
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
     [(APPBAdData *)self setImpressionIdentifierData:?];
   }
 
-  if (*(v4 + 31))
+  if (*(fromCopy + 31))
   {
     [(APPBAdData *)self setHumanReadableName:?];
   }
 
-  self->_impressionCount = *(v4 + 70);
-  if (*(v4 + 500))
+  self->_impressionCount = *(fromCopy + 70);
+  if (*(fromCopy + 500))
   {
-    self->_expirationDate = *(v4 + 1);
+    self->_expirationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -4669,7 +4669,7 @@ LABEL_71:
   v152 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   v6 = [v5 countByEnumeratingWithState:&v149 objects:v166 count:16];
   if (v6)
   {
@@ -4693,18 +4693,18 @@ LABEL_71:
     while (v7);
   }
 
-  if (*(v4 + 55))
+  if (*(fromCopy + 55))
   {
     [(APPBAdData *)self setTrackingURLSubstitutionParameter:?];
   }
 
-  if (*(v4 + 502))
+  if (*(fromCopy + 502))
   {
-    self->_unbranded = *(v4 + 498);
+    self->_unbranded = *(fromCopy + 498);
     *&self->_has |= 0x10000u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(APPBAdData *)self setAccessibilityDescription:?];
   }
@@ -4713,7 +4713,7 @@ LABEL_71:
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v10 = *(v4 + 23);
+  v10 = *(fromCopy + 23);
   v11 = [v10 countByEnumeratingWithState:&v145 objects:v165 count:16];
   if (v11)
   {
@@ -4737,7 +4737,7 @@ LABEL_71:
     while (v12);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(APPBAdData *)self setBannerQueryString:?];
   }
@@ -4746,7 +4746,7 @@ LABEL_71:
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v15 = *(v4 + 61);
+  v15 = *(fromCopy + 61);
   v16 = [v15 countByEnumeratingWithState:&v141 objects:v164 count:16];
   if (v16)
   {
@@ -4771,7 +4771,7 @@ LABEL_71:
   }
 
   mediaFiles = self->_mediaFiles;
-  v21 = *(v4 + 43);
+  v21 = *(fromCopy + 43);
   if (mediaFiles)
   {
     if (v21)
@@ -4785,27 +4785,27 @@ LABEL_71:
     [(APPBAdData *)self setMediaFiles:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(APPBAdData *)self setAudioURL:?];
   }
 
-  if (*(v4 + 50))
+  if (*(fromCopy + 50))
   {
     [(APPBAdData *)self setSlateImageURL:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(APPBAdData *)self setATVTunerImageURL:?];
   }
 
-  v22 = *(v4 + 125);
+  v22 = *(fromCopy + 125);
   if ((v22 & 0x8000) != 0)
   {
-    self->_downloadWebArchivesBeforeShowingBanner = *(v4 + 497);
+    self->_downloadWebArchivesBeforeShowingBanner = *(fromCopy + 497);
     *&self->_has |= 0x8000u;
-    v22 = *(v4 + 125);
+    v22 = *(fromCopy + 125);
     if ((v22 & 0x100) == 0)
     {
 LABEL_55:
@@ -4823,12 +4823,12 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  self->_bannerImpressionThreshold = *(v4 + 38);
+  self->_bannerImpressionThreshold = *(fromCopy + 38);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 125) & 0x200) != 0)
+  if ((*(fromCopy + 125) & 0x200) != 0)
   {
 LABEL_56:
-    self->_bannerNewContentCandidacyThreshold = *(v4 + 39);
+    self->_bannerNewContentCandidacyThreshold = *(fromCopy + 39);
     *&self->_has |= 0x200u;
   }
 
@@ -4837,7 +4837,7 @@ LABEL_57:
   v140 = 0u;
   v137 = 0u;
   v138 = 0u;
-  v23 = *(v4 + 49);
+  v23 = *(fromCopy + 49);
   v24 = [v23 countByEnumeratingWithState:&v137 objects:v163 count:16];
   if (v24)
   {
@@ -4865,7 +4865,7 @@ LABEL_57:
   v136 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v28 = *(v4 + 27);
+  v28 = *(fromCopy + 27);
   v29 = [v28 countByEnumeratingWithState:&v133 objects:v162 count:16];
   if (v29)
   {
@@ -4889,12 +4889,12 @@ LABEL_57:
     while (v30);
   }
 
-  if (*(v4 + 33))
+  if (*(fromCopy + 33))
   {
     [(APPBAdData *)self setIAdJSVersion:?];
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
     [(APPBAdData *)self setIAdJSURL:?];
   }
@@ -4903,7 +4903,7 @@ LABEL_57:
   v132 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v33 = *(v4 + 48);
+  v33 = *(fromCopy + 48);
   v34 = [v33 countByEnumeratingWithState:&v129 objects:v161 count:16];
   if (v34)
   {
@@ -4927,9 +4927,9 @@ LABEL_57:
     while (v35);
   }
 
-  if ((*(v4 + 500) & 8) != 0)
+  if ((*(fromCopy + 500) & 8) != 0)
   {
-    self->_rewardTokensExpiration = *(v4 + 4);
+    self->_rewardTokensExpiration = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
@@ -4937,7 +4937,7 @@ LABEL_57:
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v38 = *(v4 + 41);
+  v38 = *(fromCopy + 41);
   v39 = [v38 countByEnumeratingWithState:&v125 objects:v160 count:16];
   if (v39)
   {
@@ -4961,30 +4961,30 @@ LABEL_57:
     while (v40);
   }
 
-  if ((*(v4 + 500) & 0x10) != 0)
+  if ((*(fromCopy + 500) & 0x10) != 0)
   {
-    self->_skipThreshold = *(v4 + 5);
+    self->_skipThreshold = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
     [(APPBAdData *)self setLogoImageURL:?];
   }
 
-  if (*(v4 + 30))
+  if (*(fromCopy + 30))
   {
     [(APPBAdData *)self setHeadlineForLCD:?];
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(APPBAdData *)self setDescriptionForLCD:?];
   }
 
-  if ((*(v4 + 500) & 4) != 0)
+  if ((*(fromCopy + 500) & 4) != 0)
   {
-    self->_priority = *(v4 + 3);
+    self->_priority = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
@@ -4992,7 +4992,7 @@ LABEL_57:
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v43 = *(v4 + 29);
+  v43 = *(fromCopy + 29);
   v44 = [v43 countByEnumeratingWithState:&v121 objects:v159 count:16];
   if (v44)
   {
@@ -5016,12 +5016,12 @@ LABEL_57:
     while (v45);
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
     [(APPBAdData *)self setTargetAppBundleID:?];
   }
 
-  if (*(v4 + 53))
+  if (*(fromCopy + 53))
   {
     [(APPBAdData *)self setTargetAppURLScheme:?];
   }
@@ -5030,7 +5030,7 @@ LABEL_57:
   v120 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v48 = *(v4 + 24);
+  v48 = *(fromCopy + 24);
   v49 = [v48 countByEnumeratingWithState:&v117 objects:v158 count:16];
   if (v49)
   {
@@ -5054,14 +5054,14 @@ LABEL_57:
     while (v50);
   }
 
-  if ((*(v4 + 501) & 8) != 0)
+  if ((*(fromCopy + 501) & 8) != 0)
   {
-    self->_letterboxCreativeColor = *(v4 + 78);
+    self->_letterboxCreativeColor = *(fromCopy + 78);
     *&self->_has |= 0x800u;
   }
 
   installAttribution = self->_installAttribution;
-  v54 = *(v4 + 37);
+  v54 = *(fromCopy + 37);
   if (installAttribution)
   {
     if (v54)
@@ -5076,7 +5076,7 @@ LABEL_57:
   }
 
   specification = self->_specification;
-  v56 = *(v4 + 51);
+  v56 = *(fromCopy + 51);
   if (specification)
   {
     if (v56)
@@ -5090,22 +5090,22 @@ LABEL_57:
     [(APPBAdData *)self setSpecification:?];
   }
 
-  v57 = *(v4 + 125);
+  v57 = *(fromCopy + 125);
   if ((v57 & 2) != 0)
   {
-    self->_minimumIntervalBetweenPresentations = *(v4 + 2);
+    self->_minimumIntervalBetweenPresentations = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v57 = *(v4 + 125);
+    v57 = *(fromCopy + 125);
   }
 
   if ((v57 & 0x4000) != 0)
   {
-    self->_doesNotResetListeningTime = *(v4 + 496);
+    self->_doesNotResetListeningTime = *(fromCopy + 496);
     *&self->_has |= 0x4000u;
   }
 
   merchant = self->_merchant;
-  v59 = *(v4 + 44);
+  v59 = *(fromCopy + 44);
   if (merchant)
   {
     if (v59)
@@ -5123,7 +5123,7 @@ LABEL_57:
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v60 = *(v4 + 46);
+  v60 = *(fromCopy + 46);
   v61 = [v60 countByEnumeratingWithState:&v113 objects:v157 count:16];
   if (v61)
   {
@@ -5147,9 +5147,9 @@ LABEL_57:
     while (v62);
   }
 
-  if ((*(v4 + 501) & 4) != 0)
+  if ((*(fromCopy + 501) & 4) != 0)
   {
-    self->_desiredPosition = *(v4 + 52);
+    self->_desiredPosition = *(fromCopy + 52);
     *&self->_has |= 0x400u;
   }
 
@@ -5157,7 +5157,7 @@ LABEL_57:
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v65 = *(v4 + 9);
+  v65 = *(fromCopy + 9);
   v66 = [v65 countByEnumeratingWithState:&v109 objects:v156 count:16];
   if (v66)
   {
@@ -5185,7 +5185,7 @@ LABEL_57:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v70 = *(v4 + 34);
+  v70 = *(fromCopy + 34);
   v71 = [v70 countByEnumeratingWithState:&v105 objects:v155 count:16];
   if (v71)
   {
@@ -5210,7 +5210,7 @@ LABEL_57:
   }
 
   transparencyDetails = self->_transparencyDetails;
-  v76 = *(v4 + 57);
+  v76 = *(fromCopy + 57);
   if (transparencyDetails)
   {
     if (v76)
@@ -5225,7 +5225,7 @@ LABEL_57:
   }
 
   nativeMediaCreativeMetadata = self->_nativeMediaCreativeMetadata;
-  v78 = *(v4 + 45);
+  v78 = *(fromCopy + 45);
   if (nativeMediaCreativeMetadata)
   {
     if (v78)
@@ -5239,47 +5239,47 @@ LABEL_57:
     [(APPBAdData *)self setNativeMediaCreativeMetadata:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(APPBAdData *)self setAdTagContentString:?];
   }
 
-  v79 = *(v4 + 125);
+  v79 = *(fromCopy + 125);
   if ((v79 & 0x1000) != 0)
   {
-    self->_maximumPretapRequestCount = *(v4 + 84);
+    self->_maximumPretapRequestCount = *(fromCopy + 84);
     *&self->_has |= 0x1000u;
-    v79 = *(v4 + 125);
+    v79 = *(fromCopy + 125);
   }
 
   if ((v79 & 0x40) != 0)
   {
-    self->_adPrivacyMarkPosition = *(v4 + 30);
+    self->_adPrivacyMarkPosition = *(fromCopy + 30);
     *&self->_has |= 0x40u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(APPBAdData *)self setAdDataResponseIdentifier:?];
   }
 
-  if ((*(v4 + 501) & 0x20) != 0)
+  if ((*(fromCopy + 501) & 0x20) != 0)
   {
-    self->_unfilledReasonCode = *(v4 + 116);
+    self->_unfilledReasonCode = *(fromCopy + 116);
     *&self->_has |= 0x2000u;
   }
 
-  if (*(v4 + 59))
+  if (*(fromCopy + 59))
   {
     [(APPBAdData *)self setUnfilledReasonInfo:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(APPBAdData *)self setAdOriginalRequesterId:?];
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
     [(APPBAdData *)self setExpressionToEvaluate:?];
   }
@@ -5288,7 +5288,7 @@ LABEL_57:
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v80 = *(v4 + 38);
+  v80 = *(fromCopy + 38);
   v81 = [v80 countByEnumeratingWithState:&v101 objects:v154 count:16];
   if (v81)
   {
@@ -5316,7 +5316,7 @@ LABEL_57:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v85 = *(v4 + 13);
+  v85 = *(fromCopy + 13);
   v86 = [v85 countByEnumeratingWithState:&v97 objects:v153 count:16];
   if (v86)
   {
@@ -5340,18 +5340,18 @@ LABEL_57:
     while (v87);
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(APPBAdData *)self setAdType:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(APPBAdData *)self setAdFormatType:?];
   }
 
   adFrequencyCapData = self->_adFrequencyCapData;
-  v91 = *(v4 + 12);
+  v91 = *(fromCopy + 12);
   if (adFrequencyCapData)
   {
     if (v91)
@@ -5366,7 +5366,7 @@ LABEL_57:
   }
 
   policyData = self->_policyData;
-  v93 = *(v4 + 47);
+  v93 = *(fromCopy + 47);
   if (policyData)
   {
     if (v93)
@@ -5381,7 +5381,7 @@ LABEL_57:
   }
 
   targetingDimensions = self->_targetingDimensions;
-  v95 = *(v4 + 54);
+  v95 = *(fromCopy + 54);
   if (targetingDimensions)
   {
     if (v95)
@@ -5395,17 +5395,17 @@ LABEL_57:
     [(APPBAdData *)self setTargetingDimensions:?];
   }
 
-  v96 = *(v4 + 125);
+  v96 = *(fromCopy + 125);
   if ((v96 & 0x20) != 0)
   {
-    self->_startDate = *(v4 + 6);
+    self->_startDate = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v96 = *(v4 + 125);
+    v96 = *(fromCopy + 125);
   }
 
   if ((v96 & 0x80) != 0)
   {
-    self->_adPrivacyMarkerType = *(v4 + 31);
+    self->_adPrivacyMarkerType = *(fromCopy + 31);
     *&self->_has |= 0x80u;
   }
 }

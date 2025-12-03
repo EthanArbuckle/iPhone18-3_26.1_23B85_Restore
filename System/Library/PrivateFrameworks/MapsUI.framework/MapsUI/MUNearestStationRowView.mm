@@ -1,10 +1,10 @@
 @interface MUNearestStationRowView
-- (MUNearestStationRowView)initWithFrame:(CGRect)a3;
+- (MUNearestStationRowView)initWithFrame:(CGRect)frame;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateFonts;
-- (void)configureWithNearestStation:(id)a3;
+- (void)configureWithNearestStation:(id)station;
 - (void)layoutSubviews;
 @end
 
@@ -36,44 +36,44 @@
 {
   v35[10] = *MEMORY[0x1E69E9840];
   v24 = MEMORY[0x1E696ACD8];
-  v34 = [(UIStackView *)self->_labelStackView leadingAnchor];
-  v33 = [(MUNearestStationRowView *)self leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:16.0];
+  leadingAnchor = [(UIStackView *)self->_labelStackView leadingAnchor];
+  leadingAnchor2 = [(MUNearestStationRowView *)self leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v35[0] = v32;
-  v31 = [(UIStackView *)self->_labelStackView topAnchor];
-  v30 = [(MUNearestStationRowView *)self topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:16.0];
+  topAnchor = [(UIStackView *)self->_labelStackView topAnchor];
+  topAnchor2 = [(MUNearestStationRowView *)self topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v35[1] = v29;
-  v28 = [(UIStackView *)self->_labelStackView bottomAnchor];
-  v27 = [(MUNearestStationRowView *)self bottomAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27 constant:-16.0];
+  bottomAnchor = [(UIStackView *)self->_labelStackView bottomAnchor];
+  bottomAnchor2 = [(MUNearestStationRowView *)self bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v35[2] = v26;
-  v25 = [(UIStackView *)self->_labelStackView trailingAnchor];
-  v23 = [(UIImageView *)self->_stopImageView leadingAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23 constant:-8.0];
+  trailingAnchor = [(UIStackView *)self->_labelStackView trailingAnchor];
+  leadingAnchor3 = [(UIImageView *)self->_stopImageView leadingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-8.0];
   v35[3] = v22;
-  v21 = [(UIImageView *)self->_stopImageView topAnchor];
-  v20 = [(MUNearestStationRowView *)self topAnchor];
-  v19 = [v21 constraintGreaterThanOrEqualToAnchor:v20 constant:16.0];
+  topAnchor3 = [(UIImageView *)self->_stopImageView topAnchor];
+  topAnchor4 = [(MUNearestStationRowView *)self topAnchor];
+  v19 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:16.0];
   v35[4] = v19;
-  v18 = [(UIImageView *)self->_stopImageView bottomAnchor];
-  v17 = [(MUNearestStationRowView *)self bottomAnchor];
-  v16 = [v18 constraintLessThanOrEqualToAnchor:v17 constant:-16.0];
+  bottomAnchor3 = [(UIImageView *)self->_stopImageView bottomAnchor];
+  bottomAnchor4 = [(MUNearestStationRowView *)self bottomAnchor];
+  v16 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:-16.0];
   v35[5] = v16;
-  v15 = [(UIImageView *)self->_stopImageView centerYAnchor];
-  v14 = [(MUNearestStationRowView *)self centerYAnchor];
-  v3 = [v15 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIImageView *)self->_stopImageView centerYAnchor];
+  centerYAnchor2 = [(MUNearestStationRowView *)self centerYAnchor];
+  v3 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v35[6] = v3;
-  v4 = [(UIImageView *)self->_stopImageView trailingAnchor];
-  v5 = [(MUNearestStationRowView *)self trailingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:-16.0];
+  trailingAnchor2 = [(UIImageView *)self->_stopImageView trailingAnchor];
+  trailingAnchor3 = [(MUNearestStationRowView *)self trailingAnchor];
+  v6 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   v35[7] = v6;
-  v7 = [(UIImageView *)self->_stopImageView widthAnchor];
-  v8 = [v7 constraintEqualToConstant:48.0];
+  widthAnchor = [(UIImageView *)self->_stopImageView widthAnchor];
+  v8 = [widthAnchor constraintEqualToConstant:48.0];
   v35[8] = v8;
-  v9 = [(UIImageView *)self->_stopImageView heightAnchor];
-  v10 = [(UIImageView *)self->_stopImageView widthAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  heightAnchor = [(UIImageView *)self->_stopImageView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_stopImageView widthAnchor];
+  v11 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v35[9] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:10];
   [v24 activateConstraints:v12];
@@ -106,29 +106,29 @@
   [(UIStackView *)self->_labelStackView setSpacing:2.0];
   [(UIStackView *)self->_labelStackView setAxis:1];
   [(UIStackView *)self->_labelStackView setDistribution:4];
-  v12 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   titleLabel = self->_titleLabel;
-  self->_titleLabel = v12;
+  self->_titleLabel = _mapsui_defaultLabel;
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"TitleLabel"];
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel2 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   secondaryLabel = self->_secondaryLabel;
-  self->_secondaryLabel = v14;
+  self->_secondaryLabel = _mapsui_defaultLabel2;
 
   [(UILabel *)self->_secondaryLabel setAccessibilityIdentifier:@"SecondaryLabel"];
   [(UILabel *)self->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)self->_secondaryLabel setTextColor:v16];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)self->_secondaryLabel setTextColor:systemGrayColor];
 
-  v17 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel3 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   tertiaryLabel = self->_tertiaryLabel;
-  self->_tertiaryLabel = v17;
+  self->_tertiaryLabel = _mapsui_defaultLabel3;
 
   [(UILabel *)self->_tertiaryLabel setAccessibilityIdentifier:@"TertiaryLabel"];
   [(UILabel *)self->_tertiaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)self->_tertiaryLabel setTextColor:v19];
+  systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)self->_tertiaryLabel setTextColor:systemGrayColor2];
 
   [(MUNearestStationRowView *)self _updateFonts];
   [(MUNearestStationRowView *)self addSubview:self->_labelStackView];
@@ -147,14 +147,14 @@
 
 - (void)_updateAppearance
 {
-  v3 = [(MKMapItem *)self->_nearestStation artworkImage];
-  [(UIImageView *)self->_stopImageView setImage:v3];
+  artworkImage = [(MKMapItem *)self->_nearestStation artworkImage];
+  [(UIImageView *)self->_stopImageView setImage:artworkImage];
 
-  v4 = [(MKMapItem *)self->_nearestStation stationTitle];
-  [(UILabel *)self->_titleLabel setText:v4];
+  stationTitle = [(MKMapItem *)self->_nearestStation stationTitle];
+  [(UILabel *)self->_titleLabel setText:stationTitle];
 
-  v5 = [(MKMapItem *)self->_nearestStation stationCategory];
-  [(UILabel *)self->_secondaryLabel setText:v5];
+  stationCategory = [(MKMapItem *)self->_nearestStation stationCategory];
+  [(UILabel *)self->_secondaryLabel setText:stationCategory];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v8 addObject:self->_titleLabel];
@@ -165,24 +165,24 @@
   [(UIStackView *)labelStackView _mapsui_setArrangedSubviews:v7];
 }
 
-- (void)configureWithNearestStation:(id)a3
+- (void)configureWithNearestStation:(id)station
 {
-  v5 = a3;
-  if (self->_nearestStation != v5)
+  stationCopy = station;
+  if (self->_nearestStation != stationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_nearestStation, a3);
+    v6 = stationCopy;
+    objc_storeStrong(&self->_nearestStation, station);
     [(MUNearestStationRowView *)self _updateAppearance];
     [(MULoadingOverlayController *)self->_loadingOverlayController removeLoadingOverlayAnimated:1 completion:0];
-    v5 = v6;
+    stationCopy = v6;
   }
 }
 
-- (MUNearestStationRowView)initWithFrame:(CGRect)a3
+- (MUNearestStationRowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUNearestStationRowView;
-  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

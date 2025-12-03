@@ -6,11 +6,11 @@
 
 - (BOOL)hasLocationData
 {
-  v3 = [(CSSearchableItemAttributeSet *)self latitude];
-  if (v3)
+  latitude = [(CSSearchableItemAttributeSet *)self latitude];
+  if (latitude)
   {
-    v4 = [(CSSearchableItemAttributeSet *)self longitude];
-    v5 = v4 != 0;
+    longitude = [(CSSearchableItemAttributeSet *)self longitude];
+    v5 = longitude != 0;
   }
 
   else

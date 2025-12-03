@@ -1,21 +1,21 @@
 @interface CKAttributedStringItemProviderWriter
 + (NSArray)writableTypeIdentifiersForItemProvider;
-- (CKAttributedStringItemProviderWriter)initWithAttributedString:(id)a3;
+- (CKAttributedStringItemProviderWriter)initWithAttributedString:(id)string;
 - (NSArray)writableTypeIdentifiersForItemProvider;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 @end
 
 @implementation CKAttributedStringItemProviderWriter
 
-- (CKAttributedStringItemProviderWriter)initWithAttributedString:(id)a3
+- (CKAttributedStringItemProviderWriter)initWithAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = CKAttributedStringItemProviderWriter;
   v5 = [(CKAttributedStringItemProviderWriter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     attributedString = v5->_attributedString;
     v5->_attributedString = v6;
   }
@@ -55,20 +55,20 @@ void __78__CKAttributedStringItemProviderWriter_writableTypeIdentifiersForItemPr
   return [v2 writableTypeIdentifiersForItemProvider];
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKAttributedStringItemProviderWriter *)self attributedString];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  attributedString = [(CKAttributedStringItemProviderWriter *)self attributedString];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__CKAttributedStringItemProviderWriter_loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v13[3] = &unk_1E72F1988;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 loadDataWithTypeIdentifier:v10 forItemProviderCompletionHandler:v13];
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  v11 = [attributedString loadDataWithTypeIdentifier:v10 forItemProviderCompletionHandler:v13];
 
   return v11;
 }

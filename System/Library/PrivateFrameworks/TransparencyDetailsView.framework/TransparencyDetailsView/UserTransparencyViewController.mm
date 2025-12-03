@@ -1,34 +1,34 @@
 @interface UserTransparencyViewController
-- (UserTransparencyViewController)initWithUserTransparencyDetails:(id)a3;
-- (id)normalizeChineseLanguage:(id)a3;
-- (void)_closeViewController:(id)a3;
+- (UserTransparencyViewController)initWithUserTransparencyDetails:(id)details;
+- (id)normalizeChineseLanguage:(id)language;
+- (void)_closeViewController:(id)controller;
 - (void)_commonInit;
 - (void)_hideErrorMessage;
-- (void)_reportUserTransparencyViewControllerEventWithType:(id)a3 withCompletionHandler:(id)a4;
-- (void)_showErrorMessage:(id)a3;
+- (void)_reportUserTransparencyViewControllerEventWithType:(id)type withCompletionHandler:(id)handler;
+- (void)_showErrorMessage:(id)message;
 - (void)errorDelegate;
 - (void)immediatelyLoadViewControllerBeforeNetworkRequest;
 - (void)loadWebView;
 - (void)presentViewDelegate;
-- (void)requestUserTransparencyDetailsWithCompletionHandler:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)requestUserTransparencyDetailsWithCompletionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation UserTransparencyViewController
 
-- (UserTransparencyViewController)initWithUserTransparencyDetails:(id)a3
+- (UserTransparencyViewController)initWithUserTransparencyDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v10.receiver = self;
   v10.super_class = UserTransparencyViewController;
   v5 = [(UserTransparencyViewController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(UserTransparencyViewController *)v5 setUserTransparencyDetails:v4];
+    [(UserTransparencyViewController *)v5 setUserTransparencyDetails:detailsCopy];
     [(UserTransparencyViewController *)v6 setIsiPad:MGGetBoolAnswer()];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -53,11 +53,11 @@
 
   else
   {
-    v4 = [MEMORY[0x277CE9658] sharedInstance];
-    [v4 loadIDs];
+    mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+    [mEMORY[0x277CE9658] loadIDs];
 
-    v5 = [MEMORY[0x277CE9638] sharedInstance];
-    self->_renderingStatusForPAPermission = [v5 isPersonalizedAdsEnabled];
+    mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+    self->_renderingStatusForPAPermission = [mEMORY[0x277CE9638] isPersonalizedAdsEnabled];
 
     [(UserTransparencyViewController *)self immediatelyLoadViewControllerBeforeNetworkRequest];
     [(UserTransparencyViewController *)self presentViewDelegate];
@@ -83,38 +83,38 @@ void __45__UserTransparencyViewController__commonInit__block_invoke(uint64_t a1)
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)requestUserTransparencyDetailsWithCompletionHandler:(id)a3
+- (void)requestUserTransparencyDetailsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE96B8] sharedInstance];
-  v6 = [MEMORY[0x277CE9638] sharedInstance];
-  v7 = [v6 localeIdentifier];
-  v8 = [v6 localeIdentifier];
-  v9 = [v8 hasPrefix:@"zh"];
+  handlerCopy = handler;
+  mEMORY[0x277CE96B8] = [MEMORY[0x277CE96B8] sharedInstance];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  localeIdentifier = [mEMORY[0x277CE9638] localeIdentifier];
+  localeIdentifier2 = [mEMORY[0x277CE9638] localeIdentifier];
+  v9 = [localeIdentifier2 hasPrefix:@"zh"];
 
   if (v9)
   {
-    v10 = [v6 localeIdentifier];
-    v11 = [(UserTransparencyViewController *)self normalizeChineseLanguage:v10];
+    localeIdentifier3 = [mEMORY[0x277CE9638] localeIdentifier];
+    v11 = [(UserTransparencyViewController *)self normalizeChineseLanguage:localeIdentifier3];
 
-    v7 = v11;
+    localeIdentifier = v11;
   }
 
-  v12 = [MEMORY[0x277CE96B8] workQueue];
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __86__UserTransparencyViewController_requestUserTransparencyDetailsWithCompletionHandler___block_invoke;
   v17[3] = &unk_279DD9648;
-  v18 = v6;
-  v19 = v7;
-  v20 = v5;
-  v21 = self;
-  v22 = v4;
-  v13 = v4;
-  v14 = v5;
-  v15 = v7;
-  v16 = v6;
-  [v12 addOperationWithBlock:v17];
+  v18 = mEMORY[0x277CE9638];
+  v19 = localeIdentifier;
+  v20 = mEMORY[0x277CE96B8];
+  selfCopy = self;
+  v22 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = mEMORY[0x277CE96B8];
+  v15 = localeIdentifier;
+  v16 = mEMORY[0x277CE9638];
+  [workQueue addOperationWithBlock:v17];
 }
 
 void __86__UserTransparencyViewController_requestUserTransparencyDetailsWithCompletionHandler___block_invoke(id *a1)
@@ -223,13 +223,13 @@ void __86__UserTransparencyViewController_requestUserTransparencyDetailsWithComp
 
 - (void)presentViewDelegate
 {
-  v3 = [(UserTransparencyViewController *)self delegate];
+  delegate = [(UserTransparencyViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UserTransparencyViewController *)self delegate];
-    [v5 userTransparencyViewControllerDidLoad:self];
+    delegate2 = [(UserTransparencyViewController *)self delegate];
+    [delegate2 userTransparencyViewControllerDidLoad:self];
   }
 
   [(UserTransparencyViewController *)self _reportUserTransparencyViewControllerEventWithType:@"PrivacyUserTransparencyDidAppear" withCompletionHandler:0];
@@ -237,96 +237,96 @@ void __86__UserTransparencyViewController_requestUserTransparencyDetailsWithComp
 
 - (void)errorDelegate
 {
-  v3 = [(UserTransparencyViewController *)self delegate];
+  delegate = [(UserTransparencyViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(UserTransparencyViewController *)self delegate];
+    delegate2 = [(UserTransparencyViewController *)self delegate];
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"UserTransparencyViewControllerErrorDomain" code:0 userInfo:&unk_287F8ED30];
-    [v6 userTransparencyViewController:self didFailWithError:v5];
+    [delegate2 userTransparencyViewController:self didFailWithError:v5];
   }
 }
 
-- (void)_showErrorMessage:(id)a3
+- (void)_showErrorMessage:(id)message
 {
-  v26 = a3;
+  messageCopy = message;
   [(UIActivityIndicatorView *)self->activityIndicator stopAnimating];
-  v4 = [(UserTransparencyViewController *)self errorLabel];
+  errorLabel = [(UserTransparencyViewController *)self errorLabel];
 
-  if (!v4)
+  if (!errorLabel)
   {
     v5 = objc_alloc(MEMORY[0x277D756B8]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(UserTransparencyViewController *)self setErrorLabel:v6];
 
-    v7 = [(UserTransparencyViewController *)self errorLabel];
-    [v7 setNumberOfLines:0];
+    errorLabel2 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel2 setNumberOfLines:0];
 
-    v8 = [MEMORY[0x277D75348] labelColor];
-    v9 = [(UserTransparencyViewController *)self errorLabel];
-    [v9 setTextColor:v8];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    errorLabel3 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel3 setTextColor:labelColor];
 
     v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    v11 = [(UserTransparencyViewController *)self errorLabel];
-    [v11 setFont:v10];
+    errorLabel4 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel4 setFont:v10];
 
-    v12 = [(UserTransparencyViewController *)self errorLabel];
-    [v12 setAdjustsFontForContentSizeCategory:1];
+    errorLabel5 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel5 setAdjustsFontForContentSizeCategory:1];
 
-    v13 = [(UserTransparencyViewController *)self errorLabel];
-    [v13 setTextAlignment:1];
+    errorLabel6 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel6 setTextAlignment:1];
 
-    v14 = [(UserTransparencyViewController *)self errorLabel];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    errorLabel7 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(UserTransparencyViewController *)self view];
-    v16 = [(UserTransparencyViewController *)self errorLabel];
-    [v15 addSubview:v16];
+    view = [(UserTransparencyViewController *)self view];
+    errorLabel8 = [(UserTransparencyViewController *)self errorLabel];
+    [view addSubview:errorLabel8];
 
-    v17 = [(UserTransparencyViewController *)self errorLabel];
-    v18 = _NSDictionaryOfVariableBindings(&cfstr_Errorlabel.isa, v17, 0);
-    v19 = [(UserTransparencyViewController *)self view];
+    errorLabel9 = [(UserTransparencyViewController *)self errorLabel];
+    v18 = _NSDictionaryOfVariableBindings(&cfstr_Errorlabel.isa, errorLabel9, 0);
+    view2 = [(UserTransparencyViewController *)self view];
     v20 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-20-[errorLabel]-20-|" options:0 metrics:0 views:v18];
-    [v19 addConstraints:v20];
+    [view2 addConstraints:v20];
 
-    v21 = [(UserTransparencyViewController *)self view];
+    view3 = [(UserTransparencyViewController *)self view];
     v22 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-[errorLabel]-|" options:0 metrics:0 views:v18];
-    [v21 addConstraints:v22];
+    [view3 addConstraints:v22];
   }
 
-  if (!v26)
+  if (!messageCopy)
   {
     v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v26 = [v23 localizedStringForKey:@"Advertising information isn’t available right now. Try again later." value:&stru_287F8CB38 table:0];
+    messageCopy = [v23 localizedStringForKey:@"Advertising information isn’t available right now. Try again later." value:&stru_287F8CB38 table:0];
   }
 
-  v24 = [(UserTransparencyViewController *)self errorLabel];
-  [v24 setText:v26];
+  errorLabel10 = [(UserTransparencyViewController *)self errorLabel];
+  [errorLabel10 setText:messageCopy];
 
-  v25 = [(UserTransparencyViewController *)self errorLabel];
-  [v25 setHidden:0];
+  errorLabel11 = [(UserTransparencyViewController *)self errorLabel];
+  [errorLabel11 setHidden:0];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  [(UIActivityIndicatorView *)self->activityIndicator stopAnimating:a3];
+  [(UIActivityIndicatorView *)self->activityIndicator stopAnimating:view];
   [(UserTransparencyViewController *)self _hideErrorMessage];
 
   [(UserTransparencyViewController *)self _reportUserTransparencyViewControllerEventWithType:@"PrivacyUserTransparencyDidRenderTransparency" withCompletionHandler:0];
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v6 = [(UserTransparencyViewController *)self myUserPrivacyWebView:a3];
+  v6 = [(UserTransparencyViewController *)self myUserPrivacyWebView:view];
   [v6 removeFromSuperview];
 
   [(UserTransparencyViewController *)self _showErrorMessage:0];
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v6 = [(UserTransparencyViewController *)self myUserPrivacyWebView:a3];
+  v6 = [(UserTransparencyViewController *)self myUserPrivacyWebView:view];
   [v6 removeFromSuperview];
 
   [(UserTransparencyViewController *)self _showErrorMessage:0];
@@ -334,24 +334,24 @@ void __86__UserTransparencyViewController_requestUserTransparencyDetailsWithComp
 
 - (void)_hideErrorMessage
 {
-  v3 = [(UserTransparencyViewController *)self errorLabel];
+  errorLabel = [(UserTransparencyViewController *)self errorLabel];
 
-  if (v3)
+  if (errorLabel)
   {
-    v4 = [(UserTransparencyViewController *)self errorLabel];
-    [v4 setHidden:1];
+    errorLabel2 = [(UserTransparencyViewController *)self errorLabel];
+    [errorLabel2 setHidden:1];
   }
 }
 
-- (void)_closeViewController:(id)a3
+- (void)_closeViewController:(id)controller
 {
-  v4 = [(UserTransparencyViewController *)self presentingViewController];
+  presentingViewController = [(UserTransparencyViewController *)self presentingViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__UserTransparencyViewController__closeViewController___block_invoke;
   v5[3] = &unk_279DD95D0;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v5];
 
   [(UserTransparencyViewController *)self _reportUserTransparencyViewControllerEventWithType:@"PrivacyUserTransparencyDidDisappear" withCompletionHandler:0];
 }
@@ -383,49 +383,49 @@ void __55__UserTransparencyViewController__closeViewController___block_invoke(ui
 
   [(UserTransparencyViewController *)self setModalPresentationStyle:v3];
   [(UserTransparencyViewController *)self setModalTransitionStyle:0];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v5 = [(UserTransparencyViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(UserTransparencyViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(UserTransparencyViewController *)self setEdgesForExtendedLayout:0];
   v99 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = objc_alloc_init(MEMORY[0x277D75780]);
   [(UserTransparencyViewController *)self setTransparencyNavBar:v6];
 
-  v7 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  transparencyNavBar = [(UserTransparencyViewController *)self transparencyNavBar];
+  [transparencyNavBar setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v8 setTranslucent:0];
+  transparencyNavBar2 = [(UserTransparencyViewController *)self transparencyNavBar];
+  [transparencyNavBar2 setTranslucent:0];
 
-  v9 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v9 setAutoresizesSubviews:1];
+  transparencyNavBar3 = [(UserTransparencyViewController *)self transparencyNavBar];
+  [transparencyNavBar3 setAutoresizesSubviews:1];
 
-  v10 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v10 setAutoresizingMask:18];
+  transparencyNavBar4 = [(UserTransparencyViewController *)self transparencyNavBar];
+  [transparencyNavBar4 setAutoresizingMask:18];
 
-  v11 = [(UserTransparencyViewController *)self view];
-  v12 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v11 addSubview:v12];
+  view2 = [(UserTransparencyViewController *)self view];
+  transparencyNavBar5 = [(UserTransparencyViewController *)self transparencyNavBar];
+  [view2 addSubview:transparencyNavBar5];
 
   v85 = MEMORY[0x277CCAAD0];
-  v97 = [(UserTransparencyViewController *)self transparencyNavBar];
-  v93 = [v97 topAnchor];
-  v95 = [(UserTransparencyViewController *)self view];
-  v91 = [v95 topAnchor];
-  v89 = [v93 constraintEqualToAnchor:v91 constant:20.0];
+  transparencyNavBar6 = [(UserTransparencyViewController *)self transparencyNavBar];
+  topAnchor = [transparencyNavBar6 topAnchor];
+  view3 = [(UserTransparencyViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v89 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v104[0] = v89;
-  v87 = [(UserTransparencyViewController *)self transparencyNavBar];
-  v83 = [v87 rightAnchor];
-  v13 = [(UserTransparencyViewController *)self view];
-  v14 = [v13 rightAnchor];
-  v15 = [v83 constraintEqualToAnchor:v14];
+  transparencyNavBar7 = [(UserTransparencyViewController *)self transparencyNavBar];
+  rightAnchor = [transparencyNavBar7 rightAnchor];
+  view4 = [(UserTransparencyViewController *)self view];
+  rightAnchor2 = [view4 rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v104[1] = v15;
-  v16 = [(UserTransparencyViewController *)self transparencyNavBar];
-  v17 = [v16 leftAnchor];
-  v18 = [(UserTransparencyViewController *)self view];
-  v19 = [v18 leftAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  transparencyNavBar8 = [(UserTransparencyViewController *)self transparencyNavBar];
+  leftAnchor = [transparencyNavBar8 leftAnchor];
+  view5 = [(UserTransparencyViewController *)self view];
+  leftAnchor2 = [view5 leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v104[2] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v104 count:3];
   [v85 activateConstraints:v21];
@@ -442,33 +442,33 @@ void __55__UserTransparencyViewController__closeViewController___block_invoke(ui
   v98 = v24;
   v103 = v24;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v103 count:1];
-  v27 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v27 setItems:v26];
+  transparencyNavBar9 = [(UserTransparencyViewController *)self transparencyNavBar];
+  [transparencyNavBar9 setItems:v26];
 
-  v28 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v29 = [v28 userInterfaceStyle];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
-  if (v29 == 2)
+  if (userInterfaceStyle == 2)
   {
     v30 = objc_alloc_init(MEMORY[0x277D75788]);
     [v30 configureWithOpaqueBackground];
-    v31 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v30 setBackgroundColor:v31];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v30 setBackgroundColor:systemBackgroundColor2];
 
     v101 = *MEMORY[0x277D740C0];
-    v32 = [MEMORY[0x277D75348] whiteColor];
-    v102 = v32;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v102 = whiteColor;
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     [v30 setTitleTextAttributes:v33];
 
-    v34 = [(UserTransparencyViewController *)self transparencyNavBar];
-    [v34 setStandardAppearance:v30];
+    transparencyNavBar10 = [(UserTransparencyViewController *)self transparencyNavBar];
+    [transparencyNavBar10 setStandardAppearance:v30];
 
-    v35 = [(UserTransparencyViewController *)self transparencyNavBar];
-    [v35 setScrollEdgeAppearance:v30];
+    transparencyNavBar11 = [(UserTransparencyViewController *)self transparencyNavBar];
+    [transparencyNavBar11 setScrollEdgeAppearance:v30];
 
-    v36 = [(UserTransparencyViewController *)self transparencyNavBar];
-    [v36 setTranslucent:0];
+    transparencyNavBar12 = [(UserTransparencyViewController *)self transparencyNavBar];
+    [transparencyNavBar12 setTranslucent:0];
   }
 
   v37 = objc_alloc_init(MEMORY[0x277CE3830]);
@@ -485,72 +485,72 @@ void __55__UserTransparencyViewController__closeViewController___block_invoke(ui
   v41 = [v40 initWithFrame:v88 configuration:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(UserTransparencyViewController *)self setMyUserPrivacyWebView:v41];
 
-  v42 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v42 setTranslatesAutoresizingMaskIntoConstraints:0];
+  myUserPrivacyWebView = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v43 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v43 setNavigationDelegate:self];
+  myUserPrivacyWebView2 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView2 setNavigationDelegate:self];
 
-  v44 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v44 setOpaque:0];
+  myUserPrivacyWebView3 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView3 setOpaque:0];
 
-  v45 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  v46 = [v45 scrollView];
-  [v46 setContentInsetAdjustmentBehavior:2];
+  myUserPrivacyWebView4 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  scrollView = [myUserPrivacyWebView4 scrollView];
+  [scrollView setContentInsetAdjustmentBehavior:2];
 
-  v47 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v47 setAutoresizesSubviews:1];
+  myUserPrivacyWebView5 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView5 setAutoresizesSubviews:1];
 
-  v48 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v48 setAutoresizingMask:18];
+  myUserPrivacyWebView6 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView6 setAutoresizingMask:18];
 
   v49 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   activityIndicator = self->activityIndicator;
   self->activityIndicator = v49;
 
-  v51 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v51 frame];
+  myUserPrivacyWebView7 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView7 frame];
   v53 = v52 * 0.5;
-  v54 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v54 frame];
+  myUserPrivacyWebView8 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView8 frame];
   v56 = v55 * 0.5;
-  v57 = [(UserTransparencyViewController *)self transparencyNavBar];
-  [v57 frame];
+  transparencyNavBar13 = [(UserTransparencyViewController *)self transparencyNavBar];
+  [transparencyNavBar13 frame];
   [(UIActivityIndicatorView *)self->activityIndicator setCenter:v53, v56 - v58];
 
   [(UIActivityIndicatorView *)self->activityIndicator setAutoresizingMask:45];
   [(UIActivityIndicatorView *)self->activityIndicator startAnimating];
-  v59 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v59 addSubview:self->activityIndicator];
+  myUserPrivacyWebView9 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [myUserPrivacyWebView9 addSubview:self->activityIndicator];
 
-  v60 = [(UserTransparencyViewController *)self view];
-  v61 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  [v60 addSubview:v61];
+  view6 = [(UserTransparencyViewController *)self view];
+  myUserPrivacyWebView10 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  [view6 addSubview:myUserPrivacyWebView10];
 
   v75 = MEMORY[0x277CCAAD0];
-  v86 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  v82 = [v86 topAnchor];
-  v84 = [(UserTransparencyViewController *)self transparencyNavBar];
-  v81 = [v84 bottomAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81];
+  myUserPrivacyWebView11 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  topAnchor3 = [myUserPrivacyWebView11 topAnchor];
+  transparencyNavBar14 = [(UserTransparencyViewController *)self transparencyNavBar];
+  bottomAnchor = [transparencyNavBar14 bottomAnchor];
+  v80 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v100[0] = v80;
-  v79 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  v77 = [v79 bottomAnchor];
-  v78 = [(UserTransparencyViewController *)self view];
-  v76 = [v78 bottomAnchor];
-  v74 = [v77 constraintEqualToAnchor:v76];
+  myUserPrivacyWebView12 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  bottomAnchor2 = [myUserPrivacyWebView12 bottomAnchor];
+  view7 = [(UserTransparencyViewController *)self view];
+  bottomAnchor3 = [view7 bottomAnchor];
+  v74 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v100[1] = v74;
-  v73 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  v62 = [v73 rightAnchor];
-  v63 = [(UserTransparencyViewController *)self view];
-  v64 = [v63 rightAnchor];
-  v65 = [v62 constraintEqualToAnchor:v64];
+  myUserPrivacyWebView13 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  rightAnchor3 = [myUserPrivacyWebView13 rightAnchor];
+  view8 = [(UserTransparencyViewController *)self view];
+  rightAnchor4 = [view8 rightAnchor];
+  v65 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v100[2] = v65;
-  v66 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-  v67 = [v66 leftAnchor];
-  v68 = [(UserTransparencyViewController *)self view];
-  v69 = [v68 leftAnchor];
-  v70 = [v67 constraintEqualToAnchor:v69];
+  myUserPrivacyWebView14 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+  leftAnchor3 = [myUserPrivacyWebView14 leftAnchor];
+  view9 = [(UserTransparencyViewController *)self view];
+  leftAnchor4 = [view9 leftAnchor];
+  v70 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v100[3] = v70;
   v71 = [MEMORY[0x277CBEA60] arrayWithObjects:v100 count:4];
   [v75 activateConstraints:v71];
@@ -560,22 +560,22 @@ void __55__UserTransparencyViewController__closeViewController___block_invoke(ui
 
 - (void)loadWebView
 {
-  v3 = [(UserTransparencyViewController *)self userTransparencyRendererURL];
+  userTransparencyRendererURL = [(UserTransparencyViewController *)self userTransparencyRendererURL];
 
-  if (v3)
+  if (userTransparencyRendererURL)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(UserTransparencyViewController *)self userTransparencyRendererURL];
-    v12 = [v4 URLWithString:v5];
+    userTransparencyRendererURL2 = [(UserTransparencyViewController *)self userTransparencyRendererURL];
+    v12 = [v4 URLWithString:userTransparencyRendererURL2];
 
     v6 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v12];
     [v6 setHTTPMethod:@"POST"];
-    v7 = [(UserTransparencyViewController *)self userTransparencyRendererPayload];
-    v8 = [v7 dataUsingEncoding:4];
+    userTransparencyRendererPayload = [(UserTransparencyViewController *)self userTransparencyRendererPayload];
+    v8 = [userTransparencyRendererPayload dataUsingEncoding:4];
     [v6 setHTTPBody:v8];
 
-    v9 = [(UserTransparencyViewController *)self myUserPrivacyWebView];
-    v10 = [v9 loadRequest:v6];
+    myUserPrivacyWebView = [(UserTransparencyViewController *)self myUserPrivacyWebView];
+    v10 = [myUserPrivacyWebView loadRequest:v6];
   }
 
   else
@@ -587,30 +587,30 @@ void __55__UserTransparencyViewController__closeViewController___block_invoke(ui
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 request];
-  v10 = [v9 URL];
+  actionCopy = action;
+  handlerCopy = handler;
+  request = [actionCopy request];
+  v10 = [request URL];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
-  v13 = [v10 absoluteString];
-  v14 = [v11 stringWithFormat:@"%@ The URL for the link generated by the rendering server is: %@.", v12, v13];
+  absoluteString = [v10 absoluteString];
+  v14 = [v11 stringWithFormat:@"%@ The URL for the link generated by the rendering server is: %@.", v12, absoluteString];
   _ADLog();
 
   v15 = [MEMORY[0x277CCACE0] componentsWithURL:v10 resolvingAgainstBaseURL:0];
-  v16 = [v15 path];
-  v17 = [v16 lastPathComponent];
-  if ([v17 rangeOfString:@"prefs:root=Privacy&path=ADVERTISING" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+  path = [v15 path];
+  lastPathComponent = [path lastPathComponent];
+  if ([lastPathComponent rangeOfString:@"prefs:root=Privacy&path=ADVERTISING" options:1] != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_8;
   }
 
-  v18 = [v15 path];
-  v19 = [v18 lastPathComponent];
-  if ([v19 rangeOfString:@"App-Prefs:root=Privacy&path=ADVERTISING" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+  path2 = [v15 path];
+  lastPathComponent2 = [path2 lastPathComponent];
+  if ([lastPathComponent2 rangeOfString:@"App-Prefs:root=Privacy&path=ADVERTISING" options:1] != 0x7FFFFFFFFFFFFFFFLL)
   {
 
 LABEL_8:
@@ -620,24 +620,24 @@ LABEL_8:
   [v10 absoluteString];
   v20 = v10;
   v21 = v15;
-  v22 = v8;
-  v24 = v23 = v7;
+  v22 = handlerCopy;
+  v24 = v23 = actionCopy;
   v38 = [v24 containsString:@"Privacy_Advertising"];
 
-  v7 = v23;
-  v8 = v22;
+  actionCopy = v23;
+  handlerCopy = v22;
   v15 = v21;
   v10 = v20;
 
   if (v38)
   {
 LABEL_9:
-    v28 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v29 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Privacy&path=ADVERTISING"];
-    [v28 openSensitiveURL:v29 withOptions:MEMORY[0x277CBEC10]];
+    [defaultWorkspace openSensitiveURL:v29 withOptions:MEMORY[0x277CBEC10]];
 
-    v30 = [(UserTransparencyViewController *)self presentingViewController];
-    v31 = v30;
+    presentingViewController = [(UserTransparencyViewController *)self presentingViewController];
+    v31 = presentingViewController;
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __90__UserTransparencyViewController_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke;
@@ -645,26 +645,26 @@ LABEL_9:
     v41[4] = self;
     v32 = v41;
 LABEL_10:
-    [v30 dismissViewControllerAnimated:1 completion:v32];
+    [presentingViewController dismissViewControllerAnimated:1 completion:v32];
 
     [(UserTransparencyViewController *)self _reportUserTransparencyViewControllerEventWithType:@"PrivacyUserTransparencyDidLinkOut" withCompletionHandler:0];
     [(UserTransparencyViewController *)self _reportUserTransparencyViewControllerEventWithType:@"PrivacyUserTransparencyDidDisappear" withCompletionHandler:0];
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_11;
   }
 
-  v25 = [v15 path];
-  v26 = [v25 lastPathComponent];
-  v27 = [v26 rangeOfString:@"prefs:root=Privacy&path=LOCATION" options:1];
+  path3 = [v15 path];
+  lastPathComponent3 = [path3 lastPathComponent];
+  v27 = [lastPathComponent3 rangeOfString:@"prefs:root=Privacy&path=LOCATION" options:1];
 
   if (v27 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v33 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
     v34 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Privacy&path=LOCATION"];
-    [v33 openSensitiveURL:v34 withOptions:MEMORY[0x277CBEC10]];
+    [defaultWorkspace2 openSensitiveURL:v34 withOptions:MEMORY[0x277CBEC10]];
 
-    v30 = [(UserTransparencyViewController *)self presentingViewController];
-    v31 = v30;
+    presentingViewController = [(UserTransparencyViewController *)self presentingViewController];
+    v31 = presentingViewController;
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __90__UserTransparencyViewController_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke_2;
@@ -674,15 +674,15 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (![v7 navigationType])
+  if (![actionCopy navigationType])
   {
-    v35 = [MEMORY[0x277D75128] sharedApplication];
-    v36 = [v7 request];
-    v37 = [v36 URL];
-    [v35 openURL:v37 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    request2 = [actionCopy request];
+    v37 = [request2 URL];
+    [mEMORY[0x277D75128] openURL:v37 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global];
 
-    v30 = [(UserTransparencyViewController *)self presentingViewController];
-    v31 = v30;
+    presentingViewController = [(UserTransparencyViewController *)self presentingViewController];
+    v31 = presentingViewController;
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __90__UserTransparencyViewController_webView_decidePolicyForNavigationAction_decisionHandler___block_invoke_4;
@@ -692,7 +692,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8[2](v8, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_11:
 }
 
@@ -744,20 +744,20 @@ void __90__UserTransparencyViewController_webView_decidePolicyForNavigationActio
   }
 }
 
-- (void)_reportUserTransparencyViewControllerEventWithType:(id)a3 withCompletionHandler:(id)a4
+- (void)_reportUserTransparencyViewControllerEventWithType:(id)type withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CE96B8] workQueue];
+  typeCopy = type;
+  handlerCopy = handler;
+  workQueue = [MEMORY[0x277CE96B8] workQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __107__UserTransparencyViewController__reportUserTransparencyViewControllerEventWithType_withCompletionHandler___block_invoke;
   v10[3] = &unk_279DD96B8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
-  [v7 addOperationWithBlock:v10];
+  v11 = typeCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = typeCopy;
+  [workQueue addOperationWithBlock:v10];
 }
 
 void __107__UserTransparencyViewController__reportUserTransparencyViewControllerEventWithType_withCompletionHandler___block_invoke(uint64_t a1)
@@ -876,21 +876,21 @@ void __107__UserTransparencyViewController__reportUserTransparencyViewController
   }
 }
 
-- (id)normalizeChineseLanguage:(id)a3
+- (id)normalizeChineseLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   v4 = @"zh_HK";
-  if (([v3 hasPrefix:@"zh_HK"] & 1) == 0)
+  if (([languageCopy hasPrefix:@"zh_HK"] & 1) == 0)
   {
     v4 = @"zh_TW";
-    if (([v3 hasPrefix:@"zh_TW"] & 1) == 0)
+    if (([languageCopy hasPrefix:@"zh_TW"] & 1) == 0)
     {
-      if ([v3 hasPrefix:@"zh-Hant"])
+      if ([languageCopy hasPrefix:@"zh-Hant"])
       {
-        v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v3];
-        v6 = [v5 regionCode];
+        v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:languageCopy];
+        regionCode = [v5 regionCode];
 
-        if ([v6 isEqualToString:@"HK"])
+        if ([regionCode isEqualToString:@"HK"])
         {
           v7 = @"zh_HK";
         }

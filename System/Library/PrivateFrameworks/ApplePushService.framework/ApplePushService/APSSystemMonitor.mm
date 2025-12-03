@@ -1,15 +1,15 @@
 @interface APSSystemMonitor
 + (id)sharedInstance;
 - (APSSystemMonitor)init;
-- (void)_deliverNotificationSelector:(SEL)a3;
-- (void)_setSystemLockState:(BOOL)a3;
-- (void)_setSystemScreenState:(BOOL)a3;
-- (void)addListener:(id)a3;
+- (void)_deliverNotificationSelector:(SEL)selector;
+- (void)_setSystemLockState:(BOOL)state;
+- (void)_setSystemScreenState:(BOOL)state;
+- (void)addListener:(id)listener;
 - (void)dealloc;
-- (void)removeListener:(id)a3;
-- (void)setUsesPowerNotifications:(BOOL)a3;
-- (void)setWatchesScreenLightState:(BOOL)a3;
-- (void)setWatchesSystemLockState:(BOOL)a3;
+- (void)removeListener:(id)listener;
+- (void)setUsesPowerNotifications:(BOOL)notifications;
+- (void)setWatchesScreenLightState:(BOOL)state;
+- (void)setWatchesSystemLockState:(BOOL)state;
 @end
 
 @implementation APSSystemMonitor
@@ -64,15 +64,15 @@
   [(APSSystemMonitor *)&v4 dealloc];
 }
 
-- (void)_deliverNotificationSelector:(SEL)a3
+- (void)_deliverNotificationSelector:(SEL)selector
 {
   if ([(APSSystemMonitor *)self isActive])
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if ([(NSHashTable *)v5->_listeners count])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(NSHashTable *)selfCopy->_listeners count])
     {
-      v6 = [(NSHashTable *)v5->_listeners copy];
+      v6 = [(NSHashTable *)selfCopy->_listeners copy];
     }
 
     else
@@ -80,20 +80,20 @@
       v6 = 0;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    sub_1000139F4(a3, v6);
+    sub_1000139F4(selector, v6);
   }
 }
 
-- (void)setWatchesSystemLockState:(BOOL)a3
+- (void)setWatchesSystemLockState:(BOOL)state
 {
-  if (self->_watchesSystemLockState != a3)
+  if (self->_watchesSystemLockState != state)
   {
     state64[3] = v3;
     state64[4] = v4;
-    self->_watchesSystemLockState = a3;
-    if (a3)
+    self->_watchesSystemLockState = state;
+    if (state)
     {
       if (dword_1001BC7A8 == -1)
       {
@@ -113,14 +113,14 @@
   }
 }
 
-- (void)setWatchesScreenLightState:(BOOL)a3
+- (void)setWatchesScreenLightState:(BOOL)state
 {
-  if (self->_watchesScreenLightState != a3)
+  if (self->_watchesScreenLightState != state)
   {
     state64[3] = v3;
     state64[4] = v4;
-    self->_watchesScreenLightState = a3;
-    if (a3)
+    self->_watchesScreenLightState = state;
+    if (state)
     {
       if (dword_1001BC7AC == -1)
       {
@@ -140,11 +140,11 @@
   }
 }
 
-- (void)setUsesPowerNotifications:(BOOL)a3
+- (void)setUsesPowerNotifications:(BOOL)notifications
 {
-  if (self->_usesPowerNotifications != a3)
+  if (self->_usesPowerNotifications != notifications)
   {
-    if (a3)
+    if (notifications)
     {
       if (!dword_1001BF950)
       {
@@ -171,19 +171,19 @@
   }
 }
 
-- (void)_setSystemScreenState:(BOOL)a3
+- (void)_setSystemScreenState:(BOOL)state
 {
-  if (self->_screenLit != a3)
+  if (self->_screenLit != state)
   {
-    v3 = a3;
-    self->_screenLit = a3;
+    stateCopy = state;
+    self->_screenLit = state;
     v5 = self->_dateScreenLightLastChanged;
     v6 = objc_alloc_init(NSDate);
     dateScreenLightLastChanged = self->_dateScreenLightLastChanged;
     self->_dateScreenLightLastChanged = v6;
 
     v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (stateCopy)
     {
       if (v8)
       {
@@ -213,19 +213,19 @@
   }
 }
 
-- (void)_setSystemLockState:(BOOL)a3
+- (void)_setSystemLockState:(BOOL)state
 {
-  if (self->_systemLocked != a3)
+  if (self->_systemLocked != state)
   {
-    v3 = a3;
-    self->_systemLocked = a3;
+    stateCopy = state;
+    self->_systemLocked = state;
     v5 = self->_dateSystemLockLastChanged;
     v6 = objc_alloc_init(NSDate);
     dateSystemLockLastChanged = self->_dateSystemLockLastChanged;
     self->_dateSystemLockLastChanged = v6;
 
     v8 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (stateCopy)
     {
       if (v8)
       {
@@ -255,26 +255,26 @@
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (![(NSHashTable *)v4->_listeners containsObject:v5])
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSHashTable *)selfCopy->_listeners containsObject:listenerCopy])
   {
-    [(NSHashTable *)v4->_listeners addObject:v5];
+    [(NSHashTable *)selfCopy->_listeners addObject:listenerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_listeners removeObject:v5];
-  objc_sync_exit(v4);
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_listeners removeObject:listenerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

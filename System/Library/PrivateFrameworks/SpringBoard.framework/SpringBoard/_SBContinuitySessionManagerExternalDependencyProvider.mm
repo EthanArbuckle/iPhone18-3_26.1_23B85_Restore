@@ -1,7 +1,7 @@
 @interface _SBContinuitySessionManagerExternalDependencyProvider
 - (_SBContinuitySessionManagerExternalDependencyProvider)init;
-- (void)_setResourceHintActive:(BOOL)a3;
-- (void)_setRestrictionsActive:(BOOL)a3;
+- (void)_setResourceHintActive:(BOOL)active;
+- (void)_setRestrictionsActive:(BOOL)active;
 - (void)noteContinuitySessionEnded;
 - (void)noteContinuitySessionNegotiationStarted;
 @end
@@ -52,7 +52,7 @@
   [(_SBContinuitySessionManagerExternalDependencyProvider *)self _setRestrictionsActive:0];
 }
 
-- (void)_setResourceHintActive:(BOOL)a3
+- (void)_setResourceHintActive:(BOOL)active
 {
   resourceHintQueue = self->_resourceHintQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -60,18 +60,18 @@
   v4[2] = __80___SBContinuitySessionManagerExternalDependencyProvider__setResourceHintActive___block_invoke;
   v4[3] = &unk_2783A9F58;
   v4[4] = self;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(resourceHintQueue, v4);
 }
 
-- (void)_setRestrictionsActive:(BOOL)a3
+- (void)_setRestrictionsActive:(BOOL)active
 {
   restrictionsQueue = self->_restrictionsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80___SBContinuitySessionManagerExternalDependencyProvider__setRestrictionsActive___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v5 = a3;
+  activeCopy = active;
   dispatch_async(restrictionsQueue, block);
 }
 

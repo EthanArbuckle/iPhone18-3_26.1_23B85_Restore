@@ -1,40 +1,40 @@
 @interface HMDManagedStagedValue
-- (HMDManagedStagedValue)initWithValue:(id)a3 commitBlock:(id)a4;
+- (HMDManagedStagedValue)initWithValue:(id)value commitBlock:(id)block;
 - (id)value;
-- (void)_commitIfStaged:(id)a3;
-- (void)_handleCommitCompletionWithStagedValue:(id)a3 success:(BOOL)a4 committingValue:(id)a5;
+- (void)_commitIfStaged:(id)staged;
+- (void)_handleCommitCompletionWithStagedValue:(id)value success:(BOOL)success committingValue:(id)committingValue;
 - (void)_resetStagedValue;
 - (void)resetAndStagePriorValue;
-- (void)stageValue:(id)a3;
+- (void)stageValue:(id)value;
 @end
 
 @implementation HMDManagedStagedValue
 
-- (void)_handleCommitCompletionWithStagedValue:(id)a3 success:(BOOL)a4 committingValue:(id)a5
+- (void)_handleCommitCompletionWithStagedValue:(id)value success:(BOOL)success committingValue:(id)committingValue
 {
-  v6 = a4;
-  v15 = a3;
-  v8 = a5;
+  successCopy = success;
+  valueCopy = value;
+  committingValueCopy = committingValue;
   os_unfair_lock_lock_with_options();
-  v9 = [(HMDManagedStagedValue *)self stagedValue];
+  stagedValue = [(HMDManagedStagedValue *)self stagedValue];
 
-  if (v9 != v15)
+  if (stagedValue != valueCopy)
   {
     goto LABEL_2;
   }
 
   [(HMDManagedStagedValue *)self setState:0];
-  v10 = [v15 value];
-  if ([v15 isStaged])
+  value = [valueCopy value];
+  if ([valueCopy isStaged])
   {
     v11 = HMFEqualObjects();
     v12 = v11;
-    if (!v6)
+    if (!successCopy)
     {
       if (v11)
       {
-        v13 = [v15 committedValue];
-        [v15 commitValue:v13];
+        committedValue = [valueCopy committedValue];
+        [valueCopy commitValue:committedValue];
 
 LABEL_13:
 LABEL_2:
@@ -43,10 +43,10 @@ LABEL_2:
       }
 
 LABEL_14:
-      v14 = [v15 isStaged];
+      isStaged = [valueCopy isStaged];
 
       os_unfair_lock_unlock(&self->_lock);
-      if ((v14 & 1) == 0)
+      if ((isStaged & 1) == 0)
       {
         goto LABEL_3;
       }
@@ -57,7 +57,7 @@ LABEL_14:
 
   else
   {
-    if (!v6)
+    if (!successCopy)
     {
       goto LABEL_14;
     }
@@ -65,42 +65,42 @@ LABEL_14:
     v12 = 0;
   }
 
-  [v15 commitValue:v8];
+  [valueCopy commitValue:committingValueCopy];
   if (v12)
   {
     goto LABEL_13;
   }
 
-  [v15 stageValue:v10];
+  [valueCopy stageValue:value];
 
   os_unfair_lock_unlock(&self->_lock);
 LABEL_17:
-  [(HMDManagedStagedValue *)self _commitIfStaged:v15];
+  [(HMDManagedStagedValue *)self _commitIfStaged:valueCopy];
 LABEL_3:
 }
 
-- (void)_commitIfStaged:(id)a3
+- (void)_commitIfStaged:(id)staged
 {
-  v4 = a3;
+  stagedCopy = staged;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDManagedStagedValue *)self stagedValue];
+  stagedValue = [(HMDManagedStagedValue *)self stagedValue];
 
-  if (v5 == v4 && [v4 isStaged] && !-[HMDManagedStagedValue state](self, "state"))
+  if (stagedValue == stagedCopy && [stagedCopy isStaged] && !-[HMDManagedStagedValue state](self, "state"))
   {
-    v6 = [v4 value];
+    value = [stagedCopy value];
     [(HMDManagedStagedValue *)self setState:1];
     os_unfair_lock_unlock(&self->_lock);
     objc_initWeak(&location, self);
-    v7 = [(HMDManagedStagedValue *)self commitBlock];
+    commitBlock = [(HMDManagedStagedValue *)self commitBlock];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __41__HMDManagedStagedValue__commitIfStaged___block_invoke;
     v9[3] = &unk_278681730;
     objc_copyWeak(&v12, &location);
-    v10 = v4;
-    v8 = v6;
+    v10 = stagedCopy;
+    v8 = value;
     v11 = v8;
-    (v7)[2](v7, v8, v9);
+    (commitBlock)[2](commitBlock, v8, v9);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -121,8 +121,8 @@ void __41__HMDManagedStagedValue__commitIfStaged___block_invoke(uint64_t a1, uin
 - (void)_resetStagedValue
 {
   v3 = objc_alloc(MEMORY[0x277D0F900]);
-  v4 = [(HMDManagedStagedValue *)self initialValue];
-  v5 = [v3 initWithValue:v4];
+  initialValue = [(HMDManagedStagedValue *)self initialValue];
+  v5 = [v3 initWithValue:initialValue];
   [(HMDManagedStagedValue *)self setStagedValue:v5];
 
   [(HMDManagedStagedValue *)self setState:0];
@@ -131,39 +131,39 @@ void __41__HMDManagedStagedValue__commitIfStaged___block_invoke(uint64_t a1, uin
 - (void)resetAndStagePriorValue
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDManagedStagedValue *)self stagedValue];
-  v4 = [v3 value];
+  stagedValue = [(HMDManagedStagedValue *)self stagedValue];
+  value = [stagedValue value];
 
   [(HMDManagedStagedValue *)self _resetStagedValue];
-  v5 = [(HMDManagedStagedValue *)self stagedValue];
-  [v5 stageValue:v4];
+  stagedValue2 = [(HMDManagedStagedValue *)self stagedValue];
+  [stagedValue2 stageValue:value];
 
   os_unfair_lock_unlock(&self->_lock);
-  [(HMDManagedStagedValue *)self _commitIfStaged:v5];
+  [(HMDManagedStagedValue *)self _commitIfStaged:stagedValue2];
 }
 
-- (void)stageValue:(id)a3
+- (void)stageValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDManagedStagedValue *)self stagedValue];
-  [v4 stageValue:v5];
+  stagedValue = [(HMDManagedStagedValue *)self stagedValue];
+  [stagedValue stageValue:valueCopy];
   os_unfair_lock_unlock(&self->_lock);
-  [(HMDManagedStagedValue *)self _commitIfStaged:v4];
+  [(HMDManagedStagedValue *)self _commitIfStaged:stagedValue];
 }
 
 - (id)value
 {
-  v2 = [(HMDManagedStagedValue *)self stagedValue];
-  v3 = [v2 value];
+  stagedValue = [(HMDManagedStagedValue *)self stagedValue];
+  value = [stagedValue value];
 
-  return v3;
+  return value;
 }
 
-- (HMDManagedStagedValue)initWithValue:(id)a3 commitBlock:(id)a4
+- (HMDManagedStagedValue)initWithValue:(id)value commitBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = HMDManagedStagedValue;
   v8 = [(HMDManagedStagedValue *)&v15 init];
@@ -171,11 +171,11 @@ void __41__HMDManagedStagedValue__commitIfStaged___block_invoke(uint64_t a1, uin
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v6 copy];
+    v10 = [valueCopy copy];
     initialValue = v9->_initialValue;
     v9->_initialValue = v10;
 
-    v12 = [v7 copy];
+    v12 = [blockCopy copy];
     commitBlock = v9->_commitBlock;
     v9->_commitBlock = v12;
 

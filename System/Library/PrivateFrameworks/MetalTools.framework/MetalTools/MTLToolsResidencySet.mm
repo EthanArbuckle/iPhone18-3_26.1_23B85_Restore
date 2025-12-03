@@ -1,88 +1,88 @@
 @interface MTLToolsResidencySet
-- (MTLToolsResidencySet)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsResidencySet)initWithBaseObject:(id)object parent:(id)parent;
 - (NSArray)allCommittedAllocations;
 - (NSString)label;
 - (unint64_t)allocatedSize;
 - (unint64_t)allocationCount;
 - (unint64_t)currentGeneration;
 - (unint64_t)expiredGeneration;
-- (unint64_t)generationForAllocation:(id)a3;
-- (void)addAllocation:(id)a3;
-- (void)addAllocations:(const void *)a3 count:(unint64_t)a4;
+- (unint64_t)generationForAllocation:(id)allocation;
+- (void)addAllocation:(id)allocation;
+- (void)addAllocations:(const void *)allocations count:(unint64_t)count;
 - (void)commit;
 - (void)dealloc;
 - (void)endResidency;
 - (void)removeAllAllocations;
-- (void)removeAllocation:(id)a3;
-- (void)removeAllocations:(const void *)a3 count:(unint64_t)a4;
+- (void)removeAllocation:(id)allocation;
+- (void)removeAllocations:(const void *)allocations count:(unint64_t)count;
 - (void)requestResidency;
-- (void)setCurrentGeneration:(unint64_t)a3;
-- (void)setExpiredGeneration:(unint64_t)a3;
+- (void)setCurrentGeneration:(unint64_t)generation;
+- (void)setExpiredGeneration:(unint64_t)generation;
 @end
 
 @implementation MTLToolsResidencySet
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (unint64_t)allocatedSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocatedSize];
+  return [baseObject allocatedSize];
 }
 
 - (void)endResidency
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 endResidency];
+  [baseObject endResidency];
 }
 
 - (void)requestResidency
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 requestResidency];
+  [baseObject requestResidency];
 }
 
 - (unint64_t)currentGeneration
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 currentGeneration];
+  return [baseObject currentGeneration];
 }
 
-- (void)setCurrentGeneration:(unint64_t)a3
+- (void)setCurrentGeneration:(unint64_t)generation
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setCurrentGeneration:a3];
+  [baseObject setCurrentGeneration:generation];
 }
 
 - (unint64_t)expiredGeneration
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 expiredGeneration];
+  return [baseObject expiredGeneration];
 }
 
-- (void)setExpiredGeneration:(unint64_t)a3
+- (void)setExpiredGeneration:(unint64_t)generation
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setExpiredGeneration:a3];
+  [baseObject setExpiredGeneration:generation];
 }
 
-- (MTLToolsResidencySet)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsResidencySet)initWithBaseObject:(id)object parent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = MTLToolsResidencySet;
-  v4 = [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:a4];
+  v4 = [(MTLToolsObject *)&v6 initWithBaseObject:object parent:parent];
   if (v4)
   {
     v4->_allocations = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -135,27 +135,27 @@
   [(MTLToolsObject *)&v9 dealloc];
 }
 
-- (void)addAllocations:(const void *)a3 count:(unint64_t)a4
+- (void)addAllocations:(const void *)allocations count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto13MTLAllocation}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto13MTLAllocation}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      v8 = a3[v7];
+      v8 = allocations[v7];
       [(NSMutableSet *)self->_allocations addObject:v8];
       [(NSMutableSet *)self->_pendingRemoves removeObject:v8];
       [(NSMutableSet *)self->_pendingAdds addObject:v8];
-      v9 = [v8 baseObject];
-      *(__p[0] + v7++) = v9;
+      baseObject = [v8 baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 addAllocations:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 addAllocations:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -163,28 +163,28 @@
   }
 }
 
-- (void)removeAllocations:(const void *)a3 count:(unint64_t)a4
+- (void)removeAllocations:(const void *)allocations count:(unint64_t)count
 {
-  v4 = a4;
-  std::vector<objc_object  {objcproto13MTLAllocation}*>::vector[abi:ne200100](__p, a4);
-  if (v4)
+  countCopy = count;
+  std::vector<objc_object  {objcproto13MTLAllocation}*>::vector[abi:ne200100](__p, count);
+  if (countCopy)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != countCopy; ++i)
     {
-      v8 = [a3[i] baseObject];
-      *(__p[0] + i) = v8;
+      baseObject = [allocations[i] baseObject];
+      *(__p[0] + i) = baseObject;
     }
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 removeAllocations:__p[0] count:v4];
-  for (; v4; --v4)
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 removeAllocations:__p[0] count:countCopy];
+  for (; countCopy; --countCopy)
   {
-    v10 = *a3;
-    [(NSMutableSet *)self->_allocations removeObject:*a3];
+    v10 = *allocations;
+    [(NSMutableSet *)self->_allocations removeObject:*allocations];
     [(NSMutableSet *)self->_pendingAdds removeObject:v10];
     [(NSMutableSet *)self->_pendingRemoves addObject:v10];
-    ++a3;
+    ++allocations;
   }
 
   if (__p[0])
@@ -194,33 +194,33 @@
   }
 }
 
-- (void)addAllocation:(id)a3
+- (void)addAllocation:(id)allocation
 {
   [(NSMutableSet *)self->_allocations addObject:?];
-  [(NSMutableSet *)self->_pendingRemoves removeObject:a3];
-  [(NSMutableSet *)self->_pendingAdds addObject:a3];
-  v5 = [a3 baseObject];
-  v6 = [(MTLToolsObject *)self baseObject];
+  [(NSMutableSet *)self->_pendingRemoves removeObject:allocation];
+  [(NSMutableSet *)self->_pendingAdds addObject:allocation];
+  baseObject = [allocation baseObject];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
 
-  [v6 addAllocation:v5];
+  [baseObject2 addAllocation:baseObject];
 }
 
-- (void)removeAllocation:(id)a3
+- (void)removeAllocation:(id)allocation
 {
   [-[MTLToolsObject baseObject](self "baseObject")];
-  [(NSMutableSet *)self->_allocations removeObject:a3];
-  [(NSMutableSet *)self->_pendingAdds removeObject:a3];
+  [(NSMutableSet *)self->_allocations removeObject:allocation];
+  [(NSMutableSet *)self->_pendingAdds removeObject:allocation];
   pendingRemoves = self->_pendingRemoves;
 
-  [(NSMutableSet *)pendingRemoves addObject:a3];
+  [(NSMutableSet *)pendingRemoves addObject:allocation];
 }
 
-- (unint64_t)generationForAllocation:(id)a3
+- (unint64_t)generationForAllocation:(id)allocation
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [allocation baseObject];
 
-  return [v4 generationForAllocation:v5];
+  return [baseObject generationForAllocation:baseObject2];
 }
 
 - (void)removeAllAllocations
@@ -248,9 +248,9 @@
 
 - (unint64_t)allocationCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 allocationCount];
+  return [baseObject allocationCount];
 }
 
 - (void)commit

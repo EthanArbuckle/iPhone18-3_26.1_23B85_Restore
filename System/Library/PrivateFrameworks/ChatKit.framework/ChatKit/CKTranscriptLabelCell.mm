@@ -1,22 +1,22 @@
 @interface CKTranscriptLabelCell
 + (id)createStampLabelView;
-- (CKTranscriptLabelCell)initWithFrame:(CGRect)a3;
+- (CKTranscriptLabelCell)initWithFrame:(CGRect)frame;
 - (id)attributedText;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation CKTranscriptLabelCell
 
-- (CKTranscriptLabelCell)initWithFrame:(CGRect)a3
+- (CKTranscriptLabelCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKTranscriptLabelCell;
-  v3 = [(CKTranscriptStampCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptStampCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKTranscriptLabelCell *)v3 label];
-    [v5 setNumberOfLines:0];
+    label = [(CKTranscriptLabelCell *)v3 label];
+    [label setNumberOfLines:0];
   }
 
   return v4;
@@ -30,19 +30,19 @@
   return v3;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKTranscriptLabelCell *)self label];
-  [v5 setAttributedText:v4];
+  textCopy = text;
+  label = [(CKTranscriptLabelCell *)self label];
+  [label setAttributedText:textCopy];
 }
 
 - (id)attributedText
 {
-  v2 = [(CKTranscriptLabelCell *)self label];
-  v3 = [v2 attributedText];
+  label = [(CKTranscriptLabelCell *)self label];
+  attributedText = [label attributedText];
 
-  return v3;
+  return attributedText;
 }
 
 @end

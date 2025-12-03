@@ -1,60 +1,60 @@
 @interface BPSFollowUpController
-+ (id)_domainAccessorForDevice:(id)a3;
++ (id)_domainAccessorForDevice:(id)device;
 + (id)skippedSetupPaneClassesForCurrentDevice;
-+ (id)skippedSetupPaneClassesForDevice:(id)a3;
-+ (void)addFollowUpForIdentifier:(id)a3 withAttributes:(id)a4 withCompletion:(id)a5;
-+ (void)markSkippedSetupPaneClass:(Class)a3 forDevice:(id)a4;
-+ (void)markSkippedSetupPaneClassForCurrentDevice:(Class)a3;
-+ (void)removeFollowUpForIdentifier:(id)a3 withCompletion:(id)a4;
-+ (void)removeSkippedPaneClass:(Class)a3 forDevice:(id)a4;
-+ (void)removeSkippedPaneClassForCurrentDevice:(Class)a3;
++ (id)skippedSetupPaneClassesForDevice:(id)device;
++ (void)addFollowUpForIdentifier:(id)identifier withAttributes:(id)attributes withCompletion:(id)completion;
++ (void)markSkippedSetupPaneClass:(Class)class forDevice:(id)device;
++ (void)markSkippedSetupPaneClassForCurrentDevice:(Class)device;
++ (void)removeFollowUpForIdentifier:(id)identifier withCompletion:(id)completion;
++ (void)removeSkippedPaneClass:(Class)class forDevice:(id)device;
++ (void)removeSkippedPaneClassForCurrentDevice:(Class)device;
 @end
 
 @implementation BPSFollowUpController
 
 + (id)skippedSetupPaneClassesForCurrentDevice
 {
-  v3 = [a1 _currentDevice];
-  v4 = [a1 skippedSetupPaneClassesForDevice:v3];
+  _currentDevice = [self _currentDevice];
+  v4 = [self skippedSetupPaneClassesForDevice:_currentDevice];
 
   return v4;
 }
 
-+ (void)addFollowUpForIdentifier:(id)a3 withAttributes:(id)a4 withCompletion:(id)a5
++ (void)addFollowUpForIdentifier:(id)identifier withAttributes:(id)attributes withCompletion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9 && [v8 length])
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  if (identifierCopy && attributesCopy && [identifierCopy length])
   {
-    v11 = [a1 baseDomainIdentifier];
+    baseDomainIdentifier = [self baseDomainIdentifier];
     v12 = objc_alloc_init(MEMORY[0x277CFE508]);
-    [v12 setUniqueIdentifier:v8];
-    [v12 setGroupIdentifier:v11];
-    v13 = [v9 localizedTitle];
-    [v12 setTitle:v13];
+    [v12 setUniqueIdentifier:identifierCopy];
+    [v12 setGroupIdentifier:baseDomainIdentifier];
+    localizedTitle = [attributesCopy localizedTitle];
+    [v12 setTitle:localizedTitle];
 
-    v14 = [v9 localizedDescription];
-    [v12 setInformativeText:v14];
+    localizedDescription = [attributesCopy localizedDescription];
+    [v12 setInformativeText:localizedDescription];
 
-    [v12 setTargetBundleIdentifier:v11];
+    [v12 setTargetBundleIdentifier:baseDomainIdentifier];
     v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = [v9 followUpActions];
+    followUpActions = [attributesCopy followUpActions];
 
-    if (v15)
+    if (followUpActions)
     {
       v37 = v12;
-      v38 = v10;
-      v39 = v8;
+      v38 = completionCopy;
+      v39 = identifierCopy;
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v16 = [v9 followUpActions];
-      v17 = [v16 allKeys];
+      followUpActions2 = [attributesCopy followUpActions];
+      allKeys = [followUpActions2 allKeys];
 
-      v18 = [v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v18)
       {
         v19 = v18;
@@ -65,70 +65,70 @@
           {
             if (*v45 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(allKeys);
             }
 
             v22 = *(*(&v44 + 1) + 8 * i);
             v23 = MEMORY[0x277CFE4F8];
-            v24 = [v9 followUpActions];
-            [v24 objectForKeyedSubscript:v22];
-            v26 = v25 = v9;
+            followUpActions3 = [attributesCopy followUpActions];
+            [followUpActions3 objectForKeyedSubscript:v22];
+            v26 = v25 = attributesCopy;
             v27 = [v23 actionWithLabel:v22 url:v26];
 
-            v9 = v25;
+            attributesCopy = v25;
             [v40 addObject:v27];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v44 objects:v48 count:16];
+          v19 = [allKeys countByEnumeratingWithState:&v44 objects:v48 count:16];
         }
 
         while (v19);
       }
 
-      v10 = v38;
-      v8 = v39;
+      completionCopy = v38;
+      identifierCopy = v39;
       v12 = v37;
     }
 
     [v12 setActions:v40];
-    if ([v9 wantNotification])
+    if ([attributesCopy wantNotification])
     {
       v28 = objc_alloc_init(MEMORY[0x277CFE510]);
-      v29 = [v9 localizedNotificationTitle];
-      [v28 setTitle:v29];
+      localizedNotificationTitle = [attributesCopy localizedNotificationTitle];
+      [v28 setTitle:localizedNotificationTitle];
 
-      v30 = [v9 localizedNotificationDescription];
-      [v28 setInformativeText:v30];
+      localizedNotificationDescription = [attributesCopy localizedNotificationDescription];
+      [v28 setInformativeText:localizedNotificationDescription];
 
-      v31 = [v28 options];
-      [v31 setByAddingObject:*MEMORY[0x277CFE488]];
-      v33 = v32 = v9;
+      options = [v28 options];
+      [options setByAddingObject:*MEMORY[0x277CFE488]];
+      v33 = v32 = attributesCopy;
       [v28 setOptions:v33];
 
-      v34 = [v28 options];
-      v35 = [v34 setByAddingObject:*MEMORY[0x277CFE4A0]];
+      options2 = [v28 options];
+      v35 = [options2 setByAddingObject:*MEMORY[0x277CFE4A0]];
       [v28 setOptions:v35];
 
-      v9 = v32;
+      attributesCopy = v32;
       [v12 setNotification:v28];
     }
 
-    v36 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:v11];
+    v36 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:baseDomainIdentifier];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __80__BPSFollowUpController_addFollowUpForIdentifier_withAttributes_withCompletion___block_invoke;
     v42[3] = &unk_278D23430;
-    v43 = v10;
+    v43 = completionCopy;
     [v36 postFollowUpItem:v12 completion:v42];
   }
 
   else
   {
-    v11 = bps_setup_log();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    baseDomainIdentifier = bps_setup_log();
+    if (os_log_type_enabled(baseDomainIdentifier, OS_LOG_TYPE_ERROR) && os_log_type_enabled(baseDomainIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_241E74000, v11, OS_LOG_TYPE_DEFAULT, "Error!! Issuing a FollowUp requires dictating an identifier!", buf, 2u);
+      _os_log_impl(&dword_241E74000, baseDomainIdentifier, OS_LOG_TYPE_DEFAULT, "Error!! Issuing a FollowUp requires dictating an identifier!", buf, 2u);
     }
   }
 }
@@ -144,23 +144,23 @@ uint64_t __80__BPSFollowUpController_addFollowUpForIdentifier_withAttributes_wit
   return result;
 }
 
-+ (void)removeFollowUpForIdentifier:(id)a3 withCompletion:(id)a4
++ (void)removeFollowUpForIdentifier:(id)identifier withCompletion:(id)completion
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 baseDomainIdentifier];
-  if (v6 && [v6 length])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  baseDomainIdentifier = [self baseDomainIdentifier];
+  if (identifierCopy && [identifierCopy length])
   {
-    v9 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:v8];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, v6];
-    v15[0] = v10;
+    v9 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:baseDomainIdentifier];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", baseDomainIdentifier, identifierCopy];
+    v15[0] = identifierCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __68__BPSFollowUpController_removeFollowUpForIdentifier_withCompletion___block_invoke;
     v13[3] = &unk_278D23430;
-    v14 = v7;
+    v14 = completionCopy;
     [v9 clearPendingFollowUpItemsWithUniqueIdentifiers:v11 completion:v13];
   }
 
@@ -186,51 +186,51 @@ uint64_t __68__BPSFollowUpController_removeFollowUpForIdentifier_withCompletion_
   return result;
 }
 
-+ (id)_domainAccessorForDevice:(id)a3
++ (id)_domainAccessorForDevice:(id)device
 {
   v3 = MEMORY[0x277D2BA58];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithDomain:@"com.apple.Bridge" pairedDevice:v4];
+  deviceCopy = device;
+  v5 = [[v3 alloc] initWithDomain:@"com.apple.Bridge" pairedDevice:deviceCopy];
 
   return v5;
 }
 
-+ (void)markSkippedSetupPaneClassForCurrentDevice:(Class)a3
++ (void)markSkippedSetupPaneClassForCurrentDevice:(Class)device
 {
-  v5 = [a1 _currentDevice];
-  [a1 markSkippedSetupPaneClass:a3 forDevice:v5];
+  _currentDevice = [self _currentDevice];
+  [self markSkippedSetupPaneClass:device forDevice:_currentDevice];
 }
 
-+ (void)removeSkippedPaneClassForCurrentDevice:(Class)a3
++ (void)removeSkippedPaneClassForCurrentDevice:(Class)device
 {
-  v5 = [a1 _currentDevice];
-  [a1 removeSkippedPaneClass:a3 forDevice:v5];
+  _currentDevice = [self _currentDevice];
+  [self removeSkippedPaneClass:device forDevice:_currentDevice];
 }
 
-+ (void)markSkippedSetupPaneClass:(Class)a3 forDevice:(id)a4
++ (void)markSkippedSetupPaneClass:(Class)class forDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v7 = bps_setup_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136446466;
     v16 = "+[BPSFollowUpController markSkippedSetupPaneClass:forDevice:]";
     v17 = 2114;
-    v18 = a3;
+    classCopy = class;
     _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", &v15, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CCA8D8] bundleForClass:a3];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [MEMORY[0x277CCA8D8] bundleForClass:class];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
 
-  if (v8 != v9)
+  if (v8 != mainBundle)
   {
-    a3 = [v8 principalClass];
+    class = [v8 principalClass];
   }
 
-  v10 = NSStringFromClass(a3);
-  v11 = [a1 _domainAccessorForDevice:v6];
+  v10 = NSStringFromClass(class);
+  v11 = [self _domainAccessorForDevice:deviceCopy];
 
   v12 = [v11 objectForKey:@"BridgeSkippedSetupPanes"];
   if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -247,25 +247,25 @@ uint64_t __68__BPSFollowUpController_removeFollowUpForIdentifier_withCompletion_
   }
 
   [v11 setObject:v12 forKey:@"BridgeSkippedSetupPanes"];
-  v14 = [v11 synchronize];
+  synchronize = [v11 synchronize];
 }
 
-+ (void)removeSkippedPaneClass:(Class)a3 forDevice:(id)a4
++ (void)removeSkippedPaneClass:(Class)class forDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v7 = bps_setup_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136446466;
-    v14 = "+[BPSFollowUpController removeSkippedPaneClass:forDevice:]";
+    classCopy2 = "+[BPSFollowUpController removeSkippedPaneClass:forDevice:]";
     v15 = 2114;
-    v16 = a3;
+    classCopy = class;
     _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", &v13, 0x16u);
   }
 
-  v8 = NSStringFromClass(a3);
-  v9 = [a1 _domainAccessorForDevice:v6];
+  v8 = NSStringFromClass(class);
+  v9 = [self _domainAccessorForDevice:deviceCopy];
 
   v10 = [v9 objectForKey:@"BridgeSkippedSetupPanes"];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -273,7 +273,7 @@ uint64_t __68__BPSFollowUpController_removeFollowUpForIdentifier_withCompletion_
     v11 = [v10 mutableCopy];
     [v11 removeObject:v8];
     [v9 setObject:v11 forKey:@"BridgeSkippedSetupPanes"];
-    v12 = [v9 synchronize];
+    synchronize = [v9 synchronize];
   }
 
   else
@@ -282,16 +282,16 @@ uint64_t __68__BPSFollowUpController_removeFollowUpForIdentifier_withCompletion_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = a3;
+      classCopy2 = class;
       _os_log_impl(&dword_241E74000, v11, OS_LOG_TYPE_DEFAULT, "Error: tried to remove skipped pane '%@' but none was found", &v13, 0xCu);
     }
   }
 }
 
-+ (id)skippedSetupPaneClassesForDevice:(id)a3
++ (id)skippedSetupPaneClassesForDevice:(id)device
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [a1 _domainAccessorForDevice:a3];
+  v3 = [self _domainAccessorForDevice:device];
   v4 = [v3 objectForKey:@"BridgeSkippedSetupPanes"];
 
   if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))

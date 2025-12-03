@@ -1,23 +1,23 @@
 @interface SubscriptionStatusOperation
-- (BOOL)_carrierBundleStatusIsValidForCachedStatus:(id)a3;
+- (BOOL)_carrierBundleStatusIsValidForCachedStatus:(id)status;
 - (BOOL)allowsBypassOfPrivacyAcknowledgement;
 - (BOOL)authenticatesIfNecessary;
 - (NSString)localizedAuthenticationReason;
 - (NSString)reason;
 - (SSAuthenticationContext)authenticationContext;
-- (id)_getInitialStatus:(id *)a3;
-- (id)_loadStatusOnce:(id *)a3;
+- (id)_getInitialStatus:(id *)status;
+- (id)_loadStatusOnce:(id *)once;
 - (id)statusBlock;
 - (int64_t)carrierBundleProvisioningStyle;
-- (void)_cacheAccountEligibilityWithStatus:(id)a3;
+- (void)_cacheAccountEligibilityWithStatus:(id)status;
 - (void)run;
-- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)a3;
-- (void)setAuthenticatesIfNecessary:(BOOL)a3;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setCarrierBundleProvisioningStyle:(int64_t)a3;
-- (void)setLocalizedAuthenticationReason:(id)a3;
-- (void)setReason:(id)a3;
-- (void)setStatusBlock:(id)a3;
+- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)acknowledgement;
+- (void)setAuthenticatesIfNecessary:(BOOL)necessary;
+- (void)setAuthenticationContext:(id)context;
+- (void)setCarrierBundleProvisioningStyle:(int64_t)style;
+- (void)setLocalizedAuthenticationReason:(id)reason;
+- (void)setReason:(id)reason;
+- (void)setStatusBlock:(id)block;
 @end
 
 @implementation SubscriptionStatusOperation
@@ -73,29 +73,29 @@
   return v3;
 }
 
-- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)a3
+- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)acknowledgement
 {
   [(SubscriptionStatusOperation *)self lock];
-  self->_allowsBypassOfPrivacyAcknowledgement = a3;
+  self->_allowsBypassOfPrivacyAcknowledgement = acknowledgement;
 
   [(SubscriptionStatusOperation *)self unlock];
 }
 
-- (void)setAuthenticatesIfNecessary:(BOOL)a3
+- (void)setAuthenticatesIfNecessary:(BOOL)necessary
 {
   [(SubscriptionStatusOperation *)self lock];
-  self->_authenticatesIfNecessary = a3;
+  self->_authenticatesIfNecessary = necessary;
 
   [(SubscriptionStatusOperation *)self unlock];
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   [(SubscriptionStatusOperation *)self lock];
-  if (self->_authenticationContext != v6)
+  if (self->_authenticationContext != contextCopy)
   {
-    v4 = [(SSAuthenticationContext *)v6 copy];
+    v4 = [(SSAuthenticationContext *)contextCopy copy];
     authenticationContext = self->_authenticationContext;
     self->_authenticationContext = v4;
   }
@@ -103,21 +103,21 @@
   [(SubscriptionStatusOperation *)self unlock];
 }
 
-- (void)setCarrierBundleProvisioningStyle:(int64_t)a3
+- (void)setCarrierBundleProvisioningStyle:(int64_t)style
 {
   [(SubscriptionStatusOperation *)self lock];
-  self->_carrierBundleProvisioningStyle = a3;
+  self->_carrierBundleProvisioningStyle = style;
 
   [(SubscriptionStatusOperation *)self unlock];
 }
 
-- (void)setLocalizedAuthenticationReason:(id)a3
+- (void)setLocalizedAuthenticationReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   [(SubscriptionStatusOperation *)self lock];
-  if (self->_localizedAuthenticationReason != v6)
+  if (self->_localizedAuthenticationReason != reasonCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)reasonCopy copy];
     localizedAuthenticationReason = self->_localizedAuthenticationReason;
     self->_localizedAuthenticationReason = v4;
   }
@@ -125,13 +125,13 @@
   [(SubscriptionStatusOperation *)self unlock];
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
-  v6 = a3;
+  reasonCopy = reason;
   [(SubscriptionStatusOperation *)self lock];
-  if (self->_reason != v6)
+  if (self->_reason != reasonCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)reasonCopy copy];
     reason = self->_reason;
     self->_reason = v4;
   }
@@ -139,13 +139,13 @@
   [(SubscriptionStatusOperation *)self unlock];
 }
 
-- (void)setStatusBlock:(id)a3
+- (void)setStatusBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(SubscriptionStatusOperation *)self lock];
-  if (self->_statusBlock != v6)
+  if (self->_statusBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     statusBlock = self->_statusBlock;
     self->_statusBlock = v4;
   }
@@ -188,19 +188,19 @@
         v16 = +[SSLogConfig sharedConfig];
       }
 
-      v20 = [v16 shouldLog];
+      shouldLog = [v16 shouldLog];
       if ([v16 shouldLogToDisk])
       {
-        v21 = v20 | 2;
+        v21 = shouldLog | 2;
       }
 
       else
       {
-        v21 = v20;
+        v21 = shouldLog;
       }
 
-      v19 = [v16 OSLogObject];
-      if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v16 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v21 &= 2u;
       }
@@ -225,9 +225,9 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v19 = [NSString stringWithCString:v23 encoding:4, &v59, v53];
+      oSLogObject = [NSString stringWithCString:v23 encoding:4, &v59, v53];
       free(v23);
-      v52 = v19;
+      v52 = oSLogObject;
       SSFileLog();
 LABEL_34:
 
@@ -245,19 +245,19 @@ LABEL_34:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog2 = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog2 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog2;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -289,19 +289,19 @@ LABEL_34:
     }
 
     v9 = +[SSVTelephonyController sharedController];
-    v10 = [v9 isPhoneNumberAccessRestricted];
+    isPhoneNumberAccessRestricted = [v9 isPhoneNumberAccessRestricted];
 
-    if (v10)
+    if (isPhoneNumberAccessRestricted)
     {
       goto LABEL_85;
     }
 
-    v11 = [v7 carrierBundlingStatus];
-    v12 = [(SubscriptionStatusOperation *)self carrierBundleProvisioningStyle];
-    if (v12 == 1)
+    carrierBundlingStatus = [v7 carrierBundlingStatus];
+    carrierBundleProvisioningStyle = [(SubscriptionStatusOperation *)self carrierBundleProvisioningStyle];
+    if (carrierBundleProvisioningStyle == 1)
     {
       v14 = 0;
-      if (v11 != 1 && v11 != 4)
+      if (carrierBundlingStatus != 1 && carrierBundlingStatus != 4)
       {
         v14 = [v7 accountStatus] != 3;
       }
@@ -315,7 +315,7 @@ LABEL_34:
 
     else
     {
-      if (v12 == 2)
+      if (carrierBundleProvisioningStyle == 2)
       {
         v13 = 0;
         v14 = 1;
@@ -330,19 +330,19 @@ LABEL_65:
     v42 = +[SSVSubscriptionStatusCoordinator copyStatusFromUserDefaults];
     if (v42 && [(SubscriptionStatusOperation *)self _carrierBundleStatusIsValidForCachedStatus:v42])
     {
-      if (v11 != 1 && v11 != 4)
+      if (carrierBundlingStatus != 1 && carrierBundlingStatus != 4)
       {
         [v7 setCarrierBundlingStatus:{objc_msgSend(v42, "carrierBundlingStatus")}];
       }
 
-      v43 = [v42 cellularOperatorName];
-      [v7 setCellularOperatorName:v43];
+      cellularOperatorName = [v42 cellularOperatorName];
+      [v7 setCellularOperatorName:cellularOperatorName];
 
-      v44 = [v42 phoneNumber];
-      [v7 setPhoneNumber:v44];
+      phoneNumber = [v42 phoneNumber];
+      [v7 setPhoneNumber:phoneNumber];
 
-      v45 = [v42 sessionIdentifier];
-      [v7 setSessionIdentifier:v45];
+      sessionIdentifier = [v42 sessionIdentifier];
+      [v7 setSessionIdentifier:sessionIdentifier];
     }
 
     if (v13)
@@ -351,8 +351,8 @@ LABEL_65:
       v25 = v14;
 LABEL_39:
       v28 = objc_alloc_init(CarrierBundlingEligibilityOperation);
-      v29 = [(SubscriptionStatusOperation *)self reason];
-      v30 = [v29 isEqualToString:SSVSubscriptionStatusRequestReasonDeepLink];
+      reason = [(SubscriptionStatusOperation *)self reason];
+      v30 = [reason isEqualToString:SSVSubscriptionStatusRequestReasonDeepLink];
 
       if (v30)
       {
@@ -365,8 +365,8 @@ LABEL_39:
       v33 = v32;
       if (!v31)
       {
-        v35 = [v32 domain];
-        if ([v35 isEqualToString:@"CarrierBundlingEligibilityErrorDomain"])
+        domain = [v32 domain];
+        if ([domain isEqualToString:@"CarrierBundlingEligibilityErrorDomain"])
         {
           [v7 setCarrierBundlingErrorCode:{objc_msgSend(v33, "code")}];
         }
@@ -382,12 +382,12 @@ LABEL_84:
         if ((v25 & v27) != 1)
         {
 LABEL_86:
-          v47 = [v7 accountIdentifier];
+          accountIdentifier = [v7 accountIdentifier];
           v48 = +[SSAccountStore defaultStore];
-          v49 = [v48 activeAccount];
-          v50 = [v49 uniqueIdentifier];
+          activeAccount = [v48 activeAccount];
+          uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-          if (!v50 || v47 == v50)
+          if (!uniqueIdentifier || accountIdentifier == uniqueIdentifier)
           {
             if (v6)
             {
@@ -398,7 +398,7 @@ LABEL_95:
             }
           }
 
-          else if (!v47 || ((v6 | [v47 isEqualToNumber:v50] ^ 1) & 1) != 0)
+          else if (!accountIdentifier || ((v6 | [accountIdentifier isEqualToNumber:uniqueIdentifier] ^ 1) & 1) != 0)
           {
             goto LABEL_95;
           }
@@ -418,47 +418,47 @@ LABEL_85:
         goto LABEL_86;
       }
 
-      v34 = [(CarrierBundlingEligibilityOperation *)v28 eligibilityResponse];
-      v35 = v34;
+      eligibilityResponse = [(CarrierBundlingEligibilityOperation *)v28 eligibilityResponse];
+      domain = eligibilityResponse;
       v56 = v27;
-      if ((v27 & 1) == 0 && [v34 bundlingStatus] == 1)
+      if ((v27 & 1) == 0 && [eligibilityResponse bundlingStatus] == 1)
       {
         v4[2](v4, v7, 1, 0);
       }
 
-      v36 = [(CarrierBundlingEligibilityOperation *)v28 cellularProviderName];
-      [v7 setCellularOperatorName:v36];
+      cellularProviderName = [(CarrierBundlingEligibilityOperation *)v28 cellularProviderName];
+      [v7 setCellularOperatorName:cellularProviderName];
 
-      v37 = [(CarrierBundlingEligibilityOperation *)v28 phoneNumber];
-      [v7 setPhoneNumber:v37];
+      phoneNumber2 = [(CarrierBundlingEligibilityOperation *)v28 phoneNumber];
+      [v7 setPhoneNumber:phoneNumber2];
 
-      v38 = [v35 bundlingStatus];
-      if (v38 == 1)
+      bundlingStatus = [domain bundlingStatus];
+      if (bundlingStatus == 1)
       {
         if (![v7 accountStatus])
         {
-          v38 = 4;
+          bundlingStatus = 4;
 LABEL_75:
-          [v7 setCarrierBundlingStatus:v38];
+          [v7 setCarrierBundlingStatus:bundlingStatus];
           goto LABEL_76;
         }
 
         if ([v7 carrierBundlingStatus] == 4)
         {
 LABEL_76:
-          if ([v35 isFamilySubscription])
+          if ([domain isFamilySubscription])
           {
             [v7 setFamilySubscription:1];
           }
 
-          v46 = [v35 SMSSessionIdentifier];
-          if (!v46)
+          sMSSessionIdentifier = [domain SMSSessionIdentifier];
+          if (!sMSSessionIdentifier)
           {
-            v46 = [v35 headerEnrichmentSessionIdentifier];
+            sMSSessionIdentifier = [domain headerEnrichmentSessionIdentifier];
           }
 
-          [v7 setSessionIdentifier:v46];
-          if ((v56 & 1) == 0 && [v35 bundlingStatus] != 1)
+          [v7 setSessionIdentifier:sMSSessionIdentifier];
+          if ((v56 & 1) == 0 && [domain bundlingStatus] != 1)
           {
             v4[2](v4, v7, 1, 0);
           }
@@ -469,17 +469,17 @@ LABEL_76:
       }
 
       v55 = v6;
-      v39 = [v33 domain];
-      if ([v39 isEqualToString:SSErrorDomain])
+      domain2 = [v33 domain];
+      if ([domain2 isEqualToString:SSErrorDomain])
       {
         v54 = v25;
-        v40 = [v33 code];
+        code = [v33 code];
 
-        v41 = v40 == 124;
+        v41 = code == 124;
         v25 = v54;
         if (v41)
         {
-          v38 = 2;
+          bundlingStatus = 2;
         }
       }
 
@@ -508,14 +508,14 @@ LABEL_96:
   [(SubscriptionStatusOperation *)self setSuccess:v24];
 }
 
-- (void)_cacheAccountEligibilityWithStatus:(id)a3
+- (void)_cacheAccountEligibilityWithStatus:(id)status
 {
-  v3 = a3;
-  v4 = [v3 accountIdentifier];
-  if (v4)
+  statusCopy = status;
+  accountIdentifier = [statusCopy accountIdentifier];
+  if (accountIdentifier)
   {
     v5 = +[SSAccountStore defaultStore];
-    v6 = [v5 accountWithUniqueIdentifier:v4];
+    v6 = [v5 accountWithUniqueIdentifier:accountIdentifier];
     if (!v6)
     {
 LABEL_18:
@@ -523,7 +523,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if ([v3 accountStatus] == 3)
+    if ([statusCopy accountStatus] == 3)
     {
       v7 = &__kCFBooleanTrue;
     }
@@ -540,19 +540,19 @@ LABEL_18:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -561,7 +561,7 @@ LABEL_18:
     {
       v12 = objc_opt_class();
       v16 = v12;
-      v13 = [v6 accountName];
+      accountName = [v6 accountName];
       SSHashIfNeeded();
       v17 = 138543618;
       v18 = v12;
@@ -577,7 +577,7 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v11 = [NSString stringWithCString:v14 encoding:4, &v17, v15];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, &v17, v15];
       free(v14);
       SSFileLog();
     }
@@ -588,51 +588,51 @@ LABEL_17:
 LABEL_19:
 }
 
-- (BOOL)_carrierBundleStatusIsValidForCachedStatus:(id)a3
+- (BOOL)_carrierBundleStatusIsValidForCachedStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v6 = +[SSVTelephonyController sharedController];
-  v7 = [v6 isPhoneNumberAccessRestricted];
+  isPhoneNumberAccessRestricted = [v6 isPhoneNumberAccessRestricted];
 
-  if (v7)
+  if (isPhoneNumberAccessRestricted)
   {
     sub_100271E0C(a2, self);
   }
 
-  v8 = [v5 carrierBundlingStatus];
+  carrierBundlingStatus = [statusCopy carrierBundlingStatus];
   v9 = 0;
-  if (v8 <= 4 && ((1 << v8) & 0x16) != 0)
+  if (carrierBundlingStatus <= 4 && ((1 << carrierBundlingStatus) & 0x16) != 0)
   {
     v10 = +[ISNetworkObserver sharedInstance];
-    v11 = [v10 phoneNumber];
+    phoneNumber = [v10 phoneNumber];
 
-    v12 = [v5 phoneNumber];
-    if (v11 == v12)
+    phoneNumber2 = [statusCopy phoneNumber];
+    if (phoneNumber == phoneNumber2)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v11 isEqualToString:v12];
+      v9 = [phoneNumber isEqualToString:phoneNumber2];
     }
   }
 
   return v9;
 }
 
-- (id)_getInitialStatus:(id *)a3
+- (id)_getInitialStatus:(id *)status
 {
-  v4 = [(SubscriptionStatusOperation *)self authenticationContext];
-  v5 = v4;
-  if (v4)
+  authenticationContext = [(SubscriptionStatusOperation *)self authenticationContext];
+  v5 = authenticationContext;
+  if (authenticationContext)
   {
-    v6 = [v4 promptStyle] < 2;
+    authenticatesIfNecessary = [authenticationContext promptStyle] < 2;
   }
 
   else
   {
-    v6 = [(SubscriptionStatusOperation *)self authenticatesIfNecessary];
+    authenticatesIfNecessary = [(SubscriptionStatusOperation *)self authenticatesIfNecessary];
   }
 
   v7 = 0;
@@ -647,7 +647,7 @@ LABEL_19:
     v8 = [(SubscriptionStatusOperation *)self _loadStatusOnce:&v23];
     v7 = v23;
 
-    if (v8 == 0 || !v6)
+    if (v8 == 0 || !authenticatesIfNecessary)
     {
       break;
     }
@@ -663,16 +663,16 @@ LABEL_19:
     {
       v14 = [SSMutableAuthenticationContext alloc];
       v15 = +[SSAccountStore defaultStore];
-      v16 = [v15 activeAccount];
-      v13 = [v14 initWithAccount:v16];
+      activeAccount = [v15 activeAccount];
+      v13 = [v14 initWithAccount:activeAccount];
     }
 
-    v17 = [v13 reasonDescription];
+    reasonDescription = [v13 reasonDescription];
 
-    if (!v17)
+    if (!reasonDescription)
     {
-      v18 = [(SubscriptionStatusOperation *)self localizedAuthenticationReason];
-      [v13 setReasonDescription:v18];
+      localizedAuthenticationReason = [(SubscriptionStatusOperation *)self localizedAuthenticationReason];
+      [v13 setReasonDescription:localizedAuthenticationReason];
     }
 
     [v13 setCanCreateNewAccount:0];
@@ -688,10 +688,10 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v12);
-  if (a3 && !v8)
+  if (status && !v8)
   {
     v20 = v7;
-    *a3 = v7;
+    *status = v7;
   }
 
 LABEL_17:
@@ -699,26 +699,26 @@ LABEL_17:
   return v8;
 }
 
-- (id)_loadStatusOnce:(id *)a3
+- (id)_loadStatusOnce:(id *)once
 {
   v5 = +[SSAccountStore defaultStore];
-  v6 = [v5 activeAccount];
-  v7 = [v6 uniqueIdentifier];
+  activeAccount = [v5 activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
 
   v8 = objc_alloc_init(ISStoreURLOperation);
   [v8 setCanSendGUIDParameter:0];
   v9 = +[DaemonProtocolDataProvider provider];
   [v8 setDataProvider:v9];
 
-  v10 = [(SubscriptionStatusOperation *)self authenticationContext];
-  [v8 setAuthenticationContext:v10];
+  authenticationContext = [(SubscriptionStatusOperation *)self authenticationContext];
+  [v8 setAuthenticationContext:authenticationContext];
   v11 = objc_alloc_init(SSMutableURLRequestProperties);
   v12 = +[SSDevice currentDevice];
-  v13 = [v12 uniqueDeviceIdentifier];
+  uniqueDeviceIdentifier = [v12 uniqueDeviceIdentifier];
 
-  if (v13)
+  if (uniqueDeviceIdentifier)
   {
-    [v11 setValue:v13 forRequestParameter:@"guid"];
+    [v11 setValue:uniqueDeviceIdentifier forRequestParameter:@"guid"];
   }
 
   [v11 setURLBagKey:@"getSubscriptionStatusSrv"];
@@ -730,7 +730,7 @@ LABEL_17:
   if (!v14)
   {
     v20 = 0;
-    if (!a3)
+    if (!once)
     {
       goto LABEL_18;
     }
@@ -738,13 +738,13 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  v16 = [v8 dataProvider];
-  v17 = [v16 output];
+  dataProvider = [v8 dataProvider];
+  output = [dataProvider output];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v17 objectForKey:@"failureType"];
+    v18 = [output objectForKey:@"failureType"];
     v19 = v18;
     if (v18)
     {
@@ -757,19 +757,19 @@ LABEL_17:
     else
     {
       v20 = objc_alloc_init(SSVSubscriptionStatus);
-      [v20 setValuesUsingStatusDictionary:v17];
-      v22 = [v8 authenticatedAccountDSID];
-      if (!v22)
+      [v20 setValuesUsingStatusDictionary:output];
+      authenticatedAccountDSID = [v8 authenticatedAccountDSID];
+      if (!authenticatedAccountDSID)
       {
-        v22 = [v10 requiredUniqueIdentifier];
-        if (!v22)
+        authenticatedAccountDSID = [authenticationContext requiredUniqueIdentifier];
+        if (!authenticatedAccountDSID)
         {
-          v22 = v7;
+          authenticatedAccountDSID = uniqueIdentifier;
         }
       }
 
-      v21 = v22;
-      [v20 setAccountIdentifier:v22];
+      v21 = authenticatedAccountDSID;
+      [v20 setAccountIdentifier:authenticatedAccountDSID];
     }
   }
 
@@ -778,13 +778,13 @@ LABEL_17:
     v20 = 0;
   }
 
-  if (a3)
+  if (once)
   {
 LABEL_16:
     if (!v20)
     {
       v23 = v15;
-      *a3 = v15;
+      *once = v15;
     }
   }
 

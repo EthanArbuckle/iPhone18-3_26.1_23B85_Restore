@@ -1,14 +1,14 @@
 @interface AVOutputDeviceFrecencyManager
 + (AVOutputDeviceFrecentsReader)_frecentsReaderAfterMigrationIfNecessary;
 + (AVOutputDeviceFrecentsWriter)_frecentsWriter;
-+ (BOOL)_migrateFrecentsFromCFPreferencesToFrecentsFilePath:(id)a3;
-+ (double)frecencyScoreForDeviceID:(id)a3;
++ (BOOL)_migrateFrecentsFromCFPreferencesToFrecentsFilePath:(id)path;
++ (double)frecencyScoreForDeviceID:(id)d;
 + (id)_applicationSupportPath;
 + (id)_frecentsContainerPath;
 + (id)_frecentsFilePath;
 + (id)_frecentsReaderAfterMigrationIfNecessary;
 + (id)_frecentsWriter;
-+ (void)updateFrecencyListForDeviceID:(id)a3;
++ (void)updateFrecencyListForDeviceID:(id)d;
 @end
 
 @implementation AVOutputDeviceFrecencyManager
@@ -30,7 +30,7 @@ void __73__AVOutputDeviceFrecencyManager__frecentsReaderAfterMigrationIfNecessar
 {
   if ([objc_msgSend(+[AVExecutionEnvironment sharedExecutionEnvironment](AVExecutionEnvironment "sharedExecutionEnvironment")])
   {
-    +[(AVOutputDeviceFrecencyManager *)a1];
+    +[(AVOutputDeviceFrecencyManager *)self];
     return v4;
   }
 
@@ -45,11 +45,11 @@ void __73__AVOutputDeviceFrecencyManager__frecentsReaderAfterMigrationIfNecessar
   }
 }
 
-+ (double)frecencyScoreForDeviceID:(id)a3
++ (double)frecencyScoreForDeviceID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _frecentsReaderAfterMigrationIfNecessary];
-  if (!a3 || !v4 || (v5 = [v4 frecencyInfoForDeviceWithID:a3]) == 0)
+  _frecentsReaderAfterMigrationIfNecessary = [self _frecentsReaderAfterMigrationIfNecessary];
+  if (!d || !_frecentsReaderAfterMigrationIfNecessary || (v5 = [_frecentsReaderAfterMigrationIfNecessary frecencyInfoForDeviceWithID:d]) == 0)
   {
 LABEL_10:
     v10 = *MEMORY[0x1E69E9840];
@@ -94,7 +94,7 @@ uint64_t __50__AVOutputDeviceFrecencyManager__frecentsFilePath__block_invoke()
 {
   if ([objc_msgSend(+[AVExecutionEnvironment sharedExecutionEnvironment](AVExecutionEnvironment "sharedExecutionEnvironment")])
   {
-    +[(AVOutputDeviceFrecencyManager *)a1];
+    +[(AVOutputDeviceFrecencyManager *)self];
     return v4;
   }
 
@@ -105,18 +105,18 @@ uint64_t __50__AVOutputDeviceFrecencyManager__frecentsFilePath__block_invoke()
   }
 }
 
-+ (void)updateFrecencyListForDeviceID:(id)a3
++ (void)updateFrecencyListForDeviceID:(id)d
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [a1 _frecentsReaderAfterMigrationIfNecessary];
-  v39 = [a1 _frecentsWriter];
-  if (v6)
+  date = [MEMORY[0x1E695DF00] date];
+  _frecentsReaderAfterMigrationIfNecessary = [self _frecentsReaderAfterMigrationIfNecessary];
+  _frecentsWriter = [self _frecentsWriter];
+  if (_frecentsReaderAfterMigrationIfNecessary)
   {
-    v7 = [MEMORY[0x1E695DF70] arrayWithArray:{objc_msgSend(v6, "deviceIDs")}];
-    if (([v7 containsObject:a3] & 1) == 0)
+    v7 = [MEMORY[0x1E695DF70] arrayWithArray:{objc_msgSend(_frecentsReaderAfterMigrationIfNecessary, "deviceIDs")}];
+    if (([v7 containsObject:d] & 1) == 0)
     {
-      [v7 addObject:a3];
+      [v7 addObject:d];
     }
 
     v45 = 0u;
@@ -130,7 +130,7 @@ uint64_t __50__AVOutputDeviceFrecencyManager__frecentsFilePath__block_invoke()
       v10 = 0;
       v38 = *v44;
       v11 = 0.0;
-      v36 = a3;
+      dCopy = d;
       obj = v7;
       while (1)
       {
@@ -142,7 +142,7 @@ uint64_t __50__AVOutputDeviceFrecencyManager__frecentsFilePath__block_invoke()
           }
 
           v13 = *(*(&v43 + 1) + 8 * i);
-          v14 = [v6 frecencyInfoForDeviceWithID:v13];
+          v14 = [_frecentsReaderAfterMigrationIfNecessary frecencyInfoForDeviceWithID:v13];
           v15 = 1.0;
           if (!v14)
           {
@@ -162,7 +162,7 @@ LABEL_26:
             {
               [v17 doubleValue];
               v20 = v19;
-              [v5 timeIntervalSinceDate:v18];
+              [date timeIntervalSinceDate:v18];
               v15 = v20 * exp2(v21 / 86400.0 * -0.5) + 1.0;
               goto LABEL_28;
             }
@@ -231,7 +231,7 @@ LABEL_25:
           OUTLINED_FUNCTION_1_1();
           fig_log_call_emit_and_clean_up_after_send_and_compose();
           v18 = 0;
-          a3 = v36;
+          d = dCopy;
 LABEL_28:
           v28 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
           if (v11 == 0.0)
@@ -240,7 +240,7 @@ LABEL_28:
             v11 = v15;
           }
 
-          v29 = [v13 isEqualToString:a3];
+          v29 = [v13 isEqualToString:d];
           if (v11 > v15)
           {
             v30 = v13;
@@ -263,7 +263,7 @@ LABEL_28:
 
           if (v29)
           {
-            v32 = v5;
+            v32 = date;
           }
 
           else
@@ -279,7 +279,7 @@ LABEL_28:
 
           if (v32)
           {
-            [v39 setFrecencyInfo:objc_msgSend(MEMORY[0x1E695DF20] forDeviceID:{"dictionaryWithObjectsAndKeys:", v28, v31, @"FrecencyScore", v32, @"LastUsedTimestamp", 0), v13}];
+            [_frecentsWriter setFrecencyInfo:objc_msgSend(MEMORY[0x1E695DF20] forDeviceID:{"dictionaryWithObjectsAndKeys:", v28, v31, @"FrecencyScore", v32, @"LastUsedTimestamp", 0), v13}];
           }
 
           else
@@ -309,10 +309,10 @@ LABEL_28:
 
               OUTLINED_FUNCTION_1_1();
               fig_log_call_emit_and_clean_up_after_send_and_compose();
-              a3 = v36;
+              d = dCopy;
             }
 
-            [v39 removeFrecencyInfoForDeviceID:{v13, v31}];
+            [_frecentsWriter removeFrecencyInfoForDeviceID:{v13, v31}];
           }
         }
 
@@ -326,13 +326,13 @@ LABEL_28:
 
     v10 = 0;
 LABEL_55:
-    if ([v39 numberOfKeysToBeSet] >= 51 && (objc_msgSend(v10, "isEqualToString:", a3) & 1) == 0 && v10)
+    if ([_frecentsWriter numberOfKeysToBeSet] >= 51 && (objc_msgSend(v10, "isEqualToString:", d) & 1) == 0 && v10)
     {
-      [v39 removeFrecencyInfoForDeviceID:v10];
+      [_frecentsWriter removeFrecencyInfoForDeviceID:v10];
     }
 
     v40 = 0;
-    [v39 persistToDiskReturningError:&v40];
+    [_frecentsWriter persistToDiskReturningError:&v40];
   }
 
   v35 = *MEMORY[0x1E69E9840];
@@ -358,7 +358,7 @@ LABEL_55:
 
 + (id)_frecentsContainerPath
 {
-  result = [a1 _applicationSupportPath];
+  result = [self _applicationSupportPath];
   if (result)
   {
     v3 = [objc_msgSend(result stringByAppendingPathComponent:{@"com.apple.avfoundation", "stringByAppendingPathComponent:", @"Frecents"}];
@@ -379,25 +379,25 @@ LABEL_55:
 
 + (id)_frecentsFilePath
 {
-  v2 = [a1 _frecentsContainerPath];
-  if (v2)
+  _frecentsContainerPath = [self _frecentsContainerPath];
+  if (_frecentsContainerPath)
   {
-    v2 = [v2 stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@.plist", @"com.apple.avfoundation.frecents"}];
+    _frecentsContainerPath = [_frecentsContainerPath stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@.plist", @"com.apple.avfoundation.frecents"}];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__AVOutputDeviceFrecencyManager__frecentsFilePath__block_invoke;
     block[3] = &unk_1E794ED28;
-    block[4] = v2;
+    block[4] = _frecentsContainerPath;
     if (_frecentsFilePath_pathLoggingOnce != -1)
     {
       dispatch_once(&_frecentsFilePath_pathLoggingOnce, block);
     }
   }
 
-  return v2;
+  return _frecentsContainerPath;
 }
 
-+ (BOOL)_migrateFrecentsFromCFPreferencesToFrecentsFilePath:(id)a3
++ (BOOL)_migrateFrecentsFromCFPreferencesToFrecentsFilePath:(id)path
 {
   v32[16] = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B68)
@@ -419,7 +419,7 @@ LABEL_55:
       v28 = 136315394;
       v29 = "+[AVOutputDeviceFrecencyManager _migrateFrecentsFromCFPreferencesToFrecentsFilePath:]";
       v30 = 2114;
-      v31 = [a3 stringByAbbreviatingWithTildeInPath];
+      stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
       LODWORD(v19) = 22;
       v18 = &v28;
       _os_log_send_and_compose_impl();
@@ -431,13 +431,13 @@ LABEL_55:
 
   v6 = [AVOutputDeviceLegacyFrecentsReader defaultFrecentsReader:v18];
   v7 = +[AVOutputDeviceLegacyFrecentsWriter defaultFrecentsWriter];
-  v8 = [[AVOutputDeviceFrecentsWriter alloc] initWithFrecentsFilePath:a3];
+  v8 = [[AVOutputDeviceFrecentsWriter alloc] initWithFrecentsFilePath:path];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v6 deviceIDs];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  deviceIDs = [v6 deviceIDs];
+  v10 = [deviceIDs countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -448,7 +448,7 @@ LABEL_55:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(deviceIDs);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
@@ -456,7 +456,7 @@ LABEL_55:
         [v7 removeFrecencyInfoForDeviceID:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v11 = [deviceIDs countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v11);
@@ -480,41 +480,41 @@ LABEL_55:
 
 + (AVOutputDeviceFrecentsReader)_frecentsReaderAfterMigrationIfNecessary
 {
-  v4 = [a1 _frecentsFilePath];
-  if (v4)
+  _frecentsFilePath = [self _frecentsFilePath];
+  if (_frecentsFilePath)
   {
-    v5 = v4;
+    v5 = _frecentsFilePath;
     v9 = 0;
-    v4 = [[AVOutputDeviceFrecentsReader alloc] initWithFrecentsFilePath:v4 error:&v9];
-    if (!v4)
+    _frecentsFilePath = [[AVOutputDeviceFrecentsReader alloc] initWithFrecentsFilePath:_frecentsFilePath error:&v9];
+    if (!_frecentsFilePath)
     {
       v6 = v9;
-      if (v9 && (v7 = [v9 domain], (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E696A250]) & 1) != 0) && objc_msgSend(v6, "code") == 260 && (objc_msgSend(a1, "_migrateFrecentsFromCFPreferencesToFrecentsFilePath:", v5) & 1) != 0)
+      if (v9 && (v7 = [v9 domain], (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E696A250]) & 1) != 0) && objc_msgSend(v6, "code") == 260 && (objc_msgSend(self, "_migrateFrecentsFromCFPreferencesToFrecentsFilePath:", v5) & 1) != 0)
       {
-        v4 = [[AVOutputDeviceFrecentsReader alloc] initWithFrecentsFilePath:v5 error:&v9];
+        _frecentsFilePath = [[AVOutputDeviceFrecentsReader alloc] initWithFrecentsFilePath:v5 error:&v9];
       }
 
       else
       {
-        v4 = 0;
+        _frecentsFilePath = 0;
       }
     }
   }
 
-  result = v4;
+  result = _frecentsFilePath;
   *a2 = result;
   return result;
 }
 
 + (AVOutputDeviceFrecentsWriter)_frecentsWriter
 {
-  v3 = [a1 _frecentsFilePath];
-  if (v3)
+  _frecentsFilePath = [self _frecentsFilePath];
+  if (_frecentsFilePath)
   {
-    v3 = [[AVOutputDeviceFrecentsWriter alloc] initWithFrecentsFilePath:v3];
+    _frecentsFilePath = [[AVOutputDeviceFrecentsWriter alloc] initWithFrecentsFilePath:_frecentsFilePath];
   }
 
-  result = v3;
+  result = _frecentsFilePath;
   *a2 = result;
   return result;
 }

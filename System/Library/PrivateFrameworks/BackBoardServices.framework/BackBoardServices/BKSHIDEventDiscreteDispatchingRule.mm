@@ -1,27 +1,27 @@
 @interface BKSHIDEventDiscreteDispatchingRule
-+ (id)ruleForDispatchingDiscreteEventsMatchingPredicate:(id)a3 toTarget:(id)a4;
++ (id)ruleForDispatchingDiscreteEventsMatchingPredicate:(id)predicate toTarget:(id)target;
 - (BKSHIDEventDiscreteDispatchingRule)init;
-- (BKSHIDEventDiscreteDispatchingRule)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPredicate:(id)a3 target:(id)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BKSHIDEventDiscreteDispatchingRule)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPredicate:(id)predicate target:(id)target;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDiscreteDispatchingRule
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendObject:self->_predicate withName:0];
-  [v6 appendRightArrow];
-  v5 = [v6 appendObject:self->_target withName:0 skipIfNil:0];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendObject:self->_predicate withName:0];
+  [formatterCopy appendRightArrow];
+  v5 = [formatterCopy appendObject:self->_target withName:0 skipIfNil:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -29,10 +29,10 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (predicate = self->_predicate, v7 = v4->_predicate, BSEqualObjects()))
+    if (v5 == objc_opt_class() && (predicate = self->_predicate, v7 = equalCopy->_predicate, BSEqualObjects()))
     {
       target = self->_target;
-      v9 = v4->_target;
+      v9 = equalCopy->_target;
       v10 = BSEqualObjects();
     }
 
@@ -45,21 +45,21 @@
   return v10;
 }
 
-- (BKSHIDEventDiscreteDispatchingRule)initWithCoder:(id)a3
+- (BKSHIDEventDiscreteDispatchingRule)initWithCoder:(id)coder
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
     if (v12)
     {
       v8 = v12;
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"target"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"target"];
       self = [(BKSHIDEventDiscreteDispatchingRule *)self _initWithPredicate:v8 target:v13];
 
-      v11 = self;
+      selfCopy = self;
       goto LABEL_6;
     }
 
@@ -70,7 +70,7 @@
     v24[0] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v20 = [v16 errorWithDomain:v17 code:4866 userInfo:v19];
-    [v4 failWithError:v20];
+    [coderCopy failWithError:v20];
 
     v8 = 0;
   }
@@ -84,29 +84,29 @@
     v22 = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v10 = [v6 errorWithDomain:v7 code:4866 userInfo:v9];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_6:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   predicate = self->_predicate;
-  v5 = a3;
-  [v5 encodeObject:predicate forKey:@"predicate"];
-  [v5 encodeObject:self->_target forKey:@"target"];
+  coderCopy = coder;
+  [coderCopy encodeObject:predicate forKey:@"predicate"];
+  [coderCopy encodeObject:self->_target forKey:@"target"];
 }
 
-- (id)_initWithPredicate:(id)a3 target:(id)a4
+- (id)_initWithPredicate:(id)predicate target:(id)target
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  targetCopy = target;
   v9 = objc_opt_class();
   if (v9 != objc_opt_class())
   {
@@ -121,7 +121,7 @@ LABEL_6:
       v34 = 2114;
       v35 = v25;
       v36 = 2048;
-      v37 = self;
+      selfCopy = self;
       v38 = 2114;
       v39 = @"BKSHIDEventDiscreteDispatchingRule.m";
       v40 = 1024;
@@ -142,11 +142,11 @@ LABEL_6:
   v10 = [(BKSHIDEventDiscreteDispatchingRule *)&v30 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [predicateCopy copy];
     predicate = v10->_predicate;
     v10->_predicate = v11;
 
-    v13 = [v8 copy];
+    v13 = [targetCopy copy];
     target = v10->_target;
     v10->_target = v13;
 
@@ -154,8 +154,8 @@ LABEL_6:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = [v7 descriptors];
-    v16 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    descriptors = [predicateCopy descriptors];
+    v16 = [descriptors countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v16)
     {
       v17 = v16;
@@ -167,14 +167,14 @@ LABEL_6:
         {
           if (*v27 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(descriptors);
           }
 
           v10->_predicateEventTypeMask |= 1 << [*(*(&v26 + 1) + 8 * v19++) hidEventType];
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v17 = [descriptors countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v17);
@@ -198,7 +198,7 @@ LABEL_6:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDiscreteDispatchingRule.m";
     v17 = 1024;
@@ -214,12 +214,12 @@ LABEL_6:
   return result;
 }
 
-+ (id)ruleForDispatchingDiscreteEventsMatchingPredicate:(id)a3 toTarget:(id)a4
++ (id)ruleForDispatchingDiscreteEventsMatchingPredicate:(id)predicate toTarget:(id)target
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  predicateCopy = predicate;
+  targetCopy = target;
+  v9 = predicateCopy;
   if (!v9)
   {
     v15 = MEMORY[0x1E696AEC0];
@@ -237,7 +237,7 @@ LABEL_6:
       v42 = 2114;
       v43 = v21;
       v44 = 2048;
-      v45 = a1;
+      selfCopy3 = self;
       v46 = 2114;
       v47 = @"BKSHIDEventDiscreteDispatchingRule.m";
       v48 = 1024;
@@ -258,13 +258,13 @@ LABEL_6:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [v10 classForCoder];
-    if (!v23)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v23 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v24 = NSStringFromClass(v23);
+    v24 = NSStringFromClass(classForCoder);
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     v27 = [v22 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"predicate", v24, v26];
@@ -279,7 +279,7 @@ LABEL_6:
       v42 = 2114;
       v43 = v30;
       v44 = 2048;
-      v45 = a1;
+      selfCopy3 = self;
       v46 = 2114;
       v47 = @"BKSHIDEventDiscreteDispatchingRule.m";
       v48 = 1024;
@@ -295,20 +295,20 @@ LABEL_6:
     JUMPOUT(0x18635C624);
   }
 
-  v11 = v8;
+  v11 = targetCopy;
   if (v11)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v11 classForCoder];
-      if (!v32)
+      classForCoder2 = [v11 classForCoder];
+      if (!classForCoder2)
       {
-        v32 = objc_opt_class();
+        classForCoder2 = objc_opt_class();
       }
 
-      v33 = NSStringFromClass(v32);
+      v33 = NSStringFromClass(classForCoder2);
       v34 = objc_opt_class();
       v35 = NSStringFromClass(v34);
       v36 = [v31 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"target", v33, v35];
@@ -323,7 +323,7 @@ LABEL_6:
         v42 = 2114;
         v43 = v39;
         v44 = 2048;
-        v45 = a1;
+        selfCopy3 = self;
         v46 = 2114;
         v47 = @"BKSHIDEventDiscreteDispatchingRule.m";
         v48 = 1024;

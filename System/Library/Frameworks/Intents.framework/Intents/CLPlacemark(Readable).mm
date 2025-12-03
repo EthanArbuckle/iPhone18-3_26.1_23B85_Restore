@@ -16,81 +16,81 @@
     goto LABEL_8;
   }
 
-  v8 = [v7 type];
-  if (v8 == 2)
+  type = [v7 type];
+  if (type == 2)
   {
-    v10 = [a1 locality];
+    locality = [self locality];
     goto LABEL_12;
   }
 
-  if (v8 == 1)
+  if (type == 1)
   {
-    v12 = [a1 formattedAddressLines];
-    v13 = [v12 count];
+    formattedAddressLines = [self formattedAddressLines];
+    v13 = [formattedAddressLines count];
 
     if (v13)
     {
-      v14 = [a1 formattedAddressLines];
-      v11 = [v14 firstObject];
+      formattedAddressLines2 = [self formattedAddressLines];
+      firstObject = [formattedAddressLines2 firstObject];
     }
 
     else
     {
       CNPostalAddressFormatterClass = getCNPostalAddressFormatterClass();
-      v17 = [a1 postalAddress];
-      v11 = [CNPostalAddressFormatterClass singleLineStringFromPostalAddress:v17 addCountryName:0];
+      postalAddress = [self postalAddress];
+      firstObject = [CNPostalAddressFormatterClass singleLineStringFromPostalAddress:postalAddress addCountryName:0];
     }
 
     goto LABEL_13;
   }
 
   v9 = v7;
-  if (v8)
+  if (type)
   {
 LABEL_8:
-    v11 = [a1 _intents_defaultReadableDescription];
+    firstObject = [self _intents_defaultReadableDescription];
     goto LABEL_14;
   }
 
-  v10 = [a1 _intents_defaultReadableDescription];
+  locality = [self _intents_defaultReadableDescription];
 LABEL_12:
-  v11 = v10;
+  firstObject = locality;
 LABEL_13:
   v9 = v7;
 LABEL_14:
 
-  return v11;
+  return firstObject;
 }
 
 - (id)_intents_defaultReadableDescription
 {
-  v2 = [a1 name];
+  name = [self name];
 
-  if (v2)
+  if (name)
   {
-    v3 = [a1 name];
+    name2 = [self name];
   }
 
   else
   {
-    v4 = [a1 formattedAddressLines];
-    v5 = [v4 count];
+    formattedAddressLines = [self formattedAddressLines];
+    v5 = [formattedAddressLines count];
 
     if (v5)
     {
-      v6 = [a1 formattedAddressLines];
-      v3 = [v6 firstObject];
+      formattedAddressLines2 = [self formattedAddressLines];
+      name2 = [formattedAddressLines2 firstObject];
     }
 
     else
     {
       CNPostalAddressFormatterClass = getCNPostalAddressFormatterClass();
-      v8 = [a1 postalAddress];
-      v3 = [CNPostalAddressFormatterClass singleLineStringFromPostalAddress:v8 addCountryName:0];
+      postalAddress = [self postalAddress];
+      name2 = [CNPostalAddressFormatterClass singleLineStringFromPostalAddress:postalAddress addCountryName:0];
     }
   }
 
-  return v3;
+  return name2;
 }
 
 @end

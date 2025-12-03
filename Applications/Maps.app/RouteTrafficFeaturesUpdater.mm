@@ -1,19 +1,19 @@
 @interface RouteTrafficFeaturesUpdater
-- (id)_nearestTrafficCameraInFeatures:(id)a3 onRoute:(id)a4 ofType:(int64_t)a5 fromCoordinate:(id)a6;
-- (void)updateTrafficFeatures:(id)a3 onRoute:(id)a4 forLocation:(id)a5;
+- (id)_nearestTrafficCameraInFeatures:(id)features onRoute:(id)route ofType:(int64_t)type fromCoordinate:(id)coordinate;
+- (void)updateTrafficFeatures:(id)features onRoute:(id)route forLocation:(id)location;
 @end
 
 @implementation RouteTrafficFeaturesUpdater
 
-- (id)_nearestTrafficCameraInFeatures:(id)a3 onRoute:(id)a4 ofType:(int64_t)a5 fromCoordinate:(id)a6
+- (id)_nearestTrafficCameraInFeatures:(id)features onRoute:(id)route ofType:(int64_t)type fromCoordinate:(id)coordinate
 {
-  v9 = a3;
-  v10 = a4;
+  featuresCopy = features;
+  routeCopy = route;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v11 = [featuresCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -26,14 +26,14 @@
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(featuresCopy);
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
         if ([v17 isCamera])
         {
           v18 = v17;
-          if ([v18 type] == a5 && (objc_msgSend(v18, "navigationState") == 2 || objc_msgSend(v18, "navigationState") == 1) && (objc_msgSend(v10, "distanceFromPoint:toPoint:", a6, objc_msgSend(v18, "routeOffset")), v20 = fabs(v19), v20 < v15))
+          if ([v18 type] == type && (objc_msgSend(v18, "navigationState") == 2 || objc_msgSend(v18, "navigationState") == 1) && (objc_msgSend(routeCopy, "distanceFromPoint:toPoint:", coordinate, objc_msgSend(v18, "routeOffset")), v20 = fabs(v19), v20 < v15))
           {
             v21 = v18;
 
@@ -49,7 +49,7 @@
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [featuresCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v12);
@@ -63,18 +63,18 @@
   return v13;
 }
 
-- (void)updateTrafficFeatures:(id)a3 onRoute:(id)a4 forLocation:(id)a5
+- (void)updateTrafficFeatures:(id)features onRoute:(id)route forLocation:(id)location
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v9 speed];
-  if (v10 >= 0.0 && ([v9 locationUnreliable] & 1) == 0)
+  featuresCopy = features;
+  routeCopy = route;
+  locationCopy = location;
+  [locationCopy speed];
+  if (v10 >= 0.0 && ([locationCopy locationUnreliable] & 1) == 0)
   {
-    v11 = [v9 routeMatch];
-    v12 = -[RouteTrafficFeaturesUpdater _nearestTrafficCameraInFeatures:onRoute:ofType:fromCoordinate:](self, "_nearestTrafficCameraInFeatures:onRoute:ofType:fromCoordinate:", v14, v8, 1, [v11 routeCoordinate]);
+    routeMatch = [locationCopy routeMatch];
+    v12 = -[RouteTrafficFeaturesUpdater _nearestTrafficCameraInFeatures:onRoute:ofType:fromCoordinate:](self, "_nearestTrafficCameraInFeatures:onRoute:ofType:fromCoordinate:", featuresCopy, routeCopy, 1, [routeMatch routeCoordinate]);
 
-    [v9 speed];
+    [locationCopy speed];
     [v12 setIsAboveSpeedThreshold:{v13 > objc_msgSend(v12, "speedThreshold")}];
   }
 }

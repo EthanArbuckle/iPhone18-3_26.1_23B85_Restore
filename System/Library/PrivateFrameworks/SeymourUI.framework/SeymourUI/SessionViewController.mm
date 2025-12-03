@@ -2,38 +2,38 @@
 - (NSArray)keyCommands;
 - (NSArray)preferredFocusEnvironments;
 - (UIViewController)childViewControllerForHomeIndicatorAutoHidden;
-- (_TtC9SeymourUI21SessionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (_TtC9SeymourUI21SessionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)handleEscapeKeyCommand;
 - (void)handleSpacebarCommand;
 - (void)menuButtonTapped;
-- (void)playerViewController:(id)a3 didSelectMediaPresentationSetting:(id)a4 forMediaPresentationSelector:(id)a5;
-- (void)playerViewController:(id)a3 failedToStartPictureInPictureWithError:(id)a4;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3;
-- (void)playerViewControllerWillStartPictureInPicture:(id)a3;
-- (void)playerViewControllerWillStopPictureInPicture:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)playerViewController:(id)controller didSelectMediaPresentationSetting:(id)setting forMediaPresentationSelector:(id)selector;
+- (void)playerViewController:(id)controller failedToStartPictureInPictureWithError:(id)error;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture;
+- (void)playerViewControllerWillStartPictureInPicture:(id)picture;
+- (void)playerViewControllerWillStopPictureInPicture:(id)picture;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SessionViewController
 
 - (void)handleSpacebarCommand
 {
-  v1 = a1;
+  selfCopy = self;
   sub_20BBFCCC4();
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
   v10 = swift_allocObject();
-  *(v10 + 16) = a4;
+  *(v10 + 16) = controls;
   *(v10 + 24) = v9;
   v14[4] = sub_20B877AAC;
   v14[5] = v10;
@@ -42,28 +42,28 @@
   v14[2] = sub_20B7B548C;
   v14[3] = &block_descriptor_11;
   v11 = _Block_copy(v14);
-  v12 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v13 = self;
+  selfCopy = self;
 
-  [a5 addCoordinatedAnimations:v11 completion:0];
+  [coordinator addCoordinatedAnimations:v11 completion:0];
   _Block_release(v11);
 
   swift_unknownObjectRelease();
 }
 
-- (void)playerViewController:(id)a3 didSelectMediaPresentationSetting:(id)a4 forMediaPresentationSelector:(id)a5
+- (void)playerViewController:(id)controller didSelectMediaPresentationSetting:(id)setting forMediaPresentationSelector:(id)selector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_20B8768AC(v9);
+  controllerCopy = controller;
+  settingCopy = setting;
+  selectorCopy = selector;
+  selfCopy = self;
+  sub_20B8768AC(settingCopy);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SessionViewController.supportedInterfaceOrientations.getter();
 
   return v3;
@@ -91,7 +91,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_20C13B574();
   sub_20C13BB64();
   (*(v4 + 8))(v6, v3);
@@ -100,7 +100,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   SessionViewController.preferredFocusEnvironments.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C7620E0);
@@ -111,39 +111,39 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SessionViewController.viewDidLoad()();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  SessionViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  SessionViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SessionViewController.viewWillLayoutSubviews()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  SessionViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  SessionViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)menuButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BBDA1C0();
 }
 
-- (_TtC9SeymourUI21SessionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI21SessionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -165,41 +165,41 @@
   return v3;
 }
 
-- (void)playerViewControllerWillStartPictureInPicture:(id)a3
+- (void)playerViewControllerWillStartPictureInPicture:(id)picture
 {
-  v4 = a3;
-  v5 = self;
+  pictureCopy = picture;
+  selfCopy = self;
   _s9SeymourUI21SessionViewControllerC06playerde18WillStartPictureInI0yySo08AVPlayerdE0CF_0();
 }
 
-- (void)playerViewController:(id)a3 failedToStartPictureInPictureWithError:(id)a4
+- (void)playerViewController:(id)controller failedToStartPictureInPictureWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_20BFE8928(v8);
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  sub_20BFE8928(errorCopy);
 }
 
-- (void)playerViewControllerWillStopPictureInPicture:(id)a3
+- (void)playerViewControllerWillStopPictureInPicture:(id)picture
 {
-  v4 = a3;
-  v5 = self;
+  pictureCopy = picture;
+  selfCopy = self;
   _s9SeymourUI21SessionViewControllerC06playerde17WillStopPictureInI0yySo08AVPlayerdE0CF_0();
 }
 
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture
 {
-  v4 = a3;
-  v5 = self;
+  pictureCopy = picture;
+  selfCopy = self;
   _s9SeymourUI21SessionViewControllerC06playerde16DidStopPictureInI0yySo08AVPlayerdE0CF_0();
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   v7 = objc_opt_self();
-  v8 = a3;
-  v9 = a4;
-  v10 = [v7 sheetPresentationControllerForPresentedController:v8 presentingController:v9];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v10 = [v7 sheetPresentationControllerForPresentedController:controllerCopy presentingController:viewControllerCopy];
   [v10 setPrefersPageSizing_];
   v11 = [objc_opt_self() smu:5.0 effectWithBlurRadius:?];
   [v10 setBackgroundBlurEffect_];

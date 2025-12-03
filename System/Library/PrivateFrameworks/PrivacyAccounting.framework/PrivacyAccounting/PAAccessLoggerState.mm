@@ -1,9 +1,9 @@
 @interface PAAccessLoggerState
 - (PAAccessLoggerState)init;
-- (id)lookupCurrentAccessForSlot:(id)a3;
-- (id)takeOngoingAccessIntervalStateForAccess:(id)a3;
-- (id)takeOngoingAccessIntervalStateForSlot:(id)a3;
-- (void)setOngoingAccessIntervalState:(id)a3 forSlot:(id)a4;
+- (id)lookupCurrentAccessForSlot:(id)slot;
+- (id)takeOngoingAccessIntervalStateForAccess:(id)access;
+- (id)takeOngoingAccessIntervalStateForSlot:(id)slot;
+- (void)setOngoingAccessIntervalState:(id)state forSlot:(id)slot;
 @end
 
 @implementation PAAccessLoggerState
@@ -18,13 +18,13 @@
   {
     v2->_loggingEnabled = 1;
     v2->_topAccessIntervalSlot = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ongoingAccessIntervals = v3->_ongoingAccessIntervals;
-    v3->_ongoingAccessIntervals = v4;
+    v3->_ongoingAccessIntervals = dictionary;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     slotByAccessForOngoingAccessInterval = v3->_slotByAccessForOngoingAccessInterval;
-    v3->_slotByAccessForOngoingAccessInterval = v6;
+    v3->_slotByAccessForOngoingAccessInterval = dictionary2;
 
     v8 = objc_opt_new();
     negativeAccessCache = v3->_negativeAccessCache;
@@ -36,36 +36,36 @@
   return v3;
 }
 
-- (void)setOngoingAccessIntervalState:(id)a3 forSlot:(id)a4
+- (void)setOngoingAccessIntervalState:(id)state forSlot:(id)slot
 {
   ongoingAccessIntervals = self->_ongoingAccessIntervals;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableDictionary *)ongoingAccessIntervals setObject:v8 forKeyedSubscript:v7];
+  slotCopy = slot;
+  stateCopy = state;
+  [(NSMutableDictionary *)ongoingAccessIntervals setObject:stateCopy forKeyedSubscript:slotCopy];
   slotByAccessForOngoingAccessInterval = self->_slotByAccessForOngoingAccessInterval;
-  v10 = [v8 access];
+  access = [stateCopy access];
 
-  [(NSMutableDictionary *)slotByAccessForOngoingAccessInterval setObject:v7 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)slotByAccessForOngoingAccessInterval setObject:slotCopy forKeyedSubscript:access];
 }
 
-- (id)lookupCurrentAccessForSlot:(id)a3
+- (id)lookupCurrentAccessForSlot:(id)slot
 {
-  v3 = [(NSMutableDictionary *)self->_ongoingAccessIntervals objectForKeyedSubscript:a3];
-  v4 = [v3 access];
+  v3 = [(NSMutableDictionary *)self->_ongoingAccessIntervals objectForKeyedSubscript:slot];
+  access = [v3 access];
 
-  return v4;
+  return access;
 }
 
-- (id)takeOngoingAccessIntervalStateForSlot:(id)a3
+- (id)takeOngoingAccessIntervalStateForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_ongoingAccessIntervals objectForKeyedSubscript:v4];
+  slotCopy = slot;
+  v5 = [(NSMutableDictionary *)self->_ongoingAccessIntervals objectForKeyedSubscript:slotCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_ongoingAccessIntervals setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_ongoingAccessIntervals setObject:0 forKeyedSubscript:slotCopy];
     slotByAccessForOngoingAccessInterval = self->_slotByAccessForOngoingAccessInterval;
-    v7 = [v5 access];
-    [(NSMutableDictionary *)slotByAccessForOngoingAccessInterval setObject:0 forKeyedSubscript:v7];
+    access = [v5 access];
+    [(NSMutableDictionary *)slotByAccessForOngoingAccessInterval setObject:0 forKeyedSubscript:access];
 
     v8 = v5;
   }
@@ -73,9 +73,9 @@
   return v5;
 }
 
-- (id)takeOngoingAccessIntervalStateForAccess:(id)a3
+- (id)takeOngoingAccessIntervalStateForAccess:(id)access
 {
-  v4 = [(NSMutableDictionary *)self->_slotByAccessForOngoingAccessInterval objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_slotByAccessForOngoingAccessInterval objectForKeyedSubscript:access];
   if (v4)
   {
     v5 = [(PAAccessLoggerState *)self takeOngoingAccessIntervalStateForSlot:v4];

@@ -1,9 +1,9 @@
 @interface VCPSharedInstanceManager
 + (id)sharedManager;
 - (VCPSharedInstanceManager)init;
-- (id)sharedInstanceWithIdentifier:(id)a3 andCreationBlock:(id)a4;
+- (id)sharedInstanceWithIdentifier:(id)identifier andCreationBlock:(id)block;
 - (void)reset;
-- (void)resetSharedInstanceWithIdentifier:(id)a3;
+- (void)resetSharedInstanceWithIdentifier:(id)identifier;
 @end
 
 @implementation VCPSharedInstanceManager
@@ -19,9 +19,9 @@
     serialQueue = v2->serialQueue_;
     v2->serialQueue_ = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sharedInstances = v2->sharedInstances_;
-    v2->sharedInstances_ = v5;
+    v2->sharedInstances_ = dictionary;
   }
 
   return v2;
@@ -46,10 +46,10 @@ void __41__VCPSharedInstanceManager_sharedManager__block_invoke()
   sharedManager_instance = v0;
 }
 
-- (id)sharedInstanceWithIdentifier:(id)a3 andCreationBlock:(id)a4
+- (id)sharedInstanceWithIdentifier:(id)identifier andCreationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -62,11 +62,11 @@ void __41__VCPSharedInstanceManager_sharedManager__block_invoke()
   v13[2] = __74__VCPSharedInstanceManager_sharedInstanceWithIdentifier_andCreationBlock___block_invoke;
   v13[3] = &unk_1E834D758;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = blockCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = blockCopy;
+  v10 = identifierCopy;
   dispatch_sync(serialQueue, v13);
   v11 = v18[5];
 
@@ -100,17 +100,17 @@ void __74__VCPSharedInstanceManager_sharedInstanceWithIdentifier_andCreationBloc
   }
 }
 
-- (void)resetSharedInstanceWithIdentifier:(id)a3
+- (void)resetSharedInstanceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   serialQueue = self->serialQueue_;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__VCPSharedInstanceManager_resetSharedInstanceWithIdentifier___block_invoke;
   v7[3] = &unk_1E834C3D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(serialQueue, v7);
 }
 

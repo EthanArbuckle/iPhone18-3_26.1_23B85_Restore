@@ -14,37 +14,37 @@
   v6 = [NSString stringWithFormat:@"%@ | %@", v4, v5];
   [v3 addObject:v6];
 
-  v7 = [(CPRouteGuidance *)self currentRoadNameVariants];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  currentRoadNameVariants = [(CPRouteGuidance *)self currentRoadNameVariants];
+  v8 = [currentRoadNameVariants componentsJoinedByString:{@", "}];
   v9 = [NSString stringWithFormat:@"Road name: %@", v8];
   [v3 addObject:v9];
 
-  v10 = [(CPRouteGuidance *)self destinationNameVariants];
-  v11 = [v10 componentsJoinedByString:{@", "}];
+  destinationNameVariants = [(CPRouteGuidance *)self destinationNameVariants];
+  v11 = [destinationNameVariants componentsJoinedByString:{@", "}];
   v12 = [NSString stringWithFormat:@"Destination name: %@", v11];
   [v3 addObject:v12];
 
   [(CPRouteGuidance *)self timeRemaining];
   v14 = v13;
-  v15 = [(CPRouteGuidance *)self estimatedTimeOfArrival];
-  v16 = [NSString stringWithFormat:@"Time remaining: %gs | ETA: %@", v14, v15];
+  estimatedTimeOfArrival = [(CPRouteGuidance *)self estimatedTimeOfArrival];
+  v16 = [NSString stringWithFormat:@"Time remaining: %gs | ETA: %@", v14, estimatedTimeOfArrival];
   [v3 addObject:v16];
 
   v17 = [NSString stringWithFormat:@"Time zone offset minutes: %d", [(CPRouteGuidance *)self destinationTimeZoneOffsetMinutes]];
   [v3 addObject:v17];
 
-  v18 = [(CPRouteGuidance *)self distanceRemaining];
-  v19 = [(CPRouteGuidance *)self distanceRemainingDisplay];
-  v20 = [NSString stringWithFormat:@"Distance remaining: %@ | Display: %@", v18, v19];
+  distanceRemaining = [(CPRouteGuidance *)self distanceRemaining];
+  distanceRemainingDisplay = [(CPRouteGuidance *)self distanceRemainingDisplay];
+  v20 = [NSString stringWithFormat:@"Distance remaining: %@ | Display: %@", distanceRemaining, distanceRemainingDisplay];
   [v3 addObject:v20];
 
-  v21 = [(CPRouteGuidance *)self distanceRemainingToNextManeuver];
-  v22 = [(CPRouteGuidance *)self distanceRemainingToNextManeuverDisplay];
-  v23 = [NSString stringWithFormat:@"Maneuver distance remaining: %@ | Display: %@", v21, v22];
+  distanceRemainingToNextManeuver = [(CPRouteGuidance *)self distanceRemainingToNextManeuver];
+  distanceRemainingToNextManeuverDisplay = [(CPRouteGuidance *)self distanceRemainingToNextManeuverDisplay];
+  v23 = [NSString stringWithFormat:@"Maneuver distance remaining: %@ | Display: %@", distanceRemainingToNextManeuver, distanceRemainingToNextManeuverDisplay];
   [v3 addObject:v23];
 
-  v24 = [(CPRouteGuidance *)self currentManeuverIndexes];
-  v25 = [v24 componentsJoinedByString:{@", "}];
+  currentManeuverIndexes = [(CPRouteGuidance *)self currentManeuverIndexes];
+  v25 = [currentManeuverIndexes componentsJoinedByString:{@", "}];
   v26 = [NSString stringWithFormat:@"Current maneuver indexes: %@", v25];
   [v3 addObject:v26];
 

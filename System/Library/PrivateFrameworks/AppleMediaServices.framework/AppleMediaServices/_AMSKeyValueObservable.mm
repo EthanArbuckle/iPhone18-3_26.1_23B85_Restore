@@ -2,16 +2,16 @@
 - (BOOL)cancel;
 - (BOOL)sendCompletion;
 - (NSObject)object;
-- (_AMSKeyValueObservable)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (_AMSKeyValueObservable)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _AMSKeyValueObservable
 
-- (_AMSKeyValueObservable)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5
+- (_AMSKeyValueObservable)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = _AMSKeyValueObservable;
   v10 = [(AMSObservable *)&v17 initWithObserver:0];
@@ -21,12 +21,12 @@
     context = v10->_context;
     v10->_context = v11;
 
-    v13 = [v9 copy];
+    v13 = [pathCopy copy];
     keyPath = v10->_keyPath;
     v10->_keyPath = v13;
 
-    v15 = objc_storeWeak(&v10->_object, v8);
-    [v8 addObserver:v10 forKeyPath:v10->_keyPath options:a5 context:v10->_context];
+    v15 = objc_storeWeak(&v10->_object, objectCopy);
+    [objectCopy addObserver:v10 forKeyPath:v10->_keyPath options:options context:v10->_context];
   }
 
   return v10;
@@ -36,51 +36,51 @@
 {
   v8.receiver = self;
   v8.super_class = _AMSKeyValueObservable;
-  v3 = [(AMSObservable *)&v8 cancel];
-  if (v3)
+  cancel = [(AMSObservable *)&v8 cancel];
+  if (cancel)
   {
-    v4 = [(_AMSKeyValueObservable *)self object];
-    v5 = [(_AMSKeyValueObservable *)self keyPath];
-    v6 = [(_AMSKeyValueObservable *)self context];
-    [v4 removeObserver:self forKeyPath:v5 context:v6];
+    object = [(_AMSKeyValueObservable *)self object];
+    keyPath = [(_AMSKeyValueObservable *)self keyPath];
+    context = [(_AMSKeyValueObservable *)self context];
+    [object removeObserver:self forKeyPath:keyPath context:context];
   }
 
-  return v3;
+  return cancel;
 }
 
 - (BOOL)sendCompletion
 {
   v8.receiver = self;
   v8.super_class = _AMSKeyValueObservable;
-  v3 = [(AMSObservable *)&v8 sendCompletion];
-  if (v3)
+  sendCompletion = [(AMSObservable *)&v8 sendCompletion];
+  if (sendCompletion)
   {
-    v4 = [(_AMSKeyValueObservable *)self object];
-    v5 = [(_AMSKeyValueObservable *)self keyPath];
-    v6 = [(_AMSKeyValueObservable *)self context];
-    [v4 removeObserver:self forKeyPath:v5 context:v6];
+    object = [(_AMSKeyValueObservable *)self object];
+    keyPath = [(_AMSKeyValueObservable *)self keyPath];
+    context = [(_AMSKeyValueObservable *)self context];
+    [object removeObserver:self forKeyPath:keyPath context:context];
   }
 
-  return v3;
+  return sendCompletion;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(_AMSKeyValueObservable *)self context];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  context = [(_AMSKeyValueObservable *)self context];
 
-  if (v13 == a6)
+  if (context == context)
   {
-    [(AMSObservable *)self sendResult:v12];
+    [(AMSObservable *)self sendResult:changeCopy];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = _AMSKeyValueObservable;
-    [(_AMSKeyValueObservable *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_AMSKeyValueObservable *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

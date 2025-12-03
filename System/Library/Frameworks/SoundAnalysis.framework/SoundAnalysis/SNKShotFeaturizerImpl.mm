@@ -1,27 +1,27 @@
 @interface SNKShotFeaturizerImpl
-+ (BOOL)ensureIsValidHallucinatorV3Model:(id)a3 error:(id *)a4;
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7;
-+ (id)featurizeFiles:(id)a3 randomNumberGenerator:(id)a4 hallucinatorModelURL:(id)a5 error:(id *)a6;
-+ (id)labelFromNumberRepresentation:(id)a3 error:(id *)a4;
-+ (id)performSegmentationRequest:(id)a3 error:(id *)a4;
-+ (id)pseudoRandomNumberGeneratorWithSeed:(unsigned int)a3;
-+ (id)readNumRepetitionsPerTimeShiftFromHallucinator:(id)a3 error:(id *)a4;
-+ (id)readNumTimeShiftsPerSegmentFromHallucinator:(id)a3 error:(id *)a4;
-+ (id)streamCompletionFromFeaturizationResult:(id)a3;
-+ (id)streamResultWithEmbedding:(id)a3 label:(id)a4 dataset:(int64_t)a5 error:(id *)a6;
-+ (id)streamResultsForDatasetType:(int64_t)a3 embeddings:(id)a4 labels:(id)a5 error:(id *)a6;
-+ (id)streamResultsFromFeaturizationResult:(id)a3 error:(id *)a4;
++ (BOOL)ensureIsValidHallucinatorV3Model:(id)model error:(id *)error;
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue completionHandler:(id)handler;
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue resultHandler:(id)handler completionHandler:(id)completionHandler;
++ (id)featurizeFiles:(id)files randomNumberGenerator:(id)generator hallucinatorModelURL:(id)l error:(id *)error;
++ (id)labelFromNumberRepresentation:(id)representation error:(id *)error;
++ (id)performSegmentationRequest:(id)request error:(id *)error;
++ (id)pseudoRandomNumberGeneratorWithSeed:(unsigned int)seed;
++ (id)readNumRepetitionsPerTimeShiftFromHallucinator:(id)hallucinator error:(id *)error;
++ (id)readNumTimeShiftsPerSegmentFromHallucinator:(id)hallucinator error:(id *)error;
++ (id)streamCompletionFromFeaturizationResult:(id)result;
++ (id)streamResultWithEmbedding:(id)embedding label:(id)label dataset:(int64_t)dataset error:(id *)error;
++ (id)streamResultsForDatasetType:(int64_t)type embeddings:(id)embeddings labels:(id)labels error:(id *)error;
++ (id)streamResultsFromFeaturizationResult:(id)result error:(id *)error;
 @end
 
 @implementation SNKShotFeaturizerImpl
 
-+ (id)pseudoRandomNumberGeneratorWithSeed:(unsigned int)a3
++ (id)pseudoRandomNumberGeneratorWithSeed:(unsigned int)seed
 {
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x2020000000;
-  v7 = a3;
+  seedCopy = seed;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1C9A5AE0C;
@@ -33,13 +33,13 @@
   return v3;
 }
 
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 completionHandler:(id)a6
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  queueCopy = queue;
+  lCopy = l;
+  filesCopy = files;
   v14 = objc_alloc_init(v10);
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -65,42 +65,42 @@
   v34 = v19;
   v35 = v20;
   v36 = v21;
-  v37 = v9;
-  v30 = v9;
+  v37 = handlerCopy;
+  v30 = handlerCopy;
   v23 = v21;
   v24 = v20;
   v25 = v19;
   v26 = v18;
   v27 = _Block_copy(v32);
-  v28 = [a1 featurizeFiles:v13 hallucinatorModelURL:v12 queue:v11 resultHandler:v22 completionHandler:v27];
+  v28 = [self featurizeFiles:filesCopy hallucinatorModelURL:lCopy queue:queueCopy resultHandler:v22 completionHandler:v27];
 
   return v28;
 }
 
-+ (id)featurizeFiles:(id)a3 hallucinatorModelURL:(id)a4 queue:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7
++ (id)featurizeFiles:(id)files hallucinatorModelURL:(id)l queue:(id)queue resultHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a5;
+  filesCopy = files;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  queueCopy = queue;
   v17 = objc_alloc_init(SNBooleanCancellable);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = sub_1C9A5C50C;
   v26[3] = &unk_1E8346D28;
-  v32 = a1;
-  v27 = v12;
-  v28 = v13;
+  selfCopy = self;
+  v27 = filesCopy;
+  v28 = lCopy;
   v18 = v17;
   v29 = v18;
-  v30 = v14;
-  v31 = v15;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v16, v26);
+  v30 = handlerCopy;
+  v31 = completionHandlerCopy;
+  v19 = completionHandlerCopy;
+  v20 = handlerCopy;
+  v21 = lCopy;
+  v22 = filesCopy;
+  dispatch_async(queueCopy, v26);
 
   v23 = v31;
   v24 = v18;
@@ -108,10 +108,10 @@
   return v18;
 }
 
-+ (id)performSegmentationRequest:(id)a3 error:(id *)a4
++ (id)performSegmentationRequest:(id)request error:(id *)error
 {
   v230 = *MEMORY[0x1E69E9840];
-  v153 = a3;
+  requestCopy = request;
   v4 = sub_1C9A779E4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,11 +120,11 @@
   }
 
   v152 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:20];
-  if (v153)
+  if (requestCopy)
   {
-    [v153 hangoverDuration];
+    [requestCopy hangoverDuration];
     Seconds = CMTimeGetSeconds(&buf.start);
-    [v153 minSegmentDuration];
+    [requestCopy minSegmentDuration];
   }
 
   else
@@ -139,7 +139,7 @@
   v221 = 0u;
   v222 = 0u;
   v223 = 0u;
-  obj = [v153 fileURLs];
+  obj = [requestCopy fileURLs];
   v5 = [obj countByEnumeratingWithState:&v220 objects:v229 count:16];
   if (v5)
   {
@@ -164,7 +164,7 @@
         aBlock[4] = v10;
         v216 = 0x6000000010;
         v217 = 48;
-        v214 = v153;
+        v214 = requestCopy;
         v218 = v7;
         v219 = 1056964608;
         v215 = v152;
@@ -174,10 +174,10 @@
         objc_autoreleasePoolPop(v12);
         if (v13)
         {
-          if (a4)
+          if (error)
           {
             v44 = v13;
-            *a4 = v13;
+            *error = v13;
           }
 
           v45 = 0;
@@ -218,7 +218,7 @@
       v206[1] = 3221225472;
       v206[2] = sub_1C9A5F390;
       v206[3] = &unk_1E8346D78;
-      v208 = a1;
+      selfCopy = self;
       v206[4] = v18;
       v207 = v148;
       v19 = _Block_copy(v206);
@@ -227,10 +227,10 @@
       objc_autoreleasePoolPop(v20);
       if (v21)
       {
-        if (a4)
+        if (error)
         {
           v46 = v21;
-          *a4 = v21;
+          *error = v21;
         }
 
         goto LABEL_42;
@@ -249,7 +249,7 @@ LABEL_22:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
   v227[1] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v227 count:2];
-  v144 = [v22 initWithShape:v25 dataType:65568 error:a4];
+  v144 = [v22 initWithShape:v25 dataType:65568 error:error];
 
   if (!v144)
   {
@@ -262,13 +262,13 @@ LABEL_42:
 
   v26 = v144;
   obja = [v144 dataPointer];
-  v27 = [v144 strides];
-  v28 = [v27 objectAtIndexedSubscript:0];
-  v139 = [v28 intValue];
+  strides = [v144 strides];
+  v28 = [strides objectAtIndexedSubscript:0];
+  intValue = [v28 intValue];
 
-  v29 = [v144 strides];
-  v30 = [v29 objectAtIndexedSubscript:1];
-  v141 = [v30 intValue];
+  strides2 = [v144 strides];
+  v30 = [strides2 objectAtIndexedSubscript:1];
+  intValue2 = [v30 intValue];
 
   if (![v14 count])
   {
@@ -281,14 +281,14 @@ LABEL_30:
       do
       {
         v42 = *v41;
-        [v153 similarityThreshold];
+        [requestCopy similarityThreshold];
         if (v42 > v43)
         {
           ++v40;
         }
 
         ++v39;
-        v41 += v141;
+        v41 += intValue2;
       }
 
       while ([v14 count] > v39);
@@ -307,7 +307,7 @@ LABEL_30:
     else
     {
       v47 = 0;
-      v48 = &obja[v139];
+      v48 = &obja[intValue];
       v49 = 1;
       do
       {
@@ -319,14 +319,14 @@ LABEL_30:
           do
           {
             v53 = *v52;
-            [v153 similarityThreshold];
+            [requestCopy similarityThreshold];
             if (v53 > v54)
             {
               ++v51;
             }
 
             ++v50;
-            v52 += v141;
+            v52 += intValue2;
           }
 
           while ([v14 count] > v50);
@@ -344,7 +344,7 @@ LABEL_30:
         }
 
         ++v49;
-        v48 += v139;
+        v48 += intValue;
       }
 
       while ([v14 count] > v49);
@@ -354,20 +354,20 @@ LABEL_30:
     if ([v14 count])
     {
       v56 = 0;
-      v57 = &obja[v47 * v139];
+      v57 = &obja[v47 * intValue];
       do
       {
         v58 = *v57;
-        [v153 similarityThreshold];
+        [requestCopy similarityThreshold];
         if (v58 > v59)
         {
           if ([v55 count] && (objc_msgSend(v55, "lastObject"), v60 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v60, "url"), v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "objectAtIndexedSubscript:", v56), v62 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v62, "url"), v63 = objc_claimAutoreleasedReturnValue(), v64 = v61 == v63, v63, v62, v61, v60, v64))
           {
-            v66 = [v55 lastObject];
-            v65 = v66;
-            if (v66)
+            lastObject = [v55 lastObject];
+            v65 = lastObject;
+            if (lastObject)
             {
-              [v66 timeRange];
+              [lastObject timeRange];
             }
 
             else
@@ -393,9 +393,9 @@ LABEL_30:
 
             CMTimeRangeGetEnd(&end, &buf);
             CMTimeRangeFromTimeToTime(&v205, &start, &end);
-            v69 = [v55 lastObject];
+            lastObject2 = [v55 lastObject];
             buf = v205;
-            [v69 setTimeRange:&buf];
+            [lastObject2 setTimeRange:&buf];
           }
 
           else
@@ -418,11 +418,11 @@ LABEL_30:
 
           CMTimeRangeGetEnd(&start, &buf);
           v72 = CMTimeGetSeconds(&start);
-          v73 = [v55 lastObject];
-          v74 = v73;
-          if (v73)
+          lastObject3 = [v55 lastObject];
+          v74 = lastObject3;
+          if (lastObject3)
           {
-            [v73 timeRange];
+            [lastObject3 timeRange];
           }
 
           else
@@ -439,11 +439,11 @@ LABEL_30:
           if (v75)
           {
             memset(&start, 0, sizeof(start));
-            v76 = [v55 lastObject];
-            v77 = v76;
-            if (v76)
+            lastObject4 = [v55 lastObject];
+            v77 = lastObject4;
+            if (lastObject4)
             {
-              [v76 timeRange];
+              [lastObject4 timeRange];
             }
 
             else
@@ -456,14 +456,14 @@ LABEL_30:
             CMTimeMake(&buf.start, start.value - 10 * start.timescale, start.timescale);
             end = start;
             CMTimeRangeFromTimeToTime(&v195, &buf.start, &end);
-            v78 = [v55 lastObject];
+            lastObject5 = [v55 lastObject];
             buf = v195;
-            [v78 setTimeRange:&buf];
+            [lastObject5 setTimeRange:&buf];
           }
         }
 
         ++v56;
-        v57 += v141;
+        v57 += intValue2;
       }
 
       while ([v14 count] > v56);
@@ -646,12 +646,12 @@ LABEL_101:
 LABEL_117:
     CMTimeMake(&buf.start, 1, 1);
     v167 = 0;
-    v135 = sub_1C9A5B7FC(a1, &buf.start.value, v89, &v167);
+    v135 = sub_1C9A5B7FC(self, &buf.start.value, v89, &v167);
     v99 = v167;
     if (!v135)
     {
       obj = v99;
-      [SNError populateClientError:"populateClientError:withCode:underlyingError:message:" withCode:a4 underlyingError:1 message:?];
+      [SNError populateClientError:"populateClientError:withCode:underlyingError:message:" withCode:error underlyingError:1 message:?];
       v45 = 0;
 LABEL_139:
 
@@ -660,12 +660,12 @@ LABEL_139:
 
     v100 = v99;
     v166 = v99;
-    v138 = sub_1C9A5BA38(a1, 2, v135, 0, &unk_1F49659B0, &v166);
+    v138 = sub_1C9A5BA38(self, 2, v135, 0, &unk_1F49659B0, &v166);
     v131 = v166;
 
     if (!v138)
     {
-      [SNError populateClientError:a4 withCode:1 underlyingError:v131 message:@"Error ensuring segment length."];
+      [SNError populateClientError:error withCode:1 underlyingError:v131 message:@"Error ensuring segment length."];
       v45 = 0;
 LABEL_138:
 
@@ -680,7 +680,7 @@ LABEL_138:
 LABEL_123:
       v109 = MEMORY[0x1E695FED0];
       v110 = [v136 objectAtIndexedSubscript:{0, v131}];
-      v142 = [v109 multiArrayByConcatenatingMultiArrays:v136 alongAxis:1 dataType:{objc_msgSend(v110, "dataType")}];
+      featureVector = [v109 multiArrayByConcatenatingMultiArrays:v136 alongAxis:1 dataType:{objc_msgSend(v110, "dataType")}];
 
       v111 = [v138 count];
       v112 = objc_alloc(MEMORY[0x1E695FED0]);
@@ -690,7 +690,7 @@ LABEL_123:
       v114 = [MEMORY[0x1E696AD98] numberWithInt:?];
       v224[1] = v114;
       v115 = [MEMORY[0x1E695DEC8] arrayWithObjects:v224 count:2];
-      v106 = [v112 initWithShape:v115 dataType:65568 error:a4];
+      v106 = [v112 initWithShape:v115 dataType:65568 error:error];
 
       if (!v106)
       {
@@ -701,9 +701,9 @@ LABEL_137:
       }
 
       v116 = v106;
-      v132 = [v106 dataPointer];
-      v117 = v142;
-      vDSP_mtrans([v142 dataPointer], 1, v132, 1, 0x30uLL, v133);
+      dataPointer = [v106 dataPointer];
+      v117 = featureVector;
+      vDSP_mtrans([featureVector dataPointer], 1, dataPointer, 1, 0x30uLL, v133);
       objb = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:20];
       v118 = [v55 count];
       buf.start.value = 0;
@@ -741,11 +741,11 @@ LABEL_128:
           v162 = v140;
           v123 = objb;
           v158 = v134;
-          v159 = a1;
+          selfCopy2 = self;
           v163 = 0x6000000010;
           v164 = 48;
           v165 = v133;
-          v160 = v132;
+          v160 = dataPointer;
           v156 = v123;
           p_buf = &buf;
           v124 = _Block_copy(v154);
@@ -763,10 +763,10 @@ LABEL_128:
           }
         }
 
-        if (a4)
+        if (error)
         {
           v129 = v126;
-          *a4 = v126;
+          *error = v126;
         }
 
         v45 = 0;
@@ -782,7 +782,7 @@ LABEL_128:
       while (1)
       {
         v104 = [v138 objectAtIndexedSubscript:{v102, v131}];
-        v142 = [v104 featureVector];
+        featureVector = [v104 featureVector];
 
         v226[0] = &unk_1F4965548;
         v226[1] = &unk_1F4965548;
@@ -797,7 +797,7 @@ LABEL_128:
         v225[2] = v108;
         objb = [MEMORY[0x1E695DEC8] arrayWithObjects:v225 count:3];
 
-        v45 = [v142 sliceAtOrigin:v106 shape:objb squeeze:0 error:a4];
+        v45 = [featureVector sliceAtOrigin:v106 shape:objb squeeze:0 error:error];
         if (!v45)
         {
           break;
@@ -821,7 +821,7 @@ LABEL_128:
   {
 LABEL_29:
     ++v31;
-    v32 += v139;
+    v32 += intValue;
     if ([v14 count] <= v31)
     {
       goto LABEL_30;
@@ -834,7 +834,7 @@ LABEL_29:
   {
     v35 = [v148 objectAtIndexedSubscript:v31];
     v36 = [v148 objectAtIndexedSubscript:v33];
-    v37 = [SNFeaturePrint cosineSimilarityBetweenOneFeatureVector:v35 andAnotherFeatureVector:v36 error:a4];
+    v37 = [SNFeaturePrint cosineSimilarityBetweenOneFeatureVector:v35 andAnotherFeatureVector:v36 error:error];
 
     if (!v37)
     {
@@ -845,7 +845,7 @@ LABEL_29:
     *v34 = v38;
 
     ++v33;
-    v34 += v141;
+    v34 += intValue2;
     if ([v14 count] <= v33)
     {
       goto LABEL_29;
@@ -863,12 +863,12 @@ LABEL_142:
   return v45;
 }
 
-+ (id)featurizeFiles:(id)a3 randomNumberGenerator:(id)a4 hallucinatorModelURL:(id)a5 error:(id *)a6
++ (id)featurizeFiles:(id)files randomNumberGenerator:(id)generator hallucinatorModelURL:(id)l error:(id *)error
 {
   v9 = MEMORY[0x1E695DF70];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  lCopy = l;
+  generatorCopy = generator;
+  filesCopy = files;
   v13 = objc_alloc_init(v9);
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -888,7 +888,7 @@ LABEL_142:
   v37 = v21;
   v22 = _Block_copy(aBlock);
   v28 = v17;
-  v23 = sub_1C9A5C5C4(a1, v12, v11, v10, v17, v22, a6);
+  v23 = sub_1C9A5C5C4(self, filesCopy, generatorCopy, lCopy, v17, v22, error);
 
   if (v23)
   {
@@ -901,8 +901,8 @@ LABEL_142:
     v29 = v31;
     v30 = v32;
     [(SNKShotFeaturizationResult *)v24 setInferenceWindowSize:&v29];
-    v25 = [v23 exemplar];
-    [(SNKShotFeaturizationResult *)v24 setExemplar:v25];
+    exemplar = [v23 exemplar];
+    [(SNKShotFeaturizationResult *)v24 setExemplar:exemplar];
   }
 
   else
@@ -913,11 +913,11 @@ LABEL_142:
   return v24;
 }
 
-+ (id)readNumRepetitionsPerTimeShiftFromHallucinator:(id)a3 error:(id *)a4
++ (id)readNumRepetitionsPerTimeShiftFromHallucinator:(id)hallucinator error:(id *)error
 {
-  v5 = [a3 modelDescription];
-  v6 = [v5 metadata];
-  v7 = [v6 objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
+  modelDescription = [hallucinator modelDescription];
+  metadata = [modelDescription metadata];
+  v7 = [metadata objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
   v8 = [v7 objectForKeyedSubscript:@"iterationsPerTimeshift"];
 
   if (v8)
@@ -928,7 +928,7 @@ LABEL_142:
   else
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"could not read key from hallucinator metadata: %@", @"iterationsPerTimeshift"];
-    [SNError populateClientError:a4 withCode:4 underlyingError:0 message:v10];
+    [SNError populateClientError:error withCode:4 underlyingError:0 message:v10];
 
     v9 = 0;
   }
@@ -936,11 +936,11 @@ LABEL_142:
   return v9;
 }
 
-+ (id)readNumTimeShiftsPerSegmentFromHallucinator:(id)a3 error:(id *)a4
++ (id)readNumTimeShiftsPerSegmentFromHallucinator:(id)hallucinator error:(id *)error
 {
-  v5 = [a3 modelDescription];
-  v6 = [v5 metadata];
-  v7 = [v6 objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
+  modelDescription = [hallucinator modelDescription];
+  metadata = [modelDescription metadata];
+  v7 = [metadata objectForKeyedSubscript:@"MLModelCreatorDefinedKey"];
   v8 = [v7 objectForKeyedSubscript:@"timeshiftsPerSegment"];
 
   if (v8)
@@ -951,7 +951,7 @@ LABEL_142:
   else
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"could not read key from hallucinator metadata: %@", @"timeshiftsPerSegment"];
-    [SNError populateClientError:a4 withCode:4 underlyingError:0 message:v10];
+    [SNError populateClientError:error withCode:4 underlyingError:0 message:v10];
 
     v9 = 0;
   }
@@ -959,21 +959,21 @@ LABEL_142:
   return v9;
 }
 
-+ (BOOL)ensureIsValidHallucinatorV3Model:(id)a3 error:(id *)a4
++ (BOOL)ensureIsValidHallucinatorV3Model:(id)model error:(id *)error
 {
   v64[7] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 modelDescription];
-  v8 = [v7 inputDescriptionsByName];
+  modelCopy = model;
+  modelDescription = [modelCopy modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
 
-  v9 = [v6 modelDescription];
-  v10 = [v9 outputDescriptionsByName];
+  modelDescription2 = [modelCopy modelDescription];
+  outputDescriptionsByName = [modelDescription2 outputDescriptionsByName];
 
-  v11 = [a1 readNumRepetitionsPerTimeShiftFromHallucinator:v6 error:a4];
+  v11 = [self readNumRepetitionsPerTimeShiftFromHallucinator:modelCopy error:error];
 
   if (v11)
   {
-    v12 = [a1 readNumTimeShiftsPerSegmentFromHallucinator:v6 error:a4];
+    v12 = [self readNumTimeShiftsPerSegmentFromHallucinator:modelCopy error:error];
 
     if (v12)
     {
@@ -989,8 +989,8 @@ LABEL_142:
       v63[1] = @"label";
       v63[2] = @"stateOut";
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:3];
-      v15 = [v6 modelDescription];
-      v16 = [SNValidateModel ensureModelDescription:v15 hasInputFeatureNames:v13 hasOutputFeatureNames:v14 error:a4];
+      modelDescription3 = [modelCopy modelDescription];
+      v16 = [SNValidateModel ensureModelDescription:modelDescription3 hasInputFeatureNames:v13 hasOutputFeatureNames:v14 error:error];
 
       if (v16)
       {
@@ -1003,25 +1003,25 @@ LABEL_142:
         v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:3];
 
         v21 = @"foreground";
-        v22 = [v8 objectForKeyedSubscript:@"foreground"];
+        v22 = [inputDescriptionsByName objectForKeyedSubscript:@"foreground"];
         v60 = 0;
         v23 = [SNValidateModel ensureFeatureWithDescription:v22 isOptional:0 isMultiArrayWithDataType:65568 dimensionSizeRanges:v20 error:&v60];
         v24 = v60;
         v25 = v24;
-        if (v23 && (v24, v22, v20, [MEMORY[0x1E696B098] valueWithRange:{1, 0x7FFFFFFFFFFFFFFFLL}], v26 = objc_claimAutoreleasedReturnValue(), v61[0] = v26, objc_msgSend(MEMORY[0x1E696B098], "valueWithRange:", 1, 1), v27 = objc_claimAutoreleasedReturnValue(), v61[1] = v27, objc_msgSend(MEMORY[0x1E696B098], "valueWithRange:", 1000, 319001), v28 = objc_claimAutoreleasedReturnValue(), v61[2] = v28, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v61, 3), v20 = objc_claimAutoreleasedReturnValue(), v28, v27, v26, v21 = @"background", objc_msgSend(v8, "objectForKeyedSubscript:", @"background"), v22 = objc_claimAutoreleasedReturnValue(), v59 = 0, v29 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:dimensionSizeRanges:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:dimensionSizeRanges:error:", v22, 0, 65568, v20, &v59), v30 = v59, v25 = v30, v29))
+        if (v23 && (v24, v22, v20, [MEMORY[0x1E696B098] valueWithRange:{1, 0x7FFFFFFFFFFFFFFFLL}], v26 = objc_claimAutoreleasedReturnValue(), v61[0] = v26, objc_msgSend(MEMORY[0x1E696B098], "valueWithRange:", 1, 1), v27 = objc_claimAutoreleasedReturnValue(), v61[1] = v27, objc_msgSend(MEMORY[0x1E696B098], "valueWithRange:", 1000, 319001), v28 = objc_claimAutoreleasedReturnValue(), v61[2] = v28, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v61, 3), v20 = objc_claimAutoreleasedReturnValue(), v28, v27, v26, v21 = @"background", objc_msgSend(inputDescriptionsByName, "objectForKeyedSubscript:", @"background"), v22 = objc_claimAutoreleasedReturnValue(), v59 = 0, v29 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:dimensionSizeRanges:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:dimensionSizeRanges:error:", v22, 0, 65568, v20, &v59), v30 = v59, v25 = v30, v29))
         {
 
           v31 = @"shiftIteration";
-          v20 = [v8 objectForKeyedSubscript:@"shiftIteration"];
+          v20 = [inputDescriptionsByName objectForKeyedSubscript:@"shiftIteration"];
           v58 = 0;
           v32 = [SNValidateModel ensureFeatureWithDescription:v20 isOptional:0 isMultiArrayWithDataType:65568 shapeOptions:&unk_1F49655A8 error:&v58];
           v33 = v58;
           v22 = v33;
-          if (v32 && (v33, v20, v31 = @"stateIn", [v8 objectForKeyedSubscript:@"stateIn"], v20 = objc_claimAutoreleasedReturnValue(), v57 = 0, v34 = +[SNValidateModel ensureFeatureWithDescription:isOptional:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:error:", v20, 1, &v57), v35 = v57, v22 = v35, v34) && (v35, v20, v31 = @"set", objc_msgSend(v8, "objectForKeyedSubscript:", @"set"), v20 = objc_claimAutoreleasedReturnValue(), v56 = 0, v36 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:", v20, 1, 65568, &unk_1F49655D8, &v56), v37 = v56, v22 = v37, v36) && (v37, v20, v31 = @"shiftedSamples", objc_msgSend(v8, "objectForKeyedSubscript:", @"shiftedSamples"), v20 = objc_claimAutoreleasedReturnValue(), v55 = 0, v38 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:", v20, 1, 65568, &unk_1F4965608, &v55), v39 = v55, v22 = v39, v38) && (v39, v20, v31 = @"segmentLength", objc_msgSend(v8, "objectForKeyedSubscript:", @"segmentLength"), v20 = objc_claimAutoreleasedReturnValue(), v54 = 0, v40 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:", v20, 1, 65568, &unk_1F4965638, &v54), v41 = v54, v22 = v41, v40))
+          if (v32 && (v33, v20, v31 = @"stateIn", [inputDescriptionsByName objectForKeyedSubscript:@"stateIn"], v20 = objc_claimAutoreleasedReturnValue(), v57 = 0, v34 = +[SNValidateModel ensureFeatureWithDescription:isOptional:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:error:", v20, 1, &v57), v35 = v57, v22 = v35, v34) && (v35, v20, v31 = @"set", objc_msgSend(inputDescriptionsByName, "objectForKeyedSubscript:", @"set"), v20 = objc_claimAutoreleasedReturnValue(), v56 = 0, v36 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:", v20, 1, 65568, &unk_1F49655D8, &v56), v37 = v56, v22 = v37, v36) && (v37, v20, v31 = @"shiftedSamples", objc_msgSend(inputDescriptionsByName, "objectForKeyedSubscript:", @"shiftedSamples"), v20 = objc_claimAutoreleasedReturnValue(), v55 = 0, v38 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:", v20, 1, 65568, &unk_1F4965608, &v55), v39 = v55, v22 = v39, v38) && (v39, v20, v31 = @"segmentLength", objc_msgSend(inputDescriptionsByName, "objectForKeyedSubscript:", @"segmentLength"), v20 = objc_claimAutoreleasedReturnValue(), v54 = 0, v40 = +[SNValidateModel ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:](SNValidateModel, "ensureFeatureWithDescription:isOptional:isMultiArrayWithDataType:shapeOptions:error:", v20, 1, 65568, &unk_1F4965638, &v54), v41 = v54, v22 = v41, v40))
           {
 
             v42 = @"embedding";
-            v20 = [v10 objectForKeyedSubscript:@"embedding"];
+            v20 = [outputDescriptionsByName objectForKeyedSubscript:@"embedding"];
             v53 = 0;
             v43 = [SNValidateModel ensureFeatureWithDescription:v20 isOptional:0 isFreelyShapedMultiArrayWithDataType:65568 error:&v53];
             v44 = v53;
@@ -1030,7 +1030,7 @@ LABEL_142:
             {
 
               v42 = @"label";
-              v20 = [v10 objectForKeyedSubscript:@"label"];
+              v20 = [outputDescriptionsByName objectForKeyedSubscript:@"label"];
               v52 = 0;
               v45 = [SNValidateModel ensureFeatureWithDescription:v20 isOptional:0 isMultiArrayWithDataType:65568 shapeOptions:&unk_1F4965668 error:&v52];
               v46 = v52;
@@ -1039,7 +1039,7 @@ LABEL_142:
               {
 
                 v42 = @"stateOut";
-                v20 = [v10 objectForKeyedSubscript:@"stateOut"];
+                v20 = [outputDescriptionsByName objectForKeyedSubscript:@"stateOut"];
                 v51 = 0;
                 v47 = [SNValidateModel ensureFeatureWithDescription:v20 isOptional:0 error:&v51];
                 v22 = v51;
@@ -1061,13 +1061,13 @@ LABEL_21:
             [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid specification for input feature: '%@'", v31];
           }
           v25 = ;
-          [SNError populateClientError:a4 withCode:4 underlyingError:v22 message:v25];
+          [SNError populateClientError:error withCode:4 underlyingError:v22 message:v25];
         }
 
         else
         {
           v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid specification for input feature: '%@'", v21];
-          [SNError populateClientError:a4 withCode:4 underlyingError:v25 message:v50];
+          [SNError populateClientError:error withCode:4 underlyingError:v25 message:v50];
         }
 
         v48 = 0;
@@ -1082,26 +1082,26 @@ LABEL_16:
   return v48;
 }
 
-+ (id)labelFromNumberRepresentation:(id)a3 error:(id *)a4
++ (id)labelFromNumberRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 unsignedIntegerValue];
-  if (v6 == 1)
+  representationCopy = representation;
+  unsignedIntegerValue = [representationCopy unsignedIntegerValue];
+  if (unsignedIntegerValue == 1)
   {
-    v7 = [[SNKShotLabel alloc] initAsPositiveLabel];
+    initAsPositiveLabel = [[SNKShotLabel alloc] initAsPositiveLabel];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!unsignedIntegerValue)
   {
-    v7 = [[SNKShotLabel alloc] initAsNegativeLabel];
+    initAsPositiveLabel = [[SNKShotLabel alloc] initAsNegativeLabel];
 LABEL_5:
-    v8 = v7;
+    v8 = initAsPositiveLabel;
     goto LABEL_7;
   }
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"could not translate number to label: %@", v5];
-  [SNError populateClientError:a4 withCode:1 underlyingError:0 message:v9];
+  representationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"could not translate number to label: %@", representationCopy];
+  [SNError populateClientError:error withCode:1 underlyingError:0 message:representationCopy];
 
   v8 = 0;
 LABEL_7:
@@ -1109,15 +1109,15 @@ LABEL_7:
   return v8;
 }
 
-+ (id)streamResultWithEmbedding:(id)a3 label:(id)a4 dataset:(int64_t)a5 error:(id *)a6
++ (id)streamResultWithEmbedding:(id)embedding label:(id)label dataset:(int64_t)dataset error:(id *)error
 {
-  v10 = a3;
-  v11 = [a1 labelFromNumberRepresentation:a4 error:a6];
+  embeddingCopy = embedding;
+  v11 = [self labelFromNumberRepresentation:label error:error];
   if (v11)
   {
     v12 = objc_alloc_init(SNKShotFeaturizationStreamResult);
-    [(SNKShotFeaturizationStreamResult *)v12 setDatasetType:a5];
-    [(SNKShotFeaturizationStreamResult *)v12 setData:v10];
+    [(SNKShotFeaturizationStreamResult *)v12 setDatasetType:dataset];
+    [(SNKShotFeaturizationStreamResult *)v12 setData:embeddingCopy];
     [(SNKShotFeaturizationStreamResult *)v12 setLabel:v11];
   }
 
@@ -1129,60 +1129,60 @@ LABEL_7:
   return v12;
 }
 
-+ (id)streamResultsForDatasetType:(int64_t)a3 embeddings:(id)a4 labels:(id)a5 error:(id *)a6
++ (id)streamResultsForDatasetType:(int64_t)type embeddings:(id)embeddings labels:(id)labels error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E695DF70] array];
-  if ([v10 count])
+  embeddingsCopy = embeddings;
+  labelsCopy = labels;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([embeddingsCopy count])
   {
     v13 = 0;
     while (1)
     {
-      v14 = [v10 objectAtIndexedSubscript:v13];
-      v15 = [v11 objectAtIndexedSubscript:v13];
+      v14 = [embeddingsCopy objectAtIndexedSubscript:v13];
+      v15 = [labelsCopy objectAtIndexedSubscript:v13];
       if (!v15 || !v14)
       {
-        [SNError populateClientError:a6 withCode:1 underlyingError:0 message:@"expected same number of embeddings and labels"];
+        [SNError populateClientError:error withCode:1 underlyingError:0 message:@"expected same number of embeddings and labels"];
         goto LABEL_10;
       }
 
-      v16 = [a1 streamResultWithEmbedding:v14 label:v15 dataset:a3 error:a6];
+      v16 = [self streamResultWithEmbedding:v14 label:v15 dataset:type error:error];
       if (!v16)
       {
         break;
       }
 
       v17 = v16;
-      [v12 addObject:v16];
+      [array addObject:v16];
 
-      if ([v10 count] <= ++v13)
+      if ([embeddingsCopy count] <= ++v13)
       {
         goto LABEL_11;
       }
     }
 
-    v12 = 0;
+    array = 0;
 LABEL_10:
   }
 
 LABEL_11:
 
-  return v12;
+  return array;
 }
 
-+ (id)streamResultsFromFeaturizationResult:(id)a3 error:(id *)a4
++ (id)streamResultsFromFeaturizationResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 trainingDataEmbeddings];
-  v8 = [v6 trainingDataLabels];
-  v9 = [a1 streamResultsForDatasetType:0 embeddings:v7 labels:v8 error:a4];
+  resultCopy = result;
+  trainingDataEmbeddings = [resultCopy trainingDataEmbeddings];
+  trainingDataLabels = [resultCopy trainingDataLabels];
+  v9 = [self streamResultsForDatasetType:0 embeddings:trainingDataEmbeddings labels:trainingDataLabels error:error];
 
   if (v9)
   {
-    v10 = [v6 validationDataEmbeddings];
-    v11 = [v6 validationDataLabels];
-    v12 = [a1 streamResultsForDatasetType:1 embeddings:v10 labels:v11 error:a4];
+    validationDataEmbeddings = [resultCopy validationDataEmbeddings];
+    validationDataLabels = [resultCopy validationDataLabels];
+    v12 = [self streamResultsForDatasetType:1 embeddings:validationDataEmbeddings labels:validationDataLabels error:error];
 
     if (v12)
     {
@@ -1202,13 +1202,13 @@ LABEL_6:
   return v13;
 }
 
-+ (id)streamCompletionFromFeaturizationResult:(id)a3
++ (id)streamCompletionFromFeaturizationResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(SNKShotFeaturizationStreamCompletion);
-  if (v3)
+  if (resultCopy)
   {
-    [v3 inferenceWindowSize];
+    [resultCopy inferenceWindowSize];
   }
 
   else
@@ -1220,8 +1220,8 @@ LABEL_6:
   v7 = v9;
   v8 = v10;
   [(SNKShotFeaturizationStreamCompletion *)v4 setInferenceWindowSize:&v7];
-  v5 = [v3 exemplar];
-  [(SNKShotFeaturizationStreamCompletion *)v4 setExemplar:v5];
+  exemplar = [resultCopy exemplar];
+  [(SNKShotFeaturizationStreamCompletion *)v4 setExemplar:exemplar];
 
   return v4;
 }

@@ -1,13 +1,13 @@
 @interface BKLibrarySpotlightHelpers
-+ (id)spotlightQueryStringForSearchString:(id)a3 attributes:(id)a4;
-+ (id)stringByEscapingSearchString:(id)a3;
++ (id)spotlightQueryStringForSearchString:(id)string attributes:(id)attributes;
++ (id)stringByEscapingSearchString:(id)string;
 @end
 
 @implementation BKLibrarySpotlightHelpers
 
-+ (id)stringByEscapingSearchString:(id)a3
++ (id)stringByEscapingSearchString:(id)string
 {
-  v3 = [a3 mutableCopy];
+  v3 = [string mutableCopy];
   [v3 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@"'" withString:@"\\'" options:0 range:{0, objc_msgSend(v3, "length")}];
@@ -16,11 +16,11 @@
   return v3;
 }
 
-+ (id)spotlightQueryStringForSearchString:(id)a3 attributes:(id)a4
++ (id)spotlightQueryStringForSearchString:(id)string attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 stringByEscapingSearchString:v6];
+  stringCopy = string;
+  attributesCopy = attributes;
+  v8 = [self stringByEscapingSearchString:stringCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -34,7 +34,7 @@
   v9 = v8;
   v16 = v9;
   v17 = &v18;
-  [v7 enumerateObjectsUsingBlock:&v12];
+  [attributesCopy enumerateObjectsUsingBlock:&v12];
   v10 = [v19[5] componentsJoinedByString:{@" || ", v12, v13, v14, v15}];
 
   _Block_object_dispose(&v18, 8);

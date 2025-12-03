@@ -1,22 +1,22 @@
 @interface VFXReplicatorConstraint
 + (id)replicatorConstraint;
-+ (id)replicatorConstraintWithTarget:(id)a3;
++ (id)replicatorConstraintWithTarget:(id)target;
 - (VFXReplicatorConstraint)init;
-- (VFXReplicatorConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3;
-- (uint64_t)setOrientationOffset:(__n128)a3;
-- (void)_customDecodingOfVFXReplicatorConstraint:(id)a3;
-- (void)_customEncodingOfVFXReplicatorConstraint:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
+- (VFXReplicatorConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key;
+- (uint64_t)setOrientationOffset:(__n128)offset;
+- (void)_customDecodingOfVFXReplicatorConstraint:(id)constraint;
+- (void)_customEncodingOfVFXReplicatorConstraint:(id)constraint;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
 - (void)setPositionOffset:(VFXReplicatorConstraint *)self;
-- (void)setReplicatesOrientation:(BOOL)a3;
-- (void)setReplicatesPosition:(BOOL)a3;
-- (void)setReplicatesScale:(BOOL)a3;
+- (void)setReplicatesOrientation:(BOOL)orientation;
+- (void)setReplicatesPosition:(BOOL)position;
+- (void)setReplicatesScale:(BOOL)scale;
 - (void)setScaleOffset:(VFXReplicatorConstraint *)self;
-- (void)setTarget:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setTarget:(id)target;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation VFXReplicatorConstraint
@@ -51,14 +51,14 @@
   return v2;
 }
 
-+ (id)replicatorConstraintWithTarget:(id)a3
++ (id)replicatorConstraintWithTarget:(id)target
 {
-  v5 = objc_msgSend_replicatorConstraint(a1, a2, a3, v3);
-  objc_msgSend_setTarget_(v5, v6, a3, v7);
+  v5 = objc_msgSend_replicatorConstraint(self, a2, target, v3);
+  objc_msgSend_setTarget_(v5, v6, target, v7);
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v8 = objc_msgSend_target(self, v5, v6, v7);
@@ -79,17 +79,17 @@
   return v4;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   target = self->_target;
-  if (target != a3)
+  if (target != target)
   {
 
-    v6 = a3;
-    self->_target = v6;
-    if (v6)
+    targetCopy = target;
+    self->_target = targetCopy;
+    if (targetCopy)
     {
-      v6 = objc_msgSend_nodeRef(v6, v7, v8, v9);
+      targetCopy = objc_msgSend_nodeRef(targetCopy, v7, v8, v9);
     }
 
     v10[0] = MEMORY[0x1E69E9820];
@@ -97,14 +97,14 @@
     v10[2] = sub_1AF2BAA6C;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = v6;
+    v10[5] = targetCopy;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, self, v10);
   }
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
-  if (!a3)
+  if (!operation)
   {
     target = self->_target;
     if (target)
@@ -114,59 +114,59 @@
       v6[2] = sub_1AF2BAB34;
       v6[3] = &unk_1E7A7C0C8;
       v6[4] = self;
-      (*(a4 + 2))(a4, target, 1, v6);
+      (*(block + 2))(block, target, 1, v6);
     }
   }
 
-  objc_msgSend_enumerateAnimationReferencesUsingBlock_(self, target, a4, a4);
+  objc_msgSend_enumerateAnimationReferencesUsingBlock_(self, target, block, block);
 }
 
-- (void)setReplicatesOrientation:(BOOL)a3
+- (void)setReplicatesOrientation:(BOOL)orientation
 {
-  self->_replicateOrientation = a3;
+  self->_replicateOrientation = orientation;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BABCC;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  orientationCopy = orientation;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setReplicatesPosition:(BOOL)a3
+- (void)setReplicatesPosition:(BOOL)position
 {
-  self->_replicatePosition = a3;
+  self->_replicatePosition = position;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BAC7C;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  positionCopy = position;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setReplicatesScale:(BOOL)a3
+- (void)setReplicatesScale:(BOOL)scale
 {
-  self->_replicateScale = a3;
+  self->_replicateScale = scale;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BAD2C;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  scaleCopy = scale;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (uint64_t)setOrientationOffset:(__n128)a3
+- (uint64_t)setOrientationOffset:(__n128)offset
 {
-  a1[6] = a3;
+  self[6] = offset;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = sub_1AF2BADE0;
   v4[3] = &unk_1E7A7E5C8;
-  v6 = a1;
-  v5 = a3;
-  return objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, a1, @"orientationOffset", v4);
+  selfCopy = self;
+  offsetCopy = offset;
+  return objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"orientationOffset", v4);
 }
 
 - (void)setPositionOffset:(VFXReplicatorConstraint *)self
@@ -176,7 +176,7 @@
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BAE94;
   v3[3] = &unk_1E7A7E5C8;
-  v5 = self;
+  selfCopy = self;
   v4 = v2;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"positionOffset", v3);
 }
@@ -188,14 +188,14 @@
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BAF48;
   v3[3] = &unk_1E7A7E5C8;
-  v5 = self;
+  selfCopy = self;
   v4 = v2;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"scaleOffset", v3);
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"positionOffset", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"positionOffset", v3))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_positionOffset(self, v6, v7, v8);
@@ -204,13 +204,13 @@ LABEL_3:
     return objc_msgSend_valueWithVFXFloat3_(v9, v10, v11, v12);
   }
 
-  if (!objc_msgSend_isEqualToString_(a3, v6, @"orientationOffset", v8))
+  if (!objc_msgSend_isEqualToString_(key, v6, @"orientationOffset", v8))
   {
-    if (!objc_msgSend_isEqualToString_(a3, v14, @"scaleOffset", v16))
+    if (!objc_msgSend_isEqualToString_(key, v14, @"scaleOffset", v16))
     {
       v24.receiver = self;
       v24.super_class = VFXReplicatorConstraint;
-      return [(VFXReplicatorConstraint *)&v24 valueForKey:a3];
+      return [(VFXReplicatorConstraint *)&v24 valueForKey:key];
     }
 
     v9 = MEMORY[0x1E696B098];
@@ -224,25 +224,25 @@ LABEL_3:
   return objc_msgSend_valueWithVFXFloat4_(v17, v18, v19, v20);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a4, a2, @"positionOffset", a4))
+  if (objc_msgSend_isEqualToString_(key, a2, @"positionOffset", key))
   {
-    objc_msgSend_VFXFloat3Value(a3, v7, v8, v9);
+    objc_msgSend_VFXFloat3Value(value, v7, v8, v9);
 
     objc_msgSend_setPositionOffset_(self, v10, v11, v12);
   }
 
-  else if (objc_msgSend_isEqualToString_(a4, v7, @"orientationOffset", v9))
+  else if (objc_msgSend_isEqualToString_(key, v7, @"orientationOffset", v9))
   {
-    objc_msgSend_VFXFloat4Value(a3, v13, v14, v15);
+    objc_msgSend_VFXFloat4Value(value, v13, v14, v15);
 
     objc_msgSend_setOrientationOffset_(self, v16, v17, v18);
   }
 
-  else if (objc_msgSend_isEqualToString_(a4, v13, @"scaleOffset", v15))
+  else if (objc_msgSend_isEqualToString_(key, v13, @"scaleOffset", v15))
   {
-    objc_msgSend_VFXFloat3Value(a3, v19, v20, v21);
+    objc_msgSend_VFXFloat3Value(value, v19, v20, v21);
 
     objc_msgSend_setScaleOffset_(self, v22, v23, v24);
   }
@@ -251,45 +251,45 @@ LABEL_3:
   {
     v25.receiver = self;
     v25.super_class = VFXReplicatorConstraint;
-    [(VFXReplicatorConstraint *)&v25 setValue:a3 forKey:a4];
+    [(VFXReplicatorConstraint *)&v25 setValue:value forKey:key];
   }
 }
 
-- (void)_customEncodingOfVFXReplicatorConstraint:(id)a3
+- (void)_customEncodingOfVFXReplicatorConstraint:(id)constraint
 {
   target = self->_target;
   if (target)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, target, @"target");
+    objc_msgSend_encodeObject_forKey_(constraint, a2, target, @"target");
   }
 }
 
-- (void)_customDecodingOfVFXReplicatorConstraint:(id)a3
+- (void)_customDecodingOfVFXReplicatorConstraint:(id)constraint
 {
   sub_1AF155220();
   self->super._constraintRef = v5;
   v6 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v7, v6, @"target");
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(constraint, v7, v6, @"target");
   objc_msgSend_setTarget_(self, v9, v8, v10);
 
-  objc_msgSend_finalizeDecodeConstraint_(self, v11, a3, v12);
+  objc_msgSend_finalizeDecodeConstraint_(self, v11, constraint, v12);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = VFXReplicatorConstraint;
   [(VFXConstraint *)&v10 encodeWithCoder:?];
-  objc_msgSend__customEncodingOfVFXReplicatorConstraint_(self, v5, a3, v6);
-  objc_msgSend_encodeBool_forKey_(a3, v7, self->_replicateOrientation, @"replicatesOrientation");
-  objc_msgSend_encodeBool_forKey_(a3, v8, self->_replicateScale, @"replicatesScale");
-  objc_msgSend_encodeBool_forKey_(a3, v9, self->_replicatePosition, @"replicatesPosition");
-  sub_1AF371AF4(a3, @"orientationOffset", *self->_anon_60);
-  sub_1AF371A8C(a3, @"positionOffset", *self->_positionOffset);
-  sub_1AF371A8C(a3, @"scaleOffset", *self->_scaleOffset);
+  objc_msgSend__customEncodingOfVFXReplicatorConstraint_(self, v5, coder, v6);
+  objc_msgSend_encodeBool_forKey_(coder, v7, self->_replicateOrientation, @"replicatesOrientation");
+  objc_msgSend_encodeBool_forKey_(coder, v8, self->_replicateScale, @"replicatesScale");
+  objc_msgSend_encodeBool_forKey_(coder, v9, self->_replicatePosition, @"replicatesPosition");
+  sub_1AF371AF4(coder, @"orientationOffset", *self->_anon_60);
+  sub_1AF371A8C(coder, @"positionOffset", *self->_positionOffset);
+  sub_1AF371A8C(coder, @"scaleOffset", *self->_scaleOffset);
 }
 
-- (VFXReplicatorConstraint)initWithCoder:(id)a3
+- (VFXReplicatorConstraint)initWithCoder:(id)coder
 {
   v43.receiver = self;
   v43.super_class = VFXReplicatorConstraint;
@@ -298,18 +298,18 @@ LABEL_3:
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    objc_msgSend__customDecodingOfVFXReplicatorConstraint_(v7, v11, a3, v12);
-    v15 = objc_msgSend_decodeBoolForKey_(a3, v13, @"replicatesOrientation", v14);
+    objc_msgSend__customDecodingOfVFXReplicatorConstraint_(v7, v11, coder, v12);
+    v15 = objc_msgSend_decodeBoolForKey_(coder, v13, @"replicatesOrientation", v14);
     objc_msgSend_setReplicatesOrientation_(v7, v16, v15, v17);
-    v20 = objc_msgSend_decodeBoolForKey_(a3, v18, @"replicatesScale", v19);
+    v20 = objc_msgSend_decodeBoolForKey_(coder, v18, @"replicatesScale", v19);
     objc_msgSend_setReplicatesScale_(v7, v21, v20, v22);
-    v25 = objc_msgSend_decodeBoolForKey_(a3, v23, @"replicatesPosition", v24);
+    v25 = objc_msgSend_decodeBoolForKey_(coder, v23, @"replicatesPosition", v24);
     objc_msgSend_setReplicatesPosition_(v7, v26, v25, v27);
-    *&v28 = sub_1AF371C0C(a3, @"orientationOffset").n128_u64[0];
+    *&v28 = sub_1AF371C0C(coder, @"orientationOffset").n128_u64[0];
     objc_msgSend_setOrientationOffset_(v7, v29, v30, v31, v28);
-    v32 = sub_1AF371BC4(a3, @"positionOffset");
+    v32 = sub_1AF371BC4(coder, @"positionOffset");
     objc_msgSend_setPositionOffset_(v7, v33, v34, v35, v32);
-    v36 = sub_1AF371BC4(a3, @"scaleOffset");
+    v36 = sub_1AF371BC4(coder, @"scaleOffset");
     objc_msgSend_setScaleOffset_(v7, v37, v38, v39, v36);
     objc_msgSend_setImmediateMode_(VFXTransaction, v40, v8, v41);
   }

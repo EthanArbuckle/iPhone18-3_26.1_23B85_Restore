@@ -1,18 +1,18 @@
 @interface BrowserToolbarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation BrowserToolbarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BrowserToolbar" hasInstanceVariable:@"_barRegistration" withType:"<_SFBarRegistrationToken>"];
-  [v3 validateClass:@"SFBarRegistration" hasInstanceVariable:@"_shareItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"SFBarRegistration" hasInstanceVariable:@"_tabExposeItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"BrowserToolbar" hasInstanceMethod:@"initWithPlacement:hideBackground:" withFullSignature:{"@", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BrowserToolbar" hasInstanceVariable:@"_barRegistration" withType:"<_SFBarRegistrationToken>"];
+  [validationsCopy validateClass:@"SFBarRegistration" hasInstanceVariable:@"_shareItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"SFBarRegistration" hasInstanceVariable:@"_tabExposeItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"BrowserToolbar" hasInstanceMethod:@"initWithPlacement:hideBackground:" withFullSignature:{"@", "q", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -48,14 +48,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BrowserToolbarAccessibility *)self window];
-  [(BrowserToolbarAccessibility *)self convertRect:v11 toView:v4, v6, v8, v10];
+  window = [(BrowserToolbarAccessibility *)self window];
+  [(BrowserToolbarAccessibility *)self convertRect:window toView:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(BrowserToolbarAccessibility *)self window];
-  [v20 bounds];
+  window2 = [(BrowserToolbarAccessibility *)self window];
+  [window2 bounds];
   v29.origin.x = v21;
   v29.origin.y = v22;
   v29.size.width = v23;

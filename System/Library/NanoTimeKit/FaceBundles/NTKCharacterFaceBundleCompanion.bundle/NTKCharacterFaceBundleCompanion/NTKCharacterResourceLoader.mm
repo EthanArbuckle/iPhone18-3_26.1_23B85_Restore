@@ -1,18 +1,18 @@
 @interface NTKCharacterResourceLoader
-+ (id)sharedInstanceForDevice:(id)a3 withPixelFormat:(unint64_t)a4;
-+ (void)_deallocInstanceForDevice:(id)a3;
-- (id)_loadBank:(id)a3 toArrays:(unint64_t)a4 allowNewKeys:(BOOL)a5;
-- (id)getMTLTexture:(id)a3;
-- (id)initForDevice:(id)a3 withPixelFormat:(unint64_t)a4;
-- (id)mtlTextureWithName:(id)a3;
-- (id)mtlTextureWithName:(id)a3 prefix:(id)a4;
-- (id)textureWithName:(id)a3;
-- (id)textureWithName:(id)a3 prefix:(id)a4;
++ (id)sharedInstanceForDevice:(id)device withPixelFormat:(unint64_t)format;
++ (void)_deallocInstanceForDevice:(id)device;
+- (id)_loadBank:(id)bank toArrays:(unint64_t)arrays allowNewKeys:(BOOL)keys;
+- (id)getMTLTexture:(id)texture;
+- (id)initForDevice:(id)device withPixelFormat:(unint64_t)format;
+- (id)mtlTextureWithName:(id)name;
+- (id)mtlTextureWithName:(id)name prefix:(id)prefix;
+- (id)textureWithName:(id)name;
+- (id)textureWithName:(id)name prefix:(id)prefix;
 - (void)_asyncDeallocInstance;
 - (void)_loadMTLBufferData;
 - (void)_loadPrograms;
 - (void)_loadTextures;
-- (void)_setupPipelineForType:(unint64_t)a3 vertex:(id)a4 fragment:(id)a5 blending:(BOOL)a6 inLibrary:(id)a7 librarySPI:(id)a8;
+- (void)_setupPipelineForType:(unint64_t)type vertex:(id)vertex fragment:(id)fragment blending:(BOOL)blending inLibrary:(id)library librarySPI:(id)i;
 - (void)addClient;
 - (void)dealloc;
 - (void)localeChanged;
@@ -21,11 +21,11 @@
 
 @implementation NTKCharacterResourceLoader
 
-+ (id)sharedInstanceForDevice:(id)a3 withPixelFormat:(unint64_t)a4
++ (id)sharedInstanceForDevice:(id)device withPixelFormat:(unint64_t)format
 {
-  v6 = a3;
-  v7 = a1;
-  objc_sync_enter(v7);
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_25BB0)
   {
     v8 = objc_opt_new();
@@ -33,16 +33,16 @@
     qword_25BB0 = v8;
   }
 
-  v10 = sub_228C(v6);
+  v10 = sub_228C(deviceCopy);
   v11 = [qword_25BB0 objectForKeyedSubscript:v10];
   if (!v11)
   {
-    v11 = [[NTKCharacterResourceLoader alloc] initForDevice:v6 withPixelFormat:a4];
+    v11 = [[NTKCharacterResourceLoader alloc] initForDevice:deviceCopy withPixelFormat:format];
     [qword_25BB0 setObject:v11 forKeyedSubscript:v10];
   }
 
-  objc_sync_exit(v7);
-  if (v11[14] != a4)
+  objc_sync_exit(selfCopy);
+  if (v11[14] != format)
   {
     sub_F4E8();
   }
@@ -50,27 +50,27 @@
   return v11;
 }
 
-+ (void)_deallocInstanceForDevice:(id)a3
++ (void)_deallocInstanceForDevice:(id)device
 {
-  v6 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  v5 = sub_228C(v6);
+  deviceCopy = device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = sub_228C(deviceCopy);
   [qword_25BB0 setObject:0 forKeyedSubscript:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)initForDevice:(id)a3 withPixelFormat:(unint64_t)a4
+- (id)initForDevice:(id)device withPixelFormat:(unint64_t)format
 {
-  v7 = a3;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKCharacterResourceLoader;
   v8 = [(NTKCharacterResourceLoader *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clkDevice, a3);
+    objc_storeStrong(&v8->_clkDevice, device);
     v10 = +[CLKUIMetalResourceManager sharedDevice];
     mtlDevice = v9->_mtlDevice;
     v9->_mtlDevice = v10;
@@ -79,7 +79,7 @@
     bundle = v9->_bundle;
     v9->_bundle = v12;
 
-    v9->_viewMtlPixelFormat = a4;
+    v9->_viewMtlPixelFormat = format;
     v14 = objc_opt_new();
     mapping = v9->_mapping;
     v9->_mapping = v14;
@@ -146,16 +146,16 @@
 
 - (void)removeClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clients - 1;
-  v2->_clients = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clients - 1;
+  selfCopy->_clients = v3;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
 
-    [(NTKCharacterResourceLoader *)v2 _asyncDeallocInstance];
+    [(NTKCharacterResourceLoader *)selfCopy _asyncDeallocInstance];
   }
 }
 
@@ -169,42 +169,42 @@
   mtlBuffer = self->_mtlBuffer;
   self->_mtlBuffer = v3;
 
-  v5 = [(MTLBuffer *)self->_mtlBuffer contents];
-  v6 = &v5[self->_bufferOffsetBackground];
+  contents = [(MTLBuffer *)self->_mtlBuffer contents];
+  v6 = &contents[self->_bufferOffsetBackground];
   *(v6 + 2) = xmmword_14EF0;
   *(v6 + 3) = unk_14F00;
   *v6 = xmmword_14ED0;
   *(v6 + 1) = unk_14EE0;
-  v7 = &v5[self->_bufferOffsetHead];
+  v7 = &contents[self->_bufferOffsetHead];
   *v7 = xmmword_14F10;
   *(v7 + 1) = unk_14F20;
   *(v7 + 4) = xmmword_14F50;
   *(v7 + 5) = unk_14F60;
   *(v7 + 2) = xmmword_14F30;
   *(v7 + 3) = unk_14F40;
-  v8 = &v5[self->_bufferOffsetBody];
+  v8 = &contents[self->_bufferOffsetBody];
   *v8 = xmmword_14F70;
   *(v8 + 1) = unk_14F80;
   *(v8 + 4) = xmmword_14FB0;
   *(v8 + 5) = unk_14FC0;
   *(v8 + 2) = xmmword_14F90;
   *(v8 + 3) = unk_14FA0;
-  v9 = &v5[self->_bufferOffsetFoot];
+  v9 = &contents[self->_bufferOffsetFoot];
   *v9 = xmmword_14FD0;
   *(v9 + 1) = unk_14FE0;
   *(v9 + 4) = xmmword_15010;
   *(v9 + 5) = unk_15020;
   *(v9 + 2) = xmmword_14FF0;
   *(v9 + 3) = unk_15000;
-  v10 = &v5[self->_bufferOffsetHand];
+  v10 = &contents[self->_bufferOffsetHand];
   *(v10 + 2) = xmmword_15050;
   *(v10 + 3) = unk_15060;
   *(v10 + 4) = xmmword_15070;
   *(v10 + 5) = unk_15080;
   *v10 = xmmword_15030;
   *(v10 + 1) = unk_15040;
-  memcpy(&v5[self->_bufferOffsetArm], &unk_15090, 0x270uLL);
-  v11 = &v5[self->_bufferOffsetSkirt];
+  memcpy(&contents[self->_bufferOffsetArm], &unk_15090, 0x270uLL);
+  v11 = &contents[self->_bufferOffsetSkirt];
   *v11 = xmmword_15300;
   *(v11 + 1) = unk_15310;
   *(v11 + 2) = xmmword_15320;
@@ -217,7 +217,7 @@
   *(v11 + 11) = unk_153B0;
   *(v11 + 8) = xmmword_15380;
   *(v11 + 9) = unk_15390;
-  v12 = &v5[self->_bufferOffsetFlower];
+  v12 = &contents[self->_bufferOffsetFlower];
   *(v12 + 2) = xmmword_153E0;
   *(v12 + 3) = unk_153F0;
   *v12 = xmmword_153C0;
@@ -232,53 +232,53 @@
   *(v12 + 9) = unk_15450;
 }
 
-- (void)_setupPipelineForType:(unint64_t)a3 vertex:(id)a4 fragment:(id)a5 blending:(BOOL)a6 inLibrary:(id)a7 librarySPI:(id)a8
+- (void)_setupPipelineForType:(unint64_t)type vertex:(id)vertex fragment:(id)fragment blending:(BOOL)blending inLibrary:(id)library librarySPI:(id)i
 {
-  v9 = a6;
-  v13 = a5;
-  v14 = a7;
-  v15 = a4;
+  blendingCopy = blending;
+  fragmentCopy = fragment;
+  libraryCopy = library;
+  vertexCopy = vertex;
   v16 = objc_alloc_init(MTLRenderPipelineDescriptor);
-  [v16 setLabel:v13];
-  v17 = [v14 newFunctionWithName:v15];
+  [v16 setLabel:fragmentCopy];
+  v17 = [libraryCopy newFunctionWithName:vertexCopy];
 
   [v16 setVertexFunction:v17];
-  v18 = [v14 newFunctionWithName:v13];
+  v18 = [libraryCopy newFunctionWithName:fragmentCopy];
 
   [v16 setFragmentFunction:v18];
   viewMtlPixelFormat = self->_viewMtlPixelFormat;
-  v20 = [v16 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  colorAttachments = [v16 colorAttachments];
+  v21 = [colorAttachments objectAtIndexedSubscript:0];
   [v21 setPixelFormat:viewMtlPixelFormat];
 
-  if (v9)
+  if (blendingCopy)
   {
-    v22 = [v16 colorAttachments];
-    v23 = [v22 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v16 colorAttachments];
+    v23 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v23 setBlendingEnabled:1];
 
-    v24 = [v16 colorAttachments];
-    v25 = [v24 objectAtIndexedSubscript:0];
+    colorAttachments3 = [v16 colorAttachments];
+    v25 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v25 setRgbBlendOperation:0];
 
-    v26 = [v16 colorAttachments];
-    v27 = [v26 objectAtIndexedSubscript:0];
+    colorAttachments4 = [v16 colorAttachments];
+    v27 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v27 setAlphaBlendOperation:0];
 
-    v28 = [v16 colorAttachments];
-    v29 = [v28 objectAtIndexedSubscript:0];
+    colorAttachments5 = [v16 colorAttachments];
+    v29 = [colorAttachments5 objectAtIndexedSubscript:0];
     [v29 setSourceRGBBlendFactor:4];
 
-    v30 = [v16 colorAttachments];
-    v31 = [v30 objectAtIndexedSubscript:0];
+    colorAttachments6 = [v16 colorAttachments];
+    v31 = [colorAttachments6 objectAtIndexedSubscript:0];
     [v31 setSourceAlphaBlendFactor:4];
 
-    v32 = [v16 colorAttachments];
-    v33 = [v32 objectAtIndexedSubscript:0];
+    colorAttachments7 = [v16 colorAttachments];
+    v33 = [colorAttachments7 objectAtIndexedSubscript:0];
     [v33 setDestinationRGBBlendFactor:5];
 
-    v34 = [v16 colorAttachments];
-    v35 = [v34 objectAtIndexedSubscript:0];
+    colorAttachments8 = [v16 colorAttachments];
+    v35 = [colorAttachments8 objectAtIndexedSubscript:0];
     [v35 setDestinationAlphaBlendFactor:5];
   }
 
@@ -286,7 +286,7 @@
   v43 = 0;
   v37 = [(MTLDevice *)mtlDevice newRenderPipelineStateWithDescriptor:v16 error:&v43];
   v38 = v43;
-  v39 = &self->super.isa + a3;
+  v39 = &self->super.isa + type;
   v40 = v39[10];
   v39[10] = v37;
 
@@ -297,7 +297,7 @@
     {
       v42 = self->_mtlDevice;
       *buf = 138412802;
-      v45 = v13;
+      v45 = fragmentCopy;
       v46 = 2112;
       v47 = v42;
       v48 = 2112;
@@ -319,16 +319,16 @@
   [(NTKCharacterResourceLoader *)self _setupPipelineForType:3 vertex:@"boneSpriteVSH" fragment:@"recoloringFSH" blending:1 inLibrary:v5 librarySPI:0];
 }
 
-- (id)_loadBank:(id)a3 toArrays:(unint64_t)a4 allowNewKeys:(BOOL)a5
+- (id)_loadBank:(id)bank toArrays:(unint64_t)arrays allowNewKeys:(BOOL)keys
 {
-  v45 = a5;
-  v5 = a4;
-  v46 = a3;
+  keysCopy = keys;
+  arraysCopy = arrays;
+  bankCopy = bank;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v49 = self;
+  selfCopy = self;
   clkDevice = self->_clkDevice;
   obj = CLKUIOrderedSuffixesForDevice();
   v54 = [obj countByEnumeratingWithState:&v60 objects:v67 count:16];
@@ -354,13 +354,13 @@ LABEL_3:
     }
 
     v13 = *(*(&v60 + 1) + 8 * v10);
-    bundle = v49->_bundle;
-    v15 = [NSString stringWithFormat:@"%@%@@2x", v46, v13];
+    bundle = selfCopy->_bundle;
+    v15 = [NSString stringWithFormat:@"%@%@@2x", bankCopy, v13];
     v16 = [(NSBundle *)bundle pathForResource:v15 ofType:@"plist"];
 
-    v17 = v49->_bundle;
+    v17 = selfCopy->_bundle;
     v9 = v16;
-    v18 = [NSString stringWithFormat:@"%@%@@2x", v46, v13];
+    v18 = [NSString stringWithFormat:@"%@%@@2x", bankCopy, v13];
     v8 = [(NSBundle *)v17 pathForResource:v18 ofType:@"baf"];
 
     if (v9 && v8 != 0)
@@ -398,11 +398,11 @@ LABEL_3:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v66 = v46;
+          v66 = bankCopy;
           _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Mapping texture bank for %@", buf, 0xCu);
         }
 
-        v48 = [v20 bytes];
+        bytes = [v20 bytes];
         v41 = v20;
         v22 = [v20 length];
         v56 = 0u;
@@ -414,7 +414,7 @@ LABEL_3:
         if (v51)
         {
           v50 = *v57;
-          arrayByLocale = v49->_arrayByLocale;
+          arrayByLocale = selfCopy->_arrayByLocale;
           v47 = v22;
           do
           {
@@ -430,30 +430,30 @@ LABEL_3:
               v27 = [v26 objectForKeyedSubscript:@"offset"];
               v28 = [v26 objectForKeyedSubscript:@"size"];
               v55 = v27;
-              v29 = [v27 intValue];
-              v30 = [v28 intValue];
-              if (v30 + v29 <= v22)
+              intValue = [v27 intValue];
+              intValue2 = [v28 intValue];
+              if (intValue2 + intValue <= v22)
               {
-                v32 = v30;
-                v33 = &v48[v29];
-                v31 = [(NSMutableDictionary *)v49->_mapping objectForKey:v25];
+                v32 = intValue2;
+                v33 = &bytes[intValue];
+                v31 = [(NSMutableDictionary *)selfCopy->_mapping objectForKey:v25];
                 v34 = [[NTKCharacterTexture alloc] initWithData:v33 length:v32];
                 if (v31)
                 {
-                  v35 = [v31 unsignedIntegerValue];
+                  unsignedIntegerValue = [v31 unsignedIntegerValue];
                   for (j = 0; j != 3; ++j)
                   {
-                    if (((1 << j) & v5) != 0)
+                    if (((1 << j) & arraysCopy) != 0)
                     {
-                      [(NSMutableArray *)arrayByLocale[j] setObject:v34 atIndexedSubscript:v35];
+                      [(NSMutableArray *)arrayByLocale[j] setObject:v34 atIndexedSubscript:unsignedIntegerValue];
                     }
                   }
                 }
 
-                else if (v45)
+                else if (keysCopy)
                 {
-                  v37 = [NSNumber numberWithUnsignedInteger:[(NSMutableDictionary *)v49->_mapping count]];
-                  [(NSMutableDictionary *)v49->_mapping setObject:v37 forKeyedSubscript:v25];
+                  v37 = [NSNumber numberWithUnsignedInteger:[(NSMutableDictionary *)selfCopy->_mapping count]];
+                  [(NSMutableDictionary *)selfCopy->_mapping setObject:v37 forKeyedSubscript:v25];
 
                   for (k = 0; k != 3; ++k)
                   {
@@ -538,18 +538,18 @@ LABEL_43:
   [(NTKCharacterResourceLoader *)self localeChanged];
 }
 
-- (id)mtlTextureWithName:(id)a3 prefix:(id)a4
+- (id)mtlTextureWithName:(id)name prefix:(id)prefix
 {
-  v5 = [a4 stringByAppendingString:a3];
+  v5 = [prefix stringByAppendingString:name];
   v6 = [(NTKCharacterResourceLoader *)self mtlTextureWithName:v5];
 
   return v6;
 }
 
-- (id)mtlTextureWithName:(id)a3
+- (id)mtlTextureWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_mapping objectForKey:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->_mapping objectForKey:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -562,7 +562,7 @@ LABEL_43:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = nameCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@ texture is missing", &v16, 0xCu);
     }
 
@@ -570,41 +570,41 @@ LABEL_43:
   }
 
   v9 = v7;
-  v10 = [v7 unsignedIntegerValue];
-  if (v10 >= [(NSMutableArray *)self->_array count])
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  if (unsignedIntegerValue >= [(NSMutableArray *)self->_array count])
   {
-    v14 = 0;
+    mtlTexture2 = 0;
   }
 
   else
   {
-    v11 = [(NSMutableArray *)self->_array objectAtIndexedSubscript:v10];
-    v12 = [v11 mtlTexture];
+    v11 = [(NSMutableArray *)self->_array objectAtIndexedSubscript:unsignedIntegerValue];
+    mtlTexture = [v11 mtlTexture];
 
-    if (!v12)
+    if (!mtlTexture)
     {
       v13 = NTKCharacterLoadMtlTextureFromMemory([v11 data], objc_msgSend(v11, "length"), self->_mtlDevice, self->_mickeyBank);
       [v11 setMtlTexture:v13];
     }
 
-    v14 = [v11 mtlTexture];
+    mtlTexture2 = [v11 mtlTexture];
   }
 
-  return v14;
+  return mtlTexture2;
 }
 
-- (id)textureWithName:(id)a3 prefix:(id)a4
+- (id)textureWithName:(id)name prefix:(id)prefix
 {
-  v5 = [a4 stringByAppendingString:a3];
+  v5 = [prefix stringByAppendingString:name];
   v6 = [(NTKCharacterResourceLoader *)self textureWithName:v5];
 
   return v6;
 }
 
-- (id)textureWithName:(id)a3
+- (id)textureWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_mapping objectForKey:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->_mapping objectForKey:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -617,7 +617,7 @@ LABEL_43:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = nameCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@ texture is missing", &v11, 0xCu);
     }
 
@@ -629,29 +629,29 @@ LABEL_43:
   return v9;
 }
 
-- (id)getMTLTexture:(id)a3
+- (id)getMTLTexture:(id)texture
 {
-  v4 = [a3 unsignedIntegerValue];
-  if (v4 >= [(NSMutableArray *)self->_array count])
+  unsignedIntegerValue = [texture unsignedIntegerValue];
+  if (unsignedIntegerValue >= [(NSMutableArray *)self->_array count])
   {
-    v8 = 0;
+    mtlTexture2 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_array objectAtIndexedSubscript:v4];
-    v6 = [v5 mtlTexture];
+    v5 = [(NSMutableArray *)self->_array objectAtIndexedSubscript:unsignedIntegerValue];
+    mtlTexture = [v5 mtlTexture];
 
-    if (!v6)
+    if (!mtlTexture)
     {
       v7 = NTKCharacterLoadMtlTextureFromMemory([v5 data], objc_msgSend(v5, "length"), self->_mtlDevice, self->_mickeyBank);
       [v5 setMtlTexture:v7];
     }
 
-    v8 = [v5 mtlTexture];
+    mtlTexture2 = [v5 mtlTexture];
   }
 
-  return v8;
+  return mtlTexture2;
 }
 
 @end

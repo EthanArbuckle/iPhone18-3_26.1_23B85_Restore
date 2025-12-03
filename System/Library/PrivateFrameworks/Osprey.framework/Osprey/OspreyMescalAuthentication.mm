@@ -1,29 +1,29 @@
 @interface OspreyMescalAuthentication
 - (BOOL)isSessionExpired;
-- (OspreyMescalAuthentication)initWithChannel:(id)a3 connectionPreferences:(id)a4;
+- (OspreyMescalAuthentication)initWithChannel:(id)channel connectionPreferences:(id)preferences;
 - (id)mescalSession;
-- (void)_continuePreparationWithCompletion:(id)a3;
-- (void)moveToState:(unint64_t)a3;
-- (void)signData:(id)a3 success:(id)a4 failure:(id)a5;
+- (void)_continuePreparationWithCompletion:(id)completion;
+- (void)moveToState:(unint64_t)state;
+- (void)signData:(id)data success:(id)success failure:(id)failure;
 @end
 
 @implementation OspreyMescalAuthentication
 
-- (OspreyMescalAuthentication)initWithChannel:(id)a3 connectionPreferences:(id)a4
+- (OspreyMescalAuthentication)initWithChannel:(id)channel connectionPreferences:(id)preferences
 {
-  v7 = a3;
-  v8 = a4;
+  channelCopy = channel;
+  preferencesCopy = preferences;
   v13.receiver = self;
   v13.super_class = OspreyMescalAuthentication;
   v9 = [(OspreyMescalAuthentication *)&v13 init];
   if (v9)
   {
-    v10 = [[OspreyAuthService alloc] initWithChannel:v7 authStrategyVersion:[(OspreyMescalAuthentication *)v9 authenticationStrategyVersion]];
+    v10 = [[OspreyAuthService alloc] initWithChannel:channelCopy authStrategyVersion:[(OspreyMescalAuthentication *)v9 authenticationStrategyVersion]];
     authService = v9->_authService;
     v9->_authService = v10;
 
-    objc_storeStrong(&v9->_connectionPreferences, a4);
-    objc_storeStrong(&v9->_grpcChannel, a3);
+    objc_storeStrong(&v9->_connectionPreferences, preferences);
+    objc_storeStrong(&v9->_grpcChannel, channel);
   }
 
   return v9;
@@ -44,20 +44,20 @@
   return mescalSession;
 }
 
-- (void)moveToState:(unint64_t)a3
+- (void)moveToState:(unint64_t)state
 {
   OspreyLoggingInit();
   v5 = OspreyLogContextDeviceAuth;
   if (os_log_type_enabled(OspreyLogContextDeviceAuth, OS_LOG_TYPE_DEBUG))
   {
-    [(OspreyMescalAuthentication *)self moveToState:a3, v5];
+    [(OspreyMescalAuthentication *)self moveToState:state, v5];
   }
 
-  if (self->_state > a3)
+  if (self->_state > state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3)
+      if (state)
       {
         goto LABEL_12;
       }
@@ -89,43 +89,43 @@
   }
 
 LABEL_12:
-  self->_state = a3;
+  self->_state = state;
 }
 
 - (BOOL)isSessionExpired
 {
   sessionExpiration = self->_sessionExpiration;
-  v3 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(sessionExpiration) = [(NSDate *)sessionExpiration compare:v3]== NSOrderedAscending;
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(sessionExpiration) = [(NSDate *)sessionExpiration compare:date]== NSOrderedAscending;
 
   return sessionExpiration;
 }
 
-- (void)signData:(id)a3 success:(id)a4 failure:(id)a5
+- (void)signData:(id)data success:(id)success failure:(id)failure
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(OspreyMescalAuthentication *)self mescalSession];
-  v12 = v11;
-  if (v11)
+  dataCopy = data;
+  successCopy = success;
+  failureCopy = failure;
+  mescalSession = [(OspreyMescalAuthentication *)self mescalSession];
+  v12 = mescalSession;
+  if (mescalSession)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __55__OspreyMescalAuthentication_signData_success_failure___block_invoke;
     v14[3] = &unk_2799F23B0;
-    v15 = v11;
-    v16 = v8;
-    v18 = v10;
-    v19 = v9;
-    v17 = self;
+    v15 = mescalSession;
+    v16 = dataCopy;
+    v18 = failureCopy;
+    v19 = successCopy;
+    selfCopy = self;
     [(OspreyMescalAuthentication *)self _continuePreparationWithCompletion:v14];
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyMescalAuthentication" code:1 userInfo:&unk_286FA6DB0];
-    (*(v10 + 2))(v10, v13);
+    (*(failureCopy + 2))(failureCopy, v13);
   }
 }
 
@@ -168,25 +168,25 @@ void __55__OspreyMescalAuthentication_signData_success_failure___block_invoke(vo
   }
 }
 
-- (void)_continuePreparationWithCompletion:(id)a3
+- (void)_continuePreparationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(OspreyMescalAuthentication *)self state];
-  switch(v5)
+  completionCopy = completion;
+  state = [(OspreyMescalAuthentication *)self state];
+  switch(state)
   {
     case 2uLL:
       if (![(OspreyMescalAuthentication *)self isSessionExpired])
       {
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
         break;
       }
 
       goto LABEL_9;
     case 1uLL:
-      v9 = [(OspreyConnectionPreferences *)self->_connectionPreferences certificateData];
-      v10 = [(OspreyMescalAuthentication *)self mescalSession];
+      certificateData = [(OspreyConnectionPreferences *)self->_connectionPreferences certificateData];
+      mescalSession = [(OspreyMescalAuthentication *)self mescalSession];
       v18 = 0;
-      v11 = [v10 handshakeRequestWithCertificateData:v9 error:&v18];
+      v11 = [mescalSession handshakeRequestWithCertificateData:certificateData error:&v18];
       v12 = v18;
 
       if (v11)
@@ -197,7 +197,7 @@ void __55__OspreyMescalAuthentication_signData_success_failure___block_invoke(vo
         v16[2] = __65__OspreyMescalAuthentication__continuePreparationWithCompletion___block_invoke_3;
         v16[3] = &unk_2799F23D8;
         v16[4] = self;
-        v17 = v4;
+        v17 = completionCopy;
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __65__OspreyMescalAuthentication__continuePreparationWithCompletion___block_invoke_4;
@@ -209,14 +209,14 @@ void __55__OspreyMescalAuthentication_signData_success_failure___block_invoke(vo
 
       else
       {
-        (v4)[2](v4, v12);
+        (completionCopy)[2](completionCopy, v12);
       }
 
       break;
     case 0uLL:
-      v6 = [(OspreyConnectionPreferences *)self->_connectionPreferences certificateData];
+      certificateData2 = [(OspreyConnectionPreferences *)self->_connectionPreferences certificateData];
       certificateData = self->_certificateData;
-      self->_certificateData = v6;
+      self->_certificateData = certificateData2;
 
       if (!self->_certificateData)
       {
@@ -226,7 +226,7 @@ void __55__OspreyMescalAuthentication_signData_success_failure___block_invoke(vo
         v21[2] = __65__OspreyMescalAuthentication__continuePreparationWithCompletion___block_invoke;
         v21[3] = &unk_2799F1E58;
         v21[4] = self;
-        v22 = v4;
+        v22 = completionCopy;
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __65__OspreyMescalAuthentication__continuePreparationWithCompletion___block_invoke_2;
@@ -240,7 +240,7 @@ void __55__OspreyMescalAuthentication_signData_success_failure___block_invoke(vo
 
 LABEL_9:
       [(OspreyMescalAuthentication *)self moveToState:1];
-      [(OspreyMescalAuthentication *)self _continuePreparationWithCompletion:v4];
+      [(OspreyMescalAuthentication *)self _continuePreparationWithCompletion:completionCopy];
       break;
   }
 }

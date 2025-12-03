@@ -3,14 +3,14 @@
 - (CAMOverlayStateMachineDelegate)delegate;
 - (NSString)name;
 - (unint64_t)currentStage;
-- (void)addReason:(int64_t)a3;
+- (void)addReason:(int64_t)reason;
 - (void)endAllStages;
-- (void)handleStage:(unint64_t)a3 phase:(unint64_t)a4;
+- (void)handleStage:(unint64_t)stage phase:(unint64_t)phase;
 - (void)hideImmediately;
 - (void)hideSwipeCoachingImmediately;
-- (void)overlayVisibilityChangedWithReason:(int64_t)a3;
-- (void)swipeCoachingVisibilityChangedWithReason:(int64_t)a3;
-- (void)systemOverlayVisibility:(id)a3 changedForReason:(int64_t)a4;
+- (void)overlayVisibilityChangedWithReason:(int64_t)reason;
+- (void)swipeCoachingVisibilityChangedWithReason:(int64_t)reason;
+- (void)systemOverlayVisibility:(id)visibility changedForReason:(int64_t)reason;
 @end
 
 @implementation CAMSystemOverlayStateMachine
@@ -25,20 +25,20 @@
 - (NSString)name
 {
   v2 = *(self + OBJC_IVAR___CAMSystemOverlayStateMachine_visibility);
-  v3 = self;
-  v4 = [v2 name];
-  if (!v4)
+  selfCopy = self;
+  name = [v2 name];
+  if (!name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = String._bridgeToObjectiveC()();
+    name = String._bridgeToObjectiveC()();
   }
 
-  return v4;
+  return name;
 }
 
 - (BOOL)wantsOverlayVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000150A0();
 
   return v3 & 1;
@@ -47,44 +47,44 @@
 - (void)hideImmediately
 {
   v2 = *(self + OBJC_IVAR___CAMSystemOverlayStateMachine_visibility);
-  v3 = self;
+  selfCopy = self;
   [v2 hideImmediately];
   sub_100015978();
-  *(v3 + OBJC_IVAR___CAMSystemOverlayStateMachine__wantsOverlayVisible) = 0;
+  *(selfCopy + OBJC_IVAR___CAMSystemOverlayStateMachine__wantsOverlayVisible) = 0;
 }
 
-- (void)addReason:(int64_t)a3
+- (void)addReason:(int64_t)reason
 {
-  v4 = self;
-  sub_1000151D0(a3);
+  selfCopy = self;
+  sub_1000151D0(reason);
 }
 
-- (void)systemOverlayVisibility:(id)a3 changedForReason:(int64_t)a4
+- (void)systemOverlayVisibility:(id)visibility changedForReason:(int64_t)reason
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1000152E4(a3, a4);
+  selfCopy = self;
+  sub_1000152E4(visibility, reason);
   swift_unknownObjectRelease();
 }
 
-- (void)overlayVisibilityChangedWithReason:(int64_t)a3
+- (void)overlayVisibilityChangedWithReason:(int64_t)reason
 {
-  v4 = self;
-  sub_10001540C(a3);
+  selfCopy = self;
+  sub_10001540C(reason);
 }
 
 - (void)hideSwipeCoachingImmediately
 {
-  v2 = self;
+  selfCopy = self;
   sub_100015978();
 }
 
-- (void)swipeCoachingVisibilityChangedWithReason:(int64_t)a3
+- (void)swipeCoachingVisibilityChangedWithReason:(int64_t)reason
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong overlayStateMachine:self swipeCoachingVisibilityChangedForReason:a3];
+    [Strong overlayStateMachine:self swipeCoachingVisibilityChangedForReason:reason];
 
     swift_unknownObjectRelease();
   }
@@ -109,14 +109,14 @@
 
 - (void)endAllStages
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001625C();
 }
 
-- (void)handleStage:(unint64_t)a3 phase:(unint64_t)a4
+- (void)handleStage:(unint64_t)stage phase:(unint64_t)phase
 {
-  v6 = self;
-  sub_100016308(a3, a4);
+  selfCopy = self;
+  sub_100016308(stage, phase);
 }
 
 @end

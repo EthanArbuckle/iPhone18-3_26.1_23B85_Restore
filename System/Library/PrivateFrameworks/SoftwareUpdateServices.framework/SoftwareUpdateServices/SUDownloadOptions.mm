@@ -8,36 +8,36 @@
 - (BOOL)isEnabledForCellularRoaming;
 - (BOOL)isEnabledForWifi;
 - (BOOL)isEnabledOnBatteryPower;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMASuspensionEnabled;
 - (SUDescriptor)descriptor;
-- (SUDownloadOptions)initWithCoder:(id)a3;
-- (SUDownloadOptions)initWithDescriptor:(id)a3;
-- (SUDownloadOptions)initWithMetadata:(id)a3 andDescriptor:(id)a4;
+- (SUDownloadOptions)initWithCoder:(id)coder;
+- (SUDownloadOptions)initWithDescriptor:(id)descriptor;
+- (SUDownloadOptions)initWithMetadata:(id)metadata andDescriptor:(id)descriptor;
 - (SUDownloadPolicy)activeDownloadPolicy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)activeDownloadPolicyType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActiveDownloadPolicy:(id)a3;
-- (void)setActiveDownloadPolicyType:(int)a3;
-- (void)setAllowUnrestrictedCellularDownload:(BOOL)a3;
-- (void)setDescriptor:(id)a3;
-- (void)setDownloadFeeAgreementStatus:(int)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActiveDownloadPolicy:(id)policy;
+- (void)setActiveDownloadPolicyType:(int)type;
+- (void)setAllowUnrestrictedCellularDownload:(BOOL)download;
+- (void)setDescriptor:(id)descriptor;
+- (void)setDownloadFeeAgreementStatus:(int)status;
 @end
 
 @implementation SUDownloadOptions
 
-- (SUDownloadOptions)initWithDescriptor:(id)a3
+- (SUDownloadOptions)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v14.receiver = self;
   v14.super_class = SUDownloadOptions;
   v6 = [(SUOptionsBase *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
+    objc_storeStrong(&v6->_descriptor, descriptor);
     v7->_downloadOnly = 0;
     v7->_autoDownload = 0;
     v7->_userUpdateTonight = 0;
@@ -45,9 +45,9 @@
     v7->_downloadFeeAgreementStatus = 0;
     v7->_termsAndConditionsAgreementStatus = 0;
     v7->_activeDownloadPolicyType = 3;
-    v8 = [(SUOptionsBase *)v7 defaultClientName];
+    defaultClientName = [(SUOptionsBase *)v7 defaultClientName];
     clientName = v7->_clientName;
-    v7->_clientName = v8;
+    v7->_clientName = defaultClientName;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.softwareupdateservicesd.downloadoptionsqueue", v10);
@@ -58,26 +58,26 @@
   return v7;
 }
 
-- (SUDownloadOptions)initWithMetadata:(id)a3 andDescriptor:(id)a4
+- (SUDownloadOptions)initWithMetadata:(id)metadata andDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = [(SUDownloadOptions *)self initWithDescriptor:a4];
+  metadataCopy = metadata;
+  v7 = [(SUDownloadOptions *)self initWithDescriptor:descriptor];
   v8 = v7;
-  if (v6 && v7)
+  if (metadataCopy && v7)
   {
-    v7->_downloadOnly = [v6 isDownloadOnly];
-    v8->_autoDownload = [v6 isAutoDownload];
+    v7->_downloadOnly = [metadataCopy isDownloadOnly];
+    v8->_autoDownload = [metadataCopy isAutoDownload];
     v8->_userUpdateTonight = 0;
     v8->_allowUnrestrictedCellularDownload = 0;
-    v8->_downloadFeeAgreementStatus = [v6 downloadFeeAgreementStatus];
-    v8->_termsAndConditionsAgreementStatus = [v6 termsAndConditionsAgreementStatus];
-    v8->_activeDownloadPolicyType = [v6 activeDownloadPolicyType];
+    v8->_downloadFeeAgreementStatus = [metadataCopy downloadFeeAgreementStatus];
+    v8->_termsAndConditionsAgreementStatus = [metadataCopy termsAndConditionsAgreementStatus];
+    v8->_activeDownloadPolicyType = [metadataCopy activeDownloadPolicyType];
   }
 
   return v8;
 }
 
-- (void)setActiveDownloadPolicyType:(int)a3
+- (void)setActiveDownloadPolicyType:(int)type
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -85,7 +85,7 @@
   v4[2] = __49__SUDownloadOptions_setActiveDownloadPolicyType___block_invoke;
   v4[3] = &unk_279CAACD8;
   v4[4] = self;
-  v5 = a3;
+  typeCopy = type;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -120,7 +120,7 @@ void __49__SUDownloadOptions_setActiveDownloadPolicyType___block_invoke(uint64_t
   return v3;
 }
 
-- (void)setDownloadFeeAgreementStatus:(int)a3
+- (void)setDownloadFeeAgreementStatus:(int)status
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -128,7 +128,7 @@ void __49__SUDownloadOptions_setActiveDownloadPolicyType___block_invoke(uint64_t
   v4[2] = __51__SUDownloadOptions_setDownloadFeeAgreementStatus___block_invoke;
   v4[3] = &unk_279CAACD8;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -179,20 +179,20 @@ uint64_t __41__SUDownloadOptions_activeDownloadPolicy__block_invoke(uint64_t a1)
   return [v5 setCellularFeeAgreementStatus:v6];
 }
 
-- (void)setActiveDownloadPolicy:(id)a3
+- (void)setActiveDownloadPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [(SUDownloadOptions *)self activeDownloadPolicy];
+  policyCopy = policy;
+  activeDownloadPolicy = [(SUDownloadOptions *)self activeDownloadPolicy];
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SUDownloadOptions_setActiveDownloadPolicy___block_invoke;
   block[3] = &unk_279CAA798;
-  v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
-  v8 = v5;
+  v10 = activeDownloadPolicy;
+  v11 = policyCopy;
+  selfCopy = self;
+  v7 = policyCopy;
+  v8 = activeDownloadPolicy;
   dispatch_sync(stateQueue, block);
 }
 
@@ -209,7 +209,7 @@ void __45__SUDownloadOptions_setActiveDownloadPolicy___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAllowUnrestrictedCellularDownload:(BOOL)a3
+- (void)setAllowUnrestrictedCellularDownload:(BOOL)download
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -217,7 +217,7 @@ void __45__SUDownloadOptions_setActiveDownloadPolicy___block_invoke(uint64_t a1)
   v4[2] = __58__SUDownloadOptions_setAllowUnrestrictedCellularDownload___block_invoke;
   v4[3] = &unk_279CAAD00;
   v4[4] = self;
-  v5 = a3;
+  downloadCopy = download;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -252,17 +252,17 @@ uint64_t __58__SUDownloadOptions_setAllowUnrestrictedCellularDownload___block_in
   return v3;
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUDownloadOptions_setDescriptor___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -290,119 +290,119 @@ uint64_t __58__SUDownloadOptions_setAllowUnrestrictedCellularDownload___block_in
 
 - (BOOL)allowCellular
 {
-  v3 = [(SUDownloadOptions *)self activeDownloadPolicy];
-  v4 = [v3 isDownloadAllowableForCellular];
+  activeDownloadPolicy = [(SUDownloadOptions *)self activeDownloadPolicy];
+  isDownloadAllowableForCellular = [activeDownloadPolicy isDownloadAllowableForCellular];
 
-  if (!v4)
+  if (!isDownloadAllowableForCellular)
   {
     return 0;
   }
 
-  v5 = [(SUDownloadOptions *)self downloadFeeAgreementStatus];
-  if (v5 == 1)
+  downloadFeeAgreementStatus = [(SUDownloadOptions *)self downloadFeeAgreementStatus];
+  if (downloadFeeAgreementStatus == 1)
   {
     return 1;
   }
 
-  if (v5)
+  if (downloadFeeAgreementStatus)
   {
     return 0;
   }
 
-  v6 = [(SUDownloadOptions *)self activeDownloadPolicy];
-  if ([v6 isDownloadFreeForCellular])
+  activeDownloadPolicy2 = [(SUDownloadOptions *)self activeDownloadPolicy];
+  if ([activeDownloadPolicy2 isDownloadFreeForCellular])
   {
-    v7 = 1;
+    is5GDownloadAllowed = 1;
   }
 
   else
   {
-    v9 = [(SUDownloadOptions *)self activeDownloadPolicy];
-    v7 = [v9 is5GDownloadAllowed];
+    activeDownloadPolicy3 = [(SUDownloadOptions *)self activeDownloadPolicy];
+    is5GDownloadAllowed = [activeDownloadPolicy3 is5GDownloadAllowed];
   }
 
-  return v7;
+  return is5GDownloadAllowed;
 }
 
 - (BOOL)allowExpensiveNetwork
 {
-  v3 = [(SUDownloadOptions *)self activeDownloadPolicy];
-  v4 = [v3 allowExpensiveNetwork];
+  activeDownloadPolicy = [(SUDownloadOptions *)self activeDownloadPolicy];
+  allowExpensiveNetwork = [activeDownloadPolicy allowExpensiveNetwork];
 
-  if (!v4)
+  if (!allowExpensiveNetwork)
   {
     goto LABEL_5;
   }
 
-  v5 = [(SUDownloadOptions *)self downloadFeeAgreementStatus];
-  if (v5 != 1)
+  downloadFeeAgreementStatus = [(SUDownloadOptions *)self downloadFeeAgreementStatus];
+  if (downloadFeeAgreementStatus != 1)
   {
-    if (!v5)
+    if (!downloadFeeAgreementStatus)
     {
-      v6 = [(SUDownloadOptions *)self activeDownloadPolicy];
-      v7 = [v6 isDownloadFreeForCellular];
+      activeDownloadPolicy2 = [(SUDownloadOptions *)self activeDownloadPolicy];
+      isDownloadFreeForCellular = [activeDownloadPolicy2 isDownloadFreeForCellular];
 
-      LOBYTE(v5) = v7;
-      return v5;
+      LOBYTE(downloadFeeAgreementStatus) = isDownloadFreeForCellular;
+      return downloadFeeAgreementStatus;
     }
 
 LABEL_5:
-    LOBYTE(v5) = 0;
+    LOBYTE(downloadFeeAgreementStatus) = 0;
   }
 
-  return v5;
+  return downloadFeeAgreementStatus;
 }
 
 - (BOOL)isEnabledForCellularRoaming
 {
-  v3 = [(SUDownloadOptions *)self allowCellular];
-  if (v3)
+  allowCellular = [(SUDownloadOptions *)self allowCellular];
+  if (allowCellular)
   {
-    v4 = [(SUDownloadOptions *)self activeDownloadPolicy];
-    v5 = [v4 isDownloadAllowableForCellularRoaming];
+    activeDownloadPolicy = [(SUDownloadOptions *)self activeDownloadPolicy];
+    isDownloadAllowableForCellularRoaming = [activeDownloadPolicy isDownloadAllowableForCellularRoaming];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(allowCellular) = isDownloadAllowableForCellularRoaming;
   }
 
-  return v3;
+  return allowCellular;
 }
 
 - (BOOL)isEnabledForWifi
 {
-  v2 = [(SUDownloadOptions *)self activeDownloadPolicy];
-  v3 = [v2 isDownloadAllowableForWiFi];
+  activeDownloadPolicy = [(SUDownloadOptions *)self activeDownloadPolicy];
+  isDownloadAllowableForWiFi = [activeDownloadPolicy isDownloadAllowableForWiFi];
 
-  return v3;
+  return isDownloadAllowableForWiFi;
 }
 
 - (BOOL)isEnabledOnBatteryPower
 {
-  v2 = [(SUDownloadOptions *)self activeDownloadPolicy];
-  v3 = [v2 isPowerRequired];
+  activeDownloadPolicy = [(SUDownloadOptions *)self activeDownloadPolicy];
+  isPowerRequired = [activeDownloadPolicy isPowerRequired];
 
-  return v3 ^ 1;
+  return isPowerRequired ^ 1;
 }
 
 - (BOOL)isCacheDeleteSpecialCaseEnabled
 {
-  v2 = [(SUDownloadOptions *)self descriptor];
-  v3 = [v2 cdLevel4Disabled];
+  descriptor = [(SUDownloadOptions *)self descriptor];
+  cdLevel4Disabled = [descriptor cdLevel4Disabled];
 
-  return v3 ^ 1;
+  return cdLevel4Disabled ^ 1;
 }
 
 - (BOOL)_clientIsLivabilityd
 {
-  v2 = [(SUDownloadOptions *)self clientName];
-  v3 = [v2 containsString:@"com.apple.livabilityd"];
+  clientName = [(SUDownloadOptions *)self clientName];
+  v3 = [clientName containsString:@"com.apple.livabilityd"];
 
   return v3;
 }
 
 - (BOOL)isAppOffloadEnabled
 {
-  v3 = [(SUDownloadOptions *)self descriptor];
-  if ([v3 appDemotionDisabled])
+  descriptor = [(SUDownloadOptions *)self descriptor];
+  if ([descriptor appDemotionDisabled])
   {
     LOBYTE(v4) = 0;
   }
@@ -417,8 +417,8 @@ LABEL_5:
 
 - (BOOL)isMASuspensionEnabled
 {
-  v3 = [(SUDownloadOptions *)self descriptor];
-  if ([v3 maSuspensionDisabled])
+  descriptor = [(SUDownloadOptions *)self descriptor];
+  if ([descriptor maSuspensionDisabled])
   {
     LOBYTE(v4) = 0;
   }
@@ -431,10 +431,10 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -444,15 +444,15 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUDownloadOptions *)v5 descriptor];
-      v7 = [(SUDownloadOptions *)self descriptor];
-      if ([v6 isEqual:v7] && (v8 = -[SUDownloadOptions isAutoDownload](v5, "isAutoDownload"), v8 == -[SUDownloadOptions isAutoDownload](self, "isAutoDownload")) && (v9 = -[SUDownloadOptions isDownloadOnly](v5, "isDownloadOnly"), v9 == -[SUDownloadOptions isDownloadOnly](self, "isDownloadOnly")) && (v10 = -[SUDownloadOptions userUpdateTonight](v5, "userUpdateTonight"), v10 == -[SUDownloadOptions userUpdateTonight](self, "userUpdateTonight")) && (v11 = -[SUDownloadOptions downloadFeeAgreementStatus](v5, "downloadFeeAgreementStatus"), v11 == -[SUDownloadOptions downloadFeeAgreementStatus](self, "downloadFeeAgreementStatus")) && (v12 = -[SUDownloadOptions termsAndConditionsAgreementStatus](v5, "termsAndConditionsAgreementStatus"), v12 == -[SUDownloadOptions termsAndConditionsAgreementStatus](self, "termsAndConditionsAgreementStatus")) && (v13 = -[SUDownloadOptions activeDownloadPolicyType](v5, "activeDownloadPolicyType"), v13 == -[SUDownloadOptions activeDownloadPolicyType](self, "activeDownloadPolicyType")))
+      v5 = equalCopy;
+      descriptor = [(SUDownloadOptions *)v5 descriptor];
+      descriptor2 = [(SUDownloadOptions *)self descriptor];
+      if ([descriptor isEqual:descriptor2] && (v8 = -[SUDownloadOptions isAutoDownload](v5, "isAutoDownload"), v8 == -[SUDownloadOptions isAutoDownload](self, "isAutoDownload")) && (v9 = -[SUDownloadOptions isDownloadOnly](v5, "isDownloadOnly"), v9 == -[SUDownloadOptions isDownloadOnly](self, "isDownloadOnly")) && (v10 = -[SUDownloadOptions userUpdateTonight](v5, "userUpdateTonight"), v10 == -[SUDownloadOptions userUpdateTonight](self, "userUpdateTonight")) && (v11 = -[SUDownloadOptions downloadFeeAgreementStatus](v5, "downloadFeeAgreementStatus"), v11 == -[SUDownloadOptions downloadFeeAgreementStatus](self, "downloadFeeAgreementStatus")) && (v12 = -[SUDownloadOptions termsAndConditionsAgreementStatus](v5, "termsAndConditionsAgreementStatus"), v12 == -[SUDownloadOptions termsAndConditionsAgreementStatus](self, "termsAndConditionsAgreementStatus")) && (v13 = -[SUDownloadOptions activeDownloadPolicyType](v5, "activeDownloadPolicyType"), v13 == -[SUDownloadOptions activeDownloadPolicyType](self, "activeDownloadPolicyType")))
       {
-        v14 = [(SUDownloadOptions *)v5 allowUnrestrictedCellularDownload];
-        v15 = [(SUDownloadOptions *)self allowUnrestrictedCellularDownload];
+        allowUnrestrictedCellularDownload = [(SUDownloadOptions *)v5 allowUnrestrictedCellularDownload];
+        allowUnrestrictedCellularDownload2 = [(SUDownloadOptions *)self allowUnrestrictedCellularDownload];
 
-        if (v14 == v15)
+        if (allowUnrestrictedCellularDownload == allowUnrestrictedCellularDownload2)
         {
           v16 = 1;
 LABEL_16:
@@ -477,46 +477,46 @@ LABEL_17:
   return v16;
 }
 
-- (SUDownloadOptions)initWithCoder:(id)a3
+- (SUDownloadOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUDownloadOptions;
   v5 = [(SUOptionsBase *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
     v5 = [(SUDownloadOptions *)v5 initWithDescriptor:v6];
-    -[SUDownloadOptions setDownloadOnly:](v5, "setDownloadOnly:", [v4 decodeBoolForKey:@"downloadOnly"]);
-    -[SUDownloadOptions setAutoDownload:](v5, "setAutoDownload:", [v4 decodeBoolForKey:@"autoDownload"]);
-    -[SUDownloadOptions setUserUpdateTonight:](v5, "setUserUpdateTonight:", [v4 decodeBoolForKey:@"userUpdateTonight"]);
-    -[SUDownloadOptions setAllowUnrestrictedCellularDownload:](v5, "setAllowUnrestrictedCellularDownload:", [v4 decodeBoolForKey:@"allowUnrestrictedCellularDownload"]);
-    -[SUDownloadOptions setDownloadFeeAgreementStatus:](v5, "setDownloadFeeAgreementStatus:", [v4 decodeIntForKey:@"feeAgreementStatus"]);
-    -[SUDownloadOptions setTermsAndConditionsAgreementStatus:](v5, "setTermsAndConditionsAgreementStatus:", [v4 decodeIntForKey:@"termsAgreementStatus"]);
-    -[SUDownloadOptions setActiveDownloadPolicyType:](v5, "setActiveDownloadPolicyType:", [v4 decodeIntForKey:@"policyType"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUDownloadClientNameKey"];
+    -[SUDownloadOptions setDownloadOnly:](v5, "setDownloadOnly:", [coderCopy decodeBoolForKey:@"downloadOnly"]);
+    -[SUDownloadOptions setAutoDownload:](v5, "setAutoDownload:", [coderCopy decodeBoolForKey:@"autoDownload"]);
+    -[SUDownloadOptions setUserUpdateTonight:](v5, "setUserUpdateTonight:", [coderCopy decodeBoolForKey:@"userUpdateTonight"]);
+    -[SUDownloadOptions setAllowUnrestrictedCellularDownload:](v5, "setAllowUnrestrictedCellularDownload:", [coderCopy decodeBoolForKey:@"allowUnrestrictedCellularDownload"]);
+    -[SUDownloadOptions setDownloadFeeAgreementStatus:](v5, "setDownloadFeeAgreementStatus:", [coderCopy decodeIntForKey:@"feeAgreementStatus"]);
+    -[SUDownloadOptions setTermsAndConditionsAgreementStatus:](v5, "setTermsAndConditionsAgreementStatus:", [coderCopy decodeIntForKey:@"termsAgreementStatus"]);
+    -[SUDownloadOptions setActiveDownloadPolicyType:](v5, "setActiveDownloadPolicyType:", [coderCopy decodeIntForKey:@"policyType"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUDownloadClientNameKey"];
     [(SUDownloadOptions *)v5 setClientName:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   downloadOnly = self->_downloadOnly;
-  v5 = a3;
-  [v5 encodeBool:downloadOnly forKey:@"downloadOnly"];
-  [v5 encodeBool:self->_autoDownload forKey:@"autoDownload"];
-  [v5 encodeBool:self->_userUpdateTonight forKey:@"userUpdateTonight"];
-  [v5 encodeBool:self->_allowUnrestrictedCellularDownload forKey:@"allowUnrestrictedCellularDownload"];
-  [v5 encodeInt:self->_downloadFeeAgreementStatus forKey:@"feeAgreementStatus"];
-  [v5 encodeInt:self->_termsAndConditionsAgreementStatus forKey:@"termsAgreementStatus"];
-  [v5 encodeObject:self->_descriptor forKey:@"descriptor"];
-  [v5 encodeInt:self->_activeDownloadPolicyType forKey:@"policyType"];
-  [v5 encodeObject:self->_clientName forKey:@"SUDownloadClientNameKey"];
+  coderCopy = coder;
+  [coderCopy encodeBool:downloadOnly forKey:@"downloadOnly"];
+  [coderCopy encodeBool:self->_autoDownload forKey:@"autoDownload"];
+  [coderCopy encodeBool:self->_userUpdateTonight forKey:@"userUpdateTonight"];
+  [coderCopy encodeBool:self->_allowUnrestrictedCellularDownload forKey:@"allowUnrestrictedCellularDownload"];
+  [coderCopy encodeInt:self->_downloadFeeAgreementStatus forKey:@"feeAgreementStatus"];
+  [coderCopy encodeInt:self->_termsAndConditionsAgreementStatus forKey:@"termsAgreementStatus"];
+  [coderCopy encodeObject:self->_descriptor forKey:@"descriptor"];
+  [coderCopy encodeInt:self->_activeDownloadPolicyType forKey:@"policyType"];
+  [coderCopy encodeObject:self->_clientName forKey:@"SUDownloadClientNameKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(SUDescriptor *)self->_descriptor copy];
@@ -536,7 +536,7 @@ LABEL_17:
 - (id)description
 {
   v21 = MEMORY[0x277CCACA8];
-  v20 = [(SUDownloadOptions *)self clientName];
+  clientName = [(SUDownloadOptions *)self clientName];
   v3 = @"YES";
   if ([(SUDownloadOptions *)self isDownloadOnly])
   {
@@ -619,8 +619,8 @@ LABEL_17:
     v3 = @"NO";
   }
 
-  v14 = [(SUDownloadOptions *)self descriptor];
-  v15 = [v21 stringWithFormat:@"\n            ClientName: %@\n            downloadOnly: %@\n            autoDownload: %@\n            userUpdateTonight: %@\n            allowUnrestrictedCellularDownload: %@\n            downloadFeeAgreementStatus: %@\n            termsAndConditionsAgreementStatus: %@\n            activeDownloadPolicyType: %@\n            enabledForCellular: %@\n            enabledForWifi: %@\n            enabledOnBatteryPower: %@\n            enabledForCellularRoaming: %@\n            descriptor: %@\n", v20, v19, v18, v17, v7, v8, v9, v10, v11, v12, v13, v3, v14];
+  descriptor = [(SUDownloadOptions *)self descriptor];
+  v15 = [v21 stringWithFormat:@"\n            ClientName: %@\n            downloadOnly: %@\n            autoDownload: %@\n            userUpdateTonight: %@\n            allowUnrestrictedCellularDownload: %@\n            downloadFeeAgreementStatus: %@\n            termsAndConditionsAgreementStatus: %@\n            activeDownloadPolicyType: %@\n            enabledForCellular: %@\n            enabledForWifi: %@\n            enabledOnBatteryPower: %@\n            enabledForCellularRoaming: %@\n            descriptor: %@\n", clientName, v19, v18, v17, v7, v8, v9, v10, v11, v12, v13, v3, descriptor];
 
   return v15;
 }

@@ -7,32 +7,32 @@
 - (BOOL)shouldEngageCEC;
 - (PowerUICECManager)init;
 - (id)dateFormatter;
-- (id)defaultDateToDisableUntilGivenDate:(id)a3;
+- (id)defaultDateToDisableUntilGivenDate:(id)date;
 - (id)readLifetimeCECEngagementValues;
 - (id)requiredFullChargeDate;
 - (id)sessionEndCECAnalytics;
 - (id)status;
 - (void)clearAnalyticsDate;
 - (void)evaluatePausingNow;
-- (void)handleCallback:(id)a3;
+- (void)handleCallback:(id)callback;
 - (void)handleChargeUp;
 - (void)handleDisengagement;
-- (void)handleNewDebugState:(id)a3;
-- (void)handleNotificationResponse:(id)a3;
-- (void)handlePowerUICECStateChange:(unint64_t)a3 withHandler:(id)a4;
+- (void)handleNewDebugState:(id)state;
+- (void)handleNotificationResponse:(id)response;
+- (void)handlePowerUICECStateChange:(unint64_t)change withHandler:(id)handler;
 - (void)loadState;
 - (void)monitorBatteryNotifications;
 - (void)promptBDCToQueryCurrentState;
 - (void)recordAnalytics;
-- (void)recordLifetimeValues:(id)a3;
-- (void)recordPowerLogCECState:(unint64_t)a3;
+- (void)recordLifetimeValues:(id)values;
+- (void)recordPowerLogCECState:(unint64_t)state;
 - (void)recordPowerLogEvent;
 - (void)refreshShouldSupportCEC;
 - (void)registerTimer;
 - (void)resetState;
-- (void)setTemporarilyDisabled:(BOOL)a3 from:(id)a4;
-- (void)setupTempDisabledCheckAfterInterval:(double)a3;
-- (void)updatePhaseFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (void)setTemporarilyDisabled:(BOOL)disabled from:(id)from;
+- (void)setupTempDisabledCheckAfterInterval:(double)interval;
+- (void)updatePhaseFrom:(unint64_t)from to:(unint64_t)to;
 @end
 
 @implementation PowerUICECManager
@@ -77,9 +77,9 @@ void __48__PowerUICECManager_monitorBatteryNotifications__block_invoke(uint64_t 
     return 0;
   }
 
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
-  v4 = [v3 isEqualToString:@"US"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
+  v4 = [countryCode isEqualToString:@"US"];
 
   return v4;
 }
@@ -167,10 +167,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)handleNotificationResponse:(id)a3
+- (void)handleNotificationResponse:(id)response
 {
-  v4 = [a3 actionIdentifier];
-  v5 = [v4 isEqualToString:@"cecChargeUp"];
+  actionIdentifier = [response actionIdentifier];
+  v5 = [actionIdentifier isEqualToString:@"cecChargeUp"];
 
   if (v5)
   {
@@ -252,9 +252,9 @@ uint64_t __28__PowerUICECManager_manager__block_invoke()
     v10 = *(v2 + 13);
     *(v2 + 13) = v9;
 
-    v11 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     v12 = *(v2 + 5);
-    *(v2 + 5) = v11;
+    *(v2 + 5) = userContext;
 
     v13 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.powerui.cec"];
     v14 = *(v2 + 11);
@@ -326,7 +326,7 @@ uint64_t __28__PowerUICECManager_manager__block_invoke()
     v48 = v33;
     notify_register_dispatch("com.apple.powerui.cec.powerLogDonation", &v49, v32, v47);
     v46 = 0;
-    v34 = [*MEMORY[0x277D443B8] UTF8String];
+    uTF8String = [*MEMORY[0x277D443B8] UTF8String];
     v35 = *(v2 + 7);
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
@@ -334,7 +334,7 @@ uint64_t __28__PowerUICECManager_manager__block_invoke()
     v44[3] = &unk_2782D3E60;
     v36 = v33;
     v45 = v36;
-    notify_register_dispatch(v34, &v46, v35, v44);
+    notify_register_dispatch(uTF8String, &v46, v35, v44);
     v43 = 0;
     v37 = *(v2 + 7);
     v41[0] = MEMORY[0x277D85DD0];
@@ -489,7 +489,7 @@ void __25__PowerUICECManager_init__block_invoke_8(uint64_t a1)
 
   if (v22)
   {
-    v23 = [v22 unsignedIntegerValue];
+    unsignedIntegerValue = [v22 unsignedIntegerValue];
   }
 
   else
@@ -499,10 +499,10 @@ void __25__PowerUICECManager_init__block_invoke_8(uint64_t a1)
       goto LABEL_16;
     }
 
-    v23 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  self->_currentState = v23;
+  self->_currentState = unsignedIntegerValue;
 LABEL_16:
   v24 = [(NSUserDefaults *)self->_defaults objectForKey:@"tempDisabledInterval"];
 
@@ -621,12 +621,12 @@ LABEL_16:
 
 - (id)status
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPhase];
-  [v3 setObject:v4 forKeyedSubscript:@"CECCurrentPhase"];
+  [dictionary setObject:v4 forKeyedSubscript:@"CECCurrentPhase"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isChargingPaused];
-  [v3 setObject:v5 forKeyedSubscript:@"CECChargingPaused"];
+  [dictionary setObject:v5 forKeyedSubscript:@"CECChargingPaused"];
 
   phaseDescriptions = self->_phaseDescriptions;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPhase];
@@ -637,31 +637,31 @@ LABEL_16:
     v9 = self->_phaseDescriptions;
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPhase];
     v11 = [(NSDictionary *)v9 objectForKeyedSubscript:v10];
-    [v3 setObject:v11 forKeyedSubscript:@"CECCurrentPhaseString"];
+    [dictionary setObject:v11 forKeyedSubscript:@"CECCurrentPhaseString"];
   }
 
   userDeadline = self->_userDeadline;
   if (userDeadline)
   {
-    [v3 setObject:userDeadline forKeyedSubscript:@"CECUserDeadline"];
+    [dictionary setObject:userDeadline forKeyedSubscript:@"CECUserDeadline"];
   }
 
   pauseChargingCheckDate = self->_pauseChargingCheckDate;
   if (pauseChargingCheckDate)
   {
-    [v3 setObject:pauseChargingCheckDate forKeyedSubscript:@"CECCheckDate"];
+    [dictionary setObject:pauseChargingCheckDate forKeyedSubscript:@"CECCheckDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)monitorBatteryNotifications
 {
   v3 = MEMORY[0x277CFE360];
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v5 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v6 = [MEMORY[0x277CFE338] keyPathForForegroundApp];
-  v7 = [v3 predicateForKeyPath:v4 withFormat:@"(SELF.%@.value.externalConnected = %@) AND NOT (SELF.%@.value = %@)", v5, MEMORY[0x277CBEC38], v6, @"com.apple.camera"];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  keyPathForBatteryStateDataDictionary2 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  keyPathForForegroundApp = [MEMORY[0x277CFE338] keyPathForForegroundApp];
+  v7 = [v3 predicateForKeyPath:keyPathForBatteryStateDataDictionary withFormat:@"(SELF.%@.value.externalConnected = %@) AND NOT (SELF.%@.value = %@)", keyPathForBatteryStateDataDictionary2, MEMORY[0x277CBEC38], keyPathForForegroundApp, @"com.apple.camera"];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -671,8 +671,8 @@ LABEL_16:
   v8 = [MEMORY[0x277CFE350] localWakingRegistrationWithIdentifier:@"com.apple.powerui.cec.battery" contextualPredicate:v7 clientIdentifier:@"com.apple.powerui.cec.batteryState" callback:v14];
   [(_CDLocalContext *)self->_context registerCallback:v8];
   v9 = MEMORY[0x277CFE360];
-  v10 = [MEMORY[0x277CFE338] keyPathForPluginStatus];
-  v11 = [v9 predicateForChangeAtKeyPath:v10];
+  keyPathForPluginStatus = [MEMORY[0x277CFE338] keyPathForPluginStatus];
+  v11 = [v9 predicateForChangeAtKeyPath:keyPathForPluginStatus];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -799,9 +799,9 @@ void __48__PowerUICECManager_monitorBatteryNotifications__block_invoke_4(uint64_
   }
 }
 
-- (void)setupTempDisabledCheckAfterInterval:(double)a3
+- (void)setupTempDisabledCheckAfterInterval:(double)interval
 {
-  v4 = dispatch_walltime(0, (a3 * 1000000000.0));
+  v4 = dispatch_walltime(0, (interval * 1000000000.0));
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -811,16 +811,16 @@ void __48__PowerUICECManager_monitorBatteryNotifications__block_invoke_4(uint64_
   dispatch_after(v4, queue, block);
 }
 
-- (id)defaultDateToDisableUntilGivenDate:(id)a3
+- (id)defaultDateToDisableUntilGivenDate:(id)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (defaultDateToDisableUntilGivenDate__onceToken_1 != -1)
   {
     [PowerUICECManager defaultDateToDisableUntilGivenDate:];
   }
 
-  v5 = [defaultDateToDisableUntilGivenDate__calendar_1 components:60 fromDate:v4];
+  v5 = [defaultDateToDisableUntilGivenDate__calendar_1 components:60 fromDate:dateCopy];
   if ([v5 hour] >= 6)
   {
     [v5 setDay:{objc_msgSend(v5, "day") + 1}];
@@ -848,16 +848,16 @@ uint64_t __56__PowerUICECManager_defaultDateToDisableUntilGivenDate___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setTemporarilyDisabled:(BOOL)a3 from:(id)a4
+- (void)setTemporarilyDisabled:(BOOL)disabled from:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  fromCopy = from;
+  if (disabled)
   {
     if (!self->_isCECTemporarilyDisabled)
     {
       self->_isCECTemporarilyDisabled = 1;
-      v7 = [(PowerUICECManager *)self defaultDateToDisableUntilGivenDate:v6];
+      v7 = [(PowerUICECManager *)self defaultDateToDisableUntilGivenDate:fromCopy];
       cecTemporarilyDisabledDate = self->_cecTemporarilyDisabledDate;
       self->_cecTemporarilyDisabledDate = v7;
 
@@ -907,16 +907,16 @@ uint64_t __56__PowerUICECManager_defaultDateToDisableUntilGivenDate___block_invo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePowerUICECStateChange:(unint64_t)a3 withHandler:(id)a4
+- (void)handlePowerUICECStateChange:(unint64_t)change withHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = log;
-    v10 = [v8 numberWithUnsignedInteger:a3];
+    v10 = [v8 numberWithUnsignedInteger:change];
     *buf = 138412290;
     v18 = v10;
     _os_log_impl(&dword_21B766000, v9, OS_LOG_TYPE_DEFAULT, "CEC State: %@", buf, 0xCu);
@@ -927,10 +927,10 @@ uint64_t __56__PowerUICECManager_defaultDateToDisableUntilGivenDate___block_invo
   block[1] = 3221225472;
   block[2] = __61__PowerUICECManager_handlePowerUICECStateChange_withHandler___block_invoke;
   block[3] = &unk_2782D4378;
-  v15 = v6;
-  v16 = a3;
+  v15 = handlerCopy;
+  changeCopy = change;
   block[4] = self;
-  v12 = v6;
+  v12 = handlerCopy;
   dispatch_async(queue, block);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1031,7 +1031,7 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePhaseFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)updatePhaseFrom:(unint64_t)from to:(unint64_t)to
 {
   v33 = *MEMORY[0x277D85DE8];
   v7 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
@@ -1042,15 +1042,15 @@ LABEL_14:
     phaseDescriptions = self->_phaseDescriptions;
     v11 = MEMORY[0x277CCABB0];
     v12 = log;
-    v13 = [v11 numberWithUnsignedInteger:a3];
+    v13 = [v11 numberWithUnsignedInteger:from];
     v14 = [(NSDictionary *)phaseDescriptions objectForKeyedSubscript:v13];
     v15 = self->_phaseDescriptions;
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:to];
     v17 = [(NSDictionary *)v15 objectForKeyedSubscript:v16];
     v21 = 134219266;
-    v22 = a3;
+    fromCopy = from;
     v23 = 2048;
-    v24 = a4;
+    toCopy = to;
     v25 = 2112;
     v26 = v14;
     v27 = 2112;
@@ -1062,8 +1062,8 @@ LABEL_14:
     _os_log_impl(&dword_21B766000, v12, OS_LOG_TYPE_DEFAULT, "CEC Phase update from %lu to %lu (%@ --> %@); BatteryLevel %ld, PluggedIntoEligibleSource %d", &v21, 0x3Au);
   }
 
-  self->_currentPhase = a4;
-  [(NSUserDefaults *)self->_defaults setInteger:a4 forKey:@"currentPhase"];
+  self->_currentPhase = to;
+  [(NSUserDefaults *)self->_defaults setInteger:to forKey:@"currentPhase"];
   if (self->_currentPhase != 10)
   {
     [(PowerUIChargingController *)self->_chargingController clearChargeLimitForLimitType:4];
@@ -1081,22 +1081,22 @@ LABEL_14:
 
 - (void)promptBDCToQueryCurrentState
 {
-  v4 = [(PowerUIBDCDataManager *)self->_bdcDataManager getBDCDataDictTemplate];
-  [v4 setObject:&unk_282D4E980 forKeyedSubscript:@"ChargingState"];
-  [v4 setObject:&unk_282D4E980 forKeyedSubscript:@"InflowState"];
-  [v4 setObject:&unk_282D4E998 forKeyedSubscript:@"ChargeLimit"];
+  getBDCDataDictTemplate = [(PowerUIBDCDataManager *)self->_bdcDataManager getBDCDataDictTemplate];
+  [getBDCDataDictTemplate setObject:&unk_282D4E980 forKeyedSubscript:@"ChargingState"];
+  [getBDCDataDictTemplate setObject:&unk_282D4E980 forKeyedSubscript:@"InflowState"];
+  [getBDCDataDictTemplate setObject:&unk_282D4E998 forKeyedSubscript:@"ChargeLimit"];
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPhase];
-  [v4 setObject:v3 forKeyedSubscript:@"CheckPoint"];
+  [getBDCDataDictTemplate setObject:v3 forKeyedSubscript:@"CheckPoint"];
 
-  [v4 setObject:&unk_282D4E9B0 forKeyedSubscript:@"ModeOfOperation"];
-  [v4 setObject:&unk_282D4E980 forKeyedSubscript:@"DecisionMaker"];
-  [(PowerUIBDCDataManager *)self->_bdcDataManager promptBDCToQueryState:v4];
+  [getBDCDataDictTemplate setObject:&unk_282D4E9B0 forKeyedSubscript:@"ModeOfOperation"];
+  [getBDCDataDictTemplate setObject:&unk_282D4E980 forKeyedSubscript:@"DecisionMaker"];
+  [(PowerUIBDCDataManager *)self->_bdcDataManager promptBDCToQueryState:getBDCDataDictTemplate];
 }
 
-- (void)handleCallback:(id)a3
+- (void)handleCallback:(id)callback
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
   v6 = [PowerUICECUtilities isPluggedIntoEligiblePowerSourceWithContext:self->_context];
   log = self->_log;
@@ -1104,7 +1104,7 @@ LABEL_14:
   {
     currentPhase = self->_currentPhase;
     v20 = 138413058;
-    *v21 = v4;
+    *v21 = callbackCopy;
     *&v21[8] = 2048;
     v22 = currentPhase;
     v23 = 2048;
@@ -1154,13 +1154,13 @@ LABEL_15:
       {
         if ([(PowerUICECManager *)self isActiveRegion])
         {
-          v11 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager hasSufficientTimeForFullCharge];
+          hasSufficientTimeForFullCharge = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager hasSufficientTimeForFullCharge];
           v12 = +[PowerUINotificationManager sharedInstance];
-          v13 = [v12 immediateCharge];
+          immediateCharge = [v12 immediateCharge];
 
-          v14 = [(PowerUICECManager *)self isEnabled];
-          v15 = v14;
-          if (v11 && (v13 & 1) == 0 && v14)
+          isEnabled = [(PowerUICECManager *)self isEnabled];
+          v15 = isEnabled;
+          if (hasSufficientTimeForFullCharge && (immediateCharge & 1) == 0 && isEnabled)
           {
             [(PowerUICECManager *)self evaluatePausingNow];
           }
@@ -1173,9 +1173,9 @@ LABEL_15:
               v20 = 67109632;
               *v21 = v15;
               *&v21[4] = 1024;
-              *&v21[6] = v13;
+              *&v21[6] = immediateCharge;
               LOWORD(v22) = 1024;
-              *(&v22 + 2) = v11;
+              *(&v22 + 2) = hasSufficientTimeForFullCharge;
               _os_log_impl(&dword_21B766000, v16, OS_LOG_TYPE_DEFAULT, "Deciding to Charge up. (isCECEnabled %d, didUserOverride %d, notEnoughTime %d)", &v20, 0x14u);
             }
 
@@ -1247,7 +1247,7 @@ LABEL_34:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21B766000, a2, OS_LOG_TYPE_ERROR, "Battery level below %ld post engagement", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -1286,11 +1286,11 @@ LABEL_34:
 
   isChargingPaused = self->_isChargingPaused;
   v7 = +[PowerUICECGridDataManager sharedInstance];
-  v8 = [v7 shouldChargeNow];
+  shouldChargeNow = [v7 shouldChargeNow];
 
   v9 = self->_log;
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (shouldChargeNow)
   {
     if (v10)
     {
@@ -1356,9 +1356,9 @@ LABEL_22:
   }
 
   self->_firstChargingEvaluation = 0;
-  v23 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v24 = self->_pauseChargingCheckDate;
-  self->_pauseChargingCheckDate = v23;
+  self->_pauseChargingCheckDate = date;
 
   defaults = self->_defaults;
   [(NSDate *)self->_pauseChargingCheckDate timeIntervalSinceReferenceDate];
@@ -1375,8 +1375,8 @@ LABEL_25:
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCA968] localizedStringFromDate:v4 dateStyle:1 timeStyle:1];
   v7 = MEMORY[0x277CCA968];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v7 localizedStringFromDate:v8 dateStyle:1 timeStyle:1];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [v7 localizedStringFromDate:date dateStyle:1 timeStyle:1];
   v10 = [v5 stringWithFormat:@"BatteryLevel %ld, PluggedIn at %@ Evaluated at %@", v3, v6, v9];
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n%@", v10];
@@ -1390,13 +1390,13 @@ LABEL_25:
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Evaluating engagement for current session", buf, 2u);
   }
 
-  v14 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager hasSufficientTimeForFullCharge];
-  if (v14)
+  hasSufficientTimeForFullCharge = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager hasSufficientTimeForFullCharge];
+  if (hasSufficientTimeForFullCharge)
   {
     [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager timeToFullChargeFromBatteryLevel:80];
     v16 = v15;
-    v17 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager deadline];
-    [v17 timeIntervalSinceNow];
+    deadline = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager deadline];
+    [deadline timeIntervalSinceNow];
     v19 = v18;
 
     v20 = fmax(v19 - v16, 0.0);
@@ -1426,8 +1426,8 @@ LABEL_25:
 
       v31 = MEMORY[0x277CCACA8];
       v32 = +[PowerUICECGridDataManager sharedInstance];
-      v33 = [v32 cleanIntervals];
-      v34 = [PowerUICECGridDataManager cleanIntervalsStringFromDates:v33 withIntervalDuration:900.0];
+      cleanIntervals = [v32 cleanIntervals];
+      v34 = [PowerUICECGridDataManager cleanIntervalsStringFromDates:cleanIntervals withIntervalDuration:900.0];
       v35 = [v31 stringWithFormat:@"Clean windows %@", v34];
     }
 
@@ -1454,20 +1454,20 @@ LABEL_25:
 
   v38 = MEMORY[0x277CCACA8];
   v39 = self->_debugStatus;
-  v40 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager debugStatus];
-  v41 = [v38 stringWithFormat:@"%@\n%@\n%@", v39, v40, v35];
+  debugStatus = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager debugStatus];
+  v41 = [v38 stringWithFormat:@"%@\n%@\n%@", v39, debugStatus, v35];
   v42 = self->_debugStatus;
   self->_debugStatus = v41;
 
-  if (!v14)
+  if (!hasSufficientTimeForFullCharge)
   {
-    v43 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager deadline];
-    [v43 timeIntervalSinceNow];
+    deadline2 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager deadline];
+    [deadline2 timeIntervalSinceNow];
     if (v44 < 0.0)
     {
-      v45 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
 
-      v43 = v45;
+      deadline2 = date2;
     }
 
     v46 = self->_log;
@@ -1478,7 +1478,7 @@ LABEL_25:
     }
 
     v47 = MEMORY[0x277CCACA8];
-    v48 = [MEMORY[0x277CCA968] localizedStringFromDate:v43 dateStyle:1 timeStyle:1];
+    v48 = [MEMORY[0x277CCA968] localizedStringFromDate:deadline2 dateStyle:1 timeStyle:1];
     v49 = [v47 stringWithFormat:@"Device not predicted to be plugged in for long enough (until %@)", v48];
 
     v50 = +[PowerUINotificationManager sharedInstance];
@@ -1486,7 +1486,7 @@ LABEL_25:
   }
 
   v52 = *MEMORY[0x277D85DE8];
-  return v14 & v29;
+  return hasSufficientTimeForFullCharge & v29;
 }
 
 - (BOOL)evaluateEngagementAndSetup
@@ -1494,48 +1494,48 @@ LABEL_25:
   v19 = *MEMORY[0x277D85DE8];
   if ([(PowerUICECManager *)self isActiveRegion])
   {
-    v3 = [(PowerUICECManager *)self shouldEngageCEC];
+    shouldEngageCEC = [(PowerUICECManager *)self shouldEngageCEC];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v18 = v3;
+      v18 = shouldEngageCEC;
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Should engage %d", buf, 8u);
     }
 
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Should engage %d", v3];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Should engage %d", shouldEngageCEC];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", self->_debugStatus, v5];
     debugStatus = self->_debugStatus;
     self->_debugStatus = v6;
 
     [(NSUserDefaults *)self->_defaults setObject:self->_debugStatus forKey:@"debugStatus"];
-    if (v3)
+    if (shouldEngageCEC)
     {
       [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager startAllMonitoring];
-      v8 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager deadline];
+      deadline = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager deadline];
       userDeadline = self->_userDeadline;
-      self->_userDeadline = v8;
+      self->_userDeadline = deadline;
 
       defaults = self->_defaults;
       [(NSDate *)self->_userDeadline timeIntervalSinceReferenceDate];
       [(NSUserDefaults *)defaults setDouble:@"userDeadline" forKey:?];
       v11 = +[PowerUINotificationManager sharedInstance];
       v12 = +[PowerUICECGridDataManager sharedInstance];
-      v13 = [v12 cleanIntervals];
-      [v11 postInternalCECNotificationForChargingDates:v13];
+      cleanIntervals = [v12 cleanIntervals];
+      [v11 postInternalCECNotificationForChargingDates:cleanIntervals];
     }
 
-    v14 = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager hasSufficientTimeForFullCharge];
-    [(PowerUICECManager *)self analyticsCECEngagementEvaluation:v3 byPredictedTime:v14 byGridMix:v3 & v14];
+    hasSufficientTimeForFullCharge = [(PowerUICECPredictedTimeManager *)self->_pluggedInTimeManager hasSufficientTimeForFullCharge];
+    [(PowerUICECManager *)self analyticsCECEngagementEvaluation:shouldEngageCEC byPredictedTime:hasSufficientTimeForFullCharge byGridMix:shouldEngageCEC & hasSufficientTimeForFullCharge];
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(shouldEngageCEC) = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v3;
+  return shouldEngageCEC;
 }
 
 - (void)resetState
@@ -1592,28 +1592,28 @@ LABEL_25:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNewDebugState:(id)a3
+- (void)handleNewDebugState:(id)state
 {
   v37 = *MEMORY[0x277D85DE8];
   v4 = [(NSUserDefaults *)self->_defaults objectForKey:@"debugStatusHistory"];
   v27 = v4;
   if (v4)
   {
-    v5 = [v4 mutableCopy];
+    dictionary = [v4 mutableCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v6 = v5;
-  v7 = [v5 allKeys];
+  v6 = dictionary;
+  allKeys = [dictionary allKeys];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1624,12 +1624,12 @@ LABEL_25:
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [(PowerUICECManager *)self dateFormatter];
-        v14 = [v13 dateFromString:v12];
+        dateFormatter = [(PowerUICECManager *)self dateFormatter];
+        v14 = [dateFormatter dateFromString:v12];
 
         [v14 timeIntervalSinceNow];
         if (v15 < -86400.0)
@@ -1648,7 +1648,7 @@ LABEL_25:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v9);
@@ -1658,8 +1658,8 @@ LABEL_25:
   [(NSDate *)v17 timeIntervalSinceNow];
   if (v18 <= -7200.0)
   {
-    v23 = [(PowerUICECManager *)self dateFormatter];
-    v24 = [v23 stringFromDate:v17];
+    dateFormatter2 = [(PowerUICECManager *)self dateFormatter];
+    v24 = [dateFormatter2 stringFromDate:v17];
 
     [v6 setObject:self->_debugStatus forKeyedSubscript:v24];
     v25 = self->_log;
@@ -1718,7 +1718,7 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
 - (id)sessionEndCECAnalytics
 {
   v107 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [(NSUserDefaults *)self->_defaults objectForKey:@"cecEngagement"];
   if (!v4)
   {
@@ -1730,22 +1730,22 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
     }
   }
 
-  v6 = [v4 BOOLValue];
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
-  [v3 setObject:v7 forKeyedSubscript:@"engaged"];
+  bOOLValue = [v4 BOOLValue];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+  [dictionary setObject:v7 forKeyedSubscript:@"engaged"];
 
   v8 = [(NSUserDefaults *)self->_defaults objectForKey:@"cecEngagementPredictedTime"];
 
   if (v8)
   {
-    [v3 setObject:v8 forKeyedSubscript:@"engagedPredictedTime"];
+    [dictionary setObject:v8 forKeyedSubscript:@"engagedPredictedTime"];
   }
 
   v9 = [(NSUserDefaults *)self->_defaults objectForKey:@"cecEngagementGridMix"];
 
   if (v9)
   {
-    [v3 setObject:v9 forKeyedSubscript:@"engagedGridMix"];
+    [dictionary setObject:v9 forKeyedSubscript:@"engagedGridMix"];
   }
 
   v10 = [(NSUserDefaults *)self->_defaults objectForKey:@"cecDeadline"];
@@ -1782,18 +1782,18 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
     v16 = (v14 >> 63) | 1;
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:v16 + v13 / 3600];
-  [v3 setObject:v17 forKeyedSubscript:@"differenceHours"];
+  3600 = [MEMORY[0x277CCABB0] numberWithInteger:v16 + v13 / 3600];
+  [dictionary setObject:3600 forKeyedSubscript:@"differenceHours"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:v14 / 60];
-  [v3 setObject:v18 forKeyedSubscript:@"differenceRaw"];
+  [dictionary setObject:v18 forKeyedSubscript:@"differenceRaw"];
 
   if (v10)
   {
     v19 = MEMORY[0x277CCABB0];
     [v10 timeIntervalSinceDate:v12];
     v21 = [v19 numberWithInteger:v20 / 60];
-    [v3 setObject:v21 forKeyedSubscript:@"predictedPluggedInDuration"];
+    [dictionary setObject:v21 forKeyedSubscript:@"predictedPluggedInDuration"];
   }
 
   v92 = v12;
@@ -1809,20 +1809,20 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
     v24 = MEMORY[0x277CBEC38];
   }
 
-  [v3 setObject:v24 forKeyedSubscript:@"longerSession"];
+  [dictionary setObject:v24 forKeyedSubscript:@"longerSession"];
   v25 = [MEMORY[0x277CCABB0] numberWithInteger:v23];
-  [v3 setObject:v25 forKeyedSubscript:@"pluggedInDuration"];
+  [dictionary setObject:v25 forKeyedSubscript:@"pluggedInDuration"];
 
   if (self->_pluggedInBatteryLevel != -1)
   {
     v26 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-    [v3 setObject:v26 forKeyedSubscript:@"pluggedInBatteryLevel"];
+    [dictionary setObject:v26 forKeyedSubscript:@"pluggedInBatteryLevel"];
   }
 
   v27 = [PowerUISmartChargeUtilities currentBatteryLevelWithContext:self->_context];
   if (v27 < 100)
   {
-    v28 = v6;
+    v28 = bOOLValue;
   }
 
   else
@@ -1831,23 +1831,23 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
   }
 
   v29 = [MEMORY[0x277CCABB0] numberWithInteger:v27];
-  [v3 setObject:v29 forKeyedSubscript:@"pluggedOutBatteryLevel"];
+  [dictionary setObject:v29 forKeyedSubscript:@"pluggedOutBatteryLevel"];
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:v28];
-  [v3 setObject:v30 forKeyedSubscript:@"underchargeFromPrediction"];
+  [dictionary setObject:v30 forKeyedSubscript:@"underchargeFromPrediction"];
 
   v31 = [MEMORY[0x277CCABB0] numberWithBool:v28];
-  [v3 setObject:v31 forKeyedSubscript:@"undercharge"];
+  [dictionary setObject:v31 forKeyedSubscript:@"undercharge"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInt:!self->_isCECEnabled];
-  [v3 setObject:v32 forKeyedSubscript:@"cecDisabled"];
+  [dictionary setObject:v32 forKeyedSubscript:@"cecDisabled"];
 
   v33 = [MEMORY[0x277CCABB0] numberWithBool:self->_isCECTemporarilyDisabled];
-  [v3 setObject:v33 forKeyedSubscript:@"cecTemporarilyDisabled"];
+  [dictionary setObject:v33 forKeyedSubscript:@"cecTemporarilyDisabled"];
 
-  if (!v6)
+  if (!bOOLValue)
   {
-    [v3 setObject:&unk_282D4F120 forKeyedSubscript:@"pausedMinutes"];
+    [dictionary setObject:&unk_282D4F120 forKeyedSubscript:@"pausedMinutes"];
     v79 = v12;
     goto LABEL_60;
   }
@@ -1863,7 +1863,7 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
     _os_log_impl(&dword_21B766000, v35, OS_LOG_TYPE_DEFAULT, "Charging timeline %@", buf, 0xCu);
   }
 
-  v36 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   [v34 allKeys];
   v98 = 0u;
   v99 = 0u;
@@ -1884,11 +1884,11 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
         }
 
         v41 = *(*(&v98 + 1) + 8 * i);
-        v42 = [(PowerUICECManager *)self dateFormatter];
-        v43 = [v42 dateFromString:v41];
+        dateFormatter = [(PowerUICECManager *)self dateFormatter];
+        v43 = [dateFormatter dateFromString:v41];
 
         v44 = [v34 objectForKeyedSubscript:v41];
-        [v36 setObject:v44 forKeyedSubscript:v43];
+        [dictionary2 setObject:v44 forKeyedSubscript:v43];
       }
 
       v38 = [obj countByEnumeratingWithState:&v98 objects:v104 count:16];
@@ -1902,12 +1902,12 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v106 = v36;
+    v106 = dictionary2;
     _os_log_impl(&dword_21B766000, v45, OS_LOG_TYPE_DEFAULT, "Dates charging timeline %@", buf, 0xCu);
   }
 
-  v46 = [v36 allKeys];
-  v47 = [v46 mutableCopy];
+  allKeys = [dictionary2 allKeys];
+  v47 = [allKeys mutableCopy];
 
   v48 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1];
   v103 = v48;
@@ -1923,7 +1923,7 @@ uint64_t __34__PowerUICECManager_dateFormatter__block_invoke()
   if (!v51)
   {
     v55 = 0.0;
-    v70 = v50;
+    date = v50;
     v10 = v90;
 LABEL_57:
 
@@ -1934,7 +1934,7 @@ LABEL_57:
 
   v52 = v51;
   v87 = v48;
-  v88 = v3;
+  v88 = dictionary;
   v53 = 0;
   v54 = *v95;
   v55 = 0.0;
@@ -1948,10 +1948,10 @@ LABEL_57:
       }
 
       v57 = *(*(&v94 + 1) + 8 * j);
-      v58 = [v36 objectForKeyedSubscript:v57];
-      v59 = [v58 BOOLValue];
+      v58 = [dictionary2 objectForKeyedSubscript:v57];
+      bOOLValue2 = [v58 BOOLValue];
 
-      if (v59)
+      if (bOOLValue2)
       {
         v60 = self->_log;
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
@@ -1997,12 +1997,12 @@ LABEL_57:
 
   if (v53)
   {
-    v70 = [MEMORY[0x277CBEAA8] date];
-    [v70 timeIntervalSinceDate:v53];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v53];
     v72 = v71;
     v73 = MEMORY[0x277CCACA8];
     v74 = [MEMORY[0x277CCA968] localizedStringFromDate:v53 dateStyle:0 timeStyle:1];
-    v75 = [MEMORY[0x277CCA968] localizedStringFromDate:v70 dateStyle:0 timeStyle:1];
+    v75 = [MEMORY[0x277CCA968] localizedStringFromDate:date dateStyle:0 timeStyle:1];
     v76 = [v73 stringWithFormat:@"Paused from %@ to %@", v74, v75];
 
     v77 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", self->_debugStatus, v76];
@@ -2011,19 +2011,19 @@ LABEL_57:
 
     v55 = v55 + v72;
     v48 = v87;
-    v3 = v88;
+    dictionary = v88;
     v10 = v90;
     goto LABEL_57;
   }
 
   v48 = v87;
-  v3 = v88;
+  dictionary = v88;
   v10 = v90;
   v80 = 0x277CCA000uLL;
   v79 = v92;
 LABEL_59:
   v81 = [*(v80 + 2992) numberWithInteger:(v55 / 60.0)];
-  [v3 setObject:v81 forKeyedSubscript:@"pausedMinutes"];
+  [dictionary setObject:v81 forKeyedSubscript:@"pausedMinutes"];
 
   v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"Paused for %d mins in total", (v55 / 60)];
   v83 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", self->_debugStatus, v82];
@@ -2035,21 +2035,21 @@ LABEL_60:
 
   v85 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)recordPowerLogCECState:(unint64_t)a3
+- (void)recordPowerLogCECState:(unint64_t)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v6 forKeyedSubscript:@"cecState"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  [dictionary setObject:v6 forKeyedSubscript:@"cecState"];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = dictionary;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Writing to PowerLog %@", &v10, 0xCu);
   }
 
@@ -2063,7 +2063,7 @@ LABEL_60:
 - (void)recordPowerLogEvent
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   isChargingPaused = self->_isChargingPaused;
   currentPhase = self->_currentPhase;
   if (self->_isInternal)
@@ -2084,19 +2084,19 @@ LABEL_60:
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentState];
-  [v3 setObject:v9 forKeyedSubscript:@"cecState"];
+  [dictionary setObject:v9 forKeyedSubscript:@"cecState"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:currentPhase];
-  [v3 setObject:v10 forKeyedSubscript:@"status"];
+  [dictionary setObject:v10 forKeyedSubscript:@"status"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:isChargingPaused];
-  [v3 setObject:v11 forKeyedSubscript:@"isPaused"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isPaused"];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v3;
+    v16 = dictionary;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Writing to PowerLog %@", &v15, 0xCu);
   }
 
@@ -2107,38 +2107,38 @@ LABEL_60:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordLifetimeValues:(id)a3
+- (void)recordLifetimeValues:(id)values
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"engaged"];
-  v6 = [v5 BOOLValue];
+  valuesCopy = values;
+  v5 = [valuesCopy objectForKeyedSubscript:@"engaged"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"cecDisabled"];
-  v8 = [v7 BOOLValue];
+  v7 = [valuesCopy objectForKeyedSubscript:@"cecDisabled"];
+  bOOLValue2 = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"cecTemporarilyDisabled"];
-  v10 = [v9 BOOLValue];
+  v9 = [valuesCopy objectForKeyedSubscript:@"cecTemporarilyDisabled"];
+  bOOLValue3 = [v9 BOOLValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"pausedMinutes"];
+  v11 = [valuesCopy objectForKeyedSubscript:@"pausedMinutes"];
 
-  v12 = [v11 integerValue];
-  v29 = [(PowerUICECManager *)self readLifetimeCECEngagementValues];
-  v13 = [v29 objectForKeyedSubscript:@"lifetimeSessions"];
-  v14 = [v13 unsignedIntValue];
+  integerValue = [v11 integerValue];
+  readLifetimeCECEngagementValues = [(PowerUICECManager *)self readLifetimeCECEngagementValues];
+  v13 = [readLifetimeCECEngagementValues objectForKeyedSubscript:@"lifetimeSessions"];
+  unsignedIntValue = [v13 unsignedIntValue];
 
-  v15 = [v29 objectForKeyedSubscript:@"lifetimeSessionsEnabled"];
-  v16 = [v15 unsignedIntValue];
+  v15 = [readLifetimeCECEngagementValues objectForKeyedSubscript:@"lifetimeSessionsEnabled"];
+  unsignedIntValue2 = [v15 unsignedIntValue];
 
-  v17 = [v29 objectForKeyedSubscript:@"lifetimeSessionsTempDisabled"];
-  v18 = [v17 unsignedIntValue];
+  v17 = [readLifetimeCECEngagementValues objectForKeyedSubscript:@"lifetimeSessionsTempDisabled"];
+  unsignedIntValue3 = [v17 unsignedIntValue];
 
-  v19 = [v29 objectForKeyedSubscript:@"lifetimeIdleDurationMinsForMode"];
-  v20 = [v19 unsignedIntValue];
+  v19 = [readLifetimeCECEngagementValues objectForKeyedSubscript:@"lifetimeIdleDurationMinsForMode"];
+  unsignedIntValue4 = [v19 unsignedIntValue];
 
-  v21 = v14 + v6;
-  if (v6)
+  v21 = unsignedIntValue + bOOLValue;
+  if (bOOLValue)
   {
-    v22 = v12;
+    v22 = integerValue;
   }
 
   else
@@ -2146,15 +2146,15 @@ LABEL_60:
     v22 = 0;
   }
 
-  v23 = v22 + v20;
-  v24 = (((v8 | v10) & 1) == 0) + v16;
+  v23 = v22 + unsignedIntValue4;
+  v24 = (((bOOLValue2 | bOOLValue3) & 1) == 0) + unsignedIntValue2;
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
   [PowerUISmartChargeUtilities setNumber:v25 forPreferenceKey:@"com.apple.das.smartcharging.analytics.countCECSessions" inDomain:@"com.apple.smartcharging.topoffprotection"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
   [PowerUISmartChargeUtilities setNumber:v26 forPreferenceKey:@"com.apple.das.smartcharging.analytics.countCECSessionsEnabled" inDomain:@"com.apple.smartcharging.topoffprotection"];
 
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18 + v10];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntValue3 + bOOLValue3];
   [PowerUISmartChargeUtilities setNumber:v27 forPreferenceKey:@"com.apple.das.smartcharging.analytics.countCECSessionsEnabledSessionsTempDisabled" inDomain:@"com.apple.smartcharging.topoffprotection"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23];
@@ -2163,30 +2163,30 @@ LABEL_60:
 
 - (id)readLifetimeCECEngagementValues
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"com.apple.das.smartcharging.analytics.countCECSessions" inDomain:@"com.apple.smartcharging.topoffprotection"];
-  [v2 setObject:v3 forKeyedSubscript:@"lifetimeSessions"];
+  [dictionary setObject:v3 forKeyedSubscript:@"lifetimeSessions"];
 
   v4 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"com.apple.das.smartcharging.analytics.countCECSessionsEnabled" inDomain:@"com.apple.smartcharging.topoffprotection"];
-  [v2 setObject:v4 forKeyedSubscript:@"lifetimeSessionsEnabled"];
+  [dictionary setObject:v4 forKeyedSubscript:@"lifetimeSessionsEnabled"];
 
   v5 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"com.apple.das.smartcharging.analytics.countCECSessionsEnabledSessionsTempDisabled" inDomain:@"com.apple.smartcharging.topoffprotection"];
-  [v2 setObject:v5 forKeyedSubscript:@"lifetimeSessionsTempDisabled"];
+  [dictionary setObject:v5 forKeyedSubscript:@"lifetimeSessionsTempDisabled"];
 
   v6 = [PowerUISmartChargeUtilities numberForPreferenceKey:@"com.apple.das.smartcharging.analytics.countTotalMinutesIdledInCEC" inDomain:@"com.apple.smartcharging.topoffprotection"];
-  [v2 setObject:v6 forKeyedSubscript:@"lifetimeIdleDurationMinsForMode"];
+  [dictionary setObject:v6 forKeyedSubscript:@"lifetimeIdleDurationMinsForMode"];
 
-  return v2;
+  return dictionary;
 }
 
 - (void)recordAnalytics
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUICECManager *)self sessionEndCECAnalytics];
-  [(PowerUICECManager *)self recordLifetimeValues:v3];
-  if ([v3 count])
+  sessionEndCECAnalytics = [(PowerUICECManager *)self sessionEndCECAnalytics];
+  [(PowerUICECManager *)self recordLifetimeValues:sessionEndCECAnalytics];
+  if ([sessionEndCECAnalytics count])
   {
-    v6 = v3;
+    v6 = sessionEndCECAnalytics;
     AnalyticsSendEventLazy();
   }
 
@@ -2194,7 +2194,7 @@ LABEL_60:
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v3;
+    v8 = sessionEndCECAnalytics;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Reported CEC metrics to CoreAnalytics %@", buf, 0xCu);
   }
 

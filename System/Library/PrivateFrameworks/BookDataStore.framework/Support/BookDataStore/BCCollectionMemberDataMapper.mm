@@ -1,13 +1,13 @@
 @interface BCCollectionMemberDataMapper
-- (id)cloudDataFromRecord:(id)a3;
+- (id)cloudDataFromRecord:(id)record;
 @end
 
 @implementation BCCollectionMemberDataMapper
 
-- (id)cloudDataFromRecord:(id)a3
+- (id)cloudDataFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = [[BCMutableCollectionMember alloc] initWithRecord:v3];
+  recordCopy = record;
+  v4 = [[BCMutableCollectionMember alloc] initWithRecord:recordCopy];
 
   return v4;
 }

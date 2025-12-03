@@ -1,24 +1,24 @@
 @interface PAEColorCurvesEffect
 - (BOOL)addParameters;
-- (BOOL)overrideRender:(id)a3 withOutputImage:(id)a4 inputImage:(id)a5 input:(void *)a6 withInfo:(id *)a7;
-- (BOOL)parameterChanged:(id)a3 atTime:(id *)a4 paramID:(unsigned int)a5 customChannelData:(id)a6;
-- (BOOL)resync:(id)a3 atTime:(id)a4 paramID:(unsigned int)a5 customChannelData:(id *)a6;
-- (Class)classForCustomParameterID:(unsigned int)a3;
-- (PAEColorCurvesEffect)initWithAPIManager:(id)a3;
-- (id)shouldDeselectOtherMasks:(id)a3;
-- (void)_registerCurveParameter:(int)a3 name:(id)a4 red:(double)a5 green:(double)a6 blue:(double)a7;
+- (BOOL)overrideRender:(id)render withOutputImage:(id)image inputImage:(id)inputImage input:(void *)input withInfo:(id *)info;
+- (BOOL)parameterChanged:(id)changed atTime:(id *)time paramID:(unsigned int)d customChannelData:(id)data;
+- (BOOL)resync:(id)resync atTime:(id)time paramID:(unsigned int)d customChannelData:(id *)data;
+- (Class)classForCustomParameterID:(unsigned int)d;
+- (PAEColorCurvesEffect)initWithAPIManager:(id)manager;
+- (id)shouldDeselectOtherMasks:(id)masks;
+- (void)_registerCurveParameter:(int)parameter name:(id)name red:(double)red green:(double)green blue:(double)blue;
 - (void)dealloc;
-- (void)resyncOnce:(id)a3 atTime:(id)a4;
-- (void)setParameters:(id)a3 onNodeCorrector:(void *)a4 time:(id *)a5;
+- (void)resyncOnce:(id)once atTime:(id)time;
+- (void)setParameters:(id)parameters onNodeCorrector:(void *)corrector time:(id *)time;
 @end
 
 @implementation PAEColorCurvesEffect
 
-- (PAEColorCurvesEffect)initWithAPIManager:(id)a3
+- (PAEColorCurvesEffect)initWithAPIManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = PAEColorCurvesEffect;
-  v3 = [(PAEBaseCorrectorEffect *)&v6 initWithAPIManager:a3];
+  v3 = [(PAEBaseCorrectorEffect *)&v6 initWithAPIManager:manager];
   v4 = v3;
   if (v3)
   {
@@ -36,20 +36,20 @@
   [(PAEBaseCorrectorEffect *)&v3 dealloc];
 }
 
-- (void)_registerCurveParameter:(int)a3 name:(id)a4 red:(double)a5 green:(double)a6 blue:(double)a7
+- (void)_registerCurveParameter:(int)parameter name:(id)name red:(double)red green:(double)green blue:(double)blue
 {
-  v8 = *&a3;
-  v10 = [[PAEColorCurveChannelData alloc] initWithRed:a5 green:a6 blue:a7];
+  v8 = *&parameter;
+  v10 = [[PAEColorCurveChannelData alloc] initWithRed:red green:green blue:blue];
   [-[PAEBaseCorrectorEffect parameterCreationAPI](self "parameterCreationAPI")];
 }
 
 - (BOOL)addParameters
 {
-  v3 = [(PAEBaseCorrectorEffect *)self parameterCreationAPI];
-  v4 = v3;
-  if (v3)
+  parameterCreationAPI = [(PAEBaseCorrectorEffect *)self parameterCreationAPI];
+  v4 = parameterCreationAPI;
+  if (parameterCreationAPI)
   {
-    [v3 addCustomParameterWithName:&stru_2872E16E0 parmId:8888 defaultValue:0 parmFlags:17];
+    [parameterCreationAPI addCustomParameterWithName:&stru_2872E16E0 parmId:8888 defaultValue:0 parmFlags:17];
     [v4 addToggleButtonWithName:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] parmId:"bundleForClass:" defaultValue:objc_opt_class()) parmFlags:{"localizedStringForKey:value:table:", @"PAEColorCurvesEffectPreserveLuma", 0, @"Localizable", 8889, 1, 545}];
     -[PAEColorCurvesEffect _registerCurveParameter:name:red:green:blue:](self, "_registerCurveParameter:name:red:green:blue:", 1, [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"PAEColorCurvesEffectCustom1", 0, @"Localizable"}], 1.0, 0.0, 0.0);
     -[PAEColorCurvesEffect _registerCurveParameter:name:red:green:blue:](self, "_registerCurveParameter:name:red:green:blue:", 2, [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"PAEColorCurvesEffectCustom2", 0, @"Localizable"}], 0.0, 1.0, 0.0);
@@ -69,17 +69,17 @@
   return v4 != 0;
 }
 
-- (Class)classForCustomParameterID:(unsigned int)a3
+- (Class)classForCustomParameterID:(unsigned int)d
 {
-  if (a3 > 8887)
+  if (d > 8887)
   {
-    if (a3 == 8888 || a3 == 8893 || a3 == 9321)
+    if (d == 8888 || d == 8893 || d == 9321)
     {
       return objc_opt_class();
     }
   }
 
-  else if (a3 - 1 < 4)
+  else if (d - 1 < 4)
   {
     return objc_opt_class();
   }
@@ -87,38 +87,38 @@
   return 0;
 }
 
-- (void)resyncOnce:(id)a3 atTime:(id)a4
+- (void)resyncOnce:(id)once atTime:(id)time
 {
-  v6 = [a3 apiForProtocol:&unk_28735E258];
+  v6 = [once apiForProtocol:&unk_28735E258];
   v8 = 0;
   if ([-[PAEBaseCorrectorEffect versionsingAPI](self "versionsingAPI")] == 1)
   {
-    [v6 getIntValue:&self->super._hostApplication + 1 fromParm:8890 atFxTime:a4.var1];
+    [v6 getIntValue:&self->super._hostApplication + 1 fromParm:8890 atFxTime:time.var1];
   }
 
-  else if ([v6 getCustomParameterValue:&v8 fromParm:8893 atFxTime:a4.var1])
+  else if ([v6 getCustomParameterValue:&v8 fromParm:8893 atFxTime:time.var1])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v8 intValue];
+      intValue = [v8 intValue];
     }
 
     else
     {
-      v7 = 0;
+      intValue = 0;
     }
 
-    *(&self->super._hostApplication + 1) = v7;
+    *(&self->super._hostApplication + 1) = intValue;
   }
 
-  [v6 getBoolValue:&self->_gradingMode fromParm:8889 atFxTime:a4.var1];
+  [v6 getBoolValue:&self->_gradingMode fromParm:8889 atFxTime:time.var1];
 }
 
-- (BOOL)resync:(id)a3 atTime:(id)a4 paramID:(unsigned int)a5 customChannelData:(id *)a6
+- (BOOL)resync:(id)resync atTime:(id)time paramID:(unsigned int)d customChannelData:(id *)data
 {
-  v7 = *&a5;
-  v11 = [a3 apiForProtocol:&unk_28735E258];
+  v7 = *&d;
+  v11 = [resync apiForProtocol:&unk_28735E258];
   v12 = v11;
   if ((v7 - 1) > 3)
   {
@@ -126,28 +126,28 @@
     {
       if ([-[PAEBaseCorrectorEffect versionsingAPI](self "versionsingAPI")] == 1)
       {
-        v14 = [v12 getIntValue:&self->super._hostApplication + 1 fromParm:8890 atFxTime:a4.var1];
-        *a6 = [MEMORY[0x277CCABB0] numberWithInt:*(&self->super._hostApplication + 1)];
+        v14 = [v12 getIntValue:&self->super._hostApplication + 1 fromParm:8890 atFxTime:time.var1];
+        *data = [MEMORY[0x277CCABB0] numberWithInt:*(&self->super._hostApplication + 1)];
         LOBYTE(v13) = v14;
       }
 
       else
       {
-        v13 = [v12 getCustomParameterValue:a6 fromParm:8893 atFxTime:a4.var1];
+        v13 = [v12 getCustomParameterValue:data fromParm:8893 atFxTime:time.var1];
         if (v13)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [*a6 intValue];
+            intValue = [*data intValue];
           }
 
           else
           {
-            v15 = 0;
+            intValue = 0;
           }
 
-          [(PAEColorCurvesEffect *)self _setGradingMode:v15];
+          [(PAEColorCurvesEffect *)self _setGradingMode:intValue];
           LOBYTE(v13) = 1;
         }
       }
@@ -156,47 +156,47 @@
     else if (v7 == 8889)
     {
 
-      LOBYTE(v13) = [v11 getBoolValue:&self->_gradingMode fromParm:8889 atFxTime:a4.var1];
+      LOBYTE(v13) = [v11 getBoolValue:&self->_gradingMode fromParm:8889 atFxTime:time.var1];
     }
 
     else
     {
       v17.receiver = self;
       v17.super_class = PAEColorCurvesEffect;
-      LOBYTE(v13) = [(PAEBaseCorrectorEffect *)&v17 resync:a3 atTime:a4.var1 paramID:v7 customChannelData:a6];
+      LOBYTE(v13) = [(PAEBaseCorrectorEffect *)&v17 resync:resync atTime:time.var1 paramID:v7 customChannelData:data];
     }
   }
 
   else
   {
 
-    LOBYTE(v13) = [v11 getCustomParameterValue:a6 fromParm:v7 atFxTime:a4.var1];
+    LOBYTE(v13) = [v11 getCustomParameterValue:data fromParm:v7 atFxTime:time.var1];
   }
 
   return v13;
 }
 
-- (BOOL)parameterChanged:(id)a3 atTime:(id *)a4 paramID:(unsigned int)a5 customChannelData:(id)a6
+- (BOOL)parameterChanged:(id)changed atTime:(id *)time paramID:(unsigned int)d customChannelData:(id)data
 {
-  v12 = a6;
-  if (a5 == 8893)
+  dataCopy = data;
+  if (d == 8893)
   {
-    v7 = [objc_msgSend(a3 apiForProtocol:{&unk_28735E258), "getCustomParameterValue:fromParm:atFxTime:", &v12, 8893, a4}];
+    v7 = [objc_msgSend(changed apiForProtocol:{&unk_28735E258), "getCustomParameterValue:fromParm:atFxTime:", &dataCopy, 8893, time}];
     if (v7)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v12 intValue];
+        intValue = [dataCopy intValue];
       }
 
       else
       {
-        v8 = 0;
+        intValue = 0;
       }
 
       [(PAEColorCurvesEffect *)self willChangeValueForKey:@"gradingMode"];
-      [(PAEColorCurvesEffect *)self _setGradingMode:v8];
+      [(PAEColorCurvesEffect *)self _setGradingMode:intValue];
       [(PAEColorCurvesEffect *)self didChangeValueForKey:@"gradingMode"];
       LOBYTE(v7) = 1;
     }
@@ -204,18 +204,18 @@
 
   else
   {
-    v11 = *a4;
+    v11 = *time;
     v10.receiver = self;
     v10.super_class = PAEColorCurvesEffect;
-    LOBYTE(v7) = [PAEBaseCorrectorEffect parameterChanged:sel_parameterChanged_atTime_paramID_customChannelData_ atTime:a3 paramID:&v11 customChannelData:?];
+    LOBYTE(v7) = [PAEBaseCorrectorEffect parameterChanged:sel_parameterChanged_atTime_paramID_customChannelData_ atTime:changed paramID:&v11 customChannelData:?];
   }
 
   return v7;
 }
 
-- (BOOL)overrideRender:(id)a3 withOutputImage:(id)a4 inputImage:(id)a5 input:(void *)a6 withInfo:(id *)a7
+- (BOOL)overrideRender:(id)render withOutputImage:(id)image inputImage:(id)inputImage input:(void *)input withInfo:(id *)info
 {
-  v12 = (*(*a6 + 128))(a6, 0, a3, a4, a5);
+  v12 = (*(*input + 128))(input, 0, render, image, inputImage);
   v13 = v12;
   if (v12)
   {
@@ -234,7 +234,7 @@
     }
   }
 
-  v15 = [objc_opt_class() colorPrimaries:a3] == 1 || v14;
+  v15 = [objc_opt_class() colorPrimaries:render] == 1 || v14;
   if (v15)
   {
     v16 = 2;
@@ -265,19 +265,19 @@
     v18 = v17;
   }
 
-  v19 = PAECreateGammaEncodingNode(a6, v16, v16, v18, 1, 0);
-  v20 = [(PAEColorCurvesEffect *)self newNodeForCorrector];
-  v21 = v20;
-  if (!v20)
+  v19 = PAECreateGammaEncodingNode(input, v16, v16, v18, 1, 0);
+  newNodeForCorrector = [(PAEColorCurvesEffect *)self newNodeForCorrector];
+  v21 = newNodeForCorrector;
+  if (!newNodeForCorrector)
   {
-    v20 = v19;
+    newNodeForCorrector = v19;
   }
 
-  v22 = PAECreateGammaDecodingNode(v20, v16, v16, v18, 0, 1);
+  v22 = PAECreateGammaDecodingNode(newNodeForCorrector, v16, v16, v18, 0, 1);
   if (v21)
   {
-    var1 = a7->var0.var1;
-    if (!a7->var0.var1)
+    var1 = info->var0.var1;
+    if (!info->var0.var1)
     {
       var1 = MEMORY[0x277CC08F0];
     }
@@ -285,7 +285,7 @@
     v24 = *(var1 + 2);
     v26 = *var1;
     v27 = v24;
-    [(PAEColorCurvesEffect *)self setParameters:a3 onNodeCorrector:v21 time:&v26];
+    [(PAEColorCurvesEffect *)self setParameters:render onNodeCorrector:v21 time:&v26];
     (*(*v21 + 120))(v21, 0, v19);
   }
 
@@ -295,7 +295,7 @@
   }
 
   *&v26 = v22;
-  [a4 setHeliumRef:&v26];
+  [image setHeliumRef:&v26];
   if (v26)
   {
     (*(*v26 + 24))(v26);
@@ -316,17 +316,17 @@
   return 1;
 }
 
-- (void)setParameters:(id)a3 onNodeCorrector:(void *)a4 time:(id *)a5
+- (void)setParameters:(id)parameters onNodeCorrector:(void *)corrector time:(id *)time
 {
-  v44 = *a5;
-  v9 = [(PAEBaseCorrectorEffect *)self customChannelData:a3 ofParamID:4 time:&v44];
-  v44 = *a5;
-  v10 = [(PAEBaseCorrectorEffect *)self customChannelData:a3 ofParamID:1 time:&v44];
-  v44 = *a5;
-  v11 = [(PAEBaseCorrectorEffect *)self customChannelData:a3 ofParamID:2 time:&v44];
-  v44 = *a5;
-  v12 = [(PAEBaseCorrectorEffect *)self customChannelData:a3 ofParamID:3 time:&v44];
-  v13 = [v9 curveRef];
+  v44 = *time;
+  v9 = [(PAEBaseCorrectorEffect *)self customChannelData:parameters ofParamID:4 time:&v44];
+  v44 = *time;
+  v10 = [(PAEBaseCorrectorEffect *)self customChannelData:parameters ofParamID:1 time:&v44];
+  v44 = *time;
+  v11 = [(PAEBaseCorrectorEffect *)self customChannelData:parameters ofParamID:2 time:&v44];
+  v44 = *time;
+  v12 = [(PAEBaseCorrectorEffect *)self customChannelData:parameters ofParamID:3 time:&v44];
+  curveRef = [v9 curveRef];
   if (*(&self->super._hostApplication + 1) == 1)
   {
     v14 = 0;
@@ -339,8 +339,8 @@
     }
   }
 
-  v15 = [objc_opt_class() colorPrimaries:a3] != 1;
-  (*(*a4 + 96))(a4, 3, -LOBYTE(self->_gradingMode), 0.0, 0.0, 0.0);
+  v15 = [objc_opt_class() colorPrimaries:parameters] != 1;
+  (*(*corrector + 96))(corrector, 3, -LOBYTE(self->_gradingMode), 0.0, 0.0, 0.0);
   v19 = !v14 || !v15;
   if (v14 && v15)
   {
@@ -503,17 +503,17 @@
 
   v41 = v37;
   v18.n128_u32[0] = *v22;
-  (*(*a4 + 96))(a4, 5, v16, v17, v18, 0.0);
-  (*(*a4 + 96))(a4, 6, *v23, *v24, *v25, 0.0);
-  (*(*a4 + 96))(a4, 7, *v26, *v27, *v28, 0.0);
-  (*(*a4 + 96))(a4, 8, v29->f32[0], *v30, *v31, 0.0);
-  (*(*a4 + 96))(a4, 9, *v40, *v39, *v38, 0.0);
-  (*(*a4 + 96))(a4, 10, *v43, *v42, *v41, 0.0);
+  (*(*corrector + 96))(corrector, 5, v16, v17, v18, 0.0);
+  (*(*corrector + 96))(corrector, 6, *v23, *v24, *v25, 0.0);
+  (*(*corrector + 96))(corrector, 7, *v26, *v27, *v28, 0.0);
+  (*(*corrector + 96))(corrector, 8, v29->f32[0], *v30, *v31, 0.0);
+  (*(*corrector + 96))(corrector, 9, *v40, *v39, *v38, 0.0);
+  (*(*corrector + 96))(corrector, 10, *v43, *v42, *v41, 0.0);
 }
 
-- (id)shouldDeselectOtherMasks:(id)a3
+- (id)shouldDeselectOtherMasks:(id)masks
 {
-  if ([a3 mode] == 1 && !objc_msgSend(a3, "state"))
+  if ([masks mode] == 1 && !objc_msgSend(masks, "state"))
   {
     return MEMORY[0x277CBEC38];
   }

@@ -1,25 +1,25 @@
 @interface SIServiceDeviceUploadInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SIServiceDeviceUploadInfo)initWithDictionary:(id)a3;
-- (SIServiceDeviceUploadInfo)initWithJSON:(id)a3;
+- (SIServiceDeviceUploadInfo)initWithDictionary:(id)dictionary;
+- (SIServiceDeviceUploadInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIServiceDeviceUploadInfo
 
-- (SIServiceDeviceUploadInfo)initWithDictionary:(id)a3
+- (SIServiceDeviceUploadInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SIServiceDeviceUploadInfo;
   v5 = [(SIServiceDeviceUploadInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"refId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"refId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SIServiceDeviceUploadInfo *)v5 setRef_id:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"nsRelativeToBoot"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"nsRelativeToBoot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (SIServiceDeviceUploadInfo)initWithJSON:(id)a3
+- (SIServiceDeviceUploadInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIServiceDeviceUploadInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SIServiceDeviceUploadInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SIServiceDeviceUploadInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,23 +76,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SIServiceDeviceUploadInfo ns_relative_to_boot](self, "ns_relative_to_boot")}];
-    [v3 setObject:v4 forKeyedSubscript:@"nsRelativeToBoot"];
+    [dictionary setObject:v4 forKeyedSubscript:@"nsRelativeToBoot"];
   }
 
   if (self->_ref_id)
   {
-    v5 = [(SIServiceDeviceUploadInfo *)self ref_id];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"refId"];
+    ref_id = [(SIServiceDeviceUploadInfo *)self ref_id];
+    v6 = [ref_id copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"refId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -111,18 +111,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SIServiceDeviceUploadInfo *)self ref_id];
-  v6 = [v4 ref_id];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  ref_id = [(SIServiceDeviceUploadInfo *)self ref_id];
+  ref_id2 = [equalCopy ref_id];
+  v7 = ref_id2;
+  if ((ref_id != 0) == (ref_id2 == 0))
   {
 
 LABEL_12:
@@ -130,13 +130,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(SIServiceDeviceUploadInfo *)self ref_id];
-  if (v8)
+  ref_id3 = [(SIServiceDeviceUploadInfo *)self ref_id];
+  if (ref_id3)
   {
-    v9 = v8;
-    v10 = [(SIServiceDeviceUploadInfo *)self ref_id];
-    v11 = [v4 ref_id];
-    v12 = [v10 isEqual:v11];
+    v9 = ref_id3;
+    ref_id4 = [(SIServiceDeviceUploadInfo *)self ref_id];
+    ref_id5 = [equalCopy ref_id];
+    v12 = [ref_id4 isEqual:ref_id5];
 
     if (!v12)
     {
@@ -148,7 +148,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[24] & 1))
+  if ((*&self->_has & 1) != (equalCopy[24] & 1))
   {
     goto LABEL_12;
   }
@@ -156,7 +156,7 @@ LABEL_12:
   if (*&self->_has)
   {
     ns_relative_to_boot = self->_ns_relative_to_boot;
-    if (ns_relative_to_boot != [v4 ns_relative_to_boot])
+    if (ns_relative_to_boot != [equalCopy ns_relative_to_boot])
     {
       goto LABEL_12;
     }
@@ -168,12 +168,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SIServiceDeviceUploadInfo *)self ref_id];
+  toCopy = to;
+  ref_id = [(SIServiceDeviceUploadInfo *)self ref_id];
 
-  if (v4)
+  if (ref_id)
   {
     PBDataWriterWriteStringField();
   }

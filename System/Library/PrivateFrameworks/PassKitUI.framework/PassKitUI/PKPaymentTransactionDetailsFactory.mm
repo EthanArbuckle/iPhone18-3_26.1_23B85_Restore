@@ -1,76 +1,76 @@
 @interface PKPaymentTransactionDetailsFactory
-- (BOOL)canShowTransactionHistoryForTransaction:(id)a3 sourceCollection:(id)a4 account:(id)a5;
-- (PKPaymentTransactionDetailsFactory)initWithContactResolver:(id)a3 peerPaymentWebService:(id)a4 paymentServiceDataProvider:(id)a5 detailViewStyle:(int64_t)a6 context:(unint64_t)a7;
-- (id)_transactionFetcherWithSourceCollection:(id)a3 transaction:(id)a4;
-- (id)detailViewControllerForTransaction:(id)a3 sourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 bankConnectInstitution:(id)a8 physicalCards:(id)a9 navigationController:(id)a10;
-- (id)historyViewControllerForTransaction:(id)a3 group:(id)a4 sourceCollection:(id)a5 familyCollection:(id)a6 account:(id)a7 accountUserCollection:(id)a8 physicalCards:(id)a9;
-- (id)viewControllerForTransaction:(id)a3 sourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 bankConnectInstitution:(id)a8 physicalCards:(id)a9 group:(id)a10 navigationController:(id)a11;
+- (BOOL)canShowTransactionHistoryForTransaction:(id)transaction sourceCollection:(id)collection account:(id)account;
+- (PKPaymentTransactionDetailsFactory)initWithContactResolver:(id)resolver peerPaymentWebService:(id)service paymentServiceDataProvider:(id)provider detailViewStyle:(int64_t)style context:(unint64_t)context;
+- (id)_transactionFetcherWithSourceCollection:(id)collection transaction:(id)transaction;
+- (id)detailViewControllerForTransaction:(id)transaction sourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection bankConnectInstitution:(id)institution physicalCards:(id)cards navigationController:(id)self0;
+- (id)historyViewControllerForTransaction:(id)transaction group:(id)group sourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards;
+- (id)viewControllerForTransaction:(id)transaction sourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection bankConnectInstitution:(id)institution physicalCards:(id)cards group:(id)self0 navigationController:(id)self1;
 @end
 
 @implementation PKPaymentTransactionDetailsFactory
 
-- (PKPaymentTransactionDetailsFactory)initWithContactResolver:(id)a3 peerPaymentWebService:(id)a4 paymentServiceDataProvider:(id)a5 detailViewStyle:(int64_t)a6 context:(unint64_t)a7
+- (PKPaymentTransactionDetailsFactory)initWithContactResolver:(id)resolver peerPaymentWebService:(id)service paymentServiceDataProvider:(id)provider detailViewStyle:(int64_t)style context:(unint64_t)context
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  resolverCopy = resolver;
+  serviceCopy = service;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = PKPaymentTransactionDetailsFactory;
   v16 = [(PKPaymentTransactionDetailsFactory *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_contactResolver, a3);
-    objc_storeStrong(&v17->_peerPaymentWebService, a4);
-    objc_storeStrong(&v17->_paymentServiceDataProvider, a5);
-    v17->_detailViewStyle = a6;
-    v17->_context = a7;
+    objc_storeStrong(&v16->_contactResolver, resolver);
+    objc_storeStrong(&v17->_peerPaymentWebService, service);
+    objc_storeStrong(&v17->_paymentServiceDataProvider, provider);
+    v17->_detailViewStyle = style;
+    v17->_context = context;
   }
 
   return v17;
 }
 
-- (id)viewControllerForTransaction:(id)a3 sourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 bankConnectInstitution:(id)a8 physicalCards:(id)a9 group:(id)a10 navigationController:(id)a11
+- (id)viewControllerForTransaction:(id)transaction sourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection bankConnectInstitution:(id)institution physicalCards:(id)cards group:(id)self0 navigationController:(id)self1
 {
-  v17 = a8;
-  v18 = a10;
-  v19 = a11;
-  v20 = a9;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  if ([(PKPaymentTransactionDetailsFactory *)self canShowTransactionHistoryForTransaction:v25 sourceCollection:v24 account:v22])
+  institutionCopy = institution;
+  groupCopy = group;
+  controllerCopy = controller;
+  cardsCopy = cards;
+  userCollectionCopy = userCollection;
+  accountCopy = account;
+  familyCollectionCopy = familyCollection;
+  collectionCopy = collection;
+  transactionCopy = transaction;
+  if ([(PKPaymentTransactionDetailsFactory *)self canShowTransactionHistoryForTransaction:transactionCopy sourceCollection:collectionCopy account:accountCopy])
   {
-    [(PKPaymentTransactionDetailsFactory *)self historyViewControllerForTransaction:v25 group:v18 sourceCollection:v24 familyCollection:v23 account:v22 accountUserCollection:v21 physicalCards:v20];
+    [(PKPaymentTransactionDetailsFactory *)self historyViewControllerForTransaction:transactionCopy group:groupCopy sourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy];
   }
 
   else
   {
-    [(PKPaymentTransactionDetailsFactory *)self detailViewControllerForTransaction:v25 sourceCollection:v24 familyCollection:v23 account:v22 accountUserCollection:v21 bankConnectInstitution:v17 physicalCards:v20 navigationController:v19];
+    [(PKPaymentTransactionDetailsFactory *)self detailViewControllerForTransaction:transactionCopy sourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy bankConnectInstitution:institutionCopy physicalCards:cardsCopy navigationController:controllerCopy];
   }
   v26 = ;
 
   return v26;
 }
 
-- (BOOL)canShowTransactionHistoryForTransaction:(id)a3 sourceCollection:(id)a4 account:(id)a5
+- (BOOL)canShowTransactionHistoryForTransaction:(id)transaction sourceCollection:(id)collection account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 transactionType];
+  transactionCopy = transaction;
+  collectionCopy = collection;
+  transactionType = [transactionCopy transactionType];
   v10 = 0;
-  if (v9 > 9)
+  if (transactionType > 9)
   {
-    if (v9 != 10)
+    if (transactionType != 10)
     {
-      if (v9 == 11)
+      if (transactionType == 11)
       {
-        v10 = [v7 accountType] == 3;
+        v10 = [transactionCopy accountType] == 3;
       }
 
-      else if (v9 != 13)
+      else if (transactionType != 13)
       {
         goto LABEL_39;
       }
@@ -79,11 +79,11 @@
     goto LABEL_18;
   }
 
-  if (v9 < 2)
+  if (transactionType < 2)
   {
-    v11 = [v7 merchant];
-    v12 = [v11 name];
-    if (v12)
+    merchant = [transactionCopy merchant];
+    name = [merchant name];
+    if (name)
     {
 
       v10 = 0;
@@ -91,53 +91,53 @@
 
     else
     {
-      if (([v11 hasMapsMatch] & 1) == 0)
+      if (([merchant hasMapsMatch] & 1) == 0)
       {
         goto LABEL_37;
       }
 
-      v19 = [v11 shouldIgnoreMapsMatches];
+      shouldIgnoreMapsMatches = [merchant shouldIgnoreMapsMatches];
 
       v10 = 0;
-      if (v19)
+      if (shouldIgnoreMapsMatches)
       {
         goto LABEL_39;
       }
     }
 
 LABEL_18:
-    v15 = [v8 paymentPass];
-    v11 = v15;
-    if (v15)
+    paymentPass = [collectionCopy paymentPass];
+    merchant = paymentPass;
+    if (paymentPass)
     {
-      v16 = [v15 associatedAccountServiceAccountIdentifier];
-      if (v16)
+      associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+      if (associatedAccountServiceAccountIdentifier)
       {
-        v17 = 1;
+        hasAssociatedPeerPaymentAccount = 1;
       }
 
       else
       {
-        v17 = [v11 hasAssociatedPeerPaymentAccount];
+        hasAssociatedPeerPaymentAccount = [merchant hasAssociatedPeerPaymentAccount];
       }
     }
 
     else
     {
-      v17 = 1;
-      v16 = [v8 transactionSourcesForType:1];
-      if (![v16 count])
+      hasAssociatedPeerPaymentAccount = 1;
+      associatedAccountServiceAccountIdentifier = [collectionCopy transactionSourcesForType:1];
+      if (![associatedAccountServiceAccountIdentifier count])
       {
-        v18 = [v8 transactionSourcesForType:3];
+        v18 = [collectionCopy transactionSourcesForType:3];
         if ([v18 count])
         {
-          v17 = 1;
+          hasAssociatedPeerPaymentAccount = 1;
         }
 
         else
         {
-          v20 = [v8 transactionSourcesForType:2];
-          v17 = [v20 count] != 0;
+          v20 = [collectionCopy transactionSourcesForType:2];
+          hasAssociatedPeerPaymentAccount = [v20 count] != 0;
         }
       }
     }
@@ -145,7 +145,7 @@ LABEL_18:
     if (v10)
     {
       v10 = 1;
-      if (!v17)
+      if (!hasAssociatedPeerPaymentAccount)
       {
         goto LABEL_37;
       }
@@ -161,7 +161,7 @@ LABEL_35:
     }
 
     v10 = self->_detailViewStyle == 0;
-    if (v17)
+    if (hasAssociatedPeerPaymentAccount)
     {
       goto LABEL_35;
     }
@@ -173,22 +173,22 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (v9 == 3)
+  if (transactionType == 3)
   {
-    if ([v7 peerPaymentStatus] == 1)
+    if ([transactionCopy peerPaymentStatus] == 1)
     {
-      v11 = [v7 peerPaymentCounterpartHandle];
-      v13 = [v7 peerPaymentType];
+      merchant = [transactionCopy peerPaymentCounterpartHandle];
+      peerPaymentType = [transactionCopy peerPaymentType];
       v10 = 0;
-      if (![v11 length] || (v13 - 6) > 0xFFFFFFFFFFFFFFFDLL)
+      if (![merchant length] || (peerPaymentType - 6) > 0xFFFFFFFFFFFFFFFDLL)
       {
         goto LABEL_38;
       }
 
-      v14 = [v7 peerPaymentPaymentMode];
+      peerPaymentPaymentMode = [transactionCopy peerPaymentPaymentMode];
 
       v10 = 0;
-      if (v14 == 2)
+      if (peerPaymentPaymentMode == 2)
       {
         goto LABEL_39;
       }
@@ -199,7 +199,7 @@ LABEL_38:
     v10 = 0;
   }
 
-  else if (v9 == 9)
+  else if (transactionType == 9)
   {
     v10 = 1;
     goto LABEL_18;
@@ -210,46 +210,46 @@ LABEL_39:
   return v10;
 }
 
-- (id)_transactionFetcherWithSourceCollection:(id)a3 transaction:(id)a4
+- (id)_transactionFetcherWithSourceCollection:(id)collection transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 transactionType] == 3)
+  transactionCopy = transaction;
+  collectionCopy = collection;
+  if ([transactionCopy transactionType] == 3)
   {
-    v8 = [v6 peerPaymentCounterpartHandle];
-    v9 = [(PKContactResolver *)self->_contactResolver contactForHandle:v8];
+    peerPaymentCounterpartHandle = [transactionCopy peerPaymentCounterpartHandle];
+    v9 = [(PKContactResolver *)self->_contactResolver contactForHandle:peerPaymentCounterpartHandle];
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [v10 addObject:v8];
+    [v10 addObject:peerPaymentCounterpartHandle];
     if (v9)
     {
-      v11 = [v9 emailAddresses];
+      emailAddresses = [v9 emailAddresses];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __90__PKPaymentTransactionDetailsFactory__transactionFetcherWithSourceCollection_transaction___block_invoke;
       v22[3] = &unk_1E8012B18;
       v12 = v10;
       v23 = v12;
-      [v11 enumerateObjectsUsingBlock:v22];
+      [emailAddresses enumerateObjectsUsingBlock:v22];
 
-      v13 = [v9 phoneNumbers];
+      phoneNumbers = [v9 phoneNumbers];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __90__PKPaymentTransactionDetailsFactory__transactionFetcherWithSourceCollection_transaction___block_invoke_2;
       v20[3] = &unk_1E8012B18;
       v21 = v12;
-      [v13 enumerateObjectsUsingBlock:v20];
+      [phoneNumbers enumerateObjectsUsingBlock:v20];
     }
 
     v14 = objc_alloc(MEMORY[0x1E69B8788]);
     v15 = [v10 copy];
-    v16 = [v14 initWithCounterpartHandles:v15 transactionSourceCollection:v7 paymentDataProvider:self->_paymentServiceDataProvider];
+    v16 = [v14 initWithCounterpartHandles:v15 transactionSourceCollection:collectionCopy paymentDataProvider:self->_paymentServiceDataProvider];
   }
 
   else
   {
     v17 = objc_alloc(MEMORY[0x1E69B8788]);
-    v18 = [v6 merchant];
-    v16 = [v17 initWithMerchant:v18 transactionSourceCollection:v7 paymentDataProvider:self->_paymentServiceDataProvider];
+    merchant = [transactionCopy merchant];
+    v16 = [v17 initWithMerchant:merchant transactionSourceCollection:collectionCopy paymentDataProvider:self->_paymentServiceDataProvider];
   }
 
   return v16;
@@ -279,17 +279,17 @@ void __90__PKPaymentTransactionDetailsFactory__transactionFetcherWithSourceColle
   }
 }
 
-- (id)detailViewControllerForTransaction:(id)a3 sourceCollection:(id)a4 familyCollection:(id)a5 account:(id)a6 accountUserCollection:(id)a7 bankConnectInstitution:(id)a8 physicalCards:(id)a9 navigationController:(id)a10
+- (id)detailViewControllerForTransaction:(id)transaction sourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection bankConnectInstitution:(id)institution physicalCards:(id)cards navigationController:(id)self0
 {
   v47[3] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v45 = a4;
-  v44 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  transactionCopy = transaction;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  accountCopy = account;
+  userCollectionCopy = userCollection;
+  institutionCopy = institution;
+  cardsCopy = cards;
+  controllerCopy = controller;
   v22 = MEMORY[0x1E69B8540];
   v23 = *MEMORY[0x1E69BB6F8];
   v24 = *MEMORY[0x1E69BA6F0];
@@ -304,43 +304,43 @@ void __90__PKPaymentTransactionDetailsFactory__transactionFetcherWithSourceColle
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:3];
   [v22 subject:v23 sendEvent:v27];
 
-  v28 = [v16 bankConnectMetadata];
-  v29 = [v28 transactionIdentifier];
+  bankConnectMetadata = [transactionCopy bankConnectMetadata];
+  transactionIdentifier = [bankConnectMetadata transactionIdentifier];
 
-  if (v19 && v29)
+  if (institutionCopy && transactionIdentifier)
   {
-    v30 = [_TtC9PassKitUI33FinanceKitTransactionViewProvider makeViewControllerWithTransactionID:v29 institution:v19 navigationController:v21 style:self->_detailViewStyle];
-    v32 = v44;
-    v31 = v45;
+    v30 = [_TtC9PassKitUI33FinanceKitTransactionViewProvider makeViewControllerWithTransactionID:transactionIdentifier institution:institutionCopy navigationController:controllerCopy style:self->_detailViewStyle];
+    v32 = familyCollectionCopy;
+    v31 = collectionCopy;
   }
 
-  else if ([v16 transactionType] == 14)
+  else if ([transactionCopy transactionType] == 14)
   {
     v33 = [PKInstallmentPlanDetailsViewController alloc];
-    [v16 installmentPlan];
-    v34 = v43 = v20;
+    [transactionCopy installmentPlan];
+    v34 = v43 = cardsCopy;
     [MEMORY[0x1E69B8400] sharedInstance];
-    v42 = v21;
-    v35 = v18;
-    v37 = v36 = v17;
+    v42 = controllerCopy;
+    v35 = userCollectionCopy;
+    v37 = v36 = accountCopy;
     v38 = v33;
-    v32 = v44;
-    v31 = v45;
-    v30 = [(PKInstallmentPlanDetailsViewController *)v38 initWithAccount:v36 installmentPlan:v34 accountService:v37 accountUserCollection:v35 familyMemberCollection:v44 transactionSourceCollection:v45];
+    v32 = familyCollectionCopy;
+    v31 = collectionCopy;
+    v30 = [(PKInstallmentPlanDetailsViewController *)v38 initWithAccount:v36 installmentPlan:v34 accountService:v37 accountUserCollection:v35 familyMemberCollection:familyCollectionCopy transactionSourceCollection:collectionCopy];
 
-    v17 = v36;
-    v18 = v35;
-    v21 = v42;
+    accountCopy = v36;
+    userCollectionCopy = v35;
+    controllerCopy = v42;
 
-    v20 = v43;
+    cardsCopy = v43;
   }
 
   else
   {
     LOBYTE(v41) = 1;
-    v32 = v44;
-    v31 = v45;
-    v30 = [[PKPaymentTransactionDetailViewController alloc] initWithTransaction:v16 transactionSourceCollection:v45 familyCollection:v44 account:v17 accountUserCollection:v18 bankConnectInstitution:v19 physicalCards:v20 contactResolver:self->_contactResolver peerPaymentWebService:self->_peerPaymentWebService paymentServiceDataProvider:self->_paymentServiceDataProvider detailViewStyle:self->_detailViewStyle allowTransactionLinks:v41];
+    v32 = familyCollectionCopy;
+    v31 = collectionCopy;
+    v30 = [[PKPaymentTransactionDetailViewController alloc] initWithTransaction:transactionCopy transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy bankConnectInstitution:institutionCopy physicalCards:cardsCopy contactResolver:self->_contactResolver peerPaymentWebService:self->_peerPaymentWebService paymentServiceDataProvider:self->_paymentServiceDataProvider detailViewStyle:self->_detailViewStyle allowTransactionLinks:v41];
   }
 
   v39 = v30;
@@ -348,29 +348,29 @@ void __90__PKPaymentTransactionDetailsFactory__transactionFetcherWithSourceColle
   return v30;
 }
 
-- (id)historyViewControllerForTransaction:(id)a3 group:(id)a4 sourceCollection:(id)a5 familyCollection:(id)a6 account:(id)a7 accountUserCollection:(id)a8 physicalCards:(id)a9
+- (id)historyViewControllerForTransaction:(id)transaction group:(id)group sourceCollection:(id)collection familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection physicalCards:(id)cards
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [v15 transactionType];
-  if (v22 == 10)
+  transactionCopy = transaction;
+  groupCopy = group;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  accountCopy = account;
+  userCollectionCopy = userCollection;
+  cardsCopy = cards;
+  transactionType = [transactionCopy transactionType];
+  if (transactionType == 10)
   {
-    v40 = v16;
+    v40 = groupCopy;
     v23 = objc_alloc_init(MEMORY[0x1E69B8EB0]);
     [v23 setType:9];
-    v31 = [v15 amount];
-    [v15 currencyCode];
+    amount = [transactionCopy amount];
+    [transactionCopy currencyCode];
     v32 = v39 = self;
-    v33 = PKCurrencyAmountCreate(v31, v32);
+    v33 = PKCurrencyAmountCreate(amount, v32);
     [v23 setTotalAmount:v33];
 
-    v41 = v15;
+    v41 = transactionCopy;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
     [v23 setTransactions:v34];
 
@@ -380,42 +380,42 @@ void __90__PKPaymentTransactionDetailsFactory__transactionFetcherWithSourceColle
     goto LABEL_5;
   }
 
-  if (v22 == 11)
+  if (transactionType == 11)
   {
-    v40 = v16;
+    v40 = groupCopy;
     v23 = objc_alloc_init(MEMORY[0x1E69B8EB0]);
     [v23 setType:7];
-    v24 = [v15 amount];
-    v25 = [v15 currencyCode];
-    PKCurrencyAmountCreate(v24, v25);
-    v38 = v18;
+    amount2 = [transactionCopy amount];
+    currencyCode = [transactionCopy currencyCode];
+    PKCurrencyAmountCreate(amount2, currencyCode);
+    v38 = familyCollectionCopy;
     v27 = v26 = self;
     [v23 setTotalAmount:v27];
 
-    v42[0] = v15;
+    v42[0] = transactionCopy;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
     [v23 setTransactions:v28];
 
     [v23 setTransactionCount:1];
     v29 = [PKTransactionHistoryViewController alloc];
     detailViewStyle = v26->_detailViewStyle;
-    v18 = v38;
+    familyCollectionCopy = v38;
 LABEL_5:
-    v35 = [(PKTransactionHistoryViewController *)v29 initWithTransactionGroup:v23 transactionSourceCollection:v17 familyCollection:v18 account:v19 accountUserCollection:v20 physicalCards:v21 fetcher:0 detailViewStyle:detailViewStyle];
+    v35 = [(PKTransactionHistoryViewController *)v29 initWithTransactionGroup:v23 transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy fetcher:0 detailViewStyle:detailViewStyle];
 
-    v16 = v40;
+    groupCopy = v40;
     goto LABEL_6;
   }
 
-  if ([v16 type] == 5)
+  if ([groupCopy type] == 5)
   {
-    v35 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:v16 transactionSourceCollection:v17 familyCollection:v18 account:v19 accountUserCollection:v20 physicalCards:v21 fetcher:0 detailViewStyle:self->_detailViewStyle];
+    v35 = [[PKTransactionHistoryViewController alloc] initWithTransactionGroup:groupCopy transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy fetcher:0 detailViewStyle:self->_detailViewStyle];
   }
 
   else
   {
-    v37 = [(PKPaymentTransactionDetailsFactory *)self _transactionFetcherWithSourceCollection:v17 transaction:v15];
-    v35 = [[PKTransactionHistoryViewController alloc] initWithFetcher:v37 transactionSourceCollection:v17 familyCollection:v18 account:v19 accountUserCollection:v20 physicalCards:v21 featuredTransaction:v15 selectedTransactions:0];
+    v37 = [(PKPaymentTransactionDetailsFactory *)self _transactionFetcherWithSourceCollection:collectionCopy transaction:transactionCopy];
+    v35 = [[PKTransactionHistoryViewController alloc] initWithFetcher:v37 transactionSourceCollection:collectionCopy familyCollection:familyCollectionCopy account:accountCopy accountUserCollection:userCollectionCopy physicalCards:cardsCopy featuredTransaction:transactionCopy selectedTransactions:0];
   }
 
 LABEL_6:

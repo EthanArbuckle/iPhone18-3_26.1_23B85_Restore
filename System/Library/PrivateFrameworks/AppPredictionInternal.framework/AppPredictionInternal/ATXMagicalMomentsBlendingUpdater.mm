@@ -1,17 +1,17 @@
 @interface ATXMagicalMomentsBlendingUpdater
 + (id)clientModelForMagicalMomentsPredictions;
 + (id)clientModelSpecForMagicalMomentsPredictions;
-+ (id)feedbackMetadataForMmMap:(id)a3;
-+ (void)updateBlendingLayerWithMagicalMomentsMap:(id)a3;
++ (id)feedbackMetadataForMmMap:(id)map;
++ (void)updateBlendingLayerWithMagicalMomentsMap:(id)map;
 @end
 
 @implementation ATXMagicalMomentsBlendingUpdater
 
-+ (void)updateBlendingLayerWithMagicalMomentsMap:(id)a3
++ (void)updateBlendingLayerWithMagicalMomentsMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[ATXAppPredictionBlacklist sharedInstance];
-  v6 = [v5 disabledBundleIds];
+  disabledBundleIds = [v5 disabledBundleIds];
 
   v22 = 0;
   v23 = &v22;
@@ -21,26 +21,26 @@
   v17 = 3221225472;
   v18 = __77__ATXMagicalMomentsBlendingUpdater_updateBlendingLayerWithMagicalMomentsMap___block_invoke;
   v19 = &unk_2785A19B8;
-  v7 = v6;
+  v7 = disabledBundleIds;
   v20 = v7;
   v21 = &v22;
-  v8 = [v4 keysOfEntriesPassingTest:&v16];
+  v8 = [mapCopy keysOfEntriesPassingTest:&v16];
   v9 = v8;
   if (*(v23 + 24) == 1)
   {
-    v10 = [v8 allObjects];
-    v11 = [v4 dictionaryWithValuesForKeys:v10];
+    allObjects = [v8 allObjects];
+    v11 = [mapCopy dictionaryWithValuesForKeys:allObjects];
 
-    v4 = v11;
+    mapCopy = v11;
   }
 
-  v12 = [a1 clientModelSpecForMagicalMomentsPredictions];
-  v13 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForAppsWithMagicalMomentsMap:v4 clientModelSpec:v12];
-  v14 = [a1 clientModelForMagicalMomentsPredictions];
-  v15 = [a1 feedbackMetadataForMmMap:v4];
+  clientModelSpecForMagicalMomentsPredictions = [self clientModelSpecForMagicalMomentsPredictions];
+  v13 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForAppsWithMagicalMomentsMap:mapCopy clientModelSpec:clientModelSpecForMagicalMomentsPredictions];
+  clientModelForMagicalMomentsPredictions = [self clientModelForMagicalMomentsPredictions];
+  v15 = [self feedbackMetadataForMmMap:mapCopy];
   if (v15)
   {
-    [v14 updateSuggestions:v13 feedbackMetadata:v15];
+    [clientModelForMagicalMomentsPredictions updateSuggestions:v13 feedbackMetadata:v15];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -68,16 +68,16 @@ uint64_t __77__ATXMagicalMomentsBlendingUpdater_updateBlendingLayerWithMagicalMo
   return v4 ^ 1u;
 }
 
-+ (id)feedbackMetadataForMmMap:(id)a3
++ (id)feedbackMetadataForMmMap:(id)map
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v4 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v3;
+  v5 = mapCopy;
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -144,8 +144,8 @@ uint64_t __77__ATXMagicalMomentsBlendingUpdater_updateBlendingLayerWithMagicalMo
   v2 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:24];
   v3 = objc_alloc(MEMORY[0x277D42070]);
   v4 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v5 = [v4 blendingLayerServer];
-  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:v5];
+  blendingLayerServer = [v4 blendingLayerServer];
+  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:blendingLayerServer];
 
   return v6;
 }

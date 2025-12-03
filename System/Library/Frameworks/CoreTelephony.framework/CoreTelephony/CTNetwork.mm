@@ -1,17 +1,17 @@
 @interface CTNetwork
-- (BOOL)isEqual:(id)a3;
-- (CTNetwork)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTNetwork)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTNetwork
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -21,14 +21,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CTNetwork *)self name];
-      v7 = [(CTNetwork *)v5 name];
-      if (v6 == v7 || [v6 isEqualToString:v7])
+      v5 = equalCopy;
+      name = [(CTNetwork *)self name];
+      name2 = [(CTNetwork *)v5 name];
+      if (name == name2 || [name isEqualToString:name2])
       {
-        v8 = [(CTNetwork *)self plmn];
-        v9 = [(CTNetwork *)v5 plmn];
-        if (v8 == v9 || [v8 isEqualToString:v9])
+        plmn = [(CTNetwork *)self plmn];
+        plmn2 = [(CTNetwork *)v5 plmn];
+        if (plmn == plmn2 || [plmn isEqualToString:plmn2])
         {
           v10 = [(CTNetwork *)self rat];
           v11 = [(CTNetwork *)v5 rat];
@@ -67,11 +67,11 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTNetwork *)self name];
-  [v3 appendFormat:@", name=%@", v4];
+  name = [(CTNetwork *)self name];
+  [v3 appendFormat:@", name=%@", name];
 
-  v5 = [(CTNetwork *)self plmn];
-  [v3 appendFormat:@", plmn=%@", v5];
+  plmn = [(CTNetwork *)self plmn];
+  [v3 appendFormat:@", plmn=%@", plmn];
 
   v6 = [(CTNetwork *)self rat];
   [v3 appendFormat:@", rat=%@", v6];
@@ -81,15 +81,15 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTNetwork *)self name];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(CTNetwork *)self name];
+  v6 = [name copy];
   [v4 setName:v6];
 
-  v7 = [(CTNetwork *)self plmn];
-  v8 = [v7 copy];
+  plmn = [(CTNetwork *)self plmn];
+  v8 = [plmn copy];
   [v4 setPlmn:v8];
 
   v9 = [(CTNetwork *)self rat];
@@ -99,36 +99,36 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTNetwork *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(CTNetwork *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(CTNetwork *)self plmn];
-  [v4 encodeObject:v6 forKey:@"plmn"];
+  plmn = [(CTNetwork *)self plmn];
+  [coderCopy encodeObject:plmn forKey:@"plmn"];
 
   v7 = [(CTNetwork *)self rat];
-  [v4 encodeObject:v7 forKey:@"rat"];
+  [coderCopy encodeObject:v7 forKey:@"rat"];
 }
 
-- (CTNetwork)initWithCoder:(id)a3
+- (CTNetwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTNetwork;
   v5 = [(CTNetwork *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"plmn"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"plmn"];
     plmn = v5->_plmn;
     v5->_plmn = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rat"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rat"];
     rat = v5->_rat;
     v5->_rat = v10;
   }

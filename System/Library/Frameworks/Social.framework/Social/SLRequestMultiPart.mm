@@ -1,5 +1,5 @@
 @interface SLRequestMultiPart
-+ (id)multiPartWithName:(id)a3 payload:(id)a4 type:(id)a5 multiPartBoundary:(id)a6;
++ (id)multiPartWithName:(id)name payload:(id)payload type:(id)type multiPartBoundary:(id)boundary;
 - (NSString)uniqueIdentifier;
 - (id)multiPartHeader;
 - (id)partData;
@@ -9,19 +9,19 @@
 
 @implementation SLRequestMultiPart
 
-+ (id)multiPartWithName:(id)a3 payload:(id)a4 type:(id)a5 multiPartBoundary:(id)a6
++ (id)multiPartWithName:(id)name payload:(id)payload type:(id)type multiPartBoundary:(id)boundary
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = objc_alloc_init(a1);
-  [v14 setName:v13];
+  boundaryCopy = boundary;
+  typeCopy = type;
+  payloadCopy = payload;
+  nameCopy = name;
+  v14 = objc_alloc_init(self);
+  [v14 setName:nameCopy];
 
-  [v14 setPayload:v12];
-  [v14 setType:v11];
+  [v14 setPayload:payloadCopy];
+  [v14 setType:typeCopy];
 
-  [v14 setMultiPartBoundary:v10];
+  [v14 setMultiPartBoundary:boundaryCopy];
 
   return v14;
 }
@@ -48,14 +48,14 @@
 - (id)partData
 {
   v3 = objc_opt_new();
-  v4 = [(SLRequestMultiPart *)self payloadPreamble];
-  [v3 appendData:v4];
+  payloadPreamble = [(SLRequestMultiPart *)self payloadPreamble];
+  [v3 appendData:payloadPreamble];
 
-  v5 = [(SLRequestMultiPart *)self payload];
-  [v3 appendData:v5];
+  payload = [(SLRequestMultiPart *)self payload];
+  [v3 appendData:payload];
 
-  v6 = [(SLRequestMultiPart *)self payloadEpilogue];
-  [v3 appendData:v6];
+  payloadEpilogue = [(SLRequestMultiPart *)self payloadEpilogue];
+  [v3 appendData:payloadEpilogue];
 
   return v3;
 }
@@ -64,19 +64,19 @@
 {
   v3 = objc_opt_new();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(SLRequestMultiPart *)self name];
-  v6 = [v4 stringWithFormat:@"Content-Disposition: form-data name=%@", v5];;
+  name = [(SLRequestMultiPart *)self name];
+  v6 = [v4 stringWithFormat:@"Content-Disposition: form-data name=%@", name];;
   [v3 addObject:v6];
 
-  v7 = [(SLRequestMultiPart *)self filename];
-  if (v7)
+  filename = [(SLRequestMultiPart *)self filename];
+  if (filename)
   {
   }
 
   else
   {
-    v8 = [(SLRequestMultiPart *)self type];
-    v9 = [v8 commonPrefixWithString:@"image" options:0];
+    type = [(SLRequestMultiPart *)self type];
+    v9 = [type commonPrefixWithString:@"image" options:0];
     v10 = [v9 length];
 
     if (v10)
@@ -85,24 +85,24 @@
     }
   }
 
-  v11 = [(SLRequestMultiPart *)self filename];
+  filename2 = [(SLRequestMultiPart *)self filename];
 
-  if (v11)
+  if (filename2)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(SLRequestMultiPart *)self filename];
-    v14 = [v12 stringWithFormat:@" filename=./%@", v13];;
+    filename3 = [(SLRequestMultiPart *)self filename];
+    v14 = [v12 stringWithFormat:@" filename=./%@", filename3];;
     [v3 addObject:v14];
   }
 
   [v3 addObject:@"\r\n"];
-  v15 = [(SLRequestMultiPart *)self type];
+  type2 = [(SLRequestMultiPart *)self type];
 
-  if (v15)
+  if (type2)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(SLRequestMultiPart *)self type];
-    v18 = [v16 stringWithFormat:@"Content-Type: %@\r\n", v17];
+    type3 = [(SLRequestMultiPart *)self type];
+    v18 = [v16 stringWithFormat:@"Content-Type: %@\r\n", type3];
     [v3 addObject:v18];
   }
 
@@ -115,11 +115,11 @@
 - (id)payloadPreamble
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SLRequestMultiPart *)self multiPartBoundary];
-  v5 = [v3 stringWithFormat:@"--%@\r\n", v4];
+  multiPartBoundary = [(SLRequestMultiPart *)self multiPartBoundary];
+  v5 = [v3 stringWithFormat:@"--%@\r\n", multiPartBoundary];
 
-  v6 = [(SLRequestMultiPart *)self multiPartHeader];
-  v7 = [v5 stringByAppendingString:v6];
+  multiPartHeader = [(SLRequestMultiPart *)self multiPartHeader];
+  v7 = [v5 stringByAppendingString:multiPartHeader];
   v8 = [v7 dataUsingEncoding:4];
 
   return v8;
@@ -127,12 +127,12 @@
 
 - (unint64_t)length
 {
-  v3 = [(SLRequestMultiPart *)self payloadPreamble];
-  v4 = [v3 length];
-  v5 = [(SLRequestMultiPart *)self payload];
-  v6 = [v5 length] + v4;
-  v7 = [(SLRequestMultiPart *)self payloadEpilogue];
-  v8 = [v7 length];
+  payloadPreamble = [(SLRequestMultiPart *)self payloadPreamble];
+  v4 = [payloadPreamble length];
+  payload = [(SLRequestMultiPart *)self payload];
+  v6 = [payload length] + v4;
+  payloadEpilogue = [(SLRequestMultiPart *)self payloadEpilogue];
+  v8 = [payloadEpilogue length];
 
   return v6 + v8;
 }

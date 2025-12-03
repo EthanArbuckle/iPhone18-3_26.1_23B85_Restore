@@ -2,22 +2,22 @@
 - (BOOL)allowExpensiveNetwork;
 - (BOOL)allowsCellular;
 - (BOOL)discretionary;
-- (SUPolicyDownload)initWithDownloadOptions:(id)a3;
+- (SUPolicyDownload)initWithDownloadOptions:(id)options;
 - (int64_t)maxPreSUStagingOptionalSize;
 @end
 
 @implementation SUPolicyDownload
 
-- (SUPolicyDownload)initWithDownloadOptions:(id)a3
+- (SUPolicyDownload)initWithDownloadOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = SUPolicyDownload;
   v5 = [(SUPolicyDownload *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SUPolicyDownload *)v5 setDownloadOptions:v4];
+    [(SUPolicyDownload *)v5 setDownloadOptions:optionsCopy];
   }
 
   return v6;
@@ -25,33 +25,33 @@
 
 - (BOOL)discretionary
 {
-  v2 = [(SUPolicyDownload *)self downloadOptions];
-  v3 = [v2 isAutoDownload];
+  downloadOptions = [(SUPolicyDownload *)self downloadOptions];
+  isAutoDownload = [downloadOptions isAutoDownload];
 
-  return v3;
+  return isAutoDownload;
 }
 
 - (BOOL)allowsCellular
 {
-  v2 = [(SUPolicyDownload *)self downloadOptions];
-  v3 = [v2 isEnabledForCellular];
+  downloadOptions = [(SUPolicyDownload *)self downloadOptions];
+  isEnabledForCellular = [downloadOptions isEnabledForCellular];
 
-  return v3;
+  return isEnabledForCellular;
 }
 
 - (BOOL)allowExpensiveNetwork
 {
-  v2 = [(SUPolicyDownload *)self downloadOptions];
-  v3 = [v2 isEnabledForExpensiveNetwork];
+  downloadOptions = [(SUPolicyDownload *)self downloadOptions];
+  isEnabledForExpensiveNetwork = [downloadOptions isEnabledForExpensiveNetwork];
 
-  return v3;
+  return isEnabledForExpensiveNetwork;
 }
 
 - (int64_t)maxPreSUStagingOptionalSize
 {
-  v2 = [(SUPolicyDownload *)self downloadOptions];
-  v3 = [v2 descriptor];
-  v4 = [SUSpace maxPreSUStagingOptionalSpaceForUpdate:v3];
+  downloadOptions = [(SUPolicyDownload *)self downloadOptions];
+  descriptor = [downloadOptions descriptor];
+  v4 = [SUSpace maxPreSUStagingOptionalSpaceForUpdate:descriptor];
 
   return v4;
 }

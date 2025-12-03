@@ -3,26 +3,26 @@
 - (NSArray)items;
 - (NSString)code;
 - (NSString)codeType;
-- (SSVRedeemCodeMetadata)initWithRedeemCodeDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVRedeemCodeMetadata)initWithRedeemCodeDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSVRedeemCodeMetadata
 
-- (SSVRedeemCodeMetadata)initWithRedeemCodeDictionary:(id)a3
+- (SSVRedeemCodeMetadata)initWithRedeemCodeDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SSVRedeemCodeMetadata;
   v5 = [(SSVRedeemCodeMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"codeInfo"];
+    v6 = [dictionaryCopy objectForKey:@"codeInfo"];
     v7 = [v6 count];
 
     if (v7)
     {
-      v8 = [v4 copy];
+      v8 = [dictionaryCopy copy];
       dictionary = v5->_dictionary;
       v5->_dictionary = v8;
     }
@@ -86,15 +86,15 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSArray)items
@@ -123,12 +123,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __30__SSVRedeemCodeMetadata_items__block_invoke;
       v10[3] = &unk_1E84B3178;
-      v7 = v8;
+      v7 = array;
       v11 = v7;
       [v3 enumerateKeysAndObjectsUsingBlock:v10];
     }
@@ -157,14 +157,14 @@ void __30__SSVRedeemCodeMetadata_items__block_invoke(uint64_t a1, uint64_t a2, v
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDictionary *)self->_dictionary copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDictionary *)self->_dictionary copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_inputCode copyWithZone:a3];
+  v8 = [(NSString *)self->_inputCode copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 

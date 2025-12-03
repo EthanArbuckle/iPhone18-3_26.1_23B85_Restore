@@ -1,37 +1,37 @@
 @interface _UIPointerInteractionHoverGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (CGPoint)locationInView:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (CGPoint)locationInView:(id)view;
 @end
 
 @implementation _UIPointerInteractionHoverGestureRecognizer
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) != 0 && [(UIGestureRecognizer *)self state]< UIGestureRecognizerStateEnded;
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  if (v4 && ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged))
+  viewCopy = view;
+  if (viewCopy && ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged))
   {
     v11.receiver = self;
     v11.super_class = _UIPointerInteractionHoverGestureRecognizer;
-    [(UIHoverGestureRecognizer *)&v11 locationInView:v4];
+    [(UIHoverGestureRecognizer *)&v11 locationInView:viewCopy];
     v6 = v5;
     v8 = v7;
   }

@@ -9,39 +9,39 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(_MFAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(_MFAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(_MFAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(_MFAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
     goto LABEL_15;
   }
 
-  v4 = [MEMORY[0x29EDBA050] string];
-  v5 = [(_MFAtomTextViewAccessibility *)self accessibilityIdentifier];
-  if ([v5 isEqualToString:@"toField"])
+  accessibilityUserDefinedLabel2 = [MEMORY[0x29EDBA050] string];
+  accessibilityIdentifier = [(_MFAtomTextViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"toField"])
   {
     v6 = @"to.text";
 LABEL_11:
     v7 = accessibilityLocalizedString(v6);
-    [v4 appendString:v7];
+    [accessibilityUserDefinedLabel2 appendString:v7];
 
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"subjectField"])
+  if ([accessibilityIdentifier isEqualToString:@"subjectField"])
   {
     v6 = @"subject.text";
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"ccField"])
+  if ([accessibilityIdentifier isEqualToString:@"ccField"])
   {
     v6 = @"cc.text";
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"bccField"])
+  if ([accessibilityIdentifier isEqualToString:@"bccField"])
   {
     v6 = @"bcc.text";
     goto LABEL_11;
@@ -50,21 +50,21 @@ LABEL_11:
 LABEL_12:
   v10.receiver = self;
   v10.super_class = _MFAtomTextViewAccessibility;
-  v8 = [(_MFAtomTextViewAccessibility *)&v10 accessibilityLabel];
-  if (v8)
+  accessibilityLabel = [(_MFAtomTextViewAccessibility *)&v10 accessibilityLabel];
+  if (accessibilityLabel)
   {
-    [v4 appendString:v8];
+    [accessibilityUserDefinedLabel2 appendString:accessibilityLabel];
   }
 
 LABEL_15:
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(_MFAtomTextViewAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7528] & v3) != 0)
+  accessibilityTraits = [(_MFAtomTextViewAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7528] & accessibilityTraits) != 0)
   {
     v7.receiver = self;
     v7.super_class = _MFAtomTextViewAccessibility;
@@ -73,9 +73,9 @@ LABEL_15:
 
   else
   {
-    v6 = [(_MFAtomTextViewAccessibility *)self accessibilityFrame];
+    accessibilityFrame = [(_MFAtomTextViewAccessibility *)self accessibilityFrame];
 
-    MEMORY[0x2A1C5ECC8](v6);
+    MEMORY[0x2A1C5ECC8](accessibilityFrame);
   }
 
   result.y = v5;
@@ -94,7 +94,7 @@ LABEL_15:
   if ([v5 safeBoolForKey:@"_isTextViewCollapsed"])
   {
     v6 = [v5 safeValueForKey:@"_inactiveTextView"];
-    v7 = [v6 accessibilityValue];
+    accessibilityValue = [v6 accessibilityValue];
   }
 
   else if ([v4 count])
@@ -104,14 +104,14 @@ LABEL_15:
     v13 = 0x3032000000;
     v14 = __Block_byref_object_copy__2;
     v15 = __Block_byref_object_dispose__2;
-    v16 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __50___MFAtomTextViewAccessibility_accessibilityValue__block_invoke;
     v10[3] = &unk_29F2D1AB0;
     v10[4] = &v11;
     [v4 enumerateObjectsUsingBlock:v10];
-    v7 = [v12[5] componentsJoinedByString:{@", "}];
+    accessibilityValue = [v12[5] componentsJoinedByString:{@", "}];
     _Block_object_dispose(&v11, 8);
   }
 
@@ -119,10 +119,10 @@ LABEL_15:
   {
     v9.receiver = self;
     v9.super_class = _MFAtomTextViewAccessibility;
-    v7 = [(_MFAtomTextViewAccessibility *)&v9 accessibilityValue];
+    accessibilityValue = [(_MFAtomTextViewAccessibility *)&v9 accessibilityValue];
   }
 
-  return v7;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits

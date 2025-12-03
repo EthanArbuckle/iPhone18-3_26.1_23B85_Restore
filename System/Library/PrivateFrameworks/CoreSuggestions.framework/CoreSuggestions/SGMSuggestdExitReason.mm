@@ -1,18 +1,18 @@
 @interface SGMSuggestdExitReason
 - (SGMSuggestdExitReason)init;
-- (void)trackEventWithScalar:(unint64_t)a3 exitCode:(unint64_t)a4;
+- (void)trackEventWithScalar:(unint64_t)scalar exitCode:(unint64_t)code;
 @end
 
 @implementation SGMSuggestdExitReason
 
-- (void)trackEventWithScalar:(unint64_t)a3 exitCode:(unint64_t)a4
+- (void)trackEventWithScalar:(unint64_t)scalar exitCode:(unint64_t)code
 {
   v9[1] = *MEMORY[0x1E69E9840];
   tracker = self->_tracker;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:code];
   v9[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v7 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v7 value:scalar];
 
   v8 = *MEMORY[0x1E69E9840];
 }

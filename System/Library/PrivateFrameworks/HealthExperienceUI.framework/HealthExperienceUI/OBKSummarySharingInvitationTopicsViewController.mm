@@ -7,13 +7,13 @@
 
 - (void)hxui_primaryFooterButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2400CC();
 }
 
 - (void)hxui_secondaryFooterButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2404A0();
 }
 

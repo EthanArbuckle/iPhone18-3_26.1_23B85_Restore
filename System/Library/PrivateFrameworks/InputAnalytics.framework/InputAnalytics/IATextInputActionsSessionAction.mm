@@ -1,6 +1,6 @@
 @interface IATextInputActionsSessionAction
-- (BOOL)isMergeableWith:(id)a3;
-- (IATextInputActionsSessionAction)initWithCoder:(id)a3;
+- (BOOL)isMergeableWith:(id)with;
+- (IATextInputActionsSessionAction)initWithCoder:(id)coder;
 - (IATextInputActionsSessionBeganAction)asBegan;
 - (IATextInputActionsSessionCommitTextAction)asCommitText;
 - (IATextInputActionsSessionCopyAction)asCopy;
@@ -23,17 +23,17 @@
 - (IATextInputActionsSessionUndoAction)asUndo;
 - (_NSRange)relativeRangeBefore;
 - (id)description;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInsertedEmojiCount:(unint64_t)a3;
-- (void)setInsertedPunctuationCount:(unint64_t)a3;
-- (void)setInsertedTextLength:(unint64_t)a3;
-- (void)setInsertedTextLengthWithoutTracking:(unint64_t)a3;
-- (void)setRemovedEmojiCount:(unint64_t)a3;
-- (void)setRemovedPunctuationCount:(unint64_t)a3;
-- (void)setRemovedTextLength:(unint64_t)a3;
-- (void)setRemovedTextLengthWithoutTracking:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInsertedEmojiCount:(unint64_t)count;
+- (void)setInsertedPunctuationCount:(unint64_t)count;
+- (void)setInsertedTextLength:(unint64_t)length;
+- (void)setInsertedTextLengthWithoutTracking:(unint64_t)tracking;
+- (void)setRemovedEmojiCount:(unint64_t)count;
+- (void)setRemovedPunctuationCount:(unint64_t)count;
+- (void)setRemovedTextLength:(unint64_t)length;
+- (void)setRemovedTextLengthWithoutTracking:(unint64_t)tracking;
 @end
 
 @implementation IATextInputActionsSessionAction
@@ -43,15 +43,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)toDictionary
@@ -126,15 +126,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)description
@@ -280,15 +280,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionDeletionAction)asDeletion
@@ -296,15 +296,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionSelectionAction)asSelection
@@ -312,15 +312,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionCopyAction)asCopy
@@ -328,15 +328,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionCutAction)asCut
@@ -344,15 +344,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionPasteAction)asPaste
@@ -360,15 +360,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionUndoAction)asUndo
@@ -376,15 +376,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionRedoAction)asRedo
@@ -392,15 +392,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionKeyboardDockItemButtonPressAction)asKeyboardDockItemButtonPress
@@ -408,15 +408,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionDictationBeganAction)asDictationBegan
@@ -424,15 +424,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionDictationEndedAction)asDictationEnded
@@ -440,15 +440,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionReplaceTextAction)asReplaceText
@@ -456,15 +456,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionReplaceWithCandidateAction)asReplaceWithCandidate
@@ -472,15 +472,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionGlomojiTapAction)asGlomojiTap
@@ -488,15 +488,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionKBMenuAppearAction)asKBMenuAppear
@@ -504,15 +504,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionKBMenuInteractionAction)asKBMenuInteraction
@@ -520,15 +520,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionKBMenuDismissAction)asKBMenuDismiss
@@ -536,15 +536,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IATextInputActionsSessionCommitTextAction)asCommitText
@@ -552,26 +552,26 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setInsertedTextLength:(unint64_t)a3
+- (void)setInsertedTextLength:(unint64_t)length
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (length && (objc_msgSend_changedContent(self, a2, length) & 1) == 0)
   {
     sub_1D462E984();
   }
 
-  self->_insertedTextLength = a3;
-  v5 = a3 - objc_msgSend_removedTextLength(self, a2, a3);
+  self->_insertedTextLength = length;
+  v5 = length - objc_msgSend_removedTextLength(self, a2, length);
   objc_msgSend_setLargestSingleInsertionLength_(self, v6, 0);
   objc_msgSend_setLargestSingleDeletionLength_(self, v7, 0);
   if (v5 < 1)
@@ -590,15 +590,15 @@
   }
 }
 
-- (void)setRemovedTextLength:(unint64_t)a3
+- (void)setRemovedTextLength:(unint64_t)length
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (length && (objc_msgSend_changedContent(self, a2, length) & 1) == 0)
   {
     sub_1D462EA08();
   }
 
-  self->_removedTextLength = a3;
-  v5 = objc_msgSend_insertedTextLength(self, a2, a3) - a3;
+  self->_removedTextLength = length;
+  v5 = objc_msgSend_insertedTextLength(self, a2, length) - length;
   objc_msgSend_setLargestSingleInsertionLength_(self, v6, 0);
   objc_msgSend_setLargestSingleDeletionLength_(self, v7, 0);
   if (v5 < 1)
@@ -617,81 +617,81 @@
   }
 }
 
-- (void)setInsertedTextLengthWithoutTracking:(unint64_t)a3
+- (void)setInsertedTextLengthWithoutTracking:(unint64_t)tracking
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (tracking && (objc_msgSend_changedContent(self, a2, tracking) & 1) == 0)
   {
     sub_1D462EA8C();
   }
 
-  self->_insertedTextLength = a3;
+  self->_insertedTextLength = tracking;
 }
 
-- (void)setRemovedTextLengthWithoutTracking:(unint64_t)a3
+- (void)setRemovedTextLengthWithoutTracking:(unint64_t)tracking
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (tracking && (objc_msgSend_changedContent(self, a2, tracking) & 1) == 0)
   {
     sub_1D462EB10();
   }
 
-  self->_removedTextLength = a3;
+  self->_removedTextLength = tracking;
 }
 
-- (void)setInsertedEmojiCount:(unint64_t)a3
+- (void)setInsertedEmojiCount:(unint64_t)count
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (count && (objc_msgSend_changedContent(self, a2, count) & 1) == 0)
   {
     sub_1D462EB94();
   }
 
-  self->_insertedEmojiCount = a3;
+  self->_insertedEmojiCount = count;
 }
 
-- (void)setRemovedEmojiCount:(unint64_t)a3
+- (void)setRemovedEmojiCount:(unint64_t)count
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (count && (objc_msgSend_changedContent(self, a2, count) & 1) == 0)
   {
     sub_1D462EC18();
   }
 
-  self->_removedEmojiCount = a3;
+  self->_removedEmojiCount = count;
 }
 
-- (void)setInsertedPunctuationCount:(unint64_t)a3
+- (void)setInsertedPunctuationCount:(unint64_t)count
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (count && (objc_msgSend_changedContent(self, a2, count) & 1) == 0)
   {
     sub_1D462EC9C();
   }
 
-  self->_insertedPunctuationCount = a3;
+  self->_insertedPunctuationCount = count;
 }
 
-- (void)setRemovedPunctuationCount:(unint64_t)a3
+- (void)setRemovedPunctuationCount:(unint64_t)count
 {
-  if (a3 && (objc_msgSend_changedContent(self, a2, a3) & 1) == 0)
+  if (count && (objc_msgSend_changedContent(self, a2, count) & 1) == 0)
   {
     sub_1D462ED20();
   }
 
-  self->_removedPunctuationCount = a3;
+  self->_removedPunctuationCount = count;
 }
 
-- (BOOL)isMergeableWith:(id)a3
+- (BOOL)isMergeableWith:(id)with
 {
-  v7 = a3;
+  withCopy = with;
   v10 = objc_msgSend_source(self, v8, v9);
-  if (v10 != objc_msgSend_source(v7, v11, v12) || (v15 = objc_msgSend_flagOptions(self, v13, v14), v15 != objc_msgSend_flagOptions(v7, v16, v17)) || (v20 = objc_msgSend_textInputActionsType(self, v18, v19), v20 != objc_msgSend_textInputActionsType(v7, v21, v22)))
+  if (v10 != objc_msgSend_source(withCopy, v11, v12) || (v15 = objc_msgSend_flagOptions(self, v13, v14), v15 != objc_msgSend_flagOptions(withCopy, v16, v17)) || (v20 = objc_msgSend_textInputActionsType(self, v18, v19), v20 != objc_msgSend_textInputActionsType(withCopy, v21, v22)))
   {
     isEqualToString = 0;
     goto LABEL_9;
   }
 
   v27 = objc_msgSend_inputMode(self, v23, v24);
-  if (v27 || (objc_msgSend_inputMode(v7, v25, v26), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v27 || (objc_msgSend_inputMode(withCopy, v25, v26), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = objc_msgSend_inputMode(self, v25, v26);
-    v5 = objc_msgSend_inputMode(v7, v28, v29);
+    v5 = objc_msgSend_inputMode(withCopy, v28, v29);
     if (!objc_msgSend_isEqual_(v4, v30, v5))
     {
       isEqualToString = 0;
@@ -709,7 +709,7 @@ LABEL_13:
   }
 
   v34 = objc_msgSend_appBundleId(self, v25, v26);
-  v37 = objc_msgSend_appBundleId(v7, v35, v36);
+  v37 = objc_msgSend_appBundleId(withCopy, v35, v36);
   isEqualToString = objc_msgSend_isEqualToString_(v34, v38, v37);
 
   if (v31)
@@ -726,85 +726,85 @@ LABEL_9:
   return isEqualToString;
 }
 
-- (IATextInputActionsSessionAction)initWithCoder:(id)a3
+- (IATextInputActionsSessionAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v93.receiver = self;
   v93.super_class = IATextInputActionsSessionAction;
-  v5 = [(IAXPCObject *)&v93 initWithCoder:v4];
+  v5 = [(IAXPCObject *)&v93 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     p_relativeRangeBefore = &v5->_relativeRangeBefore;
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"relativeRangeBefore_location");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"relativeRangeBefore_location");
     v13 = objc_msgSend_unsignedLongValue(v10, v11, v12);
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"relativeRangeBefore_length");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"relativeRangeBefore_length");
     v19 = objc_msgSend_unsignedLongValue(v16, v17, v18);
     p_relativeRangeBefore->location = v13;
     v6->_relativeRangeBefore.length = v19;
 
     v20 = objc_opt_class();
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"source");
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"source");
     v6->_source = objc_msgSend_unsignedLongValue(v22, v23, v24);
 
     v25 = objc_opt_class();
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v25, @"textInputActionsType");
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v25, @"textInputActionsType");
     v6->_textInputActionsType = objc_msgSend_unsignedLongValue(v27, v28, v29);
 
     v30 = objc_opt_class();
-    v32 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"inputActionCountFromMergedActions");
+    v32 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"inputActionCountFromMergedActions");
     v6->_inputActionCountFromMergedActions = objc_msgSend_longValue(v32, v33, v34);
 
     v35 = objc_opt_class();
-    v37 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v36, v35, @"inputMode");
+    v37 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v36, v35, @"inputMode");
     inputMode = v6->_inputMode;
     v6->_inputMode = v37;
 
     v39 = objc_opt_class();
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v39, @"processBundleId");
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v39, @"processBundleId");
     processBundleId = v6->_processBundleId;
     v6->_processBundleId = v41;
 
     v43 = objc_opt_class();
-    v45 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v44, v43, @"flagOptions");
+    v45 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v44, v43, @"flagOptions");
     v6->_flagOptions = objc_msgSend_unsignedLongValue(v45, v46, v47);
 
     v48 = objc_opt_class();
-    v50 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v49, v48, @"insertedTextLength");
+    v50 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v49, v48, @"insertedTextLength");
     v6->_insertedTextLength = objc_msgSend_unsignedLongValue(v50, v51, v52);
 
     v53 = objc_opt_class();
-    v55 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v54, v53, @"insertedEmojiCount");
+    v55 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v54, v53, @"insertedEmojiCount");
     v6->_insertedEmojiCount = objc_msgSend_unsignedLongValue(v55, v56, v57);
 
     v58 = objc_opt_class();
-    v60 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v59, v58, @"insertedPunctuationCount");
+    v60 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v59, v58, @"insertedPunctuationCount");
     v6->_insertedPunctuationCount = objc_msgSend_unsignedLongValue(v60, v61, v62);
 
     v63 = objc_opt_class();
-    v65 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v64, v63, @"removedTextLength");
+    v65 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v64, v63, @"removedTextLength");
     v6->_removedTextLength = objc_msgSend_unsignedLongValue(v65, v66, v67);
 
     v68 = objc_opt_class();
-    v70 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v69, v68, @"removedEmojiCount");
+    v70 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v69, v68, @"removedEmojiCount");
     v6->_removedEmojiCount = objc_msgSend_unsignedLongValue(v70, v71, v72);
 
     v73 = objc_opt_class();
-    v75 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v74, v73, @"removedPunctuationCount");
+    v75 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v74, v73, @"removedPunctuationCount");
     v6->_removedPunctuationCount = objc_msgSend_unsignedLongValue(v75, v76, v77);
 
     v78 = objc_opt_class();
-    v80 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v79, v78, @"largestSingleInsertionLength");
+    v80 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v79, v78, @"largestSingleInsertionLength");
     v6->_largestSingleInsertionLength = objc_msgSend_unsignedLongValue(v80, v81, v82);
 
     v83 = objc_opt_class();
-    v85 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v84, v83, @"largestSingleDeletionLength");
+    v85 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v84, v83, @"largestSingleDeletionLength");
     v6->_largestSingleDeletionLength = objc_msgSend_unsignedLongValue(v85, v86, v87);
 
     v88 = objc_opt_class();
-    v90 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v89, v88, @"clientSideSessionErrors");
+    v90 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v89, v88, @"clientSideSessionErrors");
     clientSideSessionErrors = v6->_clientSideSessionErrors;
     v6->_clientSideSessionErrors = v90;
   }
@@ -812,128 +812,128 @@ LABEL_9:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v50.receiver = self;
   v50.super_class = IATextInputActionsSessionAction;
-  v4 = a3;
-  [(IAXPCObject *)&v50 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IAXPCObject *)&v50 encodeWithCoder:coderCopy];
   v6 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v5, self->_relativeRangeBefore.location, v50.receiver, v50.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v7, v6, @"relativeRangeBefore_location");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"relativeRangeBefore_location");
 
   v9 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v8, self->_relativeRangeBefore.length);
-  objc_msgSend_encodeObject_forKey_(v4, v10, v9, @"relativeRangeBefore_length");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v9, @"relativeRangeBefore_length");
 
   v12 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v11, self->_source);
-  objc_msgSend_encodeObject_forKey_(v4, v13, v12, @"source");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, v12, @"source");
 
   v15 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v14, self->_textInputActionsType);
-  objc_msgSend_encodeObject_forKey_(v4, v16, v15, @"textInputActionsType");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"textInputActionsType");
 
   v18 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v17, self->_inputActionCountFromMergedActions);
-  objc_msgSend_encodeObject_forKey_(v4, v19, v18, @"inputActionCountFromMergedActions");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v19, v18, @"inputActionCountFromMergedActions");
 
-  objc_msgSend_encodeObject_forKey_(v4, v20, self->_inputMode, @"inputMode");
-  objc_msgSend_encodeObject_forKey_(v4, v21, self->_processBundleId, @"processBundleId");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, self->_inputMode, @"inputMode");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v21, self->_processBundleId, @"processBundleId");
   v23 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v22, self->_flagOptions);
-  objc_msgSend_encodeObject_forKey_(v4, v24, v23, @"flagOptions");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"flagOptions");
 
   v26 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v25, self->_insertedTextLength);
-  objc_msgSend_encodeObject_forKey_(v4, v27, v26, @"insertedTextLength");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, v26, @"insertedTextLength");
 
   v29 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v28, self->_insertedEmojiCount);
-  objc_msgSend_encodeObject_forKey_(v4, v30, v29, @"insertedEmojiCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, v29, @"insertedEmojiCount");
 
   v32 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v31, self->_insertedPunctuationCount);
-  objc_msgSend_encodeObject_forKey_(v4, v33, v32, @"insertedPunctuationCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v33, v32, @"insertedPunctuationCount");
 
   v35 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v34, self->_removedTextLength);
-  objc_msgSend_encodeObject_forKey_(v4, v36, v35, @"removedTextLength");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v36, v35, @"removedTextLength");
 
   v38 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v37, self->_removedEmojiCount);
-  objc_msgSend_encodeObject_forKey_(v4, v39, v38, @"removedEmojiCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v39, v38, @"removedEmojiCount");
 
   v41 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v40, self->_removedPunctuationCount);
-  objc_msgSend_encodeObject_forKey_(v4, v42, v41, @"removedPunctuationCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v42, v41, @"removedPunctuationCount");
 
   v44 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v43, self->_largestSingleInsertionLength);
-  objc_msgSend_encodeObject_forKey_(v4, v45, v44, @"largestSingleInsertionLength");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v45, v44, @"largestSingleInsertionLength");
 
   v47 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v46, self->_largestSingleDeletionLength);
-  objc_msgSend_encodeObject_forKey_(v4, v48, v47, @"largestSingleDeletionLength");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v48, v47, @"largestSingleDeletionLength");
 
-  objc_msgSend_encodeObject_forKey_(v4, v49, self->_clientSideSessionErrors, @"clientSideSessionErrors");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v49, self->_clientSideSessionErrors, @"clientSideSessionErrors");
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v88.receiver = self;
   v88.super_class = IATextInputActionsSessionAction;
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(IAXPCObject *)&v88 init];
   v5 = MEMORY[0x1E695DF00];
-  v7 = objc_msgSend_objectForKeyedSubscript_(v3, v6, @"timestamp", v88.receiver, v88.super_class);
+  v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v6, @"timestamp", v88.receiver, v88.super_class);
   objc_msgSend_doubleValue(v7, v8, v9);
   v12 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(v5, v10, v11);
 
   objc_msgSend_setTimestamp_(v4, v13, v12);
-  v15 = objc_msgSend_objectForKeyedSubscript_(v3, v14, @"appBundleId");
+  v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"appBundleId");
   objc_msgSend_setAppBundleId_(v4, v16, v15);
 
-  v18 = objc_msgSend_objectForKeyedSubscript_(v3, v17, @"relativeRangeBefore_location");
+  v18 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v17, @"relativeRangeBefore_location");
   v21 = objc_msgSend_unsignedLongValue(v18, v19, v20);
-  v23 = objc_msgSend_objectForKeyedSubscript_(v3, v22, @"relativeRangeBefore_length");
+  v23 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v22, @"relativeRangeBefore_length");
   v26 = objc_msgSend_unsignedLongValue(v23, v24, v25);
   v4->_relativeRangeBefore.location = v21;
   v4->_relativeRangeBefore.length = v26;
 
-  v28 = objc_msgSend_objectForKeyedSubscript_(v3, v27, @"source");
+  v28 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v27, @"source");
   v4->_source = objc_msgSend_unsignedLongValue(v28, v29, v30);
 
-  v32 = objc_msgSend_objectForKeyedSubscript_(v3, v31, @"textInputActionsType");
+  v32 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v31, @"textInputActionsType");
   v4->_textInputActionsType = objc_msgSend_unsignedLongValue(v32, v33, v34);
 
-  v36 = objc_msgSend_objectForKeyedSubscript_(v3, v35, @"inputActionCountFromMergedActions");
+  v36 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v35, @"inputActionCountFromMergedActions");
   v4->_inputActionCountFromMergedActions = objc_msgSend_longValue(v36, v37, v38);
 
   v39 = [IATextInputActionsInputMode alloc];
-  v41 = objc_msgSend_objectForKeyedSubscript_(v3, v40, @"inputMode");
+  v41 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v40, @"inputMode");
   v43 = objc_msgSend_initFromDictionary_(v39, v42, v41);
   inputMode = v4->_inputMode;
   v4->_inputMode = v43;
 
-  v46 = objc_msgSend_objectForKeyedSubscript_(v3, v45, @"processBundleId");
+  v46 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v45, @"processBundleId");
   processBundleId = v4->_processBundleId;
   v4->_processBundleId = v46;
 
-  v49 = objc_msgSend_objectForKeyedSubscript_(v3, v48, @"flagOptions");
+  v49 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v48, @"flagOptions");
   v4->_flagOptions = objc_msgSend_unsignedLongValue(v49, v50, v51);
 
-  v53 = objc_msgSend_objectForKeyedSubscript_(v3, v52, @"insertedTextLength");
+  v53 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v52, @"insertedTextLength");
   v4->_insertedTextLength = objc_msgSend_unsignedLongValue(v53, v54, v55);
 
-  v57 = objc_msgSend_objectForKeyedSubscript_(v3, v56, @"insertedEmojiCount");
+  v57 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v56, @"insertedEmojiCount");
   v4->_insertedEmojiCount = objc_msgSend_unsignedLongValue(v57, v58, v59);
 
-  v61 = objc_msgSend_objectForKeyedSubscript_(v3, v60, @"insertedPunctuationCount");
+  v61 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v60, @"insertedPunctuationCount");
   v4->_insertedPunctuationCount = objc_msgSend_unsignedLongValue(v61, v62, v63);
 
-  v65 = objc_msgSend_objectForKeyedSubscript_(v3, v64, @"removedTextLength");
+  v65 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v64, @"removedTextLength");
   v4->_removedTextLength = objc_msgSend_unsignedLongValue(v65, v66, v67);
 
-  v69 = objc_msgSend_objectForKeyedSubscript_(v3, v68, @"removedEmojiCount");
+  v69 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v68, @"removedEmojiCount");
   v4->_removedEmojiCount = objc_msgSend_unsignedLongValue(v69, v70, v71);
 
-  v73 = objc_msgSend_objectForKeyedSubscript_(v3, v72, @"removedPunctuationCount");
+  v73 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v72, @"removedPunctuationCount");
   v4->_removedPunctuationCount = objc_msgSend_unsignedLongValue(v73, v74, v75);
 
-  v77 = objc_msgSend_objectForKeyedSubscript_(v3, v76, @"largestSingleInsertionLength");
+  v77 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v76, @"largestSingleInsertionLength");
   v4->_largestSingleInsertionLength = objc_msgSend_unsignedLongValue(v77, v78, v79);
 
-  v81 = objc_msgSend_objectForKeyedSubscript_(v3, v80, @"largestSingleDeletionLength");
+  v81 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v80, @"largestSingleDeletionLength");
   v4->_largestSingleDeletionLength = objc_msgSend_unsignedLongValue(v81, v82, v83);
 
-  v85 = objc_msgSend_objectForKeyedSubscript_(v3, v84, @"clientSideSessionErrors");
+  v85 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v84, @"clientSideSessionErrors");
 
   clientSideSessionErrors = v4->_clientSideSessionErrors;
   v4->_clientSideSessionErrors = v85;

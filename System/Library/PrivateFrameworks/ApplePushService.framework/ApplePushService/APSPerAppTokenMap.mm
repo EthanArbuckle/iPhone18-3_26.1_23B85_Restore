@@ -1,21 +1,21 @@
 @interface APSPerAppTokenMap
 - (APSPerAppTokenMap)init;
-- (BOOL)flagForTopic:(id)a3 identifier:(id)a4;
+- (BOOL)flagForTopic:(id)topic identifier:(id)identifier;
 - (BOOL)hasMissingTokens;
 - (BOOL)isEmpty;
 - (id)allPerAppTokens;
-- (id)identifiersForTopic:(id)a3;
-- (id)infoForTopic:(id)a3 identifier:(id)a4;
-- (id)tokenForTopic:(id)a3 identifier:(id)a4;
-- (id)tokensForTopic:(id)a3;
+- (id)identifiersForTopic:(id)topic;
+- (id)infoForTopic:(id)topic identifier:(id)identifier;
+- (id)tokenForTopic:(id)topic identifier:(id)identifier;
+- (id)tokensForTopic:(id)topic;
 - (id)topics;
-- (void)enumerateMissingTokensUsingBlock:(id)a3;
-- (void)enumerateTokensUsingBlock:(id)a3;
-- (void)enumerateTokensWithInfoUsingBlock:(id)a3;
+- (void)enumerateMissingTokensUsingBlock:(id)block;
+- (void)enumerateTokensUsingBlock:(id)block;
+- (void)enumerateTokensWithInfoUsingBlock:(id)block;
 - (void)removeAllTokens;
-- (void)removeIdentifier:(id)a3 forTopic:(id)a4;
-- (void)setToken:(id)a3 forInfo:(id)a4;
-- (void)setToken:(id)a3 forTopic:(id)a4 identifier:(id)a5;
+- (void)removeIdentifier:(id)identifier forTopic:(id)topic;
+- (void)setToken:(id)token forInfo:(id)info;
+- (void)setToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 @end
 
 @implementation APSPerAppTokenMap
@@ -35,83 +35,83 @@
   return v2;
 }
 
-- (void)removeIdentifier:(id)a3 forTopic:(id)a4
+- (void)removeIdentifier:(id)identifier forTopic:(id)topic
 {
-  v6 = a4;
-  v7 = &stru_10018F6A0;
-  if (a3)
+  topicCopy = topic;
+  identifierCopy = &stru_10018F6A0;
+  if (identifier)
   {
-    v7 = a3;
+    identifierCopy = identifier;
   }
 
-  v14 = v7;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v8->_enumerating)
+  v14 = identifierCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_enumerating)
   {
     v13 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"illegal modification during enumeration" userInfo:0];
     objc_exception_throw(v13);
   }
 
-  v9 = [(NSMutableDictionary *)v8->_perAppTokenMap objectForKey:v6];
+  v9 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:topicCopy];
   v10 = [v9 objectForKey:v14];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 perAppToken];
-    if (!v12)
+    perAppToken = [v10 perAppToken];
+    if (!perAppToken)
     {
-      --v8->_missingTokens;
+      --selfCopy->_missingTokens;
     }
 
     [v9 removeObjectForKey:v14];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setToken:(id)a3 forTopic:(id)a4 identifier:(id)a5
+- (void)setToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[APSAppTokenInfo alloc] initUnextendedAppTokenWithTopic:v9 identifier:v8];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  tokenCopy = token;
+  v11 = [[APSAppTokenInfo alloc] initUnextendedAppTokenWithTopic:topicCopy identifier:identifierCopy];
 
-  [(APSPerAppTokenMap *)self setToken:v10 forInfo:v11];
+  [(APSPerAppTokenMap *)self setToken:tokenCopy forInfo:v11];
 }
 
-- (void)setToken:(id)a3 forInfo:(id)a4
+- (void)setToken:(id)token forInfo:(id)info
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [v6 identifier];
-  v8 = v7;
+  tokenCopy = token;
+  infoCopy = info;
+  identifier = [infoCopy identifier];
+  v8 = identifier;
   v9 = &stru_10018F6A0;
-  if (v7)
+  if (identifier)
   {
-    v9 = v7;
+    v9 = identifier;
   }
 
   v10 = v9;
 
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_enumerating)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_enumerating)
   {
     v22 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"illegal modification during enumeration" userInfo:0];
     objc_exception_throw(v22);
   }
 
-  perAppTokenMap = v11->_perAppTokenMap;
-  v13 = [v6 topic];
-  v14 = [(NSMutableDictionary *)perAppTokenMap objectForKey:v13];
+  perAppTokenMap = selfCopy->_perAppTokenMap;
+  topic = [infoCopy topic];
+  v14 = [(NSMutableDictionary *)perAppTokenMap objectForKey:topic];
 
   if (!v14)
   {
     v14 = [NSMutableDictionary dictionaryWithCapacity:1];
-    v15 = v11->_perAppTokenMap;
-    v16 = [v6 topic];
-    [(NSMutableDictionary *)v15 setObject:v14 forKey:v16];
+    v15 = selfCopy->_perAppTokenMap;
+    topic2 = [infoCopy topic];
+    [(NSMutableDictionary *)v15 setObject:v14 forKey:topic2];
   }
 
   v17 = [v14 objectForKey:v10];
@@ -120,7 +120,7 @@
   {
     v18 = objc_alloc_init(APSPerAppTokenMapEntry);
     [v14 setObject:v18 forKey:v10];
-    if (v23)
+    if (tokenCopy)
     {
       goto LABEL_16;
     }
@@ -128,19 +128,19 @@
     goto LABEL_14;
   }
 
-  v19 = [(APSPerAppTokenMapEntry *)v17 perAppToken];
+  perAppToken = [(APSPerAppTokenMapEntry *)v17 perAppToken];
 
-  if (v23 && !v19)
+  if (tokenCopy && !perAppToken)
   {
     v20 = -1;
 LABEL_15:
-    v11->_missingTokens += v20;
+    selfCopy->_missingTokens += v20;
     goto LABEL_16;
   }
 
-  v21 = [(APSPerAppTokenMapEntry *)v18 perAppToken];
+  perAppToken2 = [(APSPerAppTokenMapEntry *)v18 perAppToken];
 
-  if (!v23 && v21)
+  if (!tokenCopy && perAppToken2)
   {
 LABEL_14:
     v20 = 1;
@@ -148,17 +148,17 @@ LABEL_14:
   }
 
 LABEL_16:
-  [(APSPerAppTokenMapEntry *)v18 setPerAppToken:v23];
-  [(APSPerAppTokenMapEntry *)v18 setInfo:v6];
+  [(APSPerAppTokenMapEntry *)v18 setPerAppToken:tokenCopy];
+  [(APSPerAppTokenMapEntry *)v18 setInfo:infoCopy];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllTokens
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_enumerating)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_enumerating)
   {
     v12 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"illegal modification during enumeration" userInfo:0];
     objc_exception_throw(v12);
@@ -168,7 +168,7 @@ LABEL_16:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v2->_perAppTokenMap;
+  obj = selfCopy->_perAppTokenMap;
   v3 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v3)
   {
@@ -182,7 +182,7 @@ LABEL_16:
           objc_enumerationMutation(obj);
         }
 
-        v5 = [(NSMutableDictionary *)v2->_perAppTokenMap objectForKey:*(*(&v19 + 1) + 8 * i)];
+        v5 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:*(*(&v19 + 1) + 8 * i)];
         v17 = 0u;
         v18 = 0u;
         v15 = 0u;
@@ -202,11 +202,11 @@ LABEL_16:
               }
 
               v10 = [v5 objectForKey:*(*(&v15 + 1) + 8 * j)];
-              v11 = [v10 perAppToken];
-              if (v11)
+              perAppToken = [v10 perAppToken];
+              if (perAppToken)
               {
                 [v10 setPerAppToken:0];
-                ++v2->_missingTokens;
+                ++selfCopy->_missingTokens;
               }
             }
 
@@ -223,96 +223,96 @@ LABEL_16:
     while (v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)tokenForTopic:(id)a3 identifier:(id)a4
+- (id)tokenForTopic:(id)topic identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  objc_sync_enter(v7);
+  topicCopy = topic;
+  selfCopy = self;
+  identifierCopy = identifier;
+  objc_sync_enter(selfCopy);
   v9 = &stru_10018F6A0;
-  if (v8)
+  if (identifierCopy)
   {
-    v9 = v8;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
 
-  v11 = [(NSMutableDictionary *)v7->_perAppTokenMap objectForKey:v6];
+  v11 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:topicCopy];
   v12 = [v11 objectForKey:v10];
-  v13 = [v12 perAppToken];
+  perAppToken = [v12 perAppToken];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  return v13;
+  return perAppToken;
 }
 
-- (id)infoForTopic:(id)a3 identifier:(id)a4
+- (id)infoForTopic:(id)topic identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  objc_sync_enter(v7);
+  topicCopy = topic;
+  selfCopy = self;
+  identifierCopy = identifier;
+  objc_sync_enter(selfCopy);
   v9 = &stru_10018F6A0;
-  if (v8)
+  if (identifierCopy)
   {
-    v9 = v8;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
 
-  v11 = [(NSMutableDictionary *)v7->_perAppTokenMap objectForKey:v6];
+  v11 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:topicCopy];
   v12 = [v11 objectForKey:v10];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 info];
+    info = [v12 info];
   }
 
   else
   {
-    v14 = 0;
+    info = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  return v14;
+  return info;
 }
 
-- (BOOL)flagForTopic:(id)a3 identifier:(id)a4
+- (BOOL)flagForTopic:(id)topic identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  objc_sync_enter(v7);
+  topicCopy = topic;
+  selfCopy = self;
+  identifierCopy = identifier;
+  objc_sync_enter(selfCopy);
   v9 = &stru_10018F6A0;
-  if (v8)
+  if (identifierCopy)
   {
-    v9 = v8;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
 
-  v11 = [(NSMutableDictionary *)v7->_perAppTokenMap objectForKey:v6];
+  v11 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:topicCopy];
   v12 = [v11 objectForKey:v10];
-  v13 = [v12 flag];
+  flag = [v12 flag];
 
-  objc_sync_exit(v7);
-  return v13;
+  objc_sync_exit(selfCopy);
+  return flag;
 }
 
 - (id)allPerAppTokens
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [NSMutableSet setWithCapacity:[(NSMutableDictionary *)v2->_perAppTokenMap count]];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [NSMutableSet setWithCapacity:[(NSMutableDictionary *)selfCopy->_perAppTokenMap count]];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = v2->_perAppTokenMap;
+  v4 = selfCopy->_perAppTokenMap;
   v5 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -326,7 +326,7 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [(APSPerAppTokenMap *)v2 tokensForTopic:*(*(&v10 + 1) + 8 * i), v10];
+        v8 = [(APSPerAppTokenMap *)selfCopy tokensForTopic:*(*(&v10 + 1) + 8 * i), v10];
         [v3 unionSet:v8];
       }
 
@@ -336,24 +336,24 @@ LABEL_16:
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)tokensForTopic:(id)a3
+- (id)tokensForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [NSMutableSet setWithCapacity:[(NSMutableDictionary *)v5->_perAppTokenMap count]];
-  v7 = [(NSMutableDictionary *)v5->_perAppTokenMap objectForKey:v4];
+  topicCopy = topic;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [NSMutableSet setWithCapacity:[(NSMutableDictionary *)selfCopy->_perAppTokenMap count]];
+  v7 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:topicCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v7 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [v7 allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -363,109 +363,109 @@ LABEL_16:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) perAppToken];
-        if (v12)
+        perAppToken = [*(*(&v14 + 1) + 8 * i) perAppToken];
+        if (perAppToken)
         {
-          [v6 addObject:v12];
+          [v6 addObject:perAppToken];
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (BOOL)hasMissingTokens
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_missingTokens > 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_missingTokens > 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_perAppTokenMap count]== 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap count]== 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)topics
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_perAppTokenMap allKeys];
-  v4 = [NSSet setWithArray:v3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_perAppTokenMap allKeys];
+  v4 = [NSSet setWithArray:allKeys];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)identifiersForTopic:(id)a3
+- (id)identifiersForTopic:(id)topic
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_perAppTokenMap objectForKey:v4];
-  v7 = [v6 allKeys];
-  v8 = [NSSet setWithArray:v7];
+  topicCopy = topic;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:topicCopy];
+  allKeys = [v6 allKeys];
+  v8 = [NSSet setWithArray:allKeys];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)enumerateMissingTokensUsingBlock:(id)a3
+- (void)enumerateMissingTokensUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(APSPerAppTokenMap *)v5 hasMissingTokens])
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(APSPerAppTokenMap *)selfCopy hasMissingTokens])
   {
-    v5->_enumerating = 1;
+    selfCopy->_enumerating = 1;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000873C0;
     v6[3] = &unk_1001882C0;
-    v7 = v4;
-    [(APSPerAppTokenMap *)v5 enumerateTokensUsingBlock:v6];
-    v5->_enumerating = 0;
+    v7 = blockCopy;
+    [(APSPerAppTokenMap *)selfCopy enumerateTokensUsingBlock:v6];
+    selfCopy->_enumerating = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)enumerateTokensUsingBlock:(id)a3
+- (void)enumerateTokensUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_enumerating = 1;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_enumerating = 1;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v5->_perAppTokenMap;
+  obj = selfCopy->_perAppTokenMap;
   v15 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v15)
   {
     v16 = *v26;
-    v17 = v5;
+    v17 = selfCopy;
     do
     {
       for (i = 0; i != v15; i = i + 1)
@@ -476,7 +476,7 @@ LABEL_16:
         }
 
         v6 = *(*(&v25 + 1) + 8 * i);
-        v7 = [(NSMutableDictionary *)v5->_perAppTokenMap objectForKey:v6, v15];
+        v7 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:v6, v15];
         v23 = 0u;
         v24 = 0u;
         v21 = 0u;
@@ -498,13 +498,13 @@ LABEL_16:
               v12 = *(*(&v21 + 1) + 8 * j);
               v20 = 0;
               v13 = [v8 objectForKey:v12];
-              v14 = [v13 perAppToken];
-              v4[2](v4, v14, v6, v12, &v20);
+              perAppToken = [v13 perAppToken];
+              blockCopy[2](blockCopy, perAppToken, v6, v12, &v20);
               if (v20 == 1)
               {
                 v17->_enumerating = 0;
 
-                v5 = v17;
+                selfCopy = v17;
                 goto LABEL_18;
               }
             }
@@ -519,7 +519,7 @@ LABEL_16:
           }
         }
 
-        v5 = v17;
+        selfCopy = v17;
       }
 
       v15 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -528,27 +528,27 @@ LABEL_16:
     while (v15);
   }
 
-  v5->_enumerating = 0;
+  selfCopy->_enumerating = 0;
 LABEL_18:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)enumerateTokensWithInfoUsingBlock:(id)a3
+- (void)enumerateTokensWithInfoUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_enumerating = 1;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_enumerating = 1;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5->_perAppTokenMap;
+  obj = selfCopy->_perAppTokenMap;
   v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v18 = *v27;
-    v19 = v5;
+    v19 = selfCopy;
     do
     {
       v17 = v6;
@@ -559,7 +559,7 @@ LABEL_18:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [(NSMutableDictionary *)v5->_perAppTokenMap objectForKey:*(*(&v26 + 1) + 8 * i)];
+        v8 = [(NSMutableDictionary *)selfCopy->_perAppTokenMap objectForKey:*(*(&v26 + 1) + 8 * i)];
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
@@ -581,15 +581,15 @@ LABEL_18:
               v13 = *(*(&v22 + 1) + 8 * j);
               v21 = 0;
               v14 = [v9 objectForKey:v13];
-              v15 = [v14 perAppToken];
-              v16 = [v14 info];
-              v4[2](v4, v15, v16, &v21);
+              perAppToken = [v14 perAppToken];
+              info = [v14 info];
+              blockCopy[2](blockCopy, perAppToken, info, &v21);
 
               if (v21 == 1)
               {
                 v19->_enumerating = 0;
 
-                v5 = v19;
+                selfCopy = v19;
                 goto LABEL_18;
               }
             }
@@ -604,7 +604,7 @@ LABEL_18:
           }
         }
 
-        v5 = v19;
+        selfCopy = v19;
       }
 
       v6 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -613,9 +613,9 @@ LABEL_18:
     while (v6);
   }
 
-  v5->_enumerating = 0;
+  selfCopy->_enumerating = 0;
 LABEL_18:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

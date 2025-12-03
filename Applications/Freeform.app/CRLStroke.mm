@@ -1,7 +1,7 @@
 @interface CRLStroke
-+ (CRLStroke)strokeWithColor:(id)a3 width:(double)a4;
-+ (CRLStroke)strokeWithColor:(id)a3 width:(double)a4 cap:(unint64_t)a5 join:(unint64_t)a6 pattern:(id)a7;
-+ (CRLStroke)strokeWithColor:(id)a3 width:(double)a4 pattern:(id)a5;
++ (CRLStroke)strokeWithColor:(id)color width:(double)width;
++ (CRLStroke)strokeWithColor:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern;
++ (CRLStroke)strokeWithColor:(id)color width:(double)width pattern:(id)pattern;
 + (id)emptyStroke;
 + (id)i_newEmptyStroke;
 + (id)i_newStroke;
@@ -9,52 +9,52 @@
 - (BOOL)canApplyDirectlyToRepRenderable;
 - (BOOL)canApplyToShapeRenderable;
 - (BOOL)isDash;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNearlyWhite;
 - (BOOL)isRoundDash;
-- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)a3;
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7;
+- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)appearance;
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform;
 - (CRLStroke)init;
-- (CRLStroke)initWithColor:(id)a3 width:(double)a4 cap:(unint64_t)a5 join:(unint64_t)a6 pattern:(id)a7 miterLimit:(double)a8;
+- (CRLStroke)initWithColor:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern miterLimit:(double)limit;
 - (NSString)description;
 - (_CRLStrokeOutsets)outsets;
 - (double)dashSpacing;
 - (double)horizontalMarginForSwatch;
-- (id)colorForCGContext:(CGContext *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)pathForLineEnd:(id)a3 wrapPath:(BOOL)a4 atPoint:(CGPoint)a5 atAngle:(double)a6 withScale:(double)a7;
-- (id)pathToStrokeFromCRLBezierPath:(id)a3;
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3;
-- (id)strokeLineEnd:(id)a3;
+- (id)colorForCGContext:(CGContext *)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)pathForLineEnd:(id)end wrapPath:(BOOL)path atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale;
+- (id)pathToStrokeFromCRLBezierPath:(id)path;
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform;
+- (id)strokeLineEnd:(id)end;
 - (unint64_t)hash;
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4;
-- (void)applyToRepRenderable:(id)a3 withScale:(double)a4;
-- (void)applyToShapeRenderable:(id)a3 insideStroke:(BOOL)a4 withScale:(double)a5;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)i_setActualWidth:(double)a3;
-- (void)i_setCap:(unint64_t)a3;
-- (void)i_setPattern:(id)a3;
-- (void)i_setPatternPropertiesFromStroke:(id)a3;
-- (void)i_setPropertiesFromStroke:(id)a3;
-- (void)i_setWidth:(double)a3;
-- (void)p_strokePathChunk:(CGPath *)a3 inContext:(CGContext *)a4 wantsInteriorStroke:(BOOL)a5;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
-- (void)paintRect:(CGRect)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5;
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke;
+- (void)applyToRepRenderable:(id)renderable withScale:(double)scale;
+- (void)applyToShapeRenderable:(id)renderable insideStroke:(BOOL)stroke withScale:(double)scale;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)i_setActualWidth:(double)width;
+- (void)i_setCap:(unint64_t)cap;
+- (void)i_setPattern:(id)pattern;
+- (void)i_setPatternPropertiesFromStroke:(id)stroke;
+- (void)i_setPropertiesFromStroke:(id)stroke;
+- (void)i_setWidth:(double)width;
+- (void)p_strokePathChunk:(CGPath *)chunk inContext:(CGContext *)context wantsInteriorStroke:(BOOL)stroke;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
+- (void)paintRect:(CGRect)rect wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context;
 @end
 
 @implementation CRLStroke
 
-- (CRLStroke)initWithColor:(id)a3 width:(double)a4 cap:(unint64_t)a5 join:(unint64_t)a6 pattern:(id)a7 miterLimit:(double)a8
+- (CRLStroke)initWithColor:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern miterLimit:(double)limit
 {
-  v14 = a3;
-  v15 = a7;
+  colorCopy = color;
+  patternCopy = pattern;
   v25.receiver = self;
   v25.super_class = CRLStroke;
   v16 = [(CRLStroke *)&v25 init];
   if (v16)
   {
-    if (a4 < 0.0)
+    if (width < 0.0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -80,28 +80,28 @@
 
       v18 = [NSString stringWithUTF8String:"[CRLStroke initWithColor:width:cap:join:pattern:miterLimit:]"];
       v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLStroke.m"];
-      [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:371 isFatal:0 description:"Stroke width (%f) should not be negative.", *&a4];
+      [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:371 isFatal:0 description:"Stroke width (%f) should not be negative.", *&width];
     }
 
-    if (a4 < 0.0)
+    if (width < 0.0)
     {
-      a4 = 0.0;
+      width = 0.0;
     }
 
-    v20 = [v14 copy];
+    v20 = [colorCopy copy];
     color = v16->_color;
     v16->_color = v20;
 
-    v16->_width = a4;
-    v16->_actualWidth = a4;
-    v16->_cap = a5;
-    v16->_join = a6;
-    v22 = [v15 copy];
+    v16->_width = width;
+    v16->_actualWidth = width;
+    v16->_cap = cap;
+    v16->_join = join;
+    v22 = [patternCopy copy];
     pattern = v16->_pattern;
     v16->_pattern = v22;
 
-    v16->_miterLimit = a8;
-    if ([v15 isRoundDash])
+    v16->_miterLimit = limit;
+    if ([patternCopy isRoundDash])
     {
       v16->_cap = 1;
     }
@@ -119,26 +119,26 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLMutableStroke allocWithZone:a3];
-  v5 = [(CRLStroke *)self color];
+  v4 = [CRLMutableStroke allocWithZone:zone];
+  color = [(CRLStroke *)self color];
   [(CRLStroke *)self width];
   v7 = v6;
   v8 = [(CRLStroke *)self cap];
-  v9 = [(CRLStroke *)self join];
-  v10 = [(CRLStroke *)self pattern];
+  join = [(CRLStroke *)self join];
+  pattern = [(CRLStroke *)self pattern];
   [(CRLStroke *)self miterLimit];
-  v12 = [(CRLStroke *)v4 initWithColor:v5 width:v8 cap:v9 join:v10 pattern:v7 miterLimit:v11];
+  v12 = [(CRLStroke *)v4 initWithColor:color width:v8 cap:join join:pattern pattern:v7 miterLimit:v11];
 
   [(CRLStroke *)self actualWidth];
   [(CRLStroke *)v12 i_setActualWidth:?];
   return v12;
 }
 
-- (void)i_setWidth:(double)a3
+- (void)i_setWidth:(double)width
 {
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -164,21 +164,21 @@
 
     v6 = [NSString stringWithUTF8String:"[CRLStroke i_setWidth:]"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLStroke.m"];
-    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:443 isFatal:0 description:"Stroke width (%f) should not be negative.", *&a3];
+    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:443 isFatal:0 description:"Stroke width (%f) should not be negative.", *&width];
   }
 
-  v8 = 0.0;
-  if (a3 >= 0.0)
+  widthCopy = 0.0;
+  if (width >= 0.0)
   {
-    v8 = a3;
+    widthCopy = width;
   }
 
-  self->_width = v8;
+  self->_width = widthCopy;
 }
 
-- (void)i_setCap:(unint64_t)a3
+- (void)i_setCap:(unint64_t)cap
 {
-  if (self->_cap != a3)
+  if (self->_cap != cap)
   {
     if ([(CRLStroke *)self isRoundDash])
     {
@@ -211,28 +211,28 @@
 
     else
     {
-      self->_cap = a3;
+      self->_cap = cap;
     }
   }
 }
 
-- (void)i_setPattern:(id)a3
+- (void)i_setPattern:(id)pattern
 {
-  v10 = a3;
-  v4 = [(CRLStroke *)self pattern];
+  patternCopy = pattern;
+  pattern = [(CRLStroke *)self pattern];
 
-  v5 = v10;
-  if (v4 != v10)
+  v5 = patternCopy;
+  if (pattern != patternCopy)
   {
-    v6 = [(CRLStroke *)self isRoundDash];
-    v7 = [v10 copy];
+    isRoundDash = [(CRLStroke *)self isRoundDash];
+    v7 = [patternCopy copy];
     pattern = self->_pattern;
     self->_pattern = v7;
 
-    if ([v10 isRoundDash])
+    if ([patternCopy isRoundDash])
     {
-      v5 = v10;
-      if (v6)
+      v5 = patternCopy;
+      if (isRoundDash)
       {
         goto LABEL_8;
       }
@@ -242,8 +242,8 @@
 
     else
     {
-      v5 = v10;
-      if (!v6)
+      v5 = patternCopy;
+      if (!isRoundDash)
       {
         goto LABEL_8;
       }
@@ -252,15 +252,15 @@
     }
 
     [(CRLStroke *)self i_setCap:v9];
-    v5 = v10;
+    v5 = patternCopy;
   }
 
 LABEL_8:
 }
 
-- (void)i_setActualWidth:(double)a3
+- (void)i_setActualWidth:(double)width
 {
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -286,21 +286,21 @@ LABEL_8:
 
     v6 = [NSString stringWithUTF8String:"[CRLStroke i_setActualWidth:]"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLStroke.m"];
-    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:497 isFatal:0 description:"Actual stroke width (%f) should not be negative.", *&a3];
+    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:497 isFatal:0 description:"Actual stroke width (%f) should not be negative.", *&width];
   }
 
-  v8 = 0.0;
-  if (a3 >= 0.0)
+  widthCopy = 0.0;
+  if (width >= 0.0)
   {
-    v8 = a3;
+    widthCopy = width;
   }
 
-  self->_actualWidth = v8;
+  self->_actualWidth = widthCopy;
 }
 
 + (id)i_newStroke
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CRLColor blackColor];
   v4 = +[CRLStrokePattern solidPattern];
   v5 = [v2 initWithColor:v3 width:0 cap:0 join:v4 pattern:1.0];
@@ -310,7 +310,7 @@ LABEL_8:
 
 + (id)i_newEmptyStroke
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CRLColor blackColor];
   v4 = +[CRLStrokePattern emptyPattern];
   v5 = [v2 initWithColor:v3 width:0 cap:0 join:v4 pattern:1.0];
@@ -324,7 +324,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_1003ED804;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34E60 != -1)
   {
     dispatch_once(&qword_101A34E60, block);
@@ -341,7 +341,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_1003ED8DC;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34E70 != -1)
   {
     dispatch_once(&qword_101A34E70, block);
@@ -352,38 +352,38 @@ LABEL_8:
   return v2;
 }
 
-+ (CRLStroke)strokeWithColor:(id)a3 width:(double)a4
++ (CRLStroke)strokeWithColor:(id)color width:(double)width
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_alloc(objc_opt_class());
   v7 = +[CRLStrokePattern solidPattern];
-  v8 = [v6 initWithColor:v5 width:0 cap:0 join:v7 pattern:a4];
+  v8 = [v6 initWithColor:colorCopy width:0 cap:0 join:v7 pattern:width];
 
   return v8;
 }
 
-+ (CRLStroke)strokeWithColor:(id)a3 width:(double)a4 pattern:(id)a5
++ (CRLStroke)strokeWithColor:(id)color width:(double)width pattern:(id)pattern
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [objc_alloc(objc_opt_class()) initWithColor:v8 width:0 cap:0 join:v7 pattern:a4];
+  patternCopy = pattern;
+  colorCopy = color;
+  v9 = [objc_alloc(objc_opt_class()) initWithColor:colorCopy width:0 cap:0 join:patternCopy pattern:width];
 
   return v9;
 }
 
-+ (CRLStroke)strokeWithColor:(id)a3 width:(double)a4 cap:(unint64_t)a5 join:(unint64_t)a6 pattern:(id)a7
++ (CRLStroke)strokeWithColor:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern
 {
-  v11 = a7;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithColor:v12 width:a5 cap:a6 join:v11 pattern:a4];
+  patternCopy = pattern;
+  colorCopy = color;
+  v13 = [objc_alloc(objc_opt_class()) initWithColor:colorCopy width:cap cap:join join:patternCopy pattern:width];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_30;
   }
@@ -400,82 +400,82 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v5 = [objc_opt_class() mutableClass];
-  if (v5 != [objc_opt_class() mutableClass])
+  mutableClass = [objc_opt_class() mutableClass];
+  if (mutableClass != [objc_opt_class() mutableClass])
   {
     goto LABEL_5;
   }
 
-  v7 = [(CRLStroke *)self supportsWidth];
-  v8 = [(CRLStroke *)v4 supportsWidth];
-  if (v7)
+  supportsWidth = [(CRLStroke *)self supportsWidth];
+  supportsWidth2 = [(CRLStroke *)equalCopy supportsWidth];
+  if (supportsWidth)
   {
-    if (!v8)
+    if (!supportsWidth2)
     {
       goto LABEL_5;
     }
 
     [(CRLStroke *)self width];
     v10 = v9;
-    [(CRLStroke *)v4 width];
+    [(CRLStroke *)equalCopy width];
     if (v10 != v11 && vabdd_f64(v10, v11) >= 0.00999999978)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v8)
+  else if (supportsWidth2)
   {
     goto LABEL_5;
   }
 
-  v12 = [(CRLStroke *)self supportsLineOptions];
-  v13 = [(CRLStroke *)v4 supportsLineOptions];
-  if (v12)
+  supportsLineOptions = [(CRLStroke *)self supportsLineOptions];
+  supportsLineOptions2 = [(CRLStroke *)equalCopy supportsLineOptions];
+  if (supportsLineOptions)
   {
-    if (!v13)
+    if (!supportsLineOptions2)
     {
       goto LABEL_5;
     }
 
     v14 = [(CRLStroke *)self cap];
-    if (v14 != [(CRLStroke *)v4 cap])
+    if (v14 != [(CRLStroke *)equalCopy cap])
     {
       goto LABEL_5;
     }
 
-    v15 = [(CRLStroke *)self join];
-    if (v15 != [(CRLStroke *)v4 join])
+    join = [(CRLStroke *)self join];
+    if (join != [(CRLStroke *)equalCopy join])
     {
       goto LABEL_5;
     }
 
     [(CRLStroke *)self miterLimit];
     v17 = v16;
-    [(CRLStroke *)v4 miterLimit];
+    [(CRLStroke *)equalCopy miterLimit];
     if (v17 != v18)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v13)
+  else if (supportsLineOptions2)
   {
     goto LABEL_5;
   }
 
-  v19 = [(CRLStroke *)self supportsPattern];
-  v20 = [(CRLStroke *)v4 supportsPattern];
-  if (v19)
+  supportsPattern = [(CRLStroke *)self supportsPattern];
+  supportsPattern2 = [(CRLStroke *)equalCopy supportsPattern];
+  if (supportsPattern)
   {
-    if (!v20)
+    if (!supportsPattern2)
     {
       goto LABEL_5;
     }
 
-    v21 = [(CRLStroke *)self pattern];
-    v22 = [(CRLStroke *)v4 pattern];
-    v23 = [v21 isEqual:v22];
+    pattern = [(CRLStroke *)self pattern];
+    pattern2 = [(CRLStroke *)equalCopy pattern];
+    v23 = [pattern isEqual:pattern2];
 
     if ((v23 & 1) == 0)
     {
@@ -483,26 +483,26 @@ LABEL_8:
     }
   }
 
-  else if (v20)
+  else if (supportsPattern2)
   {
     goto LABEL_5;
   }
 
-  v24 = [(CRLStroke *)self supportsColor];
-  v25 = [(CRLStroke *)v4 supportsColor];
-  if (v24)
+  supportsColor = [(CRLStroke *)self supportsColor];
+  supportsColor2 = [(CRLStroke *)equalCopy supportsColor];
+  if (supportsColor)
   {
-    if (v25)
+    if (supportsColor2)
     {
       color = self->_color;
-      v27 = [(CRLStroke *)v4 color];
-      if (!(color | v27))
+      color = [(CRLStroke *)equalCopy color];
+      if (!(color | color))
       {
         goto LABEL_30;
       }
 
-      v28 = v27;
-      v29 = [(CRLColor *)color isEqual:v27];
+      v28 = color;
+      v29 = [(CRLColor *)color isEqual:color];
 
       if (v29)
       {
@@ -511,7 +511,7 @@ LABEL_8:
     }
   }
 
-  else if ((v25 & 1) == 0)
+  else if ((supportsColor2 & 1) == 0)
   {
 LABEL_30:
     v6 = 1;
@@ -556,13 +556,13 @@ LABEL_31:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLStroke *)self pattern];
+  pattern = [(CRLStroke *)self pattern];
   [(CRLStroke *)self width];
   v7 = v6;
-  v8 = [(CRLStroke *)self color];
+  color = [(CRLStroke *)self color];
   v9 = sub_10050FC30([(CRLStroke *)self cap]);
   v10 = sub_10050FC54([(CRLStroke *)self join]);
-  v11 = [NSString stringWithFormat:@"<%@ %p pattern=<%@>' width=%f color=<%@> cap=%@ join=%@>", v4, self, v5, v7, v8, v9, v10];
+  v11 = [NSString stringWithFormat:@"<%@ %p pattern=<%@>' width=%f color=<%@> cap=%@ join=%@>", v4, self, pattern, v7, color, v9, v10];
 
   return v11;
 }
@@ -581,39 +581,39 @@ LABEL_31:
 
 - (BOOL)isDash
 {
-  v3 = [(CRLStrokePattern *)self->_pattern isDash];
-  if (v3)
+  isDash = [(CRLStrokePattern *)self->_pattern isDash];
+  if (isDash)
   {
-    LOBYTE(v3) = self->_cap != 1;
+    LOBYTE(isDash) = self->_cap != 1;
   }
 
-  return v3;
+  return isDash;
 }
 
 - (BOOL)isRoundDash
 {
-  v3 = [(CRLStrokePattern *)self->_pattern isRoundDash];
-  if (v3)
+  isRoundDash = [(CRLStrokePattern *)self->_pattern isRoundDash];
+  if (isRoundDash)
   {
-    LOBYTE(v3) = self->_cap == 1;
+    LOBYTE(isRoundDash) = self->_cap == 1;
   }
 
-  return v3;
+  return isRoundDash;
 }
 
-- (id)pathToStrokeFromCRLBezierPath:(id)a3
+- (id)pathToStrokeFromCRLBezierPath:(id)path
 {
-  v4 = a3;
-  v5 = -[CRLStroke pathToStrokeFromCGPath:](self, "pathToStrokeFromCGPath:", [v4 CGPath]);
-  if (v5 == [v4 CGPath])
+  pathCopy = path;
+  v5 = -[CRLStroke pathToStrokeFromCGPath:](self, "pathToStrokeFromCGPath:", [pathCopy CGPath]);
+  if (v5 == [pathCopy CGPath])
   {
-    v6 = v4;
+    v6 = pathCopy;
   }
 
   else
   {
     v6 = objc_alloc_init(CRLBezierPath);
-    [v4 copyPathAttributesTo:v6];
+    [pathCopy copyPathAttributesTo:v6];
     v7 = [CRLBezierPath bezierPathWithCGPath:v5];
     [(CRLBezierPath *)v6 appendBezierPath:v7];
   }
@@ -623,9 +623,9 @@ LABEL_31:
 
 - (_CRLStrokeOutsets)outsets
 {
-  v3 = [(CRLStroke *)self supportsWidth];
+  supportsWidth = [(CRLStroke *)self supportsWidth];
   v4 = 0.0;
-  if (v3)
+  if (supportsWidth)
   {
     [(CRLStroke *)self width];
     v4 = v5 * 0.5;
@@ -641,68 +641,68 @@ LABEL_31:
   return result;
 }
 
-- (void)i_setPropertiesFromStroke:(id)a3
+- (void)i_setPropertiesFromStroke:(id)stroke
 {
-  v4 = a3;
-  v5 = [v4 color];
-  [(CRLStroke *)self setI_color:v5];
+  strokeCopy = stroke;
+  color = [strokeCopy color];
+  [(CRLStroke *)self setI_color:color];
 
-  [v4 width];
+  [strokeCopy width];
   [(CRLStroke *)self i_setWidth:?];
-  -[CRLStroke setI_join:](self, "setI_join:", [v4 join]);
-  [v4 miterLimit];
+  -[CRLStroke setI_join:](self, "setI_join:", [strokeCopy join]);
+  [strokeCopy miterLimit];
   [(CRLStroke *)self setI_miterLimit:?];
-  [v4 actualWidth];
+  [strokeCopy actualWidth];
   [(CRLStroke *)self i_setActualWidth:?];
-  v6 = [v4 pattern];
-  [(CRLStroke *)self i_setPattern:v6];
+  pattern = [strokeCopy pattern];
+  [(CRLStroke *)self i_setPattern:pattern];
 
-  v7 = [v4 cap];
+  v7 = [strokeCopy cap];
 
   [(CRLStroke *)self i_setCap:v7];
 }
 
-- (void)i_setPatternPropertiesFromStroke:(id)a3
+- (void)i_setPatternPropertiesFromStroke:(id)stroke
 {
-  v4 = a3;
-  -[CRLStroke setI_join:](self, "setI_join:", [v4 join]);
-  [v4 miterLimit];
+  strokeCopy = stroke;
+  -[CRLStroke setI_join:](self, "setI_join:", [strokeCopy join]);
+  [strokeCopy miterLimit];
   [(CRLStroke *)self setI_miterLimit:?];
-  v5 = [v4 pattern];
-  [(CRLStroke *)self i_setPattern:v5];
+  pattern = [strokeCopy pattern];
+  [(CRLStroke *)self i_setPattern:pattern];
 
-  v6 = [v4 cap];
+  v6 = [strokeCopy cap];
 
   [(CRLStroke *)self i_setCap:v6];
 }
 
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke
 {
-  v4 = a4;
+  strokeCopy = stroke;
   v7 = [(CRLStroke *)self colorForCGContext:?];
-  CGContextSetStrokeColorWithColor(a3, [v7 CGColor]);
+  CGContextSetStrokeColorWithColor(context, [v7 CGColor]);
   width = self->_width;
-  if (v4)
+  if (strokeCopy)
   {
     width = width + width;
   }
 
-  CGContextSetLineWidth(a3, width);
+  CGContextSetLineWidth(context, width);
   v9 = sub_10019FE64(self->_join);
-  CGContextSetLineJoin(a3, v9);
-  CGContextSetMiterLimit(a3, self->_miterLimit);
+  CGContextSetLineJoin(context, v9);
+  CGContextSetMiterLimit(context, self->_miterLimit);
   cap = self->_cap;
-  [(CRLStrokePattern *)self->_pattern i_applyToContext:a3 lineWidth:&cap capStyle:self->_width * (self->_actualWidth / self->_width)];
+  [(CRLStrokePattern *)self->_pattern i_applyToContext:context lineWidth:&cap capStyle:self->_width * (self->_actualWidth / self->_width)];
   v10 = sub_10019FE64(cap);
-  CGContextSetLineCap(a3, v10);
+  CGContextSetLineCap(context, v10);
 }
 
-- (id)strokeLineEnd:(id)a3
+- (id)strokeLineEnd:(id)end
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4 && [v4 rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL)
+  endCopy = end;
+  identifier = [endCopy identifier];
+  v5 = identifier;
+  if (identifier && [identifier rangeOfString:@":"] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [v5 substringFromIndex:{objc_msgSend(v5, "rangeOfString:", @":"}];
     v6 = [CRLLineEnd lineEndWithIdentifier:v7];
@@ -710,15 +710,15 @@ LABEL_31:
 
   else
   {
-    v6 = v3;
+    v6 = endCopy;
   }
 
   return v6;
 }
 
-- (id)colorForCGContext:(CGContext *)a3
+- (id)colorForCGContext:(CGContext *)context
 {
-  if (sub_1005106C8(a3))
+  if (sub_1005106C8(context))
   {
     [objc_opt_class() colorOnSuppressedBackgrounds];
   }
@@ -732,56 +732,56 @@ LABEL_31:
   return v4;
 }
 
-- (void)paintRect:(CGRect)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5
+- (void)paintRect:(CGRect)rect wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context
 {
-  v6 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  strokeCopy = stroke;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
   CGPathAddRect(Mutable, 0, v14);
-  [(CRLStroke *)self paintPath:Mutable wantsInteriorStroke:v6 inContext:a5];
+  [(CRLStroke *)self paintPath:Mutable wantsInteriorStroke:strokeCopy inContext:context];
 
   CGPathRelease(Mutable);
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v9 = a4;
-  if ([(CRLStroke *)self shouldRender:a3])
+  strokeCopy = stroke;
+  if ([(CRLStroke *)self shouldRender:path])
   {
-    CGContextSaveGState(a5);
-    if (sub_1001903CC(a3) > 0x9C40)
+    CGContextSaveGState(context);
+    if (sub_1001903CC(path) > 0x9C40)
     {
-      v12 = [CRLBezierPath bezierPathWithCGPath:a3];
+      v12 = [CRLBezierPath bezierPathWithCGPath:path];
       v13 = [v12 pathSplitAtSubpathBoundariesWithSoftElementLimit:40000 hardElementLimit:50000];
-      v14 = [(CRLStroke *)self color];
-      [v14 alphaComponent];
+      color = [(CRLStroke *)self color];
+      [color alphaComponent];
       v16 = v15;
 
       if (v16 >= 1.0)
       {
-        [(CRLStroke *)self applyToContext:a5 insideStroke:v9];
+        [(CRLStroke *)self applyToContext:context insideStroke:strokeCopy];
       }
 
       else
       {
-        v17 = [(CRLStroke *)self color];
-        [v17 alphaComponent];
-        CGContextSetAlpha(a5, v18);
+        color2 = [(CRLStroke *)self color];
+        [color2 alphaComponent];
+        CGContextSetAlpha(context, v18);
 
-        CGContextBeginTransparencyLayer(a5, 0);
+        CGContextBeginTransparencyLayer(context, 0);
         v19 = [(CRLStroke *)self mutableCopy];
-        v20 = [v19 color];
-        v21 = [v20 colorWithAlphaComponent:1.0];
+        color3 = [v19 color];
+        v21 = [color3 colorWithAlphaComponent:1.0];
         [v19 setColor:v21];
 
-        [v19 applyToContext:a5 insideStroke:v9];
+        [v19 applyToContext:context insideStroke:strokeCopy];
       }
 
       v30 = 0u;
@@ -804,7 +804,7 @@ LABEL_31:
             }
 
             v27 = *(*(&v28 + 1) + 8 * i);
-            -[CRLStroke p_strokePathChunk:inContext:wantsInteriorStroke:](self, "p_strokePathChunk:inContext:wantsInteriorStroke:", [v27 CGPath], a5, v9);
+            -[CRLStroke p_strokePathChunk:inContext:wantsInteriorStroke:](self, "p_strokePathChunk:inContext:wantsInteriorStroke:", [v27 CGPath], context, strokeCopy);
           }
 
           v24 = [v22 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -815,108 +815,108 @@ LABEL_31:
 
       if (v16 < 1.0)
       {
-        CGContextEndTransparencyLayer(a5);
+        CGContextEndTransparencyLayer(context);
       }
     }
 
     else
     {
-      [(CRLStroke *)self applyToContext:a5 insideStroke:v9];
-      [(CRLStroke *)self p_strokePathChunk:a3 inContext:a5 wantsInteriorStroke:v9];
+      [(CRLStroke *)self applyToContext:context insideStroke:strokeCopy];
+      [(CRLStroke *)self p_strokePathChunk:path inContext:context wantsInteriorStroke:strokeCopy];
     }
 
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)p_strokePathChunk:(CGPath *)a3 inContext:(CGContext *)a4 wantsInteriorStroke:(BOOL)a5
+- (void)p_strokePathChunk:(CGPath *)chunk inContext:(CGContext *)context wantsInteriorStroke:(BOOL)stroke
 {
-  v5 = a5;
-  CGContextSaveGState(a4);
-  if (v5)
+  strokeCopy = stroke;
+  CGContextSaveGState(context);
+  if (strokeCopy)
   {
-    CGContextAddPath(a4, a3);
-    CGContextClip(a4);
+    CGContextAddPath(context, chunk);
+    CGContextClip(context);
   }
 
-  CGContextAddPath(a4, a3);
-  CGContextStrokePath(a4);
+  CGContextAddPath(context, chunk);
+  CGContextStrokePath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  CGContextSaveGState(a7);
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  CGContextSaveGState(context);
   memset(&v22, 0, sizeof(v22));
   CGAffineTransformMakeTranslation(&v22, x, y);
   v20 = v22;
-  CGAffineTransformScale(&transform, &v20, a6, a6);
+  CGAffineTransformScale(&transform, &v20, scale, scale);
   v22 = transform;
   v20 = transform;
-  CGAffineTransformRotate(&transform, &v20, a5);
+  CGAffineTransformRotate(&transform, &v20, angle);
   v22 = transform;
-  [v14 endPoint];
+  [endCopy endPoint];
   v16 = -v15;
-  [v14 endPoint];
+  [endCopy endPoint];
   v20 = v22;
   CGAffineTransformTranslate(&transform, &v20, v16, -v17);
   v22 = transform;
-  CGContextConcatCTM(a7, &transform);
-  v18 = [v14 path];
-  CGContextAddPath(a7, [v18 CGPath]);
+  CGContextConcatCTM(context, &transform);
+  path = [endCopy path];
+  CGContextAddPath(context, [path CGPath]);
 
-  if ([v14 isFilled])
+  if ([endCopy isFilled])
   {
-    CGContextFillPath(a7);
+    CGContextFillPath(context);
   }
 
   else
   {
     [(CRLStroke *)self width];
-    CGContextSetLineWidth(a7, v19 / a6);
-    CGContextSetLineJoin(a7, [v14 lineJoin]);
-    CGContextStrokePath(a7);
+    CGContextSetLineWidth(context, v19 / scale);
+    CGContextSetLineJoin(context, [endCopy lineJoin]);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
+  y = point.y;
+  x = point.x;
+  endCopy = end;
   memset(&v35, 0, sizeof(v35));
   CGAffineTransformMakeTranslation(&v35, x, y);
   t1 = v35;
-  CGAffineTransformScale(&v34, &t1, a6, a6);
+  CGAffineTransformScale(&v34, &t1, scale, scale);
   v35 = v34;
   t1 = v34;
-  CGAffineTransformRotate(&v34, &t1, a5);
+  CGAffineTransformRotate(&v34, &t1, angle);
   v35 = v34;
-  [v13 endPoint];
+  [endCopy endPoint];
   v15 = -v14;
-  [v13 endPoint];
+  [endCopy endPoint];
   t1 = v35;
   CGAffineTransformTranslate(&v34, &t1, v15, -v16);
   v35 = v34;
   t1 = v34;
-  v17 = *&a7->c;
-  *&v32.a = *&a7->a;
+  v17 = *&transform->c;
+  *&v32.a = *&transform->a;
   *&v32.c = v17;
-  *&v32.tx = *&a7->tx;
+  *&v32.tx = *&transform->tx;
   CGAffineTransformConcat(&v34, &t1, &v32);
   v35 = v34;
-  v18 = [v13 path];
-  v19 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [v18 CGPath]);
+  path = [endCopy path];
+  v19 = +[CRLBezierPath bezierPathWithCGPath:](CRLBezierPath, "bezierPathWithCGPath:", [path CGPath]);
 
   v34 = v35;
   [v19 transformUsingAffineTransform:&v34];
-  if ([v13 isFilled])
+  if ([endCopy isFilled])
   {
     [v19 bounds];
   }
@@ -925,7 +925,7 @@ LABEL_31:
   {
     [(CRLStroke *)self width];
     [v19 setLineWidth:?];
-    [v19 setLineJoinStyle:{sub_10019FE7C(objc_msgSend(v13, "lineJoin"))}];
+    [v19 setLineJoinStyle:{sub_10019FE7C(objc_msgSend(endCopy, "lineJoin"))}];
     [v19 boundsIncludingStroke];
   }
 
@@ -945,40 +945,40 @@ LABEL_31:
   return result;
 }
 
-- (id)pathForLineEnd:(id)a3 wrapPath:(BOOL)a4 atPoint:(CGPoint)a5 atAngle:(double)a6 withScale:(double)a7
+- (id)pathForLineEnd:(id)end wrapPath:(BOOL)path atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale
 {
-  y = a5.y;
-  x = a5.x;
-  v13 = a3;
+  y = point.y;
+  x = point.x;
+  endCopy = end;
   memset(&v23, 0, sizeof(v23));
   CGAffineTransformMakeTranslation(&v23, x, y);
   v21 = v23;
-  CGAffineTransformScale(&v22, &v21, a7, a7);
+  CGAffineTransformScale(&v22, &v21, scale, scale);
   v23 = v22;
   v21 = v22;
-  CGAffineTransformRotate(&v22, &v21, a6);
+  CGAffineTransformRotate(&v22, &v21, angle);
   v23 = v22;
-  [v13 endPoint];
+  [endCopy endPoint];
   v15 = -v14;
-  [v13 endPoint];
+  [endCopy endPoint];
   v21 = v23;
   CGAffineTransformTranslate(&v22, &v21, v15, -v16);
   v23 = v22;
-  if (a4)
+  if (path)
   {
-    [v13 wrapPath];
+    [endCopy wrapPath];
   }
 
   else
   {
-    [v13 path];
+    [endCopy path];
   }
   v17 = ;
   v18 = [v17 copy];
 
   v22 = v23;
   [v18 transformUsingAffineTransform:&v22];
-  if ([v13 isFilled])
+  if ([endCopy isFilled])
   {
     [v18 setLineWidth:0.0];
   }
@@ -987,10 +987,10 @@ LABEL_31:
   {
     [(CRLStroke *)self width];
     [v18 setLineWidth:?];
-    [v18 setLineJoinStyle:{sub_10019FE7C(objc_msgSend(v13, "lineJoin"))}];
-    v19 = [v18 strokedCopy];
+    [v18 setLineJoinStyle:{sub_10019FE7C(objc_msgSend(endCopy, "lineJoin"))}];
+    strokedCopy = [v18 strokedCopy];
 
-    v18 = v19;
+    v18 = strokedCopy;
   }
 
   return v18;
@@ -998,11 +998,11 @@ LABEL_31:
 
 - (double)horizontalMarginForSwatch
 {
-  v2 = [(CRLStroke *)self pattern];
-  v3 = [v2 isRoundDash];
+  pattern = [(CRLStroke *)self pattern];
+  isRoundDash = [pattern isRoundDash];
 
   result = 0.0;
-  if (v3)
+  if (isRoundDash)
   {
     return -3.0;
   }
@@ -1010,39 +1010,39 @@ LABEL_31:
   return result;
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CRLStroke *)self horizontalMarginForSwatch];
   v11 = v10;
   if ([(CRLStroke *)self isNullStroke])
   {
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     v12 = (height + -35.0) * 0.5;
     v13 = y + floorf(v12) + 0.5;
     v14 = width + v11 * -2.0 + -1.0;
-    v15 = [(CRLStroke *)self color];
-    CGContextSetStrokeColorWithColor(a4, [v15 CGColor]);
+    color = [(CRLStroke *)self color];
+    CGContextSetStrokeColorWithColor(context, [color CGColor]);
 
     *lengths = xmmword_101465790;
-    CGContextSetLineWidth(a4, 1.0);
-    CGContextSetLineDash(a4, 0.0, lengths, 2uLL);
+    CGContextSetLineWidth(context, 1.0);
+    CGContextSetLineDash(context, 0.0, lengths, 2uLL);
     v41.origin.x = x + v11 + 0.5;
     v41.origin.y = v13;
     v41.size.width = v14;
     v41.size.height = 35.0;
-    CGContextStrokeRect(a4, v41);
-    CGContextRestoreGState(a4);
-    v16 = [(CRLStroke *)self color];
-    CGContextSetFillColorWithColor(a4, [v16 CGColor]);
+    CGContextStrokeRect(context, v41);
+    CGContextRestoreGState(context);
+    color2 = [(CRLStroke *)self color];
+    CGContextSetFillColorWithColor(context, [color2 CGColor]);
 
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"NONE_STROKE_LABEL" value:@"None" table:0];
 
-    UIGraphicsPushContext(a4);
+    UIGraphicsPushContext(context);
     v19 = [UIFont boldSystemFontOfSize:16.0];
     v37 = NSFontAttributeName;
     v38 = v19;
@@ -1070,9 +1070,9 @@ LABEL_31:
     v26 = MidY + v25 * -0.5;
     [(CRLStroke *)self width];
     v28 = v27;
-    v29 = [(CRLStroke *)self pattern];
+    pattern = [(CRLStroke *)self pattern];
     [(CRLStroke *)self width];
-    [v29 p_renderableLengthForUnclippedPatternWithLineWidth:? withinAvailableLength:?];
+    [pattern p_renderableLengthForUnclippedPatternWithLineWidth:? withinAvailableLength:?];
     v31 = v30;
 
     Mutable = CGPathCreateMutable();
@@ -1098,7 +1098,7 @@ LABEL_31:
     v47.size.height = v28;
     v36 = CGRectGetMidY(v47);
     CGPathAddLineToPoint(Mutable, 0, MaxX, v36);
-    [(CRLStroke *)self paintPath:Mutable inContext:a4];
+    [(CRLStroke *)self paintPath:Mutable inContext:context];
 
     CGPathRelease(Mutable);
   }
@@ -1111,21 +1111,21 @@ LABEL_31:
     return 0;
   }
 
-  v4 = [(CRLStroke *)self color];
-  v5 = [v4 isNearlyWhite];
+  color = [(CRLStroke *)self color];
+  isNearlyWhite = [color isNearlyWhite];
 
-  return v5;
+  return isNearlyWhite;
 }
 
-- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)a3
+- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)appearance
 {
   if ([(CRLStroke *)self isNullStroke])
   {
     return 0;
   }
 
-  v6 = [(CRLStroke *)self color];
-  v7 = [v6 requiresOutlineOnBackgroundWithAppearance:a3];
+  color = [(CRLStroke *)self color];
+  v7 = [color requiresOutlineOnBackgroundWithAppearance:appearance];
 
   return v7;
 }
@@ -1137,18 +1137,18 @@ LABEL_31:
     return 1;
   }
 
-  v3 = [(CRLStroke *)self color];
-  v4 = [v3 isOpaque];
+  color = [(CRLStroke *)self color];
+  isOpaque = [color isOpaque];
 
-  v5 = [(CRLStroke *)self pattern];
-  if ([v5 count])
+  pattern = [(CRLStroke *)self pattern];
+  if ([pattern count])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 patternType] != 1;
+    v6 = [pattern patternType] != 1;
   }
 
   v8 = [(CRLStroke *)self cap];
@@ -1158,7 +1158,7 @@ LABEL_31:
     v9 = 0;
   }
 
-  if (v4)
+  if (isOpaque)
   {
     v7 = v9;
   }
@@ -1171,9 +1171,9 @@ LABEL_31:
   return v7;
 }
 
-- (void)applyToRepRenderable:(id)a3 withScale:(double)a4
+- (void)applyToRepRenderable:(id)renderable withScale:(double)scale
 {
-  v6 = a3;
+  renderableCopy = renderable;
   if (![(CRLStroke *)self canApplyDirectlyToRepRenderable])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1205,20 +1205,20 @@ LABEL_31:
 
   if ([(CRLStroke *)self shouldRender])
   {
-    v10 = [(CRLStroke *)self color];
-    [v6 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    color = [(CRLStroke *)self color];
+    [renderableCopy setBorderColor:{objc_msgSend(color, "CGColor")}];
 
     [(CRLStroke *)self width];
-    v12 = v11 * a4;
+    v12 = v11 * scale;
   }
 
   else
   {
-    [v6 setBorderColor:0];
+    [renderableCopy setBorderColor:0];
     v12 = 0.0;
   }
 
-  [v6 setBorderWidth:v12];
+  [renderableCopy setBorderWidth:v12];
 }
 
 - (BOOL)canApplyToShapeRenderable
@@ -1233,10 +1233,10 @@ LABEL_31:
   return [(CRLStroke *)self isMemberOfClass:v4];
 }
 
-- (void)applyToShapeRenderable:(id)a3 insideStroke:(BOOL)a4 withScale:(double)a5
+- (void)applyToShapeRenderable:(id)renderable insideStroke:(BOOL)stroke withScale:(double)scale
 {
-  v6 = a4;
-  v8 = a3;
+  strokeCopy = stroke;
+  renderableCopy = renderable;
   if (![(CRLStroke *)self canApplyToShapeRenderable])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1269,42 +1269,42 @@ LABEL_31:
   if ([(CRLStroke *)self shouldRender])
   {
     [(CRLStroke *)self width];
-    v13 = v12 * a5;
-    v14 = [(CRLStroke *)self color];
-    [v8 setStrokeColor:{objc_msgSend(v14, "CGColor")}];
+    v13 = v12 * scale;
+    color = [(CRLStroke *)self color];
+    [renderableCopy setStrokeColor:{objc_msgSend(color, "CGColor")}];
 
     v15 = v13 + v13;
-    if (!v6)
+    if (!strokeCopy)
     {
       v15 = v13;
     }
 
-    [v8 setLineWidth:v15];
+    [renderableCopy setLineWidth:v15];
     [(CRLStroke *)self miterLimit];
-    [v8 setMiterLimit:?];
-    [v8 setCGLineCap:{sub_10019FE64(-[CRLStroke cap](self, "cap"))}];
-    [v8 setCGLineJoin:{sub_10019FE64(-[CRLStroke join](self, "join"))}];
+    [renderableCopy setMiterLimit:?];
+    [renderableCopy setCGLineCap:{sub_10019FE64(-[CRLStroke cap](self, "cap"))}];
+    [renderableCopy setCGLineJoin:{sub_10019FE64(-[CRLStroke join](self, "join"))}];
     if ([(CRLStroke *)self supportsPattern])
     {
-      v16 = [(CRLStroke *)self pattern];
-      [v16 p_applyToShapeRenderable:v8 lineWidth:v13];
+      pattern = [(CRLStroke *)self pattern];
+      [pattern p_applyToShapeRenderable:renderableCopy lineWidth:v13];
     }
 
     else
     {
-      [v8 setLineDashPattern:0];
+      [renderableCopy setLineDashPattern:0];
     }
   }
 
   else
   {
-    [v8 setStrokeColor:0];
+    [renderableCopy setStrokeColor:0];
   }
 }
 
-- (id)strokeByTransformingByTransform:(CGAffineTransform *)a3
+- (id)strokeByTransformingByTransform:(CGAffineTransform *)transform
 {
-  v3 = fmin(a3->a, a3->d);
+  v3 = fmin(transform->a, transform->d);
   v4 = [(CRLStroke *)self mutableCopy];
   [v4 width];
   [v4 setWidth:{fmax(floor(v3 * v5), 0.25)}];

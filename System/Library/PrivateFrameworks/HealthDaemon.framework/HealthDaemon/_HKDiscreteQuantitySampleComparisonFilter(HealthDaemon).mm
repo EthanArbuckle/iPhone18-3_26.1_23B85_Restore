@@ -6,78 +6,78 @@
 
 - (id)predicateWithProfile:()HealthDaemon
 {
-  [a1 operatorType];
+  [self operatorType];
   v4 = HDSQLiteComparisonTypeForPredicateOperator();
-  v5 = [a1 keyPath];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CCC720]];
+  keyPath = [self keyPath];
+  v6 = [keyPath isEqualToString:*MEMORY[0x277CCC720]];
 
   if (v6)
   {
-    v7 = [(_HKDiscreteQuantitySampleComparisonFilter *)a1 _comparisonQuantityAsNumber];
-    v8 = HDQuantitySampleStatisticsEntityPredicateForMinValue(v4, v7);
+    _comparisonQuantityAsNumber = [(_HKDiscreteQuantitySampleComparisonFilter *)self _comparisonQuantityAsNumber];
+    v8 = HDQuantitySampleStatisticsEntityPredicateForMinValue(v4, _comparisonQuantityAsNumber);
 LABEL_13:
-    v19 = v8;
+    falsePredicate = v8;
 
     goto LABEL_14;
   }
 
-  v9 = [a1 keyPath];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCC6F8]];
+  keyPath2 = [self keyPath];
+  v10 = [keyPath2 isEqualToString:*MEMORY[0x277CCC6F8]];
 
   if (v10)
   {
-    v7 = [(_HKDiscreteQuantitySampleComparisonFilter *)a1 _comparisonQuantityAsNumber];
-    v8 = HDQuantitySampleStatisticsEntityPredicateForMaxValue(v4, v7);
+    _comparisonQuantityAsNumber = [(_HKDiscreteQuantitySampleComparisonFilter *)self _comparisonQuantityAsNumber];
+    v8 = HDQuantitySampleStatisticsEntityPredicateForMaxValue(v4, _comparisonQuantityAsNumber);
     goto LABEL_13;
   }
 
-  v11 = [a1 keyPath];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CCC728]];
+  keyPath3 = [self keyPath];
+  v12 = [keyPath3 isEqualToString:*MEMORY[0x277CCC728]];
 
   if (v12)
   {
-    v7 = [(_HKDiscreteQuantitySampleComparisonFilter *)a1 _comparisonQuantityAsNumber];
-    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentValue(v4, v7);
+    _comparisonQuantityAsNumber = [(_HKDiscreteQuantitySampleComparisonFilter *)self _comparisonQuantityAsNumber];
+    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentValue(v4, _comparisonQuantityAsNumber);
     goto LABEL_13;
   }
 
-  v13 = [a1 keyPath];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CCC740]];
+  keyPath4 = [self keyPath];
+  v14 = [keyPath4 isEqualToString:*MEMORY[0x277CCC740]];
 
   if (v14)
   {
-    v7 = [a1 value];
-    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentStartDate(v4, v7);
+    _comparisonQuantityAsNumber = [self value];
+    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentStartDate(v4, _comparisonQuantityAsNumber);
     goto LABEL_13;
   }
 
-  v15 = [a1 keyPath];
-  v16 = [v15 isEqualToString:*MEMORY[0x277CCC738]];
+  keyPath5 = [self keyPath];
+  v16 = [keyPath5 isEqualToString:*MEMORY[0x277CCC738]];
 
   if (v16)
   {
-    v7 = [a1 value];
-    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentEndDate(v4, v7);
+    _comparisonQuantityAsNumber = [self value];
+    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentEndDate(v4, _comparisonQuantityAsNumber);
     goto LABEL_13;
   }
 
-  v17 = [a1 keyPath];
-  v18 = [v17 isEqualToString:*MEMORY[0x277CCC730]];
+  keyPath6 = [self keyPath];
+  v18 = [keyPath6 isEqualToString:*MEMORY[0x277CCC730]];
 
   if (v18)
   {
-    v7 = [a1 value];
-    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentDuration(v4, v7);
+    _comparisonQuantityAsNumber = [self value];
+    v8 = HDQuantitySampleStatisticsEntityPredicateForMostRecentDuration(v4, _comparisonQuantityAsNumber);
     goto LABEL_13;
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:a1 file:@"_HKDiscreteQuantitySampleComparisonFilter+HealthDaemon.m" lineNumber:38 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKDiscreteQuantitySampleComparisonFilter+HealthDaemon.m" lineNumber:38 description:@"Unreachable code has been executed"];
 
-  v19 = [MEMORY[0x277D10B70] falsePredicate];
+  falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
 LABEL_14:
 
-  return v19;
+  return falsePredicate;
 }
 
 @end

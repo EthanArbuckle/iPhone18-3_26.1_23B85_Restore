@@ -1,7 +1,7 @@
 @interface CRLPulseAnimationController
-- (CRLPulseAnimationController)initWithDelegate:(id)a3;
+- (CRLPulseAnimationController)initWithDelegate:(id)delegate;
 - (unint64_t)pulseAnimationStyle;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)disconnect;
 - (void)reset;
 - (void)startAnimating;
@@ -11,16 +11,16 @@
 
 @implementation CRLPulseAnimationController
 
-- (CRLPulseAnimationController)initWithDelegate:(id)a3
+- (CRLPulseAnimationController)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = CRLPulseAnimationController;
   v6 = [(CRLPulseAnimationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v7->_duration = 0.1;
     v7->_pulseOffset = 6.0;
   }
@@ -44,24 +44,24 @@
   self->_delegate = 0;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
+  stopCopy = stop;
   if (self->_pulsating)
   {
-    v7 = v5;
+    v7 = stopCopy;
     self->_pulsating = 0;
     if (self->_autohide)
     {
       [(CRLHighlightController *)self hide];
-      v6 = [(CRLHighlightController *)self layer];
-      [v6 removeAllAnimations];
+      layer = [(CRLHighlightController *)self layer];
+      [layer removeAllAnimations];
 
       [(CRLHighlightController *)self setImage:0];
     }
 
     [(CRLPulseAnimationControllerProtocol *)self->_delegate pulseAnimationDidStopForPulse:self];
-    v5 = v7;
+    stopCopy = v7;
   }
 }
 
@@ -70,8 +70,8 @@
   pulsating = self->_pulsating;
   self->_pulsating = 0;
   [(CRLHighlightController *)self hide];
-  v4 = [(CRLHighlightController *)self layer];
-  [v4 removeAllAnimations];
+  layer = [(CRLHighlightController *)self layer];
+  [layer removeAllAnimations];
 
   [(CRLHighlightController *)self setImage:0];
   if (pulsating)
@@ -96,8 +96,8 @@
 
 - (void)startAnimatingStandardPulse
 {
-  v3 = [(CRLHighlightController *)self layer];
-  [v3 removeAllAnimations];
+  layer = [(CRLHighlightController *)self layer];
+  [layer removeAllAnimations];
 
   if ([(CRLHighlightController *)self path])
   {
@@ -196,8 +196,8 @@
 
     [v19 setDuration:self->_duration];
     [v19 setDelegate:self];
-    v27 = [(CRLHighlightController *)self layerToAnimate];
-    [v27 addAnimation:v19 forKey:@"PulseAnimation"];
+    layerToAnimate = [(CRLHighlightController *)self layerToAnimate];
+    [layerToAnimate addAnimation:v19 forKey:@"PulseAnimation"];
   }
 
   else
@@ -210,14 +210,14 @@
 
 - (void)startAnimating
 {
-  v3 = [(CRLPulseAnimationController *)self pulseAnimationStyle];
-  if (v3 == 1)
+  pulseAnimationStyle = [(CRLPulseAnimationController *)self pulseAnimationStyle];
+  if (pulseAnimationStyle == 1)
   {
 
     [(CRLPulseAnimationController *)self startAnimatingStandardThreePhasePulse];
   }
 
-  else if (!v3)
+  else if (!pulseAnimationStyle)
   {
 
     [(CRLPulseAnimationController *)self startAnimatingStandardPulse];

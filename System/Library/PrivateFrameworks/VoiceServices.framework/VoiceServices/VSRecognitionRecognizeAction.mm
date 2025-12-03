@@ -1,87 +1,87 @@
 @interface VSRecognitionRecognizeAction
 - (BOOL)_keywordIndexChanged;
-- (BOOL)_setAudioInputPath:(id)a3;
-- (BOOL)_setBluetoothInputAllowed:(BOOL)a3;
-- (BOOL)_setDebugDumpEnabled:(BOOL)a3 dumpPath:(id)a4;
-- (BOOL)_setEngineResetRequired:(BOOL)a3;
-- (BOOL)_setPreferredEngine:(int)a3;
-- (VSRecognitionRecognizeAction)initWithModelIdentifier:(id)a3;
-- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)a3 info:(void *)a4;
+- (BOOL)_setAudioInputPath:(id)path;
+- (BOOL)_setBluetoothInputAllowed:(BOOL)allowed;
+- (BOOL)_setDebugDumpEnabled:(BOOL)enabled dumpPath:(id)path;
+- (BOOL)_setEngineResetRequired:(BOOL)required;
+- (BOOL)_setPreferredEngine:(int)engine;
+- (VSRecognitionRecognizeAction)initWithModelIdentifier:(id)identifier;
+- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)callbacks info:(void *)info;
 - (float)_inputLevel;
 - (float)_inputLevelDB;
-- (id)_keywordAtIndex:(int64_t)a3;
+- (id)_keywordAtIndex:(int64_t)index;
 - (id)_keywords;
 - (id)cancel;
 - (id)perform;
 - (int64_t)_keywordCount;
 - (void)_configureNewRecognitionInstance;
-- (void)_handleRecognitionCompleted:(__VSRecognition *)a3 withResults:(__CFArray *)a4 error:(__CFError *)a5;
-- (void)_handleRecognitionPrepared:(__VSRecognition *)a3;
-- (void)_handleRecognitionStarted:(__VSRecognition *)a3;
-- (void)_handledThreadedResults:(id)a3 nextAction:(id)a4;
+- (void)_handleRecognitionCompleted:(__VSRecognition *)completed withResults:(__CFArray *)results error:(__CFError *)error;
+- (void)_handleRecognitionPrepared:(__VSRecognition *)prepared;
+- (void)_handleRecognitionStarted:(__VSRecognition *)started;
+- (void)_handledThreadedResults:(id)results nextAction:(id)action;
 - (void)_releaseFromPrepare;
 - (void)_reset;
-- (void)_setResults:(id)a3;
+- (void)_setResults:(id)results;
 - (void)dealloc;
 @end
 
 @implementation VSRecognitionRecognizeAction
 
-- (void)_handledThreadedResults:(id)a3 nextAction:(id)a4
+- (void)_handledThreadedResults:(id)results nextAction:(id)action
 {
-  if (self->_results == a3)
+  if (self->_results == results)
   {
     [(VSRecognitionRecognizeAction *)self _setResults:0];
 
-    [(VSRecognitionAction *)self completeWithNextAction:a4 error:0];
+    [(VSRecognitionAction *)self completeWithNextAction:action error:0];
   }
 }
 
-- (void)_handleRecognitionCompleted:(__VSRecognition *)a3 withResults:(__CFArray *)a4 error:(__CFError *)a5
+- (void)_handleRecognitionCompleted:(__VSRecognition *)completed withResults:(__CFArray *)results error:(__CFError *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (self->_recognition != a3)
+  if (self->_recognition != completed)
   {
     goto LABEL_51;
   }
 
-  v8 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = 0;
   v11 = 1;
-  if (!a4 || a5)
+  if (!results || error)
   {
     v19 = 0;
-    v16 = 0;
+    createHandler = 0;
   }
 
   else
   {
-    v12 = [(__CFArray *)a4 count];
+    v12 = [(__CFArray *)results count];
     v14 = v12 - 1;
     if (v12 < 1)
     {
       v10 = 0;
       v9 = 0;
       v19 = 0;
-      v16 = 0;
+      createHandler = 0;
     }
 
     else
     {
-      v28 = 0;
+      modelIdentifier = 0;
       v29 = 0;
       v9 = 0;
       v15 = 0;
-      v16 = 0;
+      createHandler = 0;
       v17 = 0;
       v18 = 1;
       *&v13 = 138412290;
       v26 = v13;
-      otherArray = a4;
+      otherArray = results;
       while (1)
       {
-        v19 = [(__CFArray *)a4 objectAtIndex:v15, v26];
+        v19 = [(__CFArray *)results objectAtIndex:v15, v26];
         if (*&self->_recognizeFlags)
         {
           v20 = VSGetLogDefault();
@@ -95,20 +95,20 @@
 
         if (v18)
         {
-          v16 = [v19 createHandler];
+          createHandler = [v19 createHandler];
           ++v17;
-          if (v16)
+          if (createHandler)
           {
             v21 = objc_opt_respondsToSelector();
             v9 = v21;
             if (v15 >= v14)
             {
-              a4 = [(__CFArray *)a4 subarrayWithRange:v15, 1];
+              results = [(__CFArray *)results subarrayWithRange:v15, 1];
             }
 
             else if (v21)
             {
-              v28 = [v19 modelIdentifier];
+              modelIdentifier = [v19 modelIdentifier];
               if (v15)
               {
                 v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -148,9 +148,9 @@
           break;
         }
 
-        v18 = v16 == 0;
+        v18 = createHandler == 0;
         ++v15;
-        if (!((v16 == 0) | v9 & 1))
+        if (!((createHandler == 0) | v9 & 1))
         {
           v9 = 0;
           break;
@@ -158,7 +158,7 @@
       }
 
       v11 = v17 == 0;
-      a5 = 0;
+      error = 0;
       v10 = v29;
     }
   }
@@ -166,31 +166,31 @@
   [(VSRecognitionRecognizeAction *)self _setResults:0];
   if (v10)
   {
-    v22 = v10;
+    resultsCopy = v10;
   }
 
   else
   {
-    v22 = a4;
+    resultsCopy = results;
   }
 
-  if (a5 || !v11)
+  if (error || !v11)
   {
-    if (v16)
+    if (createHandler)
     {
-      if ((objc_opt_respondsToSelector() & 1) == 0 || ![v16 requiresThreadedProcessing])
+      if ((objc_opt_respondsToSelector() & 1) == 0 || ![createHandler requiresThreadedProcessing])
       {
         if (v9)
         {
-          [(__CFArray *)v22 makeObjectsPerformSelector:sel_setRecognitionAction_ withObject:self];
-          v23 = [v16 actionForRecognitionResults:v22];
-          [(__CFArray *)v22 makeObjectsPerformSelector:sel_setRecognitionAction_ withObject:0];
+          [(__CFArray *)resultsCopy makeObjectsPerformSelector:sel_setRecognitionAction_ withObject:self];
+          _actionForEmptyResults = [createHandler actionForRecognitionResults:resultsCopy];
+          [(__CFArray *)resultsCopy makeObjectsPerformSelector:sel_setRecognitionAction_ withObject:0];
         }
 
         else
         {
           [v19 setRecognitionAction:self];
-          v23 = [v16 actionForRecognitionResult:v19];
+          _actionForEmptyResults = [createHandler actionForRecognitionResult:v19];
           [v19 setRecognitionAction:0];
         }
 
@@ -199,19 +199,19 @@
 
       if ((v9 & 1) == 0)
       {
-        v22 = [MEMORY[0x277CBEA60] arrayWithObject:v19];
+        resultsCopy = [MEMORY[0x277CBEA60] arrayWithObject:v19];
       }
 
-      [(VSRecognitionRecognizeAction *)self _setResults:v22];
+      [(VSRecognitionRecognizeAction *)self _setResults:resultsCopy];
       [objc_msgSend(-[VSRecognitionAction _session](self "_session")];
     }
 
-    v23 = 0;
+    _actionForEmptyResults = 0;
   }
 
   else
   {
-    v23 = [(VSRecognitionRecognizeAction *)self _actionForEmptyResults];
+    _actionForEmptyResults = [(VSRecognitionRecognizeAction *)self _actionForEmptyResults];
   }
 
 LABEL_46:
@@ -224,24 +224,24 @@ LABEL_46:
 
   if (!self->_results)
   {
-    [(VSRecognitionAction *)self completeWithNextAction:v23 error:a5];
+    [(VSRecognitionAction *)self completeWithNextAction:_actionForEmptyResults error:error];
   }
 
 LABEL_51:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRecognitionStarted:(__VSRecognition *)a3
+- (void)_handleRecognitionStarted:(__VSRecognition *)started
 {
-  if (self->_recognition == a3)
+  if (self->_recognition == started)
   {
     *&self->_recognizeFlags |= 0x20u;
   }
 }
 
-- (void)_handleRecognitionPrepared:(__VSRecognition *)a3
+- (void)_handleRecognitionPrepared:(__VSRecognition *)prepared
 {
-  if (self->_recognition == a3 && [-[VSRecognitionAction _session](self "_session")] && self->_recognition)
+  if (self->_recognition == prepared && [-[VSRecognitionAction _session](self "_session")] && self->_recognition)
   {
 
     [(VSRecognitionRecognizeAction *)self _releaseFromPrepare];
@@ -269,13 +269,13 @@ LABEL_51:
   [(VSRecognitionRecognizeAction *)self _setResults:0];
 }
 
-- (void)_setResults:(id)a3
+- (void)_setResults:(id)results
 {
   results = self->_results;
-  if (results != a3)
+  if (results != results)
   {
 
-    self->_results = a3;
+    self->_results = results;
   }
 }
 
@@ -400,7 +400,7 @@ LABEL_4:
   }
 }
 
-- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)a3 info:(void *)a4
+- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)callbacks info:(void *)info
 {
   v4 = *MEMORY[0x277CBECE8];
   if (self->_modelIdentifier)
@@ -413,25 +413,25 @@ LABEL_4:
     modelIdentifier = @"_default";
   }
 
-  return _VSRecognitionCreate(*MEMORY[0x277CBECE8], modelIdentifier, 0, a3, a4);
+  return _VSRecognitionCreate(*MEMORY[0x277CBECE8], modelIdentifier, 0, callbacks, info);
 }
 
-- (BOOL)_setEngineResetRequired:(BOOL)a3
+- (BOOL)_setEngineResetRequired:(BOOL)required
 {
   recognizeFlags = self->_recognizeFlags;
-  if ((((recognizeFlags & 8) == 0) ^ a3))
+  if ((((recognizeFlags & 8) == 0) ^ required))
   {
 LABEL_9:
     LOBYTE(v7) = 1;
     return v7;
   }
 
-  v4 = a3;
+  requiredCopy = required;
   recognition = self->_recognition;
   if (!recognition)
   {
 LABEL_5:
-    if (v4)
+    if (requiredCopy)
     {
       v8 = 8;
     }
@@ -445,7 +445,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v7 = VSRecognitionSetEngineResetRequired(recognition, a3);
+  v7 = VSRecognitionSetEngineResetRequired(recognition, required);
   if (v7)
   {
     recognizeFlags = self->_recognizeFlags;
@@ -455,10 +455,10 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_setAudioInputPath:(id)a3
+- (BOOL)_setAudioInputPath:(id)path
 {
   audioInputPath = self->_audioInputPath;
-  if (audioInputPath == a3)
+  if (audioInputPath == path)
   {
     goto LABEL_6;
   }
@@ -468,13 +468,13 @@ LABEL_5:
   {
 LABEL_5:
 
-    self->_audioInputPath = a3;
+    self->_audioInputPath = path;
 LABEL_6:
     LOBYTE(v7) = 1;
     return v7;
   }
 
-  v7 = VSRecognitionSetAudioInputPath(recognition, a3);
+  v7 = VSRecognitionSetAudioInputPath(recognition, path);
   if (v7)
   {
     audioInputPath = self->_audioInputPath;
@@ -484,26 +484,26 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_setPreferredEngine:(int)a3
+- (BOOL)_setPreferredEngine:(int)engine
 {
   recognizeFlags = self->_recognizeFlags;
-  if (((*&recognizeFlags >> 1) & 3) == a3)
+  if (((*&recognizeFlags >> 1) & 3) == engine)
   {
     goto LABEL_6;
   }
 
-  v4 = a3;
+  engineCopy = engine;
   recognition = self->_recognition;
   if (!recognition)
   {
 LABEL_5:
-    *&self->_recognizeFlags = *&recognizeFlags & 0xF9 | (2 * (v4 & 3));
+    *&self->_recognizeFlags = *&recognizeFlags & 0xF9 | (2 * (engineCopy & 3));
 LABEL_6:
     LOBYTE(v7) = 1;
     return v7;
   }
 
-  v7 = VSRecognitionSetPreferredEngine(recognition, a3);
+  v7 = VSRecognitionSetPreferredEngine(recognition, engine);
   if (v7)
   {
     *&recognizeFlags = self->_recognizeFlags;
@@ -513,14 +513,14 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_setDebugDumpEnabled:(BOOL)a3 dumpPath:(id)a4
+- (BOOL)_setDebugDumpEnabled:(BOOL)enabled dumpPath:(id)path
 {
-  if ((*&self->_recognizeFlags & 1) == a3)
+  if ((*&self->_recognizeFlags & 1) == enabled)
   {
     return 1;
   }
 
-  v5 = a3;
+  enabledCopy = enabled;
 
   self->_debugDumpPath = 0;
   recognition = self->_recognition;
@@ -528,33 +528,33 @@ LABEL_6:
   {
     v10 = 1;
 LABEL_11:
-    if (v5)
+    if (enabledCopy)
     {
-      if (a4 || (v12 = self->_recognition) == 0)
+      if (path || (v12 = self->_recognition) == 0)
       {
-        v11 = a4;
+        pathCopy = path;
       }
 
       else
       {
-        v11 = VSRecognitionCopyDebugDumpPath(v12);
+        pathCopy = VSRecognitionCopyDebugDumpPath(v12);
       }
 
-      self->_debugDumpPath = v11;
+      self->_debugDumpPath = pathCopy;
     }
 
     goto LABEL_17;
   }
 
-  v8 = *MEMORY[0x277CBEEE8];
-  if (a4)
+  pathCopy2 = *MEMORY[0x277CBEEE8];
+  if (path)
   {
-    v8 = a4;
+    pathCopy2 = path;
   }
 
-  if (v5)
+  if (enabledCopy)
   {
-    v9 = v8;
+    v9 = pathCopy2;
   }
 
   else
@@ -571,7 +571,7 @@ LABEL_11:
 LABEL_17:
   if (v10)
   {
-    *&self->_recognizeFlags = *&self->_recognizeFlags & 0xFE | v5;
+    *&self->_recognizeFlags = *&self->_recognizeFlags & 0xFE | enabledCopy;
     return 1;
   }
 
@@ -592,20 +592,20 @@ LABEL_17:
 
 - (int64_t)_keywordCount
 {
-  v2 = [(VSRecognitionRecognizeAction *)self _keywords];
+  _keywords = [(VSRecognitionRecognizeAction *)self _keywords];
 
-  return [v2 count];
+  return [_keywords count];
 }
 
-- (id)_keywordAtIndex:(int64_t)a3
+- (id)_keywordAtIndex:(int64_t)index
 {
-  v4 = [(VSRecognitionRecognizeAction *)self _keywords];
-  if ([v4 count] <= a3)
+  _keywords = [(VSRecognitionRecognizeAction *)self _keywords];
+  if ([_keywords count] <= index)
   {
     return 0;
   }
 
-  return [v4 objectAtIndex:a3];
+  return [_keywords objectAtIndex:index];
 }
 
 - (id)_keywords
@@ -653,10 +653,10 @@ LABEL_17:
   }
 }
 
-- (BOOL)_setBluetoothInputAllowed:(BOOL)a3
+- (BOOL)_setBluetoothInputAllowed:(BOOL)allowed
 {
   recognizeFlags = self->_recognizeFlags;
-  if (((((recognizeFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((recognizeFlags & 0x10) == 0) ^ allowed) & 1) == 0)
   {
     if (self->_recognition)
     {
@@ -684,12 +684,12 @@ LABEL_17:
   [(VSRecognitionAction *)&v4 dealloc];
 }
 
-- (VSRecognitionRecognizeAction)initWithModelIdentifier:(id)a3
+- (VSRecognitionRecognizeAction)initWithModelIdentifier:(id)identifier
 {
   v4 = [(VSRecognitionRecognizeAction *)self init];
   if (v4)
   {
-    v4->_modelIdentifier = a3;
+    v4->_modelIdentifier = identifier;
   }
 
   return v4;

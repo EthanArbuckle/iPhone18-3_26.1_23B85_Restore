@@ -1,20 +1,20 @@
 @interface MTNumberDeresAction
-- (MTNumberDeresAction)initWithField:(id)a3 configDictionary:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (MTNumberDeresAction)initWithField:(id)field configDictionary:(id)dictionary;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation MTNumberDeresAction
 
-- (MTNumberDeresAction)initWithField:(id)a3 configDictionary:(id)a4
+- (MTNumberDeresAction)initWithField:(id)field configDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = MTNumberDeresAction;
-  v7 = [(MTTreatmentAction *)&v24 initWithField:a3 configDictionary:v6];
+  v7 = [(MTTreatmentAction *)&v24 initWithField:field configDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"precision"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"precision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -22,7 +22,7 @@
       [(MTNumberDeresAction *)v7 setPrecision:?];
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"buckets"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"buckets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,17 +85,17 @@ LABEL_16:
   return v7;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = MTNumberDeresAction;
-  v5 = [(MTTreatmentAction *)&v21 performAction:a3 context:a4];
+  v5 = [(MTTreatmentAction *)&v21 performAction:action context:context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MTNumberDeresAction *)self buckets];
-    if (![v6 count])
+    buckets = [(MTNumberDeresAction *)self buckets];
+    if (![buckets count])
     {
       goto LABEL_12;
     }
@@ -103,11 +103,11 @@ LABEL_16:
     v22 = @"start";
     v23[0] = v5;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    v8 = [v6 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(v6 usingComparator:{"count"), 1536, &__block_literal_global_6}];
+    v8 = [buckets indexOfObject:v7 inSortedRange:0 options:objc_msgSend(buckets usingComparator:{"count"), 1536, &__block_literal_global_6}];
 
     if (v8 && v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v6 objectAtIndexedSubscript:v8 - 1];
+      v9 = [buckets objectAtIndexedSubscript:v8 - 1];
       v10 = [v9 objectForKeyedSubscript:@"value"];
       v11 = v10;
       if (v10)

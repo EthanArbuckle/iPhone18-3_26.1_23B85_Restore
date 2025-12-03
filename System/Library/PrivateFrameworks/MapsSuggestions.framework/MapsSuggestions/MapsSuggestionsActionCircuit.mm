@@ -1,31 +1,31 @@
 @interface MapsSuggestionsActionCircuit
-- (MapsSuggestionsActionCircuit)initWithTriggers:(id)a3 conditions:(id)a4 type:(unint64_t)a5 action:(id)a6;
+- (MapsSuggestionsActionCircuit)initWithTriggers:(id)triggers conditions:(id)conditions type:(unint64_t)type action:(id)action;
 - (NSString)description;
 - (Queue)dispatchQueue;
 - (id).cxx_construct;
 - (id)objectForJSON;
 - (uint64_t)_q_passedAllConditions;
 - (void)_q_passedAllConditions;
-- (void)_q_sendStateForStep:(uint64_t)a1;
-- (void)_q_startRunBecauseOfTrigger:(uint64_t)a1;
-- (void)_q_triggerFired:(uint64_t)a1;
-- (void)addCondition:(id)a3;
-- (void)addTrigger:(id)a3;
+- (void)_q_sendStateForStep:(uint64_t)step;
+- (void)_q_startRunBecauseOfTrigger:(uint64_t)trigger;
+- (void)_q_triggerFired:(uint64_t)fired;
+- (void)addCondition:(id)condition;
+- (void)addTrigger:(id)trigger;
 - (void)dealloc;
-- (void)removeCondition:(id)a3;
-- (void)removeTrigger:(id)a3;
-- (void)triggerFired:(id)a3;
+- (void)removeCondition:(id)condition;
+- (void)removeTrigger:(id)trigger;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsActionCircuit
 
-- (MapsSuggestionsActionCircuit)initWithTriggers:(id)a3 conditions:(id)a4 type:(unint64_t)a5 action:(id)a6
+- (MapsSuggestionsActionCircuit)initWithTriggers:(id)triggers conditions:(id)conditions type:(unint64_t)type action:(id)action
 {
   v66 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v12)
+  triggersCopy = triggers;
+  conditionsCopy = conditions;
+  actionCopy = action;
+  if (!actionCopy)
   {
     v48 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
     goto LABEL_24;
   }
 
-  if (!v10)
+  if (!triggersCopy)
   {
     v48 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@
     goto LABEL_24;
   }
 
-  if (!v11)
+  if (!conditionsCopy)
   {
     v48 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@
 
 LABEL_24:
 
-    v47 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
@@ -91,10 +91,10 @@ LABEL_24:
   v14 = v13;
   if (v13)
   {
-    *&v13->_anon_30[16] = a5;
+    *&v13->_anon_30[16] = type;
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [v12 uniqueName];
-    v17 = [v15 initWithFormat:@"MapsSuggestionsActionCircuitQueue{%@}", v16];
+    uniqueName = [actionCopy uniqueName];
+    v17 = [v15 initWithFormat:@"MapsSuggestionsActionCircuitQueue{%@}", uniqueName];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     MSg::Queue::Queue(location, v17, v18);
     v19 = *location;
@@ -108,17 +108,17 @@ LABEL_24:
     v14->_queue._name = v21;
 
     v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v50 = [v12 uniqueName];
-    v51 = [v23 initWithFormat:@"MapsSuggestionsActionCircuit{%@}", v50];
+    uniqueName2 = [actionCopy uniqueName];
+    v51 = [v23 initWithFormat:@"MapsSuggestionsActionCircuit{%@}", uniqueName2];
     v24 = [MapsSuggestionsObservers alloc];
     v52 = v14->_queue._innerQueue;
     v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v26 = [v12 uniqueName];
-    v27 = [v25 initWithFormat:@"MapsSuggestionsActionCircuitObservers{%@}", v26];
+    uniqueName3 = [actionCopy uniqueName];
+    v27 = [v25 initWithFormat:@"MapsSuggestionsActionCircuitObservers{%@}", uniqueName3];
     v28 = [(MapsSuggestionsObservers *)v24 initWithCallbackQueue:v52 name:v27];
-    v29 = v12;
-    v30 = [v10 copy];
-    v31 = [v11 copy];
+    v29 = actionCopy;
+    v30 = [triggersCopy copy];
+    v31 = [conditionsCopy copy];
     circuits = v14->_config.circuits;
     v14->_config.circuits = v51;
 
@@ -191,10 +191,10 @@ LABEL_24:
   }
 
   self = v14;
-  v47 = self;
+  selfCopy = self;
 LABEL_25:
 
-  return v47;
+  return selfCopy;
 }
 
 uint64_t __72__MapsSuggestionsActionCircuit_initWithTriggers_conditions_type_action___block_invoke(uint64_t a1)
@@ -264,21 +264,21 @@ uint64_t __72__MapsSuggestionsActionCircuit_initWithTriggers_conditions_type_act
   [(MapsSuggestionsActionCircuit *)&v7 dealloc];
 }
 
-- (void)addTrigger:(id)a3
+- (void)addTrigger:(id)trigger
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsActionCircuit *)self uniqueName];
-    v7 = [v4 uniqueName];
+    uniqueName = [(MapsSuggestionsActionCircuit *)self uniqueName];
+    uniqueName2 = [triggerCopy uniqueName];
     *buf = 138412802;
-    v12 = v6;
+    v12 = uniqueName;
     v13 = 2080;
     v14 = "[MapsSuggestionsActionCircuit addTrigger:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uniqueName2;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -286,7 +286,7 @@ uint64_t __72__MapsSuggestionsActionCircuit_initWithTriggers_conditions_type_act
   v9[1] = 3221225472;
   v9[2] = __43__MapsSuggestionsActionCircuit_addTrigger___block_invoke;
   v9[3] = &unk_1E81F7520;
-  v8 = v4;
+  v8 = triggerCopy;
   v10 = v8;
   MSg::Queue::async<MapsSuggestionsActionCircuit>(&self->_queue, self, v9);
 }
@@ -301,21 +301,21 @@ void __43__MapsSuggestionsActionCircuit_addTrigger___block_invoke(uint64_t a1, v
   [*(a1 + 32) registerObserver:v5];
 }
 
-- (void)addCondition:(id)a3
+- (void)addCondition:(id)condition
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conditionCopy = condition;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsActionCircuit *)self uniqueName];
-    v7 = [v4 uniqueName];
+    uniqueName = [(MapsSuggestionsActionCircuit *)self uniqueName];
+    uniqueName2 = [conditionCopy uniqueName];
     *buf = 138412802;
-    v12 = v6;
+    v12 = uniqueName;
     v13 = 2080;
     v14 = "[MapsSuggestionsActionCircuit addCondition:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uniqueName2;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -323,7 +323,7 @@ void __43__MapsSuggestionsActionCircuit_addTrigger___block_invoke(uint64_t a1, v
   v9[1] = 3221225472;
   v9[2] = __45__MapsSuggestionsActionCircuit_addCondition___block_invoke;
   v9[3] = &unk_1E81F7520;
-  v8 = v4;
+  v8 = conditionCopy;
   v10 = v8;
   MSg::Queue::async<MapsSuggestionsActionCircuit>(&self->_queue, self, v9);
 }
@@ -336,20 +336,20 @@ void __45__MapsSuggestionsActionCircuit_addCondition___block_invoke(uint64_t a1,
   v5[7] = v3;
 }
 
-- (void)removeTrigger:(id)a3
+- (void)removeTrigger:(id)trigger
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsActionCircuit *)self uniqueName];
+    uniqueName = [(MapsSuggestionsActionCircuit *)self uniqueName];
     *buf = 138412802;
-    v11 = v6;
+    v11 = uniqueName;
     v12 = 2080;
     v13 = "[MapsSuggestionsActionCircuit removeTrigger:]";
     v14 = 2048;
-    v15 = v4;
+    v15 = triggerCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %p", buf, 0x20u);
   }
 
@@ -357,7 +357,7 @@ void __45__MapsSuggestionsActionCircuit_addCondition___block_invoke(uint64_t a1,
   v8[1] = 3221225472;
   v8[2] = __46__MapsSuggestionsActionCircuit_removeTrigger___block_invoke;
   v8[3] = &unk_1E81F7520;
-  v7 = v4;
+  v7 = triggerCopy;
   v9 = v7;
   MSg::Queue::async<MapsSuggestionsActionCircuit>(&self->_queue, self, v8);
 }
@@ -377,20 +377,20 @@ void __46__MapsSuggestionsActionCircuit_removeTrigger___block_invoke(uint64_t a1
   v3[6] = v5;
 }
 
-- (void)removeCondition:(id)a3
+- (void)removeCondition:(id)condition
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conditionCopy = condition;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsActionCircuit *)self uniqueName];
+    uniqueName = [(MapsSuggestionsActionCircuit *)self uniqueName];
     *buf = 138412802;
-    v11 = v6;
+    v11 = uniqueName;
     v12 = 2080;
     v13 = "[MapsSuggestionsActionCircuit removeCondition:]";
     v14 = 2048;
-    v15 = v4;
+    v15 = conditionCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %p", buf, 0x20u);
   }
 
@@ -398,7 +398,7 @@ void __46__MapsSuggestionsActionCircuit_removeTrigger___block_invoke(uint64_t a1
   v8[1] = 3221225472;
   v8[2] = __48__MapsSuggestionsActionCircuit_removeCondition___block_invoke;
   v8[3] = &unk_1E81F7520;
-  v7 = v4;
+  v7 = conditionCopy;
   v9 = v7;
   MSg::Queue::async<MapsSuggestionsActionCircuit>(&self->_queue, self, v8);
 }
@@ -427,9 +427,9 @@ void __48__MapsSuggestionsActionCircuit_removeCondition___block_invoke(uint64_t 
     v3 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [v1 uniqueName];
+      uniqueName = [v1 uniqueName];
       *buf = 138412546;
-      v23 = v4;
+      v23 = uniqueName;
       v24 = 2080;
       v25 = "[MapsSuggestionsActionCircuit _q_passedAllConditions]";
       _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "{%@} %s", buf, 0x16u);
@@ -471,14 +471,14 @@ void __48__MapsSuggestionsActionCircuit_removeCondition___block_invoke(uint64_t 
             v12 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
             {
-              v13 = [v11 uniqueName];
+              uniqueName2 = [v11 uniqueName];
               *buf = 138412290;
-              v23 = v13;
+              v23 = uniqueName2;
               _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "RUNCONDITION{%@} failed", buf, 0xCu);
             }
 
-            v14 = [v11 uniqueName];
-            v15 = [v14 copy];
+            uniqueName3 = [v11 uniqueName];
+            v15 = [uniqueName3 copy];
             v16 = *(v1 + 80);
             *(v1 + 80) = v15;
 
@@ -504,15 +504,15 @@ void __48__MapsSuggestionsActionCircuit_removeCondition___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_q_sendStateForStep:(uint64_t)a1
+- (void)_q_sendStateForStep:(uint64_t)step
 {
   v3 = a2;
-  if (a1)
+  if (step)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [a1 objectForJSON];
-    objc_initWeak(&location, a1);
-    v5 = *(a1 + 32);
+    dispatch_assert_queue_V2(*(step + 8));
+    objectForJSON = [step objectForJSON];
+    objc_initWeak(&location, step);
+    v5 = *(step + 32);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__MapsSuggestionsActionCircuit__q_sendStateForStep___block_invoke;
@@ -520,12 +520,12 @@ void __48__MapsSuggestionsActionCircuit_removeCondition___block_invoke(uint64_t 
     objc_copyWeak(&v14, &location);
     v6 = v3;
     v12 = v6;
-    v7 = v4;
+    v7 = objectForJSON;
     v13 = v7;
     [v5 callBlock:v11];
     if (v6 == @"didAct")
     {
-      v8 = *(a1 + 32);
+      v8 = *(step + 32);
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __52__MapsSuggestionsActionCircuit__q_sendStateForStep___block_invoke_44;
@@ -540,38 +540,38 @@ void __48__MapsSuggestionsActionCircuit_removeCondition___block_invoke(uint64_t 
   }
 }
 
-- (void)_q_startRunBecauseOfTrigger:(uint64_t)a1
+- (void)_q_startRunBecauseOfTrigger:(uint64_t)trigger
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (trigger)
   {
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [a1 uniqueName];
-      v6 = [v3 uniqueName];
+      uniqueName = [trigger uniqueName];
+      uniqueName2 = [v3 uniqueName];
       *buf = 138412802;
-      v15 = v5;
+      v15 = uniqueName;
       v16 = 2080;
       v17 = "[MapsSuggestionsActionCircuit _q_startRunBecauseOfTrigger:]";
       v18 = 2112;
-      v19 = v6;
+      v19 = uniqueName2;
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
     }
 
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v7 = [v3 uniqueName];
-    v8 = [v7 copy];
-    v9 = *(a1 + 72);
-    *(a1 + 72) = v8;
+    dispatch_assert_queue_V2(*(trigger + 8));
+    uniqueName3 = [v3 uniqueName];
+    v8 = [uniqueName3 copy];
+    v9 = *(trigger + 72);
+    *(trigger + 72) = v8;
 
-    v10 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    v10 = *(trigger + 88);
+    *(trigger + 88) = 0;
 
-    [(MapsSuggestionsActionCircuit *)a1 _q_sendStateForStep:?];
-    objc_initWeak(buf, a1);
-    v11 = *(a1 + 40);
+    [(MapsSuggestionsActionCircuit *)trigger _q_sendStateForStep:?];
+    objc_initWeak(buf, trigger);
+    v11 = *(trigger + 40);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __60__MapsSuggestionsActionCircuit__q_startRunBecauseOfTrigger___block_invoke;
@@ -650,32 +650,32 @@ void __60__MapsSuggestionsActionCircuit__q_startRunBecauseOfTrigger___block_invo
   }
 }
 
-- (void)_q_triggerFired:(uint64_t)a1
+- (void)_q_triggerFired:(uint64_t)fired
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (fired)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [v3 uniqueName];
-    v5 = [v4 copy];
-    v6 = *(a1 + 72);
-    *(a1 + 72) = v5;
+    dispatch_assert_queue_V2(*(fired + 8));
+    uniqueName = [v3 uniqueName];
+    v5 = [uniqueName copy];
+    v6 = *(fired + 72);
+    *(fired + 72) = v5;
 
-    [(MapsSuggestionsActionCircuit *)a1 _q_sendStateForStep:?];
-    if (([(MapsSuggestionsActionCircuit *)a1 _q_passedAllConditions]& 1) != 0)
+    [(MapsSuggestionsActionCircuit *)fired _q_sendStateForStep:?];
+    if (([(MapsSuggestionsActionCircuit *)fired _q_passedAllConditions]& 1) != 0)
     {
-      *(a1 + 96) = 1;
+      *(fired + 96) = 1;
       v7 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        v8 = [a1 uniqueName];
+        uniqueName2 = [fired uniqueName];
         v11 = 138412290;
-        v12 = v8;
+        v12 = uniqueName2;
         _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "{%@} is allowed to run!", &v11, 0xCu);
       }
 
-      [(MapsSuggestionsActionCircuit *)a1 _q_startRunBecauseOfTrigger:v3];
+      [(MapsSuggestionsActionCircuit *)fired _q_startRunBecauseOfTrigger:v3];
     }
 
     else
@@ -683,28 +683,28 @@ void __60__MapsSuggestionsActionCircuit__q_startRunBecauseOfTrigger___block_invo
       v9 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [a1 uniqueName];
-        [(MapsSuggestionsActionCircuit *)v10 _q_triggerFired:v9];
+        uniqueName3 = [fired uniqueName];
+        [(MapsSuggestionsActionCircuit *)uniqueName3 _q_triggerFired:v9];
       }
 
-      [(MapsSuggestionsActionCircuit *)v9 _q_triggerFired:a1];
+      [(MapsSuggestionsActionCircuit *)v9 _q_triggerFired:fired];
     }
   }
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  firedCopy = fired;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsActionCircuit *)self uniqueName];
-    v7 = [v4 uniqueName];
+    uniqueName = [(MapsSuggestionsActionCircuit *)self uniqueName];
+    uniqueName2 = [firedCopy uniqueName];
     *buf = 138412546;
-    v12 = v6;
+    v12 = uniqueName;
     v13 = 2112;
-    v14 = v7;
+    v14 = uniqueName2;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} fired TRIGGER{%@}!", buf, 0x16u);
   }
 
@@ -712,7 +712,7 @@ void __60__MapsSuggestionsActionCircuit__q_startRunBecauseOfTrigger___block_invo
   v9[1] = 3221225472;
   v9[2] = __45__MapsSuggestionsActionCircuit_triggerFired___block_invoke;
   v9[3] = &unk_1E81F7520;
-  v8 = v4;
+  v8 = firedCopy;
   v10 = v8;
   MSg::Queue::async<MapsSuggestionsActionCircuit>(&self->_queue, self, v9);
 }
@@ -811,19 +811,19 @@ void __52__MapsSuggestionsActionCircuit__q_sendStateForStep___block_invoke_44(ui
           v10 = v9;
           if (v9)
           {
-            v11 = [v9 nameForJSON];
-            v49 = v11;
-            v12 = [v10 objectForJSON];
-            v50[0] = v12;
-            v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
+            nameForJSON = [v9 nameForJSON];
+            v49 = nameForJSON;
+            objectForJSON = [v10 objectForJSON];
+            v50[0] = objectForJSON;
+            null = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
+            null = [MEMORY[0x1E695DFB0] null];
           }
 
-          [v4 addObject:v13];
+          [v4 addObject:null];
         }
 
         v6 = [v5 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -832,17 +832,17 @@ void __52__MapsSuggestionsActionCircuit__q_sendStateForStep___block_invoke_44(ui
       while (v6);
     }
 
-    v37 = [v4 copy];
+    null2 = [v4 copy];
     v14 = v40;
   }
 
   else
   {
     v14 = 0;
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47[1] = v37;
+  v47[1] = null2;
   v46[2] = @"conditions";
   v15 = v36;
   if (v15)
@@ -879,8 +879,8 @@ void __52__MapsSuggestionsActionCircuit__q_sendStateForStep___block_invoke_44(ui
           }
           v23 = ;
 
-          v24 = [v22 nameForJSON];
-          [v16 setObject:v23 forKeyedSubscript:v24];
+          nameForJSON2 = [v22 nameForJSON];
+          [v16 setObject:v23 forKeyedSubscript:nameForJSON2];
         }
 
         v18 = [v17 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -889,15 +889,15 @@ void __52__MapsSuggestionsActionCircuit__q_sendStateForStep___block_invoke_44(ui
       while (v18);
     }
 
-    v25 = [v16 copy];
+    null3 = [v16 copy];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47[2] = v25;
+  v47[2] = null3;
   v46[3] = @"firedTriggerName";
   v26 = MSg::jsonFor(v39);
   v47[3] = v26;

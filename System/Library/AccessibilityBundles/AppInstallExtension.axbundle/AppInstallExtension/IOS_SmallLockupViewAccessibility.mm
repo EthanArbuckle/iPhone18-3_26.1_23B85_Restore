@@ -11,20 +11,20 @@
   v3 = [(IOS_SmallLockupViewAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
-  if ([v5 length])
+  accessibilityLabel = [v4 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v6 = MEMORY[0x29C2C8640](v5);
+    accessibilityUserInputLabels = MEMORY[0x29C2C8640](accessibilityLabel);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = IOS_SmallLockupViewAccessibility;
-    v6 = [(IOS_SmallLockupViewAccessibility *)&v9 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(IOS_SmallLockupViewAccessibility *)&v9 accessibilityUserInputLabels];
   }
 
-  v7 = v6;
+  v7 = accessibilityUserInputLabels;
 
   return v7;
 }

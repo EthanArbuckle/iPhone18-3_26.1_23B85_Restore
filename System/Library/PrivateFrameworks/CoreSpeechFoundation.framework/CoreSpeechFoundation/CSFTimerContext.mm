@@ -1,25 +1,25 @@
 @interface CSFTimerContext
-- (id)initTimerinterval:(double)a3 identifier:(id)a4;
+- (id)initTimerinterval:(double)timerinterval identifier:(id)identifier;
 @end
 
 @implementation CSFTimerContext
 
-- (id)initTimerinterval:(double)a3 identifier:(id)a4
+- (id)initTimerinterval:(double)timerinterval identifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = CSFTimerContext;
   v8 = [(CSFTimerContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    if (!v7)
+    if (!identifierCopy)
     {
       __assert_rtn("[CSFTimerContext initTimerinterval:identifier:]", "CSFTimer.m", 17, "identifier");
     }
 
-    v8->_timerInterval = a3;
-    objc_storeStrong(&v8->_identifier, a4);
+    v8->_timerInterval = timerinterval;
+    objc_storeStrong(&v8->_identifier, identifier);
   }
 
   return v9;

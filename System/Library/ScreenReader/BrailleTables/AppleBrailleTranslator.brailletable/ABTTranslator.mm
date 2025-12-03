@@ -1,27 +1,27 @@
 @interface ABTTranslator
 - (ABTTranslator)init;
-- (id)_applyNumeralReadings:(id)a3 locations:(id *)a4;
-- (id)_brailleForProcessedText:(id)a3 locations:(id *)a4;
-- (id)_compositionOf:(id)a3 then:(id)a4;
-- (id)_identityMapOfSize:(int64_t)a3;
-- (id)_ja_printBrailleForText:(id)a3 locations:(id *)a4;
-- (id)_ja_textForPrintBraille:(id)a3;
-- (id)_ko_printBrailleForText:(id)a3 locations:(id *)a4;
-- (id)_ko_textForPrintBraille:(id)a3 locations:(id *)a4;
-- (id)_locationsDataForLocationsArray:(id)a3;
-- (id)_longVowelExpressedFor:(id)a3 partOfSpeech:(int64_t)a4;
-- (id)_normalize:(id)a3;
-- (id)_printBrailleForText:(id)a3 locations:(id *)a4;
-- (id)_processKanjiNumbers:(id)a3 locations:(id *)a4;
-- (id)_replaceWords:(id)a3 locations:(id *)a4;
-- (id)_yomiWithSpacingOf:(id)a3 locations:(id *)a4;
-- (id)_zeroMapOfSize:(int64_t)a3;
+- (id)_applyNumeralReadings:(id)readings locations:(id *)locations;
+- (id)_brailleForProcessedText:(id)text locations:(id *)locations;
+- (id)_compositionOf:(id)of then:(id)then;
+- (id)_identityMapOfSize:(int64_t)size;
+- (id)_ja_printBrailleForText:(id)text locations:(id *)locations;
+- (id)_ja_textForPrintBraille:(id)braille;
+- (id)_ko_printBrailleForText:(id)text locations:(id *)locations;
+- (id)_ko_textForPrintBraille:(id)braille locations:(id *)locations;
+- (id)_locationsDataForLocationsArray:(id)array;
+- (id)_longVowelExpressedFor:(id)for partOfSpeech:(int64_t)speech;
+- (id)_normalize:(id)_normalize;
+- (id)_printBrailleForText:(id)text locations:(id *)locations;
+- (id)_processKanjiNumbers:(id)numbers locations:(id *)locations;
+- (id)_replaceWords:(id)words locations:(id *)locations;
+- (id)_yomiWithSpacingOf:(id)of locations:(id *)locations;
+- (id)_zeroMapOfSize:(int64_t)size;
 - (id)activeTable;
-- (id)applyNumeralReadings:(id)a3 locations:(id *)a4;
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7;
-- (id)processKanjiNumbers:(id)a3 locations:(id *)a4;
-- (id)replaceWords:(id)a3 locations:(id *)a4;
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5;
+- (id)applyNumeralReadings:(id)readings locations:(id *)locations;
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
+- (id)processKanjiNumbers:(id)numbers locations:(id *)locations;
+- (id)replaceWords:(id)words locations:(id *)locations;
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations;
 @end
 
 @implementation ABTTranslator
@@ -205,11 +205,11 @@
   }
 }
 
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  v8 = a3;
-  v9 = [[NSMutableData alloc] initWithCapacity:{8 * objc_msgSend(v8, "length")}];
-  if ([v8 length])
+  textCopy = text;
+  v9 = [[NSMutableData alloc] initWithCapacity:{8 * objc_msgSend(textCopy, "length")}];
+  if ([textCopy length])
   {
     v10 = 0;
     do
@@ -219,10 +219,10 @@
       ++v10;
     }
 
-    while (v10 < [v8 length]);
+    while (v10 < [textCopy length]);
   }
 
-  v30 = self;
+  selfCopy = self;
   if (self->_activeTable == 1)
   {
     v11 = @"ko-KR";
@@ -237,7 +237,7 @@
   v29 = objc_opt_new();
   v13 = [[NSArray alloc] initWithObjects:{v12, v29, 0}];
   v14 = v9;
-  v15 = v8;
+  v15 = textCopy;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -282,66 +282,66 @@
   }
 
   v34 = 0;
-  v25 = [(ABTTranslator *)v30 _printBrailleForText:v15 locations:&v34];
+  v25 = [(ABTTranslator *)selfCopy _printBrailleForText:v15 locations:&v34];
   v26 = v34;
-  if (a5)
+  if (locations)
   {
-    v27 = [(ABTTranslator *)v30 _locationsDataForLocationsArray:v26];
-    *a5 = [BRLTPreprocessorHelper mergeLocationMap:v14 withLocationMap:v27];
+    v27 = [(ABTTranslator *)selfCopy _locationsDataForLocationsArray:v26];
+    *locations = [BRLTPreprocessorHelper mergeLocationMap:v14 withLocationMap:v27];
   }
 
   return v25;
 }
 
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations
 {
   if (self->_activeTable == 1)
   {
-    [(ABTTranslator *)self _ko_textForPrintBraille:a3 locations:a5];
+    [(ABTTranslator *)self _ko_textForPrintBraille:braille locations:locations];
   }
 
   else
   {
-    [(ABTTranslator *)self _ja_textForPrintBraille:a3, a4, a5];
+    [(ABTTranslator *)self _ja_textForPrintBraille:braille, mode, locations];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)_printBrailleForText:(id)a3 locations:(id *)a4
+- (id)_printBrailleForText:(id)text locations:(id *)locations
 {
   if (self->_activeTable == 1)
   {
-    [(ABTTranslator *)self _ko_printBrailleForText:a3 locations:a4];
+    [(ABTTranslator *)self _ko_printBrailleForText:text locations:locations];
   }
 
   else
   {
-    [(ABTTranslator *)self _ja_printBrailleForText:a3 locations:a4];
+    [(ABTTranslator *)self _ja_printBrailleForText:text locations:locations];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)_ko_printBrailleForText:(id)a3 locations:(id *)a4
+- (id)_ko_printBrailleForText:(id)text locations:(id *)locations
 {
-  v5 = [_TtC22AppleBrailleTranslator19ABTKoreanTranslator translate:a3];
+  v5 = [_TtC22AppleBrailleTranslator19ABTKoreanTranslator translate:text];
   v6 = v5;
-  if (a4)
+  if (locations)
   {
-    *a4 = [v5 locations];
+    *locations = [v5 locations];
   }
 
-  v7 = [v6 string];
+  string = [v6 string];
 
-  return v7;
+  return string;
 }
 
-- (id)_ja_printBrailleForText:(id)a3 locations:(id *)a4
+- (id)_ja_printBrailleForText:(id)text locations:(id *)locations
 {
-  v6 = [(ABTTranslator *)self _normalize:a3];
+  v6 = [(ABTTranslator *)self _normalize:text];
   v7 = -[ABTTranslator _identityMapOfSize:](self, "_identityMapOfSize:", [v6 length]);
   if ([v6 length])
   {
@@ -413,19 +413,19 @@ LABEL_10:
 
   v28 = [(ABTTranslator *)self _compositionOf:v27 then:v7];
 
-  if (a4)
+  if (locations)
   {
     v29 = v28;
-    *a4 = v28;
+    *locations = v28;
   }
 
   return v26;
 }
 
-- (id)_identityMapOfSize:(int64_t)a3
+- (id)_identityMapOfSize:(int64_t)size
 {
-  v4 = [[NSMutableArray alloc] initWithCapacity:a3];
-  if (a3 >= 1)
+  v4 = [[NSMutableArray alloc] initWithCapacity:size];
+  if (size >= 1)
   {
     v5 = 0;
     do
@@ -436,83 +436,83 @@ LABEL_10:
       ++v5;
     }
 
-    while (a3 != v5);
+    while (size != v5);
   }
 
   return v4;
 }
 
-- (id)_zeroMapOfSize:(int64_t)a3
+- (id)_zeroMapOfSize:(int64_t)size
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:a3];
-  if (v3 >= 1)
+  sizeCopy = size;
+  v4 = [[NSMutableArray alloc] initWithCapacity:size];
+  if (sizeCopy >= 1)
   {
     do
     {
       [v4 addObject:&off_332A0];
-      --v3;
+      --sizeCopy;
     }
 
-    while (v3);
+    while (sizeCopy);
   }
 
   return v4;
 }
 
-- (id)_compositionOf:(id)a3 then:(id)a4
+- (id)_compositionOf:(id)of then:(id)then
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && !objc_msgSend(v6, "count"))
+  ofCopy = of;
+  thenCopy = then;
+  if ([ofCopy count] && !objc_msgSend(thenCopy, "count"))
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
-    if ([v5 count])
+    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(ofCopy, "count")}];
+    if ([ofCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [v9 integerValue];
+        v9 = [ofCopy objectAtIndex:v8];
+        integerValue = [v9 integerValue];
 
-        if ((v10 & 0x8000000000000000) != 0)
+        if ((integerValue & 0x8000000000000000) != 0)
         {
-          v10 = 0;
+          integerValue = 0;
         }
 
-        else if (v10 >= [v6 count])
+        else if (integerValue >= [thenCopy count])
         {
-          v10 = [v6 count] - 1;
+          integerValue = [thenCopy count] - 1;
         }
 
-        v11 = [v6 objectAtIndex:v10];
+        v11 = [thenCopy objectAtIndex:integerValue];
         [v7 addObject:v11];
 
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [ofCopy count]);
     }
   }
 
   return v7;
 }
 
-- (id)_normalize:(id)a3
+- (id)_normalize:(id)_normalize
 {
-  v4 = a3;
-  v5 = [[NSMutableString alloc] initWithCapacity:{objc_msgSend(v4, "length")}];
-  if ([v4 length])
+  _normalizeCopy = _normalize;
+  v5 = [[NSMutableString alloc] initWithCapacity:{objc_msgSend(_normalizeCopy, "length")}];
+  if ([_normalizeCopy length])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 substringWithRange:{v6, 1}];
+      v7 = [_normalizeCopy substringWithRange:{v6, 1}];
       v8 = [(NSDictionary *)self->_normalizer objectForKey:v7];
       if (v8)
       {
@@ -529,18 +529,18 @@ LABEL_10:
       ++v6;
     }
 
-    while (v6 < [v4 length]);
+    while (v6 < [_normalizeCopy length]);
   }
 
   return v5;
 }
 
-- (id)_replaceWords:(id)a3 locations:(id *)a4
+- (id)_replaceWords:(id)words locations:(id *)locations
 {
-  v5 = a3;
-  v6 = [[NSAttributedString alloc] initWithString:v5];
-  v33 = v5;
-  v7 = -[ABTTranslator _identityMapOfSize:](self, "_identityMapOfSize:", [v5 length]);
+  wordsCopy = words;
+  v6 = [[NSAttributedString alloc] initWithString:wordsCopy];
+  v33 = wordsCopy;
+  v7 = -[ABTTranslator _identityMapOfSize:](self, "_identityMapOfSize:", [wordsCopy length]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -551,7 +551,7 @@ LABEL_10:
   {
     v8 = 1;
     v36 = *v46;
-    v37 = self;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -632,8 +632,8 @@ LABEL_10:
           while (v17 < [v11 length]);
         }
 
-        self = v37;
-        v7 = [(ABTTranslator *)v37 _compositionOf:v16 then:v40];
+        self = selfCopy;
+        v7 = [(ABTTranslator *)selfCopy _compositionOf:v16 then:v40];
 
         v9 = v41 + 1;
         v10 = v7;
@@ -647,39 +647,39 @@ LABEL_10:
     while (v38);
   }
 
-  if (a4)
+  if (locations)
   {
     v31 = v7;
-    *a4 = v7;
+    *locations = v7;
   }
 
   return v6;
 }
 
-- (id)_processKanjiNumbers:(id)a3 locations:(id *)a4
+- (id)_processKanjiNumbers:(id)numbers locations:(id *)locations
 {
-  v5 = a3;
+  numbersCopy = numbers;
   v61 = +[NSCharacterSet decimalDigitCharacterSet];
   v63 = objc_opt_new();
   v6 = objc_opt_new();
-  if (![v5 length])
+  if (![numbersCopy length])
   {
     goto LABEL_58;
   }
 
-  v59 = a4;
+  locationsCopy = locations;
   v7 = 0;
   v8 = 0;
   v64 = 0;
-  v62 = 0;
+  integerValue = 0;
   v9 = 0;
   v10 = 4;
-  v69 = v5;
+  v69 = numbersCopy;
   do
   {
     v65 = v8;
     v11 = 1;
-    v12 = [v5 attributedSubstringFromRange:{v9, 1}];
+    v12 = [numbersCopy attributedSubstringFromRange:{v9, 1}];
     v13 = v12;
     if (v10 > 3)
     {
@@ -715,8 +715,8 @@ LABEL_7:
     }
 
 LABEL_8:
-    v14 = [v13 string];
-    v15 = [&off_34D20 objectForKey:v14];
+    string = [v13 string];
+    v15 = [&off_34D20 objectForKey:string];
 
     v70 = v15;
     if (v15)
@@ -726,8 +726,8 @@ LABEL_8:
 
     else
     {
-      v17 = [v13 string];
-      v16 = [&off_34C50 containsObject:v17];
+      string2 = [v13 string];
+      v16 = [&off_34C50 containsObject:string2];
     }
 
     v68 = [v69 attributesAtIndex:v9 effectiveRange:0];
@@ -777,7 +777,7 @@ LABEL_8:
       }
 
       v23 = [NSAttributedString alloc];
-      v24 = [NSNumber numberWithInteger:v62];
+      v24 = [NSNumber numberWithInteger:integerValue];
       v25 = [NSString stringWithFormat:@"%@", v24];
       v26 = [v23 initWithString:v25];
 
@@ -835,8 +835,8 @@ LABEL_47:
 LABEL_27:
     if (v9)
     {
-      v30 = [v69 string];
-      v31 = [v61 characterIsMember:{objc_msgSend(v30, "characterAtIndex:", v9 - 1)}];
+      string3 = [v69 string];
+      v31 = [v61 characterIsMember:{objc_msgSend(string3, "characterAtIndex:", v9 - 1)}];
     }
 
     else
@@ -858,27 +858,27 @@ LABEL_27:
       v33 = v70;
       if (v70)
       {
-        v62 = [v70 integerValue];
+        integerValue = [v70 integerValue];
         v8 = 0;
         v64 = 1;
         v7 = 1;
         goto LABEL_49;
       }
 
-      v34 = v62;
+      v34 = integerValue;
       if ((v64 & 1) == 0)
       {
         v34 = 1;
       }
 
-      v62 = v34;
-      v35 = [v13 string];
-      v36 = [&off_34D48 objectForKey:v35];
-      v66 = [v36 integerValue];
+      integerValue = v34;
+      string4 = [v13 string];
+      v36 = [&off_34D48 objectForKey:string4];
+      integerValue2 = [v36 integerValue];
 
       if (v10 <= 3)
       {
-        v37 = v10 + ~v66;
+        v37 = v10 + ~integerValue2;
         if (v37 >= 1)
         {
           if (v64)
@@ -907,7 +907,7 @@ LABEL_27:
       }
 
       v41 = [NSAttributedString alloc];
-      v42 = [NSNumber numberWithInteger:v62];
+      v42 = [NSNumber numberWithInteger:integerValue];
       v43 = [NSString stringWithFormat:@"%@", v42];
       v44 = [v41 initWithString:v43];
 
@@ -918,7 +918,7 @@ LABEL_27:
       v64 = 0;
       v8 = 0;
       v7 = 1;
-      v10 = v66;
+      v10 = integerValue2;
     }
 
 LABEL_48:
@@ -926,11 +926,11 @@ LABEL_48:
 LABEL_49:
 
     ++v9;
-    v5 = v69;
+    numbersCopy = v69;
   }
 
   while (v9 < [v69 length]);
-  a4 = v59;
+  locations = locationsCopy;
   if (v7)
   {
     if (v64)
@@ -953,7 +953,7 @@ LABEL_49:
       }
 
       v50 = [NSAttributedString alloc];
-      v51 = [NSNumber numberWithInteger:v62];
+      v51 = [NSNumber numberWithInteger:integerValue];
       v52 = [NSString stringWithFormat:@"%@", v51];
       v53 = [v50 initWithString:v52];
 
@@ -980,22 +980,22 @@ LABEL_49:
   }
 
 LABEL_58:
-  if (a4)
+  if (locations)
   {
     v57 = v6;
-    *a4 = v6;
+    *locations = v6;
   }
 
   return v63;
 }
 
-- (id)_applyNumeralReadings:(id)a3 locations:(id *)a4
+- (id)_applyNumeralReadings:(id)readings locations:(id *)locations
 {
-  v4 = a3;
+  readingsCopy = readings;
   v5 = [[NSSet alloc] initWithObjects:{@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"〇", @"一", @"二", @"三", @"四", @"五", @"六", @"七", @"八", @"九", @"十", @"百", @"千", @"万", @"億", @"兆", 0}];
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  if ([v4 length])
+  if ([readingsCopy length])
   {
     v8 = 0;
     v55 = -1;
@@ -1004,46 +1004,46 @@ LABEL_58:
     v58 = v6;
     while (1)
     {
-      if (v8 >= [v4 length])
+      if (v8 >= [readingsCopy length])
       {
         goto LABEL_8;
       }
 
-      v10 = [v4 attributesAtIndex:v8 effectiveRange:0];
+      v10 = [readingsCopy attributesAtIndex:v8 effectiveRange:0];
       v11 = [v10 objectForKey:@"token"];
 
-      v12 = [v4 string];
-      v13 = [v12 substringWithRange:{v8, 1}];
+      string = [readingsCopy string];
+      v13 = [string substringWithRange:{v8, 1}];
 
       if (!v11 && [v5 containsObject:v13])
       {
 
 LABEL_8:
-        if (v8 == [v4 length])
+        if (v8 == [readingsCopy length])
         {
           break;
         }
 
         v16 = (v8 + 1);
         v17 = v8;
-        if (v8 + 1 < [v4 length])
+        if (v8 + 1 < [readingsCopy length])
         {
           v17 = v8;
           while (1)
           {
             v16 = (v17 + 1);
-            v18 = [v4 attributesAtIndex:v8 effectiveRange:0];
+            v18 = [readingsCopy attributesAtIndex:v8 effectiveRange:0];
             v19 = [v18 objectForKey:@"token"];
 
-            v20 = [v4 string];
-            v21 = [v20 substringWithRange:{v17 + 1, 1}];
+            string2 = [readingsCopy string];
+            v21 = [string2 substringWithRange:{v17 + 1, 1}];
 
             if (v19 || ([v5 containsObject:v21] & 1) == 0)
             {
               break;
             }
 
-            v22 = [v4 length];
+            v22 = [readingsCopy length];
             v23 = v17 + 1;
             v24 = (v17 + 2);
             ++v17;
@@ -1057,11 +1057,11 @@ LABEL_8:
         }
 
 LABEL_16:
-        if (v16 >= [v4 length])
+        if (v16 >= [readingsCopy length])
         {
           v26 = v16 - v8;
 LABEL_30:
-          v27 = [v4 attributedSubstringFromRange:{v8, v26}];
+          v27 = [readingsCopy attributedSubstringFromRange:{v8, v26}];
           v9 = &_s10Foundation6LocaleVMa_ptr;
           if ([v27 length])
           {
@@ -1082,9 +1082,9 @@ LABEL_30:
           goto LABEL_35;
         }
 
-        v25 = [v4 string];
+        string3 = [readingsCopy string];
         v26 = v16 - v8;
-        v27 = [v25 substringWithRange:{v8, v16 - v8 + 1}];
+        v27 = [string3 substringWithRange:{v8, v16 - v8 + 1}];
 
         numeralInfo = self->_numeralInfo;
         if (numeralInfo && ([(NSDictionary *)numeralInfo objectForKey:v27], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -1124,8 +1124,8 @@ LABEL_30:
 
         else
         {
-          v40 = [v4 string];
-          v41 = [v40 characterAtIndex:v16];
+          string4 = [readingsCopy string];
+          v41 = [string4 characterAtIndex:v16];
 
           if (v41 != 26085)
           {
@@ -1134,7 +1134,7 @@ LABEL_30:
             goto LABEL_30;
           }
 
-          v42 = [v4 attributedSubstringFromRange:{v8, v16 - v8}];
+          v42 = [readingsCopy attributedSubstringFromRange:{v8, v16 - v8}];
           [v6 appendAttributedString:v42];
 
           if (v8 <= v17)
@@ -1169,7 +1169,7 @@ LABEL_30:
         v9 = &_s10Foundation6LocaleVMa_ptr;
 LABEL_35:
 
-        if (v8 >= [v4 length])
+        if (v8 >= [readingsCopy length])
         {
           break;
         }
@@ -1177,7 +1177,7 @@ LABEL_35:
 
       else
       {
-        v14 = [v4 attributedSubstringFromRange:{v8, 1}];
+        v14 = [readingsCopy attributedSubstringFromRange:{v8, 1}];
         [v6 appendAttributedString:v14];
 
         v15 = [v9[133] numberWithInteger:v8];
@@ -1188,34 +1188,34 @@ LABEL_35:
     }
   }
 
-  if (a4)
+  if (locations)
   {
     v51 = v7;
-    *a4 = v7;
+    *locations = v7;
   }
 
   return v6;
 }
 
-- (id)_yomiWithSpacingOf:(id)a3 locations:(id *)a4
+- (id)_yomiWithSpacingOf:(id)of locations:(id *)locations
 {
-  v5 = a3;
+  ofCopy = of;
   v6 = +[NSCharacterSet decimalDigitCharacterSet];
-  v7 = [v5 string];
+  string = [ofCopy string];
   v8 = CFLocaleCreate(kCFAllocatorDefault, @"ja");
   v100.location = 0;
   v100.length = 0;
   v9 = CFStringTokenizerCreate(kCFAllocatorDefault, 0, v100, 0, v8);
   CFRelease(v8);
-  v101.length = CFStringGetLength(v7);
-  v10 = v7;
+  v101.length = CFStringGetLength(string);
+  v10 = string;
   v11 = v9;
   v101.location = 0;
   CFStringTokenizerSetString(v9, v10, v101);
   v95 = objc_opt_new();
   v12 = objc_opt_new();
   tokenizer = v9;
-  v82 = a4;
+  locationsCopy = locations;
   if (CFStringTokenizerAdvanceToNextToken(v9))
   {
     v13 = 0;
@@ -1224,7 +1224,7 @@ LABEL_35:
     v91 = 0;
     v16 = 0;
     v17 = &_s10Foundation6LocaleVMa_ptr;
-    v97 = v5;
+    v97 = ofCopy;
     v83 = v6;
     v85 = v12;
     while (1)
@@ -1232,8 +1232,8 @@ LABEL_35:
       v88 = v16;
       v86 = v14;
       CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v11);
-      v19 = [v5 string];
-      v20 = [v19 substringWithRange:{v13, CurrentTokenRange.location - v13}];
+      string2 = [ofCopy string];
+      v20 = [string2 substringWithRange:{v13, CurrentTokenRange.location - v13}];
       [v95 appendString:v20];
 
       v21 = v13;
@@ -1252,7 +1252,7 @@ LABEL_35:
       }
 
       v23 = CFStringTokenizerCopyCurrentTokenAttribute(v11, 0x400000uLL);
-      LODWORD(v24) = _CFStringTokenizerGetCurrentTokenPartOfSpeech();
+      LODWORD(integerValue) = _CFStringTokenizerGetCurrentTokenPartOfSpeech();
       if (CurrentTokenRange.length < 1)
       {
         v25 = 1;
@@ -1271,8 +1271,8 @@ LABEL_14:
         v27 = v91;
         do
         {
-          v28 = [v5 string];
-          v29 = [v28 characterAtIndex:CurrentTokenRange.location + v26];
+          string3 = [ofCopy string];
+          v29 = [string3 characterAtIndex:CurrentTokenRange.location + v26];
 
           if (v29 > 0x7F)
           {
@@ -1293,8 +1293,8 @@ LABEL_14:
         while (CurrentTokenRange.length != v26);
       }
 
-      v30 = [v5 string];
-      v31 = [v6 characterIsMember:{objc_msgSend(v30, "characterAtIndex:", CurrentTokenRange.location)}];
+      string4 = [ofCopy string];
+      v31 = [v6 characterIsMember:{objc_msgSend(string4, "characterAtIndex:", CurrentTokenRange.location)}];
 
       if (v31)
       {
@@ -1304,8 +1304,8 @@ LABEL_14:
         {
           while (1)
           {
-            v34 = [v5 string];
-            v35 = [v34 characterAtIndex:location];
+            string5 = [ofCopy string];
+            v35 = [string5 characterAtIndex:location];
 
             if (([v6 characterIsMember:v35] & 1) == 0 && (v35 & 0xFFFD) != 0x2C)
             {
@@ -1331,7 +1331,7 @@ LABEL_21:
       v36 = 0;
       if (!v25)
       {
-        v24 = v24;
+        integerValue = integerValue;
         v90 = 0;
         v92 = v27;
         v37 = 0;
@@ -1340,16 +1340,16 @@ LABEL_21:
 
       v25 = 1;
 LABEL_26:
-      v38 = [v5 string];
-      v39 = [v38 substringWithRange:{CurrentTokenRange.location, CurrentTokenRange.length}];
+      string6 = [ofCopy string];
+      v39 = [string6 substringWithRange:{CurrentTokenRange.location, CurrentTokenRange.length}];
 
-      v24 = 0;
+      integerValue = 0;
       v90 = v25;
       v92 = v27;
       v37 = v36;
       v23 = v39;
 LABEL_27:
-      v40 = [v5 attributesAtIndex:CurrentTokenRange.location effectiveRange:0];
+      v40 = [ofCopy attributesAtIndex:CurrentTokenRange.location effectiveRange:0];
       if (CurrentTokenRange.location < 1)
       {
         v41 = 0;
@@ -1357,7 +1357,7 @@ LABEL_27:
 
       else
       {
-        v41 = [v5 attributesAtIndex:CurrentTokenRange.location - 1 effectiveRange:0];
+        v41 = [ofCopy attributesAtIndex:CurrentTokenRange.location - 1 effectiveRange:0];
       }
 
       if (CurrentTokenRange.length < 1)
@@ -1367,7 +1367,7 @@ LABEL_27:
 
       else
       {
-        v87 = [v5 attributesAtIndex:CurrentTokenRange.location + CurrentTokenRange.length - 1 effectiveRange:0];
+        v87 = [ofCopy attributesAtIndex:CurrentTokenRange.location + CurrentTokenRange.length - 1 effectiveRange:0];
       }
 
       v94 = v40;
@@ -1402,11 +1402,11 @@ LABEL_27:
       if (v48)
       {
         v49 = [v40 objectForKey:@"partOfSpeech"];
-        v24 = [v49 integerValue];
+        integerValue = [v49 integerValue];
       }
 
 LABEL_42:
-      if (v24 == &dword_C + 2)
+      if (integerValue == &dword_C + 2)
       {
         v50 = 1;
       }
@@ -1416,7 +1416,7 @@ LABEL_42:
         v50 = [&off_34C68 containsObject:v23];
       }
 
-      v96 = v24;
+      integerValue2 = integerValue;
       if ([v95 length])
       {
         v51 = CurrentTokenRange.location == v93;
@@ -1437,10 +1437,10 @@ LABEL_42:
         v52 = 1;
       }
 
-      if (((v24 == &dword_4) & ~v88) == 0 && ((v86 | v15 | v52) & 1) == 0)
+      if (((integerValue == &dword_4) & ~v88) == 0 && ((v86 | v15 | v52) & 1) == 0)
       {
-        v53 = (v24 == &dword_8 + 2) & ~v88;
-        if (v24 == &dword_C)
+        v53 = (integerValue == &dword_8 + 2) & ~v88;
+        if (integerValue == &dword_C)
         {
           v53 = 1;
         }
@@ -1471,8 +1471,8 @@ LABEL_42:
         v57 = v55;
         if (v55 < [v23 length])
         {
-          v58 = [v97 string];
-          v59 = [v58 substringWithRange:{CurrentTokenRange.location + CurrentTokenRange.length + v56, 1}];
+          string7 = [v97 string];
+          v59 = [string7 substringWithRange:{CurrentTokenRange.location + CurrentTokenRange.length + v56, 1}];
 
           v60 = [v23 substringWithRange:{objc_msgSend(v23, "length") + v56, 1}];
           v61 = [(NSDictionary *)self->_kataToHira objectForKey:v59];
@@ -1531,12 +1531,12 @@ LABEL_69:
         while (v67 > 1);
       }
 
-      v70 = [(ABTTranslator *)self _longVowelExpressedFor:v23 partOfSpeech:v96];
+      v70 = [(ABTTranslator *)self _longVowelExpressedFor:v23 partOfSpeech:integerValue2];
 
-      if (v96 == &dword_4)
+      if (integerValue2 == &dword_4)
       {
         v73 = @"わ";
-        v5 = v97;
+        ofCopy = v97;
         v6 = v83;
         v71 = CurrentTokenRange.location + CurrentTokenRange.length;
         v72 = v87;
@@ -1549,7 +1549,7 @@ LABEL_69:
 
       else
       {
-        v5 = v97;
+        ofCopy = v97;
         v6 = v83;
         v71 = CurrentTokenRange.location + CurrentTokenRange.length;
         v72 = v87;
@@ -1563,12 +1563,12 @@ LABEL_69:
         if (v74)
         {
           v75 = [v72 objectForKey:@"partOfSpeech"];
-          v96 = [v75 integerValue];
+          integerValue2 = [v75 integerValue];
         }
       }
 
-      v14 = v96 == (&dword_8 + 3);
-      if (v96 == (&dword_C + 2))
+      v14 = integerValue2 == (&dword_8 + 3);
+      if (integerValue2 == (&dword_C + 2))
       {
         v15 = 1;
       }
@@ -1591,21 +1591,21 @@ LABEL_69:
 
   v71 = 0;
 LABEL_89:
-  v76 = [v5 length] - v71;
-  v77 = [v5 string];
-  v78 = [v77 substringWithRange:{v71, v76}];
+  v76 = [ofCopy length] - v71;
+  string8 = [ofCopy string];
+  v78 = [string8 substringWithRange:{v71, v76}];
   [v95 appendString:v78];
 
-  for (; v71 < [v5 length]; ++v71)
+  for (; v71 < [ofCopy length]; ++v71)
   {
     v79 = [NSNumber numberWithInteger:v71];
     [v12 addObject:v79];
   }
 
-  if (v82)
+  if (locationsCopy)
   {
     v80 = v12;
-    *v82 = v12;
+    *locationsCopy = v12;
   }
 
   CFRelease(tokenizer);
@@ -1613,32 +1613,32 @@ LABEL_89:
   return v95;
 }
 
-- (id)_longVowelExpressedFor:(id)a3 partOfSpeech:(int64_t)a4
+- (id)_longVowelExpressedFor:(id)for partOfSpeech:(int64_t)speech
 {
-  v5 = a3;
-  if (([v5 isEqual:@"うろうろ"] & 1) != 0 || objc_msgSend(v5, "isEqual:", @"こうり"))
+  forCopy = for;
+  if (([forCopy isEqual:@"うろうろ"] & 1) != 0 || objc_msgSend(forCopy, "isEqual:", @"こうり"))
   {
-    v6 = v5;
+    v6 = forCopy;
   }
 
   else
   {
     v6 = objc_opt_new();
-    if ([v5 length])
+    if ([forCopy length])
     {
       v8 = 0;
       v9 = 0;
       do
       {
         v10 = 1;
-        v11 = [v5 substringWithRange:{v9, 1}];
+        v11 = [forCopy substringWithRange:{v9, 1}];
         v12 = v11;
         if (v8)
         {
           v10 = [(__CFString *)v11 isEqual:@"う"]^ 1;
         }
 
-        v13 = a4 == 1 && v9 == [v5 length] - 1;
+        v13 = speech == 1 && v9 == [forCopy length] - 1;
         if ((v10 | v13))
         {
           v14 = v12;
@@ -1663,18 +1663,18 @@ LABEL_89:
         ++v9;
       }
 
-      while (v9 < [v5 length]);
+      while (v9 < [forCopy length]);
     }
   }
 
   return v6;
 }
 
-- (id)_brailleForProcessedText:(id)a3 locations:(id *)a4
+- (id)_brailleForProcessedText:(id)text locations:(id *)locations
 {
-  v6 = a3;
+  textCopy = text;
   v7 = +[NSCharacterSet newlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [textCopy stringByTrimmingCharactersInSet:v7];
 
   v9 = objc_opt_new();
   v10 = objc_opt_new();
@@ -1683,7 +1683,7 @@ LABEL_89:
     goto LABEL_248;
   }
 
-  v68 = a4;
+  locationsCopy = locations;
   v78 = 0;
   v73 = 0;
   v77 = 0;
@@ -1693,7 +1693,7 @@ LABEL_89:
   v11 = 0;
   v71 = 0;
   v72 = -1;
-  v75 = self;
+  selfCopy = self;
   do
   {
     v12 = [v8 characterAtIndex:v11];
@@ -2481,10 +2481,10 @@ LABEL_230:
         }
 
 LABEL_243:
-        v63 = [(NSDictionary *)v75->_kanaToBraille objectForKey:v79];
+        v63 = [(NSDictionary *)selfCopy->_kanaToBraille objectForKey:v79];
         if (!v63)
         {
-          v63 = v75->_unknownPlaceholder;
+          v63 = selfCopy->_unknownPlaceholder;
         }
 
         v31 = v63;
@@ -2564,7 +2564,7 @@ LABEL_136:
     if (v11 + 1 < [v8 length])
     {
       v52 = [v8 substringWithRange:{v11 + 1, 1}];
-      v53 = [(NSDictionary *)v75->_kanaToBraille objectForKey:v52];
+      v53 = [(NSDictionary *)selfCopy->_kanaToBraille objectForKey:v52];
 
       if (v53)
       {
@@ -2590,7 +2590,7 @@ LABEL_136:
       }
     }
 
-    self = v75;
+    self = selfCopy;
     v11 += v76;
 LABEL_149:
 
@@ -2598,7 +2598,7 @@ LABEL_149:
   }
 
   while (v11 < [v8 length]);
-  a4 = v68;
+  locations = locationsCopy;
   if (v77)
   {
     [v9 appendString:@"⠴"];
@@ -2607,32 +2607,32 @@ LABEL_149:
   }
 
 LABEL_248:
-  if (a4)
+  if (locations)
   {
     v65 = v10;
-    *a4 = v10;
+    *locations = v10;
   }
 
   return v9;
 }
 
-- (id)_locationsDataForLocationsArray:(id)a3
+- (id)_locationsDataForLocationsArray:(id)array
 {
-  v3 = a3;
-  v4 = 8 * [v3 count];
+  arrayCopy = array;
+  v4 = 8 * [arrayCopy count];
   v5 = malloc_type_malloc(v4, 0x5255B94AuLL);
-  if ([v3 count])
+  if ([arrayCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndex:v6];
+      v7 = [arrayCopy objectAtIndex:v6];
       v5[v6] = [v7 integerValue];
 
       ++v6;
     }
 
-    while (v6 < [v3 count]);
+    while (v6 < [arrayCopy count]);
   }
 
   v8 = [NSData dataWithBytes:v5 length:v4];
@@ -2644,45 +2644,45 @@ LABEL_248:
   return v8;
 }
 
-- (id)_ko_textForPrintBraille:(id)a3 locations:(id *)a4
+- (id)_ko_textForPrintBraille:(id)braille locations:(id *)locations
 {
-  v6 = [_TtC22AppleBrailleTranslator23ABTKoreanBackTranslator backTranslate:a3];
+  v6 = [_TtC22AppleBrailleTranslator23ABTKoreanBackTranslator backTranslate:braille];
   v7 = v6;
-  if (a4)
+  if (locations)
   {
-    v8 = [v6 locations];
-    *a4 = [(ABTTranslator *)self _locationsDataForLocationsArray:v8];
+    locations = [v6 locations];
+    *locations = [(ABTTranslator *)self _locationsDataForLocationsArray:locations];
   }
 
-  v9 = [v7 string];
+  string = [v7 string];
 
-  return v9;
+  return string;
 }
 
-- (id)_ja_textForPrintBraille:(id)a3
+- (id)_ja_textForPrintBraille:(id)braille
 {
-  v3 = a3;
+  brailleCopy = braille;
   v40 = objc_opt_new();
-  if ([v3 length])
+  if ([brailleCopy length])
   {
     v4 = 0;
     v5 = 0;
     v39 = 0;
     v36 = 0;
     v38 = 0;
-    for (i = 0; i < [v3 length]; ++i)
+    for (i = 0; i < [brailleCopy length]; ++i)
     {
-      v7 = [v3 substringWithRange:{i, 1}];
+      v7 = [brailleCopy substringWithRange:{i, 1}];
       v8 = &stru_32758;
-      if (i + 1 < [v3 length])
+      if (i + 1 < [brailleCopy length])
       {
-        v8 = [v3 substringWithRange:{i, 2}];
+        v8 = [brailleCopy substringWithRange:{i, 2}];
       }
 
       v9 = &stru_32758;
-      if (i + 2 < [v3 length])
+      if (i + 2 < [brailleCopy length])
       {
-        v9 = [v3 substringWithRange:{i, 3}];
+        v9 = [brailleCopy substringWithRange:{i, 3}];
       }
 
       if ([v7 isEqual:@"⠀"])
@@ -2703,7 +2703,7 @@ LABEL_248:
         [v40 appendString:@" "];
       }
 
-      else if (i + 1 < [v3 length] && objc_msgSend(v7, "isEqual:", @"⠰") && (v4 || (-[NSDictionary objectForKey:](self->_brailleToKana, "objectForKey:", v8), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10)))
+      else if (i + 1 < [brailleCopy length] && objc_msgSend(v7, "isEqual:", @"⠰") && (v4 || (-[NSDictionary objectForKey:](self->_brailleToKana, "objectForKey:", v8), v10 = objc_claimAutoreleasedReturnValue(), v10, !v10)))
       {
         v39 = 0;
         v4 = 2;
@@ -2939,12 +2939,12 @@ LABEL_78:
               v18 = v31;
               if ((v39 | HIDWORD(v39)))
               {
-                v35 = [(__CFString *)v31 uppercaseString];
+                uppercaseString = [(__CFString *)v31 uppercaseString];
 
                 LODWORD(v39) = 0;
                 v24 = 0;
                 v4 = 2;
-                v18 = v35;
+                v18 = uppercaseString;
                 goto LABEL_84;
               }
 
@@ -2968,34 +2968,34 @@ LABEL_23:
   return v40;
 }
 
-- (id)processKanjiNumbers:(id)a3 locations:(id *)a4
+- (id)processKanjiNumbers:(id)numbers locations:(id *)locations
 {
-  v6 = a3;
-  v7 = [[NSAttributedString alloc] initWithString:v6];
+  numbersCopy = numbers;
+  v7 = [[NSAttributedString alloc] initWithString:numbersCopy];
 
-  v8 = [(ABTTranslator *)self _processKanjiNumbers:v7 locations:a4];
-  v9 = [v8 string];
+  v8 = [(ABTTranslator *)self _processKanjiNumbers:v7 locations:locations];
+  string = [v8 string];
 
-  return v9;
+  return string;
 }
 
-- (id)replaceWords:(id)a3 locations:(id *)a4
+- (id)replaceWords:(id)words locations:(id *)locations
 {
-  v4 = [(ABTTranslator *)self _replaceWords:a3 locations:a4];
-  v5 = [v4 string];
+  v4 = [(ABTTranslator *)self _replaceWords:words locations:locations];
+  string = [v4 string];
 
-  return v5;
+  return string;
 }
 
-- (id)applyNumeralReadings:(id)a3 locations:(id *)a4
+- (id)applyNumeralReadings:(id)readings locations:(id *)locations
 {
-  v6 = a3;
-  v7 = [[NSAttributedString alloc] initWithString:v6];
+  readingsCopy = readings;
+  v7 = [[NSAttributedString alloc] initWithString:readingsCopy];
 
-  v8 = [(ABTTranslator *)self _applyNumeralReadings:v7 locations:a4];
-  v9 = [v8 string];
+  v8 = [(ABTTranslator *)self _applyNumeralReadings:v7 locations:locations];
+  string = [v8 string];
 
-  return v9;
+  return string;
 }
 
 @end

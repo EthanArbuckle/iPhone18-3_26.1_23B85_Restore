@@ -1,26 +1,26 @@
 @interface TUIHScrollBoxLayout
 - (CGPoint)scrollAdditionalAXTranslation;
 - (CGRect)computedErasableBounds;
-- (TUIHScrollBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (id)_embeddedCollectionModelWithContext:(id)a3;
+- (TUIHScrollBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (id)_embeddedCollectionModelWithContext:(id)context;
 - (id)modelIdentifierForScrollable;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_updateAnchorSet;
 - (void)_validateLayout;
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 origin:(CGPoint)a6 toModels:(id)a7;
-- (void)appendEmbeddedIdentifierMaps:(id)a3 updateControllers:(id)a4 UUIDs:(id)a5;
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform origin:(CGPoint)origin toModels:(id)models;
+- (void)appendEmbeddedIdentifierMaps:(id)maps updateControllers:(id)controllers UUIDs:(id)ds;
 - (void)computeLayout;
-- (void)onChildTransformedSizeDidChange:(id)a3;
-- (void)validateRenderModelWithContext:(id)a3 transactionGroup:(id)a4;
+- (void)onChildTransformedSizeDidChange:(id)change;
+- (void)validateRenderModelWithContext:(id)context transactionGroup:(id)group;
 @end
 
 @implementation TUIHScrollBoxLayout
 
-- (TUIHScrollBoxLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIHScrollBoxLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v9.receiver = self;
   v9.super_class = TUIHScrollBoxLayout;
-  v5 = [(TUILayout *)&v9 initWithModel:a3 parent:a4 controller:a5];
+  v5 = [(TUILayout *)&v9 initWithModel:model parent:parent controller:controller];
   v6 = v5;
   if (v5)
   {
@@ -36,12 +36,12 @@
 
 - (CGPoint)scrollAdditionalAXTranslation
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 layoutScrollGradientInsets];
+    [firstObject layoutScrollGradientInsets];
     left = v5;
   }
 
@@ -50,8 +50,8 @@
     left = UIEdgeInsetsZero.left;
   }
 
-  v7 = [(TUILayout *)self controller];
-  [v7 contentsScale];
+  controller = [(TUILayout *)self controller];
+  [controller contentsScale];
   [(TUILayout *)self erasableInsetsForContentsScale:?];
   v9 = v8;
   v11 = v10;
@@ -72,23 +72,23 @@
 {
   [(TUILayout *)self computeWidth];
   v4 = v3;
-  v5 = [(TUILayout *)self children];
-  v12 = [v5 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v6 = [(TUILayout *)self layoutAncestor];
-  v7 = [v6 shouldUpdateContainingMetricsForScrollableContent];
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  shouldUpdateContainingMetricsForScrollableContent = [layoutAncestor shouldUpdateContainingMetricsForScrollableContent];
 
-  if (v7)
+  if (shouldUpdateContainingMetricsForScrollableContent)
   {
-    [v12 setContainingWidth:NAN];
+    [firstObject setContainingWidth:NAN];
   }
 
-  [v12 validateLayout];
-  [v12 computedTransformedSize];
+  [firstObject validateLayout];
+  [firstObject computedTransformedSize];
   v9 = v8;
   if (objc_opt_respondsToSelector())
   {
-    [v12 layoutScrollContentScrollSizeWithProposedSize:{v4, v9}];
+    [firstObject layoutScrollContentScrollSizeWithProposedSize:{v4, v9}];
     v4 = v10;
     v9 = v11;
   }
@@ -97,13 +97,13 @@
   [(TUIHScrollBoxLayout *)self _updateAnchorSet];
 }
 
-- (void)onChildTransformedSizeDidChange:(id)a3
+- (void)onChildTransformedSizeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(TUIHScrollBoxLayout *)self _updateAnchorSet];
   [(TUILayout *)self computedNaturalSize];
   v6 = v5;
-  [v4 computedTransformedSize];
+  [changeCopy computedTransformedSize];
   v8 = v7;
 
   if (v6 != v8)
@@ -116,11 +116,11 @@
 - (void)_updateAnchorSet
 {
   v10 = [(TUIAnchorSet *)[TUIMutableAnchorSet alloc] initWithAxis:1];
-  v3 = [(TUILayout *)self layout];
-  v4 = [v3 computedLayoutDirection];
+  layout = [(TUILayout *)self layout];
+  computedLayoutDirection = [layout computedLayoutDirection];
   v5 = [(TUILayout *)self box];
   [v5 anchorOffset];
-  if (v4 == &dword_0 + 2)
+  if (computedLayoutDirection == &dword_0 + 2)
   {
     v6 = -v6;
   }
@@ -128,8 +128,8 @@
   [(TUIAnchorSet *)v10 setOffset:v6];
 
   [(TUILayout *)self appendChildAnchorsToSet:v10 inRoot:self];
-  v7 = [(TUILayout *)self controller];
-  [v7 contentsScale];
+  controller = [(TUILayout *)self controller];
+  [controller contentsScale];
   [(TUIMutableAnchorSet *)v10 finalizeWithContentsScale:?];
 
   v8 = [(TUIMutableAnchorSet *)v10 copy];
@@ -161,11 +161,11 @@
   return result;
 }
 
-- (id)_embeddedCollectionModelWithContext:(id)a3
+- (id)_embeddedCollectionModelWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUILayout *)self controller];
-  [v5 cachedRenderModelValidatedForLayout:self];
+  contextCopy = context;
+  controller = [(TUILayout *)self controller];
+  [controller cachedRenderModelValidatedForLayout:self];
 
   v21 = 0;
   v22 = &v21;
@@ -176,8 +176,8 @@
   if (!self->_renderModelidentifierMap)
   {
     v6 = [(TUILayout *)self box];
-    v7 = [v6 identifier];
-    v8 = [v4 embeddedIdentifierMapForIdentifier:v7];
+    identifier = [v6 identifier];
+    v8 = [contextCopy embeddedIdentifierMapForIdentifier:identifier];
     renderModelidentifierMap = self->_renderModelidentifierMap;
     self->_renderModelidentifierMap = v8;
   }
@@ -185,8 +185,8 @@
   if (!self->_sectionUUID)
   {
     v10 = [(TUILayout *)self box];
-    v11 = [v10 identifier];
-    v12 = [v4 embeddedUUIDForIdentifier:v11];
+    identifier2 = [v10 identifier];
+    v12 = [contextCopy embeddedUUIDForIdentifier:identifier2];
     sectionUUID = self->_sectionUUID;
     self->_sectionUUID = v12;
   }
@@ -197,7 +197,7 @@
   v18[2] = sub_13B1F0;
   v18[3] = &unk_25DC78;
   v18[4] = self;
-  v15 = v4;
+  v15 = contextCopy;
   v19 = v15;
   v20 = &v21;
   [v15 evaluateWithIdentifierMap:v14 block:v18];
@@ -211,49 +211,49 @@
 - (id)modelIdentifierForScrollable
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 modelIdentifierForScrollable];
+  modelIdentifierForScrollable = [v2 modelIdentifierForScrollable];
 
-  return v3;
+  return modelIdentifierForScrollable;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
-  if (a3 < 4)
+  contextCopy = context;
+  if (kind < 4)
   {
     v54 = 0;
   }
 
   else
   {
-    v7 = [(TUIHScrollBoxLayout *)self _embeddedCollectionModelWithContext:v6];
+    v7 = [(TUIHScrollBoxLayout *)self _embeddedCollectionModelWithContext:contextCopy];
     renderModelUpdateController = self->_renderModelUpdateController;
     if (!renderModelUpdateController)
     {
       v9 = [(TUILayout *)self box];
-      v10 = [v9 identifier];
-      v11 = [v6 embeddedUpdateControllerForIdentifier:v10 renderModel:0];
+      identifier = [v9 identifier];
+      v11 = [contextCopy embeddedUpdateControllerForIdentifier:identifier renderModel:0];
       v12 = self->_renderModelUpdateController;
       self->_renderModelUpdateController = v11;
 
       renderModelUpdateController = self->_renderModelUpdateController;
     }
 
-    v13 = [v6 transactionGroup];
+    transactionGroup = [contextCopy transactionGroup];
     v72 = v7;
-    [(TUIRenderUpdateCollectionController *)renderModelUpdateController updateWithRenderModel:v7 viewState:0 flags:0 transactionGroup:v13];
+    [(TUIRenderUpdateCollectionController *)renderModelUpdateController updateWithRenderModel:v7 viewState:0 flags:0 transactionGroup:transactionGroup];
 
-    v14 = [(TUILayout *)self children];
-    v15 = [v14 firstObject];
+    children = [(TUILayout *)self children];
+    firstObject = [children firstObject];
 
     v16 = objc_opt_respondsToSelector();
-    v17 = 0;
+    scrollPolicy = 0;
     if (v16)
     {
-      v17 = [v15 scrollPolicy];
+      scrollPolicy = [firstObject scrollPolicy];
     }
 
-    v73 = v17;
+    v73 = scrollPolicy;
     top = UIEdgeInsetsZero.top;
     left = UIEdgeInsetsZero.left;
     bottom = UIEdgeInsetsZero.bottom;
@@ -265,7 +265,7 @@
     v26 = UIEdgeInsetsZero.top;
     if (v22)
     {
-      [v15 layoutScrollGradientInsets];
+      [firstObject layoutScrollGradientInsets];
     }
 
     v67 = v23;
@@ -279,7 +279,7 @@
     v31 = 1.0;
     if (v27)
     {
-      [v15 layoutScrollGradientFraction];
+      [firstObject layoutScrollGradientFraction];
     }
 
     v63 = v29;
@@ -290,7 +290,7 @@
     v33 = 0;
     if (v32)
     {
-      [v15 layoutScrollPageGap];
+      [firstObject layoutScrollPageGap];
     }
 
     v62 = v33;
@@ -300,7 +300,7 @@
     v37 = UIEdgeInsetsZero.top;
     if (objc_opt_respondsToSelector())
     {
-      [v15 layoutAdditionalSafeAreaInsets];
+      [firstObject layoutAdditionalSafeAreaInsets];
       v37 = v38;
       v36 = v39;
       v35 = v40;
@@ -309,7 +309,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      [v15 layoutScrollContentIntrinsicInsets];
+      [firstObject layoutScrollContentIntrinsicInsets];
       top = v42;
       left = v43;
       bottom = v44;
@@ -317,23 +317,23 @@
     }
 
     v46 = self->_renderModelUpdateController;
-    v47 = [v6 uid];
-    v48 = [v6 UUID];
+    v47 = [contextCopy uid];
+    uUID = [contextCopy UUID];
     v61 = [(TUILayout *)self box];
-    v59 = [v61 identifier];
-    v58 = [(TUIHScrollBoxLayout *)self modelIdentifierForScrollable];
-    v57 = [(TUILayout *)self modelIdentifierForEnclosingScrollable];
+    identifier2 = [v61 identifier];
+    modelIdentifierForScrollable = [(TUIHScrollBoxLayout *)self modelIdentifierForScrollable];
+    modelIdentifierForEnclosingScrollable = [(TUILayout *)self modelIdentifierForEnclosingScrollable];
     v60 = [(TUILayout *)self box];
-    v49 = [v60 acceptsDrop];
+    acceptsDrop = [v60 acceptsDrop];
     v50 = [(TUILayout *)self box];
     [v50 dropHandler];
-    v51 = v71 = v6;
+    v51 = v71 = contextCopy;
     v52 = [(TUILayout *)self box];
     [v52 decelerationRate];
-    LOBYTE(v56) = v49;
-    v54 = [TUIEmbeddedCollectionView renderModelWithUpdateController:v46 uid:v47 UUID:v48 identifier:v59 scrollIdentifier:v58 ancestorScrollIdentifier:v57 scrollPolicy:v37 scrollAxis:v36 additionalSafeAreaInsets:v35 contentIntrinsicInsets:v34 pageGap:top gradientInsets:left gradientFraction:bottom acceptsDrop:right dropHandler:v73 decelerationRate:1, v62, *&v70, *&v69, *&v68, *&v67, *&v66, *&v65, *&v63, *&v64, v56, v51, v53];
+    LOBYTE(v56) = acceptsDrop;
+    v54 = [TUIEmbeddedCollectionView renderModelWithUpdateController:v46 uid:v47 UUID:uUID identifier:identifier2 scrollIdentifier:modelIdentifierForScrollable ancestorScrollIdentifier:modelIdentifierForEnclosingScrollable scrollPolicy:v37 scrollAxis:v36 additionalSafeAreaInsets:v35 contentIntrinsicInsets:v34 pageGap:top gradientInsets:left gradientFraction:bottom acceptsDrop:right dropHandler:v73 decelerationRate:1, v62, *&v70, *&v69, *&v68, *&v67, *&v66, *&v65, *&v63, *&v64, v56, v51, v53];
 
-    v6 = v71;
+    contextCopy = v71;
     [(TUILayout *)self renderModelSizeWithContext:v71];
     [v54 setSize:?];
   }
@@ -341,43 +341,43 @@
   return v54;
 }
 
-- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4 transform:(CGAffineTransform *)a5 origin:(CGPoint)a6 toModels:(id)a7
+- (void)appendChildRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context transform:(CGAffineTransform *)transform origin:(CGPoint)origin toModels:(id)models
 {
-  if (a3 <= 3)
+  if (kind <= 3)
   {
     v10 = v7;
     v11 = v8;
     v9.receiver = self;
     v9.super_class = TUIHScrollBoxLayout;
-    [(TUILayout *)&v9 appendChildRenderModelCompatibleWithKind:*&a5->a context:*&a5->b transform:*&a5->c toModels:*&a5->d, *&a5->tx, *&a5->ty];
+    [(TUILayout *)&v9 appendChildRenderModelCompatibleWithKind:*&transform->a context:*&transform->b transform:*&transform->c toModels:*&transform->d, *&transform->tx, *&transform->ty];
   }
 }
 
-- (void)validateRenderModelWithContext:(id)a3 transactionGroup:(id)a4
+- (void)validateRenderModelWithContext:(id)context transactionGroup:(id)group
 {
-  v6 = a4;
-  v7 = [(TUIHScrollBoxLayout *)self _embeddedCollectionModelWithContext:a3];
-  [(TUIRenderUpdateCollectionController *)self->_renderModelUpdateController updateWithRenderModel:v7 viewState:0 flags:0 transactionGroup:v6];
+  groupCopy = group;
+  v7 = [(TUIHScrollBoxLayout *)self _embeddedCollectionModelWithContext:context];
+  [(TUIRenderUpdateCollectionController *)self->_renderModelUpdateController updateWithRenderModel:v7 viewState:0 flags:0 transactionGroup:groupCopy];
 }
 
-- (void)appendEmbeddedIdentifierMaps:(id)a3 updateControllers:(id)a4 UUIDs:(id)a5
+- (void)appendEmbeddedIdentifierMaps:(id)maps updateControllers:(id)controllers UUIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mapsCopy = maps;
+  controllersCopy = controllers;
+  dsCopy = ds;
   v11 = [(TUILayout *)self box];
-  v12 = [v11 identifier];
+  identifier = [v11 identifier];
 
-  if (v12)
+  if (identifier)
   {
-    [v8 setObject:self->_renderModelidentifierMap forKeyedSubscript:v12];
-    [v9 setObject:self->_renderModelUpdateController forKeyedSubscript:v12];
-    [v10 setObject:self->_sectionUUID forKeyedSubscript:v12];
+    [mapsCopy setObject:self->_renderModelidentifierMap forKeyedSubscript:identifier];
+    [controllersCopy setObject:self->_renderModelUpdateController forKeyedSubscript:identifier];
+    [dsCopy setObject:self->_sectionUUID forKeyedSubscript:identifier];
   }
 
   v13.receiver = self;
   v13.super_class = TUIHScrollBoxLayout;
-  [(TUILayout *)&v13 appendEmbeddedIdentifierMaps:v8 updateControllers:v9 UUIDs:v10];
+  [(TUILayout *)&v13 appendEmbeddedIdentifierMaps:mapsCopy updateControllers:controllersCopy UUIDs:dsCopy];
 }
 
 @end

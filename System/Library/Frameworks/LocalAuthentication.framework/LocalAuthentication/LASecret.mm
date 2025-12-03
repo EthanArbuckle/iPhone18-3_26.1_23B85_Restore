@@ -1,5 +1,5 @@
 @interface LASecret
-- (LASecret)initWithGenericPassword:(id)a3;
+- (LASecret)initWithGenericPassword:(id)password;
 - (id)right;
 - (void)dealloc;
 - (void)loadDataWithCompletion:(void *)handler;
@@ -7,22 +7,22 @@
 
 @implementation LASecret
 
-- (LASecret)initWithGenericPassword:(id)a3
+- (LASecret)initWithGenericPassword:(id)password
 {
-  v5 = a3;
+  passwordCopy = password;
   v13.receiver = self;
   v13.super_class = LASecret;
   v6 = [(LASecret *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_genp, a3);
+    objc_storeStrong(&v6->_genp, password);
     v8 = [MEMORY[0x1E69AD238] createDefaultSerialQueueWithIdentifier:@"LASecret"];
     workQueue = v7->_workQueue;
     v7->_workQueue = v8;
 
-    v10 = [MEMORY[0x1E696EE90] sharedInstance];
-    v7->_instanceID = [v10 nextInstanceIDInDomain:@"LASecret"];
+    mEMORY[0x1E696EE90] = [MEMORY[0x1E696EE90] sharedInstance];
+    v7->_instanceID = [mEMORY[0x1E696EE90] nextInstanceIDInDomain:@"LASecret"];
 
     v11 = LA_LOG_2();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))

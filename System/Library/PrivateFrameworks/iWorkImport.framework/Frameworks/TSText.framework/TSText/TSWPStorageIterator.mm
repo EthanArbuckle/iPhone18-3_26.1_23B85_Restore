@@ -1,28 +1,28 @@
 @interface TSWPStorageIterator
-- (TSWPStorageIterator)initWithStorage:(id)a3;
+- (TSWPStorageIterator)initWithStorage:(id)storage;
 - (id)description;
 - (id)nextEvent;
-- (void)addAttributeRangeProvider:(unint64_t)a3;
-- (void)addLocationProvider:(id)a3;
-- (void)addRangeProvider:(id)a3;
-- (void)p_emitEventForMarkerCharacter:(unsigned __int16)a3 atIndex:(unint64_t)a4;
-- (void)p_emitEventWithType:(int)a3 provider:(id)a4 range:(_NSRange)a5 object:(id)a6;
-- (void)p_emitPendingCharactersAndEvent:(id)a3;
-- (void)p_forceRangeEndForProvider:(id)a3 providerIndex:(unint64_t)a4 atCharIndex:(unint64_t)a5;
+- (void)addAttributeRangeProvider:(unint64_t)provider;
+- (void)addLocationProvider:(id)provider;
+- (void)addRangeProvider:(id)provider;
+- (void)p_emitEventForMarkerCharacter:(unsigned __int16)character atIndex:(unint64_t)index;
+- (void)p_emitEventWithType:(int)type provider:(id)provider range:(_NSRange)range object:(id)object;
+- (void)p_emitPendingCharactersAndEvent:(id)event;
+- (void)p_forceRangeEndForProvider:(id)provider providerIndex:(unint64_t)index atCharIndex:(unint64_t)charIndex;
 @end
 
 @implementation TSWPStorageIterator
 
-- (TSWPStorageIterator)initWithStorage:(id)a3
+- (TSWPStorageIterator)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = TSWPStorageIterator;
   v6 = [(TSWPStorageIterator *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
     v8 = objc_opt_new();
     pendingEvents = v7->_pendingEvents;
     v7->_pendingEvents = v8;
@@ -43,33 +43,33 @@
   return v7;
 }
 
-- (void)addRangeProvider:(id)a3
+- (void)addRangeProvider:(id)provider
 {
-  v8 = a3;
+  providerCopy = provider;
   v6 = objc_msgSend_rangeProviders(self, v4, v5);
-  objc_msgSend_addObject_(v6, v7, v8);
+  objc_msgSend_addObject_(v6, v7, providerCopy);
 }
 
-- (void)addAttributeRangeProvider:(unint64_t)a3
+- (void)addAttributeRangeProvider:(unint64_t)provider
 {
   v5 = [TSWPStorageAttributeRangeProvider alloc];
   v11 = objc_msgSend_storage(self, v6, v7);
-  v9 = objc_msgSend_initWithStorage_kind_(v5, v8, v11, a3);
+  v9 = objc_msgSend_initWithStorage_kind_(v5, v8, v11, provider);
   objc_msgSend_addRangeProvider_(self, v10, v9);
 }
 
-- (void)addLocationProvider:(id)a3
+- (void)addLocationProvider:(id)provider
 {
-  v8 = a3;
+  providerCopy = provider;
   v6 = objc_msgSend_locationProviders(self, v4, v5);
-  objc_msgSend_addObject_(v6, v7, v8);
+  objc_msgSend_addObject_(v6, v7, providerCopy);
 }
 
-- (void)p_emitPendingCharactersAndEvent:(id)a3
+- (void)p_emitPendingCharactersAndEvent:(id)event
 {
-  v45 = a3;
+  eventCopy = event;
   v6 = objc_msgSend_storage(self, v4, v5);
-  objc_msgSend_setStorage_(v45, v7, v6);
+  objc_msgSend_setStorage_(eventCopy, v7, v6);
 
   v10 = objc_msgSend_charIndex(self, v8, v9);
   if (v10 >= objc_msgSend_startCharIndex(self, v11, v12))
@@ -77,7 +77,7 @@
     started = objc_msgSend_startCharIndex(self, v13, v14);
     v18 = objc_msgSend_charIndex(self, v16, v17);
     v23 = v18 - objc_msgSend_startCharIndex(self, v19, v20);
-    if (objc_msgSend_isRangeEnd(v45, v21, v22))
+    if (objc_msgSend_isRangeEnd(eventCopy, v21, v22))
     {
       v24 = objc_msgSend_storage(self, v13, v14);
       v27 = objc_msgSend_length(v24, v25, v26);
@@ -104,27 +104,27 @@
   }
 
   v43 = objc_msgSend_pendingEvents(self, v13, v14);
-  objc_msgSend_addObject_(v43, v44, v45);
+  objc_msgSend_addObject_(v43, v44, eventCopy);
 }
 
-- (void)p_emitEventWithType:(int)a3 provider:(id)a4 range:(_NSRange)a5 object:(id)a6
+- (void)p_emitEventWithType:(int)type provider:(id)provider range:(_NSRange)range object:(id)object
 {
-  v8 = objc_msgSend_eventWithType_providerIdentifier_range_object_(TSWPStorageIterationEvent, a2, *&a3, a4, a5.location, a5.length, a6);
+  v8 = objc_msgSend_eventWithType_providerIdentifier_range_object_(TSWPStorageIterationEvent, a2, *&type, provider, range.location, range.length, object);
   objc_msgSend_p_emitPendingCharactersAndEvent_(self, v7, v8);
 }
 
-- (void)p_emitEventForMarkerCharacter:(unsigned __int16)a3 atIndex:(unint64_t)a4
+- (void)p_emitEventForMarkerCharacter:(unsigned __int16)character atIndex:(unint64_t)index
 {
-  v6 = objc_msgSend_eventWithType_providerIdentifier_range_object_(TSWPStorageIterationEvent, a2, 3, @"Marker", a4, 1, 0);
+  v6 = objc_msgSend_eventWithType_providerIdentifier_range_object_(TSWPStorageIterationEvent, a2, 3, @"Marker", index, 1, 0);
   objc_msgSend_p_emitPendingCharactersAndEvent_(self, v7, v6);
 
-  objc_msgSend_setStartCharIndex_(self, v8, a4 + 1);
+  objc_msgSend_setStartCharIndex_(self, v8, index + 1);
 }
 
-- (void)p_forceRangeEndForProvider:(id)a3 providerIndex:(unint64_t)a4 atCharIndex:(unint64_t)a5
+- (void)p_forceRangeEndForProvider:(id)provider providerIndex:(unint64_t)index atCharIndex:(unint64_t)charIndex
 {
-  v60 = a3;
-  if (objc_msgSend_charIndex(self, v8, v9) != a5 && objc_msgSend_charIndex(self, v10, v11) - 1 != a5)
+  providerCopy = provider;
+  if (objc_msgSend_charIndex(self, v8, v9) != charIndex && objc_msgSend_charIndex(self, v10, v11) - 1 != charIndex)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPStorageIterator p_forceRangeEndForProvider:providerIndex:atCharIndex:]");
@@ -134,7 +134,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  if (a4)
+  if (index)
   {
     v19 = -1;
     do
@@ -145,7 +145,7 @@
       v28 = objc_msgSend_objectAtIndexedSubscript_(v20, v27, v19 + v26);
 
       v31 = objc_msgSend_range(v28, v29, v30);
-      if (a5 >= v31 && a5 - v31 < v32)
+      if (charIndex >= v31 && charIndex - v31 < v32)
       {
         if ((objc_msgSend_sendEventsForNilObjects(self, v32, v33) & 1) != 0 || (objc_msgSend_object(v28, v34, v35), v36 = objc_claimAutoreleasedReturnValue(), v36, v36))
         {
@@ -153,25 +153,25 @@
           v40 = objc_msgSend_range(v28, v38, v39);
           v43 = objc_msgSend_range(v28, v41, v42);
           v46 = objc_msgSend_object(v28, v44, v45);
-          objc_msgSend_p_emitEventWithType_provider_range_object_(self, v47, 1, v37, v40, a5 + 1 - v43, v46);
+          objc_msgSend_p_emitEventWithType_provider_range_object_(self, v47, 1, v37, v40, charIndex + 1 - v43, v46);
         }
 
-        objc_msgSend_setRangeStart_(v28, v34, a5 + 1);
+        objc_msgSend_setRangeStart_(v28, v34, charIndex + 1);
       }
 
       --v19;
-      --a4;
+      --index;
     }
 
-    while (a4);
+    while (index);
   }
 
-  if ((objc_msgSend_sendEventsForNilObjects(self, v10, v11) & 1) != 0 || (objc_msgSend_object(v60, v48, v49), v50 = objc_claimAutoreleasedReturnValue(), v50, v50))
+  if ((objc_msgSend_sendEventsForNilObjects(self, v10, v11) & 1) != 0 || (objc_msgSend_object(providerCopy, v48, v49), v50 = objc_claimAutoreleasedReturnValue(), v50, v50))
   {
-    v51 = objc_msgSend_identifier(v60, v48, v49);
-    v54 = objc_msgSend_range(v60, v52, v53);
+    v51 = objc_msgSend_identifier(providerCopy, v48, v49);
+    v54 = objc_msgSend_range(providerCopy, v52, v53);
     v56 = v55;
-    v58 = objc_msgSend_object(v60, v55, v57);
+    v58 = objc_msgSend_object(providerCopy, v55, v57);
     objc_msgSend_p_emitEventWithType_provider_range_object_(self, v59, 1, v51, v54, v56, v58);
   }
 }

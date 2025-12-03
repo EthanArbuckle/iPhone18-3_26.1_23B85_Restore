@@ -7,15 +7,15 @@
 
 - (id)WAImageLoaderPreCacheImage
 {
-  [a1 size];
+  [self size];
   v3 = v2;
   v5 = v4;
-  [a1 scale];
+  [self scale];
   v7 = v6;
   v11.width = v3;
   v11.height = v5;
   UIGraphicsBeginImageContextWithOptions(v11, 0, v7);
-  [a1 drawAtPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  [self drawAtPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   v8 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
@@ -31,7 +31,7 @@
   v17.size.width = a4;
   v17.size.height = a5;
   CGContextBeginTransparencyLayerWithRect(CurrentContext, v17, 0);
-  BoxRect = CGPDFPageGetBoxRect([a1 _CGPDFPage], kCGPDFMediaBox);
+  BoxRect = CGPDFPageGetBoxRect([self _CGPDFPage], kCGPDFMediaBox);
   width = BoxRect.size.width;
   height = BoxRect.size.height;
   v13 = a4 / BoxRect.size.width;
@@ -47,7 +47,7 @@
   MaxY = CGRectGetMaxY(v19);
   CGContextTranslateCTM(CurrentContext, MinX, MaxY);
   CGContextScaleCTM(CurrentContext, v13, -a5 / height);
-  CGContextDrawPDFPage(CurrentContext, [a1 _CGPDFPage]);
+  CGContextDrawPDFPage(CurrentContext, [self _CGPDFPage]);
   v20.origin.x = 0.0;
   v20.origin.y = 0.0;
   v20.size.width = width;

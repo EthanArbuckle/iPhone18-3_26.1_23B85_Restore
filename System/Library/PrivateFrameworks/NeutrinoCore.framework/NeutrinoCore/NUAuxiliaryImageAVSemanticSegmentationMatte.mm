@@ -1,11 +1,11 @@
 @interface NUAuxiliaryImageAVSemanticSegmentationMatte
 - (CGImage)cgImageRef;
 - (__CVBuffer)cvPixelBufferRef;
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3;
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation;
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3;
-- (id)initAuxiliaryImageFromAVSemanticSegmentationMatte:(id)a3;
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type;
+- (id)initAuxiliaryImageFromAVSemanticSegmentationMatte:(id)matte;
 - (unsigned)pixelFormatType;
 @end
 
@@ -38,24 +38,24 @@
 
 - (__CVBuffer)cvPixelBufferRef
 {
-  v2 = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
-  v3 = [v2 mattingImage];
+  avSemanticSegmentationMatte = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
+  mattingImage = [avSemanticSegmentationMatte mattingImage];
 
-  return v3;
+  return mattingImage;
 }
 
 - (unsigned)pixelFormatType
 {
-  v2 = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
-  v3 = [v2 pixelFormatType];
+  avSemanticSegmentationMatte = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
+  pixelFormatType = [avSemanticSegmentationMatte pixelFormatType];
 
-  return v3;
+  return pixelFormatType;
 }
 
-- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)a3
+- (id)dictionaryRepresentationForAuxiliaryDataType:(id *)type
 {
-  v4 = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
-  v5 = [v4 dictionaryRepresentationForAuxiliaryDataType:a3];
+  avSemanticSegmentationMatte = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
+  v5 = [avSemanticSegmentationMatte dictionaryRepresentationForAuxiliaryDataType:type];
 
   return v5;
 }
@@ -68,10 +68,10 @@
   return v2;
 }
 
-- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)auxiliaryImageByReplacingAuxiliaryImageWithPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v6 = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
-  v7 = [v6 semanticSegmentationMatteByReplacingSemanticSegmentationMatteWithPixelBuffer:a3 error:a4];
+  avSemanticSegmentationMatte = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
+  v7 = [avSemanticSegmentationMatte semanticSegmentationMatteByReplacingSemanticSegmentationMatteWithPixelBuffer:buffer error:error];
 
   if (v7)
   {
@@ -86,22 +86,22 @@
   return v8;
 }
 
-- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)a3
+- (id)auxiliaryImageByApplyingExifOrientation:(unsigned int)orientation
 {
-  v3 = *&a3;
-  v4 = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
-  v5 = [v4 semanticSegmentationMatteByApplyingExifOrientation:v3];
+  v3 = *&orientation;
+  avSemanticSegmentationMatte = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)self avSemanticSegmentationMatte];
+  v5 = [avSemanticSegmentationMatte semanticSegmentationMatteByApplyingExifOrientation:v3];
 
   v6 = [[NUAuxiliaryImageAVSemanticSegmentationMatte alloc] initAuxiliaryImageFromAVSemanticSegmentationMatte:v5];
 
   return v6;
 }
 
-- (id)initAuxiliaryImageFromAVSemanticSegmentationMatte:(id)a3
+- (id)initAuxiliaryImageFromAVSemanticSegmentationMatte:(id)matte
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  matteCopy = matte;
+  if (!matteCopy)
   {
     v11 = NUAssertLogger_16664();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -122,8 +122,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -134,8 +134,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -144,36 +144,36 @@
     _NUAssertFailHandler("[NUAuxiliaryImageAVSemanticSegmentationMatte initAuxiliaryImageFromAVSemanticSegmentationMatte:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Image/NUAuxiliaryImage.m", 429, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "avSemanticSegmentationMatte != nil");
   }
 
-  v6 = v5;
+  v6 = matteCopy;
   v27.receiver = self;
   v27.super_class = NUAuxiliaryImageAVSemanticSegmentationMatte;
   v7 = [(NUAuxiliaryImageAVSemanticSegmentationMatte *)&v27 init];
   if (v7)
   {
-    v8 = [v6 matteType];
-    if ([v8 isEqualToString:*MEMORY[0x1E6987038]])
+    matteType = [v6 matteType];
+    if ([matteType isEqualToString:*MEMORY[0x1E6987038]])
     {
       v9 = 4;
     }
 
-    else if ([v8 isEqualToString:*MEMORY[0x1E6987030]])
+    else if ([matteType isEqualToString:*MEMORY[0x1E6987030]])
     {
       v9 = 5;
     }
 
-    else if ([v8 isEqualToString:*MEMORY[0x1E6987040]])
+    else if ([matteType isEqualToString:*MEMORY[0x1E6987040]])
     {
       v9 = 6;
     }
 
-    else if ([v8 isEqualToString:*MEMORY[0x1E6987028]])
+    else if ([matteType isEqualToString:*MEMORY[0x1E6987028]])
     {
       v9 = 8;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"AVSemanticSegmentationMatteTypeSky"])
+      if (![matteType isEqualToString:@"AVSemanticSegmentationMatteTypeSky"])
       {
         v7->_auxiliaryImageType = 0;
         goto LABEL_14;
@@ -184,7 +184,7 @@
 
     v7->_auxiliaryImageType = v9;
 LABEL_14:
-    objc_storeStrong(&v7->_avSemanticSegmentationMatte, a3);
+    objc_storeStrong(&v7->_avSemanticSegmentationMatte, matte);
   }
 
   return v7;

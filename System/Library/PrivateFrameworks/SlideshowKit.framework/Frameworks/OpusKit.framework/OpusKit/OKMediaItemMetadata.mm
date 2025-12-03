@@ -1,8 +1,8 @@
 @interface OKMediaItemMetadata
-+ (unint64_t)alignResolution:(unint64_t)a3;
++ (unint64_t)alignResolution:(unint64_t)resolution;
 - (BOOL)hasRegionsOfInterest;
 - (BOOL)hasRegionsOfInterestName;
-- (BOOL)writeToFileURL:(id)a3;
+- (BOOL)writeToFileURL:(id)l;
 - (CGRect)regionOfInterestContainerBounds;
 - (CGSize)resolution;
 - (CLLocation)location;
@@ -10,17 +10,17 @@
 - (NSArray)regionsOfInterest;
 - (NSArray)regionsOfInterestName;
 - (OKMediaItemMetadata)init;
-- (OKMediaItemMetadata)initWithDictionary:(id)a3;
-- (OKMediaItemMetadata)initWithFileURL:(id)a3;
+- (OKMediaItemMetadata)initWithDictionary:(id)dictionary;
+- (OKMediaItemMetadata)initWithFileURL:(id)l;
 - (double)aspectRatio;
 - (id)dictionary;
-- (id)dictionaryValueForKey:(id)a3;
+- (id)dictionaryValueForKey:(id)key;
 - (id)regionsOfInterestDictionary;
-- (unint64_t)bestResolutionForSize:(CGSize)a3 scale:(double)a4 quality:(double)a5;
+- (unint64_t)bestResolutionForSize:(CGSize)size scale:(double)scale quality:(double)quality;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setPropertiesFromDictionary:(id)a3;
-- (void)setRegionsOfInterest:(id)a3;
+- (void)setPropertiesFromDictionary:(id)dictionary;
+- (void)setRegionsOfInterest:(id)interest;
 @end
 
 @implementation OKMediaItemMetadata
@@ -52,13 +52,13 @@
   return result;
 }
 
-- (OKMediaItemMetadata)initWithDictionary:(id)a3
+- (OKMediaItemMetadata)initWithDictionary:(id)dictionary
 {
   v4 = [(OKMediaItemMetadata *)self init];
   v5 = v4;
   if (v4)
   {
-    [(OKMediaItemMetadata *)v4 setPropertiesFromDictionary:a3];
+    [(OKMediaItemMetadata *)v4 setPropertiesFromDictionary:dictionary];
   }
 
   return v5;
@@ -106,105 +106,105 @@
   [(OKMediaItemMetadata *)&v8 dealloc];
 }
 
-- (void)setPropertiesFromDictionary:(id)a3
+- (void)setPropertiesFromDictionary:(id)dictionary
 {
   objc_sync_enter(self);
-  v5 = [a3 objectForKey:@"Media Type"];
+  v5 = [dictionary objectForKey:@"Media Type"];
   if (v5)
   {
     -[OKMediaItemMetadata setType:](self, "setType:", [v5 unsignedIntegerValue]);
   }
 
-  v6 = [a3 objectForKey:@"Media SubType"];
+  v6 = [dictionary objectForKey:@"Media SubType"];
   if (v6)
   {
     -[OKMediaItemMetadata setSubType:](self, "setSubType:", [v6 unsignedIntegerValue]);
   }
 
-  v7 = [a3 objectForKey:@"Resolution"];
+  v7 = [dictionary objectForKey:@"Resolution"];
   if (v7)
   {
     v8 = CGSizeFromString(v7);
     [(OKMediaItemMetadata *)self setResolution:v8.width, v8.height];
   }
 
-  v9 = [a3 objectForKey:@"Creation Date"];
+  v9 = [dictionary objectForKey:@"Creation Date"];
   if (v9)
   {
     [(OKMediaItemMetadata *)self setCreationDate:v9];
   }
 
-  v10 = [a3 objectForKey:@"Image Orientation"];
+  v10 = [dictionary objectForKey:@"Image Orientation"];
   if (v10)
   {
     -[OKMediaItemMetadata setOrientation:](self, "setOrientation:", [v10 unsignedIntegerValue]);
   }
 
-  v11 = [a3 objectForKey:@"Duration"];
+  v11 = [dictionary objectForKey:@"Duration"];
   if (v11)
   {
     [v11 doubleValue];
     [(OKMediaItemMetadata *)self setDuration:?];
   }
 
-  v12 = [a3 objectForKey:@"DisplayTime"];
+  v12 = [dictionary objectForKey:@"DisplayTime"];
   if (v12)
   {
     [v12 doubleValue];
     [(OKMediaItemMetadata *)self setDisplayTime:?];
   }
 
-  v13 = [a3 objectForKey:@"Latitude"];
+  v13 = [dictionary objectForKey:@"Latitude"];
   if (v13)
   {
     [v13 doubleValue];
     [(OKMediaItemMetadata *)self setLatitude:?];
   }
 
-  v14 = [a3 objectForKey:@"Longitude"];
+  v14 = [dictionary objectForKey:@"Longitude"];
   if (v14)
   {
     [v14 doubleValue];
     [(OKMediaItemMetadata *)self setLongitude:?];
   }
 
-  v15 = [a3 objectForKey:@"Opaque"];
+  v15 = [dictionary objectForKey:@"Opaque"];
   if (v15)
   {
     -[OKMediaItemMetadata setOpaque:](self, "setOpaque:", [v15 BOOLValue]);
   }
 
-  v16 = [a3 objectForKey:@"UTI"];
+  v16 = [dictionary objectForKey:@"UTI"];
   if (v16)
   {
     [(OKMediaItemMetadata *)self setUTI:v16];
   }
 
-  v17 = [a3 objectForKey:@"Name"];
+  v17 = [dictionary objectForKey:@"Name"];
   if (v17)
   {
     [(OKMediaItemMetadata *)self setName:v17];
   }
 
-  v18 = [a3 objectForKey:@"Caption"];
+  v18 = [dictionary objectForKey:@"Caption"];
   if (v18)
   {
     [(OKMediaItemMetadata *)self setCaption:v18];
   }
 
-  v19 = [a3 objectForKey:@"ROI Detected"];
+  v19 = [dictionary objectForKey:@"ROI Detected"];
   if (v19)
   {
     -[OKMediaItemMetadata setRegionsOfInterestDetected:](self, "setRegionsOfInterestDetected:", [v19 BOOLValue]);
   }
 
-  v20 = [a3 objectForKey:@"ROI Rectangles"];
+  v20 = [dictionary objectForKey:@"ROI Rectangles"];
   if (v20)
   {
     [(OKMediaItemMetadata *)self setRegionsOfInterest:v20];
   }
 
-  v21 = [a3 objectForKey:@"ROIs Container Bounds"];
+  v21 = [dictionary objectForKey:@"ROIs Container Bounds"];
   if (v21)
   {
     v23 = CGRectFromString(v21);
@@ -324,10 +324,10 @@
   return v12;
 }
 
-- (id)dictionaryValueForKey:(id)a3
+- (id)dictionaryValueForKey:(id)key
 {
   objc_sync_enter(self);
-  if ([a3 isEqualToString:@"Media Type"])
+  if ([key isEqualToString:@"Media Type"])
   {
     if (!self->_type)
     {
@@ -337,9 +337,9 @@
     goto LABEL_6;
   }
 
-  if (![a3 isEqualToString:@"Media SubType"])
+  if (![key isEqualToString:@"Media SubType"])
   {
-    if ([a3 isEqualToString:@"Resolution"])
+    if ([key isEqualToString:@"Resolution"])
     {
       width = self->_resolution.width;
       height = self->_resolution.height;
@@ -352,7 +352,7 @@
       goto LABEL_7;
     }
 
-    if ([a3 isEqualToString:@"Aspect Ratio"])
+    if ([key isEqualToString:@"Aspect Ratio"])
     {
       if (self->_resolution.width == *MEMORY[0x277CBF3A8] && self->_resolution.height == *(MEMORY[0x277CBF3A8] + 8))
       {
@@ -364,13 +364,13 @@
       goto LABEL_36;
     }
 
-    if ([a3 isEqualToString:@"Creation Date"])
+    if ([key isEqualToString:@"Creation Date"])
     {
       v12 = 40;
       goto LABEL_22;
     }
 
-    if ([a3 isEqualToString:@"Image Orientation"])
+    if ([key isEqualToString:@"Image Orientation"])
     {
       if (!self->_orientation)
       {
@@ -380,26 +380,26 @@
       goto LABEL_6;
     }
 
-    if ([a3 isEqualToString:@"Duration"])
+    if ([key isEqualToString:@"Duration"])
     {
       duration = self->_duration;
     }
 
-    else if ([a3 isEqualToString:@"DisplayTime"])
+    else if ([key isEqualToString:@"DisplayTime"])
     {
       duration = self->_displayTime;
     }
 
-    else if ([a3 isEqualToString:@"Latitude"])
+    else if ([key isEqualToString:@"Latitude"])
     {
       duration = self->_latitude;
     }
 
     else
     {
-      if (![a3 isEqualToString:@"Longitude"])
+      if (![key isEqualToString:@"Longitude"])
       {
-        if ([a3 isEqualToString:@"Opaque"])
+        if ([key isEqualToString:@"Opaque"])
         {
           if (!self->_opaque)
           {
@@ -411,29 +411,29 @@
 
         else
         {
-          if ([a3 isEqualToString:@"UTI"])
+          if ([key isEqualToString:@"UTI"])
           {
             v12 = 96;
             goto LABEL_22;
           }
 
-          if ([a3 isEqualToString:@"Name"])
+          if ([key isEqualToString:@"Name"])
           {
             v12 = 104;
             goto LABEL_22;
           }
 
-          if ([a3 isEqualToString:@"Caption"])
+          if ([key isEqualToString:@"Caption"])
           {
             v12 = 112;
             goto LABEL_22;
           }
 
-          if (![a3 isEqualToString:@"ROI Detected"])
+          if (![key isEqualToString:@"ROI Detected"])
           {
-            if (([a3 isEqualToString:@"ROI Rectangles"] & 1) == 0)
+            if (([key isEqualToString:@"ROI Rectangles"] & 1) == 0)
             {
-              if (![a3 isEqualToString:@"ROIs Container Bounds"] || CGRectIsNull(self->_regionOfInterestContainerBounds) || CGRectEqualToRect(self->_regionOfInterestContainerBounds, *MEMORY[0x277CBF3A0]))
+              if (![key isEqualToString:@"ROIs Container Bounds"] || CGRectIsNull(self->_regionOfInterestContainerBounds) || CGRectEqualToRect(self->_regionOfInterestContainerBounds, *MEMORY[0x277CBF3A0]))
               {
                 goto LABEL_54;
               }
@@ -654,7 +654,7 @@ LABEL_16:
 {
   v19 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -691,7 +691,7 @@ LABEL_16:
 
           if (!v12 && [v11 length])
           {
-            [(NSArray *)v3 addObject:v11];
+            [(NSArray *)array addObject:v11];
           }
         }
       }
@@ -703,16 +703,16 @@ LABEL_16:
   }
 
   objc_sync_exit(self);
-  return v3;
+  return array;
 }
 
-- (void)setRegionsOfInterest:(id)a3
+- (void)setRegionsOfInterest:(id)interest
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   [(OKMediaItemMetadata *)self willChangeValueForKey:@"regionsOfInterest"];
 
-  self->_regionsOfInterest = [a3 copy];
+  self->_regionsOfInterest = [interest copy];
   [(OKMediaItemMetadata *)self didChangeValueForKey:@"regionsOfInterest"];
   v15 = 0u;
   v16 = 0u;
@@ -754,7 +754,7 @@ LABEL_16:
     while (v6);
   }
 
-  if ([a3 count])
+  if ([interest count])
   {
     self->_regionsOfInterestDetected = 1;
   }
@@ -771,15 +771,15 @@ LABEL_16:
   return regionsOfInterest;
 }
 
-+ (unint64_t)alignResolution:(unint64_t)a3
++ (unint64_t)alignResolution:(unint64_t)resolution
 {
   v3 = 2048;
-  if (a3 <= 0x7FF)
+  if (resolution <= 0x7FF)
   {
-    v3 = (((a3 & 0xFFFFFFFFFFFFF83FLL) + 63) & 0xFFFFFFFFFFFFFFC0) + (a3 & 0x7C0);
+    v3 = (((resolution & 0xFFFFFFFFFFFFF83FLL) + 63) & 0xFFFFFFFFFFFFFFC0) + (resolution & 0x7C0);
   }
 
-  if (a3 >= 0x80)
+  if (resolution >= 0x80)
   {
     return v3;
   }
@@ -790,18 +790,18 @@ LABEL_16:
   }
 }
 
-- (unint64_t)bestResolutionForSize:(CGSize)a3 scale:(double)a4 quality:(double)a5
+- (unint64_t)bestResolutionForSize:(CGSize)size scale:(double)scale quality:(double)quality
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width <= a3.height)
+  height = size.height;
+  width = size.width;
+  if (size.width <= size.height)
   {
-    v9 = a3.height;
+    v9 = size.height;
   }
 
   else
   {
-    v9 = a3.width;
+    v9 = size.width;
   }
 
   [(OKMediaItemMetadata *)self aspectRatio];
@@ -836,19 +836,19 @@ LABEL_16:
     }
   }
 
-  v13 = (fmax(fmin(a5, 1.0), 0.100000001) * v9 * a4);
+  v13 = (fmax(fmin(quality, 1.0), 0.100000001) * v9 * scale);
 
   return [OKMediaItemMetadata alignResolution:v13];
 }
 
-- (OKMediaItemMetadata)initWithFileURL:(id)a3
+- (OKMediaItemMetadata)initWithFileURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = OKMediaItemMetadata;
   v4 = [(OKMediaItemMetadata *)&v9 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:a3];
+    v5 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithURL:l];
     v8 = 0;
     [v5 open];
     v6 = [MEMORY[0x277CCAC58] propertyListWithStream:v5 options:0 format:0 error:&v8];
@@ -863,7 +863,7 @@ LABEL_16:
     {
       if (*MEMORY[0x277D62808] >= 4)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:779 andFormat:@"Failed to load media metadata from %@: %@", a3, objc_msgSend(v8, "localizedDescription")];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:779 andFormat:@"Failed to load media metadata from %@: %@", l, objc_msgSend(v8, "localizedDescription")];
       }
 
       return 0;
@@ -873,44 +873,44 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)writeToFileURL:(id)a3
+- (BOOL)writeToFileURL:(id)l
 {
   objc_sync_enter(self);
   v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v12 = 0;
   v11 = 0;
-  if ([v5 fileExistsAtPath:objc_msgSend(objc_msgSend(a3 isDirectory:{"URLByDeletingLastPathComponent"), "relativePath"), &v11}])
+  if ([v5 fileExistsAtPath:objc_msgSend(objc_msgSend(l isDirectory:{"URLByDeletingLastPathComponent"), "relativePath"), &v11}])
   {
     if ((v11 & 1) == 0)
     {
       if (*MEMORY[0x277D62808] >= 4)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:817 andFormat:@"Failed to write media metadata to %@: %@", a3, @"Destination path already exists as file instead of directory"];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:817 andFormat:@"Failed to write media metadata to %@: %@", l, @"Destination path already exists as file instead of directory"];
       }
 
       goto LABEL_17;
     }
   }
 
-  else if (([v5 createDirectoryAtURL:objc_msgSend(a3 withIntermediateDirectories:"URLByDeletingLastPathComponent") attributes:1 error:{0, &v12}] & 1) == 0)
+  else if (([v5 createDirectoryAtURL:objc_msgSend(l withIntermediateDirectories:"URLByDeletingLastPathComponent") attributes:1 error:{0, &v12}] & 1) == 0)
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:808 andFormat:@"Failed to write media metadata to %@: %@", a3, objc_msgSend(v12, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:808 andFormat:@"Failed to write media metadata to %@: %@", l, objc_msgSend(v12, "localizedDescription")];
     }
 
     goto LABEL_17;
   }
 
-  v6 = [(OKMediaItemMetadata *)self dictionary];
+  dictionary = [(OKMediaItemMetadata *)self dictionary];
   v7 = [MEMORY[0x277CCAA00] temporaryFileURLWithExtension:@"tmp"];
   v8 = [objc_alloc(MEMORY[0x277CBEB78]) initWithURL:v7 append:0];
   [v8 open];
-  if (![MEMORY[0x277CCAC58] writePropertyList:v6 toStream:v8 format:200 options:0 error:&v12])
+  if (![MEMORY[0x277CCAC58] writePropertyList:dictionary toStream:v8 format:200 options:0 error:&v12])
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:834 andFormat:@"Failed to write media metadata to \"%@\" (\"%@\", a3, v7, objc_msgSend(v12, "localizedDescription"")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:834 andFormat:@"Failed to write media metadata to \"%@\" (\"%@\", l, v7, objc_msgSend(v12, "localizedDescription"")];
     }
 
     [v8 close];
@@ -920,12 +920,12 @@ LABEL_16:
 
   [v8 close];
 
-  [v5 removeItemAtURL:a3 error:0];
-  if (([v5 moveItemAtURL:v7 toURL:a3 error:&v12] & 1) == 0)
+  [v5 removeItemAtURL:l error:0];
+  if (([v5 moveItemAtURL:v7 toURL:l error:&v12] & 1) == 0)
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:852 andFormat:@"Failed to save cache to %@: %@", a3, objc_msgSend(v12, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Media/OKMediaItemMetadata.m" line:852 andFormat:@"Failed to save cache to %@: %@", l, objc_msgSend(v12, "localizedDescription")];
     }
 
 LABEL_16:

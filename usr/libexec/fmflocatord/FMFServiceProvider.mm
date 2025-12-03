@@ -5,29 +5,29 @@
 - (id)_constructNonVolatileFullDeviceInfo;
 - (id)_constructStandardDeviceContext;
 - (id)_constructVolatileFullDeviceInfo;
-- (id)connectionStringForNRDevice:(id)a3;
-- (id)copyHandlerForCommand:(id)a3 params:(id)a4;
+- (id)connectionStringForNRDevice:(id)device;
+- (id)copyHandlerForCommand:(id)command params:(id)params;
 - (id)newLocationManager;
 - (void)_beginXPCTransaction;
-- (void)_buddyCompletionCheckTimerFired:(id)a3;
+- (void)_buddyCompletionCheckTimerFired:(id)fired;
 - (void)_checkForBuddyCompletion;
 - (void)_endXPCTransaction;
 - (void)_registerIDSServices;
 - (void)_sendStartupRegister;
-- (void)_triggerFence:(id)a3 atLocation:(id)a4;
+- (void)_triggerFence:(id)fence atLocation:(id)location;
 - (void)accountDeactivated;
 - (void)accountDidChange;
-- (void)ackFencesCommand:(id)a3 withCompletion:(id)a4;
-- (void)buddyDidComplete:(id)a3;
+- (void)ackFencesCommand:(id)command withCompletion:(id)completion;
+- (void)buddyDidComplete:(id)complete;
 - (void)deinitializeProvider;
 - (void)deregisterCommonNotifications;
-- (void)didReceiveAPSMessage:(id)a3;
-- (void)didReceiveAPSToken:(id)a3;
-- (void)didReceiveAuthFailureForRequest:(id)a3;
-- (void)fenceTriggered:(id)a3 atLocation:(id)a4;
+- (void)didReceiveAPSMessage:(id)message;
+- (void)didReceiveAPSToken:(id)token;
+- (void)didReceiveAuthFailureForRequest:(id)request;
+- (void)fenceTriggered:(id)triggered atLocation:(id)location;
 - (void)performInitialSetup;
 - (void)registerCommonNotifications;
-- (void)sendTriggeredFence:(id)a3 withTriggerLocation:(id)a4;
+- (void)sendTriggeredFence:(id)fence withTriggerLocation:(id)location;
 - (void)start;
 - (void)stop;
 - (void)tryToFetchAuthToken;
@@ -61,31 +61,31 @@
 {
   if (![(FMFServiceProvider *)self hasCompletedInitialSetup])
   {
-    v3 = [(FindBaseServiceProvider *)self authInvalidError];
+    authInvalidError = [(FindBaseServiceProvider *)self authInvalidError];
     v4 = +[APSTokenWatcher sharedInstance];
     v5 = [[FMNanoIDSManager alloc] initWithServiceId:@"com.apple.private.alloy.fmflocator" minimumVersion:4];
     [(FMFServiceProvider *)self setIdsManager:v5];
     v6 = +[SystemConfig sharedInstance];
-    v7 = [v6 isBuddyDone];
+    isBuddyDone = [v6 isBuddyDone];
 
-    if (v7)
+    if (isBuddyDone)
     {
       v8 = +[NSNotificationCenter defaultCenter];
       [v8 removeObserver:self name:@"purplebuddy.setupdone" object:0];
 
       v9 = sub_100002830();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-      if (v3 == 1196379972)
+      if (authInvalidError == 1196379972)
       {
         if (v10)
         {
-          v21 = [(FMFServiceProvider *)self fm_logID];
-          v22 = [(ServiceProvider *)self account];
-          v23 = [v22 username];
+          fm_logID = [(FMFServiceProvider *)self fm_logID];
+          account = [(ServiceProvider *)self account];
+          username = [account username];
           *buf = 138412546;
-          v45 = v21;
+          v45 = fm_logID;
           v46 = 2112;
-          v47 = v23;
+          v47 = username;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ found account: %@", buf, 0x16u);
         }
 
@@ -94,29 +94,29 @@
         [v24 setDelegate:self];
 
         v25 = +[FMFLocatorDaemon sharedInstance];
-        v26 = [(ServiceProvider *)self account];
-        v27 = [v26 apsEnvironmentConstant];
-        v28 = [v25 apsHandlerForEnvironment:v27];
+        account2 = [(ServiceProvider *)self account];
+        apsEnvironmentConstant = [account2 apsEnvironmentConstant];
+        v28 = [v25 apsHandlerForEnvironment:apsEnvironmentConstant];
 
         [v28 registerDelegate:self forTopic:@"com.apple.mobileme.fmf"];
-        v29 = [v28 apsToken];
-        LOBYTE(v25) = v29 == 0;
+        apsToken = [v28 apsToken];
+        LOBYTE(v25) = apsToken == 0;
 
         if (v25)
         {
           v36 = sub_100002830();
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
-            v37 = [(FMFServiceProvider *)self fm_logID];
+            fm_logID2 = [(FMFServiceProvider *)self fm_logID];
             *buf = 138412290;
-            v45 = v37;
+            v45 = fm_logID2;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "%@ No APS token yet", buf, 0xCu);
           }
 
           v38 = +[FMSystemInfo sharedInstance];
-          v39 = [v38 isInternalBuild];
+          isInternalBuild = [v38 isInternalBuild];
 
-          if (v39)
+          if (isInternalBuild)
           {
             objc_initWeak(buf, self);
             v40 = dispatch_time(0, 5000000000);
@@ -133,13 +133,13 @@
 
         else
         {
-          v30 = self;
-          objc_sync_enter(v30);
-          v31 = [v28 apsToken];
-          [(FindBaseServiceProvider *)v30 setApsToken:v31];
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          apsToken2 = [v28 apsToken];
+          [(FindBaseServiceProvider *)selfCopy setApsToken:apsToken2];
 
-          objc_sync_exit(v30);
-          [(FMFServiceProvider *)v30 _sendStartupRegister];
+          objc_sync_exit(selfCopy);
+          [(FMFServiceProvider *)selfCopy _sendStartupRegister];
         }
 
         [(FMFServiceProvider *)self registerCommonNotifications];
@@ -148,34 +148,34 @@
         [(FMFServiceProvider *)self setHasCompletedInitialSetup:1];
       }
 
-      else if (v3 == 1481920331)
+      else if (authInvalidError == 1481920331)
       {
         if (v10)
         {
-          v11 = [(FMFServiceProvider *)self serviceName];
-          v12 = [(ServiceProvider *)self account];
-          v13 = [v12 username];
+          serviceName = [(FMFServiceProvider *)self serviceName];
+          account3 = [(ServiceProvider *)self account];
+          username2 = [account3 username];
           v14 = sub_10000D094(1481920331);
           *buf = 138412802;
-          v45 = v11;
+          v45 = serviceName;
           v46 = 2112;
-          v47 = v13;
+          v47 = username2;
           v48 = 2112;
           v49 = v14;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@: Account %@ is invalid due to '%@' - will not register at this time", buf, 0x20u);
         }
 
         v15 = +[FMSystemInfo sharedInstance];
-        v16 = [v15 isInternalBuild];
+        isInternalBuild2 = [v15 isInternalBuild];
 
-        if (v16)
+        if (isInternalBuild2)
         {
           v17 = sub_100002830();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
-            v18 = [(FMFServiceProvider *)self serviceName];
+            serviceName2 = [(FMFServiceProvider *)self serviceName];
             *buf = 138412290;
-            v45 = v18;
+            v45 = serviceName2;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@ is not functional as authentication credentials are not available.", buf, 0xCu);
           }
         }
@@ -187,14 +187,14 @@
       {
         if (v10)
         {
-          v32 = [(FMFServiceProvider *)self serviceName];
-          v33 = [(ServiceProvider *)self account];
-          v34 = [v33 username];
-          v35 = sub_10000D094(v3);
+          serviceName3 = [(FMFServiceProvider *)self serviceName];
+          account4 = [(ServiceProvider *)self account];
+          username3 = [account4 username];
+          v35 = sub_10000D094(authInvalidError);
           *buf = 138412802;
-          v45 = v32;
+          v45 = serviceName3;
           v46 = 2112;
-          v47 = v34;
+          v47 = username3;
           v48 = 2112;
           v49 = v35;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@: Account %@ is invalid due to '%@' - will not register at this time", buf, 0x20u);
@@ -207,32 +207,32 @@
       v19 = sub_100002830();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [(FMFServiceProvider *)self serviceName];
+        serviceName4 = [(FMFServiceProvider *)self serviceName];
         *buf = 138412290;
-        v45 = v20;
+        v45 = serviceName4;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%@: Buddy is not complete yet. Waiting...", buf, 0xCu);
       }
 
       [(FMFServiceProvider *)self _checkForBuddyCompletion];
     }
 
-    v41 = [(FMFServiceProvider *)self idsManager];
-    [v41 start];
+    idsManager = [(FMFServiceProvider *)self idsManager];
+    [idsManager start];
   }
 }
 
 - (void)_sendStartupRegister
 {
-  v3 = [(ServiceProvider *)self account];
-  v4 = [v3 accountAddTime];
-  if (v4)
+  account = [(ServiceProvider *)self account];
+  accountAddTime = [account accountAddTime];
+  if (accountAddTime)
   {
-    v5 = v4;
-    v6 = [(ServiceProvider *)self account];
-    v7 = [v6 accountAddTime];
+    v5 = accountAddTime;
+    account2 = [(ServiceProvider *)self account];
+    accountAddTime2 = [account2 accountAddTime];
     v8 = +[FMFLocatorDaemon sharedInstance];
-    v9 = [v8 startTime];
-    v10 = [v7 compare:v9];
+    startTime = [v8 startTime];
+    v10 = [accountAddTime2 compare:startTime];
 
     if (v10 != -1)
     {
@@ -247,9 +247,9 @@
   }
 
   v11 = +[FMFLocatorDaemon sharedInstance];
-  v12 = [v11 isFirstRunAfterBoot];
+  isFirstRunAfterBoot = [v11 isFirstRunAfterBoot];
   v13 = @"Restart";
-  if (v12)
+  if (isFirstRunAfterBoot)
   {
     v13 = @"DeviceRestart";
   }
@@ -304,8 +304,8 @@ LABEL_8:
   [v5 removeObserver:self name:@"nano.devicedidunpair" object:0];
 
   v6 = +[NSNotificationCenter defaultCenter];
-  v7 = [(FMFServiceProvider *)self tokenWatcherObserverToken];
-  [v6 removeObserver:v7];
+  tokenWatcherObserverToken = [(FMFServiceProvider *)self tokenWatcherObserverToken];
+  [v6 removeObserver:tokenWatcherObserverToken];
 
   [(FMFServiceProvider *)self setTokenWatcherObserverToken:0];
   v8.receiver = self;
@@ -332,21 +332,21 @@ LABEL_8:
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(FMFServiceProvider *)self fm_logID];
+    fm_logID = [(FMFServiceProvider *)self fm_logID];
     *buf = 138412290;
-    v11 = v5;
+    v11 = fm_logID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@ Removing any fences that were set...", buf, 0xCu);
   }
 
   v6 = +[FMFFencesMgr sharedInstance];
   [v6 setFencesToMonitor:0 withFenceVersion:0 triggerValidityDuration:0 andTriggerURL:0.0];
 
-  v7 = [(FMFServiceProvider *)self buddyWaitTimer];
+  buddyWaitTimer = [(FMFServiceProvider *)self buddyWaitTimer];
 
-  if (v7)
+  if (buddyWaitTimer)
   {
-    v8 = [(FMFServiceProvider *)self buddyWaitTimer];
-    [v8 invalidate];
+    buddyWaitTimer2 = [(FMFServiceProvider *)self buddyWaitTimer];
+    [buddyWaitTimer2 invalidate];
 
     [(FMFServiceProvider *)self setBuddyWaitTimer:0];
   }
@@ -359,17 +359,17 @@ LABEL_8:
 
 - (void)accountDidChange
 {
-  v3 = [(ServiceProvider *)self account];
-  v4 = [(FMFServiceProvider *)self hasCompletedInitialSetup];
+  account = [(ServiceProvider *)self account];
+  hasCompletedInitialSetup = [(FMFServiceProvider *)self hasCompletedInitialSetup];
   v5 = sub_100002830();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (hasCompletedInitialSetup)
   {
     if (v6)
     {
-      v7 = [(FMFServiceProvider *)self fm_logID];
+      fm_logID = [(FMFServiceProvider *)self fm_logID];
       v10 = 138412290;
-      v11 = v7;
+      v11 = fm_logID;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ Sending register because account changed", &v10, 0xCu);
     }
 
@@ -380,18 +380,18 @@ LABEL_8:
   {
     if (v6)
     {
-      v8 = [(FMFServiceProvider *)self fm_logID];
+      fm_logID2 = [(FMFServiceProvider *)self fm_logID];
       v10 = 138412290;
-      v11 = v8;
+      v11 = fm_logID2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ Attempting to start this FMF provider again because account changed", &v10, 0xCu);
     }
 
     [(FMFServiceProvider *)self performInitialSetup];
   }
 
-  v9 = [v3 internalAuthToken];
+  internalAuthToken = [account internalAuthToken];
 
-  if (!v9)
+  if (!internalAuthToken)
   {
     [(FMFServiceProvider *)self requestAuthenticationShouldForce:0];
   }
@@ -404,26 +404,26 @@ LABEL_8:
   [(FindBaseServiceProvider *)&v10 deinitializeProvider];
   [(FMFServiceProvider *)self deregisterCommonNotifications];
   v3 = +[FMFFencesMgr sharedInstance];
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
 
-  if (v4 == self)
+  if (delegate == self)
   {
     v5 = +[FMFFencesMgr sharedInstance];
     [v5 setDelegate:0];
   }
 
   v6 = +[FMFLocatorDaemon sharedInstance];
-  v7 = [(ServiceProvider *)self account];
-  v8 = [v7 apsEnvironmentConstant];
-  v9 = [v6 apsHandlerForEnvironment:v8];
+  account = [(ServiceProvider *)self account];
+  apsEnvironmentConstant = [account apsEnvironmentConstant];
+  v9 = [v6 apsHandlerForEnvironment:apsEnvironmentConstant];
 
   [v9 deregisterDelegate:self];
 }
 
-- (id)copyHandlerForCommand:(id)a3 params:(id)a4
+- (id)copyHandlerForCommand:(id)command params:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  paramsCopy = params;
   v8 = qword_100070120;
   if (!qword_100070120)
   {
@@ -440,10 +440,10 @@ LABEL_8:
     v8 = qword_100070120;
   }
 
-  v11 = [v8 objectForKeyedSubscript:v6];
+  v11 = [v8 objectForKeyedSubscript:commandCopy];
   if (v11)
   {
-    v12 = [[v11 alloc] initWithParams:v7 provider:self];
+    v12 = [[v11 alloc] initWithParams:paramsCopy provider:self];
   }
 
   else
@@ -451,7 +451,7 @@ LABEL_8:
     v13 = sub_100002830();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_100036C6C(self, v6, v13);
+      sub_100036C6C(self, commandCopy, v13);
     }
 
     v12 = 0;
@@ -466,46 +466,46 @@ LABEL_8:
   if ([v2 isLocationServicesEnabled])
   {
     v3 = +[SystemConfig sharedInstance];
-    v4 = [v3 isShareMyLocationSystemServiceEnabled];
+    isShareMyLocationSystemServiceEnabled = [v3 isShareMyLocationSystemServiceEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isShareMyLocationSystemServiceEnabled = 0;
   }
 
-  return v4;
+  return isShareMyLocationSystemServiceEnabled;
 }
 
 - (id)_constructStandardDeviceContext
 {
   v6.receiver = self;
   v6.super_class = FMFServiceProvider;
-  v2 = [(FindBaseServiceProvider *)&v6 _constructStandardDeviceContext];
+  _constructStandardDeviceContext = [(FindBaseServiceProvider *)&v6 _constructStandardDeviceContext];
   v3 = +[PreferencesMgr sharedInstance];
-  v4 = [v3 bccOnFenceTrigger];
+  bccOnFenceTrigger = [v3 bccOnFenceTrigger];
 
-  if (v4)
+  if (bccOnFenceTrigger)
   {
-    [v2 setObject:&__kCFBooleanTrue forKeyedSubscript:@"bccOnFenceTrigger"];
+    [_constructStandardDeviceContext setObject:&__kCFBooleanTrue forKeyedSubscript:@"bccOnFenceTrigger"];
   }
 
-  return v2;
+  return _constructStandardDeviceContext;
 }
 
 - (id)_constructVolatileFullDeviceInfo
 {
   v16.receiver = self;
   v16.super_class = FMFServiceProvider;
-  v3 = [(FindBaseServiceProvider *)&v16 _constructVolatileFullDeviceInfo];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(FindBaseServiceProvider *)v4 apsToken];
-  [v3 fm_safelyMapKey:@"aps-token" toObject:v5];
+  _constructVolatileFullDeviceInfo = [(FindBaseServiceProvider *)&v16 _constructVolatileFullDeviceInfo];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  apsToken = [(FindBaseServiceProvider *)selfCopy apsToken];
+  [_constructVolatileFullDeviceInfo fm_safelyMapKey:@"aps-token" toObject:apsToken];
   v6 = +[APSTokenWatcher sharedInstance];
-  v7 = [v6 tokenList];
+  tokenList = [v6 tokenList];
 
-  if (v5 && ([v7 containsObject:v5] & 1) == 0)
+  if (apsToken && ([tokenList containsObject:apsToken] & 1) == 0)
   {
     v8 = sub_100002830();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -513,48 +513,48 @@ LABEL_8:
       sub_100036D1C(v8);
     }
 
-    v9 = [v7 arrayByAddingObject:v5];
+    v9 = [tokenList arrayByAddingObject:apsToken];
 
-    v7 = v9;
+    tokenList = v9;
   }
 
-  [v3 fm_safelyMapKey:@"allPushTokens" toObject:v7];
+  [_constructVolatileFullDeviceInfo fm_safelyMapKey:@"allPushTokens" toObject:tokenList];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[FMFServiceProvider _isFMFAppRestrictionSet]);
-  [v3 setObject:v10 forKeyedSubscript:@"fmfRestrictions"];
+  [_constructVolatileFullDeviceInfo setObject:v10 forKeyedSubscript:@"fmfRestrictions"];
 
-  v11 = [(ServiceProvider *)v4 account];
-  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isActive]);
-  [v3 setObject:v12 forKeyedSubscript:@"fmf"];
+  account = [(ServiceProvider *)selfCopy account];
+  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [account isActive]);
+  [_constructVolatileFullDeviceInfo setObject:v12 forKeyedSubscript:@"fmf"];
 
-  [v3 fm_safelyMapKey:@"fmfVersion" toObject:@"526"];
-  [v3 fm_safelyMapKey:@"fmfBuildVersion" toObject:@"5.0"];
+  [_constructVolatileFullDeviceInfo fm_safelyMapKey:@"fmfVersion" toObject:@"526"];
+  [_constructVolatileFullDeviceInfo fm_safelyMapKey:@"fmfBuildVersion" toObject:@"5.0"];
   v13 = +[FMFFencesMgr sharedInstance];
-  v14 = [v13 fenceVersion];
-  [v3 fm_safelyMapKey:@"fenceVersion" toObject:v14];
+  fenceVersion = [v13 fenceVersion];
+  [_constructVolatileFullDeviceInfo fm_safelyMapKey:@"fenceVersion" toObject:fenceVersion];
 
-  return v3;
+  return _constructVolatileFullDeviceInfo;
 }
 
 - (id)_constructNonVolatileFullDeviceInfo
 {
   v7.receiver = self;
   v7.super_class = FMFServiceProvider;
-  v2 = [(FindBaseServiceProvider *)&v7 _constructNonVolatileFullDeviceInfo];
+  _constructNonVolatileFullDeviceInfo = [(FindBaseServiceProvider *)&v7 _constructNonVolatileFullDeviceInfo];
   v3 = +[SystemConfig sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isRegionMonitoringAvailable]);
-  [v2 setObject:v4 forKeyedSubscript:@"fenceMonitoringCapable"];
+  [_constructNonVolatileFullDeviceInfo setObject:v4 forKeyedSubscript:@"fenceMonitoringCapable"];
 
   v5 = +[FMFConfig sharedInstance];
   LOBYTE(v3) = [v5 isFMFAllowed];
 
   if ((v3 & 1) == 0)
   {
-    [v2 setObject:&__kCFBooleanTrue forKeyedSubscript:@"fmfBlocked"];
+    [_constructNonVolatileFullDeviceInfo setObject:&__kCFBooleanTrue forKeyedSubscript:@"fmfBlocked"];
   }
 
-  return v2;
+  return _constructNonVolatileFullDeviceInfo;
 }
 
 - (id)newLocationManager
@@ -566,14 +566,14 @@ LABEL_8:
   return v4;
 }
 
-- (void)_triggerFence:(id)a3 atLocation:(id)a4
+- (void)_triggerFence:(id)fence atLocation:(id)location
 {
-  v5 = a4;
-  v6 = a3;
+  locationCopy = location;
+  fenceCopy = fence;
   v7 = sub_100002830();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 description];
+    v8 = [locationCopy description];
     v10 = 136315394;
     v11 = "[FMFServiceProvider _triggerFence:atLocation:]";
     v12 = 2112;
@@ -582,64 +582,64 @@ LABEL_8:
   }
 
   v9 = +[FMFFencesMgr sharedInstance];
-  [v9 triggerFence:v6 atLocation:v5];
+  [v9 triggerFence:fenceCopy atLocation:locationCopy];
 }
 
-- (void)sendTriggeredFence:(id)a3 withTriggerLocation:(id)a4
+- (void)sendTriggeredFence:(id)fence withTriggerLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  fenceCopy = fence;
+  locationCopy = location;
   v8 = sub_100002830();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v27 = "[FMFServiceProvider sendTriggeredFence:withTriggerLocation:]";
     v28 = 1024;
-    LODWORD(v29) = [v6 shouldUseIDSTrigger];
+    LODWORD(v29) = [fenceCopy shouldUseIDSTrigger];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: fence.shouldUseIDSTrigger == %{BOOL}d", buf, 0x12u);
   }
 
-  if ([v6 shouldUseIDSTrigger])
+  if ([fenceCopy shouldUseIDSTrigger])
   {
-    [(FMFServiceProvider *)self _triggerFence:v6 atLocation:v7];
+    [(FMFServiceProvider *)self _triggerFence:fenceCopy atLocation:locationCopy];
   }
 
   else
   {
-    v9 = [v6 triggerURL];
-    v10 = sub_100026CCC([v6 lastTrigger]);
-    if (!v9 || ![v9 length])
+    triggerURL = [fenceCopy triggerURL];
+    v10 = sub_100026CCC([fenceCopy lastTrigger]);
+    if (!triggerURL || ![triggerURL length])
     {
       v11 = +[FMFFencesMgr sharedInstance];
-      v12 = [v11 triggerURL];
+      triggerURL2 = [v11 triggerURL];
 
-      v9 = [(FindBaseServiceProvider *)self substituteStandardURLPlaceholders:v12];
+      triggerURL = [(FindBaseServiceProvider *)self substituteStandardURLPlaceholders:triggerURL2];
 
-      v13 = [v6 fenceId];
+      fenceId = [fenceCopy fenceId];
 
-      if (v13)
+      if (fenceId)
       {
-        v14 = [v6 fenceId];
-        v15 = [v9 stringByReplacingOccurrencesOfString:@"${fenceId}" withString:v14];
+        fenceId2 = [fenceCopy fenceId];
+        v15 = [triggerURL stringByReplacingOccurrencesOfString:@"${fenceId}" withString:fenceId2];
 
-        v9 = v15;
+        triggerURL = v15;
       }
 
       if (v10)
       {
-        v16 = [v9 stringByReplacingOccurrencesOfString:@"${triggerAction}" withString:v10];
+        v16 = [triggerURL stringByReplacingOccurrencesOfString:@"${triggerAction}" withString:v10];
 
-        v9 = v16;
+        triggerURL = v16;
       }
     }
 
-    v17 = [NSURL URLWithString:v9];
+    v17 = [NSURL URLWithString:triggerURL];
     v18 = sub_100002830();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(FMFServiceProvider *)self serviceName];
+      serviceName = [(FMFServiceProvider *)self serviceName];
       *buf = 138412802;
-      v27 = v19;
+      v27 = serviceName;
       v28 = 2080;
       v29 = "[FMFServiceProvider sendTriggeredFence:withTriggerLocation:]";
       v30 = 2112;
@@ -650,7 +650,7 @@ LABEL_8:
     v20 = [FMRequestFenceTrigger alloc];
     v21 = +[FMFFencesMgr sharedInstance];
     [v21 triggerValidityDuration];
-    v22 = [(FMRequestFenceTrigger *)v20 initWithProvider:self triggeredLocation:v7 fence:v6 validityDuration:v17 triggerURL:?];
+    v22 = [(FMRequestFenceTrigger *)v20 initWithProvider:self triggeredLocation:locationCopy fence:fenceCopy validityDuration:v17 triggerURL:?];
 
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -671,23 +671,23 @@ LABEL_8:
   }
 }
 
-- (void)ackFencesCommand:(id)a3 withCompletion:(id)a4
+- (void)ackFencesCommand:(id)command withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"ackURL"];
+  commandCopy = command;
+  completionCopy = completion;
+  v8 = [commandCopy objectForKeyedSubscript:@"ackURL"];
   if (v8)
   {
     v9 = [NSURL URLWithString:v8];
-    v10 = [[FMRequestAckFences alloc] initWithProvider:self fencesCommand:v6 ackURL:v9];
+    v10 = [[FMRequestAckFences alloc] initWithProvider:self fencesCommand:commandCopy ackURL:v9];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_10000BC90;
     v15 = &unk_10005D4C0;
-    v16 = self;
-    v17 = v7;
+    selfCopy = self;
+    v17 = completionCopy;
     [(FMRequest *)v10 setCompletionHandler:&v12];
-    [(FindBaseServiceProvider *)self enqueueRequest:v10, v12, v13, v14, v15, v16];
+    [(FindBaseServiceProvider *)self enqueueRequest:v10, v12, v13, v14, v15, selfCopy];
   }
 
   else
@@ -695,32 +695,32 @@ LABEL_8:
     v9 = sub_100002830();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v11 = [(FMFServiceProvider *)self serviceName];
+      serviceName = [(FMFServiceProvider *)self serviceName];
       *buf = 138412290;
-      v19 = v11;
+      v19 = serviceName;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@: Not acking the fences command because there is no ack URL", buf, 0xCu);
     }
   }
 }
 
-- (void)didReceiveAuthFailureForRequest:(id)a3
+- (void)didReceiveAuthFailureForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_100002830();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(FMFServiceProvider *)self serviceName];
-    v7 = [(ServiceProvider *)self account];
-    v8 = [v7 username];
+    serviceName = [(FMFServiceProvider *)self serviceName];
+    account = [(ServiceProvider *)self account];
+    username = [account username];
     v10 = 138412546;
-    v11 = v6;
+    v11 = serviceName;
     v12 = 2112;
-    v13 = v8;
+    v13 = username;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ - Auth failure received for account %@", &v10, 0x16u);
   }
 
-  v9 = [v4 showAuthFailedMessage];
-  if (v9)
+  showAuthFailedMessage = [requestCopy showAuthFailedMessage];
+  if (showAuthFailedMessage)
   {
     [(FMFServiceProvider *)self requestAuthenticationShouldForce:1];
   }
@@ -728,9 +728,9 @@ LABEL_8:
 
 - (void)tryToFetchAuthToken
 {
-  v3 = [(ServiceProvider *)self account];
-  v4 = [v3 authToken];
-  v5 = [v4 length];
+  account = [(ServiceProvider *)self account];
+  authToken = [account authToken];
+  v5 = [authToken length];
 
   if (!v5)
   {
@@ -751,25 +751,25 @@ LABEL_8:
 
 - (void)_registerIDSServices
 {
-  v3 = [(FMFServiceProvider *)self idsManager];
+  idsManager = [(FMFServiceProvider *)self idsManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000C3CC;
   v4[3] = &unk_10005D4E8;
   v4[4] = self;
-  [v3 handleRequestsOfType:1 withHandler:v4];
+  [idsManager handleRequestsOfType:1 withHandler:v4];
 }
 
-- (id)connectionStringForNRDevice:(id)a3
+- (id)connectionStringForNRDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = @"unknown";
   v6 = objc_autoreleasePoolPush();
-  v7 = [(FMFServiceProvider *)self idsManager];
-  v8 = [v7 devices];
+  idsManager = [(FMFServiceProvider *)self idsManager];
+  devices = [idsManager devices];
 
   v9 = +[NRPairedDeviceRegistry sharedInstance];
-  v10 = [v9 deviceForNRDevice:v4 fromIDSDevices:v8];
+  v10 = [v9 deviceForNRDevice:deviceCopy fromIDSDevices:devices];
 
   if (v10)
   {
@@ -780,9 +780,9 @@ LABEL_8:
 
     else
     {
-      v14 = [v10 isConnected];
+      isConnected = [v10 isConnected];
       v11 = &off_10005E188;
-      if (v14)
+      if (isConnected)
       {
         v11 = &off_10005E198;
       }
@@ -807,7 +807,7 @@ LABEL_8:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FMFServiceProvider : !match ids device %@", &v16, 0xCu);
     }
 
@@ -819,37 +819,37 @@ LABEL_8:
   return v13;
 }
 
-- (void)didReceiveAPSMessage:(id)a3
+- (void)didReceiveAPSMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   [(FMFServiceProvider *)self _beginXPCTransaction];
   v5 = +[StartupRegisterManager sharedInstance];
   [v5 eventDidOccur:4];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"SRFMFNotificationReceived", 0, 0, 1u);
-  v7 = [(FindBaseServiceProvider *)self essentialServerInfoMissingError];
+  essentialServerInfoMissingError = [(FindBaseServiceProvider *)self essentialServerInfoMissingError];
   v8 = sub_100002830();
   v9 = v8;
-  if (v7 == 1196379972)
+  if (essentialServerInfoMissingError == 1196379972)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100036D60(self, v4, v9);
+      sub_100036D60(self, messageCopy, v9);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"serverContext"];
-    v10 = [v4 objectForKeyedSubscript:@"intents"];
+    v9 = [messageCopy objectForKeyedSubscript:@"serverContext"];
+    v10 = [messageCopy objectForKeyedSubscript:@"intents"];
     [(FindBaseServiceProvider *)self sendQueueCheckRequest:v9 withReasons:v10];
     goto LABEL_7;
   }
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(FMFServiceProvider *)self fm_logID];
-    v10 = sub_10000D094(v7);
+    fm_logID = [(FMFServiceProvider *)self fm_logID];
+    v10 = sub_10000D094(essentialServerInfoMissingError);
     v12 = 138412546;
-    v13 = v11;
+    v13 = fm_logID;
     v14 = 2112;
     v15 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Ignoring APS message since some essential server info is missing = '%@'", &v12, 0x16u);
@@ -860,31 +860,31 @@ LABEL_7:
   [(FMFServiceProvider *)self _endXPCTransaction];
 }
 
-- (void)didReceiveAPSToken:(id)a3
+- (void)didReceiveAPSToken:(id)token
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(FindBaseServiceProvider *)v4 apsToken];
+  tokenCopy = token;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  apsToken = [(FindBaseServiceProvider *)selfCopy apsToken];
 
-  [(FindBaseServiceProvider *)v4 setApsToken:v6];
-  if (v5)
+  [(FindBaseServiceProvider *)selfCopy setApsToken:tokenCopy];
+  if (apsToken)
   {
-    [(FindBaseServiceProvider *)v4 registerDeviceWithCause:@"APSTokenReceived"];
+    [(FindBaseServiceProvider *)selfCopy registerDeviceWithCause:@"APSTokenReceived"];
   }
 
   else
   {
-    [(FMFServiceProvider *)v4 _sendStartupRegister];
+    [(FMFServiceProvider *)selfCopy _sendStartupRegister];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)fenceTriggered:(id)a3 atLocation:(id)a4
+- (void)fenceTriggered:(id)triggered atLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  triggeredCopy = triggered;
+  locationCopy = location;
   v8 = sub_100002830();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -899,10 +899,10 @@ LABEL_7:
   v12[2] = sub_10000CB2C;
   v12[3] = &unk_10005D510;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = triggeredCopy;
+  v14 = locationCopy;
+  v10 = locationCopy;
+  v11 = triggeredCopy;
   [v9 checkIfThisDeviceIsBeingUsedToShareLocation:v12];
 }
 
@@ -914,7 +914,7 @@ LABEL_7:
   return v3 == 2;
 }
 
-- (void)_buddyCompletionCheckTimerFired:(id)a3
+- (void)_buddyCompletionCheckTimerFired:(id)fired
 {
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -926,14 +926,14 @@ LABEL_7:
   [(FMFServiceProvider *)self _checkForBuddyCompletion];
 }
 
-- (void)buddyDidComplete:(id)a3
+- (void)buddyDidComplete:(id)complete
 {
   v4 = sub_100002830();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(FMFServiceProvider *)self fm_logID];
+    fm_logID = [(FMFServiceProvider *)self fm_logID];
     v6 = 138412290;
-    v7 = v5;
+    v7 = fm_logID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@ Buddy completion notification received", &v6, 0xCu);
   }
 

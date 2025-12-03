@@ -1,39 +1,39 @@
 @interface CADNotificationGatheringContext
-- (BOOL)eventHasNewProposedTime:(void *)a3;
-- (BOOL)isEventBlocked:(void *)a3;
-- (BOOL)isEventTimeSensitiveForFocus:(void *)a3;
-- (BOOL)isSharedCalendarOwnerBlocked:(void *)a3;
-- (BOOL)shouldSkipNotificationForCalendar:(void *)a3;
-- (BOOL)shouldSkipNotificationForStore:(void *)a3;
-- (CADNotificationGatheringContext)initWithConnection:(id)a3 afterDate:(id)a4 forSourceWithExternalIdentifier:(id)a5 excludingDelegateSources:(BOOL)a6 excludingUncheckedCalendars:(BOOL)a7 filteredByShowsNotificationsFlag:(BOOL)a8 expanded:(BOOL)a9;
-- (double)endDateOfLastOccurrenceInCacheForEvent:(void *)a3 database:(CalDatabase *)a4 cacheRange:(id *)a5;
-- (double)expirationTimestampForEvent:(void *)a3 database:(CalDatabase *)a4;
-- (double)expirationTimestampForEvent:(void *)a3 withInitialOccurrenceDate:(double)a4 database:(CalDatabase *)a5;
-- (double)expirationTimestampForRecurrence:(void *)a3 event:(void *)a4 database:(CalDatabase *)a5;
-- (id)nearestProposedTimeForEvent:(void *)a3;
-- (void)addNotification:(id)a3;
+- (BOOL)eventHasNewProposedTime:(void *)time;
+- (BOOL)isEventBlocked:(void *)blocked;
+- (BOOL)isEventTimeSensitiveForFocus:(void *)focus;
+- (BOOL)isSharedCalendarOwnerBlocked:(void *)blocked;
+- (BOOL)shouldSkipNotificationForCalendar:(void *)calendar;
+- (BOOL)shouldSkipNotificationForStore:(void *)store;
+- (CADNotificationGatheringContext)initWithConnection:(id)connection afterDate:(id)date forSourceWithExternalIdentifier:(id)identifier excludingDelegateSources:(BOOL)sources excludingUncheckedCalendars:(BOOL)calendars filteredByShowsNotificationsFlag:(BOOL)flag expanded:(BOOL)expanded;
+- (double)endDateOfLastOccurrenceInCacheForEvent:(void *)event database:(CalDatabase *)database cacheRange:(id *)range;
+- (double)expirationTimestampForEvent:(void *)event database:(CalDatabase *)database;
+- (double)expirationTimestampForEvent:(void *)event withInitialOccurrenceDate:(double)date database:(CalDatabase *)database;
+- (double)expirationTimestampForRecurrence:(void *)recurrence event:(void *)event database:(CalDatabase *)database;
+- (id)nearestProposedTimeForEvent:(void *)event;
+- (void)addNotification:(id)notification;
 @end
 
 @implementation CADNotificationGatheringContext
 
-- (CADNotificationGatheringContext)initWithConnection:(id)a3 afterDate:(id)a4 forSourceWithExternalIdentifier:(id)a5 excludingDelegateSources:(BOOL)a6 excludingUncheckedCalendars:(BOOL)a7 filteredByShowsNotificationsFlag:(BOOL)a8 expanded:(BOOL)a9
+- (CADNotificationGatheringContext)initWithConnection:(id)connection afterDate:(id)date forSourceWithExternalIdentifier:(id)identifier excludingDelegateSources:(BOOL)sources excludingUncheckedCalendars:(BOOL)calendars filteredByShowsNotificationsFlag:(BOOL)flag expanded:(BOOL)expanded
 {
-  v10 = a7;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  calendarsCopy = calendars;
+  connectionCopy = connection;
+  dateCopy = date;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = CADNotificationGatheringContext;
   v19 = [(CADNotificationGatheringContext *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_connection, a3);
-    objc_storeStrong(&v20->_sourceExternalIdentifier, a5);
-    v20->_excludingDelegateSources = a6;
-    v20->_filteredByShowsNotificationsFlag = a8;
-    v20->_expanded = a9;
-    if (v10)
+    objc_storeStrong(&v19->_connection, connection);
+    objc_storeStrong(&v20->_sourceExternalIdentifier, identifier);
+    v20->_excludingDelegateSources = sources;
+    v20->_filteredByShowsNotificationsFlag = flag;
+    v20->_expanded = expanded;
+    if (calendarsCopy)
     {
       v33 = 0;
       v34 = &v33;
@@ -54,8 +54,8 @@
       v22 = v21;
       _Block_object_dispose(&v33, 8);
       v23 = MEMORY[0x277CBEB98];
-      v24 = [v21 unselectedCalendarIdentifiersForFocusMode];
-      v25 = [v23 setWithArray:v24];
+      unselectedCalendarIdentifiersForFocusMode = [v21 unselectedCalendarIdentifiersForFocusMode];
+      v25 = [v23 setWithArray:unselectedCalendarIdentifiersForFocusMode];
       uncheckedCalendarIdentifiers = v20->_uncheckedCalendarIdentifiers;
       v20->_uncheckedCalendarIdentifiers = v25;
     }
@@ -64,13 +64,13 @@
     notifications = v20->_notifications;
     v20->_notifications = v27;
 
-    if (!v17)
+    if (!dateCopy)
     {
-      v17 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+      dateCopy = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
       v20->_deleteOldNotifications = 1;
     }
 
-    [v17 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v20->_now = v29;
     v20->_earliestExpirationDate = *MEMORY[0x277CF78E0];
   }
@@ -78,19 +78,19 @@
   return v20;
 }
 
-- (void)addNotification:(id)a3
+- (void)addNotification:(id)notification
 {
-  v6 = a3;
-  [(NSMutableArray *)self->_notifications addObject:v6];
-  [v6 expirationDate];
+  notificationCopy = notification;
+  [(NSMutableArray *)self->_notifications addObject:notificationCopy];
+  [notificationCopy expirationDate];
   if (v4 < self->_earliestExpirationDate)
   {
-    [v6 expirationDate];
+    [notificationCopy expirationDate];
     self->_earliestExpirationDate = v5;
   }
 }
 
-- (BOOL)shouldSkipNotificationForStore:(void *)a3
+- (BOOL)shouldSkipNotificationForStore:(void *)store
 {
   if ([CADNotificationUtilities storeIsReadOnlyDelegate:?])
   {
@@ -107,7 +107,7 @@ LABEL_17:
 
   else
   {
-    v8 = [CADNotificationUtilities _storeIsDelegate:a3];
+    v8 = [CADNotificationUtilities _storeIsDelegate:store];
     if (self->_excludingDelegateSources && v8)
     {
       v5 = CADNotificationLogHandle;
@@ -156,7 +156,7 @@ LABEL_17:
   return 1;
 }
 
-- (BOOL)shouldSkipNotificationForCalendar:(void *)a3
+- (BOOL)shouldSkipNotificationForCalendar:(void *)calendar
 {
   if ([(CADNotificationGatheringContext *)self isSharedCalendarOwnerBlocked:?])
   {
@@ -186,7 +186,7 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)eventHasNewProposedTime:(void *)a3
+- (BOOL)eventHasNewProposedTime:(void *)time
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -241,10 +241,10 @@ LABEL_14:
   return v6 & 1;
 }
 
-- (id)nearestProposedTimeForEvent:(void *)a3
+- (id)nearestProposedTimeForEvent:(void *)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+  calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -275,7 +275,7 @@ LABEL_14:
             if (CalAttendeeGetProposedStartDateStatus() != 3)
             {
               v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:{v12, v17}];
-              if ([v13 isAfterDate:v3] && (!v7 || objc_msgSend(v13, "isBeforeDate:", v7)))
+              if ([v13 isAfterDate:calSimulatedDateForNow] && (!v7 || objc_msgSend(v13, "isBeforeDate:", v7)))
               {
                 v14 = v13;
 
@@ -302,13 +302,13 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isEventTimeSensitiveForFocus:(void *)a3
+- (BOOL)isEventTimeSensitiveForFocus:(void *)focus
 {
   v29 = *MEMORY[0x277D85DE8];
   if (CalEventGetJunkStatus() != 3)
   {
     v6 = CalEventGetInvitationChangedProperties() & 0xF0;
-    v7 = [(CADNotificationGatheringContext *)self eventHasNewProposedTime:a3];
+    v7 = [(CADNotificationGatheringContext *)self eventHasNewProposedTime:focus];
     v8 = v7;
     if (v6 && !v7)
     {
@@ -325,13 +325,13 @@ LABEL_14:
     }
 
     CalCalendarItemGetStatus();
-    v11 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+    calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
     v12 = CalCopyDefaultTimeZone();
     v13 = CalEventGetStartDateOfEarliestOccurrenceEndingAfterDateWithExclusions();
     v14 = v13;
     if (v13)
     {
-      [v13 timeIntervalSinceDate:v11];
+      [v13 timeIntervalSinceDate:calSimulatedDateForNow];
       v15 = *MEMORY[0x277CF7910];
       if (v16 <= *MEMORY[0x277CF7910])
       {
@@ -353,11 +353,11 @@ LABEL_14:
         goto LABEL_18;
       }
 
-      v17 = [(CADNotificationGatheringContext *)self nearestProposedTimeForEvent:a3];
+      v17 = [(CADNotificationGatheringContext *)self nearestProposedTimeForEvent:focus];
       v18 = v17;
       if (v17)
       {
-        [v17 timeIntervalSinceDate:v11];
+        [v17 timeIntervalSinceDate:calSimulatedDateForNow];
         if (v19 <= v15)
         {
           v20 = CADNotificationLogHandle;
@@ -403,18 +403,18 @@ LABEL_20:
   return v5;
 }
 
-- (double)expirationTimestampForEvent:(void *)a3 database:(CalDatabase *)a4
+- (double)expirationTimestampForEvent:(void *)event database:(CalDatabase *)database
 {
   v7 = CalEventOccurrenceCreateForInitialOccurrence();
   CalEventOccurrenceGetDate();
   v9 = v8;
   CFRelease(v7);
 
-  [(CADNotificationGatheringContext *)self expirationTimestampForEvent:a3 withInitialOccurrenceDate:a4 database:v9];
+  [(CADNotificationGatheringContext *)self expirationTimestampForEvent:event withInitialOccurrenceDate:database database:v9];
   return result;
 }
 
-- (double)expirationTimestampForEvent:(void *)a3 withInitialOccurrenceDate:(double)a4 database:(CalDatabase *)a5
+- (double)expirationTimestampForEvent:(void *)event withInitialOccurrenceDate:(double)date database:(CalDatabase *)database
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = CalCalendarItemCopyRecurrences();
@@ -441,7 +441,7 @@ LABEL_20:
             objc_enumerationMutation(v11);
           }
 
-          [(CADNotificationGatheringContext *)self expirationTimestampForRecurrence:*(*(&v19 + 1) + 8 * v15) event:a3 database:a5, v19];
+          [(CADNotificationGatheringContext *)self expirationTimestampForRecurrence:*(*(&v19 + 1) + 8 * v15) event:event database:database, v19];
           if (v10 < v16)
           {
             v10 = v16;
@@ -460,14 +460,14 @@ LABEL_20:
 
   else
   {
-    v10 = CalEventGetDuration() + a4;
+    v10 = CalEventGetDuration() + date;
   }
 
   v17 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (double)expirationTimestampForRecurrence:(void *)a3 event:(void *)a4 database:(CalDatabase *)a5
+- (double)expirationTimestampForRecurrence:(void *)recurrence event:(void *)event database:(CalDatabase *)database
 {
   CalRecurrenceGetEffectiveEndDate();
   v9 = v8;
@@ -477,14 +477,14 @@ LABEL_20:
   }
 
   v28 = 0;
-  [(CADNotificationGatheringContext *)self endDateOfLastOccurrenceInCacheForEvent:a4 database:a5 cacheRange:&v28];
+  [(CADNotificationGatheringContext *)self endDateOfLastOccurrenceInCacheForEvent:event database:database cacheRange:&v28];
   v10 = v11;
   v12 = v28;
   v13 = v12;
   if (v10 <= self->_now)
   {
-    v14 = [v12 endDate];
-    [v14 timeIntervalSinceReferenceDate];
+    endDate = [v12 endDate];
+    [endDate timeIntervalSinceReferenceDate];
     v16 = v15;
 
     if (v9 < v16)
@@ -492,23 +492,23 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v17 = [v13 endDate];
-    [v17 timeIntervalSinceReferenceDate];
+    endDate2 = [v13 endDate];
+    [endDate2 timeIntervalSinceReferenceDate];
     v19 = v18;
-    v20 = [v13 timeZone];
+    timeZone = [v13 timeZone];
     MEMORY[0x22AA4AEF0](v19);
 
     v21 = *MEMORY[0x277CF78E0];
-    v22 = [v13 timeZone];
+    timeZone2 = [v13 timeZone];
     MEMORY[0x22AA4AEF0](v21);
 
-    v23 = [v13 timeZone];
+    timeZone3 = [v13 timeZone];
     v24 = CalEventOccurrencesExistForEventInDateRange();
 
     if (v24)
     {
-      v25 = [v13 endDate];
-      [v25 timeIntervalSinceReferenceDate];
+      endDate3 = [v13 endDate];
+      [endDate3 timeIntervalSinceReferenceDate];
       v10 = v26;
     }
 
@@ -522,7 +522,7 @@ LABEL_7:
   return v10;
 }
 
-- (double)endDateOfLastOccurrenceInCacheForEvent:(void *)a3 database:(CalDatabase *)a4 cacheRange:(id *)a5
+- (double)endDateOfLastOccurrenceInCacheForEvent:(void *)event database:(CalDatabase *)database cacheRange:(id *)range
 {
   v6 = CalFilterCreateWithDatabaseShowingAll();
   RowID = CalCalendarItemGetRowID();
@@ -551,9 +551,9 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)isSharedCalendarOwnerBlocked:(void *)a3
+- (BOOL)isSharedCalendarOwnerBlocked:(void *)blocked
 {
-  v3 = [(ClientConnection *)self->_connection blockList];
+  blockList = [(ClientConnection *)self->_connection blockList];
   if (CalCalendarGetSharingStatus() >= 2)
   {
     v5 = CalCalendarCopySharedOwnerAddress();
@@ -562,8 +562,8 @@ LABEL_7:
     {
       if ([v5 hasMailto])
       {
-        v7 = [v6 stringRemovingMailto];
-        v8 = [v3 isBlockedWithEmail:v7];
+        stringRemovingMailto = [v6 stringRemovingMailto];
+        v8 = [blockList isBlockedWithEmail:stringRemovingMailto];
 LABEL_8:
         v4 = v8;
 
@@ -573,8 +573,8 @@ LABEL_10:
 
       if ([v6 hasTel])
       {
-        v7 = [v6 stringRemovingTel];
-        v8 = [v3 isBlockedWithPhoneNumber:v7];
+        stringRemovingMailto = [v6 stringRemovingTel];
+        v8 = [blockList isBlockedWithPhoneNumber:stringRemovingMailto];
         goto LABEL_8;
       }
     }
@@ -589,7 +589,7 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEventBlocked:(void *)a3
+- (BOOL)isEventBlocked:(void *)blocked
 {
   v4 = CalCalendarItemCopyOrganizer();
   if (!v4)
@@ -598,9 +598,9 @@ LABEL_11:
   }
 
   v5 = v4;
-  v6 = [(ClientConnection *)self->_connection blockList];
+  blockList = [(ClientConnection *)self->_connection blockList];
   v7 = MEMORY[0x22AA4B090](v5);
-  if (v7 && ([v6 isBlockedWithEmail:v7] & 1) != 0)
+  if (v7 && ([blockList isBlockedWithEmail:v7] & 1) != 0)
   {
     v8 = 1;
   }
@@ -610,7 +610,7 @@ LABEL_11:
     v9 = MEMORY[0x22AA4C750](v5);
     if (v9)
     {
-      v8 = [v6 isBlockedWithPhoneNumber:v9];
+      v8 = [blockList isBlockedWithPhoneNumber:v9];
     }
 
     else

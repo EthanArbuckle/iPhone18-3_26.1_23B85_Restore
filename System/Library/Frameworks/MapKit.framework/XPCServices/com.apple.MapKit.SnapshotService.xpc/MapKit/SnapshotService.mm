@@ -1,37 +1,37 @@
 @interface SnapshotService
-- (BOOL)hasEnoughPixelsForRequest:(int64_t)a3;
+- (BOOL)hasEnoughPixelsForRequest:(int64_t)request;
 - (SnapshotService)init;
 - (id)_nextSnapshotRequest;
-- (int64_t)pixelsForRequest:(id)a3;
-- (void)_cleanupForRequest:(id)a3;
-- (void)_startNextSnapshotterIfPossible:(id)a3;
-- (void)cancelSnapshotForConnection:(id)a3;
-- (void)requestIconWithStyleAttributes:(id)a3 size:(unint64_t)a4 scale:(double)a5 completionHandler:(id)a6;
-- (void)requestSnapshotWithOptions:(id)a3 completionHandler:(id)a4;
+- (int64_t)pixelsForRequest:(id)request;
+- (void)_cleanupForRequest:(id)request;
+- (void)_startNextSnapshotterIfPossible:(id)possible;
+- (void)cancelSnapshotForConnection:(id)connection;
+- (void)requestIconWithStyleAttributes:(id)attributes size:(unint64_t)size scale:(double)scale completionHandler:(id)handler;
+- (void)requestSnapshotWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation SnapshotService
 
-- (void)requestIconWithStyleAttributes:(id)a3 size:(unint64_t)a4 scale:(double)a5 completionHandler:(id)a6
+- (void)requestIconWithStyleAttributes:(id)attributes size:(unint64_t)size scale:(double)scale completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  if (v10)
+  attributesCopy = attributes;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v11 = objc_alloc_init(VKIconManager);
     v13 = v11;
-    if (a4 > 5)
+    if (size > 5)
     {
       v14 = 5;
     }
 
     else
     {
-      v14 = qword_1000040E8[a4];
+      v14 = qword_1000040E8[size];
     }
 
-    *&v12 = a5;
-    v15 = [v11 imageForStyleAttributes:v9 withStylesheetName:@"default-search" contentScale:v14 sizeGroup:0 modifiers:v12];
+    *&v12 = scale;
+    v15 = [v11 imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:v14 sizeGroup:0 modifiers:v12];
     v16 = v15;
     if (v15)
     {
@@ -67,25 +67,25 @@
       }
 
       CGImageRelease(v17);
-      v10[2](v10, v22);
+      handlerCopy[2](handlerCopy, v22);
     }
 
     else
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
-- (void)requestSnapshotWithOptions:(id)a3 completionHandler:(id)a4
+- (void)requestSnapshotWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = sub_100000E38();
-  v9 = [v6 signpostId];
-  if ((v9 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [optionsCopy signpostId];
+  if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v10 = v9;
+    v10 = signpostId;
     if (os_signpost_enabled(v8))
     {
       *buf = 0;
@@ -101,17 +101,17 @@
   v16[3] = &unk_100008410;
   v16[4] = self;
   v17 = v11;
-  v18 = v6;
-  v19 = v7;
-  v13 = v7;
-  v14 = v6;
+  v18 = optionsCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = optionsCopy;
   v15 = v11;
   dispatch_async(homeQueue, v16);
 }
 
-- (void)_startNextSnapshotterIfPossible:(id)a3
+- (void)_startNextSnapshotterIfPossible:(id)possible
 {
-  v47 = a3;
+  possibleCopy = possible;
   [(NSLock *)self->_lock lock];
   if ([(NSMutableArray *)self->_pendingSnapshotRequests count])
   {
@@ -152,8 +152,8 @@
         goto LABEL_41;
       }
 
-      v10 = [(SnapshotService *)self _nextSnapshotRequest];
-      if (!v10)
+      _nextSnapshotRequest = [(SnapshotService *)self _nextSnapshotRequest];
+      if (!_nextSnapshotRequest)
       {
         v45 = sub_100000E38();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
@@ -162,19 +162,19 @@
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "All pending snapshots are waiting on other snapshots to complete trying again as soon as the current snapshot(s) are finished.", buf, 2u);
         }
 
-        v10 = 0;
+        _nextSnapshotRequest = 0;
         goto LABEL_40;
       }
 
-      v11 = [(SnapshotService *)self pixelsForRequest:v10];
+      v11 = [(SnapshotService *)self pixelsForRequest:_nextSnapshotRequest];
       if ([(NSMutableDictionary *)self->_requestIdToSnapshotter count]&& ![(SnapshotService *)self hasEnoughPixelsForRequest:v11])
       {
         v45 = sub_100000E38();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          v46 = [v10 requestId];
+          requestId = [_nextSnapshotRequest requestId];
           *buf = 134349056;
-          *&buf[4] = v46;
+          *&buf[4] = requestId;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "Not enough memory to take snapshot for request %{public}llu. Trying again as soon as the current snapshot(s) are finished.", buf, 0xCu);
         }
 
@@ -186,70 +186,70 @@ LABEL_40:
       v12 = sub_100000E38();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v10 requestId];
-        v14 = [v10 processIdentifier];
+        requestId2 = [_nextSnapshotRequest requestId];
+        processIdentifier = [_nextSnapshotRequest processIdentifier];
         *buf = 134349312;
-        *&buf[4] = v13;
+        *&buf[4] = requestId2;
         *&buf[12] = 1024;
-        *&buf[14] = v14;
+        *&buf[14] = processIdentifier;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Starting snapshot request %{public}llu for process %d", buf, 0x12u);
       }
 
-      [(NSMutableArray *)self->_pendingSnapshotRequests removeObject:v10];
-      self->_lastRequestPID = [v10 processIdentifier];
+      [(NSMutableArray *)self->_pendingSnapshotRequests removeObject:_nextSnapshotRequest];
+      self->_lastRequestPID = [_nextSnapshotRequest processIdentifier];
       self->_usedPixels += v11;
       proccessIdToPendingSerialSnapshot = self->_proccessIdToPendingSerialSnapshot;
-      v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 requestId]);
-      v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 processIdentifier]);
+      v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [_nextSnapshotRequest requestId]);
+      v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [_nextSnapshotRequest processIdentifier]);
       [(NSMutableDictionary *)proccessIdToPendingSerialSnapshot setObject:v16 forKey:v17];
 
-      v18 = [v10 completionHandler];
-      v19 = [v10 connection];
-      v20 = [v10 options];
-      v21 = [v20 _auditToken];
+      completionHandler = [_nextSnapshotRequest completionHandler];
+      connection = [_nextSnapshotRequest connection];
+      options = [_nextSnapshotRequest options];
+      _auditToken = [options _auditToken];
 
-      if (!v21)
+      if (!_auditToken)
       {
         goto LABEL_17;
       }
 
-      v22 = [v19 valueForEntitlement:@"com.apple.private.network.socket-delegate"];
+      v22 = [connection valueForEntitlement:@"com.apple.private.network.socket-delegate"];
       v23 = v22;
       if (!v22 || ([v22 BOOLValue] & 1) == 0)
       {
         break;
       }
 
-      v24 = [v10 options];
-      v25 = [v24 _auditToken];
+      options2 = [_nextSnapshotRequest options];
+      _auditToken2 = [options2 _auditToken];
 
-      if (!v25)
+      if (!_auditToken2)
       {
         goto LABEL_17;
       }
 
 LABEL_20:
       v27 = [VKMapSnapshotCreator alloc];
-      v28 = [v10 options];
-      v29 = [v27 initWithSnapshotOptions:v28 homeQueue:self->_homeQueue auditToken:v25];
+      options3 = [_nextSnapshotRequest options];
+      v29 = [v27 initWithSnapshotOptions:options3 homeQueue:self->_homeQueue auditToken:_auditToken2];
 
       if (v29)
       {
-        v30 = [v10 options];
-        v31 = [v30 _customFeatureAnnotations];
-        v32 = [v31 count] == 0;
+        options4 = [_nextSnapshotRequest options];
+        _customFeatureAnnotations = [options4 _customFeatureAnnotations];
+        v32 = [_customFeatureAnnotations count] == 0;
 
         if (!v32)
         {
           v33 = objc_alloc_init(NSClassFromString(@"_MKCustomFeatureStore"));
-          v34 = [v10 options];
-          v35 = [v34 _customFeatureAnnotations];
-          [v33 addAnnotations:v35];
+          options5 = [_nextSnapshotRequest options];
+          _customFeatureAnnotations2 = [options5 _customFeatureAnnotations];
+          [v33 addAnnotations:_customFeatureAnnotations2];
 
           [v29 addCustomFeatureDataSource:v33];
         }
 
-        v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 requestId]);
+        v36 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [_nextSnapshotRequest requestId]);
         [(NSMutableDictionary *)self->_requestIdToSnapshotter setObject:v29 forKey:v36];
         *buf = 0;
         *&buf[8] = buf;
@@ -264,12 +264,12 @@ LABEL_20:
         v48[2] = sub_100002248;
         v48[3] = &unk_1000083E8;
         v48[4] = self;
-        v49 = v19;
+        v49 = connection;
         v38 = v36;
         v50 = v38;
-        v51 = v10;
+        v51 = _nextSnapshotRequest;
         v53 = buf;
-        v52 = v18;
+        v52 = completionHandler;
         [v37 renderSnapshot:v48];
 
         _Block_object_dispose(buf, 8);
@@ -284,10 +284,10 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_FAULT, "Invalid MKMapSnapshotOptions", buf, 2u);
         }
 
-        if (v18)
+        if (completionHandler)
         {
-          v40 = [v10 options];
-          v41 = [NSString stringWithFormat:@"Invalid MKMapSnapshotOptions: %@.", v40];
+          options6 = [_nextSnapshotRequest options];
+          v41 = [NSString stringWithFormat:@"Invalid MKMapSnapshotOptions: %@.", options6];
 
           v42 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -301,14 +301,14 @@ LABEL_20:
           v62 = v41;
           v43 = [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
           v44 = [NSError errorWithDomain:@"MKErrorDomain" code:1 userInfo:v43];
-          (v18)[2](v18, 0, v44);
-          if (v19)
+          (completionHandler)[2](completionHandler, 0, v44);
+          if (connection)
           {
-            [(NSMapTable *)self->_connectionToSnapshotRequest removeObjectForKey:v19];
+            [(NSMapTable *)self->_connectionToSnapshotRequest removeObjectForKey:connection];
           }
         }
 
-        [(SnapshotService *)self _cleanupForRequest:v10];
+        [(SnapshotService *)self _cleanupForRequest:_nextSnapshotRequest];
       }
 
       if (![(NSMutableArray *)self->_pendingSnapshotRequests count])
@@ -319,13 +319,13 @@ LABEL_20:
 
 LABEL_17:
     memset(buf, 0, sizeof(buf));
-    if (v19)
+    if (connection)
     {
-      [v19 auditToken];
+      [connection auditToken];
     }
 
     v26 = [NSData dataWithBytes:buf length:32];
-    v25 = [[GEOApplicationAuditToken alloc] initWithAuditTokenData:v26];
+    _auditToken2 = [[GEOApplicationAuditToken alloc] initWithAuditTokenData:v26];
 
     goto LABEL_20;
   }
@@ -334,14 +334,14 @@ LABEL_41:
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)_cleanupForRequest:(id)a3
+- (void)_cleanupForRequest:(id)request
 {
-  v4 = a3;
-  self->_usedPixels -= [(SnapshotService *)self pixelsForRequest:v4];
+  requestCopy = request;
+  self->_usedPixels -= [(SnapshotService *)self pixelsForRequest:requestCopy];
   proccessIdToPendingSerialSnapshot = self->_proccessIdToPendingSerialSnapshot;
-  v6 = [v4 processIdentifier];
+  processIdentifier = [requestCopy processIdentifier];
 
-  v7 = [NSNumber numberWithInt:v6];
+  v7 = [NSNumber numberWithInt:processIdentifier];
   [(NSMutableDictionary *)proccessIdToPendingSerialSnapshot removeObjectForKey:v7];
 }
 
@@ -385,10 +385,10 @@ LABEL_41:
       while (1)
       {
         v11 = [(NSMutableArray *)self->_pendingSnapshotRequests objectAtIndex:v10];
-        v12 = [v11 options];
-        v13 = [v12 _snapshotServiceSerialPerProcess];
+        options = [v11 options];
+        _snapshotServiceSerialPerProcess = [options _snapshotServiceSerialPerProcess];
 
-        if (!v13)
+        if (!_snapshotServiceSerialPerProcess)
         {
           break;
         }
@@ -406,19 +406,19 @@ LABEL_41:
         v17 = self->_proccessIdToPendingSerialSnapshot;
         v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v11 processIdentifier]);
         v19 = [(NSMutableDictionary *)v17 objectForKey:v18];
-        v20 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
 
         v21 = sub_100000E38();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [v11 requestId];
-          v23 = [v11 processIdentifier];
+          requestId = [v11 requestId];
+          processIdentifier = [v11 processIdentifier];
           *buf = 134218496;
-          *&buf[4] = v22;
+          *&buf[4] = requestId;
           *&buf[12] = 2048;
-          *&buf[14] = v23;
+          *&buf[14] = processIdentifier;
           *&buf[22] = 2048;
-          v31 = v20;
+          v31 = unsignedIntegerValue;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Skipping request %llu from process %llu due to per process serialization waiting on request %llu.", buf, 0x20u);
         }
 
@@ -428,39 +428,39 @@ LABEL_41:
         }
       }
 
-      v24 = v11;
+      firstObject = v11;
     }
 
     else
     {
 LABEL_12:
-      v24 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v24 = [(NSMutableArray *)pendingSnapshotRequests firstObject];
+    firstObject = [(NSMutableArray *)pendingSnapshotRequests firstObject];
   }
 
-  return v24;
+  return firstObject;
 }
 
-- (void)cancelSnapshotForConnection:(id)a3
+- (void)cancelSnapshotForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   homeQueue = self->_homeQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002C00;
   v7[3] = &unk_1000083C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(homeQueue, v7);
 }
 
-- (BOOL)hasEnoughPixelsForRequest:(int64_t)a3
+- (BOOL)hasEnoughPixelsForRequest:(int64_t)request
 {
   usedPixels = self->_usedPixels;
   v11 = 0;
@@ -487,21 +487,21 @@ LABEL_12:
 
   v7 = *v5;
   v8 = v5[1];
-  return usedPixels + a3 <= GEOConfigGetInteger();
+  return usedPixels + request <= GEOConfigGetInteger();
 }
 
-- (int64_t)pixelsForRequest:(id)a3
+- (int64_t)pixelsForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 options];
-  [v4 scale];
+  requestCopy = request;
+  options = [requestCopy options];
+  [options scale];
   v6 = v5;
-  v7 = [v3 options];
-  [v7 size];
+  options2 = [requestCopy options];
+  [options2 size];
   v9 = v6 * v8;
-  v10 = [v3 options];
+  options3 = [requestCopy options];
 
-  [v10 size];
+  [options3 size];
   v12 = llround(v9 * v11);
 
   return v12;

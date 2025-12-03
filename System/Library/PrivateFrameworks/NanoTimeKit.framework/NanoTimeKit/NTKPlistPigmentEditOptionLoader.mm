@@ -1,54 +1,54 @@
 @interface NTKPlistPigmentEditOptionLoader
-+ (BOOL)containsReservedKey:(id)a3 inDictionary:(id)a4;
-+ (BOOL)containsSeasonNamePrefix:(id)a3;
-+ (id)extractNameFromFullFileName:(id)a3 fileExtension:(id)a4;
-+ (id)indexForSeasonName:(id)a3;
-+ (id)modifyContentRootForImplicitCollectionsIfNeeded:(id)a3;
++ (BOOL)containsReservedKey:(id)key inDictionary:(id)dictionary;
++ (BOOL)containsSeasonNamePrefix:(id)prefix;
++ (id)extractNameFromFullFileName:(id)name fileExtension:(id)extension;
++ (id)indexForSeasonName:(id)name;
++ (id)modifyContentRootForImplicitCollectionsIfNeeded:(id)needed;
 + (id)seasonNames;
-+ (id)sortedCollectionNamesFromCollections:(id)a3;
-+ (id)sortedColorFileNames:(id)a3;
-+ (id)sortedUniqueOptionNamesFromCollections:(id)a3;
-+ (int64_t)compareColorFileNames:(id)a3 otherFileName:(id)a4 fileExtension:(id)a5;
-+ (int64_t)compareSeasonName:(id)a3 otherSeasonName:(id)a4;
-+ (int64_t)compareSeasonWithoutYear:(id)a3 otherSeasonNameWithoutYear:(id)a4;
-+ (int64_t)extractYearFromSeasonName:(id)a3;
-- (BOOL)hasFileLevelSensitiveUIConfig:(id)a3;
-- (BOOL)isValidPigment:(id)a3;
++ (id)sortedCollectionNamesFromCollections:(id)collections;
++ (id)sortedColorFileNames:(id)names;
++ (id)sortedUniqueOptionNamesFromCollections:(id)collections;
++ (int64_t)compareColorFileNames:(id)names otherFileName:(id)name fileExtension:(id)extension;
++ (int64_t)compareSeasonName:(id)name otherSeasonName:(id)seasonName;
++ (int64_t)compareSeasonWithoutYear:(id)year otherSeasonNameWithoutYear:(id)withoutYear;
++ (int64_t)extractYearFromSeasonName:(id)name;
+- (BOOL)hasFileLevelSensitiveUIConfig:(id)config;
+- (BOOL)isValidPigment:(id)pigment;
 - (NSDictionary)sharedConfigs;
 - (NTKPlistPigmentEditOptionLoader)init;
-- (NTKPlistPigmentEditOptionLoader)initWithBundle:(id)a3;
-- (NTKPlistPigmentEditOptionLoader)initWithPlistFiles:(id)a3;
-- (id)alternativePropertyNamesForProperty:(id)a3 inNode:(id)a4 includesAllDeviceSpecificColors:(BOOL)a5;
-- (id)colorOptionsFromItemsDictionary:(id)a3 collectionName:(id)a4 applyConfig:(id)a5 plistSuffix:(id)a6 bundle:(id)a7;
-- (id)colorOptionsFromPListItems:(id)a3 collectionName:(id)a4 applyConfig:(id)a5 plistSuffix:(id)a6 bundle:(id)a7;
-- (id)configurationFromNode:(id)a3;
-- (id)configurationFromNode:(id)a3 collectionName:(id)a4;
-- (id)configurationWithName:(id)a3 fromNode:(id)a4 collectionName:(id)a5;
-- (id)copyItemsApplyingConfiguration:(id)a3 configuration:(id)a4;
-- (id)discoverCollectionWithName:(id)a3 contentRoot:(id)a4 collectionsRoot:(id)a5 discoveredCollections:(id)a6 privateDiscoveredCollections:(id)a7 discoveredInvalidCollections:(id)a8 invalidDependecies:(id)a9 hasCycle:(BOOL *)a10 plistSuffix:(id)a11 bundle:(id)a12;
-- (id)extractSuffixFromFileName:(id)a3;
-- (id)importedCollectionsFromImports:(id)a3 propertyName:(id)a4 sharedCollectionsRoot:(id)a5 parent:(id)a6 discoveredCollections:(id)a7 privateDiscoveredCollections:(id)a8 discoveredInvalidCollections:(id)a9 invalidDependencies:(id)a10 hasCycle:(BOOL *)a11 plistSuffix:(id)a12 bundle:(id)a13;
-- (id)importedCollectionsWithNode:(id)a3 sharedCollectionsRoot:(id)a4 parent:(id)a5 discoveredCollections:(id)a6 privateDiscoveredCollections:(id)a7 discoveredInvalidCollections:(id)a8 invalidDependencies:(id)a9 hasCycle:(BOOL *)a10 plistSuffix:(id)a11 bundle:(id)a12;
-- (id)itemsFromNode:(id)a3 collectionName:(id)a4 applyingConfig:(id)a5 plistSuffix:(id)a6 bundle:(id)a7;
-- (id)loadFaceCollectionForAllSlotsForDomain:(id)a3 propertyList:(id)a4 bundle:(id)a5 sharedCollections:(id)a6;
-- (id)loadFaceCollectionForDomain:(id)a3 contentRoot:(id)a4 faceCollectionsRoot:(id)a5 sharedCollections:(id)a6 plistSuffix:(id)a7 bundle:(id)a8;
-- (id)loadFaceCollectionForDomain:(id)a3 mainBundle:(id)a4 faceBundle:(id)a5 additionalBundles:(id)a6 sharedCollections:(id)a7;
-- (id)loadNestedCollectionsFromNode:(id)a3 parent:(id)a4 config:(id)a5 plistSuffix:(id)a6 bundle:(id)a7;
-- (id)loadPropertyListFromFile:(id)a3;
+- (NTKPlistPigmentEditOptionLoader)initWithBundle:(id)bundle;
+- (NTKPlistPigmentEditOptionLoader)initWithPlistFiles:(id)files;
+- (id)alternativePropertyNamesForProperty:(id)property inNode:(id)node includesAllDeviceSpecificColors:(BOOL)colors;
+- (id)colorOptionsFromItemsDictionary:(id)dictionary collectionName:(id)name applyConfig:(id)config plistSuffix:(id)suffix bundle:(id)bundle;
+- (id)colorOptionsFromPListItems:(id)items collectionName:(id)name applyConfig:(id)config plistSuffix:(id)suffix bundle:(id)bundle;
+- (id)configurationFromNode:(id)node;
+- (id)configurationFromNode:(id)node collectionName:(id)name;
+- (id)configurationWithName:(id)name fromNode:(id)node collectionName:(id)collectionName;
+- (id)copyItemsApplyingConfiguration:(id)configuration configuration:(id)a4;
+- (id)discoverCollectionWithName:(id)name contentRoot:(id)root collectionsRoot:(id)collectionsRoot discoveredCollections:(id)collections privateDiscoveredCollections:(id)discoveredCollections discoveredInvalidCollections:(id)invalidCollections invalidDependecies:(id)dependecies hasCycle:(BOOL *)self0 plistSuffix:(id)self1 bundle:(id)self2;
+- (id)extractSuffixFromFileName:(id)name;
+- (id)importedCollectionsFromImports:(id)imports propertyName:(id)name sharedCollectionsRoot:(id)root parent:(id)parent discoveredCollections:(id)collections privateDiscoveredCollections:(id)discoveredCollections discoveredInvalidCollections:(id)invalidCollections invalidDependencies:(id)self0 hasCycle:(BOOL *)self1 plistSuffix:(id)self2 bundle:(id)self3;
+- (id)importedCollectionsWithNode:(id)node sharedCollectionsRoot:(id)root parent:(id)parent discoveredCollections:(id)collections privateDiscoveredCollections:(id)discoveredCollections discoveredInvalidCollections:(id)invalidCollections invalidDependencies:(id)dependencies hasCycle:(BOOL *)self0 plistSuffix:(id)self1 bundle:(id)self2;
+- (id)itemsFromNode:(id)node collectionName:(id)name applyingConfig:(id)config plistSuffix:(id)suffix bundle:(id)bundle;
+- (id)loadFaceCollectionForAllSlotsForDomain:(id)domain propertyList:(id)list bundle:(id)bundle sharedCollections:(id)collections;
+- (id)loadFaceCollectionForDomain:(id)domain contentRoot:(id)root faceCollectionsRoot:(id)collectionsRoot sharedCollections:(id)collections plistSuffix:(id)suffix bundle:(id)bundle;
+- (id)loadFaceCollectionForDomain:(id)domain mainBundle:(id)bundle faceBundle:(id)faceBundle additionalBundles:(id)bundles sharedCollections:(id)collections;
+- (id)loadNestedCollectionsFromNode:(id)node parent:(id)parent config:(id)config plistSuffix:(id)suffix bundle:(id)bundle;
+- (id)loadPropertyListFromFile:(id)file;
 - (id)loadSharedCollections;
-- (id)loadSharedCollectionsInMainBundle:(id)a3 additionalBundles:(id)a4;
-- (id)loadSharedCollectionsWithPropertyList:(id)a3 bundle:(id)a4;
-- (id)loadSharedConfigWithPropertyList:(id)a3 bundle:(id)a4;
-- (id)parseColorOptionsForDomain:(id)a3 bundle:(id)a4;
-- (id)parseColorOptionsForDomain:(id)a3 bundle:(id)a4 sharedCollections:(id)a5;
+- (id)loadSharedCollectionsInMainBundle:(id)bundle additionalBundles:(id)bundles;
+- (id)loadSharedCollectionsWithPropertyList:(id)list bundle:(id)bundle;
+- (id)loadSharedConfigWithPropertyList:(id)list bundle:(id)bundle;
+- (id)parseColorOptionsForDomain:(id)domain bundle:(id)bundle;
+- (id)parseColorOptionsForDomain:(id)domain bundle:(id)bundle sharedCollections:(id)collections;
 - (id)plistFacesWithoutFaceBundle;
-- (id)skuFileLevel:(id)a3;
-- (id)sortedColorPListBundles:(id)a3;
-- (id)sortedPlistFilesWithMainBundle:(id)a3 faceBundle:(id)a4 additionalBundles:(id)a5;
-- (void)applyConfigurationOnEditOption:(id)a3 configuration:(id)a4;
-- (void)enumerateColorEditOptionFilesInBundle:(id)a3 sorted:(BOOL)a4 block:(id)a5;
-- (void)mergeCollections:(id)a3 withCollections:(id)a4;
-- (void)mergeConfigs:(id)a3 withConfigs:(id)a4;
+- (id)skuFileLevel:(id)level;
+- (id)sortedColorPListBundles:(id)bundles;
+- (id)sortedPlistFilesWithMainBundle:(id)bundle faceBundle:(id)faceBundle additionalBundles:(id)bundles;
+- (void)applyConfigurationOnEditOption:(id)option configuration:(id)configuration;
+- (void)enumerateColorEditOptionFilesInBundle:(id)bundle sorted:(BOOL)sorted block:(id)block;
+- (void)mergeCollections:(id)collections withCollections:(id)withCollections;
+- (void)mergeConfigs:(id)configs withConfigs:(id)withConfigs;
 @end
 
 @implementation NTKPlistPigmentEditOptionLoader
@@ -61,31 +61,31 @@
   return v4;
 }
 
-- (NTKPlistPigmentEditOptionLoader)initWithBundle:(id)a3
+- (NTKPlistPigmentEditOptionLoader)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = NTKPlistPigmentEditOptionLoader;
   v6 = [(NTKPlistPigmentEditOptionLoader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_frameworkBundle, a3);
+    objc_storeStrong(&v6->_frameworkBundle, bundle);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-- (NTKPlistPigmentEditOptionLoader)initWithPlistFiles:(id)a3
+- (NTKPlistPigmentEditOptionLoader)initWithPlistFiles:(id)files
 {
-  v5 = a3;
+  filesCopy = files;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [(NTKPlistPigmentEditOptionLoader *)self initWithBundle:v6];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_plistFiles, a3);
+    objc_storeStrong(&v7->_plistFiles, files);
   }
 
   return v7;
@@ -96,7 +96,7 @@
   sharedConfigs = self->_sharedConfigs;
   if (!sharedConfigs)
   {
-    v4 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollections];
+    loadSharedCollections = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollections];
     sharedConfigs = self->_sharedConfigs;
   }
 
@@ -114,8 +114,8 @@
   }
 
   frameworkBundle = self->_frameworkBundle;
-  v5 = [(NTKPlistPigmentEditOptionLoader *)self additionalBundles];
-  v6 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollectionsInMainBundle:frameworkBundle additionalBundles:v5];
+  additionalBundles = [(NTKPlistPigmentEditOptionLoader *)self additionalBundles];
+  v6 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollectionsInMainBundle:frameworkBundle additionalBundles:additionalBundles];
 
   v7 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -129,30 +129,30 @@
   return v6;
 }
 
-- (id)parseColorOptionsForDomain:(id)a3 bundle:(id)a4
+- (id)parseColorOptionsForDomain:(id)domain bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollections];
-  v9 = [(NTKPlistPigmentEditOptionLoader *)self parseColorOptionsForDomain:v7 bundle:v6 sharedCollections:v8];
+  bundleCopy = bundle;
+  domainCopy = domain;
+  loadSharedCollections = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollections];
+  v9 = [(NTKPlistPigmentEditOptionLoader *)self parseColorOptionsForDomain:domainCopy bundle:bundleCopy sharedCollections:loadSharedCollections];
 
   return v9;
 }
 
-- (id)parseColorOptionsForDomain:(id)a3 bundle:(id)a4 sharedCollections:(id)a5
+- (id)parseColorOptionsForDomain:(id)domain bundle:(id)bundle sharedCollections:(id)collections
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  bundleCopy = bundle;
+  collectionsCopy = collections;
   v11 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [NTKPlistPigmentEditOptionLoader parseColorOptionsForDomain:bundle:sharedCollections:];
   }
 
-  if ([v10 count])
+  if ([collectionsCopy count])
   {
-    if (!v9)
+    if (!bundleCopy)
     {
       goto LABEL_10;
     }
@@ -166,24 +166,24 @@
       [NTKPlistPigmentEditOptionLoader parseColorOptionsForDomain:bundle:sharedCollections:];
     }
 
-    if (!v9)
+    if (!bundleCopy)
     {
       goto LABEL_10;
     }
   }
 
-  if ([v9 isEqual:self->_frameworkBundle])
+  if ([bundleCopy isEqual:self->_frameworkBundle])
   {
 LABEL_10:
     v13 = 0;
     goto LABEL_12;
   }
 
-  v13 = v9;
+  v13 = bundleCopy;
 LABEL_12:
   frameworkBundle = self->_frameworkBundle;
-  v15 = [(NTKPlistPigmentEditOptionLoader *)self additionalBundles];
-  v16 = [(NTKPlistPigmentEditOptionLoader *)self loadFaceCollectionForDomain:v8 mainBundle:frameworkBundle faceBundle:v13 additionalBundles:v15 sharedCollections:v10];
+  additionalBundles = [(NTKPlistPigmentEditOptionLoader *)self additionalBundles];
+  v16 = [(NTKPlistPigmentEditOptionLoader *)self loadFaceCollectionForDomain:domainCopy mainBundle:frameworkBundle faceBundle:v13 additionalBundles:additionalBundles sharedCollections:collectionsCopy];
 
   if ([v16 count])
   {
@@ -196,21 +196,21 @@ LABEL_12:
     v17 = 0;
   }
 
-  [(NTKFacePigmentSet *)v17 setDomain:v8];
+  [(NTKFacePigmentSet *)v17 setDomain:domainCopy];
 
   return v17;
 }
 
-- (id)loadSharedCollectionsInMainBundle:(id)a3 additionalBundles:(id)a4
+- (id)loadSharedCollectionsInMainBundle:(id)bundle additionalBundles:(id)bundles
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v30 = [MEMORY[0x277CBEB38] dictionary];
-  v29 = [MEMORY[0x277CBEB38] dictionary];
-  v26 = v7;
-  v27 = v6;
-  [(NTKPlistPigmentEditOptionLoader *)self sortedPlistFilesWithMainBundle:v6 faceBundle:0 additionalBundles:v7];
+  bundleCopy = bundle;
+  bundlesCopy = bundles;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  v26 = bundlesCopy;
+  v27 = bundleCopy;
+  [(NTKPlistPigmentEditOptionLoader *)self sortedPlistFilesWithMainBundle:bundleCopy faceBundle:0 additionalBundles:bundlesCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -230,38 +230,38 @@ LABEL_12:
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 plistFileName];
-        v14 = [v12 bundle];
-        v15 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedConfigWithPropertyList:v13 bundle:v14];
+        plistFileName = [v12 plistFileName];
+        bundle = [v12 bundle];
+        v15 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedConfigWithPropertyList:plistFileName bundle:bundle];
 
         if ([v15 count])
         {
-          [(NTKPlistPigmentEditOptionLoader *)self mergeConfigs:v29 withConfigs:v15];
+          [(NTKPlistPigmentEditOptionLoader *)self mergeConfigs:dictionary2 withConfigs:v15];
         }
 
-        v16 = [v12 plistFileName];
-        v17 = [v12 bundle];
-        v18 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollectionsWithPropertyList:v16 bundle:v17];
+        plistFileName2 = [v12 plistFileName];
+        bundle2 = [v12 bundle];
+        v18 = [(NTKPlistPigmentEditOptionLoader *)self loadSharedCollectionsWithPropertyList:plistFileName2 bundle:bundle2];
 
         if ([v18 count])
         {
           v19 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [v12 plistFileName];
+            plistFileName3 = [v12 plistFileName];
             *buf = 138543618;
             v36 = v18;
             v37 = 2114;
-            v38 = v21;
+            v38 = plistFileName3;
             _os_log_debug_impl(&dword_22D9C5000, v19, OS_LOG_TYPE_DEBUG, "Merging collections %{public}@ from plist %{public}@", buf, 0x16u);
           }
 
-          [(NTKPlistPigmentEditOptionLoader *)self mergeCollections:v30 withCollections:v18];
+          [(NTKPlistPigmentEditOptionLoader *)self mergeCollections:dictionary withCollections:v18];
           v20 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543362;
-            v36 = v30;
+            v36 = dictionary;
             _os_log_debug_impl(&dword_22D9C5000, v20, OS_LOG_TYPE_DEBUG, "Collections after merge %{public}@", buf, 0xCu);
           }
         }
@@ -273,28 +273,28 @@ LABEL_12:
     while (v9);
   }
 
-  v22 = [v29 copy];
+  v22 = [dictionary2 copy];
   sharedConfigs = self->_sharedConfigs;
   self->_sharedConfigs = v22;
 
-  v24 = [v30 copy];
+  v24 = [dictionary copy];
 
   return v24;
 }
 
-- (id)loadFaceCollectionForDomain:(id)a3 mainBundle:(id)a4 faceBundle:(id)a5 additionalBundles:(id)a6 sharedCollections:(id)a7
+- (id)loadFaceCollectionForDomain:(id)domain mainBundle:(id)bundle faceBundle:(id)faceBundle additionalBundles:(id)bundles sharedCollections:(id)collections
 {
   v49 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v36 = a7;
-  v35 = [MEMORY[0x277CBEB38] dictionary];
-  v31 = v13;
-  v32 = v12;
-  v30 = v14;
-  [(NTKPlistPigmentEditOptionLoader *)self sortedPlistFilesWithMainBundle:v12 faceBundle:v13 additionalBundles:v14];
+  domainCopy = domain;
+  bundleCopy = bundle;
+  faceBundleCopy = faceBundle;
+  bundlesCopy = bundles;
+  collectionsCopy = collections;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v31 = faceBundleCopy;
+  v32 = bundleCopy;
+  v30 = bundlesCopy;
+  [(NTKPlistPigmentEditOptionLoader *)self sortedPlistFilesWithMainBundle:bundleCopy faceBundle:faceBundleCopy additionalBundles:bundlesCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -316,17 +316,17 @@ LABEL_12:
 
         v19 = *(*(&v44 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 plistFileName];
-        v22 = [v19 bundle];
-        v23 = [(NTKPlistPigmentEditOptionLoader *)self loadFaceCollectionForAllSlotsForDomain:v34 propertyList:v21 bundle:v22 sharedCollections:v36];
+        plistFileName = [v19 plistFileName];
+        bundle = [v19 bundle];
+        v23 = [(NTKPlistPigmentEditOptionLoader *)self loadFaceCollectionForAllSlotsForDomain:domainCopy propertyList:plistFileName bundle:bundle sharedCollections:collectionsCopy];
 
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __121__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForDomain_mainBundle_faceBundle_additionalBundles_sharedCollections___block_invoke;
         v40[3] = &unk_2787848A0;
-        v41 = v35;
+        v41 = dictionary;
         v42 = v19;
-        v43 = self;
+        selfCopy = self;
         [v23 enumerateKeysAndObjectsUsingBlock:v40];
 
         objc_autoreleasePoolPop(v20);
@@ -345,11 +345,11 @@ LABEL_12:
   v37[1] = 3221225472;
   v37[2] = __121__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForDomain_mainBundle_faceBundle_additionalBundles_sharedCollections___block_invoke_115;
   v37[3] = &unk_2787848C8;
-  v38 = v34;
+  v38 = domainCopy;
   v25 = v24;
   v39 = v25;
-  v26 = v34;
-  [v35 enumerateKeysAndObjectsUsingBlock:v37];
+  v26 = domainCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v37];
   v27 = v39;
   v28 = v25;
 
@@ -393,61 +393,61 @@ void __121__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForDomain_mainBund
   }
 }
 
-- (id)extractSuffixFromFileName:(id)a3
+- (id)extractSuffixFromFileName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [@".color.plist" length];
-  if ([v3 length] >= v4)
+  if ([nameCopy length] >= v4)
   {
-    v6 = [v3 lastPathComponent];
-    v7 = [v6 substringToIndex:{objc_msgSend(v6, "length") - objc_msgSend(@".color.plist", "length")}];
+    lastPathComponent = [nameCopy lastPathComponent];
+    v7 = [lastPathComponent substringToIndex:{objc_msgSend(lastPathComponent, "length") - objc_msgSend(@".color.plist", "length")}];
 
     if ([v7 containsString:@"-"])
     {
       v8 = [v7 componentsSeparatedByString:@"-"];
-      v5 = [v8 lastObject];
+      lastObject = [v8 lastObject];
 
       v7 = v8;
     }
 
     else
     {
-      v5 = 0;
+      lastObject = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    lastObject = 0;
   }
 
-  return v5;
+  return lastObject;
 }
 
-- (void)mergeConfigs:(id)a3 withConfigs:(id)a4
+- (void)mergeConfigs:(id)configs withConfigs:(id)withConfigs
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  configsCopy = configs;
+  withConfigsCopy = withConfigs;
+  if ([withConfigsCopy count])
   {
     v7 = MEMORY[0x277CBEB58];
-    v8 = [v6 allKeys];
-    v9 = [v7 setWithArray:v8];
+    allKeys = [withConfigsCopy allKeys];
+    v9 = [v7 setWithArray:allKeys];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __60__NTKPlistPigmentEditOptionLoader_mergeConfigs_withConfigs___block_invoke;
     v15[3] = &unk_2787848F0;
-    v10 = v6;
+    v10 = withConfigsCopy;
     v16 = v10;
     v17 = v9;
     v11 = v9;
-    [v5 enumerateKeysAndObjectsUsingBlock:v15];
+    [configsCopy enumerateKeysAndObjectsUsingBlock:v15];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__NTKPlistPigmentEditOptionLoader_mergeConfigs_withConfigs___block_invoke_2;
     v12[3] = &unk_27877F498;
-    v13 = v5;
+    v13 = configsCopy;
     v14 = v10;
     [v11 enumerateObjectsUsingBlock:v12];
   }
@@ -473,30 +473,30 @@ void __60__NTKPlistPigmentEditOptionLoader_mergeConfigs_withConfigs___block_invo
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v4];
 }
 
-- (void)mergeCollections:(id)a3 withCollections:(id)a4
+- (void)mergeCollections:(id)collections withCollections:(id)withCollections
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  collectionsCopy = collections;
+  withCollectionsCopy = withCollections;
+  if ([withCollectionsCopy count])
   {
     v7 = MEMORY[0x277CBEB58];
-    v8 = [v6 allKeys];
-    v9 = [v7 setWithArray:v8];
+    allKeys = [withCollectionsCopy allKeys];
+    v9 = [v7 setWithArray:allKeys];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __68__NTKPlistPigmentEditOptionLoader_mergeCollections_withCollections___block_invoke;
     v15[3] = &unk_278784918;
-    v10 = v6;
+    v10 = withCollectionsCopy;
     v16 = v10;
     v17 = v9;
     v11 = v9;
-    [v5 enumerateKeysAndObjectsUsingBlock:v15];
+    [collectionsCopy enumerateKeysAndObjectsUsingBlock:v15];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__NTKPlistPigmentEditOptionLoader_mergeCollections_withCollections___block_invoke_2;
     v12[3] = &unk_27877F498;
-    v13 = v5;
+    v13 = collectionsCopy;
     v14 = v10;
     [v11 enumerateObjectsUsingBlock:v12];
   }
@@ -522,15 +522,15 @@ void __68__NTKPlistPigmentEditOptionLoader_mergeCollections_withCollections___bl
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v4];
 }
 
-- (id)loadFaceCollectionForAllSlotsForDomain:(id)a3 propertyList:(id)a4 bundle:(id)a5 sharedCollections:(id)a6
+- (id)loadFaceCollectionForAllSlotsForDomain:(id)domain propertyList:(id)list bundle:(id)bundle sharedCollections:(id)collections
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NTKPlistPigmentEditOptionLoader *)self loadPropertyListFromFile:v11];
-  v15 = [(NTKPlistPigmentEditOptionLoader *)self extractSuffixFromFileName:v11];
+  domainCopy = domain;
+  listCopy = list;
+  bundleCopy = bundle;
+  collectionsCopy = collections;
+  v14 = [(NTKPlistPigmentEditOptionLoader *)self loadPropertyListFromFile:listCopy];
+  v15 = [(NTKPlistPigmentEditOptionLoader *)self extractSuffixFromFileName:listCopy];
   v16 = v14;
   v17 = [v16 objectForKeyedSubscript:@"faces"];
   if (!v17)
@@ -556,7 +556,7 @@ void __68__NTKPlistPigmentEditOptionLoader_mergeCollections_withCollections___bl
     goto LABEL_20;
   }
 
-  v18 = [v17 objectForKeyedSubscript:v10];
+  v18 = [v17 objectForKeyedSubscript:domainCopy];
   if (!v18)
   {
     v21 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
@@ -600,7 +600,7 @@ LABEL_20:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = v11;
+      v38 = listCopy;
       _os_log_impl(&dword_22D9C5000, v19, OS_LOG_TYPE_DEFAULT, "#plist-loader Ignoring plist because sensitive UI is disabled %{public}@", buf, 0xCu);
     }
 
@@ -617,12 +617,12 @@ LABEL_20:
       v23[2] = __112__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForAllSlotsForDomain_propertyList_bundle_sharedCollections___block_invoke_122;
       v23[3] = &unk_278784968;
       v24 = v18;
-      v25 = self;
-      v26 = v10;
+      selfCopy = self;
+      v26 = domainCopy;
       v27 = v17;
-      v28 = v13;
+      v28 = collectionsCopy;
       v29 = v15;
-      v30 = v12;
+      v30 = bundleCopy;
       v20 = v20;
       v31 = v20;
       [v24 enumerateKeysAndObjectsUsingBlock:v23];
@@ -632,7 +632,7 @@ LABEL_20:
 
     else
     {
-      v19 = [(NTKPlistPigmentEditOptionLoader *)self loadFaceCollectionForDomain:v10 contentRoot:v18 faceCollectionsRoot:v17 sharedCollections:v13 plistSuffix:v15 bundle:v12];
+      v19 = [(NTKPlistPigmentEditOptionLoader *)self loadFaceCollectionForDomain:domainCopy contentRoot:v18 faceCollectionsRoot:v17 sharedCollections:collectionsCopy plistSuffix:v15 bundle:bundleCopy];
       [v20 setObject:v19 forKeyedSubscript:@"slot-"];
     }
   }
@@ -676,26 +676,26 @@ void __112__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForAllSlotsForDoma
   }
 }
 
-- (id)loadFaceCollectionForDomain:(id)a3 contentRoot:(id)a4 faceCollectionsRoot:(id)a5 sharedCollections:(id)a6 plistSuffix:(id)a7 bundle:(id)a8
+- (id)loadFaceCollectionForDomain:(id)domain contentRoot:(id)root faceCollectionsRoot:(id)collectionsRoot sharedCollections:(id)collections plistSuffix:(id)suffix bundle:(id)bundle
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
-  v20 = [objc_opt_class() modifyContentRootForImplicitCollectionsIfNeeded:v19];
+  domainCopy = domain;
+  collectionsCopy = collections;
+  bundleCopy = bundle;
+  suffixCopy = suffix;
+  collectionsRootCopy = collectionsRoot;
+  rootCopy = root;
+  v20 = [objc_opt_class() modifyContentRootForImplicitCollectionsIfNeeded:rootCopy];
 
-  v21 = [MEMORY[0x277CBEB38] dictionary];
-  v22 = [v15 mutableCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v22 = [collectionsCopy mutableCopy];
   v28 = 0;
-  v23 = [MEMORY[0x277CBEB58] setWithObject:v14];
-  v24 = [(NTKPlistPigmentEditOptionLoader *)self discoverCollectionWithName:v14 contentRoot:v20 collectionsRoot:v18 discoveredCollections:v22 privateDiscoveredCollections:0 discoveredInvalidCollections:0 invalidDependecies:v23 hasCycle:&v28 plistSuffix:v17 bundle:v16];
+  v23 = [MEMORY[0x277CBEB58] setWithObject:domainCopy];
+  v24 = [(NTKPlistPigmentEditOptionLoader *)self discoverCollectionWithName:domainCopy contentRoot:v20 collectionsRoot:collectionsRootCopy discoveredCollections:v22 privateDiscoveredCollections:0 discoveredInvalidCollections:0 invalidDependecies:v23 hasCycle:&v28 plistSuffix:suffixCopy bundle:bundleCopy];
 
   if (v28)
   {
-    v25 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    collectionName = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
+    if (os_log_type_enabled(collectionName, OS_LOG_TYPE_ERROR))
     {
       [NTKPlistPigmentEditOptionLoader loadFaceCollectionForDomain:contentRoot:faceCollectionsRoot:sharedCollections:plistSuffix:bundle:];
     }
@@ -703,34 +703,34 @@ void __112__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForAllSlotsForDoma
 
   else if (v24)
   {
-    v25 = [v24 collectionName];
-    [v21 setObject:v24 forKey:v25];
+    collectionName = [v24 collectionName];
+    [dictionary setObject:v24 forKey:collectionName];
   }
 
   else
   {
-    v25 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+    collectionName = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
+    if (os_log_type_enabled(collectionName, OS_LOG_TYPE_DEBUG))
     {
       [NTKPlistPigmentEditOptionLoader loadFaceCollectionForDomain:contentRoot:faceCollectionsRoot:sharedCollections:plistSuffix:bundle:];
     }
   }
 
-  v26 = [v15 allKeys];
-  [v22 removeObjectsForKeys:v26];
+  allKeys = [collectionsCopy allKeys];
+  [v22 removeObjectsForKeys:allKeys];
 
-  [v21 addEntriesFromDictionary:v22];
+  [dictionary addEntriesFromDictionary:v22];
 
-  return v21;
+  return dictionary;
 }
 
-+ (id)modifyContentRootForImplicitCollectionsIfNeeded:(id)a3
++ (id)modifyContentRootForImplicitCollectionsIfNeeded:(id)needed
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = neededCopy;
   v7 = v6;
   v8 = v6;
   if (isKindOfClass)
@@ -738,9 +738,9 @@ void __112__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForAllSlotsForDoma
     v8 = v6;
     if ([v6 count])
     {
-      v9 = [a1 containsReservedKey:@"imports" inDictionary:v7];
-      v10 = [a1 containsReservedKey:@"collections" inDictionary:v7];
-      v11 = [a1 containsReservedKey:@"items" inDictionary:v7];
+      v9 = [self containsReservedKey:@"imports" inDictionary:v7];
+      v10 = [self containsReservedKey:@"collections" inDictionary:v7];
+      v11 = [self containsReservedKey:@"items" inDictionary:v7];
       v8 = v7;
       if ((v9 & 1) == 0)
       {
@@ -766,7 +766,7 @@ void __112__NTKPlistPigmentEditOptionLoader_loadFaceCollectionForAllSlotsForDoma
             if ([v15 count])
             {
               [v12 removeObjectsForKeys:v15];
-              v17 = [a1 sortedColorFileNames:v15];
+              v17 = [self sortedColorFileNames:v15];
               v18 = [v17 copy];
               [v12 setObject:v18 forKeyedSubscript:@"imports"];
 
@@ -804,14 +804,14 @@ void __83__NTKPlistPigmentEditOptionLoader_modifyContentRootForImplicitCollectio
   }
 }
 
-+ (BOOL)containsReservedKey:(id)a3 inDictionary:(id)a4
++ (BOOL)containsReservedKey:(id)key inDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v7 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v8 = v7 != 0;
 
   v20 = v8;
@@ -822,8 +822,8 @@ void __83__NTKPlistPigmentEditOptionLoader_modifyContentRootForImplicitCollectio
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v5, @"-"];
-    v11 = [v6 allKeys];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", keyCopy, @"-"];
+    allKeys = [dictionaryCopy allKeys];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__NTKPlistPigmentEditOptionLoader_containsReservedKey_inDictionary___block_invoke;
@@ -831,7 +831,7 @@ void __83__NTKPlistPigmentEditOptionLoader_modifyContentRootForImplicitCollectio
     v16 = &v17;
     v12 = v10;
     v15 = v12;
-    [v11 enumerateObjectsUsingBlock:v14];
+    [allKeys enumerateObjectsUsingBlock:v14];
 
     v9 = *(v18 + 24);
   }
@@ -852,10 +852,10 @@ void __68__NTKPlistPigmentEditOptionLoader_containsReservedKey_inDictionary___bl
   }
 }
 
-- (id)loadSharedConfigWithPropertyList:(id)a3 bundle:(id)a4
+- (id)loadSharedConfigWithPropertyList:(id)list bundle:(id)bundle
 {
-  v5 = [(NTKPlistPigmentEditOptionLoader *)self loadPropertyListFromFile:a3, a4];
-  v6 = [v5 objectForKeyedSubscript:@"shared-config"];
+  bundle = [(NTKPlistPigmentEditOptionLoader *)self loadPropertyListFromFile:list, bundle];
+  v6 = [bundle objectForKeyedSubscript:@"shared-config"];
   if (v6)
   {
     objc_opt_class();
@@ -909,13 +909,13 @@ void __75__NTKPlistPigmentEditOptionLoader_loadSharedConfigWithPropertyList_bund
   }
 }
 
-- (id)loadSharedCollectionsWithPropertyList:(id)a3 bundle:(id)a4
+- (id)loadSharedCollectionsWithPropertyList:(id)list bundle:(id)bundle
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKPlistPigmentEditOptionLoader *)self loadPropertyListFromFile:v6];
-  v9 = [(NTKPlistPigmentEditOptionLoader *)self extractSuffixFromFileName:v6];
+  listCopy = list;
+  bundleCopy = bundle;
+  v8 = [(NTKPlistPigmentEditOptionLoader *)self loadPropertyListFromFile:listCopy];
+  v9 = [(NTKPlistPigmentEditOptionLoader *)self extractSuffixFromFileName:listCopy];
   v10 = v8;
   v11 = [v10 objectForKeyedSubscript:@"shared-collections"];
   if (!v11)
@@ -947,7 +947,7 @@ void __75__NTKPlistPigmentEditOptionLoader_loadSharedConfigWithPropertyList_bund
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v40 = v6;
+      v40 = listCopy;
       _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "#plist-loader Ignoring plist because sensitive UI is disabled %{public}@", buf, 0xCu);
     }
 
@@ -979,7 +979,7 @@ LABEL_11:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v40 = v6;
+      v40 = listCopy;
       _os_log_impl(&dword_22D9C5000, v25, OS_LOG_TYPE_INFO, "#plist-loader Loading shared collections from plist %{public}@", buf, 0xCu);
     }
 
@@ -990,10 +990,10 @@ LABEL_11:
     v26 = v23;
     v33 = v26;
     v34 = v24;
-    v35 = self;
+    selfCopy = self;
     v36 = v11;
     v37 = v9;
-    v38 = v7;
+    v38 = bundleCopy;
     v22 = v24;
     [v36 enumerateKeysAndObjectsUsingBlock:&v29];
     [v26 enumerateKeysAndObjectsUsingBlock:{&__block_literal_global_123, v29, v30, v31, v32}];
@@ -1030,24 +1030,24 @@ void __80__NTKPlistPigmentEditOptionLoader_loadSharedCollectionsWithPropertyList
   }
 }
 
-- (id)discoverCollectionWithName:(id)a3 contentRoot:(id)a4 collectionsRoot:(id)a5 discoveredCollections:(id)a6 privateDiscoveredCollections:(id)a7 discoveredInvalidCollections:(id)a8 invalidDependecies:(id)a9 hasCycle:(BOOL *)a10 plistSuffix:(id)a11 bundle:(id)a12
+- (id)discoverCollectionWithName:(id)name contentRoot:(id)root collectionsRoot:(id)collectionsRoot discoveredCollections:(id)collections privateDiscoveredCollections:(id)discoveredCollections discoveredInvalidCollections:(id)invalidCollections invalidDependecies:(id)dependecies hasCycle:(BOOL *)self0 plistSuffix:(id)self1 bundle:(id)self2
 {
   v80 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = a11;
-  v24 = a12;
+  nameCopy = name;
+  rootCopy = root;
+  collectionsRootCopy = collectionsRoot;
+  collectionsCopy = collections;
+  invalidCollectionsCopy = invalidCollections;
+  dependeciesCopy = dependecies;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
   v25 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
     [NTKPlistPigmentEditOptionLoader discoverCollectionWithName:contentRoot:collectionsRoot:discoveredCollections:privateDiscoveredCollections:discoveredInvalidCollections:invalidDependecies:hasCycle:plistSuffix:bundle:];
   }
 
-  if (!v18)
+  if (!rootCopy)
   {
     v26 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(&v26->super, OS_LOG_TYPE_ERROR))
@@ -1058,8 +1058,8 @@ void __80__NTKPlistPigmentEditOptionLoader_loadSharedCollectionsWithPropertyList
     goto LABEL_25;
   }
 
-  v71 = v19;
-  v72 = v20;
+  v71 = collectionsRootCopy;
+  v72 = collectionsCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1076,13 +1076,13 @@ void __80__NTKPlistPigmentEditOptionLoader_loadSharedCollectionsWithPropertyList
     }
   }
 
-  v70 = v21;
-  v26 = [[NTKPigmentCollection alloc] initWithName:v17];
+  v70 = invalidCollectionsCopy;
+  v26 = [[NTKPigmentCollection alloc] initWithName:nameCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v27 = MEMORY[0x277CBEB40];
-    v28 = [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromPListItems:v18 collectionName:v17 applyConfig:0 plistSuffix:v23 bundle:v24];
+    v28 = [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromPListItems:rootCopy collectionName:nameCopy applyConfig:0 plistSuffix:suffixCopy bundle:bundleCopy];
     v29 = [v27 orderedSetWithArray:v28];
     [(NTKPigmentCollection *)v26 setItems:v29];
 
@@ -1106,20 +1106,20 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v30 = v18;
-  [v22 addObject:v17];
+  v30 = rootCopy;
+  [dependeciesCopy addObject:nameCopy];
   v69 = v30;
-  v31 = [(NTKPlistPigmentEditOptionLoader *)self configurationFromNode:v30 collectionName:v17];
+  v31 = [(NTKPlistPigmentEditOptionLoader *)self configurationFromNode:v30 collectionName:nameCopy];
   [(NTKPigmentCollection *)v26 setConfig:v31];
 
-  v32 = [(NTKPigmentCollection *)v26 config];
-  v33 = [v32 featureFlag];
+  config = [(NTKPigmentCollection *)v26 config];
+  featureFlag = [config featureFlag];
 
-  if (v33)
+  if (featureFlag)
   {
-    v34 = [(NTKPigmentCollection *)v26 config];
-    v35 = [v34 featureFlag];
-    [v35 cStringUsingEncoding:1];
+    config2 = [(NTKPigmentCollection *)v26 config];
+    featureFlag2 = [config2 featureFlag];
+    [featureFlag2 cStringUsingEncoding:1];
     v36 = _os_feature_enabled_impl();
 
     if ((v36 & 1) == 0)
@@ -1127,20 +1127,20 @@ LABEL_37:
       v42 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v43 = [(NTKPigmentCollection *)v26 config];
-        v44 = [v43 featureFlag];
+        config3 = [(NTKPigmentCollection *)v26 config];
+        featureFlag3 = [config3 featureFlag];
         *buf = 138543618;
-        v77 = v44;
+        v77 = featureFlag3;
         v78 = 2114;
-        v79 = v17;
+        v79 = nameCopy;
         v45 = "#plist-loader Feature flag %{public}@ is disabled. Ignoring collection %{public}@";
         goto LABEL_23;
       }
 
 LABEL_24:
-      v19 = v71;
-      v20 = v72;
-      v21 = v70;
+      collectionsRootCopy = v71;
+      collectionsCopy = v72;
+      invalidCollectionsCopy = v70;
 
 LABEL_25:
       v46 = 0;
@@ -1150,13 +1150,13 @@ LABEL_25:
 
   if (!self->_includesAllDeviceSpecificColors)
   {
-    v37 = [(NTKPigmentCollection *)v26 config];
-    v38 = [v37 sku];
+    config4 = [(NTKPigmentCollection *)v26 config];
+    v38 = [config4 sku];
     if (v38 && self->_sku)
     {
       v65 = v38;
       [(NTKPigmentCollection *)v26 config];
-      v39 = v67 = v37;
+      v39 = v67 = config4;
       v40 = [v39 sku];
       v41 = [v40 isEqualToNumber:self->_sku];
 
@@ -1165,12 +1165,12 @@ LABEL_25:
         v42 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [(NTKPigmentCollection *)v26 config];
-          v44 = [v43 sku];
+          config3 = [(NTKPigmentCollection *)v26 config];
+          featureFlag3 = [config3 sku];
           *buf = 138543618;
-          v77 = v44;
+          v77 = featureFlag3;
           v78 = 2114;
-          v79 = v17;
+          v79 = nameCopy;
           v45 = "#plist-loader Collection is sku only %{public}@. Ignoring %{public}@";
 LABEL_23:
           _os_log_impl(&dword_22D9C5000, v42, OS_LOG_TYPE_DEFAULT, v45, buf, 0x16u);
@@ -1187,10 +1187,10 @@ LABEL_23:
     }
   }
 
-  v68 = v22;
-  v47 = [(NTKPigmentCollection *)v26 collectionName];
-  v48 = [(NTKPigmentCollection *)v26 config];
-  v49 = [(NTKPlistPigmentEditOptionLoader *)self loadNestedCollectionsFromNode:v69 parent:v47 config:v48 plistSuffix:v23 bundle:v24];
+  v68 = dependeciesCopy;
+  collectionName = [(NTKPigmentCollection *)v26 collectionName];
+  config5 = [(NTKPigmentCollection *)v26 config];
+  v49 = [(NTKPlistPigmentEditOptionLoader *)self loadNestedCollectionsFromNode:v69 parent:collectionName config:config5 plistSuffix:suffixCopy bundle:bundleCopy];
 
   v66 = v49;
   if (v49)
@@ -1211,14 +1211,14 @@ LABEL_23:
     v51 = 0;
   }
 
-  v52 = [(NTKPigmentCollection *)v26 config];
-  v64 = [(NTKPlistPigmentEditOptionLoader *)self itemsFromNode:v69 collectionName:v17 applyingConfig:v52 plistSuffix:v23 bundle:v24];
+  config6 = [(NTKPigmentCollection *)v26 config];
+  v64 = [(NTKPlistPigmentEditOptionLoader *)self itemsFromNode:v69 collectionName:nameCopy applyingConfig:config6 plistSuffix:suffixCopy bundle:bundleCopy];
 
   v53 = [v68 mutableCopy];
-  v54 = [(NTKPlistPigmentEditOptionLoader *)self importedCollectionsWithNode:v69 sharedCollectionsRoot:v71 parent:v17 discoveredCollections:v72 privateDiscoveredCollections:v51 discoveredInvalidCollections:v70 invalidDependencies:v53 hasCycle:a10 plistSuffix:v23 bundle:v24];
+  v54 = [(NTKPlistPigmentEditOptionLoader *)self importedCollectionsWithNode:v69 sharedCollectionsRoot:v71 parent:nameCopy discoveredCollections:v72 privateDiscoveredCollections:v51 discoveredInvalidCollections:v70 invalidDependencies:v53 hasCycle:cycle plistSuffix:suffixCopy bundle:bundleCopy];
   [(NTKPigmentCollection *)v26 setCollections:v54];
 
-  v55 = *a10;
+  v55 = *cycle;
   if (v55)
   {
     v56 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
@@ -1227,29 +1227,29 @@ LABEL_23:
       [NTKPlistPigmentEditOptionLoader discoverCollectionWithName:contentRoot:collectionsRoot:discoveredCollections:privateDiscoveredCollections:discoveredInvalidCollections:invalidDependecies:hasCycle:plistSuffix:bundle:];
     }
 
-    [v70 addObject:v17];
-    v20 = v72;
+    [v70 addObject:nameCopy];
+    collectionsCopy = v72;
     v57 = v64;
   }
 
   else
   {
-    v58 = [(NTKPigmentCollection *)v26 config];
+    config7 = [(NTKPigmentCollection *)v26 config];
     v57 = v64;
-    [v58 removeExcludedItemsFromList:v64];
+    [config7 removeExcludedItemsFromList:v64];
 
-    v59 = [(NTKPigmentCollection *)v26 config];
-    [v59 applyCollectionOverrideNameOnItems:v64];
+    config8 = [(NTKPigmentCollection *)v26 config];
+    [config8 applyCollectionOverrideNameOnItems:v64];
 
     [(NTKPigmentCollection *)v26 setItems:v64];
-    v60 = [(NTKPigmentCollection *)v26 config];
-    v61 = [v60 defaultGalleryColorNames];
-    [(NTKPigmentCollection *)v26 setDefaultGalleryColorWithNames:v61];
+    config9 = [(NTKPigmentCollection *)v26 config];
+    defaultGalleryColorNames = [config9 defaultGalleryColorNames];
+    [(NTKPigmentCollection *)v26 setDefaultGalleryColorWithNames:defaultGalleryColorNames];
 
-    v20 = v72;
+    collectionsCopy = v72;
   }
 
-  v22 = v68;
+  dependeciesCopy = v68;
   if (!v55)
   {
     goto LABEL_37;
@@ -1257,8 +1257,8 @@ LABEL_23:
 
   v46 = 0;
 LABEL_40:
-  v19 = v71;
-  v21 = v70;
+  collectionsRootCopy = v71;
+  invalidCollectionsCopy = v70;
 LABEL_41:
 
   return v46;
@@ -1287,31 +1287,31 @@ void __217__NTKPlistPigmentEditOptionLoader_discoverCollectionWithName_contentRo
   }
 }
 
-- (id)loadNestedCollectionsFromNode:(id)a3 parent:(id)a4 config:(id)a5 plistSuffix:(id)a6 bundle:(id)a7
+- (id)loadNestedCollectionsFromNode:(id)node parent:(id)parent config:(id)config plistSuffix:(id)suffix bundle:(id)bundle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 objectForKeyedSubscript:@"collections"];
+  nodeCopy = node;
+  parentCopy = parent;
+  configCopy = config;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
+  v17 = [nodeCopy objectForKeyedSubscript:@"collections"];
   if (v17)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __98__NTKPlistPigmentEditOptionLoader_loadNestedCollectionsFromNode_parent_config_plistSuffix_bundle___block_invoke;
       v24[3] = &unk_278784A78;
-      v25 = v12;
-      v26 = v13;
-      v27 = self;
-      v28 = v15;
-      v29 = v16;
-      v30 = v14;
-      v19 = v18;
+      v25 = nodeCopy;
+      v26 = parentCopy;
+      selfCopy = self;
+      v28 = suffixCopy;
+      v29 = bundleCopy;
+      v30 = configCopy;
+      v19 = array;
       v31 = v19;
       [v17 enumerateKeysAndObjectsUsingBlock:v24];
       v20 = v31;
@@ -1381,21 +1381,21 @@ void __98__NTKPlistPigmentEditOptionLoader_loadNestedCollectionsFromNode_parent_
   }
 }
 
-- (id)importedCollectionsWithNode:(id)a3 sharedCollectionsRoot:(id)a4 parent:(id)a5 discoveredCollections:(id)a6 privateDiscoveredCollections:(id)a7 discoveredInvalidCollections:(id)a8 invalidDependencies:(id)a9 hasCycle:(BOOL *)a10 plistSuffix:(id)a11 bundle:(id)a12
+- (id)importedCollectionsWithNode:(id)node sharedCollectionsRoot:(id)root parent:(id)parent discoveredCollections:(id)collections privateDiscoveredCollections:(id)discoveredCollections discoveredInvalidCollections:(id)invalidCollections invalidDependencies:(id)dependencies hasCycle:(BOOL *)self0 plistSuffix:(id)self1 bundle:(id)self2
 {
   v47 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v41 = a4;
-  v40 = a5;
-  v39 = a6;
-  v38 = a7;
-  v37 = a8;
-  v36 = a9;
-  v18 = a11;
-  v19 = a12;
+  nodeCopy = node;
+  rootCopy = root;
+  parentCopy = parent;
+  collectionsCopy = collections;
+  discoveredCollectionsCopy = discoveredCollections;
+  invalidCollectionsCopy = invalidCollections;
+  dependenciesCopy = dependencies;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v35 = v17;
-  v20 = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"imports" inNode:v17];
+  v35 = nodeCopy;
+  v20 = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"imports" inNode:nodeCopy];
   [v20 addObject:@"imports"];
   v44 = 0u;
   v45 = 0u;
@@ -1418,14 +1418,14 @@ void __98__NTKPlistPigmentEditOptionLoader_loadNestedCollectionsFromNode_parent_
 
         v26 = *(*(&v42 + 1) + 8 * i);
         v27 = [v35 objectForKeyedSubscript:v26];
-        v28 = [(NTKPlistPigmentEditOptionLoader *)self importedCollectionsFromImports:v27 propertyName:v26 sharedCollectionsRoot:v41 parent:v40 discoveredCollections:v39 privateDiscoveredCollections:v38 discoveredInvalidCollections:v37 invalidDependencies:v36 hasCycle:a10 plistSuffix:v18 bundle:v19];
+        v28 = [(NTKPlistPigmentEditOptionLoader *)self importedCollectionsFromImports:v27 propertyName:v26 sharedCollectionsRoot:rootCopy parent:parentCopy discoveredCollections:collectionsCopy privateDiscoveredCollections:discoveredCollectionsCopy discoveredInvalidCollections:invalidCollectionsCopy invalidDependencies:dependenciesCopy hasCycle:cycle plistSuffix:suffixCopy bundle:bundleCopy];
 
         if (v28)
         {
           [v34 addObjectsFromArray:v28];
         }
 
-        v29 = *a10;
+        v29 = *cycle;
 
         if (v29)
         {
@@ -1453,36 +1453,36 @@ LABEL_13:
   return v31;
 }
 
-- (id)importedCollectionsFromImports:(id)a3 propertyName:(id)a4 sharedCollectionsRoot:(id)a5 parent:(id)a6 discoveredCollections:(id)a7 privateDiscoveredCollections:(id)a8 discoveredInvalidCollections:(id)a9 invalidDependencies:(id)a10 hasCycle:(BOOL *)a11 plistSuffix:(id)a12 bundle:(id)a13
+- (id)importedCollectionsFromImports:(id)imports propertyName:(id)name sharedCollectionsRoot:(id)root parent:(id)parent discoveredCollections:(id)collections privateDiscoveredCollections:(id)discoveredCollections discoveredInvalidCollections:(id)invalidCollections invalidDependencies:(id)self0 hasCycle:(BOOL *)self1 plistSuffix:(id)self2 bundle:(id)self3
 {
   v72 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v18 = a4;
-  v54 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v53 = a9;
-  v22 = a10;
-  v56 = a12;
-  v23 = a13;
+  importsCopy = imports;
+  nameCopy = name;
+  rootCopy = root;
+  parentCopy = parent;
+  collectionsCopy = collections;
+  discoveredCollectionsCopy = discoveredCollections;
+  invalidCollectionsCopy = invalidCollections;
+  dependenciesCopy = dependencies;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
   v24 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     [NTKPlistPigmentEditOptionLoader importedCollectionsFromImports:propertyName:sharedCollectionsRoot:parent:discoveredCollections:privateDiscoveredCollections:discoveredInvalidCollections:invalidDependencies:hasCycle:plistSuffix:bundle:];
   }
 
-  v55 = v23;
+  v55 = bundleCopy;
 
-  if (v21)
+  if (discoveredCollectionsCopy)
   {
-    v25 = v21;
+    v25 = discoveredCollectionsCopy;
 
-    v20 = v25;
+    collectionsCopy = v25;
   }
 
-  v26 = v52;
-  if (!v52)
+  v26 = importsCopy;
+  if (!importsCopy)
   {
     log = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -1500,9 +1500,9 @@ LABEL_13:
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v67 = v18;
+      v67 = nameCopy;
       v68 = 2048;
-      v69 = v19;
+      v69 = parentCopy;
       v70 = 2114;
       v71 = objc_opt_class();
       _os_log_error_impl(&dword_22D9C5000, log, OS_LOG_TYPE_ERROR, "#plist-loader '%{public}@' for %public}@ found with incorrect type - It should be an array but it was %{public}@. Returning empty items for dependencies", buf, 0x20u);
@@ -1513,23 +1513,23 @@ LABEL_38:
     goto LABEL_46;
   }
 
-  v48 = v21;
-  v49 = v18;
+  v48 = discoveredCollectionsCopy;
+  v49 = nameCopy;
   log = objc_alloc_init(MEMORY[0x277CBEB18]);
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v52;
+  obj = importsCopy;
   v27 = [obj countByEnumeratingWithState:&v61 objects:v65 count:16];
   v28 = v55;
-  v29 = v56;
+  v29 = suffixCopy;
   if (v27)
   {
     v30 = v27;
     v60 = *v62;
-    v50 = v22;
-    v51 = v19;
+    v50 = dependenciesCopy;
+    v51 = parentCopy;
     while (2)
     {
       for (i = 0; i != v30; ++i)
@@ -1543,10 +1543,10 @@ LABEL_38:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v33 = [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromPListItems:v32 collectionName:v19 applyConfig:0 plistSuffix:v29 bundle:v28];
+          v33 = [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromPListItems:v32 collectionName:parentCopy applyConfig:0 plistSuffix:v29 bundle:v28];
           if (v33)
           {
-            v34 = [[NTKPigmentCollection alloc] initWithName:v19];
+            v34 = [[NTKPigmentCollection alloc] initWithName:parentCopy];
             v35 = [MEMORY[0x277CBEB40] orderedSetWithArray:v33];
             [(NTKPigmentCollection *)v34 setItems:v35];
 
@@ -1560,8 +1560,8 @@ LABEL_38:
           if (objc_opt_isKindOfClass())
           {
             v33 = v32;
-            v36 = [v20 objectForKeyedSubscript:v33];
-            if ([v22 containsObject:v33])
+            v36 = [collectionsCopy objectForKeyedSubscript:v33];
+            if ([dependenciesCopy containsObject:v33])
             {
               v37 = v36 == 0;
             }
@@ -1573,7 +1573,7 @@ LABEL_38:
 
             if (v37)
             {
-              *a11 = 1;
+              *cycle = 1;
 LABEL_41:
 
               goto LABEL_42;
@@ -1586,45 +1586,45 @@ LABEL_41:
 
             else
             {
-              v39 = [v54 objectForKeyedSubscript:v33];
-              v40 = [v22 mutableCopy];
-              v41 = v20;
+              v39 = [rootCopy objectForKeyedSubscript:v33];
+              v40 = [dependenciesCopy mutableCopy];
+              v41 = collectionsCopy;
               v42 = v40;
               v43 = v41;
-              v44 = [NTKPlistPigmentEditOptionLoader discoverCollectionWithName:"discoverCollectionWithName:contentRoot:collectionsRoot:discoveredCollections:privateDiscoveredCollections:discoveredInvalidCollections:invalidDependecies:hasCycle:plistSuffix:bundle:" contentRoot:v33 collectionsRoot:v39 discoveredCollections:v54 privateDiscoveredCollections:v40 discoveredInvalidCollections:a11 invalidDependecies:v29 hasCycle:v28 plistSuffix:? bundle:?];
+              v44 = [NTKPlistPigmentEditOptionLoader discoverCollectionWithName:"discoverCollectionWithName:contentRoot:collectionsRoot:discoveredCollections:privateDiscoveredCollections:discoveredInvalidCollections:invalidDependecies:hasCycle:plistSuffix:bundle:" contentRoot:v33 collectionsRoot:v39 discoveredCollections:rootCopy privateDiscoveredCollections:v40 discoveredInvalidCollections:cycle invalidDependecies:v29 hasCycle:v28 plistSuffix:? bundle:?];
 
-              if (*a11)
+              if (*cycle)
               {
 
-                v20 = v43;
-                v22 = v50;
-                v19 = v51;
+                collectionsCopy = v43;
+                dependenciesCopy = v50;
+                parentCopy = v51;
                 goto LABEL_41;
               }
 
               if (v44)
               {
                 [log addObject:v44];
-                v45 = [v44 collectionName];
-                [v43 setObject:v44 forKeyedSubscript:v45];
+                collectionName = [v44 collectionName];
+                [v43 setObject:v44 forKeyedSubscript:collectionName];
               }
 
               else
               {
-                v45 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
-                if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+                collectionName = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
+                if (os_log_type_enabled(collectionName, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543362;
                   v67 = v33;
-                  _os_log_error_impl(&dword_22D9C5000, v45, OS_LOG_TYPE_ERROR, "#plist-loader %{public}@ collection does not exist.", buf, 0xCu);
+                  _os_log_error_impl(&dword_22D9C5000, collectionName, OS_LOG_TYPE_ERROR, "#plist-loader %{public}@ collection does not exist.", buf, 0xCu);
                 }
               }
 
-              v20 = v43;
-              v22 = v50;
-              v19 = v51;
+              collectionsCopy = v43;
+              dependenciesCopy = v50;
+              parentCopy = v51;
               v28 = v55;
-              v29 = v56;
+              v29 = suffixCopy;
             }
           }
 
@@ -1637,7 +1637,7 @@ LABEL_41:
               *buf = 138543618;
               v67 = v38;
               v68 = 2114;
-              v69 = v19;
+              v69 = parentCopy;
               _os_log_error_impl(&dword_22D9C5000, v33, OS_LOG_TYPE_ERROR, "#plist-loader dependency entry should be either String or Array - %{public}@ - Parent: %{public}@", buf, 0x16u);
             }
           }
@@ -1656,7 +1656,7 @@ LABEL_41:
 
 LABEL_42:
 
-  if (*a11)
+  if (*cycle)
   {
     v46 = 0;
   }
@@ -1667,25 +1667,25 @@ LABEL_42:
     log = v46;
   }
 
-  v26 = v52;
-  v21 = v48;
-  v18 = v49;
+  v26 = importsCopy;
+  discoveredCollectionsCopy = v48;
+  nameCopy = v49;
 LABEL_46:
 
   return v46;
 }
 
-- (id)configurationFromNode:(id)a3 collectionName:(id)a4
+- (id)configurationFromNode:(id)node collectionName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKPlistPigmentEditOptionLoader *)self configurationWithName:@"config" fromNode:v6 collectionName:v7];
+  nodeCopy = node;
+  nameCopy = name;
+  v8 = [(NTKPlistPigmentEditOptionLoader *)self configurationWithName:@"config" fromNode:nodeCopy collectionName:nameCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"config" inNode:v6, 0];
+  v9 = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"config" inNode:nodeCopy, 0];
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -1700,7 +1700,7 @@ LABEL_46:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(NTKPlistPigmentEditOptionLoader *)self configurationWithName:*(*(&v16 + 1) + 8 * i) fromNode:v6 collectionName:v7];
+        v14 = [(NTKPlistPigmentEditOptionLoader *)self configurationWithName:*(*(&v16 + 1) + 8 * i) fromNode:nodeCopy collectionName:nameCopy];
         [v8 overridePropertiesFromConfig:v14];
       }
 
@@ -1713,11 +1713,11 @@ LABEL_46:
   return v8;
 }
 
-- (id)configurationWithName:(id)a3 fromNode:(id)a4 collectionName:(id)a5
+- (id)configurationWithName:(id)name fromNode:(id)node collectionName:(id)collectionName
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 objectForKeyedSubscript:v8];
+  nameCopy = name;
+  collectionNameCopy = collectionName;
+  v10 = [node objectForKeyedSubscript:nameCopy];
   if (v10)
   {
     v11 = [(NTKPlistPigmentEditOptionLoader *)self configurationFromNode:v10];
@@ -1737,20 +1737,20 @@ LABEL_46:
   return v11;
 }
 
-- (id)configurationFromNode:(id)a3
+- (id)configurationFromNode:(id)node
 {
   v133 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 objectForKeyedSubscript:@"shared-config"];
+    v5 = [nodeCopy objectForKeyedSubscript:@"shared-config"];
     if (![v5 length] || (-[NTKPlistPigmentEditOptionLoader sharedConfigs](self, "sharedConfigs"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", v5), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7) || (v8 = objc_msgSend(v7, "copy"), v7, !v8))
     {
       v8 = objc_alloc_init(NTKPigmentCollectionConfig);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"sensitivity"];
+    v9 = [nodeCopy objectForKeyedSubscript:@"sensitivity"];
     if (v9)
     {
       objc_opt_class();
@@ -1769,7 +1769,7 @@ LABEL_46:
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isAddable"];
+    v20 = [nodeCopy objectForKeyedSubscript:@"isAddable"];
     if (v20)
     {
       objc_opt_class();
@@ -1788,7 +1788,7 @@ LABEL_46:
       }
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"supports-slider"];
+    v29 = [nodeCopy objectForKeyedSubscript:@"supports-slider"];
     if (v29)
     {
       objc_opt_class();
@@ -1808,14 +1808,14 @@ LABEL_46:
     }
 
     v119 = v5;
-    v38 = [v4 objectForKeyedSubscript:@"default"];
-    v123 = self;
-    v39 = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"default" inNode:v4 includesAllDeviceSpecificColors:0];
+    v38 = [nodeCopy objectForKeyedSubscript:@"default"];
+    selfCopy = self;
+    v39 = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"default" inNode:nodeCopy includesAllDeviceSpecificColors:0];
     v118 = v39;
     if ([v39 count])
     {
-      v122 = [v39 lastObject];
-      v40 = [v4 objectForKeyedSubscript:?];
+      lastObject = [v39 lastObject];
+      v40 = [nodeCopy objectForKeyedSubscript:?];
       v41 = v40;
       if (v40)
       {
@@ -1824,31 +1824,31 @@ LABEL_46:
         v38 = v42;
       }
 
-      v44 = v123;
+      v44 = selfCopy;
       v121 = v38;
     }
 
     else
     {
       v121 = v38;
-      v122 = @"default";
-      v44 = v123;
+      lastObject = @"default";
+      v44 = selfCopy;
     }
 
     v116 = v29;
-    v45 = [(NTKPigmentCollectionConfig *)v8 defaultConfigAttributeName];
+    defaultConfigAttributeName = [(NTKPigmentCollectionConfig *)v8 defaultConfigAttributeName];
     v117 = v20;
-    if (v45)
+    if (defaultConfigAttributeName)
     {
-      v46 = [(NTKPigmentCollectionConfig *)v8 defaultConfigAttributeName];
-      v47 = v122;
-      v48 = [(__CFString *)v122 isEqual:v46];
+      defaultConfigAttributeName2 = [(NTKPigmentCollectionConfig *)v8 defaultConfigAttributeName];
+      v47 = lastObject;
+      v48 = [(__CFString *)lastObject isEqual:defaultConfigAttributeName2];
     }
 
     else
     {
       v48 = 1;
-      v47 = v122;
+      v47 = lastObject;
     }
 
     [(NTKPigmentCollectionConfig *)v8 setDefaultConfigAttributeName:v47];
@@ -1879,7 +1879,7 @@ LABEL_46:
       }
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"migration"];
+    v58 = [nodeCopy objectForKeyedSubscript:@"migration"];
     if (v58)
     {
       objc_opt_class();
@@ -1898,7 +1898,7 @@ LABEL_46:
       }
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"feature-flag"];
+    v60 = [nodeCopy objectForKeyedSubscript:@"feature-flag"];
     if (v60)
     {
       objc_opt_class();
@@ -1917,7 +1917,7 @@ LABEL_46:
       }
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"sku"];
+    v62 = [nodeCopy objectForKeyedSubscript:@"sku"];
     v114 = v62;
     if (v62)
     {
@@ -1938,7 +1938,7 @@ LABEL_46:
       }
     }
 
-    v65 = [v4 objectForKeyedSubscript:@"sortedByHue"];
+    v65 = [nodeCopy objectForKeyedSubscript:@"sortedByHue"];
     v113 = v65;
     if (v65)
     {
@@ -1959,8 +1959,8 @@ LABEL_46:
       }
     }
 
-    v68 = @"exclusions";
-    v69 = [(NTKPlistPigmentEditOptionLoader *)v44 alternativePropertyNamesForProperty:@"exclusions" inNode:v4 includesAllDeviceSpecificColors:0];
+    firstObject = @"exclusions";
+    v69 = [(NTKPlistPigmentEditOptionLoader *)v44 alternativePropertyNamesForProperty:@"exclusions" inNode:nodeCopy includesAllDeviceSpecificColors:0];
     if ([v69 count] == 1)
     {
       v70 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
@@ -1969,16 +1969,16 @@ LABEL_46:
         *buf = 138543618;
         v130 = @"exclusions";
         v131 = 2114;
-        v132 = v4;
+        v132 = nodeCopy;
         _os_log_impl(&dword_22D9C5000, v70, OS_LOG_TYPE_DEFAULT, "#plist-loader Retrieving alternative property for %{public}@ - %{public}@", buf, 0x16u);
       }
 
-      v68 = [v69 firstObject];
+      firstObject = [v69 firstObject];
     }
 
-    v111 = v68;
+    v111 = firstObject;
     v115 = v58;
-    v71 = [v4 objectForKeyedSubscript:v68];
+    v71 = [nodeCopy objectForKeyedSubscript:firstObject];
     if (v71)
     {
       objc_opt_class();
@@ -1997,7 +1997,7 @@ LABEL_46:
       }
     }
 
-    v73 = [v4 objectForKeyedSubscript:@"excludes-duotone"];
+    v73 = [nodeCopy objectForKeyedSubscript:@"excludes-duotone"];
     v109 = v73;
     if (v73)
     {
@@ -2022,7 +2022,7 @@ LABEL_46:
     v83 = v60;
     v84 = v9;
     v112 = v69;
-    v85 = [v4 objectForKeyedSubscript:@"collectionOverride"];
+    v85 = [nodeCopy objectForKeyedSubscript:@"collectionOverride"];
     v86 = v118;
     if (v85)
     {
@@ -2044,13 +2044,13 @@ LABEL_46:
 
     v108 = v85;
     v110 = v71;
-    v88 = [v4 objectForKeyedSubscript:@"gallery-default"];
-    v89 = [(NTKPlistPigmentEditOptionLoader *)v123 alternativePropertyNamesForProperty:@"gallery-default" inNode:v4];
+    v88 = [nodeCopy objectForKeyedSubscript:@"gallery-default"];
+    v89 = [(NTKPlistPigmentEditOptionLoader *)selfCopy alternativePropertyNamesForProperty:@"gallery-default" inNode:nodeCopy];
     v107 = v89;
     if ([v89 count] == 1)
     {
-      v90 = [v89 firstObject];
-      v91 = [v4 objectForKeyedSubscript:v90];
+      firstObject2 = [v89 firstObject];
+      v91 = [nodeCopy objectForKeyedSubscript:firstObject2];
 
       v88 = v91;
       v49 = v121;
@@ -2065,7 +2065,7 @@ LABEL_46:
       if (objc_opt_isKindOfClass())
       {
         v104 = v84;
-        v105 = v4;
+        v105 = nodeCopy;
         v94 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v88, "count")}];
         v124 = 0u;
         v125 = 0u;
@@ -2111,7 +2111,7 @@ LABEL_46:
 
         [(NTKPigmentCollectionConfig *)v120 setDefaultGalleryColorNames:v94];
         v93 = v104;
-        v4 = v105;
+        nodeCopy = v105;
         v86 = v118;
         v92 = v119;
         v49 = v121;
@@ -2149,14 +2149,14 @@ LABEL_46:
   return v11;
 }
 
-- (BOOL)hasFileLevelSensitiveUIConfig:(id)a3
+- (BOOL)hasFileLevelSensitiveUIConfig:(id)config
 {
-  v3 = [a3 objectForKeyedSubscript:@"sensitivity"];
+  v3 = [config objectForKeyedSubscript:@"sensitivity"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 integerValue];
-    v5 = [MEMORY[0x277CBBB70] sharedMonitor];
-    v6 = [v5 considersUISensitivitySensitive:v4];
+    integerValue = [v3 integerValue];
+    mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+    v6 = [mEMORY[0x277CBBB70] considersUISensitivitySensitive:integerValue];
   }
 
   else
@@ -2167,9 +2167,9 @@ LABEL_46:
   return v6;
 }
 
-- (id)skuFileLevel:(id)a3
+- (id)skuFileLevel:(id)level
 {
-  v3 = [a3 objectForKeyedSubscript:@"sku"];
+  v3 = [level objectForKeyedSubscript:@"sku"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = v3;
@@ -2183,21 +2183,21 @@ LABEL_46:
   return v4;
 }
 
-- (id)itemsFromNode:(id)a3 collectionName:(id)a4 applyingConfig:(id)a5 plistSuffix:(id)a6 bundle:(id)a7
+- (id)itemsFromNode:(id)node collectionName:(id)name applyingConfig:(id)config plistSuffix:(id)suffix bundle:(id)bundle
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v30 = a5;
-  v29 = a6;
-  v14 = a7;
+  nodeCopy = node;
+  nameCopy = name;
+  configCopy = config;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
   v15 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v16 = self;
-  obj = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"items" inNode:v12];
+  selfCopy = self;
+  obj = [(NTKPlistPigmentEditOptionLoader *)self alternativePropertyNamesForProperty:@"items" inNode:nodeCopy];
   v17 = [obj countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v17)
   {
@@ -2219,14 +2219,14 @@ LABEL_46:
           *buf = 138543874;
           v36 = v21;
           v37 = 2114;
-          v38 = v13;
+          v38 = nameCopy;
           v39 = 2114;
-          v40 = v12;
+          v40 = nodeCopy;
           _os_log_impl(&dword_22D9C5000, v22, OS_LOG_TYPE_DEFAULT, "#plist-loader Retrieving alternative property for %{public}@ - collection name: %{public}@, node: %{public}@", buf, 0x20u);
         }
 
-        v23 = [v12 objectForKeyedSubscript:v21];
-        v24 = [(NTKPlistPigmentEditOptionLoader *)v16 colorOptionsFromPListItems:v23 collectionName:v13 applyConfig:v30 plistSuffix:v29 bundle:v14];
+        v23 = [nodeCopy objectForKeyedSubscript:v21];
+        v24 = [(NTKPlistPigmentEditOptionLoader *)selfCopy colorOptionsFromPListItems:v23 collectionName:nameCopy applyConfig:configCopy plistSuffix:suffixCopy bundle:bundleCopy];
         [v15 addObjectsFromArray:v24];
       }
 
@@ -2236,25 +2236,25 @@ LABEL_46:
     while (v18);
   }
 
-  v25 = [v12 objectForKeyedSubscript:@"items"];
-  v26 = [(NTKPlistPigmentEditOptionLoader *)v16 colorOptionsFromPListItems:v25 collectionName:v13 applyConfig:v30 plistSuffix:v29 bundle:v14];
+  v25 = [nodeCopy objectForKeyedSubscript:@"items"];
+  v26 = [(NTKPlistPigmentEditOptionLoader *)selfCopy colorOptionsFromPListItems:v25 collectionName:nameCopy applyConfig:configCopy plistSuffix:suffixCopy bundle:bundleCopy];
   [v15 addObjectsFromArray:v26];
 
   return v15;
 }
 
-- (BOOL)isValidPigment:(id)a3
+- (BOOL)isValidPigment:(id)pigment
 {
-  v3 = a3;
+  pigmentCopy = pigment;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke;
   v9[3] = &unk_27877DDA0;
-  v10 = v3;
+  v10 = pigmentCopy;
   v4 = MEMORY[0x277CBBAE8];
-  v5 = v3;
-  v6 = [v4 currentDevice];
-  v7 = __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke(v9, v6);
+  v5 = pigmentCopy;
+  currentDevice = [v4 currentDevice];
+  v7 = __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke(v9, currentDevice);
 
   return v7;
 }
@@ -2316,16 +2316,16 @@ uint64_t __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke_2(u
   return v5;
 }
 
-- (id)colorOptionsFromPListItems:(id)a3 collectionName:(id)a4 applyConfig:(id)a5 plistSuffix:(id)a6 bundle:(id)a7
+- (id)colorOptionsFromPListItems:(id)items collectionName:(id)name applyConfig:(id)config plistSuffix:(id)suffix bundle:(id)bundle
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v48 = a5;
-  v14 = a6;
-  v15 = a7;
+  itemsCopy = items;
+  nameCopy = name;
+  configCopy = config;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v12)
+  if (itemsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2344,7 +2344,7 @@ uint64_t __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke_2(u
     }
 
     objc_opt_class();
-    v49 = v14;
+    v49 = suffixCopy;
     if (objc_opt_isKindOfClass())
     {
       v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2352,10 +2352,10 @@ uint64_t __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke_2(u
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v47 = v12;
-      obj = v12;
+      v47 = itemsCopy;
+      obj = itemsCopy;
       v17 = [obj countByEnumeratingWithState:&v62 objects:v70 count:16];
-      v18 = v48;
+      v18 = configCopy;
       if (!v17)
       {
         goto LABEL_41;
@@ -2363,7 +2363,7 @@ uint64_t __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke_2(u
 
       v19 = v17;
       v53 = *v63;
-      v52 = v15;
+      v52 = bundleCopy;
       while (1)
       {
         for (i = 0; i != v19; ++i)
@@ -2377,7 +2377,7 @@ uint64_t __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke_2(u
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v22 = [[NTKPigmentEditOption alloc] initWithOptionName:v21 collectionName:v13];
+            v22 = [[NTKPigmentEditOption alloc] initWithOptionName:v21 collectionName:nameCopy];
             if (![(NTKPlistPigmentEditOptionLoader *)self isValidPigment:v22])
             {
               v33 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
@@ -2389,21 +2389,21 @@ uint64_t __50__NTKPlistPigmentEditOptionLoader_isValidPigment___block_invoke_2(u
               }
 
 LABEL_36:
-              v15 = v52;
+              bundleCopy = v52;
               goto LABEL_39;
             }
 
             [(NTKPigmentEditOption *)v22 setFromStore:1];
-            if (v14)
+            if (suffixCopy)
             {
-              [(NTKPigmentEditOption *)v22 setAlternativeLocalizedStringTableName:v14];
+              [(NTKPigmentEditOption *)v22 setAlternativeLocalizedStringTableName:suffixCopy];
             }
 
-            v23 = [v15 bundlePath];
-            v24 = [v50 bundlePath];
-            v25 = [v23 isEqualToString:v24];
+            bundlePath = [bundleCopy bundlePath];
+            bundlePath2 = [v50 bundlePath];
+            v25 = [bundlePath isEqualToString:bundlePath2];
 
-            v15 = v52;
+            bundleCopy = v52;
             if ((v25 & 1) == 0 && [v52 principalClass])
             {
               v26 = NSStringFromClass([v52 principalClass]);
@@ -2416,7 +2416,7 @@ LABEL_36:
               [v16 addObject:v22];
             }
 
-            v14 = v49;
+            suffixCopy = v49;
           }
 
           else
@@ -2424,7 +2424,7 @@ LABEL_36:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromItemsDictionary:v21 collectionName:v13 applyConfig:v18 plistSuffix:v14 bundle:v15];
+              v22 = [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromItemsDictionary:v21 collectionName:nameCopy applyConfig:v18 plistSuffix:suffixCopy bundle:bundleCopy];
               v58 = 0u;
               v59 = 0u;
               v60 = 0u;
@@ -2436,7 +2436,7 @@ LABEL_36:
               }
 
               v28 = v27;
-              v29 = v13;
+              v29 = nameCopy;
               v30 = *v59;
               do
               {
@@ -2458,9 +2458,9 @@ LABEL_36:
               }
 
               while (v28);
-              v13 = v29;
-              v18 = v48;
-              v14 = v49;
+              nameCopy = v29;
+              v18 = configCopy;
+              suffixCopy = v49;
               goto LABEL_36;
             }
 
@@ -2481,7 +2481,7 @@ LABEL_39:
         {
 LABEL_41:
 
-          v12 = v47;
+          itemsCopy = v47;
           goto LABEL_56;
         }
       }
@@ -2490,7 +2490,7 @@ LABEL_41:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromItemsDictionary:v12 collectionName:v13 applyConfig:v48 plistSuffix:v14 bundle:v15];
+      [(NTKPlistPigmentEditOptionLoader *)self colorOptionsFromItemsDictionary:itemsCopy collectionName:nameCopy applyConfig:configCopy plistSuffix:suffixCopy bundle:bundleCopy];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
@@ -2520,7 +2520,7 @@ LABEL_41:
         }
 
         while (v35);
-        v14 = v49;
+        suffixCopy = v49;
       }
 
 LABEL_56:
@@ -2530,34 +2530,34 @@ LABEL_56:
   return v16;
 }
 
-- (id)colorOptionsFromItemsDictionary:(id)a3 collectionName:(id)a4 applyConfig:(id)a5 plistSuffix:(id)a6 bundle:(id)a7
+- (id)colorOptionsFromItemsDictionary:(id)dictionary collectionName:(id)name applyConfig:(id)config plistSuffix:(id)suffix bundle:(id)bundle
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  configCopy = config;
+  suffixCopy = suffix;
+  bundleCopy = bundle;
   v16 = MEMORY[0x277CBEB18];
-  v17 = a3;
+  dictionaryCopy = dictionary;
   v18 = objc_alloc_init(v16);
   v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_collectionName_applyConfig_plistSuffix_bundle___block_invoke;
   v29[3] = &unk_278784AC8;
-  v30 = v12;
-  v31 = self;
-  v32 = v14;
-  v33 = v15;
+  v30 = nameCopy;
+  selfCopy = self;
+  v32 = suffixCopy;
+  v33 = bundleCopy;
   v34 = v19;
-  v35 = v13;
+  v35 = configCopy;
   v20 = v18;
   v36 = v20;
-  v21 = v13;
+  v21 = configCopy;
   v22 = v19;
-  v23 = v15;
-  v24 = v14;
-  v25 = v12;
-  [v17 enumerateKeysAndObjectsUsingBlock:v29];
+  v23 = bundleCopy;
+  v24 = suffixCopy;
+  v25 = nameCopy;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v29];
 
   [v20 sortUsingComparator:&__block_literal_global_153];
   v26 = v36;
@@ -2611,17 +2611,17 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
   return v7;
 }
 
-- (id)copyItemsApplyingConfiguration:(id)a3 configuration:(id)a4
+- (id)copyItemsApplyingConfiguration:(id)configuration configuration:(id)a4
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = a4;
-  v8 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(configurationCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = configurationCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -2657,52 +2657,52 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
   return v8;
 }
 
-- (void)applyConfigurationOnEditOption:(id)a3 configuration:(id)a4
+- (void)applyConfigurationOnEditOption:(id)option configuration:(id)configuration
 {
-  v17 = a3;
-  v5 = a4;
-  v6 = [v5 sensitivity];
-  v7 = [v6 integerValue];
+  optionCopy = option;
+  configurationCopy = configuration;
+  sensitivity = [configurationCopy sensitivity];
+  integerValue = [sensitivity integerValue];
 
-  v8 = [MEMORY[0x277CBBB70] sharedMonitor];
-  LODWORD(v7) = [v8 considersUISensitivitySensitive:v7];
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  LODWORD(integerValue) = [mEMORY[0x277CBBB70] considersUISensitivitySensitive:integerValue];
 
-  if (v7)
+  if (integerValue)
   {
-    [v17 setIsSensitiveUI:1];
+    [optionCopy setIsSensitiveUI:1];
   }
 
-  v9 = [v5 sortedByHue];
+  sortedByHue = [configurationCopy sortedByHue];
 
-  if (v9)
+  if (sortedByHue)
   {
-    v10 = [v5 sortedByHue];
-    [v17 setSortedByHue:{objc_msgSend(v10, "BOOLValue")}];
+    sortedByHue2 = [configurationCopy sortedByHue];
+    [optionCopy setSortedByHue:{objc_msgSend(sortedByHue2, "BOOLValue")}];
   }
 
-  v11 = [v5 isAddable];
-  v12 = [v11 BOOLValue];
+  isAddable = [configurationCopy isAddable];
+  bOOLValue = [isAddable BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
-    v13 = [v5 isAddable];
-    [v17 setIsAddable:{objc_msgSend(v13, "BOOLValue")}];
+    isAddable2 = [configurationCopy isAddable];
+    [optionCopy setIsAddable:{objc_msgSend(isAddable2, "BOOLValue")}];
   }
 
-  v14 = [v5 supportsSlider];
-  v15 = [v14 BOOLValue];
+  supportsSlider = [configurationCopy supportsSlider];
+  bOOLValue2 = [supportsSlider BOOLValue];
 
-  if (v15)
+  if (bOOLValue2)
   {
-    v16 = [v5 supportsSlider];
-    [v17 setSupportsSlider:{objc_msgSend(v16, "BOOLValue")}];
+    supportsSlider2 = [configurationCopy supportsSlider];
+    [optionCopy setSupportsSlider:{objc_msgSend(supportsSlider2, "BOOLValue")}];
   }
 }
 
-- (id)loadPropertyListFromFile:(id)a3
+- (id)loadPropertyListFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:fileCopy];
   if (!v4)
   {
     v5 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
@@ -2715,26 +2715,26 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
   return v4;
 }
 
-- (id)sortedPlistFilesWithMainBundle:(id)a3 faceBundle:(id)a4 additionalBundles:(id)a5
+- (id)sortedPlistFilesWithMainBundle:(id)bundle faceBundle:(id)faceBundle additionalBundles:(id)bundles
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v40 = a4;
-  v39 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  v37 = v8;
-  if (v9->_plistFiles)
+  bundleCopy = bundle;
+  faceBundleCopy = faceBundle;
+  bundlesCopy = bundles;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v37 = bundleCopy;
+  if (selfCopy->_plistFiles)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    plistFiles = v9->_plistFiles;
+    plistFiles = selfCopy->_plistFiles;
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __95__NTKPlistPigmentEditOptionLoader_sortedPlistFilesWithMainBundle_faceBundle_additionalBundles___block_invoke;
     v56[3] = &unk_27877DEA8;
     v12 = v10;
     v57 = v12;
-    v58 = v8;
+    v58 = bundleCopy;
     [(NSArray *)plistFiles enumerateObjectsUsingBlock:v56];
     v13 = [v12 copy];
     v38 = v12;
@@ -2745,10 +2745,10 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
   else
   {
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v16 = [v8 pathForResource:@"FaceColors" ofType:@".color.plist"];
+    v16 = [bundleCopy pathForResource:@"FaceColors" ofType:@".color.plist"];
     if (v16)
     {
-      v17 = [[NTKPlistBundle alloc] initWithPlist:v16 bundle:v8];
+      v17 = [[NTKPlistBundle alloc] initWithPlist:v16 bundle:bundleCopy];
       [v15 addObject:v17];
     }
 
@@ -2760,17 +2760,17 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
     v53[3] = &unk_278784B10;
     v19 = v18;
     v54 = v19;
-    v55 = v40;
-    [(NTKPlistPigmentEditOptionLoader *)v9 enumerateColorEditOptionFilesInBundle:v55 sorted:1 block:v53];
+    v55 = faceBundleCopy;
+    [(NTKPlistPigmentEditOptionLoader *)selfCopy enumerateColorEditOptionFilesInBundle:v55 sorted:1 block:v53];
     [v15 addObjectsFromArray:v19];
     v36 = v15;
-    if (!v9->_sortedAdditionalPlistFiles)
+    if (!selfCopy->_sortedAdditionalPlistFiles)
     {
-      if (!v9->_bundlePlistsFromFacesWithoutBundle)
+      if (!selfCopy->_bundlePlistsFromFacesWithoutBundle)
       {
         v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        bundlePlistsFromFacesWithoutBundle = v9->_bundlePlistsFromFacesWithoutBundle;
-        v9->_bundlePlistsFromFacesWithoutBundle = v20;
+        bundlePlistsFromFacesWithoutBundle = selfCopy->_bundlePlistsFromFacesWithoutBundle;
+        selfCopy->_bundlePlistsFromFacesWithoutBundle = v20;
       }
 
       v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2779,16 +2779,16 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
       v48[2] = __95__NTKPlistPigmentEditOptionLoader_sortedPlistFilesWithMainBundle_faceBundle_additionalBundles___block_invoke_3;
       v48[3] = &unk_278784B38;
       v49 = v16;
-      v50 = v9;
+      v50 = selfCopy;
       v51 = v37;
       v23 = v22;
       v52 = v23;
-      [(NTKPlistPigmentEditOptionLoader *)v9 enumerateColorEditOptionFilesInBundle:v51 sorted:0 block:v48];
+      [(NTKPlistPigmentEditOptionLoader *)selfCopy enumerateColorEditOptionFilesInBundle:v51 sorted:0 block:v48];
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v24 = v39;
+      v24 = bundlesCopy;
       v25 = [v24 countByEnumeratingWithState:&v44 objects:v60 count:16];
       if (v25)
       {
@@ -2809,7 +2809,7 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
             v41[3] = &unk_278784B10;
             v42 = v23;
             v43 = v28;
-            [(NTKPlistPigmentEditOptionLoader *)v9 enumerateColorEditOptionFilesInBundle:v28 sorted:0 block:v41];
+            [(NTKPlistPigmentEditOptionLoader *)selfCopy enumerateColorEditOptionFilesInBundle:v28 sorted:0 block:v41];
           }
 
           v25 = [v24 countByEnumeratingWithState:&v44 objects:v60 count:16];
@@ -2818,20 +2818,20 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
         while (v25);
       }
 
-      v29 = [(NTKPlistPigmentEditOptionLoader *)v9 sortedColorPListBundles:v23];
-      sortedAdditionalPlistFiles = v9->_sortedAdditionalPlistFiles;
-      v9->_sortedAdditionalPlistFiles = v29;
+      v29 = [(NTKPlistPigmentEditOptionLoader *)selfCopy sortedColorPListBundles:v23];
+      sortedAdditionalPlistFiles = selfCopy->_sortedAdditionalPlistFiles;
+      selfCopy->_sortedAdditionalPlistFiles = v29;
 
       v15 = v36;
     }
 
-    [v15 addObjectsFromArray:{v9->_bundlePlistsFromFacesWithoutBundle, v19}];
-    [v15 addObjectsFromArray:v9->_sortedAdditionalPlistFiles];
+    [v15 addObjectsFromArray:{selfCopy->_bundlePlistsFromFacesWithoutBundle, v19}];
+    [v15 addObjectsFromArray:selfCopy->_sortedAdditionalPlistFiles];
     v31 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [v36 ntk_flatDescription];
-      [NTKPlistPigmentEditOptionLoader sortedPlistFilesWithMainBundle:v32 faceBundle:buf additionalBundles:v31];
+      ntk_flatDescription = [v36 ntk_flatDescription];
+      [NTKPlistPigmentEditOptionLoader sortedPlistFilesWithMainBundle:ntk_flatDescription faceBundle:buf additionalBundles:v31];
     }
 
     v33 = v55;
@@ -2840,7 +2840,7 @@ uint64_t __113__NTKPlistPigmentEditOptionLoader_colorOptionsFromItemsDictionary_
     v14 = v35;
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
@@ -2916,13 +2916,13 @@ void __62__NTKPlistPigmentEditOptionLoader_plistFacesWithoutFaceBundle__block_in
   plistFacesWithoutFaceBundle_plists = v0;
 }
 
-- (void)enumerateColorEditOptionFilesInBundle:(id)a3 sorted:(BOOL)a4 block:(id)a5
+- (void)enumerateColorEditOptionFilesInBundle:(id)bundle sorted:(BOOL)sorted block:(id)block
 {
-  v5 = a4;
+  sortedCopy = sorted;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 pathsForResourcesOfType:@".color.plist" inDirectory:@"."];
-  if (v5)
+  blockCopy = block;
+  v8 = [bundle pathsForResourcesOfType:@".color.plist" inDirectory:@"."];
+  if (sortedCopy)
   {
     v9 = [objc_opt_class() sortedColorFileNames:v8];
 
@@ -2949,7 +2949,7 @@ void __62__NTKPlistPigmentEditOptionLoader_plistFacesWithoutFaceBundle__block_in
           objc_enumerationMutation(v10);
         }
 
-        v7[2](v7, *(*(&v15 + 1) + 8 * v14++));
+        blockCopy[2](blockCopy, *(*(&v15 + 1) + 8 * v14++));
       }
 
       while (v12 != v14);
@@ -2960,14 +2960,14 @@ void __62__NTKPlistPigmentEditOptionLoader_plistFacesWithoutFaceBundle__block_in
   }
 }
 
-+ (id)sortedColorFileNames:(id)a3
++ (id)sortedColorFileNames:(id)names
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__NTKPlistPigmentEditOptionLoader_sortedColorFileNames___block_invoke;
   v5[3] = &__block_descriptor_40_e31_q24__0__NSString_8__NSString_16l;
-  v5[4] = a1;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v5[4] = self;
+  v3 = [names sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -2981,14 +2981,14 @@ uint64_t __56__NTKPlistPigmentEditOptionLoader_sortedColorFileNames___block_invo
   return v6;
 }
 
-- (id)sortedColorPListBundles:(id)a3
+- (id)sortedColorPListBundles:(id)bundles
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_invoke;
   v5[3] = &unk_278784B80;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [bundles sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -3006,26 +3006,26 @@ uint64_t __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_i
   return v9;
 }
 
-+ (id)sortedCollectionNamesFromCollections:(id)a3
++ (id)sortedCollectionNamesFromCollections:(id)collections
 {
-  v3 = [a3 allKeys];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_178];
+  allKeys = [collections allKeys];
+  v4 = [allKeys sortedArrayUsingComparator:&__block_literal_global_178];
 
   v5 = [v4 copy];
 
   return v5;
 }
 
-+ (id)sortedUniqueOptionNamesFromCollections:(id)a3
++ (id)sortedUniqueOptionNamesFromCollections:(id)collections
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB40] orderedSet];
+  collectionsCopy = collections;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = collectionsCopy;
   v19 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v19)
   {
@@ -3046,8 +3046,8 @@ uint64_t __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_i
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v7 = [v6 allItems];
-        v8 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        allItems = [v6 allItems];
+        v8 = [allItems countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v8)
         {
           v9 = v8;
@@ -3058,30 +3058,30 @@ uint64_t __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_i
             {
               if (*v24 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allItems);
               }
 
               v12 = *(*(&v23 + 1) + 8 * i);
-              v13 = [v12 fullname];
+              fullname = [v12 fullname];
               if ([v12 isMultitoneOption])
               {
-                v14 = [v12 fullname];
-                v15 = [NTKPigmentEditOption multitoneColorNames:v14];
+                fullname2 = [v12 fullname];
+                v15 = [NTKPigmentEditOption multitoneColorNames:fullname2];
                 v21[0] = MEMORY[0x277D85DD0];
                 v21[1] = 3221225472;
                 v21[2] = __74__NTKPlistPigmentEditOptionLoader_sortedUniqueOptionNamesFromCollections___block_invoke;
                 v21[3] = &unk_27877DED0;
-                v22 = v4;
+                v22 = orderedSet;
                 [v15 enumerateObjectsUsingBlock:v21];
               }
 
               else
               {
-                [v4 addObject:v13];
+                [orderedSet addObject:fullname];
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v9 = [allItems countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v9);
@@ -3097,25 +3097,25 @@ uint64_t __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_i
     while (v19);
   }
 
-  [v4 sortUsingComparator:&__block_literal_global_180];
+  [orderedSet sortUsingComparator:&__block_literal_global_180];
 
-  return v4;
+  return orderedSet;
 }
 
-+ (int64_t)compareColorFileNames:(id)a3 otherFileName:(id)a4 fileExtension:(id)a5
++ (int64_t)compareColorFileNames:(id)names otherFileName:(id)name fileExtension:(id)extension
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = v9;
+  namesCopy = names;
+  nameCopy = name;
+  extensionCopy = extension;
+  v11 = namesCopy;
+  v12 = nameCopy;
   v13 = v12;
   v14 = v11;
-  if (v10)
+  if (extensionCopy)
   {
-    v14 = [a1 extractNameFromFullFileName:v11 fileExtension:v10];
+    v14 = [self extractNameFromFullFileName:v11 fileExtension:extensionCopy];
 
-    v13 = [a1 extractNameFromFullFileName:v12 fileExtension:v10];
+    v13 = [self extractNameFromFullFileName:v12 fileExtension:extensionCopy];
   }
 
   if (v14 && v13)
@@ -3128,24 +3128,24 @@ uint64_t __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_i
     v32 = v15;
     v16 = v13;
     v33 = v16;
-    v34 = a1;
+    selfCopy = self;
     v29 = _Block_copy(aBlock);
     v17 = [v15 componentsSeparatedByString:@"-"];
     v18 = [v16 componentsSeparatedByString:@"-"];
-    v28 = [v17 firstObject];
-    v30 = [v18 firstObject];
+    firstObject = [v17 firstObject];
+    firstObject2 = [v18 firstObject];
     if ([v17 count] == 1 && objc_msgSend(v18, "count") == 1)
     {
       v19 = v29[2](v29, v15, v16);
-      v20 = v28;
-      v21 = v30;
+      v20 = firstObject;
+      v21 = firstObject2;
     }
 
     else
     {
-      v20 = v28;
-      v21 = v30;
-      if ([v28 isEqualToString:v30])
+      v20 = firstObject;
+      v21 = firstObject2;
+      if ([firstObject isEqualToString:firstObject2])
       {
         if ([v17 count] < 2)
         {
@@ -3170,18 +3170,18 @@ uint64_t __59__NTKPlistPigmentEditOptionLoader_sortedColorPListBundles___block_i
           [v23 removeObjectAtIndex:0];
           v24 = [v23 componentsJoinedByString:@"-"];
 
-          v20 = v28;
+          v20 = firstObject;
         }
 
-        v19 = [a1 compareColorFileNames:v27 otherFileName:v24 fileExtension:{0, v18}];
+        v19 = [self compareColorFileNames:v27 otherFileName:v24 fileExtension:{0, v18}];
 
-        v21 = v30;
+        v21 = firstObject2;
         v18 = v26;
       }
 
       else
       {
-        v19 = [a1 compareColorFileNames:v28 otherFileName:v30 fileExtension:0];
+        v19 = [self compareColorFileNames:firstObject otherFileName:firstObject2 fileExtension:0];
       }
     }
   }
@@ -3246,12 +3246,12 @@ LABEL_14:
   return v7;
 }
 
-+ (int64_t)compareSeasonName:(id)a3 otherSeasonName:(id)a4
++ (int64_t)compareSeasonName:(id)name otherSeasonName:(id)seasonName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 extractYearFromSeasonName:v6];
-  v9 = [a1 extractYearFromSeasonName:v7];
+  nameCopy = name;
+  seasonNameCopy = seasonName;
+  v8 = [self extractYearFromSeasonName:nameCopy];
+  v9 = [self extractYearFromSeasonName:seasonNameCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -3267,9 +3267,9 @@ LABEL_14:
 
   else if (v8 == v9)
   {
-    v10 = [v6 substringToIndex:{objc_msgSend(v6, "length") - 4}];
-    v11 = [v7 substringToIndex:{objc_msgSend(v7, "length") - 4}];
-    v12 = [a1 compareSeasonWithoutYear:v10 otherSeasonNameWithoutYear:v11];
+    v10 = [nameCopy substringToIndex:{objc_msgSend(nameCopy, "length") - 4}];
+    v11 = [seasonNameCopy substringToIndex:{objc_msgSend(seasonNameCopy, "length") - 4}];
+    v12 = [self compareSeasonWithoutYear:v10 otherSeasonNameWithoutYear:v11];
   }
 
   else if (v8 < v9)
@@ -3285,40 +3285,40 @@ LABEL_14:
   return v12;
 }
 
-+ (int64_t)extractYearFromSeasonName:(id)a3
++ (int64_t)extractYearFromSeasonName:(id)name
 {
-  v3 = a3;
-  if ([v3 length] < 4)
+  nameCopy = name;
+  if ([nameCopy length] < 4)
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v4 = [v3 substringWithRange:{objc_msgSend(v3, "length") - 4, 4}];
-    v5 = [v4 integerValue];
+    v4 = [nameCopy substringWithRange:{objc_msgSend(nameCopy, "length") - 4, 4}];
+    integerValue = [v4 integerValue];
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (int64_t)compareSeasonWithoutYear:(id)a3 otherSeasonNameWithoutYear:(id)a4
++ (int64_t)compareSeasonWithoutYear:(id)year otherSeasonNameWithoutYear:(id)withoutYear
 {
-  v6 = a4;
-  v7 = [a1 indexForSeasonName:a3];
-  v8 = [a1 indexForSeasonName:v6];
+  withoutYearCopy = withoutYear;
+  v7 = [self indexForSeasonName:year];
+  v8 = [self indexForSeasonName:withoutYearCopy];
 
   v9 = [v7 compare:v8];
   return v9;
 }
 
-+ (id)indexForSeasonName:(id)a3
++ (id)indexForSeasonName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 seasonNames];
-  v6 = [v4 lowercaseString];
+  nameCopy = name;
+  seasonNames = [self seasonNames];
+  lowercaseString = [nameCopy lowercaseString];
 
-  v7 = [v5 indexOfObject:v6];
+  v7 = [seasonNames indexOfObject:lowercaseString];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = &unk_284183DD8;
@@ -3332,27 +3332,27 @@ LABEL_14:
   return v8;
 }
 
-+ (BOOL)containsSeasonNamePrefix:(id)a3
++ (BOOL)containsSeasonNamePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [a1 seasonNames];
+  seasonNames = [self seasonNames];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__NTKPlistPigmentEditOptionLoader_containsSeasonNamePrefix___block_invoke;
   v8[3] = &unk_278784BD0;
-  v6 = v4;
+  v6 = prefixCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [seasonNames enumerateObjectsUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(seasonNames) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return seasonNames;
 }
 
 void __60__NTKPlistPigmentEditOptionLoader_containsSeasonNamePrefix___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -3397,42 +3397,42 @@ void __46__NTKPlistPigmentEditOptionLoader_seasonNames__block_invoke()
   seasonNames_seasons = v2;
 }
 
-+ (id)extractNameFromFullFileName:(id)a3 fileExtension:(id)a4
++ (id)extractNameFromFullFileName:(id)name fileExtension:(id)extension
 {
-  v5 = a4;
-  v6 = [a3 pathComponents];
-  v7 = [v6 lastObject];
+  extensionCopy = extension;
+  pathComponents = [name pathComponents];
+  lastObject = [pathComponents lastObject];
 
-  v8 = [v5 length];
-  if ([v7 length] >= v8)
+  v8 = [extensionCopy length];
+  if ([lastObject length] >= v8)
   {
-    v9 = [v7 substringToIndex:{objc_msgSend(v7, "length") - v8}];
+    v9 = [lastObject substringToIndex:{objc_msgSend(lastObject, "length") - v8}];
 
-    v7 = v9;
+    lastObject = v9;
   }
 
-  return v7;
+  return lastObject;
 }
 
-- (id)alternativePropertyNamesForProperty:(id)a3 inNode:(id)a4 includesAllDeviceSpecificColors:(BOOL)a5
+- (id)alternativePropertyNamesForProperty:(id)property inNode:(id)node includesAllDeviceSpecificColors:(BOOL)colors
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  colorsCopy = colors;
+  propertyCopy = property;
+  nodeCopy = node;
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __110__NTKPlistPigmentEditOptionLoader_alternativePropertyNamesForProperty_inNode_includesAllDeviceSpecificColors___block_invoke;
   v36[3] = &unk_278784BF8;
-  v12 = v8;
+  v12 = propertyCopy;
   v37 = v12;
   v13 = v11;
   v38 = v13;
   v14 = v10;
   v39 = v14;
-  [v9 enumerateKeysAndObjectsUsingBlock:v36];
-  if (v5)
+  [nodeCopy enumerateKeysAndObjectsUsingBlock:v36];
+  if (colorsCopy)
   {
     v15 = v13;
   }

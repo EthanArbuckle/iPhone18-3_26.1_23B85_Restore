@@ -1,21 +1,21 @@
 @interface CKMessageEntryRecordedAudioView
 - (BOOL)isPlaying;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKMessageEntryRecordedAudioView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKMessageEntryRecordedAudioView)initWithFrame:(CGRect)frame;
 - (CKMessageEntryRecordedAudioViewDelegate)delegate;
-- (void)audioController:(id)a3 mediaObjectDidFinishPlaying:(id)a4;
-- (void)audioController:(id)a3 mediaObjectProgressDidChange:(id)a4 currentTime:(double)a5 duration:(double)a6;
-- (void)audioControllerDidPause:(id)a3;
-- (void)audioControllerDidStop:(id)a3;
+- (void)audioController:(id)controller mediaObjectDidFinishPlaying:(id)playing;
+- (void)audioController:(id)controller mediaObjectProgressDidChange:(id)change currentTime:(double)time duration:(double)duration;
+- (void)audioControllerDidPause:(id)pause;
+- (void)audioControllerDidStop:(id)stop;
 - (void)dealloc;
-- (void)handlePlayPauseDelete:(id)a3;
+- (void)handlePlayPauseDelete:(id)delete;
 - (void)layoutSubviews;
 - (void)pause;
 - (void)play;
-- (void)setAudioMediaObject:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setAudioMediaObject:(id)object;
+- (void)setFrame:(CGRect)frame;
 - (void)stop;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePlayPauseDeleteButton;
 - (void)updateProgress;
 - (void)updateTimeString;
@@ -23,35 +23,35 @@
 
 @implementation CKMessageEntryRecordedAudioView
 
-- (CKMessageEntryRecordedAudioView)initWithFrame:(CGRect)a3
+- (CKMessageEntryRecordedAudioView)initWithFrame:(CGRect)frame
 {
   v60.receiver = self;
   v60.super_class = CKMessageEntryRecordedAudioView;
-  v3 = [(CKMessageEntryRecordedAudioView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKMessageEntryRecordedAudioView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 entryFieldShouldUseBackdropView];
+    entryFieldShouldUseBackdropView = [v4 entryFieldShouldUseBackdropView];
 
-    if (v5)
+    if (entryFieldShouldUseBackdropView)
     {
       v6 = objc_alloc(MEMORY[0x1E69DD298]);
       v7 = [MEMORY[0x1E69DC730] effectWithStyle:1];
       v8 = [v6 initWithEffect:v7];
 
-      v9 = [v8 contentView];
-      v10 = [v9 layer];
+      contentView = [v8 contentView];
+      layer = [contentView layer];
       v11 = +[CKUIBehavior sharedBehaviors];
-      v12 = [v11 theme];
-      v13 = [v12 entryFieldAudioRecordingBalloonColor];
-      [v10 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
+      theme = [v11 theme];
+      entryFieldAudioRecordingBalloonColor = [theme entryFieldAudioRecordingBalloonColor];
+      [layer setBackgroundColor:{objc_msgSend(entryFieldAudioRecordingBalloonColor, "CGColor")}];
 
-      v14 = [v8 contentView];
-      v15 = [v14 layer];
-      [v15 setCompositingFilter:*MEMORY[0x1E6979CA0]];
+      contentView2 = [v8 contentView];
+      layer2 = [contentView2 layer];
+      [layer2 setCompositingFilter:*MEMORY[0x1E6979CA0]];
 
-      v16 = [v8 layer];
-      [v16 setMasksToBounds:1];
+      layer3 = [v8 layer];
+      [layer3 setMasksToBounds:1];
 
       [(CKMessageEntryRecordedAudioView *)v3 setBlurView:v8];
       [(CKMessageEntryRecordedAudioView *)v3 addSubview:v8];
@@ -94,9 +94,9 @@
       v26 = [v24 initWithImage:v25];
 
       v27 = +[CKUIBehavior sharedBehaviors];
-      v28 = [v27 theme];
-      v29 = [v28 entryFieldAudioRecordingBalloonColor];
-      [v26 setTintColor:v29];
+      theme2 = [v27 theme];
+      entryFieldAudioRecordingBalloonColor2 = [theme2 entryFieldAudioRecordingBalloonColor];
+      [v26 setTintColor:entryFieldAudioRecordingBalloonColor2];
 
       [(CKMessageEntryRecordedAudioView *)v3 setBalloonImageView:v26];
       [(CKMessageEntryRecordedAudioView *)v3 addSubview:v26];
@@ -115,11 +115,11 @@
     [(CKMessageEntryRecordedAudioView *)v3 setWaveformImageView:v35];
     v36 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v31, v32, v33, v34}];
     v37 = +[CKUIBehavior sharedBehaviors];
-    v38 = [v37 audioBalloonTimeFont];
-    [v36 setFont:v38];
+    audioBalloonTimeFont = [v37 audioBalloonTimeFont];
+    [v36 setFont:audioBalloonTimeFont];
 
-    v39 = [MEMORY[0x1E69DC888] whiteColor];
-    [v36 setTextColor:v39];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v36 setTextColor:whiteColor];
 
     v40 = CKLocalizedStringForDuration(0.0);
     [v36 setText:v40];
@@ -142,12 +142,12 @@
     self->_playPauseDeleteButton = v3;
 
     v5 = self->_playPauseDeleteButton;
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v5 setTintColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v5 setTintColor:whiteColor];
 
     v7 = self->_playPauseDeleteButton;
-    v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UIButton *)v7 setTintColor:v8];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UIButton *)v7 setTintColor:secondaryLabelColor];
 
     [(UIButton *)self->_playPauseDeleteButton setOpaque:0];
     [(UIButton *)self->_playPauseDeleteButton addTarget:self action:sel_handlePlayPauseDelete_ forEvents:64];
@@ -169,9 +169,9 @@
     v10 = [MEMORY[0x1E69DCAB8] ckImageNamed:v9];
     v16 = [v10 imageWithRenderingMode:2];
 
-    v11 = [(CKMessageEntryRecordedAudioView *)self isPlaying];
+    isPlaying = [(CKMessageEntryRecordedAudioView *)self isPlaying];
     v12 = @"pauseAudioRecordingButton";
-    if (v11)
+    if (isPlaying)
     {
       v12 = @"playAudioRecordingButton";
     }
@@ -193,28 +193,28 @@
   [(CKMessageEntryRecordedAudioView *)self setNeedsLayout];
 }
 
-- (void)handlePlayPauseDelete:(id)a3
+- (void)handlePlayPauseDelete:(id)delete
 {
   if (CKIsRunningInMacCatalyst())
   {
-    v4 = [(CKMessageEntryRecordedAudioView *)self isPlaying];
-    v5 = [(CKMessageEntryRecordedAudioView *)self delegate];
-    v6 = v5;
-    if (v4)
+    isPlaying = [(CKMessageEntryRecordedAudioView *)self isPlaying];
+    delegate = [(CKMessageEntryRecordedAudioView *)self delegate];
+    delegate2 = delegate;
+    if (isPlaying)
     {
-      [v5 messageEntryRecordedAudioViewPressedPause:self];
+      [delegate messageEntryRecordedAudioViewPressedPause:self];
     }
 
     else
     {
-      [v5 messageEntryRecordedAudioViewPressedPlay:self];
+      [delegate messageEntryRecordedAudioViewPressedPlay:self];
     }
   }
 
   else
   {
-    v6 = [(CKMessageEntryRecordedAudioView *)self delegate];
-    [v6 messageEntryRecordedAudioViewPressedDelete:self];
+    delegate2 = [(CKMessageEntryRecordedAudioView *)self delegate];
+    [delegate2 messageEntryRecordedAudioViewPressedDelete:self];
   }
 }
 
@@ -227,21 +227,21 @@
   [(CKMessageEntryRecordedAudioView *)&v3 dealloc];
 }
 
-- (void)setAudioMediaObject:(id)a3
+- (void)setAudioMediaObject:(id)object
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_audioMediaObject != v5)
+  objectCopy = object;
+  if (self->_audioMediaObject != objectCopy)
   {
-    objc_storeStrong(&self->_audioMediaObject, a3);
-    v6 = [(CKMessageEntryRecordedAudioView *)self audioController];
-    [v6 stop];
+    objc_storeStrong(&self->_audioMediaObject, object);
+    audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
+    [audioController stop];
 
-    if (v5)
+    if (objectCopy)
     {
       v7 = [CKAudioController alloc];
-      v8 = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
-      v11[0] = v8;
+      audioMediaObject = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
+      v11[0] = audioMediaObject;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
       v10 = [(CKAudioController *)v7 initWithMediaObjects:v9 conversation:0];
 
@@ -266,27 +266,27 @@
 {
   [(CKMessageEntryRecordedAudioView *)self time];
   v4 = v3;
-  v5 = [(CKMessageEntryRecordedAudioView *)self audioController];
-  v6 = [v5 isPlaying];
+  audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
+  isPlaying = [audioController isPlaying];
 
-  if ((v6 & 1) == 0)
+  if ((isPlaying & 1) == 0)
   {
-    v7 = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
-    [v7 duration];
+    audioMediaObject = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
+    [audioMediaObject duration];
     v4 = v8;
   }
 
-  v10 = [(CKMessageEntryRecordedAudioView *)self timeLabel];
+  timeLabel = [(CKMessageEntryRecordedAudioView *)self timeLabel];
   v9 = CKLocalizedStringForDuration(v4);
-  [v10 setText:v9];
+  [timeLabel setText:v9];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKMessageEntryRecordedAudioView *)self frame];
   if (v9 != width || v8 != height)
   {
@@ -298,13 +298,13 @@
   [(CKMessageEntryRecordedAudioView *)&v11 setFrame:x, y, width, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x1E69A6E08];
   v4 = *(MEMORY[0x1E69A6E08] + 8);
   v5 = *(MEMORY[0x1E69A6E08] + 16);
   v6 = *(MEMORY[0x1E69A6E08] + 24);
-  v7 = [CKUIBehavior sharedBehaviors:a3.width];
+  v7 = [CKUIBehavior sharedBehaviors:fits.width];
   [v7 balloonCornerRadius];
   v9 = v8;
 
@@ -339,16 +339,16 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(CKMessageEntryRecordedAudioView *)self waveformImage];
-  if (v4)
+  changeCopy = change;
+  waveformImage = [(CKMessageEntryRecordedAudioView *)self waveformImage];
+  if (waveformImage)
   {
-    v5 = v4;
-    v6 = [(CKMessageEntryRecordedAudioView *)self waveformImage];
-    v7 = [v6 traitCollection];
-    v8 = [v7 hasDifferentColorAppearanceComparedToTraitCollection:v9];
+    v5 = waveformImage;
+    waveformImage2 = [(CKMessageEntryRecordedAudioView *)self waveformImage];
+    traitCollection = [waveformImage2 traitCollection];
+    v8 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
     if (v8)
     {
@@ -368,9 +368,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKMessageEntryRecordedAudioView *)self blurView];
-  v12 = [v11 layer];
-  [v12 setCornerRadius:v10 * 0.5];
+  blurView = [(CKMessageEntryRecordedAudioView *)self blurView];
+  layer = [blurView layer];
+  [layer setCornerRadius:v10 * 0.5];
 
   v13 = v8;
   if (!CKIsRunningInMacCatalyst())
@@ -380,11 +380,11 @@
     v13 = v8 - v15;
   }
 
-  v16 = [(CKMessageEntryRecordedAudioView *)self blurView];
-  [v16 setFrame:{v4, v6, v13, v10}];
+  blurView2 = [(CKMessageEntryRecordedAudioView *)self blurView];
+  [blurView2 setFrame:{v4, v6, v13, v10}];
 
-  v17 = [(CKMessageEntryRecordedAudioView *)self balloonImageView];
-  [v17 setFrame:{v4, v6, v8, v10}];
+  balloonImageView = [(CKMessageEntryRecordedAudioView *)self balloonImageView];
+  [balloonImageView setFrame:{v4, v6, v8, v10}];
 
   v18 = +[CKUIBehavior sharedBehaviors];
   [v18 entryViewLeftInsetForRecordedAudioCancelButton];
@@ -400,9 +400,9 @@
   v27 = v4 + v20;
   v28 = v6 + 0.0;
   rect.origin.y = v8 - (v20 + v26);
-  v29 = [(CKMessageEntryRecordedAudioView *)self playPauseDeleteButton];
-  [v29 sizeToFit];
-  [v29 frame];
+  playPauseDeleteButton = [(CKMessageEntryRecordedAudioView *)self playPauseDeleteButton];
+  [playPauseDeleteButton sizeToFit];
+  [playPauseDeleteButton frame];
   v31 = v30;
   v33 = v32;
   v34 = CKIsRunningInMacCatalyst();
@@ -433,10 +433,10 @@
   }
 
   v37 = floor((v28 + (v10 - v33) * 0.5) * v36) / v36;
-  [v29 setFrame:{v27 + 3.0, v37, v35, v33}];
-  v38 = [(CKMessageEntryRecordedAudioView *)self timeLabel];
+  [playPauseDeleteButton setFrame:{v27 + 3.0, v37, v35, v33}];
+  timeLabel = [(CKMessageEntryRecordedAudioView *)self timeLabel];
   rect.origin.x = v27 + 3.0;
-  [v38 sizeThatFits:{rect.origin.y, v10}];
+  [timeLabel sizeThatFits:{rect.origin.y, v10}];
   v40 = v39;
 
   v64.origin.x = v27;
@@ -449,10 +449,10 @@
   [v43 audioBalloonTimeInset];
   v45 = v42 - v44;
 
-  v46 = [(CKMessageEntryRecordedAudioView *)self timeLabel];
-  [v46 setFrame:{v45, v28, v40, v10}];
+  timeLabel2 = [(CKMessageEntryRecordedAudioView *)self timeLabel];
+  [timeLabel2 setFrame:{v45, v28, v40, v10}];
 
-  v47 = [(CKMessageEntryRecordedAudioView *)self waveformImageView];
+  waveformImageView = [(CKMessageEntryRecordedAudioView *)self waveformImageView];
   v65.origin.x = rect.origin.x;
   v65.origin.y = v37;
   v65.size.width = v35;
@@ -471,21 +471,21 @@
   if (!self->_cachedWaveFormImageIsValid)
   {
     v54 = +[CKUIBehavior sharedBehaviors];
-    v55 = [v54 theme];
-    v56 = [v55 entryFieldBorderColor];
+    theme = [v54 theme];
+    entryFieldBorderColor = [theme entryFieldBorderColor];
 
-    v57 = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
-    v58 = [v57 composeWaveformForWidth:1 orientation:v56 withColor:v52 - v48];
+    audioMediaObject = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
+    v58 = [audioMediaObject composeWaveformForWidth:1 orientation:entryFieldBorderColor withColor:v52 - v48];
 
     [(CKMessageEntryRecordedAudioView *)self setWaveformImage:v58];
-    v59 = [(CKMessageEntryRecordedAudioView *)self waveformImageView];
-    [v59 setImage:v58];
+    waveformImageView2 = [(CKMessageEntryRecordedAudioView *)self waveformImageView];
+    [waveformImageView2 setImage:v58];
 
     self->_cachedWaveFormImageIsValid = 1;
   }
 
-  [v47 frame];
-  [v47 sizeThatFits:{rect.origin.y, v10}];
+  [waveformImageView frame];
+  [waveformImageView sizeThatFits:{rect.origin.y, v10}];
   v61 = v60;
   if (CKMainScreenScale_once_41 != -1)
   {
@@ -498,24 +498,24 @@
     v62 = 1.0;
   }
 
-  [v47 setFrame:{v48, floor((v41 + (v10 - v61) * 0.5) * v62) / v62, v53, v61}];
+  [waveformImageView setFrame:{v48, floor((v41 + (v10 - v61) * 0.5) * v62) / v62, v53, v61}];
 }
 
 - (void)updateProgress
 {
-  v3 = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
-  v4 = [(CKMessageEntryRecordedAudioView *)self audioController];
+  audioMediaObject = [(CKMessageEntryRecordedAudioView *)self audioMediaObject];
+  audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
   [(CKMessageEntryRecordedAudioView *)self time];
   v6 = v5;
-  [v3 duration];
+  [audioMediaObject duration];
   v8 = v7;
   [CKAudioProgressView progressForTime:v6 duration:v7];
   v10 = v9;
-  v11 = [v4 isPlaying];
-  v12 = [(CKMessageEntryRecordedAudioView *)self delegate];
-  [v12 messageEntryRecordedAudioViewPlaybackProgressDidChange:v6];
+  isPlaying = [audioController isPlaying];
+  delegate = [(CKMessageEntryRecordedAudioView *)self delegate];
+  [delegate messageEntryRecordedAudioViewPlaybackProgressDidChange:v6];
 
-  if (v6 == v8 || !((v6 != 0.0) | v11 & 1))
+  if (v6 == v8 || !((v6 != 0.0) | isPlaying & 1))
   {
     self->_cachedWaveFormImageIsValid = 0;
     [(CKMessageEntryRecordedAudioView *)self setNeedsLayout];
@@ -523,8 +523,8 @@
 
   else
   {
-    v13 = [(CKMessageEntryRecordedAudioView *)self waveformImage];
-    [v13 size];
+    waveformImage = [(CKMessageEntryRecordedAudioView *)self waveformImage];
+    [waveformImage size];
     if (v15 != 0.0)
     {
       v16 = v14;
@@ -532,12 +532,12 @@
       {
         v17 = v15;
         v18 = +[CKUIBehavior sharedBehaviors];
-        v19 = [v18 waveformPowerLevelWidthIncrement];
+        waveformPowerLevelWidthIncrement = [v18 waveformPowerLevelWidthIncrement];
 
         v20 = +[CKUIBehavior sharedBehaviors];
-        v21 = [v20 waveformPowerLevelWidth];
+        waveformPowerLevelWidth = [v20 waveformPowerLevelWidth];
         v22 = +[CKUIBehavior sharedBehaviors];
-        v23 = [v22 waveformGapWidth];
+        waveformGapWidth = [v22 waveformGapWidth];
 
         if (CKMainScreenScale_once_41 != -1)
         {
@@ -545,11 +545,11 @@
         }
 
         v26 = 1.0;
-        *v24.i64 = (1.0 - v10) * (v16 / v19);
+        *v24.i64 = (1.0 - v10) * (v16 / waveformPowerLevelWidthIncrement);
         *v25.i64 = *v24.i64 - trunc(*v24.i64);
         v27.f64[0] = NAN;
         v27.f64[1] = NAN;
-        *v24.i64 = *vbslq_s8(vnegq_f64(v27), v25, v24).i64 * v21 + *v24.i64 * v19 + v23;
+        *v24.i64 = *vbslq_s8(vnegq_f64(v27), v25, v24).i64 * waveformPowerLevelWidth + *v24.i64 * waveformPowerLevelWidthIncrement + waveformGapWidth;
         if (*&CKMainScreenScale_sMainScreenScale_41 != 0.0)
         {
           v26 = *&CKMainScreenScale_sMainScreenScale_41;
@@ -562,13 +562,13 @@
         v32[2] = __49__CKMessageEntryRecordedAudioView_updateProgress__block_invoke;
         v32[3] = &unk_1E72F3100;
         v37 = 1;
-        v33 = v13;
+        v33 = waveformImage;
         v34 = v16;
         v35 = v17;
         v36 = v28;
         v30 = [v29 imageWithActions:v32];
-        v31 = [(CKMessageEntryRecordedAudioView *)self waveformImageView];
-        [v31 setImage:v30];
+        waveformImageView = [(CKMessageEntryRecordedAudioView *)self waveformImageView];
+        [waveformImageView setImage:v30];
       }
     }
   }
@@ -623,62 +623,62 @@ void __49__CKMessageEntryRecordedAudioView_updateProgress__block_invoke(uint64_t
 
 - (void)play
 {
-  v2 = [(CKMessageEntryRecordedAudioView *)self audioController];
-  [v2 play];
+  audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
+  [audioController play];
 }
 
 - (void)pause
 {
-  v2 = [(CKMessageEntryRecordedAudioView *)self audioController];
-  [v2 pause];
+  audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
+  [audioController pause];
 }
 
 - (void)stop
 {
-  v2 = [(CKMessageEntryRecordedAudioView *)self audioController];
-  [v2 stop];
+  audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
+  [audioController stop];
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(CKMessageEntryRecordedAudioView *)self audioController];
-  v3 = [v2 isPlaying];
+  audioController = [(CKMessageEntryRecordedAudioView *)self audioController];
+  isPlaying = [audioController isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
-- (void)audioController:(id)a3 mediaObjectDidFinishPlaying:(id)a4
+- (void)audioController:(id)controller mediaObjectDidFinishPlaying:(id)playing
 {
-  v5 = a4;
+  playingCopy = playing;
   [(CKMessageEntryRecordedAudioView *)self setTime:0.0];
   [(CKMessageEntryRecordedAudioView *)self updateTimeString];
   [(CKMessageEntryRecordedAudioView *)self updateProgress];
-  v6 = [(CKMessageEntryRecordedAudioView *)self delegate];
-  [v6 messageEntryRecordedAudioView:self mediaObjectDidFinishPlaying:v5];
+  delegate = [(CKMessageEntryRecordedAudioView *)self delegate];
+  [delegate messageEntryRecordedAudioView:self mediaObjectDidFinishPlaying:playingCopy];
 }
 
-- (void)audioController:(id)a3 mediaObjectProgressDidChange:(id)a4 currentTime:(double)a5 duration:(double)a6
+- (void)audioController:(id)controller mediaObjectProgressDidChange:(id)change currentTime:(double)time duration:(double)duration
 {
-  [(CKMessageEntryRecordedAudioView *)self setTime:a3, a4, a5, a6];
+  [(CKMessageEntryRecordedAudioView *)self setTime:controller, change, time, duration];
   [(CKMessageEntryRecordedAudioView *)self updateTimeString];
 
   [(CKMessageEntryRecordedAudioView *)self updateProgress];
 }
 
-- (void)audioControllerDidPause:(id)a3
+- (void)audioControllerDidPause:(id)pause
 {
   [(CKMessageEntryRecordedAudioView *)self updateTimeString];
 
   [(CKMessageEntryRecordedAudioView *)self updateProgress];
 }
 
-- (void)audioControllerDidStop:(id)a3
+- (void)audioControllerDidStop:(id)stop
 {
-  [(CKMessageEntryRecordedAudioView *)self setTime:a3, 0.0];
+  [(CKMessageEntryRecordedAudioView *)self setTime:stop, 0.0];
   [(CKMessageEntryRecordedAudioView *)self updateTimeString];
   [(CKMessageEntryRecordedAudioView *)self updateProgress];
-  v4 = [(CKMessageEntryRecordedAudioView *)self delegate];
-  [v4 messageEntryRecordedAudioViewPlaybackDidStop];
+  delegate = [(CKMessageEntryRecordedAudioView *)self delegate];
+  [delegate messageEntryRecordedAudioViewPlaybackDidStop];
 }
 
 - (CKMessageEntryRecordedAudioViewDelegate)delegate

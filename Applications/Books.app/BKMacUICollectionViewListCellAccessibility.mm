@@ -12,15 +12,15 @@
 {
   v7.receiver = self;
   v7.super_class = BKMacUICollectionViewListCellAccessibility;
-  v3 = [(BKMacUICollectionViewListCellAccessibility *)&v7 accessibilityTraits];
-  v4 = [(BKMacUICollectionViewListCellAccessibility *)self _isNewCollectionItem];
+  accessibilityTraits = [(BKMacUICollectionViewListCellAccessibility *)&v7 accessibilityTraits];
+  _isNewCollectionItem = [(BKMacUICollectionViewListCellAccessibility *)self _isNewCollectionItem];
   v5 = UIAccessibilityTraitButton;
-  if (!v4)
+  if (!_isNewCollectionItem)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)_bkaxTarget
@@ -34,8 +34,8 @@
 - (id)_bkaxParent
 {
   objc_opt_class();
-  v3 = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxTarget];
-  v4 = [v3 superview];
+  _bkaxTarget = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxTarget];
+  superview = [_bkaxTarget superview];
   v5 = __IMAccessibilityCastAsClass();
 
   return v5;
@@ -43,18 +43,18 @@
 
 - (id)_bkaxIndexPath
 {
-  v3 = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxParent];
-  v4 = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxTarget];
-  v5 = [v3 indexPathForCell:v4];
+  _bkaxParent = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxParent];
+  _bkaxTarget = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxTarget];
+  v5 = [_bkaxParent indexPathForCell:_bkaxTarget];
 
   return v5;
 }
 
 - (BOOL)_isNewCollectionItem
 {
-  v2 = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxTarget];
-  v3 = [v2 accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"newCollection"];
+  _bkaxTarget = [(BKMacUICollectionViewListCellAccessibility *)self _bkaxTarget];
+  accessibilityIdentifier = [_bkaxTarget accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"newCollection"];
 
   return v4;
 }

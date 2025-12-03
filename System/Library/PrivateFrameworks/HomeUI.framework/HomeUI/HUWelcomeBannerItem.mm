@@ -1,14 +1,14 @@
 @interface HUWelcomeBannerItem
 - (BOOL)_shouldHideDiscoverHomeBanner;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUWelcomeBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  v4 = [options objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
   if ([v4 BOOLValue])
   {
 
@@ -23,9 +23,9 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v5 = [(HUWelcomeBannerItem *)self _shouldHideDiscoverHomeBanner];
+  _shouldHideDiscoverHomeBanner = [(HUWelcomeBannerItem *)self _shouldHideDiscoverHomeBanner];
 
-  if (v5)
+  if (_shouldHideDiscoverHomeBanner)
   {
     goto LABEL_4;
   }
@@ -62,27 +62,27 @@ LABEL_6:
 - (BOOL)_shouldHideDiscoverHomeBanner
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = [(HUBannerItem *)self home];
+  home = [(HUBannerItem *)self home];
   v5 = objc_alloc(MEMORY[0x277D14C98]);
-  v6 = [v4 currentUser];
-  v7 = [v5 initWithHome:v4 user:v6 nameStyle:0];
+  currentUser = [home currentUser];
+  v7 = [v5 initWithHome:home user:currentUser nameStyle:0];
 
   if (![(HUBannerItem *)self forceShowBanner])
   {
-    if ([v4 hf_currentUserIsRestrictedGuest])
+    if ([home hf_currentUserIsRestrictedGuest])
     {
       v9 = HFLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v4 hf_minimumDescription];
-        v11 = [v4 currentUser];
-        v12 = [v11 hf_prettyDescription];
+        hf_minimumDescription = [home hf_minimumDescription];
+        currentUser2 = [home currentUser];
+        hf_prettyDescription = [currentUser2 hf_prettyDescription];
         *buf = 136315650;
-        v36 = "[HUWelcomeBannerItem _shouldHideDiscoverHomeBanner]";
+        selfCopy4 = "[HUWelcomeBannerItem _shouldHideDiscoverHomeBanner]";
         v37 = 2112;
-        v38 = v10;
+        v38 = hf_minimumDescription;
         v39 = 2112;
-        v40 = v12;
+        v40 = hf_prettyDescription;
         v13 = "(%s) Hiding discover home banner because current user is RG | home = %@ | currentUser = %@";
 LABEL_9:
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, v13, buf, 0x20u);
@@ -93,20 +93,20 @@ LABEL_9:
       goto LABEL_18;
     }
 
-    if ([v4 hf_shouldBlockCurrentUserFromHome])
+    if ([home hf_shouldBlockCurrentUserFromHome])
     {
       v9 = HFLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v4 hf_minimumDescription];
-        v11 = [v4 currentUser];
-        v12 = [v11 hf_prettyDescription];
+        hf_minimumDescription = [home hf_minimumDescription];
+        currentUser2 = [home currentUser];
+        hf_prettyDescription = [currentUser2 hf_prettyDescription];
         *buf = 136315650;
-        v36 = "[HUWelcomeBannerItem _shouldHideDiscoverHomeBanner]";
+        selfCopy4 = "[HUWelcomeBannerItem _shouldHideDiscoverHomeBanner]";
         v37 = 2112;
-        v38 = v10;
+        v38 = hf_minimumDescription;
         v39 = 2112;
-        v40 = v12;
+        v40 = hf_prettyDescription;
         v13 = "(%s) Hiding discover home banner because should block current user | home = %@ | currentUser = %@";
         goto LABEL_9;
       }
@@ -127,20 +127,20 @@ LABEL_19:
       }
 
       v14 = NSStringFromSelector(a2);
-      v15 = [v4 debugDescription];
-      v16 = [v7 debugDescription];
+      v15 = [home debugDescription];
+      accessories3 = [v7 debugDescription];
       *buf = 138413570;
-      v36 = self;
+      selfCopy4 = self;
       v37 = 2112;
       v38 = v14;
       v39 = 2048;
-      v40 = v4;
+      v40 = home;
       v41 = 2112;
       v42 = v15;
       v43 = 2112;
-      v44 = v16;
+      v44 = accessories3;
       v45 = 1024;
-      v46 = [v7 hasDismissedWelcomeUIBanner];
+      hasDismissedWelcomeUIBanner = [v7 hasDismissedWelcomeUIBanner];
       v17 = "%@:%@ Discover Home Banner is not shown, for home:(%p:%@), userItem:%@ hasDismissedWelcomeBanner: %{BOOL}d";
       v18 = v9;
       v19 = 58;
@@ -148,39 +148,39 @@ LABEL_19:
 
     else
     {
-      v20 = [v4 accessories];
-      v21 = [v20 count];
+      accessories = [home accessories];
+      v21 = [accessories count];
 
       if (!v21)
       {
-        v23 = [MEMORY[0x277D14B68] getAvailabilityDictionary];
+        getAvailabilityDictionary = [MEMORY[0x277D14B68] getAvailabilityDictionary];
 
         v9 = HFLogForCategory();
         v24 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-        if (v23)
+        if (getAvailabilityDictionary)
         {
           if (v24)
           {
             v33 = NSStringFromSelector(a2);
-            v25 = [v4 debugDescription];
+            v25 = [home debugDescription];
             v26 = [v7 debugDescription];
-            v32 = [v7 hasDismissedWelcomeUIBanner];
-            v34 = [v4 accessories];
-            v27 = [v34 count];
-            v28 = [MEMORY[0x277D14B68] getAvailabilityDictionary];
-            v29 = [v28 debugDescription];
+            hasDismissedWelcomeUIBanner2 = [v7 hasDismissedWelcomeUIBanner];
+            accessories2 = [home accessories];
+            v27 = [accessories2 count];
+            getAvailabilityDictionary2 = [MEMORY[0x277D14B68] getAvailabilityDictionary];
+            v29 = [getAvailabilityDictionary2 debugDescription];
             *buf = 138414082;
-            v36 = self;
+            selfCopy4 = self;
             v37 = 2112;
             v38 = v33;
             v39 = 2048;
-            v40 = v4;
+            v40 = home;
             v41 = 2112;
             v42 = v25;
             v43 = 2112;
             v44 = v26;
             v45 = 1024;
-            v46 = v32;
+            hasDismissedWelcomeUIBanner = hasDismissedWelcomeUIBanner2;
             v47 = 2048;
             v48 = v27;
             v49 = 2112;
@@ -198,15 +198,15 @@ LABEL_19:
         }
 
         v14 = NSStringFromSelector(a2);
-        v15 = [v4 debugDescription];
-        v30 = [MEMORY[0x277D14B68] getAvailabilityDictionary];
-        v31 = [v30 debugDescription];
+        v15 = [home debugDescription];
+        getAvailabilityDictionary3 = [MEMORY[0x277D14B68] getAvailabilityDictionary];
+        v31 = [getAvailabilityDictionary3 debugDescription];
         *buf = 138413314;
-        v36 = self;
+        selfCopy4 = self;
         v37 = 2112;
         v38 = v14;
         v39 = 2048;
-        v40 = v4;
+        v40 = home;
         v41 = 2112;
         v42 = v15;
         v43 = 2112;
@@ -224,18 +224,18 @@ LABEL_17:
       }
 
       v14 = NSStringFromSelector(a2);
-      v15 = [v4 debugDescription];
-      v16 = [v4 accessories];
+      v15 = [home debugDescription];
+      accessories3 = [home accessories];
       *buf = 138413314;
-      v36 = self;
+      selfCopy4 = self;
       v37 = 2112;
       v38 = v14;
       v39 = 2048;
       v40 = v15;
       v41 = 2112;
-      v42 = v4;
+      v42 = home;
       v43 = 2048;
-      v44 = [v16 count];
+      v44 = [accessories3 count];
       v17 = "%@:%@ Discover Home Banner is not shown, for home:(%p:%@), with accessory count: %ld";
       v18 = v9;
       v19 = 52;

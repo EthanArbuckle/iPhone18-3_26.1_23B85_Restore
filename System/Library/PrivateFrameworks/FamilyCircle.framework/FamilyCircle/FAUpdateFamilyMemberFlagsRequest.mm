@@ -1,35 +1,35 @@
 @interface FAUpdateFamilyMemberFlagsRequest
-- (FAUpdateFamilyMemberFlagsRequest)initWithFamilyMemberDSID:(id)a3 flags:(id)a4;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FAUpdateFamilyMemberFlagsRequest)initWithFamilyMemberDSID:(id)d flags:(id)flags;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAUpdateFamilyMemberFlagsRequest
 
-- (FAUpdateFamilyMemberFlagsRequest)initWithFamilyMemberDSID:(id)a3 flags:(id)a4
+- (FAUpdateFamilyMemberFlagsRequest)initWithFamilyMemberDSID:(id)d flags:(id)flags
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  flagsCopy = flags;
   v12.receiver = self;
   v12.super_class = FAUpdateFamilyMemberFlagsRequest;
   v9 = [(FAFamilyCircleRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dsid, a3);
-    objc_storeStrong(&v10->_flags, a4);
+    objc_storeStrong(&v9->_dsid, d);
+    objc_storeStrong(&v10->_flags, flags);
   }
 
   return v10;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__FAUpdateFamilyMemberFlagsRequest_startRequestWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v13 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v12];
   dsid = self->_dsid;

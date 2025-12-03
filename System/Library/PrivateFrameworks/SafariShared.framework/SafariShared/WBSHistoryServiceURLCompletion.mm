@@ -1,20 +1,20 @@
 @interface WBSHistoryServiceURLCompletion
-- (BOOL)queryVisitCounts:(id)a3 outVisitCountScore:(int64_t *)a4 outDailyVisitCounts:(id *)a5 outWeeklyVisitCounts:(id *)a6;
+- (BOOL)queryVisitCounts:(id)counts outVisitCountScore:(int64_t *)score outDailyVisitCounts:(id *)visitCounts outWeeklyVisitCounts:(id *)weeklyVisitCounts;
 - (WBSHistoryServiceURLCompletion)init;
-- (double)lastVisitTimeForURLString:(id)a3;
+- (double)lastVisitTimeForURLString:(id)string;
 - (id).cxx_construct;
-- (id)_endOfRedirectChain:(id)a3;
-- (id)_warmUpWithDatabase:(id)a3;
-- (id)warmUpWithDatabase:(id)a3;
-- (void)computeFrequentlyVisitedSites:(unint64_t)a3 minimalVisitCountScore:(unint64_t)a4 blockList:(id)a5 allowList:(id)a6 options:(unint64_t)a7 currentTime:(double)a8 completionHandler:(id)a9;
-- (void)noteRedirectFromURLString:(id)a3 toURLString:(id)a4;
-- (void)recordVisit:(id)a3 sourceVisit:(id)a4 title:(id)a5 loadSuccessful:(BOOL)a6 origin:(int64_t)a7 increaseVisitCount:(BOOL)a8 score:(int)a9 statusCode:(int64_t)a10;
-- (void)removeURLStrings:(id)a3;
-- (void)searchForUserTypedString:(id)a3 options:(unint64_t)a4 currentTime:(double)a5 enumerationGroup:(id)a6 enumerationBlock:(id)a7;
-- (void)updateItemWithLatestVisit:(id)a3 database:(id)a4;
-- (void)updateURLString:(id)a3 autocompleteTriggerData:(id)a4;
-- (void)updateVisit:(id)a3 oldScore:(int)a4 newScore:(int)a5 completionHandler:(id)a6;
-- (void)updateVisit:(id)a3 title:(id)a4 databaseID:(id)a5;
+- (id)_endOfRedirectChain:(id)chain;
+- (id)_warmUpWithDatabase:(id)database;
+- (id)warmUpWithDatabase:(id)database;
+- (void)computeFrequentlyVisitedSites:(unint64_t)sites minimalVisitCountScore:(unint64_t)score blockList:(id)list allowList:(id)allowList options:(unint64_t)options currentTime:(double)time completionHandler:(id)handler;
+- (void)noteRedirectFromURLString:(id)string toURLString:(id)lString;
+- (void)recordVisit:(id)visit sourceVisit:(id)sourceVisit title:(id)title loadSuccessful:(BOOL)successful origin:(int64_t)origin increaseVisitCount:(BOOL)count score:(int)score statusCode:(int64_t)self0;
+- (void)removeURLStrings:(id)strings;
+- (void)searchForUserTypedString:(id)string options:(unint64_t)options currentTime:(double)time enumerationGroup:(id)group enumerationBlock:(id)block;
+- (void)updateItemWithLatestVisit:(id)visit database:(id)database;
+- (void)updateURLString:(id)string autocompleteTriggerData:(id)data;
+- (void)updateVisit:(id)visit oldScore:(int)score newScore:(int)newScore completionHandler:(id)handler;
+- (void)updateVisit:(id)visit title:(id)title databaseID:(id)d;
 @end
 
 @implementation WBSHistoryServiceURLCompletion
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (id)warmUpWithDatabase:(id)a3
+- (id)warmUpWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -50,10 +50,10 @@
   block[1] = 3221225472;
   block[2] = __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke;
   block[3] = &unk_1E7FC4D50;
-  v10 = v4;
+  v10 = databaseCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = databaseCopy;
   dispatch_barrier_sync(queue, block);
   v7 = v13[5];
 
@@ -70,15 +70,15 @@ void __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke(uint
   *(v3 + 40) = v2;
 }
 
-- (id)_warmUpWithDatabase:(id)a3
+- (id)_warmUpWithDatabase:(id)database
 {
   v96[19] = *MEMORY[0x1E69E9840];
-  v57 = a3;
-  v3 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:v57 query:{@"SELECT history_items.id, history_items.url, history_visits.title, redirect_destination, load_successful, visit_time, visit_count_score, status_code, daily_visit_counts, weekly_visit_counts, autocomplete_triggers, origin FROM history_items INNER JOIN history_visits ON history_visits.id = safari_latest_visit_for (history_items.id)"}];
+  databaseCopy = database;
+  v3 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:databaseCopy query:{@"SELECT history_items.id, history_items.url, history_visits.title, redirect_destination, load_successful, visit_time, visit_count_score, status_code, daily_visit_counts, weekly_visit_counts, autocomplete_triggers, origin FROM history_items INNER JOIN history_visits ON history_visits.id = safari_latest_visit_for (history_items.id)"}];
   if (v3)
   {
     v56 = v3;
-    v4 = [v3 handle];
+    handle = [v3 handle];
     v81 = 0u;
     v82 = 0u;
     v83 = 1065353216;
@@ -101,23 +101,23 @@ void __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke(uint
         goto LABEL_16;
       }
 
-      v5 = sqlite3_step(v4);
+      v5 = sqlite3_step(handle);
       if (v5 != 100)
       {
         break;
       }
 
-      __p = sqlite3_column_int64(v4, 0);
-      v6 = sqlite3_column_text(v4, 1);
-      v7 = sqlite3_column_bytes(v4, 1);
+      __p = sqlite3_column_int64(handle, 0);
+      v6 = sqlite3_column_text(handle, 1);
+      v7 = sqlite3_column_bytes(handle, 1);
       if (v6)
       {
         v8 = v7;
         if (strncmp(v6, "data:", 5uLL))
         {
-          v61 = sqlite3_column_int64(v4, 6);
-          v60 = sqlite3_column_blob(v4, 8);
-          v9 = sqlite3_column_bytes(v4, 8);
+          v61 = sqlite3_column_int64(handle, 6);
+          v60 = sqlite3_column_blob(handle, 8);
+          v9 = sqlite3_column_bytes(handle, 8);
           v10 = v9;
           if ((v9 & 3) != 0)
           {
@@ -125,8 +125,8 @@ void __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke(uint
           }
 
           v59 = v10;
-          v58 = sqlite3_column_blob(v4, 9);
-          v11 = sqlite3_column_bytes(v4, 9);
+          v58 = sqlite3_column_blob(handle, 9);
+          v11 = sqlite3_column_bytes(handle, 9);
           if ((v11 & 3) != 0)
           {
             v12 = 0;
@@ -137,14 +137,14 @@ void __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke(uint
             v12 = v11;
           }
 
-          v13 = sqlite3_column_blob(v4, 10);
-          v14 = sqlite3_column_bytes(v4, 10);
-          v15 = sqlite3_column_int(v4, 4) != 0;
-          v16 = sqlite3_column_int64(v4, 11) == 0;
-          v17 = sqlite3_column_text(v4, 2);
-          v18 = sqlite3_column_bytes(v4, 2);
-          v19 = sqlite3_column_double(v4, 5);
-          sqlite3_column_int64(v4, 7);
+          v13 = sqlite3_column_blob(handle, 10);
+          v14 = sqlite3_column_bytes(handle, 10);
+          v15 = sqlite3_column_int(handle, 4) != 0;
+          v16 = sqlite3_column_int64(handle, 11) == 0;
+          v17 = sqlite3_column_text(handle, 2);
+          v18 = sqlite3_column_bytes(handle, 2);
+          v19 = sqlite3_column_double(handle, 5);
+          sqlite3_column_int64(handle, 7);
           v20 = WBSStatusCodeGroupFromStatusCode();
           *buf = v6;
           *&buf[8] = v8;
@@ -164,7 +164,7 @@ void __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke(uint
           SafariShared::URLCompletionEntryBuilder::validateVisitedCountsIfNeeded(buf);
           v69 = SafariShared::URLCompletionEntryMap::insert(&self->_map, buf, 1);
           std::__hash_table<std::__hash_value_type<long long,NSString * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,NSString * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,NSString * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,NSString * {__strong}>>>::__emplace_unique_key_args<long long,long long &,NSString * {__strong}&>(v71 + 6, &__p);
-          v68 = sqlite3_column_int64(v4, 3);
+          v68 = sqlite3_column_int64(handle, 3);
           if (v68)
           {
             std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v81, &v68);
@@ -179,13 +179,13 @@ void __53__WBSHistoryServiceURLCompletion_warmUpWithDatabase___block_invoke(uint
       v34 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+        [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
         [objc_claimAutoreleasedReturnValue() safari_privacyPreservingDescription];
         objc_claimAutoreleasedReturnValue();
         [WBSHistoryServiceURLCompletion _warmUpWithDatabase:];
       }
 
-      v28 = [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+      v28 = [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
       goto LABEL_75;
     }
 
@@ -201,7 +201,7 @@ LABEL_16:
     {
       *buf = -1;
       __p = buf;
-      SafariShared::WBSSQLiteDatabaseEnumerate<std::tuple<long long &>>(v57, 0, @"SELECT count(*) FROM history_items", &__p);
+      SafariShared::WBSSQLiteDatabaseEnumerate<std::tuple<long long &>>(databaseCopy, 0, @"SELECT count(*) FROM history_items", &__p);
       v22 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -309,34 +309,34 @@ LABEL_16:
       std::locale::~locale(v88);
       std::iostream::~basic_iostream();
       MEMORY[0x1BFB13440](v96);
-      v62 = [v23 initWithDatabase:v57 query:v40];
+      v62 = [v23 initWithDatabase:databaseCopy query:v40];
 
       if (!v62)
       {
         v54 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
         {
-          [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+          [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
           [objc_claimAutoreleasedReturnValue() safari_privacyPreservingDescription];
           objc_claimAutoreleasedReturnValue();
           [WBSHistoryServiceURLCompletion _warmUpWithDatabase:];
         }
 
-        v28 = [v57 lastErrorWithMethodName:{"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]", 0}];
+        v28 = [databaseCopy lastErrorWithMethodName:{"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]", 0}];
         goto LABEL_76;
       }
 
-      v42 = [v62 handle];
+      handle2 = [v62 handle];
       while (1)
       {
-        v43 = sqlite3_step(v42);
+        v43 = sqlite3_step(handle2);
         if (v43 != 100)
         {
           break;
         }
 
-        __p = sqlite3_column_int64(v42, 0);
-        v69 = sqlite3_column_int64(v42, 1);
+        __p = sqlite3_column_int64(handle2, 0);
+        v69 = sqlite3_column_int64(handle2, 1);
         v44 = std::__hash_table<std::__hash_value_type<long long,long long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,long long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,long long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,long long>>>::__equal_range_multi<long long>(&v78, &__p);
         v46 = v45;
         *buf = &v69;
@@ -395,13 +395,13 @@ LABEL_16:
         v55 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
         {
-          [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+          [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
           [objc_claimAutoreleasedReturnValue() safari_privacyPreservingDescription];
           objc_claimAutoreleasedReturnValue();
           [WBSHistoryServiceURLCompletion _warmUpWithDatabase:];
         }
 
-        v28 = [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+        v28 = [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
       }
 
       v56 = v62;
@@ -424,13 +424,13 @@ LABEL_81:
     v27 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+      [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
       [objc_claimAutoreleasedReturnValue() safari_privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [WBSHistoryServiceURLCompletion _warmUpWithDatabase:];
     }
 
-    v28 = [v57 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
+    v28 = [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion _warmUpWithDatabase:]"];
 LABEL_77:
 
     return v28;
@@ -459,18 +459,18 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
   return result;
 }
 
-- (void)updateItemWithLatestVisit:(id)a3 database:(id)a4
+- (void)updateItemWithLatestVisit:(id)visit database:(id)database
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:v6 query:{@"SELECT url, visit_count_score, daily_visit_counts, weekly_visit_counts, autocomplete_triggers, status_code FROM history_items WHERE id = ?"}];
+  visitCopy = visit;
+  databaseCopy = database;
+  v7 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:databaseCopy query:{@"SELECT url, visit_count_score, daily_visit_counts, weekly_visit_counts, autocomplete_triggers, status_code FROM history_items WHERE id = ?"}];
   if (!v7)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [v6 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:]"];
+      [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:]"];
       [objc_claimAutoreleasedReturnValue() safari_privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:];
@@ -479,20 +479,20 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
     goto LABEL_9;
   }
 
-  v8 = [v5 itemID];
-  [v7 bindInt64:v8 atParameterIndex:1];
-  v9 = [v7 handle];
-  v10 = sqlite3_step(v9);
+  itemID = [visitCopy itemID];
+  [v7 bindInt64:itemID atParameterIndex:1];
+  handle = [v7 handle];
+  v10 = sqlite3_step(handle);
   if (v10 == 100)
   {
-    v13 = [v5 title];
-    v14 = [v13 UTF8String];
+    title = [visitCopy title];
+    uTF8String = [title UTF8String];
 
-    v32 = sqlite3_column_blob(v9, 0);
-    v31 = sqlite3_column_bytes(v9, 0);
-    v30 = sqlite3_column_int64(v9, 1);
-    v29 = sqlite3_column_blob(v9, 2);
-    v15 = sqlite3_column_bytes(v9, 2);
+    v32 = sqlite3_column_blob(handle, 0);
+    v31 = sqlite3_column_bytes(handle, 0);
+    v30 = sqlite3_column_int64(handle, 1);
+    v29 = sqlite3_column_blob(handle, 2);
+    v15 = sqlite3_column_bytes(handle, 2);
     v16 = v15;
     if ((v15 & 3) != 0)
     {
@@ -500,8 +500,8 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
     }
 
     v28 = v16;
-    v27 = sqlite3_column_blob(v9, 3);
-    v17 = sqlite3_column_bytes(v9, 3);
+    v27 = sqlite3_column_blob(handle, 3);
+    v17 = sqlite3_column_bytes(handle, 3);
     v18 = v17;
     if ((v17 & 3) != 0)
     {
@@ -509,13 +509,13 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
     }
 
     v26 = v18;
-    v25 = sqlite3_column_blob(v9, 4);
-    v19 = sqlite3_column_bytes(v9, 4);
-    v20 = [v5 loadSuccessful];
-    v21 = [v5 origin] == 0;
-    if (v14)
+    v25 = sqlite3_column_blob(handle, 4);
+    v19 = sqlite3_column_bytes(handle, 4);
+    loadSuccessful = [visitCopy loadSuccessful];
+    v21 = [visitCopy origin] == 0;
+    if (uTF8String)
     {
-      v22 = strlen(v14);
+      v22 = strlen(uTF8String);
     }
 
     else
@@ -523,9 +523,9 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
       v22 = 0;
     }
 
-    [v5 visitTime];
+    [visitCopy visitTime];
     v24 = v23;
-    sqlite3_column_int64(v9, 5);
+    sqlite3_column_int64(handle, 5);
     *buf = v32;
     v35 = v31;
     v36 = v30;
@@ -535,9 +535,9 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
     v40 = v26;
     v41 = v25;
     v42 = v19;
-    v43 = v20;
+    v43 = loadSuccessful;
     v44 = v21;
-    v45 = v14;
+    v45 = uTF8String;
     v46 = v22;
     v47 = v24;
     v48 = WBSStatusCodeGroupFromStatusCode() == 4;
@@ -556,7 +556,7 @@ void *__54__WBSHistoryServiceURLCompletion__warmUpWithDatabase___block_invoke(ui
     v12 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [v6 lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:]"];
+      [databaseCopy lastErrorWithMethodName:"-[WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:]"];
       [objc_claimAutoreleasedReturnValue() safari_privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:];
@@ -570,49 +570,49 @@ LABEL_9:
   v11 = WBS_LOG_CHANNEL_PREFIXURLAutocomplete();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    -[WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:].cold.1(buf, [v5 databaseID], v8, v11);
+    -[WBSHistoryServiceURLCompletion updateItemWithLatestVisit:database:].cold.1(buf, [visitCopy databaseID], itemID, v11);
   }
 
 LABEL_21:
 }
 
-- (void)updateURLString:(id)a3 autocompleteTriggerData:(id)a4
+- (void)updateURLString:(id)string autocompleteTriggerData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  dataCopy = data;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__WBSHistoryServiceURLCompletion_updateURLString_autocompleteTriggerData___block_invoke;
   block[3] = &unk_1E7FB7DD0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stringCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = stringCopy;
   dispatch_barrier_async(queue, block);
 }
 
-- (void)noteRedirectFromURLString:(id)a3 toURLString:(id)a4
+- (void)noteRedirectFromURLString:(id)string toURLString:(id)lString
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  lStringCopy = lString;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__WBSHistoryServiceURLCompletion_noteRedirectFromURLString_toURLString___block_invoke;
   block[3] = &unk_1E7FB7DD0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = lStringCopy;
+  v13 = stringCopy;
+  v9 = stringCopy;
+  v10 = lStringCopy;
   dispatch_barrier_async(queue, block);
 }
 
-- (BOOL)queryVisitCounts:(id)a3 outVisitCountScore:(int64_t *)a4 outDailyVisitCounts:(id *)a5 outWeeklyVisitCounts:(id *)a6
+- (BOOL)queryVisitCounts:(id)counts outVisitCountScore:(int64_t *)score outDailyVisitCounts:(id *)visitCounts outWeeklyVisitCounts:(id *)weeklyVisitCounts
 {
-  v10 = a3;
+  countsCopy = counts;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -635,22 +635,22 @@ LABEL_21:
   v14[2] = __111__WBSHistoryServiceURLCompletion_queryVisitCounts_outVisitCountScore_outDailyVisitCounts_outWeeklyVisitCounts___block_invoke;
   v14[3] = &unk_1E7FC7F58;
   v14[4] = self;
-  v15 = v10;
+  v15 = countsCopy;
   v16 = &v32;
   v17 = &v26;
   v18 = &v20;
-  v19 = a4;
-  v12 = v10;
+  scoreCopy = score;
+  v12 = countsCopy;
   dispatch_sync(queue, v14);
-  *a5 = v27[5];
-  *a6 = v21[5];
-  LOBYTE(a6) = *(v33 + 24);
+  *visitCounts = v27[5];
+  *weeklyVisitCounts = v21[5];
+  LOBYTE(weeklyVisitCounts) = *(v33 + 24);
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&v26, 8);
 
   _Block_object_dispose(&v32, 8);
-  return a6;
+  return weeklyVisitCounts;
 }
 
 void __111__WBSHistoryServiceURLCompletion_queryVisitCounts_outVisitCountScore_outDailyVisitCounts_outWeeklyVisitCounts___block_invoke(void *a1)
@@ -674,28 +674,28 @@ void __111__WBSHistoryServiceURLCompletion_queryVisitCounts_outVisitCountScore_o
   *(v10 + 40) = v7;
 }
 
-- (void)recordVisit:(id)a3 sourceVisit:(id)a4 title:(id)a5 loadSuccessful:(BOOL)a6 origin:(int64_t)a7 increaseVisitCount:(BOOL)a8 score:(int)a9 statusCode:(int64_t)a10
+- (void)recordVisit:(id)visit sourceVisit:(id)sourceVisit title:(id)title loadSuccessful:(BOOL)successful origin:(int64_t)origin increaseVisitCount:(BOOL)count score:(int)score statusCode:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  visitCopy = visit;
+  sourceVisitCopy = sourceVisit;
+  titleCopy = title;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __122__WBSHistoryServiceURLCompletion_recordVisit_sourceVisit_title_loadSuccessful_origin_increaseVisitCount_score_statusCode___block_invoke;
   block[3] = &unk_1E7FC7F80;
   block[4] = self;
-  v24 = v16;
-  v30 = a6;
-  v27 = a10;
-  v28 = a7;
-  v31 = a8;
-  v29 = a9;
-  v25 = v18;
-  v26 = v17;
-  v20 = v17;
-  v21 = v18;
-  v22 = v16;
+  v24 = visitCopy;
+  successfulCopy = successful;
+  codeCopy = code;
+  originCopy = origin;
+  countCopy = count;
+  scoreCopy = score;
+  v25 = titleCopy;
+  v26 = sourceVisitCopy;
+  v20 = sourceVisitCopy;
+  v21 = titleCopy;
+  v22 = visitCopy;
   dispatch_barrier_async(queue, block);
 }
 
@@ -718,23 +718,23 @@ void __122__WBSHistoryServiceURLCompletion_recordVisit_sourceVisit_title_loadSuc
   }
 }
 
-- (void)updateVisit:(id)a3 title:(id)a4 databaseID:(id)a5
+- (void)updateVisit:(id)visit title:(id)title databaseID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  visitCopy = visit;
+  titleCopy = title;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__WBSHistoryServiceURLCompletion_updateVisit_title_databaseID___block_invoke;
   v15[3] = &unk_1E7FC5D00;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = visitCopy;
+  v17 = titleCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = titleCopy;
+  v14 = visitCopy;
   dispatch_barrier_async(queue, v15);
 }
 
@@ -746,22 +746,22 @@ void __63__WBSHistoryServiceURLCompletion_updateVisit_title_databaseID___block_i
   SafariShared::URLCompletionEntryMap::updateItemTitle((v2 + 16), v5, v4, *(a1 + 48), v3);
 }
 
-- (void)updateVisit:(id)a3 oldScore:(int)a4 newScore:(int)a5 completionHandler:(id)a6
+- (void)updateVisit:(id)visit oldScore:(int)score newScore:(int)newScore completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  visitCopy = visit;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__WBSHistoryServiceURLCompletion_updateVisit_oldScore_newScore_completionHandler___block_invoke;
   v15[3] = &unk_1E7FC59B0;
   v15[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = visitCopy;
+  scoreCopy = score;
+  newScoreCopy = newScore;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = visitCopy;
   dispatch_barrier_async(queue, v15);
 }
 
@@ -783,23 +783,23 @@ void __82__WBSHistoryServiceURLCompletion_updateVisit_oldScore_newScore_completi
   dispatch_async(v5, v6);
 }
 
-- (void)removeURLStrings:(id)a3
+- (void)removeURLStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__WBSHistoryServiceURLCompletion_removeURLStrings___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stringsCopy;
+  v6 = stringsCopy;
   dispatch_barrier_async(queue, v7);
 }
 
-- (double)lastVisitTimeForURLString:(id)a3
+- (double)lastVisitTimeForURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -809,10 +809,10 @@ void __82__WBSHistoryServiceURLCompletion_updateVisit_oldScore_newScore_completi
   block[1] = 3221225472;
   block[2] = __60__WBSHistoryServiceURLCompletion_lastVisitTimeForURLString___block_invoke;
   block[3] = &unk_1E7FC4D50;
-  v10 = v4;
+  v10 = stringCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = stringCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -820,35 +820,35 @@ void __82__WBSHistoryServiceURLCompletion_updateVisit_oldScore_newScore_completi
   return v7;
 }
 
-- (id)_endOfRedirectChain:(id)a3
+- (id)_endOfRedirectChain:(id)chain
 {
-  v4 = a3;
+  chainCopy = chain;
   v5 = 16;
   while (1)
   {
-    v6 = SafariShared::URLCompletionEntryMap::nextItemInRedirectChainOfItem(&self->_map, v4);
+    v6 = SafariShared::URLCompletionEntryMap::nextItemInRedirectChainOfItem(&self->_map, chainCopy);
     if (!v6)
     {
       break;
     }
 
-    v4 = v6;
+    chainCopy = v6;
     if (!--v5)
     {
       goto LABEL_6;
     }
   }
 
-  v6 = v4;
+  v6 = chainCopy;
 LABEL_6:
 
   return v6;
 }
 
-- (void)searchForUserTypedString:(id)a3 options:(unint64_t)a4 currentTime:(double)a5 enumerationGroup:(id)a6 enumerationBlock:(id)a7
+- (void)searchForUserTypedString:(id)string options:(unint64_t)options currentTime:(double)time enumerationGroup:(id)group enumerationBlock:(id)block
 {
-  v12 = a3;
-  v13 = a7;
+  stringCopy = string;
+  blockCopy = block;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x6012000000;
@@ -857,7 +857,7 @@ LABEL_6:
   v28[5] = 256;
   memset(&v28[6], 0, 40);
   v29 = 1065353216;
-  v14 = a6;
+  groupCopy = group;
   v15 = dispatch_queue_create("WBSHistoryServiceURLCompletion.redundancyPreventer", 0);
   v16 = v28[6];
   v28[6] = v15;
@@ -874,14 +874,14 @@ LABEL_6:
   v21[2] = __113__WBSHistoryServiceURLCompletion_searchForUserTypedString_options_currentTime_enumerationGroup_enumerationBlock___block_invoke;
   v21[3] = &unk_1E7FC7FA8;
   v25 = v28;
-  v26 = a4;
-  v22 = v12;
-  v23 = self;
-  v27 = a5;
-  v24 = v13;
-  v19 = v13;
-  v20 = v12;
-  SafariShared::URLCompletionEntryMap::enumerateConcurrently(&self->_map, v14, queue, v18, v21);
+  optionsCopy = options;
+  v22 = stringCopy;
+  selfCopy = self;
+  timeCopy = time;
+  v24 = blockCopy;
+  v19 = blockCopy;
+  v20 = stringCopy;
+  SafariShared::URLCompletionEntryMap::enumerateConcurrently(&self->_map, groupCopy, queue, v18, v21);
 
   _Block_object_dispose(v28, 8);
   std::__hash_table<NSString * {__strong},std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,std::allocator<NSString * {__strong}>>::~__hash_table(&v28[7]);
@@ -948,14 +948,14 @@ void __113__WBSHistoryServiceURLCompletion_searchForUserTypedString_options_curr
   }
 }
 
-- (void)computeFrequentlyVisitedSites:(unint64_t)a3 minimalVisitCountScore:(unint64_t)a4 blockList:(id)a5 allowList:(id)a6 options:(unint64_t)a7 currentTime:(double)a8 completionHandler:(id)a9
+- (void)computeFrequentlyVisitedSites:(unint64_t)sites minimalVisitCountScore:(unint64_t)score blockList:(id)list allowList:(id)allowList options:(unint64_t)options currentTime:(double)time completionHandler:(id)handler
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  if (a3)
+  listCopy = list;
+  allowListCopy = allowList;
+  handlerCopy = handler;
+  if (sites)
   {
-    v19 = 0;
+    dictionary = 0;
     v47[0] = 0;
     v47[1] = v47;
     v47[2] = 0x4812000000;
@@ -967,14 +967,14 @@ void __113__WBSHistoryServiceURLCompletion_searchForUserTypedString_options_curr
     v45[1] = v45;
     v45[2] = 0x2020000000;
     v46 = 0x800000;
-    if ((a7 & 2) != 0)
+    if ((options & 2) != 0)
     {
-      v19 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v29 = v18;
-    v20 = v16;
-    if ((a7 & 1) != 0 && [WBSHistoryServiceURLCompletion computeFrequentlyVisitedSites:minimalVisitCountScore:blockList:allowList:options:currentTime:completionHandler:]::filterExpressionOnce != -1)
+    v29 = handlerCopy;
+    v20 = listCopy;
+    if ((options & 1) != 0 && [WBSHistoryServiceURLCompletion computeFrequentlyVisitedSites:minimalVisitCountScore:blockList:allowList:options:currentTime:completionHandler:]::filterExpressionOnce != -1)
     {
       [WBSHistoryServiceURLCompletion computeFrequentlyVisitedSites:minimalVisitCountScore:blockList:allowList:options:currentTime:completionHandler:];
     }
@@ -986,21 +986,21 @@ void __113__WBSHistoryServiceURLCompletion_searchForUserTypedString_options_curr
     block[1] = 3221225472;
     block[2] = __145__WBSHistoryServiceURLCompletion_computeFrequentlyVisitedSites_minimalVisitCountScore_blockList_allowList_options_currentTime_completionHandler___block_invoke_2;
     block[3] = &unk_1E7FC8020;
-    v41 = a4;
+    scoreCopy = score;
     block[4] = self;
     v34 = v21;
-    v35 = v17;
-    v43 = a8;
+    v35 = allowListCopy;
+    timeCopy = time;
     v36 = v20;
     v37 = v22;
-    v38 = v19;
+    v38 = dictionary;
     v39 = v45;
-    v42 = a7;
+    optionsCopy = options;
     v40 = v47;
-    v44 = a3;
-    v24 = v19;
+    sitesCopy = sites;
+    v24 = dictionary;
     v25 = v22;
-    v16 = v20;
+    listCopy = v20;
     v26 = v25;
     v27 = v21;
     dispatch_group_async(v27, queue, block);
@@ -1008,7 +1008,7 @@ void __113__WBSHistoryServiceURLCompletion_searchForUserTypedString_options_curr
     v30[1] = 3221225472;
     v30[2] = __145__WBSHistoryServiceURLCompletion_computeFrequentlyVisitedSites_minimalVisitCountScore_blockList_allowList_options_currentTime_completionHandler___block_invoke_5;
     v30[3] = &unk_1E7FC4B78;
-    v18 = v29;
+    handlerCopy = v29;
     v31 = v29;
     v32 = v47;
     dispatch_group_notify(v27, v26, v30);
@@ -1022,7 +1022,7 @@ void __113__WBSHistoryServiceURLCompletion_searchForUserTypedString_options_curr
   else
   {
     v28 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    (*(v18 + 2))(v18, 0, v28);
+    (*(handlerCopy + 2))(handlerCopy, 0, v28);
   }
 }
 

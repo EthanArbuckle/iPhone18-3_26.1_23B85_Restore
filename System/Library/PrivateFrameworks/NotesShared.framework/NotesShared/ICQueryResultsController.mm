@@ -1,22 +1,22 @@
 @interface ICQueryResultsController
 - (ICQuery)query;
-- (ICQueryResultsController)initWithManagedObjectContext:(id)a3 query:(id)a4;
+- (ICQueryResultsController)initWithManagedObjectContext:(id)context query:(id)query;
 - (NSManagedObjectContext)managedObjectContext;
 - (id)performFetch;
 @end
 
 @implementation ICQueryResultsController
 
-- (ICQueryResultsController)initWithManagedObjectContext:(id)a3 query:(id)a4
+- (ICQueryResultsController)initWithManagedObjectContext:(id)context query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  queryCopy = query;
   v12.receiver = self;
   v12.super_class = ICQueryResultsController;
   v8 = [(ICQueryResultsController *)&v12 init];
   if (v8)
   {
-    v9 = [[ICQueryResultsControllerObjC alloc] initWithManagedObjectContext:v6 query:v7];
+    v9 = [[ICQueryResultsControllerObjC alloc] initWithManagedObjectContext:contextCopy query:queryCopy];
     queryResultsControllerObjC = v8->_queryResultsControllerObjC;
     v8->_queryResultsControllerObjC = v9;
   }
@@ -26,26 +26,26 @@
 
 - (id)performFetch
 {
-  v2 = [(ICQueryResultsController *)self queryResultsControllerObjC];
-  v3 = [v2 performFetch];
+  queryResultsControllerObjC = [(ICQueryResultsController *)self queryResultsControllerObjC];
+  performFetch = [queryResultsControllerObjC performFetch];
 
-  return v3;
+  return performFetch;
 }
 
 - (NSManagedObjectContext)managedObjectContext
 {
-  v2 = [(ICQueryResultsController *)self queryResultsControllerObjC];
-  v3 = [v2 managedObjectContext];
+  queryResultsControllerObjC = [(ICQueryResultsController *)self queryResultsControllerObjC];
+  managedObjectContext = [queryResultsControllerObjC managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (ICQuery)query
 {
-  v2 = [(ICQueryResultsController *)self queryResultsControllerObjC];
-  v3 = [v2 query];
+  queryResultsControllerObjC = [(ICQueryResultsController *)self queryResultsControllerObjC];
+  query = [queryResultsControllerObjC query];
 
-  return v3;
+  return query;
 }
 
 @end

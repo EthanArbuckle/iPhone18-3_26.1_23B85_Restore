@@ -1,5 +1,5 @@
 @interface LoadingViewController
-- (LoadingViewController)initWithWebClip:(id)a3 orientation:(int64_t)a4;
+- (LoadingViewController)initWithWebClip:(id)clip orientation:(int64_t)orientation;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
@@ -7,17 +7,17 @@
 
 @implementation LoadingViewController
 
-- (LoadingViewController)initWithWebClip:(id)a3 orientation:(int64_t)a4
+- (LoadingViewController)initWithWebClip:(id)clip orientation:(int64_t)orientation
 {
-  v6 = a3;
+  clipCopy = clip;
   v7 = [(LoadingViewController *)self initWithNibName:0 bundle:0];
   [(LoadingViewController *)v7 setModalPresentationStyle:5];
   [(LoadingViewController *)v7 setModalPresentationCapturesStatusBarAppearance:1];
   [(LoadingViewController *)v7 setModalTransitionStyle:2];
-  v7->_orientation = a4;
-  [v6 webClipStatusBarStyle];
+  v7->_orientation = orientation;
+  [clipCopy webClipStatusBarStyle];
   v7->_preferredStatusBarStyle = UIStatusBarStyleFromUIWebClipStatusBarStyle();
-  v8 = [v6 getStartupImage:v7->_orientation];
+  v8 = [clipCopy getStartupImage:v7->_orientation];
 
   if ([v8 sf_isLaunchImageSizedForOrientation:v7->_orientation includesStatusBar:&v7->_imageIsFullScreen])
   {
@@ -43,9 +43,9 @@
 
 - (void)loadView
 {
-  v9 = [MEMORY[0x277D75348] systemBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  [v3 setBackgroundColor:v9];
+  [v3 setBackgroundColor:systemBackgroundColor];
   [(LoadingViewController *)self setView:v3];
   if (self->_image)
   {
@@ -65,13 +65,13 @@
 
     if ([(LoadingViewController *)self preferredStatusBarStyle])
     {
-      v8 = [MEMORY[0x277D75348] blackColor];
-      [(UIView *)self->_statusBarView setBackgroundColor:v8];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UIView *)self->_statusBarView setBackgroundColor:blackColor];
     }
 
     else
     {
-      [(UIView *)self->_statusBarView setBackgroundColor:v9];
+      [(UIView *)self->_statusBarView setBackgroundColor:systemBackgroundColor];
     }
 
     [v3 addSubview:self->_statusBarView];
@@ -83,8 +83,8 @@
   v17.receiver = self;
   v17.super_class = LoadingViewController;
   [(LoadingViewController *)&v17 viewDidLayoutSubviews];
-  v3 = [(LoadingViewController *)self view];
-  [v3 bounds];
+  view = [(LoadingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -92,8 +92,8 @@
 
   [*MEMORY[0x277D76620] statusBarHeightForOrientation:self->_orientation];
   v13 = v12;
-  v14 = [(LoadingViewController *)self view];
-  [v14 frame];
+  view2 = [(LoadingViewController *)self view];
+  [view2 frame];
   v15 = 0.0;
   [(UIView *)self->_statusBarView setFrame:0.0, 0.0, CGRectGetWidth(v18), v13];
 

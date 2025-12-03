@@ -1,9 +1,9 @@
 @interface BLEMIDIDataReceiver
 - (BLEMIDIDataReceiver)init;
-- (BLEMIDIDataReceiver)initWithEndpoint:(unsigned int)a3 owner:(MIDIDriverInterface *)a4;
-- (const)nextMIDIEventFrom:(const char *)a3 to:(const char *)a4;
+- (BLEMIDIDataReceiver)initWithEndpoint:(unsigned int)endpoint owner:(MIDIDriverInterface *)owner;
+- (const)nextMIDIEventFrom:(const char *)from to:(const char *)to;
 - (void)dealloc;
-- (void)unpackValue:(id)a3;
+- (void)unpackValue:(id)value;
 @end
 
 @implementation BLEMIDIDataReceiver
@@ -24,7 +24,7 @@
   return 0;
 }
 
-- (BLEMIDIDataReceiver)initWithEndpoint:(unsigned int)a3 owner:(MIDIDriverInterface *)a4
+- (BLEMIDIDataReceiver)initWithEndpoint:(unsigned int)endpoint owner:(MIDIDriverInterface *)owner
 {
   v9.receiver = self;
   v9.super_class = BLEMIDIDataReceiver;
@@ -32,9 +32,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->endpoint = a3;
-    v6->driver = a4;
-    v6->packetEmitter.mEP = a3;
+    v6->endpoint = endpoint;
+    v6->driver = owner;
+    v6->packetEmitter.mEP = endpoint;
     v6->timeStamper = objc_alloc_init(BLEMIDITimeStamper);
     v7->logBuffer[0] = 0;
   }
@@ -49,16 +49,16 @@
   [(BLEMIDIDataReceiver *)&v3 dealloc];
 }
 
-- (const)nextMIDIEventFrom:(const char *)a3 to:(const char *)a4
+- (const)nextMIDIEventFrom:(const char *)from to:(const char *)to
 {
-  v4 = *a3;
+  v4 = *from;
   v5 = v4 >> 4;
   if (v4 >> 4 <= 0xF)
   {
     if (((1 << v5) & 0x4F00) != 0)
     {
 LABEL_3:
-      v6 = a3 + 3;
+      v6 = from + 3;
       goto LABEL_6;
     }
 
@@ -69,7 +69,7 @@ LABEL_3:
 
     if (v5 == 15)
     {
-      if (*a3 > 0xF1u)
+      if (*from > 0xF1u)
       {
         if (v4 == 242)
         {
@@ -89,22 +89,22 @@ LABEL_3:
         if (v4 != 241)
         {
 LABEL_20:
-          v6 = a3 + 1;
+          v6 = from + 1;
           goto LABEL_6;
         }
 
 LABEL_5:
-        v6 = a3 + 2;
+        v6 = from + 2;
         goto LABEL_6;
       }
     }
   }
 
-  v8 = a3 + 1;
+  v8 = from + 1;
   do
   {
     v6 = v8;
-    if (v8 >= a4)
+    if (v8 >= to)
     {
       break;
     }
@@ -114,9 +114,9 @@ LABEL_5:
 
   while ((*v6 & 0x80000000) == 0);
 LABEL_6:
-  if (v6 >= a4)
+  if (v6 >= to)
   {
-    return a4;
+    return to;
   }
 
   else
@@ -125,20 +125,20 @@ LABEL_6:
   }
 }
 
-- (void)unpackValue:(id)a3
+- (void)unpackValue:(id)value
 {
   driver = self->driver;
-  v6 = [a3 length];
-  v7 = [a3 bytes];
+  v6 = [value length];
+  bytes = [value bytes];
   if (driver[11])
   {
     return;
   }
 
-  v8 = v7;
-  v9 = [(BLEMIDIDataReceiver *)self nowInMS];
+  v8 = bytes;
+  nowInMS = [(BLEMIDIDataReceiver *)self nowInMS];
   [(BLEMIDITimeStamper *)self->timeStamper setConnectionIntervalNanos:driver[32]];
-  [(BLEMIDITimeStamper *)self->timeStamper setReceiveTime:v9];
+  [(BLEMIDITimeStamper *)self->timeStamper setReceiveTime:nowInMS];
   v10 = *v8;
   if ((*v8 & 0x80000000) == 0)
   {
@@ -226,8 +226,8 @@ LABEL_50:
     return;
   }
 
-  v49 = v9;
-  v52 = a3;
+  v49 = nowInMS;
+  valueCopy = value;
   time = 0;
   v54 = 0;
   v20 = 0;
@@ -281,8 +281,8 @@ LABEL_42:
           _os_log_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "%25s:%-5d ERROR: Expected a timestamp byte, concurrent running status, or SysEx continuation. The full packet will be logged below.", buf, 0x12u);
         }
 
-        v45 = [v52 bytes];
-        +[BLEMIDIAccessor logEvent:length:timeStamp:intoBuffer:](BLEMIDIAccessor, "logEvent:length:timeStamp:intoBuffer:", v45, [v52 length], v50, self->logBuffer);
+        bytes2 = [valueCopy bytes];
+        +[BLEMIDIAccessor logEvent:length:timeStamp:intoBuffer:](BLEMIDIAccessor, "logEvent:length:timeStamp:intoBuffer:", bytes2, [valueCopy length], v50, self->logBuffer);
         sub_BDA4();
         v46 = qword_1D998;
         if (os_log_type_enabled(qword_1D998, OS_LOG_TYPE_ERROR))
@@ -445,8 +445,8 @@ LABEL_34:
     _os_log_impl(&dword_0, v47, OS_LOG_TYPE_ERROR, "%25s:%-5d ERROR: Discarding malformed packet. The full packet will be logged below.", buf, 0x12u);
   }
 
-  v48 = [v52 bytes];
-  +[BLEMIDIAccessor logEvent:length:timeStamp:intoBuffer:](BLEMIDIAccessor, "logEvent:length:timeStamp:intoBuffer:", v48, [v52 length], v51, self->logBuffer);
+  bytes3 = [valueCopy bytes];
+  +[BLEMIDIAccessor logEvent:length:timeStamp:intoBuffer:](BLEMIDIAccessor, "logEvent:length:timeStamp:intoBuffer:", bytes3, [valueCopy length], v51, self->logBuffer);
   sub_BDA4();
   v46 = qword_1D998;
   if (os_log_type_enabled(qword_1D998, OS_LOG_TYPE_ERROR))

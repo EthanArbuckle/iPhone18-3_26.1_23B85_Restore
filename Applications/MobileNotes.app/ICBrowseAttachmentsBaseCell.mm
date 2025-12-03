@@ -1,5 +1,5 @@
 @interface ICBrowseAttachmentsBaseCell
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (ICBrowseAttachmentsCellDelegate)delegate;
 - (ICBrowseAttachmentsCollectionController)collectionController;
 - (ICNAEventReporter)eventReporter;
@@ -9,18 +9,18 @@
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)dragItemForAttachment;
-- (id)previewActionsForViewControllerManager:(id)a3 fromView:(id)a4;
+- (id)previewActionsForViewControllerManager:(id)manager fromView:(id)view;
 - (int64_t)countOfItemsInSection;
 - (int64_t)indexInSection;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)eventReporterLostSession:(id)a3;
-- (void)openAttachment:(id)a3;
-- (void)openAttachmentInspector:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)eventReporterLostSession:(id)session;
+- (void)openAttachment:(id)attachment;
+- (void)openAttachmentInspector:(id)inspector;
 - (void)prepareForReuse;
-- (void)setDragging:(BOOL)a3;
-- (void)shareAttachment:(id)a3;
-- (void)showInNote:(id)a3;
+- (void)setDragging:(BOOL)dragging;
+- (void)shareAttachment:(id)attachment;
+- (void)showInNote:(id)note;
 - (void)updateFocusEffect;
 @end
 
@@ -74,15 +74,15 @@
   self->_eventReporter = 0;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if ("showInNote:" == a3 || "openAttachment:" == a3)
+  if ("showInNote:" == action || "openAttachment:" == action)
   {
     return 1;
   }
 
   result = ICDebugModeEnabled();
-  if ("openAttachmentInspector:" != a3)
+  if ("openAttachmentInspector:" != action)
   {
     return 0;
   }
@@ -90,79 +90,79 @@
   return result;
 }
 
-- (void)showInNote:(id)a3
+- (void)showInNote:(id)note
 {
-  v7 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  v4 = [(ICBrowseAttachmentsBaseCell *)self ic_viewControllerManager];
-  v5 = [v7 objectID];
-  [v4 selectAttachmentWithObjectID:v5 animated:1];
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  ic_viewControllerManager = [(ICBrowseAttachmentsBaseCell *)self ic_viewControllerManager];
+  objectID = [attachment objectID];
+  [ic_viewControllerManager selectAttachmentWithObjectID:objectID animated:1];
 
-  v6 = [(ICBrowseAttachmentsBaseCell *)self eventReporter];
-  [v6 submitAttachmentBrowserActionEventForType:3];
+  eventReporter = [(ICBrowseAttachmentsBaseCell *)self eventReporter];
+  [eventReporter submitAttachmentBrowserActionEventForType:3];
 }
 
-- (void)openAttachment:(id)a3
+- (void)openAttachment:(id)attachment
 {
-  v5 = [(ICBrowseAttachmentsBaseCell *)self delegate];
-  v4 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  [v5 browseAttachmentsCell:self didSelectAttachment:v4];
+  delegate = [(ICBrowseAttachmentsBaseCell *)self delegate];
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  [delegate browseAttachmentsCell:self didSelectAttachment:attachment];
 }
 
-- (void)shareAttachment:(id)a3
+- (void)shareAttachment:(id)attachment
 {
-  v5 = [(ICBrowseAttachmentsBaseCell *)self delegate];
-  v4 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  [v5 browseAttachmentsCell:self shouldShareAttachment:v4];
+  delegate = [(ICBrowseAttachmentsBaseCell *)self delegate];
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  [delegate browseAttachmentsCell:self shouldShareAttachment:attachment];
 }
 
-- (void)openAttachmentInspector:(id)a3
+- (void)openAttachmentInspector:(id)inspector
 {
-  v4 = [(ICBrowseAttachmentsBaseCell *)self delegate];
+  delegate = [(ICBrowseAttachmentsBaseCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(ICBrowseAttachmentsBaseCell *)self delegate];
-    v6 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-    [v7 browseAttachmentsCell:self shouldInspectAttachment:v6];
+    delegate2 = [(ICBrowseAttachmentsBaseCell *)self delegate];
+    attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+    [delegate2 browseAttachmentsCell:self shouldInspectAttachment:attachment];
   }
 }
 
 - (UICollectionView)collectionView
 {
-  v2 = [(ICBrowseAttachmentsBaseCell *)self collectionController];
-  v3 = [v2 collectionView];
+  collectionController = [(ICBrowseAttachmentsBaseCell *)self collectionController];
+  collectionView = [collectionController collectionView];
 
-  return v3;
+  return collectionView;
 }
 
 - (int64_t)indexInSection
 {
-  v3 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
-  v4 = [v3 indexPathForCell:self];
-  v5 = [v4 item];
+  collectionView = [(ICBrowseAttachmentsBaseCell *)self collectionView];
+  v4 = [collectionView indexPathForCell:self];
+  item = [v4 item];
 
-  return v5;
+  return item;
 }
 
 - (int64_t)countOfItemsInSection
 {
-  v3 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
-  v4 = [v3 indexPathForCell:self];
+  collectionView = [(ICBrowseAttachmentsBaseCell *)self collectionView];
+  v4 = [collectionView indexPathForCell:self];
 
-  v5 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
-  v6 = [v5 dataSource];
-  v7 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
-  v8 = [v6 collectionView:v7 numberOfItemsInSection:{objc_msgSend(v4, "section")}];
+  collectionView2 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
+  dataSource = [collectionView2 dataSource];
+  collectionView3 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
+  v8 = [dataSource collectionView:collectionView3 numberOfItemsInSection:{objc_msgSend(v4, "section")}];
 
   return v8;
 }
 
 - (NSString)itemNumberAccessibilityString
 {
-  v3 = [(ICBrowseAttachmentsBaseCell *)self collectionView];
+  collectionView = [(ICBrowseAttachmentsBaseCell *)self collectionView];
 
-  if (v3)
+  if (collectionView)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"%ld of %ld" value:&stru_100661CF0 table:0];
@@ -178,36 +178,36 @@
   return v6;
 }
 
-- (void)setDragging:(BOOL)a3
+- (void)setDragging:(BOOL)dragging
 {
-  v3 = a3;
-  v5 = [(ICBrowseAttachmentsBaseCell *)self isDragging];
+  draggingCopy = dragging;
+  isDragging = [(ICBrowseAttachmentsBaseCell *)self isDragging];
   v6.receiver = self;
   v6.super_class = ICBrowseAttachmentsBaseCell;
-  [(ICBrowseAttachmentsBaseCell *)&v6 setDragging:v3];
-  if (v5 != v3)
+  [(ICBrowseAttachmentsBaseCell *)&v6 setDragging:draggingCopy];
+  if (isDragging != draggingCopy)
   {
-    [(ICBrowseAttachmentsBaseCell *)self updateAppearanceForDragging:v3];
+    [(ICBrowseAttachmentsBaseCell *)self updateAppearanceForDragging:draggingCopy];
   }
 }
 
 - (id)dragItemForAttachment
 {
-  v3 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  v4 = [v3 attachmentModel];
-  v5 = [v4 itemProvider];
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  attachmentModel = [attachment attachmentModel];
+  itemProvider = [attachmentModel itemProvider];
 
-  if (v5)
+  if (itemProvider)
   {
-    v6 = [[UIDragItem alloc] initWithItemProvider:v5];
-    v7 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-    v8 = [v7 isChildOfDocumentGallery];
+    v6 = [[UIDragItem alloc] initWithItemProvider:itemProvider];
+    attachment2 = [(ICBrowseAttachmentsBaseCell *)self attachment];
+    isChildOfDocumentGallery = [attachment2 isChildOfDocumentGallery];
 
-    if ((v8 & 1) == 0)
+    if ((isChildOfDocumentGallery & 1) == 0)
     {
-      v9 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-      v10 = [v9 attachmentModel];
-      [v6 setLocalObject:v10];
+      attachment3 = [(ICBrowseAttachmentsBaseCell *)self attachment];
+      attachmentModel2 = [attachment3 attachmentModel];
+      [v6 setLocalObject:attachmentModel2];
     }
   }
 
@@ -219,10 +219,10 @@
   return v6;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
-  v6 = [v5 isEqual:self];
+  nextFocusedItem = [context nextFocusedItem];
+  v6 = [nextFocusedItem isEqual:self];
 
   if (v6)
   {
@@ -238,22 +238,22 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v13 = [(ICBrowseAttachmentsBaseCell *)self layer];
-  [v13 cornerRadius];
+  layer = [(ICBrowseAttachmentsBaseCell *)self layer];
+  [layer cornerRadius];
   v12 = [UIFocusHaloEffect effectWithRoundedRect:kCACornerCurveContinuous cornerRadius:v4 curve:v6, v8, v10, v11];
   [(ICBrowseAttachmentsBaseCell *)self setFocusEffect:v12];
 }
 
-- (id)previewActionsForViewControllerManager:(id)a3 fromView:(id)a4
+- (id)previewActionsForViewControllerManager:(id)manager fromView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  viewCopy = view;
   objc_initWeak(location, self);
   v8 = +[NSMutableArray array];
   v9 = [ICAttachmentView alloc];
-  v10 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  v11 = [(ICBrowseAttachmentsBaseCell *)self window];
-  v12 = [v9 initWithAttachment:v10 textContainer:0 actionWindow:v11];
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  window = [(ICBrowseAttachmentsBaseCell *)self window];
+  v12 = [v9 initWithAttachment:attachment textContainer:0 actionWindow:window];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"Copy" value:&stru_100661CF0 table:0];
@@ -275,7 +275,7 @@
   v35[3] = &unk_100647A30;
   objc_copyWeak(&v36, location);
   v19 = [UIAction ic_actionWithTitle:v18 imageName:@"square.and.arrow.up" handler:v35];
-  v26 = v7;
+  v26 = viewCopy;
 
   [v8 addObject:v19];
   v20 = +[NSBundle mainBundle];
@@ -295,8 +295,8 @@
     v30 = sub_1000DE6DC;
     v31 = &unk_100647A30;
     objc_copyWeak(&v32, location);
-    v23 = [UIAction ic_actionWithTitle:@"Inspect Attachment" imageName:@"magnifyingglass" handler:&v28, v7];
-    [v8 addObject:v23];
+    viewCopy = [UIAction ic_actionWithTitle:@"Inspect Attachment" imageName:@"magnifyingglass" handler:&v28, viewCopy];
+    [v8 addObject:viewCopy];
 
     objc_destroyWeak(&v32);
   }
@@ -332,17 +332,17 @@
   return v9;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = ICNAEventReporterLostSessionNotification;
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [v8 removeObserver:self name:v6 object:object];
 }
 
 - (ICBrowseAttachmentsCollectionController)collectionController

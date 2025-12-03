@@ -1,11 +1,11 @@
 @interface PSNoiseCancellationSettingsDetail
 + (BOOL)isEnabled;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PSNoiseCancellationSettingsDetail
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
   v3 = PSConnected298();
   if (v3)

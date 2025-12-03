@@ -17,8 +17,8 @@
 - (__CFString)safari_suggestionsLocalizedStringRelativeToNowForDate:()WBSNSRelativeDateTimeFormatterExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 isDateInToday:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar isDateInToday:v4];
 
   if (v6)
   {
@@ -28,8 +28,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 isDateInYesterday:v4];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar2 isDateInYesterday:v4];
 
   if (v9)
   {
@@ -40,7 +40,7 @@ LABEL_5:
   if (v4)
   {
     v12 = [MEMORY[0x1E695DF00] now];
-    v10 = [a1 localizedStringForDate:v4 relativeToDate:v12];
+    v10 = [self localizedStringForDate:v4 relativeToDate:v12];
   }
 
   else

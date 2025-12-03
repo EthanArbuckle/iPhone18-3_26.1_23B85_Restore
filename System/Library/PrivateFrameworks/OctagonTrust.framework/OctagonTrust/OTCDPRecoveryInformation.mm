@@ -1,49 +1,49 @@
 @interface OTCDPRecoveryInformation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNonViableRepair:(BOOL)a3;
-- (void)setHasSilentRecoveryAttempt:(BOOL)a3;
-- (void)setHasUseCachedSecret:(BOOL)a3;
-- (void)setHasUsePreviouslyCachedRecoveryKey:(BOOL)a3;
-- (void)setHasUsesMultipleIcsc:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNonViableRepair:(BOOL)repair;
+- (void)setHasSilentRecoveryAttempt:(BOOL)attempt;
+- (void)setHasUseCachedSecret:(BOOL)secret;
+- (void)setHasUsePreviouslyCachedRecoveryKey:(BOOL)key;
+- (void)setHasUsesMultipleIcsc:(BOOL)icsc;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTCDPRecoveryInformation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(OTCDPRecoveryInformation *)self setRecoverySecret:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[32] & 8) != 0)
+  if ((fromCopy[32] & 8) != 0)
   {
-    self->_useCachedSecret = v4[27];
+    self->_useCachedSecret = fromCopy[27];
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(OTCDPRecoveryInformation *)self setRecoveryKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[32];
+  v5 = fromCopy[32];
   if ((v5 & 0x10) != 0)
   {
-    self->_usePreviouslyCachedRecoveryKey = v4[28];
+    self->_usePreviouslyCachedRecoveryKey = fromCopy[28];
     *&self->_has |= 0x10u;
-    v5 = v4[32];
+    v5 = fromCopy[32];
     if ((v5 & 4) == 0)
     {
 LABEL_9:
@@ -56,14 +56,14 @@ LABEL_9:
     }
   }
 
-  else if ((v4[32] & 4) == 0)
+  else if ((fromCopy[32] & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_silentRecoveryAttempt = v4[26];
+  self->_silentRecoveryAttempt = fromCopy[26];
   *&self->_has |= 4u;
-  v5 = v4[32];
+  v5 = fromCopy[32];
   if (!v5)
   {
 LABEL_10:
@@ -76,9 +76,9 @@ LABEL_10:
   }
 
 LABEL_18:
-  self->_containsIcdpData = v4[24];
+  self->_containsIcdpData = fromCopy[24];
   *&self->_has |= 1u;
-  v5 = v4[32];
+  v5 = fromCopy[32];
   if ((v5 & 0x20) == 0)
   {
 LABEL_11:
@@ -91,12 +91,12 @@ LABEL_11:
   }
 
 LABEL_19:
-  self->_usesMultipleIcsc = v4[29];
+  self->_usesMultipleIcsc = fromCopy[29];
   *&self->_has |= 0x20u;
-  if ((v4[32] & 2) != 0)
+  if ((fromCopy[32] & 2) != 0)
   {
 LABEL_12:
-    self->_nonViableRepair = v4[25];
+    self->_nonViableRepair = fromCopy[25];
     *&self->_has |= 2u;
   }
 
@@ -183,16 +183,16 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   recoverySecret = self->_recoverySecret;
-  if (recoverySecret | *(v4 + 2))
+  if (recoverySecret | *(equalCopy + 2))
   {
     if (![(NSString *)recoverySecret isEqual:?])
     {
@@ -201,36 +201,36 @@ LABEL_9:
   }
 
   has = self->_has;
-  v7 = *(v4 + 32);
+  v7 = *(equalCopy + 32);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0)
+    if ((*(equalCopy + 32) & 8) == 0)
     {
       goto LABEL_53;
     }
 
-    v10 = *(v4 + 27);
+    v10 = *(equalCopy + 27);
     if (self->_useCachedSecret)
     {
-      if ((*(v4 + 27) & 1) == 0)
+      if ((*(equalCopy + 27) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 27))
+    else if (*(equalCopy + 27))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_53;
   }
 
   recoveryKey = self->_recoveryKey;
-  if (recoveryKey | *(v4 + 1))
+  if (recoveryKey | *(equalCopy + 1))
   {
     if (![(NSString *)recoveryKey isEqual:?])
     {
@@ -238,7 +238,7 @@ LABEL_9:
     }
 
     has = self->_has;
-    v7 = *(v4 + 32);
+    v7 = *(equalCopy + 32);
   }
 
   if ((has & 0x10) != 0)
@@ -248,16 +248,16 @@ LABEL_9:
       goto LABEL_53;
     }
 
-    v11 = *(v4 + 28);
+    v11 = *(equalCopy + 28);
     if (self->_usePreviouslyCachedRecoveryKey)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_53;
     }
@@ -275,16 +275,16 @@ LABEL_9:
       goto LABEL_53;
     }
 
-    v12 = *(v4 + 26);
+    v12 = *(equalCopy + 26);
     if (self->_silentRecoveryAttempt)
     {
-      if ((*(v4 + 26) & 1) == 0)
+      if ((*(equalCopy + 26) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 26))
+    else if (*(equalCopy + 26))
     {
       goto LABEL_53;
     }
@@ -302,16 +302,16 @@ LABEL_9:
       goto LABEL_53;
     }
 
-    v13 = *(v4 + 24);
+    v13 = *(equalCopy + 24);
     if (self->_containsIcdpData)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_53;
     }
@@ -339,16 +339,16 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v14 = *(v4 + 29);
+  v14 = *(equalCopy + 29);
   if (self->_usesMultipleIcsc)
   {
-    if ((*(v4 + 29) & 1) == 0)
+    if ((*(equalCopy + 29) & 1) == 0)
     {
       goto LABEL_53;
     }
   }
 
-  else if (*(v4 + 29))
+  else if (*(equalCopy + 29))
   {
     goto LABEL_53;
   }
@@ -361,13 +361,13 @@ LABEL_17:
     {
       if (self->_nonViableRepair)
       {
-        if (*(v4 + 25))
+        if (*(equalCopy + 25))
         {
           goto LABEL_55;
         }
       }
 
-      else if (!*(v4 + 25))
+      else if (!*(equalCopy + 25))
       {
 LABEL_55:
         v9 = 1;
@@ -383,10 +383,10 @@ LABEL_54:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_recoverySecret copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_recoverySecret copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -396,7 +396,7 @@ LABEL_54:
     *(v5 + 32) |= 8u;
   }
 
-  v8 = [(NSString *)self->_recoveryKey copyWithZone:a3];
+  v8 = [(NSString *)self->_recoveryKey copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -465,33 +465,33 @@ LABEL_8:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_recoverySecret)
   {
-    [v4 setRecoverySecret:?];
-    v4 = v6;
+    [toCopy setRecoverySecret:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    v4[27] = self->_useCachedSecret;
-    v4[32] |= 8u;
+    toCopy[27] = self->_useCachedSecret;
+    toCopy[32] |= 8u;
   }
 
   if (self->_recoveryKey)
   {
     [v6 setRecoveryKey:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[28] = self->_usePreviouslyCachedRecoveryKey;
-    v4[32] |= 0x10u;
+    toCopy[28] = self->_usePreviouslyCachedRecoveryKey;
+    toCopy[32] |= 0x10u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -510,8 +510,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[26] = self->_silentRecoveryAttempt;
-  v4[32] |= 4u;
+  toCopy[26] = self->_silentRecoveryAttempt;
+  toCopy[32] |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -525,8 +525,8 @@ LABEL_10:
   }
 
 LABEL_18:
-  v4[24] = self->_containsIcdpData;
-  v4[32] |= 1u;
+  toCopy[24] = self->_containsIcdpData;
+  toCopy[32] |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -540,39 +540,39 @@ LABEL_11:
   }
 
 LABEL_19:
-  v4[29] = self->_usesMultipleIcsc;
-  v4[32] |= 0x20u;
+  toCopy[29] = self->_usesMultipleIcsc;
+  toCopy[32] |= 0x20u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_12:
-    v4[25] = self->_nonViableRepair;
-    v4[32] |= 2u;
+    toCopy[25] = self->_nonViableRepair;
+    toCopy[32] |= 2u;
   }
 
 LABEL_13:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_recoverySecret)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     useCachedSecret = self->_useCachedSecret;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_recoveryKey)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -580,7 +580,7 @@ LABEL_13:
   {
     usePreviouslyCachedRecoveryKey = self->_usePreviouslyCachedRecoveryKey;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -601,7 +601,7 @@ LABEL_9:
 
   silentRecoveryAttempt = self->_silentRecoveryAttempt;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -617,7 +617,7 @@ LABEL_10:
 LABEL_18:
   containsIcdpData = self->_containsIcdpData;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -633,13 +633,13 @@ LABEL_11:
 LABEL_19:
   usesMultipleIcsc = self->_usesMultipleIcsc;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_12:
     nonViableRepair = self->_nonViableRepair;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_13:
@@ -647,12 +647,12 @@ LABEL_13:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   recoverySecret = self->_recoverySecret;
   if (recoverySecret)
   {
-    [v3 setObject:recoverySecret forKey:@"recovery_secret"];
+    [dictionary setObject:recoverySecret forKey:@"recovery_secret"];
   }
 
   if ((*&self->_has & 8) != 0)
@@ -744,15 +744,15 @@ LABEL_13:
   v8.receiver = self;
   v8.super_class = OTCDPRecoveryInformation;
   v4 = [(OTCDPRecoveryInformation *)&v8 description];
-  v5 = [(OTCDPRecoveryInformation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTCDPRecoveryInformation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNonViableRepair:(BOOL)a3
+- (void)setHasNonViableRepair:(BOOL)repair
 {
-  if (a3)
+  if (repair)
   {
     v3 = 2;
   }
@@ -765,9 +765,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUsesMultipleIcsc:(BOOL)a3
+- (void)setHasUsesMultipleIcsc:(BOOL)icsc
 {
-  if (a3)
+  if (icsc)
   {
     v3 = 32;
   }
@@ -780,9 +780,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSilentRecoveryAttempt:(BOOL)a3
+- (void)setHasSilentRecoveryAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 4;
   }
@@ -795,9 +795,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUsePreviouslyCachedRecoveryKey:(BOOL)a3
+- (void)setHasUsePreviouslyCachedRecoveryKey:(BOOL)key
 {
-  if (a3)
+  if (key)
   {
     v3 = 16;
   }
@@ -810,9 +810,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasUseCachedSecret:(BOOL)a3
+- (void)setHasUseCachedSecret:(BOOL)secret
 {
-  if (a3)
+  if (secret)
   {
     v3 = 8;
   }

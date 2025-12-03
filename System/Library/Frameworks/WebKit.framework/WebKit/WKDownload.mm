@@ -3,8 +3,8 @@
 - (WKFrameInfo)originatingFrame;
 - (WKWebView)webView;
 - (id)delegate;
-- (uint64_t)cancel:(const void *)a1;
-- (uint64_t)cancel:(uint64_t)a1;
+- (uint64_t)cancel:(const void *)cancel;
+- (uint64_t)cancel:(uint64_t)cancel;
 - (uint64_t)progress;
 - (void)cancel:(void *)completionHandler;
 - (void)dealloc;
@@ -285,7 +285,7 @@ LABEL_10:
 - (void)progress
 {
   v3 = 0;
-  objc_moveWeak(&v3, (a1 + 32));
+  objc_moveWeak(&v3, (self + 32));
   v1 = WTF::fastMalloc(0x10);
   *v1 = &unk_1F10F49B0;
   *(v1 + 8) = 0;
@@ -304,14 +304,14 @@ LABEL_10:
 
 - (uint64_t)progress
 {
-  Weak = objc_loadWeak((a1 + 8));
+  Weak = objc_loadWeak((self + 8));
 
   return [Weak cancel:0];
 }
 
-- (uint64_t)cancel:(uint64_t)a1
+- (uint64_t)cancel:(uint64_t)cancel
 {
-  result = *(a1 + 8);
+  result = *(cancel + 8);
   if (result)
   {
     if (a2 && *(a2 + 8))
@@ -324,7 +324,7 @@ LABEL_10:
         return result;
       }
 
-      result = *(a1 + 8);
+      result = *(cancel + 8);
     }
 
     v4 = *(result + 16);
@@ -335,12 +335,12 @@ LABEL_10:
   return result;
 }
 
-- (uint64_t)cancel:(const void *)a1
+- (uint64_t)cancel:(const void *)cancel
 {
-  *a1 = &unk_1F10F4AF0;
-  _Block_release(a1[1]);
+  *cancel = &unk_1F10F4AF0;
+  _Block_release(cancel[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(cancel, v2);
 }
 
 @end

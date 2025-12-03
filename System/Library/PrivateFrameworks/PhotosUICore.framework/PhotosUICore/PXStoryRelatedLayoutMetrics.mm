@@ -1,8 +1,8 @@
 @interface PXStoryRelatedLayoutMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)scrollOffset;
 - (UIEdgeInsets)margins;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXStoryRelatedLayoutMetrics;
-  result = [(PXLayoutMetrics *)&v6 copyWithZone:a3];
+  result = [(PXLayoutMetrics *)&v6 copyWithZone:zone];
   if (result)
   {
     v5 = *&self->_margins.bottom;
@@ -59,10 +59,10 @@
   return v3 ^ (2 * v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -72,7 +72,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8.receiver = self;
       v8.super_class = PXStoryRelatedLayoutMetrics;
       if ([(PXLayoutMetrics *)&v8 isEqual:v5])

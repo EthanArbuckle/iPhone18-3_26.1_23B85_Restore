@@ -1,39 +1,39 @@
 @interface WFToggleAlarmContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFToggleAlarmContextualAction)initWithAlarmIdentifier:(id)a3 alarmName:(id)a4 alarmData:(id)a5 operation:(unint64_t)a6;
-- (WFToggleAlarmContextualAction)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFToggleAlarmContextualAction)initWithAlarmIdentifier:(id)identifier alarmName:(id)name alarmData:(id)data operation:(unint64_t)operation;
+- (WFToggleAlarmContextualAction)initWithCoder:(id)coder;
 - (id)_staticDisplayStringForDecoding;
-- (id)displayStringFromOperation:(unint64_t)a3 alarmName:(id)a4;
+- (id)displayStringFromOperation:(unint64_t)operation alarmName:(id)name;
 - (id)settingBiomeStreamIdentifier;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFToggleAlarmContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFToggleAlarmContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_alarmIdentifier forKey:{@"alarmIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_alarmName forKey:@"alarmName"];
-  [v4 encodeInteger:self->_operation forKey:@"operation"];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_alarmIdentifier forKey:{@"alarmIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_alarmName forKey:@"alarmName"];
+  [coderCopy encodeInteger:self->_operation forKey:@"operation"];
 }
 
-- (WFToggleAlarmContextualAction)initWithCoder:(id)a3
+- (WFToggleAlarmContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = WFToggleAlarmContextualAction;
-  v5 = [(WFContextualAction *)&v13 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alarmIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alarmName"];
-    v8 = [v4 decodeIntegerForKey:@"operation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alarmIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alarmName"];
+    v8 = [coderCopy decodeIntegerForKey:@"operation"];
     if (v6)
     {
       v9 = v7 == 0;
@@ -67,26 +67,26 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = WFToggleAlarmContextualAction;
-  if ([(WFContextualAction *)&v19 isEqual:v4])
+  if ([(WFContextualAction *)&v19 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(operation) = 0;
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v6 = [v5 alarmIdentifier];
-    v7 = [(WFToggleAlarmContextualAction *)self alarmIdentifier];
-    v8 = v6;
-    v9 = v7;
+    alarmIdentifier = [v5 alarmIdentifier];
+    alarmIdentifier2 = [(WFToggleAlarmContextualAction *)self alarmIdentifier];
+    v8 = alarmIdentifier;
+    v9 = alarmIdentifier2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -94,7 +94,7 @@ LABEL_22:
 
     else
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(operation) = 0;
       v12 = v9;
       v13 = v8;
       if (!v8 || !v9)
@@ -106,17 +106,17 @@ LABEL_22:
 
       if (!v14)
       {
-        LOBYTE(v11) = 0;
+        LOBYTE(operation) = 0;
 LABEL_21:
 
         goto LABEL_22;
       }
     }
 
-    v15 = [v5 alarmName];
-    v16 = [(WFToggleAlarmContextualAction *)self alarmName];
-    v13 = v15;
-    v17 = v16;
+    alarmName = [v5 alarmName];
+    alarmName2 = [(WFToggleAlarmContextualAction *)self alarmName];
+    v13 = alarmName;
+    v17 = alarmName2;
     v12 = v17;
     if (v13 == v17)
     {
@@ -127,29 +127,29 @@ LABEL_21:
       if (!v13 || !v17)
       {
 
-        LOBYTE(v11) = 0;
+        LOBYTE(operation) = 0;
         goto LABEL_20;
       }
 
-      LODWORD(v11) = [v13 isEqualToString:v17];
+      LODWORD(operation) = [v13 isEqualToString:v17];
 
-      if (!v11)
+      if (!operation)
       {
         goto LABEL_20;
       }
     }
 
-    v11 = [v5 operation];
-    LOBYTE(v11) = v11 == [(WFToggleAlarmContextualAction *)self operation];
+    operation = [v5 operation];
+    LOBYTE(operation) = operation == [(WFToggleAlarmContextualAction *)self operation];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  LOBYTE(v11) = 0;
+  LOBYTE(operation) = 0;
 LABEL_23:
 
-  return v11;
+  return operation;
 }
 
 - (unint64_t)hash
@@ -158,11 +158,11 @@ LABEL_23:
   v12.receiver = self;
   v12.super_class = WFToggleAlarmContextualAction;
   v4 = [v3 combineInteger:{-[WFContextualAction hash](&v12, sel_hash)}];
-  v5 = [(WFToggleAlarmContextualAction *)self alarmIdentifier];
-  v6 = [v3 combineContentsOfPropertyListObject:v5];
+  alarmIdentifier = [(WFToggleAlarmContextualAction *)self alarmIdentifier];
+  v6 = [v3 combineContentsOfPropertyListObject:alarmIdentifier];
 
-  v7 = [(WFToggleAlarmContextualAction *)self alarmName];
-  v8 = [v3 combineContentsOfPropertyListObject:v7];
+  alarmName = [(WFToggleAlarmContextualAction *)self alarmName];
+  v8 = [v3 combineContentsOfPropertyListObject:alarmName];
 
   v9 = [v3 combineInteger:{-[WFToggleAlarmContextualAction operation](self, "operation")}];
   v10 = [v3 finalize];
@@ -173,20 +173,20 @@ LABEL_23:
 - (id)uniqueIdentifier
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v3 = [(WFToggleAlarmContextualAction *)self operation];
-  if (v3 > 3)
+  operation = [(WFToggleAlarmContextualAction *)self operation];
+  if (operation > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E7B026E8[v3];
+    v4 = off_1E7B026E8[operation];
   }
 
-  v5 = [(WFContextualAction *)self identifier];
-  v6 = [(WFToggleAlarmContextualAction *)self alarmIdentifier];
-  v11[1] = v6;
+  identifier = [(WFContextualAction *)self identifier];
+  alarmIdentifier = [(WFToggleAlarmContextualAction *)self alarmIdentifier];
+  v11[1] = alarmIdentifier;
   v11[2] = v4;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
 
@@ -220,44 +220,44 @@ LABEL_23:
     _Block_object_dispose(&v11, 8);
     if (!v2)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"id<BMRootLibrary> WFBiomeLibrary(void)"];
-      [v8 handleFailureInFunction:v9 file:@"WFToggleAlarmContextualAction.m" lineNumber:19 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v9 file:@"WFToggleAlarmContextualAction.m" lineNumber:19 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
     }
 
     v3 = v2();
-    v4 = [v3 Clock];
-    v5 = [v4 Alarm];
-    v6 = [v5 identifier];
+    clock = [v3 Clock];
+    alarm = [clock Alarm];
+    identifier = [alarm identifier];
   }
 
   else
   {
-    v6 = 0;
+    identifier = 0;
   }
 
-  return v6;
+  return identifier;
 }
 
 - (id)_staticDisplayStringForDecoding
 {
-  v3 = [(WFToggleAlarmContextualAction *)self operation];
-  v4 = [(WFToggleAlarmContextualAction *)self alarmName];
-  v5 = [(WFToggleAlarmContextualAction *)self displayStringFromOperation:v3 alarmName:v4];
+  operation = [(WFToggleAlarmContextualAction *)self operation];
+  alarmName = [(WFToggleAlarmContextualAction *)self alarmName];
+  v5 = [(WFToggleAlarmContextualAction *)self displayStringFromOperation:operation alarmName:alarmName];
 
   return v5;
 }
 
-- (id)displayStringFromOperation:(unint64_t)a3 alarmName:(id)a4
+- (id)displayStringFromOperation:(unint64_t)operation alarmName:(id)name
 {
-  v5 = a4;
-  v6 = 0;
-  if (a3 > 1)
+  nameCopy = name;
+  nameCopy = 0;
+  if (operation > 1)
   {
-    if (a3 == 2)
+    if (operation == 2)
     {
       v7 = MEMORY[0x1E696AEC0];
       v10 = @"%@ Alarm";
@@ -265,7 +265,7 @@ LABEL_23:
 
     else
     {
-      if (a3 != 3)
+      if (operation != 3)
       {
         goto LABEL_13;
       }
@@ -279,9 +279,9 @@ LABEL_23:
 
   else
   {
-    if (a3)
+    if (operation)
     {
-      if (a3 != 1)
+      if (operation != 1)
       {
         goto LABEL_13;
       }
@@ -302,22 +302,22 @@ LABEL_23:
   }
 
   v12 = v11;
-  v6 = [v7 stringWithFormat:v11, v5];
+  nameCopy = [v7 stringWithFormat:v11, nameCopy];
 
 LABEL_13:
 
-  return v6;
+  return nameCopy;
 }
 
-- (WFToggleAlarmContextualAction)initWithAlarmIdentifier:(id)a3 alarmName:(id)a4 alarmData:(id)a5 operation:(unint64_t)a6
+- (WFToggleAlarmContextualAction)initWithAlarmIdentifier:(id)identifier alarmName:(id)name alarmData:(id)data operation:(unint64_t)operation
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  identifierCopy = identifier;
+  nameCopy = name;
+  dataCopy = data;
+  if (identifierCopy)
   {
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -325,23 +325,23 @@ LABEL_13:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"WFToggleAlarmContextualAction.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"alarmIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFToggleAlarmContextualAction.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"alarmIdentifier"}];
 
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"WFToggleAlarmContextualAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"alarmName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFToggleAlarmContextualAction.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"alarmName"}];
 
 LABEL_3:
-  v37 = self;
-  v14 = [(WFToggleAlarmContextualAction *)self displayStringFromOperation:a6 alarmName:v12];
-  v38 = v13;
-  v15 = [[WFContextualActionParameter alloc] initWithType:@"WFDictionaryContentItem" displayString:0 wfParameterKey:@"alarm" wfSerializedRepresentation:v13];
+  selfCopy = self;
+  v14 = [(WFToggleAlarmContextualAction *)self displayStringFromOperation:operation alarmName:nameCopy];
+  v38 = dataCopy;
+  v15 = [[WFContextualActionParameter alloc] initWithType:@"WFDictionaryContentItem" displayString:0 wfParameterKey:@"alarm" wfSerializedRepresentation:dataCopy];
   v16 = [[WFContextualActionParameter alloc] initWithType:@"WFStringContentItem" displayString:0 wfParameterKey:@"operation" wfSerializedRepresentation:@"toggle"];
   v36 = v15;
   v40[0] = v15;
@@ -349,8 +349,8 @@ LABEL_3:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
   v18 = [v17 mutableCopy];
 
-  v35 = a6;
-  if (a6 == 2)
+  operationCopy = operation;
+  if (operation == 2)
   {
     v19 = [WFContextualActionParameter alloc];
     v20 = [(WFContextualActionParameter *)v19 initWithType:@"WFNumberContentItem" displayString:0 wfParameterKey:@"ShowWhenRun" wfSerializedRepresentation:MEMORY[0x1E695E110]];
@@ -358,22 +358,22 @@ LABEL_3:
   }
 
   v39[0] = @"com.apple.mobiletimer-framework.MobileTimerIntents.MTToggleAlarmIntent";
-  v39[1] = v11;
+  v39[1] = identifierCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
   v22 = [v21 componentsJoinedByString:@"."];
 
   v23 = WFLocalizedString(@"Alarm");
   v24 = [WFContextualActionIcon iconWithApplicationBundleIdentifier:@"com.apple.mobiletimer"];
-  v25 = [(WFContextualAction *)v37 initWithIdentifier:v22 wfActionIdentifier:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTToggleAlarmIntent" associatedAppBundleIdentifier:@"com.apple.mobiletimer" parameters:v18 displayString:v14 title:v23 subtitle:v14 icon:v24];
+  v25 = [(WFContextualAction *)selfCopy initWithIdentifier:v22 wfActionIdentifier:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTToggleAlarmIntent" associatedAppBundleIdentifier:@"com.apple.mobiletimer" parameters:v18 displayString:v14 title:v23 subtitle:v14 icon:v24];
 
   if (v25)
   {
-    v25->_operation = v35;
-    v26 = [v11 copy];
+    v25->_operation = operationCopy;
+    v26 = [identifierCopy copy];
     alarmIdentifier = v25->_alarmIdentifier;
     v25->_alarmIdentifier = v26;
 
-    v28 = [v12 copy];
+    v28 = [nameCopy copy];
     alarmName = v25->_alarmName;
     v25->_alarmName = v28;
 

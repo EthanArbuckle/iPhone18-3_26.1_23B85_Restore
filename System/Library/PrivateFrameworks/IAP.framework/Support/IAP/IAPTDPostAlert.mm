@@ -1,19 +1,19 @@
 @interface IAPTDPostAlert
-+ (id)GetLocalizedString:(id)a3;
-+ (void)PostAccessoryNotification:(__CFString *)a3 forMsg:(__CFString *)a4 withArg:(__CFString *)a5 forDefaultButton:(__CFString *)a6 withAlternateButton:(__CFString *)a7 forNotification:(__CFUserNotification *)a8 withCallback:(void *)a9 andTimeout:(double)a10;
-+ (void)TearDownAccessoryNotification:(__CFUserNotification *)a3;
++ (id)GetLocalizedString:(id)string;
++ (void)PostAccessoryNotification:(__CFString *)notification forMsg:(__CFString *)msg withArg:(__CFString *)arg forDefaultButton:(__CFString *)button withAlternateButton:(__CFString *)alternateButton forNotification:(__CFUserNotification *)forNotification withCallback:(void *)callback andTimeout:(double)self0;
++ (void)TearDownAccessoryNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation IAPTDPostAlert
 
-+ (void)PostAccessoryNotification:(__CFString *)a3 forMsg:(__CFString *)a4 withArg:(__CFString *)a5 forDefaultButton:(__CFString *)a6 withAlternateButton:(__CFString *)a7 forNotification:(__CFUserNotification *)a8 withCallback:(void *)a9 andTimeout:(double)a10
++ (void)PostAccessoryNotification:(__CFString *)notification forMsg:(__CFString *)msg withArg:(__CFString *)arg forDefaultButton:(__CFString *)button withAlternateButton:(__CFString *)alternateButton forNotification:(__CFUserNotification *)forNotification withCallback:(void *)callback andTimeout:(double)self0
 {
   v16 = objc_autoreleasePoolPush();
   error = 0;
-  v17 = [IAPTDPostAlert GetLocalizedString:a3];
-  v18 = [IAPTDPostAlert GetLocalizedString:a4];
-  v19 = [IAPTDPostAlert GetLocalizedString:a6];
-  v20 = [IAPTDPostAlert GetLocalizedString:a7];
+  v17 = [IAPTDPostAlert GetLocalizedString:notification];
+  v18 = [IAPTDPostAlert GetLocalizedString:msg];
+  v19 = [IAPTDPostAlert GetLocalizedString:button];
+  v20 = [IAPTDPostAlert GetLocalizedString:alternateButton];
   if (v17)
   {
     v21 = v17;
@@ -39,7 +39,7 @@
     v18 = &stru_10002E218;
   }
 
-  if (a7)
+  if (alternateButton)
   {
     if (v20)
     {
@@ -60,12 +60,12 @@
   }
 
   v25 = v24;
-  [IAPTDPostAlert TearDownAccessoryNotification:a8];
-  if (a8)
+  [IAPTDPostAlert TearDownAccessoryNotification:forNotification];
+  if (forNotification)
   {
-    v26 = CFUserNotificationCreate(kCFAllocatorDefault, a10, 3uLL, &error, v25);
-    *a8 = v26;
-    RunLoopSource = CFUserNotificationCreateRunLoopSource(kCFAllocatorDefault, v26, a9, 0);
+    v26 = CFUserNotificationCreate(kCFAllocatorDefault, timeout, 3uLL, &error, v25);
+    *forNotification = v26;
+    RunLoopSource = CFUserNotificationCreateRunLoopSource(kCFAllocatorDefault, v26, callback, 0);
     if (RunLoopSource)
     {
       v28 = RunLoopSource;
@@ -74,32 +74,32 @@
       CFRelease(v28);
     }
 
-    else if (*a8)
+    else if (*forNotification)
     {
-      CFRelease(*a8);
-      *a8 = 0;
+      CFRelease(*forNotification);
+      *forNotification = 0;
     }
   }
 
   objc_autoreleasePoolPop(v16);
 }
 
-+ (void)TearDownAccessoryNotification:(__CFUserNotification *)a3
++ (void)TearDownAccessoryNotification:(__CFUserNotification *)notification
 {
-  if (a3)
+  if (notification)
   {
-    if (*a3)
+    if (*notification)
     {
-      CFUserNotificationCancel(*a3);
-      CFRelease(*a3);
-      *a3 = 0;
+      CFUserNotificationCancel(*notification);
+      CFRelease(*notification);
+      *notification = 0;
     }
   }
 }
 
-+ (id)GetLocalizedString:(id)a3
++ (id)GetLocalizedString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
@@ -110,7 +110,7 @@
     return 0;
   }
 
-  return [(NSBundle *)v4 localizedStringForKey:a3 value:&stru_10002E218 table:@"Framework"];
+  return [(NSBundle *)v4 localizedStringForKey:string value:&stru_10002E218 table:@"Framework"];
 }
 
 @end

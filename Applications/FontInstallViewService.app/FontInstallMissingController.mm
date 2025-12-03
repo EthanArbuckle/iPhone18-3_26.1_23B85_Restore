@@ -1,32 +1,32 @@
 @interface FontInstallMissingController
 - (void)configureControllersForInput;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)connectToEndpoint:(id)a3;
-- (void)doneWithMissingFonts:(id)a3 withDismissAnimated:(BOOL)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)setupWithUserInfo:(id)a3 xpcEndpoint:(id)a4 dismissHandler:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)connectToEndpoint:(id)endpoint;
+- (void)doneWithMissingFonts:(id)fonts withDismissAnimated:(BOOL)animated;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)setupWithUserInfo:(id)info xpcEndpoint:(id)endpoint dismissHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FontInstallMissingController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
+  appearCopy = appear;
   v41.receiver = self;
   v41.super_class = FontInstallMissingController;
-  [(FontInstallMissingController *)&v41 viewDidAppear:a3];
+  [(FontInstallMissingController *)&v41 viewDidAppear:appear];
   location = @"Main_iPhone";
   v19 = +[UIDevice currentDevice];
-  v20 = [(UIDevice *)v19 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v19 userInterfaceIdiom];
 
-  v45 = v20;
+  v45 = userInterfaceIdiom;
   v21 = 1;
-  if (v20 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v21 = v45 == 5;
   }
@@ -36,31 +36,31 @@
     objc_storeStrong(&location, @"Main");
   }
 
-  v15 = [(FontInstallMissingController *)v44 view];
-  v14 = [v15 window];
-  v13 = [v14 _rootSheetPresentationController];
-  [v13 _setShouldScaleDownBehindDescendantSheets:0];
+  view = [(FontInstallMissingController *)selfCopy view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   v3 = [UIStoryboard storyboardWithName:location bundle:0];
-  storyboard = v44->_storyboard;
-  v44->_storyboard = v3;
+  storyboard = selfCopy->_storyboard;
+  selfCopy->_storyboard = v3;
 
-  v5 = [(UIStoryboard *)v44->_storyboard instantiateViewControllerWithIdentifier:@"MissingFontsNavigation"];
-  detailPresentationController = v44->_detailPresentationController;
-  v44->_detailPresentationController = v5;
+  v5 = [(UIStoryboard *)selfCopy->_storyboard instantiateViewControllerWithIdentifier:@"MissingFontsNavigation"];
+  detailPresentationController = selfCopy->_detailPresentationController;
+  selfCopy->_detailPresentationController = v5;
 
   v16 = +[UIScreen mainScreen];
   [(UIScreen *)v16 scale];
   v7 = [UIImage _applicationIconImageForBundleIdentifier:@"com.apple.FontInstallViewService" format:2 scale:?];
-  mainIcon = v44->_mainIcon;
-  v44->_mainIcon = v7;
+  mainIcon = selfCopy->_mainIcon;
+  selfCopy->_mainIcon = v7;
 
-  v39 = [UIAlertController alertControllerWithTitle:v44->_alertTitle message:v44->_messageText preferredStyle:?];
-  v17 = [v39 view];
-  [v17 setAccessibilityIdentifier:@"MISSING_FONTS"];
+  v39 = [UIAlertController alertControllerWithTitle:selfCopy->_alertTitle message:selfCopy->_messageText preferredStyle:?];
+  view2 = [v39 view];
+  [view2 setAccessibilityIdentifier:@"MISSING_FONTS"];
 
-  objc_initWeak(&v38, v44);
-  cancelTitle = v44->_cancelTitle;
+  objc_initWeak(&v38, selfCopy);
+  cancelTitle = selfCopy->_cancelTitle;
   v31 = _NSConcreteStackBlock;
   v32 = -1073741824;
   v33 = 0;
@@ -68,27 +68,27 @@
   v35 = &unk_10001C780;
   objc_copyWeak(&v36, &v38);
   v37 = [UIAlertAction actionWithTitle:cancelTitle style:1 handler:&v31];
-  noncancelTitle = v44->_noncancelTitle;
+  noncancelTitle = selfCopy->_noncancelTitle;
   v23 = _NSConcreteStackBlock;
   v24 = -1073741824;
   v25 = 0;
   v26 = __46__FontInstallMissingController_viewDidAppear___block_invoke_2;
   v27 = &unk_10001C7A8;
   objc_copyWeak(&v29, &v38);
-  v28 = v44;
+  v28 = selfCopy;
   v30 = [UIAlertAction actionWithTitle:noncancelTitle style:0 handler:&v23];
   [v39 addAction:v37];
   [v39 addAction:v30];
   v10 = v39;
   v11 = [IconAndSubIconHeaderViewController alloc];
-  v9 = [(IconAndSubIconHeaderViewController *)v11 initWithIconImage:v44->_mainIcon andSubIconImage:v44->_subIcon];
+  v9 = [(IconAndSubIconHeaderViewController *)v11 initWithIconImage:selfCopy->_mainIcon andSubIconImage:selfCopy->_subIcon];
   [v10 _setHeaderContentViewController:v9];
 
-  objc_storeStrong(&v44->_initialViewController, v39);
-  [(FontInstallMissingController *)v44 presentViewController:v44->_initialViewController animated:1 completion:0];
-  v22 = [(FontInstallMissingController *)v44 _remoteViewControllerProxy];
-  [v22 setWallpaperTunnelActive:1];
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy->_initialViewController, v39);
+  [(FontInstallMissingController *)selfCopy presentViewController:selfCopy->_initialViewController animated:1 completion:0];
+  _remoteViewControllerProxy = [(FontInstallMissingController *)selfCopy _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:1];
+  objc_storeStrong(&_remoteViewControllerProxy, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v28, 0);
   objc_destroyWeak(&v29);
@@ -139,25 +139,25 @@ void __46__FontInstallMissingController_viewDidAppear___block_invoke_2(id *a1, v
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = FontInstallMissingController;
-  [(FontInstallMissingController *)&v4 viewWillAppear:a3];
-  v3 = [(FontInstallMissingController *)v7 _remoteViewControllerProxy];
-  [v3 setStatusBarHidden:1 withDuration:0.0];
-  [v3 setAllowsAlertItems:1];
-  objc_storeStrong(&v3, 0);
+  [(FontInstallMissingController *)&v4 viewWillAppear:appear];
+  _remoteViewControllerProxy = [(FontInstallMissingController *)selfCopy _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  objc_storeStrong(&_remoteViewControllerProxy, 0);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  disappearCopy = disappear;
   if (self->_connection)
   {
     location = &_os_log_default;
@@ -171,31 +171,31 @@ void __46__FontInstallMissingController_viewDidAppear___block_invoke_2(id *a1, v
     }
 
     objc_storeStrong(&location, 0);
-    [(FontInstallMissingController *)v11 doneWithMissingFonts:&__NSArray0__struct withDismissAnimated:1];
+    [(FontInstallMissingController *)selfCopy doneWithMissingFonts:&__NSArray0__struct withDismissAnimated:1];
   }
 
-  v5.receiver = v11;
+  v5.receiver = selfCopy;
   v5.super_class = FontInstallMissingController;
-  [(FontInstallMissingController *)&v5 viewDidDisappear:v9];
+  [(FontInstallMissingController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)connectToEndpoint:(id)a3
+- (void)connectToEndpoint:(id)endpoint
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, endpoint);
   v15 = objc_alloc_init(NSXPCListenerEndpoint);
   [v15 _setEndpoint:location[0]];
   v3 = [[NSXPCConnection alloc] initWithListenerEndpoint:v15];
-  connection = v17->_connection;
-  v17->_connection = v3;
+  connection = selfCopy->_connection;
+  selfCopy->_connection = v3;
 
-  v5 = v17->_connection;
+  v5 = selfCopy->_connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FontInstallViewServiceProtocol];
   [(NSXPCConnection *)v5 setRemoteObjectInterface:?];
 
-  objc_initWeak(&v14, v17);
+  objc_initWeak(&v14, selfCopy);
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -203,9 +203,9 @@ void __46__FontInstallMissingController_viewDidAppear___block_invoke_2(id *a1, v
   v11 = &unk_10001C690;
   objc_copyWeak(&v12, &v14);
   v13 = objc_retainBlock(&v7);
-  [(NSXPCConnection *)v17->_connection setInvalidationHandler:v13];
-  [(NSXPCConnection *)v17->_connection setInterruptionHandler:v13];
-  [(NSXPCConnection *)v17->_connection resume];
+  [(NSXPCConnection *)selfCopy->_connection setInvalidationHandler:v13];
+  [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:v13];
+  [(NSXPCConnection *)selfCopy->_connection resume];
   objc_storeStrong(&v13, 0);
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
@@ -236,43 +236,43 @@ void __50__FontInstallMissingController_connectToEndpoint___block_invoke(id *a1)
   objc_storeStrong(v6, 0);
 }
 
-- (void)setupWithUserInfo:(id)a3 xpcEndpoint:(id)a4 dismissHandler:(id)a5
+- (void)setupWithUserInfo:(id)info xpcEndpoint:(id)endpoint dismissHandler:(id)handler
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, endpoint);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, handler);
   v9 = [location[0] objectForKey:@"fonts"];
-  [(FontInstallMissingController *)v13 setInput:?];
+  [(FontInstallMissingController *)selfCopy setInput:?];
 
-  [(FontInstallMissingController *)v13 configureControllersForInput];
+  [(FontInstallMissingController *)selfCopy configureControllersForInput];
   v5 = objc_retainBlock(v10);
-  dismissHandler = v13->_dismissHandler;
-  v13->_dismissHandler = v5;
+  dismissHandler = selfCopy->_dismissHandler;
+  selfCopy->_dismissHandler = v5;
 
-  [(FontInstallMissingController *)v13 connectToEndpoint:v11];
+  [(FontInstallMissingController *)selfCopy connectToEndpoint:v11];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = [(FontInstallMissingController *)v18 _remoteViewControllerProxyWithErrorHandler:&__block_literal_global_1];
-  v11 = [(FontInstallMissingController *)v18 view];
-  v10 = [v11 window];
-  v9 = [v10 windowScene];
-  [v15 setLaunchingInterfaceOrientation:{objc_msgSend(v9, "interfaceOrientation")}];
+  objc_storeStrong(&v16, completion);
+  v15 = [(FontInstallMissingController *)selfCopy _remoteViewControllerProxyWithErrorHandler:&__block_literal_global_1];
+  view = [(FontInstallMissingController *)selfCopy view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [v15 setLaunchingInterfaceOrientation:{objc_msgSend(windowScene, "interfaceOrientation")}];
 
   [v15 setReachabilityDisabled:1];
   [v15 setAllowsAlertStacking:0];
@@ -287,8 +287,8 @@ void __50__FontInstallMissingController_connectToEndpoint___block_invoke(id *a1)
   }
 
   objc_storeStrong(&v14, 0);
-  v4 = v18;
-  v5 = [location[0] xpcEndpoint];
+  v4 = selfCopy;
+  xpcEndpoint = [location[0] xpcEndpoint];
   [(FontInstallMissingController *)v4 connectToEndpoint:?];
 
   if (v16)
@@ -320,16 +320,16 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
 - (void)configureControllersForInput
 {
-  v97 = self;
+  selfCopy = self;
   v96 = a2;
-  v77 = [(FontInstallMissingController *)self input];
-  v78 = [(NSArray *)v77 count];
+  input = [(FontInstallMissingController *)self input];
+  v78 = [(NSArray *)input count];
 
   v95 = v78;
   v94 = objc_opt_new();
   v93 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = [(FontInstallMissingController *)v97 input];
+  obj = [(FontInstallMissingController *)selfCopy input];
   v80 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v99 count:16];
   if (v80)
   {
@@ -371,8 +371,8 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
     {
       v87 = objc_opt_new();
       memset(v85, 0, sizeof(v85));
-      v65 = [(FontInstallMissingController *)v97 input];
-      v66 = [(NSArray *)v65 countByEnumeratingWithState:v85 objects:v98 count:16];
+      input2 = [(FontInstallMissingController *)selfCopy input];
+      v66 = [(NSArray *)input2 countByEnumeratingWithState:v85 objects:v98 count:16];
       if (v66)
       {
         v62 = *v85[2];
@@ -383,7 +383,7 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
           v61 = v63;
           if (*v85[2] != v62)
           {
-            objc_enumerationMutation(v65);
+            objc_enumerationMutation(input2);
           }
 
           v86 = *(v85[1] + 8 * v63);
@@ -398,7 +398,7 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
           if (v61 + 1 >= v64)
           {
             v63 = 0;
-            v64 = [(NSArray *)v65 countByEnumeratingWithState:v85 objects:v98 count:16];
+            v64 = [(NSArray *)input2 countByEnumeratingWithState:v85 objects:v98 count:16];
             if (!v64)
             {
               break;
@@ -407,16 +407,16 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
         }
       }
 
-      v84 = [v94 anyObject];
+      anyObject = [v94 anyObject];
       v47 = +[UIScreen mainScreen];
       [(UIScreen *)v47 scale];
-      v83 = [UIImage _applicationIconImageForBundleIdentifier:v84 format:2 scale:?];
+      v83 = [UIImage _applicationIconImageForBundleIdentifier:anyObject format:2 scale:?];
 
-      v48 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v84 allowPlaceholder:0 error:?];
-      v82 = [v48 localizedName];
+      v48 = [[LSApplicationRecord alloc] initWithBundleIdentifier:anyObject allowPlaceholder:0 error:?];
+      localizedName = [v48 localizedName];
 
       v81 = [v87 count];
-      objc_storeStrong(&v97->_subIcon, v83);
+      objc_storeStrong(&selfCopy->_subIcon, v83);
       v17 = +[NSBundle mainBundle];
       v50 = v17;
       if (v81 == 1)
@@ -431,8 +431,8 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
       v49 = [NSBundle localizedStringForKey:v17 value:"localizedStringForKey:value:table:" table:v18];
       v19 = [NSString localizedStringWithFormat:?];
-      alertTitle = v97->_alertTitle;
-      v97->_alertTitle = v19;
+      alertTitle = selfCopy->_alertTitle;
+      selfCopy->_alertTitle = v19;
 
       v21 = +[NSBundle mainBundle];
       v53 = v21;
@@ -448,29 +448,29 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
       v52 = [(NSBundle *)v21 localizedStringForKey:v22 value:&stru_10001CD88 table:0];
       v51 = [NSListFormatter localizedStringByJoiningStrings:v87];
-      v23 = [NSString localizedStringWithFormat:v52, v51, v82];
-      messageText = v97->_messageText;
-      v97->_messageText = v23;
+      v23 = [NSString localizedStringWithFormat:v52, v51, localizedName];
+      messageText = selfCopy->_messageText;
+      selfCopy->_messageText = v23;
 
       v54 = +[NSBundle mainBundle];
       v25 = [(NSBundle *)v54 localizedStringForKey:@"IGNORE_BUTTON" value:&stru_10001CD88 table:0];
-      cancelTitle = v97->_cancelTitle;
-      v97->_cancelTitle = v25;
+      cancelTitle = selfCopy->_cancelTitle;
+      selfCopy->_cancelTitle = v25;
 
       v55 = +[NSBundle mainBundle];
       v27 = [(NSBundle *)v55 localizedStringForKey:@"DETAILS_BUTTON" value:&stru_10001CD88 table:0];
-      noncancelTitle = v97->_noncancelTitle;
-      v97->_noncancelTitle = v27;
+      noncancelTitle = selfCopy->_noncancelTitle;
+      selfCopy->_noncancelTitle = v27;
 
-      objc_storeStrong(&v82, 0);
+      objc_storeStrong(&localizedName, 0);
       objc_storeStrong(&v83, 0);
-      objc_storeStrong(&v84, 0);
+      objc_storeStrong(&anyObject, 0);
       objc_storeStrong(&v87, 0);
     }
 
     else
     {
-      objc_storeStrong(&v97->_subIcon, 0);
+      objc_storeStrong(&selfCopy->_subIcon, 0);
       v29 = +[NSBundle mainBundle];
       v42 = v29;
       if (v93 == 1)
@@ -485,8 +485,8 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
       v41 = [NSBundle localizedStringForKey:v29 value:"localizedStringForKey:value:table:" table:v30];
       v31 = [NSString localizedStringWithFormat:?];
-      v32 = v97->_alertTitle;
-      v97->_alertTitle = v31;
+      v32 = selfCopy->_alertTitle;
+      selfCopy->_alertTitle = v31;
 
       v33 = +[NSBundle mainBundle];
       v44 = v33;
@@ -502,18 +502,18 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
       v43 = [(NSBundle *)v33 localizedStringForKey:v34 value:&stru_10001CD88 table:0];
       v35 = [NSString localizedStringWithFormat:?];
-      v36 = v97->_messageText;
-      v97->_messageText = v35;
+      v36 = selfCopy->_messageText;
+      selfCopy->_messageText = v35;
 
       v45 = +[NSBundle mainBundle];
       v37 = [(NSBundle *)v45 localizedStringForKey:@"IGNORE_BUTTON" value:&stru_10001CD88 table:0];
-      v38 = v97->_cancelTitle;
-      v97->_cancelTitle = v37;
+      v38 = selfCopy->_cancelTitle;
+      selfCopy->_cancelTitle = v37;
 
       v46 = +[NSBundle mainBundle];
       v39 = [(NSBundle *)v46 localizedStringForKey:@"DETAILS_BUTTON" value:&stru_10001CD88 table:0];
-      v40 = v97->_noncancelTitle;
-      v97->_noncancelTitle = v39;
+      v40 = selfCopy->_noncancelTitle;
+      selfCopy->_noncancelTitle = v39;
     }
   }
 
@@ -533,8 +533,8 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
     v67 = [NSBundle localizedStringForKey:v3 value:"localizedStringForKey:value:table:" table:v4];
     v5 = [NSString localizedStringWithFormat:v95];
-    v6 = v97->_alertTitle;
-    v97->_alertTitle = v5;
+    v6 = selfCopy->_alertTitle;
+    selfCopy->_alertTitle = v5;
 
     v7 = +[NSBundle mainBundle];
     v70 = v7;
@@ -550,36 +550,36 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
     v69 = [(NSBundle *)v7 localizedStringForKey:v8 value:&stru_10001CD88 table:0];
     v9 = [NSString localizedStringWithFormat:?];
-    v10 = v97->_messageText;
-    v97->_messageText = v9;
+    v10 = selfCopy->_messageText;
+    selfCopy->_messageText = v9;
 
     v11 = [UIImage imageNamed:@"Caution"];
-    subIcon = v97->_subIcon;
-    v97->_subIcon = v11;
+    subIcon = selfCopy->_subIcon;
+    selfCopy->_subIcon = v11;
 
     v71 = +[NSBundle mainBundle];
     v13 = [(NSBundle *)v71 localizedStringForKey:@"OK_BUTTON" value:&stru_10001CD88 table:0];
-    v14 = v97->_cancelTitle;
-    v97->_cancelTitle = v13;
+    v14 = selfCopy->_cancelTitle;
+    selfCopy->_cancelTitle = v13;
 
     v72 = +[NSBundle mainBundle];
     v15 = [(NSBundle *)v72 localizedStringForKey:@"DETAILS_BUTTON" value:&stru_10001CD88 table:0];
-    v16 = v97->_noncancelTitle;
-    v97->_noncancelTitle = v15;
+    v16 = selfCopy->_noncancelTitle;
+    selfCopy->_noncancelTitle = v15;
   }
 
   objc_storeStrong(&v94, 0);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = [(FontInstallMissingController *)v15 _remoteViewControllerProxyWithErrorHandler:&__block_literal_global_151];
+  objc_storeStrong(&v13, completion);
+  v12 = [(FontInstallMissingController *)selfCopy _remoteViewControllerProxyWithErrorHandler:&__block_literal_global_151];
   v11 = &_os_log_default;
   v10 = 2;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -592,11 +592,11 @@ void __64__FontInstallMissingController_configureWithContext_completion___block_
 
   objc_storeStrong(&v11, 0);
   [v12 setStatusBarHidden:1 withDuration:0.4];
-  v5 = [location[0] userInfo];
-  v4 = [v5 objectForKey:@"fonts"];
-  [(FontInstallMissingController *)v15 setInput:?];
+  userInfo = [location[0] userInfo];
+  v4 = [userInfo objectForKey:@"fonts"];
+  [(FontInstallMissingController *)selfCopy setInput:?];
 
-  [(FontInstallMissingController *)v15 configureControllersForInput];
+  [(FontInstallMissingController *)selfCopy configureControllersForInput];
   if (v13)
   {
     (*(v13 + 2))();
@@ -624,13 +624,13 @@ void __75__FontInstallMissingController_prepareForActivationWithContext_completi
   objc_storeStrong(location, 0);
 }
 
-- (void)doneWithMissingFonts:(id)a3 withDismissAnimated:(BOOL)a4
+- (void)doneWithMissingFonts:(id)fonts withDismissAnimated:(BOOL)animated
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, fonts);
+  animatedCopy = animated;
   v15 = &_os_log_default;
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -640,16 +640,16 @@ void __75__FontInstallMissingController_prepareForActivationWithContext_completi
   }
 
   objc_storeStrong(&v15, 0);
-  v13 = [(NSXPCConnection *)v18->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_153];
+  v13 = [(NSXPCConnection *)selfCopy->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_153];
   [v13 doneWithMissingFonts:location[0]];
-  v5 = v18;
-  v4 = v16;
+  v5 = selfCopy;
+  v4 = animatedCopy;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = __73__FontInstallMissingController_doneWithMissingFonts_withDismissAnimated___block_invoke_154;
   v11 = &unk_10001C738;
-  v12 = v18;
+  v12 = selfCopy;
   [(FontInstallMissingController *)v5 dismissViewControllerAnimated:v4 completion:&v7];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);

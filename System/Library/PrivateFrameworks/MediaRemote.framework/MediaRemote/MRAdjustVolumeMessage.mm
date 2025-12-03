@@ -1,5 +1,5 @@
 @interface MRAdjustVolumeMessage
-- (MRAdjustVolumeMessage)initWithAdjustment:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5;
+- (MRAdjustVolumeMessage)initWithAdjustment:(int64_t)adjustment outputDeviceUID:(id)d details:(id)details;
 - (MRRequestDetails)details;
 - (NSString)outputDeviceUID;
 - (int64_t)adjustment;
@@ -7,20 +7,20 @@
 
 @implementation MRAdjustVolumeMessage
 
-- (MRAdjustVolumeMessage)initWithAdjustment:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5
+- (MRAdjustVolumeMessage)initWithAdjustment:(int64_t)adjustment outputDeviceUID:(id)d details:(id)details
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  detailsCopy = details;
   v14.receiver = self;
   v14.super_class = MRAdjustVolumeMessage;
   v10 = [(MRProtocolMessage *)&v14 init];
   if (v10)
   {
     v11 = objc_alloc_init(_MRAdjustVolumeMessageProtobuf);
-    [(_MRAdjustVolumeMessageProtobuf *)v11 setAdjustment:a3];
-    [(_MRAdjustVolumeMessageProtobuf *)v11 setOutputDeviceUID:v8];
-    v12 = [v9 protobuf];
-    [(_MRAdjustVolumeMessageProtobuf *)v11 setDetails:v12];
+    [(_MRAdjustVolumeMessageProtobuf *)v11 setAdjustment:adjustment];
+    [(_MRAdjustVolumeMessageProtobuf *)v11 setOutputDeviceUID:dCopy];
+    protobuf = [detailsCopy protobuf];
+    [(_MRAdjustVolumeMessageProtobuf *)v11 setDetails:protobuf];
 
     [(MRProtocolMessage *)v10 setUnderlyingCodableMessage:v11];
   }
@@ -30,26 +30,26 @@
 
 - (int64_t)adjustment
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 adjustment];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  adjustment = [underlyingCodableMessage adjustment];
 
-  return v3;
+  return adjustment;
 }
 
 - (NSString)outputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUID = [underlyingCodableMessage outputDeviceUID];
 
-  return v3;
+  return outputDeviceUID;
 }
 
 - (MRRequestDetails)details
 {
   v3 = [MRRequestDetails alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 details];
-  v6 = [(MRRequestDetails *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  details = [underlyingCodableMessage details];
+  v6 = [(MRRequestDetails *)v3 initWithProtobuf:details];
 
   return v6;
 }

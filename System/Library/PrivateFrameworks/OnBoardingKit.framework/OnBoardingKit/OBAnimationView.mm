@@ -2,22 +2,22 @@
 - (CGRect)preferredFrame;
 - (CGSize)intrinsicContentSize;
 - (OBAnimationAppearanceChangeDelegate)appearanceChangeDelegate;
-- (OBAnimationView)initWithFrame:(CGRect)a3;
+- (OBAnimationView)initWithFrame:(CGRect)frame;
 - (double)defaultScale;
-- (void)_setPackage:(id)a3;
+- (void)_setPackage:(id)package;
 - (void)layoutSubviews;
-- (void)setPackage:(id)a3 sizingTransformScale:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPackage:(id)package sizingTransformScale:(double)scale;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation OBAnimationView
 
-- (OBAnimationView)initWithFrame:(CGRect)a3
+- (OBAnimationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = OBAnimationView;
   result = [(OBAnimationView *)&v8 initWithFrame:?];
@@ -36,55 +36,55 @@
 {
   [(OBAnimationView *)self preferredFrame];
   v4 = v3;
-  v5 = [(OBAnimationView *)self package];
-  v6 = [v5 rootLayer];
-  [v6 size];
+  package = [(OBAnimationView *)self package];
+  rootLayer = [package rootLayer];
+  [rootLayer size];
   v8 = v4 / v7;
 
   return v8;
 }
 
-- (void)setPackage:(id)a3 sizingTransformScale:(double)a4
+- (void)setPackage:(id)package sizingTransformScale:(double)scale
 {
-  v7 = a3;
-  [(OBAnimationView *)self setScale:a4];
-  if (self->_package != v7)
+  packageCopy = package;
+  [(OBAnimationView *)self setScale:scale];
+  if (self->_package != packageCopy)
   {
-    objc_storeStrong(&self->_package, a3);
-    [(OBAnimationView *)self _setPackage:v7];
+    objc_storeStrong(&self->_package, package);
+    [(OBAnimationView *)self _setPackage:packageCopy];
   }
 }
 
-- (void)_setPackage:(id)a3
+- (void)_setPackage:(id)package
 {
-  v4 = a3;
-  v5 = [(OBAnimationView *)self packageLayer];
-  [v5 removeFromSuperlayer];
+  packageCopy = package;
+  packageLayer = [(OBAnimationView *)self packageLayer];
+  [packageLayer removeFromSuperlayer];
 
-  v6 = [v4 rootLayer];
-  [(OBAnimationView *)self setPackageLayer:v6];
+  rootLayer = [packageCopy rootLayer];
+  [(OBAnimationView *)self setPackageLayer:rootLayer];
 
-  v7 = [v4 isGeometryFlipped];
-  v8 = [(OBAnimationView *)self packageLayer];
-  [v8 setGeometryFlipped:v7];
+  isGeometryFlipped = [packageCopy isGeometryFlipped];
+  packageLayer2 = [(OBAnimationView *)self packageLayer];
+  [packageLayer2 setGeometryFlipped:isGeometryFlipped];
 
   v9 = *MEMORY[0x1E6979DE8];
-  v10 = [(OBAnimationView *)self packageLayer];
-  [v10 setContentsGravity:v9];
+  packageLayer3 = [(OBAnimationView *)self packageLayer];
+  [packageLayer3 setContentsGravity:v9];
 
-  v11 = [(OBAnimationView *)self packageLayer];
-  [v11 setMasksToBounds:0];
+  packageLayer4 = [(OBAnimationView *)self packageLayer];
+  [packageLayer4 setMasksToBounds:0];
 
   v12 = *MEMORY[0x1E69797D8];
-  v13 = [(OBAnimationView *)self packageLayer];
-  [v13 setFillMode:v12];
+  packageLayer5 = [(OBAnimationView *)self packageLayer];
+  [packageLayer5 setFillMode:v12];
 
-  v14 = [(OBAnimationView *)self layer];
-  [v14 setShouldRasterize:0];
+  layer = [(OBAnimationView *)self layer];
+  [layer setShouldRasterize:0];
 
-  v15 = [(OBAnimationView *)self layer];
-  v16 = [(OBAnimationView *)self packageLayer];
-  [v15 addSublayer:v16];
+  layer2 = [(OBAnimationView *)self layer];
+  packageLayer6 = [(OBAnimationView *)self packageLayer];
+  [layer2 addSublayer:packageLayer6];
 
   [(OBAnimationView *)self invalidateIntrinsicContentSize];
 
@@ -93,13 +93,13 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(OBAnimationView *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(OBAnimationView *)self layer];
+  [layer setMasksToBounds:0];
 
-  v4 = [(OBAnimationView *)self packageLayer];
-  v5 = [(OBAnimationView *)self superview];
-  [v5 center];
-  [v4 setPosition:?];
+  packageLayer = [(OBAnimationView *)self packageLayer];
+  superview = [(OBAnimationView *)self superview];
+  [superview center];
+  [packageLayer setPosition:?];
 
   [(OBAnimationView *)self scale];
   v7 = v6;
@@ -108,17 +108,17 @@
   {
     [(OBAnimationView *)self bounds];
     v10 = v9;
-    v11 = [(OBAnimationView *)self packageLayer];
-    [v11 bounds];
+    packageLayer2 = [(OBAnimationView *)self packageLayer];
+    [packageLayer2 bounds];
     v7 = v10 / v12;
   }
 
-  v13 = [(OBAnimationView *)self packageLayer];
-  v14 = [(OBAnimationView *)self packageLayer];
-  v15 = v14;
-  if (v14)
+  packageLayer3 = [(OBAnimationView *)self packageLayer];
+  packageLayer4 = [(OBAnimationView *)self packageLayer];
+  v15 = packageLayer4;
+  if (packageLayer4)
   {
-    [v14 contentsTransform];
+    [packageLayer4 contentsTransform];
   }
 
   else
@@ -127,13 +127,13 @@
   }
 
   CGAffineTransformScale(&v17, &v16, v7, v7);
-  [v13 setAffineTransform:&v17];
+  [packageLayer3 setAffineTransform:&v17];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(OBAnimationView *)self packageLayer];
-  [v3 bounds];
+  packageLayer = [(OBAnimationView *)self packageLayer];
+  [packageLayer bounds];
   v5 = v4;
   v7 = v6;
 
@@ -142,8 +142,8 @@
   {
     [(OBAnimationView *)self preferredFrame];
     v10 = v9;
-    v11 = [(OBAnimationView *)self packageLayer];
-    [v11 bounds];
+    packageLayer2 = [(OBAnimationView *)self packageLayer];
+    [packageLayer2 bounds];
     v13 = v10 / v12;
   }
 
@@ -152,11 +152,11 @@
     v13 = v8;
   }
 
-  v14 = [(OBAnimationView *)self packageLayer];
-  v15 = v14;
-  if (v14)
+  packageLayer3 = [(OBAnimationView *)self packageLayer];
+  v15 = packageLayer3;
+  if (packageLayer3)
   {
-    [v14 contentsTransform];
+    [packageLayer3 contentsTransform];
   }
 
   else
@@ -175,15 +175,15 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v9 = a3;
-  if (!v9 || (v4 = [v9 userInterfaceStyle], -[OBAnimationView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceStyle"), v5, v7 = v9, v4 != v6))
+  changeCopy = change;
+  if (!changeCopy || (v4 = [changeCopy userInterfaceStyle], -[OBAnimationView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "userInterfaceStyle"), v5, v7 = changeCopy, v4 != v6))
   {
-    v8 = [(OBAnimationView *)self appearanceChangeDelegate];
-    [v8 updateAnimationForAppearanceChange];
+    appearanceChangeDelegate = [(OBAnimationView *)self appearanceChangeDelegate];
+    [appearanceChangeDelegate updateAnimationForAppearanceChange];
 
-    v7 = v9;
+    v7 = changeCopy;
   }
 }
 

@@ -1,7 +1,7 @@
 @interface CarplayNoEventsView
 - (CarplayNoEventsView)init;
 - (void)didMoveToWindow;
-- (void)updateHeaderText:(id)a3;
+- (void)updateHeaderText:(id)text;
 @end
 
 @implementation CarplayNoEventsView
@@ -47,40 +47,40 @@
     header = v2->_header;
     v2->_header = v9;
 
-    v11 = [(CarplayTableViewHeaderContentView *)v2->_header separator];
-    [v11 setHidden:1];
+    separator = [(CarplayTableViewHeaderContentView *)v2->_header separator];
+    [separator setHidden:1];
 
     [(CarplayTableViewHeaderContentView *)v2->_header setTranslatesAutoresizingMaskIntoConstraints:0];
     v12 = CUIKNowDate();
     v13 = CUIKStringForDateAndDayOfWeekInCalendarTimezoneWithFormattingContext();
-    v14 = [(CarplayTableViewHeaderContentView *)v2->_header label];
-    [v14 setText:v13];
+    label = [(CarplayTableViewHeaderContentView *)v2->_header label];
+    [label setText:v13];
 
     [(CarplayNoEventsView *)v2 addSubview:v2->_header];
-    v15 = [(UILabel *)v2->_label firstBaselineAnchor];
-    v16 = [(CarplayNoEventsView *)v2 topAnchor];
-    v17 = [(CarplayNoEventsView *)v2 window];
-    [v17 bounds];
-    v18 = [v15 constraintEqualToAnchor:v16 constant:CGRectGetHeight(v37) * 0.56];
+    firstBaselineAnchor = [(UILabel *)v2->_label firstBaselineAnchor];
+    topAnchor = [(CarplayNoEventsView *)v2 topAnchor];
+    window = [(CarplayNoEventsView *)v2 window];
+    [window bounds];
+    v18 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:CGRectGetHeight(v37) * 0.56];
     labelBaselineConstraint = v2->_labelBaselineConstraint;
     v2->_labelBaselineConstraint = v18;
 
-    v33 = [(CarplayTableViewHeaderContentView *)v2->_header leadingAnchor];
-    v32 = [(CarplayNoEventsView *)v2 leadingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32 constant:12.0];
+    leadingAnchor = [(CarplayTableViewHeaderContentView *)v2->_header leadingAnchor];
+    leadingAnchor2 = [(CarplayNoEventsView *)v2 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v36[0] = v31;
-    v30 = [(CarplayTableViewHeaderContentView *)v2->_header topAnchor];
-    v20 = [(CarplayNoEventsView *)v2 topAnchor];
-    v21 = [v30 constraintEqualToAnchor:v20];
+    topAnchor2 = [(CarplayTableViewHeaderContentView *)v2->_header topAnchor];
+    topAnchor3 = [(CarplayNoEventsView *)v2 topAnchor];
+    v21 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v36[1] = v21;
     v36[2] = v2->_labelBaselineConstraint;
-    v22 = [(CarplayTableViewHeaderContentView *)v2->_header trailingAnchor];
-    v23 = [(CarplayNoEventsView *)v2 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:-12.0];
+    trailingAnchor = [(CarplayTableViewHeaderContentView *)v2->_header trailingAnchor];
+    trailingAnchor2 = [(CarplayNoEventsView *)v2 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     v36[3] = v24;
-    v25 = [(UILabel *)v2->_label centerXAnchor];
-    v26 = [(CarplayNoEventsView *)v2 centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor = [(UILabel *)v2->_label centerXAnchor];
+    centerXAnchor2 = [(CarplayNoEventsView *)v2 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v36[4] = v27;
     v28 = [NSArray arrayWithObjects:v36 count:5];
     [NSLayoutConstraint activateConstraints:v28];
@@ -94,17 +94,17 @@
   v4.receiver = self;
   v4.super_class = CarplayNoEventsView;
   [(CarplayNoEventsView *)&v4 didMoveToWindow];
-  v3 = [(CarplayNoEventsView *)self window];
-  [v3 bounds];
+  window = [(CarplayNoEventsView *)self window];
+  [window bounds];
   [(NSLayoutConstraint *)self->_labelBaselineConstraint setConstant:CGRectGetHeight(v5) * 0.56];
 }
 
-- (void)updateHeaderText:(id)a3
+- (void)updateHeaderText:(id)text
 {
   header = self->_header;
-  v4 = a3;
-  v5 = [(CarplayTableViewHeaderContentView *)header label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(CarplayTableViewHeaderContentView *)header label];
+  [label setText:textCopy];
 }
 
 @end

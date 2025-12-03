@@ -1,7 +1,7 @@
 @interface FBAAnnouncementsInbox
 - (NSString)displayText;
-- (id)predicateForTeam:(id)a3;
-- (unint64_t)unreadCountForTeam:(id)a3;
+- (id)predicateForTeam:(id)team;
+- (unint64_t)unreadCountForTeam:(id)team;
 @end
 
 @implementation FBAAnnouncementsInbox
@@ -10,7 +10,7 @@
 {
   v2 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = v3;
-  v5 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v12._object = 0xE000000000000000;
   v6._object = 0x80000001000CE410;
   v6._countAndFlagsBits = 0xD000000000000014;
@@ -19,23 +19,23 @@
   v8._countAndFlagsBits = 0;
   v8._object = 0xE000000000000000;
   v12._countAndFlagsBits = 0;
-  NSLocalizedString(_:tableName:bundle:value:comment:)(v6, v7, v5, v8, v12);
+  NSLocalizedString(_:tableName:bundle:value:comment:)(v6, v7, mainBundle, v8, v12);
 
   v9 = String._bridgeToObjectiveC()();
 
   return v9;
 }
 
-- (unint64_t)unreadCountForTeam:(id)a3
+- (unint64_t)unreadCountForTeam:(id)team
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_10008615C(a3);
+  teamCopy = team;
+  selfCopy = self;
+  v7 = sub_10008615C(team);
 
   return v7;
 }
 
-- (id)predicateForTeam:(id)a3
+- (id)predicateForTeam:(id)team
 {
   sub_100041AA0(&qword_10010A040, &unk_1000C37D0);
   v3 = swift_allocObject();

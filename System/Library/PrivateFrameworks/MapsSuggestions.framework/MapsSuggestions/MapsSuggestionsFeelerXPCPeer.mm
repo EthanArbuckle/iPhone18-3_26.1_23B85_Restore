@@ -1,12 +1,12 @@
 @interface MapsSuggestionsFeelerXPCPeer
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsFeelerXPCPeer)initWithXPCConnection:(id)a3 memory:(id)a4;
+- (MapsSuggestionsFeelerXPCPeer)initWithXPCConnection:(id)connection memory:(id)memory;
 - (NSString)description;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)signalPackForDestinationEntryData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5;
-- (void)signalPackForDestinationMapItemData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5;
-- (void)signalPackForLocation:(id)a3 handler:(id)a4;
+- (void)signalPackForDestinationEntryData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler;
+- (void)signalPackForDestinationMapItemData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler;
+- (void)signalPackForLocation:(id)location handler:(id)handler;
 @end
 
 @implementation MapsSuggestionsFeelerXPCPeer
@@ -18,17 +18,17 @@
   return self;
 }
 
-- (MapsSuggestionsFeelerXPCPeer)initWithXPCConnection:(id)a3 memory:(id)a4
+- (MapsSuggestionsFeelerXPCPeer)initWithXPCConnection:(id)connection memory:(id)memory
 {
-  v7 = a3;
-  objc_initWeak(&location, a4);
+  connectionCopy = connection;
+  objc_initWeak(&location, memory);
   v19.receiver = self;
   v19.super_class = MapsSuggestionsFeelerXPCPeer;
   v8 = [(MapsSuggestionsFeelerXPCPeer *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
+    objc_storeStrong(&v8->_connection, connection);
     v10 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v9->_memory, v10);
 
@@ -89,19 +89,19 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MapsSuggestionsFeelerXPCPeer *)self connection];
-  v6 = [v5 debugDescription];
+  connection = [(MapsSuggestionsFeelerXPCPeer *)self connection];
+  v6 = [connection debugDescription];
   v7 = [v3 initWithFormat:@"%@<%p> from %@", v4, self, v6];
 
   return v7;
 }
 
-- (void)signalPackForDestinationMapItemData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5
+- (void)signalPackForDestinationMapItemData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dataCopy = data;
+  coordinateDataCopy = coordinateData;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -120,7 +120,7 @@
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -156,9 +156,9 @@ LABEL_11:
   v14[2] = sub_10001DC44;
   v14[3] = &unk_1000756D0;
   objc_copyWeak(&v18, buf);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v15 = dataCopy;
+  v16 = coordinateDataCopy;
+  v17 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, v14);
 
   objc_destroyWeak(&v18);
@@ -166,12 +166,12 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)signalPackForDestinationEntryData:(id)a3 originCoordinateData:(id)a4 handler:(id)a5
+- (void)signalPackForDestinationEntryData:(id)data originCoordinateData:(id)coordinateData handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  dataCopy = data;
+  coordinateDataCopy = coordinateData;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -190,7 +190,7 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -226,9 +226,9 @@ LABEL_11:
   v14[2] = sub_10001E1A4;
   v14[3] = &unk_1000756D0;
   objc_copyWeak(&v18, buf);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v15 = dataCopy;
+  v16 = coordinateDataCopy;
+  v17 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, v14);
 
   objc_destroyWeak(&v18);
@@ -236,10 +236,10 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)signalPackForLocation:(id)a3 handler:(id)a4
+- (void)signalPackForLocation:(id)location handler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -256,7 +256,7 @@ LABEL_12:
     v9[2] = sub_10001E610;
     v9[3] = &unk_100075780;
     objc_copyWeak(&v11, buf);
-    v10 = v5;
+    v10 = handlerCopy;
     dispatch_async(self->_queue._innerQueue, v9);
 
     objc_destroyWeak(&v11);

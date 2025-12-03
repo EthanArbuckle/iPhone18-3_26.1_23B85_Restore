@@ -1,20 +1,20 @@
 @interface ATXShortcutsEditorGroupedUIFeedbackPublisher
-- (ATXShortcutsEditorGroupedUIFeedbackPublisher)initWithUIFeedbackPublisher:(id)a3;
+- (ATXShortcutsEditorGroupedUIFeedbackPublisher)initWithUIFeedbackPublisher:(id)publisher;
 - (id)shortcutsEditorUIFeedbackPublisher;
 @end
 
 @implementation ATXShortcutsEditorGroupedUIFeedbackPublisher
 
-- (ATXShortcutsEditorGroupedUIFeedbackPublisher)initWithUIFeedbackPublisher:(id)a3
+- (ATXShortcutsEditorGroupedUIFeedbackPublisher)initWithUIFeedbackPublisher:(id)publisher
 {
-  v5 = a3;
+  publisherCopy = publisher;
   v9.receiver = self;
   v9.super_class = ATXShortcutsEditorGroupedUIFeedbackPublisher;
   v6 = [(ATXShortcutsEditorGroupedUIFeedbackPublisher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uiFeedbackPublisher, a3);
+    objc_storeStrong(&v6->_uiFeedbackPublisher, publisher);
   }
 
   return v7;

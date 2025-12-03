@@ -4,11 +4,11 @@
 - (void)_setupAttSiriSvcXpcConnection;
 - (void)attSiriAttendingFailed;
 - (void)attSiriAttendingTimeoutTriggered;
-- (void)attSiriDidDetectAttendingTrigger:(id)a3;
+- (void)attSiriDidDetectAttendingTrigger:(id)trigger;
 - (void)attSiriDidDetectContinuousConversation;
 - (void)dealloc;
 - (void)invalidate;
-- (void)startAttendingWithContext:(id)a3;
+- (void)startAttendingWithContext:(id)context;
 @end
 
 @implementation CSAttSiriServiceClient
@@ -93,17 +93,17 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attSiriDidDetectAttendingTrigger:(id)a3
+- (void)attSiriDidDetectAttendingTrigger:(id)trigger
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[CSAttSiriServiceClient attSiriDidDetectAttendingTrigger:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = triggerCopy;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s triggerInfo: %@", &v12, 0x16u);
   }
 
@@ -117,7 +117,7 @@
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 attSiriDidDetectAttendingTrigger:v4];
+      [v10 attSiriDidDetectAttendingTrigger:triggerCopy];
     }
   }
 
@@ -240,21 +240,21 @@ void __55__CSAttSiriServiceClient__setupAttSiriSvcXpcConnection__block_invoke_72
   self->_attSiriSvcConn = 0;
 }
 
-- (void)startAttendingWithContext:(id)a3
+- (void)startAttendingWithContext:(id)context
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSAttSiriServiceClient startAttendingWithContext:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = contextCopy;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s ctx=%@", &v7, 0x16u);
   }
 
-  [self->_remoteSvcProxy startAttendingWithContext:v4];
+  [self->_remoteSvcProxy startAttendingWithContext:contextCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }

@@ -1,22 +1,22 @@
 @interface FMNearbyInteractionLocalizerContext
 - (NSString)description;
 - (_TtC11FMFindingUI35FMNearbyInteractionLocalizerContext)init;
-- (void)session:(id)a3 didDiscoverNearbyObject:(id)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5;
-- (void)session:(id)a3 didUpdateAlgorithmConvergence:(id)a4 forObject:(id)a5;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4;
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6;
-- (void)session:(id)a3 suspendedWithReason:(int64_t)a4;
-- (void)session:(id)a3 suspensionReasonEnded:(int64_t)a4 isNoLongerSuspended:(BOOL)a5;
+- (void)session:(id)session didDiscoverNearbyObject:(id)object;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason;
+- (void)session:(id)session didUpdateAlgorithmConvergence:(id)convergence forObject:(id)object;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects;
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
+- (void)session:(id)session suspendedWithReason:(int64_t)reason;
+- (void)session:(id)session suspensionReasonEnded:(int64_t)ended isNoLongerSuspended:(BOOL)suspended;
 @end
 
 @implementation FMNearbyInteractionLocalizerContext
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A55D3DC();
 
   v3 = sub_24A62EBE4();
@@ -24,71 +24,71 @@
   return v3;
 }
 
-- (void)session:(id)a3 didDiscoverNearbyObject:(id)a4
+- (void)session:(id)session didDiscoverNearbyObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24A55D754(v6, v7);
+  sessionCopy = session;
+  objectCopy = object;
+  selfCopy = self;
+  sub_24A55D754(sessionCopy, objectCopy);
 }
 
-- (void)session:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)session:(id)session didUpdateNearbyObjects:(id)objects
 {
   sub_24A50D7EC(0, &qword_27EF50208, 0x277CD8A58);
   v6 = sub_24A62ED64();
-  v7 = a3;
-  v8 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_24A5660B0(v6);
 }
 
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_24A566DF4(v11, a5, a6);
+  sessionCopy = session;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
+  selfCopy = self;
+  sub_24A566DF4(objectCopy, region, previousRegion);
 }
 
-- (void)session:(id)a3 didRemoveNearbyObjects:(id)a4 withReason:(int64_t)a5
+- (void)session:(id)session didRemoveNearbyObjects:(id)objects withReason:(int64_t)reason
 {
   sub_24A50D7EC(0, &qword_27EF50208, 0x277CD8A58);
   v8 = sub_24A62ED64();
-  v9 = a3;
-  v10 = self;
-  sub_24A5676CC(v8, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_24A5676CC(v8, reason);
 }
 
-- (void)session:(id)a3 didUpdateAlgorithmConvergence:(id)a4 forObject:(id)a5
+- (void)session:(id)session didUpdateAlgorithmConvergence:(id)convergence forObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_24A567CB4(v9, a5);
+  sessionCopy = session;
+  convergenceCopy = convergence;
+  objectCopy = object;
+  selfCopy = self;
+  sub_24A567CB4(convergenceCopy, object);
 }
 
-- (void)session:(id)a3 suspensionReasonEnded:(int64_t)a4 isNoLongerSuspended:(BOOL)a5
+- (void)session:(id)session suspensionReasonEnded:(int64_t)ended isNoLongerSuspended:(BOOL)suspended
 {
-  v8 = a3;
-  v9 = self;
-  sub_24A568ABC(a4, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_24A568ABC(ended, suspended);
 }
 
-- (void)session:(id)a3 suspendedWithReason:(int64_t)a4
+- (void)session:(id)session suspendedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = self;
-  sub_24A568E74(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_24A568E74(reason);
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_24A5692FC(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24A5692FC(errorCopy);
 }
 
 - (_TtC11FMFindingUI35FMNearbyInteractionLocalizerContext)init
@@ -98,12 +98,12 @@
   return result;
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24A561B7C(v6, v7);
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
+  sub_24A561B7C(sessionCopy, frameCopy);
 }
 
 @end

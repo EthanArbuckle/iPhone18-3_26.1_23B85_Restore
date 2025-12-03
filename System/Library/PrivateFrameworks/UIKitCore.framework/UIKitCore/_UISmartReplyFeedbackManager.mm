@@ -1,35 +1,35 @@
 @interface _UISmartReplyFeedbackManager
 + (BOOL)showReportConcernUI;
-+ (id)_conversationTypePayloadValueFromConversationType:(int64_t)a3;
-+ (void)_sendAnalyticsForSignal:(id)a3 toChannel:(id)a4 withThreadId:(id)a5 payload:(id)a6;
-+ (void)userSelectedSmartReply:(id)a3 isLongForm:(BOOL)a4 withMailOrMsgThreadId:(id)a5 withConversationType:(int64_t)a6 withSmartReplyFeedbackManagerInstance:(id)a7;
-- (BOOL)predictionsContainLongFormCandidates:(id)a3;
-- (BOOL)predictionsContainSmartActions:(id)a3;
-- (BOOL)predictionsContainSmartReplies:(id)a3;
-- (BOOL)shouldShowSmartReplyFeedbackInputDashboardViewControllerWithKeyboardIsSplit:(BOOL)a3;
++ (id)_conversationTypePayloadValueFromConversationType:(int64_t)type;
++ (void)_sendAnalyticsForSignal:(id)signal toChannel:(id)channel withThreadId:(id)id payload:(id)payload;
++ (void)userSelectedSmartReply:(id)reply isLongForm:(BOOL)form withMailOrMsgThreadId:(id)id withConversationType:(int64_t)type withSmartReplyFeedbackManagerInstance:(id)instance;
+- (BOOL)predictionsContainLongFormCandidates:(id)candidates;
+- (BOOL)predictionsContainSmartActions:(id)actions;
+- (BOOL)predictionsContainSmartReplies:(id)replies;
+- (BOOL)shouldShowSmartReplyFeedbackInputDashboardViewControllerWithKeyboardIsSplit:(BOOL)split;
 - (_UIKeyboardStateManager)keyboardStateManagerDelegate;
 - (_UISmartReplyFeedbackManager)init;
-- (_UISmartReplyFeedbackManager)initWithKeyboardStateManagerDelegate:(id)a3;
+- (_UISmartReplyFeedbackManager)initWithKeyboardStateManagerDelegate:(id)delegate;
 - (_UISmartReplyFeedbackManager)initWithoutBundleIdCheck;
-- (id)stringListFromPredictions:(id)a3;
-- (void)_sendAnalyticsForSignal:(id)a3 toChannel:(id)a4 withThreadId:(id)a5 payload:(id)a6;
-- (void)_userSelectedSmartReply:(id)a3 isLongForm:(BOOL)a4 withMailOrMsgThreadId:(id)a5 withConversationType:(int64_t)a6;
-- (void)composeFieldInFocusWithMailOrMsgThreadId:(id)a3;
+- (id)stringListFromPredictions:(id)predictions;
+- (void)_sendAnalyticsForSignal:(id)signal toChannel:(id)channel withThreadId:(id)id payload:(id)payload;
+- (void)_userSelectedSmartReply:(id)reply isLongForm:(BOOL)form withMailOrMsgThreadId:(id)id withConversationType:(int64_t)type;
+- (void)composeFieldInFocusWithMailOrMsgThreadId:(id)id;
 - (void)inputModeWillChange;
 - (void)predictionBarDebounceTimeIntervalExpired;
 - (void)reportFeedbackUIPresented;
 - (void)reportSmartRepliesConcern;
-- (void)reportSmartRepliesFeedbackSignal:(id)a3;
+- (void)reportSmartRepliesFeedbackSignal:(id)signal;
 - (void)reportSmartRepliesThumbsDown;
 - (void)reportSmartRepliesThumbsUp;
 - (void)reportWritingToolsPanelDismissed;
 - (void)resetOnKeyboardCandidatesCleared;
 - (void)resetSmartReplyFeedbackUIIfAlreadyShown;
 - (void)resetStateIfNoSmartReplySelected;
-- (void)resetWithDebug:(id)a3;
+- (void)resetWithDebug:(id)debug;
 - (void)smartRepliesPresented;
-- (void)updateCandidates:(id)a3;
-- (void)userSelectedPollAction:(id)a3 withInputContextHistory:(id)a4;
+- (void)updateCandidates:(id)candidates;
+- (void)userSelectedPollAction:(id)action withInputContextHistory:(id)history;
 @end
 
 @implementation _UISmartReplyFeedbackManager
@@ -45,7 +45,7 @@
     {
       if (!+[UIKeyboard isKeyboardProcess])
       {
-        v5 = 0;
+        selfCopy = 0;
         goto LABEL_7;
       }
 
@@ -55,10 +55,10 @@
 
   [(_UISmartReplyFeedbackManager *)self setPredictionBarDebounceTimeInterval:v4];
   self = [(_UISmartReplyFeedbackManager *)self initWithoutBundleIdCheck];
-  v5 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)resetOnKeyboardCandidatesCleared
@@ -111,29 +111,29 @@ LABEL_7:
   {
     v2->_state = 0;
     [(_UISmartReplyFeedbackManager *)v2 resetWithDebug:@"init"];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_inputModeWillChange name:@"UITextInputCurrentInputModeWillChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_inputModeWillChange name:@"UITextInputCurrentInputModeWillChangeNotification" object:0];
   }
 
   return v3;
 }
 
-- (_UISmartReplyFeedbackManager)initWithKeyboardStateManagerDelegate:(id)a3
+- (_UISmartReplyFeedbackManager)initWithKeyboardStateManagerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(_UISmartReplyFeedbackManager *)self init];
   v6 = v5;
   if (v5)
   {
-    [(_UISmartReplyFeedbackManager *)v5 setKeyboardStateManagerDelegate:v4];
+    [(_UISmartReplyFeedbackManager *)v5 setKeyboardStateManagerDelegate:delegateCopy];
   }
 
   return v6;
 }
 
-- (BOOL)shouldShowSmartReplyFeedbackInputDashboardViewControllerWithKeyboardIsSplit:(BOOL)a3
+- (BOOL)shouldShowSmartReplyFeedbackInputDashboardViewControllerWithKeyboardIsSplit:(BOOL)split
 {
-  v3 = a3;
+  splitCopy = split;
   if ([(_UISmartReplyFeedbackManager *)self state]< 3)
   {
     return 0;
@@ -142,7 +142,7 @@ LABEL_7:
   if (![(_UISmartReplyFeedbackManager *)self isLongFormCandidate])
   {
     result = 1;
-    if (!v3)
+    if (!splitCopy)
     {
       return result;
     }
@@ -151,7 +151,7 @@ LABEL_7:
   }
 
   result = [(_UISmartReplyFeedbackManager *)self state]> 4;
-  if (v3)
+  if (splitCopy)
   {
 LABEL_7:
     result = 0;
@@ -161,9 +161,9 @@ LABEL_7:
   return result;
 }
 
-- (void)composeFieldInFocusWithMailOrMsgThreadId:(id)a3
+- (void)composeFieldInFocusWithMailOrMsgThreadId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -182,51 +182,51 @@ LABEL_7:
   {
     v7 = *v5;
     v8 = getIAChannelSmartReplies();
-    [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v7 toChannel:v8 withThreadId:v4 payload:0];
+    [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v7 toChannel:v8 withThreadId:idCopy payload:0];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalSmartRepliesComposeFieldInFocus(void)"];
-    [v9 handleFailureInFunction:v10 file:@"_UISmartReplyFeedbackManager.m" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"_UISmartReplyFeedbackManager.m" lineNumber:36 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (id)stringListFromPredictions:(id)a3
+- (id)stringListFromPredictions:(id)predictions
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  predictionsCopy = predictions;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(predictionsCopy, "count")}];
+  if ([predictionsCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
-      v7 = [v6 label];
-      v8 = [v7 copy];
+      v6 = [predictionsCopy objectAtIndexedSubscript:v5];
+      label = [v6 label];
+      v8 = [label copy];
       [v4 setObject:v8 atIndexedSubscript:v5];
 
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [predictionsCopy count]);
   }
 
   return v4;
 }
 
-- (BOOL)predictionsContainSmartReplies:(id)a3
+- (BOOL)predictionsContainSmartReplies:(id)replies
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  repliesCopy = replies;
+  v4 = [repliesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -236,7 +236,7 @@ LABEL_7:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(repliesCopy);
         }
 
         if ([_UISmartReplyFeedbackManager candidateIsSmartReply:*(*(&v8 + 1) + 8 * i), v8])
@@ -246,7 +246,7 @@ LABEL_7:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [repliesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -261,15 +261,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)predictionsContainSmartActions:(id)a3
+- (BOOL)predictionsContainSmartActions:(id)actions
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  actionsCopy = actions;
+  v4 = [actionsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -279,7 +279,7 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if ([_UISmartReplyFeedbackManager candidateIsSmartAction:*(*(&v8 + 1) + 8 * i), v8])
@@ -289,7 +289,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [actionsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -304,15 +304,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)predictionsContainLongFormCandidates:(id)a3
+- (BOOL)predictionsContainLongFormCandidates:(id)candidates
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  candidatesCopy = candidates;
+  v4 = [candidatesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -322,7 +322,7 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(candidatesCopy);
         }
 
         if ([_UISmartReplyFeedbackManager candidateIsLongFormSmartReply:*(*(&v8 + 1) + 8 * i), v8])
@@ -332,7 +332,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [candidatesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -347,17 +347,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)updateCandidates:(id)a3
+- (void)updateCandidates:(id)candidates
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  candidatesCopy = candidates;
   if ([(_UISmartReplyFeedbackManager *)self state]< 3 || [(_UISmartReplyFeedbackManager *)self state]> 7)
   {
-    if ([(_UISmartReplyFeedbackManager *)self predictionsContainSmartReplies:v4]|| [(_UISmartReplyFeedbackManager *)self predictionsContainSmartActions:v4])
+    if ([(_UISmartReplyFeedbackManager *)self predictionsContainSmartReplies:candidatesCopy]|| [(_UISmartReplyFeedbackManager *)self predictionsContainSmartActions:candidatesCopy])
     {
-      v6 = [(_UISmartReplyFeedbackManager *)self stringListFromPredictions:v4];
-      v7 = [(_UISmartReplyFeedbackManager *)self previouslyShownCandidates];
-      v8 = [v7 isEqualToArray:v6];
+      v6 = [(_UISmartReplyFeedbackManager *)self stringListFromPredictions:candidatesCopy];
+      previouslyShownCandidates = [(_UISmartReplyFeedbackManager *)self previouslyShownCandidates];
+      v8 = [previouslyShownCandidates isEqualToArray:v6];
 
       if (v8)
       {
@@ -373,7 +373,7 @@ LABEL_11:
       {
         [(_UISmartReplyFeedbackManager *)self setPreviouslyShownCandidates:v6];
         [(_UISmartReplyFeedbackManager *)self resetWithDebug:@"updateCandidates"];
-        self->_isLongFormCandidate = [(_UISmartReplyFeedbackManager *)self predictionsContainLongFormCandidates:v4];
+        self->_isLongFormCandidate = [(_UISmartReplyFeedbackManager *)self predictionsContainLongFormCandidates:candidatesCopy];
         v10 = UIFeedbackServiceLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
@@ -427,7 +427,7 @@ LABEL_11:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v5 = 134217984;
-      v6 = [(_UISmartReplyFeedbackManager *)self state];
+      state = [(_UISmartReplyFeedbackManager *)self state];
       _os_log_error_impl(&dword_188A29000, v3, OS_LOG_TYPE_ERROR, "Unexpected state %lu in smartRepliesPresented", &v5, 0xCu);
     }
   }
@@ -440,72 +440,72 @@ LABEL_11:
   }
 }
 
-+ (id)_conversationTypePayloadValueFromConversationType:(int64_t)a3
++ (id)_conversationTypePayloadValueFromConversationType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unspecified";
   }
 
   else
   {
-    return off_1E7118BA0[a3];
+    return off_1E7118BA0[type];
   }
 }
 
-- (void)_userSelectedSmartReply:(id)a3 isLongForm:(BOOL)a4 withMailOrMsgThreadId:(id)a5 withConversationType:(int64_t)a6
+- (void)_userSelectedSmartReply:(id)reply isLongForm:(BOOL)form withMailOrMsgThreadId:(id)id withConversationType:(int64_t)type
 {
-  v8 = a4;
+  formCopy = form;
   v31[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  replyCopy = reply;
+  idCopy = id;
   if ([(_UISmartReplyFeedbackManager *)self state]!= 2)
   {
     v12 = UIFeedbackServiceLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v26 = 134217984;
-      v27 = [(_UISmartReplyFeedbackManager *)self state];
+      state = [(_UISmartReplyFeedbackManager *)self state];
       _os_log_error_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Unexpected state %lu in _userSelectedSmartReply", &v26, 0xCu);
     }
   }
 
-  if ([(_UISmartReplyFeedbackManager *)self isLongFormCandidate]!= v8)
+  if ([(_UISmartReplyFeedbackManager *)self isLongFormCandidate]!= formCopy)
   {
     v13 = UIFeedbackServiceLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v25 = @"NO";
-      if (v8)
+      if (formCopy)
       {
         v25 = @"YES";
       }
 
       v26 = 138477827;
-      v27 = v25;
+      state = v25;
       _os_log_error_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Unexpected isLongForm %{private}@ in _userSelectedSmartReply", &v26, 0xCu);
     }
   }
 
   v14 = 4;
-  if (!v8)
+  if (!formCopy)
   {
     v14 = 5;
   }
 
   self->_state = v14;
-  [(_UISmartReplyFeedbackManager *)self setSelectedCandidateDescription:v10];
-  self->_isLongFormCandidate = v8;
-  v15 = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
-  [v15 updateAssistantView];
+  [(_UISmartReplyFeedbackManager *)self setSelectedCandidateDescription:replyCopy];
+  self->_isLongFormCandidate = formCopy;
+  keyboardStateManagerDelegate = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
+  [keyboardStateManagerDelegate updateAssistantView];
 
   v16 = getIASignalSmartRepliesIntentEngaged();
   v17 = getIAChannelSmartReplies();
   v18 = getIAPayloadKeySmartRepliesSelectedIntent();
   v19 = v18;
-  if (v10)
+  if (replyCopy)
   {
-    v20 = v10;
+    v20 = replyCopy;
   }
 
   else
@@ -516,50 +516,50 @@ LABEL_11:
   v30[0] = v18;
   v30[1] = @"ConversationType";
   v31[0] = v20;
-  v21 = [_UISmartReplyFeedbackManager _conversationTypePayloadValueFromConversationType:a6];
+  v21 = [_UISmartReplyFeedbackManager _conversationTypePayloadValueFromConversationType:type];
   v31[1] = v21;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
-  [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v16 toChannel:v17 withThreadId:v11 payload:v22];
+  [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v16 toChannel:v17 withThreadId:idCopy payload:v22];
 
   v23 = UIFeedbackServiceLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     v24 = @"short form";
-    if (v8)
+    if (formCopy)
     {
       v24 = @"long form";
     }
 
     v26 = 138478083;
-    v27 = v24;
+    state = v24;
     v28 = 2117;
-    v29 = v10;
+    v29 = replyCopy;
     _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_INFO, "_userSelectedSmartReply %{private}@ '%{sensitive}@'", &v26, 0x16u);
   }
 }
 
-+ (void)userSelectedSmartReply:(id)a3 isLongForm:(BOOL)a4 withMailOrMsgThreadId:(id)a5 withConversationType:(int64_t)a6 withSmartReplyFeedbackManagerInstance:(id)a7
++ (void)userSelectedSmartReply:(id)reply isLongForm:(BOOL)form withMailOrMsgThreadId:(id)id withConversationType:(int64_t)type withSmartReplyFeedbackManagerInstance:(id)instance
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (instance)
   {
-    v10 = a4;
-    v11 = a5;
-    v12 = a3;
-    [a7 _userSelectedSmartReply:v12 isLongForm:v10 withMailOrMsgThreadId:v11 withConversationType:a6];
+    formCopy = form;
+    idCopy = id;
+    replyCopy = reply;
+    [instance _userSelectedSmartReply:replyCopy isLongForm:formCopy withMailOrMsgThreadId:idCopy withConversationType:type];
   }
 
   else
   {
-    v13 = a5;
-    v14 = a3;
-    v12 = getIASignalSmartRepliesIntentEngaged();
-    v11 = getIAChannelSmartReplies();
+    idCopy2 = id;
+    replyCopy2 = reply;
+    replyCopy = getIASignalSmartRepliesIntentEngaged();
+    idCopy = getIAChannelSmartReplies();
     v15 = getIAPayloadKeySmartRepliesSelectedIntent();
     v16 = v15;
-    if (v14)
+    if (replyCopy2)
     {
-      v17 = v14;
+      v17 = replyCopy2;
     }
 
     else
@@ -570,49 +570,49 @@ LABEL_11:
     v20[0] = v15;
     v20[1] = @"ConversationType";
     v21[0] = v17;
-    v18 = [_UISmartReplyFeedbackManager _conversationTypePayloadValueFromConversationType:a6];
+    v18 = [_UISmartReplyFeedbackManager _conversationTypePayloadValueFromConversationType:type];
     v21[1] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-    [_UISmartReplyFeedbackManager _sendAnalyticsForSignal:v12 toChannel:v11 withThreadId:v13 payload:v19];
+    [_UISmartReplyFeedbackManager _sendAnalyticsForSignal:replyCopy toChannel:idCopy withThreadId:idCopy2 payload:v19];
   }
 }
 
-- (void)userSelectedPollAction:(id)a3 withInputContextHistory:(id)a4
+- (void)userSelectedPollAction:(id)action withInputContextHistory:(id)history
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  historyCopy = history;
   if ([(_UISmartReplyFeedbackManager *)self state]!= 2)
   {
     v8 = UIFeedbackServiceLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v22 = [(_UISmartReplyFeedbackManager *)self state];
+      state = [(_UISmartReplyFeedbackManager *)self state];
       _os_log_error_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Unexpected state %lu in userSelectedPollAction", buf, 0xCu);
     }
   }
 
   self->_state = 5;
-  [(_UISmartReplyFeedbackManager *)self setSelectedCandidateDescription:v6];
+  [(_UISmartReplyFeedbackManager *)self setSelectedCandidateDescription:actionCopy];
   self->_isPollAction = 1;
-  v9 = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
-  [v9 updateAssistantView];
+  keyboardStateManagerDelegate = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
+  [keyboardStateManagerDelegate updateAssistantView];
 
-  v10 = [v7 recipientIdentifiers];
-  if (v10)
+  recipientIdentifiers = [historyCopy recipientIdentifiers];
+  if (recipientIdentifiers)
   {
-    v11 = v10;
-    v12 = [v7 recipientIdentifiers];
-    v13 = [v12 count];
+    v11 = recipientIdentifiers;
+    recipientIdentifiers2 = [historyCopy recipientIdentifiers];
+    v13 = [recipientIdentifiers2 count];
 
     if (v13 >= 2)
     {
       v14 = getIAChannelSmartReplies();
-      v15 = [v7 threadIdentifier];
-      if (v6)
+      threadIdentifier = [historyCopy threadIdentifier];
+      if (actionCopy)
       {
-        v16 = v6;
+        v16 = actionCopy;
       }
 
       else
@@ -623,7 +623,7 @@ LABEL_11:
       v19 = @"PollActionTitle";
       v20 = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-      [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:@"PollActionEngaged" toChannel:v14 withThreadId:v15 payload:v17];
+      [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:@"PollActionEngaged" toChannel:v14 withThreadId:threadIdentifier payload:v17];
     }
   }
 
@@ -631,7 +631,7 @@ LABEL_11:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138739971;
-    v22 = v6;
+    state = actionCopy;
     _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_INFO, "userSelectedPollAction '%{sensitive}@'", buf, 0xCu);
   }
 }
@@ -663,19 +663,19 @@ LABEL_11:
 {
   if (![(_UISmartReplyFeedbackManager *)self isLongFormCandidate]|| [(_UISmartReplyFeedbackManager *)self state]>= 5)
   {
-    v3 = [(_UISmartReplyFeedbackManager *)self reportFeedbackUIPresentedCalledTime];
+    reportFeedbackUIPresentedCalledTime = [(_UISmartReplyFeedbackManager *)self reportFeedbackUIPresentedCalledTime];
 
-    if (!v3)
+    if (!reportFeedbackUIPresentedCalledTime)
     {
-      v4 = [MEMORY[0x1E695DF00] date];
-      [(_UISmartReplyFeedbackManager *)self setReportFeedbackUIPresentedCalledTime:v4];
+      date = [MEMORY[0x1E695DF00] date];
+      [(_UISmartReplyFeedbackManager *)self setReportFeedbackUIPresentedCalledTime:date];
 
       self->_state = 6;
       [(_UISmartReplyFeedbackManager *)self predictionBarDebounceTimeInterval];
       v6 = v5;
-      v7 = [(_UISmartReplyFeedbackManager *)self isPollAction];
+      isPollAction = [(_UISmartReplyFeedbackManager *)self isPollAction];
       v8 = 1.0;
-      if (!v7)
+      if (!isPollAction)
       {
         v8 = v6;
       }
@@ -706,8 +706,8 @@ LABEL_11:
       {
         v12 = *v10;
         v13 = getIAChannelFeedbackService();
-        v14 = [(_UISmartReplyFeedbackManager *)self analyticsSessionId];
-        [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v12 toChannel:v13 withThreadId:v14 payload:0];
+        analyticsSessionId = [(_UISmartReplyFeedbackManager *)self analyticsSessionId];
+        [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v12 toChannel:v13 withThreadId:analyticsSessionId payload:0];
 
         v15 = UIFeedbackServiceLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -719,9 +719,9 @@ LABEL_11:
 
       else
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalFeedbackServiceSmartRepliesFeedbackUIPresented(void)"];
-        [v16 handleFailureInFunction:v17 file:@"_UISmartReplyFeedbackManager.m" lineNumber:41 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v17 file:@"_UISmartReplyFeedbackManager.m" lineNumber:41 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
@@ -742,10 +742,10 @@ LABEL_11:
       _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_INFO, "predictionBarDebounceTimeIntervalExpired", &v9, 2u);
     }
 
-    v4 = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
-    v5 = [v4 _hasMarkedText];
+    keyboardStateManagerDelegate = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
+    _hasMarkedText = [keyboardStateManagerDelegate _hasMarkedText];
 
-    if (v5)
+    if (_hasMarkedText)
     {
       [(_UISmartReplyFeedbackManager *)self resetWithDebug:@"predictionBarDebounceTimeIntervalExpired with marked text"];
     }
@@ -753,10 +753,10 @@ LABEL_11:
 
   else
   {
-    v6 = [(_UISmartReplyFeedbackManager *)self state];
+    state = [(_UISmartReplyFeedbackManager *)self state];
     v7 = UIFeedbackServiceLog();
     v8 = v7;
-    if (v6 == 1)
+    if (state == 1)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -768,7 +768,7 @@ LABEL_11:
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 134217984;
-      v10 = [(_UISmartReplyFeedbackManager *)self state];
+      state2 = [(_UISmartReplyFeedbackManager *)self state];
       _os_log_error_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Unexpected state %lu in predictionBarDebounceTimeIntervalExpired", &v9, 0xCu);
     }
   }
@@ -786,39 +786,39 @@ LABEL_11:
   [(_UISmartReplyFeedbackManager *)self resetWithDebug:@"resetOnInputModeWillChange"];
 }
 
-- (void)reportSmartRepliesFeedbackSignal:(id)a3
+- (void)reportSmartRepliesFeedbackSignal:(id)signal
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  signalCopy = signal;
   if (+[UIKeyboard isKeyboardProcess])
   {
     v5 = +[UIKeyboard keyboardBundleIdentifier];
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 inputSystemSourceSession];
-    v8 = [v7 documentTraits];
-    v9 = [v8 sceneID];
+    inputSystemSourceSession = [v6 inputSystemSourceSession];
+    documentTraits = [inputSystemSourceSession documentTraits];
+    sceneID = [documentTraits sceneID];
 
     v10 = 0;
-    if (v5 && v9)
+    if (v5 && sceneID)
     {
       v13[0] = @"FeedbackServiceRequestingBundleID";
       v13[1] = @"FeedbackServiceRequestingSceneID";
       v14[0] = v5;
-      v14[1] = v9;
+      v14[1] = sceneID;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
     }
   }
 
   else
   {
-    v9 = 0;
+    sceneID = 0;
     v5 = 0;
     v10 = 0;
   }
 
   v11 = getIAChannelFeedbackService();
-  v12 = [(_UISmartReplyFeedbackManager *)self analyticsSessionId];
-  [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v4 toChannel:v11 withThreadId:v12 payload:v10];
+  analyticsSessionId = [(_UISmartReplyFeedbackManager *)self analyticsSessionId];
+  [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:signalCopy toChannel:v11 withThreadId:analyticsSessionId payload:v10];
 
   [(_UISmartReplyFeedbackManager *)self resetWithDebug:@"reportSmartRepliesFeedbackSignal"];
 }
@@ -846,9 +846,9 @@ LABEL_11:
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalFeedbackServiceLaunchSmartRepliesReportConcern(void)"];
-    [v5 handleFailureInFunction:v6 file:@"_UISmartReplyFeedbackManager.m" lineNumber:40 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v6 file:@"_UISmartReplyFeedbackManager.m" lineNumber:40 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -877,9 +877,9 @@ LABEL_11:
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalFeedbackServiceLaunchSmartRepliesThumbsUp(void)"];
-    [v5 handleFailureInFunction:v6 file:@"_UISmartReplyFeedbackManager.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v6 file:@"_UISmartReplyFeedbackManager.m" lineNumber:38 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -908,39 +908,39 @@ LABEL_11:
 
   else
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalFeedbackServiceLaunchSmartRepliesThumbsDown(void)"];
-    [v5 handleFailureInFunction:v6 file:@"_UISmartReplyFeedbackManager.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v6 file:@"_UISmartReplyFeedbackManager.m" lineNumber:39 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)resetWithDebug:(id)a3
+- (void)resetWithDebug:(id)debug
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  debugCopy = debug;
   if ([(_UISmartReplyFeedbackManager *)self state]!= 1)
   {
     v5 = UIFeedbackServiceLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138477827;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = debugCopy;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_INFO, "Resetting state (%{private}@)", &buf, 0xCu);
     }
 
-    v6 = [(_UISmartReplyFeedbackManager *)self predictionBarDebounceTimeIntervalTimer];
-    [v6 invalidate];
+    predictionBarDebounceTimeIntervalTimer = [(_UISmartReplyFeedbackManager *)self predictionBarDebounceTimeIntervalTimer];
+    [predictionBarDebounceTimeIntervalTimer invalidate];
 
     self->_state = 1;
     *&self->_isLongFormCandidate = 0;
     [(_UISmartReplyFeedbackManager *)self setPreviouslyShownCandidates:0];
     [(_UISmartReplyFeedbackManager *)self setSelectedCandidateDescription:0];
-    v7 = [(_UISmartReplyFeedbackManager *)self reportFeedbackUIPresentedCalledTime];
-    LOBYTE(v6) = v7 == 0;
+    reportFeedbackUIPresentedCalledTime = [(_UISmartReplyFeedbackManager *)self reportFeedbackUIPresentedCalledTime];
+    LOBYTE(predictionBarDebounceTimeIntervalTimer) = reportFeedbackUIPresentedCalledTime == 0;
 
-    if ((v6 & 1) == 0)
+    if ((predictionBarDebounceTimeIntervalTimer & 1) == 0)
     {
       v8 = UIFeedbackServiceLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -950,8 +950,8 @@ LABEL_11:
       }
 
       [(_UISmartReplyFeedbackManager *)self setReportFeedbackUIPresentedCalledTime:0];
-      v9 = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
-      [v9 updateAssistantView];
+      keyboardStateManagerDelegate = [(_UISmartReplyFeedbackManager *)self keyboardStateManagerDelegate];
+      [keyboardStateManagerDelegate updateAssistantView];
     }
 
     v18 = 0;
@@ -976,17 +976,17 @@ LABEL_11:
     _Block_object_dispose(&v18, 8);
     if (!v10)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getIASignalFeedbackServiceSmartRepliesFeedbackUIReset(void)"];
-      [v16 handleFailureInFunction:v17 file:@"_UISmartReplyFeedbackManager.m" lineNumber:42 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v17 file:@"_UISmartReplyFeedbackManager.m" lineNumber:42 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
     v13 = *v10;
     v14 = getIAChannelFeedbackService();
-    v15 = [(_UISmartReplyFeedbackManager *)self analyticsSessionId];
-    [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v13 toChannel:v14 withThreadId:v15 payload:0];
+    analyticsSessionId = [(_UISmartReplyFeedbackManager *)self analyticsSessionId];
+    [(_UISmartReplyFeedbackManager *)self _sendAnalyticsForSignal:v13 toChannel:v14 withThreadId:analyticsSessionId payload:0];
   }
 }
 
@@ -999,22 +999,22 @@ LABEL_11:
   }
 }
 
-- (void)_sendAnalyticsForSignal:(id)a3 toChannel:(id)a4 withThreadId:(id)a5 payload:(id)a6
+- (void)_sendAnalyticsForSignal:(id)signal toChannel:(id)channel withThreadId:(id)id payload:(id)payload
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(_UISmartReplyFeedbackManager *)self setAnalyticsSessionId:v11];
-  [_UISmartReplyFeedbackManager _sendAnalyticsForSignal:v13 toChannel:v12 withThreadId:v11 payload:v10];
+  payloadCopy = payload;
+  idCopy = id;
+  channelCopy = channel;
+  signalCopy = signal;
+  [(_UISmartReplyFeedbackManager *)self setAnalyticsSessionId:idCopy];
+  [_UISmartReplyFeedbackManager _sendAnalyticsForSignal:signalCopy toChannel:channelCopy withThreadId:idCopy payload:payloadCopy];
 }
 
-+ (void)_sendAnalyticsForSignal:(id)a3 toChannel:(id)a4 withThreadId:(id)a5 payload:(id)a6
++ (void)_sendAnalyticsForSignal:(id)signal toChannel:(id)channel withThreadId:(id)id payload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  signalCopy = signal;
+  channelCopy = channel;
+  idCopy = id;
+  payloadCopy = payload;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -1037,7 +1037,7 @@ LABEL_11:
   _Block_object_dispose(&v18, 8);
   if (v13)
   {
-    [v13 sendSignal:v9 toChannel:v10 withNullableUniqueStringID:v11 withPayload:v12];
+    [v13 sendSignal:signalCopy toChannel:channelCopy withNullableUniqueStringID:idCopy withPayload:payloadCopy];
   }
 
   else

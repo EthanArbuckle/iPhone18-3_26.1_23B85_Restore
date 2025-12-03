@@ -1,6 +1,6 @@
 @interface VOSDefaultHapticPack
 - (NSDictionary)eventToHapticFilenameMapping;
-- (id)hapticAssetURLForOutputEvent:(id)a3;
+- (id)hapticAssetURLForOutputEvent:(id)event;
 @end
 
 @implementation VOSDefaultHapticPack
@@ -243,20 +243,20 @@ void __52__VOSDefaultHapticPack_eventToHapticFilenameMapping__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)hapticAssetURLForOutputEvent:(id)a3
+- (id)hapticAssetURLForOutputEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 supportsHaptic])
+  eventCopy = event;
+  if ([eventCopy supportsHaptic])
   {
-    v5 = [(VOSDefaultHapticPack *)self eventToHapticFilenameMapping];
-    v6 = [v4 rawValue];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    eventToHapticFilenameMapping = [(VOSDefaultHapticPack *)self eventToHapticFilenameMapping];
+    rawValue = [eventCopy rawValue];
+    v7 = [eventToHapticFilenameMapping objectForKeyedSubscript:rawValue];
 
-    v8 = [v7 pathExtension];
-    v9 = [v7 stringByDeletingPathExtension];
+    pathExtension = [v7 pathExtension];
+    stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
 
     v10 = VOSVoiceOverBundle();
-    v11 = [v10 URLForResource:v9 withExtension:v8 subdirectory:@"Haptics"];
+    v11 = [v10 URLForResource:stringByDeletingPathExtension withExtension:pathExtension subdirectory:@"Haptics"];
   }
 
   else

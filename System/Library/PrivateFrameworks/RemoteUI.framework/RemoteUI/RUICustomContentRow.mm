@@ -1,22 +1,22 @@
 @interface RUICustomContentRow
 - (_TtC8RemoteUI19RUICustomContentRow)init;
-- (_TtC8RemoteUI19RUICustomContentRow)initWithAttributes:(id)a3 parent:(id)a4;
-- (id)subElementWithID:(id)a3;
+- (_TtC8RemoteUI19RUICustomContentRow)initWithAttributes:(id)attributes parent:(id)parent;
+- (id)subElementWithID:(id)d;
 - (id)tableCell;
 - (void)prepareToPreload;
 @end
 
 @implementation RUICustomContentRow
 
-- (id)subElementWithID:(id)a3
+- (id)subElementWithID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_21BA87CBC();
     v6 = v5;
-    v7 = *(**&v3[OBJC_IVAR____TtC8RemoteUI19RUICustomContentRow_childElementDirectory] + 120);
-    v8 = v3;
+    v7 = *(**&selfCopy[OBJC_IVAR____TtC8RemoteUI19RUICustomContentRow_childElementDirectory] + 120);
+    v8 = selfCopy;
     v9 = v7(v4, v6);
 
     return v9;
@@ -32,7 +32,7 @@
 
 - (id)tableCell
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21BA4D09C();
 
   return v3;
@@ -40,7 +40,7 @@
 
 - (void)prepareToPreload
 {
-  v2 = self;
+  selfCopy = self;
   sub_21BA4D208();
 }
 
@@ -56,9 +56,9 @@
   return [(RUISwiftUITableViewRow *)&v5 init];
 }
 
-- (_TtC8RemoteUI19RUICustomContentRow)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtC8RemoteUI19RUICustomContentRow)initWithAttributes:(id)attributes parent:(id)parent
 {
-  if (a3)
+  if (attributes)
   {
     v5 = sub_21BA87BCC();
   }
@@ -68,8 +68,8 @@
     v5 = 0;
   }
 
-  v6 = a4;
-  return RUICustomContentRow.init(attributes:parent:)(v5, a4);
+  parentCopy = parent;
+  return RUICustomContentRow.init(attributes:parent:)(v5, parent);
 }
 
 @end

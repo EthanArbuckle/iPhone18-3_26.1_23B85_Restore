@@ -1,17 +1,17 @@
 @interface RWIProtocolRuntimeCallArgument
 - (NSString)objectId;
 - (RWIProtocolJSONObject)value;
-- (void)setObjectId:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setObjectId:(id)id;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolRuntimeCallArgument
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeCallArgument;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setObject:value forKey:@"value"];
 }
 
 - (RWIProtocolJSONObject)value
@@ -69,11 +69,11 @@
   return v7;
 }
 
-- (void)setObjectId:(id)a3
+- (void)setObjectId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeCallArgument;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"objectId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"objectId"];
 }
 
 - (NSString)objectId

@@ -1,8 +1,8 @@
 @interface REMNSPersistentHistoryChangeTombstone
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSUUID)uuidForChangeTracking;
-- (REMNSPersistentHistoryChangeTombstone)initWithCoder:(id)a3;
-- (REMNSPersistentHistoryChangeTombstone)initWithDictionary:(id)a3;
+- (REMNSPersistentHistoryChangeTombstone)initWithCoder:(id)coder;
+- (REMNSPersistentHistoryChangeTombstone)initWithDictionary:(id)dictionary;
 - (id)assignmentOwningReminderIdentifier;
 - (id)daIsEventOnlyContainer;
 - (id)dueDateDeltaAlertReminderIdentifier;
@@ -14,22 +14,22 @@
 - (id)shareeAddress;
 - (id)shareeDisplayName;
 - (id)shareeOwningListIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMNSPersistentHistoryChangeTombstone
 
-- (REMNSPersistentHistoryChangeTombstone)initWithDictionary:(id)a3
+- (REMNSPersistentHistoryChangeTombstone)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v12.receiver = self;
     v12.super_class = REMNSPersistentHistoryChangeTombstone;
     v5 = [(REMNSPersistentHistoryChangeTombstone *)&v12 init];
     if (v5)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [dictionaryCopy mutableCopy];
       v7 = [(NSDictionary *)v6 objectForKeyedSubscript:@"externalIdentifier"];
       if (v7)
       {
@@ -42,143 +42,143 @@
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)objectIdentifier
 {
-  v3 = [(REMNSPersistentHistoryChangeTombstone *)self remObjectIdentifier];
-  if (!v3)
+  remObjectIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self remObjectIdentifier];
+  if (!remObjectIdentifier)
   {
-    v3 = [(REMNSPersistentHistoryChangeTombstone *)self uuidForChangeTracking];
+    remObjectIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self uuidForChangeTracking];
   }
 
-  return v3;
+  return remObjectIdentifier;
 }
 
 - (id)remObjectIdentifier
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"identifier"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"identifier"];
 
   return v3;
 }
 
 - (id)externalIdentifier
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"externalIdentifier"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"externalIdentifier"];
 
   return v3;
 }
 
 - (id)daIsEventOnlyContainer
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"daIsEventOnlyContainer"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"daIsEventOnlyContainer"];
 
   return v3;
 }
 
 - (id)shareeOwningListIdentifier
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"owningListIdentifier"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"owningListIdentifier"];
 
   return v3;
 }
 
 - (id)shareeDisplayName
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"displayName"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"displayName"];
 
   return v3;
 }
 
 - (id)shareeAddress
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"address"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"address"];
 
   return v3;
 }
 
 - (id)assignmentOwningReminderIdentifier
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"owningReminderIdentifier"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"owningReminderIdentifier"];
 
   return v3;
 }
 
 - (id)hashtagName
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"name"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"name"];
 
   return v3;
 }
 
 - (id)hashtagReminderIdentifier
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"reminderIdentifier"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"reminderIdentifier"];
 
   return v3;
 }
 
 - (NSUUID)uuidForChangeTracking
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"uuidForChangeTracking"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"uuidForChangeTracking"];
 
   return v3;
 }
 
 - (id)dueDateDeltaAlertReminderIdentifier
 {
-  v2 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-  v3 = [v2 objectForKey:@"reminderIdentifier"];
+  persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+  v3 = [persistentHistoryChangeTombstone objectForKey:@"reminderIdentifier"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-      v8 = [(REMNSPersistentHistoryChangeTombstone *)v6 persistentHistoryChangeTombstone];
-      if (v7 == v8)
+      persistentHistoryChangeTombstone = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+      persistentHistoryChangeTombstone2 = [(REMNSPersistentHistoryChangeTombstone *)v6 persistentHistoryChangeTombstone];
+      if (persistentHistoryChangeTombstone == persistentHistoryChangeTombstone2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
-        v10 = [(REMNSPersistentHistoryChangeTombstone *)v6 persistentHistoryChangeTombstone];
-        v11 = [v9 isEqual:v10];
+        persistentHistoryChangeTombstone3 = [(REMNSPersistentHistoryChangeTombstone *)self persistentHistoryChangeTombstone];
+        persistentHistoryChangeTombstone4 = [(REMNSPersistentHistoryChangeTombstone *)v6 persistentHistoryChangeTombstone];
+        v11 = [persistentHistoryChangeTombstone3 isEqual:persistentHistoryChangeTombstone4];
       }
     }
 
@@ -191,129 +191,129 @@
   return v11 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMNSPersistentHistoryChangeTombstone *)self remObjectIdentifier];
-  [v4 encodeObject:v5 forKey:@"remObjectIdentifier"];
+  coderCopy = coder;
+  remObjectIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self remObjectIdentifier];
+  [coderCopy encodeObject:remObjectIdentifier forKey:@"remObjectIdentifier"];
 
-  v6 = [(REMNSPersistentHistoryChangeTombstone *)self externalIdentifier];
-  [v4 encodeObject:v6 forKey:@"externalIdentifier"];
+  externalIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self externalIdentifier];
+  [coderCopy encodeObject:externalIdentifier forKey:@"externalIdentifier"];
 
-  v7 = [(REMNSPersistentHistoryChangeTombstone *)self daIsEventOnlyContainer];
-  [v4 encodeObject:v7 forKey:@"daIsEventOnlyContainer"];
+  daIsEventOnlyContainer = [(REMNSPersistentHistoryChangeTombstone *)self daIsEventOnlyContainer];
+  [coderCopy encodeObject:daIsEventOnlyContainer forKey:@"daIsEventOnlyContainer"];
 
-  v8 = [(REMNSPersistentHistoryChangeTombstone *)self shareeOwningListIdentifier];
-  [v4 encodeObject:v8 forKey:@"shareeOwningListIdentifier"];
+  shareeOwningListIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self shareeOwningListIdentifier];
+  [coderCopy encodeObject:shareeOwningListIdentifier forKey:@"shareeOwningListIdentifier"];
 
-  v9 = [(REMNSPersistentHistoryChangeTombstone *)self shareeDisplayName];
-  [v4 encodeObject:v9 forKey:@"shareeDisplayName"];
+  shareeDisplayName = [(REMNSPersistentHistoryChangeTombstone *)self shareeDisplayName];
+  [coderCopy encodeObject:shareeDisplayName forKey:@"shareeDisplayName"];
 
-  v10 = [(REMNSPersistentHistoryChangeTombstone *)self shareeAddress];
-  [v4 encodeObject:v10 forKey:@"shareeAddress"];
+  shareeAddress = [(REMNSPersistentHistoryChangeTombstone *)self shareeAddress];
+  [coderCopy encodeObject:shareeAddress forKey:@"shareeAddress"];
 
-  v11 = [(REMNSPersistentHistoryChangeTombstone *)self assignmentOwningReminderIdentifier];
-  [v4 encodeObject:v11 forKey:@"assignmentOwningReminderIdentifier"];
+  assignmentOwningReminderIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self assignmentOwningReminderIdentifier];
+  [coderCopy encodeObject:assignmentOwningReminderIdentifier forKey:@"assignmentOwningReminderIdentifier"];
 
-  v12 = [(REMNSPersistentHistoryChangeTombstone *)self hashtagName];
-  [v4 encodeObject:v12 forKey:@"hashtagName"];
+  hashtagName = [(REMNSPersistentHistoryChangeTombstone *)self hashtagName];
+  [coderCopy encodeObject:hashtagName forKey:@"hashtagName"];
 
-  v13 = [(REMNSPersistentHistoryChangeTombstone *)self hashtagReminderIdentifier];
-  [v4 encodeObject:v13 forKey:@"hashtagReminderIdentifier"];
+  hashtagReminderIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self hashtagReminderIdentifier];
+  [coderCopy encodeObject:hashtagReminderIdentifier forKey:@"hashtagReminderIdentifier"];
 
-  v14 = [(REMNSPersistentHistoryChangeTombstone *)self uuidForChangeTracking];
-  [v4 encodeObject:v14 forKey:@"uuidForChangeTracking"];
+  uuidForChangeTracking = [(REMNSPersistentHistoryChangeTombstone *)self uuidForChangeTracking];
+  [coderCopy encodeObject:uuidForChangeTracking forKey:@"uuidForChangeTracking"];
 
-  v15 = [(REMNSPersistentHistoryChangeTombstone *)self dueDateDeltaAlertReminderIdentifier];
-  [v4 encodeObject:v15 forKey:@"dueDateDeltaAlertReminderIdentifier"];
+  dueDateDeltaAlertReminderIdentifier = [(REMNSPersistentHistoryChangeTombstone *)self dueDateDeltaAlertReminderIdentifier];
+  [coderCopy encodeObject:dueDateDeltaAlertReminderIdentifier forKey:@"dueDateDeltaAlertReminderIdentifier"];
 }
 
-- (REMNSPersistentHistoryChangeTombstone)initWithCoder:(id)a3
+- (REMNSPersistentHistoryChangeTombstone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = REMNSPersistentHistoryChangeTombstone;
   v5 = [(REMNSPersistentHistoryChangeTombstone *)&v24 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remObjectIdentifier"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remObjectIdentifier"];
     if (v7)
     {
-      [v6 setObject:v7 forKeyedSubscript:@"identifier"];
+      [dictionary setObject:v7 forKeyedSubscript:@"identifier"];
     }
 
     v23 = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
     if (v8)
     {
-      [v6 setObject:v8 forKeyedSubscript:@"externalIdentifier"];
+      [dictionary setObject:v8 forKeyedSubscript:@"externalIdentifier"];
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daIsEventOnlyContainer"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daIsEventOnlyContainer"];
     if (v9)
     {
-      [v6 setObject:v9 forKeyedSubscript:@"daIsEventOnlyContainer"];
+      [dictionary setObject:v9 forKeyedSubscript:@"daIsEventOnlyContainer"];
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareeOwningListIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareeOwningListIdentifier"];
     if (v10)
     {
-      [v6 setObject:v10 forKeyedSubscript:@"owningListIdentifier"];
+      [dictionary setObject:v10 forKeyedSubscript:@"owningListIdentifier"];
     }
 
     v19 = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareeDisplayName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareeDisplayName"];
     if (v11)
     {
-      [v6 setObject:v11 forKeyedSubscript:{@"displayName", v19}];
+      [dictionary setObject:v11 forKeyedSubscript:{@"displayName", v19}];
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareeAddress"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareeAddress"];
     if (v12)
     {
-      [v6 setObject:v12 forKeyedSubscript:@"address"];
+      [dictionary setObject:v12 forKeyedSubscript:@"address"];
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assignmentOwningReminderIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assignmentOwningReminderIdentifier"];
     if (v13)
     {
-      [v6 setObject:v13 forKeyedSubscript:@"owningReminderIdentifier"];
+      [dictionary setObject:v13 forKeyedSubscript:@"owningReminderIdentifier"];
     }
 
     v22 = v8;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hashtagName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hashtagName"];
     if (v14)
     {
-      [v6 setObject:v14 forKeyedSubscript:@"name"];
+      [dictionary setObject:v14 forKeyedSubscript:@"name"];
     }
 
     v21 = v9;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hashtagReminderIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hashtagReminderIdentifier"];
     if (v15)
     {
-      [v6 setObject:v15 forKeyedSubscript:@"reminderIdentifier"];
+      [dictionary setObject:v15 forKeyedSubscript:@"reminderIdentifier"];
     }
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuidForChangeTracking"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuidForChangeTracking"];
     if (v16)
     {
-      [v6 setObject:v16 forKeyedSubscript:@"uuidForChangeTracking"];
+      [dictionary setObject:v16 forKeyedSubscript:@"uuidForChangeTracking"];
     }
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueDateDeltaAlertReminderIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueDateDeltaAlertReminderIdentifier"];
     if (v17)
     {
-      [v6 setObject:v17 forKeyedSubscript:@"reminderIdentifier"];
+      [dictionary setObject:v17 forKeyedSubscript:@"reminderIdentifier"];
     }
 
-    if (![v6 count])
+    if (![dictionary count])
     {
 
-      v6 = 0;
+      dictionary = 0;
     }
 
-    v5 = [(REMNSPersistentHistoryChangeTombstone *)v5 initWithDictionary:v6];
+    v5 = [(REMNSPersistentHistoryChangeTombstone *)v5 initWithDictionary:dictionary];
   }
 
   return v5;

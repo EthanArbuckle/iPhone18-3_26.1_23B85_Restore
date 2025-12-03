@@ -1,18 +1,18 @@
 @interface PKFeatureOnBoardingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation PKFeatureOnBoardingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKFeatureOnBoardingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKFeatureOnBoardingViewController" hasInstanceVariable:@"_featureIdentifier" withType:"Q"];
-  [v3 validateClass:@"PKFeatureOnBoardingViewController" isKindOfClass:@"PKExplanationViewController"];
-  [v3 validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKFeatureOnBoardingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKFeatureOnBoardingViewController" hasInstanceVariable:@"_featureIdentifier" withType:"Q"];
+  [validationsCopy validateClass:@"PKFeatureOnBoardingViewController" isKindOfClass:@"PKExplanationViewController"];
+  [validationsCopy validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

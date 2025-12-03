@@ -1,30 +1,30 @@
 @interface AXAuditNode
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (AXAuditNode)initWithAuditElement:(id)a3 description:(id)a4 roleDescription:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (AXAuditNode)initWithAuditElement:(id)element description:(id)description roleDescription:(id)roleDescription;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_printDescendantsWithLevel:(unint64_t)a3;
+- (void)_printDescendantsWithLevel:(unint64_t)level;
 @end
 
 @implementation AXAuditNode
 
-- (AXAuditNode)initWithAuditElement:(id)a3 description:(id)a4 roleDescription:(id)a5
+- (AXAuditNode)initWithAuditElement:(id)element description:(id)description roleDescription:(id)roleDescription
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  descriptionCopy = description;
+  roleDescriptionCopy = roleDescription;
   v16.receiver = self;
   v16.super_class = AXAuditNode;
   v11 = [(AXAuditNode *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    [(AXAuditNode *)v11 setAuditElement:v8];
-    if (v9)
+    [(AXAuditNode *)v11 setAuditElement:elementCopy];
+    if (descriptionCopy)
     {
-      v13 = v9;
+      v13 = descriptionCopy;
     }
 
     else
@@ -33,9 +33,9 @@
     }
 
     [(AXAuditNode *)v12 setHumanReadableDescription:v13];
-    if (v10)
+    if (roleDescriptionCopy)
     {
-      v14 = v10;
+      v14 = roleDescriptionCopy;
     }
 
     else
@@ -49,9 +49,9 @@
   return v12;
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v10 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditNode_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v10 addPropertyEntry:v4];
@@ -83,7 +83,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v9 setTransportKey:@"ChildrenValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v9 setLocalValueToTransportValue:&__block_literal_global_54_1];
   [(AXAuditObjectTransportPropertyEntry *)v9 setPopulateLocalObjectWithTransportValue:&__block_literal_global_57_2];
-  [v3 registerTransportInfoPropertyBased:v10];
+  [managerCopy registerTransportInfoPropertyBased:v10];
 }
 
 void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -169,25 +169,25 @@ void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_12(
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditNode *)self auditElement];
-  v4 = [v3 hash];
-  v5 = [(AXAuditNode *)self humanReadableDescription];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(AXAuditNode *)self children];
-  v8 = [v7 hash];
-  v9 = [(AXAuditNode *)self humanReadableRoleDescription];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(AXAuditNode *)self className];
-  v12 = [v11 hash];
+  auditElement = [(AXAuditNode *)self auditElement];
+  v4 = [auditElement hash];
+  humanReadableDescription = [(AXAuditNode *)self humanReadableDescription];
+  v6 = [humanReadableDescription hash] ^ v4;
+  children = [(AXAuditNode *)self children];
+  v8 = [children hash];
+  humanReadableRoleDescription = [(AXAuditNode *)self humanReadableRoleDescription];
+  v10 = v6 ^ v8 ^ [humanReadableRoleDescription hash];
+  className = [(AXAuditNode *)self className];
+  v12 = [className hash];
   v13 = v12 + [(AXAuditNode *)self isIgnored];
 
   return v10 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -197,56 +197,56 @@ void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_12(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditNode *)v5 auditElement];
-      v7 = [(AXAuditNode *)self auditElement];
-      if (v6 | v7 && ![v6 isEqual:v7])
+      v5 = equalCopy;
+      auditElement = [(AXAuditNode *)v5 auditElement];
+      auditElement2 = [(AXAuditNode *)self auditElement];
+      if (auditElement | auditElement2 && ![auditElement isEqual:auditElement2])
       {
         v18 = 0;
       }
 
       else
       {
-        v8 = [(AXAuditNode *)v5 className];
-        v9 = [(AXAuditNode *)self className];
-        if (v8 | v9 && ![v8 isEqual:v9])
+        className = [(AXAuditNode *)v5 className];
+        className2 = [(AXAuditNode *)self className];
+        if (className | className2 && ![className isEqual:className2])
         {
           v18 = 0;
         }
 
         else
         {
-          v10 = [(AXAuditNode *)v5 humanReadableDescription];
-          v11 = [(AXAuditNode *)self humanReadableDescription];
-          if (v10 | v11 && ![v10 isEqual:v11])
+          humanReadableDescription = [(AXAuditNode *)v5 humanReadableDescription];
+          humanReadableDescription2 = [(AXAuditNode *)self humanReadableDescription];
+          if (humanReadableDescription | humanReadableDescription2 && ![humanReadableDescription isEqual:humanReadableDescription2])
           {
             v18 = 0;
           }
 
           else
           {
-            v23 = v9;
-            v12 = [(AXAuditNode *)v5 humanReadableRoleDescription];
-            v13 = [(AXAuditNode *)self humanReadableRoleDescription];
-            v24 = v12;
-            if (v12 | v13 && ![v12 isEqual:v13])
+            v23 = className2;
+            humanReadableRoleDescription = [(AXAuditNode *)v5 humanReadableRoleDescription];
+            humanReadableRoleDescription2 = [(AXAuditNode *)self humanReadableRoleDescription];
+            v24 = humanReadableRoleDescription;
+            if (humanReadableRoleDescription | humanReadableRoleDescription2 && ![humanReadableRoleDescription isEqual:humanReadableRoleDescription2])
             {
               v18 = 0;
-              v9 = v23;
+              className2 = v23;
             }
 
             else
             {
-              v21 = v11;
-              v22 = v10;
-              v14 = [(AXAuditNode *)v5 children];
-              v15 = [(AXAuditNode *)self children];
-              if (v14 == v15 || [v14 isEqualToArray:v15])
+              v21 = humanReadableDescription2;
+              v22 = humanReadableDescription;
+              children = [(AXAuditNode *)v5 children];
+              children2 = [(AXAuditNode *)self children];
+              if (children == children2 || [children isEqualToArray:children2])
               {
-                v20 = v8;
-                v16 = [(AXAuditNode *)v5 isIgnored];
-                v17 = v16 ^ [(AXAuditNode *)self isIgnored];
-                v8 = v20;
+                v20 = className;
+                isIgnored = [(AXAuditNode *)v5 isIgnored];
+                v17 = isIgnored ^ [(AXAuditNode *)self isIgnored];
+                className = v20;
                 v18 = v17 ^ 1;
               }
 
@@ -255,10 +255,10 @@ void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_12(
                 v18 = 0;
               }
 
-              v9 = v23;
+              className2 = v23;
 
-              v11 = v21;
-              v10 = v22;
+              humanReadableDescription2 = v21;
+              humanReadableDescription = v22;
             }
           }
         }
@@ -274,41 +274,41 @@ void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_12(
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AXAuditNode *)self auditElement];
-  [v4 setAuditElement:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  auditElement = [(AXAuditNode *)self auditElement];
+  [v4 setAuditElement:auditElement];
 
-  v6 = [(AXAuditNode *)self humanReadableDescription];
-  [v4 setHumanReadableDescription:v6];
+  humanReadableDescription = [(AXAuditNode *)self humanReadableDescription];
+  [v4 setHumanReadableDescription:humanReadableDescription];
 
-  v7 = [(AXAuditNode *)self humanReadableRoleDescription];
-  [v4 setHumanReadableRoleDescription:v7];
+  humanReadableRoleDescription = [(AXAuditNode *)self humanReadableRoleDescription];
+  [v4 setHumanReadableRoleDescription:humanReadableRoleDescription];
 
-  v8 = [(AXAuditNode *)self className];
-  [v4 setClassName:v8];
+  className = [(AXAuditNode *)self className];
+  [v4 setClassName:className];
 
-  v9 = [(AXAuditNode *)self children];
-  [v4 setChildren:v9];
+  children = [(AXAuditNode *)self children];
+  [v4 setChildren:children];
 
   [v4 setIsIgnored:{-[AXAuditNode isIgnored](self, "isIgnored")}];
   return v4;
 }
 
-- (void)_printDescendantsWithLevel:(unint64_t)a3
+- (void)_printDescendantsWithLevel:(unint64_t)level
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(AXAuditNode *)self humanReadableDescription];
-  v6 = [(AXAuditNode *)self humanReadableRoleDescription];
-  NSLog(&cfstr_AxauditnodeLd.isa, a3, v5, v6);
+  humanReadableDescription = [(AXAuditNode *)self humanReadableDescription];
+  humanReadableRoleDescription = [(AXAuditNode *)self humanReadableRoleDescription];
+  NSLog(&cfstr_AxauditnodeLd.isa, level, humanReadableDescription, humanReadableRoleDescription);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(AXAuditNode *)self children];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(AXAuditNode *)self children];
+  v8 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -320,14 +320,14 @@ void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_12(
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) _printDescendantsWithLevel:a3 + 1];
+        [*(*(&v13 + 1) + 8 * v11++) _printDescendantsWithLevel:level + 1];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -341,10 +341,10 @@ void __54__AXAuditNode_registerTransportableObjectWithManager___block_invoke_12(
   v9.receiver = self;
   v9.super_class = AXAuditNode;
   v3 = [(AXAuditNode *)&v9 description];
-  v4 = [(AXAuditNode *)self humanReadableDescription];
-  v5 = [(AXAuditNode *)self humanReadableRoleDescription];
-  v6 = [(AXAuditNode *)self children];
-  v7 = [v3 stringByAppendingFormat:@" %@(%@) with %ld children", v4, v5, objc_msgSend(v6, "count")];
+  humanReadableDescription = [(AXAuditNode *)self humanReadableDescription];
+  humanReadableRoleDescription = [(AXAuditNode *)self humanReadableRoleDescription];
+  children = [(AXAuditNode *)self children];
+  v7 = [v3 stringByAppendingFormat:@" %@(%@) with %ld children", humanReadableDescription, humanReadableRoleDescription, objc_msgSend(children, "count")];
 
   return v7;
 }

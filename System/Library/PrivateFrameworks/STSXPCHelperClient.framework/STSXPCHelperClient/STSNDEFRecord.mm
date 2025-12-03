@@ -1,10 +1,10 @@
 @interface STSNDEFRecord
-+ (BOOL)_parseNDEFData:(id)a3 outRecords:(id)a4;
-+ (id)ndefRecordsWithData:(id)a3;
++ (BOOL)_parseNDEFData:(id)data outRecords:(id)records;
++ (id)ndefRecordsWithData:(id)data;
 - (BOOL)isAlternativeCarrierRecord;
 - (BOOL)isBluetoothLEConfigurationRecord;
 - (BOOL)isCollisionResolutionRecord;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHandoverRequestRecord;
 - (BOOL)isHandoverSelectErrorRecord;
 - (BOOL)isHandoverSelectRecord;
@@ -12,26 +12,26 @@
 - (BOOL)isISO18013ReaderEngagementRecord;
 - (BOOL)isNfcConfigurationRecord;
 - (BOOL)isWiFiAwareConfigurationRecord;
-- (STSNDEFRecord)initWithCoder:(id)a3;
+- (STSNDEFRecord)initWithCoder:(id)coder;
 - (id)description;
 - (id)getAuxiliaryDataReferencesFromAlternativeCarrierRecord;
 - (id)getCarrierDataReferenceFromAlternativeCarrierRecord;
 - (unint64_t)getCarrierPowerStateFromAlternativeCarrierRecord;
-- (void)_setIdLengthPresent:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setChunked:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setMessageBegin:(BOOL)a3;
-- (void)setMessageEnd:(BOOL)a3;
-- (void)setPayload:(id)a3;
-- (void)setShortRecord:(BOOL)a3;
+- (void)_setIdLengthPresent:(BOOL)present;
+- (void)encodeWithCoder:(id)coder;
+- (void)setChunked:(BOOL)chunked;
+- (void)setIdentifier:(id)identifier;
+- (void)setMessageBegin:(BOOL)begin;
+- (void)setMessageEnd:(BOOL)end;
+- (void)setPayload:(id)payload;
+- (void)setShortRecord:(BOOL)record;
 @end
 
 @implementation STSNDEFRecord
 
-- (void)setMessageBegin:(BOOL)a3
+- (void)setMessageBegin:(BOOL)begin
 {
-  if (a3)
+  if (begin)
   {
     v3 = 0x80;
   }
@@ -44,9 +44,9 @@
   self->_firstOctet = v3 & 0x80 | self->_firstOctet & 0x7F;
 }
 
-- (void)setMessageEnd:(BOOL)a3
+- (void)setMessageEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 64;
   }
@@ -59,9 +59,9 @@
   self->_firstOctet = self->_firstOctet & 0xBF | v3;
 }
 
-- (void)setChunked:(BOOL)a3
+- (void)setChunked:(BOOL)chunked
 {
-  if (a3)
+  if (chunked)
   {
     v3 = 32;
   }
@@ -74,9 +74,9 @@
   self->_firstOctet = self->_firstOctet & 0xDF | v3;
 }
 
-- (void)setShortRecord:(BOOL)a3
+- (void)setShortRecord:(BOOL)record
 {
-  if (a3)
+  if (record)
   {
     v3 = 16;
   }
@@ -89,9 +89,9 @@
   self->_firstOctet = self->_firstOctet & 0xEF | v3;
 }
 
-- (void)_setIdLengthPresent:(BOOL)a3
+- (void)_setIdLengthPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 8;
   }
@@ -104,13 +104,13 @@
   self->_firstOctet = self->_firstOctet & 0xF7 | v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     objc_msgSend__setIdLengthPresent_(self, v4, 1);
-    v5 = v7;
+    v5 = identifierCopy;
   }
 
   else
@@ -119,28 +119,28 @@
   }
 
   identifier = self->_identifier;
-  self->_identifier = v7;
+  self->_identifier = identifierCopy;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  objc_storeStrong(&self->_payload, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_payload, payload);
+  payloadCopy = payload;
   v8 = objc_msgSend_length(self->_payload, v6, v7);
 
   objc_msgSend_setShortRecord_(self, v9, v8 < 0x100);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v26 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = v5;
     v26 = 0;
@@ -229,52 +229,52 @@
   return v35;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  objc_msgSend_encodeInteger_forKey_(v10, v4, self->_firstOctet, @"firstOctet");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v4, self->_firstOctet, @"firstOctet");
   type = self->_type;
   if (type)
   {
-    objc_msgSend_encodeObject_forKey_(v10, v5, type, @"type");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v5, type, @"type");
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    objc_msgSend_encodeObject_forKey_(v10, v5, identifier, @"identifier");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v5, identifier, @"identifier");
   }
 
   payload = self->_payload;
-  v9 = v10;
+  v9 = coderCopy;
   if (payload)
   {
-    objc_msgSend_encodeObject_forKey_(v10, v5, payload, @"payload");
-    v9 = v10;
+    objc_msgSend_encodeObject_forKey_(coderCopy, v5, payload, @"payload");
+    v9 = coderCopy;
   }
 }
 
-- (STSNDEFRecord)initWithCoder:(id)a3
+- (STSNDEFRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = STSNDEFRecord;
   v6 = [(STSNDEFRecord *)&v20 init];
   if (v6)
   {
-    v6->_firstOctet = objc_msgSend_decodeIntegerForKey_(v4, v5, @"firstOctet");
+    v6->_firstOctet = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"firstOctet");
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"type");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"type");
     type = v6->_type;
     v6->_type = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"identifier");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"identifier");
     identifier = v6->_identifier;
     v6->_identifier = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"payload");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"payload");
     payload = v6->_payload;
     v6->_payload = v17;
   }
@@ -282,28 +282,28 @@
   return v6;
 }
 
-+ (id)ndefRecordsWithData:(id)a3
++ (id)ndefRecordsWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  if (objc_msgSend__parseNDEFData_outRecords_(STSNDEFRecord, v5, v3, v4))
+  if (objc_msgSend__parseNDEFData_outRecords_(STSNDEFRecord, v5, dataCopy, v4))
   {
     v11 = objc_msgSend_copy(v4, v6, v7);
   }
 
   else
   {
-    sub_2645011D4(OS_LOG_TYPE_INFO, 0, "+[STSNDEFRecord ndefRecordsWithData:]", 290, @"Invalid NDEF data: %@", v8, v9, v10, v3);
+    sub_2645011D4(OS_LOG_TYPE_INFO, 0, "+[STSNDEFRecord ndefRecordsWithData:]", 290, @"Invalid NDEF data: %@", v8, v9, v10, dataCopy);
     v11 = 0;
   }
 
   return v11;
 }
 
-+ (BOOL)_parseNDEFData:(id)a3 outRecords:(id)a4
++ (BOOL)_parseNDEFData:(id)data outRecords:(id)records
 {
-  v5 = a4;
-  v7 = objc_msgSend_inputStreamWithData_(MEMORY[0x277CBEAE0], v6, a3);
+  recordsCopy = records;
+  v7 = objc_msgSend_inputStreamWithData_(MEMORY[0x277CBEAE0], v6, data);
   objc_msgSend_open(v7, v8, v9);
   if (objc_msgSend_hasBytesAvailable(v7, v10, v11))
   {
@@ -414,7 +414,7 @@
       v45 = *(v40 + 32);
       *(v40 + 32) = v33;
 
-      objc_msgSend_addObject_(v5, v46, v40);
+      objc_msgSend_addObject_(recordsCopy, v46, v40);
       if ((objc_msgSend_hasBytesAvailable(v7, v47, v48) & 1) == 0)
       {
         goto LABEL_25;

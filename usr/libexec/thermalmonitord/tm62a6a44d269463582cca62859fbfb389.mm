@@ -1,17 +1,17 @@
 @interface tm62a6a44d269463582cca62859fbfb389
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)computeMaxCGTemp;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm62a6a44d269463582cca62859fbfb389
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tm62a6a44d269463582cca62859fbfb389;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -21,17 +21,17 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
-  v5 = [(tm62a6a44d269463582cca62859fbfb389 *)self gasGaugeBatteryTemperature];
+  loadCopy = load;
+  gasGaugeBatteryTemperature = [(tm62a6a44d269463582cca62859fbfb389 *)self gasGaugeBatteryTemperature];
   v7 = qword_1000AB834;
   v6 = HIDWORD(qword_1000AB834);
   v9 = dword_1000AB83C;
   v8 = dword_1000AB840;
   v11 = dword_1000AB844;
   v10 = dword_1000AB848;
-  if (v3)
+  if (loadCopy)
   {
     [(tm62a6a44d269463582cca62859fbfb389 *)self resetVTFilterState];
   }
@@ -42,10 +42,10 @@
   *&v15 = v14;
   *&v14 = v13;
   [v12 calculateControlEffort:v14 trigger:v15];
-  v16 = v5;
+  v16 = gasGaugeBatteryTemperature;
   v33 = v7;
   v17 = v6;
-  sub_10000533C(47, (v5 * 0.56 + -109.0 + v7 * 0.53 + v6 * -0.07));
+  sub_10000533C(47, (gasGaugeBatteryTemperature * 0.56 + -109.0 + v7 * 0.53 + v6 * -0.07));
   v18 = qword_1000AB8E0;
   v19 = [(CommonProduct *)self findComponent:19];
   v20 = v18 / 100.0;

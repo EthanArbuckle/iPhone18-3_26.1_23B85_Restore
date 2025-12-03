@@ -1,27 +1,27 @@
 @interface WiFiAnalyticsAWDWiFiDPSActiveProbeStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRttGatewayBE:(BOOL)a3;
-- (void)setHasRttGatewayBK:(BOOL)a3;
-- (void)setHasRttGatewayVI:(BOOL)a3;
-- (void)setHasRttGatewayVO:(BOOL)a3;
-- (void)setHasRttPrimaryDnsBE:(BOOL)a3;
-- (void)setHasRttPrimaryDnsBK:(BOOL)a3;
-- (void)setHasRttPrimaryDnsVI:(BOOL)a3;
-- (void)setHasRttPrimaryDnsVO:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRttGatewayBE:(BOOL)e;
+- (void)setHasRttGatewayBK:(BOOL)k;
+- (void)setHasRttGatewayVI:(BOOL)i;
+- (void)setHasRttGatewayVO:(BOOL)o;
+- (void)setHasRttPrimaryDnsBE:(BOOL)e;
+- (void)setHasRttPrimaryDnsBK:(BOOL)k;
+- (void)setHasRttPrimaryDnsVI:(BOOL)i;
+- (void)setHasRttPrimaryDnsVO:(BOOL)o;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiDPSActiveProbeStats
 
-- (void)setHasRttGatewayBE:(BOOL)a3
+- (void)setHasRttGatewayBE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRttGatewayBK:(BOOL)a3
+- (void)setHasRttGatewayBK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 4;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasRttGatewayVO:(BOOL)a3
+- (void)setHasRttGatewayVO:(BOOL)o
 {
-  if (a3)
+  if (o)
   {
     v3 = 16;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRttGatewayVI:(BOOL)a3
+- (void)setHasRttGatewayVI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 8;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRttPrimaryDnsBE:(BOOL)a3
+- (void)setHasRttPrimaryDnsBE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 32;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRttPrimaryDnsBK:(BOOL)a3
+- (void)setHasRttPrimaryDnsBK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 64;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRttPrimaryDnsVO:(BOOL)a3
+- (void)setHasRttPrimaryDnsVO:(BOOL)o
 {
-  if (a3)
+  if (o)
   {
     v3 = 256;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRttPrimaryDnsVI:(BOOL)a3
+- (void)setHasRttPrimaryDnsVI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 128;
   }
@@ -145,20 +145,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiDPSActiveProbeStats;
   v4 = [(WiFiAnalyticsAWDWiFiDPSActiveProbeStats *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiDPSActiveProbeStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiDPSActiveProbeStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -179,7 +179,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttGatewayBE];
-  [v3 setObject:v8 forKey:@"rttGatewayBE"];
+  [dictionary setObject:v8 forKey:@"rttGatewayBE"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -195,7 +195,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttGatewayBK];
-  [v3 setObject:v9 forKey:@"rttGatewayBK"];
+  [dictionary setObject:v9 forKey:@"rttGatewayBK"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -211,7 +211,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttGatewayVO];
-  [v3 setObject:v10 forKey:@"rttGatewayVO"];
+  [dictionary setObject:v10 forKey:@"rttGatewayVO"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -227,7 +227,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttGatewayVI];
-  [v3 setObject:v11 forKey:@"rttGatewayVI"];
+  [dictionary setObject:v11 forKey:@"rttGatewayVI"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -243,7 +243,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttPrimaryDnsBE];
-  [v3 setObject:v12 forKey:@"rttPrimaryDnsBE"];
+  [dictionary setObject:v12 forKey:@"rttPrimaryDnsBE"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -259,7 +259,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttPrimaryDnsBK];
-  [v3 setObject:v13 forKey:@"rttPrimaryDnsBK"];
+  [dictionary setObject:v13 forKey:@"rttPrimaryDnsBK"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -275,23 +275,23 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttPrimaryDnsVO];
-  [v3 setObject:v14 forKey:@"rttPrimaryDnsVO"];
+  [dictionary setObject:v14 forKey:@"rttPrimaryDnsVO"];
 
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_10:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rttPrimaryDnsVI];
-    [v3 setObject:v5 forKey:@"rttPrimaryDnsVI"];
+    [dictionary setObject:v5 forKey:@"rttPrimaryDnsVI"];
   }
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -417,14 +417,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -443,8 +443,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_rttGatewayBE;
-  *(v4 + 24) |= 2u;
+  *(toCopy + 4) = self->_rttGatewayBE;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -458,8 +458,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  *(v4 + 5) = self->_rttGatewayBK;
-  *(v4 + 24) |= 4u;
+  *(toCopy + 5) = self->_rttGatewayBK;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -473,8 +473,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  *(v4 + 7) = self->_rttGatewayVO;
-  *(v4 + 24) |= 0x10u;
+  *(toCopy + 7) = self->_rttGatewayVO;
+  *(toCopy + 24) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -488,8 +488,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(v4 + 6) = self->_rttGatewayVI;
-  *(v4 + 24) |= 8u;
+  *(toCopy + 6) = self->_rttGatewayVI;
+  *(toCopy + 24) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -503,8 +503,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(v4 + 8) = self->_rttPrimaryDnsBE;
-  *(v4 + 24) |= 0x20u;
+  *(toCopy + 8) = self->_rttPrimaryDnsBE;
+  *(toCopy + 24) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -518,8 +518,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(v4 + 9) = self->_rttPrimaryDnsBK;
-  *(v4 + 24) |= 0x40u;
+  *(toCopy + 9) = self->_rttPrimaryDnsBK;
+  *(toCopy + 24) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -533,21 +533,21 @@ LABEL_9:
   }
 
 LABEL_21:
-  *(v4 + 11) = self->_rttPrimaryDnsVO;
-  *(v4 + 24) |= 0x100u;
+  *(toCopy + 11) = self->_rttPrimaryDnsVO;
+  *(toCopy + 24) |= 0x100u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_10:
-    *(v4 + 10) = self->_rttPrimaryDnsVI;
-    *(v4 + 24) |= 0x80u;
+    *(toCopy + 10) = self->_rttPrimaryDnsVI;
+    *(toCopy + 24) |= 0x80u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -674,19 +674,19 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_47;
     }
@@ -701,7 +701,7 @@ LABEL_47:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_rttGatewayBE != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_rttGatewayBE != *(equalCopy + 4))
     {
       goto LABEL_47;
     }
@@ -714,7 +714,7 @@ LABEL_47:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_rttGatewayBK != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_rttGatewayBK != *(equalCopy + 5))
     {
       goto LABEL_47;
     }
@@ -727,7 +727,7 @@ LABEL_47:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_rttGatewayVO != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_rttGatewayVO != *(equalCopy + 7))
     {
       goto LABEL_47;
     }
@@ -740,7 +740,7 @@ LABEL_47:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_rttGatewayVI != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_rttGatewayVI != *(equalCopy + 6))
     {
       goto LABEL_47;
     }
@@ -753,7 +753,7 @@ LABEL_47:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_rttPrimaryDnsBE != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_rttPrimaryDnsBE != *(equalCopy + 8))
     {
       goto LABEL_47;
     }
@@ -766,7 +766,7 @@ LABEL_47:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_rttPrimaryDnsBK != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_rttPrimaryDnsBK != *(equalCopy + 9))
     {
       goto LABEL_47;
     }
@@ -779,20 +779,20 @@ LABEL_47:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 24) & 0x100) == 0 || self->_rttPrimaryDnsVO != *(v4 + 11))
+    if ((*(equalCopy + 24) & 0x100) == 0 || self->_rttPrimaryDnsVO != *(equalCopy + 11))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 24) & 0x100) != 0)
+  else if ((*(equalCopy + 24) & 0x100) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_rttPrimaryDnsVI != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_rttPrimaryDnsVI != *(equalCopy + 10))
     {
       goto LABEL_47;
     }
@@ -935,15 +935,15 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -961,9 +961,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_rttGatewayBE = *(v4 + 4);
+  self->_rttGatewayBE = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -976,9 +976,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_rttGatewayBK = *(v4 + 5);
+  self->_rttGatewayBK = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -991,9 +991,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_rttGatewayVO = *(v4 + 7);
+  self->_rttGatewayVO = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -1006,9 +1006,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_rttGatewayVI = *(v4 + 6);
+  self->_rttGatewayVI = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -1021,9 +1021,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_rttPrimaryDnsBE = *(v4 + 8);
+  self->_rttPrimaryDnsBE = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -1036,9 +1036,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_rttPrimaryDnsBK = *(v4 + 9);
+  self->_rttPrimaryDnsBK = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x100) == 0)
   {
 LABEL_9:
@@ -1051,12 +1051,12 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_rttPrimaryDnsVO = *(v4 + 11);
+  self->_rttPrimaryDnsVO = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 24) & 0x80) != 0)
+  if ((*(fromCopy + 24) & 0x80) != 0)
   {
 LABEL_10:
-    self->_rttPrimaryDnsVI = *(v4 + 10);
+    self->_rttPrimaryDnsVI = *(fromCopy + 10);
     *&self->_has |= 0x80u;
   }
 

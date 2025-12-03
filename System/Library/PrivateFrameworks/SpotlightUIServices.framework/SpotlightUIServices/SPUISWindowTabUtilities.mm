@@ -1,11 +1,11 @@
 @interface SPUISWindowTabUtilities
-+ (id)openWindowCommandWithAppBundleId:(id)a3 processInstanceIdentifier:(id)a4 entityIdentifier:(id)a5;
++ (id)openWindowCommandWithAppBundleId:(id)id processInstanceIdentifier:(id)identifier entityIdentifier:(id)entityIdentifier;
 - (_TtC19SpotlightUIServices23SPUISWindowTabUtilities)init;
 @end
 
 @implementation SPUISWindowTabUtilities
 
-+ (id)openWindowCommandWithAppBundleId:(id)a3 processInstanceIdentifier:(id)a4 entityIdentifier:(id)a5
++ (id)openWindowCommandWithAppBundleId:(id)id processInstanceIdentifier:(id)identifier entityIdentifier:(id)entityIdentifier
 {
   v5 = sub_26B8C7E94();
   v7 = v6;

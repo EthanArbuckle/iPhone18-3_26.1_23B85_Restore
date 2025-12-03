@@ -1,12 +1,12 @@
 @interface CNPRSPosterConfigurationAttributes
-- (CNPRSPosterConfigurationAttributes)initWithCNConfiguration:(id)a3;
+- (CNPRSPosterConfigurationAttributes)initWithCNConfiguration:(id)configuration;
 @end
 
 @implementation CNPRSPosterConfigurationAttributes
 
-- (CNPRSPosterConfigurationAttributes)initWithCNConfiguration:(id)a3
+- (CNPRSPosterConfigurationAttributes)initWithCNConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = CNPRSPosterConfigurationAttributes;
   v5 = [(CNPRSPosterConfigurationAttributes *)&v13 init];
@@ -31,8 +31,8 @@
     v7 = v6;
     _Block_object_dispose(&v15, 8);
     v8 = [v6 alloc];
-    v9 = [v4 wrappedPosterConfiguration];
-    v10 = [v8 initWithConfiguration:v9];
+    wrappedPosterConfiguration = [configurationCopy wrappedPosterConfiguration];
+    v10 = [v8 initWithConfiguration:wrappedPosterConfiguration];
     wrappedPosterAttributes = v5->_wrappedPosterAttributes;
     v5->_wrappedPosterAttributes = v10;
   }

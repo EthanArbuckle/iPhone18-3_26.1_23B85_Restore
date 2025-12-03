@@ -1,18 +1,18 @@
 @interface MKRatingStringBuilder
-+ (id)carPlayHeaderStringForMapItem:(id)a3 isHighlighted:(BOOL)a4;
++ (id)carPlayHeaderStringForMapItem:(id)item isHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MKRatingStringBuilder
 
-+ (id)carPlayHeaderStringForMapItem:(id)a3 isHighlighted:(BOOL)a4
++ (id)carPlayHeaderStringForMapItem:(id)item isHighlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v5 = a3;
+  highlightedCopy = highlighted;
+  itemCopy = item;
   v6 = +[UIColor _carSystemFocusLabelColor];
-  v7 = sub_100D0DDDC(v5);
+  v7 = sub_100D0DDDC(itemCopy);
   v8 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption2 weight:3 grade:UIFontWeightRegular];
   v9 = v8;
-  if (v4)
+  if (highlightedCopy)
   {
     v10 = v6;
   }
@@ -32,7 +32,7 @@
 
   v14 = +[UIColor _carSystemFocusLabelColor];
   v15 = +[UIColor _carSystemSecondaryColor];
-  if (v4)
+  if (highlightedCopy)
   {
     v16 = v14;
   }
@@ -51,7 +51,7 @@
   v19 = v14;
   v20 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v23 count:2];
 
-  v21 = [MKRatingStringBuilder carPlayHeaderStringForMapItem:v5 titleAttributes:v13 providerAttributes:v20];
+  v21 = [MKRatingStringBuilder carPlayHeaderStringForMapItem:itemCopy titleAttributes:v13 providerAttributes:v20];
 
   return v21;
 }

@@ -1,15 +1,15 @@
 @interface _UITouchPredictor
 - (_UITouchPredictor)init;
-- (_UITouchPredictor)initWithTouchPredictor:(id)a3;
-- (id)_predictedTouchesAtIndex:(unint64_t)a3 forTouch:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UITouchPredictor)initWithTouchPredictor:(id)predictor;
+- (id)_predictedTouchesAtIndex:(unint64_t)index forTouch:(id)touch;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionFromIndex:(int)a3 toIndex:(int)a4 includeHeader:(BOOL)a5 includeDetailedConfidence:(BOOL)a6;
-- (id)predictedTouchesForTouch:(id)a3;
-- (unint64_t)_dampenedNumPredictionsAtIndex:(unint64_t)a3;
-- (unint64_t)_numPredictionsAtIndex:(unint64_t)a3 hardLimit:(unint64_t *)a4;
-- (void)_updatePredictionsForTouch:(id)a3 weight:(double)a4;
-- (void)addTouch:(id)a3;
+- (id)descriptionFromIndex:(int)index toIndex:(int)toIndex includeHeader:(BOOL)header includeDetailedConfidence:(BOOL)confidence;
+- (id)predictedTouchesForTouch:(id)touch;
+- (unint64_t)_dampenedNumPredictionsAtIndex:(unint64_t)index;
+- (unint64_t)_numPredictionsAtIndex:(unint64_t)index hardLimit:(unint64_t *)limit;
+- (void)_updatePredictionsForTouch:(id)touch weight:(double)weight;
+- (void)addTouch:(id)touch;
 @end
 
 @implementation _UITouchPredictor
@@ -21,9 +21,9 @@
   v2 = [(_UITouchPredictor *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     predictions = v2->_predictions;
-    v2->_predictions = v3;
+    v2->_predictions = array;
 
     v2->_predictionsValid = 0;
     v2->_numPredictionsBufferCount = 0;
@@ -71,44 +71,44 @@
   return v2;
 }
 
-- (_UITouchPredictor)initWithTouchPredictor:(id)a3
+- (_UITouchPredictor)initWithTouchPredictor:(id)predictor
 {
-  v4 = a3;
+  predictorCopy = predictor;
   v24.receiver = self;
   v24.super_class = _UITouchPredictor;
   v5 = [(_UITouchPredictor *)&v24 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     predictions = v5->_predictions;
-    v5->_predictions = v6;
+    v5->_predictions = array;
 
     v5->_predictionsValid = 0;
     v5->_numPredictionsBufferCount = 0;
     v5->_averageTouchInterval = 0.0;
     v5->_lastTouchTimestamp = 0.0;
-    v8 = [v4 _xValuePredictor];
-    v9 = [v8 copy];
+    _xValuePredictor = [predictorCopy _xValuePredictor];
+    v9 = [_xValuePredictor copy];
     xValuePredictor = v5->_xValuePredictor;
     v5->_xValuePredictor = v9;
 
-    v11 = [v4 _yValuePredictor];
-    v12 = [v11 copy];
+    _yValuePredictor = [predictorCopy _yValuePredictor];
+    v12 = [_yValuePredictor copy];
     yValuePredictor = v5->_yValuePredictor;
     v5->_yValuePredictor = v12;
 
-    v14 = [v4 _angleValuePredictor];
-    v15 = [v14 copy];
+    _angleValuePredictor = [predictorCopy _angleValuePredictor];
+    v15 = [_angleValuePredictor copy];
     angleValuePredictor = v5->_angleValuePredictor;
     v5->_angleValuePredictor = v15;
 
-    v17 = [v4 _azimuthValuePredictor];
-    v18 = [v17 copy];
+    _azimuthValuePredictor = [predictorCopy _azimuthValuePredictor];
+    v18 = [_azimuthValuePredictor copy];
     azimuthValuePredictor = v5->_azimuthValuePredictor;
     v5->_azimuthValuePredictor = v18;
 
-    v20 = [v4 _forceValuePredictor];
-    v21 = [v20 copy];
+    _forceValuePredictor = [predictorCopy _forceValuePredictor];
+    v21 = [_forceValuePredictor copy];
     forceValuePredictor = v5->_forceValuePredictor;
     v5->_forceValuePredictor = v21;
   }
@@ -116,16 +116,16 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithTouchPredictor:self];
 }
 
-- (void)addTouch:(id)a3
+- (void)addTouch:(id)touch
 {
-  v10 = a3;
+  touchCopy = touch;
   [(NSMutableArray *)self->_predictions removeAllObjects];
   self->_predictionsValid = 0;
   if (self->_lastTouchTimestamp == 0.0)
@@ -135,7 +135,7 @@
 
   else
   {
-    [v10 timestamp];
+    [touchCopy timestamp];
     v5 = v4 - self->_lastTouchTimestamp;
     if (self->_averageTouchInterval == 0.0)
     {
@@ -152,19 +152,19 @@
     v8 = v7 / v5;
   }
 
-  [v10 timestamp];
+  [touchCopy timestamp];
   self->_lastTouchTimestamp = v9;
-  [(_UITouchPredictor *)self _updatePredictionsForTouch:v10 weight:v8];
+  [(_UITouchPredictor *)self _updatePredictionsForTouch:touchCopy weight:v8];
 }
 
-- (unint64_t)_numPredictionsAtIndex:(unint64_t)a3 hardLimit:(unint64_t *)a4
+- (unint64_t)_numPredictionsAtIndex:(unint64_t)index hardLimit:(unint64_t *)limit
 {
   [(_UIValuePredictor *)self->_xValuePredictor _predictionsAtIndex:?];
-  [(_UIValuePredictor *)self->_yValuePredictor _predictionsAtIndex:a3];
-  v7 = [(_UIValuePredictor *)self->_xValuePredictor _confidenceFactorsAtIndex:a3];
-  v8 = [(_UIValuePredictor *)self->_yValuePredictor _confidenceFactorsAtIndex:a3];
-  v9 = [(_UIValuePredictor *)self->_xValuePredictor _confidenceFactorsForVelocityAtIndex:a3];
-  v10 = [(_UIValuePredictor *)self->_yValuePredictor _confidenceFactorsForVelocityAtIndex:a3];
+  [(_UIValuePredictor *)self->_yValuePredictor _predictionsAtIndex:index];
+  v7 = [(_UIValuePredictor *)self->_xValuePredictor _confidenceFactorsAtIndex:index];
+  v8 = [(_UIValuePredictor *)self->_yValuePredictor _confidenceFactorsAtIndex:index];
+  v9 = [(_UIValuePredictor *)self->_xValuePredictor _confidenceFactorsForVelocityAtIndex:index];
+  v10 = [(_UIValuePredictor *)self->_yValuePredictor _confidenceFactorsForVelocityAtIndex:index];
   v11 = 0;
   v12 = 0x7FFFFFFFFFFFFFFFLL;
   do
@@ -191,7 +191,7 @@
   }
 
   while (v11 != 4);
-  *a4 = 4;
+  *limit = 4;
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 4;
@@ -203,10 +203,10 @@
   }
 }
 
-- (unint64_t)_dampenedNumPredictionsAtIndex:(unint64_t)a3
+- (unint64_t)_dampenedNumPredictionsAtIndex:(unint64_t)index
 {
   v15 = 4;
-  v4 = [(_UITouchPredictor *)self _numPredictionsAtIndex:a3 hardLimit:&v15];
+  v4 = [(_UITouchPredictor *)self _numPredictionsAtIndex:index hardLimit:&v15];
   numPredictionsBufferCount = self->_numPredictionsBufferCount;
   if (numPredictionsBufferCount <= 4)
   {
@@ -256,35 +256,35 @@ LABEL_8:
   return v13;
 }
 
-- (id)_predictedTouchesAtIndex:(unint64_t)a3 forTouch:(id)a4
+- (id)_predictedTouchesAtIndex:(unint64_t)index forTouch:(id)touch
 {
-  v6 = a4;
+  touchCopy = touch;
   if (!self->_predictionsValid)
   {
-    v33 = [(_UIValuePredictor *)self->_xValuePredictor _predictionsAtIndex:a3];
-    v7 = [(_UIValuePredictor *)self->_yValuePredictor _predictionsAtIndex:a3];
-    v8 = [(_UIValuePredictor *)self->_angleValuePredictor _predictionsAtIndex:a3];
-    v9 = [(_UIValuePredictor *)self->_azimuthValuePredictor _predictionsAtIndex:a3];
-    v10 = [(_UIValuePredictor *)self->_forceValuePredictor _predictionsAtIndex:a3];
-    v31 = v6;
-    v11 = v6;
-    v12 = [v11 window];
-    [v12 contentScaleFactor];
+    v33 = [(_UIValuePredictor *)self->_xValuePredictor _predictionsAtIndex:index];
+    v7 = [(_UIValuePredictor *)self->_yValuePredictor _predictionsAtIndex:index];
+    v8 = [(_UIValuePredictor *)self->_angleValuePredictor _predictionsAtIndex:index];
+    v9 = [(_UIValuePredictor *)self->_azimuthValuePredictor _predictionsAtIndex:index];
+    v10 = [(_UIValuePredictor *)self->_forceValuePredictor _predictionsAtIndex:index];
+    v31 = touchCopy;
+    v11 = touchCopy;
+    window = [v11 window];
+    [window contentScaleFactor];
     v34 = v13;
 
     averageTouchInterval = self->_averageTouchInterval;
-    v15 = [(_UITouchPredictor *)self _dampenedNumPredictionsAtIndex:a3];
+    v15 = [(_UITouchPredictor *)self _dampenedNumPredictionsAtIndex:index];
     if (v15 >= 1)
     {
       v16 = 0;
       v17 = v15 & 0x7FFFFFFF;
       v32 = vdupq_lane_s64(v34, 0);
-      v18 = v11;
+      _clone = v11;
       while (1)
       {
-        v19 = v18;
-        v18 = [v11 _clone];
-        [v18 _setPreviousTouch:v19];
+        v19 = _clone;
+        _clone = [v11 _clone];
+        [_clone _setPreviousTouch:v19];
         v20 = v33[v16];
         v21 = v7[v16];
         v22 = v20;
@@ -292,25 +292,25 @@ LABEL_8:
         *&v23 = v32.f64[0];
         v24 = vdivq_f64(vrndaq_f64(vmulq_n_f64(v25, *&v34)), v32);
         v25.f64[0] = v24.f64[1];
-        if (v18)
+        if (_clone)
         {
-          v25 = *(v18 + 112);
-          v23 = *(v18 + 144);
-          *(v18 + 160) = v23;
-          *(v18 + 112) = v24;
-          *(v18 + 128) = v25;
-          *(v18 + 144) = v20;
-          *(v18 + 152) = v21;
+          v25 = *(_clone + 112);
+          v23 = *(_clone + 144);
+          *(_clone + 160) = v23;
+          *(_clone + 112) = v24;
+          *(_clone + 128) = v25;
+          *(_clone + 144) = v20;
+          *(_clone + 152) = v21;
         }
 
         if ((v16 & 0x8000000000000000) == 0)
         {
-          [(UITouch *)v18 _setAltitudeAngle:?];
+          [(UITouch *)_clone _setAltitudeAngle:?];
           v25.f64[0] = v9[v16];
-          if (v18)
+          if (_clone)
           {
-            *(v18 + 368) = v25.f64[0];
-            [(UITouch *)v18 _computeAzimuthAngleInWindow];
+            *(_clone + 368) = v25.f64[0];
+            [(UITouch *)_clone _computeAzimuthAngleInWindow];
           }
         }
 
@@ -320,7 +320,7 @@ LABEL_8:
         }
 
         v25.f64[0] = v10[v16];
-        if (v18)
+        if (_clone)
         {
           break;
         }
@@ -328,7 +328,7 @@ LABEL_8:
         [v19 timestamp];
         [0 setTimestamp:averageTouchInterval + v27];
 LABEL_16:
-        [(NSMutableArray *)self->_predictions addObject:v18];
+        [(NSMutableArray *)self->_predictions addObject:_clone];
 
         if (++v16 == v17)
         {
@@ -336,32 +336,32 @@ LABEL_16:
         }
       }
 
-      v21 = *(v18 + 216);
-      *&v23 = *(v18 + 224);
+      v21 = *(_clone + 216);
+      *&v23 = *(_clone + 224);
       if (*&v23 < v25.f64[0])
       {
         *&v23 = v10[v16];
       }
 
-      *(v18 + 176) = v21;
-      *(v18 + 216) = v25.f64[0];
-      *(v18 + 224) = v23;
+      *(_clone + 176) = v21;
+      *(_clone + 216) = v25.f64[0];
+      *(_clone + 224) = v23;
 LABEL_14:
       [v19 timestamp];
-      [v18 setTimestamp:averageTouchInterval + v26];
-      if (v18)
+      [_clone setTimestamp:averageTouchInterval + v26];
+      if (_clone)
       {
-        *(v18 + 236) |= 0x80u;
+        *(_clone + 236) |= 0x80u;
       }
 
       goto LABEL_16;
     }
 
-    v18 = v11;
+    _clone = v11;
 LABEL_20:
     self->_predictionsValid = 1;
 
-    v6 = v31;
+    touchCopy = v31;
   }
 
   predictions = self->_predictions;
@@ -370,36 +370,36 @@ LABEL_20:
   return predictions;
 }
 
-- (id)predictedTouchesForTouch:(id)a3
+- (id)predictedTouchesForTouch:(id)touch
 {
   xValuePredictor = self->_xValuePredictor;
-  v5 = a3;
-  v6 = [(_UITouchPredictor *)self _predictedTouchesAtIndex:[(_UIValuePredictor *)xValuePredictor numValues]- 1 forTouch:v5];
+  touchCopy = touch;
+  v6 = [(_UITouchPredictor *)self _predictedTouchesAtIndex:[(_UIValuePredictor *)xValuePredictor numValues]- 1 forTouch:touchCopy];
 
   return v6;
 }
 
-- (id)descriptionFromIndex:(int)a3 toIndex:(int)a4 includeHeader:(BOOL)a5 includeDetailedConfidence:(BOOL)a6
+- (id)descriptionFromIndex:(int)index toIndex:(int)toIndex includeHeader:(BOOL)header includeDetailedConfidence:(BOOL)confidence
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = [MEMORY[0x1E696AD60] string];
-  v12 = [(_UIValuePredictor *)self->_xValuePredictor descriptionFromIndex:a3 toIndex:a4 includeHeader:v7 includeDetailedConfidence:v6];
-  [v11 appendFormat:@"X:\n%@", v12];
+  confidenceCopy = confidence;
+  headerCopy = header;
+  string = [MEMORY[0x1E696AD60] string];
+  v12 = [(_UIValuePredictor *)self->_xValuePredictor descriptionFromIndex:index toIndex:toIndex includeHeader:headerCopy includeDetailedConfidence:confidenceCopy];
+  [string appendFormat:@"X:\n%@", v12];
 
-  v13 = [(_UIValuePredictor *)self->_yValuePredictor descriptionFromIndex:a3 toIndex:a4 includeHeader:v7 includeDetailedConfidence:v6];
-  [v11 appendFormat:@"Y:\n%@", v13];
+  v13 = [(_UIValuePredictor *)self->_yValuePredictor descriptionFromIndex:index toIndex:toIndex includeHeader:headerCopy includeDetailedConfidence:confidenceCopy];
+  [string appendFormat:@"Y:\n%@", v13];
 
-  v14 = [(_UIValuePredictor *)self->_angleValuePredictor descriptionFromIndex:a3 toIndex:a4 includeHeader:v7 includeDetailedConfidence:v6];
-  [v11 appendFormat:@"Angle:\n%@", v14];
+  v14 = [(_UIValuePredictor *)self->_angleValuePredictor descriptionFromIndex:index toIndex:toIndex includeHeader:headerCopy includeDetailedConfidence:confidenceCopy];
+  [string appendFormat:@"Angle:\n%@", v14];
 
-  v15 = [(_UIValuePredictor *)self->_azimuthValuePredictor descriptionFromIndex:a3 toIndex:a4 includeHeader:v7 includeDetailedConfidence:v6];
-  [v11 appendFormat:@"Azimuth:\n%@", v15];
+  v15 = [(_UIValuePredictor *)self->_azimuthValuePredictor descriptionFromIndex:index toIndex:toIndex includeHeader:headerCopy includeDetailedConfidence:confidenceCopy];
+  [string appendFormat:@"Azimuth:\n%@", v15];
 
-  v16 = [(_UIValuePredictor *)self->_forceValuePredictor descriptionFromIndex:a3 toIndex:a4 includeHeader:v7 includeDetailedConfidence:v6];
-  [v11 appendFormat:@"Force:\n%@", v16];
+  v16 = [(_UIValuePredictor *)self->_forceValuePredictor descriptionFromIndex:index toIndex:toIndex includeHeader:headerCopy includeDetailedConfidence:confidenceCopy];
+  [string appendFormat:@"Force:\n%@", v16];
 
-  return v11;
+  return string;
 }
 
 - (id)description
@@ -409,19 +409,19 @@ LABEL_20:
   return [(_UITouchPredictor *)self descriptionFromIndex:0 toIndex:v3 includeHeader:1 includeDetailedConfidence:1];
 }
 
-- (void)_updatePredictionsForTouch:(id)a3 weight:(double)a4
+- (void)_updatePredictionsForTouch:(id)touch weight:(double)weight
 {
-  v6 = a3;
-  [v6 preciseLocationInView:0];
+  touchCopy = touch;
+  [touchCopy preciseLocationInView:0];
   v8 = v7;
   [_UIValuePredictor addValue:"addValue:weight:" weight:?];
-  [(_UIValuePredictor *)self->_yValuePredictor addValue:v8 weight:a4];
+  [(_UIValuePredictor *)self->_yValuePredictor addValue:v8 weight:weight];
   angleValuePredictor = self->_angleValuePredictor;
-  [v6 altitudeAngle];
+  [touchCopy altitudeAngle];
   [_UIValuePredictor addValue:"addValue:weight:" weight:?];
-  if (v6)
+  if (touchCopy)
   {
-    v10 = v6[46];
+    v10 = touchCopy[46];
   }
 
   else
@@ -429,12 +429,12 @@ LABEL_20:
     v10 = 0.0;
   }
 
-  [(_UIValuePredictor *)self->_azimuthValuePredictor addValue:v10 weight:a4];
+  [(_UIValuePredictor *)self->_azimuthValuePredictor addValue:v10 weight:weight];
   forceValuePredictor = self->_forceValuePredictor;
-  [v6 _pressure];
+  [touchCopy _pressure];
   v13 = v12;
 
-  [(_UIValuePredictor *)forceValuePredictor addValue:v13 weight:a4];
+  [(_UIValuePredictor *)forceValuePredictor addValue:v13 weight:weight];
 }
 
 @end

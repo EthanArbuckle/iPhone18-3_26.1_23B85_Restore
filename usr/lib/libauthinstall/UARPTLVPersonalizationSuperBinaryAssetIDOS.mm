@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationSuperBinaryAssetIDOS
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationSuperBinaryAssetIDOS)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setAssetID:(unsigned __int16)a3;
+- (void)setAssetID:(unsigned __int16)d;
 @end
 
 @implementation UARPTLVPersonalizationSuperBinaryAssetIDOS
@@ -18,12 +18,12 @@
   return [(UARPMetaDataTLV16OS *)&v3 init];
 }
 
-- (void)setAssetID:(unsigned __int16)a3
+- (void)setAssetID:(unsigned __int16)d
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  *(&v4->super.super._tlvLength + 2) = a3;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *(&selfCopy->super.super._tlvLength + 2) = d;
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -72,17 +72,17 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
-    v6 = [v4 unsignedShortValue];
+    unsignedShortValue = [v4 unsignedShortValue];
 
-    [v5 setAssetID:v6];
+    [v5 setAssetID:unsignedShortValue];
   }
 
   else
@@ -93,12 +93,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 2)
+  if (length == 2)
   {
     v5 = objc_opt_new();
-    [v5 setAssetID:uarpHtons(*a4)];
+    [v5 setAssetID:uarpHtons(*value)];
   }
 
   else

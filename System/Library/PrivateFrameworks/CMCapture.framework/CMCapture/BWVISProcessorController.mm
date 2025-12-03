@@ -1,11 +1,11 @@
 @interface BWVISProcessorController
-- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)a3;
+- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)processing;
 - (int)finishPendingProcessing;
 - (int)prepareToProcess;
 - (uint64_t)prepareToProcess;
 - (void)dealloc;
-- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4;
-- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4;
+- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status;
+- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status;
 @end
 
 @implementation BWVISProcessorController
@@ -30,16 +30,16 @@
     goto LABEL_10;
   }
 
-  v4 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters videoStabilizationProcessorVersion];
-  if (!v4)
+  videoStabilizationProcessorVersion = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters videoStabilizationProcessorVersion];
+  if (!videoStabilizationProcessorVersion)
   {
 LABEL_30:
     v24 = -12780;
     goto LABEL_32;
   }
 
-  v5 = v4;
-  v6 = BWLoadProcessorBundle(@"VideoStabilization", v4);
+  v5 = videoStabilizationProcessorVersion;
+  v6 = BWLoadProcessorBundle(@"VideoStabilization", videoStabilizationProcessorVersion);
   if (!v6)
   {
 LABEL_29:
@@ -142,8 +142,8 @@ LABEL_10:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = [(BWVISProcessorControllerConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
-  v15 = [(NSDictionary *)v14 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  outputAttachmentsPixelBufferPools = [(BWVISProcessorControllerConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
+  v15 = [(NSDictionary *)outputAttachmentsPixelBufferPools countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -154,7 +154,7 @@ LABEL_10:
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(outputAttachmentsPixelBufferPools);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
@@ -163,7 +163,7 @@ LABEL_10:
         [v13 setObject:objc_msgSend(v20 forKeyedSubscript:{"cvPixelBufferPoolAuxAttributes"), v19}];
       }
 
-      v16 = [(NSDictionary *)v14 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v16 = [(NSDictionary *)outputAttachmentsPixelBufferPools countByEnumeratingWithState:&v28 objects:v27 count:16];
     }
 
     while (v16);
@@ -217,23 +217,23 @@ LABEL_21:
   [(BWVISProcessorController *)&v3 dealloc];
 }
 
-- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4
+- (void)willStartProcessingBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status
 {
-  v4 = *&a4;
+  v4 = *&status;
   Weak = objc_loadWeak(&self->_delegate);
 
-  [Weak willStartProcessingBuffer:a3 withStatus:v4];
+  [Weak willStartProcessingBuffer:buffer withStatus:v4];
 }
 
-- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)a3 withStatus:(int)a4
+- (void)didCompleteProcessingOfBuffer:(opaqueCMSampleBuffer *)buffer withStatus:(int)status
 {
-  v4 = *&a4;
+  v4 = *&status;
   Weak = objc_loadWeak(&self->_delegate);
 
-  [Weak didCompleteProcessingOfBuffer:a3 withStatus:v4];
+  [Weak didCompleteProcessingOfBuffer:buffer withStatus:v4];
 }
 
-- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)a3
+- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)processing
 {
   if (!self->_visProcessor)
   {
@@ -242,7 +242,7 @@ LABEL_21:
 
   Weak = objc_loadWeak(&self->_delegate);
   v6 = -12780;
-  if (a3 && Weak)
+  if (processing && Weak)
   {
     if (!self->_buffersEnqueued)
     {
@@ -251,7 +251,7 @@ LABEL_21:
       [(VISProcessor *)self->_visProcessor setSmartStyleReversibilityProcessingEnabled:self->_smartStyleReversibilityProcessingEnabled];
     }
 
-    v6 = [(VISProcessor *)self->_visProcessor enqueueBufferForProcessing:a3];
+    v6 = [(VISProcessor *)self->_visProcessor enqueueBufferForProcessing:processing];
     if (v6)
     {
       fig_log_get_emitter();
@@ -275,8 +275,8 @@ LABEL_21:
     return -12780;
   }
 
-  v3 = [(VISProcessor *)self->_visProcessor finishProcessing];
-  if (v3)
+  finishProcessing = [(VISProcessor *)self->_visProcessor finishProcessing];
+  if (finishProcessing)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -287,7 +287,7 @@ LABEL_21:
     self->_buffersEnqueued = 0;
   }
 
-  return v3;
+  return finishProcessing;
 }
 
 - (uint64_t)prepareToProcess

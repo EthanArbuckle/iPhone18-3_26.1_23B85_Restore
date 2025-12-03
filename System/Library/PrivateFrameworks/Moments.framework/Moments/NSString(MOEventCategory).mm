@@ -6,42 +6,42 @@
 
 - (uint64_t)associatedEventPermission
 {
-  if ([a1 isEqualToString:MOEventBundleSourceTypeContact])
+  if ([self isEqualToString:MOEventBundleSourceTypeContact])
   {
     return 10;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypeMedia])
+  if ([self isEqualToString:MOEventBundleSourceTypeMedia])
   {
     return 4;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypePeopleContext])
+  if ([self isEqualToString:MOEventBundleSourceTypePeopleContext])
   {
     return 23;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypePhoto])
+  if ([self isEqualToString:MOEventBundleSourceTypePhoto])
   {
     return 5;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypeThirdPartyMedia])
+  if ([self isEqualToString:MOEventBundleSourceTypeThirdPartyMedia])
   {
     return 4;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypeStateOfMind])
+  if ([self isEqualToString:MOEventBundleSourceTypeStateOfMind])
   {
     return 24;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypeVisitLocation])
+  if ([self isEqualToString:MOEventBundleSourceTypeVisitLocation])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:MOEventBundleSourceTypeActivity])
+  if ([self isEqualToString:MOEventBundleSourceTypeActivity])
   {
     return 2;
   }

@@ -1,46 +1,46 @@
 @interface SOConfigurationHost
-+ (id)_loadProfilesFromDict:(id)a3;
-+ (id)_loadProfilesFromURL:(id)a3 logFileError:(BOOL)a4;
++ (id)_loadProfilesFromDict:(id)dict;
++ (id)_loadProfilesFromURL:(id)l logFileError:(BOOL)error;
 + (id)defaultManager;
-+ (id)maskRegistrationTokenInConfigurationData:(id)a3;
-+ (id)maskRegistrationTokenInProfileList:(id)a3;
++ (id)maskRegistrationTokenInConfigurationData:(id)data;
++ (id)maskRegistrationTokenInProfileList:(id)list;
 + (void)defaultManager;
-- (BOOL)_initCachePath:(id)a3 ifNeededWithError:(id *)a4;
-- (BOOL)_initDataVaultIfNeededWithError:(id *)a3;
+- (BOOL)_initCachePath:(id)path ifNeededWithError:(id *)error;
+- (BOOL)_initDataVaultIfNeededWithError:(id *)error;
 - (BOOL)_isConfigFileAvailable;
-- (BOOL)_saveCacheToFile:(id)a3 error:(id *)a4;
-- (BOOL)_saveConfigToFile:(id)a3 error:(id *)a4;
-- (BOOL)hasAnyMDMProfileForExtension:(id)a3;
-- (BOOL)isPlatformSSOProfile:(id)a3;
-- (BOOL)saveConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)saveConfigurationData:(id)a3 error:(id *)a4;
+- (BOOL)_saveCacheToFile:(id)file error:(id *)error;
+- (BOOL)_saveConfigToFile:(id)file error:(id *)error;
+- (BOOL)hasAnyMDMProfileForExtension:(id)extension;
+- (BOOL)isPlatformSSOProfile:(id)profile;
+- (BOOL)saveConfiguration:(id)configuration error:(id *)error;
+- (BOOL)saveConfigurationData:(id)data error:(id *)error;
 - (SOConfigurationHost)init;
-- (id)_checkAssociatedDomainForProfiles:(id)a3;
-- (id)_checkExtensionsExistenceForProfiles:(id)a3;
+- (id)_checkAssociatedDomainForProfiles:(id)profiles;
+- (id)_checkExtensionsExistenceForProfiles:(id)profiles;
 - (id)_defaultCacheFile;
 - (id)_defaultConfigurationFile;
-- (id)_mergeProfile:(id)a3 userProfiles:(id)a4;
-- (id)_removeNotSupportedUserProfiles:(id)a3;
-- (id)_stringWithReason:(int64_t)a3;
-- (id)configurationForClientWithError:(id *)a3;
-- (id)findPlatformSSOProfile:(id)a3;
-- (id)findProfileForExtension:(id)a3 profiles:(id)a4;
+- (id)_mergeProfile:(id)profile userProfiles:(id)profiles;
+- (id)_removeNotSupportedUserProfiles:(id)profiles;
+- (id)_stringWithReason:(int64_t)reason;
+- (id)configurationForClientWithError:(id *)error;
+- (id)findPlatformSSOProfile:(id)profile;
+- (id)findProfileForExtension:(id)extension profiles:(id)profiles;
 - (id)platformSSOProfile;
-- (id)profileForURL:(id)a3 responseCode:(int64_t)a4;
-- (id)profilesWithExtensionBundleIdentifier:(id)a3;
+- (id)profileForURL:(id)l responseCode:(int64_t)code;
+- (id)profilesWithExtensionBundleIdentifier:(id)identifier;
 - (id)realms;
-- (id)removedProfileForExtensionBundleIdentifier:(id)a3;
-- (id)systemMDMProfileForExtension:(id)a3;
+- (id)removedProfileForExtensionBundleIdentifier:(id)identifier;
+- (id)systemMDMProfileForExtension:(id)extension;
 - (id)validatedProfileForPlatformSSO;
-- (int64_t)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5;
+- (int64_t)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier;
 - (void)_checkNewVersion;
-- (void)_configurationLoadedWithReason:(int64_t)a3;
-- (void)_extensionsLoaded:(id)a3;
+- (void)_configurationLoadedWithReason:(int64_t)reason;
+- (void)_extensionsLoaded:(id)loaded;
 - (void)_isConfigFileAvailable;
-- (void)_isConfigurationActiveForExtensionIdentifier:(id)a3 runningAsAgent:(BOOL)a4 completion:(id)a5;
+- (void)_isConfigurationActiveForExtensionIdentifier:(id)identifier runningAsAgent:(BOOL)agent completion:(id)completion;
 - (void)_loadCacheFromDisk;
 - (void)_loadConfigForFirstTime;
-- (void)_reloadConfigWithReason:(int64_t)a3;
+- (void)_reloadConfigWithReason:(int64_t)reason;
 - (void)_startKeyBagObserverForReloadingConfiguration;
 - (void)dealloc;
 - (void)platformSSOProfile;
@@ -74,10 +74,10 @@
 {
   if ([(SOConfigurationVersion *)self->_configurationVersion checkVersion]== 1)
   {
-    v3 = [(SOConfigurationHost *)self configurationPendingLock];
-    objc_sync_enter(v3);
+    configurationPendingLock = [(SOConfigurationHost *)self configurationPendingLock];
+    objc_sync_enter(configurationPendingLock);
     [(SOConfigurationHost *)self setConfigurationPending:1];
-    objc_sync_exit(v3);
+    objc_sync_exit(configurationPendingLock);
 
     [(SOConfigurationHost *)self _reloadConfigWithReason:2];
   }
@@ -150,49 +150,49 @@ uint64_t __37__SOConfigurationHost_defaultManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SOConfigurationHost;
   [(SOConfigurationHost *)&v4 dealloc];
 }
 
-- (BOOL)saveConfiguration:(id)a3 error:(id *)a4
+- (BOOL)saveConfiguration:(id)configuration error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() maskRegistrationTokenInProfileList:v6];
+    v8 = [objc_opt_class() maskRegistrationTokenInProfileList:configurationCopy];
     *buf = 136315651;
     v22 = "[SOConfigurationHost saveConfiguration:error:]";
     v23 = 2113;
     v24 = v8;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_DEFAULT, "%s saving new configuration: %{private}@ on %@", buf, 0x20u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [objc_opt_class() _loadProfilesFromDict:v6];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v10 = [objc_opt_class() _loadProfilesFromDict:configurationCopy];
   if (v10)
   {
-    v11 = [(SOConfigurationHost *)v9 _saveConfigToFile:v6 error:a4];
+    v11 = [(SOConfigurationHost *)selfCopy2 _saveConfigToFile:configurationCopy error:error];
     if (v11)
     {
-      [(SOConfigurationVersion *)v9->_configurationVersion increaseVersionWithMessage:@"NewConfiguration"];
+      [(SOConfigurationVersion *)selfCopy2->_configurationVersion increaseVersionWithMessage:@"NewConfiguration"];
     }
 
     if (!getuid())
     {
-      v12 = [(SOConfigurationHost *)v9 _defaultCacheFile];
-      v13 = [v12 stringByDeletingLastPathComponent];
+      _defaultCacheFile = [(SOConfigurationHost *)selfCopy2 _defaultCacheFile];
+      stringByDeletingLastPathComponent = [_defaultCacheFile stringByDeletingLastPathComponent];
 
       v20 = 0;
-      v14 = [(SOConfigurationHost *)v9 _initCachePath:v13 ifNeededWithError:&v20];
+      v14 = [(SOConfigurationHost *)selfCopy2 _initCachePath:stringByDeletingLastPathComponent ifNeededWithError:&v20];
       v15 = v20;
       if (!v14)
       {
@@ -213,10 +213,10 @@ uint64_t __37__SOConfigurationHost_defaultManager__block_invoke()
       [SOConfigurationHost saveConfiguration:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [getSOErrorHelperClass_3() parameterErrorWithMessage:@"invalid configuration format"];
-      *a4 = LOBYTE(v11) = 0;
+      *error = LOBYTE(v11) = 0;
     }
 
     else
@@ -225,45 +225,45 @@ uint64_t __37__SOConfigurationHost_defaultManager__block_invoke()
     }
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy2);
   v18 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (BOOL)saveConfigurationData:(id)a3 error:(id *)a4
+- (BOOL)saveConfigurationData:(id)data error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() maskRegistrationTokenInProfileList:v6];
+    v8 = [objc_opt_class() maskRegistrationTokenInProfileList:dataCopy];
     v19 = 136315651;
     v20 = "[SOConfigurationHost saveConfigurationData:error:]";
     v21 = 2113;
     v22 = v8;
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_DEFAULT, "%s saving new configuration=%{private}@ on %@", &v19, 0x20u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [objc_opt_class() _loadProfilesFromDict:v6];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v10 = [objc_opt_class() _loadProfilesFromDict:dataCopy];
   if (!v10)
   {
     v15 = SO_LOG_SOConfigurationHost();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [objc_opt_class() maskRegistrationTokenInProfileList:v6];
+      v16 = [objc_opt_class() maskRegistrationTokenInProfileList:dataCopy];
       [SOConfigurationHost saveConfigurationData:v16 error:&v19];
     }
 
-    if (a4)
+    if (error)
     {
       [getSOErrorHelperClass_3() parameterErrorWithMessage:@"invalid configuration format"];
       v10 = 0;
-      *a4 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_12;
     }
 
@@ -273,45 +273,45 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![(SOConfigurationHost *)v9 _saveConfigToFile:v6 error:a4])
+  if (![(SOConfigurationHost *)selfCopy2 _saveConfigToFile:dataCopy error:error])
   {
     goto LABEL_11;
   }
 
-  v11 = [(SOConfigurationHost *)v9 _checkAssociatedDomainForProfiles:v10];
+  v11 = [(SOConfigurationHost *)selfCopy2 _checkAssociatedDomainForProfiles:v10];
 
   v12 = [objc_alloc(getSOConfigurationClass()) initWithProfiles:v11];
-  configuration = v9->_configuration;
-  v9->_configuration = v12;
+  configuration = selfCopy2->_configuration;
+  selfCopy2->_configuration = v12;
 
-  [(SOConfigurationVersion *)v9->_configurationVersion increaseVersionWithMessage:@"NewConfiguration"];
+  [(SOConfigurationVersion *)selfCopy2->_configurationVersion increaseVersionWithMessage:@"NewConfiguration"];
   v14 = 1;
   v10 = v11;
 LABEL_12:
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy2);
   v17 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (id)profileForURL:(id)a3 responseCode:(int64_t)a4
+- (id)profileForURL:(id)l responseCode:(int64_t)code
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315394;
     v17 = "[SOConfigurationHost profileForURL:responseCode:]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v16, 0x16u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  [(SOConfigurationHost *)v8 _checkNewVersion];
-  v9 = [(SOConfiguration *)v8->_configuration profileForURL:v6 responseCode:a4];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  [(SOConfigurationHost *)selfCopy2 _checkNewVersion];
+  v9 = [(SOConfiguration *)selfCopy2->_configuration profileForURL:lCopy responseCode:code];
   if (v9 && (getSOFullProfileClass(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = SO_LOG_SOConfigurationHost();
@@ -328,48 +328,48 @@ LABEL_12:
     v10 = SO_LOG_SOConfigurationHost();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(SOConfiguration *)v8->_configuration profiles];
+      profiles = [(SOConfiguration *)selfCopy2->_configuration profiles];
       v16 = 141558787;
       v17 = 1752392040;
       v18 = 2117;
-      v19 = v6;
+      selfCopy = lCopy;
       v20 = 2114;
       v21 = v9;
       v22 = 2114;
-      v23 = v15;
+      v23 = profiles;
       _os_log_debug_impl(&dword_1C1317000, v10, OS_LOG_TYPE_DEBUG, "profile for URL %{sensitive, mask.hash}@ => %{public}@ in %{public}@", &v16, 0x2Au);
     }
 
     v11 = v9;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy2);
   v13 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-- (id)removedProfileForExtensionBundleIdentifier:(id)a3
+- (id)removedProfileForExtensionBundleIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[SOConfigurationHost removedProfileForExtensionBundleIdentifier:]";
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6->_removedProfiles;
+  v7 = selfCopy2->_removedProfiles;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v8)
   {
@@ -384,8 +384,8 @@ LABEL_12:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 extensionBundleIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+        v13 = [extensionBundleIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -409,11 +409,11 @@ LABEL_13:
   v14 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    removedProfiles = v6->_removedProfiles;
+    removedProfiles = selfCopy2->_removedProfiles;
     *buf = 138543874;
-    v23 = v4;
+    v23 = identifierCopy;
     v24 = 2114;
-    v25 = v8;
+    selfCopy = v8;
     v26 = 2114;
     v27 = removedProfiles;
     _os_log_debug_impl(&dword_1C1317000, v14, OS_LOG_TYPE_DEBUG, "removed profile for extension bundle ID %{public}@ => %{public}@ in %{public}@", buf, 0x20u);
@@ -421,17 +421,17 @@ LABEL_13:
 
   if (v8)
   {
-    [(NSMutableArray *)v6->_removedProfiles removeObject:v8];
+    [(NSMutableArray *)selfCopy2->_removedProfiles removeObject:v8];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy2);
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)configurationForClientWithError:(id *)a3
+- (id)configurationForClientWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = SO_LOG_SOConfigurationHost();
@@ -440,20 +440,20 @@ LABEL_13:
     *buf = 136315394;
     v22 = "[SOConfigurationHost configurationForClientWithError:]";
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(SOConfigurationHost *)v6 _checkNewVersion];
-  v7 = [MEMORY[0x1E695DF70] array];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  [(SOConfigurationHost *)selfCopy2 _checkNewVersion];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SOConfiguration *)v6->_configuration profiles];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  profiles = [(SOConfiguration *)selfCopy2->_configuration profiles];
+  v9 = [profiles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = *v17;
@@ -463,57 +463,57 @@ LABEL_13:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(profiles);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyProfileForClient];
-        [v7 addObject:v12];
+        copyProfileForClient = [*(*(&v16 + 1) + 8 * i) copyProfileForClient];
+        [array addObject:copyProfileForClient];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [profiles countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
-  v13 = [objc_alloc(getSOConfigurationClass()) initWithProfiles:v7];
+  v13 = [objc_alloc(getSOConfigurationClass()) initWithProfiles:array];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy2);
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-- (id)profilesWithExtensionBundleIdentifier:(id)a3
+- (id)profilesWithExtensionBundleIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v24 = "[SOConfigurationHost profilesWithExtensionBundleIdentifier:]";
     v25 = 2114;
-    v26 = v4;
+    v26 = identifierCopy;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s extensionBundleIdentifier: %{public}@ on %@", buf, 0x20u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [MEMORY[0x1E695DF70] array];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(SOConfiguration *)v6->_configuration profiles];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  profiles = [(SOConfiguration *)selfCopy2->_configuration profiles];
+  v9 = [profiles countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -523,30 +523,30 @@ LABEL_13:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(profiles);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 extensionBundleIdentifier];
-        v14 = [v13 isEqualToString:v4];
+        extensionBundleIdentifier = [v12 extensionBundleIdentifier];
+        v14 = [extensionBundleIdentifier isEqualToString:identifierCopy];
 
         if (v14)
         {
-          v15 = [v12 copyProfile];
-          [v7 addObject:v15];
+          copyProfile = [v12 copyProfile];
+          [array addObject:copyProfile];
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [profiles countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy2);
   v16 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
 - (id)validatedProfileForPlatformSSO
@@ -558,43 +558,43 @@ LABEL_13:
     *buf = 136315394;
     v19 = "[SOConfigurationHost validatedProfileForPlatformSSO]";
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SOConfiguration *)v4->_configuration profiles];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v6)
+  profiles = [(SOConfiguration *)selfCopy2->_configuration profiles];
+  copyProfile = [profiles countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (copyProfile)
   {
     v7 = *v14;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != copyProfile; i = i + 1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(profiles);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([(SOConfigurationHost *)v4 isPlatformSSOProfile:v9])
+        if ([(SOConfigurationHost *)selfCopy2 isPlatformSSOProfile:v9])
         {
-          v6 = [v9 copyProfile];
-          v10 = [v9 pssoRegistrationToken];
-          [v6 setPssoRegistrationToken:v10];
+          copyProfile = [v9 copyProfile];
+          pssoRegistrationToken = [v9 pssoRegistrationToken];
+          [copyProfile setPssoRegistrationToken:pssoRegistrationToken];
 
           goto LABEL_13;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v6)
+      copyProfile = [profiles countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (copyProfile)
       {
         continue;
       }
@@ -605,10 +605,10 @@ LABEL_13:
 
 LABEL_13:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy2);
   v11 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return copyProfile;
 }
 
 - (id)platformSSOProfile
@@ -620,11 +620,11 @@ LABEL_13:
     *buf = 136315394;
     v26 = "[SOConfigurationHost platformSSOProfile]";
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v4 = [(SOConfigurationHost *)self _defaultConfigurationFile];
+  _defaultConfigurationFile = [(SOConfigurationHost *)self _defaultConfigurationFile];
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -632,7 +632,7 @@ LABEL_13:
   }
 
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultConfigurationFile];
   v8 = [v6 _loadProfilesFromURL:v7 logFileError:1];
 
   v22 = 0u;
@@ -693,17 +693,17 @@ LABEL_19:
   return v16;
 }
 
-- (id)findPlatformSSOProfile:(id)a3
+- (id)findPlatformSSOProfile:(id)profile
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profileCopy = profile;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v21 = "[SOConfigurationHost findPlatformSSOProfile:]";
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -711,7 +711,7 @@ LABEL_19:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = profileCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -752,18 +752,18 @@ LABEL_13:
   return v12;
 }
 
-- (id)findProfileForExtension:(id)a3 profiles:(id)a4
+- (id)findProfileForExtension:(id)extension profiles:(id)profiles
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  profilesCopy = profiles;
   v8 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v24 = "[SOConfigurationHost findProfileForExtension:profiles:]";
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -771,7 +771,7 @@ LABEL_13:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = profilesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -786,8 +786,8 @@ LABEL_13:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 extensionBundleIdentifier];
-        v15 = [v14 isEqualToString:v6];
+        extensionBundleIdentifier = [v13 extensionBundleIdentifier];
+        v15 = [extensionBundleIdentifier isEqualToString:extensionCopy];
 
         if (v15)
         {
@@ -813,28 +813,28 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)isPlatformSSOProfile:(id)a3
+- (BOOL)isPlatformSSOProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   SOFullProfileClass = getSOFullProfileClass();
-  v5 = [v3 platformSSO];
-  v6 = [v5 objectForKeyedSubscript:@"AuthenticationMethod"];
+  platformSSO = [profileCopy platformSSO];
+  v6 = [platformSSO objectForKeyedSubscript:@"AuthenticationMethod"];
   v7 = [SOFullProfileClass authMethodWithString:v6];
 
-  v8 = v7 != 1000 && [v3 type] == 1;
+  v8 = v7 != 1000 && [profileCopy type] == 1;
   return v8;
 }
 
-- (id)_removeNotSupportedUserProfiles:(id)a3
+- (id)_removeNotSupportedUserProfiles:(id)profiles
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  profilesCopy = profiles;
+  v5 = [profilesCopy mutableCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = profilesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v7)
   {
@@ -870,8 +870,8 @@ LABEL_13:
 
           else
           {
-            v15 = [v13 platformSSO];
-            v16 = [v15 objectForKeyedSubscript:@"UseSharedDeviceKeys"];
+            platformSSO = [v13 platformSSO];
+            v16 = [platformSSO objectForKeyedSubscript:@"UseSharedDeviceKeys"];
 
             if ([v16 BOOLValue])
             {
@@ -902,21 +902,21 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)hasAnyMDMProfileForExtension:(id)a3
+- (BOOL)hasAnyMDMProfileForExtension:(id)extension
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extensionCopy = extension;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v29 = "[SOConfigurationHost hasAnyMDMProfileForExtension:]";
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = [(SOConfigurationHost *)self _defaultConfigurationFile];
+  _defaultConfigurationFile = [(SOConfigurationHost *)self _defaultConfigurationFile];
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -924,7 +924,7 @@ LABEL_13:
   }
 
   v8 = objc_opt_class();
-  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultConfigurationFile];
   v10 = [v8 _loadProfilesFromURL:v9 logFileError:1];
 
   v25 = 0u;
@@ -946,8 +946,8 @@ LABEL_13:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v23 + 1) + 8 * i) extensionBundleIdentifier];
-        v17 = [v16 isEqualToString:v4];
+        extensionBundleIdentifier = [*(*(&v23 + 1) + 8 * i) extensionBundleIdentifier];
+        v17 = [extensionBundleIdentifier isEqualToString:extensionCopy];
 
         if (v17)
         {
@@ -986,21 +986,21 @@ LABEL_19:
   return v19;
 }
 
-- (id)systemMDMProfileForExtension:(id)a3
+- (id)systemMDMProfileForExtension:(id)extension
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  extensionCopy = extension;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v30 = "[SOConfigurationHost systemMDMProfileForExtension:]";
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = [(SOConfigurationHost *)self _defaultConfigurationFile];
+  _defaultConfigurationFile = [(SOConfigurationHost *)self _defaultConfigurationFile];
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1008,7 +1008,7 @@ LABEL_19:
   }
 
   v8 = objc_opt_class();
-  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultConfigurationFile];
   v10 = [v8 _loadProfilesFromURL:v9 logFileError:1];
 
   v26 = 0u;
@@ -1031,8 +1031,8 @@ LABEL_19:
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 extensionBundleIdentifier];
-        v18 = [v17 isEqualToString:v4];
+        extensionBundleIdentifier = [v16 extensionBundleIdentifier];
+        v18 = [extensionBundleIdentifier isEqualToString:extensionCopy];
 
         if (v18)
         {
@@ -1081,25 +1081,25 @@ LABEL_19:
     v8 = 136315394;
     v9 = "[SOConfigurationHost realms]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(SOConfiguration *)v4->_configuration realms];
-  objc_sync_exit(v4);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  realms = [(SOConfiguration *)selfCopy2->_configuration realms];
+  objc_sync_exit(selfCopy2);
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return realms;
 }
 
-- (int64_t)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5
+- (int64_t)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
   v10 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1108,27 +1108,27 @@ LABEL_19:
     v34 = 2160;
     v35 = 1752392040;
     v36 = 2117;
-    v37 = v8;
+    v37 = lCopy;
     v38 = 2114;
-    v39 = v9;
+    v39 = identifierCopy;
     v40 = 2112;
-    v41 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1C1317000, v10, OS_LOG_TYPE_DEBUG, "%s URL: %{sensitive, mask.hash}@, callerBundleIdentifier: %{public}@ on %@", buf, 0x34u);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  configuration = v11->_configuration;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  configuration = selfCopy2->_configuration;
   v31 = 0;
-  v13 = [(SOConfiguration *)configuration willHandleURL:v8 responseCode:a4 callerBundleIdentifier:v9 profile:&v31];
+  v13 = [(SOConfiguration *)configuration willHandleURL:lCopy responseCode:code callerBundleIdentifier:identifierCopy profile:&v31];
   v14 = v31;
   v15 = v14;
   if (!v13)
   {
     if ([v14 type] == 1)
     {
-      v16 = [v15 extensionBundleIdentifier];
-      if ([SOExtensionManager isAppleConnectExtensionBundleIdentifier:v16])
+      extensionBundleIdentifier = [v15 extensionBundleIdentifier];
+      if ([SOExtensionManager isAppleConnectExtensionBundleIdentifier:extensionBundleIdentifier])
       {
         v13 = 0;
 LABEL_19:
@@ -1136,17 +1136,17 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v17 = [v8 scheme];
-      v18 = [v17 lowercaseString];
-      v19 = [v18 isEqualToString:@"ssoid"];
+      scheme = [lCopy scheme];
+      lowercaseString = [scheme lowercaseString];
+      v19 = [lowercaseString isEqualToString:@"ssoid"];
 
       if ((v19 & 1) == 0)
       {
-        v16 = +[SOExtensionManager sharedInstance];
-        objc_sync_enter(v16);
+        extensionBundleIdentifier = +[SOExtensionManager sharedInstance];
+        objc_sync_enter(extensionBundleIdentifier);
         v20 = +[SOExtensionManager sharedInstance];
-        v21 = [v15 extensionBundleIdentifier];
-        v22 = [v20 loadedExtensionWithBundleIdentifier:v21];
+        extensionBundleIdentifier2 = [v15 extensionBundleIdentifier];
+        v22 = [v20 loadedExtensionWithBundleIdentifier:extensionBundleIdentifier2];
 
         if ([v22 hasAssociatedDomainsApproved])
         {
@@ -1162,7 +1162,7 @@ LABEL_19:
           }
 
           v24 = [MEMORY[0x1E695DEC8] arrayWithObject:v15];
-          v25 = [(SOConfigurationHost *)v11 _checkAssociatedDomainForProfiles:v24];
+          v25 = [(SOConfigurationHost *)selfCopy2 _checkAssociatedDomainForProfiles:v24];
 
           if ([v22 hasAssociatedDomainsApproved])
           {
@@ -1172,8 +1172,8 @@ LABEL_19:
               [SOConfigurationHost willHandleURL:responseCode:callerBundleIdentifier:];
             }
 
-            [(SOConfigurationHost *)v11 _reloadConfigWithReason:1];
-            v13 = [(SOConfiguration *)v11->_configuration willHandleURL:v8 responseCode:a4 callerBundleIdentifier:v9 profile:0];
+            [(SOConfigurationHost *)selfCopy2 _reloadConfigWithReason:1];
+            v13 = [(SOConfiguration *)selfCopy2->_configuration willHandleURL:lCopy responseCode:code callerBundleIdentifier:identifierCopy profile:0];
           }
 
           else
@@ -1182,7 +1182,7 @@ LABEL_19:
           }
         }
 
-        objc_sync_exit(v16);
+        objc_sync_exit(extensionBundleIdentifier);
         goto LABEL_19;
       }
     }
@@ -1198,15 +1198,15 @@ LABEL_20:
     *buf = 141558787;
     v33 = 1752392040;
     v34 = 2117;
-    v35 = v8;
+    v35 = lCopy;
     v36 = 2114;
-    v37 = v9;
+    v37 = identifierCopy;
     v38 = 2114;
     v39 = v28;
     _os_log_impl(&dword_1C1317000, v27, OS_LOG_TYPE_INFO, "willHandleURL(host): %{sensitive, mask.hash}@ callerBundleIdentifier: %{public}@ result: %{public}@", buf, 0x2Au);
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy2);
   v29 = *MEMORY[0x1E69E9840];
   return v13;
 }
@@ -1219,12 +1219,12 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
   objc_sync_exit(obj);
 }
 
-- (void)_isConfigurationActiveForExtensionIdentifier:(id)a3 runningAsAgent:(BOOL)a4 completion:(id)a5
+- (void)_isConfigurationActiveForExtensionIdentifier:(id)identifier runningAsAgent:(BOOL)agent completion:(id)completion
 {
-  v6 = a4;
+  agentCopy = agent;
   v59 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v39 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1237,23 +1237,23 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
     [SOConfigurationHost _isConfigurationActiveForExtensionIdentifier:runningAsAgent:completion:];
   }
 
-  if ([(SOConfigurationHost *)self hasAnyMDMProfileForExtension:v43])
+  if ([(SOConfigurationHost *)self hasAnyMDMProfileForExtension:identifierCopy])
   {
     v10 = 0;
     while (1)
     {
-      v11 = self;
-      objc_sync_enter(v11);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v12 = SO_LOG_SOConfigurationHost();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         [SOConfigurationHost _isConfigurationActiveForExtensionIdentifier:v48 runningAsAgent:? completion:?];
       }
 
-      if (v6)
+      if (agentCopy)
       {
         v13 = +[SOExtensionManager sharedInstance];
-        v14 = [v13 loadedExtensionWithBundleIdentifier:v43];
+        v14 = [v13 loadedExtensionWithBundleIdentifier:identifierCopy];
       }
 
       else
@@ -1265,12 +1265,12 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
         }
 
         v13 = +[SOExtensionManager sharedInstance];
-        v14 = [v13 loadExtensionWithBundleIdentifier:v43];
+        v14 = [v13 loadExtensionWithBundleIdentifier:identifierCopy];
       }
 
       v16 = v14;
 
-      objc_sync_exit(v11);
+      objc_sync_exit(selfCopy);
       if (v16)
       {
         break;
@@ -1288,15 +1288,15 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
       if (v10++ >= 9)
       {
         v41 = [getSOErrorHelperClass_3() errorWithCode:-14 message:@"Missing extension with extension identifier"];
-        v39[2](v39, 0, v41);
+        completionCopy[2](completionCopy, 0, v41);
 
         goto LABEL_58;
       }
     }
 
     v19 = MEMORY[0x1E695DFF8];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", @"ssoid", v43];
-    v42 = [v19 URLWithString:v20];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@", @"ssoid", identifierCopy];
+    v42 = [v19 URLWithString:identifierCopy];
 
     v49 = 0;
     v50 = &v49;
@@ -1320,7 +1320,7 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
     v23 = 0;
     do
     {
-      v24 = v11;
+      v24 = selfCopy;
       objc_sync_enter(v24);
       v25 = SO_LOG_SOConfigurationHost();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1328,9 +1328,9 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
         [SOConfigurationHost _isConfigurationActiveForExtensionIdentifier:&v49 + 1 runningAsAgent:? completion:?];
       }
 
-      if (v6)
+      if (agentCopy)
       {
-        v26 = [(SOConfiguration *)v11->_configuration profileForURL:v42 responseCode:0];
+        v26 = [(SOConfiguration *)selfCopy->_configuration profileForURL:v42 responseCode:0];
       }
 
       else
@@ -1378,7 +1378,7 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
       }
 
       [v24 _loadCacheFromDisk];
-      v31 = [v24[5] objectForKeyedSubscript:v43];
+      v31 = [v24[5] objectForKeyedSubscript:identifierCopy];
       v32 = [v31 mutableCopy];
       v33 = v32;
       if (v32)
@@ -1402,17 +1402,17 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
 
       if ([v16 hasAssociatedDomainsApproved])
       {
-        v39[2](v39, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
       else
       {
         if (+[SOPreferences isAssociatedDomainValidated])
         {
-          if (![SOExtensionManager isAppleConnectExtensionBundleIdentifier:v43])
+          if (![SOExtensionManager isAppleConnectExtensionBundleIdentifier:identifierCopy])
           {
             [MEMORY[0x1E696AF00] sleepForTimeInterval:3.0];
-            [v16 checkAssociatedDomainsWithCompletion:v39];
+            [v16 checkAssociatedDomainsWithCompletion:completionCopy];
             goto LABEL_57;
           }
 
@@ -1433,14 +1433,14 @@ void __93__SOConfigurationHost_isConfigurationActiveForExtensionIdentifier_runni
           }
         }
 
-        v39[2](v39, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
     }
 
     else
     {
       v35 = [getSOErrorHelperClass_3() errorWithCode:-14 message:@"Configuration not loaded for extension"];
-      v39[2](v39, 0, v35);
+      completionCopy[2](completionCopy, 0, v35);
     }
 
 LABEL_57:
@@ -1449,34 +1449,34 @@ LABEL_57:
   }
 
   v16 = [getSOErrorHelperClass_3() errorWithCode:-13 message:@"No profile for extension identifier"];
-  v39[2](v39, 0, v16);
+  completionCopy[2](completionCopy, 0, v16);
 LABEL_58:
 
   v38 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_loadProfilesFromDict:(id)a3
++ (id)_loadProfilesFromDict:(id)dict
 {
   v32 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  dictCopy = dict;
   v4 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v29 = "+[SOConfigurationHost _loadProfilesFromDict:]";
     v30 = 2112;
-    v31 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v4, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  v5 = [v22 objectForKeyedSubscript:@"Profiles"];
+  v5 = [dictCopy objectForKeyedSubscript:@"Profiles"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = SO_LOG_SOConfigurationHost();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    array = SO_LOG_SOConfigurationHost();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       +[SOConfigurationHost _loadProfilesFromDict:];
     }
@@ -1486,7 +1486,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -1551,7 +1551,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      [v6 addObject:v14];
+      [array addObject:v14];
 
       v9 |= v15;
     }
@@ -1567,8 +1567,8 @@ LABEL_24:
 
 LABEL_14:
 
-  v6 = v6;
-  v16 = v6;
+  array = array;
+  v16 = array;
 LABEL_26:
 
   objc_sync_exit(obj);
@@ -1577,18 +1577,18 @@ LABEL_26:
   return v16;
 }
 
-+ (id)_loadProfilesFromURL:(id)a3 logFileError:(BOOL)a4
++ (id)_loadProfilesFromURL:(id)l logFileError:(BOOL)error
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = a1;
-  objc_sync_enter(v7);
+  errorCopy = error;
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0;
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v6 error:&v13];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v13];
   v9 = v13;
   if (v9)
   {
-    if (v4)
+    if (errorCopy)
     {
       v10 = SO_LOG_SOConfigurationHost();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1605,7 +1605,7 @@ LABEL_26:
     v11 = [objc_opt_class() _loadProfilesFromDict:v8];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -1627,14 +1627,14 @@ LABEL_26:
     v7 = 136315394;
     v8 = "[SOConfigurationHost _loadConfigForFirstTime]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
   }
 
-  v4 = [(SOConfigurationHost *)self configurationPendingLock];
-  objc_sync_enter(v4);
+  configurationPendingLock = [(SOConfigurationHost *)self configurationPendingLock];
+  objc_sync_enter(configurationPendingLock);
   [(SOConfigurationHost *)self setConfigurationPending:1];
-  objc_sync_exit(v4);
+  objc_sync_exit(configurationPendingLock);
 
   if ([(SOConfigurationHost *)self _isConfigFileAvailable])
   {
@@ -1646,8 +1646,8 @@ LABEL_26:
     [(SOConfigurationHost *)self _startKeyBagObserverForReloadingConfiguration];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__extensionsLoaded_ name:@"com.apple.AppSSO.SOExtensionManager.ExtensionsChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__extensionsLoaded_ name:@"com.apple.AppSSO.SOExtensionManager.ExtensionsChanged" object:0];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -1673,30 +1673,30 @@ uint64_t __68__SOConfigurationHost__startKeyBagObserverForReloadingConfiguration
   return [*(a1 + 32) _reloadConfigWithReason:0];
 }
 
-- (void)_reloadConfigWithReason:(int64_t)a3
+- (void)_reloadConfigWithReason:(int64_t)reason
 {
   v77 = *MEMORY[0x1E69E9840];
   v4 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SOConfigurationHost *)self _stringWithReason:a3];
+    v5 = [(SOConfigurationHost *)self _stringWithReason:reason];
     *buf = 136315650;
     v72 = "[SOConfigurationHost _reloadConfigWithReason:]";
     v73 = 2112;
     v74 = v5;
     v75 = 2112;
-    v76 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v4, OS_LOG_TYPE_DEFAULT, "%s reason = %@ on %@", buf, 0x20u);
   }
 
-  v48 = self;
-  objc_sync_enter(v48);
-  if (a3 != 1)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (reason != 1)
   {
-    [(SOConfigurationHost *)v48 _loadCacheFromDisk];
+    [(SOConfigurationHost *)selfCopy2 _loadCacheFromDisk];
   }
 
-  v46 = [(SOConfigurationHost *)v48 _defaultConfigurationFile];
+  _defaultConfigurationFile = [(SOConfigurationHost *)selfCopy2 _defaultConfigurationFile];
   v6 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1704,22 +1704,22 @@ uint64_t __68__SOConfigurationHost__startKeyBagObserverForReloadingConfiguration
   }
 
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v46];
+  v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultConfigurationFile];
   v45 = [v7 _loadProfilesFromURL:v8 logFileError:1];
 
-  v9 = [(SOConfigurationHost *)v48 _mergeProfile:v45 userProfiles:0];
-  v10 = [(SOConfigurationHost *)v48 _checkExtensionsExistenceForProfiles:v9];
+  v9 = [(SOConfigurationHost *)selfCopy2 _mergeProfile:v45 userProfiles:0];
+  v10 = [(SOConfigurationHost *)selfCopy2 _checkExtensionsExistenceForProfiles:v9];
 
-  v53 = [(SOConfigurationHost *)v48 _checkAssociatedDomainForProfiles:v10];
+  v53 = [(SOConfigurationHost *)selfCopy2 _checkAssociatedDomainForProfiles:v10];
 
-  if (a3 == 2)
+  if (reason == 2)
   {
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v11 = [(SOConfiguration *)v48->_configuration profiles];
-    v12 = [v11 countByEnumeratingWithState:&v62 objects:v70 count:16];
+    profiles = [(SOConfiguration *)selfCopy2->_configuration profiles];
+    v12 = [profiles countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (!v12)
     {
       v49 = 0;
@@ -1728,7 +1728,7 @@ uint64_t __68__SOConfigurationHost__startKeyBagObserverForReloadingConfiguration
 
     v49 = 0;
     v51 = *v63;
-    obj = v11;
+    obj = profiles;
     while (1)
     {
       v13 = 0;
@@ -1759,9 +1759,9 @@ LABEL_15:
             }
 
             v19 = *(*(&v58 + 1) + 8 * v18);
-            v20 = [v14 extensionBundleIdentifier];
-            v21 = [v19 extensionBundleIdentifier];
-            LOBYTE(v19) = [v20 isEqualToString:v21];
+            extensionBundleIdentifier = [v14 extensionBundleIdentifier];
+            extensionBundleIdentifier2 = [v19 extensionBundleIdentifier];
+            LOBYTE(v19) = [extensionBundleIdentifier isEqualToString:extensionBundleIdentifier2];
 
             if (v19)
             {
@@ -1781,17 +1781,17 @@ LABEL_15:
           }
         }
 
-        v22 = [v14 extensionBundleIdentifier];
-        v23 = [SOExtensionManager isAppleConnectExtensionBundleIdentifier:v22];
+        extensionBundleIdentifier3 = [v14 extensionBundleIdentifier];
+        v23 = [SOExtensionManager isAppleConnectExtensionBundleIdentifier:extensionBundleIdentifier3];
 
         if (v23)
         {
           v15 = SO_LOG_SOConfigurationHost();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v24 = [v14 extensionBundleIdentifier];
+            extensionBundleIdentifier4 = [v14 extensionBundleIdentifier];
             *buf = 138543362;
-            v72 = v24;
+            v72 = extensionBundleIdentifier4;
             _os_log_impl(&dword_1C1317000, v15, OS_LOG_TYPE_INFO, "Removed configuration ignored for extension: %{public}@", buf, 0xCu);
           }
 
@@ -1800,33 +1800,33 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v25 = v49;
+        array = v49;
         if (!v49)
         {
-          v25 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v49 = v25;
-        [v25 addObject:{v14, v45}];
+        v49 = array;
+        [array addObject:{v14, v45}];
 LABEL_25:
         ++v13;
       }
 
       while (v13 != v12);
-      v11 = obj;
+      profiles = obj;
       v26 = [obj countByEnumeratingWithState:&v62 objects:v70 count:16];
       v12 = v26;
       if (!v26)
       {
 LABEL_33:
 
-        objc_storeStrong(&v48->_removedProfiles, v49);
-        if ([(NSMutableArray *)v48->_removedProfiles count])
+        objc_storeStrong(&selfCopy2->_removedProfiles, v49);
+        if ([(NSMutableArray *)selfCopy2->_removedProfiles count])
         {
           v27 = SO_LOG_SOConfigurationHost();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            removedProfiles = v48->_removedProfiles;
+            removedProfiles = selfCopy2->_removedProfiles;
             *buf = 138477827;
             v72 = removedProfiles;
             _os_log_impl(&dword_1C1317000, v27, OS_LOG_TYPE_DEFAULT, "removed profiles = %{private}@", buf, 0xCu);
@@ -1836,7 +1836,7 @@ LABEL_33:
           v57 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v52 = v48->_removedProfiles;
+          v52 = selfCopy2->_removedProfiles;
           v29 = [(NSMutableArray *)v52 countByEnumeratingWithState:&v54 objects:v68 count:16];
           if (v29)
           {
@@ -1854,8 +1854,8 @@ LABEL_33:
                 v33 = *(*(&v54 + 1) + 8 * i);
                 v34 = objc_alloc_init(SOAuthorization);
                 v66 = @"removedProfileExtensionBundleIdentifier";
-                v35 = [v33 extensionBundleIdentifier];
-                v67 = v35;
+                extensionBundleIdentifier5 = [v33 extensionBundleIdentifier];
+                v67 = extensionBundleIdentifier5;
                 v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
                 [(SOAuthorization *)v34 setAuthorizationOptions:v36];
 
@@ -1885,32 +1885,32 @@ LABEL_33:
   }
 
   v40 = [objc_alloc(getSOConfigurationClass()) initWithProfiles:v53];
-  configuration = v48->_configuration;
-  v48->_configuration = v40;
+  configuration = selfCopy2->_configuration;
+  selfCopy2->_configuration = v40;
 
-  [(SOConfigurationHost *)v48 _configurationLoadedWithReason:a3];
-  v42 = [(SOConfigurationHost *)v48 _stringWithReason:a3];
+  [(SOConfigurationHost *)selfCopy2 _configurationLoadedWithReason:reason];
+  v42 = [(SOConfigurationHost *)selfCopy2 _stringWithReason:reason];
   [SOAnalytics analyticsForMDMProfiles:v53 reason:v42];
 
-  v43 = [(SOConfigurationHost *)v48 configurationPendingLock];
-  objc_sync_enter(v43);
-  [(SOConfigurationHost *)v48 setConfigurationPending:0];
-  objc_sync_exit(v43);
+  configurationPendingLock = [(SOConfigurationHost *)selfCopy2 configurationPendingLock];
+  objc_sync_enter(configurationPendingLock);
+  [(SOConfigurationHost *)selfCopy2 setConfigurationPending:0];
+  objc_sync_exit(configurationPendingLock);
 
-  objc_sync_exit(v48);
+  objc_sync_exit(selfCopy2);
   v44 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_mergeProfile:(id)a3 userProfiles:(id)a4
+- (id)_mergeProfile:(id)profile userProfiles:(id)profiles
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  profilesCopy = profiles;
   v8 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(profileCopy, "count")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(profilesCopy, "count")}];
     v22 = 136315906;
     v23 = "[SOConfigurationHost _mergeProfile:userProfiles:]";
     v24 = 2114;
@@ -1918,41 +1918,41 @@ LABEL_33:
     v26 = 2114;
     v27 = v10;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s systemProfiles = %{public}@, userProfiles = %{public}@ on %@", &v22, 0x2Au);
   }
 
-  v11 = [(SOConfigurationHost *)self _removeNotSupportedUserProfiles:v7];
+  v11 = [(SOConfigurationHost *)self _removeNotSupportedUserProfiles:profilesCopy];
   if (![v11 count])
   {
-    v19 = v6;
+    v19 = profileCopy;
 LABEL_14:
     v18 = v19;
     goto LABEL_19;
   }
 
-  if (![v6 count] && objc_msgSend(v11, "count"))
+  if (![profileCopy count] && objc_msgSend(v11, "count"))
   {
     v19 = v11;
     goto LABEL_14;
   }
 
-  if ([v6 count] && objc_msgSend(v11, "count"))
+  if ([profileCopy count] && objc_msgSend(v11, "count"))
   {
-    v12 = [(SOConfigurationHost *)self findPlatformSSOProfile:v6];
+    v12 = [(SOConfigurationHost *)self findPlatformSSOProfile:profileCopy];
     v13 = [(SOConfigurationHost *)self findPlatformSSOProfile:v11];
     if (v12)
     {
-      v14 = [v12 extensionBundleIdentifier];
-      v15 = [(SOConfigurationHost *)self findProfileForExtension:v14 profiles:v11];
+      extensionBundleIdentifier = [v12 extensionBundleIdentifier];
+      v15 = [(SOConfigurationHost *)self findProfileForExtension:extensionBundleIdentifier profiles:v11];
 
       if (v13 | v15)
       {
-        v16 = [v15 extensionData];
-        [v12 setExtensionData:v16];
+        extensionData = [v15 extensionData];
+        [v12 setExtensionData:extensionData];
 
-        v17 = [v15 pssoRegistrationToken];
-        [v12 setPssoRegistrationToken:v17];
+        pssoRegistrationToken = [v15 pssoRegistrationToken];
+        [v12 setPssoRegistrationToken:pssoRegistrationToken];
 
         v18 = [v11 mutableCopy];
         [v18 removeObject:v15];
@@ -1983,13 +1983,13 @@ LABEL_19:
   return v18;
 }
 
-- (void)_configurationLoadedWithReason:(int64_t)a3
+- (void)_configurationLoadedWithReason:(int64_t)reason
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SOConfigurationHost *)self _stringWithReason:a3];
+    v6 = [(SOConfigurationHost *)self _stringWithReason:reason];
     configuration = self->_configuration;
     *buf = 136315906;
     v22 = "[SOConfigurationHost _configurationLoadedWithReason:]";
@@ -1998,20 +1998,20 @@ LABEL_19:
     v25 = 2114;
     v26 = configuration;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s reason = %{public}@, configuration = %{public}@ on %@", buf, 0x2Au);
   }
 
   if (![(SOConfiguration *)self->_configuration empty])
   {
-    if (a3 == 1 || !a3 && (([(SOConfigurationVersion *)self->_configurationVersion checkVersion], ![(SOConfigurationVersion *)self->_configurationVersion version]) || [(SOConfigurationVersion *)self->_configurationVersion version]== -1))
+    if (reason == 1 || !reason && (([(SOConfigurationVersion *)self->_configurationVersion checkVersion], ![(SOConfigurationVersion *)self->_configurationVersion version]) || [(SOConfigurationVersion *)self->_configurationVersion version]== -1))
     {
       configurationVersion = self->_configurationVersion;
-      v13 = [(SOConfigurationHost *)self _stringWithReason:a3];
+      v13 = [(SOConfigurationHost *)self _stringWithReason:reason];
       [(SOConfigurationVersion *)configurationVersion increaseVersionWithMessage:v13];
     }
 
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{a3, @"reason"}];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{reason, @"reason"}];
     v18 = v8;
     v9 = MEMORY[0x1E695DF20];
     v10 = &v18;
@@ -2020,10 +2020,10 @@ LABEL_19:
   }
 
   [(SOConfigurationVersion *)self->_configurationVersion setAppSSOUnavailable];
-  if (a3)
+  if (reason)
   {
     v19 = @"reason";
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
     v20 = v8;
     v9 = MEMORY[0x1E695DF20];
     v10 = &v20;
@@ -2031,35 +2031,35 @@ LABEL_19:
 LABEL_12:
     v14 = [v9 dictionaryWithObjects:v10 forKeys:v11 count:1];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"com.apple.AppSSO.SOConfigurationHost.ConfigurationChanged" object:self userInfo:v14];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.AppSSO.SOConfigurationHost.ConfigurationChanged" object:self userInfo:v14];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_checkExtensionsExistenceForProfiles:(id)a3
+- (id)_checkExtensionsExistenceForProfiles:(id)profiles
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v25 = "[SOConfigurationHost _checkExtensionsExistenceForProfiles:]";
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   obj = self;
   objc_sync_enter(obj);
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = profilesCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -2076,12 +2076,12 @@ LABEL_12:
 
         v11 = *(*(&v19 + 1) + 8 * v10);
         v12 = +[SOExtensionManager sharedInstance];
-        v13 = [v11 extensionBundleIdentifier];
-        v14 = [v12 isLoadedExtensionWithBundleIdentifier:v13];
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+        v14 = [v12 isLoadedExtensionWithBundleIdentifier:extensionBundleIdentifier];
 
         if (v14)
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
 
         else
@@ -2108,32 +2108,32 @@ LABEL_12:
   objc_sync_exit(obj);
   v16 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return array;
 }
 
-- (id)_checkAssociatedDomainForProfiles:(id)a3
+- (id)_checkAssociatedDomainForProfiles:(id)profiles
 {
   v95 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v85 = "[SOConfigurationHost _checkAssociatedDomainForProfiles:]";
     v86 = 2112;
-    v87 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v69 = self;
-  objc_sync_enter(v69);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v62 = +[SOExtensionManager sharedInstance];
   objc_sync_enter(v62);
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v4;
+  obj = profilesCopy;
   v6 = [obj countByEnumeratingWithState:&v80 objects:v94 count:16];
   if (v6)
   {
@@ -2152,17 +2152,17 @@ LABEL_12:
         if ([v10 type] == 1)
         {
           v11 = +[SOExtensionManager sharedInstance];
-          v12 = [v10 extensionBundleIdentifier];
-          v13 = [v11 loadedExtensionWithBundleIdentifier:v12];
+          extensionBundleIdentifier = [v10 extensionBundleIdentifier];
+          v13 = [v11 loadedExtensionWithBundleIdentifier:extensionBundleIdentifier];
 
-          v14 = [v10 extensionBundleIdentifier];
-          LOBYTE(v12) = [SOExtensionManager isAppleConnectExtensionBundleIdentifier:v14];
+          extensionBundleIdentifier2 = [v10 extensionBundleIdentifier];
+          LOBYTE(extensionBundleIdentifier) = [SOExtensionManager isAppleConnectExtensionBundleIdentifier:extensionBundleIdentifier2];
 
-          if ((v12 & 1) == 0)
+          if ((extensionBundleIdentifier & 1) == 0)
           {
-            associatedDomainCache = v69->_associatedDomainCache;
-            v16 = [v10 extensionBundleIdentifier];
-            v17 = [(NSMutableDictionary *)associatedDomainCache objectForKeyedSubscript:v16];
+            associatedDomainCache = selfCopy2->_associatedDomainCache;
+            extensionBundleIdentifier3 = [v10 extensionBundleIdentifier];
+            v17 = [(NSMutableDictionary *)associatedDomainCache objectForKeyedSubscript:extensionBundleIdentifier3];
             v18 = [v17 mutableCopy];
             v19 = v18;
             if (v18)
@@ -2178,9 +2178,9 @@ LABEL_12:
             v21 = v20;
 
             [v13 checkAssociatedDomainsWithCache:v21];
-            v22 = v69->_associatedDomainCache;
-            v23 = [v10 extensionBundleIdentifier];
-            [(NSMutableDictionary *)v22 setObject:v21 forKeyedSubscript:v23];
+            v22 = selfCopy2->_associatedDomainCache;
+            extensionBundleIdentifier4 = [v10 extensionBundleIdentifier];
+            [(NSMutableDictionary *)v22 setObject:v21 forKeyedSubscript:extensionBundleIdentifier4];
           }
         }
       }
@@ -2191,9 +2191,9 @@ LABEL_12:
     while (v6);
   }
 
-  v24 = v69->_associatedDomainCache;
+  v24 = selfCopy2->_associatedDomainCache;
   v79 = 0;
-  v25 = [(SOConfigurationHost *)v69 _saveCacheToFile:v24 error:&v79];
+  v25 = [(SOConfigurationHost *)selfCopy2 _saveCacheToFile:v24 error:&v79];
   v61 = v79;
   if (!v25)
   {
@@ -2206,7 +2206,7 @@ LABEL_12:
 
   if (+[SOPreferences isAssociatedDomainValidated])
   {
-    v64 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
@@ -2228,13 +2228,13 @@ LABEL_12:
           v27 = *(*(&v75 + 1) + 8 * j);
           if ([v27 type] != 1)
           {
-            [v64 addObject:v27];
+            [array addObject:v27];
             continue;
           }
 
           v28 = +[SOExtensionManager sharedInstance];
-          v29 = [v27 extensionBundleIdentifier];
-          v70 = [v28 loadedExtensionWithBundleIdentifier:v29];
+          extensionBundleIdentifier5 = [v27 extensionBundleIdentifier];
+          v70 = [v28 loadedExtensionWithBundleIdentifier:extensionBundleIdentifier5];
 
           if (!v70)
           {
@@ -2249,8 +2249,8 @@ LABEL_12:
             goto LABEL_66;
           }
 
-          v30 = [v27 extensionBundleIdentifier];
-          v31 = [SOExtensionManager isAppleConnectExtensionBundleIdentifier:v30];
+          extensionBundleIdentifier6 = [v27 extensionBundleIdentifier];
+          v31 = [SOExtensionManager isAppleConnectExtensionBundleIdentifier:extensionBundleIdentifier6];
 
           if (!v31)
           {
@@ -2258,8 +2258,8 @@ LABEL_12:
             v74 = 0u;
             v71 = 0u;
             v72 = 0u;
-            v35 = [v27 URLPrefix];
-            v36 = [v35 countByEnumeratingWithState:&v71 objects:v90 count:16];
+            uRLPrefix = [v27 URLPrefix];
+            v36 = [uRLPrefix countByEnumeratingWithState:&v71 objects:v90 count:16];
             if (!v36)
             {
               goto LABEL_64;
@@ -2273,20 +2273,20 @@ LABEL_12:
               {
                 if (*v72 != v37)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(uRLPrefix);
                 }
 
                 v39 = *(*(&v71 + 1) + 8 * v38);
                 v40 = [MEMORY[0x1E695DFF8] URLWithString:v39];
-                v41 = [v40 scheme];
-                if ([v41 isEqualToString:@"http"])
+                scheme = [v40 scheme];
+                if ([scheme isEqualToString:@"http"])
                 {
                 }
 
                 else
                 {
-                  v42 = [v40 scheme];
-                  v43 = [v42 isEqualToString:@"https"];
+                  scheme2 = [v40 scheme];
+                  v43 = [scheme2 isEqualToString:@"https"];
 
                   if ((v43 & 1) == 0)
                   {
@@ -2299,7 +2299,7 @@ LABEL_12:
                     *buf = 141558531;
                     v85 = 1752392040;
                     v86 = 2117;
-                    v87 = v39;
+                    selfCopy = v39;
                     v88 = 2114;
                     v89 = v70;
                     v53 = v52;
@@ -2308,8 +2308,8 @@ LABEL_12:
                   }
                 }
 
-                v44 = [v40 host];
-                if ([v44 rangeOfString:@"*"] != 0x7FFFFFFFFFFFFFFFLL)
+                host = [v40 host];
+                if ([host rangeOfString:@"*"] != 0x7FFFFFFFFFFFFFFFLL)
                 {
 
 LABEL_52:
@@ -2322,7 +2322,7 @@ LABEL_52:
                   *buf = 141558531;
                   v85 = 1752392040;
                   v86 = 2117;
-                  v87 = v39;
+                  selfCopy = v39;
                   v88 = 2114;
                   v89 = v70;
                   v53 = v52;
@@ -2332,17 +2332,17 @@ LABEL_62:
                   goto LABEL_55;
                 }
 
-                v45 = [v40 host];
-                v46 = [v45 rangeOfString:@"?"] == 0x7FFFFFFFFFFFFFFFLL;
+                host2 = [v40 host];
+                v46 = [host2 rangeOfString:@"?"] == 0x7FFFFFFFFFFFFFFFLL;
 
                 if (!v46)
                 {
                   goto LABEL_52;
                 }
 
-                v47 = v69->_associatedDomainCache;
-                v48 = [v27 extensionBundleIdentifier];
-                v49 = [(NSMutableDictionary *)v47 objectForKeyedSubscript:v48];
+                v47 = selfCopy2->_associatedDomainCache;
+                extensionBundleIdentifier7 = [v27 extensionBundleIdentifier];
+                v49 = [(NSMutableDictionary *)v47 objectForKeyedSubscript:extensionBundleIdentifier7];
                 LOBYTE(v47) = [v70 hasURLApprovedAssociatedDomain:v40 cache:v49];
 
                 if (v47)
@@ -2350,17 +2350,17 @@ LABEL_62:
                   goto LABEL_56;
                 }
 
-                v50 = [v70 hasAssociatedDomainsApproved];
+                hasAssociatedDomainsApproved = [v70 hasAssociatedDomainsApproved];
                 v51 = SO_LOG_SOConfigurationHost();
                 v52 = v51;
-                if (v50)
+                if (hasAssociatedDomainsApproved)
                 {
                   if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 141558531;
                     v85 = 1752392040;
                     v86 = 2117;
-                    v87 = v39;
+                    selfCopy = v39;
                     v88 = 2114;
                     v89 = v70;
                     v53 = v52;
@@ -2379,7 +2379,7 @@ LABEL_55:
                   *buf = 141558531;
                   v85 = 1752392040;
                   v86 = 2117;
-                  v87 = v39;
+                  selfCopy = v39;
                   v88 = 2114;
                   v89 = v70;
                   _os_log_impl(&dword_1C1317000, v52, OS_LOG_TYPE_INFO, "Associated domain: validation failed for URL: %{sensitive, mask.hash}@ because it has no approved associated domains for extensions %{public}@, it will be checked again when the extension is used", buf, 0x20u);
@@ -2390,14 +2390,14 @@ LABEL_56:
               }
 
               while (v36 != v38);
-              v55 = [v35 countByEnumeratingWithState:&v71 objects:v90 count:16];
+              v55 = [uRLPrefix countByEnumeratingWithState:&v71 objects:v90 count:16];
               v36 = v55;
               if (!v55)
               {
 LABEL_64:
 
-                v56 = [v27 URLPrefix];
-                v57 = [v56 count] == 0;
+                uRLPrefix2 = [v27 URLPrefix];
+                v57 = [uRLPrefix2 count] == 0;
 
                 if (!v57)
                 {
@@ -2412,12 +2412,12 @@ LABEL_64:
           v32 = SO_LOG_SOConfigurationHost();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
-            v33 = [v27 extensionBundleIdentifier];
-            [(SOConfigurationHost *)v33 _checkAssociatedDomainForProfiles:v91, &v92, v32];
+            extensionBundleIdentifier8 = [v27 extensionBundleIdentifier];
+            [(SOConfigurationHost *)extensionBundleIdentifier8 _checkAssociatedDomainForProfiles:v91, &v92, v32];
           }
 
 LABEL_65:
-          [v64 addObject:v27];
+          [array addObject:v27];
 LABEL_66:
         }
 
@@ -2437,18 +2437,18 @@ LABEL_66:
       _os_log_impl(&dword_1C1317000, v58, OS_LOG_TYPE_INFO, "Associated domain: validation is ignored, using all URLs in AppSSO configuration", buf, 2u);
     }
 
-    v64 = obj;
+    array = obj;
   }
 
   objc_sync_exit(v62);
-  objc_sync_exit(v69);
+  objc_sync_exit(selfCopy2);
 
   v59 = *MEMORY[0x1E69E9840];
 
-  return v64;
+  return array;
 }
 
-- (BOOL)_initDataVaultIfNeededWithError:(id *)a3
+- (BOOL)_initDataVaultIfNeededWithError:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v5 = SO_LOG_SOConfigurationHost();
@@ -2457,15 +2457,15 @@ LABEL_66:
     *buf = 136315394;
     v42 = "[SOConfigurationHost _initDataVaultIfNeededWithError:]";
     v43 = 2112;
-    v44 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = [(SOConfigurationHost *)self _defaultConfigurationPath];
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 fileExistsAtPath:v6 isDirectory:0];
+  _defaultConfigurationPath = [(SOConfigurationHost *)self _defaultConfigurationPath];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:_defaultConfigurationPath isDirectory:0];
 
   if ((v9 & 1) == 0)
   {
@@ -2475,9 +2475,9 @@ LABEL_66:
     v40[0] = @"mobile";
     v40[1] = @"mobile";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v38 = 0;
-    v13 = [v12 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v11 error:&v38];
+    v13 = [defaultManager2 createDirectoryAtPath:_defaultConfigurationPath withIntermediateDirectories:1 attributes:v11 error:&v38];
     v14 = v38;
 
     if (v14)
@@ -2494,10 +2494,10 @@ LABEL_66:
         [SOConfigurationHost _initDataVaultIfNeededWithError:];
       }
 
-      if (a3)
+      if (error)
       {
         v26 = v14;
-        *a3 = v14;
+        *error = v14;
       }
 
       v27 = 0;
@@ -2507,13 +2507,13 @@ LABEL_66:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v42 = v6;
+      v42 = _defaultConfigurationPath;
       _os_log_impl(&dword_1C1317000, v16, OS_LOG_TYPE_DEFAULT, "created configuration directory at %{public}@", buf, 0xCu);
     }
   }
 
-  v17 = v6;
-  [v6 UTF8String];
+  v17 = _defaultConfigurationPath;
+  [_defaultConfigurationPath UTF8String];
   v18 = rootless_check_datavault_flag();
   if (v18)
   {
@@ -2527,7 +2527,7 @@ LABEL_66:
         [(SOConfigurationHost *)v21 _initDataVaultIfNeededWithError:buf];
       }
 
-      if (a3)
+      if (error)
       {
         SOErrorHelperClass_3 = getSOErrorHelperClass_3();
         v23 = MEMORY[0x1E696AEC0];
@@ -2536,7 +2536,7 @@ LABEL_66:
         v25 = [SOErrorHelperClass_3 internalErrorWithMessage:v14];
 LABEL_30:
         v27 = 0;
-        *a3 = v25;
+        *error = v25;
 LABEL_31:
 
         goto LABEL_32;
@@ -2545,8 +2545,8 @@ LABEL_31:
 
     else
     {
-      v28 = v6;
-      [v6 UTF8String];
+      v28 = _defaultConfigurationPath;
+      [_defaultConfigurationPath UTF8String];
       v29 = rootless_convert_to_datavault();
       v30 = SO_LOG_SOConfigurationHost();
       v14 = v30;
@@ -2555,7 +2555,7 @@ LABEL_31:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v42 = v6;
+          v42 = _defaultConfigurationPath;
           _os_log_impl(&dword_1C1317000, v14, OS_LOG_TYPE_DEFAULT, "successfully created datavault at %{public}@", buf, 0xCu);
         }
 
@@ -2570,7 +2570,7 @@ LABEL_31:
         [(SOConfigurationHost *)v32 _initDataVaultIfNeededWithError:buf];
       }
 
-      if (a3)
+      if (error)
       {
         v33 = getSOErrorHelperClass_3();
         v34 = MEMORY[0x1E696AEC0];
@@ -2587,37 +2587,37 @@ LABEL_31:
 
   v27 = 1;
 LABEL_32:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy2);
 
   v36 = *MEMORY[0x1E69E9840];
   return v27;
 }
 
-- (BOOL)_initCachePath:(id)a3 ifNeededWithError:(id *)a4
+- (BOOL)_initCachePath:(id)path ifNeededWithError:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v44 = "[SOConfigurationHost _initCachePath:ifNeededWithError:]";
     v45 = 2112;
-    v46 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v9 = *MEMORY[0x1E696A328];
   v41[0] = *MEMORY[0x1E696A360];
   v41[1] = v9;
   v42[0] = @"mobile";
   v42[1] = @"mobile";
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v40 = 0;
-  v12 = [v11 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v10 error:&v40];
+  v12 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:v10 error:&v40];
   v13 = v40;
 
   if (v13)
@@ -2634,10 +2634,10 @@ LABEL_32:
       [SOConfigurationHost saveConfiguration:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v28 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     goto LABEL_26;
@@ -2646,13 +2646,13 @@ LABEL_32:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v44 = v6;
+    v44 = pathCopy;
     _os_log_impl(&dword_1C1317000, v15, OS_LOG_TYPE_DEFAULT, "created cache directory at %{public}@", buf, 0xCu);
   }
 
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v39 = 0;
-  v17 = [v16 setAttributes:v10 ofItemAtPath:v6 error:&v39];
+  v17 = [defaultManager2 setAttributes:v10 ofItemAtPath:pathCopy error:&v39];
   v18 = v39;
 
   if ((v17 & 1) == 0)
@@ -2663,28 +2663,28 @@ LABEL_32:
       [SOConfigurationHost _initCachePath:ifNeededWithError:];
     }
 
-    if (a4)
+    if (error)
     {
       v30 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
 LABEL_26:
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy2);
     LOBYTE(v20) = 0;
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  objc_sync_exit(v8);
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = [v19 fileExistsAtPath:v6 isDirectory:0];
+  objc_sync_exit(selfCopy2);
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+  v20 = [defaultManager3 fileExistsAtPath:pathCopy isDirectory:0];
 
   if (v20)
   {
-    v21 = v6;
-    [v6 UTF8String];
+    v21 = pathCopy;
+    [pathCopy UTF8String];
     v22 = rootless_check_datavault_flag();
     if (!v22)
     {
@@ -2700,34 +2700,34 @@ LABEL_27:
         [SOConfigurationHost _initCachePath:ifNeededWithError:];
       }
 
-      if (a4)
+      if (error)
       {
         SOErrorHelperClass_3 = getSOErrorHelperClass_3();
         v25 = MEMORY[0x1E696AEC0];
         v26 = __error();
-        v8 = [v25 stringWithFormat:@"failed to check the state of datavault: %s", strerror(*v26)];
-        v27 = [SOErrorHelperClass_3 internalErrorWithMessage:v8];
+        selfCopy2 = [v25 stringWithFormat:@"failed to check the state of datavault: %s", strerror(*v26)];
+        v27 = [SOErrorHelperClass_3 internalErrorWithMessage:selfCopy2];
 LABEL_38:
         LOBYTE(v20) = 0;
-        *a4 = v27;
+        *error = v27;
         goto LABEL_27;
       }
     }
 
     else
     {
-      v33 = v6;
-      [v6 UTF8String];
+      v33 = pathCopy;
+      [pathCopy UTF8String];
       v34 = rootless_convert_to_datavault();
       v35 = SO_LOG_SOConfigurationHost();
-      v8 = v35;
+      selfCopy2 = v35;
       if (v34 != -1)
       {
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v44 = v6;
-          _os_log_impl(&dword_1C1317000, &v8->super, OS_LOG_TYPE_DEFAULT, "successfully created datavault at %{public}@", buf, 0xCu);
+          v44 = pathCopy;
+          _os_log_impl(&dword_1C1317000, &selfCopy2->super, OS_LOG_TYPE_DEFAULT, "successfully created datavault at %{public}@", buf, 0xCu);
         }
 
         LOBYTE(v20) = 1;
@@ -2739,13 +2739,13 @@ LABEL_38:
         [SOConfigurationHost _initCachePath:ifNeededWithError:];
       }
 
-      if (a4)
+      if (error)
       {
         v36 = getSOErrorHelperClass_3();
         v37 = MEMORY[0x1E696AEC0];
         v38 = __error();
-        v8 = [v37 stringWithFormat:@"failed to convert to datavault: %s", strerror(*v38)];
-        v27 = [v36 internalErrorWithMessage:v8];
+        selfCopy2 = [v37 stringWithFormat:@"failed to convert to datavault: %s", strerror(*v38)];
+        v27 = [v36 internalErrorWithMessage:selfCopy2];
         goto LABEL_38;
       }
     }
@@ -2759,28 +2759,28 @@ LABEL_28:
   return v20;
 }
 
-- (BOOL)_saveConfigToFile:(id)a3 error:(id *)a4
+- (BOOL)_saveConfigToFile:(id)file error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fileCopy = file;
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v32 = "[SOConfigurationHost _saveConfigToFile:error:]";
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([(SOConfigurationHost *)v8 _initDataVaultIfNeededWithError:a4])
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if ([(SOConfigurationHost *)selfCopy2 _initDataVaultIfNeededWithError:error])
   {
-    v9 = [(SOConfigurationHost *)v8 _defaultConfigurationFile];
-    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
+    _defaultConfigurationFile = [(SOConfigurationHost *)selfCopy2 _defaultConfigurationFile];
+    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultConfigurationFile];
     v28 = 0;
-    v11 = [v6 writeToURL:v10 error:&v28];
+    v11 = [fileCopy writeToURL:v10 error:&v28];
     v12 = v28;
 
     if (v11)
@@ -2791,9 +2791,9 @@ LABEL_28:
       v30[0] = @"mobile";
       v30[1] = @"mobile";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
-      v15 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v27 = 0;
-      v16 = [v15 setAttributes:v14 ofItemAtPath:v9 error:&v27];
+      v16 = [defaultManager setAttributes:v14 ofItemAtPath:_defaultConfigurationFile error:&v27];
       v17 = v27;
 
       v18 = SO_LOG_SOConfigurationHost();
@@ -2802,11 +2802,11 @@ LABEL_28:
       {
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [objc_opt_class() maskRegistrationTokenInProfileList:v6];
+          v20 = [objc_opt_class() maskRegistrationTokenInProfileList:fileCopy];
           *buf = 138543618;
-          v32 = v9;
+          v32 = _defaultConfigurationFile;
           v33 = 2112;
-          v34 = v20;
+          selfCopy = v20;
           _os_log_impl(&dword_1C1317000, v19, OS_LOG_TYPE_DEFAULT, "config written to file: %{public}@, %@", buf, 0x16u);
         }
 
@@ -2819,10 +2819,10 @@ LABEL_28:
         [SOConfigurationHost _saveConfigToFile:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v24 = v17;
-        *a4 = v17;
+        *error = v17;
       }
     }
 
@@ -2834,11 +2834,11 @@ LABEL_28:
         [SOConfigurationHost _saveConfigToFile:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v23 = v12;
         v21 = 0;
-        *a4 = v12;
+        *error = v12;
 LABEL_20:
 
         goto LABEL_21;
@@ -2851,36 +2851,36 @@ LABEL_20:
 
   v21 = 0;
 LABEL_21:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy2);
 
   v25 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (BOOL)_saveCacheToFile:(id)a3 error:(id *)a4
+- (BOOL)_saveCacheToFile:(id)file error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  fileCopy = file;
   v7 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v39 = "[SOConfigurationHost _saveCacheToFile:error:]";
     v40 = 2112;
-    v41 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(SOConfigurationHost *)v8 _defaultCacheFile];
-  v10 = [v9 stringByDeletingLastPathComponent];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  _defaultCacheFile = [(SOConfigurationHost *)selfCopy2 _defaultCacheFile];
+  stringByDeletingLastPathComponent = [_defaultCacheFile stringByDeletingLastPathComponent];
 
-  if ([(SOConfigurationHost *)v8 _initCachePath:v10 ifNeededWithError:a4])
+  if ([(SOConfigurationHost *)selfCopy2 _initCachePath:stringByDeletingLastPathComponent ifNeededWithError:error])
   {
-    v11 = [(SOConfigurationHost *)v8 _defaultCacheFile];
+    _defaultCacheFile2 = [(SOConfigurationHost *)selfCopy2 _defaultCacheFile];
     v35 = 0;
-    v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v6 options:3 error:&v35];
+    v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:fileCopy options:3 error:&v35];
     v32 = v35;
     if (!v12)
     {
@@ -2890,11 +2890,11 @@ LABEL_21:
         [SOConfigurationHost _saveCacheToFile:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v25 = v32;
         v23 = 0;
-        *a4 = v32;
+        *error = v32;
       }
 
       else
@@ -2905,11 +2905,11 @@ LABEL_21:
       goto LABEL_26;
     }
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
-    [v13 removeItemAtURL:v14 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultCacheFile2];
+    [defaultManager removeItemAtURL:v14 error:0];
 
-    v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
+    v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:_defaultCacheFile2];
     v34 = 0;
     LODWORD(v14) = [v12 writeToURL:v15 options:0 error:&v34];
     v16 = v34;
@@ -2922,9 +2922,9 @@ LABEL_21:
       v37[0] = @"mobile";
       v37[1] = @"mobile";
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
-      v18 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v33 = 0;
-      v19 = [v18 setAttributes:v31 ofItemAtPath:v11 error:&v33];
+      v19 = [defaultManager2 setAttributes:v31 ofItemAtPath:_defaultCacheFile2 error:&v33];
       v20 = v33;
 
       v21 = SO_LOG_SOConfigurationHost();
@@ -2934,9 +2934,9 @@ LABEL_21:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v39 = v11;
+          v39 = _defaultCacheFile2;
           v40 = 2114;
-          v41 = v6;
+          selfCopy = fileCopy;
           _os_log_impl(&dword_1C1317000, v22, OS_LOG_TYPE_DEFAULT, "cache written to file: %{public}@, %{public}@", buf, 0x16u);
         }
 
@@ -2949,10 +2949,10 @@ LABEL_21:
         [SOConfigurationHost _saveConfigToFile:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v28 = v20;
-        *a4 = v20;
+        *error = v20;
       }
     }
 
@@ -2964,11 +2964,11 @@ LABEL_21:
         [SOConfigurationHost _saveCacheToFile:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v27 = v16;
         v23 = 0;
-        *a4 = v16;
+        *error = v16;
 LABEL_25:
 
 LABEL_26:
@@ -2983,35 +2983,35 @@ LABEL_26:
   v23 = 0;
 LABEL_27:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy2);
   v29 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (void)_extensionsLoaded:(id)a3
+- (void)_extensionsLoaded:(id)loaded
 {
   v56 = *MEMORY[0x1E69E9840];
-  v33 = a3;
+  loadedCopy = loaded;
   v4 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v51 = "[SOConfigurationHost _extensionsLoaded:]";
     v52 = 2112;
-    v53 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v4, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v34 = self;
-  objc_sync_enter(v34);
-  v5 = [v33 userInfo];
-  v29 = [v5 objectForKeyedSubscript:@"extensions"];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  userInfo = [loadedCopy userInfo];
+  v29 = [userInfo objectForKeyedSubscript:@"extensions"];
 
-  v6 = [v33 userInfo];
-  v31 = [v6 objectForKeyedSubscript:@"new"];
+  userInfo2 = [loadedCopy userInfo];
+  v31 = [userInfo2 objectForKeyedSubscript:@"new"];
 
-  v7 = [v33 userInfo];
-  v32 = [v7 objectForKeyedSubscript:@"removed"];
+  userInfo3 = [loadedCopy userInfo];
+  v32 = [userInfo3 objectForKeyedSubscript:@"removed"];
 
   v8 = SO_LOG_SOConfigurationHost();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -3019,7 +3019,7 @@ LABEL_27:
     *buf = 138543874;
     v51 = v29;
     v52 = 2114;
-    v53 = v31;
+    selfCopy = v31;
     v54 = 2114;
     v55 = v32;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_INFO, "extensions changed: %{public}@, new: %{public}@, removed: %{public}@", buf, 0x20u);
@@ -3027,16 +3027,16 @@ LABEL_27:
 
   if ([v32 count])
   {
-    v9 = [(SOConfigurationHost *)v34 configurationPendingLock];
-    objc_sync_enter(v9);
-    [(SOConfigurationHost *)v34 setConfigurationPending:1];
-    objc_sync_exit(v9);
+    configurationPendingLock = [(SOConfigurationHost *)selfCopy2 configurationPendingLock];
+    objc_sync_enter(configurationPendingLock);
+    [(SOConfigurationHost *)selfCopy2 setConfigurationPending:1];
+    objc_sync_exit(configurationPendingLock);
 
-    v10 = v34;
+    v10 = selfCopy2;
     objc_sync_enter(v10);
     v30 = v10;
-    v11 = [v10[1] profiles];
-    v12 = [v11 mutableCopy];
+    profiles = [v10[1] profiles];
+    v12 = [profiles mutableCopy];
 
     v46 = 0u;
     v47 = 0u;
@@ -3078,9 +3078,9 @@ LABEL_27:
                 }
 
                 v18 = *(*(&v40 + 1) + 8 * v17);
-                v19 = [v13 extensionBundleIdentifier];
-                v20 = [v18 extensionBundleIdentifier];
-                v21 = [v19 isEqualToString:v20];
+                extensionBundleIdentifier = [v13 extensionBundleIdentifier];
+                extensionBundleIdentifier2 = [v18 extensionBundleIdentifier];
+                v21 = [extensionBundleIdentifier isEqualToString:extensionBundleIdentifier2];
 
                 if (v21)
                 {
@@ -3115,31 +3115,31 @@ LABEL_27:
     v24 = [v30 _stringWithReason:1];
     [SOAnalytics analyticsForMDMProfiles:v12 reason:v24];
 
-    v25 = [v30 configurationPendingLock];
-    objc_sync_enter(v25);
+    configurationPendingLock2 = [v30 configurationPendingLock];
+    objc_sync_enter(configurationPendingLock2);
     [v30 setConfigurationPending:0];
-    objc_sync_exit(v25);
+    objc_sync_exit(configurationPendingLock2);
 
     objc_sync_exit(v30);
   }
 
   if ([(SOConfigurationHost *)v31 count])
   {
-    v26 = [(SOConfigurationHost *)v34 configurationPendingLock];
-    objc_sync_enter(v26);
-    [(SOConfigurationHost *)v34 setConfigurationPending:1];
-    objc_sync_exit(v26);
+    configurationPendingLock3 = [(SOConfigurationHost *)selfCopy2 configurationPendingLock];
+    objc_sync_enter(configurationPendingLock3);
+    [(SOConfigurationHost *)selfCopy2 setConfigurationPending:1];
+    objc_sync_exit(configurationPendingLock3);
 
     v27 = dispatch_time(0, 3000000000);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__SOConfigurationHost__extensionsLoaded___block_invoke;
     block[3] = &unk_1E813ECB8;
-    block[4] = v34;
+    block[4] = selfCopy2;
     dispatch_after(v27, MEMORY[0x1E69E96A0], block);
   }
 
-  objc_sync_exit(v34);
+  objc_sync_exit(selfCopy2);
   v28 = *MEMORY[0x1E69E9840];
 }
 
@@ -3147,8 +3147,8 @@ LABEL_27:
 {
   v2 = MEMORY[0x1E695DF20];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(SOConfigurationHost *)self _defaultConfigurationFile];
-  v5 = [v3 fileURLWithPath:v4];
+  _defaultConfigurationFile = [(SOConfigurationHost *)self _defaultConfigurationFile];
+  v5 = [v3 fileURLWithPath:_defaultConfigurationFile];
   v10 = 0;
   v6 = [v2 dictionaryWithContentsOfURL:v5 error:&v10];
   v7 = v10;
@@ -3165,15 +3165,15 @@ LABEL_27:
   return v6 != 0;
 }
 
-- (id)_stringWithReason:(int64_t)a3
+- (id)_stringWithReason:(int64_t)reason
 {
   v3 = @"FirstLoad";
-  if (a3 == 1)
+  if (reason == 1)
   {
     v3 = @"ExtensionsChanged";
   }
 
-  if (a3 == 2)
+  if (reason == 2)
   {
     return @"ModifiedByMDM";
   }
@@ -3184,11 +3184,11 @@ LABEL_27:
   }
 }
 
-+ (id)maskRegistrationTokenInConfigurationData:(id)a3
++ (id)maskRegistrationTokenInConfigurationData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKeyedSubscript:@"RegistrationToken"];
+  dataCopy = data;
+  v4 = [dataCopy mutableCopy];
+  v5 = [dataCopy objectForKeyedSubscript:@"RegistrationToken"];
 
   if (v5)
   {
@@ -3205,22 +3205,22 @@ LABEL_27:
   return v4;
 }
 
-+ (id)maskRegistrationTokenInProfileList:(id)a3
++ (id)maskRegistrationTokenInProfileList:(id)list
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"Profiles"];
+  listCopy = list;
+  v4 = [listCopy objectForKeyedSubscript:@"Profiles"];
 
   if (v4)
   {
-    v18 = [v3 mutableCopy];
+    v18 = [listCopy mutableCopy];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v3;
-    v6 = [v3 objectForKeyedSubscript:@"Profiles"];
+    v19 = listCopy;
+    v6 = [listCopy objectForKeyedSubscript:@"Profiles"];
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v7)
     {
@@ -3262,12 +3262,12 @@ LABEL_27:
     v15 = v18;
     [v18 setObject:v5 forKeyedSubscript:@"Profiles"];
 
-    v3 = v19;
+    listCopy = v19;
   }
 
   else
   {
-    v15 = v3;
+    v15 = listCopy;
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -3278,8 +3278,8 @@ LABEL_27:
 - (id)_defaultConfigurationFile
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SOConfigurationHost *)self _defaultConfigurationPath];
-  v4 = [v2 stringWithFormat:@"%@/%@", v3, @"com.apple.AppSSO.configuration.plist"];
+  _defaultConfigurationPath = [(SOConfigurationHost *)self _defaultConfigurationPath];
+  v4 = [v2 stringWithFormat:@"%@/%@", _defaultConfigurationPath, @"com.apple.AppSSO.configuration.plist"];
 
   return v4;
 }
@@ -3287,8 +3287,8 @@ LABEL_27:
 - (id)_defaultCacheFile
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SOConfigurationHost *)self _defaultConfigurationPath];
-  v4 = [v2 stringWithFormat:@"%@/Cache/%@", v3, @"com.apple.AppSSO.cache.json"];
+  _defaultConfigurationPath = [(SOConfigurationHost *)self _defaultConfigurationPath];
+  v4 = [v2 stringWithFormat:@"%@/Cache/%@", _defaultConfigurationPath, @"com.apple.AppSSO.cache.json"];
 
   return v4;
 }

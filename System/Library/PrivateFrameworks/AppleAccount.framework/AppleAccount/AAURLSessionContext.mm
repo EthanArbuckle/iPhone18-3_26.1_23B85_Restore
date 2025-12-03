@@ -2,30 +2,30 @@
 + (id)_relevantHTTPStatusCodes;
 - (AAAbsintheSigner)absintheSigner;
 - (AARemoteServer)remoteServer;
-- (AAURLSessionContext)initWithCoder:(id)a3;
-- (id)_initRequiringSigning:(BOOL)a3 appleIDSession:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AAURLSessionContext)initWithCoder:(id)coder;
+- (id)_initRequiringSigning:(BOOL)signing appleIDSession:(id)session;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)relevantHTTPStatusCodes;
-- (void)URLSession:(id)a3 task:(id)a4 getAppleIDHeadersForResponse:(id)a5 completionHandler:(id)a6;
-- (void)_additionalAbsintheHeadersForData:(id)a3 completion:(id)a4;
-- (void)_additionalHeadersForRequest:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)URLSession:(id)session task:(id)task getAppleIDHeadersForResponse:(id)response completionHandler:(id)handler;
+- (void)_additionalAbsintheHeadersForData:(id)data completion:(id)completion;
+- (void)_additionalHeadersForRequest:(id)request completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAURLSessionContext
 
 - (id)relevantHTTPStatusCodes
 {
-  v2 = [(AKAppleIDSession *)self->_appleIDSession relevantHTTPStatusCodes];
-  v3 = [objc_opt_class() _relevantHTTPStatusCodes];
-  if (v2)
+  relevantHTTPStatusCodes = [(AKAppleIDSession *)self->_appleIDSession relevantHTTPStatusCodes];
+  _relevantHTTPStatusCodes = [objc_opt_class() _relevantHTTPStatusCodes];
+  if (relevantHTTPStatusCodes)
   {
-    v4 = [v2 setByAddingObjectsFromSet:v3];
+    v4 = [relevantHTTPStatusCodes setByAddingObjectsFromSet:_relevantHTTPStatusCodes];
 
-    v3 = v4;
+    _relevantHTTPStatusCodes = v4;
   }
 
-  return v3;
+  return _relevantHTTPStatusCodes;
 }
 
 + (id)_relevantHTTPStatusCodes
@@ -47,17 +47,17 @@ uint64_t __47__AAURLSessionContext__relevantHTTPStatusCodes__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initRequiringSigning:(BOOL)a3 appleIDSession:(id)a4
+- (id)_initRequiringSigning:(BOOL)signing appleIDSession:(id)session
 {
-  v7 = a4;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = AAURLSessionContext;
   v8 = [(AAURLSessionContext *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_requiresSigning = a3;
-    objc_storeStrong(&v8->_appleIDSession, a4);
+    v8->_requiresSigning = signing;
+    objc_storeStrong(&v8->_appleIDSession, session);
     v9->_signerLock._os_unfair_lock_opaque = 0;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = v9;
@@ -69,16 +69,16 @@ uint64_t __47__AAURLSessionContext__relevantHTTPStatusCodes__block_invoke()
   return v9;
 }
 
-- (AAURLSessionContext)initWithCoder:(id)a3
+- (AAURLSessionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AAURLSessionContext;
   v5 = [(AAURLSessionContext *)&v13 init];
   if (v5)
   {
-    v5->_requiresSigning = [v4 decodeBoolForKey:@"RequiresSigning"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppleIDSession"];
+    v5->_requiresSigning = [coderCopy decodeBoolForKey:@"RequiresSigning"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppleIDSession"];
     appleIDSession = v5->_appleIDSession;
     v5->_appleIDSession = v6;
 
@@ -153,10 +153,10 @@ id __37__AAURLSessionContext_absintheSigner__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_additionalHeadersForRequest:(id)a3 completion:(id)a4
+- (void)_additionalHeadersForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (_AAURLSessionDefaultHeaders_onceToken != -1)
   {
     [AAURLSessionContext _additionalHeadersForRequest:completion:];
@@ -165,24 +165,24 @@ id __37__AAURLSessionContext_absintheSigner__block_invoke(uint64_t a1)
   v8 = [_AAURLSessionDefaultHeaders_defaultHeaders mutableCopy];
   if ([(AAURLSessionContext *)self requiresSigning])
   {
-    v9 = [v6 aa_HTTPBody];
-    v10 = [(AAURLSessionContext *)self remoteServer];
+    aa_HTTPBody = [requestCopy aa_HTTPBody];
+    remoteServer = [(AAURLSessionContext *)self remoteServer];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __63__AAURLSessionContext__additionalHeadersForRequest_completion___block_invoke;
     v12[3] = &unk_1E7C9C320;
     v13 = v8;
-    v14 = self;
-    v15 = v9;
-    v16 = v7;
-    v11 = v9;
-    [v10 configurationWithCompletion:v12];
+    selfCopy = self;
+    v15 = aa_HTTPBody;
+    v16 = completionCopy;
+    v11 = aa_HTTPBody;
+    [remoteServer configurationWithCompletion:v12];
   }
 
   else
   {
     v11 = [v8 copy];
-    (*(v7 + 2))(v7, v11, 0);
+    (*(completionCopy + 2))(completionCopy, v11, 0);
   }
 }
 
@@ -260,18 +260,18 @@ void __63__AAURLSessionContext__additionalHeadersForRequest_completion___block_i
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)_additionalAbsintheHeadersForData:(id)a3 completion:(id)a4
+- (void)_additionalAbsintheHeadersForData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AAURLSessionContext *)self absintheSigner];
+  completionCopy = completion;
+  dataCopy = data;
+  absintheSigner = [(AAURLSessionContext *)self absintheSigner];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__AAURLSessionContext__additionalAbsintheHeadersForData_completion___block_invoke;
   v10[3] = &unk_1E7C9C348;
-  v11 = v6;
-  v9 = v6;
-  [v8 signatureForData:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [absintheSigner signatureForData:dataCopy completion:v10];
 }
 
 void __68__AAURLSessionContext__additionalAbsintheHeadersForData_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -310,32 +310,32 @@ void __68__AAURLSessionContext__additionalAbsintheHeadersForData_completion___bl
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requiresSigning = self->_requiresSigning;
-  v5 = a3;
-  [v5 encodeBool:requiresSigning forKey:@"RequiresSigning"];
-  [v5 encodeObject:self->_appleIDSession forKey:@"AppleIDSession"];
+  coderCopy = coder;
+  [coderCopy encodeBool:requiresSigning forKey:@"RequiresSigning"];
+  [coderCopy encodeObject:self->_appleIDSession forKey:@"AppleIDSession"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(AKAppleIDSession *)self->_appleIDSession copyWithZone:?];
-  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initRequiringSigning:appleIDSession:", self->_requiresSigning, v5}];
+  v6 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initRequiringSigning:appleIDSession:", self->_requiresSigning, v5}];
 
   return v6;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 getAppleIDHeadersForResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task getAppleIDHeadersForResponse:(id)response completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  if (!sessionCopy)
   {
     [AAURLSessionContext URLSession:a2 task:self getAppleIDHeadersForResponse:? completionHandler:?];
-    if (v12)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
@@ -345,15 +345,15 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v12)
+  if (!taskCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v15 = [MEMORY[0x1E695AC78] sharedSession];
-  v16 = [v12 currentRequest];
-  v17 = [v15 dataTaskWithRequest:v16];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
+  currentRequest = [taskCopy currentRequest];
+  v17 = [mEMORY[0x1E695AC78] dataTaskWithRequest:currentRequest];
 
   appleIDSession = self->_appleIDSession;
   v22[0] = MEMORY[0x1E69E9820];
@@ -361,13 +361,13 @@ LABEL_3:
   v22[2] = __86__AAURLSessionContext_URLSession_task_getAppleIDHeadersForResponse_completionHandler___block_invoke;
   v22[3] = &unk_1E7C9C398;
   v23 = v17;
-  v24 = self;
-  v25 = v12;
-  v26 = v14;
-  v19 = v14;
-  v20 = v12;
+  selfCopy = self;
+  v25 = taskCopy;
+  v26 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = taskCopy;
   v21 = v17;
-  [(AKAppleIDSession *)appleIDSession URLSession:v11 task:v21 getAppleIDHeadersForResponse:v13 completionHandler:v22];
+  [(AKAppleIDSession *)appleIDSession URLSession:sessionCopy task:v21 getAppleIDHeadersForResponse:responseCopy completionHandler:v22];
 }
 
 void __86__AAURLSessionContext_URLSession_task_getAppleIDHeadersForResponse_completionHandler___block_invoke(uint64_t a1, int a2, void *a3)

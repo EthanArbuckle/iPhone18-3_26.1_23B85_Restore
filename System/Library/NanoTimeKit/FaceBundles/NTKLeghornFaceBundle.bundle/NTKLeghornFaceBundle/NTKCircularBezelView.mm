@@ -1,108 +1,108 @@
 @interface NTKCircularBezelView
-+ (void)drawSnapshotInContext:(CGContext *)a3 hiVizComplicationStyle:(unint64_t)a4 colorPalette:(id)a5 poiFilter:(id)a6 forDevice:(id)a7;
-- (CGRect)_dirtyRectFromSeconds:(double)a3 toSeconds:(double)a4;
-- (NTKCircularBezelView)initWithFrame:(CGRect)a3 forDevice:(id)a4 withDisplayMode:(unint64_t)a5;
-- (__CTLine)radiusLabelCTLineForRadius:(double)a3;
++ (void)drawSnapshotInContext:(CGContext *)context hiVizComplicationStyle:(unint64_t)style colorPalette:(id)palette poiFilter:(id)filter forDevice:(id)device;
+- (CGRect)_dirtyRectFromSeconds:(double)seconds toSeconds:(double)toSeconds;
+- (NTKCircularBezelView)initWithFrame:(CGRect)frame forDevice:(id)device withDisplayMode:(unint64_t)mode;
+- (__CTLine)radiusLabelCTLineForRadius:(double)radius;
 - (id)_accessibilityStringForCurrentHeading;
 - (id)_accessibilityStringForCurrentWaypointRadius;
-- (id)_accessibilityStringForDistanceAccuracyToWaypoint:(id)a3;
+- (id)_accessibilityStringForDistanceAccuracyToWaypoint:(id)waypoint;
 - (id)_accessibilityStringForRelativeBearingToTargetWaypoint;
-- (id)_initWithFrame:(CGRect)a3 layoutConstants:(id *)a4 forDevice:(id)a5 withDisplayMode:(unint64_t)a6;
+- (id)_initWithFrame:(CGRect)frame layoutConstants:(id *)constants forDevice:(id)device withDisplayMode:(unint64_t)mode;
 - (id)accessibilityLabel;
-- (id)attributedStringForCardinalDirectionLabel:(double)a3;
-- (id)attributedStringForDistanceAccuracyToWaypoint:(id)a3;
-- (id)attributedStringForTargetWaypoint:(id)a3;
-- (id)initForDevice:(id)a3 frame:(CGRect)a4 displayMode:(unint64_t)a5;
+- (id)attributedStringForCardinalDirectionLabel:(double)label;
+- (id)attributedStringForDistanceAccuracyToWaypoint:(id)waypoint;
+- (id)attributedStringForTargetWaypoint:(id)waypoint;
+- (id)initForDevice:(id)device frame:(CGRect)frame displayMode:(unint64_t)mode;
 - (unint64_t)hiVizComplicationStyle;
-- (void)_addConstraintsForDevice:(id)a3;
+- (void)_addConstraintsForDevice:(id)device;
 - (void)_addSubViews;
-- (void)_drawCircularCompassBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 backgroundAlpha:(double)a5 compassAlpha:(double)a6 waypointsAlpha:(double)a7 secondsAlpha:(double)a8;
+- (void)_drawCircularCompassBezelInContext:(CGContext *)context tritiumProgress:(double)progress backgroundAlpha:(double)alpha compassAlpha:(double)compassAlpha waypointsAlpha:(double)waypointsAlpha secondsAlpha:(double)secondsAlpha;
 - (void)_invalidateRadiusLabelCTLine;
-- (void)_labelVShiftForDevice:(id)a3 nameLabel:(double *)a4 distanceLabel:(double *)a5;
-- (void)_setHeading:(double)a3 duration:(double)a4 completion:(id)a5;
-- (void)_updateLabelsFromDisplayMode:(unint64_t)a3 toDislayMode:(unint64_t)a4 progress:(double)a5 onlyUpdateDistanceLabel:(BOOL)a6;
+- (void)_labelVShiftForDevice:(id)device nameLabel:(double *)label distanceLabel:(double *)distanceLabel;
+- (void)_setHeading:(double)heading duration:(double)duration completion:(id)completion;
+- (void)_updateLabelsFromDisplayMode:(unint64_t)mode toDislayMode:(unint64_t)dislayMode progress:(double)progress onlyUpdateDistanceLabel:(BOOL)label;
 - (void)_updateLabelsIfNeeded;
 - (void)_updateWaypointAhead;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)radiusLabelColor:(id)a3;
-- (void)seTtritiumMedialColor:(id)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setColorPalette:(id)a3;
-- (void)setCompassAlpha:(double)a3;
-- (void)setCompassBackgroundColor:(id)a3;
-- (void)setCompassCardinalColor:(id)a3;
-- (void)setCompassMajorTickColor:(id)a3;
-- (void)setCompassMedialTickColor:(id)a3;
-- (void)setCompassMinorTickColor:(id)a3;
-- (void)setCompassNorthColor:(id)a3;
-- (void)setCompassOrientingArrowColor:(id)a3;
-- (void)setFromBackgroundStyle:(unint64_t)a3 toBackgroundStyle:(unint64_t)a4 fraction:(double)a5;
-- (void)setFromDisplayMode:(unint64_t)a3 toDisplayMode:(unint64_t)a4 fraction:(double)transitoryDisplayModeProgress;
-- (void)setFromHiVizComplicationStyle:(unint64_t)a3 toHiVizComplicationStyle:(unint64_t)a4 fraction:(double)a5;
-- (void)setFromTargetWaypoint:(id)a3 toTargetWaypoint:(id)a4 fraction:(double)a5;
-- (void)setFromWaypointRadius:(double)a3 toWaypointRadius:(double)a4 fraction:(double)a5;
-- (void)setFromWaypointsState:(unint64_t)a3 toWaypointsState:(unint64_t)a4 fraction:(double)a5;
-- (void)setHeading:(double)a3 animated:(BOOL)a4;
-- (void)setLiveSecondsInTritium:(BOOL)a3;
-- (void)setLocation:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)radiusLabelColor:(id)color;
+- (void)seTtritiumMedialColor:(id)color;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setColorPalette:(id)palette;
+- (void)setCompassAlpha:(double)alpha;
+- (void)setCompassBackgroundColor:(id)color;
+- (void)setCompassCardinalColor:(id)color;
+- (void)setCompassMajorTickColor:(id)color;
+- (void)setCompassMedialTickColor:(id)color;
+- (void)setCompassMinorTickColor:(id)color;
+- (void)setCompassNorthColor:(id)color;
+- (void)setCompassOrientingArrowColor:(id)color;
+- (void)setFromBackgroundStyle:(unint64_t)style toBackgroundStyle:(unint64_t)backgroundStyle fraction:(double)fraction;
+- (void)setFromDisplayMode:(unint64_t)mode toDisplayMode:(unint64_t)displayMode fraction:(double)transitoryDisplayModeProgress;
+- (void)setFromHiVizComplicationStyle:(unint64_t)style toHiVizComplicationStyle:(unint64_t)complicationStyle fraction:(double)fraction;
+- (void)setFromTargetWaypoint:(id)waypoint toTargetWaypoint:(id)targetWaypoint fraction:(double)fraction;
+- (void)setFromWaypointRadius:(double)radius toWaypointRadius:(double)waypointRadius fraction:(double)fraction;
+- (void)setFromWaypointsState:(unint64_t)state toWaypointsState:(unint64_t)waypointsState fraction:(double)fraction;
+- (void)setHeading:(double)heading animated:(BOOL)animated;
+- (void)setLiveSecondsInTritium:(BOOL)tritium;
+- (void)setLocation:(id)location;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setPreserveColorsInTritium:(BOOL)a3;
-- (void)setPrimaryBackgroundColor:(id)a3;
-- (void)setSecondaryBackgroundColor:(id)a3;
-- (void)setSeconds:(double)a3;
-- (void)setSecondsAlpha:(double)a3;
-- (void)setSecondsInactiveMajorTickColor:(id)a3;
-- (void)setSecondsInactiveMedialTickColor:(id)a3;
-- (void)setSecondsInactiveMinorTickColor:(id)a3;
-- (void)setSecondsMajorTickColor:(id)a3;
-- (void)setSecondsMedialTickColor:(id)a3;
-- (void)setSecondsMinorTickColor:(id)a3;
-- (void)setTertiaryBackgroundColor:(id)a3;
-- (void)setToSnapshotValuesWithPOIFilter:(id)a3;
-- (void)setTritiumMajorColor:(id)a3;
-- (void)setTritiumMinorColor:(id)a3;
-- (void)setTritiumProgress:(double)a3;
-- (void)setUsePOIDerivedColors:(BOOL)a3;
-- (void)setWaypointActiveConeColor:(id)a3;
-- (void)setWaypointAheadColor:(id)a3;
-- (void)setWaypointColor:(id)a3;
-- (void)setWaypointInactiveConeColor:(id)a3;
-- (void)setWaypointLabelPrimaryColor:(id)a3;
-- (void)setWaypointLabelSecondaryColor:(id)a3;
-- (void)setWaypointRingColor:(id)a3;
-- (void)setWaypointTargetRingColor:(id)a3;
-- (void)setWaypoints:(id)a3;
-- (void)setWaypointsAlpha:(double)a3;
-- (void)setsecondsCompassRingColor:(id)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setPreserveColorsInTritium:(BOOL)tritium;
+- (void)setPrimaryBackgroundColor:(id)color;
+- (void)setSecondaryBackgroundColor:(id)color;
+- (void)setSeconds:(double)seconds;
+- (void)setSecondsAlpha:(double)alpha;
+- (void)setSecondsInactiveMajorTickColor:(id)color;
+- (void)setSecondsInactiveMedialTickColor:(id)color;
+- (void)setSecondsInactiveMinorTickColor:(id)color;
+- (void)setSecondsMajorTickColor:(id)color;
+- (void)setSecondsMedialTickColor:(id)color;
+- (void)setSecondsMinorTickColor:(id)color;
+- (void)setTertiaryBackgroundColor:(id)color;
+- (void)setToSnapshotValuesWithPOIFilter:(id)filter;
+- (void)setTritiumMajorColor:(id)color;
+- (void)setTritiumMinorColor:(id)color;
+- (void)setTritiumProgress:(double)progress;
+- (void)setUsePOIDerivedColors:(BOOL)colors;
+- (void)setWaypointActiveConeColor:(id)color;
+- (void)setWaypointAheadColor:(id)color;
+- (void)setWaypointColor:(id)color;
+- (void)setWaypointInactiveConeColor:(id)color;
+- (void)setWaypointLabelPrimaryColor:(id)color;
+- (void)setWaypointLabelSecondaryColor:(id)color;
+- (void)setWaypointRingColor:(id)color;
+- (void)setWaypointTargetRingColor:(id)color;
+- (void)setWaypoints:(id)waypoints;
+- (void)setWaypointsAlpha:(double)alpha;
+- (void)setsecondsCompassRingColor:(id)color;
 @end
 
 @implementation NTKCircularBezelView
 
-- (NTKCircularBezelView)initWithFrame:(CGRect)a3 forDevice:(id)a4 withDisplayMode:(unint64_t)a5
+- (NTKCircularBezelView)initWithFrame:(CGRect)frame forDevice:(id)device withDisplayMode:(unint64_t)mode
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  sub_23BECF628(v11, v15);
-  v13 = objc_msgSend__initWithFrame_layoutConstants_forDevice_withDisplayMode_(self, v12, x, v15, v11, a5, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  sub_23BECF628(deviceCopy, v15);
+  v13 = objc_msgSend__initWithFrame_layoutConstants_forDevice_withDisplayMode_(self, v12, x, v15, deviceCopy, mode, y, width, height);
 
   return v13;
 }
 
-- (id)initForDevice:(id)a3 frame:(CGRect)a4 displayMode:(unint64_t)a5
+- (id)initForDevice:(id)device frame:(CGRect)frame displayMode:(unint64_t)mode
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   memset(__src, 0, 512);
-  v11 = a3;
-  v12 = sub_23BECF75C(v11, __src, 0.0, 0.0, width, height);
-  objc_msgSend_sizeClass(v11, v13, v12);
+  deviceCopy = device;
+  v12 = sub_23BECF75C(deviceCopy, __src, 0.0, 0.0, width, height);
+  objc_msgSend_sizeClass(deviceCopy, v13, v12);
 
   *&__src[21] = 0x3FE0000000000000;
   *(&__src[21] + 1) = *(&__src[19] + 1) + 4.0;
@@ -122,28 +122,28 @@
   __src[35] = xmmword_23BEED240;
   *&__src[36] = 0x4008000000000000;
   memcpy(v23, __src, sizeof(v23));
-  v21 = objc_msgSend__initWithFrame_layoutConstants_forDevice_withDisplayMode_(self, v20, x, v23, v11, a5, y, width, height);
+  v21 = objc_msgSend__initWithFrame_layoutConstants_forDevice_withDisplayMode_(self, v20, x, v23, deviceCopy, mode, y, width, height);
 
   return v21;
 }
 
-- (id)_initWithFrame:(CGRect)a3 layoutConstants:(id *)a4 forDevice:(id)a5 withDisplayMode:(unint64_t)a6
+- (id)_initWithFrame:(CGRect)frame layoutConstants:(id *)constants forDevice:(id)device withDisplayMode:(unint64_t)mode
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v168 = *MEMORY[0x277D85DE8];
-  v13 = a5;
+  deviceCopy = device;
   v161.receiver = self;
   v161.super_class = NTKCircularBezelView;
-  v14 = [(NTKCircularBezelView *)&v161 initWithFrame:x, y, width, height];
-  v17 = v14;
-  if (v14)
+  height = [(NTKCircularBezelView *)&v161 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    v153 = a6;
-    p_x = &v14->_dirtyRect.origin.x;
-    objc_msgSend_bounds(v14, v15, v16);
+    modeCopy = mode;
+    p_x = &height->_dirtyRect.origin.x;
+    objc_msgSend_bounds(height, v15, v16);
     *p_x = v19;
     v17->_dirtyRect.origin.y = v20;
     v17->_dirtyRect.size.width = v21;
@@ -151,13 +151,13 @@
     v24 = objc_msgSend_clearColor(MEMORY[0x277D75348], v23, v19);
     objc_msgSend_setBackgroundColor_(v17, v25, v26, v24);
 
-    memcpy(&v17->_layoutConstants, a4, sizeof(v17->_layoutConstants));
+    memcpy(&v17->_layoutConstants, constants, sizeof(v17->_layoutConstants));
     v27 = v17->_layoutConstants.bezelCircularOuterRadius * 6.28318531;
     v17->_pixelsPerDegree = v27 / 360.0;
     v28 = v27 / 60.0;
     v17->_pixelsPerSecond = v28;
-    v158 = v13;
-    objc_msgSend_screenScale(v13, v29, v28);
+    v158 = deviceCopy;
+    objc_msgSend_screenScale(deviceCopy, v29, v28);
     obj = &v17->_layoutConstants.bezelOuterRect.origin.x;
     v157 = v17;
     v17->_pixelsPerVisibleChange = 1.0 / (v30 * 4.0);
@@ -214,8 +214,8 @@
 
     v160 = objc_msgSend_copy(v66, v80, v81);
     v157->_informationLabelLines = sub_23BEC66A4(v160);
-    v157->_displayMode = v153;
-    v157->_transitoryDisplayMode = v153;
+    v157->_displayMode = modeCopy;
+    v157->_transitoryDisplayMode = modeCopy;
     v157->_transitoryDisplayModeProgress = 1.0;
     targetWaypoint = v157->_targetWaypoint;
     v157->_targetWaypoint = 0;
@@ -336,7 +336,7 @@
     v157->_secondsEndOfMinuteAnimationStyle = 3;
     v157->_secondsEndOfMinuteAnimationDuration = 0.5;
     objc_msgSend__addSubViews(v157, v145, v146);
-    v13 = v158;
+    deviceCopy = v158;
     objc_msgSend__addConstraintsForDevice_(v157, v147, v148, v158);
   }
 
@@ -365,12 +365,12 @@
   [(NTKCircularBezelView *)&v6 dealloc];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_dirtyRect = &self->_dirtyRect;
   v9 = self->_dirtyRect.origin.x;
   v10 = self->_dirtyRect.origin.y;
@@ -470,9 +470,9 @@
   }
 }
 
-- (void)_labelVShiftForDevice:(id)a3 nameLabel:(double *)a4 distanceLabel:(double *)a5
+- (void)_labelVShiftForDevice:(id)device nameLabel:(double *)label distanceLabel:(double *)distanceLabel
 {
-  v8 = objc_msgSend_sizeClass(a3, a2, v5);
+  v8 = objc_msgSend_sizeClass(device, a2, v5);
   UICeilToViewScale();
   v10 = v9;
   if (v8 == 9)
@@ -498,18 +498,18 @@
 
   v22 = fmax(v21, 0.0);
   UICeilToViewScale();
-  if (a4)
+  if (label)
   {
-    *a4 = v23;
+    *label = v23;
   }
 
-  if (a5)
+  if (distanceLabel)
   {
-    *a5 = v22;
+    *distanceLabel = v22;
   }
 }
 
-- (void)_addConstraintsForDevice:(id)a3
+- (void)_addConstraintsForDevice:(id)device
 {
   v84[6] = *MEMORY[0x277D85DE8];
   p_layoutConstants = &self->_layoutConstants;
@@ -521,7 +521,7 @@
   bezelLabelTopRadius = self->_layoutConstants.bezelLabelTopRadius;
   v82 = 0.0;
   v83 = 0.0;
-  objc_msgSend__labelVShiftForDevice_nameLabel_distanceLabel_(self, a2, bezelCircularSecondsOutsideRadius, a3, &v83, &v82);
+  objc_msgSend__labelVShiftForDevice_nameLabel_distanceLabel_(self, a2, bezelCircularSecondsOutsideRadius, device, &v83, &v82);
   v9 = v82;
   v8 = v83;
   v10 = p_layoutConstants->bezelLabelBaseRadius;
@@ -571,25 +571,25 @@
   }
 }
 
-- (__CTLine)radiusLabelCTLineForRadius:(double)a3
+- (__CTLine)radiusLabelCTLineForRadius:(double)radius
 {
   p_layoutConstants = &self->_layoutConstants;
-  v5 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], a2, a3);
+  v5 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], a2, radius);
   v8 = objc_msgSend_objectForKey_(v5, v6, v7, *MEMORY[0x277CBE718]);
   v11 = objc_msgSend_BOOLValue(v8, v9, v10);
 
   v13 = objc_msgSend_foghornDepthBezelLabelFontOfSize_(MEMORY[0x277CBBB08], v12, p_layoutConstants->bezelRadiusLabelFontSize);
   v15 = objc_msgSend_foghornDepthBezelLabelFontOfSize_(MEMORY[0x277CBBB08], v14, p_layoutConstants->bezelRadiusLabelFontSize * 0.8);
   v18 = objc_msgSend_cyanColor(MEMORY[0x277D75348], v16, v17);
-  v20 = objc_msgSend__attributedStringForRadius_useMetric_formatPrefix_valueFont_valueColor_unitFont_unitColor_(MEMORY[0x277CCA898], v19, a3, v11, @"LEGHORN_RADIUS", v13, v18, v15, v18);
+  v20 = objc_msgSend__attributedStringForRadius_useMetric_formatPrefix_valueFont_valueColor_unitFont_unitColor_(MEMORY[0x277CCA898], v19, radius, v11, @"LEGHORN_RADIUS", v13, v18, v15, v18);
   v21 = CTLineCreateWithAttributedString(v20);
 
   return v21;
 }
 
-- (void)_drawCircularCompassBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 backgroundAlpha:(double)a5 compassAlpha:(double)a6 waypointsAlpha:(double)a7 secondsAlpha:(double)a8
+- (void)_drawCircularCompassBezelInContext:(CGContext *)context tritiumProgress:(double)progress backgroundAlpha:(double)alpha compassAlpha:(double)compassAlpha waypointsAlpha:(double)waypointsAlpha secondsAlpha:(double)secondsAlpha
 {
-  v9 = self;
+  selfCopy = self;
   v853 = *MEMORY[0x277D85DE8];
   preserveColorsInTritium = self->_preserveColorsInTritium;
   liveSecondsInTritium = self->_liveSecondsInTritium;
@@ -599,30 +599,30 @@
   heading = self->_heading;
   seconds = self->_seconds;
   v690 = self->_tritiumMajorColor;
-  v689 = v9->_tritiumMedialColor;
-  v703 = v9->_tritiumMinorColor;
-  x = v9->_compassOrientingArrowColor;
-  v716 = v9->_compassNorthColor;
-  v717 = v9->_compassCardinalColor;
-  v718 = v9->_compassMedialTickColor;
-  v719 = v9->_compassMinorTickColor;
-  v720 = v9->_secondsCompassRingColor;
-  fractionUsePOIDerivedColors = v9->_fractionUsePOIDerivedColors;
-  v713 = v9->_waypointColor;
-  v714 = v9->_waypointAheadColor;
-  v721 = v9->_waypointRingColor;
-  v712 = v9->_waypointTargetRingColor;
-  v724 = v9->_waypointActiveConeColor;
-  v14 = v9->_waypointInactiveConeColor;
-  v723 = v9->_waypointOutOfRangeColor;
-  v725 = v9->_secondsMajorTickColor;
-  v15 = v9->_secondsMinorTickColor;
-  v729 = v9->_secondsInactiveMajorTickColor;
-  v728 = v9->_secondsInactiveMinorTickColor;
-  v702 = v9->_radiusLabelColor;
-  v726 = v9->_primaryBackgroundColor;
-  v16 = v9->_secondaryBackgroundColor;
-  v17 = v9->_tertiaryBackgroundColor;
+  v689 = selfCopy->_tritiumMedialColor;
+  v703 = selfCopy->_tritiumMinorColor;
+  x = selfCopy->_compassOrientingArrowColor;
+  v716 = selfCopy->_compassNorthColor;
+  v717 = selfCopy->_compassCardinalColor;
+  v718 = selfCopy->_compassMedialTickColor;
+  v719 = selfCopy->_compassMinorTickColor;
+  v720 = selfCopy->_secondsCompassRingColor;
+  fractionUsePOIDerivedColors = selfCopy->_fractionUsePOIDerivedColors;
+  v713 = selfCopy->_waypointColor;
+  v714 = selfCopy->_waypointAheadColor;
+  v721 = selfCopy->_waypointRingColor;
+  v712 = selfCopy->_waypointTargetRingColor;
+  v724 = selfCopy->_waypointActiveConeColor;
+  v14 = selfCopy->_waypointInactiveConeColor;
+  v723 = selfCopy->_waypointOutOfRangeColor;
+  v725 = selfCopy->_secondsMajorTickColor;
+  v15 = selfCopy->_secondsMinorTickColor;
+  v729 = selfCopy->_secondsInactiveMajorTickColor;
+  v728 = selfCopy->_secondsInactiveMinorTickColor;
+  v702 = selfCopy->_radiusLabelColor;
+  v726 = selfCopy->_primaryBackgroundColor;
+  v16 = selfCopy->_secondaryBackgroundColor;
+  v17 = selfCopy->_tertiaryBackgroundColor;
   v685 = 0.0;
   v804 = transitoryDisplayModeProgress;
   CLKInterpolateBetweenFloatsClipped();
@@ -714,12 +714,12 @@
     }
   }
 
-  v33 = fabs(a4 + -1.0);
-  v706 = v9;
+  v33 = fabs(progress + -1.0);
+  v706 = selfCopy;
   v802 = transitoryDisplayMode;
   v801 = displayMode;
   v684 = v33;
-  if (a4 > 1.0 || v33 < 0.00000011920929)
+  if (progress > 1.0 || v33 < 0.00000011920929)
   {
     j = 0.0;
     v66 = 345.0;
@@ -810,8 +810,8 @@
   else
   {
     v730 = v15;
-    v691 = v29 * a7;
-    if (a4 <= 0.0 || fabs(a4) < 0.00000011920929)
+    v691 = v29 * waypointsAlpha;
+    if (progress <= 0.0 || fabs(progress) < 0.00000011920929)
     {
       goto LABEL_50;
     }
@@ -836,33 +836,33 @@
       j = j + 360.0;
     }
 
-    v691 = (1.0 - a4) * v691;
-    v37 = objc_msgSend_clearColor(MEMORY[0x277D75348], v31, 1.0 - a4);
-    v780 = MEMORY[0x23EEC10C0](v726, v37, a4);
+    v691 = (1.0 - progress) * v691;
+    v37 = objc_msgSend_clearColor(MEMORY[0x277D75348], v31, 1.0 - progress);
+    v780 = MEMORY[0x23EEC10C0](v726, v37, progress);
 
     v40 = objc_msgSend_clearColor(MEMORY[0x277D75348], v38, v39);
-    v776 = MEMORY[0x23EEC10C0](v16, v40, a4);
+    v776 = MEMORY[0x23EEC10C0](v16, v40, progress);
 
     v43 = objc_msgSend_clearColor(MEMORY[0x277D75348], v41, v42);
-    v44 = MEMORY[0x23EEC10C0](v17, v43, a4);
+    v44 = MEMORY[0x23EEC10C0](v17, v43, progress);
 
     if (preserveColorsInTritium)
     {
       v47 = objc_msgSend_clearColor(MEMORY[0x277D75348], v45, v46);
-      v48 = MEMORY[0x23EEC10C0](v713, v47, a4);
+      v48 = MEMORY[0x23EEC10C0](v713, v47, progress);
 
       v51 = objc_msgSend_clearColor(MEMORY[0x277D75348], v49, v50);
-      v52 = MEMORY[0x23EEC10C0](v714, v51, a4);
+      v52 = MEMORY[0x23EEC10C0](v714, v51, progress);
 
       v55 = objc_msgSend_clearColor(MEMORY[0x277D75348], v53, v54);
-      MEMORY[0x23EEC10C0](v723, v55, a4);
+      MEMORY[0x23EEC10C0](v723, v55, progress);
       v57 = v56 = v14;
 
       v60 = objc_msgSend_clearColor(MEMORY[0x277D75348], v58, v59);
-      v61 = MEMORY[0x23EEC10C0](v724, v60, a4);
+      v61 = MEMORY[0x23EEC10C0](v724, v60, progress);
 
       v64 = objc_msgSend_clearColor(MEMORY[0x277D75348], v62, v63);
-      v65 = MEMORY[0x23EEC10C0](v56, v64, a4);
+      v65 = MEMORY[0x23EEC10C0](v56, v64, progress);
 
       v723 = v57;
       v724 = v61;
@@ -873,45 +873,45 @@
 
     else
     {
-      v98 = MEMORY[0x23EEC10C0](x, v690, a4);
+      v98 = MEMORY[0x23EEC10C0](x, v690, progress);
 
-      v772 = MEMORY[0x23EEC10C0](v716, v690, a4);
+      v772 = MEMORY[0x23EEC10C0](v716, v690, progress);
 
-      v766 = MEMORY[0x23EEC10C0](v717, v690, a4);
+      v766 = MEMORY[0x23EEC10C0](v717, v690, progress);
 
-      v762 = MEMORY[0x23EEC10C0](v718, v690, a4);
+      v762 = MEMORY[0x23EEC10C0](v718, v690, progress);
 
-      theArrayc = MEMORY[0x23EEC10C0](v719, v703, a4);
+      theArrayc = MEMORY[0x23EEC10C0](v719, v703, progress);
 
-      v750 = MEMORY[0x23EEC10C0](v720, v689, a4);
+      v750 = MEMORY[0x23EEC10C0](v720, v689, progress);
 
       v101 = objc_msgSend_clearColor(MEMORY[0x277D75348], v99, v100);
-      v745 = MEMORY[0x23EEC10C0](v713, v101, a4);
+      v745 = MEMORY[0x23EEC10C0](v713, v101, progress);
 
       v104 = objc_msgSend_clearColor(MEMORY[0x277D75348], v102, v103);
-      v740 = MEMORY[0x23EEC10C0](v714, v104, a4);
+      v740 = MEMORY[0x23EEC10C0](v714, v104, progress);
 
       v107 = objc_msgSend_clearColor(MEMORY[0x277D75348], v105, v106);
-      v735 = MEMORY[0x23EEC10C0](v723, v107, a4);
+      v735 = MEMORY[0x23EEC10C0](v723, v107, progress);
 
-      v108 = MEMORY[0x23EEC10C0](v721, v703, a4);
+      v108 = MEMORY[0x23EEC10C0](v721, v703, progress);
 
-      v727 = MEMORY[0x23EEC10C0](v712, v689, a4);
+      v727 = MEMORY[0x23EEC10C0](v712, v689, progress);
 
-      v722 = MEMORY[0x23EEC10C0](v724, v690, a4);
+      v722 = MEMORY[0x23EEC10C0](v724, v690, progress);
 
       v111 = objc_msgSend_clearColor(MEMORY[0x277D75348], v109, v110);
-      v65 = MEMORY[0x23EEC10C0](v14, v111, a4);
+      v65 = MEMORY[0x23EEC10C0](v14, v111, progress);
 
-      v112 = MEMORY[0x23EEC10C0](v725, v690, a4);
+      v112 = MEMORY[0x23EEC10C0](v725, v690, progress);
 
-      v113 = MEMORY[0x23EEC10C0](v730, v689, a4);
+      v113 = MEMORY[0x23EEC10C0](v730, v689, progress);
 
-      v114 = MEMORY[0x23EEC10C0](v729, v703, a4);
+      v114 = MEMORY[0x23EEC10C0](v729, v703, progress);
 
-      v115 = MEMORY[0x23EEC10C0](v728, v703, a4);
+      v115 = MEMORY[0x23EEC10C0](v728, v703, progress);
 
-      MEMORY[0x23EEC10C0](v702, v689, a4);
+      MEMORY[0x23EEC10C0](v702, v689, progress);
       v725 = v112;
       v729 = v114;
       v730 = v113;
@@ -931,7 +931,7 @@
       v717 = v766;
     }
 
-    v9 = v706;
+    selfCopy = v706;
     v76 = v776;
     v69 = v780;
   }
@@ -942,7 +942,7 @@
   v17 = v44;
   heading = j;
 LABEL_50:
-  fractionBezelBackgroundOn = v9->_fractionBezelBackgroundOn;
+  fractionBezelBackgroundOn = selfCopy->_fractionBezelBackgroundOn;
   v117 = fractionBezelBackgroundOn <= 1.0 && fractionBezelBackgroundOn > 0.0;
   v692 = heading;
   if (fractionBezelBackgroundOn < 1.0 && v117)
@@ -964,11 +964,11 @@ LABEL_50:
   v699 = v16;
   v700 = v17;
   v704 = v14;
-  v128 = v30 * a5;
-  waypointRadius = v9->_waypointRadius;
-  v129 = v9->_waypoints;
-  v701 = v9->_location;
-  if (v129 && !v9->_sortedWaypoints)
+  v128 = v30 * alpha;
+  waypointRadius = selfCopy->_waypointRadius;
+  v129 = selfCopy->_waypoints;
+  v701 = selfCopy->_location;
+  if (v129 && !selfCopy->_sortedWaypoints)
   {
     v818[0] = MEMORY[0x277D85DD0];
     v818[1] = 3221225472;
@@ -976,15 +976,15 @@ LABEL_50:
     v818[3] = &unk_278BA1220;
     v819 = v701;
     v132 = objc_msgSend_sortedArrayUsingComparator_(v129, v130, v131, v818);
-    objc_storeStrong(&v9->_sortedWaypoints, v132);
+    objc_storeStrong(&selfCopy->_sortedWaypoints, v132);
   }
 
-  v688 = v9->_sortedWaypoints;
+  v688 = selfCopy->_sortedWaypoints;
 
-  v698 = v9->_targetWaypoint;
-  v687 = v9->_waypointAhead;
-  CGContextSaveGState(a3);
-  v805 = a4;
+  v698 = selfCopy->_targetWaypoint;
+  v687 = selfCopy->_waypointAhead;
+  CGContextSaveGState(context);
+  progressCopy = progress;
   if (v128 <= 0.0)
   {
     v179 = v730;
@@ -1007,22 +1007,22 @@ LABEL_50:
 
     if (v117)
     {
-      fromHiVizComplicationStyle = v9->_fromHiVizComplicationStyle;
-      toHiVizComplicationStyle = v9->_toHiVizComplicationStyle;
-      fractionHiVizComplicationStyle = v9->_fractionHiVizComplicationStyle;
-      bezelCircularOuterRadius = v9->_layoutConstants.bezelCircularOuterRadius;
+      fromHiVizComplicationStyle = selfCopy->_fromHiVizComplicationStyle;
+      toHiVizComplicationStyle = selfCopy->_toHiVizComplicationStyle;
+      fractionHiVizComplicationStyle = selfCopy->_fractionHiVizComplicationStyle;
+      bezelCircularOuterRadius = selfCopy->_layoutConstants.bezelCircularOuterRadius;
       v142 = v726;
       v143 = v700;
       v144 = v699;
       v147 = objc_msgSend_CGColor(v726, v145, v146);
-      v148 = -CGRectGetMinX(v9->_layoutConstants.bezelOuterRect);
-      v149 = -CGRectGetMinY(v9->_layoutConstants.bezelOuterRect);
-      v855 = CGRectInset(v9->_layoutConstants.bezelOuterRect, v148, v149);
+      v148 = -CGRectGetMinX(selfCopy->_layoutConstants.bezelOuterRect);
+      v149 = -CGRectGetMinY(selfCopy->_layoutConstants.bezelOuterRect);
+      v855 = CGRectInset(selfCopy->_layoutConstants.bezelOuterRect, v148, v149);
       v150 = v855.origin.x;
       v151 = v855.origin.y;
       v152 = v855.size.width;
       height = v855.size.height;
-      CGContextAddRect(a3, v855);
+      CGContextAddRect(context, v855);
       v856.origin.x = v150;
       v856.origin.y = v151;
       v856.size.width = v152;
@@ -1036,45 +1036,45 @@ LABEL_50:
       v858.size.width = bezelCircularOuterRadius + bezelCircularOuterRadius;
       v858.origin.x = v154;
       v858.size.height = bezelCircularOuterRadius + bezelCircularOuterRadius;
-      CGContextAddEllipseInRect(a3, v858);
-      CGContextSetFillColorWithColor(a3, v147);
-      CGContextEOFillPath(a3);
-      v155 = v9->_layoutConstants.bezelCircularOuterRadius;
-      bezelCircularWaypointOuterRingRadius = v9->_layoutConstants.bezelCircularWaypointOuterRingRadius;
+      CGContextAddEllipseInRect(context, v858);
+      CGContextSetFillColorWithColor(context, v147);
+      CGContextEOFillPath(context);
+      v155 = selfCopy->_layoutConstants.bezelCircularOuterRadius;
+      bezelCircularWaypointOuterRingRadius = selfCopy->_layoutConstants.bezelCircularWaypointOuterRingRadius;
       v157 = v144;
       v160 = objc_msgSend_CGColor(v157, v158, v159);
       v699 = v144;
 
-      MidX = CGRectGetMidX(v9->_layoutConstants.bezelOuterRect);
-      MidY = CGRectGetMidY(v9->_layoutConstants.bezelOuterRect);
+      MidX = CGRectGetMidX(selfCopy->_layoutConstants.bezelOuterRect);
+      MidY = CGRectGetMidY(selfCopy->_layoutConstants.bezelOuterRect);
       v859.origin.x = MidX - v155;
       v859.origin.y = MidY - v155;
       v859.size.width = v155 + v155;
       v859.size.height = v155 + v155;
-      CGContextAddEllipseInRect(a3, v859);
+      CGContextAddEllipseInRect(context, v859);
       v860.origin.x = MidX - bezelCircularWaypointOuterRingRadius;
       v860.origin.y = MidY - bezelCircularWaypointOuterRingRadius;
       v860.size.width = bezelCircularWaypointOuterRingRadius + bezelCircularWaypointOuterRingRadius;
       v860.size.height = bezelCircularWaypointOuterRingRadius + bezelCircularWaypointOuterRingRadius;
-      CGContextAddEllipseInRect(a3, v860);
-      CGContextSetFillColorWithColor(a3, v160);
-      CGContextEOFillPath(a3);
-      bezelCircularWaypointInnerRingRadius = v9->_layoutConstants.bezelCircularWaypointInnerRingRadius;
+      CGContextAddEllipseInRect(context, v860);
+      CGContextSetFillColorWithColor(context, v160);
+      CGContextEOFillPath(context);
+      bezelCircularWaypointInnerRingRadius = selfCopy->_layoutConstants.bezelCircularWaypointInnerRingRadius;
       v164 = v143;
       v167 = objc_msgSend_CGColor(v164, v165, v166);
       v700 = v143;
 
-      v168 = CGRectGetMidX(v9->_layoutConstants.bezelOuterRect);
-      v169 = CGRectGetMidY(v9->_layoutConstants.bezelOuterRect);
+      v168 = CGRectGetMidX(selfCopy->_layoutConstants.bezelOuterRect);
+      v169 = CGRectGetMidY(selfCopy->_layoutConstants.bezelOuterRect);
       v861.origin.x = v168 - bezelCircularWaypointInnerRingRadius;
       v861.origin.y = v169 - bezelCircularWaypointInnerRingRadius;
       v861.size.width = bezelCircularWaypointInnerRingRadius + bezelCircularWaypointInnerRingRadius;
       v861.size.height = bezelCircularWaypointInnerRingRadius + bezelCircularWaypointInnerRingRadius;
-      CGContextAddEllipseInRect(a3, v861);
+      CGContextAddEllipseInRect(context, v861);
       v833.b = 0.0;
       v833.a = 0.0;
       v831 = 0.0;
-      NTKCircularBezelViewHiVizComplicationCenterAndScaleFromHiVizStyleToHiVizStyle(fromHiVizComplicationStyle, toHiVizComplicationStyle, &v833.a, &v831, v9->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.x, v9->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.y, fractionHiVizComplicationStyle);
+      NTKCircularBezelViewHiVizComplicationCenterAndScaleFromHiVizStyleToHiVizStyle(fromHiVizComplicationStyle, toHiVizComplicationStyle, &v833.a, &v831, selfCopy->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.x, selfCopy->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.y, fractionHiVizComplicationStyle);
       if (v831 <= 0.0)
       {
         v174 = *MEMORY[0x277CBF3A0];
@@ -1089,7 +1089,7 @@ LABEL_50:
 
       else
       {
-        v170 = v831 * (v9->_layoutConstants.bezelCircularSecondsHiVizRadius + v9->_layoutConstants.bezelCircularSecondsHiVizPlatterPadding);
+        v170 = v831 * (selfCopy->_layoutConstants.bezelCircularSecondsHiVizRadius + selfCopy->_layoutConstants.bezelCircularSecondsHiVizPlatterPadding);
         v171 = v833.a - v170;
         v172 = v833.b - v170;
         v173 = v170 + v170;
@@ -1104,7 +1104,7 @@ LABEL_50:
       v862.origin.y = v172;
       v862.size.width = v173;
       v862.size.height = v178;
-      v9 = v706;
+      selfCopy = v706;
       v179 = v730;
       if (!CGRectEqualToRect(v862, *&v174))
       {
@@ -1112,11 +1112,11 @@ LABEL_50:
         v863.origin.y = v169 + v172;
         v863.size.width = v173;
         v863.size.height = v178;
-        CGContextAddEllipseInRect(a3, v863);
+        CGContextAddEllipseInRect(context, v863);
       }
 
-      CGContextSetFillColorWithColor(a3, v167);
-      CGContextFillPath(a3);
+      CGContextSetFillColorWithColor(context, v167);
+      CGContextFillPath(context);
     }
 
     else
@@ -1125,21 +1125,21 @@ LABEL_50:
     }
   }
 
-  p_x = &v9->_layoutConstants.bezelOuterRect.origin.x;
-  v181 = CGRectGetMidX(v9->_layoutConstants.bezelOuterRect);
-  v182 = CGRectGetMidY(v9->_layoutConstants.bezelOuterRect);
-  CGContextTranslateCTM(a3, v181, v182);
-  v183 = v9->_fromHiVizComplicationStyle;
-  v184 = v9->_toHiVizComplicationStyle;
-  v185 = v9->_fractionHiVizComplicationStyle;
+  p_x = &selfCopy->_layoutConstants.bezelOuterRect.origin.x;
+  v181 = CGRectGetMidX(selfCopy->_layoutConstants.bezelOuterRect);
+  v182 = CGRectGetMidY(selfCopy->_layoutConstants.bezelOuterRect);
+  CGContextTranslateCTM(context, v181, v182);
+  v183 = selfCopy->_fromHiVizComplicationStyle;
+  v184 = selfCopy->_toHiVizComplicationStyle;
+  v185 = selfCopy->_fractionHiVizComplicationStyle;
   v833.b = 0.0;
   v833.a = 0.0;
   v831 = 0.0;
-  NTKCircularBezelViewHiVizComplicationCenterAndScaleFromHiVizStyleToHiVizStyle(v183, v184, &v833.a, &v831, v9->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.x, v9->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.y, v185);
+  NTKCircularBezelViewHiVizComplicationCenterAndScaleFromHiVizStyleToHiVizStyle(v183, v184, &v833.a, &v831, selfCopy->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.x, selfCopy->_layoutConstants.bezelCircularSecondsHiVizCenterOffset.y, v185);
   v186 = v802;
   CLKInterpolateBetweenFloatsClipped();
   v188 = 0.0;
-  v189 = a3;
+  contextCopy10 = context;
   if (fabs(v187) >= 0.00000011920929)
   {
     v188 = v187;
@@ -1163,7 +1163,7 @@ LABEL_50:
 
   else
   {
-    v190 = v188 * v831 * (v9->_layoutConstants.bezelCircularSecondsHiVizRadius + v9->_layoutConstants.bezelCircularSecondsHiVizPlatterPadding);
+    v190 = v188 * v831 * (selfCopy->_layoutConstants.bezelCircularSecondsHiVizRadius + selfCopy->_layoutConstants.bezelCircularSecondsHiVizPlatterPadding);
     v191 = v833.a - v190;
     v192 = v833.b - v190;
     v193 = v190 + v190;
@@ -1174,7 +1174,7 @@ LABEL_50:
     v198 = v190 + v190;
   }
 
-  v199 = v22 * a7;
+  v199 = v22 * waypointsAlpha;
   v864.origin.x = v191;
   v864.origin.y = v192;
   v864.size.width = v193;
@@ -1182,31 +1182,31 @@ LABEL_50:
   if (!CGRectEqualToRect(v864, *&v194))
   {
     v865.origin.x = *p_x;
-    v865.origin.y = v9->_layoutConstants.bezelOuterRect.origin.y;
-    v865.size.width = v9->_layoutConstants.bezelOuterRect.size.width;
-    v865.size.height = v9->_layoutConstants.bezelOuterRect.size.height;
+    v865.origin.y = selfCopy->_layoutConstants.bezelOuterRect.origin.y;
+    v865.size.width = selfCopy->_layoutConstants.bezelOuterRect.size.width;
+    v865.size.height = selfCopy->_layoutConstants.bezelOuterRect.size.height;
     v201 = -CGRectGetMidX(v865);
     v866.origin.x = *p_x;
-    v866.origin.y = v9->_layoutConstants.bezelOuterRect.origin.y;
-    v866.size.width = v9->_layoutConstants.bezelOuterRect.size.width;
-    v866.size.height = v9->_layoutConstants.bezelOuterRect.size.height;
+    v866.origin.y = selfCopy->_layoutConstants.bezelOuterRect.origin.y;
+    v866.size.width = selfCopy->_layoutConstants.bezelOuterRect.size.width;
+    v866.size.height = selfCopy->_layoutConstants.bezelOuterRect.size.height;
     v202 = -CGRectGetMidY(v866);
     v867.origin.x = *p_x;
-    v867.origin.y = v9->_layoutConstants.bezelOuterRect.origin.y;
-    v867.size.width = v9->_layoutConstants.bezelOuterRect.size.width;
-    v867.size.height = v9->_layoutConstants.bezelOuterRect.size.height;
+    v867.origin.y = selfCopy->_layoutConstants.bezelOuterRect.origin.y;
+    v867.size.width = selfCopy->_layoutConstants.bezelOuterRect.size.width;
+    v867.size.height = selfCopy->_layoutConstants.bezelOuterRect.size.height;
     v868 = CGRectInset(v867, v201, v202);
-    CGContextAddRect(a3, v868);
+    CGContextAddRect(context, v868);
     v869.origin.x = v191;
     v869.origin.y = v192;
     v869.size.width = v193;
     v869.size.height = v198;
-    CGContextAddEllipseInRect(a3, v869);
-    CGContextEOClip(a3);
+    CGContextAddEllipseInRect(context, v869);
+    CGContextEOClip(context);
   }
 
-  v203 = v784 * a6;
-  v204 = v805;
+  v203 = v784 * compassAlpha;
+  v204 = progressCopy;
   if (v199 > 0.0)
   {
     v205 = v720;
@@ -1243,24 +1243,24 @@ LABEL_50:
       v215 = 0.0;
     }
 
-    sub_23BECB538(v9->_layoutConstants.bezelCircularWaypointOuterRingWidth, v9->_layoutConstants.bezelCircularWaypointOuterRingWidthTritium, v805);
-    v217 = v215 + (v9->_layoutConstants.bezelCircularWaypointOuterRingWidth - v216) * 0.5;
+    sub_23BECB538(selfCopy->_layoutConstants.bezelCircularWaypointOuterRingWidth, selfCopy->_layoutConstants.bezelCircularWaypointOuterRingWidthTritium, progressCopy);
+    v217 = v215 + (selfCopy->_layoutConstants.bezelCircularWaypointOuterRingWidth - v216) * 0.5;
     v218 = -v217;
     v219 = v217 + v217;
-    CGContextSetLineWidth(a3, v216);
+    CGContextSetLineWidth(context, v216);
     v220 = v212;
     v223 = objc_msgSend_CGColor(v220, v221, v222);
 
-    CGContextSetStrokeColorWithColor(a3, v223);
+    CGContextSetStrokeColorWithColor(context, v223);
     v870.origin.x = v218;
     v870.origin.y = v218;
     v870.size.width = v219;
     v870.size.height = v219;
-    CGContextStrokeEllipseInRect(a3, v870);
+    CGContextStrokeEllipseInRect(context, v870);
   }
 
-  v224 = v25 * a8;
-  p_layoutConstants = &v9->_layoutConstants;
+  v224 = v25 * secondsAlpha;
+  p_layoutConstants = &selfCopy->_layoutConstants;
   if (v203 > 0.0)
   {
     if (v203 >= 1.0)
@@ -1288,7 +1288,7 @@ LABEL_50:
       v235 = objc_msgSend_colorWithAlphaComponent_(v720, v234, v203);
     }
 
-    theArray = v9->_circularCompassTextLines;
+    theArray = selfCopy->_circularCompassTextLines;
     v236 = v225;
     v237 = v227;
     v238 = v229;
@@ -1298,14 +1298,14 @@ LABEL_50:
     v242 = p_layoutConstants;
     v785 = *(p_layoutConstants + 384);
     v777 = *(p_layoutConstants + 392);
-    sub_23BECB538(*(p_layoutConstants + 352), *(p_layoutConstants + 368), v805);
+    sub_23BECB538(*(p_layoutConstants + 352), *(p_layoutConstants + 368), progressCopy);
     widtha = v243;
-    sub_23BECB538(v242[45], v242[47], v805);
+    sub_23BECB538(v242[45], v242[47], progressCopy);
     v773 = v244;
     v245 = *(p_layoutConstants + 312);
     v246 = *(p_layoutConstants + 408);
     v767 = *(p_layoutConstants + 400);
-    sub_23BECB538(v242[53], v242[55], v805);
+    sub_23BECB538(v242[53], v242[55], progressCopy);
     v763 = v247;
     v248 = v245 - v246;
     CLKInterpolateBetweenFloatsClipped();
@@ -1332,7 +1332,7 @@ LABEL_50:
     v260 = objc_msgSend_CGColor(v256, v257, v258);
     v716 = v237;
     v717 = v238;
-    if (fabs(v805) < 2.22044605e-16 || v684 < 2.22044605e-16)
+    if (fabs(progressCopy) < 2.22044605e-16 || v684 < 2.22044605e-16)
     {
       v282 = v237;
       v285 = objc_msgSend_CGColor(v282, v283, v284);
@@ -1345,11 +1345,11 @@ LABEL_50:
 
     else
     {
-      objc_msgSend_colorWithAlphaComponent_(v237, v259, 1.0 - v805, v684);
+      objc_msgSend_colorWithAlphaComponent_(v237, v259, 1.0 - progressCopy, v684);
       v262 = v261 = v236;
-      v264 = objc_msgSend_colorWithAlphaComponent_(v238, v263, 1.0 - v805);
-      v266 = objc_msgSend_colorWithAlphaComponent_(v237, v265, v805);
-      v268 = objc_msgSend_colorWithAlphaComponent_(v238, v267, v805);
+      v264 = objc_msgSend_colorWithAlphaComponent_(v238, v263, 1.0 - progressCopy);
+      v266 = objc_msgSend_colorWithAlphaComponent_(v237, v265, progressCopy);
+      v268 = objc_msgSend_colorWithAlphaComponent_(v238, v267, progressCopy);
       v269 = v262;
       v751 = objc_msgSend_CGColor(v269, v270, v271);
       v272 = v264;
@@ -1359,11 +1359,11 @@ LABEL_50:
       v278 = v268;
       v281 = objc_msgSend_CGColor(v278, v279, v280);
 
-      v189 = a3;
+      contextCopy10 = context;
       v236 = v261;
     }
 
-    CGContextSaveGState(v189);
+    CGContextSaveGState(contextCopy10);
     v289 = *(p_layoutConstants + 328);
     v290 = *(p_layoutConstants + 336);
     v291 = v289 + v290 * -2.0;
@@ -1376,32 +1376,32 @@ LABEL_50:
     ye = v292 - v296;
     v298 = -v294;
     v299 = v236;
-    CGContextAddArc(v189, v293 + 0.0, v297, v290, -v294, 1.57079633, 0);
+    CGContextAddArc(contextCopy10, v293 + 0.0, v297, v290, -v294, 1.57079633, 0);
     v300 = v294 + 3.14159265;
-    CGContextAddArc(v189, 0.0 - v293, v297, v290, 1.57079633, v300, 0);
-    CGContextAddArc(v189, 0.0, ye, v290, v300, v298, 0);
-    CGContextClosePath(v189);
+    CGContextAddArc(contextCopy10, 0.0 - v293, v297, v290, 1.57079633, v300, 0);
+    CGContextAddArc(contextCopy10, 0.0, ye, v290, v300, v298, 0);
+    CGContextClosePath(contextCopy10);
     v301 = v299;
     v304 = objc_msgSend_CGColor(v301, v302, v303);
     x = v299;
 
-    CGContextSetFillColorWithColor(v189, v304);
-    CGContextFillPath(v189);
-    CGContextSetShouldSubpixelPositionFonts(v189, 1);
-    CGContextSetShouldSubpixelQuantizeFonts(v189, 0);
-    CGContextSetShouldAntialias(v189, 1);
-    CGContextSetShouldSmoothFonts(v189, 1);
-    CGContextSetLineCap(v189, kCGLineCapRound);
-    CGContextSetLineWidth(v189, *(p_layoutConstants + 80));
+    CGContextSetFillColorWithColor(contextCopy10, v304);
+    CGContextFillPath(contextCopy10);
+    CGContextSetShouldSubpixelPositionFonts(contextCopy10, 1);
+    CGContextSetShouldSubpixelQuantizeFonts(contextCopy10, 0);
+    CGContextSetShouldAntialias(contextCopy10, 1);
+    CGContextSetShouldSmoothFonts(contextCopy10, 1);
+    CGContextSetLineCap(contextCopy10, kCGLineCapRound);
+    CGContextSetLineWidth(contextCopy10, *(p_layoutConstants + 80));
     v305 = *(MEMORY[0x277CBF2C0] + 16);
     *&v833.a = *MEMORY[0x277CBF2C0];
     *&v833.c = v305;
     *&v833.tx = *(MEMORY[0x277CBF2C0] + 32);
-    CGContextSetTextMatrix(v189, &v833);
-    CGContextSetShouldSmoothFonts(v189, 1);
+    CGContextSetTextMatrix(contextCopy10, &v833);
+    CGContextSetShouldSmoothFonts(contextCopy10, 1);
     v306 = v782 - v736;
-    CGContextSetLineWidth(v189, widtha);
-    CGContextSetLineCap(v189, kCGLineCapRound);
+    CGContextSetLineWidth(contextCopy10, widtha);
+    CGContextSetLineCap(contextCopy10, kCGLineCapRound);
     v307 = 0;
     v737 = v767 + v736;
     v764 = v763 * 0.5;
@@ -1443,7 +1443,7 @@ LABEL_50:
         v317 = v316 * v313;
         v318 = v315 * v314;
         v319 = v316 * v314;
-        v320 = a3;
+        contextCopy4 = context;
         v321 = v315 * v313;
         v322 = v312;
         v323 = v311;
@@ -1451,7 +1451,7 @@ LABEL_50:
 
       else
       {
-        if (v805 < 1.0)
+        if (progressCopy < 1.0)
         {
           ValueAtIndex = CFArrayGetValueAtIndex(theArray, v307 / 0x12u);
           if (v307)
@@ -1464,11 +1464,11 @@ LABEL_50:
             v325 = v751;
           }
 
-          CGContextSetFillColorWithColor(a3, v325);
-          sub_23BECFE88(a3, ValueAtIndex, 0, v309, 0.0, 0.0, v737, 0.5);
+          CGContextSetFillColorWithColor(context, v325);
+          sub_23BECFE88(context, ValueAtIndex, 0, v309, 0.0, 0.0, v737, 0.5);
         }
 
-        if (v805 <= 0.0)
+        if (progressCopy <= 0.0)
         {
           goto LABEL_119;
         }
@@ -1488,23 +1488,23 @@ LABEL_50:
         v317 = v710 * v328;
         v318 = radius * v327;
         v319 = radius * v328;
-        v320 = a3;
+        contextCopy4 = context;
         v321 = v710 * v327;
         v322 = v326;
         v323 = widtha;
       }
 
-      sub_23BECFDF8(v320, v322, v321, v317, v318, v319, v323);
+      sub_23BECFDF8(contextCopy4, v322, v321, v317, v318, v319, v323);
 LABEL_119:
       v295 = v295 + 0.0872664626;
       if (++v307 == 72)
       {
-        v189 = a3;
-        CGContextRestoreGState(a3);
+        contextCopy10 = context;
+        CGContextRestoreGState(context);
 
-        v9 = v706;
+        selfCopy = v706;
         v179 = v730;
-        v204 = v805;
+        v204 = progressCopy;
         v186 = v802;
         p_x = p_layoutConstants;
         v224 = v680;
@@ -1536,7 +1536,7 @@ LABEL_119:
     *&v821 = v337;
     sub_23BECB538(p_x[68], p_x[70], v204);
     v339 = v338;
-    secondsEndOfMinuteAnimationDuration = v9->_secondsEndOfMinuteAnimationDuration;
+    secondsEndOfMinuteAnimationDuration = selfCopy->_secondsEndOfMinuteAnimationDuration;
     if (v204 <= 0.0 || liveSecondsInTritium)
     {
       if (seconds <= 60.0 - secondsEndOfMinuteAnimationDuration)
@@ -1546,9 +1546,9 @@ LABEL_119:
 LABEL_131:
         v349 = *&v821;
         v350 = seconds;
-        v351 = v9->_fromHiVizComplicationStyle;
-        v352 = v9->_toHiVizComplicationStyle;
-        v353 = v9->_fractionHiVizComplicationStyle;
+        v351 = selfCopy->_fromHiVizComplicationStyle;
+        v352 = selfCopy->_toHiVizComplicationStyle;
+        v353 = selfCopy->_fractionHiVizComplicationStyle;
         v354 = v347;
         v355 = v179;
         v356 = v729;
@@ -1556,7 +1556,7 @@ LABEL_131:
         *&__y = 0;
         v358 = modf(v350, &__y);
         v359 = *&__y;
-        CGContextSaveGState(v189);
+        CGContextSaveGState(contextCopy10);
         v360 = v354;
         v725 = v354;
         v363 = objc_msgSend_CGColor(v360, v361, v362);
@@ -1569,9 +1569,9 @@ LABEL_131:
         v372 = v357;
         v728 = v357;
         v375 = objc_msgSend_CGColor(v372, v373, v374);
-        CGContextSetStrokeColorWithColor(v189, v363);
-        CGContextSetLineCap(v189, kCGLineCapRound);
-        CGContextSetLineWidth(v189, v349);
+        CGContextSetStrokeColorWithColor(contextCopy10, v363);
+        CGContextSetLineCap(contextCopy10, kCGLineCapRound);
+        CGContextSetLineWidth(contextCopy10, v349);
         v835 = 0u;
         v834 = 0u;
         memset(&v833, 0, sizeof(v833));
@@ -1596,7 +1596,7 @@ LABEL_131:
           v830 = 0.0;
           v829 = 0.0;
           sub_23BED02E8(p_layoutConstants, &v833, v376, &v829, &v831);
-          sub_23BECFDF8(v189, v378, v829, v830, v831, v832, v349);
+          sub_23BECFDF8(contextCopy10, v378, v829, v830, v831, v832, v349);
           ++v376;
         }
 
@@ -1606,7 +1606,7 @@ LABEL_131:
         {
           CLKInterpolateBetweenFloatsClipped();
           v381 = v380;
-          CGContextSetLineWidth(v189, v380);
+          CGContextSetLineWidth(contextCopy10, v380);
           v382 = v729;
           if (v379 == 5 * (v379 / 5))
           {
@@ -1629,14 +1629,14 @@ LABEL_131:
           v830 = 0.0;
           v829 = 0.0;
           sub_23BED02E8(p_layoutConstants, &v833, v379, &v829, &v831);
-          sub_23BECFDF8(v189, v390, v829, v830, v831, v832, v381);
+          sub_23BECFDF8(contextCopy10, v390, v829, v830, v831, v832, v381);
           v379 = y + 2;
         }
 
-        v9 = v706;
+        selfCopy = v706;
         v329 = v696;
         v204 = v346;
-        CGContextSetLineWidth(v189, v339);
+        CGContextSetLineWidth(contextCopy10, v339);
         if (v379 <= 0x3B)
         {
           do
@@ -1656,21 +1656,21 @@ LABEL_131:
             v830 = 0.0;
             v829 = 0.0;
             sub_23BED02E8(p_layoutConstants, &v833, v379, &v829, &v831);
-            sub_23BECFDF8(v189, v391, v829, v830, v831, v832, v339);
+            sub_23BECFDF8(contextCopy10, v391, v829, v830, v831, v832, v339);
             ++v379;
           }
 
           while (v379 != 60);
         }
 
-        CGContextRestoreGState(v189);
+        CGContextRestoreGState(contextCopy10);
 
         v179 = v731;
         v186 = v802;
         goto LABEL_147;
       }
 
-      secondsEndOfMinuteAnimationStyle = v9->_secondsEndOfMinuteAnimationStyle;
+      secondsEndOfMinuteAnimationStyle = selfCopy->_secondsEndOfMinuteAnimationStyle;
       v342 = v725;
       v815 = v725;
       v814 = v179;
@@ -1681,7 +1681,7 @@ LABEL_131:
 
     else
     {
-      secondsTritiumAnimationStyle = v9->_secondsTritiumAnimationStyle;
+      secondsTritiumAnimationStyle = selfCopy->_secondsTritiumAnimationStyle;
       v342 = v725;
       v817 = v725;
       v816 = v179;
@@ -1699,7 +1699,7 @@ LABEL_131:
   }
 
 LABEL_147:
-  v392 = v693 * a7;
+  v392 = v693 * waypointsAlpha;
   if (v329 > 0.0)
   {
     v393 = v712;
@@ -1733,7 +1733,7 @@ LABEL_147:
       v394 = v402;
       v774 = v406;
       v778 = v404;
-      v189 = a3;
+      contextCopy10 = context;
       v397 = v408;
       v399 = v410;
     }
@@ -1767,13 +1767,13 @@ LABEL_147:
     v747 = v426 + v426;
     v871.origin.y = -v426;
     v871.size.height = v426 + v426;
-    CGContextAddEllipseInRect(v189, v871);
+    CGContextAddEllipseInRect(contextCopy10, v871);
     v872.origin.x = -v427;
     v752 = -v427;
     v872.origin.y = -v427;
     v872.size.width = v427 + v427;
     v872.size.height = v427 + v427;
-    CGContextAddEllipseInRect(v189, v872);
+    CGContextAddEllipseInRect(contextCopy10, v872);
     theArraya = v427 + v427;
     if (v417)
     {
@@ -1804,12 +1804,12 @@ LABEL_147:
     yb = -v441;
     rectb = v423 - v441;
     v442 = v441 + v441;
-    v204 = v805;
-    if (v805 < 1.0)
+    v204 = progressCopy;
+    if (progressCopy < 1.0)
     {
       v683 = v423 * v437.__cosval;
       v694 = v423 * v437.__sinval;
-      if (v805 <= 0.0)
+      if (progressCopy <= 0.0)
       {
         v770 = v441 + v441;
         v446 = v418;
@@ -1820,13 +1820,13 @@ LABEL_147:
       else
       {
         v443 = objc_msgSend_clearColor(MEMORY[0x277D75348], v439, v423 * v437.__sinval);
-        v446 = MEMORY[0x23EEC10C0](v418, v443, v805);
+        v446 = MEMORY[0x23EEC10C0](v418, v443, progressCopy);
 
         v873.origin.x = -v441;
         v873.origin.y = v423 - v441;
         v873.size.width = v441 + v441;
         v873.size.height = v441 + v441;
-        v874 = CGRectInset(v873, v441 * v805, v441 * v805);
+        v874 = CGRectInset(v873, v441 * progressCopy, v441 * progressCopy);
         v444 = v874.origin.x;
         v445 = v874.origin.y;
         v442 = v874.size.width;
@@ -1834,23 +1834,23 @@ LABEL_147:
       }
 
       v447 = k > 0.0;
-      CGContextAddArc(v189, v786, v783, widthb, v438 + 3.14159265, v438, v447);
-      CGContextAddArc(v189, 0.0, 0.0, radiusa, v438, v436, v447);
-      CGContextAddArc(v189, v683, v694, widthb, v436, v436 + 3.14159265, v447);
-      CGContextAddArc(v189, 0.0, 0.0, v738, v436, v438, k <= 0.0);
-      CGContextClosePath(v189);
+      CGContextAddArc(contextCopy10, v786, v783, widthb, v438 + 3.14159265, v438, v447);
+      CGContextAddArc(contextCopy10, 0.0, 0.0, radiusa, v438, v436, v447);
+      CGContextAddArc(contextCopy10, v683, v694, widthb, v436, v436 + 3.14159265, v447);
+      CGContextAddArc(contextCopy10, 0.0, 0.0, v738, v436, v438, k <= 0.0);
+      CGContextClosePath(contextCopy10);
       yb = v444;
       v875.origin.x = v444;
       rectb = v445;
       v875.origin.y = v445;
       v875.size.width = v442;
       v875.size.height = v770;
-      CGContextAddEllipseInRect(v189, v875);
+      CGContextAddEllipseInRect(contextCopy10, v875);
       v448 = v446;
       v451 = objc_msgSend_CGColor(v448, v449, v450);
-      CGContextSetFillColorWithColor(v189, v451);
-      CGContextEOFillPath(v189);
-      v204 = v805;
+      CGContextSetFillColorWithColor(contextCopy10, v451);
+      CGContextEOFillPath(contextCopy10);
+      v204 = progressCopy;
     }
 
     else
@@ -1882,32 +1882,32 @@ LABEL_147:
       theArrayd = v878.origin.x;
       v743 = v878.size.height;
       v748 = v878.size.width;
-      CGContextSetLineWidth(a3, v453);
+      CGContextSetLineWidth(context, v453);
       v459 = v452;
       v462 = objc_msgSend_CGColor(v459, v460, v461);
-      CGContextSetStrokeColorWithColor(a3, v462);
+      CGContextSetStrokeColorWithColor(context, v462);
       v879.origin.x = v455;
       v879.origin.y = v456;
       v879.size.width = v457;
       v879.size.height = v458;
-      CGContextStrokeEllipseInRect(a3, v879);
-      CGContextSetLineWidth(a3, v454);
+      CGContextStrokeEllipseInRect(context, v879);
+      CGContextSetLineWidth(context, v454);
       v463 = v452;
       v466 = objc_msgSend_CGColor(v463, v464, v465);
-      CGContextSetStrokeColorWithColor(a3, v466);
+      CGContextSetStrokeColorWithColor(context, v466);
       v880.origin.y = v753;
       v880.origin.x = theArrayd;
-      v204 = v805;
+      v204 = progressCopy;
       v880.size.height = v743;
       v880.size.width = v748;
-      CGContextStrokeEllipseInRect(a3, v880);
+      CGContextStrokeEllipseInRect(context, v880);
 
-      v189 = a3;
+      contextCopy10 = context;
     }
 
-    CGContextSaveGState(v189);
-    CGContextAddArc(v189, v786, v783, widthb, -3.14159265, 3.14159265, 0);
-    CGContextClip(v189);
+    CGContextSaveGState(contextCopy10);
+    CGContextAddArc(contextCopy10, v786, v783, widthb, -3.14159265, 3.14159265, 0);
+    CGContextClip(contextCopy10);
     if (v204 < 1.0)
     {
       v468 = objc_msgSend_fillColor(v417, v467, 1.0);
@@ -1923,22 +1923,22 @@ LABEL_147:
 
       v474 = v469;
       v477 = objc_msgSend_CGColor(v474, v475, v476);
-      CGContextSetFillColorWithColor(a3, v477);
+      CGContextSetFillColorWithColor(context, v477);
       v881.origin.x = yb;
       v881.origin.y = rectb;
       v881.size.width = v442;
       v881.size.height = v770;
-      CGContextFillEllipseInRect(a3, v881);
+      CGContextFillEllipseInRect(context, v881);
 
-      v189 = a3;
+      contextCopy10 = context;
     }
 
-    CGContextRestoreGState(v189);
+    CGContextRestoreGState(contextCopy10);
 
     v478 = *(p_layoutConstants + 408);
     v479 = *(p_layoutConstants + 416);
     v481 = sub_23BED041C();
-    v9 = v706;
+    selfCopy = v706;
     if (v417)
     {
       v482 = v481 + v481 + v478 - v479;
@@ -1967,7 +1967,7 @@ LABEL_147:
       }
 
       v491 = __sincos_stret(1.57079633 - m);
-      sub_23BED0510(v189, p_layoutConstants, v417, v802, v801, v417, v417, 1u, v489 * v491.__cosval, v489 * v491.__sinval, v804, 1.0, 1.0, fractionUsePOIDerivedColors, v204, v490, 1u, 0, v419, v419, preserveColorsInTritium, v419, v415);
+      sub_23BED0510(contextCopy10, p_layoutConstants, v417, v802, v801, v417, v417, 1u, v489 * v491.__cosval, v489 * v491.__sinval, v804, 1.0, 1.0, fractionUsePOIDerivedColors, v204, v490, 1u, 0, v419, v419, preserveColorsInTritium, v419, v415);
     }
 
     v179 = v732;
@@ -1982,16 +1982,16 @@ LABEL_293:
     goto LABEL_296;
   }
 
-  if (v685 * a7 >= 1.0)
+  if (v685 * waypointsAlpha >= 1.0)
   {
     v495 = v704;
   }
 
   else
   {
-    v492 = objc_msgSend_colorWithAlphaComponent_(v724, v200, v685 * a7);
+    v492 = objc_msgSend_colorWithAlphaComponent_(v724, v200, v685 * waypointsAlpha);
 
-    v494 = objc_msgSend_colorWithAlphaComponent_(v704, v493, v685 * a7);
+    v494 = objc_msgSend_colorWithAlphaComponent_(v704, v493, v685 * waypointsAlpha);
 
     v495 = v494;
     v724 = v492;
@@ -2014,17 +2014,17 @@ LABEL_293:
   v503 = v501 + (*(p_layoutConstants + 432) - v502) * -0.5;
   v504 = -v503;
   v505 = v503 + v503;
-  CGContextSetLineWidth(v189, v502);
+  CGContextSetLineWidth(contextCopy10, v502);
   v506 = v500;
   v509 = objc_msgSend_CGColor(v506, v507, v508);
   v721 = v500;
 
-  CGContextSetStrokeColorWithColor(v189, v509);
+  CGContextSetStrokeColorWithColor(contextCopy10, v509);
   v882.origin.x = v504;
   v882.origin.y = v504;
   v882.size.width = v505;
   v882.size.height = v505;
-  CGContextStrokeEllipseInRect(v189, v882);
+  CGContextStrokeEllipseInRect(contextCopy10, v882);
   if (_fractionFromToDisplayMode(0, v186, v801) <= 0.0)
   {
     v514 = 0.0;
@@ -2071,7 +2071,7 @@ LABEL_293:
   if (v512 > 0.0)
   {
     v516 = v495;
-    v517 = CFArrayGetValueAtIndex(v9->_informationLabelLines, 0);
+    v517 = CFArrayGetValueAtIndex(selfCopy->_informationLabelLines, 0);
     v518 = *(p_layoutConstants + 648);
     v519 = *(p_layoutConstants + 408) - *(p_layoutConstants + 416);
     v520 = v516;
@@ -2080,19 +2080,19 @@ LABEL_293:
     v523 = v520;
     v526 = objc_msgSend_CGColor(v523, v524, v525);
 
-    CGContextSetFillColorWithColor(v189, v526);
-    sub_23BECFE88(v189, v517, 0, 0.0, 0.0, 0.0, v522, 0.5);
+    CGContextSetFillColorWithColor(contextCopy10, v526);
+    sub_23BECFE88(contextCopy10, v517, 0, 0.0, 0.0, 0.0, v522, 0.5);
   }
 
   if (v510 > 0.0)
   {
 LABEL_202:
-    transitoryWaypointRadiusProgress = v9->_transitoryWaypointRadiusProgress;
-    transitoryWaypointRadius = v9->_transitoryWaypointRadius;
-    transitoryTargetWaypoint = v9->_transitoryTargetWaypoint;
-    transitoryTargetWaypointProgress = v9->_transitoryTargetWaypointProgress;
-    waypointsConeWaypointTrackingEnabled = v9->_waypointsConeWaypointTrackingEnabled;
-    waypointsConeDynamicBreadthEnabled = v9->_waypointsConeDynamicBreadthEnabled;
+    transitoryWaypointRadiusProgress = selfCopy->_transitoryWaypointRadiusProgress;
+    transitoryWaypointRadius = selfCopy->_transitoryWaypointRadius;
+    transitoryTargetWaypoint = selfCopy->_transitoryTargetWaypoint;
+    transitoryTargetWaypointProgress = selfCopy->_transitoryTargetWaypointProgress;
+    waypointsConeWaypointTrackingEnabled = selfCopy->_waypointsConeWaypointTrackingEnabled;
+    waypointsConeDynamicBreadthEnabled = selfCopy->_waypointsConeDynamicBreadthEnabled;
     radiusb = v688;
     v529 = v687;
     rectc = transitoryTargetWaypoint;
@@ -2161,7 +2161,7 @@ LABEL_202:
     v839 = v539;
     v840 = transitoryWaypointRadius;
     v841 = waypointRadius;
-    v842 = a3;
+    contextCopy9 = context;
     v843 = v541;
     v844 = v802;
     v845 = v801;
@@ -2177,7 +2177,7 @@ LABEL_202:
     v849 = fractionUsePOIDerivedColors;
     v739 = v531;
     *&v835 = v739;
-    v850 = v805;
+    v850 = progressCopy;
     v771 = v533;
     *(&v835 + 1) = v771;
     v852 = preserveColorsInTritium;
@@ -2190,7 +2190,7 @@ LABEL_202:
     v551 = v549;
     v552 = 1.0;
     *&theArrayb = v539;
-    if (v805 < 1.0)
+    if (progressCopy < 1.0)
     {
       v678 = v549;
       v733 = v179;
@@ -2236,7 +2236,7 @@ LABEL_202:
                 v574 = v573;
 
                 v575 = __sincos_stret(v569);
-                sub_23BED0510(a3, p_layoutConstants, v562, v802, v801, rectc, widthc, v574 <= transitoryWaypointRadius, v539 * v575.__cosval, v539 * v575.__sinval, v804, transitoryTargetWaypointProgress, transitoryWaypointRadiusProgress, fractionUsePOIDerivedColors, v805, v765, v574 <= waypointRadius, 0, v754, v771, preserveColorsInTritium, v788, v761);
+                sub_23BED0510(context, p_layoutConstants, v562, v802, v801, rectc, widthc, v574 <= transitoryWaypointRadius, v539 * v575.__cosval, v539 * v575.__sinval, v804, transitoryTargetWaypointProgress, transitoryWaypointRadiusProgress, fractionUsePOIDerivedColors, progressCopy, v765, v574 <= waypointRadius, 0, v754, v771, preserveColorsInTritium, v788, v761);
               }
             }
           }
@@ -2323,37 +2323,37 @@ LABEL_202:
       v593 = v592 * 0.5;
       v594 = v583 - v593;
       v595 = v583 + v593;
-      CGContextAddArc(a3, 0.0, 0.0, v590, v583 - v593, v583 + v593, 0);
-      CGContextAddArc(a3, 0.0, 0.0, v711, v595, v594, 1);
-      CGContextClosePath(a3);
+      CGContextAddArc(context, 0.0, 0.0, v590, v583 - v593, v583 + v593, 0);
+      CGContextAddArc(context, 0.0, 0.0, v711, v595, v594, 1);
+      CGContextClosePath(context);
       v596 = v591;
       v599 = objc_msgSend_CGColor(v596, v597, v598);
       v749 = v591;
 
-      CGContextSetFillColorWithColor(a3, v599);
-      CGContextFillPath(a3);
-      if (v805 >= 1.0 || v684 < 2.22044605e-16)
+      CGContextSetFillColorWithColor(context, v599);
+      CGContextFillPath(context);
+      if (progressCopy >= 1.0 || v684 < 2.22044605e-16)
       {
 
         v576 = v697;
-        v204 = v805;
+        v204 = progressCopy;
 LABEL_284:
 
-        v189 = a3;
-        v9 = v706;
+        contextCopy10 = context;
+        selfCopy = v706;
         goto LABEL_285;
       }
 
       v679 = v551;
       v734 = v179;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v600 = v681 + *(p_layoutConstants + 408) - *(p_layoutConstants + 416);
       v601 = tan(*(p_layoutConstants + 488) * 0.5);
-      CGContextMoveToPoint(a3, 0.0, 0.0);
-      CGContextAddLineToPoint(a3, -(v600 * v601), v600);
-      CGContextAddLineToPoint(a3, v600 * v601, v600);
-      CGContextClosePath(a3);
-      CGContextClip(a3);
+      CGContextMoveToPoint(context, 0.0, 0.0);
+      CGContextAddLineToPoint(context, -(v600 * v601), v600);
+      CGContextAddLineToPoint(context, v600 * v601, v600);
+      CGContextClosePath(context);
+      CGContextClip(context);
       v823 = 0u;
       v824 = 0u;
       v821 = 0u;
@@ -2396,7 +2396,7 @@ LABEL_284:
                 v624 = v623;
 
                 v625 = __sincos_stret(v619);
-                sub_23BED0510(a3, p_layoutConstants, v611, v802, v801, rectc, widthc, v624 <= transitoryWaypointRadius, *&theArrayb * v625.__cosval, *&theArrayb * v625.__sinval, v804, transitoryTargetWaypointProgress, transitoryWaypointRadiusProgress, fractionUsePOIDerivedColors, v805, v765, v624 <= waypointRadius, v611, v739, v771, preserveColorsInTritium, v788, v761);
+                sub_23BED0510(context, p_layoutConstants, v611, v802, v801, rectc, widthc, v624 <= transitoryWaypointRadius, *&theArrayb * v625.__cosval, *&theArrayb * v625.__sinval, v804, transitoryTargetWaypointProgress, transitoryWaypointRadiusProgress, fractionUsePOIDerivedColors, progressCopy, v765, v624 <= waypointRadius, v611, v739, v771, preserveColorsInTritium, v788, v761);
               }
             }
           }
@@ -2413,7 +2413,7 @@ LABEL_284:
         (v679)[2](v679, v548);
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
 
       v495 = v705;
       v179 = v734;
@@ -2425,7 +2425,7 @@ LABEL_284:
       (v551)[2](v551, v546);
     }
 
-    v204 = v805;
+    v204 = progressCopy;
     if (v547 != v546 && v547 && v547 != v548)
     {
       (v551)[2](v551, v547);
@@ -2477,11 +2477,11 @@ LABEL_285:
     v641 = *MEMORY[0x277CBF348];
     v642 = *(MEMORY[0x277CBF348] + 8);
     v643 = ca * -6.28318531 + 1.04719755;
-    CGContextSaveGState(v189);
-    CGContextAddArc(v189, v641, v642, v635 - v636 * 0.5, ca * -6.28318531, v643, 0);
-    CGContextAddArc(v189, v641, v642, v634 + yd * 0.5, v643, ca * -6.28318531, 1);
-    CGContextClip(v189);
-    CGContextClosePath(v189);
+    CGContextSaveGState(contextCopy10);
+    CGContextAddArc(contextCopy10, v641, v642, v635 - v636 * 0.5, ca * -6.28318531, v643, 0);
+    CGContextAddArc(contextCopy10, v641, v642, v634 + yd * 0.5, v643, ca * -6.28318531, 1);
+    CGContextClip(contextCopy10);
+    CGContextClosePath(contextCopy10);
     *&v833.a = xmmword_23BEED430;
     v644 = v627;
     *&v647 = COERCE_DOUBLE(objc_msgSend_CGColor(v644, v645, v646));
@@ -2496,10 +2496,10 @@ LABEL_285:
     v659 = CGGradientCreateWithColors(DeviceRGB, v657, &v833.a);
     v854.x = v641;
     v854.y = v642;
-    CGContextDrawConicGradient(v189, v659, v854, ca * -6.28318531);
+    CGContextDrawConicGradient(contextCopy10, v659, v854, ca * -6.28318531);
     CGGradientRelease(v659);
     CGColorSpaceRelease(DeviceRGB);
-    CGContextRestoreGState(v189);
+    CGContextRestoreGState(contextCopy10);
   }
 
 LABEL_296:
@@ -2517,11 +2517,11 @@ LABEL_296:
       v702 = v660;
     }
 
-    radiusLabelCTLine = v9->_radiusLabelCTLine;
+    radiusLabelCTLine = selfCopy->_radiusLabelCTLine;
     if (!radiusLabelCTLine)
     {
-      radiusLabelCTLine = objc_msgSend_radiusLabelCTLineForRadius_(v9, v200, waypointRadius);
-      v9->_radiusLabelCTLine = radiusLabelCTLine;
+      radiusLabelCTLine = objc_msgSend_radiusLabelCTLineForRadius_(selfCopy, v200, waypointRadius);
+      selfCopy->_radiusLabelCTLine = radiusLabelCTLine;
     }
 
     v662 = *(p_layoutConstants + 528) - *(p_layoutConstants + 568) - *(p_layoutConstants + 536) - *(p_layoutConstants + 632);
@@ -2537,14 +2537,14 @@ LABEL_296:
     v672 = v663;
     v675 = objc_msgSend_CGColor(v672, v673, v674);
 
-    CGContextSetFillColorWithColor(v189, v675);
-    sub_23BECFE88(v189, radiusLabelCTLine, 1, v667 * 3.14159265 / 180.0, v665 * 3.14159265 / 180.0, v669 * 3.14159265 / 180.0, v662, v671);
+    CGContextSetFillColorWithColor(contextCopy10, v675);
+    sub_23BECFE88(contextCopy10, radiusLabelCTLine, 1, v667 * 3.14159265 / 180.0, v665 * 3.14159265 / 180.0, v669 * 3.14159265 / 180.0, v662, v671);
   }
 
-  CGContextRestoreGState(v189);
+  CGContextRestoreGState(contextCopy10);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   objc_msgSend_bounds(self, v5, v6);
@@ -2571,9 +2571,9 @@ LABEL_296:
   self->_dirtyRect.size = v14;
 }
 
-- (void)setToSnapshotValuesWithPOIFilter:(id)a3
+- (void)setToSnapshotValuesWithPOIFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   objc_msgSend_setSeconds_(self, v5, 45.0);
   objc_msgSend_setHeading_(self, v6, 0.0);
   v9 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], v7, v8);
@@ -2581,7 +2581,7 @@ LABEL_296:
   v15 = objc_msgSend_BOOLValue(v12, v13, v14);
 
   v34 = objc_msgSend_testAppleParkLocation(NTKLeghornWaypoint, v16, v17);
-  v19 = objc_msgSend_demoPOIsFromDataSet_relativeToLocation_filterBy_filterRadius_ensureNorthPOI_useMetric_userGuides_(NTKLeghornDemoPOIDataSource, v18, 0.0, NTKLeghornPOIDataSetSnapshots, v34, v4, 1, v15, 0);
+  v19 = objc_msgSend_demoPOIsFromDataSet_relativeToLocation_filterBy_filterRadius_ensureNorthPOI_useMetric_userGuides_(NTKLeghornDemoPOIDataSource, v18, 0.0, NTKLeghornPOIDataSetSnapshots, v34, filterCopy, 1, v15, 0);
 
   objc_msgSend_setWaypoints_(self, v20, v21, v19);
   objc_msgSend_setTargetWaypoint_(self, v22, v23, 0);
@@ -2592,87 +2592,87 @@ LABEL_296:
   objc_msgSend_setWaypointsState_(self, v32, v33, 2);
 }
 
-+ (void)drawSnapshotInContext:(CGContext *)a3 hiVizComplicationStyle:(unint64_t)a4 colorPalette:(id)a5 poiFilter:(id)a6 forDevice:(id)a7
++ (void)drawSnapshotInContext:(CGContext *)context hiVizComplicationStyle:(unint64_t)style colorPalette:(id)palette poiFilter:(id)filter forDevice:(id)device
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
+  deviceCopy = device;
+  filterCopy = filter;
+  paletteCopy = palette;
   v14 = [NTKCircularBezelView alloc];
-  objc_msgSend_screenBounds(v11, v15, v16);
-  v30 = objc_msgSend_initWithFrame_forDevice_(v14, v17, v18, v11);
+  objc_msgSend_screenBounds(deviceCopy, v15, v16);
+  v30 = objc_msgSend_initWithFrame_forDevice_(v14, v17, v18, deviceCopy);
 
-  objc_msgSend_setColorPalette_(v30, v19, v20, v13);
-  objc_msgSend_setHiVizComplicationStyle_(v30, v21, v22, a4);
-  objc_msgSend_setToSnapshotValuesWithPOIFilter_(v30, v23, v24, v12);
+  objc_msgSend_setColorPalette_(v30, v19, v20, paletteCopy);
+  objc_msgSend_setHiVizComplicationStyle_(v30, v21, v22, style);
+  objc_msgSend_setToSnapshotValuesWithPOIFilter_(v30, v23, v24, filterCopy);
 
   v27 = objc_msgSend_layer(v30, v25, v26);
-  objc_msgSend_renderInContext_(v27, v28, v29, a3);
+  objc_msgSend_renderInContext_(v27, v28, v29, context);
 }
 
-- (void)setPreserveColorsInTritium:(BOOL)a3
+- (void)setPreserveColorsInTritium:(BOOL)tritium
 {
-  if (self->_preserveColorsInTritium != a3)
+  if (self->_preserveColorsInTritium != tritium)
   {
-    self->_preserveColorsInTritium = a3;
+    self->_preserveColorsInTritium = tritium;
     objc_msgSend_setNeedsDisplay(self, a2, v3);
   }
 }
 
-- (void)setLiveSecondsInTritium:(BOOL)a3
+- (void)setLiveSecondsInTritium:(BOOL)tritium
 {
-  if (self->_liveSecondsInTritium != a3)
+  if (self->_liveSecondsInTritium != tritium)
   {
-    self->_liveSecondsInTritium = a3;
+    self->_liveSecondsInTritium = tritium;
     objc_msgSend_setNeedsDisplay(self, a2, v3);
   }
 }
 
-- (void)setTritiumProgress:(double)a3
+- (void)setTritiumProgress:(double)progress
 {
-  if (self->_tritiumProgress != a3)
+  if (self->_tritiumProgress != progress)
   {
-    self->_tritiumProgress = a3;
-    objc_msgSend__updateLabels(self, a2, a3);
+    self->_tritiumProgress = progress;
+    objc_msgSend__updateLabels(self, a2, progress);
 
     objc_msgSend_setNeedsDisplay(self, v5, v6);
   }
 }
 
-- (CGRect)_dirtyRectFromSeconds:(double)a3 toSeconds:(double)a4
+- (CGRect)_dirtyRectFromSeconds:(double)seconds toSeconds:(double)toSeconds
 {
-  if (a3 <= a4)
+  if (seconds <= toSeconds)
   {
-    v5 = a4;
+    secondsCopy = toSeconds;
   }
 
   else
   {
-    v5 = a3;
+    secondsCopy = seconds;
   }
 
-  if (a3 <= a4)
+  if (seconds <= toSeconds)
   {
-    v6 = a3;
+    toSecondsCopy2 = seconds;
   }
 
   else
   {
-    v6 = a4;
+    toSecondsCopy2 = toSeconds;
   }
 
-  sub_23BECBCCC(&self->_layoutConstants, self->_fromHiVizComplicationStyle, self->_toHiVizComplicationStyle, v5, self->_fractionHiVizComplicationStyle);
+  sub_23BECBCCC(&self->_layoutConstants, self->_fromHiVizComplicationStyle, self->_toHiVizComplicationStyle, secondsCopy, self->_fractionHiVizComplicationStyle);
   v9 = v8;
   v11 = v10;
   v13 = v12;
   for (i = v14; ; i = v22)
   {
-    v5 = v5 + -1.0;
-    if (v5 <= v6)
+    secondsCopy = secondsCopy + -1.0;
+    if (secondsCopy <= toSecondsCopy2)
     {
       break;
     }
 
-    sub_23BECBCCC(&self->_layoutConstants, self->_fromHiVizComplicationStyle, self->_toHiVizComplicationStyle, v5, self->_fractionHiVizComplicationStyle);
+    sub_23BECBCCC(&self->_layoutConstants, self->_fromHiVizComplicationStyle, self->_toHiVizComplicationStyle, secondsCopy, self->_fractionHiVizComplicationStyle);
     v39.origin.x = v16;
     v39.origin.y = v17;
     v39.size.width = v18;
@@ -2710,24 +2710,24 @@ LABEL_296:
   return result;
 }
 
-- (void)setSeconds:(double)a3
+- (void)setSeconds:(double)seconds
 {
-  if (objc_msgSend__needUpdateForDeltaSeconds_(self, a2, a3 - self->_seconds))
+  if (objc_msgSend__needUpdateForDeltaSeconds_(self, a2, seconds - self->_seconds))
   {
     seconds = self->_seconds;
-    self->_seconds = a3;
-    if ((objc_msgSend__secondsParasitesNeedsDisplay(self, v5, v6) & 1) != 0 || (v9 = vabdd_f64(a3, seconds), v9 > 1.0) || (v9 = 60.0 - self->_secondsEndOfMinuteAnimationDuration, v9 < a3))
+    self->_seconds = seconds;
+    if ((objc_msgSend__secondsParasitesNeedsDisplay(self, v5, v6) & 1) != 0 || (v9 = vabdd_f64(seconds, seconds), v9 > 1.0) || (v9 = 60.0 - self->_secondsEndOfMinuteAnimationDuration, v9 < seconds))
     {
       objc_msgSend_setNeedsDisplay(self, v8, v9);
     }
 
     else
     {
-      objc_msgSend__dirtyRectFromSeconds_toSeconds_(self, v8, seconds, a3);
+      objc_msgSend__dirtyRectFromSeconds_toSeconds_(self, v8, seconds, seconds);
       objc_msgSend_setNeedsDisplayInRect_(self, v12, v13);
     }
 
-    v11 = modf(a3 + a3, &__y);
+    v11 = modf(seconds + seconds, &__y);
     if (v11 < 0.133333333)
     {
       objc_msgSend__updateLabelsIfNeeded(self, v10, v11);
@@ -2735,11 +2735,11 @@ LABEL_296:
   }
 }
 
-- (void)_setHeading:(double)a3 duration:(double)a4 completion:(id)a5
+- (void)_setHeading:(double)heading duration:(double)duration completion:(id)completion
 {
-  v8 = a5;
-  objc_msgSend_setHeading_(self, v7, a3);
-  v8[2](v8, 1);
+  completionCopy = completion;
+  objc_msgSend_setHeading_(self, v7, heading);
+  completionCopy[2](completionCopy, 1);
 }
 
 - (void)_updateWaypointAhead
@@ -2879,13 +2879,13 @@ LABEL_296:
   self->_waypointAheadProgress = v8;
 }
 
-- (id)attributedStringForDistanceAccuracyToWaypoint:(id)a3
+- (id)attributedStringForDistanceAccuracyToWaypoint:(id)waypoint
 {
   v58[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  waypointCopy = waypoint;
   fractionUsePOIDerivedColors = self->_fractionUsePOIDerivedColors;
   v6 = self->_waypointLabelSecondaryColor;
-  v9 = objc_msgSend_labelColor(v4, v7, v8);
+  v9 = objc_msgSend_labelColor(waypointCopy, v7, v8);
   tritiumProgress = self->_tritiumProgress;
   v49 = objc_msgSend_clearColor(MEMORY[0x277D75348], v11, v12);
   v51 = v9;
@@ -2912,7 +2912,7 @@ LABEL_296:
     v30 = objc_msgSend_objectForKey_(v27, v28, v29, *MEMORY[0x277CBE718]);
     v33 = objc_msgSend_BOOLValue(v30, v31, v32);
 
-    v36 = objc_msgSend_waypointLocation(v4, v34, v35);
+    v36 = objc_msgSend_waypointLocation(waypointCopy, v34, v35);
     objc_msgSend_distanceFromLocation_(v25, v37, v38, v36);
     v40 = v39;
 
@@ -2934,13 +2934,13 @@ LABEL_296:
   return v44;
 }
 
-- (id)attributedStringForTargetWaypoint:(id)a3
+- (id)attributedStringForTargetWaypoint:(id)waypoint
 {
   v20[2] = *MEMORY[0x277D85DE8];
   waypointLabelTertiaryColor = self->_waypointLabelTertiaryColor;
   v5 = self->_waypointLabelPrimaryFont;
   v6 = waypointLabelTertiaryColor;
-  v9 = objc_msgSend_labelText(a3, v7, v8);
+  v9 = objc_msgSend_labelText(waypoint, v7, v8);
   v10 = *MEMORY[0x277D740A8];
   v19[0] = *MEMORY[0x277D740C0];
   v19[1] = v10;
@@ -2954,7 +2954,7 @@ LABEL_296:
   return v17;
 }
 
-- (id)attributedStringForCardinalDirectionLabel:(double)a3
+- (id)attributedStringForCardinalDirectionLabel:(double)label
 {
     ;
   }
@@ -2976,7 +2976,7 @@ LABEL_296:
   return v12;
 }
 
-- (void)_updateLabelsFromDisplayMode:(unint64_t)a3 toDislayMode:(unint64_t)a4 progress:(double)a5 onlyUpdateDistanceLabel:(BOOL)a6
+- (void)_updateLabelsFromDisplayMode:(unint64_t)mode toDislayMode:(unint64_t)dislayMode progress:(double)progress onlyUpdateDistanceLabel:(BOOL)label
 {
   tritiumProgress = self->_tritiumProgress;
   waypointsAlpha = self->_waypointsAlpha;
@@ -2993,34 +2993,34 @@ LABEL_296:
     }
   }
 
-  if (a3 != 3 && a3)
+  if (mode != 3 && mode)
   {
-    if (a4)
+    if (dislayMode)
     {
-      a3 = -1;
+      mode = -1;
     }
 
     else
     {
-      a3 = 0;
+      mode = 0;
     }
 
-    if (a4 == 3)
+    if (dislayMode == 3)
     {
       goto LABEL_18;
     }
   }
 
-  else if (a4 == 3 || !a4)
+  else if (dislayMode == 3 || !dislayMode)
   {
     v14.n128_u64[0] = 0.5;
-    if (a5 > 0.5)
+    if (progress > 0.5)
     {
-      a3 = a4;
+      mode = dislayMode;
     }
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
 LABEL_18:
     v13 = self->_targetWaypoint;
@@ -3030,10 +3030,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (mode)
   {
     v17 = 0;
-    if (a6)
+    if (label)
     {
       goto LABEL_47;
     }
@@ -3059,7 +3059,7 @@ LABEL_19:
 
   if (v19)
   {
-    if (a6)
+    if (label)
     {
       goto LABEL_47;
     }
@@ -3192,37 +3192,37 @@ LABEL_47:
   }
 }
 
-- (void)setHeading:(double)a3 animated:(BOOL)a4
+- (void)setHeading:(double)heading animated:(BOOL)animated
 {
-  v5 = a4;
-  v6 = a3;
-  if (a3 >= 360.0)
+  animatedCopy = animated;
+  headingCopy = heading;
+  if (heading >= 360.0)
   {
     v4 = -360.0;
     do
     {
-      v6 = v6 + -360.0;
+      headingCopy = headingCopy + -360.0;
     }
 
-    while (v6 >= 360.0);
+    while (headingCopy >= 360.0);
   }
 
-  while (v6 < 0.0)
+  while (headingCopy < 0.0)
   {
-    v6 = v6 + 360.0;
+    headingCopy = headingCopy + 360.0;
   }
 
-  if (objc_msgSend__needUpdateForDeltaHeading_(self, a2, v6 - self->_heading, v4))
+  if (objc_msgSend__needUpdateForDeltaHeading_(self, a2, headingCopy - self->_heading, v4))
   {
-    if (v5)
+    if (animatedCopy)
     {
 
-      MEMORY[0x2821F9670](v6);
+      MEMORY[0x2821F9670](headingCopy);
     }
 
     else
     {
-      self->_heading = v6;
+      self->_heading = headingCopy;
       objc_msgSend_setNeedsDisplay(self, v8, v9);
       if (!self->_displayMode)
       {
@@ -3234,13 +3234,13 @@ LABEL_47:
   }
 }
 
-- (void)setFromDisplayMode:(unint64_t)a3 toDisplayMode:(unint64_t)a4 fraction:(double)transitoryDisplayModeProgress
+- (void)setFromDisplayMode:(unint64_t)mode toDisplayMode:(unint64_t)displayMode fraction:(double)transitoryDisplayModeProgress
 {
   v5 = transitoryDisplayModeProgress;
-  if (self->_transitoryDisplayMode != a3 || self->_displayMode != a4 || (transitoryDisplayModeProgress = self->_transitoryDisplayModeProgress, transitoryDisplayModeProgress != v5))
+  if (self->_transitoryDisplayMode != mode || self->_displayMode != displayMode || (transitoryDisplayModeProgress = self->_transitoryDisplayModeProgress, transitoryDisplayModeProgress != v5))
   {
-    self->_transitoryDisplayMode = a3;
-    self->_displayMode = a4;
+    self->_transitoryDisplayMode = mode;
+    self->_displayMode = displayMode;
     self->_transitoryDisplayModeProgress = v5;
     objc_msgSend_setNeedsDisplay(self, a2, transitoryDisplayModeProgress);
     objc_msgSend__updateWaypointAhead(self, v7, v8);
@@ -3249,18 +3249,18 @@ LABEL_47:
   }
 }
 
-- (void)setFromWaypointsState:(unint64_t)a3 toWaypointsState:(unint64_t)a4 fraction:(double)a5
+- (void)setFromWaypointsState:(unint64_t)state toWaypointsState:(unint64_t)waypointsState fraction:(double)fraction
 {
-  if (self->_transitoryWaypointsState != a3 || self->_waypointsState != a4 || self->_transitoryWaypointsStateProgress != a5)
+  if (self->_transitoryWaypointsState != state || self->_waypointsState != waypointsState || self->_transitoryWaypointsStateProgress != fraction)
   {
-    self->_transitoryWaypointsState = a3;
-    self->_waypointsState = a4;
-    self->_transitoryWaypointsStateProgress = a5;
-    objc_msgSend_setNeedsDisplay(self, a2, a5);
+    self->_transitoryWaypointsState = state;
+    self->_waypointsState = waypointsState;
+    self->_transitoryWaypointsStateProgress = fraction;
+    objc_msgSend_setNeedsDisplay(self, a2, fraction);
   }
 }
 
-- (void)setFromHiVizComplicationStyle:(unint64_t)a3 toHiVizComplicationStyle:(unint64_t)a4 fraction:(double)a5
+- (void)setFromHiVizComplicationStyle:(unint64_t)style toHiVizComplicationStyle:(unint64_t)complicationStyle fraction:(double)fraction
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = NTKFoghornFaceBundleLogObject();
@@ -3275,15 +3275,15 @@ LABEL_47:
     v20 = 2112;
     v21 = v15;
     v22 = 2048;
-    v23 = a5;
+    fractionCopy = fraction;
     _os_log_debug_impl(&dword_23BEB1000, v9, OS_LOG_TYPE_DEBUG, "%s: fromHiVizComplicationStyle: %@ to: %@ fraction: %f", &v16, 0x2Au);
   }
 
-  if (self->_fromHiVizComplicationStyle != a3 || self->_toHiVizComplicationStyle != a4 || (fractionHiVizComplicationStyle = self->_fractionHiVizComplicationStyle, fractionHiVizComplicationStyle != a5))
+  if (self->_fromHiVizComplicationStyle != style || self->_toHiVizComplicationStyle != complicationStyle || (fractionHiVizComplicationStyle = self->_fractionHiVizComplicationStyle, fractionHiVizComplicationStyle != fraction))
   {
-    self->_fromHiVizComplicationStyle = a3;
-    self->_toHiVizComplicationStyle = a4;
-    self->_fractionHiVizComplicationStyle = a5;
+    self->_fromHiVizComplicationStyle = style;
+    self->_toHiVizComplicationStyle = complicationStyle;
+    self->_fractionHiVizComplicationStyle = fraction;
     objc_msgSend_setNeedsDisplay(self, v11, fractionHiVizComplicationStyle);
   }
 }
@@ -3299,7 +3299,7 @@ LABEL_47:
   return *(&self->super.super.super.isa + *v2);
 }
 
-- (void)setFromBackgroundStyle:(unint64_t)a3 toBackgroundStyle:(unint64_t)a4 fraction:(double)a5
+- (void)setFromBackgroundStyle:(unint64_t)style toBackgroundStyle:(unint64_t)backgroundStyle fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   if (self->_fractionBezelBackgroundOn != v7)
@@ -3310,18 +3310,18 @@ LABEL_47:
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v16 = a3;
-  objc_storeStrong(&self->_location, a3);
-  if (!v16)
+  locationCopy = location;
+  objc_storeStrong(&self->_location, location);
+  if (!locationCopy)
   {
     goto LABEL_5;
   }
 
-  if (!self->_lastSignificantLocation || objc_msgSend_ntk_significantlyDiffersFromLocation_(v16, v5, v6))
+  if (!self->_lastSignificantLocation || objc_msgSend_ntk_significantlyDiffersFromLocation_(locationCopy, v5, v6))
   {
-    v7 = objc_msgSend_copy(v16, v5, v6);
+    v7 = objc_msgSend_copy(locationCopy, v5, v6);
     lastSignificantLocation = self->_lastSignificantLocation;
     self->_lastSignificantLocation = v7;
 
@@ -3345,25 +3345,25 @@ LABEL_5:
   }
 }
 
-- (void)setFromWaypointRadius:(double)a3 toWaypointRadius:(double)a4 fraction:(double)a5
+- (void)setFromWaypointRadius:(double)radius toWaypointRadius:(double)waypointRadius fraction:(double)fraction
 {
-  if (self->_transitoryWaypointRadius != a3 || self->_waypointRadius != a4 || self->_transitoryWaypointRadiusProgress != a5)
+  if (self->_transitoryWaypointRadius != radius || self->_waypointRadius != waypointRadius || self->_transitoryWaypointRadiusProgress != fraction)
   {
-    self->_transitoryWaypointRadius = a3;
-    self->_waypointRadius = a4;
-    self->_transitoryWaypointRadiusProgress = a5;
-    objc_msgSend__invalidateRadiusLabelCTLine(self, a2, a3);
+    self->_transitoryWaypointRadius = radius;
+    self->_waypointRadius = waypointRadius;
+    self->_transitoryWaypointRadiusProgress = fraction;
+    objc_msgSend__invalidateRadiusLabelCTLine(self, a2, radius);
 
     objc_msgSend_setNeedsDisplay(self, v6, v7);
   }
 }
 
-- (void)setWaypoints:(id)a3
+- (void)setWaypoints:(id)waypoints
 {
-  v14 = a3;
-  if ((objc_msgSend_isEqual_(v14, v5, v6, self->_waypoints) & 1) == 0)
+  waypointsCopy = waypoints;
+  if ((objc_msgSend_isEqual_(waypointsCopy, v5, v6, self->_waypoints) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypoints, a3);
+    objc_storeStrong(&self->_waypoints, waypoints);
     sortedWaypoints = self->_sortedWaypoints;
     self->_sortedWaypoints = 0;
 
@@ -3373,353 +3373,353 @@ LABEL_5:
   }
 }
 
-- (void)setFromTargetWaypoint:(id)a3 toTargetWaypoint:(id)a4 fraction:(double)a5
+- (void)setFromTargetWaypoint:(id)waypoint toTargetWaypoint:(id)targetWaypoint fraction:(double)fraction
 {
-  v16 = a3;
-  v9 = a4;
-  if (self->_transitoryTargetWaypoint != v16 || self->_targetWaypoint != v9 || self->_transitoryTargetWaypointProgress != a5)
+  waypointCopy = waypoint;
+  targetWaypointCopy = targetWaypoint;
+  if (self->_transitoryTargetWaypoint != waypointCopy || self->_targetWaypoint != targetWaypointCopy || self->_transitoryTargetWaypointProgress != fraction)
   {
-    objc_storeStrong(&self->_transitoryTargetWaypoint, a3);
-    objc_storeStrong(&self->_targetWaypoint, a4);
-    self->_transitoryTargetWaypointProgress = a5;
+    objc_storeStrong(&self->_transitoryTargetWaypoint, waypoint);
+    objc_storeStrong(&self->_targetWaypoint, targetWaypoint);
+    self->_transitoryTargetWaypointProgress = fraction;
     objc_msgSend_setNeedsDisplay(self, v10, v11);
     objc_msgSend__updateWaypointAhead(self, v12, v13);
     objc_msgSend__updateLabels(self, v14, v15);
   }
 }
 
-- (void)setPrimaryBackgroundColor:(id)a3
+- (void)setPrimaryBackgroundColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_primaryBackgroundColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_primaryBackgroundColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_primaryBackgroundColor, a3);
+    objc_storeStrong(&self->_primaryBackgroundColor, color);
     objc_msgSend__setBackgroundNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondaryBackgroundColor:(id)a3
+- (void)setSecondaryBackgroundColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondaryBackgroundColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondaryBackgroundColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondaryBackgroundColor, a3);
+    objc_storeStrong(&self->_secondaryBackgroundColor, color);
     objc_msgSend__setBackgroundNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setTertiaryBackgroundColor:(id)a3
+- (void)setTertiaryBackgroundColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_tertiaryBackgroundColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_tertiaryBackgroundColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_tertiaryBackgroundColor, a3);
+    objc_storeStrong(&self->_tertiaryBackgroundColor, color);
     objc_msgSend__setBackgroundNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassOrientingArrowColor:(id)a3
+- (void)setCompassOrientingArrowColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassOrientingArrowColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassOrientingArrowColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassOrientingArrowColor, a3);
+    objc_storeStrong(&self->_compassOrientingArrowColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassNorthColor:(id)a3
+- (void)setCompassNorthColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassNorthColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassNorthColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassNorthColor, a3);
+    objc_storeStrong(&self->_compassNorthColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassCardinalColor:(id)a3
+- (void)setCompassCardinalColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassCardinalColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassCardinalColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassCardinalColor, a3);
+    objc_storeStrong(&self->_compassCardinalColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassMajorTickColor:(id)a3
+- (void)setCompassMajorTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassMajorTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassMajorTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassMajorTickColor, a3);
+    objc_storeStrong(&self->_compassMajorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassMedialTickColor:(id)a3
+- (void)setCompassMedialTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassMedialTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassMedialTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassMedialTickColor, a3);
+    objc_storeStrong(&self->_compassMedialTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassMinorTickColor:(id)a3
+- (void)setCompassMinorTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassMinorTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassMinorTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassMinorTickColor, a3);
+    objc_storeStrong(&self->_compassMinorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setCompassBackgroundColor:(id)a3
+- (void)setCompassBackgroundColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_compassBackgroundColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_compassBackgroundColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_compassBackgroundColor, a3);
+    objc_storeStrong(&self->_compassBackgroundColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setsecondsCompassRingColor:(id)a3
+- (void)setsecondsCompassRingColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsCompassRingColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsCompassRingColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsCompassRingColor, a3);
+    objc_storeStrong(&self->_secondsCompassRingColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointColor:(id)a3
+- (void)setWaypointColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointColor, a3);
+    objc_storeStrong(&self->_waypointColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointAheadColor:(id)a3
+- (void)setWaypointAheadColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointAheadColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointAheadColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointAheadColor, a3);
+    objc_storeStrong(&self->_waypointAheadColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointRingColor:(id)a3
+- (void)setWaypointRingColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointRingColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointRingColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointRingColor, a3);
+    objc_storeStrong(&self->_waypointRingColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointTargetRingColor:(id)a3
+- (void)setWaypointTargetRingColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointTargetRingColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointTargetRingColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointTargetRingColor, a3);
+    objc_storeStrong(&self->_waypointTargetRingColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointActiveConeColor:(id)a3
+- (void)setWaypointActiveConeColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointActiveConeColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointActiveConeColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointActiveConeColor, a3);
+    objc_storeStrong(&self->_waypointActiveConeColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointInactiveConeColor:(id)a3
+- (void)setWaypointInactiveConeColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointInactiveConeColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointInactiveConeColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointInactiveConeColor, a3);
+    objc_storeStrong(&self->_waypointInactiveConeColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondsMajorTickColor:(id)a3
+- (void)setSecondsMajorTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsMajorTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsMajorTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsMajorTickColor, a3);
+    objc_storeStrong(&self->_secondsMajorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondsMedialTickColor:(id)a3
+- (void)setSecondsMedialTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsMedialTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsMedialTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsMedialTickColor, a3);
+    objc_storeStrong(&self->_secondsMedialTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondsMinorTickColor:(id)a3
+- (void)setSecondsMinorTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsMinorTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsMinorTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsMinorTickColor, a3);
+    objc_storeStrong(&self->_secondsMinorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondsInactiveMajorTickColor:(id)a3
+- (void)setSecondsInactiveMajorTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsInactiveMajorTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsInactiveMajorTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsInactiveMajorTickColor, a3);
+    objc_storeStrong(&self->_secondsInactiveMajorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondsInactiveMedialTickColor:(id)a3
+- (void)setSecondsInactiveMedialTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsInactiveMedialTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsInactiveMedialTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsInactiveMedialTickColor, a3);
+    objc_storeStrong(&self->_secondsInactiveMedialTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setSecondsInactiveMinorTickColor:(id)a3
+- (void)setSecondsInactiveMinorTickColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_secondsInactiveMinorTickColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_secondsInactiveMinorTickColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsInactiveMinorTickColor, a3);
+    objc_storeStrong(&self->_secondsInactiveMinorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointLabelPrimaryColor:(id)a3
+- (void)setWaypointLabelPrimaryColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointLabelPrimaryColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointLabelPrimaryColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointLabelPrimaryColor, a3);
+    objc_storeStrong(&self->_waypointLabelPrimaryColor, color);
     objc_msgSend__updateLabels(self, v7, v8);
   }
 }
 
-- (void)setWaypointLabelSecondaryColor:(id)a3
+- (void)setWaypointLabelSecondaryColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_waypointLabelSecondaryColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_waypointLabelSecondaryColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_waypointLabelSecondaryColor, a3);
+    objc_storeStrong(&self->_waypointLabelSecondaryColor, color);
     objc_msgSend__updateLabels(self, v7, v8);
   }
 }
 
-- (void)radiusLabelColor:(id)a3
+- (void)radiusLabelColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_radiusLabelColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_radiusLabelColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_radiusLabelColor, a3);
+    objc_storeStrong(&self->_radiusLabelColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setTritiumMajorColor:(id)a3
+- (void)setTritiumMajorColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_tritiumMajorColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_tritiumMajorColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_tritiumMajorColor, a3);
+    objc_storeStrong(&self->_tritiumMajorColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)seTtritiumMedialColor:(id)a3
+- (void)seTtritiumMedialColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_tritiumMedialColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_tritiumMedialColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_tritiumMedialColor, a3);
+    objc_storeStrong(&self->_tritiumMedialColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setTritiumMinorColor:(id)a3
+- (void)setTritiumMinorColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, v6, self->_tritiumMinorColor) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, v6, self->_tritiumMinorColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_tritiumMinorColor, a3);
+    objc_storeStrong(&self->_tritiumMinorColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8);
   }
 }
 
-- (void)setWaypointsAlpha:(double)a3
+- (void)setWaypointsAlpha:(double)alpha
 {
-  if (self->_waypointsAlpha != a3)
+  if (self->_waypointsAlpha != alpha)
   {
-    self->_waypointsAlpha = a3;
-    objc_msgSend__updateLabels(self, a2, a3);
+    self->_waypointsAlpha = alpha;
+    objc_msgSend__updateLabels(self, a2, alpha);
 
     objc_msgSend_setNeedsDisplay(self, v5, v6);
   }
 }
 
-- (void)setCompassAlpha:(double)a3
+- (void)setCompassAlpha:(double)alpha
 {
-  if (self->_compassAlpha != a3)
+  if (self->_compassAlpha != alpha)
   {
-    self->_compassAlpha = a3;
-    objc_msgSend_setNeedsDisplay(self, a2, a3);
+    self->_compassAlpha = alpha;
+    objc_msgSend_setNeedsDisplay(self, a2, alpha);
   }
 }
 
-- (void)setSecondsAlpha:(double)a3
+- (void)setSecondsAlpha:(double)alpha
 {
-  if (self->_secondsAlpha != a3)
+  if (self->_secondsAlpha != alpha)
   {
-    self->_secondsAlpha = a3;
-    objc_msgSend_setNeedsDisplay(self, a2, a3);
+    self->_secondsAlpha = alpha;
+    objc_msgSend_setNeedsDisplay(self, a2, alpha);
   }
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
-    objc_msgSend__setBackgroundNeedsDisplay(self, a2, a3);
+    self->_backgroundAlpha = alpha;
+    objc_msgSend__setBackgroundNeedsDisplay(self, a2, alpha);
   }
 }
 
-- (void)setUsePOIDerivedColors:(BOOL)a3
+- (void)setUsePOIDerivedColors:(BOOL)colors
 {
   v3 = 0.0;
-  if (a3)
+  if (colors)
   {
     v3 = 1.0;
   }
@@ -3731,114 +3731,114 @@ LABEL_5:
   }
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  v4 = a3;
-  v7 = objc_msgSend_isNightModeF(v4, v5, v6);
+  paletteCopy = palette;
+  v7 = objc_msgSend_isNightModeF(paletteCopy, v5, v6);
   objc_msgSend_doubleValue(v7, v8, v9);
   v11 = 1.0 - v10;
 
-  v14 = objc_msgSend_isMulticolorF(v4, v12, v13);
+  v14 = objc_msgSend_isMulticolorF(paletteCopy, v12, v13);
   objc_msgSend_doubleValue(v14, v15, v16);
   v18 = v17;
 
   v19 = fmin(v11 * v18, 1.0);
   v20 = fmax(v19, 0.0);
-  v177 = objc_msgSend_bezelDepthLimitMajorTickColor(v4, v21, v19);
+  v177 = objc_msgSend_bezelDepthLimitMajorTickColor(paletteCopy, v21, v19);
   v24 = objc_msgSend_clearColor(MEMORY[0x277D75348], v22, v23);
-  v27 = objc_msgSend_primaryBackgroundColor(v4, v25, v26);
+  v27 = objc_msgSend_primaryBackgroundColor(paletteCopy, v25, v26);
   objc_msgSend_setPrimaryBackgroundColor_(self, v28, v29, v27);
 
-  v32 = objc_msgSend_secondaryBackgroundColor(v4, v30, v31);
+  v32 = objc_msgSend_secondaryBackgroundColor(paletteCopy, v30, v31);
   objc_msgSend_setSecondaryBackgroundColor_(self, v33, v34, v32);
 
-  v37 = objc_msgSend_tertiaryBackgroundColor(v4, v35, v36);
+  v37 = objc_msgSend_tertiaryBackgroundColor(paletteCopy, v35, v36);
   objc_msgSend_setTertiaryBackgroundColor_(self, v38, v39, v37);
 
-  v42 = objc_msgSend_compassOrientingArrowColor(v4, v40, v41);
+  v42 = objc_msgSend_compassOrientingArrowColor(paletteCopy, v40, v41);
   objc_msgSend_setCompassOrientingArrowColor_(self, v43, v44, v42);
 
-  v47 = objc_msgSend_compassNorthColor(v4, v45, v46);
+  v47 = objc_msgSend_compassNorthColor(paletteCopy, v45, v46);
   objc_msgSend_setCompassNorthColor_(self, v48, v49, v47);
 
-  v52 = objc_msgSend_compassCardinalColor(v4, v50, v51);
+  v52 = objc_msgSend_compassCardinalColor(paletteCopy, v50, v51);
   objc_msgSend_setCompassCardinalColor_(self, v53, v54, v52);
 
-  v57 = objc_msgSend_compassMajorTickColor(v4, v55, v56);
+  v57 = objc_msgSend_compassMajorTickColor(paletteCopy, v55, v56);
   objc_msgSend_setCompassMajorTickColor_(self, v58, v59, v57);
 
-  v62 = objc_msgSend_compassMedialTickColor(v4, v60, v61);
+  v62 = objc_msgSend_compassMedialTickColor(paletteCopy, v60, v61);
   objc_msgSend_setCompassMedialTickColor_(self, v63, v64, v62);
 
-  v67 = objc_msgSend_compassMinorTickColor(v4, v65, v66);
+  v67 = objc_msgSend_compassMinorTickColor(paletteCopy, v65, v66);
   objc_msgSend_setCompassMinorTickColor_(self, v68, v69, v67);
 
   objc_msgSend_setCompassBackgroundColor_(self, v70, v71, v24);
-  v74 = objc_msgSend_secondsCompassRingColor(v4, v72, v73);
+  v74 = objc_msgSend_secondsCompassRingColor(paletteCopy, v72, v73);
   objc_msgSend_setSecondsCompassRingColor_(self, v75, v76, v74);
 
-  v79 = objc_msgSend_waypointAheadColor(v4, v77, v78);
+  v79 = objc_msgSend_waypointAheadColor(paletteCopy, v77, v78);
   objc_msgSend_setWaypointAheadColor_(self, v80, v81, v79);
 
-  v84 = objc_msgSend_waypointRingColor(v4, v82, v83);
+  v84 = objc_msgSend_waypointRingColor(paletteCopy, v82, v83);
   objc_msgSend_setWaypointRingColor_(self, v85, v86, v84);
 
-  v89 = objc_msgSend_waypointTargetRingColor(v4, v87, v88);
+  v89 = objc_msgSend_waypointTargetRingColor(paletteCopy, v87, v88);
   objc_msgSend_setWaypointTargetRingColor_(self, v90, v91, v89);
 
-  v94 = objc_msgSend_waypointActiveConeColor(v4, v92, v93);
+  v94 = objc_msgSend_waypointActiveConeColor(paletteCopy, v92, v93);
   objc_msgSend_setWaypointActiveConeColor_(self, v95, v96, v94);
 
-  v99 = objc_msgSend_waypointInactiveConeColor(v4, v97, v98);
+  v99 = objc_msgSend_waypointInactiveConeColor(paletteCopy, v97, v98);
   objc_msgSend_setWaypointInactiveConeColor_(self, v100, v101, v99);
 
-  v104 = objc_msgSend_waypointColor(v4, v102, v103);
+  v104 = objc_msgSend_waypointColor(paletteCopy, v102, v103);
   objc_msgSend_setWaypointColor_(self, v105, v106, v104);
 
-  v109 = objc_msgSend_waypointOutOfRangeColor(v4, v107, v108);
+  v109 = objc_msgSend_waypointOutOfRangeColor(paletteCopy, v107, v108);
   objc_msgSend_setWaypointOutOfRangeColor_(self, v110, v111, v109);
 
   self->_fractionUsePOIDerivedColors = v20;
-  v114 = objc_msgSend_secondsMajorTickColor(v4, v112, v113);
+  v114 = objc_msgSend_secondsMajorTickColor(paletteCopy, v112, v113);
   objc_msgSend_setSecondsMajorTickColor_(self, v115, v116, v114);
 
-  v119 = objc_msgSend_secondsMajorTickColor(v4, v117, v118);
+  v119 = objc_msgSend_secondsMajorTickColor(paletteCopy, v117, v118);
   objc_msgSend_setSecondsMedialTickColor_(self, v120, v121, v119);
 
-  v124 = objc_msgSend_secondsMinorTickColor(v4, v122, v123);
+  v124 = objc_msgSend_secondsMinorTickColor(paletteCopy, v122, v123);
   objc_msgSend_setSecondsMinorTickColor_(self, v125, v126, v124);
 
-  v129 = objc_msgSend_secondsInactiveMajorTickColor(v4, v127, v128);
+  v129 = objc_msgSend_secondsInactiveMajorTickColor(paletteCopy, v127, v128);
   objc_msgSend_setSecondsInactiveMajorTickColor_(self, v130, v131, v129);
 
-  v134 = objc_msgSend_secondsInactiveMajorTickColor(v4, v132, v133);
+  v134 = objc_msgSend_secondsInactiveMajorTickColor(paletteCopy, v132, v133);
   objc_msgSend_setSecondsInactiveMedialTickColor_(self, v135, v136, v134);
 
-  v139 = objc_msgSend_secondsInactiveMinorTickColor(v4, v137, v138);
+  v139 = objc_msgSend_secondsInactiveMinorTickColor(paletteCopy, v137, v138);
   objc_msgSend_setSecondsInactiveMinorTickColor_(self, v140, v141, v139);
 
-  v144 = objc_msgSend_waypointLabelPrimaryColor(v4, v142, v143);
+  v144 = objc_msgSend_waypointLabelPrimaryColor(paletteCopy, v142, v143);
   objc_msgSend_setWaypointLabelPrimaryColor_(self, v145, v146, v144);
 
-  v149 = objc_msgSend_waypointLabelSecondaryColor(v4, v147, v148);
+  v149 = objc_msgSend_waypointLabelSecondaryColor(paletteCopy, v147, v148);
   objc_msgSend_setWaypointLabelSecondaryColor_(self, v150, v151, v149);
 
-  v154 = objc_msgSend_waypointLabelTertiaryColor(v4, v152, v153);
+  v154 = objc_msgSend_waypointLabelTertiaryColor(paletteCopy, v152, v153);
   objc_msgSend_setWaypointLabelTertiaryColor_(self, v155, v156, v154);
 
-  v159 = objc_msgSend_radiusLabelColor(v4, v157, v158);
+  v159 = objc_msgSend_radiusLabelColor(paletteCopy, v157, v158);
   objc_msgSend_setRadiusLabelColor_(self, v160, v161, v159);
 
   objc_msgSend_setTritiumMajorColor_(self, v162, v163, v177);
   objc_msgSend_setTritiumMedialColor_(self, v164, v165, v177);
   objc_msgSend_setTritiumMinorColor_(self, v166, v167, v177);
-  v170 = objc_msgSend_isFullScreen(v4, v168, v169);
+  v170 = objc_msgSend_isFullScreen(paletteCopy, v168, v169);
   objc_msgSend_doubleValue(v170, v171, v172);
   v174 = v173;
 
   objc_msgSend_setFromBackgroundStyle_toBackgroundStyle_fraction_(self, v175, v174, 0, 1);
   colorPalette = self->_colorPalette;
-  self->_colorPalette = v4;
+  self->_colorPalette = paletteCopy;
 }
 
 - (id)accessibilityLabel
@@ -3876,12 +3876,12 @@ LABEL_5:
   return MEMORY[0x2821F9670](waypointRadius);
 }
 
-- (id)_accessibilityStringForDistanceAccuracyToWaypoint:(id)a3
+- (id)_accessibilityStringForDistanceAccuracyToWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   IsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
   v6 = 0;
-  if (v4 && IsVoiceOverRunning)
+  if (waypointCopy && IsVoiceOverRunning)
   {
     location = self->_location;
     if (location)
@@ -3892,7 +3892,7 @@ LABEL_5:
       v15 = objc_msgSend_objectForKey_(v12, v13, v14, *MEMORY[0x277CBE718]);
       v18 = objc_msgSend_BOOLValue(v15, v16, v17);
 
-      v21 = objc_msgSend_waypointLocation(v4, v19, v20);
+      v21 = objc_msgSend_waypointLocation(waypointCopy, v19, v20);
       objc_msgSend_distanceFromLocation_(v9, v22, v23, v21);
       v25 = v24;
 

@@ -8,24 +8,24 @@
 - (void)sb_setMaxInputLength:()SpringBoardUserNotification
 {
   v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, "_sb_maxInputLength", v2, 0x301);
+  objc_setAssociatedObject(self, "_sb_maxInputLength", v2, 0x301);
 }
 
 - (uint64_t)sb_maxInputLength
 {
-  v1 = objc_getAssociatedObject(a1, "_sb_maxInputLength");
+  v1 = objc_getAssociatedObject(self, "_sb_maxInputLength");
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedIntegerValue];
+    unsignedIntegerValue = [v1 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 @end

@@ -8,11 +8,11 @@
 
 - (uint64_t)canConvertToSchemaOrg
 {
-  v2 = [a1 intentResponse];
-  if (v2)
+  intentResponse = [self intentResponse];
+  if (intentResponse)
   {
-    v3 = [a1 intentResponse];
-    v4 = [v3 conformsToProtocol:&unk_28479D600];
+    intentResponse2 = [self intentResponse];
+    v4 = [intentResponse2 conformsToProtocol:&unk_28479D600];
   }
 
   else
@@ -25,19 +25,19 @@
 
 - (id)toSchemas
 {
-  v2 = [a1 intentResponse];
-  if (v2 && (v3 = v2, [a1 intentResponse], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "conformsToProtocol:", &unk_28479D600), v4, v3, v5))
+  intentResponse = [self intentResponse];
+  if (intentResponse && (v3 = intentResponse, [self intentResponse], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "conformsToProtocol:", &unk_28479D600), v4, v3, v5))
   {
-    v6 = [a1 intentResponse];
-    v7 = [v6 toSchemas];
+    intentResponse2 = [self intentResponse];
+    toSchemas = [intentResponse2 toSchemas];
   }
 
   else
   {
-    v7 = 0;
+    toSchemas = 0;
   }
 
-  return v7;
+  return toSchemas;
 }
 
 + (id)fromSchemas:()schema

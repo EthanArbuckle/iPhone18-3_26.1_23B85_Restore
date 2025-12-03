@@ -1,11 +1,11 @@
 @interface HKQuantityDistributionSeries
-+ (id)segmentsFromChartPoint:(id)a3 minY:(double)a4 maxY:(double)a5 zeroCountForGap:(int64_t)a6;
-+ (id)segmentsFromChartPoint:(id)a3 zeroCountForGap:(int64_t)a4;
-+ (id)transformedSegmentsFromChartPoint:(id)a3 forX:(double)a4 minY:(double)a5 maxY:(double)a6 zeroCountForGap:(int64_t)a7;
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
++ (id)segmentsFromChartPoint:(id)point minY:(double)y maxY:(double)maxY zeroCountForGap:(int64_t)gap;
++ (id)segmentsFromChartPoint:(id)point zeroCountForGap:(int64_t)gap;
++ (id)transformedSegmentsFromChartPoint:(id)point forX:(double)x minY:(double)y maxY:(double)maxY zeroCountForGap:(int64_t)gap;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
 - (BOOL)excludeDistribution;
-- (CGRect)_textRectForSize:(CGSize)a3 location:(CGPoint)a4 screenRect:(CGRect)a5 yOffset:(double)a6;
+- (CGRect)_textRectForSize:(CGSize)size location:(CGPoint)location screenRect:(CGRect)rect yOffset:(double)offset;
 - (HKAxisLabelStyle)minMaxLabelStyle;
 - (HKAxisLabelStyle)minMaxValueStyle;
 - (HKQuantityDistributionSeries)init;
@@ -13,25 +13,25 @@
 - (HKStrokeStyle)minMaxPointStyle;
 - (HKStrokeStyle)selectedStrokeStyle;
 - (HKStrokeStyle)unselectedStrokeStyle;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
 - (double)hollowLineRatio;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)_quickDate:(id)a3;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (id)marginsForYAxis:(id)a3 xAxisRange:(id)a4 zoomLevel:(int64_t)a5 chartRect:(CGRect)a6;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)_quickDate:(id)date;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (id)marginsForYAxis:(id)axis xAxisRange:(id)range zoomLevel:(int64_t)level chartRect:(CGRect)rect;
 - (int64_t)zeroCountForGap;
-- (void)_drawMinMaxLabelsForMin:(CGPoint)a3 max:(CGPoint)a4 pointTransform:(CGAffineTransform *)a5 axisRect:(CGRect)a6 context:(CGContext *)a7;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)setExcludeDistribution:(BOOL)a3;
-- (void)setHollowLineRatio:(double)a3;
-- (void)setInactiveStrokeStyle:(id)a3;
-- (void)setMinMaxLabelStyle:(id)a3;
-- (void)setMinMaxPointStyle:(id)a3;
-- (void)setMinMaxValueStyle:(id)a3;
-- (void)setSelectedStrokeStyle:(id)a3;
-- (void)setUnselectedStrokeStyle:(id)a3;
-- (void)setZeroCountForGap:(int64_t)a3;
+- (void)_drawMinMaxLabelsForMin:(CGPoint)min max:(CGPoint)max pointTransform:(CGAffineTransform *)transform axisRect:(CGRect)rect context:(CGContext *)context;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)setExcludeDistribution:(BOOL)distribution;
+- (void)setHollowLineRatio:(double)ratio;
+- (void)setInactiveStrokeStyle:(id)style;
+- (void)setMinMaxLabelStyle:(id)style;
+- (void)setMinMaxPointStyle:(id)style;
+- (void)setMinMaxValueStyle:(id)style;
+- (void)setSelectedStrokeStyle:(id)style;
+- (void)setUnselectedStrokeStyle:(id)style;
+- (void)setZeroCountForGap:(int64_t)gap;
 @end
 
 @implementation HKQuantityDistributionSeries
@@ -76,259 +76,259 @@
 
 - (HKStrokeStyle)inactiveStrokeStyle
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_inactiveStrokeStyleStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setInactiveStrokeStyle:(id)a3
+- (void)setInactiveStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   inactiveStrokeStyleStorage = self->_inactiveStrokeStyleStorage;
   self->_inactiveStrokeStyleStorage = v6;
 
-  v8 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKStrokeStyle)unselectedStrokeStyle
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_unselectedStrokeStyleStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setUnselectedStrokeStyle:(id)a3
+- (void)setUnselectedStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   unselectedStrokeStyleStorage = self->_unselectedStrokeStyleStorage;
   self->_unselectedStrokeStyleStorage = v6;
 
-  v8 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKStrokeStyle)selectedStrokeStyle
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_selectedStrokeStyleStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setSelectedStrokeStyle:(id)a3
+- (void)setSelectedStrokeStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   selectedStrokeStyleStorage = self->_selectedStrokeStyleStorage;
   self->_selectedStrokeStyleStorage = v6;
 
-  v8 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKAxisLabelStyle)minMaxLabelStyle
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_minMaxLabelStyleStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setMinMaxLabelStyle:(id)a3
+- (void)setMinMaxLabelStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   minMaxLabelStyleStorage = self->_minMaxLabelStyleStorage;
   self->_minMaxLabelStyleStorage = v6;
 
-  v8 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKAxisLabelStyle)minMaxValueStyle
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_minMaxValueStyleStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setMinMaxValueStyle:(id)a3
+- (void)setMinMaxValueStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   minMaxValueStyleStorage = self->_minMaxValueStyleStorage;
   self->_minMaxValueStyleStorage = v6;
 
-  v8 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (HKStrokeStyle)minMaxPointStyle
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_minMaxPointStyleStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setMinMaxPointStyle:(id)a3
+- (void)setMinMaxPointStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  styleCopy = style;
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [styleCopy copy];
   minMaxPointStyleStorage = self->_minMaxPointStyleStorage;
   self->_minMaxPointStyleStorage = v6;
 
-  v8 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (BOOL)excludeDistribution
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  LOBYTE(v3) = self->_excludeDistributionStorage;
-  v4 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v4 unlock];
+  LOBYTE(seriesMutableStateLock) = self->_excludeDistributionStorage;
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
-  return v3;
+  return seriesMutableStateLock;
 }
 
-- (void)setExcludeDistribution:(BOOL)a3
+- (void)setExcludeDistribution:(BOOL)distribution
 {
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_excludeDistributionStorage = a3;
-  v6 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_excludeDistributionStorage = distribution;
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (int64_t)zeroCountForGap
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   zeroCountForGapStorage = self->_zeroCountForGapStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return zeroCountForGapStorage;
 }
 
-- (void)setZeroCountForGap:(int64_t)a3
+- (void)setZeroCountForGap:(int64_t)gap
 {
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_zeroCountForGapStorage = a3;
-  v6 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_zeroCountForGapStorage = gap;
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (double)hollowLineRatio
 {
-  v3 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   hollowLineRatioStorage = self->_hollowLineRatioStorage;
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return hollowLineRatioStorage;
 }
 
-- (void)setHollowLineRatio:(double)a3
+- (void)setHollowLineRatio:(double)ratio
 {
-  v5 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = 1.0;
-  if (a3 <= 1.0)
+  ratioCopy = 1.0;
+  if (ratio <= 1.0)
   {
-    v6 = a3;
+    ratioCopy = ratio;
   }
 
-  self->_hollowLineRatioStorage = fmax(v6, 0.0);
-  v7 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
-  [v7 unlock];
+  self->_hollowLineRatioStorage = fmax(ratioCopy, 0.0);
+  seriesMutableStateLock2 = [(HKQuantityDistributionSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (id)_quickDate:(id)a3
+- (id)_quickDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"MM/dd/YYYY-HH:mm:ss"];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v5 setTimeZone:v6];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v5 setTimeZone:localTimeZone];
 
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:dateCopy];
 
   return v7;
 }
 
-- (id)marginsForYAxis:(id)a3 xAxisRange:(id)a4 zoomLevel:(int64_t)a5 chartRect:(CGRect)a6
+- (id)marginsForYAxis:(id)axis xAxisRange:(id)range zoomLevel:(int64_t)level chartRect:(CGRect)rect
 {
-  height = a6.size.height;
-  y = a6.origin.y;
-  v9 = a3;
-  v10 = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
-  if (v10 && (v11 = v10, [(HKQuantityDistributionSeries *)self minMaxValueStyle], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v9) && v12 && height > 0.0)
+  height = rect.size.height;
+  y = rect.origin.y;
+  axisCopy = axis;
+  minMaxLabelStyle = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
+  if (minMaxLabelStyle && (v11 = minMaxLabelStyle, [(HKQuantityDistributionSeries *)self minMaxValueStyle], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, axisCopy) && v12 && height > 0.0)
   {
-    v13 = [v9 minValue];
-    [v13 doubleValue];
+    minValue = [axisCopy minValue];
+    [minValue doubleValue];
     v15 = v14;
-    v16 = [v9 maxValue];
-    [v16 doubleValue];
+    maxValue = [axisCopy maxValue];
+    [maxValue doubleValue];
     v18 = v17;
 
     [HKAxis expandByPointsLow:36.0 high:36.0 modelRange:v15 pointRange:v18, y, y + height];
@@ -340,23 +340,23 @@
 
   else
   {
-    v23 = v9;
+    v23 = axisCopy;
   }
 
   return v23;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3;
-  v52 = a5;
-  v51 = a8;
-  v20 = a9;
-  CGContextSaveGState(a7);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  renderContextCopy = renderContext;
+  delegateCopy = delegate;
+  CGContextSaveGState(context);
   if ([(HKGraphSeries *)self allowsSelection])
   {
     [(HKQuantityDistributionSeries *)self unselectedStrokeStyle];
@@ -367,11 +367,11 @@
     [(HKQuantityDistributionSeries *)self inactiveStrokeStyle];
   }
   v21 = ;
-  [v21 applyToContext:a7];
+  [v21 applyToContext:context];
   [v21 lineWidth];
   v23 = v22;
-  v24 = [(HKQuantityDistributionSeries *)self selectedStrokeStyle];
-  [v24 lineWidth];
+  selectedStrokeStyle = [(HKQuantityDistributionSeries *)self selectedStrokeStyle];
+  [selectedStrokeStyle lineWidth];
   v26 = v25;
 
   v103 = 0u;
@@ -379,7 +379,7 @@
   v101 = 0u;
   v102 = 0u;
   [(HKGraphSeries *)self selectedPathRange];
-  [v20 virtualMarginInsets];
+  [delegateCopy virtualMarginInsets];
   v49 = v28;
   v50 = v27;
   v30 = v29;
@@ -415,7 +415,7 @@
   v77[0] = 0;
   v77[1] = v77;
   v77[2] = 0x2020000000;
-  v78 = [(HKQuantityDistributionSeries *)self excludeDistribution];
+  excludeDistribution = [(HKQuantityDistributionSeries *)self excludeDistribution];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __171__HKQuantityDistributionSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke;
@@ -443,7 +443,7 @@
   v60 = v97;
   v61 = &v85;
   v62 = v77;
-  v72 = a7;
+  contextCopy = context;
   v58 = v99;
   v56[4] = self;
   v76 = v104;
@@ -454,48 +454,48 @@
   v64 = &v79;
   v35 = v21;
   v57 = v35;
-  v36 = *&a6->c;
-  v53 = *&a6->a;
+  v36 = *&transform->c;
+  v53 = *&transform->a;
   v54 = v36;
-  v55 = *&a6->tx;
-  [v19 enumerateCoordinatesWithTransform:&v53 roundToViewScale:0 block:v56];
-  v37 = [v20 seriesDrawingDuringScrolling];
-  v38 = [v20 seriesDrawingDuringTiling];
+  v55 = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:&v53 roundToViewScale:0 block:v56];
+  seriesDrawingDuringScrolling = [delegateCopy seriesDrawingDuringScrolling];
+  seriesDrawingDuringTiling = [delegateCopy seriesDrawingDuringTiling];
   if ([(HKGraphSeries *)self allowsSelection])
   {
     if ((v80[3] & 1) == 0)
     {
-      v39 = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
-      if (v39)
+      minMaxLabelStyle = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
+      if (minMaxLabelStyle)
       {
-        v40 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
-        v41 = v40;
-        if ((v40 == 0) | (v38 | v37) & 1)
+        minMaxValueStyle = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
+        v41 = minMaxValueStyle;
+        if ((minMaxValueStyle == 0) | (seriesDrawingDuringTiling | seriesDrawingDuringScrolling) & 1)
         {
         }
 
         else
         {
-          v42 = [(HKQuantityDistributionSeries *)self excludeDistribution];
+          excludeDistribution2 = [(HKQuantityDistributionSeries *)self excludeDistribution];
 
-          if (v42)
+          if (excludeDistribution2)
           {
             v43 = v92[4];
             v44 = v92[5];
             v45 = v86[4];
             v46 = v86[5];
-            v47 = *&a6->c;
-            v53 = *&a6->a;
+            v47 = *&transform->c;
+            v53 = *&transform->a;
             v54 = v47;
-            v55 = *&a6->tx;
-            [(HKQuantityDistributionSeries *)self _drawMinMaxLabelsForMin:&v53 max:a7 pointTransform:v43 axisRect:v44 context:v45, v46, v33, y + v50, width - (v48 + v32), height - (v50 + v49)];
+            v55 = *&transform->tx;
+            [(HKQuantityDistributionSeries *)self _drawMinMaxLabelsForMin:&v53 max:context pointTransform:v43 axisRect:v44 context:v45, v46, v33, y + v50, width - (v48 + v32), height - (v50 + v49)];
           }
         }
       }
     }
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 
   _Block_object_dispose(v77, 8);
   _Block_object_dispose(&v79, 8);
@@ -674,76 +674,76 @@ LABEL_32:
   }
 }
 
-- (void)_drawMinMaxLabelsForMin:(CGPoint)a3 max:(CGPoint)a4 pointTransform:(CGAffineTransform *)a5 axisRect:(CGRect)a6 context:(CGContext *)a7
+- (void)_drawMinMaxLabelsForMin:(CGPoint)min max:(CGPoint)max pointTransform:(CGAffineTransform *)transform axisRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  x = a6.origin.x;
-  y = a6.origin.y;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v10 = max.y;
+  v11 = max.x;
+  v12 = min.y;
+  v13 = min.x;
   v179[2] = *MEMORY[0x1E69E9840];
-  v15 = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
-  v16 = [v15 font];
+  minMaxLabelStyle = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
+  font = [minMaxLabelStyle font];
 
-  v17 = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
-  v18 = [v17 textColor];
+  minMaxLabelStyle2 = [(HKQuantityDistributionSeries *)self minMaxLabelStyle];
+  textColor = [minMaxLabelStyle2 textColor];
 
   v20 = *MEMORY[0x1E69DB650];
   v178[0] = *MEMORY[0x1E69DB648];
   v19 = v178[0];
   v178[1] = v20;
-  v166 = v16;
-  v179[0] = v16;
-  v179[1] = v18;
-  v168 = v18;
+  v166 = font;
+  v179[0] = font;
+  v179[1] = textColor;
+  v168 = textColor;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v179 forKeys:v178 count:2];
-  v22 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
-  v23 = [v22 font];
+  minMaxValueStyle = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
+  font2 = [minMaxValueStyle font];
 
-  v24 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
-  v25 = [v24 textColor];
+  minMaxValueStyle2 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
+  textColor2 = [minMaxValueStyle2 textColor];
 
   v176[0] = v19;
   v176[1] = v20;
-  v167 = v23;
-  v177[0] = v23;
-  v177[1] = v25;
-  v26 = v25;
+  v167 = font2;
+  v177[0] = font2;
+  v177[1] = textColor2;
+  v26 = textColor2;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v177 forKeys:v176 count:2];
-  v28 = [MEMORY[0x1E69DC888] clearColor];
-  v29 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
-  v30 = [v29 numberFormatter];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  minMaxValueStyle3 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
+  numberFormatter = [minMaxValueStyle3 numberFormatter];
 
   rect = height;
-  if (v30)
+  if (numberFormatter)
   {
-    v31 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
-    v32 = [v31 numberFormatter];
+    minMaxValueStyle4 = [(HKQuantityDistributionSeries *)self minMaxValueStyle];
+    numberFormatter2 = [minMaxValueStyle4 numberFormatter];
   }
 
   else
   {
-    v32 = [MEMORY[0x1E696ADA0] hk_wholeNumberFormatter];
+    numberFormatter2 = [MEMORY[0x1E696ADA0] hk_wholeNumberFormatter];
   }
 
   v33 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-  v34 = [v32 stringFromNumber:v33 displayType:0 unitController:0];
+  v34 = [numberFormatter2 stringFromNumber:v33 displayType:0 unitController:0];
 
   v35 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-  v36 = v32;
+  v36 = numberFormatter2;
   v37 = v35;
   v169 = v36;
   v38 = [v36 stringFromNumber:v35 displayType:0 unitController:0];
 
-  a = a5->a;
-  b = a5->b;
-  v41 = a5->c;
-  d = a5->d;
-  tx = a5->tx;
-  ty = a5->ty;
+  a = transform->a;
+  b = transform->b;
+  v41 = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
   v45 = v38;
   v172 = tx + v12 * v41 + a * v13;
   v46 = ty + v12 * d + b * v13;
@@ -767,7 +767,7 @@ LABEL_32:
     }
 
     [(HKQuantityDistributionSeries *)self _textRectForSize:v160 location:v51 screenRect:v47 yOffset:v48, x, y, width, rect, *&v53];
-    [v38 hk_drawInRect:v27 withAttributes:v28 outlineWidth:a7 outlineColor:? context:?];
+    [v38 hk_drawInRect:v27 withAttributes:clearColor outlineWidth:context outlineColor:? context:?];
     v54 = v169;
   }
 
@@ -778,10 +778,10 @@ LABEL_32:
     v55 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     [v55 localizedStringForKey:@"HEART_RATE_MIN_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v56 = v157 = v34;
-    v57 = [v56 localizedUppercaseString];
+    localizedUppercaseString = [v56 localizedUppercaseString];
 
     v34 = v157;
-    [v57 sizeWithAttributes:v21];
+    [localizedUppercaseString sizeWithAttributes:v21];
     v59 = v58;
     v61 = v60;
     [v157 sizeWithAttributes:v27];
@@ -821,7 +821,7 @@ LABEL_32:
       v74 = v73;
       v153 = v76;
       r2a = v75;
-      v77 = [v57 rangeOfCharacterFromSet:v66];
+      v77 = [localizedUppercaseString rangeOfCharacterFromSet:v66];
       v78 = v74 + 3.0;
       if (v77 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -834,10 +834,10 @@ LABEL_32:
     v87 = x;
     v88 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v89 = [v88 localizedStringForKey:@"HEART_RATE_MAX_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v90 = [v89 localizedUppercaseString];
+    localizedUppercaseString2 = [v89 localizedUppercaseString];
 
     v21 = v161;
-    [v90 sizeWithAttributes:v161];
+    [localizedUppercaseString2 sizeWithAttributes:v161];
     v92 = v91;
     v94 = v93;
     [v45 sizeWithAttributes:v27];
@@ -876,7 +876,7 @@ LABEL_32:
       v107 = v106;
       v109 = v108;
       v111 = v110;
-      v112 = [v90 rangeOfCharacterFromSet:v156];
+      v112 = [localizedUppercaseString2 rangeOfCharacterFromSet:v156];
       v113 = v101 + -3.0;
       if (v112 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -928,25 +928,25 @@ LABEL_32:
     v193 = CGRectIntersection(v187, v192);
     if (CGRectEqualToRect(*MEMORY[0x1E695F050], v193))
     {
-      recta = v28;
-      r1a = [HKStringDrawing stringDrawingWithText:v90 inRect:v161 withAttributes:v99, v148, r1, v149];
+      recta = clearColor;
+      r1a = [HKStringDrawing stringDrawingWithText:localizedUppercaseString2 inRect:v161 withAttributes:v99, v148, r1, v149];
       v175[0] = r1a;
-      v126 = [HKStringDrawing stringDrawingWithText:v45 inRect:v27 withAttributes:v143, v141, v109, v111];
-      v175[1] = v126;
-      [HKStringDrawing stringDrawingWithText:v57 inRect:v161 withAttributes:v147, v146, v145, v144];
-      v127 = v165 = v90;
+      v111 = [HKStringDrawing stringDrawingWithText:v45 inRect:v27 withAttributes:v143, v141, v109, v111];
+      v175[1] = v111;
+      [HKStringDrawing stringDrawingWithText:localizedUppercaseString inRect:v161 withAttributes:v147, v146, v145, v144];
+      v127 = v165 = localizedUppercaseString2;
       v175[2] = v127;
       [HKStringDrawing stringDrawingWithText:v157 inRect:v27 withAttributes:v163, v152, r2a, v153];
       v129 = v128 = v26;
       v175[3] = v129;
       v130 = [MEMORY[0x1E695DEC8] arrayWithObjects:v175 count:4];
-      [HKStringDrawing drawStrings:v130 outlineWidth:recta outlineColor:a7 context:8.0];
+      [HKStringDrawing drawStrings:v130 outlineWidth:recta outlineColor:context context:8.0];
 
-      v28 = recta;
+      clearColor = recta;
       v26 = v128;
       v34 = v157;
 
-      v90 = v165;
+      localizedUppercaseString2 = v165;
       v54 = v169;
 
       v21 = v161;
@@ -956,44 +956,44 @@ LABEL_32:
     v48 = v159;
   }
 
-  v131 = [(HKQuantityDistributionSeries *)self minMaxPointStyle];
+  minMaxPointStyle = [(HKQuantityDistributionSeries *)self minMaxPointStyle];
 
-  if (v131)
+  if (minMaxPointStyle)
   {
-    v132 = [(HKQuantityDistributionSeries *)self minMaxPointStyle];
-    [v132 lineWidth];
+    minMaxPointStyle2 = [(HKQuantityDistributionSeries *)self minMaxPointStyle];
+    [minMaxPointStyle2 lineWidth];
     v134 = v133;
 
-    v135 = [(HKQuantityDistributionSeries *)self minMaxPointStyle];
-    [v135 strokeColor];
-    v137 = v136 = v28;
-    CGContextSetFillColorWithColor(a7, [v137 CGColor]);
+    minMaxPointStyle3 = [(HKQuantityDistributionSeries *)self minMaxPointStyle];
+    [minMaxPointStyle3 strokeColor];
+    v137 = v136 = clearColor;
+    CGContextSetFillColorWithColor(context, [v137 CGColor]);
 
-    v28 = v136;
+    clearColor = v136;
     v138 = HKUIFloorToScreenScale(v172);
-    CGContextAddArc(a7, v138, v171, v134, 0.0, 6.28318531, 1);
-    CGContextFillPath(a7);
+    CGContextAddArc(context, v138, v171, v134, 0.0, 6.28318531, 1);
+    CGContextFillPath(context);
     v139 = HKUIFloorToScreenScale(v47);
-    CGContextAddArc(a7, v139, v48, v134, 0.0, 6.28318531, 1);
-    CGContextFillPath(a7);
+    CGContextAddArc(context, v139, v48, v134, 0.0, 6.28318531, 1);
+    CGContextFillPath(context);
   }
 }
 
-- (CGRect)_textRectForSize:(CGSize)a3 location:(CGPoint)a4 screenRect:(CGRect)a5 yOffset:(double)a6
+- (CGRect)_textRectForSize:(CGSize)size location:(CGPoint)location screenRect:(CGRect)rect yOffset:(double)offset
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
-  v12 = a4.x + a3.width * -0.5;
-  v13 = a4.y - a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  v12 = location.x + size.width * -0.5;
+  v13 = location.y - offset;
   v24.origin.x = v12;
-  v24.origin.y = a4.y - a6;
+  v24.origin.y = location.y - offset;
   v24.size.width = v11;
   v24.size.height = v10;
-  v25 = CGRectIntersection(v24, a5);
+  v25 = CGRectIntersection(v24, rect);
   if (!CGRectIsNull(v25))
   {
     if (v12 < x)
@@ -1066,27 +1066,27 @@ LABEL_32:
   return result;
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 chartPoints];
-  if (!v12)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKQuantityDistributionSeries coordinatesForBlock:a2 blockPath:self xAxis:? yAxis:?];
   }
 
-  v26 = v10;
-  v13 = [v10 transform];
-  v25 = v11;
-  v14 = [v11 transform];
+  v26 = axisCopy;
+  transform = [axisCopy transform];
+  v25 = yAxisCopy;
+  transform2 = [yAxisCopy transform];
   v15 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v12;
+  obj = chartPoints;
   v16 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v16)
   {
@@ -1101,7 +1101,7 @@ LABEL_32:
           objc_enumerationMutation(obj);
         }
 
-        v20 = [[HKDistributionBlockPoint alloc] initWithChartPoint:*(*(&v30 + 1) + 8 * i) xAxisTransform:v13 yAxisTransform:v14 gapZeroCount:[(HKQuantityDistributionSeries *)self zeroCountForGap]];
+        v20 = [[HKDistributionBlockPoint alloc] initWithChartPoint:*(*(&v30 + 1) + 8 * i) xAxisTransform:transform yAxisTransform:transform2 gapZeroCount:[(HKQuantityDistributionSeries *)self zeroCountForGap]];
         [v15 addObject:v20];
       }
 
@@ -1118,15 +1118,15 @@ LABEL_32:
   return v21;
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a4 distributionSegments];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  distributionSegments = [coordinate distributionSegments];
+  v6 = [distributionSegments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1138,7 +1138,7 @@ LABEL_32:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(distributionSegments);
         }
 
         [*(*(&v13 + 1) + 8 * i) CGPointValue];
@@ -1149,7 +1149,7 @@ LABEL_32:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [distributionSegments countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1163,23 +1163,23 @@ LABEL_32:
   return v9;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  [a4 minPoint];
+  x = point.x;
+  [coordinate minPoint];
   return vabdd_f64(x, v6);
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
+  y = point.y;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a4 distributionSegments];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  distributionSegments = [coordinate distributionSegments];
+  v7 = [distributionSegments countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1192,7 +1192,7 @@ LABEL_32:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(distributionSegments);
         }
 
         [*(*(&v16 + 1) + 8 * i) CGPointValue];
@@ -1207,7 +1207,7 @@ LABEL_32:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [distributionSegments countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1230,58 +1230,58 @@ LABEL_32:
   }
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a4;
-  [a3 minPoint];
+  thanCopy = than;
+  [coordinate minPoint];
   v7 = v6;
-  [v5 minPoint];
+  [thanCopy minPoint];
   v9 = v8;
 
   return v7 < v9;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a4;
-  [a3 maxPoint];
+  thanCopy = than;
+  [coordinate maxPoint];
   v7 = v6;
-  [v5 maxPoint];
+  [thanCopy maxPoint];
   v9 = v8;
 
   return v7 > v9;
 }
 
-+ (id)segmentsFromChartPoint:(id)a3 zeroCountForGap:(int64_t)a4
++ (id)segmentsFromChartPoint:(id)point zeroCountForGap:(int64_t)gap
 {
-  v6 = a3;
-  v7 = [v6 minYValue];
-  v8 = [v6 maxYValue];
-  [v7 doubleValue];
+  pointCopy = point;
+  minYValue = [pointCopy minYValue];
+  maxYValue = [pointCopy maxYValue];
+  [minYValue doubleValue];
   v10 = v9;
-  [v8 doubleValue];
-  v12 = [a1 segmentsFromChartPoint:v6 minY:a4 maxY:v10 zeroCountForGap:v11];
+  [maxYValue doubleValue];
+  v12 = [self segmentsFromChartPoint:pointCopy minY:gap maxY:v10 zeroCountForGap:v11];
 
   return v12;
 }
 
-+ (id)segmentsFromChartPoint:(id)a3 minY:(double)a4 maxY:(double)a5 zeroCountForGap:(int64_t)a6
++ (id)segmentsFromChartPoint:(id)point minY:(double)y maxY:(double)maxY zeroCountForGap:(int64_t)gap
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  pointCopy = point;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v9 minimumBucketValue];
+  [pointCopy minimumBucketValue];
   v12 = v11;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = [v9 bucketCounts];
-  v14 = [v13 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  bucketCounts = [pointCopy bucketCounts];
+  v14 = [bucketCounts countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v14)
   {
     v15 = v14;
-    v16 = 0;
+    gapCopy = 0;
     v17 = *v37;
     v18 = v12;
     v19 = v12;
@@ -1291,13 +1291,13 @@ LABEL_32:
       {
         if (*v37 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(bucketCounts);
         }
 
         if ([*(*(&v36 + 1) + 8 * i) integerValue])
         {
-          v21 = v16 < a6;
-          v16 = 0;
+          v21 = gapCopy < gap;
+          gapCopy = 0;
           if (!v21)
           {
             v12 = v19;
@@ -1307,27 +1307,27 @@ LABEL_32:
 
         else
         {
-          if (!v16)
+          if (!gapCopy)
           {
             v12 = v19;
           }
 
-          if (++v16 == a6)
+          if (++gapCopy == gap)
           {
             v22 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
             v23 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
             [v10 addObject:v22];
             [v10 addObject:v23];
 
-            v16 = a6;
+            gapCopy = gap;
           }
         }
 
-        [v9 bucketIncrement];
+        [pointCopy bucketIncrement];
         v19 = v19 + v24;
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v15 = [bucketCounts countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v15);
@@ -1345,23 +1345,23 @@ LABEL_32:
   [v10 addObject:v26];
   if ([v10 count])
   {
-    v27 = [v10 firstObject];
-    [v27 doubleValue];
+    firstObject = [v10 firstObject];
+    [firstObject doubleValue];
     v29 = v28;
 
-    if (v29 < a4)
+    if (v29 < y)
     {
-      v30 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+      v30 = [MEMORY[0x1E696AD98] numberWithDouble:y];
       [v10 setObject:v30 atIndexedSubscript:0];
     }
 
-    v31 = [v10 lastObject];
-    [v31 doubleValue];
+    lastObject = [v10 lastObject];
+    [lastObject doubleValue];
     v33 = v32;
 
-    if (v33 > a5)
+    if (v33 > maxY)
     {
-      v34 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+      v34 = [MEMORY[0x1E696AD98] numberWithDouble:maxY];
       [v10 setObject:v34 atIndexedSubscript:{objc_msgSend(v10, "count") - 1}];
     }
   }
@@ -1369,14 +1369,14 @@ LABEL_32:
   return v10;
 }
 
-+ (id)transformedSegmentsFromChartPoint:(id)a3 forX:(double)a4 minY:(double)a5 maxY:(double)a6 zeroCountForGap:(int64_t)a7
++ (id)transformedSegmentsFromChartPoint:(id)point forX:(double)x minY:(double)y maxY:(double)maxY zeroCountForGap:(int64_t)gap
 {
-  v8 = [a1 segmentsFromChartPoint:a3 minY:a7 maxY:a5 zeroCountForGap:a6];
+  v8 = [self segmentsFromChartPoint:point minY:gap maxY:y zeroCountForGap:maxY];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __97__HKQuantityDistributionSeries_transformedSegmentsFromChartPoint_forX_minY_maxY_zeroCountForGap___block_invoke;
   v11[3] = &__block_descriptor_40_e27___NSValue_16__0__NSNumber_8l;
-  *&v11[4] = a4;
+  *&v11[4] = x;
   v9 = [v8 hk_map:v11];
 
   return v9;

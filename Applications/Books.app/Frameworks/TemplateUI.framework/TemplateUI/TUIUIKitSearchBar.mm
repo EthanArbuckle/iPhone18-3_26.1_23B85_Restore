@@ -1,19 +1,19 @@
 @interface TUIUIKitSearchBar
-- (TUIUIKitSearchBar)initWithFrame:(CGRect)a3;
+- (TUIUIKitSearchBar)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCancelText:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setCancelText:(id)text;
+- (void)setFont:(id)font;
+- (void)setTextColor:(id)color;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation TUIUIKitSearchBar
 
-- (TUIUIKitSearchBar)initWithFrame:(CGRect)a3
+- (TUIUIKitSearchBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUIUIKitSearchBar;
-  v3 = [(TUIUIKitSearchBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIUIKitSearchBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,34 +34,34 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUIUIKitSearchBar *)self searchField];
+  searchField = [(TUIUIKitSearchBar *)self searchField];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [UIImage tui_imageNamed:@"search_glyph" inBundle:v12];
   v14 = [v13 imageWithRenderingMode:2];
 
-  v15 = [v11 leftView];
-  [v15 setImage:v14];
-  [v15 frame];
+  leftView = [searchField leftView];
+  [leftView setImage:v14];
+  [leftView frame];
   v17 = v16;
-  [v15 frame];
+  [leftView frame];
   v19 = v18;
   [v14 size];
   v21 = v20;
   [v14 size];
-  [v15 setFrame:{v17, v19, v21, v22}];
-  v23 = [(TUIUIKitSearchBar *)self tintColor];
-  [v15 setTintColor:v23];
+  [leftView setFrame:{v17, v19, v21, v22}];
+  tintColor = [(TUIUIKitSearchBar *)self tintColor];
+  [leftView setTintColor:tintColor];
 
-  [v11 frame];
+  [searchField frame];
   x = v39.origin.x;
   Width = CGRectGetWidth(v39);
   v40.origin.x = v4;
   v40.origin.y = v6;
   v40.size.width = v8;
   v40.size.height = v10;
-  [v11 setFrame:{x, 0.0, Width, CGRectGetHeight(v40)}];
-  v26 = [(TUIUIKitSearchBar *)self cancelButton];
-  [v26 frame];
+  [searchField setFrame:{x, 0.0, Width, CGRectGetHeight(v40)}];
+  cancelButton = [(TUIUIKitSearchBar *)self cancelButton];
+  [cancelButton frame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -77,61 +77,61 @@
   v42.size.width = v32;
   v42.size.height = v34;
   v36 = v35 - CGRectGetWidth(v42);
-  v37 = [(TUIUIKitSearchBar *)self cancelButton];
-  [v37 setFrame:{v36, v30, v32, v34}];
+  cancelButton2 = [(TUIUIKitSearchBar *)self cancelButton];
+  [cancelButton2 setFrame:{v36, v30, v32, v34}];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TUIUIKitSearchBar *)self searchField];
-  [v5 setFont:v4];
+  fontCopy = font;
+  searchField = [(TUIUIKitSearchBar *)self searchField];
+  [searchField setFont:fontCopy];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(TUIUIKitSearchBar *)self searchField];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  searchField = [(TUIUIKitSearchBar *)self searchField];
+  [searchField setTextColor:colorCopy];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v11.receiver = self;
   v11.super_class = TUIUIKitSearchBar;
-  v4 = a3;
-  [(TUIUIKitSearchBar *)&v11 setTintColor:v4];
-  [(TUIUIKitSearchBar *)self setBarTintColor:v4, v11.receiver, v11.super_class];
-  v5 = [(TUIUIKitSearchBar *)self searchField];
-  v6 = [v5 _clearButton];
-  [v6 setTintColor:v4];
+  colorCopy = color;
+  [(TUIUIKitSearchBar *)&v11 setTintColor:colorCopy];
+  [(TUIUIKitSearchBar *)self setBarTintColor:colorCopy, v11.receiver, v11.super_class];
+  searchField = [(TUIUIKitSearchBar *)self searchField];
+  _clearButton = [searchField _clearButton];
+  [_clearButton setTintColor:colorCopy];
 
-  v7 = [(TUIUIKitSearchBar *)self searchField];
-  v8 = [v7 _clearButton];
-  v9 = [v8 imageForState:0];
+  searchField2 = [(TUIUIKitSearchBar *)self searchField];
+  _clearButton2 = [searchField2 _clearButton];
+  v9 = [_clearButton2 imageForState:0];
 
   v10 = [v9 imageWithRenderingMode:2];
 
   [(TUIUIKitSearchBar *)self setImage:v10 forSearchBarIcon:1 state:0];
 }
 
-- (void)setCancelText:(id)a3
+- (void)setCancelText:(id)text
 {
-  v4 = a3;
-  [(TUIUIKitSearchBar *)self _setCancelButtonText:v4];
-  v5 = [(TUIUIKitSearchBar *)self cancelButton];
-  [v5 setTitle:v4 forState:0];
+  textCopy = text;
+  [(TUIUIKitSearchBar *)self _setCancelButtonText:textCopy];
+  cancelButton = [(TUIUIKitSearchBar *)self cancelButton];
+  [cancelButton setTitle:textCopy forState:0];
 
-  v6 = [(TUIUIKitSearchBar *)self cancelButton];
-  [v6 sizeToFit];
+  cancelButton2 = [(TUIUIKitSearchBar *)self cancelButton];
+  [cancelButton2 sizeToFit];
 
-  v7 = [(TUIUIKitSearchBar *)self text];
-  v8 = [v7 length];
+  text = [(TUIUIKitSearchBar *)self text];
+  v8 = [text length];
 
   if (v8)
   {
-    v9 = [(TUIUIKitSearchBar *)self cancelButton];
-    [v9 setEnabled:1];
+    cancelButton3 = [(TUIUIKitSearchBar *)self cancelButton];
+    [cancelButton3 setEnabled:1];
   }
 }
 

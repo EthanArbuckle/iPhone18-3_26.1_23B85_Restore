@@ -66,7 +66,7 @@
   if (v21)
   {
     DOMWrapper = getDOMWrapper(v21);
-    v10 = DOMWrapper;
+    _init = DOMWrapper;
     if (DOMWrapper)
     {
       v14 = DOMWrapper;
@@ -74,12 +74,12 @@
 
     else
     {
-      v10 = [(WebScriptObject *)[DOMXPathResult alloc] _init];
+      _init = [(WebScriptObject *)[DOMXPathResult alloc] _init];
       v15 = 0;
-      v10->super._internal = v21;
+      _init->super._internal = v21;
       ++*v21;
       v27 = v21;
-      v28 = v10;
+      v28 = _init;
       atomic_compare_exchange_strong_explicit(wrapperCacheLock, &v15, 1u, memory_order_acquire, memory_order_acquire);
       if (v15)
       {
@@ -99,7 +99,7 @@
       }
     }
 
-    v17 = v10;
+    v17 = _init;
     if (*v21 == 1)
     {
       v18 = MEMORY[0x1CCA64260]();
@@ -114,11 +114,11 @@
 
   else
   {
-    v10 = 0;
+    _init = 0;
   }
 
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v24, v12);
-  return v10;
+  return _init;
 }
 
 @end

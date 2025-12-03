@@ -7,29 +7,29 @@
 
 - (void)_maps_setNeedsUpdate:()MapsSharedExtras withSelector:
 {
-  v7 = objc_getAssociatedObject(a1, kMapsNeedsUpdateSelectorsToInvokeKey);
+  v7 = objc_getAssociatedObject(self, kMapsNeedsUpdateSelectorsToInvokeKey);
   v8 = v7;
   if (a3)
   {
     if (!v7)
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      objc_setAssociatedObject(a1, kMapsNeedsUpdateSelectorsToInvokeKey, v8, 1);
+      objc_setAssociatedObject(self, kMapsNeedsUpdateSelectorsToInvokeKey, v8, 1);
     }
 
     v9 = NSStringFromSelector(a4);
     [v8 addObject:v9];
 
-    v10 = objc_getAssociatedObject(a1, _maps_setNeedsUpdate_withSelector__hasScheduledInvocationForSelectorsKey);
+    v10 = objc_getAssociatedObject(self, _maps_setNeedsUpdate_withSelector__hasScheduledInvocationForSelectorsKey);
 
     if (!v10)
     {
-      objc_setAssociatedObject(a1, _maps_setNeedsUpdate_withSelector__hasScheduledInvocationForSelectorsKey, MEMORY[0x277CBEC38], 3);
+      objc_setAssociatedObject(self, _maps_setNeedsUpdate_withSelector__hasScheduledInvocationForSelectorsKey, MEMORY[0x277CBEC38], 3);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __64__NSObject_MapsSharedExtras___maps_setNeedsUpdate_withSelector___block_invoke;
       block[3] = &unk_279866158;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
@@ -43,7 +43,7 @@
 
 - (uint64_t)_maps_needsUpdateWithSelector:()MapsSharedExtras
 {
-  v4 = objc_getAssociatedObject(a1, kMapsNeedsUpdateSelectorsToInvokeKey);
+  v4 = objc_getAssociatedObject(self, kMapsNeedsUpdateSelectorsToInvokeKey);
   v5 = NSStringFromSelector(a3);
   v6 = [v4 containsObject:v5];
 

@@ -1,10 +1,10 @@
 @interface SOSAccountTransaction
 - (NSString)description;
-- (SOSAccountTransaction)initWithAccount:(id)a3 quiet:(BOOL)a4;
+- (SOSAccountTransaction)initWithAccount:(id)account quiet:(BOOL)quiet;
 - (unint64_t)currentTrustBitmask;
 - (void)finish;
-- (void)requestSyncWith:(id)a3;
-- (void)requestSyncWithPeers:(id)a3;
+- (void)requestSyncWith:(id)with;
+- (void)requestSyncWithPeers:(id)peers;
 - (void)restart;
 - (void)start;
 - (void)updateSOSCircleCachedStatus;
@@ -12,64 +12,64 @@
 
 @implementation SOSAccountTransaction
 
-- (void)requestSyncWithPeers:(id)a3
+- (void)requestSyncWithPeers:(id)peers
 {
-  v4 = a3;
-  v5 = [(SOSAccountTransaction *)self peersToRequestSync];
+  peersCopy = peers;
+  peersToRequestSync = [(SOSAccountTransaction *)self peersToRequestSync];
 
-  if (!v5)
+  if (!peersToRequestSync)
   {
     v6 = +[NSMutableSet set];
     [(SOSAccountTransaction *)self setPeersToRequestSync:v6];
   }
 
-  v7 = [(SOSAccountTransaction *)self peersToRequestSync];
-  [v7 unionSet:v4];
+  peersToRequestSync2 = [(SOSAccountTransaction *)self peersToRequestSync];
+  [peersToRequestSync2 unionSet:peersCopy];
 }
 
-- (void)requestSyncWith:(id)a3
+- (void)requestSyncWith:(id)with
 {
-  v4 = a3;
-  v5 = [(SOSAccountTransaction *)self peersToRequestSync];
+  withCopy = with;
+  peersToRequestSync = [(SOSAccountTransaction *)self peersToRequestSync];
 
-  if (!v5)
+  if (!peersToRequestSync)
   {
     v6 = +[NSMutableSet set];
     [(SOSAccountTransaction *)self setPeersToRequestSync:v6];
   }
 
-  v7 = [(SOSAccountTransaction *)self peersToRequestSync];
-  [v7 addObject:v4];
+  peersToRequestSync2 = [(SOSAccountTransaction *)self peersToRequestSync];
+  [peersToRequestSync2 addObject:withCopy];
 }
 
 - (void)finish
 {
-  v3 = [(SOSAccountTransaction *)self account];
-  v4 = [v3 notifyCircleChangeOnExit];
+  account = [(SOSAccountTransaction *)self account];
+  notifyCircleChangeOnExit = [account notifyCircleChangeOnExit];
 
-  v5 = [(SOSAccountTransaction *)self account];
-  v6 = [v5 SOSMonitorModeSOSIsActive];
+  account2 = [(SOSAccountTransaction *)self account];
+  sOSMonitorModeSOSIsActive = [account2 SOSMonitorModeSOSIsActive];
 
-  v7 = [(SOSAccountTransaction *)self account];
-  v8 = [v7 isInCircle:0];
+  account3 = [(SOSAccountTransaction *)self account];
+  v8 = [account3 isInCircle:0];
 
   if (v8)
   {
-    v9 = [(SOSAccountTransaction *)self peersToRequestSync];
-    v10 = (v9 != 0) & v6;
+    peersToRequestSync = [(SOSAccountTransaction *)self peersToRequestSync];
+    v10 = (peersToRequestSync != 0) & sOSMonitorModeSOSIsActive;
 
     if (v10 == 1)
     {
-      v11 = [(SOSAccountTransaction *)self peersToRequestSync];
+      peersToRequestSync2 = [(SOSAccountTransaction *)self peersToRequestSync];
       [(SOSAccountTransaction *)self setPeersToRequestSync:0];
-      sub_100245684(v11);
+      sub_100245684(peersToRequestSync2);
     }
 
     sub_100214644(self);
-    if (v6)
+    if (sOSMonitorModeSOSIsActive)
     {
-      v12 = [(SOSAccountTransaction *)self account];
-      sub_1002214EC(v12);
+      account4 = [(SOSAccountTransaction *)self account];
+      sub_1002214EC(account4);
       goto LABEL_17;
     }
   }
@@ -79,11 +79,11 @@
     sub_100214644(self);
   }
 
-  v12 = [(SOSAccountTransaction *)self account];
-  if ([v12 isListeningForSync])
+  account4 = [(SOSAccountTransaction *)self account];
+  if ([account4 isListeningForSync])
   {
-    v13 = [v12 trust];
-    v14 = [v13 getDataSourceEngine:{objc_msgSend(v12, "factory")}];
+    trust = [account4 trust];
+    v14 = [trust getDataSourceEngine:{objc_msgSend(account4, "factory")}];
 
     v15 = sub_100006274("initial-sync");
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -108,17 +108,17 @@
       }
     }
 
-    [v12 setIsListeningForSync:0];
+    [account4 setIsListeningForSync:0];
   }
 
 LABEL_17:
-  v17 = [(SOSAccountTransaction *)self account];
-  [v17 peerInfo];
+  account5 = [(SOSAccountTransaction *)self account];
+  [account5 peerInfo];
 
-  if (v6)
+  if (sOSMonitorModeSOSIsActive)
   {
-    v18 = [(SOSAccountTransaction *)self initialID];
-    v19 = [v18 isEqualToString:SOSPeerInfoGetPeerID()];
+    initialID = [(SOSAccountTransaction *)self initialID];
+    v19 = [initialID isEqualToString:SOSPeerInfoGetPeerID()];
 
     if (v19)
     {
@@ -127,17 +127,17 @@ LABEL_17:
     }
   }
 
-  v21 = [(SOSAccountTransaction *)self account];
-  v22 = sub_100220688(v21);
+  account6 = [(SOSAccountTransaction *)self account];
+  v22 = sub_100220688(account6);
 
-  if (!v6)
+  if (!sOSMonitorModeSOSIsActive)
   {
     v26 = 0;
     goto LABEL_65;
   }
 
-  v23 = [(SOSAccountTransaction *)self initialUnsyncedViews];
-  if (!v23)
+  initialUnsyncedViews = [(SOSAccountTransaction *)self initialUnsyncedViews];
+  if (!initialUnsyncedViews)
   {
     if (!v22)
     {
@@ -145,13 +145,13 @@ LABEL_17:
     }
 
 LABEL_26:
-    v27 = [(SOSAccountTransaction *)self account];
-    v28 = [(SOSAccountTransaction *)self initialUnsyncedViews];
-    v29 = v27;
-    v26 = sub_100220990(2, v28, v22);
+    account7 = [(SOSAccountTransaction *)self account];
+    initialUnsyncedViews2 = [(SOSAccountTransaction *)self initialUnsyncedViews];
+    v29 = account7;
+    v26 = sub_100220990(2, initialUnsyncedViews2, v22);
     if (v26)
     {
-      v130 = v4;
+      v130 = notifyCircleChangeOnExit;
       cf = v22;
       v30 = v29;
       v31 = sub_100006274("initial-sync");
@@ -203,8 +203,8 @@ LABEL_26:
         CFRelease(v34);
       }
 
-      v41 = [v32 trust];
-      v42 = [v41 updateViewSets:v32 enabled:v33 disabled:v39];
+      trust2 = [v32 trust];
+      v42 = [trust2 updateViewSets:v32 enabled:v33 disabled:v39];
 
       if (v33)
       {
@@ -218,7 +218,7 @@ LABEL_26:
         sub_100228AD0(v32, @"pendingEnableViews", 0);
         sub_100228AD0(v32, @"pendingDisableViews", 0);
         v43 = sub_100006274("views");
-        v4 = v130;
+        notifyCircleChangeOnExit = v130;
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(buf) = 0;
@@ -231,7 +231,7 @@ LABEL_26:
       else
       {
         v45 = sub_100006274("SecError");
-        v4 = v130;
+        notifyCircleChangeOnExit = v130;
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(buf) = 0;
@@ -247,22 +247,22 @@ LABEL_26:
       }
 
       v46 = v32;
-      v47 = [v46 waitForInitialSync_blocks];
+      waitForInitialSync_blocks = [v46 waitForInitialSync_blocks];
       [v46 setWaitForInitialSync_blocks:0];
-      if (v47)
+      if (waitForInitialSync_blocks)
       {
         *&buf = _NSConcreteStackBlock;
         *(&buf + 1) = 3221225472;
         v135 = sub_100220B40;
         v136 = &unk_100345B70;
         v137 = v46;
-        CFDictionaryApplyFunction(v47, sub_100220C10, &buf);
+        CFDictionaryApplyFunction(waitForInitialSync_blocks, sub_100220C10, &buf);
 
-        CFRelease(v47);
+        CFRelease(waitForInitialSync_blocks);
       }
     }
 
-    if (sub_100220990(5, v28, v22))
+    if (sub_100220990(5, initialUnsyncedViews2, v22))
     {
       v48 = sub_100006274("initial-sync");
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -277,27 +277,27 @@ LABEL_26:
     v49 = sub_100006274("initial-sync");
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [(SOSAccountTransaction *)self initialUnsyncedViews];
-      v51 = [v50 shortDescription];
+      initialUnsyncedViews3 = [(SOSAccountTransaction *)self initialUnsyncedViews];
+      shortDescription = [initialUnsyncedViews3 shortDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v51;
+      *(&buf + 4) = shortDescription;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Unsynced was: %@", &buf, 0xCu);
     }
 
     v52 = sub_100006274("initial-sync");
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [(__CFSet *)v22 shortDescription];
+      shortDescription2 = [(__CFSet *)v22 shortDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v53;
+      *(&buf + 4) = shortDescription2;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Unsynced is: %@", &buf, 0xCu);
     }
 
     goto LABEL_63;
   }
 
-  v24 = v23;
-  v25 = [v23 isEqual:v22];
+  v24 = initialUnsyncedViews;
+  v25 = [initialUnsyncedViews isEqual:v22];
 
   if ((v25 & 1) == 0)
   {
@@ -307,48 +307,48 @@ LABEL_26:
 LABEL_23:
   v26 = 0;
 LABEL_63:
-  v54 = [(SOSAccountTransaction *)self account];
-  v55 = [v54 engine_peer_state_needs_repair];
+  account8 = [(SOSAccountTransaction *)self account];
+  engine_peer_state_needs_repair = [account8 engine_peer_state_needs_repair];
 
-  if (v55)
+  if (engine_peer_state_needs_repair)
   {
-    v56 = [(SOSAccountTransaction *)self account];
-    sub_100210680(v56);
+    account9 = [(SOSAccountTransaction *)self account];
+    sub_100210680(account9);
 
     v26 = 1;
   }
 
 LABEL_65:
-  v57 = [(SOSAccountTransaction *)self account];
-  v58 = [v57 circle_rings_retirements_need_attention];
+  account10 = [(SOSAccountTransaction *)self account];
+  circle_rings_retirements_need_attention = [account10 circle_rings_retirements_need_attention];
 
-  if (v58)
+  if (circle_rings_retirements_need_attention)
   {
-    v59 = [(SOSAccountTransaction *)self account];
-    [v59 setCircle_rings_retirements_need_attention:0];
+    account11 = [(SOSAccountTransaction *)self account];
+    [account11 setCircle_rings_retirements_need_attention:0];
 
-    v60 = [(SOSAccountTransaction *)self account];
-    [v60 triggerRingUpdate];
+    account12 = [(SOSAccountTransaction *)self account];
+    [account12 triggerRingUpdate];
 
     v26 = 1;
   }
 
-  v61 = [(SOSAccountTransaction *)self account];
-  v62 = [v61 need_backup_peers_created_after_backup_key_set];
+  account13 = [(SOSAccountTransaction *)self account];
+  need_backup_peers_created_after_backup_key_set = [account13 need_backup_peers_created_after_backup_key_set];
 
-  if (v62)
+  if (need_backup_peers_created_after_backup_key_set)
   {
-    v63 = [(SOSAccountTransaction *)self account];
-    [v63 setNeed_backup_peers_created_after_backup_key_set:0];
+    account14 = [(SOSAccountTransaction *)self account];
+    [account14 setNeed_backup_peers_created_after_backup_key_set:0];
 
     v26 = 1;
   }
 
-  v64 = [(SOSAccountTransaction *)self account];
-  if ([v64 peerInfo])
+  account15 = [(SOSAccountTransaction *)self account];
+  if ([account15 peerInfo])
   {
-    v65 = [(SOSAccountTransaction *)self account];
-    [v65 peerInfo];
+    account16 = [(SOSAccountTransaction *)self account];
+    [account16 peerInfo];
     v66 = SOSPeerInfoCopyEnabledViews();
   }
 
@@ -357,11 +357,11 @@ LABEL_65:
     v66 = 0;
   }
 
-  v67 = [(SOSAccountTransaction *)self initialViews];
-  v68 = v67;
-  if (v67)
+  initialViews = [(SOSAccountTransaction *)self initialViews];
+  v68 = initialViews;
+  if (initialViews)
   {
-    v69 = [v67 isEqual:v66];
+    v69 = [initialViews isEqual:v66];
   }
 
   else
@@ -378,40 +378,40 @@ LABEL_65:
 
   if (v26 | v70)
   {
-    v71 = [(SOSAccountTransaction *)self account];
-    sub_10021ED88(v71);
+    account17 = [(SOSAccountTransaction *)self account];
+    sub_10021ED88(account17);
   }
 
-  v72 = [(SOSAccountTransaction *)self account];
-  if ([v72 key_interests_need_updating])
+  account18 = [(SOSAccountTransaction *)self account];
+  if ([account18 key_interests_need_updating])
   {
-    v73 = [(SOSAccountTransaction *)self account];
-    v74 = [v73 consolidateKeyInterest];
+    account19 = [(SOSAccountTransaction *)self account];
+    consolidateKeyInterest = [account19 consolidateKeyInterest];
 
-    if (v74)
+    if (consolidateKeyInterest)
     {
       goto LABEL_83;
     }
 
-    v72 = [(SOSAccountTransaction *)self account];
-    sub_100236230(v72);
+    account18 = [(SOSAccountTransaction *)self account];
+    sub_100236230(account18);
   }
 
 LABEL_83:
-  v75 = [(SOSAccountTransaction *)self account];
-  [v75 setEngine_peer_state_needs_repair:0];
+  account20 = [(SOSAccountTransaction *)self account];
+  [account20 setEngine_peer_state_needs_repair:0];
 
-  v76 = [(SOSAccountTransaction *)self account];
-  [v76 flattenToSaveBlock];
+  account21 = [(SOSAccountTransaction *)self account];
+  [account21 flattenToSaveBlock];
 
-  v77 = [(SOSAccountTransaction *)self account];
-  v78 = [v77 isInCircle:0];
+  account22 = [(SOSAccountTransaction *)self account];
+  v78 = [account22 isInCircle:0];
 
-  if ((v6 & v78 & v4) == 1)
+  if ((sOSMonitorModeSOSIsActive & v78 & notifyCircleChangeOnExit) == 1)
   {
     v79 = self->_account;
-    v80 = [(SOSAccount *)v79 settings];
-    v81 = [v80 objectForKey:@"lastKVSCleanup"];
+    settings = [(SOSAccount *)v79 settings];
+    v81 = [settings objectForKey:@"lastKVSCleanup"];
 
     v82 = +[NSDate date];
     [v82 timeIntervalSinceDate:v81];
@@ -421,12 +421,12 @@ LABEL_83:
     }
   }
 
-  v84 = [(SOSAccountTransaction *)self account];
-  v85 = [v84 peerInfo];
+  account23 = [(SOSAccountTransaction *)self account];
+  peerInfo = [account23 peerInfo];
 
-  if (v85)
+  if (peerInfo)
   {
-    v85 = SOSPeerInfoCopyEnabledViews();
+    peerInfo = SOSPeerInfoCopyEnabledViews();
   }
 
   if (![(SOSAccountTransaction *)self quiet])
@@ -436,44 +436,44 @@ LABEL_83:
     v133[2] = sub_10021DAF0;
     v133[3] = &unk_100345938;
     v133[4] = self;
-    sub_100085CC8(v85, v133);
+    sub_100085CC8(peerInfo, v133);
   }
 
-  cfa = v85;
-  v86 = [(SOSAccountTransaction *)self initialKeyParameters];
-  v87 = [(SOSAccountTransaction *)self account];
-  v88 = [v87 accountKeyDerivationParameters];
-  v89 = v88;
-  if (v86)
+  cfa = peerInfo;
+  initialKeyParameters = [(SOSAccountTransaction *)self initialKeyParameters];
+  account24 = [(SOSAccountTransaction *)self account];
+  accountKeyDerivationParameters = [account24 accountKeyDerivationParameters];
+  v89 = accountKeyDerivationParameters;
+  if (initialKeyParameters)
   {
-    v90 = [v86 isEqual:v88];
+    v90 = [initialKeyParameters isEqual:accountKeyDerivationParameters];
   }
 
   else
   {
-    v90 = v88 == 0;
+    v90 = accountKeyDerivationParameters == 0;
   }
 
   if ([(SOSAccountTransaction *)self initialTrusted]&& !(v90 & 1 | ![(SOSAccountTransaction *)self initialInCircle]| (v78 ^ 1) & 1))
   {
-    v92 = [(SOSAccountTransaction *)self account];
-    v91 = [v92 accountKeyIsTrusted];
+    account25 = [(SOSAccountTransaction *)self account];
+    accountKeyIsTrusted = [account25 accountKeyIsTrusted];
   }
 
   else
   {
-    v91 = 0;
+    accountKeyIsTrusted = 0;
   }
 
   if (v78 == [(SOSAccountTransaction *)self initialInCircle])
   {
     if (v78)
     {
-      v96 = [(SOSAccountTransaction *)self initialViews];
-      if (v96)
+      initialViews2 = [(SOSAccountTransaction *)self initialViews];
+      if (initialViews2)
       {
-        v97 = v96;
-        v98 = [v96 isEqual:cfa];
+        v97 = initialViews2;
+        v98 = [initialViews2 isEqual:cfa];
 
         if (v98)
         {
@@ -501,7 +501,7 @@ LABEL_83:
 
 LABEL_105:
     v93 = v22;
-    if (!v91)
+    if (!accountKeyIsTrusted)
     {
       v95 = 0;
       goto LABEL_111;
@@ -530,7 +530,7 @@ LABEL_105:
 
   v95 = 1;
 LABEL_109:
-  v4 = 1;
+  notifyCircleChangeOnExit = 1;
 LABEL_110:
 
 LABEL_111:
@@ -538,15 +538,15 @@ LABEL_111:
   {
     if ([(SOSAccountTransaction *)self initialTrusted])
     {
-      if ((v4 & 1) == 0)
+      if ((notifyCircleChangeOnExit & 1) == 0)
       {
         goto LABEL_140;
       }
 
 LABEL_127:
       [(SOSAccountTransaction *)self updateSOSCircleCachedStatus];
-      v106 = [(SOSAccountTransaction *)self account];
-      [v106 sosEvaluateIfNeeded];
+      account26 = [(SOSAccountTransaction *)self account];
+      [account26 sosEvaluateIfNeeded];
 
       if ((v95 & 1) == 0)
       {
@@ -573,11 +573,11 @@ LABEL_127:
       goto LABEL_127;
     }
 
-    v4 = 1;
+    notifyCircleChangeOnExit = 1;
   }
 
-  v102 = [(SOSAccountTransaction *)self account];
-  v103 = [v102 accountKeyIsTrusted] & v78;
+  account27 = [(SOSAccountTransaction *)self account];
+  v103 = [account27 accountKeyIsTrusted] & v78;
 
   if (v103 == 1)
   {
@@ -589,13 +589,13 @@ LABEL_127:
     }
 
     [(SOSAccountTransaction *)self updateSOSCircleCachedStatus];
-    v105 = [(SOSAccountTransaction *)self account];
-    [v105 sosEvaluateIfNeeded];
+    account28 = [(SOSAccountTransaction *)self account];
+    [account28 sosEvaluateIfNeeded];
 
     goto LABEL_128;
   }
 
-  if (v4)
+  if (notifyCircleChangeOnExit)
   {
     goto LABEL_127;
   }
@@ -608,20 +608,20 @@ LABEL_128:
   }
 
 LABEL_129:
-  v107 = [(SOSAccountTransaction *)self account];
-  v108 = [v107 notifyBackupOnExit];
+  account29 = [(SOSAccountTransaction *)self account];
+  notifyBackupOnExit = [account29 notifyBackupOnExit];
 
-  if (v108)
+  if (notifyBackupOnExit)
   {
     notify_post("com.apple.security.itembackup");
-    v109 = [(SOSAccountTransaction *)self account];
-    [v109 setNotifyBackupOnExit:0];
+    account30 = [(SOSAccountTransaction *)self account];
+    [account30 setNotifyBackupOnExit:0];
   }
 
   v110 = dword_10039E380;
   if (dword_10039E380 <= 0)
   {
-    v111 = [(SOSAccountTransaction *)self account];
+    account31 = [(SOSAccountTransaction *)self account];
     v112 = sub_100006274("accountLogState");
     if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
     {
@@ -629,7 +629,7 @@ LABEL_129:
       _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_DEFAULT, "Start", &buf, 2u);
     }
 
-    v113 = sub_100209CB8(v111);
+    v113 = sub_100209CB8(account31);
     v114 = sub_100006274("accountLogState");
     if (os_log_type_enabled(v114, OS_LOG_TYPE_DEFAULT))
     {
@@ -643,37 +643,37 @@ LABEL_129:
       CFRelease(v113);
     }
 
-    v115 = [v111 trust];
-    if ([v115 trustedCircle])
+    trust3 = [account31 trust];
+    if ([trust3 trustedCircle])
     {
-      [v115 trustedCircle];
-      [v111 accountKey];
-      v116 = [v111 peerID];
+      [trust3 trustedCircle];
+      [account31 accountKey];
+      peerID = [account31 peerID];
       SOSCircleLogState();
     }
 
     else
     {
-      v116 = sub_100006274("accountLogState");
-      if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
+      peerID = sub_100006274("accountLogState");
+      if (os_log_type_enabled(peerID, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(buf) = 0;
-        _os_log_impl(&_mh_execute_header, v116, OS_LOG_TYPE_DEFAULT, "ACCOUNT: No Circle", &buf, 2u);
+        _os_log_impl(&_mh_execute_header, peerID, OS_LOG_TYPE_DEFAULT, "ACCOUNT: No Circle", &buf, 2u);
       }
     }
 
-    v117 = [(SOSAccountTransaction *)self account];
-    v118 = [v117 trust];
-    v119 = [v118 isInCircleOnly:0];
+    account32 = [(SOSAccountTransaction *)self account];
+    trust4 = [account32 trust];
+    v119 = [trust4 isInCircleOnly:0];
 
     if (v119)
     {
-      v120 = [v117 peerInfo];
-      v121 = sub_100220920(v117);
-      v122 = sub_100220920(v117);
-      if (v120)
+      peerInfo2 = [account32 peerInfo];
+      v121 = sub_100220920(account32);
+      v122 = sub_100220920(account32);
+      if (peerInfo2)
       {
-        v120 = SOSPeerInfoCopyEnabledViews();
+        peerInfo2 = SOSPeerInfoCopyEnabledViews();
       }
 
       *&buf = _NSConcreteStackBlock;
@@ -682,13 +682,13 @@ LABEL_129:
       v136 = &unk_100345250;
       LOBYTE(v137) = v121;
       BYTE1(v137) = v122;
-      sub_100085CC8(v120, &buf);
-      if (v120)
+      sub_100085CC8(peerInfo2, &buf);
+      if (peerInfo2)
       {
-        CFRelease(v120);
+        CFRelease(peerInfo2);
       }
 
-      v123 = sub_100220688(v117);
+      v123 = sub_100220688(account32);
       sub_1002124BC(&stru_100345270, @"null");
       if (v123)
       {
@@ -705,9 +705,9 @@ LABEL_129:
         v124 = sub_100006274("accountLogState");
         if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
         {
-          v125 = [v117 sosCompatibilityMode];
+          sosCompatibilityMode = [account32 sosCompatibilityMode];
           v126 = @"disabled";
-          if (v125)
+          if (sosCompatibilityMode)
           {
             v126 = @"enabled";
           }
@@ -747,38 +747,38 @@ LABEL_129:
 {
   [(SOSAccountTransaction *)self updateSOSCircleCachedStatus];
   sub_10021DC1C(self->_account);
-  v3 = [(SOSAccountTransaction *)self account];
-  -[SOSAccountTransaction setInitialInCircle:](self, "setInitialInCircle:", [v3 isInCircle:0]);
+  account = [(SOSAccountTransaction *)self account];
+  -[SOSAccountTransaction setInitialInCircle:](self, "setInitialInCircle:", [account isInCircle:0]);
 
-  v4 = [(SOSAccountTransaction *)self account];
-  -[SOSAccountTransaction setInitialTrusted:](self, "setInitialTrusted:", [v4 accountKeyIsTrusted]);
+  account2 = [(SOSAccountTransaction *)self account];
+  -[SOSAccountTransaction setInitialTrusted:](self, "setInitialTrusted:", [account2 accountKeyIsTrusted]);
 
   [(SOSAccountTransaction *)self setInitialCirclePeerCount:0];
   if ([(SOSAccountTransaction *)self initialInCircle])
   {
-    v5 = [(SOSAccountTransaction *)self account];
-    v6 = [v5 trust];
-    [v6 trustedCircle];
+    account3 = [(SOSAccountTransaction *)self account];
+    trust = [account3 trust];
+    [trust trustedCircle];
     [(SOSAccountTransaction *)self setInitialCirclePeerCount:SOSCircleCountPeers()];
   }
 
   if ([(SOSAccountTransaction *)self initialInCircle])
   {
-    v7 = [(SOSAccountTransaction *)self account];
-    sub_1002214EC(v7);
+    account4 = [(SOSAccountTransaction *)self account];
+    sub_1002214EC(account4);
   }
 
-  v8 = [(SOSAccountTransaction *)self account];
-  v9 = sub_100220688(v8);
+  account5 = [(SOSAccountTransaction *)self account];
+  v9 = sub_100220688(account5);
   [(SOSAccountTransaction *)self setInitialUnsyncedViews:v9];
 
-  v10 = [(SOSAccountTransaction *)self account];
-  v11 = [v10 accountKeyDerivationParameters];
-  if (v11)
+  account6 = [(SOSAccountTransaction *)self account];
+  accountKeyDerivationParameters = [account6 accountKeyDerivationParameters];
+  if (accountKeyDerivationParameters)
   {
-    v12 = [(SOSAccountTransaction *)self account];
-    v13 = [v12 accountKeyDerivationParameters];
-    v14 = [NSData dataWithData:v13];
+    account7 = [(SOSAccountTransaction *)self account];
+    accountKeyDerivationParameters2 = [account7 accountKeyDerivationParameters];
+    v14 = [NSData dataWithData:accountKeyDerivationParameters2];
     [(SOSAccountTransaction *)self setInitialKeyParameters:v14];
   }
 
@@ -787,59 +787,59 @@ LABEL_129:
     [(SOSAccountTransaction *)self setInitialKeyParameters:0];
   }
 
-  v15 = [(SOSAccountTransaction *)self account];
-  v16 = [v15 peerInfo];
+  account8 = [(SOSAccountTransaction *)self account];
+  peerInfo = [account8 peerInfo];
 
-  if (v16)
+  if (peerInfo)
   {
     v17 = SOSPeerInfoCopyEnabledViews();
     [(SOSAccountTransaction *)self setInitialViews:v17];
 
-    v18 = [(SOSAccountTransaction *)self account];
-    [v18 ensureOctagonPeerKeys];
+    account9 = [(SOSAccountTransaction *)self account];
+    [account9 ensureOctagonPeerKeys];
   }
 
   [(SOSAccountTransaction *)self setPeersToRequestSync:0];
   sub_100214644(self);
-  v19 = [(SOSAccountTransaction *)self account];
-  if ([v19 key_interests_need_updating])
+  account10 = [(SOSAccountTransaction *)self account];
+  if ([account10 key_interests_need_updating])
   {
-    v20 = [(SOSAccountTransaction *)self account];
-    v21 = [v20 consolidateKeyInterest];
+    account11 = [(SOSAccountTransaction *)self account];
+    consolidateKeyInterest = [account11 consolidateKeyInterest];
 
-    if (v21)
+    if (consolidateKeyInterest)
     {
       goto LABEL_14;
     }
 
-    v19 = [(SOSAccountTransaction *)self account];
-    sub_100236230(v19);
+    account10 = [(SOSAccountTransaction *)self account];
+    sub_100236230(account10);
   }
 
 LABEL_14:
   if (![(SOSAccountTransaction *)self quiet])
   {
-    v22 = [(SOSAccountTransaction *)self initialViews];
+    initialViews = [(SOSAccountTransaction *)self initialViews];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10021E29C;
     v23[3] = &unk_100345938;
     v23[4] = self;
-    sub_100085CC8(v22, v23);
+    sub_100085CC8(initialViews, v23);
   }
 }
 
-- (SOSAccountTransaction)initWithAccount:(id)a3 quiet:(BOOL)a4
+- (SOSAccountTransaction)initWithAccount:(id)account quiet:(BOOL)quiet
 {
-  v6 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = SOSAccountTransaction;
   v7 = [(SOSAccountTransaction *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SOSAccountTransaction *)v7 setAccount:v6];
-    v8->_quiet = a4;
+    [(SOSAccountTransaction *)v7 setAccount:accountCopy];
+    v8->_quiet = quiet;
     [(SOSAccountTransaction *)v8 start];
   }
 
@@ -848,11 +848,11 @@ LABEL_14:
 
 - (NSString)description
 {
-  v3 = [(SOSAccountTransaction *)self initialViews];
-  if (v3)
+  initialViews = [(SOSAccountTransaction *)self initialViews];
+  if (initialViews)
   {
-    v4 = [(SOSAccountTransaction *)self initialViews];
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<SOSAccountTransaction*@%p %ld>", self, [v4 count]);
+    initialViews2 = [(SOSAccountTransaction *)self initialViews];
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<SOSAccountTransaction*@%p %ld>", self, [initialViews2 count]);
   }
 
   else
@@ -865,17 +865,17 @@ LABEL_14:
 
 - (void)updateSOSCircleCachedStatus
 {
-  v3 = [(SOSAccount *)self->_account queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SOSAccount *)self->_account queue];
+  dispatch_assert_queue_V2(queue);
 
   if (qword_10039E378 != -1)
   {
     dispatch_once(&qword_10039E378, &stru_1003458A8);
   }
 
-  v4 = [(SOSAccountTransaction *)self currentTrustBitmask];
-  v5 = v4;
-  if ((qword_10039E370 & 0x8000000000000000) == 0 || qword_10039E370 != v4)
+  currentTrustBitmask = [(SOSAccountTransaction *)self currentTrustBitmask];
+  v5 = currentTrustBitmask;
+  if ((qword_10039E370 & 0x8000000000000000) == 0 || qword_10039E370 != currentTrustBitmask)
   {
     [(SOSAccount *)self->_account setNotifyCircleChangeOnExit:1];
   }
@@ -902,17 +902,17 @@ LABEL_14:
 
 - (unint64_t)currentTrustBitmask
 {
-  v3 = [(SOSAccount *)self->_account queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SOSAccount *)self->_account queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SOSAccount *)self->_account trust];
-  v5 = [v4 getCircleStatusOnly:0];
+  trust = [(SOSAccount *)self->_account trust];
+  v5 = [trust getCircleStatusOnly:0];
 
   if ([(SOSAccount *)self->_account accountKeyIsTrusted])
   {
-    v6 = [(SOSAccount *)self->_account accountPrivateKey];
+    accountPrivateKey = [(SOSAccount *)self->_account accountPrivateKey];
     v7 = 0xE000000000000000;
-    if (!v6)
+    if (!accountPrivateKey)
     {
       v7 = 0xC000000000000000;
     }
@@ -925,8 +925,8 @@ LABEL_14:
     v8 = v5 | 0x8000000000000000;
   }
 
-  v9 = [(SOSAccount *)self->_account trust];
-  v10 = [v9 isInCircleOnly:0];
+  trust2 = [(SOSAccount *)self->_account trust];
+  v10 = [trust2 isInCircleOnly:0];
 
   if (v10)
   {

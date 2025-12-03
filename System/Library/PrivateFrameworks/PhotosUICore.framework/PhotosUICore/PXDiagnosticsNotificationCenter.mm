@@ -1,23 +1,23 @@
 @interface PXDiagnosticsNotificationCenter
 - (PXDiagnosticsNotificationCenter)init;
-- (void)_didReplyToIDNumber:(int64_t)a3;
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4 resultHandler:(id)a5;
+- (void)_didReplyToIDNumber:(int64_t)number;
+- (void)postNotificationWithName:(id)name userInfo:(id)info resultHandler:(id)handler;
 @end
 
 @implementation PXDiagnosticsNotificationCenter
 
-- (void)_didReplyToIDNumber:(int64_t)a3
+- (void)_didReplyToIDNumber:(int64_t)number
 {
   pendingReplyHandles = self->_pendingReplyHandles;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:number];
   [(NSMutableDictionary *)pendingReplyHandles removeObjectForKey:v4];
 }
 
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4 resultHandler:(id)a5
+- (void)postNotificationWithName:(id)name userInfo:(id)info resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  infoCopy = info;
+  handlerCopy = handler;
   nextReplyID = self->_nextReplyID;
   self->_nextReplyID = nextReplyID + 1;
   objc_initWeak(&location, self);
@@ -26,7 +26,7 @@
   v19[1] = 3221225472;
   v19[2] = __83__PXDiagnosticsNotificationCenter_postNotificationWithName_userInfo_resultHandler___block_invoke;
   v19[3] = &unk_1E772E598;
-  v13 = v10;
+  v13 = handlerCopy;
   v20 = v13;
   objc_copyWeak(&v21, &location);
   v14 = [(_PXDiagnosticsNotificationReplyHandle *)v12 initWithIDNumber:nextReplyID replyBlock:v19];
@@ -34,10 +34,10 @@
   v16 = [MEMORY[0x1E696AD98] numberWithInteger:nextReplyID];
   [(NSMutableDictionary *)pendingReplyHandles setObject:v14 forKeyedSubscript:v16];
 
-  v17 = [v9 mutableCopy];
+  v17 = [infoCopy mutableCopy];
   [v17 setObject:v14 forKeyedSubscript:@"PXDiagnosticsNotificationCenterReplyHandleKey"];
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 postNotificationName:v8 object:0 userInfo:v17];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:0 userInfo:v17];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);

@@ -1,50 +1,50 @@
 @interface RTStateTransitionOneTimeTrans
-- (RTStateTransitionOneTimeTrans)initWithCoder:(id)a3;
-- (RTStateTransitionOneTimeTrans)initWithStart:(double)a3 stop:(double)a4 motionActivityType:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (RTStateTransitionOneTimeTrans)initWithCoder:(id)coder;
+- (RTStateTransitionOneTimeTrans)initWithStart:(double)start stop:(double)stop motionActivityType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStateTransitionOneTimeTrans
 
-- (RTStateTransitionOneTimeTrans)initWithStart:(double)a3 stop:(double)a4 motionActivityType:(unint64_t)a5
+- (RTStateTransitionOneTimeTrans)initWithStart:(double)start stop:(double)stop motionActivityType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = RTStateTransitionOneTimeTrans;
   result = [(RTStateTransitionOneTimeTrans *)&v9 init];
   if (result)
   {
-    result->_start_s = a3;
-    result->_stop_s = a4;
-    result->_motionActivityType = a5;
+    result->_start_s = start;
+    result->_stop_s = stop;
+    result->_motionActivityType = type;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   start_s = self->_start_s;
-  v5 = a3;
-  [v5 encodeDouble:@"start_s" forKey:start_s];
-  [v5 encodeDouble:@"stop_s" forKey:self->_stop_s];
-  [v5 encodeInteger:self->_motionActivityType forKey:@"motionActivityType"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"start_s" forKey:start_s];
+  [coderCopy encodeDouble:@"stop_s" forKey:self->_stop_s];
+  [coderCopy encodeInteger:self->_motionActivityType forKey:@"motionActivityType"];
 }
 
-- (RTStateTransitionOneTimeTrans)initWithCoder:(id)a3
+- (RTStateTransitionOneTimeTrans)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RTStateTransitionOneTimeTrans;
   v5 = [(RTStateTransitionOneTimeTrans *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"start_s"];
+    [coderCopy decodeDoubleForKey:@"start_s"];
     v5->_start_s = v6;
-    [v4 decodeDoubleForKey:@"stop_s"];
+    [coderCopy decodeDoubleForKey:@"stop_s"];
     v5->_stop_s = v7;
-    if ([v4 containsValueForKey:@"motionActivityType"])
+    if ([coderCopy containsValueForKey:@"motionActivityType"])
     {
-      v8 = [v4 decodeIntegerForKey:@"motionActivityType"];
+      v8 = [coderCopy decodeIntegerForKey:@"motionActivityType"];
     }
 
     else

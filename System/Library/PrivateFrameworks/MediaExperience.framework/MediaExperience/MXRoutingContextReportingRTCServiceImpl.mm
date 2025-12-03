@@ -1,7 +1,7 @@
 @interface MXRoutingContextReportingRTCServiceImpl
 - (void)_configurationDidFinish;
 - (void)dealloc;
-- (void)sendModificationResult:(id)a3;
+- (void)sendModificationResult:(id)result;
 @end
 
 @implementation MXRoutingContextReportingRTCServiceImpl
@@ -47,7 +47,7 @@ uint64_t __88__MXRoutingContextReportingRTCServiceImpl_initWithFigEndpointType_r
   [(NSCondition *)mConfigurationCondition unlock];
 }
 
-- (void)sendModificationResult:(id)a3
+- (void)sendModificationResult:(id)result
 {
   mWorkQueue = self->mWorkQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -55,7 +55,7 @@ uint64_t __88__MXRoutingContextReportingRTCServiceImpl_initWithFigEndpointType_r
   v4[2] = __66__MXRoutingContextReportingRTCServiceImpl_sendModificationResult___block_invoke;
   v4[3] = &unk_1E7AEA340;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = result;
   dispatch_async(mWorkQueue, v4);
 }
 

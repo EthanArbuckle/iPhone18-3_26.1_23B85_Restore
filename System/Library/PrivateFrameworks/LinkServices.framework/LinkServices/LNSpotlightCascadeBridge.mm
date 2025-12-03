@@ -1,13 +1,13 @@
 @interface LNSpotlightCascadeBridge
-+ (void)deleteItems:(id)a3 bundleIdentifier:(id)a4 version:(unint64_t)a5 validity:(id)a6 completionHandler:(id)a7;
-+ (void)donateItems:(id)a3 bundleIdentifier:(id)a4 version:(unint64_t)a5 validity:(id)a6 shouldContinue:(id)a7 completionHandler:(id)a8;
++ (void)deleteItems:(id)items bundleIdentifier:(id)identifier version:(unint64_t)version validity:(id)validity completionHandler:(id)handler;
++ (void)donateItems:(id)items bundleIdentifier:(id)identifier version:(unint64_t)version validity:(id)validity shouldContinue:(id)continue completionHandler:(id)handler;
 @end
 
 @implementation LNSpotlightCascadeBridge
 
-+ (void)donateItems:(id)a3 bundleIdentifier:(id)a4 version:(unint64_t)a5 validity:(id)a6 shouldContinue:(id)a7 completionHandler:(id)a8
++ (void)donateItems:(id)items bundleIdentifier:(id)identifier version:(unint64_t)version validity:(id)validity shouldContinue:(id)continue completionHandler:(id)handler
 {
-  v8 = a8;
+  handlerCopy = handler;
   v9 = getLNLogCategoryVocabulary();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -15,12 +15,12 @@
     _os_log_impl(&dword_19763D000, v9, OS_LOG_TYPE_ERROR, "Bridge is no longer implemented", v10, 2u);
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-+ (void)deleteItems:(id)a3 bundleIdentifier:(id)a4 version:(unint64_t)a5 validity:(id)a6 completionHandler:(id)a7
++ (void)deleteItems:(id)items bundleIdentifier:(id)identifier version:(unint64_t)version validity:(id)validity completionHandler:(id)handler
 {
-  v7 = a7;
+  handlerCopy = handler;
   v8 = getLNLogCategoryVocabulary();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -28,7 +28,7 @@
     _os_log_impl(&dword_19763D000, v8, OS_LOG_TYPE_ERROR, "Bridge is no longer implemented", v9, 2u);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 @end

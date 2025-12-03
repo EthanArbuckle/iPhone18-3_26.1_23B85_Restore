@@ -1,18 +1,18 @@
 @interface WBSPasswordImportCSVCredentialExtractor
-+ (id)credentialExtractionErrorForErrorCode:(int64_t)a3;
++ (id)credentialExtractionErrorForErrorCode:(int64_t)code;
 - (BOOL)looksLikePasswordsCSVFile;
-- (WBSPasswordImportCSVCredentialExtractor)initWithURLforCSVFile:(id)a3;
-- (id)_initWithCSVContents:(id)a3;
-- (id)extractCredentialsWithError:(id *)a3;
+- (WBSPasswordImportCSVCredentialExtractor)initWithURLforCSVFile:(id)file;
+- (id)_initWithCSVContents:(id)contents;
+- (id)extractCredentialsWithError:(id *)error;
 @end
 
 @implementation WBSPasswordImportCSVCredentialExtractor
 
-- (WBSPasswordImportCSVCredentialExtractor)initWithURLforCSVFile:(id)a3
+- (WBSPasswordImportCSVCredentialExtractor)initWithURLforCSVFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v16 = 0;
-  v5 = [MEMORY[0x1E695DEC8] arrayWithContentsOfDelimitedURL:v4 options:2 delimiter:44 error:&v16];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithContentsOfDelimitedURL:fileCopy options:2 delimiter:44 error:&v16];
   v6 = v16;
   if (!v5)
   {
@@ -24,7 +24,7 @@
   }
 
   v15 = v6;
-  v8 = [MEMORY[0x1E695DEC8] arrayWithContentsOfDelimitedURL:v4 options:3 delimiter:44 error:&v15];
+  v8 = [MEMORY[0x1E695DEC8] arrayWithContentsOfDelimitedURL:fileCopy options:3 delimiter:44 error:&v15];
   v9 = v15;
 
   if (!v8)
@@ -52,16 +52,16 @@
   return v13;
 }
 
-+ (id)credentialExtractionErrorForErrorCode:(int64_t)a3
++ (id)credentialExtractionErrorForErrorCode:(int64_t)code
 {
-  if (a3 > 3)
+  if (code > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.SafariShared.WBSCredentialExtractionErrorDomain" code:a3 userInfo:{0, v3}];
+    v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.SafariShared.WBSCredentialExtractionErrorDomain" code:code userInfo:{0, v3}];
   }
 
   return v5;
@@ -82,16 +82,16 @@
   return v6;
 }
 
-- (id)extractCredentialsWithError:(id *)a3
+- (id)extractCredentialsWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
     p_csvContents = &self->_csvContents;
     if (![(NSArray *)self->_csvContents count])
     {
       [objc_opt_class() credentialExtractionErrorForErrorCode:3];
-      *a3 = v6 = 0;
+      *error = v6 = 0;
       goto LABEL_12;
     }
 
@@ -117,10 +117,10 @@ LABEL_5:
       v6 = v13;
     }
 
-    else if (a3)
+    else if (error)
     {
       [objc_opt_class() credentialExtractionErrorForErrorCode:2];
-      *a3 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -407,9 +407,9 @@ LABEL_49:
 LABEL_57:
 }
 
-- (id)_initWithCSVContents:(id)a3
+- (id)_initWithCSVContents:(id)contents
 {
-  v5 = a3;
+  contentsCopy = contents;
   v11.receiver = self;
   v11.super_class = WBSPasswordImportCSVCredentialExtractor;
   v6 = [(WBSPasswordImportCSVCredentialExtractor *)&v11 init];
@@ -419,7 +419,7 @@ LABEL_57:
     csvHeaderChecker = v6->_csvHeaderChecker;
     v6->_csvHeaderChecker = v7;
 
-    objc_storeStrong(&v6->_csvContents, a3);
+    objc_storeStrong(&v6->_csvContents, contents);
     v9 = v6;
   }
 

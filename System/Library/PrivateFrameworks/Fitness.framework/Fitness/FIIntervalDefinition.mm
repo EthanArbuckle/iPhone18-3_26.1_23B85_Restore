@@ -1,41 +1,41 @@
 @interface FIIntervalDefinition
-+ (id)definitionFromDictionary:(id)a3 error:(id *)a4;
-+ (id)intervalDefinitionWithTypeIdentifier:(int64_t)a3 quantity:(id)a4;
-- (FIIntervalDefinition)initWithTypeIdentifier:(int64_t)a3 quantity:(id)a4;
-- (id)byChangingType:(int64_t)a3 quantity:(id)a4;
++ (id)definitionFromDictionary:(id)dictionary error:(id *)error;
++ (id)intervalDefinitionWithTypeIdentifier:(int64_t)identifier quantity:(id)quantity;
+- (FIIntervalDefinition)initWithTypeIdentifier:(int64_t)identifier quantity:(id)quantity;
+- (id)byChangingType:(int64_t)type quantity:(id)quantity;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation FIIntervalDefinition
 
-- (FIIntervalDefinition)initWithTypeIdentifier:(int64_t)a3 quantity:(id)a4
+- (FIIntervalDefinition)initWithTypeIdentifier:(int64_t)identifier quantity:(id)quantity
 {
-  v7 = a4;
+  quantityCopy = quantity;
   v11.receiver = self;
   v11.super_class = FIIntervalDefinition;
   v8 = [(FIIntervalDefinition *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_quantity, a4);
+    v8->_type = identifier;
+    objc_storeStrong(&v8->_quantity, quantity);
   }
 
   return v9;
 }
 
-+ (id)intervalDefinitionWithTypeIdentifier:(int64_t)a3 quantity:(id)a4
++ (id)intervalDefinitionWithTypeIdentifier:(int64_t)identifier quantity:(id)quantity
 {
-  v5 = a4;
-  v6 = [objc_opt_class() intervalDefinitionWithTypeIdentifier:a3 quantity:v5];
+  quantityCopy = quantity;
+  v6 = [objc_opt_class() intervalDefinitionWithTypeIdentifier:identifier quantity:quantityCopy];
 
   return v6;
 }
 
-+ (id)definitionFromDictionary:(id)a3 error:(id *)a4
++ (id)definitionFromDictionary:(id)dictionary error:(id *)error
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [FIValidation validationWithName:@"Key 'type' exists" test:&__block_literal_global_3];
   v7 = [FIValidation validationWithName:@"Key 'quantity' exists" test:&__block_literal_global_43, v6];
   v23[1] = v7;
@@ -47,20 +47,20 @@
   v23[4] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:5];
 
-  LODWORD(a4) = [FIValidation performValidations:v11 withObject:v5 error:a4];
-  if (a4)
+  LODWORD(error) = [FIValidation performValidations:v11 withObject:dictionaryCopy error:error];
+  if (error)
   {
-    v12 = [v5 objectForKeyedSubscript:@"type"];
-    v13 = [v12 integerValue];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"type"];
+    integerValue = [v12 integerValue];
 
     v14 = MEMORY[0x277CCD7E8];
-    v15 = FICanonicalQuantityUnitForIntervalType(v13);
-    v16 = [v5 objectForKeyedSubscript:@"quantity"];
+    v15 = FICanonicalQuantityUnitForIntervalType(integerValue);
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"quantity"];
     [v16 doubleValue];
     v17 = [v14 quantityWithUnit:v15 doubleValue:?];
 
     v18 = [FIIntervalDefinition alloc];
-    v19 = [v5 objectForKeyedSubscript:@"type"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v20 = -[FIIntervalDefinition initWithTypeIdentifier:quantity:](v18, "initWithTypeIdentifier:quantity:", [v19 integerValue], v17);
   }
 
@@ -77,9 +77,9 @@
 - (id)dictionaryRepresentation
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v3 = [(FIIntervalDefinition *)self quantity];
+  quantity = [(FIIntervalDefinition *)self quantity];
   v4 = FICanonicalQuantityUnitForIntervalType([(FIIntervalDefinition *)self type]);
-  [v3 doubleValueForUnit:v4];
+  [quantity doubleValueForUnit:v4];
   v6 = v5;
 
   v12[0] = @"type";
@@ -95,10 +95,10 @@
   return v9;
 }
 
-- (id)byChangingType:(int64_t)a3 quantity:(id)a4
+- (id)byChangingType:(int64_t)type quantity:(id)quantity
 {
-  v5 = a4;
-  v6 = [[FIIntervalDefinition alloc] initWithTypeIdentifier:a3 quantity:v5];
+  quantityCopy = quantity;
+  v6 = [[FIIntervalDefinition alloc] initWithTypeIdentifier:type quantity:quantityCopy];
 
   return v6;
 }

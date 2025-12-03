@@ -1,11 +1,11 @@
 @interface CWFRangingResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRangingResult:(id)a3;
-- (CWFRangingResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRangingResult:(id)result;
+- (CWFRangingResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFRangingResult
@@ -37,14 +37,14 @@
   return v9;
 }
 
-- (BOOL)isEqualToRangingResult:(id)a3
+- (BOOL)isEqualToRangingResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   MACAddress = self->_MACAddress;
-  v6 = [v4 MACAddress];
-  if (MACAddress != v6)
+  mACAddress = [resultCopy MACAddress];
+  if (MACAddress != mACAddress)
   {
-    if (!self->_MACAddress || ([v4 MACAddress], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_MACAddress || ([resultCopy MACAddress], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_40;
@@ -52,8 +52,8 @@
 
     v8 = v7;
     v9 = self->_MACAddress;
-    v10 = [v4 MACAddress];
-    if (![(NSString *)v9 isEqual:v10])
+    mACAddress2 = [resultCopy MACAddress];
+    if (![(NSString *)v9 isEqual:mACAddress2])
     {
       v11 = 0;
 LABEL_39:
@@ -61,52 +61,52 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v39 = v10;
+    v39 = mACAddress2;
     v40 = v8;
   }
 
   identifier = self->_identifier;
-  v13 = [v4 identifier];
-  if (identifier == v13)
+  identifier = [resultCopy identifier];
+  if (identifier == identifier)
   {
 LABEL_12:
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:self->_distance];
     v19 = MEMORY[0x1E696AD98];
-    [v4 distance];
+    [resultCopy distance];
     v20 = [v19 numberWithDouble:?];
     if ([v18 isEqualToNumber:v20])
     {
       v37 = v18;
       v21 = [MEMORY[0x1E696AD98] numberWithDouble:self->_standardDeviation];
       v22 = MEMORY[0x1E696AD98];
-      [v4 standardDeviation];
+      [resultCopy standardDeviation];
       v23 = [v22 numberWithDouble:?];
       v38 = v21;
       if ([v21 isEqualToNumber:v23])
       {
         status = self->_status;
         v25 = v37;
-        if (status == [v4 status] && (numberOfValidMeasurements = self->_numberOfValidMeasurements, numberOfValidMeasurements == objc_msgSend(v4, "numberOfValidMeasurements")))
+        if (status == [resultCopy status] && (numberOfValidMeasurements = self->_numberOfValidMeasurements, numberOfValidMeasurements == objc_msgSend(resultCopy, "numberOfValidMeasurements")))
         {
           measurements = self->_measurements;
-          v28 = [v4 measurements];
-          if (measurements == v28)
+          measurements = [resultCopy measurements];
+          if (measurements == measurements)
           {
             v11 = 1;
           }
 
           else if (self->_measurements)
           {
-            v34 = v28;
-            v29 = [v4 measurements];
-            if (v29)
+            v34 = measurements;
+            measurements2 = [resultCopy measurements];
+            if (measurements2)
             {
               v30 = self->_measurements;
-              v33 = v29;
-              v31 = [v4 measurements];
-              v11 = [(NSArray *)v30 isEqual:v31];
+              v33 = measurements2;
+              measurements3 = [resultCopy measurements];
+              v11 = [(NSArray *)v30 isEqual:measurements3];
 
-              v29 = v33;
+              measurements2 = v33;
             }
 
             else
@@ -114,7 +114,7 @@ LABEL_12:
               v11 = 0;
             }
 
-            v28 = v34;
+            measurements = v34;
           }
 
           else
@@ -142,14 +142,14 @@ LABEL_12:
       v11 = 0;
     }
 
-    if (identifier != v13)
+    if (identifier != identifier)
     {
 
 LABEL_35:
-      v10 = v39;
+      mACAddress2 = v39;
       v8 = v40;
 
-      if (MACAddress == v6)
+      if (MACAddress == mACAddress)
       {
         goto LABEL_40;
       }
@@ -162,24 +162,24 @@ LABEL_35:
 
   if (self->_identifier)
   {
-    v14 = [v4 identifier];
-    if (!v14)
+    identifier2 = [resultCopy identifier];
+    if (!identifier2)
     {
       v11 = 0;
       goto LABEL_35;
     }
 
-    v15 = v14;
+    v15 = identifier2;
     v16 = self->_identifier;
-    v17 = [v4 identifier];
-    if (([(NSData *)v16 isEqual:v17]& 1) == 0)
+    identifier3 = [resultCopy identifier];
+    if (([(NSData *)v16 isEqual:identifier3]& 1) == 0)
     {
 
       v11 = 0;
       goto LABEL_38;
     }
 
-    v35 = v17;
+    v35 = identifier3;
     v36 = v15;
     goto LABEL_12;
   }
@@ -188,9 +188,9 @@ LABEL_35:
 LABEL_37:
 
 LABEL_38:
-  v10 = v39;
+  mACAddress2 = v39;
   v8 = v40;
-  if (MACAddress != v6)
+  if (MACAddress != mACAddress)
   {
     goto LABEL_39;
   }
@@ -200,18 +200,18 @@ LABEL_40:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRangingResult *)self isEqualToRangingResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRangingResult *)self isEqualToRangingResult:v5];
   }
 
   return v6;
@@ -230,7 +230,7 @@ LABEL_40:
   return v7 ^ v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFRangingResult allocWithZone:?]];
   [(CWFRangingResult *)v4 setMACAddress:self->_MACAddress];
@@ -242,43 +242,43 @@ LABEL_40:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   MACAddress = self->_MACAddress;
-  v5 = a3;
-  [v5 encodeObject:MACAddress forKey:@"_MACAddress"];
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
-  [v5 encodeDouble:@"_distance" forKey:self->_distance];
-  [v5 encodeDouble:@"_standardDeviation" forKey:self->_standardDeviation];
-  [v5 encodeInteger:self->_status forKey:@"_status"];
-  [v5 encodeObject:self->_measurements forKey:@"_measurements"];
+  coderCopy = coder;
+  [coderCopy encodeObject:MACAddress forKey:@"_MACAddress"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
+  [coderCopy encodeDouble:@"_distance" forKey:self->_distance];
+  [coderCopy encodeDouble:@"_standardDeviation" forKey:self->_standardDeviation];
+  [coderCopy encodeInteger:self->_status forKey:@"_status"];
+  [coderCopy encodeObject:self->_measurements forKey:@"_measurements"];
 }
 
-- (CWFRangingResult)initWithCoder:(id)a3
+- (CWFRangingResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CWFRangingResult;
   v5 = [(CWFRangingResult *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_MACAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_MACAddress"];
     MACAddress = v5->_MACAddress;
     v5->_MACAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    [v4 decodeDoubleForKey:@"_distance"];
+    [coderCopy decodeDoubleForKey:@"_distance"];
     v5->_distance = v10;
-    [v4 decodeDoubleForKey:@"_standardDeviation"];
+    [coderCopy decodeDoubleForKey:@"_standardDeviation"];
     v5->_standardDeviation = v11;
-    v5->_status = [v4 decodeIntegerForKey:@"_status"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"_status"];
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_measurements"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_measurements"];
     measurements = v5->_measurements;
     v5->_measurements = v15;
   }

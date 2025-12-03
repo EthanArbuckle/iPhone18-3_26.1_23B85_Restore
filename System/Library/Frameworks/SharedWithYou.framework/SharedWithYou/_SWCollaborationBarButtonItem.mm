@@ -3,98 +3,98 @@
 - (NSItemProvider)itemProvider;
 - (SWHighlight)highlight;
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate;
-- (_SWCollaborationBarButtonItem)initWithCollaborationButtonView:(id)a3;
-- (_SWCollaborationBarButtonItem)initWithHighlight:(id)a3;
-- (_SWCollaborationBarButtonItem)initWithHighlight:(id)a3 detailViewListContent:(id)a4;
-- (_SWCollaborationBarButtonItem)initWithItemProvider:(id)a3;
+- (_SWCollaborationBarButtonItem)initWithCollaborationButtonView:(id)view;
+- (_SWCollaborationBarButtonItem)initWithHighlight:(id)highlight;
+- (_SWCollaborationBarButtonItem)initWithHighlight:(id)highlight detailViewListContent:(id)content;
+- (_SWCollaborationBarButtonItem)initWithItemProvider:(id)provider;
 - (unint64_t)activeParticipantCount;
-- (void)setActiveParticipantCount:(unint64_t)a3;
-- (void)setCloudSharingControllerDelegate:(id)a3;
-- (void)setDetailViewListContent:(id)a3;
-- (void)setHighlight:(id)a3;
-- (void)setItemProvider:(id)a3;
-- (void)setManageButtonTitle:(id)a3;
+- (void)setActiveParticipantCount:(unint64_t)count;
+- (void)setCloudSharingControllerDelegate:(id)delegate;
+- (void)setDetailViewListContent:(id)content;
+- (void)setHighlight:(id)highlight;
+- (void)setItemProvider:(id)provider;
+- (void)setManageButtonTitle:(id)title;
 @end
 
 @implementation _SWCollaborationBarButtonItem
 
 - (NSItemProvider)itemProvider
 {
-  v2 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v3 = [v2 buttonView];
-  v4 = [v3 itemProvider];
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  itemProvider = [buttonView itemProvider];
 
-  return v4;
+  return itemProvider;
 }
 
-- (void)setItemProvider:(id)a3
+- (void)setItemProvider:(id)provider
 {
-  v4 = a3;
-  v6 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v5 = [v6 buttonView];
-  [v5 setItemProvider:v4];
+  providerCopy = provider;
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  [buttonView setItemProvider:providerCopy];
 }
 
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate
 {
-  v2 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v3 = [v2 buttonView];
-  v4 = [v3 cloudSharingControllerDelegate];
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  cloudSharingControllerDelegate = [buttonView cloudSharingControllerDelegate];
 
-  return v4;
+  return cloudSharingControllerDelegate;
 }
 
-- (void)setCloudSharingControllerDelegate:(id)a3
+- (void)setCloudSharingControllerDelegate:(id)delegate
 {
-  v4 = a3;
-  v6 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v5 = [v6 buttonView];
-  [v5 setCloudSharingControllerDelegate:v4];
+  delegateCopy = delegate;
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  [buttonView setCloudSharingControllerDelegate:delegateCopy];
 }
 
 - (unint64_t)activeParticipantCount
 {
-  v2 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v3 = [v2 buttonView];
-  v4 = [v3 activeParticipantCount];
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  activeParticipantCount = [buttonView activeParticipantCount];
 
-  return v4;
+  return activeParticipantCount;
 }
 
-- (void)setActiveParticipantCount:(unint64_t)a3
+- (void)setActiveParticipantCount:(unint64_t)count
 {
-  v5 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v4 = [v5 buttonView];
-  [v4 setActiveParticipantCount:a3];
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  [buttonView setActiveParticipantCount:count];
 }
 
 - (BOOL)isContentShared
 {
-  v2 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v3 = [v2 buttonView];
-  v4 = [v3 isContentShared];
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  isContentShared = [buttonView isContentShared];
 
-  return v4;
+  return isContentShared;
 }
 
-- (_SWCollaborationBarButtonItem)initWithCollaborationButtonView:(id)a3
+- (_SWCollaborationBarButtonItem)initWithCollaborationButtonView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = _SWCollaborationBarButtonItem;
   v5 = [(_SWCollaborationBarButtonItem *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(_SWCollaborationBarButtonItem *)v5 setCollaborationButtonView:v4];
-    [(_SWCollaborationBarButtonItem *)v6 setCustomView:v4];
+    [(_SWCollaborationBarButtonItem *)v5 setCollaborationButtonView:viewCopy];
+    [(_SWCollaborationBarButtonItem *)v6 setCustomView:viewCopy];
     objc_initWeak(&location, v6);
     v7 = MEMORY[0x1E69DC928];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65___SWCollaborationBarButtonItem_initWithCollaborationButtonView___block_invoke;
     v10[3] = &unk_1E7FDDDE0;
-    v11 = v4;
+    v11 = viewCopy;
     objc_copyWeak(&v12, &location);
     v8 = [v7 elementWithUncachedProvider:v10];
     [(_SWCollaborationBarButtonItem *)v6 _dci_setMenuRepresentation:v8];
@@ -106,75 +106,75 @@
   return v6;
 }
 
-- (_SWCollaborationBarButtonItem)initWithItemProvider:(id)a3
+- (_SWCollaborationBarButtonItem)initWithItemProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SWCollaborationView *)[_SWCollaborationButtonView alloc] initWithItemProvider:v4];
+  providerCopy = provider;
+  v5 = [(SWCollaborationView *)[_SWCollaborationButtonView alloc] initWithItemProvider:providerCopy];
 
   v6 = [(_SWCollaborationBarButtonItem *)self initWithCollaborationButtonView:v5];
   return v6;
 }
 
-- (void)setDetailViewListContent:(id)a3
+- (void)setDetailViewListContent:(id)content
 {
-  v4 = a3;
-  v6 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v5 = [v6 buttonView];
-  [v5 setDetailViewListContent:v4];
+  contentCopy = content;
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  [buttonView setDetailViewListContent:contentCopy];
 }
 
-- (void)setManageButtonTitle:(id)a3
+- (void)setManageButtonTitle:(id)title
 {
-  v4 = a3;
-  v6 = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
-  v5 = [v6 buttonView];
-  [v5 setManageButtonTitle:v4];
+  titleCopy = title;
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)self collaborationButtonView];
+  buttonView = [collaborationButtonView buttonView];
+  [buttonView setManageButtonTitle:titleCopy];
 }
 
 - (SWHighlight)highlight
 {
-  v2 = self;
-  v3 = [(_SWCollaborationBarButtonItem *)v2 collaborationButtonView];
-  v4 = sub_1BBC2EF14(v3, sel_buttonView);
+  selfCopy = self;
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)selfCopy collaborationButtonView];
+  v4 = sub_1BBC2EF14(collaborationButtonView, sel_buttonView);
 
-  v5 = [*(v4 + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) collaborationHighlight];
+  collaborationHighlight = [*(v4 + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) collaborationHighlight];
 
-  return v5;
+  return collaborationHighlight;
 }
 
-- (void)setHighlight:(id)a3
+- (void)setHighlight:(id)highlight
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(_SWCollaborationBarButtonItem *)v7 collaborationButtonView];
-  v6 = sub_1BBC2EF14(v5, sel_buttonView);
+  highlightCopy = highlight;
+  selfCopy = self;
+  collaborationButtonView = [(_SWCollaborationBarButtonItem *)selfCopy collaborationButtonView];
+  v6 = sub_1BBC2EF14(collaborationButtonView, sel_buttonView);
 
   [*(v6 + OBJC_IVAR____SWCollaborationButtonViewImpl_detailViewController) setCollaborationHighlight_];
 }
 
-- (_SWCollaborationBarButtonItem)initWithHighlight:(id)a3
+- (_SWCollaborationBarButtonItem)initWithHighlight:(id)highlight
 {
   v5 = objc_allocWithZone(_SWCollaborationDetailViewController);
-  v6 = a3;
-  v7 = [v5 initWithHighlight_];
+  highlightCopy = highlight;
+  initWithHighlight_ = [v5 initWithHighlight_];
   v8 = objc_allocWithZone(type metadata accessor for _SWCollaborationButtonViewImpl());
-  v9 = sub_1BBC2C860(v7);
-  v10 = [objc_allocWithZone(_SWCollaborationButtonView) initWithTypeErasedButtonView_];
-  v11 = [(_SWCollaborationBarButtonItem *)self initWithCollaborationButtonView:v10];
+  v9 = sub_1BBC2C860(initWithHighlight_);
+  initWithTypeErasedButtonView_ = [objc_allocWithZone(_SWCollaborationButtonView) initWithTypeErasedButtonView_];
+  v11 = [(_SWCollaborationBarButtonItem *)self initWithCollaborationButtonView:initWithTypeErasedButtonView_];
 
   return v11;
 }
 
-- (_SWCollaborationBarButtonItem)initWithHighlight:(id)a3 detailViewListContent:(id)a4
+- (_SWCollaborationBarButtonItem)initWithHighlight:(id)highlight detailViewListContent:(id)content
 {
   v7 = objc_allocWithZone(_SWCollaborationDetailViewController);
-  v8 = a3;
-  v9 = a4;
-  v10 = [v7 initWithHighlight:v8 listContent:v9];
+  highlightCopy = highlight;
+  contentCopy = content;
+  v10 = [v7 initWithHighlight:highlightCopy listContent:contentCopy];
   v11 = objc_allocWithZone(type metadata accessor for _SWCollaborationButtonViewImpl());
   v12 = sub_1BBC2C860(v10);
-  v13 = [objc_allocWithZone(_SWCollaborationButtonView) initWithTypeErasedButtonView_];
-  v14 = [(_SWCollaborationBarButtonItem *)self initWithCollaborationButtonView:v13];
+  initWithTypeErasedButtonView_ = [objc_allocWithZone(_SWCollaborationButtonView) initWithTypeErasedButtonView_];
+  v14 = [(_SWCollaborationBarButtonItem *)self initWithCollaborationButtonView:initWithTypeErasedButtonView_];
 
   return v14;
 }

@@ -1,16 +1,16 @@
 @interface IMDSpotlightLinkDataProvider
-+ (id)attachmentPathsFromMessageRecord:(id)a3;
-- (id)dataForGUID:(id)a3 error:(id *)a4;
++ (id)attachmentPathsFromMessageRecord:(id)record;
+- (id)dataForGUID:(id)d error:(id *)error;
 @end
 
 @implementation IMDSpotlightLinkDataProvider
 
-+ (id)attachmentPathsFromMessageRecord:(id)a3
++ (id)attachmentPathsFromMessageRecord:(id)record
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_autoreleasePoolPush();
-  v7 = objc_msgSend_attachmentRecords(v3, v5, v6);
+  v7 = objc_msgSend_attachmentRecords(recordCopy, v5, v6);
   if (v7)
   {
     v36 = v4;
@@ -79,11 +79,11 @@
   return v13;
 }
 
-- (id)dataForGUID:(id)a3 error:(id *)a4
+- (id)dataForGUID:(id)d error:(id *)error
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = IMDMessageRecordCopyMessageForGUID(v5);
+  dCopy = d;
+  v6 = IMDMessageRecordCopyMessageForGUID(dCopy);
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -144,15 +144,15 @@
     v38[0] = v14;
     v38[1] = v18;
     v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v21, v38, v37, 2);
-    v27 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v26, v25, 0, a4);
+    v27 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v26, v25, 0, error);
     if (IMOSLoggingEnabled())
     {
       v29 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        if (a4)
+        if (error)
         {
-          v30 = *a4;
+          v30 = *error;
         }
 
         else

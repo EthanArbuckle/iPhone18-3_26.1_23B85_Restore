@@ -1,24 +1,24 @@
 @interface IDSDaemonRequestTimer
 - (IDSDaemonRequestTimer)init;
-- (id)_criticalFindRequestContextWithResponseHandler:(id)a3;
-- (id)_criticalInvalidateTimeoutAndReturnHandlerForRequestID:(id)a3;
-- (id)invalidateTimeoutAndReturnHandlerForRequestID:(id)a3;
+- (id)_criticalFindRequestContextWithResponseHandler:(id)handler;
+- (id)_criticalInvalidateTimeoutAndReturnHandlerForRequestID:(id)d;
+- (id)invalidateTimeoutAndReturnHandlerForRequestID:(id)d;
 - (id)invalidateTimeoutsAndReturnHandlersForAllRequests;
-- (id)scheduleTimeoutWithResponseHandler:(id)a3 timeoutInterval:(double)a4 timeoutBlock:(id)a5;
+- (id)scheduleTimeoutWithResponseHandler:(id)handler timeoutInterval:(double)interval timeoutBlock:(id)block;
 - (int64_t)inFlightRequestCount;
-- (void)_accessRequestContextMapInCriticalSectionWithBlock:(id)a3;
-- (void)_criticalInvokeTimeoutBlockForRequestID:(id)a3;
-- (void)_handleSystemTimerFired:(id)a3;
+- (void)_accessRequestContextMapInCriticalSectionWithBlock:(id)block;
+- (void)_criticalInvokeTimeoutBlockForRequestID:(id)d;
+- (void)_handleSystemTimerFired:(id)fired;
 - (void)dealloc;
 @end
 
 @implementation IDSDaemonRequestTimer
 
-- (void)_accessRequestContextMapInCriticalSectionWithBlock:(id)a3
+- (void)_accessRequestContextMapInCriticalSectionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pthread_mutex_lock(&self->_requestContextMapLock);
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   pthread_mutex_unlock(&self->_requestContextMapLock);
 }
@@ -66,15 +66,15 @@
   return v2;
 }
 
-- (id)scheduleTimeoutWithResponseHandler:(id)a3 timeoutInterval:(double)a4 timeoutBlock:(id)a5
+- (id)scheduleTimeoutWithResponseHandler:(id)handler timeoutInterval:(double)interval timeoutBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  handlerCopy = handler;
+  blockCopy = block;
+  v10 = blockCopy;
   v11 = 0;
-  if (v8)
+  if (handlerCopy)
   {
-    if (a4 > 0.0 && v9 != 0)
+    if (interval > 0.0 && blockCopy != 0)
     {
       v19 = 0;
       v20 = &v19;
@@ -87,9 +87,9 @@
       v14[2] = sub_195AB23F0;
       v14[3] = &unk_1E7441C88;
       v14[4] = self;
-      v15 = v8;
+      v15 = handlerCopy;
       v17 = &v19;
-      v18 = a4;
+      intervalCopy = interval;
       v16 = v10;
       [(IDSDaemonRequestTimer *)self _accessRequestContextMapInCriticalSectionWithBlock:v14];
       v11 = v20[5];
@@ -101,10 +101,10 @@
   return v11;
 }
 
-- (id)_criticalFindRequestContextWithResponseHandler:(id)a3
+- (id)_criticalFindRequestContextWithResponseHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(NSMutableDictionary *)self->_requestContextMap allValues];
   v13 = 0u;
   v14 = 0u;
@@ -124,9 +124,9 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 responseHandler];
+        responseHandler = [v9 responseHandler];
 
-        if (v10 == v4)
+        if (responseHandler == handlerCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -150,34 +150,34 @@ LABEL_11:
   return v6;
 }
 
-- (void)_handleSystemTimerFired:(id)a3
+- (void)_handleSystemTimerFired:(id)fired
 {
-  v4 = [a3 userInfo];
+  userInfo = [fired userInfo];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195AB2710;
   v6[3] = &unk_1E743EA30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = userInfo;
+  v5 = userInfo;
   [(IDSDaemonRequestTimer *)self _accessRequestContextMapInCriticalSectionWithBlock:v6];
 }
 
-- (void)_criticalInvokeTimeoutBlockForRequestID:(id)a3
+- (void)_criticalInvokeTimeoutBlockForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_requestContextMap objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_requestContextMap objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 responseHandler];
-    v8 = [v7 queue];
+    responseHandler = [v5 responseHandler];
+    queue = [responseHandler queue];
 
-    v9 = [v6 timeoutBlock];
-    v10 = v9;
-    if (v8)
+    timeoutBlock = [v6 timeoutBlock];
+    v10 = timeoutBlock;
+    if (queue)
     {
-      v11 = v9 == 0;
+      v11 = timeoutBlock == 0;
     }
 
     else
@@ -191,17 +191,17 @@ LABEL_11:
       block[1] = 3221225472;
       block[2] = sub_195AB282C;
       block[3] = &unk_1E743E850;
-      v13 = v9;
-      dispatch_async(v8, block);
+      v13 = timeoutBlock;
+      dispatch_async(queue, block);
     }
 
-    [(NSMutableDictionary *)self->_requestContextMap removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_requestContextMap removeObjectForKey:dCopy];
   }
 }
 
-- (id)invalidateTimeoutAndReturnHandlerForRequestID:(id)a3
+- (id)invalidateTimeoutAndReturnHandlerForRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -214,7 +214,7 @@ LABEL_11:
   v8[3] = &unk_1E743EA08;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   [(IDSDaemonRequestTimer *)self _accessRequestContextMapInCriticalSectionWithBlock:v8];
   v6 = v12[5];
@@ -224,24 +224,24 @@ LABEL_11:
   return v6;
 }
 
-- (id)_criticalInvalidateTimeoutAndReturnHandlerForRequestID:(id)a3
+- (id)_criticalInvalidateTimeoutAndReturnHandlerForRequestID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_requestContextMap objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_requestContextMap objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
     [v5 killSystemTimer];
-    v7 = [v6 responseHandler];
-    [(NSMutableDictionary *)self->_requestContextMap removeObjectForKey:v4];
+    responseHandler = [v6 responseHandler];
+    [(NSMutableDictionary *)self->_requestContextMap removeObjectForKey:dCopy];
   }
 
   else
   {
-    v7 = 0;
+    responseHandler = 0;
   }
 
-  return v7;
+  return responseHandler;
 }
 
 - (id)invalidateTimeoutsAndReturnHandlersForAllRequests

@@ -6,17 +6,17 @@
 
 - (uint64_t)pbui_isFileNotFoundError
 {
-  v2 = [a1 domain];
-  v3 = [a1 code];
-  if ([v2 isEqualToString:*MEMORY[0x277CCA5B8]])
+  domain = [self domain];
+  code = [self code];
+  if ([domain isEqualToString:*MEMORY[0x277CCA5B8]])
   {
-    v4 = v3 == 2;
+    v4 = code == 2;
   }
 
   else
   {
-    v5 = [v2 isEqualToString:*MEMORY[0x277CCA050]];
-    if (v3 == 4)
+    v5 = [domain isEqualToString:*MEMORY[0x277CCA050]];
+    if (code == 4)
     {
       v4 = v5;
     }

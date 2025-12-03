@@ -1,9 +1,9 @@
 @interface CCUIAppLauncherModule
 - (CCUIAppLauncherModule)init;
 - (SBFApplication)_application;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 - (void)_fetchApplicationIfNeeded;
-- (void)handleTapWithTouchType:(int64_t)a3;
+- (void)handleTapWithTouchType:(int64_t)type;
 @end
 
 @implementation CCUIAppLauncherModule
@@ -19,14 +19,14 @@
     bundle = v2->_bundle;
     v2->_bundle = v3;
 
-    v5 = [(NSBundle *)v2->_bundle infoDictionary];
-    v6 = [v5 objectForKey:@"CCAssociatedBundleIdentifier"];
+    infoDictionary = [(NSBundle *)v2->_bundle infoDictionary];
+    v6 = [infoDictionary objectForKey:@"CCAssociatedBundleIdentifier"];
     [(CCUIAppLauncherModule *)v2 setApplicationIdentifier:v6];
 
-    v7 = [v5 objectForKey:@"CCLaunchApplicationIdentifier"];
+    v7 = [infoDictionary objectForKey:@"CCLaunchApplicationIdentifier"];
     [(CCUIAppLauncherModule *)v2 setLaunchApplicationIdentifier:v7];
 
-    v8 = [v5 objectForKey:@"CCLaunchURL"];
+    v8 = [infoDictionary objectForKey:@"CCLaunchURL"];
     if (v8)
     {
       v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
@@ -38,24 +38,24 @@
       [(CCUIAppLauncherModule *)v2 setLaunchURL:0];
     }
 
-    v10 = [(NSBundle *)v2->_bundle ccui_displayName];
+    ccui_displayName = [(NSBundle *)v2->_bundle ccui_displayName];
     displayName = v2->_displayName;
-    v2->_displayName = v10;
+    v2->_displayName = ccui_displayName;
 
-    v12 = [v5 objectForKey:@"CCSupportsApplicationShortcuts"];
+    v12 = [infoDictionary objectForKey:@"CCSupportsApplicationShortcuts"];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
     }
 
     else
     {
-      v14 = 1;
+      bOOLValue = 1;
     }
 
-    v2->_supportsApplicationShortcuts = v14;
-    v15 = [v5 objectForKey:@"CCRequestAuthenticationForExpandedModule"];
+    v2->_supportsApplicationShortcuts = bOOLValue;
+    v15 = [infoDictionary objectForKey:@"CCRequestAuthenticationForExpandedModule"];
     v16 = v15;
     if (v15)
     {
@@ -75,45 +75,45 @@
   return v2;
 }
 
-- (void)handleTapWithTouchType:(int64_t)a3
+- (void)handleTapWithTouchType:(int64_t)type
 {
   v9 = [(CCUIAppLauncherModule *)self launchURLForTouchType:?];
-  v5 = [(CCUIAppLauncherModule *)self launchApplicationIdentifier];
-  v6 = [(CCUIAppLauncherModule *)self applicationIdentifier];
+  launchApplicationIdentifier = [(CCUIAppLauncherModule *)self launchApplicationIdentifier];
+  applicationIdentifier = [(CCUIAppLauncherModule *)self applicationIdentifier];
   if (v9)
   {
-    v7 = [(CCUIAppLauncherModule *)self contentModuleContext];
-    v8 = [(CCUIAppLauncherModule *)self launchURLForTouchType:a3];
-    [v7 openURL:v8 completionHandler:0];
+    contentModuleContext = [(CCUIAppLauncherModule *)self contentModuleContext];
+    applicationIdentifier2 = [(CCUIAppLauncherModule *)self launchURLForTouchType:type];
+    [contentModuleContext openURL:applicationIdentifier2 completionHandler:0];
 LABEL_3:
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if (v5)
+  if (launchApplicationIdentifier)
   {
-    v7 = [(CCUIAppLauncherModule *)self contentModuleContext];
-    [v7 openApplication:v5 completionHandler:0];
+    contentModuleContext = [(CCUIAppLauncherModule *)self contentModuleContext];
+    [contentModuleContext openApplication:launchApplicationIdentifier completionHandler:0];
     goto LABEL_6;
   }
 
-  if (v6)
+  if (applicationIdentifier)
   {
-    v7 = [(CCUIAppLauncherModule *)self contentModuleContext];
-    v8 = [(CCUIAppLauncherModule *)self applicationIdentifier];
-    [v7 openApplication:v8 completionHandler:0];
+    contentModuleContext = [(CCUIAppLauncherModule *)self contentModuleContext];
+    applicationIdentifier2 = [(CCUIAppLauncherModule *)self applicationIdentifier];
+    [contentModuleContext openApplication:applicationIdentifier2 completionHandler:0];
     goto LABEL_3;
   }
 
 LABEL_7:
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v4 = objc_alloc_init(CCUIAppLauncherViewController);
-  v5 = [(CCUIAppLauncherModule *)self contentModuleContext];
-  [(CCUIMenuModuleViewController *)v4 setContentModuleContext:v5];
+  contentModuleContext = [(CCUIAppLauncherModule *)self contentModuleContext];
+  [(CCUIMenuModuleViewController *)v4 setContentModuleContext:contentModuleContext];
 
   [(CCUIAppLauncherViewController *)v4 setModule:self];
 

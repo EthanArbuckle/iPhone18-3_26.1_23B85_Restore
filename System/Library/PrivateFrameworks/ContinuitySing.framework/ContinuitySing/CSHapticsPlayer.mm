@@ -1,15 +1,15 @@
 @interface CSHapticsPlayer
 - (CSHapticsPlayer)init;
-- (float)_hapticIntensityValueForIntensity:(unint64_t)a3;
-- (float)_reverbHapticSharpnessValueForIntensity:(unint64_t)a3;
+- (float)_hapticIntensityValueForIntensity:(unint64_t)intensity;
+- (float)_reverbHapticSharpnessValueForIntensity:(unint64_t)intensity;
 - (void)_onEngineReset;
-- (void)_onEngineStopsWithReason:(int64_t)a3;
-- (void)_playButtonFeedbackWithIntensity:(float)a3 andSharpness:(float)a4;
+- (void)_onEngineStopsWithReason:(int64_t)reason;
+- (void)_playButtonFeedbackWithIntensity:(float)intensity andSharpness:(float)sharpness;
 - (void)_setupHapticEngine;
-- (void)_startHapticsEngineWithCompletion:(id)a3;
+- (void)_startHapticsEngineWithCompletion:(id)completion;
 - (void)playButtonFeedback;
-- (void)playReverbButtonFeedbackWithIntensity:(unint64_t)a3;
-- (void)playVocalButtonFeedbackWithIntensity:(unint64_t)a3;
+- (void)playReverbButtonFeedbackWithIntensity:(unint64_t)intensity;
+- (void)playVocalButtonFeedbackWithIntensity:(unint64_t)intensity;
 @end
 
 @implementation CSHapticsPlayer
@@ -21,8 +21,8 @@
   v2 = [(CSHapticsPlayer *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBF6B0] capabilitiesForHardware];
-    v2->_supportsHaptics = [v3 supportsHaptics];
+    capabilitiesForHardware = [MEMORY[0x277CBF6B0] capabilitiesForHardware];
+    v2->_supportsHaptics = [capabilitiesForHardware supportsHaptics];
 
     [(CSHapticsPlayer *)v2 _setupHapticEngine];
   }
@@ -50,11 +50,11 @@
   }
 }
 
-- (void)playVocalButtonFeedbackWithIntensity:(unint64_t)a3
+- (void)playVocalButtonFeedbackWithIntensity:(unint64_t)intensity
 {
   if ([(CSHapticsPlayer *)self supportsHaptics])
   {
-    [(CSHapticsPlayer *)self _hapticIntensityValueForIntensity:a3];
+    [(CSHapticsPlayer *)self _hapticIntensityValueForIntensity:intensity];
 
     [CSHapticsPlayer _playButtonFeedbackWithIntensity:"_playButtonFeedbackWithIntensity:andSharpness:" andSharpness:?];
   }
@@ -69,13 +69,13 @@
   }
 }
 
-- (void)playReverbButtonFeedbackWithIntensity:(unint64_t)a3
+- (void)playReverbButtonFeedbackWithIntensity:(unint64_t)intensity
 {
   if ([(CSHapticsPlayer *)self supportsHaptics])
   {
-    [(CSHapticsPlayer *)self _hapticIntensityValueForIntensity:a3];
+    [(CSHapticsPlayer *)self _hapticIntensityValueForIntensity:intensity];
     v6 = v5;
-    [(CSHapticsPlayer *)self _reverbHapticSharpnessValueForIntensity:a3];
+    [(CSHapticsPlayer *)self _reverbHapticSharpnessValueForIntensity:intensity];
     LODWORD(v7) = LODWORD(v8);
     LODWORD(v8) = v6;
 
@@ -163,9 +163,9 @@ void __37__CSHapticsPlayer__setupHapticEngine__block_invoke_2(uint64_t a1, uint6
   [WeakRetained _onEngineStopsWithReason:a2];
 }
 
-- (void)_startHapticsEngineWithCompletion:(id)a3
+- (void)_startHapticsEngineWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   [(CHHapticEngine *)self->_engine setPlaysHapticsOnly:1];
   engine = self->_engine;
@@ -174,7 +174,7 @@ void __37__CSHapticsPlayer__setupHapticEngine__block_invoke_2(uint64_t a1, uint6
   v7[2] = __53__CSHapticsPlayer__startHapticsEngineWithCompletion___block_invoke;
   v7[3] = &unk_278E0AC20;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(CHHapticEngine *)engine startWithCompletionHandler:v7];
   self->_state = 1;
@@ -249,7 +249,7 @@ void __53__CSHapticsPlayer__startHapticsEngineWithCompletion___block_invoke(uint
   }
 }
 
-- (void)_onEngineStopsWithReason:(int64_t)a3
+- (void)_onEngineStopsWithReason:(int64_t)reason
 {
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -257,7 +257,7 @@ void __53__CSHapticsPlayer__startHapticsEngineWithCompletion___block_invoke(uint
     v9 = 136315394;
     v10 = "[CSHapticsPlayer _onEngineStopsWithReason:]";
     v11 = 2048;
-    v12 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: HapticsEngine stopped! Reason: %ld", &v9, 0x16u);
   }
 
@@ -275,7 +275,7 @@ void __53__CSHapticsPlayer__startHapticsEngineWithCompletion___block_invoke(uint
   *p_state = 0;
 }
 
-- (void)_playButtonFeedbackWithIntensity:(float)a3 andSharpness:(float)a4
+- (void)_playButtonFeedbackWithIntensity:(float)intensity andSharpness:(float)sharpness
 {
   v7 = ContinuitySingLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -286,11 +286,11 @@ void __53__CSHapticsPlayer__startHapticsEngineWithCompletion___block_invoke(uint
   }
 
   v8 = objc_alloc(MEMORY[0x277CBF6C0]);
-  *&v9 = a3;
+  *&v9 = intensity;
   v10 = [v8 initWithParameterID:*MEMORY[0x277CBF638] value:v9];
   v38[0] = v10;
   v11 = objc_alloc(MEMORY[0x277CBF6C0]);
-  *&v12 = a4;
+  *&v12 = sharpness;
   v13 = [v11 initWithParameterID:*MEMORY[0x277CBF640] value:v12];
   v38[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
@@ -449,15 +449,15 @@ void __65__CSHapticsPlayer__playButtonFeedbackWithIntensity_andSharpness___block
   }
 }
 
-- (float)_hapticIntensityValueForIntensity:(unint64_t)a3
+- (float)_hapticIntensityValueForIntensity:(unint64_t)intensity
 {
   result = 0.5;
-  if (a3 == 1)
+  if (intensity == 1)
   {
     result = 0.75;
   }
 
-  if (a3 == 2)
+  if (intensity == 2)
   {
     return 1.0;
   }
@@ -465,15 +465,15 @@ void __65__CSHapticsPlayer__playButtonFeedbackWithIntensity_andSharpness___block
   return result;
 }
 
-- (float)_reverbHapticSharpnessValueForIntensity:(unint64_t)a3
+- (float)_reverbHapticSharpnessValueForIntensity:(unint64_t)intensity
 {
   result = 0.3;
-  if (a3 != 1)
+  if (intensity != 1)
   {
     result = 1.0;
   }
 
-  if (a3 == 2)
+  if (intensity == 2)
   {
     return 0.1;
   }

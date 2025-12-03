@@ -2,38 +2,38 @@
 - (BOOL)_needsDisclosureAccessory;
 - (BOOL)_shouldUseAccessibilityTextLayout;
 - (NSString)folderName;
-- (RCFoldersCollectionViewCell)initWithFrame:(CGRect)a3;
+- (RCFoldersCollectionViewCell)initWithFrame:(CGRect)frame;
 - (RCFoldersCollectionViewCellActionHandler)actionHandler;
 - (UIImage)iconImage;
-- (id)_attributedStringForRecordingsCount:(id)a3;
+- (id)_attributedStringForRecordingsCount:(id)count;
 - (id)_defaultCellAccessories;
 - (id)_labelAccessoryTintColor;
 - (id)_moreOptionsButtonAccessory;
 - (id)accessibilityLabel;
 - (id)recordingsCountString;
 - (void)_clearSecondaryAttributedText;
-- (void)_setRecordingsCountText:(id)a3;
-- (void)_setSecondaryAttributedTextWithRecordingsCount:(id)a3;
+- (void)_setRecordingsCountText:(id)text;
+- (void)_setSecondaryAttributedTextWithRecordingsCount:(id)count;
 - (void)_showRecordingsCountLabel;
-- (void)_switchToAccessibilityTextLayout:(BOOL)a3;
+- (void)_switchToAccessibilityTextLayout:(BOOL)layout;
 - (void)_transitionSpecialAccessoryToEditMode;
-- (void)configureWithFolderName:(id)a3 recordingsCount:(int64_t)a4 iconImage:(id)a5 UUID:(id)a6 folderType:(int64_t)a7;
+- (void)configureWithFolderName:(id)name recordingsCount:(int64_t)count iconImage:(id)image UUID:(id)d folderType:(int64_t)type;
 - (void)contentSizeChanged;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFolderName:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setRecordingsCount:(int64_t)a3;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFolderName:(id)name;
+- (void)setIconImage:(id)image;
+- (void)setRecordingsCount:(int64_t)count;
 - (void)updateAccessories;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation RCFoldersCollectionViewCell
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
-  if (a3)
+  self->_enabled = enabled;
+  if (enabled)
   {
     v3 = 1.0;
   }
@@ -43,51 +43,51 @@
     v3 = 0.5;
   }
 
-  v4 = [(RCFoldersCollectionViewCell *)self contentView];
-  [v4 setAlpha:v3];
+  contentView = [(RCFoldersCollectionViewCell *)self contentView];
+  [contentView setAlpha:v3];
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != mode)
   {
-    self->_displayMode = a3;
-    if (a3 == 2)
+    self->_displayMode = mode;
+    if (mode == 2)
     {
       [(RCFoldersCollectionViewCell *)self _showEditingMoreOptionsButton];
     }
 
-    else if (a3 == 1)
+    else if (mode == 1)
     {
       [(RCFoldersCollectionViewCell *)self _showRecordingsCountLabel];
     }
   }
 }
 
-- (void)setFolderName:(id)a3
+- (void)setFolderName:(id)name
 {
-  v4 = a3;
-  v5 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  [v5 setText:v4];
+  nameCopy = name;
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  [contentConfiguration setText:nameCopy];
 
-  [(RCFoldersCollectionViewCell *)self setContentConfiguration:v5];
+  [(RCFoldersCollectionViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (NSString)folderName
 {
-  v2 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  v3 = [v2 text];
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  text = [contentConfiguration text];
 
-  return v3;
+  return text;
 }
 
-- (void)setRecordingsCount:(int64_t)a3
+- (void)setRecordingsCount:(int64_t)count
 {
-  self->_recordingsCount = a3;
+  self->_recordingsCount = count;
   if ([(RCFoldersCollectionViewCell *)self displayMode]!= 2)
   {
-    v4 = [(RCFoldersCollectionViewCell *)self recordingsCountString];
-    [(RCFoldersCollectionViewCell *)self _setRecordingsCountText:v4];
+    recordingsCountString = [(RCFoldersCollectionViewCell *)self recordingsCountString];
+    [(RCFoldersCollectionViewCell *)self _setRecordingsCountText:recordingsCountString];
   }
 }
 
@@ -99,29 +99,29 @@
   return v3;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = a3;
-  v6 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  v5 = [v4 imageWithRenderingMode:2];
+  imageCopy = image;
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  v5 = [imageCopy imageWithRenderingMode:2];
 
-  [v6 setImage:v5];
-  [(RCFoldersCollectionViewCell *)self setContentConfiguration:v6];
+  [contentConfiguration setImage:v5];
+  [(RCFoldersCollectionViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (UIImage)iconImage
 {
-  v2 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  v3 = [v2 image];
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  image = [contentConfiguration image];
 
-  return v3;
+  return image;
 }
 
-- (RCFoldersCollectionViewCell)initWithFrame:(CGRect)a3
+- (RCFoldersCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = RCFoldersCollectionViewCell;
-  v3 = [(RCFoldersCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCFoldersCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -136,27 +136,27 @@
   return v4;
 }
 
-- (void)configureWithFolderName:(id)a3 recordingsCount:(int64_t)a4 iconImage:(id)a5 UUID:(id)a6 folderType:(int64_t)a7
+- (void)configureWithFolderName:(id)name recordingsCount:(int64_t)count iconImage:(id)image UUID:(id)d folderType:(int64_t)type
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [(RCFoldersCollectionViewCell *)self defaultContentConfiguration];
-  [(RCFoldersCollectionViewCell *)self setContentConfiguration:v15];
-  [(RCFoldersCollectionViewCell *)self setFolderName:v14];
+  dCopy = d;
+  imageCopy = image;
+  nameCopy = name;
+  defaultContentConfiguration = [(RCFoldersCollectionViewCell *)self defaultContentConfiguration];
+  [(RCFoldersCollectionViewCell *)self setContentConfiguration:defaultContentConfiguration];
+  [(RCFoldersCollectionViewCell *)self setFolderName:nameCopy];
 
-  [(RCFoldersCollectionViewCell *)self setRecordingsCount:a4];
-  [(RCFoldersCollectionViewCell *)self setIconImage:v13];
+  [(RCFoldersCollectionViewCell *)self setRecordingsCount:count];
+  [(RCFoldersCollectionViewCell *)self setIconImage:imageCopy];
 
-  [(RCFoldersCollectionViewCell *)self setUUID:v12];
-  [(RCFoldersCollectionViewCell *)self setFolderType:a7];
+  [(RCFoldersCollectionViewCell *)self setUUID:dCopy];
+  [(RCFoldersCollectionViewCell *)self setFolderType:type];
   [(RCFoldersCollectionViewCell *)self updateAccessories];
 }
 
 - (void)updateAccessories
 {
-  v3 = [(RCFoldersCollectionViewCell *)self _defaultCellAccessories];
-  [(RCFoldersCollectionViewCell *)self setAccessories:v3];
+  _defaultCellAccessories = [(RCFoldersCollectionViewCell *)self _defaultCellAccessories];
+  [(RCFoldersCollectionViewCell *)self setAccessories:_defaultCellAccessories];
 }
 
 - (id)_defaultCellAccessories
@@ -165,21 +165,21 @@
   v4 = objc_alloc_init(UICellAccessoryReorder);
   [v4 setDisplayedState:1];
   [v3 addObject:v4];
-  v5 = [(RCFoldersCollectionViewCell *)self _moreOptionsButtonAccessory];
-  [v3 addObject:v5];
+  _moreOptionsButtonAccessory = [(RCFoldersCollectionViewCell *)self _moreOptionsButtonAccessory];
+  [v3 addObject:_moreOptionsButtonAccessory];
   v6 = objc_alloc_init(UICellAccessoryDelete);
   [v6 setDisplayedState:1];
   [v3 addObject:v6];
   if (![(RCFoldersCollectionViewCell *)self _shouldUseAccessibilityTextLayout])
   {
     v7 = [UICellAccessoryLabel alloc];
-    v8 = [(RCFoldersCollectionViewCell *)self recordingsCountString];
-    v9 = [v7 initWithText:v8];
+    recordingsCountString = [(RCFoldersCollectionViewCell *)self recordingsCountString];
+    v9 = [v7 initWithText:recordingsCountString];
 
     [v9 setDisplayedState:2];
-    v10 = [(RCFoldersCollectionViewCell *)self _labelAccessoryTintColor];
-    [(RCFoldersCollectionViewCell *)self setCurrentLabelAccessoryTintColor:v10];
-    [v9 setTintColor:v10];
+    _labelAccessoryTintColor = [(RCFoldersCollectionViewCell *)self _labelAccessoryTintColor];
+    [(RCFoldersCollectionViewCell *)self setCurrentLabelAccessoryTintColor:_labelAccessoryTintColor];
+    [v9 setTintColor:_labelAccessoryTintColor];
     [v3 addObject:v9];
   }
 
@@ -245,8 +245,8 @@
 {
   if ([(RCFoldersCollectionViewCell *)self _shouldUseAccessibilityTextLayout])
   {
-    v3 = [(RCFoldersCollectionViewCell *)self recordingsCountString];
-    [(RCFoldersCollectionViewCell *)self _setSecondaryAttributedTextWithRecordingsCount:v3];
+    recordingsCountString = [(RCFoldersCollectionViewCell *)self recordingsCountString];
+    [(RCFoldersCollectionViewCell *)self _setSecondaryAttributedTextWithRecordingsCount:recordingsCountString];
   }
 }
 
@@ -254,21 +254,21 @@
 {
   if ([(RCFoldersCollectionViewCell *)self _shouldUseAccessibilityTextLayout])
   {
-    v3 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-    [v3 setSecondaryAttributedText:0];
-    [(RCFoldersCollectionViewCell *)self setContentConfiguration:v3];
+    contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+    [contentConfiguration setSecondaryAttributedText:0];
+    [(RCFoldersCollectionViewCell *)self setContentConfiguration:contentConfiguration];
   }
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v20.receiver = self;
   v20.super_class = RCFoldersCollectionViewCell;
-  v4 = a3;
-  [(RCFoldersCollectionViewCell *)&v20 updateConfigurationUsingState:v4];
-  v5 = [v4 isEditing];
+  stateCopy = state;
+  [(RCFoldersCollectionViewCell *)&v20 updateConfigurationUsingState:stateCopy];
+  isEditing = [stateCopy isEditing];
 
-  if (v5)
+  if (isEditing)
   {
     v6 = 2;
   }
@@ -279,14 +279,14 @@
   }
 
   [(RCFoldersCollectionViewCell *)self setDisplayMode:v6];
-  v7 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v9 = [v7 secondaryTextProperties];
-  [v9 setFont:v8];
+  secondaryTextProperties = [contentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setFont:v8];
 
   LODWORD(v8) = [(RCFoldersCollectionViewCell *)self _shouldUseAccessibilityTextLayout];
-  v10 = [v7 textProperties];
-  v11 = v10;
+  textProperties = [contentConfiguration textProperties];
+  v11 = textProperties;
   v12 = v8 ^ 1;
   if (v8)
   {
@@ -298,18 +298,18 @@
     v13 = 4;
   }
 
-  [v10 setNumberOfLines:v12];
+  [textProperties setNumberOfLines:v12];
 
-  v14 = [v7 textProperties];
-  [v14 setLineBreakMode:v13];
+  textProperties2 = [contentConfiguration textProperties];
+  [textProperties2 setLineBreakMode:v13];
 
-  [(RCFoldersCollectionViewCell *)self setContentConfiguration:v7];
-  v15 = [(RCFoldersCollectionViewCell *)self _labelAccessoryTintColor];
-  v16 = [(RCFoldersCollectionViewCell *)self currentLabelAccessoryTintColor];
-  v17 = v16 | v15;
+  [(RCFoldersCollectionViewCell *)self setContentConfiguration:contentConfiguration];
+  _labelAccessoryTintColor = [(RCFoldersCollectionViewCell *)self _labelAccessoryTintColor];
+  currentLabelAccessoryTintColor = [(RCFoldersCollectionViewCell *)self currentLabelAccessoryTintColor];
+  v17 = currentLabelAccessoryTintColor | _labelAccessoryTintColor;
 
-  v18 = [(RCFoldersCollectionViewCell *)self currentLabelAccessoryTintColor];
-  v19 = [v18 isEqual:v15];
+  currentLabelAccessoryTintColor2 = [(RCFoldersCollectionViewCell *)self currentLabelAccessoryTintColor];
+  v19 = [currentLabelAccessoryTintColor2 isEqual:_labelAccessoryTintColor];
 
   if (v17 && (v19 & 1) == 0)
   {
@@ -317,12 +317,12 @@
   }
 }
 
-- (void)_setRecordingsCountText:(id)a3
+- (void)_setRecordingsCountText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(RCFoldersCollectionViewCell *)self _shouldUseAccessibilityTextLayout])
   {
-    [(RCFoldersCollectionViewCell *)self _setSecondaryAttributedTextWithRecordingsCount:v4];
+    [(RCFoldersCollectionViewCell *)self _setSecondaryAttributedTextWithRecordingsCount:textCopy];
   }
 
   else
@@ -331,15 +331,15 @@
   }
 }
 
-- (void)_switchToAccessibilityTextLayout:(BOOL)a3
+- (void)_switchToAccessibilityTextLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   [(RCFoldersCollectionViewCell *)self updateAccessories];
-  v5 = [(RCFoldersCollectionViewCell *)self recordingsCountString];
-  v6 = v5;
-  if (v3)
+  recordingsCountString = [(RCFoldersCollectionViewCell *)self recordingsCountString];
+  v6 = recordingsCountString;
+  if (layoutCopy)
   {
-    [(RCFoldersCollectionViewCell *)self _setSecondaryAttributedTextWithRecordingsCount:v5];
+    [(RCFoldersCollectionViewCell *)self _setSecondaryAttributedTextWithRecordingsCount:recordingsCountString];
   }
 
   else
@@ -348,26 +348,26 @@
   }
 }
 
-- (void)_setSecondaryAttributedTextWithRecordingsCount:(id)a3
+- (void)_setSecondaryAttributedTextWithRecordingsCount:(id)count
 {
-  v4 = a3;
-  v6 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  v5 = [(RCFoldersCollectionViewCell *)self _attributedStringForRecordingsCount:v4];
+  countCopy = count;
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  v5 = [(RCFoldersCollectionViewCell *)self _attributedStringForRecordingsCount:countCopy];
 
-  [v6 setSecondaryAttributedText:v5];
-  [(RCFoldersCollectionViewCell *)self setContentConfiguration:v6];
+  [contentConfiguration setSecondaryAttributedText:v5];
+  [(RCFoldersCollectionViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (void)_clearSecondaryAttributedText
 {
-  v3 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  [v3 setSecondaryAttributedText:0];
-  [(RCFoldersCollectionViewCell *)self setContentConfiguration:v3];
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  [contentConfiguration setSecondaryAttributedText:0];
+  [(RCFoldersCollectionViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
-- (id)_attributedStringForRecordingsCount:(id)a3
+- (id)_attributedStringForRecordingsCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
   v6 = 0.0;
   if ([(RCFoldersCollectionViewCell *)self _shouldUseAccessibilityTextLayout])
@@ -381,7 +381,7 @@
   v9 = [NSNumber numberWithDouble:v6];
   v14 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  v11 = [v8 initWithString:v4 attributes:v10];
+  v11 = [v8 initWithString:countCopy attributes:v10];
 
   return v11;
 }
@@ -389,19 +389,19 @@
 - (BOOL)_shouldUseAccessibilityTextLayout
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 isAccessibilityLargerTextSizeEnabled];
+  isAccessibilityLargerTextSizeEnabled = [v2 isAccessibilityLargerTextSizeEnabled];
 
-  return v3;
+  return isAccessibilityLargerTextSizeEnabled;
 }
 
 - (id)_labelAccessoryTintColor
 {
-  v2 = [(RCFoldersCollectionViewCell *)self contentConfiguration];
-  v3 = [v2 textProperties];
-  v4 = [v3 resolvedColor];
+  contentConfiguration = [(RCFoldersCollectionViewCell *)self contentConfiguration];
+  textProperties = [contentConfiguration textProperties];
+  resolvedColor = [textProperties resolvedColor];
 
   v5 = +[UIColor labelColor];
-  v6 = [v4 isEqual:v5];
+  v6 = [resolvedColor isEqual:v5];
 
   if (v6)
   {
@@ -410,7 +410,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = resolvedColor;
   }
 
   return v7;
@@ -419,30 +419,30 @@
 - (BOOL)_needsDisclosureAccessory
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 sidebarCollectionViewNeedsDisclosureAccessory];
+  sidebarCollectionViewNeedsDisclosureAccessory = [v2 sidebarCollectionViewNeedsDisclosureAccessory];
 
-  return v3;
+  return sidebarCollectionViewNeedsDisclosureAccessory;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(RCFoldersCollectionViewCell *)self configurationState];
-  v4 = [v3 isEditing];
+  configurationState = [(RCFoldersCollectionViewCell *)self configurationState];
+  isEditing = [configurationState isEditing];
 
-  if (v4)
+  if (isEditing)
   {
-    v5 = [(RCFoldersCollectionViewCell *)self folderName];
-    v6 = [NSString stringWithFormat:@"%@", v5];
+    folderName = [(RCFoldersCollectionViewCell *)self folderName];
+    v6 = [NSString stringWithFormat:@"%@", folderName];
   }
 
   else
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"AX_NUMBER_OF_RECORDINGS_IN_FOLDER" value:&stru_100295BB8 table:0];
-    v5 = [NSString localizedStringWithFormat:v8, [(RCFoldersCollectionViewCell *)self recordingsCount]];
+    folderName = [NSString localizedStringWithFormat:v8, [(RCFoldersCollectionViewCell *)self recordingsCount]];
 
-    v9 = [(RCFoldersCollectionViewCell *)self folderName];
-    v6 = [NSString stringWithFormat:@"%@, %@", v9, v5];
+    folderName2 = [(RCFoldersCollectionViewCell *)self folderName];
+    v6 = [NSString stringWithFormat:@"%@, %@", folderName2, folderName];
   }
 
   return v6;

@@ -1,40 +1,40 @@
 @interface ICDocCamScanCacheItem
-- (ICDocCamScanCacheItem)initWithImageCache:(id)a3 docInfos:(id)a4;
-- (id)docInfoForScanDataDelegate:(id)a3;
-- (id)imageForScanDataDelegateIdentifier:(id)a3;
+- (ICDocCamScanCacheItem)initWithImageCache:(id)cache docInfos:(id)infos;
+- (id)docInfoForScanDataDelegate:(id)delegate;
+- (id)imageForScanDataDelegateIdentifier:(id)identifier;
 - (void)deleteCacheImages;
 - (void)doneBuildingCache;
 @end
 
 @implementation ICDocCamScanCacheItem
 
-- (ICDocCamScanCacheItem)initWithImageCache:(id)a3 docInfos:(id)a4
+- (ICDocCamScanCacheItem)initWithImageCache:(id)cache docInfos:(id)infos
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  infosCopy = infos;
   v12.receiver = self;
   v12.super_class = ICDocCamScanCacheItem;
   v9 = [(ICDocCamScanCacheItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageCache, a3);
-    objc_storeStrong(&v10->_docInfos, a4);
+    objc_storeStrong(&v9->_imageCache, cache);
+    objc_storeStrong(&v10->_docInfos, infos);
   }
 
   return v10;
 }
 
-- (id)docInfoForScanDataDelegate:(id)a3
+- (id)docInfoForScanDataDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ICDocCamScanCacheItem *)self docInfos];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  docInfos = [(ICDocCamScanCacheItem *)self docInfos];
+  v6 = [docInfos countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -44,12 +44,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(docInfos);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 scanDataDelegateIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        scanDataDelegateIdentifier = [v9 scanDataDelegateIdentifier];
+        v11 = [scanDataDelegateIdentifier isEqualToString:delegateCopy];
 
         if (v11)
         {
@@ -58,7 +58,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [docInfos countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -73,14 +73,14 @@ LABEL_11:
   return v6;
 }
 
-- (id)imageForScanDataDelegateIdentifier:(id)a3
+- (id)imageForScanDataDelegateIdentifier:(id)identifier
 {
-  v4 = [(ICDocCamScanCacheItem *)self docInfoForScanDataDelegate:a3];
-  v5 = [v4 croppedAndFilteredImageUUID];
-  if (v5)
+  v4 = [(ICDocCamScanCacheItem *)self docInfoForScanDataDelegate:identifier];
+  croppedAndFilteredImageUUID = [v4 croppedAndFilteredImageUUID];
+  if (croppedAndFilteredImageUUID)
   {
-    v6 = [(ICDocCamScanCacheItem *)self imageCache];
-    v7 = [v6 getImage:v5];
+    imageCache = [(ICDocCamScanCacheItem *)self imageCache];
+    v7 = [imageCache getImage:croppedAndFilteredImageUUID];
   }
 
   else
@@ -125,8 +125,8 @@ LABEL_11:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v8 = [v7 allUUIDs];
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        allUUIDs = [v7 allUUIDs];
+        v9 = [allUUIDs countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v9)
         {
           v10 = v9;
@@ -138,18 +138,18 @@ LABEL_11:
             {
               if (*v18 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allUUIDs);
               }
 
               v13 = *(*(&v17 + 1) + 8 * v12);
-              v14 = [(ICDocCamScanCacheItem *)self imageCache];
-              [v14 deleteImage:v13];
+              imageCache = [(ICDocCamScanCacheItem *)self imageCache];
+              [imageCache deleteImage:v13];
 
               ++v12;
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v10 = [allUUIDs countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v10);

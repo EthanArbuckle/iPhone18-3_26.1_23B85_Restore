@@ -2,15 +2,15 @@
 + (BOOL)immediateMode;
 + (CAMediaTimingFunction)animationTimingFunction;
 + (__C3DScene)immediateModeRestrictedContext;
-+ (void)enqueueCommandForObject:(id)a3 immediateTransactionBlock:(id)a4;
-+ (void)performPresentationInstanceQueriesInScene:(id)a3 usingBlock:(id)a4;
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 applyBlock:(id)a5;
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 key:(id)a5 applyBlock:(id)a6;
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 key:(id)a5 subscriptIndex:(unint64_t)a6 derivedKeyPath:(id)a7 applyBlock:(id)a8;
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 key:(id)a5 subscriptKey:(id)a6 derivedKeyPath:(id)a7 applyBlock:(id)a8;
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 keyPath:(id)a5 applyBlock:(id)a6;
++ (void)enqueueCommandForObject:(id)object immediateTransactionBlock:(id)block;
++ (void)performPresentationInstanceQueriesInScene:(id)scene usingBlock:(id)block;
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object applyBlock:(id)block;
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object key:(id)key applyBlock:(id)block;
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object key:(id)key subscriptIndex:(unint64_t)index derivedKeyPath:(id)path applyBlock:(id)block;
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object key:(id)key subscriptKey:(id)subscriptKey derivedKeyPath:(id)path applyBlock:(id)block;
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object keyPath:(id)path applyBlock:(id)block;
 + (void)setAnimationTimingFunction:(CAMediaTimingFunction *)animationTimingFunction;
-- (void)setAnimationTimingFunction:(id)a3;
+- (void)setAnimationTimingFunction:(id)function;
 @end
 
 @implementation SCNTransaction
@@ -48,125 +48,125 @@
   return C3DParticleSystemInstanceGetSystem(Current);
 }
 
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 applyBlock:(id)a5
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object applyBlock:(id)block
 {
   Current = C3DTransactionGetCurrent();
-  if (C3DTransactionAllowImmediate(Current, a3))
+  if (C3DTransactionAllowImmediate(Current, context))
   {
-    v10 = *(a5 + 2);
+    v10 = *(block + 2);
     v9.n128_u64[0] = 0;
 
-    v10(a5, v9);
+    v10(block, v9);
   }
 
   else
   {
-    v11 = [a4 __CFObject];
+    __CFObject = [object __CFObject];
 
-    C3DTransactionAddCommandBlock(Current, a3, a4, v11, 0, a5);
+    C3DTransactionAddCommandBlock(Current, context, object, __CFObject, 0, block);
   }
 }
 
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 keyPath:(id)a5 applyBlock:(id)a6
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object keyPath:(id)path applyBlock:(id)block
 {
   Current = C3DTransactionGetCurrent();
-  if (C3DTransactionAllowImmediate(Current, a3))
+  if (C3DTransactionAllowImmediate(Current, context))
   {
-    (*(a6 + 2))(a6, 0.0);
-    if (a3 && a5)
+    (*(block + 2))(block, 0.0);
+    if (context && path)
     {
-      v11 = [a4 __CFObject];
+      __CFObject = [object __CFObject];
 
-      C3DTransactionUpdateModelValueForKeypathIfNeeded(a3, v11, a5);
+      C3DTransactionUpdateModelValueForKeypathIfNeeded(context, __CFObject, path);
     }
   }
 
   else
   {
-    v12 = [a4 __CFObject];
+    __CFObject2 = [object __CFObject];
 
-    C3DTransactionAddCommandBlock(Current, a3, a4, v12, a5, a6);
+    C3DTransactionAddCommandBlock(Current, context, object, __CFObject2, path, block);
   }
 }
 
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 key:(id)a5 subscriptIndex:(unint64_t)a6 derivedKeyPath:(id)a7 applyBlock:(id)a8
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object key:(id)key subscriptIndex:(unint64_t)index derivedKeyPath:(id)path applyBlock:(id)block
 {
   Current = C3DTransactionGetCurrent();
-  if (C3DTransactionAllowImmediate(Current, a3))
+  if (C3DTransactionAllowImmediate(Current, context))
   {
-    (*(a8 + 2))(a8, 0.0);
-    if (a3 && a7)
+    (*(block + 2))(block, 0.0);
+    if (context && path)
     {
-      v15 = [a4 __CFObject];
+      __CFObject = [object __CFObject];
 
-      C3DTransactionUpdateModelValueForKeyAndSubscriptIndexIfNeeded(a3, v15, a5, a6);
+      C3DTransactionUpdateModelValueForKeyAndSubscriptIndexIfNeeded(context, __CFObject, key, index);
     }
   }
 
   else
   {
-    v16 = [a4 __CFObject];
+    __CFObject2 = [object __CFObject];
 
-    C3DTransactionAddCommandBlock(Current, a3, a4, v16, a7, a8);
+    C3DTransactionAddCommandBlock(Current, context, object, __CFObject2, path, block);
   }
 }
 
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 key:(id)a5 subscriptKey:(id)a6 derivedKeyPath:(id)a7 applyBlock:(id)a8
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object key:(id)key subscriptKey:(id)subscriptKey derivedKeyPath:(id)path applyBlock:(id)block
 {
   Current = C3DTransactionGetCurrent();
-  if (C3DTransactionAllowImmediate(Current, a3))
+  if (C3DTransactionAllowImmediate(Current, context))
   {
-    (*(a8 + 2))(a8, 0.0);
-    if (a3 && a7)
+    (*(block + 2))(block, 0.0);
+    if (context && path)
     {
-      v15 = [a4 __CFObject];
+      __CFObject = [object __CFObject];
 
-      C3DTransactionUpdateModelValueForKeyAndSubscriptKeyIfNeeded(a3, v15, a5, a6);
+      C3DTransactionUpdateModelValueForKeyAndSubscriptKeyIfNeeded(context, __CFObject, key, subscriptKey);
     }
   }
 
   else
   {
-    v16 = [a4 __CFObject];
+    __CFObject2 = [object __CFObject];
 
-    C3DTransactionAddCommandBlock(Current, a3, a4, v16, a7, a8);
+    C3DTransactionAddCommandBlock(Current, context, object, __CFObject2, path, block);
   }
 }
 
-+ (void)postCommandWithContext:(__C3DScene *)a3 object:(id)a4 key:(id)a5 applyBlock:(id)a6
++ (void)postCommandWithContext:(__C3DScene *)context object:(id)object key:(id)key applyBlock:(id)block
 {
   Current = C3DTransactionGetCurrent();
-  if (C3DTransactionAllowImmediate(Current, a3))
+  if (C3DTransactionAllowImmediate(Current, context))
   {
-    (*(a6 + 2))(a6, 0.0);
-    if (a3 && a5)
+    (*(block + 2))(block, 0.0);
+    if (context && key)
     {
-      v11 = [a4 __CFObject];
+      __CFObject = [object __CFObject];
 
-      C3DTransactionUpdateModelValueForKeyIfNeeded(a3, v11, a5);
+      C3DTransactionUpdateModelValueForKeyIfNeeded(context, __CFObject, key);
     }
   }
 
   else
   {
-    v12 = [a4 __CFObject];
+    __CFObject2 = [object __CFObject];
 
-    C3DTransactionAddCommandBlock(Current, a3, a4, v12, a5, a6);
+    C3DTransactionAddCommandBlock(Current, context, object, __CFObject2, key, block);
   }
 }
 
-+ (void)enqueueCommandForObject:(id)a3 immediateTransactionBlock:(id)a4
++ (void)enqueueCommandForObject:(id)object immediateTransactionBlock:(id)block
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [a3 scene];
+    object = [object scene];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [a3 sceneRef];
-    if (!v8)
+    sceneRef = [object sceneRef];
+    if (!sceneRef)
     {
       v9 = scn_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -179,9 +179,9 @@
     v11[1] = 3221225472;
     v11[2] = __68__SCNTransaction_enqueueCommandForObject_immediateTransactionBlock___block_invoke;
     v11[3] = &unk_278300670;
-    v11[4] = a4;
+    v11[4] = block;
     v11[5] = a2;
-    [a1 postCommandWithContext:v8 object:a3 applyBlock:v11];
+    [self postCommandWithContext:sceneRef object:object applyBlock:v11];
   }
 
   else
@@ -217,33 +217,33 @@ uint64_t __68__SCNTransaction_enqueueCommandForObject_immediateTransactionBlock_
   }
 }
 
-+ (void)performPresentationInstanceQueriesInScene:(id)a3 usingBlock:(id)a4
++ (void)performPresentationInstanceQueriesInScene:(id)scene usingBlock:(id)block
 {
-  v5 = [a3 sceneRef];
-  v7 = v5;
-  if (v5)
+  sceneRef = [scene sceneRef];
+  v7 = sceneRef;
+  if (sceneRef)
   {
-    v6 = v5;
-    C3DSceneLock(v5);
-    (*(a4 + 2))(a4, &v7);
+    v6 = sceneRef;
+    C3DSceneLock(sceneRef);
+    (*(block + 2))(block, &v7);
     C3DSceneUnlock(v6);
   }
 
   else
   {
-    (*(a4 + 2))(a4, &v7);
+    (*(block + 2))(block, &v7);
   }
 }
 
-- (void)setAnimationTimingFunction:(id)a3
+- (void)setAnimationTimingFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [MEMORY[0x277CD9EF8] functionWithName:a3];
+    function = [MEMORY[0x277CD9EF8] functionWithName:function];
   }
 
-  [SCNTransaction setAnimationTimingFunction:a3];
+  [SCNTransaction setAnimationTimingFunction:function];
 }
 
 + (void)enqueueCommandForObject:immediateTransactionBlock:.cold.1()

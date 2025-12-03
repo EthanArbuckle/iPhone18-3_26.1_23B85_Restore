@@ -1,18 +1,18 @@
 @interface LifetimeServoControlLoop
-- (LifetimeServoControlLoop)initWithParams:(id)a3 perfStateVoltages:(int *)a4 voltageCount:(int)a5 loopType:(int)a6 persistancePath:(__CFString *)a7 filer:(id)a8;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
-- (int)updateTempMax:(int)a3;
-- (void)initSensorIndexSet:(id)a3;
+- (LifetimeServoControlLoop)initWithParams:(id)params perfStateVoltages:(int *)voltages voltageCount:(int)count loopType:(int)type persistancePath:(__CFString *)path filer:(id)filer;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
+- (int)updateTempMax:(int)max;
+- (void)initSensorIndexSet:(id)set;
 - (void)initializeLifetimeServoStateAsPersisted;
-- (void)processSleepInterval:(int64_t)a3;
+- (void)processSleepInterval:(int64_t)interval;
 - (void)updateDieTempTarget;
 - (void)updatePersistedState;
 @end
 
 @implementation LifetimeServoControlLoop
 
-- (LifetimeServoControlLoop)initWithParams:(id)a3 perfStateVoltages:(int *)a4 voltageCount:(int)a5 loopType:(int)a6 persistancePath:(__CFString *)a7 filer:(id)a8
+- (LifetimeServoControlLoop)initWithParams:(id)params perfStateVoltages:(int *)voltages voltageCount:(int)count loopType:(int)type persistancePath:(__CFString *)path filer:(id)filer
 {
   v41.receiver = self;
   v41.super_class = LifetimeServoControlLoop;
@@ -23,9 +23,9 @@
     return v15;
   }
 
-  if (a3)
+  if (params)
   {
-    v14->_loopType = a6;
+    v14->_loopType = type;
     p_loopType = &v14->_loopType;
     if (byte_1000AB2F8 == 1)
     {
@@ -33,21 +33,21 @@
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v43 = a6;
+        typeCopy = type;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "<Notice> LSControlLoop %d: init", buf, 8u);
       }
     }
 
-    if (a6 > 1)
+    if (type > 1)
     {
-      if (a6 == 2)
+      if (type == 2)
       {
         v17 = off_1000861C0;
         v18 = @"_P";
         goto LABEL_20;
       }
 
-      if (a6 == 3)
+      if (type == 3)
       {
         v17 = off_1000861E0;
         v18 = @"_G";
@@ -57,14 +57,14 @@
 
     else
     {
-      if (!a6)
+      if (!type)
       {
         v17 = off_100086180;
         v18 = &stru_1000891D8;
         goto LABEL_20;
       }
 
-      if (a6 == 1)
+      if (type == 1)
       {
         v17 = off_1000861A0;
         v18 = @"_E";
@@ -72,18 +72,18 @@ LABEL_20:
         v15->_persistenceKeyNames = v17;
         v15->_tGraphHeaderSuffix = v18;
 LABEL_21:
-        v15->_persistancePath = a7;
-        v15->_filer = a8;
+        v15->_persistancePath = path;
+        v15->_filer = filer;
         v15->_override_is = -1;
         v15->_override_af_i = -1;
         v15->_override_af_i_float = -1;
-        [objc_msgSend(a3 valueForKey:{@"targetAF", "floatValue"}];
+        [objc_msgSend(params valueForKey:{@"targetAF", "floatValue"}];
         v15->_r = v19;
-        v15->_afLUT = -[LifetimeServoAFLUT initWithAFTableColumns:]([LifetimeServoAFLUT alloc], "initWithAFTableColumns:", [a3 valueForKey:@"AFLUT"]);
+        v15->_afLUT = -[LifetimeServoAFLUT initWithAFTableColumns:]([LifetimeServoAFLUT alloc], "initWithAFTableColumns:", [params valueForKey:@"AFLUT"]);
         v15->_is = 0;
-        [objc_msgSend(a3 valueForKey:{@"seed", "floatValue"}];
+        [objc_msgSend(params valueForKey:{@"seed", "floatValue"}];
         v21 = v20;
-        v22 = [objc_msgSend(a3 valueForKey:{@"seed", "intValue"}];
+        v22 = [objc_msgSend(params valueForKey:{@"seed", "intValue"}];
         v15->_is = v22;
         if (v21 != 0.0)
         {
@@ -94,7 +94,7 @@ LABEL_21:
             {
               v24 = *p_loopType;
               *buf = 67109376;
-              v43 = v24;
+              typeCopy = v24;
               v44 = 2048;
               *v45 = v22;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "<Notice> LSControlLoop %d: seed %lld", buf, 0x12u);
@@ -107,9 +107,9 @@ LABEL_21:
         v15->_isUp = 0;
         v15->_isDown = 0;
         [(LifetimeServoControlLoop *)v15 initializeLifetimeServoStateAsPersisted];
-        v15->_Lmin = [objc_msgSend(a3 valueForKey:{@"targetLmin", "intValue"}];
-        v15->_Lmax = [objc_msgSend(a3 valueForKey:{@"targetLmax", "intValue"}];
-        [objc_msgSend(a3 valueForKey:{@"ki", "floatValue"}];
+        v15->_Lmin = [objc_msgSend(params valueForKey:{@"targetLmin", "intValue"}];
+        v15->_Lmax = [objc_msgSend(params valueForKey:{@"targetLmax", "intValue"}];
+        [objc_msgSend(params valueForKey:{@"ki", "floatValue"}];
         LODWORD(v15->_ki_ls) = v25;
         if (byte_1000AB2F8 == 1)
         {
@@ -122,7 +122,7 @@ LABEL_21:
             Lmin = v15->_Lmin;
             Lmax = v15->_Lmax;
             *buf = 67110144;
-            v43 = loopType;
+            typeCopy = loopType;
             v44 = 2048;
             *v45 = r;
             *&v45[8] = 1024;
@@ -140,18 +140,18 @@ LABEL_21:
           sub_100059A8C(p_loopType);
         }
 
-        if (a5 <= 16)
+        if (count <= 16)
         {
-          if (a5 >= 1)
+          if (count >= 1)
           {
             v32 = 0;
-            v33 = a5;
+            countCopy = count;
             v34 = byte_1000AB2F8;
             *&v25 = 67109632;
             v39 = v25;
             do
             {
-              v35 = a4[v32];
+              v35 = voltages[v32];
               v15->_perfStateVoltages[v32] = v35;
               if (v34)
               {
@@ -160,7 +160,7 @@ LABEL_21:
                 {
                   v37 = *p_loopType;
                   *buf = v39;
-                  v43 = v37;
+                  typeCopy = v37;
                   v44 = 1024;
                   *v45 = v32;
                   *&v45[4] = 1024;
@@ -183,7 +183,7 @@ LABEL_21:
               ++v32;
             }
 
-            while (v33 != v32);
+            while (countCopy != v32);
           }
         }
 
@@ -256,11 +256,11 @@ LABEL_21:
     v8 = [(Filer *)self->_filer getValueForKey:*self->_persistenceKeyNames];
     if (v8 && (self->_is = [v8 unsignedLongLongValue], (v9 = -[Filer getValueForKey:](self->_filer, "getValueForKey:", *(self->_persistenceKeyNames + 1))) != 0) && (self->_isUp = objc_msgSend(v9, "unsignedLongLongValue"), (v10 = -[Filer getValueForKey:](self->_filer, "getValueForKey:", *(self->_persistenceKeyNames + 2))) != 0))
     {
-      v11 = [v10 unsignedLongLongValue];
-      self->_isDown = v11;
+      unsignedLongLongValue = [v10 unsignedLongLongValue];
+      self->_isDown = unsignedLongLongValue;
       if (byte_1000AB2F8 == 1)
       {
-        v12 = v11;
+        v12 = unsignedLongLongValue;
         v13 = qword_1000AB718;
         if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
         {
@@ -447,11 +447,11 @@ LABEL_37:
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         loopType = self->_loopType;
-        v6 = [(Filer *)self->_filer copyDictionaryFromFile];
+        copyDictionaryFromFile = [(Filer *)self->_filer copyDictionaryFromFile];
         *buf = 67109378;
         *&buf[4] = loopType;
         LOWORD(v16) = 2112;
-        *(&v16 + 2) = v6;
+        *(&v16 + 2) = copyDictionaryFromFile;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "<Notice> LSControlLoop %d: persisting dictionary %@", buf, 0x12u);
       }
     }
@@ -507,7 +507,7 @@ LABEL_37:
   }
 }
 
-- (int)updateTempMax:(int)a3
+- (int)updateTempMax:(int)max
 {
   sensorIndexSet = self->_sensorIndexSet;
   if (sensorIndexSet)
@@ -517,15 +517,15 @@ LABEL_37:
 
   else
   {
-    return a3;
+    return max;
   }
 }
 
-- (void)processSleepInterval:(int64_t)a3
+- (void)processSleepInterval:(int64_t)interval
 {
   if (self->_override_is == -1)
   {
-    v5 = ((self->_r * a3) * 1024.0) / 5.0;
+    v5 = ((self->_r * interval) * 1024.0) / 5.0;
     v6 = v5;
     if (v5 >= 1)
     {
@@ -541,7 +541,7 @@ LABEL_37:
         v9[0] = 67109632;
         v9[1] = loopType;
         v10 = 2048;
-        v11 = a3;
+        intervalCopy = interval;
         v12 = 2048;
         v13 = v6;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> LSControlLoop %d: delta %ld, is_sleep_adjustment %lld", v9, 0x1Cu);
@@ -550,9 +550,9 @@ LABEL_37:
   }
 }
 
-- (void)initSensorIndexSet:(id)a3
+- (void)initSensorIndexSet:(id)set
 {
-  self->_sensorIndexSet = a3;
+  self->_sensorIndexSet = set;
   v5 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
@@ -560,31 +560,31 @@ LABEL_37:
     v7[0] = 67109378;
     v7[1] = loopType;
     v8 = 2112;
-    v9 = a3;
+    setCopy = set;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> looptype %d sensorIndex %@", v7, 0x12u);
   }
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 4)
+  if (index > 4)
   {
     return 0;
   }
 
   else
   {
-    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, *(&off_100086250 + a3), self->_tGraphHeaderSuffix);
+    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, *(&off_100086250 + index), self->_tGraphHeaderSuffix);
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 <= 1)
+  if (index <= 1)
   {
-    if (a3)
+    if (index)
     {
-      if (a3 != 1)
+      if (index != 1)
       {
         return 0;
       }
@@ -602,14 +602,14 @@ LABEL_37:
 
   else
   {
-    if (a3 != 2)
+    if (index != 2)
     {
-      if (a3 == 3)
+      if (index == 3)
       {
         return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%f", self->_af_i);
       }
 
-      if (a3 == 4)
+      if (index == 4)
       {
         return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%d", self->_u);
       }

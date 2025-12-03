@@ -1,19 +1,19 @@
 @interface SBMoveFloatingOverFullScreenGestureSwitcherModifier
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (id)handleTransitionEvent:(id)event;
 @end
 
 @implementation SBMoveFloatingOverFullScreenGestureSwitcherModifier
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBMoveFloatingOverFullScreenGestureSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 2)
+  if (phase == 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -21,13 +21,13 @@
   return v5;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sbf_isLowEndForSlideOverMoveGesture];
+  layoutCopy = layout;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sbf_isLowEndForSlideOverMoveGesture = [currentDevice sbf_isLowEndForSlideOverMoveGesture];
 
-  if (v6)
+  if (sbf_isLowEndForSlideOverMoveGesture)
   {
     v7 = SBSwitcherAsyncRenderingAttributesMake(1u, 0);
   }
@@ -36,7 +36,7 @@
   {
     v10.receiver = self;
     v10.super_class = SBMoveFloatingOverFullScreenGestureSwitcherModifier;
-    v7 = [(SBMoveFloatingOverFullScreenGestureSwitcherModifier *)&v10 asyncRenderingAttributesForAppLayout:v4];
+    v7 = [(SBMoveFloatingOverFullScreenGestureSwitcherModifier *)&v10 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v8 = v7;

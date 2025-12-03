@@ -1,31 +1,31 @@
 @interface PXStoryPassthroughDetailedSaliencyProducer
-- (PXStoryPassthroughDetailedSaliencyProducer)initWithDetailedSaliency:(id)a3;
-- (id)requestDetailedSaliencyForDisplayAssets:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
+- (PXStoryPassthroughDetailedSaliencyProducer)initWithDetailedSaliency:(id)saliency;
+- (id)requestDetailedSaliencyForDisplayAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPassthroughDetailedSaliencyProducer
 
-- (id)requestDetailedSaliencyForDisplayAssets:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestDetailedSaliencyForDisplayAssets:(id)assets options:(unint64_t)options resultHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [PXStoryProducerResult alloc];
-  v9 = [(PXStoryPassthroughDetailedSaliencyProducer *)self detailedSaliency];
-  v10 = [(PXStoryProducerResult *)v8 initWithObject:v9];
-  (*(a5 + 2))(v7, v10);
+  detailedSaliency = [(PXStoryPassthroughDetailedSaliencyProducer *)self detailedSaliency];
+  v10 = [(PXStoryProducerResult *)v8 initWithObject:detailedSaliency];
+  (*(handler + 2))(handlerCopy, v10);
 
   return 0;
 }
 
-- (PXStoryPassthroughDetailedSaliencyProducer)initWithDetailedSaliency:(id)a3
+- (PXStoryPassthroughDetailedSaliencyProducer)initWithDetailedSaliency:(id)saliency
 {
-  v5 = a3;
+  saliencyCopy = saliency;
   v9.receiver = self;
   v9.super_class = PXStoryPassthroughDetailedSaliencyProducer;
   v6 = [(PXStoryPassthroughDetailedSaliencyProducer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_detailedSaliency, a3);
+    objc_storeStrong(&v6->_detailedSaliency, saliency);
   }
 
   return v7;

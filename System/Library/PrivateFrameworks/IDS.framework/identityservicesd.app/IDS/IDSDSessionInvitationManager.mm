@@ -1,84 +1,84 @@
 @interface IDSDSessionInvitationManager
-- (BOOL)_isValidDestination:(id)a3;
+- (BOOL)_isValidDestination:(id)destination;
 - (IDSDSession)delegate;
-- (IDSDSessionInvitationManager)initWithDictionary:(id)a3 sharedState:(id)a4 messenger:(id)a5;
+- (IDSDSessionInvitationManager)initWithDictionary:(id)dictionary sharedState:(id)state messenger:(id)messenger;
 - (id)_acceptedDeviceToken;
 - (id)_acceptedDeviceUniqueID;
 - (id)publicIdentityDataFromLocalFullIdentity;
-- (void)_sendAcceptMessageWithContext:(id)a3 connectionData:(id)a4;
-- (void)_sendInvitationMessageToDestinations:(id)a3 withOptions:(id)a4 contextData:(id)a5 declineOnError:(BOOL)a6 connectionData:(id)a7;
-- (void)_sendInvitationWithOptions:(id)a3 data:(id)a4 declineOnError:(BOOL)a5;
-- (void)acceptInvitationWithData:(id)a3;
+- (void)_sendAcceptMessageWithContext:(id)context connectionData:(id)data;
+- (void)_sendInvitationMessageToDestinations:(id)destinations withOptions:(id)options contextData:(id)data declineOnError:(BOOL)error connectionData:(id)connectionData;
+- (void)_sendInvitationWithOptions:(id)options data:(id)data declineOnError:(BOOL)error;
+- (void)acceptInvitationWithData:(id)data;
 - (void)cancelInvitation;
-- (void)cancelInvitationWithData:(id)a3;
-- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)a3;
-- (void)declineInvitationWithData:(id)a3 forceFromURI:(id)a4 additionalMessageAttributes:(id)a5;
-- (void)receivedAcceptMessage:(id)a3 fromURI:(id)a4;
-- (void)receivedCancelMessage:(id)a3 fromURI:(id)a4;
-- (void)receivedDeclineMessage:(id)a3 fromURI:(id)a4;
-- (void)sendCancelInvitationToDestinations:(id)a3 remoteEndReason:(unsigned int)a4 data:(id)a5;
+- (void)cancelInvitationWithData:(id)data;
+- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)override;
+- (void)declineInvitationWithData:(id)data forceFromURI:(id)i additionalMessageAttributes:(id)attributes;
+- (void)receivedAcceptMessage:(id)message fromURI:(id)i;
+- (void)receivedCancelMessage:(id)message fromURI:(id)i;
+- (void)receivedDeclineMessage:(id)message fromURI:(id)i;
+- (void)sendCancelInvitationToDestinations:(id)destinations remoteEndReason:(unsigned int)reason data:(id)data;
 @end
 
 @implementation IDSDSessionInvitationManager
 
-- (IDSDSessionInvitationManager)initWithDictionary:(id)a3 sharedState:(id)a4 messenger:(id)a5
+- (IDSDSessionInvitationManager)initWithDictionary:(id)dictionary sharedState:(id)state messenger:(id)messenger
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  stateCopy = state;
+  messengerCopy = messenger;
   v15.receiver = self;
   v15.super_class = IDSDSessionInvitationManager;
   v11 = [(IDSDSessionInvitationManager *)&v15 init];
   if (v11)
   {
-    v12 = [v8 objectForKey:IDSSessionUseStunMessageIntegrityKey];
+    v12 = [dictionaryCopy objectForKey:IDSSessionUseStunMessageIntegrityKey];
     v11->_useStunMICheck = [v12 BOOLValue];
 
-    v13 = [v8 objectForKey:IDSDSessionMessageAssumeRemoteDeviceEncryption];
+    v13 = [dictionaryCopy objectForKey:IDSDSessionMessageAssumeRemoteDeviceEncryption];
     v11->_remoteAssumeRemoteDeviceEncryption = [v13 BOOLValue];
 
-    objc_storeStrong(&v11->_sharedState, a4);
-    objc_storeStrong(&v11->_messenger, a5);
+    objc_storeStrong(&v11->_sharedState, state);
+    objc_storeStrong(&v11->_messenger, messenger);
   }
 
   return v11;
 }
 
-- (void)_sendInvitationWithOptions:(id)a3 data:(id)a4 declineOnError:(BOOL)a5
+- (void)_sendInvitationWithOptions:(id)options data:(id)data declineOnError:(BOOL)error
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IDSDSessionInvitationManager *)self sharedState];
-  v11 = [v10 connection];
-  if (v11)
+  errorCopy = error;
+  optionsCopy = options;
+  dataCopy = data;
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  connection = [sharedState connection];
+  if (connection)
   {
 
 LABEL_6:
-    v74 = v5;
-    v75 = v9;
-    v76 = v8;
+    v74 = errorCopy;
+    v75 = dataCopy;
+    v76 = optionsCopy;
     v15 = +[IDSDAccountController sharedInstance];
-    v16 = [(IDSDSessionInvitationManager *)self sharedState];
-    v17 = [v16 accountID];
-    v18 = [v15 accountWithUniqueID:v17];
+    sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+    accountID = [sharedState2 accountID];
+    v18 = [v15 accountWithUniqueID:accountID];
 
     v80 = v18;
-    v79 = [v18 accountType];
+    accountType = [v18 accountType];
     v19 = [NSMutableSet alloc];
-    v20 = [(IDSDSessionInvitationManager *)self sharedState];
-    v21 = [v20 destinations];
-    v22 = [v19 initWithSet:v21];
+    sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+    destinations = [sharedState3 destinations];
+    v22 = [v19 initWithSet:destinations];
 
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v23 = [(IDSDSessionInvitationManager *)self sharedState];
-    v24 = [v23 destinations];
+    sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+    destinations2 = [sharedState4 destinations];
 
-    obj = v24;
-    v83 = [v24 countByEnumeratingWithState:&v90 objects:v102 count:16];
+    obj = destinations2;
+    v83 = [destinations2 countByEnumeratingWithState:&v90 objects:v102 count:16];
     v25 = 0;
     v14 = 0;
     if (!v83)
@@ -89,7 +89,7 @@ LABEL_6:
     v82 = *v91;
     v77 = IDSDevicePropertyIsActivePairedDevice;
     v78 = IDSDevicePropertyDefaultLocalDevice;
-    v26 = v79;
+    v26 = accountType;
     while (1)
     {
       for (i = 0; i != v83; i = i + 1)
@@ -100,8 +100,8 @@ LABEL_6:
         }
 
         v28 = *(*(&v90 + 1) + 8 * i);
-        v29 = [(IDSDSessionInvitationManager *)self sharedState];
-        v30 = [v29 destinationIsDefaultPairedDevice:v28];
+        sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+        v30 = [sharedState5 destinationIsDefaultPairedDevice:v28];
 
         if (v30)
         {
@@ -129,21 +129,21 @@ LABEL_6:
 
         else
         {
-          v33 = [v28 prefixedURI];
-          v34 = [v33 hasPrefix:@"device:"];
+          prefixedURI = [v28 prefixedURI];
+          v34 = [prefixedURI hasPrefix:@"device:"];
 
           if (!v34)
           {
             goto LABEL_27;
           }
 
-          v35 = [v28 unprefixedURI];
-          v36 = [v80 dependentRegistrationMatchingUUID:v35];
+          unprefixedURI = [v28 unprefixedURI];
+          v36 = [v80 dependentRegistrationMatchingUUID:unprefixedURI];
 
           if (!v36 || ([v36 objectForKey:v78], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "BOOLValue"), v37, objc_msgSend(v36, "objectForKey:", v77), v39 = v25, v40 = v14, v41 = v22, v42 = self, v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "BOOLValue"), v43, self = v42, v22 = v41, v14 = v40, v25 = v39, !v38) || (v44 & 1) != 0)
           {
 
-            v26 = v79;
+            v26 = accountType;
 LABEL_27:
             if (!v25)
             {
@@ -165,7 +165,7 @@ LABEL_30:
           }
 
           [(__CFString *)v22 removeObject:v28];
-          v26 = v79;
+          v26 = accountType;
         }
       }
 
@@ -177,10 +177,10 @@ LABEL_33:
         v46 = +[IDSFoundationLog IDSDSession];
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v47 = [(IDSDSessionInvitationManager *)self sharedState];
-          v48 = [v47 destinations];
+          sharedState6 = [(IDSDSessionInvitationManager *)self sharedState];
+          destinations3 = [sharedState6 destinations];
           *buf = 138413058;
-          v95 = v48;
+          v95 = destinations3;
           v96 = 2112;
           v97 = v22;
           v98 = 2112;
@@ -192,26 +192,26 @@ LABEL_33:
 
         v49 = v25;
 
-        v50 = [(IDSDSessionInvitationManager *)self sharedState];
-        [v50 setDestinations:v22];
+        sharedState7 = [(IDSDSessionInvitationManager *)self sharedState];
+        [sharedState7 setDestinations:v22];
 
-        v9 = v75;
-        v8 = v76;
+        dataCopy = v75;
+        optionsCopy = v76;
         if ([v14 count])
         {
-          v51 = [(IDSDSessionInvitationManager *)self sharedState];
-          v52 = [v51 forceInternetInvitation];
+          sharedState8 = [(IDSDSessionInvitationManager *)self sharedState];
+          forceInternetInvitation = [sharedState8 forceInternetInvitation];
 
-          if ((v52 & 1) == 0)
+          if ((forceInternetInvitation & 1) == 0)
           {
             v53 = +[NSData data];
             v54 = +[IDSFoundationLog IDSDSession];
             if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
             {
-              v55 = [(IDSDSessionInvitationManager *)self sharedState];
-              v56 = [v55 isScreenSharingSession];
+              sharedState9 = [(IDSDSessionInvitationManager *)self sharedState];
+              isScreenSharingSession = [sharedState9 isScreenSharingSession];
               v57 = @"NO";
-              if (v56)
+              if (isScreenSharingSession)
               {
                 v57 = @"YES";
               }
@@ -224,25 +224,25 @@ LABEL_33:
             }
 
             [(IDSDSessionInvitationManager *)self _sendInvitationMessageToDestinations:v14 withOptions:v76 contextData:v75 declineOnError:v74 connectionData:v53];
-            v58 = [(IDSDSessionInvitationManager *)self sharedState];
-            [v58 setInvitationTimer];
+            sharedState10 = [(IDSDSessionInvitationManager *)self sharedState];
+            [sharedState10 setInvitationTimer];
           }
         }
 
         if (-[NSObject count](v25, "count") || (-[IDSDSessionInvitationManager sharedState](self, "sharedState"), v59 = objc_claimAutoreleasedReturnValue(), v60 = [v59 forceInternetInvitation], v59, v60))
         {
           v61 = v25;
-          v62 = [(IDSDSessionInvitationManager *)self sharedState];
-          v63 = [v62 forceInternetInvitation];
+          sharedState11 = [(IDSDSessionInvitationManager *)self sharedState];
+          forceInternetInvitation2 = [sharedState11 forceInternetInvitation];
 
-          if (v63)
+          if (forceInternetInvitation2)
           {
             v64 = v14;
 
             v61 = v64;
           }
 
-          v65 = [(IDSDSessionInvitationManager *)self delegate];
+          delegate = [(IDSDSessionInvitationManager *)self delegate];
           v84[0] = _NSConcreteStackBlock;
           v84[1] = 3221225472;
           v84[2] = sub_1005CEF40;
@@ -254,20 +254,20 @@ LABEL_33:
           v89 = v74;
           v88 = v14;
           v66 = v61;
-          [v65 networkingIsAvailable:v84];
+          [delegate networkingIsAvailable:v84];
         }
 
-        v67 = [(IDSDSessionInvitationManager *)self sharedState];
-        [v67 setState:3];
+        sharedState12 = [(IDSDSessionInvitationManager *)self sharedState];
+        [sharedState12 setState:3];
 
-        v68 = [(IDSDSessionInvitationManager *)self preferences];
-        [(IDSDSessionInvitationManager *)self _setLinkPreferences:v68];
+        preferences = [(IDSDSessionInvitationManager *)self preferences];
+        [(IDSDSessionInvitationManager *)self _setLinkPreferences:preferences];
 
-        v69 = [(IDSDSessionInvitationManager *)self delegate];
-        v70 = [(IDSDSessionInvitationManager *)self sharedState];
-        v71 = [v70 destinations];
-        v72 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v71 count]);
-        [v69 submitAWDMetricsForIDSSessionInvitationSentWithNumberOfRecipients:v72];
+        delegate2 = [(IDSDSessionInvitationManager *)self delegate];
+        sharedState13 = [(IDSDSessionInvitationManager *)self sharedState];
+        destinations4 = [sharedState13 destinations];
+        v72 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [destinations4 count]);
+        [delegate2 submitAWDMetricsForIDSSessionInvitationSentWithNumberOfRecipients:v72];
 
         v73 = +[IDSDSessionController sharedInstance];
         [v73 updateCriticalReliabilityState];
@@ -277,10 +277,10 @@ LABEL_33:
     }
   }
 
-  v12 = [(IDSDSessionInvitationManager *)self sharedState];
-  v13 = [v12 isScreenSharingSession];
+  sharedState14 = [(IDSDSessionInvitationManager *)self sharedState];
+  isScreenSharingSession2 = [sharedState14 isScreenSharingSession];
 
-  if (!v13)
+  if (!isScreenSharingSession2)
   {
     goto LABEL_6;
   }
@@ -295,17 +295,17 @@ LABEL_33:
 LABEL_48:
 }
 
-- (void)_sendInvitationMessageToDestinations:(id)a3 withOptions:(id)a4 contextData:(id)a5 declineOnError:(BOOL)a6 connectionData:(id)a7
+- (void)_sendInvitationMessageToDestinations:(id)destinations withOptions:(id)options contextData:(id)data declineOnError:(BOOL)error connectionData:(id)connectionData
 {
-  v8 = a6;
-  v81 = a3;
-  v12 = a4;
-  v13 = a5;
-  v82 = a7;
-  v14 = [(IDSDSessionInvitationManager *)self sharedState];
-  v15 = [v14 uniqueID];
+  errorCopy = error;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  dataCopy = data;
+  connectionDataCopy = connectionData;
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  uniqueID = [sharedState uniqueID];
 
-  if (v15)
+  if (uniqueID)
   {
     v16 = objc_alloc_init(NSMutableDictionary);
     v17 = _IDSSessionProtocolVersionNumber();
@@ -319,7 +319,7 @@ LABEL_48:
       sub_100917318();
     }
 
-    v19 = v82;
+    v19 = connectionDataCopy;
     if (v19)
     {
       CFDictionarySetValue(v16, IDSDSessionMessageBlob, v19);
@@ -330,12 +330,12 @@ LABEL_48:
       sub_10092C180();
     }
 
-    v20 = [(IDSDSessionInvitationManager *)self sharedState];
-    v21 = [v20 uniqueID];
+    sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+    uniqueID2 = [sharedState2 uniqueID];
 
-    if (v21)
+    if (uniqueID2)
     {
-      CFDictionarySetValue(v16, IDSDSessionMessageSessionID, v21);
+      CFDictionarySetValue(v16, IDSDSessionMessageSessionID, uniqueID2);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -343,12 +343,12 @@ LABEL_48:
       sub_1009173A0();
     }
 
-    v22 = [(IDSDSessionInvitationManager *)self sharedState];
-    v23 = [v22 participantID];
+    sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+    participantID = [sharedState3 participantID];
 
-    if (v23)
+    if (participantID)
     {
-      CFDictionarySetValue(v16, IDSDSessionMessageParticipantID, v23);
+      CFDictionarySetValue(v16, IDSDSessionMessageParticipantID, participantID);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -356,8 +356,8 @@ LABEL_48:
       sub_100917428();
     }
 
-    v24 = [(IDSDSessionInvitationManager *)self sharedState];
-    v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v24 transportType]);
+    sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+    v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sharedState4 transportType]);
 
     if (v25)
     {
@@ -369,7 +369,7 @@ LABEL_48:
       sub_10092C208();
     }
 
-    v26 = [NSNumber numberWithBool:v8];
+    v26 = [NSNumber numberWithBool:errorCopy];
     if (v26)
     {
       CFDictionarySetValue(v16, IDSDSessionMessageDeclineOnNetworkError, v26);
@@ -380,40 +380,40 @@ LABEL_48:
       sub_10092C290();
     }
 
-    if (v12)
+    if (optionsCopy)
     {
-      CFDictionarySetValue(v16, IDSDSessionMessageInviteOptions, v12);
+      CFDictionarySetValue(v16, IDSDSessionMessageInviteOptions, optionsCopy);
     }
 
-    if (v13)
+    if (dataCopy)
     {
-      CFDictionarySetValue(v16, IDSDSessionMessageContext, v13);
+      CFDictionarySetValue(v16, IDSDSessionMessageContext, dataCopy);
     }
 
-    v27 = [(IDSDSessionInvitationManager *)self quickRelaySessionToken];
-    if (v27)
+    quickRelaySessionToken = [(IDSDSessionInvitationManager *)self quickRelaySessionToken];
+    if (quickRelaySessionToken)
     {
-      CFDictionarySetValue(v16, IDSDSessionMessageQuickRelaySessionToken, v27);
+      CFDictionarySetValue(v16, IDSDSessionMessageQuickRelaySessionToken, quickRelaySessionToken);
     }
 
-    v28 = [(IDSDSessionInvitationManager *)self sharedState];
-    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v28 enableSKE]);
+    sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+    v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sharedState5 enableSKE]);
 
     if (v29)
     {
       CFDictionarySetValue(v16, IDSDSessionMessageNeedsToWaitForPreConnectionData, v29);
     }
 
-    v30 = [(IDSDSessionInvitationManager *)self sharedState];
-    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v30 disableEncryption]);
+    sharedState6 = [(IDSDSessionInvitationManager *)self sharedState];
+    v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sharedState6 disableEncryption]);
 
     if (v31)
     {
       CFDictionarySetValue(v16, IDSDSessionMessageDisableEncryption, v31);
     }
 
-    v32 = [(IDSDSessionInvitationManager *)self sharedState];
-    v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v32 enableSingleChannelDirectMode]);
+    sharedState7 = [(IDSDSessionInvitationManager *)self sharedState];
+    v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sharedState7 enableSingleChannelDirectMode]);
 
     if (v33)
     {
@@ -422,21 +422,21 @@ LABEL_48:
 
     CFDictionarySetValue(v16, IDSDSessionMessageUseStunMessageIntegrity, &__kCFBooleanTrue);
     CFDictionarySetValue(v16, IDSDSessionMessageUseSecureQRControlMessage, &__kCFBooleanTrue);
-    v34 = [(IDSDSessionInvitationManager *)self sharedState];
-    v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v34 useBTDatagramPipe]);
+    sharedState8 = [(IDSDSessionInvitationManager *)self sharedState];
+    v35 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sharedState8 useBTDatagramPipe]);
 
     if (v35)
     {
       CFDictionarySetValue(v16, IDSDSessionMessageIsRealTime, v35);
     }
 
-    v36 = [(IDSDSessionInvitationManager *)self sharedState];
-    v37 = [v36 localUnauthenticatedFullIdentity];
+    sharedState9 = [(IDSDSessionInvitationManager *)self sharedState];
+    localUnauthenticatedFullIdentity = [sharedState9 localUnauthenticatedFullIdentity];
 
-    if (v37)
+    if (localUnauthenticatedFullIdentity)
     {
-      v38 = [(IDSDSessionInvitationManager *)self publicIdentityDataFromLocalFullIdentity];
-      if (!v38)
+      publicIdentityDataFromLocalFullIdentity = [(IDSDSessionInvitationManager *)self publicIdentityDataFromLocalFullIdentity];
+      if (!publicIdentityDataFromLocalFullIdentity)
       {
         v56 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -455,16 +455,16 @@ LABEL_48:
         goto LABEL_80;
       }
 
-      CFDictionarySetValue(v16, IDSSessionUnauthenticatedPublicKey, v38);
+      CFDictionarySetValue(v16, IDSSessionUnauthenticatedPublicKey, publicIdentityDataFromLocalFullIdentity);
     }
 
-    v39 = [(IDSDSessionInvitationManager *)self sharedState];
-    v40 = [v39 connectionCountHint] == 0;
+    sharedState10 = [(IDSDSessionInvitationManager *)self sharedState];
+    v40 = [sharedState10 connectionCountHint] == 0;
 
     if (!v40)
     {
-      v41 = [(IDSDSessionInvitationManager *)self sharedState];
-      v42 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v41 connectionCountHint]);
+      sharedState11 = [(IDSDSessionInvitationManager *)self sharedState];
+      v42 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [sharedState11 connectionCountHint]);
 
       if (v42)
       {
@@ -472,10 +472,10 @@ LABEL_48:
       }
     }
 
-    v43 = [(IDSDSessionInvitationManager *)self sharedState];
-    v44 = [v43 isScreenSharingSession];
+    sharedState12 = [(IDSDSessionInvitationManager *)self sharedState];
+    isScreenSharingSession = [sharedState12 isScreenSharingSession];
 
-    if (v44)
+    if (isScreenSharingSession)
     {
       if (SecRandomCopyBytes(kSecRandomDefault, 0x3CuLL, self->keyMaterial))
       {
@@ -492,8 +492,8 @@ LABEL_48:
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "SecRandomCopyBytes failed %d (%s), bailing...", buf, 0x12u);
         }
 
-        v49 = [(IDSDSessionInvitationManager *)self sharedState];
-        v50 = [v49 serviceName];
+        sharedState13 = [(IDSDSessionInvitationManager *)self sharedState];
+        serviceName = [sharedState13 serviceName];
         v51 = *__error();
         v52 = __error();
         v80 = strerror(*v52);
@@ -526,8 +526,8 @@ LABEL_80:
 
       v59 = arc4random();
       [(IDSDSessionInvitationManager *)self setSeqSendStart:v59];
-      v60 = [(IDSDSessionInvitationManager *)self sharedState];
-      [v60 setSeqSend:v59];
+      sharedState14 = [(IDSDSessionInvitationManager *)self sharedState];
+      [sharedState14 setSeqSend:v59];
 
       v61 = [NSNumber numberWithUnsignedShort:[(IDSDSessionInvitationManager *)self seqSendStart]];
       if (v61)
@@ -545,39 +545,39 @@ LABEL_80:
     {
       CFDictionarySetValue(v16, IDSDSessionMessageUseCloudPairedControlChannel, &__kCFBooleanTrue);
       CFDictionarySetValue(v16, IDSDSessionMessageUsePhoneContinuityLocalMessage, &__kCFBooleanTrue);
-      v54 = [(IDSDSessionInvitationManager *)self delegate];
-      v55 = [v54 isWithDefaultPairedDevice];
+      delegate = [(IDSDSessionInvitationManager *)self delegate];
+      isWithDefaultPairedDevice = [delegate isWithDefaultPairedDevice];
 
-      if ((v55 & 1) == 0)
+      if ((isWithDefaultPairedDevice & 1) == 0)
       {
         CFDictionarySetValue(v16, IDSDSessionMessageAssumeRemoteDeviceEncryption, &__kCFBooleanTrue);
       }
     }
 
-    v62 = [(IDSDSessionInvitationManager *)self delegate];
-    [v62 registerClientChannel];
+    delegate2 = [(IDSDSessionInvitationManager *)self delegate];
+    [delegate2 registerClientChannel];
 
-    v63 = [(IDSDSessionInvitationManager *)self sharedState];
-    [v63 inviteSentTime];
+    sharedState15 = [(IDSDSessionInvitationManager *)self sharedState];
+    [sharedState15 inviteSentTime];
     v65 = v64 == 0.0;
 
     if (v65)
     {
       ids_monotonic_time();
       v67 = v66;
-      v68 = [(IDSDSessionInvitationManager *)self sharedState];
-      [v68 setInviteSentTime:v67];
+      sharedState16 = [(IDSDSessionInvitationManager *)self sharedState];
+      [sharedState16 setInviteSentTime:v67];
     }
 
     v69 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
     {
-      v70 = [(IDSDSessionInvitationManager *)self sharedState];
-      v71 = [v70 uniqueID];
+      sharedState17 = [(IDSDSessionInvitationManager *)self sharedState];
+      uniqueID3 = [sharedState17 uniqueID];
       *buf = 138412802;
-      *&buf[4] = v81;
+      *&buf[4] = destinationsCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v71;
+      *&buf[14] = uniqueID3;
       *&buf[22] = 2112;
       v93 = v16;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "Sending invitation to %@, %@ <%@>", buf, 0x20u);
@@ -591,11 +591,11 @@ LABEL_80:
     v72 = objc_alloc_init(IMMessageContext);
     [v72 setShouldBoost:1];
     v73 = +[IDSDaemon sharedInstance];
-    v74 = [(IDSDSessionInvitationManager *)self sharedState];
-    v75 = [v74 pushTopic];
-    v76 = [v73 broadcasterForTopic:v75 entitlement:kIDSSessionEntitlement command:0 messageContext:v72];
+    sharedState18 = [(IDSDSessionInvitationManager *)self sharedState];
+    pushTopic = [sharedState18 pushTopic];
+    v76 = [v73 broadcasterForTopic:pushTopic entitlement:kIDSSessionEntitlement command:0 messageContext:v72];
 
-    v77 = [(IDSDSessionInvitationManager *)self messenger];
+    messenger = [(IDSDSessionInvitationManager *)self messenger];
     v78 = [NSNumber numberWithInteger:232];
     v87[0] = _NSConcreteStackBlock;
     v87[1] = 3221225472;
@@ -612,8 +612,8 @@ LABEL_80:
     v86 = buf;
     v79 = v88;
     v84 = v79;
-    v85 = self;
-    [v77 sendMessage:v16 toDestinations:v81 withCommand:v78 fromURI:0 willSendBlock:v87 completionBlock:v83];
+    selfCopy = self;
+    [messenger sendMessage:v16 toDestinations:destinationsCopy withCommand:v78 fromURI:0 willSendBlock:v87 completionBlock:v83];
 
     objc_destroyWeak(&v90);
     _Block_object_dispose(buf, 8);
@@ -643,18 +643,18 @@ LABEL_80:
 LABEL_81:
 }
 
-- (void)sendCancelInvitationToDestinations:(id)a3 remoteEndReason:(unsigned int)a4 data:(id)a5
+- (void)sendCancelInvitationToDestinations:(id)destinations remoteEndReason:(unsigned int)reason data:(id)data
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IDSDSessionInvitationManager *)self sharedState];
-  v11 = [v10 isInitiator];
+  v6 = *&reason;
+  destinationsCopy = destinations;
+  dataCopy = data;
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  isInitiator = [sharedState isInitiator];
 
-  if (v11)
+  if (isInitiator)
   {
-    v12 = [(IDSDSessionInvitationManager *)self sharedState];
-    [v12 clearAllTimers];
+    sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+    [sharedState2 clearAllTimers];
 
     if (v6)
     {
@@ -678,12 +678,12 @@ LABEL_81:
       sub_100917318();
     }
 
-    v17 = [(IDSDSessionInvitationManager *)self sharedState];
-    v18 = [v17 uniqueID];
+    sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+    uniqueID = [sharedState3 uniqueID];
 
-    if (v18)
+    if (uniqueID)
     {
-      CFDictionarySetValue(v15, IDSDSessionMessageSessionID, v18);
+      CFDictionarySetValue(v15, IDSDSessionMessageSessionID, uniqueID);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -691,12 +691,12 @@ LABEL_81:
       sub_1009173A0();
     }
 
-    v19 = [(IDSDSessionInvitationManager *)self sharedState];
-    v20 = [v19 participantID];
+    sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+    participantID = [sharedState4 participantID];
 
-    if (v20)
+    if (participantID)
     {
-      CFDictionarySetValue(v15, IDSDSessionMessageParticipantID, v20);
+      CFDictionarySetValue(v15, IDSDSessionMessageParticipantID, participantID);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -709,40 +709,40 @@ LABEL_81:
       CFDictionarySetValue(v15, IDSDSessionMessageRemoteEndReason, v13);
     }
 
-    if (v9)
+    if (dataCopy)
     {
-      CFDictionarySetValue(v15, IDSDSessionMessageContext, v9);
+      CFDictionarySetValue(v15, IDSDSessionMessageContext, dataCopy);
     }
 
-    if (![v8 count])
+    if (![destinationsCopy count])
     {
-      v21 = [(IDSDSessionInvitationManager *)self sharedState];
-      v22 = [v21 destinations];
+      sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+      destinations = [sharedState5 destinations];
 
-      v8 = v22;
+      destinationsCopy = destinations;
     }
 
     v23 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(IDSDSessionInvitationManager *)self sharedState];
-      v25 = [v24 uniqueID];
+      sharedState6 = [(IDSDSessionInvitationManager *)self sharedState];
+      uniqueID2 = [sharedState6 uniqueID];
       v30 = 138412802;
-      v31 = v8;
+      v31 = destinationsCopy;
       v32 = 2112;
-      v33 = v25;
+      v33 = uniqueID2;
       v34 = 2112;
       v35 = v15;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Sending CANCEL %@, %@ <%@>", &v30, 0x20u);
     }
 
-    v26 = [(IDSDSessionInvitationManager *)self messenger];
+    messenger = [(IDSDSessionInvitationManager *)self messenger];
     v27 = [NSNumber numberWithInteger:235];
-    [v26 sendMessage:v15 toDestinations:v8 withCommand:v27];
+    [messenger sendMessage:v15 toDestinations:destinationsCopy withCommand:v27];
 
-    v28 = [(IDSDSessionInvitationManager *)self delegate];
-    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
-    [v28 submitAWDMetricsForIDSSessionCancelSentWithRemoteEndReason:v6 numberOfRecipients:v29];
+    delegate = [(IDSDSessionInvitationManager *)self delegate];
+    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [destinationsCopy count]);
+    [delegate submitAWDMetricsForIDSSessionCancelSentWithRemoteEndReason:v6 numberOfRecipients:v29];
   }
 
   else
@@ -761,7 +761,7 @@ LABEL_81:
       _IDSLogTransport();
     }
 
-    [(IDSDSessionInvitationManager *)self declineInvitationWithData:v9];
+    [(IDSDSessionInvitationManager *)self declineInvitationWithData:dataCopy];
   }
 }
 
@@ -770,10 +770,10 @@ LABEL_81:
   v3 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSDSessionInvitationManager *)self sharedState];
-    v5 = [v4 destinations];
+    sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+    destinations = [sharedState destinations];
     *buf = 138412290;
-    v27 = v5;
+    v27 = destinations;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Looking for device unique ID in: %@", buf, 0xCu);
   }
 
@@ -781,10 +781,10 @@ LABEL_81:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(IDSDSessionInvitationManager *)self sharedState];
-  v7 = [v6 destinations];
+  sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+  destinations2 = [sharedState2 destinations];
 
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [destinations2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v10 = v8;
@@ -797,23 +797,23 @@ LABEL_81:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(destinations2);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * i) pushToken];
+        pushToken = [*(*(&v21 + 1) + 8 * i) pushToken];
         v14 = +[IDSFoundationLog IDSDSession];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v20;
-          v27 = v13;
+          v27 = pushToken;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "  => Push token: %@", buf, 0xCu);
         }
 
-        if (v13)
+        if (pushToken)
         {
           v15 = +[IDSDAccountController sharedInstance];
-          v16 = [v13 rawToken];
-          v17 = [v15 deviceIDForPushToken:v16];
+          rawToken = [pushToken rawToken];
+          v17 = [v15 deviceIDForPushToken:rawToken];
 
           v18 = +[IDSFoundationLog IDSDSession];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -831,7 +831,7 @@ LABEL_81:
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [destinations2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v10)
       {
         continue;
@@ -841,11 +841,11 @@ LABEL_81:
     }
   }
 
-  v7 = +[IDSFoundationLog IDSDSession];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  destinations2 = +[IDSFoundationLog IDSDSession];
+  if (os_log_type_enabled(destinations2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "  => No unique ID found", buf, 2u);
+    _os_log_impl(&_mh_execute_header, destinations2, OS_LOG_TYPE_DEFAULT, "  => No unique ID found", buf, 2u);
   }
 
   v17 = 0;
@@ -859,10 +859,10 @@ LABEL_21:
   v3 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSDSessionInvitationManager *)self sharedState];
-    v5 = [v4 destinations];
+    sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+    destinations = [sharedState destinations];
     *buf = 138412290;
-    v23 = v5;
+    v23 = destinations;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Looking for device token in: %@", buf, 0xCu);
   }
 
@@ -870,10 +870,10 @@ LABEL_21:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(IDSDSessionInvitationManager *)self sharedState];
-  v7 = [v6 destinations];
+  sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+  destinations2 = [sharedState2 destinations];
 
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [destinations2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v10 = v8;
@@ -886,26 +886,26 @@ LABEL_5:
     {
       if (*v18 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(destinations2);
       }
 
-      v13 = [*(*(&v17 + 1) + 8 * v12) pushToken];
+      pushToken = [*(*(&v17 + 1) + 8 * v12) pushToken];
       v14 = +[IDSFoundationLog IDSDSession];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = v16;
-        v23 = v13;
+        v23 = pushToken;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "  => Push token: %@", buf, 0xCu);
       }
 
-      if (v13)
+      if (pushToken)
       {
         break;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [destinations2 countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           goto LABEL_5;
@@ -920,56 +920,56 @@ LABEL_5:
   {
 LABEL_13:
 
-    v7 = +[IDSFoundationLog IDSDSession];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    destinations2 = +[IDSFoundationLog IDSDSession];
+    if (os_log_type_enabled(destinations2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "  => No token found", buf, 2u);
+      _os_log_impl(&_mh_execute_header, destinations2, OS_LOG_TYPE_DEFAULT, "  => No token found", buf, 2u);
     }
 
-    v13 = 0;
+    pushToken = 0;
   }
 
-  return v13;
+  return pushToken;
 }
 
 - (void)cancelInvitation
 {
   [(IDSDSessionInvitationManager *)self _sendCancelInvitationToDestinations:0 withData:0];
-  v3 = [(IDSDSessionInvitationManager *)self delegate];
-  [v3 endSessionWithReason:5];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate endSessionWithReason:5];
 }
 
-- (void)cancelInvitationWithData:(id)a3
+- (void)cancelInvitationWithData:(id)data
 {
-  [(IDSDSessionInvitationManager *)self _sendCancelInvitationToDestinations:0 withData:a3];
-  v4 = [(IDSDSessionInvitationManager *)self delegate];
-  [v4 endSessionWithReason:5];
+  [(IDSDSessionInvitationManager *)self _sendCancelInvitationToDestinations:0 withData:data];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate endSessionWithReason:5];
 }
 
-- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)a3
+- (void)cancelInvitationWithRemoteEndedReasonOverride:(unsigned int)override
 {
-  [(IDSDSessionInvitationManager *)self sendCancelInvitationToDestinations:0 remoteEndReason:*&a3 data:0];
-  v4 = [(IDSDSessionInvitationManager *)self delegate];
-  [v4 endSessionWithReason:5];
+  [(IDSDSessionInvitationManager *)self sendCancelInvitationToDestinations:0 remoteEndReason:*&override data:0];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate endSessionWithReason:5];
 }
 
-- (void)acceptInvitationWithData:(id)a3
+- (void)acceptInvitationWithData:(id)data
 {
-  value = a3;
+  value = data;
   v4 = objc_alloc_init(NSDate);
-  v125 = self;
-  v5 = [(IDSDSessionInvitationManager *)self sharedState];
-  [v5 setStartConnectingDate:v4];
+  selfCopy = self;
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  [sharedState setStartConnectingDate:v4];
 
-  v6 = [(IDSDSessionInvitationManager *)self delegate];
-  v124 = [v6 isWithDefaultPairedDevice];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  isWithDefaultPairedDevice = [delegate isWithDefaultPairedDevice];
 
   v7 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"YES";
-    if (v124)
+    if (isWithDefaultPairedDevice)
     {
       v9 = @"YES";
     }
@@ -979,8 +979,8 @@ LABEL_13:
       v9 = @"NO";
     }
 
-    v10 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    if ([v10 enableQuickRelay])
+    sharedState2 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    if ([sharedState2 enableQuickRelay])
     {
       v11 = @"YES";
     }
@@ -990,15 +990,15 @@ LABEL_13:
       v11 = @"NO";
     }
 
-    v12 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    if (![v12 useQRDirectly])
+    sharedState3 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    if (![sharedState3 useQRDirectly])
     {
       v8 = @"NO";
     }
 
-    v13 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v14 = [v13 clientType];
-    if (v14 == 1)
+    sharedState4 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    clientType = [sharedState4 clientType];
+    if (clientType == 1)
     {
       v15 = 0;
       v16 = @"YES";
@@ -1006,17 +1006,17 @@ LABEL_13:
 
     else
     {
-      v122 = [(IDSDSessionInvitationManager *)v125 sharedState];
+      sharedState5 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
       v16 = @"YES";
-      if ([v122 clientType] == 5)
+      if ([sharedState5 clientType] == 5)
       {
         v15 = 0;
       }
 
       else
       {
-        v121 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        if ([v121 clientType] != 6)
+        sharedState6 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        if ([sharedState6 clientType] != 6)
         {
           v16 = @"NO";
         }
@@ -1038,22 +1038,22 @@ LABEL_13:
     {
     }
 
-    if (v14 != 1)
+    if (clientType != 1)
     {
     }
   }
 
-  v17 = [(IDSDSessionInvitationManager *)v125 remoteBlob];
-  if ((v17 != 0) | v124 & 1)
+  remoteBlob = [(IDSDSessionInvitationManager *)selfCopy remoteBlob];
+  if ((remoteBlob != 0) | isWithDefaultPairedDevice & 1)
   {
   }
 
   else
   {
-    v18 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v19 = [v18 enableQuickRelay];
+    sharedState7 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    enableQuickRelay = [sharedState7 enableQuickRelay];
 
-    if ((v19 & 1) == 0)
+    if ((enableQuickRelay & 1) == 0)
     {
       v39 = +[IDSFoundationLog IDSDSession];
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -1062,71 +1062,71 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "No remote blob, bailing...", buf, 2u);
       }
 
-      v40 = [(IDSDSessionInvitationManager *)v125 delegate];
-      [v40 endSessionWithReason:9];
+      delegate2 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+      [delegate2 endSessionWithReason:9];
       goto LABEL_117;
     }
   }
 
-  v20 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  [v20 clearAllTimers];
+  sharedState8 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  [sharedState8 clearAllTimers];
 
-  v21 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  [v21 setConnectionTimer];
+  sharedState9 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  [sharedState9 setConnectionTimer];
 
-  v22 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  [v22 setState:4];
+  sharedState10 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  [sharedState10 setState:4];
 
-  v23 = [(IDSDSessionInvitationManager *)v125 delegate];
-  [v23 registerClientChannel];
+  delegate3 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+  [delegate3 registerClientChannel];
 
-  v24 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  v25 = [v24 isScreenSharingSession];
+  sharedState11 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  isScreenSharingSession = [sharedState11 isScreenSharingSession];
 
-  if (v25)
+  if (isScreenSharingSession)
   {
     v26 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(IDSDSessionInvitationManager *)v125 remoteBlob];
+      remoteBlob2 = [(IDSDSessionInvitationManager *)selfCopy remoteBlob];
       *buf = 138412290;
-      v131 = v27;
+      v131 = remoteBlob2;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "acceptInvitationWithData remoteBlob %@", buf, 0xCu);
     }
 
-    v28 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v29 = [v28 connection];
-    v30 = [(IDSDSessionInvitationManager *)v125 remoteBlob];
-    [v29 receivedRemoteConnectionData:v30];
+    sharedState12 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    connection = [sharedState12 connection];
+    remoteBlob3 = [(IDSDSessionInvitationManager *)selfCopy remoteBlob];
+    [connection receivedRemoteConnectionData:remoteBlob3];
 
-    v31 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v32 = [v31 connection];
+    sharedState13 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    connection2 = [sharedState13 connection];
     v128[0] = _NSConcreteStackBlock;
     v128[1] = 3221225472;
     v128[2] = sub_1005D2DF8;
     v128[3] = &unk_100BE0858;
-    v128[4] = v125;
+    v128[4] = selfCopy;
     v129 = value;
-    [v32 createConnectionData:0 handler:v128];
+    [connection2 createConnectionData:0 handler:v128];
 
 LABEL_116:
-    v109 = [(IDSDSessionInvitationManager *)v125 preferences];
-    [(IDSDSessionInvitationManager *)v125 _setLinkPreferences:v109];
+    preferences = [(IDSDSessionInvitationManager *)selfCopy preferences];
+    [(IDSDSessionInvitationManager *)selfCopy _setLinkPreferences:preferences];
 
-    v40 = [(IDSDSessionInvitationManager *)v125 delegate];
-    [v40 submitAWDMetricsForIDSSessionAcceptSent];
+    delegate2 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+    [delegate2 submitAWDMetricsForIDSSessionAcceptSent];
     goto LABEL_117;
   }
 
-  if (v124)
+  if (isWithDefaultPairedDevice)
   {
-    v33 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v34 = [v33 forceInternetInvitation];
+    sharedState14 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    forceInternetInvitation = [sharedState14 forceInternetInvitation];
 
-    if (!v34)
+    if (!forceInternetInvitation)
     {
-      v61 = [(IDSDSessionInvitationManager *)v125 delegate];
-      [v61 openSocketToDevice:kIDSDefaultPairedDeviceID];
+      delegate4 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+      [delegate4 openSocketToDevice:kIDSDefaultPairedDeviceID];
 
       v62 = objc_alloc_init(NSMutableDictionary);
       v63 = _IDSSessionProtocolVersionNumber();
@@ -1151,12 +1151,12 @@ LABEL_116:
         sub_10092C180();
       }
 
-      v88 = [(IDSDSessionInvitationManager *)v125 sharedState];
-      v89 = [v88 uniqueID];
+      sharedState15 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      uniqueID = [sharedState15 uniqueID];
 
-      if (v89)
+      if (uniqueID)
       {
-        CFDictionarySetValue(v62, IDSDSessionMessageSessionID, v89);
+        CFDictionarySetValue(v62, IDSDSessionMessageSessionID, uniqueID);
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1164,12 +1164,12 @@ LABEL_116:
         sub_1009173A0();
       }
 
-      v90 = [(IDSDSessionInvitationManager *)v125 sharedState];
-      v91 = [v90 participantID];
+      sharedState16 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      participantID = [sharedState16 participantID];
 
-      if (v91)
+      if (participantID)
       {
-        CFDictionarySetValue(v62, IDSDSessionMessageParticipantID, v91);
+        CFDictionarySetValue(v62, IDSDSessionMessageParticipantID, participantID);
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1188,79 +1188,79 @@ LABEL_116:
       v92 = +[IDSFoundationLog IDSDSession];
       if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
       {
-        v93 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        v94 = [v93 destinations];
-        v95 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        v96 = [v95 uniqueID];
+        sharedState17 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        destinations = [sharedState17 destinations];
+        sharedState18 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        uniqueID2 = [sharedState18 uniqueID];
         *buf = 138412802;
-        v131 = v94;
+        v131 = destinations;
         v132 = 2112;
-        v133 = v96;
+        v133 = uniqueID2;
         v134 = 2112;
         v135 = v62;
         _os_log_impl(&_mh_execute_header, v92, OS_LOG_TYPE_DEFAULT, "Sending accept to %@, %@ <%@>", buf, 0x20u);
       }
 
-      v97 = [(IDSDSessionInvitationManager *)v125 messenger];
+      messenger = [(IDSDSessionInvitationManager *)selfCopy messenger];
       v98 = [NSNumber numberWithInteger:233];
-      [v97 sendMessage:v62 withCommand:v98];
+      [messenger sendMessage:v62 withCommand:v98];
 
       goto LABEL_116;
     }
   }
 
-  v35 = [(IDSDSessionInvitationManager *)v125 _acceptedDeviceUniqueID];
+  _acceptedDeviceUniqueID = [(IDSDSessionInvitationManager *)selfCopy _acceptedDeviceUniqueID];
 
-  v36 = v35 == 0;
-  v37 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  v38 = v37;
+  v36 = _acceptedDeviceUniqueID == 0;
+  sharedState19 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  v38 = sharedState19;
   if (v36)
   {
-    v41 = [v37 useQRDirectly];
+    useQRDirectly = [sharedState19 useQRDirectly];
 
-    if ((v41 & 1) == 0 && ![(IDSDSessionInvitationManager *)v125 remoteAssumeRemoteDeviceEncryption])
+    if ((useQRDirectly & 1) == 0 && ![(IDSDSessionInvitationManager *)selfCopy remoteAssumeRemoteDeviceEncryption])
     {
       v110 = +[IDSFoundationLog IDSDSession];
       if (os_log_type_enabled(v110, OS_LOG_TYPE_DEFAULT))
       {
-        v111 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        v112 = [v111 fromURI];
-        v113 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        v114 = [v113 uniqueID];
+        sharedState20 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        fromURI = [sharedState20 fromURI];
+        sharedState21 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        uniqueID3 = [sharedState21 uniqueID];
         *buf = 138412546;
-        v131 = v112;
+        v131 = fromURI;
         v132 = 2112;
-        v133 = v114;
+        v133 = uniqueID3;
         _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_DEFAULT, "At ACCEPT invitaion - from %@, session %@, expecting remote device encryption but remote does not specify", buf, 0x16u);
       }
 
-      v40 = [(IDSDSessionInvitationManager *)v125 delegate];
-      [v40 endSessionWithReason:17];
+      delegate2 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+      [delegate2 endSessionWithReason:17];
       goto LABEL_117;
     }
   }
 
   else
   {
-    [v37 setDisableRemoteDeviceEncryption:1];
+    [sharedState19 setDisableRemoteDeviceEncryption:1];
   }
 
-  v42 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  v43 = [v42 enableQuickRelay];
+  sharedState22 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  enableQuickRelay2 = [sharedState22 enableQuickRelay];
 
-  if (v43)
+  if (enableQuickRelay2)
   {
-    v44 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    if (([v44 useQRDirectly] & 1) == 0)
+    sharedState23 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    if (([sharedState23 useQRDirectly] & 1) == 0)
     {
-      v45 = [(IDSDSessionInvitationManager *)v125 sharedState];
-      if ([v45 clientType] != 1)
+      sharedState24 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      if ([sharedState24 clientType] != 1)
       {
-        v46 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        if ([v46 clientType] != 5)
+        sharedState25 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        if ([sharedState25 clientType] != 5)
         {
-          v115 = [(IDSDSessionInvitationManager *)v125 sharedState];
-          v116 = [v115 clientType] == 6;
+          sharedState26 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+          v116 = [sharedState26 clientType] == 6;
 
           if (!v116)
           {
@@ -1273,41 +1273,41 @@ LABEL_116:
     }
 
 LABEL_45:
-    v47 = [(IDSDSessionInvitationManager *)v125 delegate];
-    [v47 startQRSession];
+    delegate5 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+    [delegate5 startQRSession];
 
 LABEL_46:
     v48 = +[IDSQuickRelayAllocator sharedInstance];
-    v49 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v50 = [v49 uniqueID];
-    [v48 requestAllocationForRecipient:v50];
+    sharedState27 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    uniqueID4 = [sharedState27 uniqueID];
+    [v48 requestAllocationForRecipient:uniqueID4];
     goto LABEL_51;
   }
 
   v51 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
-    v52 = [(IDSDSessionInvitationManager *)v125 remoteBlob];
+    remoteBlob4 = [(IDSDSessionInvitationManager *)selfCopy remoteBlob];
     *buf = 138412290;
-    v131 = v52;
+    v131 = remoteBlob4;
     _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "acceptInvitationWithData remoteBlob %@", buf, 0xCu);
   }
 
-  v53 = [(IDSDSessionInvitationManager *)v125 sharedState];
-  v54 = [v53 localBlob];
-  v55 = v54 == 0;
+  sharedState28 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  localBlob = [sharedState28 localBlob];
+  v55 = localBlob == 0;
 
   if (!v55)
   {
-    v56 = [(IDSDSessionInvitationManager *)v125 delegate];
-    v57 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v58 = [v57 uniqueID];
-    [v56 openSocketToDevice:v58];
+    delegate6 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+    sharedState29 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    uniqueID5 = [sharedState29 uniqueID];
+    [delegate6 openSocketToDevice:uniqueID5];
 
     v48 = +[IDSUTunController sharedInstance];
-    v49 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v50 = [v49 uniqueID];
-    [v48 startConnectionForDevice:v50 isInitiator:0 remotePartyID:0 useStunMICheck:{-[IDSDSessionInvitationManager useStunMICheck](v125, "useStunMICheck")}];
+    sharedState27 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    uniqueID4 = [sharedState27 uniqueID];
+    [v48 startConnectionForDevice:uniqueID4 isInitiator:0 remotePartyID:0 useStunMICheck:{-[IDSDSessionInvitationManager useStunMICheck](selfCopy, "useStunMICheck")}];
 LABEL_51:
 
     v59 = objc_alloc_init(NSMutableDictionary);
@@ -1322,12 +1322,12 @@ LABEL_51:
       sub_100917318();
     }
 
-    v64 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v65 = [v64 localBlob];
+    sharedState30 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    localBlob2 = [sharedState30 localBlob];
 
-    if (v65)
+    if (localBlob2)
     {
-      CFDictionarySetValue(v59, IDSDSessionMessageBlob, v65);
+      CFDictionarySetValue(v59, IDSDSessionMessageBlob, localBlob2);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1335,12 +1335,12 @@ LABEL_51:
       sub_10092C180();
     }
 
-    v66 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v67 = [v66 uniqueID];
+    sharedState31 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    uniqueID6 = [sharedState31 uniqueID];
 
-    if (v67)
+    if (uniqueID6)
     {
-      CFDictionarySetValue(v59, IDSDSessionMessageSessionID, v67);
+      CFDictionarySetValue(v59, IDSDSessionMessageSessionID, uniqueID6);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1348,12 +1348,12 @@ LABEL_51:
       sub_1009173A0();
     }
 
-    v68 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v69 = [v68 participantID];
+    sharedState32 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    participantID2 = [sharedState32 participantID];
 
-    if (v69)
+    if (participantID2)
     {
-      CFDictionarySetValue(v59, IDSDSessionMessageParticipantID, v69);
+      CFDictionarySetValue(v59, IDSDSessionMessageParticipantID, participantID2);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1368,26 +1368,26 @@ LABEL_51:
 
     CFDictionarySetValue(v59, IDSDSessionMessageUseStunMessageIntegrity, &__kCFBooleanTrue);
     CFDictionarySetValue(v59, IDSDSessionMessageUseSecureQRControlMessage, &__kCFBooleanTrue);
-    v70 = [(IDSDSessionInvitationManager *)v125 _acceptedDeviceUniqueID];
-    v71 = v70 == 0;
+    _acceptedDeviceUniqueID2 = [(IDSDSessionInvitationManager *)selfCopy _acceptedDeviceUniqueID];
+    v71 = _acceptedDeviceUniqueID2 == 0;
 
     if (v71)
     {
       CFDictionarySetValue(v59, IDSDSessionMessageAssumeRemoteDeviceEncryption, &__kCFBooleanTrue);
     }
 
-    v72 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v73 = [v72 localUnauthenticatedFullIdentity];
+    sharedState33 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    localUnauthenticatedFullIdentity = [sharedState33 localUnauthenticatedFullIdentity];
 
-    if (!v73)
+    if (!localUnauthenticatedFullIdentity)
     {
       goto LABEL_111;
     }
 
-    v74 = [(IDSDSessionInvitationManager *)v125 sharedState];
-    v75 = [v74 localUnauthenticatedFullIdentity];
+    sharedState34 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    localUnauthenticatedFullIdentity2 = [sharedState34 localUnauthenticatedFullIdentity];
     v127 = 0;
-    v76 = [v75 publicIdentityWithError:&v127];
+    v76 = [localUnauthenticatedFullIdentity2 publicIdentityWithError:&v127];
     v77 = v127;
 
     if (v76)
@@ -1436,12 +1436,12 @@ LABEL_51:
       v81 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
       {
-        v82 = [(IDSDSessionInvitationManager *)v125 sharedState];
-        v83 = [v82 localUnauthenticatedFullIdentity];
+        sharedState35 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        localUnauthenticatedFullIdentity3 = [sharedState35 localUnauthenticatedFullIdentity];
         *buf = 138543619;
         v131 = v77;
         v132 = 2113;
-        v133 = v83;
+        v133 = localUnauthenticatedFullIdentity3;
         _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_ERROR, "Failed to create public identity from full identity {error: %{public}@, fullIdentity: %{private}@}", buf, 0x16u);
       }
 
@@ -1451,15 +1451,15 @@ LABEL_51:
         goto LABEL_110;
       }
 
-      v84 = [(IDSDSessionInvitationManager *)v125 sharedState];
-      v119 = [v84 localUnauthenticatedFullIdentity];
+      sharedState36 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      localUnauthenticatedFullIdentity4 = [sharedState36 localUnauthenticatedFullIdentity];
       _IDSWarnV();
 
-      v85 = [(IDSDSessionInvitationManager *)v125 sharedState:v77];
-      v120 = [v85 localUnauthenticatedFullIdentity];
+      v85 = [(IDSDSessionInvitationManager *)selfCopy sharedState:v77];
+      localUnauthenticatedFullIdentity5 = [v85 localUnauthenticatedFullIdentity];
       _IDSLogV();
 
-      v78 = [(IDSDSessionInvitationManager *)v125 sharedState:v77];
+      v78 = [(IDSDSessionInvitationManager *)selfCopy sharedState:v77];
       [v78 localUnauthenticatedFullIdentity];
       v118 = v117 = v77;
       _IDSLogTransport();
@@ -1469,10 +1469,10 @@ LABEL_51:
 
 LABEL_110:
 LABEL_111:
-    v100 = [(IDSDSessionInvitationManager *)v125 sharedState:v117];
-    v101 = [v100 isScreenSharingSession];
+    v100 = [(IDSDSessionInvitationManager *)selfCopy sharedState:v117];
+    isScreenSharingSession2 = [v100 isScreenSharingSession];
 
-    if ((v101 & 1) == 0)
+    if ((isScreenSharingSession2 & 1) == 0)
     {
       CFDictionarySetValue(v59, IDSDSessionMessageUseCloudPairedControlChannel, &__kCFBooleanTrue);
       CFDictionarySetValue(v59, IDSDSessionMessageUsePhoneContinuityLocalMessage, &__kCFBooleanTrue);
@@ -1481,22 +1481,22 @@ LABEL_111:
     v102 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
     {
-      v103 = [(IDSDSessionInvitationManager *)v125 sharedState];
-      v104 = [v103 destinations];
-      v105 = [(IDSDSessionInvitationManager *)v125 sharedState];
-      v106 = [v105 uniqueID];
+      sharedState37 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      destinations2 = [sharedState37 destinations];
+      sharedState38 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      uniqueID7 = [sharedState38 uniqueID];
       *buf = 138412802;
-      v131 = v104;
+      v131 = destinations2;
       v132 = 2112;
-      v133 = v106;
+      v133 = uniqueID7;
       v134 = 2112;
       v135 = v59;
       _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "Sending accept to %@, %@ <%@>", buf, 0x20u);
     }
 
-    v107 = [(IDSDSessionInvitationManager *)v125 messenger];
+    messenger2 = [(IDSDSessionInvitationManager *)selfCopy messenger];
     v108 = [NSNumber numberWithInteger:233];
-    [v107 sendMessage:v59 withCommand:v108];
+    [messenger2 sendMessage:v59 withCommand:v108];
 
     goto LABEL_116;
   }
@@ -1508,15 +1508,15 @@ LABEL_111:
     _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "Failed to get local connection data, bailing...", buf, 2u);
   }
 
-  v40 = [(IDSDSessionInvitationManager *)v125 delegate];
-  [v40 endSessionWithReason:8];
+  delegate2 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+  [delegate2 endSessionWithReason:8];
 LABEL_117:
 }
 
-- (void)_sendAcceptMessageWithContext:(id)a3 connectionData:(id)a4
+- (void)_sendAcceptMessageWithContext:(id)context connectionData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dataCopy = data;
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = _IDSSessionProtocolVersionNumber();
   if (v9)
@@ -1529,7 +1529,7 @@ LABEL_117:
     sub_100917318();
   }
 
-  v10 = v7;
+  v10 = dataCopy;
   if (v10)
   {
     CFDictionarySetValue(v8, IDSDSessionMessageBlob, v10);
@@ -1540,12 +1540,12 @@ LABEL_117:
     sub_10092C180();
   }
 
-  v11 = [(IDSDSessionInvitationManager *)self sharedState];
-  v12 = [v11 uniqueID];
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  uniqueID = [sharedState uniqueID];
 
-  if (v12)
+  if (uniqueID)
   {
-    CFDictionarySetValue(v8, IDSDSessionMessageSessionID, v12);
+    CFDictionarySetValue(v8, IDSDSessionMessageSessionID, uniqueID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1553,12 +1553,12 @@ LABEL_117:
     sub_1009173A0();
   }
 
-  v13 = [(IDSDSessionInvitationManager *)self sharedState];
-  v14 = [v13 participantID];
+  sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+  participantID = [sharedState2 participantID];
 
-  if (v14)
+  if (participantID)
   {
-    CFDictionarySetValue(v8, IDSDSessionMessageParticipantID, v14);
+    CFDictionarySetValue(v8, IDSDSessionMessageParticipantID, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1566,18 +1566,18 @@ LABEL_117:
     sub_100917428();
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    CFDictionarySetValue(v8, IDSDSessionMessageContext, v6);
+    CFDictionarySetValue(v8, IDSDSessionMessageContext, contextCopy);
   }
 
-  v15 = [(IDSDSessionInvitationManager *)self sharedState];
-  v16 = [v15 localUnauthenticatedFullIdentity];
+  sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+  localUnauthenticatedFullIdentity = [sharedState3 localUnauthenticatedFullIdentity];
 
-  if (v16)
+  if (localUnauthenticatedFullIdentity)
   {
-    v17 = [(IDSDSessionInvitationManager *)self publicIdentityDataFromLocalFullIdentity];
-    if (!v17)
+    publicIdentityDataFromLocalFullIdentity = [(IDSDSessionInvitationManager *)self publicIdentityDataFromLocalFullIdentity];
+    if (!publicIdentityDataFromLocalFullIdentity)
     {
       v28 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1599,41 +1599,41 @@ LABEL_117:
     v18 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(IDSDSessionInvitationManager *)self sharedState];
-      v20 = [v19 localUnauthenticatedFullIdentity];
+      sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+      localUnauthenticatedFullIdentity2 = [sharedState4 localUnauthenticatedFullIdentity];
       *buf = 138477827;
-      *v55 = v20;
+      *v55 = localUnauthenticatedFullIdentity2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Sending unauthenticated public identity {localUnauthenticatedFullIdentity: %{private}@}", buf, 0xCu);
     }
 
-    CFDictionarySetValue(v8, IDSSessionUnauthenticatedPublicKey, v17);
+    CFDictionarySetValue(v8, IDSSessionUnauthenticatedPublicKey, publicIdentityDataFromLocalFullIdentity);
   }
 
-  v21 = [(IDSDSessionInvitationManager *)self sharedState];
-  v22 = [v21 isScreenSharingSession];
+  sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+  isScreenSharingSession = [sharedState5 isScreenSharingSession];
 
-  if (!v22)
+  if (!isScreenSharingSession)
   {
 LABEL_54:
     v46 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [(IDSDSessionInvitationManager *)self sharedState];
-      v48 = [v47 destinations];
-      v49 = [(IDSDSessionInvitationManager *)self sharedState];
-      v50 = [v49 uniqueID];
+      sharedState6 = [(IDSDSessionInvitationManager *)self sharedState];
+      destinations = [sharedState6 destinations];
+      sharedState7 = [(IDSDSessionInvitationManager *)self sharedState];
+      uniqueID2 = [sharedState7 uniqueID];
       *buf = 138412802;
-      *v55 = v48;
+      *v55 = destinations;
       *&v55[8] = 2112;
-      *&v55[10] = v50;
+      *&v55[10] = uniqueID2;
       v56 = 2112;
       v57 = v8;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Sending accept to %@, %@, <%@>", buf, 0x20u);
     }
 
-    v51 = [(IDSDSessionInvitationManager *)self messenger];
+    messenger = [(IDSDSessionInvitationManager *)self messenger];
     v52 = [NSNumber numberWithInteger:233];
-    [v51 sendMessage:v8 withCommand:v52];
+    [messenger sendMessage:v8 withCommand:v52];
 
     goto LABEL_57;
   }
@@ -1655,8 +1655,8 @@ LABEL_54:
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "SecRandomCopyBytes failed %d (%s), bailing...", buf, 0x12u);
       }
 
-      v27 = [(IDSDSessionInvitationManager *)self delegate];
-      [v27 endSessionWithReason:17];
+      delegate = [(IDSDSessionInvitationManager *)self delegate];
+      [delegate endSessionWithReason:17];
 
       free(v23);
       goto LABEL_57;
@@ -1693,8 +1693,8 @@ LABEL_54:
 
     v34 = arc4random();
     [(IDSDSessionInvitationManager *)self setSeqSendStart:v34];
-    v35 = [(IDSDSessionInvitationManager *)self sharedState];
-    [v35 setSeqSend:v34];
+    sharedState8 = [(IDSDSessionInvitationManager *)self sharedState];
+    [sharedState8 setSeqSend:v34];
 
     v36 = [NSNumber numberWithUnsignedShort:LOWORD(self->_seqSendStart)];
     if (v36)
@@ -1712,30 +1712,30 @@ LABEL_54:
       self->keyMaterial[i] ^= *(v23 + i);
     }
 
-    v38 = [(IDSDSessionInvitationManager *)self sharedState];
-    v39 = [v38 peerProtocolVersion] > 1;
+    sharedState9 = [(IDSDSessionInvitationManager *)self sharedState];
+    v39 = [sharedState9 peerProtocolVersion] > 1;
 
-    v40 = [(IDSDSessionInvitationManager *)self sharedState];
-    v41 = [v40 encryptionState];
+    sharedState10 = [(IDSDSessionInvitationManager *)self sharedState];
+    encryptionState = [sharedState10 encryptionState];
 
-    v42 = sub_10050C5E0(v41, self->keyMaterial, 60, 0, [(IDSDSessionInvitationManager *)self SSRCSend], [(IDSDSessionInvitationManager *)self seqSendStart], [(IDSDSessionInvitationManager *)self SSRCRecv], [(IDSDSessionInvitationManager *)self seqRecvStart], v39);
+    v42 = sub_10050C5E0(encryptionState, self->keyMaterial, 60, 0, [(IDSDSessionInvitationManager *)self SSRCSend], [(IDSDSessionInvitationManager *)self seqSendStart], [(IDSDSessionInvitationManager *)self SSRCRecv], [(IDSDSessionInvitationManager *)self seqRecvStart], v39);
     *&self->keyMaterial[44] = 0u;
     *&self->keyMaterial[32] = 0u;
     *&self->keyMaterial[16] = 0u;
     *self->keyMaterial = 0u;
     if (v42)
     {
-      v43 = [(IDSDSessionInvitationManager *)self delegate];
-      [v43 endSessionWithReason:17];
+      delegate2 = [(IDSDSessionInvitationManager *)self delegate];
+      [delegate2 endSessionWithReason:17];
 
-      v44 = [(IDSDSessionInvitationManager *)self sharedState];
-      [v44 setEncryptionInitialized:0];
+      sharedState11 = [(IDSDSessionInvitationManager *)self sharedState];
+      [sharedState11 setEncryptionInitialized:0];
 
       goto LABEL_57;
     }
 
-    v45 = [(IDSDSessionInvitationManager *)self sharedState];
-    [v45 setEncryptionInitialized:1];
+    sharedState12 = [(IDSDSessionInvitationManager *)self sharedState];
+    [sharedState12 setEncryptionInitialized:1];
 
     goto LABEL_54;
   }
@@ -1747,19 +1747,19 @@ LABEL_54:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Malloc error when creating key material, ending call...", buf, 2u);
   }
 
-  v30 = [(IDSDSessionInvitationManager *)self delegate];
-  [v30 endSessionWithReason:17];
+  delegate3 = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate3 endSessionWithReason:17];
 
 LABEL_57:
 }
 
-- (void)declineInvitationWithData:(id)a3 forceFromURI:(id)a4 additionalMessageAttributes:(id)a5
+- (void)declineInvitationWithData:(id)data forceFromURI:(id)i additionalMessageAttributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IDSDSessionInvitationManager *)self sharedState];
-  [v11 clearAllTimers];
+  dataCopy = data;
+  iCopy = i;
+  attributesCopy = attributes;
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  [sharedState clearAllTimers];
 
   v12 = objc_alloc_init(NSMutableDictionary);
   v13 = _IDSSessionProtocolVersionNumber();
@@ -1773,12 +1773,12 @@ LABEL_57:
     sub_100917318();
   }
 
-  v14 = [(IDSDSessionInvitationManager *)self sharedState];
-  v15 = [v14 uniqueID];
+  sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+  uniqueID = [sharedState2 uniqueID];
 
-  if (v15)
+  if (uniqueID)
   {
-    CFDictionarySetValue(v12, IDSDSessionMessageSessionID, v15);
+    CFDictionarySetValue(v12, IDSDSessionMessageSessionID, uniqueID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1786,12 +1786,12 @@ LABEL_57:
     sub_1009173A0();
   }
 
-  v16 = [(IDSDSessionInvitationManager *)self sharedState];
-  v17 = [v16 participantID];
+  sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+  participantID = [sharedState3 participantID];
 
-  if (v17)
+  if (participantID)
   {
-    CFDictionarySetValue(v12, IDSDSessionMessageParticipantID, v17);
+    CFDictionarySetValue(v12, IDSDSessionMessageParticipantID, participantID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -1799,59 +1799,59 @@ LABEL_57:
     sub_100917428();
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    CFDictionarySetValue(v12, IDSDSessionMessageContext, v8);
+    CFDictionarySetValue(v12, IDSDSessionMessageContext, dataCopy);
   }
 
-  [(__CFDictionary *)v12 addEntriesFromDictionary:v10];
+  [(__CFDictionary *)v12 addEntriesFromDictionary:attributesCopy];
 
   v18 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(IDSDSessionInvitationManager *)self sharedState];
-    v20 = [v19 destinations];
-    v21 = [(IDSDSessionInvitationManager *)self sharedState];
-    v22 = [v21 uniqueID];
+    sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+    destinations = [sharedState4 destinations];
+    sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+    uniqueID2 = [sharedState5 uniqueID];
     v30 = 138412802;
-    v31 = v20;
+    v31 = destinations;
     v32 = 2112;
-    v33 = v22;
+    v33 = uniqueID2;
     v34 = 2112;
     v35 = v12;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Sending decline to %@, %@ <%@>", &v30, 0x20u);
   }
 
-  if (!v9)
+  if (!iCopy)
   {
-    v23 = [(IDSDSessionInvitationManager *)self sharedState];
-    v9 = [v23 fromURI];
+    sharedState6 = [(IDSDSessionInvitationManager *)self sharedState];
+    iCopy = [sharedState6 fromURI];
   }
 
-  v24 = [(IDSDSessionInvitationManager *)self messenger];
-  v25 = [(IDSDSessionInvitationManager *)self sharedState];
-  v26 = [v25 destinations];
+  messenger = [(IDSDSessionInvitationManager *)self messenger];
+  sharedState7 = [(IDSDSessionInvitationManager *)self sharedState];
+  destinations2 = [sharedState7 destinations];
   v27 = [NSNumber numberWithInteger:234];
-  [v24 sendMessage:v12 toDestinations:v26 withCommand:v27 fromURI:v9];
+  [messenger sendMessage:v12 toDestinations:destinations2 withCommand:v27 fromURI:iCopy];
 
-  v28 = [(IDSDSessionInvitationManager *)self delegate];
-  [v28 submitAWDMetricsForIDSSessionDeclineSent];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate submitAWDMetricsForIDSSessionDeclineSent];
 
-  v29 = [(IDSDSessionInvitationManager *)self delegate];
-  [v29 endSessionWithReason:2];
+  delegate2 = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate2 endSessionWithReason:2];
 }
 
 - (id)publicIdentityDataFromLocalFullIdentity
 {
-  v3 = [(IDSDSessionInvitationManager *)self sharedState];
-  v4 = [v3 localUnauthenticatedFullIdentity];
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  localUnauthenticatedFullIdentity = [sharedState localUnauthenticatedFullIdentity];
 
-  if (v4)
+  if (localUnauthenticatedFullIdentity)
   {
-    v5 = [(IDSDSessionInvitationManager *)self sharedState];
-    v6 = [v5 localUnauthenticatedFullIdentity];
+    sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+    localUnauthenticatedFullIdentity2 = [sharedState2 localUnauthenticatedFullIdentity];
     v24 = 0;
-    v7 = [v6 publicIdentityWithError:&v24];
+    v7 = [localUnauthenticatedFullIdentity2 publicIdentityWithError:&v24];
     v8 = v24;
 
     if (v7)
@@ -1873,11 +1873,11 @@ LABEL_57:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543875;
-          v26 = v10;
+          selfCopy3 = v10;
           v27 = 2113;
           v28 = v7;
           v29 = 2113;
-          v30 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to get data from unauthenticated public identity {error: %{public}@, publicIdentity: %{private}@, session: %{private}@}", buf, 0x20u);
         }
 
@@ -1898,14 +1898,14 @@ LABEL_57:
       v13 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [(IDSDSessionInvitationManager *)self sharedState];
-        v15 = [v14 localUnauthenticatedFullIdentity];
+        sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+        localUnauthenticatedFullIdentity3 = [sharedState3 localUnauthenticatedFullIdentity];
         *buf = 138543875;
-        v26 = v8;
+        selfCopy3 = v8;
         v27 = 2113;
-        v28 = v15;
+        v28 = localUnauthenticatedFullIdentity3;
         v29 = 2113;
-        v30 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to get unauthenticated public identity from full identity {error: %{public}@, fullIdentity: %{private}@, session: %{private}@}", buf, 0x20u);
       }
 
@@ -1915,16 +1915,16 @@ LABEL_57:
         goto LABEL_20;
       }
 
-      v16 = [(IDSDSessionInvitationManager *)self sharedState];
-      v20 = [v16 localUnauthenticatedFullIdentity];
+      sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+      localUnauthenticatedFullIdentity4 = [sharedState4 localUnauthenticatedFullIdentity];
       _IDSWarnV();
 
       v17 = [(IDSDSessionInvitationManager *)self sharedState:v8];
-      v21 = [v17 localUnauthenticatedFullIdentity];
+      localUnauthenticatedFullIdentity5 = [v17 localUnauthenticatedFullIdentity];
       _IDSLogV();
 
       v9 = [(IDSDSessionInvitationManager *)self sharedState:v8];
-      v22 = [v9 localUnauthenticatedFullIdentity];
+      localUnauthenticatedFullIdentity6 = [v9 localUnauthenticatedFullIdentity];
       _IDSLogTransport();
 
       v11 = 0;
@@ -1938,7 +1938,7 @@ LABEL_20:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138477827;
-    v26 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to create unauthenticated public key because of nil full identity {session: %{private}@}", buf, 0xCu);
   }
 
@@ -1955,28 +1955,28 @@ LABEL_21:
   return v11;
 }
 
-- (void)receivedAcceptMessage:(id)a3 fromURI:(id)a4
+- (void)receivedAcceptMessage:(id)message fromURI:(id)i
 {
-  v182 = a3;
-  v183 = a4;
-  v185 = self;
-  v6 = [(IDSDSessionInvitationManager *)self delegate];
-  [v6 submitAWDMetricsForIDSSessionAcceptReceived];
+  messageCopy = message;
+  iCopy = i;
+  selfCopy = self;
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate submitAWDMetricsForIDSSessionAcceptReceived];
 
   v7 = objc_alloc_init(NSDate);
-  v8 = [(IDSDSessionInvitationManager *)self sharedState];
-  [v8 setStartConnectingDate:v7];
+  sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+  [sharedState setStartConnectingDate:v7];
 
-  v9 = [(IDSDSessionInvitationManager *)v185 sharedState];
-  LODWORD(v8) = [v9 state];
+  sharedState2 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  LODWORD(sharedState) = [sharedState2 state];
 
-  if (v8 >= 4)
+  if (sharedState >= 4)
   {
     v10 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v195 = v183;
+      v195 = iCopy;
       v11 = "Ignoring incoming accept from %@, session is not waiting for an invite response anymore";
 LABEL_9:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v11, buf, 0xCu);
@@ -1986,26 +1986,26 @@ LABEL_9:
     goto LABEL_137;
   }
 
-  v12 = [(IDSDSessionInvitationManager *)v185 sharedState];
-  v13 = [v12 isInitiator];
+  sharedState3 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+  isInitiator = [sharedState3 isInitiator];
 
-  if (v13)
+  if (isInitiator)
   {
-    v14 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    v186 = [v14 destinationIsDefaultPairedDevice:v183];
+    sharedState4 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    v186 = [sharedState4 destinationIsDefaultPairedDevice:iCopy];
 
     v15 = IDSDSessionMessageBlob;
-    v16 = [v182 objectForKey:IDSDSessionMessageBlob];
+    v16 = [messageCopy objectForKey:IDSDSessionMessageBlob];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v182 objectForKey:v15];
+      v17 = [messageCopy objectForKey:v15];
       v18 = [NSData _IDSDataFromBase64String:v17];
     }
 
     else
     {
-      v17 = [v182 objectForKey:v15];
+      v17 = [messageCopy objectForKey:v15];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -2013,7 +2013,7 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      v18 = [v182 objectForKey:v15];
+      v18 = [messageCopy objectForKey:v15];
     }
 
     v19 = v18;
@@ -2022,10 +2022,10 @@ LABEL_14:
     v181 = v19;
     if (!(([v19 length]!= 0) | v186 & 1))
     {
-      v20 = [(IDSDSessionInvitationManager *)v185 sharedState];
-      v21 = [v20 enableQuickRelay];
+      sharedState5 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      enableQuickRelay = [sharedState5 enableQuickRelay];
 
-      if ((v21 & 1) == 0)
+      if ((enableQuickRelay & 1) == 0)
       {
         v28 = +[IDSFoundationLog IDSDSession];
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2034,15 +2034,15 @@ LABEL_14:
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "No remote blob, bailing...", buf, 2u);
         }
 
-        v29 = [(IDSDSessionInvitationManager *)v185 delegate];
-        [v29 endSessionWithReason:9];
+        delegate2 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+        [delegate2 endSessionWithReason:9];
 
         goto LABEL_136;
       }
     }
 
-    v22 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    v23 = [v22 destinationIsGuestDevice:v183];
+    sharedState6 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    v23 = [sharedState6 destinationIsGuestDevice:iCopy];
 
     if (!v23)
     {
@@ -2050,17 +2050,17 @@ LABEL_14:
     }
 
     v24 = IDSSessionUnauthenticatedPublicKey;
-    v25 = [v182 objectForKey:IDSSessionUnauthenticatedPublicKey];
+    v25 = [messageCopy objectForKey:IDSSessionUnauthenticatedPublicKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = [v182 objectForKey:v24];
+      v26 = [messageCopy objectForKey:v24];
       v27 = [NSData _IDSDataFromBase64String:v26];
     }
 
     else
     {
-      v26 = [v182 objectForKey:v24];
+      v26 = [messageCopy objectForKey:v24];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -2068,7 +2068,7 @@ LABEL_14:
         goto LABEL_26;
       }
 
-      v27 = [v182 objectForKey:v24];
+      v27 = [messageCopy objectForKey:v24];
     }
 
     v30 = v27;
@@ -2076,23 +2076,23 @@ LABEL_26:
 
     if (!v30)
     {
-      v63 = [(IDSDSessionInvitationManager *)v185 delegate];
-      [v63 endSessionWithReason:14];
+      delegate3 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+      [delegate3 endSessionWithReason:14];
 
 LABEL_136:
       v10 = v181;
       goto LABEL_137;
     }
 
-    v31 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    v32 = [v31 publicIdentityFromData:v30];
+    sharedState7 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    v32 = [sharedState7 publicIdentityFromData:v30];
 
-    v33 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    [v33 setRemoteUnauthenticatedPublicIdentity:v32];
+    sharedState8 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    [sharedState8 setRemoteUnauthenticatedPublicIdentity:v32];
 
 LABEL_28:
     v34 = objc_opt_class();
-    v180 = sub_10001B980(v34, v182, IDSDSessionMessageParticipantID);
+    v180 = sub_10001B980(v34, messageCopy, IDSDSessionMessageParticipantID);
     if (![v180 length])
     {
       v60 = +[IDSFoundationLog IDSDSession];
@@ -2102,14 +2102,14 @@ LABEL_28:
         _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "No participantID, bailing...", buf, 2u);
       }
 
-      v179 = [(IDSDSessionInvitationManager *)v185 delegate];
-      [v179 endSessionWithReason:14];
+      delegate4 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+      [delegate4 endSessionWithReason:14];
       goto LABEL_135;
     }
 
     v35 = objc_opt_class();
-    v36 = sub_10001B980(v35, v182, IDSDSessionMessageVersion);
-    v179 = v36;
+    v36 = sub_10001B980(v35, messageCopy, IDSDSessionMessageVersion);
+    delegate4 = v36;
     if (!v36)
     {
       v61 = +[IDSFoundationLog IDSDSession];
@@ -2119,83 +2119,83 @@ LABEL_28:
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "No message version, bailing...", buf, 2u);
       }
 
-      v62 = [(IDSDSessionInvitationManager *)v185 delegate];
-      [v62 endSessionWithReason:14];
+      delegate5 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+      [delegate5 endSessionWithReason:14];
 
       goto LABEL_135;
     }
 
-    v37 = [v36 unsignedIntValue];
-    v38 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    [v38 setPeerProtocolVersion:v37];
+    unsignedIntValue = [v36 unsignedIntValue];
+    sharedState9 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    [sharedState9 setPeerProtocolVersion:unsignedIntValue];
 
     v39 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(IDSDSessionInvitationManager *)v185 sharedState];
+      sharedState10 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
       *buf = 67109120;
-      LODWORD(v195) = [v40 peerProtocolVersion];
+      LODWORD(v195) = [sharedState10 peerProtocolVersion];
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Setting peer protocol version to %d", buf, 8u);
     }
 
     v41 = objc_opt_class();
-    v42 = sub_10001B980(v41, v182, IDSDSessionMessageUseCloudPairedControlChannel);
-    v43 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    [v43 setRemoteUseCloudPairedControlChannel:v42];
+    v42 = sub_10001B980(v41, messageCopy, IDSDSessionMessageUseCloudPairedControlChannel);
+    sharedState11 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    [sharedState11 setRemoteUseCloudPairedControlChannel:v42];
 
     v44 = objc_opt_class();
-    v45 = sub_10001B980(v44, v182, IDSDSessionMessageUsePhoneContinuityLocalMessage);
-    v46 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    [v46 setRemoteUsePhoneContinuityLocalMessage:v45];
+    v45 = sub_10001B980(v44, messageCopy, IDSDSessionMessageUsePhoneContinuityLocalMessage);
+    sharedState12 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    [sharedState12 setRemoteUsePhoneContinuityLocalMessage:v45];
 
     v47 = objc_opt_class();
     v48 = IDSDSessionMessageUseStunMessageIntegrity;
-    v49 = sub_10001B980(v47, v182, IDSDSessionMessageUseStunMessageIntegrity);
+    v49 = sub_10001B980(v47, messageCopy, IDSDSessionMessageUseStunMessageIntegrity);
     v50 = objc_opt_class();
-    v51 = sub_10001B980(v50, v182, v48);
-    -[IDSDSessionInvitationManager setUseStunMICheck:](v185, "setUseStunMICheck:", [v51 BOOLValue]);
+    v51 = sub_10001B980(v50, messageCopy, v48);
+    -[IDSDSessionInvitationManager setUseStunMICheck:](selfCopy, "setUseStunMICheck:", [v51 BOOLValue]);
 
-    v52 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    LODWORD(v51) = [v52 peerProtocolVersion] < 4;
+    sharedState13 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    LODWORD(v51) = [sharedState13 peerProtocolVersion] < 4;
 
     if (v51)
     {
       v53 = objc_opt_class();
       v54 = IDSDSessionMessageUseSecureQRControlMessage;
-      v55 = sub_10001B980(v53, v182, IDSDSessionMessageUseSecureQRControlMessage);
+      sharedState15 = sub_10001B980(v53, messageCopy, IDSDSessionMessageUseSecureQRControlMessage);
       v56 = objc_opt_class();
-      v57 = sub_10001B980(v56, v182, v54);
-      v58 = [v57 BOOLValue];
-      v59 = [(IDSDSessionInvitationManager *)v185 sharedState];
-      [v59 setUseSecureQRControlMessage:v58];
+      v57 = sub_10001B980(v56, messageCopy, v54);
+      bOOLValue = [v57 BOOLValue];
+      sharedState14 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      [sharedState14 setUseSecureQRControlMessage:bOOLValue];
     }
 
     else
     {
-      v55 = [(IDSDSessionInvitationManager *)v185 sharedState];
-      [v55 setUseSecureQRControlMessage:1];
+      sharedState15 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+      [sharedState15 setUseSecureQRControlMessage:1];
     }
 
-    v64 = [(IDSDSessionInvitationManager *)v185 sharedState];
-    v65 = [v64 isScreenSharingSession];
+    sharedState16 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+    isScreenSharingSession = [sharedState16 isScreenSharingSession];
 
-    if (!v65)
+    if (!isScreenSharingSession)
     {
       goto LABEL_63;
     }
 
     v66 = IDSDSessionMessageKeyMaterial;
-    v67 = [v182 objectForKey:IDSDSessionMessageKeyMaterial];
+    v67 = [messageCopy objectForKey:IDSDSessionMessageKeyMaterial];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v68 = [v182 objectForKey:v66];
+      v68 = [messageCopy objectForKey:v66];
       v69 = [NSData _IDSDataFromBase64String:v68];
     }
 
     else
     {
-      v68 = [v182 objectForKey:v66];
+      v68 = [messageCopy objectForKey:v66];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -2203,90 +2203,90 @@ LABEL_28:
 LABEL_49:
 
         v71 = objc_opt_class();
-        v72 = sub_10001B980(v71, v182, IDSDSessionMessageSelfSSRC);
+        v72 = sub_10001B980(v71, messageCopy, IDSDSessionMessageSelfSSRC);
         v73 = objc_opt_class();
-        v74 = sub_10001B980(v73, v182, IDSDSessionMessageSelfSeqStart);
+        v74 = sub_10001B980(v73, messageCopy, IDSDSessionMessageSelfSeqStart);
         v75 = 17;
         if (v70)
         {
-          v76 = v185;
+          v76 = selfCopy;
           if (!v72 || !v74)
           {
             goto LABEL_61;
           }
 
           v77 = v70;
-          v78 = [v70 bytes];
+          bytes = [v70 bytes];
           if ([v70 length] == 60)
           {
-            -[IDSDSessionInvitationManager setSSRCRecv:](v185, "setSSRCRecv:", [v72 unsignedIntValue]);
-            -[IDSDSessionInvitationManager setSeqRecvStart:](v185, "setSeqRecvStart:", [v74 unsignedShortValue]);
+            -[IDSDSessionInvitationManager setSSRCRecv:](selfCopy, "setSSRCRecv:", [v72 unsignedIntValue]);
+            -[IDSDSessionInvitationManager setSeqRecvStart:](selfCopy, "setSeqRecvStart:", [v74 unsignedShortValue]);
             for (i = 0; i != 60; ++i)
             {
-              v185->keyMaterial[i] ^= v78[i];
+              selfCopy->keyMaterial[i] ^= bytes[i];
             }
 
-            v80 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            v81 = [v80 peerProtocolVersion] > 1;
+            sharedState17 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            v81 = [sharedState17 peerProtocolVersion] > 1;
 
-            v82 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            v83 = [v82 encryptionState];
+            sharedState18 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            encryptionState = [sharedState18 encryptionState];
 
-            v84 = sub_10050C5E0(v83, v185->keyMaterial, 60, 1, [(IDSDSessionInvitationManager *)v185 SSRCSend], [(IDSDSessionInvitationManager *)v185 seqSendStart], [(IDSDSessionInvitationManager *)v185 SSRCRecv], [(IDSDSessionInvitationManager *)v185 seqRecvStart], v81);
-            *&v185->keyMaterial[44] = 0u;
-            *&v185->keyMaterial[32] = 0u;
-            *&v185->keyMaterial[16] = 0u;
-            *v185->keyMaterial = 0u;
+            v84 = sub_10050C5E0(encryptionState, selfCopy->keyMaterial, 60, 1, [(IDSDSessionInvitationManager *)selfCopy SSRCSend], [(IDSDSessionInvitationManager *)selfCopy seqSendStart], [(IDSDSessionInvitationManager *)selfCopy SSRCRecv], [(IDSDSessionInvitationManager *)selfCopy seqRecvStart], v81);
+            *&selfCopy->keyMaterial[44] = 0u;
+            *&selfCopy->keyMaterial[32] = 0u;
+            *&selfCopy->keyMaterial[16] = 0u;
+            *selfCopy->keyMaterial = 0u;
             if (v84)
             {
-              v85 = [(IDSDSessionInvitationManager *)v185 delegate];
-              [v85 endSessionWithReason:17];
+              delegate6 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+              [delegate6 endSessionWithReason:17];
 
-              v86 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              [v86 setEncryptionInitialized:0];
+              sharedState19 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              [sharedState19 setEncryptionInitialized:0];
 
 LABEL_135:
               goto LABEL_136;
             }
 
-            v90 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            [v90 setEncryptionInitialized:1];
+            sharedState20 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            [sharedState20 setEncryptionInitialized:1];
 
 LABEL_63:
-            v91 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            [v91 clearAllTimers];
+            sharedState21 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            [sharedState21 clearAllTimers];
 
-            v92 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            [v92 setState:4];
+            sharedState22 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            [sharedState22 setState:4];
 
-            v184 = [v183 pushToken];
+            pushToken = [iCopy pushToken];
             v93 = +[IDSFoundationLog IDSDSession];
             if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
             {
-              v94 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v95 = [v94 uniqueID];
+              sharedState23 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              uniqueID = [sharedState23 uniqueID];
               *buf = 138412802;
-              v195 = v183;
+              v195 = iCopy;
               v196 = 2112;
-              v197 = v95;
+              v197 = uniqueID;
               v198 = 2112;
-              v199 = v184;
+              v199 = pushToken;
               _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Received accept from %@, session %@, fromToken %@.", buf, 0x20u);
             }
 
             v96 = objc_alloc_init(NSMutableSet);
-            v97 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            v98 = [v97 destinationIsGuestDevice:v183];
+            sharedState24 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            v98 = [sharedState24 destinationIsGuestDevice:iCopy];
 
             v191 = 0u;
             v192 = 0u;
             v189 = 0u;
             v190 = 0u;
-            v99 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            v100 = [v99 destinations];
+            sharedState25 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            destinations = [sharedState25 destinations];
 
             v101 = 0;
-            v102 = [v100 countByEnumeratingWithState:&v189 objects:v193 count:16];
+            v102 = [destinations countByEnumeratingWithState:&v189 objects:v193 count:16];
             if (v102)
             {
               v103 = *v190;
@@ -2296,14 +2296,14 @@ LABEL_63:
                 {
                   if (*v190 != v103)
                   {
-                    objc_enumerationMutation(v100);
+                    objc_enumerationMutation(destinations);
                   }
 
                   v105 = *(*(&v189 + 1) + 8 * j);
                   if (v186)
                   {
-                    v106 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                    v107 = [v106 destinationIsDefaultPairedDevice:v105];
+                    sharedState26 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                    v107 = [sharedState26 destinationIsDefaultPairedDevice:v105];
 
                     if (v107)
                     {
@@ -2311,11 +2311,11 @@ LABEL_63:
                     }
                   }
 
-                  if (!v98 || ([v105 isEqualToURI:v183] & 1) == 0)
+                  if (!v98 || ([v105 isEqualToURI:iCopy] & 1) == 0)
                   {
-                    v108 = [v105 pushToken];
+                    pushToken2 = [v105 pushToken];
 
-                    if (([v108 isEqualToPushToken:v184] & 1) == 0)
+                    if (([pushToken2 isEqualToPushToken:pushToken] & 1) == 0)
                     {
                       [v96 addObject:v105];
                       v109 = +[IDSFoundationLog IDSDSession];
@@ -2327,11 +2327,11 @@ LABEL_63:
                       }
                     }
 
-                    v101 = v108;
+                    v101 = pushToken2;
                   }
                 }
 
-                v102 = [v100 countByEnumeratingWithState:&v189 objects:v193 count:16];
+                v102 = [destinations countByEnumeratingWithState:&v189 objects:v193 count:16];
               }
 
               while (v102);
@@ -2347,35 +2347,35 @@ LABEL_63:
                 _os_log_impl(&_mh_execute_header, v110, OS_LOG_TYPE_DEFAULT, "Canceling invitations to %@", buf, 0xCu);
               }
 
-              [(IDSDSessionInvitationManager *)v185 sendCancelInvitationToDestinations:v96 remoteEndReason:29 data:0];
+              [(IDSDSessionInvitationManager *)selfCopy sendCancelInvitationToDestinations:v96 remoteEndReason:29 data:0];
             }
 
             if (v186)
             {
-              v111 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v112 = [v111 forceInternetInvitation];
+              sharedState27 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              forceInternetInvitation = [sharedState27 forceInternetInvitation];
 
-              if ((v112 & 1) == 0)
+              if ((forceInternetInvitation & 1) == 0)
               {
                 v113 = +[IDSUTunController sharedInstance];
-                v114 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                v115 = [v114 uniqueID];
-                [v113 stopUDPGlobalLinkForDevice:v115];
+                sharedState28 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                uniqueID2 = [sharedState28 uniqueID];
+                [v113 stopUDPGlobalLinkForDevice:uniqueID2];
               }
             }
 
-            v116 = [[NSSet alloc] initWithObjects:{v183, 0, v179}];
-            v117 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            [v117 setDestinations:v116];
+            v116 = [[NSSet alloc] initWithObjects:{iCopy, 0, delegate4}];
+            sharedState29 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            [sharedState29 setDestinations:v116];
 
-            [(IDSDSessionInvitationManager *)v185 setRemoteBlob:v181];
-            v118 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            [v118 setConnectionTimer];
+            [(IDSDSessionInvitationManager *)selfCopy setRemoteBlob:v181];
+            sharedState30 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            [sharedState30 setConnectionTimer];
 
-            v119 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            LODWORD(v117) = [v119 isScreenSharingSession];
+            sharedState31 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            LODWORD(sharedState29) = [sharedState31 isScreenSharingSession];
 
-            if (v117)
+            if (sharedState29)
             {
               v120 = +[IDSFoundationLog IDSDSession];
               if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
@@ -2384,70 +2384,70 @@ LABEL_63:
                 _os_log_impl(&_mh_execute_header, v120, OS_LOG_TYPE_DEFAULT, "Starting screen sharing connection with remote blob", buf, 2u);
               }
 
-              v121 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v122 = [v121 connection];
-              [v122 receivedRemoteConnectionData:v181];
+              sharedState32 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              connection = [sharedState32 connection];
+              [connection receivedRemoteConnectionData:v181];
 
-              v123 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v124 = [v123 connection];
-              v125 = [(IDSDSessionInvitationManager *)v185 sharedState];
+              sharedState33 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              connection2 = [sharedState33 connection];
+              sharedState34 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
               v188[0] = _NSConcreteStackBlock;
               v188[1] = 3221225472;
               v188[2] = sub_1005D5A40;
               v188[3] = &unk_100BD9F28;
-              v188[4] = v185;
-              [v124 startConnectionAsInitiator:1 peerProtocolVersion:objc_msgSend(v125 errorHandler:{"peerProtocolVersion"), v188}];
+              v188[4] = selfCopy;
+              [connection2 startConnectionAsInitiator:1 peerProtocolVersion:objc_msgSend(sharedState34 errorHandler:{"peerProtocolVersion"), v188}];
 
               goto LABEL_127;
             }
 
-            v126 = [(IDSDSessionInvitationManager *)v185 _acceptedDeviceUniqueID];
-            if ((v126 != 0) | v186 & 1)
+            _acceptedDeviceUniqueID = [(IDSDSessionInvitationManager *)selfCopy _acceptedDeviceUniqueID];
+            if ((_acceptedDeviceUniqueID != 0) | v186 & 1)
             {
             }
 
-            else if (![(IDSDSessionInvitationManager *)v185 _isLocalDeviceSafeviewAdviserInitiatorOnLoboMacOrLaterAndRemoteDeviceIsPreTiboAnyPlatform])
+            else if (![(IDSDSessionInvitationManager *)selfCopy _isLocalDeviceSafeviewAdviserInitiatorOnLoboMacOrLaterAndRemoteDeviceIsPreTiboAnyPlatform])
             {
-              v152 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v153 = [v152 useQRDirectly];
+              sharedState35 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              useQRDirectly = [sharedState35 useQRDirectly];
 
-              if (v153)
+              if (useQRDirectly)
               {
                 goto LABEL_97;
               }
 
-              v154 = [v182 objectForKeyedSubscript:IDSDSessionMessageAssumeRemoteDeviceEncryption];
-              v155 = [v154 BOOLValue];
+              v154 = [messageCopy objectForKeyedSubscript:IDSDSessionMessageAssumeRemoteDeviceEncryption];
+              bOOLValue2 = [v154 BOOLValue];
 
-              v156 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v127 = v156;
-              if (!v155)
+              sharedState36 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              sharedState48 = sharedState36;
+              if (!bOOLValue2)
               {
-                v174 = [v156 disableRemoteDeviceEncryption];
+                disableRemoteDeviceEncryption = [sharedState36 disableRemoteDeviceEncryption];
 
-                if ((v174 & 1) == 0)
+                if ((disableRemoteDeviceEncryption & 1) == 0)
                 {
                   v175 = +[IDSFoundationLog IDSDSession];
                   if (os_log_type_enabled(v175, OS_LOG_TYPE_DEFAULT))
                   {
-                    v176 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                    v177 = [v176 uniqueID];
+                    sharedState37 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                    uniqueID3 = [sharedState37 uniqueID];
                     *buf = 138412546;
-                    v195 = v183;
+                    v195 = iCopy;
                     v196 = 2112;
-                    v197 = v177;
+                    v197 = uniqueID3;
                     _os_log_impl(&_mh_execute_header, v175, OS_LOG_TYPE_DEFAULT, "Received accept from %@, session %@, expecting remote device encryption but remote does not specify", buf, 0x16u);
                   }
 
-                  v164 = [(IDSDSessionInvitationManager *)v185 delegate];
-                  [v164 endSessionWithReason:17];
+                  delegate7 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+                  [delegate7 endSessionWithReason:17];
                   goto LABEL_134;
                 }
 
                 goto LABEL_97;
               }
 
-              [v156 setDisableRemoteDeviceEncryption:0];
+              [sharedState36 setDisableRemoteDeviceEncryption:0];
 LABEL_96:
 
 LABEL_97:
@@ -2458,16 +2458,16 @@ LABEL_97:
                 _os_log_impl(&_mh_execute_header, v128, OS_LOG_TYPE_DEFAULT, "Starting connection with remote blob", buf, 2u);
               }
 
-              v129 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              if ([v129 destinationIsDefaultPairedDevice:v183])
+              sharedState38 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              if ([sharedState38 destinationIsDefaultPairedDevice:iCopy])
               {
-                v130 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                v131 = [v130 forceInternetInvitation];
+                sharedState39 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                forceInternetInvitation2 = [sharedState39 forceInternetInvitation];
 
-                if (!v131)
+                if (!forceInternetInvitation2)
                 {
-                  v132 = [(IDSDSessionInvitationManager *)v185 delegate];
-                  [v132 openSocketToDevice:kIDSDefaultPairedDeviceID];
+                  delegate8 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+                  [delegate8 openSocketToDevice:kIDSDefaultPairedDeviceID];
 
                   goto LABEL_127;
                 }
@@ -2477,33 +2477,33 @@ LABEL_97:
               {
               }
 
-              v133 = [(IDSDSessionInvitationManager *)v185 delegate];
-              v134 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v135 = [v134 uniqueID];
-              [v133 openSocketToDevice:v135];
+              delegate9 = [(IDSDSessionInvitationManager *)selfCopy delegate];
+              sharedState40 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              uniqueID4 = [sharedState40 uniqueID];
+              [delegate9 openSocketToDevice:uniqueID4];
 
-              v136 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              LODWORD(v134) = [v136 enableQuickRelay];
+              sharedState41 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              LODWORD(sharedState40) = [sharedState41 enableQuickRelay];
 
-              if (v134)
+              if (sharedState40)
               {
                 v137 = +[IDSQuickRelayAllocator sharedInstance];
-                v138 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                v139 = [v138 uniqueID];
-                v140 = [v184 rawToken];
-                v141 = [v137 getRelaySessionIDForIDSSessionID:v139 pushToken:v140];
+                sharedState42 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                uniqueID5 = [sharedState42 uniqueID];
+                rawToken = [pushToken rawToken];
+                v141 = [v137 getRelaySessionIDForIDSSessionID:uniqueID5 pushToken:rawToken];
 
                 v142 = +[IDSQuickRelayAllocator sharedInstance];
-                v143 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                v144 = [v143 uniqueID];
-                v145 = [v184 rawToken];
-                [v142 setInitiatorsAcceptedToken:v144 pushToken:v145];
+                sharedState43 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                uniqueID6 = [sharedState43 uniqueID];
+                rawToken2 = [pushToken rawToken];
+                [v142 setInitiatorsAcceptedToken:uniqueID6 pushToken:rawToken2];
 
                 if (v141)
                 {
                   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-                  v147 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                  v148 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v147 useSecureQRControlMessage]);
+                  sharedState44 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                  v148 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [sharedState44 useSecureQRControlMessage]);
 
                   if (v148)
                   {
@@ -2571,48 +2571,48 @@ LABEL_97:
               else
               {
                 v149 = +[IDSUTunController sharedInstance];
-                v150 = [(IDSDSessionInvitationManager *)v185 sharedState];
-                v151 = [v150 uniqueID];
-                [v149 startConnectionForDevice:v151 isInitiator:1 remotePartyID:v180 useStunMICheck:{-[IDSDSessionInvitationManager useStunMICheck](v185, "useStunMICheck")}];
+                sharedState45 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+                uniqueID7 = [sharedState45 uniqueID];
+                [v149 startConnectionForDevice:uniqueID7 isInitiator:1 remotePartyID:v180 useStunMICheck:{-[IDSDSessionInvitationManager useStunMICheck](selfCopy, "useStunMICheck")}];
               }
 
 LABEL_127:
               v160 = IDSDSessionMessageContext;
-              v161 = [v182 objectForKey:{IDSDSessionMessageContext, v178}];
+              v161 = [messageCopy objectForKey:{IDSDSessionMessageContext, v178}];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v162 = [v182 objectForKey:v160];
+                v162 = [messageCopy objectForKey:v160];
                 v163 = [NSData _IDSDataFromBase64String:v162];
               }
 
               else
               {
-                v162 = [v182 objectForKey:v160];
+                v162 = [messageCopy objectForKey:v160];
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  v164 = 0;
+                  delegate7 = 0;
                   goto LABEL_133;
                 }
 
-                v163 = [v182 objectForKey:v160];
+                v163 = [messageCopy objectForKey:v160];
               }
 
-              v164 = v163;
+              delegate7 = v163;
 LABEL_133:
 
               v165 = objc_alloc_init(IMMessageContext);
               [v165 setShouldBoost:1];
               v166 = +[IDSDaemon sharedInstance];
-              v167 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v168 = [v167 pushTopic];
-              v169 = [v166 broadcasterForTopic:v168 entitlement:kIDSSessionEntitlement command:0 messageContext:v165];
+              sharedState46 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              pushTopic = [sharedState46 pushTopic];
+              v169 = [v166 broadcasterForTopic:pushTopic entitlement:kIDSSessionEntitlement command:0 messageContext:v165];
 
-              v170 = [(IDSDSessionInvitationManager *)v185 sharedState];
-              v171 = [v170 uniqueID];
-              v172 = [v183 prefixedURI];
-              [v169 sessionAcceptReceived:v171 fromID:v172 withData:v164];
+              sharedState47 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+              uniqueID8 = [sharedState47 uniqueID];
+              prefixedURI = [iCopy prefixedURI];
+              [v169 sessionAcceptReceived:uniqueID8 fromID:prefixedURI withData:delegate7];
 
               v173 = +[IDSDSessionController sharedInstance];
               [v173 updateCriticalReliabilityState];
@@ -2621,8 +2621,8 @@ LABEL_134:
               goto LABEL_135;
             }
 
-            v127 = [(IDSDSessionInvitationManager *)v185 sharedState];
-            [v127 setDisableRemoteDeviceEncryption:1];
+            sharedState48 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+            [sharedState48 setDisableRemoteDeviceEncryption:1];
             goto LABEL_96;
           }
 
@@ -2636,18 +2636,18 @@ LABEL_134:
           v75 = 14;
         }
 
-        v76 = v185;
+        v76 = selfCopy;
 LABEL_61:
-        v88 = [(IDSDSessionInvitationManager *)v76 delegate];
-        [v88 endSessionWithReason:v75];
+        delegate10 = [(IDSDSessionInvitationManager *)v76 delegate];
+        [delegate10 endSessionWithReason:v75];
 
-        v89 = [(IDSDSessionInvitationManager *)v185 sharedState];
-        [v89 setEncryptionInitialized:0];
+        sharedState49 = [(IDSDSessionInvitationManager *)selfCopy sharedState];
+        [sharedState49 setEncryptionInitialized:0];
 
         goto LABEL_135;
       }
 
-      v69 = [v182 objectForKey:v66];
+      v69 = [messageCopy objectForKey:v66];
     }
 
     v70 = v69;
@@ -2658,7 +2658,7 @@ LABEL_61:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v195 = v183;
+    v195 = iCopy;
     v11 = "Ignoring incoming accept from %@, session is not the initiator";
     goto LABEL_9;
   }
@@ -2666,71 +2666,71 @@ LABEL_61:
 LABEL_137:
 }
 
-- (void)receivedDeclineMessage:(id)a3 fromURI:(id)a4
+- (void)receivedDeclineMessage:(id)message fromURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  iCopy = i;
   v8 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(IDSDSessionInvitationManager *)self sharedState];
-    v10 = [v9 uniqueID];
+    sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+    uniqueID = [sharedState uniqueID];
     *buf = 138412802;
-    v49 = v6;
+    v49 = messageCopy;
     v50 = 2112;
-    v51 = v7;
+    v51 = iCopy;
     v52 = 2112;
-    v53 = v10;
+    v53 = uniqueID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received decline %@ from %@, %@", buf, 0x20u);
   }
 
-  v11 = [(IDSDSessionInvitationManager *)self delegate];
-  [v11 submitAWDMetricsForIDSSessionDeclineReceived];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate submitAWDMetricsForIDSSessionDeclineReceived];
 
-  if ([(IDSDSessionInvitationManager *)self _isValidDestination:v7])
+  if ([(IDSDSessionInvitationManager *)self _isValidDestination:iCopy])
   {
     v12 = objc_opt_class();
-    v13 = sub_10001B980(v12, v6, IDSDSessionMessageAllowOtherInvites);
+    v13 = sub_10001B980(v12, messageCopy, IDSDSessionMessageAllowOtherInvites);
     v14 = IDSDSessionMessageContext;
-    v15 = [v6 objectForKey:IDSDSessionMessageContext];
+    v15 = [messageCopy objectForKey:IDSDSessionMessageContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v6 objectForKey:v14];
+      v16 = [messageCopy objectForKey:v14];
       v17 = [NSData _IDSDataFromBase64String:v16];
     }
 
     else
     {
-      v16 = [v6 objectForKey:v14];
+      v16 = [messageCopy objectForKey:v14];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v18 = 0;
+        sharedState8 = 0;
 LABEL_12:
 
-        v19 = JWDecodeDictionary();
+        uniqueID3 = JWDecodeDictionary();
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [v19 objectForKey:IDSDSessionMessageDeclineReason];
-          v23 = [v22 unsignedIntValue];
+          v22 = [uniqueID3 objectForKey:IDSDSessionMessageDeclineReason];
+          unsignedIntValue = [v22 unsignedIntValue];
         }
 
         else
         {
-          v23 = 0;
+          unsignedIntValue = 0;
         }
 
         v24 = +[IDSFoundationLog IDSDSession];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          LODWORD(v49) = v23;
+          LODWORD(v49) = unsignedIntValue;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Invite was declined { givenReason: %u }", buf, 8u);
         }
 
-        if (v23 == 13)
+        if (unsignedIntValue == 13)
         {
           v25 = 15;
         }
@@ -2743,17 +2743,17 @@ LABEL_12:
         v47 = v25;
         if ([v13 BOOLValue])
         {
-          v26 = [(IDSDSessionInvitationManager *)self sharedState];
-          v27 = [v26 destinations];
-          v28 = [v27 mutableCopy];
+          sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+          destinations = [sharedState2 destinations];
+          v28 = [destinations mutableCopy];
 
-          [v28 removeObject:v7];
+          [v28 removeObject:iCopy];
           v29 = [v28 copy];
           v30 = +[IDSFoundationLog IDSDSession];
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v49 = v7;
+            v49 = iCopy;
             v50 = 2112;
             v51 = v29;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Invite was declined with reason alias deactivated { fromURI: %@, _inviteTokens: %@ }", buf, 0x16u);
@@ -2761,11 +2761,11 @@ LABEL_12:
 
           if ([v29 count])
           {
-            v31 = +[IDSFoundationLog IDSDSession];
-            if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+            delegate3 = +[IDSFoundationLog IDSDSession];
+            if (os_log_type_enabled(delegate3, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Suppressing decline, other recipients", buf, 2u);
+              _os_log_impl(&_mh_execute_header, delegate3, OS_LOG_TYPE_DEFAULT, "Suppressing decline, other recipients", buf, 2u);
             }
 
 LABEL_30:
@@ -2774,104 +2774,104 @@ LABEL_30:
           }
         }
 
-        v45 = v19;
-        v46 = v18;
+        v45 = uniqueID3;
+        v46 = sharedState8;
         v32 = +[IDSFoundationLog IDSDSession];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(IDSDSessionInvitationManager *)self sharedState];
-          v34 = [v33 destinations];
+          sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+          destinations2 = [sharedState3 destinations];
           *buf = 138412290;
-          v49 = v34;
+          v49 = destinations2;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Invite was declined, notifying everyone I invited: %@", buf, 0xCu);
         }
 
-        v35 = [(IDSDSessionInvitationManager *)self delegate];
-        [v35 invitationDeclined];
+        delegate2 = [(IDSDSessionInvitationManager *)self delegate];
+        [delegate2 invitationDeclined];
 
-        v36 = [(IDSDSessionInvitationManager *)self sharedState];
-        [v36 clearAllTimers];
+        sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+        [sharedState4 clearAllTimers];
 
-        v37 = [[NSSet alloc] initWithObjects:{v7, 0}];
-        v38 = [(IDSDSessionInvitationManager *)self sharedState];
-        [v38 setDestinations:v37];
+        v37 = [[NSSet alloc] initWithObjects:{iCopy, 0}];
+        sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+        [sharedState5 setDestinations:v37];
 
         v28 = objc_alloc_init(IMMessageContext);
         [v28 setShouldBoost:1];
         v39 = +[IDSDaemon sharedInstance];
-        v40 = [(IDSDSessionInvitationManager *)self sharedState];
-        v41 = [v40 pushTopic];
-        v29 = [v39 broadcasterForTopic:v41 entitlement:kIDSSessionEntitlement command:0 messageContext:v28];
+        sharedState6 = [(IDSDSessionInvitationManager *)self sharedState];
+        pushTopic = [sharedState6 pushTopic];
+        v29 = [v39 broadcasterForTopic:pushTopic entitlement:kIDSSessionEntitlement command:0 messageContext:v28];
 
-        v42 = [(IDSDSessionInvitationManager *)self sharedState];
-        v43 = [v42 uniqueID];
-        v44 = [v7 prefixedURI];
-        v18 = v46;
-        [v29 sessionDeclineReceived:v43 fromID:v44 withData:v46];
+        sharedState7 = [(IDSDSessionInvitationManager *)self sharedState];
+        uniqueID2 = [sharedState7 uniqueID];
+        prefixedURI = [iCopy prefixedURI];
+        sharedState8 = v46;
+        [v29 sessionDeclineReceived:uniqueID2 fromID:prefixedURI withData:v46];
 
-        v31 = [(IDSDSessionInvitationManager *)self delegate];
-        [v31 endSessionWithReason:v47];
-        v19 = v45;
+        delegate3 = [(IDSDSessionInvitationManager *)self delegate];
+        [delegate3 endSessionWithReason:v47];
+        uniqueID3 = v45;
         goto LABEL_30;
       }
 
-      v17 = [v6 objectForKey:v14];
+      v17 = [messageCopy objectForKey:v14];
     }
 
-    v18 = v17;
+    sharedState8 = v17;
     goto LABEL_12;
   }
 
   v13 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(IDSDSessionInvitationManager *)self sharedState];
-    v19 = [v18 uniqueID];
-    v20 = [(IDSDSessionInvitationManager *)self sharedState];
-    v21 = [v20 destinations];
+    sharedState8 = [(IDSDSessionInvitationManager *)self sharedState];
+    uniqueID3 = [sharedState8 uniqueID];
+    sharedState9 = [(IDSDSessionInvitationManager *)self sharedState];
+    destinations3 = [sharedState9 destinations];
     *buf = 138412802;
-    v49 = v7;
+    v49 = iCopy;
     v50 = 2112;
-    v51 = v19;
+    v51 = uniqueID3;
     v52 = 2112;
-    v53 = v21;
+    v53 = destinations3;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Ignoring Decline from %@, %@, not in destinations: %@", buf, 0x20u);
 
 LABEL_31:
   }
 }
 
-- (BOOL)_isValidDestination:(id)a3
+- (BOOL)_isValidDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [v4 prefixedURI];
-  v6 = [v5 isEqualToIgnoringCase:IDSDefaultPairedDevice];
+  destinationCopy = destination;
+  prefixedURI = [destinationCopy prefixedURI];
+  v6 = [prefixedURI isEqualToIgnoringCase:IDSDefaultPairedDevice];
 
   if ((v6 & 1) == 0)
   {
-    v8 = [v4 prefixedURI];
-    if ([v8 hasPrefix:@"device:"])
+    prefixedURI2 = [destinationCopy prefixedURI];
+    if ([prefixedURI2 hasPrefix:@"device:"])
     {
     }
 
     else
     {
-      v9 = [(IDSDSessionInvitationManager *)self sharedState];
-      v10 = [v9 destinationIsGuestDevice:v4];
+      sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+      v10 = [sharedState destinationIsGuestDevice:destinationCopy];
 
       if (!v10)
       {
-        v12 = [v4 pushToken];
-        if (v12)
+        pushToken = [destinationCopy pushToken];
+        if (pushToken)
         {
           v26 = 0u;
           v27 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v17 = [(IDSDSessionInvitationManager *)self sharedState];
-          v18 = [v17 destinations];
+          sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+          destinations = [sharedState2 destinations];
 
-          v7 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v7 = [destinations countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v7)
           {
             v19 = *v25;
@@ -2881,12 +2881,12 @@ LABEL_31:
               {
                 if (*v25 != v19)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(destinations);
                 }
 
-                v21 = [*(*(&v24 + 1) + 8 * i) pushToken];
-                v22 = v21;
-                if (v21 && ([v21 isEqualToPushToken:v12] & 1) != 0)
+                pushToken2 = [*(*(&v24 + 1) + 8 * i) pushToken];
+                v22 = pushToken2;
+                if (pushToken2 && ([pushToken2 isEqualToPushToken:pushToken] & 1) != 0)
                 {
 
                   LOBYTE(v7) = 1;
@@ -2894,7 +2894,7 @@ LABEL_31:
                 }
               }
 
-              v7 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v7 = [destinations countByEnumeratingWithState:&v24 objects:v32 count:16];
               if (v7)
               {
                 continue;
@@ -2921,10 +2921,10 @@ LABEL_30:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [(IDSDSessionInvitationManager *)self sharedState];
-    v12 = [v11 destinations];
+    sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+    pushToken = [sharedState3 destinations];
 
-    v13 = [v12 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v13 = [pushToken countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v13)
     {
       v14 = v13;
@@ -2935,17 +2935,17 @@ LABEL_30:
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(pushToken);
           }
 
-          if ([*(*(&v28 + 1) + 8 * j) isEqualToURI:v4])
+          if ([*(*(&v28 + 1) + 8 * j) isEqualToURI:destinationCopy])
           {
             LOBYTE(v7) = 1;
             goto LABEL_30;
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v14 = [pushToken countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v14)
         {
           continue;
@@ -2964,38 +2964,38 @@ LABEL_31:
   return v7;
 }
 
-- (void)receivedCancelMessage:(id)a3 fromURI:(id)a4
+- (void)receivedCancelMessage:(id)message fromURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  iCopy = i;
   v8 = +[IDSFoundationLog IDSDSession];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(IDSDSessionInvitationManager *)self sharedState];
-    v10 = [v9 uniqueID];
+    sharedState = [(IDSDSessionInvitationManager *)self sharedState];
+    uniqueID = [sharedState uniqueID];
     *buf = 138412802;
-    v23 = v6;
+    v23 = messageCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = iCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = uniqueID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received CANCEL %@ from %@, %@", buf, 0x20u);
   }
 
-  v11 = [(IDSDSessionInvitationManager *)self delegate];
-  [v11 submitAWDMetricsForIDSSessionCancelReceived];
+  delegate = [(IDSDSessionInvitationManager *)self delegate];
+  [delegate submitAWDMetricsForIDSSessionCancelReceived];
 
-  if ([(IDSDSessionInvitationManager *)self _isValidDestination:v7])
+  if ([(IDSDSessionInvitationManager *)self _isValidDestination:iCopy])
   {
-    v12 = [(IDSDSessionInvitationManager *)self sharedState];
-    [v12 clearAllTimers];
+    sharedState2 = [(IDSDSessionInvitationManager *)self sharedState];
+    [sharedState2 clearAllTimers];
 
-    v13 = [[NSSet alloc] initWithObjects:{v7, 0}];
-    v14 = [(IDSDSessionInvitationManager *)self sharedState];
-    [v14 setDestinations:v13];
+    v13 = [[NSSet alloc] initWithObjects:{iCopy, 0}];
+    sharedState3 = [(IDSDSessionInvitationManager *)self sharedState];
+    [sharedState3 setDestinations:v13];
 
-    v20 = v6;
-    v21 = v7;
+    v20 = messageCopy;
+    v21 = iCopy;
     im_dispatch_after_primary_queue();
 
     v15 = v20;
@@ -3006,16 +3006,16 @@ LABEL_31:
     v15 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(IDSDSessionInvitationManager *)self sharedState];
-      v17 = [v16 uniqueID];
-      v18 = [(IDSDSessionInvitationManager *)self sharedState];
-      v19 = [v18 destinations];
+      sharedState4 = [(IDSDSessionInvitationManager *)self sharedState];
+      uniqueID2 = [sharedState4 uniqueID];
+      sharedState5 = [(IDSDSessionInvitationManager *)self sharedState];
+      destinations = [sharedState5 destinations];
       *buf = 138412802;
-      v23 = v7;
+      v23 = iCopy;
       v24 = 2112;
-      v25 = v17;
+      v25 = uniqueID2;
       v26 = 2112;
-      v27 = v19;
+      v27 = destinations;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Ignoring CANCEL from %@, %@, not in destinations: %@", buf, 0x20u);
     }
   }

@@ -1,63 +1,63 @@
 @interface HDMedicalDownloadableAttachmentStoreServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDMedicalDownloadableAttachmentStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 attachmentManager:(id)a7;
-- (void)_unitTesting_remote_triggerDownloadableAttachmentDidChange:(id)a3 completion:(id)a4;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDMedicalDownloadableAttachmentStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate attachmentManager:(id)manager;
+- (void)_unitTesting_remote_triggerDownloadableAttachmentDidChange:(id)change completion:(id)completion;
 - (void)dealloc;
-- (void)downloadableAttachmentDidChangeState:(id)a3;
-- (void)remote_fetchAttachmentWithIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_insertDownloadableAttachment:(id)a3 completion:(id)a4;
-- (void)remote_markDataAvailableForAttachmentWithIdentifier:(id)a3 attachmentContent:(id)a4 completion:(id)a5;
-- (void)remote_markDownloadCompleteForAttachmentWithIdentifier:(id)a3 fileURL:(id)a4 completion:(id)a5;
-- (void)remote_processAttachmentWithIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_removeAllAttachmentsFromMedicalRecord:(id)a3 completion:(id)a4;
-- (void)remote_triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)a3 errorStatus:(int64_t)a4 lastError:(id)a5 retryCount:(int64_t)a6 completion:(id)a7;
-- (void)remote_updateRetryCountForAttachmentWithIdentifier:(id)a3 retryCount:(int64_t)a4 nextRetryDate:(id)a5 completion:(id)a6;
-- (void)remote_updateStatusAndClearErrorForAttachmentWithIdentifier:(id)a3 status:(int64_t)a4 completion:(id)a5;
+- (void)downloadableAttachmentDidChangeState:(id)state;
+- (void)remote_fetchAttachmentWithIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_insertDownloadableAttachment:(id)attachment completion:(id)completion;
+- (void)remote_markDataAvailableForAttachmentWithIdentifier:(id)identifier attachmentContent:(id)content completion:(id)completion;
+- (void)remote_markDownloadCompleteForAttachmentWithIdentifier:(id)identifier fileURL:(id)l completion:(id)completion;
+- (void)remote_processAttachmentWithIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_removeAllAttachmentsFromMedicalRecord:(id)record completion:(id)completion;
+- (void)remote_triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)identifier errorStatus:(int64_t)status lastError:(id)error retryCount:(int64_t)count completion:(id)completion;
+- (void)remote_updateRetryCountForAttachmentWithIdentifier:(id)identifier retryCount:(int64_t)count nextRetryDate:(id)date completion:(id)completion;
+- (void)remote_updateStatusAndClearErrorForAttachmentWithIdentifier:(id)identifier status:(int64_t)status completion:(id)completion;
 @end
 
 @implementation HDMedicalDownloadableAttachmentStoreServer
 
-- (HDMedicalDownloadableAttachmentStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 attachmentManager:(id)a7
+- (HDMedicalDownloadableAttachmentStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate attachmentManager:(id)manager
 {
-  v13 = a7;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HDMedicalDownloadableAttachmentStoreServer;
-  v14 = [(HDMedicalDownloadableAttachmentStoreServer *)&v17 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v14 = [(HDMedicalDownloadableAttachmentStoreServer *)&v17 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_attachmentManager, a7);
+    objc_storeStrong(&v14->_attachmentManager, manager);
     [(HDMedicalDownloadableAttachmentManager *)v15->_attachmentManager addDownloadableAttachmentStateObserver:v15];
   }
 
   return v15;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
-  v16 = [v15 profile];
-  v17 = [v16 profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
+  dCopy = d;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
+  clientCopy = client;
+  profile = [clientCopy profile];
+  v17 = [profile profileExtensionWithIdentifier:HKHealthRecordsPluginIdentifier];
 
-  v18 = [v17 downloadableAttachmentManager];
-  if (v18)
+  downloadableAttachmentManager = [v17 downloadableAttachmentManager];
+  if (downloadableAttachmentManager)
   {
-    v19 = [[a1 alloc] initWithUUID:v12 configuration:v13 client:v15 delegate:v14 attachmentManager:v18];
+    v19 = [[self alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy attachmentManager:downloadableAttachmentManager];
   }
 
   else
   {
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = [v15 profile];
+    profile2 = [clientCopy profile];
 
-    [NSError hk_assignError:a7 code:100 format:@"Cannot use %@ on profile without downloadable attachment manager: %@", v21, v22];
+    [NSError hk_assignError:error code:100 format:@"Cannot use %@ on profile without downloadable attachment manager: %@", v21, profile2];
     v19 = 0;
-    v15 = v21;
+    clientCopy = v21;
   }
 
   return v19;
@@ -71,14 +71,14 @@
   [(HDMedicalDownloadableAttachmentStoreServer *)&v3 dealloc];
 }
 
-- (void)remote_updateRetryCountForAttachmentWithIdentifier:(id)a3 retryCount:(int64_t)a4 nextRetryDate:(id)a5 completion:(id)a6
+- (void)remote_updateRetryCountForAttachmentWithIdentifier:(id)identifier retryCount:(int64_t)count nextRetryDate:(id)date completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v14 = 0;
-  v10 = a6;
-  LODWORD(a4) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager updateRetryCountForAttachmentWithIdentifier:a3 retryCount:a4 nextRetryDate:a5 error:&v14];
+  completionCopy = completion;
+  LODWORD(count) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager updateRetryCountForAttachmentWithIdentifier:identifier retryCount:count nextRetryDate:date error:&v14];
   v11 = v14;
-  if (a4)
+  if (count)
   {
     v12 = 1;
     v13 = 0;
@@ -90,17 +90,17 @@
     v13 = v11;
   }
 
-  (v10)[2](v10, v12, v13);
+  (completionCopy)[2](completionCopy, v12, v13);
 }
 
-- (void)remote_updateStatusAndClearErrorForAttachmentWithIdentifier:(id)a3 status:(int64_t)a4 completion:(id)a5
+- (void)remote_updateStatusAndClearErrorForAttachmentWithIdentifier:(id)identifier status:(int64_t)status completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v12 = 0;
-  v8 = a5;
-  LODWORD(a3) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager updateStatusAndClearErrorForAttachmentWithIdentifier:a3 status:a4 error:&v12];
+  completionCopy = completion;
+  LODWORD(identifier) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager updateStatusAndClearErrorForAttachmentWithIdentifier:identifier status:status error:&v12];
   v9 = v12;
-  if (a3)
+  if (identifier)
   {
     v10 = 1;
     v11 = 0;
@@ -112,17 +112,17 @@
     v11 = v9;
   }
 
-  (v8)[2](v8, v10, v11);
+  (completionCopy)[2](completionCopy, v10, v11);
 }
 
-- (void)remote_updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)a3 errorStatus:(int64_t)a4 lastError:(id)a5 retryCount:(int64_t)a6 completion:(id)a7
+- (void)remote_updateErrorStatusAndRetryCountForAttachmentWithIdentifier:(id)identifier errorStatus:(int64_t)status lastError:(id)error retryCount:(int64_t)count completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v16 = 0;
-  v12 = a7;
-  LODWORD(a5) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager updateErrorStatusAndRetryCountForAttachmentWithIdentifier:a3 errorStatus:a4 lastError:a5 retryCount:a6 error:&v16];
+  completionCopy = completion;
+  LODWORD(error) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager updateErrorStatusAndRetryCountForAttachmentWithIdentifier:identifier errorStatus:status lastError:error retryCount:count error:&v16];
   v13 = v16;
-  if (a5)
+  if (error)
   {
     v14 = 1;
     v15 = 0;
@@ -134,17 +134,17 @@
     v15 = v13;
   }
 
-  (v12)[2](v12, v14, v15);
+  (completionCopy)[2](completionCopy, v14, v15);
 }
 
-- (void)remote_markDownloadCompleteForAttachmentWithIdentifier:(id)a3 fileURL:(id)a4 completion:(id)a5
+- (void)remote_markDownloadCompleteForAttachmentWithIdentifier:(id)identifier fileURL:(id)l completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v12 = 0;
-  v8 = a5;
-  LODWORD(a3) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager markDownloadCompleteForAttachmentWithIdentifier:a3 fileURL:a4 error:&v12];
+  completionCopy = completion;
+  LODWORD(identifier) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager markDownloadCompleteForAttachmentWithIdentifier:identifier fileURL:l error:&v12];
   v9 = v12;
-  if (a3)
+  if (identifier)
   {
     v10 = 1;
     v11 = 0;
@@ -156,17 +156,17 @@
     v11 = v9;
   }
 
-  (v8)[2](v8, v10, v11);
+  (completionCopy)[2](completionCopy, v10, v11);
 }
 
-- (void)remote_markDataAvailableForAttachmentWithIdentifier:(id)a3 attachmentContent:(id)a4 completion:(id)a5
+- (void)remote_markDataAvailableForAttachmentWithIdentifier:(id)identifier attachmentContent:(id)content completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v12 = 0;
-  v8 = a5;
-  LODWORD(a3) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager markDataAvailableForAttachmentWithIdentifier:a3 attachmentContent:a4 error:&v12];
+  completionCopy = completion;
+  LODWORD(identifier) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager markDataAvailableForAttachmentWithIdentifier:identifier attachmentContent:content error:&v12];
   v9 = v12;
-  if (a3)
+  if (identifier)
   {
     v10 = 1;
     v11 = 0;
@@ -178,40 +178,40 @@
     v11 = v9;
   }
 
-  (v8)[2](v8, v10, v11);
+  (completionCopy)[2](completionCopy, v10, v11);
 }
 
-- (void)remote_fetchAttachmentWithIdentifier:(id)a3 completion:(id)a4
+- (void)remote_fetchAttachmentWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   attachmentManager = self->_attachmentManager;
   v12 = 0;
-  v9 = [(HDMedicalDownloadableAttachmentManager *)attachmentManager fetchAttachmentWithIdentifier:v6 error:&v12];
+  v9 = [(HDMedicalDownloadableAttachmentManager *)attachmentManager fetchAttachmentWithIdentifier:identifierCopy error:&v12];
   v10 = v12;
-  v11 = v10;
+  identifierCopy = v10;
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
   {
     if (!v10)
     {
-      v11 = [NSError hk_error:118 format:@"HKMedicalDownloadableAttachment for identifier %@ not found", v6];
+      identifierCopy = [NSError hk_error:118 format:@"HKMedicalDownloadableAttachment for identifier %@ not found", identifierCopy];
     }
 
-    (v7)[2](v7, 0, v11);
+    (completionCopy)[2](completionCopy, 0, identifierCopy);
   }
 }
 
-- (void)remote_processAttachmentWithIdentifier:(id)a3 completion:(id)a4
+- (void)remote_processAttachmentWithIdentifier:(id)identifier completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v10 = 0;
-  v6 = a4;
-  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager processDownloadableAttachmentWithIdentifier:a3 error:&v10];
+  completionCopy = completion;
+  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager processDownloadableAttachmentWithIdentifier:identifier error:&v10];
   v7 = v10;
   if (attachmentManager)
   {
@@ -225,15 +225,15 @@
     v9 = v7;
   }
 
-  (v6)[2](v6, v8, v9);
+  (completionCopy)[2](completionCopy, v8, v9);
 }
 
-- (void)remote_triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)a3 completion:(id)a4
+- (void)remote_triggerAttachmentRetryForMedicalRecordWithIdentifier:(id)identifier completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v10 = 0;
-  v6 = a4;
-  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager triggerAttachmentRetryForMedicalRecordWithIdentifier:a3 error:&v10];
+  completionCopy = completion;
+  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager triggerAttachmentRetryForMedicalRecordWithIdentifier:identifier error:&v10];
   v7 = v10;
   if (attachmentManager)
   {
@@ -247,15 +247,15 @@
     v9 = v7;
   }
 
-  (v6)[2](v6, v8, v9);
+  (completionCopy)[2](completionCopy, v8, v9);
 }
 
-- (void)remote_insertDownloadableAttachment:(id)a3 completion:(id)a4
+- (void)remote_insertDownloadableAttachment:(id)attachment completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v10 = 0;
-  v6 = a4;
-  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager insertDownloadableAttachment:a3 error:&v10];
+  completionCopy = completion;
+  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager insertDownloadableAttachment:attachment error:&v10];
   v7 = v10;
   if (attachmentManager)
   {
@@ -269,15 +269,15 @@
     v9 = v7;
   }
 
-  (v6)[2](v6, v8, v9);
+  (completionCopy)[2](completionCopy, v8, v9);
 }
 
-- (void)remote_removeAllAttachmentsFromMedicalRecord:(id)a3 completion:(id)a4
+- (void)remote_removeAllAttachmentsFromMedicalRecord:(id)record completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v10 = 0;
-  v6 = a4;
-  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager removeAllAttachmentsFromMedicalRecord:a3 error:&v10];
+  completionCopy = completion;
+  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager removeAllAttachmentsFromMedicalRecord:record error:&v10];
   v7 = v10;
   if (attachmentManager)
   {
@@ -291,15 +291,15 @@
     v9 = v7;
   }
 
-  (v6)[2](v6, v8, v9);
+  (completionCopy)[2](completionCopy, v8, v9);
 }
 
-- (void)_unitTesting_remote_triggerDownloadableAttachmentDidChange:(id)a3 completion:(id)a4
+- (void)_unitTesting_remote_triggerDownloadableAttachmentDidChange:(id)change completion:(id)completion
 {
   attachmentManager = self->_attachmentManager;
   v10 = 0;
-  v6 = a4;
-  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager _unitTesting_triggerDownloadableAttachmentDidChange:a3 error:&v10];
+  completionCopy = completion;
+  LODWORD(attachmentManager) = [(HDMedicalDownloadableAttachmentManager *)attachmentManager _unitTesting_triggerDownloadableAttachmentDidChange:change error:&v10];
   v7 = v10;
   if (attachmentManager)
   {
@@ -313,29 +313,29 @@
     v9 = v7;
   }
 
-  (v6)[2](v6, v8, v9);
+  (completionCopy)[2](completionCopy, v8, v9);
 }
 
-- (void)downloadableAttachmentDidChangeState:(id)a3
+- (void)downloadableAttachmentDidChangeState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
-    sub_A31AC(self, v5, v4);
+    sub_A31AC(self, v5, stateCopy);
   }
 
-  v6 = [(HDMedicalDownloadableAttachmentStoreServer *)self client];
-  v7 = [v6 connection];
+  client = [(HDMedicalDownloadableAttachmentStoreServer *)self client];
+  connection = [client connection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_511EC;
   v9[3] = &unk_105C38;
   v9[4] = self;
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v9];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v9];
 
-  [v8 clientRemote_downloadableAttachmentDidChangeState:v4];
+  [v8 clientRemote_downloadableAttachmentDidChangeState:stateCopy];
 }
 
 @end

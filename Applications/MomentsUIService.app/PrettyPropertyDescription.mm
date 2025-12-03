@@ -1,26 +1,26 @@
 @interface PrettyPropertyDescription
-+ (id)describingPropertyNamed:(id)a3 withClassName:(id)a4 andValue:(id)a5 andRecursiveDepth:(unint64_t)a6;
-+ (id)describingPropertyNamed:(id)a3 withClassType:(Class)a4 andValue:(id)a5 andRecursiveDepth:(unint64_t)a6;
-- (PrettyPropertyDescription)initWithClassName:(id)a3 propertyName:(id)a4 andPropertyValue:(id)a5 andRecursiveDepth:(unint64_t)a6;
++ (id)describingPropertyNamed:(id)named withClassName:(id)name andValue:(id)value andRecursiveDepth:(unint64_t)depth;
++ (id)describingPropertyNamed:(id)named withClassType:(Class)type andValue:(id)value andRecursiveDepth:(unint64_t)depth;
+- (PrettyPropertyDescription)initWithClassName:(id)name propertyName:(id)propertyName andPropertyValue:(id)value andRecursiveDepth:(unint64_t)depth;
 @end
 
 @implementation PrettyPropertyDescription
 
-- (PrettyPropertyDescription)initWithClassName:(id)a3 propertyName:(id)a4 andPropertyValue:(id)a5 andRecursiveDepth:(unint64_t)a6
+- (PrettyPropertyDescription)initWithClassName:(id)name propertyName:(id)propertyName andPropertyValue:(id)value andRecursiveDepth:(unint64_t)depth
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = PrettyPropertyDescription;
-  v11 = a4;
+  propertyNameCopy = propertyName;
   v12 = [(PrettyPropertyDescription *)&v18 init];
   className = v12->_className;
-  v12->_className = v9;
-  v14 = v9;
+  v12->_className = nameCopy;
+  v14 = nameCopy;
 
-  if (v11)
+  if (propertyNameCopy)
   {
-    v15 = v11;
+    v15 = propertyNameCopy;
   }
 
   else
@@ -30,27 +30,27 @@
 
   objc_storeStrong(&v12->_propertyName, v15);
   propertyValue = v12->_propertyValue;
-  v12->_propertyValue = v10;
+  v12->_propertyValue = valueCopy;
 
   return v12;
 }
 
-+ (id)describingPropertyNamed:(id)a3 withClassName:(id)a4 andValue:(id)a5 andRecursiveDepth:(unint64_t)a6
++ (id)describingPropertyNamed:(id)named withClassName:(id)name andValue:(id)value andRecursiveDepth:(unint64_t)depth
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PrettyPropertyDescription alloc] initWithClassName:v10 propertyName:v11 andPropertyValue:v9 andRecursiveDepth:a6];
+  valueCopy = value;
+  nameCopy = name;
+  namedCopy = named;
+  v12 = [[PrettyPropertyDescription alloc] initWithClassName:nameCopy propertyName:namedCopy andPropertyValue:valueCopy andRecursiveDepth:depth];
 
   return v12;
 }
 
-+ (id)describingPropertyNamed:(id)a3 withClassType:(Class)a4 andValue:(id)a5 andRecursiveDepth:(unint64_t)a6
++ (id)describingPropertyNamed:(id)named withClassType:(Class)type andValue:(id)value andRecursiveDepth:(unint64_t)depth
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = NSStringFromClass(a4);
-  v12 = [PrettyPropertyDescription describingPropertyNamed:v10 withClassName:v11 andValue:v9 andRecursiveDepth:a6];
+  valueCopy = value;
+  namedCopy = named;
+  v11 = NSStringFromClass(type);
+  v12 = [PrettyPropertyDescription describingPropertyNamed:namedCopy withClassName:v11 andValue:valueCopy andRecursiveDepth:depth];
 
   return v12;
 }

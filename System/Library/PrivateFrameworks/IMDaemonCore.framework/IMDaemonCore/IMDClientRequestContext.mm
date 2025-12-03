@@ -1,17 +1,17 @@
 @interface IMDClientRequestContext
 + (IMDClientRequestContext)currentContext;
-+ (void)setCurrentContext:(id)a3;
++ (void)setCurrentContext:(id)context;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (IMDClientRequestContext)initWithListenerID:(id)a3 auditToken:(id *)a4 capabilities:(unint64_t)a5 replyProxy:(id)a6;
+- (IMDClientRequestContext)initWithListenerID:(id)d auditToken:(id *)token capabilities:(unint64_t)capabilities replyProxy:(id)proxy;
 @end
 
 @implementation IMDClientRequestContext
 
 + (IMDClientRequestContext)currentContext
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.messages.IMDClientRequestContext.currentContext"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"com.apple.messages.IMDClientRequestContext.currentContext"];
 
   if (!v4)
   {
@@ -22,30 +22,30 @@
   return v4;
 }
 
-+ (void)setCurrentContext:(id)a3
++ (void)setCurrentContext:(id)context
 {
   v3 = MEMORY[0x277CCACC8];
-  v4 = a3;
-  v6 = [v3 currentThread];
-  v5 = [v6 threadDictionary];
-  [v5 setObject:v4 forKeyedSubscript:@"com.apple.messages.IMDClientRequestContext.currentContext"];
+  contextCopy = context;
+  currentThread = [v3 currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:contextCopy forKeyedSubscript:@"com.apple.messages.IMDClientRequestContext.currentContext"];
 }
 
-- (IMDClientRequestContext)initWithListenerID:(id)a3 auditToken:(id *)a4 capabilities:(unint64_t)a5 replyProxy:(id)a6
+- (IMDClientRequestContext)initWithListenerID:(id)d auditToken:(id *)token capabilities:(unint64_t)capabilities replyProxy:(id)proxy
 {
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  proxyCopy = proxy;
   v12 = [(IMDClientRequestContext *)self init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dCopy copy];
     listenerID = v12->_listenerID;
     v12->_listenerID = v13;
 
-    v12->_capabilities = a5;
-    objc_storeStrong(&v12->_replyProxy, a6);
-    v15 = *&a4->var0[4];
-    *v12->_auditToken.val = *a4->var0;
+    v12->_capabilities = capabilities;
+    objc_storeStrong(&v12->_replyProxy, proxy);
+    v15 = *&token->var0[4];
+    *v12->_auditToken.val = *token->var0;
     *&v12->_auditToken.val[4] = v15;
   }
 

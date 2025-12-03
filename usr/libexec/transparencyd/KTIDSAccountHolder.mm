@@ -1,16 +1,16 @@
 @interface KTIDSAccountHolder
-- (KTIDSAccountHolder)initWithIDSAccount:(id)a3;
+- (KTIDSAccountHolder)initWithIDSAccount:(id)account;
 @end
 
 @implementation KTIDSAccountHolder
 
-- (KTIDSAccountHolder)initWithIDSAccount:(id)a3
+- (KTIDSAccountHolder)initWithIDSAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 profileID];
-  v6 = [v4 accountType];
+  accountCopy = account;
+  profileID = [accountCopy profileID];
+  accountType = [accountCopy accountType];
 
-  v7 = [(KTIDSAccountHolder *)self initWithIDSDSID:v5 type:v6];
+  v7 = [(KTIDSAccountHolder *)self initWithIDSDSID:profileID type:accountType];
   return v7;
 }
 

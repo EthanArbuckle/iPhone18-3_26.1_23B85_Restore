@@ -1,27 +1,27 @@
 @interface PLModelMigrationAction_AddMissingAdjustedMediaMetadata
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_AddMissingAdjustedMediaMetadata
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionBackground *)self databaseContext];
-  v8 = [v7 newShortLivedLibraryWithName:"-[PLModelMigrationAction_AddMissingAdjustedMediaMetadata performActionWithManagedObjectContext:error:]"];
+  contextCopy = context;
+  databaseContext = [(PLModelMigrationActionBackground *)self databaseContext];
+  v8 = [databaseContext newShortLivedLibraryWithName:"-[PLModelMigrationAction_AddMissingAdjustedMediaMetadata performActionWithManagedObjectContext:error:]"];
 
-  v9 = [v8 libraryServicesManager];
-  if (([v9 isCloudPhotoLibraryEnabled] & 1) != 0 || -[PLModelMigrationAction_AddMissingAdjustedMediaMetadata isUnitTestingWithLibraryServiceManager:](self, "isUnitTestingWithLibraryServiceManager:", v9))
+  libraryServicesManager = [v8 libraryServicesManager];
+  if (([libraryServicesManager isCloudPhotoLibraryEnabled] & 1) != 0 || -[PLModelMigrationAction_AddMissingAdjustedMediaMetadata isUnitTestingWithLibraryServiceManager:](self, "isUnitTestingWithLibraryServiceManager:", libraryServicesManager))
   {
     v48 = v8;
-    v10 = [(PLModelMigrationActionBackground *)self resumeMarker];
-    v11 = v6;
-    v46 = a4;
-    v47 = v9;
-    if (v10)
+    resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+    v11 = contextCopy;
+    errorCopy = error;
+    v47 = libraryServicesManager;
+    if (resumeMarker)
     {
-      v12 = [MEMORY[0x1E695DFF8] URLWithString:v10];
+      v12 = [MEMORY[0x1E695DFF8] URLWithString:resumeMarker];
     }
 
     else
@@ -29,8 +29,8 @@
       v12 = 0;
     }
 
-    v13 = [v11 persistentStoreCoordinator];
-    v14 = [v13 managedObjectIDForURIRepresentation:v12];
+    persistentStoreCoordinator = [v11 persistentStoreCoordinator];
+    v14 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v12];
 
     v15 = MEMORY[0x1E695D5E0];
     v16 = +[PLManagedAsset entityName];
@@ -73,14 +73,14 @@
     [(PLModelMigrationActionBackground *)self finalizeProgress];
     v29 = v28;
     v30 = v29;
-    if (v27 != 1 && v46)
+    if (v27 != 1 && errorCopy)
     {
       v31 = v29;
-      *v46 = v30;
+      *errorCopy = v30;
     }
 
     v8 = v48;
-    v9 = v47;
+    libraryServicesManager = v47;
   }
 
   else
@@ -90,9 +90,9 @@
 
     if (v33)
     {
-      v34 = [(PLModelMigrationActionBackground *)self logger];
+      logger = [(PLModelMigrationActionBackground *)self logger];
 
-      if (v34)
+      if (logger)
       {
         v85 = 0u;
         v86 = 0u;

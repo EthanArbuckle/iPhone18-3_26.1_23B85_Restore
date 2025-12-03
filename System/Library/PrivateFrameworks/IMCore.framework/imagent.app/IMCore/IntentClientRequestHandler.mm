@@ -1,6 +1,6 @@
 @interface IntentClientRequestHandler
 - (_TtC7imagent26IntentClientRequestHandler)init;
-- (void)requestContactsForIdentifiers:(id)a3 reply:(id)a4;
+- (void)requestContactsForIdentifiers:(id)identifiers reply:(id)reply;
 @end
 
 @implementation IntentClientRequestHandler
@@ -14,13 +14,13 @@
   return [(IntentClientRequestHandler *)&v3 init];
 }
 
-- (void)requestContactsForIdentifiers:(id)a3 reply:(id)a4
+- (void)requestContactsForIdentifiers:(id)identifiers reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = sub_1000541B4();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   sub_100038094(v6, sub_1000382F8, v7);
 }
 

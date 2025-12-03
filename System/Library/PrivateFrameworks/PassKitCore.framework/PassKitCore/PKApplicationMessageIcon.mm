@@ -1,18 +1,18 @@
 @interface PKApplicationMessageIcon
-+ (CGSize)maximumSizeForStyle:(int64_t)a3;
-+ (id)createWithImage:(id)a3 style:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKApplicationMessageIcon)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (CGSize)maximumSizeForStyle:(int64_t)style;
++ (id)createWithImage:(id)image style:(int64_t)style;
+- (BOOL)isEqual:(id)equal;
+- (PKApplicationMessageIcon)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplicationMessageIcon
 
-+ (CGSize)maximumSizeForStyle:(int64_t)a3
++ (CGSize)maximumSizeForStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v3 = PKScreenSize();
       v4 = PKGetMaxPassWidthForScreenSize(v3);
@@ -64,11 +64,11 @@
   return result;
 }
 
-+ (id)createWithImage:(id)a3 style:(int64_t)a4
++ (id)createWithImage:(id)image style:(int64_t)style
 {
-  v6 = a3;
+  imageCopy = image;
   v7 = [PKApplicationMessageIcon alloc];
-  v8 = v6;
+  v8 = imageCopy;
   v9 = v8;
   if (v7 && v8)
   {
@@ -78,8 +78,8 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(v10 + 1, a3);
-      v11[2] = a4;
+      objc_storeStrong(v10 + 1, image);
+      v11[2] = style;
     }
 
     v7 = v11;
@@ -94,36 +94,36 @@
   return v12;
 }
 
-- (PKApplicationMessageIcon)initWithCoder:(id)a3
+- (PKApplicationMessageIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKApplicationMessageIcon;
   v5 = [(PKApplicationMessageIcon *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v6;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   image = self->_image;
-  v5 = a3;
-  [v5 encodeObject:image forKey:@"image"];
-  [v5 encodeInteger:self->_style forKey:@"style"];
+  coderCopy = coder;
+  [coderCopy encodeObject:image forKey:@"image"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -133,9 +133,9 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = 0;
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (equalCopy && (isKindOfClass & 1) != 0)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self && v7->_style == self->_style)
       {

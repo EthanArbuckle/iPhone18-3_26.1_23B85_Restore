@@ -6,14 +6,14 @@
 - (CGRect)contentViewFrame;
 - (CGRect)frame;
 - (CGSize)suggestedSizeAfterInvalidation;
-- (SXComponentBlueprint)initWithComponent:(id)a3 componentLayout:(id)a4 componentSizer:(id)a5;
+- (SXComponentBlueprint)initWithComponent:(id)component componentLayout:(id)layout componentSizer:(id)sizer;
 - (SXLayoutBlueprint)parentLayoutBlueprint;
 - (SXLayoutBlueprint)rootLayoutBlueprint;
 - (UIEdgeInsets)borderInsets;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)layoutMargins;
 - (_NSRange)columnRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)invalidateLayout;
 - (void)invalidatePosition;
@@ -22,24 +22,24 @@
 
 @implementation SXComponentBlueprint
 
-- (SXComponentBlueprint)initWithComponent:(id)a3 componentLayout:(id)a4 componentSizer:(id)a5
+- (SXComponentBlueprint)initWithComponent:(id)component componentLayout:(id)layout componentSizer:(id)sizer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  componentCopy = component;
+  layoutCopy = layout;
+  sizerCopy = sizer;
   v19.receiver = self;
   v19.super_class = SXComponentBlueprint;
   v12 = [(SXComponentBlueprint *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_component, a3);
-    objc_storeStrong(&v13->_componentLayout, a4);
-    objc_storeStrong(&v13->_componentSizer, a5);
+    objc_storeStrong(&v12->_component, component);
+    objc_storeStrong(&v13->_componentLayout, layout);
+    objc_storeStrong(&v13->_componentSizer, sizer);
     v14 = *(MEMORY[0x1E695F058] + 16);
     v13->_frame.origin = *MEMORY[0x1E695F058];
     v13->_frame.size = v14;
-    v13->_columnRange.location = [v10 columnRange];
+    v13->_columnRange.location = [layoutCopy columnRange];
     v13->_columnRange.length = v15;
     v16 = objc_opt_new();
     componentState = v13->_componentState;
@@ -52,28 +52,28 @@
 - (SXLayoutBlueprint)rootLayoutBlueprint
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentLayoutBlueprint);
-  v3 = [WeakRetained parentLayoutBlueprint];
+  parentLayoutBlueprint = [WeakRetained parentLayoutBlueprint];
 
-  if (v3)
+  if (parentLayoutBlueprint)
   {
     do
     {
-      v4 = [WeakRetained parentLayoutBlueprint];
+      parentLayoutBlueprint2 = [WeakRetained parentLayoutBlueprint];
 
-      v5 = [v4 parentLayoutBlueprint];
+      v4ParentLayoutBlueprint = [parentLayoutBlueprint2 parentLayoutBlueprint];
 
-      WeakRetained = v4;
+      WeakRetained = parentLayoutBlueprint2;
     }
 
-    while (v5);
+    while (v4ParentLayoutBlueprint);
   }
 
   else
   {
-    v4 = WeakRetained;
+    parentLayoutBlueprint2 = WeakRetained;
   }
 
-  return v4;
+  return parentLayoutBlueprint2;
 }
 
 - (void)invalidateLayout
@@ -83,9 +83,9 @@
   [(SXComponentBlueprint *)self invalidatePosition];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong((v4 + 16), self->_component);
   objc_storeStrong((v4 + 40), self->_componentLayout);
   objc_storeStrong((v4 + 32), self->_componentSizer);
@@ -135,19 +135,19 @@
   v17 = NSStringFromClass(v3);
   [(SXComponentBlueprint *)self frame];
   v16 = NSStringFromCGRect(v22);
-  v15 = [(SXComponentBlueprint *)self hasValidPosition];
-  v4 = [(SXComponentBlueprint *)self hasValidSize];
-  v5 = [(SXComponentBlueprint *)self hasValidLayout];
-  v6 = [(SXComponentBlueprint *)self component];
+  hasValidPosition = [(SXComponentBlueprint *)self hasValidPosition];
+  hasValidSize = [(SXComponentBlueprint *)self hasValidSize];
+  hasValidLayout = [(SXComponentBlueprint *)self hasValidLayout];
+  component = [(SXComponentBlueprint *)self component];
   v7 = objc_opt_class();
-  v8 = [(SXComponentBlueprint *)self component];
-  v9 = [v8 identifier];
-  v10 = [(SXComponentBlueprint *)self componentLayout];
-  v20.location = [v10 columnRange];
+  component2 = [(SXComponentBlueprint *)self component];
+  identifier = [component2 identifier];
+  componentLayout = [(SXComponentBlueprint *)self componentLayout];
+  v20.location = [componentLayout columnRange];
   v11 = NSStringFromRange(v20);
   v21.location = [(SXComponentBlueprint *)self columnRange];
   v12 = NSStringFromRange(v21);
-  v13 = [v18 stringWithFormat:@"<%@: %p frame: %@; hasValidPosition: %d; hasValidSize: %d; hasValidLayout: %d, component: %@, identifier: %@, columnRange: %@, convertedColumnRange: %@>", v17, self, v16, v15, v4, v5, v7, v9, v11, v12];;
+  v13 = [v18 stringWithFormat:@"<%@: %p frame: %@; hasValidPosition: %d; hasValidSize: %d; hasValidLayout: %d, component: %@, identifier: %@, columnRange: %@, convertedColumnRange: %@>", v17, self, v16, hasValidPosition, hasValidSize, hasValidLayout, v7, identifier, v11, v12];;
 
   return v13;
 }

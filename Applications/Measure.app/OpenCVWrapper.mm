@@ -1,27 +1,27 @@
 @interface OpenCVWrapper
-+ (CGImage)createCgImageFromCVMat:(Mat *)a3;
-+ (id)LSDInImage:(id)a3;
-+ (id)blurredImage:(id)a3 blurSize:(int)a4;
-+ (id)findCannyEdgesInImage:(id)a3 threshold1:(double)a4 threshold2:(double)a5;
-+ (id)findContoursInImage:(id)a3;
-+ (id)findCornersAndFilterContours:(id)a3 forMaxEdgeTurns:(int)a4 forTurningPointMargin:(int)a5;
-+ (id)findHoughLines:(id)a3 rho:(double)a4 theta:(double)a5 threshold:(double)a6 minLineLength:(double)a7 maxLineGap:(double)a8;
-+ (id)getMinAreaRectEnclosingPoints:(id)a3;
-+ (id)makeCVImageFromContours:(id)a3 lineThickness:(int)a4 color:(id)a5;
-+ (id)makeCVImageFromUniqueContours:(id)a3 lineThickness:(int)a4;
-+ (id)makeUIImageFromCVImage:(id)a3;
-+ (id)samplePointsInContour:()vector<cv:(std:(int)a4 :allocator<cv::Point_<int>>> *)a3 :Point_<int> numberOfPoints:;
-+ (int)calcHistogramMedianForImage:(id)a3;
-+ (void)filterContours:(id)a3 forMinEdgeLength:(int)a4;
++ (CGImage)createCgImageFromCVMat:(Mat *)mat;
++ (id)LSDInImage:(id)image;
++ (id)blurredImage:(id)image blurSize:(int)size;
++ (id)findCannyEdgesInImage:(id)image threshold1:(double)threshold1 threshold2:(double)threshold2;
++ (id)findContoursInImage:(id)image;
++ (id)findCornersAndFilterContours:(id)contours forMaxEdgeTurns:(int)turns forTurningPointMargin:(int)margin;
++ (id)findHoughLines:(id)lines rho:(double)rho theta:(double)theta threshold:(double)threshold minLineLength:(double)length maxLineGap:(double)gap;
++ (id)getMinAreaRectEnclosingPoints:(id)points;
++ (id)makeCVImageFromContours:(id)contours lineThickness:(int)thickness color:(id)color;
++ (id)makeCVImageFromUniqueContours:(id)contours lineThickness:(int)thickness;
++ (id)makeUIImageFromCVImage:(id)image;
++ (id)samplePointsInContour:()vector<cv:(std:(int)cv :allocator<cv::Point_<int>>> *)a3 :Point_<int> numberOfPoints:;
++ (int)calcHistogramMedianForImage:(id)image;
++ (void)filterContours:(id)contours forMinEdgeLength:(int)length;
 @end
 
 @implementation OpenCVWrapper
 
-+ (id)blurredImage:(id)a3 blurSize:(int)a4
++ (id)blurredImage:(id)image blurSize:(int)size
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 > 1)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (size > 1)
   {
     v17[0] = 1124007936;
     memset(&v17[1], 0, 60);
@@ -29,24 +29,24 @@
     v19 = v20;
     v20[0] = 0;
     v20[1] = 0;
-    v15 = [v5 image];
+    image = [imageCopy image];
     v16 = 0;
     v14 = 16842752;
-    HIDWORD(v10) = a4;
+    HIDWORD(v10) = size;
     v11 = 33619968;
     v12 = v17;
     v13 = 0;
-    LODWORD(v10) = a4;
+    LODWORD(v10) = size;
     v9 = -1;
     sub_10035F98C(&v14, &v11, &v10, &v9, 4);
   }
 
-  v7 = [v5 clone];
+  clone = [imageCopy clone];
 
-  return v7;
+  return clone;
 }
 
-+ (id)findCannyEdgesInImage:(id)a3 threshold1:(double)a4 threshold2:(double)a5
++ (id)findCannyEdgesInImage:(id)image threshold1:(double)threshold1 threshold2:(double)threshold2
 {
   v14[0] = 1124007936;
   memset(&v14[1], 0, 60);
@@ -54,18 +54,18 @@
   v16 = v17;
   v17[0] = 0;
   v17[1] = 0;
-  v12 = [a3 image];
+  image = [image image];
   v13 = 0;
   v11 = 16842752;
   v8 = 33619968;
   v9 = v14;
   v10 = 0;
-  sub_1002C8EA4(&v11, &v8, 3, 0, a4, a5);
+  sub_1002C8EA4(&v11, &v8, 3, 0, threshold1, threshold2);
 }
 
-+ (id)LSDInImage:(id)a3
++ (id)LSDInImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v5 = 1124007936;
   memset(v6, 0, sizeof(v6));
   v7 = &v6[4];
@@ -75,19 +75,19 @@
   sub_10032EFB0();
 }
 
-+ (id)findHoughLines:(id)a3 rho:(double)a4 theta:(double)a5 threshold:(double)a6 minLineLength:(double)a7 maxLineGap:(double)a8
++ (id)findHoughLines:(id)lines rho:(double)rho theta:(double)theta threshold:(double)threshold minLineLength:(double)length maxLineGap:(double)gap
 {
-  v10 = a3;
+  linesCopy = lines;
   v24 = 0;
   v25 = 0;
   v26 = 0;
-  *&__p[8] = [v10 image];
+  *&__p[8] = [linesCopy image];
   *&__p[16] = 0;
   *__p = 16842752;
   LODWORD(v21) = -2113732579;
   v22 = &v24;
   v23 = 0;
-  sub_10032DC34(__p, &v21, a4, a5);
+  sub_10032DC34(__p, &v21, rho, theta);
   v21 = 0;
   v22 = 0;
   v23 = 0;
@@ -161,7 +161,7 @@
   return v13;
 }
 
-+ (id)getMinAreaRectEnclosingPoints:(id)a3
++ (id)getMinAreaRectEnclosingPoints:(id)points
 {
   __p = 0;
   v35 = 0;
@@ -170,8 +170,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v37 count:16];
+  pointsCopy = points;
+  v4 = [pointsCopy countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v4)
   {
     v5 = *v31;
@@ -181,7 +181,7 @@
       {
         if (*v31 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pointsCopy);
         }
 
         v7 = *(*(&v30 + 1) + 8 * i);
@@ -210,7 +210,7 @@
         v35 = v15;
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v30 objects:v37 count:{16, v28[0]}];
+      v4 = [pointsCopy countByEnumeratingWithState:&v30 objects:v37 count:{16, v28[0]}];
     }
 
     while (v4);
@@ -250,19 +250,19 @@
   return v16;
 }
 
-+ (int)calcHistogramMedianForImage:(id)a3
++ (int)calcHistogramMedianForImage:(id)image
 {
-  v3 = a3;
-  v4 = *([v3 image] + 2);
-  v5 = *([v3 image] + 3);
-  v6 = [v3 image];
-  v7 = *v6;
-  v8 = v6[1];
-  v43 = *v6;
+  imageCopy = image;
+  v4 = *([imageCopy image] + 2);
+  v5 = *([imageCopy image] + 3);
+  image = [imageCopy image];
+  v7 = *image;
+  v8 = image[1];
+  v43 = *image;
   v44 = v8;
-  v45 = v6[2];
-  v9 = *(v6 + 7);
-  v46 = *(v6 + 6);
+  v45 = image[2];
+  v9 = *(image + 7);
+  v46 = *(image + 6);
   v47 = v9;
   v48 = &v43 + 8;
   v49 = v50;
@@ -271,7 +271,7 @@
   if (v9)
   {
     atomic_fetch_add((v9 + 20), 1u);
-    v10 = *(v6 + 1);
+    v10 = *(image + 1);
   }
 
   else
@@ -282,12 +282,12 @@
   if (v10 > 2)
   {
     DWORD1(v43) = 0;
-    sub_100269B58(&v43, v6);
+    sub_100269B58(&v43, image);
   }
 
   else
   {
-    v11 = *(v6 + 9);
+    v11 = *(image + 9);
     v12 = v49;
     *v49 = *v11;
     v12[1] = v11[1];
@@ -441,44 +441,44 @@
   return v16;
 }
 
-+ (id)makeUIImageFromCVImage:(id)a3
++ (id)makeUIImageFromCVImage:(id)image
 {
-  v3 = a3;
-  v4 = sub_1002C12A4([v3 image]);
+  imageCopy = image;
+  v4 = sub_1002C12A4([imageCopy image]);
 
   return v4;
 }
 
-+ (id)findContoursInImage:(id)a3
++ (id)findContoursInImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   memset(v11, 0, sizeof(v11));
   LODWORD(v10[0]) = 50397184;
-  v10[1] = [v3 image];
+  v10[1] = [imageCopy image];
   v10[2] = 0;
   v7 = -2113667060;
   v8 = v11;
   v9 = 0;
   v6 = 0;
   sub_1002EF464(v10, &v7, 0, 1, &v6);
-  v4 = -[OpenCVWrapperContours initWithContours:originalImageSize:]([OpenCVWrapperContours alloc], "initWithContours:originalImageSize:", v11, [v3 image] + 64);
+  v4 = -[OpenCVWrapperContours initWithContours:originalImageSize:]([OpenCVWrapperContours alloc], "initWithContours:originalImageSize:", v11, [imageCopy image] + 64);
   v10[0] = v11;
   sub_100009030(v10);
 
   return v4;
 }
 
-+ (void)filterContours:(id)a3 forMinEdgeLength:(int)a4
++ (void)filterContours:(id)contours forMinEdgeLength:(int)length
 {
-  v5 = a3;
-  sub_100007D24([v5 contours], a4);
+  contoursCopy = contours;
+  sub_100007D24([contoursCopy contours], length);
 }
 
-+ (id)makeCVImageFromContours:(id)a3 lineThickness:(int)a4 color:(id)a5
++ (id)makeCVImageFromContours:(id)contours lineThickness:(int)thickness color:(id)color
 {
-  v7 = a3;
-  v8 = a5;
-  v16[0] = *[v7 originalImageSize];
+  contoursCopy = contours;
+  colorCopy = color;
+  v16[0] = *[contoursCopy originalImageSize];
   sub_100266EA8(v16, 0x10u, &v17);
   LODWORD(v20[0]) = 1124007936;
   memset(v20 + 4, 0, 32);
@@ -492,19 +492,19 @@
   LODWORD(v16[0]) = 50397184;
   v16[1] = v20;
   v16[2] = 0;
-  v9 = [v7 contours];
+  contours = [contoursCopy contours];
   LODWORD(v15) = -2130444276;
   v26 = 0.0;
   v27 = 0.0;
   v24 = 0;
   v25 = 0.0;
-  [v8 getRed:&v27 green:&v26 blue:&v25 alpha:{&v24, v15, v9, 0}];
+  [colorCopy getRed:&v27 green:&v26 blue:&v25 alpha:{&v24, v15, contours, 0}];
   v10.f64[0] = v27;
   v10.f64[1] = v26;
   v17 = vmulq_f64(v10, vdupq_n_s64(0x406FE00000000000uLL));
   v18 = v25 * 255.0;
   v19 = 0;
-  sub_1002FF83C(v16, &v15, 0, &v17, a4, 8, 0);
+  sub_1002FF83C(v16, &v15, 0, &v17, thickness, 8, 0);
   v11 = [[OpenCVWrapperImage alloc] initWithImage:v20];
   if (v20[7] && atomic_fetch_add((v20[7] + 20), 0xFFFFFFFF) == 1)
   {
@@ -533,10 +533,10 @@
   return v11;
 }
 
-+ (id)makeCVImageFromUniqueContours:(id)a3 lineThickness:(int)a4
++ (id)makeCVImageFromUniqueContours:(id)contours lineThickness:(int)thickness
 {
-  v5 = a3;
-  v18 = *[v5 originalImageSize];
+  contoursCopy = contours;
+  v18 = *[contoursCopy originalImageSize];
   sub_100266EA8(&v18, 0x10u, v19);
   LODWORD(v20[0]) = 1124007936;
   memset(v20 + 4, 0, 32);
@@ -547,10 +547,10 @@
   v23[1] = 0;
   (*(*v19[0] + 24))(v19[0], v19, v20, 0xFFFFFFFFLL);
   sub_100008E50(v19);
-  v6 = [v5 contours];
-  v7 = *v6;
-  v8 = v6[1];
-  if (*v6 != v8)
+  contours = [contoursCopy contours];
+  v7 = *contours;
+  v8 = contours[1];
+  if (*contours != v8)
   {
     v9 = 0xFFFFFFFFLL;
     do
@@ -570,7 +570,7 @@
       }
 
       v17 = (v12 - v18) >> 3;
-      sub_1002FF518(v20, &v18, &v17, 1, 0, v19, a4, 8, 0);
+      sub_1002FF518(v20, &v18, &v17, 1, 0, v19, thickness, 8, 0);
       v7 += 3;
     }
 
@@ -605,29 +605,29 @@
   return v13;
 }
 
-+ (id)findCornersAndFilterContours:(id)a3 forMaxEdgeTurns:(int)a4 forTurningPointMargin:(int)a5
++ (id)findCornersAndFilterContours:(id)contours forMaxEdgeTurns:(int)turns forTurningPointMargin:(int)margin
 {
-  v7 = a3;
-  v8 = [v7 contours];
+  contoursCopy = contours;
+  contours = [contoursCopy contours];
   v9 = objc_alloc_init(OpenCVWrapperCorners);
   __p = 0;
   v16 = 0;
   v17 = 0;
-  if (a4 < 0)
+  if (turns < 0)
   {
     __assert_rtn("safeUnsignedCast", "OpenCVWrapperInternal.h", 73, "value >= 0 && int outside of valid range to cast to size_t");
   }
 
-  v10 = *v8;
-  v11 = v8[1];
-  if (*v8 != v11)
+  v10 = *contours;
+  v11 = contours[1];
+  if (*contours != v11)
   {
-    v12 = a4;
+    turnsCopy = turns;
     while (1)
     {
       v16 = __p;
-      sub_10000897C(&__p, v10, [v7 originalImageSize], a5);
-      if (0xAAAAAAAAAAAAAAABLL * ((v16 - __p) >> 3) > a4)
+      sub_10000897C(&__p, v10, [contoursCopy originalImageSize], margin);
+      if (0xAAAAAAAAAAAAAAABLL * ((v16 - __p) >> 3) > turns)
       {
         break;
       }
@@ -646,8 +646,8 @@
       for (i = (v10 + 24); i != v11; i = (i + 24))
       {
         v16 = __p;
-        sub_10000897C(&__p, i, [v7 originalImageSize], a5);
-        if (0xAAAAAAAAAAAAAAABLL * ((v16 - __p) >> 3) <= v12)
+        sub_10000897C(&__p, i, [contoursCopy originalImageSize], margin);
+        if (0xAAAAAAAAAAAAAAABLL * ((v16 - __p) >> 3) <= turnsCopy)
         {
           sub_100009720(&v18, __p, v16, [(OpenCVWrapperCorners *)v9 corners]);
           sub_100009864(v10, i);
@@ -658,7 +658,7 @@
   }
 
 LABEL_12:
-  sub_1000085A8(v8, v10, v8[1]);
+  sub_1000085A8(contours, v10, contours[1]);
   if (__p)
   {
     v16 = __p;
@@ -668,14 +668,14 @@ LABEL_12:
   return v9;
 }
 
-+ (id)samplePointsInContour:()vector<cv:(std:(int)a4 :allocator<cv::Point_<int>>> *)a3 :Point_<int> numberOfPoints:
++ (id)samplePointsInContour:()vector<cv:(std:(int)cv :allocator<cv::Point_<int>>> *)a3 :Point_<int> numberOfPoints:
 {
   v6 = objc_opt_new();
   v20 = a3;
   v21 = 0;
   v19 = -2130509812;
   sub_10035C3AC(&v19, v22);
-  v7 = sqrt((v24 * v23 / a4));
+  v7 = sqrt((v24 * v23 / cv));
   v8 = v23 / v7;
   if (v8 > 0.0)
   {
@@ -718,25 +718,25 @@ LABEL_12:
   return v6;
 }
 
-+ (CGImage)createCgImageFromCVMat:(Mat *)a3
++ (CGImage)createCgImageFromCVMat:(Mat *)mat
 {
-  data = a3->data;
-  dims = a3->dims;
+  data = mat->data;
+  dims = mat->dims;
   if (dims < 1)
   {
     v6 = 0;
     goto LABEL_7;
   }
 
-  v6 = a3->step.p[dims - 1];
+  v6 = mat->step.p[dims - 1];
   if (dims < 3)
   {
 LABEL_7:
-    v8 = a3->cols * a3->rows;
+    v8 = mat->cols * mat->rows;
     goto LABEL_8;
   }
 
-  p = a3->size.p;
+  p = mat->size.p;
   v8 = 1;
   do
   {
@@ -748,8 +748,8 @@ LABEL_7:
   while (dims);
 LABEL_8:
   v10 = [NSData dataWithBytes:data length:v8 * v6];
-  v11 = a3->dims;
-  if (v11 >= 1 && a3->step.p[v11 - 1] == 1)
+  v11 = mat->dims;
+  if (v11 >= 1 && mat->step.p[v11 - 1] == 1)
   {
     DeviceGray = CGColorSpaceCreateDeviceGray();
   }
@@ -761,14 +761,14 @@ LABEL_8:
 
   v13 = DeviceGray;
   v14 = CGDataProviderCreateWithCFData(v10);
-  cols = a3->cols;
-  if ((cols & 0x80000000) != 0 || (rows = a3->rows, (rows & 0x80000000) != 0))
+  cols = mat->cols;
+  if ((cols & 0x80000000) != 0 || (rows = mat->rows, (rows & 0x80000000) != 0))
   {
     __assert_rtn("safeUnsignedCast", "OpenCVWrapperInternal.h", 73, "value >= 0 && int outside of valid range to cast to size_t");
   }
 
-  v17 = a3->dims;
-  v18 = a3->step.p;
+  v17 = mat->dims;
+  v18 = mat->step.p;
   if (v17 < 1)
   {
     v19 = 0;

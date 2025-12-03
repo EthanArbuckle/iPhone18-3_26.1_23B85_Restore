@@ -1,25 +1,25 @@
 @interface RDOverwritingFileManagerDelegate
-- (BOOL)fileManager:(id)a3 shouldCopyItemAtURL:(id)a4 toURL:(id)a5;
-- (BOOL)fileManager:(id)a3 shouldProceedAfterError:(id)a4 copyingItemAtURL:(id)a5 toURL:(id)a6;
+- (BOOL)fileManager:(id)manager shouldCopyItemAtURL:(id)l toURL:(id)rL;
+- (BOOL)fileManager:(id)manager shouldProceedAfterError:(id)error copyingItemAtURL:(id)l toURL:(id)rL;
 @end
 
 @implementation RDOverwritingFileManagerDelegate
 
-- (BOOL)fileManager:(id)a3 shouldCopyItemAtURL:(id)a4 toURL:(id)a5
+- (BOOL)fileManager:(id)manager shouldCopyItemAtURL:(id)l toURL:(id)rL
 {
   v8 = 0;
-  if ([a3 fileExistsAtPath:objc_msgSend(a5 isDirectory:{"path", a3, a4), &v8}] && (v8 & 1) == 0)
+  if ([manager fileExistsAtPath:objc_msgSend(rL isDirectory:{"path", manager, l), &v8}] && (v8 & 1) == 0)
   {
-    [a3 removeItemAtURL:a5 error:0];
+    [manager removeItemAtURL:rL error:0];
   }
 
   return 1;
 }
 
-- (BOOL)fileManager:(id)a3 shouldProceedAfterError:(id)a4 copyingItemAtURL:(id)a5 toURL:(id)a6
+- (BOOL)fileManager:(id)manager shouldProceedAfterError:(id)error copyingItemAtURL:(id)l toURL:(id)rL
 {
   v8 = 0;
-  if ([a3 fileExistsAtPath:objc_msgSend(a6 isDirectory:{"path", a3, a4, a5), &v8}] && objc_msgSend(a4, "code") == 516)
+  if ([manager fileExistsAtPath:objc_msgSend(rL isDirectory:{"path", manager, error, l), &v8}] && objc_msgSend(error, "code") == 516)
   {
     return v8 & 1;
   }

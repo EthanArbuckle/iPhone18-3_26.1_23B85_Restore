@@ -8,11 +8,11 @@
 {
   v10 = a6;
   v11 = a5;
-  v12 = objc_alloc_init(a1);
+  v12 = objc_alloc_init(self);
   [v12 setClipsToBounds:1];
-  v13 = [MEMORY[0x277D75520] defaultMetrics];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
   v14 = [MEMORY[0x277D74300] systemFontOfSize:a2 weight:a3];
-  v15 = [v13 scaledFontForFont:v14];
+  v15 = [defaultMetrics scaledFontForFont:v14];
   [v12 setFont:v15];
 
   [v12 setText:v11];
@@ -23,8 +23,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277D75348] labelColor];
-    [v12 setTextColor:v16];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v12 setTextColor:labelColor];
   }
 
   return v12;

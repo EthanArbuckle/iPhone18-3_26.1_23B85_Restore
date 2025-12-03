@@ -1,82 +1,82 @@
 @interface MTAlarmScheduler
-+ (id)_intervalToCheckForAlarmsToFireBeforeDate:(id)a3;
-- (BOOL)_shouldPostNotificationForScheduledAlarm:(id)a3;
-- (BOOL)handlesNotification:(id)a3 ofType:(int64_t)a4;
++ (id)_intervalToCheckForAlarmsToFireBeforeDate:(id)date;
+- (BOOL)_shouldPostNotificationForScheduledAlarm:(id)alarm;
+- (BOOL)handlesNotification:(id)notification ofType:(int64_t)type;
 - (MTAlarmScheduleDelegate)delegate;
-- (MTAlarmScheduler)initWithStorage:(id)a3 notificationCenter:(id)a4;
-- (MTAlarmScheduler)initWithStorage:(id)a3 notificationCenter:(id)a4 scheduler:(id)a5 defaults:(id)a6;
-- (MTAlarmScheduler)initWithStorage:(id)a3 notificationCenter:(id)a4 scheduler:(id)a5 defaults:(id)a6 schedulingDelegate:(id)a7 taskScheduler:(id)a8 currentDateProvider:(id)a9;
-- (id)_additionalAlarmsToScheduleForAlarms:(id)a3;
+- (MTAlarmScheduler)initWithStorage:(id)storage notificationCenter:(id)center;
+- (MTAlarmScheduler)initWithStorage:(id)storage notificationCenter:(id)center scheduler:(id)scheduler defaults:(id)defaults;
+- (MTAlarmScheduler)initWithStorage:(id)storage notificationCenter:(id)center scheduler:(id)scheduler defaults:(id)defaults schedulingDelegate:(id)delegate taskScheduler:(id)taskScheduler currentDateProvider:(id)provider;
+- (id)_additionalAlarmsToScheduleForAlarms:(id)alarms;
 - (id)_lastAlarmTriggerDate;
-- (id)_nextScheduledAlertIncludingBedtimeNotification:(BOOL)a3;
+- (id)_nextScheduledAlertIncludingBedtimeNotification:(BOOL)notification;
 - (id)_nextTriggerDateForScheduling;
 - (id)gatherDiagnostics;
-- (id)nextScheduledAlarmIncludingBedtimeNotification:(BOOL)a3;
-- (void)_fireScheduledAlarm:(id)a3 firedDate:(id)a4 completionBlock:(id)a5;
-- (void)_queue_fireTriggeredAlarmsWithCompletionBlock:(id)a3;
-- (void)_queue_triggerDidFireForAlarmWithCompletionBlock:(id)a3;
+- (id)nextScheduledAlarmIncludingBedtimeNotification:(BOOL)notification;
+- (void)_fireScheduledAlarm:(id)alarm firedDate:(id)date completionBlock:(id)block;
+- (void)_queue_fireTriggeredAlarmsWithCompletionBlock:(id)block;
+- (void)_queue_triggerDidFireForAlarmWithCompletionBlock:(id)block;
 - (void)_queue_unregisterTimer;
-- (void)_queue_updateNextAlarmTimerWithCompletion:(id)a3;
-- (void)_rescheduleAlarmsWithCompletion:(id)a3;
-- (void)_scheduleAlarms:(id)a3 withCompletion:(id)a4;
-- (void)_setLastAlarmTriggerDate:(id)a3;
-- (void)_unscheduleAlarms:(id)a3;
+- (void)_queue_updateNextAlarmTimerWithCompletion:(id)completion;
+- (void)_rescheduleAlarmsWithCompletion:(id)completion;
+- (void)_scheduleAlarms:(id)alarms withCompletion:(id)completion;
+- (void)_setLastAlarmTriggerDate:(id)date;
+- (void)_unscheduleAlarms:(id)alarms;
 - (void)cleanDeliveredNotifications;
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5;
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion;
 - (void)printDiagnostics;
-- (void)rescheduleAlarmsWithCompletion:(id)a3;
-- (void)scheduleAlarms:(id)a3;
-- (void)scheduledListDidChange:(id)a3 withCompletion:(id)a4;
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5;
-- (void)source:(id)a3 didRemoveAlarms:(id)a4;
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5;
-- (void)source:(id)a3 didUpdateAlarms:(id)a4;
-- (void)unscheduleAlarms:(id)a3;
+- (void)rescheduleAlarmsWithCompletion:(id)completion;
+- (void)scheduleAlarms:(id)alarms;
+- (void)scheduledListDidChange:(id)change withCompletion:(id)completion;
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action;
+- (void)source:(id)source didRemoveAlarms:(id)alarms;
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action;
+- (void)source:(id)source didUpdateAlarms:(id)alarms;
+- (void)unscheduleAlarms:(id)alarms;
 @end
 
 @implementation MTAlarmScheduler
 
-- (MTAlarmScheduler)initWithStorage:(id)a3 notificationCenter:(id)a4
+- (MTAlarmScheduler)initWithStorage:(id)storage notificationCenter:(id)center
 {
-  v6 = a4;
-  v7 = a3;
+  centerCopy = center;
+  storageCopy = storage;
   v8 = +[MTScheduler serialSchedulerWithName:priority:](MTScheduler, "serialSchedulerWithName:priority:", @"com.apple.MTAlarmScheduler.access-queue", +[MTScheduler defaultPriority]);
   v9 = +[MTUserDefaults sharedUserDefaults];
-  v10 = [(MTAlarmScheduler *)self initWithStorage:v7 notificationCenter:v6 scheduler:v8 defaults:v9];
+  v10 = [(MTAlarmScheduler *)self initWithStorage:storageCopy notificationCenter:centerCopy scheduler:v8 defaults:v9];
 
   return v10;
 }
 
-- (MTAlarmScheduler)initWithStorage:(id)a3 notificationCenter:(id)a4 scheduler:(id)a5 defaults:(id)a6
+- (MTAlarmScheduler)initWithStorage:(id)storage notificationCenter:(id)center scheduler:(id)scheduler defaults:(id)defaults
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  defaultsCopy = defaults;
+  schedulerCopy = scheduler;
+  centerCopy = center;
+  storageCopy = storage;
   v14 = [MTXPCScheduler xpcSchedulerWithEvent:@"com.apple.MTAlarmScheduler.alarm-event"];
   v15 = objc_opt_new();
   v16 = MTCurrentDateProvider();
-  v17 = [(MTAlarmScheduler *)self initWithStorage:v13 notificationCenter:v12 scheduler:v11 defaults:v10 schedulingDelegate:v14 taskScheduler:v15 currentDateProvider:v16];
+  v17 = [(MTAlarmScheduler *)self initWithStorage:storageCopy notificationCenter:centerCopy scheduler:schedulerCopy defaults:defaultsCopy schedulingDelegate:v14 taskScheduler:v15 currentDateProvider:v16];
 
   return v17;
 }
 
-- (MTAlarmScheduler)initWithStorage:(id)a3 notificationCenter:(id)a4 scheduler:(id)a5 defaults:(id)a6 schedulingDelegate:(id)a7 taskScheduler:(id)a8 currentDateProvider:(id)a9
+- (MTAlarmScheduler)initWithStorage:(id)storage notificationCenter:(id)center scheduler:(id)scheduler defaults:(id)defaults schedulingDelegate:(id)delegate taskScheduler:(id)taskScheduler currentDateProvider:(id)provider
 {
   v35 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v31 = a5;
-  v30 = a6;
-  v29 = a7;
-  v28 = a8;
-  v18 = a9;
+  storageCopy = storage;
+  centerCopy = center;
+  schedulerCopy = scheduler;
+  defaultsCopy = defaults;
+  delegateCopy = delegate;
+  taskSchedulerCopy = taskScheduler;
+  providerCopy = provider;
   v32.receiver = self;
   v32.super_class = MTAlarmScheduler;
   v19 = [(MTAlarmScheduler *)&v32 init];
   if (v19)
   {
-    v27 = v17;
+    v27 = centerCopy;
     v20 = MTLogForCategory(3);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -85,89 +85,89 @@
       _os_log_impl(&dword_1B1F9F000, v20, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@", buf, 0xCu);
     }
 
-    v21 = [v18 copy];
+    v21 = [providerCopy copy];
     currentDateProvider = v19->_currentDateProvider;
     v19->_currentDateProvider = v21;
 
-    objc_storeStrong(&v19->_schedulingDelegate, a7);
-    objc_storeStrong(&v19->_taskScheduler, a8);
-    objc_storeStrong(&v19->_notificationCenter, a4);
-    objc_storeStrong(&v19->_defaults, a6);
-    objc_storeStrong(&v19->_storage, a3);
-    [v16 registerObserver:v19];
+    objc_storeStrong(&v19->_schedulingDelegate, delegate);
+    objc_storeStrong(&v19->_taskScheduler, taskScheduler);
+    objc_storeStrong(&v19->_notificationCenter, center);
+    objc_storeStrong(&v19->_defaults, defaults);
+    objc_storeStrong(&v19->_storage, storage);
+    [storageCopy registerObserver:v19];
     v23 = [[MTScheduledList alloc] initWithDelegate:v19];
     scheduledAlarms = v19->_scheduledAlarms;
     v19->_scheduledAlarms = v23;
 
-    objc_storeStrong(&v19->_serializer, a5);
-    v17 = v27;
+    objc_storeStrong(&v19->_serializer, scheduler);
+    centerCopy = v27;
   }
 
   v25 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (void)rescheduleAlarmsWithCompletion:(id)a3
+- (void)rescheduleAlarmsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MTAlarmScheduler *)self serializer];
+  completionCopy = completion;
+  serializer = [(MTAlarmScheduler *)self serializer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MTAlarmScheduler_rescheduleAlarmsWithCompletion___block_invoke;
   v7[3] = &unk_1E7B0CA00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [serializer performBlock:v7];
 }
 
 - (void)cleanDeliveredNotifications
 {
-  v3 = [(MTAlarmScheduler *)self notificationCenter];
+  notificationCenter = [(MTAlarmScheduler *)self notificationCenter];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTAlarmScheduler *)self notificationCenter];
-    [v5 removeAllDeliveredNotifications];
+    notificationCenter2 = [(MTAlarmScheduler *)self notificationCenter];
+    [notificationCenter2 removeAllDeliveredNotifications];
   }
 }
 
-- (void)_rescheduleAlarmsWithCompletion:(id)a3
+- (void)_rescheduleAlarmsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MTAlarmScheduler *)self storage];
-  v6 = [v5 allAlarms];
+  completionCopy = completion;
+  storage = [(MTAlarmScheduler *)self storage];
+  allAlarms = [storage allAlarms];
 
   v7 = MTLogForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2050;
-    v12 = [v6 count];
+    v12 = [allAlarms count];
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ rescheduling %{public}ld alarms", &v9, 0x16u);
   }
 
   [(MTScheduledList *)self->_scheduledAlarms reset];
-  [(MTAlarmScheduler *)self _scheduleAlarms:v6 withCompletion:v4];
+  [(MTAlarmScheduler *)self _scheduleAlarms:allAlarms withCompletion:completionCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduleAlarms:(id)a3
+- (void)scheduleAlarms:(id)alarms
 {
-  v4 = a3;
-  v5 = [(MTAlarmScheduler *)self serializer];
+  alarmsCopy = alarms;
+  serializer = [(MTAlarmScheduler *)self serializer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__MTAlarmScheduler_scheduleAlarms___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = alarmsCopy;
+  v6 = alarmsCopy;
+  [serializer performBlock:v7];
 }
 
 void __35__MTAlarmScheduler_scheduleAlarms___block_invoke(uint64_t a1)
@@ -205,9 +205,9 @@ void __35__MTAlarmScheduler_scheduleAlarms___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_additionalAlarmsToScheduleForAlarms:(id)a3
+- (id)_additionalAlarmsToScheduleForAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -222,7 +222,7 @@ void __35__MTAlarmScheduler_scheduleAlarms___block_invoke(uint64_t a1)
   v10[3] = &unk_1E7B0DD20;
   v10[4] = &v11;
   v10[5] = &v15;
-  [v4 na_each:v10];
+  [alarmsCopy na_each:v10];
   if (*(v16 + 24) == *(v12 + 24))
   {
     v5 = MEMORY[0x1E695E0F0];
@@ -230,15 +230,15 @@ void __35__MTAlarmScheduler_scheduleAlarms___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(MTAlarmScheduler *)self storage];
-    v7 = [v6 sleepAlarms];
+    storage = [(MTAlarmScheduler *)self storage];
+    sleepAlarms = [storage sleepAlarms];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__MTAlarmScheduler__additionalAlarmsToScheduleForAlarms___block_invoke_2;
     v9[3] = &unk_1E7B0DD48;
     v9[4] = &v15;
-    v5 = [v7 na_filter:v9];
+    v5 = [sleepAlarms na_filter:v9];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -263,25 +263,25 @@ void __57__MTAlarmScheduler__additionalAlarmsToScheduleForAlarms___block_invoke(
   }
 }
 
-- (void)_scheduleAlarms:(id)a3 withCompletion:(id)a4
+- (void)_scheduleAlarms:(id)alarms withCompletion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  alarmsCopy = alarms;
+  completionCopy = completion;
   kdebug_trace();
   v8 = (*(self->_currentDateProvider + 2))();
-  v9 = [(MTAlarmScheduler *)self _lastAlarmTriggerDate];
+  _lastAlarmTriggerDate = [(MTAlarmScheduler *)self _lastAlarmTriggerDate];
   v10 = [v8 dateByAddingTimeInterval:-900.0];
   v42 = v10;
-  v43 = v9;
-  v41 = v7;
-  if ([v9 mtIsBeforeOrSameAsDate:v10])
+  v43 = _lastAlarmTriggerDate;
+  v41 = completionCopy;
+  if ([_lastAlarmTriggerDate mtIsBeforeOrSameAsDate:v10])
   {
     v11 = MTLogForCategory(3);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v54 = self;
+      selfCopy6 = self;
       v55 = 1024;
       *v56 = 15;
       *&v56[4] = 2114;
@@ -294,7 +294,7 @@ void __57__MTAlarmScheduler__additionalAlarmsToScheduleForAlarms___block_invoke(
 
   else
   {
-    v13 = [v9 mtIsAfterDate:v8];
+    v13 = [_lastAlarmTriggerDate mtIsAfterDate:v8];
     v14 = MTLogForCategory(3);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
     if (v13)
@@ -302,7 +302,7 @@ void __57__MTAlarmScheduler__additionalAlarmsToScheduleForAlarms___block_invoke(
       if (v15)
       {
         *buf = 138543362;
-        v54 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ the last alarm fire date is ahead of the current date (probably because we went back in time).", buf, 0xCu);
       }
 
@@ -314,15 +314,15 @@ void __57__MTAlarmScheduler__additionalAlarmsToScheduleForAlarms___block_invoke(
     if (v15)
     {
       *buf = 138543874;
-      v54 = self;
+      selfCopy6 = self;
       v55 = 1024;
       *v56 = 15;
       *&v56[4] = 2114;
-      *&v56[6] = v9;
+      *&v56[6] = _lastAlarmTriggerDate;
       _os_log_impl(&dword_1B1F9F000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ fired last alarm less than %d minutes ago.  Seeing if we have to fire any alarms we missed since %{public}@", buf, 0x1Cu);
     }
 
-    v12 = v9;
+    v12 = _lastAlarmTriggerDate;
   }
 
   v16 = v12;
@@ -331,7 +331,7 @@ LABEL_13:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v17 = v6;
+  v17 = alarmsCopy;
   v18 = [v17 countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (!v18)
   {
@@ -359,11 +359,11 @@ LABEL_13:
           v26 = MTLogForCategory(3);
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v25 alarmID];
+            alarmID = [v25 alarmID];
             *buf = 138543618;
-            v54 = self;
+            selfCopy6 = self;
             v55 = 2114;
-            *v56 = v27;
+            *v56 = alarmID;
             _os_log_impl(&dword_1B1F9F000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Clearing fire date for really old snoozed alarm %{public}@", buf, 0x16u);
           }
 
@@ -379,11 +379,11 @@ LABEL_13:
           v33 = MTLogForCategory(3);
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v25 alarmID];
+            alarmID2 = [v25 alarmID];
             *buf = 138543618;
-            v54 = self;
+            selfCopy6 = self;
             v55 = 2114;
-            *v56 = v34;
+            *v56 = alarmID2;
             _os_log_impl(&dword_1B1F9F000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting really old snoozed alarm %{public}@ to disabled", buf, 0x16u);
           }
 
@@ -397,8 +397,8 @@ LABEL_13:
 
       else if ([v22 isFiring])
       {
-        v28 = [v22 firedDate];
-        [v8 timeIntervalSinceDate:v28];
+        firedDate = [v22 firedDate];
+        [v8 timeIntervalSinceDate:firedDate];
         v30 = v29;
 
         if (v30 > 172800.0)
@@ -407,11 +407,11 @@ LABEL_13:
           v31 = MTLogForCategory(3);
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v25 alarmID];
+            alarmID3 = [v25 alarmID];
             *buf = 138543618;
-            v54 = self;
+            selfCopy6 = self;
             v55 = 2114;
-            *v56 = v32;
+            *v56 = alarmID3;
             _os_log_impl(&dword_1B1F9F000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ Clearing fire date for really old firing alarm %{public}@", buf, 0x16u);
           }
 
@@ -506,18 +506,18 @@ uint64_t __51__MTAlarmScheduler__scheduleAlarms_withCompletion___block_invoke_22
   return result;
 }
 
-- (void)unscheduleAlarms:(id)a3
+- (void)unscheduleAlarms:(id)alarms
 {
-  v4 = a3;
-  v5 = [(MTAlarmScheduler *)self serializer];
+  alarmsCopy = alarms;
+  serializer = [(MTAlarmScheduler *)self serializer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__MTAlarmScheduler_unscheduleAlarms___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = alarmsCopy;
+  v6 = alarmsCopy;
+  [serializer performBlock:v7];
 }
 
 void __37__MTAlarmScheduler_unscheduleAlarms___block_invoke(uint64_t a1)
@@ -527,17 +527,17 @@ void __37__MTAlarmScheduler_unscheduleAlarms___block_invoke(uint64_t a1)
   [*(a1 + 32) _scheduleAlarms:v2 withCompletion:0];
 }
 
-- (void)_unscheduleAlarms:(id)a3
+- (void)_unscheduleAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v5 = MTNewChildActivityForName(0xBuLL);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MTAlarmScheduler__unscheduleAlarms___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = alarmsCopy;
+  v6 = alarmsCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -574,22 +574,22 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduledListDidChange:(id)a3 withCompletion:(id)a4
+- (void)scheduledListDidChange:(id)change withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  [(MTAlarmScheduler *)self _queue_updateNextAlarmTimerWithCompletion:a4];
-  v5 = [(MTAlarmScheduler *)self scheduledAlarms];
-  v6 = [v5 nextScheduledAlertOrNotification];
+  [(MTAlarmScheduler *)self _queue_updateNextAlarmTimerWithCompletion:completion];
+  scheduledAlarms = [(MTAlarmScheduler *)self scheduledAlarms];
+  nextScheduledAlertOrNotification = [scheduledAlarms nextScheduledAlertOrNotification];
 
   v7 = MTLogForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 scheduleable];
-    v9 = [v8 identifier];
+    scheduleable = [nextScheduledAlertOrNotification scheduleable];
+    identifier = [scheduleable identifier];
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v9;
+    v16 = identifier;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ next alarm changed: %{public}@", &v13, 0x16u);
   }
 
@@ -600,35 +600,35 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_INFO, "MTAlarmScheduler - Changing Next Alarm", &v13, 2u);
   }
 
-  v11 = [(MTAlarmScheduler *)self delegate];
-  [v11 scheduler:self didChangeNextAlarm:v6];
+  delegate = [(MTAlarmScheduler *)self delegate];
+  [delegate scheduler:self didChangeNextAlarm:nextScheduledAlertOrNotification];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_updateNextAlarmTimerWithCompletion:(id)a3
+- (void)_queue_updateNextAlarmTimerWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *&v6 = COERCE_DOUBLE([(MTScheduledList *)self->_scheduledAlarms numberOfScheduledAlertsAndNotifications]);
     *buf = 138543618;
-    v21 = self;
+    selfCopy5 = self;
     v22 = 2050;
     v23 = *&v6;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ has %{public}ld scheduled alerts and notifications", buf, 0x16u);
   }
 
-  v7 = [(MTAlarmScheduler *)self _nextTriggerDateForScheduling];
-  [v7 dateByAddingTimeInterval:-10.0];
+  _nextTriggerDateForScheduling = [(MTAlarmScheduler *)self _nextTriggerDateForScheduling];
+  [_nextTriggerDateForScheduling dateByAddingTimeInterval:-10.0];
   v8 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
   if (v8 == 0.0)
   {
     [(MTAlarmScheduler *)self _queue_unregisterTimer];
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_20;
     }
@@ -640,7 +640,7 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy5 = self;
     v22 = 2114;
     v23 = v8;
     _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Scheduling persistent timer for next alert at %{public}@", buf, 0x16u);
@@ -656,7 +656,7 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B1F9F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Timer should have fired.  Triggering it now", buf, 0xCu);
     }
 
@@ -664,7 +664,7 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
     v18[1] = 3221225472;
     v18[2] = __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___block_invoke;
     v18[3] = &unk_1E7B0D6F0;
-    v19 = v4;
+    v19 = completionCopy;
     [(MTAlarmScheduler *)self _queue_fireTriggeredAlarmsWithCompletionBlock:v18];
 
     goto LABEL_20;
@@ -680,7 +680,7 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
     }
 
     *buf = 138543618;
-    v21 = self;
+    selfCopy5 = self;
     v22 = 2048;
     v23 = v12;
     v15 = "%{public}@ Timer will fire %f seconds from now";
@@ -694,7 +694,7 @@ void __38__MTAlarmScheduler__unscheduleAlarms___block_invoke(uint64_t a1)
     }
 
     *buf = 138543618;
-    v21 = self;
+    selfCopy5 = self;
     v22 = 2048;
     v23 = v12 / 60.0;
     v15 = "%{public}@ Timer will fire %f minutes from now";
@@ -706,10 +706,10 @@ LABEL_18:
   kdebug_trace();
   [(MTSchedulingDelegate *)self->_schedulingDelegate scheduleTimerForSeconds:v12];
   kdebug_trace();
-  if (v4)
+  if (completionCopy)
   {
 LABEL_19:
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_20:
@@ -735,7 +735,7 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Unscheduling persistent timer.", &v5, 0xCu);
   }
 
@@ -743,69 +743,69 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_intervalToCheckForAlarmsToFireBeforeDate:(id)a3
++ (id)_intervalToCheckForAlarmsToFireBeforeDate:(id)date
 {
-  v3 = a3;
-  v4 = [v3 dateByAddingTimeInterval:10.0];
-  v5 = [v3 dateByAddingTimeInterval:-900.0];
+  dateCopy = date;
+  v4 = [dateCopy dateByAddingTimeInterval:10.0];
+  v5 = [dateCopy dateByAddingTimeInterval:-900.0];
 
   v6 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v5 endDate:v4];
 
   return v6;
 }
 
-- (void)_queue_triggerDidFireForAlarmWithCompletionBlock:(id)a3
+- (void)_queue_triggerDidFireForAlarmWithCompletionBlock:(id)block
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Alarm timer fired", &v7, 0xCu);
   }
 
   [(MTAlarmScheduler *)self _queue_unregisterTimer];
-  [(MTAlarmScheduler *)self _queue_fireTriggeredAlarmsWithCompletionBlock:v4];
+  [(MTAlarmScheduler *)self _queue_fireTriggeredAlarmsWithCompletionBlock:blockCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldPostNotificationForScheduledAlarm:(id)a3
+- (BOOL)_shouldPostNotificationForScheduledAlarm:(id)alarm
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 isVisible];
-  if ((v5 & 1) == 0)
+  alarmCopy = alarm;
+  isVisible = [alarmCopy isVisible];
+  if ((isVisible & 1) == 0)
   {
     v6 = MTLogForCategory(3);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 scheduleable];
-      v8 = [v7 identifier];
-      v9 = [v4 trigger];
+      scheduleable = [alarmCopy scheduleable];
+      identifier = [scheduleable identifier];
+      trigger = [alarmCopy trigger];
       v12 = 138543874;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v8;
+      v15 = identifier;
       v16 = 2114;
-      v17 = v9;
+      v17 = trigger;
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Alarm %{public}@ is for non-visible event %{public}@", &v12, 0x20u);
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v5;
+  return isVisible;
 }
 
-- (void)_fireScheduledAlarm:(id)a3 firedDate:(id)a4 completionBlock:(id)a5
+- (void)_fireScheduledAlarm:(id)alarm firedDate:(id)date completionBlock:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MTScheduledList *)self->_scheduledAlarms isScheduled:v8])
+  alarmCopy = alarm;
+  dateCopy = date;
+  blockCopy = block;
+  if ([(MTScheduledList *)self->_scheduledAlarms isScheduled:alarmCopy])
   {
     v11 = MTLogForCategory(9);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -817,18 +817,18 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
     v12 = MTLogForCategory(3);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 scheduleable];
-      v14 = [v13 alarmID];
+      scheduleable = [alarmCopy scheduleable];
+      alarmID = [scheduleable alarmID];
       *buf = 138543874;
-      v40 = self;
+      selfCopy6 = self;
       v41 = 2114;
-      v42 = v14;
+      v42 = alarmID;
       v43 = 2114;
-      v44 = v9;
+      v44 = dateCopy;
       _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@ fired (scheduled fire date: %{public}@)", buf, 0x20u);
     }
 
-    [(MTScheduledList *)self->_scheduledAlarms _unscheduleObject:v8];
+    [(MTScheduledList *)self->_scheduledAlarms _unscheduleObject:alarmCopy];
     notificationCenter = self->_notificationCenter;
     if (objc_opt_respondsToSelector())
     {
@@ -836,16 +836,16 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v40 = self;
+        selfCopy6 = self;
         v41 = 2114;
-        v42 = v8;
+        v42 = alarmCopy;
         _os_log_impl(&dword_1B1F9F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ first dismissing related notifications for %{public}@", buf, 0x16u);
       }
 
-      [(MTNotificationCenter *)self->_notificationCenter dismissRelatedNotificationsForScheduledAlarm:v8];
+      [(MTNotificationCenter *)self->_notificationCenter dismissRelatedNotificationsForScheduledAlarm:alarmCopy];
     }
 
-    v17 = [(MTAlarmScheduler *)self _shouldPostNotificationForScheduledAlarm:v8];
+    v17 = [(MTAlarmScheduler *)self _shouldPostNotificationForScheduledAlarm:alarmCopy];
     v18 = MTLogForCategory(3);
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -853,13 +853,13 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
       if (v19)
       {
         *buf = 138543618;
-        v40 = self;
+        selfCopy6 = self;
         v41 = 2114;
-        v42 = v8;
+        v42 = alarmCopy;
         _os_log_impl(&dword_1B1F9F000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ post notification for %{public}@", buf, 0x16u);
       }
 
-      [(MTNotificationCenter *)self->_notificationCenter postNotificationForScheduledAlarm:v8 completionBlock:v10];
+      [(MTNotificationCenter *)self->_notificationCenter postNotificationForScheduledAlarm:alarmCopy completionBlock:blockCopy];
     }
 
     else
@@ -867,41 +867,41 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
       if (v19)
       {
         *buf = 138543618;
-        v40 = self;
+        selfCopy6 = self;
         v41 = 2114;
-        v42 = v8;
+        v42 = alarmCopy;
         _os_log_impl(&dword_1B1F9F000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ not posting notification for %{public}@", buf, 0x16u);
       }
 
-      v10[2](v10);
+      blockCopy[2](blockCopy);
     }
 
-    [(MTAlarmScheduler *)self _setLastAlarmTriggerDate:v9];
-    v23 = [v8 scheduleable];
-    v24 = [v23 mutableCopy];
+    [(MTAlarmScheduler *)self _setLastAlarmTriggerDate:dateCopy];
+    scheduleable2 = [alarmCopy scheduleable];
+    v24 = [scheduleable2 mutableCopy];
 
-    v25 = [v8 trigger];
-    v26 = [v25 isBedtimeRelated];
+    trigger = [alarmCopy trigger];
+    isBedtimeRelated = [trigger isBedtimeRelated];
 
-    if (v26)
+    if (isBedtimeRelated)
     {
-      [v24 setBedtimeFiredDate:v9];
+      [v24 setBedtimeFiredDate:dateCopy];
     }
 
     else
     {
-      [v24 setFiredDate:v9];
+      [v24 setFiredDate:dateCopy];
     }
 
-    v27 = [v8 trigger];
-    v28 = [v27 isForSnooze];
+    trigger2 = [alarmCopy trigger];
+    isForSnooze = [trigger2 isForSnooze];
 
-    if (v28)
+    if (isForSnooze)
     {
-      v29 = [v8 trigger];
-      v30 = [v29 isForGoToBed];
+      trigger3 = [alarmCopy trigger];
+      isForGoToBed = [trigger3 isForGoToBed];
 
-      if (v30)
+      if (isForGoToBed)
       {
         [v24 setBedtimeSnoozeFireDate:0];
       }
@@ -917,11 +917,11 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
       v31 = MTLogForCategory(3);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [v24 alarmID];
+        alarmID2 = [v24 alarmID];
         *buf = 138543618;
-        v40 = self;
+        selfCopy6 = self;
         v41 = 2114;
-        v42 = v32;
+        v42 = alarmID2;
         _os_log_impl(&dword_1B1F9F000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting non-repeating alarm %{public}@ to disabled", buf, 0x16u);
       }
 
@@ -935,7 +935,7 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
     v36[3] = &unk_1E7B0DD70;
     v36[4] = self;
     v37 = v24;
-    v38 = v8;
+    v38 = alarmCopy;
     v34 = v24;
     [(MTAlarmStorage *)storage updateAlarm:v34 withCompletion:v36 source:self];
   }
@@ -945,16 +945,16 @@ uint64_t __62__MTAlarmScheduler__queue_updateNextAlarmTimerWithCompletion___bloc
     v20 = MTLogForCategory(3);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 scheduleable];
-      v22 = [v21 identifier];
+      scheduleable3 = [alarmCopy scheduleable];
+      identifier = [scheduleable3 identifier];
       *buf = 138543618;
-      v40 = self;
+      selfCopy6 = self;
       v41 = 2114;
-      v42 = v22;
+      v42 = identifier;
       _os_log_impl(&dword_1B1F9F000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Alarm %{public}@ was supposed to fire but is no longer scheduled", buf, 0x16u);
     }
 
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 
   v35 = *MEMORY[0x1E69E9840];
@@ -1018,17 +1018,17 @@ void __66__MTAlarmScheduler__fireScheduledAlarm_firedDate_completionBlock___bloc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_fireTriggeredAlarmsWithCompletionBlock:(id)a3
+- (void)_queue_fireTriggeredAlarmsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = MTNewChildActivityForName(0xAuLL);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MTAlarmScheduler__queue_fireTriggeredAlarmsWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E7B0CA00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -1249,31 +1249,31 @@ uint64_t __66__MTAlarmScheduler__queue_fireTriggeredAlarmsWithCompletionBlock___
 - (id)_lastAlarmTriggerDate
 {
   defaults = self->_defaults;
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  v4 = [(MTPersistence *)defaults objectForKey:@"MTAlarmLastTriggerDate" defaultValue:v3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v4 = [(MTPersistence *)defaults objectForKey:@"MTAlarmLastTriggerDate" defaultValue:distantPast];
 
   return v4;
 }
 
-- (void)_setLastAlarmTriggerDate:(id)a3
+- (void)_setLastAlarmTriggerDate:(id)date
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v5 = MTLogForCategory(3);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = dateCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting last alarm trigger date to %{public}@", &v7, 0x16u);
   }
 
-  [(MTPersistence *)self->_defaults setObject:v4 forKey:@"MTAlarmLastTriggerDate"];
+  [(MTPersistence *)self->_defaults setObject:dateCopy forKey:@"MTAlarmLastTriggerDate"];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)nextScheduledAlarmIncludingBedtimeNotification:(BOOL)a3
+- (id)nextScheduledAlarmIncludingBedtimeNotification:(BOOL)notification
 {
   v14 = 0;
   v15 = &v14;
@@ -1282,17 +1282,17 @@ uint64_t __66__MTAlarmScheduler__queue_fireTriggeredAlarmsWithCompletionBlock___
   v18 = __Block_byref_object_dispose__4;
   v19 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(MTAlarmScheduler *)self serializer];
+  serializer = [(MTAlarmScheduler *)self serializer];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__MTAlarmScheduler_nextScheduledAlarmIncludingBedtimeNotification___block_invoke;
   v10[3] = &unk_1E7B0DE10;
   v12 = &v14;
   v10[4] = self;
-  v13 = a3;
+  notificationCopy = notification;
   v7 = v5;
   v11 = v7;
-  [v6 performBlock:v10];
+  [serializer performBlock:v10];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v15[5];
@@ -1314,10 +1314,10 @@ intptr_t __67__MTAlarmScheduler_nextScheduledAlarmIncludingBedtimeNotification__
   return dispatch_semaphore_signal(v5);
 }
 
-- (id)_nextScheduledAlertIncludingBedtimeNotification:(BOOL)a3
+- (id)_nextScheduledAlertIncludingBedtimeNotification:(BOOL)notification
 {
   scheduledAlarms = self->_scheduledAlarms;
-  if (a3)
+  if (notification)
   {
     [(MTScheduledList *)scheduledAlarms nextScheduledAlertOrNotification];
   }
@@ -1333,30 +1333,30 @@ intptr_t __67__MTAlarmScheduler_nextScheduledAlarmIncludingBedtimeNotification__
 
 - (id)_nextTriggerDateForScheduling
 {
-  v2 = [(MTScheduledList *)self->_scheduledAlarms nextScheduledObject];
-  v3 = [v2 trigger];
-  v4 = [v3 triggerDate];
+  nextScheduledObject = [(MTScheduledList *)self->_scheduledAlarms nextScheduledObject];
+  trigger = [nextScheduledObject trigger];
+  triggerDate = [trigger triggerDate];
 
-  return v4;
+  return triggerDate;
 }
 
-- (void)source:(id)a3 didUpdateAlarms:(id)a4
+- (void)source:(id)source didUpdateAlarms:(id)alarms
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 != self)
+  alarmsCopy = alarms;
+  if (source != self)
   {
     v7 = MTLogForCategory(3);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = alarmsCopy;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ received update of alarms %{public}@.  Rescheduling them.", buf, 0x16u);
     }
 
-    [(MTAlarmScheduler *)self scheduleAlarms:v6];
+    [(MTAlarmScheduler *)self scheduleAlarms:alarmsCopy];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -1364,7 +1364,7 @@ intptr_t __67__MTAlarmScheduler_nextScheduledAlarmIncludingBedtimeNotification__
   v9[2] = __43__MTAlarmScheduler_source_didUpdateAlarms___block_invoke;
   v9[3] = &unk_1E7B0CD98;
   v9[4] = self;
-  [v6 na_each:v9];
+  [alarmsCopy na_each:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -1394,16 +1394,16 @@ void __43__MTAlarmScheduler_source_didUpdateAlarms___block_invoke(uint64_t a1, v
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didRemoveAlarms:(id)a4
+- (void)source:(id)source didRemoveAlarms:(id)alarms
 {
-  v5 = a4;
-  [(MTAlarmScheduler *)self unscheduleAlarms:v5];
+  alarmsCopy = alarms;
+  [(MTAlarmScheduler *)self unscheduleAlarms:alarmsCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__MTAlarmScheduler_source_didRemoveAlarms___block_invoke;
   v6[3] = &unk_1E7B0CD98;
   v6[4] = self;
-  [v5 na_each:v6];
+  [alarmsCopy na_each:v6];
 }
 
 void __43__MTAlarmScheduler_source_didRemoveAlarms___block_invoke(uint64_t a1, void *a2)
@@ -1414,64 +1414,64 @@ void __43__MTAlarmScheduler_source_didRemoveAlarms___block_invoke(uint64_t a1, v
   [v4 dismissNotificationsForAlarm:v3];
 }
 
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  sourceCopy = source;
+  alarmCopy = alarm;
+  v10 = alarmCopy;
+  if (alarmCopy)
   {
-    v25[0] = v9;
+    v25[0] = alarmCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     [(MTAlarmScheduler *)self scheduleAlarms:v11];
 
-    if (a5 != 1)
+    if (action != 1)
     {
-      v12 = [(MTAlarmScheduler *)self notificationCenter];
+      notificationCenter = [(MTAlarmScheduler *)self notificationCenter];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(MTAlarmScheduler *)self notificationCenter];
-        [v14 dismissNotificationsForAlarm:v10 includeSnooze:0];
+        notificationCenter2 = [(MTAlarmScheduler *)self notificationCenter];
+        [notificationCenter2 dismissNotificationsForAlarm:v10 includeSnooze:0];
       }
 
       v15 = MTLogForCategory(3);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543618;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
         v24 = v10;
         _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ posting snooze countdown notification for snoozed alarm %{public}@", &v21, 0x16u);
       }
 
-      v16 = [v10 snoozeFireDate];
-      v17 = [MTTrigger triggerWithDate:v16 triggerType:6];
+      snoozeFireDate = [v10 snoozeFireDate];
+      v17 = [MTTrigger triggerWithDate:snoozeFireDate triggerType:6];
       v18 = [MTScheduledObject scheduledObjectForScheduleable:v10 trigger:v17];
 
-      v19 = [(MTAlarmScheduler *)self notificationCenter];
-      [v19 postNotificationForScheduledAlarm:v18 completionBlock:&__block_literal_global_16];
+      notificationCenter3 = [(MTAlarmScheduler *)self notificationCenter];
+      [notificationCenter3 postNotificationForScheduledAlarm:v18 completionBlock:&__block_literal_global_16];
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action
 {
-  v7 = a4;
-  v8 = [(MTAlarmScheduler *)self serializer];
+  alarmCopy = alarm;
+  serializer = [(MTAlarmScheduler *)self serializer];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__MTAlarmScheduler_source_didDismissAlarm_dismissAction___block_invoke;
   v10[3] = &unk_1E7B0CD10;
-  v11 = v7;
-  v12 = self;
-  v13 = a5;
-  v9 = v7;
-  [v8 performBlock:v10];
+  v11 = alarmCopy;
+  selfCopy = self;
+  actionCopy = action;
+  v9 = alarmCopy;
+  [serializer performBlock:v10];
 }
 
 void __57__MTAlarmScheduler_source_didDismissAlarm_dismissAction___block_invoke(uint64_t a1)
@@ -1489,11 +1489,11 @@ void __57__MTAlarmScheduler_source_didDismissAlarm_dismissAction___block_invoke(
   }
 }
 
-- (BOOL)handlesNotification:(id)a3 ofType:(int64_t)a4
+- (BOOL)handlesNotification:(id)notification ofType:(int64_t)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 isEqualToString:@"com.apple.MTAlarmScheduler.alarm-event"];
+    return [notification isEqualToString:@"com.apple.MTAlarmScheduler.alarm-event"];
   }
 
   else
@@ -1502,31 +1502,31 @@ void __57__MTAlarmScheduler_source_didDismissAlarm_dismissAction___block_invoke(
   }
 }
 
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  notificationCopy = notification;
+  completionCopy = completion;
   kdebug_trace();
   v9 = MTLogForCategory(3);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v7;
+    v18 = notificationCopy;
     _os_log_impl(&dword_1B1F9F000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ handling notification %{public}@", buf, 0x16u);
   }
 
-  v10 = [(MTAlarmScheduler *)self serializer];
+  serializer = [(MTAlarmScheduler *)self serializer];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__MTAlarmScheduler_handleNotification_ofType_completion___block_invoke;
   v13[3] = &unk_1E7B0CA00;
   v13[4] = self;
-  v14 = v8;
-  v11 = v8;
-  [v10 performBlock:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [serializer performBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -1566,9 +1566,9 @@ uint64_t __57__MTAlarmScheduler_handleNotification_ofType_completion___block_inv
   v4 = MTLogForCategory(1);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MTAlarmScheduler *)self scheduledAlarms];
+    scheduledAlarms = [(MTAlarmScheduler *)self scheduledAlarms];
     v7 = 138543362;
-    v8 = v5;
+    v8 = scheduledAlarms;
     _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_DEFAULT, "Scheduled Alarms: %{public}@", &v7, 0xCu);
   }
 
@@ -1580,8 +1580,8 @@ uint64_t __57__MTAlarmScheduler_handleNotification_ofType_completion___block_inv
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"Scheduled alarms";
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(MTAlarmScheduler *)self scheduledAlarms];
-  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(v3, "numberOfScheduledAlerts")}];
+  scheduledAlarms = [(MTAlarmScheduler *)self scheduledAlarms];
+  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(scheduledAlarms, "numberOfScheduledAlerts")}];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 

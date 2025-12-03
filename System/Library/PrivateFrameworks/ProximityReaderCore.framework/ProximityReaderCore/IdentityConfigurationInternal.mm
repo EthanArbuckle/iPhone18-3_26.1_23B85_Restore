@@ -1,6 +1,6 @@
 @interface IdentityConfigurationInternal
 - (_TtC19ProximityReaderCore29IdentityConfigurationInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityConfigurationInternal
@@ -12,15 +12,15 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC19ProximityReaderCore29IdentityConfigurationInternal_readerIdentifier);
   v5 = *&self->readerIdentifier[OBJC_IVAR____TtC19ProximityReaderCore29IdentityConfigurationInternal_readerIdentifier];
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_26121CC50();
   v8 = sub_26121CC50();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 @end

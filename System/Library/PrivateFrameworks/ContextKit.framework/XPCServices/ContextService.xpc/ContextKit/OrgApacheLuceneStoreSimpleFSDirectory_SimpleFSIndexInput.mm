@@ -1,9 +1,9 @@
 @interface OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput
 - (id)clone;
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)close;
 - (void)dealloc;
-- (void)newBufferWithByteArray:(id)a3;
+- (void)newBufferWithByteArray:(id)array;
 @end
 
 @implementation OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput
@@ -26,9 +26,9 @@
 {
   v4.receiver = self;
   v4.super_class = OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput;
-  v2 = [(OrgApacheLuceneStoreBufferedIndexInput *)&v4 clone];
+  clone = [(OrgApacheLuceneStoreBufferedIndexInput *)&v4 clone];
   objc_opt_class();
-  if (!v2)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -38,35 +38,35 @@
     JreThrowClassCastException();
   }
 
-  v2[64] = 1;
-  return v2;
+  clone[64] = 1;
+  return clone;
 }
 
-- (id)sliceWithNSString:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (id)sliceWithNSString:(id)string withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  if ((a5 | a4) < 0 || a5 + a4 > self->end_ - self->off_)
+  if ((withLong | long) < 0 || withLong + long > self->end_ - self->off_)
   {
-    v17 = JreStrcat("$$$@", a2, a3, a4, a5, v5, v6, v7, @"slice() ");
+    v17 = JreStrcat("$$$@", a2, string, long, withLong, v5, v6, v7, @"slice() ");
     v18 = new_JavaLangIllegalArgumentException_initWithNSString_(v17);
     objc_exception_throw(v18);
   }
 
-  v11 = [(OrgApacheLuceneStoreIndexInput *)self getFullSliceDescriptionWithNSString:a3];
+  v11 = [(OrgApacheLuceneStoreIndexInput *)self getFullSliceDescriptionWithNSString:string];
   channel = self->channel_;
   off = self->off_;
-  v14 = [(OrgApacheLuceneStoreBufferedIndexInput *)self getBufferSize];
+  getBufferSize = [(OrgApacheLuceneStoreBufferedIndexInput *)self getBufferSize];
   v15 = [OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput alloc];
-  OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput_initWithNSString_withJavaNioChannelsSeekableByteChannel_withLong_withLong_withInt_(v15, v11, channel, off + a4, a5, v14);
+  OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput_initWithNSString_withJavaNioChannelsSeekableByteChannel_withLong_withLong_withInt_(v15, v11, channel, off + long, withLong, getBufferSize);
 
   return v15;
 }
 
-- (void)newBufferWithByteArray:(id)a3
+- (void)newBufferWithByteArray:(id)array
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneStoreSimpleFSDirectory_SimpleFSIndexInput;
   [(OrgApacheLuceneStoreBufferedIndexInput *)&v6 newBufferWithByteArray:?];
-  v5 = JavaNioByteBuffer_wrapWithByteArray_(a3);
+  v5 = JavaNioByteBuffer_wrapWithByteArray_(array);
   JreStrongAssign(&self->byteBuf_, v5);
 }
 

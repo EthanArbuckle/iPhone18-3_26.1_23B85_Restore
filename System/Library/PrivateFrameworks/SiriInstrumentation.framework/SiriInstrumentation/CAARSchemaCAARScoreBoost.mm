@@ -1,26 +1,26 @@
 @interface CAARSchemaCAARScoreBoost
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARScoreBoost)initWithDictionary:(id)a3;
-- (CAARSchemaCAARScoreBoost)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARScoreBoost)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARScoreBoost)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARScoreBoost
 
-- (CAARSchemaCAARScoreBoost)initWithDictionary:(id)a3
+- (CAARSchemaCAARScoreBoost)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CAARSchemaCAARScoreBoost;
   v5 = [(CAARSchemaCAARScoreBoost *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionCandidateId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(CAARSchemaCAARScoreBoost *)v5 setActionCandidateId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"boost"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"boost"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(CAARSchemaCAARScoreBoost *)v5 setBoost:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"reason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARScoreBoost)initWithJSON:(id)a3
+- (CAARSchemaCAARScoreBoost)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARScoreBoost *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARScoreBoost *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARScoreBoost *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,20 +86,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionCandidateId)
   {
-    v4 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    actionCandidateId = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
+    dictionaryRepresentation = [actionCandidateId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"actionCandidateId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionCandidateId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"actionCandidateId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionCandidateId"];
     }
   }
 
@@ -108,19 +108,19 @@
     v7 = MEMORY[0x1E696AD98];
     [(CAARSchemaCAARScoreBoost *)self boost];
     v8 = [v7 numberWithDouble:?];
-    [v3 setObject:v8 forKeyedSubscript:@"boost"];
+    [dictionary setObject:v8 forKeyedSubscript:@"boost"];
   }
 
   if (self->_reason)
   {
-    v9 = [(CAARSchemaCAARScoreBoost *)self reason];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"reason"];
+    reason = [(CAARSchemaCAARScoreBoost *)self reason];
+    v10 = [reason copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"reason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,28 +162,28 @@
   return v6 ^ v3 ^ [(NSString *)self->_reason hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
-  v6 = [v4 actionCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
+  actionCandidateId2 = [equalCopy actionCandidateId];
+  if ((actionCandidateId != 0) == (actionCandidateId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
-  if (v7)
+  actionCandidateId3 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
+  if (actionCandidateId3)
   {
-    v8 = v7;
-    v9 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
-    v10 = [v4 actionCandidateId];
-    v11 = [v9 isEqual:v10];
+    v8 = actionCandidateId3;
+    actionCandidateId4 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
+    actionCandidateId5 = [equalCopy actionCandidateId];
+    v11 = [actionCandidateId4 isEqual:actionCandidateId5];
 
     if (!v11)
     {
@@ -195,7 +195,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -203,19 +203,19 @@
   if (*&self->_has)
   {
     boost = self->_boost;
-    [v4 boost];
+    [equalCopy boost];
     if (boost != v13)
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(CAARSchemaCAARScoreBoost *)self reason];
-  v6 = [v4 reason];
-  if ((v5 != 0) != (v6 == 0))
+  actionCandidateId = [(CAARSchemaCAARScoreBoost *)self reason];
+  actionCandidateId2 = [equalCopy reason];
+  if ((actionCandidateId != 0) != (actionCandidateId2 == 0))
   {
-    v14 = [(CAARSchemaCAARScoreBoost *)self reason];
-    if (!v14)
+    reason = [(CAARSchemaCAARScoreBoost *)self reason];
+    if (!reason)
     {
 
 LABEL_18:
@@ -223,10 +223,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v15 = v14;
-    v16 = [(CAARSchemaCAARScoreBoost *)self reason];
-    v17 = [v4 reason];
-    v18 = [v16 isEqual:v17];
+    v15 = reason;
+    reason2 = [(CAARSchemaCAARScoreBoost *)self reason];
+    reason3 = [equalCopy reason];
+    v18 = [reason2 isEqual:reason3];
 
     if (v18)
     {
@@ -246,14 +246,14 @@ LABEL_16:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
+  toCopy = to;
+  actionCandidateId = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
 
-  if (v4)
+  if (actionCandidateId)
   {
-    v5 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
+    actionCandidateId2 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -262,27 +262,27 @@ LABEL_16:
     PBDataWriterWriteDoubleField();
   }
 
-  v6 = [(CAARSchemaCAARScoreBoost *)self reason];
+  reason = [(CAARSchemaCAARScoreBoost *)self reason];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (reason)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CAARSchemaCAARScoreBoost;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CAARSchemaCAARScoreBoost *)self actionCandidateId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(CAARSchemaCAARScoreBoost *)self deleteActionCandidateId];
   }

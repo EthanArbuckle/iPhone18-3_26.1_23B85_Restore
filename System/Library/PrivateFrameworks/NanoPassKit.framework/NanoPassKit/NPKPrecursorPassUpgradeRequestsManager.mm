@@ -1,16 +1,16 @@
 @interface NPKPrecursorPassUpgradeRequestsManager
 - (NPKPrecursorPassUpgradeRequestsManager)init;
-- (id)descriptionForPassWithUniqueID:(id)a3;
-- (void)_queue_addObserver:(id)a3;
-- (void)_queue_invalidateUpgradeControllerForPassWithUniqueID:(id)a3;
-- (void)_queue_notifyObserversDidChangeUpgradeRequestDescription:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)_queue_removeObserver:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)invalidateUpgradeControllerForPassWithUniqueID:(id)a3;
-- (void)loadUpgradeControllerForPass:(id)a3;
-- (void)notifyObserversDidChangeUpgradeRequestDescription:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)precursorPassUpgradeRequestsDidChangeForUpgradeController:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)descriptionForPassWithUniqueID:(id)d;
+- (void)_queue_addObserver:(id)observer;
+- (void)_queue_invalidateUpgradeControllerForPassWithUniqueID:(id)d;
+- (void)_queue_notifyObserversDidChangeUpgradeRequestDescription:(id)description forPassWithUniqueID:(id)d;
+- (void)_queue_removeObserver:(id)observer;
+- (void)addObserver:(id)observer;
+- (void)invalidateUpgradeControllerForPassWithUniqueID:(id)d;
+- (void)loadUpgradeControllerForPass:(id)pass;
+- (void)notifyObserversDidChangeUpgradeRequestDescription:(id)description forPassWithUniqueID:(id)d;
+- (void)precursorPassUpgradeRequestsDidChangeForUpgradeController:(id)controller;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NPKPrecursorPassUpgradeRequestsManager
@@ -39,12 +39,12 @@
   return v2;
 }
 
-- (void)loadUpgradeControllerForPass:(id)a3
+- (void)loadUpgradeControllerForPass:(id)pass
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uniqueID];
-  if ([v4 npkIsPrecursorPass])
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  if ([passCopy npkIsPrecursorPass])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -60,7 +60,7 @@
     block[3] = &unk_279948C68;
     objc_copyWeak(&v33, &location);
     p_buf = &buf;
-    v7 = v5;
+    v7 = uniqueID;
     v31 = v7;
     dispatch_sync(internalQueue, block);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -93,7 +93,7 @@
         }
       }
 
-      v18 = [[NPKPrecursorPassUpgradeRequestController alloc] initWithPass:v4];
+      v18 = [[NPKPrecursorPassUpgradeRequestController alloc] initWithPass:passCopy];
       v19 = *(*(&buf + 1) + 40);
       *(*(&buf + 1) + 40) = v18;
 
@@ -105,7 +105,7 @@
       v22[3] = &unk_279948D08;
       objc_copyWeak(&v26, &location);
       v25 = &buf;
-      v23 = v4;
+      v23 = passCopy;
       v24 = v8;
       dispatch_barrier_async(v20, v22);
       v10[2](v10, *(*(&buf + 1) + 40));
@@ -130,7 +130,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v5;
+        *(&buf + 4) = uniqueID;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKPrecursorPassUpgradeRequestsManager: Unable to load data; pass (%@) is not a precursor pass.", &buf, 0xCu);
       }
     }
@@ -142,7 +142,7 @@
     v35[2] = __71__NPKPrecursorPassUpgradeRequestsManager_loadUpgradeControllerForPass___block_invoke;
     v35[3] = &unk_279945240;
     objc_copyWeak(&v37, &buf);
-    v36 = v5;
+    v36 = uniqueID;
     dispatch_async(v14, v35);
 
     objc_destroyWeak(&v37);
@@ -233,9 +233,9 @@ void __71__NPKPrecursorPassUpgradeRequestsManager_loadUpgradeControllerForPass__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateUpgradeControllerForPassWithUniqueID:(id)a3
+- (void)invalidateUpgradeControllerForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -243,8 +243,8 @@ void __71__NPKPrecursorPassUpgradeRequestsManager_loadUpgradeControllerForPass__
   block[2] = __89__NPKPrecursorPassUpgradeRequestsManager_invalidateUpgradeControllerForPassWithUniqueID___block_invoke;
   block[3] = &unk_279945240;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_barrier_async(internalQueue, block);
 
   objc_destroyWeak(&v9);
@@ -257,9 +257,9 @@ void __89__NPKPrecursorPassUpgradeRequestsManager_invalidateUpgradeControllerFor
   [WeakRetained _queue_invalidateUpgradeControllerForPassWithUniqueID:*(a1 + 32)];
 }
 
-- (id)descriptionForPassWithUniqueID:(id)a3
+- (id)descriptionForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -272,9 +272,9 @@ void __89__NPKPrecursorPassUpgradeRequestsManager_invalidateUpgradeControllerFor
   block[2] = __73__NPKPrecursorPassUpgradeRequestsManager_descriptionForPassWithUniqueID___block_invoke;
   block[3] = &unk_279948090;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -292,9 +292,9 @@ void __73__NPKPrecursorPassUpgradeRequestsManager_descriptionForPassWithUniqueID
   *(v3 + 40) = v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -302,8 +302,8 @@ void __73__NPKPrecursorPassUpgradeRequestsManager_descriptionForPassWithUniqueID
   block[2] = __54__NPKPrecursorPassUpgradeRequestsManager_addObserver___block_invoke;
   block[3] = &unk_279945240;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -316,9 +316,9 @@ void __54__NPKPrecursorPassUpgradeRequestsManager_addObserver___block_invoke(uin
   [WeakRetained _queue_addObserver:*(a1 + 32)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observerQueue = self->_observerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -326,8 +326,8 @@ void __54__NPKPrecursorPassUpgradeRequestsManager_addObserver___block_invoke(uin
   block[2] = __57__NPKPrecursorPassUpgradeRequestsManager_removeObserver___block_invoke;
   block[3] = &unk_279945240;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -340,20 +340,20 @@ void __57__NPKPrecursorPassUpgradeRequestsManager_removeObserver___block_invoke(
   [WeakRetained _queue_removeObserver:*(a1 + 32)];
 }
 
-- (void)precursorPassUpgradeRequestsDidChangeForUpgradeController:(id)a3
+- (void)precursorPassUpgradeRequestsDidChangeForUpgradeController:(id)controller
 {
-  v4 = a3;
-  v7 = [v4 upgradeRequestDescription];
-  v5 = [v4 pass];
+  controllerCopy = controller;
+  upgradeRequestDescription = [controllerCopy upgradeRequestDescription];
+  pass = [controllerCopy pass];
 
-  v6 = [v5 uniqueID];
-  [(NPKPrecursorPassUpgradeRequestsManager *)self notifyObserversDidChangeUpgradeRequestDescription:v7 forPassWithUniqueID:v6];
+  uniqueID = [pass uniqueID];
+  [(NPKPrecursorPassUpgradeRequestsManager *)self notifyObserversDidChangeUpgradeRequestDescription:upgradeRequestDescription forPassWithUniqueID:uniqueID];
 }
 
-- (void)notifyObserversDidChangeUpgradeRequestDescription:(id)a3 forPassWithUniqueID:(id)a4
+- (void)notifyObserversDidChangeUpgradeRequestDescription:(id)description forPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  dCopy = d;
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -361,10 +361,10 @@ void __57__NPKPrecursorPassUpgradeRequestsManager_removeObserver___block_invoke(
   v11[2] = __112__NPKPrecursorPassUpgradeRequestsManager_notifyObserversDidChangeUpgradeRequestDescription_forPassWithUniqueID___block_invoke;
   v11[3] = &unk_279945290;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptionCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = descriptionCopy;
   dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -377,10 +377,10 @@ void __112__NPKPrecursorPassUpgradeRequestsManager_notifyObserversDidChangeUpgra
   [WeakRetained _queue_notifyObserversDidChangeUpgradeRequestDescription:*(a1 + 32) forPassWithUniqueID:*(a1 + 40)];
 }
 
-- (void)_queue_invalidateUpgradeControllerForPassWithUniqueID:(id)a3
+- (void)_queue_invalidateUpgradeControllerForPassWithUniqueID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -391,36 +391,36 @@ void __112__NPKPrecursorPassUpgradeRequestsManager_notifyObserversDidChangeUpgra
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: NPKPrecursorPassUpgradeRequestsManager: Invalidating upgradeController for pass: %@", &v9, 0xCu);
     }
   }
 
-  [(NSMutableDictionary *)self->_upgradeControllerMap removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_upgradeControllerMap removeObjectForKey:dCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_addObserver:(id)a3
+- (void)_queue_addObserver:(id)observer
 {
   observerQueue = self->_observerQueue;
-  v5 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(observerQueue);
-  [(NPKObserverManager *)self->_observerManager registerObserver:v5];
+  [(NPKObserverManager *)self->_observerManager registerObserver:observerCopy];
 }
 
-- (void)_queue_removeObserver:(id)a3
+- (void)_queue_removeObserver:(id)observer
 {
   observerQueue = self->_observerQueue;
-  v5 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_V2(observerQueue);
-  [(NPKObserverManager *)self->_observerManager unregisterObserver:v5];
+  [(NPKObserverManager *)self->_observerManager unregisterObserver:observerCopy];
 }
 
-- (void)_queue_notifyObserversDidChangeUpgradeRequestDescription:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_queue_notifyObserversDidChangeUpgradeRequestDescription:(id)description forPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_internalQueue);
   objc_initWeak(&location, self);
   observerManager = self->_observerManager;
@@ -429,9 +429,9 @@ void __112__NPKPrecursorPassUpgradeRequestsManager_notifyObserversDidChangeUpgra
   v11[2] = __119__NPKPrecursorPassUpgradeRequestsManager__queue_notifyObserversDidChangeUpgradeRequestDescription_forPassWithUniqueID___block_invoke;
   v11[3] = &unk_279948D30;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = descriptionCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = dCopy;
   v13 = v10;
   [(NPKObserverManager *)observerManager enumerateObserversUsingBlock:v11];
 

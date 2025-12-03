@@ -6,25 +6,25 @@
 
 - (BOOL)perform
 {
-  v3 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CNDataclassActionHandler *)self account];
-    v5 = [v4 accountType];
-    v6 = [v5 identifier];
-    v7 = [(CNDataclassActionHandler *)self account];
-    v8 = [v7 username];
+    account = [(CNDataclassActionHandler *)self account];
+    accountType = [account accountType];
+    identifier = [accountType identifier];
+    account2 = [(CNDataclassActionHandler *)self account];
+    username = [account2 username];
     v15 = 138412546;
-    v16 = v6;
+    v16 = identifier;
     v17 = 2112;
-    v18 = v8;
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Will merge from the Contacts container for iCloud account %@ (%@) to the Contacts local container, so first enable the Contacts local container", &v15, 0x16u);
+    v18 = username;
+    _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "Will merge from the Contacts container for iCloud account %@ (%@) to the Contacts local container, so first enable the Contacts local container", &v15, 0x16u);
   }
 
   [(CNDataclassActionHandler *)self setLocalSourceEnabled:1];
-  v9 = [(CNDataclassActionHandler *)self account];
-  v10 = [(CNDataclassActionHandler *)self childAccounts];
-  v11 = [(CNDataclassActionHandler *)self copyABAccountForACAccount:v9 withChildren:v10];
+  account3 = [(CNDataclassActionHandler *)self account];
+  childAccounts = [(CNDataclassActionHandler *)self childAccounts];
+  v11 = [(CNDataclassActionHandler *)self copyABAccountForACAccount:account3 withChildren:childAccounts];
 
   if (!v11)
   {
@@ -33,8 +33,8 @@
 
   if (![(CNDataclassActionHandler *)self mergeContactsIntoLocalSourceFromABAccount:v11])
   {
-    v13 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       sub_6F30();
     }

@@ -1,11 +1,11 @@
 @interface HealthBalanceDaemonPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
 - (NSString)pluginIdentifier;
 - (_TtC19HealthBalanceDaemon25HealthBalanceDaemonPlugin)init;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
-- (void)setPluginIdentifier:(id)a3;
+- (void)setPluginIdentifier:(id)identifier;
 @end
 
 @implementation HealthBalanceDaemonPlugin
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (void)setPluginIdentifier:(id)a3
+- (void)setPluginIdentifier:(id)identifier
 {
   v4 = sub_22892F0C8();
   v6 = v5;
@@ -33,33 +33,33 @@
   v7[1] = v6;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_2288EB82C(a3);
+  selfCopy = self;
+  v6 = sub_2288EB82C(daemon);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2288EBA90(v4);
+  profileCopy = profile;
+  selfCopy = self;
+  v6 = sub_2288EBA90(profileCopy);
 
   return v6;
 }
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
   swift_unknownObjectRetain();
-  v4 = [a3 behavior];
-  v5 = [v4 isRealityDevice];
+  behavior = [daemon behavior];
+  isRealityDevice = [behavior isRealityDevice];
 
   swift_unknownObjectRelease();
-  return v5 ^ 1;
+  return isRealityDevice ^ 1;
 }
 
 - (_TtC19HealthBalanceDaemon25HealthBalanceDaemonPlugin)init

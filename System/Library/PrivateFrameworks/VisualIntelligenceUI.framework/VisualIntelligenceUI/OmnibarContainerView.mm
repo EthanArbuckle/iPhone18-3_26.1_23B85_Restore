@@ -1,15 +1,15 @@
 @interface OmnibarContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIView)viewForFirstBaselineLayout;
 - (UIView)viewForLastBaselineLayout;
-- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithCoder:(id)a3;
-- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithFrame:(CGRect)a3;
+- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithCoder:(id)coder;
+- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation OmnibarContainerView
 
-- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithCoder:(id)a3
+- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_hostingView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_askLabel) = 0;
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OmnibarContainerView.layoutSubviews()();
 }
 
@@ -32,18 +32,18 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_askLabel);
   if (v2)
   {
-    v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_askLabel);
+    selfCopy = *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_askLabel);
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v2 = 0;
   }
 
   v4 = v2;
 
-  return v3;
+  return selfCopy;
 }
 
 - (UIView)viewForLastBaselineLayout
@@ -51,24 +51,24 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_searchLabel);
   if (v2)
   {
-    v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_searchLabel);
+    selfCopy = *(&self->super.super.super.isa + OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_searchLabel);
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
     v2 = 0;
   }
 
   v4 = v2;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8 = OBJC_IVAR____TtC20VisualIntelligenceUI20OmnibarContainerView_hostingView;
   swift_beginAccess();
   v9 = *(&self->super.super.super.isa + v8);
@@ -77,16 +77,16 @@
     return 0;
   }
 
-  v10 = a4;
-  v11 = self;
+  eventCopy = event;
+  selfCopy = self;
   v12 = v9;
-  [(OmnibarContainerView *)v11 convertPoint:v12 toCoordinateSpace:x, y];
-  v13 = [v12 pointInside:v10 withEvent:?];
+  [(OmnibarContainerView *)selfCopy convertPoint:v12 toCoordinateSpace:x, y];
+  v13 = [v12 pointInside:eventCopy withEvent:?];
 
   return v13;
 }
 
-- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithFrame:(CGRect)a3
+- (_TtC20VisualIntelligenceUI20OmnibarContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

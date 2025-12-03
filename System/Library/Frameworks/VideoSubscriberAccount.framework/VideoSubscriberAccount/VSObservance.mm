@@ -1,9 +1,9 @@
 @interface VSObservance
 - (VSObservance)init;
-- (VSObservance)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5;
+- (VSObservance)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options;
 - (VSObservanceDelegate)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -20,14 +20,14 @@
   return 0;
 }
 
-- (VSObservance)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5
+- (VSObservance)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  objectCopy = object;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (objectCopy)
   {
-    if (v9)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -50,12 +50,12 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    v11->_object = v8;
+    v11->_object = objectCopy;
     v13 = [v10 copy];
     keyPath = v12->_keyPath;
     v12->_keyPath = v13;
 
-    v12->_options = a5;
+    v12->_options = options;
   }
 
   return v12;
@@ -73,10 +73,10 @@ LABEL_3:
 {
   if (![(VSObservance *)self isObserving])
   {
-    v3 = [(VSObservance *)self object];
-    v4 = [(VSObservance *)self keyPath];
-    v5 = [(VSObservance *)self options];
-    [v3 addObserver:self forKeyPath:v4 options:v5 context:kVSKeyValueObservingContext_GenericObservance];
+    object = [(VSObservance *)self object];
+    keyPath = [(VSObservance *)self keyPath];
+    options = [(VSObservance *)self options];
+    [object addObserver:self forKeyPath:keyPath options:options context:kVSKeyValueObservingContext_GenericObservance];
 
     [(VSObservance *)self setObserving:1];
   }
@@ -86,29 +86,29 @@ LABEL_3:
 {
   if ([(VSObservance *)self isObserving])
   {
-    v3 = [(VSObservance *)self object];
-    v4 = [(VSObservance *)self keyPath];
-    [v3 removeObserver:self forKeyPath:v4 context:kVSKeyValueObservingContext_GenericObservance];
+    object = [(VSObservance *)self object];
+    keyPath = [(VSObservance *)self keyPath];
+    [object removeObserver:self forKeyPath:keyPath context:kVSKeyValueObservingContext_GenericObservance];
 
     [(VSObservance *)self setObserving:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kVSKeyValueObservingContext_GenericObservance == a6)
+  if (kVSKeyValueObservingContext_GenericObservance == context)
   {
-    v11 = a5;
-    v12 = [(VSObservance *)self delegate];
-    [v12 observeChange:v11 forObservance:self];
+    changeCopy = change;
+    delegate = [(VSObservance *)self delegate];
+    [delegate observeChange:changeCopy forObservance:self];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = VSObservance;
-    v10 = a5;
-    [(VSObservance *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(VSObservance *)&v13 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 

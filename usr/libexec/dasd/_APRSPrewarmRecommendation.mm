@@ -1,13 +1,13 @@
 @interface _APRSPrewarmRecommendation
-+ (BOOL)appHasContinuousBackgroundModeWithRecord:(id)a3;
-+ (BOOL)appPrefersUnoptimizedLaunchesWithRecord:(id)a3;
-+ (BOOL)appPreventsPrewarm:(id)a3;
++ (BOOL)appHasContinuousBackgroundModeWithRecord:(id)record;
++ (BOOL)appPrefersUnoptimizedLaunchesWithRecord:(id)record;
++ (BOOL)appPreventsPrewarm:(id)prewarm;
 + (BOOL)isPrewarmAllowed;
-+ (BOOL)isPrewarmAllowedForApp:(id)a3;
-+ (id)appActivationTimeScores:(id)a3;
-+ (id)candidatesFromTimeline:(id)a3;
-+ (id)evaluateRecommendationsFromTimeline:(id)a3;
-+ (id)scoresToConfidenceLevels:(id)a3;
++ (BOOL)isPrewarmAllowedForApp:(id)app;
++ (id)appActivationTimeScores:(id)scores;
++ (id)candidatesFromTimeline:(id)timeline;
++ (id)evaluateRecommendationsFromTimeline:(id)timeline;
++ (id)scoresToConfidenceLevels:(id)levels;
 + (id)sharedInstance;
 - (_APRSPrewarmRecommendation)init;
 - (id)appPredictionTimeline;
@@ -84,32 +84,32 @@
   return v3;
 }
 
-+ (BOOL)appPreventsPrewarm:(id)a3
++ (BOOL)appPreventsPrewarm:(id)prewarm
 {
-  v4 = a3;
+  prewarmCopy = prewarm;
   v5 = 1;
-  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:prewarmCopy allowPlaceholder:1 error:0];
 
-  if (([a1 appHasContinuousBackgroundModeWithRecord:v6] & 1) == 0)
+  if (([self appHasContinuousBackgroundModeWithRecord:v6] & 1) == 0)
   {
-    v5 = [a1 appPrefersUnoptimizedLaunchesWithRecord:v6];
+    v5 = [self appPrefersUnoptimizedLaunchesWithRecord:v6];
   }
 
   return v5;
 }
 
-+ (BOOL)appHasContinuousBackgroundModeWithRecord:(id)a3
++ (BOOL)appHasContinuousBackgroundModeWithRecord:(id)record
 {
-  v3 = [a3 UIBackgroundModes];
-  v4 = [v3 containsObject:@"continuous"];
+  uIBackgroundModes = [record UIBackgroundModes];
+  v4 = [uIBackgroundModes containsObject:@"continuous"];
 
   return v4;
 }
 
-+ (BOOL)appPrefersUnoptimizedLaunchesWithRecord:(id)a3
++ (BOOL)appPrefersUnoptimizedLaunchesWithRecord:(id)record
 {
-  v3 = [a3 infoDictionary];
-  v4 = [v3 objectForKey:@"SBPrefersUnoptimizedLaunch" ofClass:objc_opt_class()];
+  infoDictionary = [record infoDictionary];
+  v4 = [infoDictionary objectForKey:@"SBPrefersUnoptimizedLaunch" ofClass:objc_opt_class()];
 
   v5 = v4 && ([v4 BOOLValue] & 1) != 0;
   return v5;
@@ -117,23 +117,23 @@
 
 - (void)evaluateRecommendations
 {
-  v5 = [(_APRSPrewarmRecommendation *)self appPredictionTimeline];
-  v3 = [_APRSPrewarmRecommendation evaluateRecommendationsFromTimeline:v5];
+  appPredictionTimeline = [(_APRSPrewarmRecommendation *)self appPredictionTimeline];
+  v3 = [_APRSPrewarmRecommendation evaluateRecommendationsFromTimeline:appPredictionTimeline];
   recommendations = self->_recommendations;
   self->_recommendations = v3;
 }
 
-+ (BOOL)isPrewarmAllowedForApp:(id)a3
++ (BOOL)isPrewarmAllowedForApp:(id)app
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.purplebuddy"] & 1) != 0 || (objc_msgSend(v3, "containsString:", @"UIService") & 1) != 0 || (objc_msgSend(v3, "containsString:", @".widget") & 1) != 0 || (objc_msgSend(v3, "containsString:", @"com.apple.Reality") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.MTLReplayer") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.Health") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.camera") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.ContinuityCaptureShieldUI") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.itunesu"))
+  appCopy = app;
+  if ([appCopy isEqualToString:@"com.apple.purplebuddy"] & 1) != 0 || (objc_msgSend(appCopy, "containsString:", @"UIService") & 1) != 0 || (objc_msgSend(appCopy, "containsString:", @".widget") & 1) != 0 || (objc_msgSend(appCopy, "containsString:", @"com.apple.Reality") & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.MTLReplayer") & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.Health") & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.camera") & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.ContinuityCaptureShieldUI") & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.itunesu"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [objc_opt_class() appPreventsPrewarm:v3] ^ 1;
+    v4 = [objc_opt_class() appPreventsPrewarm:appCopy] ^ 1;
   }
 
   return v4;
@@ -142,43 +142,43 @@
 + (BOOL)isPrewarmAllowed
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  if (v3 & 1) != 0 || (DMIsMigrationNeeded())
+  if (isLowPowerModeEnabled & 1) != 0 || (DMIsMigrationNeeded())
   {
     return 0;
   }
 
-  v5 = [objc_opt_class() sharedInstance];
-  v6 = [v5 classCUnlocked];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  classCUnlocked = [sharedInstance classCUnlocked];
 
-  return v6;
+  return classCUnlocked;
 }
 
-+ (id)candidatesFromTimeline:(id)a3
++ (id)candidatesFromTimeline:(id)timeline
 {
-  v3 = a3;
+  timelineCopy = timeline;
   v4 = os_transaction_create();
   v5 = +[NSMutableDictionary dictionary];
   v6 = os_log_create("com.apple.aprs", "appResume.PrewarmRecommendations");
-  if (v3)
+  if (timelineCopy)
   {
-    v7 = [v3 startDate];
-    v8 = [v3 valueAtDate:v7];
+    startDate = [timelineCopy startDate];
+    v8 = [timelineCopy valueAtDate:startDate];
 
     [v5 addEntriesFromDictionary:v8];
     v9 = [v5 count];
     v10 = +[_APRSPrewarmRecommendation sharedInstance];
-    v11 = [v10 prewarmCount];
+    prewarmCount = [v10 prewarmCount];
 
-    if (v9 < v11)
+    if (v9 < prewarmCount)
     {
-      v12 = [v3 transitionDates];
-      v13 = [v12 firstObject];
+      transitionDates = [timelineCopy transitionDates];
+      firstObject = [transitionDates firstObject];
 
-      if (v13)
+      if (firstObject)
       {
-        v14 = [v3 valueAtDate:v13];
+        v14 = [timelineCopy valueAtDate:firstObject];
         [v5 addEntriesFromDictionary:v14];
       }
     }
@@ -199,11 +199,11 @@
   return v21;
 }
 
-+ (id)appActivationTimeScores:(id)a3
++ (id)appActivationTimeScores:(id)scores
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[_APRSBiomeEventAnalyzer sharedInstance];
-  v5 = [v4 meanDeltaTimeBetweenColdLaunchAndResume];
+  meanDeltaTimeBetweenColdLaunchAndResume = [v4 meanDeltaTimeBetweenColdLaunchAndResume];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -211,33 +211,33 @@
   v8[3] = &unk_1001B5608;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [meanDeltaTimeBetweenColdLaunchAndResume enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
 
-+ (id)scoresToConfidenceLevels:(id)a3
++ (id)scoresToConfidenceLevels:(id)levels
 {
-  v3 = a3;
+  levelsCopy = levels;
   +[NSMutableDictionary dictionary];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000105D4;
   v4 = v6[3] = &unk_1001B5608;
   v7 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [levelsCopy enumerateKeysAndObjectsUsingBlock:v6];
 
   return v4;
 }
 
-+ (id)evaluateRecommendationsFromTimeline:(id)a3
++ (id)evaluateRecommendationsFromTimeline:(id)timeline
 {
-  v3 = a3;
+  timelineCopy = timeline;
   v4 = os_log_create("com.apple.aprs", "appResume.PrewarmRecommendations");
   if ([objc_opt_class() isPrewarmAllowed])
   {
     v5 = +[NSMutableArray array];
-    v6 = [_APRSPrewarmRecommendation candidatesFromTimeline:v3];
+    v6 = [_APRSPrewarmRecommendation candidatesFromTimeline:timelineCopy];
     v7 = [v6 mutableCopy];
 
     if ([v7 count])
@@ -251,8 +251,8 @@
         sub_10011C108(v9, v4, v11, v12, v13, v14, v15, v16);
       }
 
-      v37 = v3;
-      v17 = [v9 allKeys];
+      v37 = timelineCopy;
+      allKeys = [v9 allKeys];
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
       v42[2] = sub_100010A58;
@@ -261,7 +261,7 @@
       v43 = v36;
       v35 = v10;
       v44 = v35;
-      v18 = [v17 sortedArrayUsingComparator:v42];
+      v18 = [allKeys sortedArrayUsingComparator:v42];
 
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
@@ -323,7 +323,7 @@
       v33 = v5;
 
       v7 = v36;
-      v3 = v37;
+      timelineCopy = v37;
     }
 
     else
@@ -392,11 +392,11 @@
     if (v6)
     {
       v8 = 134217984;
-      v9 = [v4 longValue];
+      longValue = [v4 longValue];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Trial: Prewarm count set to %lld", &v8, 0xCu);
     }
 
-    v7 = [v4 longValue];
+    longValue2 = [v4 longValue];
   }
 
   else
@@ -407,10 +407,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Trial: Failed to load prewarmCount", &v8, 2u);
     }
 
-    v7 = 3;
+    longValue2 = 3;
   }
 
-  self->_prewarmCount = v7;
+  self->_prewarmCount = longValue2;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PLPersistedPersonFaceMetadata
 + (id)_detectedFacePropertiesToFetch;
 + (id)_detectedFaceRelationshipKeyPathsToPrefetch;
-+ (id)_migrateDetectedFaces:(id)a3 forPersonMetadata:(id)a4 fromVersion:(unint64_t)a5;
-+ (id)_persistedFaceMetadataWithDetectedFace:(id)a3 isKeyFace:(BOOL)a4 isClusterRejected:(BOOL)a5;
-+ (id)_persistedFacesWithUnarchiver:(id)a3 key:(id)a4;
-+ (void)enumerateMatchedAssetsWithMetadata:(id)a3 inContext:(id)a4 withBlock:(id)a5;
++ (id)_migrateDetectedFaces:(id)faces forPersonMetadata:(id)metadata fromVersion:(unint64_t)version;
++ (id)_persistedFaceMetadataWithDetectedFace:(id)face isKeyFace:(BOOL)keyFace isClusterRejected:(BOOL)rejected;
++ (id)_persistedFacesWithUnarchiver:(id)unarchiver key:(id)key;
++ (void)enumerateMatchedAssetsWithMetadata:(id)metadata inContext:(id)context withBlock:(id)block;
 - (BOOL)isDeferrable;
-- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)a3 forConfirmedPersonUUID:(id)a4 diff:(id *)a5;
-- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)a3 forRejectedPersonUUID:(id)a4 diff:(id *)a5;
+- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)context forConfirmedPersonUUID:(id)d diff:(id *)diff;
+- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)context forRejectedPersonUUID:(id)d diff:(id *)diff;
 - (NSString)description;
-- (PLPersistedPersonFaceMetadata)initWithCoder:(id)a3;
+- (PLPersistedPersonFaceMetadata)initWithCoder:(id)coder;
 - (id)_identifier;
-- (id)_insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)a3 personUUID:(id)a4 isRejected:(BOOL)a5;
+- (id)_insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)context personUUID:(id)d isRejected:(BOOL)rejected;
 - (id)jsonDictionary;
-- (id)matchingFaceInManagedObejctContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)matchingFaceInManagedObejctContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLPersistedPersonFaceMetadata
@@ -33,11 +33,11 @@
     return 0;
   }
 
-  v5 = [(PLPersistedPersonFaceMetadata *)self detectionType];
-  if (v5)
+  detectionType = [(PLPersistedPersonFaceMetadata *)self detectionType];
+  if (detectionType)
   {
-    v6 = [(PLPersistedPersonFaceMetadata *)self detectionType];
-    v7 = [v6 integerValue] == 1;
+    detectionType2 = [(PLPersistedPersonFaceMetadata *)self detectionType];
+    v7 = [detectionType2 integerValue] == 1;
   }
 
   else
@@ -52,11 +52,11 @@
 {
   v34[15] = *MEMORY[0x1E69E9840];
   v33[0] = @"assetUUID";
-  v3 = [(PLPersistedPersonFaceMetadata *)self assetUUID];
-  v32 = v3;
-  if (v3)
+  assetUUID = [(PLPersistedPersonFaceMetadata *)self assetUUID];
+  v32 = assetUUID;
+  if (assetUUID)
   {
-    v4 = v3;
+    v4 = assetUUID;
   }
 
   else
@@ -66,11 +66,11 @@
 
   v34[0] = v4;
   v33[1] = @"assetCloudGUID";
-  v5 = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
-  v31 = v5;
-  if (v5)
+  assetCloudGUID = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
+  v31 = assetCloudGUID;
+  if (assetCloudGUID)
   {
-    v6 = v5;
+    v6 = assetCloudGUID;
   }
 
   else
@@ -115,12 +115,12 @@
   v16 = [v15 numberWithDouble:?];
   v34[8] = v16;
   v33[9] = @"detectionType";
-  v17 = [(PLPersistedPersonFaceMetadata *)self detectionType];
-  v18 = v17;
+  detectionType = [(PLPersistedPersonFaceMetadata *)self detectionType];
+  v18 = detectionType;
   v19 = &unk_1F0FBDA98;
-  if (v17)
+  if (detectionType)
   {
-    v19 = v17;
+    v19 = detectionType;
   }
 
   v34[9] = v19;
@@ -144,72 +144,72 @@
   return v25;
 }
 
-- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)a3 forRejectedPersonUUID:(id)a4 diff:(id *)a5
+- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)context forRejectedPersonUUID:(id)d diff:(id *)diff
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(PLPersistedPersonFaceMetadata *)self matchingFaceInManagedObejctContext:a3];
+  dCopy = d;
+  v9 = [(PLPersistedPersonFaceMetadata *)self matchingFaceInManagedObejctContext:context];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 rejectedPersons];
+    rejectedPersons = [v9 rejectedPersons];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __111__PLPersistedPersonFaceMetadata_matchesEntityInLibraryBackedByManagedObjectContext_forRejectedPersonUUID_diff___block_invoke;
     v26[3] = &unk_1E7571C60;
-    v12 = v8;
+    v12 = dCopy;
     v27 = v12;
-    v13 = [v11 objectsPassingTest:v26];
-    v14 = [v13 anyObject];
+    v13 = [rejectedPersons objectsPassingTest:v26];
+    anyObject = [v13 anyObject];
 
-    if (v14)
+    if (anyObject)
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      v16 = [MEMORY[0x1E695DF90] dictionary];
-      v17 = [v10 clusterRejectedPersons];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      clusterRejectedPersons = [v10 clusterRejectedPersons];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __111__PLPersistedPersonFaceMetadata_matchesEntityInLibraryBackedByManagedObjectContext_forRejectedPersonUUID_diff___block_invoke_2;
       v24[3] = &unk_1E7571C60;
       v25 = v12;
-      v18 = [v17 objectsPassingTest:v24];
-      v19 = [v18 anyObject];
+      v18 = [clusterRejectedPersons objectsPassingTest:v24];
+      anyObject2 = [v18 anyObject];
 
-      if ((v19 != 0) != [(PLPersistedPersonFaceMetadata *)self isClusterRejected])
+      if ((anyObject2 != 0) != [(PLPersistedPersonFaceMetadata *)self isClusterRejected])
       {
         v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLPersistedPersonFaceMetadata isClusterRejected](self, "isClusterRejected")}];
-        [v15 setObject:v20 forKey:@"isClusterRejected"];
+        [dictionary setObject:v20 forKey:@"isClusterRejected"];
 
-        v21 = [MEMORY[0x1E696AD98] numberWithBool:v19 != 0];
-        [v16 setObject:v21 forKey:@"isClusterRejected"];
+        v21 = [MEMORY[0x1E696AD98] numberWithBool:anyObject2 != 0];
+        [dictionary2 setObject:v21 forKey:@"isClusterRejected"];
       }
 
-      if (a5)
+      if (diff)
       {
         v28[0] = @"metadata";
         v28[1] = @"library";
-        v29[0] = v15;
-        v29[1] = v16;
-        *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
+        v29[0] = dictionary;
+        v29[1] = dictionary2;
+        *diff = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
       }
 
-      if ([v15 count])
+      if ([dictionary count])
       {
         v22 = 0;
       }
 
       else
       {
-        v22 = [v16 count] == 0;
+        v22 = [dictionary2 count] == 0;
       }
     }
 
     else
     {
       v22 = 0;
-      if (a5)
+      if (diff)
       {
-        *a5 = 0;
+        *diff = 0;
       }
     }
   }
@@ -217,9 +217,9 @@
   else
   {
     v22 = 0;
-    if (a5)
+    if (diff)
     {
-      *a5 = 0;
+      *diff = 0;
     }
   }
 
@@ -242,111 +242,111 @@ uint64_t __111__PLPersistedPersonFaceMetadata_matchesEntityInLibraryBackedByMana
   return v4;
 }
 
-- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)a3 forConfirmedPersonUUID:(id)a4 diff:(id *)a5
+- (BOOL)matchesEntityInLibraryBackedByManagedObjectContext:(id)context forConfirmedPersonUUID:(id)d diff:(id *)diff
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(PLPersistedPersonFaceMetadata *)self matchingFaceInManagedObejctContext:a3];
+  dCopy = d;
+  v9 = [(PLPersistedPersonFaceMetadata *)self matchingFaceInManagedObejctContext:context];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = [v9 personForFace];
-    v13 = [v12 personUUID];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    personForFace = [v9 personForFace];
+    personUUID = [personForFace personUUID];
     IsEqual = PLObjectIsEqual();
 
     if ((IsEqual & 1) == 0)
     {
-      [v10 _pl_setNonNilObject:v8 forKey:@"personUUID"];
-      v15 = [v9 personForFace];
-      v16 = [v15 personUUID];
-      [v11 _pl_setNonNilObject:v16 forKey:@"personUUID"];
+      [dictionary _pl_setNonNilObject:dCopy forKey:@"personUUID"];
+      personForFace2 = [v9 personForFace];
+      personUUID2 = [personForFace2 personUUID];
+      [dictionary2 _pl_setNonNilObject:personUUID2 forKey:@"personUUID"];
     }
 
-    v17 = [(PLPersistedPersonFaceMetadata *)self nameSource];
-    if (v17 != [v9 nameSource])
+    nameSource = [(PLPersistedPersonFaceMetadata *)self nameSource];
+    if (nameSource != [v9 nameSource])
     {
       v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[PLPersistedPersonFaceMetadata nameSource](self, "nameSource")}];
-      [v10 setObject:v18 forKey:@"nameSource"];
+      [dictionary setObject:v18 forKey:@"nameSource"];
 
       v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v9, "nameSource")}];
-      [v11 setObject:v19 forKey:@"nameSource"];
+      [dictionary2 setObject:v19 forKey:@"nameSource"];
     }
 
-    v20 = [(PLPersistedPersonFaceMetadata *)self cloudNameSource];
-    if (v20 != [v9 cloudNameSource])
+    cloudNameSource = [(PLPersistedPersonFaceMetadata *)self cloudNameSource];
+    if (cloudNameSource != [v9 cloudNameSource])
     {
       v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[PLPersistedPersonFaceMetadata cloudNameSource](self, "cloudNameSource")}];
-      [v10 setObject:v21 forKey:@"cloudNameSource"];
+      [dictionary setObject:v21 forKey:@"cloudNameSource"];
 
       v22 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v9, "cloudNameSource")}];
-      [v11 setObject:v22 forKey:@"cloudNameSource"];
+      [dictionary2 setObject:v22 forKey:@"cloudNameSource"];
     }
 
-    v23 = [(PLPersistedPersonFaceMetadata *)self isManual];
-    if (v23 != [v9 manual])
+    isManual = [(PLPersistedPersonFaceMetadata *)self isManual];
+    if (isManual != [v9 manual])
     {
       v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLPersistedPersonFaceMetadata isManual](self, "isManual")}];
-      [v10 setObject:v24 forKey:@"manual"];
+      [dictionary setObject:v24 forKey:@"manual"];
 
       v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v9, "manual")}];
-      [v11 setObject:v25 forKey:@"manual"];
+      [dictionary2 setObject:v25 forKey:@"manual"];
     }
 
-    v26 = [v9 personBeingKeyFace];
+    personBeingKeyFace = [v9 personBeingKeyFace];
 
-    if ((v26 != 0) != [(PLPersistedPersonFaceMetadata *)self isRepresentative])
+    if ((personBeingKeyFace != 0) != [(PLPersistedPersonFaceMetadata *)self isRepresentative])
     {
       v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLPersistedPersonFaceMetadata isRepresentative](self, "isRepresentative")}];
-      [v10 setObject:v27 forKey:@"isKeyFace"];
+      [dictionary setObject:v27 forKey:@"isKeyFace"];
 
-      v28 = [MEMORY[0x1E696AD98] numberWithBool:v26 != 0];
-      [v11 setObject:v28 forKey:@"isKeyFace"];
+      v28 = [MEMORY[0x1E696AD98] numberWithBool:personBeingKeyFace != 0];
+      [dictionary2 setObject:v28 forKey:@"isKeyFace"];
     }
 
-    if (a5)
+    if (diff)
     {
       v31[0] = @"metadata";
       v31[1] = @"library";
-      v32[0] = v10;
-      v32[1] = v11;
-      *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
+      v32[0] = dictionary;
+      v32[1] = dictionary2;
+      *diff = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
     }
 
-    if ([v10 count])
+    if ([dictionary count])
     {
       v29 = 0;
     }
 
     else
     {
-      v29 = [v11 count] == 0;
+      v29 = [dictionary2 count] == 0;
     }
   }
 
   else
   {
     v29 = 0;
-    if (a5)
+    if (diff)
     {
-      *a5 = 0;
+      *diff = 0;
     }
   }
 
   return v29;
 }
 
-- (id)matchingFaceInManagedObejctContext:(id)a3
+- (id)matchingFaceInManagedObejctContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = +[PLDetectedFace fetchRequest];
   v6 = MEMORY[0x1E696AE18];
-  v7 = [(PLPersistedPersonFaceMetadata *)self assetUUID];
-  v8 = [v6 predicateWithFormat:@"%K = %@", @"assetForFace.uuid", v7];
+  assetUUID = [(PLPersistedPersonFaceMetadata *)self assetUUID];
+  v8 = [v6 predicateWithFormat:@"%K = %@", @"assetForFace.uuid", assetUUID];
   [v5 setPredicate:v8];
 
-  [v4 executeFetchRequest:v5 error:0];
+  [contextCopy executeFetchRequest:v5 error:0];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -407,8 +407,8 @@ LABEL_13:
 - (id)_identifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
-  if (v4)
+  assetCloudGUID = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
+  if (assetCloudGUID)
   {
     [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
   }
@@ -428,14 +428,14 @@ LABEL_13:
   return v11;
 }
 
-- (id)_insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)a3 personUUID:(id)a4 isRejected:(BOOL)a5
+- (id)_insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)context personUUID:(id)d isRejected:(BOOL)rejected
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  rejectedCopy = rejected;
+  contextCopy = context;
+  dCopy = d;
   if ([(PLPersistedPersonFaceMetadata *)self isDeferrable])
   {
-    v10 = [(PLManagedObject *)PLDeferredRebuildFace insertInManagedObjectContext:v8];
+    v10 = [(PLManagedObject *)PLDeferredRebuildFace insertInManagedObjectContext:contextCopy];
     [(PLPersistedPersonFaceMetadata *)self centerX];
     [v10 setCenterX:?];
     [(PLPersistedPersonFaceMetadata *)self centerY];
@@ -446,29 +446,29 @@ LABEL_13:
     [v10 setHidden:{-[PLPersistedPersonFaceMetadata isHidden](self, "isHidden")}];
     [v10 setNameSource:{-[PLPersistedPersonFaceMetadata nameSource](self, "nameSource")}];
     [v10 setCloudNameSource:{-[PLPersistedPersonFaceMetadata cloudNameSource](self, "cloudNameSource")}];
-    v11 = [(PLPersistedPersonFaceMetadata *)self assetUUID];
-    [v10 setAssetUUID:v11];
+    assetUUID = [(PLPersistedPersonFaceMetadata *)self assetUUID];
+    [v10 setAssetUUID:assetUUID];
 
-    v12 = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
-    [v10 setAssetCloudGUID:v12];
+    assetCloudGUID = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
+    [v10 setAssetCloudGUID:assetCloudGUID];
 
-    [v10 setRejected:v5];
+    [v10 setRejected:rejectedCopy];
     [v10 setClusterRejected:{-[PLPersistedPersonFaceMetadata isClusterRejected](self, "isClusterRejected")}];
-    [v10 setPersonUUID:v9];
-    v13 = [MEMORY[0x1E69BF320] UUIDString];
-    [v10 setUuid:v13];
+    [v10 setPersonUUID:dCopy];
+    uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+    [v10 setUuid:uUIDString];
 
     if ([(PLPersistedPersonFaceMetadata *)self faceAlgorithmVersion])
     {
-      v14 = [(PLPersistedPersonFaceMetadata *)self faceAlgorithmVersion];
+      faceAlgorithmVersion = [(PLPersistedPersonFaceMetadata *)self faceAlgorithmVersion];
     }
 
     else
     {
-      v14 = 1;
+      faceAlgorithmVersion = 1;
     }
 
-    [v10 setFaceAlgorithmVersion:v14];
+    [v10 setFaceAlgorithmVersion:faceAlgorithmVersion];
   }
 
   else
@@ -484,8 +484,8 @@ LABEL_13:
   v23.receiver = self;
   v23.super_class = PLPersistedPersonFaceMetadata;
   v3 = [(PLPersistedPersonFaceMetadata *)&v23 description];
-  v4 = [(PLPersistedPersonFaceMetadata *)self assetUUID];
-  v5 = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
+  assetUUID = [(PLPersistedPersonFaceMetadata *)self assetUUID];
+  assetCloudGUID = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
   [(PLPersistedPersonFaceMetadata *)self size];
   v7 = v6;
   [(PLPersistedPersonFaceMetadata *)self centerX];
@@ -500,133 +500,133 @@ LABEL_13:
   v17 = v16;
   [(PLPersistedPersonFaceMetadata *)self bodyHeight];
   v19 = v18;
-  v20 = [(PLPersistedPersonFaceMetadata *)self detectionType];
-  v21 = [v3 stringByAppendingFormat:@" face on %@ [%@] (face: %6.6f @ %6.6f, %6.6f) (body: %6.6fx%6.6f @ %6.6f, %6.6f) type:%d isKey:%d [manual:%d hidden:%d nameSource:%d]", v4, v5, v7, v9, v11, v13, v15, v17, v19, objc_msgSend(v20, "intValue"), -[PLPersistedPersonFaceMetadata isRepresentative](self, "isRepresentative"), -[PLPersistedPersonFaceMetadata isManual](self, "isManual"), -[PLPersistedPersonFaceMetadata isHidden](self, "isHidden"), -[PLPersistedPersonFaceMetadata nameSource](self, "nameSource")];
+  detectionType = [(PLPersistedPersonFaceMetadata *)self detectionType];
+  v21 = [v3 stringByAppendingFormat:@" face on %@ [%@] (face: %6.6f @ %6.6f, %6.6f) (body: %6.6fx%6.6f @ %6.6f, %6.6f) type:%d isKey:%d [manual:%d hidden:%d nameSource:%d]", assetUUID, assetCloudGUID, v7, v9, v11, v13, v15, v17, v19, objc_msgSend(detectionType, "intValue"), -[PLPersistedPersonFaceMetadata isRepresentative](self, "isRepresentative"), -[PLPersistedPersonFaceMetadata isManual](self, "isManual"), -[PLPersistedPersonFaceMetadata isHidden](self, "isHidden"), -[PLPersistedPersonFaceMetadata nameSource](self, "nameSource")];
 
   return v21;
 }
 
-- (PLPersistedPersonFaceMetadata)initWithCoder:(id)a3
+- (PLPersistedPersonFaceMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PLPersistedPersonFaceMetadata;
   v5 = [(PLPersistedPersonFaceMetadata *)&v12 init];
-  [v4 decodeDoubleForKey:@"centerX"];
+  [coderCopy decodeDoubleForKey:@"centerX"];
   [(PLPersistedPersonFaceMetadata *)v5 setCenterX:?];
-  [v4 decodeDoubleForKey:@"centerY"];
+  [coderCopy decodeDoubleForKey:@"centerY"];
   [(PLPersistedPersonFaceMetadata *)v5 setCenterY:?];
-  [v4 decodeDoubleForKey:@"size"];
+  [coderCopy decodeDoubleForKey:@"size"];
   [(PLPersistedPersonFaceMetadata *)v5 setSize:?];
-  [v4 decodeDoubleForKey:@"bodyCenterX"];
+  [coderCopy decodeDoubleForKey:@"bodyCenterX"];
   [(PLPersistedPersonFaceMetadata *)v5 setBodyCenterX:?];
-  [v4 decodeDoubleForKey:@"bodyCenterY"];
+  [coderCopy decodeDoubleForKey:@"bodyCenterY"];
   [(PLPersistedPersonFaceMetadata *)v5 setBodyCenterY:?];
-  [v4 decodeDoubleForKey:@"bodyWidth"];
+  [coderCopy decodeDoubleForKey:@"bodyWidth"];
   [(PLPersistedPersonFaceMetadata *)v5 setBodyWidth:?];
-  [v4 decodeDoubleForKey:@"bodyHeight"];
+  [coderCopy decodeDoubleForKey:@"bodyHeight"];
   [(PLPersistedPersonFaceMetadata *)v5 setBodyHeight:?];
-  if ([v4 containsValueForKey:@"detectionType"])
+  if ([coderCopy containsValueForKey:@"detectionType"])
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "decodeIntForKey:", @"detectionType"}];
+    v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(coderCopy, "decodeIntForKey:", @"detectionType"}];
     [(PLPersistedPersonFaceMetadata *)v5 setDetectionType:v6];
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetUUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetUUID"];
   [(PLPersistedPersonFaceMetadata *)v5 setAssetUUID:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetCloudGUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetCloudGUID"];
   [(PLPersistedPersonFaceMetadata *)v5 setAssetCloudGUID:v8];
 
-  -[PLPersistedPersonFaceMetadata setHidden:](v5, "setHidden:", [v4 decodeBoolForKey:@"isHidden"]);
-  -[PLPersistedPersonFaceMetadata setManual:](v5, "setManual:", [v4 decodeBoolForKey:@"isManual"]);
-  -[PLPersistedPersonFaceMetadata setRepresentative:](v5, "setRepresentative:", [v4 decodeBoolForKey:@"isRepresentative"]);
-  -[PLPersistedPersonFaceMetadata setFaceAlgorithmVersion:](v5, "setFaceAlgorithmVersion:", [v4 decodeInt32ForKey:@"faceAlgorithmVersion"]);
-  if ([v4 containsValueForKey:@"isNameSourceAuto"])
+  -[PLPersistedPersonFaceMetadata setHidden:](v5, "setHidden:", [coderCopy decodeBoolForKey:@"isHidden"]);
+  -[PLPersistedPersonFaceMetadata setManual:](v5, "setManual:", [coderCopy decodeBoolForKey:@"isManual"]);
+  -[PLPersistedPersonFaceMetadata setRepresentative:](v5, "setRepresentative:", [coderCopy decodeBoolForKey:@"isRepresentative"]);
+  -[PLPersistedPersonFaceMetadata setFaceAlgorithmVersion:](v5, "setFaceAlgorithmVersion:", [coderCopy decodeInt32ForKey:@"faceAlgorithmVersion"]);
+  if ([coderCopy containsValueForKey:@"isNameSourceAuto"])
   {
-    v9 = [v4 decodeBoolForKey:@"isNameSourceAuto"] ^ 1;
+    v9 = [coderCopy decodeBoolForKey:@"isNameSourceAuto"] ^ 1;
   }
 
   else
   {
-    v9 = [v4 decodeIntegerForKey:@"nameSource"];
+    v9 = [coderCopy decodeIntegerForKey:@"nameSource"];
   }
 
   [(PLPersistedPersonFaceMetadata *)v5 setNameSource:v9];
-  if ([v4 containsValueForKey:@"cloudNameSource"])
+  if ([coderCopy containsValueForKey:@"cloudNameSource"])
   {
-    v10 = [v4 decodeIntForKey:@"cloudNameSource"];
+    nameSource = [coderCopy decodeIntForKey:@"cloudNameSource"];
   }
 
   else
   {
-    v10 = [(PLPersistedPersonFaceMetadata *)v5 nameSource];
+    nameSource = [(PLPersistedPersonFaceMetadata *)v5 nameSource];
   }
 
-  [(PLPersistedPersonFaceMetadata *)v5 setCloudNameSource:v10];
-  if ([v4 containsValueForKey:@"isClusterRejected"])
+  [(PLPersistedPersonFaceMetadata *)v5 setCloudNameSource:nameSource];
+  if ([coderCopy containsValueForKey:@"isClusterRejected"])
   {
-    -[PLPersistedPersonFaceMetadata setClusterRejected:](v5, "setClusterRejected:", [v4 decodeBoolForKey:@"isClusterRejected"]);
+    -[PLPersistedPersonFaceMetadata setClusterRejected:](v5, "setClusterRejected:", [coderCopy decodeBoolForKey:@"isClusterRejected"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   [(PLPersistedPersonFaceMetadata *)self centerX];
-  [v8 encodeDouble:@"centerX" forKey:?];
+  [coderCopy encodeDouble:@"centerX" forKey:?];
   [(PLPersistedPersonFaceMetadata *)self centerY];
-  [v8 encodeDouble:@"centerY" forKey:?];
+  [coderCopy encodeDouble:@"centerY" forKey:?];
   [(PLPersistedPersonFaceMetadata *)self size];
-  [v8 encodeDouble:@"size" forKey:?];
+  [coderCopy encodeDouble:@"size" forKey:?];
   [(PLPersistedPersonFaceMetadata *)self bodyCenterX];
-  [v8 encodeDouble:@"bodyCenterX" forKey:?];
+  [coderCopy encodeDouble:@"bodyCenterX" forKey:?];
   [(PLPersistedPersonFaceMetadata *)self bodyCenterY];
-  [v8 encodeDouble:@"bodyCenterY" forKey:?];
+  [coderCopy encodeDouble:@"bodyCenterY" forKey:?];
   [(PLPersistedPersonFaceMetadata *)self bodyWidth];
-  [v8 encodeDouble:@"bodyWidth" forKey:?];
+  [coderCopy encodeDouble:@"bodyWidth" forKey:?];
   [(PLPersistedPersonFaceMetadata *)self bodyHeight];
-  [v8 encodeDouble:@"bodyHeight" forKey:?];
-  v4 = [(PLPersistedPersonFaceMetadata *)self detectionType];
+  [coderCopy encodeDouble:@"bodyHeight" forKey:?];
+  detectionType = [(PLPersistedPersonFaceMetadata *)self detectionType];
 
-  if (v4)
+  if (detectionType)
   {
-    v5 = [(PLPersistedPersonFaceMetadata *)self detectionType];
-    [v8 encodeInt:objc_msgSend(v5 forKey:{"intValue"), @"detectionType"}];
+    detectionType2 = [(PLPersistedPersonFaceMetadata *)self detectionType];
+    [coderCopy encodeInt:objc_msgSend(detectionType2 forKey:{"intValue"), @"detectionType"}];
   }
 
-  v6 = [(PLPersistedPersonFaceMetadata *)self assetUUID];
-  [v8 encodeObject:v6 forKey:@"assetUUID"];
+  assetUUID = [(PLPersistedPersonFaceMetadata *)self assetUUID];
+  [coderCopy encodeObject:assetUUID forKey:@"assetUUID"];
 
-  v7 = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
-  [v8 encodeObject:v7 forKey:@"assetCloudGUID"];
+  assetCloudGUID = [(PLPersistedPersonFaceMetadata *)self assetCloudGUID];
+  [coderCopy encodeObject:assetCloudGUID forKey:@"assetCloudGUID"];
 
-  [v8 encodeBool:-[PLPersistedPersonFaceMetadata isHidden](self forKey:{"isHidden"), @"isHidden"}];
-  [v8 encodeBool:-[PLPersistedPersonFaceMetadata isManual](self forKey:{"isManual"), @"isManual"}];
-  [v8 encodeBool:-[PLPersistedPersonFaceMetadata isRepresentative](self forKey:{"isRepresentative"), @"isRepresentative"}];
-  [v8 encodeInteger:-[PLPersistedPersonFaceMetadata nameSource](self forKey:{"nameSource"), @"nameSource"}];
-  [v8 encodeInteger:-[PLPersistedPersonFaceMetadata cloudNameSource](self forKey:{"cloudNameSource"), @"cloudNameSource"}];
-  [v8 encodeBool:-[PLPersistedPersonFaceMetadata isClusterRejected](self forKey:{"isClusterRejected"), @"isClusterRejected"}];
-  [v8 encodeInt32:-[PLPersistedPersonFaceMetadata faceAlgorithmVersion](self forKey:{"faceAlgorithmVersion"), @"faceAlgorithmVersion"}];
+  [coderCopy encodeBool:-[PLPersistedPersonFaceMetadata isHidden](self forKey:{"isHidden"), @"isHidden"}];
+  [coderCopy encodeBool:-[PLPersistedPersonFaceMetadata isManual](self forKey:{"isManual"), @"isManual"}];
+  [coderCopy encodeBool:-[PLPersistedPersonFaceMetadata isRepresentative](self forKey:{"isRepresentative"), @"isRepresentative"}];
+  [coderCopy encodeInteger:-[PLPersistedPersonFaceMetadata nameSource](self forKey:{"nameSource"), @"nameSource"}];
+  [coderCopy encodeInteger:-[PLPersistedPersonFaceMetadata cloudNameSource](self forKey:{"cloudNameSource"), @"cloudNameSource"}];
+  [coderCopy encodeBool:-[PLPersistedPersonFaceMetadata isClusterRejected](self forKey:{"isClusterRejected"), @"isClusterRejected"}];
+  [coderCopy encodeInt32:-[PLPersistedPersonFaceMetadata faceAlgorithmVersion](self forKey:{"faceAlgorithmVersion"), @"faceAlgorithmVersion"}];
 }
 
-+ (void)enumerateMatchedAssetsWithMetadata:(id)a3 inContext:(id)a4 withBlock:(id)a5
++ (void)enumerateMatchedAssetsWithMetadata:(id)metadata inContext:(id)context withBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v20 = [v7 _pl_map:&__block_literal_global_118];
-  v21 = v8;
+  metadataCopy = metadata;
+  contextCopy = context;
+  blockCopy = block;
+  v20 = [metadataCopy _pl_map:&__block_literal_global_118];
+  v21 = contextCopy;
   v19 = [PLManagedAsset assetsWithUUIDs:"assetsWithUUIDs:options:inManagedObjectContext:" options:? inManagedObjectContext:?];
   v10 = [v19 _pl_indexBy:&__block_literal_global_122_76918];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v7;
+  v11 = metadataCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -642,12 +642,12 @@ LABEL_13:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v16 assetUUID];
-        v18 = [v10 objectForKeyedSubscript:v17];
+        assetUUID = [v16 assetUUID];
+        v18 = [v10 objectForKeyedSubscript:assetUUID];
 
-        if (v9)
+        if (blockCopy)
         {
-          v9[2](v9, v16, v18);
+          blockCopy[2](blockCopy, v16, v18);
         }
       }
 
@@ -658,43 +658,43 @@ LABEL_13:
   }
 }
 
-+ (id)_persistedFacesWithUnarchiver:(id)a3 key:(id)a4
++ (id)_persistedFacesWithUnarchiver:(id)unarchiver key:(id)key
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  unarchiverCopy = unarchiver;
   v8 = objc_opt_class();
   v9 = [v5 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v7 decodeObjectOfClasses:v9 forKey:v6];
+  v10 = [unarchiverCopy decodeObjectOfClasses:v9 forKey:keyCopy];
 
   return v10;
 }
 
-+ (id)_migrateDetectedFaces:(id)a3 forPersonMetadata:(id)a4 fromVersion:(unint64_t)a5
++ (id)_migrateDetectedFaces:(id)faces forPersonMetadata:(id)metadata fromVersion:(unint64_t)version
 {
   v81 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  facesCopy = faces;
+  metadataCopy = metadata;
+  if ([facesCopy count])
   {
-    v9 = [v8 personUUID];
+    personUUID = [metadataCopy personUUID];
     v10 = PLMigrationGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v78 = [v7 count];
+      v78 = [facesCopy count];
       v79 = 2112;
-      v80 = v9;
+      v80 = personUUID;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Migrating %lu faces metadata for person %@", buf, 0x16u);
     }
 
-    if (a5 <= 2)
+    if (version <= 2)
     {
       v11 = PLMigrationGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v78 = v9;
+        v78 = personUUID;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Resetting name source on persisted faces during rebuild for person %@", buf, 0xCu);
       }
 
@@ -702,7 +702,7 @@ LABEL_13:
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v12 = v7;
+      v12 = facesCopy;
       v13 = [v12 countByEnumeratingWithState:&v68 objects:v76 count:16];
       if (v13)
       {
@@ -727,13 +727,13 @@ LABEL_13:
       }
     }
 
-    if (a5 <= 7)
+    if (version <= 7)
     {
       v17 = PLMigrationGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v78 = v9;
+        v78 = personUUID;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Fixing name source on manual faces during rebuild for person %@", buf, 0xCu);
       }
 
@@ -741,7 +741,7 @@ LABEL_13:
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v18 = v7;
+      v18 = facesCopy;
       v19 = [v18 countByEnumeratingWithState:&v64 objects:v75 count:16];
       if (v19)
       {
@@ -786,7 +786,7 @@ LABEL_13:
 
       v60 = 0u;
       v61 = 0u;
-      if ([v8 verifiedType] == 2)
+      if ([metadataCopy verifiedType] == 2)
       {
         v26 = 5;
       }
@@ -834,7 +834,7 @@ LABEL_13:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v78 = v9;
+        v78 = personUUID;
         v79 = 2048;
         v80 = v26;
         _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEFAULT, "Person %@ is missing named face during rebuild, will set representative face nameSource to %ld", buf, 0x16u);
@@ -881,19 +881,19 @@ LABEL_13:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v78 = v8;
+        v78 = metadataCopy;
         _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "Persisted person %@ has zero named faces, no representative face. Unable to choose a face for face crop generation", buf, 0xCu);
       }
 
 LABEL_56:
 
-      v39 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v52 = 0u;
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v7 = v27;
-      v40 = [v7 countByEnumeratingWithState:&v52 objects:v72 count:16];
+      facesCopy = v27;
+      v40 = [facesCopy countByEnumeratingWithState:&v52 objects:v72 count:16];
       if (v40)
       {
         v41 = v40;
@@ -904,24 +904,24 @@ LABEL_56:
           {
             if (*v53 != v42)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(facesCopy);
             }
 
             v44 = *(*(&v52 + 1) + 8 * n);
             if ([v44 nameSource] == 5 || objc_msgSend(v44, "nameSource") == 1 || objc_msgSend(v44, "nameSource") == 3 || objc_msgSend(v44, "isManual"))
             {
-              [v39 addObject:v44];
+              [array addObject:v44];
             }
           }
 
-          v41 = [v7 countByEnumeratingWithState:&v52 objects:v72 count:16];
+          v41 = [facesCopy countByEnumeratingWithState:&v52 objects:v72 count:16];
         }
 
         while (v41);
       }
 
-      v45 = [v7 count];
-      v46 = [v39 count];
+      v45 = [facesCopy count];
+      v46 = [array count];
       v47 = v45 - v46;
       if (v45 != v46)
       {
@@ -936,59 +936,59 @@ LABEL_56:
           _os_log_impl(&dword_19BF1F000, v49, OS_LOG_TYPE_DEFAULT, "Removing %ld non-user named faces from facesMetadata, %ld user named faces remaining", buf, 0x16u);
         }
 
-        v50 = v39;
-        v7 = v50;
+        v50 = array;
+        facesCopy = v50;
       }
     }
   }
 
-  return v7;
+  return facesCopy;
 }
 
-+ (id)_persistedFaceMetadataWithDetectedFace:(id)a3 isKeyFace:(BOOL)a4 isClusterRejected:(BOOL)a5
++ (id)_persistedFaceMetadataWithDetectedFace:(id)face isKeyFace:(BOOL)keyFace isClusterRejected:(BOOL)rejected
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (!v9)
+  rejectedCopy = rejected;
+  keyFaceCopy = keyFace;
+  faceCopy = face;
+  if (!faceCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLPersistedPersonMetadata.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"face"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPersistedPersonMetadata.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"face"}];
   }
 
-  v10 = [v9 associatedAssetForFaceOrTorso:1 orTemporal:0];
-  v11 = [v10 uuid];
-  if (v11)
+  v10 = [faceCopy associatedAssetForFaceOrTorso:1 orTemporal:0];
+  uuid = [v10 uuid];
+  if (uuid)
   {
-    v12 = objc_alloc_init(a1);
-    [v12 setAssetUUID:v11];
-    v13 = [v10 cloudAssetGUID];
-    [v12 setAssetCloudGUID:v13];
+    v12 = objc_alloc_init(self);
+    [v12 setAssetUUID:uuid];
+    cloudAssetGUID = [v10 cloudAssetGUID];
+    [v12 setAssetCloudGUID:cloudAssetGUID];
 
-    [v9 centerX];
+    [faceCopy centerX];
     [v12 setCenterX:?];
-    [v9 centerY];
+    [faceCopy centerY];
     [v12 setCenterY:?];
-    [v9 size];
+    [faceCopy size];
     [v12 setSize:?];
-    [v9 bodyCenterX];
+    [faceCopy bodyCenterX];
     [v12 setBodyCenterX:?];
-    [v9 bodyCenterY];
+    [faceCopy bodyCenterY];
     [v12 setBodyCenterY:?];
-    [v9 bodyWidth];
+    [faceCopy bodyWidth];
     [v12 setBodyWidth:?];
-    [v9 bodyHeight];
+    [faceCopy bodyHeight];
     [v12 setBodyHeight:?];
-    v14 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v9, "detectionType")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(faceCopy, "detectionType")}];
     [v12 setDetectionType:v14];
 
-    [v12 setHidden:{objc_msgSend(v9, "hidden")}];
-    [v12 setManual:{objc_msgSend(v9, "manual")}];
-    [v12 setRepresentative:v6];
-    [v12 setNameSource:{objc_msgSend(v9, "nameSource")}];
-    [v12 setCloudNameSource:{objc_msgSend(v9, "cloudNameSource")}];
-    [v12 setClusterRejected:v5];
-    [v12 setFaceAlgorithmVersion:{objc_msgSend(v9, "faceAlgorithmVersion")}];
+    [v12 setHidden:{objc_msgSend(faceCopy, "hidden")}];
+    [v12 setManual:{objc_msgSend(faceCopy, "manual")}];
+    [v12 setRepresentative:keyFaceCopy];
+    [v12 setNameSource:{objc_msgSend(faceCopy, "nameSource")}];
+    [v12 setCloudNameSource:{objc_msgSend(faceCopy, "cloudNameSource")}];
+    [v12 setClusterRejected:rejectedCopy];
+    [v12 setFaceAlgorithmVersion:{objc_msgSend(faceCopy, "faceAlgorithmVersion")}];
   }
 
   else

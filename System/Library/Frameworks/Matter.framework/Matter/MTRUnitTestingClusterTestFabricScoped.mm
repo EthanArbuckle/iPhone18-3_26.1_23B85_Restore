@@ -1,6 +1,6 @@
 @interface MTRUnitTestingClusterTestFabricScoped
 - (MTRUnitTestingClusterTestFabricScoped)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,9 +33,9 @@
     fabricSensitiveStruct = v3->_fabricSensitiveStruct;
     v3->_fabricSensitiveStruct = v9;
 
-    v11 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     fabricSensitiveInt8uList = v3->_fabricSensitiveInt8uList;
-    v3->_fabricSensitiveInt8uList = v11;
+    v3->_fabricSensitiveInt8uList = array;
 
     fabricIndex = v3->_fabricIndex;
     v3->_fabricIndex = &unk_284C3E588;
@@ -44,32 +44,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestFabricScoped);
-  v5 = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveInt8u];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveInt8u:v5];
+  fabricSensitiveInt8u = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveInt8u];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveInt8u:fabricSensitiveInt8u];
 
-  v6 = [(MTRUnitTestingClusterTestFabricScoped *)self optionalFabricSensitiveInt8u];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setOptionalFabricSensitiveInt8u:v6];
+  optionalFabricSensitiveInt8u = [(MTRUnitTestingClusterTestFabricScoped *)self optionalFabricSensitiveInt8u];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setOptionalFabricSensitiveInt8u:optionalFabricSensitiveInt8u];
 
-  v7 = [(MTRUnitTestingClusterTestFabricScoped *)self nullableFabricSensitiveInt8u];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setNullableFabricSensitiveInt8u:v7];
+  nullableFabricSensitiveInt8u = [(MTRUnitTestingClusterTestFabricScoped *)self nullableFabricSensitiveInt8u];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setNullableFabricSensitiveInt8u:nullableFabricSensitiveInt8u];
 
-  v8 = [(MTRUnitTestingClusterTestFabricScoped *)self nullableOptionalFabricSensitiveInt8u];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setNullableOptionalFabricSensitiveInt8u:v8];
+  nullableOptionalFabricSensitiveInt8u = [(MTRUnitTestingClusterTestFabricScoped *)self nullableOptionalFabricSensitiveInt8u];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setNullableOptionalFabricSensitiveInt8u:nullableOptionalFabricSensitiveInt8u];
 
-  v9 = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveCharString];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveCharString:v9];
+  fabricSensitiveCharString = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveCharString];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveCharString:fabricSensitiveCharString];
 
-  v10 = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveStruct];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveStruct:v10];
+  fabricSensitiveStruct = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveStruct];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveStruct:fabricSensitiveStruct];
 
-  v11 = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveInt8uList];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveInt8uList:v11];
+  fabricSensitiveInt8uList = [(MTRUnitTestingClusterTestFabricScoped *)self fabricSensitiveInt8uList];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricSensitiveInt8uList:fabricSensitiveInt8uList];
 
-  v12 = [(MTRUnitTestingClusterTestFabricScoped *)self fabricIndex];
-  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricIndex:v12];
+  fabricIndex = [(MTRUnitTestingClusterTestFabricScoped *)self fabricIndex];
+  [(MTRUnitTestingClusterTestFabricScoped *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

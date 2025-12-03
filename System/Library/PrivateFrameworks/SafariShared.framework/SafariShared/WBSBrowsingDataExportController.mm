@@ -1,12 +1,12 @@
 @interface WBSBrowsingDataExportController
 + (NSString)defaultExportFolderName;
-+ (id)fileURLFromExportFolderURL:(id)a3 profileTitle:(id)a4 forBrowsingDataExportType:(unint64_t)a5;
-+ (id)iconForBrowsingDataExportType:(unint64_t)a3;
-+ (id)labelForBrowsingDataExportType:(unint64_t)a3 withCount:(unint64_t)a4;
-+ (id)titleForBrowsingDataExportType:(unint64_t)a3;
-- (void)_exportToTemporaryFolderWithURL:(id)a3 completionHandler:(id)a4;
-- (void)computeNumberOfItemsToBeExportedForBrowsingDataExportType:(unint64_t)a3 usingBlock:(id)a4;
-- (void)exportToZipArchiveAtURL:(id)a3 completionHandler:(id)a4;
++ (id)fileURLFromExportFolderURL:(id)l profileTitle:(id)title forBrowsingDataExportType:(unint64_t)type;
++ (id)iconForBrowsingDataExportType:(unint64_t)type;
++ (id)labelForBrowsingDataExportType:(unint64_t)type withCount:(unint64_t)count;
++ (id)titleForBrowsingDataExportType:(unint64_t)type;
+- (void)_exportToTemporaryFolderWithURL:(id)l completionHandler:(id)handler;
+- (void)computeNumberOfItemsToBeExportedForBrowsingDataExportType:(unint64_t)type usingBlock:(id)block;
+- (void)exportToZipArchiveAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSBrowsingDataExportController
@@ -25,16 +25,16 @@
   return v7;
 }
 
-+ (id)iconForBrowsingDataExportType:(unint64_t)a3
++ (id)iconForBrowsingDataExportType:(unint64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return @"book";
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       return @"clock";
     }
@@ -42,7 +42,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 4uLL:
         return @"puzzlepiece.extension";
@@ -56,18 +56,18 @@
   return &stru_1F3A5E418;
 }
 
-+ (id)titleForBrowsingDataExportType:(unint64_t)a3
++ (id)titleForBrowsingDataExportType:(unint64_t)type
 {
   v4 = &stru_1F3A5E418;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1 || a3 == 2)
+    if (type == 1 || type == 2)
     {
       goto LABEL_8;
     }
   }
 
-  else if (a3 == 4 || a3 == 8 || a3 == 16)
+  else if (type == 4 || type == 8 || type == 16)
   {
 LABEL_8:
     v4 = _WBSLocalizedString();
@@ -76,19 +76,19 @@ LABEL_8:
   return v4;
 }
 
-+ (id)labelForBrowsingDataExportType:(unint64_t)a3 withCount:(unint64_t)a4
++ (id)labelForBrowsingDataExportType:(unint64_t)type withCount:(unint64_t)count
 {
   v5 = &stru_1F3A5E418;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v6 = MEMORY[0x1E696AEC0];
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_13;
       }
@@ -99,7 +99,7 @@ LABEL_8:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 4uLL:
         v6 = MEMORY[0x1E696AEC0];
@@ -116,32 +116,32 @@ LABEL_8:
   }
 
   v7 = _WBSLocalizedString();
-  v5 = [v6 localizedStringWithFormat:v7, a4];
+  v5 = [v6 localizedStringWithFormat:v7, count];
 
 LABEL_13:
 
   return v5;
 }
 
-+ (id)fileURLFromExportFolderURL:(id)a3 profileTitle:(id)a4 forBrowsingDataExportType:(unint64_t)a5
++ (id)fileURLFromExportFolderURL:(id)l profileTitle:(id)title forBrowsingDataExportType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  lCopy = l;
+  titleCopy = title;
+  v9 = titleCopy;
   v10 = 0;
-  if (a5 > 3)
+  if (type > 3)
   {
-    if (a5 != 4)
+    if (type != 4)
     {
-      if (a5 != 8)
+      if (type != 8)
       {
-        if (a5 != 16)
+        if (type != 16)
         {
           goto LABEL_18;
         }
 
         v11 = _WBSLocalizedString();
-        v12 = [v7 URLByAppendingPathComponent:v11];
+        v12 = [lCopy URLByAppendingPathComponent:v11];
         v13 = v12;
         v14 = @"csv";
         goto LABEL_16;
@@ -150,7 +150,7 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    if (v8)
+    if (titleCopy)
     {
       v15 = MEMORY[0x1E696AEC0];
       goto LABEL_12;
@@ -158,16 +158,16 @@ LABEL_13:
 
 LABEL_15:
     v11 = _WBSLocalizedString();
-    v12 = [v7 URLByAppendingPathComponent:v11];
+    v12 = [lCopy URLByAppendingPathComponent:v11];
     v13 = v12;
     v14 = @"json";
     goto LABEL_16;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v11 = _WBSLocalizedString();
-    v12 = [v7 URLByAppendingPathComponent:v11];
+    v12 = [lCopy URLByAppendingPathComponent:v11];
     v13 = v12;
     v14 = @"html";
 LABEL_16:
@@ -175,12 +175,12 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a5 != 2)
+  if (type != 2)
   {
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!titleCopy)
   {
     goto LABEL_15;
   }
@@ -189,7 +189,7 @@ LABEL_16:
 LABEL_12:
   v11 = _WBSLocalizedString();
   v13 = [v15 localizedStringWithFormat:v11, v9];
-  v16 = [v7 URLByAppendingPathComponent:v13];
+  v16 = [lCopy URLByAppendingPathComponent:v13];
   v10 = [v16 URLByAppendingPathExtension:@"json"];
 
 LABEL_17:
@@ -198,10 +198,10 @@ LABEL_18:
   return v10;
 }
 
-- (void)_exportToTemporaryFolderWithURL:(id)a3 completionHandler:(id)a4
+- (void)_exportToTemporaryFolderWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
   selectedBrowsingDataExportTypes = self->_selectedBrowsingDataExportTypes;
   if ((selectedBrowsingDataExportTypes & 2) != 0)
@@ -218,7 +218,7 @@ LABEL_18:
     v31[2] = __85__WBSBrowsingDataExportController__exportToTemporaryFolderWithURL_completionHandler___block_invoke;
     v31[3] = &unk_1E7FB6D90;
     v32 = v8;
-    [(WBSBrowsingDataExportController *)self _exportHistoryToDirectoryWithURL:v6 completionHandler:v31];
+    [(WBSBrowsingDataExportController *)self _exportHistoryToDirectoryWithURL:lCopy completionHandler:v31];
 
     selectedBrowsingDataExportTypes = self->_selectedBrowsingDataExportTypes;
     if ((selectedBrowsingDataExportTypes & 1) == 0)
@@ -244,7 +244,7 @@ LABEL_3:
     [WBSBrowsingDataExportController _exportToTemporaryFolderWithURL:completionHandler:];
   }
 
-  v12 = [objc_opt_class() fileURLFromExportFolderURL:v6 profileTitle:0 forBrowsingDataExportType:1];
+  v12 = [objc_opt_class() fileURLFromExportFolderURL:lCopy profileTitle:0 forBrowsingDataExportType:1];
   dispatch_group_enter(v8);
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -272,10 +272,10 @@ LABEL_13:
     [WBSBrowsingDataExportController _exportToTemporaryFolderWithURL:completionHandler:];
   }
 
-  v14 = [objc_opt_class() fileURLFromExportFolderURL:v6 profileTitle:0 forBrowsingDataExportType:16];
-  v15 = [MEMORY[0x1E69C8A38] sharedStore];
-  v16 = [v14 path];
-  [v15 exportContentsOfAccountStoreToCSVFileWithPath:v16];
+  v14 = [objc_opt_class() fileURLFromExportFolderURL:lCopy profileTitle:0 forBrowsingDataExportType:16];
+  mEMORY[0x1E69C8A38] = [MEMORY[0x1E69C8A38] sharedStore];
+  path = [v14 path];
+  [mEMORY[0x1E69C8A38] exportContentsOfAccountStoreToCSVFileWithPath:path];
 
   selectedBrowsingDataExportTypes = self->_selectedBrowsingDataExportTypes;
   if ((selectedBrowsingDataExportTypes & 4) == 0)
@@ -302,7 +302,7 @@ LABEL_16:
   v27[2] = __85__WBSBrowsingDataExportController__exportToTemporaryFolderWithURL_completionHandler___block_invoke_126;
   v27[3] = &unk_1E7FB6D90;
   v28 = v8;
-  [(WBSBrowsingDataExportController *)self _exportExtensionsToDirectoryWithURL:v6 completionHandler:v27];
+  [(WBSBrowsingDataExportController *)self _exportExtensionsToDirectoryWithURL:lCopy completionHandler:v27];
 
   if ((self->_selectedBrowsingDataExportTypes & 8) != 0)
   {
@@ -313,7 +313,7 @@ LABEL_19:
       [WBSBrowsingDataExportController _exportToTemporaryFolderWithURL:completionHandler:];
     }
 
-    v19 = [objc_opt_class() fileURLFromExportFolderURL:v6 profileTitle:0 forBrowsingDataExportType:8];
+    v19 = [objc_opt_class() fileURLFromExportFolderURL:lCopy profileTitle:0 forBrowsingDataExportType:8];
     dispatch_group_enter(v8);
     v20 = +[WBSCreditCardDataController creditCardDataController];
     v25[0] = MEMORY[0x1E69E9820];
@@ -330,8 +330,8 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __85__WBSBrowsingDataExportController__exportToTemporaryFolderWithURL_completionHandler___block_invoke_130;
   block[3] = &unk_1E7FB7350;
-  v24 = v7;
-  v22 = v7;
+  v24 = handlerCopy;
+  v22 = handlerCopy;
   dispatch_group_notify(v8, v21, block);
 }
 
@@ -390,20 +390,20 @@ uint64_t __85__WBSBrowsingDataExportController__exportToTemporaryFolderWithURL_c
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)exportToZipArchiveAtURL:(id)a3 completionHandler:(id)a4
+- (void)exportToZipArchiveAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WBSBrowsingDataExportController_exportToZipArchiveAtURL_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7378;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = lCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   dispatch_async(v8, block);
 }
 
@@ -510,21 +510,21 @@ void __77__WBSBrowsingDataExportController_exportToZipArchiveAtURL_completionHan
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)computeNumberOfItemsToBeExportedForBrowsingDataExportType:(unint64_t)a3 usingBlock:(id)a4
+- (void)computeNumberOfItemsToBeExportedForBrowsingDataExportType:(unint64_t)type usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__WBSBrowsingDataExportController_computeNumberOfItemsToBeExportedForBrowsingDataExportType_usingBlock___block_invoke;
   block[3] = &unk_1E7FC6B68;
-  v16 = a3;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   v15 = v8;
   dispatch_async(v7, block);
 
-  if ((a3 & 8) != 0)
+  if ((type & 8) != 0)
   {
     v9 = +[WBSCreditCardDataController creditCardDataController];
     v12[0] = MEMORY[0x1E69E9820];
@@ -535,7 +535,7 @@ void __77__WBSBrowsingDataExportController_exportToZipArchiveAtURL_completionHan
     [v9 numberOfCreditCardsToBeExportedWithCompletionHandler:v12];
   }
 
-  if ((a3 & 2) != 0)
+  if ((type & 2) != 0)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;

@@ -1,9 +1,9 @@
 @interface THWLabelControlRep
 - (THWLabelControlDelegate)delegate;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
 - (void)updateFromLayout;
-- (void)updateLayerGeometryFromLayout:(id)a3;
+- (void)updateLayerGeometryFromLayout:(id)layout;
 @end
 
 @implementation THWLabelControlRep
@@ -27,11 +27,11 @@
   return TSUProtocolCast();
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   v3.receiver = self;
   v3.super_class = THWLabelControlRep;
-  [(THWLabelControlRep *)&v3 updateLayerGeometryFromLayout:a3];
+  [(THWLabelControlRep *)&v3 updateLayerGeometryFromLayout:layout];
 }
 
 - (void)updateFromLayout
@@ -61,7 +61,7 @@
   [(THWLabelLayer *)self->_labelLayer setShadowScale:?];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   if (self->_labelLayer)
   {
@@ -71,7 +71,7 @@
     [(THWLabelLayer *)self->_labelLayer setFrame:?];
     labelLayer = self->_labelLayer;
 
-    [a3 addObject:labelLayer];
+    [array addObject:labelLayer];
   }
 }
 

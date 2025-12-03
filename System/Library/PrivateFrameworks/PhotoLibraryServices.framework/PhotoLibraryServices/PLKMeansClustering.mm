@@ -1,30 +1,30 @@
 @interface PLKMeansClustering
-- (double)_dataArray:(id)a3 featureCount:(unsigned int)a4 useKeypaths:(BOOL)a5;
-- (id)_performWithDataset:(id)a3 numericData:(id)a4 progressBlock:(id)a5;
+- (double)_dataArray:(id)array featureCount:(unsigned int)count useKeypaths:(BOOL)keypaths;
+- (id)_performWithDataset:(id)dataset numericData:(id)data progressBlock:(id)block;
 @end
 
 @implementation PLKMeansClustering
 
-- (double)_dataArray:(id)a3 featureCount:(unsigned int)a4 useKeypaths:(BOOL)a5
+- (double)_dataArray:(id)array featureCount:(unsigned int)count useKeypaths:(BOOL)keypaths
 {
-  v5 = a5;
+  keypathsCopy = keypaths;
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v33 = malloc_type_calloc(8uLL, [v7 count] * a4, 0x13FA2A48uLL);
+  arrayCopy = array;
+  countCopy = count;
+  v33 = malloc_type_calloc(8uLL, [arrayCopy count] * count, 0x13FA2A48uLL);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v7;
+  obj = arrayCopy;
   v9 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = 0;
     v12 = *v49;
-    v13 = 8 * v8;
-    v35 = 8 * v8;
+    v13 = 8 * countCopy;
+    v35 = 8 * countCopy;
     v36 = *v49;
     do
     {
@@ -40,21 +40,21 @@
         }
 
         v16 = *(*(&v48 + 1) + 8 * v14);
-        if (v5)
+        if (keypathsCopy)
         {
           v46 = 0uLL;
           v47 = 0uLL;
           v44 = 0uLL;
           v45 = 0uLL;
-          v17 = [(PLDataClustering *)self numericValueKeypaths];
-          v18 = [v17 countByEnumeratingWithState:&v44 objects:v53 count:16];
+          numericValueKeypaths = [(PLDataClustering *)self numericValueKeypaths];
+          v18 = [numericValueKeypaths countByEnumeratingWithState:&v44 objects:v53 count:16];
           if (!v18)
           {
             goto LABEL_23;
           }
 
           v19 = v18;
-          v20 = v5;
+          v20 = keypathsCopy;
           v21 = 0;
           v22 = *v45;
           do
@@ -63,7 +63,7 @@
             {
               if (*v45 != v22)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(numericValueKeypaths);
               }
 
               v24 = [v16 valueForKeyPath:*(*(&v44 + 1) + 8 * i)];
@@ -73,11 +73,11 @@
               ++v21;
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v44 objects:v53 count:16];
+            v19 = [numericValueKeypaths countByEnumeratingWithState:&v44 objects:v53 count:16];
           }
 
           while (v19);
-          v5 = v20;
+          keypathsCopy = v20;
           v13 = v35;
           v12 = v36;
         }
@@ -88,8 +88,8 @@
           v43 = 0uLL;
           v40 = 0uLL;
           v41 = 0uLL;
-          v17 = v16;
-          v26 = [v17 countByEnumeratingWithState:&v40 objects:v52 count:16];
+          numericValueKeypaths = v16;
+          v26 = [numericValueKeypaths countByEnumeratingWithState:&v40 objects:v52 count:16];
           if (!v26)
           {
             goto LABEL_23;
@@ -104,14 +104,14 @@
             {
               if (*v41 != v29)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(numericValueKeypaths);
               }
 
               [*(*(&v40 + 1) + 8 * j) doubleValue];
               *&v15[8 * v28++] = v31;
             }
 
-            v27 = [v17 countByEnumeratingWithState:&v40 objects:v52 count:16];
+            v27 = [numericValueKeypaths countByEnumeratingWithState:&v40 objects:v52 count:16];
           }
 
           while (v27);
@@ -135,13 +135,13 @@ LABEL_23:
   return v33;
 }
 
-- (id)_performWithDataset:(id)a3 numericData:(id)a4 progressBlock:(id)a5
+- (id)_performWithDataset:(id)dataset numericData:(id)data progressBlock:(id)block
 {
   v159 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  datasetCopy = dataset;
+  dataCopy = data;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v12 = v11;
   if (v11)
   {
@@ -163,9 +163,9 @@ LABEL_95:
     }
   }
 
-  if (v9)
+  if (dataCopy)
   {
-    [v9 firstObject];
+    [dataCopy firstObject];
   }
 
   else
@@ -196,7 +196,7 @@ LABEL_96:
     goto LABEL_168;
   }
 
-  if (![v8 count])
+  if (![datasetCopy count])
   {
     if (!v12)
     {
@@ -216,17 +216,17 @@ LABEL_96:
     goto LABEL_95;
   }
 
-  v134 = v10;
+  v134 = blockCopy;
   v137 = v12;
-  v135 = v8;
-  if ([v8 count] <= self->_k)
+  v135 = datasetCopy;
+  if ([datasetCopy count] <= self->_k)
   {
-    v81 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v82 = v8;
+    v82 = datasetCopy;
     v83 = [v82 countByEnumeratingWithState:&v147 objects:v156 count:16];
     if (v83)
     {
@@ -244,7 +244,7 @@ LABEL_96:
           v155 = *(*(&v147 + 1) + 8 * i);
           v87 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v155 count:1];
           v88 = [PLDataCluster clusterWithObjects:v87];
-          [v81 addObject:v88];
+          [array addObject:v88];
         }
 
         v84 = [v82 countByEnumeratingWithState:&v147 objects:v156 count:16];
@@ -253,7 +253,7 @@ LABEL_96:
       while (v84);
     }
 
-    v10 = v134;
+    blockCopy = v134;
     if (v12 && (LOBYTE(v151) = 0, (v12)[2](v12, &v151, 1.0), v151))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -268,27 +268,27 @@ LABEL_96:
 
     else
     {
-      v80 = v81;
+      v80 = array;
     }
 
-    v8 = v135;
+    datasetCopy = v135;
 
     goto LABEL_168;
   }
 
-  v133 = v9;
-  if (v9)
+  v133 = dataCopy;
+  if (dataCopy)
   {
-    v16 = v9;
+    v16 = dataCopy;
   }
 
   else
   {
-    v16 = v8;
+    v16 = datasetCopy;
   }
 
-  v17 = [(PLKMeansClustering *)self _dataArray:v16 featureCount:v15 useKeypaths:v9 == 0];
-  v18 = [v8 count];
+  v17 = [(PLKMeansClustering *)self _dataArray:v16 featureCount:v15 useKeypaths:dataCopy == 0];
+  v18 = [datasetCopy count];
   v19 = v18;
   v136 = malloc_type_calloc(4uLL, v18, 0xE72C7B6DuLL);
   v20 = malloc_type_calloc(4uLL, self->_k, 0x11CED078uLL);
@@ -300,7 +300,7 @@ LABEL_96:
   [MEMORY[0x1E696AD50] indexSetWithIndex:v18 >> 1];
   v146 = v145 = v17;
   k = self->_k;
-  v143 = self;
+  selfCopy = self;
   if (k < 2)
   {
 LABEL_40:
@@ -323,7 +323,7 @@ LABEL_40:
           goto LABEL_149;
         }
 
-        k = v143->_k;
+        k = selfCopy->_k;
       }
 
       bzero(v20, 4 * k);
@@ -332,7 +332,7 @@ LABEL_40:
       {
         v43 = 0;
         v44 = 0;
-        v45 = v143->_k;
+        v45 = selfCopy->_k;
         do
         {
           if (v45)
@@ -395,7 +395,7 @@ LABEL_40:
         }
       }
 
-      bzero(v21, v143->_k * __n);
+      bzero(v21, selfCopy->_k * __n);
       if (__upper_bound)
       {
         v59 = 0;
@@ -435,7 +435,7 @@ LABEL_116:
         }
       }
 
-      k = v143->_k;
+      k = selfCopy->_k;
       if (k)
       {
         v65 = 0;
@@ -475,7 +475,7 @@ LABEL_116:
           goto LABEL_149;
         }
 
-        k = v143->_k;
+        k = selfCopy->_k;
       }
 
       if (k)
@@ -489,7 +489,7 @@ LABEL_116:
           {
             v75 = arc4random_uniform(__upper_bound);
             memcpy(&v21[8 * v72], &v145[v75 * v15], __n);
-            k = v143->_k;
+            k = selfCopy->_k;
             v71 = 1;
           }
 
@@ -529,13 +529,13 @@ LABEL_116:
       }
     }
 
-    v100 = v143->_k;
+    v100 = selfCopy->_k;
     v101 = v135;
     v142 = v100;
     for (j = [MEMORY[0x1E695DF70] arrayWithCapacity:v100];
     {
-      v103 = [MEMORY[0x1E695DF70] array];
-      [j addObject:v103];
+      array2 = [MEMORY[0x1E695DF70] array];
+      [j addObject:array2];
     }
 
     v104 = [v101 count];
@@ -614,8 +614,8 @@ LABEL_150:
       free(v79);
     }
 
-    v10 = v134;
-    v8 = v135;
+    blockCopy = v134;
+    datasetCopy = v135;
     if (v41)
     {
       free(v41);
@@ -623,7 +623,7 @@ LABEL_150:
 
     if (v12 && (LOBYTE(v151) = 0, (v12)[2](v12, &v151, 1.0), v151 | v78))
     {
-      v9 = v133;
+      dataCopy = v133;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
@@ -640,7 +640,7 @@ LABEL_165:
     {
       v77 = v77;
       v80 = v77;
-      v9 = v133;
+      dataCopy = v133;
     }
 
     goto LABEL_167;
@@ -727,7 +727,7 @@ LABEL_165:
       while (v25 != v19);
       v39 = v27 == 0.0;
       v12 = v137;
-      self = v143;
+      self = selfCopy;
       if (!v137)
       {
         goto LABEL_38;
@@ -842,8 +842,8 @@ LABEL_127:
   v117 = v135;
   for (n = [MEMORY[0x1E695DF70] arrayWithCapacity:v138];
   {
-    v119 = [MEMORY[0x1E695DF70] array];
-    [n addObject:v119];
+    array3 = [MEMORY[0x1E695DF70] array];
+    [n addObject:array3];
   }
 
   v120 = [v117 count];
@@ -898,7 +898,7 @@ LABEL_127:
     free(v145);
   }
 
-  v9 = v133;
+  dataCopy = v133;
   v12 = v137;
   if (v136)
   {
@@ -915,8 +915,8 @@ LABEL_127:
     free(v21);
   }
 
-  v10 = v134;
-  v8 = v135;
+  blockCopy = v134;
+  datasetCopy = v135;
   if (v132)
   {
     free(v132);

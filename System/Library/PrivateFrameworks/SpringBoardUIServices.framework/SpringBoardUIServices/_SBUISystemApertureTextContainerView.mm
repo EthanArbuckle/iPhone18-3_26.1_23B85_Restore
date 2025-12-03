@@ -1,9 +1,9 @@
 @interface _SBUISystemApertureTextContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)setTransitionSize:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)setTransitionSize:(double)size;
 - (double)transitionSize;
-- (id)initWithContentLabel:(id *)a1;
+- (id)initWithContentLabel:(id *)label;
 - (uint64_t)contentLabel;
 - (void)layoutSubviews;
 @end
@@ -12,25 +12,25 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   v13.receiver = self;
   v13.super_class = _SBUISystemApertureTextContainerView;
   [(_SBUISystemApertureTextContainerView *)&v13 layoutSubviews];
-  [(_SBUISystemApertureTextContainerView *)v2 bounds];
+  [(_SBUISystemApertureTextContainerView *)selfCopy bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  if (!v2 || (width = v2->_transitionSize.width, height = v2->_transitionSize.height, v2 = v2->_contentLabel, width == 0.0) && height == 0.0)
+  if (!selfCopy || (width = selfCopy->_transitionSize.width, height = selfCopy->_transitionSize.height, selfCopy = selfCopy->_contentLabel, width == 0.0) && height == 0.0)
   {
-    [(_SBUISystemApertureTextContainerView *)v2 setBounds:v4, v6, v8, v10];
+    [(_SBUISystemApertureTextContainerView *)selfCopy setBounds:v4, v6, v8, v10];
   }
 
   UIRectGetCenter();
-  [(_SBUISystemApertureTextContainerView *)v2 setCenter:?];
+  [(_SBUISystemApertureTextContainerView *)selfCopy setCenter:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self)
   {
@@ -44,7 +44,7 @@
     self = self->_contentLabel;
   }
 
-  [(_SBUISystemApertureTextContainerView *)self sizeThatFits:a3.width, a3.height];
+  [(_SBUISystemApertureTextContainerView *)self sizeThatFits:fits.width, fits.height];
 LABEL_7:
   result.height = height;
   result.width = width;
@@ -72,34 +72,34 @@ LABEL_5:
   return result;
 }
 
-- (id)initWithContentLabel:(id *)a1
+- (id)initWithContentLabel:(id *)label
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (label)
   {
     [v4 bounds];
-    v8.receiver = a1;
+    v8.receiver = label;
     v8.super_class = _SBUISystemApertureTextContainerView;
     v6 = objc_msgSendSuper2(&v8, sel_initWithFrame_);
-    a1 = v6;
+    label = v6;
     if (v6)
     {
       objc_storeStrong(v6 + 51, a2);
-      [a1 addSubview:v5];
+      [label addSubview:v5];
     }
   }
 
-  return a1;
+  return label;
 }
 
-- (double)setTransitionSize:(double)a3
+- (double)setTransitionSize:(double)size
 {
   if (result)
   {
-    if (result[52] != a2 || result[53] != a3)
+    if (result[52] != a2 || result[53] != size)
     {
-      return OUTLINED_FUNCTION_0(result, result + 52, a2, a3);
+      return OUTLINED_FUNCTION_0(result, result + 52, a2, size);
     }
   }
 
@@ -108,9 +108,9 @@ LABEL_5:
 
 - (double)transitionSize
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 416);
+    return *(self + 416);
   }
 
   else

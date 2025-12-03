@@ -1,11 +1,11 @@
 @interface LifetimeServoAFLUTColumn
-- (LifetimeServoAFLUTColumn)initWithLUTColumn:(id)a3 voltage:(int)a4;
-- (float)accelerationFactor:(int)a3;
+- (LifetimeServoAFLUTColumn)initWithLUTColumn:(id)column voltage:(int)voltage;
+- (float)accelerationFactor:(int)factor;
 @end
 
 @implementation LifetimeServoAFLUTColumn
 
-- (LifetimeServoAFLUTColumn)initWithLUTColumn:(id)a3 voltage:(int)a4
+- (LifetimeServoAFLUTColumn)initWithLUTColumn:(id)column voltage:(int)voltage
 {
   v20.receiver = self;
   v20.super_class = LifetimeServoAFLUTColumn;
@@ -16,8 +16,8 @@
     return v7;
   }
 
-  v6->_voltage = a4;
-  rowCount = [a3 count];
+  v6->_voltage = voltage;
+  rowCount = [column count];
   v7->_rowCount = rowCount;
   if (rowCount < 13)
   {
@@ -41,7 +41,7 @@ LABEL_5:
   accelerationFactors = v7->_accelerationFactors;
   do
   {
-    v12 = [a3 objectAtIndex:v10];
+    v12 = [column objectAtIndex:v10];
     *(accelerationFactors - 12) = [objc_msgSend(v12 objectForKey:{@"temp", "intValue"}];
     [objc_msgSend(v12 objectForKey:{@"af", "floatValue"}];
     *accelerationFactors++ = v13;
@@ -77,17 +77,17 @@ LABEL_5:
   return v7;
 }
 
-- (float)accelerationFactor:(int)a3
+- (float)accelerationFactor:(int)factor
 {
   temperatures = self->_temperatures;
-  v3 = self->_temperatures[0];
+  factorCopy = self->_temperatures[0];
   rowCount = self->_rowCount;
-  if (v3 <= a3)
+  if (factorCopy <= factor)
   {
-    v3 = temperatures[rowCount - 1];
-    if (v3 >= a3)
+    factorCopy = temperatures[rowCount - 1];
+    if (factorCopy >= factor)
     {
-      v3 = a3;
+      factorCopy = factor;
     }
   }
 
@@ -103,7 +103,7 @@ LABEL_5:
     while (1)
     {
       v8 = *v6++;
-      if (v3 <= v8)
+      if (factorCopy <= v8)
       {
         break;
       }
@@ -122,7 +122,7 @@ LABEL_5:
   result = 0.0;
   if (v11 != v10)
   {
-    return ((self->_accelerationFactors[v9] * (v11 - v3)) + (self->_accelerationFactors[v7] * (v3 - v10))) / (v11 - v10);
+    return ((self->_accelerationFactors[v9] * (v11 - factorCopy)) + (self->_accelerationFactors[v7] * (factorCopy - v10))) / (v11 - v10);
   }
 
   return result;

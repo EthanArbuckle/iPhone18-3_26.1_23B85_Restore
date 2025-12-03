@@ -1,14 +1,14 @@
 @interface HDSPSleepEventList
 - (HDSPSleepEventList)init;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)overdueEventsForDate:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)overdueEventsForDate:(id)date;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_sortEvents;
-- (void)addEvents:(id)a3 provider:(id)a4;
+- (void)addEvents:(id)events provider:(id)provider;
 - (void)removeAllEvents;
-- (void)removeEvents:(id)a3;
-- (void)removeEventsForProvider:(id)a3;
+- (void)removeEvents:(id)events;
+- (void)removeEventsForProvider:(id)provider;
 @end
 
 @implementation HDSPSleepEventList
@@ -33,20 +33,20 @@
   return v2;
 }
 
-- (void)addEvents:(id)a3 provider:(id)a4
+- (void)addEvents:(id)events provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  providerCopy = provider;
   eventsByProvider = self->_eventsByProvider;
-  v9 = [v7 providerIdentifier];
-  v10 = [(NSMutableDictionary *)eventsByProvider objectForKeyedSubscript:v9];
+  providerIdentifier = [providerCopy providerIdentifier];
+  v10 = [(NSMutableDictionary *)eventsByProvider objectForKeyedSubscript:providerIdentifier];
 
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v11 = self->_eventsByProvider;
-    v12 = [v7 providerIdentifier];
-    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
+    providerIdentifier2 = [providerCopy providerIdentifier];
+    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:providerIdentifier2];
   }
 
   v14[0] = MEMORY[0x277D85DD0];
@@ -55,7 +55,7 @@
   v14[3] = &unk_279C7C9B0;
   v15 = v10;
   v13 = v10;
-  [v6 na_each:v14];
+  [eventsCopy na_each:v14];
   [(HDSPSleepEventList *)self _sortEvents];
 }
 
@@ -92,8 +92,8 @@ void __41__HDSPSleepEventList_addEvents_provider___block_invoke(uint64_t a1, voi
         }
 
         v9 = [(NSMutableDictionary *)self->_eventsByProvider objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v8), v15];
-        v10 = [v9 allValues];
-        [v3 addObjectsFromArray:v10];
+        allValues = [v9 allValues];
+        [v3 addObjectsFromArray:allValues];
 
         ++v8;
       }
@@ -115,19 +115,19 @@ void __41__HDSPSleepEventList_addEvents_provider___block_invoke(uint64_t a1, voi
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEventsForProvider:(id)a3
+- (void)removeEventsForProvider:(id)provider
 {
   eventsByProvider = self->_eventsByProvider;
-  v5 = [a3 providerIdentifier];
-  [(NSMutableDictionary *)eventsByProvider removeObjectForKey:v5];
+  providerIdentifier = [provider providerIdentifier];
+  [(NSMutableDictionary *)eventsByProvider removeObjectForKey:providerIdentifier];
 
   [(HDSPSleepEventList *)self _sortEvents];
 }
 
-- (void)removeEvents:(id)a3
+- (void)removeEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -155,7 +155,7 @@ void __41__HDSPSleepEventList_addEvents_provider___block_invoke(uint64_t a1, voi
         v13[3] = &unk_279C7C9B0;
         v14 = v10;
         v11 = v10;
-        [v4 na_each:v13];
+        [eventsCopy na_each:v13];
 
         ++v9;
       }
@@ -185,16 +185,16 @@ void __35__HDSPSleepEventList_removeEvents___block_invoke(uint64_t a1, void *a2)
   self->_sortedEvents = MEMORY[0x277CBEBF8];
 }
 
-- (id)overdueEventsForDate:(id)a3
+- (id)overdueEventsForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   sortedEvents = self->_sortedEvents;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__HDSPSleepEventList_overdueEventsForDate___block_invoke;
   v9[3] = &unk_279C7C768;
-  v10 = v4;
-  v6 = v4;
+  v10 = dateCopy;
+  v6 = dateCopy;
   v7 = [(NSArray *)sortedEvents na_filter:v9];
 
   return v7;
@@ -210,27 +210,27 @@ uint64_t __43__HDSPSleepEventList_overdueEventsForDate___block_invoke(uint64_t a
 
 - (id)succinctDescription
 {
-  v2 = [(HDSPSleepEventList *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HDSPSleepEventList *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(HDSPSleepEventList *)self allEvents];
-  [v3 appendArraySection:v4 withName:@"sleepEvents" multilinePrefix:&stru_287A83178 skipIfEmpty:0];
+  allEvents = [(HDSPSleepEventList *)self allEvents];
+  [v3 appendArraySection:allEvents withName:@"sleepEvents" multilinePrefix:&stru_287A83178 skipIfEmpty:0];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HDSPSleepEventList *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HDSPSleepEventList *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

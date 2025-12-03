@@ -1,11 +1,11 @@
 @interface CKAssistantSMSSend
-- (BOOL)shouldForceToSMS:(id)a3;
-- (id)_getAddressesFromRecipients:(id)a3;
-- (id)_validateSMS:(id)a3;
-- (id)errorWithDescription:(id)a3;
+- (BOOL)shouldForceToSMS:(id)s;
+- (id)_getAddressesFromRecipients:(id)recipients;
+- (id)_validateSMS:(id)s;
+- (id)errorWithDescription:(id)description;
 - (void)_connectToDaemonIfNeeded;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
-- (void)sendSMS:(id)a3 toAddresses:(id)a4 groupNameID:(id)a5 idsIdentifier:(id)a6;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
+- (void)sendSMS:(id)s toAddresses:(id)addresses groupNameID:(id)d idsIdentifier:(id)identifier;
 @end
 
 @implementation CKAssistantSMSSend
@@ -19,15 +19,15 @@
   [v3 blockUntilConnected];
 }
 
-- (id)_getAddressesFromRecipients:(id)a3
+- (id)_getAddressesFromRecipients:(id)recipients
 {
-  v3 = a3;
+  recipientsCopy = recipients;
   v4 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = recipientsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -42,7 +42,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) data];
+        data = [*(*(&v14 + 1) + 8 * i) data];
         v11 = IMStripFormattingFromAddress();
 
         if (!v11)
@@ -71,34 +71,34 @@ LABEL_11:
   return v12;
 }
 
-- (id)errorWithDescription:(id)a3
+- (id)errorWithDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_alloc_init(NSMutableDictionary);
-  [v4 setObject:v3 forKey:NSLocalizedDescriptionKey];
+  [v4 setObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
 
   v5 = [NSError errorWithDomain:@"CKAssistantSMSSendErrorDomain" code:0 userInfo:v4];
 
   return v5;
 }
 
-- (void)sendSMS:(id)a3 toAddresses:(id)a4 groupNameID:(id)a5 idsIdentifier:(id)a6
+- (void)sendSMS:(id)s toAddresses:(id)addresses groupNameID:(id)d idsIdentifier:(id)identifier
 {
-  v60 = a3;
-  v62 = a4;
-  v9 = a5;
-  v61 = a6;
+  sCopy = s;
+  addressesCopy = addresses;
+  dCopy = d;
+  identifierCopy = identifier;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v71 = v62;
+      v71 = addressesCopy;
       v72 = 2112;
-      v73 = v9;
+      v73 = dCopy;
       v74 = 2112;
-      v75 = v61;
+      v75 = identifierCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Trying to send sms to addresses %@, groupNameID %@, idsIdentifier %@", buf, 0x20u);
     }
   }
@@ -106,13 +106,13 @@ LABEL_11:
   v11 = +[IMService smsService];
   v12 = CKMakeHandlesFromRecipientsWithFallbackService();
 
-  if ([v12 count] || objc_msgSend(v9, "length"))
+  if ([v12 count] || objc_msgSend(dCopy, "length"))
   {
     v13 = +[IMChatRegistry sharedRegistry];
     v14 = v13;
-    if (v9)
+    if (dCopy)
     {
-      [v13 existingChatWithChatIdentifier:v9];
+      [v13 existingChatWithChatIdentifier:dCopy];
     }
 
     else
@@ -133,15 +133,15 @@ LABEL_11:
     }
 
     [v15 join];
-    v17 = [v15 lastAddressedHandleID];
-    if (v17)
+    lastAddressedHandleID = [v15 lastAddressedHandleID];
+    if (lastAddressedHandleID)
     {
     }
 
     else
     {
-      v18 = [v15 lastAddressedSIMID];
-      v19 = v18 == 0;
+      lastAddressedSIMID = [v15 lastAddressedSIMID];
+      v19 = lastAddressedSIMID == 0;
 
       if (v19)
       {
@@ -182,41 +182,41 @@ LABEL_11:
           v32 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
-            v33 = [v31 handle];
-            v34 = [v33 value];
-            v35 = [v31 accountUUID];
-            v36 = [v35 UUIDString];
+            handle = [v31 handle];
+            value = [handle value];
+            accountUUID = [v31 accountUUID];
+            uUIDString = [accountUUID UUIDString];
             *buf = 138412546;
-            v71 = v34;
+            v71 = value;
             v72 = 2112;
-            v73 = v36;
+            v73 = uUIDString;
             _os_log_impl(&dword_0, v32, OS_LOG_TYPE_INFO, "Setting LastAddressedSIMID to: %@, LastAddressedHandleID: %@", buf, 0x16u);
           }
         }
 
-        v37 = [v31 accountUUID];
-        v38 = [v37 UUIDString];
-        [v15 setLastAddressedSIMID:v38];
+        accountUUID2 = [v31 accountUUID];
+        uUIDString2 = [accountUUID2 UUIDString];
+        [v15 setLastAddressedSIMID:uUIDString2];
 
-        v39 = [v31 handle];
-        v40 = [v39 value];
-        [v15 setLastAddressedHandleID:v40];
+        handle2 = [v31 handle];
+        value2 = [handle2 value];
+        [v15 setLastAddressedHandleID:value2];
 
-        v41 = [v31 handle];
-        v42 = [v41 value];
-        LODWORD(v40) = [v59 shouldForceToSMS:v42];
+        handle3 = [v31 handle];
+        value3 = [handle3 value];
+        LODWORD(value2) = [v59 shouldForceToSMS:value3];
 
-        if (v40)
+        if (value2)
         {
           if (IMOSLoggingEnabled())
           {
             v43 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
             {
-              v44 = [v31 handle];
-              v45 = [v44 value];
+              handle4 = [v31 handle];
+              value4 = [handle4 value];
               *buf = 138412290;
-              v71 = v45;
+              v71 = value4;
               _os_log_impl(&dword_0, v43, OS_LOG_TYPE_INFO, "Forcing to update shouldForceToSMS. iMessage is not enabled for SIM phone number = %@ or phone number is nil. ", buf, 0xCu);
             }
           }
@@ -233,12 +233,12 @@ LABEL_11:
       v20 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v15 lastAddressedSIMID];
-        v22 = [v15 lastAddressedHandleID];
+        lastAddressedSIMID2 = [v15 lastAddressedSIMID];
+        lastAddressedHandleID2 = [v15 lastAddressedHandleID];
         *buf = 138412546;
-        v71 = v21;
+        v71 = lastAddressedSIMID2;
         v72 = 2112;
-        v73 = v22;
+        v73 = lastAddressedHandleID2;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "We have existing conversation with LastAddressedSIMID = %@, LastAddressedHandleID = %@", buf, 0x16u);
       }
     }
@@ -246,15 +246,15 @@ LABEL_11:
 LABEL_43:
     v46 = [[CKConversation alloc] initWithChat:v15];
     [v46 refreshServiceForSending];
-    v47 = [[NSAttributedString alloc] initWithString:v60];
+    v47 = [[NSAttributedString alloc] initWithString:sCopy];
     v48 = [[CKComposition alloc] initWithText:v47 subject:0];
     v49 = [v46 messageWithComposition:v48];
     if (v49)
     {
-      v50 = [v15 account];
-      v51 = [v50 service];
+      account = [v15 account];
+      service = [account service];
 
-      if ([v61 length])
+      if ([identifierCopy length])
       {
         if (IMOSLoggingEnabled())
         {
@@ -262,12 +262,12 @@ LABEL_43:
           if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v71 = v61;
+            v71 = identifierCopy;
             _os_log_impl(&dword_0, v52, OS_LOG_TYPE_INFO, "Setting idsIdentifier provided %@ on immessageitem", buf, 0xCu);
           }
         }
 
-        [v49 setNotificationIDSTokenURI:v61];
+        [v49 setNotificationIDSTokenURI:identifierCopy];
       }
 
       [v49 setSourceApplicationID:@"com.apple.siri"];
@@ -276,18 +276,18 @@ LABEL_43:
         v53 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
         {
-          v54 = [v49 guid];
+          guid = [v49 guid];
           *buf = 138412802;
-          v71 = v54;
+          v71 = guid;
           v72 = 2112;
           v73 = v49;
           v74 = 2112;
-          v75 = v51;
+          v75 = service;
           _os_log_impl(&dword_0, v53, OS_LOG_TYPE_INFO, "Sending message with guid %@, message %@, serviceToUse %@", buf, 0x20u);
         }
       }
 
-      [v46 sendMessage:v49 onService:v51 newComposition:1];
+      [v46 sendMessage:v49 onService:service newComposition:1];
       v55 = +[NSNotificationCenter defaultCenter];
       v67 = @"CKAssistantSentMessageNotificationMessageKey";
       v68 = v49;
@@ -326,24 +326,24 @@ LABEL_43:
 LABEL_60:
 }
 
-- (BOOL)shouldForceToSMS:(id)a3
+- (BOOL)shouldForceToSMS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = sCopy;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Checking if we should force to SMS for phone number: %@", &v9, 0xCu);
     }
   }
 
   v5 = +[IMService iMessageService];
-  v6 = [IMServiceImpl hasAlias:v3 onAccountForService:v5];
+  v6 = [IMServiceImpl hasAlias:sCopy onAccountForService:v5];
 
-  if (v3)
+  if (sCopy)
   {
     v7 = v6 ^ 1;
   }
@@ -356,9 +356,9 @@ LABEL_60:
   return v7;
 }
 
-- (id)_validateSMS:(id)a3
+- (id)_validateSMS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -369,15 +369,15 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  v4 = [v3 msgRecipients];
-  if ([v4 count])
+  msgRecipients = [sCopy msgRecipients];
+  if ([msgRecipients count])
   {
   }
 
   else
   {
-    v7 = [v3 groupNameId];
-    v8 = [v7 length];
+    groupNameId = [sCopy groupNameId];
+    v8 = [groupNameId length];
 
     if (!v8)
     {
@@ -387,8 +387,8 @@ LABEL_24:
     }
   }
 
-  v9 = [v3 message];
-  v10 = [v9 length];
+  message = [sCopy message];
+  v10 = [message length];
 
   if (!v10)
   {
@@ -402,8 +402,8 @@ LABEL_24:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [v3 msgRecipients];
-  v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  msgRecipients2 = [sCopy msgRecipients];
+  v13 = [msgRecipients2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
@@ -414,10 +414,10 @@ LABEL_24:
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(msgRecipients2);
         }
 
-        v17 = [*(*(&v24 + 1) + 8 * i) data];
+        data = [*(*(&v24 + 1) + 8 * i) data];
         if ((IMStringIsPhoneNumber() & 1) != 0 || IMStringIsEmail())
         {
           v18 = IMStripFormattingFromAddress();
@@ -428,7 +428,7 @@ LABEL_24:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v14 = [msgRecipients2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v14);
@@ -450,10 +450,10 @@ LABEL_27:
   return v21;
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  helperCopy = helper;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -472,9 +472,9 @@ LABEL_27:
   v14[2] = sub_7268;
   v14[3] = &unk_10520;
   v14[4] = self;
-  v11 = v6;
+  v11 = completionCopy;
   v16 = v11;
-  v12 = v7;
+  v12 = helperCopy;
   v15 = v12;
   v13 = objc_retainBlock(v14);
   if (+[NSThread isMainThread])

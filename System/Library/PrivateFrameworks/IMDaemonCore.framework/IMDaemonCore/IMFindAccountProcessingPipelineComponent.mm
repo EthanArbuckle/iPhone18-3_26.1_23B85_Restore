@@ -1,30 +1,30 @@
 @interface IMFindAccountProcessingPipelineComponent
-- (BOOL)_isSOSWithInput:(id)a3;
-- (IMFindAccountProcessingPipelineComponent)initWithReceivingAccount:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (BOOL)_isSOSWithInput:(id)input;
+- (IMFindAccountProcessingPipelineComponent)initWithReceivingAccount:(id)account;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMFindAccountProcessingPipelineComponent
 
-- (IMFindAccountProcessingPipelineComponent)initWithReceivingAccount:(id)a3
+- (IMFindAccountProcessingPipelineComponent)initWithReceivingAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = IMFindAccountProcessingPipelineComponent;
   v6 = [(IMFindAccountProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_receivingAccount, a3);
+    objc_storeStrong(&v6->_receivingAccount, account);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -35,15 +35,15 @@
     }
   }
 
-  v6 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-  v7 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-  v8 = [v7 session];
+  receivingAccount = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+  receivingAccount2 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+  session = [receivingAccount2 session];
 
-  if (!v8)
+  if (!session)
   {
-    v19 = [v6 isActive];
+    isActive = [receivingAccount isActive];
     v20 = IMOSLoggingEnabled();
-    if ((v19 & 1) == 0)
+    if ((isActive & 1) == 0)
     {
       if (v20)
       {
@@ -66,8 +66,8 @@
       }
 
       v50 = objc_alloc(MEMORY[0x277CCA9B8]);
-      v14 = [v50 initWithDomain:*MEMORY[0x277D18DF8] code:22 userInfo:0];
-      v43 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v14];
+      session2 = [v50 initWithDomain:*MEMORY[0x277D18DF8] code:22 userInfo:0];
+      v43 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:session2];
       goto LABEL_65;
     }
 
@@ -81,9 +81,9 @@
       }
     }
 
-    [v6 createSessionIfNecessary];
-    v22 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-    v8 = [v22 session];
+    [receivingAccount createSessionIfNecessary];
+    receivingAccount3 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+    session = [receivingAccount3 session];
 
     if (IMOSLoggingEnabled())
     {
@@ -91,43 +91,43 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v67 = v8;
+        v67 = session;
         _os_log_impl(&dword_22B4CC000, v23, OS_LOG_TYPE_INFO, "ServiceSession created: %@", buf, 0xCu);
       }
     }
   }
 
-  v9 = [v4 replicationSourceServiceName];
-  v10 = [v9 length] == 0;
+  replicationSourceServiceName = [inputCopy replicationSourceServiceName];
+  v10 = [replicationSourceServiceName length] == 0;
 
   if (v10)
   {
-    v14 = v8;
+    session2 = session;
 LABEL_27:
-    [v4 setAccount:v6];
-    [v4 setServiceSession:v14];
+    [inputCopy setAccount:receivingAccount];
+    [inputCopy setServiceSession:session2];
     if (IMOSLoggingEnabled())
     {
       v30 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
-        v31 = [v4 replicationSourceServiceName];
+        replicationSourceServiceName2 = [inputCopy replicationSourceServiceName];
         *buf = 138412802;
-        v67 = v6;
+        v67 = receivingAccount;
         v68 = 2112;
-        v69 = v14;
+        v69 = session2;
         v70 = 2112;
-        v71 = v31;
+        v71 = replicationSourceServiceName2;
         _os_log_impl(&dword_22B4CC000, v30, OS_LOG_TYPE_INFO, "<IMFindAccountProcessingPipelineComponent> Assigning account %@ service session %@ (replication source: %@)", buf, 0x20u);
       }
     }
 
     v32 = IMGetCachedDomainIntForKey();
-    v33 = [MEMORY[0x277D19268] sharedInstance];
-    v34 = [v33 isInternalInstall];
+    mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+    isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
     if (v32 > 0)
     {
-      v35 = v34;
+      v35 = isInternalInstall;
     }
 
     else
@@ -137,8 +137,8 @@ LABEL_27:
 
     if (v35)
     {
-      v36 = [v4 replicationSourceServiceName];
-      v37 = [v36 length] == 0;
+      replicationSourceServiceName3 = [inputCopy replicationSourceServiceName];
+      v37 = [replicationSourceServiceName3 length] == 0;
 
       if (!v37)
       {
@@ -150,7 +150,7 @@ LABEL_27:
         v63[3] = &unk_278702FA0;
         v40 = v38;
         v64 = v40;
-        v65 = v4;
+        v65 = inputCopy;
         dispatch_after(v39, MEMORY[0x277D85CD0], v63);
         v41 = v65;
         v42 = v40;
@@ -163,54 +163,54 @@ LABEL_27:
     {
     }
 
-    v43 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v43 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
     goto LABEL_65;
   }
 
   v11 = +[IMDAccountController sharedAccountController];
-  v12 = [v4 replicationSourceServiceName];
-  v13 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-  v14 = [v11 sessionForReplicationSourceServiceName:v12 replicatingAccount:v13];
+  replicationSourceServiceName4 = [inputCopy replicationSourceServiceName];
+  receivingAccount4 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+  session2 = [v11 sessionForReplicationSourceServiceName:replicationSourceServiceName4 replicatingAccount:receivingAccount4];
 
-  if (((v14 == 0) & [(IMFindAccountProcessingPipelineComponent *)self _isSOSWithInput:v4]) == 1)
+  if (((session2 == 0) & [(IMFindAccountProcessingPipelineComponent *)self _isSOSWithInput:inputCopy]) == 1)
   {
     if (IMOSLoggingEnabled())
     {
       v15 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v4 replicationSourceServiceName];
-        v17 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+        replicationSourceServiceName5 = [inputCopy replicationSourceServiceName];
+        receivingAccount5 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
         *buf = 138412546;
-        v67 = v16;
+        v67 = replicationSourceServiceName5;
         v68 = 2112;
-        v69 = v17;
+        v69 = receivingAccount5;
         _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "<IMFindAccountProcessingPipelineComponent> Failed to find service session for replicated message with source service %@ replicating account %@, but is SOS, permitting on received iMessage account session instead", buf, 0x16u);
       }
     }
 
-    v18 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-    v14 = [v18 session];
+    receivingAccount6 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+    session2 = [receivingAccount6 session];
 
-    if (!v14)
+    if (!session2)
     {
       goto LABEL_39;
     }
 
 LABEL_26:
-    v29 = [v14 account];
+    account = [session2 account];
 
-    v6 = v29;
+    receivingAccount = account;
     goto LABEL_27;
   }
 
-  if (!v14)
+  if (!session2)
   {
 LABEL_39:
-    v44 = [v4 toIdentifier];
-    if ([v44 length])
+    toIdentifier = [inputCopy toIdentifier];
+    if ([toIdentifier length])
     {
-      v45 = [v4 toIdentifier];
+      toIdentifier2 = [inputCopy toIdentifier];
       IsEmail = IMStringIsEmail();
 
       if (IsEmail)
@@ -236,19 +236,19 @@ LABEL_39:
       v55 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
-        v56 = [v4 replicationSourceServiceName];
-        v57 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-        v58 = v57;
+        replicationSourceServiceName6 = [inputCopy replicationSourceServiceName];
+        receivingAccount7 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+        v58 = receivingAccount7;
         v59 = @"NO";
         *buf = 138412802;
-        v67 = v56;
+        v67 = replicationSourceServiceName6;
         v68 = 2112;
         if (IsEmail)
         {
           v59 = @"YES";
         }
 
-        v69 = v57;
+        v69 = receivingAccount7;
         v70 = 2112;
         v71 = v59;
         _os_log_impl(&dword_22B4CC000, v55, OS_LOG_TYPE_INFO, "<IMFindAccountProcessingPipelineComponent> Failed to find service session for replicated message with source service %@ replicating account %@ (email alias: %@)", buf, 0x20u);
@@ -256,18 +256,18 @@ LABEL_39:
     }
 
     v60 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v14 = [v60 initWithDomain:*MEMORY[0x277D18DF8] code:v47 userInfo:0];
-    v43 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v14];
+    session2 = [v60 initWithDomain:*MEMORY[0x277D18DF8] code:v47 userInfo:0];
+    v43 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:session2];
 LABEL_65:
     v42 = v43;
     goto LABEL_66;
   }
 
-  v24 = [v14 mainSession];
-  v25 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
-  v26 = [v4 toIdentifier];
-  v27 = [v26 _stripFZIDPrefix];
-  v28 = [v24 acceptsIncomingReplicatedMessagesFromAccount:v25 toIdentifier:v27 isSOS:{-[IMFindAccountProcessingPipelineComponent _isSOSWithInput:](self, "_isSOSWithInput:", v4)}];
+  mainSession = [session2 mainSession];
+  receivingAccount8 = [(IMFindAccountProcessingPipelineComponent *)self receivingAccount];
+  toIdentifier3 = [inputCopy toIdentifier];
+  _stripFZIDPrefix = [toIdentifier3 _stripFZIDPrefix];
+  v28 = [mainSession acceptsIncomingReplicatedMessagesFromAccount:receivingAccount8 toIdentifier:_stripFZIDPrefix isSOS:{-[IMFindAccountProcessingPipelineComponent _isSOSWithInput:](self, "_isSOSWithInput:", inputCopy)}];
 
   if (v28)
   {
@@ -279,9 +279,9 @@ LABEL_65:
     v51 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
-      v52 = [v4 replicationSourceServiceName];
+      replicationSourceServiceName7 = [inputCopy replicationSourceServiceName];
       *buf = 138412290;
-      v67 = v52;
+      v67 = replicationSourceServiceName7;
       _os_log_impl(&dword_22B4CC000, v51, OS_LOG_TYPE_INFO, "<IMFindAccountProcessingPipelineComponent> Has replication source %@ but service session rejected message, dropping", buf, 0xCu);
     }
   }
@@ -296,20 +296,20 @@ LABEL_66:
   return v42;
 }
 
-- (BOOL)_isSOSWithInput:(id)a3
+- (BOOL)_isSOSWithInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isSOS];
+    isSOS = [inputCopy isSOS];
   }
 
   else
   {
-    v4 = 0;
+    isSOS = 0;
   }
 
-  return v4;
+  return isSOS;
 }
 
 @end

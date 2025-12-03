@@ -1,20 +1,20 @@
 @interface MessageListDragDropHelper
 + (OS_os_log)log;
-- (BOOL)_canMoveDragItems:(id)a3 toMailboxes:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (MessageListDragDropHelper)initWithDataSource:(id)a3 delegate:(id)a4;
+- (BOOL)_canMoveDragItems:(id)items toMailboxes:(id)mailboxes;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (MessageListDragDropHelper)initWithDataSource:(id)source delegate:(id)delegate;
 - (MessageListDragDropHelperDataSource)dataSource;
 - (MessageListDragDropHelperDelegate)delegate;
-- (id)_dragItemsForDragSession:(id)a3 atIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5;
-- (int64_t)_dataOwnerForMailboxes:(id)a3;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
+- (id)_dragItemsForDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_collectionView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path;
+- (int64_t)_dataOwnerForMailboxes:(id)mailboxes;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
 @end
 
 @implementation MessageListDragDropHelper
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001536B8;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD300 != -1)
   {
     dispatch_once(&qword_1006DD300, block);
@@ -36,62 +36,62 @@
   return v2;
 }
 
-- (MessageListDragDropHelper)initWithDataSource:(id)a3 delegate:(id)a4
+- (MessageListDragDropHelper)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = MessageListDragDropHelper;
   v8 = [(MessageListDragDropHelper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
 }
 
-- (id)_dragItemsForDragSession:(id)a3 atIndexPath:(id)a4
+- (id)_dragItemsForDragSession:(id)session atIndexPath:(id)path
 {
-  v27 = a3;
-  v28 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   v6 = +[MessageListDragDropHelper log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v28;
+    v31 = pathCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Drag source items requested for indexpath: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(MessageListDragDropHelper *)self dataSource];
-  v8 = [v7 messageDragDropHelper:self itemContextForIndexPath:v28];
+  dataSource = [(MessageListDragDropHelper *)self dataSource];
+  v8 = [dataSource messageDragDropHelper:self itemContextForIndexPath:pathCopy];
   if (v8)
   {
-    v9 = [v27 items];
-    v10 = [NSMutableArray arrayWithArray:v9];
+    items = [sessionCopy items];
+    v10 = [NSMutableArray arrayWithArray:items];
 
-    v11 = [v8 messageListItem];
-    v12 = [NSMutableSet setWithObject:v11];
+    messageListItem = [v8 messageListItem];
+    v12 = [NSMutableSet setWithObject:messageListItem];
 
-    v13 = [v7 undoManagerForMessageListDragDropHelper:self];
+    v13 = [dataSource undoManagerForMessageListDragDropHelper:self];
     if ([v10 count])
     {
-      v14 = [v10 firstObject];
-      v15 = [v14 localObject];
+      firstObject = [v10 firstObject];
+      localObject = [firstObject localObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v17 = [v14 localObject];
-        v18 = [v17 messageListItemSelection];
-        v19 = [v18 messageListItems];
-        [v12 addObjectsFromArray:v19];
+        localObject2 = [firstObject localObject];
+        messageListItemSelection = [localObject2 messageListItemSelection];
+        messageListItems = [messageListItemSelection messageListItems];
+        [v12 addObjectsFromArray:messageListItems];
       }
 
-      [v14 setLocalObject:0];
+      [firstObject setLocalObject:0];
     }
 
     v20 = +[MessageListDragDropHelper log];
@@ -103,12 +103,12 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Will begin dragging %lu message list items", buf, 0xCu);
     }
 
-    v22 = [v8 dragItem];
-    v23 = [v12 allObjects];
-    v24 = [(MFTriageInteraction *)MFMoveMessageTriageInteraction interactionWithMessageListItems:v23 undoManager:v13 origin:2 actor:2];
-    [v22 setLocalObject:v24];
+    dragItem = [v8 dragItem];
+    allObjects = [v12 allObjects];
+    v24 = [(MFTriageInteraction *)MFMoveMessageTriageInteraction interactionWithMessageListItems:allObjects undoManager:v13 origin:2 actor:2];
+    [dragItem setLocalObject:v24];
 
-    v29 = v22;
+    v29 = dragItem;
     v25 = [NSArray arrayWithObjects:&v29 count:1];
   }
 
@@ -118,7 +118,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v31 = v28;
+      v31 = pathCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Context is nil. Cancel drag for item at indexPath: %{public}@", buf, 0xCu);
     }
 
@@ -128,18 +128,18 @@
   return v25;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v5 = [(MessageListDragDropHelper *)self _dragItemsForDragSession:a4 atIndexPath:a5];
+  v5 = [(MessageListDragDropHelper *)self _dragItemsForDragSession:session atIndexPath:path];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
-  v5 = [a3 cellForItemAtIndexPath:a4];
-  v6 = [(MessageListDragDropHelper *)self delegate];
-  [v6 dragItemCornerRadius:self];
+  v5 = [view cellForItemAtIndexPath:path];
+  delegate = [(MessageListDragDropHelper *)self delegate];
+  [delegate dragItemCornerRadius:self];
 
   v7 = objc_alloc_init(UIDragPreviewParameters);
   [v5 bounds];
@@ -149,34 +149,34 @@
   return v7;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = [(MessageListDragDropHelper *)self _dragItemsForDragSession:a4 atIndexPath:a5, a6.x, a6.y];
+  v6 = [(MessageListDragDropHelper *)self _dragItemsForDragSession:session atIndexPath:path, point.x, point.y];
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v5 = [(MessageListDragDropHelper *)self delegate:a3];
+  v5 = [(MessageListDragDropHelper *)self delegate:view];
   [v5 willBeginDragForMessageListDragDropHelper:self];
 }
 
-- (BOOL)_canMoveDragItems:(id)a3 toMailboxes:(id)a4
+- (BOOL)_canMoveDragItems:(id)items toMailboxes:(id)mailboxes
 {
-  v5 = a3;
-  v6 = a4;
-  v22 = v5;
-  if ([v6 count])
+  itemsCopy = items;
+  mailboxesCopy = mailboxes;
+  v22 = itemsCopy;
+  if ([mailboxesCopy count])
   {
-    v7 = [v6 ef_compactMap:&stru_1006517D0];
+    v7 = [mailboxesCopy ef_compactMap:&stru_1006517D0];
     v20 = [NSSet setWithArray:v7];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v5;
+    obj = itemsCopy;
     v8 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
@@ -190,7 +190,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v10 = [*(*(&v27 + 1) + 8 * i) localObject];
+          localObject = [*(*(&v27 + 1) + 8 * i) localObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -213,7 +213,7 @@
                   }
 
                   v15 = *(*(&v23 + 1) + 8 * j);
-                  v16 = v10;
+                  v16 = localObject;
                   LODWORD(v15) = [v16 isPermittedWithTargetAccount:v15];
 
                   if (!v15)
@@ -259,14 +259,14 @@ LABEL_23:
   return v17;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(MessageListDragDropHelper *)self dataSource];
-  v8 = [v7 dropMailboxesForMessageListDragDropHelper:self];
+  updateCopy = update;
+  dataSource = [(MessageListDragDropHelper *)self dataSource];
+  v8 = [dataSource dropMailboxesForMessageListDragDropHelper:self];
 
-  v9 = [v6 items];
-  LODWORD(self) = [(MessageListDragDropHelper *)self _canMoveDragItems:v9 toMailboxes:v8];
+  items = [updateCopy items];
+  LODWORD(self) = [(MessageListDragDropHelper *)self _canMoveDragItems:items toMailboxes:v8];
 
   v10 = [UICollectionViewDropProposal alloc];
   if (self)
@@ -284,13 +284,13 @@ LABEL_23:
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v28 = a4;
-  v5 = [(MessageListDragDropHelper *)self dataSource];
-  v6 = [v5 dropMailboxesForMessageListDragDropHelper:self];
+  sessionCopy = session;
+  dataSource = [(MessageListDragDropHelper *)self dataSource];
+  v6 = [dataSource dropMailboxesForMessageListDragDropHelper:self];
 
-  if (v6 && (v27 = v6, [v28 items], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[MessageListItemDragContext dragItemsAreAllMessageListItems:](MessageListItemDragContext, "dragItemsAreAllMessageListItems:", v7), v7, (v8 & 1) != 0) && (objc_msgSend(v6, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v38[0] = _NSConcreteStackBlock, v38[1] = 3221225472, v38[2] = sub_1001546CC, v38[3] = &unk_1006517F0, v38[4] = v10, (objc_msgSend(v6, "ef_all:", v38) & 1) != 0))
+  if (v6 && (v27 = v6, [sessionCopy items], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[MessageListItemDragContext dragItemsAreAllMessageListItems:](MessageListItemDragContext, "dragItemsAreAllMessageListItems:", v7), v7, (v8 & 1) != 0) && (objc_msgSend(v6, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v38[0] = _NSConcreteStackBlock, v38[1] = 3221225472, v38[2] = sub_1001546CC, v38[3] = &unk_1006517F0, v38[4] = v10, (objc_msgSend(v6, "ef_all:", v38) & 1) != 0))
   {
     v26 = [NSSet setWithArray:v6];
     v11 = objc_alloc_init(NSMutableSet);
@@ -298,9 +298,9 @@ LABEL_23:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v12 = [v28 items];
-    obj = v12;
-    v13 = [v12 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    items = [sessionCopy items];
+    obj = items;
+    v13 = [items countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v13)
     {
       v14 = *v35;
@@ -313,7 +313,7 @@ LABEL_23:
             objc_enumerationMutation(obj);
           }
 
-          v16 = [*(*(&v34 + 1) + 8 * i) localObject];
+          localObject = [*(*(&v34 + 1) + 8 * i) localObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -321,10 +321,10 @@ LABEL_23:
             v33 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v17 = [v16 messageListItemSelection];
-            v18 = [v17 messageListItems];
+            messageListItemSelection = [localObject messageListItemSelection];
+            messageListItems = [messageListItemSelection messageListItems];
 
-            v19 = [v18 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v19 = [messageListItems countByEnumeratingWithState:&v30 objects:v39 count:16];
             if (v19)
             {
               v20 = *v31;
@@ -334,14 +334,14 @@ LABEL_23:
                 {
                   if (*v31 != v20)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(messageListItems);
                   }
 
-                  v22 = [*(*(&v30 + 1) + 8 * j) mailboxes];
-                  [v11 addObjectsFromArray:v22];
+                  mailboxes = [*(*(&v30 + 1) + 8 * j) mailboxes];
+                  [v11 addObjectsFromArray:mailboxes];
                 }
 
-                v19 = [v18 countByEnumeratingWithState:&v30 objects:v39 count:16];
+                v19 = [messageListItems countByEnumeratingWithState:&v30 objects:v39 count:16];
               }
 
               while (v19);
@@ -349,7 +349,7 @@ LABEL_23:
           }
         }
 
-        v12 = obj;
+        items = obj;
         v13 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
       }
 
@@ -369,28 +369,28 @@ LABEL_23:
   return v24;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v22 = a3;
-  v23 = a4;
-  v6 = [v23 session];
-  v21 = [v6 items];
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  session = [coordinatorCopy session];
+  items = [session items];
 
   v7 = [UIDragPreviewTarget alloc];
-  [v22 bounds];
+  [viewCopy bounds];
   MidX = CGRectGetMidX(v31);
-  [v22 bounds];
+  [viewCopy bounds];
   MidY = CGRectGetMidY(v32);
   CGAffineTransformMakeScale(&v29, 0.0, 0.0);
-  v24 = [v7 initWithContainer:v22 center:&v29 transform:{MidX, MidY}];
-  v10 = [(MessageListDragDropHelper *)self dataSource];
-  v11 = [v10 dropMailboxesForMessageListDragDropHelper:self];
+  v24 = [v7 initWithContainer:viewCopy center:&v29 transform:{MidX, MidY}];
+  dataSource = [(MessageListDragDropHelper *)self dataSource];
+  v11 = [dataSource dropMailboxesForMessageListDragDropHelper:self];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v21;
+  v12 = items;
   v13 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v13)
   {
@@ -405,16 +405,16 @@ LABEL_23:
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 localObject];
+        localObject = [v16 localObject];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = v17;
-          v19 = [v11 firstObject];
-          [v18 setTargetMailbox:v19];
+          v18 = localObject;
+          firstObject = [v11 firstObject];
+          [v18 setTargetMailbox:firstObject];
 
           [v18 performInteraction];
-          v20 = [v23 dropItem:v16 toTarget:v24];
+          v20 = [coordinatorCopy dropItem:v16 toTarget:v24];
         }
       }
 
@@ -425,13 +425,13 @@ LABEL_23:
   }
 }
 
-- (int64_t)_dataOwnerForMailboxes:(id)a3
+- (int64_t)_dataOwnerForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  mailboxesCopy = mailboxes;
+  v4 = mailboxesCopy;
+  if (mailboxesCopy)
   {
-    if ([v3 ef_any:&stru_100651810])
+    if ([mailboxesCopy ef_any:&stru_100651810])
     {
       v5 = 2;
     }
@@ -450,22 +450,22 @@ LABEL_23:
   return v5;
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(MessageListDragDropHelper *)self dataSource];
-  v8 = [v7 messageDragDropHelper:self itemContextForIndexPath:v6];
+  pathCopy = path;
+  dataSource = [(MessageListDragDropHelper *)self dataSource];
+  v8 = [dataSource messageDragDropHelper:self itemContextForIndexPath:pathCopy];
 
-  v9 = [v8 messageListItem];
-  v10 = [v9 mailboxes];
-  v11 = [(MessageListDragDropHelper *)self _dataOwnerForMailboxes:v10];
+  messageListItem = [v8 messageListItem];
+  mailboxes = [messageListItem mailboxes];
+  v11 = [(MessageListDragDropHelper *)self _dataOwnerForMailboxes:mailboxes];
 
   return v11;
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path
 {
-  v6 = [(MessageListDragDropHelper *)self dataSource:a3];
+  v6 = [(MessageListDragDropHelper *)self dataSource:view];
   v7 = [v6 dropMailboxesForMessageListDragDropHelper:self];
 
   v8 = [(MessageListDragDropHelper *)self _dataOwnerForMailboxes:v7];

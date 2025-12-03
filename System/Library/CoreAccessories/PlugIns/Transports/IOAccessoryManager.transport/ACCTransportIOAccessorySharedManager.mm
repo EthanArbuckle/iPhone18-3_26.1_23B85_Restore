@@ -1,73 +1,73 @@
 @interface ACCTransportIOAccessorySharedManager
-+ (id)IOAccessoryClassStringForIOAccessoryClassType:(int)a3;
++ (id)IOAccessoryClassStringForIOAccessoryClassType:(int)type;
 + (id)sharedManager;
-+ (int)IOAccessoryClassTypeForIOAccessoryClassString:(id)a3;
++ (int)IOAccessoryClassTypeForIOAccessoryClassString:(id)string;
 - (ACCTransportIOAccessorySharedManager)init;
 - (ACCTransportPluginIOAccessoryManager)delegate;
-- (BOOL)IOAccessoryEADataArrived:(id)a3 eaEndpointUUID:(id)a4;
-- (BOOL)IOAccessoryOOBPairingDataArrived:(id)a3 endpointUUID:(id)a4;
-- (BOOL)IOAccessoryOOBPairingDataFinishedForEndpointUUID:(id)a3;
-- (BOOL)IOAccessoryOOBPairingDataStartedForEndpointUUID:(id)a3;
-- (BOOL)IOAccessoryOOBPairingInfoArrived:(id)a3 endpointUUID:(id)a4;
-- (BOOL)IOAccessoryPortDataArrived:(id)a3 endpointUUID:(id)a4;
-- (BOOL)_addACCTransportToManager:(id)a3;
-- (BOOL)_managerForConnectionUUIDHasActiveEndpoint:(id)a3;
-- (BOOL)connectedThroughAdapter:(id)a3;
-- (BOOL)isBatteryPackModeEnabled:(id)a3;
-- (BOOL)isPowerDuringSleepEnabled:(id)a3;
-- (BOOL)isPowerDuringSleepSupported:(id)a3;
-- (BOOL)openEASession:(id)a3 withEAEndpointUUID:(id)a4;
-- (BOOL)resetAccessoryBaseCurrent:(id)a3;
-- (BOOL)setProperties:(id)a3 forManager:(id)a4;
+- (BOOL)IOAccessoryEADataArrived:(id)arrived eaEndpointUUID:(id)d;
+- (BOOL)IOAccessoryOOBPairingDataArrived:(id)arrived endpointUUID:(id)d;
+- (BOOL)IOAccessoryOOBPairingDataFinishedForEndpointUUID:(id)d;
+- (BOOL)IOAccessoryOOBPairingDataStartedForEndpointUUID:(id)d;
+- (BOOL)IOAccessoryOOBPairingInfoArrived:(id)arrived endpointUUID:(id)d;
+- (BOOL)IOAccessoryPortDataArrived:(id)arrived endpointUUID:(id)d;
+- (BOOL)_addACCTransportToManager:(id)manager;
+- (BOOL)_managerForConnectionUUIDHasActiveEndpoint:(id)endpoint;
+- (BOOL)connectedThroughAdapter:(id)adapter;
+- (BOOL)isBatteryPackModeEnabled:(id)enabled;
+- (BOOL)isPowerDuringSleepEnabled:(id)enabled;
+- (BOOL)isPowerDuringSleepSupported:(id)supported;
+- (BOOL)openEASession:(id)session withEAEndpointUUID:(id)d;
+- (BOOL)resetAccessoryBaseCurrent:(id)current;
+- (BOOL)setProperties:(id)properties forManager:(id)manager;
 - (BOOL)shouldEnableDirectAWCAuth;
-- (id)_basePortForConnectionUUID:(id)a3;
-- (id)_basePortForEndpointUUID:(id)a3;
-- (id)_managerContainingBase:(id)a3;
-- (id)_managerForBase:(id)a3;
-- (id)_managerForBaseEndpointUUID:(id)a3;
-- (id)_managerForConnectionUUID:(id)a3;
-- (id)_managerForIOService:(unsigned int)a3 shouldCreateNewService:(BOOL)a4;
-- (id)_portForManagerMatchingPrimaryPort:(id)a3;
-- (id)basePortForService:(unsigned int)a3;
-- (id)digitalIDDataForUpstreamConnection:(id)a3;
-- (id)managerForIOAccessoryManagerService:(unsigned int)a3;
-- (int)CableType:(id)a3;
-- (int)USBModeForConnectionUUID:(id)a3;
-- (int)USBModeForEndpointUUID:(id)a3;
-- (int)_connectionTypeForIOAccessoryPort:(id)a3;
-- (int)_endpointTransportTypeForIOAccessoryPort:(id)a3;
-- (unsigned)USBChargingVoltageInmV:(id)a3;
-- (unsigned)USBCurrentLimitBaseInmA:(id)a3;
-- (unsigned)USBCurrentLimitInmA:(id)a3;
-- (unsigned)USBCurrentLimitOffsetInmA:(id)a3;
-- (unsigned)accessoryChargingCurrentInmA:(id)a3;
-- (unsigned)sleepPowerCurrentLimitInmA:(id)a3;
-- (void)IOAccessoryConfigStreamMessageArrived:(id)a3 endpointUUID:(id)a4;
-- (void)IOAccessoryConfigStreamUpdateAccesssoryInfo:(id)a3;
-- (void)IOAccessoryManagerResistorIDChanged:(int)a3 forManager:(id)a4;
-- (void)IOAccessoryManagerServiceArrived:(unsigned int)a3;
-- (void)IOAccessoryManagerServiceDetached:(unsigned int)a3;
-- (void)IOAccessoryManagerServiceInfoSet:(unsigned int)a3;
-- (void)IOAccessoryPortDetach:(id)a3;
-- (void)IOAccessoryPortPropertyChanged:(id)a3;
-- (void)IOAccessoryPortPublish:(id)a3;
-- (void)_IOAccessoryPortDetachInternal:(id)a3;
-- (void)_clearChildPortEndpointsForManagerDisconnection:(id)a3;
-- (void)_createEAEndpointForProtocol:(id)a3 andManager:(id)a4;
-- (void)_createEAProtocolsForManager:(id)a3;
-- (void)_createModuleConnectionAndEndpoint:(id)a3;
-- (void)_handleRequestForIAPDPortB139B164Connected:(id)a3;
-- (void)_handleRequestForPrimaryPort:(id)a3;
-- (void)_handleUSBHostPluginArrived:(id)a3;
-- (void)closeEASession:(id)a3;
+- (id)_basePortForConnectionUUID:(id)d;
+- (id)_basePortForEndpointUUID:(id)d;
+- (id)_managerContainingBase:(id)base;
+- (id)_managerForBase:(id)base;
+- (id)_managerForBaseEndpointUUID:(id)d;
+- (id)_managerForConnectionUUID:(id)d;
+- (id)_managerForIOService:(unsigned int)service shouldCreateNewService:(BOOL)newService;
+- (id)_portForManagerMatchingPrimaryPort:(id)port;
+- (id)basePortForService:(unsigned int)service;
+- (id)digitalIDDataForUpstreamConnection:(id)connection;
+- (id)managerForIOAccessoryManagerService:(unsigned int)service;
+- (int)CableType:(id)type;
+- (int)USBModeForConnectionUUID:(id)d;
+- (int)USBModeForEndpointUUID:(id)d;
+- (int)_connectionTypeForIOAccessoryPort:(id)port;
+- (int)_endpointTransportTypeForIOAccessoryPort:(id)port;
+- (unsigned)USBChargingVoltageInmV:(id)v;
+- (unsigned)USBCurrentLimitBaseInmA:(id)a;
+- (unsigned)USBCurrentLimitInmA:(id)a;
+- (unsigned)USBCurrentLimitOffsetInmA:(id)a;
+- (unsigned)accessoryChargingCurrentInmA:(id)a;
+- (unsigned)sleepPowerCurrentLimitInmA:(id)a;
+- (void)IOAccessoryConfigStreamMessageArrived:(id)arrived endpointUUID:(id)d;
+- (void)IOAccessoryConfigStreamUpdateAccesssoryInfo:(id)info;
+- (void)IOAccessoryManagerResistorIDChanged:(int)changed forManager:(id)manager;
+- (void)IOAccessoryManagerServiceArrived:(unsigned int)arrived;
+- (void)IOAccessoryManagerServiceDetached:(unsigned int)detached;
+- (void)IOAccessoryManagerServiceInfoSet:(unsigned int)set;
+- (void)IOAccessoryPortDetach:(id)detach;
+- (void)IOAccessoryPortPropertyChanged:(id)changed;
+- (void)IOAccessoryPortPublish:(id)publish;
+- (void)_IOAccessoryPortDetachInternal:(id)internal;
+- (void)_clearChildPortEndpointsForManagerDisconnection:(id)disconnection;
+- (void)_createEAEndpointForProtocol:(id)protocol andManager:(id)manager;
+- (void)_createEAProtocolsForManager:(id)manager;
+- (void)_createModuleConnectionAndEndpoint:(id)endpoint;
+- (void)_handleRequestForIAPDPortB139B164Connected:(id)connected;
+- (void)_handleRequestForPrimaryPort:(id)port;
+- (void)_handleUSBHostPluginArrived:(id)arrived;
+- (void)closeEASession:(id)session;
 - (void)dealloc;
-- (void)handleCloseEASessionNotification:(id)a3;
-- (void)handleOpenEASessionNotification:(id)a3;
+- (void)handleCloseEASessionNotification:(id)notification;
+- (void)handleOpenEASessionNotification:(id)notification;
 - (void)lockAccessoryPorts;
-- (void)resetLightningBusForEndpointWithUUID:(id)a3;
+- (void)resetLightningBusForEndpointWithUUID:(id)d;
 - (void)shouldEnableDirectAWCAuth;
 - (void)startIOACCTransportManager;
-- (void)transmitData:(id)a3 forEndpointUUID:(id)a4;
+- (void)transmitData:(id)data forEndpointUUID:(id)d;
 - (void)unlockAccessoryPorts;
 @end
 
@@ -79,7 +79,7 @@
   block[1] = 3221225472;
   block[2] = __53__ACCTransportIOAccessorySharedManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once != -1)
   {
     dispatch_once(&sharedManager_once, block);
@@ -92,8 +92,8 @@
 
 - (void)lockAccessoryPorts
 {
-  v2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v2 lock];
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 }
 
 - (ACCTransportPluginIOAccessoryManager)delegate
@@ -105,8 +105,8 @@
 
 - (void)unlockAccessoryPorts
 {
-  v2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v2 unlock];
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock unlock];
 }
 
 - (ACCTransportIOAccessorySharedManager)init
@@ -142,11 +142,11 @@
     accessoryPortLock = v2->_accessoryPortLock;
     v2->_accessoryPortLock = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v2 selector:sel__handleRequestForIAPDPortB139B164Connected_ name:*MEMORY[0x277CFD180] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleRequestForIAPDPortB139B164Connected_ name:*MEMORY[0x277CFD180] object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v2 selector:sel__handleRequestForPrimaryPort_ name:*MEMORY[0x277CFD188] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleRequestForPrimaryPort_ name:*MEMORY[0x277CFD188] object:0];
 
     v2->_bIsWatch = MGGetSInt32Answer() == 6;
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -244,10 +244,10 @@ uint64_t __66__ACCTransportIOAccessorySharedManager_startIOACCTransportManager__
   return [*(*(a1 + 32) + 56) startListening];
 }
 
-- (id)_managerForBase:(id)a3
+- (id)_managerForBase:(id)base
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  baseCopy = base;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -261,7 +261,7 @@ uint64_t __66__ACCTransportIOAccessorySharedManager_startIOACCTransportManager__
   block[3] = &unk_2789E8820;
   v26 = &v27;
   block[4] = self;
-  v6 = v4;
+  v6 = baseCopy;
   v25 = v6;
   dispatch_sync(listQ, block);
   if ([v28[5] count] != 1)
@@ -423,10 +423,10 @@ BOOL __56__ACCTransportIOAccessorySharedManager__managerForBase___block_invoke_2
   return v9 == v10;
 }
 
-- (id)_managerContainingBase:(id)a3
+- (id)_managerContainingBase:(id)base
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  baseCopy = base;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -440,7 +440,7 @@ BOOL __56__ACCTransportIOAccessorySharedManager__managerForBase___block_invoke_2
   block[3] = &unk_2789E8820;
   v26 = &v27;
   block[4] = self;
-  v6 = v4;
+  v6 = baseCopy;
   v25 = v6;
   dispatch_sync(listQ, block);
   if ([v28[5] count] != 1)
@@ -581,16 +581,16 @@ uint64_t __63__ACCTransportIOAccessorySharedManager__managerContainingBase___blo
   return v6;
 }
 
-- (id)managerForIOAccessoryManagerService:(unsigned int)a3
+- (id)managerForIOAccessoryManagerService:(unsigned int)service
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [(ACCTransportIOAccessorySharedManager *)self allIOAccessoryManagers];
+  allIOAccessoryManagers = [(ACCTransportIOAccessorySharedManager *)self allIOAccessoryManagers];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76__ACCTransportIOAccessorySharedManager_managerForIOAccessoryManagerService___block_invoke;
   v21[3] = &__block_descriptor_36_e44_B24__0__ACCTransportIOAccessoryManager_8_B16l;
-  v22 = a3;
-  v5 = [v4 objectsPassingTest:v21];
+  serviceCopy = service;
+  v5 = [allIOAccessoryManagers objectsPassingTest:v21];
 
   if ([v5 count] != 1)
   {
@@ -668,7 +668,7 @@ LABEL_19:
   return v9;
 }
 
-- (id)_managerForIOService:(unsigned int)a3 shouldCreateNewService:(BOOL)a4
+- (id)_managerForIOService:(unsigned int)service shouldCreateNewService:(BOOL)newService
 {
   v10 = 0;
   v11 = &v10;
@@ -681,10 +681,10 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __84__ACCTransportIOAccessorySharedManager__managerForIOService_shouldCreateNewService___block_invoke;
   block[3] = &unk_2789E90B0;
-  v8 = a3;
+  serviceCopy = service;
   block[4] = self;
   block[5] = &v10;
-  v9 = a4;
+  newServiceCopy = newService;
   dispatch_sync(listQ, block);
   v5 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -803,11 +803,11 @@ LABEL_17:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_managerForBaseEndpointUUID:(id)a3
+- (id)_managerForBaseEndpointUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:v4];
+  dCopy = d;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:dCopy];
   if (!v5)
   {
     if (gLogObjects)
@@ -842,7 +842,7 @@ LABEL_17:
     }
 
     v18 = 138412290;
-    v19 = v4;
+    v19 = dCopy;
     v14 = "Unable to find accBaseTransport for endpointUUID %@";
     goto LABEL_33;
   }
@@ -921,18 +921,18 @@ LABEL_35:
   return v9;
 }
 
-- (id)_managerForConnectionUUID:(id)a3
+- (id)_managerForConnectionUUID:(id)d
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy__0;
   v49 = __Block_byref_object_dispose__0;
   v50 = 0;
-  if (v4)
+  if (dCopy)
   {
     listQ = self->_listQ;
     block[0] = MEMORY[0x277D85DD0];
@@ -941,7 +941,7 @@ LABEL_35:
     block[3] = &unk_2789E8820;
     v44 = &v45;
     block[4] = self;
-    v43 = v4;
+    v43 = dCopy;
     dispatch_sync(listQ, block);
   }
 
@@ -1008,7 +1008,7 @@ LABEL_34:
         _os_log_impl(&dword_233656000, v21, OS_LOG_TYPE_INFO, "Found base port owning connectionUUID, stop looking", buf, 2u);
       }
 
-      v13 = 0;
+      rootE75Manager2 = 0;
       goto LABEL_90;
     }
 
@@ -1018,7 +1018,7 @@ LABEL_34:
       v23 = [(ACCTransportIOAccessorySharedManager *)self _managerForIOService:ServiceWithPort shouldCreateNewService:0];
       if (v23)
       {
-        v13 = v23;
+        rootE75Manager2 = v23;
         if (gLogObjects && gNumLogObjects >= 2)
         {
           v24 = *(gLogObjects + 8);
@@ -1091,12 +1091,12 @@ LABEL_34:
       }
     }
 
-    v30 = [(ACCTransportIOAccessorySharedManager *)self rootE75Manager];
-    v31 = v30 == 0;
+    rootE75Manager = [(ACCTransportIOAccessorySharedManager *)self rootE75Manager];
+    v31 = rootE75Manager == 0;
 
     if (!v31)
     {
-      v13 = [(ACCTransportIOAccessorySharedManager *)self rootE75Manager];
+      rootE75Manager2 = [(ACCTransportIOAccessorySharedManager *)self rootE75Manager];
       if (gLogObjects && gNumLogObjects >= 2)
       {
         v21 = *(gLogObjects + 8);
@@ -1127,7 +1127,7 @@ LABEL_90:
       goto LABEL_91;
     }
 
-    v13 = 0;
+    rootE75Manager2 = 0;
 LABEL_76:
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -1202,12 +1202,12 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v13 = 0;
+  rootE75Manager2 = 0;
   v14 = *v39;
   do
   {
     v15 = 0;
-    v16 = v13;
+    v16 = rootE75Manager2;
     do
     {
       if (*v39 != v14)
@@ -1215,10 +1215,10 @@ LABEL_33:
         objc_enumerationMutation(v11);
       }
 
-      v13 = *(*(&v38 + 1) + 8 * v15);
+      rootE75Manager2 = *(*(&v38 + 1) + 8 * v15);
 
       ++v15;
-      v16 = v13;
+      v16 = rootE75Manager2;
     }
 
     while (v12 != v15);
@@ -1227,13 +1227,13 @@ LABEL_33:
 
   while (v12);
 
-  if (!v13)
+  if (!rootE75Manager2)
   {
     goto LABEL_34;
   }
 
 LABEL_91:
-  v35 = v13;
+  v35 = rootE75Manager2;
   _Block_object_dispose(&v45, 8);
 
   v36 = *MEMORY[0x277D85DE8];
@@ -1323,10 +1323,10 @@ uint64_t __66__ACCTransportIOAccessorySharedManager__managerForConnectionUUID___
   return v12;
 }
 
-- (BOOL)_managerForConnectionUUIDHasActiveEndpoint:(id)a3
+- (BOOL)_managerForConnectionUUIDHasActiveEndpoint:(id)endpoint
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:a3];
+  v3 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:endpoint];
   v4 = v3;
   if (!v3)
   {
@@ -1363,9 +1363,9 @@ uint64_t __66__ACCTransportIOAccessorySharedManager__managerForConnectionUUID___
       if (objc_opt_isKindOfClass())
       {
         v11 = v10;
-        v12 = [v11 ioAccPortEndpointUUID];
+        ioAccPortEndpointUUID = [v11 ioAccPortEndpointUUID];
 
-        if (v12)
+        if (ioAccPortEndpointUUID)
         {
           if (gLogObjects && gNumLogObjects >= 2)
           {
@@ -1390,9 +1390,9 @@ uint64_t __66__ACCTransportIOAccessorySharedManager__managerForConnectionUUID___
             goto LABEL_57;
           }
 
-          v22 = [v11 ioAccPortEndpointUUID];
+          ioAccPortEndpointUUID2 = [v11 ioAccPortEndpointUUID];
           *buf = 138412290;
-          v35 = v22;
+          v35 = ioAccPortEndpointUUID2;
           v23 = "found IOAccessoryPort with active endpointUUID %@";
 LABEL_56:
           _os_log_impl(&dword_233656000, v20, OS_LOG_TYPE_DEFAULT, v23, buf, 0xCu);
@@ -1409,9 +1409,9 @@ LABEL_57:
         if (objc_opt_isKindOfClass())
         {
           v13 = v10;
-          v14 = [v13 endpointUUID];
+          endpointUUID = [v13 endpointUUID];
 
-          if (v14)
+          if (endpointUUID)
           {
             if (gLogObjects && gNumLogObjects >= 2)
             {
@@ -1436,9 +1436,9 @@ LABEL_57:
               goto LABEL_57;
             }
 
-            v22 = [v13 endpointUUID];
+            ioAccPortEndpointUUID2 = [v13 endpointUUID];
             *buf = 138412290;
-            v35 = v22;
+            v35 = ioAccPortEndpointUUID2;
             v23 = "found IOAccessoryEA with active endpointUUID %@";
             goto LABEL_56;
           }
@@ -1450,9 +1450,9 @@ LABEL_57:
           if (objc_opt_isKindOfClass())
           {
             v15 = v10;
-            v16 = [v15 endpointUUID];
+            endpointUUID2 = [v15 endpointUUID];
 
-            if (v16)
+            if (endpointUUID2)
             {
               if (gLogObjects && gNumLogObjects >= 2)
               {
@@ -1477,9 +1477,9 @@ LABEL_57:
                 goto LABEL_57;
               }
 
-              v22 = [v15 endpointUUID];
+              ioAccPortEndpointUUID2 = [v15 endpointUUID];
               *buf = 138412290;
-              v35 = v22;
+              v35 = ioAccPortEndpointUUID2;
               v23 = "found IOAccessoryOOBPairing with active endpointUUID %@";
               goto LABEL_56;
             }
@@ -1494,9 +1494,9 @@ LABEL_57:
             }
 
             v17 = v10;
-            v18 = [v17 endpointUUID];
+            endpointUUID3 = [v17 endpointUUID];
 
-            if (v18)
+            if (endpointUUID3)
             {
               if (gLogObjects && gNumLogObjects >= 2)
               {
@@ -1521,9 +1521,9 @@ LABEL_57:
                 goto LABEL_57;
               }
 
-              v22 = [v17 endpointUUID];
+              ioAccPortEndpointUUID2 = [v17 endpointUUID];
               *buf = 138412290;
-              v35 = v22;
+              v35 = ioAccPortEndpointUUID2;
               v23 = "found IOAccessoryConfigStream with active endpointUUID %@";
               goto LABEL_56;
             }
@@ -1550,7 +1550,7 @@ LABEL_59:
   return v19;
 }
 
-- (id)basePortForService:(unsigned int)a3
+- (id)basePortForService:(unsigned int)service
 {
   v37 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -1566,7 +1566,7 @@ LABEL_59:
   block[3] = &unk_2789E90F8;
   block[4] = self;
   block[5] = &v26;
-  v25 = a3;
+  serviceCopy = service;
   dispatch_sync(listQ, block);
   if ([v27[5] count] != 1)
   {
@@ -1713,10 +1713,10 @@ BOOL __59__ACCTransportIOAccessorySharedManager_basePortForService___block_invok
   return v5 == v6;
 }
 
-- (id)_basePortForEndpointUUID:(id)a3
+- (id)_basePortForEndpointUUID:(id)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1731,7 +1731,7 @@ BOOL __59__ACCTransportIOAccessorySharedManager_basePortForService___block_invok
   v30 = &v31;
   block[4] = self;
   v24 = @"ACCTransportIOAccessoryPort";
-  v6 = v4;
+  v6 = dCopy;
   v25 = v6;
   v26 = @"ACCTransportIOAccessoryEA";
   v27 = @"ACCTransportIOAccessoryOOBPairing";
@@ -2047,10 +2047,10 @@ LABEL_48:
   return v23;
 }
 
-- (id)_basePortForConnectionUUID:(id)a3
+- (id)_basePortForConnectionUUID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2065,7 +2065,7 @@ LABEL_48:
   v26 = &v27;
   block[4] = self;
   v24 = @"ACCTransportIOAccessoryAuthCP";
-  v6 = v4;
+  v6 = dCopy;
   v25 = v6;
   dispatch_sync(listQ, block);
   if ([v28[5] count] != 1)
@@ -2206,10 +2206,10 @@ uint64_t __67__ACCTransportIOAccessorySharedManager__basePortForConnectionUUID__
   return v9;
 }
 
-- (id)_portForManagerMatchingPrimaryPort:(id)a3
+- (id)_portForManagerMatchingPrimaryPort:(id)port
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  portCopy = port;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2222,7 +2222,7 @@ uint64_t __67__ACCTransportIOAccessorySharedManager__basePortForConnectionUUID__
   block[2] = __75__ACCTransportIOAccessorySharedManager__portForManagerMatchingPrimaryPort___block_invoke;
   block[3] = &unk_2789E91E8;
   v26 = &v27;
-  v6 = v4;
+  v6 = portCopy;
   v25 = v6;
   dispatch_sync(listQ, block);
   if ([v28[5] count] != 1)
@@ -2246,11 +2246,11 @@ uint64_t __67__ACCTransportIOAccessorySharedManager__basePortForConnectionUUID__
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v14 = [v28[5] count];
-      v15 = [v6 primaryPortNumber];
+      primaryPortNumber = [v6 primaryPortNumber];
       *buf = 134218240;
       v34 = v14;
       v35 = 1024;
-      v36 = v15;
+      v36 = primaryPortNumber;
       _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_INFO, "Found %lu IOBase Ports contained in set for primaryPort %d", buf, 0x12u);
     }
 
@@ -2374,22 +2374,22 @@ LABEL_14:
   return v9;
 }
 
-- (void)_createEAProtocolsForManager:(id)a3
+- (void)_createEAProtocolsForManager:(id)manager
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  managerCopy = manager;
+  v4 = managerCopy;
+  if (managerCopy)
   {
-    v5 = [v3 connectionUUID];
+    connectionUUID = [managerCopy connectionUUID];
 
-    if (!v5)
+    if (!connectionUUID)
     {
-      v6 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v7 = [v6 createConnectionWithType:objc_msgSend(v4 andIdentifier:{"connectionType"), 0}];
+      delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      v7 = [delegate createConnectionWithType:objc_msgSend(v4 andIdentifier:{"connectionType"), 0}];
 
-      v8 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      [v8 setSupervisedTransportsRestricted:objc_msgSend(v4 forConnectionWithUUID:{"supervisedTransportsRestricted"), v7}];
+      delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      [delegate2 setSupervisedTransportsRestricted:objc_msgSend(v4 forConnectionWithUUID:{"supervisedTransportsRestricted"), v7}];
 
       [v4 setConnectionUUID:v7];
       if (gLogObjects && gNumLogObjects >= 2)
@@ -2410,41 +2410,41 @@ LABEL_14:
 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v11 = [v4 connectionUUID];
+        connectionUUID2 = [v4 connectionUUID];
         *buf = 138412290;
-        v48 = v11;
+        v48 = connectionUUID2;
         _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_INFO, "Created a new connection with UUID: %@", buf, 0xCu);
       }
 
-      v12 = [v4 accessoryInfoLock];
-      [v12 lock];
+      accessoryInfoLock = [v4 accessoryInfoLock];
+      [accessoryInfoLock lock];
 
       v45[0] = *MEMORY[0x277CFD2C0];
       v13 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v4, "primaryPortNumber")}];
       v46[0] = v13;
       v45[1] = *MEMORY[0x277CFD290];
-      v14 = [v4 digitalID];
-      v15 = v14;
-      if (!v14)
+      digitalID = [v4 digitalID];
+      null = digitalID;
+      if (!digitalID)
       {
-        v15 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
       }
 
-      v46[1] = v15;
+      v46[1] = null;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
-      if (!v14)
+      if (!digitalID)
       {
       }
 
-      v17 = [v4 accessoryInfoLock];
-      [v17 unlock];
+      accessoryInfoLock2 = [v4 accessoryInfoLock];
+      [accessoryInfoLock2 unlock];
 
-      v18 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      delegate3 = [(ACCTransportIOAccessorySharedManager *)self delegate];
       v19 = [v16 copy];
-      [v18 setProperties:v19 forConnectionWithUUID:v7];
+      [delegate3 setProperties:v19 forConnectionWithUUID:v7];
     }
 
-    v20 = [v4 eaProtocolChildPorts];
+    eaProtocolChildPorts = [v4 eaProtocolChildPorts];
     if (gLogObjects && gNumLogObjects >= 2)
     {
       v21 = *(gLogObjects + 8);
@@ -2464,20 +2464,20 @@ LABEL_14:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v48 = v20;
+      v48 = eaProtocolChildPorts;
       _os_log_impl(&dword_233656000, v21, OS_LOG_TYPE_INFO, "accEAEndpointsForManager = %@", buf, 0xCu);
     }
 
-    v23 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    delegate4 = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-    if (v23)
+    if (delegate4)
     {
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v38 = v20;
-      v24 = v20;
+      v38 = eaProtocolChildPorts;
+      v24 = eaProtocolChildPorts;
       v25 = [v24 countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v25)
       {
@@ -2494,9 +2494,9 @@ LABEL_14:
             }
 
             v30 = *(*(&v40 + 1) + 8 * i);
-            v31 = [v30 endpointUUID];
+            endpointUUID = [v30 endpointUUID];
 
-            if (v31)
+            if (endpointUUID)
             {
               v32 = gLogObjects;
               v33 = gNumLogObjects;
@@ -2549,86 +2549,86 @@ LABEL_14:
         while (v26);
       }
 
-      v20 = v38;
+      eaProtocolChildPorts = v38;
     }
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createEAEndpointForProtocol:(id)a3 andManager:(id)a4
+- (void)_createEAEndpointForProtocol:(id)protocol andManager:(id)manager
 {
   v46[9] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  protocolCopy = protocol;
+  managerCopy = manager;
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [v7 accessoryInfoLock];
-    [v9 lock];
+    accessoryInfoLock = [managerCopy accessoryInfoLock];
+    [accessoryInfoLock lock];
 
     v45[0] = *MEMORY[0x277CFD250];
-    v36 = [v6 deviceName];
-    v46[0] = v36;
+    deviceName = [protocolCopy deviceName];
+    v46[0] = deviceName;
     v45[1] = *MEMORY[0x277CFD248];
-    v35 = [v6 deviceModelNumber];
-    v46[1] = v35;
+    deviceModelNumber = [protocolCopy deviceModelNumber];
+    v46[1] = deviceModelNumber;
     v45[2] = *MEMORY[0x277CFD240];
-    v34 = [v6 deviceVendorName];
-    v46[2] = v34;
+    deviceVendorName = [protocolCopy deviceVendorName];
+    v46[2] = deviceVendorName;
     v45[3] = *MEMORY[0x277CFD270];
-    v33 = [v6 deviceSerialNumber];
-    v46[3] = v33;
+    deviceSerialNumber = [protocolCopy deviceSerialNumber];
+    v46[3] = deviceSerialNumber;
     v45[4] = *MEMORY[0x277CFD230];
-    v10 = [v6 deviceFirmwareRevision];
-    v46[4] = v10;
+    deviceFirmwareRevision = [protocolCopy deviceFirmwareRevision];
+    v46[4] = deviceFirmwareRevision;
     v45[5] = *MEMORY[0x277CFD238];
-    v11 = [v6 deviceHardwareRevision];
-    v46[5] = v11;
+    deviceHardwareRevision = [protocolCopy deviceHardwareRevision];
+    v46[5] = deviceHardwareRevision;
     v45[6] = *MEMORY[0x277CFD258];
-    v12 = [v7 ppid];
-    v13 = v12;
-    if (!v12)
+    ppid = [managerCopy ppid];
+    null = ppid;
+    if (!ppid)
     {
-      v13 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v38 = self;
-    v46[6] = v13;
+    selfCopy = self;
+    v46[6] = null;
     v45[7] = *MEMORY[0x277CFD268];
-    v14 = [v7 regionCode];
-    v15 = v14;
-    if (!v14)
+    regionCode = [managerCopy regionCode];
+    null2 = regionCode;
+    if (!regionCode)
     {
-      v15 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
-    v46[7] = v15;
+    v46[7] = null2;
     v45[8] = *MEMORY[0x277CFD220];
-    v16 = [v7 inductiveDeviceUID];
-    v17 = v16;
-    if (!v16)
+    inductiveDeviceUID = [managerCopy inductiveDeviceUID];
+    null3 = inductiveDeviceUID;
+    if (!inductiveDeviceUID)
     {
-      v17 = [MEMORY[0x277CBEB68] null];
+      null3 = [MEMORY[0x277CBEB68] null];
     }
 
-    v46[8] = v17;
+    v46[8] = null3;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:9];
-    if (!v16)
+    if (!inductiveDeviceUID)
     {
     }
 
-    if (!v14)
+    if (!regionCode)
     {
     }
 
-    if (!v12)
+    if (!ppid)
     {
     }
 
-    v18 = [v7 accessoryInfoLock];
-    [v18 unlock];
+    accessoryInfoLock2 = [managerCopy accessoryInfoLock];
+    [accessoryInfoLock2 unlock];
 
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -2650,40 +2650,40 @@ LABEL_14:
 
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v22 = [v6 eaProtocol];
-      v23 = [v7 connectionUUID];
+      eaProtocol = [protocolCopy eaProtocol];
+      connectionUUID = [managerCopy connectionUUID];
       *buf = 138412802;
       v40 = v20;
       v41 = 2112;
-      v42 = v22;
+      v42 = eaProtocol;
       v43 = 2112;
-      v44 = v23;
+      v44 = connectionUUID;
       _os_log_impl(&dword_233656000, v19, OS_LOG_TYPE_INFO, "accInfoDictionary = %@, accEAProtocol.eaProtocol = %@, ioAccMgr.connectionUUID = %@", buf, 0x20u);
     }
 
-    v24 = [(ACCTransportIOAccessorySharedManager *)v38 delegate];
-    v25 = [v6 eaProtocol];
-    v26 = [v7 connectionUUID];
-    v27 = [v26 copy];
-    v28 = [v24 createEndpointWithTransportType:5 andProtocol:5 andIdentifier:v25 forConnectionWithUUID:v27 publishConnection:0];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)selfCopy delegate];
+    eaProtocol2 = [protocolCopy eaProtocol];
+    connectionUUID2 = [managerCopy connectionUUID];
+    v27 = [connectionUUID2 copy];
+    v28 = [delegate2 createEndpointWithTransportType:5 andProtocol:5 andIdentifier:eaProtocol2 forConnectionWithUUID:v27 publishConnection:0];
 
-    v29 = [(ACCTransportIOAccessorySharedManager *)v38 delegate];
-    [v29 setAccessoryInfo:v20 forEndpointWithUUID:v28];
+    delegate3 = [(ACCTransportIOAccessorySharedManager *)selfCopy delegate];
+    [delegate3 setAccessoryInfo:v20 forEndpointWithUUID:v28];
 
     v30 = [v28 copy];
-    [v6 setEndpointUUID:v30];
+    [protocolCopy setEndpointUUID:v30];
 
-    v31 = [v7 connectionUUID];
-    [v6 setParentConnectionUUID:v31];
+    connectionUUID3 = [managerCopy connectionUUID];
+    [protocolCopy setParentConnectionUUID:connectionUUID3];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearChildPortEndpointsForManagerDisconnection:(id)a3
+- (void)_clearChildPortEndpointsForManagerDisconnection:(id)disconnection
 {
-  v3 = [a3 ioAccessoryChildPorts];
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_110];
+  ioAccessoryChildPorts = [disconnection ioAccessoryChildPorts];
+  [ioAccessoryChildPorts enumerateObjectsUsingBlock:&__block_literal_global_110];
 }
 
 void __88__ACCTransportIOAccessorySharedManager__clearChildPortEndpointsForManagerDisconnection___block_invoke(uint64_t a1, void *a2)
@@ -2827,24 +2827,24 @@ void __88__ACCTransportIOAccessorySharedManager__clearChildPortEndpointsForManag
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_connectionTypeForIOAccessoryPort:(id)a3
+- (int)_connectionTypeForIOAccessoryPort:(id)port
 {
-  v4 = a3;
-  [v4 upstreamManagerService];
+  portCopy = port;
+  [portCopy upstreamManagerService];
   Type = IOAccessoryManagerGetType();
   if (Type == 3 || (!self->_bIsWatch && (Type & 0xF) != 5 ? (v6 = 1) : (v6 = 4), Type == 6))
   {
     v6 = 6;
   }
 
-  v7 = [v4 portIDNumber];
+  portIDNumber = [portCopy portIDNumber];
 
-  if (v7 == 257)
+  if (portIDNumber == 257)
   {
     return 8;
   }
 
-  if (v7 == 256)
+  if (portIDNumber == 256)
   {
     return 3;
   }
@@ -2852,20 +2852,20 @@ void __88__ACCTransportIOAccessorySharedManager__clearChildPortEndpointsForManag
   return v6;
 }
 
-- (int)_endpointTransportTypeForIOAccessoryPort:(id)a3
+- (int)_endpointTransportTypeForIOAccessoryPort:(id)port
 {
-  v3 = a3;
-  v4 = [v3 portIDNumber];
-  if ((v4 - 6) <= 0xF)
+  portCopy = port;
+  portIDNumber = [portCopy portIDNumber];
+  if ((portIDNumber - 6) <= 0xF)
   {
-    v5 = [v3 portTransportType];
-    v6 = v5;
-    if (v5 == 7)
+    portTransportType = [portCopy portTransportType];
+    v6 = portTransportType;
+    if (portTransportType == 7)
     {
       goto LABEL_18;
     }
 
-    if (v5 != 19)
+    if (portTransportType != 19)
     {
       v6 = 1;
       goto LABEL_18;
@@ -2875,18 +2875,18 @@ void __88__ACCTransportIOAccessorySharedManager__clearChildPortEndpointsForManag
   }
 
   v6 = 5;
-  if (v4 > 256)
+  if (portIDNumber > 256)
   {
-    if (v4 == 257)
+    if (portIDNumber == 257)
     {
       v6 = 9;
       goto LABEL_18;
     }
 
-    if (v4 == 512)
+    if (portIDNumber == 512)
     {
 LABEL_14:
-      if ([v3 portStreamType] == 5)
+      if ([portCopy portStreamType] == 5)
       {
         v6 = 14;
       }
@@ -2900,7 +2900,7 @@ LABEL_14:
 
   else
   {
-    if (v4 == 2)
+    if (portIDNumber == 2)
     {
       v7 = 0;
     }
@@ -2910,7 +2910,7 @@ LABEL_14:
       v7 = 5;
     }
 
-    if (v4 == 1)
+    if (portIDNumber == 1)
     {
       v6 = 6;
     }
@@ -2926,11 +2926,11 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)_addACCTransportToManager:(id)a3
+- (BOOL)_addACCTransportToManager:(id)manager
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForBase:v4];
+  managerCopy = manager;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForBase:managerCopy];
   v6 = v5;
   if (gLogObjects)
   {
@@ -2968,7 +2968,7 @@ LABEL_18:
       _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "Found IOAccessoryManager with service %u, adding child port to manager", &v15, 8u);
     }
 
-    [v6 addIOAccessoryChildPort:v4];
+    [v6 addIOAccessoryChildPort:managerCopy];
   }
 
   else
@@ -2992,13 +2992,13 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v15 = 138413058;
-      v16 = v4;
+      v16 = managerCopy;
       v17 = 1024;
-      v18 = [v4 ioService];
+      ioService = [managerCopy ioService];
       v19 = 1024;
-      v20 = [v4 primaryPortNumber];
+      primaryPortNumber = [managerCopy primaryPortNumber];
       v21 = 1024;
-      v22 = [v4 upstreamManagerService];
+      upstreamManagerService = [managerCopy upstreamManagerService];
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Couldn't find Manager for basePort %@, ioService %d, primaryPortNumber %d, upstreamManagerService %d", &v15, 0x1Eu);
     }
   }
@@ -3007,25 +3007,25 @@ LABEL_18:
   return v6 != 0;
 }
 
-- (void)_handleRequestForIAPDPortB139B164Connected:(id)a3
+- (void)_handleRequestForIAPDPortB139B164Connected:(id)connected
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ACCTransportIOAccessorySharedManager *)self isB139OrB164Connected];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  isB139OrB164Connected = [(ACCTransportIOAccessorySharedManager *)self isB139OrB164Connected];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:isB139OrB164Connected];
   v8 = *MEMORY[0x277CFD170];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:*MEMORY[0x277CFD1A0] object:0 userInfo:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277CFD1A0] object:0 userInfo:v5];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRequestForPrimaryPort:(id)a3
+- (void)_handleRequestForPrimaryPort:(id)port
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277CFD178]];
+  userInfo = [port userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CFD178]];
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 2;
@@ -3092,9 +3092,9 @@ LABEL_18:
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v10 primaryPortNumber];
+      primaryPortNumber = [v10 primaryPortNumber];
       *buf = 67109120;
-      LODWORD(v26) = v16;
+      LODWORD(v26) = primaryPortNumber;
       _os_log_impl(&dword_233656000, v13, OS_LOG_TYPE_DEFAULT, "Request for primary port: found managerForConnectionUUID. PrimaryPort is %d", buf, 8u);
     }
 
@@ -3132,15 +3132,15 @@ LABEL_18:
   v23 = *MEMORY[0x277CFD168];
   v24 = v17;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-  v21 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v21 postNotificationName:*MEMORY[0x277CFD1A8] object:0 userInfo:v20];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277CFD1A8] object:0 userInfo:v20];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleOpenEASessionNotification:(id)a3
+- (void)handleOpenEASessionNotification:(id)notification
 {
-  v3 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:a3];
+  v3 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:notification];
   if (v3)
   {
     v5 = v3;
@@ -3154,9 +3154,9 @@ LABEL_18:
   }
 }
 
-- (void)handleCloseEASessionNotification:(id)a3
+- (void)handleCloseEASessionNotification:(id)notification
 {
-  v3 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:a3];
+  v3 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:notification];
   if (v3)
   {
     v5 = v3;
@@ -3170,10 +3170,10 @@ LABEL_18:
   }
 }
 
-- (void)_handleUSBHostPluginArrived:(id)a3
+- (void)_handleUSBHostPluginArrived:(id)arrived
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrivedCopy = arrived;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 2;
@@ -3209,17 +3209,17 @@ LABEL_18:
     _os_log_impl(&dword_233656000, v6, OS_LOG_TYPE_DEFAULT, "Received %@ notification, notifying %@", &v9, 0x16u);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"ACCTransportIOAccessory_IOAccessoryManagerArrivedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ACCTransportIOAccessory_IOAccessoryManagerArrivedNotification" object:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transmitData:(id)a3 forEndpointUUID:(id)a4
+- (void)transmitData:(id)data forEndpointUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 2;
@@ -3269,26 +3269,26 @@ LABEL_18:
       v12 = MEMORY[0x277D86220];
     }
 
-    v13 = [v7 hash];
+    v13 = [dCopy hash];
     if ((v13 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v14 = v13;
       if (os_signpost_enabled(v11))
       {
         v20 = 138412546;
-        v21 = v7;
+        v21 = dCopy;
         v22 = 2048;
-        v23 = [v6 length];
+        v23 = [dataCopy length];
         _os_signpost_emit_with_name_impl(&dword_233656000, v11, OS_SIGNPOST_EVENT, v14, "Endpoint SEND", "Send outgoing data! %@, %lu bytes", &v20, 0x16u);
       }
     }
   }
 
-  v15 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:v7];
+  v15 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:dCopy];
   v16 = v15;
   if (v15)
   {
-    [v15 transmitData:v6];
+    [v15 transmitData:dataCopy];
   }
 
   else
@@ -3312,7 +3312,7 @@ LABEL_18:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
-      v21 = v7;
+      v21 = dCopy;
       _os_log_impl(&dword_233656000, v17, OS_LOG_TYPE_INFO, "No ACCTransport handler for connectionUUID %@", &v20, 0xCu);
     }
   }
@@ -3356,36 +3356,36 @@ LABEL_18:
   return [(ACCSettingsState *)self->_enableDirectAWCAuth BOOLValue];
 }
 
-- (BOOL)setProperties:(id)a3 forManager:(id)a4
+- (BOOL)setProperties:(id)properties forManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-  v9 = v8;
+  propertiesCopy = properties;
+  managerCopy = manager;
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate2 = delegate;
   v10 = 0;
-  if (v6 && v8)
+  if (propertiesCopy && delegate)
   {
 
-    if (!v7)
+    if (!managerCopy)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v9 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v11 = [v7 connectionUUID];
-    v10 = [v9 setProperties:v6 forConnectionWithUUID:v11];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    connectionUUID = [managerCopy connectionUUID];
+    v10 = [delegate2 setProperties:propertiesCopy forConnectionWithUUID:connectionUUID];
   }
 
 LABEL_6:
   return v10;
 }
 
-- (BOOL)openEASession:(id)a3 withEAEndpointUUID:(id)a4
+- (BOOL)openEASession:(id)session withEAEndpointUUID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 2;
@@ -3415,17 +3415,17 @@ LABEL_6:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v18 = 138412546;
-    v19 = v6;
+    v19 = sessionCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = dCopy;
     _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Opening EA session for protocol %@ and endpoint UUID %@", &v18, 0x16u);
   }
 
-  v11 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:v7];
+  v11 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:dCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 openEAServiceSession];
+    openEAServiceSession = [v11 openEAServiceSession];
   }
 
   else
@@ -3449,21 +3449,21 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v18 = 138412290;
-      v19 = v6;
+      v19 = sessionCopy;
       _os_log_impl(&dword_233656000, v14, OS_LOG_TYPE_INFO, "Could not find ACCTransportIOAccessoryEA object for protocol %@", &v18, 0xCu);
     }
 
-    v13 = 0;
+    openEAServiceSession = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v13;
+  return openEAServiceSession;
 }
 
-- (void)closeEASession:(id)a3
+- (void)closeEASession:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 2;
@@ -3493,11 +3493,11 @@ LABEL_6:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = sessionCopy;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_INFO, "Closing EA session for eaEndpointUUID %@", &v13, 0xCu);
   }
 
-  v8 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:v4];
+  v8 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:sessionCopy];
   v9 = v8;
   if (v8)
   {
@@ -3525,7 +3525,7 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = sessionCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Could not find ACCTransportIOAccessoryEA object for eaEndpointUUID %@", &v13, 0xCu);
     }
   }
@@ -3533,15 +3533,15 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int)USBModeForConnectionUUID:(id)a3
+- (int)USBModeForConnectionUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  dCopy = d;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 getUSBMode];
+    getUSBMode = [v5 getUSBMode];
     if (gLogObjects)
     {
       v8 = gNumLogObjects < 2;
@@ -3605,26 +3605,26 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_impl(&dword_233656000, v12, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v15, 0xCu);
     }
 
-    v7 = -1;
+    getUSBMode = -1;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v7;
+  return getUSBMode;
 }
 
-- (int)USBModeForEndpointUUID:(id)a3
+- (int)USBModeForEndpointUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForBaseEndpointUUID:v4];
+  dCopy = d;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForBaseEndpointUUID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 getUSBMode];
+    getUSBMode = [v5 getUSBMode];
     if (gLogObjects)
     {
       v8 = gNumLogObjects < 2;
@@ -3688,26 +3688,26 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_impl(&dword_233656000, v12, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base endpoint UUID %@", &v15, 0xCu);
     }
 
-    v7 = -1;
+    getUSBMode = -1;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v7;
+  return getUSBMode;
 }
 
-- (unsigned)USBCurrentLimitInmA:(id)a3
+- (unsigned)USBCurrentLimitInmA:(id)a
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  aCopy = a;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:aCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 USBCurrentLimitInmA];
+    uSBCurrentLimitInmA = [v5 USBCurrentLimitInmA];
   }
 
   else
@@ -3741,26 +3741,26 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = aCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    uSBCurrentLimitInmA = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return uSBCurrentLimitInmA;
 }
 
-- (unsigned)USBCurrentLimitBaseInmA:(id)a3
+- (unsigned)USBCurrentLimitBaseInmA:(id)a
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  aCopy = a;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:aCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 USBCurrentLimitBaseInmA];
+    uSBCurrentLimitBaseInmA = [v5 USBCurrentLimitBaseInmA];
   }
 
   else
@@ -3794,26 +3794,26 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = aCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    uSBCurrentLimitBaseInmA = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return uSBCurrentLimitBaseInmA;
 }
 
-- (unsigned)USBCurrentLimitOffsetInmA:(id)a3
+- (unsigned)USBCurrentLimitOffsetInmA:(id)a
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  aCopy = a;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:aCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 USBCurrentLimitOffsetInmA];
+    uSBCurrentLimitOffsetInmA = [v5 USBCurrentLimitOffsetInmA];
   }
 
   else
@@ -3847,26 +3847,26 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = aCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    uSBCurrentLimitOffsetInmA = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return uSBCurrentLimitOffsetInmA;
 }
 
-- (unsigned)USBChargingVoltageInmV:(id)a3
+- (unsigned)USBChargingVoltageInmV:(id)v
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  vCopy = v;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:vCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 USBChargingVoltageInmV];
+    uSBChargingVoltageInmV = [v5 USBChargingVoltageInmV];
   }
 
   else
@@ -3900,26 +3900,26 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = vCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    uSBChargingVoltageInmV = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return uSBChargingVoltageInmV;
 }
 
-- (int)CableType:(id)a3
+- (int)CableType:(id)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  typeCopy = type;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:typeCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 cableType];
+    cableType = [v5 cableType];
   }
 
   else
@@ -3953,36 +3953,36 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = typeCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    cableType = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return cableType;
 }
 
-- (unsigned)sleepPowerCurrentLimitInmA:(id)a3
+- (unsigned)sleepPowerCurrentLimitInmA:(id)a
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  aCopy = a;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:aCopy];
   v6 = v5;
   if (v5)
   {
     if (([v5 isRootPort] & 1) == 0)
     {
-      v7 = [v6 connectionType];
-      if (v7 == 1)
+      connectionType = [v6 connectionType];
+      if (connectionType == 1)
       {
         v8 = 64;
       }
 
       else
       {
-        if (v7 != 3)
+        if (connectionType != 3)
         {
           goto LABEL_23;
         }
@@ -3994,13 +3994,13 @@ LABEL_6:
       if (v13)
       {
         v11 = v13;
-        v12 = [v13 sleepPowerCurrentLimitInmA];
-        v14 = [v6 sleepPowerCurrentLimitInmA];
-        v15 = v14;
-        if (v12 >= v14)
+        sleepPowerCurrentLimitInmA = [v13 sleepPowerCurrentLimitInmA];
+        sleepPowerCurrentLimitInmA2 = [v6 sleepPowerCurrentLimitInmA];
+        v15 = sleepPowerCurrentLimitInmA2;
+        if (sleepPowerCurrentLimitInmA >= sleepPowerCurrentLimitInmA2)
         {
           v17 = 0;
-          v12 = v14;
+          sleepPowerCurrentLimitInmA = sleepPowerCurrentLimitInmA2;
         }
 
         else
@@ -4023,23 +4023,23 @@ LABEL_6:
 
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v28 = [v6 connectionUUID];
-            v30 = [v6 primaryPortNumber];
-            v29 = [v11 connectionUUID];
+            connectionUUID = [v6 connectionUUID];
+            primaryPortNumber = [v6 primaryPortNumber];
+            connectionUUID2 = [v11 connectionUUID];
             *buf = 138413826;
-            v32 = v4;
+            v32 = aCopy;
             v33 = 2112;
-            v34 = v28;
+            v34 = connectionUUID;
             v35 = 1024;
-            v36 = v30;
+            v36 = primaryPortNumber;
             v37 = 2112;
-            v38 = v29;
+            v38 = connectionUUID2;
             v39 = 1024;
-            v40 = [v11 primaryPortNumber];
+            primaryPortNumber2 = [v11 primaryPortNumber];
             v41 = 1024;
             v42 = v15;
             v43 = 1024;
-            v44 = v12;
+            v44 = sleepPowerCurrentLimitInmA;
             _os_log_impl(&dword_233656000, v16, OS_LOG_TYPE_INFO, "connectionUUID %@, accMgrTransport %@ (%d), rootMgr %@ (%d), sleepPowerCurrentLimitInmA=%d -> %d", buf, 0x38u);
           }
 
@@ -4051,7 +4051,7 @@ LABEL_6:
     }
 
 LABEL_23:
-    v12 = [v6 sleepPowerCurrentLimitInmA];
+    sleepPowerCurrentLimitInmA = [v6 sleepPowerCurrentLimitInmA];
     v11 = 0;
     v17 = 1;
 LABEL_24:
@@ -4073,42 +4073,42 @@ LABEL_24:
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v20 = [v6 connectionUUID];
-      v21 = [v6 primaryPortNumber];
-      v22 = v21;
+      connectionUUID3 = [v6 connectionUUID];
+      primaryPortNumber3 = [v6 primaryPortNumber];
+      v22 = primaryPortNumber3;
       if (v17)
       {
         *buf = 138413570;
-        v32 = v4;
+        v32 = aCopy;
         v33 = 2112;
-        v34 = v20;
+        v34 = connectionUUID3;
         v35 = 1024;
-        v36 = v21;
+        v36 = primaryPortNumber3;
         v37 = 2112;
         v38 = 0;
         v39 = 1024;
-        v40 = -1;
+        primaryPortNumber2 = -1;
         v41 = 1024;
-        v42 = v12;
+        v42 = sleepPowerCurrentLimitInmA;
         _os_log_impl(&dword_233656000, v18, OS_LOG_TYPE_INFO, "connectionUUID %@, accMgrTransport %@ (%d), rootMgr %@ (%d), sleepPowerCurrentLimitInmA=%d", buf, 0x32u);
       }
 
       else
       {
-        v23 = [v11 connectionUUID];
-        v24 = [v11 primaryPortNumber];
+        connectionUUID4 = [v11 connectionUUID];
+        primaryPortNumber4 = [v11 primaryPortNumber];
         *buf = 138413570;
-        v32 = v4;
+        v32 = aCopy;
         v33 = 2112;
-        v34 = v20;
+        v34 = connectionUUID3;
         v35 = 1024;
         v36 = v22;
         v37 = 2112;
-        v38 = v23;
+        v38 = connectionUUID4;
         v39 = 1024;
-        v40 = v24;
+        primaryPortNumber2 = primaryPortNumber4;
         v41 = 1024;
-        v42 = v12;
+        v42 = sleepPowerCurrentLimitInmA;
         _os_log_impl(&dword_233656000, v18, OS_LOG_TYPE_INFO, "connectionUUID %@, accMgrTransport %@ (%d), rootMgr %@ (%d), sleepPowerCurrentLimitInmA=%d", buf, 0x32u);
       }
     }
@@ -4145,26 +4145,26 @@ LABEL_24:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v32 = v4;
+    v32 = aCopy;
     _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", buf, 0xCu);
   }
 
-  v12 = 0;
+  sleepPowerCurrentLimitInmA = 0;
 LABEL_36:
 
   v25 = *MEMORY[0x277D85DE8];
-  return v12;
+  return sleepPowerCurrentLimitInmA;
 }
 
-- (BOOL)isPowerDuringSleepSupported:(id)a3
+- (BOOL)isPowerDuringSleepSupported:(id)supported
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  supportedCopy = supported;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:supportedCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 isPowerDuringSleepSupported];
+    isPowerDuringSleepSupported = [v5 isPowerDuringSleepSupported];
   }
 
   else
@@ -4198,26 +4198,26 @@ LABEL_36:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = supportedCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    isPowerDuringSleepSupported = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isPowerDuringSleepSupported;
 }
 
-- (BOOL)isPowerDuringSleepEnabled:(id)a3
+- (BOOL)isPowerDuringSleepEnabled:(id)enabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  enabledCopy = enabled;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:enabledCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 isPowerDuringSleepEnabled];
+    isPowerDuringSleepEnabled = [v5 isPowerDuringSleepEnabled];
   }
 
   else
@@ -4251,26 +4251,26 @@ LABEL_36:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = enabledCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    isPowerDuringSleepEnabled = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isPowerDuringSleepEnabled;
 }
 
-- (BOOL)isBatteryPackModeEnabled:(id)a3
+- (BOOL)isBatteryPackModeEnabled:(id)enabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  enabledCopy = enabled;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:enabledCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 isBatteryPackModeEnabled];
+    isBatteryPackModeEnabled = [v5 isBatteryPackModeEnabled];
   }
 
   else
@@ -4304,26 +4304,26 @@ LABEL_36:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = enabledCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    isBatteryPackModeEnabled = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isBatteryPackModeEnabled;
 }
 
-- (BOOL)resetAccessoryBaseCurrent:(id)a3
+- (BOOL)resetAccessoryBaseCurrent:(id)current
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  currentCopy = current;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:currentCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 resetAccessoryBaseCurrent];
+    resetAccessoryBaseCurrent = [v5 resetAccessoryBaseCurrent];
   }
 
   else
@@ -4357,26 +4357,26 @@ LABEL_36:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = currentCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    resetAccessoryBaseCurrent = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return resetAccessoryBaseCurrent;
 }
 
-- (unsigned)accessoryChargingCurrentInmA:(id)a3
+- (unsigned)accessoryChargingCurrentInmA:(id)a
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:v4];
+  aCopy = a;
+  v5 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:aCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 accessoryChargingCurrentInmA];
+    accessoryChargingCurrentInmA = [v5 accessoryChargingCurrentInmA];
   }
 
   else
@@ -4410,37 +4410,37 @@ LABEL_36:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = aCopy;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Unable to find accMgrTransport for base connection UUID %@", &v13, 0xCu);
     }
 
-    v7 = 0;
+    accessoryChargingCurrentInmA = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v7;
+  return accessoryChargingCurrentInmA;
 }
 
-- (id)digitalIDDataForUpstreamConnection:(id)a3
+- (id)digitalIDDataForUpstreamConnection:(id)connection
 {
-  v4 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:a3];
+  v4 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:connection];
   v5 = -[ACCTransportIOAccessorySharedManager managerForIOAccessoryManagerService:](self, "managerForIOAccessoryManagerService:", [v4 upstreamManagerService]);
-  v6 = [v5 digitalID];
+  digitalID = [v5 digitalID];
 
-  return v6;
+  return digitalID;
 }
 
-- (BOOL)connectedThroughAdapter:(id)a3
+- (BOOL)connectedThroughAdapter:(id)adapter
 {
-  v4 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:a3];
+  v4 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUID:adapter];
   v5 = -[ACCTransportIOAccessorySharedManager managerForIOAccessoryManagerService:](self, "managerForIOAccessoryManagerService:", [v4 upstreamManagerService]);
-  v6 = [v5 digitalID];
-  v7 = v6 != 0;
+  digitalID = [v5 digitalID];
+  v7 = digitalID != 0;
 
   return v7;
 }
 
-- (void)IOAccessoryManagerServiceArrived:(unsigned int)a3
+- (void)IOAccessoryManagerServiceArrived:(unsigned int)arrived
 {
   v14 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -4472,7 +4472,7 @@ LABEL_36:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v13 = a3;
+    arrivedCopy = arrived;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_INFO, "IOAccMgr service arrived with service %d", buf, 8u);
   }
 
@@ -4482,7 +4482,7 @@ LABEL_36:
   v10[2] = __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceArrived___block_invoke;
   v10[3] = &unk_2789E9040;
   v10[4] = self;
-  v11 = a3;
+  arrivedCopy2 = arrived;
   dispatch_sync(listQ, v10);
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -4536,11 +4536,11 @@ void __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceArrived
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)IOAccessoryManagerServiceDetached:(unsigned int)a3
+- (void)IOAccessoryManagerServiceDetached:(unsigned int)detached
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v5 lock];
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
   v20 = 0;
   v21 = &v20;
@@ -4553,16 +4553,16 @@ void __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceArrived
   block[1] = 3221225472;
   block[2] = __74__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceDetached___block_invoke;
   block[3] = &unk_2789E90F8;
-  v19 = a3;
+  detachedCopy = detached;
   block[4] = self;
   block[5] = &v20;
   dispatch_sync(listQ, block);
   v7 = v21[5];
   if (v7)
   {
-    v8 = [v7 connectionUUID];
+    connectionUUID = [v7 connectionUUID];
 
-    if (v8)
+    if (connectionUUID)
     {
       if (gLogObjects && gNumLogObjects >= 2)
       {
@@ -4582,17 +4582,17 @@ void __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceArrived
 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v21[5] connectionUUID];
+        connectionUUID2 = [v21[5] connectionUUID];
         *buf = 67109378;
-        v27 = a3;
+        detachedCopy3 = detached;
         v28 = 2112;
-        v29 = v12;
+        v29 = connectionUUID2;
         _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "IOAccessoryManager service %d detach, remove connectionUUID %@", buf, 0x12u);
       }
 
-      v13 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v14 = [v21[5] connectionUUID];
-      [v13 destroyConnectionWithUUID:v14];
+      delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      connectionUUID3 = [v21[5] connectionUUID];
+      [delegate destroyConnectionWithUUID:connectionUUID3];
 
       [v21[5] setConnectionUUID:0];
       [(ACCTransportIOAccessorySharedManager *)self _clearChildPortEndpointsForManagerDisconnection:v21[5]];
@@ -4620,13 +4620,13 @@ void __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceArrived
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v27 = a3;
+      detachedCopy3 = detached;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Couldn't find ACCTransportIOAccessoryManager for service %d", buf, 8u);
     }
   }
 
-  v16 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v16 unlock];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 
   _Block_object_dispose(&v20, 8);
   v17 = *MEMORY[0x277D85DE8];
@@ -4711,11 +4711,11 @@ void __76__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceTermina
   *(v9 + v5) = 0;
 }
 
-- (void)IOAccessoryManagerServiceInfoSet:(unsigned int)a3
+- (void)IOAccessoryManagerServiceInfoSet:(unsigned int)set
 {
   v133 = *MEMORY[0x277D85DE8];
-  v4 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v4 lock];
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
   if (gLogObjects)
   {
@@ -4746,7 +4746,7 @@ void __76__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceTermina
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = set;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "Accessory info set for IOAccessoryManager service %d", buf, 8u);
   }
 
@@ -4763,10 +4763,10 @@ void __76__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceTermina
   block[3] = &unk_2789E90F8;
   block[4] = self;
   block[5] = buf;
-  v117 = a3;
+  setCopy = set;
   dispatch_sync(listQ, block);
-  v9 = [*(v128 + 5) connectionUUID];
-  v10 = v9 == 0;
+  connectionUUID = [*(v128 + 5) connectionUUID];
+  v10 = connectionUUID == 0;
 
   if (v10)
   {
@@ -4789,39 +4789,39 @@ void __76__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceTermina
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *v122 = 67109120;
-      LODWORD(v123) = a3;
+      LODWORD(v123) = set;
       _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "No connectionUUID for IOAccessoryManager service %d yet, creating one", v122, 8u);
     }
 
-    v13 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v14 = [v13 createConnectionWithType:objc_msgSend(*(v128 + 5) andIdentifier:{"connectionType"), 0}];
+    delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    v14 = [delegate createConnectionWithType:objc_msgSend(*(v128 + 5) andIdentifier:{"connectionType"), 0}];
 
-    v15 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    [v15 setSupervisedTransportsRestricted:objc_msgSend(*(v128 + 5) forConnectionWithUUID:{"supervisedTransportsRestricted"), v14}];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    [delegate2 setSupervisedTransportsRestricted:objc_msgSend(*(v128 + 5) forConnectionWithUUID:{"supervisedTransportsRestricted"), v14}];
 
     [*(v128 + 5) setConnectionUUID:v14];
-    v16 = [*(v128 + 5) accessoryInfoLock];
-    [v16 lock];
+    accessoryInfoLock = [*(v128 + 5) accessoryInfoLock];
+    [accessoryInfoLock lock];
 
     v125[0] = *MEMORY[0x277CFD2C0];
     v17 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(*(v128 + 5), "primaryPortNumber")}];
     v126[0] = v17;
     v125[1] = *MEMORY[0x277CFD290];
-    v18 = [*(v128 + 5) digitalID];
-    v19 = v18;
-    if (!v18)
+    digitalID = [*(v128 + 5) digitalID];
+    null = digitalID;
+    if (!digitalID)
     {
-      v19 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v126[1] = v19;
+    v126[1] = null;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v126 forKeys:v125 count:2];
-    if (!v18)
+    if (!digitalID)
     {
     }
 
-    v21 = [*(v128 + 5) accessoryInfoLock];
-    [v21 unlock];
+    accessoryInfoLock2 = [*(v128 + 5) accessoryInfoLock];
+    [accessoryInfoLock2 unlock];
 
     v22 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v20];
     if ([*(v128 + 5) isAdapter])
@@ -4830,47 +4830,47 @@ void __76__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceTermina
       [v22 setObject:v23 forKey:*MEMORY[0x277CFD2B0]];
     }
 
-    v24 = [*(v128 + 5) managerParent];
+    managerParent = [*(v128 + 5) managerParent];
 
-    if (v24)
+    if (managerParent)
     {
-      v25 = [*(v128 + 5) managerParent];
-      [v22 setObject:v25 forKey:*MEMORY[0x277CFD2B8]];
+      managerParent2 = [*(v128 + 5) managerParent];
+      [v22 setObject:managerParent2 forKey:*MEMORY[0x277CFD2B8]];
     }
 
-    v26 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    delegate3 = [(ACCTransportIOAccessorySharedManager *)self delegate];
     v27 = [v22 copy];
-    [v26 setProperties:v27 forConnectionWithUUID:v14];
+    [delegate3 setProperties:v27 forConnectionWithUUID:v14];
   }
 
   if ([*(v128 + 5) connectionType] != 4 || self->_bIsWatch)
   {
-    v28 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v29 = [*(v128 + 5) connectionUUID];
-    v30 = [v29 copy];
-    v31 = [v28 createEndpointWithTransportType:5 andProtocol:2 andIdentifier:0 forConnectionWithUUID:v30 publishConnection:0];
+    delegate4 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    connectionUUID2 = [*(v128 + 5) connectionUUID];
+    v30 = [connectionUUID2 copy];
+    v31 = [delegate4 createEndpointWithTransportType:5 andProtocol:2 andIdentifier:0 forConnectionWithUUID:v30 publishConnection:0];
 
     goto LABEL_32;
   }
 
-  v74 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-  v75 = [*(v128 + 5) connectionUUID];
-  v76 = [v74 endpointUUIDsForConnectionWithUUID:v75];
+  delegate5 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  connectionUUID3 = [*(v128 + 5) connectionUUID];
+  v76 = [delegate5 endpointUUIDsForConnectionWithUUID:connectionUUID3];
 
   v114 = 0u;
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v28 = v76;
-  v77 = [v28 countByEnumeratingWithState:&v112 objects:v124 count:16];
+  delegate4 = v76;
+  v77 = [delegate4 countByEnumeratingWithState:&v112 objects:v124 count:16];
   if (!v77)
   {
 
 LABEL_143:
-    v29 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v93 = [*(v128 + 5) connectionUUID];
-    v94 = [v93 copy];
-    v31 = [v29 createEndpointWithTransportType:12 andProtocol:1 andIdentifier:0 forConnectionWithUUID:v94 publishConnection:0];
+    connectionUUID2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    connectionUUID4 = [*(v128 + 5) connectionUUID];
+    v94 = [connectionUUID4 copy];
+    v31 = [connectionUUID2 createEndpointWithTransportType:12 andProtocol:1 andIdentifier:0 forConnectionWithUUID:v94 publishConnection:0];
 
     goto LABEL_32;
   }
@@ -4883,15 +4883,15 @@ LABEL_143:
     {
       if (*v113 != v78)
       {
-        objc_enumerationMutation(v28);
+        objc_enumerationMutation(delegate4);
       }
 
       v80 = *(*(&v112 + 1) + 8 * i);
-      v81 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v82 = [v81 transportTypeForEndpointWithUUID:v80];
+      delegate6 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      v82 = [delegate6 transportTypeForEndpointWithUUID:v80];
 
-      v83 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v84 = [v83 protocolForEndpointWithUUID:v80];
+      delegate7 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      v84 = [delegate7 protocolForEndpointWithUUID:v80];
 
       if (v82 == 12 && v84 == 1)
       {
@@ -4901,7 +4901,7 @@ LABEL_143:
       }
     }
 
-    v77 = [v28 countByEnumeratingWithState:&v112 objects:v124 count:16];
+    v77 = [delegate4 countByEnumeratingWithState:&v112 objects:v124 count:16];
   }
 
   while (v77);
@@ -4913,7 +4913,7 @@ LABEL_143:
 
   if (gLogObjects && gNumLogObjects >= 2)
   {
-    v29 = *(gLogObjects + 8);
+    connectionUUID2 = *(gLogObjects + 8);
   }
 
   else
@@ -4923,15 +4923,15 @@ LABEL_143:
       [ACCTransportIOAccessoryOOBPairing dealloc];
     }
 
-    v29 = MEMORY[0x277D86220];
+    connectionUUID2 = MEMORY[0x277D86220];
     v95 = MEMORY[0x277D86220];
   }
 
-  if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(connectionUUID2, OS_LOG_TYPE_DEFAULT))
   {
     *v122 = 138412290;
     v123 = v31;
-    _os_log_impl(&dword_233656000, v29, OS_LOG_TYPE_DEFAULT, "Found existing endpointUUID %@ for IOAccessoryManager accessory info", v122, 0xCu);
+    _os_log_impl(&dword_233656000, connectionUUID2, OS_LOG_TYPE_DEFAULT, "Found existing endpointUUID %@ for IOAccessoryManager accessory info", v122, 0xCu);
   }
 
 LABEL_32:
@@ -4972,199 +4972,199 @@ LABEL_32:
       _os_log_impl(&dword_233656000, v34, OS_LOG_TYPE_DEFAULT, "Created endpointUUID %@ for IOAccessoryManager accessory info", v122, 0xCu);
     }
 
-    v37 = [*(v128 + 5) accessoryInfoLock];
-    [v37 lock];
+    accessoryInfoLock3 = [*(v128 + 5) accessoryInfoLock];
+    [accessoryInfoLock3 lock];
 
     v120[0] = *MEMORY[0x277CFD250];
-    v110 = [*(v128 + 5) deviceName];
-    v38 = v110;
-    if (!v110)
+    deviceName = [*(v128 + 5) deviceName];
+    null2 = deviceName;
+    if (!deviceName)
     {
-      v38 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
-    v103 = v38;
-    v121[0] = v38;
+    v103 = null2;
+    v121[0] = null2;
     v120[1] = *MEMORY[0x277CFD248];
-    v104 = [*(v128 + 5) deviceModelNumber];
-    v39 = v104;
-    if (!v104)
+    deviceModelNumber = [*(v128 + 5) deviceModelNumber];
+    null3 = deviceModelNumber;
+    if (!deviceModelNumber)
     {
-      v39 = [MEMORY[0x277CBEB68] null];
+      null3 = [MEMORY[0x277CBEB68] null];
     }
 
-    v102 = v39;
-    v121[1] = v39;
+    v102 = null3;
+    v121[1] = null3;
     v120[2] = *MEMORY[0x277CFD240];
-    v108 = [*(v128 + 5) deviceVendorName];
-    v40 = v108;
-    if (!v108)
+    deviceVendorName = [*(v128 + 5) deviceVendorName];
+    null4 = deviceVendorName;
+    if (!deviceVendorName)
     {
-      v40 = [MEMORY[0x277CBEB68] null];
+      null4 = [MEMORY[0x277CBEB68] null];
     }
 
-    v101 = v40;
-    v121[2] = v40;
+    v101 = null4;
+    v121[2] = null4;
     v120[3] = *MEMORY[0x277CFD270];
-    v107 = [*(v128 + 5) deviceSerialNumber];
-    v41 = v107;
-    if (!v107)
+    deviceSerialNumber = [*(v128 + 5) deviceSerialNumber];
+    null5 = deviceSerialNumber;
+    if (!deviceSerialNumber)
     {
-      v41 = [MEMORY[0x277CBEB68] null];
+      null5 = [MEMORY[0x277CBEB68] null];
     }
 
-    v100 = v41;
-    v121[3] = v41;
+    v100 = null5;
+    v121[3] = null5;
     v120[4] = *MEMORY[0x277CFD230];
-    v106 = [*(v128 + 5) deviceFirmwareRevision];
-    v42 = v106;
-    if (!v106)
+    deviceFirmwareRevision = [*(v128 + 5) deviceFirmwareRevision];
+    null6 = deviceFirmwareRevision;
+    if (!deviceFirmwareRevision)
     {
-      v42 = [MEMORY[0x277CBEB68] null];
+      null6 = [MEMORY[0x277CBEB68] null];
     }
 
-    v99 = v42;
-    v121[4] = v42;
+    v99 = null6;
+    v121[4] = null6;
     v120[5] = *MEMORY[0x277CFD238];
-    v105 = [*(v128 + 5) deviceHardwareRevision];
-    v43 = v105;
-    if (!v105)
+    deviceHardwareRevision = [*(v128 + 5) deviceHardwareRevision];
+    null7 = deviceHardwareRevision;
+    if (!deviceHardwareRevision)
     {
-      v43 = [MEMORY[0x277CBEB68] null];
+      null7 = [MEMORY[0x277CBEB68] null];
     }
 
-    v98 = v43;
-    v121[5] = v43;
+    v98 = null7;
+    v121[5] = null7;
     v120[6] = *MEMORY[0x277CFD258];
-    v44 = [*(v128 + 5) ppid];
-    v45 = v44;
-    if (!v44)
+    ppid = [*(v128 + 5) ppid];
+    null8 = ppid;
+    if (!ppid)
     {
-      v45 = [MEMORY[0x277CBEB68] null];
+      null8 = [MEMORY[0x277CBEB68] null];
     }
 
-    v97 = v45;
-    v121[6] = v45;
+    v97 = null8;
+    v121[6] = null8;
     v120[7] = *MEMORY[0x277CFD268];
-    v46 = [*(v128 + 5) regionCode];
-    v47 = v46;
-    if (!v46)
+    regionCode = [*(v128 + 5) regionCode];
+    null9 = regionCode;
+    if (!regionCode)
     {
-      v47 = [MEMORY[0x277CBEB68] null];
+      null9 = [MEMORY[0x277CBEB68] null];
     }
 
-    v96 = v47;
-    v121[7] = v47;
+    v96 = null9;
+    v121[7] = null9;
     v120[8] = *MEMORY[0x277CFD220];
-    v48 = [*(v128 + 5) inductiveDeviceUID];
-    v49 = v48;
-    if (!v48)
+    inductiveDeviceUID = [*(v128 + 5) inductiveDeviceUID];
+    null10 = inductiveDeviceUID;
+    if (!inductiveDeviceUID)
     {
-      v49 = [MEMORY[0x277CBEB68] null];
+      null10 = [MEMORY[0x277CBEB68] null];
     }
 
-    v121[8] = v49;
+    v121[8] = null10;
     v120[9] = *MEMORY[0x277CFD278];
-    v50 = [*(v128 + 5) vendorID];
-    v51 = v50;
-    if (!v50)
+    vendorID = [*(v128 + 5) vendorID];
+    null11 = vendorID;
+    if (!vendorID)
     {
-      v51 = [MEMORY[0x277CBEB68] null];
+      null11 = [MEMORY[0x277CBEB68] null];
     }
 
-    v121[9] = v51;
+    v121[9] = null11;
     v120[10] = *MEMORY[0x277CFD260];
-    v52 = [*(v128 + 5) productID];
-    v53 = v52;
-    if (!v52)
+    productID = [*(v128 + 5) productID];
+    null12 = productID;
+    if (!productID)
     {
-      v53 = [MEMORY[0x277CBEB68] null];
+      null12 = [MEMORY[0x277CBEB68] null];
     }
 
-    v121[10] = v53;
+    v121[10] = null12;
     v111 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v121 forKeys:v120 count:11];
-    if (!v52)
+    if (!productID)
     {
     }
 
-    if (!v50)
+    if (!vendorID)
     {
     }
 
-    if (!v48)
+    if (!inductiveDeviceUID)
     {
     }
 
-    if (!v46)
+    if (!regionCode)
     {
     }
 
-    if (!v44)
+    if (!ppid)
     {
     }
 
-    if (!v105)
+    if (!deviceHardwareRevision)
     {
     }
 
-    if (!v106)
+    if (!deviceFirmwareRevision)
     {
     }
 
-    if (!v107)
+    if (!deviceSerialNumber)
     {
     }
 
-    if (!v108)
+    if (!deviceVendorName)
     {
     }
 
-    if (!v104)
+    if (!deviceModelNumber)
     {
     }
 
-    if (!v110)
+    if (!deviceName)
     {
     }
 
-    v54 = [*(v128 + 5) accessoryInfoLock];
-    [v54 unlock];
+    accessoryInfoLock4 = [*(v128 + 5) accessoryInfoLock];
+    [accessoryInfoLock4 unlock];
 
-    v55 = [*(v128 + 5) connectionUUID];
-    NSLog(&cfstr_Accinfodiction.isa, v111, v55);
+    connectionUUID5 = [*(v128 + 5) connectionUUID];
+    NSLog(&cfstr_Accinfodiction.isa, v111, connectionUUID5);
 
-    v56 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    [v56 setAccessoryInfo:v111 forEndpointWithUUID:v31];
+    delegate8 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    [delegate8 setAccessoryInfo:v111 forEndpointWithUUID:v31];
 
-    v57 = [*(v128 + 5) accessoryInfoLock];
-    [v57 lock];
+    accessoryInfoLock5 = [*(v128 + 5) accessoryInfoLock];
+    [accessoryInfoLock5 lock];
 
-    v58 = [*(v128 + 5) inductiveLocalDeviceID];
+    inductiveLocalDeviceID = [*(v128 + 5) inductiveLocalDeviceID];
 
-    if (v58)
+    if (inductiveLocalDeviceID)
     {
       v118 = *MEMORY[0x277CFD2A8];
-      v59 = [*(v128 + 5) inductiveLocalDeviceID];
-      v119 = v59;
+      inductiveLocalDeviceID2 = [*(v128 + 5) inductiveLocalDeviceID];
+      v119 = inductiveLocalDeviceID2;
       v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
 
-      v61 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v62 = [*(v128 + 5) connectionUUID];
-      [v61 setProperties:v60 forConnectionWithUUID:v62];
+      delegate9 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      connectionUUID6 = [*(v128 + 5) connectionUUID];
+      [delegate9 setProperties:v60 forConnectionWithUUID:connectionUUID6];
     }
 
     [*(v128 + 5) updateInductiveInfo];
-    v63 = [*(v128 + 5) accessoryInfoLock];
-    [v63 unlock];
+    accessoryInfoLock6 = [*(v128 + 5) accessoryInfoLock];
+    [accessoryInfoLock6 unlock];
 
-    v64 = [*(v128 + 5) eaProtocolChildPorts];
-    v65 = [v64 count];
+    eaProtocolChildPorts = [*(v128 + 5) eaProtocolChildPorts];
+    v65 = [eaProtocolChildPorts count];
 
-    v66 = [*(v128 + 5) oobPairingChildPorts];
-    v67 = [v66 count];
+    oobPairingChildPorts = [*(v128 + 5) oobPairingChildPorts];
+    v67 = [oobPairingChildPorts count];
 
-    v68 = [*(v128 + 5) configStreamChildPorts];
-    v69 = [v68 count];
+    configStreamChildPorts = [*(v128 + 5) configStreamChildPorts];
+    v69 = [configStreamChildPorts count];
 
     if (gLogObjects)
     {
@@ -5181,7 +5181,7 @@ LABEL_32:
     {
       if (v71)
       {
-        v73 = *(gLogObjects + 8);
+        delegate10 = *(gLogObjects + 8);
       }
 
       else
@@ -5191,13 +5191,13 @@ LABEL_32:
           [ACCTransportIOAccessoryOOBPairing dealloc];
         }
 
-        v73 = MEMORY[0x277D86220];
+        delegate10 = MEMORY[0x277D86220];
         v88 = MEMORY[0x277D86220];
       }
 
-      if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(delegate10, OS_LOG_TYPE_DEBUG))
       {
-        -[ACCTransportIOAccessorySharedManager IOAccessoryManagerServiceInfoSet:].cold.7(v122, [*(v128 + 5) ioService], v73);
+        -[ACCTransportIOAccessorySharedManager IOAccessoryManagerServiceInfoSet:].cold.7(v122, [*(v128 + 5) ioService], delegate10);
       }
     }
 
@@ -5225,9 +5225,9 @@ LABEL_32:
         _os_log_impl(&dword_233656000, v72, OS_LOG_TYPE_DEFAULT, "Publishing connection with eACCEndpoint_Protocol_InternalInfo", v122, 2u);
       }
 
-      v73 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v90 = [*(v128 + 5) connectionUUID];
-      [v73 publishConnectionWithUUID:v90];
+      delegate10 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      connectionUUID7 = [*(v128 + 5) connectionUUID];
+      [delegate10 publishConnectionWithUUID:connectionUUID7];
     }
   }
 
@@ -5253,13 +5253,13 @@ LABEL_32:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *v122 = 67109120;
-      LODWORD(v123) = a3;
+      LODWORD(v123) = set;
       _os_log_impl(&dword_233656000, v35, OS_LOG_TYPE_DEFAULT, "Failed to create endpointUUID for IOAccessoryManager info for service %d", v122, 8u);
     }
   }
 
-  v91 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v91 unlock];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 
   _Block_object_dispose(buf, 8);
   v92 = *MEMORY[0x277D85DE8];
@@ -5275,19 +5275,19 @@ uint64_t __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceInf
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)IOAccessoryManagerResistorIDChanged:(int)a3 forManager:(id)a4
+- (void)IOAccessoryManagerResistorIDChanged:(int)changed forManager:(id)manager
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(ACCTransportIOAccessorySharedManager *)self _portForManagerMatchingPrimaryPort:v6];
-  v8 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v8 lock];
+  managerCopy = manager;
+  v7 = [(ACCTransportIOAccessorySharedManager *)self _portForManagerMatchingPrimaryPort:managerCopy];
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
   if (v7)
   {
-    v9 = [v7 ioAccPortEndpointUUID];
+    ioAccPortEndpointUUID = [v7 ioAccPortEndpointUUID];
 
-    if (v9)
+    if (ioAccPortEndpointUUID)
     {
       if (gLogObjects && gNumLogObjects >= 2)
       {
@@ -5310,12 +5310,12 @@ uint64_t __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceInf
         goto LABEL_24;
       }
 
-      v16 = [v6 connectionUUID];
-      v17 = [v7 ioAccPortEndpointUUID];
+      connectionUUID = [managerCopy connectionUUID];
+      ioAccPortEndpointUUID2 = [v7 ioAccPortEndpointUUID];
       v25 = 138412546;
-      v26 = v16;
+      v26 = connectionUUID;
       v27 = 2112;
-      v28 = v17;
+      v28 = ioAccPortEndpointUUID2;
       _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_DEFAULT, "Already have a connection %@ and an endpoint %@ when handling resistorIDChanged...ignore it", &v25, 0x16u);
     }
 
@@ -5329,9 +5329,9 @@ uint64_t __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceInf
         [v7 setIoAccPortEndpointUUID:v12];
       }
 
-      v13 = [v6 connectionUUID];
+      connectionUUID2 = [managerCopy connectionUUID];
 
-      if (!v13)
+      if (!connectionUUID2)
       {
         goto LABEL_24;
       }
@@ -5354,29 +5354,29 @@ uint64_t __73__ACCTransportIOAccessorySharedManager_IOAccessoryManagerServiceInf
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v6 connectionUUID];
+        connectionUUID3 = [managerCopy connectionUUID];
         v25 = 138412290;
-        v26 = v19;
+        v26 = connectionUUID3;
         _os_log_impl(&dword_233656000, v14, OS_LOG_TYPE_DEFAULT, "SharedManager: Have a connection UUID %@, sending resistorID notification", &v25, 0xCu);
       }
 
-      v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      connectionUUID = [MEMORY[0x277CCABB0] numberWithInteger:changed];
       v29[0] = *MEMORY[0x277CFD178];
-      v20 = [v6 connectionUUID];
+      connectionUUID4 = [managerCopy connectionUUID];
       v29[1] = *MEMORY[0x277CFD190];
-      v30[0] = v20;
-      v30[1] = v16;
+      v30[0] = connectionUUID4;
+      v30[1] = connectionUUID;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
 
-      v22 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v22 postNotificationName:*MEMORY[0x277CFD198] object:0 userInfo:v21];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277CFD198] object:0 userInfo:v21];
     }
 
 LABEL_24:
   }
 
-  v23 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v23 unlock];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -5461,15 +5461,15 @@ LABEL_19:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_IOAccessoryPortDetachInternal:(id)a3
+- (void)_IOAccessoryPortDetachInternal:(id)internal
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 ioAccPortEndpointUUID];
-  if (v5 && (v6 = v5, [(ACCTransportIOAccessorySharedManager *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  internalCopy = internal;
+  ioAccPortEndpointUUID = [internalCopy ioAccPortEndpointUUID];
+  if (ioAccPortEndpointUUID && (v6 = ioAccPortEndpointUUID, [(ACCTransportIOAccessorySharedManager *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [v4 ioAccPortEndpointUUID];
-    v9 = [v8 copy];
+    ioAccPortEndpointUUID2 = [internalCopy ioAccPortEndpointUUID];
+    v9 = [ioAccPortEndpointUUID2 copy];
 
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -5519,15 +5519,15 @@ LABEL_19:
         _os_log_impl(&dword_233656000, v16, OS_LOG_TYPE_DEFAULT, "Successfully sent io accessory port detach for endpointToRemove %@", &v30, 0xCu);
       }
 
-      v17 = [(ACCTransportIOAccessorySharedManager *)self _managerForBase:v4];
-      [v4 setIoAccPortEndpointUUID:0];
-      [v4 setIoAccPortParentConnectionUUID:0];
-      v21 = [v17 connectionUUID];
-      if (v21)
+      v17 = [(ACCTransportIOAccessorySharedManager *)self _managerForBase:internalCopy];
+      [internalCopy setIoAccPortEndpointUUID:0];
+      [internalCopy setIoAccPortParentConnectionUUID:0];
+      connectionUUID = [v17 connectionUUID];
+      if (connectionUUID)
       {
-        v22 = v21;
-        v23 = [v17 connectionUUID];
-        v24 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUIDHasActiveEndpoint:v23];
+        v22 = connectionUUID;
+        connectionUUID2 = [v17 connectionUUID];
+        v24 = [(ACCTransportIOAccessorySharedManager *)self _managerForConnectionUUIDHasActiveEndpoint:connectionUUID2];
 
         if (!v24)
         {
@@ -5549,15 +5549,15 @@ LABEL_19:
 
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v17 connectionUUID];
+            connectionUUID3 = [v17 connectionUUID];
             v30 = 138412290;
-            v31 = v27;
+            v31 = connectionUUID3;
             _os_log_impl(&dword_233656000, v25, OS_LOG_TYPE_DEFAULT, "No active endpoint for IOAccessoryPort, remove connectionUUID %@", &v30, 0xCu);
           }
 
-          v28 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-          v29 = [v17 connectionUUID];
-          [v28 destroyConnectionWithUUID:v29];
+          delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
+          connectionUUID4 = [v17 connectionUUID];
+          [delegate destroyConnectionWithUUID:connectionUUID4];
 
           [v17 setConnectionUUID:0];
           [(ACCTransportIOAccessorySharedManager *)self _clearChildPortEndpointsForManagerDisconnection:v17];
@@ -5621,7 +5621,7 @@ LABEL_19:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 67109120;
-      LODWORD(v31) = [v4 ioService];
+      LODWORD(v31) = [internalCopy ioService];
       _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "No active endpointUUID for IOAccessoryPort service %d", &v30, 8u);
     }
   }
@@ -5629,22 +5629,22 @@ LABEL_19:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)IOAccessoryPortDetach:(id)a3
+- (void)IOAccessoryPortDetach:(id)detach
 {
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v5 lock];
+  detachCopy = detach;
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
-  [(ACCTransportIOAccessorySharedManager *)self _IOAccessoryPortDetachInternal:v4];
-  v6 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v6 unlock];
+  [(ACCTransportIOAccessorySharedManager *)self _IOAccessoryPortDetachInternal:detachCopy];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 }
 
-- (BOOL)IOAccessoryPortDataArrived:(id)a3 endpointUUID:(id)a4
+- (BOOL)IOAccessoryPortDataArrived:(id)arrived endpointUUID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrivedCopy = arrived;
+  dCopy = d;
   if (gLogSignpostObjects)
   {
     v8 = gNumLogSignpostObjects < 4;
@@ -5671,22 +5671,22 @@ LABEL_19:
     v10 = *(gLogSignpostObjects + 24);
   }
 
-  v11 = [v7 hash];
+  v11 = [dCopy hash];
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
       v31 = 138412546;
-      v32 = v7;
+      v32 = dCopy;
       v33 = 2048;
-      v34 = [v6 length];
+      v34 = [arrivedCopy length];
       _os_signpost_emit_with_name_impl(&dword_233656000, v10, OS_SIGNPOST_EVENT, v12, "Endpoint RECV", "Received incoming data! %@, %lu bytes", &v31, 0x16u);
     }
   }
 
-  v13 = [v7 hash];
-  v14 = [v6 hash];
+  v13 = [dCopy hash];
+  v14 = [arrivedCopy hash];
   v15 = v14 ^ v13;
   if (gLogSignpostObjects && gNumLogSignpostObjects >= 4)
   {
@@ -5708,27 +5708,27 @@ LABEL_19:
   v19 = !v18;
   if (!v18 && os_signpost_enabled(v16))
   {
-    v20 = [v6 length];
+    v20 = [arrivedCopy length];
     v31 = 138412546;
-    v32 = v7;
+    v32 = dCopy;
     v33 = 2048;
     v34 = v20;
     _os_signpost_emit_with_name_impl(&dword_233656000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v15, "Endpoint RECV", "Received incoming data! %@, %lu bytes", &v31, 0x16u);
   }
 
-  v21 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v21 lock];
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
-  v22 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (v22)
+  if (delegate)
   {
-    v23 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    LODWORD(v22) = [v23 processIncomingData:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    LODWORD(delegate) = [delegate2 processIncomingData:arrivedCopy forEndpointWithUUID:dCopy];
   }
 
-  v24 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v24 unlock];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 
   if (gLogSignpostObjects && gNumLogSignpostObjects >= 4)
   {
@@ -5753,7 +5753,7 @@ LABEL_19:
 LABEL_36:
     if (os_signpost_enabled(v25))
     {
-      if (v22)
+      if (delegate)
       {
         v27 = "SUCCESS";
       }
@@ -5763,11 +5763,11 @@ LABEL_36:
         v27 = "ERROR";
       }
 
-      v28 = [v6 length];
+      v28 = [arrivedCopy length];
       v31 = 136315650;
       v32 = v27;
       v33 = 2112;
-      v34 = v7;
+      v34 = dCopy;
       v35 = 2048;
       v36 = v28;
       _os_signpost_emit_with_name_impl(&dword_233656000, v25, OS_SIGNPOST_INTERVAL_END, v15, "Endpoint RECV", "%s handling Received incoming data! %@, %lu bytes", &v31, 0x20u);
@@ -5777,17 +5777,17 @@ LABEL_36:
 LABEL_41:
 
   v29 = *MEMORY[0x277D85DE8];
-  return v22;
+  return delegate;
 }
 
-- (void)IOAccessoryPortPropertyChanged:(id)a3
+- (void)IOAccessoryPortPropertyChanged:(id)changed
 {
   *&v23[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v5 lock];
+  changedCopy = changed;
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
-  v6 = -[ACCTransportIOAccessorySharedManager _managerForIOService:shouldCreateNewService:](self, "_managerForIOService:shouldCreateNewService:", [v4 ioService], 1);
+  v6 = -[ACCTransportIOAccessorySharedManager _managerForIOService:shouldCreateNewService:](self, "_managerForIOService:shouldCreateNewService:", [changedCopy ioService], 1);
   v7 = v6;
   if (gLogObjects)
   {
@@ -5821,9 +5821,9 @@ LABEL_41:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 67109376;
-      v23[0] = [v4 ioService];
+      v23[0] = [changedCopy ioService];
       LOWORD(v23[1]) = 1024;
-      *(&v23[1] + 2) = [v4 portIDNumber];
+      *(&v23[1] + 2) = [changedCopy portIDNumber];
       _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "Didn't find existing manager for property change IOAccessoryPortService %d, portID %d", &v22, 0xEu);
     }
 
@@ -5851,11 +5851,11 @@ LABEL_41:
     v22 = 67109376;
     v23[0] = [v7 ioService];
     LOWORD(v23[1]) = 1024;
-    *(&v23[1] + 2) = [v4 ioService];
+    *(&v23[1] + 2) = [changedCopy ioService];
     _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_DEFAULT, "Found manager with service %d for property change IOAccessoryPort service %d, will remove from its child ports", &v22, 0xEu);
   }
 
-  [v7 removeIOAccessoryChildPort:v4];
+  [v7 removeIOAccessoryChildPort:changedCopy];
   if (gLogObjects && gNumLogObjects >= 2)
   {
     v13 = *(gLogObjects + 8);
@@ -5874,15 +5874,15 @@ LABEL_41:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v4 ioAccPortParentConnectionUUID];
+    ioAccPortParentConnectionUUID = [changedCopy ioAccPortParentConnectionUUID];
     v22 = 138412290;
-    *v23 = v15;
+    *v23 = ioAccPortParentConnectionUUID;
     _os_log_impl(&dword_233656000, v13, OS_LOG_TYPE_DEFAULT, "Current parent connectionUUID for port is %@", &v22, 0xCu);
   }
 
-  v16 = [v4 ioAccPortParentConnectionUUID];
+  ioAccPortParentConnectionUUID2 = [changedCopy ioAccPortParentConnectionUUID];
 
-  if (v16)
+  if (ioAccPortParentConnectionUUID2)
   {
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -5902,30 +5902,30 @@ LABEL_41:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v4 ioAccPortEndpointUUID];
+      ioAccPortEndpointUUID = [changedCopy ioAccPortEndpointUUID];
       v22 = 138412290;
-      *v23 = v18;
+      *v23 = ioAccPortEndpointUUID;
       _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "Current endpointUUID for port is %@", &v22, 0xCu);
     }
 
 LABEL_39:
   }
 
-  [(ACCTransportIOAccessorySharedManager *)self _addACCTransportToManager:v4];
-  v20 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v20 unlock];
+  [(ACCTransportIOAccessorySharedManager *)self _addACCTransportToManager:changedCopy];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)IOAccessoryPortPublish:(id)a3
+- (void)IOAccessoryPortPublish:(id)publish
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v5 lock];
+  publishCopy = publish;
+  accessoryPortLock = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock lock];
 
-  v6 = -[ACCTransportIOAccessorySharedManager _managerForIOService:shouldCreateNewService:](self, "_managerForIOService:shouldCreateNewService:", [v4 ioService], 1);
+  v6 = -[ACCTransportIOAccessorySharedManager _managerForIOService:shouldCreateNewService:](self, "_managerForIOService:shouldCreateNewService:", [publishCopy ioService], 1);
   if (v6)
   {
     if (gLogObjects && gNumLogObjects >= 2)
@@ -5949,24 +5949,24 @@ LABEL_39:
       v15[0] = 67109376;
       v15[1] = [v6 ioService];
       v16 = 1024;
-      v17 = [v4 ioService];
+      ioService = [publishCopy ioService];
       _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "Found manager with service %d for property change IOAccessoryPort service %d, will publish", v15, 0xEu);
     }
 
-    v9 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-    if (v9)
+    if (delegate)
     {
-      v10 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-      v11 = [v6 connectionUUID];
-      [v10 publishConnectionWithUUID:v11];
+      delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+      connectionUUID = [v6 connectionUUID];
+      [delegate2 publishConnectionWithUUID:connectionUUID];
     }
 
     else
     {
       if (gLogObjects && gNumLogObjects >= 2)
       {
-        v10 = *(gLogObjects + 8);
+        delegate2 = *(gLogObjects + 8);
       }
 
       else
@@ -5976,29 +5976,29 @@ LABEL_39:
           [ACCTransportIOAccessoryOOBPairing dealloc];
         }
 
-        v10 = MEMORY[0x277D86220];
+        delegate2 = MEMORY[0x277D86220];
         v12 = MEMORY[0x277D86220];
       }
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(delegate2, OS_LOG_TYPE_INFO))
       {
         LOWORD(v15[0]) = 0;
-        _os_log_impl(&dword_233656000, v10, OS_LOG_TYPE_INFO, "Can't find delegate for ACCTransportIOAccessoryPortProtocol skip Publish", v15, 2u);
+        _os_log_impl(&dword_233656000, delegate2, OS_LOG_TYPE_INFO, "Can't find delegate for ACCTransportIOAccessoryPortProtocol skip Publish", v15, 2u);
       }
     }
   }
 
-  v13 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
-  [v13 unlock];
+  accessoryPortLock2 = [(ACCTransportIOAccessorySharedManager *)self accessoryPortLock];
+  [accessoryPortLock2 unlock];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)IOAccessoryEADataArrived:(id)a3 eaEndpointUUID:(id)a4
+- (BOOL)IOAccessoryEADataArrived:(id)arrived eaEndpointUUID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrivedCopy = arrived;
+  dCopy = d;
   if (gLogSignpostObjects)
   {
     v8 = gNumLogSignpostObjects < 4;
@@ -6025,22 +6025,22 @@ LABEL_39:
     v10 = *(gLogSignpostObjects + 24);
   }
 
-  v11 = [v7 hash];
+  v11 = [dCopy hash];
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
       v30 = 138412546;
-      v31 = v7;
+      v31 = dCopy;
       v32 = 2048;
-      v33 = [v6 length];
+      v33 = [arrivedCopy length];
       _os_signpost_emit_with_name_impl(&dword_233656000, v10, OS_SIGNPOST_EVENT, v12, "Endpoint RECV", "Received incoming EA data! %@, %lu bytes", &v30, 0x16u);
     }
   }
 
-  v13 = [v7 hash];
-  v14 = [v6 hash];
+  v13 = [dCopy hash];
+  v14 = [arrivedCopy hash];
   v15 = v14 ^ v13;
   if (gLogSignpostObjects && gNumLogSignpostObjects >= 4)
   {
@@ -6062,20 +6062,20 @@ LABEL_39:
   v19 = !v18;
   if (!v18 && os_signpost_enabled(v16))
   {
-    v20 = [v6 length];
+    v20 = [arrivedCopy length];
     v30 = 138412546;
-    v31 = v7;
+    v31 = dCopy;
     v32 = 2048;
     v33 = v20;
     _os_signpost_emit_with_name_impl(&dword_233656000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v15, "Endpoint RECV", "Received incoming EA data! %@, %lu bytes", &v30, 0x16u);
   }
 
-  v21 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (v21)
+  if (delegate)
   {
-    v22 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v23 = [v22 processIncomingData:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    v23 = [delegate2 processIncomingData:arrivedCopy forEndpointWithUUID:dCopy];
   }
 
   else
@@ -6116,11 +6116,11 @@ LABEL_37:
         v26 = "ERROR";
       }
 
-      v27 = [v6 length];
+      v27 = [arrivedCopy length];
       v30 = 136315650;
       v31 = v26;
       v32 = 2112;
-      v33 = v7;
+      v33 = dCopy;
       v34 = 2048;
       v35 = v27;
       _os_signpost_emit_with_name_impl(&dword_233656000, v24, OS_SIGNPOST_INTERVAL_END, v15, "Endpoint RECV", "%s handling Received incoming EA data! %@, %lu bytes", &v30, 0x20u);
@@ -6133,11 +6133,11 @@ LABEL_42:
   return v23;
 }
 
-- (BOOL)IOAccessoryOOBPairingInfoArrived:(id)a3 endpointUUID:(id)a4
+- (BOOL)IOAccessoryOOBPairingInfoArrived:(id)arrived endpointUUID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrivedCopy = arrived;
+  dCopy = d;
   if (gLogSignpostObjects)
   {
     v8 = gNumLogSignpostObjects < 4;
@@ -6164,22 +6164,22 @@ LABEL_42:
     v10 = *(gLogSignpostObjects + 24);
   }
 
-  v11 = [v7 hash];
+  v11 = [dCopy hash];
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
       v30 = 138412546;
-      v31 = v7;
+      v31 = dCopy;
       v32 = 2048;
-      v33 = [v6 length];
+      v33 = [arrivedCopy length];
       _os_signpost_emit_with_name_impl(&dword_233656000, v10, OS_SIGNPOST_EVENT, v12, "Endpoint RECV", "Received incoming OOBPairingInfo data! %@, %lu bytes", &v30, 0x16u);
     }
   }
 
-  v13 = [v7 hash];
-  v14 = [v6 hash];
+  v13 = [dCopy hash];
+  v14 = [arrivedCopy hash];
   v15 = v14 ^ v13;
   if (gLogSignpostObjects && gNumLogSignpostObjects >= 4)
   {
@@ -6201,20 +6201,20 @@ LABEL_42:
   v19 = !v18;
   if (!v18 && os_signpost_enabled(v16))
   {
-    v20 = [v6 length];
+    v20 = [arrivedCopy length];
     v30 = 138412546;
-    v31 = v7;
+    v31 = dCopy;
     v32 = 2048;
     v33 = v20;
     _os_signpost_emit_with_name_impl(&dword_233656000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v15, "Endpoint RECV", "Received incoming OOBPairingInfo data! %@, %lu bytes", &v30, 0x16u);
   }
 
-  v21 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (v21)
+  if (delegate)
   {
-    v22 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v23 = [v22 processIncomingData:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    v23 = [delegate2 processIncomingData:arrivedCopy forEndpointWithUUID:dCopy];
   }
 
   else
@@ -6255,11 +6255,11 @@ LABEL_37:
         v26 = "ERROR";
       }
 
-      v27 = [v6 length];
+      v27 = [arrivedCopy length];
       v30 = 136315650;
       v31 = v26;
       v32 = 2112;
-      v33 = v7;
+      v33 = dCopy;
       v34 = 2048;
       v35 = v27;
       _os_signpost_emit_with_name_impl(&dword_233656000, v24, OS_SIGNPOST_INTERVAL_END, v15, "Endpoint RECV", "%s handling Received incoming OOBPairingInfo data! %@, %lu bytes", &v30, 0x20u);
@@ -6272,11 +6272,11 @@ LABEL_42:
   return v23;
 }
 
-- (BOOL)IOAccessoryOOBPairingDataArrived:(id)a3 endpointUUID:(id)a4
+- (BOOL)IOAccessoryOOBPairingDataArrived:(id)arrived endpointUUID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrivedCopy = arrived;
+  dCopy = d;
   if (gLogSignpostObjects)
   {
     v8 = gNumLogSignpostObjects < 4;
@@ -6303,22 +6303,22 @@ LABEL_42:
     v10 = *(gLogSignpostObjects + 24);
   }
 
-  v11 = [v7 hash];
+  v11 = [dCopy hash];
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
       v30 = 138412546;
-      v31 = v7;
+      v31 = dCopy;
       v32 = 2048;
-      v33 = [v6 length];
+      v33 = [arrivedCopy length];
       _os_signpost_emit_with_name_impl(&dword_233656000, v10, OS_SIGNPOST_EVENT, v12, "Endpoint RECV", "Received incoming OOBPairingData data! %@, %lu bytes", &v30, 0x16u);
     }
   }
 
-  v13 = [v7 hash];
-  v14 = [v6 hash];
+  v13 = [dCopy hash];
+  v14 = [arrivedCopy hash];
   v15 = v14 ^ v13;
   if (gLogSignpostObjects && gNumLogSignpostObjects >= 4)
   {
@@ -6340,20 +6340,20 @@ LABEL_42:
   v19 = !v18;
   if (!v18 && os_signpost_enabled(v16))
   {
-    v20 = [v6 length];
+    v20 = [arrivedCopy length];
     v30 = 138412546;
-    v31 = v7;
+    v31 = dCopy;
     v32 = 2048;
     v33 = v20;
     _os_signpost_emit_with_name_impl(&dword_233656000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v15, "Endpoint RECV", "Received incoming OOBPairingData data! %@, %lu bytes", &v30, 0x16u);
   }
 
-  v21 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (v21)
+  if (delegate)
   {
-    v22 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v23 = [v22 processIncomingData:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    v23 = [delegate2 processIncomingData:arrivedCopy forEndpointWithUUID:dCopy];
   }
 
   else
@@ -6394,11 +6394,11 @@ LABEL_37:
         v26 = "ERROR";
       }
 
-      v27 = [v6 length];
+      v27 = [arrivedCopy length];
       v30 = 136315650;
       v31 = v26;
       v32 = 2112;
-      v33 = v7;
+      v33 = dCopy;
       v34 = 2048;
       v35 = v27;
       _os_signpost_emit_with_name_impl(&dword_233656000, v24, OS_SIGNPOST_INTERVAL_END, v15, "Endpoint RECV", "%s handling Received incoming OOBPairingData data! %@, %lu bytes", &v30, 0x20u);
@@ -6411,10 +6411,10 @@ LABEL_42:
   return v23;
 }
 
-- (BOOL)IOAccessoryOOBPairingDataStartedForEndpointUUID:(id)a3
+- (BOOL)IOAccessoryOOBPairingDataStartedForEndpointUUID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 2;
@@ -6444,7 +6444,7 @@ LABEL_42:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = dCopy;
     _os_log_impl(&dword_233656000, v6, OS_LOG_TYPE_DEFAULT, "IOAccessoryOOBPairingDataStartedForEndpointUUID: %@", &v9, 0xCu);
   }
 
@@ -6452,10 +6452,10 @@ LABEL_42:
   return 1;
 }
 
-- (BOOL)IOAccessoryOOBPairingDataFinishedForEndpointUUID:(id)a3
+- (BOOL)IOAccessoryOOBPairingDataFinishedForEndpointUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 2;
@@ -6485,11 +6485,11 @@ LABEL_42:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = dCopy;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "IOAccessoryOOBPairingDataFinishedForEndpointUUID: %@", buf, 0xCu);
   }
 
-  v8 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:v4];
+  v8 = [(ACCTransportIOAccessorySharedManager *)self _basePortForEndpointUUID:dCopy];
   v9 = v8;
   if (v8 && [v8 ioServiceClassType] == 4)
   {
@@ -6514,11 +6514,11 @@ LABEL_42:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 needsOOBPairing];
+        needsOOBPairing = [v10 needsOOBPairing];
         *buf = 138412546;
         v21 = v10;
         v22 = 1024;
-        v23 = v13;
+        v23 = needsOOBPairing;
         _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "accMgrInstance=%@ OOBPairing finished. Reset needsOOBPairing, current %d", buf, 0x12u);
       }
 
@@ -6729,34 +6729,34 @@ void __89__ACCTransportIOAccessorySharedManager_IOAccessoryOOBPairingDataFinishe
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)IOAccessoryConfigStreamUpdateAccesssoryInfo:(id)a3
+- (void)IOAccessoryConfigStreamUpdateAccesssoryInfo:(id)info
 {
   v24[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v23[0] = *MEMORY[0x277CFD250];
-  v5 = [v4 deviceName];
-  v24[0] = v5;
+  deviceName = [infoCopy deviceName];
+  v24[0] = deviceName;
   v23[1] = *MEMORY[0x277CFD240];
-  v6 = [v4 deviceManufacturer];
-  v24[1] = v6;
+  deviceManufacturer = [infoCopy deviceManufacturer];
+  v24[1] = deviceManufacturer;
   v23[2] = *MEMORY[0x277CFD248];
-  v7 = [v4 deviceModel];
-  v24[2] = v7;
+  deviceModel = [infoCopy deviceModel];
+  v24[2] = deviceModel;
   v23[3] = *MEMORY[0x277CFD270];
-  v8 = [v4 deviceSerialNumber];
-  v24[3] = v8;
+  deviceSerialNumber = [infoCopy deviceSerialNumber];
+  v24[3] = deviceSerialNumber;
   v23[4] = *MEMORY[0x277CFD238];
-  v9 = [v4 deviceHardwareVersion];
-  v24[4] = v9;
+  deviceHardwareVersion = [infoCopy deviceHardwareVersion];
+  v24[4] = deviceHardwareVersion;
   v23[5] = *MEMORY[0x277CFD230];
-  v10 = [v4 deviceFirmwareVersion];
-  v24[5] = v10;
+  deviceFirmwareVersion = [infoCopy deviceFirmwareVersion];
+  v24[5] = deviceFirmwareVersion;
   v23[6] = *MEMORY[0x277CFD258];
-  v11 = [v4 devicePPID];
-  v24[6] = v11;
+  devicePPID = [infoCopy devicePPID];
+  v24[6] = devicePPID;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:7];
 
-  v13 = [v4 endpointUUID];
+  endpointUUID = [infoCopy endpointUUID];
   if (gLogObjects && gNumLogObjects >= 2)
   {
     v14 = *(gLogObjects + 8);
@@ -6776,25 +6776,25 @@ void __89__ACCTransportIOAccessorySharedManager_IOAccessoryOOBPairingDataFinishe
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v18[0] = 67109634;
-    v18[1] = [v4 ioService];
+    v18[1] = [infoCopy ioService];
     v19 = 2112;
-    v20 = v13;
+    v20 = endpointUUID;
     v21 = 2112;
     v22 = v12;
     _os_log_impl(&dword_233656000, v14, OS_LOG_TYPE_INFO, "setAccessoryInfo for ConfigStream service %d, endpointUUID %@, accInfo %@", v18, 0x1Cu);
   }
 
-  v16 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-  [v16 setAccessoryInfo:v12 forEndpointWithUUID:v13];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  [delegate setAccessoryInfo:v12 forEndpointWithUUID:endpointUUID];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)IOAccessoryConfigStreamMessageArrived:(id)a3 endpointUUID:(id)a4
+- (void)IOAccessoryConfigStreamMessageArrived:(id)arrived endpointUUID:(id)d
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  arrivedCopy = arrived;
+  dCopy = d;
   if (gLogSignpostObjects)
   {
     v8 = gNumLogSignpostObjects < 4;
@@ -6821,22 +6821,22 @@ void __89__ACCTransportIOAccessorySharedManager_IOAccessoryOOBPairingDataFinishe
     v10 = *(gLogSignpostObjects + 24);
   }
 
-  v11 = [v7 hash];
+  v11 = [dCopy hash];
   if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
       v29 = 138412546;
-      v30 = v7;
+      v30 = dCopy;
       v31 = 2048;
-      v32 = [v6 length];
+      v32 = [arrivedCopy length];
       _os_signpost_emit_with_name_impl(&dword_233656000, v10, OS_SIGNPOST_EVENT, v12, "Endpoint RECV", "Received incoming ConfigStream data! %@, %lu bytes", &v29, 0x16u);
     }
   }
 
-  v13 = [v7 hash];
-  v14 = [v6 hash];
+  v13 = [dCopy hash];
+  v14 = [arrivedCopy hash];
   v15 = v14 ^ v13;
   if (gLogSignpostObjects && gNumLogSignpostObjects >= 4)
   {
@@ -6858,21 +6858,21 @@ void __89__ACCTransportIOAccessorySharedManager_IOAccessoryOOBPairingDataFinishe
   v19 = !v18;
   if (!v18 && os_signpost_enabled(v16))
   {
-    v20 = [v6 length];
+    v20 = [arrivedCopy length];
     v29 = 138412546;
-    v30 = v7;
+    v30 = dCopy;
     v31 = 2048;
     v32 = v20;
     _os_signpost_emit_with_name_impl(&dword_233656000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v15, "Endpoint RECV", "Received incoming ConfigStream data! %@, %lu bytes", &v29, 0x16u);
   }
 
-  v21 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
   v22 = "ERROR";
-  if (v21)
+  if (delegate)
   {
-    v23 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v24 = [v23 processIncomingData:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    v24 = [delegate2 processIncomingData:arrivedCopy forEndpointWithUUID:dCopy];
 
     if (v24)
     {
@@ -6903,11 +6903,11 @@ void __89__ACCTransportIOAccessorySharedManager_IOAccessoryOOBPairingDataFinishe
 LABEL_37:
     if (os_signpost_enabled(v25))
     {
-      v27 = [v6 length];
+      v27 = [arrivedCopy length];
       v29 = 136315650;
       v30 = v22;
       v31 = 2112;
-      v32 = v7;
+      v32 = dCopy;
       v33 = 2048;
       v34 = v27;
       _os_signpost_emit_with_name_impl(&dword_233656000, v25, OS_SIGNPOST_INTERVAL_END, v15, "Endpoint RECV", "%s handling Received incoming ConfigStream data! %@, %lu bytes", &v29, 0x20u);
@@ -6919,10 +6919,10 @@ LABEL_39:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetLightningBusForEndpointWithUUID:(id)a3
+- (void)resetLightningBusForEndpointWithUUID:(id)d
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   connect = 0;
   if (gLogObjects)
   {
@@ -6953,21 +6953,21 @@ LABEL_39:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v66 = v4;
+    v66 = dCopy;
     _os_log_impl(&dword_233656000, v7, OS_LOG_TYPE_DEFAULT, "Resetting lightning bus for endpoint %@...", buf, 0xCu);
   }
 
-  v8 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (!v8)
+  if (!delegate)
   {
     goto LABEL_16;
   }
 
-  v9 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-  v10 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-  v11 = [v10 connectionUUIDForEndpointWithUUID:v4];
-  v12 = [v9 connectionTypeForConnectionWithUUID:v11];
+  delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate3 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  v11 = [delegate3 connectionUUIDForEndpointWithUUID:dCopy];
+  v12 = [delegate2 connectionTypeForConnectionWithUUID:v11];
 
   if (v12 != 1)
   {
@@ -6997,12 +6997,12 @@ LABEL_16:
     goto LABEL_178;
   }
 
-  v13 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+  delegate4 = [(ACCTransportIOAccessorySharedManager *)self delegate];
 
-  if (v13)
+  if (delegate4)
   {
-    v14 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-    v15 = [v14 transportTypeForEndpointWithUUID:v4];
+    delegate5 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+    v15 = [delegate5 transportTypeForEndpointWithUUID:dCopy];
   }
 
   else
@@ -7031,7 +7031,7 @@ LABEL_16:
     [ACCTransportIOAccessorySharedManager resetLightningBusForEndpointWithUUID:];
   }
 
-  v19 = [(ACCTransportIOAccessorySharedManager *)self _managerForBaseEndpointUUID:v4];
+  v19 = [(ACCTransportIOAccessorySharedManager *)self _managerForBaseEndpointUUID:dCopy];
   v16 = v19;
   if (!v19)
   {
@@ -7484,11 +7484,11 @@ uint64_t __53__ACCTransportIOAccessorySharedManager_sharedManager__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)IOAccessoryClassStringForIOAccessoryClassType:(int)a3
++ (id)IOAccessoryClassStringForIOAccessoryClassType:(int)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v3 = MEMORY[0x277CCACA8];
@@ -7507,7 +7507,7 @@ uint64_t __53__ACCTransportIOAccessorySharedManager_sharedManager__block_invoke(
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v3 = MEMORY[0x277CCACA8];
@@ -7553,17 +7553,17 @@ LABEL_18:
   return v6;
 }
 
-+ (int)IOAccessoryClassTypeForIOAccessoryClassString:(id)a3
++ (int)IOAccessoryClassTypeForIOAccessoryClassString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"IOAccessoryManager"];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [stringCopy isEqualToString:v4];
 
   if ((v5 & 1) == 0)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"IOAccessoryPort"];
-    v8 = [v3 isEqualToString:v7];
+    v8 = [stringCopy isEqualToString:v7];
 
     if (v8)
     {
@@ -7572,7 +7572,7 @@ LABEL_18:
     }
 
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"IOAccessoryEAInterface"];
-    v10 = [v3 isEqualToString:v9];
+    v10 = [stringCopy isEqualToString:v9];
 
     if (v10)
     {
@@ -7581,7 +7581,7 @@ LABEL_18:
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AppleAuthCP"];
-    v12 = [v3 isEqualToString:v11];
+    v12 = [stringCopy isEqualToString:v11];
 
     if (v12)
     {
@@ -7590,7 +7590,7 @@ LABEL_18:
     }
 
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"IOAccessoryConfigStreamInterface"];
-    v14 = [v3 isEqualToString:v13];
+    v14 = [stringCopy isEqualToString:v13];
 
     if (v14)
     {
@@ -7617,7 +7617,7 @@ LABEL_18:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v3;
+      v20 = stringCopy;
       _os_log_impl(&dword_233656000, v17, OS_LOG_TYPE_INFO, "Unknown classString %@", &v19, 0xCu);
     }
   }
@@ -7629,13 +7629,13 @@ LABEL_11:
   return v6;
 }
 
-- (void)_createModuleConnectionAndEndpoint:(id)a3
+- (void)_createModuleConnectionAndEndpoint:(id)endpoint
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 accConnectionType] == 7)
+  endpointCopy = endpoint;
+  if ([endpointCopy accConnectionType] == 7)
   {
-    v6 = [v5 representsInternalModule] - 1;
+    v6 = [endpointCopy representsInternalModule] - 1;
     if (v6 <= 3)
     {
       v7 = off_2789E9270[v6];
@@ -7645,7 +7645,7 @@ LABEL_11:
       [OUTLINED_FUNCTION_19() accConnectionType];
       v9 = [OUTLINED_FUNCTION_18() createConnectionWithType:? andIdentifier:?];
 
-      v10 = -[ACCTransportIOAccessorySharedManager managerForIOAccessoryManagerService:](self, "managerForIOAccessoryManagerService:", [v5 upstreamManagerService]);
+      v10 = -[ACCTransportIOAccessorySharedManager managerForIOAccessoryManagerService:](self, "managerForIOAccessoryManagerService:", [endpointCopy upstreamManagerService]);
 
       if (v10)
       {
@@ -7658,9 +7658,9 @@ LABEL_11:
 
       if (v9)
       {
-        v12 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+        delegate = [(ACCTransportIOAccessorySharedManager *)self delegate];
         v13 = [(__CFString *)v9 copy];
-        v14 = [v12 createEndpointWithTransportType:v8 andProtocol:2 andIdentifier:0 forConnectionWithUUID:v13 publishConnection:0];
+        v14 = [delegate createEndpointWithTransportType:v8 andProtocol:2 andIdentifier:0 forConnectionWithUUID:v13 publishConnection:0];
 
         if (v14)
         {
@@ -7695,11 +7695,11 @@ LABEL_11:
             _os_log_impl(&dword_233656000, v17, OS_LOG_TYPE_DEFAULT, "Created endpointUUID %{public}@ for %@ AppleAuthCP", buf, 0x16u);
           }
 
-          v20 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-          [v20 publishConnectionWithUUID:v9];
+          delegate2 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+          [delegate2 publishConnectionWithUUID:v9];
 
-          [v5 setConnectionUUID:v9];
-          [v5 setEndpointUUID:v14];
+          [endpointCopy setConnectionUUID:v9];
+          [endpointCopy setEndpointUUID:v14];
           v21 = *MEMORY[0x277CFD248];
           v36[0] = *MEMORY[0x277CFD250];
           v36[1] = v21;
@@ -7744,8 +7744,8 @@ LABEL_11:
             _os_log_impl(&dword_233656000, v26, OS_LOG_TYPE_DEFAULT, "accInfoDictionary for hardware accessory = %@, connectionUUID = %@", buf, 0x16u);
           }
 
-          v28 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-          [v28 setAccessoryInfo:v24 forEndpointWithUUID:v14];
+          delegate3 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+          [delegate3 setAccessoryInfo:v24 forEndpointWithUUID:v14];
 
           v29 = gNumLogObjects;
           if (gLogObjects && gNumLogObjects >= 2)
@@ -7773,8 +7773,8 @@ LABEL_11:
             _os_log_impl(&dword_233656000, v30, OS_LOG_TYPE_DEFAULT, "Publishing connection: %@ with eACCEndpoint_Protocol_InternalInfo", buf, 0xCu);
           }
 
-          v32 = [(ACCTransportIOAccessorySharedManager *)self delegate];
-          [v32 publishConnectionWithUUID:v9];
+          delegate4 = [(ACCTransportIOAccessorySharedManager *)self delegate];
+          [delegate4 publishConnectionWithUUID:v9];
         }
 
         else
@@ -7919,7 +7919,7 @@ void __66__ACCTransportIOAccessorySharedManager__managerForConnectionUUID___bloc
 - (void)shouldEnableDirectAWCAuth
 {
   v7 = *MEMORY[0x277D85DE8];
-  [*(a1 + 88) BOOLValue];
+  [*(self + 88) BOOLValue];
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 8u);

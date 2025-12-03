@@ -1,5 +1,5 @@
 @interface SBPIPAnalyticsAssistant
-- (SBPIPAnalyticsAssistant)initWithBundleIdentifier:(id)a3 contentType:(int64_t)a4 isAutoPIPEnabled:(BOOL)a5 invalidationBlock:(id)a6;
+- (SBPIPAnalyticsAssistant)initWithBundleIdentifier:(id)identifier contentType:(int64_t)type isAutoPIPEnabled:(BOOL)enabled invalidationBlock:(id)block;
 - (id)_generateMutableAnalyticsPayload;
 - (id)generateAnalyticsPayload;
 - (void)invalidate;
@@ -7,11 +7,11 @@
 
 @implementation SBPIPAnalyticsAssistant
 
-- (SBPIPAnalyticsAssistant)initWithBundleIdentifier:(id)a3 contentType:(int64_t)a4 isAutoPIPEnabled:(BOOL)a5 invalidationBlock:(id)a6
+- (SBPIPAnalyticsAssistant)initWithBundleIdentifier:(id)identifier contentType:(int64_t)type isAutoPIPEnabled:(BOOL)enabled invalidationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (!blockCopy)
   {
     v12 = SBLogCommon();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
@@ -22,8 +22,8 @@
     }
   }
 
-  v14 = v10;
-  if (!v10)
+  v14 = identifierCopy;
+  if (!identifierCopy)
   {
     v15 = SBLogCommon();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -44,14 +44,14 @@
   v19 = v18;
   if (v18)
   {
-    v18->_isAutoPIPEnabled = a5;
-    v18->_contentType = a4;
+    v18->_isAutoPIPEnabled = enabled;
+    v18->_contentType = type;
     v20 = [(__CFString *)v17 copy];
     bundleIdentifier = v19->_bundleIdentifier;
     v19->_bundleIdentifier = v20;
 
     v19->_activationTimestamp = NAN;
-    v22 = MEMORY[0x223D6F7F0](v11);
+    v22 = MEMORY[0x223D6F7F0](blockCopy);
     invalidationBlock = v19->_invalidationBlock;
     v19->_invalidationBlock = v22;
   }
@@ -65,8 +65,8 @@
   invalidationBlock = self->_invalidationBlock;
   if (invalidationBlock)
   {
-    v4 = [(SBPIPAnalyticsAssistant *)self analyticsIdentifier];
-    invalidationBlock[2](invalidationBlock, self, v4);
+    analyticsIdentifier = [(SBPIPAnalyticsAssistant *)self analyticsIdentifier];
+    invalidationBlock[2](invalidationBlock, self, analyticsIdentifier);
 
     v5 = self->_invalidationBlock;
     self->_invalidationBlock = 0;
@@ -75,8 +75,8 @@
 
 - (id)generateAnalyticsPayload
 {
-  v2 = [(SBPIPAnalyticsAssistant *)self _generateMutableAnalyticsPayload];
-  v3 = [v2 copy];
+  _generateMutableAnalyticsPayload = [(SBPIPAnalyticsAssistant *)self _generateMutableAnalyticsPayload];
+  v3 = [_generateMutableAnalyticsPayload copy];
 
   return v3;
 }

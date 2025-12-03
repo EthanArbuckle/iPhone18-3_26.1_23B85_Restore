@@ -1,27 +1,27 @@
 @interface TTRIRemindersListContentViewController_collectionView
-- (BOOL)collectionView:(id)a3 canEditItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (_TtC9Reminders53TTRIRemindersListContentViewController_collectionView)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionViewDidEndMultipleSelectionInteraction:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)hoverInteraction:(id)a3 didBeginHoverAndHoldAtLocation:(CGPoint)a4 elevation:(double)a5;
-- (void)hoverInteractionDidEndHoverAndHold:(id)a3;
+- (BOOL)collectionView:(id)view canEditItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (_TtC9Reminders53TTRIRemindersListContentViewController_collectionView)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionViewDidEndMultipleSelectionInteraction:(id)interaction;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)hoverInteraction:(id)interaction didBeginHoverAndHoldAtLocation:(CGPoint)location elevation:(double)elevation;
+- (void)hoverInteractionDidEndHoverAndHold:(id)hold;
 - (void)loadView;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -30,78 +30,78 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050F488();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050F5BC();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_100511B14(a3, a4);
+  selfCopy = self;
+  sub_100511B14(editing, animated);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100511CE4();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100512260(a3);
+  selfCopy = self;
+  sub_100512260(disappear);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = self;
-  v6 = [a3 nextFocusedView];
-  if (v6)
+  selfCopy = self;
+  nextFocusedView = [context nextFocusedView];
+  if (nextFocusedView)
   {
-    v7 = v6;
+    v7 = nextFocusedView;
     type metadata accessor for TTRIRemindersListReminderCell_collectionView();
-    v6 = swift_dynamicCastClass();
-    if (!v6)
+    nextFocusedView = swift_dynamicCastClass();
+    if (!nextFocusedView)
     {
 
-      v6 = 0;
+      nextFocusedView = 0;
     }
   }
 
-  v8 = *(&v5->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_internalFocusedCell);
-  *(&v5->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_internalFocusedCell) = v6;
+  v8 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_internalFocusedCell);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_internalFocusedCell) = nextFocusedView;
 }
 
-- (_TtC9Reminders53TTRIRemindersListContentViewController_collectionView)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders53TTRIRemindersListContentViewController_collectionView)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   type metadata accessor for IndexPath();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10051B348();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_scrollingController);
   if (v3)
   {
     sub_100003540(0, &qword_100775690);
-    v6 = a3;
-    v7 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
     v8 = v3;
     if (static NSObject.== infix(_:_:)())
     {
@@ -117,24 +117,24 @@
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_externalScrollViewDelegate);
   if (v4)
   {
     v5 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_externalScrollViewDelegate) respondsToSelector:"scrollViewWillBeginDragging:"];
-    v6 = a3;
-    v7 = self;
+    draggingCopy = dragging;
+    selfCopy = self;
     if (v5)
     {
-      [v4 scrollViewWillBeginDragging:v6];
+      [v4 scrollViewWillBeginDragging:draggingCopy];
     }
   }
 
   else
   {
-    v8 = a3;
-    v9 = self;
+    draggingCopy2 = dragging;
+    selfCopy2 = self;
   }
 
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_scrollingController))
@@ -147,43 +147,43 @@
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_100524734(a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_100524734(decelerate);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_1005247D0();
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_10051B7DC();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_100524868();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for TTRICollectionViewCellSelectionOption();
   v7 = *(v6 - 8);
@@ -197,8 +197,8 @@
   __chkstk_darwin(v13);
   v16 = &v20 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v17 = a3;
-  v18 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10051BA3C(v12, v9);
   sub_1000079B4(v12, &qword_100772140);
   LOBYTE(self) = TTRICollectionViewCellSelectionOption.shouldRevertItemHighlight.getter();
@@ -206,30 +206,30 @@
   if (self)
   {
     isa = IndexPath._bridgeToObjectiveC()().super.isa;
-    [(TTRIRemindersListContentViewController_collectionView *)v17 _unhighlightItemAtIndexPath:isa animated:0];
+    [(TTRIRemindersListContentViewController_collectionView *)viewCopy _unhighlightItemAtIndexPath:isa animated:0];
 
-    v17 = v18;
-    v18 = isa;
+    viewCopy = selfCopy;
+    selfCopy = isa;
   }
 
   (*(v14 + 8))(v16, v13);
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10051C598(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10051C598(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -241,50 +241,50 @@
   sub_10000C36C((&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_presenter), v9);
   v11 = *(v10 + 8);
   v12 = *(v11 + 304);
-  v13 = self;
+  selfCopy = self;
   v14 = v12(v9, v11);
 
   (*(v6 + 8))(v8, v5);
   return v14 & 1;
 }
 
-- (void)collectionView:(id)a3 didBeginMultipleSelectionInteractionAtIndexPath:(id)a4
+- (void)collectionView:(id)view didBeginMultipleSelectionInteractionAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100524AF0();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionViewDidEndMultipleSelectionInteraction:(id)a3
+- (void)collectionViewDidEndMultipleSelectionInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   sub_100524C60();
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  LOBYTE(self) = sub_10051CF40(v10);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = sub_10051CF40(viewCopy);
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (BOOL)collectionView:(id)a3 canEditItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canEditItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -295,21 +295,21 @@
   return 1;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   type metadata accessor for IndexPath();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10051D568(v10, v9, x, y);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10051D568(viewCopy, v9, x, y);
   v13 = v12;
 
   return v13;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders53TTRIRemindersListContentViewController_collectionView_presenter);
   v9 = v8[3];
@@ -317,26 +317,26 @@
   sub_10000C36C(v8, v9);
   v11 = *(v10 + 8);
   v12 = *(v11 + 848);
-  v13 = a4;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v14 = self;
-  v12(v13, a5, v9, v11);
+  selfCopy = self;
+  v12(configurationCopy, animator, v9, v11);
 
   swift_unknownObjectRelease();
 }
 
-- (void)hoverInteraction:(id)a3 didBeginHoverAndHoldAtLocation:(CGPoint)a4 elevation:(double)a5
+- (void)hoverInteraction:(id)interaction didBeginHoverAndHoldAtLocation:(CGPoint)location elevation:(double)elevation
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
-  sub_100525328(v8, x, y);
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_100525328(interactionCopy, x, y);
 }
 
-- (void)hoverInteractionDidEndHoverAndHold:(id)a3
+- (void)hoverInteractionDidEndHoverAndHold:(id)hold
 {
-  v3 = self;
+  selfCopy = self;
   sub_100117CEC();
   PassthroughSubject.send(_:)();
 }

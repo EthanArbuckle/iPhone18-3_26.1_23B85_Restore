@@ -1,47 +1,47 @@
 @interface CRLWPSelectionHighlightLayer
-- (void)renderInContext:(CGContext *)a3;
+- (void)renderInContext:(CGContext *)context;
 @end
 
 @implementation CRLWPSelectionHighlightLayer
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
   if (([(CRLWPSelectionHighlightLayer *)self isHidden]& 1) != 0)
   {
     return;
   }
 
-  CGContextSaveGState(a3);
-  v5 = [(CRLWPSelectionHighlightLayer *)self fillColor];
-  if (v5)
+  CGContextSaveGState(context);
+  fillColor = [(CRLWPSelectionHighlightLayer *)self fillColor];
+  if (fillColor)
   {
-    CGContextSetFillColorWithColor(a3, v5);
+    CGContextSetFillColorWithColor(context, fillColor);
   }
 
-  v6 = [(CRLWPSelectionHighlightLayer *)self strokeColor];
-  if (v6)
+  strokeColor = [(CRLWPSelectionHighlightLayer *)self strokeColor];
+  if (strokeColor)
   {
-    CGContextSetStrokeColorWithColor(a3, v6);
+    CGContextSetStrokeColorWithColor(context, strokeColor);
   }
 
   [(CRLWPSelectionHighlightLayer *)self lineWidth];
-  CGContextSetLineWidth(a3, v7);
+  CGContextSetLineWidth(context, v7);
   [(CRLWPSelectionHighlightLayer *)self miterLimit];
-  CGContextSetMiterLimit(a3, v8);
-  v22 = [(CRLWPSelectionHighlightLayer *)self lineCap];
-  if ([v22 isEqualToString:kCALineCapButt])
+  CGContextSetMiterLimit(context, v8);
+  lineCap = [(CRLWPSelectionHighlightLayer *)self lineCap];
+  if ([lineCap isEqualToString:kCALineCapButt])
   {
     v9 = kCGLineCapButt;
   }
 
-  else if ([v22 isEqualToString:kCALineCapRound])
+  else if ([lineCap isEqualToString:kCALineCapRound])
   {
     v9 = kCGLineCapRound;
   }
 
   else
   {
-    if (![v22 isEqualToString:kCALineCapSquare])
+    if (![lineCap isEqualToString:kCALineCapSquare])
     {
       goto LABEL_13;
     }
@@ -49,22 +49,22 @@
     v9 = kCGLineCapSquare;
   }
 
-  CGContextSetLineCap(a3, v9);
+  CGContextSetLineCap(context, v9);
 LABEL_13:
-  v10 = [(CRLWPSelectionHighlightLayer *)self lineJoin];
-  if ([v10 isEqualToString:kCALineJoinMiter])
+  lineJoin = [(CRLWPSelectionHighlightLayer *)self lineJoin];
+  if ([lineJoin isEqualToString:kCALineJoinMiter])
   {
     v11 = kCGLineJoinMiter;
   }
 
-  else if ([v10 isEqualToString:kCALineJoinRound])
+  else if ([lineJoin isEqualToString:kCALineJoinRound])
   {
     v11 = kCGLineJoinRound;
   }
 
   else
   {
-    if (![v10 isEqualToString:kCALineJoinBevel])
+    if (![lineJoin isEqualToString:kCALineJoinBevel])
     {
       goto LABEL_20;
     }
@@ -72,48 +72,48 @@ LABEL_13:
     v11 = kCGLineJoinBevel;
   }
 
-  CGContextSetLineJoin(a3, v11);
+  CGContextSetLineJoin(context, v11);
 LABEL_20:
-  v12 = [(CRLWPSelectionHighlightLayer *)self lineDashPattern];
-  v13 = [v12 count];
+  lineDashPattern = [(CRLWPSelectionHighlightLayer *)self lineDashPattern];
+  v13 = [lineDashPattern count];
   v14 = malloc_type_calloc(v13, 8uLL, 0x100004000313F17uLL);
   if (v13)
   {
     for (i = 0; i != v13; i = i + 1)
     {
-      v16 = [v12 objectAtIndexedSubscript:i];
+      v16 = [lineDashPattern objectAtIndexedSubscript:i];
       [v16 doubleValue];
       v14[i] = v17;
     }
   }
 
   [(CRLWPSelectionHighlightLayer *)self lineDashPhase];
-  CGContextSetLineDash(a3, v18, v14, v13);
+  CGContextSetLineDash(context, v18, v14, v13);
   free(v14);
-  CGContextAddPath(a3, [(CRLWPSelectionHighlightLayer *)self path]);
-  if (!v5)
+  CGContextAddPath(context, [(CRLWPSelectionHighlightLayer *)self path]);
+  if (!fillColor)
   {
-    if (v6)
+    if (strokeColor)
     {
-      CGContextDrawPath(a3, kCGPathStroke);
+      CGContextDrawPath(context, kCGPathStroke);
     }
 
     goto LABEL_37;
   }
 
-  v19 = [(CRLWPSelectionHighlightLayer *)self fillRule];
-  v20 = [v19 isEqualToString:kCAFillRuleNonZero];
-  if (v6)
+  fillRule = [(CRLWPSelectionHighlightLayer *)self fillRule];
+  v20 = [fillRule isEqualToString:kCAFillRuleNonZero];
+  if (strokeColor)
   {
     if (v20)
     {
       v21 = kCGPathFillStroke;
 LABEL_35:
-      CGContextDrawPath(a3, v21);
+      CGContextDrawPath(context, v21);
       goto LABEL_36;
     }
 
-    if ([v19 isEqualToString:kCAFillRuleEvenOdd])
+    if ([fillRule isEqualToString:kCAFillRuleEvenOdd])
     {
       v21 = kCGPathEOFillStroke;
       goto LABEL_35;
@@ -128,7 +128,7 @@ LABEL_35:
       goto LABEL_35;
     }
 
-    if ([v19 isEqualToString:kCAFillRuleEvenOdd])
+    if ([fillRule isEqualToString:kCAFillRuleEvenOdd])
     {
       v21 = kCGPathEOFill;
       goto LABEL_35;
@@ -138,7 +138,7 @@ LABEL_35:
 LABEL_36:
 
 LABEL_37:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

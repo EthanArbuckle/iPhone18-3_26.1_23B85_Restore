@@ -1,18 +1,18 @@
 @interface CDCOCalendarDataClassOwner
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6;
-- (CalDatabase)createDatabaseReferenceForAccount:(id)a3;
-- (id)_DAAccountIdentifierForAccount:(id)a3 withChildren:(id)a4;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass;
+- (CalDatabase)createDatabaseReferenceForAccount:(id)account;
+- (id)_DAAccountIdentifierForAccount:(id)account withChildren:(id)children;
 - (id)accountStore;
-- (id)actionsForAddingAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4;
+- (id)actionsForAddingAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass;
 @end
 
 @implementation CDCOCalendarDataClassOwner
 
-- (CalDatabase)createDatabaseReferenceForAccount:(id)a3
+- (CalDatabase)createDatabaseReferenceForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(CalDatabaseInitializationConfiguration);
   [v4 setOptions:20];
   v5 = CalDatabaseCreateWithConfigurationForAccount();
@@ -35,21 +35,21 @@
   return accountStore;
 }
 
-- (id)_DAAccountIdentifierForAccount:(id)a3 withChildren:(id)a4
+- (id)_DAAccountIdentifierForAccount:(id)account withChildren:(id)children
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = [v5 accountType];
-  v9 = [v8 identifier];
+  accountCopy = account;
+  childrenCopy = children;
+  identifier = [accountCopy identifier];
+  accountType = [accountCopy accountType];
+  identifier2 = [accountType identifier];
   v10 = ACAccountTypeIdentifierCalDAV;
-  if ([v9 isEqualToString:ACAccountTypeIdentifierCalDAV])
+  if ([identifier2 isEqualToString:ACAccountTypeIdentifierCalDAV])
   {
   }
 
   else
   {
-    v11 = [v6 count];
+    v11 = [childrenCopy count];
 
     if (!v11)
     {
@@ -60,13 +60,13 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = v6;
-    v12 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    accountType = childrenCopy;
+    v12 = [accountType countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
-      v22 = v7;
-      v23 = v6;
+      v22 = identifier;
+      v23 = childrenCopy;
       v14 = *v25;
       while (2)
       {
@@ -74,24 +74,24 @@
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(accountType);
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 accountType];
-          v18 = [v17 identifier];
-          v19 = [v18 isEqualToString:v10];
+          accountType2 = [v16 accountType];
+          identifier3 = [accountType2 identifier];
+          v19 = [identifier3 isEqualToString:v10];
 
           if (v19)
           {
-            v7 = [v16 identifier];
+            identifier = [v16 identifier];
 
-            v6 = v23;
+            childrenCopy = v23;
             goto LABEL_14;
           }
         }
 
-        v13 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [accountType countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v13)
         {
           continue;
@@ -100,15 +100,15 @@
         break;
       }
 
-      v7 = v22;
-      v6 = v23;
+      identifier = v22;
+      childrenCopy = v23;
     }
   }
 
 LABEL_14:
 
 LABEL_15:
-  v20 = [NSString stringWithFormat:@"com.apple.dataaccessd-%@", v7];
+  v20 = [NSString stringWithFormat:@"com.apple.dataaccessd-%@", identifier];
 
   return v20;
 }
@@ -121,13 +121,13 @@ LABEL_15:
   return v2;
 }
 
-- (id)actionsForAddingAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForAddingAccount:(id)account forDataclass:(id)dataclass
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountType];
+  accountCopy = account;
+  dataclassCopy = dataclass;
+  accountType = [accountCopy accountType];
   v9 = [(CDCOCalendarDataClassOwner *)self createDatabaseReferenceForAccount:0];
-  if ([CalStoreSetupAndTeardownUtils isReadOnlyAccount:v6])
+  if ([CalStoreSetupAndTeardownUtils isReadOnlyAccount:accountCopy])
   {
     v10 = [ACDataclassAction actionWithType:1];
     v35 = v10;
@@ -136,14 +136,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v12 = [v8 identifier];
-  if ([v12 isEqualToString:ACAccountTypeIdentifierExchange])
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:ACAccountTypeIdentifierExchange])
   {
     goto LABEL_12;
   }
 
-  v13 = [v8 identifier];
-  if ([v13 isEqualToString:ACAccountTypeIdentifierHotmail])
+  identifier2 = [accountType identifier];
+  if ([identifier2 isEqualToString:ACAccountTypeIdentifierHotmail])
   {
 LABEL_11:
 
@@ -151,35 +151,35 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v14 = [v8 identifier];
-  if ([v14 isEqualToString:ACAccountTypeIdentifierGmail])
+  identifier3 = [accountType identifier];
+  if ([identifier3 isEqualToString:ACAccountTypeIdentifierGmail])
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v15 = [v8 identifier];
-  if ([v15 isEqualToString:ACAccountTypeIdentifierYahoo])
+  identifier4 = [accountType identifier];
+  if ([identifier4 isEqualToString:ACAccountTypeIdentifierYahoo])
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v30 = [v8 identifier];
-  if ([v30 isEqualToString:ACAccountTypeIdentifierCalDAV])
+  identifier5 = [accountType identifier];
+  if ([identifier5 isEqualToString:ACAccountTypeIdentifierCalDAV])
   {
 
     goto LABEL_9;
   }
 
-  v29 = [v8 identifier];
+  identifier6 = [accountType identifier];
   v28 = ACAccountTypeIdentifierAppleAccount;
-  if ([v29 isEqualToString:?])
+  if ([identifier6 isEqualToString:?])
   {
-    v21 = [v6 identifier];
-    v27 = [CalAccountUtils isAccountDataSeparated:v21];
+    identifier7 = [accountCopy identifier];
+    v27 = [CalAccountUtils isAccountDataSeparated:identifier7];
 
     if (v27)
     {
@@ -210,8 +210,8 @@ LABEL_13:
   {
   }
 
-  v22 = [v8 identifier];
-  v23 = [v22 isEqualToString:v28];
+  identifier8 = [accountType identifier];
+  v23 = [identifier8 isEqualToString:v28];
 
   if (v23)
   {
@@ -246,13 +246,13 @@ LABEL_16:
   return v11;
 }
 
-- (id)actionsForDeletingAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDeletingAccount:(id)account forDataclass:(id)dataclass
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountType];
-  v9 = [(CDCOCalendarDataClassOwner *)self createDatabaseReferenceForAccount:v6];
-  if ([CalStoreSetupAndTeardownUtils isReadOnlyAccount:v6])
+  accountCopy = account;
+  dataclassCopy = dataclass;
+  accountType = [accountCopy accountType];
+  v9 = [(CDCOCalendarDataClassOwner *)self createDatabaseReferenceForAccount:accountCopy];
+  if ([CalStoreSetupAndTeardownUtils isReadOnlyAccount:accountCopy])
   {
     v10 = [ACDataclassAction destructiveActionWithType:3];
     v33 = v10;
@@ -261,14 +261,14 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  v12 = [v8 identifier];
-  if ([v12 isEqualToString:ACAccountTypeIdentifierExchange])
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:ACAccountTypeIdentifierExchange])
   {
     goto LABEL_12;
   }
 
-  v13 = [v8 identifier];
-  if ([v13 isEqualToString:ACAccountTypeIdentifierHotmail])
+  identifier2 = [accountType identifier];
+  if ([identifier2 isEqualToString:ACAccountTypeIdentifierHotmail])
   {
 LABEL_11:
 
@@ -283,35 +283,35 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = [v8 identifier];
-  if ([v14 isEqualToString:ACAccountTypeIdentifierGmail])
+  identifier3 = [accountType identifier];
+  if ([identifier3 isEqualToString:ACAccountTypeIdentifierGmail])
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v15 = [v8 identifier];
-  if ([v15 isEqualToString:ACAccountTypeIdentifierYahoo])
+  identifier4 = [accountType identifier];
+  if ([identifier4 isEqualToString:ACAccountTypeIdentifierYahoo])
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v29 = [v8 identifier];
-  if ([v29 isEqualToString:ACAccountTypeIdentifierCalDAV])
+  identifier5 = [accountType identifier];
+  if ([identifier5 isEqualToString:ACAccountTypeIdentifierCalDAV])
   {
 
     goto LABEL_9;
   }
 
-  v28 = [v8 identifier];
+  identifier6 = [accountType identifier];
   v27 = ACAccountTypeIdentifierAppleAccount;
-  if ([v28 isEqualToString:?])
+  if ([identifier6 isEqualToString:?])
   {
-    v19 = [v6 identifier];
-    v26 = [CalAccountUtils isAccountDataSeparated:v19];
+    identifier7 = [accountCopy identifier];
+    v26 = [CalAccountUtils isAccountDataSeparated:identifier7];
 
     if (v26)
     {
@@ -323,12 +323,12 @@ LABEL_9:
   {
   }
 
-  v20 = [v8 identifier];
-  v21 = [v20 isEqualToString:v27];
+  identifier8 = [accountType identifier];
+  v21 = [identifier8 isEqualToString:v27];
 
   if (v21)
   {
-    if ([CalStoreSetupAndTeardownUtils isStoreEmptyForAccount:v6 inDatabase:v9])
+    if ([CalStoreSetupAndTeardownUtils isStoreEmptyForAccount:accountCopy inDatabase:v9])
     {
       v22 = [ACDataclassAction destructiveActionWithType:3];
       v31 = v22;
@@ -361,14 +361,14 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v63 = a6;
-  v13 = [v11 accountType];
-  v14 = [(CDCOCalendarDataClassOwner *)self createDatabaseReferenceForAccount:v11];
+  actionCopy = action;
+  accountCopy = account;
+  childrenCopy = children;
+  dataclassCopy = dataclass;
+  accountType = [accountCopy accountType];
+  v14 = [(CDCOCalendarDataClassOwner *)self createDatabaseReferenceForAccount:accountCopy];
   if (CalDatabaseIsAuxiliaryDatabase())
   {
     v15 = [(CDCOCalendarDataClassOwner *)self createDatabaseReferenceForAccount:0];
@@ -380,46 +380,46 @@ LABEL_14:
   }
 
   v61 = v15;
-  v62 = [(CDCOCalendarDataClassOwner *)self accountStore];
-  v60 = [(CDCOCalendarDataClassOwner *)self _DAAccountIdentifierForAccount:v11 withChildren:v12];
+  accountStore = [(CDCOCalendarDataClassOwner *)self accountStore];
+  v60 = [(CDCOCalendarDataClassOwner *)self _DAAccountIdentifierForAccount:accountCopy withChildren:childrenCopy];
   CalDatabaseSetClientIdentifier();
-  v16 = [v13 identifier];
+  identifier = [accountType identifier];
   v17 = ACAccountTypeIdentifierAppleAccount;
-  if ([v16 isEqualToString:ACAccountTypeIdentifierAppleAccount])
+  if ([identifier isEqualToString:ACAccountTypeIdentifierAppleAccount])
   {
-    v18 = [v11 identifier];
-    v19 = [CalAccountUtils isAccountDataSeparated:v18];
+    identifier2 = [accountCopy identifier];
+    v19 = [CalAccountUtils isAccountDataSeparated:identifier2];
 
     if ((v19 & 1) == 0)
     {
-      v20 = [v10 type];
+      type = [actionCopy type];
       v21 = 0;
-      if (v20 > 2)
+      if (type > 2)
       {
         v23 = v61;
-        v22 = v62;
-        if (v20 == &dword_0 + 3)
+        v22 = accountStore;
+        if (type == &dword_0 + 3)
         {
-          if ([CalStoreSetupAndTeardownUtils clearAllEventsFromStoreForParentAccount:v11 withChildren:v12 inDatabase:v14])
+          if ([CalStoreSetupAndTeardownUtils clearAllEventsFromStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14])
           {
-            v28 = v11;
-            v29 = v12;
+            v28 = accountCopy;
+            v29 = childrenCopy;
             goto LABEL_61;
           }
 
           goto LABEL_69;
         }
 
-        if (v20 != &dword_4 + 1)
+        if (type != &dword_4 + 1)
         {
           goto LABEL_73;
         }
 
         if (![CalStoreSetupAndTeardownUtils isLocalStoreEmptyInDatabase:v61])
         {
-          if ([CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:v11 withChildren:v12 inDatabase:v14])
+          if ([CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14])
           {
-            v47 = [CalStoreSetupAndTeardownUtils copyStoreForAccount:v11 withChildren:v12 inDatabase:v14];
+            v47 = [CalStoreSetupAndTeardownUtils copyStoreForAccount:accountCopy withChildren:childrenCopy inDatabase:v14];
             if (!v47)
             {
               goto LABEL_44;
@@ -448,10 +448,10 @@ LABEL_14:
       else
       {
         v23 = v61;
-        v22 = v62;
-        if (v20 != &dword_0 + 1)
+        v22 = accountStore;
+        if (type != &dword_0 + 1)
         {
-          if (v20 != &dword_0 + 2)
+          if (type != &dword_0 + 2)
           {
             goto LABEL_73;
           }
@@ -463,7 +463,7 @@ LABEL_14:
           }
 
           [CalStoreSetupAndTeardownUtils setLocalStoreEnabled:1 inDatabase:v14];
-          v25 = [CalStoreSetupAndTeardownUtils copyStoreForAccount:v11 withChildren:v12 inDatabase:v14];
+          v25 = [CalStoreSetupAndTeardownUtils copyStoreForAccount:accountCopy withChildren:childrenCopy inDatabase:v14];
           if (v25)
           {
             v26 = v25;
@@ -471,8 +471,8 @@ LABEL_14:
             CFRelease(v26);
             if (v27)
             {
-              v28 = v11;
-              v29 = v12;
+              v28 = accountCopy;
+              v29 = childrenCopy;
 LABEL_61:
               [CalStoreSetupAndTeardownUtils removeStoreForAccount:v28 withChildren:v29 inDatabase:v14 mainDatabase:v23 accountStore:v22];
               goto LABEL_44;
@@ -483,7 +483,7 @@ LABEL_61:
         }
       }
 
-      if ([CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:v11 withChildren:v12 inDatabase:v14])
+      if ([CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14])
       {
         v38 = _ACLogSystem();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -504,15 +504,15 @@ LABEL_69:
   {
   }
 
-  v30 = [v13 identifier];
-  if ([v30 isEqualToString:v17])
+  identifier3 = [accountType identifier];
+  if ([identifier3 isEqualToString:v17])
   {
     goto LABEL_24;
   }
 
   v31 = v14;
-  v32 = [v13 identifier];
-  if ([v32 isEqualToString:ACAccountTypeIdentifierCalDAV])
+  identifier4 = [accountType identifier];
+  if ([identifier4 isEqualToString:ACAccountTypeIdentifierCalDAV])
   {
 LABEL_23:
 
@@ -522,18 +522,18 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v33 = v13;
-  v34 = [v13 identifier];
-  if ([v34 isEqualToString:ACAccountTypeIdentifierExchange])
+  v33 = accountType;
+  identifier5 = [accountType identifier];
+  if ([identifier5 isEqualToString:ACAccountTypeIdentifierExchange])
   {
 LABEL_22:
 
-    v13 = v33;
+    accountType = v33;
     goto LABEL_23;
   }
 
-  v35 = [v33 identifier];
-  if ([v35 isEqualToString:ACAccountTypeIdentifierHotmail])
+  identifier6 = [v33 identifier];
+  if ([identifier6 isEqualToString:ACAccountTypeIdentifierHotmail])
   {
 LABEL_21:
 
@@ -541,17 +541,17 @@ LABEL_21:
   }
 
   v59 = v33;
-  v57 = [v33 identifier];
-  if ([v57 isEqualToString:ACAccountTypeIdentifierGmail])
+  identifier7 = [v33 identifier];
+  if ([identifier7 isEqualToString:ACAccountTypeIdentifierGmail])
   {
 
     goto LABEL_21;
   }
 
-  v51 = [v33 identifier];
-  v56 = [v51 isEqualToString:ACAccountTypeIdentifierYahoo];
+  identifier8 = [v33 identifier];
+  v56 = [identifier8 isEqualToString:ACAccountTypeIdentifierYahoo];
 
-  v13 = v59;
+  accountType = v59;
   v14 = v31;
   if ((v56 & 1) == 0)
   {
@@ -559,12 +559,12 @@ LABEL_21:
   }
 
 LABEL_25:
-  if ([v10 type] != &dword_4 + 2)
+  if ([actionCopy type] != &dword_4 + 2)
   {
-    if ([v10 type] == &dword_0 + 1)
+    if ([actionCopy type] == &dword_0 + 1)
     {
-      v22 = v62;
-      if (![CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:v11 withChildren:v12 inDatabase:v14])
+      v22 = accountStore;
+      if (![CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14])
       {
         v21 = 0;
         v23 = v61;
@@ -581,31 +581,31 @@ LABEL_25:
       goto LABEL_29;
     }
 
-    if ([v10 type] == &dword_4)
+    if ([actionCopy type] == &dword_4)
     {
-      v21 = [CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:v11 withChildren:v12 inDatabase:v14];
+      v21 = [CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14];
 LABEL_72:
       v23 = v61;
-      v22 = v62;
+      v22 = accountStore;
       goto LABEL_73;
     }
 
-    if ([v10 type] == &dword_0 + 3)
+    if ([actionCopy type] == &dword_0 + 3)
     {
-      v53 = [CalStoreSetupAndTeardownUtils clearAllEventsFromStoreForParentAccount:v11 withChildren:v12 inDatabase:v14];
+      v53 = [CalStoreSetupAndTeardownUtils clearAllEventsFromStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14];
       if (v53)
       {
-        [CalStoreSetupAndTeardownUtils removeStoreForAccount:v11 withChildren:v12 inDatabase:v14 mainDatabase:v61 accountStore:v62];
+        [CalStoreSetupAndTeardownUtils removeStoreForAccount:accountCopy withChildren:childrenCopy inDatabase:v14 mainDatabase:v61 accountStore:accountStore];
       }
 
       v54 = v14;
-      v55 = v12;
-      v58 = v11;
+      v55 = childrenCopy;
+      v58 = accountCopy;
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v40 = v12;
+      v40 = childrenCopy;
       v41 = [v40 countByEnumeratingWithState:&v64 objects:v68 count:16];
       if (v41)
       {
@@ -625,7 +625,7 @@ LABEL_72:
 
             if (v46)
             {
-              [(CDCOCalendarDataClassOwner *)self performAction:v10 forAccount:v45 withChildren:&__NSArray0__struct forDataclass:v63];
+              [(CDCOCalendarDataClassOwner *)self performAction:actionCopy forAccount:v45 withChildren:&__NSArray0__struct forDataclass:dataclassCopy];
             }
           }
 
@@ -635,11 +635,11 @@ LABEL_72:
         while (v42);
       }
 
-      v12 = v55;
-      v11 = v58;
+      childrenCopy = v55;
+      accountCopy = v58;
       v14 = v54;
       v23 = v61;
-      v22 = v62;
+      v22 = accountStore;
       v21 = v53;
       goto LABEL_73;
     }
@@ -651,9 +651,9 @@ LABEL_71:
 
   v23 = v61;
   v36 = [CalStoreSetupAndTeardownUtils drainLocalStoreInDatabase:v61];
-  v37 = [CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:v11 withChildren:v12 inDatabase:v14];
+  v37 = [CalStoreSetupAndTeardownUtils setUpCalStoreForParentAccount:accountCopy withChildren:childrenCopy inDatabase:v14];
   v21 = 0;
-  v22 = v62;
+  v22 = accountStore;
   if (v36 && v37)
   {
     v38 = _ACLogSystem();

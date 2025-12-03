@@ -2,12 +2,12 @@
 + (id)newDefaultProfile;
 - (GCSJSONObject)jsonObject;
 - (GCSMouseProfile)init;
-- (GCSMouseProfile)initWithBundleIdentifier:(id)a3 trackingSpeed:(double)a4 useLinearTracking:(BOOL)a5;
-- (GCSMouseProfile)initWithCoder:(id)a3;
-- (GCSMouseProfile)initWithJSONObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTrackingSpeed:(double)a3;
+- (GCSMouseProfile)initWithBundleIdentifier:(id)identifier trackingSpeed:(double)speed useLinearTracking:(BOOL)tracking;
+- (GCSMouseProfile)initWithCoder:(id)coder;
+- (GCSMouseProfile)initWithJSONObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTrackingSpeed:(double)speed;
 @end
 
 @implementation GCSMouseProfile
@@ -18,36 +18,36 @@
   objc_exception_throw(v2);
 }
 
-- (GCSMouseProfile)initWithBundleIdentifier:(id)a3 trackingSpeed:(double)a4 useLinearTracking:(BOOL)a5
+- (GCSMouseProfile)initWithBundleIdentifier:(id)identifier trackingSpeed:(double)speed useLinearTracking:(BOOL)tracking
 {
-  v8 = a3;
-  if ([v8 length] && (v14.receiver = self, v14.super_class = GCSMouseProfile, (self = -[GCSMouseProfile init](&v14, sel_init)) != 0))
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (v14.receiver = self, v14.super_class = GCSMouseProfile, (self = -[GCSMouseProfile init](&v14, sel_init)) != 0))
   {
-    v9 = [v8 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = self->_bundleIdentifier;
     self->_bundleIdentifier = v9;
 
-    v11 = -1.0;
-    if (a4 > 0.0)
+    speedCopy = -1.0;
+    if (speed > 0.0)
     {
-      v11 = a4;
+      speedCopy = speed;
     }
 
-    self->_trackingSpeed = v11;
-    self->_useLinearTracking = a5;
+    self->_trackingSpeed = speedCopy;
+    self->_useLinearTracking = tracking;
     self = self;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [GCSMouseProfile alloc];
   bundleIdentifier = self->_bundleIdentifier;
@@ -57,22 +57,22 @@
   return [(GCSMouseProfile *)v4 initWithBundleIdentifier:bundleIdentifier trackingSpeed:useLinearTracking useLinearTracking:trackingSpeed];
 }
 
-- (GCSMouseProfile)initWithCoder:(id)a3
+- (GCSMouseProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GCSMouseProfile;
   v5 = [(GCSMouseProfile *)&v11 init];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"], v6 = objc_claimAutoreleasedReturnValue(), bundleIdentifier = v5->_bundleIdentifier, v5->_bundleIdentifier = v6, bundleIdentifier, v5->_bundleIdentifier))
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"], v6 = objc_claimAutoreleasedReturnValue(), bundleIdentifier = v5->_bundleIdentifier, v5->_bundleIdentifier = v6, bundleIdentifier, v5->_bundleIdentifier))
   {
-    [v4 decodeDoubleForKey:@"trackingSpeed"];
+    [coderCopy decodeDoubleForKey:@"trackingSpeed"];
     if (v8 <= 0.0)
     {
       v8 = -1.0;
     }
 
     v5->_trackingSpeed = v8;
-    v5->_useLinearTracking = [v4 decodeBoolForKey:@"useLinearTracking"];
+    v5->_useLinearTracking = [coderCopy decodeBoolForKey:@"useLinearTracking"];
     v9 = v5;
   }
 
@@ -84,22 +84,22 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
   if (self->_trackingSpeed > 0.0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-    [v5 encodeObject:v4 forKey:@"trackingSpeed"];
+    [coderCopy encodeObject:v4 forKey:@"trackingSpeed"];
   }
 
-  [v5 encodeBool:self->_useLinearTracking forKey:@"trackingSpeed"];
+  [coderCopy encodeBool:self->_useLinearTracking forKey:@"trackingSpeed"];
 }
 
-- (GCSMouseProfile)initWithJSONObject:(id)a3
+- (GCSMouseProfile)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -114,13 +114,13 @@
     goto LABEL_7;
   }
 
-  v5 = [v4 _gcs_stringForJSONKey:@"_bundleIdentifier"];
+  v5 = [objectCopy _gcs_stringForJSONKey:@"_bundleIdentifier"];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v5;
 
   if (self->_bundleIdentifier)
   {
-    v7 = [v4 _gcs_numberForJSONKey:@"_trackingSpeed"];
+    v7 = [objectCopy _gcs_numberForJSONKey:@"_trackingSpeed"];
     [v7 doubleValue];
     self->_trackingSpeed = v8;
 
@@ -129,20 +129,20 @@
       self->_trackingSpeed = -1.0;
     }
 
-    v9 = [v4 _gcs_numberForJSONKey:@"_useLinearTracking"];
+    v9 = [objectCopy _gcs_numberForJSONKey:@"_useLinearTracking"];
     self->_useLinearTracking = [v9 BOOLValue];
 
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_7:
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject
@@ -163,14 +163,14 @@ LABEL_7:
   return v6;
 }
 
-- (void)setTrackingSpeed:(double)a3
+- (void)setTrackingSpeed:(double)speed
 {
-  if (a3 <= 0.0)
+  if (speed <= 0.0)
   {
-    a3 = -1.0;
+    speed = -1.0;
   }
 
-  self->_trackingSpeed = a3;
+  self->_trackingSpeed = speed;
 }
 
 + (id)newDefaultProfile

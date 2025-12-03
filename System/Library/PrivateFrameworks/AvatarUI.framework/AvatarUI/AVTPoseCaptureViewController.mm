@@ -1,46 +1,46 @@
 @interface AVTPoseCaptureViewController
-- (AVTPoseCaptureViewController)initWithSelectedRecord:(id)a3 avtViewSessionProvider:(id)a4;
+- (AVTPoseCaptureViewController)initWithSelectedRecord:(id)record avtViewSessionProvider:(id)provider;
 - (AVTPoseCaptureViewControllerDelegate)delegate;
 - (UIView)avtViewContainer;
-- (int64_t)interfaceOrientationForFaceTrackingManager:(id)a3;
-- (void)beginAVTViewSessionWithDidBeginBlock:(id)a3;
-- (void)beginUsingAVTViewFromSession:(id)a3;
-- (void)configureAVTViewSession:(id)a3 withAvatarRecord:(id)a4 completionBlock:(id)a5;
+- (int64_t)interfaceOrientationForFaceTrackingManager:(id)manager;
+- (void)beginAVTViewSessionWithDidBeginBlock:(id)block;
+- (void)beginUsingAVTViewFromSession:(id)session;
+- (void)configureAVTViewSession:(id)session withAvatarRecord:(id)record completionBlock:(id)block;
 - (void)configureUserInfoLabel;
 - (void)createCaptureButtonIfNeeded;
 - (void)createDiscardButtonIfNeeded;
-- (void)didTapAvatarView:(id)a3;
-- (void)didTapCancel:(id)a3;
-- (void)didTapCaptureButton:(id)a3;
-- (void)didTapDone:(id)a3;
-- (void)setMode:(unint64_t)a3;
+- (void)didTapAvatarView:(id)view;
+- (void)didTapCancel:(id)cancel;
+- (void)didTapCaptureButton:(id)button;
+- (void)didTapDone:(id)done;
+- (void)setMode:(unint64_t)mode;
 - (void)switchToCaptureMode;
-- (void)switchToReviewMode:(id)a3;
+- (void)switchToReviewMode:(id)mode;
 - (void)updateAVTViewContainerFrame;
 - (void)updateHeaderHeightConstraint;
 - (void)updatePaddingConstant;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AVTPoseCaptureViewController
 
-- (AVTPoseCaptureViewController)initWithSelectedRecord:(id)a3 avtViewSessionProvider:(id)a4
+- (AVTPoseCaptureViewController)initWithSelectedRecord:(id)record avtViewSessionProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = AVTPoseCaptureViewController;
   v9 = [(AVTPoseCaptureViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_avatarRecord, a3);
-    objc_storeStrong(&v10->_avtViewSessionProvider, a4);
+    objc_storeStrong(&v9->_avatarRecord, record);
+    objc_storeStrong(&v10->_avtViewSessionProvider, provider);
   }
 
   return v10;
@@ -52,20 +52,20 @@
   v60.receiver = self;
   v60.super_class = AVTPoseCaptureViewController;
   [(AVTPoseCaptureViewController *)&v60 viewDidLoad];
-  v3 = [(AVTPoseCaptureViewController *)self backgroundColor];
-  v4 = [(AVTPoseCaptureViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  backgroundColor = [(AVTPoseCaptureViewController *)self backgroundColor];
+  view = [(AVTPoseCaptureViewController *)self view];
+  [view setBackgroundColor:backgroundColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
   headerView = self->_headerView;
   self->_headerView = v5;
 
   [(UIView *)self->_headerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(AVTPoseCaptureViewController *)self view];
-  [v7 addSubview:self->_headerView];
+  view2 = [(AVTPoseCaptureViewController *)self view];
+  [view2 addSubview:self->_headerView];
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)self->_headerView setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)self->_headerView setBackgroundColor:clearColor];
 
   v9 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v10 = [v9 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -76,59 +76,59 @@
   [(UIImageView *)self->_snapshotImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_snapshotImageView setHidden:1];
   [(UIImageView *)self->_snapshotImageView setAlpha:0.0];
-  v12 = [(AVTPoseCaptureViewController *)self view];
-  [v12 addSubview:self->_snapshotImageView];
+  view3 = [(AVTPoseCaptureViewController *)self view];
+  [view3 addSubview:self->_snapshotImageView];
 
   v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_didTapCancel_];
-  v14 = [(AVTPoseCaptureViewController *)self navigationItem];
+  navigationItem = [(AVTPoseCaptureViewController *)self navigationItem];
   v59 = v13;
-  [v14 setLeftBarButtonItem:v13];
+  [navigationItem setLeftBarButtonItem:v13];
 
   v15 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_didTapDone_];
   doneButton = self->_doneButton;
   self->_doneButton = v15;
 
   v17 = self->_doneButton;
-  v18 = [(AVTPoseCaptureViewController *)self navigationItem];
-  [v18 setRightBarButtonItem:v17];
+  navigationItem2 = [(AVTPoseCaptureViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v17];
 
   [(AVTPoseCaptureViewController *)self updateHeaderHeightConstraint];
   [(AVTPoseCaptureViewController *)self updatePaddingConstant];
-  v19 = [(UIView *)self->_headerView topAnchor];
-  v20 = [(AVTPoseCaptureViewController *)self view];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:{-[AVTPoseCaptureViewController topPadding](self, "topPadding")}];
+  topAnchor = [(UIView *)self->_headerView topAnchor];
+  view4 = [(AVTPoseCaptureViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:{-[AVTPoseCaptureViewController topPadding](self, "topPadding")}];
   [(AVTPoseCaptureViewController *)self setHeaderTopAnchor:v22];
 
-  v58 = [(AVTPoseCaptureViewController *)self headerTopAnchor];
-  v61[0] = v58;
-  v56 = [(UIView *)self->_headerView leadingAnchor];
-  v57 = [(AVTPoseCaptureViewController *)self view];
-  v55 = [v57 leadingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  headerTopAnchor = [(AVTPoseCaptureViewController *)self headerTopAnchor];
+  v61[0] = headerTopAnchor;
+  leadingAnchor = [(UIView *)self->_headerView leadingAnchor];
+  view5 = [(AVTPoseCaptureViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v61[1] = v54;
-  v52 = [(UIView *)self->_headerView trailingAnchor];
-  v53 = [(AVTPoseCaptureViewController *)self view];
-  v51 = [v53 trailingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  trailingAnchor = [(UIView *)self->_headerView trailingAnchor];
+  view6 = [(AVTPoseCaptureViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v50 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v61[2] = v50;
-  v49 = [(AVTPoseCaptureViewController *)self headerHeightConstraint];
-  v61[3] = v49;
-  v48 = [(UIImageView *)self->_snapshotImageView heightAnchor];
-  v47 = [(UIView *)self->_headerView heightAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  headerHeightConstraint = [(AVTPoseCaptureViewController *)self headerHeightConstraint];
+  v61[3] = headerHeightConstraint;
+  heightAnchor = [(UIImageView *)self->_snapshotImageView heightAnchor];
+  heightAnchor2 = [(UIView *)self->_headerView heightAnchor];
+  v46 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v61[4] = v46;
-  v45 = [(UIImageView *)self->_snapshotImageView widthAnchor];
-  v23 = [(UIView *)self->_headerView widthAnchor];
-  v24 = [v45 constraintEqualToAnchor:v23];
+  widthAnchor = [(UIImageView *)self->_snapshotImageView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_headerView widthAnchor];
+  v24 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v61[5] = v24;
-  v25 = [(UIImageView *)self->_snapshotImageView centerXAnchor];
-  v26 = [(UIView *)self->_headerView centerXAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerXAnchor = [(UIImageView *)self->_snapshotImageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_headerView centerXAnchor];
+  v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v61[6] = v27;
-  v28 = [(UIImageView *)self->_snapshotImageView centerYAnchor];
-  v29 = [(UIView *)self->_headerView centerYAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  centerYAnchor = [(UIImageView *)self->_snapshotImageView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_headerView centerYAnchor];
+  v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v61[7] = v30;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:8];
 
@@ -146,46 +146,46 @@
     [(AVTPoseCaptureViewController *)self setMode:0];
   }
 
-  v33 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v33 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v35 = v34;
-  v36 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v36 nativeScale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 nativeScale];
   v38 = v37;
 
   if (v35 != v38)
   {
     v39 = objc_alloc(MEMORY[0x1E69DD250]);
     v40 = objc_opt_class();
-    v41 = [(AVTPoseCaptureViewController *)self view];
-    [v41 bounds];
+    view7 = [(AVTPoseCaptureViewController *)self view];
+    [view7 bounds];
     [v40 borderMaskRectForContentRect:?];
     v42 = [v39 initWithFrame:?];
     borderMaskView = self->_borderMaskView;
     self->_borderMaskView = v42;
 
-    v44 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)self->_borderMaskView setBackgroundColor:v44];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)self->_borderMaskView setBackgroundColor:whiteColor];
 
     [(UIView *)self->_headerView setMaskView:self->_borderMaskView];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AVTPoseCaptureViewController;
-  [(AVTPoseCaptureViewController *)&v4 viewWillAppear:a3];
+  [(AVTPoseCaptureViewController *)&v4 viewWillAppear:appear];
   [(AVTPoseCaptureViewController *)self beginAVTViewSessionWithDidBeginBlock:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = AVTPoseCaptureViewController;
-  [(AVTPoseCaptureViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  [v4 tearDownWithCompletionHandler:0];
+  [(AVTPoseCaptureViewController *)&v5 viewWillDisappear:disappear];
+  avtViewSession = [(AVTPoseCaptureViewController *)self avtViewSession];
+  [avtViewSession tearDownWithCompletionHandler:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -205,21 +205,21 @@
   [(AVTPoseCaptureViewController *)self updateAVTViewContainerFrame];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = AVTPoseCaptureViewController;
-  v7 = a4;
-  [(AVTPoseCaptureViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(AVTPoseCaptureViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(AVTPoseCaptureViewController *)self updatePaddingConstant];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E7F3A9E0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -233,38 +233,38 @@ void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionC
 
 - (void)updateHeaderHeightConstraint
 {
-  v3 = [(AVTPoseCaptureViewController *)self view];
-  [v3 frame];
+  view = [(AVTPoseCaptureViewController *)self view];
+  [view frame];
   v5 = v4;
-  v6 = [(AVTPoseCaptureViewController *)self view];
-  [v6 frame];
+  view2 = [(AVTPoseCaptureViewController *)self view];
+  [view2 frame];
   v8 = v5 > v7;
 
   v9 = dbl_1BB4162C0[v8];
-  v10 = [(AVTPoseCaptureViewController *)self headerHeightConstraint];
+  headerHeightConstraint = [(AVTPoseCaptureViewController *)self headerHeightConstraint];
 
-  if (v10)
+  if (headerHeightConstraint)
   {
-    v12 = [(AVTPoseCaptureViewController *)self headerHeightConstraint];
-    [v12 setConstant:v9];
+    headerHeightConstraint2 = [(AVTPoseCaptureViewController *)self headerHeightConstraint];
+    [headerHeightConstraint2 setConstant:v9];
   }
 
   else
   {
-    v12 = [(UIView *)self->_headerView heightAnchor];
-    v11 = [v12 constraintEqualToConstant:v9];
+    headerHeightConstraint2 = [(UIView *)self->_headerView heightAnchor];
+    v11 = [headerHeightConstraint2 constraintEqualToConstant:v9];
     [(AVTPoseCaptureViewController *)self setHeaderHeightConstraint:v11];
   }
 }
 
 - (void)updatePaddingConstant
 {
-  v3 = [(AVTPoseCaptureViewController *)self view];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  view = [(AVTPoseCaptureViewController *)self view];
+  traitCollection = [view traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v6 = [(AVTPoseCaptureViewController *)self view];
-  [v6 frame];
+  view2 = [(AVTPoseCaptureViewController *)self view];
+  [view2 frame];
   v8 = v7;
 
   v9 = v8 * 0.08;
@@ -279,7 +279,7 @@ void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionC
     v10 = 20.0;
   }
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     v11 = 44.0;
   }
@@ -289,7 +289,7 @@ void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionC
     v11 = v9;
   }
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     v12 = 78.0;
   }
@@ -299,11 +299,11 @@ void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionC
     v12 = v10;
   }
 
-  v13 = [(AVTPoseCaptureViewController *)self view];
-  [v13 frame];
+  view3 = [(AVTPoseCaptureViewController *)self view];
+  [view3 frame];
   v15 = v14;
-  v16 = [(AVTPoseCaptureViewController *)self view];
-  [v16 frame];
+  view4 = [(AVTPoseCaptureViewController *)self view];
+  [view4 frame];
   v18 = v17;
 
   v19 = v15 <= v18;
@@ -329,52 +329,52 @@ void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionC
 
   [(AVTPoseCaptureViewController *)self setTopPadding:v21];
   [(AVTPoseCaptureViewController *)self setBottomPadding:v20];
-  v22 = [(AVTPoseCaptureViewController *)self topPadding];
-  v23 = [(AVTPoseCaptureViewController *)self view];
-  [v23 safeAreaInsets];
-  v25 = v24 + v22;
-  v26 = [(AVTPoseCaptureViewController *)self headerTopAnchor];
-  [v26 setConstant:v25];
+  topPadding = [(AVTPoseCaptureViewController *)self topPadding];
+  view5 = [(AVTPoseCaptureViewController *)self view];
+  [view5 safeAreaInsets];
+  v25 = v24 + topPadding;
+  headerTopAnchor = [(AVTPoseCaptureViewController *)self headerTopAnchor];
+  [headerTopAnchor setConstant:v25];
 
   v27 = [(AVTPoseCaptureViewController *)self];
-  v28 = [(AVTPoseCaptureViewController *)self captureButtonBottomAnchor];
-  [v28 setConstant:v27];
+  captureButtonBottomAnchor = [(AVTPoseCaptureViewController *)self captureButtonBottomAnchor];
+  [captureButtonBottomAnchor setConstant:v27];
 }
 
 - (void)updateAVTViewContainerFrame
 {
-  v3 = [(AVTPoseCaptureViewController *)self avtViewContainer];
-  v4 = [v3 superview];
-  v5 = [(AVTPoseCaptureViewController *)self headerView];
+  avtViewContainer = [(AVTPoseCaptureViewController *)self avtViewContainer];
+  superview = [avtViewContainer superview];
+  headerView = [(AVTPoseCaptureViewController *)self headerView];
 
-  if (v4 == v5)
+  if (superview == headerView)
   {
-    v15 = [(AVTPoseCaptureViewController *)self headerView];
-    [v15 bounds];
+    headerView2 = [(AVTPoseCaptureViewController *)self headerView];
+    [headerView2 bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(AVTPoseCaptureViewController *)self avtViewContainer];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    avtViewContainer2 = [(AVTPoseCaptureViewController *)self avtViewContainer];
+    [avtViewContainer2 setFrame:{v7, v9, v11, v13}];
   }
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode == a3)
+  if (self->_mode == mode)
   {
     return;
   }
 
-  self->_mode = a3;
-  switch(a3)
+  self->_mode = mode;
+  switch(mode)
   {
     case 2uLL:
       [(AVTPoseCaptureViewController *)self createCaptureButtonIfNeeded];
       [(AVTPoseCaptureViewController *)self createDiscardButtonIfNeeded];
-      v4 = [(AVTPoseCaptureViewController *)self discardButton];
-      v5 = v4;
+      discardButton = [(AVTPoseCaptureViewController *)self discardButton];
+      v5 = discardButton;
       v6 = 0;
       goto LABEL_9;
     case 1uLL:
@@ -389,14 +389,14 @@ void __83__AVTPoseCaptureViewController_viewWillTransitionToSize_withTransitionC
       objc_destroyWeak(&location);
       return;
     case 0uLL:
-      v4 = [(AVTPoseCaptureViewController *)self discardButton];
-      v5 = v4;
+      discardButton = [(AVTPoseCaptureViewController *)self discardButton];
+      v5 = discardButton;
       v6 = 1;
 LABEL_9:
-      [v4 setHidden:v6];
+      [discardButton setHidden:v6];
 
-      v7 = [(AVTPoseCaptureViewController *)self captureButton];
-      [v7 setHidden:1];
+      captureButton = [(AVTPoseCaptureViewController *)self captureButton];
+      [captureButton setHidden:1];
 
       break;
   }
@@ -416,34 +416,34 @@ void __40__AVTPoseCaptureViewController_setMode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)beginAVTViewSessionWithDidBeginBlock:(id)a3
+- (void)beginAVTViewSessionWithDidBeginBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  v6 = [v5 isActive];
+  blockCopy = block;
+  avtViewSession = [(AVTPoseCaptureViewController *)self avtViewSession];
+  isActive = [avtViewSession isActive];
 
-  if (v6)
+  if (isActive)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v7 = [(AVTPoseCaptureViewController *)self avtViewSession];
-      v4[2](v4, v7);
+      avtViewSession2 = [(AVTPoseCaptureViewController *)self avtViewSession];
+      blockCopy[2](blockCopy, avtViewSession2);
     }
   }
 
   else
   {
-    v8 = [(AVTPoseCaptureViewController *)self postSessionDidBecomeActiveHandler];
+    postSessionDidBecomeActiveHandler = [(AVTPoseCaptureViewController *)self postSessionDidBecomeActiveHandler];
 
-    if (v8)
+    if (postSessionDidBecomeActiveHandler)
     {
-      v9 = [(AVTPoseCaptureViewController *)self postSessionDidBecomeActiveHandler];
-      v9[2](v9, 0);
+      postSessionDidBecomeActiveHandler2 = [(AVTPoseCaptureViewController *)self postSessionDidBecomeActiveHandler];
+      postSessionDidBecomeActiveHandler2[2](postSessionDidBecomeActiveHandler2, 0);
     }
 
-    [(AVTPoseCaptureViewController *)self setPostSessionDidBecomeActiveHandler:v4];
+    [(AVTPoseCaptureViewController *)self setPostSessionDidBecomeActiveHandler:blockCopy];
     objc_initWeak(&location, self);
-    v10 = [(AVTPoseCaptureViewController *)self avtViewSessionProvider];
+    avtViewSessionProvider = [(AVTPoseCaptureViewController *)self avtViewSessionProvider];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __69__AVTPoseCaptureViewController_beginAVTViewSessionWithDidBeginBlock___block_invoke;
@@ -454,7 +454,7 @@ void __40__AVTPoseCaptureViewController_setMode___block_invoke(uint64_t a1)
     v12[2] = __69__AVTPoseCaptureViewController_beginAVTViewSessionWithDidBeginBlock___block_invoke_2;
     v12[3] = &unk_1E7F3AA30;
     objc_copyWeak(&v13, &location);
-    v11 = [v10 sessionWithDidBecomeActiveHandler:v14 tearDownHandler:v12];
+    v11 = [avtViewSessionProvider sessionWithDidBecomeActiveHandler:v14 tearDownHandler:v12];
     [(AVTPoseCaptureViewController *)self setAvtViewSession:v11];
 
     objc_destroyWeak(&v13);
@@ -518,29 +518,29 @@ void __69__AVTPoseCaptureViewController_beginAVTViewSessionWithDidBeginBlock___b
   v5[2](v5);
 }
 
-- (void)beginUsingAVTViewFromSession:(id)a3
+- (void)beginUsingAVTViewFromSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 avtViewContainer];
-  [(AVTPoseCaptureViewController *)self setAvtViewContainer:v5];
+  sessionCopy = session;
+  avtViewContainer = [sessionCopy avtViewContainer];
+  [(AVTPoseCaptureViewController *)self setAvtViewContainer:avtViewContainer];
 
-  v6 = [(AVTPoseCaptureViewController *)self avtViewContainer];
-  [v6 setAlpha:1.0];
+  avtViewContainer2 = [(AVTPoseCaptureViewController *)self avtViewContainer];
+  [avtViewContainer2 setAlpha:1.0];
 
-  v7 = [(AVTPoseCaptureViewController *)self headerView];
-  v8 = [(AVTPoseCaptureViewController *)self avtViewContainer];
-  [v7 addSubview:v8];
+  headerView = [(AVTPoseCaptureViewController *)self headerView];
+  avtViewContainer3 = [(AVTPoseCaptureViewController *)self avtViewContainer];
+  [headerView addSubview:avtViewContainer3];
 
   [(AVTPoseCaptureViewController *)self updateAVTViewContainerFrame];
-  v9 = [(AVTPoseCaptureViewController *)self avatarRecord];
+  avatarRecord = [(AVTPoseCaptureViewController *)self avatarRecord];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_invoke;
   v11[3] = &unk_1E7F3AA58;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [(AVTPoseCaptureViewController *)self configureAVTViewSession:v10 withAvatarRecord:v9 completionBlock:v11];
+  v12 = sessionCopy;
+  v10 = sessionCopy;
+  [(AVTPoseCaptureViewController *)self configureAVTViewSession:v10 withAvatarRecord:avatarRecord completionBlock:v11];
 }
 
 void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_invoke(uint64_t a1)
@@ -570,33 +570,33 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
   [v12 setNeedsLayout];
 }
 
-- (void)configureAVTViewSession:(id)a3 withAvatarRecord:(id)a4 completionBlock:(id)a5
+- (void)configureAVTViewSession:(id)session withAvatarRecord:(id)record completionBlock:(id)block
 {
-  v19 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v19 avtView];
-  [v10 updateInterfaceOrientation];
+  sessionCopy = session;
+  blockCopy = block;
+  recordCopy = record;
+  avtView = [sessionCopy avtView];
+  [avtView updateInterfaceOrientation];
 
   v11 = AVTUIShowTrackingLostReticle_once();
-  v12 = [v19 avtView];
-  [v12 setEnableReticle:v11];
+  avtView2 = [sessionCopy avtView];
+  [avtView2 setEnableReticle:v11];
 
   allowFacetracking = self->_allowFacetracking;
-  v14 = [v19 avtView];
-  [v14 setEnableFaceTracking:allowFacetracking];
+  avtView3 = [sessionCopy avtView];
+  [avtView3 setEnableFaceTracking:allowFacetracking];
 
-  v15 = [(AVTPoseCaptureViewController *)self backgroundColor];
+  backgroundColor = [(AVTPoseCaptureViewController *)self backgroundColor];
 
-  if (v15)
+  if (backgroundColor)
   {
-    v16 = [(AVTPoseCaptureViewController *)self backgroundColor];
-    v17 = [v19 avtView];
-    [v17 setBackgroundColor:v16];
+    backgroundColor2 = [(AVTPoseCaptureViewController *)self backgroundColor];
+    avtView4 = [sessionCopy avtView];
+    [avtView4 setBackgroundColor:backgroundColor2];
   }
 
-  v18 = [v19 avtViewUpdater];
-  [v18 setAvatarRecord:v9 completionHandler:v8];
+  avtViewUpdater = [sessionCopy avtViewUpdater];
+  [avtViewUpdater setAvatarRecord:recordCopy completionHandler:blockCopy];
 }
 
 - (void)configureUserInfoLabel
@@ -604,31 +604,31 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
   v21[3] = *MEMORY[0x1E69E9840];
   if (![(AVTPoseCaptureViewController *)self shouldHideUserInfoView]&& self->_allowFacetracking)
   {
-    v3 = [(AVTPoseCaptureViewController *)self avtViewSessionProvider];
-    v4 = [v3 faceTrackingManager];
-    v5 = [v4 userInfoView];
+    avtViewSessionProvider = [(AVTPoseCaptureViewController *)self avtViewSessionProvider];
+    faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+    userInfoView = [faceTrackingManager userInfoView];
 
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(AVTPoseCaptureViewController *)self backgroundColor];
-    [v5 setContainerBackgroundColor:v6];
+    [userInfoView setTranslatesAutoresizingMaskIntoConstraints:0];
+    backgroundColor = [(AVTPoseCaptureViewController *)self backgroundColor];
+    [userInfoView setContainerBackgroundColor:backgroundColor];
 
-    v7 = [(AVTPoseCaptureViewController *)self headerView];
-    [v7 addSubview:v5];
+    headerView = [(AVTPoseCaptureViewController *)self headerView];
+    [headerView addSubview:userInfoView];
 
-    v19 = [v5 leadingAnchor];
-    v20 = [(AVTPoseCaptureViewController *)self headerView];
-    v18 = [v20 leadingAnchor];
-    v17 = [v19 constraintEqualToAnchor:v18];
+    leadingAnchor = [userInfoView leadingAnchor];
+    headerView2 = [(AVTPoseCaptureViewController *)self headerView];
+    leadingAnchor2 = [headerView2 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v21[0] = v17;
-    v8 = [v5 trailingAnchor];
-    v9 = [(AVTPoseCaptureViewController *)self headerView];
-    v10 = [v9 trailingAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    trailingAnchor = [userInfoView trailingAnchor];
+    headerView3 = [(AVTPoseCaptureViewController *)self headerView];
+    trailingAnchor2 = [headerView3 trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v21[1] = v11;
-    v12 = [v5 bottomAnchor];
-    v13 = [(AVTPoseCaptureViewController *)self headerView];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [userInfoView bottomAnchor];
+    headerView4 = [(AVTPoseCaptureViewController *)self headerView];
+    bottomAnchor2 = [headerView4 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v21[2] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:3];
 
@@ -636,71 +636,71 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
   }
 }
 
-- (void)didTapAvatarView:(id)a3
+- (void)didTapAvatarView:(id)view
 {
-  v4 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  v5 = [v4 isActive];
+  avtViewSession = [(AVTPoseCaptureViewController *)self avtViewSession];
+  isActive = [avtViewSession isActive];
 
-  if (v5)
+  if (isActive)
   {
-    v7 = [(AVTPoseCaptureViewController *)self avtViewSessionProvider];
-    v6 = [v7 faceTrackingManager];
-    [v6 resumeFaceTrackingIfNeededAnimated:1];
+    avtViewSessionProvider = [(AVTPoseCaptureViewController *)self avtViewSessionProvider];
+    faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+    [faceTrackingManager resumeFaceTrackingIfNeededAnimated:1];
   }
 }
 
 - (void)createCaptureButtonIfNeeded
 {
   v32[4] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTPoseCaptureViewController *)self captureButton];
+  captureButton = [(AVTPoseCaptureViewController *)self captureButton];
 
-  if (!v3)
+  if (!captureButton)
   {
     v4 = objc_alloc_init(AVTRecordingButton);
     [(AVTPoseCaptureViewController *)self setCaptureButton:v4];
 
-    v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v6 = [(AVTPoseCaptureViewController *)self captureButton];
-    [v6 setCenterCircleColor:v5];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    captureButton2 = [(AVTPoseCaptureViewController *)self captureButton];
+    [captureButton2 setCenterCircleColor:systemBlueColor];
 
-    v7 = [(AVTPoseCaptureViewController *)self captureButton];
-    [v7 setIgnoresLongPress:1];
+    captureButton3 = [(AVTPoseCaptureViewController *)self captureButton];
+    [captureButton3 setIgnoresLongPress:1];
 
-    v8 = [(AVTPoseCaptureViewController *)self captureButton];
-    [v8 addTarget:self action:sel_didTapCaptureButton_ forControlEvents:64];
+    captureButton4 = [(AVTPoseCaptureViewController *)self captureButton];
+    [captureButton4 addTarget:self action:sel_didTapCaptureButton_ forControlEvents:64];
 
-    v9 = [(AVTPoseCaptureViewController *)self captureButton];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    captureButton5 = [(AVTPoseCaptureViewController *)self captureButton];
+    [captureButton5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(AVTPoseCaptureViewController *)self view];
-    v11 = [(AVTPoseCaptureViewController *)self captureButton];
-    [v10 addSubview:v11];
+    view = [(AVTPoseCaptureViewController *)self view];
+    captureButton6 = [(AVTPoseCaptureViewController *)self captureButton];
+    [view addSubview:captureButton6];
 
-    v12 = [(AVTPoseCaptureViewController *)self captureButton];
-    v13 = [v12 bottomAnchor];
-    v14 = [(AVTPoseCaptureViewController *)self view];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15 constant:{--[AVTPoseCaptureViewController bottomPadding](self, "bottomPadding")}];
+    captureButton7 = [(AVTPoseCaptureViewController *)self captureButton];
+    bottomAnchor = [captureButton7 bottomAnchor];
+    view2 = [(AVTPoseCaptureViewController *)self view];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:{--[AVTPoseCaptureViewController bottomPadding](self, "bottomPadding")}];
     [(AVTPoseCaptureViewController *)self setCaptureButtonBottomAnchor:v16];
 
-    v31 = [(AVTPoseCaptureViewController *)self captureButton];
-    v30 = [v31 widthAnchor];
-    v29 = [v30 constraintEqualToConstant:79.0];
+    captureButton8 = [(AVTPoseCaptureViewController *)self captureButton];
+    widthAnchor = [captureButton8 widthAnchor];
+    v29 = [widthAnchor constraintEqualToConstant:79.0];
     v32[0] = v29;
-    v28 = [(AVTPoseCaptureViewController *)self captureButton];
-    v27 = [v28 heightAnchor];
-    v17 = [(AVTPoseCaptureViewController *)self captureButton];
-    v18 = [v17 widthAnchor];
-    v19 = [v27 constraintEqualToAnchor:v18];
+    captureButton9 = [(AVTPoseCaptureViewController *)self captureButton];
+    heightAnchor = [captureButton9 heightAnchor];
+    captureButton10 = [(AVTPoseCaptureViewController *)self captureButton];
+    widthAnchor2 = [captureButton10 widthAnchor];
+    v19 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v32[1] = v19;
-    v20 = [(AVTPoseCaptureViewController *)self captureButton];
-    v21 = [v20 centerXAnchor];
-    v22 = [(AVTPoseCaptureViewController *)self view];
-    v23 = [v22 centerXAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    captureButton11 = [(AVTPoseCaptureViewController *)self captureButton];
+    centerXAnchor = [captureButton11 centerXAnchor];
+    view3 = [(AVTPoseCaptureViewController *)self view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v32[2] = v24;
-    v25 = [(AVTPoseCaptureViewController *)self captureButtonBottomAnchor];
-    v32[3] = v25;
+    captureButtonBottomAnchor = [(AVTPoseCaptureViewController *)self captureButtonBottomAnchor];
+    v32[3] = captureButtonBottomAnchor;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v26];
@@ -710,53 +710,53 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
 - (void)createDiscardButtonIfNeeded
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v3 = [(AVTPoseCaptureViewController *)self discardButton];
+  discardButton = [(AVTPoseCaptureViewController *)self discardButton];
 
-  if (!v3)
+  if (!discardButton)
   {
     v4 = [AVTCircularButton alloc];
     v5 = [(AVTCircularButton *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(AVTPoseCaptureViewController *)self setDiscardButton:v5];
 
-    v6 = [MEMORY[0x1E69DC888] redColor];
-    v7 = [(AVTPoseCaptureViewController *)self discardButton];
-    [v7 setTintColor:v6];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    discardButton2 = [(AVTPoseCaptureViewController *)self discardButton];
+    [discardButton2 setTintColor:redColor];
 
     v32 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:5 weight:38.0];
-    v8 = [(AVTPoseCaptureViewController *)self discardButton];
-    [v8 setSymbolImageWithName:@"trash.fill" configuration:v32];
+    discardButton3 = [(AVTPoseCaptureViewController *)self discardButton];
+    [discardButton3 setSymbolImageWithName:@"trash.fill" configuration:v32];
 
-    v9 = [(AVTPoseCaptureViewController *)self discardButton];
-    [v9 addTarget:self action:sel_didTapDiscardButton_ forControlEvents:64];
+    discardButton4 = [(AVTPoseCaptureViewController *)self discardButton];
+    [discardButton4 addTarget:self action:sel_didTapDiscardButton_ forControlEvents:64];
 
-    v10 = [(AVTPoseCaptureViewController *)self discardButton];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    discardButton5 = [(AVTPoseCaptureViewController *)self discardButton];
+    [discardButton5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v11 = [(AVTPoseCaptureViewController *)self view];
-    v12 = [(AVTPoseCaptureViewController *)self discardButton];
-    [v11 addSubview:v12];
+    view = [(AVTPoseCaptureViewController *)self view];
+    discardButton6 = [(AVTPoseCaptureViewController *)self discardButton];
+    [view addSubview:discardButton6];
 
-    v31 = [(AVTPoseCaptureViewController *)self discardButton];
-    v30 = [v31 widthAnchor];
-    v29 = [v30 constraintEqualToConstant:69.0];
+    discardButton7 = [(AVTPoseCaptureViewController *)self discardButton];
+    widthAnchor = [discardButton7 widthAnchor];
+    v29 = [widthAnchor constraintEqualToConstant:69.0];
     v33[0] = v29;
-    v28 = [(AVTPoseCaptureViewController *)self discardButton];
-    v26 = [v28 heightAnchor];
-    v27 = [(AVTPoseCaptureViewController *)self discardButton];
-    v25 = [v27 widthAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    discardButton8 = [(AVTPoseCaptureViewController *)self discardButton];
+    heightAnchor = [discardButton8 heightAnchor];
+    discardButton9 = [(AVTPoseCaptureViewController *)self discardButton];
+    widthAnchor2 = [discardButton9 widthAnchor];
+    v24 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v33[1] = v24;
-    v23 = [(AVTPoseCaptureViewController *)self discardButton];
-    v13 = [v23 centerXAnchor];
-    v14 = [(AVTPoseCaptureViewController *)self captureButton];
-    v15 = [v14 centerXAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    discardButton10 = [(AVTPoseCaptureViewController *)self discardButton];
+    centerXAnchor = [discardButton10 centerXAnchor];
+    captureButton = [(AVTPoseCaptureViewController *)self captureButton];
+    centerXAnchor2 = [captureButton centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v33[2] = v16;
-    v17 = [(AVTPoseCaptureViewController *)self discardButton];
-    v18 = [v17 centerYAnchor];
-    v19 = [(AVTPoseCaptureViewController *)self captureButton];
-    v20 = [v19 centerYAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    discardButton11 = [(AVTPoseCaptureViewController *)self discardButton];
+    centerYAnchor = [discardButton11 centerYAnchor];
+    captureButton2 = [(AVTPoseCaptureViewController *)self captureButton];
+    centerYAnchor2 = [captureButton2 centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v33[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
 
@@ -764,27 +764,27 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
   }
 }
 
-- (void)didTapCaptureButton:(id)a3
+- (void)didTapCaptureButton:(id)button
 {
   v4 = MEMORY[0x1E698E2D8];
-  v5 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  v6 = [v5 avtView];
-  v7 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  v8 = [v7 avtView];
-  v9 = [v4 snapshotAVTView:v6 matchingViewSize:v8 highQuality:1 logger:0];
+  avtViewSession = [(AVTPoseCaptureViewController *)self avtViewSession];
+  avtView = [avtViewSession avtView];
+  avtViewSession2 = [(AVTPoseCaptureViewController *)self avtViewSession];
+  avtView2 = [avtViewSession2 avtView];
+  v9 = [v4 snapshotAVTView:avtView matchingViewSize:avtView2 highQuality:1 logger:0];
 
-  v10 = [(AVTPoseCaptureViewController *)self delegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  delegate = [(AVTPoseCaptureViewController *)self delegate];
+  LOBYTE(avtView) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (avtView)
   {
-    v11 = [(AVTPoseCaptureViewController *)self delegate];
+    delegate2 = [(AVTPoseCaptureViewController *)self delegate];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __52__AVTPoseCaptureViewController_didTapCaptureButton___block_invoke;
     v12[3] = &unk_1E7F3A658;
     v12[4] = self;
-    [v11 poseCaptureViewController:self willCaptureAvatarImage:v9 completion:v12];
+    [delegate2 poseCaptureViewController:self willCaptureAvatarImage:v9 completion:v12];
   }
 
   else
@@ -793,15 +793,15 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
   }
 }
 
-- (void)switchToReviewMode:(id)a3
+- (void)switchToReviewMode:(id)mode
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVTPoseCaptureViewController *)self snapshotImageView];
-  [v5 setImage:v4];
+  modeCopy = mode;
+  snapshotImageView = [(AVTPoseCaptureViewController *)self snapshotImageView];
+  [snapshotImageView setImage:modeCopy];
 
-  v6 = [(AVTPoseCaptureViewController *)self snapshotImageView];
-  [v6 setHidden:0];
+  snapshotImageView2 = [(AVTPoseCaptureViewController *)self snapshotImageView];
+  [snapshotImageView2 setHidden:0];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -814,20 +814,20 @@ void __61__AVTPoseCaptureViewController_beginUsingAVTViewFromSession___block_inv
   v19[3] = &unk_1E7F3AA80;
   v19[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:v20 animations:v19 completion:0.4];
-  v7 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  v8 = [v7 avtView];
-  v9 = [v8 avatar];
-  v10 = [v9 physicsState];
+  avtViewSession = [(AVTPoseCaptureViewController *)self avtViewSession];
+  avtView = [avtViewSession avtView];
+  avatar = [avtView avatar];
+  physicsState = [avatar physicsState];
 
   v21 = @"memoji";
-  v22[0] = v10;
+  v22[0] = physicsState;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v12 = objc_alloc(MEMORY[0x1E698E280]);
-  v13 = [(AVTPoseCaptureViewController *)self avtViewSession];
-  v14 = [v13 avtView];
-  v15 = [v14 avatar];
-  v16 = [v15 pose];
-  v17 = [v12 initWithPose:v16 physicsStates:v11];
+  avtViewSession2 = [(AVTPoseCaptureViewController *)self avtViewSession];
+  avtView2 = [avtViewSession2 avtView];
+  avatar2 = [avtView2 avatar];
+  pose = [avatar2 pose];
+  v17 = [v12 initWithPose:pose physicsStates:v11];
 
   v18 = [objc_alloc(MEMORY[0x1E698E2C0]) initWithName:@"custom_capture" pose:v17 props:0 shaders:0 camera:0 options:0];
   [(AVTPoseCaptureViewController *)self setAdHocConfiguration:v18];
@@ -858,8 +858,8 @@ void __51__AVTPoseCaptureViewController_switchToReviewMode___block_invoke_2(uint
 {
   [(AVTPoseCaptureViewController *)self setMode:1];
   [(UIBarButtonItem *)self->_doneButton setEnabled:0];
-  v3 = [(AVTPoseCaptureViewController *)self headerView];
-  [v3 setHidden:0];
+  headerView = [(AVTPoseCaptureViewController *)self headerView];
+  [headerView setHidden:0];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -895,27 +895,27 @@ void __51__AVTPoseCaptureViewController_switchToCaptureMode__block_invoke_2(uint
   }
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
-  v4 = [(AVTPoseCaptureViewController *)self delegate];
-  [v4 poseCaptureViewControllerDidCancel:self];
+  delegate = [(AVTPoseCaptureViewController *)self delegate];
+  [delegate poseCaptureViewControllerDidCancel:self];
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
-  v6 = [(AVTPoseCaptureViewController *)self delegate];
-  v4 = [(AVTPoseCaptureViewController *)self adHocConfiguration];
-  v5 = [(AVTPoseCaptureViewController *)self avatarRecord];
-  [v6 poseCaptureViewController:self didCapturePoseWithConfiguration:v4 avatar:v5];
+  delegate = [(AVTPoseCaptureViewController *)self delegate];
+  adHocConfiguration = [(AVTPoseCaptureViewController *)self adHocConfiguration];
+  avatarRecord = [(AVTPoseCaptureViewController *)self avatarRecord];
+  [delegate poseCaptureViewController:self didCapturePoseWithConfiguration:adHocConfiguration avatar:avatarRecord];
 }
 
-- (int64_t)interfaceOrientationForFaceTrackingManager:(id)a3
+- (int64_t)interfaceOrientationForFaceTrackingManager:(id)manager
 {
-  v3 = [(AVTPoseCaptureViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 _windowInterfaceOrientation];
+  view = [(AVTPoseCaptureViewController *)self view];
+  window = [view window];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  return v5;
+  return _windowInterfaceOrientation;
 }
 
 - (AVTPoseCaptureViewControllerDelegate)delegate

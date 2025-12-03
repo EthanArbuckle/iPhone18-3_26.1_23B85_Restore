@@ -1,15 +1,15 @@
 @interface AMSUIWebMetricsEvent
-- (AMSUIWebMetricsEvent)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebMetricsEvent)initWithJSObject:(id)object context:(id)context;
 @end
 
 @implementation AMSUIWebMetricsEvent
 
-- (AMSUIWebMetricsEvent)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebMetricsEvent)initWithJSObject:(id)object context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"topic"];
+  objectCopy = object;
+  contextCopy = context;
+  v8 = [objectCopy objectForKeyedSubscript:@"topic"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -28,14 +28,14 @@
     v10 = [(AMSUIWebMetricsEvent *)&v30 initWithTopic:v9];
     if (v10)
     {
-      v11 = [v6 objectForKeyedSubscript:@"account"];
-      v12 = [v7 iTunesAccountFromJSAccount:v11];
+      v11 = [objectCopy objectForKeyedSubscript:@"account"];
+      v12 = [contextCopy iTunesAccountFromJSAccount:v11];
       [(AMSUIWebMetricsEvent *)v10 setAccount:v12];
 
-      v13 = [v6 objectForKeyedSubscript:@"checkDiagnosticsAndUsageSetting"];
+      v13 = [objectCopy objectForKeyedSubscript:@"checkDiagnosticsAndUsageSetting"];
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v6 objectForKeyedSubscript:@"checkDiagnosticsAndUsageSetting"];
+        v14 = [objectCopy objectForKeyedSubscript:@"checkDiagnosticsAndUsageSetting"];
         -[AMSUIWebMetricsEvent setCheckDiagnosticsAndUsageSetting:](v10, "setCheckDiagnosticsAndUsageSetting:", [v14 BOOLValue]);
       }
 
@@ -44,10 +44,10 @@
         [(AMSUIWebMetricsEvent *)v10 setCheckDiagnosticsAndUsageSetting:0];
       }
 
-      v20 = [v6 objectForKeyedSubscript:@"anonymous"];
+      v20 = [objectCopy objectForKeyedSubscript:@"anonymous"];
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v6 objectForKeyedSubscript:@"anonymous"];
+        v21 = [objectCopy objectForKeyedSubscript:@"anonymous"];
         -[AMSUIWebMetricsEvent setAnonymous:](v10, "setAnonymous:", [v21 BOOLValue]);
       }
 
@@ -56,10 +56,10 @@
         [(AMSUIWebMetricsEvent *)v10 setAnonymous:0];
       }
 
-      v22 = [v6 objectForKeyedSubscript:@"suppressEngagement"];
+      v22 = [objectCopy objectForKeyedSubscript:@"suppressEngagement"];
       if (objc_opt_respondsToSelector())
       {
-        v23 = [v6 objectForKeyedSubscript:@"suppressEngagement"];
+        v23 = [objectCopy objectForKeyedSubscript:@"suppressEngagement"];
         -[AMSUIWebMetricsEvent setSuppressEngagement:](v10, "setSuppressEngagement:", [v23 BOOLValue]);
       }
 
@@ -68,15 +68,15 @@
         [(AMSUIWebMetricsEvent *)v10 setSuppressEngagement:0];
       }
 
-      v24 = [v7 metricsOverlay];
+      metricsOverlay = [contextCopy metricsOverlay];
 
-      if (v24)
+      if (metricsOverlay)
       {
-        v25 = [v7 metricsOverlay];
-        [(AMSUIWebMetricsEvent *)v10 addPropertiesWithDictionary:v25];
+        metricsOverlay2 = [contextCopy metricsOverlay];
+        [(AMSUIWebMetricsEvent *)v10 addPropertiesWithDictionary:metricsOverlay2];
       }
 
-      v26 = [v6 objectForKeyedSubscript:@"fields"];
+      v26 = [objectCopy objectForKeyedSubscript:@"fields"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -95,19 +95,19 @@
     }
 
     self = v10;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v15)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v15 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -116,15 +116,15 @@
       v33 = 2114;
       v34 = v18;
       v35 = 2112;
-      v36 = v6;
-      _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Metrics event does not contain topic: %@", buf, 0x20u);
+      v36 = objectCopy;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Metrics event does not contain topic: %@", buf, 0x20u);
     }
 
-    v19 = 0;
+    selfCopy = 0;
   }
 
   v28 = *MEMORY[0x1E69E9840];
-  return v19;
+  return selfCopy;
 }
 
 @end

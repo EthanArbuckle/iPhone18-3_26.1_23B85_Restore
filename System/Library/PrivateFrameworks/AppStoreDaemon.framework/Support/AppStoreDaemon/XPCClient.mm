@@ -1,23 +1,23 @@
 @interface XPCClient
-+ (id)clientIDForConnection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (XPCClient)initWithApplicationID:(id)a3;
-- (XPCClient)initWithConnection:(id)a3;
++ (id)clientIDForConnection:(id)connection;
+- (BOOL)isEqual:(id)equal;
+- (XPCClient)initWithApplicationID:(id)d;
+- (XPCClient)initWithConnection:(id)connection;
 - (id)description;
 @end
 
 @implementation XPCClient
 
-- (XPCClient)initWithApplicationID:(id)a3
+- (XPCClient)initWithApplicationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = XPCClient;
   v5 = [(XPCClient *)&v16 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+    v7 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
     v8 = v7;
     if (v7)
     {
@@ -37,7 +37,7 @@
     objc_autoreleasePoolPop(v6);
     if (!v5->_clientID)
     {
-      v12 = [v4 copy];
+      v12 = [dCopy copy];
       clientID = v5->_clientID;
       v5->_clientID = v12;
 
@@ -51,7 +51,7 @@
   return v5;
 }
 
-- (XPCClient)initWithConnection:(id)a3
+- (XPCClient)initWithConnection:(id)connection
 {
   v3 = __chkstk_darwin(self);
   v5 = v4;
@@ -114,9 +114,9 @@ LABEL_16:
         goto LABEL_15;
       }
 
-      v16 = [(__CFString *)v9 lastPathComponent];
+      lastPathComponent = [(__CFString *)v9 lastPathComponent];
       clientID = v6->_clientID;
-      v6->_clientID = v16;
+      v6->_clientID = lastPathComponent;
 
       clientVersion = v6->_clientVersion;
       v6->_clientVersion = @"1.0";
@@ -131,14 +131,14 @@ LABEL_17:
   return v6;
 }
 
-+ (id)clientIDForConnection:(id)a3
++ (id)clientIDForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[XPCClient alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[XPCClient alloc] initWithConnection:connectionCopy];
 
-  v5 = [(XPCClient *)v4 clientID];
+  clientID = [(XPCClient *)v4 clientID];
 
-  return v5;
+  return clientID;
 }
 
 - (id)description
@@ -151,15 +151,15 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     clientID = self->_clientID;
-    v8 = [v4 clientID];
-    v6 = [(NSString *)clientID isEqual:v8];
+    clientID = [equalCopy clientID];
+    v6 = [(NSString *)clientID isEqual:clientID];
   }
 
   else

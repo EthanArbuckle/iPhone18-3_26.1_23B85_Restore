@@ -1,14 +1,14 @@
 @interface ASCMetrics
 + (ASCMetrics)sharedMetrics;
-- (ASCMetrics)initWithConnection:(id)a3;
-- (id)processMetricsData:(id)a3 pageFields:(id)a4 activity:(id)a5;
-- (id)processViewMetrics:(id)a3 atInvocationPoint:(id)a4 withActivity:(id)a5;
-- (id)processViewRenderWithPredicate:(id)a3;
-- (id)recordCampaignToken:(id)a3 providerToken:(id)a4 withLockup:(id)a5;
-- (id)recordQToken:(id)a3 campaignToken:(id)a4 advertisementID:(id)a5 withLockup:(id)a6;
-- (void)daemonConnectionWasLost:(id)a3;
+- (ASCMetrics)initWithConnection:(id)connection;
+- (id)processMetricsData:(id)data pageFields:(id)fields activity:(id)activity;
+- (id)processViewMetrics:(id)metrics atInvocationPoint:(id)point withActivity:(id)activity;
+- (id)processViewRenderWithPredicate:(id)predicate;
+- (id)recordCampaignToken:(id)token providerToken:(id)providerToken withLockup:(id)lockup;
+- (id)recordQToken:(id)token campaignToken:(id)campaignToken advertisementID:(id)d withLockup:(id)lockup;
+- (void)daemonConnectionWasLost:(id)lost;
 - (void)dealloc;
-- (void)logErrorMessage:(id)a3;
+- (void)logErrorMessage:(id)message;
 @end
 
 @implementation ASCMetrics
@@ -34,9 +34,9 @@ void __27__ASCMetrics_sharedMetrics__block_invoke()
   sharedMetrics_sharedMetrics = v1;
 }
 
-- (ASCMetrics)initWithConnection:(id)a3
+- (ASCMetrics)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   +[ASCEligibility assertCurrentProcessEligibility];
   v13.receiver = self;
   v13.super_class = ASCMetrics;
@@ -44,16 +44,16 @@ void __27__ASCMetrics_sharedMetrics__block_invoke()
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_alloc_init(ASCPendingPromises);
     pendingProcesses = v7->_pendingProcesses;
     v7->_pendingProcesses = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CB8 object:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CB8 object:connectionCopy];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CD8 object:v5];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_daemonConnectionWasLost_ name:0x2827A4CD8 object:connectionCopy];
   }
 
   return v7;
@@ -61,15 +61,15 @@ void __27__ASCMetrics_sharedMetrics__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCMetrics;
   [(ASCMetrics *)&v4 dealloc];
 }
 
-- (void)daemonConnectionWasLost:(id)a3
+- (void)daemonConnectionWasLost:(id)lost
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CCA9B8]);
@@ -78,21 +78,21 @@ void __27__ASCMetrics_sharedMetrics__block_invoke()
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 initWithDomain:0x2827A05D8 code:1 userInfo:v5];
 
-  v7 = [(ASCMetrics *)self pendingProcesses];
-  [v7 finishAllWithError:v6];
+  pendingProcesses = [(ASCMetrics *)self pendingProcesses];
+  [pendingProcesses finishAllWithError:v6];
 }
 
-- (id)processMetricsData:(id)a3 pageFields:(id)a4 activity:(id)a5
+- (id)processMetricsData:(id)data pageFields:(id)fields activity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ASCMetrics *)self pendingProcesses];
-  objc_initWeak(&location, v11);
+  dataCopy = data;
+  fieldsCopy = fields;
+  activityCopy = activity;
+  pendingProcesses = [(ASCMetrics *)self pendingProcesses];
+  objc_initWeak(&location, pendingProcesses);
 
   v12 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v13 = [(ASCMetrics *)self connection];
-  v14 = [v13 metricsService];
+  connection = [(ASCMetrics *)self connection];
+  metricsService = [connection metricsService];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -101,20 +101,20 @@ void __27__ASCMetrics_sharedMetrics__block_invoke()
   objc_copyWeak(&v30, &location);
   v15 = v12;
   v26 = v15;
-  v16 = v8;
+  v16 = dataCopy;
   v27 = v16;
-  v17 = v9;
+  v17 = fieldsCopy;
   v28 = v17;
-  v18 = v10;
+  v18 = activityCopy;
   v29 = v18;
-  [v14 addSuccessBlock:v25];
+  [metricsService addSuccessBlock:v25];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __53__ASCMetrics_processMetricsData_pageFields_activity___block_invoke_3;
   v23[3] = &unk_2781CBB80;
   v19 = v15;
   v24 = v19;
-  [v14 addErrorBlock:v23];
+  [metricsService addErrorBlock:v23];
   v20 = v24;
   v21 = v19;
 
@@ -155,24 +155,24 @@ uint64_t __53__ASCMetrics_processMetricsData_pageFields_activity___block_invoke_
   }
 }
 
-- (id)recordCampaignToken:(id)a3 providerToken:(id)a4 withLockup:(id)a5
+- (id)recordCampaignToken:(id)token providerToken:(id)providerToken withLockup:(id)lockup
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 offer];
+  tokenCopy = token;
+  providerTokenCopy = providerToken;
+  lockupCopy = lockup;
+  offer = [lockupCopy offer];
 
-  if (v11)
+  if (offer)
   {
     v12 = ASCOfferGetCodableClasses();
-    v13 = [v10 offer];
+    offer2 = [lockupCopy offer];
     v14 = [v12 containsObject:objc_opt_class()];
 
     if ((v14 & 1) == 0)
     {
       v15 = MEMORY[0x277CCACA8];
-      v16 = [v10 offer];
+      offer3 = [lockupCopy offer];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = [v15 stringWithFormat:@"Unsupported custom lockup offer type: %@.", v18];
@@ -193,12 +193,12 @@ uint64_t __53__ASCMetrics_processMetricsData_pageFields_activity___block_invoke_
   {
   }
 
-  v24 = [(ASCMetrics *)self pendingProcesses];
-  objc_initWeak(&location, v24);
+  pendingProcesses = [(ASCMetrics *)self pendingProcesses];
+  objc_initWeak(&location, pendingProcesses);
 
   v25 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v26 = [(ASCMetrics *)self connection];
-  v27 = [v26 metricsService];
+  connection = [(ASCMetrics *)self connection];
+  metricsService = [connection metricsService];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -207,17 +207,17 @@ uint64_t __53__ASCMetrics_processMetricsData_pageFields_activity___block_invoke_
   objc_copyWeak(&v39, &location);
   v28 = v25;
   v35 = v28;
-  v36 = v8;
-  v37 = v9;
-  v38 = v10;
-  [v27 addSuccessBlock:v34];
+  v36 = tokenCopy;
+  v37 = providerTokenCopy;
+  v38 = lockupCopy;
+  [metricsService addSuccessBlock:v34];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __59__ASCMetrics_recordCampaignToken_providerToken_withLockup___block_invoke_3;
   v32[3] = &unk_2781CBB80;
   v29 = v28;
   v33 = v29;
-  [v27 addErrorBlock:v32];
+  [metricsService addErrorBlock:v32];
   v30 = v33;
   v23 = v29;
 
@@ -259,25 +259,25 @@ uint64_t __59__ASCMetrics_recordCampaignToken_providerToken_withLockup___block_i
   }
 }
 
-- (id)recordQToken:(id)a3 campaignToken:(id)a4 advertisementID:(id)a5 withLockup:(id)a6
+- (id)recordQToken:(id)token campaignToken:(id)campaignToken advertisementID:(id)d withLockup:(id)lockup
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 offer];
+  tokenCopy = token;
+  campaignTokenCopy = campaignToken;
+  dCopy = d;
+  lockupCopy = lockup;
+  offer = [lockupCopy offer];
 
-  if (v14)
+  if (offer)
   {
     v15 = ASCOfferGetCodableClasses();
-    v16 = [v13 offer];
+    offer2 = [lockupCopy offer];
     v17 = [v15 containsObject:objc_opt_class()];
 
     if ((v17 & 1) == 0)
     {
       v18 = MEMORY[0x277CCACA8];
-      v19 = [v13 offer];
+      offer3 = [lockupCopy offer];
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
       v22 = [v18 stringWithFormat:@"Unsupported custom lockup offer type: %@.", v21];
@@ -298,12 +298,12 @@ uint64_t __59__ASCMetrics_recordCampaignToken_providerToken_withLockup___block_i
   {
   }
 
-  v27 = [(ASCMetrics *)self pendingProcesses];
-  objc_initWeak(&location, v27);
+  pendingProcesses = [(ASCMetrics *)self pendingProcesses];
+  objc_initWeak(&location, pendingProcesses);
 
   v28 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v29 = [(ASCMetrics *)self connection];
-  v30 = [v29 metricsService];
+  connection = [(ASCMetrics *)self connection];
+  metricsService = [connection metricsService];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -312,18 +312,18 @@ uint64_t __59__ASCMetrics_recordCampaignToken_providerToken_withLockup___block_i
   objc_copyWeak(&v43, &location);
   v31 = v28;
   v38 = v31;
-  v39 = v10;
-  v40 = v11;
-  v41 = v12;
-  v42 = v13;
-  [v30 addSuccessBlock:v37];
+  v39 = tokenCopy;
+  v40 = campaignTokenCopy;
+  v41 = dCopy;
+  v42 = lockupCopy;
+  [metricsService addSuccessBlock:v37];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __68__ASCMetrics_recordQToken_campaignToken_advertisementID_withLockup___block_invoke_3;
   v35[3] = &unk_2781CBB80;
   v32 = v31;
   v36 = v32;
-  [v30 addErrorBlock:v35];
+  [metricsService addErrorBlock:v35];
   v33 = v36;
   v26 = v32;
 
@@ -366,16 +366,16 @@ uint64_t __68__ASCMetrics_recordQToken_campaignToken_advertisementID_withLockup_
   }
 }
 
-- (id)processViewMetrics:(id)a3 atInvocationPoint:(id)a4 withActivity:(id)a5
+- (id)processViewMetrics:(id)metrics atInvocationPoint:(id)point withActivity:(id)activity
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dataForInvocationPoint:v9];
+  metricsCopy = metrics;
+  pointCopy = point;
+  activityCopy = activity;
+  v11 = [metricsCopy dataForInvocationPoint:pointCopy];
   if ([v11 count])
   {
-    v24 = v9;
+    v24 = pointCopy;
     v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
     v25 = 0u;
     v26 = 0u;
@@ -398,8 +398,8 @@ uint64_t __68__ASCMetrics_recordQToken_campaignToken_advertisementID_withLockup_
           }
 
           v18 = *(*(&v25 + 1) + 8 * i);
-          v19 = [v8 pageFields];
-          v20 = [(ASCMetrics *)self processMetricsData:v18 pageFields:v19 activity:v10];
+          pageFields = [metricsCopy pageFields];
+          v20 = [(ASCMetrics *)self processMetricsData:v18 pageFields:pageFields activity:activityCopy];
           [v12 addObject:v20];
         }
 
@@ -409,30 +409,30 @@ uint64_t __68__ASCMetrics_recordQToken_campaignToken_advertisementID_withLockup_
       while (v15);
     }
 
-    v21 = [MEMORY[0x277CEE420] promiseWithFlattenedPromises:v12];
+    promiseWithSuccess = [MEMORY[0x277CEE420] promiseWithFlattenedPromises:v12];
 
     v11 = v23;
-    v9 = v24;
+    pointCopy = v24;
   }
 
   else
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [ASCMetrics processViewMetrics:v9 atInvocationPoint:? withActivity:?];
+      [ASCMetrics processViewMetrics:pointCopy atInvocationPoint:? withActivity:?];
     }
 
-    v21 = [MEMORY[0x277CEE420] promiseWithSuccess];
+    promiseWithSuccess = [MEMORY[0x277CEE420] promiseWithSuccess];
   }
 
-  return v21;
+  return promiseWithSuccess;
 }
 
-- (id)processViewRenderWithPredicate:(id)a3
+- (id)processViewRenderWithPredicate:(id)predicate
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEmpty])
+  predicateCopy = predicate;
+  if ([predicateCopy isEmpty])
   {
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v24 = *MEMORY[0x277CCA450];
@@ -445,12 +445,12 @@ uint64_t __68__ASCMetrics_recordQToken_campaignToken_advertisementID_withLockup_
 
   else
   {
-    v9 = [(ASCMetrics *)self pendingProcesses];
-    objc_initWeak(&location, v9);
+    pendingProcesses = [(ASCMetrics *)self pendingProcesses];
+    objc_initWeak(&location, pendingProcesses);
 
     v10 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-    v11 = [(ASCMetrics *)self connection];
-    v12 = [v11 metricsService];
+    connection = [(ASCMetrics *)self connection];
+    metricsService = [connection metricsService];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -459,15 +459,15 @@ uint64_t __68__ASCMetrics_recordQToken_campaignToken_advertisementID_withLockup_
     objc_copyWeak(&v22, &location);
     v13 = v10;
     v20 = v13;
-    v21 = v4;
-    [v12 addSuccessBlock:v19];
+    v21 = predicateCopy;
+    [metricsService addSuccessBlock:v19];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __45__ASCMetrics_processViewRenderWithPredicate___block_invoke_3;
     v17[3] = &unk_2781CBB80;
     v14 = v13;
     v18 = v14;
-    [v12 addErrorBlock:v17];
+    [metricsService addErrorBlock:v17];
     v15 = v18;
     v8 = v14;
 
@@ -507,20 +507,20 @@ uint64_t __45__ASCMetrics_processViewRenderWithPredicate___block_invoke_2(uint64
   }
 }
 
-- (void)logErrorMessage:(id)a3
+- (void)logErrorMessage:(id)message
 {
-  v4 = a3;
-  if ([v4 count])
+  messageCopy = message;
+  if ([messageCopy count])
   {
-    v5 = [(ASCMetrics *)self connection];
-    v6 = [v5 metricsService];
+    connection = [(ASCMetrics *)self connection];
+    metricsService = [connection metricsService];
 
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__ASCMetrics_logErrorMessage___block_invoke;
     v7[3] = &unk_2781CBC20;
-    v8 = v4;
-    [v6 addSuccessBlock:v7];
+    v8 = messageCopy;
+    [metricsService addSuccessBlock:v7];
   }
 }
 

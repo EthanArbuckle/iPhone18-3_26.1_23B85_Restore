@@ -59,9 +59,9 @@
   [v21 appendString:v16];
   if (a9)
   {
-    v22 = [v17 CDVStringByAddingPercentEscapesForHREF];
+    cDVStringByAddingPercentEscapesForHREF = [v17 CDVStringByAddingPercentEscapesForHREF];
 
-    v17 = v22;
+    v17 = cDVStringByAddingPercentEscapesForHREF;
   }
 
   [v21 appendString:v17];
@@ -96,7 +96,7 @@
   else
   {
     LOBYTE(v29) = 1;
-    v26 = [a1 CDVURLWithScheme:v15 userandpass:v16 host:v17 port:v18 path:v19 parameters:v20 encodePercents:v29];
+    v26 = [self CDVURLWithScheme:v15 userandpass:v16 host:v17 port:v18 path:v19 parameters:v20 encodePercents:v29];
   }
 
   v27 = v26;
@@ -142,13 +142,13 @@ LABEL_26:
     v24 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:0];
     if ([v20 compare:v24] == -1)
     {
-      v25 = a1;
+      selfCopy3 = self;
       v28 = 0;
     }
 
     else
     {
-      v25 = a1;
+      selfCopy3 = self;
       v26 = [objc_opt_class() CDVDefaultPortForScheme:v18];
       if (v26 && (v27 = [v20 unsignedLongValue], v27 == objc_msgSend(v26, "unsignedLongValue")))
       {
@@ -164,21 +164,21 @@ LABEL_26:
 
   else
   {
-    v25 = a1;
+    selfCopy3 = self;
     v28 = 0;
   }
 
   v29 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_28583EAE8];
   if (v48)
   {
-    v30 = [v48 CDVStringByAddingPercentEscapesForUserOrPassword];
-    [v29 appendString:v30];
+    cDVStringByAddingPercentEscapesForUserOrPassword = [v48 CDVStringByAddingPercentEscapesForUserOrPassword];
+    [v29 appendString:cDVStringByAddingPercentEscapesForUserOrPassword];
 
     if (v47)
     {
       [v29 appendString:@":"];
-      v31 = [v47 CDVStringByAddingPercentEscapesForUserOrPassword];
-      [v29 appendString:v31];
+      cDVStringByAddingPercentEscapesForUserOrPassword2 = [v47 CDVStringByAddingPercentEscapesForUserOrPassword];
+      [v29 appendString:cDVStringByAddingPercentEscapesForUserOrPassword2];
     }
 
     [v29 appendString:@"@"];
@@ -199,9 +199,9 @@ LABEL_26:
   }
 
   LOBYTE(v42) = 0;
-  v34 = [v25 CDVURLWithScheme:v43 userandpass:v29 host:v19 port:v28 path:v21 parameters:v33 encodePercents:v42];
-  v35 = [v34 absoluteString];
-  v36 = [v25 initWithString:v35];
+  v34 = [selfCopy3 CDVURLWithScheme:v43 userandpass:v29 host:v19 port:v28 path:v21 parameters:v33 encodePercents:v42];
+  absoluteString = [v34 absoluteString];
+  v36 = [selfCopy3 initWithString:absoluteString];
 
   return v36;
 }
@@ -239,14 +239,14 @@ LABEL_8:
 {
   v4 = a3;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [a1 scheme];
-  v7 = [a1 CDVPassword];
-  v8 = [a1 host];
-  v9 = [a1 port];
-  v10 = [a1 CDVRawPath];
-  v11 = [a1 query];
-  v12 = [a1 fragment];
-  v13 = [v5 initWithCDVScheme:v6 user:v4 password:v7 host:v8 port:v9 path:v10 query:v11 fragment:v12];
+  scheme = [self scheme];
+  cDVPassword = [self CDVPassword];
+  host = [self host];
+  port = [self port];
+  cDVRawPath = [self CDVRawPath];
+  query = [self query];
+  fragment = [self fragment];
+  v13 = [v5 initWithCDVScheme:scheme user:v4 password:cDVPassword host:host port:port path:cDVRawPath query:query fragment:fragment];
 
   return v13;
 }
@@ -255,14 +255,14 @@ LABEL_8:
 {
   v4 = a3;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [a1 scheme];
-  v7 = [a1 user];
-  v8 = [a1 host];
-  v9 = [a1 port];
-  v10 = [a1 CDVRawPath];
-  v11 = [a1 query];
-  v12 = [a1 fragment];
-  v13 = [v5 initWithCDVScheme:v6 user:v7 password:v4 host:v8 port:v9 path:v10 query:v11 fragment:v12];
+  scheme = [self scheme];
+  user = [self user];
+  host = [self host];
+  port = [self port];
+  cDVRawPath = [self CDVRawPath];
+  query = [self query];
+  fragment = [self fragment];
+  v13 = [v5 initWithCDVScheme:scheme user:user password:v4 host:host port:port path:cDVRawPath query:query fragment:fragment];
 
   return v13;
 }
@@ -271,40 +271,40 @@ LABEL_8:
 {
   v4 = a3;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [a1 scheme];
-  v7 = [a1 user];
-  v8 = [a1 CDVPassword];
-  v9 = [a1 host];
-  v10 = [a1 port];
-  v11 = [a1 query];
-  v12 = [a1 fragment];
-  v13 = [v5 initWithCDVScheme:v6 user:v7 password:v8 host:v9 port:v10 path:v4 query:v11 fragment:v12];
+  scheme = [self scheme];
+  user = [self user];
+  cDVPassword = [self CDVPassword];
+  host = [self host];
+  port = [self port];
+  query = [self query];
+  fragment = [self fragment];
+  v13 = [v5 initWithCDVScheme:scheme user:user password:cDVPassword host:host port:port path:v4 query:query fragment:fragment];
 
   return v13;
 }
 
 - (id)CDVPassword
 {
-  v1 = [a1 password];
-  v2 = [v1 stringByRemovingPercentEncoding];
+  password = [self password];
+  stringByRemovingPercentEncoding = [password stringByRemovingPercentEncoding];
 
-  return v2;
+  return stringByRemovingPercentEncoding;
 }
 
 - (__CFString)CDVRawPath
 {
-  v1 = CFURLCopyPath(a1);
+  v1 = CFURLCopyPath(self);
 
   return v1;
 }
 
 - (id)CDVRawLastPathComponent
 {
-  v2 = [a1 CDVRawPath];
-  v3 = [v2 hasSuffix:@"/"];
-  v4 = [a1 lastPathComponent];
-  v5 = v4;
-  if (v3 && ([v4 hasSuffix:@"/"] & 1) == 0)
+  cDVRawPath = [self CDVRawPath];
+  v3 = [cDVRawPath hasSuffix:@"/"];
+  lastPathComponent = [self lastPathComponent];
+  v5 = lastPathComponent;
+  if (v3 && ([lastPathComponent hasSuffix:@"/"] & 1) == 0)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/", v5];
 
@@ -316,53 +316,53 @@ LABEL_8:
 
 - (id)CDVRawLastPathComponentPreservingEscapes
 {
-  v1 = [a1 CDVRawPath];
-  v2 = [v1 lastPathComponent];
+  cDVRawPath = [self CDVRawPath];
+  lastPathComponent = [cDVRawPath lastPathComponent];
 
-  return v2;
+  return lastPathComponent;
 }
 
 - (id)CDVURLByDeletingLastPathComponent
 {
-  v2 = [a1 URLByDeletingLastPathComponent];
-  v3 = [v2 absoluteString];
-  v4 = [v3 length];
-  v5 = [a1 absoluteString];
-  v6 = [v5 length];
+  uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
+  absoluteString = [uRLByDeletingLastPathComponent absoluteString];
+  v4 = [absoluteString length];
+  absoluteString2 = [self absoluteString];
+  v6 = [absoluteString2 length];
 
   if (v4 > v6)
   {
-    v7 = a1;
+    selfCopy = self;
 
-    v2 = v7;
+    uRLByDeletingLastPathComponent = selfCopy;
   }
 
-  return v2;
+  return uRLByDeletingLastPathComponent;
 }
 
 - (id)CDVServerURL
 {
-  v2 = [a1 scheme];
-  if (v2 && (v3 = v2, [a1 host], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
+  scheme = [self scheme];
+  if (scheme && (v3 = scheme, [self host], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = [a1 port];
+    port = [self port];
 
     v6 = MEMORY[0x277CBEBC0];
     v7 = MEMORY[0x277CCACA8];
-    v8 = [a1 scheme];
-    v9 = [a1 host];
-    v10 = v9;
-    if (v5)
+    scheme2 = [self scheme];
+    host = [self host];
+    v10 = host;
+    if (port)
     {
-      v11 = [a1 port];
-      v12 = [v7 stringWithFormat:@"%@://%@:%@/", v8, v10, v11];
+      port2 = [self port];
+      v12 = [v7 stringWithFormat:@"%@://%@:%@/", scheme2, v10, port2];
       v13 = [v6 URLWithString:v12];
     }
 
     else
     {
-      v11 = [v7 stringWithFormat:@"%@://%@/", v8, v9];
-      v13 = [v6 URLWithString:v11];
+      port2 = [v7 stringWithFormat:@"%@://%@/", scheme2, host];
+      v13 = [v6 URLWithString:port2];
     }
   }
 
@@ -376,30 +376,30 @@ LABEL_8:
 
 - (id)CDVServerURLWithPath:()CoreDAVExtensions
 {
-  v5 = [a1 host];
-  v6 = [a1 scheme];
+  host = [self host];
+  scheme = [self scheme];
   if (a3)
   {
-    v7 = [a1 CDVRawPath];
+    cDVRawPath = [self CDVRawPath];
   }
 
   else
   {
-    v7 = &stru_28583EAE8;
+    cDVRawPath = &stru_28583EAE8;
   }
 
-  v8 = [a1 port];
+  port = [self port];
   v9 = 0;
-  if (v5 && v6)
+  if (host && scheme)
   {
-    if (v8)
+    if (port)
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@:%@%@", v6, v5, v8, v7];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@:%@%@", scheme, host, port, cDVRawPath];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@%@", v6, v5, v7, v12];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@%@", scheme, host, cDVRawPath, v12];
     }
     v10 = ;
     v9 = [MEMORY[0x277CBEBC0] URLWithString:v10];
@@ -411,18 +411,18 @@ LABEL_8:
 - (uint64_t)CDVIsEqualToURL:()CoreDAVExtensions
 {
   v4 = a3;
-  v5 = [a1 absoluteString];
-  v6 = [v4 absoluteString];
-  if ([v5 isEqualToString:v6])
+  absoluteString = [self absoluteString];
+  absoluteString2 = [v4 absoluteString];
+  if ([absoluteString isEqualToString:absoluteString2])
   {
     v7 = 1;
   }
 
-  else if ([a1 isFileURL] && objc_msgSend(v4, "isFileURL"))
+  else if ([self isFileURL] && objc_msgSend(v4, "isFileURL"))
   {
-    v8 = [a1 path];
-    v9 = [v4 path];
-    v7 = [v8 isEqualToString:v9];
+    path = [self path];
+    path2 = [v4 path];
+    v7 = [path isEqualToString:path2];
   }
 
   else
@@ -435,8 +435,8 @@ LABEL_8:
 
 - (id)CDVFileSystemSafePath
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 mutableCopy];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString mutableCopy];
 
   [v2 replaceOccurrencesOfString:@"/" withString:@"_" options:0 range:{0, objc_msgSend(v2, "length")}];
   [v2 replaceOccurrencesOfString:@":" withString:@"_" options:0 range:{0, objc_msgSend(v2, "length")}];
@@ -448,10 +448,10 @@ LABEL_8:
 - (id)CDVfixedURLByAppendingPathComponent:()CoreDAVExtensions
 {
   v4 = a3;
-  v5 = [a1 absoluteString];
-  v6 = [v5 CDVStringByAppendingSlashIfNeeded];
+  absoluteString = [self absoluteString];
+  cDVStringByAppendingSlashIfNeeded = [absoluteString CDVStringByAppendingSlashIfNeeded];
 
-  v7 = [v6 stringByAppendingString:v4];
+  v7 = [cDVStringByAppendingSlashIfNeeded stringByAppendingString:v4];
 
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
 
@@ -461,13 +461,13 @@ LABEL_8:
 - (uint64_t)CDVIsSafeRedirectForRequestURL:()CoreDAVExtensions
 {
   v4 = a3;
-  v5 = [v4 scheme];
+  scheme = [v4 scheme];
 
-  if (v5)
+  if (scheme)
   {
-    v6 = [a1 scheme];
-    v7 = [v4 scheme];
-    v8 = [v6 hasPrefix:v7];
+    scheme2 = [self scheme];
+    scheme3 = [v4 scheme];
+    v8 = [scheme2 hasPrefix:scheme3];
   }
 
   else

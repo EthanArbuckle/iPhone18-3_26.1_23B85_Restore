@@ -1,48 +1,48 @@
 @interface AFRequestInfo
-+ (id)_announceIncomingCallRequestInfoFromRequest:(id)a3;
-+ (id)_announceNotificationRequestInfoFromNotificationRequest:(id)a3 previousRequest:(id)a4 synchronousBurstIndex:(unint64_t)a5 isMediaPlaying:(BOOL)a6;
-+ (id)_createAnnounceInHomeRequestFromSKIAnnouncePayload:(id)a3;
-+ (id)_createAnnounceIncomingCallRequest:(id)a3;
-+ (id)_createAnnounceWorkoutReminderRequestFromSKIAnnouncePayload:(id)a3 announceNotificationRequest:(id)a4;
-+ (id)_createAnnounceWorkoutVoiceFeedbackRequestFromSKIAnnouncePayload:(id)a3 announceNotificationRequest:(id)a4;
-+ (id)_updateStartLocalRequest:(id)a3 withNewAnnouncePayload:(id)a4 forAnnouncementType:(int64_t)a5;
-+ (id)requestInfoFromAnnouncementRequest:(id)a3 previousRequest:(id)a4 synchronousBurstIndex:(unint64_t)a5 isMediaPlaying:(BOOL)a6;
-- (id)_ad_localRequestCommandWithRequestHelper:(id)a3;
-- (id)_ad_requestCommandWithRequestHelper:(id)a3;
-- (id)_ad_speechRequestOptionsWithClientConfiguration:(id)a3;
++ (id)_announceIncomingCallRequestInfoFromRequest:(id)request;
++ (id)_announceNotificationRequestInfoFromNotificationRequest:(id)request previousRequest:(id)previousRequest synchronousBurstIndex:(unint64_t)index isMediaPlaying:(BOOL)playing;
++ (id)_createAnnounceInHomeRequestFromSKIAnnouncePayload:(id)payload;
++ (id)_createAnnounceIncomingCallRequest:(id)request;
++ (id)_createAnnounceWorkoutReminderRequestFromSKIAnnouncePayload:(id)payload announceNotificationRequest:(id)request;
++ (id)_createAnnounceWorkoutVoiceFeedbackRequestFromSKIAnnouncePayload:(id)payload announceNotificationRequest:(id)request;
++ (id)_updateStartLocalRequest:(id)request withNewAnnouncePayload:(id)payload forAnnouncementType:(int64_t)type;
++ (id)requestInfoFromAnnouncementRequest:(id)request previousRequest:(id)previousRequest synchronousBurstIndex:(unint64_t)index isMediaPlaying:(BOOL)playing;
+- (id)_ad_localRequestCommandWithRequestHelper:(id)helper;
+- (id)_ad_requestCommandWithRequestHelper:(id)helper;
+- (id)_ad_speechRequestOptionsWithClientConfiguration:(id)configuration;
 @end
 
 @implementation AFRequestInfo
 
-- (id)_ad_speechRequestOptionsWithClientConfiguration:(id)a3
+- (id)_ad_speechRequestOptionsWithClientConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AFRequestInfo *)self speechRequestOptions];
-  if (v5)
+  configurationCopy = configuration;
+  speechRequestOptions = [(AFRequestInfo *)self speechRequestOptions];
+  if (speechRequestOptions)
   {
     goto LABEL_6;
   }
 
-  v6 = [(AFRequestInfo *)self handoffRequestData];
-  if (v6)
+  handoffRequestData = [(AFRequestInfo *)self handoffRequestData];
+  if (handoffRequestData)
   {
   }
 
   else
   {
-    v7 = [(AFRequestInfo *)self notifyState];
+    notifyState = [(AFRequestInfo *)self notifyState];
 
-    if (!v7)
+    if (!notifyState)
     {
       goto LABEL_10;
     }
   }
 
-  v5 = [[AFSpeechRequestOptions alloc] initWithActivationEvent:1];
-  if (v5)
+  speechRequestOptions = [[AFSpeechRequestOptions alloc] initWithActivationEvent:1];
+  if (speechRequestOptions)
   {
 LABEL_6:
-    v8 = v5;
+    v8 = speechRequestOptions;
     goto LABEL_7;
   }
 
@@ -67,9 +67,9 @@ LABEL_10:
 LABEL_16:
     if ([(AFRequestInfo *)self activationEvent]== 6 || [(AFRequestInfo *)self activationEvent]== 9)
     {
-      v11 = [v4 isDeviceInStarkMode];
+      isDeviceInStarkMode = [configurationCopy isDeviceInStarkMode];
       v12 = [AFSpeechRequestOptions alloc];
-      if (v11)
+      if (isDeviceInStarkMode)
       {
         v8 = [v12 initWithActivationEvent:32];
         [v8 setAnnouncementPlatform:2];
@@ -83,9 +83,9 @@ LABEL_16:
       {
         v8 = [v12 initWithActivationEvent:21];
         v13 = +[ADExternalNotificationRequestHandler sharedNotificationRequestHandler];
-        v14 = [v13 announcePlatformForCurrentRequest];
+        announcePlatformForCurrentRequest = [v13 announcePlatformForCurrentRequest];
 
-        [v8 setAnnouncementPlatform:v14];
+        [v8 setAnnouncementPlatform:announcePlatformForCurrentRequest];
         [v8 setEndpointerOperationMode:3];
         if (v8)
         {
@@ -102,37 +102,37 @@ LABEL_7:
   return v8;
 }
 
-- (id)_ad_localRequestCommandWithRequestHelper:(id)a3
+- (id)_ad_localRequestCommandWithRequestHelper:(id)helper
 {
-  v4 = a3;
-  v5 = [(AFRequestInfo *)self startLocalRequest];
-  if (!v5)
+  helperCopy = helper;
+  startLocalRequest = [(AFRequestInfo *)self startLocalRequest];
+  if (!startLocalRequest)
   {
-    v5 = [(AFRequestInfo *)self notifyState];
+    startLocalRequest = [(AFRequestInfo *)self notifyState];
 
-    if (v5)
+    if (startLocalRequest)
     {
-      v6 = [v4 remoteRequestInfo];
-      v5 = [v6 startLocalRequest];
+      remoteRequestInfo = [helperCopy remoteRequestInfo];
+      startLocalRequest = [remoteRequestInfo startLocalRequest];
     }
   }
 
-  return v5;
+  return startLocalRequest;
 }
 
-- (id)_ad_requestCommandWithRequestHelper:(id)a3
+- (id)_ad_requestCommandWithRequestHelper:(id)helper
 {
-  v4 = a3;
-  v5 = [(AFRequestInfo *)self notifyState];
+  helperCopy = helper;
+  notifyState = [(AFRequestInfo *)self notifyState];
 
-  if (v5)
+  if (notifyState)
   {
-    v6 = [v4 remoteRequestInfo];
-    v7 = sub_10000B3A0(v6);
+    remoteRequestInfo = [helperCopy remoteRequestInfo];
+    v7 = sub_10000B3A0(remoteRequestInfo);
     if (!v7)
     {
-      v8 = [v6 handoffURLString];
-      [(AFRequestInfo *)self setHandoffURLString:v8];
+      handoffURLString = [remoteRequestInfo handoffURLString];
+      [(AFRequestInfo *)self setHandoffURLString:handoffURLString];
     }
   }
 
@@ -144,15 +144,15 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_createAnnounceWorkoutVoiceFeedbackRequestFromSKIAnnouncePayload:(id)a3 announceNotificationRequest:(id)a4
++ (id)_createAnnounceWorkoutVoiceFeedbackRequestFromSKIAnnouncePayload:(id)payload announceNotificationRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 workoutVoiceFeedback];
-    v8 = [SKIFitnessInvocation announceWorkoutVoiceFeedback:v7 announcePayload:v5];
+    workoutVoiceFeedback = [requestCopy workoutVoiceFeedback];
+    v8 = [SKIFitnessInvocation announceWorkoutVoiceFeedback:workoutVoiceFeedback announcePayload:payloadCopy];
   }
 
   else
@@ -163,26 +163,26 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_createAnnounceIncomingCallRequest:(id)a3
++ (id)_createAnnounceIncomingCallRequest:(id)request
 {
-  v3 = [a3 call];
-  v4 = [v3 callUUID];
-  v5 = [v3 callProviderIdentifier];
-  v6 = [v3 callProviderBundleID];
-  v7 = [v3 callerContactIdentifiers];
-  v8 = [v3 handle];
-  v9 = [v3 isVideo];
-  LOBYTE(v12) = [v3 isCallerIDBlocked];
-  v10 = [SKIPhoneInvocation announceIncomingCallerRequestForCallUUID:v4 callProviderIdentifier:v5 callProviderBundleId:v6 callerContactIdentifiers:v7 handle:v8 isVideo:v9 isCallerIDBlocked:v12];
+  call = [request call];
+  callUUID = [call callUUID];
+  callProviderIdentifier = [call callProviderIdentifier];
+  callProviderBundleID = [call callProviderBundleID];
+  callerContactIdentifiers = [call callerContactIdentifiers];
+  handle = [call handle];
+  isVideo = [call isVideo];
+  LOBYTE(v12) = [call isCallerIDBlocked];
+  v10 = [SKIPhoneInvocation announceIncomingCallerRequestForCallUUID:callUUID callProviderIdentifier:callProviderIdentifier callProviderBundleId:callProviderBundleID callerContactIdentifiers:callerContactIdentifiers handle:handle isVideo:isVideo isCallerIDBlocked:v12];
 
   return v10;
 }
 
-+ (id)_announceIncomingCallRequestInfoFromRequest:(id)a3
++ (id)_announceIncomingCallRequestInfoFromRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(AFRequestInfo);
-  v5 = [objc_opt_class() _createAnnounceIncomingCallRequest:v3];
+  v5 = [objc_opt_class() _createAnnounceIncomingCallRequest:requestCopy];
 
   v6 = [AFRequestCompletionOptions alloc];
   v7 = _AFPreferencesSpokenNotificationShowUIDuringTriggerlessListening();
@@ -194,17 +194,17 @@ LABEL_7:
   return v4;
 }
 
-+ (id)_createAnnounceInHomeRequestFromSKIAnnouncePayload:(id)a3
++ (id)_createAnnounceInHomeRequestFromSKIAnnouncePayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 notification];
-  v5 = [v4 request];
+  payloadCopy = payload;
+  notification = [payloadCopy notification];
+  request = [notification request];
 
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
+  content = [request content];
+  userInfo = [content userInfo];
 
   v8 = off_10058E8C8();
-  v9 = [v7 objectForKey:v8];
+  v9 = [userInfo objectForKey:v8];
 
   v10 = +[NSNull null];
 
@@ -224,26 +224,26 @@ LABEL_7:
   }
 
   v12 = off_10058E8D0();
-  v13 = [v7 objectForKey:v12];
+  v13 = [userInfo objectForKey:v12];
 
-  v14 = [v3 appBundleId];
-  v15 = [v3 synchronousBurstIndex];
+  appBundleId = [payloadCopy appBundleId];
+  synchronousBurstIndex = [payloadCopy synchronousBurstIndex];
 
-  v16 = [NSNumber numberWithUnsignedInteger:v15];
-  v17 = [SKIPhoneInvocation announceHomeAnnouncementRequestFromApp:v14 withAnnouncementIdentifier:v13 withUserNotificationType:v11 synchronousBurstIndex:v16];
+  v16 = [NSNumber numberWithUnsignedInteger:synchronousBurstIndex];
+  v17 = [SKIPhoneInvocation announceHomeAnnouncementRequestFromApp:appBundleId withAnnouncementIdentifier:v13 withUserNotificationType:v11 synchronousBurstIndex:v16];
 
   return v17;
 }
 
-+ (id)_createAnnounceWorkoutReminderRequestFromSKIAnnouncePayload:(id)a3 announceNotificationRequest:(id)a4
++ (id)_createAnnounceWorkoutReminderRequestFromSKIAnnouncePayload:(id)payload announceNotificationRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 workoutReminder];
-    v8 = [SKIFitnessInvocation announceWorkoutReminder:v7 announcePayload:v5];
+    workoutReminder = [requestCopy workoutReminder];
+    v8 = [SKIFitnessInvocation announceWorkoutReminder:workoutReminder announcePayload:payloadCopy];
   }
 
   else
@@ -254,13 +254,13 @@ LABEL_7:
   return v8;
 }
 
-+ (id)_updateStartLocalRequest:(id)a3 withNewAnnouncePayload:(id)a4 forAnnouncementType:(int64_t)a5
++ (id)_updateStartLocalRequest:(id)request withNewAnnouncePayload:(id)payload forAnnouncementType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 8)
+  requestCopy = request;
+  payloadCopy = payload;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 8)
   {
-    v9 = [SKIFitnessInvocation updateStartLocalRequest:v7 withNewAnnouncePayload:v8];
+    v9 = [SKIFitnessInvocation updateStartLocalRequest:requestCopy withNewAnnouncePayload:payloadCopy];
   }
 
   else
@@ -283,24 +283,24 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_announceNotificationRequestInfoFromNotificationRequest:(id)a3 previousRequest:(id)a4 synchronousBurstIndex:(unint64_t)a5 isMediaPlaying:(BOOL)a6
++ (id)_announceNotificationRequestInfoFromNotificationRequest:(id)request previousRequest:(id)previousRequest synchronousBurstIndex:(unint64_t)index isMediaPlaying:(BOOL)playing
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  previousRequestCopy = previousRequest;
   v10 = objc_alloc_init(AFRequestInfo);
   [v10 setActivationEvent:6];
-  v11 = [v8 notification];
-  v12 = [v8 platform];
+  notification = [requestCopy notification];
+  platform = [requestCopy platform];
   v13 = &stru_10051F508;
-  if ([v9 requestType] == 1)
+  if ([previousRequestCopy requestType] == 1)
   {
-    v14 = v9;
-    v15 = [v14 announcementType];
-    v16 = [v14 appID];
+    v14 = previousRequestCopy;
+    announcementType = [v14 announcementType];
+    appID = [v14 appID];
 
-    if (v16)
+    if (appID)
     {
-      v17 = v16;
+      v17 = appID;
     }
 
     else
@@ -313,21 +313,21 @@ LABEL_7:
 
   else
   {
-    v15 = 0;
+    announcementType = 0;
   }
 
-  v18 = [v8 announcementType];
-  v37 = [v8 appID];
-  v19 = [v9 timeOfRequestArrival];
-  [v19 timeIntervalSinceNow];
+  announcementType2 = [requestCopy announcementType];
+  appID2 = [requestCopy appID];
+  timeOfRequestArrival = [previousRequestCopy timeOfRequestArrival];
+  [timeOfRequestArrival timeIntervalSinceNow];
   v21 = v20;
 
-  v22 = [v8 summary];
+  summary = [requestCopy summary];
 
-  if (v22)
+  if (summary)
   {
-    v23 = [v8 summary];
-    v40 = v23;
+    summary2 = [requestCopy summary];
+    v40 = summary2;
     v36 = [NSArray arrayWithObjects:&v40 count:1];
   }
 
@@ -337,21 +337,21 @@ LABEL_7:
   }
 
   v24 = -v21;
-  if (v18 == 9)
+  if (announcementType2 == 9)
   {
     [v10 setIsAlwaysAllowedWhileDeviceLocked:1];
   }
 
   v25 = [SKIAnnounceNotificationDirectInvocationPayload alloc];
   BYTE1(v34) = [ADRequestDispatcherServiceHelper isBobbleAvailable]_0();
-  LOBYTE(v34) = a6;
-  v26 = [v25 initWithNotification:v11 appBundleId:v37 appBundleIdOfLastAnnouncement:v13 synchronousBurstIndex:a5 isSameTypeAsLastAnnouncement:v18 == v15 timeSinceLastAnnouncement:v12 announcementPlatform:v24 isMediaPlaying:v34 isBobbleCapableAnnouncement:v36 summaries:?];
-  v27 = [v8 startLocalRequest];
+  LOBYTE(v34) = playing;
+  v26 = [v25 initWithNotification:notification appBundleId:appID2 appBundleIdOfLastAnnouncement:v13 synchronousBurstIndex:index isSameTypeAsLastAnnouncement:announcementType2 == announcementType timeSinceLastAnnouncement:platform announcementPlatform:v24 isMediaPlaying:v34 isBobbleCapableAnnouncement:v36 summaries:?];
+  startLocalRequest = [requestCopy startLocalRequest];
 
-  if (v27)
+  if (startLocalRequest)
   {
-    v28 = [v8 startLocalRequest];
-    v29 = [objc_opt_class() _updateStartLocalRequest:v28 withNewAnnouncePayload:v26 forAnnouncementType:v18];
+    startLocalRequest2 = [requestCopy startLocalRequest];
+    v29 = [objc_opt_class() _updateStartLocalRequest:startLocalRequest2 withNewAnnouncePayload:v26 forAnnouncementType:announcementType2];
 
     [v10 setStartLocalRequest:v29];
     v30 = v10;
@@ -359,11 +359,11 @@ LABEL_7:
     goto LABEL_40;
   }
 
-  if (v18 > 4)
+  if (announcementType2 > 4)
   {
-    if (v18 <= 6)
+    if (announcementType2 <= 6)
     {
-      if (v18 == 5)
+      if (announcementType2 == 5)
       {
         [SKIPhoneInvocation announceVoicemailRequestForAnnounceDirectInvocationPayload:v26];
       }
@@ -375,17 +375,17 @@ LABEL_7:
 
       v31 = LABEL_19:;
 LABEL_38:
-      v27 = v31;
+      startLocalRequest = v31;
       goto LABEL_39;
     }
 
-    switch(v18)
+    switch(announcementType2)
     {
       case 7:
         v31 = [SKIPhoneInvocation announceIncomingCallNotificationRequest:v26];
         goto LABEL_38;
       case 8:
-        v31 = [objc_opt_class() _createAnnounceWorkoutReminderRequestFromSKIAnnouncePayload:v26 announceNotificationRequest:v8];
+        v31 = [objc_opt_class() _createAnnounceWorkoutReminderRequestFromSKIAnnouncePayload:v26 announceNotificationRequest:requestCopy];
         if (v31)
         {
           goto LABEL_38;
@@ -393,7 +393,7 @@ LABEL_38:
 
         break;
       case 9:
-        v31 = [objc_opt_class() _createAnnounceWorkoutVoiceFeedbackRequestFromSKIAnnouncePayload:v26 announceNotificationRequest:v8];
+        v31 = [objc_opt_class() _createAnnounceWorkoutVoiceFeedbackRequestFromSKIAnnouncePayload:v26 announceNotificationRequest:requestCopy];
         if (v31)
         {
           goto LABEL_38;
@@ -407,15 +407,15 @@ LABEL_38:
 
   else
   {
-    if (v18 > 1)
+    if (announcementType2 > 1)
     {
-      if (v18 == 2)
+      if (announcementType2 == 2)
       {
         v31 = [objc_opt_class() _createAnnounceInHomeRequestFromSKIAnnouncePayload:v26];
         goto LABEL_38;
       }
 
-      if (v18 == 3)
+      if (announcementType2 == 3)
       {
         [SKINotificationsInvocation announceNotificationsRequestFromAnnounceDirectInvocationPayload:v26];
       }
@@ -428,16 +428,16 @@ LABEL_38:
       goto LABEL_19;
     }
 
-    if (v18)
+    if (announcementType2)
     {
-      if (v18 == 1)
+      if (announcementType2 == 1)
       {
         v31 = [SKIMessagesInvocation announceMessagesRequestFromAnnounceDirectInvocationPayload:v26];
         goto LABEL_38;
       }
 
 LABEL_39:
-      [v10 setStartLocalRequest:v27];
+      [v10 setStartLocalRequest:startLocalRequest];
       v30 = v10;
 
       goto LABEL_40;
@@ -458,15 +458,15 @@ LABEL_40:
   return v30;
 }
 
-+ (id)requestInfoFromAnnouncementRequest:(id)a3 previousRequest:(id)a4 synchronousBurstIndex:(unint64_t)a5 isMediaPlaying:(BOOL)a6
++ (id)requestInfoFromAnnouncementRequest:(id)request previousRequest:(id)previousRequest synchronousBurstIndex:(unint64_t)index isMediaPlaying:(BOOL)playing
 {
-  v7 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = [v11 requestType];
-  if (v13)
+  playingCopy = playing;
+  requestCopy = request;
+  previousRequestCopy = previousRequest;
+  requestType = [requestCopy requestType];
+  if (requestType)
   {
-    if (v13 == 2)
+    if (requestType == 2)
     {
       v15 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -476,17 +476,17 @@ LABEL_40:
         _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s Creating announce incoming call request", &v18, 0xCu);
       }
 
-      v14 = [a1 _announceIncomingCallRequestInfoFromRequest:v11];
+      v14 = [self _announceIncomingCallRequestInfoFromRequest:requestCopy];
     }
 
     else
     {
-      if (v13 != 1)
+      if (requestType != 1)
       {
         goto LABEL_12;
       }
 
-      v14 = [a1 _announceNotificationRequestInfoFromNotificationRequest:v11 previousRequest:v12 synchronousBurstIndex:a5 isMediaPlaying:v7];
+      v14 = [self _announceNotificationRequestInfoFromNotificationRequest:requestCopy previousRequest:previousRequestCopy synchronousBurstIndex:index isMediaPlaying:playingCopy];
     }
 
     v6 = v14;

@@ -7,13 +7,13 @@
 
 - (uint64_t)safari_currentKeyboardInputIsRTL
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__UIApplication_MobileSafariFrameworkExtras__safari_currentKeyboardInputIsRTL__block_invoke;
   block[3] = &unk_1E721B400;
-  block[4] = a1;
-  v3 = v2;
+  block[4] = self;
+  v3 = defaultCenter;
   v9 = v3;
   if (safari_currentKeyboardInputIsRTL_onceToken != -1)
   {
@@ -28,7 +28,7 @@
       v6[1] = 3221225472;
       v6[2] = __78__UIApplication_MobileSafariFrameworkExtras__safari_currentKeyboardInputIsRTL__block_invoke_4;
       v6[3] = &unk_1E721B400;
-      v6[4] = a1;
+      v6[4] = self;
       v7 = v3;
       dispatch_async(MEMORY[0x1E69E96A0], v6);
     }
@@ -51,7 +51,7 @@
     return 0;
   }
 
-  return [a1 currentKeyboardModifierFlags];
+  return [self currentKeyboardModifierFlags];
 }
 
 @end

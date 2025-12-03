@@ -1,83 +1,83 @@
 @interface SFCredentialIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)site;
-- (SFCredentialIdentity)initWithCoder:(id)a3;
-- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)a3 serviceIdentifier:(id)a4 serviceIdentifierType:(int64_t)a5 externalRecordIdentifier:(id)a6 user:(id)a7 rank:(int64_t)a8;
-- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)a3 serviceIdentifier:(id)a4 serviceIdentifierType:(int64_t)a5 externalRecordIdentifier:(id)a6 user:(id)a7 rank:(int64_t)a8 owningExtensionState:(id)a9;
+- (SFCredentialIdentity)initWithCoder:(id)coder;
+- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)identifier serviceIdentifier:(id)serviceIdentifier serviceIdentifierType:(int64_t)type externalRecordIdentifier:(id)recordIdentifier user:(id)user rank:(int64_t)rank;
+- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)identifier serviceIdentifier:(id)serviceIdentifier serviceIdentifierType:(int64_t)type externalRecordIdentifier:(id)recordIdentifier user:(id)user rank:(int64_t)rank owningExtensionState:(id)state;
 - (id)_domainWithoutWWWDot;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compareForQuickTypeBar:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compareForQuickTypeBar:(id)bar;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCredentialIdentity
 
-- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)a3 serviceIdentifier:(id)a4 serviceIdentifierType:(int64_t)a5 externalRecordIdentifier:(id)a6 user:(id)a7 rank:(int64_t)a8
+- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)identifier serviceIdentifier:(id)serviceIdentifier serviceIdentifierType:(int64_t)type externalRecordIdentifier:(id)recordIdentifier user:(id)user rank:(int64_t)rank
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  serviceIdentifierCopy = serviceIdentifier;
+  recordIdentifierCopy = recordIdentifier;
+  userCopy = user;
   v27.receiver = self;
   v27.super_class = SFCredentialIdentity;
   v17 = [(SFCredentialIdentity *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    v17->_rowIdentifier = a3;
-    v19 = [v14 copy];
+    v17->_rowIdentifier = identifier;
+    v19 = [serviceIdentifierCopy copy];
     serviceIdentifier = v18->_serviceIdentifier;
     v18->_serviceIdentifier = v19;
 
-    v18->_serviceIdentifierType = a5;
-    v21 = [v15 copy];
+    v18->_serviceIdentifierType = type;
+    v21 = [recordIdentifierCopy copy];
     externalRecordIdentifier = v18->_externalRecordIdentifier;
     v18->_externalRecordIdentifier = v21;
 
-    v23 = [v16 copy];
+    v23 = [userCopy copy];
     user = v18->_user;
     v18->_user = v23;
 
-    v18->_rank = a8;
+    v18->_rank = rank;
     v25 = v18;
   }
 
   return v18;
 }
 
-- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)a3 serviceIdentifier:(id)a4 serviceIdentifierType:(int64_t)a5 externalRecordIdentifier:(id)a6 user:(id)a7 rank:(int64_t)a8 owningExtensionState:(id)a9
+- (SFCredentialIdentity)initWithRowIdentifier:(int64_t)identifier serviceIdentifier:(id)serviceIdentifier serviceIdentifierType:(int64_t)type externalRecordIdentifier:(id)recordIdentifier user:(id)user rank:(int64_t)rank owningExtensionState:(id)state
 {
-  v16 = a9;
-  v17 = [(SFCredentialIdentity *)self initWithRowIdentifier:a3 serviceIdentifier:a4 serviceIdentifierType:a5 externalRecordIdentifier:a6 user:a7 rank:a8];
+  stateCopy = state;
+  v17 = [(SFCredentialIdentity *)self initWithRowIdentifier:identifier serviceIdentifier:serviceIdentifier serviceIdentifierType:type externalRecordIdentifier:recordIdentifier user:user rank:rank];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_owningExtensionState, a9);
+    objc_storeStrong(&v17->_owningExtensionState, state);
     v19 = v18;
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rowIdentifier = self->_rowIdentifier;
-  v5 = a3;
-  [v5 encodeInt64:rowIdentifier forKey:@"rowIdentifier"];
-  [v5 encodeObject:self->_serviceIdentifier forKey:@"serviceIdentifier"];
-  [v5 encodeInt64:self->_serviceIdentifierType forKey:@"serviceIdentifierType"];
-  [v5 encodeObject:self->_externalRecordIdentifier forKey:@"externalRecordIdentifier"];
-  [v5 encodeObject:self->_user forKey:@"user"];
-  [v5 encodeInt64:self->_rank forKey:@"rank"];
-  [v5 encodeObject:self->_owningExtensionState forKey:@"owningExtensionState"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:rowIdentifier forKey:@"rowIdentifier"];
+  [coderCopy encodeObject:self->_serviceIdentifier forKey:@"serviceIdentifier"];
+  [coderCopy encodeInt64:self->_serviceIdentifierType forKey:@"serviceIdentifierType"];
+  [coderCopy encodeObject:self->_externalRecordIdentifier forKey:@"externalRecordIdentifier"];
+  [coderCopy encodeObject:self->_user forKey:@"user"];
+  [coderCopy encodeInt64:self->_rank forKey:@"rank"];
+  [coderCopy encodeObject:self->_owningExtensionState forKey:@"owningExtensionState"];
 }
 
-- (SFCredentialIdentity)initWithCoder:(id)a3
+- (SFCredentialIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeInt64ForKey:@"rowIdentifier"];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"serviceIdentifier"];
+  v6 = [coderCopy decodeInt64ForKey:@"rowIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"serviceIdentifier"];
   v8 = v7;
   if (v7)
   {
@@ -91,7 +91,7 @@
 
   v10 = v9;
 
-  v11 = [v4 decodeInt64ForKey:@"serviceIdentifierType"];
+  v11 = [coderCopy decodeInt64ForKey:@"serviceIdentifierType"];
   if (v11 >= 2)
   {
     v12 = 0;
@@ -102,7 +102,7 @@
     v12 = v11;
   }
 
-  v13 = [v4 decodeObjectOfClass:v5 forKey:@"externalRecordIdentifier"];
+  v13 = [coderCopy decodeObjectOfClass:v5 forKey:@"externalRecordIdentifier"];
   v14 = v13;
   if (v13)
   {
@@ -116,7 +116,7 @@
 
   v16 = v15;
 
-  v17 = [v4 decodeObjectOfClass:v5 forKey:@"user"];
+  v17 = [coderCopy decodeObjectOfClass:v5 forKey:@"user"];
   v18 = v17;
   if (v17)
   {
@@ -130,8 +130,8 @@
 
   v20 = v19;
 
-  v21 = [v4 decodeInt64ForKey:@"rank"];
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"owningExtensionState"];
+  v21 = [coderCopy decodeInt64ForKey:@"rank"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"owningExtensionState"];
 
   v23 = [(SFCredentialIdentity *)self initWithRowIdentifier:v6 serviceIdentifier:v10 serviceIdentifierType:v12 externalRecordIdentifier:v16 user:v20 rank:v21 owningExtensionState:v22];
   return v23;
@@ -144,10 +144,10 @@
   return v3 ^ v4 ^ [(NSString *)self->_externalRecordIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -157,22 +157,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFCredentialIdentity *)v5 serviceIdentifier];
-      v7 = [(SFCredentialIdentity *)v5 user];
-      v8 = [(SFCredentialIdentity *)v5 externalRecordIdentifier];
+      v5 = equalCopy;
+      serviceIdentifier = [(SFCredentialIdentity *)v5 serviceIdentifier];
+      user = [(SFCredentialIdentity *)v5 user];
+      externalRecordIdentifier = [(SFCredentialIdentity *)v5 externalRecordIdentifier];
       serviceIdentifierType = self->_serviceIdentifierType;
-      if (serviceIdentifierType == [(SFCredentialIdentity *)v5 serviceIdentifierType]&& ((serviceIdentifier = self->_serviceIdentifier, serviceIdentifier == v6) || [(NSString *)serviceIdentifier isEqualToString:v6]) && ((user = self->_user, user == v7) || [(NSString *)user isEqualToString:v7]))
+      if (serviceIdentifierType == [(SFCredentialIdentity *)v5 serviceIdentifierType]&& ((serviceIdentifier = self->_serviceIdentifier, serviceIdentifier == serviceIdentifier) || [(NSString *)serviceIdentifier isEqualToString:serviceIdentifier]) && ((user = self->_user, user == user) || [(NSString *)user isEqualToString:user]))
       {
         externalRecordIdentifier = self->_externalRecordIdentifier;
-        if (externalRecordIdentifier == v8)
+        if (externalRecordIdentifier == externalRecordIdentifier)
         {
           v13 = 1;
         }
 
         else
         {
-          v13 = [(NSString *)externalRecordIdentifier isEqualToString:v8];
+          v13 = [(NSString *)externalRecordIdentifier isEqualToString:externalRecordIdentifier];
         }
       }
 
@@ -200,10 +200,10 @@
     if (serviceIdentifierType == 1)
     {
       v6 = [MEMORY[0x277CCACE0] componentsWithString:self->_serviceIdentifier];
-      v7 = [v6 host];
-      v8 = [v7 safari_stringByRemovingWwwDotPrefix];
+      host = [v6 host];
+      safari_stringByRemovingWwwDotPrefix = [host safari_stringByRemovingWwwDotPrefix];
       v9 = self->_domainWithoutWWWDot;
-      self->_domainWithoutWWWDot = v8;
+      self->_domainWithoutWWWDot = safari_stringByRemovingWwwDotPrefix;
     }
 
     else
@@ -215,9 +215,9 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v5 = [(NSString *)self->_serviceIdentifier safari_stringByRemovingWwwDotPrefix];
+      safari_stringByRemovingWwwDotPrefix2 = [(NSString *)self->_serviceIdentifier safari_stringByRemovingWwwDotPrefix];
       v6 = self->_domainWithoutWWWDot;
-      self->_domainWithoutWWWDot = v5;
+      self->_domainWithoutWWWDot = safari_stringByRemovingWwwDotPrefix2;
     }
 
     goto LABEL_7;
@@ -229,7 +229,7 @@ LABEL_8:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   rowIdentifier = self->_rowIdentifier;
@@ -242,22 +242,22 @@ LABEL_8:
   return [v4 initWithRowIdentifier:rowIdentifier serviceIdentifier:serviceIdentifier serviceIdentifierType:serviceIdentifierType externalRecordIdentifier:externalRecordIdentifier user:user rank:rank];
 }
 
-- (int64_t)compareForQuickTypeBar:(id)a3
+- (int64_t)compareForQuickTypeBar:(id)bar
 {
-  v4 = a3;
-  if (-[SFCredentialIdentity type](self, "type") == 2 && [v4 type] != 2)
+  barCopy = bar;
+  if (-[SFCredentialIdentity type](self, "type") == 2 && [barCopy type] != 2)
   {
     v5 = -1;
   }
 
-  else if (-[SFCredentialIdentity type](self, "type") == 2 || [v4 type] != 2)
+  else if (-[SFCredentialIdentity type](self, "type") == 2 || [barCopy type] != 2)
   {
     serviceIdentifierType = self->_serviceIdentifierType;
-    if (serviceIdentifierType == [v4 serviceIdentifierType])
+    if (serviceIdentifierType == [barCopy serviceIdentifierType])
     {
-      v7 = [(SFCredentialIdentity *)self _domainWithoutWWWDot];
-      v8 = [v4 _domainWithoutWWWDot];
-      v9 = [v7 safari_isCaseInsensitiveEqualToString:v8];
+      _domainWithoutWWWDot = [(SFCredentialIdentity *)self _domainWithoutWWWDot];
+      _domainWithoutWWWDot2 = [barCopy _domainWithoutWWWDot];
+      v9 = [_domainWithoutWWWDot safari_isCaseInsensitiveEqualToString:_domainWithoutWWWDot2];
 
       if (v9)
       {
@@ -265,20 +265,20 @@ LABEL_8:
       }
     }
 
-    v10 = [(SFCredentialIdentity *)self _domainWithoutWWWDot];
-    v11 = [v10 safari_countOfString:@"."];
+    _domainWithoutWWWDot3 = [(SFCredentialIdentity *)self _domainWithoutWWWDot];
+    v11 = [_domainWithoutWWWDot3 safari_countOfString:@"."];
 
-    v12 = [v4 _domainWithoutWWWDot];
-    v13 = [v12 safari_countOfString:@"."];
+    _domainWithoutWWWDot4 = [barCopy _domainWithoutWWWDot];
+    v13 = [_domainWithoutWWWDot4 safari_countOfString:@"."];
 
     v5 = v11 < v13 ? -1 : 1;
     if (v11 == v13)
     {
 LABEL_12:
-      v14 = [v4 rank];
+      rank = [barCopy rank];
       rank = self->_rank;
-      v16 = rank == v14;
-      v17 = rank <= v14;
+      v16 = rank == rank;
+      v17 = rank <= rank;
       v18 = -1;
       if (v17)
       {
@@ -310,17 +310,17 @@ LABEL_12:
   if ([(SFCredentialIdentity *)self serviceIdentifierType]== 1)
   {
     v3 = MEMORY[0x277CCACE0];
-    v4 = [(SFCredentialIdentity *)self serviceIdentifier];
-    v5 = [v3 componentsWithString:v4];
-    v6 = [v5 host];
+    serviceIdentifier = [(SFCredentialIdentity *)self serviceIdentifier];
+    v5 = [v3 componentsWithString:serviceIdentifier];
+    host = [v5 host];
   }
 
   else
   {
-    v6 = [(SFCredentialIdentity *)self serviceIdentifier];
+    host = [(SFCredentialIdentity *)self serviceIdentifier];
   }
 
-  return v6;
+  return host;
 }
 
 @end

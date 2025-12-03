@@ -1,27 +1,27 @@
 @interface JRSchemaJRTokenConfidence
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRTokenConfidence)initWithDictionary:(id)a3;
-- (JRSchemaJRTokenConfidence)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRTokenConfidence)initWithDictionary:(id)dictionary;
+- (JRSchemaJRTokenConfidence)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (float)asrScoresAtIndex:(unint64_t)a3;
+- (float)asrScoresAtIndex:(unint64_t)index;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addAsrScores:(float)a3;
-- (void)writeTo:(id)a3;
+- (void)addAsrScores:(float)scores;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRTokenConfidence
 
-- (JRSchemaJRTokenConfidence)initWithDictionary:(id)a3
+- (JRSchemaJRTokenConfidence)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = JRSchemaJRTokenConfidence;
   v5 = [(JRSchemaJRTokenConfidence *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"asrScores"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"asrScores"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (JRSchemaJRTokenConfidence)initWithJSON:(id)a3
+- (JRSchemaJRTokenConfidence)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRTokenConfidence *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRTokenConfidence *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRTokenConfidence *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,31 +106,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_asrScores count])
   {
-    v4 = [(JRSchemaJRTokenConfidence *)self asrScores];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"asrScores"];
+    asrScores = [(JRSchemaJRTokenConfidence *)self asrScores];
+    v5 = [asrScores copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"asrScores"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(JRSchemaJRTokenConfidence *)self asrScores];
-    v6 = [v4 asrScores];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    asrScores = [(JRSchemaJRTokenConfidence *)self asrScores];
+    asrScores2 = [equalCopy asrScores];
+    v7 = asrScores2;
+    if ((asrScores != 0) != (asrScores2 == 0))
     {
-      v8 = [(JRSchemaJRTokenConfidence *)self asrScores];
-      if (!v8)
+      asrScores3 = [(JRSchemaJRTokenConfidence *)self asrScores];
+      if (!asrScores3)
       {
 
 LABEL_10:
@@ -138,10 +138,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(JRSchemaJRTokenConfidence *)self asrScores];
-      v11 = [v4 asrScores];
-      v12 = [v10 isEqual:v11];
+      v9 = asrScores3;
+      asrScores4 = [(JRSchemaJRTokenConfidence *)self asrScores];
+      asrScores5 = [equalCopy asrScores];
+      v12 = [asrScores4 isEqual:asrScores5];
 
       if (v12)
       {
@@ -160,10 +160,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -197,28 +197,28 @@ LABEL_8:
   }
 }
 
-- (float)asrScoresAtIndex:(unint64_t)a3
+- (float)asrScoresAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_asrScores objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_asrScores objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addAsrScores:(float)a3
+- (void)addAsrScores:(float)scores
 {
   asrScores = self->_asrScores;
   if (!asrScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_asrScores;
-    self->_asrScores = v6;
+    self->_asrScores = array;
 
     asrScores = self->_asrScores;
   }
 
-  *&v8 = a3;
+  *&v8 = scores;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)asrScores addObject:v9];
 }

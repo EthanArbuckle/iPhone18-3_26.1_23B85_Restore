@@ -7,8 +7,8 @@
 - (id)analyticsDict
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(NSPNetworkStatusStats *)self tierType];
-  [v3 setObject:v4 forKeyedSubscript:@"TierType"];
+  tierType = [(NSPNetworkStatusStats *)self tierType];
+  [v3 setObject:tierType forKeyedSubscript:@"TierType"];
 
   v5 = [NSNumber numberWithUnsignedInteger:[(NSPNetworkStatusStats *)self wifiStatusBlockedCount]];
   [v3 setObject:v5 forKeyedSubscript:@"NetworkStatusStatsWiFiBlockedCount"];

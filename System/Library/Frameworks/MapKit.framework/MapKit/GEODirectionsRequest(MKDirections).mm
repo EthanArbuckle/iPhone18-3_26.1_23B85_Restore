@@ -10,22 +10,22 @@
   v10 = a3;
   v11 = a4;
   v12 = a5;
-  v13 = [a1 initWithFeedback:a6];
+  v13 = [self initWithFeedback:a6];
   v14 = v13;
   if (v13)
   {
     [v13 _commonSetup:v10];
-    v15 = [v11 geoWaypointTyped];
-    [v14 addWaypointTyped:v15];
+    geoWaypointTyped = [v11 geoWaypointTyped];
+    [v14 addWaypointTyped:geoWaypointTyped];
 
-    v16 = [v12 geoWaypointTyped];
-    [v14 addWaypointTyped:v16];
+    geoWaypointTyped2 = [v12 geoWaypointTyped];
+    [v14 addWaypointTyped:geoWaypointTyped2];
 
     if (GEOConfigGetBOOL())
     {
-      v17 = [MEMORY[0x1E69A2398] sharedPlatform];
-      v18 = [v17 clientCapabilities];
-      v19 = [v18 copy];
+      mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+      clientCapabilities = [mEMORY[0x1E69A2398] clientCapabilities];
+      v19 = [clientCapabilities copy];
 
       [v19 setRouteOptionsSupported:0];
       [v14 setClientCapabilities:v19];
@@ -39,7 +39,7 @@
 {
   v4 = a3;
   v5 = _routeAttributesForMKDirectionsRequest(v4);
-  [a1 setRouteAttributes:v5];
+  [self setRouteAttributes:v5];
 
   LODWORD(v5) = [v4 requestsAlternateRoutes];
   if (v5)
@@ -52,12 +52,12 @@
     v6 = 1;
   }
 
-  [a1 setMainTransportTypeMaxRouteCount:v6];
+  [self setMainTransportTypeMaxRouteCount:v6];
   v8 = +[MKLocationManager sharedLocationManager];
   if ([v8 hasLocation] && (objc_msgSend(v8, "isLastLocationStale") & 1) == 0)
   {
-    v7 = [v8 currentLocation];
-    [a1 setCurrentUserLocation:v7];
+    currentLocation = [v8 currentLocation];
+    [self setCurrentUserLocation:currentLocation];
   }
 }
 

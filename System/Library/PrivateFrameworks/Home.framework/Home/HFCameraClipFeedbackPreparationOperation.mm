@@ -1,22 +1,22 @@
 @interface HFCameraClipFeedbackPreparationOperation
-- (HFCameraClipFeedbackPreparationOperation)initWithCameraClip:(id)a3 completionHandler:(id)a4;
+- (HFCameraClipFeedbackPreparationOperation)initWithCameraClip:(id)clip completionHandler:(id)handler;
 - (void)main;
 @end
 
 @implementation HFCameraClipFeedbackPreparationOperation
 
-- (HFCameraClipFeedbackPreparationOperation)initWithCameraClip:(id)a3 completionHandler:(id)a4
+- (HFCameraClipFeedbackPreparationOperation)initWithCameraClip:(id)clip completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  clipCopy = clip;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = HFCameraClipFeedbackPreparationOperation;
   v9 = [(HFCameraClipFeedbackPreparationOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cameraClip, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_cameraClip, clip);
+    v11 = _Block_copy(handlerCopy);
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
   }
@@ -27,12 +27,12 @@
 - (void)main
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
-  v4 = [HFCameraUtilities videoDestinationURLForCameraClip:v3 strippedAudio:1];
+  cameraClip = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
+  v4 = [HFCameraUtilities videoDestinationURLForCameraClip:cameraClip strippedAudio:1];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v4 path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {
@@ -44,18 +44,18 @@
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Stripped audio file exists at url:%@.", buf, 0xCu);
     }
 
-    v9 = [(HFCameraClipFeedbackPreparationOperation *)self completionHandler];
-    (v9)[2](v9, v4);
+    completionHandler = [(HFCameraClipFeedbackPreparationOperation *)self completionHandler];
+    (completionHandler)[2](completionHandler, v4);
   }
 
   else
   {
-    v10 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
-    v9 = [HFCameraUtilities videoDestinationURLForCameraClip:v10];
+    cameraClip2 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
+    completionHandler = [HFCameraUtilities videoDestinationURLForCameraClip:cameraClip2];
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v9 path];
-    v13 = [v11 fileExistsAtPath:v12];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    path2 = [completionHandler path];
+    v13 = [defaultManager2 fileExistsAtPath:path2];
 
     v14 = HFLogForCategory(0x14uLL);
     v15 = v14;
@@ -63,42 +63,42 @@
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
-        v17 = [v16 hf_prettyDescription];
+        cameraClip3 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
+        hf_prettyDescription = [cameraClip3 hf_prettyDescription];
         *buf = 138412290;
-        v30 = v17;
+        v30 = hf_prettyDescription;
         _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "Proceed to strip audio file and truncate file to 20 seconds for clip: %@", buf, 0xCu);
       }
 
-      v18 = [MEMORY[0x277CE63D8] assetWithURL:v9];
+      v18 = [MEMORY[0x277CE63D8] assetWithURL:completionHandler];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __48__HFCameraClipFeedbackPreparationOperation_main__block_invoke;
       v24[3] = &unk_277DF3398;
       v25 = v18;
-      v26 = v9;
-      v27 = self;
+      v26 = completionHandler;
+      selfCopy = self;
       v28 = v4;
-      v19 = v18;
-      [v19 loadValuesAsynchronouslyForKeys:&unk_282525798 completionHandler:v24];
+      completionHandler2 = v18;
+      [completionHandler2 loadValuesAsynchronouslyForKeys:&unk_282525798 completionHandler:v24];
     }
 
     else
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v21 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
-        v22 = [v21 hf_prettyDescription];
-        v23 = [v9 path];
+        cameraClip4 = [(HFCameraClipFeedbackPreparationOperation *)self cameraClip];
+        hf_prettyDescription2 = [cameraClip4 hf_prettyDescription];
+        path3 = [completionHandler path];
         *buf = 138412546;
-        v30 = v22;
+        v30 = hf_prettyDescription2;
         v31 = 2112;
-        v32 = v23;
+        v32 = path3;
         _os_log_error_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_ERROR, "Unable to find file to convert for clip: %@; URL: %@. THIS SHOULD NEVER HAPPEN.", buf, 0x16u);
       }
 
-      v19 = [(HFCameraClipFeedbackPreparationOperation *)self completionHandler];
-      (*(v19 + 2))(v19, 0);
+      completionHandler2 = [(HFCameraClipFeedbackPreparationOperation *)self completionHandler];
+      (*(completionHandler2 + 2))(completionHandler2, 0);
     }
   }
 

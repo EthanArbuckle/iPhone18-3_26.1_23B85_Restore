@@ -1,8 +1,8 @@
 @interface AXMTraitDetectorNode
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (id)_blurValueForVisionObservation:(id)a3;
-- (id)_brightnessValueForVisionObservation:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (id)_blurValueForVisionObservation:(id)observation;
+- (id)_brightnessValueForVisionObservation:(id)observation;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 - (void)nodeInitialize;
 @end
 
@@ -60,22 +60,22 @@
   return 0;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v26.receiver = self;
   v26.super_class = AXMTraitDetectorNode;
-  [(AXMEvaluationNode *)&v26 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v26 evaluate:evaluateCopy metrics:metricsCopy];
   v8 = objc_autoreleasePoolPush();
   if ([(AXMTraitDetectorNode *)self shouldEvaluateColorInformation])
   {
-    [(AXMTraitDetectorNode *)self _evaluateColorInformation:v6];
+    [(AXMTraitDetectorNode *)self _evaluateColorInformation:evaluateCopy];
   }
 
-  v9 = [v6 visionImageRequestHandler];
-  if (v9)
+  visionImageRequestHandler = [evaluateCopy visionImageRequestHandler];
+  if (visionImageRequestHandler)
   {
     v28 = 0;
     v29 = &v28;
@@ -99,23 +99,23 @@
     v32[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
     v25 = 0;
-    v14 = [v9 performRequests:v13 error:&v25];
+    v14 = [visionImageRequestHandler performRequests:v13 error:&v25];
     v15 = v25;
     if (v14)
     {
-      v16 = [v12 results];
-      v17 = [v16 firstObject];
-      v18 = [(AXMTraitDetectorNode *)self _blurValueForVisionObservation:v17];
+      results = [v12 results];
+      firstObject = [results firstObject];
+      v18 = [(AXMTraitDetectorNode *)self _blurValueForVisionObservation:firstObject];
 
       if (v18)
       {
         [v18 floatValue];
         v20 = v19;
-        [v6 size];
+        [evaluateCopy size];
         v22 = v21;
         LODWORD(v21) = v20;
         v24 = [AXMVisionFeature featureWithVisionRequest:v12 blurValue:v21 canvasSize:v22, v23];
-        [v6 appendFeature:v24];
+        [evaluateCopy appendFeature:v24];
       }
     }
 
@@ -141,24 +141,24 @@
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)_brightnessValueForVisionObservation:(id)a3
+- (id)_brightnessValueForVisionObservation:(id)observation
 {
-  v3 = a3;
+  observationCopy = observation;
   getVNImageBrightnessObservationClass();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x1E696AD98];
-    [v3 brightness];
-    v5 = [v4 numberWithFloat:?];
+    [observationCopy brightness];
+    exposureScore = [v4 numberWithFloat:?];
 LABEL_5:
-    v6 = v5;
+    v6 = exposureScore;
     goto LABEL_7;
   }
 
   getVNImageScoreObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 exposureScore];
+    exposureScore = [observationCopy exposureScore];
     goto LABEL_5;
   }
 
@@ -168,24 +168,24 @@ LABEL_7:
   return v6;
 }
 
-- (id)_blurValueForVisionObservation:(id)a3
+- (id)_blurValueForVisionObservation:(id)observation
 {
-  v3 = a3;
+  observationCopy = observation;
   getVNImageBlurObservationClass();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x1E696AD98];
-    [v3 blurMeasure];
-    v5 = [v4 numberWithFloat:?];
+    [observationCopy blurMeasure];
+    blurScore = [v4 numberWithFloat:?];
 LABEL_5:
-    v6 = v5;
+    v6 = blurScore;
     goto LABEL_7;
   }
 
   getVNImageScoreObservationClass();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 blurScore];
+    blurScore = [observationCopy blurScore];
     goto LABEL_5;
   }
 

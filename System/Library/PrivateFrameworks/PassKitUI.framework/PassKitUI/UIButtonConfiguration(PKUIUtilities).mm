@@ -13,18 +13,18 @@
 
 + (void)pkui_createPlainButtonConfiguration
 {
-  v0 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v1 = [v0 background];
-  [v1 setCornerRadius:0.0];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  background = [plainButtonConfiguration background];
+  [background setCornerRadius:0.0];
 
-  return v0;
+  return plainButtonConfiguration;
 }
 
 + (void)pkui_createPlainMinimalButtonConfiguration
 {
-  v0 = [MEMORY[0x1E69DC740] pkui_createPlainButtonConfiguration];
-  [v0 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  return v0;
+  pkui_createPlainButtonConfiguration = [MEMORY[0x1E69DC740] pkui_createPlainButtonConfiguration];
+  [pkui_createPlainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  return pkui_createPlainButtonConfiguration;
 }
 
 + (id)pkui_plainConfigurationWithTitle:()PKUIUtilities font:
@@ -32,12 +32,12 @@
   v5 = MEMORY[0x1E69DC740];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 pkui_createPlainButtonConfiguration];
+  pkui_createPlainButtonConfiguration = [v5 pkui_createPlainButtonConfiguration];
   v9 = [MEMORY[0x1E696AAB0] pkui_attriutedStringWithString:v7 font:v6 paragraphStyle:0];
 
-  [v8 setAttributedTitle:v9];
+  [pkui_createPlainButtonConfiguration setAttributedTitle:v9];
 
-  return v8;
+  return pkui_createPlainButtonConfiguration;
 }
 
 + (id)pkui_plainConfigurationWithTitle:()PKUIUtilities font:lineBreakMode:textAlignment:
@@ -45,17 +45,17 @@
   v9 = MEMORY[0x1E69DC740];
   v10 = a4;
   v11 = a3;
-  v12 = [v9 pkui_createPlainButtonConfiguration];
-  v13 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v14 = [v13 mutableCopy];
+  pkui_createPlainButtonConfiguration = [v9 pkui_createPlainButtonConfiguration];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v14 = [defaultParagraphStyle mutableCopy];
 
   [v14 setLineBreakMode:a5];
   [v14 setAlignment:a6];
   v15 = [MEMORY[0x1E696AAB0] pkui_attriutedStringWithString:v11 font:v10 paragraphStyle:v14];
 
-  [v12 setAttributedTitle:v15];
+  [pkui_createPlainButtonConfiguration setAttributedTitle:v15];
 
-  return v12;
+  return pkui_createPlainButtonConfiguration;
 }
 
 + (id)pkui_plainConfigurationWithImage:()PKUIUtilities foregroundColor:
@@ -63,12 +63,12 @@
   v5 = MEMORY[0x1E69DC740];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 pkui_createPlainMinimalButtonConfiguration];
-  [v8 setImage:v7];
+  pkui_createPlainMinimalButtonConfiguration = [v5 pkui_createPlainMinimalButtonConfiguration];
+  [pkui_createPlainMinimalButtonConfiguration setImage:v7];
 
-  [v8 setBaseForegroundColor:v6];
+  [pkui_createPlainMinimalButtonConfiguration setBaseForegroundColor:v6];
 
-  return v8;
+  return pkui_createPlainMinimalButtonConfiguration;
 }
 
 + (id)pkui_plainConfigurationWithImage:()PKUIUtilities imageConfiguration:foregroundColor:
@@ -77,23 +77,23 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [v7 pkui_createPlainMinimalButtonConfiguration];
-  [v11 setImage:v10];
+  pkui_createPlainMinimalButtonConfiguration = [v7 pkui_createPlainMinimalButtonConfiguration];
+  [pkui_createPlainMinimalButtonConfiguration setImage:v10];
 
-  [v11 setPreferredSymbolConfigurationForImage:v9];
-  [v11 setBaseForegroundColor:v8];
+  [pkui_createPlainMinimalButtonConfiguration setPreferredSymbolConfigurationForImage:v9];
+  [pkui_createPlainMinimalButtonConfiguration setBaseForegroundColor:v8];
 
-  return v11;
+  return pkui_createPlainMinimalButtonConfiguration;
 }
 
 + (void)pkui_createSecondaryButtonConfiguration
 {
-  v0 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v0 setCornerStyle:4];
-  v1 = [MEMORY[0x1E69DC888] labelColor];
-  [v0 setBaseForegroundColor:v1];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration setCornerStyle:4];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [grayButtonConfiguration setBaseForegroundColor:labelColor];
 
-  return v0;
+  return grayButtonConfiguration;
 }
 
 + (id)pkui_secondaryConfigurationWithTitle:()PKUIUtilities font:
@@ -101,12 +101,12 @@
   v5 = MEMORY[0x1E69DC740];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 pkui_createSecondaryButtonConfiguration];
+  pkui_createSecondaryButtonConfiguration = [v5 pkui_createSecondaryButtonConfiguration];
   v9 = [MEMORY[0x1E696AAB0] pkui_attriutedStringWithString:v7 font:v6 paragraphStyle:0];
 
-  [v8 setAttributedTitle:v9];
+  [pkui_createSecondaryButtonConfiguration setAttributedTitle:v9];
 
-  return v8;
+  return pkui_createSecondaryButtonConfiguration;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface TRINamespaceDescriptorProvider
-+ (id)_descriptorFromDynamicNamespaceRecord:(id)a3;
-+ (id)providerWithNamespaceDatabase:(id)a3 defaultDescriptorDirectoryPath:(id)a4;
-- (TRINamespaceDescriptorProvider)initWithNamespaceDatabase:(id)a3 defaultDescriptorDirectoryPath:(id)a4;
-- (id)descriptorWithNamespaceName:(id)a3;
++ (id)_descriptorFromDynamicNamespaceRecord:(id)record;
++ (id)providerWithNamespaceDatabase:(id)database defaultDescriptorDirectoryPath:(id)path;
+- (TRINamespaceDescriptorProvider)initWithNamespaceDatabase:(id)database defaultDescriptorDirectoryPath:(id)path;
+- (id)descriptorWithNamespaceName:(id)name;
 @end
 
 @implementation TRINamespaceDescriptorProvider
 
-+ (id)providerWithNamespaceDatabase:(id)a3 defaultDescriptorDirectoryPath:(id)a4
++ (id)providerWithNamespaceDatabase:(id)database defaultDescriptorDirectoryPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithNamespaceDatabase:v7 defaultDescriptorDirectoryPath:v6];
+  pathCopy = path;
+  databaseCopy = database;
+  v8 = [[self alloc] initWithNamespaceDatabase:databaseCopy defaultDescriptorDirectoryPath:pathCopy];
 
   return v8;
 }
 
-- (TRINamespaceDescriptorProvider)initWithNamespaceDatabase:(id)a3 defaultDescriptorDirectoryPath:(id)a4
+- (TRINamespaceDescriptorProvider)initWithNamespaceDatabase:(id)database defaultDescriptorDirectoryPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  databaseCopy = database;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (databaseCopy)
   {
-    if (v9)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -31,8 +31,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorProvider.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"namespaceDatabase"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorProvider.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"namespaceDatabase"}];
 
     if (v10)
     {
@@ -40,8 +40,8 @@
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorProvider.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"descriptorDirectory"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceDescriptorProvider.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"descriptorDirectory"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -50,17 +50,17 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_namespaceDatabase, a3);
-    objc_storeStrong(&v12->_descriptorDirectory, a4);
+    objc_storeStrong(&v11->_namespaceDatabase, database);
+    objc_storeStrong(&v12->_descriptorDirectory, path);
   }
 
   return v12;
 }
 
-- (id)descriptorWithNamespaceName:(id)a3
+- (id)descriptorWithNamespaceName:(id)name
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D73750] loadWithNamespaceName:v4 fromDirectory:self->_descriptorDirectory];
+  nameCopy = name;
+  v5 = [MEMORY[0x277D73750] loadWithNamespaceName:nameCopy fromDirectory:self->_descriptorDirectory];
   v6 = v5;
   if (v5)
   {
@@ -69,7 +69,7 @@ LABEL_3:
 
   else
   {
-    v8 = [(TRINamespaceDatabase *)self->_namespaceDatabase dynamicNamespaceRecordWithNamespaceName:v4];
+    v8 = [(TRINamespaceDatabase *)self->_namespaceDatabase dynamicNamespaceRecordWithNamespaceName:nameCopy];
     if (v8)
     {
       v7 = [TRINamespaceDescriptorProvider _descriptorFromDynamicNamespaceRecord:v8];
@@ -98,22 +98,22 @@ void __73__TRINamespaceDescriptorProvider__dynamicDescriptorsForContainer_teamId
   }
 }
 
-+ (id)_descriptorFromDynamicNamespaceRecord:(id)a3
++ (id)_descriptorFromDynamicNamespaceRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_opt_new();
-  v5 = [v3 defaultsFileURL];
-  [v4 setFactorsURL:v5];
+  defaultsFileURL = [recordCopy defaultsFileURL];
+  [v4 setFactorsURL:defaultsFileURL];
 
-  v6 = [v3 appContainer];
-  [v4 setAppContainer:v6];
+  appContainer = [recordCopy appContainer];
+  [v4 setAppContainer:appContainer];
 
-  [v4 setCloudKitContainerId:{objc_msgSend(v3, "cloudKitContainer")}];
+  [v4 setCloudKitContainerId:{objc_msgSend(recordCopy, "cloudKitContainer")}];
   v7 = objc_alloc(MEMORY[0x277D73750]);
-  v8 = [v3 name];
-  v9 = [v3 compatibilityVersion];
+  name = [recordCopy name];
+  compatibilityVersion = [recordCopy compatibilityVersion];
 
-  v10 = [v7 initWithNamespaceName:v8 downloadNCV:v9 optionalParams:v4];
+  v10 = [v7 initWithNamespaceName:name downloadNCV:compatibilityVersion optionalParams:v4];
 
   return v10;
 }

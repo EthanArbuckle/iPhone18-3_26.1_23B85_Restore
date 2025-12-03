@@ -1,99 +1,99 @@
 @interface REPHASEContext
-- (BOOL)addEventIfStillPreparing:(id)a3 forToken:(unint64_t)a4;
-- (BOOL)doCleanUpSoundEventForToken:(unint64_t)a3 ifNotInScene:(unint64_t)a4;
+- (BOOL)addEventIfStillPreparing:(id)preparing forToken:(unint64_t)token;
+- (BOOL)doCleanUpSoundEventForToken:(unint64_t)token ifNotInScene:(unint64_t)scene;
 - (BOOL)engineShouldBeRunning;
 - (BOOL)engineShouldBeRunningWithListenerAndSoundEvents;
-- (BOOL)eventBeingPrepared:(unint64_t)a3;
-- (BOOL)getConfigurationForAudioAssetID:(unint64_t)a3 configuration:(void *)a4;
+- (BOOL)eventBeingPrepared:(unint64_t)prepared;
+- (BOOL)getConfigurationForAudioAssetID:(unint64_t)d configuration:(void *)configuration;
 - (BOOL)isListenerCreatedInScene;
-- (DynamicArray<re::audio::PHASEOccluderData>)createPHASEOccluders:(SEL)a3;
-- (DynamicArray<re::audio::PHASEOccluderUpdateData>)updatePHASEOccluders:(SEL)a3;
+- (DynamicArray<re::audio::PHASEOccluderData>)createPHASEOccluders:(SEL)occluders;
+- (DynamicArray<re::audio::PHASEOccluderUpdateData>)updatePHASEOccluders:(SEL)occluders;
 - (PHASEEngine)engine;
 - (PHASEEngine)maybeEngine;
-- (PHASEOccluderData)createPHASEOccluderData:(SEL)a3;
-- (PHASEOccluderUpdateData)createPHASEOccluderUpdateData:(SEL)a3;
+- (PHASEOccluderData)createPHASEOccluderData:(SEL)data;
+- (PHASEOccluderUpdateData)createPHASEOccluderUpdateData:(SEL)data;
 - (PhaseRoomAcousticDefaults)roomAcousticDefaults;
-- (REPHASEContext)initWithSampleRate:(double)a3 phaseQueue:(id)a4 audioEngineRunnableManager:(shared_ptr<re:(int64_t)a6 :(BOOL)a7 AudioEngineRunnableManager>)a5 phaseEngineUpdateMode:shouldConfigureAudioEngine:;
-- (double)doubleFromPlistValue:(id)a3 defaultValue:(double)a4;
+- (REPHASEContext)initWithSampleRate:(double)rate phaseQueue:(id)queue audioEngineRunnableManager:(shared_ptr<re:(int64_t)manager :(BOOL)a7 AudioEngineRunnableManager>)a5 phaseEngineUpdateMode:shouldConfigureAudioEngine:;
+- (double)doubleFromPlistValue:(id)value defaultValue:(double)defaultValue;
 - (id).cxx_construct;
-- (id)baseMixerDefinitionWith:(const void *)a3;
-- (id)createAcousticMaterialsArrayWithAbsorption:(DynamicArray<re:(DynamicArray<re:(DynamicArray<re::AcousticSoundReductionMaterial> *)a5 :AcousticScatteringMaterial> *)a4 :AcousticAbsorptionMaterial> *)a3 scattering:soundReduction:;
-- (id)createPHASEShape:(const void *)a3;
-- (id)createPHASEShapeAndOccluder:(const void *)a3;
-- (id)createPhaseShapeWithMeshID:(unint64_t)a3 materials:(id)a4 mdlMesh:(id)a5 arkitMesh:(BOOL)a6 meshType:(unsigned __int8)a7;
-- (id)createSamplerDefinitionForToken:(unint64_t)a3;
-- (id)directParamForToken:(unint64_t)a3 isGroupPlaybackSound:(BOOL)a4;
-- (id)eventFor:(unint64_t)a3;
+- (id)baseMixerDefinitionWith:(const void *)with;
+- (id)createAcousticMaterialsArrayWithAbsorption:(DynamicArray<re:(DynamicArray<re:(DynamicArray<re::AcousticSoundReductionMaterial> *)absorption :AcousticScatteringMaterial> *)a4 :AcousticAbsorptionMaterial> *)a3 scattering:soundReduction:;
+- (id)createPHASEShape:(const void *)shape;
+- (id)createPHASEShapeAndOccluder:(const void *)occluder;
+- (id)createPhaseShapeWithMeshID:(unint64_t)d materials:(id)materials mdlMesh:(id)mesh arkitMesh:(BOOL)arkitMesh meshType:(unsigned __int8)type;
+- (id)createSamplerDefinitionForToken:(unint64_t)token;
+- (id)directParamForToken:(unint64_t)token isGroupPlaybackSound:(BOOL)sound;
+- (id)eventFor:(unint64_t)for;
 - (id)fillOutMeshBoundingBoxInformation:;
-- (id)gainParamForToken:(unint64_t)a3 isGroupPlaybackSound:(BOOL)a4;
+- (id)gainParamForToken:(unint64_t)token isGroupPlaybackSound:(BOOL)sound;
 - (id)getListener;
-- (id)getOrCreateSpatialMixerDefinitionUsing:(const void *)a3;
-- (id)getPhaseShapeFromCacheWithMeshID:(unint64_t)a3;
-- (id)getSessionRoot:(unint64_t)a3;
-- (id)mixerParametersForPrepareState:(const void *)a3 source:(id)a4 listener:(id)a5 mixerIdentifiers:(id)a6;
-- (id)reverbParamForToken:(unint64_t)a3 isGroupPlaybackSound:(BOOL)a4;
-- (id)samplerDefForFileAsset:(unint64_t)a3 mixerDefinition:(id)a4 prepareState:(const void *)a5;
-- (id)samplerDefForFileAsset:(unint64_t)a3 with:(const void *)a4;
-- (id)sourceObjectForEntityID:(unint64_t)a3;
-- (shared_ptr<re::audio::REPHASEAudioScene>)sceneForID:(unint64_t)a3;
-- (shared_ptr<re::audio::REPHASEEntity>)_getEntityUnderLock:(unint64_t)a3;
-- (shared_ptr<re::audio::REPHASEEntity>)getEntity:(unint64_t)a3;
+- (id)getOrCreateSpatialMixerDefinitionUsing:(const void *)using;
+- (id)getPhaseShapeFromCacheWithMeshID:(unint64_t)d;
+- (id)getSessionRoot:(unint64_t)root;
+- (id)mixerParametersForPrepareState:(const void *)state source:(id)source listener:(id)listener mixerIdentifiers:(id)identifiers;
+- (id)reverbParamForToken:(unint64_t)token isGroupPlaybackSound:(BOOL)sound;
+- (id)samplerDefForFileAsset:(unint64_t)asset mixerDefinition:(id)definition prepareState:(const void *)state;
+- (id)samplerDefForFileAsset:(unint64_t)asset with:(const void *)with;
+- (id)sourceObjectForEntityID:(unint64_t)d;
+- (shared_ptr<re::audio::REPHASEAudioScene>)sceneForID:(unint64_t)d;
+- (shared_ptr<re::audio::REPHASEEntity>)_getEntityUnderLock:(unint64_t)lock;
+- (shared_ptr<re::audio::REPHASEEntity>)getEntity:(unint64_t)entity;
 - (unint64_t)phaseShapeCount;
 - (unint64_t)uniqueEventCount;
 - (unordered_map<unsigned)copyPhaseShapeCache;
 - (unordered_set<unsigned)playbackClientsWithPreparedOrPreparingSounds;
 - (unsigned)getPlayingSoundEventsCount;
 - (unsigned)getPreparingSoundEventsCount;
-- (void)addAudioAssetID:(unint64_t)a3 configuration:(const void *)a4;
-- (void)addOccluder:(id)a3 toScene:(unint64_t)a4 entity:(unint64_t)a5;
-- (void)addPhaseShapeToCache:(id)a3 meshID:(unint64_t)a4 mesh:(id)a5;
+- (void)addAudioAssetID:(unint64_t)d configuration:(const void *)configuration;
+- (void)addOccluder:(id)occluder toScene:(unint64_t)scene entity:(unint64_t)entity;
+- (void)addPhaseShapeToCache:(id)cache meshID:(unint64_t)d mesh:(id)mesh;
 - (void)applyCustomHRIR;
-- (void)applyMeshEvents:(const void *)a3;
-- (void)applyMeshRemoval:(const void *)a3 shouldRemoveEntity:(BOOL)a4;
-- (void)applyMeshRemovals:(const void *)a3 shouldRemoveEntity:(BOOL)a4;
-- (void)applyOccluderAdditions:(const void *)a3;
-- (void)applyOccluderUpdates:(const void *)a3;
+- (void)applyMeshEvents:(const void *)events;
+- (void)applyMeshRemoval:(const void *)removal shouldRemoveEntity:(BOOL)entity;
+- (void)applyMeshRemovals:(const void *)removals shouldRemoveEntity:(BOOL)entity;
+- (void)applyOccluderAdditions:(const void *)additions;
+- (void)applyOccluderUpdates:(const void *)updates;
 - (void)applyReverbPreset;
 - (void)applySpaceBlendLevel;
 - (void)clearPhaseShapeCache;
-- (void)clearPreparingStateForToken:(unint64_t)a3;
+- (void)clearPreparingStateForToken:(unint64_t)token;
 - (void)clearSoundEventEnginePointers;
 - (void)createListenerIfPending;
-- (void)decrementOrDestroyEntityWithZeroCount:(unint64_t)a3;
-- (void)fillOutDebugInformation:(id)a3;
-- (void)fillOutMeshBoundingBoxInformation:(id)a3;
-- (void)getSourceCount:(unsigned int *)a3 occluderCount:(unsigned int *)a4;
-- (void)prepare:(shared_ptr<re::audio::REPHASESoundPrepareState>)a3;
-- (void)prepareExternalType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
-- (void)prepareFileGroupType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
-- (void)prepareFileType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
-- (void)prepareGeneratorType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
-- (void)prepareSyncGroup:(unordered_map<unsigned long)long forGroupID:()std:(std:(std:(std:(std:(unint64_t)a4 :(unint64_t)a5 shared_ptr<re::audio::REPHASESoundPrepareState>>>> *)a3 :allocator<std::pair<const unsigned long)long :equal_to<unsigned long)long> :hash<unsigned long)long> :shared_ptr<re::audio::REPHASESoundPrepareState> withTransportControlToken:;
-- (void)removeAudioAssetID:(unint64_t)a3;
-- (void)removeAudioFileGroupAssetData:(unint64_t)a3;
+- (void)decrementOrDestroyEntityWithZeroCount:(unint64_t)count;
+- (void)fillOutDebugInformation:(id)information;
+- (void)fillOutMeshBoundingBoxInformation:(id)information;
+- (void)getSourceCount:(unsigned int *)count occluderCount:(unsigned int *)occluderCount;
+- (void)prepare:(shared_ptr<re::audio::REPHASESoundPrepareState>)prepare;
+- (void)prepareExternalType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
+- (void)prepareFileGroupType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
+- (void)prepareFileType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
+- (void)prepareGeneratorType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:;
+- (void)prepareSyncGroup:(unordered_map<unsigned long)long forGroupID:()std:(std:(std:(std:(std:(unint64_t)std :(unint64_t)a5 shared_ptr<re::audio::REPHASESoundPrepareState>>>> *)a3 :allocator<std::pair<const unsigned long)long :equal_to<unsigned long)long> :hash<unsigned long)long> :shared_ptr<re::audio::REPHASESoundPrepareState> withTransportControlToken:;
+- (void)removeAudioAssetID:(unint64_t)d;
+- (void)removeAudioFileGroupAssetData:(unint64_t)data;
 - (void)removeListener;
-- (void)removeOccluderFromScene:(unint64_t)a3 entity:(unint64_t)a4 shouldRemoveEntity:(BOOL)a5;
-- (void)removePhaseShapeFromCacheWithMeshID:(unint64_t)a3;
-- (void)removeSessionRoot:(unint64_t)a3;
-- (void)setCustomHRIRURL:(id)a3;
-- (void)setPreparingWithData:(RESoundEventPreparingData)a3 forToken:(unint64_t)a4;
-- (void)setReverbPreset:(int64_t)a3 allowingSpaceBlend:(BOOL)a4;
-- (void)setRoomSensedReverbStabilizationIsEnabled:(BOOL)a3;
-- (void)setSpaceBlendLevel:(float)a3;
-- (void)setSpaceBlendTargetPresetOrientation:(uint64_t)a1;
+- (void)removeOccluderFromScene:(unint64_t)scene entity:(unint64_t)entity shouldRemoveEntity:(BOOL)removeEntity;
+- (void)removePhaseShapeFromCacheWithMeshID:(unint64_t)d;
+- (void)removeSessionRoot:(unint64_t)root;
+- (void)setCustomHRIRURL:(id)l;
+- (void)setPreparingWithData:(RESoundEventPreparingData)data forToken:(unint64_t)token;
+- (void)setReverbPreset:(int64_t)preset allowingSpaceBlend:(BOOL)blend;
+- (void)setRoomSensedReverbStabilizationIsEnabled:(BOOL)enabled;
+- (void)setSpaceBlendLevel:(float)level;
+- (void)setSpaceBlendTargetPresetOrientation:(uint64_t)orientation;
 - (void)stopAllAndReset;
 - (void)update;
-- (void)updateOccluder:(const void *)a3;
+- (void)updateOccluder:(const void *)occluder;
 @end
 
 @implementation REPHASEContext
 
-- (REPHASEContext)initWithSampleRate:(double)a3 phaseQueue:(id)a4 audioEngineRunnableManager:(shared_ptr<re:(int64_t)a6 :(BOOL)a7 AudioEngineRunnableManager>)a5 phaseEngineUpdateMode:shouldConfigureAudioEngine:
+- (REPHASEContext)initWithSampleRate:(double)rate phaseQueue:(id)queue audioEngineRunnableManager:(shared_ptr<re:(int64_t)manager :(BOOL)a7 AudioEngineRunnableManager>)a5 phaseEngineUpdateMode:shouldConfigureAudioEngine:
 {
-  v7 = a6;
+  managerCopy = manager;
   cntrl = a5.__cntrl_;
   ptr = a5.__ptr_;
-  v13 = a4;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = REPHASEContext;
   v14 = [(REPHASEContext *)&v27 init];
@@ -102,11 +102,11 @@
   {
     atomic_store(0, &v14->_stoppedAndDestroyed);
     v14->_phaseUpdateMode = cntrl;
-    v14->_shouldConfigureAudioEngine = v7;
+    v14->_shouldConfigureAudioEngine = managerCopy;
     v14->_reverbPreset = -1;
     v14->_allowSpaceBlend = 1;
     v14->_spaceBlendLevel = 0.0;
-    v14->_sampleRate = a3;
+    v14->_sampleRate = rate;
     v16 = [objc_alloc(MEMORY[0x1E69781E0]) initWithValue:@"gain" minimum:1.0 maximum:0.0 identifier:4.0];
     gainLinearParamDefinition = v15->_gainLinearParamDefinition;
     v15->_gainLinearParamDefinition = v16;
@@ -115,9 +115,9 @@
     rateParamDefinition = v15->_rateParamDefinition;
     v15->_rateParamDefinition = v18;
 
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v15->_directpathEnabled = [v20 BOOLForKey:@"com.apple.re.audio.directpathenabled"];
-    objc_storeStrong(&v15->_phaseQueue, a4);
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v15->_directpathEnabled = [standardUserDefaults BOOLForKey:@"com.apple.re.audio.directpathenabled"];
+    objc_storeStrong(&v15->_phaseQueue, queue);
     v22 = *ptr;
     v21 = *(ptr + 1);
     if (v21)
@@ -141,13 +141,13 @@
   return v15;
 }
 
-- (void)fillOutMeshBoundingBoxInformation:(id)a3
+- (void)fillOutMeshBoundingBoxInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   [(REPHASEContext *)self copyPhaseShapeCache];
   v42 = 0uLL;
   v41 = 0uLL;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = v44;
   if (v44)
   {
@@ -172,7 +172,7 @@
       v35 = v18;
       v19 = [REPHASEContext fillOutMeshBoundingBoxInformation:]::$_5::operator()(v7, &v39, &v33);
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PHASEMesh-%llu", v7];
-      [v5 setObject:v19 forKey:v20];
+      [dictionary setObject:v19 forKey:v20];
 
       if (v6 == v44)
       {
@@ -217,9 +217,9 @@
   }
 
   v27 = [REPHASEContext fillOutMeshBoundingBoxInformation:]::$_5::operator()(0, &v42, &v41);
-  [v5 setObject:v27 forKey:@"Overall-PHASEMesh"];
+  [dictionary setObject:v27 forKey:@"Overall-PHASEMesh"];
 
-  [v4 setObject:v5 forKey:@"PHASEMeshBoundingBoxInfo"];
+  [informationCopy setObject:dictionary forKey:@"PHASEMeshBoundingBoxInfo"];
   std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::__deallocate_node(v44);
   v28 = v43;
   v43 = 0;
@@ -232,7 +232,7 @@
 - (id)fillOutMeshBoundingBoxInformation:
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26[0] = @"minBounds";
   LODWORD(v6) = *a2;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
@@ -258,19 +258,19 @@
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:3];
   v27[1] = v19;
   v26[2] = @"meshID";
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a1];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self];
   v27[2] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
-  [v23 addObject:v21];
+  [array addObject:v21];
 
-  return v23;
+  return array;
 }
 
-- (void)fillOutDebugInformation:(id)a3
+- (void)fillOutDebugInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   os_unfair_lock_lock(&self->_scenesMutex.m_lock);
-  for (i = &self->_scenes.__table_.__first_node_; ; re::audio::REPHASEAudioScene::fillOutDebugInformation(i[3].__next_, v4))
+  for (i = &self->_scenes.__table_.__first_node_; ; re::audio::REPHASEAudioScene::fillOutDebugInformation(i[3].__next_, informationCopy))
   {
     i = i->__next_;
     if (!i)
@@ -291,7 +291,7 @@
       _os_log_impl(&dword_1E1C61000, v8, OS_LOG_TYPE_DEFAULT, "Filling out PHASE Mesh Info", v9, 2u);
     }
 
-    [(REPHASEContext *)self fillOutMeshBoundingBoxInformation:v4];
+    [(REPHASEContext *)self fillOutMeshBoundingBoxInformation:informationCopy];
   }
 
   os_unfair_lock_unlock(&self->_scenesMutex.m_lock);
@@ -374,19 +374,19 @@
   os_unfair_lock_lock(&self->_audioEngineMutex.m_lock);
   v5 = self->_unsafeEngine;
   os_unfair_lock_unlock(&self->_audioEngineMutex.m_lock);
-  v6 = [(PHASEEngine *)v5 rootObject];
-  v7 = re::audioLogObjects(v6);
+  rootObject = [(PHASEEngine *)v5 rootObject];
+  v7 = re::audioLogObjects(rootObject);
   v8 = re::AudioLogObjects::loggingEnabled(v7);
   if (v8)
   {
     v9 = *re::audioLogObjects(v8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(re *)v6 children];
+      children = [(re *)rootObject children];
       v11 = 138412546;
-      v12 = v6;
+      v12 = rootObject;
       v13 = 2048;
-      v14 = [v10 count];
+      v14 = [children count];
       _os_log_debug_impl(&dword_1E1C61000, v9, OS_LOG_TYPE_DEBUG, "REPHASEContext update: %@ has %lu children right before PHASEEngine update", &v11, 0x16u);
     }
   }
@@ -419,12 +419,12 @@
   os_unfair_lock_unlock(&self->_shapesMutex.m_lock);
 }
 
-- (void)addPhaseShapeToCache:(id)a3 meshID:(unint64_t)a4 mesh:(id)a5
+- (void)addPhaseShapeToCache:(id)cache meshID:(unint64_t)d mesh:(id)mesh
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = re::audioLogObjects(v9);
+  cacheCopy = cache;
+  meshCopy = mesh;
+  v10 = re::audioLogObjects(meshCopy);
   v11 = re::AudioLogObjects::loggingEnabled(v10);
   if (v11)
   {
@@ -432,16 +432,16 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       v23 = 138412546;
-      v24 = v8;
+      v24 = cacheCopy;
       v25 = 2048;
-      v26 = a4;
+      dCopy = d;
       _os_log_debug_impl(&dword_1E1C61000, v22, OS_LOG_TYPE_DEBUG, "REPHASEContext:addPhaseShapeToCache: adding PHASEShape(%@) with meshID(%llu) to cache", &v23, 0x16u);
     }
   }
 
   os_unfair_lock_lock(&self->_shapesMutex.m_lock);
-  v12 = v8;
-  v13 = v9;
+  v12 = cacheCopy;
+  v13 = meshCopy;
   size = self->_shapes.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
   {
@@ -452,19 +452,19 @@
   v15.i16[0] = vaddlv_u8(v15);
   if (v15.u32[0] > 1uLL)
   {
-    v16 = a4;
-    if (size <= a4)
+    dCopy2 = d;
+    if (size <= d)
     {
-      v16 = a4 % size;
+      dCopy2 = d % size;
     }
   }
 
   else
   {
-    v16 = (size - 1) & a4;
+    dCopy2 = (size - 1) & d;
   }
 
-  v17 = self->_shapes.__table_.__bucket_list_.__ptr_[v16];
+  v17 = self->_shapes.__table_.__bucket_list_.__ptr_[dCopy2];
   if (!v17 || (v18 = *v17) == 0)
   {
 LABEL_19:
@@ -474,7 +474,7 @@ LABEL_19:
   while (1)
   {
     v19 = v18[1];
-    if (v19 == a4)
+    if (v19 == d)
     {
       break;
     }
@@ -492,7 +492,7 @@ LABEL_19:
       v19 &= size - 1;
     }
 
-    if (v19 != v16)
+    if (v19 != dCopy2)
     {
       goto LABEL_19;
     }
@@ -505,7 +505,7 @@ LABEL_18:
     }
   }
 
-  if (v18[2] != a4)
+  if (v18[2] != d)
   {
     goto LABEL_18;
   }
@@ -519,10 +519,10 @@ LABEL_18:
   os_unfair_lock_unlock(&self->_shapesMutex.m_lock);
 }
 
-- (id)getPhaseShapeFromCacheWithMeshID:(unint64_t)a3
+- (id)getPhaseShapeFromCacheWithMeshID:(unint64_t)d
 {
   os_unfair_lock_lock(&self->_shapesMutex.m_lock);
-  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_shapes.__table_.__bucket_list_.__ptr_, a3);
+  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_shapes.__table_.__bucket_list_.__ptr_, d);
   if (v5)
   {
     v6 = v5[3];
@@ -538,11 +538,11 @@ LABEL_18:
   return v6;
 }
 
-- (void)removePhaseShapeFromCacheWithMeshID:(unint64_t)a3
+- (void)removePhaseShapeFromCacheWithMeshID:(unint64_t)d
 {
   v26 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_shapesMutex.m_lock);
-  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_shapes.__table_.__bucket_list_.__ptr_, a3);
+  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_shapes.__table_.__bucket_list_.__ptr_, d);
   v6 = re::audioLogObjects(v5);
   if (v5)
   {
@@ -554,9 +554,9 @@ LABEL_18:
       {
         v21 = *(v5 + 3);
         v22 = 138412546;
-        v23 = v21;
+        dCopy2 = v21;
         v24 = 2048;
-        v25 = a3;
+        dCopy = d;
         _os_log_debug_impl(&dword_1E1C61000, v20, OS_LOG_TYPE_DEBUG, "REPHASEContext:removePhaseShapeFromCache: removing PHASEShape(%@) with meshID(%llu) from cache", &v22, 0x16u);
       }
     }
@@ -678,7 +678,7 @@ LABEL_27:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v22 = 134217984;
-      v23 = a3;
+      dCopy2 = d;
       _os_log_debug_impl(&dword_1E1C61000, v13, OS_LOG_TYPE_DEBUG, "REPHASEContext:removePhaseShapeFromCache: warning: meshID(%llu) not found in cache", &v22, 0xCu);
     }
   }
@@ -778,14 +778,14 @@ LABEL_17:
   return result;
 }
 
-- (void)removeOccluderFromScene:(unint64_t)a3 entity:(unint64_t)a4 shouldRemoveEntity:(BOOL)a5
+- (void)removeOccluderFromScene:(unint64_t)scene entity:(unint64_t)entity shouldRemoveEntity:(BOOL)removeEntity
 {
-  v5 = a5;
+  removeEntityCopy = removeEntity;
   v34 = *MEMORY[0x1E69E9840];
   [(REPHASEContext *)self sceneForID:?];
   if (v26)
   {
-    re::audio::REPHASEAudioScene::getEntity(v26, a4, &v24);
+    re::audio::REPHASEAudioScene::getEntity(v26, entity, &v24);
     v9 = v24;
     if (v24)
     {
@@ -801,21 +801,21 @@ LABEL_17:
           {
             v22 = *(v9 + 32);
             *buf = 134218498;
-            v29 = a3;
+            sceneCopy4 = scene;
             v30 = 2048;
-            v31 = a4;
+            entityCopy5 = entity;
             v32 = 2112;
             v33 = v22;
             _os_log_debug_impl(&dword_1E1C61000, v21, OS_LOG_TYPE_DEBUG, "removeOccluderFromScene: sceneID=%llu entityID=%llu entityName='%@'", buf, 0x20u);
           }
         }
 
-        v13 = [*(v9 + 24) parent];
-        [v13 removeChild:*(v9 + 24)];
+        parent = [*(v9 + 24) parent];
+        [parent removeChild:*(v9 + 24)];
         v14 = *(v9 + 24);
         *(v9 + 24) = 0;
 
-        if (v5 && !*(v9 + 16))
+        if (removeEntityCopy && !*(v9 + 16))
         {
           v16 = re::audioLogObjects(v15);
           v17 = re::AudioLogObjects::loggingEnabled(v16);
@@ -825,12 +825,12 @@ LABEL_17:
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
             {
               *buf = 134217984;
-              v29 = a4;
+              sceneCopy4 = entity;
               _os_log_debug_impl(&dword_1E1C61000, v23, OS_LOG_TYPE_DEBUG, "removeOccluderFromScene: removing entity(%llu) from REAudioScene", buf, 0xCu);
             }
           }
 
-          re::audio::REPHASEAudioScene::removeEntity(v26, a4);
+          re::audio::REPHASEAudioScene::removeEntity(v26, entity);
         }
 
         goto LABEL_10;
@@ -849,9 +849,9 @@ LABEL_10:
       }
 
       *buf = 134218240;
-      v29 = a3;
+      sceneCopy4 = scene;
       v30 = 2048;
-      v31 = a4;
+      entityCopy5 = entity;
       v20 = "removeOccluderFromScene: occluder not found for sceneID=%llu entityID=%llu";
     }
 
@@ -864,9 +864,9 @@ LABEL_10:
       }
 
       *buf = 134218240;
-      v29 = a3;
+      sceneCopy4 = scene;
       v30 = 2048;
-      v31 = a4;
+      entityCopy5 = entity;
       v20 = "removeOccluderFromScene: entity not found for sceneID=%llu entityID=%llu";
     }
 
@@ -878,9 +878,9 @@ LABEL_10:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218240;
-    v29 = a3;
+    sceneCopy4 = scene;
     v30 = 2048;
-    v31 = a4;
+    entityCopy5 = entity;
     _os_log_error_impl(&dword_1E1C61000, v18, OS_LOG_TYPE_ERROR, "removeOccluderFromScene: scene not found for sceneID=%llu entityID=%llu", buf, 0x16u);
   }
 
@@ -891,27 +891,27 @@ LABEL_12:
   }
 }
 
-- (void)applyMeshRemoval:(const void *)a3 shouldRemoveEntity:(BOOL)a4
+- (void)applyMeshRemoval:(const void *)removal shouldRemoveEntity:(BOOL)entity
 {
-  v4 = a4;
-  [(REPHASEContext *)self removePhaseShapeFromCacheWithMeshID:*(a3 + 2)];
-  v7 = *a3;
-  v8 = *(a3 + 1);
+  entityCopy = entity;
+  [(REPHASEContext *)self removePhaseShapeFromCacheWithMeshID:*(removal + 2)];
+  v7 = *removal;
+  v8 = *(removal + 1);
 
-  [(REPHASEContext *)self removeOccluderFromScene:v7 entity:v8 shouldRemoveEntity:v4];
+  [(REPHASEContext *)self removeOccluderFromScene:v7 entity:v8 shouldRemoveEntity:entityCopy];
 }
 
-- (void)applyMeshRemovals:(const void *)a3 shouldRemoveEntity:(BOOL)a4
+- (void)applyMeshRemovals:(const void *)removals shouldRemoveEntity:(BOOL)entity
 {
-  v4 = *(a3 + 2);
+  v4 = *(removals + 2);
   if (v4)
   {
-    v5 = a4;
-    v7 = *(a3 + 4);
+    entityCopy = entity;
+    v7 = *(removals + 4);
     v8 = 40 * v4;
     do
     {
-      [(REPHASEContext *)self applyMeshRemoval:v7 shouldRemoveEntity:v5];
+      [(REPHASEContext *)self applyMeshRemoval:v7 shouldRemoveEntity:entityCopy];
       v7 += 40;
       v8 -= 40;
     }
@@ -920,44 +920,44 @@ LABEL_12:
   }
 }
 
-- (void)addOccluder:(id)a3 toScene:(unint64_t)a4 entity:(unint64_t)a5
+- (void)addOccluder:(id)occluder toScene:(unint64_t)scene entity:(unint64_t)entity
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (a4 == -1 || !a5)
+  occluderCopy = occluder;
+  v10 = occluderCopy;
+  if (scene == -1 || !entity)
   {
-    v18 = *re::audioLogObjects(v9);
+    v18 = *re::audioLogObjects(occluderCopy);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v28 = a5;
+      sceneCopy3 = entity;
       v29 = 2048;
-      v30 = a4;
+      entityCopy3 = scene;
       _os_log_error_impl(&dword_1E1C61000, v18, OS_LOG_TYPE_ERROR, "REPhaseContext:addOccluder Can't add occluder to invalid entity(%llu)/scene(%llu)", buf, 0x16u);
     }
   }
 
   else
   {
-    [(REPHASEContext *)self sceneForID:a4];
+    [(REPHASEContext *)self sceneForID:scene];
     if (v25)
     {
-      re::audio::REPHASEAudioScene::getOrCreateEntity(v25, a5, &v23);
+      re::audio::REPHASEAudioScene::getOrCreateEntity(v25, entity, &v23);
       v12 = v23;
       if (v23)
       {
         os_unfair_lock_lock(&self->_audioEngineMutex.m_lock);
         v13 = self->_unsafeEngine;
         os_unfair_lock_unlock(&self->_audioEngineMutex.m_lock);
-        v14 = [(PHASEEngine *)v13 rootObject];
+        rootObject = [(PHASEEngine *)v13 rootObject];
 
-        objc_storeStrong((v12 + 24), a3);
+        objc_storeStrong((v12 + 24), occluder);
         v15 = v10;
         [*(v12 + 24) setTransform:{*(v12 + 48), *(v12 + 64), *(v12 + 80), *(v12 + 96)}];
 
         v22 = 0;
-        [v14 addChild:v15 error:&v22];
+        [rootObject addChild:v15 error:&v22];
         v16 = v22;
         v17 = v16;
         if (v16)
@@ -966,9 +966,9 @@ LABEL_12:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218242;
-            v28 = a5;
+            sceneCopy3 = entity;
             v29 = 2112;
-            v30 = v17;
+            entityCopy3 = v17;
             _os_log_error_impl(&dword_1E1C61000, v21, OS_LOG_TYPE_ERROR, "REPhaseContext:addOccluder Could not add PHASEOccluder for entity %llu. Error %@", buf, 0x16u);
           }
         }
@@ -980,9 +980,9 @@ LABEL_12:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218240;
-          v28 = a4;
+          sceneCopy3 = scene;
           v29 = 2048;
-          v30 = a5;
+          entityCopy3 = entity;
           _os_log_error_impl(&dword_1E1C61000, v20, OS_LOG_TYPE_ERROR, "REPhaseContext:addOccluder failed to find or create REPHASEEntity for sceneID(%llu) entityID(%llu)", buf, 0x16u);
         }
       }
@@ -999,7 +999,7 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v28 = a4;
+        sceneCopy3 = scene;
         _os_log_error_impl(&dword_1E1C61000, v19, OS_LOG_TYPE_ERROR, "REPhaseContext:addOccluder failed to find REPHASEAudioScene for sceneID(%llu)", buf, 0xCu);
       }
     }
@@ -1011,12 +1011,12 @@ LABEL_12:
   }
 }
 
-- (void)applyOccluderAdditions:(const void *)a3
+- (void)applyOccluderAdditions:(const void *)additions
 {
-  v3 = *(a3 + 2);
+  v3 = *(additions + 2);
   if (v3)
   {
-    v5 = *(a3 + 4);
+    v5 = *(additions + 4);
     v6 = 48 * v3;
     do
     {
@@ -1029,31 +1029,31 @@ LABEL_12:
   }
 }
 
-- (void)updateOccluder:(const void *)a3
+- (void)updateOccluder:(const void *)occluder
 {
-  v14 = *a3;
-  v5 = *(a3 + 5);
-  v15 = *(a3 + 2);
+  v14 = *occluder;
+  v5 = *(occluder + 5);
+  v15 = *(occluder + 2);
   v16 = v5;
-  v17 = *(a3 + 48);
+  v17 = *(occluder + 48);
   [(REPHASEContext *)self applyMeshRemoval:&v14 shouldRemoveEntity:0];
-  v9 = *a3;
-  v6 = *(a3 + 4);
-  v10 = *(a3 + 3);
+  v9 = *occluder;
+  v6 = *(occluder + 4);
+  v10 = *(occluder + 3);
   v7 = v6;
-  v8 = *(a3 + 5);
+  v8 = *(occluder + 5);
   v11 = v7;
   v12 = v8;
-  v13 = *(a3 + 48);
+  v13 = *(occluder + 48);
   [(REPHASEContext *)self addOccluder:&v9];
 }
 
-- (void)applyOccluderUpdates:(const void *)a3
+- (void)applyOccluderUpdates:(const void *)updates
 {
-  v3 = *(a3 + 2);
+  v3 = *(updates + 2);
   if (v3)
   {
-    v5 = *(a3 + 4);
+    v5 = *(updates + 4);
     v6 = 56 * v3;
     do
     {
@@ -1066,24 +1066,24 @@ LABEL_12:
   }
 }
 
-- (void)applyMeshEvents:(const void *)a3
+- (void)applyMeshEvents:(const void *)events
 {
-  v11 = self;
-  v3 = *(a3 + 2);
+  selfCopy = self;
+  v3 = *(events + 2);
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v6 = (*(a3 + 5) + 48 * ((*(a3 + 3) + i) % *(a3 + 1)));
+      v6 = (*(events + 5) + 48 * ((*(events + 3) + i) % *(events + 1)));
       v7 = v6[2];
       if (v7)
       {
         for (j = 0; j != v7; ++j)
         {
           v9 = v6[5] + 48 * ((j + v6[3]) % v6[1]);
-          v12[0] = &v11;
-          v12[1] = &v11;
-          v12[2] = &v11;
+          v12[0] = &selfCopy;
+          v12[1] = &selfCopy;
+          v12[2] = &selfCopy;
           v10 = *(v9 + 40);
           if (v10 == -1)
           {
@@ -1098,30 +1098,30 @@ LABEL_12:
   }
 }
 
-- (id)createAcousticMaterialsArrayWithAbsorption:(DynamicArray<re:(DynamicArray<re:(DynamicArray<re::AcousticSoundReductionMaterial> *)a5 :AcousticScatteringMaterial> *)a4 :AcousticAbsorptionMaterial> *)a3 scattering:soundReduction:
+- (id)createAcousticMaterialsArrayWithAbsorption:(DynamicArray<re:(DynamicArray<re:(DynamicArray<re::AcousticSoundReductionMaterial> *)absorption :AcousticScatteringMaterial> *)a4 :AcousticAbsorptionMaterial> *)a3 scattering:soundReduction:
 {
   re::internal::AriadneSignpostScopeGuard::AriadneSignpostScopeGuard(v12, 2532, self);
-  v9 = [(REPHASEContext *)self engine];
-  v10 = re::REPHASEMaterialCache::getMaterials(&self->_phaseMaterialCache, v9, a3, a4, a5);
+  engine = [(REPHASEContext *)self engine];
+  v10 = re::REPHASEMaterialCache::getMaterials(&self->_phaseMaterialCache, engine, a3, a4, absorption);
 
   re::internal::AriadneSignpostScopeGuard::~AriadneSignpostScopeGuard(v12);
 
   return v10;
 }
 
-- (id)createPhaseShapeWithMeshID:(unint64_t)a3 materials:(id)a4 mdlMesh:(id)a5 arkitMesh:(BOOL)a6 meshType:(unsigned __int8)a7
+- (id)createPhaseShapeWithMeshID:(unint64_t)d materials:(id)materials mdlMesh:(id)mesh arkitMesh:(BOOL)arkitMesh meshType:(unsigned __int8)type
 {
-  v7 = a7;
-  v8 = a6;
+  typeCopy = type;
+  arkitMeshCopy = arkitMesh;
   v57[2] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
+  materialsCopy = materials;
+  meshCopy = mesh;
   v14 = re::internal::AriadneSignpostScopeGuard::AriadneSignpostScopeGuard(v41, 2530, self);
-  if (v7 || !v8)
+  if (typeCopy || !arkitMeshCopy)
   {
     v17 = 0;
     v18 = 7;
-    if (v7 == 1 && v8)
+    if (typeCopy == 1 && arkitMeshCopy)
     {
       v19 = re::audioLogObjects(v14);
       v20 = re::AudioLogObjects::loggingEnabled(v19);
@@ -1195,13 +1195,13 @@ LABEL_12:
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
 
   v26 = objc_alloc(MEMORY[0x1E6978208]);
-  v27 = [(REPHASEContext *)self engine];
-  v28 = [v26 initWithEngine:v27 mesh:v13 materials:v12 options:v25];
+  engine = [(REPHASEContext *)self engine];
+  v28 = [v26 initWithEngine:engine mesh:meshCopy materials:materialsCopy options:v25];
 
-  v29 = [v13 boundingBox];
+  boundingBox = [meshCopy boundingBox];
   v39 = v31;
   v40 = v30;
-  v32 = re::audioLogObjects(v29);
+  v32 = re::audioLogObjects(boundingBox);
   v33 = re::AudioLogObjects::loggingEnabled(v32);
   if (v33)
   {
@@ -1209,7 +1209,7 @@ LABEL_12:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134219520;
-      v43 = a3;
+      dCopy = d;
       v44 = 2048;
       v45 = *&v39;
       v46 = 2048;
@@ -1231,35 +1231,35 @@ LABEL_12:
   return v28;
 }
 
-- (id)createPHASEShape:(const void *)a3
+- (id)createPHASEShape:(const void *)shape
 {
   v6 = 0;
-  v7 = self;
-  v8[0] = &v7;
+  selfCopy = self;
+  v8[0] = &selfCopy;
   v8[1] = &v6;
   v8[2] = &v6;
-  v8[3] = &v7;
-  v3 = *(a3 + 38);
+  v8[3] = &selfCopy;
+  v3 = *(shape + 38);
   if (v3 == -1)
   {
     std::__throw_bad_variant_access[abi:ne200100]();
   }
 
   v9 = v8;
-  (off_1F5CCAA50[v3])(&v9, a3);
+  (off_1F5CCAA50[v3])(&v9, shape);
   v4 = v6;
 
   return v4;
 }
 
-- (id)createPHASEShapeAndOccluder:(const void *)a3
+- (id)createPHASEShapeAndOccluder:(const void *)occluder
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v5 = [(REPHASEContext *)self createPHASEShape:?];
   if (v5)
   {
-    v6 = re::audio::meshID<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(a3);
-    v7 = *(a3 + 38);
+    v6 = re::audio::meshID<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(occluder);
+    v7 = *(occluder + 38);
     if (v7 == -1)
     {
       std::__throw_bad_variant_access[abi:ne200100]();
@@ -1267,12 +1267,12 @@ LABEL_12:
 
     v8 = v6;
     *buf = &v22;
-    v9 = (off_1F5CCAA70[v7])(buf, a3);
+    v9 = (off_1F5CCAA70[v7])(buf, occluder);
     [(REPHASEContext *)self addPhaseShapeToCache:v5 meshID:v8 mesh:v9];
 
-    re::audio::meshID<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(a3);
-    re::audio::meshType<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(a3);
-    re::audio::meshType<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(a3);
+    re::audio::meshID<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(occluder);
+    re::audio::meshType<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(occluder);
+    re::audio::meshType<std::variant<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>>(occluder);
     re::internal::AriadneSignpostScopeGuard::AriadneSignpostScopeGuard(buf, 2543, self);
     v10 = objc_alloc(MEMORY[0x1E69781E8]);
     os_unfair_lock_lock(&self->_audioEngineMutex.m_lock);
@@ -1290,14 +1290,14 @@ LABEL_12:
       v17 = *re::audioLogObjects(v16);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = *(a3 + 38);
+        v18 = *(occluder + 38);
         if (v18 == -1)
         {
           std::__throw_bad_variant_access[abi:ne200100]();
         }
 
         v22 = &v21;
-        v19 = (off_1F5CCAA80[v18])(&v22, a3);
+        v19 = (off_1F5CCAA80[v18])(&v22, occluder);
         *buf = 134218242;
         *&buf[4] = v19;
         v24 = 2112;
@@ -1315,7 +1315,7 @@ LABEL_12:
   return v13;
 }
 
-- (PHASEOccluderData)createPHASEOccluderData:(SEL)a3
+- (PHASEOccluderData)createPHASEOccluderData:(SEL)data
 {
   retstr->var3 = 0;
   retstr->var4.var0.__null_state_ = 0;
@@ -1336,7 +1336,7 @@ LABEL_12:
   return result;
 }
 
-- (DynamicArray<re::audio::PHASEOccluderData>)createPHASEOccluders:(SEL)a3
+- (DynamicArray<re::audio::PHASEOccluderData>)createPHASEOccluders:(SEL)occluders
 {
   retstr->var4 = 0;
   retstr->var1 = 0;
@@ -1346,12 +1346,12 @@ LABEL_12:
   v5 = *(a4 + 2);
   if (v5)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = *(a4 + 4);
     v8 = 160 * v5;
     do
     {
-      v9 = unk_1F5D5DAB8(v6, "createPHASEOccluderData:", v7);
+      v9 = unk_1F5D5DAB8(selfCopy, "createPHASEOccluderData:", v7);
       var1 = retstr->var1;
       var2 = retstr->var2;
       if (var2 >= var1)
@@ -1415,7 +1415,7 @@ LABEL_12:
   return self;
 }
 
-- (PHASEOccluderUpdateData)createPHASEOccluderUpdateData:(SEL)a3
+- (PHASEOccluderUpdateData)createPHASEOccluderUpdateData:(SEL)data
 {
   retstr->var4 = 0;
   retstr->var5.var0.__null_state_ = 0;
@@ -1436,7 +1436,7 @@ LABEL_12:
   return std::__variant_detail::__dtor<std::__variant_detail::__traits<re::audio::AcousticMeshData,re::audio::AcousticARKitMeshData>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](v14);
 }
 
-- (DynamicArray<re::audio::PHASEOccluderUpdateData>)updatePHASEOccluders:(SEL)a3
+- (DynamicArray<re::audio::PHASEOccluderUpdateData>)updatePHASEOccluders:(SEL)occluders
 {
   retstr->var4 = 0;
   retstr->var1 = 0;
@@ -1446,12 +1446,12 @@ LABEL_12:
   v5 = *(a4 + 2);
   if (v5)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = *(a4 + 4);
     v8 = 168 * v5;
     do
     {
-      v9 = unk_1F5D5DAE8(v6, "createPHASEOccluderUpdateData:", v7);
+      v9 = unk_1F5D5DAE8(selfCopy, "createPHASEOccluderUpdateData:", v7);
       var1 = retstr->var1;
       var2 = retstr->var2;
       if (var2 >= var1)
@@ -1662,10 +1662,10 @@ LABEL_12:
   [(PHASEEngine *)v19 stop];
 }
 
-- (shared_ptr<re::audio::REPHASEAudioScene>)sceneForID:(unint64_t)a3
+- (shared_ptr<re::audio::REPHASEAudioScene>)sceneForID:(unint64_t)d
 {
   v4 = v3;
-  if (a3 == -1)
+  if (d == -1)
   {
     *v3 = 0;
     v3[1] = 0;
@@ -1683,19 +1683,19 @@ LABEL_12:
   v9.i16[0] = vaddlv_u8(v9);
   if (v9.u32[0] > 1uLL)
   {
-    v10 = a3;
-    if (size <= a3)
+    dCopy = d;
+    if (size <= d)
     {
-      v10 = a3 % size;
+      dCopy = d % size;
     }
   }
 
   else
   {
-    v10 = (size - 1) & a3;
+    dCopy = (size - 1) & d;
   }
 
-  v11 = self->_scenes.__table_.__bucket_list_.__ptr_[v10];
+  v11 = self->_scenes.__table_.__bucket_list_.__ptr_[dCopy];
   if (!v11 || (v12 = *v11) == 0)
   {
 LABEL_19:
@@ -1705,7 +1705,7 @@ LABEL_19:
   while (1)
   {
     v13 = v12[1];
-    if (v13 == a3)
+    if (v13 == d)
     {
       break;
     }
@@ -1723,7 +1723,7 @@ LABEL_19:
       v13 &= size - 1;
     }
 
-    if (v13 != v10)
+    if (v13 != dCopy)
     {
       goto LABEL_19;
     }
@@ -1736,7 +1736,7 @@ LABEL_18:
     }
   }
 
-  if (v12[2] != a3)
+  if (v12[2] != d)
   {
     goto LABEL_18;
   }
@@ -1756,11 +1756,11 @@ LABEL_25:
   return result;
 }
 
-- (void)addAudioAssetID:(unint64_t)a3 configuration:(const void *)a4
+- (void)addAudioAssetID:(unint64_t)d configuration:(const void *)configuration
 {
-  if (*(a4 + 2))
+  if (*(configuration + 2))
   {
-    v7 = *(a4 + 2);
+    v7 = *(configuration + 2);
   }
 
   else
@@ -1769,21 +1769,21 @@ LABEL_25:
   }
 
   os_unfair_lock_lock(&self->_audioAssetsMutex.m_lock);
-  v14 = *a4;
-  v15 = *(a4 + 1);
-  v16[0] = *(a4 + 32);
+  v14 = *configuration;
+  v15 = *(configuration + 1);
+  v16[0] = *(configuration + 32);
   if (v16[0] == 1)
   {
-    re::DynamicString::DynamicString(&v17, (a4 + 40));
+    re::DynamicString::DynamicString(&v17, (configuration + 40));
   }
 
-  v19 = *(a4 + 72);
+  v19 = *(configuration + 72);
   if (v19 == 1)
   {
-    v20 = *(a4 + 19);
+    v20 = *(configuration + 19);
   }
 
-  v21 = *(a4 + 80);
+  v21 = *(configuration + 80);
   v22 = v7;
   size = self->_audioAssets.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
@@ -1795,19 +1795,19 @@ LABEL_25:
   v9.i16[0] = vaddlv_u8(v9);
   if (v9.u32[0] > 1uLL)
   {
-    v10 = a3;
-    if (size <= a3)
+    dCopy = d;
+    if (size <= d)
     {
-      v10 = a3 % size;
+      dCopy = d % size;
     }
   }
 
   else
   {
-    v10 = (size - 1) & a3;
+    dCopy = (size - 1) & d;
   }
 
-  v11 = self->_audioAssets.__table_.__bucket_list_.__ptr_[v10];
+  v11 = self->_audioAssets.__table_.__bucket_list_.__ptr_[dCopy];
   if (!v11 || (v12 = *v11) == 0)
   {
 LABEL_25:
@@ -1817,7 +1817,7 @@ LABEL_25:
   while (1)
   {
     v13 = v12[1];
-    if (v13 == a3)
+    if (v13 == d)
     {
       break;
     }
@@ -1835,7 +1835,7 @@ LABEL_25:
       v13 &= size - 1;
     }
 
-    if (v13 != v10)
+    if (v13 != dCopy)
     {
       goto LABEL_25;
     }
@@ -1848,7 +1848,7 @@ LABEL_24:
     }
   }
 
-  if (v12[2] != a3)
+  if (v12[2] != d)
   {
     goto LABEL_24;
   }
@@ -1886,24 +1886,24 @@ LABEL_32:
   os_unfair_lock_unlock(&self->_audioAssetsMutex.m_lock);
 }
 
-- (BOOL)getConfigurationForAudioAssetID:(unint64_t)a3 configuration:(void *)a4
+- (BOOL)getConfigurationForAudioAssetID:(unint64_t)d configuration:(void *)configuration
 {
   os_unfair_lock_lock(&self->_audioAssetsMutex.m_lock);
-  v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, a3);
+  v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, d);
   v8 = v7;
   if (v7)
   {
     v9 = *(v7 + 5);
-    *a4 = *(v7 + 3);
-    *(a4 + 1) = v9;
-    re::Optional<re::DynamicString>::operator=(a4 + 32, v7 + 56);
-    if (*(a4 + 72))
+    *configuration = *(v7 + 3);
+    *(configuration + 1) = v9;
+    re::Optional<re::DynamicString>::operator=(configuration + 32, v7 + 56);
+    if (*(configuration + 72))
     {
       if ((v8[12] & 1) == 0)
       {
-        *(a4 + 72) = 0;
+        *(configuration + 72) = 0;
 LABEL_8:
-        *(a4 + 80) = *(v8 + 104);
+        *(configuration + 80) = *(v8 + 104);
         goto LABEL_9;
       }
     }
@@ -1915,10 +1915,10 @@ LABEL_8:
         goto LABEL_8;
       }
 
-      *(a4 + 72) = 1;
+      *(configuration + 72) = 1;
     }
 
-    *(a4 + 19) = *(v8 + 25);
+    *(configuration + 19) = *(v8 + 25);
     goto LABEL_8;
   }
 
@@ -1927,10 +1927,10 @@ LABEL_9:
   return v8 != 0;
 }
 
-- (void)removeAudioAssetID:(unint64_t)a3
+- (void)removeAudioAssetID:(unint64_t)d
 {
   os_unfair_lock_lock(&self->_audioAssetsMutex.m_lock);
-  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, a3);
+  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, d);
   if (!v5)
   {
     goto LABEL_32;
@@ -2051,43 +2051,43 @@ LABEL_32:
   os_unfair_lock_unlock(&self->_audioAssetsMutex.m_lock);
 }
 
-- (void)setReverbPreset:(int64_t)a3 allowingSpaceBlend:(BOOL)a4
+- (void)setReverbPreset:(int64_t)preset allowingSpaceBlend:(BOOL)blend
 {
-  v4 = a4;
+  blendCopy = blend;
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_reverbPreset != a3 || self->_allowSpaceBlend != a4)
+  if (self->_reverbPreset != preset || self->_allowSpaceBlend != blend)
   {
     v7 = *re::audioLogObjects(self);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109376;
-      v8[1] = a3;
+      v8[1] = preset;
       v9 = 1024;
-      v10 = v4;
+      v10 = blendCopy;
       _os_log_impl(&dword_1E1C61000, v7, OS_LOG_TYPE_DEFAULT, "[REPhaseContext setReverbPreset:] Setting preset to %d, allowing space blend %d.", v8, 0xEu);
     }
 
-    self->_reverbPreset = a3;
-    self->_allowSpaceBlend = v4;
+    self->_reverbPreset = preset;
+    self->_allowSpaceBlend = blendCopy;
     [(REPHASEContext *)self applyReverbPreset];
     [(REPHASEContext *)self applySpaceBlendLevel];
   }
 }
 
-- (void)setSpaceBlendLevel:(float)a3
+- (void)setSpaceBlendLevel:(float)level
 {
-  if (self->_spaceBlendLevel != a3)
+  if (self->_spaceBlendLevel != level)
   {
-    self->_spaceBlendLevel = a3;
+    self->_spaceBlendLevel = level;
     [(REPHASEContext *)self applySpaceBlendLevel];
   }
 }
 
-- (void)setSpaceBlendTargetPresetOrientation:(uint64_t)a1
+- (void)setSpaceBlendTargetPresetOrientation:(uint64_t)orientation
 {
-  os_unfair_lock_lock((a1 + 260));
-  v3 = *(a1 + 8);
-  os_unfair_lock_unlock((a1 + 260));
+  os_unfair_lock_lock((orientation + 260));
+  v3 = *(orientation + 8);
+  os_unfair_lock_unlock((orientation + 260));
   if (v3)
   {
     [v3 setSpaceBlendTargetPresetOrientation:a2];
@@ -2228,13 +2228,13 @@ LABEL_11:
   }
 }
 
-- (id)baseMixerDefinitionWith:(const void *)a3
+- (id)baseMixerDefinitionWith:(const void *)with
 {
-  v4 = self;
+  selfCopy = self;
   v82 = *MEMORY[0x1E69E9840];
-  v5 = *a3;
-  v6 = *(*a3 + 100);
-  if (!*(*a3 + 100))
+  v5 = *with;
+  v6 = *(*with + 100);
+  if (!*(*with + 100))
   {
     goto LABEL_9;
   }
@@ -2245,8 +2245,8 @@ LABEL_11:
     self = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
     if (self)
     {
-      v43 = *(*a3 + 100);
-      v44 = *(*a3 + 304);
+      v43 = *(*with + 100);
+      v44 = *(*with + 304);
       *buf = 67109376;
       *v74 = v43;
       *&v74[4] = 1024;
@@ -2254,17 +2254,17 @@ LABEL_11:
       _os_log_error_impl(&dword_1E1C61000, v7, OS_LOG_TYPE_ERROR, "Only point sources can have a directivity. Switching to omnidirectional. inputMode: %d, directivityMode: %d", buf, 0xEu);
     }
 
-    v5 = *a3;
+    v5 = *with;
     *(v5 + 304) = 0;
     v6 = *(v5 + 100);
   }
 
   if (v6 == 2)
   {
-    [(REPHASEContext *)v4 sceneForID:*(v5 + 32)];
-    re::audio::REPHASEAudioScene::getOrCreateEntity(v71, *(*a3 + 40), &v69);
+    [(REPHASEContext *)selfCopy sceneForID:*(v5 + 32)];
+    re::audio::REPHASEAudioScene::getOrCreateEntity(v71, *(*with + 40), &v69);
     v16 = objc_alloc(MEMORY[0x1E6978170]);
-    v17 = re::audio::REPHASESoundPrepareState::getChannelLayout(*a3);
+    v17 = re::audio::REPHASESoundPrepareState::getChannelLayout(*with);
     v18 = v69;
     v20 = *(v69 + 48);
     v19 = *(v69 + 64);
@@ -2350,8 +2350,8 @@ LABEL_11:
       v57 = *re::audioLogObjects(v56);
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
       {
-        v64 = *(*a3 + 24);
-        re::audio::REPHASESoundPrepareState::getChannelLayout(*a3);
+        v64 = *(*with + 24);
+        re::audio::REPHASESoundPrepareState::getChannelLayout(*with);
         v65 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 134218242;
         *v74 = v64;
@@ -2381,7 +2381,7 @@ LABEL_11:
         v31 = *re::audioLogObjects(self);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v61 = *(*a3 + 100);
+          v61 = *(*with + 100);
           *buf = 67109120;
           *v74 = v61;
           _os_log_error_impl(&dword_1E1C61000, v31, OS_LOG_TYPE_ERROR, "Unrecognized input mode for AudioFileAsset %d", buf, 8u);
@@ -2393,7 +2393,7 @@ LABEL_28:
       }
 
 LABEL_9:
-      v8 = [(REPHASEContext *)v4 getOrCreateSpatialMixerDefinitionUsing:a3];
+      v8 = [(REPHASEContext *)selfCopy getOrCreateSpatialMixerDefinitionUsing:with];
       if (v8)
       {
         goto LABEL_41;
@@ -2402,8 +2402,8 @@ LABEL_9:
       v9 = *re::audioLogObjects(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v59 = *(*a3 + 24);
-        re::audio::REPHASESoundPrepareState::getChannelLayout(*a3);
+        v59 = *(*with + 24);
+        re::audio::REPHASESoundPrepareState::getChannelLayout(*with);
         v60 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 134218242;
         *v74 = v59;
@@ -2415,11 +2415,11 @@ LABEL_9:
       goto LABEL_28;
     }
 
-    v10 = (v4->_mixerDefNameCounter + 1);
-    v4->_mixerDefNameCounter = v10;
+    v10 = (selfCopy->_mixerDefNameCounter + 1);
+    selfCopy->_mixerDefNameCounter = v10;
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"channelMixer-%d", v10];
     v12 = objc_alloc(MEMORY[0x1E6978188]);
-    v13 = re::audio::REPHASESoundPrepareState::getChannelLayout(*a3);
+    v13 = re::audio::REPHASESoundPrepareState::getChannelLayout(*with);
     v8 = [v12 initWithChannelLayout:v13 identifier:v11];
 
     if (!v8)
@@ -2427,8 +2427,8 @@ LABEL_9:
       v15 = *re::audioLogObjects(v14);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v62 = *(*a3 + 24);
-        re::audio::REPHASESoundPrepareState::getChannelLayout(*a3);
+        v62 = *(*with + 24);
+        re::audio::REPHASESoundPrepareState::getChannelLayout(*with);
         v63 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 134218242;
         *v74 = v62;
@@ -2444,19 +2444,19 @@ LABEL_41:
   return v8;
 }
 
-- (id)createSamplerDefinitionForToken:(unint64_t)a3
+- (id)createSamplerDefinitionForToken:(unint64_t)token
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(REPHASEContext *)self eventFor:?];
-  v6 = v5;
-  if (!v5)
+  soundEvent = [(REPHASEContext *)self eventFor:?];
+  v6 = soundEvent;
+  if (!soundEvent)
   {
     goto LABEL_10;
   }
 
-  v5 = [v5 soundEvent];
-  v7 = v5;
-  if (!v5)
+  soundEvent = [soundEvent soundEvent];
+  v7 = soundEvent;
+  if (!soundEvent)
   {
     goto LABEL_10;
   }
@@ -2487,11 +2487,11 @@ LABEL_41:
   else
   {
 LABEL_10:
-    v10 = *re::audioLogObjects(v5);
+    v10 = *re::audioLogObjects(soundEvent);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      *&buf[4] = a3;
+      *&buf[4] = token;
       *&buf[12] = 2112;
       *&buf[14] = v6;
       _os_log_error_impl(&dword_1E1C61000, v10, OS_LOG_TYPE_ERROR, "cannot create sampler definition for token %llu with invalid event %@", buf, 0x16u);
@@ -2503,25 +2503,25 @@ LABEL_10:
   return v9;
 }
 
-- (id)samplerDefForFileAsset:(unint64_t)a3 with:(const void *)a4
+- (id)samplerDefForFileAsset:(unint64_t)asset with:(const void *)with
 {
-  v7 = [(REPHASEContext *)self baseMixerDefinitionWith:a4];
-  v8 = [(REPHASEContext *)self samplerDefForFileAsset:a3 mixerDefinition:v7 prepareState:a4];
+  v7 = [(REPHASEContext *)self baseMixerDefinitionWith:with];
+  v8 = [(REPHASEContext *)self samplerDefForFileAsset:asset mixerDefinition:v7 prepareState:with];
 
   return v8;
 }
 
-- (id)samplerDefForFileAsset:(unint64_t)a3 mixerDefinition:(id)a4 prepareState:(const void *)a5
+- (id)samplerDefForFileAsset:(unint64_t)asset mixerDefinition:(id)definition prepareState:(const void *)state
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  definitionCopy = definition;
+  if (!definitionCopy)
   {
     v15 = *re::audioLogObjects(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
       LODWORD(buf.__r_.__value_.__l.__data_) = 134217984;
-      *(buf.__r_.__value_.__r.__words + 4) = a3;
+      *(buf.__r_.__value_.__r.__words + 4) = asset;
       _os_log_fault_impl(&dword_1E1C61000, v15, OS_LOG_TYPE_FAULT, "[REPHASEContext samplerDefForFileAsset:mixerDefinition:prepareState] Failed to initialize PHASESamplerNodeDefinition for assetID: %llu.PHASEChannelMixerDefinition returned a null mixerDef", &buf, 0xCu);
     }
 
@@ -2529,16 +2529,16 @@ LABEL_10:
   }
 
   os_unfair_lock_lock(&self->_audioAssetsMutex.m_lock);
-  if (!std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, a3))
+  if (!std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, asset))
   {
     v16 = *re::audioLogObjects(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v27 = *(*a5 + 24);
+      v27 = *(*state + 24);
       LODWORD(buf.__r_.__value_.__l.__data_) = 134218240;
       *(buf.__r_.__value_.__r.__words + 4) = v27;
       WORD2(buf.__r_.__value_.__r.__words[1]) = 2048;
-      *(&buf.__r_.__value_.__r.__words[1] + 6) = a3;
+      *(&buf.__r_.__value_.__r.__words[1] + 6) = asset;
       _os_log_error_impl(&dword_1E1C61000, v16, OS_LOG_TYPE_ERROR, "[REPhaseContext] [samplerDefForFileAsset] Preparing sampler definition for token %llu, unknown asset %llu", &buf, 0x16u);
     }
 
@@ -2549,17 +2549,17 @@ LABEL_12:
   }
 
   os_unfair_lock_unlock(&self->_audioAssetsMutex.m_lock);
-  v9 = [(REPHASEContext *)self phaseIDForAssetID:a3];
-  v10 = [objc_alloc(MEMORY[0x1E69781F8]) initWithSoundAssetIdentifier:v9 mixerDefinition:v8];
+  v9 = [(REPHASEContext *)self phaseIDForAssetID:asset];
+  v10 = [objc_alloc(MEMORY[0x1E69781F8]) initWithSoundAssetIdentifier:v9 mixerDefinition:definitionCopy];
   os_unfair_lock_lock(&self->_audioAssetsMutex.m_lock);
-  v11 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, a3);
+  v11 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_audioAssets.__table_.__bucket_list_.__ptr_, asset);
   if (v11)
   {
     v12 = v11;
     [v10 setCalibrationMode:*(v11 + 8) level:v11[14]];
     if (*(v12 + 56) == 1)
     {
-      v13 = *a5;
+      v13 = *state;
       if (v12[9])
       {
         v14 = *(v12 + 10);
@@ -2579,8 +2579,8 @@ LABEL_12:
         operator delete(__p[0]);
       }
 
-      v21 = [(REPHASEContext *)self engine];
-      v22 = [v21 groups];
+      engine = [(REPHASEContext *)self engine];
+      groups = [engine groups];
       if ((buf.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
       {
         p_buf = &buf;
@@ -2592,7 +2592,7 @@ LABEL_12:
       }
 
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:p_buf];
-      v25 = [v22 objectForKey:v24];
+      v25 = [groups objectForKey:v24];
       [v10 setGroup:v25];
 
       if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
@@ -2605,7 +2605,7 @@ LABEL_12:
     [v10 setGainMetaParameterDefinition:self->_gainLinearParamDefinition];
     [v10 setRateMetaParameterDefinition:self->_rateParamDefinition];
     [v10 setRate:1.0];
-    [v10 setPlaybackMode:*(*a5 + 96) != 0];
+    [v10 setPlaybackMode:*(*state + 96) != 0];
     v17 = v10;
   }
 
@@ -2614,11 +2614,11 @@ LABEL_12:
     v18 = *re::audioLogObjects(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v28 = *(*a5 + 24);
+      v28 = *(*state + 24);
       LODWORD(buf.__r_.__value_.__l.__data_) = 134218240;
       *(buf.__r_.__value_.__r.__words + 4) = v28;
       WORD2(buf.__r_.__value_.__r.__words[1]) = 2048;
-      *(&buf.__r_.__value_.__r.__words[1] + 6) = a3;
+      *(&buf.__r_.__value_.__r.__words[1] + 6) = asset;
       _os_log_error_impl(&dword_1E1C61000, v18, OS_LOG_TYPE_ERROR, "[REPhaseContext] [samplerDefForFileAsset] Preparing sampler definition for token %llu, unknown asset %llu", &buf, 0x16u);
     }
 
@@ -2631,16 +2631,16 @@ LABEL_26:
   return v17;
 }
 
-- (id)mixerParametersForPrepareState:(const void *)a3 source:(id)a4 listener:(id)a5 mixerIdentifiers:(id)a6
+- (id)mixerParametersForPrepareState:(const void *)state source:(id)source listener:(id)listener mixerIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  listenerCopy = listener;
+  identifiersCopy = identifiers;
   v12 = objc_alloc_init(MEMORY[0x1E69781D8]);
-  if (*(*a3 + 100))
+  if (*(*state + 100))
   {
-    if (*(*a3 + 100) != 2)
+    if (*(*state + 100) != 2)
     {
       goto LABEL_19;
     }
@@ -2649,7 +2649,7 @@ LABEL_26:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v11;
+    v13 = identifiersCopy;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v14)
     {
@@ -2663,7 +2663,7 @@ LABEL_26:
             objc_enumerationMutation(v13);
           }
 
-          [v12 addAmbientMixerParametersWithIdentifier:*(*(&v22 + 1) + 8 * i) listener:{v10, v22}];
+          [v12 addAmbientMixerParametersWithIdentifier:*(*(&v22 + 1) + 8 * i) listener:{listenerCopy, v22}];
         }
 
         v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -2679,7 +2679,7 @@ LABEL_26:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = v11;
+    v17 = identifiersCopy;
     v18 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v18)
     {
@@ -2693,7 +2693,7 @@ LABEL_26:
             objc_enumerationMutation(v17);
           }
 
-          [v12 addSpatialMixerParametersWithIdentifier:*(*(&v26 + 1) + 8 * j) source:v9 listener:v10];
+          [v12 addSpatialMixerParametersWithIdentifier:*(*(&v26 + 1) + 8 * j) source:sourceCopy listener:listenerCopy];
         }
 
         v18 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -2708,15 +2708,15 @@ LABEL_19:
   return v12;
 }
 
-- (void)prepareSyncGroup:(unordered_map<unsigned long)long forGroupID:()std:(std:(std:(std:(std:(unint64_t)a4 :(unint64_t)a5 shared_ptr<re::audio::REPHASESoundPrepareState>>>> *)a3 :allocator<std::pair<const unsigned long)long :equal_to<unsigned long)long> :hash<unsigned long)long> :shared_ptr<re::audio::REPHASESoundPrepareState> withTransportControlToken:
+- (void)prepareSyncGroup:(unordered_map<unsigned long)long forGroupID:()std:(std:(std:(std:(std:(unint64_t)std :(unint64_t)a5 shared_ptr<re::audio::REPHASESoundPrepareState>>>> *)a3 :allocator<std::pair<const unsigned long)long :equal_to<unsigned long)long> :hash<unsigned long)long> :shared_ptr<re::audio::REPHASESoundPrepareState> withTransportControlToken:
 {
-  v6 = self;
+  selfCopy = self;
   v127 = *MEMORY[0x1E69E9840];
   v114 = a5;
   objc_initWeak(&location, self);
-  os_unfair_lock_lock(&v6->_audioEngineMutex.m_lock);
-  v7 = v6->_unsafeEngine;
-  os_unfair_lock_unlock(&v6->_audioEngineMutex.m_lock);
+  os_unfair_lock_lock(&selfCopy->_audioEngineMutex.m_lock);
+  v7 = selfCopy->_unsafeEngine;
+  os_unfair_lock_unlock(&selfCopy->_audioEngineMutex.m_lock);
   v92 = v7;
   if (!v7)
   {
@@ -2736,7 +2736,7 @@ LABEL_19:
   aBlock[3] = &unk_1F5CCA960;
   objc_copyWeak(&v111, &location);
   std::unordered_map<unsigned long long,std::shared_ptr<re::audio::REPHASESoundPrepareState>>::unordered_map(v112, a3);
-  v112[5] = a4;
+  v112[5] = std;
   v86 = _Block_copy(aBlock);
   v9 = *re::audioLogObjects(v86);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2770,17 +2770,17 @@ LABEL_19:
   }
 
   v84 = v11;
-  [(REPHASEContext *)v6 sceneForID:*(v12 + 32)];
+  [(REPHASEContext *)selfCopy sceneForID:*(v12 + 32)];
   v89 = re::audio::REPHASEAudioScene::getListener(v108);
   v90 = objc_alloc_init(MEMORY[0x1E69781D8]);
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a4];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", std];
   v85 = v83 = v12;
   v91 = [objc_alloc(MEMORY[0x1E6978190]) initWithIdentifier:v85];
   __p = 0;
   v106 = 0;
   v107 = 0;
   p_first_node = &a3->__table_.__first_node_;
-  v88 = v6;
+  v88 = selfCopy;
   while (1)
   {
     p_first_node = p_first_node->__next_;
@@ -2790,15 +2790,15 @@ LABEL_19:
     }
 
     v15 = &p_first_node[3];
-    v16 = [(REPHASEContext *)v6 gainParamForToken:*(p_first_node[3].__next_ + 3) isGroupPlaybackSound:1];
+    v16 = [(REPHASEContext *)selfCopy gainParamForToken:*(p_first_node[3].__next_ + 3) isGroupPlaybackSound:1];
     v17 = *(p_first_node[3].__next_ + 44);
     (*v15)[22].i64[0] = v16;
 
-    v18 = [(REPHASEContext *)v6 reverbParamForToken:*(p_first_node[3].__next_ + 3) isGroupPlaybackSound:1];
+    v18 = [(REPHASEContext *)selfCopy reverbParamForToken:*(p_first_node[3].__next_ + 3) isGroupPlaybackSound:1];
     v19 = *(p_first_node[3].__next_ + 42);
     (*v15)[21].i64[0] = v18;
 
-    v20 = [(REPHASEContext *)v6 directParamForToken:*(p_first_node[3].__next_ + 3) isGroupPlaybackSound:1];
+    v20 = [(REPHASEContext *)selfCopy directParamForToken:*(p_first_node[3].__next_ + 3) isGroupPlaybackSound:1];
     v21 = *(p_first_node[3].__next_ + 43);
     (*v15)[21].i64[1] = v20;
 
@@ -2872,9 +2872,9 @@ LABEL_25:
         }
       }
 
-      v41 = [(PHASEEngine *)v92 rootObject];
+      rootObject = [(PHASEEngine *)v92 rootObject];
       v102 = 0;
-      [v41 addChild:v27 error:&v102];
+      [rootObject addChild:v27 error:&v102];
       v42 = v102;
 
       if (v42)
@@ -2943,14 +2943,14 @@ LABEL_29:
       v55 = v52 + __p - v106;
       if (v106 == __p)
       {
-        v6 = v88;
+        selfCopy = v88;
       }
 
       else
       {
         v56 = __p;
         v57 = (v52 + __p - v106);
-        v6 = v88;
+        selfCopy = v88;
         do
         {
           v58 = *v56;
@@ -2983,7 +2983,7 @@ LABEL_29:
     }
 
     v106 = v48;
-    if (v6->_listener)
+    if (selfCopy->_listener)
     {
       v59 = 1;
     }
@@ -3020,19 +3020,19 @@ LABEL_72:
       goto LABEL_74;
     }
 
-    v60 = [(REPHASEContext *)v6 samplerDefForFileAsset:(*v15)[4].i64[0] with:&p_first_node[3]];
+    v60 = [(REPHASEContext *)selfCopy samplerDefForFileAsset:(*v15)[4].i64[0] with:&p_first_node[3]];
     if (v60)
     {
-      v61 = [(REPHASEContext *)v6 gainParamForToken:(*v15)[1].i64[1] isGroupPlaybackSound:1];
+      v61 = [(REPHASEContext *)selfCopy gainParamForToken:(*v15)[1].i64[1] isGroupPlaybackSound:1];
       v62 = [objc_alloc(MEMORY[0x1E69781E0]) initWithValue:v61 minimum:1.0 maximum:0.0 identifier:4.0];
       [v60 setGainMetaParameterDefinition:v62];
 
-      [v60 setRateMetaParameterDefinition:v6->_rateParamDefinition];
+      [v60 setRateMetaParameterDefinition:selfCopy->_rateParamDefinition];
       [v60 setRate:1.0];
       [v60 setPlaybackMode:(*v15)[6].i32[0] != 0];
-      v63 = [v60 mixerDefinition];
-      v64 = [v63 identifier];
-      [v90 addSpatialMixerParametersWithIdentifier:v64 source:*(v103 + 16) listener:v89];
+      mixerDefinition = [v60 mixerDefinition];
+      identifier = [mixerDefinition identifier];
+      [v90 addSpatialMixerParametersWithIdentifier:identifier source:*(v103 + 16) listener:v89];
 
       [v91 addSubtree:v60];
     }
@@ -3063,14 +3063,14 @@ LABEL_72:
     }
   }
 
-  v69 = [(PHASEEngine *)v92 assetRegistry];
+  assetRegistry = [(PHASEEngine *)v92 assetRegistry];
   v101 = 0;
-  v70 = [v69 registerSoundEventAssetWithRootNode:v91 identifier:v85 error:&v101];
+  v70 = [assetRegistry registerSoundEventAssetWithRootNode:v91 identifier:v85 error:&v101];
   v71 = v101;
 
   v72 = [REPHASESoundEvent alloc];
   v73 = *(v83 + 16);
-  phaseQueue = v6->_phaseQueue;
+  phaseQueue = selfCopy->_phaseQueue;
   memset(v100, 0, sizeof(v100));
   std::vector<PHASESource * {__strong}>::__init_with_size[abi:ne200100]<PHASESource * {__strong}*,PHASESource * {__strong}*>(v100, __p, v106, (v106 - __p) >> 3);
   v99 = v71;
@@ -3211,9 +3211,9 @@ void __72__REPHASEContext_prepareSyncGroup_forGroupID_withTransportControlToken_
   }
 }
 
-- (void)prepare:(shared_ptr<re::audio::REPHASESoundPrepareState>)a3
+- (void)prepare:(shared_ptr<re::audio::REPHASESoundPrepareState>)prepare
 {
-  ptr = a3.__ptr_;
+  ptr = prepare.__ptr_;
   v86 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_audioEngineMutex.m_lock);
   v5 = self->_unsafeEngine;
@@ -3556,9 +3556,9 @@ LABEL_10:
 
 LABEL_55:
 
-    v38 = [(PHASEEngine *)v5 rootObject];
+    rootObject = [(PHASEEngine *)v5 rootObject];
     v65 = 0;
-    [v38 addChild:v14 error:&v65];
+    [rootObject addChild:v14 error:&v65];
     v39 = v65;
 
     if (v39)
@@ -3705,7 +3705,7 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)prepareExternalType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
+- (void)prepareExternalType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -3949,7 +3949,7 @@ void __61__REPHASEContext_prepareExternalType_phaseEntity_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)prepareFileGroupType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
+- (void)prepareFileGroupType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -3961,19 +3961,19 @@ void __61__REPHASEContext_prepareExternalType_phaseEntity_completion___block_inv
   v70 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu%llu%hhu", *(*ptr + 40), *(*ptr + 64), *(*ptr + 100)];
   v8 = [(REPhaseSoundEventAssetStore *)self->_soundEventAssetStore getAssetWithIdentifier:v70 fromAssetID:*(*ptr + 64)];
   v69 = v8;
-  v9 = [v8 asset];
-  if (v9)
+  asset = [v8 asset];
+  if (asset)
   {
-    v74 = [v8 mixerIdentifiers];
+    mixerIdentifiers = [v8 mixerIdentifiers];
     v10 = 0;
-    [(REPHASEContext *)self mixerParametersForPrepareState:ptr source:*(*cntrl + 16) listener:self->_listener mixerIdentifiers:v74];
+    [(REPHASEContext *)self mixerParametersForPrepareState:ptr source:*(*cntrl + 16) listener:self->_listener mixerIdentifiers:mixerIdentifiers];
   }
 
   else
   {
-    v9 = objc_alloc_init(MEMORY[0x1E69781F0]);
-    [v9 setUniqueSelectionQueueLength:*(*ptr + 80) - *(*ptr + 72) > 8uLL];
-    v74 = [(REPHASEContext *)self baseMixerDefinitionWith:ptr];
+    asset = objc_alloc_init(MEMORY[0x1E69781F0]);
+    [asset setUniqueSelectionQueueLength:*(*ptr + 80) - *(*ptr + 72) > 8uLL];
+    mixerIdentifiers = [(REPHASEContext *)self baseMixerDefinitionWith:ptr];
     v73 = [MEMORY[0x1E695DF70] arrayWithCapacity:(*(*ptr + 80) - *(*ptr + 72)) >> 3];
     v11 = *(*ptr + 72);
     v12 = *(*ptr + 80);
@@ -3981,17 +3981,17 @@ void __61__REPHASEContext_prepareExternalType_phaseEntity_completion___block_inv
     {
       while (1)
       {
-        v13 = [(REPHASEContext *)self samplerDefForFileAsset:*v11 mixerDefinition:v74 prepareState:ptr];
+        v13 = [(REPHASEContext *)self samplerDefForFileAsset:*v11 mixerDefinition:mixerIdentifiers prepareState:ptr];
         if (!v13)
         {
           break;
         }
 
-        [v9 addSubtree:v13 weight:&unk_1F5D42960];
-        v14 = [v13 mixerDefinition];
-        v15 = [v14 identifier];
+        [asset addSubtree:v13 weight:&unk_1F5D42960];
+        mixerDefinition = [v13 mixerDefinition];
+        identifier = [mixerDefinition identifier];
 
-        [v73 addObject:v15];
+        [v73 addObject:identifier];
         if (++v11 == v12)
         {
           goto LABEL_6;
@@ -4023,16 +4023,16 @@ void __61__REPHASEContext_prepareExternalType_phaseEntity_completion___block_inv
     }
 
 LABEL_6:
-    v16 = [(PHASEEngine *)v72 assetRegistry];
+    assetRegistry = [(PHASEEngine *)v72 assetRegistry];
     v85 = 0;
-    v17 = [v16 registerSoundEventAssetWithRootNode:v9 identifier:v70 error:&v85];
+    v17 = [assetRegistry registerSoundEventAssetWithRootNode:asset identifier:v70 error:&v85];
     v10 = v85;
 
     v18 = v73;
     [(REPhaseSoundEventAssetStore *)self->_soundEventAssetStore addAsset:v17 andMixerIdentifiers:v18 forIdentifier:v70 withAssetID:*(*ptr + 64)];
 
-    v74 = v18;
-    v9 = v17;
+    mixerIdentifiers = v18;
+    asset = v17;
     [(REPHASEContext *)self mixerParametersForPrepareState:ptr source:*(*cntrl + 16) listener:self->_listener mixerIdentifiers:v18];
   }
   v73 = ;
@@ -4042,7 +4042,7 @@ LABEL_6:
   v22 = *(*ptr + 16);
   phaseQueue = self->_phaseQueue;
   v84 = v10;
-  v24 = [(REPHASESoundEvent *)v19 initWithEngine:v72 soundEventAsset:v9 source:v20 listener:listener mixerParameters:v73 audioSession:v22 phaseQueue:phaseQueue outError:&v84];
+  v24 = [(REPHASESoundEvent *)v19 initWithEngine:v72 soundEventAsset:asset source:v20 listener:listener mixerParameters:v73 audioSession:v22 phaseQueue:phaseQueue outError:&v84];
   v25 = v84;
 
   if (v24)
@@ -4208,7 +4208,7 @@ LABEL_32:
     v50 = *MEMORY[0x1E696AA08];
     v89 = v49;
     v90 = v50;
-    v51 = v25;
+    null = v25;
   }
 
   else
@@ -4219,10 +4219,10 @@ LABEL_32:
     v89 = *MEMORY[0x1E696A578];
     v90 = v60;
     v91[0] = @"Could not create PHASESoundEvent for file group.";
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91[1] = v51;
+  v91[1] = null;
   v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:&v89 count:2];
   v62 = [v48 errorWithDomain:@"com.apple.re.internal" code:-200 userInfo:v61];
 
@@ -4235,7 +4235,7 @@ LABEL_32:
 LABEL_47:
 }
 
-- (void)prepareGeneratorType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
+- (void)prepareGeneratorType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -4294,8 +4294,8 @@ LABEL_47:
       operator delete(v44[0]);
     }
 
-    v20 = [(REPHASEContext *)self engine];
-    v21 = [v20 groups];
+    engine = [(REPHASEContext *)self engine];
+    groups = [engine groups];
     if ((buf.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
       p_buf = &buf;
@@ -4307,7 +4307,7 @@ LABEL_47:
     }
 
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:p_buf];
-    v24 = [v21 objectForKey:v23];
+    v24 = [groups objectForKey:v23];
 
     if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -4423,7 +4423,7 @@ void __62__REPHASEContext_prepareGeneratorType_phaseEntity_completion___block_in
   }
 }
 
-- (void)prepareFileType:(shared_ptr<re:(shared_ptr<re:(id)a5 :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
+- (void)prepareFileType:(shared_ptr<re:(shared_ptr<re:(id)type :audio::REPHASEEntity>)a4 :audio::REPHASESoundPrepareState>)a3 phaseEntity:completion:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -4438,15 +4438,15 @@ void __62__REPHASEContext_prepareGeneratorType_phaseEntity_completion___block_in
   {
     v10 = *(*cntrl + 16);
     listener = self->_listener;
-    v12 = [v8 mixerDefinition];
-    v13 = [v12 identifier];
-    v87 = v13;
+    mixerDefinition = [v8 mixerDefinition];
+    identifier = [mixerDefinition identifier];
+    v87 = identifier;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
     v15 = [(REPHASEContext *)self mixerParametersForPrepareState:ptr source:v10 listener:listener mixerIdentifiers:v14];
 
-    v16 = [(PHASEEngine *)v69 assetRegistry];
+    assetRegistry = [(PHASEEngine *)v69 assetRegistry];
     v80 = 0;
-    v17 = [v16 registerSoundEventAssetWithRootNode:v9 identifier:0 error:&v80];
+    v17 = [assetRegistry registerSoundEventAssetWithRootNode:v9 identifier:0 error:&v80];
     v18 = v80;
 
     v19 = [REPHASESoundEvent alloc];
@@ -4469,7 +4469,7 @@ void __62__REPHASEContext_prepareGeneratorType_phaseEntity_completion___block_in
         v53 = *MEMORY[0x1E696AA08];
         v84 = v52;
         v85 = v53;
-        v54 = v25;
+        null = v25;
       }
 
       else
@@ -4480,10 +4480,10 @@ void __62__REPHASEContext_prepareGeneratorType_phaseEntity_completion___block_in
         v84 = *MEMORY[0x1E696A578];
         v85 = v63;
         v86[0] = @"Could not create PHASESoundEvent for file.";
-        v54 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v86[1] = v54;
+      v86[1] = null;
       v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:&v84 count:2];
       v65 = [v51 errorWithDomain:@"com.apple.re.internal" code:-200 userInfo:v64];
 
@@ -4674,10 +4674,10 @@ LABEL_42:
 LABEL_43:
 }
 
-- (id)eventFor:(unint64_t)a3
+- (id)eventFor:(unint64_t)for
 {
   os_unfair_lock_lock(&self->_soundEventsMutex.m_lock);
-  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEvents.__table_.__bucket_list_.__ptr_, a3);
+  v5 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEvents.__table_.__bucket_list_.__ptr_, for);
   if (v5)
   {
     v6 = v5[3];
@@ -4693,12 +4693,12 @@ LABEL_43:
   return v6;
 }
 
-- (BOOL)eventBeingPrepared:(unint64_t)a3
+- (BOOL)eventBeingPrepared:(unint64_t)prepared
 {
   os_unfair_lock_lock(&self->_soundEventsPreparingMutex.m_lock);
-  LOBYTE(a3) = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, a3) != 0;
+  LOBYTE(prepared) = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, prepared) != 0;
   os_unfair_lock_unlock(&self->_soundEventsPreparingMutex.m_lock);
-  return a3;
+  return prepared;
 }
 
 - (unint64_t)uniqueEventCount
@@ -4805,11 +4805,11 @@ LABEL_43:
   return result;
 }
 
-- (BOOL)doCleanUpSoundEventForToken:(unint64_t)a3 ifNotInScene:(unint64_t)a4
+- (BOOL)doCleanUpSoundEventForToken:(unint64_t)token ifNotInScene:(unint64_t)scene
 {
   std::lock[abi:ne200100]<re::UnfairLock,re::UnfairLock>(&self->_soundEventsMutex.m_lock, &self->_soundEventsPreparingMutex.m_lock);
   p_soundEvents = &self->_soundEvents;
-  v8 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEvents.__table_.__bucket_list_.__ptr_, a3);
+  v8 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEvents.__table_.__bucket_list_.__ptr_, token);
   v9 = v8;
   if (v8)
   {
@@ -4831,7 +4831,7 @@ LABEL_43:
       ptr = MEMORY[0x20];
     }
 
-    v12 = ptr != a4;
+    v12 = ptr != scene;
   }
 
   else
@@ -4839,8 +4839,8 @@ LABEL_43:
     v12 = 0;
   }
 
-  v13 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, a3) | v9;
-  v15 = a4 == -1 && v13 != 0;
+  v13 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, token) | v9;
+  v15 = scene == -1 && v13 != 0;
   v16 = v15 || v12;
   if (v16)
   {
@@ -4854,7 +4854,7 @@ LABEL_43:
       v17 = 0;
     }
 
-    v18 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEvents.__table_.__bucket_list_.__ptr_, a3);
+    v18 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEvents.__table_.__bucket_list_.__ptr_, token);
     if (v18)
     {
       size = self->_soundEvents.__table_.__bucket_list_.__deleter_.__size_;
@@ -4965,7 +4965,7 @@ LABEL_38:
       std::unique_ptr<std::__hash_node<std::__hash_value_type<unsigned long long,REPHASESoundEvent * {__strong}>,void *>,std::__hash_node_destructor<std::allocator<std::__hash_node<std::__hash_value_type<unsigned long long,REPHASESoundEvent * {__strong}>,void *>>>>::~unique_ptr[abi:ne200100](&v33);
     }
 
-    std::__hash_table<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>>>::__erase_unique<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, a3);
+    std::__hash_table<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>>>::__erase_unique<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, token);
   }
 
   else
@@ -5010,14 +5010,14 @@ LABEL_38:
   return v16;
 }
 
-- (BOOL)addEventIfStillPreparing:(id)a3 forToken:(unint64_t)a4
+- (BOOL)addEventIfStillPreparing:(id)preparing forToken:(unint64_t)token
 {
-  v7 = a3;
+  preparingCopy = preparing;
   std::lock[abi:ne200100]<re::UnfairLock,re::UnfairLock>(&self->_soundEventsMutex.m_lock, &self->_soundEventsPreparingMutex.m_lock);
-  v8 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, a4);
+  v8 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, token);
   if (v8)
   {
-    std::__hash_table<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>>>::__erase_unique<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, a4);
+    std::__hash_table<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>>>::__erase_unique<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, token);
     size = self->_soundEvents.__table_.__bucket_list_.__deleter_.__size_;
     if (!size)
     {
@@ -5028,19 +5028,19 @@ LABEL_38:
     v10.i16[0] = vaddlv_u8(v10);
     if (v10.u32[0] > 1uLL)
     {
-      v11 = a4;
-      if (size <= a4)
+      tokenCopy = token;
+      if (size <= token)
       {
-        v11 = a4 % size;
+        tokenCopy = token % size;
       }
     }
 
     else
     {
-      v11 = (size - 1) & a4;
+      tokenCopy = (size - 1) & token;
     }
 
-    v12 = self->_soundEvents.__table_.__bucket_list_.__ptr_[v11];
+    v12 = self->_soundEvents.__table_.__bucket_list_.__ptr_[tokenCopy];
     if (!v12 || (v13 = *v12) == 0)
     {
 LABEL_19:
@@ -5050,11 +5050,11 @@ LABEL_19:
     while (1)
     {
       v14 = v13[1];
-      if (v14 == a4)
+      if (v14 == token)
       {
-        if (v13[2] == a4)
+        if (v13[2] == token)
         {
-          objc_storeStrong(v13 + 3, a3);
+          objc_storeStrong(v13 + 3, preparing);
           break;
         }
       }
@@ -5074,7 +5074,7 @@ LABEL_19:
           v14 &= size - 1;
         }
 
-        if (v14 != v11)
+        if (v14 != tokenCopy)
         {
           goto LABEL_19;
         }
@@ -5094,10 +5094,10 @@ LABEL_19:
   return v8 != 0;
 }
 
-- (void)setPreparingWithData:(RESoundEventPreparingData)a3 forToken:(unint64_t)a4
+- (void)setPreparingWithData:(RESoundEventPreparingData)data forToken:(unint64_t)token
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = data.var1;
+  var0 = data.var0;
   os_unfair_lock_lock(&self->_soundEventsPreparingMutex.m_lock);
   size = self->_soundEventsPreparing.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
@@ -5109,19 +5109,19 @@ LABEL_19:
   v9.i16[0] = vaddlv_u8(v9);
   if (v9.u32[0] > 1uLL)
   {
-    v10 = a4;
-    if (size <= a4)
+    tokenCopy = token;
+    if (size <= token)
     {
-      v10 = a4 % size;
+      tokenCopy = token % size;
     }
   }
 
   else
   {
-    v10 = (size - 1) & a4;
+    tokenCopy = (size - 1) & token;
   }
 
-  v11 = self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_[v10];
+  v11 = self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_[tokenCopy];
   if (!v11 || (v12 = *v11) == 0)
   {
 LABEL_18:
@@ -5131,7 +5131,7 @@ LABEL_18:
   while (1)
   {
     v13 = v12[1];
-    if (v13 == a4)
+    if (v13 == token)
     {
       break;
     }
@@ -5149,7 +5149,7 @@ LABEL_18:
       v13 &= size - 1;
     }
 
-    if (v13 != v10)
+    if (v13 != tokenCopy)
     {
       goto LABEL_18;
     }
@@ -5162,7 +5162,7 @@ LABEL_17:
     }
   }
 
-  if (v12[2] != a4)
+  if (v12[2] != token)
   {
     goto LABEL_17;
   }
@@ -5173,25 +5173,25 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_soundEventsPreparingMutex.m_lock);
 }
 
-- (void)clearPreparingStateForToken:(unint64_t)a3
+- (void)clearPreparingStateForToken:(unint64_t)token
 {
   os_unfair_lock_lock(&self->_soundEventsPreparingMutex.m_lock);
-  std::__hash_table<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>>>::__erase_unique<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, a3);
+  std::__hash_table<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,RESoundEventPreparingData>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,RESoundEventPreparingData>>>::__erase_unique<unsigned long long>(&self->_soundEventsPreparing.__table_.__bucket_list_.__ptr_, token);
 
   os_unfair_lock_unlock(&self->_soundEventsPreparingMutex.m_lock);
 }
 
-- (id)getOrCreateSpatialMixerDefinitionUsing:(const void *)a3
+- (id)getOrCreateSpatialMixerDefinitionUsing:(const void *)using
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = *a3;
-  v5 = *(*a3 + 304);
+  v4 = *using;
+  v5 = *(*using + 304);
   if (v5 == 3)
   {
     v10 = v4[78] * 0.5;
     v11 = v4[79];
-    v12 = *(a3 + 1);
-    v17[0] = *a3;
+    v12 = *(using + 1);
+    v17[0] = *using;
     v17[1] = v12;
     if (v12)
     {
@@ -5204,8 +5204,8 @@ LABEL_17:
   if (v5 == 1)
   {
     v8 = v4[77];
-    v9 = *(a3 + 1);
-    v18 = *a3;
+    v9 = *(using + 1);
+    v18 = *using;
     v19 = v9;
     if (v9)
     {
@@ -5230,8 +5230,8 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v6 = *(a3 + 1);
-  v20 = *a3;
+  v6 = *(using + 1);
+  v20 = *using;
   v21 = v6;
   if (v6)
   {
@@ -5249,7 +5249,7 @@ LABEL_17:
   v13 = *re::audioLogObjects(self);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = *(*a3 + 196);
+    v14 = *(*using + 196);
     *buf = 134218242;
     v23 = v14;
     v24 = 2112;
@@ -5258,15 +5258,15 @@ LABEL_17:
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E69781B8]);
-  [v15 setRolloffFactor:*(*a3 + 196)];
+  [v15 setRolloffFactor:*(*using + 196)];
   [v7 setDistanceModelParameters:v15];
 
   return v7;
 }
 
-- (void)setCustomHRIRURL:(id)a3
+- (void)setCustomHRIRURL:(id)l
 {
-  objc_storeStrong(&self->_customHRIRURL, a3);
+  objc_storeStrong(&self->_customHRIRURL, l);
 
   [(REPHASEContext *)self applyCustomHRIR];
 }
@@ -5300,17 +5300,17 @@ LABEL_17:
   }
 }
 
-- (double)doubleFromPlistValue:(id)a3 defaultValue:(double)a4
+- (double)doubleFromPlistValue:(id)value defaultValue:(double)defaultValue
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 doubleValue];
-    a4 = v6;
+    [valueCopy doubleValue];
+    defaultValue = v6;
   }
 
-  return a4;
+  return defaultValue;
 }
 
 - (void)createListenerIfPending
@@ -5447,13 +5447,13 @@ LABEL_7:
 
 - (BOOL)engineShouldBeRunning
 {
-  v3 = [(REPHASEContext *)self engineShouldBeRunningWithListenerAndSoundEvents];
+  engineShouldBeRunningWithListenerAndSoundEvents = [(REPHASEContext *)self engineShouldBeRunningWithListenerAndSoundEvents];
   v4 = *(self->_audioEngineRunnableManager.__ptr_ + 3);
   v5 = v4 == 0;
   v6 = v4 != 0;
   v7 = v5;
-  self->_startPendingForRunnable = v7 & v3;
-  return v6 && v3;
+  self->_startPendingForRunnable = v7 & engineShouldBeRunningWithListenerAndSoundEvents;
+  return v6 && engineShouldBeRunningWithListenerAndSoundEvents;
 }
 
 - (id)getListener
@@ -5502,7 +5502,7 @@ LABEL_4:
   os_unfair_lock_unlock(&self->_scenesMutex.m_lock);
 }
 
-- (id)getSessionRoot:(unint64_t)a3
+- (id)getSessionRoot:(unint64_t)root
 {
   os_unfair_lock_lock(&self->_scenesMutex.m_lock);
   next = self->_scenes.__table_.__first_node_.__next_;
@@ -5510,7 +5510,7 @@ LABEL_4:
   {
     while (1)
     {
-      v6 = re::audio::REPHASEAudioScene::getSessionRoot(*&next[6]._os_unfair_lock_opaque, a3);
+      v6 = re::audio::REPHASEAudioScene::getSessionRoot(*&next[6]._os_unfair_lock_opaque, root);
       if (v6)
       {
         break;
@@ -5535,10 +5535,10 @@ LABEL_4:
   return v6;
 }
 
-- (void)removeSessionRoot:(unint64_t)a3
+- (void)removeSessionRoot:(unint64_t)root
 {
   os_unfair_lock_lock(&self->_scenesMutex.m_lock);
-  for (i = &self->_scenes.__table_.__first_node_; ; re::audio::REPHASEAudioScene::removeSessionRoot(i[3].__next_, a3))
+  for (i = &self->_scenes.__table_.__first_node_; ; re::audio::REPHASEAudioScene::removeSessionRoot(i[3].__next_, root))
   {
     i = i->__next_;
     if (!i)
@@ -5550,7 +5550,7 @@ LABEL_4:
   os_unfair_lock_unlock(&self->_scenesMutex.m_lock);
 }
 
-- (void)getSourceCount:(unsigned int *)a3 occluderCount:(unsigned int *)a4
+- (void)getSourceCount:(unsigned int *)count occluderCount:(unsigned int *)occluderCount
 {
   os_unfair_lock_lock(&self->_scenesMutex.m_lock);
   next = self->_scenes.__table_.__first_node_.__next_;
@@ -5568,7 +5568,7 @@ LABEL_4:
     }
 
     while (next);
-    if (a3)
+    if (count)
     {
       goto LABEL_5;
     }
@@ -5578,24 +5578,24 @@ LABEL_4:
   {
     v9 = 0;
     v8 = 0;
-    if (a3)
+    if (count)
     {
 LABEL_5:
-      *a3 = v8;
+      *count = v8;
     }
   }
 
-  if (a4)
+  if (occluderCount)
   {
-    *a4 = v9;
+    *occluderCount = v9;
   }
 
   os_unfair_lock_unlock(&self->_scenesMutex.m_lock);
 }
 
-- (id)sourceObjectForEntityID:(unint64_t)a3
+- (id)sourceObjectForEntityID:(unint64_t)d
 {
-  [(REPHASEContext *)self getEntity:a3];
+  [(REPHASEContext *)self getEntity:d];
   if (v5)
   {
     v3 = *(v5 + 16);
@@ -5614,10 +5614,10 @@ LABEL_5:
   return v3;
 }
 
-- (shared_ptr<re::audio::REPHASEEntity>)getEntity:(unint64_t)a3
+- (shared_ptr<re::audio::REPHASEEntity>)getEntity:(unint64_t)entity
 {
   os_unfair_lock_lock(&self->_scenesMutex.m_lock);
-  [(REPHASEContext *)self _getEntityUnderLock:a3];
+  [(REPHASEContext *)self _getEntityUnderLock:entity];
 
   os_unfair_lock_unlock(&self->_scenesMutex.m_lock);
   result.var1 = v6;
@@ -5625,7 +5625,7 @@ LABEL_5:
   return result;
 }
 
-- (shared_ptr<re::audio::REPHASEEntity>)_getEntityUnderLock:(unint64_t)a3
+- (shared_ptr<re::audio::REPHASEEntity>)_getEntityUnderLock:(unint64_t)lock
 {
   v4 = v3;
   next = self->_scenes.__table_.__first_node_.__next_;
@@ -5633,7 +5633,7 @@ LABEL_5:
   {
     while (1)
     {
-      re::audio::REPHASEAudioScene::getEntity(*&next[6]._os_unfair_lock_opaque, a3, v4);
+      re::audio::REPHASEAudioScene::getEntity(*&next[6]._os_unfair_lock_opaque, lock, v4);
       if (*v4)
       {
         break;
@@ -5665,10 +5665,10 @@ LABEL_6:
   return result;
 }
 
-- (void)decrementOrDestroyEntityWithZeroCount:(unint64_t)a3
+- (void)decrementOrDestroyEntityWithZeroCount:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_scenesMutex.m_lock);
-  for (i = &self->_scenes.__table_.__first_node_; ; re::audio::REPHASEAudioScene::decrementOrDestroyEntityWithZeroCount(i[3].__next_, a3))
+  for (i = &self->_scenes.__table_.__first_node_; ; re::audio::REPHASEAudioScene::decrementOrDestroyEntityWithZeroCount(i[3].__next_, count))
   {
     i = i->__next_;
     if (!i)
@@ -5680,13 +5680,13 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_scenesMutex.m_lock);
 }
 
-- (id)gainParamForToken:(unint64_t)a3 isGroupPlaybackSound:(BOOL)a4
+- (id)gainParamForToken:(unint64_t)token isGroupPlaybackSound:(BOOL)sound
 {
-  v10[0] = a3;
+  v10[0] = token;
   v4 = @"gain";
-  if (a4)
+  if (sound)
   {
-    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_gainStringParamCache.__table_.__bucket_list_.__ptr_, a3);
+    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_gainStringParamCache.__table_.__bucket_list_.__ptr_, token);
     if (v7)
     {
       v4 = v7[3];
@@ -5694,9 +5694,9 @@ LABEL_6:
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", @"gain", a3, v10[0]];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", @"gain", token, v10[0]];
       v10[1] = v10;
-      v8 = std::__hash_table<std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSString * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_gainStringParamCache.__table_.__bucket_list_.__ptr_, a3);
+      v8 = std::__hash_table<std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSString * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_gainStringParamCache.__table_.__bucket_list_.__ptr_, token);
       objc_storeStrong(v8 + 3, v4);
     }
   }
@@ -5704,13 +5704,13 @@ LABEL_6:
   return v4;
 }
 
-- (id)reverbParamForToken:(unint64_t)a3 isGroupPlaybackSound:(BOOL)a4
+- (id)reverbParamForToken:(unint64_t)token isGroupPlaybackSound:(BOOL)sound
 {
-  v10[0] = a3;
+  v10[0] = token;
   v4 = @"reverbSend";
-  if (a4)
+  if (sound)
   {
-    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_reverbStringParamCache.__table_.__bucket_list_.__ptr_, a3);
+    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_reverbStringParamCache.__table_.__bucket_list_.__ptr_, token);
     if (v7)
     {
       v4 = v7[3];
@@ -5718,9 +5718,9 @@ LABEL_6:
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", @"reverbSend", a3, v10[0]];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", @"reverbSend", token, v10[0]];
       v10[1] = v10;
-      v8 = std::__hash_table<std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSString * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_reverbStringParamCache.__table_.__bucket_list_.__ptr_, a3);
+      v8 = std::__hash_table<std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSString * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_reverbStringParamCache.__table_.__bucket_list_.__ptr_, token);
       objc_storeStrong(v8 + 3, v4);
     }
   }
@@ -5728,13 +5728,13 @@ LABEL_6:
   return v4;
 }
 
-- (id)directParamForToken:(unint64_t)a3 isGroupPlaybackSound:(BOOL)a4
+- (id)directParamForToken:(unint64_t)token isGroupPlaybackSound:(BOOL)sound
 {
-  v10[0] = a3;
+  v10[0] = token;
   v4 = @"directSend";
-  if (a4)
+  if (sound)
   {
-    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_directStringParamCache.__table_.__bucket_list_.__ptr_, a3);
+    v7 = std::__hash_table<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PhaseShapeAndMesh>>>::find<unsigned long long>(&self->_directStringParamCache.__table_.__bucket_list_.__ptr_, token);
     if (v7)
     {
       v4 = v7[3];
@@ -5742,9 +5742,9 @@ LABEL_6:
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", @"directSend", a3, v10[0]];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %llu", @"directSend", token, v10[0]];
       v10[1] = v10;
-      v8 = std::__hash_table<std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSString * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_directStringParamCache.__table_.__bucket_list_.__ptr_, a3);
+      v8 = std::__hash_table<std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,NSString * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,NSString * {__strong}>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long const&>,std::tuple<>>(&self->_directStringParamCache.__table_.__bucket_list_.__ptr_, token);
       objc_storeStrong(v8 + 3, v4);
     }
   }
@@ -5760,18 +5760,18 @@ LABEL_6:
   }
 }
 
-- (void)removeAudioFileGroupAssetData:(unint64_t)a3
+- (void)removeAudioFileGroupAssetData:(unint64_t)data
 {
   os_unfair_lock_lock(&self->_audioEngineMutex.m_lock);
   v5 = self->_unsafeEngine;
   os_unfair_lock_unlock(&self->_audioEngineMutex.m_lock);
   if (v5)
   {
-    [(REPhaseSoundEventAssetStore *)self->_soundEventAssetStore removeEntriesForAssetID:a3 fromEngine:v5];
+    [(REPhaseSoundEventAssetStore *)self->_soundEventAssetStore removeEntriesForAssetID:data fromEngine:v5];
   }
 }
 
-- (void)setRoomSensedReverbStabilizationIsEnabled:(BOOL)a3
+- (void)setRoomSensedReverbStabilizationIsEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_audioEngineMutex.m_lock);
   v4 = self->_unsafeEngine;

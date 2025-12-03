@@ -1,16 +1,16 @@
 @interface MPSImageAreaMin
-- (MPSImageAreaMin)initWithCoder:(id)a3 device:(id)a4;
-- (MPSImageAreaMin)initWithDevice:(id)a3 kernelWidth:(unint64_t)a4 kernelHeight:(unint64_t)a5;
+- (MPSImageAreaMin)initWithCoder:(id)coder device:(id)device;
+- (MPSImageAreaMin)initWithDevice:(id)device kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height;
 - (void)initEncoder;
 @end
 
 @implementation MPSImageAreaMin
 
-- (MPSImageAreaMin)initWithDevice:(id)a3 kernelWidth:(unint64_t)a4 kernelHeight:(unint64_t)a5
+- (MPSImageAreaMin)initWithDevice:(id)device kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height
 {
   v12.receiver = self;
   v12.super_class = MPSImageAreaMin;
-  result = [(MPSImageAreaMax *)&v12 initWithDevice:a3 kernelWidth:a4 kernelHeight:a5];
+  result = [(MPSImageAreaMax *)&v12 initWithDevice:device kernelWidth:width kernelHeight:height];
   if (result)
   {
     result->super.info = 56;
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (MPSImageAreaMin)initWithCoder:(id)a3 device:(id)a4
+- (MPSImageAreaMin)initWithCoder:(id)coder device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSImageAreaMin;
-  result = [(MPSImageAreaMax *)&v11 initWithCoder:a3 device:a4];
+  result = [(MPSImageAreaMax *)&v11 initWithCoder:coder device:device];
   if (result)
   {
     result->super.info = 56;

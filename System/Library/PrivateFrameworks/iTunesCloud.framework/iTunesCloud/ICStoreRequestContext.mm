@@ -1,23 +1,23 @@
 @interface ICStoreRequestContext
 + (id)activeStoreAccountRequestContext;
-- (BOOL)isEqual:(id)a3;
-- (ICStoreRequestContext)initWithBlock:(id)a3;
-- (ICStoreRequestContext)initWithCoder:(id)a3;
-- (ICStoreRequestContext)initWithIdentity:(id)a3;
-- (ICStoreRequestContext)initWithIdentity:(id)a3 clientInfo:(id)a4;
-- (ICStoreRequestContext)initWithIdentity:(id)a3 identityStore:(id)a4 clientInfo:(id)a5;
-- (ICStoreRequestContext)initWithIdentity:(id)a3 identityStore:(id)a4 clientInfo:(id)a5 authenticationProvider:(id)a6;
-- (id)copyWithBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICStoreRequestContext)initWithBlock:(id)block;
+- (ICStoreRequestContext)initWithCoder:(id)coder;
+- (ICStoreRequestContext)initWithIdentity:(id)identity;
+- (ICStoreRequestContext)initWithIdentity:(id)identity clientInfo:(id)info;
+- (ICStoreRequestContext)initWithIdentity:(id)identity identityStore:(id)store clientInfo:(id)info;
+- (ICStoreRequestContext)initWithIdentity:(id)identity identityStore:(id)store clientInfo:(id)info authenticationProvider:(id)provider;
+- (id)copyWithBlock:(id)block;
 - (id)description;
 - (id)userAgent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllowsExpiredBags:(BOOL)a3;
-- (void)setDelegatedIdentity:(id)a3;
-- (void)setIdentity:(id)a3;
-- (void)setIdentityStore:(id)a3;
-- (void)setPersonalizationStyle:(int64_t)a3;
-- (void)setStoreDialogResponseHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllowsExpiredBags:(BOOL)bags;
+- (void)setDelegatedIdentity:(id)identity;
+- (void)setIdentity:(id)identity;
+- (void)setIdentityStore:(id)store;
+- (void)setPersonalizationStyle:(int64_t)style;
+- (void)setStoreDialogResponseHandler:(id)handler;
 @end
 
 @implementation ICStoreRequestContext
@@ -26,62 +26,62 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(ICRequestContext *)self clientInfo];
-  v6 = [v5 clientIdentifier];
-  v7 = [(ICRequestContext *)self clientInfo];
-  v8 = [v7 clientVersion];
-  v9 = [v3 stringWithFormat:@"<%@: %p [%@/%@ %@]>", v4, self, v6, v8, self->_identity];;
+  clientInfo = [(ICRequestContext *)self clientInfo];
+  clientIdentifier = [clientInfo clientIdentifier];
+  clientInfo2 = [(ICRequestContext *)self clientInfo];
+  clientVersion = [clientInfo2 clientVersion];
+  v9 = [v3 stringWithFormat:@"<%@: %p [%@/%@ %@]>", v4, self, clientIdentifier, clientVersion, self->_identity];;
 
   return v9;
 }
 
 - (id)userAgent
 {
-  v3 = [(ICRequestContext *)self deviceInfo];
-  v4 = [(ICRequestContext *)self _userAgentWithPlatformVersion];
-  v5 = [v4 mutableCopy];
+  deviceInfo = [(ICRequestContext *)self deviceInfo];
+  _userAgentWithPlatformVersion = [(ICRequestContext *)self _userAgentWithPlatformVersion];
+  v5 = [_userAgentWithPlatformVersion mutableCopy];
 
   v6 = +[ICDeviceInfo currentDeviceInfo];
-  v7 = [v6 isMac];
+  isMac = [v6 isMac];
 
-  if ((v7 & 1) == 0)
+  if ((isMac & 1) == 0)
   {
-    v8 = [v3 deviceModel];
-    if ([v8 length])
+    deviceModel = [deviceInfo deviceModel];
+    if ([deviceModel length])
     {
-      [v5 appendFormat:@" model/%@", v8];
+      [v5 appendFormat:@" model/%@", deviceModel];
     }
   }
 
-  v9 = [v3 hardwarePlatform];
-  if ([v9 length])
+  hardwarePlatform = [deviceInfo hardwarePlatform];
+  if ([hardwarePlatform length])
   {
-    [v5 appendFormat:@" hwp/%@", v9];
+    [v5 appendFormat:@" hwp/%@", hardwarePlatform];
   }
 
-  v10 = [v3 buildVersion];
-  if ([v10 length])
+  buildVersion = [deviceInfo buildVersion];
+  if ([buildVersion length])
   {
-    [v5 appendFormat:@" build/%@", v10];
+    [v5 appendFormat:@" build/%@", buildVersion];
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = +[ICDeviceInfo currentDeviceInfo];
-  v13 = [v12 isMac];
+  isMac2 = [v12 isMac];
 
-  if ((v13 & 1) == 0)
+  if ((isMac2 & 1) == 0)
   {
-    v14 = [v3 deviceClass] - 1;
+    v14 = [deviceInfo deviceClass] - 1;
     if (v14 <= 5 && ((0x2Fu >> v14) & 1) != 0)
     {
       [v11 addObject:off_1E7BF37C0[v14]];
     }
   }
 
-  v15 = [v3 fairPlayDeviceType];
-  if (v15)
+  fairPlayDeviceType = [deviceInfo fairPlayDeviceType];
+  if (fairPlayDeviceType)
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dt:%d", v15];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dt:%d", fairPlayDeviceType];
     [v11 addObject:v16];
   }
 
@@ -94,140 +94,140 @@
   return v5;
 }
 
-- (void)setPersonalizationStyle:(int64_t)a3
+- (void)setPersonalizationStyle:(int64_t)style
 {
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:253 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:253 description:@"Mutation not allowed beyond initialization."];
   }
 
-  self->_personalizationStyle = a3;
+  self->_personalizationStyle = style;
 }
 
-- (void)setAllowsExpiredBags:(BOOL)a3
+- (void)setAllowsExpiredBags:(BOOL)bags
 {
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:248 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:248 description:@"Mutation not allowed beyond initialization."];
   }
 
-  self->_allowsExpiredBags = a3;
+  self->_allowsExpiredBags = bags;
 }
 
-- (void)setStoreDialogResponseHandler:(id)a3
+- (void)setStoreDialogResponseHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:243 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:243 description:@"Mutation not allowed beyond initialization."];
   }
 
   storeDialogResponseHandler = self->_storeDialogResponseHandler;
-  self->_storeDialogResponseHandler = v5;
+  self->_storeDialogResponseHandler = handlerCopy;
 }
 
-- (void)setIdentityStore:(id)a3
+- (void)setIdentityStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:238 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:238 description:@"Mutation not allowed beyond initialization."];
   }
 
   identityStore = self->_identityStore;
-  self->_identityStore = v5;
+  self->_identityStore = storeCopy;
 }
 
-- (void)setIdentity:(id)a3
+- (void)setIdentity:(id)identity
 {
-  v8 = a3;
+  identityCopy = identity;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:233 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:233 description:@"Mutation not allowed beyond initialization."];
   }
 
-  v5 = [v8 copy];
+  v5 = [identityCopy copy];
   identity = self->_identity;
   self->_identity = v5;
 }
 
-- (void)setDelegatedIdentity:(id)a3
+- (void)setDelegatedIdentity:(id)identity
 {
-  v8 = a3;
+  identityCopy = identity;
   if (![(ICRequestContext *)self _allowsMutation])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:228 description:@"Mutation not allowed beyond initialization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:228 description:@"Mutation not allowed beyond initialization."];
   }
 
-  v5 = [v8 copy];
+  v5 = [identityCopy copy];
   delegatedIdentity = self->_delegatedIdentity;
   self->_delegatedIdentity = v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ICStoreRequestContext;
-  v4 = a3;
-  [(ICRequestContext *)&v5 encodeWithCoder:v4];
-  [v4 ic_encodeUserIdentity:self->_delegatedIdentity withStore:self->_identityStore forKey:{@"delegatedIdentity", v5.receiver, v5.super_class}];
-  [v4 ic_encodeUserIdentity:self->_identity withStore:self->_identityStore forKey:@"identity"];
-  [v4 encodeObject:self->_identityStore forKey:@"identityStore"];
-  [v4 encodeObject:self->_storeDialogResponseHandler forKey:@"storeDialogResponseHandler"];
-  [v4 encodeBool:self->_allowsExpiredBags forKey:@"allowsExpiredBags"];
-  [v4 encodeInteger:self->_personalizationStyle forKey:@"personalizationStyle"];
+  coderCopy = coder;
+  [(ICRequestContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy ic_encodeUserIdentity:self->_delegatedIdentity withStore:self->_identityStore forKey:{@"delegatedIdentity", v5.receiver, v5.super_class}];
+  [coderCopy ic_encodeUserIdentity:self->_identity withStore:self->_identityStore forKey:@"identity"];
+  [coderCopy encodeObject:self->_identityStore forKey:@"identityStore"];
+  [coderCopy encodeObject:self->_storeDialogResponseHandler forKey:@"storeDialogResponseHandler"];
+  [coderCopy encodeBool:self->_allowsExpiredBags forKey:@"allowsExpiredBags"];
+  [coderCopy encodeInteger:self->_personalizationStyle forKey:@"personalizationStyle"];
 }
 
-- (ICStoreRequestContext)initWithCoder:(id)a3
+- (ICStoreRequestContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ICStoreRequestContext;
-  v5 = [(ICRequestContext *)&v15 initWithCoder:v4];
+  v5 = [(ICRequestContext *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delegatedIdentity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delegatedIdentity"];
     delegatedIdentity = v5->_delegatedIdentity;
     v5->_delegatedIdentity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
     identity = v5->_identity;
     v5->_identity = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identityStore"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identityStore"];
     identityStore = v5->_identityStore;
     v5->_identityStore = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeDialogResponseHandler"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeDialogResponseHandler"];
     storeDialogResponseHandler = v5->_storeDialogResponseHandler;
     v5->_storeDialogResponseHandler = v12;
 
-    v5->_allowsExpiredBags = [v4 decodeBoolForKey:@"allowsExpiredBags"];
-    v5->_personalizationStyle = [v4 decodeIntegerForKey:@"personalizationStyle"];
+    v5->_allowsExpiredBags = [coderCopy decodeBoolForKey:@"allowsExpiredBags"];
+    v5->_personalizationStyle = [coderCopy decodeIntegerForKey:@"personalizationStyle"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICStoreRequestContext *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICStoreRequestContext *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       v27.receiver = self;
       v27.super_class = ICStoreRequestContext;
       if (![(ICRequestContext *)&v27 isEqual:v5])
@@ -533,9 +533,9 @@ LABEL_24:
 
     else
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v38 handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -733,9 +733,9 @@ LABEL_24:
 
     else
     {
-      v79 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v80 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v79 handleFailureInFunction:v80 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler2 handleFailureInFunction:v80 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -932,9 +932,9 @@ LABEL_24:
 
     else
     {
-      v119 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v120 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v119 handleFailureInFunction:v120 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler3 handleFailureInFunction:v120 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1131,9 +1131,9 @@ LABEL_24:
 
     else
     {
-      v159 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v160 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v159 handleFailureInFunction:v160 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler4 handleFailureInFunction:v160 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1331,9 +1331,9 @@ LABEL_24:
 
     else
     {
-      v200 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v201 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v200 handleFailureInFunction:v201 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler5 handleFailureInFunction:v201 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1499,9 +1499,9 @@ LABEL_24:
 
     else
     {
-      v222 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v223 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend32(MSVHasher * _Nonnull, uint32_t)"}];
-      [v222 handleFailureInFunction:v223 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler6 handleFailureInFunction:v223 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1706,9 +1706,9 @@ LABEL_24:
 
     else
     {
-      v263 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v264 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v263 handleFailureInFunction:v264 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler7 handleFailureInFunction:v264 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1758,9 +1758,9 @@ LABEL_301:
     {
       if (!v243)
       {
-        v316 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
         v317 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-        [v316 handleFailureInFunction:v317 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+        [currentHandler8 handleFailureInFunction:v317 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
         goto LABEL_348;
       }
@@ -2077,9 +2077,9 @@ LABEL_348:
   if (*&data[0] != 3001)
   {
 LABEL_376:
-    v367 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
     v368 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger _MSVHashGetHash(MSVHash)"];
-    [v367 handleFailureInFunction:v368 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
+    [currentHandler9 handleFailureInFunction:v368 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
     return 0;
   }
@@ -2087,18 +2087,18 @@ LABEL_376:
   return *(&data[0] + 1);
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__ICStoreRequestContext_copyWithBlock___block_invoke;
   v9[3] = &unk_1E7BF37A0;
   v9[4] = self;
-  v10 = v4;
+  v10 = blockCopy;
   v8.receiver = self;
   v8.super_class = ICStoreRequestContext;
-  v5 = v4;
+  v5 = blockCopy;
   v6 = [(ICRequestContext *)&v8 copyWithBlock:v9];
 
   return v6;
@@ -2116,17 +2116,17 @@ void __39__ICStoreRequestContext_copyWithBlock___block_invoke(uint64_t a1, id *a
   (*(*(a1 + 40) + 16))();
 }
 
-- (ICStoreRequestContext)initWithBlock:(id)a3
+- (ICStoreRequestContext)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__ICStoreRequestContext_initWithBlock___block_invoke;
   v9[3] = &unk_1E7BF3778;
-  v10 = v4;
+  v10 = blockCopy;
   v8.receiver = self;
   v8.super_class = ICStoreRequestContext;
-  v5 = v4;
+  v5 = blockCopy;
   v6 = [(ICRequestContext *)&v8 initWithBlock:v9];
 
   return v6;
@@ -2160,30 +2160,30 @@ void __39__ICStoreRequestContext_initWithBlock___block_invoke(uint64_t a1, void 
   }
 }
 
-- (ICStoreRequestContext)initWithIdentity:(id)a3 identityStore:(id)a4 clientInfo:(id)a5 authenticationProvider:(id)a6
+- (ICStoreRequestContext)initWithIdentity:(id)identity identityStore:(id)store clientInfo:(id)info authenticationProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 || !v12)
+  identityCopy = identity;
+  storeCopy = store;
+  infoCopy = info;
+  providerCopy = provider;
+  if (!identityCopy || !storeCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"identityStore != nil && identity != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICStoreRequestContext.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"identityStore != nil && identity != nil"}];
   }
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __90__ICStoreRequestContext_initWithIdentity_identityStore_clientInfo_authenticationProvider___block_invoke;
   v22[3] = &unk_1E7BF3750;
-  v23 = v13;
-  v24 = v11;
-  v25 = v12;
-  v26 = v14;
-  v15 = v14;
-  v16 = v12;
-  v17 = v11;
-  v18 = v13;
+  v23 = infoCopy;
+  v24 = identityCopy;
+  v25 = storeCopy;
+  v26 = providerCopy;
+  v15 = providerCopy;
+  v16 = storeCopy;
+  v17 = identityCopy;
+  v18 = infoCopy;
   v19 = [(ICStoreRequestContext *)self initWithBlock:v22];
 
   return v19;
@@ -2199,39 +2199,39 @@ void __90__ICStoreRequestContext_initWithIdentity_identityStore_clientInfo_authe
   [v4 setAuthenticationProvider:a1[7]];
 }
 
-- (ICStoreRequestContext)initWithIdentity:(id)a3 identityStore:(id)a4 clientInfo:(id)a5
+- (ICStoreRequestContext)initWithIdentity:(id)identity identityStore:(id)store clientInfo:(id)info
 {
-  v7 = a5;
-  v8 = a3;
+  infoCopy = info;
+  identityCopy = identity;
   v9 = +[ICUserIdentityStore defaultIdentityStore];
   v10 = [(ICURLResponseAuthenticationProvider *)[ICStoreURLResponseAuthenticationProvider alloc] initWithUserInteractionLevel:2];
-  v11 = [(ICStoreRequestContext *)self initWithIdentity:v8 identityStore:v9 clientInfo:v7 authenticationProvider:v10];
+  v11 = [(ICStoreRequestContext *)self initWithIdentity:identityCopy identityStore:v9 clientInfo:infoCopy authenticationProvider:v10];
 
   return v11;
 }
 
-- (ICStoreRequestContext)initWithIdentity:(id)a3 clientInfo:(id)a4
+- (ICStoreRequestContext)initWithIdentity:(id)identity clientInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
+  infoCopy = info;
+  identityCopy = identity;
   v8 = +[ICUserIdentityStore defaultIdentityStore];
-  v9 = [(ICStoreRequestContext *)self initWithIdentity:v7 identityStore:v8 clientInfo:v6];
+  v9 = [(ICStoreRequestContext *)self initWithIdentity:identityCopy identityStore:v8 clientInfo:infoCopy];
 
   return v9;
 }
 
-- (ICStoreRequestContext)initWithIdentity:(id)a3
+- (ICStoreRequestContext)initWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[ICClientInfo defaultInfo];
-  v6 = [(ICStoreRequestContext *)self initWithIdentity:v4 clientInfo:v5];
+  v6 = [(ICStoreRequestContext *)self initWithIdentity:identityCopy clientInfo:v5];
 
   return v6;
 }
 
 + (id)activeStoreAccountRequestContext
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[ICUserIdentity activeAccount];
   v4 = [v2 initWithIdentity:v3];
 

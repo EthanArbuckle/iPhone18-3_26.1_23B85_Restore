@@ -1,23 +1,23 @@
 @interface FPPinOperation
-- (FPPinOperation)initWithItems:(id)a3;
+- (FPPinOperation)initWithItems:(id)items;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPPinOperation
 
-- (FPPinOperation)initWithItems:(id)a3
+- (FPPinOperation)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = FPPinOperation;
   v6 = [(FPActionOperation *)&v9 initWithProvider:0 action:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
-    [(FPActionOperation *)v7 setSourceItemsToPreflight:v5];
+    objc_storeStrong(&v6->_items, items);
+    [(FPActionOperation *)v7 setSourceItemsToPreflight:itemsCopy];
   }
 
   return v7;
@@ -97,7 +97,7 @@
         v10 = *(*(&v27 + 1) + 8 * v9);
         dispatch_group_enter(&v2->super);
         v11 = +[FPDaemonConnection sharedConnection];
-        v12 = [v10 itemID];
+        itemID = [v10 itemID];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __28__FPPinOperation_actionMain__block_invoke;
@@ -105,7 +105,7 @@
         v26 = v31;
         v24 = v6;
         v25 = v2;
-        [v11 pinItemWithID:v12 completionHandler:v23];
+        [v11 pinItemWithID:itemID completionHandler:v23];
 
         ++v9;
       }
@@ -117,16 +117,16 @@
     while (v7);
   }
 
-  v13 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__FPPinOperation_actionMain__block_invoke_2;
   block[3] = &unk_1E793E0D0;
   v20 = v6;
-  v21 = self;
+  selfCopy = self;
   v22 = v31;
   v14 = v6;
-  dispatch_group_notify(&v2->super, v13, block);
+  dispatch_group_notify(&v2->super, callbackQueue, block);
 
   _Block_object_dispose(v31, 8);
 LABEL_18:
@@ -233,14 +233,14 @@ uint64_t __28__FPPinOperation_actionMain__block_invoke_3(uint64_t a1, uint64_t a
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
-  [v4 transformItems:self->_items handler:&__block_literal_global_328];
+  stitcher2 = [(FPActionOperation *)self stitcher];
+  [stitcher2 transformItems:self->_items handler:&__block_literal_global_328];
 
-  v5 = [(FPActionOperation *)self stitcher];
-  [v5 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
 void __38__FPPinOperation_presendNotifications__block_invoke(uint64_t a1, void *a2)
@@ -253,16 +253,16 @@ void __38__FPPinOperation_presendNotifications__block_invoke(uint64_t a1, void *
   [v2 setCapabilities:{objc_msgSend(v2, "capabilities") | 0x8000000}];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPActionOperation *)self stitcher];
-  [v8 finishWithItems:v7 error:v6];
+  errorCopy = error;
+  resultCopy = result;
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItems:resultCopy error:errorCopy];
 
   v9.receiver = self;
   v9.super_class = FPPinOperation;
-  [(FPActionOperation *)&v9 finishWithResult:v7 error:v6];
+  [(FPActionOperation *)&v9 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

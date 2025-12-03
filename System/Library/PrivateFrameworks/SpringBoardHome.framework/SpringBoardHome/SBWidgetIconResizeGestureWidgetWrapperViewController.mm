@@ -1,24 +1,24 @@
 @interface SBWidgetIconResizeGestureWidgetWrapperViewController
 - (BOOL)isContentReady;
-- (SBWidgetIconResizeGestureWidgetWrapperViewController)initWithWidgetViewController:(id)a3;
-- (void)addObserver:(id)a3;
+- (SBWidgetIconResizeGestureWidgetWrapperViewController)initWithWidgetViewController:(id)controller;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)a3 widgetContentIsReady:(BOOL)a4;
+- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)changed widgetContentIsReady:(BOOL)ready;
 @end
 
 @implementation SBWidgetIconResizeGestureWidgetWrapperViewController
 
-- (SBWidgetIconResizeGestureWidgetWrapperViewController)initWithWidgetViewController:(id)a3
+- (SBWidgetIconResizeGestureWidgetWrapperViewController)initWithWidgetViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_widgetViewController, a3);
-    [v5 addObserver:v7];
+    objc_storeStrong(&v6->_widgetViewController, controller);
+    [controllerCopy addObserver:v7];
   }
 
   return v7;
@@ -27,12 +27,12 @@
 - (void)loadView
 {
   v41[4] = *MEMORY[0x1E69E9840];
-  v2 = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
-  [v2 iconImageInfo];
+  widgetViewController = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
+  [widgetViewController iconImageInfo];
   v4 = v3;
   v7 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v5, v6}];
-  v39 = v2;
-  if ([v2 wantsSystemMaterialBackground])
+  v39 = widgetViewController;
+  if ([widgetViewController wantsSystemMaterialBackground])
   {
     v8 = [MEMORY[0x1E69AE158] materialViewWithRecipe:3];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -40,45 +40,45 @@
     [v7 addSubview:v8];
     [v7 sendSubviewToBack:v8];
     v26 = MEMORY[0x1E696ACD8];
-    v36 = [v7 leadingAnchor];
-    v34 = [v8 leadingAnchor];
-    v32 = [v36 constraintEqualToAnchor:v34];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [v8 leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41[0] = v32;
-    v30 = [v7 trailingAnchor];
-    v28 = [v8 trailingAnchor];
-    v25 = [v30 constraintEqualToAnchor:v28];
+    trailingAnchor = [v7 trailingAnchor];
+    trailingAnchor2 = [v8 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v41[1] = v25;
-    v9 = [v7 topAnchor];
-    v10 = [v8 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [v8 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v41[2] = v11;
-    v12 = [v7 bottomAnchor];
-    v13 = [v8 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [v7 bottomAnchor];
+    bottomAnchor2 = [v8 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v41[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
     [v26 activateConstraints:v15];
   }
 
-  v16 = [v39 view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v7 addSubview:v16];
+  view = [v39 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v7 addSubview:view];
   v27 = MEMORY[0x1E696ACD8];
-  v37 = [v7 leadingAnchor];
-  v35 = [v16 leadingAnchor];
-  v33 = [v37 constraintEqualToAnchor:v35];
+  leadingAnchor3 = [v7 leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v33 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v40[0] = v33;
-  v31 = [v7 trailingAnchor];
-  v29 = [v16 trailingAnchor];
-  v17 = [v31 constraintEqualToAnchor:v29];
+  trailingAnchor3 = [v7 trailingAnchor];
+  trailingAnchor4 = [view trailingAnchor];
+  v17 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v40[1] = v17;
-  v18 = [v7 topAnchor];
-  v19 = [v16 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  topAnchor3 = [v7 topAnchor];
+  topAnchor4 = [view topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v40[2] = v20;
-  v21 = [v7 bottomAnchor];
-  v22 = [v16 bottomAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  bottomAnchor3 = [v7 bottomAnchor];
+  bottomAnchor4 = [view bottomAnchor];
+  v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v40[3] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
   [v27 activateConstraints:v24];
@@ -91,66 +91,66 @@
   v4.receiver = self;
   v4.super_class = SBWidgetIconResizeGestureWidgetWrapperViewController;
   [(SBWidgetIconResizeGestureWidgetWrapperViewController *)&v4 viewDidLoad];
-  v3 = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
-  [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self bs_addChildViewController:v3];
+  widgetViewController = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
+  [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self bs_addChildViewController:widgetViewController];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (BOOL)isContentReady
 {
-  v2 = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
-  v3 = [v2 isContentReady];
+  widgetViewController = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
+  isContentReady = [widgetViewController isContentReady];
 
-  return v3;
+  return isContentReady;
 }
 
 - (void)invalidate
 {
-  v8 = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
+  widgetViewController = [(SBWidgetIconResizeGestureWidgetWrapperViewController *)self widgetViewController];
   v2 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v4 = v8;
+  v4 = widgetViewController;
   if (isKindOfClass)
   {
-    v5 = [v8 widgetViewController];
+    v8WidgetViewController = [widgetViewController widgetViewController];
     v6 = objc_opt_self();
     v7 = objc_opt_isKindOfClass();
 
     if (v7)
     {
-      [v5 invalidate];
+      [v8WidgetViewController invalidate];
     }
 
-    v4 = v8;
+    v4 = widgetViewController;
   }
 }
 
-- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)a3 widgetContentIsReady:(BOOL)a4
+- (void)widgetContainerViewControllerInitialWidgetContentReadinessChanged:(id)changed widgetContentIsReady:(BOOL)ready
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSHashTable *)self->_observers copy:a3];
+  v5 = [(NSHashTable *)self->_observers copy:changed];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

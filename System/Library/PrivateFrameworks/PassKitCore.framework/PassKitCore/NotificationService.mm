@@ -1,51 +1,51 @@
 @interface NotificationService
-+ (id)_notificationServicesInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)_predicateForRegistrationURL:(id)a3;
-+ (id)_predicateForServiceType:(unint64_t)a3;
-+ (id)_predicateForServiceURL:(id)a3;
++ (id)_notificationServicesInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)_predicateForRegistrationURL:(id)l;
++ (id)_predicateForServiceType:(unint64_t)type;
++ (id)_predicateForServiceURL:(id)l;
 + (id)_propertySettersForPaymentTransaction;
-+ (id)anyInDatabase:(id)a3 withPushTopic:(id)a4;
-+ (id)anyInDatabase:(id)a3 withPushTopic:(id)a4 serviceType:(unint64_t)a5 serviceURL:(id)a6 registrationURL:(id)a7;
-+ (id)anyInDatabase:(id)a3 withServiceURL:(id)a4 registrationURL:(id)a5;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertNotificationServiceWithPushTopic:(id)a3 serviceType:(unint64_t)a4 serviceURL:(id)a5 registrationURL:(id)a6 deviceIdentifier:(id)a7 inDatabase:(id)a8;
-+ (id)notificationServicesInDatabase:(id)a3 withPushTopic:(id)a4;
-+ (id)notificationServicesInDatabase:(id)a3 withPushTopic:(id)a4 serviceType:(unint64_t)a5 serviceURL:(id)a6 registrationURL:(id)a7;
-- (NotificationService)initWithPushTopic:(id)a3 serviceType:(unint64_t)a4 serviceURL:(id)a5 registrationURL:(id)a6 deviceIdentifier:(id)a7 inDatabase:(id)a8;
++ (id)anyInDatabase:(id)database withPushTopic:(id)topic;
++ (id)anyInDatabase:(id)database withPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL;
++ (id)anyInDatabase:(id)database withServiceURL:(id)l registrationURL:(id)rL;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertNotificationServiceWithPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL deviceIdentifier:(id)identifier inDatabase:(id)database;
++ (id)notificationServicesInDatabase:(id)database withPushTopic:(id)topic;
++ (id)notificationServicesInDatabase:(id)database withPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL;
+- (NotificationService)initWithPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL deviceIdentifier:(id)identifier inDatabase:(id)database;
 - (id)notificationService;
-- (void)updateWithLastUpdatedDate:(id)a3;
-- (void)updateWithLastUpdatedTag:(id)a3;
-- (void)updateWithNotificationService:(id)a3;
+- (void)updateWithLastUpdatedDate:(id)date;
+- (void)updateWithLastUpdatedTag:(id)tag;
+- (void)updateWithNotificationService:(id)service;
 @end
 
 @implementation NotificationService
 
-- (NotificationService)initWithPushTopic:(id)a3 serviceType:(unint64_t)a4 serviceURL:(id)a5 registrationURL:(id)a6 deviceIdentifier:(id)a7 inDatabase:(id)a8
+- (NotificationService)initWithPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL deviceIdentifier:(id)identifier inDatabase:(id)database
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
+  databaseCopy = database;
+  identifierCopy = identifier;
+  rLCopy = rL;
+  lCopy = l;
+  topicCopy = topic;
   v19 = +[NSMutableDictionary dictionary];
-  [v19 setObjectOrNull:v15 forKey:@"device_identifier"];
+  [v19 setObjectOrNull:identifierCopy forKey:@"device_identifier"];
 
-  [v19 setObjectOrNull:v18 forKey:@"push_topic"];
-  [v19 setInteger:a4 forKey:@"service_type"];
+  [v19 setObjectOrNull:topicCopy forKey:@"push_topic"];
+  [v19 setInteger:type forKey:@"service_type"];
   v20 = _SQLValueForURL();
 
   [v19 setObjectOrNull:v20 forKey:@"service_url"];
   v21 = _SQLValueForURL();
 
   [v19 setObjectOrNull:v21 forKey:@"registration_url"];
-  v22 = [(SQLiteEntity *)self initWithPropertyValues:v19 inDatabase:v14];
+  v22 = [(SQLiteEntity *)self initWithPropertyValues:v19 inDatabase:databaseCopy];
 
   return v22;
 }
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"pid";
   }
@@ -56,127 +56,127 @@
   }
 }
 
-+ (id)insertNotificationServiceWithPushTopic:(id)a3 serviceType:(unint64_t)a4 serviceURL:(id)a5 registrationURL:(id)a6 deviceIdentifier:(id)a7 inDatabase:(id)a8
++ (id)insertNotificationServiceWithPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL deviceIdentifier:(id)identifier inDatabase:(id)database
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
-  v19 = [[a1 alloc] initWithPushTopic:v18 serviceType:a4 serviceURL:v17 registrationURL:v16 deviceIdentifier:v15 inDatabase:v14];
+  databaseCopy = database;
+  identifierCopy = identifier;
+  rLCopy = rL;
+  lCopy = l;
+  topicCopy = topic;
+  v19 = [[self alloc] initWithPushTopic:topicCopy serviceType:type serviceURL:lCopy registrationURL:rLCopy deviceIdentifier:identifierCopy inDatabase:databaseCopy];
 
   return v19;
 }
 
-+ (id)anyInDatabase:(id)a3 withPushTopic:(id)a4
++ (id)anyInDatabase:(id)database withPushTopic:(id)topic
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPushTopic:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPushTopic:topic];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withServiceURL:(id)a4 registrationURL:(id)a5
++ (id)anyInDatabase:(id)database withServiceURL:(id)l registrationURL:(id)rL
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  rLCopy = rL;
+  lCopy = l;
+  databaseCopy = database;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [a1 _predicateForServiceURL:v9];
+  v12 = [self _predicateForServiceURL:lCopy];
 
   [v11 addObject:v12];
-  if (v8)
+  if (rLCopy)
   {
-    [a1 _predicateForRegistrationURL:v8];
+    [self _predicateForRegistrationURL:rLCopy];
   }
 
   else
   {
-    [a1 _predicateForNoRegistrationURL];
+    [self _predicateForNoRegistrationURL];
   }
   v13 = ;
   [v11 addObject:v13];
 
   v14 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v11];
-  v15 = [a1 anyInDatabase:v10 predicate:v14];
+  v15 = [self anyInDatabase:databaseCopy predicate:v14];
 
   return v15;
 }
 
-+ (id)anyInDatabase:(id)a3 withPushTopic:(id)a4 serviceType:(unint64_t)a5 serviceURL:(id)a6 registrationURL:(id)a7
++ (id)anyInDatabase:(id)database withPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  rLCopy = rL;
+  lCopy = l;
+  topicCopy = topic;
+  databaseCopy = database;
   v16 = objc_alloc_init(NSMutableArray);
-  v17 = [a1 _predicateForServiceType:a5];
+  v17 = [self _predicateForServiceType:type];
   [v16 addObject:v17];
 
-  v18 = [a1 _predicateForPushTopic:v14];
+  v18 = [self _predicateForPushTopic:topicCopy];
 
   [v16 addObject:v18];
-  v19 = [a1 _predicateForServiceURL:v13];
+  v19 = [self _predicateForServiceURL:lCopy];
 
   [v16 addObject:v19];
-  if (v12)
+  if (rLCopy)
   {
-    [a1 _predicateForRegistrationURL:v12];
+    [self _predicateForRegistrationURL:rLCopy];
   }
 
   else
   {
-    [a1 _predicateForNoRegistrationURL];
+    [self _predicateForNoRegistrationURL];
   }
   v20 = ;
   [v16 addObject:v20];
 
   v21 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v16];
-  v22 = [a1 anyInDatabase:v15 predicate:v21];
+  v22 = [self anyInDatabase:databaseCopy predicate:v21];
 
   return v22;
 }
 
-+ (id)notificationServicesInDatabase:(id)a3 withPushTopic:(id)a4
++ (id)notificationServicesInDatabase:(id)database withPushTopic:(id)topic
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPushTopic:a4];
-  v8 = [a1 _notificationServicesInDatabase:v6 matchingPredicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPushTopic:topic];
+  v8 = [self _notificationServicesInDatabase:databaseCopy matchingPredicate:v7];
 
   return v8;
 }
 
-+ (id)notificationServicesInDatabase:(id)a3 withPushTopic:(id)a4 serviceType:(unint64_t)a5 serviceURL:(id)a6 registrationURL:(id)a7
++ (id)notificationServicesInDatabase:(id)database withPushTopic:(id)topic serviceType:(unint64_t)type serviceURL:(id)l registrationURL:(id)rL
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  rLCopy = rL;
+  lCopy = l;
+  topicCopy = topic;
+  databaseCopy = database;
   v16 = objc_alloc_init(NSMutableArray);
-  v17 = [a1 _predicateForServiceType:a5];
+  v17 = [self _predicateForServiceType:type];
   [v16 addObject:v17];
 
-  v18 = [a1 _predicateForPushTopic:v14];
+  v18 = [self _predicateForPushTopic:topicCopy];
 
   [v16 addObject:v18];
-  v19 = [a1 _predicateForServiceURL:v13];
+  v19 = [self _predicateForServiceURL:lCopy];
 
   [v16 addObject:v19];
-  if (v12)
+  if (rLCopy)
   {
-    [a1 _predicateForRegistrationURL:v12];
+    [self _predicateForRegistrationURL:rLCopy];
   }
 
   else
   {
-    [a1 _predicateForNoRegistrationURL];
+    [self _predicateForNoRegistrationURL];
   }
   v20 = ;
   [v16 addObject:v20];
 
   v21 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v16];
-  v22 = [a1 _notificationServicesInDatabase:v15 matchingPredicate:v21];
+  v22 = [self _notificationServicesInDatabase:databaseCopy matchingPredicate:v21];
 
   return v22;
 }
@@ -185,7 +185,7 @@
 {
   v3 = objc_alloc_init(PDNotificationService);
   v4 = +[NotificationService _propertySettersForPaymentTransaction];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001376E4;
@@ -194,7 +194,7 @@
   v6 = v3;
   v13 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -202,20 +202,20 @@
   return v6;
 }
 
-- (void)updateWithLastUpdatedDate:(id)a3
+- (void)updateWithLastUpdatedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSMutableDictionary dictionary];
-  [v5 setObjectOrNull:v4 forKey:@"last_updated_date"];
+  [v5 setObjectOrNull:dateCopy forKey:@"last_updated_date"];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-- (void)updateWithLastUpdatedTag:(id)a3
+- (void)updateWithLastUpdatedTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v6 = +[NSMutableDictionary dictionary];
-  [v6 setObjectOrNull:v4 forKey:@"last_updated_tag"];
+  [v6 setObjectOrNull:tagCopy forKey:@"last_updated_tag"];
 
   v5 = +[NSDate date];
   [v6 setObjectOrNull:v5 forKey:@"last_updated_tag_date"];
@@ -223,50 +223,50 @@
   [(SQLiteEntity *)self setValuesWithDictionary:v6];
 }
 
-- (void)updateWithNotificationService:(id)a3
+- (void)updateWithNotificationService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v11 = +[NSMutableDictionary dictionary];
-  v5 = [v4 pushToken];
-  [v11 setObjectOrNull:v5 forKey:@"push_token"];
+  pushToken = [serviceCopy pushToken];
+  [v11 setObjectOrNull:pushToken forKey:@"push_token"];
 
-  v6 = [v4 authenticationToken];
-  [v11 setObjectOrNull:v6 forKey:@"authentication_token"];
+  authenticationToken = [serviceCopy authenticationToken];
+  [v11 setObjectOrNull:authenticationToken forKey:@"authentication_token"];
 
-  v7 = [v4 appLaunchToken];
-  [v11 setObjectOrNull:v7 forKey:@"app_launch_token"];
+  appLaunchToken = [serviceCopy appLaunchToken];
+  [v11 setObjectOrNull:appLaunchToken forKey:@"app_launch_token"];
 
-  v8 = [v4 lastUpdatedDate];
-  [v11 setObjectOrNull:v8 forKey:@"last_updated_date"];
+  lastUpdatedDate = [serviceCopy lastUpdatedDate];
+  [v11 setObjectOrNull:lastUpdatedDate forKey:@"last_updated_date"];
 
-  v9 = [v4 lastUpdatedTag];
-  [v11 setObjectOrNull:v9 forKey:@"last_updated_tag"];
+  lastUpdatedTag = [serviceCopy lastUpdatedTag];
+  [v11 setObjectOrNull:lastUpdatedTag forKey:@"last_updated_tag"];
 
-  v10 = [v4 lastUpdatedTagDate];
+  lastUpdatedTagDate = [serviceCopy lastUpdatedTagDate];
 
-  [v11 setObjectOrNull:v10 forKey:@"last_updated_tag_date"];
+  [v11 setObjectOrNull:lastUpdatedTagDate forKey:@"last_updated_tag_date"];
   [(SQLiteEntity *)self setValuesWithDictionary:v11];
 }
 
-+ (id)_notificationServicesInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)_notificationServicesInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v8 = objc_alloc_init(NSMutableSet);
-  v9 = [a1 _propertySettersForPaymentTransaction];
-  v10 = [a1 queryWithDatabase:v7 predicate:v6];
+  _propertySettersForPaymentTransaction = [self _propertySettersForPaymentTransaction];
+  v10 = [self queryWithDatabase:databaseCopy predicate:predicateCopy];
 
-  v11 = [v9 allKeys];
+  allKeys = [_propertySettersForPaymentTransaction allKeys];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100137AF8;
   v17[3] = &unk_10083C998;
-  v20 = a1;
-  v18 = v9;
+  selfCopy = self;
+  v18 = _propertySettersForPaymentTransaction;
   v12 = v8;
   v19 = v12;
-  v13 = v9;
-  [v10 enumeratePersistentIDsAndProperties:v11 usingBlock:v17];
+  v13 = _propertySettersForPaymentTransaction;
+  [v10 enumeratePersistentIDsAndProperties:allKeys usingBlock:v17];
 
   v14 = v19;
   v15 = v12;
@@ -274,15 +274,15 @@
   return v12;
 }
 
-+ (id)_predicateForServiceType:(unint64_t)a3
++ (id)_predicateForServiceType:(unint64_t)type
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:type];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"service_type" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForServiceURL:(id)a3
++ (id)_predicateForServiceURL:(id)l
 {
   v3 = _SQLValueForURL();
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"service_url" equalToValue:v3];
@@ -290,7 +290,7 @@
   return v4;
 }
 
-+ (id)_predicateForRegistrationURL:(id)a3
++ (id)_predicateForRegistrationURL:(id)l
 {
   v3 = _SQLValueForURL();
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"registration_url" equalToValue:v3];

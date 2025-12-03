@@ -1,18 +1,18 @@
 @interface EDAccountECAccountTransformer
-- (id)transformAccount:(id)a3;
-- (id)transformDeliveryAccount:(id)a3;
-- (id)transformReceivingAccount:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)transformAccount:(id)account;
+- (id)transformDeliveryAccount:(id)account;
+- (id)transformReceivingAccount:(id)account;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation EDAccountECAccountTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F461C6B0])
+  valueCopy = value;
+  if ([valueCopy conformsToProtocol:&unk_1F461C6B0])
   {
-    v5 = [(EDAccountECAccountTransformer *)self transformAccount:v4];
+    v5 = [(EDAccountECAccountTransformer *)self transformAccount:valueCopy];
   }
 
   else
@@ -23,20 +23,20 @@
   return v5;
 }
 
-- (id)transformAccount:(id)a3
+- (id)transformAccount:(id)account
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F4628C10])
+  accountCopy = account;
+  if ([accountCopy conformsToProtocol:&unk_1F4628C10])
   {
-    v5 = [(EDAccountECAccountTransformer *)self transformReceivingAccount:v4];
+    v5 = [(EDAccountECAccountTransformer *)self transformReceivingAccount:accountCopy];
 LABEL_5:
     v6 = v5;
     goto LABEL_7;
   }
 
-  if ([v4 conformsToProtocol:&unk_1F4628CE0])
+  if ([accountCopy conformsToProtocol:&unk_1F4628CE0])
   {
-    v5 = [(EDAccountECAccountTransformer *)self transformDeliveryAccount:v4];
+    v5 = [(EDAccountECAccountTransformer *)self transformDeliveryAccount:accountCopy];
     goto LABEL_5;
   }
 
@@ -46,20 +46,20 @@ LABEL_7:
   return v6;
 }
 
-- (id)transformReceivingAccount:(id)a3
+- (id)transformReceivingAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc(MEMORY[0x1E699AE08]);
-  v6 = [v4 identifier];
-  v7 = [v5 initWithRepresentedObjectID:v6];
+  identifier = [accountCopy identifier];
+  v7 = [v5 initWithRepresentedObjectID:identifier];
 
-  v8 = [v4 displayName];
-  v9 = [v4 hostname];
-  v10 = v9;
+  displayName = [accountCopy displayName];
+  hostname = [accountCopy hostname];
+  v10 = hostname;
   v11 = &stru_1F45B4608;
-  if (v9)
+  if (hostname)
   {
-    v11 = v9;
+    v11 = hostname;
   }
 
   v12 = v11;
@@ -69,10 +69,10 @@ LABEL_7:
   v17[1] = 3221225472;
   v17[2] = __59__EDAccountECAccountTransformer_transformReceivingAccount___block_invoke;
   v17[3] = &unk_1E8250048;
-  v14 = v4;
+  v14 = accountCopy;
   v18 = v14;
-  v19 = self;
-  v15 = [v13 initWithObjectID:v7 name:v8 hostname:v12 builder:v17];
+  selfCopy = self;
+  v15 = [v13 initWithObjectID:v7 name:displayName hostname:v12 builder:v17];
 
   return v15;
 }
@@ -104,23 +104,23 @@ void __59__EDAccountECAccountTransformer_transformReceivingAccount___block_invok
   }
 }
 
-- (id)transformDeliveryAccount:(id)a3
+- (id)transformDeliveryAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc(MEMORY[0x1E699AE08]);
-  v5 = [v3 identifier];
-  v6 = [v4 initWithRepresentedObjectID:v5];
+  identifier = [accountCopy identifier];
+  v6 = [v4 initWithRepresentedObjectID:identifier];
 
-  v7 = [v3 displayName];
-  v8 = [v3 hostname];
+  displayName = [accountCopy displayName];
+  hostname = [accountCopy hostname];
   v9 = objc_alloc(MEMORY[0x1E699ACA0]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__EDAccountECAccountTransformer_transformDeliveryAccount___block_invoke;
   v13[3] = &unk_1E8250070;
-  v10 = v3;
+  v10 = accountCopy;
   v14 = v10;
-  v11 = [v9 initWithObjectID:v6 name:v7 hostname:v8 builder:v13];
+  v11 = [v9 initWithObjectID:v6 name:displayName hostname:hostname builder:v13];
 
   return v11;
 }

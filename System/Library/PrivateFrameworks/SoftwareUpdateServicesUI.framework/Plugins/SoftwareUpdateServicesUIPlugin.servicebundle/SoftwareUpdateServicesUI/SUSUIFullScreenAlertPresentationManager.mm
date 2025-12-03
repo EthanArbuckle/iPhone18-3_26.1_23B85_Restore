@@ -1,57 +1,57 @@
 @interface SUSUIFullScreenAlertPresentationManager
 - (NSMutableArray)activeFullScreenAlerts;
-- (SUSUIFullScreenAlertPresentationManager)initWithQueue:(id)a3;
-- (void)dismissAlert:(id)a3;
-- (void)dismissAlertsOfClass:(Class)a3;
-- (void)presentAlert:(id)a3 completion:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (SUSUIFullScreenAlertPresentationManager)initWithQueue:(id)queue;
+- (void)dismissAlert:(id)alert;
+- (void)dismissAlertsOfClass:(Class)class;
+- (void)presentAlert:(id)alert completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation SUSUIFullScreenAlertPresentationManager
 
-- (SUSUIFullScreenAlertPresentationManager)initWithQueue:(id)a3
+- (SUSUIFullScreenAlertPresentationManager)initWithQueue:(id)queue
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, queue);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = SUSUIFullScreenAlertPresentationManager;
   v10 = [(SUSUIFullScreenAlertPresentationManager *)&v11 init];
-  v13 = v10;
-  objc_storeStrong(&v13, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v4 = +[NSMapTable strongToStrongObjectsMapTable];
-    alertToHandleMapping = v13->_alertToHandleMapping;
-    v13->_alertToHandleMapping = v4;
+    alertToHandleMapping = selfCopy->_alertToHandleMapping;
+    selfCopy->_alertToHandleMapping = v4;
 
     v6 = +[NSMapTable strongToStrongObjectsMapTable];
-    alertActivationBlocks = v13->_alertActivationBlocks;
-    v13->_alertActivationBlocks = v6;
+    alertActivationBlocks = selfCopy->_alertActivationBlocks;
+    selfCopy->_alertActivationBlocks = v6;
 
-    objc_storeStrong(&v13->_queue, location[0]);
+    objc_storeStrong(&selfCopy->_queue, location[0]);
   }
 
-  v9 = v13;
+  v9 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (NSMutableArray)activeFullScreenAlerts
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   queue = self->_queue;
   BSDispatchQueueAssert();
   v15[0] = 0;
   memset(__b, 0, sizeof(__b));
-  obj = [(NSMapTable *)v16->_alertToHandleMapping keyEnumerator];
+  obj = [(NSMapTable *)selfCopy->_alertToHandleMapping keyEnumerator];
   v12 = [(NSEnumerator *)obj countByEnumeratingWithState:__b objects:v17 count:16];
   if (v12)
   {
@@ -94,25 +94,25 @@
   return v6;
 }
 
-- (void)presentAlert:(id)a3 completion:(id)a4
+- (void)presentAlert:(id)alert completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  queue = v14->_queue;
+  objc_storeStrong(&v12, completion);
+  queue = selfCopy->_queue;
   BSDispatchQueueAssert();
-  v11 = [location[0] configurationContext];
-  v7 = [location[0] remoteDefinition];
+  configurationContext = [location[0] configurationContext];
+  remoteDefinition = [location[0] remoteDefinition];
   v10 = [SBSRemoteAlertHandle newHandleWithDefinition:"newHandleWithDefinition:configurationContext:" configurationContext:?];
 
-  [v10 addObserver:v14];
-  [(NSMapTable *)v14->_alertToHandleMapping setObject:v10 forKey:location[0]];
+  [v10 addObserver:selfCopy];
+  [(NSMapTable *)selfCopy->_alertToHandleMapping setObject:v10 forKey:location[0]];
   if (v12)
   {
-    alertActivationBlocks = v14->_alertActivationBlocks;
+    alertActivationBlocks = selfCopy->_alertActivationBlocks;
     v6 = objc_retainBlock(v12);
     [NSMapTable setObject:"setObject:forKey:" forKey:?];
   }
@@ -127,18 +127,18 @@
   objc_storeStrong(&v9, 0);
   [v10 activateWithOptions:0];
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&configurationContext, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissAlert:(id)a3
+- (void)dismissAlert:(id)alert
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = v7->_queue;
+  objc_storeStrong(location, alert);
+  queue = selfCopy->_queue;
   BSDispatchQueueAssert();
   oslog = SUSUILog();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -148,22 +148,22 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(NSMapTable *)v7->_alertToHandleMapping objectForKey:location[0]];
+  v4 = [(NSMapTable *)selfCopy->_alertToHandleMapping objectForKey:location[0]];
   [v4 invalidate];
 
-  [(NSMapTable *)v7->_alertToHandleMapping removeObjectForKey:location[0]];
+  [(NSMapTable *)selfCopy->_alertToHandleMapping removeObjectForKey:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissAlertsOfClass:(Class)a3
+- (void)dismissAlertsOfClass:(Class)class
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  classCopy = class;
   queue = self->_queue;
   BSDispatchQueueAssert();
   memset(__b, 0, sizeof(__b));
-  v8 = [(NSMapTable *)v15->_alertToHandleMapping copy];
+  v8 = [(NSMapTable *)selfCopy->_alertToHandleMapping copy];
   obj = [v8 keyEnumerator];
 
   v10 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
@@ -183,7 +183,7 @@
       v12 = *(__b[1] + 8 * v6);
       if (objc_opt_isKindOfClass())
       {
-        [(SUSUIFullScreenAlertPresentationManager *)v15 dismissAlert:v12];
+        [(SUSUIFullScreenAlertPresentationManager *)selfCopy dismissAlert:v12];
       }
 
       ++v6;
@@ -200,12 +200,12 @@
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, activate);
   v12 = SUSUILog();
   v11 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -215,13 +215,13 @@
   }
 
   objc_storeStrong(&v12, 0);
-  queue = v14->_queue;
+  queue = selfCopy->_queue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_6498;
   v8 = &unk_5D008;
-  v9 = v14;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(queue, &v4);
   objc_storeStrong(&v10, 0);
@@ -229,12 +229,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, deactivate);
   v11 = SUSUILog();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -244,7 +244,7 @@
   }
 
   objc_storeStrong(&v11, 0);
-  queue = v13->_queue;
+  queue = selfCopy->_queue;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -256,14 +256,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handle);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, error);
   v14 = SUSUILog();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -273,14 +273,14 @@
   }
 
   objc_storeStrong(&v14, 0);
-  queue = v17->_queue;
+  queue = selfCopy->_queue;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_68E4;
   v10 = &unk_5D008;
   v11 = location[0];
-  v12 = v17;
+  v12 = selfCopy;
   dispatch_async(queue, &v6);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);

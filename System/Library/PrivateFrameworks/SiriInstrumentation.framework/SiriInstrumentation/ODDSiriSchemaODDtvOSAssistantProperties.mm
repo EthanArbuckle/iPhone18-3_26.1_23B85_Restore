@@ -1,25 +1,25 @@
 @interface ODDSiriSchemaODDtvOSAssistantProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDtvOSAssistantProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDtvOSAssistantProperties)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDtvOSAssistantProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDtvOSAssistantProperties)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDtvOSAssistantProperties
 
-- (ODDSiriSchemaODDtvOSAssistantProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDtvOSAssistantProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDtvOSAssistantProperties;
   v5 = [(ODDSiriSchemaODDtvOSAssistantProperties *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"multiUserState"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"multiUserState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ODDSiriSchemaODDtvOSAssistantProperties *)v5 setMultiUserState:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"homePodProperties"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"homePodProperties"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDtvOSAssistantProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDtvOSAssistantProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDtvOSAssistantProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDtvOSAssistantProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_homePodProperties)
   {
-    v4 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    homePodProperties = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+    dictionaryRepresentation = [homePodProperties dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"homePodProperties"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"homePodProperties"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"homePodProperties"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"homePodProperties"];
     }
   }
 
   if (self->_multiUserState)
   {
-    v7 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    multiUserState = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+    dictionaryRepresentation2 = [multiUserState dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"multiUserState"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"multiUserState"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"multiUserState"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"multiUserState"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
-  v6 = [v4 multiUserState];
-  if ((v5 != 0) == (v6 == 0))
+  multiUserState = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+  multiUserState2 = [equalCopy multiUserState];
+  if ((multiUserState != 0) == (multiUserState2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
-  if (v7)
+  multiUserState3 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+  if (multiUserState3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
-    v10 = [v4 multiUserState];
-    v11 = [v9 isEqual:v10];
+    v8 = multiUserState3;
+    multiUserState4 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+    multiUserState5 = [equalCopy multiUserState];
+    v11 = [multiUserState4 isEqual:multiUserState5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
-  v6 = [v4 homePodProperties];
-  if ((v5 != 0) != (v6 == 0))
+  multiUserState = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+  multiUserState2 = [equalCopy homePodProperties];
+  if ((multiUserState != 0) != (multiUserState2 == 0))
   {
-    v12 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
-    if (!v12)
+    homePodProperties = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+    if (!homePodProperties)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
-    v15 = [v4 homePodProperties];
-    v16 = [v14 isEqual:v15];
+    v13 = homePodProperties;
+    homePodProperties2 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+    homePodProperties3 = [equalCopy homePodProperties];
+    v16 = [homePodProperties2 isEqual:homePodProperties3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+  toCopy = to;
+  multiUserState = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
 
-  if (v4)
+  if (multiUserState)
   {
-    v5 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+    multiUserState2 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+  homePodProperties = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
 
-  if (v6)
+  if (homePodProperties)
   {
-    v7 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+    homePodProperties2 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODDSiriSchemaODDtvOSAssistantProperties;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  multiUserState = [(ODDSiriSchemaODDtvOSAssistantProperties *)self multiUserState];
+  v7 = [multiUserState applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDtvOSAssistantProperties *)self deleteMultiUserState];
   }
 
-  v9 = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  homePodProperties = [(ODDSiriSchemaODDtvOSAssistantProperties *)self homePodProperties];
+  v10 = [homePodProperties applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDtvOSAssistantProperties *)self deleteHomePodProperties];
   }

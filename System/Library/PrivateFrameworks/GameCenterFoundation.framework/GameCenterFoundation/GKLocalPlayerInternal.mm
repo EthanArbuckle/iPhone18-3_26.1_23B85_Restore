@@ -1,17 +1,17 @@
 @interface GKLocalPlayerInternal
-+ (id)minimalInternalFromSourcePlayer:(id)a3;
++ (id)minimalInternalFromSourcePlayer:(id)player;
 + (id)secureCodedPropertyKeys;
 - (BOOL)hasAcknowledgedLatestGDPR;
 - (BOOL)isUnderage;
 - (id)minimalInternal;
 - (int)ageCategory;
-- (void)setDefaultContactsIntegrationConsent:(BOOL)a3;
-- (void)setDefaultNickname:(BOOL)a3;
-- (void)setDefaultPrivacyVisibility:(BOOL)a3;
-- (void)setFindable:(BOOL)a3;
-- (void)setPhotoPending:(BOOL)a3;
-- (void)setPurpleBuddyAccount:(BOOL)a3;
-- (void)setUnderage:(BOOL)a3;
+- (void)setDefaultContactsIntegrationConsent:(BOOL)consent;
+- (void)setDefaultNickname:(BOOL)nickname;
+- (void)setDefaultPrivacyVisibility:(BOOL)visibility;
+- (void)setFindable:(BOOL)findable;
+- (void)setPhotoPending:(BOOL)pending;
+- (void)setPurpleBuddyAccount:(BOOL)account;
+- (void)setUnderage:(BOOL)underage;
 @end
 
 @implementation GKLocalPlayerInternal
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_549_0 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_549_0, block);
@@ -71,58 +71,58 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
   return [v3 minimalInternalFromSourcePlayer:self];
 }
 
-+ (id)minimalInternalFromSourcePlayer:(id)a3
++ (id)minimalInternalFromSourcePlayer:(id)player
 {
-  v3 = a3;
-  v4 = [objc_opt_class() internalRepresentation];
-  v5 = [v3 playerID];
-  [v4 setPlayerID:v5];
+  playerCopy = player;
+  internalRepresentation = [objc_opt_class() internalRepresentation];
+  playerID = [playerCopy playerID];
+  [internalRepresentation setPlayerID:playerID];
 
-  v6 = [v3 scopedIDs];
-  [v4 setScopedIDs:v6];
+  scopedIDs = [playerCopy scopedIDs];
+  [internalRepresentation setScopedIDs:scopedIDs];
 
-  v7 = [v3 alias];
-  [v4 setAlias:v7];
+  alias = [playerCopy alias];
+  [internalRepresentation setAlias:alias];
 
-  v8 = [v3 firstName];
-  [v4 setFirstName:v8];
+  firstName = [playerCopy firstName];
+  [internalRepresentation setFirstName:firstName];
 
-  v9 = [v3 lastName];
-  [v4 setLastName:v9];
+  lastName = [playerCopy lastName];
+  [internalRepresentation setLastName:lastName];
 
-  v10 = [v3 friendLevel];
-  [v4 setFriendLevel:v10];
+  friendLevel = [playerCopy friendLevel];
+  [internalRepresentation setFriendLevel:friendLevel];
 
-  v11 = [v3 friendBiDirectional];
-  [v4 setFriendBiDirectional:v11];
+  friendBiDirectional = [playerCopy friendBiDirectional];
+  [internalRepresentation setFriendBiDirectional:friendBiDirectional];
 
-  v12 = [v3 friendPlayedWith];
-  [v4 setFriendPlayedWith:v12];
+  friendPlayedWith = [playerCopy friendPlayedWith];
+  [internalRepresentation setFriendPlayedWith:friendPlayedWith];
 
-  v13 = [v3 friendPlayedNearby];
-  [v4 setFriendPlayedNearby:v13];
+  friendPlayedNearby = [playerCopy friendPlayedNearby];
+  [internalRepresentation setFriendPlayedNearby:friendPlayedNearby];
 
-  v14 = [v3 compositeName];
-  [v4 setCompositeName:v14];
+  compositeName = [playerCopy compositeName];
+  [internalRepresentation setCompositeName:compositeName];
 
-  v15 = [v3 accountName];
-  [v4 setAccountName:v15];
+  accountName = [playerCopy accountName];
+  [internalRepresentation setAccountName:accountName];
 
-  v16 = [v3 contactsAssociationID];
-  [v4 setContactsAssociationID:v16];
+  contactsAssociationID = [playerCopy contactsAssociationID];
+  [internalRepresentation setContactsAssociationID:contactsAssociationID];
 
-  [v4 setContactsIntegrationConsent:{objc_msgSend(v3, "contactsIntegrationConsent")}];
-  v17 = [v3 serviceLastUpdatedTimestamp];
+  [internalRepresentation setContactsIntegrationConsent:{objc_msgSend(playerCopy, "contactsIntegrationConsent")}];
+  serviceLastUpdatedTimestamp = [playerCopy serviceLastUpdatedTimestamp];
 
-  [v4 setServiceLastUpdatedTimestamp:v17];
+  [internalRepresentation setServiceLastUpdatedTimestamp:serviceLastUpdatedTimestamp];
 
-  return v4;
+  return internalRepresentation;
 }
 
-- (void)setPurpleBuddyAccount:(BOOL)a3
+- (void)setPurpleBuddyAccount:(BOOL)account
 {
   v3 = 256;
-  if (!a3)
+  if (!account)
   {
     v3 = 0;
   }
@@ -130,10 +130,10 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
   self->super.super.super._flags.var0 = (*&self->super.super.super._flags.var0 & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setDefaultNickname:(BOOL)a3
+- (void)setDefaultNickname:(BOOL)nickname
 {
   v3 = 4096;
-  if (!a3)
+  if (!nickname)
   {
     v3 = 0;
   }
@@ -141,10 +141,10 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
   self->super.super.super._flags.var0 = (*&self->super.super.super._flags.var0 & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setDefaultPrivacyVisibility:(BOOL)a3
+- (void)setDefaultPrivacyVisibility:(BOOL)visibility
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!visibility)
   {
     v3 = 0;
   }
@@ -152,10 +152,10 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
   self->super.super.super._flags.var0 = (*&self->super.super.super._flags.var0 & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setDefaultContactsIntegrationConsent:(BOOL)a3
+- (void)setDefaultContactsIntegrationConsent:(BOOL)consent
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!consent)
   {
     v3 = 0;
   }
@@ -166,9 +166,9 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
 - (BOOL)isUnderage
 {
   v3 = +[GKPreferences shared];
-  v4 = [v3 forceUnderage];
+  forceUnderage = [v3 forceUnderage];
 
-  if (v4)
+  if (forceUnderage)
   {
     LOBYTE(v5) = 1;
   }
@@ -181,10 +181,10 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
   return v5;
 }
 
-- (void)setUnderage:(BOOL)a3
+- (void)setUnderage:(BOOL)underage
 {
   v3 = 512;
-  if (!a3)
+  if (!underage)
   {
     v3 = 0;
   }
@@ -195,15 +195,15 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
 - (int)ageCategory
 {
   v2 = +[GKPreferences shared];
-  v3 = [v2 localPlayerAgeCategory];
+  localPlayerAgeCategory = [v2 localPlayerAgeCategory];
 
-  return v3;
+  return localPlayerAgeCategory;
 }
 
-- (void)setFindable:(BOOL)a3
+- (void)setFindable:(BOOL)findable
 {
   v3 = 2048;
-  if (!a3)
+  if (!findable)
   {
     v3 = 0;
   }
@@ -211,10 +211,10 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
   self->super.super.super._flags.var0 = (*&self->super.super.super._flags.var0 & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setPhotoPending:(BOOL)a3
+- (void)setPhotoPending:(BOOL)pending
 {
   v3 = 1024;
-  if (!a3)
+  if (!pending)
   {
     v3 = 0;
   }
@@ -224,10 +224,10 @@ void __48__GKLocalPlayerInternal_secureCodedPropertyKeys__block_invoke(uint64_t 
 
 - (BOOL)hasAcknowledgedLatestGDPR
 {
-  v2 = [(GKPlayerInternal *)self onboarding];
-  v3 = [v2 hasAcknowledgedLatestGDPR];
+  onboarding = [(GKPlayerInternal *)self onboarding];
+  hasAcknowledgedLatestGDPR = [onboarding hasAcknowledgedLatestGDPR];
 
-  return v3;
+  return hasAcknowledgedLatestGDPR;
 }
 
 @end

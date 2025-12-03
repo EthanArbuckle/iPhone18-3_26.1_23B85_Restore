@@ -1,14 +1,14 @@
 @interface SUUIHandleRulesSettingsHeaderFooterDescriptionView
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5;
-+ (id)_labelWithDescription:(id)a3 forWidth:(double)a4;
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context;
++ (id)_labelWithDescription:(id)description forWidth:(double)width;
 - (void)layoutSubviews;
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SUUIHandleRulesSettingsHeaderFooterDescriptionView
 
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -17,30 +17,30 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context
 {
-  v7 = a4;
+  descriptionCopy = description;
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
   [v8 _scaledValueForValue:22.0];
   v10 = v9;
-  v11 = [a1 _labelWithDescription:v7 forWidth:a3];
+  v11 = [self _labelWithDescription:descriptionCopy forWidth:width];
   [v11 _firstLineBaselineFrameOriginY];
   v13 = v10 - v12;
   [v11 _lastLineBaselineFrameOriginY];
   v15 = v13 + v14;
 
-  v16 = a3;
+  widthCopy = width;
   v17 = v15;
   result.height = v17;
-  result.width = v16;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
-  objc_storeStrong(&self->_description, a3);
-  v10 = a3;
-  v8 = [objc_opt_class() _labelWithDescription:self->_description forWidth:a4];
+  objc_storeStrong(&self->_description, description);
+  descriptionCopy = description;
+  v8 = [objc_opt_class() _labelWithDescription:self->_description forWidth:width];
   label = self->_label;
   self->_label = v8;
 
@@ -85,19 +85,19 @@
   [(UILabel *)self->_label setTextAlignment:v22];
 }
 
-+ (id)_labelWithDescription:(id)a3 forWidth:(double)a4
++ (id)_labelWithDescription:(id)description forWidth:(double)width
 {
   v5 = MEMORY[0x277D756B8];
-  v6 = a3;
+  descriptionCopy = description;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 text];
-  [v7 setText:v8];
+  text = [descriptionCopy text];
+  [v7 setText:text];
   [v7 setNumberOfLines:0];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
   [v7 setFont:v9];
-  v10 = [v6 showInvalid];
+  showInvalid = [descriptionCopy showInvalid];
 
-  if (v10)
+  if (showInvalid)
   {
     [MEMORY[0x277D75348] systemRedColor];
   }
@@ -108,8 +108,8 @@
   }
   v11 = ;
   [v7 setColor:v11];
-  [v7 sizeThatFits:{a4, 1.0}];
-  [v7 setFrame:{0.0, 0.0, a4, v12}];
+  [v7 sizeThatFits:{width, 1.0}];
+  [v7 setFrame:{0.0, 0.0, width, v12}];
 
   return v7;
 }

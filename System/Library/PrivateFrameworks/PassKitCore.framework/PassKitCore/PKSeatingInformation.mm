@@ -1,19 +1,19 @@
 @interface PKSeatingInformation
-- (BOOL)_isStringAllLetters:(id)a3;
-- (BOOL)_isStringAllNumbers:(id)a3 formatter:(id)a4;
+- (BOOL)_isStringAllLetters:(id)letters;
+- (BOOL)_isStringAllNumbers:(id)numbers formatter:(id)formatter;
 - (BOOL)seatsSpanMultipleSections;
-- (PKSeatingInformation)initWithCoder:(id)a3;
+- (PKSeatingInformation)initWithCoder:(id)coder;
 - (id)_allAisles;
 - (id)_allLevels;
 - (id)_allRows;
 - (id)_allSectionColors;
 - (id)_allSections;
-- (id)_displayableAirlineSeatsStringForRow:(id)a3 designations:(id)a4;
-- (id)_formatSeatLettersForRow:(id)a3 designations:(id)a4 includeSpaceBetweenRowAndSeats:(BOOL)a5;
-- (id)_formatSeatNumbersForRow:(id)a3 designations:(id)a4 formatter:(id)a5 includeSpaceBetweenRowAndSeats:(BOOL)a6;
-- (id)_formattedAirlineSeatsStringForRow:(id)a3 designation:(id)a4 includeSpaceBetweenRowAndSeats:(BOOL)a5;
-- (id)changeMessageFromAirlineSeatingInformation:(id)a3;
-- (id)changeMessageFromInformation:(id)a3 isTransit:(BOOL)a4;
+- (id)_displayableAirlineSeatsStringForRow:(id)row designations:(id)designations;
+- (id)_formatSeatLettersForRow:(id)row designations:(id)designations includeSpaceBetweenRowAndSeats:(BOOL)seats;
+- (id)_formatSeatNumbersForRow:(id)row designations:(id)designations formatter:(id)formatter includeSpaceBetweenRowAndSeats:(BOOL)seats;
+- (id)_formattedAirlineSeatsStringForRow:(id)row designation:(id)designation includeSpaceBetweenRowAndSeats:(BOOL)seats;
+- (id)changeMessageFromAirlineSeatingInformation:(id)information;
+- (id)changeMessageFromInformation:(id)information isTransit:(BOOL)transit;
 - (id)displayableAirlineSeatsString;
 - (id)displayableAllAislesString;
 - (id)displayableAllLevelsString;
@@ -21,10 +21,10 @@
 - (id)displayableAllSeatsString;
 - (id)displayableAllSectionsColor;
 - (id)displayableAllSectionsString;
-- (id)firstSeatContainingAttributes:(unint64_t)a3;
-- (id)initFromSemantic:(id)a3;
-- (id)initFromSemantics:(id)a3;
-- (id)seatsContainingAttributes:(unint64_t)a3;
+- (id)firstSeatContainingAttributes:(unint64_t)attributes;
+- (id)initFromSemantic:(id)semantic;
+- (id)initFromSemantics:(id)semantics;
+- (id)seatsContainingAttributes:(unint64_t)attributes;
 @end
 
 @implementation PKSeatingInformation
@@ -38,14 +38,14 @@
   {
     if (v4 == 1)
     {
-      v5 = [v3 firstObject];
-      v6 = [v5 airlineSeat];
+      firstObject = [v3 firstObject];
+      airlineSeat = [firstObject airlineSeat];
     }
 
     else
     {
-      v7 = [(PKSeatingInformation *)self _allRows];
-      v8 = [v7 count];
+      _allRows = [(PKSeatingInformation *)self _allRows];
+      v8 = [_allRows count];
 
       if (v8 < 3)
       {
@@ -73,8 +73,8 @@
 
               v15 = *(*(&v41 + 1) + 8 * i);
               v16 = [v15 row];
-              v17 = [v15 designation];
-              if ([v16 length] && objc_msgSend(v17, "length"))
+              designation = [v15 designation];
+              if ([v16 length] && objc_msgSend(designation, "length"))
               {
                 v18 = [v9 objectForKeyedSubscript:v16];
                 if (!v18)
@@ -83,7 +83,7 @@
                   [v9 setObject:v18 forKeyedSubscript:v16];
                 }
 
-                [v18 addObject:v17];
+                [v18 addObject:designation];
               }
             }
 
@@ -93,8 +93,8 @@
           while (v12);
         }
 
-        v19 = [v9 allKeys];
-        v20 = [v19 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+        allKeys = [v9 allKeys];
+        v20 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
         v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v37 = 0u;
@@ -122,7 +122,7 @@
               v30 = v29;
               if (v24 == 2 && [v29 count] > 1 || (-[PKSeatingInformation _displayableAirlineSeatsStringForRow:designations:](self, "_displayableAirlineSeatsStringForRow:designations:", v28, v30), (v31 = objc_claimAutoreleasedReturnValue()) == 0))
               {
-                v6 = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
+                airlineSeat = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
 
                 v33 = v22;
                 goto LABEL_31;
@@ -143,7 +143,7 @@
         }
 
         v33 = PKLocalizedTicketingString(&cfstr_LocalizedListD.isa, 0);
-        v6 = [v21 componentsJoinedByString:v33];
+        airlineSeat = [v21 componentsJoinedByString:v33];
 LABEL_31:
 
         v3 = v36;
@@ -151,27 +151,27 @@ LABEL_31:
 
       else
       {
-        v6 = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
+        airlineSeat = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    airlineSeat = 0;
   }
 
-  return v6;
+  return airlineSeat;
 }
 
-- (id)changeMessageFromAirlineSeatingInformation:(id)a3
+- (id)changeMessageFromAirlineSeatingInformation:(id)information
 {
-  v4 = [a3 firstSeat];
-  v5 = [(PKSeatingInformation *)self firstSeat];
-  if (([v5 diffFromSeat:v4] & 3) != 0)
+  firstSeat = [information firstSeat];
+  firstSeat2 = [(PKSeatingInformation *)self firstSeat];
+  if (([firstSeat2 diffFromSeat:firstSeat] & 3) != 0)
   {
-    v6 = [v5 airlineSeat];
-    v7 = PKLocalizedTicketingString(&cfstr_SemanticsSeats.isa, &stru_1F2281668.isa, v6);
+    airlineSeat = [firstSeat2 airlineSeat];
+    v7 = PKLocalizedTicketingString(&cfstr_SemanticsSeats.isa, &stru_1F2281668.isa, airlineSeat);
   }
 
   else
@@ -182,27 +182,27 @@ LABEL_31:
   return v7;
 }
 
-- (BOOL)_isStringAllNumbers:(id)a3 formatter:(id)a4
+- (BOOL)_isStringAllNumbers:(id)numbers formatter:(id)formatter
 {
-  v4 = [a4 numberFromString:a3];
+  v4 = [formatter numberFromString:numbers];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (BOOL)_isStringAllLetters:(id)a3
+- (BOOL)_isStringAllLetters:(id)letters
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 letterCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  lettersCopy = letters;
+  letterCharacterSet = [v3 letterCharacterSet];
+  v6 = [lettersCopy rangeOfCharacterFromSet:letterCharacterSet];
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)_formattedAirlineSeatsStringForRow:(id)a3 designation:(id)a4 includeSpaceBetweenRowAndSeats:(BOOL)a5
+- (id)_formattedAirlineSeatsStringForRow:(id)row designation:(id)designation includeSpaceBetweenRowAndSeats:(BOOL)seats
 {
-  if (a5)
+  if (seats)
   {
     v5 = @"LOCALIZED_ROW_AND_SEAT_WITH_SPACE_FORMAT";
   }
@@ -212,22 +212,22 @@ LABEL_31:
     v5 = @"LOCALIZED_ROW_AND_SEAT_NO_SPACE_FORMAT";
   }
 
-  v6 = PKLocalizedTicketingString(&v5->isa, &stru_1F22903C8.isa, a3, a4);
+  v6 = PKLocalizedTicketingString(&v5->isa, &stru_1F22903C8.isa, row, designation);
 
   return v6;
 }
 
-- (id)_displayableAirlineSeatsStringForRow:(id)a3 designations:(id)a4
+- (id)_displayableAirlineSeatsStringForRow:(id)row designations:(id)designations
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  designationsCopy = designations;
   v8 = PKSeatingInformationNumberFormatter();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = designationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v10)
   {
@@ -299,7 +299,7 @@ LABEL_13:
   {
     if (v13)
     {
-      v17 = [(PKSeatingInformation *)self _formatSeatLettersForRow:v6 designations:v9 includeSpaceBetweenRowAndSeats:[(PKSeatingInformation *)self _isStringAllLetters:v6]];
+      v17 = [(PKSeatingInformation *)self _formatSeatLettersForRow:rowCopy designations:v9 includeSpaceBetweenRowAndSeats:[(PKSeatingInformation *)self _isStringAllLetters:rowCopy]];
       goto LABEL_23;
     }
 
@@ -307,7 +307,7 @@ LABEL_13:
   }
 
 LABEL_22:
-  v17 = [(PKSeatingInformation *)self _formatSeatNumbersForRow:v6 designations:v9 formatter:v8 includeSpaceBetweenRowAndSeats:[(PKSeatingInformation *)self _isStringAllNumbers:v6 formatter:v8, v20]];
+  v17 = [(PKSeatingInformation *)self _formatSeatNumbersForRow:rowCopy designations:v9 formatter:v8 includeSpaceBetweenRowAndSeats:[(PKSeatingInformation *)self _isStringAllNumbers:rowCopy formatter:v8, v20]];
 LABEL_23:
   v18 = v17;
 LABEL_24:
@@ -315,41 +315,41 @@ LABEL_24:
   return v18;
 }
 
-- (id)_formatSeatNumbersForRow:(id)a3 designations:(id)a4 formatter:(id)a5 includeSpaceBetweenRowAndSeats:(BOOL)a6
+- (id)_formatSeatNumbersForRow:(id)row designations:(id)designations formatter:(id)formatter includeSpaceBetweenRowAndSeats:(BOOL)seats
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  seatsCopy = seats;
+  rowCopy = row;
+  formatterCopy = formatter;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __111__PKSeatingInformation_Flight___formatSeatNumbersForRow_designations_formatter_includeSpaceBetweenRowAndSeats___block_invoke;
   v27[3] = &unk_1E79E0B78;
-  v12 = v11;
+  v12 = formatterCopy;
   v28 = v12;
-  v13 = [a4 sortedArrayUsingComparator:v27];
+  v13 = [designations sortedArrayUsingComparator:v27];
   v14 = [v13 count];
-  v15 = [v13 firstObject];
+  firstObject = [v13 firstObject];
   if (v14 <= 1)
   {
-    v16 = [(PKSeatingInformation *)self _formattedAirlineSeatsStringForRow:v10 designation:v15 includeSpaceBetweenRowAndSeats:v6];
+    v16 = [(PKSeatingInformation *)self _formattedAirlineSeatsStringForRow:rowCopy designation:firstObject includeSpaceBetweenRowAndSeats:seatsCopy];
     goto LABEL_12;
   }
 
-  v26 = v6;
-  v17 = [v13 lastObject];
-  v18 = [v12 numberFromString:v15];
-  v19 = [v12 numberFromString:v17];
+  v26 = seatsCopy;
+  lastObject = [v13 lastObject];
+  v18 = [v12 numberFromString:firstObject];
+  v19 = [v12 numberFromString:lastObject];
   v20 = v19;
   v16 = 0;
   if (v18 && v19)
   {
-    v21 = [v18 integerValue];
-    v22 = [v20 integerValue] - v21;
+    integerValue = [v18 integerValue];
+    v22 = [v20 integerValue] - integerValue;
     if (v22 == [v13 count] - 1)
     {
-      v23 = PKLocalizedTicketingString(&cfstr_LocalizedNumbe.isa, &stru_1F22903C8.isa, v15, v17);
+      v23 = PKLocalizedTicketingString(&cfstr_LocalizedNumbe.isa, &stru_1F22903C8.isa, firstObject, lastObject);
 LABEL_10:
-      v16 = [(PKSeatingInformation *)self _formattedAirlineSeatsStringForRow:v10 designation:v23 includeSpaceBetweenRowAndSeats:v26];
+      v16 = [(PKSeatingInformation *)self _formattedAirlineSeatsStringForRow:rowCopy designation:v23 includeSpaceBetweenRowAndSeats:v26];
 
       goto LABEL_11;
     }
@@ -402,12 +402,12 @@ uint64_t __111__PKSeatingInformation_Flight___formatSeatNumbersForRow_designatio
   return v10;
 }
 
-- (id)_formatSeatLettersForRow:(id)a3 designations:(id)a4 includeSpaceBetweenRowAndSeats:(BOOL)a5
+- (id)_formatSeatLettersForRow:(id)row designations:(id)designations includeSpaceBetweenRowAndSeats:(BOOL)seats
 {
-  v5 = a5;
+  seatsCopy = seats;
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a4 sortedArrayUsingComparator:&__block_literal_global_206];
+  rowCopy = row;
+  v9 = [designations sortedArrayUsingComparator:&__block_literal_global_206];
   if ([v9 count] > 1)
   {
     v34 = 0u;
@@ -446,14 +446,14 @@ uint64_t __111__PKSeatingInformation_Flight___formatSeatNumbersForRow_designatio
       }
     }
 
-    v31 = v5;
+    v31 = seatsCopy;
 
     if ([v15 count] < 2)
     {
 LABEL_17:
-      v27 = [v15 firstObject];
-      v28 = [v15 lastObject];
-      v10 = PKLocalizedTicketingString(&cfstr_LocalizedChara.isa, &stru_1F22903C8.isa, v27, v28);
+      firstObject = [v15 firstObject];
+      lastObject = [v15 lastObject];
+      firstObject2 = PKLocalizedTicketingString(&cfstr_LocalizedChara.isa, &stru_1F22903C8.isa, firstObject, lastObject);
     }
 
     else
@@ -468,11 +468,11 @@ LABEL_17:
           break;
         }
 
-        v23 = [v21 uppercaseString];
-        v24 = [v23 characterAtIndex:0];
+        uppercaseString = [v21 uppercaseString];
+        v24 = [uppercaseString characterAtIndex:0];
 
-        v25 = [v22 uppercaseString];
-        v26 = [v25 characterAtIndex:0];
+        uppercaseString2 = [v22 uppercaseString];
+        v26 = [uppercaseString2 characterAtIndex:0];
 
         if (v24 + 1 != v26)
         {
@@ -493,36 +493,36 @@ LABEL_19:
         goto LABEL_25;
       }
 
-      v27 = PKLocalizedTicketingString(&cfstr_LocalizedListD_0.isa, 0);
-      v10 = [v15 componentsJoinedByString:v27];
+      firstObject = PKLocalizedTicketingString(&cfstr_LocalizedListD_0.isa, 0);
+      firstObject2 = [v15 componentsJoinedByString:firstObject];
     }
 
-    v11 = self;
-    v12 = v8;
-    v13 = v10;
+    selfCopy2 = self;
+    v12 = rowCopy;
+    v13 = firstObject2;
     v14 = v31;
   }
 
   else
   {
-    v10 = [v9 firstObject];
-    v11 = self;
-    v12 = v8;
-    v13 = v10;
-    v14 = v5;
+    firstObject2 = [v9 firstObject];
+    selfCopy2 = self;
+    v12 = rowCopy;
+    v13 = firstObject2;
+    v14 = seatsCopy;
   }
 
-  v29 = [(PKSeatingInformation *)v11 _formattedAirlineSeatsStringForRow:v12 designation:v13 includeSpaceBetweenRowAndSeats:v14];
+  v29 = [(PKSeatingInformation *)selfCopy2 _formattedAirlineSeatsStringForRow:v12 designation:v13 includeSpaceBetweenRowAndSeats:v14];
 
 LABEL_25:
 
   return v29;
 }
 
-- (id)initFromSemantic:(id)a3
+- (id)initFromSemantic:(id)semantic
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  semanticCopy = semantic;
   v24.receiver = self;
   v24.super_class = PKSeatingInformation;
   v5 = [(PKSeatingInformation *)&v24 init];
@@ -531,15 +531,15 @@ LABEL_25:
     goto LABEL_16;
   }
 
-  v6 = [v4 semanticKey];
-  v7 = [@"seats" isEqualToString:v6];
+  semanticKey = [semanticCopy semanticKey];
+  v7 = [@"seats" isEqualToString:semanticKey];
 
   if (!v7)
   {
     goto LABEL_18;
   }
 
-  result = [v4 dictionariesValue];
+  result = [semanticCopy dictionariesValue];
   if (result)
   {
     v9 = result;
@@ -605,10 +605,10 @@ LABEL_18:
   return result;
 }
 
-- (id)initFromSemantics:(id)a3
+- (id)initFromSemantics:(id)semantics
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  semanticsCopy = semantics;
   v34.receiver = self;
   v34.super_class = PKSeatingInformation;
   v5 = [(PKSeatingInformation *)&v34 init];
@@ -616,13 +616,13 @@ LABEL_18:
   if (v5)
   {
     v22 = v5;
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(semanticsCopy, "count")}];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = v4;
-    obj = v4;
+    v23 = semanticsCopy;
+    obj = semanticsCopy;
     v8 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v8)
     {
@@ -638,14 +638,14 @@ LABEL_18:
           }
 
           v11 = [[PKSeatingInformation alloc] initFromSemantic:*(*(&v30 + 1) + 8 * i)];
-          v12 = [v11 allSeats];
-          if ([v12 count])
+          allSeats = [v11 allSeats];
+          if ([allSeats count])
           {
             v28 = 0u;
             v29 = 0u;
             v26 = 0u;
             v27 = 0u;
-            v13 = v12;
+            v13 = allSeats;
             v14 = [v13 countByEnumeratingWithState:&v26 objects:v35 count:16];
             if (v14)
             {
@@ -686,7 +686,7 @@ LABEL_18:
 
       v20 = 0;
       v6 = v22;
-      v4 = v23;
+      semanticsCopy = v23;
       goto LABEL_24;
     }
 
@@ -694,7 +694,7 @@ LABEL_18:
     allSeats = v22->_allSeats;
     v22->_allSeats = v7;
 
-    v4 = v23;
+    semanticsCopy = v23;
   }
 
   v20 = v6;
@@ -703,27 +703,27 @@ LABEL_24:
   return v20;
 }
 
-- (id)firstSeatContainingAttributes:(unint64_t)a3
+- (id)firstSeatContainingAttributes:(unint64_t)attributes
 {
   allSeats = self->_allSeats;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PKSeatingInformation_firstSeatContainingAttributes___block_invoke;
   v6[3] = &__block_descriptor_40_e16_B16__0__PKSeat_8l;
-  v6[4] = a3;
+  v6[4] = attributes;
   v4 = [(NSArray *)allSeats pk_firstObjectPassingTest:v6];
 
   return v4;
 }
 
-- (id)seatsContainingAttributes:(unint64_t)a3
+- (id)seatsContainingAttributes:(unint64_t)attributes
 {
   allSeats = self->_allSeats;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PKSeatingInformation_seatsContainingAttributes___block_invoke;
   v6[3] = &__block_descriptor_40_e23_B32__0__PKSeat_8Q16_B24l;
-  v6[4] = a3;
+  v6[4] = attributes;
   v4 = [(NSArray *)allSeats pk_objectsPassingTest:v6];
 
   return v4;
@@ -731,19 +731,19 @@ LABEL_24:
 
 - (BOOL)seatsSpanMultipleSections
 {
-  v3 = [(PKSeatingInformation *)self _allLevels];
-  if ([v3 count] > 1)
+  _allLevels = [(PKSeatingInformation *)self _allLevels];
+  if ([_allLevels count] > 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v4 = [(PKSeatingInformation *)self _allSections];
-    if ([v4 count] <= 1)
+    _allSections = [(PKSeatingInformation *)self _allSections];
+    if ([_allSections count] <= 1)
     {
-      v6 = [(PKSeatingInformation *)self _allRows];
-      v5 = [v6 count] > 1;
+      _allRows = [(PKSeatingInformation *)self _allRows];
+      v5 = [_allRows count] > 1;
     }
 
     else
@@ -764,25 +764,25 @@ LABEL_24:
   {
     if (v4 == 1)
     {
-      v5 = [v3 firstObject];
-      v6 = [v5 designation];
+      firstObject = [v3 firstObject];
+      designation = [firstObject designation];
       goto LABEL_4;
     }
 
     if (v4 < 5)
     {
-      v5 = [(PKSeatingInformation *)self _allLevels];
-      if ([v5 count] < 2)
+      firstObject = [(PKSeatingInformation *)self _allLevels];
+      if ([firstObject count] < 2)
       {
-        v9 = [(PKSeatingInformation *)self _allSections];
-        if ([v9 count] < 2)
+        _allSections = [(PKSeatingInformation *)self _allSections];
+        if ([_allSections count] < 2)
         {
-          v10 = [(PKSeatingInformation *)self _allRows];
-          if ([v10 count] < 2)
+          _allRows = [(PKSeatingInformation *)self _allRows];
+          if ([_allRows count] < 2)
           {
-            v33 = v10;
-            v34 = v5;
-            v35 = v9;
+            v33 = _allRows;
+            v34 = firstObject;
+            v35 = _allSections;
             v11 = PKSeatingInformationNumberFormatter();
             v38 = 0u;
             v39 = 0u;
@@ -805,8 +805,8 @@ LABEL_24:
                     objc_enumerationMutation(v12);
                   }
 
-                  v19 = [*(*(&v38 + 1) + 8 * i) designation];
-                  v20 = [v11 numberFromString:v19];
+                  designation2 = [*(*(&v38 + 1) + 8 * i) designation];
+                  v20 = [v11 numberFromString:designation2];
 
                   v16 = (v20 == 0) & v16;
                   v17 = (v20 != 0) & v17;
@@ -836,18 +836,18 @@ LABEL_24:
               v23 = v11;
               v37 = v23;
               [v22 sortUsingComparator:v36];
-              v24 = [v22 firstObject];
-              v25 = [v22 lastObject];
-              v26 = [v23 numberFromString:v24];
-              v27 = [v26 integerValue];
+              firstObject2 = [v22 firstObject];
+              lastObject = [v22 lastObject];
+              v26 = [v23 numberFromString:firstObject2];
+              integerValue = [v26 integerValue];
 
-              v28 = [v23 numberFromString:v25];
-              v29 = [v28 integerValue];
+              v28 = [v23 numberFromString:lastObject];
+              integerValue2 = [v28 integerValue];
 
-              v9 = v35;
-              if (v29 - v27 == [v22 count] - 1)
+              _allSections = v35;
+              if (integerValue2 - integerValue == [v22 count] - 1)
               {
-                v7 = PKLocalizedTicketingString(&cfstr_LocalizedNumbe.isa, &stru_1F22903C8.isa, v24, v25);
+                v7 = PKLocalizedTicketingString(&cfstr_LocalizedNumbe.isa, &stru_1F22903C8.isa, firstObject2, lastObject);
               }
 
               else
@@ -856,14 +856,14 @@ LABEL_24:
                 v7 = [v22 componentsJoinedByString:v31];
               }
 
-              v32 = v24;
-              v10 = v33;
-              v5 = v34;
+              v32 = firstObject2;
+              _allRows = v33;
+              firstObject = v34;
             }
 
             else
             {
-              v9 = v35;
+              _allSections = v35;
               if (v16)
               {
                 [v22 sortUsingComparator:&__block_literal_global_156];
@@ -876,8 +876,8 @@ LABEL_24:
                 v7 = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
               }
 
-              v10 = v33;
-              v5 = v34;
+              _allRows = v33;
+              firstObject = v34;
             }
           }
 
@@ -895,9 +895,9 @@ LABEL_24:
         goto LABEL_5;
       }
 
-      v6 = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
+      designation = PKLocalizedTicketingString(&cfstr_LabelMultipleS.isa, 0);
 LABEL_4:
-      v7 = v6;
+      v7 = designation;
 LABEL_5:
 
       goto LABEL_9;
@@ -929,17 +929,17 @@ uint64_t __49__PKSeatingInformation_displayableAllSeatsString__block_invoke_2(ui
 
 - (id)displayableAllRowsString
 {
-  v3 = [(PKSeatingInformation *)self _allLevels];
-  if ([v3 count] < 2)
+  _allLevels = [(PKSeatingInformation *)self _allLevels];
+  if ([_allLevels count] < 2)
   {
-    v5 = [(PKSeatingInformation *)self _allSections];
-    if ([v5 count] < 2)
+    _allSections = [(PKSeatingInformation *)self _allSections];
+    if ([_allSections count] < 2)
     {
-      v6 = [(PKSeatingInformation *)self _allRows];
-      v7 = v6;
-      if (v6)
+      _allRows = [(PKSeatingInformation *)self _allRows];
+      v7 = _allRows;
+      if (_allRows)
       {
-        if ([v6 count] == 1)
+        if ([_allRows count] == 1)
         {
           [v7 anyObject];
         }
@@ -973,14 +973,14 @@ uint64_t __49__PKSeatingInformation_displayableAllSeatsString__block_invoke_2(ui
 
 - (id)displayableAllSectionsString
 {
-  v3 = [(PKSeatingInformation *)self _allLevels];
-  if ([v3 count] < 2)
+  _allLevels = [(PKSeatingInformation *)self _allLevels];
+  if ([_allLevels count] < 2)
   {
-    v5 = [(PKSeatingInformation *)self _allSections];
-    v6 = v5;
-    if (v5)
+    _allSections = [(PKSeatingInformation *)self _allSections];
+    v6 = _allSections;
+    if (_allSections)
     {
-      if ([v5 count] == 1)
+      if ([_allSections count] == 1)
       {
         [v6 anyObject];
       }
@@ -1008,11 +1008,11 @@ uint64_t __49__PKSeatingInformation_displayableAllSeatsString__block_invoke_2(ui
 
 - (id)displayableAllAislesString
 {
-  v2 = [(PKSeatingInformation *)self _allAisles];
-  v3 = v2;
-  if (v2)
+  _allAisles = [(PKSeatingInformation *)self _allAisles];
+  v3 = _allAisles;
+  if (_allAisles)
   {
-    if ([v2 count] == 1)
+    if ([_allAisles count] == 1)
     {
       [v3 anyObject];
     }
@@ -1034,11 +1034,11 @@ uint64_t __49__PKSeatingInformation_displayableAllSeatsString__block_invoke_2(ui
 
 - (id)displayableAllLevelsString
 {
-  v2 = [(PKSeatingInformation *)self _allLevels];
-  v3 = v2;
-  if (v2)
+  _allLevels = [(PKSeatingInformation *)self _allLevels];
+  v3 = _allLevels;
+  if (_allLevels)
   {
-    if ([v2 count] == 1)
+    if ([_allLevels count] == 1)
     {
       [v3 anyObject];
     }
@@ -1060,31 +1060,31 @@ uint64_t __49__PKSeatingInformation_displayableAllSeatsString__block_invoke_2(ui
 
 - (id)displayableAllSectionsColor
 {
-  v2 = [(PKSeatingInformation *)self _allSectionColors];
-  v3 = v2;
-  if (v2 && [v2 count] == 1)
+  _allSectionColors = [(PKSeatingInformation *)self _allSectionColors];
+  v3 = _allSectionColors;
+  if (_allSectionColors && [_allSectionColors count] == 1)
   {
-    v4 = [v3 anyObject];
+    anyObject = [v3 anyObject];
   }
 
   else
   {
-    v4 = 0;
+    anyObject = 0;
   }
 
-  return v4;
+  return anyObject;
 }
 
-- (id)changeMessageFromInformation:(id)a3 isTransit:(BOOL)a4
+- (id)changeMessageFromInformation:(id)information isTransit:(BOOL)transit
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 firstSeat];
-  v8 = [(PKSeatingInformation *)self firstSeat];
-  v9 = v8;
-  if (v7 && v8)
+  transitCopy = transit;
+  informationCopy = information;
+  firstSeat = [informationCopy firstSeat];
+  firstSeat2 = [(PKSeatingInformation *)self firstSeat];
+  v9 = firstSeat2;
+  if (firstSeat && firstSeat2)
   {
-    if ([v8 isEqual:v7])
+    if ([firstSeat2 isEqual:firstSeat])
     {
 LABEL_4:
       v10 = 0;
@@ -1092,28 +1092,28 @@ LABEL_4:
     }
   }
 
-  else if (v8 == v7)
+  else if (firstSeat2 == firstSeat)
   {
     goto LABEL_4;
   }
 
-  if (v4)
+  if (transitCopy)
   {
-    v10 = [(PKSeatingInformation *)self changeMessageFromAirlineSeatingInformation:v6];
+    v10 = [(PKSeatingInformation *)self changeMessageFromAirlineSeatingInformation:informationCopy];
     goto LABEL_25;
   }
 
-  v11 = [v9 diffFromSeat:v7];
+  v11 = [v9 diffFromSeat:firstSeat];
   v12 = v11 & 0x1F;
-  v13 = [v9 designation];
+  designation = [v9 designation];
   v14 = [v9 row];
-  v15 = [v9 section];
-  v16 = [v9 aisle];
-  v17 = [v9 level];
-  v18 = v17;
-  if (v13 && v12 == 1)
+  section = [v9 section];
+  aisle = [v9 aisle];
+  level = [v9 level];
+  v18 = level;
+  if (designation && v12 == 1)
   {
-    PKLocalizedTicketingString(&cfstr_SemanticsSeats_0.isa, &stru_1F2281668.isa, v13);
+    PKLocalizedTicketingString(&cfstr_SemanticsSeats_0.isa, &stru_1F2281668.isa, designation);
   }
 
   else if (v14 && v12 == 2)
@@ -1121,19 +1121,19 @@ LABEL_4:
     PKLocalizedTicketingString(&cfstr_SemanticsSeats_1.isa, &stru_1F2281668.isa, v14);
   }
 
-  else if (v15 && v12 == 4)
+  else if (section && v12 == 4)
   {
-    PKLocalizedTicketingString(&cfstr_SemanticsSeats_2.isa, &stru_1F2281668.isa, v15);
+    PKLocalizedTicketingString(&cfstr_SemanticsSeats_2.isa, &stru_1F2281668.isa, section);
   }
 
-  else if (v16 && v12 == 8)
+  else if (aisle && v12 == 8)
   {
-    PKLocalizedTicketingString(&cfstr_SemanticsSeats_3.isa, &stru_1F2281668.isa, v15);
+    PKLocalizedTicketingString(&cfstr_SemanticsSeats_3.isa, &stru_1F2281668.isa, section);
   }
 
   else
   {
-    if (!v17 || v12 != 16)
+    if (!level || v12 != 16)
     {
       v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (v18 && (v11 & 0x10) != 0)
@@ -1142,15 +1142,15 @@ LABEL_4:
         [v27 addObject:v20];
       }
 
-      if (v16 && (v11 & 8) != 0)
+      if (aisle && (v11 & 8) != 0)
       {
-        v21 = PKLocalizedTicketingString(&cfstr_SeatAisle.isa, &stru_1F2281668.isa, v16);
+        v21 = PKLocalizedTicketingString(&cfstr_SeatAisle.isa, &stru_1F2281668.isa, aisle);
         [v27 addObject:v21];
       }
 
-      if (v15 && (v11 & 4) != 0)
+      if (section && (v11 & 4) != 0)
       {
-        v22 = PKLocalizedTicketingString(&cfstr_SeatSection.isa, &stru_1F2281668.isa, v15);
+        v22 = PKLocalizedTicketingString(&cfstr_SeatSection.isa, &stru_1F2281668.isa, section);
         [v27 addObject:v22];
       }
 
@@ -1160,9 +1160,9 @@ LABEL_4:
         [v27 addObject:v23];
       }
 
-      if (v13 && (v11 & 1) != 0)
+      if (designation && (v11 & 1) != 0)
       {
-        v24 = PKLocalizedTicketingString(&cfstr_SeatNumber_0.isa, &stru_1F2281668.isa, v13);
+        v24 = PKLocalizedTicketingString(&cfstr_SeatNumber_0.isa, &stru_1F2281668.isa, designation);
         [v27 addObject:v24];
       }
 
@@ -1173,7 +1173,7 @@ LABEL_4:
       goto LABEL_24;
     }
 
-    PKLocalizedTicketingString(&cfstr_SemanticsSeats_4.isa, &stru_1F2281668.isa, v17);
+    PKLocalizedTicketingString(&cfstr_SemanticsSeats_4.isa, &stru_1F2281668.isa, level);
   }
   v10 = ;
 LABEL_24:
@@ -1263,15 +1263,15 @@ LABEL_25:
   return v3;
 }
 
-- (PKSeatingInformation)initWithCoder:(id)a3
+- (PKSeatingInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKSeatingInformation;
   v5 = [(PKSeatingInformation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allSeats"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allSeats"];
     allSeats = v5->_allSeats;
     v5->_allSeats = v6;
   }

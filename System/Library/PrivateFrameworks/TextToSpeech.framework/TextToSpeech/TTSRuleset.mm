@@ -1,12 +1,12 @@
 @interface TTSRuleset
-+ (TTSRuleset)rulesetWithData:(id)a3 identifier:(id)a4 priority:(unint64_t)a5;
-+ (id)processReplacementStringForSpecialCharacters:(id)a3;
++ (TTSRuleset)rulesetWithData:(id)data identifier:(id)identifier priority:(unint64_t)priority;
++ (id)processReplacementStringForSpecialCharacters:(id)characters;
 - (NSNumber)ruleCount;
 - (TTSRuleset)init;
-- (void)addRuleReplacement:(id)a3;
-- (void)addRuleString:(id)a3;
-- (void)addRules:(id)a3;
-- (void)addRulesFromData:(id)a3;
+- (void)addRuleReplacement:(id)replacement;
+- (void)addRuleString:(id)string;
+- (void)addRules:(id)rules;
+- (void)addRulesFromData:(id)data;
 @end
 
 @implementation TTSRuleset
@@ -26,16 +26,16 @@
   return v6;
 }
 
-+ (TTSRuleset)rulesetWithData:(id)a3 identifier:(id)a4 priority:(unint64_t)a5
++ (TTSRuleset)rulesetWithData:(id)data identifier:(id)identifier priority:(unint64_t)priority
 {
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   v9 = [TTSRuleset alloc];
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
-  objc_msgSend_addRulesFromData_(v14, v15, v8, v16, v17);
+  objc_msgSend_addRulesFromData_(v14, v15, dataCopy, v16, v17);
 
-  objc_msgSend_setPriority_(v14, v18, a5, v19, v20);
-  objc_msgSend_setIdentifier_(v14, v21, v7, v22, v23);
+  objc_msgSend_setPriority_(v14, v18, priority, v19, v20);
+  objc_msgSend_setIdentifier_(v14, v21, identifierCopy, v22, v23);
 
   return v14;
 }
@@ -50,29 +50,29 @@
   return v15;
 }
 
-- (void)addRuleString:(id)a3
+- (void)addRuleString:(id)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  stringCopy = string;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v8 = objc_msgSend_arrayWithObjects_count_(v4, v6, &v13, 1, v7);
+  stringCopy2 = string;
+  v8 = objc_msgSend_arrayWithObjects_count_(v4, v6, &stringCopy, 1, v7);
 
-  objc_msgSend_addRules_(self, v9, v8, v10, v11, v13, v14);
+  objc_msgSend_addRules_(self, v9, v8, v10, v11, stringCopy, v14);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRuleReplacement:(id)a3
+- (void)addRuleReplacement:(id)replacement
 {
-  v121 = a3;
+  replacementCopy = replacement;
   v8 = objc_msgSend_ruleReplacements(self, v4, v5, v6, v7);
   v13 = objc_msgSend_lastObject(v8, v9, v10, v11, v12);
   v18 = objc_msgSend_group(v13, v14, v15, v16, v17);
 
-  v23 = objc_msgSend_replacement(v121, v19, v20, v21, v22);
+  v23 = objc_msgSend_replacement(replacementCopy, v19, v20, v21, v22);
   v27 = objc_msgSend_containsString_(v23, v24, @"_HOMOGRAPH_START", v25, v26);
 
-  v32 = objc_msgSend_replacement(v121, v28, v29, v30, v31);
+  v32 = objc_msgSend_replacement(replacementCopy, v28, v29, v30, v31);
   v36 = objc_msgSend_containsString_(v32, v33, @"_ENG_CORE", v34, v35);
 
   if ((v36 & 1) != 0 || v27)
@@ -90,7 +90,7 @@
       v60 = objc_msgSend_count(v55, v56, v57, v58, v59);
       objc_msgSend_setEndIndex_(v18, v61, v60, v62, v63);
 
-      objc_msgSend_setGroup_(v121, v64, v18, v65, v66);
+      objc_msgSend_setGroup_(replacementCopy, v64, v18, v65, v66);
     }
 
     else
@@ -105,32 +105,32 @@
       v93 = objc_msgSend_count(v88, v89, v90, v91, v92);
       objc_msgSend_setEndIndex_(v67, v94, v93, v95, v96);
 
-      objc_msgSend_setGroup_(v121, v97, v67, v98, v99);
+      objc_msgSend_setGroup_(replacementCopy, v97, v67, v98, v99);
     }
   }
 
-  objc_msgSend_setRuleset_(v121, v37, self, v38, v39);
+  objc_msgSend_setRuleset_(replacementCopy, v37, self, v38, v39);
   v104 = objc_msgSend_ruleReplacements(self, v100, v101, v102, v103);
   v109 = objc_msgSend_count(v104, v105, v106, v107, v108);
-  objc_msgSend_setIndex_(v121, v110, v109, v111, v112);
+  objc_msgSend_setIndex_(replacementCopy, v110, v109, v111, v112);
 
   v117 = objc_msgSend_ruleReplacements(self, v113, v114, v115, v116);
-  objc_msgSend_addObject_(v117, v118, v121, v119, v120);
+  objc_msgSend_addObject_(v117, v118, replacementCopy, v119, v120);
 }
 
-- (void)addRules:(id)a3
+- (void)addRules:(id)rules
 {
   v116 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v104 = self;
-  objc_sync_enter(v104);
+  rulesCopy = rules;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_msgSend_whitespaceAndNewlineCharacterSet(MEMORY[0x1E696AB08], v5, v6, v7, v8);
   v103 = objc_msgSend_regularExpressionWithPattern_options_error_(MEMORY[0x1E696AE70], v10, @"(.*?)", 1, 0);
   v111 = 0u;
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  obj = v4;
+  obj = rulesCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v109, v115, 16);
   if (v15)
   {
@@ -181,11 +181,11 @@
             {
               v84 = objc_alloc_init(TTSRuleReplacement);
               objc_msgSend_setRegex_(v84, v85, v83, v86, v87);
-              objc_msgSend_setRuleset_(v84, v88, v104, v89, v90);
+              objc_msgSend_setRuleset_(v84, v88, selfCopy, v89, v90);
               v94 = objc_msgSend_processReplacementStringForSpecialCharacters_(TTSRuleset, v91, v78, v92, v93);
               objc_msgSend_setReplacement_(v84, v95, v94, v96, v97);
 
-              objc_msgSend_addRuleReplacement_(v104, v98, v84, v99, v100);
+              objc_msgSend_addRuleReplacement_(selfCopy, v98, v84, v99, v100);
             }
 
             else
@@ -219,16 +219,16 @@
     while (v15);
   }
 
-  objc_sync_exit(v104);
+  objc_sync_exit(selfCopy);
   v101 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRulesFromData:(id)a3
+- (void)addRulesFromData:(id)data
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  dataCopy = data;
   v6 = [v4 alloc];
-  v9 = objc_msgSend_initWithData_encoding_(v6, v7, v5, 4, v8);
+  v9 = objc_msgSend_initWithData_encoding_(v6, v7, dataCopy, 4, v8);
 
   v13 = objc_msgSend_componentsSeparatedByString_(v9, v10, @"[data]", v11, v12);
   v25 = objc_msgSend_lastObject(v13, v14, v15, v16, v17);
@@ -237,9 +237,9 @@
   objc_msgSend_addRules_(self, v22, v21, v23, v24);
 }
 
-+ (id)processReplacementStringForSpecialCharacters:(id)a3
++ (id)processReplacementStringForSpecialCharacters:(id)characters
 {
-  v4 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(a3, a2, @"\\\, @"\, v3);
+  v4 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(characters, a2, @"\\\, @"\, v3);
   v7 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v4, v5, @"\\e\, @"\x1B\, v6);
 
   v10 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v7, v8, @"\\e/+", @"\x1B/+", v9);

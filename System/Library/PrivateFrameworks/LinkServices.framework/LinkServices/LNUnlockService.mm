@@ -1,15 +1,15 @@
 @interface LNUnlockService
-- (LNUnlockService)initWithQueue:(id)a3;
+- (LNUnlockService)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)requestUnlockIfNeeded:(id)a3;
+- (void)requestUnlockIfNeeded:(id)needed;
 @end
 
 @implementation LNUnlockService
 
-- (void)requestUnlockIfNeeded:(id)a3
+- (void)requestUnlockIfNeeded:(id)needed
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   v5 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -45,16 +45,16 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      v15 = [(LNUnlockService *)self service];
+      service = [(LNUnlockService *)self service];
       v16 = objc_opt_new();
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __41__LNUnlockService_requestUnlockIfNeeded___block_invoke_6;
       v19[3] = &unk_1E74B1FF0;
       v19[4] = self;
-      v20 = v4;
-      v17 = v4;
-      [v15 requestPasscodeUnlockUIWithOptions:v16 withCompletion:v19];
+      v20 = neededCopy;
+      v17 = neededCopy;
+      [service requestPasscodeUnlockUIWithOptions:v16 withCompletion:v19];
 
       v14 = v20;
       goto LABEL_18;
@@ -76,14 +76,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [(LNUnlockService *)self queue];
+  queue = [(LNUnlockService *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__LNUnlockService_requestUnlockIfNeeded___block_invoke;
   block[3] = &unk_1E74B1FA0;
-  v22 = v4;
-  v13 = v4;
-  dispatch_async(v12, block);
+  v22 = neededCopy;
+  v13 = neededCopy;
+  dispatch_async(queue, block);
 
   v14 = v22;
 LABEL_18:
@@ -125,24 +125,24 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(LNUnlockService *)self service];
-  [v3 invalidate];
+  service = [(LNUnlockService *)self service];
+  [service invalidate];
 
   v4.receiver = self;
   v4.super_class = LNUnlockService;
   [(LNUnlockService *)&v4 dealloc];
 }
 
-- (LNUnlockService)initWithQueue:(id)a3
+- (LNUnlockService)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LNUnlockService;
   v6 = [(LNUnlockService *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x1E69D4260]);
     service = v7->_service;
     v7->_service = v8;

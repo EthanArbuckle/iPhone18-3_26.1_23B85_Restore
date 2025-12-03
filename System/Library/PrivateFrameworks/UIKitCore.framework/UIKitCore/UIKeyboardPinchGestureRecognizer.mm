@@ -1,23 +1,23 @@
 @interface UIKeyboardPinchGestureRecognizer
-- (UIKeyboardPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIKeyboardPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (UIKeyboardPinchGestureRecognizerDelegate)pinchDelegate;
 - (double)finalProgressForInitialProgress:(double)result;
 - (void)interpretTouchesForSplit;
 - (void)reset;
 - (void)resetPinchCalculations;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIKeyboardPinchGestureRecognizer
 
-- (UIKeyboardPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIKeyboardPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = UIKeyboardPinchGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v10 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v10 initWithTarget:target action:action];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:2];
@@ -32,18 +32,18 @@
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [a4 timestamp];
+  beganCopy = began;
+  [event timestamp];
   self->_beginPinchTimestamp = v7;
-  [(NSMutableSet *)self->_activeTouches unionSet:v6];
+  [(NSMutableSet *)self->_activeTouches unionSet:beganCopy];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v6;
+  obj = beganCopy;
   v8 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
@@ -60,8 +60,8 @@
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
-        v13 = [(UIGestureRecognizer *)self view];
-        [v12 locationInView:v13];
+        view = [(UIGestureRecognizer *)self view];
+        [v12 locationInView:view];
         v15 = v14;
         v17 = v16;
 
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [a4 timestamp];
+  [event timestamp];
   if (v5 - self->_beginPinchTimestamp >= 0.01)
   {
     if ([(NSMutableSet *)self->_activeTouches count]== 2)
@@ -100,15 +100,15 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  endedCopy = ended;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v6 = [endedCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -120,7 +120,7 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endedCopy);
         }
 
         initialTouchPoints = self->_initialTouchPoints;
@@ -131,13 +131,13 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [endedCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
   }
 
-  [(NSMutableSet *)self->_activeTouches minusSet:v5];
+  [(NSMutableSet *)self->_activeTouches minusSet:endedCopy];
   if (self->_pinchDetected && [(NSMutableSet *)self->_activeTouches count]<= 1)
   {
     [(UIGestureRecognizer *)self setState:3];
@@ -145,7 +145,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = v5;
+    v12 = endedCopy;
     v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v13)
     {
@@ -162,8 +162,8 @@
           }
 
           v17 = *(*(&v19 + 1) + 8 * v16);
-          v18 = [(UIKeyboardPinchGestureRecognizer *)self pinchDelegate];
-          [v18 pinchDidConsumeTouch:v17];
+          pinchDelegate = [(UIKeyboardPinchGestureRecognizer *)self pinchDelegate];
+          [pinchDelegate pinchDidConsumeTouch:v17];
 
           ++v16;
         }
@@ -177,15 +177,15 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cancelledCopy = cancelled;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [cancelledCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -197,7 +197,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cancelledCopy);
         }
 
         initialTouchPoints = self->_initialTouchPoints;
@@ -208,13 +208,13 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [cancelledCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  [(NSMutableSet *)self->_activeTouches minusSet:v5];
+  [(NSMutableSet *)self->_activeTouches minusSet:cancelledCopy];
   if (self->_pinchDetected && ![(NSMutableSet *)self->_activeTouches count])
   {
     [(UIGestureRecognizer *)self setState:3];
@@ -249,19 +249,19 @@
       return;
     }
 
-    v3 = [(NSMutableSet *)self->_activeTouches allObjects];
-    v49 = [v3 objectAtIndex:0];
+    allObjects = [(NSMutableSet *)self->_activeTouches allObjects];
+    v49 = [allObjects objectAtIndex:0];
 
-    v4 = [(NSMutableSet *)self->_activeTouches allObjects];
-    v5 = [v4 objectAtIndex:1];
+    allObjects2 = [(NSMutableSet *)self->_activeTouches allObjects];
+    v5 = [allObjects2 objectAtIndex:1];
 
-    v6 = [(UIGestureRecognizer *)self view];
-    [v49 locationInView:v6];
+    view = [(UIGestureRecognizer *)self view];
+    [v49 locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    v11 = [(UIGestureRecognizer *)self view];
-    [v5 locationInView:v11];
+    view2 = [(UIGestureRecognizer *)self view];
+    [v5 locationInView:view2];
     v13 = v12;
     v15 = v14;
 
@@ -302,8 +302,8 @@
       goto LABEL_30;
     }
 
-    v39 = [(UIGestureRecognizer *)self delegate];
-    if (!v39 || (v40 = v39, v41 = v13 - v8, v42 = v15 - v10, v43 = hypotf(v41, v42), v44 = v32 - v25, v45 = v34 - v27, v46 = v43 / hypotf(v44, v45), -[UIKeyboardPinchGestureRecognizer pinchDelegate](self, "pinchDelegate"), v47 = objc_claimAutoreleasedReturnValue(), v48 = [v47 pinchCanBeginWithTouches:self->_activeTouches andScale:v46], v47, v40, (v48 & 1) != 0))
+    delegate = [(UIGestureRecognizer *)self delegate];
+    if (!delegate || (v40 = delegate, v41 = v13 - v8, v42 = v15 - v10, v43 = hypotf(v41, v42), v44 = v32 - v25, v45 = v34 - v27, v46 = v43 / hypotf(v44, v45), -[UIKeyboardPinchGestureRecognizer pinchDelegate](self, "pinchDelegate"), v47 = objc_claimAutoreleasedReturnValue(), v48 = [v47 pinchCanBeginWithTouches:self->_activeTouches andScale:v46], v47, v40, (v48 & 1) != 0))
     {
 LABEL_10:
       v16 = &self->_pinchSeparationValues[1];
@@ -324,12 +324,12 @@ LABEL_10:
         self->_initialPinchSeparation = v18;
       }
 
-      v19 = [(UIGestureRecognizer *)self delegate];
+      delegate2 = [(UIGestureRecognizer *)self delegate];
 
-      if (v19)
+      if (delegate2)
       {
-        v20 = [(UIKeyboardPinchGestureRecognizer *)self pinchDelegate];
-        [v20 didDetectPinchWithSeparation:v18];
+        pinchDelegate = [(UIKeyboardPinchGestureRecognizer *)self pinchDelegate];
+        [pinchDelegate didDetectPinchWithSeparation:v18];
       }
     }
 

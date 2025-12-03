@@ -1,19 +1,19 @@
 @interface MTLibraryLegacyUtil
-+ (int64_t)legacyPlayCountForPlayState:(int64_t)a3 playCount:(int64_t)a4;
-+ (int64_t)playStateFromHasBeenPlayed:(BOOL)a3 andPlayCount:(int64_t)a4;
++ (int64_t)legacyPlayCountForPlayState:(int64_t)state playCount:(int64_t)count;
++ (int64_t)playStateFromHasBeenPlayed:(BOOL)played andPlayCount:(int64_t)count;
 @end
 
 @implementation MTLibraryLegacyUtil
 
-+ (int64_t)playStateFromHasBeenPlayed:(BOOL)a3 andPlayCount:(int64_t)a4
++ (int64_t)playStateFromHasBeenPlayed:(BOOL)played andPlayCount:(int64_t)count
 {
   v4 = 1;
-  if (!a3)
+  if (!played)
   {
     v4 = 2;
   }
 
-  if (a4 <= 0)
+  if (count <= 0)
   {
     return v4;
   }
@@ -24,26 +24,26 @@
   }
 }
 
-+ (int64_t)legacyPlayCountForPlayState:(int64_t)a3 playCount:(int64_t)a4
++ (int64_t)legacyPlayCountForPlayState:(int64_t)state playCount:(int64_t)count
 {
-  if (a4 <= 1)
+  if (count <= 1)
   {
-    v4 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v4 = a4;
+    countCopy = count;
   }
 
-  if (a3)
+  if (state)
   {
     return 0;
   }
 
   else
   {
-    return v4;
+    return countCopy;
   }
 }
 

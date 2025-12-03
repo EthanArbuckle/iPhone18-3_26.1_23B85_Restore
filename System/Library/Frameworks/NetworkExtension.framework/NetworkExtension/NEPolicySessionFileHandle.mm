@@ -1,8 +1,8 @@
 @interface NEPolicySessionFileHandle
-- (NEPolicySessionFileHandle)initWithPolicySession:(id)a3 name:(id)a4;
+- (NEPolicySessionFileHandle)initWithPolicySession:(id)session name:(id)name;
 - (id)description;
 - (id)dictionary;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation NEPolicySessionFileHandle
@@ -10,9 +10,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEPolicySessionFileHandle *)self name];
-  v5 = [(NEFileHandle *)self handle];
-  v6 = [v3 stringWithFormat:@"Policy Session %@ socket (%d)", v4, objc_msgSend(v5, "fileDescriptor")];
+  name = [(NEPolicySessionFileHandle *)self name];
+  handle = [(NEFileHandle *)self handle];
+  v6 = [v3 stringWithFormat:@"Policy Session %@ socket (%d)", name, objc_msgSend(handle, "fileDescriptor")];
 
   return v6;
 }
@@ -21,28 +21,28 @@
 {
   v6.receiver = self;
   v6.super_class = NEPolicySessionFileHandle;
-  v3 = [(NEFileHandle *)&v6 dictionary];
-  if (v3)
+  dictionary = [(NEFileHandle *)&v6 dictionary];
+  if (dictionary)
   {
     name = self->_name;
     if (name)
     {
-      xpc_dictionary_set_string(v3, "session-name", [(NSString *)name UTF8String]);
+      xpc_dictionary_set_string(dictionary, "session-name", [(NSString *)name UTF8String]);
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = NEPolicySessionFileHandle;
-  v5 = [(NEFileHandle *)&v10 initFromDictionary:v4];
+  v5 = [(NEFileHandle *)&v10 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    string = xpc_dictionary_get_string(v4, "session-name");
+    string = xpc_dictionary_get_string(dictionaryCopy, "session-name");
     if (string)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:string encoding:4];
@@ -54,31 +54,31 @@
   return v5;
 }
 
-- (NEPolicySessionFileHandle)initWithPolicySession:(id)a3 name:(id)a4
+- (NEPolicySessionFileHandle)initWithPolicySession:(id)session name:(id)name
 {
-  v7 = a4;
-  v8 = [a3 dupSocket];
-  if ((v8 & 0x80000000) != 0)
+  nameCopy = name;
+  dupSocket = [session dupSocket];
+  if ((dupSocket & 0x80000000) != 0)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = NEPolicySessionFileHandle;
-    v9 = [(NEFileHandle *)&v13 initWithFileDescriptor:v8 launchOwnerWhenReadable:0];
+    v9 = [(NEFileHandle *)&v13 initWithFileDescriptor:dupSocket launchOwnerWhenReadable:0];
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_name, a4);
+      objc_storeStrong(&v9->_name, name);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface AXMouseEventListener
 + (id)sharedInstance;
-- (BOOL)_handleMouseButtonEvent:(id)a3;
+- (BOOL)_handleMouseButtonEvent:(id)event;
 - (BOOL)currentDevicesHaveAssistiveTouchCustomActions;
 - (id)_init;
 - (id)discoveredMouseDevices;
-- (void)_finishHandlingMouseButtonEvent:(id)a3 buttonMask:(double)a4 creatorHIDServiceClient:(__IOHIDServiceClient *)a5;
-- (void)addObserver:(id)a3;
+- (void)_finishHandlingMouseButtonEvent:(id)event buttonMask:(double)mask creatorHIDServiceClient:(__IOHIDServiceClient *)client;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3;
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event;
 - (void)endFilteringButtonEvents;
 - (void)mouseSettingsDidChange;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AXMouseEventListener
@@ -46,14 +46,14 @@ uint64_t __38__AXMouseEventListener_sharedInstance__block_invoke()
   {
     v2->_cachedMouseDevicesLock._os_unfair_lock_opaque = 0;
     v2->_observerLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     v6 = [AXDeviceMonitor alloc];
-    v7 = [objc_opt_class() _mouseMatching];
-    v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v9 = [(AXDeviceMonitor *)v6 initWithMatchingMultiple:v7 callbackRunLoop:v8];
+    _mouseMatching = [objc_opt_class() _mouseMatching];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    v9 = [(AXDeviceMonitor *)v6 initWithMatchingMultiple:_mouseMatching callbackRunLoop:mainRunLoop];
     deviceMonitor = v3->_deviceMonitor;
     v3->_deviceMonitor = v9;
 
@@ -121,11 +121,11 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
   [(AXMouseEventListener *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
   if (objc_opt_respondsToSelector())
   {
@@ -134,16 +134,16 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
     os_unfair_lock_unlock(&self->_cachedMouseDevicesLock);
     if (v4)
     {
-      [v5 mouseDevicesChanged:self];
+      [observerCopy mouseDevicesChanged:self];
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
@@ -156,13 +156,13 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
   os_unfair_lock_unlock(&self->_cachedMouseDevicesLock);
   if (!cachedMouseDevices)
   {
-    v4 = [(AXDeviceMonitor *)self->_deviceMonitor copyDevices];
+    copyDevices = [(AXDeviceMonitor *)self->_deviceMonitor copyDevices];
     v5 = [MEMORY[0x1E695DFA8] set];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = copyDevices;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -203,10 +203,10 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
   }
 
   os_unfair_lock_lock(&self->_cachedMouseDevicesLock);
-  v15 = [(NSSet *)self->_cachedMouseDevices allObjects];
+  allObjects = [(NSSet *)self->_cachedMouseDevices allObjects];
   os_unfair_lock_unlock(&self->_cachedMouseDevicesLock);
 
-  return v15;
+  return allObjects;
 }
 
 - (void)endFilteringButtonEvents
@@ -226,8 +226,8 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(AXMouseEventListener *)self discoveredMouseDevices];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  discoveredMouseDevices = [(AXMouseEventListener *)self discoveredMouseDevices];
+  v3 = [discoveredMouseDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -237,7 +237,7 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(discoveredMouseDevices);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) customActionsRequireAssistiveTouch])
@@ -247,7 +247,7 @@ void __29__AXMouseEventListener__init__block_invoke_2(uint64_t a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [discoveredMouseDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -269,8 +269,8 @@ LABEL_11:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v2 = [(AXMouseEventListener *)self discoveredMouseDevices];
-  v3 = [v2 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  discoveredMouseDevices = [(AXMouseEventListener *)self discoveredMouseDevices];
+  v3 = [discoveredMouseDevices countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (!v3)
   {
 LABEL_34:
@@ -287,12 +287,12 @@ LABEL_34:
     {
       if (*v34 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(discoveredMouseDevices);
       }
 
       v7 = *(*(&v33 + 1) + 8 * i);
-      v8 = [v7 identifier];
-      v9 = +[AXCustomizableMouse _existingMouseForIdentifier:vendorId:productId:](AXCustomizableMouse, "_existingMouseForIdentifier:vendorId:productId:", v8, [v7 vendorId], objc_msgSend(v7, "productId"));
+      identifier = [v7 identifier];
+      v9 = +[AXCustomizableMouse _existingMouseForIdentifier:vendorId:productId:](AXCustomizableMouse, "_existingMouseForIdentifier:vendorId:productId:", identifier, [v7 vendorId], objc_msgSend(v7, "productId"));
 
       if ([v7 hasCustomActions])
       {
@@ -318,11 +318,11 @@ LABEL_34:
 
       else if (v9)
       {
-        v11 = v2;
+        v11 = discoveredMouseDevices;
         os_unfair_lock_lock(&self->_cachedMouseDevicesLock);
-        v12 = [v9 buttonMap];
-        v13 = [v7 buttonMap];
-        v14 = [v12 isEqualToDictionary:v13];
+        buttonMap = [v9 buttonMap];
+        buttonMap2 = [v7 buttonMap];
+        v14 = [buttonMap isEqualToDictionary:buttonMap2];
 
         if ((v14 & 1) == 0)
         {
@@ -333,18 +333,18 @@ LABEL_34:
             _os_log_impl(&dword_18B15E000, v15, OS_LOG_TYPE_INFO, "device updated custom actions", buf, 2u);
           }
 
-          v16 = [v9 buttonMap];
-          [v7 setButtonMap:v16];
+          buttonMap3 = [v9 buttonMap];
+          [v7 setButtonMap:buttonMap3];
 
           v26 = 1;
         }
 
         os_unfair_lock_unlock(&self->_cachedMouseDevicesLock);
-        v2 = v11;
+        discoveredMouseDevices = v11;
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    v4 = [discoveredMouseDevices countByEnumeratingWithState:&v33 objects:v38 count:16];
   }
 
   while (v4);
@@ -352,7 +352,7 @@ LABEL_34:
   if (v26)
   {
     os_unfair_lock_lock(&self->_observerLock);
-    v18 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observerLock);
     v19 = ASTLogMouse();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -365,8 +365,8 @@ LABEL_34:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v2 = v18;
-    v20 = [v2 countByEnumeratingWithState:&v28 objects:v37 count:16];
+    discoveredMouseDevices = allObjects;
+    v20 = [discoveredMouseDevices countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v20)
     {
       v21 = v20;
@@ -377,17 +377,17 @@ LABEL_34:
         {
           if (*v29 != v22)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(discoveredMouseDevices);
           }
 
-          v24 = v2;
+          v24 = discoveredMouseDevices;
           v25 = *(*(&v28 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
             [v25 mouseCustomActionsDidChange:self];
           }
 
-          v2 = v24;
+          discoveredMouseDevices = v24;
         }
 
         v21 = [v24 countByEnumeratingWithState:&v28 objects:v37 count:16];
@@ -400,7 +400,7 @@ LABEL_34:
   }
 }
 
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_cachedMouseDevicesLock);
@@ -409,13 +409,13 @@ LABEL_34:
 
   os_unfair_lock_unlock(&self->_cachedMouseDevicesLock);
   os_unfair_lock_lock(&self->_observerLock);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observerLock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -448,26 +448,26 @@ LABEL_34:
   }
 }
 
-- (BOOL)_handleMouseButtonEvent:(id)a3
+- (BOOL)_handleMouseButtonEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 pointerControllerInfo];
-  v6 = [v4 creatorHIDServiceClient];
+  eventCopy = event;
+  pointerControllerInfo = [eventCopy pointerControllerInfo];
+  creatorHIDServiceClient = [eventCopy creatorHIDServiceClient];
   v7 = 0;
-  if (v5)
+  if (pointerControllerInfo)
   {
-    v8 = v6;
-    if (v6)
+    v8 = creatorHIDServiceClient;
+    if (creatorHIDServiceClient)
     {
-      [v5 pointerButtonMask];
-      if (v9 != 0.0 && (v10 = v9, [v5 pointerButtonNumber], v11 == 1) && (objc_msgSend(v5, "pointerButtonClickCount"), v12))
+      [pointerControllerInfo pointerButtonMask];
+      if (v9 != 0.0 && (v10 = v9, [pointerControllerInfo pointerButtonNumber], v11 == 1) && (objc_msgSend(pointerControllerInfo, "pointerButtonClickCount"), v12))
       {
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __48__AXMouseEventListener__handleMouseButtonEvent___block_invoke;
         v14[3] = &unk_1E71ECB28;
         v14[4] = self;
-        v15 = v4;
+        v15 = eventCopy;
         v16 = v10;
         v17 = v8;
         dispatch_async(MEMORY[0x1E69E96A0], v14);
@@ -485,11 +485,11 @@ LABEL_34:
   return v7;
 }
 
-- (void)_finishHandlingMouseButtonEvent:(id)a3 buttonMask:(double)a4 creatorHIDServiceClient:(__IOHIDServiceClient *)a5
+- (void)_finishHandlingMouseButtonEvent:(id)event buttonMask:(double)mask creatorHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v6 = 0;
   v20 = *MEMORY[0x1E69E9840];
-  while (((a4 >> v6) & 1) == 0)
+  while (((mask >> v6) & 1) == 0)
   {
     if (++v6 == 65534)
     {
@@ -497,17 +497,17 @@ LABEL_34:
     }
   }
 
-  v7 = [AXCustomizableMouse mouseForHIDServiceClient:a5];
+  v7 = [AXCustomizableMouse mouseForHIDServiceClient:client];
   if (v7)
   {
     os_unfair_lock_lock(&self->_observerLock);
-    v8 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_observerLock);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v8;
+    v9 = allObjects;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {

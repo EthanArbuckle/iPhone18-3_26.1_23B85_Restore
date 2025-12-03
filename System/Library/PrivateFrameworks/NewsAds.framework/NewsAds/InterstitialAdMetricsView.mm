@@ -1,13 +1,13 @@
 @interface InterstitialAdMetricsView
-- (_TtC7NewsAds25InterstitialAdMetricsView)initWithCoder:(id)a3;
-- (_TtC7NewsAds25InterstitialAdMetricsView)initWithFrame:(CGRect)a3;
+- (_TtC7NewsAds25InterstitialAdMetricsView)initWithCoder:(id)coder;
+- (_TtC7NewsAds25InterstitialAdMetricsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)metricsViewCollapsed:(id)a3;
+- (void)metricsViewCollapsed:(id)collapsed;
 @end
 
 @implementation InterstitialAdMetricsView
 
-- (_TtC7NewsAds25InterstitialAdMetricsView)initWithCoder:(id)a3
+- (_TtC7NewsAds25InterstitialAdMetricsView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsAds25InterstitialAdMetricsView_onLongPress;
   sub_1D76E9468(0, &qword_1EE0B0810, MEMORY[0x1E69D8770]);
@@ -31,17 +31,17 @@
   [v3 setFrame_];
 }
 
-- (_TtC7NewsAds25InterstitialAdMetricsView)initWithFrame:(CGRect)a3
+- (_TtC7NewsAds25InterstitialAdMetricsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)metricsViewCollapsed:(id)a3
+- (void)metricsViewCollapsed:(id)collapsed
 {
-  v4 = a3;
-  v5 = self;
+  collapsedCopy = collapsed;
+  selfCopy = self;
   _s7NewsAds25InterstitialAdMetricsViewC07metricsF9Collapsedyy17PromotedContentUI0eF0CF_0();
 }
 

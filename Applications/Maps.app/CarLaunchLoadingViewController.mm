@@ -1,17 +1,17 @@
 @interface CarLaunchLoadingViewController
 - (id)initForResume;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CarLaunchLoadingViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CarLaunchLoadingViewController;
-  [(CarLaunchLoadingViewController *)&v5 viewDidDisappear:a3];
+  [(CarLaunchLoadingViewController *)&v5 viewDidDisappear:disappear];
   if (self->_configuredForResume)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -19,11 +19,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CarLaunchLoadingViewController;
-  [(CarLaunchLoadingViewController *)&v5 viewDidAppear:a3];
+  [(CarLaunchLoadingViewController *)&v5 viewDidAppear:appear];
   if (!self->_configuredForResume)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -31,11 +31,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CarLaunchLoadingViewController;
-  [(CarLaunchLoadingViewController *)&v8 viewWillAppear:a3];
+  [(CarLaunchLoadingViewController *)&v8 viewWillAppear:appear];
   if (+[CarDisplayController debugLaunchPerformance])
   {
     v4 = +[UIColor systemRedColor];
@@ -44,12 +44,12 @@
   else
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [(CarLaunchLoadingViewController *)self traitCollection];
-    v4 = [UIColor colorNamed:@"CartographyBackground" inBundle:v5 compatibleWithTraitCollection:v6];
+    traitCollection = [(CarLaunchLoadingViewController *)self traitCollection];
+    v4 = [UIColor colorNamed:@"CartographyBackground" inBundle:v5 compatibleWithTraitCollection:traitCollection];
   }
 
-  v7 = [(CarLaunchLoadingViewController *)self view];
-  [v7 setBackgroundColor:v4];
+  view = [(CarLaunchLoadingViewController *)self view];
+  [view setBackgroundColor:v4];
 }
 
 - (id)initForResume

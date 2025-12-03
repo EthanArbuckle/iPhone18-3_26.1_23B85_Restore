@@ -1,29 +1,29 @@
 @interface ASCAdamID
 + (ASCAdamID)invalidAdamID;
-- (ASCAdamID)initWithCoder:(id)a3;
-- (ASCAdamID)initWithInt64:(int64_t)a3;
-- (ASCAdamID)initWithNumberValue:(id)a3;
-- (ASCAdamID)initWithStringValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCAdamID)initWithCoder:(id)coder;
+- (ASCAdamID)initWithInt64:(int64_t)int64;
+- (ASCAdamID)initWithNumberValue:(id)value;
+- (ASCAdamID)initWithStringValue:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)numberValue;
 - (id)description;
 - (int64_t)int64value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCAdamID
 
-- (ASCAdamID)initWithStringValue:(id)a3
+- (ASCAdamID)initWithStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   +[ASCEligibility assertCurrentProcessEligibility];
   v9.receiver = self;
   v9.super_class = ASCAdamID;
   v5 = [(ASCAdamID *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
   }
@@ -31,38 +31,38 @@
   return v5;
 }
 
-- (ASCAdamID)initWithNumberValue:(id)a3
+- (ASCAdamID)initWithNumberValue:(id)value
 {
-  v4 = [a3 stringValue];
-  v5 = [(ASCAdamID *)self initWithStringValue:v4];
+  stringValue = [value stringValue];
+  v5 = [(ASCAdamID *)self initWithStringValue:stringValue];
 
   return v5;
 }
 
-- (ASCAdamID)initWithInt64:(int64_t)a3
+- (ASCAdamID)initWithInt64:(int64_t)int64
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%lld", a3];
-  v5 = [(ASCAdamID *)self initWithStringValue:v4];
+  int64 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%lld", int64];
+  v5 = [(ASCAdamID *)self initWithStringValue:int64];
 
   return v5;
 }
 
 + (ASCAdamID)invalidAdamID
 {
-  v2 = [[a1 alloc] initWithInt64:0x8000000000000000];
+  v2 = [[self alloc] initWithInt64:0x8000000000000000];
 
   return v2;
 }
 
-- (ASCAdamID)initWithCoder:(id)a3
+- (ASCAdamID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
 
   if (v5)
   {
     self = [(ASCAdamID *)self initWithStringValue:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -72,32 +72,32 @@
       [ASCAdamID initWithCoder:];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCAdamID *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"stringValue"];
+  coderCopy = coder;
+  stringValue = [(ASCAdamID *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"stringValue"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ASCAdamID *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(ASCAdamID *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3 + 47;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -120,17 +120,17 @@
 
   if (v7)
   {
-    v8 = [(ASCAdamID *)self stringValue];
-    v9 = [v7 stringValue];
-    v10 = v9;
-    if (v8 && v9)
+    stringValue = [(ASCAdamID *)self stringValue];
+    stringValue2 = [v7 stringValue];
+    v10 = stringValue2;
+    if (stringValue && stringValue2)
     {
-      v11 = [v8 isEqual:v9];
+      v11 = [stringValue isEqual:stringValue2];
     }
 
     else
     {
-      v11 = v8 == v9;
+      v11 = stringValue == stringValue2;
     }
   }
 
@@ -145,29 +145,29 @@
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCAdamID *)self stringValue];
-  [(ASCDescriber *)v3 addSensitiveObject:v4 withName:@"stringValue"];
+  stringValue = [(ASCAdamID *)self stringValue];
+  [(ASCDescriber *)v3 addSensitiveObject:stringValue withName:@"stringValue"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 - (NSNumber)numberValue
 {
   v3 = objc_alloc(MEMORY[0x277CCABB0]);
-  v4 = [(ASCAdamID *)self stringValue];
-  v5 = [v3 initWithLongLong:{objc_msgSend(v4, "longLongValue")}];
+  stringValue = [(ASCAdamID *)self stringValue];
+  v5 = [v3 initWithLongLong:{objc_msgSend(stringValue, "longLongValue")}];
 
   return v5;
 }
 
 - (int64_t)int64value
 {
-  v2 = [(ASCAdamID *)self stringValue];
-  v3 = [v2 longLongValue];
+  stringValue = [(ASCAdamID *)self stringValue];
+  longLongValue = [stringValue longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 @end

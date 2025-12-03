@@ -1,11 +1,11 @@
 @interface IdentityProofingErrorViewController
-- (_TtC9CoreIDVUI35IdentityProofingErrorViewController)initWithCoder:(id)a3;
+- (_TtC9CoreIDVUI35IdentityProofingErrorViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation IdentityProofingErrorViewController
 
-- (_TtC9CoreIDVUI35IdentityProofingErrorViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI35IdentityProofingErrorViewController)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);
@@ -14,7 +14,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24586BF94();
 }
 

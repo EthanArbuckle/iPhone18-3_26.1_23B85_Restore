@@ -1,6 +1,6 @@
 @interface IMDualSIMUtilitiesManager
 + (IMDualSIMUtilitiesManager)sharedManager;
-+ (id)_localizedShortNameForSIMID:(id)a3;
++ (id)_localizedShortNameForSIMID:(id)d;
 + (id)_updateConversationListSIMShortNamesDictionary;
 - (IMDualSIMUtilitiesManager)init;
 - (void)_handleSIMSubscriptionsUpdate;
@@ -43,14 +43,14 @@
   v20 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v3 = +[IMCTSubscriptionUtilities sharedInstance];
-  v4 = [v3 ctSubscriptionInfo];
-  v5 = [v4 subscriptions];
+  ctSubscriptionInfo = [v3 ctSubscriptionInfo];
+  subscriptions = [ctSubscriptionInfo subscriptions];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = subscriptions;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -65,11 +65,11 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) labelID];
-        v12 = [IMDualSIMUtilitiesManager _localizedShortNameForSIMID:v11];
+        labelID = [*(*(&v15 + 1) + 8 * i) labelID];
+        v12 = [IMDualSIMUtilitiesManager _localizedShortNameForSIMID:labelID];
         if (v12)
         {
-          [v2 setObject:v12 forKey:v11];
+          [v2 setObject:v12 forKey:labelID];
         }
       }
 
@@ -90,27 +90,27 @@
   conversationListSIMShortNameDictionary = self->_conversationListSIMShortNameDictionary;
   self->_conversationListSIMShortNameDictionary = v3;
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 __mainThreadPostNotificationName:@"__kIMSIMShortNameChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter __mainThreadPostNotificationName:@"__kIMSIMShortNameChanged" object:0];
 }
 
-+ (id)_localizedShortNameForSIMID:(id)a3
++ (id)_localizedShortNameForSIMID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v3];
-  v5 = [MEMORY[0x1E69D8A58] sharedInstance];
-  v6 = [v5 providerManager];
+  dCopy = d;
+  v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:dCopy];
+  mEMORY[0x1E69D8A58] = [MEMORY[0x1E69D8A58] sharedInstance];
+  providerManager = [mEMORY[0x1E69D8A58] providerManager];
 
-  v7 = [v6 telephonyProvider];
-  v8 = [v7 senderIdentityForAccountUUID:v4];
+  telephonyProvider = [providerManager telephonyProvider];
+  v8 = [telephonyProvider senderIdentityForAccountUUID:v4];
 
-  v9 = [v8 localizedShortName];
-  if (!v9)
+  localizedShortName = [v8 localizedShortName];
+  if (!localizedShortName)
   {
     v10 = IMLogHandleForCategory("IMDualSIMUtilitiesManager");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C19DC(v3, v4, v10);
+      sub_1A88C19DC(dCopy, v4, v10);
     }
 
     v11 = IMLogHandleForCategory("IMDualSIMUtilitiesManager");
@@ -120,7 +120,7 @@
     }
   }
 
-  return v9;
+  return localizedShortName;
 }
 
 @end

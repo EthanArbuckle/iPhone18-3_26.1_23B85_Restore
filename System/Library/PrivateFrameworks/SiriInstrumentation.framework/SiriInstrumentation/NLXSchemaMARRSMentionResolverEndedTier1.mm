@@ -1,27 +1,27 @@
 @interface NLXSchemaMARRSMentionResolverEndedTier1
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaMARRSMentionResolverEndedTier1)initWithDictionary:(id)a3;
-- (NLXSchemaMARRSMentionResolverEndedTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaMARRSMentionResolverEndedTier1)initWithDictionary:(id)dictionary;
+- (NLXSchemaMARRSMentionResolverEndedTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addMentionResolverSpansTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMentionResolverSpansTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaMARRSMentionResolverEndedTier1
 
-- (NLXSchemaMARRSMentionResolverEndedTier1)initWithDictionary:(id)a3
+- (NLXSchemaMARRSMentionResolverEndedTier1)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = NLXSchemaMARRSMentionResolverEndedTier1;
   v5 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mentionResolverSpansTier1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mentionResolverSpansTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"linkId", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"linkId", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (NLXSchemaMARRSMentionResolverEndedTier1)initWithJSON:(id)a3
+- (NLXSchemaMARRSMentionResolverEndedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,26 +116,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_mentionResolverSpansTier1s count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -174,36 +174,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"mentionResolverSpansTier1"];
+    [dictionary setObject:array forKeyedSubscript:@"mentionResolverSpansTier1"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s];
-  v6 = [v4 mentionResolverSpansTier1s];
-  if ((v5 != 0) == (v6 == 0))
+  mentionResolverSpansTier1s = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s];
+  mentionResolverSpansTier1s2 = [equalCopy mentionResolverSpansTier1s];
+  if ((mentionResolverSpansTier1s != 0) == (mentionResolverSpansTier1s2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s];
-  if (v7)
+  mentionResolverSpansTier1s3 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s];
+  if (mentionResolverSpansTier1s3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s];
-    v10 = [v4 mentionResolverSpansTier1s];
-    v11 = [v9 isEqual:v10];
+    v8 = mentionResolverSpansTier1s3;
+    mentionResolverSpansTier1s4 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s];
+    mentionResolverSpansTier1s5 = [equalCopy mentionResolverSpansTier1s];
+    v11 = [mentionResolverSpansTier1s4 isEqual:mentionResolverSpansTier1s5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) != (v6 == 0))
+  mentionResolverSpansTier1s = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+  mentionResolverSpansTier1s2 = [equalCopy linkId];
+  if ((mentionResolverSpansTier1s != 0) != (mentionResolverSpansTier1s2 == 0))
   {
-    v12 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
-    if (!v12)
+    linkId = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+    if (!linkId)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
-    v15 = [v4 linkId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkId;
+    linkId2 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v16 = [linkId2 isEqual:linkId3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+  linkId = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
 
-  if (v10)
+  if (linkId)
   {
-    v11 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+    linkId2 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addMentionResolverSpansTier1:(id)a3
+- (void)addMentionResolverSpansTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   mentionResolverSpansTier1s = self->_mentionResolverSpansTier1s;
-  v8 = v4;
+  v8 = tier1Copy;
   if (!mentionResolverSpansTier1s)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_mentionResolverSpansTier1s;
-    self->_mentionResolverSpansTier1s = v6;
+    self->_mentionResolverSpansTier1s = array;
 
-    v4 = v8;
+    tier1Copy = v8;
     mentionResolverSpansTier1s = self->_mentionResolverSpansTier1s;
   }
 
-  [(NSArray *)mentionResolverSpansTier1s addObject:v4];
+  [(NSArray *)mentionResolverSpansTier1s addObject:tier1Copy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLXSchemaMARRSMentionResolverEndedTier1;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self mentionResolverSpansTier1s:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaMARRSMentionResolverEndedTier1 *)self setMentionResolverSpansTier1s:v7];
 
-  v8 = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  linkId = [(NLXSchemaMARRSMentionResolverEndedTier1 *)self linkId];
+  v9 = [linkId applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaMARRSMentionResolverEndedTier1 *)self deleteLinkId];
   }

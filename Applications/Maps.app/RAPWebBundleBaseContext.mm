@@ -1,9 +1,9 @@
 @interface RAPWebBundleBaseContext
 - (NSDictionary)context;
-- (RAPWebBundleBaseContext)initWithType:(id)a3 locales:(id)a4;
+- (RAPWebBundleBaseContext)initWithType:(id)type locales:(id)locales;
 - (id)_currentUserInterfaceIdiomString;
 - (id)description;
-- (void)_setLocaleWithLocales:(id)a3;
+- (void)_setLocaleWithLocales:(id)locales;
 @end
 
 @implementation RAPWebBundleBaseContext
@@ -11,39 +11,39 @@
 - (id)_currentUserInterfaceIdiomString
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 > 6)
+  if (userInterfaceIdiom > 6)
   {
     return @"unspecified";
   }
 
   else
   {
-    return off_10164E488[v3];
+    return off_10164E488[userInterfaceIdiom];
   }
 }
 
-- (void)_setLocaleWithLocales:(id)a3
+- (void)_setLocaleWithLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100C3C1CC;
   v14[3] = &unk_10164E468;
   v5 = objc_alloc_init(NSMutableArray);
   v15 = v5;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [localesCopy enumerateObjectsUsingBlock:v14];
 
   v6 = +[NSLocale autoupdatingCurrentLocale];
-  v7 = [v6 collatorIdentifier];
+  collatorIdentifier = [v6 collatorIdentifier];
 
-  v22 = v7;
+  v22 = collatorIdentifier;
   v8 = [NSArray arrayWithObjects:&v22 count:1];
   v9 = [NSBundle preferredLocalizationsFromArray:v5 forPreferences:v8];
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
   locale = self->_locale;
-  self->_locale = v10;
+  self->_locale = firstObject;
 
   v12 = sub_100038318();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -52,7 +52,7 @@
     *buf = 138412802;
     v17 = v13;
     v18 = 2112;
-    v19 = v7;
+    v19 = collatorIdentifier;
     v20 = 2112;
     v21 = v5;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "selectedLocale: %@, preferredLocale: %@, verifiedLocales: %@", buf, 0x20u);
@@ -64,8 +64,8 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   type = self->_type;
-  v6 = [(RAPWebBundleBaseContext *)self context];
-  v7 = [NSString stringWithFormat:@"<%@:%p type:%@, context: %@>", v4, self, type, v6];
+  context = [(RAPWebBundleBaseContext *)self context];
+  v7 = [NSString stringWithFormat:@"<%@:%p type:%@, context: %@>", v4, self, type, context];
 
   return v7;
 }
@@ -87,11 +87,11 @@
   }
 
   v7 = +[GEOCountryConfiguration sharedConfiguration];
-  v8 = [v7 countryCode];
+  countryCode = [v7 countryCode];
 
-  if (v8)
+  if (countryCode)
   {
-    [v4 setObject:v8 forKeyedSubscript:@"countryCode"];
+    [v4 setObject:countryCode forKeyedSubscript:@"countryCode"];
   }
 
   v9 = +[NSLocale autoupdatingCurrentLocale];
@@ -103,8 +103,8 @@
   v12 = [NSNumber numberWithBool:UIAccessibilityIsOnOffSwitchLabelsEnabled()];
   [v4 setObject:v12 forKeyedSubscript:@"useAccessibilityLabels"];
 
-  v13 = [(RAPWebBundleBaseContext *)self _currentUserInterfaceIdiomString];
-  [v4 setObject:v13 forKeyedSubscript:@"uiIdiom"];
+  _currentUserInterfaceIdiomString = [(RAPWebBundleBaseContext *)self _currentUserInterfaceIdiomString];
+  [v4 setObject:_currentUserInterfaceIdiomString forKeyedSubscript:@"uiIdiom"];
 
   [v4 setObject:self->_email forKeyedSubscript:@"email"];
   v14 = GEOConfigGetString();
@@ -117,30 +117,30 @@
   v21 = 0;
   v17 = [v16 loadWebBundleManifestWithError:&v21];
 
-  v18 = [v17 version];
-  [v4 setObject:v18 forKeyedSubscript:@"version"];
+  version = [v17 version];
+  [v4 setObject:version forKeyedSubscript:@"version"];
 
   v19 = [v4 copy];
 
   return v19;
 }
 
-- (RAPWebBundleBaseContext)initWithType:(id)a3 locales:(id)a4
+- (RAPWebBundleBaseContext)initWithType:(id)type locales:(id)locales
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  localesCopy = locales;
   v15.receiver = self;
   v15.super_class = RAPWebBundleBaseContext;
   v9 = [(RAPWebBundleBaseContext *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_type, a3);
-    [(RAPWebBundleBaseContext *)v10 _setLocaleWithLocales:v8];
+    objc_storeStrong(&v9->_type, type);
+    [(RAPWebBundleBaseContext *)v10 _setLocaleWithLocales:localesCopy];
     v11 = +[UserInformationManager sharedInstance];
-    v12 = [v11 userEmail];
+    userEmail = [v11 userEmail];
     email = v10->_email;
-    v10->_email = v12;
+    v10->_email = userEmail;
   }
 
   return v10;

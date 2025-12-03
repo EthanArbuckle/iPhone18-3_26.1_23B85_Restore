@@ -1,15 +1,15 @@
 @interface VUIFamilyMember
 - (VUIFamilyMemberDelegate)delegate;
 - (unint64_t)hash;
-- (void)setMemberIdentifier:(id)a3;
+- (void)setMemberIdentifier:(id)identifier;
 @end
 
 @implementation VUIFamilyMember
 
-- (void)setMemberIdentifier:(id)a3
+- (void)setMemberIdentifier:(id)identifier
 {
-  v5 = a3;
-  objc_storeStrong(&self->_memberIdentifier, a3);
+  identifierCopy = identifier;
+  objc_storeStrong(&self->_memberIdentifier, identifier);
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
@@ -66,17 +66,17 @@ void __39__VUIFamilyMember_setMemberIdentifier___block_invoke_2(uint64_t a1, voi
 
 - (unint64_t)hash
 {
-  v3 = [(VUIFamilyMember *)self memberIdentifier];
-  v4 = [v3 hash];
+  memberIdentifier = [(VUIFamilyMember *)self memberIdentifier];
+  v4 = [memberIdentifier hash];
 
-  v5 = [(VUIFamilyMember *)self firstName];
-  v6 = [v5 hash] ^ v4;
+  firstName = [(VUIFamilyMember *)self firstName];
+  v6 = [firstName hash] ^ v4;
 
-  v7 = [(VUIFamilyMember *)self lastName];
-  v8 = [v7 hash];
+  lastName = [(VUIFamilyMember *)self lastName];
+  v8 = [lastName hash];
 
-  v9 = [(VUIFamilyMember *)self accountName];
-  v10 = v8 ^ [v9 hash];
+  accountName = [(VUIFamilyMember *)self accountName];
+  v10 = v8 ^ [accountName hash];
 
   return v6 ^ v10;
 }

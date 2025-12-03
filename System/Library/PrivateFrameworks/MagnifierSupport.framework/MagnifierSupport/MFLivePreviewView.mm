@@ -1,8 +1,8 @@
 @interface MFLivePreviewView
 + (Class)layerClass;
 - (NSString)accessibilityLabel;
-- (_TtC16MagnifierSupport17MFLivePreviewView)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupport17MFLivePreviewView)initWithFrame:(CGRect)a3;
+- (_TtC16MagnifierSupport17MFLivePreviewView)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupport17MFLivePreviewView)initWithFrame:(CGRect)frame;
 - (id)accessibilityExpandedTextValue;
 @end
 
@@ -39,12 +39,12 @@
   return v2;
 }
 
-- (_TtC16MagnifierSupport17MFLivePreviewView)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport17MFLivePreviewView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport17MFLivePreviewView_textValue);
   *v9 = 0;
@@ -54,7 +54,7 @@
   return [(MFLivePreviewView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MagnifierSupport17MFLivePreviewView)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport17MFLivePreviewView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport17MFLivePreviewView_textValue);
@@ -62,8 +62,8 @@
   v6[1] = 0xE000000000000000;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(MFLivePreviewView *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(MFLivePreviewView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

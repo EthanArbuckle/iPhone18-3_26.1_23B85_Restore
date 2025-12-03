@@ -1,42 +1,42 @@
 @interface ConversationViewControllerBase
 + (id)log;
-- (BOOL)_canBrowseInDirection:(int)a3;
-- (BOOL)_executeIfSplitViewIsAvailable:(id)a3;
-- (BOOL)_isConversationViewShortcut:(SEL)a3;
-- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)a3;
-- (BOOL)_scrollViewIsScrolledToEnd:(id)a3;
-- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)a3;
-- (BOOL)_shouldHideStickyFooterViewForTraitCollection:(id)a3;
-- (BOOL)_shouldShowArrowsForDisplayMode:(int64_t)a3 collapsed:(BOOL)a4 withTraitCollection:(id)a5;
+- (BOOL)_canBrowseInDirection:(int)direction;
+- (BOOL)_executeIfSplitViewIsAvailable:(id)available;
+- (BOOL)_isConversationViewShortcut:(SEL)shortcut;
+- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)path;
+- (BOOL)_scrollViewIsScrolledToEnd:(id)end;
+- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)path;
+- (BOOL)_shouldHideStickyFooterViewForTraitCollection:(id)collection;
+- (BOOL)_shouldShowArrowsForDisplayMode:(int64_t)mode collapsed:(BOOL)collapsed withTraitCollection:(id)collection;
 - (BOOL)_shouldShowConversationHeader;
-- (BOOL)_shouldUseDesktopClassNavigationBarForTraitCollection:(id)a3;
+- (BOOL)_shouldUseDesktopClassNavigationBarForTraitCollection:(id)collection;
 - (BOOL)beingPreviewed;
-- (BOOL)canHandleAction:(SEL)a3 withMailMenuCommand:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)conversationSearchHandler:(id)a3 shouldConsiderQuotedContentForItemID:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)canHandleAction:(SEL)action withMailMenuCommand:(id)command;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)conversationSearchHandler:(id)handler shouldConsiderQuotedContentForItemID:(id)d;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isFullyVisible;
 - (BOOL)isShowingGroupedSenderMessageList;
 - (BOOL)isSplitViewAvailable;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (BOOL)shouldAddDoneButtonForConversationNavigationBarItemsManager:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (BOOL)shouldAddDoneButtonForConversationNavigationBarItemsManager:(id)manager;
 - (BOOL)shouldHideStickyFooterView;
 - (BOOL)shouldShowExpandableDigestHeaderView;
 - (BOOL)shouldShowStaticDigestHeaderView;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGPoint)initialScrollOffset;
 - (CGPoint)layoutInvalidationContentOffset;
-- (CGRect)_defaultSourceRectForView:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)defaultCellSizeForTracker:(id)a3;
+- (CGRect)_defaultSourceRectForView:(id)view;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)defaultCellSizeForTracker:(id)tracker;
 - (ComposeCapable)scene;
-- (ConversationViewControllerBase)initWithScene:(id)a3 contactStore:(id)a4 avatarGenerator:(id)a5;
+- (ConversationViewControllerBase)initWithScene:(id)scene contactStore:(id)store avatarGenerator:(id)generator;
 - (ConversationViewControllerBaseDelegate)delegate;
 - (MFArrowControlsView)arrowControlsView;
-- (NSDirectionalEdgeInsets)layoutMarginsForCollectionViewFrame:(CGRect)a3;
+- (NSDirectionalEdgeInsets)layoutMarginsForCollectionViewFrame:(CGRect)frame;
 - (UIBarButtonItem)doneButton;
 - (UICollectionView)collectionView;
 - (UIEdgeInsets)_calculateCollectionViewInsets;
@@ -44,177 +44,177 @@
 - (_TtC10MobileMail36ConversationSenderHeaderViewAnimator)senderHeaderViewAnimator;
 - (_TtC10MobileMail38ExpandableConversationSenderHeaderView)expandableSenderHeaderView;
 - (_UINavigationBarTitleView)tapGestureTitleView;
-- (double)_autoscrollAdjustmentWithBaseOffset:(double)a3;
+- (double)_autoscrollAdjustmentWithBaseOffset:(double)offset;
 - (double)_expectedCellWidth;
 - (double)_itemSpacing;
 - (double)_minimumItemHeight;
 - (double)_navigationBarHeight;
 - (double)_topSpacingToAvoidStatusBar;
-- (double)defaultSemiExpandedHeightForTracker:(id)a3;
-- (double)quickReplyHeightForTracker:(id)a3;
-- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)a3;
-- (double)stickySubjectViewMaxYForConversationHeaderView:(id)a3;
-- (double)widthForConversationViewCellsForConversationSearchHandler:(id)a3;
+- (double)defaultSemiExpandedHeightForTracker:(id)tracker;
+- (double)quickReplyHeightForTracker:(id)tracker;
+- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)view;
+- (double)stickySubjectViewMaxYForConversationHeaderView:(id)view;
+- (double)widthForConversationViewCellsForConversationSearchHandler:(id)handler;
 - (id)_currentSizeMetadataKey;
 - (id)_defaultBarButtonItems;
-- (id)_defaultBarButtonsWithFlexibleSpacing:(BOOL)a3 reverseOrder:(BOOL)a4;
-- (id)_dragItemsForItemAtIndexPath:(id)a3;
+- (id)_defaultBarButtonsWithFlexibleSpacing:(BOOL)spacing reverseOrder:(BOOL)order;
+- (id)_dragItemsForItemAtIndexPath:(id)path;
 - (id)_fixedSpaceBarButton;
 - (id)_flexibleSpaceBarButton;
 - (id)_indexPathForTopMostVisibleRow;
-- (id)_indexPathOfMessageViewControllerMessage:(id)a3;
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)_nextIndexPathToSelectFromIndexPath:(id)a3 withDirection:(int)a4;
-- (id)_nextMessageIndexWithDirection:(int)a3;
+- (id)_indexPathOfMessageViewControllerMessage:(id)message;
+- (id)_layoutAttributesForItemAtIndexPath:(id)path;
+- (id)_nextIndexPathToSelectFromIndexPath:(id)path withDirection:(int)direction;
+- (id)_nextMessageIndexWithDirection:(int)direction;
 - (id)_oldestIndexPath;
-- (id)_persistentIDForEMMessageObjectID:(id)a3;
-- (id)_previewActionsForTriageActions:(id)a3 excludingActions:(id)a4;
-- (id)_recategorizationTriageInteraction:(id)a3;
-- (id)_visibleIndexPathForMessageViewController:(id)a3;
+- (id)_persistentIDForEMMessageObjectID:(id)d;
+- (id)_previewActionsForTriageActions:(id)actions excludingActions:(id)excludingActions;
+- (id)_recategorizationTriageInteraction:(id)interaction;
+- (id)_visibleIndexPathForMessageViewController:(id)controller;
 - (id)_visibleNavigationBar;
 - (id)archiveButtonItem;
-- (id)cellConfigurator:(id)a3 messageItemIDAtIndexPath:(id)a4;
-- (id)cellConfigurator:(id)a3 targetHeightForExpandingCellAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
+- (id)cellConfigurator:(id)configurator messageItemIDAtIndexPath:(id)path;
+- (id)cellConfigurator:(id)configurator targetHeightForExpandingCellAtIndexPath:(id)path;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
 - (id)contentUnavailableConfigurationState;
-- (id)conversationSearchHandler:(id)a3 contentRepresentationRequestForItemID:(id)a4;
-- (id)conversationSearchMessageListForConversationSearchHandler:(id)a3;
+- (id)conversationSearchHandler:(id)handler contentRepresentationRequestForItemID:(id)d;
+- (id)conversationSearchMessageListForConversationSearchHandler:(id)handler;
 - (id)deleteButtonItem;
-- (id)hostScrollViewForConversationHeaderView:(id)a3;
-- (id)indexSetForRowsFromIndexPaths:(id)a3 section:(int64_t)a4;
-- (id)layoutInformationForConversationSenderHeaderViewAnimator:(id)a3;
+- (id)hostScrollViewForConversationHeaderView:(id)view;
+- (id)indexSetForRowsFromIndexPaths:(id)paths section:(int64_t)section;
+- (id)layoutInformationForConversationSenderHeaderViewAnimator:(id)animator;
 - (id)leadingPreviewAction;
-- (id)messageDisplayMetricsForTraitCollection:(id)a3 layoutMargins:(UIEdgeInsets)a4;
-- (id)messageItemIDAtIndexPath:(id)a3;
-- (id)messageViewController:(id)a3 displayNameForEmailAddress:(id)a4 abbreviated:(BOOL)a5;
+- (id)messageDisplayMetricsForTraitCollection:(id)collection layoutMargins:(UIEdgeInsets)margins;
+- (id)messageItemIDAtIndexPath:(id)path;
+- (id)messageViewController:(id)controller displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated;
 - (id)mf_preferredTitle;
 - (id)moveButtonItem;
 - (id)passthroughViews;
 - (id)previewActionItems;
 - (id)replyButtonItem;
-- (id)supplementaryButtonItemForConversationNavigationBarItemsManager:(id)a3;
+- (id)supplementaryButtonItemForConversationNavigationBarItemsManager:(id)manager;
 - (id)trailingPreviewAction;
-- (id)transitionCoordinatorForKeyboardAvoidance:(id)a3;
-- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)a3;
-- (int64_t)cellConfigurator:(id)a3 expansionStatusForMessageAtIndexPath:(id)a4;
-- (int64_t)conversationViewCellSizeTracker:(id)a3 expansionStatusForMessageWithItemID:(id)a4;
-- (void)_adjustForKeyboardAvoidanceOverlap:(double)a3;
-- (void)_animateWithKeyboard:(id)a3 animations:(id)a4;
+- (id)transitionCoordinatorForKeyboardAvoidance:(id)avoidance;
+- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)path;
+- (int64_t)cellConfigurator:(id)configurator expansionStatusForMessageAtIndexPath:(id)path;
+- (int64_t)conversationViewCellSizeTracker:(id)tracker expansionStatusForMessageWithItemID:(id)d;
+- (void)_adjustForKeyboardAvoidanceOverlap:(double)overlap;
+- (void)_animateWithKeyboard:(id)keyboard animations:(id)animations;
 - (void)_attemptLoadMissingMessages;
-- (void)_beginResizingConversationView:(CGSize)a3;
-- (void)_configureSenderHeaderView:(id)a3 expansionStatus:(int64_t)a4;
-- (void)_endEditingAnimated:(BOOL)a3;
+- (void)_beginResizingConversationView:(CGSize)view;
+- (void)_configureSenderHeaderView:(id)view expansionStatus:(int64_t)status;
+- (void)_endEditingAnimated:(BOOL)animated;
 - (void)_endResizingConversationView;
-- (void)_enqueueMessageViewController:(id)a3;
-- (void)_enumerateExpandedCellMessageContentViewsWithBlock:(id)a3;
-- (void)_expansionRecognizerDidRecognize:(id)a3;
-- (void)_hideRemovedSingleMessageCellIfInRemovedIndexPaths:(id)a3;
+- (void)_enqueueMessageViewController:(id)controller;
+- (void)_enumerateExpandedCellMessageContentViewsWithBlock:(id)block;
+- (void)_expansionRecognizerDidRecognize:(id)recognize;
+- (void)_hideRemovedSingleMessageCellIfInRemovedIndexPaths:(id)paths;
 - (void)_invalidateQuickReplyFooter;
-- (void)_maybeAttemptLoadMissingMessages:(id)a3;
+- (void)_maybeAttemptLoadMissingMessages:(id)messages;
 - (void)_messageSearchBegan;
-- (void)_navigateToMessageInDirection:(int)a3;
-- (void)_notifyDelegateWillRemoveAllVisibleMessagesForTriageInteraction:(id)a3;
-- (void)_pageDownCommandInvoked:(id)a3;
-- (void)_pageUpCommandInvoked:(id)a3;
-- (void)_reloadCellsAtIndexPaths:(id)a3 animated:(BOOL)a4;
+- (void)_navigateToMessageInDirection:(int)direction;
+- (void)_notifyDelegateWillRemoveAllVisibleMessagesForTriageInteraction:(id)interaction;
+- (void)_pageDownCommandInvoked:(id)invoked;
+- (void)_pageUpCommandInvoked:(id)invoked;
+- (void)_reloadCellsAtIndexPaths:(id)paths animated:(BOOL)animated;
 - (void)_reloadPreparedCells;
 - (void)_removeNavigationBarFromSelf;
 - (void)_resetBottomPaddingIfDisplayingSingleMessage;
 - (void)_restorePinnedScrollPosition;
-- (void)_sceneWillDeactivate:(id)a3;
-- (void)_scrollToItemAtIndexPath:(id)a3 dynamicOffset:(id)a4 shouldAdjustToShowPreviousMessage:(BOOL)a5 animated:(BOOL)a6 pin:(BOOL)a7 completion:(id)a8;
-- (void)_selectNextMessageCommandInvoked:(id)a3;
-- (void)_selectPreviousMessageCommandInvoked:(id)a3;
-- (void)_setBottomPadding:(double)a3;
+- (void)_sceneWillDeactivate:(id)deactivate;
+- (void)_scrollToItemAtIndexPath:(id)path dynamicOffset:(id)offset shouldAdjustToShowPreviousMessage:(BOOL)message animated:(BOOL)animated pin:(BOOL)pin completion:(id)completion;
+- (void)_selectNextMessageCommandInvoked:(id)invoked;
+- (void)_selectPreviousMessageCommandInvoked:(id)invoked;
+- (void)_setBottomPadding:(double)padding;
 - (void)_setNavigationBarTitleViewNeedsLayout;
-- (void)_showModalViewController:(id)a3 fromView:(id)a4 sourceRect:(CGRect)a5 animated:(BOOL)a6;
-- (void)_showSingleMessage:(id)a3 animationOffset:(CGPoint)a4 initialScrollOffset:(CGPoint)a5;
+- (void)_showModalViewController:(id)controller fromView:(id)view sourceRect:(CGRect)rect animated:(BOOL)animated;
+- (void)_showSingleMessage:(id)message animationOffset:(CGPoint)offset initialScrollOffset:(CGPoint)scrollOffset;
 - (void)_shrinkBottomPaddingIfNecessary;
-- (void)_shrinkMessagesToBarButton:(id)a3 withInteraction:(id)a4 completionHandler:(id)a5;
-- (void)_shrinkMessagesToView:(id)a3 withInteraction:(id)a4 completionHandler:(id)a5;
-- (void)_splitViewStateChanged:(id)a3;
-- (void)_toggleCellGroupOpacityIfNeeded:(id)a3 displaying:(BOOL)a4;
-- (void)_toggleCellsGroupOpacityDuringRotationWithCoordinator:(id)a3;
-- (void)_updateAllowQuickReplyForMessageListItem:(id)a3;
+- (void)_shrinkMessagesToBarButton:(id)button withInteraction:(id)interaction completionHandler:(id)handler;
+- (void)_shrinkMessagesToView:(id)view withInteraction:(id)interaction completionHandler:(id)handler;
+- (void)_splitViewStateChanged:(id)changed;
+- (void)_toggleCellGroupOpacityIfNeeded:(id)needed displaying:(BOOL)displaying;
+- (void)_toggleCellsGroupOpacityDuringRotationWithCoordinator:(id)coordinator;
+- (void)_updateAllowQuickReplyForMessageListItem:(id)item;
 - (void)_updateBackgroundColor;
-- (void)_updateBarButtonsAnimated:(BOOL)a3 force:(BOOL)a4 isShowingTitle:(BOOL)a5;
-- (void)_updateBarButtonsAnimated:(BOOL)a3 withDisplayMode:(int64_t)a4 withTraitCollection:(id)a5 collapsed:(BOOL)a6 force:(BOOL)a7 isShowingTitle:(BOOL)a8;
+- (void)_updateBarButtonsAnimated:(BOOL)animated force:(BOOL)force isShowingTitle:(BOOL)title;
+- (void)_updateBarButtonsAnimated:(BOOL)animated withDisplayMode:(int64_t)mode withTraitCollection:(id)collection collapsed:(BOOL)collapsed force:(BOOL)force isShowingTitle:(BOOL)title;
 - (void)_updateBottomPadding;
-- (void)_updateBottomPaddingWithLastItemHeight:(double)a3;
+- (void)_updateBottomPaddingWithLastItemHeight:(double)height;
 - (void)_updateCells;
 - (void)_updateCollectionViewMargins;
-- (void)_updateConversationHeaderViewLayoutMarginsWithSuperviewMargins:(NSDirectionalEdgeInsets)a3;
+- (void)_updateConversationHeaderViewLayoutMarginsWithSuperviewMargins:(NSDirectionalEdgeInsets)margins;
 - (void)_updateConversationSortOrder;
 - (void)_updateDisplayMetrics;
 - (void)_updateForceCollapsedSenderHeader;
 - (void)_updateIncludeRelatedMessages;
 - (void)_updateLayout;
 - (void)_updateSenderHeaderLayoutTopConstrainntIfNeeded;
-- (void)_updateSenderHeaderView:(id)a3 viewModel:(id)a4 expansionStatus:(int64_t)a5;
+- (void)_updateSenderHeaderView:(id)view viewModel:(id)model expansionStatus:(int64_t)status;
 - (void)_updateTitle;
-- (void)cellConfigurator:(id)a3 didConfigureCell:(id)a4 atIndexPath:(id)a5;
-- (void)cellConfigurator:(id)a3 didInvalidateConfigurationForCellsAtIndexPaths:(id)a4;
-- (void)cellConfigurator:(id)a3 wantsToReloadCellAtIndexPaths:(id)a4 animated:(BOOL)a5;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionViewMarginsDidChange:(NSDirectionalEdgeInsets)a3;
-- (void)contactCardInteractions:(id)a3 triggerSearchForDisplayName:(id)a4 emailAddresses:(id)a5;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)cellConfigurator:(id)configurator didConfigureCell:(id)cell atIndexPath:(id)path;
+- (void)cellConfigurator:(id)configurator didInvalidateConfigurationForCellsAtIndexPaths:(id)paths;
+- (void)cellConfigurator:(id)configurator wantsToReloadCellAtIndexPaths:(id)paths animated:(BOOL)animated;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionViewMarginsDidChange:(NSDirectionalEdgeInsets)change;
+- (void)contactCardInteractions:(id)interactions triggerSearchForDisplayName:(id)name emailAddresses:(id)addresses;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)dealloc;
-- (void)done:(id)a3;
-- (void)forwardButtonTapped:(id)a3;
+- (void)done:(id)done;
+- (void)forwardButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)messageViewController:(id)a3 didChangeSelectedHTML:(id)a4;
-- (void)messageViewController:(id)a3 didFinishRenderingWithHeight:(double)a4;
-- (void)messageViewController:(id)a3 didStartDownloadForContentItemWithProgress:(id)a4;
-- (void)messageViewController:(id)a3 didTapRevealActionsButton:(id)a4;
-- (void)messageViewController:(id)a3 didTapShowMoreAtCollapsedOffset:(CGPoint)a4 expandedOffset:(CGPoint)a5;
-- (void)messageViewController:(id)a3 didTapUndoSendButton:(id)a4;
-- (void)messageViewController:(id)a3 webViewDidTerminateWithReason:(int64_t)a4;
-- (void)messageViewControllerDidDisplayContent:(id)a3 success:(BOOL)a4;
-- (void)messageViewControllerDidFinishFirstPaint:(id)a3;
-- (void)messageViewControllerDidTapAddressAtom:(id)a3 contactViewController:(id)a4;
-- (void)navigateToMessageInDirection:(int)a3;
+- (void)messageViewController:(id)controller didChangeSelectedHTML:(id)l;
+- (void)messageViewController:(id)controller didFinishRenderingWithHeight:(double)height;
+- (void)messageViewController:(id)controller didStartDownloadForContentItemWithProgress:(id)progress;
+- (void)messageViewController:(id)controller didTapRevealActionsButton:(id)button;
+- (void)messageViewController:(id)controller didTapShowMoreAtCollapsedOffset:(CGPoint)offset expandedOffset:(CGPoint)expandedOffset;
+- (void)messageViewController:(id)controller didTapUndoSendButton:(id)button;
+- (void)messageViewController:(id)controller webViewDidTerminateWithReason:(int64_t)reason;
+- (void)messageViewControllerDidDisplayContent:(id)content success:(BOOL)success;
+- (void)messageViewControllerDidFinishFirstPaint:(id)paint;
+- (void)messageViewControllerDidTapAddressAtom:(id)atom contactViewController:(id)controller;
+- (void)navigateToMessageInDirection:(int)direction;
 - (void)presentPreviousDraftPicker;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
 - (void)previewCancelled;
-- (void)previewDidCommit:(BOOL)a3;
-- (void)replyAllButtonTapped:(id)a3;
-- (void)replyButtonTapped:(id)a3;
-- (void)revealActionsButtonTapped:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBeingPreviewed:(BOOL)a3;
-- (void)setDidCompleteFirstPaint:(BOOL)a3;
-- (void)setDisableScrollPinning:(BOOL)a3;
-- (void)setDisplayMetrics:(id)a3;
-- (void)setDoneButton:(id)a3;
-- (void)setPinnedItem:(id)a3;
-- (void)setReferenceMessageListItem:(id)a3;
-- (void)setResizingState:(int64_t)a3;
-- (void)setShouldShowNoMessageSelectedView:(BOOL)a3;
-- (void)showAllMessagesForConversationSenderHeaderView:(id)a3;
-- (void)showCategoryMessagesForConversationSenderHeaderView:(id)a3;
-- (void)tappedSenderHeader:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)previewDidCommit:(BOOL)commit;
+- (void)replyAllButtonTapped:(id)tapped;
+- (void)replyButtonTapped:(id)tapped;
+- (void)revealActionsButtonTapped:(id)tapped;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBeingPreviewed:(BOOL)previewed;
+- (void)setDidCompleteFirstPaint:(BOOL)paint;
+- (void)setDisableScrollPinning:(BOOL)pinning;
+- (void)setDisplayMetrics:(id)metrics;
+- (void)setDoneButton:(id)button;
+- (void)setPinnedItem:(id)item;
+- (void)setReferenceMessageListItem:(id)item;
+- (void)setResizingState:(int64_t)state;
+- (void)setShouldShowNoMessageSelectedView:(BOOL)view;
+- (void)showAllMessagesForConversationSenderHeaderView:(id)view;
+- (void)showCategoryMessagesForConversationSenderHeaderView:(id)view;
+- (void)tappedSenderHeader:(id)header;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateArrowControlsView;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)updateNavigationItemChromelessConfiguration;
-- (void)updateUserActivityState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateUserActivityState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ConversationViewControllerBase
@@ -224,10 +224,10 @@
   v3 = +[NSUserDefaults em_userDefaults];
   v4 = [v3 BOOLForKey:EMUserDefaultForceCollapsedSenderHeader];
 
-  v5 = [(ConversationViewControllerBase *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v6 == 1)
+  if (verticalSizeClass == 1)
   {
     v7 = 1;
   }
@@ -294,31 +294,31 @@
     [(_MFConversationViewCollectionView *)self->_conversationView setKeyboardDismissMode:2];
   }
 
-  v12 = [(ConversationViewControllerBase *)self view];
-  [v12 addSubview:self->_conversationView];
+  view = [(ConversationViewControllerBase *)self view];
+  [view addSubview:self->_conversationView];
 
   v13 = [[MFConversationCellConfigurator alloc] initWithCollectionView:self->_conversationView];
   cellConfigurator = self->_cellConfigurator;
   self->_cellConfigurator = v13;
 
   [(MFConversationCellConfigurator *)self->_cellConfigurator setDelegate:self];
-  v15 = [(ConversationViewControllerBase *)self contactStore];
-  [(MFConversationCellConfigurator *)self->_cellConfigurator setContactStore:v15];
+  contactStore = [(ConversationViewControllerBase *)self contactStore];
+  [(MFConversationCellConfigurator *)self->_cellConfigurator setContactStore:contactStore];
 
-  v16 = [(ConversationViewControllerBase *)self avatarGenerator];
-  [(MFConversationCellConfigurator *)self->_cellConfigurator setAvatarGenerator:v16];
+  avatarGenerator = [(ConversationViewControllerBase *)self avatarGenerator];
+  [(MFConversationCellConfigurator *)self->_cellConfigurator setAvatarGenerator:avatarGenerator];
 
-  v17 = [(MFConversationCellConfigurator *)self->_cellConfigurator sizeTracker];
-  [v17 setDelegate:self];
+  sizeTracker = [(MFConversationCellConfigurator *)self->_cellConfigurator sizeTracker];
+  [sizeTracker setDelegate:self];
 
   [(ConversationViewControllerBase *)self _updateLayout];
-  v18 = [(ConversationViewControllerBase *)self restorationFuture];
-  v19 = v18 == 0;
+  restorationFuture = [(ConversationViewControllerBase *)self restorationFuture];
+  v19 = restorationFuture == 0;
 
   [(ConversationViewControllerBase *)self _doSetShouldShowNoMessageSelectedView:v19];
   [(ConversationViewControllerBase *)self mf_updateAlertSuppressionContextsForReason:@"conversation view did load"];
-  v20 = [(ConversationViewControllerBase *)self navigationItem];
-  [v20 setLargeTitleDisplayMode:2];
+  navigationItem = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   v21 = self->_findInteraction;
   if (v21)
@@ -330,27 +330,27 @@
   senderHeaderLayoutGuide = self->_senderHeaderLayoutGuide;
   self->_senderHeaderLayoutGuide = v22;
 
-  v24 = [(ConversationViewControllerBase *)self view];
-  [v24 addLayoutGuide:self->_senderHeaderLayoutGuide];
+  view2 = [(ConversationViewControllerBase *)self view];
+  [view2 addLayoutGuide:self->_senderHeaderLayoutGuide];
 
-  v25 = [(UILayoutGuide *)self->_senderHeaderLayoutGuide topAnchor];
-  v26 = [(ConversationViewControllerBase *)self view];
-  v27 = [v26 topAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  topAnchor = [(UILayoutGuide *)self->_senderHeaderLayoutGuide topAnchor];
+  view3 = [(ConversationViewControllerBase *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   senderHeaderLayoutGuideTopConstraint = self->_senderHeaderLayoutGuideTopConstraint;
   self->_senderHeaderLayoutGuideTopConstraint = v28;
 
-  v30 = [(UILayoutGuide *)self->_senderHeaderLayoutGuide leadingAnchor];
-  v31 = [(ConversationViewControllerBase *)self view];
-  v32 = [v31 leadingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  leadingAnchor = [(UILayoutGuide *)self->_senderHeaderLayoutGuide leadingAnchor];
+  view4 = [(ConversationViewControllerBase *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   senderHeaderLayoutGuideLeadingConstraint = self->_senderHeaderLayoutGuideLeadingConstraint;
   self->_senderHeaderLayoutGuideLeadingConstraint = v33;
 
-  v35 = [(UILayoutGuide *)self->_senderHeaderLayoutGuide trailingAnchor];
-  v36 = [(ConversationViewControllerBase *)self view];
-  v37 = [v36 trailingAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  trailingAnchor = [(UILayoutGuide *)self->_senderHeaderLayoutGuide trailingAnchor];
+  view5 = [(ConversationViewControllerBase *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   senderHeaderLayoutGuideTrailingConstraint = self->_senderHeaderLayoutGuideTrailingConstraint;
   self->_senderHeaderLayoutGuideTrailingConstraint = v38;
 
@@ -369,8 +369,8 @@
     return 0;
   }
 
-  v3 = [(ConversationViewControllerBase *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 2)
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
     v4 = +[UIDevice mf_isPadIdiom];
   }
@@ -385,7 +385,7 @@
 
 - (BOOL)isShowingGroupedSenderMessageList
 {
-  v2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -394,8 +394,8 @@
 
 - (UIEdgeInsets)_calculateCollectionViewInsets
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 contentInset];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView contentInset];
   v5 = v4;
   v7 = v6;
 
@@ -403,10 +403,10 @@
   v9 = 0.0;
   if (![(ConversationViewControllerBase *)self beingPreviewed])
   {
-    v10 = [(ConversationViewControllerBase *)self navigationController];
-    v11 = [v10 presentingViewController];
+    navigationController = [(ConversationViewControllerBase *)self navigationController];
+    presentingViewController = [navigationController presentingViewController];
 
-    if (!v11)
+    if (!presentingViewController)
     {
       [(ConversationViewControllerBase *)self _topSpacingToAvoidStatusBar];
       v8 = v12;
@@ -416,8 +416,8 @@
     v14 = v13;
     if ([(ConversationViewControllerBase *)self shouldShowStaticDigestHeaderView])
     {
-      v15 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
-      [v15 frame];
+      staticSenderHeaderView = [(ConversationViewControllerBase *)self staticSenderHeaderView];
+      [staticSenderHeaderView frame];
       v17 = v16;
       [(ConversationViewControllerBase *)self _itemSpacing];
       v8 = v17 + v18 + -10.0;
@@ -436,8 +436,8 @@
 
     [(ConversationViewControllerBase *)self _itemSpacing];
     v23 = v22;
-    v24 = [(ConversationViewControllerBase *)self view];
-    [v24 safeAreaInsets];
+    view = [(ConversationViewControllerBase *)self view];
+    [view safeAreaInsets];
     v9 = v23 + v25 + self->_adjustmentForKeyboard;
   }
 
@@ -454,10 +454,10 @@
 
 - (BOOL)beingPreviewed
 {
-  v2 = [(ConversationViewControllerBase *)self previewState];
-  v3 = [v2 beingPreviewed];
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  beingPreviewed = [previewState beingPreviewed];
 
-  return v3;
+  return beingPreviewed;
 }
 
 - (ComposeCapable)scene
@@ -471,16 +471,16 @@
 {
   if ([(ConversationViewControllerBase *)self shouldShowExpandableDigestHeaderView])
   {
-    v3 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-    [v3 currentHeight];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+    [senderHeaderViewAnimator currentHeight];
     v5 = v4;
   }
 
   else
   {
-    v3 = [(ConversationViewControllerBase *)self navigationController];
-    v6 = [v3 navigationBar];
-    [v6 frame];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self navigationController];
+    navigationBar = [senderHeaderViewAnimator navigationBar];
+    [navigationBar frame];
     v5 = v7;
   }
 
@@ -489,10 +489,10 @@
 
 - (BOOL)shouldShowExpandableDigestHeaderView
 {
-  v3 = [(ConversationViewControllerBase *)self traitCollection];
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v4 = [v3 horizontalSizeClass] == 1 || objc_msgSend(v3, "userInterfaceIdiom") == 0;
+    v4 = [traitCollection horizontalSizeClass] == 1 || objc_msgSend(traitCollection, "userInterfaceIdiom") == 0;
   }
 
   else
@@ -524,10 +524,10 @@
 
 - (void)_updateLayout
 {
-  v3 = [(ConversationViewControllerBase *)self viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(ConversationViewControllerBase *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v4)
+  if (window)
   {
     if (EMBlackPearlIsFeatureEnabled())
     {
@@ -536,13 +536,13 @@
         [(ConversationViewControllerBase *)self _updateSenderHeaderLayoutTopConstrainntIfNeeded];
         [(ConversationViewControllerBase *)self horizontalPadding];
         v6 = v5;
-        v7 = [(ConversationViewControllerBase *)self senderHeaderLayoutGuideLeadingConstraint];
-        [v7 setConstant:v6];
+        senderHeaderLayoutGuideLeadingConstraint = [(ConversationViewControllerBase *)self senderHeaderLayoutGuideLeadingConstraint];
+        [senderHeaderLayoutGuideLeadingConstraint setConstant:v6];
 
         [(ConversationViewControllerBase *)self horizontalPadding];
         v9 = v8;
-        v10 = [(ConversationViewControllerBase *)self senderHeaderLayoutGuideTrailingConstraint];
-        [v10 setConstant:-v9];
+        senderHeaderLayoutGuideTrailingConstraint = [(ConversationViewControllerBase *)self senderHeaderLayoutGuideTrailingConstraint];
+        [senderHeaderLayoutGuideTrailingConstraint setConstant:-v9];
       }
 
       [(ConversationViewControllerBase *)self _updateForceCollapsedSenderHeader];
@@ -553,8 +553,8 @@
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(ConversationViewControllerBase *)self collectionView];
-    [v19 contentInset];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView contentInset];
     if (v23 == v14 && v20 == v12 && v22 == v18)
     {
       v24 = v21;
@@ -572,8 +572,8 @@ LABEL_16:
         }
 
         [(ConversationViewControllerBase *)self _updateCollectionViewMargins];
-        v31 = [(ConversationViewControllerBase *)self collectionView];
-        [(ConversationViewControllerBase *)self _updateManualSummaryUIForScroll:v31];
+        collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+        [(ConversationViewControllerBase *)self _updateManualSummaryUIForScroll:collectionView2];
 
         [(ConversationViewControllerBase *)self _updateBackgroundColor];
         goto LABEL_19;
@@ -584,8 +584,8 @@ LABEL_16:
     {
     }
 
-    v26 = [(ConversationViewControllerBase *)self collectionView];
-    [v26 setContentInset:{v12, v14, v16, v18}];
+    collectionView3 = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView3 setContentInset:{v12, v14, v16, v18}];
 
     goto LABEL_16;
   }
@@ -594,7 +594,7 @@ LABEL_16:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 134217984;
-    v33 = v3;
+    v33 = viewIfLoaded;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Skip _updateLayout since window is nil (view:%p)", &v32, 0xCu);
   }
 
@@ -613,12 +613,12 @@ LABEL_19:
   return v3;
 }
 
-- (ConversationViewControllerBase)initWithScene:(id)a3 contactStore:(id)a4 avatarGenerator:(id)a5
+- (ConversationViewControllerBase)initWithScene:(id)scene contactStore:(id)store avatarGenerator:(id)generator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  sceneCopy = scene;
+  storeCopy = store;
+  generatorCopy = generator;
+  if (!storeCopy)
   {
     memset(__b, 170, sizeof(__b));
     LODWORD(__b[4]) = 0;
@@ -644,10 +644,10 @@ LABEL_19:
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_scene, v8);
-    objc_storeStrong(&v13->_contactStore, a4);
-    objc_storeStrong(&v13->_avatarGenerator, a5);
-    v14 = [[_TtC10MobileMail37ConversationNavigationBarItemsManager alloc] initWithScene:v8 delegate:v13 actionHandler:v13 arrowDelegate:v13];
+    objc_storeWeak(&v12->_scene, sceneCopy);
+    objc_storeStrong(&v13->_contactStore, store);
+    objc_storeStrong(&v13->_avatarGenerator, generator);
+    v14 = [[_TtC10MobileMail37ConversationNavigationBarItemsManager alloc] initWithScene:sceneCopy delegate:v13 actionHandler:v13 arrowDelegate:v13];
     barItemsManager = v13->_barItemsManager;
     v13->_barItemsManager = v14;
 
@@ -665,8 +665,8 @@ LABEL_19:
 
     v22 = [MFConversationAssistantContextProvider alloc];
     v23 = v13->_currentVisibleMessageStrategy;
-    v24 = [(ConversationViewControllerBase *)v13 contactStore];
-    v25 = [(MFConversationAssistantContextProvider *)v22 initWithCurrentVisibileMessageStrategy:v23 contactStore:v24];
+    contactStore = [(ConversationViewControllerBase *)v13 contactStore];
+    v25 = [(MFConversationAssistantContextProvider *)v22 initWithCurrentVisibileMessageStrategy:v23 contactStore:contactStore];
     assistantContextProvider = v13->_assistantContextProvider;
     v13->_assistantContextProvider = v25;
 
@@ -693,14 +693,14 @@ LABEL_19:
     [v32 addObserver:v13 selector:"_updateIncludeRelatedMessages" name:MailApplicationDidChangeConversationViewIncludesRelatedMessages object:0];
     [v32 addObserver:v13 selector:"_fontMetricCacheDidInvalidate:" name:MFFontMetricCacheInvalidationNotification object:0];
     [v32 addObserver:v13 selector:"_splitViewStateChanged:" name:@"MailSplitViewControllerViewStateChangedNotification" object:0];
-    [v32 addObserver:v13 selector:"_sceneDidActivate:" name:UISceneDidActivateNotification object:v8];
-    [v32 addObserver:v13 selector:"_sceneWillDeactivate:" name:UISceneWillDeactivateNotification object:v8];
+    [v32 addObserver:v13 selector:"_sceneDidActivate:" name:UISceneDidActivateNotification object:sceneCopy];
+    [v32 addObserver:v13 selector:"_sceneWillDeactivate:" name:UISceneWillDeactivateNotification object:sceneCopy];
     [v32 addObserver:v13 selector:"_contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
     v33 = [[MFConversationPreviewState alloc] initWithBackgroundUpdater:0];
     previewState = v13->_previewState;
     v13->_previewState = v33;
 
-    v35 = [[MFMessageViewControllerReuseQueue alloc] initWithScene:v8];
+    v35 = [[MFMessageViewControllerReuseQueue alloc] initWithScene:sceneCopy];
     messageViewControllerReuseQueue = v13->_messageViewControllerReuseQueue;
     v13->_messageViewControllerReuseQueue = v35;
 
@@ -715,10 +715,10 @@ LABEL_19:
       v13->_quickReplyHeight = v39;
     }
 
-    v40 = [v8 daemonInterface];
-    v41 = [v40 mailboxRepository];
+    daemonInterface = [sceneCopy daemonInterface];
+    mailboxRepository = [daemonInterface mailboxRepository];
     mailboxRepository = v13->_mailboxRepository;
-    v13->_mailboxRepository = v41;
+    v13->_mailboxRepository = mailboxRepository;
 
     if (EMBlackPearlIsFeatureEnabled())
     {
@@ -752,22 +752,22 @@ LABEL_19:
   [(ConversationViewControllerBase *)&v4 dealloc];
 }
 
-- (void)_sceneWillDeactivate:(id)a3
+- (void)_sceneWillDeactivate:(id)deactivate
 {
-  v3 = [(ConversationViewControllerBase *)self blankConversationController];
-  [v3 reportMetrics];
+  blankConversationController = [(ConversationViewControllerBase *)self blankConversationController];
+  [blankConversationController reportMetrics];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = ConversationViewControllerBase;
-  [(ConversationViewControllerBase *)&v14 viewWillAppear:a3];
-  v4 = [(ConversationViewControllerBase *)self scene];
+  [(ConversationViewControllerBase *)&v14 viewWillAppear:appear];
+  scene = [(ConversationViewControllerBase *)self scene];
   if (![(ConversationViewControllerBase *)self didNotifyExtendedLaunchTracker])
   {
-    v5 = [v4 extendedLaunchTracker];
-    [v5 observeViewController:self scene:v4];
+    extendedLaunchTracker = [scene extendedLaunchTracker];
+    [extendedLaunchTracker observeViewController:self scene:scene];
   }
 
   *&self->_flags |= 0x10u;
@@ -779,12 +779,12 @@ LABEL_19:
   *&self->_flags &= ~0x40u;
   if (+[UIDevice mf_isPadIdiom])
   {
-    v6 = [v4 popoverManager];
-    [v6 addPassthroughViewProvider:self];
+    popoverManager = [scene popoverManager];
+    [popoverManager addPassthroughViewProvider:self];
   }
 
-  v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  if (v7)
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  if (referenceMessageListItem)
   {
 
 LABEL_7:
@@ -793,9 +793,9 @@ LABEL_7:
   }
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 accountsProvider];
-  v10 = [v9 displayedAccounts];
-  v11 = [v10 count];
+  accountsProvider = [v8 accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
+  v11 = [displayedAccounts count];
 
   if (!v11)
   {
@@ -813,16 +813,16 @@ LABEL_12:
   if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") && [UIApp launchedToTest] && !-[ConversationViewControllerBase didNotifyExtendedLaunchTracker](self, "didNotifyExtendedLaunchTracker"))
   {
     [(ConversationViewControllerBase *)self setDidNotifyExtendedLaunchTracker:1];
-    v13 = [v4 extendedLaunchTracker];
-    [v13 didFinishLoadViewController:self scene:v4];
+    extendedLaunchTracker2 = [scene extendedLaunchTracker];
+    [extendedLaunchTracker2 didFinishLoadViewController:self scene:scene];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v28.receiver = self;
   v28.super_class = ConversationViewControllerBase;
-  [(ConversationViewControllerBase *)&v28 viewDidAppear:a3];
+  [(ConversationViewControllerBase *)&v28 viewDidAppear:appear];
   sub_100084A18(self, 1);
   if ([(ConversationViewControllerBase *)self isPrimary])
   {
@@ -835,18 +835,18 @@ LABEL_12:
       [(MFConversationCellExpansionGestureRecognizer *)self->_cellExpansionRecognizer setDelegate:self];
     }
 
-    v6 = [(ConversationViewControllerBase *)self view];
-    v7 = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
-    [v6 addGestureRecognizer:v7];
+    view = [(ConversationViewControllerBase *)self view];
+    cellExpansionRecognizer = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
+    [view addGestureRecognizer:cellExpansionRecognizer];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [(ConversationViewControllerBase *)self collectionView];
-    v9 = [v8 interactions];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    interactions = [collectionView interactions];
 
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v10 = [interactions countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v10)
     {
       v11 = *v25;
@@ -857,7 +857,7 @@ LABEL_12:
         {
           if (*v25 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(interactions);
           }
 
           v13 = *(*(&v24 + 1) + 8 * v12);
@@ -871,17 +871,17 @@ LABEL_12:
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v10 = [interactions countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v10);
     }
   }
 
-  v14 = [(ConversationViewControllerBase *)self previewState];
-  v15 = [v14 shouldScheduleMarkMessageAsRead];
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  shouldScheduleMarkMessageAsRead = [previewState shouldScheduleMarkMessageAsRead];
 
-  if (v15)
+  if (shouldScheduleMarkMessageAsRead)
   {
     [(ConversationViewControllerBase *)self scheduleAutomaticMarkAsReadForReferenceMessage];
   }
@@ -891,9 +891,9 @@ LABEL_12:
   [v16 registerKeyboardAvoidable:self];
 
   v17 = MFMessageSelectionLifecycleSignpostLog();
-  v18 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v19 = [v18 itemID];
-  v20 = os_signpost_id_make_with_pointer(v17, v19);
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  itemID = [referenceMessageListItem itemID];
+  v20 = os_signpost_id_make_with_pointer(v17, itemID);
 
   v21 = MFMessageSelectionLifecycleSignpostLog();
   v22 = v21;
@@ -904,22 +904,22 @@ LABEL_12:
   }
 }
 
-- (void)_enumerateExpandedCellMessageContentViewsWithBlock:(id)a3
+- (void)_enumerateExpandedCellMessageContentViewsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self resizingContentViews];
-  v6 = [v5 mutableCopy];
+  blockCopy = block;
+  resizingContentViews = [(ConversationViewControllerBase *)self resizingContentViews];
+  v6 = [resizingContentViews mutableCopy];
 
-  v7 = [(ConversationViewControllerBase *)self cellConfigurator];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000853D0;
   v13[3] = &unk_10064E0E8;
-  v8 = v4;
+  v8 = blockCopy;
   v15 = v8;
   v9 = v6;
   v14 = v9;
-  [v7 enumerateExpandedCellsWithBlock:v13];
+  [cellConfigurator enumerateExpandedCellsWithBlock:v13];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -930,16 +930,16 @@ LABEL_12:
   [v9 enumerateObjectsUsingBlock:v11];
 }
 
-- (void)setResizingState:(int64_t)a3
+- (void)setResizingState:(int64_t)state
 {
-  if (self->_resizingState != a3)
+  if (self->_resizingState != state)
   {
-    self->_resizingState = a3;
+    self->_resizingState = state;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000857B8;
     v21[3] = &unk_10064E130;
-    v22 = a3 != 2;
+    v22 = state != 2;
     v5 = objc_retainBlock(v21);
     objc_initWeak(&location, self);
     v18[0] = _NSConcreteStackBlock;
@@ -948,18 +948,18 @@ LABEL_12:
     v18[3] = &unk_10064D928;
     objc_copyWeak(&v19, &location);
     v6 = objc_retainBlock(v18);
-    if (a3 > 1)
+    if (state > 1)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         [(ConversationViewControllerBase *)self _enumerateExpandedCellMessageContentViewsWithBlock:v5];
         (v6[2])(v6, 1);
       }
 
-      else if (a3 == 2)
+      else if (state == 2)
       {
-        v8 = [(ConversationViewControllerBase *)self collectionView];
-        [v8 directionalLayoutMargins];
+        collectionView = [(ConversationViewControllerBase *)self collectionView];
+        [collectionView directionalLayoutMargins];
         [(ConversationViewControllerBase *)self _updateConversationHeaderViewLayoutMarginsWithSuperviewMargins:?];
 
         [(ConversationViewControllerBase *)self _enumerateExpandedCellMessageContentViewsWithBlock:v5];
@@ -968,9 +968,9 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    if (a3)
+    if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
 LABEL_12:
 
@@ -1014,39 +1014,39 @@ LABEL_12:
   }
 }
 
-- (id)messageItemIDAtIndexPath:(id)a3
+- (id)messageItemIDAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase messageItemIDAtIndexPath:]", "ConversationViewControllerBase.m", 574, "0");
 }
 
-- (void)_showSingleMessage:(id)a3 animationOffset:(CGPoint)a4 initialScrollOffset:(CGPoint)a5
+- (void)_showSingleMessage:(id)message animationOffset:(CGPoint)offset initialScrollOffset:(CGPoint)scrollOffset
 {
-  v7 = a3;
+  messageCopy = message;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _showSingleMessage:animationOffset:initialScrollOffset:]", "ConversationViewControllerBase.m", 591, "0");
 }
 
-- (id)_indexPathOfMessageViewControllerMessage:(id)a3
+- (id)_indexPathOfMessageViewControllerMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _indexPathOfMessageViewControllerMessage:]", "ConversationViewControllerBase.m", 603, "0");
 }
 
-- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)a3
+- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _isItemInitiallyUnreadAtIndexPath:]", "ConversationViewControllerBase.m", 607, "0");
 }
 
-- (void)_enqueueMessageViewController:(id)a3
+- (void)_enqueueMessageViewController:(id)controller
 {
-  v5 = a3;
-  v4 = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
-  [v4 enqueueMessageViewController:v5];
+  controllerCopy = controller;
+  messageViewControllerReuseQueue = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
+  [messageViewControllerReuseQueue enqueueMessageViewController:controllerCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1064,10 +1064,10 @@ LABEL_12:
     v3 = objc_retainBlock(v6);
     if (![(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
     {
-      v4 = [(ConversationViewControllerBase *)self previewState];
-      v5 = [v4 shouldScrollToReferenceMessage];
+      previewState = [(ConversationViewControllerBase *)self previewState];
+      shouldScrollToReferenceMessage = [previewState shouldScrollToReferenceMessage];
 
-      if (v5)
+      if (shouldScrollToReferenceMessage)
       {
         [UIView performWithoutAnimation:v3];
         [(ConversationViewControllerBase *)self _scrollToInitialPosition];
@@ -1081,14 +1081,14 @@ LABEL_12:
   }
 }
 
-- (void)collectionViewMarginsDidChange:(NSDirectionalEdgeInsets)a3
+- (void)collectionViewMarginsDidChange:(NSDirectionalEdgeInsets)change
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
-  v39 = [(ConversationViewControllerBase *)self view];
-  [v39 mf_prefersRightToLeftInterfaceLayout];
+  trailing = change.trailing;
+  bottom = change.bottom;
+  leading = change.leading;
+  top = change.top;
+  view = [(ConversationViewControllerBase *)self view];
+  [view mf_prefersRightToLeftInterfaceLayout];
   MFEdgeInsetsFromDirectionalEdgeInsets();
   v9 = v8;
   v11 = v10;
@@ -1096,8 +1096,8 @@ LABEL_12:
   v15 = v14;
   v37 = bottom;
 
-  v40 = [(ConversationViewControllerBase *)self displayMetrics];
-  [v40 layoutMargins];
+  displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+  [displayMetrics layoutMargins];
   if (v11 == v19 && v9 == v16 && v15 == v18)
   {
     v22 = v17;
@@ -1119,11 +1119,11 @@ LABEL_12:
   }
 
 LABEL_12:
-  v41 = [(ConversationViewControllerBase *)self displayMetrics];
-  [v41 headerMinAvatarLeadingSpacing];
+  displayMetrics2 = [(ConversationViewControllerBase *)self displayMetrics];
+  [displayMetrics2 headerMinAvatarLeadingSpacing];
   v24 = v23;
   horizontalPadding = self->_horizontalPadding;
-  [v41 headerAvatarMaxOffset];
+  [displayMetrics2 headerAvatarMaxOffset];
   v27 = leading - horizontalPadding - v26;
   if (v24 >= v27)
   {
@@ -1135,13 +1135,13 @@ LABEL_12:
     v28 = v27;
   }
 
-  [v41 headerMinAvatarLeadingSpacing];
+  [displayMetrics2 headerMinAvatarLeadingSpacing];
   v30 = v29;
   v31 = self->_horizontalPadding;
-  [v41 headerAvatarMaxOffset];
+  [displayMetrics2 headerAvatarMaxOffset];
   v33 = v32;
-  v34 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
-  v35 = v34;
+  staticSenderHeaderView = [(ConversationViewControllerBase *)self staticSenderHeaderView];
+  v35 = staticSenderHeaderView;
   if (v30 >= trailing - v31 - v33)
   {
     v36 = v30;
@@ -1152,35 +1152,35 @@ LABEL_12:
     v36 = trailing - v31 - v33;
   }
 
-  [v34 setDirectionalLayoutMargins:{top, v28, v38, v36}];
+  [staticSenderHeaderView setDirectionalLayoutMargins:{top, v28, v38, v36}];
 }
 
-- (NSDirectionalEdgeInsets)layoutMarginsForCollectionViewFrame:(CGRect)a3
+- (NSDirectionalEdgeInsets)layoutMarginsForCollectionViewFrame:(CGRect)frame
 {
   [(ConversationViewControllerBase *)self systemMinimumLayoutMargins];
-  v4 = [(ConversationViewControllerBase *)self view];
-  [v4 mf_prefersRightToLeftInterfaceLayout];
+  view = [(ConversationViewControllerBase *)self view];
+  [view mf_prefersRightToLeftInterfaceLayout];
   MFEdgeInsetsFromDirectionalEdgeInsets();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ConversationViewControllerBase *)self view];
-  [v13 safeAreaInsets];
+  view2 = [(ConversationViewControllerBase *)self view];
+  [view2 safeAreaInsets];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  [MFReadableContentMarginCalculator readableContentMarginsForWidth:CGRectGetWidth(a3) minMargins:v6 safeAreaInsets:v8, v10, v12, v15, v17, v19, v21];
+  [MFReadableContentMarginCalculator readableContentMarginsForWidth:CGRectGetWidth(frame) minMargins:v6 safeAreaInsets:v8, v10, v12, v15, v17, v19, v21];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(ConversationViewControllerBase *)self view];
-  v31 = [v30 mf_prefersRightToLeftInterfaceLayout];
-  if (v31)
+  view3 = [(ConversationViewControllerBase *)self view];
+  mf_prefersRightToLeftInterfaceLayout = [view3 mf_prefersRightToLeftInterfaceLayout];
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v32 = v29;
   }
@@ -1190,27 +1190,27 @@ LABEL_12:
     v32 = v25;
   }
 
-  if (v31)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v29 = v25;
   }
 
   for (i = [(ConversationViewControllerBase *)self navigationController];
   {
-    v34 = [i navigationController];
+    navigationController = [i navigationController];
 
-    if (!v34)
+    if (!navigationController)
     {
       break;
     }
 
-    v35 = [i navigationController];
+    navigationController2 = [i navigationController];
   }
 
   if (i)
   {
-    v36 = [(ConversationViewControllerBase *)self traitCollection];
-    [v36 mf_leadingEdgeToBackButtonText];
+    traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+    [traitCollection mf_leadingEdgeToBackButtonText];
     v38 = v32 + v37;
 
     v29 = v38;
@@ -1259,13 +1259,13 @@ LABEL_12:
   [(ConversationViewControllerBase *)self _updateConversationHeaderViewLayoutMarginsWithSuperviewMargins:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = ConversationViewControllerBase;
   [(ConversationViewControllerBase *)&v6 viewWillDisappear:?];
-  [(ConversationViewControllerBase *)self _endEditingAnimated:v3];
+  [(ConversationViewControllerBase *)self _endEditingAnimated:disappearCopy];
   if ([(ConversationViewControllerBase *)self allowQuickReply])
   {
     [(ConversationViewControllerBase *)self _dismissKeyboardIfNecessary];
@@ -1282,35 +1282,35 @@ LABEL_12:
   *&self->_flags |= 0x40u;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = ConversationViewControllerBase;
-  [(ConversationViewControllerBase *)&v7 viewDidDisappear:a3];
+  [(ConversationViewControllerBase *)&v7 viewDidDisappear:disappear];
   *&self->_flags &= 0xAFu;
   sub_100084A18(self, 0);
-  v4 = [(ConversationViewControllerBase *)self scene];
+  scene = [(ConversationViewControllerBase *)self scene];
   if (+[UIDevice mf_isPadIdiom])
   {
-    v5 = [v4 popoverManager];
-    [v5 removePassthroughViewProvider:self];
+    popoverManager = [scene popoverManager];
+    [popoverManager removePassthroughViewProvider:self];
   }
 
-  v6 = [(MFConversationCellExpansionGestureRecognizer *)self->_cellExpansionRecognizer view];
-  [v6 removeGestureRecognizer:self->_cellExpansionRecognizer];
+  view = [(MFConversationCellExpansionGestureRecognizer *)self->_cellExpansionRecognizer view];
+  [view removeGestureRecognizer:self->_cellExpansionRecognizer];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v16.receiver = self;
   v16.super_class = ConversationViewControllerBase;
-  [(ConversationViewControllerBase *)&v16 traitCollectionDidChange:v4];
-  v5 = [(ConversationViewControllerBase *)self splitViewController];
+  [(ConversationViewControllerBase *)&v16 traitCollectionDidChange:changeCopy];
+  splitViewController = [(ConversationViewControllerBase *)self splitViewController];
 
   [(ConversationViewControllerBase *)self _updateTitle];
-  v6 = [(ConversationViewControllerBase *)self traitCollection];
-  v7 = [v6 mf_traitDifferenceAffectsTextLayout:v4];
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  v7 = [traitCollection mf_traitDifferenceAffectsTextLayout:changeCopy];
 
   if (v7)
   {
@@ -1318,46 +1318,46 @@ LABEL_12:
     [(ConversationViewControllerBase *)self _updateLayout];
   }
 
-  else if (v5)
+  else if (splitViewController)
   {
     goto LABEL_5;
   }
 
   [(ConversationViewControllerBase *)self _updateBarButtonsAnimated:0 force:1];
 LABEL_5:
-  v8 = [(ConversationViewControllerBase *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
+  traitCollection2 = [(ConversationViewControllerBase *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
 
-  v10 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
-  if (IsAccessibilityCategory != UIContentSizeCategoryIsAccessibilityCategory(v10))
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  if (IsAccessibilityCategory != UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2))
   {
     [(ConversationViewControllerBase *)self _reloadPreparedCells];
   }
 
-  v12 = [(ConversationViewControllerBase *)self cellConfigurator];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100086710;
   v15[3] = &unk_10064E1C8;
   v15[4] = self;
-  [v12 enumerateExpandedCellsWithBlock:v15];
+  [cellConfigurator enumerateExpandedCellsWithBlock:v15];
 
-  v13 = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
-  v14 = [(ConversationViewControllerBase *)self navigationController];
-  [v14 setToolbarHidden:v13 ^ 1];
+  shouldHideStickyFooterView = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
+  navigationController = [(ConversationViewControllerBase *)self navigationController];
+  [navigationController setToolbarHidden:shouldHideStickyFooterView ^ 1];
 
   [(ConversationViewControllerBase *)self updateNavigationItemChromelessConfiguration];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  [(ConversationViewControllerBase *)self _toggleCellsGroupOpacityDuringRotationWithCoordinator:v7];
-  v8 = [(ConversationViewControllerBase *)self view];
-  [v8 bounds];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  [(ConversationViewControllerBase *)self _toggleCellsGroupOpacityDuringRotationWithCoordinator:coordinatorCopy];
+  view = [(ConversationViewControllerBase *)self view];
+  [view bounds];
   if (width - v9 >= 0.0)
   {
     v10 = width - v9;
@@ -1373,10 +1373,10 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v11 = [(ConversationViewControllerBase *)self collectionView];
-  v12 = [v11 window];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  window = [collectionView window];
 
-  if (v12)
+  if (window)
   {
     [(ConversationViewControllerBase *)self _beginResizingConversationView:width, height];
     v14[4] = self;
@@ -1389,32 +1389,32 @@ LABEL_5:
     v14[1] = 3221225472;
     v14[2] = sub_100086B0C;
     v14[3] = &unk_10064CC00;
-    [v7 animateAlongsideTransition:v15 completion:v14];
+    [coordinatorCopy animateAlongsideTransition:v15 completion:v14];
 LABEL_7:
     v13.receiver = self;
     v13.super_class = ConversationViewControllerBase;
-    [(ConversationViewControllerBase *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+    [(ConversationViewControllerBase *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   }
 }
 
 - (BOOL)isFullyVisible
 {
-  v2 = [(ConversationViewControllerBase *)self previewState];
-  v3 = [v2 isFullyVisible];
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  isFullyVisible = [previewState isFullyVisible];
 
-  return v3;
+  return isFullyVisible;
 }
 
-- (void)setReferenceMessageListItem:(id)a3
+- (void)setReferenceMessageListItem:(id)item
 {
-  v5 = a3;
-  v6 = [(ConversationViewControllerBase *)self delegate];
-  if (!v5 && self->_referenceMessageListItem && (objc_opt_respondsToSelector() & 1) != 0)
+  itemCopy = item;
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  if (!itemCopy && self->_referenceMessageListItem && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 referenceMessageNoLongerAvailableInConversationView:self];
+    [delegate referenceMessageNoLongerAvailableInConversationView:self];
   }
 
-  objc_storeStrong(&self->_referenceMessageListItem, a3);
+  objc_storeStrong(&self->_referenceMessageListItem, item);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100086DDC;
@@ -1502,16 +1502,16 @@ LABEL_7:
   return [(ConversationViewControllerBase *)self _previewActionForTriageAction:v3 forSwipe:1];
 }
 
-- (id)_previewActionsForTriageActions:(id)a3 excludingActions:(id)a4
+- (id)_previewActionsForTriageActions:(id)actions excludingActions:(id)excludingActions
 {
-  v6 = a3;
-  v20 = a4;
+  actionsCopy = actions;
+  excludingActionsCopy = excludingActions;
   v19 = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = actionsCopy;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -1533,7 +1533,7 @@ LABEL_7:
           v11 = v10;
           v12 = [v11 objectForKeyedSubscript:@"SubMenuTitle"];
           v13 = [v11 objectForKeyedSubscript:@"SubMenuItems"];
-          v14 = [(ConversationViewControllerBase *)self _previewActionsForTriageActions:v13 excludingActions:v20];
+          v14 = [(ConversationViewControllerBase *)self _previewActionsForTriageActions:v13 excludingActions:excludingActionsCopy];
           v15 = [UIPreviewActionGroup actionGroupWithTitle:v12 style:0 actions:v14];
           [v19 addObject:v15];
 
@@ -1542,7 +1542,7 @@ LABEL_8:
         }
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ([v20 containsObject:v10] & 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ([excludingActionsCopy containsObject:v10] & 1) == 0)
         {
           v12 = -[ConversationViewControllerBase _previewActionForTriageAction:forSwipe:](self, "_previewActionForTriageAction:forSwipe:", [v10 integerValue], 0);
           if (v12)
@@ -1568,41 +1568,41 @@ LABEL_11:
   return v19;
 }
 
-- (void)_shrinkMessagesToBarButton:(id)a3 withInteraction:(id)a4 completionHandler:(id)a5
+- (void)_shrinkMessagesToBarButton:(id)button withInteraction:(id)interaction completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [a3 view];
-  [(ConversationViewControllerBase *)self _shrinkMessagesToView:v9 withInteraction:v10 completionHandler:v8];
+  interactionCopy = interaction;
+  handlerCopy = handler;
+  view = [button view];
+  [(ConversationViewControllerBase *)self _shrinkMessagesToView:view withInteraction:interactionCopy completionHandler:handlerCopy];
 }
 
-- (void)_shrinkMessagesToView:(id)a3 withInteraction:(id)a4 completionHandler:(id)a5
+- (void)_shrinkMessagesToView:(id)view withInteraction:(id)interaction completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v44 = v9;
-  v45 = a5;
-  v46 = v8;
-  v10 = [UIApp launchedToTest];
-  v11 = [(ConversationViewControllerBase *)self delegate];
+  viewCopy = view;
+  interactionCopy = interaction;
+  v44 = interactionCopy;
+  handlerCopy = handler;
+  v46 = viewCopy;
+  launchedToTest = [UIApp launchedToTest];
+  delegate = [(ConversationViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 shrinkAnimationContainerViewForConversationViewController:{self, v11}];
+    superview = [delegate shrinkAnimationContainerViewForConversationViewController:{self, delegate}];
   }
 
   else
   {
-    v13 = [(ConversationViewControllerBase *)self collectionView];
-    v12 = [v13 superview];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    superview = [collectionView superview];
   }
 
-  [v12 bounds];
+  [superview bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(ConversationViewControllerBase *)self collectionView];
-  [v22 contentInset];
+  collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView2 contentInset];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -1612,18 +1612,18 @@ LABEL_11:
   v32 = [UIColor colorWithWhite:0.0 alpha:0.5];
   [v31 setBackgroundColor:v32];
 
-  [v12 addSubview:v31];
-  v33 = [(ConversationViewControllerBase *)self view];
-  v34 = [v33 snapshotViewAfterScreenUpdates:0];
+  [superview addSubview:v31];
+  view = [(ConversationViewControllerBase *)self view];
+  v34 = [view snapshotViewAfterScreenUpdates:0];
 
-  [v12 addSubview:v34];
-  v35 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v36 = [v35 count];
-  v37 = [v9 messageCount];
+  [superview addSubview:v34];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v36 = [referenceMessageListItem count];
+  messageCount = [interactionCopy messageCount];
 
-  if (v36 == v37)
+  if (v36 == messageCount)
   {
-    [(ConversationViewControllerBase *)self _notifyDelegateWillRemoveAllVisibleMessagesForTriageInteraction:v9];
+    [(ConversationViewControllerBase *)self _notifyDelegateWillRemoveAllVisibleMessagesForTriageInteraction:interactionCopy];
   }
 
   v52[0] = _NSConcreteStackBlock;
@@ -1631,65 +1631,65 @@ LABEL_11:
   v52[2] = sub_1000879FC;
   v52[3] = &unk_10064E1F0;
   v53 = v34;
-  v38 = v12;
+  v38 = superview;
   v54 = v38;
   v39 = v46;
   v55 = v39;
-  v58 = v10;
+  v58 = launchedToTest;
   v56 = v31;
-  v57 = self;
+  selfCopy = self;
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_100087B18;
   v47[3] = &unk_10064E218;
-  v51 = v10;
+  v51 = launchedToTest;
   v47[4] = self;
   v40 = v53;
   v48 = v40;
   v41 = v56;
   v49 = v41;
-  v42 = v45;
+  v42 = handlerCopy;
   v50 = v42;
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v52 completion:v47];
 }
 
-- (void)_notifyDelegateWillRemoveAllVisibleMessagesForTriageInteraction:(id)a3
+- (void)_notifyDelegateWillRemoveAllVisibleMessagesForTriageInteraction:(id)interaction
 {
-  v7 = a3;
-  v4 = [(ConversationViewControllerBase *)self delegate];
+  interactionCopy = interaction;
+  delegate = [(ConversationViewControllerBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(ConversationViewControllerBase *)self _messagesForTriageInteraction:v7];
+    v5 = [(ConversationViewControllerBase *)self _messagesForTriageInteraction:interactionCopy];
     v6 = [v5 ef_map:&stru_10064E258];
 
-    [v4 conversationViewController:self willRemoveAllVisibleMessagesWithItemIDs:v6];
+    [delegate conversationViewController:self willRemoveAllVisibleMessagesWithItemIDs:v6];
   }
 }
 
-- (void)setBeingPreviewed:(BOOL)a3
+- (void)setBeingPreviewed:(BOOL)previewed
 {
-  v3 = a3;
-  v4 = [(ConversationViewControllerBase *)self previewState];
-  [v4 setBeingPreviewed:v3];
+  previewedCopy = previewed;
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  [previewState setBeingPreviewed:previewedCopy];
 }
 
 - (void)previewCancelled
 {
-  v2 = [(ConversationViewControllerBase *)self previewState];
-  [v2 previewCancelled];
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  [previewState previewCancelled];
 }
 
-- (void)previewDidCommit:(BOOL)a3
+- (void)previewDidCommit:(BOOL)commit
 {
-  v3 = a3;
-  v4 = [(ConversationViewControllerBase *)self previewState];
-  [v4 previewDidCommit:v3];
+  commitCopy = commit;
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  [previewState previewDidCommit:commitCopy];
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v8 = a3;
-  if ([v8 showNoMessageSelectedView])
+  stateCopy = state;
+  if ([stateCopy showNoMessageSelectedView])
   {
     v4 = +[UIContentUnavailableConfiguration emptyConfiguration];
     v5 = +[NSBundle mainBundle];
@@ -1711,12 +1711,12 @@ LABEL_11:
 {
   v8.receiver = self;
   v8.super_class = ConversationViewControllerBase;
-  v4 = [(ConversationViewControllerBase *)&v8 contentUnavailableConfigurationState];
-  v5 = [(ConversationViewControllerBase *)self shouldShowNoMessageSelectedView];
-  if (v5)
+  contentUnavailableConfigurationState = [(ConversationViewControllerBase *)&v8 contentUnavailableConfigurationState];
+  shouldShowNoMessageSelectedView = [(ConversationViewControllerBase *)self shouldShowNoMessageSelectedView];
+  if (shouldShowNoMessageSelectedView)
   {
-    v2 = [(ConversationViewControllerBase *)self delegate];
-    v6 = [v2 conversationViewControllerCanShowNoMessageSelectedView:self];
+    delegate = [(ConversationViewControllerBase *)self delegate];
+    v6 = [delegate conversationViewControllerCanShowNoMessageSelectedView:self];
   }
 
   else
@@ -1724,46 +1724,46 @@ LABEL_11:
     v6 = 0;
   }
 
-  [v4 setShowNoMessageSelectedView:v6];
-  if (v5)
+  [contentUnavailableConfigurationState setShowNoMessageSelectedView:v6];
+  if (shouldShowNoMessageSelectedView)
   {
   }
 
-  return v4;
+  return contentUnavailableConfigurationState;
 }
 
-- (void)setShouldShowNoMessageSelectedView:(BOOL)a3
+- (void)setShouldShowNoMessageSelectedView:(BOOL)view
 {
-  if (self->_shouldShowNoMessageSelectedView != a3)
+  if (self->_shouldShowNoMessageSelectedView != view)
   {
     [(ConversationViewControllerBase *)self _doSetShouldShowNoMessageSelectedView:?];
   }
 }
 
-- (void)_configureSenderHeaderView:(id)a3 expansionStatus:(int64_t)a4
+- (void)_configureSenderHeaderView:(id)view expansionStatus:(int64_t)status
 {
-  v6 = a3;
-  v7 = [(ConversationViewControllerBase *)self delegate];
-  v30 = [v7 currentlySelectedBucketForConversationViewController:self];
+  viewCopy = view;
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  v30 = [delegate currentlySelectedBucketForConversationViewController:self];
 
-  v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v31 = [v8 itemID];
-  v9 = [v6 viewModel];
-  v10 = [v9 itemID];
-  if (([v10 isEqual:v31] & 1) == 0)
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  itemID = [referenceMessageListItem itemID];
+  viewModel = [viewCopy viewModel];
+  itemID2 = [viewModel itemID];
+  if (([itemID2 isEqual:itemID] & 1) == 0)
   {
 
     v13 = 0;
     goto LABEL_5;
   }
 
-  v11 = [v6 viewModel];
-  v12 = [v11 bucket];
+  viewModel2 = [viewCopy viewModel];
+  bucket = [viewModel2 bucket];
 
-  if (v12 == v30)
+  if (bucket == v30)
   {
-    v9 = [v6 viewModel];
-    v13 = [v9 copy];
+    viewModel = [viewCopy viewModel];
+    v13 = [viewModel copy];
 LABEL_5:
 
     goto LABEL_7;
@@ -1771,99 +1771,99 @@ LABEL_5:
 
   v13 = 0;
 LABEL_7:
-  v14 = [(ConversationViewControllerBase *)self contactStore];
-  v29 = [v8 preferredSenderDisplayNameWithContactStore:v14];
+  contactStore = [(ConversationViewControllerBase *)self contactStore];
+  v29 = [referenceMessageListItem preferredSenderDisplayNameWithContactStore:contactStore];
 
-  v15 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v17 = [v8 unseenCount];
+    unseenCount = [referenceMessageListItem unseenCount];
   }
 
   else
   {
-    v17 = 0;
+    unseenCount = 0;
   }
 
-  v18 = [(ConversationViewControllerBase *)self totalUnfilteredMessageCount];
+  totalUnfilteredMessageCount = [(ConversationViewControllerBase *)self totalUnfilteredMessageCount];
   if ([(ConversationViewControllerBase *)self isMessageListUnfiltered])
   {
-    v19 = 0;
+    countOfMessages = 0;
   }
 
   else
   {
-    v19 = [(ConversationViewControllerBase *)self countOfMessages];
+    countOfMessages = [(ConversationViewControllerBase *)self countOfMessages];
   }
 
-  v20 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-  [v20 updateHeaderWithExpansionStatus:a4];
+  senderHeaderViewAnimator = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+  [senderHeaderViewAnimator updateHeaderWithExpansionStatus:status];
 
   if (v13)
   {
     [(ConversationSenderHeaderViewModel *)v13 setForceCollapsed:[(ConversationViewControllerBase *)self forceCollapsedSenderHeader]];
     [(ConversationSenderHeaderViewModel *)v13 setIsBucketSelected:[(ConversationViewControllerBase *)self isBucketSelected]];
-    [(ConversationSenderHeaderViewModel *)v13 updateSubtitleInformationWithBucket:v30 isBucketSelected:[(ConversationViewControllerBase *)self isBucketSelected] categoryMessageCount:v19 totalMessageCount:v18 unreadMessageCount:0 newMessageCount:v17];
+    [(ConversationSenderHeaderViewModel *)v13 updateSubtitleInformationWithBucket:v30 isBucketSelected:[(ConversationViewControllerBase *)self isBucketSelected] categoryMessageCount:countOfMessages totalMessageCount:totalUnfilteredMessageCount unreadMessageCount:0 newMessageCount:unseenCount];
   }
 
   else
   {
     v21 = [_TtC10MobileMail33ConversationSenderHeaderViewModel alloc];
-    v22 = [(ConversationViewControllerBase *)self isBucketSelected];
+    isBucketSelected = [(ConversationViewControllerBase *)self isBucketSelected];
     LOBYTE(v28) = [(ConversationViewControllerBase *)self forceCollapsedSenderHeader];
-    v13 = [(ConversationSenderHeaderViewModel *)v21 initWithItemID:v31 avatarResult:0 title:v29 bucket:v30 isBucketSelected:v22 categoryMessageCount:v19 totalMessageCount:v18 newMessageCount:v17 unreadMessageCount:0 forceCollapsed:v28];
+    v13 = [(ConversationSenderHeaderViewModel *)v21 initWithItemID:itemID avatarResult:0 title:v29 bucket:v30 isBucketSelected:isBucketSelected categoryMessageCount:countOfMessages totalMessageCount:totalUnfilteredMessageCount newMessageCount:unseenCount unreadMessageCount:0 forceCollapsed:v28];
   }
 
-  [(ConversationViewControllerBase *)self _updateSenderHeaderView:v6 viewModel:v13 expansionStatus:a4];
+  [(ConversationViewControllerBase *)self _updateSenderHeaderView:viewCopy viewModel:v13 expansionStatus:status];
   objc_initWeak(&location, self);
-  v23 = [[MUIAvatarImageContext alloc] initWithMessageListItem:v8];
-  v24 = [(ConversationViewControllerBase *)self avatarGenerator];
+  v23 = [[MUIAvatarImageContext alloc] initWithMessageListItem:referenceMessageListItem];
+  avatarGenerator = [(ConversationViewControllerBase *)self avatarGenerator];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100088508;
   v32[3] = &unk_10064E280;
   objc_copyWeak(&v35, &location);
-  v25 = v6;
+  v25 = viewCopy;
   v33 = v25;
   v26 = v13;
   v34 = v26;
-  v27 = [v24 contactForContext:v23 handler:v32];
+  v27 = [avatarGenerator contactForContext:v23 handler:v32];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateSenderHeaderView:(id)a3 viewModel:(id)a4 expansionStatus:(int64_t)a5
+- (void)_updateSenderHeaderView:(id)view viewModel:(id)model expansionStatus:(int64_t)status
 {
-  v8 = a3;
-  v7 = a4;
+  viewCopy = view;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 updateWith:v7 expansionStatus:a5];
+    [viewCopy updateWith:modelCopy expansionStatus:status];
   }
 
   else
   {
-    [v8 updateWith:v7];
+    [viewCopy updateWith:modelCopy];
   }
 }
 
 - (void)_updateTitle
 {
-  v3 = [(ConversationViewControllerBase *)self countOfMessages];
-  v4 = [(ConversationViewControllerBase *)self navigationItem];
-  [v4 setTitleView:0];
+  countOfMessages = [(ConversationViewControllerBase *)self countOfMessages];
+  navigationItem = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem setTitleView:0];
 
-  v52 = [(ConversationViewControllerBase *)self scene];
-  v5 = [(ConversationViewControllerBase *)self shouldShowExpandableDigestHeaderView];
-  v53 = [(ConversationViewControllerBase *)self shouldShowStaticDigestHeaderView];
-  if ((v5 | v53))
+  scene = [(ConversationViewControllerBase *)self scene];
+  shouldShowExpandableDigestHeaderView = [(ConversationViewControllerBase *)self shouldShowExpandableDigestHeaderView];
+  shouldShowStaticDigestHeaderView = [(ConversationViewControllerBase *)self shouldShowStaticDigestHeaderView];
+  if ((shouldShowExpandableDigestHeaderView | shouldShowStaticDigestHeaderView))
   {
-    if (v5)
+    if (shouldShowExpandableDigestHeaderView)
     {
       [(ConversationViewControllerBase *)self expandableSenderHeaderView];
     }
@@ -1873,25 +1873,25 @@ LABEL_7:
       [(ConversationViewControllerBase *)self staticSenderHeaderView];
     }
     WeakRetained = ;
-    v13 = [WeakRetained superview];
+    superview = [WeakRetained superview];
 
-    if (!v13)
+    if (!superview)
     {
-      v14 = [(ConversationViewControllerBase *)self view];
-      [v14 addSubview:WeakRetained];
+      view = [(ConversationViewControllerBase *)self view];
+      [view addSubview:WeakRetained];
 
-      v51 = [(ConversationViewControllerBase *)self senderHeaderLayoutGuide];
-      v50 = [WeakRetained topAnchor];
-      v48 = [v51 topAnchor];
-      v47 = [v50 constraintEqualToAnchor:?];
+      senderHeaderLayoutGuide = [(ConversationViewControllerBase *)self senderHeaderLayoutGuide];
+      topAnchor = [WeakRetained topAnchor];
+      topAnchor2 = [senderHeaderLayoutGuide topAnchor];
+      v47 = [topAnchor constraintEqualToAnchor:?];
       v60[0] = v47;
-      v49 = [WeakRetained leadingAnchor];
-      v15 = [v51 leadingAnchor];
-      v16 = [v49 constraintEqualToAnchor:v15];
+      leadingAnchor = [WeakRetained leadingAnchor];
+      leadingAnchor2 = [senderHeaderLayoutGuide leadingAnchor];
+      v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v60[1] = v16;
-      v17 = [WeakRetained trailingAnchor];
-      v18 = [v51 trailingAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      trailingAnchor = [WeakRetained trailingAnchor];
+      trailingAnchor2 = [senderHeaderLayoutGuide trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v60[2] = v19;
       v20 = [NSArray arrayWithObjects:v60 count:3];
       [NSLayoutConstraint activateConstraints:v20];
@@ -1899,11 +1899,11 @@ LABEL_7:
       [WeakRetained recalculateHeights];
     }
 
-    if (v5)
+    if (shouldShowExpandableDigestHeaderView)
     {
-      v12 = [(ConversationViewControllerBase *)self tapGestureTitleView];
-      v21 = [(ConversationViewControllerBase *)self initialSenderHeaderExpansionStatus];
-      if ((v21 - 1) <= 1)
+      tapGestureTitleView = [(ConversationViewControllerBase *)self tapGestureTitleView];
+      initialSenderHeaderExpansionStatus = [(ConversationViewControllerBase *)self initialSenderHeaderExpansionStatus];
+      if ((initialSenderHeaderExpansionStatus - 1) <= 1)
       {
         [(ConversationViewControllerBase *)self setInitialSenderHeaderExpansionStatus:0];
       }
@@ -1915,14 +1915,14 @@ LABEL_7:
 
       else
       {
-        v22 = v21;
+        v22 = initialSenderHeaderExpansionStatus;
       }
     }
 
     else
     {
       v22 = 0;
-      v12 = 0;
+      tapGestureTitleView = 0;
     }
 
     [(ConversationViewControllerBase *)self _configureSenderHeaderView:WeakRetained expansionStatus:v22];
@@ -1930,21 +1930,21 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  if (v3 < 1 || (-[ConversationViewControllerBase barItemsManager](self, "barItemsManager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 useDesktopClassNavigationBar], v6, (v7 & 1) != 0))
+  if (countOfMessages < 1 || (-[ConversationViewControllerBase barItemsManager](self, "barItemsManager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 useDesktopClassNavigationBar], v6, (v7 & 1) != 0))
   {
     WeakRetained = +[ConversationViewController log];
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v10 = [v9 ef_publicDescription];
+      referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      ef_publicDescription = [referenceMessageListItem ef_publicDescription];
       *buf = 138412290;
-      v55 = v10;
+      v55 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, WeakRetained, OS_LOG_TYPE_DEFAULT, "Skip title update, message count is 0, referenceMessage=%@", buf, 0xCu);
     }
 
     v11 = 0;
 LABEL_9:
-    v12 = 0;
+    tapGestureTitleView = 0;
     goto LABEL_21;
   }
 
@@ -1969,18 +1969,18 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Get title from delegate: %@", buf, 0xCu);
     }
 
-    v45 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    [v45 setDelegate:0];
+    conversationHeaderView = [(ConversationViewControllerBase *)self conversationHeaderView];
+    [conversationHeaderView setDelegate:0];
 
     goto LABEL_9;
   }
 
   v26 = +[NSBundle mainBundle];
   v27 = [v26 localizedStringForKey:@"MESSAGE_COUNT_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
-  WeakRetained = [NSString localizedStringWithFormat:v27, v3];
+  WeakRetained = [NSString localizedStringWithFormat:v27, countOfMessages];
 
-  v28 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
-  if (v28)
+  _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+  if (_isDisplayingSingleMessage)
   {
     v29 = 0;
   }
@@ -1993,53 +1993,53 @@ LABEL_9:
   v11 = v29;
   if ([(ConversationViewControllerBase *)self _shouldShowConversationHeader])
   {
-    v30 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    conversationHeaderView2 = [(ConversationViewControllerBase *)self conversationHeaderView];
 
-    if (!v30)
+    if (!conversationHeaderView2)
     {
-      v31 = [(ConversationViewControllerBase *)self view];
-      [v31 frame];
+      view2 = [(ConversationViewControllerBase *)self view];
+      [view2 frame];
       Width = CGRectGetWidth(v61);
 
       v33 = [[ConversationHeaderView alloc] initWithFrame:0.0, 0.0, Width, 0.0];
       [(ConversationViewControllerBase *)self setConversationHeaderView:v33];
     }
 
-    v34 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    [v34 setDelegate:self];
+    conversationHeaderView3 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    [conversationHeaderView3 setDelegate:self];
 
-    v35 = [(ConversationViewControllerBase *)self conversationSubject];
-    v36 = [ECSubjectFormatter subjectStringForDisplayForSubject:v35 style:1];
+    conversationSubject = [(ConversationViewControllerBase *)self conversationSubject];
+    conversationHeaderView8 = [ECSubjectFormatter subjectStringForDisplayForSubject:conversationSubject style:1];
 
-    v37 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    v38 = [v37 title];
-    v39 = [v38 isEqualToString:v36];
+    conversationHeaderView4 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    title = [conversationHeaderView4 title];
+    v39 = [title isEqualToString:conversationHeaderView8];
 
     if ((v39 & 1) == 0)
     {
-      v40 = [(ConversationViewControllerBase *)self conversationHeaderView];
-      [v40 setCollapsed:0 animated:0];
+      conversationHeaderView5 = [(ConversationViewControllerBase *)self conversationHeaderView];
+      [conversationHeaderView5 setCollapsed:0 animated:0];
     }
 
     v41 = +[ConversationViewController log];
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v55 = v3;
+      v55 = countOfMessages;
       v56 = 1024;
-      v57 = v28;
+      v57 = _isDisplayingSingleMessage;
       v58 = 1024;
-      v59 = v36 != 0;
+      v59 = conversationHeaderView8 != 0;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Update conversation header view (messageCount=%ld, isDisplayingSingleMessage=%{BOOL}d, hasTrimmedSubject=%{BOOL}d)", buf, 0x18u);
     }
 
-    v42 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    [v42 setSuperTitle:v11];
+    conversationHeaderView6 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    [conversationHeaderView6 setSuperTitle:v11];
 
-    v43 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    [v43 setTitle:v36];
+    conversationHeaderView7 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    [conversationHeaderView7 setTitle:conversationHeaderView8];
 
-    v12 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    tapGestureTitleView = [(ConversationViewControllerBase *)self conversationHeaderView];
   }
 
   else
@@ -2048,35 +2048,35 @@ LABEL_9:
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v55 = v3;
+      v55 = countOfMessages;
       v56 = 1024;
-      v57 = v28;
+      v57 = _isDisplayingSingleMessage;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Update title (messageCount=%ld, isDisplayingSingleMessage=%{BOOL}d)", buf, 0x12u);
     }
 
-    v36 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    v12 = 0;
-    [v36 setDelegate:0];
+    conversationHeaderView8 = [(ConversationViewControllerBase *)self conversationHeaderView];
+    tapGestureTitleView = 0;
+    [conversationHeaderView8 setDelegate:0];
   }
 
 LABEL_21:
-  if ((v5 & 1) == 0)
+  if ((shouldShowExpandableDigestHeaderView & 1) == 0)
   {
-    v23 = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
-    [v23 removeFromSuperview];
+    expandableSenderHeaderView = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
+    [expandableSenderHeaderView removeFromSuperview];
   }
 
-  if ((v53 & 1) == 0)
+  if ((shouldShowStaticDigestHeaderView & 1) == 0)
   {
-    v24 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
-    [v24 removeFromSuperview];
+    staticSenderHeaderView = [(ConversationViewControllerBase *)self staticSenderHeaderView];
+    [staticSenderHeaderView removeFromSuperview];
   }
 
   [(ConversationViewControllerBase *)self setTitle:v11];
-  v25 = [(ConversationViewControllerBase *)self navigationItem];
-  [v25 setTitleView:v12];
+  navigationItem2 = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem2 setTitleView:tapGestureTitleView];
 
-  [v52 mf_resetPreferredTitle];
+  [scene mf_resetPreferredTitle];
 }
 
 - (void)_updateBackgroundColor
@@ -2087,21 +2087,21 @@ LABEL_21:
     {
       if (+[UIDevice mf_isPadIdiom])
       {
-        v4 = [(ConversationViewControllerBase *)self traitCollection];
-        v3 = +[UIColor mf_mailThreadedConversationViewBackgroundForHorizontalSizeClass:](UIColor, "mf_mailThreadedConversationViewBackgroundForHorizontalSizeClass:", [v4 horizontalSizeClass]);
+        traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+        v3 = +[UIColor mf_mailThreadedConversationViewBackgroundForHorizontalSizeClass:](UIColor, "mf_mailThreadedConversationViewBackgroundForHorizontalSizeClass:", [traitCollection horizontalSizeClass]);
         [(_MFConversationViewCollectionView *)self->_conversationView setBackgroundColor:v3];
       }
 
       else
       {
-        v4 = +[UIColor mailThreadedConversationViewBackgroundColor];
+        traitCollection = +[UIColor mailThreadedConversationViewBackgroundColor];
         [(_MFConversationViewCollectionView *)self->_conversationView setBackgroundColor:?];
       }
     }
 
     else
     {
-      v4 = +[UIColor mailSingletonConversationViewBackgroundColor];
+      traitCollection = +[UIColor mailSingletonConversationViewBackgroundColor];
       [(_MFConversationViewCollectionView *)self->_conversationView setBackgroundColor:?];
     }
   }
@@ -2149,8 +2149,8 @@ LABEL_21:
     if (!senderHeaderViewAnimator)
     {
       v4 = [_TtC10MobileMail36ConversationSenderHeaderViewAnimator alloc];
-      v5 = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
-      v6 = [(ConversationSenderHeaderViewAnimator *)v4 initWithHeaderView:v5];
+      expandableSenderHeaderView = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
+      v6 = [(ConversationSenderHeaderViewAnimator *)v4 initWithHeaderView:expandableSenderHeaderView];
       v7 = self->_senderHeaderViewAnimator;
       self->_senderHeaderViewAnimator = v6;
 
@@ -2187,28 +2187,28 @@ LABEL_21:
   return tapGestureTitleView;
 }
 
-- (void)tappedSenderHeader:(id)a3
+- (void)tappedSenderHeader:(id)header
 {
-  v3 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-  [v3 updateHeaderWithExpansionStatus:1];
+  senderHeaderViewAnimator = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+  [senderHeaderViewAnimator updateHeaderWithExpansionStatus:1];
 }
 
 - (id)mf_preferredTitle
 {
-  v2 = [(ConversationViewControllerBase *)self conversationSubject];
-  v3 = [ECSubjectFormatter subjectStringForDisplayForSubject:v2 style:0];
+  conversationSubject = [(ConversationViewControllerBase *)self conversationSubject];
+  v3 = [ECSubjectFormatter subjectStringForDisplayForSubject:conversationSubject style:0];
 
   return v3;
 }
 
 - (BOOL)_shouldShowConversationHeader
 {
-  v3 = [(ConversationViewControllerBase *)self isPrimary];
-  v4 = [(ConversationViewControllerBase *)self conversationSubject];
-  v5 = [v4 subjectWithoutPrefix];
-  v6 = [v5 length];
+  isPrimary = [(ConversationViewControllerBase *)self isPrimary];
+  conversationSubject = [(ConversationViewControllerBase *)self conversationSubject];
+  subjectWithoutPrefix = [conversationSubject subjectWithoutPrefix];
+  v6 = [subjectWithoutPrefix length];
 
-  return v6 && v3;
+  return v6 && isPrimary;
 }
 
 - (id)_visibleNavigationBar
@@ -2218,8 +2218,8 @@ LABEL_21:
   v9 = 0x3032000000;
   v10 = sub_100085910;
   v11 = sub_100085920;
-  v3 = [(ConversationViewControllerBase *)self navigationController];
-  v12 = [v3 navigationBar];
+  navigationController = [(ConversationViewControllerBase *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -2233,9 +2233,9 @@ LABEL_21:
   return v4;
 }
 
-- (void)_updateConversationHeaderViewLayoutMarginsWithSuperviewMargins:(NSDirectionalEdgeInsets)a3
+- (void)_updateConversationHeaderViewLayoutMarginsWithSuperviewMargins:(NSDirectionalEdgeInsets)margins
 {
-  [(ConversationHeaderView *)self->_conversationHeaderView directionalLayoutMargins:a3.top];
+  [(ConversationHeaderView *)self->_conversationHeaderView directionalLayoutMargins:margins.top];
   conversationHeaderView = self->_conversationHeaderView;
 
   [(ConversationHeaderView *)conversationHeaderView setDirectionalLayoutMargins:?];
@@ -2261,13 +2261,13 @@ LABEL_21:
 
   if ([(ConversationViewControllerBase *)self shouldShowExpandableDigestHeaderView]|| [(ConversationViewControllerBase *)self shouldShowStaticDigestHeaderView])
   {
-    v5 = objc_opt_new();
-    [v5 configureWithTransparentBackground];
-    v6 = [(ConversationViewControllerBase *)self navigationItem];
-    [v6 setStandardAppearance:v5];
-    [v6 setScrollEdgeAppearance:v5];
-    [v6 setCompactAppearance:v5];
-    [v6 setCompactScrollEdgeAppearance:v5];
+    navigationController3 = objc_opt_new();
+    [navigationController3 configureWithTransparentBackground];
+    navigationItem = [(ConversationViewControllerBase *)self navigationItem];
+    [navigationItem setStandardAppearance:navigationController3];
+    [navigationItem setScrollEdgeAppearance:navigationController3];
+    [navigationItem setCompactAppearance:navigationController3];
+    [navigationItem setCompactScrollEdgeAppearance:navigationController3];
 LABEL_7:
 
     goto LABEL_8;
@@ -2276,61 +2276,61 @@ LABEL_7:
   if (v4)
   {
     (v3[2])(v3);
-    v5 = objc_opt_new();
-    v6 = [(ConversationViewControllerBase *)self navigationItem];
-    [v6 setScrollEdgeAppearance:v5];
+    navigationController3 = objc_opt_new();
+    navigationItem = [(ConversationViewControllerBase *)self navigationItem];
+    [navigationItem setScrollEdgeAppearance:navigationController3];
     goto LABEL_7;
   }
 
   if (!+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") || (-[ConversationViewControllerBase traitCollection](self, "traitCollection"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 horizontalSizeClass], v7, v8 != 2))
   {
     (v3[2])(v3);
-    v14 = [(ConversationViewControllerBase *)self navigationController];
-    v15 = [v14 navigationBar];
-    v16 = [v15 standardAppearance];
-    v17 = [(ConversationViewControllerBase *)self navigationController];
-    v18 = [v17 navigationBar];
-    [v18 setScrollEdgeAppearance:v16];
+    navigationController = [(ConversationViewControllerBase *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    standardAppearance = [navigationBar standardAppearance];
+    navigationController2 = [(ConversationViewControllerBase *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 setScrollEdgeAppearance:standardAppearance];
 
-    v19 = [(ConversationViewControllerBase *)self navigationItem];
-    [v19 _setManualScrollEdgeAppearanceEnabled:0];
+    navigationItem2 = [(ConversationViewControllerBase *)self navigationItem];
+    [navigationItem2 _setManualScrollEdgeAppearanceEnabled:0];
 
     if (![(ConversationViewControllerBase *)self allowQuickReply])
     {
       goto LABEL_9;
     }
 
-    v5 = [(ConversationViewControllerBase *)self navigationController];
-    v6 = [v5 toolbar];
-    v20 = [v6 standardAppearance];
-    v21 = [(ConversationViewControllerBase *)self navigationController];
-    v22 = [v21 toolbar];
-    [v22 setScrollEdgeAppearance:v20];
+    navigationController3 = [(ConversationViewControllerBase *)self navigationController];
+    navigationItem = [navigationController3 toolbar];
+    standardAppearance2 = [navigationItem standardAppearance];
+    navigationController4 = [(ConversationViewControllerBase *)self navigationController];
+    toolbar = [navigationController4 toolbar];
+    [toolbar setScrollEdgeAppearance:standardAppearance2];
 
     goto LABEL_7;
   }
 
   (v3[2])(v3);
-  v9 = [(ConversationViewControllerBase *)self navigationController];
-  v10 = [v9 navigationBar];
-  [v10 setScrollEdgeAppearance:0];
+  navigationController5 = [(ConversationViewControllerBase *)self navigationController];
+  navigationBar3 = [navigationController5 navigationBar];
+  [navigationBar3 setScrollEdgeAppearance:0];
 
-  v11 = [(ConversationViewControllerBase *)self navigationItem];
-  LOBYTE(v10) = [v11 _isManualScrollEdgeAppearanceEnabled];
+  navigationItem3 = [(ConversationViewControllerBase *)self navigationItem];
+  LOBYTE(navigationBar3) = [navigationItem3 _isManualScrollEdgeAppearanceEnabled];
 
-  if (v10)
+  if (navigationBar3)
   {
     goto LABEL_9;
   }
 
-  v12 = [(ConversationViewControllerBase *)self navigationItem];
-  [v12 _setAutoScrollEdgeTransitionDistance:1.0];
+  navigationItem4 = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem4 _setAutoScrollEdgeTransitionDistance:1.0];
 
-  v13 = [(ConversationViewControllerBase *)self navigationItem];
-  [v13 _setManualScrollEdgeAppearanceProgress:1.0];
+  navigationItem5 = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem5 _setManualScrollEdgeAppearanceProgress:1.0];
 
-  v5 = [(ConversationViewControllerBase *)self navigationItem];
-  [v5 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationController3 = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationController3 _setManualScrollEdgeAppearanceEnabled:1];
 LABEL_8:
 
 LABEL_9:
@@ -2338,22 +2338,22 @@ LABEL_9:
 
 - (double)_topSpacingToAvoidStatusBar
 {
-  v3 = [(ConversationViewControllerBase *)self scene];
-  v4 = [v3 statusBarManager];
-  [v4 statusBarFrame];
+  scene = [(ConversationViewControllerBase *)self scene];
+  statusBarManager = [scene statusBarManager];
+  [statusBarManager statusBarFrame];
   Height = CGRectGetHeight(v15);
 
   if (MUISolariumFeatureEnabled())
   {
-    v6 = [(ConversationViewControllerBase *)self view];
-    v7 = [v6 window];
-    v8 = [v7 screen];
-    v9 = [v8 coordinateSpace];
+    view = [(ConversationViewControllerBase *)self view];
+    window = [view window];
+    screen = [window screen];
+    coordinateSpace = [screen coordinateSpace];
 
-    v10 = [(ConversationViewControllerBase *)self view];
-    v11 = [(ConversationViewControllerBase *)self view];
-    [v11 bounds];
-    [v10 convertRect:v9 toCoordinateSpace:?];
+    view2 = [(ConversationViewControllerBase *)self view];
+    view3 = [(ConversationViewControllerBase *)self view];
+    [view3 bounds];
+    [view2 convertRect:coordinateSpace toCoordinateSpace:?];
     v13 = v12;
 
     Height = fmax(Height - v13, 10.0);
@@ -2374,11 +2374,11 @@ LABEL_9:
       v4 = v4 + v5;
     }
 
-    v7 = [(ConversationViewControllerBase *)self senderHeaderLayoutGuideTopConstraint];
-    [v7 constant];
+    senderHeaderLayoutGuideTopConstraint = [(ConversationViewControllerBase *)self senderHeaderLayoutGuideTopConstraint];
+    [senderHeaderLayoutGuideTopConstraint constant];
     if (v6 != v4)
     {
-      [v7 setConstant:v4];
+      [senderHeaderLayoutGuideTopConstraint setConstant:v4];
     }
   }
 }
@@ -2386,61 +2386,61 @@ LABEL_9:
 - (void)_reloadPreparedCells
 {
   v3 = +[NSMutableSet set];
-  v4 = [(ConversationViewControllerBase *)self cellConfigurator];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_100089FB0;
   v10 = &unk_10064E2D0;
-  v11 = self;
+  selfCopy = self;
   v5 = v3;
   v12 = v5;
-  [v4 enumeratePreparedCellsWithBlock:&v7];
+  [cellConfigurator enumeratePreparedCellsWithBlock:&v7];
 
-  v6 = [v5 allObjects];
-  [(ConversationViewControllerBase *)self _reloadCellsAtIndexPaths:v6 animated:1];
+  allObjects = [v5 allObjects];
+  [(ConversationViewControllerBase *)self _reloadCellsAtIndexPaths:allObjects animated:1];
 }
 
 - (void)_updateCells
 {
-  v3 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+  _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
   v4 = +[NSMutableSet set];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v5 = [(ConversationViewControllerBase *)self collectionView];
-  v6 = [(ConversationViewControllerBase *)self cellConfigurator];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_10008A418;
   v23 = &unk_10064E2F8;
   v26 = &v28;
-  v7 = v5;
+  v7 = collectionView;
   v24 = v7;
-  v27 = v3;
+  v27 = _isDisplayingSingleMessage;
   v8 = v4;
   v25 = v8;
-  [v6 enumerateExpandedCellsWithBlock:&v20];
+  [cellConfigurator enumerateExpandedCellsWithBlock:&v20];
 
   v9 = [ConversationViewController log:v20];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v17 = [v8 count];
     v18 = v29[3];
-    v19 = [(ConversationViewControllerBase *)self countOfMessages];
+    countOfMessages = [(ConversationViewControllerBase *)self countOfMessages];
     *buf = 134218496;
     v33 = v17;
     v34 = 2048;
     v35 = v18;
     v36 = 2048;
-    v37 = v19;
+    v37 = countOfMessages;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "_updateCells reloadIndexPath.count:%lu expandedCellCount:%lu countOfMessages:%li", buf, 0x20u);
   }
 
   if ([v8 count])
   {
-    v10 = [v8 allObjects];
-    [(ConversationViewControllerBase *)self _reloadCellsAtIndexPaths:v10 animated:1];
+    allObjects = [v8 allObjects];
+    [(ConversationViewControllerBase *)self _reloadCellsAtIndexPaths:allObjects animated:1];
 LABEL_5:
 
     goto LABEL_7;
@@ -2448,24 +2448,24 @@ LABEL_5:
 
   if (!v29[3] && [(ConversationViewControllerBase *)self countOfMessages]>= 1)
   {
-    v10 = [(ConversationViewControllerBase *)self _indexPathForReferenceMessage];
+    allObjects = [(ConversationViewControllerBase *)self _indexPathForReferenceMessage];
     v11 = +[ConversationViewController log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      sub_100485380(v10, v11);
+      sub_100485380(allObjects, v11);
     }
 
-    if (v10)
+    if (allObjects)
     {
-      v12 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:v10];
-      v13 = [(ConversationViewControllerBase *)self cellConfigurator];
-      v14 = [v13 expansionTracker];
-      v15 = [v14 expansionStatusForCellWithItemID:v12];
+      v12 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:allObjects];
+      cellConfigurator2 = [(ConversationViewControllerBase *)self cellConfigurator];
+      expansionTracker = [cellConfigurator2 expansionTracker];
+      v15 = [expansionTracker expansionStatusForCellWithItemID:v12];
 
       if (v15 == 3)
       {
-        v16 = [(ConversationViewControllerBase *)self cellConfigurator];
-        [v16 expandCellAtIndexPath:v10 animated:0 highlightFirst:0];
+        cellConfigurator3 = [(ConversationViewControllerBase *)self cellConfigurator];
+        [cellConfigurator3 expandCellAtIndexPath:allObjects animated:0 highlightFirst:0];
       }
     }
 
@@ -2477,9 +2477,9 @@ LABEL_7:
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)_reloadCellsAtIndexPaths:(id)a3 animated:(BOOL)a4
+- (void)_reloadCellsAtIndexPaths:(id)paths animated:(BOOL)animated
 {
-  v6 = a3;
+  pathsCopy = paths;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _reloadCellsAtIndexPaths:animated:]", "ConversationViewControllerBase.m", 1581, "0");
 }
@@ -2506,33 +2506,33 @@ LABEL_7:
   }
 }
 
-- (void)updateUserActivityState:(id)a3
+- (void)updateUserActivityState:(id)state
 {
-  v3 = [(ConversationViewControllerBase *)self handoffCoordinator];
-  [v3 updateUserActivityState];
+  handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
+  [handoffCoordinator updateUserActivityState];
 }
 
 - (id)_indexPathForTopMostVisibleRow
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 bounds];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
-  v6 = [(ConversationViewControllerBase *)self collectionView];
-  [v6 contentOffset];
+  collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView2 contentOffset];
   v8 = v7;
-  v9 = [(ConversationViewControllerBase *)self collectionView];
-  [v9 contentInset];
+  collectionView3 = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView3 contentInset];
   v11 = v8 + v10;
 
-  v12 = [(ConversationViewControllerBase *)self collectionView];
-  v13 = [v12 indexPathForItemAtPoint:{v5 * 0.5, v11}];
+  collectionView4 = [(ConversationViewControllerBase *)self collectionView];
+  v13 = [collectionView4 indexPathForItemAtPoint:{v5 * 0.5, v11}];
 
   return v13;
 }
 
-- (void)setPinnedItem:(id)a3
+- (void)setPinnedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(ConversationViewControllerBase *)self disableScrollPinning])
   {
     v5 = +[ConversationViewController log];
@@ -2542,82 +2542,82 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Pinning is disabled. This is for testing purposes only.", &v10, 2u);
     }
 
-    v4 = 0;
+    itemCopy = 0;
   }
 
-  if (![(PinnedConversationItem *)self->_pinnedItem isEqual:v4])
+  if (![(PinnedConversationItem *)self->_pinnedItem isEqual:itemCopy])
   {
     if (self->_pinnedItem)
     {
       v6 = +[ConversationViewController log];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(PinnedConversationItem *)self->_pinnedItem ef_publicDescription];
+        ef_publicDescription = [(PinnedConversationItem *)self->_pinnedItem ef_publicDescription];
         v10 = 138412290;
-        v11 = v7;
+        v11 = ef_publicDescription;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unpinning %@", &v10, 0xCu);
       }
     }
 
-    if (v4)
+    if (itemCopy)
     {
       v8 = +[ConversationViewController log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v4 ef_publicDescription];
+        ef_publicDescription2 = [itemCopy ef_publicDescription];
         v10 = 138412290;
-        v11 = v9;
+        v11 = ef_publicDescription2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Pinning to %@", &v10, 0xCu);
       }
     }
 
-    objc_storeStrong(&self->_pinnedItem, v4);
+    objc_storeStrong(&self->_pinnedItem, itemCopy);
   }
 }
 
 - (void)_restorePinnedScrollPosition
 {
-  v6 = [(ConversationViewControllerBase *)self pinnedItem];
-  v3 = [v6 indexPath];
-  if (v6)
+  pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
+  indexPath = [pinnedItem indexPath];
+  if (pinnedItem)
   {
-    if (v3)
+    if (indexPath)
     {
-      v4 = [v6 dynamicOffset];
+      dynamicOffset = [pinnedItem dynamicOffset];
 
-      if (v4)
+      if (dynamicOffset)
       {
-        v5 = [v6 dynamicOffset];
-        [(ConversationViewControllerBase *)self _scrollToItemAtIndexPath:v3 dynamicOffset:v5 shouldAdjustToShowPreviousMessage:1 animated:0 pin:0 completion:0];
+        dynamicOffset2 = [pinnedItem dynamicOffset];
+        [(ConversationViewControllerBase *)self _scrollToItemAtIndexPath:indexPath dynamicOffset:dynamicOffset2 shouldAdjustToShowPreviousMessage:1 animated:0 pin:0 completion:0];
       }
     }
   }
 }
 
-- (void)_maybeAttemptLoadMissingMessages:(id)a3
+- (void)_maybeAttemptLoadMissingMessages:(id)messages
 {
-  v11 = a3;
-  v4 = [(ConversationViewControllerBase *)self conversationSortOrder];
-  if ([v11 isTracking])
+  messagesCopy = messages;
+  conversationSortOrder = [(ConversationViewControllerBase *)self conversationSortOrder];
+  if ([messagesCopy isTracking])
   {
-    v5 = 1;
+    isDecelerating = 1;
   }
 
   else
   {
-    v5 = [v11 isDecelerating];
+    isDecelerating = [messagesCopy isDecelerating];
   }
 
-  [v11 _verticalVelocity];
+  [messagesCopy _verticalVelocity];
   v7 = v6;
   +[NSDate timeIntervalSinceReferenceDate];
   v9 = -v7;
-  if (v4 == 1)
+  if (conversationSortOrder == 1)
   {
     v9 = v7;
   }
 
-  if (v5)
+  if (isDecelerating)
   {
     if (v9 > 0.0 && v8 >= self->_nextAvailableLoadMoreInterval)
     {
@@ -2628,80 +2628,80 @@ LABEL_7:
 
 - (void)_attemptLoadMissingMessages
 {
-  v4 = [(ConversationViewControllerBase *)self _oldestIndexPath];
-  if (v4)
+  _oldestIndexPath = [(ConversationViewControllerBase *)self _oldestIndexPath];
+  if (_oldestIndexPath)
   {
-    [(ConversationViewControllerBase *)self _loadMoreMessagesWithMaxVisibleIndexPath:v4];
+    [(ConversationViewControllerBase *)self _loadMoreMessagesWithMaxVisibleIndexPath:_oldestIndexPath];
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
   self->_nextAvailableLoadMoreInterval = v3 + 0.5;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self viewIfLoaded];
-  v6 = [v5 window];
+  scrollCopy = scroll;
+  viewIfLoaded = [(ConversationViewControllerBase *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v6)
+  if (!window)
   {
     goto LABEL_11;
   }
 
-  v7 = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
-  v8 = [v7 superview];
+  expandableSenderHeaderView = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
+  superview = [expandableSenderHeaderView superview];
 
-  if (v8)
+  if (superview)
   {
-    v9 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-    [v9 scrollViewDidScroll:v4];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+    [senderHeaderViewAnimator scrollViewDidScroll:scrollCopy];
   }
 
   else
   {
-    v10 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
-    v11 = [v10 superview];
+    staticSenderHeaderView = [(ConversationViewControllerBase *)self staticSenderHeaderView];
+    superview2 = [staticSenderHeaderView superview];
 
-    if (!v11)
+    if (!superview2)
     {
       goto LABEL_7;
     }
 
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v13 = v12;
-    v9 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
-    [v9 frame];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self staticSenderHeaderView];
+    [senderHeaderViewAnimator frame];
     Height = CGRectGetHeight(v19);
-    v15 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
-    [v15 setAppearance:v13 >= -(Height + -10.0)];
+    staticSenderHeaderView2 = [(ConversationViewControllerBase *)self staticSenderHeaderView];
+    [staticSenderHeaderView2 setAppearance:v13 >= -(Height + -10.0)];
   }
 
 LABEL_7:
   if ([(ConversationViewControllerBase *)self resizingState]!= 3)
   {
-    v16 = [(ConversationViewControllerBase *)self collectionView];
-    v17 = [v16 visibleCells];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    visibleCells = [collectionView visibleCells];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10008AF30;
     v18[3] = &unk_10064DE30;
     v18[4] = self;
-    [v17 enumerateObjectsUsingBlock:v18];
+    [visibleCells enumerateObjectsUsingBlock:v18];
 
     [(MFConversationCellExpansionGestureRecognizer *)self->_cellExpansionRecognizer cancel];
     if ([(ConversationViewControllerBase *)self allowQuickReply])
     {
-      [(ConversationViewControllerBase *)self _updateQuickReplySendButtonOffset:v4];
+      [(ConversationViewControllerBase *)self _updateQuickReplySendButtonOffset:scrollCopy];
     }
 
-    [(ConversationViewControllerBase *)self _updateManualSummaryUIForScroll:v4];
+    [(ConversationViewControllerBase *)self _updateManualSummaryUIForScroll:scrollCopy];
   }
 
 LABEL_11:
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
   [(ConversationViewControllerBase *)self setPinnedItem:0];
   v4 = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -2715,27 +2715,27 @@ LABEL_11:
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v6 = a3;
+  draggingCopy = dragging;
   [(ConversationViewControllerBase *)self mf_updateAlertSuppressionContextsForReason:@"begin Dragging"];
   [(ConversationViewControllerBase *)self setPinnedItem:0];
   if ([(ConversationViewControllerBase *)self shouldShowExpandableDigestHeaderView]&& ![(ConversationViewControllerBase *)self forceCollapsedSenderHeader])
   {
     [(ConversationViewControllerBase *)self setResizingState:3];
-    v4 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-    [v4 scrollViewWillBeginDragging:v6];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+    [senderHeaderViewAnimator scrollViewWillBeginDragging:draggingCopy];
   }
 
-  v5 = [(ConversationViewControllerBase *)self conversationHeaderView];
-  [v5 hostScrollViewWillBeginDragging:v6];
+  conversationHeaderView = [(ConversationViewControllerBase *)self conversationHeaderView];
+  [conversationHeaderView hostScrollViewWillBeginDragging:draggingCopy];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   v9 = -y;
   if (y >= 0.0)
   {
@@ -2745,8 +2745,8 @@ LABEL_11:
   if (v9 < 0.00000011920929)
   {
     [(ConversationViewControllerBase *)self pinCurrentItem];
-    v10 = [(ConversationViewControllerBase *)self handoffCoordinator];
-    [v10 updateHandoffMessageBasedOnMessageVisibility];
+    handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
+    [handoffCoordinator updateHandoffMessageBasedOnMessageVisibility];
 
     [(ConversationViewControllerBase *)self updateArrowControlsView];
   }
@@ -2754,40 +2754,40 @@ LABEL_11:
   if ([(ConversationViewControllerBase *)self shouldShowExpandableDigestHeaderView]&& ![(ConversationViewControllerBase *)self forceCollapsedSenderHeader])
   {
     [(ConversationViewControllerBase *)self setResizingState:0];
-    v11 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-    [v11 scrollViewWillEndDragging:v12 withVelocity:a5 targetContentOffset:{x, y}];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+    [senderHeaderViewAnimator scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 
   else
   {
-    v11 = [(ConversationViewControllerBase *)self conversationHeaderView];
-    [v11 hostScrollViewWillEndDragging:v12 withVelocity:a5 targetContentOffset:{x, y}];
+    senderHeaderViewAnimator = [(ConversationViewControllerBase *)self conversationHeaderView];
+    [senderHeaderViewAnimator hostScrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v6 = a3;
+  deceleratingCopy = decelerating;
   [(ConversationViewControllerBase *)self pinCurrentItem];
   [(ConversationViewControllerBase *)self _shrinkBottomPaddingIfNecessary];
-  v4 = [(ConversationViewControllerBase *)self handoffCoordinator];
-  [v4 updateHandoffMessageBasedOnMessageVisibility];
+  handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
+  [handoffCoordinator updateHandoffMessageBasedOnMessageVisibility];
 
   [(ConversationViewControllerBase *)self updateArrowControlsView];
   [(ConversationViewControllerBase *)self mf_updateAlertSuppressionContextsForReason:@"ended decelerating"];
-  if ([(ConversationViewControllerBase *)self _scrollViewIsScrolledToEnd:v6]&& [(ConversationViewControllerBase *)self _isDisplayingSingleMessage])
+  if ([(ConversationViewControllerBase *)self _scrollViewIsScrolledToEnd:deceleratingCopy]&& [(ConversationViewControllerBase *)self _isDisplayingSingleMessage])
   {
     [(ConversationViewControllerBase *)self _scrolledToEndOfSingleMessage];
   }
 
-  v5 = [(ConversationViewControllerBase *)self conversationHeaderView];
-  [v5 hostScrollViewDidEndDecelerating:v6];
+  conversationHeaderView = [(ConversationViewControllerBase *)self conversationHeaderView];
+  [conversationHeaderView hostScrollViewDidEndDecelerating:deceleratingCopy];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
     [(ConversationViewControllerBase *)self _shrinkBottomPaddingIfNecessary];
   }
@@ -2795,21 +2795,21 @@ LABEL_11:
   [(ConversationViewControllerBase *)self mf_updateAlertSuppressionContextsForReason:@"ended dragging"];
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
-  v5 = [v4 superview];
-  if (!v5)
+  expandableSenderHeaderView = [(ConversationViewControllerBase *)self expandableSenderHeaderView];
+  superview = [expandableSenderHeaderView superview];
+  if (!superview)
   {
     goto LABEL_4;
   }
 
-  v6 = [(ConversationViewControllerBase *)self forceCollapsedSenderHeader];
+  forceCollapsedSenderHeader = [(ConversationViewControllerBase *)self forceCollapsedSenderHeader];
 
-  if ((v6 & 1) == 0)
+  if ((forceCollapsedSenderHeader & 1) == 0)
   {
-    v4 = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
-    [v4 updateHeaderWithExpansionStatus:1];
+    expandableSenderHeaderView = [(ConversationViewControllerBase *)self senderHeaderViewAnimator];
+    [expandableSenderHeaderView updateHeaderWithExpansionStatus:1];
 LABEL_4:
   }
 
@@ -2820,16 +2820,16 @@ LABEL_4:
 {
   if (![(ConversationViewControllerBase *)self _isDisplayingSingleMessage])
   {
-    v10 = [(ConversationViewControllerBase *)self collectionView];
-    [v10 _contentScrollInset];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView _contentScrollInset];
     v4 = v3;
     if (v3 > 0.00000011920929)
     {
-      [v10 visibleBounds];
+      [collectionView visibleBounds];
       MaxY = CGRectGetMaxY(v12);
-      [v10 contentInset];
+      [collectionView contentInset];
       v7 = v6;
-      [v10 contentSize];
+      [collectionView contentSize];
       v9 = MaxY - v7 - v8;
       if (v9 < 0.0)
       {
@@ -2845,57 +2845,57 @@ LABEL_4:
   }
 }
 
-- (void)_scrollToItemAtIndexPath:(id)a3 dynamicOffset:(id)a4 shouldAdjustToShowPreviousMessage:(BOOL)a5 animated:(BOOL)a6 pin:(BOOL)a7 completion:(id)a8
+- (void)_scrollToItemAtIndexPath:(id)path dynamicOffset:(id)offset shouldAdjustToShowPreviousMessage:(BOOL)message animated:(BOOL)animated pin:(BOOL)pin completion:(id)completion
 {
-  v9 = a7;
-  v10 = a6;
-  v29 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
+  pinCopy = pin;
+  animatedCopy = animated;
+  messageCopy = message;
+  pathCopy = path;
+  offsetCopy = offset;
+  completionCopy = completion;
   v16 = +[ConversationViewController log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v13 section];
-    v18 = [v13 item];
-    v19 = [v14 ef_publicDescription];
+    section = [pathCopy section];
+    item = [pathCopy item];
+    ef_publicDescription = [offsetCopy ef_publicDescription];
     *buf = 134219010;
-    v34 = v17;
+    v34 = section;
     v35 = 2048;
-    v36 = v18;
+    v36 = item;
     v37 = 2112;
-    v38 = v19;
+    v38 = ef_publicDescription;
     v39 = 1024;
-    v40 = v10;
+    v40 = animatedCopy;
     v41 = 1024;
-    v42 = v9;
+    v42 = pinCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Scroll to item at index path {%ld, %ld}, dynamicOffset: %@, animated: %{BOOL}d, pin:%{BOOL}d", buf, 0x2Cu);
   }
 
-  [(ConversationViewControllerBase *)self _ensureSubjectViewLayoutIfNeededAtIndexPath:v13];
-  if (v9 && ![(ConversationViewControllerBase *)self disableScrollPinning])
+  [(ConversationViewControllerBase *)self _ensureSubjectViewLayoutIfNeededAtIndexPath:pathCopy];
+  if (pinCopy && ![(ConversationViewControllerBase *)self disableScrollPinning])
   {
-    [(ConversationViewControllerBase *)self pinItemAtIndexPath:v13 dynamicOffset:v14];
-    if ([v13 item] >= 1)
+    [(ConversationViewControllerBase *)self pinItemAtIndexPath:pathCopy dynamicOffset:offsetCopy];
+    if ([pathCopy item] >= 1)
     {
       *&self->_flags &= ~8u;
       [(ConversationViewControllerBase *)self _updateBottomPadding];
     }
   }
 
-  [(ConversationViewControllerBase *)self _updateHandoffWithMessageAtIndexPath:v13];
+  [(ConversationViewControllerBase *)self _updateHandoffWithMessageAtIndexPath:pathCopy];
   [(ConversationViewControllerBase *)self updateArrowControlsView];
   if (!self->_pagingAnimator)
   {
     v20 = [MFCollectionViewPagingAnimator alloc];
-    v21 = [(ConversationViewControllerBase *)self collectionView];
-    v22 = [(MFCollectionViewPagingAnimator *)v20 initWithCollectionView:v21];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v22 = [(MFCollectionViewPagingAnimator *)v20 initWithCollectionView:collectionView];
     pagingAnimator = self->_pagingAnimator;
     self->_pagingAnimator = v22;
   }
 
-  v24 = [(ConversationViewControllerBase *)self traitCollection];
-  if ([v24 mf_hasCompactDimension])
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  if ([traitCollection mf_hasCompactDimension])
   {
     v25 = -8.0;
   }
@@ -2915,19 +2915,19 @@ LABEL_4:
   v30[2] = sub_10008B968;
   v30[3] = &unk_10064E320;
   v30[4] = self;
-  v27 = v13;
+  v27 = pathCopy;
   v31 = v27;
-  v28 = v15;
+  v28 = completionCopy;
   v32 = v28;
-  [(MFCollectionViewPagingAnimator *)v26 scrollToItemAtIndexPath:v27 dynamicOffset:v14 shouldAdjustToShowPreviousMessage:v29 animated:v10 completion:v30];
+  [(MFCollectionViewPagingAnimator *)v26 scrollToItemAtIndexPath:v27 dynamicOffset:offsetCopy shouldAdjustToShowPreviousMessage:messageCopy animated:animatedCopy completion:v30];
 }
 
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3
+- (id)_layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  [(ConversationViewControllerBase *)self _ensureSubjectViewLayoutIfNeededAtIndexPath:v4];
-  v5 = [(ConversationViewControllerBase *)self collectionView];
-  v6 = [v5 layoutAttributesForItemAtIndexPath:v4];
+  pathCopy = path;
+  [(ConversationViewControllerBase *)self _ensureSubjectViewLayoutIfNeededAtIndexPath:pathCopy];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v6 = [collectionView layoutAttributesForItemAtIndexPath:pathCopy];
 
   return v6;
 }
@@ -2945,12 +2945,12 @@ LABEL_4:
 {
   if ((*&self->_flags & 8) == 0)
   {
-    v3 = [(ConversationViewControllerBase *)self countOfMessages];
-    if (v3 >= 1)
+    countOfMessages = [(ConversationViewControllerBase *)self countOfMessages];
+    if (countOfMessages >= 1)
     {
-      v7 = [NSIndexPath indexPathForItem:v3 - 1 inSection:0];
-      v4 = [(ConversationViewControllerBase *)self cellConfigurator];
-      [v4 sizeForItemAtIndexPath:v7];
+      v7 = [NSIndexPath indexPathForItem:countOfMessages - 1 inSection:0];
+      cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+      [cellConfigurator sizeForItemAtIndexPath:v7];
       v6 = v5;
 
       [(ConversationViewControllerBase *)self _updateBottomPaddingWithLastItemHeight:v6];
@@ -2958,82 +2958,82 @@ LABEL_4:
   }
 }
 
-- (void)_updateBottomPaddingWithLastItemHeight:(double)a3
+- (void)_updateBottomPaddingWithLastItemHeight:(double)height
 {
-  v5 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+  _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
   v6 = 0.0;
-  if ((v5 & 1) == 0)
+  if ((_isDisplayingSingleMessage & 1) == 0)
   {
-    v7 = [(ConversationViewControllerBase *)self collectionView];
-    [v7 mf_visibleHeight];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView mf_visibleHeight];
     v9 = v8;
 
     [(ConversationViewControllerBase *)self _autoscrollAdjustmentWithBaseOffset:10.0];
-    v6 = v9 - (fmax(a3, 276.0) + v10);
+    v6 = v9 - (fmax(height, 276.0) + v10);
   }
 
   [(ConversationViewControllerBase *)self _setBottomPadding:v6];
 }
 
-- (void)_setBottomPadding:(double)a3
+- (void)_setBottomPadding:(double)padding
 {
   if (!_os_feature_enabled_impl() || ![(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
   {
-    v12 = [(ConversationViewControllerBase *)self collectionView];
-    [v12 _contentScrollInset];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView _contentScrollInset];
     v5 = v4;
     v7 = v6;
     v9 = v8;
 
-    v13 = [(ConversationViewControllerBase *)self collectionView];
+    collectionView2 = [(ConversationViewControllerBase *)self collectionView];
     UIRoundToViewScale();
     v11 = v10;
 
-    v14 = [(ConversationViewControllerBase *)self collectionView];
-    [v14 _setContentScrollInset:{v5, v7, fmax(v11, 0.0), v9}];
+    collectionView3 = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView3 _setContentScrollInset:{v5, v7, fmax(v11, 0.0), v9}];
   }
 }
 
-- (void)cellConfigurator:(id)a3 didConfigureCell:(id)a4 atIndexPath:(id)a5
+- (void)cellConfigurator:(id)configurator didConfigureCell:(id)cell atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v9 = +[ConversationViewController log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138543874;
     v25 = objc_opt_class();
     v26 = 2048;
-    v27 = v7;
+    selfCopy = cellCopy;
     v28 = 2114;
-    v29 = v8;
+    v29 = pathCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Configuring class:%{public}@ cell:%p indexPath:%{public}@", &v24, 0x20u);
   }
 
-  v10 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
-  if (([(ConversationViewControllerBase *)self allowQuickReply]& v10) == 1)
+  _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+  if (([(ConversationViewControllerBase *)self allowQuickReply]& _isDisplayingSingleMessage) == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(ConversationViewControllerBase *)v7 setRoundedCorners:3];
+      [(ConversationViewControllerBase *)cellCopy setRoundedCorners:3];
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(ConversationViewControllerBase *)self _shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:v8];
-    v12 = v7;
-    v13 = [v12 viewModel];
-    [(ConversationViewControllerBase *)self _configureExpandedCell:v12 atIndexPath:v8 viewModel:v13 collapseQuotedContent:v11];
+    v11 = [(ConversationViewControllerBase *)self _shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:pathCopy];
+    v12 = cellCopy;
+    viewModel = [v12 viewModel];
+    [(ConversationViewControllerBase *)self _configureExpandedCell:v12 atIndexPath:pathCopy viewModel:viewModel collapseQuotedContent:v11];
 
-    v14 = [v12 messageViewController];
-    [(ConversationViewControllerBase *)self addChildViewController:v14];
-    [v14 didMoveToParentViewController:self];
-    v15 = [(ConversationViewControllerBase *)self resizingState];
-    v16 = [v14 messageContentView];
-    [v16 setContentPaddingFollowsLayoutMargins:v15 != 2];
+    messageViewController = [v12 messageViewController];
+    [(ConversationViewControllerBase *)self addChildViewController:messageViewController];
+    [messageViewController didMoveToParentViewController:self];
+    resizingState = [(ConversationViewControllerBase *)self resizingState];
+    messageContentView = [messageViewController messageContentView];
+    [messageContentView setContentPaddingFollowsLayoutMargins:resizingState != 2];
   }
 
   else
@@ -3041,9 +3041,9 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v7;
-      v17 = [v12 viewModel];
-      [(ConversationViewControllerBase *)self _configureCollapsedCell:v12 atIndexPath:v8 viewModel:v17];
+      v12 = cellCopy;
+      viewModel2 = [v12 viewModel];
+      [(ConversationViewControllerBase *)self _configureCollapsedCell:v12 atIndexPath:pathCopy viewModel:viewModel2];
     }
 
     else
@@ -3051,9 +3051,9 @@ LABEL_4:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v7;
-        v18 = [v12 viewModel];
-        [(ConversationViewControllerBase *)self _configureGeneratedSummaryCell:v12 atIndexPath:v8 viewModel:v18];
+        v12 = cellCopy;
+        viewModel3 = [v12 viewModel];
+        [(ConversationViewControllerBase *)self _configureGeneratedSummaryCell:v12 atIndexPath:pathCopy viewModel:viewModel3];
       }
 
       else
@@ -3063,19 +3063,19 @@ LABEL_4:
         {
           v19 = objc_opt_class();
           v20 = objc_opt_class();
-          v21 = [(ConversationViewControllerBase *)v7 viewModel];
-          v22 = [v21 messageContentRequest];
-          v23 = [v22 itemID];
+          viewModel4 = [(ConversationViewControllerBase *)cellCopy viewModel];
+          messageContentRequest = [viewModel4 messageContentRequest];
+          itemID = [messageContentRequest itemID];
           v24 = 138413314;
           v25 = v19;
           v26 = 2048;
-          v27 = self;
+          selfCopy = self;
           v28 = 2112;
           v29 = v20;
           v30 = 2112;
-          v31 = v8;
+          v31 = pathCopy;
           v32 = 2114;
-          v33 = v23;
+          v33 = itemID;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "<%@: %p> Cannot configure an unknown cell type %@ at indexPath %@ for itemID: %{public}@", &v24, 0x34u);
         }
       }
@@ -3083,17 +3083,17 @@ LABEL_4:
   }
 }
 
-- (int64_t)cellConfigurator:(id)a3 expansionStatusForMessageAtIndexPath:(id)a4
+- (int64_t)cellConfigurator:(id)configurator expansionStatusForMessageAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ConversationViewControllerBase *)self _indexPathForReferenceMessage];
-  if (([v5 isEqual:v6] & 1) != 0 || -[ConversationViewControllerBase _isQuickReplyMessageAtIndexPath:](self, "_isQuickReplyMessageAtIndexPath:", v5) || -[ConversationViewControllerBase _isUndoSendMessageAtIndexPath:](self, "_isUndoSendMessageAtIndexPath:", v5))
+  pathCopy = path;
+  _indexPathForReferenceMessage = [(ConversationViewControllerBase *)self _indexPathForReferenceMessage];
+  if (([pathCopy isEqual:_indexPathForReferenceMessage] & 1) != 0 || -[ConversationViewControllerBase _isQuickReplyMessageAtIndexPath:](self, "_isQuickReplyMessageAtIndexPath:", pathCopy) || -[ConversationViewControllerBase _isUndoSendMessageAtIndexPath:](self, "_isUndoSendMessageAtIndexPath:", pathCopy))
   {
   }
 
   else
   {
-    v8 = [(ConversationViewControllerBase *)self _isItemInitiallyUnreadAtIndexPath:v5];
+    v8 = [(ConversationViewControllerBase *)self _isItemInitiallyUnreadAtIndexPath:pathCopy];
 
     if ((v8 & 1) == 0)
     {
@@ -3117,58 +3117,58 @@ LABEL_11:
   return v7;
 }
 
-- (void)cellConfigurator:(id)a3 didInvalidateConfigurationForCellsAtIndexPaths:(id)a4
+- (void)cellConfigurator:(id)configurator didInvalidateConfigurationForCellsAtIndexPaths:(id)paths
 {
-  v5 = a4;
-  v6 = [(ConversationViewControllerBase *)self pinnedItem];
-  v7 = [v6 indexPath];
-  if (![(ConversationViewControllerBase *)self _isDisplayingSingleMessage]&& v6 && v7)
+  pathsCopy = paths;
+  pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
+  indexPath = [pinnedItem indexPath];
+  if (![(ConversationViewControllerBase *)self _isDisplayingSingleMessage]&& pinnedItem && indexPath)
   {
     [(ConversationViewControllerBase *)self setPinnedItem:0];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10008C458;
     v8[3] = &unk_10064E348;
-    v9 = v5;
-    v10 = self;
-    v11 = v7;
-    v12 = v6;
+    v9 = pathsCopy;
+    selfCopy = self;
+    v11 = indexPath;
+    v12 = pinnedItem;
     [UIView performWithoutAnimation:v8];
   }
 }
 
-- (id)cellConfigurator:(id)a3 targetHeightForExpandingCellAtIndexPath:(id)a4
+- (id)cellConfigurator:(id)configurator targetHeightForExpandingCellAtIndexPath:(id)path
 {
-  v5 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:a4];
-  v6 = [(ConversationViewControllerBase *)self _currentSizeMetadataKey];
-  v7 = [NSString stringWithFormat:@"%@_%@", v5, v6];
+  v5 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:path];
+  _currentSizeMetadataKey = [(ConversationViewControllerBase *)self _currentSizeMetadataKey];
+  v7 = [NSString stringWithFormat:@"%@_%@", v5, _currentSizeMetadataKey];
 
-  v8 = [(ConversationViewControllerBase *)self cellHeightCache];
-  v9 = [v8 objectForKey:v7];
+  cellHeightCache = [(ConversationViewControllerBase *)self cellHeightCache];
+  v9 = [cellHeightCache objectForKey:v7];
 
   return v9;
 }
 
-- (id)cellConfigurator:(id)a3 messageItemIDAtIndexPath:(id)a4
+- (id)cellConfigurator:(id)configurator messageItemIDAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  configuratorCopy = configurator;
+  pathCopy = path;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase cellConfigurator:messageItemIDAtIndexPath:]", "ConversationViewControllerBase.m", 2017, "0");
 }
 
-- (void)cellConfigurator:(id)a3 wantsToReloadCellAtIndexPaths:(id)a4 animated:(BOOL)a5
+- (void)cellConfigurator:(id)configurator wantsToReloadCellAtIndexPaths:(id)paths animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
+  configuratorCopy = configurator;
+  pathsCopy = paths;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase cellConfigurator:wantsToReloadCellAtIndexPaths:animated:]", "ConversationViewControllerBase.m", 2021, "0");
 }
 
 - (id)_currentSizeMetadataKey
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 mf_visibleBounds];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView mf_visibleBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3180,9 +3180,9 @@ LABEL_11:
   v19.size.height = v11;
   Width = CGRectGetWidth(v19);
   v13 = MFModernUIApplicationPreferredContentSizeCode();
-  v14 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+  _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
   v15 = @"conversation";
-  if (v14)
+  if (_isDisplayingSingleMessage)
   {
     v15 = @"single";
   }
@@ -3192,9 +3192,9 @@ LABEL_11:
   return v16;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  if ([(ConversationViewControllerBase *)self allowQuickReply:a3]&& [(ConversationViewControllerBase *)self didCompleteFirstPaint]&& [(ConversationViewControllerBase *)self conversationSortOrder]== 1)
+  if ([(ConversationViewControllerBase *)self allowQuickReply:view]&& [(ConversationViewControllerBase *)self didCompleteFirstPaint]&& [(ConversationViewControllerBase *)self conversationSortOrder]== 1)
   {
     [(ConversationViewControllerBase *)self quickReplyHeight];
     v7 = v6;
@@ -3214,9 +3214,9 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  if ([(ConversationViewControllerBase *)self allowQuickReply:a3]&& [(ConversationViewControllerBase *)self didCompleteFirstPaint]&& ![(ConversationViewControllerBase *)self conversationSortOrder])
+  if ([(ConversationViewControllerBase *)self allowQuickReply:view]&& [(ConversationViewControllerBase *)self didCompleteFirstPaint]&& ![(ConversationViewControllerBase *)self conversationSortOrder])
   {
     [(ConversationViewControllerBase *)self quickReplyHeight];
     v9 = v8;
@@ -3236,10 +3236,10 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  [(MFConversationCellConfigurator *)self->_cellConfigurator sizeForItemAtIndexPath:v6];
+  pathCopy = path;
+  [(MFConversationCellConfigurator *)self->_cellConfigurator sizeForItemAtIndexPath:pathCopy];
   v8 = v7;
   v10 = v9;
   if (v9 < 0.0)
@@ -3273,32 +3273,32 @@ LABEL_11:
 
 - (double)_minimumItemHeight
 {
-  v2 = [(ConversationViewControllerBase *)self displayMetrics];
-  [MFCollapsedMessageCell defaultHeightWithDisplayMetrics:v2];
+  displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+  [MFCollapsedMessageCell defaultHeightWithDisplayMetrics:displayMetrics];
   v4 = v3 + 180.0;
 
   return v4;
 }
 
-- (double)_autoscrollAdjustmentWithBaseOffset:(double)a3
+- (double)_autoscrollAdjustmentWithBaseOffset:(double)offset
 {
   [(ConversationViewControllerBase *)self _itemSpacing];
   v6 = v5;
-  v7 = [(ConversationViewControllerBase *)self previewState];
-  v8 = v6 + a3;
-  if ([v7 shouldScheduleMarkMessageAsRead])
+  previewState = [(ConversationViewControllerBase *)self previewState];
+  v8 = v6 + offset;
+  if ([previewState shouldScheduleMarkMessageAsRead])
   {
-    v9 = [(ConversationViewControllerBase *)self _shouldShowConversationHeader];
+    _shouldShowConversationHeader = [(ConversationViewControllerBase *)self _shouldShowConversationHeader];
 
-    if (v9)
+    if (_shouldShowConversationHeader)
     {
       [(ConversationHeaderView *)self->_conversationHeaderView frame];
       r2 = v10;
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [(ConversationViewControllerBase *)self _visibleNavigationBar];
-      [v17 bounds];
+      _visibleNavigationBar = [(ConversationViewControllerBase *)self _visibleNavigationBar];
+      [_visibleNavigationBar bounds];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -3334,52 +3334,52 @@ LABEL_11:
   return v8;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = a5;
-  [(ConversationViewControllerBase *)self _toggleCellGroupOpacityIfNeeded:v11 displaying:1];
+  cellCopy = cell;
+  pathCopy = path;
+  [(ConversationViewControllerBase *)self _toggleCellGroupOpacityIfNeeded:cellCopy displaying:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(MFSwipableCollectionViewLayout *)self->_conversationLayout expandingIndexPath];
-    v9 = [v7 compare:v8];
+    expandingIndexPath = [(MFSwipableCollectionViewLayout *)self->_conversationLayout expandingIndexPath];
+    v9 = [pathCopy compare:expandingIndexPath];
 
     if (!v9)
     {
-      v10 = [v11 layer];
-      [v10 setAllowsGroupOpacity:0];
+      layer = [cellCopy layer];
+      [layer setAllowsGroupOpacity:0];
     }
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
-    v12 = [v11 viewModel];
-    v13 = [v12 messageContentRequest];
-    v14 = [v13 itemID];
-    v15 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:v10];
-    v16 = [v14 isEqual:v15];
+    v11 = cellCopy;
+    viewModel = [v11 viewModel];
+    messageContentRequest = [viewModel messageContentRequest];
+    itemID = [messageContentRequest itemID];
+    v15 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:pathCopy];
+    v16 = [itemID isEqual:v15];
 
-    if (!v16 || ([v8 indexPathsForVisibleItems], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", v10), v17, (v18 & 1) == 0))
+    if (!v16 || ([viewCopy indexPathsForVisibleItems], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", pathCopy), v17, (v18 & 1) == 0))
     {
-      v19 = [v11 viewModel];
-      [(ConversationViewControllerBase *)self cancelAutomaticMarkAsReadForCellViewModel:v19];
+      viewModel2 = [v11 viewModel];
+      [(ConversationViewControllerBase *)self cancelAutomaticMarkAsReadForCellViewModel:viewModel2];
     }
 
-    v20 = [v11 messageViewController];
-    [v20 willMoveToParentViewController:0];
-    [v20 removeFromParentViewController];
-    v21 = [v8 valueForKeyPath:@"firstResponderViewType"];
-    v22 = [v8 valueForKeyPath:@"firstResponderView"];
-    v23 = [v8 valueForKeyPath:@"firstResponderIndexPath"];
+    messageViewController = [v11 messageViewController];
+    [messageViewController willMoveToParentViewController:0];
+    [messageViewController removeFromParentViewController];
+    v21 = [viewCopy valueForKeyPath:@"firstResponderViewType"];
+    v22 = [viewCopy valueForKeyPath:@"firstResponderView"];
+    v23 = [viewCopy valueForKeyPath:@"firstResponderIndexPath"];
     if (v22 && [v21 integerValue] == 1 && v23)
     {
       v24 = [(ConversationViewControllerBase *)self _layoutAttributesForItemAtIndexPath:v23];
@@ -3393,28 +3393,28 @@ LABEL_11:
       [UIView performWithoutAnimation:v27];
     }
 
-    [(ConversationViewControllerBase *)self _enqueueMessageViewController:v20];
-    [v20 setDelegate:0];
+    [(ConversationViewControllerBase *)self _enqueueMessageViewController:messageViewController];
+    [messageViewController setDelegate:0];
     [v11 setMessageViewController:0];
-    v26 = [v11 layer];
-    [v26 setAllowsGroupOpacity:1];
+    layer = [v11 layer];
+    [layer setAllowsGroupOpacity:1];
   }
 
-  [(ConversationViewControllerBase *)self _toggleCellGroupOpacityIfNeeded:v9 displaying:0];
+  [(ConversationViewControllerBase *)self _toggleCellGroupOpacityIfNeeded:cellCopy displaying:0];
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
-  [v8 cancel];
+  viewCopy = view;
+  pathCopy = path;
+  cellExpansionRecognizer = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
+  [cellExpansionRecognizer cancel];
 
-  v9 = [v6 cellForItemAtIndexPath:v7];
+  v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
   v10 = objc_alloc_init(UIDragPreviewParameters);
-  v11 = [v9 roundedCorners];
+  roundedCorners = [v9 roundedCorners];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & (v11 != 0)) == 1)
+  if ((objc_opt_isKindOfClass() & (roundedCorners != 0)) == 1)
   {
     [v9 bounds];
     v13 = v12;
@@ -3436,15 +3436,15 @@ LABEL_11:
   return v10;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 cellForItemAtIndexPath:v9];
-  [v8 locationInView:v10];
+  sessionCopy = session;
+  pathCopy = path;
+  v10 = [view cellForItemAtIndexPath:pathCopy];
+  [sessionCopy locationInView:v10];
   if ([v10 canBeginDragWithTouchAtPoint:?])
   {
-    v11 = [(ConversationViewControllerBase *)self _dragItemsForItemAtIndexPath:v9];
+    v11 = [(ConversationViewControllerBase *)self _dragItemsForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -3467,17 +3467,17 @@ LABEL_11:
   return v12;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 cellForItemAtIndexPath:v11];
-  [v10 convertPoint:v12 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  pathCopy = path;
+  v12 = [viewCopy cellForItemAtIndexPath:pathCopy];
+  [viewCopy convertPoint:v12 toView:{x, y}];
   if ([v12 canBeginDragWithTouchAtPoint:?])
   {
-    v13 = [(ConversationViewControllerBase *)self _dragItemsForItemAtIndexPath:v11];
+    v13 = [(ConversationViewControllerBase *)self _dragItemsForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -3500,39 +3500,39 @@ LABEL_11:
   return v14;
 }
 
-- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)a3
+- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _dataOwnerForDragSessionAtIndexPath:]", "ConversationViewControllerBase.m", 2226, "0");
 }
 
-- (id)_dragItemsForItemAtIndexPath:(id)a3
+- (id)_dragItemsForItemAtIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _dragItemsForItemAtIndexPath:]", "ConversationViewControllerBase.m", 2230, "0");
 }
 
-- (void)messageViewController:(id)a3 didFinishRenderingWithHeight:(double)a4
+- (void)messageViewController:(id)controller didFinishRenderingWithHeight:(double)height
 {
-  v94 = a3;
-  v6 = [v94 parentViewController];
+  controllerCopy = controller;
+  parentViewController = [controllerCopy parentViewController];
 
-  v7 = [(ConversationViewControllerBase *)self _indexPathOfMessageViewControllerMessage:v94];
-  if (v7 && v6 == self)
+  v7 = [(ConversationViewControllerBase *)self _indexPathOfMessageViewControllerMessage:controllerCopy];
+  if (v7 && parentViewController == self)
   {
-    v95 = [(ConversationViewControllerBase *)self collectionView];
-    [v95 mui_sortedIndexPathsForVisibleItems];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView mui_sortedIndexPathsForVisibleItems];
     v106[0] = _NSConcreteStackBlock;
     v106[1] = 3221225472;
     v106[2] = sub_10008E14C;
     v106[3] = &unk_10064E370;
     rect_16 = v106[4] = self;
     rect_8 = [rect_16 ef_map:v106];
-    rect_24 = [v95 cellForItemAtIndexPath:v7];
-    v8 = [(ConversationViewControllerBase *)self cellConfigurator];
-    v9 = [v8 updateSemiExpandedToFullyExpandedIfNecessaryAtIndexPath:v7 renderedHeight:a4];
+    rect_24 = [collectionView cellForItemAtIndexPath:v7];
+    cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+    v9 = [cellConfigurator updateSemiExpandedToFullyExpandedIfNecessaryAtIndexPath:v7 renderedHeight:height];
 
     if (v9)
     {
@@ -3544,18 +3544,18 @@ LABEL_11:
     }
 
     v93 = [(ConversationViewControllerBase *)self messageItemIDAtIndexPath:v7];
-    [v95 mf_visibleBounds];
+    [collectionView mf_visibleBounds];
     rect = v10;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(ConversationViewControllerBase *)self cellConfigurator];
-    [v17 sizeForItemAtIndexPath:v7];
+    cellConfigurator2 = [(ConversationViewControllerBase *)self cellConfigurator];
+    [cellConfigurator2 sizeForItemAtIndexPath:v7];
     v19 = v18;
 
     [(ConversationViewControllerBase *)self _minimumItemHeight];
     v21 = v20;
-    v22 = ceil(a4);
+    v22 = ceil(height);
     if (v21 >= v22)
     {
       v23 = v21;
@@ -3566,15 +3566,15 @@ LABEL_11:
       v23 = v22;
     }
 
-    v24 = [(ConversationViewControllerBase *)self cellConfigurator];
-    v25 = [v24 sizeTracker];
-    v26 = [(ConversationViewControllerBase *)self collectionView];
-    [v26 frame];
-    [v25 setIntrinsicSize:v93 forCellWithItemID:{v27, v23}];
+    cellConfigurator3 = [(ConversationViewControllerBase *)self cellConfigurator];
+    sizeTracker = [cellConfigurator3 sizeTracker];
+    collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView2 frame];
+    [sizeTracker setIntrinsicSize:v93 forCellWithItemID:{v27, v23}];
 
-    v28 = [(ConversationViewControllerBase *)self cellConfigurator];
-    v29 = [v28 sizeTracker];
-    [v29 displaySizeForCellWithItemID:v93];
+    cellConfigurator4 = [(ConversationViewControllerBase *)self cellConfigurator];
+    sizeTracker2 = [cellConfigurator4 sizeTracker];
+    [sizeTracker2 displaySizeForCellWithItemID:v93];
     v31 = v30;
 
     v32 = v23 - v31;
@@ -3596,7 +3596,7 @@ LABEL_11:
         *buf = 134218752;
         v109 = v23;
         v110 = 2048;
-        v111 = a4;
+        heightCopy = height;
         v112 = 2048;
         v113 = v21;
         v114 = 2048;
@@ -3613,41 +3613,41 @@ LABEL_11:
 
     if (v34 < 2.22044605e-16)
     {
-      v51 = [(ConversationViewControllerBase *)self pinnedItemOnHeightChange];
-      if (!v51)
+      pinnedItemOnHeightChange = [(ConversationViewControllerBase *)self pinnedItemOnHeightChange];
+      if (!pinnedItemOnHeightChange)
       {
 LABEL_63:
 
-        v87 = [v95 cellForItemAtIndexPath:v7];
+        v87 = [collectionView cellForItemAtIndexPath:v7];
         [(ConversationViewControllerBase *)self _updateFooterViewFrameForCell:v87];
 
         goto LABEL_64;
       }
 
-      v88 = v51;
-      [(ConversationViewControllerBase *)self setPinnedItem:v51];
+      v88 = pinnedItemOnHeightChange;
+      [(ConversationViewControllerBase *)self setPinnedItem:pinnedItemOnHeightChange];
       [(ConversationViewControllerBase *)self setPinnedItemOnHeightChange:0];
       v52 = +[ConversationViewController log];
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = [(ConversationViewControllerBase *)self pinnedItem];
+        pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
         *buf = 138543362;
-        v109 = *&v53;
+        v109 = *&pinnedItem;
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Rendered Height is now equal. Restore pinnedItem:%{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v35 = [(ConversationViewControllerBase *)self resizingState];
-      if (v35 != 3)
+      resizingState = [(ConversationViewControllerBase *)self resizingState];
+      if (resizingState != 3)
       {
-        v36 = [(ConversationViewControllerBase *)self _currentSizeMetadataKey];
-        v37 = [NSString stringWithFormat:@"%@_%@", v93, v36];
+        _currentSizeMetadataKey = [(ConversationViewControllerBase *)self _currentSizeMetadataKey];
+        v37 = [NSString stringWithFormat:@"%@_%@", v93, _currentSizeMetadataKey];
 
         v38 = [NSNumber numberWithDouble:v31];
-        v39 = [(ConversationViewControllerBase *)self cellHeightCache];
-        [v39 setObject:v38 forKeyedSubscript:v37];
+        cellHeightCache = [(ConversationViewControllerBase *)self cellHeightCache];
+        [cellHeightCache setObject:v38 forKeyedSubscript:v37];
       }
 
       v40 = [rect_16 containsObject:v7];
@@ -3663,14 +3663,14 @@ LABEL_63:
       {
         v43 = COERCE_DOUBLE([v7 section]);
         v44 = COERCE_DOUBLE([v7 row]);
-        v45 = [v94 contentRequest];
-        v46 = [v45 messageFuture];
-        v47 = [v46 resultIfAvailable];
-        v48 = [v47 ef_publicDescription];
+        contentRequest = [controllerCopy contentRequest];
+        messageFuture = [contentRequest messageFuture];
+        resultIfAvailable = [messageFuture resultIfAvailable];
+        ef_publicDescription = [resultIfAvailable ef_publicDescription];
         *buf = 138414338;
         v109 = *&v88;
         v110 = 2048;
-        v111 = v43;
+        heightCopy = v43;
         v112 = 2048;
         v113 = v44;
         v114 = 2048;
@@ -3680,15 +3680,15 @@ LABEL_63:
         v118 = 2048;
         v119 = v31 - v19;
         v120 = 2048;
-        v121 = a4;
+        heightCopy2 = height;
         v122 = 2048;
         v123 = v21;
         v124 = 2112;
-        v125 = v48;
+        v125 = ef_publicDescription;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Height changed for %@ cell at {%ld, %ld} (%g->%g, delta=%g, renderedHeight=%g, minimumHeight=%g) for message: %@", buf, 0x5Cu);
       }
 
-      if (v35 == 3)
+      if (resizingState == 3)
       {
         v49 = 0;
         v50 = v31 - v19;
@@ -3698,16 +3698,16 @@ LABEL_63:
       {
         [(ConversationViewControllerBase *)self pinnedItem];
         v54 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v55 = [*&v54 dynamicOffset];
+        dynamicOffset = [*&v54 dynamicOffset];
 
-        if (v55)
+        if (dynamicOffset)
         {
-          v56 = [*&v54 dynamicOffset];
-          [v95 mf_cellOffsetByApplyingDynamicOffset:v56 cellHeight:v19];
+          dynamicOffset2 = [*&v54 dynamicOffset];
+          [collectionView mf_cellOffsetByApplyingDynamicOffset:dynamicOffset2 cellHeight:v19];
           v58 = v57;
 
-          v59 = [*&v54 dynamicOffset];
-          [v95 mf_cellOffsetByApplyingDynamicOffset:v59 cellHeight:v31];
+          dynamicOffset3 = [*&v54 dynamicOffset];
+          [collectionView mf_cellOffsetByApplyingDynamicOffset:dynamicOffset3 cellHeight:v31];
           v61 = v60;
 
           v62 = +[ConversationViewController log];
@@ -3717,7 +3717,7 @@ LABEL_63:
             *buf = 134218242;
             v109 = v50;
             v110 = 2114;
-            v111 = v54;
+            heightCopy = v54;
             _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Cell being resized is the pinned cell. Will adjust content offset by %0.1f. Temporarily clear pinnedItem:%{public}@.", buf, 0x16u);
           }
 
@@ -3754,8 +3754,8 @@ LABEL_38:
                 }
 
                 v67 = *(*(&v102 + 1) + 8 * v66);
-                v68 = [v67 second];
-                [v68 frame];
+                second = [v67 second];
+                [second frame];
                 MinY = CGRectGetMinY(v126);
                 v127.origin.x = rect;
                 v127.origin.y = v12;
@@ -3778,9 +3778,9 @@ LABEL_38:
                 }
               }
 
-              v70 = [v67 first];
+              first = [v67 first];
 
-              if (v70)
+              if (first)
               {
                 goto LABEL_47;
               }
@@ -3791,11 +3791,11 @@ LABEL_38:
 LABEL_44:
             }
 
-            v71 = [v63 firstObject];
-            v70 = [v71 first];
+            firstObject = [v63 firstObject];
+            first = [firstObject first];
 
 LABEL_47:
-            v72 = [v7 compare:v70];
+            v72 = [v7 compare:first];
             v49 = v72 == -1;
             v73 = @"Will NOT adjust";
             if (v72 == -1)
@@ -3809,12 +3809,12 @@ LABEL_47:
             {
               v76 = COERCE_DOUBLE([v7 section]);
               v77 = COERCE_DOUBLE([v7 row]);
-              v78 = COERCE_DOUBLE([v70 section]);
-              v79 = COERCE_DOUBLE([v70 row]);
+              v78 = COERCE_DOUBLE([first section]);
+              v79 = COERCE_DOUBLE([first row]);
               *buf = 138413570;
               v109 = *&v74;
               v110 = 2048;
-              v111 = v31 - v19;
+              heightCopy = v31 - v19;
               v112 = 2048;
               v113 = v76;
               v114 = 2048;
@@ -3857,37 +3857,37 @@ LABEL_47:
       v101 = v31;
       v52 = v80;
       v98 = v52;
-      v99 = v95;
+      v99 = collectionView;
       v84 = objc_retainBlock(v96);
-      v85 = [(ConversationViewControllerBase *)self cellConfigurator];
-      v86 = [v85 animatePendingHeightChangesIfNecessary];
+      cellConfigurator5 = [(ConversationViewControllerBase *)self cellConfigurator];
+      animatePendingHeightChangesIfNecessary = [cellConfigurator5 animatePendingHeightChangesIfNecessary];
 
-      if ((v86 & 1) == 0)
+      if ((animatePendingHeightChangesIfNecessary & 1) == 0)
       {
         (v84[2])(v84);
       }
     }
 
-    v51 = v88;
+    pinnedItemOnHeightChange = v88;
     goto LABEL_63;
   }
 
 LABEL_64:
 }
 
-- (void)messageViewControllerDidFinishFirstPaint:(id)a3
+- (void)messageViewControllerDidFinishFirstPaint:(id)paint
 {
   if (![(ConversationViewControllerBase *)self didCompleteFirstPaint])
   {
     [(ConversationViewControllerBase *)self setDidCompleteFirstPaint:1];
   }
 
-  v6 = [(ConversationViewControllerBase *)self collectionView];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
   if ([(ConversationViewControllerBase *)self _scrollViewIsScrolledToEnd:?])
   {
-    v4 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+    _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
 
-    if (v4)
+    if (_isDisplayingSingleMessage)
     {
       [(ConversationViewControllerBase *)self _scrolledToEndOfSingleMessage];
     }
@@ -3898,52 +3898,52 @@ LABEL_64:
   }
 
   v7 = +[UIApplication sharedApplication];
-  v5 = [v7 isTesting];
+  isTesting = [v7 isTesting];
 
-  if (v5)
+  if (isTesting)
   {
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 postNotificationName:@"MFMailConversationViewDidShow" object:self];
   }
 }
 
-- (void)messageViewControllerDidDisplayContent:(id)a3 success:(BOOL)a4
+- (void)messageViewControllerDidDisplayContent:(id)content success:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 contentRequest];
-  v8 = [v7 message];
+  successCopy = success;
+  contentCopy = content;
+  contentRequest = [contentCopy contentRequest];
+  message = [contentRequest message];
 
-  [(ConversationViewControllerBase *)self scheduleAutomaticMarkAsReadForMessage:v8];
-  v9 = [(ConversationViewControllerBase *)self mailboxRepository];
-  [v9 recordFrecencyEventWithMailboxesOfMessage:v8];
+  [(ConversationViewControllerBase *)self scheduleAutomaticMarkAsReadForMessage:message];
+  mailboxRepository = [(ConversationViewControllerBase *)self mailboxRepository];
+  [mailboxRepository recordFrecencyEventWithMailboxesOfMessage:message];
 
   if ([UIApp launchedToTest])
   {
     v10 = +[NSNotificationCenter defaultCenter];
-    [v10 postNotificationName:@"MFMailConversationViewChildMessageViewDidDisplayContent" object:v6];
+    [v10 postNotificationName:@"MFMailConversationViewChildMessageViewDidDisplayContent" object:contentCopy];
   }
 
-  if (v4)
+  if (successCopy)
   {
-    v11 = [(ConversationViewControllerBase *)self blankConversationController];
-    [v11 conversationViewWebViewDidLoadMessage];
+    blankConversationController = [(ConversationViewControllerBase *)self blankConversationController];
+    [blankConversationController conversationViewWebViewDidLoadMessage];
   }
 
   [(ConversationViewControllerBase *)self _updateFooterViewFrameForVisibleCells];
-  [(ConversationViewControllerBase *)self _messageViewControllerDidDisplayContent:v6];
-  v12 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v13 = [v12 itemID];
+  [(ConversationViewControllerBase *)self _messageViewControllerDidDisplayContent:contentCopy];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  itemID = [referenceMessageListItem itemID];
 
   v14 = MFMessageSelectionLifecycleSignpostLog();
-  v15 = os_signpost_id_make_with_pointer(v14, v13);
+  v15 = os_signpost_id_make_with_pointer(v14, itemID);
 
   v16 = MFMessageSelectionLifecycleSignpostLog();
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     v18 = @"failed to display";
-    if (v4)
+    if (successCopy)
     {
       v18 = @"successfully displayed";
     }
@@ -3951,137 +3951,137 @@ LABEL_64:
     v19 = 138412546;
     v20 = v18;
     v21 = 2112;
-    v22 = v13;
+    v22 = itemID;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_END, v15, "Message selection lifecycle", "Message view controller %@ message with itemID: %@", &v19, 0x16u);
   }
 }
 
-- (void)messageViewController:(id)a3 didStartDownloadForContentItemWithProgress:(id)a4
+- (void)messageViewController:(id)controller didStartDownloadForContentItemWithProgress:(id)progress
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  progressCopy = progress;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase messageViewController:didStartDownloadForContentItemWithProgress:]", "ConversationViewControllerBase.m", 2418, "0");
 }
 
-- (void)messageViewController:(id)a3 didTapShowMoreAtCollapsedOffset:(CGPoint)a4 expandedOffset:(CGPoint)a5
+- (void)messageViewController:(id)controller didTapShowMoreAtCollapsedOffset:(CGPoint)offset expandedOffset:(CGPoint)expandedOffset
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v10 = a3;
+  y = expandedOffset.y;
+  x = expandedOffset.x;
+  v7 = offset.y;
+  v8 = offset.x;
+  controllerCopy = controller;
   [(ConversationViewControllerBase *)self setPinnedItem:0];
-  [(ConversationViewControllerBase *)self _showSingleMessage:v10 animationOffset:v8 initialScrollOffset:v7, x, y];
+  [(ConversationViewControllerBase *)self _showSingleMessage:controllerCopy animationOffset:v8 initialScrollOffset:v7, x, y];
 }
 
-- (void)messageViewController:(id)a3 didTapRevealActionsButton:(id)a4
+- (void)messageViewController:(id)controller didTapRevealActionsButton:(id)button
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  buttonCopy = button;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase messageViewController:didTapRevealActionsButton:]", "ConversationViewControllerBase.m", 2427, "0");
 }
 
-- (void)messageViewController:(id)a3 didTapUndoSendButton:(id)a4
+- (void)messageViewController:(id)controller didTapUndoSendButton:(id)button
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  buttonCopy = button;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase messageViewController:didTapUndoSendButton:]", "ConversationViewControllerBase.m", 2431, "0");
 }
 
-- (id)_visibleIndexPathForMessageViewController:(id)a3
+- (id)_visibleIndexPathForMessageViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _visibleIndexPathForMessageViewController:]", "ConversationViewControllerBase.m", 2439, "0");
 }
 
-- (void)messageViewControllerDidTapAddressAtom:(id)a3 contactViewController:(id)a4
+- (void)messageViewControllerDidTapAddressAtom:(id)atom contactViewController:(id)controller
 {
-  v7 = a3;
-  v6 = a4;
-  [v6 setDelegate:self];
-  [v7 bounds];
-  [(ConversationViewControllerBase *)self _showModalViewController:v6 fromView:v7 sourceRect:1 animated:?];
+  atomCopy = atom;
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  [atomCopy bounds];
+  [(ConversationViewControllerBase *)self _showModalViewController:controllerCopy fromView:atomCopy sourceRect:1 animated:?];
 }
 
-- (void)messageViewController:(id)a3 didChangeSelectedHTML:(id)a4
+- (void)messageViewController:(id)controller didChangeSelectedHTML:(id)l
 {
-  v12 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  lCopy = l;
   textSelectionScrollHandler = self->_textSelectionScrollHandler;
   if (!textSelectionScrollHandler)
   {
     v8 = [MFTextSelectionScrollHandler alloc];
-    v9 = [(ConversationViewControllerBase *)self collectionView];
-    v10 = [(MFTextSelectionScrollHandler *)v8 initWithScrollView:v9];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v10 = [(MFTextSelectionScrollHandler *)v8 initWithScrollView:collectionView];
     v11 = self->_textSelectionScrollHandler;
     self->_textSelectionScrollHandler = v10;
 
     textSelectionScrollHandler = self->_textSelectionScrollHandler;
   }
 
-  [(MFTextSelectionScrollHandler *)textSelectionScrollHandler handleTextSelectionChanged:v6];
+  [(MFTextSelectionScrollHandler *)textSelectionScrollHandler handleTextSelectionChanged:lCopy];
 }
 
-- (id)messageViewController:(id)a3 displayNameForEmailAddress:(id)a4 abbreviated:(BOOL)a5
+- (id)messageViewController:(id)controller displayNameForEmailAddress:(id)address abbreviated:(BOOL)abbreviated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(ConversationViewControllerBase *)self contactStore];
-  v9 = [v8 displayNameForEmailAddress:v7 abbreviated:v5];
+  abbreviatedCopy = abbreviated;
+  addressCopy = address;
+  contactStore = [(ConversationViewControllerBase *)self contactStore];
+  v9 = [contactStore displayNameForEmailAddress:addressCopy abbreviated:abbreviatedCopy];
 
   return v9;
 }
 
-- (void)contactCardInteractions:(id)a3 triggerSearchForDisplayName:(id)a4 emailAddresses:(id)a5
+- (void)contactCardInteractions:(id)interactions triggerSearchForDisplayName:(id)name emailAddresses:(id)addresses
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008ECB8;
   v6[3] = &unk_10064C660;
-  v7 = self;
-  v8 = a5;
-  v5 = v8;
-  [(ConversationViewControllerBase *)v7 dismissViewControllerAnimated:1 completion:v6];
+  selfCopy = self;
+  addressesCopy = addresses;
+  v5 = addressesCopy;
+  [(ConversationViewControllerBase *)selfCopy dismissViewControllerAnimated:1 completion:v6];
 }
 
-- (void)messageViewController:(id)a3 webViewDidTerminateWithReason:(int64_t)a4
+- (void)messageViewController:(id)controller webViewDidTerminateWithReason:(int64_t)reason
 {
-  v7 = [(ConversationViewControllerBase *)self scene];
-  v6 = [v7 activationState];
+  scene = [(ConversationViewControllerBase *)self scene];
+  activationState = [scene activationState];
 
-  v8 = [(ConversationViewControllerBase *)self blankConversationController];
-  [v8 conversationViewWebViewCrashedWithReason:a4 isBackgrounded:v6 == 2];
+  blankConversationController = [(ConversationViewControllerBase *)self blankConversationController];
+  [blankConversationController conversationViewWebViewCrashedWithReason:reason isBackgrounded:activationState == 2];
 }
 
-- (id)hostScrollViewForConversationHeaderView:(id)a3
+- (id)hostScrollViewForConversationHeaderView:(id)view
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (double)stickySubjectViewMaxYForConversationHeaderView:(id)a3
+- (double)stickySubjectViewMaxYForConversationHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase stickySubjectViewMaxYForConversationHeaderView:]", "ConversationViewControllerBase.m", 2509, "0");
 }
 
-- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)a3
+- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase stickySubjectViewFirstBaselineForConversationHeaderView:]", "ConversationViewControllerBase.m", 2513, "0");
 }
 
-- (BOOL)_scrollViewIsScrolledToEnd:(id)a3
+- (BOOL)_scrollViewIsScrolledToEnd:(id)end
 {
-  v3 = a3;
-  [v3 contentSize];
+  endCopy = end;
+  [endCopy contentSize];
   if (v4 <= 1.0)
   {
     v10 = 0;
@@ -4089,26 +4089,26 @@ LABEL_64:
 
   else
   {
-    [v3 contentOffset];
+    [endCopy contentOffset];
     v6 = v5;
-    [v3 bounds];
+    [endCopy bounds];
     v8 = v7;
-    [v3 contentSize];
+    [endCopy contentSize];
     v10 = (v6 + v8) / v9 >= 0.85;
   }
 
   return v10;
 }
 
-- (id)indexSetForRowsFromIndexPaths:(id)a3 section:(int64_t)a4
+- (id)indexSetForRowsFromIndexPaths:(id)paths section:(int64_t)section
 {
-  v5 = a3;
+  pathsCopy = paths;
   v6 = +[NSMutableIndexSet indexSet];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v5;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -4123,7 +4123,7 @@ LABEL_64:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 section] == a4)
+        if ([v11 section] == section)
         {
           [v6 addIndex:{objc_msgSend(v11, "row")}];
         }
@@ -4138,9 +4138,9 @@ LABEL_64:
   return v6;
 }
 
-- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)a3
+- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ((+[MUIManagedDeviceRestrictions isManualSummaryRestricted]& 1) != 0 || !_os_feature_enabled_impl())
   {
     v5 = 0;
@@ -4155,16 +4155,16 @@ LABEL_64:
   {
     if (v5)
     {
-      v6 = [(ConversationViewControllerBase *)self countOfMessages];
-      v7 = [(ConversationViewControllerBase *)self countOfSummaries]+ v6;
+      countOfMessages = [(ConversationViewControllerBase *)self countOfMessages];
+      countOfMessages2 = [(ConversationViewControllerBase *)self countOfSummaries]+ countOfMessages;
     }
 
     else
     {
-      v7 = [(ConversationViewControllerBase *)self countOfMessages];
+      countOfMessages2 = [(ConversationViewControllerBase *)self countOfMessages];
     }
 
-    v8 = v7 - 1;
+    v8 = countOfMessages2 - 1;
   }
 
   else
@@ -4172,24 +4172,24 @@ LABEL_64:
     v8 = v5;
   }
 
-  v9 = [v4 row] != v8;
+  v9 = [pathCopy row] != v8;
 
   return v9;
 }
 
-- (id)_nextMessageIndexWithDirection:(int)a3
+- (id)_nextMessageIndexWithDirection:(int)direction
 {
-  v3 = *&a3;
-  v5 = [(ConversationViewControllerBase *)self _currentlyVisibleIndexPath];
-  v6 = [(ConversationViewControllerBase *)self _nextIndexPathToSelectFromIndexPath:v5 withDirection:v3];
+  v3 = *&direction;
+  _currentlyVisibleIndexPath = [(ConversationViewControllerBase *)self _currentlyVisibleIndexPath];
+  v6 = [(ConversationViewControllerBase *)self _nextIndexPathToSelectFromIndexPath:_currentlyVisibleIndexPath withDirection:v3];
 
   return v6;
 }
 
-- (id)_nextIndexPathToSelectFromIndexPath:(id)a3 withDirection:(int)a4
+- (id)_nextIndexPathToSelectFromIndexPath:(id)path withDirection:(int)direction
 {
-  v6 = [a3 row];
-  if (a4 == -1)
+  v6 = [path row];
+  if (direction == -1)
   {
     v7 = -1;
   }
@@ -4233,44 +4233,44 @@ LABEL_9:
 
 - (id)_oldestIndexPath
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
   if ([(ConversationViewControllerBase *)self conversationSortOrder]== 1)
   {
-    [v4 lastObject];
+    [indexPathsForVisibleItems lastObject];
   }
 
   else
   {
-    [v4 firstObject];
+    [indexPathsForVisibleItems firstObject];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)_hideRemovedSingleMessageCellIfInRemovedIndexPaths:(id)a3
+- (void)_hideRemovedSingleMessageCellIfInRemovedIndexPaths:(id)paths
 {
-  v14 = a3;
-  v4 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
-  if (v4)
+  pathsCopy = paths;
+  removedSingleMessageIndexPath = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
+  if (removedSingleMessageIndexPath)
   {
-    v5 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
-    v6 = [v14 containsObject:v5];
+    removedSingleMessageIndexPath2 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
+    v6 = [pathsCopy containsObject:removedSingleMessageIndexPath2];
 
     if (v6)
     {
-      v7 = [(ConversationViewControllerBase *)self collectionView];
-      v8 = [v7 indexPathsForVisibleItems];
-      v9 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
-      v10 = [v8 containsObject:v9];
+      collectionView = [(ConversationViewControllerBase *)self collectionView];
+      indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+      removedSingleMessageIndexPath3 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
+      v10 = [indexPathsForVisibleItems containsObject:removedSingleMessageIndexPath3];
 
       if (v10)
       {
-        v11 = [(ConversationViewControllerBase *)self collectionView];
-        v12 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
-        v13 = [v11 cellForItemAtIndexPath:v12];
+        collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+        removedSingleMessageIndexPath4 = [(ConversationViewControllerBase *)self removedSingleMessageIndexPath];
+        v13 = [collectionView2 cellForItemAtIndexPath:removedSingleMessageIndexPath4];
 
         [v13 setAlpha:0.0];
       }
@@ -4280,20 +4280,20 @@ LABEL_9:
   }
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(ConversationViewControllerBase *)self pinnedItem];
-  v8 = [v7 indexPath];
+  y = offset.y;
+  x = offset.x;
+  pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
+  indexPath = [pinnedItem indexPath];
 
-  v9 = [(ConversationViewControllerBase *)self pinnedItem];
-  v10 = [v9 dynamicOffset];
+  pinnedItem2 = [(ConversationViewControllerBase *)self pinnedItem];
+  dynamicOffset = [pinnedItem2 dynamicOffset];
 
-  if (v8 && v10)
+  if (indexPath && dynamicOffset)
   {
-    v11 = [(ConversationViewControllerBase *)self collectionView];
-    [v11 mf_contentOffsetApplyingDynamicOffset:v10 indexPath:v8];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView mf_contentOffsetApplyingDynamicOffset:dynamicOffset indexPath:indexPath];
     v13 = v12;
 
     if (v13 == y)
@@ -4333,37 +4333,37 @@ LABEL_10:
   return result;
 }
 
-- (id)transitionCoordinatorForKeyboardAvoidance:(id)a3
+- (id)transitionCoordinatorForKeyboardAvoidance:(id)avoidance
 {
-  v3 = [(ConversationViewControllerBase *)self transitionCoordinator];
+  transitionCoordinator = [(ConversationViewControllerBase *)self transitionCoordinator];
 
-  return v3;
+  return transitionCoordinator;
 }
 
-- (void)_adjustForKeyboardAvoidanceOverlap:(double)a3
+- (void)_adjustForKeyboardAvoidanceOverlap:(double)overlap
 {
   if (_os_feature_enabled_impl() && [(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
   {
-    if (self->_adjustmentForKeyboard != a3)
+    if (self->_adjustmentForKeyboard != overlap)
     {
-      self->_adjustmentForKeyboard = a3;
+      self->_adjustmentForKeyboard = overlap;
     }
 
     return;
   }
 
-  v76 = [(ConversationViewControllerBase *)self traitCollection];
-  v5 = [v76 horizontalSizeClass];
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v77 = [(ConversationViewControllerBase *)self navigationController];
-  v6 = [v77 toolbar];
-  [v6 frame];
+  navigationController = [(ConversationViewControllerBase *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar frame];
   v8 = v7;
 
-  v9 = [(ConversationViewControllerBase *)self allowQuickReply];
-  if (a3 > 0.0)
+  allowQuickReply = [(ConversationViewControllerBase *)self allowQuickReply];
+  if (overlap > 0.0)
   {
-    v10 = v9;
+    v10 = allowQuickReply;
   }
 
   else
@@ -4371,18 +4371,18 @@ LABEL_10:
     v10 = 0;
   }
 
-  if ((v10 & (v5 == 1)) != 0)
+  if ((v10 & (horizontalSizeClass == 1)) != 0)
   {
-    v11 = a3 - v8;
+    overlapCopy = overlap - v8;
   }
 
   else
   {
-    v11 = a3;
+    overlapCopy = overlap;
   }
 
-  v75 = v11;
-  if (v11 != self->_adjustmentForKeyboard)
+  v75 = overlapCopy;
+  if (overlapCopy != self->_adjustmentForKeyboard)
   {
     v72 = v8;
     v78 = self->_conversationView;
@@ -4411,12 +4411,12 @@ LABEL_10:
       goto LABEL_29;
     }
 
-    v28 = [(ConversationViewControllerBase *)self collectionView];
-    [v28 frame];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView frame];
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    if (v5 != 1 || v75 <= 0.0)
+    if (horizontalSizeClass != 1 || v75 <= 0.0)
     {
       v37 = v29 - v75;
     }
@@ -4426,17 +4426,17 @@ LABEL_10:
       v37 = v29 - v75 - v73;
     }
 
-    v38 = [(ConversationViewControllerBase *)self _quickReplyView];
-    v39 = v38;
-    if (v38)
+    _quickReplyView = [(ConversationViewControllerBase *)self _quickReplyView];
+    v39 = _quickReplyView;
+    if (_quickReplyView)
     {
-      [v38 frame];
+      [_quickReplyView frame];
       v41 = v40;
       v43 = v42;
       v45 = v44;
       v47 = v46;
-      v48 = [(ConversationViewControllerBase *)self view];
-      [v48 convertRect:v28 fromView:{v41, v43, v45, v47}];
+      view = [(ConversationViewControllerBase *)self view];
+      [view convertRect:collectionView fromView:{v41, v43, v45, v47}];
       v50 = v49;
       v52 = v51;
       v54 = v53;
@@ -4455,28 +4455,28 @@ LABEL_10:
       v59 = MaxY - CGRectGetMaxY(v89);
       if (v59 > 0.0)
       {
-        [v28 contentOffset];
+        [collectionView contentOffset];
         v61 = v60;
         v63 = v62;
-        [v28 contentSize];
+        [collectionView contentSize];
         v65 = v64;
-        [v28 bounds];
+        [collectionView bounds];
         v67 = v66;
-        [v28 contentInset];
+        [collectionView contentInset];
         v69 = v65 - v67 + v68;
         if (v59 + v63 < v69)
         {
           v69 = v59 + v63;
         }
 
-        [v28 setContentOffset:{v61, v69}];
+        [collectionView setContentOffset:{v61, v69}];
         v70 = +[ConversationViewController log];
         if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
           v80 = objc_opt_class();
           v81 = 2048;
-          v82 = self;
+          selfCopy = self;
           v83 = 2048;
           v84 = v59;
           v85 = 2048;
@@ -4492,21 +4492,21 @@ LABEL_29:
   }
 }
 
-- (void)_animateWithKeyboard:(id)a3 animations:(id)a4
+- (void)_animateWithKeyboard:(id)keyboard animations:(id)animations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+  keyboardCopy = keyboard;
+  animationsCopy = animations;
+  userInfo = [keyboardCopy userInfo];
+  v9 = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v6 userInfo];
-  v13 = [v12 objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-  v14 = [v13 integerValue];
+  userInfo2 = [keyboardCopy userInfo];
+  v13 = [userInfo2 objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+  integerValue = [v13 integerValue];
 
-  v15 = [v6 userInfo];
-  v16 = [v15 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo3 = [keyboardCopy userInfo];
+  v16 = [userInfo3 objectForKey:UIKeyboardFrameEndUserInfoKey];
   [v16 CGRectValue];
   v18 = v17;
   v20 = v19;
@@ -4517,29 +4517,29 @@ LABEL_29:
   v27[1] = 3221225472;
   v27[2] = sub_100090008;
   v27[3] = &unk_10064E3E8;
-  v25 = v7;
+  v25 = animationsCopy;
   v29 = v18;
   v30 = v20;
   v31 = v22;
   v32 = v24;
   v27[4] = self;
   v28 = v25;
-  v26 = [UIViewPropertyAnimator runningPropertyAnimatorWithDuration:v14 << 16 delay:v27 options:0 animations:v11 completion:0.0];
+  v26 = [UIViewPropertyAnimator runningPropertyAnimatorWithDuration:integerValue << 16 delay:v27 options:0 animations:v11 completion:0.0];
 }
 
-- (BOOL)canHandleAction:(SEL)a3 withMailMenuCommand:(id)a4
+- (BOOL)canHandleAction:(SEL)action withMailMenuCommand:(id)command
 {
-  v6 = [(ConversationViewControllerBase *)self _isConversationViewShortcut:a3, a4];
-  if (v6)
+  command = [(ConversationViewControllerBase *)self _isConversationViewShortcut:action, command];
+  if (command)
   {
 
-    LOBYTE(v6) = sub_100090084(self, a3);
+    LOBYTE(command) = sub_100090084(self, action);
   }
 
-  return v6;
+  return command;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v13 = 0;
   v14 = &v13;
@@ -4550,9 +4550,9 @@ LABEL_29:
   v9[2] = sub_100090440;
   v9[3] = &unk_10064E410;
   v11 = &v13;
-  v12 = a3;
-  v6 = a4;
-  v10 = v6;
+  actionCopy = action;
+  senderCopy = sender;
+  v10 = senderCopy;
   if ([(ConversationViewControllerBase *)self _executeIfSplitViewIsAvailable:v9])
   {
     v7 = *(v14 + 24);
@@ -4560,7 +4560,7 @@ LABEL_29:
 
   else
   {
-    v7 = [(ConversationViewControllerBase *)self canHandleAction:a3 withMailMenuCommand:v6];
+    v7 = [(ConversationViewControllerBase *)self canHandleAction:action withMailMenuCommand:senderCopy];
     *(v14 + 24) = v7;
   }
 
@@ -4568,49 +4568,49 @@ LABEL_29:
   return v7 & 1;
 }
 
-- (BOOL)_isConversationViewShortcut:(SEL)a3
+- (BOOL)_isConversationViewShortcut:(SEL)shortcut
 {
-  if (sub_10012F5F0(MailSplitViewController, a3))
+  if (sub_10012F5F0(MailSplitViewController, shortcut))
   {
     return 1;
   }
 
-  return sub_10012F238(MailSplitViewController, a3);
+  return sub_10012F238(MailSplitViewController, shortcut);
 }
 
-- (void)_pageUpCommandInvoked:(id)a3
+- (void)_pageUpCommandInvoked:(id)invoked
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 mf_pageUp];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView mf_pageUp];
 }
 
-- (void)_pageDownCommandInvoked:(id)a3
+- (void)_pageDownCommandInvoked:(id)invoked
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 mf_pageDown];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView mf_pageDown];
 }
 
-- (void)_selectNextMessageCommandInvoked:(id)a3
+- (void)_selectNextMessageCommandInvoked:(id)invoked
 {
-  v4 = [(ConversationViewControllerBase *)self delegate];
-  if ([v4 conversationViewController:self canAdvanceToNextConversationWithDirection:0xFFFFFFFFLL])
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  if ([delegate conversationViewController:self canAdvanceToNextConversationWithDirection:0xFFFFFFFFLL])
   {
-    [v4 conversationViewController:self advanceToNextConversationWithDirection:0xFFFFFFFFLL];
+    [delegate conversationViewController:self advanceToNextConversationWithDirection:0xFFFFFFFFLL];
   }
 }
 
-- (void)_selectPreviousMessageCommandInvoked:(id)a3
+- (void)_selectPreviousMessageCommandInvoked:(id)invoked
 {
-  v4 = [(ConversationViewControllerBase *)self delegate];
-  if ([v4 conversationViewController:self canAdvanceToNextConversationWithDirection:1])
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  if ([delegate conversationViewController:self canAdvanceToNextConversationWithDirection:1])
   {
-    [v4 conversationViewController:self advanceToNextConversationWithDirection:1];
+    [delegate conversationViewController:self advanceToNextConversationWithDirection:1];
   }
 }
 
-- (BOOL)_shouldShowArrowsForDisplayMode:(int64_t)a3 collapsed:(BOOL)a4 withTraitCollection:(id)a5
+- (BOOL)_shouldShowArrowsForDisplayMode:(int64_t)mode collapsed:(BOOL)collapsed withTraitCollection:(id)collection
 {
-  v8 = a5;
+  collectionCopy = collection;
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList]|| [(ConversationViewControllerBase *)self isStandalone]&& [(ConversationViewControllerBase *)self _isDisplayingSingleMessage])
   {
 LABEL_2:
@@ -4618,9 +4618,9 @@ LABEL_2:
     goto LABEL_8;
   }
 
-  if (v8)
+  if (collectionCopy)
   {
-    if (a4)
+    if (collapsed)
     {
 LABEL_7:
       LOBYTE(v9) = 1;
@@ -4630,18 +4630,18 @@ LABEL_7:
 
   else
   {
-    v8 = [(ConversationViewControllerBase *)self traitCollection];
-    if (a4)
+    collectionCopy = [(ConversationViewControllerBase *)self traitCollection];
+    if (collapsed)
     {
       goto LABEL_7;
     }
   }
 
-  v11 = [v8 horizontalSizeClass];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
   LOBYTE(v9) = 1;
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1 && v11 != 1)
+  if ((mode & 0xFFFFFFFFFFFFFFFDLL) != 1 && horizontalSizeClass != 1)
   {
-    if (a3 == 5)
+    if (mode == 5)
     {
       v9 = MUISolariumFeatureEnabled() ^ 1;
       goto LABEL_8;
@@ -4655,47 +4655,47 @@ LABEL_8:
   return v9;
 }
 
-- (void)_updateBarButtonsAnimated:(BOOL)a3 force:(BOOL)a4 isShowingTitle:(BOOL)a5
+- (void)_updateBarButtonsAnimated:(BOOL)animated force:(BOOL)force isShowingTitle:(BOOL)title
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ConversationViewControllerBase *)self splitViewController];
-  v12 = v9;
-  if (v9)
+  titleCopy = title;
+  forceCopy = force;
+  animatedCopy = animated;
+  splitViewController = [(ConversationViewControllerBase *)self splitViewController];
+  v12 = splitViewController;
+  if (splitViewController)
   {
-    v10 = [v9 displayMode];
-    v11 = [v12 isCollapsed];
+    displayMode = [splitViewController displayMode];
+    isCollapsed = [v12 isCollapsed];
   }
 
   else
   {
-    v11 = 1;
-    v10 = 1;
+    isCollapsed = 1;
+    displayMode = 1;
   }
 
-  [(ConversationViewControllerBase *)self _updateBarButtonsAnimated:v7 withDisplayMode:v10 withTraitCollection:0 collapsed:v11 force:v6 isShowingTitle:v5];
+  [(ConversationViewControllerBase *)self _updateBarButtonsAnimated:animatedCopy withDisplayMode:displayMode withTraitCollection:0 collapsed:isCollapsed force:forceCopy isShowingTitle:titleCopy];
 }
 
 - (void)_removeNavigationBarFromSelf
 {
-  v3 = [(ConversationViewControllerBase *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
-  v4 = [(ConversationViewControllerBase *)self navigationItem];
-  [v4 setCenterItemGroups:&__NSArray0__struct];
+  navigationItem2 = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem2 setCenterItemGroups:&__NSArray0__struct];
 
-  v5 = [(ConversationViewControllerBase *)self navigationItem];
-  [v5 setRightBarButtonItem:0];
+  navigationItem3 = [(ConversationViewControllerBase *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:0];
 }
 
-- (BOOL)_shouldUseDesktopClassNavigationBarForTraitCollection:(id)a3
+- (BOOL)_shouldUseDesktopClassNavigationBarForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v11 = [UINavigationBar mf_shouldUseDesktopClassNavigationBarForTraitCollection:v4];
+  v11 = [UINavigationBar mf_shouldUseDesktopClassNavigationBarForTraitCollection:collectionCopy];
   if (*(v9 + 24) == 1)
   {
     v7[0] = _NSConcreteStackBlock;
@@ -4717,33 +4717,33 @@ LABEL_8:
   return v5 & 1;
 }
 
-- (void)_updateBarButtonsAnimated:(BOOL)a3 withDisplayMode:(int64_t)a4 withTraitCollection:(id)a5 collapsed:(BOOL)a6 force:(BOOL)a7 isShowingTitle:(BOOL)a8
+- (void)_updateBarButtonsAnimated:(BOOL)animated withDisplayMode:(int64_t)mode withTraitCollection:(id)collection collapsed:(BOOL)collapsed force:(BOOL)force isShowingTitle:(BOOL)title
 {
-  v46 = a8;
-  v47 = a3;
-  v8 = a7;
-  v9 = a6;
-  v12 = a5;
-  v13 = [(ConversationViewControllerBase *)self barItemsManager];
-  v14 = [(ConversationViewControllerBase *)self _shouldArchiveByDefault];
-  if (v14 != [v13 useArchiveButton])
+  titleCopy = title;
+  animatedCopy = animated;
+  forceCopy = force;
+  collapsedCopy = collapsed;
+  collectionCopy = collection;
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  _shouldArchiveByDefault = [(ConversationViewControllerBase *)self _shouldArchiveByDefault];
+  if (_shouldArchiveByDefault != [barItemsManager useArchiveButton])
   {
-    [v13 setUseArchiveButton:v14];
-    v8 = 1;
+    [barItemsManager setUseArchiveButton:_shouldArchiveByDefault];
+    forceCopy = 1;
   }
 
-  v15 = [(ConversationViewControllerBase *)self _shouldShowArrowsForDisplayMode:a4 collapsed:v9 withTraitCollection:v12];
-  if (v15 != [v13 showNavigationArrows])
+  v15 = [(ConversationViewControllerBase *)self _shouldShowArrowsForDisplayMode:mode collapsed:collapsedCopy withTraitCollection:collectionCopy];
+  if (v15 != [barItemsManager showNavigationArrows])
   {
-    [v13 setShowNavigationArrows:v15];
-    v8 = 1;
+    [barItemsManager setShowNavigationArrows:v15];
+    forceCopy = 1;
   }
 
   v16 = sub_100090924(self);
   v17 = v16;
-  if (!v12)
+  if (!collectionCopy)
   {
-    v12 = [(ConversationViewControllerBase *)v16 traitCollection];
+    collectionCopy = [(ConversationViewControllerBase *)v16 traitCollection];
   }
 
   if (v17 != self)
@@ -4751,64 +4751,64 @@ LABEL_8:
     [(ConversationViewControllerBase *)self _removeNavigationBarFromSelf];
   }
 
-  v18 = [(ConversationViewControllerBase *)self _shouldUseDesktopClassNavigationBarForTraitCollection:v12];
-  v19 = v8 | v18 ^ [v13 useDesktopClassNavigationBar];
-  if (v19 != 1 || ([v13 setUseDesktopClassNavigationBar:v18], -[ConversationViewControllerBase navigationController](v17, "navigationController"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "navigationBar"), v21 = objc_claimAutoreleasedReturnValue(), -[ConversationViewControllerBase navigationItem](v17, "navigationItem"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "configureNavigationBar:navigationItem:", v21, v22), v22, v21, v20, !v18))
+  v18 = [(ConversationViewControllerBase *)self _shouldUseDesktopClassNavigationBarForTraitCollection:collectionCopy];
+  v19 = forceCopy | v18 ^ [barItemsManager useDesktopClassNavigationBar];
+  if (v19 != 1 || ([barItemsManager setUseDesktopClassNavigationBar:v18], -[ConversationViewControllerBase navigationController](v17, "navigationController"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "navigationBar"), v21 = objc_claimAutoreleasedReturnValue(), -[ConversationViewControllerBase navigationItem](v17, "navigationItem"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(barItemsManager, "configureNavigationBar:navigationItem:", v21, v22), v22, v21, v20, !v18))
   {
-    v25 = [v12 mf_hasCompactDimension];
+    mf_hasCompactDimension = [collectionCopy mf_hasCompactDimension];
     if (((self->_defaultBarButtons != 0) & ~v19) == 0)
     {
-      v26 = [(ConversationViewControllerBase *)self _defaultBarButtonItems];
+      _defaultBarButtonItems = [(ConversationViewControllerBase *)self _defaultBarButtonItems];
       defaultBarButtons = self->_defaultBarButtons;
-      self->_defaultBarButtons = v26;
+      self->_defaultBarButtons = _defaultBarButtonItems;
     }
 
     flags = self->_flags;
-    if ((v25 & *&flags) == 1)
+    if ((mf_hasCompactDimension & *&flags) == 1)
     {
-      v29 = [(ConversationViewControllerBase *)self toolbarItems];
-      v30 = v29 == 0;
+      toolbarItems = [(ConversationViewControllerBase *)self toolbarItems];
+      v30 = toolbarItems == 0;
     }
 
     else
     {
-      v30 = v25 ^ *&flags;
+      v30 = mf_hasCompactDimension ^ *&flags;
     }
 
-    v31 = [(ConversationViewControllerBase *)v17 navigationController];
-    [v31 setNavigationBarHidden:0 animated:v47];
+    navigationController = [(ConversationViewControllerBase *)v17 navigationController];
+    [navigationController setNavigationBarHidden:0 animated:animatedCopy];
 
-    v32 = [(ConversationViewControllerBase *)v17 navigationItem];
+    navigationItem = [(ConversationViewControllerBase *)v17 navigationItem];
     if (((v19 | v30) & 1) == 0)
     {
       goto LABEL_48;
     }
 
-    *&self->_flags = *&self->_flags & 0xFE | v25;
+    *&self->_flags = *&self->_flags & 0xFE | mf_hasCompactDimension;
     v33 = objc_opt_new();
     if ((*&self->_flags & 1) == 0)
     {
-      [(ConversationViewControllerBase *)v17 setToolbarItems:0 animated:v47];
+      [(ConversationViewControllerBase *)v17 setToolbarItems:0 animated:animatedCopy];
       if ([(ConversationViewControllerBase *)self isPrimary])
       {
         if ([v33 count])
         {
-          v34 = [v13 leftSpaceItem];
-          [v33 addObject:v34];
+          leftSpaceItem = [barItemsManager leftSpaceItem];
+          [v33 addObject:leftSpaceItem];
         }
 
         if (v15)
         {
           if (MUISolariumFeatureEnabled())
           {
-            v35 = [v13 arrowControlsButtonItems];
-            [v33 addObjectsFromArray:v35];
+            arrowControlsButtonItems = [barItemsManager arrowControlsButtonItems];
+            [v33 addObjectsFromArray:arrowControlsButtonItems];
           }
 
           else
           {
-            v35 = [v13 arrowControlsButtonItem];
-            [v33 addObject:v35];
+            arrowControlsButtonItems = [barItemsManager arrowControlsButtonItem];
+            [v33 addObject:arrowControlsButtonItems];
           }
         }
       }
@@ -4816,7 +4816,7 @@ LABEL_8:
       v40 = [(ConversationViewControllerBase *)self _defaultBarButtonsWithFlexibleSpacing:0 reverseOrder:1];
       v41 = [v40 mutableCopy];
 
-      [v32 setRightBarButtonItems:v41 animated:v47];
+      [navigationItem setRightBarButtonItems:v41 animated:animatedCopy];
       goto LABEL_37;
     }
 
@@ -4824,47 +4824,47 @@ LABEL_8:
     {
       if (MUISolariumFeatureEnabled())
       {
-        v36 = [v13 arrowControlsButtonItems];
+        arrowControlsButtonItems2 = [barItemsManager arrowControlsButtonItems];
 LABEL_33:
-        [v32 setRightBarButtonItems:v36 animated:v47];
+        [navigationItem setRightBarButtonItems:arrowControlsButtonItems2 animated:animatedCopy];
         v39 = [(ConversationViewControllerBase *)self _defaultBarButtonsWithFlexibleSpacing:1 reverseOrder:0];
-        [(ConversationViewControllerBase *)v17 setToolbarItems:v39 animated:v47];
+        [(ConversationViewControllerBase *)v17 setToolbarItems:v39 animated:animatedCopy];
 
 LABEL_37:
         if ([v33 count])
         {
-          v42 = [v32 leftBarButtonItems];
-          v43 = [v33 isEqual:v42];
+          leftBarButtonItems = [navigationItem leftBarButtonItems];
+          v43 = [v33 isEqual:leftBarButtonItems];
 
           if ((v43 & 1) == 0)
           {
-            [v32 setLeftBarButtonItems:v33 animated:v47];
+            [navigationItem setLeftBarButtonItems:v33 animated:animatedCopy];
           }
 
-          [v32 setLeftItemsSupplementBackButton:1];
+          [navigationItem setLeftItemsSupplementBackButton:1];
         }
 
         else
         {
-          [v32 setLeftBarButtonItems:0 animated:v47];
+          [navigationItem setLeftBarButtonItems:0 animated:animatedCopy];
         }
 
-        if ([(ConversationViewControllerBase *)self shouldAddDoneButtonForConversationNavigationBarItemsManager:v13])
+        if ([(ConversationViewControllerBase *)self shouldAddDoneButtonForConversationNavigationBarItemsManager:barItemsManager])
         {
-          v44 = [v13 doneButtonItem];
-          v48 = v44;
+          doneButtonItem = [barItemsManager doneButtonItem];
+          v48 = doneButtonItem;
           v45 = [NSArray arrayWithObjects:&v48 count:1];
 
           if (*&self->_flags)
           {
-            [v32 setRightBarButtonItems:v45 animated:v47];
-            [v32 setHidesBackButton:1 animated:v47];
+            [navigationItem setRightBarButtonItems:v45 animated:animatedCopy];
+            [navigationItem setHidesBackButton:1 animated:animatedCopy];
           }
 
           else
           {
-            [v32 setLeftBarButtonItems:v45 animated:v47];
-            [v32 setLeftItemsSupplementBackButton:0];
+            [navigationItem setLeftBarButtonItems:v45 animated:animatedCopy];
+            [navigationItem setLeftItemsSupplementBackButton:0];
           }
         }
 
@@ -4874,8 +4874,8 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v37 = [v13 arrowControlsButtonItem];
-      v50 = v37;
+      arrowControlsButtonItem = [barItemsManager arrowControlsButtonItem];
+      v50 = arrowControlsButtonItem;
       v38 = [NSArray arrayWithObjects:&v50 count:1];
     }
 
@@ -4883,26 +4883,26 @@ LABEL_48:
     {
       if (![(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
       {
-        v36 = 0;
+        arrowControlsButtonItems2 = 0;
         goto LABEL_33;
       }
 
-      v37 = [v13 groupedSenderActionsButtonItem];
-      v49 = v37;
+      arrowControlsButtonItem = [barItemsManager groupedSenderActionsButtonItem];
+      v49 = arrowControlsButtonItem;
       v38 = [NSArray arrayWithObjects:&v49 count:1];
     }
 
-    v36 = v38;
+    arrowControlsButtonItems2 = v38;
 
     goto LABEL_33;
   }
 
-  [(ConversationViewControllerBase *)v17 setToolbarItems:0 animated:v47];
-  v23 = [(ConversationViewControllerBase *)v17 navigationController];
-  [v23 setNavigationBarHidden:0 animated:v47];
+  [(ConversationViewControllerBase *)v17 setToolbarItems:0 animated:animatedCopy];
+  navigationController2 = [(ConversationViewControllerBase *)v17 navigationController];
+  [navigationController2 setNavigationBarHidden:0 animated:animatedCopy];
 
-  v24 = [(ConversationViewControllerBase *)v17 navigationItem];
-  [v13 configureDesktopClassButtonsFor:v24 isPrimary:-[ConversationViewControllerBase isPrimary](self isShowingTitle:"isPrimary") animated:{v46, v47}];
+  navigationItem2 = [(ConversationViewControllerBase *)v17 navigationItem];
+  [barItemsManager configureDesktopClassButtonsFor:navigationItem2 isPrimary:-[ConversationViewControllerBase isPrimary](self isShowingTitle:"isPrimary") animated:{titleCopy, animatedCopy}];
 
   [(ConversationViewControllerBase *)self _updateBarButtonsEnabled];
 LABEL_49:
@@ -4910,31 +4910,31 @@ LABEL_49:
 
 - (id)_defaultBarButtonItems
 {
-  v2 = self;
-  v3 = [(ConversationViewControllerBase *)self barItemsManager];
+  selfCopy = self;
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 destructiveButtonItem];
-  v14[0] = v5;
-  v6 = [v3 moveButtonItem];
-  v14[1] = v6;
+  destructiveButtonItem = [barItemsManager destructiveButtonItem];
+  v14[0] = destructiveButtonItem;
+  moveButtonItem = [barItemsManager moveButtonItem];
+  v14[1] = moveButtonItem;
   v7 = [NSArray arrayWithObjects:v14 count:2];
   [v4 addObjectsFromArray:v7];
 
-  v8 = [(ConversationViewControllerBase *)v2 traitCollection];
-  LODWORD(v2) = [v8 mf_hasCompactDimension];
+  traitCollection = [(ConversationViewControllerBase *)selfCopy traitCollection];
+  LODWORD(selfCopy) = [traitCollection mf_hasCompactDimension];
 
-  if (v2)
+  if (selfCopy)
   {
-    v9 = [v3 revealActionsButtonItem];
-    [v4 addObject:v9];
+    revealActionsButtonItem = [barItemsManager revealActionsButtonItem];
+    [v4 addObject:revealActionsButtonItem];
   }
 
-  v10 = [v3 composeButtonItem];
+  composeButtonItem = [barItemsManager composeButtonItem];
 
-  if (v10)
+  if (composeButtonItem)
   {
-    v11 = [v3 composeButtonItem];
-    [v4 addObject:v11];
+    composeButtonItem2 = [barItemsManager composeButtonItem];
+    [v4 addObject:composeButtonItem2];
   }
 
   v12 = [v4 copy];
@@ -4942,40 +4942,40 @@ LABEL_49:
   return v12;
 }
 
-- (void)setDoneButton:(id)a3
+- (void)setDoneButton:(id)button
 {
-  v5 = a3;
-  v4 = [(ConversationViewControllerBase *)self barItemsManager];
-  [v4 setDoneButton:v5];
+  buttonCopy = button;
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  [barItemsManager setDoneButton:buttonCopy];
 }
 
 - (UIBarButtonItem)doneButton
 {
-  v2 = [(ConversationViewControllerBase *)self barItemsManager];
-  v3 = [v2 doneButton];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  doneButton = [barItemsManager doneButton];
 
-  return v3;
+  return doneButton;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v9 = [(ConversationViewControllerBase *)self delegate];
-  v4 = [(ConversationViewControllerBase *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  navigationController = [(ConversationViewControllerBase *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v6 == self)
+  if (firstObject == self)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v9 conversationViewControllerWantsDismissal:self];
+      [delegate conversationViewControllerWantsDismissal:self];
     }
   }
 
   else
   {
-    v7 = [(ConversationViewControllerBase *)self navigationController];
-    v8 = [v7 popViewControllerAnimated:1];
+    navigationController2 = [(ConversationViewControllerBase *)self navigationController];
+    v8 = [navigationController2 popViewControllerAnimated:1];
   }
 }
 
@@ -4994,12 +4994,12 @@ LABEL_49:
   return v2;
 }
 
-- (id)_defaultBarButtonsWithFlexibleSpacing:(BOOL)a3 reverseOrder:(BOOL)a4
+- (id)_defaultBarButtonsWithFlexibleSpacing:(BOOL)spacing reverseOrder:(BOOL)order
 {
-  v4 = a4;
-  v5 = a3;
+  orderCopy = order;
+  spacingCopy = spacing;
   v7 = +[NSMutableArray array];
-  if (v5)
+  if (spacingCopy)
   {
     [(ConversationViewControllerBase *)self _flexibleSpaceBarButton];
   }
@@ -5009,7 +5009,7 @@ LABEL_49:
     [(ConversationViewControllerBase *)self _fixedSpaceBarButton];
   }
   v8 = ;
-  if (v4)
+  if (orderCopy)
   {
     v9 = 2;
   }
@@ -5019,11 +5019,11 @@ LABEL_49:
     v9 = 0;
   }
 
-  v10 = [(ConversationViewControllerBase *)self barItemsManager];
-  v11 = [v10 composeButtonItem];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  composeButtonItem = [barItemsManager composeButtonItem];
 
   v12 = MUISolariumFeatureEnabled();
-  if (v11)
+  if (composeButtonItem)
   {
     v13 = v12;
   }
@@ -5035,7 +5035,7 @@ LABEL_49:
 
   if (v13 == 1)
   {
-    v14 = [(NSArray *)self->_defaultBarButtons indexOfObject:v11];
+    v14 = [(NSArray *)self->_defaultBarButtons indexOfObject:composeButtonItem];
     v15 = v14 != 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -5051,15 +5051,15 @@ LABEL_49:
   v23[2] = sub_1000919AC;
   v23[3] = &unk_10064E438;
   v28 = v15;
-  v29 = v4;
+  v29 = orderCopy;
   v27 = v14;
   v17 = v7;
   v24 = v17;
   v18 = v8;
   v25 = v18;
-  v26 = self;
+  selfCopy = self;
   [(NSArray *)defaultBarButtons enumerateObjectsWithOptions:v9 usingBlock:v23];
-  if (v5 && [(ConversationViewControllerBase *)self shouldHideStickyFooterView])
+  if (spacingCopy && [(ConversationViewControllerBase *)self shouldHideStickyFooterView])
   {
     v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
     [v19 setWidth:8.0];
@@ -5074,35 +5074,35 @@ LABEL_49:
   return v17;
 }
 
-- (void)revealActionsButtonTapped:(id)a3
+- (void)revealActionsButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase revealActionsButtonTapped:]", "ConversationViewControllerBase.m", 3145, "0");
 }
 
-- (void)replyButtonTapped:(id)a3
+- (void)replyButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase replyButtonTapped:]", "ConversationViewControllerBase.m", 3149, "0");
 }
 
-- (void)replyAllButtonTapped:(id)a3
+- (void)replyAllButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase replyAllButtonTapped:]", "ConversationViewControllerBase.m", 3153, "0");
 }
 
-- (void)forwardButtonTapped:(id)a3
+- (void)forwardButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase forwardButtonTapped:]", "ConversationViewControllerBase.m", 3157, "0");
 }
 
-- (id)supplementaryButtonItemForConversationNavigationBarItemsManager:(id)a3
+- (id)supplementaryButtonItemForConversationNavigationBarItemsManager:(id)manager
 {
   v6 = 0;
   v7 = &v6;
@@ -5122,22 +5122,22 @@ LABEL_49:
   return v3;
 }
 
-- (BOOL)shouldAddDoneButtonForConversationNavigationBarItemsManager:(id)a3
+- (BOOL)shouldAddDoneButtonForConversationNavigationBarItemsManager:(id)manager
 {
   if (+[UIDevice mf_isPadIdiom]&& ![(ConversationViewControllerBase *)self isPrimary]&& ![(ConversationViewControllerBase *)self shownAsConversation])
   {
     return 1;
   }
 
-  v4 = [(ConversationViewControllerBase *)self doneButton];
-  v5 = v4 != 0;
+  doneButton = [(ConversationViewControllerBase *)self doneButton];
+  v5 = doneButton != 0;
 
   return v5;
 }
 
-- (void)navigateToMessageInDirection:(int)a3
+- (void)navigateToMessageInDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   if ([(ConversationViewControllerBase *)self _canBrowseInDirection:?])
   {
 
@@ -5145,9 +5145,9 @@ LABEL_49:
   }
 }
 
-- (void)_navigateToMessageInDirection:(int)a3
+- (void)_navigateToMessageInDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   v5 = [(ConversationViewControllerBase *)self _nextMessageIndexWithDirection:?];
   v10 = v5;
   if (v5)
@@ -5158,9 +5158,9 @@ LABEL_49:
 
   else
   {
-    v6 = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
+    _isDisplayingSingleMessage = [(ConversationViewControllerBase *)self _isDisplayingSingleMessage];
     flags = self->_flags;
-    if ((v6 | ((flags & 2) >> 1)) == 1)
+    if ((_isDisplayingSingleMessage | ((flags & 2) >> 1)) == 1)
     {
       *&self->_flags = flags & 0xFD;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -5185,12 +5185,12 @@ LABEL_49:
   }
 }
 
-- (BOOL)_canBrowseInDirection:(int)a3
+- (BOOL)_canBrowseInDirection:(int)direction
 {
-  v3 = *&a3;
-  v5 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v3 = *&direction;
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
 
-  if (!v5)
+  if (!referenceMessageListItem)
   {
     return 0;
   }
@@ -5215,26 +5215,26 @@ LABEL_49:
   if (MUISolariumFeatureEnabled())
   {
     v3 = [(ConversationViewControllerBase *)self _canBrowseInDirection:0xFFFFFFFFLL];
-    v10 = [(ConversationViewControllerBase *)self barItemsManager];
-    v4 = [v10 upArrowBarButtonItem];
-    [v4 setEnabled:v3];
+    barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+    upArrowBarButtonItem = [barItemsManager upArrowBarButtonItem];
+    [upArrowBarButtonItem setEnabled:v3];
 
     v5 = [(ConversationViewControllerBase *)self _canBrowseInDirection:1];
-    v11 = [(ConversationViewControllerBase *)self barItemsManager];
-    [v11 downArrowBarButtonItem];
+    barItemsManager2 = [(ConversationViewControllerBase *)self barItemsManager];
+    [barItemsManager2 downArrowBarButtonItem];
   }
 
   else
   {
-    v7 = [(ConversationViewControllerBase *)self barItemsManager];
-    v11 = [v7 arrowControlsView];
+    barItemsManager3 = [(ConversationViewControllerBase *)self barItemsManager];
+    barItemsManager2 = [barItemsManager3 arrowControlsView];
 
     v8 = [(ConversationViewControllerBase *)self _canBrowseInDirection:0xFFFFFFFFLL];
-    v9 = [v11 upButton];
-    [v9 setEnabled:v8];
+    upButton = [barItemsManager2 upButton];
+    [upButton setEnabled:v8];
 
     v5 = [(ConversationViewControllerBase *)self _canBrowseInDirection:1];
-    [v11 downButton];
+    [barItemsManager2 downButton];
   }
   v6 = ;
   [v6 setEnabled:v5];
@@ -5242,40 +5242,40 @@ LABEL_49:
 
 - (void)_setNavigationBarTitleViewNeedsLayout
 {
-  v2 = [(ConversationViewControllerBase *)self conversationHeaderView];
-  [v2 setNeedsLayout];
+  conversationHeaderView = [(ConversationViewControllerBase *)self conversationHeaderView];
+  [conversationHeaderView setNeedsLayout];
 }
 
 - (id)replyButtonItem
 {
-  v2 = [(ConversationViewControllerBase *)self barItemsManager];
-  v3 = [v2 replyButtonItem];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  replyButtonItem = [barItemsManager replyButtonItem];
 
-  return v3;
+  return replyButtonItem;
 }
 
 - (id)deleteButtonItem
 {
-  v2 = [(ConversationViewControllerBase *)self barItemsManager];
-  v3 = [v2 deleteButtonItem];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  deleteButtonItem = [barItemsManager deleteButtonItem];
 
-  return v3;
+  return deleteButtonItem;
 }
 
 - (id)archiveButtonItem
 {
-  v2 = [(ConversationViewControllerBase *)self barItemsManager];
-  v3 = [v2 archiveButtonItem];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  archiveButtonItem = [barItemsManager archiveButtonItem];
 
-  return v3;
+  return archiveButtonItem;
 }
 
 - (id)moveButtonItem
 {
-  v2 = [(ConversationViewControllerBase *)self barItemsManager];
-  v3 = [v2 moveButtonItem];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  moveButtonItem = [barItemsManager moveButtonItem];
 
-  return v3;
+  return moveButtonItem;
 }
 
 - (MFArrowControlsView)arrowControlsView
@@ -5283,10 +5283,10 @@ LABEL_49:
   arrowControlsView = self->_arrowControlsView;
   if (!arrowControlsView)
   {
-    v4 = [(ConversationViewControllerBase *)self barItemsManager];
-    v5 = [v4 arrowControlsView];
+    barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+    arrowControlsView = [barItemsManager arrowControlsView];
     v6 = self->_arrowControlsView;
-    self->_arrowControlsView = v5;
+    self->_arrowControlsView = arrowControlsView;
 
     arrowControlsView = self->_arrowControlsView;
   }
@@ -5294,16 +5294,16 @@ LABEL_49:
   return arrowControlsView;
 }
 
-- (void)_showModalViewController:(id)a3 fromView:(id)a4 sourceRect:(CGRect)a5 animated:(BOOL)a6
+- (void)_showModalViewController:(id)controller fromView:(id)view sourceRect:(CGRect)rect animated:(BOOL)animated
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v22 = v13;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  v22 = controllerCopy;
   objc_opt_class();
   v15 = v22;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -5314,10 +5314,10 @@ LABEL_49:
   }
 
   [v15 setModalPresentationStyle:7];
-  v17 = [v15 popoverPresentationController];
-  [v17 setPermittedArrowDirections:3];
-  [v17 setSourceView:v14];
-  [v17 setDelegate:self];
+  popoverPresentationController = [v15 popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:3];
+  [popoverPresentationController setSourceView:viewCopy];
+  [popoverPresentationController setDelegate:self];
   v25.origin.x = CGRectZero.origin.x;
   v25.origin.y = CGRectZero.origin.y;
   v25.size.width = CGRectZero.size.width;
@@ -5328,30 +5328,30 @@ LABEL_49:
   v24.size.height = height;
   if (CGRectEqualToRect(v24, v25))
   {
-    [(ConversationViewControllerBase *)self _defaultSourceRectForView:v14];
+    [(ConversationViewControllerBase *)self _defaultSourceRectForView:viewCopy];
     x = v18;
     y = v19;
     width = v20;
     height = v21;
   }
 
-  [v17 setSourceRect:{x, y, width, height}];
-  [(ConversationViewControllerBase *)self presentViewController:v15 animated:v6 completion:0];
+  [popoverPresentationController setSourceRect:{x, y, width, height}];
+  [(ConversationViewControllerBase *)self presentViewController:v15 animated:animatedCopy completion:0];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000927A0;
   v18 = &unk_10064E460;
-  v10 = v8;
+  v10 = controllerCopy;
   v19 = v10;
-  v22 = a4;
-  v11 = v9;
-  v20 = self;
+  animatedCopy = animated;
+  v11 = completionCopy;
+  selfCopy = self;
   v21 = v11;
   v12 = objc_retainBlock(&v15);
   v13 = [(ConversationViewControllerBase *)self presentedViewController:v15];
@@ -5367,10 +5367,10 @@ LABEL_49:
   }
 }
 
-- (CGRect)_defaultSourceRectForView:(id)a3
+- (CGRect)_defaultSourceRectForView:(id)view
 {
-  v3 = a3;
-  [v3 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   x = v12.origin.x;
   y = v12.origin.y;
   width = v12.size.width;
@@ -5387,65 +5387,65 @@ LABEL_49:
   return result;
 }
 
-- (void)_endEditingAnimated:(BOOL)a3
+- (void)_endEditingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(ConversationViewControllerBase *)self conversationLayout];
-  [v4 setSwipedIndexPath:0 animated:v3 completion:0];
+  animatedCopy = animated;
+  conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+  [conversationLayout setSwipedIndexPath:0 animated:animatedCopy completion:0];
 }
 
 - (void)presentPreviousDraftPicker
 {
-  v5 = [(ConversationViewControllerBase *)self scene];
+  scene = [(ConversationViewControllerBase *)self scene];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ConversationViewControllerBase *)self barItemsManager];
-    v4 = [v3 composeButtonItem];
-    [v5 performSelector:"composeButtonLongPressed:" withObject:v4];
+    barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+    composeButtonItem = [barItemsManager composeButtonItem];
+    [scene performSelector:"composeButtonLongPressed:" withObject:composeButtonItem];
   }
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v8 = a3;
+  controllerCopy = controller;
   if (![(ConversationViewControllerBase *)self desiredContextualControllerPresentationStyle])
   {
-    v5 = [(ConversationViewControllerBase *)self barItemsManager];
-    v6 = [v5 contactLeftDoneButtonItem];
-    v7 = [v8 navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+    contactLeftDoneButtonItem = [barItemsManager contactLeftDoneButtonItem];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setLeftBarButtonItem:contactLeftDoneButtonItem];
   }
 }
 
 - (id)passthroughViews
 {
   v3 = [NSMutableArray arrayWithCapacity:3];
-  v4 = [(ConversationViewControllerBase *)self barItemsManager];
-  v5 = [v4 replyButtonItem];
-  v6 = [v5 view];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  replyButtonItem = [barItemsManager replyButtonItem];
+  view = [replyButtonItem view];
 
-  if (v6)
+  if (view)
   {
-    [v3 addObject:v6];
+    [v3 addObject:view];
   }
 
   v7 = +[NSUserDefaults em_userDefaults];
   if ([v7 BOOLForKey:ShowMessageDeleteConfirmationKey])
   {
-    v8 = [(ConversationViewControllerBase *)self barItemsManager];
-    v9 = [v8 deleteButtonItem];
-    v10 = [v9 view];
+    barItemsManager2 = [(ConversationViewControllerBase *)self barItemsManager];
+    deleteButtonItem = [barItemsManager2 deleteButtonItem];
+    view2 = [deleteButtonItem view];
 
-    if (v10)
+    if (view2)
     {
-      [v3 addObject:v10];
+      [v3 addObject:view2];
     }
   }
 
   else
   {
 
-    v10 = v6;
+    view2 = view;
   }
 
   return v3;
@@ -5453,9 +5453,9 @@ LABEL_49:
 
 - (void)_updateConversationSortOrder
 {
-  v3 = [(ConversationViewControllerBase *)self _currentConversationSortOrderPreference];
+  _currentConversationSortOrderPreference = [(ConversationViewControllerBase *)self _currentConversationSortOrderPreference];
 
-  [(ConversationViewControllerBase *)self setConversationSortOrder:v3];
+  [(ConversationViewControllerBase *)self setConversationSortOrder:_currentConversationSortOrderPreference];
 }
 
 - (void)_updateIncludeRelatedMessages
@@ -5475,18 +5475,18 @@ LABEL_49:
   [(ConversationViewControllerBase *)self _reloadDataSource];
 }
 
-- (void)_splitViewStateChanged:(id)a3
+- (void)_splitViewStateChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [(ConversationViewControllerBase *)self splitViewController];
+  changedCopy = changed;
+  object = [changedCopy object];
+  splitViewController = [(ConversationViewControllerBase *)self splitViewController];
 
-  if (v6 == v7)
+  if (object == splitViewController)
   {
-    v8 = [v5 userInfo];
-    v9 = [v8 objectForKeyedSubscript:@"MailSplitViewControllerNewDisplayModeKey"];
-    v10 = [v8 objectForKeyedSubscript:@"MailSplitViewControllerNewTraitCollectionKey"];
-    v11 = [v8 objectForKeyedSubscript:@"MailSplitViewControllerIsCollapsedKey"];
+    userInfo = [changedCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:@"MailSplitViewControllerNewDisplayModeKey"];
+    v10 = [userInfo objectForKeyedSubscript:@"MailSplitViewControllerNewTraitCollectionKey"];
+    v11 = [userInfo objectForKeyedSubscript:@"MailSplitViewControllerIsCollapsedKey"];
     v12 = v11;
     if (!v9 || !v11)
     {
@@ -5494,41 +5494,41 @@ LABEL_49:
       [v16 handleFailureInMethod:a2 object:self file:@"ConversationViewControllerBase.m" lineNumber:3446 description:{@"Notification is missing information:%@, %@", v9, v12}];
     }
 
-    v13 = [v9 integerValue];
-    v14 = [v12 BOOLValue];
+    integerValue = [v9 integerValue];
+    bOOLValue = [v12 BOOLValue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100092EA4;
     v17[3] = &unk_10064E488;
     v17[4] = self;
-    v19 = v13;
+    v19 = integerValue;
     v15 = v10;
     v18 = v15;
-    v20 = v14;
+    v20 = bOOLValue;
     [UIView performWithoutAnimation:v17];
   }
 }
 
-- (CGSize)defaultCellSizeForTracker:(id)a3
+- (CGSize)defaultCellSizeForTracker:(id)tracker
 {
-  v4 = [(ConversationViewControllerBase *)self collectionView];
-  [v4 mf_visibleHeight];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView mf_visibleHeight];
   v6 = v5;
 
   if ([(ConversationViewControllerBase *)self _isDisplayingSingleMessage])
   {
     if (![(ConversationViewControllerBase *)self shouldHideStickyFooterView]|| (v7 = 0.0, MUISolariumFeatureEnabled()))
     {
-      v8 = [(ConversationViewControllerBase *)self collectionView];
-      [v8 contentInset];
+      collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+      [collectionView2 contentInset];
       v7 = v9;
     }
 
     v10 = v6 + v7;
     if (+[UIDevice mf_isPadIdiom]&& (MUISolariumFeatureEnabled() & 1) == 0)
     {
-      v11 = [(ConversationViewControllerBase *)self displayMetrics];
-      [v11 estimatedFooterViewHeight];
+      displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+      [displayMetrics estimatedFooterViewHeight];
       v10 = v10 + v12 * -0.5;
     }
   }
@@ -5547,14 +5547,14 @@ LABEL_49:
 
 - (double)_expectedCellWidth
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 mui_safeVisibleBounds];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView mui_safeVisibleBounds];
   v4 = CGRectGetWidth(v6) + self->_horizontalPadding * -2.0;
 
   return v4;
 }
 
-- (double)quickReplyHeightForTracker:(id)a3
+- (double)quickReplyHeightForTracker:(id)tracker
 {
   [(ConversationViewControllerBase *)self quickReplyHeight];
   v5 = v4;
@@ -5562,38 +5562,38 @@ LABEL_49:
   return v5 + v6;
 }
 
-- (int64_t)conversationViewCellSizeTracker:(id)a3 expansionStatusForMessageWithItemID:(id)a4
+- (int64_t)conversationViewCellSizeTracker:(id)tracker expansionStatusForMessageWithItemID:(id)d
 {
-  v5 = a4;
-  v6 = [(ConversationViewControllerBase *)self cellConfigurator];
-  v7 = [v6 expansionTracker];
-  v8 = [v7 expansionStatusForCellWithItemID:v5];
+  dCopy = d;
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  expansionTracker = [cellConfigurator expansionTracker];
+  v8 = [expansionTracker expansionStatusForCellWithItemID:dCopy];
 
   return v8;
 }
 
-- (double)defaultSemiExpandedHeightForTracker:(id)a3
+- (double)defaultSemiExpandedHeightForTracker:(id)tracker
 {
-  v3 = [(ConversationViewControllerBase *)self displayMetrics];
-  [MFExpandedMessageCell defaultSemiExpandedHeightWithDisplayMetrics:v3];
+  displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+  [MFExpandedMessageCell defaultSemiExpandedHeightWithDisplayMetrics:displayMetrics];
   v5 = v4;
 
   return v5;
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = [a3 presentedViewController];
-  v8 = [v7 childViewControllers];
+  presentedViewController = [controller presentedViewController];
+  childViewControllers = [presentedViewController childViewControllers];
 
-  if ([v8 count])
+  if ([childViewControllers count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v8;
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    navigationItem = childViewControllers;
+    v10 = [navigationItem countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -5603,7 +5603,7 @@ LABEL_4:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(navigationItem);
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
@@ -5615,7 +5615,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v10 = [navigationItem countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -5632,37 +5632,37 @@ LABEL_4:
         goto LABEL_21;
       }
 
-      v14 = [v10 contentViewController];
-      v15 = [v14 isEditing];
+      contentViewController = [v10 contentViewController];
+      isEditing = [contentViewController isEditing];
 
-      if (v15)
+      if (isEditing)
       {
         goto LABEL_21;
       }
 
-      if (a4 == -1)
+      if (style == -1)
       {
-        v9 = [v10 navigationItem];
-        [v9 setLeftBarButtonItem:0];
+        navigationItem = [v10 navigationItem];
+        [navigationItem setLeftBarButtonItem:0];
       }
 
       else
       {
-        v9 = [v10 contact];
-        if ([v9 isUnknown])
+        navigationItem = [v10 contact];
+        if ([navigationItem isUnknown])
         {
-          v16 = [(ConversationViewControllerBase *)self barItemsManager];
-          v17 = [v16 contactLeftDoneButtonItem];
-          v18 = [v10 navigationItem];
-          [v18 setRightBarButtonItem:v17];
+          barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+          contactLeftDoneButtonItem = [barItemsManager contactLeftDoneButtonItem];
+          navigationItem2 = [v10 navigationItem];
+          [navigationItem2 setRightBarButtonItem:contactLeftDoneButtonItem];
         }
 
         else
         {
-          v16 = [(ConversationViewControllerBase *)self barItemsManager];
-          v17 = [v16 contactLeftDoneButtonItem];
-          v18 = [v10 navigationItem];
-          [v18 setLeftBarButtonItem:v17];
+          barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+          contactLeftDoneButtonItem = [barItemsManager contactLeftDoneButtonItem];
+          navigationItem2 = [v10 navigationItem];
+          [navigationItem2 setLeftBarButtonItem:contactLeftDoneButtonItem];
         }
       }
     }
@@ -5678,9 +5678,9 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_toggleCellsGroupOpacityDuringRotationWithCoordinator:(id)a3
+- (void)_toggleCellsGroupOpacityDuringRotationWithCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000935B0;
@@ -5694,31 +5694,31 @@ LABEL_21:
   v7[3] = &unk_10064E4B0;
   v6 = v5;
   v8 = v6;
-  [v4 animateAlongsideTransition:0 completion:v7];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v7];
 }
 
-- (void)_toggleCellGroupOpacityIfNeeded:(id)a3 displaying:(BOOL)a4
+- (void)_toggleCellGroupOpacityIfNeeded:(id)needed displaying:(BOOL)displaying
 {
-  v4 = a4;
-  v6 = a3;
+  displayingCopy = displaying;
+  neededCopy = needed;
   if ((*&self->_flags & 0x80000000) != 0)
   {
-    v8 = v6;
-    v7 = [v6 layer];
-    [v7 setAllowsGroupOpacity:!v4];
+    v8 = neededCopy;
+    layer = [neededCopy layer];
+    [layer setAllowsGroupOpacity:!displayingCopy];
 
-    v6 = v8;
+    neededCopy = v8;
   }
 }
 
-- (void)_beginResizingConversationView:(CGSize)a3
+- (void)_beginResizingConversationView:(CGSize)view
 {
-  height = a3.height;
-  width = a3.width;
-  v26 = [(ConversationViewControllerBase *)self collectionView];
-  if ([v26 numberOfSections])
+  height = view.height;
+  width = view.width;
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  if ([collectionView numberOfSections])
   {
-    v6 = [v26 numberOfItemsInSection:0] == 0;
+    v6 = [collectionView numberOfItemsInSection:0] == 0;
   }
 
   else
@@ -5726,14 +5726,14 @@ LABEL_21:
     v6 = 1;
   }
 
-  v7 = [(ConversationViewControllerBase *)self splitViewController];
-  v8 = [v7 displayMode];
+  splitViewController = [(ConversationViewControllerBase *)self splitViewController];
+  displayMode = [splitViewController displayMode];
 
-  v10 = v8 != 2 && v8 != 4;
+  v10 = displayMode != 2 && displayMode != 4;
   if (!v10 && !v6)
   {
     [(ConversationViewControllerBase *)self prepareForResizing];
-    [v26 frame];
+    [collectionView frame];
     v15 = v11;
     v16 = v12;
     v17 = v13;
@@ -5765,38 +5765,38 @@ LABEL_21:
 
     if (v19 == v20 || v19 < 1.0 && v20 < 1.0 || v19 > 1.0 && v20 > 1.0)
     {
-      [v26 center];
+      [collectionView center];
       UIRectCenteredAboutPoint();
       v15 = v22;
       v16 = v23;
       width = v24;
       height = v25;
-      [v26 setAutoresizingMask:5];
+      [collectionView setAutoresizingMask:5];
     }
 
     else
     {
-      [v26 setAutoresizingMask:0];
+      [collectionView setAutoresizingMask:0];
     }
 
-    [v26 setFrame:{v15, v16, width, height}];
+    [collectionView setFrame:{v15, v16, width, height}];
     [(ConversationViewControllerBase *)self layoutMarginsForCollectionViewFrame:v15, v16, width, height];
-    [v26 setDirectionalLayoutMargins:?];
+    [collectionView setDirectionalLayoutMargins:?];
     [(ConversationViewControllerBase *)self beginResizing];
   }
 }
 
 - (void)_endResizingConversationView
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  [v3 setAutoresizingMask:18];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView setAutoresizingMask:18];
 
   v4 = sub_10001F2A0(self);
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ConversationViewControllerBase *)self collectionView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView2 setFrame:{v4, v6, v8, v10}];
 
   [(ConversationViewControllerBase *)self endResizing];
 }
@@ -5813,23 +5813,23 @@ LABEL_21:
     v5 = v4;
     v7 = v6;
     v9 = v8;
-    v10 = [(ConversationViewControllerBase *)self collectionView];
-    [v10 setFrame:{v3, v5, v7, v9}];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView setFrame:{v3, v5, v7, v9}];
   }
 
-  v11 = [(ConversationViewControllerBase *)self conversationLayout];
-  v12 = [v11 swipedIndexPath];
+  conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+  swipedIndexPath = [conversationLayout swipedIndexPath];
 
-  if (!v12)
+  if (!swipedIndexPath)
   {
-    v13 = [(ConversationViewControllerBase *)self view];
-    [v13 safeAreaInsets];
+    view = [(ConversationViewControllerBase *)self view];
+    [view safeAreaInsets];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(ConversationViewControllerBase *)self displayMetrics];
-    [v22 safeAreaInsets];
+    displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+    [displayMetrics safeAreaInsets];
     if (v17 == v26 && v15 == v23 && v21 == v25)
     {
       v27 = v24;
@@ -5843,8 +5843,8 @@ LABEL_21:
         v43 = v42;
         v45 = v44;
         v47 = v46;
-        v48 = [(ConversationViewControllerBase *)self collectionView];
-        [v48 contentInset];
+        collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+        [collectionView2 contentInset];
         if (v52 == v43 && v49 == v41 && v51 == v47)
         {
           v53 = v50;
@@ -5864,8 +5864,8 @@ LABEL_21:
         {
         }
 
-        v54 = [(ConversationViewControllerBase *)self collectionView];
-        [v54 setContentInset:{v41, v43, v45, v47}];
+        collectionView3 = [(ConversationViewControllerBase *)self collectionView];
+        [collectionView3 setContentInset:{v41, v43, v45, v47}];
 
         if (v28)
         {
@@ -5882,12 +5882,12 @@ LABEL_26:
     {
     }
 
-    v29 = [(ConversationViewControllerBase *)self view];
-    [v29 safeAreaInsets];
+    view2 = [(ConversationViewControllerBase *)self view];
+    [view2 safeAreaInsets];
     v31 = v30;
     v33 = v32;
-    v34 = [(ConversationViewControllerBase *)self displayMetrics];
-    [v34 safeAreaInsets];
+    displayMetrics2 = [(ConversationViewControllerBase *)self displayMetrics];
+    [displayMetrics2 safeAreaInsets];
     v37 = v31 - v36;
     v38 = -(v31 - v36);
     if (v37 < 0.0)
@@ -5929,10 +5929,10 @@ LABEL_20:
 
 - (void)_updateDisplayMetrics
 {
-  v3 = [(ConversationViewControllerBase *)self traitCollection];
-  v4 = [(ConversationViewControllerBase *)self collectionView];
-  [v4 layoutMargins];
-  v5 = [(ConversationViewControllerBase *)self messageDisplayMetricsForTraitCollection:v3 layoutMargins:?];
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView layoutMargins];
+  v5 = [(ConversationViewControllerBase *)self messageDisplayMetricsForTraitCollection:traitCollection layoutMargins:?];
   [(ConversationViewControllerBase *)self setDisplayMetrics:v5];
 
   if (MUISolariumFeatureEnabled())
@@ -5945,10 +5945,10 @@ LABEL_20:
     v6 = 24.0;
   }
 
-  v7 = [(ConversationViewControllerBase *)self traitCollection];
-  v8 = [v7 horizontalSizeClass];
+  traitCollection2 = [(ConversationViewControllerBase *)self traitCollection];
+  horizontalSizeClass = [traitCollection2 horizontalSizeClass];
   v9 = 0.0;
-  if (v8 == 2)
+  if (horizontalSizeClass == 2)
   {
     v10 = +[UIDevice mf_isPadIdiom];
     v9 = 0.0;
@@ -5965,60 +5965,60 @@ LABEL_20:
   [(ConversationViewControllerBase *)self _didChangeHorizontalPadding:horizontalPadding];
 }
 
-- (id)messageDisplayMetricsForTraitCollection:(id)a3 layoutMargins:(UIEdgeInsets)a4
+- (id)messageDisplayMetricsForTraitCollection:(id)collection layoutMargins:(UIEdgeInsets)margins
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  v10 = [(ConversationViewControllerBase *)self view];
-  [v10 safeAreaInsets];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  collectionCopy = collection;
+  view = [(ConversationViewControllerBase *)self view];
+  [view safeAreaInsets];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(ConversationViewControllerBase *)self scene];
-  v20 = +[MFMessageDisplayMetrics displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:](MFMessageDisplayMetrics, "displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:", v9, [v19 interfaceOrientation], top, left, bottom, right, v12, v14, v16, v18);
+  scene = [(ConversationViewControllerBase *)self scene];
+  v20 = +[MFMessageDisplayMetrics displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:](MFMessageDisplayMetrics, "displayMetricsWithTraitCollection:layoutMargins:safeAreaInsets:interfaceOrientation:", collectionCopy, [scene interfaceOrientation], top, left, bottom, right, v12, v14, v16, v18);
 
   if (v20)
   {
-    v21 = v20;
+    displayMetrics = v20;
   }
 
   else
   {
-    v21 = [(ConversationViewControllerBase *)self displayMetrics];
+    displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
   }
 
-  v22 = v21;
+  v22 = displayMetrics;
 
   return v22;
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
-  v7 = a3;
+  metricsCopy = metrics;
   if (([(MFMessageDisplayMetrics *)self->_displayMetrics isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_displayMetrics, a3);
-    v5 = [(ConversationViewControllerBase *)self cellConfigurator];
-    [v5 setDisplayMetrics:v7];
+    objc_storeStrong(&self->_displayMetrics, metrics);
+    cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+    [cellConfigurator setDisplayMetrics:metricsCopy];
 
-    v6 = [(ConversationViewControllerBase *)self conversationLayout];
-    [v6 setDisplayMetrics:v7];
+    conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+    [conversationLayout setDisplayMetrics:metricsCopy];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
+  beginCopy = begin;
+  cellExpansionRecognizer = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
 
-  if (v5 == v4)
+  if (cellExpansionRecognizer == beginCopy)
   {
-    v7 = [(ConversationViewControllerBase *)self collectionView];
-    if ([v7 hasActiveDrag])
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    if ([collectionView hasActiveDrag])
     {
 LABEL_4:
       v6 = 0;
@@ -6027,30 +6027,30 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v8 = [(ConversationViewControllerBase *)self collectionView];
-    if ([v8 isDragging])
+    collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+    if ([collectionView2 isDragging])
     {
       goto LABEL_6;
     }
 
-    v10 = [(ConversationViewControllerBase *)self conversationLayout];
-    v11 = [v10 swipedIndexPath];
+    conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+    swipedIndexPath = [conversationLayout swipedIndexPath];
 
-    if (v11)
+    if (swipedIndexPath)
     {
       v6 = 0;
       goto LABEL_9;
     }
 
-    v12 = [(ConversationViewControllerBase *)self collectionView];
-    [v4 locationInView:v12];
+    collectionView3 = [(ConversationViewControllerBase *)self collectionView];
+    [beginCopy locationInView:collectionView3];
     v14 = v13;
     v16 = v15;
 
-    v17 = [(ConversationViewControllerBase *)self collectionView];
-    v7 = [v17 indexPathForItemAtPoint:{v14, v16}];
+    collectionView4 = [(ConversationViewControllerBase *)self collectionView];
+    collectionView = [collectionView4 indexPathForItemAtPoint:{v14, v16}];
 
-    if (!v7)
+    if (!collectionView)
     {
       goto LABEL_4;
     }
@@ -6060,15 +6060,15 @@ LABEL_8:
       goto LABEL_19;
     }
 
-    v18 = [(ConversationViewControllerBase *)self view];
-    [v4 locationInView:v18];
+    view = [(ConversationViewControllerBase *)self view];
+    [beginCopy locationInView:view];
     v20 = v19;
 
-    v21 = [(ConversationViewControllerBase *)self collectionView];
-    [v21 frame];
+    collectionView5 = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView5 frame];
     MinY = CGRectGetMinY(v58);
-    v23 = [(ConversationViewControllerBase *)self collectionView];
-    [v23 contentInset];
+    collectionView6 = [(ConversationViewControllerBase *)self collectionView];
+    [collectionView6 contentInset];
     v25 = MinY + v24;
 
     if (v25 > v20)
@@ -6076,30 +6076,30 @@ LABEL_8:
       goto LABEL_4;
     }
 
-    v26 = [(ConversationViewControllerBase *)self cellConfigurator];
-    v27 = [v26 expansionStatusForMessageAtIndexPath:v7];
+    cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+    v27 = [cellConfigurator expansionStatusForMessageAtIndexPath:collectionView];
 
     if (v27 == 2)
     {
-      v28 = [(ConversationViewControllerBase *)self collectionView];
-      v8 = [v28 cellForItemAtIndexPath:v7];
+      collectionView7 = [(ConversationViewControllerBase *)self collectionView];
+      collectionView2 = [collectionView7 cellForItemAtIndexPath:collectionView];
 
-      [v4 locationInView:v8];
+      [beginCopy locationInView:collectionView2];
       v54 = v30;
       v55 = v29;
-      v31 = [v8 messageViewController];
-      v32 = [v31 messageContentView];
-      v33 = [v32 headerView];
-      [v33 frame];
+      messageViewController = [collectionView2 messageViewController];
+      messageContentView = [messageViewController messageContentView];
+      headerView = [messageContentView headerView];
+      [headerView frame];
       v35 = v34;
       v37 = v36;
       v39 = v38;
       v41 = v40;
 
-      v42 = [v8 messageViewController];
-      v43 = [v42 messageContentView];
-      v44 = [v43 footerView];
-      [v44 frame];
+      messageViewController2 = [collectionView2 messageViewController];
+      messageContentView2 = [messageViewController2 messageContentView];
+      footerView = [messageContentView2 footerView];
+      [footerView frame];
       v46 = v45;
       v48 = v47;
       v50 = v49;
@@ -6132,8 +6132,8 @@ LABEL_7:
     else
     {
 LABEL_19:
-      v8 = [(ConversationViewControllerBase *)self cellConfigurator];
-      v53 = [v8 messageAtIndexPathIsExpanded:v7];
+      collectionView2 = [(ConversationViewControllerBase *)self cellConfigurator];
+      v53 = [collectionView2 messageAtIndexPathIsExpanded:collectionView];
     }
 
     v6 = v53 ^ 1;
@@ -6146,25 +6146,25 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
-  LOBYTE(self) = v6 == v5;
+  recognizerCopy = recognizer;
+  cellExpansionRecognizer = [(ConversationViewControllerBase *)self cellExpansionRecognizer];
+  LOBYTE(self) = cellExpansionRecognizer == recognizerCopy;
 
   return self;
 }
 
-- (void)_expansionRecognizerDidRecognize:(id)a3
+- (void)_expansionRecognizerDidRecognize:(id)recognize
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self collectionView];
-  [v4 locationInView:v5];
+  recognizeCopy = recognize;
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [recognizeCopy locationInView:collectionView];
   v8 = v6;
   v9 = v7;
   if (!qword_1006DCE40)
   {
-    v10 = [v5 indexPathForItemAtPoint:{v6, v7}];
+    v10 = [collectionView indexPathForItemAtPoint:{v6, v7}];
     v11 = qword_1006DCE40;
     qword_1006DCE40 = v10;
   }
@@ -6175,8 +6175,8 @@ LABEL_9:
   v18[3] = &unk_10064C570;
   v18[4] = self;
   v12 = objc_retainBlock(v18);
-  v13 = [v5 indexPathForItemAtPoint:{v8, v9}];
-  if ([v4 state] == 1)
+  v13 = [collectionView indexPathForItemAtPoint:{v8, v9}];
+  if ([recognizeCopy state] == 1)
   {
     objc_storeStrong(&qword_1006DCE40, v13);
     v14 = 1;
@@ -6185,15 +6185,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 state] == 2)
+  if ([recognizeCopy state] == 2)
   {
     v14 = [v13 isEqual:qword_1006DCE40];
     goto LABEL_13;
   }
 
-  if ([v4 state] != 3)
+  if ([recognizeCopy state] != 3)
   {
-    if ([v4 state] != 4)
+    if ([recognizeCopy state] != 4)
     {
       goto LABEL_14;
     }
@@ -6208,48 +6208,48 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v15 = [(ConversationViewControllerBase *)self collectionView];
-  v16 = [v15 isDragging];
+  collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+  isDragging = [collectionView2 isDragging];
 
-  if (v16)
+  if (isDragging)
   {
     goto LABEL_12;
   }
 
   [(ConversationViewControllerBase *)self setLastExpandedCellIndexPath:v13];
   [(ConversationViewControllerBase *)self setPinnedItem:0];
-  v17 = [(ConversationViewControllerBase *)self cellConfigurator];
-  [v17 expandCellAtIndexPath:v13 animated:1 highlightFirst:1 expansionStatus:3];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  [cellConfigurator expandCellAtIndexPath:v13 animated:1 highlightFirst:1 expansionStatus:3];
 
 LABEL_14:
 }
 
-- (BOOL)_executeIfSplitViewIsAvailable:(id)a3
+- (BOOL)_executeIfSplitViewIsAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self scene];
-  v6 = [(ConversationViewControllerBase *)self isSplitViewAvailable];
-  if (v6)
+  availableCopy = available;
+  scene = [(ConversationViewControllerBase *)self scene];
+  isSplitViewAvailable = [(ConversationViewControllerBase *)self isSplitViewAvailable];
+  if (isSplitViewAvailable)
   {
-    v7 = [v5 splitViewController];
-    v4[2](v4, v7);
+    splitViewController = [scene splitViewController];
+    availableCopy[2](availableCopy, splitViewController);
   }
 
-  return v6;
+  return isSplitViewAvailable;
 }
 
 - (BOOL)isSplitViewAvailable
 {
-  v2 = [(ConversationViewControllerBase *)self scene];
-  v3 = [v2 conformsToProtocol:&OBJC_PROTOCOL___SplitLayoutCapable];
+  scene = [(ConversationViewControllerBase *)self scene];
+  v3 = [scene conformsToProtocol:&OBJC_PROTOCOL___SplitLayoutCapable];
 
   return v3;
 }
 
-- (void)setDisableScrollPinning:(BOOL)a3
+- (void)setDisableScrollPinning:(BOOL)pinning
 {
-  self->_disableScrollPinning = a3;
-  if (a3)
+  self->_disableScrollPinning = pinning;
+  if (pinning)
   {
     [(ConversationViewControllerBase *)self setPinnedItem:0];
   }
@@ -6257,17 +6257,17 @@ LABEL_14:
 
 - (BOOL)shouldHideStickyFooterView
 {
-  v2 = self;
-  v3 = [(ConversationViewControllerBase *)self traitCollection];
-  LOBYTE(v2) = [(ConversationViewControllerBase *)v2 _shouldHideStickyFooterViewForTraitCollection:v3];
+  selfCopy = self;
+  traitCollection = [(ConversationViewControllerBase *)self traitCollection];
+  LOBYTE(selfCopy) = [(ConversationViewControllerBase *)selfCopy _shouldHideStickyFooterViewForTraitCollection:traitCollection];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_shouldHideStickyFooterViewForTraitCollection:(id)a3
+- (BOOL)_shouldHideStickyFooterViewForTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 mf_hasCompactDimension])
+  collectionCopy = collection;
+  if ([collectionCopy mf_hasCompactDimension])
   {
     v4 = 1;
   }
@@ -6294,48 +6294,48 @@ LABEL_14:
   }
 }
 
-- (id)conversationSearchMessageListForConversationSearchHandler:(id)a3
+- (id)conversationSearchMessageListForConversationSearchHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase conversationSearchMessageListForConversationSearchHandler:]", "ConversationViewControllerBase.m", 3856, "0");
 }
 
-- (id)conversationSearchHandler:(id)a3 contentRepresentationRequestForItemID:(id)a4
+- (id)conversationSearchHandler:(id)handler contentRepresentationRequestForItemID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase conversationSearchHandler:contentRepresentationRequestForItemID:]", "ConversationViewControllerBase.m", 3860, "0");
 }
 
-- (BOOL)conversationSearchHandler:(id)a3 shouldConsiderQuotedContentForItemID:(id)a4
+- (BOOL)conversationSearchHandler:(id)handler shouldConsiderQuotedContentForItemID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase conversationSearchHandler:shouldConsiderQuotedContentForItemID:]", "ConversationViewControllerBase.m", 3864, "0");
 }
 
-- (double)widthForConversationViewCellsForConversationSearchHandler:(id)a3
+- (double)widthForConversationViewCellsForConversationSearchHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase widthForConversationViewCellsForConversationSearchHandler:]", "ConversationViewControllerBase.m", 3868, "0");
 }
 
-- (id)_persistentIDForEMMessageObjectID:(id)a3
+- (id)_persistentIDForEMMessageObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _persistentIDForEMMessageObjectID:]", "ConversationViewControllerBase.m", 3872, "0");
 }
 
-- (void)_updateAllowQuickReplyForMessageListItem:(id)a3
+- (void)_updateAllowQuickReplyForMessageListItem:(id)item
 {
-  v7 = a3;
+  itemCopy = item;
   v4 = _os_feature_enabled_impl() ^ 1;
-  if (!v7)
+  if (!itemCopy)
   {
     LOBYTE(v4) = 1;
   }
@@ -6345,8 +6345,8 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  v5 = [v7 sendLaterDate];
-  if (v5)
+  sendLaterDate = [itemCopy sendLaterDate];
+  if (sendLaterDate)
   {
 
 LABEL_8:
@@ -6354,7 +6354,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v7 isEditable])
+  if ([itemCopy isEditable])
   {
     goto LABEL_8;
   }
@@ -6365,38 +6365,38 @@ LABEL_9:
   [(ConversationViewControllerBase *)self setAllowQuickReply:v6];
 }
 
-- (void)setDidCompleteFirstPaint:(BOOL)a3
+- (void)setDidCompleteFirstPaint:(BOOL)paint
 {
-  if (self->_didCompleteFirstPaint != a3)
+  if (self->_didCompleteFirstPaint != paint)
   {
-    self->_didCompleteFirstPaint = a3;
-    if (a3)
+    self->_didCompleteFirstPaint = paint;
+    if (paint)
     {
       [(ConversationViewControllerBase *)self _invalidateQuickReplyFooter];
     }
   }
 }
 
-- (void)showAllMessagesForConversationSenderHeaderView:(id)a3
+- (void)showAllMessagesForConversationSenderHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase showAllMessagesForConversationSenderHeaderView:]", "ConversationViewControllerBase.m", 3951, "0");
 }
 
-- (void)showCategoryMessagesForConversationSenderHeaderView:(id)a3
+- (void)showCategoryMessagesForConversationSenderHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase showCategoryMessagesForConversationSenderHeaderView:]", "ConversationViewControllerBase.m", 3955, "0");
 }
 
-- (id)layoutInformationForConversationSenderHeaderViewAnimator:(id)a3
+- (id)layoutInformationForConversationSenderHeaderViewAnimator:(id)animator
 {
   v4 = [_TtC10MobileMail45ConversationSenderHeaderViewLayoutInformation alloc];
-  v5 = [(ConversationViewControllerBase *)self scene];
-  v6 = [v5 statusBarManager];
-  [v6 statusBarFrame];
+  scene = [(ConversationViewControllerBase *)self scene];
+  statusBarManager = [scene statusBarManager];
+  [statusBarManager statusBarFrame];
   v8 = v7;
   [(ConversationViewControllerBase *)self _itemSpacing];
   v10 = [(ConversationSenderHeaderViewLayoutInformation *)v4 initWithStatusBarHeight:v8 contentInset:v9];
@@ -6404,9 +6404,9 @@ LABEL_9:
   return v10;
 }
 
-- (id)_recategorizationTriageInteraction:(id)a3
+- (id)_recategorizationTriageInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   [(ConversationViewControllerBase *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewControllerBase _recategorizationTriageInteraction:]", "ConversationViewControllerBase.m", 3971, "0");
 }

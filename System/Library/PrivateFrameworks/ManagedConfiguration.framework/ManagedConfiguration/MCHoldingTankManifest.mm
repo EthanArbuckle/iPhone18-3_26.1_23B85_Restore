@@ -1,17 +1,17 @@
 @interface MCHoldingTankManifest
 + (id)sharedManifest;
-- (BOOL)_adjustManifestForDevice:(unint64_t)a3 withIdentifier:(id)a4 addingIdentifier:(BOOL)a5 outError:(id *)a6;
-- (BOOL)addPurgatoryProfileData:(id)a3 identifier:(id)a4 targetDevice:(unint64_t)a5 outError:(id *)a6;
+- (BOOL)_adjustManifestForDevice:(unint64_t)device withIdentifier:(id)identifier addingIdentifier:(BOOL)addingIdentifier outError:(id *)error;
+- (BOOL)addPurgatoryProfileData:(id)data identifier:(id)identifier targetDevice:(unint64_t)device outError:(id *)error;
 - (MCHoldingTankManifest)init;
-- (id)_manifestForDevice:(unint64_t)a3 createIfNil:(BOOL)a4;
-- (id)_pathToHoldingTankDirectoryForDevice:(unint64_t)a3;
-- (id)_pathToHoldingTankManifestForDevice:(unint64_t)a3;
-- (id)pathToHoldingTankProfileDataForIdentifier:(id)a3 targetDevice:(unint64_t)a4 createDirectory:(BOOL)a5;
-- (id)uninstalledProfileDataWithIdentifier:(id)a3 targetDevice:(unint64_t)a4;
-- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)a3;
-- (id)uninstalledProfileWithIdentifier:(id)a3 targetDevice:(unint64_t)a4;
+- (id)_manifestForDevice:(unint64_t)device createIfNil:(BOOL)nil;
+- (id)_pathToHoldingTankDirectoryForDevice:(unint64_t)device;
+- (id)_pathToHoldingTankManifestForDevice:(unint64_t)device;
+- (id)pathToHoldingTankProfileDataForIdentifier:(id)identifier targetDevice:(unint64_t)device createDirectory:(BOOL)directory;
+- (id)uninstalledProfileDataWithIdentifier:(id)identifier targetDevice:(unint64_t)device;
+- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)device;
+- (id)uninstalledProfileWithIdentifier:(id)identifier targetDevice:(unint64_t)device;
 - (void)dealloc;
-- (void)removeProfileDataWithIdentifier:(id)a3 fromHoldingTankForDevice:(unint64_t)a4;
+- (void)removeProfileDataWithIdentifier:(id)identifier fromHoldingTankForDevice:(unint64_t)device;
 @end
 
 @implementation MCHoldingTankManifest
@@ -58,46 +58,46 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_pathToHoldingTankDirectoryForDevice:(unint64_t)a3
+- (id)_pathToHoldingTankDirectoryForDevice:(unint64_t)device
 {
   v4 = MCSystemProfileStorageDirectory();
-  v5 = [MCProfile stringForDeviceType:a3];
+  v5 = [MCProfile stringForDeviceType:device];
   v6 = [v4 stringByAppendingPathComponent:v5];
 
   return v6;
 }
 
-- (id)_pathToHoldingTankManifestForDevice:(unint64_t)a3
+- (id)_pathToHoldingTankManifestForDevice:(unint64_t)device
 {
-  v3 = [(MCHoldingTankManifest *)self _pathToHoldingTankDirectoryForDevice:a3];
+  v3 = [(MCHoldingTankManifest *)self _pathToHoldingTankDirectoryForDevice:device];
   v4 = MCHoldingTankManifestName();
   v5 = [v3 stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
-- (id)pathToHoldingTankProfileDataForIdentifier:(id)a3 targetDevice:(unint64_t)a4 createDirectory:(BOOL)a5
+- (id)pathToHoldingTankProfileDataForIdentifier:(id)identifier targetDevice:(unint64_t)device createDirectory:(BOOL)directory
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(MCHoldingTankManifest *)self _pathToHoldingTankDirectoryForDevice:a4];
-  if (v5)
+  directoryCopy = directory;
+  identifierCopy = identifier;
+  v9 = [(MCHoldingTankManifest *)self _pathToHoldingTankDirectoryForDevice:device];
+  if (directoryCopy)
   {
     [(MCHoldingTankManifest *)self _createDirectory:v9 withIntermediateDirectories:1];
   }
 
-  v10 = [(MCHoldingTankManifest *)self _profileDataFileNameForProfileIdentifier:v8];
+  v10 = [(MCHoldingTankManifest *)self _profileDataFileNameForProfileIdentifier:identifierCopy];
   v11 = [v9 stringByAppendingPathComponent:v10];
 
   return v11;
 }
 
-- (id)_manifestForDevice:(unint64_t)a3 createIfNil:(BOOL)a4
+- (id)_manifestForDevice:(unint64_t)device createIfNil:(BOOL)nil
 {
-  v4 = a4;
+  nilCopy = nil;
   v29 = *MEMORY[0x1E69E9840];
   v7 = [MCProfile stringForDeviceType:?];
-  v8 = [(MCHoldingTankManifest *)self _pathToHoldingTankManifestForDevice:a3];
+  v8 = [(MCHoldingTankManifest *)self _pathToHoldingTankManifestForDevice:device];
   if (!self->_universalManifest)
   {
     v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
@@ -110,7 +110,7 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   v12 = v24;
   if (v12)
   {
-    if (!v4)
+    if (!nilCopy)
     {
       v13 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
@@ -142,7 +142,7 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
 
   v17 = [(NSMutableDictionary *)self->_universalManifest objectForKeyedSubscript:v7];
 
-  if (!v17 && v4)
+  if (!v17 && nilCopy)
   {
     v18 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
     [(NSMutableDictionary *)self->_universalManifest setObject:v18 forKeyedSubscript:v7];
@@ -158,26 +158,26 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   return v20;
 }
 
-- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)a3
+- (id)uninstalledProfileIdentifiersForDevice:(unint64_t)device
 {
-  v3 = [(MCHoldingTankManifest *)self _manifestForDevice:a3 createIfNil:0];
+  v3 = [(MCHoldingTankManifest *)self _manifestForDevice:device createIfNil:0];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 allKeys];
+    allKeys = [v3 allKeys];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    allKeys = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return allKeys;
 }
 
-- (id)uninstalledProfileWithIdentifier:(id)a3 targetDevice:(unint64_t)a4
+- (id)uninstalledProfileWithIdentifier:(id)identifier targetDevice:(unint64_t)device
 {
-  v4 = [(MCHoldingTankManifest *)self uninstalledProfileDataWithIdentifier:a3 targetDevice:a4];
+  v4 = [(MCHoldingTankManifest *)self uninstalledProfileDataWithIdentifier:identifier targetDevice:device];
   if (v4)
   {
     v5 = [MCProfile profileWithData:v4 outError:0];
@@ -191,12 +191,12 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   return v5;
 }
 
-- (id)uninstalledProfileDataWithIdentifier:(id)a3 targetDevice:(unint64_t)a4
+- (id)uninstalledProfileDataWithIdentifier:(id)identifier targetDevice:(unint64_t)device
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(MCHoldingTankManifest *)self pathToHoldingTankProfileDataForIdentifier:a3 targetDevice:a4 createDirectory:0];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  v4 = [(MCHoldingTankManifest *)self pathToHoldingTankProfileDataForIdentifier:identifier targetDevice:device createDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (v6)
   {
@@ -227,19 +227,19 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   return v7;
 }
 
-- (BOOL)addPurgatoryProfileData:(id)a3 identifier:(id)a4 targetDevice:(unint64_t)a5 outError:(id *)a6
+- (BOOL)addPurgatoryProfileData:(id)data identifier:(id)identifier targetDevice:(unint64_t)device outError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MCHoldingTankManifest *)self pathToHoldingTankProfileDataForIdentifier:v10 targetDevice:a5 createDirectory:1];
+  identifierCopy = identifier;
+  dataCopy = data;
+  v12 = [(MCHoldingTankManifest *)self pathToHoldingTankProfileDataForIdentifier:identifierCopy targetDevice:device createDirectory:1];
   v20 = 0;
-  v13 = [v11 writeToFile:v12 options:0x20000000 error:&v20];
+  v13 = [dataCopy writeToFile:v12 options:0x20000000 error:&v20];
 
   v14 = v20;
   if (v13)
   {
-    v15 = [(MCHoldingTankManifest *)self _adjustManifestForDevice:a5 withIdentifier:v10 addingIdentifier:1 outError:a6];
+    v15 = [(MCHoldingTankManifest *)self _adjustManifestForDevice:device withIdentifier:identifierCopy addingIdentifier:1 outError:error];
   }
 
   else
@@ -248,7 +248,7 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v22 = v10;
+      v22 = identifierCopy;
       v23 = 2114;
       v24 = v12;
       v25 = 2114;
@@ -257,11 +257,11 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
     }
 
     MCCheckSystemGroupContainerFileReadability(0, 0);
-    if (a6)
+    if (error)
     {
       v17 = v14;
       v15 = 0;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -274,14 +274,14 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   return v15;
 }
 
-- (void)removeProfileDataWithIdentifier:(id)a3 fromHoldingTankForDevice:(unint64_t)a4
+- (void)removeProfileDataWithIdentifier:(id)identifier fromHoldingTankForDevice:(unint64_t)device
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MCHoldingTankManifest *)self pathToHoldingTankProfileDataForIdentifier:v6 targetDevice:a4 createDirectory:1];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  identifierCopy = identifier;
+  v7 = [(MCHoldingTankManifest *)self pathToHoldingTankProfileDataForIdentifier:identifierCopy targetDevice:device createDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  [v8 removeItemAtPath:v7 error:&v12];
+  [defaultManager removeItemAtPath:v7 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -290,7 +290,7 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v14 = v6;
+      v14 = identifierCopy;
       v15 = 2114;
       v16 = v7;
       v17 = 2114;
@@ -299,14 +299,14 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
     }
   }
 
-  [(MCHoldingTankManifest *)self _adjustManifestForDevice:a4 withIdentifier:v6 addingIdentifier:0 outError:0];
+  [(MCHoldingTankManifest *)self _adjustManifestForDevice:device withIdentifier:identifierCopy addingIdentifier:0 outError:0];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_adjustManifestForDevice:(unint64_t)a3 withIdentifier:(id)a4 addingIdentifier:(BOOL)a5 outError:(id *)a6
+- (BOOL)_adjustManifestForDevice:(unint64_t)device withIdentifier:(id)identifier addingIdentifier:(BOOL)addingIdentifier outError:(id *)error
 {
-  v10 = a4;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -319,15 +319,15 @@ uint64_t __39__MCHoldingTankManifest_sharedManifest__block_invoke()
   block[2] = __91__MCHoldingTankManifest__adjustManifestForDevice_withIdentifier_addingIdentifier_outError___block_invoke;
   block[3] = &unk_1E77D2550;
   block[4] = self;
-  v18 = a3;
-  v19 = a5;
-  v12 = v10;
+  deviceCopy = device;
+  addingIdentifierCopy = addingIdentifier;
+  v12 = identifierCopy;
   v16 = v12;
   v17 = &v20;
   dispatch_sync(syncQueue, block);
-  if (a6)
+  if (error)
   {
-    *a6 = v21[5];
+    *error = v21[5];
   }
 
   v13 = v21[5] == 0;

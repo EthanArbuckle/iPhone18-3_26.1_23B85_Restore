@@ -5,27 +5,27 @@
 - (id)_addToLibraryOrUpdateFaceInLibrary;
 - (id)_analyticsExitScreenNameForCurrentState;
 - (id)_analyticsModelForAddFaceEvents;
-- (id)_appNameFromItemId:(id)a3;
+- (id)_appNameFromItemId:(id)id;
 - (id)_curPendingComplicationItemId;
 - (id)_missingAppsDescription;
-- (id)_queue_fetchLocallyAvailableAppsWithError:(id *)a3;
-- (id)canAddWatchFaceFromDecodedRecipe:(id)a3 toLibrary:(id)a4;
+- (id)_queue_fetchLocallyAvailableAppsWithError:(id *)error;
+- (id)canAddWatchFaceFromDecodedRecipe:(id)recipe toLibrary:(id)library;
 - (id)skippedComplicationsSlots;
-- (void)_buildUnavailableComplicationsInformationWithInstalledBundleIds:(id)a3;
+- (void)_buildUnavailableComplicationsInformationWithInstalledBundleIds:(id)ids;
 - (void)_cancelLibraryTimeoutTimer;
 - (void)_cleanUpDownloader;
-- (void)_decodeUrl:(id)a3;
-- (void)_handleAddWatchFaceManagerDidFinishWithError:(id)a3;
+- (void)_decodeUrl:(id)url;
+- (void)_handleAddWatchFaceManagerDidFinishWithError:(id)error;
 - (void)_libraryTimeoutTimerFired;
 - (void)_moveAndNotifyDelegateToStartStateIfPossible;
-- (void)_queue_fetchInstalledAppsOnWatchWithithCompletionBlock:(id)a3;
-- (void)_refreshInstalledComplicationsWithContinueBlock:(id)a3;
-- (void)_startDownloadWirthURL:(id)a3;
+- (void)_queue_fetchInstalledAppsOnWatchWithithCompletionBlock:(id)block;
+- (void)_refreshInstalledComplicationsWithContinueBlock:(id)block;
+- (void)_startDownloadWirthURL:(id)l;
 - (void)_startLibraryTimeoutTimer;
-- (void)_updateUIStateAndNotifyDelegate:(unint64_t)a3;
+- (void)_updateUIStateAndNotifyDelegate:(unint64_t)delegate;
 - (void)dealloc;
-- (void)decodeWatchFaceWithURL:(id)a3 sourceApplicationBundleIdentifier:(id)a4;
-- (void)faceCollectionDidLoad:(id)a3;
+- (void)decodeWatchFaceWithURL:(id)l sourceApplicationBundleIdentifier:(id)identifier;
+- (void)faceCollectionDidLoad:(id)load;
 - (void)handleAddToMyFacesAction;
 - (void)handleContinueAction;
 - (void)handleDidExitAddWatchFaceFlow;
@@ -62,8 +62,8 @@
     v2->_serialQueue = v9;
 
     v11 = +[NTKCompanionFaceCollectionsManager sharedInstance];
-    v12 = [MEMORY[0x277CBBAE8] currentDevice];
-    v13 = [v11 sharedFaceCollectionForDevice:v12 forCollectionIdentifier:@"LibraryFaces"];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v13 = [v11 sharedFaceCollectionForDevice:currentDevice forCollectionIdentifier:@"LibraryFaces"];
     library = v2->_library;
     v2->_library = v13;
 
@@ -86,13 +86,13 @@
   [(NTKGreenfieldAddWatchFaceManager *)&v3 dealloc];
 }
 
-- (void)decodeWatchFaceWithURL:(id)a3 sourceApplicationBundleIdentifier:(id)a4
+- (void)decodeWatchFaceWithURL:(id)l sourceApplicationBundleIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBBAE8] currentDevice];
-  v9 = [v8 supportsPDRCapability:569066848];
+  lCopy = l;
+  identifierCopy = identifier;
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v9 = [currentDevice supportsPDRCapability:569066848];
 
   if (v9)
   {
@@ -103,7 +103,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v6;
+      v19 = lCopy;
       _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "decodeWatchFaceWithURL: %@", &v18, 0xCu);
     }
 
@@ -113,7 +113,7 @@
       [NTKGreenfieldAddWatchFaceManager decodeWatchFaceWithURL:sourceApplicationBundleIdentifier:];
     }
 
-    objc_storeStrong(&self->_sourceApplicationBundleIdentifier, a4);
+    objc_storeStrong(&self->_sourceApplicationBundleIdentifier, identifier);
     [(NTKGreenfieldAddWatchFaceManager *)self _updateUIStateAndNotifyDelegate:0];
     if (self->_isLibraryTimeout)
     {
@@ -123,18 +123,18 @@
 
     else
     {
-      if ([v6 isFileURL])
+      if ([lCopy isFileURL])
       {
-        [(NTKGreenfieldAddWatchFaceManager *)self _decodeUrl:v6];
+        [(NTKGreenfieldAddWatchFaceManager *)self _decodeUrl:lCopy];
         goto LABEL_10;
       }
 
-      v16 = [v6 scheme];
-      v17 = [v16 isEqualToString:@"watchface"];
+      scheme = [lCopy scheme];
+      v17 = [scheme isEqualToString:@"watchface"];
 
       if (v17)
       {
-        [(NTKGreenfieldAddWatchFaceManager *)self _startDownloadWirthURL:v6];
+        [(NTKGreenfieldAddWatchFaceManager *)self _startDownloadWirthURL:lCopy];
         goto LABEL_10;
       }
 
@@ -155,15 +155,15 @@
 LABEL_10:
 }
 
-- (void)_decodeUrl:(id)a3
+- (void)_decodeUrl:(id)url
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  urlCopy = url;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = urlCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "_decodeUrl: %@", buf, 0xCu);
   }
 
@@ -173,8 +173,8 @@ LABEL_10:
   v7[2] = __47__NTKGreenfieldAddWatchFaceManager__decodeUrl___block_invoke;
   v7[3] = &unk_2787832A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = urlCopy;
+  v6 = urlCopy;
   [NTKGreenfieldUtilities decodeWatchFaceFromUrl:v6 completionBlock:v7];
 }
 
@@ -250,20 +250,20 @@ void __47__NTKGreenfieldAddWatchFaceManager__decodeUrl___block_invoke(uint64_t a
 LABEL_16:
 }
 
-- (void)_startDownloadWirthURL:(id)a3
+- (void)_startDownloadWirthURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = lCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "_startDownloadWirthURL: %@", buf, 0xCu);
   }
 
   self->_decodingState = 1;
-  v6 = [[NTKGreenfieldDownloader alloc] initWithWatchFaceURL:v4];
+  v6 = [[NTKGreenfieldDownloader alloc] initWithWatchFaceURL:lCopy];
   downloader = self->_downloader;
   self->_downloader = v6;
 
@@ -273,10 +273,10 @@ LABEL_16:
   v10[1] = 3221225472;
   v10[2] = __59__NTKGreenfieldAddWatchFaceManager__startDownloadWirthURL___block_invoke;
   v10[3] = &unk_2787832C8;
-  v9 = v4;
+  v9 = lCopy;
   v11 = v9;
   objc_copyWeak(&v13, buf);
-  v12 = self;
+  selfCopy = self;
   [(NTKGreenfieldDownloader *)v8 downloadWithCompletionBlock:v10];
   objc_destroyWeak(&v13);
 
@@ -339,8 +339,8 @@ void __59__NTKGreenfieldAddWatchFaceManager__startDownloadWirthURL___block_invok
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "StartState: handleAddToMyFacesAction", v7, 2u);
     }
 
-    v6 = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
-    [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:v6];
+    _addToLibraryOrUpdateFaceInLibrary = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
+    [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:_addToLibraryOrUpdateFaceInLibrary];
   }
 }
 
@@ -363,10 +363,10 @@ void __59__NTKGreenfieldAddWatchFaceManager__startDownloadWirthURL___block_invok
 
     if ([(NSMutableSet *)self->_unavailableComplicationsSlots count])
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 2;
 LABEL_14:
-      [(NTKGreenfieldAddWatchFaceManager *)v5 _updateUIStateAndNotifyDelegate:v6];
+      [(NTKGreenfieldAddWatchFaceManager *)selfCopy2 _updateUIStateAndNotifyDelegate:v6];
       return;
     }
 
@@ -376,7 +376,7 @@ LABEL_14:
     }
 
 LABEL_13:
-    v5 = self;
+    selfCopy2 = self;
     v6 = 3;
     goto LABEL_14;
   }
@@ -393,10 +393,10 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v8 = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
-  if (v8)
+  _addToLibraryOrUpdateFaceInLibrary = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
+  if (_addToLibraryOrUpdateFaceInLibrary)
   {
-    [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:v8];
+    [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:_addToLibraryOrUpdateFaceInLibrary];
   }
 
   else
@@ -430,9 +430,9 @@ LABEL_13:
     v3 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
+      _curPendingComplicationItemId = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
       *buf = 138412290;
-      v7 = v4;
+      v7 = _curPendingComplicationItemId;
       _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "handleRevisitSkippedComplicationsAction: current complication id: %@", buf, 0xCu);
     }
 
@@ -467,36 +467,36 @@ uint64_t __75__NTKGreenfieldAddWatchFaceManager_handleRevisitSkippedComplication
   v11 = *MEMORY[0x277D85DE8];
   if (self->_uiState == 3)
   {
-    v3 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
-    if (v3)
+    _curPendingComplicationItemId = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
+    if (_curPendingComplicationItemId)
     {
-      [(NSMutableSet *)self->_skippedPendingComplicationsItemIds addObject:v3];
-      [(NSMutableArray *)self->_orderedPendingComplicationsItemIds removeObject:v3];
+      [(NSMutableSet *)self->_skippedPendingComplicationsItemIds addObject:_curPendingComplicationItemId];
+      [(NSMutableArray *)self->_orderedPendingComplicationsItemIds removeObject:_curPendingComplicationItemId];
       ++self->_viewedNonInstalledAppCount;
     }
 
-    v4 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
+    _curPendingComplicationItemId2 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
     v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = v3;
+      v8 = _curPendingComplicationItemId;
       v9 = 2112;
-      v10 = v4;
+      v10 = _curPendingComplicationItemId2;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "handleSkipComplicationAction current complication id: %@, nextComplication id: %@", &v7, 0x16u);
     }
 
-    if (v4)
+    if (_curPendingComplicationItemId2)
     {
       [(NTKGreenfieldAddWatchFaceManager *)self _updateUIStateAndNotifyDelegate:3];
     }
 
     else
     {
-      v6 = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
-      if (v6)
+      _addToLibraryOrUpdateFaceInLibrary = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
+      if (_addToLibraryOrUpdateFaceInLibrary)
       {
-        [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:v6];
+        [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:_addToLibraryOrUpdateFaceInLibrary];
       }
 
       else
@@ -531,8 +531,8 @@ uint64_t __75__NTKGreenfieldAddWatchFaceManager_handleRevisitSkippedComplication
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
-        v11 = [v10 allKeysForObject:v9];
+        complicationSlotToItemIdMapping = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
+        v11 = [complicationSlotToItemIdMapping allKeysForObject:v9];
 
         if (v11)
         {
@@ -546,12 +546,12 @@ uint64_t __75__NTKGreenfieldAddWatchFaceManager_handleRevisitSkippedComplication
     while (v6);
   }
 
-  v12 = [(NSMutableSet *)self->_unavailableComplicationsSlots allObjects];
-  [v3 addObjectsFromArray:v12];
+  allObjects = [(NSMutableSet *)self->_unavailableComplicationsSlots allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
-  v13 = [v3 allObjects];
+  allObjects2 = [v3 allObjects];
 
-  return v13;
+  return allObjects2;
 }
 
 - (void)openAppStore
@@ -561,11 +561,11 @@ uint64_t __75__NTKGreenfieldAddWatchFaceManager_handleRevisitSkippedComplication
   {
     if (totalNonInstalledAppCount == 1 && [(NSMutableArray *)self->_orderedPendingComplicationsItemIds count]== 1)
     {
-      v8 = [(NSMutableArray *)self->_orderedPendingComplicationsItemIds firstObject];
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", v8];
-      v5 = [MEMORY[0x277D75128] sharedApplication];
+      firstObject = [(NSMutableArray *)self->_orderedPendingComplicationsItemIds firstObject];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", firstObject];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
       v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
-      [v5 openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
+      [mEMORY[0x277D75128] openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
     }
 
     else
@@ -585,14 +585,14 @@ void __48__NTKGreenfieldAddWatchFaceManager_openAppStore__block_invoke()
 
 - (NSString)addFaceDescription
 {
-  v3 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-  v4 = [(NTKGreenfieldAddWatchFaceManager *)self _missingAppsDescription];
-  if (([v3 isUsingConfigurationModifiedForThisDevice] & 1) != 0 || -[NTKGreenfieldDecodedRecipe wasModifiedForThisDevice](self->_decodedRecipe, "wasModifiedForThisDevice"))
+  watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+  _missingAppsDescription = [(NTKGreenfieldAddWatchFaceManager *)self _missingAppsDescription];
+  if (([watchFace isUsingConfigurationModifiedForThisDevice] & 1) != 0 || -[NTKGreenfieldDecodedRecipe wasModifiedForThisDevice](self->_decodedRecipe, "wasModifiedForThisDevice"))
   {
-    if (v4)
+    if (_missingAppsDescription)
     {
       v5 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_CONFIGURATION_WAS_MODIFIED_AND_HAS_MISSING_APPS", 0);
-      v6 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v5, v4];
+      v6 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v5, _missingAppsDescription];
 
       goto LABEL_9;
     }
@@ -601,9 +601,9 @@ void __48__NTKGreenfieldAddWatchFaceManager_openAppStore__block_invoke()
     goto LABEL_8;
   }
 
-  if (v4)
+  if (_missingAppsDescription)
   {
-    v7 = v4;
+    v7 = _missingAppsDescription;
 LABEL_8:
     v6 = v7;
     goto LABEL_9;
@@ -617,7 +617,7 @@ LABEL_9:
 
 - (id)_missingAppsDescription
 {
-  v3 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+  watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
   if (self->_totalNonInstalledSlotCount == 1)
   {
     v4 = @"GREENFIELD_ADD_WATCH_FACE_A_COMPLICATION";
@@ -643,12 +643,12 @@ LABEL_9:
   v10 = v8;
   v21 = v10;
   v11 = _Block_copy(aBlock);
-  if ([v3 faceStyle] == 22)
+  if ([watchFace faceStyle] == 22)
   {
-    if (NTKPhotosIsCustomPhotosFace(v3))
+    if (NTKPhotosIsCustomPhotosFace(watchFace))
     {
-      v12 = [v3 resourceDirectory];
-      v13 = [NTKPhotosReader readerForResourceDirectory:v12];
+      resourceDirectory = [watchFace resourceDirectory];
+      v13 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory];
 
       v14 = v11[2](v11, [v13 count], @"GREENFIELD_ADD_WATCH_FACE_PHOTOS_COUNT");
 
@@ -658,7 +658,7 @@ LABEL_9:
 
   else
   {
-    if ([v3 faceStyle] == 23 && objc_msgSend(v3, "treatAsUsingCustomAsset"))
+    if ([watchFace faceStyle] == 23 && objc_msgSend(watchFace, "treatAsUsingCustomAsset"))
     {
       v14 = v11[2](v11, 1, @"GREENFIELD_ADD_WATCH_FACE_KALEIDOSCOPE_COUNT");
       goto LABEL_16;
@@ -709,30 +709,30 @@ id __59__NTKGreenfieldAddWatchFaceManager__missingAppsDescription__block_invoke(
   return v8;
 }
 
-- (void)_buildUnavailableComplicationsInformationWithInstalledBundleIds:(id)a3
+- (void)_buildUnavailableComplicationsInformationWithInstalledBundleIds:(id)ids
 {
-  v4 = a3;
-  v5 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+  idsCopy = ids;
+  watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
   v6 = [MEMORY[0x277CBEB58] set];
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [v5 device];
-  v9 = NTKRestrictedComplicationsForDevice(v8);
+  device = [watchFace device];
+  v9 = NTKRestrictedComplicationsForDevice(device);
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __100__NTKGreenfieldAddWatchFaceManager__buildUnavailableComplicationsInformationWithInstalledBundleIds___block_invoke;
   v19[3] = &unk_278783318;
-  v20 = v5;
+  v20 = watchFace;
   v21 = v9;
-  v22 = self;
-  v23 = v4;
+  selfCopy = self;
+  v23 = idsCopy;
   v10 = v6;
   v24 = v10;
   v11 = v7;
   v25 = v11;
-  v12 = v4;
+  v12 = idsCopy;
   v13 = v9;
-  v14 = v5;
+  v14 = watchFace;
   [v14 enumerateComplicationSlotsWithBlock:v19];
   unavailableComplicationsSlots = self->_unavailableComplicationsSlots;
   self->_unavailableComplicationsSlots = v10;
@@ -826,17 +826,17 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_refreshInstalledComplicationsWithContinueBlock:(id)a3
+- (void)_refreshInstalledComplicationsWithContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__NTKGreenfieldAddWatchFaceManager__refreshInstalledComplicationsWithContinueBlock___block_invoke;
   v7[3] = &unk_27877FF60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -1176,50 +1176,50 @@ LABEL_10:
 {
   if (self->_uiState == 3)
   {
-    v4 = [(NSMutableArray *)self->_orderedPendingComplicationsItemIds firstObject];
+    firstObject = [(NSMutableArray *)self->_orderedPendingComplicationsItemIds firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (void)markComplicationAsInstalled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
-  if (v3)
+  _curPendingComplicationItemId = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
+  if (_curPendingComplicationItemId)
   {
-    [(NSMutableArray *)self->_orderedPendingComplicationsItemIds removeObject:v3];
-    [(NSMutableSet *)self->_installedComplicationIds addObject:v3];
+    [(NSMutableArray *)self->_orderedPendingComplicationsItemIds removeObject:_curPendingComplicationItemId];
+    [(NSMutableSet *)self->_installedComplicationIds addObject:_curPendingComplicationItemId];
     ++self->_viewedNonInstalledAppCount;
   }
 
-  v4 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
+  _curPendingComplicationItemId2 = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v3;
+    v8 = _curPendingComplicationItemId;
     v9 = 2112;
-    v10 = v4;
+    v10 = _curPendingComplicationItemId2;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "markComplicationAsInstalled current complication id: %@, nextComplication id: %@", &v7, 0x16u);
   }
 
-  if (v4)
+  if (_curPendingComplicationItemId2)
   {
     [(NTKGreenfieldAddWatchFaceManager *)self _updateUIStateAndNotifyDelegate:3];
   }
 
   else
   {
-    v6 = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
-    if (v6)
+    _addToLibraryOrUpdateFaceInLibrary = [(NTKGreenfieldAddWatchFaceManager *)self _addToLibraryOrUpdateFaceInLibrary];
+    if (_addToLibraryOrUpdateFaceInLibrary)
     {
-      [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:v6];
+      [(NTKGreenfieldAddWatchFaceManager *)self _handleAddWatchFaceManagerDidFinishWithError:_addToLibraryOrUpdateFaceInLibrary];
     }
 
     else
@@ -1289,7 +1289,7 @@ void __61__NTKGreenfieldAddWatchFaceManager__startLibraryTimeoutTimer__block_inv
   self->_libraryTimeoutTimer = 0;
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
   v4 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1321,15 +1321,15 @@ void __61__NTKGreenfieldAddWatchFaceManager__startLibraryTimeoutTimer__block_inv
   }
 }
 
-- (void)_updateUIStateAndNotifyDelegate:(unint64_t)a3
+- (void)_updateUIStateAndNotifyDelegate:(unint64_t)delegate
 {
   uiState = self->_uiState;
-  self->_uiState = a3;
-  if (a3 <= 1)
+  self->_uiState = delegate;
+  if (delegate <= 1)
   {
-    if (a3)
+    if (delegate)
     {
-      if (a3 != 1)
+      if (delegate != 1)
       {
         return;
       }
@@ -1357,7 +1357,7 @@ void __61__NTKGreenfieldAddWatchFaceManager__startLibraryTimeoutTimer__block_inv
 
   else
   {
-    switch(a3)
+    switch(delegate)
     {
       case 2uLL:
         if ([(NSMutableSet *)self->_unavailableComplicationsNames count]== 1)
@@ -1373,25 +1373,25 @@ void __61__NTKGreenfieldAddWatchFaceManager__startLibraryTimeoutTimer__block_inv
         }
 
         WeakRetained = NTKClockFaceLocalizedString(v8, v9);
-        v17 = [(NSMutableSet *)self->_unavailableComplicationsNames allObjects];
-        v10 = [v17 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+        allObjects = [(NSMutableSet *)self->_unavailableComplicationsNames allObjects];
+        skippedComplicationsSlots = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
-        if ([v10 count] == 1)
+        if ([skippedComplicationsSlots count] == 1)
         {
           v18 = NTKClockFaceLocalizedString(@"GREENFIELD_COMPLICATIONS_NOT_AVAILABLE_DESCRIPTION_ONE", 0);
           v19 = MEMORY[0x277CCACA8];
-          v20 = [v10 objectAtIndexedSubscript:0];
+          v20 = [skippedComplicationsSlots objectAtIndexedSubscript:0];
           v21 = [v19 stringWithFormat:v18, v20];
         }
 
         else
         {
           v18 = NTKClockFaceLocalizedString(@"GREENFIELD_COMPLICATIONS_NOT_AVAILABLE_DESCRIPTION_OTHER", 0);
-          v20 = [v10 mutableCopy];
+          v20 = [skippedComplicationsSlots mutableCopy];
           [v20 removeLastObject];
           v22 = [v20 componentsJoinedByString:{@", "}];
-          v23 = [v10 lastObject];
-          v21 = [MEMORY[0x277CCACA8] stringWithFormat:v18, v22, v23];
+          lastObject = [skippedComplicationsSlots lastObject];
+          v21 = [MEMORY[0x277CCACA8] stringWithFormat:v18, v22, lastObject];
         }
 
         v24 = objc_loadWeakRetained(&self->_delegate);
@@ -1400,7 +1400,7 @@ void __61__NTKGreenfieldAddWatchFaceManager__startLibraryTimeoutTimer__block_inv
         break;
       case 3uLL:
         WeakRetained = [(NTKGreenfieldAddWatchFaceManager *)self _curPendingComplicationItemId];
-        v10 = [(NTKGreenfieldAddWatchFaceManager *)self skippedComplicationsSlots];
+        skippedComplicationsSlots = [(NTKGreenfieldAddWatchFaceManager *)self skippedComplicationsSlots];
         v11 = [(NSSet *)self->_locallyAvailableItemIds containsObject:WeakRetained];
         v12 = [(NSSet *)self->_appsThatRequireUpdatesItemIds containsObject:WeakRetained];
         v13 = 2;
@@ -1419,16 +1419,16 @@ void __61__NTKGreenfieldAddWatchFaceManager__startLibraryTimeoutTimer__block_inv
           v14 = v11;
         }
 
-        v15 = [(NTKGreenfieldAddWatchFaceManager *)self delegate];
-        v16 = v15;
+        delegate = [(NTKGreenfieldAddWatchFaceManager *)self delegate];
+        v16 = delegate;
         if (uiState == 4)
         {
-          [v15 addWatchFaceManager:self updateStateToRevisitComplicationWithItemId:WeakRetained installMode:v14 skippedComplicationSlots:v10];
+          [delegate addWatchFaceManager:self updateStateToRevisitComplicationWithItemId:WeakRetained installMode:v14 skippedComplicationSlots:skippedComplicationsSlots];
         }
 
         else
         {
-          [v15 addWatchFaceManager:self updateStateToAddComplicationWithItemId:WeakRetained installMode:v14 skippedComplicationSlots:v10];
+          [delegate addWatchFaceManager:self updateStateToAddComplicationWithItemId:WeakRetained installMode:v14 skippedComplicationSlots:skippedComplicationsSlots];
         }
 
         break;
@@ -1460,24 +1460,24 @@ LABEL_31:
 
     if (!self->_addedFaceID)
     {
-      v24 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-      v25 = [v24 deepCopy];
+      watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+      deepCopy = [watchFace deepCopy];
 
-      if (![v25 origin])
+      if (![deepCopy origin])
       {
-        [v25 setOrigin:12];
+        [deepCopy setOrigin:12];
       }
 
-      [(NTKFaceCollection *)self->_library appendFace:v25 suppressingCallbackToObserver:0];
-      [(NTKFaceCollection *)self->_library setSelectedFace:v25 suppressingCallbackToObserver:0];
-      v26 = [(NTKFaceCollection *)self->_library selectedUUID];
+      [(NTKFaceCollection *)self->_library appendFace:deepCopy suppressingCallbackToObserver:0];
+      [(NTKFaceCollection *)self->_library setSelectedFace:deepCopy suppressingCallbackToObserver:0];
+      selectedUUID = [(NTKFaceCollection *)self->_library selectedUUID];
       addedFaceID = self->_addedFaceID;
-      self->_addedFaceID = v26;
+      self->_addedFaceID = selectedUUID;
     }
   }
 
-  v28 = [(NTKFaceCollection *)self->_library facesByUUID];
-  v32 = [v28 objectForKey:self->_addedFaceID];
+  facesByUUID = [(NTKFaceCollection *)self->_library facesByUUID];
+  v32 = [facesByUUID objectForKey:self->_addedFaceID];
   v3 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -1490,22 +1490,22 @@ LABEL_31:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-  v5 = [v4 orderedComplicationSlots];
+  watchFace2 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+  orderedComplicationSlots = [watchFace2 orderedComplicationSlots];
 
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v6 = [orderedComplicationSlots countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v36;
-    v31 = v5;
+    v31 = orderedComplicationSlots;
     do
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(orderedComplicationSlots);
         }
 
         v10 = *(*(&v35 + 1) + 8 * i);
@@ -1516,14 +1516,14 @@ LABEL_31:
           goto LABEL_21;
         }
 
-        v12 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-        v11 = [v12 complicationForSlot:v10];
+        watchFace3 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+        v11 = [watchFace3 complicationForSlot:v10];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
-          v14 = [v13 objectForKeyedSubscript:v10];
+          complicationSlotToItemIdMapping = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
+          v14 = [complicationSlotToItemIdMapping objectForKeyedSubscript:v10];
 
           if ([(NSMutableSet *)self->_skippedPendingComplicationsItemIds containsObject:v14])
           {
@@ -1538,8 +1538,8 @@ LABEL_31:
             v30 = [(NTKGreenfieldAddWatchFaceManager *)self _appNameFromItemId:v14];
             if (v30)
             {
-              v29 = [v15 complication];
-              v16 = [NTKGreenfieldPlaceholderComplication placeholderWithComplication:v29 appStoreItemId:v14 appName:v30];
+              complication = [v15 complication];
+              v16 = [NTKGreenfieldPlaceholderComplication placeholderWithComplication:complication appStoreItemId:v14 appName:v30];
             }
 
             else
@@ -1550,14 +1550,14 @@ LABEL_31:
             [v32 setComplication:v16 forSlot:v10];
 
 LABEL_19:
-            v5 = v31;
+            orderedComplicationSlots = v31;
           }
         }
 
 LABEL_21:
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v7 = [orderedComplicationSlots countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v7);
@@ -1573,14 +1573,14 @@ LABEL_21:
 
   if ([v32 editedState] == 2)
   {
-    v18 = [v32 lastEditedDate];
-    [v32 setCreationDate:v18];
+    lastEditedDate = [v32 lastEditedDate];
+    [v32 setCreationDate:lastEditedDate];
   }
 
   else
   {
-    v19 = [MEMORY[0x277CBEAA8] date];
-    [v32 setCreationDate:v19];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v32 setCreationDate:date];
 
     [v32 setEditedState:1];
   }
@@ -1607,43 +1607,43 @@ void __70__NTKGreenfieldAddWatchFaceManager__addToLibraryOrUpdateFaceInLibrary__
   [v2 handleAddedFromFaceSharing];
 }
 
-- (id)canAddWatchFaceFromDecodedRecipe:(id)a3 toLibrary:(id)a4
+- (id)canAddWatchFaceFromDecodedRecipe:(id)recipe toLibrary:(id)library
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 watchFace];
+  recipeCopy = recipe;
+  libraryCopy = library;
+  watchFace = [recipeCopy watchFace];
   v30 = 0;
-  v8 = NTKCanAddWatchFace(v7, v6, &v30);
+  v8 = NTKCanAddWatchFace(watchFace, libraryCopy, &v30);
   v9 = v30;
 
   if ((v8 & 1) == 0)
   {
     if (v9)
     {
-      v15 = [v9 code];
+      code = [v9 code];
     }
 
     else
     {
-      v15 = 0;
+      code = 0;
     }
 
     v14 = v9;
     goto LABEL_9;
   }
 
-  v10 = [v5 watchFace];
-  v11 = [v10 shouldSanitizeFaceConfigurationWhenAddingSharedFace];
+  watchFace2 = [recipeCopy watchFace];
+  shouldSanitizeFaceConfigurationWhenAddingSharedFace = [watchFace2 shouldSanitizeFaceConfigurationWhenAddingSharedFace];
 
-  if (!v11)
+  if (!shouldSanitizeFaceConfigurationWhenAddingSharedFace)
   {
     goto LABEL_10;
   }
 
-  v12 = [v5 watchFace];
+  watchFace3 = [recipeCopy watchFace];
   v29 = v9;
-  v13 = [v12 sanitizeFaceConfiguration:&v29];
+  v13 = [watchFace3 sanitizeFaceConfiguration:&v29];
   v14 = v29;
 
   if (v13)
@@ -1652,15 +1652,15 @@ void __70__NTKGreenfieldAddWatchFaceManager__addToLibraryOrUpdateFaceInLibrary__
     goto LABEL_10;
   }
 
-  v18 = [v14 domain];
-  v19 = v18;
-  if (v18 == @"com.apple.nanotimekit.photos")
+  domain = [v14 domain];
+  v19 = domain;
+  if (domain == @"com.apple.nanotimekit.photos")
   {
-    v20 = [v14 code];
+    code2 = [v14 code];
 
-    if (v20 == 1006)
+    if (code2 == 1006)
     {
-      v15 = 7;
+      code = 7;
       goto LABEL_9;
     }
   }
@@ -1669,26 +1669,26 @@ void __70__NTKGreenfieldAddWatchFaceManager__addToLibraryOrUpdateFaceInLibrary__
   {
   }
 
-  v21 = [v14 domain];
-  v22 = v21;
-  if (v21 != @"com.apple.nanotimekit.resourceDirectory")
+  domain2 = [v14 domain];
+  v22 = domain2;
+  if (domain2 != @"com.apple.nanotimekit.resourceDirectory")
   {
 
 LABEL_25:
-    v15 = 0;
+    code = 0;
     goto LABEL_9;
   }
 
-  v23 = [v14 code];
+  code3 = [v14 code];
 
-  if (v23 != 2004)
+  if (code3 != 2004)
   {
     goto LABEL_25;
   }
 
-  v15 = 12;
+  code = 12;
 LABEL_9:
-  v9 = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:v15];
+  v9 = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:code];
 
 LABEL_10:
   if (v9)
@@ -1696,23 +1696,23 @@ LABEL_10:
     v16 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v5 watchFace];
-      v25 = [v9 localizedDescription];
-      v26 = [v9 code];
-      v27 = [v5 watchFace];
-      v28 = [v27 device];
+      watchFace4 = [recipeCopy watchFace];
+      localizedDescription = [v9 localizedDescription];
+      code4 = [v9 code];
+      watchFace5 = [recipeCopy watchFace];
+      device = [watchFace5 device];
       *buf = 138413570;
-      v32 = v24;
+      v32 = watchFace4;
       v33 = 2112;
-      v34 = v25;
+      v34 = localizedDescription;
       v35 = 2048;
-      v36 = v26;
+      v36 = code4;
       v37 = 2112;
-      v38 = v6;
+      v38 = libraryCopy;
       v39 = 2112;
-      v40 = v5;
+      v40 = recipeCopy;
       v41 = 2112;
-      v42 = v28;
+      v42 = device;
       _os_log_error_impl(&dword_22D9C5000, v16, OS_LOG_TYPE_ERROR, "Failed to add watch face %@, errorMessage %@, errorCode %ld, library %@, decodedRecipe %@, device %@", buf, 0x3Eu);
     }
   }
@@ -1720,13 +1720,13 @@ LABEL_10:
   return v9;
 }
 
-- (id)_appNameFromItemId:(id)a3
+- (id)_appNameFromItemId:(id)id
 {
-  v3 = a3;
-  if (v3)
+  idCopy = id;
+  if (idCopy)
   {
     v12 = 0;
-    v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithStoreItemIdentifier:objc_msgSend(v3 error:{"longLongValue"), &v12}];
+    v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithStoreItemIdentifier:objc_msgSend(idCopy error:{"longLongValue"), &v12}];
     v5 = v12;
     if (!v4)
     {
@@ -1737,12 +1737,12 @@ LABEL_10:
       }
     }
 
-    v7 = [v4 localizedName];
-    v8 = v7;
+    localizedName = [v4 localizedName];
+    v8 = localizedName;
     v9 = &stru_284110E98;
-    if (v7)
+    if (localizedName)
     {
-      v9 = v7;
+      v9 = localizedName;
     }
 
     v10 = v9;
@@ -1762,9 +1762,9 @@ LABEL_10:
   return v10;
 }
 
-- (void)_queue_fetchInstalledAppsOnWatchWithithCompletionBlock:(id)a3
+- (void)_queue_fetchInstalledAppsOnWatchWithithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_serialQueue);
   v25 = 0;
   v26 = &v25;
@@ -1797,7 +1797,7 @@ LABEL_10:
   v9 = v7;
   [v6 fetchInstalledAppsOnWatchWithCompletionBlock:v8];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  v4[2](v4, v26[5], v20[5], v14[5]);
+  blockCopy[2](blockCopy, v26[5], v20[5], v14[5]);
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
@@ -1828,7 +1828,7 @@ void __91__NTKGreenfieldAddWatchFaceManager__queue_fetchInstalledAppsOnWatchWith
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_queue_fetchLocallyAvailableAppsWithError:(id *)a3
+- (id)_queue_fetchLocallyAvailableAppsWithError:(id *)error
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v22 = 0;
@@ -1844,10 +1844,10 @@ void __91__NTKGreenfieldAddWatchFaceManager__queue_fetchInstalledAppsOnWatchWith
   v20 = __Block_byref_object_dispose__32;
   v21 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  v6 = [MEMORY[0x277CBBAE8] currentDevice];
-  v7 = [v6 pdrDevice];
-  v8 = [v7 pairingID];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  pdrDevice = [currentDevice pdrDevice];
+  pairingID = [pdrDevice pairingID];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1857,11 +1857,11 @@ void __91__NTKGreenfieldAddWatchFaceManager__queue_fetchInstalledAppsOnWatchWith
   v13 = v9;
   v14 = &v16;
   v15 = &v22;
-  [v5 enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v8 options:3 withBlock:v12];
+  [mEMORY[0x277CEAF80] enumerateLocallyAvailableApplicationsForDeviceWithPairingID:pairingID options:3 withBlock:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v10 = [v23[5] copy];
@@ -1911,12 +1911,12 @@ LABEL_7:
   return v9;
 }
 
-- (void)_handleAddWatchFaceManagerDidFinishWithError:(id)a3
+- (void)_handleAddWatchFaceManagerDidFinishWithError:(id)error
 {
-  objc_storeStrong(&self->_failedError, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_failedError, error);
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained addWatchFaceManager:self didFinishAddingFaceWithError:v5];
+  [WeakRetained addWatchFaceManager:self didFinishAddingFaceWithError:errorCopy];
 }
 
 - (id)_analyticsExitScreenNameForCurrentState
@@ -1936,23 +1936,23 @@ LABEL_7:
 - (void)handleDidExitAddWatchFaceFlow
 {
   failedError = self->_failedError;
-  v4 = [(NTKGreenfieldAddWatchFaceManager *)self _analyticsModelForAddFaceEvents];
-  v6 = v4;
+  _analyticsModelForAddFaceEvents = [(NTKGreenfieldAddWatchFaceManager *)self _analyticsModelForAddFaceEvents];
+  v6 = _analyticsModelForAddFaceEvents;
   if (failedError)
   {
-    [v4 setError:self->_failedError];
+    [_analyticsModelForAddFaceEvents setError:self->_failedError];
     NTKSubmitAnalyticsForErrorAddFaceFlow(v6);
   }
 
   else if (self->_addedFaceID)
   {
-    NTKSubmitAnalyticsForAddSharedFace(v4);
+    NTKSubmitAnalyticsForAddSharedFace(_analyticsModelForAddFaceEvents);
   }
 
   else
   {
-    v5 = [(NTKGreenfieldAddWatchFaceManager *)self _analyticsExitScreenNameForCurrentState];
-    [v6 setAddFaceFlowExitScreenName:v5];
+    _analyticsExitScreenNameForCurrentState = [(NTKGreenfieldAddWatchFaceManager *)self _analyticsExitScreenNameForCurrentState];
+    [v6 setAddFaceFlowExitScreenName:_analyticsExitScreenNameForCurrentState];
 
     NTKSubmitAnalyticsForExitAddSharedFaceFlow(v6);
   }
@@ -1961,13 +1961,13 @@ LABEL_7:
 - (id)_analyticsModelForAddFaceEvents
 {
   v3 = objc_alloc_init(NTKGreenfieldAnalyticsModel);
-  v4 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-  [(NTKGreenfieldAnalyticsModel *)v3 setWatchFace:v4];
+  watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+  [(NTKGreenfieldAnalyticsModel *)v3 setWatchFace:watchFace];
 
   [(NTKGreenfieldAnalyticsModel *)v3 setPurchasedComplicationsItemIds:self->_installedComplicationIds];
   [(NTKGreenfieldAnalyticsModel *)v3 setSkippedComplicationsItemIds:self->_skippedPendingComplicationsItemIds];
-  v5 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
-  [(NTKGreenfieldAnalyticsModel *)v3 setComplicationSlotToIdMapping:v5];
+  complicationSlotToItemIdMapping = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
+  [(NTKGreenfieldAnalyticsModel *)v3 setComplicationSlotToIdMapping:complicationSlotToItemIdMapping];
 
   [(NTKGreenfieldAnalyticsModel *)v3 setDistributionMechanism:self->_sourceApplicationBundleIdentifier];
 

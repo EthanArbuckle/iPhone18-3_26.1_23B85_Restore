@@ -1,18 +1,18 @@
 @interface MTLIOAccelHeap
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newSubResourceAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 alignment:(unint64_t)a5 options:(unint64_t)a6;
-- (id)newSubResourceWithLength:(unint64_t)a3 alignment:(unint64_t)a4 options:(unint64_t)a5 offset:(unint64_t *)a6;
-- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)a3;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newSubResourceAtOffset:(unint64_t)offset withLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options;
+- (id)newSubResourceWithLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options offset:(unint64_t *)offset;
+- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)alignment;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)usedSize;
 - (void)dealloc;
 - (void)deallocHeapSubResource;
-- (void)unpinMemoryAtOffset:(unint64_t)a3 withLength:(unint64_t)a4;
+- (void)unpinMemoryAtOffset:(unint64_t)offset withLength:(unint64_t)length;
 @end
 
 @implementation MTLIOAccelHeap
@@ -31,16 +31,16 @@
   return v3;
 }
 
-- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)a3
+- (unint64_t)maxAvailableSizeWithAlignment:(unint64_t)alignment
 {
-  v3 = a3;
+  alignmentCopy = alignment;
   if ([(_MTLHeap *)self type])
   {
     return 0;
   }
 
   pthread_mutex_lock(&self->_mutex);
-  MaxFreeSize = MTLRangeAllocatorGetMaxFreeSize(&self->_allocator, v3);
+  MaxFreeSize = MTLRangeAllocatorGetMaxFreeSize(&self->_allocator, alignmentCopy);
   pthread_mutex_unlock(&self->_mutex);
   return MaxFreeSize;
 }
@@ -58,25 +58,25 @@
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (id)newSubResourceWithLength:(unint64_t)a3 alignment:(unint64_t)a4 options:(unint64_t)a5 offset:(unint64_t *)a6
+- (id)newSubResourceWithLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options offset:(unint64_t *)offset
 {
-  if (self->_size < a3)
+  if (self->_size < length)
   {
     return 0;
   }
 
-  v8 = a5;
+  optionsCopy = options;
   v12 = *&self->_resource->_anon_50[96];
   v13 = v12 & 0xF;
-  if ((a5 & 0xF) != v13)
+  if ((options & 0xF) != v13)
   {
-    v17 = MTLCPUCacheModeString(a5 & 0xF);
+    v17 = MTLCPUCacheModeString(options & 0xF);
     MTLCPUCacheModeString(v13);
     MTLReportFailure(0, "[MTLIOAccelHeap newSubResourceWithLength:alignment:options:offset:]", 175, @"The requested CPU cache mode (%@) does not match the heap's mode (%@)", v18, v19, v20, v21, v17);
     v12 = *&self->_resource->_anon_50[96];
   }
 
-  v14 = v8 >> 4;
+  v14 = optionsCopy >> 4;
   if (v14 != 3)
   {
     v15 = v12 >> 4;
@@ -87,7 +87,7 @@
   }
 
   pthread_mutex_lock(&self->_mutex);
-  if (MTLRangeAllocatorAllocate(&self->_allocator, a3, a6, a4))
+  if (MTLRangeAllocatorAllocate(&self->_allocator, length, offset, alignment))
   {
     v6 = self->_resource;
   }
@@ -101,10 +101,10 @@
   return v6;
 }
 
-- (void)unpinMemoryAtOffset:(unint64_t)a3 withLength:(unint64_t)a4
+- (void)unpinMemoryAtOffset:(unint64_t)offset withLength:(unint64_t)length
 {
   pthread_mutex_lock(&self->_mutex);
-  MTLRangeAllocatorDeallocate(&self->_allocator.elements, a3, a4);
+  MTLRangeAllocatorDeallocate(&self->_allocator.elements, offset, length);
 
   pthread_mutex_unlock(&self->_mutex);
 }
@@ -116,35 +116,35 @@
   pthread_mutex_unlock(&self->_mutex);
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   pthread_mutex_lock(&self->_mutex);
-  v5 = [(MTLIOAccelResource *)self->_resource setPurgeableState:a3];
+  v5 = [(MTLIOAccelResource *)self->_resource setPurgeableState:state];
   pthread_mutex_unlock(&self->_mutex);
   return v5;
 }
 
-- (id)newSubResourceAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 alignment:(unint64_t)a5 options:(unint64_t)a6
+- (id)newSubResourceAtOffset:(unint64_t)offset withLength:(unint64_t)length alignment:(unint64_t)alignment options:(unint64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v11 = *&self->_resource->_anon_50[96];
   v12 = v11 & 0xF;
-  if ((a6 & 0xF) != v12)
+  if ((options & 0xF) != v12)
   {
-    v17 = MTLCPUCacheModeString(a6 & 0xF);
+    v17 = MTLCPUCacheModeString(options & 0xF);
     MTLCPUCacheModeString(v12);
     MTLReportFailure(0, "[MTLIOAccelHeap newSubResourceAtOffset:withLength:alignment:options:]", 255, @"The requested CPU cache mode (%@) does not match the heap's mode (%@)", v18, v19, v20, v21, v17);
     v11 = *&self->_resource->_anon_50[96];
   }
 
-  v13 = v6 >> 4;
+  v13 = optionsCopy >> 4;
   v14 = v11 >> 4;
   if (v13 != v14)
   {
     [MTLIOAccelHeap newSubResourceAtOffset:v13 withLength:v14 alignment:? options:?];
   }
 
-  if (__CFADD__(a3, a4) || a3 + a4 > self->_size || ((a5 | a3) & (a5 - 1)) != 0)
+  if (__CFADD__(offset, length) || offset + length > self->_size || ((alignment | offset) & (alignment - 1)) != 0)
   {
     return 0;
   }
@@ -154,17 +154,17 @@
   return resource;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
-    v6 = [(_MTLHeap *)self storageMode];
-    if (v6 != 2)
+    storageMode = [(_MTLHeap *)self storageMode];
+    if (storageMode != 2)
     {
-      [(MTLIOAccelHeap *)v6 newAccelerationStructureWithSize:v7, v8, v9, v10, v11, v12, v13, v18];
+      [(MTLIOAccelHeap *)storageMode newAccelerationStructureWithSize:v7, v8, v9, v10, v11, v12, v13, v18];
     }
 
-    v14 = [(MTLIOAccelHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions]];
+    v14 = [(MTLIOAccelHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions]];
     if (v14)
     {
       v15 = v14;
@@ -182,30 +182,30 @@
   return 0;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
-  v5 = [(_MTLHeap *)self storageMode];
-  if (v5 != 2)
+  storageMode = [(_MTLHeap *)self storageMode];
+  if (storageMode != 2)
   {
-    [(MTLIOAccelHeap *)v5 newAccelerationStructureWithDescriptor:v6, v7, v8, v9, v10, v11, v12, v15];
+    [(MTLIOAccelHeap *)storageMode newAccelerationStructureWithDescriptor:v6, v7, v8, v9, v10, v11, v12, v15];
   }
 
-  v13 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:a3];
+  v13 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:descriptor];
 
   return [(MTLIOAccelHeap *)self newAccelerationStructureWithSize:v13];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [(_MTLHeap *)self storageMode];
-    if (v8 != 2)
+    storageMode = [(_MTLHeap *)self storageMode];
+    if (storageMode != 2)
     {
-      [(MTLIOAccelHeap *)v8 newAccelerationStructureWithSize:v9 offset:v10, v11, v12, v13, v14, v15, v20];
+      [(MTLIOAccelHeap *)storageMode newAccelerationStructureWithSize:v9 offset:v10, v11, v12, v13, v14, v15, v20];
     }
 
-    v16 = [(_MTLHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions] offset:a4];
+    v16 = [(_MTLHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions] offset:offset];
     if (v16)
     {
       v17 = v16;
@@ -223,34 +223,34 @@
   return 0;
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v7 = [(_MTLHeap *)self storageMode];
-  if (v7 != 2)
+  storageMode = [(_MTLHeap *)self storageMode];
+  if (storageMode != 2)
   {
-    [(MTLIOAccelHeap *)v7 newAccelerationStructureWithDescriptor:v8 offset:v9, v10, v11, v12, v13, v14, v17];
+    [(MTLIOAccelHeap *)storageMode newAccelerationStructureWithDescriptor:v8 offset:v9, v10, v11, v12, v13, v14, v17];
   }
 
-  v15 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:a3];
+  v15 = [(MTLDevice *)self->_device heapAccelerationStructureSizeAndAlignWithDescriptor:descriptor];
 
-  return [(MTLIOAccelHeap *)self newAccelerationStructureWithSize:v15 offset:a4];
+  return [(MTLIOAccelHeap *)self newAccelerationStructureWithSize:v15 offset:offset];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
-    v8 = [(_MTLHeap *)self storageMode];
-    if (v8 != 2)
+    storageMode = [(_MTLHeap *)self storageMode];
+    if (storageMode != 2)
     {
-      [(MTLIOAccelHeap *)v8 newAccelerationStructureWithSize:v9 resourceIndex:v10, v11, v12, v13, v14, v15, v20];
+      [(MTLIOAccelHeap *)storageMode newAccelerationStructureWithSize:v9 resourceIndex:v10, v11, v12, v13, v14, v15, v20];
     }
 
-    v16 = [(MTLIOAccelHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions]];
+    v16 = [(MTLIOAccelHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions]];
     if (v16)
     {
       v17 = v16;
-      v18 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v16 offset:0 resourceIndex:a4];
+      v18 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v16 offset:0 resourceIndex:index];
 
       return v18;
     }
@@ -264,21 +264,21 @@
   return 0;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   if (([(MTLDevice *)self->_device requiresRaytracingEmulation]& 1) != 0)
   {
-    v10 = [(_MTLHeap *)self storageMode];
-    if (v10 != 2)
+    storageMode = [(_MTLHeap *)self storageMode];
+    if (storageMode != 2)
     {
-      [(MTLIOAccelHeap *)v10 newAccelerationStructureWithSize:v11 offset:v12 resourceIndex:v13, v14, v15, v16, v17, v22];
+      [(MTLIOAccelHeap *)storageMode newAccelerationStructureWithSize:v11 offset:v12 resourceIndex:v13, v14, v15, v16, v17, v22];
     }
 
-    v18 = [(_MTLHeap *)self newBufferWithLength:a3 options:[(_MTLHeap *)self resourceOptions] offset:a4];
+    v18 = [(_MTLHeap *)self newBufferWithLength:size options:[(_MTLHeap *)self resourceOptions] offset:offset];
     if (v18)
     {
       v19 = v18;
-      v20 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v18 offset:0 resourceIndex:a5];
+      v20 = [(MTLDevice *)self->_device newAccelerationStructureWithBuffer:v18 offset:0 resourceIndex:index];
 
       return v20;
     }

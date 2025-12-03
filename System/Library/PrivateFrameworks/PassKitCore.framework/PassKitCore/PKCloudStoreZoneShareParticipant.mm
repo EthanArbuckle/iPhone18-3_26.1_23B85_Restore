@@ -1,70 +1,70 @@
 @interface PKCloudStoreZoneShareParticipant
-- (BOOL)isEqual:(id)a3;
-- (PKCloudStoreZoneShareParticipant)initWithCoder:(id)a3;
-- (PKCloudStoreZoneShareParticipant)initWithParticipant:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKCloudStoreZoneShareParticipant)initWithCoder:(id)coder;
+- (PKCloudStoreZoneShareParticipant)initWithParticipant:(id)participant;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)invitationTokenData;
 - (id)lookupInfoData;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZoneShareParticipant
 
-- (PKCloudStoreZoneShareParticipant)initWithParticipant:(id)a3
+- (PKCloudStoreZoneShareParticipant)initWithParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v16.receiver = self;
   v16.super_class = PKCloudStoreZoneShareParticipant;
   v5 = [(PKCloudStoreZoneShareParticipant *)&v16 init];
   if (v5)
   {
-    v6 = [v4 userIdentity];
-    v7 = [v6 lookupInfo];
+    userIdentity = [participantCopy userIdentity];
+    lookupInfo = [userIdentity lookupInfo];
     lookupInfo = v5->_lookupInfo;
-    v5->_lookupInfo = v7;
+    v5->_lookupInfo = lookupInfo;
 
-    v9 = [v4 invitationToken];
+    invitationToken = [participantCopy invitationToken];
     invitationToken = v5->_invitationToken;
-    v5->_invitationToken = v9;
+    v5->_invitationToken = invitationToken;
 
-    v11 = [(CKUserIdentityLookupInfo *)v5->_lookupInfo emailAddress];
-    v12 = v11;
-    if (v11)
+    emailAddress = [(CKUserIdentityLookupInfo *)v5->_lookupInfo emailAddress];
+    v12 = emailAddress;
+    if (emailAddress)
     {
-      v13 = v11;
+      phoneNumber = emailAddress;
     }
 
     else
     {
-      v13 = [(CKUserIdentityLookupInfo *)v5->_lookupInfo phoneNumber];
+      phoneNumber = [(CKUserIdentityLookupInfo *)v5->_lookupInfo phoneNumber];
     }
 
     participantHandle = v5->_participantHandle;
-    v5->_participantHandle = v13;
+    v5->_participantHandle = phoneNumber;
   }
 
   return v5;
 }
 
-- (PKCloudStoreZoneShareParticipant)initWithCoder:(id)a3
+- (PKCloudStoreZoneShareParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKCloudStoreZoneShareParticipant;
   v5 = [(PKCloudStoreZoneShareParticipant *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"participantHandle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"participantHandle"];
     participantHandle = v5->_participantHandle;
     v5->_participantHandle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lookupInfo"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lookupInfo"];
     lookupInfo = v5->_lookupInfo;
     v5->_lookupInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationToken"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationToken"];
     invitationToken = v5->_invitationToken;
     v5->_invitationToken = v10;
   }
@@ -104,39 +104,39 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   participantHandle = self->_participantHandle;
-  v5 = a3;
-  [v5 encodeObject:participantHandle forKey:@"participantHandle"];
-  [v5 encodeObject:self->_lookupInfo forKey:@"lookupInfo"];
-  [v5 encodeObject:self->_invitationToken forKey:@"invitationToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:participantHandle forKey:@"participantHandle"];
+  [coderCopy encodeObject:self->_lookupInfo forKey:@"lookupInfo"];
+  [coderCopy encodeObject:self->_invitationToken forKey:@"invitationToken"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCloudStoreZoneShareParticipant allocWithZone:](PKCloudStoreZoneShareParticipant init];
-  v6 = [(NSString *)self->_participantHandle copyWithZone:a3];
+  v6 = [(NSString *)self->_participantHandle copyWithZone:zone];
   participantHandle = v5->_participantHandle;
   v5->_participantHandle = v6;
 
-  v8 = [(CKUserIdentityLookupInfo *)self->_lookupInfo copyWithZone:a3];
+  v8 = [(CKUserIdentityLookupInfo *)self->_lookupInfo copyWithZone:zone];
   lookupInfo = v5->_lookupInfo;
   v5->_lookupInfo = v8;
 
-  v10 = [(CKDeviceToDeviceShareInvitationToken *)self->_invitationToken copyWithZone:a3];
+  v10 = [(CKDeviceToDeviceShareInvitationToken *)self->_invitationToken copyWithZone:zone];
   invitationToken = v5->_invitationToken;
   v5->_invitationToken = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -204,11 +204,11 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_participantHandle];
-  [v3 safelyAddObject:self->_lookupInfo];
-  [v3 safelyAddObject:self->_invitationToken];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_participantHandle];
+  [array safelyAddObject:self->_lookupInfo];
+  [array safelyAddObject:self->_invitationToken];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

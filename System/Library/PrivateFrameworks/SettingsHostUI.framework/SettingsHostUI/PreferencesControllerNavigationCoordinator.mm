@@ -1,6 +1,6 @@
 @interface PreferencesControllerNavigationCoordinator
 - (_TtC14SettingsHostUI42PreferencesControllerNavigationCoordinator)init;
-- (void)preferencesViewController:(id)a3 pushViewController:(id)a4 animated:(BOOL)a5;
+- (void)preferencesViewController:(id)controller pushViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation PreferencesControllerNavigationCoordinator
@@ -18,7 +18,7 @@
   return self;
 }
 
-- (void)preferencesViewController:(id)a3 pushViewController:(id)a4 animated:(BOOL)a5
+- (void)preferencesViewController:(id)controller pushViewController:(id)viewController animated:(BOOL)animated
 {
   sub_265A46C2C();
   sub_265A46C1C();
@@ -28,10 +28,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
 
-  PreferencesControllerNavigationCoordinator.preferencesViewController(_:push:animated:)(v8, v9, a5);
+  PreferencesControllerNavigationCoordinator.preferencesViewController(_:push:animated:)(controllerCopy, viewControllerCopy, animated);
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface RMModelManagementTestDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 echo:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 echo:(id)a4 echoDataAssetReference:(id)a5 returnStatus:(id)a6;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier echo:(id)echo;
++ (id)buildWithIdentifier:(id)identifier echo:(id)echo echoDataAssetReference:(id)reference returnStatus:(id)status;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelManagementTestDeclaration
@@ -50,32 +50,32 @@ void __51__RMModelManagementTestDeclaration_assetReferences__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 echo:(id)a4 echoDataAssetReference:(id)a5 returnStatus:(id)a6
++ (id)buildWithIdentifier:(id)identifier echo:(id)echo echoDataAssetReference:(id)reference returnStatus:(id)status
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  statusCopy = status;
+  referenceCopy = reference;
+  echoCopy = echo;
   v13 = objc_opt_new();
   [v13 setDeclarationType:@"com.apple.configuration.management.test"];
-  if (v9)
+  if (identifierCopy)
   {
-    [v13 setDeclarationIdentifier:v9];
+    [v13 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setDeclarationIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setDeclarationIdentifier:uUIDString];
   }
 
-  [v13 setPayloadEcho:v12];
+  [v13 setPayloadEcho:echoCopy];
 
-  [v13 setPayloadEchoDataAssetReference:v11];
-  if (v10)
+  [v13 setPayloadEchoDataAssetReference:referenceCopy];
+  if (statusCopy)
   {
-    v16 = v10;
+    v16 = statusCopy;
   }
 
   else
@@ -90,25 +90,25 @@ void __51__RMModelManagementTestDeclaration_assetReferences__block_invoke()
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 echo:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier echo:(id)echo
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  echoCopy = echo;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.management.test"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadEcho:v6];
+  [v7 setPayloadEcho:echoCopy];
 
   [v7 updateServerToken];
 
@@ -167,12 +167,12 @@ void __51__RMModelManagementTestDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelManagementTestDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -180,32 +180,32 @@ void __51__RMModelManagementTestDeclaration_assetReferences__block_invoke()
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Echo" forKeyPath:@"payloadEcho" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"EchoDataAssetReference" forKeyPath:@"payloadEchoDataAssetReference" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ReturnStatus" forKeyPath:@"payloadReturnStatus" isRequired:0 defaultValue:@"Installed" error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Echo" forKeyPath:@"payloadEcho" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"EchoDataAssetReference" forKeyPath:@"payloadEchoDataAssetReference" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ReturnStatus" forKeyPath:@"payloadReturnStatus" isRequired:0 defaultValue:@"Installed" error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelManagementTestDeclaration *)self payloadEcho];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Echo" value:v5 isRequired:1 defaultValue:0];
+  payloadEcho = [(RMModelManagementTestDeclaration *)self payloadEcho];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Echo" value:payloadEcho isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelManagementTestDeclaration *)self payloadEchoDataAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"EchoDataAssetReference" value:v6 isRequired:0 defaultValue:0];
+  payloadEchoDataAssetReference = [(RMModelManagementTestDeclaration *)self payloadEchoDataAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"EchoDataAssetReference" value:payloadEchoDataAssetReference isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelManagementTestDeclaration *)self payloadReturnStatus];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ReturnStatus" value:v7 isRequired:0 defaultValue:@"Installed"];
+  payloadReturnStatus = [(RMModelManagementTestDeclaration *)self payloadReturnStatus];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ReturnStatus" value:payloadReturnStatus isRequired:0 defaultValue:@"Installed"];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelManagementTestDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadEcho copy];
   v6 = v4[6];
   v4[6] = v5;

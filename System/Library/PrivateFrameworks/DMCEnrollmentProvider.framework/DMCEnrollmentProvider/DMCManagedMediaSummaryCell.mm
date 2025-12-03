@@ -1,37 +1,37 @@
 @interface DMCManagedMediaSummaryCell
-- (void)_setText:(id)a3 image:(id)a4;
-- (void)setManagedApp:(id)a3;
-- (void)setManagedBook:(id)a3;
+- (void)_setText:(id)text image:(id)image;
+- (void)setManagedApp:(id)app;
+- (void)setManagedBook:(id)book;
 @end
 
 @implementation DMCManagedMediaSummaryCell
 
-- (void)setManagedBook:(id)a3
+- (void)setManagedBook:(id)book
 {
-  v5 = [a3 friendlyName];
+  friendlyName = [book friendlyName];
   v4 = [DMCApplicationProxy bookIconForVariant:1];
-  [(DMCManagedMediaSummaryCell *)self _setText:v5 image:v4];
+  [(DMCManagedMediaSummaryCell *)self _setText:friendlyName image:v4];
 }
 
-- (void)setManagedApp:(id)a3
+- (void)setManagedApp:(id)app
 {
-  v4 = a3;
-  v6 = [v4 name];
-  v5 = [v4 iconForVariant:1];
+  appCopy = app;
+  name = [appCopy name];
+  v5 = [appCopy iconForVariant:1];
 
-  [(DMCManagedMediaSummaryCell *)self _setText:v6 image:v5];
+  [(DMCManagedMediaSummaryCell *)self _setText:name image:v5];
 }
 
-- (void)_setText:(id)a3 image:(id)a4
+- (void)_setText:(id)text image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  textCopy = text;
   [(DMCManagedMediaSummaryCell *)self setSelectionStyle:0];
-  v8 = [MEMORY[0x277D756E0] cellConfiguration];
-  [v8 setText:v7];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  [cellConfiguration setText:textCopy];
 
-  [v8 setImage:v6];
-  [(DMCManagedMediaSummaryCell *)self setContentConfiguration:v8];
+  [cellConfiguration setImage:imageCopy];
+  [(DMCManagedMediaSummaryCell *)self setContentConfiguration:cellConfiguration];
 }
 
 @end

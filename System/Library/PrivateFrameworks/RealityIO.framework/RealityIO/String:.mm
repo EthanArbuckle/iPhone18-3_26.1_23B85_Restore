@@ -9,8 +9,8 @@
 {
   v2 = *(v1 + 16);
   v3 = *(v1 + 24);
-  v5 = a1;
-  return v2(&v5);
+  selfCopy = self;
+  return v2(&selfCopy);
 }
 
 - (void)Any

@@ -1,44 +1,44 @@
 @interface NSFilePresenterProxy
-+ (id)urlWithItemURL:(id)a3 subitemPath:(id)a4;
-- (BOOL)allowedForURL:(id)a3;
-- (NSFilePresenterProxy)initWithClient:(id)a3 remotePresenter:(id)a4 reactorID:(id)a5;
++ (id)urlWithItemURL:(id)l subitemPath:(id)path;
+- (BOOL)allowedForURL:(id)l;
+- (NSFilePresenterProxy)initWithClient:(id)client remotePresenter:(id)presenter reactorID:(id)d;
 - (void)_settleNonCoordinatedChanges;
-- (void)accommodateDeletionWithSubitemPath:(id)a3 completionHandler:(id)a4;
+- (void)accommodateDeletionWithSubitemPath:(id)path completionHandler:(id)handler;
 - (void)dealloc;
-- (void)forwardRelinquishmentForWritingClaim:(BOOL)a3 withID:(id)a4 purposeID:(id)a5 subitemURL:(id)a6 options:(unint64_t)a7 completionHandler:(id)a8;
-- (void)forwardUsingProxy:(id)a3;
+- (void)forwardRelinquishmentForWritingClaim:(BOOL)claim withID:(id)d purposeID:(id)iD subitemURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)forwardUsingProxy:(id)proxy;
 - (void)invalidate;
-- (void)observeChangeAtSubitemPath:(id)a3;
-- (void)observeChangeOfUbiquityAttributes:(id)a3;
-- (void)observeDisappearanceAtSubitemPath:(id)a3;
-- (void)observeDisconnectionByWriterWithPurposeID:(id)a3;
-- (void)observeMoveByWriterWithPurposeID:(id)a3 withPhysicalDestinationURL:(id)a4 withFSID:(fsid)a5 andFileID:(unint64_t)a6;
-- (void)observeMoveOfSubitemAtURL:(id)a3 toURL:(id)a4 byWriterWithPurposeID:(id)a5 withFSID:(fsid)a6 andFileID:(unint64_t)a7;
-- (void)observeNewProvider:(id)a3;
-- (void)observePresenterChange:(BOOL)a3 atSubitemURL:(id)a4;
-- (void)observeReconnectionByWriterWithPurposeID:(id)a3;
-- (void)observeSharingChangeAtSubitemPath:(id)a3 withPhysicalURL:(id)a4;
-- (void)observeUbiquityChangeAtSubitemPath:(id)a3 withPhysicalURL:(id)a4;
-- (void)observeVersionChangeOfKind:(id)a3 withClientID:(id)a4 name:(id)a5 subitemPath:(id)a6;
-- (void)relinquishToWritingClaimWithID:(id)a3 options:(unint64_t)a4 purposeID:(id)a5 subitemPath:(id)a6 resultHandler:(id)a7;
-- (void)saveChangesWithCompletionHandler:(id)a3;
-- (void)setItemLocation:(id)a3;
-- (void)startObservingApplicationStateWithQueue:(id)a3;
-- (void)startWatchingWithQueue:(id)a3 lastEventID:(id)a4 unannouncedMoveHandler:(id)a5;
+- (void)observeChangeAtSubitemPath:(id)path;
+- (void)observeChangeOfUbiquityAttributes:(id)attributes;
+- (void)observeDisappearanceAtSubitemPath:(id)path;
+- (void)observeDisconnectionByWriterWithPurposeID:(id)d;
+- (void)observeMoveByWriterWithPurposeID:(id)d withPhysicalDestinationURL:(id)l withFSID:(fsid)iD andFileID:(unint64_t)fileID;
+- (void)observeMoveOfSubitemAtURL:(id)l toURL:(id)rL byWriterWithPurposeID:(id)d withFSID:(fsid)iD andFileID:(unint64_t)fileID;
+- (void)observeNewProvider:(id)provider;
+- (void)observePresenterChange:(BOOL)change atSubitemURL:(id)l;
+- (void)observeReconnectionByWriterWithPurposeID:(id)d;
+- (void)observeSharingChangeAtSubitemPath:(id)path withPhysicalURL:(id)l;
+- (void)observeUbiquityChangeAtSubitemPath:(id)path withPhysicalURL:(id)l;
+- (void)observeVersionChangeOfKind:(id)kind withClientID:(id)d name:(id)name subitemPath:(id)path;
+- (void)relinquishToWritingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD subitemPath:(id)path resultHandler:(id)handler;
+- (void)saveChangesWithCompletionHandler:(id)handler;
+- (void)setItemLocation:(id)location;
+- (void)startObservingApplicationStateWithQueue:(id)queue;
+- (void)startWatchingWithQueue:(id)queue lastEventID:(id)d unannouncedMoveHandler:(id)handler;
 - (void)stopObservingApplicationState;
 @end
 
 @implementation NSFilePresenterProxy
 
-- (NSFilePresenterProxy)initWithClient:(id)a3 remotePresenter:(id)a4 reactorID:(id)a5
+- (NSFilePresenterProxy)initWithClient:(id)client remotePresenter:(id)presenter reactorID:(id)d
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = NSFilePresenterProxy;
-  v6 = [(NSFileReactorProxy *)&v8 initWithClient:a3 reactorID:a5];
+  v6 = [(NSFileReactorProxy *)&v8 initWithClient:client reactorID:d];
   if (v6)
   {
-    v6->_remotePresenter = [[NSFilePresenterManagedProxy alloc] initWithXPCProxy:a4];
+    v6->_remotePresenter = [[NSFilePresenterManagedProxy alloc] initWithXPCProxy:presenter];
   }
 
   return v6;
@@ -61,37 +61,37 @@
   [(NSFileReactorProxy *)&v4 dealloc];
 }
 
-- (void)setItemLocation:(id)a3
+- (void)setItemLocation:(id)location
 {
   v16[1] = *MEMORY[0x1E69E9840];
   itemLocation = self->super._itemLocation;
-  if (itemLocation == a3)
+  if (itemLocation == location)
   {
     goto LABEL_11;
   }
 
-  v6 = [(NSFileAccessNode *)itemLocation itemProvider];
+  itemProvider = [(NSFileAccessNode *)itemLocation itemProvider];
   v7 = _nearestPresenterInterestedInSubitemPresenters(self->super._itemLocation);
   HasPresentersExcludingPresenter = _nodeHasPresentersExcludingPresenter(self->super._itemLocation, self);
   v9 = [(NSFileAccessNode *)self->super._itemLocation url];
   [(NSFileAccessNode *)self->super._itemLocation removePresenter:self];
-  self->super._itemLocation = a3;
-  [a3 addPresenter:self];
-  v10 = [(NSFileAccessNode *)self->super._itemLocation itemProvider];
+  self->super._itemLocation = location;
+  [location addPresenter:self];
+  itemProvider2 = [(NSFileAccessNode *)self->super._itemLocation itemProvider];
   v11 = [(NSFileAccessNode *)self->super._itemLocation url];
-  if (v6 != v10)
+  if (itemProvider != itemProvider2)
   {
-    if (v6)
+    if (itemProvider)
     {
-      [v6 observePresentationChangeOfKind:@"removed" withPresenter:self url:v9 newURL:0];
+      [itemProvider observePresentationChangeOfKind:@"removed" withPresenter:self url:v9 newURL:0];
     }
 
-    if (v10)
+    if (itemProvider2)
     {
-      [v10 observePresentationChangeOfKind:@"added" withPresenter:self url:v11 newURL:0];
+      [itemProvider2 observePresentationChangeOfKind:@"added" withPresenter:self url:v11 newURL:0];
     }
 
-    [(NSFilePresenterProxy *)self observeNewProvider:v10];
+    [(NSFilePresenterProxy *)self observeNewProvider:itemProvider2];
     if (HasPresentersExcludingPresenter)
     {
       goto LABEL_9;
@@ -100,7 +100,7 @@
     goto LABEL_8;
   }
 
-  [v6 observePresentationChangeOfKind:@"itemMoved" withPresenter:self url:v9 newURL:v11];
+  [itemProvider observePresentationChangeOfKind:@"itemMoved" withPresenter:self url:v9 newURL:v11];
   if ((HasPresentersExcludingPresenter & 1) == 0)
   {
 LABEL_8:
@@ -148,7 +148,7 @@ LABEL_11:
   }
 }
 
-- (void)forwardUsingProxy:(id)a3
+- (void)forwardUsingProxy:(id)proxy
 {
   forwardedMessenger = self->_forwardedMessenger;
   if (!forwardedMessenger)
@@ -167,7 +167,7 @@ LABEL_11:
     v6 = 0;
   }
 
-  [a3 addPresenter:forwardedMessenger withID:self->super._reactorID fileURL:-[NSFileAccessNode url](self->super._itemLocation lastPresentedItemEventIdentifier:"url") ubiquityAttributes:0 options:self->_observedUbiquityAttributes responses:{v6, self->_filePresenterResponses}];
+  [proxy addPresenter:forwardedMessenger withID:self->super._reactorID fileURL:-[NSFileAccessNode url](self->super._itemLocation lastPresentedItemEventIdentifier:"url") ubiquityAttributes:0 options:self->_observedUbiquityAttributes responses:{v6, self->_filePresenterResponses}];
 }
 
 - (void)invalidate
@@ -179,10 +179,10 @@ LABEL_11:
   [(NSFilePresenterProxy *)self setFilePresenterResponses:0];
 }
 
-- (BOOL)allowedForURL:(id)a3
+- (BOOL)allowedForURL:(id)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
     *v19 = 0;
     *&v19[8] = v19;
@@ -190,10 +190,10 @@ LABEL_11:
     v20 = 0;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(NSFileReactorProxy *)self client];
-    if (v5)
+    client = [(NSFileReactorProxy *)self client];
+    if (client)
     {
-      [v5 auditToken];
+      [client auditToken];
     }
 
     else
@@ -204,7 +204,7 @@ LABEL_11:
 
     *buf = v17;
     *&buf[16] = v18;
-    if (sandbox_check_by_audit_token() && ![objc_msgSend(a3 "path")])
+    if (sandbox_check_by_audit_token() && ![objc_msgSend(l "path")])
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -213,7 +213,7 @@ LABEL_11:
       v13[2] = __38__NSFilePresenterProxy_allowedForURL___block_invoke;
       v13[3] = &unk_1E69F96B8;
       v13[4] = v19;
-      [NSFileReactorProxy _enumerateParentDirectoriesStartingAtURL:a3 usingBlock:v13];
+      [NSFileReactorProxy _enumerateParentDirectoriesStartingAtURL:l usingBlock:v13];
       if ((*(*&v19[8] + 24) & 1) == 0)
       {
         v9 = _NSFCPresenterLog();
@@ -221,13 +221,13 @@ LABEL_11:
         {
           reactorID = self->super._reactorID;
           v11 = [-[NSFileReactorProxy client](self "client")];
-          v12 = [a3 path];
+          path = [l path];
           *buf = 138543875;
           *&buf[4] = reactorID;
           *&buf[12] = 1024;
           *&buf[14] = v11;
           *&buf[18] = 2113;
-          *&buf[20] = v12;
+          *&buf[20] = path;
           _os_log_impl(&dword_18075C000, v9, OS_LOG_TYPE_DEFAULT, "Registering presenter %{public}@ disallowed. Process %d is not allowed to access the requested path or any of its parent directories: %{private}@", buf, 0x1Cu);
         }
       }
@@ -250,7 +250,7 @@ LABEL_11:
       *v19 = 138543619;
       *&v19[4] = self;
       *&v19[12] = 2113;
-      *&v19[14] = a3;
+      *&v19[14] = l;
       _os_log_error_impl(&dword_18075C000, v6, OS_LOG_TYPE_ERROR, "Registering presenter %{public}@ disallowed. Only file URLs are allowed, unlike this one: %{private}@", v19, 0x16u);
     }
 
@@ -305,11 +305,11 @@ uint64_t __38__NSFilePresenterProxy_allowedForURL___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)startWatchingWithQueue:(id)a3 lastEventID:(id)a4 unannouncedMoveHandler:(id)a5
+- (void)startWatchingWithQueue:(id)queue lastEventID:(id)d unannouncedMoveHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_queue = a3;
-  dispatch_retain(a3);
+  self->_queue = queue;
+  dispatch_retain(queue);
   v9 = [NSFileWatcher alloc];
   client = self->super._client;
   if (client)
@@ -322,12 +322,12 @@ uint64_t __38__NSFilePresenterProxy_allowedForURL___block_invoke(uint64_t a1, vo
     memset(v14, 0, sizeof(v14));
   }
 
-  v11 = [(NSFileWatcher *)v9 initWithQueue:a3 auditToken:v14];
+  v11 = [(NSFileWatcher *)v9 initWithQueue:queue auditToken:v14];
   self->_watcher = v11;
   [(NSFileWatcher *)v11 setURL:[(NSFileAccessNode *)self->super._itemLocation url]];
-  if (a4)
+  if (d)
   {
-    -[NSFileWatcher setLastObservedEventID:](self->_watcher, "setLastObservedEventID:", [a4 unsignedLongLongValue]);
+    -[NSFileWatcher setLastObservedEventID:](self->_watcher, "setLastObservedEventID:", [d unsignedLongLongValue]);
   }
 
   watcher = self->_watcher;
@@ -336,9 +336,9 @@ uint64_t __38__NSFilePresenterProxy_allowedForURL___block_invoke(uint64_t a1, vo
   v13[2] = __82__NSFilePresenterProxy_startWatchingWithQueue_lastEventID_unannouncedMoveHandler___block_invoke;
   v13[3] = &unk_1E69F9708;
   v13[4] = self;
-  v13[5] = a3;
-  v13[6] = a4;
-  v13[7] = a5;
+  v13[5] = queue;
+  v13[6] = d;
+  v13[7] = handler;
   [(NSFileWatcher *)watcher setObserver:v13];
   [(NSFileWatcher *)self->_watcher start];
 }
@@ -474,7 +474,7 @@ uint64_t __82__NSFilePresenterProxy_startWatchingWithQueue_lastEventID_unannounc
   return result;
 }
 
-- (void)startObservingApplicationStateWithQueue:(id)a3
+- (void)startObservingApplicationStateWithQueue:(id)queue
 {
   v10[1] = *MEMORY[0x1E69E9840];
   if (!self->_inSubarbiter)
@@ -485,7 +485,7 @@ uint64_t __82__NSFilePresenterProxy_startWatchingWithQueue_lastEventID_unannounc
       [(NSFileAccessProcessManager *)processManager invalidate];
     }
 
-    v6 = -[NSFileAccessProcessManager initWithClient:queue:]([NSFileAccessProcessManager alloc], "initWithClient:queue:", [-[NSFileReactorProxy client](self "client")], a3);
+    v6 = -[NSFileAccessProcessManager initWithClient:queue:]([NSFileAccessProcessManager alloc], "initWithClient:queue:", [-[NSFileReactorProxy client](self "client")], queue);
     self->_processManager = v6;
     if ((self->_filePresenterResponses & 0xFFFFFFFF8000020FLL) != 0)
     {
@@ -524,12 +524,12 @@ uint64_t __82__NSFilePresenterProxy_startWatchingWithQueue_lastEventID_unannounc
   [remotePresenter setProcessManager:0];
 }
 
-+ (id)urlWithItemURL:(id)a3 subitemPath:(id)a4
++ (id)urlWithItemURL:(id)l subitemPath:(id)path
 {
-  result = [a4 count];
+  result = [path count];
   if (result)
   {
-    v7 = [objc_msgSend(a3 "path")];
+    v7 = [objc_msgSend(l "path")];
     v8 = MEMORY[0x1E695DFF8];
 
     return [v8 fileURLWithPath:v7];
@@ -538,14 +538,14 @@ uint64_t __82__NSFilePresenterProxy_startWatchingWithQueue_lastEventID_unannounc
   return result;
 }
 
-- (void)relinquishToWritingClaimWithID:(id)a3 options:(unint64_t)a4 purposeID:(id)a5 subitemPath:(id)a6 resultHandler:(id)a7
+- (void)relinquishToWritingClaimWithID:(id)d options:(unint64_t)options purposeID:(id)iD subitemPath:(id)path resultHandler:(id)handler
 {
-  v12 = [NSURLPromisePair pairWithLogicalURL:[NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a6] physicalURL:0];
+  v12 = [NSURLPromisePair pairWithLogicalURL:[NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path] physicalURL:0];
 
-  [(NSFilePresenterProxy *)self forwardRelinquishmentForWritingClaim:1 withID:a3 purposeID:a5 subitemURL:v12 options:a4 completionHandler:a7];
+  [(NSFilePresenterProxy *)self forwardRelinquishmentForWritingClaim:1 withID:d purposeID:iD subitemURL:v12 options:options completionHandler:handler];
 }
 
-- (void)saveChangesWithCompletionHandler:(id)a3
+- (void)saveChangesWithCompletionHandler:(id)handler
 {
   v7[5] = *MEMORY[0x1E69E9840];
   remotePresenter = self->_remotePresenter;
@@ -553,13 +553,13 @@ uint64_t __82__NSFilePresenterProxy_startWatchingWithQueue_lastEventID_unannounc
   v7[1] = 3221225472;
   v7[2] = __57__NSFilePresenterProxy_saveChangesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E69F3938;
-  v7[4] = a3;
+  v7[4] = handler;
   v5 = [remotePresenter remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__NSFilePresenterProxy_saveChangesWithCompletionHandler___block_invoke_92;
   v6[3] = &unk_1E69F3938;
-  v6[4] = a3;
+  v6[4] = handler;
   [v5 saveChangesWithCompletionHandler:v6];
 }
 
@@ -579,23 +579,23 @@ uint64_t __57__NSFilePresenterProxy_saveChangesWithCompletionHandler___block_inv
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)accommodateDeletionWithSubitemPath:(id)a3 completionHandler:(id)a4
+- (void)accommodateDeletionWithSubitemPath:(id)path completionHandler:(id)handler
 {
   v11[5] = *MEMORY[0x1E69E9840];
-  v6 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a3];
+  v6 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path];
   remotePresenter = self->_remotePresenter;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completionHandler___block_invoke;
   v11[3] = &unk_1E69F3938;
-  v11[4] = a4;
+  v11[4] = handler;
   v8 = [remotePresenter remoteObjectProxyWithErrorHandler:v11];
   v9 = [NSURLPromisePair pairWithLogicalURL:v6 physicalURL:0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completionHandler___block_invoke_96;
   v10[3] = &unk_1E69F3938;
-  v10[4] = a4;
+  v10[4] = handler;
   [v8 accommodateDeletionOfSubitemAtURL:v9 completionHandler:v10];
 }
 
@@ -615,36 +615,36 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)observeMoveByWriterWithPurposeID:(id)a3 withPhysicalDestinationURL:(id)a4 withFSID:(fsid)a5 andFileID:(unint64_t)a6
+- (void)observeMoveByWriterWithPurposeID:(id)d withPhysicalDestinationURL:(id)l withFSID:(fsid)iD andFileID:(unint64_t)fileID
 {
   self->_didObserveMovingByWriter = 1;
-  v10 = [NSURLPromisePair pairWithLogicalURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] physicalURL:a4];
-  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:a3])
+  v10 = [NSURLPromisePair pairWithLogicalURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] physicalURL:l];
+  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:d])
   {
     remotePresenter = self->_remotePresenter;
 
-    [remotePresenter observeMoveToURL:v10 withSubitemURL:0 byWriterWithPurposeID:a3 withFSID:a5 andFileID:a6];
+    [remotePresenter observeMoveToURL:v10 withSubitemURL:0 byWriterWithPurposeID:d withFSID:iD andFileID:fileID];
   }
 }
 
-- (void)observeMoveOfSubitemAtURL:(id)a3 toURL:(id)a4 byWriterWithPurposeID:(id)a5 withFSID:(fsid)a6 andFileID:(unint64_t)a7
+- (void)observeMoveOfSubitemAtURL:(id)l toURL:(id)rL byWriterWithPurposeID:(id)d withFSID:(fsid)iD andFileID:(unint64_t)fileID
 {
-  if (!a3)
+  if (!l)
   {
     self->_didObserveMovingByWriter = 1;
   }
 
-  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:a5])
+  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:d])
   {
     remotePresenter = self->_remotePresenter;
 
-    [remotePresenter observeMoveToURL:a4 withSubitemURL:a3 byWriterWithPurposeID:a5 withFSID:a6 andFileID:a7];
+    [remotePresenter observeMoveToURL:rL withSubitemURL:l byWriterWithPurposeID:d withFSID:iD andFileID:fileID];
   }
 }
 
-- (void)observeDisconnectionByWriterWithPurposeID:(id)a3
+- (void)observeDisconnectionByWriterWithPurposeID:(id)d
 {
-  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:a3])
+  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:d])
   {
     [self->_remotePresenter observeDisconnection];
   }
@@ -654,9 +654,9 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   [(NSFilePresenterProxy *)self disconnect];
 }
 
-- (void)observeReconnectionByWriterWithPurposeID:(id)a3
+- (void)observeReconnectionByWriterWithPurposeID:(id)d
 {
-  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:a3])
+  if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:d])
   {
     remotePresenter = self->_remotePresenter;
 
@@ -664,9 +664,9 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   }
 }
 
-- (void)observeUbiquityChangeAtSubitemPath:(id)a3 withPhysicalURL:(id)a4
+- (void)observeUbiquityChangeAtSubitemPath:(id)path withPhysicalURL:(id)l
 {
-  v5 = [NSURLPromisePair pairWithLogicalURL:[NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a3] physicalURL:a4];
+  v5 = [NSURLPromisePair pairWithLogicalURL:[NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path] physicalURL:l];
   if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:self->_currentWriterPurposeID])
   {
     remotePresenter = self->_remotePresenter;
@@ -675,9 +675,9 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   }
 }
 
-- (void)observeSharingChangeAtSubitemPath:(id)a3 withPhysicalURL:(id)a4
+- (void)observeSharingChangeAtSubitemPath:(id)path withPhysicalURL:(id)l
 {
-  v5 = [NSURLPromisePair pairWithLogicalURL:[NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a3] physicalURL:a4];
+  v5 = [NSURLPromisePair pairWithLogicalURL:[NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path] physicalURL:l];
   if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:self->_currentWriterPurposeID])
   {
     remotePresenter = self->_remotePresenter;
@@ -686,25 +686,25 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   }
 }
 
-- (void)observeChangeOfUbiquityAttributes:(id)a3
+- (void)observeChangeOfUbiquityAttributes:(id)attributes
 {
   observedUbiquityAttributes = self->_observedUbiquityAttributes;
-  if (!observedUbiquityAttributes || -[NSSet count](observedUbiquityAttributes, "count") && (v6 = [a3 mutableCopy], objc_msgSend(v6, "intersectSet:", self->_observedUbiquityAttributes), a3 = v6, objc_msgSend(a3, "count")))
+  if (!observedUbiquityAttributes || -[NSSet count](observedUbiquityAttributes, "count") && (v6 = [attributes mutableCopy], objc_msgSend(v6, "intersectSet:", self->_observedUbiquityAttributes), attributes = v6, objc_msgSend(attributes, "count")))
   {
     if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:self->_currentWriterPurposeID])
     {
       remotePresenter = self->_remotePresenter;
 
-      [remotePresenter observeChangeOfUbiquityAttributes:a3];
+      [remotePresenter observeChangeOfUbiquityAttributes:attributes];
     }
   }
 }
 
-- (void)observeDisappearanceAtSubitemPath:(id)a3
+- (void)observeDisappearanceAtSubitemPath:(id)path
 {
-  if ([a3 count])
+  if ([path count])
   {
-    v5 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a3];
+    v5 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path];
     if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:self->_currentWriterPurposeID])
     {
       remotePresenter = self->_remotePresenter;
@@ -715,9 +715,9 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   }
 }
 
-- (void)observeChangeAtSubitemPath:(id)a3
+- (void)observeChangeAtSubitemPath:(id)path
 {
-  v4 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a3];
+  v4 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path];
   if ([(NSFilePresenterProxy *)self shouldSendObservationMessageWithPurposeID:self->_currentWriterPurposeID])
   {
     remotePresenter = self->_remotePresenter;
@@ -727,50 +727,50 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
   }
 }
 
-- (void)observeVersionChangeOfKind:(id)a3 withClientID:(id)a4 name:(id)a5 subitemPath:(id)a6
+- (void)observeVersionChangeOfKind:(id)kind withClientID:(id)d name:(id)name subitemPath:(id)path
 {
   self->_didObserveVersionChangingByWriter = 1;
-  v10 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:a6];
+  v10 = [NSFilePresenterProxy urlWithItemURL:[(NSFileAccessNode *)self->super._itemLocation standardizedURL] subitemPath:path];
   remotePresenter = self->_remotePresenter;
   v12 = [NSURLPromisePair pairWithLogicalURL:v10 physicalURL:0];
 
-  [remotePresenter observeVersionChangeOfKind:a3 toItemAtURL:v12 withClientID:a4 name:a5];
+  [remotePresenter observeVersionChangeOfKind:kind toItemAtURL:v12 withClientID:d name:name];
 }
 
-- (void)observePresenterChange:(BOOL)a3 atSubitemURL:(id)a4
+- (void)observePresenterChange:(BOOL)change atSubitemURL:(id)l
 {
   if (!self->_inSubarbiter)
   {
-    v5 = a3;
+    changeCopy = change;
     remotePresenter = self->_remotePresenter;
-    v7 = [NSURLPromisePair pairWithLogicalURL:a4 physicalURL:0];
+    v7 = [NSURLPromisePair pairWithLogicalURL:l physicalURL:0];
 
-    [remotePresenter observePresenterChange:v5 forSubitemAtURL:v7];
+    [remotePresenter observePresenterChange:changeCopy forSubitemAtURL:v7];
   }
 }
 
-- (void)observeNewProvider:(id)a3
+- (void)observeNewProvider:(id)provider
 {
   if (!self->_inSubarbiter)
   {
     remotePresenter = self->_remotePresenter;
-    v5 = [a3 reactorID];
+    reactorID = [provider reactorID];
 
-    [remotePresenter setProviderPurposeIdentifier:v5];
+    [remotePresenter setProviderPurposeIdentifier:reactorID];
   }
 }
 
-- (void)forwardRelinquishmentForWritingClaim:(BOOL)a3 withID:(id)a4 purposeID:(id)a5 subitemURL:(id)a6 options:(unint64_t)a7 completionHandler:(id)a8
+- (void)forwardRelinquishmentForWritingClaim:(BOOL)claim withID:(id)d purposeID:(id)iD subitemURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a6;
-  v13 = a3;
+  optionsCopy2 = options;
+  lCopy2 = l;
+  claimCopy = claim;
   v35 = *MEMORY[0x1E69E9840];
-  if (a3 && self->_watcher)
+  if (claim && self->_watcher)
   {
     [(NSFilePresenterProxy *)self _settleNonCoordinatedChanges];
     currentWriterPurposeID = self->_currentWriterPurposeID;
-    self->_currentWriterPurposeID = [a5 copy];
+    self->_currentWriterPurposeID = [iD copy];
     ++self->_writingRelinquishmentCount;
     if (currentWriterPurposeID)
     {
@@ -790,8 +790,8 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
     v30[2] = __115__NSFilePresenterProxy_forwardRelinquishmentForWritingClaim_withID_purposeID_subitemURL_options_completionHandler___block_invoke_2;
     v30[3] = &unk_1E69F84B0;
     v30[4] = self;
-    v10 = a6;
-    v9 = a7;
+    lCopy2 = l;
+    optionsCopy2 = options;
   }
 
   else
@@ -799,14 +799,14 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
     v18 = &__block_literal_global_78;
   }
 
-  if ([a5 isEqual:self->super._reactorID] && !self->_inSubarbiter)
+  if ([iD isEqual:self->super._reactorID] && !self->_inSubarbiter)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __115__NSFilePresenterProxy_forwardRelinquishmentForWritingClaim_withID_purposeID_subitemURL_options_completionHandler___block_invoke_3;
     v24[3] = &unk_1E69F97F0;
     v24[4] = v18;
-    (*(a8 + 2))(a8, 1, 0, v24);
+    (*(handler + 2))(handler, 1, 0, v24);
   }
 
   else
@@ -816,10 +816,10 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
     v28[2] = __115__NSFilePresenterProxy_forwardRelinquishmentForWritingClaim_withID_purposeID_subitemURL_options_completionHandler___block_invoke_2_100;
     v28[3] = &unk_1E69F97C8;
     v28[4] = self;
-    v28[5] = a4;
-    v28[6] = a8;
+    v28[5] = d;
+    v28[6] = handler;
     v28[7] = v18;
-    v29 = v13;
+    v29 = claimCopy;
     remotePresenter = self->_remotePresenter;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -834,18 +834,18 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
       *buf = 138543618;
       v32 = reactorID;
       v33 = 2114;
-      v34 = a4;
+      dCopy = d;
       _os_log_impl(&dword_18075C000, v21, OS_LOG_TYPE_DEFAULT, "Asking presenter %{public}@ to relinquish to claim %{public}@", buf, 0x16u);
     }
 
-    if (v13)
+    if (claimCopy)
     {
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __115__NSFilePresenterProxy_forwardRelinquishmentForWritingClaim_withID_purposeID_subitemURL_options_completionHandler___block_invoke_113;
       v26[3] = &unk_1E69F3938;
       v26[4] = v28;
-      [v20 relinquishToWritingClaimWithID:a4 options:v9 purposeID:a5 subitemURL:v10 completionHandler:v26];
+      [v20 relinquishToWritingClaimWithID:d options:optionsCopy2 purposeID:iD subitemURL:lCopy2 completionHandler:v26];
     }
 
     else
@@ -855,7 +855,7 @@ uint64_t __77__NSFilePresenterProxy_accommodateDeletionWithSubitemPath_completio
       v25[2] = __115__NSFilePresenterProxy_forwardRelinquishmentForWritingClaim_withID_purposeID_subitemURL_options_completionHandler___block_invoke_2_114;
       v25[3] = &unk_1E69F3938;
       v25[4] = v28;
-      [v20 relinquishToReadingClaimWithID:a4 options:v9 purposeID:a5 completionHandler:v25];
+      [v20 relinquishToReadingClaimWithID:d options:optionsCopy2 purposeID:iD completionHandler:v25];
     }
   }
 }

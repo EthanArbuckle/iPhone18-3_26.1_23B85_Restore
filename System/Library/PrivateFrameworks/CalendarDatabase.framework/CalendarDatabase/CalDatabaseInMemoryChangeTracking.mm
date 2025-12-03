@@ -1,14 +1,14 @@
 @interface CalDatabaseInMemoryChangeTracking
-+ (id)canonicalizePath:(id)a3;
-+ (id)changeTrackingForDatabase:(CalDatabase *)a3;
-+ (id)changeTrackingForDatabaseWithPath:(id)a3;
-+ (id)pathForDatabase:(CalDatabase *)a3;
-+ (void)_setInterestedDatabasePaths:(id)a3 forContext:(id)a4;
-+ (void)setInterestedDatabasePaths:(id)a3 forContext:(id)a4;
-+ (void)setInterestedDatabases:(id)a3 forContext:(id)a4;
++ (id)canonicalizePath:(id)path;
++ (id)changeTrackingForDatabase:(CalDatabase *)database;
++ (id)changeTrackingForDatabaseWithPath:(id)path;
++ (id)pathForDatabase:(CalDatabase *)database;
++ (void)_setInterestedDatabasePaths:(id)paths forContext:(id)context;
++ (void)setInterestedDatabasePaths:(id)paths forContext:(id)context;
++ (void)setInterestedDatabases:(id)databases forContext:(id)context;
 - (CalDatabaseInMemoryChangeTracking)init;
-- (id)changedEntityIDsBetweenMinExternalTimestamp:(unint64_t)a3 minSelfTimestamp:(unint64_t)a4 maxExternalTimestamp:(unint64_t)a5 allowIntegrationChanges:(BOOL)a6 latestSelfTimestamp:(unint64_t *)a7 client:(int)a8 changeType:(unint64_t *)a9 deleteOffset:(unint64_t *)a10;
-- (int)_writeChanges:(id)a3 withTimestamp:(unint64_t)a4 flags:(int)a5 clientID:(unsigned int)a6 atIndex:(int)a7;
+- (id)changedEntityIDsBetweenMinExternalTimestamp:(unint64_t)timestamp minSelfTimestamp:(unint64_t)selfTimestamp maxExternalTimestamp:(unint64_t)externalTimestamp allowIntegrationChanges:(BOOL)changes latestSelfTimestamp:(unint64_t *)latestSelfTimestamp client:(int)client changeType:(unint64_t *)type deleteOffset:(unint64_t *)self0;
+- (int)_writeChanges:(id)changes withTimestamp:(unint64_t)timestamp flags:(int)flags clientID:(unsigned int)d atIndex:(int)index;
 - (void)clearAllChangesets;
 @end
 
@@ -27,32 +27,32 @@
   return result;
 }
 
-+ (id)canonicalizePath:(id)a3
++ (id)canonicalizePath:(id)path
 {
-  v3 = a3;
-  if (([v3 hasSuffix:@"/"] & 1) == 0)
+  pathCopy = path;
+  if (([pathCopy hasSuffix:@"/"] & 1) == 0)
   {
-    v4 = [v3 stringByAppendingString:@"/"];
+    v4 = [pathCopy stringByAppendingString:@"/"];
 
-    v3 = v4;
+    pathCopy = v4;
   }
 
-  return v3;
+  return pathCopy;
 }
 
-+ (id)pathForDatabase:(CalDatabase *)a3
++ (id)pathForDatabase:(CalDatabase *)database
 {
-  v4 = CalDatabaseCopyDirectoryPathForDatabase(a3);
-  v5 = [a1 canonicalizePath:v4];
+  v4 = CalDatabaseCopyDirectoryPathForDatabase(database);
+  v5 = [self canonicalizePath:v4];
 
   return v5;
 }
 
-+ (void)_setInterestedDatabasePaths:(id)a3 forContext:(id)a4
++ (void)_setInterestedDatabasePaths:(id)paths forContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pathsCopy = paths;
+  contextCopy = context;
   os_unfair_lock_lock(&_trackedDatabasesLock);
   v34 = 0u;
   v35 = 0u;
@@ -75,19 +75,19 @@
 
         v11 = *(*(&v32 + 1) + 8 * i);
         v12 = [_trackedDatabases objectForKeyedSubscript:v11];
-        v13 = [v5 containsObject:v11];
-        v14 = [v12 clients];
-        v15 = v14;
+        v13 = [pathsCopy containsObject:v11];
+        clients = [v12 clients];
+        v15 = clients;
         if (v13)
         {
-          [v14 addObject:v6];
+          [clients addObject:contextCopy];
 
-          [v5 removeObject:v11];
+          [pathsCopy removeObject:v11];
         }
 
         else
         {
-          [v14 removeObject:v6];
+          [clients removeObject:contextCopy];
 
           if (([v12 hasClients] & 1) == 0)
           {
@@ -113,7 +113,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = v5;
+  v18 = pathsCopy;
   v19 = [v18 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v19)
   {
@@ -130,8 +130,8 @@
 
         v23 = *(*(&v28 + 1) + 8 * j);
         v24 = objc_alloc_init(CalInMemoryTrackedDatabase);
-        v25 = [(CalInMemoryTrackedDatabase *)v24 clients];
-        [v25 addObject:v6];
+        clients2 = [(CalInMemoryTrackedDatabase *)v24 clients];
+        [clients2 addObject:contextCopy];
 
         [_trackedDatabases setObject:v24 forKeyedSubscript:v23];
       }
@@ -146,19 +146,19 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setInterestedDatabases:(id)a3 forContext:(id)a4
++ (void)setInterestedDatabases:(id)databases forContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  databasesCopy = databases;
+  contextCopy = context;
+  if (contextCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v6;
+    v9 = databasesCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -173,7 +173,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [a1 pathForDatabase:{*(*(&v16 + 1) + 8 * i), v16}];
+          v14 = [self pathForDatabase:{*(*(&v16 + 1) + 8 * i), v16}];
           [v8 addObject:v14];
         }
 
@@ -189,24 +189,24 @@
     v8 = 0;
   }
 
-  [a1 _setInterestedDatabasePaths:v8 forContext:{v7, v16}];
+  [self _setInterestedDatabasePaths:v8 forContext:{contextCopy, v16}];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setInterestedDatabasePaths:(id)a3 forContext:(id)a4
++ (void)setInterestedDatabasePaths:(id)paths forContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  contextCopy = context;
+  if (contextCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v6;
+    v9 = pathsCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -221,7 +221,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [a1 canonicalizePath:{*(*(&v16 + 1) + 8 * i), v16}];
+          v14 = [self canonicalizePath:{*(*(&v16 + 1) + 8 * i), v16}];
           [v8 addObject:v14];
         }
 
@@ -237,29 +237,29 @@
     v8 = 0;
   }
 
-  [a1 _setInterestedDatabasePaths:v8 forContext:{v7, v16}];
+  [self _setInterestedDatabasePaths:v8 forContext:{contextCopy, v16}];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)changeTrackingForDatabase:(CalDatabase *)a3
++ (id)changeTrackingForDatabase:(CalDatabase *)database
 {
-  v4 = [a1 pathForDatabase:a3];
-  v5 = [a1 changeTrackingForDatabaseWithPath:v4];
+  v4 = [self pathForDatabase:database];
+  v5 = [self changeTrackingForDatabaseWithPath:v4];
 
   return v5;
 }
 
-+ (id)changeTrackingForDatabaseWithPath:(id)a3
++ (id)changeTrackingForDatabaseWithPath:(id)path
 {
-  v3 = [a1 canonicalizePath:a3];
+  v3 = [self canonicalizePath:path];
   os_unfair_lock_lock(&_trackedDatabasesLock);
   v4 = [_trackedDatabases objectForKeyedSubscript:v3];
-  v5 = [v4 database];
+  database = [v4 database];
 
   os_unfair_lock_unlock(&_trackedDatabasesLock);
 
-  return v5;
+  return database;
 }
 
 - (void)clearAllChangesets
@@ -272,64 +272,64 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int)_writeChanges:(id)a3 withTimestamp:(unint64_t)a4 flags:(int)a5 clientID:(unsigned int)a6 atIndex:(int)a7
+- (int)_writeChanges:(id)changes withTimestamp:(unint64_t)timestamp flags:(int)flags clientID:(unsigned int)d atIndex:(int)index
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  changesCopy = changes;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v13 = [changesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v27;
     changes = self->_changes;
-    v17 = ((a6 & 0x1FFFFF) << 8) | (a5 << 29);
+    v17 = ((d & 0x1FFFFF) << 8) | (flags << 29);
     do
     {
       for (i = 0; i != v14; ++i)
       {
         if (*v27 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(changesCopy);
         }
 
         v19 = *(*(&v26 + 1) + 8 * i);
-        v20 = &changes[a7];
-        v20->timestamp = a4;
+        v20 = &changes[index];
+        v20->timestamp = timestamp;
         v21 = CalRecordIDGetEntityType(v19);
         *(v20 + 3) = *(v20 + 3) & 0xFFFFFF00 | internalEntityTypeFromExternalType(v21);
         v22 = CalRecordIDGetRowID(v19);
         v23 = v17 | *(v20 + 12);
         v20->rowID = v22;
         *(v20 + 3) = v23;
-        if (a7 == 511)
+        if (index == 511)
         {
-          a7 = 0;
+          index = 0;
         }
 
         else
         {
-          ++a7;
+          ++index;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v14 = [changesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v14);
   }
 
   v24 = *MEMORY[0x1E69E9840];
-  return a7;
+  return index;
 }
 
-- (id)changedEntityIDsBetweenMinExternalTimestamp:(unint64_t)a3 minSelfTimestamp:(unint64_t)a4 maxExternalTimestamp:(unint64_t)a5 allowIntegrationChanges:(BOOL)a6 latestSelfTimestamp:(unint64_t *)a7 client:(int)a8 changeType:(unint64_t *)a9 deleteOffset:(unint64_t *)a10
+- (id)changedEntityIDsBetweenMinExternalTimestamp:(unint64_t)timestamp minSelfTimestamp:(unint64_t)selfTimestamp maxExternalTimestamp:(unint64_t)externalTimestamp allowIntegrationChanges:(BOOL)changes latestSelfTimestamp:(unint64_t *)latestSelfTimestamp client:(int)client changeType:(unint64_t *)type deleteOffset:(unint64_t *)self0
 {
-  v11 = a6;
-  v13 = a10;
+  changesCopy = changes;
+  offsetCopy2 = offset;
   changeCount = self->_changeCount;
   if (changeCount < 1)
   {
@@ -352,23 +352,23 @@
     p_lastPrunedTimestamp = &self->_changes[v16];
   }
 
-  *a7 = p_lastPrunedTimestamp->timestamp;
-  if (a10)
+  *latestSelfTimestamp = p_lastPrunedTimestamp->timestamp;
+  if (offset)
   {
-    *a10 = 0;
+    *offset = 0;
   }
 
-  if (a3 >= a4)
+  if (timestamp >= selfTimestamp)
   {
-    v18 = a4;
+    timestampCopy = selfTimestamp;
   }
 
   else
   {
-    v18 = a3;
+    timestampCopy = timestamp;
   }
 
-  if (v18 < self->_lastPrunedTimestamp)
+  if (timestampCopy < self->_lastPrunedTimestamp)
   {
     v19 = 0;
     goto LABEL_83;
@@ -376,9 +376,9 @@
 
   if (!changeCount)
   {
-    if (a9)
+    if (type)
     {
-      *a9 = 1;
+      *type = 1;
     }
 
     v19 = objc_alloc_init(MEMORY[0x1E695DEF0]);
@@ -407,7 +407,7 @@
         v28 = -v27;
       }
 
-      if (self->_changes[v28].timestamp <= v18)
+      if (self->_changes[v28].timestamp <= timestampCopy)
       {
         v22 = ((v22 + v21) >> 1) + 1;
       }
@@ -451,19 +451,19 @@
 
   changes = self->_changes;
   v37 = 1;
-  v39 = a4;
-  v38 = a5;
-  v40 = a3;
-  v61 = v11;
-  v62 = a8;
+  selfTimestampCopy3 = selfTimestamp;
+  externalTimestampCopy2 = externalTimestamp;
+  timestampCopy3 = timestamp;
+  v61 = changesCopy;
+  clientCopy = client;
   do
   {
     v41 = &changes[v35];
     timestamp = v41->timestamp;
     v43 = *(v41 + 3);
-    if (((v43 >> 8) & 0x1FFFFF) == a8)
+    if (((v43 >> 8) & 0x1FFFFF) == client)
     {
-      if (timestamp <= v39)
+      if (timestamp <= selfTimestampCopy3)
       {
         goto LABEL_64;
       }
@@ -471,14 +471,14 @@
 
     else
     {
-      v44 = timestamp <= v40 || timestamp > v38;
+      v44 = timestamp <= timestampCopy3 || timestamp > externalTimestampCopy2;
       if (v44)
       {
         goto LABEL_64;
       }
     }
 
-    if ((v43 & 0x60000000) != 0x40000000 || v11)
+    if ((v43 & 0x60000000) != 0x40000000 || changesCopy)
     {
       v70 = v34;
       v71 = v33;
@@ -555,8 +555,8 @@ LABEL_58:
 
           HIDWORD(v74) = v53;
           v31 = v63;
-          v11 = v61;
-          a8 = v62;
+          changesCopy = v61;
+          client = clientCopy;
           if ((v54 & 0x20) == 0)
           {
             goto LABEL_58;
@@ -576,8 +576,8 @@ LABEL_61:
 LABEL_52:
         HIDWORD(v74) = -1;
         v31 = v63;
-        v11 = v61;
-        a8 = v62;
+        changesCopy = v61;
+        client = clientCopy;
       }
 
       else
@@ -600,9 +600,9 @@ LABEL_55:
 LABEL_63:
       v33 = v70 & v68 | v71;
       v34 = 1;
-      v39 = a4;
-      v38 = a5;
-      v40 = a3;
+      selfTimestampCopy3 = selfTimestamp;
+      externalTimestampCopy2 = externalTimestamp;
+      timestampCopy3 = timestamp;
       v37 = v69;
 LABEL_64:
       if (v35 == 511)
@@ -631,7 +631,7 @@ LABEL_64:
     v56 = v37;
   }
 
-  v13 = a10;
+  offsetCopy2 = offset;
   v57 = v64;
 LABEL_76:
   v58 = 8 * (v57 + v31);
@@ -661,14 +661,14 @@ LABEL_76:
   }
 
   v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v59 length:v58 freeWhenDone:1];
-  if (a9)
+  if (type)
   {
-    *a9 = v56;
+    *type = v56;
   }
 
-  if (v13)
+  if (offsetCopy2)
   {
-    *v13 = v31;
+    *offsetCopy2 = v31;
   }
 
   _Block_object_dispose(v73, 8);

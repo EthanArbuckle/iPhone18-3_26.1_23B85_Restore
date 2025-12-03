@@ -3,26 +3,26 @@
 - (BOOL)isFunctionName;
 - (BOOL)isInteger;
 - (BOOL)isWordOrAbbreviation;
-- (SCRCMathSimpleExpression)initWithDictionary:(id)a3;
+- (SCRCMathSimpleExpression)initWithDictionary:(id)dictionary;
 - (id)_functionNames;
 - (id)description;
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4;
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position;
 - (id)latexMathModeDescription;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
 - (int64_t)integerValue;
 @end
 
 @implementation SCRCMathSimpleExpression
 
-- (SCRCMathSimpleExpression)initWithDictionary:(id)a3
+- (SCRCMathSimpleExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SCRCMathSimpleExpression;
-  v5 = [(SCRCMathExpression *)&v13 initWithDictionary:v4];
+  v5 = [(SCRCMathExpression *)&v13 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMContent"];
+    v6 = [dictionaryCopy objectForKey:@"AXMContent"];
     if (v6)
     {
       v7 = v6;
@@ -37,7 +37,7 @@
     content = v5->_content;
     v5->_content = v8;
 
-    v10 = [v4 objectForKey:@"AXMIsImplicit"];
+    v10 = [dictionaryCopy objectForKey:@"AXMIsImplicit"];
     v11 = v10;
     if (v10)
     {
@@ -55,16 +55,16 @@
   v7.receiver = self;
   v7.super_class = SCRCMathSimpleExpression;
   v3 = [(SCRCMathSimpleExpression *)&v7 description];
-  v4 = [(SCRCMathSimpleExpression *)self content];
-  v5 = [v3 stringByAppendingFormat:@" - content %@", v4];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v5 = [v3 stringByAppendingFormat:@" - content %@", content];
 
   return v5;
 }
 
 - (BOOL)isInteger
 {
-  v3 = [(SCRCMathSimpleExpression *)self content];
-  v4 = [v3 rangeOfString:@"."];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v4 = [content rangeOfString:@"."];
 
   if (![(SCRCMathExpression *)self isNumber])
   {
@@ -76,18 +76,18 @@
     return 1;
   }
 
-  v6 = [(SCRCMathSimpleExpression *)self content];
-  v5 = v4 == [v6 length] - 1;
+  content2 = [(SCRCMathSimpleExpression *)self content];
+  v5 = v4 == [content2 length] - 1;
 
   return v5;
 }
 
 - (int64_t)integerValue
 {
-  v2 = [(SCRCMathSimpleExpression *)self content];
-  v3 = [v2 integerValue];
+  content = [(SCRCMathSimpleExpression *)self content];
+  integerValue = [content integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isWordOrAbbreviation
@@ -97,8 +97,8 @@
     return 0;
   }
 
-  v4 = [(SCRCMathSimpleExpression *)self content];
-  v3 = [v4 length] > 1;
+  content = [(SCRCMathSimpleExpression *)self content];
+  v3 = [content length] > 1;
 
   return v3;
 }
@@ -124,36 +124,36 @@ uint64_t __42__SCRCMathSimpleExpression__functionNames__block_invoke()
 
 - (BOOL)isFunctionName
 {
-  v3 = [(SCRCMathSimpleExpression *)self _functionNames];
-  v4 = [(SCRCMathSimpleExpression *)self content];
-  v5 = [v3 containsObject:v4];
+  _functionNames = [(SCRCMathSimpleExpression *)self _functionNames];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v5 = [_functionNames containsObject:content];
 
   return v5;
 }
 
 - (BOOL)canBeUsedWithBase
 {
-  v3 = [(SCRCMathSimpleExpression *)self content];
-  if ([v3 isEqualToString:@"log"])
+  content = [(SCRCMathSimpleExpression *)self content];
+  if ([content isEqualToString:@"log"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SCRCMathSimpleExpression *)self content];
-    v4 = [v5 isEqualToString:@"lg"];
+    content2 = [(SCRCMathSimpleExpression *)self content];
+    v4 = [content2 isEqualToString:@"lg"];
   }
 
   return v4;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  if ([(SCRCMathSimpleExpression *)self isFunctionName:a3])
+  if ([(SCRCMathSimpleExpression *)self isFunctionName:style])
   {
-    v5 = [(SCRCMathSimpleExpression *)self content];
-    v6 = [@"function." stringByAppendingString:v5];
+    content = [(SCRCMathSimpleExpression *)self content];
+    v6 = [@"function." stringByAppendingString:content];
     v7 = [(SCRCMathExpression *)self localizedAttributedStringForKey:v6];
   }
 
@@ -165,20 +165,20 @@ uint64_t __42__SCRCMathSimpleExpression__functionNames__block_invoke()
   return v7;
 }
 
-- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)a3 treePosition:(id)a4
+- (id)dollarCodeDescriptionWithNumberOfOuterRadicals:(unint64_t)radicals treePosition:(id)position
 {
   v5 = MEMORY[0x277CCA898];
-  v6 = a4;
-  v7 = [(SCRCMathSimpleExpression *)self content];
-  v8 = [v5 scrcStringWithString:v7 treePosition:v6];
+  positionCopy = position;
+  content = [(SCRCMathSimpleExpression *)self content];
+  v8 = [v5 scrcStringWithString:content treePosition:positionCopy];
 
   return v8;
 }
 
 - (id)latexMathModeDescription
 {
-  v3 = [(SCRCMathSimpleExpression *)self content];
-  v4 = [(SCRCMathExpression *)self latexIdentifierForIdentifier:v3];
+  content = [(SCRCMathSimpleExpression *)self content];
+  v4 = [(SCRCMathExpression *)self latexIdentifierForIdentifier:content];
 
   return v4;
 }

@@ -1,16 +1,16 @@
 @interface RDLaunchEvents
 + (void)initialize;
 - (void)dealloc;
-- (void)registerForXPCActivities:(id)a3;
-- (void)registerForXPCEvent:(id)a3;
-- (void)unregisterForXPCActivities:(id)a3;
+- (void)registerForXPCActivities:(id)activities;
+- (void)registerForXPCEvent:(id)event;
+- (void)unregisterForXPCActivities:(id)activities;
 @end
 
 @implementation RDLaunchEvents
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B280 = os_log_create("com.apple.SensorKit", "RDLaunchEvents");
   }
@@ -30,14 +30,14 @@
   [(RDLaunchEvents *)&v5 dealloc];
 }
 
-- (void)registerForXPCActivities:(id)a3
+- (void)registerForXPCActivities:(id)activities
 {
   objc_initWeak(&location, self);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v16 objects:v23 count:16];
+  v4 = [activities countByEnumeratingWithState:&v16 objects:v23 count:16];
   if (v4)
   {
     v6 = *v17;
@@ -49,7 +49,7 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(activities);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
@@ -64,14 +64,14 @@
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Registering for %{public}@", buf, 0xCu);
           }
 
-          v11 = [v8 UTF8String];
+          uTF8String = [v8 UTF8String];
           handler[0] = _NSConcreteStackBlock;
           handler[1] = 3221225472;
           handler[2] = sub_1000061A8;
           handler[3] = &unk_100024B00;
           objc_copyWeak(&v15, &location);
           handler[4] = v8;
-          xpc_activity_register(v11, XPC_ACTIVITY_CHECK_IN, handler);
+          xpc_activity_register(uTF8String, XPC_ACTIVITY_CHECK_IN, handler);
           objc_destroyWeak(&v15);
         }
 
@@ -83,7 +83,7 @@
         }
       }
 
-      v4 = [a3 countByEnumeratingWithState:&v16 objects:v23 count:16];
+      v4 = [activities countByEnumeratingWithState:&v16 objects:v23 count:16];
     }
 
     while (v4);
@@ -92,13 +92,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)unregisterForXPCActivities:(id)a3
+- (void)unregisterForXPCActivities:(id)activities
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  v4 = [activities countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v4)
   {
     v6 = v4;
@@ -112,7 +112,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(activities);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -129,21 +129,21 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [activities countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)registerForXPCEvent:(id)a3
+- (void)registerForXPCEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
-  v5 = [a3 UTF8String];
-  if (v4)
+  uTF8String = [event UTF8String];
+  if (selfCopy)
   {
-    v4 = v4->_q;
+    selfCopy = selfCopy->_q;
   }
 
   v6[0] = _NSConcreteStackBlock;
@@ -151,7 +151,7 @@
   v6[2] = sub_100006740;
   v6[3] = &unk_100024B28;
   objc_copyWeak(&v7, &location);
-  xpc_set_event_stream_handler(v5, &v4->super, v6);
+  xpc_set_event_stream_handler(uTF8String, &selfCopy->super, v6);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }

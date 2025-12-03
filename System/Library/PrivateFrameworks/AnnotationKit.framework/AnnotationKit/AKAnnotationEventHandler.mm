@@ -1,47 +1,47 @@
 @interface AKAnnotationEventHandler
-+ (BOOL)allowsDraggingOfAnnotation:(id)a3;
-+ (CGRect)annotationRectangleForDraggingBounds:(CGRect)a3 forAnnotation:(id)a4 onPageController:(id)a5 withOriginalCenter:(CGPoint)a6;
-+ (Class)_handlerClassForPlatformForAnnotation:(id)a3;
-+ (id)newAnnotationEventHandlerForCurrentPlatformForAnnotation:(id)a3 withPageController:(id)a4;
++ (BOOL)allowsDraggingOfAnnotation:(id)annotation;
++ (CGRect)annotationRectangleForDraggingBounds:(CGRect)bounds forAnnotation:(id)annotation onPageController:(id)controller withOriginalCenter:(CGPoint)center;
++ (Class)_handlerClassForPlatformForAnnotation:(id)annotation;
++ (id)newAnnotationEventHandlerForCurrentPlatformForAnnotation:(id)annotation withPageController:(id)controller;
 - (AKPageController)pageController;
-- (BOOL)continueDraggableAreaEventTrackingLoopWithEvent:(id)a3 orRecognizer:(id)a4;
-- (BOOL)enterDraggableAreaEventTrackingLoopWithEvent:(id)a3 orRecognizer:(id)a4;
-- (BOOL)handleDownEvent:(id)a3 orRecognizer:(id)a4;
+- (BOOL)continueDraggableAreaEventTrackingLoopWithEvent:(id)event orRecognizer:(id)recognizer;
+- (BOOL)enterDraggableAreaEventTrackingLoopWithEvent:(id)event orRecognizer:(id)recognizer;
+- (BOOL)handleDownEvent:(id)event orRecognizer:(id)recognizer;
 - (CGPoint)initialCenter;
 - (CGPoint)initialDraggedPoint;
 - (CGPoint)initialOtherPoint;
 - (CGPoint)lastPositionInModel;
 - (CGPoint)lastPositionInWindow;
-- (CGPoint)modelPointFromPointInWindow:(CGPoint)a3;
-- (CGPoint)windowPointFromEvent:(id)a3 orRecognizer:(id)a4;
+- (CGPoint)modelPointFromPointInWindow:(CGPoint)window;
+- (CGPoint)windowPointFromEvent:(id)event orRecognizer:(id)recognizer;
 - (CGSize)naturalSizeForAnnotation;
 - (double)naturalAspectRatioForAnnotation;
-- (id)_initWithAnnotation:(id)a3 andPageController:(id)a4;
+- (id)_initWithAnnotation:(id)annotation andPageController:(id)controller;
 @end
 
 @implementation AKAnnotationEventHandler
 
-+ (id)newAnnotationEventHandlerForCurrentPlatformForAnnotation:(id)a3 withPageController:(id)a4
++ (id)newAnnotationEventHandlerForCurrentPlatformForAnnotation:(id)annotation withPageController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_alloc(objc_msgSend(a1 _handlerClassForPlatformForAnnotation:{v7)), "_initWithAnnotation:andPageController:", v7, v6}];
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  v8 = [objc_alloc(objc_msgSend(self _handlerClassForPlatformForAnnotation:{annotationCopy)), "_initWithAnnotation:andPageController:", annotationCopy, controllerCopy}];
 
   return v8;
 }
 
-- (id)_initWithAnnotation:(id)a3 andPageController:(id)a4
+- (id)_initWithAnnotation:(id)annotation andPageController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = AKAnnotationEventHandler;
   v8 = [(AKAnnotationEventHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AKAnnotationEventHandler *)v8 setPageController:v7];
-    [(AKAnnotationEventHandler *)v9 setAnnotation:v6];
+    [(AKAnnotationEventHandler *)v8 setPageController:controllerCopy];
+    [(AKAnnotationEventHandler *)v9 setAnnotation:annotationCopy];
   }
 
   return v9;
@@ -61,9 +61,9 @@
   [(AKAnnotationEventHandler *)self naturalSizeForAnnotation];
   v4 = v3;
   v6 = v5;
-  v7 = [(AKAnnotationEventHandler *)self annotation];
-  v8 = [v7 originalExifOrientation];
-  if (v8 <= 4)
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  originalExifOrientation = [annotation originalExifOrientation];
+  if (originalExifOrientation <= 4)
   {
     v9 = v6;
   }
@@ -73,7 +73,7 @@
     v9 = v4;
   }
 
-  if (v8 <= 4)
+  if (originalExifOrientation <= 4)
   {
     v10 = v4;
   }
@@ -88,34 +88,34 @@
   return v11;
 }
 
-- (BOOL)handleDownEvent:(id)a3 orRecognizer:(id)a4
+- (BOOL)handleDownEvent:(id)event orRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [(AKAnnotationEventHandler *)self pageController];
-  v7 = [v6 controller];
-  [v7 showSelectionMenu:v5];
+  recognizerCopy = recognizer;
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  controller = [pageController controller];
+  [controller showSelectionMenu:recognizerCopy];
 
   return 1;
 }
 
-+ (BOOL)allowsDraggingOfAnnotation:(id)a3
++ (BOOL)allowsDraggingOfAnnotation:(id)annotation
 {
-  v3 = [a1 _handlerClassForPlatformForAnnotation:a3];
+  v3 = [self _handlerClassForPlatformForAnnotation:annotation];
 
   return MEMORY[0x2821F9670](v3, sel_allowsDragging);
 }
 
-+ (CGRect)annotationRectangleForDraggingBounds:(CGRect)a3 forAnnotation:(id)a4 onPageController:(id)a5 withOriginalCenter:(CGPoint)a6
++ (CGRect)annotationRectangleForDraggingBounds:(CGRect)bounds forAnnotation:(id)annotation onPageController:(id)controller withOriginalCenter:(CGPoint)center
 {
-  y = a6.y;
-  x = a6.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:v13];
+  y = center.y;
+  x = center.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:annotationCopy];
   v16 = -v15;
   v18 = -v17;
   v29.origin.x = v12;
@@ -128,10 +128,10 @@
   v21 = v30.size.width;
   v22 = v30.size.height;
   v28 = v30;
-  if ([v13 conformsToAKTextAnnotationProtocol])
+  if ([annotationCopy conformsToAKTextAnnotationProtocol])
   {
     LOBYTE(v27) = 0;
-    [AKTextAnnotationRenderHelper getAnnotationRectangle:&v28 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:0 forAnnotation:v13 onPageController:x orInContext:y shouldAlignToPixels:v19 optionalText:v20 optionalCenter:v21 optionalProposedRectangle:v22, v14, 0, v27, 0];
+    [AKTextAnnotationRenderHelper getAnnotationRectangle:&v28 textBounds:0 containerSize:0 exclusionPaths:0 isTextClipped:0 forAnnotation:annotationCopy onPageController:x orInContext:y shouldAlignToPixels:v19 optionalText:v20 optionalCenter:v21 optionalProposedRectangle:v22, controllerCopy, 0, v27, 0];
   }
 
   v23 = v28.origin.x;
@@ -145,7 +145,7 @@
   return result;
 }
 
-- (BOOL)enterDraggableAreaEventTrackingLoopWithEvent:(id)a3 orRecognizer:(id)a4
+- (BOOL)enterDraggableAreaEventTrackingLoopWithEvent:(id)event orRecognizer:(id)recognizer
 {
   v18 = 0.0;
   v19 = 0.0;
@@ -153,14 +153,14 @@
   v17 = 0.0;
   v14 = 0.0;
   v15 = 0.0;
-  v6 = a4;
-  v7 = a3;
-  [(AKAnnotationEventHandler *)self getInitialDraggedPoint:&v18 otherPoint:&v16 center:&v14 forEvent:v7 orRecognizer:v6];
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  [(AKAnnotationEventHandler *)self getInitialDraggedPoint:&v18 otherPoint:&v16 center:&v14 forEvent:eventCopy orRecognizer:recognizerCopy];
   [(AKAnnotationEventHandler *)self setInitialDraggedPoint:v18, v19];
   [(AKAnnotationEventHandler *)self setInitialOtherPoint:v16, v17];
   [(AKAnnotationEventHandler *)self setInitialCenter:v14, v15];
   [(AKAnnotationEventHandler *)self setupDraggingConstraints];
-  [(AKAnnotationEventHandler *)self windowPointFromEvent:v7 orRecognizer:v6];
+  [(AKAnnotationEventHandler *)self windowPointFromEvent:eventCopy orRecognizer:recognizerCopy];
   v9 = v8;
   v11 = v10;
 
@@ -168,30 +168,30 @@
   [(AKAnnotationEventHandler *)self lastPositionInWindow];
   [(AKAnnotationEventHandler *)self modelPointFromPointInWindow:?];
   [(AKAnnotationEventHandler *)self setLastPositionInModel:?];
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  -[AKAnnotationEventHandler setTouchModifiersEnabled:](self, "setTouchModifiersEnabled:", [v12 BOOLForKey:@"AKAnnotationEventTouchModifiersEnabled"]);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  -[AKAnnotationEventHandler setTouchModifiersEnabled:](self, "setTouchModifiersEnabled:", [standardUserDefaults BOOLForKey:@"AKAnnotationEventTouchModifiersEnabled"]);
 
   return 1;
 }
 
-- (BOOL)continueDraggableAreaEventTrackingLoopWithEvent:(id)a3 orRecognizer:(id)a4
+- (BOOL)continueDraggableAreaEventTrackingLoopWithEvent:(id)event orRecognizer:(id)recognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  eventCopy = event;
+  recognizerCopy = recognizer;
+  if (recognizerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = ([v7 state] - 6) < 0xFFFFFFFFFFFFFFFDLL;
-      v9 = [v7 modifierFlags];
-      v10 = (v9 >> 16) & 2 | (v9 >> 19) & 1;
+      v8 = ([recognizerCopy state] - 6) < 0xFFFFFFFFFFFFFFFDLL;
+      modifierFlags = [recognizerCopy modifierFlags];
+      v10 = (modifierFlags >> 16) & 2 | (modifierFlags >> 19) & 1;
       if (!v10)
       {
         if ([(AKAnnotationEventHandler *)self touchModifiersEnabled]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v11 = [v7 additionalNumberOfTouches];
-          v10 = ((v11 & 0xFFFFFFFFFFFFFFFELL) == 2) | (2 * ((v11 & 0xFFFFFFFFFFFFFFFDLL) == 1));
+          additionalNumberOfTouches = [recognizerCopy additionalNumberOfTouches];
+          v10 = ((additionalNumberOfTouches & 0xFFFFFFFFFFFFFFFELL) == 2) | (2 * ((additionalNumberOfTouches & 0xFFFFFFFFFFFFFFFDLL) == 1));
         }
 
         else
@@ -200,7 +200,7 @@
         }
       }
 
-      [(AKAnnotationEventHandler *)self windowPointFromEvent:v6 orRecognizer:v7];
+      [(AKAnnotationEventHandler *)self windowPointFromEvent:eventCopy orRecognizer:recognizerCopy];
       v13 = v12;
       v15 = v14;
       [(AKAnnotationEventHandler *)self setLastPositionInWindow:?];
@@ -225,18 +225,18 @@
   return v8;
 }
 
-- (CGPoint)windowPointFromEvent:(id)a3 orRecognizer:(id)a4
+- (CGPoint)windowPointFromEvent:(id)event orRecognizer:(id)recognizer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  eventCopy = event;
+  recognizerCopy = recognizer;
+  v7 = recognizerCopy;
+  if (eventCopy)
   {
-    v8 = [v5 allTouches];
-    if ([v8 count])
+    allTouches = [eventCopy allTouches];
+    if ([allTouches count])
     {
-      v9 = [v8 anyObject];
-      [v9 locationInView:0];
+      anyObject = [allTouches anyObject];
+      [anyObject locationInView:0];
       v11 = v10;
       v13 = v12;
     }
@@ -248,9 +248,9 @@
     }
   }
 
-  else if (v6)
+  else if (recognizerCopy)
   {
-    [v6 akLocationInWindow];
+    [recognizerCopy akLocationInWindow];
     v11 = v14;
     v13 = v15;
   }
@@ -269,14 +269,14 @@
   return result;
 }
 
-- (CGPoint)modelPointFromPointInWindow:(CGPoint)a3
+- (CGPoint)modelPointFromPointInWindow:(CGPoint)window
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(AKAnnotationEventHandler *)self pageController];
-  v6 = [v5 overlayView];
-  [v6 convertPoint:0 fromView:{x, y}];
-  [v5 convertPointFromOverlayToModel:?];
+  y = window.y;
+  x = window.x;
+  pageController = [(AKAnnotationEventHandler *)self pageController];
+  overlayView = [pageController overlayView];
+  [overlayView convertPoint:0 fromView:{x, y}];
+  [pageController convertPointFromOverlayToModel:?];
   v8 = v7;
   v10 = v9;
 
@@ -287,9 +287,9 @@
   return result;
 }
 
-+ (Class)_handlerClassForPlatformForAnnotation:(id)a3
++ (Class)_handlerClassForPlatformForAnnotation:(id)annotation
 {
-  v3 = a3;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {

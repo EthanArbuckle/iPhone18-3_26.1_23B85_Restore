@@ -1,7 +1,7 @@
 @interface PKDUserManagementProvider
 - (BOOL)isMultiUser;
-- (id)listAllPersonaAttributesWithError:(id *)a3;
-- (unint64_t)personaGenerationIdentifierWithError:(id *)a3;
+- (id)listAllPersonaAttributesWithError:(id *)error;
+- (unint64_t)personaGenerationIdentifierWithError:(id *)error;
 @end
 
 @implementation PKDUserManagementProvider
@@ -14,23 +14,23 @@
   }
 
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 isMultiUser];
+  isMultiUser = [v2 isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
-- (id)listAllPersonaAttributesWithError:(id *)a3
+- (id)listAllPersonaAttributesWithError:(id *)error
 {
   v4 = +[UMUserManager sharedManager];
-  v5 = [v4 listAllPersonaAttributesWithError:a3];
+  v5 = [v4 listAllPersonaAttributesWithError:error];
 
   return v5;
 }
 
-- (unint64_t)personaGenerationIdentifierWithError:(id *)a3
+- (unint64_t)personaGenerationIdentifierWithError:(id *)error
 {
   v4 = +[UMUserManager sharedManager];
-  v5 = [v4 personaGenerationIdentifierWithError:a3];
+  v5 = [v4 personaGenerationIdentifierWithError:error];
 
   return v5;
 }

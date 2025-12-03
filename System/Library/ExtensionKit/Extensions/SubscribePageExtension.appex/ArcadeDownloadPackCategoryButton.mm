@@ -1,39 +1,39 @@
 @interface ArcadeDownloadPackCategoryButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton)initWithFrame:(CGRect)a3;
-- (void)didPress:(id)a3;
-- (void)didRelease:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton)initWithFrame:(CGRect)frame;
+- (void)didPress:(id)press;
+- (void)didRelease:(id)release;
 - (void)didTap;
 - (void)invalidateMeasurements;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation ArcadeDownloadPackCategoryButton
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ArcadeDownloadPackCategoryButton *)&v5 setSelected:v3];
+  [(ArcadeDownloadPackCategoryButton *)&v5 setSelected:selectedCopy];
   sub_10020191C();
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100201A68(a3);
+  selfCopy = self;
+  sub_100201A68(enabled);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(ArcadeDownloadPackCategoryButton *)v2 bounds];
-  v3 = [(ArcadeDownloadPackCategoryButton *)v2 traitCollection];
+  selfCopy = self;
+  [(ArcadeDownloadPackCategoryButton *)selfCopy bounds];
+  traitCollection = [(ArcadeDownloadPackCategoryButton *)selfCopy traitCollection];
   sub_100201B40(v10);
   sub_10000C888(v10, v10[3]);
   sub_100751254();
@@ -50,16 +50,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002020C8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_100201B40(v11);
   sub_10000C888(v11, v11[3]);
-  v4 = [(ArcadeDownloadPackCategoryButton *)v3 traitCollection];
+  traitCollection = [(ArcadeDownloadPackCategoryButton *)selfCopy traitCollection];
   sub_100751254();
   v6 = v5;
   v8 = v7;
@@ -77,37 +77,37 @@
   ObjectType = swift_getObjectType();
   v7.receiver = self;
   v7.super_class = ObjectType;
-  v4 = self;
-  v5 = [(ArcadeDownloadPackCategoryButton *)&v7 isSelected];
-  v6.receiver = v4;
+  selfCopy = self;
+  isSelected = [(ArcadeDownloadPackCategoryButton *)&v7 isSelected];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
-  [(ArcadeDownloadPackCategoryButton *)&v6 setSelected:v5 ^ 1];
+  [(ArcadeDownloadPackCategoryButton *)&v6 setSelected:isSelected ^ 1];
   sub_10020191C();
-  (*(&v4->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton_action))(*(&v4->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton_category));
+  (*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton_action))(*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton_category));
 }
 
-- (void)didPress:(id)a3
+- (void)didPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002023C8(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_1002023C8(pressCopy);
 }
 
-- (void)didRelease:(id)a3
+- (void)didRelease:(id)release
 {
-  v4 = a3;
-  v5 = self;
-  sub_100203640(v4);
+  releaseCopy = release;
+  selfCopy = self;
+  sub_100203640(releaseCopy);
 }
 
 - (void)invalidateMeasurements
 {
-  v2 = self;
-  [(ArcadeDownloadPackCategoryButton *)v2 setNeedsLayout];
-  [(ArcadeDownloadPackCategoryButton *)v2 invalidateIntrinsicContentSize];
+  selfCopy = self;
+  [(ArcadeDownloadPackCategoryButton *)selfCopy setNeedsLayout];
+  [(ArcadeDownloadPackCategoryButton *)selfCopy invalidateIntrinsicContentSize];
 }
 
-- (_TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension32ArcadeDownloadPackCategoryButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

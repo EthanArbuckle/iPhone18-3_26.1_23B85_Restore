@@ -1,38 +1,38 @@
 @interface HKHealthPrivacyHostAuthorizationViewController
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3;
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler;
 - (HKHealthPrivacyHostAuthorizationControllerDelegate)delegate;
-- (void)didFinishWithError:(id)a3;
-- (void)setRequestRecord:(id)a3 presentationRequests:(id)a4;
+- (void)didFinishWithError:(id)error;
+- (void)setRequestRecord:(id)record presentationRequests:(id)requests;
 - (void)show;
 @end
 
 @implementation HKHealthPrivacyHostAuthorizationViewController
 
-- (void)setRequestRecord:(id)a3 presentationRequests:(id)a4
+- (void)setRequestRecord:(id)record presentationRequests:(id)requests
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKHealthPrivacyHostAuthorizationViewController *)self _healthPrivacyServiceViewControllerProxy];
-  [v8 setRequestRecord:v7 presentationRequests:v6];
+  requestsCopy = requests;
+  recordCopy = record;
+  _healthPrivacyServiceViewControllerProxy = [(HKHealthPrivacyHostAuthorizationViewController *)self _healthPrivacyServiceViewControllerProxy];
+  [_healthPrivacyServiceViewControllerProxy setRequestRecord:recordCopy presentationRequests:requestsCopy];
 }
 
 - (void)show
 {
-  v2 = [(HKHealthPrivacyHostAuthorizationViewController *)self _healthPrivacyServiceViewControllerProxy];
-  [v2 show];
+  _healthPrivacyServiceViewControllerProxy = [(HKHealthPrivacyHostAuthorizationViewController *)self _healthPrivacyServiceViewControllerProxy];
+  [_healthPrivacyServiceViewControllerProxy show];
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HKHealthPrivacyHostAuthorizationViewController *)self delegate];
-  [v5 healthPrivacyHostAuthorizationControllerDidFinishWithError:v4];
+  errorCopy = error;
+  delegate = [(HKHealthPrivacyHostAuthorizationViewController *)self delegate];
+  [delegate healthPrivacyHostAuthorizationControllerDidFinishWithError:errorCopy];
 }
 
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"HKHealthPrivacyServiceAuthorizationViewController" fromServiceWithBundleIdentifier:*MEMORY[0x1E696C888] connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"HKHealthPrivacyServiceAuthorizationViewController" fromServiceWithBundleIdentifier:*MEMORY[0x1E696C888] connectionHandler:handlerCopy];
 
   return v4;
 }

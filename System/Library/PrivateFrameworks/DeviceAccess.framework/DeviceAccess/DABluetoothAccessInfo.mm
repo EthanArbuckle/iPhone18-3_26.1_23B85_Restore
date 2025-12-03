@@ -1,13 +1,13 @@
 @interface DABluetoothAccessInfo
-- (DABluetoothAccessInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (DABluetoothAccessInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation DABluetoothAccessInfo
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -63,19 +63,19 @@
   return v15;
 }
 
-- (DABluetoothAccessInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (DABluetoothAccessInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v17.receiver = self;
   v17.super_class = DABluetoothAccessInfo;
   v7 = [(DABluetoothAccessInfo *)&v17 init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v10 = objc_opt_class();
       DAErrorF(350001, "%@ super init failed", v11, v12, v13, v14, v15, v16, v10);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_4;
     }
 

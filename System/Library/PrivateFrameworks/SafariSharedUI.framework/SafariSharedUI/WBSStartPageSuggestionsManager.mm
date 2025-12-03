@@ -7,8 +7,8 @@
 - (void)_updateDefaultStartPageVisibleProviders
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSStartPageSectionManager *)self->_sectionManager suggestionsDataSourceSections];
-  v4 = [v3 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_60];
+  suggestionsDataSourceSections = [(WBSStartPageSectionManager *)self->_sectionManager suggestionsDataSourceSections];
+  v4 = [suggestionsDataSourceSections safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_60];
 
   v5 = [MEMORY[0x1E695DFA8] set];
   v16 = 0u;
@@ -31,8 +31,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 providerSectionIdentifier];
-        v13 = [v4 containsObject:v12];
+        providerSectionIdentifier = [v11 providerSectionIdentifier];
+        v13 = [v4 containsObject:providerSectionIdentifier];
 
         if (v13)
         {

@@ -1,18 +1,18 @@
 @interface _UISearchBarAppearanceStorage
-- (id)imageForIcon:(int64_t)a3 state:(unint64_t)a4;
-- (id)searchFieldBackgroundImageForState:(unint64_t)a3;
-- (void)setImage:(id)a3 forIcon:(int64_t)a4 state:(unint64_t)a5;
-- (void)setSearchFieldBackgroundImage:(id)a3 forState:(unint64_t)a4;
+- (id)imageForIcon:(int64_t)icon state:(unint64_t)state;
+- (id)searchFieldBackgroundImageForState:(unint64_t)state;
+- (void)setImage:(id)image forIcon:(int64_t)icon state:(unint64_t)state;
+- (void)setSearchFieldBackgroundImage:(id)image forState:(unint64_t)state;
 @end
 
 @implementation _UISearchBarAppearanceStorage
 
-- (void)setSearchFieldBackgroundImage:(id)a3 forState:(unint64_t)a4
+- (void)setSearchFieldBackgroundImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
+  imageCopy = image;
   searchFieldBackgroundImages = self->searchFieldBackgroundImages;
-  v11 = v6;
-  if (v6)
+  v11 = imageCopy;
+  if (imageCopy)
   {
     if (!searchFieldBackgroundImages)
     {
@@ -23,7 +23,7 @@
       searchFieldBackgroundImages = self->searchFieldBackgroundImages;
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)searchFieldBackgroundImages setObject:v11 forKey:v10];
   }
 
@@ -34,28 +34,28 @@
       goto LABEL_8;
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)searchFieldBackgroundImages removeObjectForKey:v10];
   }
 
 LABEL_8:
 }
 
-- (id)searchFieldBackgroundImageForState:(unint64_t)a3
+- (id)searchFieldBackgroundImageForState:(unint64_t)state
 {
   searchFieldBackgroundImages = self->searchFieldBackgroundImages;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v5 = [(NSMutableDictionary *)searchFieldBackgroundImages objectForKey:v4];
 
   return v5;
 }
 
-- (void)setImage:(id)a3 forIcon:(int64_t)a4 state:(unint64_t)a5
+- (void)setImage:(id)image forIcon:(int64_t)icon state:(unint64_t)state
 {
-  v8 = a3;
+  imageCopy = image;
   iconImages = self->iconImages;
-  v14 = v8;
-  if (v8)
+  v14 = imageCopy;
+  if (imageCopy)
   {
     if (!iconImages)
     {
@@ -70,28 +70,28 @@ LABEL_8:
   if (iconImages)
   {
 LABEL_5:
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a5 + 100 * a4];
+    icon = [MEMORY[0x1E696AD98] numberWithInteger:state + 100 * icon];
     v13 = self->iconImages;
     if (v14)
     {
-      [(NSMutableDictionary *)v13 setObject:v14 forKey:v12];
+      [(NSMutableDictionary *)v13 setObject:v14 forKey:icon];
     }
 
     else
     {
-      [(NSMutableDictionary *)v13 removeObjectForKey:v12];
+      [(NSMutableDictionary *)v13 removeObjectForKey:icon];
     }
   }
 }
 
-- (id)imageForIcon:(int64_t)a3 state:(unint64_t)a4
+- (id)imageForIcon:(int64_t)icon state:(unint64_t)state
 {
   iconImages = self->iconImages;
-  v7 = 100 * a3;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:100 * a3 + a4];
-  v9 = [(NSMutableDictionary *)iconImages objectForKey:v8];
+  v7 = 100 * icon;
+  state = [MEMORY[0x1E696AD98] numberWithInteger:100 * icon + state];
+  v9 = [(NSMutableDictionary *)iconImages objectForKey:state];
 
-  if (a4 == 1 && !v9)
+  if (state == 1 && !v9)
   {
     v10 = self->iconImages;
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:v7];

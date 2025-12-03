@@ -1,69 +1,69 @@
 @interface TSPAbstractMutableLargeArray
 + (Class)arraySegmentClass;
-- (BOOL)mergeSegmentIfNeededAtIndex:(unint64_t)a3;
-- (BOOL)shouldBisectForCount:(unint64_t)a3 byteSize:(unint64_t)a4 cost:(unint64_t)a5;
+- (BOOL)mergeSegmentIfNeededAtIndex:(unint64_t)index;
+- (BOOL)shouldBisectForCount:(unint64_t)count byteSize:(unint64_t)size cost:(unint64_t)cost;
 - (NSArray)allObjects;
 - (NSMutableArray)mutableArrayWrapper;
-- (TSPAbstractMutableLargeArray)initWithArray:(id)a3 context:(id)a4;
-- (TSPAbstractMutableLargeArray)initWithContext:(id)a3;
-- (TSPAbstractMutableLargeArray)initWithContext:(id)a3 shouldDelayArchiving:(BOOL)a4 delayedArchivingPriority:(unsigned int)a5 storeOutsideObjectArchive:(BOOL)a6;
+- (TSPAbstractMutableLargeArray)initWithArray:(id)array context:(id)context;
+- (TSPAbstractMutableLargeArray)initWithContext:(id)context;
+- (TSPAbstractMutableLargeArray)initWithContext:(id)context shouldDelayArchiving:(BOOL)archiving delayedArchivingPriority:(unsigned int)priority storeOutsideObjectArchive:(BOOL)archive;
 - (_NSRange)lastRange;
-- (_NSRange)rangeOfSegmentIndex:(unint64_t)a3;
+- (_NSRange)rangeOfSegmentIndex:(unint64_t)index;
 - (id).cxx_construct;
 - (id)createArraySegment;
 - (id)firstObject;
-- (id)initDocumentObjectWithContext:(id)a3;
+- (id)initDocumentObjectWithContext:(id)context;
 - (id)lastObject;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)pop;
-- (id)segmentAtIndex:(unint64_t)a3;
+- (id)segmentAtIndex:(unint64_t)index;
 - (id)segmentRanges;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)elementCount;
-- (unint64_t)estimatedByteSizeOfElementAtIndex:(unint64_t)a3;
+- (unint64_t)estimatedByteSizeOfElementAtIndex:(unint64_t)index;
 - (unint64_t)maxSegmentElementCount;
 - (unint64_t)maxSegmentSize;
-- (unint64_t)segmentIndexForElementIndex:(unint64_t)a3 firstSegmentIndex:(unint64_t)a4 lastSegmentIndex:(unint64_t)a5 segmentIndexGuess:(unint64_t)a6;
-- (unint64_t)segmentIndexForElementIndex:(unint64_t)a3 segmentIndexGuess:(unint64_t)a4;
+- (unint64_t)segmentIndexForElementIndex:(unint64_t)index firstSegmentIndex:(unint64_t)segmentIndex lastSegmentIndex:(unint64_t)lastSegmentIndex segmentIndexGuess:(unint64_t)guess;
+- (unint64_t)segmentIndexForElementIndex:(unint64_t)index segmentIndexGuess:(unint64_t)guess;
 - (unsigned)delayedArchivingPriority;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)bisectSegmentIfNeeded:(unint64_t)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)bisectSegmentIfNeeded:(unint64_t)needed;
 - (void)commonInit;
-- (void)enqueue:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)largeArraySegmentDidBisectAtIndex:(unint64_t)a3 segments:(id)a4;
-- (void)loadFromLargeArrayMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_removeObjectsFromSegmentAtSegmentIndex:(unint64_t)a3 atIndexes:(id)a4;
+- (void)enqueue:(id)enqueue;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)largeArraySegmentDidBisectAtIndex:(unint64_t)index segments:(id)segments;
+- (void)loadFromLargeArrayMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_removeObjectsFromSegmentAtSegmentIndex:(unint64_t)index atIndexes:(id)indexes;
 - (void)removeAllObjects;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)removeObjectsAtIndexes:(id)a3;
-- (void)removeObjectsInRange:(_NSRange)a3;
-- (void)removeRangeAtSegmentIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToLargeArrayMessage:(void *)a3 archiver:(id)a4;
-- (void)setMaxSegmentElementCount:(unint64_t)a3 willModify:(BOOL)a4;
-- (void)setMaxSegmentSize:(unint64_t)a3 willModify:(BOOL)a4;
-- (void)setRange:(_NSRange)a3 forSegmentIndex:(unint64_t)a4;
-- (void)updateSegmentRangesAfterIndex:(unint64_t)a3;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)removeObjectsAtIndexes:(id)indexes;
+- (void)removeObjectsInRange:(_NSRange)range;
+- (void)removeRangeAtSegmentIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToLargeArrayMessage:(void *)message archiver:(id)archiver;
+- (void)setMaxSegmentElementCount:(unint64_t)count willModify:(BOOL)modify;
+- (void)setMaxSegmentSize:(unint64_t)size willModify:(BOOL)modify;
+- (void)setRange:(_NSRange)range forSegmentIndex:(unint64_t)index;
+- (void)updateSegmentRangesAfterIndex:(unint64_t)index;
 @end
 
 @implementation TSPAbstractMutableLargeArray
 
-- (TSPAbstractMutableLargeArray)initWithArray:(id)a3 context:(id)a4
+- (TSPAbstractMutableLargeArray)initWithArray:(id)array context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_initWithContext_(self, v8, v7);
+  arrayCopy = array;
+  contextCopy = context;
+  v9 = objc_msgSend_initWithContext_(self, v8, contextCopy);
   if (v9)
   {
     v10 = objc_opt_class();
     v13 = objc_alloc(objc_msgSend_arraySegmentClass(v10, v11, v12));
     shouldDelayArchiving = objc_msgSend_shouldDelayArchiving(v9, v14, v15);
-    shouldDelayArchiving_context = objc_msgSend_initWithArray_delegate_shouldDelayArchiving_context_(v13, v17, v6, v9, shouldDelayArchiving, v7);
+    shouldDelayArchiving_context = objc_msgSend_initWithArray_delegate_shouldDelayArchiving_context_(v13, v17, arrayCopy, v9, shouldDelayArchiving, contextCopy);
     segments = v9->_segments;
     v21 = objc_msgSend_referenceForObject_(TSPLazyReference, v20, shouldDelayArchiving_context);
     objc_msgSend_addObject_(segments, v22, v21);
@@ -91,30 +91,30 @@
   self->_mergingSegmentIndex = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (TSPAbstractMutableLargeArray)initWithContext:(id)a3
+- (TSPAbstractMutableLargeArray)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSPAbstractMutableLargeArray;
-  return [(TSPObject *)&v4 initWithContext:a3];
+  return [(TSPObject *)&v4 initWithContext:context];
 }
 
-- (id)initDocumentObjectWithContext:(id)a3
+- (id)initDocumentObjectWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSPAbstractMutableLargeArray;
-  return [(TSPObject *)&v4 initDocumentObjectWithContext:a3];
+  return [(TSPObject *)&v4 initDocumentObjectWithContext:context];
 }
 
-- (TSPAbstractMutableLargeArray)initWithContext:(id)a3 shouldDelayArchiving:(BOOL)a4 delayedArchivingPriority:(unsigned int)a5 storeOutsideObjectArchive:(BOOL)a6
+- (TSPAbstractMutableLargeArray)initWithContext:(id)context shouldDelayArchiving:(BOOL)archiving delayedArchivingPriority:(unsigned int)priority storeOutsideObjectArchive:(BOOL)archive
 {
   v10.receiver = self;
   v10.super_class = TSPAbstractMutableLargeArray;
-  result = [(TSPObject *)&v10 initWithContext:a3];
+  result = [(TSPObject *)&v10 initWithContext:context];
   if (result)
   {
-    result->_shouldDelayArchiving = a4;
-    result->_storeOutsideObjectArchive = a6;
-    result->_delayedArchivingPriority = a5;
+    result->_shouldDelayArchiving = archiving;
+    result->_storeOutsideObjectArchive = archive;
+    result->_delayedArchivingPriority = priority;
   }
 
   return result;
@@ -134,38 +134,38 @@
   }
 }
 
-- (unint64_t)segmentIndexForElementIndex:(unint64_t)a3 firstSegmentIndex:(unint64_t)a4 lastSegmentIndex:(unint64_t)a5 segmentIndexGuess:(unint64_t)a6
+- (unint64_t)segmentIndexForElementIndex:(unint64_t)index firstSegmentIndex:(unint64_t)segmentIndex lastSegmentIndex:(unint64_t)lastSegmentIndex segmentIndexGuess:(unint64_t)guess
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a5 >= a4)
+  if (lastSegmentIndex >= segmentIndex)
   {
     begin = self->_segmentRanges.__begin_;
-    if (self->_segmentRanges.__end_ - begin > a5)
+    if (self->_segmentRanges.__end_ - begin > lastSegmentIndex)
     {
-      v6 = a6 == a5 ? a6 : 0x7FFFFFFFFFFFFFFFLL;
-      v8 = a6 == 0x7FFFFFFFFFFFFFFFLL ? 0x7FFFFFFFFFFFFFFFLL : v6;
-      if (v8 == 0x7FFFFFFFFFFFFFFFLL || ((v9 = &begin[v8], a3 >= v9->location) ? (v10 = a3 - v9->location >= v9->length) : (v10 = 1), v10))
+      v6 = guess == lastSegmentIndex ? guess : 0x7FFFFFFFFFFFFFFFLL;
+      v8 = guess == 0x7FFFFFFFFFFFFFFFLL ? 0x7FFFFFFFFFFFFFFFLL : v6;
+      if (v8 == 0x7FFFFFFFFFFFFFFFLL || ((v9 = &begin[v8], index >= v9->location) ? (v10 = index - v9->location >= v9->length) : (v10 = 1), v10))
       {
-        if (a4 == 0x7FFFFFFFFFFFFFFFLL || ((v11 = &begin[a4].location, v13 = *v11, v12 = v11[1], a3 >= v13) ? (v14 = a3 - v13 >= v12) : (v14 = 1), v14))
+        if (segmentIndex == 0x7FFFFFFFFFFFFFFFLL || ((v11 = &begin[segmentIndex].location, v13 = *v11, v12 = v11[1], index >= v13) ? (v14 = index - v13 >= v12) : (v14 = 1), v14))
         {
-          if (a5 == 0x7FFFFFFFFFFFFFFFLL || ((p_location = &begin[a5].location, v17 = *p_location, v16 = p_location[1], a3 >= v17) ? (v18 = a3 - v17 >= v16) : (v18 = 1), v18))
+          if (lastSegmentIndex == 0x7FFFFFFFFFFFFFFFLL || ((p_location = &begin[lastSegmentIndex].location, v17 = *p_location, v16 = p_location[1], index >= v17) ? (v18 = index - v17 >= v16) : (v18 = 1), v18))
           {
             v6 = 0x7FFFFFFFFFFFFFFFLL;
-            if (a5 - a4 >= 2)
+            if (lastSegmentIndex - segmentIndex >= 2)
             {
-              return objc_msgSend_segmentIndexForElementIndex_firstSegmentIndex_lastSegmentIndex_segmentIndexGuess_(self, a2, a3);
+              return objc_msgSend_segmentIndexForElementIndex_firstSegmentIndex_lastSegmentIndex_segmentIndexGuess_(self, a2, index);
             }
           }
 
           else
           {
-            return a5;
+            return lastSegmentIndex;
           }
         }
 
         else
         {
-          return a4;
+          return segmentIndex;
         }
       }
     }
@@ -174,9 +174,9 @@
   return v6;
 }
 
-- (unint64_t)segmentIndexForElementIndex:(unint64_t)a3 segmentIndexGuess:(unint64_t)a4
+- (unint64_t)segmentIndexForElementIndex:(unint64_t)index segmentIndexGuess:(unint64_t)guess
 {
-  if (objc_msgSend_segmentCount(self, a2, a3))
+  if (objc_msgSend_segmentCount(self, a2, index))
   {
     v9 = objc_msgSend_segmentCount(self, v7, v8) - 1;
   }
@@ -186,12 +186,12 @@
     v9 = 0;
   }
 
-  return objc_msgSend_segmentIndexForElementIndex_firstSegmentIndex_lastSegmentIndex_segmentIndexGuess_(self, v7, a3, 0, v9, a4);
+  return objc_msgSend_segmentIndexForElementIndex_firstSegmentIndex_lastSegmentIndex_segmentIndexGuess_(self, v7, index, 0, v9, guess);
 }
 
-- (_NSRange)rangeOfSegmentIndex:(unint64_t)a3
+- (_NSRange)rangeOfSegmentIndex:(unint64_t)index
 {
-  v3 = &self->_segmentRanges.__begin_[a3];
+  v3 = &self->_segmentRanges.__begin_[index];
   location = v3->location;
   length = v3->length;
   result.length = length;
@@ -209,22 +209,22 @@
   return result;
 }
 
-- (void)setRange:(_NSRange)a3 forSegmentIndex:(unint64_t)a4
+- (void)setRange:(_NSRange)range forSegmentIndex:(unint64_t)index
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_willModify(self, a2, a3.location);
-  v8 = &self->_segmentRanges.__begin_[a4];
+  length = range.length;
+  location = range.location;
+  objc_msgSend_willModify(self, a2, range.location);
+  v8 = &self->_segmentRanges.__begin_[index];
   v8->location = location;
   v8->length = length;
 }
 
-- (void)removeRangeAtSegmentIndex:(unint64_t)a3
+- (void)removeRangeAtSegmentIndex:(unint64_t)index
 {
-  objc_msgSend_willModify(self, a2, a3);
+  objc_msgSend_willModify(self, a2, index);
   p_segmentRanges = &self->_segmentRanges;
   end = self->_segmentRanges.__end_;
-  v7 = &self->_segmentRanges.__begin_[a3];
+  v7 = &self->_segmentRanges.__begin_[index];
   v8 = end - &v7[1];
   if (end != &v7[1])
   {
@@ -248,9 +248,9 @@
   return v5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_segments, a2, a3) && (v7 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v5, a3, 0), v7 != 0x7FFFFFFFFFFFFFFFLL) && (v8 = v7, v9 = objc_msgSend_rangeOfSegmentIndex_(self, v5, v7), v10 = a3 >= v9, v11 = a3 - v9, v10))
+  if (objc_msgSend_count(self->_segments, a2, index) && (v7 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v5, index, 0), v7 != 0x7FFFFFFFFFFFFFFFLL) && (v8 = v7, v9 = objc_msgSend_rangeOfSegmentIndex_(self, v5, v7), v10 = index >= v9, v11 = index - v9, v10))
   {
     v18 = objc_msgSend_segmentAtIndex_(self, v5, v8);
     if (!v18)
@@ -290,12 +290,12 @@
   return v14;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v33 = a3;
+  objectCopy = object;
   objc_msgSend_willModify(self, v6, v7);
   ++self->_mutations;
-  v11 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v8, a4, 0);
+  v11 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v8, index, 0);
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = objc_msgSend_count(self->_segments, v9, v10);
@@ -313,13 +313,13 @@
   }
 
   v21 = objc_msgSend_rangeOfSegmentIndex_(self, v12, v11);
-  v25 = objc_msgSend_convertElementToSegmentElement_(self, v22, v33);
+  v25 = objc_msgSend_convertElementToSegmentElement_(self, v22, objectCopy);
   if (!v25)
   {
     v25 = objc_msgSend_null(MEMORY[0x277CBEB68], v23, v24);
   }
 
-  objc_msgSend_insertObject_atIndex_(v13, v23, v25, a4 - v21);
+  objc_msgSend_insertObject_atIndex_(v13, v23, v25, index - v21);
   self->_estimatedByteSize += objc_msgSend_estimatedByteSizeOfElement_(v13, v26, v25);
   v29 = objc_msgSend_count(v13, v27, v28);
   objc_msgSend_setRange_forSegmentIndex_(self, v30, v21, v29, v11);
@@ -327,11 +327,11 @@
   objc_msgSend_bisectSegmentIfNeeded_(self, v32, v11);
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  objc_msgSend_willModify(self, a2, a3);
+  objc_msgSend_willModify(self, a2, index);
   ++self->_mutations;
-  v6 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v5, a3, 0);
+  v6 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v5, index, 0);
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return;
@@ -350,7 +350,7 @@
   }
 
   v17 = objc_msgSend_rangeOfSegmentIndex_(self, v9, v8);
-  v18 = a3 - v17;
+  v18 = index - v17;
   v20 = objc_msgSend_objectAtIndex_(v37, v19, v18);
   v22 = objc_msgSend_estimatedByteSizeOfElement_(v37, v21, v20);
 
@@ -388,10 +388,10 @@ LABEL_12:
   objc_msgSend_mergeSegmentIfNeededAtIndex_(self, v35, v8);
 }
 
-- (void)removeObjectsAtIndexes:(id)a3
+- (void)removeObjectsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  indexesCopy = indexes;
+  if (objc_msgSend_count(indexesCopy, v5, v6))
   {
     objc_msgSend_willModify(self, v7, v8);
     ++self->_mutations;
@@ -442,7 +442,7 @@ LABEL_12:
     v26[10] = &v27;
     v26[4] = self;
     v26[5] = v15;
-    objc_msgSend_enumerateIndexesUsingBlock_(v4, v16, v26);
+    objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v16, v26);
     if (v34[3] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend_count(v15, v17, v18))
     {
       objc_msgSend_p_removeObjectsFromSegmentAtSegmentIndex_atIndexes_(self, v17, v34[3], v15);
@@ -479,10 +479,10 @@ LABEL_12:
   }
 }
 
-- (void)p_removeObjectsFromSegmentAtSegmentIndex:(unint64_t)a3 atIndexes:(id)a4
+- (void)p_removeObjectsFromSegmentAtSegmentIndex:(unint64_t)index atIndexes:(id)indexes
 {
-  v45 = a4;
-  v9 = objc_msgSend_segmentAtIndex_(self, v6, a3);
+  indexesCopy = indexes;
+  v9 = objc_msgSend_segmentAtIndex_(self, v6, index);
   if (!v9)
   {
     v10 = MEMORY[0x277D81150];
@@ -494,7 +494,7 @@ LABEL_12:
   }
 
   v17 = objc_msgSend_estimatedByteSize(v9, v7, v8);
-  objc_msgSend_removeObjectsAtIndexes_(v9, v18, v45);
+  objc_msgSend_removeObjectsAtIndexes_(v9, v18, indexesCopy);
   v21 = objc_msgSend_estimatedByteSize(v9, v19, v20);
   v23 = v17 - v21;
   if (v17 < v21)
@@ -511,12 +511,12 @@ LABEL_12:
   }
 
   self->_estimatedByteSize = v26;
-  v27 = objc_msgSend_rangeOfSegmentIndex_(self, v22, a3);
+  v27 = objc_msgSend_rangeOfSegmentIndex_(self, v22, index);
   v29 = v28;
-  if (v28 >= objc_msgSend_count(v45, v28, v30))
+  if (v28 >= objc_msgSend_count(indexesCopy, v28, v30))
   {
-    v43 = objc_msgSend_count(v45, v31, v32);
-    objc_msgSend_setRange_forSegmentIndex_(self, v44, v27, &v29[-v43], a3);
+    v43 = objc_msgSend_count(indexesCopy, v31, v32);
+    objc_msgSend_setRange_forSegmentIndex_(self, v44, v27, &v29[-v43], index);
   }
 
   else
@@ -524,17 +524,17 @@ LABEL_12:
     v33 = MEMORY[0x277D81150];
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "[TSPAbstractMutableLargeArray p_removeObjectsFromSegmentAtSegmentIndex:atIndexes:]");
     v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPAbstractMutableLargeArray.mm");
-    v39 = objc_msgSend_count(v45, v37, v38);
+    v39 = objc_msgSend_count(indexesCopy, v37, v38);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v40, v34, v36, 564, 0, "segmentRange length should always at least indexSetForCurrentSegment.count. segmentRangeLength=%tu indexSetForCurrentSegmentCount=%tu", v29, v39);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v41, v42);
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v126[2] = *MEMORY[0x277D85DE8];
-  v124 = a3;
+  objectCopy = object;
   objc_msgSend_willModify(self, v4, v5);
   ++self->_mutations;
   v10 = objc_msgSend_count(self->_segments, v6, v7);
@@ -664,7 +664,7 @@ LABEL_15:
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40);
   v12 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_16:
-  v43 = objc_msgSend_convertElementToSegmentElement_(self, v19, v124);
+  v43 = objc_msgSend_convertElementToSegmentElement_(self, v19, objectCopy);
   if (!v43)
   {
     v43 = objc_msgSend_null(MEMORY[0x277CBEB68], v41, v42);
@@ -701,10 +701,10 @@ LABEL_24:
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v122 = *MEMORY[0x277D85DE8];
-  v115 = a3;
+  arrayCopy = array;
   objc_msgSend_willModify(self, v4, v5);
   ++self->_mutations;
   v10 = objc_msgSend_count(self->_segments, v6, v7);
@@ -834,13 +834,13 @@ LABEL_15:
   v12 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_16:
   v41 = MEMORY[0x277CBEB18];
-  v42 = objc_msgSend_count(v115, v19, v20);
+  v42 = objc_msgSend_count(arrayCopy, v19, v20);
   v44 = objc_msgSend_arrayWithCapacity_(v41, v43, v42);
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v45 = v115;
+  v45 = arrayCopy;
   v48 = objc_msgSend_countByEnumeratingWithState_objects_count_(v45, v46, &v116, v121, 16);
   if (v48)
   {
@@ -977,12 +977,12 @@ LABEL_27:
   }
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v36 = a4;
+  objectCopy = object;
   objc_msgSend_willModify(self, v6, v7);
   ++self->_mutations;
-  v11 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v8, a3, 0);
+  v11 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v8, index, 0);
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = objc_msgSend_count(self->_segments, v9, v10);
@@ -1000,13 +1000,13 @@ LABEL_27:
   }
 
   v21 = objc_msgSend_rangeOfSegmentIndex_(self, v12, v11);
-  v25 = objc_msgSend_convertElementToSegmentElement_(self, v22, v36);
+  v25 = objc_msgSend_convertElementToSegmentElement_(self, v22, objectCopy);
   if (!v25)
   {
     v25 = objc_msgSend_null(MEMORY[0x277CBEB68], v23, v24);
   }
 
-  v26 = a3 - v21;
+  v26 = index - v21;
   v27 = objc_msgSend_objectAtIndex_(v13, v23, v26);
   v29 = objc_msgSend_estimatedByteSizeOfElement_(v13, v28, v27);
 
@@ -1028,37 +1028,37 @@ LABEL_27:
   objc_msgSend_replaceObjectAtIndex_withObject_(v13, v35, v26, v25);
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &self->_mutations;
+    state->var2 = &self->_mutations;
   }
 
-  v10 = objc_msgSend_count(self, a2, a3);
-  v12 = v10 - var0;
+  v10 = objc_msgSend_count(self, a2, state);
+  countCopy = v10 - var0;
   if (v10 <= var0)
   {
     return 0;
   }
 
   v43 = var0;
-  v44 = a4;
-  if (v12 >= a5)
+  objectsCopy = objects;
+  if (countCopy >= count)
   {
-    v12 = a5;
+    countCopy = count;
   }
 
-  v41 = a3;
-  v42 = v12;
-  if (v12)
+  stateCopy = state;
+  v42 = countCopy;
+  if (countCopy)
   {
     v13 = 0;
     v14 = 0x277D81000uLL;
     v16 = v43;
-    v15 = a4;
-    v17 = v12;
+    objectsCopy2 = objects;
+    v17 = countCopy;
     do
     {
       v13 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v11, v16, v13);
@@ -1091,13 +1091,13 @@ LABEL_27:
 
           v37 = objc_msgSend_objectAtIndex_(v29, v28, v27);
           v39 = objc_msgSend_convertSegmentElementToElement_(self, v38, v37);
-          *v15 = v39;
+          *objectsCopy2 = v39;
 
           v14 = 0x277D81000;
         }
       }
 
-      ++v15;
+      ++objectsCopy2;
       ++v16;
       --v17;
     }
@@ -1106,8 +1106,8 @@ LABEL_27:
   }
 
   result = v42;
-  v41->var0 = v42 + v43;
-  v41->var1 = v44;
+  stateCopy->var0 = v42 + v43;
+  stateCopy->var1 = objectsCopy;
   return result;
 }
 
@@ -1126,12 +1126,12 @@ LABEL_27:
   }
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3
+- (void)removeObjectsInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     do
     {
       objc_msgSend_removeObjectAtIndex_(self, a2, location);
@@ -1182,11 +1182,11 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)shouldBisectForCount:(unint64_t)a3 byteSize:(unint64_t)a4 cost:(unint64_t)a5
+- (BOOL)shouldBisectForCount:(unint64_t)count byteSize:(unint64_t)size cost:(unint64_t)cost
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    if (objc_msgSend_maxSegmentSize(self, a2, a3, a4, a5) < a4)
+    if (objc_msgSend_maxSegmentSize(self, a2, count, size, cost) < size)
     {
       if (UnsafePointer == -1)
       {
@@ -1201,12 +1201,12 @@ LABEL_27:
     return v7;
   }
 
-  if (objc_msgSend_maxSegmentElementCount(self, a2, a3) >= a3 && objc_msgSend_maxSegmentSize(self, v9, v10) >= a4)
+  if (objc_msgSend_maxSegmentElementCount(self, a2, count) >= count && objc_msgSend_maxSegmentSize(self, v9, v10) >= size)
   {
     v7 = objc_msgSend_maxSegmentCost(self, v11, v12);
     if (v7)
     {
-      LOBYTE(v7) = objc_msgSend_maxSegmentCost(self, v13, v14) < a5;
+      LOBYTE(v7) = objc_msgSend_maxSegmentCost(self, v13, v14) < cost;
     }
   }
 
@@ -1218,13 +1218,13 @@ LABEL_27:
   return v7;
 }
 
-- (void)bisectSegmentIfNeeded:(unint64_t)a3
+- (void)bisectSegmentIfNeeded:(unint64_t)needed
 {
-  if ((objc_msgSend_disableSegmentation(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend_disableSegmentation(self, a2, needed) & 1) == 0)
   {
-    objc_msgSend_rangeOfSegmentIndex_(self, v5, a3);
+    objc_msgSend_rangeOfSegmentIndex_(self, v5, needed);
     v7 = v6;
-    v42 = objc_msgSend_segmentAtIndex_(self, v6, a3);
+    v42 = objc_msgSend_segmentAtIndex_(self, v6, needed);
     v10 = objc_msgSend_estimatedByteSize(v42, v8, v9);
     v13 = objc_msgSend_estimatedCost(v42, v11, v12);
     if (objc_msgSend_shouldBisectForCount_byteSize_cost_(self, v14, v7, v10, v13))
@@ -1240,13 +1240,13 @@ LABEL_27:
       }
 
       self->_bisectedSegmentIdentifier = objc_msgSend_tsp_identifier(v42, v15, v16);
-      self->_bisectedSegmentIndex = a3;
+      self->_bisectedSegmentIndex = needed;
       v26 = objc_msgSend_count(v42, v24, v25);
       v28 = objc_msgSend_bisectAtIndex_(v42, v27, v26 >> 1);
       self->_bisectedSegmentIdentifier = 0;
       self->_bisectedSegmentIndex = 0x7FFFFFFFFFFFFFFFLL;
-      v29 = a3 + 1;
-      v31 = objc_msgSend_segmentAtIndex_(self, v30, a3 + 1);
+      v29 = needed + 1;
+      v31 = objc_msgSend_segmentAtIndex_(self, v30, needed + 1);
       v34 = v31;
       if (v31)
       {
@@ -1258,7 +1258,7 @@ LABEL_27:
         v35 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      objc_msgSend_bisectSegmentIfNeeded_(self, v32, a3);
+      objc_msgSend_bisectSegmentIfNeeded_(self, v32, needed);
       while (v29 < objc_msgSend_segmentCount(self, v36, v37))
       {
         v39 = objc_msgSend_segmentAtIndex_(self, v38, v29);
@@ -1277,12 +1277,12 @@ LABEL_27:
   }
 }
 
-- (BOOL)mergeSegmentIfNeededAtIndex:(unint64_t)a3
+- (BOOL)mergeSegmentIfNeededAtIndex:(unint64_t)index
 {
-  if (self->_mergingSegmentIndex == 0x7FFFFFFFFFFFFFFFLL && (v5 = a3 + 1, a3 + 1 < objc_msgSend_segmentCount(self, a2, a3)))
+  if (self->_mergingSegmentIndex == 0x7FFFFFFFFFFFFFFFLL && (v5 = index + 1, index + 1 < objc_msgSend_segmentCount(self, a2, index)))
   {
-    self->_mergingSegmentIndex = a3;
-    v7 = objc_msgSend_rangeOfSegmentIndex_(self, v6, a3);
+    self->_mergingSegmentIndex = index;
+    v7 = objc_msgSend_rangeOfSegmentIndex_(self, v6, index);
     v9 = v8;
     objc_msgSend_rangeOfSegmentIndex_(self, v8, v5);
     v11 = v10;
@@ -1290,7 +1290,7 @@ LABEL_27:
     v15 = 0;
     if (v9 < v13 >> 2 && v11 < v13 >> 1)
     {
-      v16 = objc_msgSend_segmentAtIndex_(self, v14, a3);
+      v16 = objc_msgSend_segmentAtIndex_(self, v14, index);
       v18 = objc_msgSend_segmentAtIndex_(self, v17, v5);
       v21 = v18;
       v15 = 0;
@@ -1319,7 +1319,7 @@ LABEL_27:
           }
 
           v50 = objc_msgSend_count(v16, v48, v49);
-          objc_msgSend_setRange_forSegmentIndex_(self, v51, v7, v50, a3);
+          objc_msgSend_setRange_forSegmentIndex_(self, v51, v7, v50, index);
           objc_msgSend_removeRangeAtSegmentIndex_(self, v52, v5);
           objc_msgSend_removeObjectAtIndex_(self->_segments, v53, v5);
           v15 = 1;
@@ -1337,10 +1337,10 @@ LABEL_27:
   return v15;
 }
 
-- (void)largeArraySegmentDidBisectAtIndex:(unint64_t)a3 segments:(id)a4
+- (void)largeArraySegmentDidBisectAtIndex:(unint64_t)index segments:(id)segments
 {
-  v69 = a4;
-  if (!v69)
+  segmentsCopy = segments;
+  if (!segmentsCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSPAbstractMutableLargeArray largeArraySegmentDidBisectAtIndex:segments:]");
@@ -1352,7 +1352,7 @@ LABEL_27:
 
   objc_msgSend_willModify(self, v5, v6);
   ++self->_mutations;
-  v68 = objc_msgSend_objectAtIndexedSubscript_(v69, v14, 0);
+  v68 = objc_msgSend_objectAtIndexedSubscript_(segmentsCopy, v14, 0);
   if (!v68)
   {
     v17 = MEMORY[0x277D81150];
@@ -1379,9 +1379,9 @@ LABEL_12:
       objc_msgSend_setPackageLocator_(v68, v49, v43);
     }
 
-    for (i = 1; i < objc_msgSend_count(v69, v47, v48); ++i)
+    for (i = 1; i < objc_msgSend_count(segmentsCopy, v47, v48); ++i)
     {
-      v52 = objc_msgSend_objectAtIndexedSubscript_(v69, v51, i);
+      v52 = objc_msgSend_objectAtIndexedSubscript_(segmentsCopy, v51, i);
       objc_msgSend_setPackageLocator_(v52, v53, v43);
       v56 = objc_msgSend_count(v52, v54, v55);
       v59 = objc_msgSend_count(self->_segments, v57, v58);
@@ -1439,14 +1439,14 @@ LABEL_12:
   return result;
 }
 
-- (void)setMaxSegmentSize:(unint64_t)a3 willModify:(BOOL)a4
+- (void)setMaxSegmentSize:(unint64_t)size willModify:(BOOL)modify
 {
-  if (a4)
+  if (modify)
   {
-    objc_msgSend_willModify(self, a2, a3);
+    objc_msgSend_willModify(self, a2, size);
   }
 
-  self->_maxSegmentSize = a3;
+  self->_maxSegmentSize = size;
 }
 
 - (unint64_t)maxSegmentSize
@@ -1478,9 +1478,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)segmentAtIndex:(unint64_t)a3
+- (id)segmentAtIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_objectAtIndex_(self->_segments, a2, a3);
+  v4 = objc_msgSend_objectAtIndex_(self->_segments, a2, index);
   v59 = 0;
   v6 = objc_msgSend_objectAndReturnError_(v4, v5, &v59);
   v7 = v59;
@@ -1558,13 +1558,13 @@ LABEL_12:
   return v6;
 }
 
-- (void)updateSegmentRangesAfterIndex:(unint64_t)a3
+- (void)updateSegmentRangesAfterIndex:(unint64_t)index
 {
-  if (objc_msgSend_segmentCount(self, a2, a3) > a3)
+  if (objc_msgSend_segmentCount(self, a2, index) > index)
   {
-    v6 = objc_msgSend_rangeOfSegmentIndex_(self, v5, a3);
+    v6 = objc_msgSend_rangeOfSegmentIndex_(self, v5, index);
     v8 = v7;
-    v9 = a3 + 1;
+    v9 = index + 1;
     v11 = objc_msgSend_segmentCount(self, v7, v10);
     while (v9 < v11)
     {
@@ -1578,17 +1578,17 @@ LABEL_12:
   }
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v6 = a3;
+  enqueueCopy = enqueue;
   if (objc_msgSend_count(self, v4, v5))
   {
-    objc_msgSend_insertObject_atIndex_(self, v6, v6, 0);
+    objc_msgSend_insertObject_atIndex_(self, enqueueCopy, enqueueCopy, 0);
   }
 
   else
   {
-    objc_msgSend_addObject_(self, v6, v6);
+    objc_msgSend_addObject_(self, enqueueCopy, enqueueCopy);
   }
 }
 
@@ -1603,14 +1603,14 @@ LABEL_12:
   return v6;
 }
 
-- (unint64_t)estimatedByteSizeOfElementAtIndex:(unint64_t)a3
+- (unint64_t)estimatedByteSizeOfElementAtIndex:(unint64_t)index
 {
-  if (!objc_msgSend_count(self->_segments, a2, a3))
+  if (!objc_msgSend_count(self->_segments, a2, index))
   {
     return 0;
   }
 
-  v6 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v5, a3, 0);
+  v6 = objc_msgSend_segmentIndexForElementIndex_segmentIndexGuess_(self, v5, index, 0);
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -1618,8 +1618,8 @@ LABEL_12:
 
   v8 = v6;
   v9 = objc_msgSend_rangeOfSegmentIndex_(self, v7, v6);
-  v11 = a3 >= v9;
-  v12 = a3 - v9;
+  v11 = index >= v9;
+  v12 = index - v9;
   if (!v11)
   {
     return 0;
@@ -1655,59 +1655,59 @@ LABEL_12:
   return delayedArchivingPriority;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812FC248[78]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812FC248[78]);
 
-  objc_msgSend_loadFromLargeArrayMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromLargeArrayMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276AB5148, off_2812FC248[78]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276AB5148, off_2812FC248[78]);
 
-  objc_msgSend_saveToLargeArrayMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToLargeArrayMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToLargeArrayMessage:(void *)a3 archiver:(id)a4
+- (void)saveToLargeArrayMessage:(void *)message archiver:(id)archiver
 {
-  v46 = a4;
+  archiverCopy = archiver;
   if (self->_storeOutsideObjectArchive)
   {
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 93) = 1;
+    *(message + 4) |= 0x10u;
+    *(message + 93) = 1;
   }
 
   if (self->_maxSegmentElementCount)
   {
     v8 = objc_msgSend_maxSegmentElementCount(self, v6, v7);
-    *(a3 + 4) |= 1u;
-    *(a3 + 9) = v8;
+    *(message + 4) |= 1u;
+    *(message + 9) = v8;
   }
 
   if (self->_maxSegmentSize)
   {
     v9 = objc_msgSend_maxSegmentSize(self, v6, v7);
-    *(a3 + 4) |= 2u;
-    *(a3 + 10) = v9;
+    *(message + 4) |= 2u;
+    *(message + 10) = v9;
   }
 
   if (self->_maxSegmentCost)
   {
     v10 = objc_msgSend_maxSegmentCost(self, v6, v7);
-    *(a3 + 4) |= 0x40u;
-    *(a3 + 13) = v10;
+    *(message + 4) |= 0x40u;
+    *(message + 13) = v10;
   }
 
   if (objc_msgSend_shouldDelayArchiving(self, v6, v7))
   {
     shouldDelayArchiving = objc_msgSend_shouldDelayArchiving(self, v11, v12);
-    *(a3 + 4) |= 8u;
-    *(a3 + 92) = shouldDelayArchiving;
+    *(message + 4) |= 8u;
+    *(message + 92) = shouldDelayArchiving;
   }
 
   if (objc_msgSend_shouldDelayArchiving(self, v11, v12))
@@ -1715,16 +1715,16 @@ LABEL_12:
     delayedArchivingPriority = self->_delayedArchivingPriority;
     if (delayedArchivingPriority)
     {
-      *(a3 + 4) |= 4u;
-      *(a3 + 22) = delayedArchivingPriority;
+      *(message + 4) |= 4u;
+      *(message + 22) = delayedArchivingPriority;
     }
   }
 
   estimatedByteSize = self->_estimatedByteSize;
   if (estimatedByteSize)
   {
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 12) = estimatedByteSize;
+    *(message + 4) |= 0x20u;
+    *(message + 12) = estimatedByteSize;
   }
 
   for (i = 0; i < objc_msgSend_segmentCount(self, v14, v15); ++i)
@@ -1740,39 +1740,39 @@ LABEL_12:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
     }
 
-    v29 = *(a3 + 8);
+    v29 = *(message + 8);
     if (!v29)
     {
-      v31 = *(a3 + 15);
+      v31 = *(message + 15);
 LABEL_25:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 12, v31 + 1);
-      v29 = *(a3 + 8);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message + 12, v31 + 1);
+      v29 = *(message + 8);
       v31 = *v29;
       goto LABEL_26;
     }
 
-    v30 = *(a3 + 14);
+    v30 = *(message + 14);
     v31 = *v29;
     if (v30 < *v29)
     {
-      *(a3 + 14) = v30 + 1;
-      objc_msgSend_setStrongLazyReference_message_(v46, v20, v21, *&v29[2 * v30 + 2]);
+      *(message + 14) = v30 + 1;
+      objc_msgSend_setStrongLazyReference_message_(archiverCopy, v20, v21, *&v29[2 * v30 + 2]);
       goto LABEL_27;
     }
 
-    if (v31 == *(a3 + 15))
+    if (v31 == *(message + 15))
     {
       goto LABEL_25;
     }
 
 LABEL_26:
     *v29 = v31 + 1;
-    v32 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*(a3 + 6));
-    v33 = *(a3 + 14);
-    v34 = *(a3 + 8) + 8 * v33;
-    *(a3 + 14) = v33 + 1;
+    v32 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*(message + 6));
+    v33 = *(message + 14);
+    v34 = *(message + 8) + 8 * v33;
+    *(message + 14) = v33 + 1;
     *(v34 + 8) = v32;
-    objc_msgSend_setStrongLazyReference_message_(v46, v35, v21, v32);
+    objc_msgSend_setStrongLazyReference_message_(archiverCopy, v35, v21, v32);
 LABEL_27:
   }
 
@@ -1782,37 +1782,37 @@ LABEL_27:
   {
     location = begin->location;
     length = begin->length;
-    v40 = *(a3 + 5);
+    v40 = *(message + 5);
     if (!v40)
     {
-      v42 = *(a3 + 9);
+      v42 = *(message + 9);
 LABEL_35:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 6, v42 + 1);
-      v40 = *(a3 + 5);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message + 6, v42 + 1);
+      v40 = *(message + 5);
       v42 = *v40;
       goto LABEL_36;
     }
 
-    v41 = *(a3 + 8);
+    v41 = *(message + 8);
     v42 = *v40;
     if (v41 < *v40)
     {
-      *(a3 + 8) = v41 + 1;
+      *(message + 8) = v41 + 1;
       v43 = *&v40[2 * v41 + 2];
       goto LABEL_37;
     }
 
-    if (v42 == *(a3 + 9))
+    if (v42 == *(message + 9))
     {
       goto LABEL_35;
     }
 
 LABEL_36:
     *v40 = v42 + 1;
-    v43 = google::protobuf::Arena::CreateMaybeMessage<TSP::Range>(*(a3 + 3));
-    v44 = *(a3 + 8);
-    v45 = *(a3 + 5) + 8 * v44;
-    *(a3 + 8) = v44 + 1;
+    v43 = google::protobuf::Arena::CreateMaybeMessage<TSP::Range>(*(message + 3));
+    v44 = *(message + 8);
+    v45 = *(message + 5) + 8 * v44;
+    *(message + 8) = v44 + 1;
     *(v45 + 8) = v43;
 LABEL_37:
     v48.location = location;
@@ -1822,25 +1822,25 @@ LABEL_37:
   }
 }
 
-- (void)loadFromLargeArrayMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromLargeArrayMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v9 = objc_msgSend_delegate(v6, v7, v8);
+  unarchiverCopy = unarchiver;
+  v9 = objc_msgSend_delegate(unarchiverCopy, v7, v8);
   if (objc_opt_respondsToSelector())
   {
     v12 = objc_msgSend_component(v9, v10, v11);
     self->_storeOutsideObjectArchive = objc_msgSend_isStoredOutsideObjectArchive(v12, v13, v14);
   }
 
-  v15 = *(a3 + 4);
+  v15 = *(message + 4);
   if (!self->_storeOutsideObjectArchive && (v15 & 0x10) != 0)
   {
-    self->_storeOutsideObjectArchive = *(a3 + 93);
+    self->_storeOutsideObjectArchive = *(message + 93);
   }
 
   if ((v15 & 8) != 0)
   {
-    self->_shouldDelayArchiving = *(a3 + 92);
+    self->_shouldDelayArchiving = *(message + 92);
     if ((v15 & 4) == 0)
     {
 LABEL_8:
@@ -1858,8 +1858,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  self->_delayedArchivingPriority = *(a3 + 22);
-  v15 = *(a3 + 4);
+  self->_delayedArchivingPriority = *(message + 22);
+  v15 = *(message + 4);
   if ((v15 & 1) == 0)
   {
 LABEL_9:
@@ -1872,7 +1872,7 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_maxSegmentElementCount = *(a3 + 9);
+  self->_maxSegmentElementCount = *(message + 9);
   if ((v15 & 2) == 0)
   {
 LABEL_10:
@@ -1885,7 +1885,7 @@ LABEL_10:
   }
 
 LABEL_22:
-  self->_maxSegmentSize = *(a3 + 10);
+  self->_maxSegmentSize = *(message + 10);
   if ((v15 & 0x40) == 0)
   {
 LABEL_11:
@@ -1898,39 +1898,39 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_maxSegmentCost = *(a3 + 13);
+  self->_maxSegmentCost = *(message + 13);
   if ((v15 & 0x20) != 0)
   {
 LABEL_12:
-    self->_estimatedByteSize = *(a3 + 12);
+    self->_estimatedByteSize = *(message + 12);
   }
 
 LABEL_13:
-  if (*(a3 + 14) >= 1)
+  if (*(message + 14) >= 1)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = sub_276AB4980;
     v22[3] = &unk_27A6E4220;
     v22[4] = self;
-    v16 = v6;
+    v16 = unarchiverCopy;
     v17 = objc_opt_class();
-    objc_msgSend_readRepeatedLazyReferenceMessage_class_protocol_completion_(v16, v18, a3 + 48, v17, 0, v22);
+    objc_msgSend_readRepeatedLazyReferenceMessage_class_protocol_completion_(v16, v18, message + 48, v17, 0, v22);
   }
 
-  if (*(a3 + 8) >= 1)
+  if (*(message + 8) >= 1)
   {
     v19 = 0;
     do
     {
       v21 = 0uLL;
-      *&v21 = TSPNSRangeFromMessage(*(*(a3 + 5) + 8 * v19 + 8));
+      *&v21 = TSPNSRangeFromMessage(*(*(message + 5) + 8 * v19 + 8));
       *(&v21 + 1) = v20;
       sub_276AB0630(&self->_segmentRanges, &v21);
       ++v19;
     }
 
-    while (v19 < *(a3 + 8));
+    while (v19 < *(message + 8));
   }
 }
 
@@ -1979,15 +1979,15 @@ LABEL_13:
   objc_exception_throw(v18);
 }
 
-- (void)setMaxSegmentElementCount:(unint64_t)a3 willModify:(BOOL)a4
+- (void)setMaxSegmentElementCount:(unint64_t)count willModify:(BOOL)modify
 {
-  if (a4)
+  if (modify)
   {
-    objc_msgSend_willModify(self, a2, a3);
+    objc_msgSend_willModify(self, a2, count);
     ++self->_mutations;
     v8 = self->_maxSegmentElementCount - 1;
-    self->_maxSegmentElementCount = a3;
-    if (v8 >= a3 && objc_msgSend_count(self->_segments, v6, v7))
+    self->_maxSegmentElementCount = count;
+    if (v8 >= count && objc_msgSend_count(self->_segments, v6, v7))
     {
       v10 = 0;
       do
@@ -2001,7 +2001,7 @@ LABEL_13:
 
   else
   {
-    self->_maxSegmentElementCount = a3;
+    self->_maxSegmentElementCount = count;
   }
 }
 

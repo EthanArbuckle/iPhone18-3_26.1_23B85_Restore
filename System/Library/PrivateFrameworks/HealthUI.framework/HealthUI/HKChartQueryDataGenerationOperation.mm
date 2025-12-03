@@ -1,32 +1,32 @@
 @interface HKChartQueryDataGenerationOperation
-- (HKChartQueryDataGenerationOperation)initWithHealthStore:(id)a3 dataSource:(id)a4 startDate:(id)a5 endDate:(id)a6 statisticsInterval:(id)a7 operationDescription:(id)a8 completion:(id)a9;
-- (void)completedWithResults:(id)a3 error:(id)a4;
-- (void)startOperationWithCompletion:(id)a3;
+- (HKChartQueryDataGenerationOperation)initWithHealthStore:(id)store dataSource:(id)source startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval operationDescription:(id)description completion:(id)completion;
+- (void)completedWithResults:(id)results error:(id)error;
+- (void)startOperationWithCompletion:(id)completion;
 - (void)stopOperation;
 @end
 
 @implementation HKChartQueryDataGenerationOperation
 
-- (HKChartQueryDataGenerationOperation)initWithHealthStore:(id)a3 dataSource:(id)a4 startDate:(id)a5 endDate:(id)a6 statisticsInterval:(id)a7 operationDescription:(id)a8 completion:(id)a9
+- (HKChartQueryDataGenerationOperation)initWithHealthStore:(id)store dataSource:(id)source startDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval operationDescription:(id)description completion:(id)completion
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  storeCopy = store;
+  sourceCopy = source;
+  dateCopy = date;
+  endDateCopy = endDate;
+  intervalCopy = interval;
+  completionCopy = completion;
   v27.receiver = self;
   v27.super_class = HKChartQueryDataGenerationOperation;
-  v19 = [(HKFetchOperation *)&v27 initWithOperationDescription:a8];
+  v19 = [(HKFetchOperation *)&v27 initWithOperationDescription:description];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_healthStore, a3);
-    objc_storeStrong(&v20->_dataSource, a4);
-    objc_storeStrong(&v20->_startDate, a5);
-    objc_storeStrong(&v20->_endDate, a6);
-    objc_storeStrong(&v20->_statisticsInterval, a7);
-    v21 = _Block_copy(v18);
+    objc_storeStrong(&v19->_healthStore, store);
+    objc_storeStrong(&v20->_dataSource, source);
+    objc_storeStrong(&v20->_startDate, date);
+    objc_storeStrong(&v20->_endDate, endDate);
+    objc_storeStrong(&v20->_statisticsInterval, interval);
+    v21 = _Block_copy(completionCopy);
     clientCompletion = v20->_clientCompletion;
     v20->_clientCompletion = v21;
   }
@@ -34,10 +34,10 @@
   return v20;
 }
 
-- (void)startOperationWithCompletion:(id)a3
+- (void)startOperationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  completionCopy = completion;
+  v5 = _Block_copy(completionCopy);
   fetchOperationManager = self->_fetchOperationManager;
   self->_fetchOperationManager = v5;
 
@@ -116,14 +116,14 @@ void __68__HKChartQueryDataGenerationOperation_startOperationWithCompletion___bl
   self->_fetchOperationManager = 0;
 }
 
-- (void)completedWithResults:(id)a3 error:(id)a4
+- (void)completedWithResults:(id)results error:(id)error
 {
-  v12 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   clientCompletion = self->_clientCompletion;
   if (clientCompletion)
   {
-    clientCompletion[2](clientCompletion, self, v12, v6);
+    clientCompletion[2](clientCompletion, self, resultsCopy, errorCopy);
     v8 = self->_clientCompletion;
     self->_clientCompletion = 0;
   }
@@ -131,7 +131,7 @@ void __68__HKChartQueryDataGenerationOperation_startOperationWithCompletion___bl
   fetchOperationManager = self->_fetchOperationManager;
   if (fetchOperationManager)
   {
-    fetchOperationManager[2](fetchOperationManager, v6 == 0, v6);
+    fetchOperationManager[2](fetchOperationManager, errorCopy == 0, errorCopy);
     v10 = self->_fetchOperationManager;
     self->_fetchOperationManager = 0;
   }

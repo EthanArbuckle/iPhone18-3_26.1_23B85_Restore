@@ -1,22 +1,22 @@
 @interface TSCEFunction_MID
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_MID
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v10 = v8;
   v90 = 0;
   if (v8)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v90);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v90);
     v11 = v90;
     if (v11)
     {
       v15 = v11;
-      v16 = objc_msgSend_raiseErrorOrConvert_(a3, v12, v11, v13, v14);
+      v16 = objc_msgSend_raiseErrorOrConvert_(context, v12, v11, v13, v14);
       goto LABEL_25;
     }
   }
@@ -28,12 +28,12 @@
     v93 = 0;
   }
 
-  v17 = *(*a5 + 8);
+  v17 = *(*arguments + 8);
   if (objc_msgSend_isEmptyArg(v17, v18, v19, v20, v21))
   {
-    v26 = objc_msgSend_functionName(a4, v22, v23, v24, v25);
+    v26 = objc_msgSend_functionName(spec, v22, v23, v24, v25);
     v28 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_(TSCEError, v27, 2, v26, 1, 1.0);
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v29, v28, v30, v31);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v29, v28, v30, v31);
     v15 = 0;
 LABEL_23:
 
@@ -41,7 +41,7 @@ LABEL_23:
   }
 
   v89 = 0;
-  v32 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v17, v22, a3, a4, 1, &v89);
+  v32 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v17, v22, context, spec, 1, &v89);
   v15 = v89;
   v26 = objc_msgSend_trunc(v32, v33, v34, v35, v36);
 
@@ -54,13 +54,13 @@ LABEL_23:
     v48 = v42 - 1;
     v49 = sub_22157EFF8(v47, v42 - 1);
 
-    v28 = *(*a5 + 16);
+    v28 = *(*arguments + 16);
     v88 = 0;
-    v51 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v28, v50, a3, a4, 2, &v88);
+    v51 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v28, v50, context, spec, 2, &v88);
     v15 = v88;
     if (v15)
     {
-      v16 = objc_msgSend_raiseErrorOrConvert_(a3, v52, v15, v54, v55);
+      v16 = objc_msgSend_raiseErrorOrConvert_(context, v52, v15, v54, v55);
     }
 
     else
@@ -123,7 +123,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v16 = objc_msgSend_raiseErrorOrConvert_(a3, v37, v15, v39, v40);
+  v16 = objc_msgSend_raiseErrorOrConvert_(context, v37, v15, v39, v40);
 LABEL_24:
 
 LABEL_25:

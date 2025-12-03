@@ -8,10 +8,10 @@
 - (id)value
 {
   objc_opt_class();
-  v2 = a1;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -22,7 +22,7 @@
   v4 = v3;
 
   objc_opt_class();
-  v5 = v2;
+  v5 = selfCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -93,39 +93,39 @@
 
   if (v4)
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
+    stringValue = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
 LABEL_31:
-    v21 = v20;
+    v21 = stringValue;
     goto LABEL_32;
   }
 
   if (v7)
   {
-    v20 = [v7 stringValue];
+    stringValue = [v7 stringValue];
     goto LABEL_31;
   }
 
   if (v10)
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "integerValue")}];
+    stringValue = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "integerValue")}];
     goto LABEL_31;
   }
 
   if (v13)
   {
-    v20 = [v13 stringListValue];
+    stringValue = [v13 stringListValue];
     goto LABEL_31;
   }
 
   if (v16)
   {
-    v20 = [v16 languageValues];
+    stringValue = [v16 languageValues];
     goto LABEL_31;
   }
 
   if (v19)
   {
-    v20 = [v19 languageValue];
+    stringValue = [v19 languageValue];
     goto LABEL_31;
   }
 
@@ -139,10 +139,10 @@ LABEL_32:
 {
   v4 = a3;
   objc_opt_class();
-  v5 = a1;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   else
@@ -153,7 +153,7 @@ LABEL_32:
   v7 = v6;
 
   objc_opt_class();
-  v8 = v5;
+  v8 = selfCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;

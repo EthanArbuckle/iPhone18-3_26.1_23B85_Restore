@@ -1,10 +1,10 @@
 @interface AddTagsActionViewController
-- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCoder:(id)a3;
-- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCoder:(id)coder;
+- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AddTagsActionViewController
@@ -16,15 +16,15 @@
   [(AddTagsActionViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100002D1C(a3);
+  selfCopy = self;
+  sub_100002D1C(appear);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -37,46 +37,46 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_100002EAC(a3, v6, v7);
+  selfCopy = self;
+  sub_100002EAC(animated, v6, v7);
   sub_10000324C(v6);
 }
 
-- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCollectionViewLayout:(id)layout
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for AddTagsActionViewController();
-  return [(AddTagsActionViewController *)&v5 initWithCollectionViewLayout:a3];
+  return [(AddTagsActionViewController *)&v5 initWithCollectionViewLayout:layout];
 }
 
-- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1000041A8();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_100004198();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AddTagsActionViewController();
-  v9 = [(AddTagsActionViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AddTagsActionViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCoder:(id)a3
+- (_TtC22AddTagsActionExtension27AddTagsActionViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AddTagsActionViewController();
-  v4 = a3;
-  v5 = [(AddTagsActionViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AddTagsActionViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

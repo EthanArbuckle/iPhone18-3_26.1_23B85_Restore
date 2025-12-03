@@ -1,15 +1,15 @@
 @interface SKUIViewTextProperties
-- (SKUIViewTextProperties)initWithStringLayout:(id)a3;
-- (SKUIViewTextProperties)initWithTextLayout:(id)a3 isExpanded:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKUIViewTextProperties)initWithStringLayout:(id)layout;
+- (SKUIViewTextProperties)initWithTextLayout:(id)layout isExpanded:(BOOL)expanded;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SKUIViewTextProperties
 
-- (SKUIViewTextProperties)initWithStringLayout:(id)a3
+- (SKUIViewTextProperties)initWithStringLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIViewTextProperties initWithStringLayout:];
@@ -20,15 +20,15 @@
   v5 = [(SKUIViewTextProperties *)&v15 init];
   if (v5)
   {
-    [v4 firstBaselineOffset];
+    [layoutCopy firstBaselineOffset];
     v7 = v6;
     [(SKUIViewTextProperties *)v5 setFirstBaselineOffset:?];
-    v8 = [v4 attributedString];
-    LineHeight = SKUIAttributedStringGetLineHeight(v8);
+    attributedString = [layoutCopy attributedString];
+    LineHeight = SKUIAttributedStringGetLineHeight(attributedString);
 
-    [v4 boundingSize];
+    [layoutCopy boundingSize];
     v11 = v10;
-    [v4 baselineOffset];
+    [layoutCopy baselineOffset];
     *&v12 = v11 - v12;
     [(SKUIViewTextProperties *)v5 setBaselineOffsetFromBottom:roundf(*&v12)];
     v13 = LineHeight - v7;
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (SKUIViewTextProperties)initWithTextLayout:(id)a3 isExpanded:(BOOL)a4
+- (SKUIViewTextProperties)initWithTextLayout:(id)layout isExpanded:(BOOL)expanded
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  layoutCopy = layout;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIViewTextProperties initWithTextLayout:isExpanded:];
@@ -52,24 +52,24 @@
   v6 = [(SKUIViewTextProperties *)&v20 init];
   if (v6)
   {
-    v7 = [v5 textFrame];
-    Lines = CTFrameGetLines(v7);
+    textFrame = [layoutCopy textFrame];
+    Lines = CTFrameGetLines(textFrame);
     Count = CFArrayGetCount(Lines);
     if (Count >= 1)
     {
       v10 = Count;
-      v11 = [v5 textSize];
+      textSize = [layoutCopy textSize];
       v13 = v12;
-      MEMORY[0x28223BE20](v11);
+      MEMORY[0x28223BE20](textSize);
       v22.location = 0;
       v22.length = v10;
-      CTFrameGetLineOrigins(v7, v22, &v19 - v10);
+      CTFrameGetLineOrigins(textFrame, v22, &v19 - v10);
       v14 = *(&v19 - 1);
       [(SKUIViewTextProperties *)v6 setBaselineOffsetFromBottom:roundf(v14)];
       v15 = v13 - (&v19 - 2 * v10)[1];
       v16 = roundf(v15);
       [(SKUIViewTextProperties *)v6 setFirstBaselineOffset:v16];
-      [v5 lineHeight];
+      [layoutCopy lineHeight];
       [(SKUIViewTextProperties *)v6 setDesiredOffsetTop:v17 - v16];
     }
   }
@@ -77,9 +77,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SKUIViewTextProperties *)self baselineOffsetFromBottom];
   [v4 setBaselineOffsetFromBottom:?];
   [(SKUIViewTextProperties *)self desiredOffsetTop];

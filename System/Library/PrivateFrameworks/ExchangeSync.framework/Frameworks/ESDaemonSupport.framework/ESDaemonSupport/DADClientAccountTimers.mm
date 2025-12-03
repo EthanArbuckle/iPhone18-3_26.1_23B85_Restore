@@ -5,14 +5,14 @@
 - (OS_dispatch_source)deferredFolderContentsSource;
 - (OS_dispatch_source)deferredFolderListSource;
 - (int64_t)clientBehaviorForFolderContents;
-- (int64_t)clientBehaviorForFolderIds:(id)a3;
+- (int64_t)clientBehaviorForFolderIds:(id)ids;
 - (int64_t)clientBehaviorForFolderList;
 - (void)dealloc;
 - (void)killAllTimers;
-- (void)setDeferredAllFolderContentsSource:(id)a3;
-- (void)setDeferredFolderContentsSource:(id)a3;
-- (void)setDeferredFolderListSource:(id)a3;
-- (void)setLastFolderContentRequestDate:(id)a3 forFolderWithId:(id)a4;
+- (void)setDeferredAllFolderContentsSource:(id)source;
+- (void)setDeferredFolderContentsSource:(id)source;
+- (void)setDeferredFolderListSource:(id)source;
+- (void)setLastFolderContentRequestDate:(id)date forFolderWithId:(id)id;
 @end
 
 @implementation DADClientAccountTimers
@@ -73,17 +73,17 @@
   return folderIdToLastFolderContentsRequestDate;
 }
 
-- (void)setLastFolderContentRequestDate:(id)a3 forFolderWithId:(id)a4
+- (void)setLastFolderContentRequestDate:(id)date forFolderWithId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DADClientAccountTimers *)self folderIdToLastFolderContentsRequestDate];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  idCopy = id;
+  dateCopy = date;
+  folderIdToLastFolderContentsRequestDate = [(DADClientAccountTimers *)self folderIdToLastFolderContentsRequestDate];
+  [folderIdToLastFolderContentsRequestDate setObject:dateCopy forKeyedSubscript:idCopy];
 }
 
-- (void)setDeferredAllFolderContentsSource:(id)a3
+- (void)setDeferredAllFolderContentsSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_deferredAllFolderContentsSource);
 
   if (WeakRetained)
@@ -97,9 +97,9 @@
   objc_storeWeak(&self->_deferredAllFolderContentsSource, obj);
 }
 
-- (void)setDeferredFolderListSource:(id)a3
+- (void)setDeferredFolderListSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_deferredFolderListSource);
 
   if (WeakRetained)
@@ -113,9 +113,9 @@
   objc_storeWeak(&self->_deferredFolderListSource, obj);
 }
 
-- (void)setDeferredFolderContentsSource:(id)a3
+- (void)setDeferredFolderContentsSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_deferredFolderContentsSource);
 
   if (WeakRetained)
@@ -129,16 +129,16 @@
   objc_storeWeak(&self->_deferredFolderContentsSource, obj);
 }
 
-- (int64_t)clientBehaviorForFolderIds:(id)a3
+- (int64_t)clientBehaviorForFolderIds:(id)ids
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = idsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -155,8 +155,8 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [(DADClientAccountTimers *)self folderIdToLastFolderContentsRequestDate];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        folderIdToLastFolderContentsRequestDate = [(DADClientAccountTimers *)self folderIdToLastFolderContentsRequestDate];
+        v14 = [folderIdToLastFolderContentsRequestDate objectForKeyedSubscript:v12];
 
         if (v14 && ([v5 timeIntervalSinceDate:v14], v16 = v15, -[DADClientAccountTimers deferredTimerInterval](self, "deferredTimerInterval"), v16 <= v17))
         {
@@ -196,8 +196,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_lastFolderListRequestDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_lastFolderListRequestDate];
   v5 = v4;
   [(DADClientAccountTimers *)self deferredTimerInterval];
   v7 = v6;
@@ -220,8 +220,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_lastAllFolderContentsRequestDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_lastAllFolderContentsRequestDate];
   v5 = v4;
   [(DADClientAccountTimers *)self deferredTimerInterval];
   v7 = v6;
@@ -244,8 +244,8 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_lastFolderWipeRequestDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_lastFolderWipeRequestDate];
   v5 = v4;
   [(DADClientAccountTimers *)self deferredTimerInterval];
   v7 = v5 > v6 * 5.0;

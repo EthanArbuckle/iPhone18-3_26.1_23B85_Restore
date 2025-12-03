@@ -1,16 +1,16 @@
 @interface EQKitMathMLMStack
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLMStack)initWithChildren:(id)a3;
+- (EQKitMathMLMStack)initWithChildren:(id)children;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMStack
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v5 = [a4 parseChildrenAsArrayFromXMLNode:a3];
+  v5 = [parser parseChildrenAsArrayFromXMLNode:node];
 
   return [(EQKitMathMLMStack *)self initWithChildren:v5];
 }
@@ -24,7 +24,7 @@
   return [EQKitMathMLMStack mathMLAttributes]::sAttributesSet;
 }
 
-- (EQKitMathMLMStack)initWithChildren:(id)a3
+- (EQKitMathMLMStack)initWithChildren:(id)children
 {
   v25 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
@@ -34,21 +34,21 @@
   if (v4)
   {
     v4->mAlign = 0;
-    v6 = [a3 count];
+    v6 = [children count];
     if (v6)
     {
       v7 = v6;
       v8 = 0;
       for (i = 0; i != v7; ++i)
       {
-        v10 = [a3 objectAtIndex:i];
+        v10 = [children objectAtIndex:i];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           if (!v8)
           {
-            v8 = [a3 mutableCopy];
-            a3 = v8;
+            v8 = [children mutableCopy];
+            children = v8;
           }
 
           v11 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v10, 0}];
@@ -63,13 +63,13 @@
       v8 = 0;
     }
 
-    v13 = a3;
-    v5->mChildren = v13;
+    childrenCopy = children;
+    v5->mChildren = childrenCopy;
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [(NSArray *)v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    v14 = [(NSArray *)childrenCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -81,14 +81,14 @@
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(childrenCopy);
           }
 
           [*(*(&v19 + 1) + 8 * v17++) setParent:v5];
         }
 
         while (v15 != v17);
-        v15 = [(NSArray *)v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v15 = [(NSArray *)childrenCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v15);

@@ -6,65 +6,65 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_toHeader"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
   v6 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_toField"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
 
-  if ([v5 length] && objc_msgSend(v7, "length"))
+  if ([accessibilityLabel length] && objc_msgSend(accessibilityLabel2, "length"))
   {
     v8 = __UIAXStringForVariables();
-    [v3 addObject:{v8, v7, @"__AXStringForVariablesSentinel"}];
+    [array addObject:{v8, accessibilityLabel2, @"__AXStringForVariablesSentinel"}];
   }
 
   v9 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_ccHeader"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel3 = [v9 accessibilityLabel];
 
   v11 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_ccField"];
-  v12 = [v11 accessibilityLabel];
+  accessibilityLabel4 = [v11 accessibilityLabel];
 
-  if ([v10 length] && objc_msgSend(v12, "length"))
+  if ([accessibilityLabel3 length] && objc_msgSend(accessibilityLabel4, "length"))
   {
     v13 = __UIAXStringForVariables();
-    [v3 addObject:{v13, v12, @"__AXStringForVariablesSentinel"}];
+    [array addObject:{v13, accessibilityLabel4, @"__AXStringForVariablesSentinel"}];
   }
 
-  v28 = v7;
+  v28 = accessibilityLabel2;
   v14 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_bccHeader"];
-  v15 = [v14 accessibilityLabel];
+  accessibilityLabel5 = [v14 accessibilityLabel];
 
   v16 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_bccField"];
-  v17 = [v16 accessibilityLabel];
+  accessibilityLabel6 = [v16 accessibilityLabel];
 
-  if ([v15 length] && objc_msgSend(v17, "length"))
+  if ([accessibilityLabel5 length] && objc_msgSend(accessibilityLabel6, "length"))
   {
     v18 = __UIAXStringForVariables();
-    [v3 addObject:{v18, v17, @"__AXStringForVariablesSentinel"}];
+    [array addObject:{v18, accessibilityLabel6, @"__AXStringForVariablesSentinel"}];
   }
 
   v19 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_subjectHeader"];
-  v20 = [v19 accessibilityLabel];
+  accessibilityLabel7 = [v19 accessibilityLabel];
 
   v21 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_subjectField"];
-  v22 = [v21 accessibilityLabel];
+  accessibilityLabel8 = [v21 accessibilityLabel];
 
-  if ([v20 length] && objc_msgSend(v22, "length"))
+  if ([accessibilityLabel7 length] && objc_msgSend(accessibilityLabel8, "length"))
   {
     v23 = __UIAXStringForVariables();
-    [v3 addObject:{v23, v22, @"__AXStringForVariablesSentinel"}];
+    [array addObject:{v23, accessibilityLabel8, @"__AXStringForVariablesSentinel"}];
   }
 
   v24 = [(MFEmailSnippetComposeViewAccessibility *)self safeValueForKey:@"_bodyText"];
-  v25 = [v24 accessibilityLabel];
+  accessibilityLabel9 = [v24 accessibilityLabel];
 
-  if ([v25 length])
+  if ([accessibilityLabel9 length])
   {
-    [v3 addObject:v25];
+    [array addObject:accessibilityLabel9];
   }
 
-  v26 = [v3 componentsJoinedByString:{@", "}];
+  v26 = [array componentsJoinedByString:{@", "}];
 
   return v26;
 }

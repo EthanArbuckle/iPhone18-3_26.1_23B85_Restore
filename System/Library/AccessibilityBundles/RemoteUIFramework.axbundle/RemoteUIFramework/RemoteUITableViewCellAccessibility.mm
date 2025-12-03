@@ -1,21 +1,21 @@
 @interface RemoteUITableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_privateAccessibilityCustomActions;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)_accessoriesChanged;
-- (void)setRemoteUIAccessoryView:(id)a3;
+- (void)setRemoteUIAccessoryView:(id)view;
 @end
 
 @implementation RemoteUITableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_imageView:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_textLabel:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"RUITableView"];
-  [v3 validateClass:@"RUITableView" hasInstanceMethod:@"objectModelRowForIndexPath:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_imageView:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_textLabel:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"RUITableView"];
+  [validationsCopy validateClass:@"RUITableView" hasInstanceMethod:@"objectModelRowForIndexPath:" withFullSignature:{"@", "@", 0}];
 }
 
 - (void)_accessoriesChanged
@@ -24,42 +24,42 @@
   v6.super_class = RemoteUITableViewCellAccessibility;
   [(RemoteUITableViewCellAccessibility *)&v6 _accessoriesChanged];
   v3 = [(RemoteUITableViewCellAccessibility *)self safeValueForKey:@"_remoteUIAccessoryType"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if ((v4 & 0xFFFFFFFD) == 1)
+  if ((intValue & 0xFFFFFFFD) == 1)
   {
     v5 = [(RemoteUITableViewCellAccessibility *)self safeValueForKey:@"_remoteUIAccessoryView"];
     [v5 setIsAccessibilityElement:0];
   }
 }
 
-- (void)setRemoteUIAccessoryView:(id)a3
+- (void)setRemoteUIAccessoryView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = RemoteUITableViewCellAccessibility;
-  [(RemoteUITableViewCellAccessibility *)&v7 setRemoteUIAccessoryView:v4];
+  [(RemoteUITableViewCellAccessibility *)&v7 setRemoteUIAccessoryView:viewCopy];
   v5 = [(RemoteUITableViewCellAccessibility *)self safeValueForKey:@"_remoteUIAccessoryType"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if ((v6 & 0xFFFFFFFD) == 1)
+  if ((intValue & 0xFFFFFFFD) == 1)
   {
-    [v4 setIsAccessibilityElement:0];
+    [viewCopy setIsAccessibilityElement:0];
   }
 }
 
 - (unint64_t)accessibilityTraits
 {
   v3 = [(RemoteUITableViewCellAccessibility *)self safeValueForKey:@"_remoteUIAccessoryType"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == 1)
+  if (intValue == 1)
   {
     v5 = MEMORY[0x29EDC7F70];
     return *v5;
   }
 
-  if (v4 == 3)
+  if (intValue == 3)
   {
     v5 = MEMORY[0x29EDC7FC0];
     return *v5;
@@ -67,7 +67,7 @@
 
   v7 = [(RemoteUITableViewCellAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   LOBYTE(v28) = 0;
-  v8 = [v7 dataSource];
+  dataSource = [v7 dataSource];
   v9 = __UIAccessibilitySafeClass();
 
   v34 = 0;
@@ -86,7 +86,7 @@
   v24 = v10;
   v11 = v7;
   v25 = v11;
-  v26 = self;
+  selfCopy = self;
   AXPerformSafeBlock();
   v12 = v29[5];
 
@@ -103,17 +103,17 @@
 
   if (v17)
   {
-    v6 = *MEMORY[0x29EDC7F70];
+    accessibilityTraits = *MEMORY[0x29EDC7F70];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = RemoteUITableViewCellAccessibility;
-    v6 = [(RemoteUITableViewCellAccessibility *)&v19 accessibilityTraits];
+    accessibilityTraits = [(RemoteUITableViewCellAccessibility *)&v19 accessibilityTraits];
   }
 
-  return v6;
+  return accessibilityTraits;
 }
 
 void __57__RemoteUITableViewCellAccessibility_accessibilityTraits__block_invoke(uint64_t a1)
@@ -144,9 +144,9 @@ void __57__RemoteUITableViewCellAccessibility_accessibilityTraits__block_invoke(
   v3 = v11[5];
   _Block_object_dispose(&v10, 8);
 
-  v4 = [v3 accessibilityIdentifier];
+  accessibilityIdentifier = [v3 accessibilityIdentifier];
 
-  if (v4)
+  if (accessibilityIdentifier)
   {
     v9[0] = self;
     v5 = v9;
@@ -154,14 +154,14 @@ void __57__RemoteUITableViewCellAccessibility_accessibilityTraits__block_invoke(
 
   else
   {
-    v8 = self;
-    v5 = &v8;
+    selfCopy = self;
+    v5 = &selfCopy;
   }
 
   v5->super_class = RemoteUITableViewCellAccessibility;
-  v6 = [(objc_super *)v5 _privateAccessibilityCustomActions];
+  _privateAccessibilityCustomActions = [(objc_super *)v5 _privateAccessibilityCustomActions];
 
-  return v6;
+  return _privateAccessibilityCustomActions;
 }
 
 uint64_t __72__RemoteUITableViewCellAccessibility__privateAccessibilityCustomActions__block_invoke(uint64_t a1)
@@ -186,18 +186,18 @@ uint64_t __72__RemoteUITableViewCellAccessibility__privateAccessibilityCustomAct
   v15 = 3221225472;
   v16 = __56__RemoteUITableViewCellAccessibility_accessibilityLabel__block_invoke;
   v17 = &unk_29F2F1BF8;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   AXPerformSafeBlock();
   v3 = v21[5];
   _Block_object_dispose(&v20, 8);
 
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   LOBYTE(v20) = 0;
   objc_opt_class();
   v5 = [(RemoteUITableViewCellAccessibility *)self safeArrayForKey:@"subviews"];
   v6 = [v5 ax_filteredArrayUsingBlock:&__block_literal_global_1];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   v8 = __UIAccessibilityCastAsClass();
 
   if (v20 == 1)
@@ -207,8 +207,8 @@ uint64_t __72__RemoteUITableViewCellAccessibility__privateAccessibilityCustomAct
 
   v13.receiver = self;
   v13.super_class = RemoteUITableViewCellAccessibility;
-  v9 = [(RemoteUITableViewCellAccessibility *)&v13 accessibilityLabel];
-  v12 = [v8 accessibilityLabel];
+  accessibilityLabel2 = [(RemoteUITableViewCellAccessibility *)&v13 accessibilityLabel];
+  accessibilityLabel3 = [v8 accessibilityLabel];
   v10 = __AXStringForVariables();
 
   return v10;

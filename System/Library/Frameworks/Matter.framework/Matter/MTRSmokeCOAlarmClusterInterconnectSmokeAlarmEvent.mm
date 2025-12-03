@@ -1,6 +1,6 @@
 @interface MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent
 - (MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent);
-  v5 = [(MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent *)self alarmSeverityLevel];
-  [(MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent *)v4 setAlarmSeverityLevel:v5];
+  alarmSeverityLevel = [(MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent *)self alarmSeverityLevel];
+  [(MTRSmokeCOAlarmClusterInterconnectSmokeAlarmEvent *)v4 setAlarmSeverityLevel:alarmSeverityLevel];
 
   return v4;
 }

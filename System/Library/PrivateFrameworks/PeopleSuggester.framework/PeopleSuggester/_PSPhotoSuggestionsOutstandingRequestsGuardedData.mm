@@ -36,9 +36,9 @@
 
 - (uint64_t)waitingForRequestIDForCurrentThread
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

@@ -1,22 +1,22 @@
 @interface IOSurfaceRemoteServer
-- (IOSurfaceRemoteServer)initWithListener:(id)a3 options:(id)a4;
-- (void)_handleClientConnection:(id)a3;
-- (void)_handleClientDisconnected:(id)a3;
+- (IOSurfaceRemoteServer)initWithListener:(id)listener options:(id)options;
+- (void)_handleClientConnection:(id)connection;
+- (void)_handleClientDisconnected:(id)disconnected;
 - (void)dealloc;
 - (void)shutdown;
 @end
 
 @implementation IOSurfaceRemoteServer
 
-- (IOSurfaceRemoteServer)initWithListener:(id)a3 options:(id)a4
+- (IOSurfaceRemoteServer)initWithListener:(id)listener options:(id)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = IOSurfaceRemoteServer;
   v8 = [(IOSurfaceRemoteServer *)&v17 init];
-  [(IOSurfaceRemoteServer *)v8 setListener:v6];
+  [(IOSurfaceRemoteServer *)v8 setListener:listenerCopy];
   v9 = objc_opt_new();
   [(IOSurfaceRemoteServer *)v8 setClients:v9];
 
@@ -29,9 +29,9 @@
   handler[2] = __50__IOSurfaceRemoteServer_initWithListener_options___block_invoke;
   handler[3] = &unk_1E7A91A10;
   objc_copyWeak(&v15, &location);
-  xpc_connection_set_event_handler(v6, handler);
-  xpc_connection_set_target_queue(v6, v11);
-  xpc_connection_activate(v6);
+  xpc_connection_set_event_handler(listenerCopy, handler);
+  xpc_connection_set_target_queue(listenerCopy, v11);
+  xpc_connection_activate(listenerCopy);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 
@@ -58,8 +58,8 @@ void __50__IOSurfaceRemoteServer_initWithListener_options___block_invoke(uint64_
 - (void)dealloc
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(IOSurfaceRemoteServer *)self listener];
-  xpc_connection_cancel(v3);
+  listener = [(IOSurfaceRemoteServer *)self listener];
+  xpc_connection_cancel(listener);
 
   v5.receiver = self;
   v5.super_class = IOSurfaceRemoteServer;
@@ -69,15 +69,15 @@ void __50__IOSurfaceRemoteServer_initWithListener_options___block_invoke(uint64_
 
 - (void)shutdown
 {
-  v2 = [(IOSurfaceRemoteServer *)self listener];
-  xpc_connection_cancel(v2);
+  listener = [(IOSurfaceRemoteServer *)self listener];
+  xpc_connection_cancel(listener);
 }
 
-- (void)_handleClientConnection:(id)a3
+- (void)_handleClientConnection:(id)connection
 {
   location[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  xpc_connection_get_pid(v4);
+  connectionCopy = connection;
+  xpc_connection_get_pid(connectionCopy);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     [IOSurfaceRemoteServer _handleClientConnection:];
@@ -85,19 +85,19 @@ void __50__IOSurfaceRemoteServer_initWithListener_options___block_invoke(uint64_
 
   objc_initWeak(location, self);
   v5 = [IOSurfaceRemoteRemoteClient alloc];
-  v6 = [(IOSurfaceRemoteServer *)self queue];
+  queue = [(IOSurfaceRemoteServer *)self queue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__IOSurfaceRemoteServer__handleClientConnection___block_invoke;
   v11[3] = &unk_1E7A91A38;
   objc_copyWeak(&v12, location);
-  v7 = [(IOSurfaceRemoteRemoteClient *)v5 initWithRemoteConnection:v4 disconnectedQueue:v6 disconnectedHandler:v11];
+  v7 = [(IOSurfaceRemoteRemoteClient *)v5 initWithRemoteConnection:connectionCopy disconnectedQueue:queue disconnectedHandler:v11];
 
-  v8 = [(IOSurfaceRemoteServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  queue2 = [(IOSurfaceRemoteServer *)self queue];
+  dispatch_assert_queue_V2(queue2);
 
-  v9 = [(IOSurfaceRemoteServer *)self clients];
-  [v9 addObject:v7];
+  clients = [(IOSurfaceRemoteServer *)self clients];
+  [clients addObject:v7];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(location);
@@ -112,20 +112,20 @@ void __49__IOSurfaceRemoteServer__handleClientConnection___block_invoke(uint64_t
   [WeakRetained _handleClientDisconnected:v3];
 }
 
-- (void)_handleClientDisconnected:(id)a3
+- (void)_handleClientDisconnected:(id)disconnected
 {
-  v4 = a3;
-  [v4 pid];
+  disconnectedCopy = disconnected;
+  [disconnectedCopy pid];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     [IOSurfaceRemoteServer _handleClientDisconnected:];
   }
 
-  v5 = [(IOSurfaceRemoteServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(IOSurfaceRemoteServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(IOSurfaceRemoteServer *)self clients];
-  [v6 removeObject:v4];
+  clients = [(IOSurfaceRemoteServer *)self clients];
+  [clients removeObject:disconnectedCopy];
 }
 
 - (void)_handleClientConnection:.cold.1()

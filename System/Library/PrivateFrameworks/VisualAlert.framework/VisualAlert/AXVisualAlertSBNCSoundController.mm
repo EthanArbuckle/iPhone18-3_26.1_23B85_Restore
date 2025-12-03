@@ -1,25 +1,25 @@
 @interface AXVisualAlertSBNCSoundController
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)playSoundAndReadOutForNotificationRequest:(id)a3 presentingDestination:(id)a4;
-- (void)stopSoundForNotificationRequest:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)playSoundAndReadOutForNotificationRequest:(id)request presentingDestination:(id)destination;
+- (void)stopSoundForNotificationRequest:(id)request;
 @end
 
 @implementation AXVisualAlertSBNCSoundController
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBNCSoundController" hasInstanceMethod:@"playSoundAndReadOutForNotificationRequest:presentingDestination:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBNCSoundController" hasInstanceMethod:@"stopSoundForNotificationRequest:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceMethod:@"playSoundAndReadOutForNotificationRequest:presentingDestination:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBNCSoundController" hasInstanceMethod:@"stopSoundForNotificationRequest:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)playSoundAndReadOutForNotificationRequest:(id)a3 presentingDestination:(id)a4
+- (void)playSoundAndReadOutForNotificationRequest:(id)request presentingDestination:(id)destination
 {
-  v6 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = AXVisualAlertSBNCSoundController;
-  [(AXVisualAlertSBNCSoundController *)&v8 playSoundAndReadOutForNotificationRequest:v6 presentingDestination:a4];
-  v7 = v6;
+  [(AXVisualAlertSBNCSoundController *)&v8 playSoundAndReadOutForNotificationRequest:requestCopy presentingDestination:destination];
+  v7 = requestCopy;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
@@ -228,21 +228,21 @@ LABEL_28:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSoundForNotificationRequest:(id)a3
+- (void)stopSoundForNotificationRequest:(id)request
 {
   v17 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = AXVisualAlertSBNCSoundController;
-  v4 = a3;
-  [(AXVisualAlertSBNCSoundController *)&v14 stopSoundForNotificationRequest:v4];
-  v5 = [v4 sectionIdentifier];
+  requestCopy = request;
+  [(AXVisualAlertSBNCSoundController *)&v14 stopSoundForNotificationRequest:requestCopy];
+  sectionIdentifier = [requestCopy sectionIdentifier];
 
-  v6 = [MEMORY[0x277CE6998] sharedInstance];
-  v7 = [v6 ignoreLogging];
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v7 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v8 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v9 = AXLoggerForFacility();
 
     v10 = AXOSLogLevelFromAXLogLevel();
@@ -261,7 +261,7 @@ LABEL_28:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 isEqualToString:@"com.apple.mobiletimer"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [sectionIdentifier isEqualToString:@"com.apple.mobiletimer"])
   {
     [_VisualAlertManager _handleEndVisualAlertForAlarm];
   }

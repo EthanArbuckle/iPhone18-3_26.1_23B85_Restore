@@ -11,14 +11,14 @@
 - (BOOL)_isOtherStreamsActiveOnDoAPRoute
 {
   v2 = +[CSAudioStreamActivityMonitor sharedInstance];
-  v3 = [v2 hasNonVoiceTriggerStreamsOrStreamHoldersActive];
+  hasNonVoiceTriggerStreamsOrStreamHoldersActive = [v2 hasNonVoiceTriggerStreamsOrStreamHoldersActive];
 
   v4 = +[CSAudioRouteChangeMonitor sharedInstance];
-  v5 = [v4 hearstRouteStatus];
+  hearstRouteStatus = [v4 hearstRouteStatus];
 
-  if (v5 == 1)
+  if (hearstRouteStatus == 1)
   {
-    return v3;
+    return hasNonVoiceTriggerStreamsOrStreamHoldersActive;
   }
 
   else

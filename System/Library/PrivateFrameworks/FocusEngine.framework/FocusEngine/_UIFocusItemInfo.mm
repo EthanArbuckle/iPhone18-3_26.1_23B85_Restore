@@ -1,13 +1,13 @@
 @interface _UIFocusItemInfo
-+ (_UIFocusItemInfo)infoWithItem:(id)a3;
-+ (_UIFocusItemInfo)infoWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4;
++ (_UIFocusItemInfo)infoWithItem:(id)item;
++ (_UIFocusItemInfo)infoWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller;
 - (BOOL)isFocusMovementFlippedHorizontally;
-- (CGRect)focusedRectInCoordinateSpace:(id)a3;
+- (CGRect)focusedRectInCoordinateSpace:(id)space;
 - (NSArray)ancestorEnvironmentScrollableContainers;
 - (UIFocusItem)item;
 - (_UIFocusRegion)focusedRegion;
 - (id)_createFocusedRegion;
-- (id)_initWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4;
+- (id)_initWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller;
 - (id)description;
 - (id)shortDescription;
 - (int64_t)focusTouchSensitivityStyle;
@@ -18,36 +18,36 @@
 
 @implementation _UIFocusItemInfo
 
-+ (_UIFocusItemInfo)infoWithItem:(id)a3
++ (_UIFocusItemInfo)infoWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithItem:v4 useFallbackAncestorScroller:0];
+  itemCopy = item;
+  v5 = [[self alloc] _initWithItem:itemCopy useFallbackAncestorScroller:0];
 
   return v5;
 }
 
-+ (_UIFocusItemInfo)infoWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4
++ (_UIFocusItemInfo)infoWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithItem:v6 useFallbackAncestorScroller:v4];
+  scrollerCopy = scroller;
+  itemCopy = item;
+  v7 = [[self alloc] _initWithItem:itemCopy useFallbackAncestorScroller:scrollerCopy];
 
   return v7;
 }
 
-- (id)_initWithItem:(id)a3 useFallbackAncestorScroller:(BOOL)a4
+- (id)_initWithItem:(id)item useFallbackAncestorScroller:(BOOL)scroller
 {
-  v4 = a4;
-  v6 = a3;
+  scrollerCopy = scroller;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = _UIFocusItemInfo;
   v7 = [(_UIFocusItemInfo *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_item, v6);
+    objc_storeWeak(&v7->_item, itemCopy);
     v8->_inheritedFocusMovementStyle = 0;
-    if (v4)
+    if (scrollerCopy)
     {
       v9 = 16;
     }
@@ -84,12 +84,12 @@
   result = self->_inheritedFocusMovementStyle;
   if (!result)
   {
-    v4 = [(_UIFocusItemInfo *)self item];
+    item = [(_UIFocusItemInfo *)self item];
 
-    if (v4)
+    if (item)
     {
-      v5 = [(_UIFocusItemInfo *)self item];
-      self->_inheritedFocusMovementStyle = _UIFocusEnvironmentInheritedFocusMovementStyle(v5);
+      item2 = [(_UIFocusItemInfo *)self item];
+      self->_inheritedFocusMovementStyle = _UIFocusEnvironmentInheritedFocusMovementStyle(item2);
 
       return self->_inheritedFocusMovementStyle;
     }
@@ -108,18 +108,18 @@
 {
   if ((*&self->_flags & 1) == 0)
   {
-    v3 = [(_UIFocusItemInfo *)self item];
+    item = [(_UIFocusItemInfo *)self item];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 _focusTouchSensitivityStyle];
+      _focusTouchSensitivityStyle = [item _focusTouchSensitivityStyle];
     }
 
     else
     {
-      v4 = 0;
+      _focusTouchSensitivityStyle = 0;
     }
 
-    self->_focusTouchSensitivityStyle = v4;
+    self->_focusTouchSensitivityStyle = _focusTouchSensitivityStyle;
     *&self->_flags |= 1u;
   }
 
@@ -130,8 +130,8 @@
 {
   if ((*&self->_flags & 8) == 0)
   {
-    v3 = [(_UIFocusItemInfo *)self item];
-    self->_rotaryFocusMovementAxis = _UIFocusEnvironmentResolvedRotaryFocusMovementAxis(v3, 0);
+    item = [(_UIFocusItemInfo *)self item];
+    self->_rotaryFocusMovementAxis = _UIFocusEnvironmentResolvedRotaryFocusMovementAxis(item, 0);
 
     *&self->_flags |= 8u;
   }
@@ -147,13 +147,13 @@
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = 0;
-    v3 = [(_UIFocusItemInfo *)self item];
+    item = [(_UIFocusItemInfo *)self item];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __54___UIFocusItemInfo_isFocusMovementFlippedHorizontally__block_invoke;
     v5[3] = &unk_279014898;
     v5[4] = &v6;
-    _UIFocusEnvironmentEnumerateAncestorEnvironments(v3, v5);
+    _UIFocusEnvironmentEnumerateAncestorEnvironments(item, v5);
 
     *(&self->_flags + 1) = *(v7 + 24);
     *&self->_flags |= 2u;
@@ -167,9 +167,9 @@
 {
   if ((*&self->_flags & 4) == 0)
   {
-    v3 = [(_UIFocusItemInfo *)self _createFocusedRegion];
+    _createFocusedRegion = [(_UIFocusItemInfo *)self _createFocusedRegion];
     focusedRegion = self->_focusedRegion;
-    self->_focusedRegion = v3;
+    self->_focusedRegion = _createFocusedRegion;
 
     *&self->_flags |= 4u;
   }
@@ -189,10 +189,10 @@
     goto LABEL_15;
   }
 
-  v4 = [WeakRetained parentFocusEnvironment];
-  if (!v4)
+  parentFocusEnvironment = [WeakRetained parentFocusEnvironment];
+  if (!parentFocusEnvironment)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_UIFocusItemInfo _createFocusedRegion]"];
     v35 = MEMORY[0x277CCACA8];
     v36 = v3;
@@ -200,17 +200,17 @@
     v38 = NSStringFromClass(v37);
     v39 = [v35 stringWithFormat:@"<%@: %p>", v38, v36];
 
-    [v33 handleFailureInFunction:v34 file:@"_UIFocusItemInfo.m" lineNumber:177 description:{@"Focus item %@ does not provide a parentFocusEnvironment.", v39}];
+    [currentHandler handleFailureInFunction:v34 file:@"_UIFocusItemInfo.m" lineNumber:177 description:{@"Focus item %@ does not provide a parentFocusEnvironment.", v39}];
   }
 
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v5 = [v4 focusItemContainer];
-    v6 = v5;
-    if (v5)
+    focusItemContainer = [parentFocusEnvironment focusItemContainer];
+    v6 = focusItemContainer;
+    if (focusItemContainer)
     {
-      v7 = [v5 coordinateSpace];
-      v8 = _UIFocusItemFrameInCoordinateSpace(v3, v7);
+      coordinateSpace = [focusItemContainer coordinateSpace];
+      v8 = _UIFocusItemFrameInCoordinateSpace(v3, coordinateSpace);
       _UIFocusRectWithMinimumSize(v8, v9, v10, v11);
       v13 = v12;
       v15 = v14;
@@ -226,7 +226,7 @@
         v21 = [UIFocusSystem focusSystemForEnvironment:v3];
         if (!v21)
         {
-          v54 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
           v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_UIFocusItemInfo _createFocusedRegion]"];
           v56 = MEMORY[0x277CCACA8];
           v57 = v3;
@@ -234,12 +234,12 @@
           v59 = NSStringFromClass(v58);
           v60 = [v56 stringWithFormat:@"<%@: %p>", v59, v57];
 
-          [v54 handleFailureInFunction:v55 file:@"_UIFocusItemInfo.m" lineNumber:189 description:{@"Unable to find focus system for item %@", v60}];
+          [currentHandler2 handleFailureInFunction:v55 file:@"_UIFocusItemInfo.m" lineNumber:189 description:{@"Unable to find focus system for item %@", v60}];
         }
 
         v22 = [_UIFocusItemRegion alloc];
-        v23 = [v6 coordinateSpace];
-        v20 = [(_UIFocusItemRegion *)v22 initWithFrame:v23 coordinateSpace:v3 item:v21 focusSystem:v13, v15, v17, v19];
+        coordinateSpace2 = [v6 coordinateSpace];
+        v20 = [(_UIFocusItemRegion *)v22 initWithFrame:coordinateSpace2 coordinateSpace:v3 item:v21 focusSystem:v13, v15, v17, v19];
 
         if (v20)
         {
@@ -252,7 +252,7 @@
 
     else
     {
-      v40 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_UIFocusItemInfo _createFocusedRegion]"];
       v42 = MEMORY[0x277CCACA8];
       v43 = v3;
@@ -260,8 +260,8 @@
       v45 = NSStringFromClass(v44);
       v46 = [v42 stringWithFormat:@"<%@: %p>", v45, v43];
 
-      v47 = v4;
-      if (v4)
+      v47 = parentFocusEnvironment;
+      if (parentFocusEnvironment)
       {
         v48 = MEMORY[0x277CCACA8];
         v49 = v47;
@@ -277,20 +277,20 @@
         v53 = @"(nil)";
       }
 
-      [v40 handleFailureInFunction:v41 file:@"_UIFocusItemInfo.m" lineNumber:182 description:{@"Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items.", v46, v53}];
+      [currentHandler3 handleFailureInFunction:v41 file:@"_UIFocusItemInfo.m" lineNumber:182 description:{@"Focus item %@ has a parent focus environment of %@ but this environment does not provide a container for focus items.", v46, v53}];
     }
   }
 
 LABEL_13:
-  v24 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
   v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[_UIFocusItemInfo _createFocusedRegion]"];
   v26 = [v3 debugDescription];
-  v27 = [v3 parentFocusEnvironment];
-  v28 = [v27 debugDescription];
-  v29 = [v3 parentFocusEnvironment];
-  v30 = [v29 focusItemContainer];
-  v31 = [v30 debugDescription];
-  [v24 handleFailureInFunction:v25 file:@"_UIFocusItemInfo.m" lineNumber:196 description:{@"Failed to create FocusRegion for FocusItem: %@ with parentFocusEnvironment: %@  focusItemContainer: %@", v26, v28, v31}];
+  parentFocusEnvironment2 = [v3 parentFocusEnvironment];
+  v28 = [parentFocusEnvironment2 debugDescription];
+  parentFocusEnvironment3 = [v3 parentFocusEnvironment];
+  focusItemContainer2 = [parentFocusEnvironment3 focusItemContainer];
+  v31 = [focusItemContainer2 debugDescription];
+  [currentHandler4 handleFailureInFunction:v25 file:@"_UIFocusItemInfo.m" lineNumber:196 description:{@"Failed to create FocusRegion for FocusItem: %@ with parentFocusEnvironment: %@  focusItemContainer: %@", v26, v28, v31}];
 
   v20 = 0;
 LABEL_14:
@@ -300,14 +300,14 @@ LABEL_15:
   return v20;
 }
 
-- (CGRect)focusedRectInCoordinateSpace:(id)a3
+- (CGRect)focusedRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIFocusItemInfo *)self focusedRegion];
-  v6 = v5;
-  if (v4 && v5)
+  spaceCopy = space;
+  focusedRegion = [(_UIFocusItemInfo *)self focusedRegion];
+  v6 = focusedRegion;
+  if (spaceCopy && focusedRegion)
   {
-    [_UIFocusRegionEvaluator frameForRegion:v5 inCoordinateSpace:v4];
+    [_UIFocusRegionEvaluator frameForRegion:focusedRegion inCoordinateSpace:spaceCopy];
     _UIFocusRectWithMinimumSize(v7, v8, v9, v10);
     v12 = v11;
     v14 = v13;

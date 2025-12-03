@@ -1,18 +1,18 @@
 @interface CrossfireService
-- (void)flushMetricsWithCompletionBlock:(id)a3;
-- (void)getAppEventsWithCompletionBlock:(id)a3;
-- (void)recordLaunchesWithCompletionBlock:(id)a3;
-- (void)recordMetricsWithCompletionBlock:(id)a3;
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4;
-- (void)resetMetricsWithCompletionBlock:(id)a3;
-- (void)sendMetricsWithCompletionBlock:(id)a3;
+- (void)flushMetricsWithCompletionBlock:(id)block;
+- (void)getAppEventsWithCompletionBlock:(id)block;
+- (void)recordLaunchesWithCompletionBlock:(id)block;
+- (void)recordMetricsWithCompletionBlock:(id)block;
+- (void)reportAppEvent:(id)event completionBlock:(id)block;
+- (void)resetMetricsWithCompletionBlock:(id)block;
+- (void)sendMetricsWithCompletionBlock:(id)block;
 @end
 
 @implementation CrossfireService
 
-- (void)flushMetricsWithCompletionBlock:(id)a3
+- (void)flushMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,12 +27,12 @@
   }
 
   v9 = sub_1001F26CC();
-  sub_1001F27A8(v9, @"User Request", v4);
+  sub_1001F27A8(v9, @"User Request", blockCopy);
 }
 
-- (void)getAppEventsWithCompletionBlock:(id)a3
+- (void)getAppEventsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -47,12 +47,12 @@
   }
 
   v9 = sub_1001F26CC();
-  sub_1001F2A74(v9, v4);
+  sub_1001F2A74(v9, blockCopy);
 }
 
-- (void)recordLaunchesWithCompletionBlock:(id)a3
+- (void)recordLaunchesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -67,12 +67,12 @@
   }
 
   v9 = sub_1001F26CC();
-  sub_1001F2D28(v9, v4);
+  sub_1001F2D28(v9, blockCopy);
 }
 
-- (void)recordMetricsWithCompletionBlock:(id)a3
+- (void)recordMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -87,12 +87,12 @@
   }
 
   v9 = sub_1001F26CC();
-  sub_1001F2FC4(v9, v4);
+  sub_1001F2FC4(v9, blockCopy);
 }
 
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4
+- (void)reportAppEvent:(id)event completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,16 +106,16 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] reportAppEvent for client: %{public}@", &v11, 0x16u);
   }
 
-  if (v5)
+  if (blockCopy)
   {
     v10 = ASDErrorWithDescription();
-    v5[2](v5, 0, v10);
+    blockCopy[2](blockCopy, 0, v10);
   }
 }
 
-- (void)resetMetricsWithCompletionBlock:(id)a3
+- (void)resetMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -130,12 +130,12 @@
   }
 
   v9 = sub_1001F26CC();
-  sub_1001F3218(v9, v4);
+  sub_1001F3218(v9, blockCopy);
 }
 
-- (void)sendMetricsWithCompletionBlock:(id)a3
+- (void)sendMetricsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,7 +150,7 @@
   }
 
   v9 = sub_1001F26CC();
-  sub_1001F35DC(v9, v4);
+  sub_1001F35DC(v9, blockCopy);
 }
 
 @end

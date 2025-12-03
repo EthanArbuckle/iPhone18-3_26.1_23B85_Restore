@@ -1,14 +1,14 @@
 @interface CLKIntentReference
 + (Class)_INIntentClass;
-- (BOOL)isEqual:(id)a3;
-- (CLKIntentReference)initWithCHSIntentReference:(id)a3;
-- (CLKIntentReference)initWithCoder:(id)a3;
-- (CLKIntentReference)initWithIntent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLKIntentReference)initWithCHSIntentReference:(id)reference;
+- (CLKIntentReference)initWithCoder:(id)coder;
+- (CLKIntentReference)initWithIntent:(id)intent;
 - (INIntent)intent;
 - (id)_lock_intent;
 - (id)description;
 - (void)_lock_intent;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKIntentReference
@@ -37,10 +37,10 @@
   return v3;
 }
 
-- (CLKIntentReference)initWithIntent:(id)a3
+- (CLKIntentReference)initWithIntent:(id)intent
 {
-  v4 = a3;
-  if (!v4)
+  intentCopy = intent;
+  if (!intentCopy)
   {
     goto LABEL_12;
   }
@@ -50,7 +50,7 @@
   self = [(CLKIntentReference *)&v18 init];
   if (self)
   {
-    v5 = v4;
+    v5 = intentCopy;
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
@@ -101,43 +101,43 @@
     }
 
 LABEL_12:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
 LABEL_8:
   self = self;
-  v13 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v13;
+  return selfCopy;
 }
 
-- (CLKIntentReference)initWithCHSIntentReference:(id)a3
+- (CLKIntentReference)initWithCHSIntentReference:(id)reference
 {
-  if (a3)
+  if (reference)
   {
-    v4 = [a3 intent];
-    self = [(CLKIntentReference *)self initWithIntent:v4];
+    intent = [reference intent];
+    self = [(CLKIntentReference *)self initWithIntent:intent];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (INIntent)intent
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(CLKIntentReference *)self _lock_intent];
+  _lock_intent = [(CLKIntentReference *)self _lock_intent];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_intent;
 }
 
 - (id)_lock_intent
@@ -185,34 +185,34 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_indexingHash == v4[4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_indexingHash == equalCopy[4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   indexingHash = self->_indexingHash;
   v5 = _CLKIntentReferenceIndexingHashKey;
-  v6 = a3;
-  [v6 encodeInt64:indexingHash forKey:v5];
-  [v6 encodeObject:self->_intentData forKey:_CLKIntentReferenceIntentDataKey];
+  coderCopy = coder;
+  [coderCopy encodeInt64:indexingHash forKey:v5];
+  [coderCopy encodeObject:self->_intentData forKey:_CLKIntentReferenceIntentDataKey];
 }
 
-- (CLKIntentReference)initWithCoder:(id)a3
+- (CLKIntentReference)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CLKIntentReference;
   v5 = [(CLKIntentReference *)&v9 init];
   if (v5)
   {
-    v5->_indexingHash = [v4 decodeInt64ForKey:_CLKIntentReferenceIndexingHashKey];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:_CLKIntentReferenceIntentDataKey];
+    v5->_indexingHash = [coderCopy decodeInt64ForKey:_CLKIntentReferenceIndexingHashKey];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:_CLKIntentReferenceIntentDataKey];
     intentData = v5->_intentData;
     v5->_intentData = v6;
   }
@@ -234,7 +234,7 @@ LABEL_13:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_23702D000, a2, OS_LOG_TYPE_FAULT, "Failed to decode intent: %@", &v2, 0xCu);
 }
 

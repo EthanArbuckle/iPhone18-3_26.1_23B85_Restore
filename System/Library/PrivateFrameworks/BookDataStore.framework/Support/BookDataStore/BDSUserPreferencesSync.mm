@@ -1,6 +1,6 @@
 @interface BDSUserPreferencesSync
 + (NSArray)syncedPreferenceKeys;
-+ (id)objectFromGroupPreferencesForKey:(id)a3;
++ (id)objectFromGroupPreferencesForKey:(id)key;
 @end
 
 @implementation BDSUserPreferencesSync
@@ -17,15 +17,15 @@
   return v3;
 }
 
-+ (id)objectFromGroupPreferencesForKey:(id)a3
++ (id)objectFromGroupPreferencesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSUserDefaults alloc];
   v5 = +[BDSAppGroupContainer containerIdentifier];
   v6 = +[BDSAppGroupContainer containerURL];
   v7 = [v4 _initWithSuiteName:v5 container:v6];
 
-  v8 = [@"watchSynced-" stringByAppendingString:v3];
+  v8 = [@"watchSynced-" stringByAppendingString:keyCopy];
   v9 = [v7 objectForKey:v8];
 
   return v9;

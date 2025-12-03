@@ -1,38 +1,38 @@
 @interface WFCloudKitWorkflow
-+ (BOOL)isShortcutV2RecordID:(id)a3;
++ (BOOL)isShortcutV2RecordID:(id)d;
 + (NSDictionary)properties;
 + (id)encryptedNameProperty;
 + (id)nameProperty;
-+ (id)recordIDWithZoneID:(id)a3 workflowID:(id)a4;
-+ (id)workflowIdentifierForRecordID:(id)a3;
++ (id)recordIDWithZoneID:(id)d workflowID:(id)iD;
++ (id)workflowIdentifierForRecordID:(id)d;
 - (BOOL)isValidForSyncing;
-- (WFCloudKitWorkflow)initWithRecord:(id)a3 identifier:(id)a4;
-- (id)recordRepresentationWithError:(id *)a3;
-- (void)setCreatedAt:(id)a3 modifiedAt:(id)a4 createdBy:(id)a5;
+- (WFCloudKitWorkflow)initWithRecord:(id)record identifier:(id)identifier;
+- (id)recordRepresentationWithError:(id *)error;
+- (void)setCreatedAt:(id)at modifiedAt:(id)modifiedAt createdBy:(id)by;
 @end
 
 @implementation WFCloudKitWorkflow
 
-+ (BOOL)isShortcutV2RecordID:(id)a3
++ (BOOL)isShortcutV2RecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 hasPrefix:@"Shortcut_v2"];
+  recordName = [d recordName];
+  v4 = [recordName hasPrefix:@"Shortcut_v2"];
 
   return v4;
 }
 
-+ (id)workflowIdentifierForRecordID:(id)a3
++ (id)workflowIdentifierForRecordID:(id)d
 {
-  v3 = [a3 recordName];
+  recordName = [d recordName];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-", @"Shortcut_v2"];
-  if ([v3 hasPrefix:v4])
+  if ([recordName hasPrefix:v4])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v4, "length")}];
+    v5 = [recordName substringFromIndex:{objc_msgSend(v4, "length")}];
   }
 
   else
   {
-    v5 = v3;
+    v5 = recordName;
   }
 
   v6 = v5;
@@ -40,12 +40,12 @@
   return v6;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 workflowID:(id)a4
++ (id)recordIDWithZoneID:(id)d workflowID:(id)iD
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"%@-%@", @"Shortcut_v2", a4];
-  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v7 zoneID:v6];
+  dCopy = d;
+  v7 = [v5 stringWithFormat:@"%@-%@", @"Shortcut_v2", iD];
+  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v7 zoneID:dCopy];
 
   return v8;
 }
@@ -117,14 +117,14 @@
   v8 = [WFCloudKitItemProperty objectPropertyWithName:@"serializedSmartPromptsPerWorkflowStateData"];
   v21[9] = v8;
   v20[10] = @"name";
-  v9 = [a1 nameProperty];
-  v21[10] = v9;
+  nameProperty = [self nameProperty];
+  v21[10] = nameProperty;
   v20[11] = @"encryptedSchemaVersion";
   v10 = [WFCloudKitItemProperty scalarPropertyWithName:"scalarPropertyWithName:nilValue:" nilValue:?];
   v21[11] = v10;
   v20[12] = @"encryptedName";
-  v11 = [a1 encryptedNameProperty];
-  v21[12] = v11;
+  encryptedNameProperty = [self encryptedNameProperty];
+  v21[12] = encryptedNameProperty;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:13];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -134,11 +134,11 @@
 
 - (BOOL)isValidForSyncing
 {
-  v3 = [(WFCloudKitWorkflow *)self name];
-  if (v3)
+  name = [(WFCloudKitWorkflow *)self name];
+  if (name)
   {
-    v4 = [(WFCloudKitWorkflow *)self serializedDataFile];
-    v5 = v4 != 0;
+    serializedDataFile = [(WFCloudKitWorkflow *)self serializedDataFile];
+    v5 = serializedDataFile != 0;
   }
 
   else
@@ -149,13 +149,13 @@
   return v5;
 }
 
-- (id)recordRepresentationWithError:(id *)a3
+- (id)recordRepresentationWithError:(id *)error
 {
   p_cachedRecord = &self->_cachedRecord;
   cachedRecord = self->_cachedRecord;
-  v7 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (cachedRecord == v7)
+  if (cachedRecord == null)
   {
     goto LABEL_16;
   }
@@ -173,9 +173,9 @@
     goto LABEL_16;
   }
 
-  v9 = [(WFCloudKitWorkflow *)self name];
+  name = [(WFCloudKitWorkflow *)self name];
 
-  if (!v9)
+  if (!name)
   {
 LABEL_15:
     cachedRecord = 0;
@@ -185,12 +185,12 @@ LABEL_16:
   }
 
   v10 = [WFWorkflowFileDescriptor alloc];
-  v11 = [(WFCloudKitWorkflow *)self serializedDataFile];
-  v12 = [(WFCloudKitWorkflow *)self name];
-  v13 = [(WFWorkflowFileDescriptor *)v10 initWithFile:v11 name:v12];
+  serializedDataFile = [(WFCloudKitWorkflow *)self serializedDataFile];
+  name2 = [(WFCloudKitWorkflow *)self name];
+  v13 = [(WFWorkflowFileDescriptor *)v10 initWithFile:serializedDataFile name:name2];
 
-  v14 = [[WFWorkflowFile alloc] initWithDescriptor:v13 performMigration:0 error:a3];
-  v15 = [(WFWorkflowFile *)v14 recordRepresentationWithError:a3];
+  v14 = [[WFWorkflowFile alloc] initWithDescriptor:v13 performMigration:0 error:error];
+  v15 = [(WFWorkflowFile *)v14 recordRepresentationWithError:error];
 
   if (!v15)
   {
@@ -198,45 +198,45 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v16 = [(WFCloudKitWorkflow *)self name];
-  [v15 setName:v16];
+  name3 = [(WFCloudKitWorkflow *)self name];
+  [v15 setName:name3];
 
-  v17 = [(WFCloudKitWorkflow *)self createdAt];
-  [v15 setCreationDate:v17];
+  createdAt = [(WFCloudKitWorkflow *)self createdAt];
+  [v15 setCreationDate:createdAt];
 
-  v18 = [(WFCloudKitWorkflow *)self modifiedAt];
-  [v15 setModificationDate:v18];
+  modifiedAt = [(WFCloudKitWorkflow *)self modifiedAt];
+  [v15 setModificationDate:modifiedAt];
 
-  v19 = [(WFCloudKitWorkflow *)self workflowSubtitle];
-  [v15 setWorkflowSubtitle:v19];
+  workflowSubtitle = [(WFCloudKitWorkflow *)self workflowSubtitle];
+  [v15 setWorkflowSubtitle:workflowSubtitle];
 
-  v20 = [(WFCloudKitWorkflow *)self associatedAppBundleIdentifier];
-  [v15 setAssociatedAppBundleIdentifier:v20];
+  associatedAppBundleIdentifier = [(WFCloudKitWorkflow *)self associatedAppBundleIdentifier];
+  [v15 setAssociatedAppBundleIdentifier:associatedAppBundleIdentifier];
 
-  v21 = [(WFCloudKitWorkflow *)self source];
-  [v15 setSource:v21];
+  source = [(WFCloudKitWorkflow *)self source];
+  [v15 setSource:source];
 
-  v22 = [(WFCloudKitWorkflow *)self galleryIdentifier];
-  [v15 setGalleryIdentifier:v22];
+  galleryIdentifier = [(WFCloudKitWorkflow *)self galleryIdentifier];
+  [v15 setGalleryIdentifier:galleryIdentifier];
 
-  v23 = [(WFCloudKitWorkflow *)self serializedQuarantineData];
+  serializedQuarantineData = [(WFCloudKitWorkflow *)self serializedQuarantineData];
 
-  if (v23)
+  if (serializedQuarantineData)
   {
     v24 = [WFWorkflowQuarantine alloc];
-    v25 = [(WFCloudKitWorkflow *)self serializedQuarantineData];
-    v26 = [(WFWorkflowQuarantine *)v24 initWithSerializedData:v25];
+    serializedQuarantineData2 = [(WFCloudKitWorkflow *)self serializedQuarantineData];
+    v26 = [(WFWorkflowQuarantine *)v24 initWithSerializedData:serializedQuarantineData2];
     [v15 setQuarantine:v26];
   }
 
-  v27 = [(WFCloudKitWorkflow *)self serializedAccessResourcePerWorkflowStateData];
+  serializedAccessResourcePerWorkflowStateData = [(WFCloudKitWorkflow *)self serializedAccessResourcePerWorkflowStateData];
 
   v28 = MEMORY[0x1E695E0F0];
-  if (v27)
+  if (serializedAccessResourcePerWorkflowStateData)
   {
     v29 = MEMORY[0x1E696AE40];
-    v30 = [(WFCloudKitWorkflow *)self serializedAccessResourcePerWorkflowStateData];
-    v31 = [v29 propertyListWithData:v30 options:0 format:0 error:0];
+    serializedAccessResourcePerWorkflowStateData2 = [(WFCloudKitWorkflow *)self serializedAccessResourcePerWorkflowStateData];
+    v31 = [v29 propertyListWithData:serializedAccessResourcePerWorkflowStateData2 options:0 format:0 error:0];
     v32 = v31;
     if (v31)
     {
@@ -263,13 +263,13 @@ LABEL_16:
     [v15 setAccessResourcePerWorkflowStates:v36];
   }
 
-  v39 = [(WFCloudKitWorkflow *)self serializedSmartPromptsPerWorkflowStateData];
+  serializedSmartPromptsPerWorkflowStateData = [(WFCloudKitWorkflow *)self serializedSmartPromptsPerWorkflowStateData];
 
-  if (v39)
+  if (serializedSmartPromptsPerWorkflowStateData)
   {
     v40 = MEMORY[0x1E696AE40];
-    v41 = [(WFCloudKitWorkflow *)self serializedSmartPromptsPerWorkflowStateData];
-    v42 = [v40 propertyListWithData:v41 options:0 format:0 error:0];
+    serializedSmartPromptsPerWorkflowStateData2 = [(WFCloudKitWorkflow *)self serializedSmartPromptsPerWorkflowStateData];
+    v42 = [v40 propertyListWithData:serializedSmartPromptsPerWorkflowStateData2 options:0 format:0 error:0];
     v43 = v42;
     if (v42)
     {
@@ -296,11 +296,11 @@ LABEL_16:
     [v15 setSmartPromptPerWorkflowStates:v47];
   }
 
-  v49 = [(WFCloudKitWorkflow *)self lastSavedOnDeviceName];
-  [v15 setLastSavedOnDeviceName:v49];
+  lastSavedOnDeviceName = [(WFCloudKitWorkflow *)self lastSavedOnDeviceName];
+  [v15 setLastSavedOnDeviceName:lastSavedOnDeviceName];
 
-  v50 = [(WFCloudKitWorkflow *)self recordSystemFieldsData];
-  [v15 setCloudKitRecordMetadata:v50];
+  recordSystemFieldsData = [(WFCloudKitWorkflow *)self recordSystemFieldsData];
+  [v15 setCloudKitRecordMetadata:recordSystemFieldsData];
 
   [v15 setSyncHash:{-[WFCloudKitWorkflow cachedSyncHash](self, "cachedSyncHash")}];
   [v15 setWantedEncryptedSchemaVersion:{-[WFCloudKitWorkflow encryptedSchemaVersion](self, "encryptedSchemaVersion")}];
@@ -331,105 +331,105 @@ WFSerializedAccessResourcePerWorkflowState *__52__WFCloudKitWorkflow_recordRepre
   return v3;
 }
 
-- (WFCloudKitWorkflow)initWithRecord:(id)a3 identifier:(id)a4
+- (WFCloudKitWorkflow)initWithRecord:(id)record identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  identifierCopy = identifier;
   v9 = [(WFCloudKitWorkflow *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cachedRecord, a3);
-    objc_storeStrong(&v10->_identifier, a4);
-    v11 = [v7 name];
+    objc_storeStrong(&v9->_cachedRecord, record);
+    objc_storeStrong(&v10->_identifier, identifier);
+    name = [recordCopy name];
     name = v10->_name;
-    v10->_name = v11;
+    v10->_name = name;
 
-    v13 = [v7 workflowSubtitle];
+    workflowSubtitle = [recordCopy workflowSubtitle];
     workflowSubtitle = v10->_workflowSubtitle;
-    v10->_workflowSubtitle = v13;
+    v10->_workflowSubtitle = workflowSubtitle;
 
-    v15 = [v7 associatedAppBundleIdentifier];
+    associatedAppBundleIdentifier = [recordCopy associatedAppBundleIdentifier];
     associatedAppBundleIdentifier = v10->_associatedAppBundleIdentifier;
-    v10->_associatedAppBundleIdentifier = v15;
+    v10->_associatedAppBundleIdentifier = associatedAppBundleIdentifier;
 
-    v17 = [v7 source];
+    source = [recordCopy source];
     source = v10->_source;
-    v10->_source = v17;
+    v10->_source = source;
 
-    v19 = [v7 galleryIdentifier];
+    galleryIdentifier = [recordCopy galleryIdentifier];
     galleryIdentifier = v10->_galleryIdentifier;
-    v10->_galleryIdentifier = v19;
+    v10->_galleryIdentifier = galleryIdentifier;
 
-    v21 = [v7 fileRepresentation];
-    v22 = [v8 recordName];
-    [v21 setName:v22];
+    fileRepresentation = [recordCopy fileRepresentation];
+    recordName = [identifierCopy recordName];
+    [fileRepresentation setName:recordName];
 
-    v23 = [v21 writeToDiskWithError:0];
+    v23 = [fileRepresentation writeToDiskWithError:0];
     serializedDataFile = v10->_serializedDataFile;
     v10->_serializedDataFile = v23;
 
-    v25 = [v7 quarantine];
-    v26 = [v25 serializedData];
+    quarantine = [recordCopy quarantine];
+    serializedData = [quarantine serializedData];
     serializedQuarantineData = v10->_serializedQuarantineData;
-    v10->_serializedQuarantineData = v26;
+    v10->_serializedQuarantineData = serializedData;
 
     v28 = MEMORY[0x1E696AE40];
-    v29 = [v7 accessResourcePerWorkflowStates];
-    v30 = [v29 allObjects];
-    v31 = [v30 valueForKey:@"dictionaryRepresentation"];
+    accessResourcePerWorkflowStates = [recordCopy accessResourcePerWorkflowStates];
+    allObjects = [accessResourcePerWorkflowStates allObjects];
+    v31 = [allObjects valueForKey:@"dictionaryRepresentation"];
     v32 = [v28 dataWithPropertyList:v31 format:200 options:0 error:0];
     serializedAccessResourcePerWorkflowStateData = v10->_serializedAccessResourcePerWorkflowStateData;
     v10->_serializedAccessResourcePerWorkflowStateData = v32;
 
     v34 = MEMORY[0x1E696AE40];
-    v35 = [v7 smartPromptPerWorkflowStates];
-    v36 = [v35 allObjects];
-    v37 = [v36 valueForKey:@"dictionaryRepresentation"];
+    smartPromptPerWorkflowStates = [recordCopy smartPromptPerWorkflowStates];
+    allObjects2 = [smartPromptPerWorkflowStates allObjects];
+    v37 = [allObjects2 valueForKey:@"dictionaryRepresentation"];
     v38 = [v34 dataWithPropertyList:v37 format:200 options:0 error:0];
     serializedSmartPromptsPerWorkflowStateData = v10->_serializedSmartPromptsPerWorkflowStateData;
     v10->_serializedSmartPromptsPerWorkflowStateData = v38;
 
-    v40 = [v7 creationDate];
+    creationDate = [recordCopy creationDate];
     createdAt = v10->_createdAt;
-    v10->_createdAt = v40;
+    v10->_createdAt = creationDate;
 
-    v42 = [v7 modificationDate];
+    modificationDate = [recordCopy modificationDate];
     modifiedAt = v10->_modifiedAt;
-    v10->_modifiedAt = v42;
+    v10->_modifiedAt = modificationDate;
 
-    v44 = [v7 lastSavedOnDeviceName];
+    lastSavedOnDeviceName = [recordCopy lastSavedOnDeviceName];
     lastSavedOnDeviceName = v10->_lastSavedOnDeviceName;
-    v10->_lastSavedOnDeviceName = v44;
+    v10->_lastSavedOnDeviceName = lastSavedOnDeviceName;
 
-    v46 = [v7 quarantine];
-    v47 = [v46 serializedData];
+    quarantine2 = [recordCopy quarantine];
+    serializedData2 = [quarantine2 serializedData];
     v48 = v10->_serializedQuarantineData;
-    v10->_serializedQuarantineData = v47;
+    v10->_serializedQuarantineData = serializedData2;
 
-    v49 = [v7 cloudKitRecordMetadata];
-    v50 = [v49 copy];
+    cloudKitRecordMetadata = [recordCopy cloudKitRecordMetadata];
+    v50 = [cloudKitRecordMetadata copy];
     recordSystemFieldsData = v10->_recordSystemFieldsData;
     v10->_recordSystemFieldsData = v50;
 
-    v10->_cachedSyncHash = [v7 syncHash];
-    v10->_encryptedSchemaVersion = [v7 wantedEncryptedSchemaVersion];
+    v10->_cachedSyncHash = [recordCopy syncHash];
+    v10->_encryptedSchemaVersion = [recordCopy wantedEncryptedSchemaVersion];
     v52 = v10;
   }
 
   return v10;
 }
 
-- (void)setCreatedAt:(id)a3 modifiedAt:(id)a4 createdBy:(id)a5
+- (void)setCreatedAt:(id)at modifiedAt:(id)modifiedAt createdBy:(id)by
 {
-  v7 = a3;
-  v8 = a4;
+  atCopy = at;
+  modifiedAtCopy = modifiedAt;
   createdAt = self->_createdAt;
-  self->_createdAt = v7;
-  v11 = v7;
+  self->_createdAt = atCopy;
+  v11 = atCopy;
 
   modifiedAt = self->_modifiedAt;
-  self->_modifiedAt = v8;
+  self->_modifiedAt = modifiedAtCopy;
 }
 
 @end

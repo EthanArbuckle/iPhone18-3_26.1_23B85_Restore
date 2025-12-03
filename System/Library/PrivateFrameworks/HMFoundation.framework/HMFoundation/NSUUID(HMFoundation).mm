@@ -24,8 +24,8 @@
 
 - (id)shortDescription
 {
-  v1 = [a1 UUIDString];
-  v2 = [v1 substringToIndex:8];
+  uUIDString = [self UUIDString];
+  v2 = [uUIDString substringToIndex:8];
 
   return v2;
 }
@@ -51,7 +51,7 @@
   v4[2] = *MEMORY[0x277D85DE8];
   v4[0] = 0;
   v4[1] = 0;
-  [a1 getUUIDBytes:v4];
+  [self getUUIDBytes:v4];
   v1 = [MEMORY[0x277CBEA90] dataWithBytes:v4 length:16];
   v2 = *MEMORY[0x277D85DE8];
 
@@ -62,14 +62,14 @@
 {
   v4 = a3;
   v5 = v4;
-  if (a1 == v4)
+  if (self == v4)
   {
     v6 = 1;
   }
 
   else if (v4)
   {
-    v6 = [a1 isEqual:v4];
+    v6 = [self isEqual:v4];
   }
 
   else
@@ -88,7 +88,7 @@
 
   if (v6)
   {
-    v7 = [a1 hmf_isEqualToUUID:v6];
+    v7 = [self hmf_isEqualToUUID:v6];
   }
 
   else

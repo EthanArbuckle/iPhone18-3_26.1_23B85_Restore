@@ -1,38 +1,38 @@
 @interface CNIOSLegacyIdentifierDescription
-- (id)CNValueForContact:(id)a3;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
-- (void)setCNValue:(id)a3 onContact:(id)a4;
+- (id)CNValueForContact:(id)contact;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
+- (void)setCNValue:(id)value onContact:(id)contact;
 @end
 
 @implementation CNIOSLegacyIdentifierDescription
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v6 = a4;
-  v5 = [a3 decodeInt32ForKey:@"_iOSLegacyIdentifier"];
-  v6[4] = v5;
+  contactCopy = contact;
+  v5 = [coder decodeInt32ForKey:@"_iOSLegacyIdentifier"];
+  contactCopy[4] = v5;
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](v5, contactCopy);
 }
 
-- (id)CNValueForContact:(id)a3
+- (id)CNValueForContact:(id)contact
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 iOSLegacyIdentifier];
+  iOSLegacyIdentifier = [contact iOSLegacyIdentifier];
 
-  return [v3 numberWithInt:v4];
+  return [v3 numberWithInt:iOSLegacyIdentifier];
 }
 
-- (void)setCNValue:(id)a3 onContact:(id)a4
+- (void)setCNValue:(id)value onContact:(id)contact
 {
-  v5 = a4;
-  [v5 setIOSLegacyIdentifier:{objc_msgSend(a3, "intValue")}];
+  contactCopy = contact;
+  [contactCopy setIOSLegacyIdentifier:{objc_msgSend(value, "intValue")}];
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
-  valuePtr = ABRecordGetRecordID(a3);
+  valuePtr = ABRecordGetRecordID(person);
   result = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt32Type, &valuePtr);
   if (result)
   {

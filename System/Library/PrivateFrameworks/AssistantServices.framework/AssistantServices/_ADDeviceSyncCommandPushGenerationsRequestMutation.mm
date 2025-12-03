@@ -1,5 +1,5 @@
 @interface _ADDeviceSyncCommandPushGenerationsRequestMutation
-- (_ADDeviceSyncCommandPushGenerationsRequestMutation)initWithBase:(id)a3;
+- (_ADDeviceSyncCommandPushGenerationsRequestMutation)initWithBase:(id)base;
 - (id)getGenerationsByDataType;
 @end
 
@@ -9,27 +9,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_generationsByDataType;
+    generationsByDataType = self->_generationsByDataType;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncCommandPushGenerationsRequest *)self->_base generationsByDataType];
+    generationsByDataType = [(ADDeviceSyncCommandPushGenerationsRequest *)self->_base generationsByDataType];
   }
 
-  return v2;
+  return generationsByDataType;
 }
 
-- (_ADDeviceSyncCommandPushGenerationsRequestMutation)initWithBase:(id)a3
+- (_ADDeviceSyncCommandPushGenerationsRequestMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADDeviceSyncCommandPushGenerationsRequestMutation;
   v6 = [(_ADDeviceSyncCommandPushGenerationsRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

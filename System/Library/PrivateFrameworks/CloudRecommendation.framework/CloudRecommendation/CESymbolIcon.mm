@@ -1,22 +1,22 @@
 @interface CESymbolIcon
-- (CESymbolIcon)initWithCoder:(id)a3;
-- (CESymbolIcon)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CESymbolIcon)initWithCoder:(id)coder;
+- (CESymbolIcon)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CESymbolIcon
 
-- (CESymbolIcon)initWithDictionary:(id)a3
+- (CESymbolIcon)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = CESymbolIcon;
-  v5 = [(CEIcon *)&v22 initWithDictionary:v4];
+  v5 = [(CEIcon *)&v22 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"path"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"path"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"color"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"color"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"foregroundColor"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"foregroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,31 +110,31 @@
   return v5;
 }
 
-- (CESymbolIcon)initWithCoder:(id)a3
+- (CESymbolIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CESymbolIcon;
-  v5 = [(CEIcon *)&v17 initWithCoder:v4];
+  v5 = [(CEIcon *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemColorName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemColorName"];
     systemColorName = v5->_systemColorName;
     v5->_systemColorName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foregroundSystemColorName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foregroundSystemColorName"];
     foregroundSystemColorName = v5->_foregroundSystemColorName;
     v5->_foregroundSystemColorName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundSystemColorName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundSystemColorName"];
     backgroundSystemColorName = v5->_backgroundSystemColorName;
     v5->_backgroundSystemColorName = v14;
   }
@@ -142,11 +142,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CESymbolIcon;
-  v4 = [(CEIcon *)&v6 copyWithZone:a3];
+  v4 = [(CEIcon *)&v6 copyWithZone:zone];
   [v4 setIdentifier:self->_identifier];
   [v4 setPath:self->_path];
   [v4 setSystemColorName:self->_systemColorName];
@@ -155,17 +155,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CESymbolIcon;
-  v4 = a3;
-  [(CEIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_identifier forKey:{@"id", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_path forKey:@"path"];
-  [v4 encodeObject:self->_systemColorName forKey:@"systemColorName"];
-  [v4 encodeObject:self->_foregroundSystemColorName forKey:@"foregroundSystemColorName"];
-  [v4 encodeObject:self->_backgroundSystemColorName forKey:@"backgroundSystemColorName"];
+  coderCopy = coder;
+  [(CEIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_identifier forKey:{@"id", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_path forKey:@"path"];
+  [coderCopy encodeObject:self->_systemColorName forKey:@"systemColorName"];
+  [coderCopy encodeObject:self->_foregroundSystemColorName forKey:@"foregroundSystemColorName"];
+  [coderCopy encodeObject:self->_backgroundSystemColorName forKey:@"backgroundSystemColorName"];
 }
 
 - (id)description

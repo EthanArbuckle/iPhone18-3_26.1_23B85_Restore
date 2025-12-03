@@ -1,16 +1,16 @@
 @interface PDISO18013Manager_TemporaryAliroDocumentEventForwarder
-- (PDISO18013Manager_TemporaryAliroDocumentEventForwarder)initWithSecureElement:(id)a3 documentType:(id)a4 documentSignatureDate:(id)a5 subcredentialIdentifier:(id)a6;
-- (void)updateDocumentStatus:(BOOL)a3 completion:(id)a4;
+- (PDISO18013Manager_TemporaryAliroDocumentEventForwarder)initWithSecureElement:(id)element documentType:(id)type documentSignatureDate:(id)date subcredentialIdentifier:(id)identifier;
+- (void)updateDocumentStatus:(BOOL)status completion:(id)completion;
 @end
 
 @implementation PDISO18013Manager_TemporaryAliroDocumentEventForwarder
 
-- (PDISO18013Manager_TemporaryAliroDocumentEventForwarder)initWithSecureElement:(id)a3 documentType:(id)a4 documentSignatureDate:(id)a5 subcredentialIdentifier:(id)a6
+- (PDISO18013Manager_TemporaryAliroDocumentEventForwarder)initWithSecureElement:(id)element documentType:(id)type documentSignatureDate:(id)date subcredentialIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  elementCopy = element;
+  typeCopy = type;
+  dateCopy = date;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = PDISO18013Manager_TemporaryAliroDocumentEventForwarder;
   v15 = [(PDISO18013Manager_TemporaryAliroDocumentEventForwarder *)&v26 init];
@@ -20,14 +20,14 @@
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v15->_secureElement, a3);
-  objc_storeStrong(&v16->_subcredentialIdentifier, a6);
+  objc_storeStrong(&v15->_secureElement, element);
+  objc_storeStrong(&v16->_subcredentialIdentifier, identifier);
   if (!v16->_secureElement || !v16->_subcredentialIdentifier)
   {
     goto LABEL_13;
   }
 
-  v17 = v12;
+  v17 = typeCopy;
   if (v17 != @"aliro-a")
   {
     v18 = v17;
@@ -57,7 +57,7 @@ LABEL_7:
   v20 = 0;
 LABEL_8:
   v16->_documentType = v20;
-  objc_storeStrong(&v16->_documentSignatureDate, a5);
+  objc_storeStrong(&v16->_documentSignatureDate, date);
 LABEL_9:
   v21 = v16;
 LABEL_14:
@@ -65,10 +65,10 @@ LABEL_14:
   return v21;
 }
 
-- (void)updateDocumentStatus:(BOOL)a3 completion:(id)a4
+- (void)updateDocumentStatus:(BOOL)status completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  statusCopy = status;
+  completionCopy = completion;
   secureElement = self->_secureElement;
   documentType = self->_documentType;
   p_documentSignatureDate = &self->_documentSignatureDate;
@@ -78,9 +78,9 @@ LABEL_14:
   v13[1] = 3221225472;
   v13[2] = sub_1001A2A98;
   v13[3] = &unk_100845A78;
-  v14 = v6;
-  v12 = v6;
-  [(PKSecureElement *)secureElement updateAliroCredentialDocumentStatusWithSubcredentialIdentifier:v10 documentType:documentType isDocumentPresent:v4 signedDate:documentSignatureDate withCompletion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(PKSecureElement *)secureElement updateAliroCredentialDocumentStatusWithSubcredentialIdentifier:v10 documentType:documentType isDocumentPresent:statusCopy signedDate:documentSignatureDate withCompletion:v13];
 }
 
 @end

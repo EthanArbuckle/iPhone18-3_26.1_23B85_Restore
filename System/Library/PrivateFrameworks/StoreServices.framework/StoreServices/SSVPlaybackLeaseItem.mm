@@ -1,14 +1,14 @@
 @interface SSVPlaybackLeaseItem
-- (id)assetForFlavor:(id)a3;
+- (id)assetForFlavor:(id)flavor;
 @end
 
 @implementation SSVPlaybackLeaseItem
 
-- (id)assetForFlavor:(id)a3
+- (id)assetForFlavor:(id)flavor
 {
   v5.receiver = self;
   v5.super_class = SSVPlaybackLeaseItem;
-  v3 = [(SSVPlaybackItem *)&v5 assetForFlavor:a3];
+  v3 = [(SSVPlaybackItem *)&v5 assetForFlavor:flavor];
 
   return v3;
 }

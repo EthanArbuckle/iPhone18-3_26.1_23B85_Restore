@@ -1,77 +1,77 @@
 @interface OITSUImage
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)imageWithContentsOfFile:(id)a3;
-+ (id)imageWithData:(id)a3;
-+ (id)imageWithUIImage:(id)a3;
-+ (id)noisePatternWithWidth:(unint64_t)a3 height:(unint64_t)a4 factor:(double)a5;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)imageWithCGImage:(CGImage *)image;
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
++ (id)imageWithContentsOfFile:(id)file;
++ (id)imageWithData:(id)data;
++ (id)imageWithUIImage:(id)image;
++ (id)noisePatternWithWidth:(unint64_t)width height:(unint64_t)height factor:(double)factor;
 - (BOOL)isEmpty;
 - (CGImage)CGImage;
-- (CGImage)CGImageForSize:(CGSize)a3;
+- (CGImage)CGImageForSize:(CGSize)size;
 - (CGSize)size;
 - (OITSUImage)init;
-- (OITSUImage)initWithCGImage:(CGImage *)a3;
-- (OITSUImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (OITSUImage)initWithContentsOfFile:(id)a3;
-- (OITSUImage)initWithData:(id)a3;
-- (OITSUImage)initWithImageSourceRef:(CGImageSource *)a3;
-- (OITSUImage)initWithUIImage:(id)a3;
+- (OITSUImage)initWithCGImage:(CGImage *)image;
+- (OITSUImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
+- (OITSUImage)initWithContentsOfFile:(id)file;
+- (OITSUImage)initWithData:(id)data;
+- (OITSUImage)initWithImageSourceRef:(CGImageSource *)ref;
+- (OITSUImage)initWithUIImage:(id)image;
 - (UIImage)UIImage;
 - (double)scale;
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3;
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality;
 - (id)PNGRepresentation;
 - (id)TIFFRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight;
 - (int64_t)imageOrientation;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3 context:(CGContext *)a4 stretchingCenterWidthBy:(double)a5;
-- (void)drawInRect:(CGRect)a3 fromRect:(CGRect)a4 isFlipped:(BOOL)a5;
+- (void)drawInRect:(CGRect)rect context:(CGContext *)context stretchingCenterWidthBy:(double)by;
+- (void)drawInRect:(CGRect)rect fromRect:(CGRect)fromRect isFlipped:(BOOL)flipped;
 @end
 
 @implementation OITSUImage
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [OI_TSUImageM allocWithZone:a3];
+    return [OI_TSUImageM allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___OITSUImage;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-+ (id)imageWithContentsOfFile:(id)a3
++ (id)imageWithContentsOfFile:(id)file
 {
-  v3 = [[a1 alloc] initWithContentsOfFile:a3];
+  v3 = [[self alloc] initWithContentsOfFile:file];
 
   return v3;
 }
 
-+ (id)imageWithData:(id)a3
++ (id)imageWithData:(id)data
 {
-  v3 = [[a1 alloc] initWithData:a3];
+  v3 = [[self alloc] initWithData:data];
 
   return v3;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  v3 = [[a1 alloc] initWithCGImage:a3];
+  v3 = [[self alloc] initWithCGImage:image];
 
   return v3;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] initWithCGImage:a3 scale:a5 orientation:a4];
+  v5 = [[self alloc] initWithCGImage:image scale:orientation orientation:scale];
 
   return v5;
 }
@@ -90,7 +90,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUImage copyWithZone:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
@@ -105,7 +105,7 @@
   objc_exception_throw(v10);
 }
 
-- (OITSUImage)initWithContentsOfFile:(id)a3
+- (OITSUImage)initWithContentsOfFile:(id)file
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUImage initWithContentsOfFile:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
@@ -120,7 +120,7 @@
   objc_exception_throw(v10);
 }
 
-- (OITSUImage)initWithData:(id)a3
+- (OITSUImage)initWithData:(id)data
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUImage initWithData:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
@@ -135,7 +135,7 @@
   objc_exception_throw(v10);
 }
 
-- (OITSUImage)initWithCGImage:(CGImage *)a3
+- (OITSUImage)initWithCGImage:(CGImage *)image
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUImage initWithCGImage:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
@@ -150,9 +150,9 @@
   objc_exception_throw(v10);
 }
 
-- (OITSUImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (OITSUImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[OITSUImage initWithCGImage:scale:orientation:]", a5, a4}];
+  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[OITSUImage initWithCGImage:scale:orientation:]", orientation, scale}];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
   v7 = objc_opt_class();
   [OITSUAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:741 isFatal:0 description:"Abstract method not overridden by %@", NSStringFromClass(v7)];
@@ -165,7 +165,7 @@
   objc_exception_throw(v12);
 }
 
-- (OITSUImage)initWithImageSourceRef:(CGImageSource *)a3
+- (OITSUImage)initWithImageSourceRef:(CGImageSource *)ref
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUImage initWithImageSourceRef:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
@@ -224,9 +224,9 @@
   [(OITSUImage *)&v4 dealloc];
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3
+- (CGImage)CGImageForSize:(CGSize)size
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[OITSUImage CGImageForSize:]", a3.width, a3.height}];
+  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[OITSUImage CGImageForSize:]", size.width, size.height}];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
   v5 = objc_opt_class();
   [OITSUAssertionHandler handleFailureInFunction:v3 file:v4 lineNumber:771 isFatal:0 description:"Abstract method not overridden by %@", NSStringFromClass(v5)];
@@ -271,44 +271,44 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(OITSUImage *)self CGImage];
+  cGImage = [(OITSUImage *)self CGImage];
 
-  return TSUCGImageIsEmpty(v2);
+  return TSUCGImageIsEmpty(cGImage);
 }
 
 - (id)TIFFRepresentation
 {
-  v2 = [(OITSUImage *)self CGImage];
+  cGImage = [(OITSUImage *)self CGImage];
 
-  return CGImageTIFFRepresentation(v2);
+  return CGImageTIFFRepresentation(cGImage);
 }
 
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality
 {
-  v4 = [(OITSUImage *)self CGImage];
+  cGImage = [(OITSUImage *)self CGImage];
 
-  return CGImageJPEGRepresentation(v4, a3);
+  return CGImageJPEGRepresentation(cGImage, quality);
 }
 
 - (id)PNGRepresentation
 {
-  v2 = [(OITSUImage *)self CGImage];
+  cGImage = [(OITSUImage *)self CGImage];
 
-  return CGImagePNGRepresentation(v2);
+  return CGImagePNGRepresentation(cGImage);
 }
 
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__OITSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topCapHeight_bottomCapHeight___block_invoke;
   v12[3] = &unk_2799C6610;
-  v13 = a3;
+  sizeCopy = size;
   v12[4] = self;
-  v14 = a6;
-  v15 = a7;
-  v16 = a4;
-  v17 = a5;
+  heightCopy = height;
+  capHeightCopy = capHeight;
+  widthCopy = width;
+  capWidthCopy = capWidth;
   v8 = __91__OITSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topCapHeight_bottomCapHeight___block_invoke(v12, [(OITSUImage *)self CGImageForSize:?], 1.0);
   [(OITSUImage *)self scale];
   v10 = [OITSUImage imageWithCGImage:v8 scale:[(OITSUImage *)self imageOrientation] orientation:v9];
@@ -446,12 +446,12 @@ CGImageRef __91__OITSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topC
   return v34;
 }
 
-- (void)drawInRect:(CGRect)a3 context:(CGContext *)a4 stretchingCenterWidthBy:(double)a5
+- (void)drawInRect:(CGRect)rect context:(CGContext *)context stretchingCenterWidthBy:(double)by
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(OITSUImage *)self CGImageForSize:a3.size.width, a3.size.height];
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = [(OITSUImage *)self CGImageForSize:rect.size.width, rect.size.height];
   Width = CGImageGetWidth(v10);
   v12 = CGImageGetHeight(v10);
   if ((Width & 0x80000001) == 1)
@@ -509,17 +509,17 @@ CGImageRef __91__OITSUImage_stretchedImageOfSize_leftCapWidth_rightCapWidth_topC
   v30.origin.y = y;
   v30.size.width = v14;
   v30.size.height = height;
-  CGContextDrawImage(a4, v30, Value);
+  CGContextDrawImage(context, v30, Value);
   v31.origin.x = x + v14;
   v31.origin.y = y;
-  v31.size.width = a5;
+  v31.size.width = by;
   v31.size.height = height;
-  CGContextDrawImage(a4, v31, v23);
-  v32.origin.x = x + v14 + a5;
+  CGContextDrawImage(context, v31, v23);
+  v32.origin.x = x + v14 + by;
   v32.origin.y = y;
   v32.size.width = v15;
   v32.size.height = height;
-  CGContextDrawImage(a4, v32, v24);
+  CGContextDrawImage(context, v32, v24);
 }
 
 CFMutableDictionaryRef __57__OITSUImage_drawInRect_context_stretchingCenterWidthBy___block_invoke(uint64_t a1)
@@ -529,14 +529,14 @@ CFMutableDictionaryRef __57__OITSUImage_drawInRect_context_stretchingCenterWidth
   return result;
 }
 
-+ (id)imageWithUIImage:(id)a3
++ (id)imageWithUIImage:(id)image
 {
-  v3 = [[OITSUUIImage alloc] initWithUIImage:a3];
+  v3 = [[OITSUUIImage alloc] initWithUIImage:image];
 
   return v3;
 }
 
-- (OITSUImage)initWithUIImage:(id)a3
+- (OITSUImage)initWithUIImage:(id)image
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUImage(UIKitAdditions) initWithUIImage:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUImage.m"];
@@ -573,10 +573,10 @@ uint64_t __37__OITSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)noisePatternWithWidth:(unint64_t)a3 height:(unint64_t)a4 factor:(double)a5
++ (id)noisePatternWithWidth:(unint64_t)width height:(unint64_t)height factor:(double)factor
 {
-  v9 = a4 * a3;
-  v10 = malloc_type_malloc(a4 * a3, 0x100004077774924uLL);
+  v9 = height * width;
+  v10 = malloc_type_malloc(height * width, 0x100004077774924uLL);
   srand(0x7Cu);
   if (v9)
   {
@@ -594,7 +594,7 @@ uint64_t __37__OITSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
         v13 = v12;
       }
 
-      v14 = v13 * a5;
+      v14 = v13 * factor;
       if (v14 > 255.0)
       {
         v14 = 255.0;
@@ -608,116 +608,116 @@ uint64_t __37__OITSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
   }
 
   DeviceGray = CGColorSpaceCreateDeviceGray();
-  v16 = CGBitmapContextCreate(v10, a3, a4, 8uLL, a3, DeviceGray, 0);
+  v16 = CGBitmapContextCreate(v10, width, height, 8uLL, width, DeviceGray, 0);
   Image = CGBitmapContextCreateImage(v16);
   CGColorSpaceRelease(DeviceGray);
   free(v10);
   CGContextRelease(v16);
-  v18 = [a1 imageWithCGImage:Image];
+  v18 = [self imageWithCGImage:Image];
   CGImageRelease(Image);
   return v18;
 }
 
-- (void)drawInRect:(CGRect)a3 fromRect:(CGRect)a4 isFlipped:(BOOL)a5
+- (void)drawInRect:(CGRect)rect fromRect:(CGRect)fromRect isFlipped:(BOOL)flipped
 {
-  if (a4.size.width >= 0.0)
+  if (fromRect.size.width >= 0.0)
   {
-    x = a4.origin.x;
+    x = fromRect.origin.x;
   }
 
   else
   {
-    x = a4.origin.x + a4.size.width;
+    x = fromRect.origin.x + fromRect.size.width;
   }
 
-  if (a4.size.width >= 0.0)
+  if (fromRect.size.width >= 0.0)
   {
-    width = a4.size.width;
+    width = fromRect.size.width;
   }
 
   else
   {
-    width = -a4.size.width;
+    width = -fromRect.size.width;
   }
 
   v32 = width;
-  if (a3.size.width < 0.0)
+  if (rect.size.width < 0.0)
   {
-    v8 = a4.size.width >= 0.0;
+    v8 = fromRect.size.width >= 0.0;
   }
 
   else
   {
-    v8 = a4.size.width < 0.0;
+    v8 = fromRect.size.width < 0.0;
   }
 
-  if (a3.size.width < 0.0)
+  if (rect.size.width < 0.0)
   {
-    v9 = a3.origin.x + a3.size.width;
-  }
-
-  else
-  {
-    v9 = a3.origin.x;
-  }
-
-  if (a3.size.width < 0.0)
-  {
-    v10 = -a3.size.width;
+    v9 = rect.origin.x + rect.size.width;
   }
 
   else
   {
-    v10 = a3.size.width;
+    v9 = rect.origin.x;
   }
 
-  v11 = !a5;
-  height = -a4.size.height;
-  if (a4.size.height < 0.0)
+  if (rect.size.width < 0.0)
   {
-    y = a4.origin.y + a4.size.height;
+    v10 = -rect.size.width;
   }
 
   else
   {
-    v11 = a5;
-    y = a4.origin.y;
+    v10 = rect.size.width;
   }
 
-  if (a4.size.height >= 0.0)
+  flippedCopy = !flipped;
+  height = -fromRect.size.height;
+  if (fromRect.size.height < 0.0)
   {
-    height = a4.size.height;
+    y = fromRect.origin.y + fromRect.size.height;
+  }
+
+  else
+  {
+    flippedCopy = flipped;
+    y = fromRect.origin.y;
+  }
+
+  if (fromRect.size.height >= 0.0)
+  {
+    height = fromRect.size.height;
   }
 
   rect = height;
-  if (a3.size.height < 0.0)
+  if (rect.size.height < 0.0)
   {
-    v14 = !v11;
+    v14 = !flippedCopy;
   }
 
   else
   {
-    v14 = v11;
+    v14 = flippedCopy;
   }
 
-  if (a3.size.height < 0.0)
+  if (rect.size.height < 0.0)
   {
-    v15 = a3.origin.y + a3.size.height;
-  }
-
-  else
-  {
-    v15 = a3.origin.y;
-  }
-
-  if (a3.size.height < 0.0)
-  {
-    v16 = -a3.size.height;
+    v15 = rect.origin.y + rect.size.height;
   }
 
   else
   {
-    v16 = a3.size.height;
+    v15 = rect.origin.y;
+  }
+
+  if (rect.size.height < 0.0)
+  {
+    v16 = -rect.size.height;
+  }
+
+  else
+  {
+    v16 = rect.size.height;
   }
 
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -773,14 +773,14 @@ uint64_t __37__OITSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
   v43.origin.x = v24;
   v43.origin.y = v25;
   v28 = CGRectEqualToRect(v39, v43);
-  v29 = [(OITSUImage *)self CGImage];
+  cGImage = [(OITSUImage *)self CGImage];
   if (v28)
   {
     v40.origin.x = v9;
     v40.origin.y = v15;
     v40.size.width = v10;
     v40.size.height = v16;
-    CGContextDrawImage(CurrentContext, v40, v29);
+    CGContextDrawImage(CurrentContext, v40, cGImage);
   }
 
   else
@@ -789,7 +789,7 @@ uint64_t __37__OITSUImage_UIKitAdditions__UIImage__block_invoke(uint64_t a1)
     v41.origin.y = y;
     v41.size.width = v32;
     v41.size.height = rect;
-    v30 = CGImageCreateWithImageInRect(v29, v41);
+    v30 = CGImageCreateWithImageInRect(cGImage, v41);
     if (v30)
     {
       v31 = v30;

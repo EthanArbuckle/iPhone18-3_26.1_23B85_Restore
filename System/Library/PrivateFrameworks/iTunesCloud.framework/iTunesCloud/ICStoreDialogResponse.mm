@@ -1,13 +1,13 @@
 @interface ICStoreDialogResponse
 - (BOOL)isBiometricAuthenticationAllowed;
 - (BOOL)isInitialCheckboxValue;
-- (ICStoreDialogResponse)initWithResponseDictionary:(id)a3;
+- (ICStoreDialogResponse)initWithResponseDictionary:(id)dictionary;
 - (NSArray)buttons;
 - (NSString)explanation;
 - (NSString)message;
-- (id)_buttonActionKeyForType:(int64_t)a3;
-- (id)_buttonTitleKeyForType:(int64_t)a3;
-- (id)_buttonWithType:(int64_t)a3;
+- (id)_buttonActionKeyForType:(int64_t)type;
+- (id)_buttonTitleKeyForType:(int64_t)type;
+- (id)_buttonWithType:(int64_t)type;
 - (id)debugDescription;
 - (int64_t)defaultButtonType;
 - (int64_t)type;
@@ -15,33 +15,33 @@
 
 @implementation ICStoreDialogResponse
 
-- (id)_buttonActionKeyForType:(int64_t)a3
+- (id)_buttonActionKeyForType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7BF7F48[a3 - 1];
+    return off_1E7BF7F48[type - 1];
   }
 }
 
-- (id)_buttonTitleKeyForType:(int64_t)a3
+- (id)_buttonTitleKeyForType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7BF7F30[a3 - 1];
+    return off_1E7BF7F30[type - 1];
   }
 }
 
-- (id)_buttonWithType:(int64_t)a3
+- (id)_buttonWithType:(int64_t)type
 {
   v5 = [(ICStoreDialogResponse *)self _buttonTitleKeyForType:?];
   if (v5)
@@ -56,7 +56,7 @@
 
   if (_NSIsNSString())
   {
-    v7 = [(ICStoreDialogResponse *)self _buttonActionKeyForType:a3];
+    v7 = [(ICStoreDialogResponse *)self _buttonActionKeyForType:type];
     if (v7)
     {
       v8 = [(NSDictionary *)self->_responseDictionary objectForKey:v7];
@@ -77,7 +77,7 @@
       v10 = 0;
     }
 
-    v9 = [[ICStoreDialogResponseButton alloc] initWithType:a3 isDefaultButton:[(ICStoreDialogResponse *)self defaultButtonType]== a3 title:v6 action:v10];
+    v9 = [[ICStoreDialogResponseButton alloc] initWithType:type isDefaultButton:[(ICStoreDialogResponse *)self defaultButtonType]== type title:v6 action:v10];
   }
 
   else
@@ -124,26 +124,26 @@
 
 - (NSArray)buttons
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(ICStoreDialogResponse *)self _buttonWithType:1];
   if (v4)
   {
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
   v5 = [(ICStoreDialogResponse *)self _buttonWithType:2];
   if (v5)
   {
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
   v6 = [(ICStoreDialogResponse *)self _buttonWithType:3];
   if (v6)
   {
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)message
@@ -169,15 +169,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"m-allowed"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isInitialCheckboxValue
@@ -185,15 +185,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"initialCheckboxValue"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)explanation
@@ -240,15 +240,15 @@
   return v6;
 }
 
-- (ICStoreDialogResponse)initWithResponseDictionary:(id)a3
+- (ICStoreDialogResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICStoreDialogResponse;
   v5 = [(ICStoreDialogResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

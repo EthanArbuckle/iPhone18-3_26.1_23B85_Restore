@@ -1,22 +1,22 @@
 @interface AMAbsorption
-- (AMAbsorption)initWithMaterialName:(id)a3;
-- (AMAbsorption)initWithValues:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validatedWithoutError:(id *)a3;
+- (AMAbsorption)initWithMaterialName:(id)name;
+- (AMAbsorption)initWithValues:(id)values error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validatedWithoutError:(id *)error;
 @end
 
 @implementation AMAbsorption
 
-- (AMAbsorption)initWithValues:(id)a3 error:(id *)a4
+- (AMAbsorption)initWithValues:(id)values error:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  valuesCopy = values;
   v42.receiver = self;
   v42.super_class = AMAbsorption;
   v7 = [(AMAbsorption *)&v42 init];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v6 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [valuesCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
   v11 = MEMORY[0x277CBEB98];
   v12 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"materialName", @"materialDescription", @"frequencyBands", @"absorptionUserData", @"absorptionReferenceData", @"uncertaintyReferenceData", @"numDataPointsReferenceData", @"totalNumDataSetsReferenceData", 0}];
   v13 = [v11 setWithArray:v12];
@@ -24,7 +24,7 @@
 
   if ((v14 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -33,73 +33,73 @@
     v43 = *MEMORY[0x277CCA450];
     v44[0] = @"At least one mandatory key was not found in input dictionary.";
     v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-    *a4 = [v38 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:5 userInfo:v39];
+    *error = [v38 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:5 userInfo:v39];
 
 LABEL_6:
-    a4 = 0;
+    error = 0;
     goto LABEL_7;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"materialName"];
+  v15 = [valuesCopy objectForKeyedSubscript:@"materialName"];
   materialName = v7->_materialName;
   v7->_materialName = v15;
 
-  v17 = [v6 objectForKeyedSubscript:@"materialDescription"];
+  v17 = [valuesCopy objectForKeyedSubscript:@"materialDescription"];
   materialDescription = v7->_materialDescription;
   v7->_materialDescription = v17;
 
-  v19 = [v6 objectForKeyedSubscript:@"frequencyBands"];
+  v19 = [valuesCopy objectForKeyedSubscript:@"frequencyBands"];
   v20 = decimalValuesFromCSV(v19);
   frequencyBands = v7->_frequencyBands;
   v7->_frequencyBands = v20;
 
-  v22 = [v6 objectForKeyedSubscript:@"absorptionUserData"];
+  v22 = [valuesCopy objectForKeyedSubscript:@"absorptionUserData"];
   v23 = decimalValuesFromCSV(v22);
   v24 = clampArrayValues(v23, &unk_2850169E0, &unk_2850169F8);
   absorptionUserData = v7->_absorptionUserData;
   v7->_absorptionUserData = v24;
 
-  v26 = [v6 objectForKeyedSubscript:@"absorptionReferenceData"];
+  v26 = [valuesCopy objectForKeyedSubscript:@"absorptionReferenceData"];
   v27 = decimalValuesFromCSV(v26);
   v28 = clampArrayValues(v27, &unk_2850169E0, &unk_2850169F8);
   absorptionReferenceData = v7->_absorptionReferenceData;
   v7->_absorptionReferenceData = v28;
 
-  v30 = [v6 objectForKeyedSubscript:@"uncertaintyReferenceData"];
+  v30 = [valuesCopy objectForKeyedSubscript:@"uncertaintyReferenceData"];
   v31 = decimalValuesFromCSV(v30);
   v32 = clampArrayValues(v31, &unk_2850169E0, &unk_2850169F8);
   uncertaintyReferenceData = v7->_uncertaintyReferenceData;
   v7->_uncertaintyReferenceData = v32;
 
-  v34 = [v6 objectForKeyedSubscript:@"numDataPointsReferenceData"];
+  v34 = [valuesCopy objectForKeyedSubscript:@"numDataPointsReferenceData"];
   v35 = integerValuesFromCSV(v34);
   numDataPointsReferenceData = v7->_numDataPointsReferenceData;
   v7->_numDataPointsReferenceData = v35;
 
-  v37 = [v6 objectForKeyedSubscript:@"totalNumDataSetsReferenceData"];
+  v37 = [valuesCopy objectForKeyedSubscript:@"totalNumDataSetsReferenceData"];
   v7->_totalNumDataSetsReferenceData = [v37 intValue];
 
-  if (![(AMAbsorption *)v7 validatedWithoutError:a4])
+  if (![(AMAbsorption *)v7 validatedWithoutError:error])
   {
     goto LABEL_6;
   }
 
-  a4 = v7;
+  error = v7;
 LABEL_7:
 
   v40 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (AMAbsorption)initWithMaterialName:(id)a3
+- (AMAbsorption)initWithMaterialName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = AMAbsorption;
   v5 = [(AMAbsorption *)&v15 init];
   materialName = v5->_materialName;
-  v5->_materialName = v4;
-  v7 = v4;
+  v5->_materialName = nameCopy;
+  v7 = nameCopy;
 
   materialDescription = v5->_materialDescription;
   v5->_materialDescription = 0;
@@ -123,21 +123,21 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v22 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     materialName = self->_materialName;
-    v8 = [(AMAbsorption *)v6 materialName];
-    LODWORD(materialName) = [(NSString *)materialName isEqualToString:v8];
+    materialName = [(AMAbsorption *)v6 materialName];
+    LODWORD(materialName) = [(NSString *)materialName isEqualToString:materialName];
 
     if (!materialName)
     {
@@ -145,8 +145,8 @@ LABEL_7:
     }
 
     materialDescription = self->_materialDescription;
-    v10 = [(AMAbsorption *)v6 materialDescription];
-    LODWORD(materialDescription) = [(NSString *)materialDescription isEqualToString:v10];
+    materialDescription = [(AMAbsorption *)v6 materialDescription];
+    LODWORD(materialDescription) = [(NSString *)materialDescription isEqualToString:materialDescription];
 
     if (!materialDescription)
     {
@@ -154,8 +154,8 @@ LABEL_7:
     }
 
     frequencyBands = self->_frequencyBands;
-    v12 = [(AMAbsorption *)v6 frequencyBands];
-    LODWORD(frequencyBands) = [(NSArray *)frequencyBands isEqualToArray:v12];
+    frequencyBands = [(AMAbsorption *)v6 frequencyBands];
+    LODWORD(frequencyBands) = [(NSArray *)frequencyBands isEqualToArray:frequencyBands];
 
     if (!frequencyBands)
     {
@@ -163,8 +163,8 @@ LABEL_7:
     }
 
     absorptionUserData = self->_absorptionUserData;
-    v14 = [(AMAbsorption *)v6 absorptionUserData];
-    LODWORD(absorptionUserData) = [(NSArray *)absorptionUserData isEqualToArray:v14];
+    absorptionUserData = [(AMAbsorption *)v6 absorptionUserData];
+    LODWORD(absorptionUserData) = [(NSArray *)absorptionUserData isEqualToArray:absorptionUserData];
 
     if (!absorptionUserData)
     {
@@ -172,8 +172,8 @@ LABEL_7:
     }
 
     absorptionReferenceData = self->_absorptionReferenceData;
-    v16 = [(AMAbsorption *)v6 absorptionReferenceData];
-    LODWORD(absorptionReferenceData) = [(NSArray *)absorptionReferenceData isEqualToArray:v16];
+    absorptionReferenceData = [(AMAbsorption *)v6 absorptionReferenceData];
+    LODWORD(absorptionReferenceData) = [(NSArray *)absorptionReferenceData isEqualToArray:absorptionReferenceData];
 
     if (!absorptionReferenceData)
     {
@@ -181,8 +181,8 @@ LABEL_7:
     }
 
     uncertaintyReferenceData = self->_uncertaintyReferenceData;
-    v18 = [(AMAbsorption *)v6 uncertaintyReferenceData];
-    LODWORD(uncertaintyReferenceData) = [(NSArray *)uncertaintyReferenceData isEqualToArray:v18];
+    uncertaintyReferenceData = [(AMAbsorption *)v6 uncertaintyReferenceData];
+    LODWORD(uncertaintyReferenceData) = [(NSArray *)uncertaintyReferenceData isEqualToArray:uncertaintyReferenceData];
 
     if (!uncertaintyReferenceData)
     {
@@ -190,8 +190,8 @@ LABEL_7:
     }
 
     numDataPointsReferenceData = self->_numDataPointsReferenceData;
-    v20 = [(AMAbsorption *)v6 numDataPointsReferenceData];
-    LODWORD(numDataPointsReferenceData) = [(NSArray *)numDataPointsReferenceData isEqualToArray:v20];
+    numDataPointsReferenceData = [(AMAbsorption *)v6 numDataPointsReferenceData];
+    LODWORD(numDataPointsReferenceData) = [(NSArray *)numDataPointsReferenceData isEqualToArray:numDataPointsReferenceData];
 
     if (numDataPointsReferenceData)
     {
@@ -214,7 +214,7 @@ LABEL_14:
   return v22;
 }
 
-- (BOOL)validatedWithoutError:(id *)a3
+- (BOOL)validatedWithoutError:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v5 = [(NSArray *)self->_frequencyBands count];
@@ -222,7 +222,7 @@ LABEL_14:
   {
     if (([(NSString *)self->_materialName isEqual:&stru_285015AD0]& 1) != 0 || [(NSString *)self->_materialDescription isEqual:&stru_285015AD0])
     {
-      if (a3)
+      if (error)
       {
         v6 = MEMORY[0x277CCA9B8];
         v31 = *MEMORY[0x277CCA450];
@@ -231,7 +231,7 @@ LABEL_14:
         v8 = v6;
         v9 = 2;
 LABEL_11:
-        *a3 = [v8 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:v9 userInfo:{v7, v26}];
+        *error = [v8 errorWithDomain:@"com.apple.acousticmaterials.ErrorDomain" code:v9 userInfo:{v7, v26}];
       }
     }
 
@@ -239,7 +239,7 @@ LABEL_11:
     {
       if (self->_totalNumDataSetsReferenceData < 0)
       {
-        if (!a3)
+        if (!error)
         {
           goto LABEL_12;
         }
@@ -307,7 +307,7 @@ LABEL_27:
       }
 
 LABEL_29:
-      if (a3)
+      if (error)
       {
         v25 = MEMORY[0x277CCA9B8];
         v27 = *MEMORY[0x277CCA450];
@@ -320,7 +320,7 @@ LABEL_29:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
     v33 = *MEMORY[0x277CCA450];

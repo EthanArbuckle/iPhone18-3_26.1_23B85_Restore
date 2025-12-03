@@ -1,22 +1,22 @@
 @interface UIInputViewSetPlacementCompactAssistantOnScreenLeft
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 @end
 
 @implementation UIInputViewSetPlacementCompactAssistantOnScreenLeft
 
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  v5 = a4;
-  if (a4)
+  viewCopy = view;
+  if (view)
   {
-    v6 = a5;
-    v7 = [v5 leftAnchor];
-    v8 = [v6 leftAnchor];
+    containerViewCopy = containerView;
+    leftAnchor = [viewCopy leftAnchor];
+    leftAnchor2 = [containerViewCopy leftAnchor];
 
-    v5 = [v7 constraintEqualToAnchor:v8 constant:16.0];
+    viewCopy = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:16.0];
   }
 
-  return v5;
+  return viewCopy;
 }
 
 @end

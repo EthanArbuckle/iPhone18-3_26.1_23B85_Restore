@@ -1,14 +1,14 @@
 @interface ASCMetricsActivity
 + (NSDictionary)defaultFields;
-- (ASCMetricsActivity)initWithCoder:(id)a3;
-- (ASCMetricsActivity)initWithFields:(id)a3;
-- (ASCMetricsActivity)metricsActivityWithValue:(id)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASCMetricsActivity)initWithCoder:(id)coder;
+- (ASCMetricsActivity)initWithFields:(id)fields;
+- (ASCMetricsActivity)metricsActivityWithValue:(id)value forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)metricsActivityByMergingFields:(id)a3 uniquingFieldsWithBlock:(id)a4;
-- (id)metricsActivityByRemovingValueForKey:(id)a3;
+- (id)metricsActivityByMergingFields:(id)fields uniquingFieldsWithBlock:(id)block;
+- (id)metricsActivityByRemovingValueForKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCMetricsActivity
@@ -45,16 +45,16 @@ void __35__ASCMetricsActivity_defaultFields__block_invoke()
   defaultFields_defaultFields = v5;
 }
 
-- (ASCMetricsActivity)initWithFields:(id)a3
+- (ASCMetricsActivity)initWithFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   v10.receiver = self;
   v10.super_class = ASCMetricsActivity;
   v5 = [(ASCMetricsActivity *)&v10 init];
   if (v5)
   {
     v6 = +[ASCMetricsActivity defaultFields];
-    v7 = [v6 asc_dictionaryByMergingDictionary:v4 uniquingKeysWithBlock:&__block_literal_global_22];
+    v7 = [v6 asc_dictionaryByMergingDictionary:fieldsCopy uniquingKeysWithBlock:&__block_literal_global_22];
     fields = v5->_fields;
     v5->_fields = v7;
   }
@@ -62,19 +62,19 @@ void __35__ASCMetricsActivity_defaultFields__block_invoke()
   return v5;
 }
 
-- (ASCMetricsActivity)initWithCoder:(id)a3
+- (ASCMetricsActivity)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"fields"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"fields"];
 
   if (v9)
   {
     self = [(ASCMetricsActivity *)self initWithFields:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -84,34 +84,34 @@ void __35__ASCMetricsActivity_defaultFields__block_invoke()
       [ASCMetricsActivity initWithCoder:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCMetricsActivity *)self fields];
-  [v4 encodeObject:v5 forKey:@"fields"];
+  coderCopy = coder;
+  fields = [(ASCMetricsActivity *)self fields];
+  [coderCopy encodeObject:fields forKey:@"fields"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCMetricsActivity *)self fields];
-  [(ASCHasher *)v3 combineObject:v4];
+  fields = [(ASCMetricsActivity *)self fields];
+  [(ASCHasher *)v3 combineObject:fields];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -134,17 +134,17 @@ void __35__ASCMetricsActivity_defaultFields__block_invoke()
 
   if (v7)
   {
-    v8 = [(ASCMetricsActivity *)self fields];
-    v9 = [v7 fields];
-    v10 = v9;
-    if (v8 && v9)
+    fields = [(ASCMetricsActivity *)self fields];
+    fields2 = [v7 fields];
+    v10 = fields2;
+    if (fields && fields2)
     {
-      v11 = [v8 isEqual:v9];
+      v11 = [fields isEqual:fields2];
     }
 
     else
     {
-      v11 = v8 == v9;
+      v11 = fields == fields2;
     }
   }
 
@@ -159,46 +159,46 @@ void __35__ASCMetricsActivity_defaultFields__block_invoke()
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCMetricsActivity *)self fields];
-  [(ASCDescriber *)v3 addSensitiveObject:v4 withName:@"fields"];
+  fields = [(ASCMetricsActivity *)self fields];
+  [(ASCDescriber *)v3 addSensitiveObject:fields withName:@"fields"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
-- (ASCMetricsActivity)metricsActivityWithValue:(id)a3 forKey:(id)a4
+- (ASCMetricsActivity)metricsActivityWithValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCMetricsActivity *)self fields];
-  v9 = [v8 mutableCopy];
+  keyCopy = key;
+  valueCopy = value;
+  fields = [(ASCMetricsActivity *)self fields];
+  v9 = [fields mutableCopy];
 
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [v9 setObject:valueCopy forKeyedSubscript:keyCopy];
   v10 = [objc_alloc(objc_opt_class()) initWithFields:v9];
 
   return v10;
 }
 
-- (id)metricsActivityByMergingFields:(id)a3 uniquingFieldsWithBlock:(id)a4
+- (id)metricsActivityByMergingFields:(id)fields uniquingFieldsWithBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCMetricsActivity *)self fields];
-  v9 = [v8 asc_dictionaryByMergingDictionary:v7 uniquingKeysWithBlock:v6];
+  blockCopy = block;
+  fieldsCopy = fields;
+  fields = [(ASCMetricsActivity *)self fields];
+  v9 = [fields asc_dictionaryByMergingDictionary:fieldsCopy uniquingKeysWithBlock:blockCopy];
 
   v10 = [objc_alloc(objc_opt_class()) initWithFields:v9];
 
   return v10;
 }
 
-- (id)metricsActivityByRemovingValueForKey:(id)a3
+- (id)metricsActivityByRemovingValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ASCMetricsActivity *)self fields];
-  v6 = [v5 mutableCopy];
+  keyCopy = key;
+  fields = [(ASCMetricsActivity *)self fields];
+  v6 = [fields mutableCopy];
 
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:keyCopy];
   v7 = [objc_alloc(objc_opt_class()) initWithFields:v6];
 
   return v7;

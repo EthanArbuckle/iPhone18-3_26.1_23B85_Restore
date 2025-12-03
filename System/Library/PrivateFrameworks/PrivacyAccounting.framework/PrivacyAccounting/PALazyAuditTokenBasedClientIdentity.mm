@@ -2,20 +2,20 @@
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (NSString)description;
 - (OS_tcc_identity)identity;
-- (PALazyAuditTokenBasedClientIdentity)initWithAuditToken:(id *)a3;
+- (PALazyAuditTokenBasedClientIdentity)initWithAuditToken:(id *)token;
 @end
 
 @implementation PALazyAuditTokenBasedClientIdentity
 
-- (PALazyAuditTokenBasedClientIdentity)initWithAuditToken:(id *)a3
+- (PALazyAuditTokenBasedClientIdentity)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = PALazyAuditTokenBasedClientIdentity;
   result = [(PALazyAuditTokenBasedClientIdentity *)&v6 init];
   if (result)
   {
-    v5 = *a3->var0;
-    *&result->_auditToken.val[4] = *&a3->var0[4];
+    v5 = *token->var0;
+    *&result->_auditToken.val[4] = *&token->var0[4];
     *result->_auditToken.val = v5;
   }
 
@@ -57,8 +57,8 @@
 {
   v2 = MEMORY[0x1EEE9AC00](self, a2);
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [v2 identity];
-  if (v3)
+  identity = [v2 identity];
+  if (identity)
   {
     v4 = tcc_object_copy_description();
   }

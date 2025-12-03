@@ -6,8 +6,8 @@
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  v3 = [(MPModelArtist *)v2 name:0x22203A656D614ELL];
+  selfCopy = self;
+  v3 = [(MPModelArtist *)selfCopy name:0x22203A656D614ELL];
   if (v3)
   {
     v4 = v3;

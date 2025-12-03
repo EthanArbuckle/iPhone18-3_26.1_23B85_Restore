@@ -1,6 +1,6 @@
 @interface WebBrowsingSettingsController
-- (WebBrowsingSettingsController)initWithCoder:(id)a3;
-- (WebBrowsingSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WebBrowsingSettingsController)initWithCoder:(id)coder;
+- (WebBrowsingSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 @end
 
@@ -8,7 +8,7 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_53194();
   v4 = v3;
 
@@ -25,17 +25,17 @@
   return v5.super.isa;
 }
 
-- (WebBrowsingSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (WebBrowsingSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_55854();
     v8 = &self->super.super.PSListController_opaque[OBJC_IVAR___WebBrowsingSettingsController_webBrowsingTitle];
     *v8 = 0;
     *(v8 + 1) = 0xE000000000000000;
-    v9 = a4;
-    a3 = sub_55844();
+    bundleCopy = bundle;
+    name = sub_55844();
   }
 
   else
@@ -43,17 +43,17 @@
     v10 = &self->super.super.PSListController_opaque[OBJC_IVAR___WebBrowsingSettingsController_webBrowsingTitle];
     *v10 = 0;
     *(v10 + 1) = 0xE000000000000000;
-    v11 = a4;
+    bundleCopy2 = bundle;
   }
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(WebBrowsingSettingsController *)&v14 initWithNibName:a3 bundle:a4];
+  v12 = [(WebBrowsingSettingsController *)&v14 initWithNibName:name bundle:bundle];
 
   return v12;
 }
 
-- (WebBrowsingSettingsController)initWithCoder:(id)a3
+- (WebBrowsingSettingsController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = &self->super.super.PSListController_opaque[OBJC_IVAR___WebBrowsingSettingsController_webBrowsingTitle];
@@ -61,8 +61,8 @@
   *(v6 + 1) = 0xE000000000000000;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(WebBrowsingSettingsController *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(WebBrowsingSettingsController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

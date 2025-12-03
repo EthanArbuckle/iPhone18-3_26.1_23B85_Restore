@@ -1,24 +1,24 @@
 @interface SBPIPBackdropView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (NSString)groupName;
-- (SBPIPBackdropView)initWithFrame:(CGRect)a3;
+- (SBPIPBackdropView)initWithFrame:(CGRect)frame;
 - (double)backdropScale;
 - (double)gaussianBlurRadius;
 - (void)_updateFilters;
 - (void)dealloc;
-- (void)setBackdropScale:(double)a3;
-- (void)setGaussianBlurRadius:(double)a3;
-- (void)setGroupName:(id)a3;
+- (void)setBackdropScale:(double)scale;
+- (void)setGaussianBlurRadius:(double)radius;
+- (void)setGroupName:(id)name;
 @end
 
 @implementation SBPIPBackdropView
 
-- (SBPIPBackdropView)initWithFrame:(CGRect)a3
+- (SBPIPBackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = SBLogPIP();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -27,12 +27,12 @@
 
   v18.receiver = self;
   v18.super_class = SBPIPBackdropView;
-  v9 = [(SBPIPBackdropView *)&v18 initWithFrame:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(SBPIPBackdropView *)&v18 initWithFrame:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    animatedLayerProperties = v9->_animatedLayerProperties;
-    v9->_animatedLayerProperties = &unk_28336DEA8;
+    animatedLayerProperties = height->_animatedLayerProperties;
+    height->_animatedLayerProperties = &unk_28336DEA8;
 
     v12 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v12 setName:@"gaussianBlur"];
@@ -44,8 +44,8 @@
     v10->_gaussianBlurFilter = v12;
     v15 = v12;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v10 selector:sel__updateFilters name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__updateFilters name:*MEMORY[0x277D764C8] object:0];
 
     [(SBPIPBackdropView *)v10 _updateFilters];
   }
@@ -61,8 +61,8 @@
     [SBPIPBackdropView initWithFrame:];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SBPIPBackdropView;
@@ -93,61 +93,61 @@
   v8 = [v7 numberWithDouble:?];
   [(CAFilter *)gaussianBlurFilter setValue:v8 forKey:@"inputRadius"];
 
-  v9 = [(SBPIPBackdropView *)self layer];
-  [v9 setFilters:v10];
+  layer = [(SBPIPBackdropView *)self layer];
+  [layer setFilters:v10];
 }
 
 - (NSString)groupName
 {
-  v2 = [(SBPIPBackdropView *)self layer];
-  v3 = [v2 groupName];
+  layer = [(SBPIPBackdropView *)self layer];
+  groupName = [layer groupName];
 
-  return v3;
+  return groupName;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [(SBPIPBackdropView *)self layer];
-  [v5 setGroupName:v4];
+  nameCopy = name;
+  layer = [(SBPIPBackdropView *)self layer];
+  [layer setGroupName:nameCopy];
 }
 
 - (double)gaussianBlurRadius
 {
-  v2 = [(SBPIPBackdropView *)self layer];
-  v3 = [v2 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(SBPIPBackdropView *)self layer];
+  v3 = [layer valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setGaussianBlurRadius:(double)a3
+- (void)setGaussianBlurRadius:(double)radius
 {
-  v5 = [(SBPIPBackdropView *)self layer];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(SBPIPBackdropView *)self layer];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
+  [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
 - (double)backdropScale
 {
-  v2 = [(SBPIPBackdropView *)self layer];
-  [v2 scale];
+  layer = [(SBPIPBackdropView *)self layer];
+  [layer scale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBackdropScale:(double)a3
+- (void)setBackdropScale:(double)scale
 {
-  v4 = [(SBPIPBackdropView *)self layer];
-  [v4 setScale:a3];
+  layer = [(SBPIPBackdropView *)self layer];
+  [layer setScale:scale];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([(NSArray *)self->_animatedLayerProperties containsObject:v4])
+  keyCopy = key;
+  if ([(NSArray *)self->_animatedLayerProperties containsObject:keyCopy])
   {
     v5 = 1;
   }
@@ -156,7 +156,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBPIPBackdropView;
-    v5 = [(SBPIPBackdropView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBPIPBackdropView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

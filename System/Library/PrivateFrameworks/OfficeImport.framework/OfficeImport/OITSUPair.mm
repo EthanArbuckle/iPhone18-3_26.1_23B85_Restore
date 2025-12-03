@@ -1,44 +1,44 @@
 @interface OITSUPair
 + (id)pair;
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-+ (id)pairWithPair:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (OITSUPair)initWithCoder:(id)a3;
-- (OITSUPair)initWithFirst:(id)a3 second:(id)a4;
-- (OITSUPair)initWithPair:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
++ (id)pairWithFirst:(id)first second:(id)second;
++ (id)pairWithPair:(id)pair;
+- (BOOL)isEqual:(id)equal;
+- (OITSUPair)initWithCoder:(id)coder;
+- (OITSUPair)initWithFirst:(id)first second:(id)second;
+- (OITSUPair)initWithPair:(id)pair;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)p_SetFirst:(id)a3;
-- (void)p_SetSecond:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)p_SetFirst:(id)first;
+- (void)p_SetSecond:(id)second;
 @end
 
 @implementation OITSUPair
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v4 = [[a1 alloc] initWithFirst:a3 second:a4];
+  v4 = [[self alloc] initWithFirst:first second:second];
 
   return v4;
 }
 
-+ (id)pairWithPair:(id)a3
++ (id)pairWithPair:(id)pair
 {
-  v3 = [[a1 alloc] initWithPair:a3];
+  v3 = [[self alloc] initWithPair:pair];
 
   return v3;
 }
 
 + (id)pair
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (OITSUPair)initWithFirst:(id)a3 second:(id)a4
+- (OITSUPair)initWithFirst:(id)first second:(id)second
 {
   v9.receiver = self;
   v9.super_class = OITSUPair;
@@ -46,19 +46,19 @@
   v7 = v6;
   if (v6)
   {
-    [(OITSUPair *)v6 p_SetFirst:a3];
-    [(OITSUPair *)v7 p_SetSecond:a4];
+    [(OITSUPair *)v6 p_SetFirst:first];
+    [(OITSUPair *)v7 p_SetSecond:second];
   }
 
   return v7;
 }
 
-- (OITSUPair)initWithPair:(id)a3
+- (OITSUPair)initWithPair:(id)pair
 {
-  v5 = [a3 first];
-  v6 = [a3 second];
+  first = [pair first];
+  second = [pair second];
 
-  return [(OITSUPair *)self initWithFirst:v5 second:v6];
+  return [(OITSUPair *)self initWithFirst:first second:second];
 }
 
 - (void)dealloc
@@ -70,25 +70,25 @@
   [(OITSUPair *)&v3 dealloc];
 }
 
-- (OITSUPair)initWithCoder:(id)a3
+- (OITSUPair)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObject];
-  v6 = [a3 decodeObject];
+  decodeObject = [coder decodeObject];
+  decodeObject2 = [coder decodeObject];
 
-  return [(OITSUPair *)self initWithFirst:v5 second:v6];
+  return [(OITSUPair *)self initWithFirst:decodeObject second:decodeObject2];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:{-[OITSUPair first](self, "first")}];
-  v5 = [(OITSUPair *)self second];
+  [coder encodeObject:{-[OITSUPair first](self, "first")}];
+  second = [(OITSUPair *)self second];
 
-  [a3 encodeObject:v5];
+  [coder encodeObject:second];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_6;
   }
@@ -100,37 +100,37 @@
     return v7;
   }
 
-  v5 = [(OITSUPair *)self first];
-  v6 = [a3 first];
-  if (!(v5 | v6) || (v7 = [v5 isEqual:v6]) != 0)
+  first = [(OITSUPair *)self first];
+  first2 = [equal first];
+  if (!(first | first2) || (v7 = [first isEqual:first2]) != 0)
   {
-    v8 = [(OITSUPair *)self second];
-    v9 = [a3 second];
-    if (!(v8 | v9))
+    second = [(OITSUPair *)self second];
+    second2 = [equal second];
+    if (!(second | second2))
     {
 LABEL_6:
       LOBYTE(v7) = 1;
       return v7;
     }
 
-    LOBYTE(v7) = [v8 isEqual:v9];
+    LOBYTE(v7) = [second isEqual:second2];
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v5 = objc_opt_class();
-  v6 = TSUCheckedDynamicCast(v5, a3);
+  v6 = TSUCheckedDynamicCast(v5, compare);
   if (!v6)
   {
     return -1;
   }
 
   v7 = v6;
-  v8 = [(OITSUPair *)self first];
-  if (v8 != [v7 first])
+  first = [(OITSUPair *)self first];
+  if (first != [v7 first])
   {
     if (![(OITSUPair *)self first])
     {
@@ -161,8 +161,8 @@ LABEL_18:
     }
   }
 
-  v10 = [(OITSUPair *)self second];
-  if (v10 == [v7 second])
+  second = [(OITSUPair *)self second];
+  if (second == [v7 second])
   {
     return 0;
   }
@@ -187,47 +187,47 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v11 = [(OITSUPair *)self second];
-  v12 = [v7 second];
+  second2 = [(OITSUPair *)self second];
+  second3 = [v7 second];
 
-  return [v11 compare:v12];
+  return [second2 compare:second3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [-[OITSUPair first](self "first")];
   v6 = [-[OITSUPair second](self "second")];
-  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithFirst:second:", v5, v6}];
+  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithFirst:second:", v5, v6}];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [-[OITSUPair first](self "first")];
   v6 = [-[OITSUPair second](self "second")];
-  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithFirst:second:", v5, v6}];
+  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithFirst:second:", v5, v6}];
 
   return v7;
 }
 
-- (void)p_SetFirst:(id)a3
+- (void)p_SetFirst:(id)first
 {
   mFirst = self->mFirst;
-  if (mFirst != a3)
+  if (mFirst != first)
   {
 
-    self->mFirst = a3;
+    self->mFirst = first;
   }
 }
 
-- (void)p_SetSecond:(id)a3
+- (void)p_SetSecond:(id)second
 {
   mSecond = self->mSecond;
-  if (mSecond != a3)
+  if (mSecond != second)
   {
 
-    self->mSecond = a3;
+    self->mSecond = second;
   }
 }
 

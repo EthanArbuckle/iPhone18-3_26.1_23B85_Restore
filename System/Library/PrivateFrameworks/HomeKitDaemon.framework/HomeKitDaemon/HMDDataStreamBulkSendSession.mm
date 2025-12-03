@@ -1,13 +1,13 @@
 @interface HMDDataStreamBulkSendSession
 - (BOOL)isActive;
 - (HMDDataStreamBulkSendProtocol)bulkSendProtocol;
-- (HMDDataStreamBulkSendSession)initWithProtocol:(id)a3 sessionIdentifier:(id)a4 queue:(id)a5 logIdentifier:(id)a6;
+- (HMDDataStreamBulkSendSession)initWithProtocol:(id)protocol sessionIdentifier:(id)identifier queue:(id)queue logIdentifier:(id)logIdentifier;
 - (void)_closeSession;
 - (void)_pumpReadDataIfPossible;
-- (void)asyncHandleIncomingPackets:(id)a3 isEof:(BOOL)a4;
-- (void)asyncHandleRemoteCloseWithError:(id)a3;
+- (void)asyncHandleIncomingPackets:(id)packets isEof:(BOOL)eof;
+- (void)asyncHandleRemoteCloseWithError:(id)error;
 - (void)dealloc;
-- (void)read:(id)a3;
+- (void)read:(id)read;
 @end
 
 @implementation HMDDataStreamBulkSendSession
@@ -21,18 +21,18 @@
 
 - (void)_pumpReadDataIfPossible
 {
-  v3 = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
+  activeReadHandler = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
 
-  if (v3)
+  if (activeReadHandler)
   {
-    v4 = [(HMDDataStreamBulkSendSession *)self pendingReads];
-    v5 = [v4 hmf_maybeDequeue];
+    pendingReads = [(HMDDataStreamBulkSendSession *)self pendingReads];
+    hmf_maybeDequeue = [pendingReads hmf_maybeDequeue];
 
-    if (!v5)
+    if (!hmf_maybeDequeue)
     {
-      v6 = [(HMDDataStreamBulkSendSession *)self pendingError];
+      pendingError = [(HMDDataStreamBulkSendSession *)self pendingError];
       [(HMDDataStreamBulkSendSession *)self setPendingError:0];
-      if (v6)
+      if (pendingError)
       {
         goto LABEL_5;
       }
@@ -43,21 +43,21 @@
       }
     }
 
-    v6 = 0;
+    pendingError = 0;
 LABEL_5:
-    v7 = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
+    activeReadHandler2 = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
     [(HMDDataStreamBulkSendSession *)self setActiveReadHandler:0];
-    v8 = [(HMDDataStreamBulkSendSession *)self queue];
+    queue = [(HMDDataStreamBulkSendSession *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__HMDDataStreamBulkSendSession__pumpReadDataIfPossible__block_invoke;
     block[3] = &unk_278689F98;
-    v14 = v7;
-    v12 = v5;
-    v13 = v6;
-    v9 = v6;
-    v10 = v7;
-    dispatch_async(v8, block);
+    v14 = activeReadHandler2;
+    v12 = hmf_maybeDequeue;
+    v13 = pendingError;
+    v9 = pendingError;
+    v10 = activeReadHandler2;
+    dispatch_async(queue, block);
 
 LABEL_6:
   }
@@ -68,33 +68,33 @@ LABEL_6:
   if (!self->_isClosed)
   {
     self->_isClosed = 1;
-    v3 = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
+    activeReadHandler = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
     [(HMDDataStreamBulkSendSession *)self setActiveReadHandler:0];
-    if (v3)
+    if (activeReadHandler)
     {
-      v4 = [(HMDDataStreamBulkSendSession *)self queue];
+      queue = [(HMDDataStreamBulkSendSession *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __45__HMDDataStreamBulkSendSession__closeSession__block_invoke;
       block[3] = &unk_278688B80;
-      v6 = v3;
-      dispatch_async(v4, block);
+      v6 = activeReadHandler;
+      dispatch_async(queue, block);
     }
   }
 }
 
-- (void)asyncHandleRemoteCloseWithError:(id)a3
+- (void)asyncHandleRemoteCloseWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDDataStreamBulkSendSession *)self queue];
+  errorCopy = error;
+  queue = [(HMDDataStreamBulkSendSession *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HMDDataStreamBulkSendSession_asyncHandleRemoteCloseWithError___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __64__HMDDataStreamBulkSendSession_asyncHandleRemoteCloseWithError___block_invoke(uint64_t a1)
@@ -122,19 +122,19 @@ uint64_t __64__HMDDataStreamBulkSendSession_asyncHandleRemoteCloseWithError___bl
   return result;
 }
 
-- (void)asyncHandleIncomingPackets:(id)a3 isEof:(BOOL)a4
+- (void)asyncHandleIncomingPackets:(id)packets isEof:(BOOL)eof
 {
-  v6 = a3;
-  v7 = [(HMDDataStreamBulkSendSession *)self queue];
+  packetsCopy = packets;
+  queue = [(HMDDataStreamBulkSendSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___block_invoke;
   block[3] = &unk_278688BD0;
-  v11 = a4;
+  eofCopy = eof;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = packetsCopy;
+  v8 = packetsCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___block_invoke(uint64_t a1)
@@ -168,35 +168,35 @@ uint64_t __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___b
   return result;
 }
 
-- (void)read:(id)a3
+- (void)read:(id)read
 {
-  v4 = a3;
-  v5 = [(HMDDataStreamBulkSendSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  readCopy = read;
+  queue = [(HMDDataStreamBulkSendSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_isClosed)
   {
-    v6 = [(HMDDataStreamBulkSendSession *)self queue];
+    queue2 = [(HMDDataStreamBulkSendSession *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__HMDDataStreamBulkSendSession_read___block_invoke;
     block[3] = &unk_278688B80;
-    v9 = v4;
-    dispatch_async(v6, block);
+    v9 = readCopy;
+    dispatch_async(queue2, block);
   }
 
   else
   {
-    v7 = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
+    activeReadHandler = [(HMDDataStreamBulkSendSession *)self activeReadHandler];
 
-    if (v7)
+    if (activeReadHandler)
     {
       [(HMDDataStreamBulkSendSession *)self cancelWithReason:5];
     }
 
     else
     {
-      [(HMDDataStreamBulkSendSession *)self setActiveReadHandler:v4];
+      [(HMDDataStreamBulkSendSession *)self setActiveReadHandler:readCopy];
       [(HMDDataStreamBulkSendSession *)self _pumpReadDataIfPossible];
     }
   }
@@ -211,16 +211,16 @@ uint64_t __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___b
 
   else
   {
-    v4 = [(HMDDataStreamBulkSendSession *)self pendingReads];
-    if ([v4 count])
+    pendingReads = [(HMDDataStreamBulkSendSession *)self pendingReads];
+    if ([pendingReads count])
     {
     }
 
     else
     {
-      v5 = [(HMDDataStreamBulkSendSession *)self pendingError];
+      pendingError = [(HMDDataStreamBulkSendSession *)self pendingError];
 
-      if (!v5)
+      if (!pendingError)
       {
         return !self->_hasReceivedEof;
       }
@@ -234,11 +234,11 @@ uint64_t __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___b
 {
   if (!self->_isClosed)
   {
-    v3 = [(HMDDataStreamBulkSendSession *)self bulkSendProtocol];
-    if (v3)
+    bulkSendProtocol = [(HMDDataStreamBulkSendSession *)self bulkSendProtocol];
+    if (bulkSendProtocol)
     {
-      v4 = [(HMDDataStreamBulkSendSession *)self sessionIdentifier];
-      [v3 asyncBulkSendSessionDidCancelSessionWithIdentifier:v4 reason:5 hadReceivedEof:self->_hasReceivedEof];
+      sessionIdentifier = [(HMDDataStreamBulkSendSession *)self sessionIdentifier];
+      [bulkSendProtocol asyncBulkSendSessionDidCancelSessionWithIdentifier:sessionIdentifier reason:5 hadReceivedEof:self->_hasReceivedEof];
     }
   }
 
@@ -247,12 +247,12 @@ uint64_t __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___b
   [(HMDDataStreamBulkSendSession *)&v5 dealloc];
 }
 
-- (HMDDataStreamBulkSendSession)initWithProtocol:(id)a3 sessionIdentifier:(id)a4 queue:(id)a5 logIdentifier:(id)a6
+- (HMDDataStreamBulkSendSession)initWithProtocol:(id)protocol sessionIdentifier:(id)identifier queue:(id)queue logIdentifier:(id)logIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  protocolCopy = protocol;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  logIdentifierCopy = logIdentifier;
   v21.receiver = self;
   v21.super_class = HMDDataStreamBulkSendSession;
   v14 = [(HMDDataStreamBulkSendSession *)&v21 init];
@@ -260,16 +260,16 @@ uint64_t __65__HMDDataStreamBulkSendSession_asyncHandleIncomingPackets_isEof___b
   if (v14)
   {
     *&v14->_isClosed = 0;
-    objc_storeWeak(&v14->_bulkSendProtocol, v10);
-    objc_storeStrong(&v15->_sessionIdentifier, a4);
-    objc_storeStrong(&v15->_queue, a5);
-    v16 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v14->_bulkSendProtocol, protocolCopy);
+    objc_storeStrong(&v15->_sessionIdentifier, identifier);
+    objc_storeStrong(&v15->_queue, queue);
+    array = [MEMORY[0x277CBEB18] array];
     pendingReads = v15->_pendingReads;
-    v15->_pendingReads = v16;
+    v15->_pendingReads = array;
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v13, v11];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", logIdentifierCopy, identifierCopy];
     logIdentifier = v15->_logIdentifier;
-    v15->_logIdentifier = v18;
+    v15->_logIdentifier = identifierCopy;
   }
 
   return v15;

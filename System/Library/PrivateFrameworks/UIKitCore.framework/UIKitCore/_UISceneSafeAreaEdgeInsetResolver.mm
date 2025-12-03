@@ -1,7 +1,7 @@
 @interface _UISceneSafeAreaEdgeInsetResolver
-- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)a3;
+- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)orientation;
 - (_UISceneSafeAreaEdgeInsetResolver)init;
-- (_UISceneSafeAreaEdgeInsetResolver)initWithBSXPCCoder:(id)a3;
+- (_UISceneSafeAreaEdgeInsetResolver)initWithBSXPCCoder:(id)coder;
 @end
 
 @implementation _UISceneSafeAreaEdgeInsetResolver
@@ -13,14 +13,14 @@
   return [(_UISceneSafeAreaEdgeInsetResolver *)&v3 init];
 }
 
-- (_UISceneSafeAreaEdgeInsetResolver)initWithBSXPCCoder:(id)a3
+- (_UISceneSafeAreaEdgeInsetResolver)initWithBSXPCCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);
   return result;
 }
 
-- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)orientation
 {
   sub_18A4A8398();
   __break(1u);

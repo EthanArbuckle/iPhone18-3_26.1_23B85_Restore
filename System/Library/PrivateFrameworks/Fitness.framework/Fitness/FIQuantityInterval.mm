@@ -1,22 +1,22 @@
 @interface FIQuantityInterval
-- (FIQuantityInterval)initWithIntervalDefinition:(id)a3 activityType:(unint64_t)a4 startDate:(id)a5;
+- (FIQuantityInterval)initWithIntervalDefinition:(id)definition activityType:(unint64_t)type startDate:(id)date;
 @end
 
 @implementation FIQuantityInterval
 
-- (FIQuantityInterval)initWithIntervalDefinition:(id)a3 activityType:(unint64_t)a4 startDate:(id)a5
+- (FIQuantityInterval)initWithIntervalDefinition:(id)definition activityType:(unint64_t)type startDate:(id)date
 {
-  v9 = a3;
-  v10 = a5;
+  definitionCopy = definition;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = FIQuantityInterval;
   v11 = [(FIQuantityInterval *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_definition, a3);
-    objc_storeStrong(&v12->_startDate, a5);
-    if (a4 == 13)
+    objc_storeStrong(&v11->_definition, definition);
+    objc_storeStrong(&v12->_startDate, date);
+    if (type == 13)
     {
       v13 = MEMORY[0x277CCCB10];
     }
@@ -26,7 +26,7 @@
       v13 = MEMORY[0x277CCCB40];
     }
 
-    if (a4 == 46)
+    if (type == 46)
     {
       v13 = MEMORY[0x277CCCB38];
     }

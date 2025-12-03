@@ -1,5 +1,5 @@
 @interface HMDCloudAccountOperation
-- (HMDCloudAccountOperation)initWithBlock:(id)a3 clientQueue:(id)a4;
+- (HMDCloudAccountOperation)initWithBlock:(id)block clientQueue:(id)queue;
 - (id)description;
 - (void)main;
 @end
@@ -10,12 +10,12 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDCloudAccountOperation *)v4 description];
+    v7 = [(HMDCloudAccountOperation *)selfCopy description];
     *buf = 138543618;
     v27 = v6;
     v28 = 2112;
@@ -25,9 +25,9 @@
 
   objc_autoreleasePoolPop(v3);
   v8 = dispatch_group_create();
-  objc_initWeak(&location, v4);
+  objc_initWeak(&location, selfCopy);
   dispatch_group_enter(v8);
-  v9 = [(HMDCloudAccountOperation *)v4 clientQueue];
+  clientQueue = [(HMDCloudAccountOperation *)selfCopy clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HMDCloudAccountOperation_main__block_invoke;
@@ -35,19 +35,19 @@
   objc_copyWeak(&v24, &location);
   v10 = v8;
   v23 = v10;
-  dispatch_async(v9, block);
+  dispatch_async(clientQueue, block);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = v4;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [(HMDCloudAccountOperation *)v12 identifier];
+    identifier = [(HMDCloudAccountOperation *)v12 identifier];
     *buf = 138543618;
     v27 = v14;
     v28 = 2112;
-    v29 = v15;
+    v29 = identifier;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Waiting for account operation %@ to complete", buf, 0x16u);
   }
 
@@ -59,11 +59,11 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [(HMDCloudAccountOperation *)v17 identifier];
+    identifier2 = [(HMDCloudAccountOperation *)v17 identifier];
     *buf = 138543618;
     v27 = v19;
     v28 = 2112;
-    v29 = v20;
+    v29 = identifier2;
     _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@Account operation %@ completed", buf, 0x16u);
   }
 
@@ -94,30 +94,30 @@ void __32__HMDCloudAccountOperation_main__block_invoke(uint64_t a1)
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDCloudAccountOperation *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@, Identifier = %@>", v4, v5];
+  identifier = [(HMDCloudAccountOperation *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@, Identifier = %@>", v4, identifier];
 
   return v6;
 }
 
-- (HMDCloudAccountOperation)initWithBlock:(id)a3 clientQueue:(id)a4
+- (HMDCloudAccountOperation)initWithBlock:(id)block clientQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HMDCloudAccountOperation;
   v8 = [(HMDCloudAccountOperation *)&v15 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = uUID;
 
-    v11 = _Block_copy(v6);
+    v11 = _Block_copy(blockCopy);
     operationBlock = v8->_operationBlock;
     v8->_operationBlock = v11;
 
-    objc_storeStrong(&v8->_clientQueue, a4);
+    objc_storeStrong(&v8->_clientQueue, queue);
     v13 = v8;
   }
 

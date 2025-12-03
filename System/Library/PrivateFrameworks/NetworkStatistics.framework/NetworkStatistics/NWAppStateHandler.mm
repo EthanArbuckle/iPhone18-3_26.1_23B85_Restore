@@ -1,15 +1,15 @@
 @interface NWAppStateHandler
-- (BOOL)identifierShouldBeIgnored:(id)a3;
-- (BOOL)rbsProcessStateToForeground:(id)a3;
+- (BOOL)identifierShouldBeIgnored:(id)ignored;
+- (BOOL)rbsProcessStateToForeground:(id)foreground;
 - (NWAppStateHandler)init;
-- (id)trackerForPid:(int)a3;
-- (void)_removeStateTracker:(id)a3;
-- (void)handleStateUpdate:(id)a3 forProcess:(id)a4;
+- (id)trackerForPid:(int)pid;
+- (void)_removeStateTracker:(id)tracker;
+- (void)handleStateUpdate:(id)update forProcess:(id)process;
 @end
 
 @implementation NWAppStateHandler
 
-- (id)trackerForPid:(int)a3
+- (id)trackerForPid:(int)pid
 {
   v8 = 0;
   v9 = &v8;
@@ -22,7 +22,7 @@
   v6[1] = 3221225472;
   v6[2] = __35__NWAppStateHandler_trackerForPid___block_invoke;
   v6[3] = &unk_27996DB48;
-  v7 = a3;
+  pidCopy = pid;
   v6[4] = &v8;
   [(NSMutableDictionary *)appBundlesMonitored enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v9[5];
@@ -70,23 +70,23 @@ void __35__NWAppStateHandler_trackerForPid___block_invoke(uint64_t a1, uint64_t 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeStateTracker:(id)a3
+- (void)_removeStateTracker:(id)tracker
 {
-  v4 = a3;
-  if (!v4)
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     [NWAppStateHandler _removeStateTracker:];
   }
 
-  v9 = v4;
-  v5 = [v4 identifier];
-  if (!v5)
+  v9 = trackerCopy;
+  identifier = [trackerCopy identifier];
+  if (!identifier)
   {
     [NWAppStateHandler _removeStateTracker:];
   }
 
-  v6 = v5;
-  v7 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:v5];
+  v6 = identifier;
+  v7 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:identifier];
   if (!v7)
   {
     [NWAppStateHandler _removeStateTracker:];
@@ -100,10 +100,10 @@ void __35__NWAppStateHandler_trackerForPid___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (BOOL)identifierShouldBeIgnored:(id)a3
+- (BOOL)identifierShouldBeIgnored:(id)ignored
 {
-  v3 = a3;
-  v4 = v3;
+  ignoredCopy = ignored;
+  v4 = ignoredCopy;
   if (identifierShouldBeIgnored__onceToken != -1)
   {
     [NWAppStateHandler identifierShouldBeIgnored:];
@@ -117,7 +117,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!ignoredCopy)
   {
     goto LABEL_5;
   }
@@ -135,35 +135,35 @@ void __47__NWAppStateHandler_identifierShouldBeIgnored___block_invoke()
   identifierShouldBeIgnored__kIdentifiersToIgnore = &unk_286D3E570;
 }
 
-- (void)handleStateUpdate:(id)a3 forProcess:(id)a4
+- (void)handleStateUpdate:(id)update forProcess:(id)process
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identity];
-  v9 = [v8 embeddedApplicationIdentifier];
-  if (!v9)
+  updateCopy = update;
+  processCopy = process;
+  identity = [processCopy identity];
+  embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
+  if (!embeddedApplicationIdentifier)
   {
-    v9 = [v8 xpcServiceIdentifier];
-    if (!v9)
+    embeddedApplicationIdentifier = [identity xpcServiceIdentifier];
+    if (!embeddedApplicationIdentifier)
     {
-      if (![v7 hasConsistentLaunchdJob] || (objc_msgSend(v7, "consistentJobLabel"), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (![processCopy hasConsistentLaunchdJob] || (objc_msgSend(processCopy, "consistentJobLabel"), (embeddedApplicationIdentifier = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v10 = [v7 bundle];
-        v9 = [v10 identifier];
+        bundle = [processCopy bundle];
+        embeddedApplicationIdentifier = [bundle identifier];
       }
     }
   }
 
-  if (![(NWAppStateHandler *)self identifierShouldBeIgnored:v9])
+  if (![(NWAppStateHandler *)self identifierShouldBeIgnored:embeddedApplicationIdentifier])
   {
-    if (!v9)
+    if (!embeddedApplicationIdentifier)
     {
       v27 = NStatGetLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v32 = v7;
+        *v32 = processCopy;
         _os_log_impl(&dword_25BA3A000, v27, OS_LOG_TYPE_ERROR, "handleStateUpdate no identifier from process %@", buf, 0xCu);
       }
 
@@ -171,17 +171,17 @@ void __47__NWAppStateHandler_identifierShouldBeIgnored___block_invoke()
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v32 = v6;
+        *v32 = updateCopy;
         _os_log_impl(&dword_25BA3A000, v12, OS_LOG_TYPE_ERROR, "handleStateUpdate failed identifier lookup was from update %@", buf, 0xCu);
       }
 
       goto LABEL_33;
     }
 
-    v11 = [v7 pid];
+    v11 = [processCopy pid];
     v12 = pid_to_uuid(v11);
-    v13 = [v6 state];
-    v14 = [(NWAppStateHandler *)self rbsProcessStateToForeground:v13];
+    state = [updateCopy state];
+    v14 = [(NWAppStateHandler *)self rbsProcessStateToForeground:state];
 
     obj = self->_appBundlesMonitored;
     objc_sync_enter(obj);
@@ -197,10 +197,10 @@ void __47__NWAppStateHandler_identifierShouldBeIgnored___block_invoke()
       goto LABEL_32;
     }
 
-    v17 = [v6 state];
-    v18 = [v17 taskState];
+    state2 = [updateCopy state];
+    taskState = [state2 taskState];
 
-    if (v18)
+    if (taskState)
     {
       if (!v16)
       {
@@ -213,27 +213,27 @@ LABEL_16:
           goto LABEL_32;
         }
 
-        [(NWAppStateTracker *)v25 setIdentifier:v9];
+        [(NWAppStateTracker *)v25 setIdentifier:embeddedApplicationIdentifier];
         [(NWAppStateTracker *)v25 setUuid:v12];
         [(NWAppStateTracker *)v25 setPid:v11];
-        v26 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:v9];
+        v26 = [(NSMutableDictionary *)self->_appBundlesMonitored objectForKeyedSubscript:embeddedApplicationIdentifier];
         if (!v26)
         {
           v26 = objc_alloc_init(MEMORY[0x277CBEB58]);
-          [(NSMutableDictionary *)self->_appBundlesMonitored setObject:v26 forKey:v9];
+          [(NSMutableDictionary *)self->_appBundlesMonitored setObject:v26 forKey:embeddedApplicationIdentifier];
         }
 
         [v26 addObject:v25];
         goto LABEL_31;
       }
 
-      v19 = [(NWAppStateTracker *)v16 uuid];
-      v20 = [v19 isEqual:v12];
+      uuid = [(NWAppStateTracker *)v16 uuid];
+      v20 = [uuid isEqual:v12];
 
       if (v20)
       {
-        v21 = [(NWAppStateTracker *)v16 identifier];
-        v22 = [v21 isEqualToString:v9];
+        identifier = [(NWAppStateTracker *)v16 identifier];
+        v22 = [identifier isEqualToString:embeddedApplicationIdentifier];
 
         if (v22)
         {
@@ -245,16 +245,16 @@ LABEL_33:
           goto LABEL_34;
         }
 
-        v23 = [(NWAppStateTracker *)v16 identifier];
+        identifier2 = [(NWAppStateTracker *)v16 identifier];
         v24 = NStatGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109634;
           *v32 = v11;
           *&v32[4] = 2112;
-          *&v32[6] = v9;
+          *&v32[6] = embeddedApplicationIdentifier;
           v33 = 2112;
-          v34 = v23;
+          v34 = identifier2;
           _os_log_impl(&dword_25BA3A000, v24, OS_LOG_TYPE_DEFAULT, "State change notification for pid %d now has bundle %@, not matching previous %@", buf, 0x1Cu);
         }
 
@@ -265,13 +265,13 @@ LABEL_33:
       v26 = NStatGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v28 = [(NWAppStateTracker *)v16 uuid];
+        uuid2 = [(NWAppStateTracker *)v16 uuid];
         *buf = 67109634;
         *v32 = v11;
         *&v32[4] = 2112;
         *&v32[6] = v12;
         v33 = 2112;
-        v34 = v28;
+        v34 = uuid2;
         _os_log_impl(&dword_25BA3A000, v26, OS_LOG_TYPE_ERROR, "State change notification for pid %d has uuid %@, not matching previous %@", buf, 0x1Cu);
       }
     }
@@ -299,14 +299,14 @@ LABEL_34:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)rbsProcessStateToForeground:(id)a3
+- (BOOL)rbsProcessStateToForeground:(id)foreground
 {
-  v3 = a3;
-  v4 = [v3 taskState];
-  if (v4 == 4 || v4 == 2)
+  foregroundCopy = foreground;
+  taskState = [foregroundCopy taskState];
+  if (taskState == 4 || taskState == 2)
   {
-    v6 = [v3 endowmentNamespaces];
-    v7 = [v6 containsObject:@"com.apple.frontboard.visibility"];
+    endowmentNamespaces = [foregroundCopy endowmentNamespaces];
+    v7 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
   }
 
   else

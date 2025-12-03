@@ -1,26 +1,26 @@
 @interface PUICalendarPrivacyController
-+ (BOOL)isServiceRestricted:(id)a3;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4;
-- (id)calendarStatus:(id)a3;
++ (BOOL)isServiceRestricted:(id)restricted;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d;
+- (id)calendarStatus:(id)status;
 - (id)specifiers;
-- (void)_setCalendarStatus:(id)a3 specifier:(id)a4;
+- (void)_setCalendarStatus:(id)status specifier:(id)specifier;
 - (void)provideNavigationDonations;
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5;
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value;
 - (void)updateCalendarAuthorizationStates;
 - (void)updateSpecifiersForImposedSettings;
 @end
 
 @implementation PUICalendarPrivacyController
 
-+ (BOOL)isServiceRestricted:(id)a3
++ (BOOL)isServiceRestricted:(id)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   CFPreferencesAppSynchronize(@"com.apple.springboard");
   v4 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsObject:v3];
+    v6 = [v4 containsObject:restrictedCopy];
   }
 
   else
@@ -35,15 +35,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"CALENDARS" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"CALENDARS" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -53,19 +53,19 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = _PUILoggingFacility();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = a3;
+    serviceCopy = service;
     v20 = 2112;
-    v21 = v8;
+    v21 = identifierCopy;
     v22 = 1024;
-    v23 = a5;
+    valueCopy = value;
     _os_log_impl(&dword_2657FE000, v9, OS_LOG_TYPE_DEFAULT, "Setting TCC auth for service: %@ appIdentifier:%@, accessLevel:%d", buf, 0x1Cu);
   }
 
@@ -74,24 +74,24 @@
     [PUICalendarPrivacyController setTCCForService:appIdentifier:value:];
   }
 
-  [v8 cStringUsingEncoding:4];
+  [identifierCopy cStringUsingEncoding:4];
   v10 = tcc_identity_create();
   v11 = tcc_service_singleton_for_CF_name();
-  if (a5 == 2)
+  if (value == 2)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__PUICalendarPrivacyController_setTCCForService_appIdentifier_value___block_invoke_2;
     v16[3] = &unk_279BA18B0;
     v16[4] = self;
-    v12 = v8;
+    v12 = identifierCopy;
     v17 = v12;
     v13 = _Block_copy(v16);
     v14 = _PUILoggingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v12;
+      serviceCopy = v12;
       _os_log_impl(&dword_2657FE000, v14, OS_LOG_TYPE_DEFAULT, "Setting calendar auth for app %@ to full, after prompt", buf, 0xCu);
     }
 
@@ -213,7 +213,7 @@ void __69__PUICalendarPrivacyController_setTCCForService_appIdentifier_value___b
     v47 = PUIGetActivePairedDevice();
     if (v47 && objc_opt_class())
     {
-      v51 = [MEMORY[0x277D2BD58] sharedInstance];
+      mEMORY[0x277D2BD58] = [MEMORY[0x277D2BD58] sharedInstance];
       ScreenScale();
       if (v20 == 2)
       {
@@ -230,8 +230,8 @@ void __69__PUICalendarPrivacyController_setTCCForService_appIdentifier_value___b
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v53 = [(PUICalendarPrivacyController *)val calendarAllAppIDs];
-      v22 = [v53 countByEnumeratingWithState:&v61 objects:v69 count:16];
+      calendarAllAppIDs = [(PUICalendarPrivacyController *)val calendarAllAppIDs];
+      v22 = [calendarAllAppIDs countByEnumeratingWithState:&v61 objects:v69 count:16];
       if (v22)
       {
         v23 = *v62;
@@ -242,7 +242,7 @@ void __69__PUICalendarPrivacyController_setTCCForService_appIdentifier_value___b
           {
             if (*v62 != v23)
             {
-              objc_enumerationMutation(v53);
+              objc_enumerationMutation(calendarAllAppIDs);
             }
 
             v26 = *(*(&v61 + 1) + 8 * j);
@@ -283,7 +283,7 @@ void __69__PUICalendarPrivacyController_setTCCForService_appIdentifier_value___b
               v32 = v30;
               v59 = v32;
               objc_copyWeak(&v60, buf);
-              [v51 getIconForBundleID:v28 iconVariant:v49 block:v58 timeout:-1.0];
+              [mEMORY[0x277D2BD58] getIconForBundleID:v28 iconVariant:v49 block:v58 timeout:-1.0];
               [v55 addObject:v32];
               objc_destroyWeak(&v60);
 
@@ -291,7 +291,7 @@ void __69__PUICalendarPrivacyController_setTCCForService_appIdentifier_value___b
             }
           }
 
-          v22 = [v53 countByEnumeratingWithState:&v61 objects:v69 count:16];
+          v22 = [calendarAllAppIDs countByEnumeratingWithState:&v61 objects:v69 count:16];
         }
 
         while (v22);
@@ -379,54 +379,54 @@ uint64_t __42__PUICalendarPrivacyController_specifiers__block_invoke_3(uint64_t 
   return v7;
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4
+- (id)appSpecifierWithName:(id)name bundleID:(id)d
 {
   v6 = MEMORY[0x277D3FAD8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 preferenceSpecifierNamed:v8 target:self set:sel__setCalendarStatus_specifier_ get:sel_calendarStatus_ detail:objc_opt_class() cell:2 edit:0];
+  dCopy = d;
+  nameCopy = name;
+  v9 = [v6 preferenceSpecifierNamed:nameCopy target:self set:sel__setCalendarStatus_specifier_ get:sel_calendarStatus_ detail:objc_opt_class() cell:2 edit:0];
 
-  [v9 setIdentifier:v7];
-  [v9 setProperty:v7 forKey:@"appBundleID"];
+  [v9 setIdentifier:dCopy];
+  [v9 setProperty:dCopy forKey:@"appBundleID"];
 
   v10 = PUI_LocalizedStringForPrivacy(@"CALENDARS_AUTH_HEADER");
   [v9 setProperty:v10 forKey:*MEMORY[0x277D40110]];
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v13 = PUI_LocalizedStringForPrivacy(@"CALENDARS_NO_ACCESS_AUTHORIZATION");
-  [v11 addObject:v13];
+  [array addObject:v13];
 
-  [v12 addObject:&unk_28772B2B8];
+  [array2 addObject:&unk_28772B2B8];
   v14 = PUI_LocalizedStringForPrivacy(@"CALENDARS_WRITE_ONLY_ACCESS_AUTHORIZATION");
-  [v11 addObject:v14];
+  [array addObject:v14];
 
-  [v12 addObject:&unk_28772B288];
+  [array2 addObject:&unk_28772B288];
   v15 = PUI_LocalizedStringForPrivacy(@"CALENDARS_FULL_ACCESS_AUTHORIZATION");
-  [v11 addObject:v15];
+  [array addObject:v15];
 
-  [v12 addObject:&unk_28772B2A0];
-  [v9 setValues:v12 titles:v11];
+  [array2 addObject:&unk_28772B2A0];
+  [v9 setValues:array2 titles:array];
 
   return v9;
 }
 
-- (void)_setCalendarStatus:(id)a3 specifier:(id)a4
+- (void)_setCalendarStatus:(id)status specifier:(id)specifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"appBundleID"];
+  statusCopy = status;
+  v7 = [specifier propertyForKey:@"appBundleID"];
   v8 = _PUILoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412546;
     v20 = v7;
     v21 = 1024;
-    v22 = [v6 intValue];
+    intValue = [statusCopy intValue];
     _os_log_impl(&dword_2657FE000, v8, OS_LOG_TYPE_DEFAULT, "Selected entry for app %@: %d", &v19, 0x12u);
   }
 
-  if ([v6 intValue] == 2)
+  if ([statusCopy intValue] == 2)
   {
     v9 = _PUILoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -437,15 +437,15 @@ uint64_t __42__PUICalendarPrivacyController_specifiers__block_invoke_3(uint64_t 
     }
 
     v10 = *MEMORY[0x277D6C118];
-    v11 = self;
+    selfCopy3 = self;
     v12 = v7;
     v13 = 2;
 LABEL_18:
-    [(PUICalendarPrivacyController *)v11 setTCCForService:v10 appIdentifier:v12 value:v13];
+    [(PUICalendarPrivacyController *)selfCopy3 setTCCForService:v10 appIdentifier:v12 value:v13];
     goto LABEL_19;
   }
 
-  if ([v6 intValue] == 1)
+  if ([statusCopy intValue] == 1)
   {
     v14 = _PUILoggingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -456,16 +456,16 @@ LABEL_18:
     }
 
     v10 = *MEMORY[0x277D6C118];
-    v11 = self;
+    selfCopy3 = self;
     v12 = v7;
     v13 = 1;
     goto LABEL_18;
   }
 
-  v15 = [v6 intValue];
+  intValue2 = [statusCopy intValue];
   v16 = _PUILoggingFacility();
   v17 = v16;
-  if (!v15)
+  if (!intValue2)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -475,7 +475,7 @@ LABEL_18:
     }
 
     v10 = *MEMORY[0x277D6C118];
-    v11 = self;
+    selfCopy3 = self;
     v12 = v7;
     v13 = 0;
     goto LABEL_18;
@@ -483,7 +483,7 @@ LABEL_18:
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    [PUICalendarPrivacyController _setCalendarStatus:v6 specifier:v17];
+    [PUICalendarPrivacyController _setCalendarStatus:statusCopy specifier:v17];
   }
 
 LABEL_19:
@@ -493,12 +493,12 @@ LABEL_19:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)calendarStatus:(id)a3
+- (id)calendarStatus:(id)status
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 propertyForKey:@"appBundleID"];
-  v5 = [(PUICalendarPrivacyController *)self calendarFullAccessAllowedAppIDs];
-  v6 = [v5 containsObject:v4];
+  v4 = [status propertyForKey:@"appBundleID"];
+  calendarFullAccessAllowedAppIDs = [(PUICalendarPrivacyController *)self calendarFullAccessAllowedAppIDs];
+  v6 = [calendarFullAccessAllowedAppIDs containsObject:v4];
 
   if (v6)
   {
@@ -515,8 +515,8 @@ LABEL_19:
 
   else
   {
-    v9 = [(PUICalendarPrivacyController *)self calendarWriteOnlyAppIDs];
-    v10 = [v9 containsObject:v4];
+    calendarWriteOnlyAppIDs = [(PUICalendarPrivacyController *)self calendarWriteOnlyAppIDs];
+    v10 = [calendarWriteOnlyAppIDs containsObject:v4];
 
     if (v10)
     {
@@ -533,8 +533,8 @@ LABEL_19:
 
     else
     {
-      v11 = [(PUICalendarPrivacyController *)self calendarNoAccessAppIDs];
-      v12 = [v11 containsObject:v4];
+      calendarNoAccessAppIDs = [(PUICalendarPrivacyController *)self calendarNoAccessAppIDs];
+      v12 = [calendarNoAccessAppIDs containsObject:v4];
 
       v13 = _PUILoggingFacility();
       v7 = v13;
@@ -604,14 +604,14 @@ LABEL_19:
   [(PUICalendarPrivacyController *)self setCalendarWriteOnlyAppIDs:v20];
 
   [(PUICalendarPrivacyController *)self setCalendarNoAccessAppIDs:v21];
-  v22 = [(PUICalendarPrivacyController *)self calendarWriteOnlyAppIDs];
-  v23 = [(PUICalendarPrivacyController *)self calendarFullAccessAllowedAppIDs];
-  v24 = [v22 setByAddingObjectsFromSet:v23];
+  calendarWriteOnlyAppIDs = [(PUICalendarPrivacyController *)self calendarWriteOnlyAppIDs];
+  calendarFullAccessAllowedAppIDs = [(PUICalendarPrivacyController *)self calendarFullAccessAllowedAppIDs];
+  v24 = [calendarWriteOnlyAppIDs setByAddingObjectsFromSet:calendarFullAccessAllowedAppIDs];
   [(PUICalendarPrivacyController *)self setCalendarSomeAccessAppIDs:v24];
 
-  v25 = [(PUICalendarPrivacyController *)self calendarSomeAccessAppIDs];
-  v26 = [(PUICalendarPrivacyController *)self calendarNoAccessAppIDs];
-  v27 = [v25 setByAddingObjectsFromSet:v26];
+  calendarSomeAccessAppIDs = [(PUICalendarPrivacyController *)self calendarSomeAccessAppIDs];
+  calendarNoAccessAppIDs = [(PUICalendarPrivacyController *)self calendarNoAccessAppIDs];
+  v27 = [calendarSomeAccessAppIDs setByAddingObjectsFromSet:calendarNoAccessAppIDs];
   [(PUICalendarPrivacyController *)self setCalendarAllAppIDs:v27];
 
   v28 = *MEMORY[0x277D85DE8];
@@ -649,10 +649,10 @@ LABEL_19:
         {
           v11 = v10;
           v12 = [v9 objectForKeyedSubscript:v7];
-          v13 = [v12 BOOLValue];
-          v14 = [v3 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
+          bOOLValue2 = [v3 BOOLValue];
 
-          if (v13 == v14)
+          if (bOOLValue == bOOLValue2)
           {
             continue;
           }

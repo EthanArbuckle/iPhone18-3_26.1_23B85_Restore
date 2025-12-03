@@ -2,39 +2,39 @@
 + (PXMediaTypeInfoManager)sharedManager;
 - (PXMediaTypeInfoManager)init;
 - (id)_init;
-- (void)_handleAssetDownloadProgressWithAsset:(id)a3 error:(id)a4;
-- (void)_handleAssetQueryCallbackWithAsset:(id)a3 error:(id)a4 userInitiated:(BOOL)a5;
-- (void)_handleInstallMobileAssetCallbackWithAsset:(id)a3 UTI:(id)a4 codecName:(id)a5 completionHandler:(id)a6;
-- (void)_installMobileAssetAsUserInitiated:(BOOL)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (void)_handleAssetDownloadProgressWithAsset:(id)asset error:(id)error;
+- (void)_handleAssetQueryCallbackWithAsset:(id)asset error:(id)error userInitiated:(BOOL)initiated;
+- (void)_handleInstallMobileAssetCallbackWithAsset:(id)asset UTI:(id)i codecName:(id)name completionHandler:(id)handler;
+- (void)_installMobileAssetAsUserInitiated:(BOOL)initiated timeout:(double)timeout completionHandler:(id)handler;
 - (void)_prepareInformationForLookups;
-- (void)_processPendingCallbacksWithAsset:(id)a3;
-- (void)mediaTypeInfoURLForUTI:(id)a3 codecName:(id)a4 timeout:(double)a5 completionHandler:(id)a6;
+- (void)_processPendingCallbacksWithAsset:(id)asset;
+- (void)mediaTypeInfoURLForUTI:(id)i codecName:(id)name timeout:(double)timeout completionHandler:(id)handler;
 - (void)prepareInformationForLookups;
 @end
 
 @implementation PXMediaTypeInfoManager
 
-- (void)mediaTypeInfoURLForUTI:(id)a3 codecName:(id)a4 timeout:(double)a5 completionHandler:(id)a6
+- (void)mediaTypeInfoURLForUTI:(id)i codecName:(id)name timeout:(double)timeout completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v13)
+  iCopy = i;
+  nameCopy = name;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  if (v11 | v12)
+  if (iCopy | nameCopy)
   {
     v14 = PLUIGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v11;
+      v31 = iCopy;
       v32 = 2112;
-      v33 = v12;
+      v33 = nameCopy;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEFAULT, "PXMediaTypeInfoManager - Look up URL for UTI: %@, codec: %@", buf, 0x16u);
     }
 
@@ -45,11 +45,11 @@
     block[2] = __85__PXMediaTypeInfoManager_mediaTypeInfoURLForUTI_codecName_timeout_completionHandler___block_invoke_342;
     block[3] = &unk_1E773D548;
     objc_copyWeak(v26, buf);
-    v26[1] = *&a5;
-    v23 = v11;
-    v24 = v12;
-    v25 = v13;
-    v16 = v13;
+    v26[1] = *&timeout;
+    v23 = iCopy;
+    v24 = nameCopy;
+    v25 = handlerCopy;
+    v16 = handlerCopy;
     dispatch_async(v15, block);
 
     objc_destroyWeak(v26);
@@ -72,9 +72,9 @@
     v27[2] = __85__PXMediaTypeInfoManager_mediaTypeInfoURLForUTI_codecName_timeout_completionHandler___block_invoke;
     v27[3] = &unk_1E774C2F0;
     v28 = v17;
-    v29 = v13;
+    v29 = handlerCopy;
     v19 = v17;
-    v20 = v13;
+    v20 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v27);
   }
 }
@@ -103,30 +103,30 @@ void __85__PXMediaTypeInfoManager_mediaTypeInfoURLForUTI_codecName_timeout_compl
   [WeakRetained _handleInstallMobileAssetCallbackWithAsset:v3 UTI:*(a1 + 32) codecName:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)_handleInstallMobileAssetCallbackWithAsset:(id)a3 UTI:(id)a4 codecName:(id)a5 completionHandler:(id)a6
+- (void)_handleInstallMobileAssetCallbackWithAsset:(id)asset UTI:(id)i codecName:(id)name completionHandler:(id)handler
 {
   v56 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  assetCopy = asset;
+  iCopy = i;
+  nameCopy = name;
+  handlerCopy = handler;
+  if (assetCopy)
   {
-    if ([v11 state] != 1)
+    if ([assetCopy state] != 1)
     {
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v44 handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"!asset || ([asset state] == ASAssetStateInstalled)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"!asset || ([asset state] == ASAssetStateInstalled)"}];
     }
 
-    v48 = v13;
-    v15 = [v11 localURL];
-    v16 = [v15 URLByAppendingPathComponent:@"mediaSupport"];
+    v48 = nameCopy;
+    localURL = [assetCopy localURL];
+    v16 = [localURL URLByAppendingPathComponent:@"mediaSupport"];
     v17 = [v16 URLByAppendingPathExtension:@"plist"];
 
     v53 = 0;
     v18 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v17 options:2 error:&v53];
     v19 = v53;
-    v47 = v12;
+    v47 = iCopy;
     if (!v18)
     {
       v20 = PLUIGetLog();
@@ -141,8 +141,8 @@ void __85__PXMediaTypeInfoManager_mediaTypeInfoURLForUTI_codecName_timeout_compl
       v21 = v19;
 LABEL_31:
 
-      v12 = v47;
-      v13 = v48;
+      iCopy = v47;
+      nameCopy = v48;
       if (v32)
       {
         goto LABEL_33;
@@ -243,8 +243,8 @@ LABEL_30:
 LABEL_32:
   v32 = +[PXMediaTypeInfoManager knowledgeBaseFallbackURL];
 LABEL_33:
-  v37 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v38 = [v37 stringForKey:@"PXMediaTypeInfoManagerMoreInfoURLString"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v38 = [standardUserDefaults stringForKey:@"PXMediaTypeInfoManagerMoreInfoURLString"];
 
   if (v38)
   {
@@ -277,9 +277,9 @@ LABEL_33:
   block[2] = __101__PXMediaTypeInfoManager__handleInstallMobileAssetCallbackWithAsset_UTI_codecName_completionHandler___block_invoke;
   block[3] = &unk_1E774C2F0;
   v50 = v32;
-  v51 = v14;
+  v51 = handlerCopy;
   v42 = v32;
-  v43 = v14;
+  v43 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -320,19 +320,19 @@ void __54__PXMediaTypeInfoManager_prepareInformationForLookups__block_invoke(uin
   }
 }
 
-- (void)_installMobileAssetAsUserInitiated:(BOOL)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)_installMobileAssetAsUserInitiated:(BOOL)initiated timeout:(double)timeout completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
-    v11 = _Block_copy(v9);
-    if (a4 > 0.0)
+    v11 = _Block_copy(handlerCopy);
+    if (timeout > 0.0)
     {
-      if (!a3)
+      if (!initiated)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"userInitiated"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"userInitiated"}];
       }
 
       location[0] = 0;
@@ -347,7 +347,7 @@ void __54__PXMediaTypeInfoManager_prepareInformationForLookups__block_invoke(uin
       v28 = v10;
       v12 = _Block_copy(aBlock);
 
-      v13 = dispatch_time(0, (a4 * 1000000000.0));
+      v13 = dispatch_time(0, (timeout * 1000000000.0));
       v14 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -379,7 +379,7 @@ void __54__PXMediaTypeInfoManager_prepareInformationForLookups__block_invoke(uin
   v19[2] = __87__PXMediaTypeInfoManager__installMobileAssetAsUserInitiated_timeout_completionHandler___block_invoke_2_327;
   v19[3] = &unk_1E773D4F8;
   objc_copyWeak(&v20, location);
-  v21 = a3;
+  initiatedCopy = initiated;
   [v17 startQuery:v19];
   objc_destroyWeak(&v20);
   objc_destroyWeak(location);
@@ -432,16 +432,16 @@ void __87__PXMediaTypeInfoManager__installMobileAssetAsUserInitiated_timeout_com
   [WeakRetained _handleAssetQueryCallbackWithAsset:v7 error:v5 userInitiated:*(a1 + 40)];
 }
 
-- (void)_handleAssetQueryCallbackWithAsset:(id)a3 error:(id)a4 userInitiated:(BOOL)a5
+- (void)_handleAssetQueryCallbackWithAsset:(id)asset error:(id)error userInitiated:(BOOL)initiated
 {
-  v5 = a5;
+  initiatedCopy = initiated;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  assetCopy = asset;
+  errorCopy = error;
+  if (assetCopy)
   {
-    v10 = [v8 state];
-    if (v10 == 1)
+    state = [assetCopy state];
+    if (state == 1)
     {
       v18 = PLUIGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -450,15 +450,15 @@ void __87__PXMediaTypeInfoManager__installMobileAssetAsUserInitiated_timeout_com
         _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_DEFAULT, "PXMediaTypeInfoManager - Asset installed.", &buf, 2u);
       }
 
-      [(PXMediaTypeInfoManager *)self _processPendingCallbacksWithAsset:v8];
+      [(PXMediaTypeInfoManager *)self _processPendingCallbacksWithAsset:assetCopy];
     }
 
-    else if (!v10)
+    else if (!state)
     {
-      v11 = [MEMORY[0x1E69B18C0] nonUserInitiatedDownloadsAllowed];
+      nonUserInitiatedDownloadsAllowed = [MEMORY[0x1E69B18C0] nonUserInitiatedDownloadsAllowed];
       v12 = PLUIGetLog();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      if (nonUserInitiatedDownloadsAllowed)
       {
         if (v13)
         {
@@ -466,17 +466,17 @@ void __87__PXMediaTypeInfoManager__installMobileAssetAsUserInitiated_timeout_com
           _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEFAULT, "PXMediaTypeInfoManager - Asset not present, will download.", &buf, 2u);
         }
 
-        [v8 setUserInitiatedDownload:v5];
+        [assetCopy setUserInitiatedDownload:initiatedCopy];
         objc_initWeak(&location, self);
-        objc_initWeak(&from, v8);
+        objc_initWeak(&from, assetCopy);
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __81__PXMediaTypeInfoManager__handleAssetQueryCallbackWithAsset_error_userInitiated___block_invoke;
         v21[3] = &unk_1E773D4A8;
         objc_copyWeak(&v22, &location);
         objc_copyWeak(&v23, &from);
-        [v8 setProgressHandler:v21];
-        if (v5)
+        [assetCopy setProgressHandler:v21];
+        if (initiatedCopy)
         {
           v14 = *MEMORY[0x1E69B1880];
           v26 = *MEMORY[0x1E69B1878];
@@ -506,7 +506,7 @@ void __87__PXMediaTypeInfoManager__installMobileAssetAsUserInitiated_timeout_com
         }
 
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&buf forKeys:&v26 count:v16];
-        [v8 beginDownloadWithOptions:v20];
+        [assetCopy beginDownloadWithOptions:v20];
 
         objc_destroyWeak(&v23);
         objc_destroyWeak(&v22);
@@ -533,7 +533,7 @@ void __87__PXMediaTypeInfoManager__installMobileAssetAsUserInitiated_timeout_com
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_DEFAULT, "PXMediaTypeInfoManager - Query returned no asset! Error: %@", &buf, 0xCu);
     }
 
@@ -549,29 +549,29 @@ void __81__PXMediaTypeInfoManager__handleAssetQueryCallbackWithAsset_error_userI
   [WeakRetained _handleAssetDownloadProgressWithAsset:v5 error:v4];
 }
 
-- (void)_handleAssetDownloadProgressWithAsset:(id)a3 error:(id)a4
+- (void)_handleAssetDownloadProgressWithAsset:(id)asset error:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  assetCopy = asset;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = PLUIGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "PXMediaTypeInfoManager - Download returned error: %@", &v12, 0xCu);
     }
 
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
 LABEL_5:
-    [(PXMediaTypeInfoManager *)v9 _processPendingCallbacksWithAsset:v10];
+    [(PXMediaTypeInfoManager *)selfCopy2 _processPendingCallbacksWithAsset:v10];
     goto LABEL_6;
   }
 
-  if (v6 && [v6 state] == 1)
+  if (assetCopy && [assetCopy state] == 1)
   {
     v11 = PLUIGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -580,17 +580,17 @@ LABEL_5:
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "PXMediaTypeInfoManager - Did download asset.", &v12, 2u);
     }
 
-    v9 = self;
-    v10 = v6;
+    selfCopy2 = self;
+    v10 = assetCopy;
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (void)_processPendingCallbacksWithAsset:(id)a3
+- (void)_processPendingCallbacksWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -610,9 +610,9 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = __60__PXMediaTypeInfoManager__processPendingCallbacksWithAsset___block_invoke_2;
   v8[3] = &unk_1E7749A28;
-  v9 = v4;
+  v9 = assetCopy;
   v10 = v12;
-  v7 = v4;
+  v7 = assetCopy;
   dispatch_async(v6, v8);
 
   _Block_object_dispose(v12, 8);
@@ -662,8 +662,8 @@ void __60__PXMediaTypeInfoManager__processPendingCallbacksWithAsset___block_invo
 
 - (PXMediaTypeInfoManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXMediaTypeInfoManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaTypeInfoManager.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXMediaTypeInfoManager init]"}];
 
   abort();
 }

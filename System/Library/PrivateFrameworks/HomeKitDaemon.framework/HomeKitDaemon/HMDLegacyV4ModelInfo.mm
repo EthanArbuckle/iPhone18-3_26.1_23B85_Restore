@@ -1,10 +1,10 @@
 @interface HMDLegacyV4ModelInfo
-- (HMDLegacyV4ModelInfo)initWithClass:(Class)a3;
+- (HMDLegacyV4ModelInfo)initWithClass:(Class)class;
 @end
 
 @implementation HMDLegacyV4ModelInfo
 
-- (HMDLegacyV4ModelInfo)initWithClass:(Class)a3
+- (HMDLegacyV4ModelInfo)initWithClass:(Class)class
 {
   v20.receiver = self;
   v20.super_class = HMDLegacyV4ModelInfo;
@@ -12,29 +12,29 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_hmdModelClass, a3);
+    objc_storeStrong(&v4->_hmdModelClass, class);
     v6 = +[HMDBackingStoreSingleton sharedInstance];
-    v7 = [v6 classToNameTransform];
-    v8 = [v7 objectForKey:a3];
+    classToNameTransform = [v6 classToNameTransform];
+    v8 = [classToNameTransform objectForKey:class];
     hmdTypeName = v5->_hmdTypeName;
     v5->_hmdTypeName = v8;
 
     if (!v5->_hmdTypeName)
     {
-      v10 = NSStringFromClass(a3);
+      v10 = NSStringFromClass(class);
       v11 = v5->_hmdTypeName;
       v5->_hmdTypeName = v10;
     }
 
-    v12 = [(objc_class *)a3 properties];
-    v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+    properties = [(objc_class *)class properties];
+    v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(properties, "count")}];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __38__HMDLegacyV4ModelInfo_initWithClass___block_invoke;
     v18[3] = &unk_278670C58;
     v19 = v13;
     v14 = v13;
-    [v12 enumerateKeysAndObjectsUsingBlock:v18];
+    [properties enumerateKeysAndObjectsUsingBlock:v18];
     v15 = [v14 copy];
     properties = v5->_properties;
     v5->_properties = v15;

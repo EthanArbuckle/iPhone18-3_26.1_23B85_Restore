@@ -1,125 +1,125 @@
 @interface SBSUIWallpaperService
-+ (BOOL)setWallpaperColor:(id)a3 darkColor:(id)a4 forLocations:(id)a5;
-+ (BOOL)setWallpaperGradient:(id)a3 forLocations:(id)a4;
-+ (BOOL)setWallpaperImage:(id)a3 adjustedImage:(id)a4 thumbnailData:(id)a5 imageHashData:(id)a6 wallpaperOptions:(id)a7 forLocations:(id)a8 currentWallpaperMode:(id)a9;
-+ (BOOL)setWallpaperWithVideo:(id)a3 sandboxToken:(id)a4 cropRect:(id)a5 wallpaperMode:(id)a6;
-+ (id)_remoteTargetForServiceClientConnection:(id)a3;
++ (BOOL)setWallpaperColor:(id)color darkColor:(id)darkColor forLocations:(id)locations;
++ (BOOL)setWallpaperGradient:(id)gradient forLocations:(id)locations;
++ (BOOL)setWallpaperImage:(id)image adjustedImage:(id)adjustedImage thumbnailData:(id)data imageHashData:(id)hashData wallpaperOptions:(id)options forLocations:(id)locations currentWallpaperMode:(id)mode;
++ (BOOL)setWallpaperWithVideo:(id)video sandboxToken:(id)token cropRect:(id)rect wallpaperMode:(id)mode;
++ (id)_remoteTargetForServiceClientConnection:(id)connection;
 + (id)_setupAndActivateServiceClientConnection;
-+ (id)getWallpaperLegibilitySettingsForVariant:(id)a3;
-+ (id)getWallpaperOptionsForVariant:(id)a3;
++ (id)getWallpaperLegibilitySettingsForVariant:(id)variant;
++ (id)getWallpaperOptionsForVariant:(id)variant;
 + (void)removeWallpaperVideo;
 + (void)restoreDefaultWallpaper;
-+ (void)setProceduralWallpaperIdentifier:(id)a3 options:(id)a4 locations:(id)a5;
++ (void)setProceduralWallpaperIdentifier:(id)identifier options:(id)options locations:(id)locations;
 @end
 
 @implementation SBSUIWallpaperService
 
-+ (BOOL)setWallpaperImage:(id)a3 adjustedImage:(id)a4 thumbnailData:(id)a5 imageHashData:(id)a6 wallpaperOptions:(id)a7 forLocations:(id)a8 currentWallpaperMode:(id)a9
++ (BOOL)setWallpaperImage:(id)image adjustedImage:(id)adjustedImage thumbnailData:(id)data imageHashData:(id)hashData wallpaperOptions:(id)options forLocations:(id)locations currentWallpaperMode:(id)mode
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [a1 _setupAndActivateServiceClientConnection];
-  v24 = [a1 _remoteTargetForServiceClientConnection:v23];
-  v25 = [v24 setWallpaperImage:v22 adjustedImage:v21 thumbnailData:v20 imageHashData:v19 wallpaperOptions:v18 forLocations:v17 currentWallpaperMode:v16];
+  modeCopy = mode;
+  locationsCopy = locations;
+  optionsCopy = options;
+  hashDataCopy = hashData;
+  dataCopy = data;
+  adjustedImageCopy = adjustedImage;
+  imageCopy = image;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v24 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  v25 = [v24 setWallpaperImage:imageCopy adjustedImage:adjustedImageCopy thumbnailData:dataCopy imageHashData:hashDataCopy wallpaperOptions:optionsCopy forLocations:locationsCopy currentWallpaperMode:modeCopy];
 
-  [v23 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
   return v25;
 }
 
-+ (void)setProceduralWallpaperIdentifier:(id)a3 options:(id)a4 locations:(id)a5
++ (void)setProceduralWallpaperIdentifier:(id)identifier options:(id)options locations:(id)locations
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [a1 _setupAndActivateServiceClientConnection];
-  v11 = [a1 _remoteTargetForServiceClientConnection:v12];
-  [v11 setProceduralWallpaperIdentifier:v10 options:v9 locations:v8];
+  locationsCopy = locations;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v11 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  [v11 setProceduralWallpaperIdentifier:identifierCopy options:optionsCopy locations:locationsCopy];
 
-  [v12 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
 }
 
 + (void)removeWallpaperVideo
 {
-  v4 = [a1 _setupAndActivateServiceClientConnection];
-  v3 = [a1 _remoteTargetForServiceClientConnection:v4];
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v3 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
   [v3 removeWallpaperVideo];
 
-  [v4 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
 }
 
-+ (BOOL)setWallpaperWithVideo:(id)a3 sandboxToken:(id)a4 cropRect:(id)a5 wallpaperMode:(id)a6
++ (BOOL)setWallpaperWithVideo:(id)video sandboxToken:(id)token cropRect:(id)rect wallpaperMode:(id)mode
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 _setupAndActivateServiceClientConnection];
-  v15 = [a1 _remoteTargetForServiceClientConnection:v14];
-  v16 = [v15 setWallpaperWithVideo:v13 sandboxToken:v12 cropRect:v11 wallpaperMode:v10];
+  modeCopy = mode;
+  rectCopy = rect;
+  tokenCopy = token;
+  videoCopy = video;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v15 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  v16 = [v15 setWallpaperWithVideo:videoCopy sandboxToken:tokenCopy cropRect:rectCopy wallpaperMode:modeCopy];
 
-  [v14 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
   return v16;
 }
 
 + (void)restoreDefaultWallpaper
 {
-  v4 = [a1 _setupAndActivateServiceClientConnection];
-  v3 = [a1 _remoteTargetForServiceClientConnection:v4];
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v3 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
   [v3 restoreDefaultWallpaper];
 
-  [v4 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
 }
 
-+ (BOOL)setWallpaperColor:(id)a3 darkColor:(id)a4 forLocations:(id)a5
++ (BOOL)setWallpaperColor:(id)color darkColor:(id)darkColor forLocations:(id)locations
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 _setupAndActivateServiceClientConnection];
-  v12 = [a1 _remoteTargetForServiceClientConnection:v11];
-  v13 = [v12 setWallpaperColor:v10 darkColor:v9 forLocations:v8];
+  locationsCopy = locations;
+  darkColorCopy = darkColor;
+  colorCopy = color;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v12 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  v13 = [v12 setWallpaperColor:colorCopy darkColor:darkColorCopy forLocations:locationsCopy];
 
-  [v11 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
   return v13;
 }
 
-+ (BOOL)setWallpaperGradient:(id)a3 forLocations:(id)a4
++ (BOOL)setWallpaperGradient:(id)gradient forLocations:(id)locations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _setupAndActivateServiceClientConnection];
-  v9 = [a1 _remoteTargetForServiceClientConnection:v8];
-  v10 = [v9 setWallpaperGradient:v7 forLocations:v6];
+  locationsCopy = locations;
+  gradientCopy = gradient;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v9 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  v10 = [v9 setWallpaperGradient:gradientCopy forLocations:locationsCopy];
 
-  [v8 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
   return v10;
 }
 
-+ (id)getWallpaperOptionsForVariant:(id)a3
++ (id)getWallpaperOptionsForVariant:(id)variant
 {
-  v4 = a3;
-  v5 = [a1 _setupAndActivateServiceClientConnection];
-  v6 = [a1 _remoteTargetForServiceClientConnection:v5];
-  v7 = [v6 getWallpaperOptionsForVariant:v4];
+  variantCopy = variant;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v6 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  v7 = [v6 getWallpaperOptionsForVariant:variantCopy];
 
-  [v5 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
 
   return v7;
 }
 
-+ (id)getWallpaperLegibilitySettingsForVariant:(id)a3
++ (id)getWallpaperLegibilitySettingsForVariant:(id)variant
 {
-  v4 = a3;
-  v5 = [a1 _setupAndActivateServiceClientConnection];
-  v6 = [a1 _remoteTargetForServiceClientConnection:v5];
-  v7 = [v6 getWallpaperLegibilitySettingsForVariant:v4];
+  variantCopy = variant;
+  _setupAndActivateServiceClientConnection = [self _setupAndActivateServiceClientConnection];
+  v6 = [self _remoteTargetForServiceClientConnection:_setupAndActivateServiceClientConnection];
+  v7 = [v6 getWallpaperLegibilitySettingsForVariant:variantCopy];
 
-  [v5 invalidate];
+  [_setupAndActivateServiceClientConnection invalidate];
 
   return v7;
 }
@@ -135,7 +135,7 @@
   v8[1] = 3221225472;
   v8[2] = __65__SBSUIWallpaperService__setupAndActivateServiceClientConnection__block_invoke;
   v8[3] = &__block_descriptor_40_e42_v16__0___BSServiceConnectionConfiguring__8l;
-  v8[4] = a1;
+  v8[4] = self;
   [v6 configureConnection:v8];
   [v6 activate];
 
@@ -177,15 +177,15 @@ void __65__SBSUIWallpaperService__setupAndActivateServiceClientConnection__block
   }
 }
 
-+ (id)_remoteTargetForServiceClientConnection:(id)a3
++ (id)_remoteTargetForServiceClientConnection:(id)connection
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69C7560];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [v3 attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v7 = [v4 remoteTargetWithLaunchingAssertionAttributes:v6];
+  v7 = [connectionCopy remoteTargetWithLaunchingAssertionAttributes:v6];
 
   return v7;
 }

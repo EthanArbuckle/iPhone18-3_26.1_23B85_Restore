@@ -1,47 +1,47 @@
 @interface PKPaymentRequirementsRequest
-- (PKPaymentRequirementsRequest)initWithCardholderName:(id)a3 primaryAccountNumber:(id)a4;
-- (PKPaymentRequirementsRequest)initWithPaymentCredential:(id)a3;
+- (PKPaymentRequirementsRequest)initWithCardholderName:(id)name primaryAccountNumber:(id)number;
+- (PKPaymentRequirementsRequest)initWithPaymentCredential:(id)credential;
 - (id)_cardDictionary;
-- (void)_deviceScoreWithCompletion:(id)a3;
-- (void)_secureCardDictionaryWithBuilder:(id)a3 includingDeviceScore:(BOOL)a4 completion:(id)a5;
-- (void)_urlRequestWithBuilder:(id)a3 webService:(id)a4 completion:(id)a5;
+- (void)_deviceScoreWithCompletion:(id)completion;
+- (void)_secureCardDictionaryWithBuilder:(id)builder includingDeviceScore:(BOOL)score completion:(id)completion;
+- (void)_urlRequestWithBuilder:(id)builder webService:(id)service completion:(id)completion;
 @end
 
 @implementation PKPaymentRequirementsRequest
 
-- (PKPaymentRequirementsRequest)initWithPaymentCredential:(id)a3
+- (PKPaymentRequirementsRequest)initWithPaymentCredential:(id)credential
 {
-  v5 = a3;
+  credentialCopy = credential;
   v12.receiver = self;
   v12.super_class = PKPaymentRequirementsRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentCredential, a3);
-    v8 = [v5 underlyingPaymentPass];
-    v9 = [v8 passTypeIdentifier];
+    objc_storeStrong(&v6->_paymentCredential, credential);
+    underlyingPaymentPass = [credentialCopy underlyingPaymentPass];
+    passTypeIdentifier = [underlyingPaymentPass passTypeIdentifier];
     region = v7->_region;
-    v7->_region = v9;
+    v7->_region = passTypeIdentifier;
   }
 
   return v7;
 }
 
-- (PKPaymentRequirementsRequest)initWithCardholderName:(id)a3 primaryAccountNumber:(id)a4
+- (PKPaymentRequirementsRequest)initWithCardholderName:(id)name primaryAccountNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  numberCopy = number;
   v14.receiver = self;
   v14.super_class = PKPaymentRequirementsRequest;
   v8 = [(PKOverlayableWebServiceRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     cardholderName = v8->_cardholderName;
     v8->_cardholderName = v9;
 
-    v11 = [v7 copy];
+    v11 = [numberCopy copy];
     primaryAccountNumber = v8->_primaryAccountNumber;
     v8->_primaryAccountNumber = v11;
   }
@@ -49,12 +49,12 @@
   return v8;
 }
 
-- (void)_urlRequestWithBuilder:(id)a3 webService:(id)a4 completion:(id)a5
+- (void)_urlRequestWithBuilder:(id)builder webService:(id)service completion:(id)completion
 {
   v92[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  builderCopy = builder;
+  serviceCopy = service;
+  completionCopy = completion;
   v82 = 0;
   v83 = &v82;
   v84 = 0x3032000000;
@@ -66,63 +66,63 @@
   aBlock[2] = __77__PKPaymentRequirementsRequest__urlRequestWithBuilder_webService_completion___block_invoke;
   aBlock[3] = &unk_1E79D2888;
   aBlock[4] = self;
-  v11 = v10;
+  v11 = completionCopy;
   v81 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(PKPaymentRequirementsRequest *)self _cardDictionary];
+  _cardDictionary = [(PKPaymentRequirementsRequest *)self _cardDictionary];
   paymentCredential = self->_paymentCredential;
   if (paymentCredential && ![(PKPaymentCredential *)paymentCredential isContactlessProductCredential]&& ![(PKPaymentCredential *)self->_paymentCredential isDigitalIssuanceProductCredential]&& ![(PKPaymentCredential *)self->_paymentCredential isPurchasedProductCredential]&& ![(PKPaymentCredential *)self->_paymentCredential isFPANCredential])
   {
-    v22 = [(PKPaymentCredential *)self->_paymentCredential isRemoteCredential];
-    v23 = v22 | [(PKPaymentCredential *)self->_paymentCredential isLocalPassCredential];
+    isRemoteCredential = [(PKPaymentCredential *)self->_paymentCredential isRemoteCredential];
+    v23 = isRemoteCredential | [(PKPaymentCredential *)self->_paymentCredential isLocalPassCredential];
     v24 = self->_paymentCredential;
     if (v23)
     {
-      v62 = [(PKPaymentCredential *)v24 couldSupportSuperEasyProvisioning];
+      couldSupportSuperEasyProvisioning = [(PKPaymentCredential *)v24 couldSupportSuperEasyProvisioning];
       v25 = self->_paymentCredential;
-      if (v22)
+      if (isRemoteCredential)
       {
-        v64 = [(PKPaymentCredential *)v25 remoteCredential];
-        v59 = [v8 brokerURL];
+        remoteCredential = [(PKPaymentCredential *)v25 remoteCredential];
+        brokerURL = [builderCopy brokerURL];
         v92[0] = @"devices";
-        v26 = [v8 deviceID];
-        v92[1] = v26;
+        deviceID = [builderCopy deviceID];
+        v92[1] = deviceID;
         v92[2] = @"cards";
-        v27 = [v64 identifier];
-        v92[3] = v27;
+        identifier = [remoteCredential identifier];
+        v92[3] = identifier;
         v92[4] = @"provisioningRequirements";
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:5];
-        v29 = [v8 appleAccountInformation];
-        v30 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v59 endpointComponents:v28 queryParameters:0 appleAccountInformation:v29];
+        appleAccountInformation = [builderCopy appleAccountInformation];
+        v30 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL endpointComponents:v28 queryParameters:0 appleAccountInformation:appleAccountInformation];
         v31 = v83[5];
         v83[5] = v30;
       }
 
       else
       {
-        v64 = [(PKPaymentCredential *)v25 localPassCredential];
-        v58 = [v8 brokerURL];
+        remoteCredential = [(PKPaymentCredential *)v25 localPassCredential];
+        brokerURL2 = [builderCopy brokerURL];
         v91[0] = @"devices";
-        v60 = [v8 deviceID];
-        v91[1] = v60;
+        deviceID2 = [builderCopy deviceID];
+        v91[1] = deviceID2;
         v91[2] = @"passes";
-        v44 = [v64 passTypeIdentifier];
-        v91[3] = v44;
-        v45 = [v64 serialNumber];
-        v91[4] = v45;
+        passTypeIdentifier = [remoteCredential passTypeIdentifier];
+        v91[3] = passTypeIdentifier;
+        serialNumber = [remoteCredential serialNumber];
+        v91[4] = serialNumber;
         v91[5] = @"provisioningRequirements";
         v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:6];
-        v47 = [v8 appleAccountInformation];
-        v48 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v58 endpointComponents:v46 queryParameters:0 appleAccountInformation:v47];
+        appleAccountInformation2 = [builderCopy appleAccountInformation];
+        v48 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL2 endpointComponents:v46 queryParameters:0 appleAccountInformation:appleAccountInformation2];
         v49 = v83[5];
         v83[5] = v48;
       }
 
-      v32 = [v64 state];
-      v21 = [v32 useNonce];
+      state = [remoteCredential state];
+      useNonce = [state useNonce];
 
       v50 = v83[5];
-      if (v62)
+      if (couldSupportSuperEasyProvisioning)
       {
         [v50 setHTTPMethod:@"POST"];
         [v83[5] setValue:@"application/binary" forHTTPHeaderField:@"Content-Type"];
@@ -130,11 +130,11 @@
         v73[1] = 3221225472;
         v73[2] = __77__PKPaymentRequirementsRequest__urlRequestWithBuilder_webService_completion___block_invoke_2;
         v73[3] = &unk_1E79DAFF0;
-        v74 = v13;
-        v21 = v21;
-        v75 = v21;
-        v76 = v8;
-        v77 = self;
+        v74 = _cardDictionary;
+        useNonce = useNonce;
+        v75 = useNonce;
+        v76 = builderCopy;
+        selfCopy = self;
         v79 = &v82;
         v78 = v12;
         [(PKPaymentRequirementsRequest *)self _secureCardDictionaryWithBuilder:v76 includingDeviceScore:1 completion:v73];
@@ -149,15 +149,15 @@
       goto LABEL_7;
     }
 
-    v33 = [(PKPaymentCredential *)v24 isAccountCredential];
+    isAccountCredential = [(PKPaymentCredential *)v24 isAccountCredential];
     v34 = self->_paymentCredential;
-    if (v33)
+    if (isAccountCredential)
     {
-      v63 = [(PKPaymentCredential *)v34 accountCredential];
-      v35 = [v63 passDetailsResponse];
-      v65 = [v35 provisioningIdentifier];
+      accountCredential = [(PKPaymentCredential *)v34 accountCredential];
+      passDetailsResponse = [accountCredential passDetailsResponse];
+      provisioningIdentifier = [passDetailsResponse provisioningIdentifier];
 
-      if (![v65 length])
+      if (![provisioningIdentifier length])
       {
         v36 = PKLogFacilityTypeGetObject(0xFuLL);
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -167,16 +167,16 @@
         }
       }
 
-      v37 = [v8 brokerURL];
+      brokerURL3 = [builderCopy brokerURL];
       v90[0] = @"devices";
-      v38 = [v8 deviceID];
-      v90[1] = v38;
+      deviceID3 = [builderCopy deviceID];
+      v90[1] = deviceID3;
       v90[2] = @"cards";
-      v90[3] = v65;
+      v90[3] = provisioningIdentifier;
       v90[4] = @"provisioningRequirements";
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:5];
-      v40 = [v8 appleAccountInformation];
-      v41 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v37 endpointComponents:v39 queryParameters:0 appleAccountInformation:v40];
+      appleAccountInformation3 = [builderCopy appleAccountInformation];
+      v41 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL3 endpointComponents:v39 queryParameters:0 appleAccountInformation:appleAccountInformation3];
       v42 = v83[5];
       v83[5] = v41;
 
@@ -200,21 +200,21 @@
         goto LABEL_29;
       }
 
-      v63 = [(PKPaymentCredential *)self->_paymentCredential peerPaymentCredential];
-      v51 = [v63 passDetailsResponse];
-      v65 = [v51 remoteCredential];
+      accountCredential = [(PKPaymentCredential *)self->_paymentCredential peerPaymentCredential];
+      passDetailsResponse2 = [accountCredential passDetailsResponse];
+      provisioningIdentifier = [passDetailsResponse2 remoteCredential];
 
-      v52 = [v8 brokerURL];
+      brokerURL4 = [builderCopy brokerURL];
       v89[0] = @"devices";
-      v61 = [v8 deviceID];
-      v89[1] = v61;
+      deviceID4 = [builderCopy deviceID];
+      v89[1] = deviceID4;
       v89[2] = @"cards";
-      v53 = [v65 identifier];
-      v89[3] = v53;
+      identifier2 = [provisioningIdentifier identifier];
+      v89[3] = identifier2;
       v89[4] = @"provisioningRequirements";
       v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:5];
-      v55 = [v8 appleAccountInformation];
-      v56 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v52 endpointComponents:v54 queryParameters:0 appleAccountInformation:v55];
+      appleAccountInformation4 = [builderCopy appleAccountInformation];
+      v56 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL4 endpointComponents:v54 queryParameters:0 appleAccountInformation:appleAccountInformation4];
       v57 = v83[5];
       v83[5] = v56;
 
@@ -226,14 +226,14 @@ LABEL_29:
     goto LABEL_8;
   }
 
-  v15 = [v8 brokerURL];
+  brokerURL5 = [builderCopy brokerURL];
   v88[0] = @"devices";
-  v16 = [v8 deviceID];
-  v88[1] = v16;
+  deviceID5 = [builderCopy deviceID];
+  v88[1] = deviceID5;
   v88[2] = @"provisioningRequirements";
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:3];
-  v18 = [v8 appleAccountInformation];
-  v19 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v15 endpointComponents:v17 queryParameters:0 appleAccountInformation:v18];
+  appleAccountInformation5 = [builderCopy appleAccountInformation];
+  v19 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL5 endpointComponents:v17 queryParameters:0 appleAccountInformation:appleAccountInformation5];
   v20 = v83[5];
   v83[5] = v19;
 
@@ -243,14 +243,14 @@ LABEL_29:
   v66[1] = 3221225472;
   v66[2] = __77__PKPaymentRequirementsRequest__urlRequestWithBuilder_webService_completion___block_invoke_389;
   v66[3] = &unk_1E79DB018;
-  v67 = v8;
-  v68 = self;
+  v67 = builderCopy;
+  selfCopy2 = self;
   v71 = &v82;
-  v69 = v13;
+  v69 = _cardDictionary;
   v70 = v12;
   [(PKPaymentRequirementsRequest *)self _secureCardDictionaryWithBuilder:v67 includingDeviceScore:0 completion:v66];
 
-  v21 = v67;
+  useNonce = v67;
 LABEL_7:
 
 LABEL_8:
@@ -316,11 +316,11 @@ uint64_t __77__PKPaymentRequirementsRequest__urlRequestWithBuilder_webService_co
   paymentCredential = self->_paymentCredential;
   if (paymentCredential)
   {
-    v5 = [(PKPaymentCredential *)paymentCredential isContactlessProductCredential];
+    isContactlessProductCredential = [(PKPaymentCredential *)paymentCredential isContactlessProductCredential];
     v6 = self->_paymentCredential;
-    if (v5)
+    if (isContactlessProductCredential)
     {
-      v7 = [(PKPaymentCredential *)v6 contactlessProductCredential];
+      contactlessProductCredential = [(PKPaymentCredential *)v6 contactlessProductCredential];
     }
 
     else
@@ -330,15 +330,15 @@ uint64_t __77__PKPaymentRequirementsRequest__urlRequestWithBuilder_webService_co
         goto LABEL_10;
       }
 
-      v7 = [(PKPaymentCredential *)self->_paymentCredential digitalIssuanceProductCredential];
+      contactlessProductCredential = [(PKPaymentCredential *)self->_paymentCredential digitalIssuanceProductCredential];
     }
 
-    v8 = v7;
-    v9 = [v7 productIdentifier];
+    v8 = contactlessProductCredential;
+    productIdentifier = [contactlessProductCredential productIdentifier];
 
-    if (v9)
+    if (productIdentifier)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"productIdentifier"];
+      [v3 setObject:productIdentifier forKeyedSubscript:@"productIdentifier"];
     }
   }
 
@@ -347,22 +347,22 @@ LABEL_10:
   return v3;
 }
 
-- (void)_secureCardDictionaryWithBuilder:(id)a3 includingDeviceScore:(BOOL)a4 completion:(id)a5
+- (void)_secureCardDictionaryWithBuilder:(id)builder includingDeviceScore:(BOOL)score completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  scoreCopy = score;
+  builderCopy = builder;
+  completionCopy = completion;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   paymentCredential = self->_paymentCredential;
   if (paymentCredential)
   {
-    v12 = [(PKPaymentCredential *)paymentCredential isContactlessProductCredential];
+    isContactlessProductCredential = [(PKPaymentCredential *)paymentCredential isContactlessProductCredential];
     v13 = self->_paymentCredential;
-    if (v12)
+    if (isContactlessProductCredential)
     {
-      v14 = [(PKPaymentCredential *)v13 contactlessProductCredential];
-      v15 = [v14 cardSessionToken];
-      if (!v15)
+      contactlessProductCredential = [(PKPaymentCredential *)v13 contactlessProductCredential];
+      cardSessionToken = [contactlessProductCredential cardSessionToken];
+      if (!cardSessionToken)
       {
 LABEL_17:
 
@@ -371,30 +371,30 @@ LABEL_17:
 
       v16 = @"cardSessionToken";
 LABEL_5:
-      [v10 setObject:v15 forKeyedSubscript:v16];
+      [v10 setObject:cardSessionToken forKeyedSubscript:v16];
       goto LABEL_17;
     }
 
     if (v13)
     {
-      v17 = [(PKPaymentCredential *)v13 isDigitalIssuanceProductCredential];
+      isDigitalIssuanceProductCredential = [(PKPaymentCredential *)v13 isDigitalIssuanceProductCredential];
       v18 = self->_paymentCredential;
-      if (v17)
+      if (isDigitalIssuanceProductCredential)
       {
-        v19 = [(PKPaymentCredential *)v18 digitalIssuanceProductCredential];
+        digitalIssuanceProductCredential = [(PKPaymentCredential *)v18 digitalIssuanceProductCredential];
 LABEL_12:
-        v14 = v19;
-        v15 = [v19 purchase];
-        v22 = [v15 identifier];
-        v23 = [v15 partnerMetadata];
-        if (v22)
+        contactlessProductCredential = digitalIssuanceProductCredential;
+        cardSessionToken = [digitalIssuanceProductCredential purchase];
+        identifier = [cardSessionToken identifier];
+        partnerMetadata = [cardSessionToken partnerMetadata];
+        if (identifier)
         {
-          [v10 setObject:v22 forKeyedSubscript:@"provisioningToken"];
+          [v10 setObject:identifier forKeyedSubscript:@"provisioningToken"];
         }
 
-        if (v23)
+        if (partnerMetadata)
         {
-          [v10 setObject:v23 forKeyedSubscript:@"metadata"];
+          [v10 setObject:partnerMetadata forKeyedSubscript:@"metadata"];
         }
 
         goto LABEL_17;
@@ -402,21 +402,21 @@ LABEL_12:
 
       if (v18)
       {
-        v20 = [(PKPaymentCredential *)v18 isPurchasedProductCredential];
+        isPurchasedProductCredential = [(PKPaymentCredential *)v18 isPurchasedProductCredential];
         v21 = self->_paymentCredential;
-        if (v20)
+        if (isPurchasedProductCredential)
         {
-          v19 = [(PKPaymentCredential *)v21 purchasedProductCredential];
+          digitalIssuanceProductCredential = [(PKPaymentCredential *)v21 purchasedProductCredential];
           goto LABEL_12;
         }
 
         if (v21 && [(PKPaymentCredential *)v21 isFPANCredential])
         {
-          v14 = [(PKPaymentCredential *)self->_paymentCredential fpanCredential];
-          v24 = [v14 cardholderName];
-          [v10 setObject:v24 forKeyedSubscript:@"name"];
+          contactlessProductCredential = [(PKPaymentCredential *)self->_paymentCredential fpanCredential];
+          cardholderName = [contactlessProductCredential cardholderName];
+          [v10 setObject:cardholderName forKeyedSubscript:@"name"];
 
-          v15 = [v14 cardNumber];
+          cardSessionToken = [contactlessProductCredential cardNumber];
           v16 = @"primaryAccountNumber";
           goto LABEL_5;
         }
@@ -437,28 +437,28 @@ LABEL_12:
   }
 
 LABEL_25:
-  v27 = [v8 deviceData];
-  v28 = [v27 primaryJSBLSequenceCounter];
-  v29 = [v28 stringValue];
+  deviceData = [builderCopy deviceData];
+  primaryJSBLSequenceCounter = [deviceData primaryJSBLSequenceCounter];
+  stringValue = [primaryJSBLSequenceCounter stringValue];
 
-  v30 = [v29 dataUsingEncoding:4];
-  v31 = [v30 hexEncoding];
-  [v10 setObject:v31 forKeyedSubscript:@"jsblSequenceCounter"];
+  v30 = [stringValue dataUsingEncoding:4];
+  hexEncoding = [v30 hexEncoding];
+  [v10 setObject:hexEncoding forKeyedSubscript:@"jsblSequenceCounter"];
 
-  if (v6)
+  if (scoreCopy)
   {
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __97__PKPaymentRequirementsRequest__secureCardDictionaryWithBuilder_includingDeviceScore_completion___block_invoke;
     v32[3] = &unk_1E79DB040;
     v33 = v10;
-    v34 = v9;
+    v34 = completionCopy;
     [(PKPaymentRequirementsRequest *)self _deviceScoreWithCompletion:v32];
   }
 
   else
   {
-    (*(v9 + 2))(v9, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -485,10 +485,10 @@ uint64_t __97__PKPaymentRequirementsRequest__secureCardDictionaryWithBuilder_inc
   return v6();
 }
 
-- (void)_deviceScoreWithCompletion:(id)a3
+- (void)_deviceScoreWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (+[PKDeviceScorer deviceScoringSupported]&& [(PKPaymentCredential *)self->_paymentCredential couldSupportSuperEasyProvisioning])
     {
@@ -503,13 +503,13 @@ uint64_t __97__PKPaymentRequirementsRequest__secureCardDictionaryWithBuilder_inc
       v9[1] = 3221225472;
       v9[2] = __59__PKPaymentRequirementsRequest__deviceScoreWithCompletion___block_invoke;
       v9[3] = &unk_1E79DAFA0;
-      v10 = v4;
+      v10 = completionCopy;
       [(PKODIAssessment *)v8 waitForAssessmentWithTimeout:1 startTimeoutFromAssessmentStart:0 continueBlock:v9];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }

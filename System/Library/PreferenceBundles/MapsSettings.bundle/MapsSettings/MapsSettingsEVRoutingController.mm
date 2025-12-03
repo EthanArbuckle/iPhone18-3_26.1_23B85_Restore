@@ -3,17 +3,17 @@
 - (MapsSettingsEVRoutingController)delegate;
 - (MapsSettingsEVRoutingController)init;
 - (NSMutableArray)disabledAppIdentifiers;
-- (id)_extensionEnabled:(id)a3;
-- (id)applicationForIdentifier:(id)a3;
+- (id)_extensionEnabled:(id)enabled;
+- (id)applicationForIdentifier:(id)identifier;
 - (id)specifiers;
-- (void)OEMAppsUpdated:(id)a3;
-- (void)_consumeUpdatedGarage:(id)a3;
+- (void)OEMAppsUpdated:(id)updated;
+- (void)_consumeUpdatedGarage:(id)garage;
 - (void)_saveState;
-- (void)_setExtensionEnabled:(id)a3 specifier:(id)a4;
+- (void)_setExtensionEnabled:(id)enabled specifier:(id)specifier;
 - (void)dealloc;
-- (void)setApplications:(id)a3;
-- (void)setElectricVehicleCount:(unint64_t)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)setApplications:(id)applications;
+- (void)setElectricVehicleCount:(unint64_t)count;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation MapsSettingsEVRoutingController
@@ -66,16 +66,16 @@
   [(MapsSettingsEVRoutingController *)&v5 dealloc];
 }
 
-- (void)setApplications:(id)a3
+- (void)setApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   applications = self->_applications;
-  v12 = v4;
-  v6 = applications;
-  if (v12 | v6)
+  v12 = applicationsCopy;
+  applicationsCopy2 = applications;
+  if (v12 | applicationsCopy2)
   {
-    v7 = v6;
-    v8 = [v12 isEqual:v6];
+    v7 = applicationsCopy2;
+    v8 = [v12 isEqual:applicationsCopy2];
 
     if ((v8 & 1) == 0)
     {
@@ -83,8 +83,8 @@
       v10 = self->_applications;
       self->_applications = v9;
 
-      v11 = [(MapsSettingsEVRoutingController *)self delegate];
-      [v11 didUpdateEVApplications:self->_applications];
+      delegate = [(MapsSettingsEVRoutingController *)self delegate];
+      [delegate didUpdateEVApplications:self->_applications];
 
       if ([(MapsSettingsEVRoutingController *)self isViewLoaded])
       {
@@ -96,13 +96,13 @@
   _objc_release_x1();
 }
 
-- (void)setElectricVehicleCount:(unint64_t)a3
+- (void)setElectricVehicleCount:(unint64_t)count
 {
-  if (self->_electricVehicleCount != a3)
+  if (self->_electricVehicleCount != count)
   {
-    self->_electricVehicleCount = a3;
-    v5 = [(MapsSettingsEVRoutingController *)self delegate];
-    [v5 didUpdateElectricVehicleCount:a3];
+    self->_electricVehicleCount = count;
+    delegate = [(MapsSettingsEVRoutingController *)self delegate];
+    [delegate didUpdateElectricVehicleCount:count];
 
     if ([(MapsSettingsEVRoutingController *)self isViewLoaded])
     {
@@ -114,8 +114,8 @@
 
 - (BOOL)hasInstalledApplications
 {
-  v2 = [(MapsSettingsEVRoutingController *)self applications];
-  v3 = [v2 count] != 0;
+  applications = [(MapsSettingsEVRoutingController *)self applications];
+  v3 = [applications count] != 0;
 
   return v3;
 }
@@ -156,17 +156,17 @@
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        v16 = [v14 applicationRecord];
-        v17 = [v16 localizedName];
-        v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:self set:"_setExtensionEnabled:specifier:" get:"_extensionEnabled:" detail:0 cell:6 edit:0];
+        identifier = [v14 identifier];
+        applicationRecord = [v14 applicationRecord];
+        localizedName = [applicationRecord localizedName];
+        v18 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:"_setExtensionEnabled:specifier:" get:"_extensionEnabled:" detail:0 cell:6 edit:0];
 
         v19 = +[UIScreen mainScreen];
         [v19 scale];
-        v20 = [UIImage _applicationIconImageForBundleIdentifier:v15 format:0 scale:?];
+        v20 = [UIImage _applicationIconImageForBundleIdentifier:identifier format:0 scale:?];
 
         [v18 setProperty:v20 forKey:v24];
-        [v18 setIdentifier:v15];
+        [v18 setIdentifier:identifier];
         v6 = v13;
         [v13 addObject:v18];
       }
@@ -201,61 +201,61 @@
 
 - (void)_saveState
 {
-  v3 = [(MapsSettingsEVRoutingController *)self disabledAppIdentifiers];
-  v2 = [v3 componentsJoinedByString:{@", "}];
+  disabledAppIdentifiers = [(MapsSettingsEVRoutingController *)self disabledAppIdentifiers];
+  v2 = [disabledAppIdentifiers componentsJoinedByString:{@", "}];
   GEOConfigSetString();
 }
 
-- (void)_setExtensionEnabled:(id)a3 specifier:(id)a4
+- (void)_setExtensionEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 identifier];
+  enabledCopy = enabled;
+  identifier = [specifier identifier];
   v8 = MAPSGetVirtualGarageLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138412546;
-    v13 = v7;
+    v13 = identifier;
     v14 = 2112;
-    v15 = v6;
+    v15 = enabledCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Setting application %@, enabled: %@", &v12, 0x16u);
   }
 
-  v9 = [v6 BOOLValue];
-  v10 = [(MapsSettingsEVRoutingController *)self disabledAppIdentifiers];
-  v11 = v10;
-  if (v9)
+  bOOLValue = [enabledCopy BOOLValue];
+  disabledAppIdentifiers = [(MapsSettingsEVRoutingController *)self disabledAppIdentifiers];
+  v11 = disabledAppIdentifiers;
+  if (bOOLValue)
   {
-    [v10 removeObject:v7];
+    [disabledAppIdentifiers removeObject:identifier];
   }
 
   else
   {
-    [v10 addObject:v7];
+    [disabledAppIdentifiers addObject:identifier];
   }
 
   [(MapsSettingsEVRoutingController *)self _saveState];
 }
 
-- (id)_extensionEnabled:(id)a3
+- (id)_extensionEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(MapsSettingsEVRoutingController *)self disabledAppIdentifiers];
-  v6 = [v4 identifier];
+  enabledCopy = enabled;
+  disabledAppIdentifiers = [(MapsSettingsEVRoutingController *)self disabledAppIdentifiers];
+  identifier = [enabledCopy identifier];
 
-  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 containsObject:v6] ^ 1);
+  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [disabledAppIdentifiers containsObject:identifier] ^ 1);
 
   return v7;
 }
 
-- (id)applicationForIdentifier:(id)a3
+- (id)applicationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MapsSettingsEVRoutingController *)self applications];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  applications = [(MapsSettingsEVRoutingController *)self applications];
+  v6 = [applications countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -265,12 +265,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(applications);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -279,7 +279,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [applications countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -294,34 +294,34 @@ LABEL_11:
   return v6;
 }
 
-- (void)OEMAppsUpdated:(id)a3
+- (void)OEMAppsUpdated:(id)updated
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_11578;
   v4[3] = &unk_7FAF0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  updatedCopy = updated;
+  v3 = updatedCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_consumeUpdatedGarage:(id)a3
+- (void)_consumeUpdatedGarage:(id)garage
 {
-  v5 = [a3 vehicles];
-  v4 = MapsFilter(v5, &stru_7FB30);
+  vehicles = [garage vehicles];
+  v4 = MapsFilter(vehicles, &stru_7FB30);
   -[MapsSettingsEVRoutingController setElectricVehicleCount:](self, "setElectricVehicleCount:", [v4 count]);
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_11694;
   v4[3] = &unk_7FAF0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  updateCopy = update;
+  v3 = updateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

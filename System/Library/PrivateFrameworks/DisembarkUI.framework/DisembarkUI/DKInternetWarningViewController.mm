@@ -1,10 +1,10 @@
 @interface DKInternetWarningViewController
 + (id)advancedDataProtectionConfiguration;
 + (id)standardConfiguration;
-- (DKInternetWarningViewController)initWithConfiguration:(id)a3;
-- (id)_createNotableUserDataCardForFindMy:(BOOL)a3;
-- (void)_continueWithoutInternetTapped:(id)a3;
-- (void)_requireInternetTapped:(id)a3;
+- (DKInternetWarningViewController)initWithConfiguration:(id)configuration;
+- (id)_createNotableUserDataCardForFindMy:(BOOL)my;
+- (void)_continueWithoutInternetTapped:(id)tapped;
+- (void)_requireInternetTapped:(id)tapped;
 - (void)showAvailable;
 - (void)showBusy;
 - (void)viewDidLoad;
@@ -26,27 +26,27 @@
   return v2;
 }
 
-- (DKInternetWarningViewController)initWithConfiguration:(id)a3
+- (DKInternetWarningViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 imageName];
+  configurationCopy = configuration;
+  imageName = [configurationCopy imageName];
 
-  if (v5)
+  if (imageName)
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = [v4 imageName];
+    imageName2 = [configurationCopy imageName];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v6 imageNamed:v7 inBundle:v8 withConfiguration:0];
+    imageName = [v6 imageNamed:imageName2 inBundle:v8 withConfiguration:0];
   }
 
-  v9 = [v4 title];
+  title = [configurationCopy title];
   v12.receiver = self;
   v12.super_class = DKInternetWarningViewController;
-  v10 = [(DKInternetWarningViewController *)&v12 initWithTitle:v9 detailText:0 icon:v5 contentLayout:2];
+  v10 = [(DKInternetWarningViewController *)&v12 initWithTitle:title detailText:0 icon:imageName contentLayout:2];
 
   if (v10)
   {
-    [(DKInternetWarningViewController *)v10 setConfiguration:v4];
+    [(DKInternetWarningViewController *)v10 setConfiguration:configurationCopy];
   }
 
   return v10;
@@ -58,131 +58,131 @@
   v58.receiver = self;
   v58.super_class = DKInternetWarningViewController;
   [(OBBaseWelcomeController *)&v58 viewDidLoad];
-  v3 = [(DKInternetWarningViewController *)self configuration];
-  v4 = [v3 showNotableUserDataCardForFindMy];
+  configuration = [(DKInternetWarningViewController *)self configuration];
+  showNotableUserDataCardForFindMy = [configuration showNotableUserDataCardForFindMy];
 
-  if (v4)
+  if (showNotableUserDataCardForFindMy)
   {
     v5 = objc_alloc(MEMORY[0x277D75A68]);
     v6 = *MEMORY[0x277CBF3A0];
     v7 = *(MEMORY[0x277CBF3A0] + 8);
     v8 = *(MEMORY[0x277CBF3A0] + 16);
     v9 = *(MEMORY[0x277CBF3A0] + 24);
-    v10 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], v7, v8, v9}];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v10 setAxis:1];
-    [v10 setSpacing:10.0];
-    v11 = [(DKInternetWarningViewController *)self notableUserData];
-    v12 = -[DKInternetWarningViewController _createNotableUserDataCardForFindMy:](self, "_createNotableUserDataCardForFindMy:", [v11 findMyEnabled]);
-    [v10 addArrangedSubview:v12];
+    configuration3 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], v7, v8, v9}];
+    [configuration3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [configuration3 setAxis:1];
+    [configuration3 setSpacing:10.0];
+    notableUserData = [(DKInternetWarningViewController *)self notableUserData];
+    v12 = -[DKInternetWarningViewController _createNotableUserDataCardForFindMy:](self, "_createNotableUserDataCardForFindMy:", [notableUserData findMyEnabled]);
+    [configuration3 addArrangedSubview:v12];
 
-    v13 = [v10 arrangedSubviews];
-    v56 = [v13 lastObject];
+    arrangedSubviews = [configuration3 arrangedSubviews];
+    lastObject = [arrangedSubviews lastObject];
 
-    [v10 setCustomSpacing:v56 afterView:20.0];
-    v14 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v6, v7, v8, v9}];
-    v15 = [(DKInternetWarningViewController *)self configuration];
-    v16 = [v15 detail];
-    [v14 setText:v16];
+    [configuration3 setCustomSpacing:lastObject afterView:20.0];
+    headerView = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v6, v7, v8, v9}];
+    configuration2 = [(DKInternetWarningViewController *)self configuration];
+    detail = [configuration2 detail];
+    [headerView setText:detail];
 
-    [v14 setTextAlignment:1];
+    [headerView setTextAlignment:1];
     v17 = MEMORY[0x277D74300];
     v18 = MEMORY[0x277D74310];
     v19 = *MEMORY[0x277D76918];
-    v20 = [(DKInternetWarningViewController *)self traitCollection];
-    v21 = [v18 preferredFontDescriptorWithTextStyle:v19 compatibleWithTraitCollection:v20];
+    traitCollection = [(DKInternetWarningViewController *)self traitCollection];
+    v21 = [v18 preferredFontDescriptorWithTextStyle:v19 compatibleWithTraitCollection:traitCollection];
     v22 = [v17 fontWithDescriptor:v21 size:0.0];
-    [v14 setFont:v22];
+    [headerView setFont:v22];
 
-    v23 = [MEMORY[0x277D75348] labelColor];
-    [v14 setTextColor:v23];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [headerView setTextColor:labelColor];
 
-    [v14 setNumberOfLines:0];
-    [v10 addArrangedSubview:v14];
-    v24 = [(DKInternetWarningViewController *)self contentView];
-    [v24 addSubview:v10];
+    [headerView setNumberOfLines:0];
+    [configuration3 addArrangedSubview:headerView];
+    contentView = [(DKInternetWarningViewController *)self contentView];
+    [contentView addSubview:configuration3];
 
-    v57 = [(DKInternetWarningViewController *)self contentView];
-    v55 = [(DKInternetWarningViewController *)self contentView];
-    v54 = [v55 topAnchor];
-    v53 = [v10 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    contentView2 = [(DKInternetWarningViewController *)self contentView];
+    contentView3 = [(DKInternetWarningViewController *)self contentView];
+    topAnchor = [contentView3 topAnchor];
+    topAnchor2 = [configuration3 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v59[0] = v52;
-    v51 = [(DKInternetWarningViewController *)self contentView];
-    v50 = [v51 leadingAnchor];
-    v49 = [v10 leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    contentView4 = [(DKInternetWarningViewController *)self contentView];
+    leadingAnchor = [contentView4 leadingAnchor];
+    leadingAnchor2 = [configuration3 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v59[1] = v48;
-    v47 = [(DKInternetWarningViewController *)self contentView];
-    v46 = [v47 trailingAnchor];
-    v25 = [v10 trailingAnchor];
-    v26 = [v46 constraintEqualToAnchor:v25];
+    contentView5 = [(DKInternetWarningViewController *)self contentView];
+    trailingAnchor = [contentView5 trailingAnchor];
+    trailingAnchor2 = [configuration3 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v59[2] = v26;
-    v27 = [(DKInternetWarningViewController *)self contentView];
-    v28 = [v27 bottomAnchor];
-    v29 = [v10 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    contentView6 = [(DKInternetWarningViewController *)self contentView];
+    bottomAnchor = [contentView6 bottomAnchor];
+    bottomAnchor2 = [configuration3 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v59[3] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:4];
-    [v57 addConstraints:v31];
+    [contentView2 addConstraints:v31];
 
-    v32 = v56;
+    detail2 = lastObject;
   }
 
   else
   {
-    v10 = [(DKInternetWarningViewController *)self configuration];
-    v32 = [v10 detail];
-    v14 = [(DKInternetWarningViewController *)self headerView];
-    [v14 setDetailText:v32];
+    configuration3 = [(DKInternetWarningViewController *)self configuration];
+    detail2 = [configuration3 detail];
+    headerView = [(DKInternetWarningViewController *)self headerView];
+    [headerView setDetailText:detail2];
   }
 
-  v33 = [MEMORY[0x277D37618] boldButton];
-  v34 = [(DKInternetWarningViewController *)self configuration];
-  v35 = [v34 requireInternetButtonTitle];
-  [v33 setTitle:v35 forState:0];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  configuration4 = [(DKInternetWarningViewController *)self configuration];
+  requireInternetButtonTitle = [configuration4 requireInternetButtonTitle];
+  [boldButton setTitle:requireInternetButtonTitle forState:0];
 
-  [v33 addTarget:self action:sel__requireInternetTapped_ forControlEvents:64];
-  v36 = [(DKInternetWarningViewController *)self buttonTray];
-  [v36 addButton:v33];
+  [boldButton addTarget:self action:sel__requireInternetTapped_ forControlEvents:64];
+  buttonTray = [(DKInternetWarningViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v37 = [MEMORY[0x277D37650] linkButton];
-  v38 = [(DKInternetWarningViewController *)self configuration];
-  v39 = [v38 continueWithoutInternetButtonTitle];
-  [v37 setTitle:v39 forState:0];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  configuration5 = [(DKInternetWarningViewController *)self configuration];
+  continueWithoutInternetButtonTitle = [configuration5 continueWithoutInternetButtonTitle];
+  [linkButton setTitle:continueWithoutInternetButtonTitle forState:0];
 
-  v40 = [(DKInternetWarningViewController *)self configuration];
-  v41 = [v40 continueWithoutInternetButtonTintColor];
+  configuration6 = [(DKInternetWarningViewController *)self configuration];
+  continueWithoutInternetButtonTintColor = [configuration6 continueWithoutInternetButtonTintColor];
 
-  if (v41)
+  if (continueWithoutInternetButtonTintColor)
   {
-    v42 = [(DKInternetWarningViewController *)self configuration];
-    v43 = [v42 continueWithoutInternetButtonTintColor];
-    [v37 setTintColor:v43];
+    configuration7 = [(DKInternetWarningViewController *)self configuration];
+    continueWithoutInternetButtonTintColor2 = [configuration7 continueWithoutInternetButtonTintColor];
+    [linkButton setTintColor:continueWithoutInternetButtonTintColor2];
   }
 
-  [v37 addTarget:self action:sel__continueWithoutInternetTapped_ forControlEvents:64];
-  v44 = [(DKInternetWarningViewController *)self buttonTray];
-  [v44 addButton:v37];
+  [linkButton addTarget:self action:sel__continueWithoutInternetTapped_ forControlEvents:64];
+  buttonTray2 = [(DKInternetWarningViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
 - (void)showBusy
 {
-  v2 = [(DKInternetWarningViewController *)self buttonTray];
-  [v2 showButtonsBusy];
+  buttonTray = [(DKInternetWarningViewController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 }
 
 - (void)showAvailable
 {
-  v2 = [(DKInternetWarningViewController *)self buttonTray];
-  [v2 showButtonsAvailable];
+  buttonTray = [(DKInternetWarningViewController *)self buttonTray];
+  [buttonTray showButtonsAvailable];
 }
 
-- (id)_createNotableUserDataCardForFindMy:(BOOL)a3
+- (id)_createNotableUserDataCardForFindMy:(BOOL)my
 {
-  if (a3)
+  if (my)
   {
     v3 = [DKNotableUserDataCardView alloc];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -208,31 +208,31 @@
   return v9;
 }
 
-- (void)_requireInternetTapped:(id)a3
+- (void)_requireInternetTapped:(id)tapped
 {
-  v3 = [(DKInternetWarningViewController *)self requireInternetBlock];
-  v3[2]();
+  requireInternetBlock = [(DKInternetWarningViewController *)self requireInternetBlock];
+  requireInternetBlock[2]();
 }
 
-- (void)_continueWithoutInternetTapped:(id)a3
+- (void)_continueWithoutInternetTapped:(id)tapped
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v5 = [currentDevice userInterfaceIdiom] == 1;
 
   v6 = MEMORY[0x277D75110];
-  v7 = [(DKInternetWarningViewController *)self configuration];
-  v8 = [v7 confirmationTitle];
-  v9 = [v6 alertControllerWithTitle:v8 message:0 preferredStyle:v5];
+  configuration = [(DKInternetWarningViewController *)self configuration];
+  confirmationTitle = [configuration confirmationTitle];
+  v9 = [v6 alertControllerWithTitle:confirmationTitle message:0 preferredStyle:v5];
 
   v10 = MEMORY[0x277D750F8];
-  v11 = [(DKInternetWarningViewController *)self configuration];
-  v12 = [v11 confirmationContinueWithoutInternetButtonTitle];
+  configuration2 = [(DKInternetWarningViewController *)self configuration];
+  confirmationContinueWithoutInternetButtonTitle = [configuration2 confirmationContinueWithoutInternetButtonTitle];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __66__DKInternetWarningViewController__continueWithoutInternetTapped___block_invoke;
   v18[3] = &unk_278F7DBE8;
   v18[4] = self;
-  v13 = [v10 actionWithTitle:v12 style:2 handler:v18];
+  v13 = [v10 actionWithTitle:confirmationContinueWithoutInternetButtonTitle style:2 handler:v18];
   [v9 addAction:v13];
 
   v14 = MEMORY[0x277D750F8];

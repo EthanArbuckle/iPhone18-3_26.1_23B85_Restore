@@ -1,12 +1,12 @@
 @interface _SBHAddWidgetSheetCollectionView
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
 @end
 
 @implementation _SBHAddWidgetSheetCollectionView
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(_SBHAddWidgetSheetCollectionView *)self containsInteractiveUIControls])
   {
     v5 = 1;
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = _SBHAddWidgetSheetCollectionView;
-    v5 = [(_SBHAddWidgetSheetCollectionView *)&v7 touchesShouldCancelInContentView:v4];
+    v5 = [(_SBHAddWidgetSheetCollectionView *)&v7 touchesShouldCancelInContentView:viewCopy];
   }
 
   return v5;

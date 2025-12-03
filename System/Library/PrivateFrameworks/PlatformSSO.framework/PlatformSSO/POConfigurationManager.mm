@@ -1,42 +1,42 @@
 @interface POConfigurationManager
 + (POConfigurationManager)sharedInstance;
-- (BOOL)__removeDeviceConfigurationWithIdentifier:(id)a3;
-- (BOOL)__removeLoginConfigurationForIdentifier:(id)a3;
-- (BOOL)_setTokens:(id)a3 identifier:(id)a4 extensionIdentifier:(id)a5 returningError:(id *)a6;
+- (BOOL)__removeDeviceConfigurationWithIdentifier:(id)identifier;
+- (BOOL)__removeLoginConfigurationForIdentifier:(id)identifier;
+- (BOOL)_setTokens:(id)tokens identifier:(id)identifier extensionIdentifier:(id)extensionIdentifier returningError:(id *)error;
 - (BOOL)createAppSSOCachePath;
 - (BOOL)removeDeviceConfiguration;
 - (BOOL)removeLoginConfiguration;
-- (BOOL)removeUserConfigurationForUserName:(id)a3;
+- (BOOL)removeUserConfigurationForUserName:(id)name;
 - (BOOL)removeUserDeviceConfiguration;
 - (BOOL)removeUserLoginConfiguration;
 - (BOOL)resetStoredConfiguration;
-- (BOOL)saveAppSSOConfiguration:(id)a3;
-- (BOOL)saveDeviceConfiguration:(id)a3;
-- (BOOL)saveDeviceConfigurationSyncAllConfigToPreboot:(id)a3;
-- (BOOL)saveLoginConfiguration:(id)a3;
-- (BOOL)saveUserConfiguration:(id)a3 forUserName:(id)a4 syncToPreboot:(BOOL)a5;
-- (BOOL)setTokens:(id)a3 extensionIdentifier:(id)a4 returningError:(id *)a5;
-- (BOOL)setTokens:(id)a3 user:(id)a4 extensionIdentifier:(id)a5 returningError:(id *)a6;
+- (BOOL)saveAppSSOConfiguration:(id)configuration;
+- (BOOL)saveDeviceConfiguration:(id)configuration;
+- (BOOL)saveDeviceConfigurationSyncAllConfigToPreboot:(id)preboot;
+- (BOOL)saveLoginConfiguration:(id)configuration;
+- (BOOL)saveUserConfiguration:(id)configuration forUserName:(id)name syncToPreboot:(BOOL)preboot;
+- (BOOL)setTokens:(id)tokens extensionIdentifier:(id)identifier returningError:(id *)error;
+- (BOOL)setTokens:(id)tokens user:(id)user extensionIdentifier:(id)identifier returningError:(id *)error;
 - (NSDate)tokenExpiration;
 - (NSDate)tokenReceived;
 - (NSString)userIdentifier;
-- (POConfigurationManager)initWithUserName:(id)a3;
-- (id)_tokensForExtensionIdentifier:(id)a3 identifier:(id)a4;
-- (id)calculateExpirationForTokens:(id)a3;
+- (POConfigurationManager)initWithUserName:(id)name;
+- (id)_tokensForExtensionIdentifier:(id)identifier identifier:(id)a4;
+- (id)calculateExpirationForTokens:(id)tokens;
 - (id)currentDeviceConfiguration;
 - (id)currentLoginConfiguration;
 - (id)currentRefreshToken;
 - (id)currentUserConfiguration;
 - (id)deviceConfiguration;
 - (id)loginConfiguration;
-- (id)refreshTokenFromTokens:(id)a3;
-- (id)tokensForExtensionIdentifier:(id)a3;
-- (id)tokensForExtensionIdentifier:(id)a3 user:(id)a4;
-- (id)userConfigurationForUserName:(id)a3;
+- (id)refreshTokenFromTokens:(id)tokens;
+- (id)tokensForExtensionIdentifier:(id)identifier;
+- (id)tokensForExtensionIdentifier:(id)identifier user:(id)user;
+- (id)userConfigurationForUserName:(id)name;
 - (id)userDeviceConfiguration;
 - (void)createAppSSOCachePath;
 - (void)deviceConfiguration;
-- (void)enablePlatformSSORulesAndDefaultsIfNeeded:(id)a3;
+- (void)enablePlatformSSORulesAndDefaultsIfNeeded:(id)needed;
 - (void)loginConfiguration;
 - (void)removeDeviceConfiguration;
 - (void)removeLoginConfiguration;
@@ -69,31 +69,31 @@ void __40__POConfigurationManager_sharedInstance__block_invoke()
   sharedInstance_defaultManager = v1;
 }
 
-- (POConfigurationManager)initWithUserName:(id)a3
+- (POConfigurationManager)initWithUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(PODirectoryServices);
-  v6 = [(POConfigurationManager *)self initWithUserName:v4 directoryServices:v5 sharedOnly:0];
+  v6 = [(POConfigurationManager *)self initWithUserName:nameCopy directoryServices:v5 sharedOnly:0];
 
   return v6;
 }
 
 - (id)currentUserConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationManager *)v2 userConfigurationVersion];
-  v4 = [v3 checkVersion];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userConfigurationVersion = [(POConfigurationManager *)selfCopy userConfigurationVersion];
+  checkVersion = [userConfigurationVersion checkVersion];
 
-  currentUserConfiguration = v2->_currentUserConfiguration;
+  currentUserConfiguration = selfCopy->_currentUserConfiguration;
   if (!currentUserConfiguration)
   {
-    v10 = [(POConfigurationCoreManager *)v2 userName];
-    v11 = [(POConfigurationManager *)v2 userConfigurationForUserName:v10];
-    v12 = v2->_currentUserConfiguration;
-    v2->_currentUserConfiguration = v11;
+    userName = [(POConfigurationCoreManager *)selfCopy userName];
+    v11 = [(POConfigurationManager *)selfCopy userConfigurationForUserName:userName];
+    v12 = selfCopy->_currentUserConfiguration;
+    selfCopy->_currentUserConfiguration = v11;
 
-    currentUserConfiguration = v2->_currentUserConfiguration;
+    currentUserConfiguration = selfCopy->_currentUserConfiguration;
     if (!currentUserConfiguration)
     {
       v13 = __50__POConfigurationManager_currentUserConfiguration__block_invoke();
@@ -105,24 +105,24 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!checkVersion)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (checkVersion == 1)
   {
-    v6 = [(POConfigurationCoreManager *)v2 userName];
-    v7 = [(POConfigurationManager *)v2 userConfigurationForUserName:v6];
-    v8 = v2->_currentUserConfiguration;
-    v2->_currentUserConfiguration = v7;
+    userName2 = [(POConfigurationCoreManager *)selfCopy userName];
+    v7 = [(POConfigurationManager *)selfCopy userConfigurationForUserName:userName2];
+    v8 = selfCopy->_currentUserConfiguration;
+    selfCopy->_currentUserConfiguration = v7;
 
-    currentUserConfiguration = v2->_currentUserConfiguration;
+    currentUserConfiguration = selfCopy->_currentUserConfiguration;
     if (!currentUserConfiguration)
     {
       v9 = __50__POConfigurationManager_currentUserConfiguration__block_invoke_100();
 LABEL_8:
-      currentUserConfiguration = v2->_currentUserConfiguration;
+      currentUserConfiguration = selfCopy->_currentUserConfiguration;
       goto LABEL_9;
     }
 
@@ -131,7 +131,7 @@ LABEL_8:
 
   v14 = 0;
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -174,19 +174,19 @@ id __71__POConfigurationManager_saveCurrentUserConfigurationAndSyncToPreboot___b
 
 - (id)currentDeviceConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationManager *)v2 deviceConfigurationVersion];
-  v4 = [v3 checkVersion];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceConfigurationVersion = [(POConfigurationManager *)selfCopy deviceConfigurationVersion];
+  checkVersion = [deviceConfigurationVersion checkVersion];
 
-  currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+  currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
   if (!currentDeviceConfiguration)
   {
-    v9 = [(POConfigurationManager *)v2 deviceConfiguration];
-    v10 = v2->_currentDeviceConfiguration;
-    v2->_currentDeviceConfiguration = v9;
+    deviceConfiguration = [(POConfigurationManager *)selfCopy deviceConfiguration];
+    v10 = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = deviceConfiguration;
 
-    currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
     if (!currentDeviceConfiguration)
     {
       v11 = __52__POConfigurationManager_currentDeviceConfiguration__block_invoke();
@@ -198,23 +198,23 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!checkVersion)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (checkVersion == 1)
   {
-    v6 = [(POConfigurationManager *)v2 deviceConfiguration];
-    v7 = v2->_currentDeviceConfiguration;
-    v2->_currentDeviceConfiguration = v6;
+    deviceConfiguration2 = [(POConfigurationManager *)selfCopy deviceConfiguration];
+    v7 = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = deviceConfiguration2;
 
-    currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
     if (!currentDeviceConfiguration)
     {
       v8 = __52__POConfigurationManager_currentDeviceConfiguration__block_invoke_109();
 LABEL_8:
-      currentDeviceConfiguration = v2->_currentDeviceConfiguration;
+      currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
       goto LABEL_9;
     }
 
@@ -223,7 +223,7 @@ LABEL_8:
 
   v12 = 0;
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -254,19 +254,19 @@ id __52__POConfigurationManager_currentDeviceConfiguration__block_invoke_109()
 
 - (id)currentLoginConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(POConfigurationManager *)v2 loginConfigurationVersion];
-  v4 = [v3 checkVersion];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  loginConfigurationVersion = [(POConfigurationManager *)selfCopy loginConfigurationVersion];
+  checkVersion = [loginConfigurationVersion checkVersion];
 
-  currentLoginConfiguration = v2->_currentLoginConfiguration;
+  currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
   if (!currentLoginConfiguration)
   {
-    v9 = [(POConfigurationManager *)v2 loginConfiguration];
-    v10 = v2->_currentLoginConfiguration;
-    v2->_currentLoginConfiguration = v9;
+    loginConfiguration = [(POConfigurationManager *)selfCopy loginConfiguration];
+    v10 = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = loginConfiguration;
 
-    currentLoginConfiguration = v2->_currentLoginConfiguration;
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
     if (!currentLoginConfiguration)
     {
       v11 = __51__POConfigurationManager_currentLoginConfiguration__block_invoke();
@@ -278,23 +278,23 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!checkVersion)
   {
     goto LABEL_9;
   }
 
-  if (v4 == 1)
+  if (checkVersion == 1)
   {
-    v6 = [(POConfigurationManager *)v2 loginConfiguration];
-    v7 = v2->_currentLoginConfiguration;
-    v2->_currentLoginConfiguration = v6;
+    loginConfiguration2 = [(POConfigurationManager *)selfCopy loginConfiguration];
+    v7 = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = loginConfiguration2;
 
-    currentLoginConfiguration = v2->_currentLoginConfiguration;
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
     if (!currentLoginConfiguration)
     {
       v8 = __51__POConfigurationManager_currentLoginConfiguration__block_invoke_113();
 LABEL_8:
-      currentLoginConfiguration = v2->_currentLoginConfiguration;
+      currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
       goto LABEL_9;
     }
 
@@ -303,7 +303,7 @@ LABEL_8:
 
   v12 = 0;
 LABEL_11:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -368,8 +368,8 @@ id __51__POConfigurationManager_currentLoginConfiguration__block_invoke_113()
   if (!v14[5] && ![(POConfigurationCoreManager *)self sharedOnly])
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(POConfigurationManager *)self userIdentifier];
-    v7 = [v5 stringWithFormat:@"%@", v6];
+    userIdentifier = [(POConfigurationManager *)self userIdentifier];
+    v7 = [v5 stringWithFormat:@"%@", userIdentifier];
 
     v8 = self->_serviceConnection;
     v11[0] = MEMORY[0x277D85DD0];
@@ -436,8 +436,8 @@ void __45__POConfigurationManager_deviceConfiguration__block_invoke_2(uint64_t a
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(POConfigurationManager *)self userIdentifier];
-  v6 = [v4 stringWithFormat:@"%@", v5];
+  userIdentifier = [(POConfigurationManager *)self userIdentifier];
+  v6 = [v4 stringWithFormat:@"%@", userIdentifier];
 
   v17[0] = 0;
   v17[1] = v17;
@@ -486,16 +486,16 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   *(v11 + 40) = v5;
 }
 
-- (BOOL)saveDeviceConfiguration:(id)a3
+- (BOOL)saveDeviceConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager saveDeviceConfiguration:];
   }
 
-  if ([v4 sharedDeviceKeys])
+  if ([configurationCopy sharedDeviceKeys])
   {
     v6 = 0;
   }
@@ -503,8 +503,8 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(POConfigurationManager *)self userIdentifier];
-    v6 = [v7 stringWithFormat:@"%@", v8];
+    userIdentifier = [(POConfigurationManager *)self userIdentifier];
+    v6 = [v7 stringWithFormat:@"%@", userIdentifier];
   }
 
   v17 = 0;
@@ -512,24 +512,24 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   v19 = 0x2020000000;
   v20 = 0;
   serviceConnection = self->_serviceConnection;
-  v10 = [v4 dataRepresentation];
+  dataRepresentation = [configurationCopy dataRepresentation];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__POConfigurationManager_saveDeviceConfiguration___block_invoke;
   v16[3] = &unk_279A3A240;
   v16[4] = &v17;
-  [(PODaemonConnection *)serviceConnection saveDeviceConfiguration:v10 identifier:v6 completion:v16];
+  [(PODaemonConnection *)serviceConnection saveDeviceConfiguration:dataRepresentation identifier:v6 completion:v16];
 
   if (*(v18 + 24) == 1)
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    currentDeviceConfiguration = v11->_currentDeviceConfiguration;
-    v11->_currentDeviceConfiguration = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = 0;
 
-    objc_sync_exit(v11);
-    v13 = [(POConfigurationManager *)v11 deviceConfigurationVersion];
-    [v13 increaseVersionWithMessage:@"deviceConfiguration updated"];
+    objc_sync_exit(selfCopy);
+    deviceConfigurationVersion = [(POConfigurationManager *)selfCopy deviceConfigurationVersion];
+    [deviceConfigurationVersion increaseVersionWithMessage:@"deviceConfiguration updated"];
 
     v14 = *(v18 + 24);
   }
@@ -544,16 +544,16 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   return v14 & 1;
 }
 
-- (BOOL)saveDeviceConfigurationSyncAllConfigToPreboot:(id)a3
+- (BOOL)saveDeviceConfigurationSyncAllConfigToPreboot:(id)preboot
 {
-  v4 = a3;
+  prebootCopy = preboot;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager saveDeviceConfigurationSyncAllConfigToPreboot:];
   }
 
-  if ([v4 sharedDeviceKeys])
+  if ([prebootCopy sharedDeviceKeys])
   {
     v6 = 0;
   }
@@ -561,8 +561,8 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(POConfigurationManager *)self userIdentifier];
-    v6 = [v7 stringWithFormat:@"%@", v8];
+    userIdentifier = [(POConfigurationManager *)self userIdentifier];
+    v6 = [v7 stringWithFormat:@"%@", userIdentifier];
   }
 
   v19 = 0;
@@ -570,30 +570,30 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   v21 = 0x2020000000;
   v22 = 0;
   serviceConnection = self->_serviceConnection;
-  v10 = [v4 dataRepresentation];
+  dataRepresentation = [prebootCopy dataRepresentation];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __72__POConfigurationManager_saveDeviceConfigurationSyncAllConfigToPreboot___block_invoke;
   v18[3] = &unk_279A3A240;
   v18[4] = &v19;
-  [(PODaemonConnection *)serviceConnection saveDeviceConfigurationSyncAllConfigToPreboot:v10 identifier:v6 completion:v18];
+  [(PODaemonConnection *)serviceConnection saveDeviceConfigurationSyncAllConfigToPreboot:dataRepresentation identifier:v6 completion:v18];
 
   if (*(v20 + 24) == 1)
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    currentDeviceConfiguration = v11->_currentDeviceConfiguration;
-    v11->_currentDeviceConfiguration = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = 0;
 
-    currentLoginConfiguration = v11->_currentLoginConfiguration;
-    v11->_currentLoginConfiguration = 0;
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = 0;
 
-    objc_sync_exit(v11);
-    v14 = [(POConfigurationManager *)v11 deviceConfigurationVersion];
-    [v14 increaseVersionWithMessage:@"deviceConfiguration sync all"];
+    objc_sync_exit(selfCopy);
+    deviceConfigurationVersion = [(POConfigurationManager *)selfCopy deviceConfigurationVersion];
+    [deviceConfigurationVersion increaseVersionWithMessage:@"deviceConfiguration sync all"];
 
-    v15 = [(POConfigurationManager *)v11 loginConfigurationVersion];
-    [v15 increaseVersionWithMessage:@"loginConfiguration sync all"];
+    loginConfigurationVersion = [(POConfigurationManager *)selfCopy loginConfigurationVersion];
+    [loginConfigurationVersion increaseVersionWithMessage:@"loginConfiguration sync all"];
 
     v16 = *(v20 + 24);
   }
@@ -628,16 +628,16 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(POConfigurationManager *)self userIdentifier];
-  v6 = [v4 stringWithFormat:@"%@", v5];
+  userIdentifier = [(POConfigurationManager *)self userIdentifier];
+  v6 = [v4 stringWithFormat:@"%@", userIdentifier];
 
   v7 = [(POConfigurationManager *)self __removeDeviceConfigurationWithIdentifier:v6];
   return v7;
 }
 
-- (BOOL)__removeDeviceConfigurationWithIdentifier:(id)a3
+- (BOOL)__removeDeviceConfigurationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -654,18 +654,18 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   v12[2] = __68__POConfigurationManager___removeDeviceConfigurationWithIdentifier___block_invoke;
   v12[3] = &unk_279A3A240;
   v12[4] = &v13;
-  [(PODaemonConnection *)serviceConnection removeDeviceConfigurationForIdentifier:v4 completion:v12];
+  [(PODaemonConnection *)serviceConnection removeDeviceConfigurationForIdentifier:identifierCopy completion:v12];
   if (*(v14 + 24) == 1)
   {
-    v7 = [(POConfigurationManager *)self deviceConfigurationVersion];
-    [v7 increaseVersionWithMessage:@"deviceConfiguration updated"];
+    deviceConfigurationVersion = [(POConfigurationManager *)self deviceConfigurationVersion];
+    [deviceConfigurationVersion increaseVersionWithMessage:@"deviceConfiguration updated"];
 
-    v8 = self;
-    objc_sync_enter(v8);
-    currentDeviceConfiguration = v8->_currentDeviceConfiguration;
-    v8->_currentDeviceConfiguration = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    currentDeviceConfiguration = selfCopy->_currentDeviceConfiguration;
+    selfCopy->_currentDeviceConfiguration = 0;
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
     v10 = *(v14 + 24);
   }
 
@@ -699,10 +699,10 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   v16 = __Block_byref_object_copy__2;
   v17 = __Block_byref_object_dispose__2;
   v18 = 0;
-  v4 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v5 = [v4 sharedDeviceKeys];
+  currentDeviceConfiguration = [(POConfigurationManager *)self currentDeviceConfiguration];
+  sharedDeviceKeys = [currentDeviceConfiguration sharedDeviceKeys];
 
-  if (v5)
+  if (sharedDeviceKeys)
   {
     v6 = 0;
   }
@@ -710,8 +710,8 @@ void __49__POConfigurationManager_userDeviceConfiguration__block_invoke(uint64_t
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(POConfigurationManager *)self userIdentifier];
-    v6 = [v7 stringWithFormat:@"%@", v8];
+    userIdentifier = [(POConfigurationManager *)self userIdentifier];
+    v6 = [v7 stringWithFormat:@"%@", userIdentifier];
   }
 
   serviceConnection = self->_serviceConnection;
@@ -749,19 +749,19 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   *(v11 + 40) = v5;
 }
 
-- (BOOL)saveLoginConfiguration:(id)a3
+- (BOOL)saveLoginConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager saveLoginConfiguration:];
   }
 
-  v6 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v7 = [v6 sharedDeviceKeys];
+  currentDeviceConfiguration = [(POConfigurationManager *)self currentDeviceConfiguration];
+  sharedDeviceKeys = [currentDeviceConfiguration sharedDeviceKeys];
 
-  if (v7)
+  if (sharedDeviceKeys)
   {
     v8 = 0;
   }
@@ -769,8 +769,8 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(POConfigurationManager *)self userIdentifier];
-    v8 = [v9 stringWithFormat:@"%@", v10];
+    userIdentifier = [(POConfigurationManager *)self userIdentifier];
+    v8 = [v9 stringWithFormat:@"%@", userIdentifier];
   }
 
   v19 = 0;
@@ -778,25 +778,25 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   v21 = 0x2020000000;
   v22 = 0;
   serviceConnection = self->_serviceConnection;
-  v12 = [v4 dataRepresentation];
+  dataRepresentation = [configurationCopy dataRepresentation];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __49__POConfigurationManager_saveLoginConfiguration___block_invoke;
   v18[3] = &unk_279A3A240;
   v18[4] = &v19;
-  [(PODaemonConnection *)serviceConnection saveLoginConfiguration:v12 identifier:v8 completion:v18];
+  [(PODaemonConnection *)serviceConnection saveLoginConfiguration:dataRepresentation identifier:v8 completion:v18];
 
   if (*(v20 + 24) == 1)
   {
-    v13 = [(POConfigurationManager *)self loginConfigurationVersion];
-    [v13 increaseVersionWithMessage:@"loginConfiguration updated"];
+    loginConfigurationVersion = [(POConfigurationManager *)self loginConfigurationVersion];
+    [loginConfigurationVersion increaseVersionWithMessage:@"loginConfiguration updated"];
 
-    v14 = self;
-    objc_sync_enter(v14);
-    currentLoginConfiguration = v14->_currentLoginConfiguration;
-    v14->_currentLoginConfiguration = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = 0;
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
     v16 = *(v20 + 24);
   }
 
@@ -819,8 +819,8 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   }
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(POConfigurationManager *)self userIdentifier];
-  v6 = [v4 stringWithFormat:@"%@", v5];
+  userIdentifier = [(POConfigurationManager *)self userIdentifier];
+  v6 = [v4 stringWithFormat:@"%@", userIdentifier];
 
   v7 = [(POConfigurationManager *)self __removeLoginConfigurationForIdentifier:v6];
   return v7;
@@ -834,10 +834,10 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
     [POConfigurationManager removeLoginConfiguration];
   }
 
-  v4 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v5 = [v4 sharedDeviceKeys];
+  currentDeviceConfiguration = [(POConfigurationManager *)self currentDeviceConfiguration];
+  sharedDeviceKeys = [currentDeviceConfiguration sharedDeviceKeys];
 
-  if (v5)
+  if (sharedDeviceKeys)
   {
     v6 = 0;
   }
@@ -845,8 +845,8 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(POConfigurationManager *)self userIdentifier];
-    v6 = [v7 stringWithFormat:@"%@", v8];
+    userIdentifier = [(POConfigurationManager *)self userIdentifier];
+    v6 = [v7 stringWithFormat:@"%@", userIdentifier];
   }
 
   v9 = [(POConfigurationManager *)self __removeLoginConfigurationForIdentifier:v6];
@@ -854,9 +854,9 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   return v9;
 }
 
-- (BOOL)__removeLoginConfigurationForIdentifier:(id)a3
+- (BOOL)__removeLoginConfigurationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -873,18 +873,18 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   v12[2] = __66__POConfigurationManager___removeLoginConfigurationForIdentifier___block_invoke;
   v12[3] = &unk_279A3A240;
   v12[4] = &v13;
-  [(PODaemonConnection *)serviceConnection removeLoginConfigurationForIdentifier:v4 completion:v12];
+  [(PODaemonConnection *)serviceConnection removeLoginConfigurationForIdentifier:identifierCopy completion:v12];
   if (*(v14 + 24) == 1)
   {
-    v7 = [(POConfigurationManager *)self loginConfigurationVersion];
-    [v7 increaseVersionWithMessage:@"loginConfiguration updated"];
+    loginConfigurationVersion = [(POConfigurationManager *)self loginConfigurationVersion];
+    [loginConfigurationVersion increaseVersionWithMessage:@"loginConfiguration updated"];
 
-    v8 = self;
-    objc_sync_enter(v8);
-    currentLoginConfiguration = v8->_currentLoginConfiguration;
-    v8->_currentLoginConfiguration = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    currentLoginConfiguration = selfCopy->_currentLoginConfiguration;
+    selfCopy->_currentLoginConfiguration = 0;
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
     v10 = *(v14 + 24);
   }
 
@@ -898,17 +898,17 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
   return v10 & 1;
 }
 
-- (id)userConfigurationForUserName:(id)a3
+- (id)userConfigurationForUserName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v12 = 0;
     goto LABEL_13;
   }
 
-  v5 = [(POConfigurationManager *)self directoryServices];
-  v6 = [v5 uniqueIdentifierForUserName:v4];
+  directoryServices = [(POConfigurationManager *)self directoryServices];
+  v6 = [directoryServices uniqueIdentifierForUserName:nameCopy];
 
   if (v6)
   {
@@ -935,8 +935,8 @@ void __44__POConfigurationManager_loginConfiguration__block_invoke(uint64_t a1, 
     v8 = v18[5];
     if (v8)
     {
-      v9 = [v8 uniqueIdentifier];
-      v10 = [v6 isEqualToString:v9];
+      uniqueIdentifier = [v8 uniqueIdentifier];
+      v10 = [v6 isEqualToString:uniqueIdentifier];
 
       if (!v10)
       {
@@ -965,7 +965,7 @@ LABEL_11:
   v25[1] = 3221225472;
   v25[2] = __55__POConfigurationManager_userConfigurationForUserName___block_invoke;
   v25[3] = &unk_279A3A088;
-  v26 = v4;
+  v26 = nameCopy;
   v13 = __55__POConfigurationManager_userConfigurationForUserName___block_invoke(v25);
 
   v12 = 0;
@@ -1014,24 +1014,24 @@ id __55__POConfigurationManager_userConfigurationForUserName___block_invoke_2()
   return v0;
 }
 
-- (BOOL)saveUserConfiguration:(id)a3 forUserName:(id)a4 syncToPreboot:(BOOL)a5
+- (BOOL)saveUserConfiguration:(id)configuration forUserName:(id)name syncToPreboot:(BOOL)preboot
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prebootCopy = preboot;
+  configurationCopy = configuration;
+  nameCopy = name;
   v10 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager saveUserConfiguration:forUserName:syncToPreboot:];
   }
 
-  v11 = [(POConfigurationManager *)self directoryServices];
-  v12 = [v11 uniqueIdentifierForUserName:v9];
+  directoryServices = [(POConfigurationManager *)self directoryServices];
+  v12 = [directoryServices uniqueIdentifierForUserName:nameCopy];
 
   if (v12)
   {
-    [v8 setUniqueIdentifier:v12];
-    v13 = [(POConfigurationCoreManager *)self isTemporaryAccountUserName:v9];
+    [configurationCopy setUniqueIdentifier:v12];
+    v13 = [(POConfigurationCoreManager *)self isTemporaryAccountUserName:nameCopy];
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
@@ -1042,17 +1042,17 @@ id __55__POConfigurationManager_userConfigurationForUserName___block_invoke_2()
     v21[2] = __74__POConfigurationManager_saveUserConfiguration_forUserName_syncToPreboot___block_invoke_145;
     v21[3] = &unk_279A3A240;
     v21[4] = &v22;
-    [(PODaemonConnection *)serviceConnection saveUserConfiguration:v8 forIdentifier:v12 syncToPreboot:v5 & ~v13 completion:v21];
+    [(PODaemonConnection *)serviceConnection saveUserConfiguration:configurationCopy forIdentifier:v12 syncToPreboot:prebootCopy & ~v13 completion:v21];
     if (*(v23 + 24) == 1)
     {
-      v15 = self;
-      objc_sync_enter(v15);
-      currentUserConfiguration = v15->_currentUserConfiguration;
-      v15->_currentUserConfiguration = 0;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      currentUserConfiguration = selfCopy->_currentUserConfiguration;
+      selfCopy->_currentUserConfiguration = 0;
 
-      objc_sync_exit(v15);
-      v17 = [(POConfigurationManager *)v15 userConfigurationVersion];
-      [v17 increaseVersionWithMessage:@"userConfiguration updated"];
+      objc_sync_exit(selfCopy);
+      userConfigurationVersion = [(POConfigurationManager *)selfCopy userConfigurationVersion];
+      [userConfigurationVersion increaseVersionWithMessage:@"userConfiguration updated"];
 
       v18 = *(v23 + 24);
     }
@@ -1071,7 +1071,7 @@ id __55__POConfigurationManager_userConfigurationForUserName___block_invoke_2()
     v26[1] = 3221225472;
     v26[2] = __74__POConfigurationManager_saveUserConfiguration_forUserName_syncToPreboot___block_invoke;
     v26[3] = &unk_279A3A088;
-    v27 = v9;
+    v27 = nameCopy;
     v19 = __74__POConfigurationManager_saveUserConfiguration_forUserName_syncToPreboot___block_invoke(v26);
 
     v18 = 0;
@@ -1092,17 +1092,17 @@ id __74__POConfigurationManager_saveUserConfiguration_forUserName_syncToPreboot_
   return v2;
 }
 
-- (BOOL)removeUserConfigurationForUserName:(id)a3
+- (BOOL)removeUserConfigurationForUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager removeUserConfigurationForUserName:];
   }
 
-  v6 = [(POConfigurationManager *)self directoryServices];
-  v7 = [v6 uniqueIdentifierForUserName:v4];
+  directoryServices = [(POConfigurationManager *)self directoryServices];
+  v7 = [directoryServices uniqueIdentifierForUserName:nameCopy];
 
   if (v7)
   {
@@ -1119,15 +1119,15 @@ id __74__POConfigurationManager_saveUserConfiguration_forUserName_syncToPreboot_
     [(PODaemonConnection *)serviceConnection removeUserConfigurationForIdentifier:v7 completion:v15];
     if (*(v17 + 24) == 1)
     {
-      v9 = [(POConfigurationManager *)self loginConfigurationVersion];
-      [v9 increaseVersionWithMessage:@"userConfiguration updated"];
+      loginConfigurationVersion = [(POConfigurationManager *)self loginConfigurationVersion];
+      [loginConfigurationVersion increaseVersionWithMessage:@"userConfiguration updated"];
 
-      v10 = self;
-      objc_sync_enter(v10);
-      currentUserConfiguration = v10->_currentUserConfiguration;
-      v10->_currentUserConfiguration = 0;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      currentUserConfiguration = selfCopy->_currentUserConfiguration;
+      selfCopy->_currentUserConfiguration = 0;
 
-      objc_sync_exit(v10);
+      objc_sync_exit(selfCopy);
       v12 = *(v17 + 24);
     }
 
@@ -1145,7 +1145,7 @@ id __74__POConfigurationManager_saveUserConfiguration_forUserName_syncToPreboot_
     v20[1] = 3221225472;
     v20[2] = __61__POConfigurationManager_removeUserConfigurationForUserName___block_invoke;
     v20[3] = &unk_279A3A088;
-    v21 = v4;
+    v21 = nameCopy;
     v13 = __61__POConfigurationManager_removeUserConfigurationForUserName___block_invoke(v20);
 
     v12 = 0;
@@ -1181,14 +1181,14 @@ id __61__POConfigurationManager_removeUserConfigurationForUserName___block_invok
   [(PODaemonConnection *)serviceConnection resetStoredConfigurationWithCompletion:v9];
   if (*(v11 + 24) == 1)
   {
-    v4 = [(POConfigurationManager *)self userConfigurationVersion];
-    [v4 reset];
+    userConfigurationVersion = [(POConfigurationManager *)self userConfigurationVersion];
+    [userConfigurationVersion reset];
 
-    v5 = [(POConfigurationManager *)self loginConfigurationVersion];
-    [v5 reset];
+    loginConfigurationVersion = [(POConfigurationManager *)self loginConfigurationVersion];
+    [loginConfigurationVersion reset];
 
-    v6 = [(POConfigurationManager *)self deviceConfigurationVersion];
-    [v6 reset];
+    deviceConfigurationVersion = [(POConfigurationManager *)self deviceConfigurationVersion];
+    [deviceConfigurationVersion reset];
 
     v7 = *(v11 + 24);
   }
@@ -1202,9 +1202,9 @@ id __61__POConfigurationManager_removeUserConfigurationForUserName___block_invok
   return v7 & 1;
 }
 
-- (void)enablePlatformSSORulesAndDefaultsIfNeeded:(id)a3
+- (void)enablePlatformSSORulesAndDefaultsIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1223,9 +1223,9 @@ id __61__POConfigurationManager_removeUserConfigurationForUserName___block_invok
   v6[4] = &v13;
   v6[5] = &v7;
   [(PODaemonConnection *)serviceConnection enablePlatformSSORulesAndDefaults:v6];
-  if (v4)
+  if (neededCopy)
   {
-    v4[2](v4, *(v14 + 24), v8[5]);
+    neededCopy[2](neededCopy, *(v14 + 24), v8[5]);
   }
 
   _Block_object_dispose(&v7, 8);
@@ -1254,9 +1254,9 @@ id __61__POConfigurationManager_removeUserConfigurationForUserName___block_invok
   userIdentifier = self->_userIdentifier;
   if (!userIdentifier)
   {
-    v4 = [(POConfigurationManager *)self directoryServices];
-    v5 = [(POConfigurationCoreManager *)self userName];
-    v6 = [v4 uniqueIdentifierForUserName:v5];
+    directoryServices = [(POConfigurationManager *)self directoryServices];
+    userName = [(POConfigurationCoreManager *)self userName];
+    v6 = [directoryServices uniqueIdentifierForUserName:userName];
     v7 = self->_userIdentifier;
     self->_userIdentifier = v6;
 
@@ -1287,13 +1287,13 @@ id __40__POConfigurationManager_userIdentifier__block_invoke()
 
 - (NSDate)tokenExpiration
 {
-  v3 = [(POConfigurationManager *)self keychainHelper];
-  v4 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v5 = [v4 extensionIdentifier];
-  v6 = [(POConfigurationManager *)self currentUserConfiguration];
-  v7 = [v6 uniqueIdentifier];
+  keychainHelper = [(POConfigurationManager *)self keychainHelper];
+  currentDeviceConfiguration = [(POConfigurationManager *)self currentDeviceConfiguration];
+  extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
+  currentUserConfiguration = [(POConfigurationManager *)self currentUserConfiguration];
+  uniqueIdentifier = [currentUserConfiguration uniqueIdentifier];
   v13 = 0;
-  v8 = [v3 retrieveTokensFromKeychainForService:v5 username:v7 system:0 returningTokens:0 metaData:&v13];
+  v8 = [keychainHelper retrieveTokensFromKeychainForService:extensionIdentifier username:uniqueIdentifier system:0 returningTokens:0 metaData:&v13];
   v9 = v13;
 
   if (v8)
@@ -1329,32 +1329,32 @@ id __41__POConfigurationManager_tokenExpiration__block_invoke()
 
 - (NSDate)tokenReceived
 {
-  v3 = [(POConfigurationManager *)self currentUserConfiguration];
-  v4 = [v3 uniqueIdentifier];
-  if (!v4)
+  currentUserConfiguration = [(POConfigurationManager *)self currentUserConfiguration];
+  uniqueIdentifier = [currentUserConfiguration uniqueIdentifier];
+  if (!uniqueIdentifier)
   {
 
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v7 = [v6 extensionIdentifier];
+  v5 = uniqueIdentifier;
+  currentDeviceConfiguration = [(POConfigurationManager *)self currentDeviceConfiguration];
+  extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
 
-  if (!v7)
+  if (!extensionIdentifier)
   {
 LABEL_7:
     v16 = 0;
     goto LABEL_11;
   }
 
-  v8 = [(POConfigurationManager *)self keychainHelper];
-  v9 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v10 = [v9 extensionIdentifier];
-  v11 = [(POConfigurationManager *)self currentUserConfiguration];
-  v12 = [v11 uniqueIdentifier];
+  keychainHelper = [(POConfigurationManager *)self keychainHelper];
+  currentDeviceConfiguration2 = [(POConfigurationManager *)self currentDeviceConfiguration];
+  extensionIdentifier2 = [currentDeviceConfiguration2 extensionIdentifier];
+  currentUserConfiguration2 = [(POConfigurationManager *)self currentUserConfiguration];
+  uniqueIdentifier2 = [currentUserConfiguration2 uniqueIdentifier];
   v18 = 0;
-  v13 = [v8 retrieveTokensFromKeychainForService:v10 username:v12 system:0 returningTokens:0 metaData:&v18];
+  v13 = [keychainHelper retrieveTokensFromKeychainForService:extensionIdentifier2 username:uniqueIdentifier2 system:0 returningTokens:0 metaData:&v18];
   v14 = v18;
 
   if (v13)
@@ -1390,14 +1390,14 @@ id __39__POConfigurationManager_tokenReceived__block_invoke()
 
 - (id)currentRefreshToken
 {
-  v3 = [(POConfigurationManager *)self currentDeviceConfiguration];
-  v4 = [v3 extensionIdentifier];
+  currentDeviceConfiguration = [(POConfigurationManager *)self currentDeviceConfiguration];
+  extensionIdentifier = [currentDeviceConfiguration extensionIdentifier];
 
-  if (v4)
+  if (extensionIdentifier)
   {
-    v5 = [(POConfigurationManager *)self currentDeviceConfiguration];
-    v6 = [v5 extensionIdentifier];
-    v7 = [(POConfigurationManager *)self tokensForExtensionIdentifier:v6];
+    currentDeviceConfiguration2 = [(POConfigurationManager *)self currentDeviceConfiguration];
+    extensionIdentifier2 = [currentDeviceConfiguration2 extensionIdentifier];
+    v7 = [(POConfigurationManager *)self tokensForExtensionIdentifier:extensionIdentifier2];
 
     if (v7)
     {
@@ -1418,10 +1418,10 @@ id __39__POConfigurationManager_tokenReceived__block_invoke()
   return v8;
 }
 
-- (id)refreshTokenFromTokens:(id)a3
+- (id)refreshTokenFromTokens:(id)tokens
 {
   v11 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v11];
+  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:tokens options:16 error:&v11];
   v4 = v11;
   v5 = v4;
   if (v4)
@@ -1456,16 +1456,16 @@ id __49__POConfigurationManager_refreshTokenFromTokens___block_invoke(uint64_t a
   return v1;
 }
 
-- (id)tokensForExtensionIdentifier:(id)a3 user:(id)a4
+- (id)tokensForExtensionIdentifier:(id)identifier user:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(POConfigurationManager *)self directoryServices];
-  v9 = [v8 uniqueIdentifierForUserName:v7];
+  identifierCopy = identifier;
+  userCopy = user;
+  directoryServices = [(POConfigurationManager *)self directoryServices];
+  v9 = [directoryServices uniqueIdentifierForUserName:userCopy];
 
   if (v9)
   {
-    v10 = [(POConfigurationManager *)self _tokensForExtensionIdentifier:v6 identifier:v9];
+    v10 = [(POConfigurationManager *)self _tokensForExtensionIdentifier:identifierCopy identifier:v9];
   }
 
   else
@@ -1474,7 +1474,7 @@ id __49__POConfigurationManager_refreshTokenFromTokens___block_invoke(uint64_t a
     v13[1] = 3221225472;
     v13[2] = __60__POConfigurationManager_tokensForExtensionIdentifier_user___block_invoke;
     v13[3] = &unk_279A3A088;
-    v14 = v7;
+    v14 = userCopy;
     v11 = __60__POConfigurationManager_tokensForExtensionIdentifier_user___block_invoke(v13);
 
     v10 = 0;
@@ -1495,17 +1495,17 @@ id __60__POConfigurationManager_tokensForExtensionIdentifier_user___block_invoke
   return v2;
 }
 
-- (id)tokensForExtensionIdentifier:(id)a3
+- (id)tokensForExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(POConfigurationManager *)self currentUserConfiguration];
-  v6 = [v5 uniqueIdentifier];
+  identifierCopy = identifier;
+  currentUserConfiguration = [(POConfigurationManager *)self currentUserConfiguration];
+  uniqueIdentifier = [currentUserConfiguration uniqueIdentifier];
 
-  if (v6)
+  if (uniqueIdentifier)
   {
-    v7 = [(POConfigurationManager *)self currentUserConfiguration];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [(POConfigurationManager *)self _tokensForExtensionIdentifier:v4 identifier:v8];
+    currentUserConfiguration2 = [(POConfigurationManager *)self currentUserConfiguration];
+    uniqueIdentifier2 = [currentUserConfiguration2 uniqueIdentifier];
+    v9 = [(POConfigurationManager *)self _tokensForExtensionIdentifier:identifierCopy identifier:uniqueIdentifier2];
   }
 
   else
@@ -1522,19 +1522,19 @@ id __60__POConfigurationManager_tokensForExtensionIdentifier_user___block_invoke
   return v9;
 }
 
-- (id)_tokensForExtensionIdentifier:(id)a3 identifier:(id)a4
+- (id)_tokensForExtensionIdentifier:(id)identifier identifier:(id)a4
 {
   v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager _tokensForExtensionIdentifier:identifier:];
   }
 
-  v9 = [(POConfigurationManager *)self keychainHelper];
+  keychainHelper = [(POConfigurationManager *)self keychainHelper];
   v16 = 0;
-  v10 = [v9 retrieveTokensFromKeychainForService:v7 username:v6 system:0 returningTokens:&v16 metaData:0];
+  v10 = [keychainHelper retrieveTokensFromKeychainForService:identifierCopy username:v6 system:0 returningTokens:&v16 metaData:0];
 
   v11 = v16;
   if (v10)
@@ -1584,17 +1584,17 @@ id __67__POConfigurationManager__tokensForExtensionIdentifier_identifier___block
   return v0;
 }
 
-- (BOOL)setTokens:(id)a3 user:(id)a4 extensionIdentifier:(id)a5 returningError:(id *)a6
+- (BOOL)setTokens:(id)tokens user:(id)user extensionIdentifier:(id)identifier returningError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(POConfigurationManager *)self directoryServices];
-  v14 = [v13 uniqueIdentifierForUserName:v11];
+  tokensCopy = tokens;
+  userCopy = user;
+  identifierCopy = identifier;
+  directoryServices = [(POConfigurationManager *)self directoryServices];
+  v14 = [directoryServices uniqueIdentifierForUserName:userCopy];
 
   if (v14)
   {
-    v15 = [(POConfigurationManager *)self _setTokens:v10 identifier:v14 extensionIdentifier:v12 returningError:a6];
+    v15 = [(POConfigurationManager *)self _setTokens:tokensCopy identifier:v14 extensionIdentifier:identifierCopy returningError:error];
   }
 
   else
@@ -1603,7 +1603,7 @@ id __67__POConfigurationManager__tokensForExtensionIdentifier_identifier___block
     v18[1] = 3221225472;
     v18[2] = __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningError___block_invoke;
     v18[3] = &unk_279A3A088;
-    v19 = v11;
+    v19 = userCopy;
     v16 = __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningError___block_invoke(v18);
 
     v15 = 0;
@@ -1624,18 +1624,18 @@ id __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningErro
   return v2;
 }
 
-- (BOOL)setTokens:(id)a3 extensionIdentifier:(id)a4 returningError:(id *)a5
+- (BOOL)setTokens:(id)tokens extensionIdentifier:(id)identifier returningError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(POConfigurationManager *)self currentUserConfiguration];
-  v11 = [v10 uniqueIdentifier];
+  tokensCopy = tokens;
+  identifierCopy = identifier;
+  currentUserConfiguration = [(POConfigurationManager *)self currentUserConfiguration];
+  uniqueIdentifier = [currentUserConfiguration uniqueIdentifier];
 
-  if (v11)
+  if (uniqueIdentifier)
   {
-    v12 = [(POConfigurationManager *)self currentUserConfiguration];
-    v13 = [v12 uniqueIdentifier];
-    v14 = [(POConfigurationManager *)self _setTokens:v8 identifier:v13 extensionIdentifier:v9 returningError:a5];
+    currentUserConfiguration2 = [(POConfigurationManager *)self currentUserConfiguration];
+    uniqueIdentifier2 = [currentUserConfiguration2 uniqueIdentifier];
+    v14 = [(POConfigurationManager *)self _setTokens:tokensCopy identifier:uniqueIdentifier2 extensionIdentifier:identifierCopy returningError:error];
   }
 
   else
@@ -1652,26 +1652,26 @@ id __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningErro
   return v14;
 }
 
-- (BOOL)_setTokens:(id)a3 identifier:(id)a4 extensionIdentifier:(id)a5 returningError:(id *)a6
+- (BOOL)_setTokens:(id)tokens identifier:(id)identifier extensionIdentifier:(id)extensionIdentifier returningError:(id *)error
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  tokensCopy = tokens;
+  identifierCopy = identifier;
+  extensionIdentifierCopy = extensionIdentifier;
   v13 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     [POConfigurationManager _setTokens:identifier:extensionIdentifier:returningError:];
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  if (v10)
+  if (tokensCopy)
   {
-    v14 = [(POConfigurationManager *)self calculateExpirationForTokens:v10];
+    v14 = [(POConfigurationManager *)self calculateExpirationForTokens:tokensCopy];
     v15 = v14;
     if (v14)
     {
@@ -1680,8 +1680,8 @@ id __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningErro
       v17 = *MEMORY[0x277D3D2D0];
       v29[0] = v16;
       v29[1] = v17;
-      v18 = [MEMORY[0x277CBEAA8] date];
-      v30[1] = v18;
+      date = [MEMORY[0x277CBEAA8] date];
+      v30[1] = date;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
     }
 
@@ -1690,16 +1690,16 @@ id __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningErro
       v19 = 0;
     }
 
-    v24 = [(POConfigurationManager *)self keychainHelper];
-    v25 = [v24 addTokens:v10 metaData:v19 toKeychainForService:v12 username:v11];
+    keychainHelper = [(POConfigurationManager *)self keychainHelper];
+    v25 = [keychainHelper addTokens:tokensCopy metaData:v19 toKeychainForService:extensionIdentifierCopy username:identifierCopy];
 
     if (v25)
     {
       v26 = __83__POConfigurationManager__setTokens_identifier_extensionIdentifier_returningError___block_invoke();
-      if (a6)
+      if (error)
       {
         v26 = v26;
-        *a6 = v26;
+        *error = v26;
       }
 
       v22 = 0;
@@ -1714,17 +1714,17 @@ id __76__POConfigurationManager_setTokens_user_extensionIdentifier_returningErro
 
   else
   {
-    v20 = [(POConfigurationManager *)self keychainHelper];
-    v21 = [v20 removeTokensFromKeychainWithService:v12 username:v11 system:0];
+    keychainHelper2 = [(POConfigurationManager *)self keychainHelper];
+    v21 = [keychainHelper2 removeTokensFromKeychainWithService:extensionIdentifierCopy username:identifierCopy system:0];
 
     v22 = 1;
     if (v21 != -25300 && v21)
     {
       v23 = __83__POConfigurationManager__setTokens_identifier_extensionIdentifier_returningError___block_invoke_181();
-      if (a6)
+      if (error)
       {
         v23 = v23;
-        *a6 = v23;
+        *error = v23;
       }
 
       v22 = v21 == -25300;
@@ -1759,10 +1759,10 @@ id __83__POConfigurationManager__setTokens_identifier_extensionIdentifier_return
   return v0;
 }
 
-- (id)calculateExpirationForTokens:(id)a3
+- (id)calculateExpirationForTokens:(id)tokens
 {
   v14 = 0;
-  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v14];
+  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:tokens options:16 error:&v14];
   v4 = v14;
   v5 = v4;
   if (v4)
@@ -1808,9 +1808,9 @@ id __55__POConfigurationManager_calculateExpirationForTokens___block_invoke(uint
   return v1;
 }
 
-- (BOOL)saveAppSSOConfiguration:(id)a3
+- (BOOL)saveAppSSOConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = PO_LOG_POConfigurationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1846,7 +1846,7 @@ id __55__POConfigurationManager_calculateExpirationForTokens___block_invoke(uint
   v13[4] = &v20;
   v13[5] = buf;
   v13[6] = v7;
-  [(PODaemonConnection *)serviceConnection saveAppSSOConfiguration:v4 completion:v13];
+  [(PODaemonConnection *)serviceConnection saveAppSSOConfiguration:configurationCopy completion:v13];
   v11 = *(v21 + 24);
   _Block_object_dispose(buf, 8);
 

@@ -8,16 +8,16 @@
 
 - (id)tvp_localizedDisplayString
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v3 = MEMORY[0x277CE6520];
-  v4 = [a1 commonMetadata];
-  v5 = [v3 metadataItemsFromArray:v4 withKey:*MEMORY[0x277CE5F28] keySpace:*MEMORY[0x277CE5F98]];
+  commonMetadata = [self commonMetadata];
+  v5 = [v3 metadataItemsFromArray:commonMetadata withKey:*MEMORY[0x277CE5F28] keySpace:*MEMORY[0x277CE5F98]];
 
-  v6 = [MEMORY[0x277CE6520] metadataItemsFromArray:v5 withLocale:v2];
+  v6 = [MEMORY[0x277CE6520] metadataItemsFromArray:v5 withLocale:currentLocale];
   if ([v6 count])
   {
-    v7 = [a1 displayNameWithLocale:v2];
-    if (v7)
+    displayName = [self displayNameWithLocale:currentLocale];
+    if (displayName)
     {
       goto LABEL_4;
     }
@@ -25,9 +25,9 @@
     goto LABEL_3;
   }
 
-  v9 = [v2 localeIdentifier];
-  v10 = [v9 rangeOfString:@"_"];
-  v11 = [v9 rangeOfString:@"-"];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v10 = [localeIdentifier rangeOfString:@"_"];
+  v11 = [localeIdentifier rangeOfString:@"-"];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL || v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
@@ -56,11 +56,11 @@
     v13 = v10;
   }
 
-  v15 = [v9 substringToIndex:v13];
+  v15 = [localeIdentifier substringToIndex:v13];
   if (!v15)
   {
 LABEL_27:
-    v7 = 0;
+    displayName = 0;
     goto LABEL_30;
   }
 
@@ -69,56 +69,56 @@ LABEL_27:
   v18 = [MEMORY[0x277CE6520] metadataItemsFromArray:v5 withLocale:v17];
   if ([v18 count])
   {
-    v7 = [a1 displayNameWithLocale:v17];
+    displayName = [self displayNameWithLocale:v17];
   }
 
   else
   {
-    v7 = 0;
+    displayName = 0;
   }
 
 LABEL_30:
-  if (!v7)
+  if (!displayName)
   {
 LABEL_3:
-    v7 = [a1 displayName];
+    displayName = [self displayName];
   }
 
 LABEL_4:
 
-  return v7;
+  return displayName;
 }
 
 - (id)tvp_languageCodeFromLocale
 {
-  v2 = [a1 locale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE6C8]];
+  locale = [self locale];
+  v3 = [locale objectForKey:*MEMORY[0x277CBE6C8]];
 
-  v4 = [a1 mediaType];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CE5E58]];
+  mediaType = [self mediaType];
+  v5 = [mediaType isEqualToString:*MEMORY[0x277CE5E58]];
 
   if (v5)
   {
-    v6 = @"en";
+    tvp_subtitleLanguageCode = @"en";
   }
 
   else
   {
-    v7 = [a1 mediaType];
-    v8 = [v7 isEqualToString:*MEMORY[0x277CE5E90]];
+    mediaType2 = [self mediaType];
+    v8 = [mediaType2 isEqualToString:*MEMORY[0x277CE5E90]];
 
     if (!v8)
     {
       goto LABEL_6;
     }
 
-    v9 = [a1 locale];
-    v6 = [v9 tvp_subtitleLanguageCode];
+    locale2 = [self locale];
+    tvp_subtitleLanguageCode = [locale2 tvp_subtitleLanguageCode];
 
-    v3 = v9;
+    v3 = locale2;
   }
 
-  v3 = v6;
+  v3 = tvp_subtitleLanguageCode;
 LABEL_6:
 
   return v3;
@@ -126,17 +126,17 @@ LABEL_6:
 
 - (uint64_t)tvp_isSDHSubtitle
 {
-  v2 = [a1 mediaType];
-  if ([v2 isEqualToString:*MEMORY[0x277CE5E90]])
+  mediaType = [self mediaType];
+  if ([mediaType isEqualToString:*MEMORY[0x277CE5E90]])
   {
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x277CE5E00]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x277CE5E00]])
     {
       v3 = 1;
     }
 
     else
     {
-      v3 = [a1 hasMediaCharacteristic:*MEMORY[0x277CE5E38]];
+      v3 = [self hasMediaCharacteristic:*MEMORY[0x277CE5E38]];
     }
   }
 

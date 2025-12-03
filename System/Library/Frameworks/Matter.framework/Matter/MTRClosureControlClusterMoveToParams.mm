@@ -1,8 +1,8 @@
 @interface MTRClosureControlClusterMoveToParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRClosureControlClusterMoveToParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureControlClusterMoveToParams);
-  v5 = [(MTRClosureControlClusterMoveToParams *)self position];
-  [(MTRClosureControlClusterMoveToParams *)v4 setPosition:v5];
+  position = [(MTRClosureControlClusterMoveToParams *)self position];
+  [(MTRClosureControlClusterMoveToParams *)v4 setPosition:position];
 
-  v6 = [(MTRClosureControlClusterMoveToParams *)self latch];
-  [(MTRClosureControlClusterMoveToParams *)v4 setLatch:v6];
+  latch = [(MTRClosureControlClusterMoveToParams *)self latch];
+  [(MTRClosureControlClusterMoveToParams *)v4 setLatch:latch];
 
-  v7 = [(MTRClosureControlClusterMoveToParams *)self speed];
-  [(MTRClosureControlClusterMoveToParams *)v4 setSpeed:v7];
+  speed = [(MTRClosureControlClusterMoveToParams *)self speed];
+  [(MTRClosureControlClusterMoveToParams *)v4 setSpeed:speed];
 
-  v8 = [(MTRClosureControlClusterMoveToParams *)self timedInvokeTimeoutMs];
-  [(MTRClosureControlClusterMoveToParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRClosureControlClusterMoveToParams *)self timedInvokeTimeoutMs];
+  [(MTRClosureControlClusterMoveToParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRClosureControlClusterMoveToParams *)self serverSideProcessingTimeout];
-  [(MTRClosureControlClusterMoveToParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRClosureControlClusterMoveToParams *)self serverSideProcessingTimeout];
+  [(MTRClosureControlClusterMoveToParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,7 +66,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v27) = 0;
   LOBYTE(v28) = 0;
@@ -74,31 +74,31 @@
   v26[0] = 0;
   v26[1] = 0;
   v25 = v26;
-  v5 = [(MTRClosureControlClusterMoveToParams *)self position];
+  position = [(MTRClosureControlClusterMoveToParams *)self position];
 
-  if (v5)
+  if (position)
   {
     v27 = 1;
-    v6 = [(MTRClosureControlClusterMoveToParams *)self position];
-    HIBYTE(v27) = [v6 unsignedCharValue];
+    position2 = [(MTRClosureControlClusterMoveToParams *)self position];
+    HIBYTE(v27) = [position2 unsignedCharValue];
   }
 
-  v7 = [(MTRClosureControlClusterMoveToParams *)self latch];
+  latch = [(MTRClosureControlClusterMoveToParams *)self latch];
 
-  if (v7)
+  if (latch)
   {
     v28 = 1;
-    v8 = [(MTRClosureControlClusterMoveToParams *)self latch];
-    HIBYTE(v28) = [v8 BOOLValue];
+    latch2 = [(MTRClosureControlClusterMoveToParams *)self latch];
+    HIBYTE(v28) = [latch2 BOOLValue];
   }
 
-  v9 = [(MTRClosureControlClusterMoveToParams *)self speed];
+  speed = [(MTRClosureControlClusterMoveToParams *)self speed];
 
-  if (v9)
+  if (speed)
   {
     v29 = 1;
-    v10 = [(MTRClosureControlClusterMoveToParams *)self speed];
-    HIBYTE(v29) = [v10 unsignedCharValue];
+    speed2 = [(MTRClosureControlClusterMoveToParams *)self speed];
+    HIBYTE(v29) = [speed2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v24);
@@ -120,8 +120,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -149,19 +149,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRClosureControlClusterMoveToParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -172,7 +172,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x596A00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

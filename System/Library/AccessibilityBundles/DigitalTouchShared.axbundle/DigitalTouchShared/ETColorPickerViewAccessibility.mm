@@ -1,8 +1,8 @@
 @interface ETColorPickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (CGRect)accessibilityFrame;
-- (ETColorPickerViewAccessibility)initWithFrame:(CGRect)a3 collapsedFrame:(CGRect)a4;
+- (ETColorPickerViewAccessibility)initWithFrame:(CGRect)frame collapsedFrame:(CGRect)collapsedFrame;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetCenterCircleHint;
@@ -12,19 +12,19 @@
 
 @implementation ETColorPickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETColorPickerView"];
-  [v3 validateClass:@"ETColorPickerView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"showColorWheel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceVariable:@"_paletteCircles" withType:"NSArray"];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"layoutPaletteCircles" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"initWithFrame: collapsedFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"_dismissAnimated: completion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"dismissAnimated: completion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"ETColorPickerView" hasInstanceMethod:@"presentAnimated: completion:" withFullSignature:{"v", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETColorPickerView"];
+  [validationsCopy validateClass:@"ETColorPickerView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"showColorWheel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceVariable:@"_paletteCircles" withType:"NSArray"];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"layoutPaletteCircles" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"initWithFrame: collapsedFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"_dismissAnimated: completion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"dismissAnimated: completion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"ETColorPickerView" hasInstanceMethod:@"presentAnimated: completion:" withFullSignature:{"v", "B", "@?", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -43,7 +43,7 @@
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = accessibilityLocalizedString(@"people.color.picker");
-  v9 = [v5 axColorStringForSpeaking];
+  axColorStringForSpeaking = [v5 axColorStringForSpeaking];
   v7 = __UIAXStringForVariables();
 
   return v7;
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (ETColorPickerViewAccessibility)initWithFrame:(CGRect)a3 collapsedFrame:(CGRect)a4
+- (ETColorPickerViewAccessibility)initWithFrame:(CGRect)frame collapsedFrame:(CGRect)collapsedFrame
 {
   v6.receiver = self;
   v6.super_class = ETColorPickerViewAccessibility;
-  v4 = [(ETColorPickerViewAccessibility *)&v6 initWithFrame:a3.origin.x collapsedFrame:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v4 = [(ETColorPickerViewAccessibility *)&v6 initWithFrame:frame.origin.x collapsedFrame:frame.origin.y, frame.size.width, frame.size.height, collapsedFrame.origin.x, collapsedFrame.origin.y, collapsedFrame.size.width, collapsedFrame.size.height];
   [(ETColorPickerViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
   return v4;
 }
@@ -156,9 +156,9 @@ void __62__ETColorPickerViewAccessibility__dismissAnimated_completion___block_in
   v3 = [(ETColorPickerViewAccessibility *)self safeValueForKey:@"_paletteCircles"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
   v6 = accessibilityLocalizedString(@"non.adjustable.color.circle.hint");
-  [v5 setAccessibilityHint:v6];
+  [lastObject setAccessibilityHint:v6];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface _NSCoreDataCodableError
 - (NSString)exceptionReason;
-- (_NSCoreDataCodableError)initWithCoder:(id)a3;
-- (_NSCoreDataCodableError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
+- (_NSCoreDataCodableError)initWithCoder:(id)coder;
+- (_NSCoreDataCodableError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 - (id)exception;
 @end
 
@@ -26,14 +26,14 @@
   return v5;
 }
 
-- (_NSCoreDataCodableError)initWithCoder:(id)a3
+- (_NSCoreDataCodableError)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_NSCoreDataCodableError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (_NSCoreDataCodableError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -42,12 +42,12 @@
 
 - (id)exception
 {
-  v3 = [(_NSCoreDataCodableError *)self exceptionName];
-  v4 = [(_NSCoreDataCodableError *)self exceptionCode];
-  v5 = [(_NSCoreDataCodableError *)self exceptionReason];
-  v6 = [(_NSCoreDataCodableError *)self exceptionUserInfo];
+  exceptionName = [(_NSCoreDataCodableError *)self exceptionName];
+  exceptionCode = [(_NSCoreDataCodableError *)self exceptionCode];
+  exceptionReason = [(_NSCoreDataCodableError *)self exceptionReason];
+  exceptionUserInfo = [(_NSCoreDataCodableError *)self exceptionUserInfo];
 
-  return [_NSCoreDataException exceptionWithName:v3 code:v4 reason:v5 userInfo:v6];
+  return [_NSCoreDataException exceptionWithName:exceptionName code:exceptionCode reason:exceptionReason userInfo:exceptionUserInfo];
 }
 
 @end

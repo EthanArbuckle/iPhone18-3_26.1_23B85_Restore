@@ -1,21 +1,21 @@
 @interface PXLegacyText
-+ (void)readLegacyTextFromData:(id)a3 toShape:(id)a4 state:(id)a5;
-+ (void)textMasterStyleOfType:(int)a3 state:(id)a4;
++ (void)readLegacyTextFromData:(id)data toShape:(id)shape state:(id)state;
++ (void)textMasterStyleOfType:(int)type state:(id)state;
 @end
 
 @implementation PXLegacyText
 
-+ (void)textMasterStyleOfType:(int)a3 state:(id)a4
++ (void)textMasterStyleOfType:(int)type state:(id)state
 {
-  v4 = a3;
-  v5 = a4;
+  typeCopy = type;
+  stateCopy = state;
   objc_opt_class();
-  v6 = [v5 legacyTextGlobals];
+  legacyTextGlobals = [stateCopy legacyTextGlobals];
   objc_opt_class();
-  v7 = [v6 firstChildOfType:1010];
-  v8 = [v7 childOfType:4003 instance:v4];
-  v9 = [v8 eshObject];
-  if (v9)
+  v7 = [legacyTextGlobals firstChildOfType:1010];
+  v8 = [v7 childOfType:4003 instance:typeCopy];
+  eshObject = [v8 eshObject];
+  if (eshObject)
   {
   }
 
@@ -27,15 +27,15 @@
   return v10;
 }
 
-+ (void)readLegacyTextFromData:(id)a3 toShape:(id)a4 state:(id)a5
++ (void)readLegacyTextFromData:(id)data toShape:(id)shape state:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  [a5 legacyPresentationState];
+  dataCopy = data;
+  shapeCopy = shape;
+  [state legacyPresentationState];
   objc_claimAutoreleasedReturnValue();
-  [v8 textBody];
+  [shapeCopy textBody];
   objc_claimAutoreleasedReturnValue();
-  pptTreeWithData(v7);
+  pptTreeWithData(dataCopy);
 }
 
 @end

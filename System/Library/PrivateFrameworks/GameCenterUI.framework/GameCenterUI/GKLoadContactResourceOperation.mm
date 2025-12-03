@@ -1,6 +1,6 @@
 @interface GKLoadContactResourceOperation
 + (double)mainScreenScale;
-- (GKLoadContactResourceOperation)initWithContactId:(id)a3;
+- (GKLoadContactResourceOperation)initWithContactId:(id)id;
 - (id)imageCreationError;
 - (id)makeFetchError;
 - (void)main;
@@ -8,21 +8,21 @@
 
 @implementation GKLoadContactResourceOperation
 
-- (GKLoadContactResourceOperation)initWithContactId:(id)a3
+- (GKLoadContactResourceOperation)initWithContactId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = GKLoadContactResourceOperation;
   v5 = [(GKLoadContactResourceOperation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     contactId = v5->_contactId;
     v5->_contactId = v6;
 
     v8 = objc_alloc(MEMORY[0x277CBDBD0]);
-    v9 = [MEMORY[0x277CBDBD8] defaultSettings];
-    v10 = [v8 initWithSettings:v9];
+    defaultSettings = [MEMORY[0x277CBDBD8] defaultSettings];
+    v10 = [v8 initWithSettings:defaultSettings];
     monogrammer = v5->_monogrammer;
     v5->_monogrammer = v10;
   }
@@ -54,40 +54,40 @@
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:10];
 
     v10 = objc_alloc_init(MEMORY[0x277CBDAB8]);
-    v11 = [(GKLoadContactResourceOperation *)self contactId];
-    v12 = [v10 unifiedContactWithIdentifier:v11 keysToFetch:v9 error:0];
+    contactId = [(GKLoadContactResourceOperation *)self contactId];
+    v12 = [v10 unifiedContactWithIdentifier:contactId keysToFetch:v9 error:0];
 
-    v13 = [v12 imageData];
+    imageData = [v12 imageData];
 
-    if (v13)
+    if (imageData)
     {
       v14 = MEMORY[0x277D755B8];
-      v15 = [v12 imageData];
-      v16 = [v14 _gkImageWithCheckedData:v15];
+      imageData2 = [v12 imageData];
+      monogrammer = [v14 _gkImageWithCheckedData:imageData2];
 
-      if (v16)
+      if (monogrammer)
       {
-        [(GKLoadResourceOperation *)self didCompleteWithResource:v16 error:0];
+        [(GKLoadResourceOperation *)self didCompleteWithResource:monogrammer error:0];
 LABEL_8:
 
         return;
       }
 
-      v17 = [(GKLoadContactResourceOperation *)self imageCreationError];
-      [(GKLoadResourceOperation *)self didCompleteWithResource:0 error:v17];
+      imageCreationError = [(GKLoadContactResourceOperation *)self imageCreationError];
+      [(GKLoadResourceOperation *)self didCompleteWithResource:0 error:imageCreationError];
     }
 
     else
     {
-      v16 = [(GKLoadContactResourceOperation *)self monogrammer];
+      monogrammer = [(GKLoadContactResourceOperation *)self monogrammer];
       v20 = v12;
-      v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
+      imageCreationError = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __38__GKLoadContactResourceOperation_main__block_invoke;
       v19[3] = &unk_2796699D0;
       v19[4] = self;
-      v18 = [v16 renderAvatarsForContacts:v17 handler:v19];
+      v18 = [monogrammer renderAvatarsForContacts:imageCreationError handler:v19];
     }
 
     goto LABEL_8;
@@ -119,8 +119,8 @@ void __38__GKLoadContactResourceOperation_main__block_invoke(uint64_t a1, void *
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(GKLoadContactResourceOperation *)self contactId];
-  v4 = [v2 stringWithFormat:@"Unable to create photo with Id: %@", v3];
+  contactId = [(GKLoadContactResourceOperation *)self contactId];
+  v4 = [v2 stringWithFormat:@"Unable to create photo with Id: %@", contactId];
 
   v5 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];
@@ -135,8 +135,8 @@ void __38__GKLoadContactResourceOperation_main__block_invoke(uint64_t a1, void *
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(GKLoadContactResourceOperation *)self contactId];
-  v4 = [v2 stringWithFormat:@"Unable to contact photo with Id: %@", v3];
+  contactId = [(GKLoadContactResourceOperation *)self contactId];
+  v4 = [v2 stringWithFormat:@"Unable to contact photo with Id: %@", contactId];
 
   v5 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];
@@ -153,13 +153,13 @@ void __38__GKLoadContactResourceOperation_main__block_invoke(uint64_t a1, void *
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [MEMORY[0x277D759A0] screens];
+  screens = [MEMORY[0x277D759A0] screens];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__GKLoadContactResourceOperation_mainScreenScale__block_invoke;
   v5[3] = &unk_2796699F8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [screens enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);

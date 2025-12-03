@@ -7,9 +7,9 @@
 + (id)account
 {
   v2 = objc_alloc_init(MEMORY[0x1E6959A48]);
-  v3 = [v2 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 @end

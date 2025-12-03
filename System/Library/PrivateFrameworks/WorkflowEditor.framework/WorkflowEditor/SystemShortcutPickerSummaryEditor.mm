@@ -1,46 +1,46 @@
 @interface SystemShortcutPickerSummaryEditor
-- (id)viewControllerForEditingWithIdentifier:(id)a3;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
-- (void)smartShortcutPickerViewControllerDidFinishWithSystemAction:(id)a3 error:(id)a4;
+- (id)viewControllerForEditingWithIdentifier:(id)identifier;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
+- (void)smartShortcutPickerViewControllerDidFinishWithSystemAction:(id)action error:(id)error;
 @end
 
 @implementation SystemShortcutPickerSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_27444B038(v6, v7);
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_27444B038(identifierCopy, anchorCopy);
 }
 
-- (id)viewControllerForEditingWithIdentifier:(id)a3
+- (id)viewControllerForEditingWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   v6 = sub_27444B0BC();
 
   return v6;
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_2745EA34C(&unk_27464B3E8, v5);
 }
 
-- (void)smartShortcutPickerViewControllerDidFinishWithSystemAction:(id)a3 error:(id)a4
+- (void)smartShortcutPickerViewControllerDidFinishWithSystemAction:(id)action error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_27444BBB4(a3);
+  actionCopy = action;
+  selfCopy = self;
+  errorCopy = error;
+  sub_27444BBB4(action);
 }
 
 @end

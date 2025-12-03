@@ -1,16 +1,16 @@
 @interface SBIdleTimerPolicyAggregatorAccessibility
-- (void)idleTimerDidWarn:(id)a3;
+- (void)idleTimerDidWarn:(id)warn;
 @end
 
 @implementation SBIdleTimerPolicyAggregatorAccessibility
 
-- (void)idleTimerDidWarn:(id)a3
+- (void)idleTimerDidWarn:(id)warn
 {
-  v4 = a3;
+  warnCopy = warn;
   +[SBBacklightControllerAccessibility isIdling];
   v5.receiver = self;
   v5.super_class = SBIdleTimerPolicyAggregatorAccessibility;
-  [(SBIdleTimerPolicyAggregatorAccessibility *)&v5 idleTimerDidWarn:v4];
+  [(SBIdleTimerPolicyAggregatorAccessibility *)&v5 idleTimerDidWarn:warnCopy];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface CKDSWritableStorage
-- (CKDSWritableStorage)initWithFileURL:(id)a3;
-- (CKDSWritableStorage)initWithTemporaryFile:(id *)a3;
+- (CKDSWritableStorage)initWithFileURL:(id)l;
+- (CKDSWritableStorage)initWithTemporaryFile:(id *)file;
 - (id)initInMemory;
 - (id)readableStorage;
 @end
 
 @implementation CKDSWritableStorage
 
-- (CKDSWritableStorage)initWithFileURL:(id)a3
+- (CKDSWritableStorage)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [CKDSStorageFile alloc];
-  isOwned = objc_msgSend_initWithURL_isOwned_(v5, v6, v4, 0, v7, v8, v9);
+  isOwned = objc_msgSend_initWithURL_isOwned_(v5, v6, lCopy, 0, v7, v8, v9);
 
   v14 = objc_msgSend_initForWriting_withFile_orData_(self, v11, 1, isOwned, 0, v12, v13);
   return v14;
@@ -25,7 +25,7 @@
   return v11;
 }
 
-- (CKDSWritableStorage)initWithTemporaryFile:(id *)a3
+- (CKDSWritableStorage)initWithTemporaryFile:(id *)file
 {
   v73[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEBC0];
@@ -65,23 +65,23 @@
     isOwned = objc_msgSend_initWithURL_isOwned_(v57, v58, v55, 1, v59, v60, v61);
     self = objc_msgSend_initForWriting_withFile_orData_(self, v63, 1, isOwned, 0, v64, v65);
 
-    v66 = self;
+    selfCopy = self;
   }
 
-  else if (a3)
+  else if (file)
   {
     v67 = v28;
-    v66 = 0;
-    *a3 = v28;
+    selfCopy = 0;
+    *file = v28;
   }
 
   else
   {
-    v66 = 0;
+    selfCopy = 0;
   }
 
   v68 = *MEMORY[0x277D85DE8];
-  return v66;
+  return selfCopy;
 }
 
 - (id)readableStorage

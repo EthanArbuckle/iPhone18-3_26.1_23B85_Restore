@@ -1,12 +1,12 @@
 @interface ThreadNetworkManagerInstance
-- (BOOL)alreadyOnTheSameNetwork:(id)a3;
-- (BOOL)areTwoNetworksSame:(id)a3 nwname:(id)a4 creds_xpan:(id)a5 xpan:(id)a6;
-- (BOOL)checkAndUpdateNetworkParamsFromMdnsScan:(id)a3 borderAgentID:(id)a4 leaderBorderAgentID:(id)a5 isNwFound:(BOOL *)a6 numAppleBRs:(int *)a7 numThirdPartyBRs:(int *)a8 isLeaderAppleDevice:(BOOL *)a9 numThreadNwsFound:(int *)a10 shouldRunPeriodicTdm:(BOOL *)a11;
-- (BOOL)checkIfDuplicateWedAttachRequest:(const char *)a3;
+- (BOOL)alreadyOnTheSameNetwork:(id)network;
+- (BOOL)areTwoNetworksSame:(id)same nwname:(id)nwname creds_xpan:(id)creds_xpan xpan:(id)xpan;
+- (BOOL)checkAndUpdateNetworkParamsFromMdnsScan:(id)scan borderAgentID:(id)d leaderBorderAgentID:(id)iD isNwFound:(BOOL *)found numAppleBRs:(int *)rs numThirdPartyBRs:(int *)bRs isLeaderAppleDevice:(BOOL *)device numThreadNwsFound:(int *)self0 shouldRunPeriodicTdm:(BOOL *)self1;
+- (BOOL)checkIfDuplicateWedAttachRequest:(const char *)request;
 - (BOOL)checkIfMdnsIsPublishedForBAID;
-- (BOOL)checkIfNetworkIsFoundInMDNSScan:(id)a3 borderAgentID:(id)a4;
+- (BOOL)checkIfNetworkIsFoundInMDNSScan:(id)scan borderAgentID:(id)d;
 - (BOOL)clearThreadCredentials;
-- (BOOL)generateThreadSessionEvent:(BOOL)a3;
+- (BOOL)generateThreadSessionEvent:(BOOL)event;
 - (BOOL)getBTAudioCallStatus;
 - (BOOL)getDefaultChildNode;
 - (BOOL)getFWUpdateStatus;
@@ -15,17 +15,17 @@
 - (BOOL)getWasChildStatus;
 - (BOOL)isAudioNoThreadFeatureEnabled;
 - (BOOL)isCurrentBTCoExLoadAvailable;
-- (BOOL)isCurrentNetworkSameAsOneToStart:(id)a3;
+- (BOOL)isCurrentNetworkSameAsOneToStart:(id)start;
 - (BOOL)isGeoAvailable;
-- (BOOL)isNetworkSame:(Ctr_attachToNetwork *)a3 nwname:(void *)a4 xpan:(void *)a5;
+- (BOOL)isNetworkSame:(Ctr_attachToNetwork *)same nwname:(void *)nwname xpan:(void *)xpan;
 - (BOOL)isRegulatoryCertMode;
 - (BOOL)isStateMachineWedEnabled;
 - (BOOL)isThreadAlwaysOnFeatureEnabled;
 - (BOOL)isThreadGeoEnabled;
 - (BOOL)isWedSessionEnabled;
-- (BOOL)updateMeshcopRelatedParams:(BOOL *)a3 numAppleBRs:(int *)a4 numThirdPartyBRs:(int *)a5 isLeaderAppleDevice:(BOOL *)a6 numThreadNwsFound:(int *)a7 shouldRunPeriodicTdm:(BOOL *)a8;
+- (BOOL)updateMeshcopRelatedParams:(BOOL *)params numAppleBRs:(int *)rs numThirdPartyBRs:(int *)bRs isLeaderAppleDevice:(BOOL *)device numThreadNwsFound:(int *)found shouldRunPeriodicTdm:(BOOL *)tdm;
 - (BOOL)updatePreferredNetworkForDatasetChange;
-- (BOOL)validateDataSetTLVs:(id)a3 creds:(id *)a4;
+- (BOOL)validateDataSetTLVs:(id)vs creds:(id *)creds;
 - (Result)getNCPNetworkInfo:(Result *__return_ptr)retstr;
 - (Result)getPskc:(Result *__return_ptr)retstr pskc_str:;
 - (Result)saveThreadConfiguration:(Result *__return_ptr)retstr passPhrase:uuid:;
@@ -34,88 +34,88 @@
 - (basic_string<char,)getNCPPropertyAsString:(std::allocator<char>> *__return_ptr)retstr;
 - (basic_string<char,)getPersistedWedAddr;
 - (basic_string<char,)getPersistedWedMleid;
-- (const)validateExtendedMACAddress:(const char *)a3;
-- (dict)threadNetworkManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (const)validateExtendedMACAddress:(const char *)address;
+- (dict)threadNetworkManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (id)CAgetPrevValidDeviceRole;
-- (id)dataFromHexString:(id)a3;
+- (id)dataFromHexString:(id)string;
 - (id)getCurrentBorderAgent;
 - (id)getCurrentCredentialsDataSet;
 - (id)getCurrentNetworkCredentials;
 - (id)getCurrentNetworkCredentialsActiveDataSetRecord;
 - (id)getCurrentNetworkNameAndXpanid;
 - (id)getHardwareAddress;
-- (id)getNCPPreferredNetworkInDict:(id)a3;
+- (id)getNCPPreferredNetworkInDict:(id)dict;
 - (id)getNCPProperties;
-- (id)getNCPPropertyInDict:(const char *)a3;
+- (id)getNCPPropertyInDict:(const char *)dict;
 - (id)getNCPStatusInDict;
 - (id)getPreferredNetwork;
 - (id)getPreferredNetworkWithNoScan;
 - (id)getRCPProperties;
-- (id)init:(id)a3 statsQueue:(id)a4;
-- (int)attachToNetwork:(dict)a3 output:(dict *)a4;
-- (int)attachWithAllCreds:(const char *)a3 credentialsRecord_t:(id)a4 output:(dict *)a5;
-- (int)checkPreferredAndJoin:(dict *)a3 isCalledFromTimer:(BOOL)a4;
-- (int)deleteCredentialsForThisNetwork:(id)a3;
-- (int)formNetworkWithAOD:(const char *)a3 record:(id)a4 output:(dict *)a5;
-- (int)formNetworkWithCreds:(const char *)a3 credentialsRecord_t:(id)a4 output:(dict *)a5;
-- (int)formNewNetwork:(dict)a3;
-- (int)getMeCredentialsForThisNetwork:(id)a3 credentialsRecord_t:(id *)a4;
-- (int)getMePassPhraseForThisNetwork:(id)a3 passPhrase:(id *)a4;
-- (int)howToGetOnTheNetwork:(id)a3;
-- (int)howToStartThreadNetwork:(const char *)a3 activeOperationalDataset:(const char *)a4 credentialsRecord_t:(id *)a5;
+- (id)init:(id)init statsQueue:(id)queue;
+- (int)attachToNetwork:(dict)network output:(dict *)output;
+- (int)attachWithAllCreds:(const char *)creds credentialsRecord_t:(id)record_t output:(dict *)output;
+- (int)checkPreferredAndJoin:(dict *)join isCalledFromTimer:(BOOL)timer;
+- (int)deleteCredentialsForThisNetwork:(id)network;
+- (int)formNetworkWithAOD:(const char *)d record:(id)record output:(dict *)output;
+- (int)formNetworkWithCreds:(const char *)creds credentialsRecord_t:(id)record_t output:(dict *)output;
+- (int)formNewNetwork:(dict)network;
+- (int)getMeCredentialsForThisNetwork:(id)network credentialsRecord_t:(id *)record_t;
+- (int)getMePassPhraseForThisNetwork:(id)network passPhrase:(id *)phrase;
+- (int)howToGetOnTheNetwork:(id)network;
+- (int)howToStartThreadNetwork:(const char *)network activeOperationalDataset:(const char *)dataset credentialsRecord_t:(id *)record_t;
 - (int)initializeKeyChainStore;
-- (int)joinerAttach:(const char *)a3 output:(dict *)a4;
-- (int)provideExtendedMACAddress:(const char *)a3 output:(dict *)a4;
-- (int)retrieveActiveDataSetRecordForUniqueId:(const char *)a3 record:(id *)a4;
-- (int)retrieveCredentialsForUniqueId:(const char *)a3 credentialsRecord_t:(id *)a4;
-- (int)setChannel:(dict)a3;
-- (int)setChannelUsingChannelManger:(dict)a3;
-- (int)startFWUpdate:(const char *)a3 isWED:(BOOL)a4 output:(dict *)a5;
-- (int)startPairing:(const char *)a3 isWED:(BOOL)a4 output:(dict *)a5;
-- (int)startThreadNetworkWithAOD:(const char *)a3 output:(dict *)a4;
-- (int)stopFWUpdate:(dict *)a3;
-- (int)stopPairing:(dict *)a3;
+- (int)joinerAttach:(const char *)attach output:(dict *)output;
+- (int)provideExtendedMACAddress:(const char *)address output:(dict *)output;
+- (int)retrieveActiveDataSetRecordForUniqueId:(const char *)id record:(id *)record;
+- (int)retrieveCredentialsForUniqueId:(const char *)id credentialsRecord_t:(id *)record_t;
+- (int)setChannel:(dict)channel;
+- (int)setChannelUsingChannelManger:(dict)manger;
+- (int)startFWUpdate:(const char *)update isWED:(BOOL)d output:(dict *)output;
+- (int)startPairing:(const char *)pairing isWED:(BOOL)d output:(dict *)output;
+- (int)startThreadNetworkWithAOD:(const char *)d output:(dict *)output;
+- (int)stopFWUpdate:(dict *)update;
+- (int)stopPairing:(dict *)pairing;
 - (int)threadLeave;
-- (int)threadStart:(const char *)a3 activeOperationalDataset:(const char *)a4 output:(dict *)a5;
+- (int)threadStart:(const char *)start activeOperationalDataset:(const char *)dataset output:(dict *)output;
 - (int)threadStop;
-- (int)updateHomeThreadInfo:(id *)a3;
-- (int)updatePrimaryResident:(const char *)a3 isPrimaryResident:(BOOL)a4 isPrimaryResidentThreadCapable:(BOOL)a5;
+- (int)updateHomeThreadInfo:(id *)info;
+- (int)updatePrimaryResident:(const char *)resident isPrimaryResident:(BOOL)primaryResident isPrimaryResidentThreadCapable:(BOOL)capable;
 - (unint64_t)getCountOfAvailableNetworksForCommissioning;
-- (unint64_t)getCountOfThreadBorderRoutersWithMdns:(id)a3;
+- (unint64_t)getCountOfThreadBorderRoutersWithMdns:(id)mdns;
 - (void)CATriggerABCInfoMetric:()basic_string<char abcCaseSubType:()std:(std::allocator<char>> *)var0 :char_traits<char> abcString:;
 - (void)CAgetCoexCounter;
-- (void)CAgetPcapMetrics:(BOOL)a3;
-- (void)CAincrementStartProcessCount:(BOOL)a3;
-- (void)CAincrementStartProcessSuccessCount:(BOOL)a3;
-- (void)CAincrementStopProcessCount:(BOOL)a3;
-- (void)CAincrementStopProcessSuccessCount:(BOOL)a3;
-- (void)CAnoteStartProcessReqTime:(BOOL)a3;
-- (void)CAnoteStopProcessReqTimeSuccessOrFail:(BOOL)a3 isProcessPairing:(BOOL)a4;
+- (void)CAgetPcapMetrics:(BOOL)metrics;
+- (void)CAincrementStartProcessCount:(BOOL)count;
+- (void)CAincrementStartProcessSuccessCount:(BOOL)count;
+- (void)CAincrementStopProcessCount:(BOOL)count;
+- (void)CAincrementStopProcessSuccessCount:(BOOL)count;
+- (void)CAnoteStartProcessReqTime:(BOOL)time;
+- (void)CAnoteStopProcessReqTimeSuccessOrFail:(BOOL)fail isProcessPairing:(BOOL)pairing;
 - (void)CAresetCoexTaskPeriodMetrics;
-- (void)UpdateOutputWithBackOffTimerValue:(const char *)a3 output:(dict *)a4;
-- (void)addCommonDimensions:(id)a3;
-- (void)appendValMapToDict:(id)a3 value:(any)a4;
-- (void)calculateCoexTaskPeriod:(any)a3;
-- (void)captureNCPStateInformation:(id *)a3;
+- (void)UpdateOutputWithBackOffTimerValue:(const char *)value output:(dict *)output;
+- (void)addCommonDimensions:(id)dimensions;
+- (void)appendValMapToDict:(id)dict value:(any)value;
+- (void)calculateCoexTaskPeriod:(any)period;
+- (void)captureNCPStateInformation:(id *)information;
 - (void)checkAndResumeNW;
 - (void)checkIfMdnsIsPublishedForBAID;
 - (void)checkMeshcopMdns;
 - (void)checkPreferredThreadNetworkTimerHandler;
 - (void)clearProvideEmacTracker;
 - (void)clearWedDevice;
-- (void)coexCounterCollection:(BOOL)a3;
+- (void)coexCounterCollection:(BOOL)collection;
 - (void)configureRCP2PeriodicEvents;
-- (void)createDriverInterface:(id)a3;
-- (void)deleteCurrentNetwork:(id)a3;
+- (void)createDriverInterface:(id)interface;
+- (void)deleteCurrentNetwork:(id)network;
 - (void)disconnectActiveWedConnection;
 - (void)dumpAppAndRouteMetricsHistograms;
 - (void)eraseKeyFromProvideEmacTracker:()basic_string<char;
-- (void)fillupThreadCredentialsToSelfHealThreadNetwork:(id)a3 store:(id)a4;
+- (void)fillupThreadCredentialsToSelfHealThreadNetwork:(id)network store:(id)store;
 - (void)generateAPLifeInfoMetrics;
 - (void)generateStateInfoEventMetrics;
 - (void)getAllMacMetrics;
-- (void)getBTWifiLoadInfoEvent:(any)a3;
-- (void)getCurrentBTWifiLoad:(id)a3;
+- (void)getBTWifiLoadInfoEvent:(any)event;
+- (void)getCurrentBTWifiLoad:(id)load;
 - (void)getCurrentBorderAgent;
 - (void)getCurrentCredentialsDataSet;
 - (void)getCurrentNetworkCredentials;
@@ -123,35 +123,35 @@
 - (void)getCurrentWEDInfoMetrics;
 - (void)getDaemonAndVendorVersions;
 - (void)getEngagementMetrics;
-- (void)getIPMLEMetrics:(id)a3;
+- (void)getIPMLEMetrics:(id)metrics;
 - (void)getMatterSubscriptionHistograms;
 - (void)getMetricsBetweenRoleChanges;
 - (void)getNCPChannel;
-- (void)getNCPState:(BOOL)a3;
+- (void)getNCPState:(BOOL)state;
 - (void)getNetworkRadioMetrics;
 - (void)getPowerMetrics;
-- (void)getRCP2CoexMetrics:(BOOL)a3;
-- (void)getStreamRawResponseHistogramMetric:(BOOL)a3;
-- (void)getThreadSessionRejectInfoMetrics:(id)a3;
-- (void)getThreadSessionWEDConnectionHistory:(id)a3;
+- (void)getRCP2CoexMetrics:(BOOL)metrics;
+- (void)getStreamRawResponseHistogramMetric:(BOOL)metric;
+- (void)getThreadSessionRejectInfoMetrics:(id)metrics;
+- (void)getThreadSessionWEDConnectionHistory:(id)history;
 - (void)getTopologyMetrics;
 - (void)handleAdv;
 - (void)handleRouterModeFailSafeTrigger;
 - (void)initCheckPreferredTimer;
 - (void)initSyslogDumpInfo;
-- (void)nodeChangeToChildStatus:(unsigned __int8)a3;
+- (void)nodeChangeToChildStatus:(unsigned __int8)status;
 - (void)noteBTWIFILoadOnThreadStart;
-- (void)noteTimeWhenWEDAttachCompleteSuccessOrFail:(BOOL)a3;
-- (void)noteTimeWhenWEDAttachStart:(id)a3;
-- (void)noteTimeWhenWEDDetachCompleteSuccessOrFail:(BOOL)a3;
+- (void)noteTimeWhenWEDAttachCompleteSuccessOrFail:(BOOL)fail;
+- (void)noteTimeWhenWEDAttachStart:(id)start;
+- (void)noteTimeWhenWEDDetachCompleteSuccessOrFail:(BOOL)fail;
 - (void)noteTimeWhenWEDDetachStart;
-- (void)notifyHK:()basic_string<char wedMleid:()std:(std::allocator<char>> *)a3 :char_traits<char> discReason:;
+- (void)notifyHK:()basic_string<char wedMleid:()std:(std::allocator<char>> *)std :char_traits<char> discReason:;
 - (void)notifyOnNodeStatusChange;
 - (void)notifyWedUnsolictedDisconnect;
 - (void)performDiscoveryScanInSRMode;
-- (void)persistDefaultChildNode:(BOOL)a3;
-- (void)persistGeoAvailable:(BOOL)a3;
-- (void)persistWedSession:()basic_string<char wedMleid:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (void)persistDefaultChildNode:(BOOL)node;
+- (void)persistGeoAvailable:(BOOL)available;
+- (void)persistWedSession:()basic_string<char wedMleid:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (void)printProvideEmacTracker;
 - (void)registerStateMachineWedEventHandlers;
 - (void)reset;
@@ -162,7 +162,7 @@
 - (void)resetIPMLEMetrics;
 - (void)resetMacMetrics;
 - (void)resetMatterSubscriptionHistograms;
-- (void)resetMetrics:(id)a3;
+- (void)resetMetrics:(id)metrics;
 - (void)resetMetricsBetweenRoleChanges;
 - (void)resetNetworkRadioHistogramMetrics;
 - (void)resetNetworkRadioMetrics;
@@ -175,30 +175,30 @@
 - (void)resetTopologyMetrics;
 - (void)resumeNetwork;
 - (void)retrieveAndPostThirdPartyInfo;
-- (void)saveLastKnownJoinedNetwork:(const char *)a3 datasetRecord:(id)a4;
-- (void)sendThirdPartyMetricsInfo:(unsigned int)a3 prefNws:(unsigned int)a4 prefNwsByApple:(unsigned int)a5;
-- (void)setDeviceNode:(BOOL)a3 geoAvailable:(BOOL)a4 defaultChildNode:(BOOL)a5;
+- (void)saveLastKnownJoinedNetwork:(const char *)network datasetRecord:(id)record;
+- (void)sendThirdPartyMetricsInfo:(unsigned int)info prefNws:(unsigned int)nws prefNwsByApple:(unsigned int)apple;
+- (void)setDeviceNode:(BOOL)node geoAvailable:(BOOL)available defaultChildNode:(BOOL)childNode;
 - (void)setIsAssociatedFirstTimeAfterThreadStart;
-- (void)startFWUpdateHelper:(const char *)a3;
+- (void)startFWUpdateHelper:(const char *)helper;
 - (void)startNetworkTopologyBuilder;
 - (void)startPeriodicDiscoveryScanInSRMode;
 - (void)startQuickDiscoveryScanInSRMode;
 - (void)stopPeriodicDiscoveryScanInSRMode;
-- (void)submitHistogramCAEvent:(id)a3 histValues:(void *)a4;
+- (void)submitHistogramCAEvent:(id)event histValues:(void *)values;
 - (void)threadLeave;
 - (void)threadStop;
-- (void)transitionToChildNode:(dict *)a3;
+- (void)transitionToChildNode:(dict *)node;
 - (void)transitionToChildNodeHelper;
 - (void)triggerBTWifiLoadInfoEvent;
 - (void)triggerScan;
 - (void)updateBusyFailureCount;
-- (void)updateInternalDBForCommonDimensions:(id)a3 coexCntrsDict:(id)a4 coexDict:(id)a5;
+- (void)updateInternalDBForCommonDimensions:(id)dimensions coexCntrsDict:(id)dict coexDict:(id)coexDict;
 - (void)updateLinkFailureCount;
 - (void)updateOTAppAndRouteCostHistograms;
 - (void)updatePreferredNetworkForDatasetChange;
 - (void)updateThreadSessionStartTime;
-- (void)updateThreadSessionStopReason:(id)a3;
-- (void)updateThreadSessionmetrics:(id)a3 previousNodeType:(id)a4;
+- (void)updateThreadSessionStopReason:(id)reason;
+- (void)updateThreadSessionmetrics:(id)sessionmetrics previousNodeType:(id)type;
 - (void)updateWEDConnectionCount;
 - (void)updateWEDConnectionReqDupCount;
 - (void)upgradeCredentials;
@@ -206,12 +206,12 @@
 
 @implementation ThreadNetworkManagerInstance
 
-- (const)validateExtendedMACAddress:(const char *)a3
+- (const)validateExtendedMACAddress:(const char *)address
 {
-  v3 = a3;
-  if (a3)
+  addressCopy = address;
+  if (address)
   {
-    v4 = strlen(a3);
+    v4 = strlen(address);
     if (v4 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -242,39 +242,39 @@
       p_b = __b;
     }
 
-    v9 = strlen(v3);
-    v10 = strncmp(v3, p_b, v9);
+    v9 = strlen(addressCopy);
+    v10 = strncmp(addressCopy, p_b, v9);
     if (v9 == 16 && v10)
     {
       if ((v6 & 0x80000000) == 0)
       {
-        return v3;
+        return addressCopy;
       }
 
 LABEL_18:
       operator delete(v7);
-      return v3;
+      return addressCopy;
     }
 
     v12 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ThreadNetworkManagerInstance(SM_extension) *)v3 validateExtendedMACAddress:v12];
+      [(ThreadNetworkManagerInstance(SM_extension) *)addressCopy validateExtendedMACAddress:v12];
     }
 
-    v3 = 0;
+    addressCopy = 0;
     if (v6 < 0)
     {
       goto LABEL_18;
     }
   }
 
-  return v3;
+  return addressCopy;
 }
 
-- (int)startPairing:(const char *)a3 isWED:(BOOL)a4 output:(dict *)a5
+- (int)startPairing:(const char *)pairing isWED:(BOOL)d output:(dict *)output
 {
-  v6 = a4;
+  dCopy = d;
   v9 = objc_initWeak(&location, self);
   v83.var0 = 0;
   *(v82 + 3) = 0;
@@ -292,19 +292,19 @@ LABEL_18:
       v11 = v85[0].__r_.__value_.__r.__words[0];
     }
 
-    if (a3)
+    if (pairing)
     {
-      v12 = a3;
+      pairingCopy = pairing;
     }
 
     else
     {
-      v12 = "nil";
+      pairingCopy = "nil";
     }
 
-    if (a3)
+    if (pairing)
     {
-      v13 = strlen(a3);
+      v13 = strlen(pairing);
     }
 
     else
@@ -319,11 +319,11 @@ LABEL_18:
     *&buf[18] = 2080;
     *&buf[20] = v11;
     *&buf[28] = 2080;
-    *&buf[30] = v12;
+    *&buf[30] = pairingCopy;
     v87 = 2048;
     v88 = v13;
     v89 = 1024;
-    v90 = v6;
+    v90 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s:%d Start Pairing Cmd received in state %s, extendedMACAddress : %s, Length = %ld, isWED : %d", buf, 0x36u);
     if (SHIBYTE(v85[0].__r_.__value_.__r.__words[2]) < 0)
     {
@@ -331,9 +331,9 @@ LABEL_18:
     }
   }
 
-  v14 = [(ThreadNetworkManagerInstance *)self validateExtendedMACAddress:a3];
+  v14 = [(ThreadNetworkManagerInstance *)self validateExtendedMACAddress:pairing];
   v15 = v14;
-  if (v6 && !v14 || [(ThreadNetworkManagerInstance *)self lastKnownNCPState]== 4)
+  if (dCopy && !v14 || [(ThreadNetworkManagerInstance *)self lastKnownNCPState]== 4)
   {
     v16 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -376,7 +376,7 @@ LABEL_18:
       v87 = 2048;
       v88 = v34;
       v89 = 1024;
-      v90 = v6;
+      v90 = dCopy;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s:%d Returning error :  Failed to start pairing, state %s, extendedMACAddress : %s, Length = %ld, isWED : %d", buf, 0x36u);
       if (SHIBYTE(v85[0].__r_.__value_.__r.__words[2]) < 0)
       {
@@ -389,11 +389,11 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  v19 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "Network:NodeType");
-  if (v19)
+  if (ctrInternalClientPtr)
   {
-    [v19 getProperty:__p output:&v83];
+    [ctrInternalClientPtr getProperty:__p output:&v83];
     v20 = *buf == 0;
     size = *&buf[8];
     LOBYTE(v22) = buf[31];
@@ -434,13 +434,13 @@ LABEL_18:
   if ((buf[23] & 0x80000000) != 0)
   {
     operator delete(*buf);
-    if (v6)
+    if (dCopy)
     {
       goto LABEL_28;
     }
   }
 
-  else if (v6)
+  else if (dCopy)
   {
 LABEL_28:
     if (v23 - 3 <= 1)
@@ -519,11 +519,11 @@ LABEL_75:
         }
       }
 
-      v45 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
       std::string::basic_string[abi:ne200100]<0>(v77, "Network:NodeType");
-      if (v45)
+      if (ctrInternalClientPtr2)
       {
-        [v45 setProperty:v77 property_val:"sleepy-router"];
+        [ctrInternalClientPtr2 setProperty:v77 property_val:"sleepy-router"];
       }
 
       else
@@ -554,11 +554,11 @@ LABEL_75:
     }
 
 LABEL_132:
-    v56 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr3 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(v63, "Thread:Pairing:Status");
-    if (v56)
+    if (ctrInternalClientPtr3)
     {
-      [v56 setProperty:v63 property_val:"1"];
+      [ctrInternalClientPtr3 setProperty:v63 property_val:"1"];
       data = v85[0].__r_.__value_.__l.__data_;
       if ((v22 & 0x80) == 0)
       {
@@ -647,7 +647,7 @@ LABEL_135:
           v65 = xpc_null_create();
         }
 
-        *buf = a5;
+        *buf = output;
         *&buf[8] = "extendedMACAddress";
         xpc::dict::object_proxy::operator=(buf, &v65, &v66);
         v38 = v66;
@@ -671,11 +671,11 @@ LABEL_135:
     {
       if (v15)
       {
-        v36 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+        ctrInternalClientPtr4 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
         std::string::basic_string[abi:ne200100]<0>(v69, "Thread:EmacId");
-        if (v36)
+        if (ctrInternalClientPtr4)
         {
-          [v36 setProperty:v69 property_val:v15];
+          [ctrInternalClientPtr4 setProperty:v69 property_val:v15];
         }
 
         else
@@ -706,7 +706,7 @@ LABEL_135:
           v67 = xpc_null_create();
         }
 
-        *buf = a5;
+        *buf = output;
         *&buf[8] = "extendedMACAddress";
         xpc::dict::object_proxy::operator=(buf, &v67, &v68);
         v47 = v68;
@@ -793,11 +793,11 @@ LABEL_135:
 
       if (v15)
       {
-        v31 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+        ctrInternalClientPtr5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
         std::string::basic_string[abi:ne200100]<0>(v75, "Thread:EmacId");
-        if (v31)
+        if (ctrInternalClientPtr5)
         {
-          [v31 setProperty:v75 property_val:v15];
+          [ctrInternalClientPtr5 setProperty:v75 property_val:v15];
         }
 
         else
@@ -828,7 +828,7 @@ LABEL_135:
           v73 = xpc_null_create();
         }
 
-        *buf = a5;
+        *buf = output;
         *&buf[8] = "extendedMACAddress";
         xpc::dict::object_proxy::operator=(buf, &v73, &v74);
         v52 = v74;
@@ -838,11 +838,11 @@ LABEL_135:
         v73 = 0;
       }
 
-      v54 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      ctrInternalClientPtr6 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
       std::string::basic_string[abi:ne200100]<0>(v71, "Network:NodeType");
-      if (v54)
+      if (ctrInternalClientPtr6)
       {
-        [v54 setProperty:v71 property_val:"router"];
+        [ctrInternalClientPtr6 setProperty:v71 property_val:"router"];
       }
 
       else
@@ -918,7 +918,7 @@ LABEL_17:
   return v17;
 }
 
-- (int)stopPairing:(dict *)a3
+- (int)stopPairing:(dict *)pairing
 {
   v4 = objc_initWeak(&location, self);
   v39.var0 = 0;
@@ -944,11 +944,11 @@ LABEL_17:
     }
   }
 
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v36, "Thread:Pairing:Status");
-  if (v7)
+  if (ctrInternalClientPtr)
   {
-    [v7 setProperty:v36 property_val:"0"];
+    [ctrInternalClientPtr setProperty:v36 property_val:"0"];
     v8 = *buf;
     v9 = *&buf[8];
     v10 = *&buf[16];
@@ -1024,11 +1024,11 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  v14 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v34, "Network:NodeType");
-  if (v14)
+  if (ctrInternalClientPtr2)
   {
-    [v14 getProperty:v34 output:&v39];
+    [ctrInternalClientPtr2 getProperty:v34 output:&v39];
     v15 = *buf == 0;
     if ((v11 & 0x80) == 0)
     {
@@ -1081,11 +1081,11 @@ LABEL_21:
     goto LABEL_61;
   }
 
-  v17 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr3 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v32, "Thread:EmacId");
-  if (v17)
+  if (ctrInternalClientPtr3)
   {
-    [v17 setProperty:v32 property_val:""];
+    [ctrInternalClientPtr3 setProperty:v32 property_val:""];
     if ((v11 & 0x80000000) == 0)
     {
       goto LABEL_30;
@@ -1137,8 +1137,8 @@ LABEL_30:
       v19 = *__p;
     }
 
-    v20 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
-    v21 = [(ThreadNetworkManagerInstance *)self numAdvDuringPairing];
+    defaultChildNode = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+    numAdvDuringPairing = [(ThreadNetworkManagerInstance *)self numAdvDuringPairing];
     *buf = 136316162;
     *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) stopPairing:]";
     *&buf[12] = 1024;
@@ -1146,9 +1146,9 @@ LABEL_30:
     *&buf[18] = 2080;
     *&buf[20] = v19;
     *&buf[28] = 2080;
-    *&buf[30] = v20;
+    *&buf[30] = defaultChildNode;
     v42 = 1024;
-    v43 = v21;
+    v43 = numAdvDuringPairing;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s:%d Current Node = [%s], transition to New Node = [%s], num ADV Rx During Pairing = [%d]", buf, 0x2Cu);
     if ((__p[23] & 0x80000000) != 0)
     {
@@ -1156,12 +1156,12 @@ LABEL_30:
     }
   }
 
-  v22 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr4 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v30, "Network:NodeType");
-  v23 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
-  if (v22)
+  defaultChildNode2 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+  if (ctrInternalClientPtr4)
   {
-    [v22 setProperty:v30 property_val:v23];
+    [ctrInternalClientPtr4 setProperty:v30 property_val:defaultChildNode2];
     v24 = *buf == 0;
     if ((v11 & 0x80000000) == 0)
     {
@@ -1236,9 +1236,9 @@ LABEL_51:
   return v26;
 }
 
-- (int)startFWUpdate:(const char *)a3 isWED:(BOOL)a4 output:(dict *)a5
+- (int)startFWUpdate:(const char *)update isWED:(BOOL)d output:(dict *)output
 {
-  v6 = a4;
+  dCopy = d;
   v9 = objc_initWeak(&location, self);
   v125.var0 = 0;
   *(v124 + 3) = 0;
@@ -1256,19 +1256,19 @@ LABEL_51:
       p_p = __p.__r_.__value_.__r.__words[0];
     }
 
-    if (a3)
+    if (update)
     {
-      v12 = a3;
+      updateCopy = update;
     }
 
     else
     {
-      v12 = "nil";
+      updateCopy = "nil";
     }
 
-    if (a3)
+    if (update)
     {
-      v13 = strlen(a3);
+      v13 = strlen(update);
     }
 
     else
@@ -1283,11 +1283,11 @@ LABEL_51:
     *&buf[18] = 2080;
     *&buf[20] = p_p;
     *&buf[28] = 2080;
-    *&buf[30] = v12;
+    *&buf[30] = updateCopy;
     v129 = 2048;
     v130 = v13;
     v131 = 1024;
-    v132 = v6;
+    v132 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s:%d Start FW Update Cmd received in state %s, extendedMACAddress : %s, Length = %ld, isWED : %d", buf, 0x36u);
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -1295,9 +1295,9 @@ LABEL_51:
     }
   }
 
-  v14 = [(ThreadNetworkManagerInstance *)self validateExtendedMACAddress:a3];
+  v14 = [(ThreadNetworkManagerInstance *)self validateExtendedMACAddress:update];
   v15 = v14;
-  if (v6 && !v14 || [(ThreadNetworkManagerInstance *)self lastKnownNCPState]== 4)
+  if (dCopy && !v14 || [(ThreadNetworkManagerInstance *)self lastKnownNCPState]== 4)
   {
     v16 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1340,7 +1340,7 @@ LABEL_51:
       v129 = 2048;
       v130 = v38;
       v131 = 1024;
-      v132 = v6;
+      v132 = dCopy;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s:%d Returning error :  Failed to start FW Update, state %s, extendedMACAddress : %s, Length = %ld, isWED : %d", buf, 0x36u);
       if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -1353,11 +1353,11 @@ LABEL_51:
     goto LABEL_17;
   }
 
-  v19 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v121, "Network:NodeType");
-  if (v19)
+  if (ctrInternalClientPtr)
   {
-    [v19 getProperty:v121 output:&v125];
+    [ctrInternalClientPtr getProperty:v121 output:&v125];
     v20 = *buf == 0;
     v21 = *&buf[8];
     LOBYTE(v22) = buf[31];
@@ -1404,7 +1404,7 @@ LABEL_51:
   {
     if (!v23)
     {
-      if (v6)
+      if (dCopy)
       {
         v44 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -1451,11 +1451,11 @@ LABEL_51:
           }
         }
 
-        v49 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+        ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
         std::string::basic_string[abi:ne200100]<0>(v115, "Network:NodeType");
-        if (v49)
+        if (ctrInternalClientPtr2)
         {
-          [v49 setProperty:v115 property_val:"sleepy-router"];
+          [ctrInternalClientPtr2 setProperty:v115 property_val:"sleepy-router"];
           v50 = *buf == 0;
         }
 
@@ -1489,11 +1489,11 @@ LABEL_51:
 
         if (v15)
         {
-          v75 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+          ctrInternalClientPtr3 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
           std::string::basic_string[abi:ne200100]<0>(v113, "Thread:EmacId");
-          if (v75)
+          if (ctrInternalClientPtr3)
           {
-            [v75 setProperty:v113 property_val:v15];
+            [ctrInternalClientPtr3 setProperty:v113 property_val:v15];
             v76 = *buf;
           }
 
@@ -1612,7 +1612,7 @@ LABEL_51:
           [(ThreadNetworkManagerInstance *)self stopPeriodicDiscoveryScanInSRMode];
         }
 
-        [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v15 output:a5];
+        [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v15 output:output];
       }
 
       else
@@ -1662,11 +1662,11 @@ LABEL_51:
           }
         }
 
-        v58 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+        ctrInternalClientPtr4 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
         std::string::basic_string[abi:ne200100]<0>(v111, "Network:NodeType");
-        if (v58)
+        if (ctrInternalClientPtr4)
         {
-          [v58 setProperty:v111 property_val:"router"];
+          [ctrInternalClientPtr4 setProperty:v111 property_val:"router"];
           v59 = *buf;
         }
 
@@ -1763,7 +1763,7 @@ LABEL_51:
         v119 = xpc_null_create();
       }
 
-      *buf = a5;
+      *buf = output;
       *&buf[8] = "extendedMACAddress";
       xpc::dict::object_proxy::operator=(buf, &v119, &v120);
       v40 = v120;
@@ -1772,11 +1772,11 @@ LABEL_51:
       v41 = v119;
       v119 = 0;
 
-      v42 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      ctrInternalClientPtr5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
       std::string::basic_string[abi:ne200100]<0>(v117, "Thread:EmacId");
-      if (v42)
+      if (ctrInternalClientPtr5)
       {
-        [v42 setProperty:v117 property_val:v15];
+        [ctrInternalClientPtr5 setProperty:v117 property_val:v15];
         v43 = *buf;
       }
 
@@ -1841,14 +1841,14 @@ LABEL_51:
       }
     }
 
-    if (v6)
+    if (dCopy)
     {
       [(ThreadNetworkManagerInstance *)self setIsWedFWUpdateProgressInChildRole:1];
       [(ThreadNetworkManagerInstance *)self setIsNonWedFWUpdateProgressInChildRole:0];
       v68 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
-        v69 = [(ThreadNetworkManagerInstance *)self isWedFWUpdateProgressInChildRole];
+        isWedFWUpdateProgressInChildRole = [(ThreadNetworkManagerInstance *)self isWedFWUpdateProgressInChildRole];
         v70 = "nil";
         if (v15)
         {
@@ -1856,7 +1856,7 @@ LABEL_51:
         }
 
         *buf = 67109378;
-        *&buf[4] = v69;
+        *&buf[4] = isWedFWUpdateProgressInChildRole;
         *&buf[8] = 2080;
         *&buf[10] = v70;
         v71 = "isWedFWUpdateProgressInChildRole = %d and extaddr = %s";
@@ -1872,7 +1872,7 @@ LABEL_211:
       v68 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
-        v89 = [(ThreadNetworkManagerInstance *)self isNonWedFWUpdateProgressInChildRole];
+        isNonWedFWUpdateProgressInChildRole = [(ThreadNetworkManagerInstance *)self isNonWedFWUpdateProgressInChildRole];
         v90 = "nil";
         if (v15)
         {
@@ -1880,7 +1880,7 @@ LABEL_211:
         }
 
         *buf = 67109378;
-        *&buf[4] = v89;
+        *&buf[4] = isNonWedFWUpdateProgressInChildRole;
         *&buf[8] = 2080;
         *&buf[10] = v90;
         v71 = "isNonWedFWUpdateProgressInChildRole = %d and extaddr = %s";
@@ -1892,7 +1892,7 @@ LABEL_211:
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
     {
       nl::wpantund::node_type_to_string(v23, &__p);
-      [(ThreadNetworkManagerInstance(SM_extension) *)v6 startFWUpdate:buf isWED:v72 output:?];
+      [(ThreadNetworkManagerInstance(SM_extension) *)dCopy startFWUpdate:buf isWED:v72 output:?];
     }
 
     goto LABEL_136;
@@ -1902,7 +1902,7 @@ LABEL_211:
   {
     if (v23 == 8)
     {
-      if (v6)
+      if (dCopy)
       {
         v24 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1958,7 +1958,7 @@ LABEL_211:
           [(ThreadNetworkManagerInstance *)self stopPeriodicDiscoveryScanInSRMode];
         }
 
-        v87 = [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v15 output:a5];
+        v87 = [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v15 output:output];
         goto LABEL_201;
       }
 
@@ -2008,11 +2008,11 @@ LABEL_211:
         }
       }
 
-      v65 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      ctrInternalClientPtr6 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
       std::string::basic_string[abi:ne200100]<0>(v109, "Network:NodeType");
-      if (v65)
+      if (ctrInternalClientPtr6)
       {
-        [v65 setProperty:v109 property_val:"router"];
+        [ctrInternalClientPtr6 setProperty:v109 property_val:"router"];
         v66 = *buf;
       }
 
@@ -2095,7 +2095,7 @@ LABEL_202:
   }
 
 LABEL_47:
-  if (!v6)
+  if (!dCopy)
   {
     v51 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -2166,11 +2166,11 @@ LABEL_47:
     }
   }
 
-  v34 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v107, "Network:NodeType");
-  if (v34)
+  if (ctrInternalClientPtr7)
   {
-    [v34 setProperty:v107 property_val:"sleepy-router"];
+    [ctrInternalClientPtr7 setProperty:v107 property_val:"sleepy-router"];
     v35 = *buf == 0;
   }
 
@@ -2200,11 +2200,11 @@ LABEL_47:
   {
     if (v15)
     {
-      v73 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      ctrInternalClientPtr8 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
       std::string::basic_string[abi:ne200100]<0>(v105, "Thread:EmacId");
-      if (v73)
+      if (ctrInternalClientPtr8)
       {
-        [v73 setProperty:v105 property_val:v15];
+        [ctrInternalClientPtr8 setProperty:v105 property_val:v15];
         v74 = *buf;
       }
 
@@ -2318,7 +2318,7 @@ LABEL_47:
       }
     }
 
-    v87 = [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v15 output:a5];
+    v87 = [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v15 output:output];
 LABEL_201:
     v17 = v87;
     if (v87)
@@ -2365,20 +2365,20 @@ LABEL_17:
   return v17;
 }
 
-- (void)startFWUpdateHelper:(const char *)a3
+- (void)startFWUpdateHelper:(const char *)helper
 {
   v5 = objc_initWeak(&location, self);
   v6 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = "nil";
-    if (a3)
+    helperCopy = "nil";
+    if (helper)
     {
-      v7 = a3;
+      helperCopy = helper;
     }
 
     *buf = 136315138;
-    *&buf[4] = v7;
+    *&buf[4] = helperCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Start FwUpdate extendedMACAddress : %s", buf, 0xCu);
   }
 
@@ -2396,11 +2396,11 @@ LABEL_17:
     ThreadPowerAssertDispatchTask(&power_assertion_n);
   }
 
-  v9 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "Thread:FWUpdate");
-  if (v9)
+  if (ctrInternalClientPtr)
   {
-    [v9 setProperty:__p property_val:"1"];
+    [ctrInternalClientPtr setProperty:__p property_val:"1"];
     v10 = *buf;
     v11 = *&buf[8];
     v12 = *&buf[16];
@@ -2462,13 +2462,13 @@ LABEL_17:
     }
   }
 
-  if (a3)
+  if (helper)
   {
-    v15 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(v21, "Thread:EmacId");
-    if (v15)
+    if (ctrInternalClientPtr2)
     {
-      [v15 setProperty:v21 property_val:a3];
+      [ctrInternalClientPtr2 setProperty:v21 property_val:helper];
       v16 = *buf;
       if ((v13 & 0x80) == 0)
       {
@@ -2549,7 +2549,7 @@ LABEL_26:
   objc_destroyWeak(&location);
 }
 
-- (int)stopFWUpdate:(dict *)a3
+- (int)stopFWUpdate:(dict *)update
 {
   v4 = objc_initWeak(&location, self);
   memset(&__p[24], 0, 7);
@@ -2581,11 +2581,11 @@ LABEL_26:
   [(ThreadNetworkManagerInstance *)self setIsNonWedFWUpdateProgressInChildRole:0];
   [(ThreadNetworkManagerInstance *)self setIsWedFWUpdateProgressInChildRole:0];
   disableFWUpdateFlag();
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v25, "Thread:FWUpdate");
-  if (v7)
+  if (ctrInternalClientPtr)
   {
-    [v7 setProperty:v25 property_val:"0"];
+    [ctrInternalClientPtr setProperty:v25 property_val:"0"];
     v8 = *buf;
     v9 = *&buf[8];
     v10 = *&buf[16];
@@ -2648,11 +2648,11 @@ LABEL_26:
   }
 
   [(ThreadNetworkManagerInstance *)self resetFWUpdateStatus];
-  v13 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v23, "Thread:EmacId");
-  if (v13)
+  if (ctrInternalClientPtr2)
   {
-    [v13 setProperty:v23 property_val:""];
+    [ctrInternalClientPtr2 setProperty:v23 property_val:""];
     v14 = *buf;
     if ((v11 & 0x80) == 0)
     {
@@ -2746,16 +2746,16 @@ LABEL_20:
 - (void)registerStateMachineWedEventHandlers
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v26, "TNMWakeOnDeviceConnectionStatus");
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEventHandlers__block_invoke;
   v24[3] = &unk_1004C85D0;
   objc_copyWeak(&v25, &location);
-  v5 = [(ThreadNetworkManagerInstance *)self tnmWedStatusChangeQueue];
-  v23 = v5;
-  [v4 setEventHandler:v26 InternalClientEventBlock:v24 dqueue:&v23];
+  tnmWedStatusChangeQueue = [(ThreadNetworkManagerInstance *)self tnmWedStatusChangeQueue];
+  v23 = tnmWedStatusChangeQueue;
+  [ctrInternalClientPtr setEventHandler:v26 InternalClientEventBlock:v24 dqueue:&v23];
   v6 = v23;
   v23 = 0;
 
@@ -2764,16 +2764,16 @@ LABEL_20:
     operator delete(v26[0]);
   }
 
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "ReceivedAdv");
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEventHandlers__block_invoke_22;
   v19[3] = &unk_1004C85D0;
   objc_copyWeak(&v20, &location);
-  v8 = [(ThreadNetworkManagerInstance *)self tnmNodeTypeChangeQueue];
-  v18 = v8;
-  [v7 setEventHandler:__p InternalClientEventBlock:v19 dqueue:&v18];
+  tnmNodeTypeChangeQueue = [(ThreadNetworkManagerInstance *)self tnmNodeTypeChangeQueue];
+  v18 = tnmNodeTypeChangeQueue;
+  [ctrInternalClientPtr2 setEventHandler:__p InternalClientEventBlock:v19 dqueue:&v18];
   v9 = v18;
   v18 = 0;
 
@@ -2782,16 +2782,16 @@ LABEL_20:
     operator delete(__p[0]);
   }
 
-  v10 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr3 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v16, "AttachRetryAttemptsComplete");
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEventHandlers__block_invoke_24;
   v14[3] = &unk_1004C85D0;
   objc_copyWeak(&v15, &location);
-  v11 = [(ThreadNetworkManagerInstance *)self tnmNodeTypeChangeQueue];
-  v13 = v11;
-  [v10 setEventHandler:v16 InternalClientEventBlock:v14 dqueue:&v13];
+  tnmNodeTypeChangeQueue2 = [(ThreadNetworkManagerInstance *)self tnmNodeTypeChangeQueue];
+  v13 = tnmNodeTypeChangeQueue2;
+  [ctrInternalClientPtr3 setEventHandler:v16 InternalClientEventBlock:v14 dqueue:&v13];
   v12 = v13;
   v13 = 0;
 
@@ -3092,7 +3092,7 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
   objc_destroyWeak(&location);
 }
 
-- (void)persistWedSession:()basic_string<char wedMleid:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (void)persistWedSession:()basic_string<char wedMleid:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = RcpHostContext::sRcpHostContext;
   if (!RcpHostContext::sRcpHostContext)
@@ -3101,14 +3101,14 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
   }
 
   v5 = v3;
-  if (*(&a3->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v7, a3->var0.var1.var0, a3->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v7, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    v7 = *a3;
+    v7 = *std;
   }
 
   if (*(v5 + 23) < 0)
@@ -3133,7 +3133,7 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
   }
 }
 
-- (void)persistDefaultChildNode:(BOOL)a3
+- (void)persistDefaultChildNode:(BOOL)node
 {
   v4 = RcpHostContext::sRcpHostContext;
   if (!RcpHostContext::sRcpHostContext)
@@ -3141,7 +3141,7 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
     [ThreadNetworkManagerInstance(SM_extension) persistWedSession:wedMleid:];
   }
 
-  RcpHostContext::persistDefaultChildNode(v4, a3);
+  RcpHostContext::persistDefaultChildNode(v4, node);
 }
 
 - (BOOL)getDefaultChildNode
@@ -3155,7 +3155,7 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
   return RcpHostContext::getDefaultChildNodeFlag(v3);
 }
 
-- (void)persistGeoAvailable:(BOOL)a3
+- (void)persistGeoAvailable:(BOOL)available
 {
   v4 = RcpHostContext::sRcpHostContext;
   if (!RcpHostContext::sRcpHostContext)
@@ -3163,7 +3163,7 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
     [ThreadNetworkManagerInstance(SM_extension) persistWedSession:wedMleid:];
   }
 
-  RcpHostContext::persistGeoAvailable(v4, a3);
+  RcpHostContext::persistGeoAvailable(v4, available);
 }
 
 - (BOOL)isGeoAvailable
@@ -3221,9 +3221,9 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
   return RcpHostContext::isStateMachineEnabled(v3);
 }
 
-- (void)nodeChangeToChildStatus:(unsigned __int8)a3
+- (void)nodeChangeToChildStatus:(unsigned __int8)status
 {
-  v3 = a3;
+  statusCopy = status;
   v5 = objc_initWeak(&location, self);
   v41 = 0;
   v39[0] = 0;
@@ -3267,7 +3267,7 @@ void __82__ThreadNetworkManagerInstance_SM_extension__registerStateMachineWedEve
   v12 = buf[23];
   if ([(ThreadNetworkManagerInstance *)self lastKnownNCPState]== 8)
   {
-    if (v3 == 9)
+    if (statusCopy == 9)
     {
       v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -3286,9 +3286,9 @@ LABEL_34:
       v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(ThreadNetworkManagerInstance *)self lastKnownNCPState];
+        lastKnownNCPState = [(ThreadNetworkManagerInstance *)self lastKnownNCPState];
         *buf = 67109120;
-        *&buf[4] = v22;
+        *&buf[4] = lastKnownNCPState;
         v14 = "ThreadConnection: kWPANTUNDEvent_AttachRetryAttemptsComplete unexpected in state = %d";
         v23 = v13;
         v24 = 8;
@@ -3318,11 +3318,11 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "ThreadConnection: kWPANTUNDEvent_AttachRetryAttemptsComplete Mode change not successful, fallback to Sleepy Router Node", buf, 2u);
     }
 
-    v27 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(v33, "Network:NodeType");
-    if (v27)
+    if (ctrInternalClientPtr)
     {
-      [v27 setProperty:v33 property_val:"sleepy-router"];
+      [ctrInternalClientPtr setProperty:v33 property_val:"sleepy-router"];
       v28 = *buf;
       if ((v12 & 0x80000000) == 0)
       {
@@ -3399,21 +3399,21 @@ LABEL_43:
   v16 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(ThreadNetworkManagerInstance *)self isNonWedFWUpdateProgressInChildRole];
-    v18 = [(ThreadNetworkManagerInstance *)self isWedFWUpdateProgressInChildRole];
+    isNonWedFWUpdateProgressInChildRole = [(ThreadNetworkManagerInstance *)self isNonWedFWUpdateProgressInChildRole];
+    isWedFWUpdateProgressInChildRole = [(ThreadNetworkManagerInstance *)self isWedFWUpdateProgressInChildRole];
     *buf = 67109376;
-    *&buf[4] = v17;
+    *&buf[4] = isNonWedFWUpdateProgressInChildRole;
     *&buf[8] = 1024;
-    *&buf[10] = v18;
+    *&buf[10] = isWedFWUpdateProgressInChildRole;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "ThreadConnection: Start FW Update: isNonWedFWUpdateProgressInChildRole [%d], isWedFWUpdateProgressInChildRole [%d]", buf, 0xEu);
   }
 
-  v19 = [(ThreadNetworkManagerInstance *)self isWedFWUpdateProgressInChildRole];
-  v20 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  isWedFWUpdateProgressInChildRole2 = [(ThreadNetworkManagerInstance *)self isWedFWUpdateProgressInChildRole];
+  ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "Thread:EmacId");
-  if (v20)
+  if (ctrInternalClientPtr2)
   {
-    [v20 getProperty:__p output:&v41];
+    [ctrInternalClientPtr2 getProperty:__p output:&v41];
     v21 = *buf == 0;
     if ((buf[31] & 0x80000000) != 0)
     {
@@ -3456,7 +3456,7 @@ LABEL_43:
     v25 = v39[0];
   }
 
-  if ([(ThreadNetworkManagerInstance *)self startFWUpdate:v25 isWED:v19 output:&v38])
+  if ([(ThreadNetworkManagerInstance *)self startFWUpdate:v25 isWED:isWedFWUpdateProgressInChildRole2 output:&v38])
   {
     v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -3498,11 +3498,11 @@ LABEL_48:
   std::string::basic_string[abi:ne200100]<0>(v28, "Command Error");
   v4 = *v28;
   v5 = v28[23];
-  v6 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "Network:NodeType");
-  if (v6)
+  if (ctrInternalClientPtr)
   {
-    [v6 getProperty:__p output:&v25];
+    [ctrInternalClientPtr getProperty:__p output:&v25];
     v7 = *v28 == 0;
     if ((v5 & 0x80000000) == 0)
     {
@@ -3564,7 +3564,7 @@ LABEL_4:
         nl::wpantund::node_type_to_string(v10, &buf);
         v14 = SHIBYTE(buf.__r_.__value_.__r.__words[2]);
         v15 = buf.__r_.__value_.__r.__words[0];
-        v16 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+        defaultChildNode = [(ThreadNetworkManagerInstance *)self defaultChildNode];
         *&v28[4] = "[ThreadNetworkManagerInstance(SM_extension) handleRouterModeFailSafeTrigger]";
         p_buf = &buf;
         *v28 = 136315906;
@@ -3578,7 +3578,7 @@ LABEL_4:
         *&v28[18] = 2080;
         *&v28[20] = p_buf;
         *&v28[28] = 2080;
-        *&v28[30] = v16;
+        *&v28[30] = defaultChildNode;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s:%d Current Node = [%s], transition to New Node = [%s]", v28, 0x26u);
         if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
         {
@@ -3586,12 +3586,12 @@ LABEL_4:
         }
       }
 
-      v18 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
       std::string::basic_string[abi:ne200100]<0>(v21, "Network:NodeType");
-      v19 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
-      if (v18)
+      defaultChildNode2 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+      if (ctrInternalClientPtr2)
       {
-        [v18 setProperty:v21 property_val:v19];
+        [ctrInternalClientPtr2 setProperty:v21 property_val:defaultChildNode2];
         if ((v9 & 0x80000000) == 0)
         {
 LABEL_24:
@@ -3660,11 +3660,11 @@ LABEL_30:
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   v5 = *buf;
   v6 = buf[23];
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "Network:NodeType");
-  if (v7)
+  if (ctrInternalClientPtr)
   {
-    [v7 getProperty:__p output:&v40];
+    [ctrInternalClientPtr getProperty:__p output:&v40];
     v8 = *buf == 0;
     if ((v6 & 0x80000000) == 0)
     {
@@ -3712,7 +3712,7 @@ LABEL_6:
           nl::wpantund::node_type_to_string(v11, &v37);
           v13 = SHIBYTE(v37.__r_.__value_.__r.__words[2]);
           v14 = v37.__r_.__value_.__r.__words[0];
-          v15 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+          defaultChildNode = [(ThreadNetworkManagerInstance *)self defaultChildNode];
           *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) handleAdv]";
           v16 = &v37;
           *buf = 136315906;
@@ -3726,7 +3726,7 @@ LABEL_6:
           *&buf[18] = 2080;
           *&buf[20] = v16;
           *&buf[28] = 2080;
-          *&buf[30] = v15;
+          *&buf[30] = defaultChildNode;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s:%d Current Node = [%s], transition to New Node = [%s]", buf, 0x26u);
           if (SHIBYTE(v37.__r_.__value_.__r.__words[2]) < 0)
           {
@@ -3734,12 +3734,12 @@ LABEL_6:
           }
         }
 
-        v17 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+        ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
         std::string::basic_string[abi:ne200100]<0>(v35, "Network:NodeType");
-        v18 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
-        if (v17)
+        defaultChildNode2 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+        if (ctrInternalClientPtr2)
         {
-          [v17 setProperty:v35 property_val:v18];
+          [ctrInternalClientPtr2 setProperty:v35 property_val:defaultChildNode2];
           if ((v10 & 0x80000000) == 0)
           {
 LABEL_23:
@@ -3774,22 +3774,22 @@ LABEL_23:
       v20 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [(ThreadNetworkManagerInstance *)self numAdvDuringPairing];
-        v22 = [(ThreadNetworkManagerInstance *)self stopPairingRequest];
-        v23 = [(ThreadNetworkManagerInstance *)self isPairing];
-        v24 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+        numAdvDuringPairing = [(ThreadNetworkManagerInstance *)self numAdvDuringPairing];
+        stopPairingRequest = [(ThreadNetworkManagerInstance *)self stopPairingRequest];
+        isPairing = [(ThreadNetworkManagerInstance *)self isPairing];
+        defaultChildNode3 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
         *buf = 136316418;
         *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) handleAdv]";
         *&buf[12] = 1024;
         *&buf[14] = 864;
         *&buf[18] = 1024;
-        *&buf[20] = v21;
+        *&buf[20] = numAdvDuringPairing;
         *&buf[24] = 1024;
-        *&buf[26] = v22;
+        *&buf[26] = stopPairingRequest;
         *&buf[30] = 1024;
-        *&buf[32] = v23;
+        *&buf[32] = isPairing;
         *&buf[36] = 2080;
-        v43 = v24;
+        v43 = defaultChildNode3;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s:%d foundAdvDuringPairing [%d], stopPairingRequest [%d], isPairing [%d], ready to transition to %s", buf, 0x2Eu);
       }
     }
@@ -3799,22 +3799,22 @@ LABEL_23:
       v25 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v26 = [(ThreadNetworkManagerInstance *)self lastKnownNCPState];
-        v27 = [(ThreadNetworkManagerInstance *)self modeChangeInProgress];
-        v28 = [(ThreadNetworkManagerInstance *)self wedStatus];
-        v29 = [(ThreadNetworkManagerInstance *)self wedAttachRequest];
+        lastKnownNCPState = [(ThreadNetworkManagerInstance *)self lastKnownNCPState];
+        modeChangeInProgress = [(ThreadNetworkManagerInstance *)self modeChangeInProgress];
+        wedStatus = [(ThreadNetworkManagerInstance *)self wedStatus];
+        wedAttachRequest = [(ThreadNetworkManagerInstance *)self wedAttachRequest];
         *buf = 136316418;
         *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) handleAdv]";
         *&buf[12] = 1024;
         *&buf[14] = 869;
         *&buf[18] = 1024;
-        *&buf[20] = v26;
+        *&buf[20] = lastKnownNCPState;
         *&buf[24] = 1024;
-        *&buf[26] = v27;
+        *&buf[26] = modeChangeInProgress;
         *&buf[30] = 1024;
-        *&buf[32] = v28;
+        *&buf[32] = wedStatus;
         *&buf[36] = 1024;
-        LODWORD(v43) = v29;
+        LODWORD(v43) = wedAttachRequest;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s:%d ThreadConnection: lastKnownNCPState=[%d], modeChangeInProgress=[%d], wedStatus=[%d], wedAttachRequest=[%d]", buf, 0x2Au);
       }
 
@@ -3838,22 +3838,22 @@ LABEL_23:
         v20 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v31 = [(ThreadNetworkManagerInstance *)self lastKnownNCPState];
-          v32 = [(ThreadNetworkManagerInstance *)self modeChangeInProgress];
-          v33 = [(ThreadNetworkManagerInstance *)self wedStatus];
-          v34 = [(ThreadNetworkManagerInstance *)self wedAttachRequest];
+          lastKnownNCPState2 = [(ThreadNetworkManagerInstance *)self lastKnownNCPState];
+          modeChangeInProgress2 = [(ThreadNetworkManagerInstance *)self modeChangeInProgress];
+          wedStatus2 = [(ThreadNetworkManagerInstance *)self wedStatus];
+          wedAttachRequest2 = [(ThreadNetworkManagerInstance *)self wedAttachRequest];
           *buf = 136316418;
           *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) handleAdv]";
           *&buf[12] = 1024;
           *&buf[14] = 883;
           *&buf[18] = 1024;
-          *&buf[20] = v31;
+          *&buf[20] = lastKnownNCPState2;
           *&buf[24] = 1024;
-          *&buf[26] = v32;
+          *&buf[26] = modeChangeInProgress2;
           *&buf[30] = 1024;
-          *&buf[32] = v33;
+          *&buf[32] = wedStatus2;
           *&buf[36] = 1024;
-          LODWORD(v43) = v34;
+          LODWORD(v43) = wedAttachRequest2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s:%d ThreadConnection: lastKnownNCPState = [%d], modeChangeInProgress = [%d], wedStatus = [%d], wedAttachRequest = [%d]", buf, 0x2Au);
         }
       }
@@ -3910,11 +3910,11 @@ LABEL_49:
   v4 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(ThreadNetworkManagerInstance *)self lastKnownNodeType];
+    lastKnownNodeType = [(ThreadNetworkManagerInstance *)self lastKnownNodeType];
     *buf = 136315394;
     *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) notifyOnNodeStatusChange]";
     *&buf[12] = 1024;
-    *&buf[14] = v5;
+    *&buf[14] = lastKnownNodeType;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s, lastKnownNodeType = [%d]", buf, 0x12u);
   }
 
@@ -3976,8 +3976,8 @@ LABEL_49:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ThreadConnection: Dispatch _semaphoreNetworkNodeTypeChange \n", buf, 2u);
       }
 
-      v14 = [(ThreadNetworkManagerInstance *)self semaphoreNetworkNodeTypeChange];
-      dispatch_semaphore_signal(v14);
+      semaphoreNetworkNodeTypeChange = [(ThreadNetworkManagerInstance *)self semaphoreNetworkNodeTypeChange];
+      dispatch_semaphore_signal(semaphoreNetworkNodeTypeChange);
     }
 
     v15 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
@@ -4044,11 +4044,11 @@ LABEL_49:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ThreadConnection: Mode SED/SSED, fetch Parent MLEID \n", buf, 2u);
     }
 
-    v11 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(__p, "Thread:NeighborMeshLocalAddress");
-    if (v11)
+    if (ctrInternalClientPtr)
     {
-      [v11 getProperty:__p output:&v23];
+      [ctrInternalClientPtr getProperty:__p output:&v23];
       v12 = *buf == 0;
       if (buf[31] < 0)
       {
@@ -4087,7 +4087,7 @@ LABEL_35:
   objc_destroyWeak(&location);
 }
 
-- (void)notifyHK:()basic_string<char wedMleid:()std:(std::allocator<char>> *)a3 :char_traits<char> discReason:
+- (void)notifyHK:()basic_string<char wedMleid:()std:(std::allocator<char>> *)std :char_traits<char> discReason:
 {
   v3 = objc_initWeak(&location, self);
   v6[0] = 0;
@@ -4152,10 +4152,10 @@ LABEL_35:
 - (BOOL)getPairingStatus
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(ThreadNetworkManagerInstance *)self isPairing];
+  isPairing = [(ThreadNetworkManagerInstance *)self isPairing];
 
   objc_destroyWeak(&location);
-  return v4;
+  return isPairing;
 }
 
 - (void)resetPairingStatus
@@ -4176,7 +4176,7 @@ LABEL_35:
     v6 = 1024;
     v7 = 1103;
     v8 = 1024;
-    v9 = [(ThreadNetworkManagerInstance *)self foundAdvDuringWedConnectionAttempt];
+    foundAdvDuringWedConnectionAttempt = [(ThreadNetworkManagerInstance *)self foundAdvDuringWedConnectionAttempt];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s:%d Reset ADV flags [%d]", &v4, 0x18u);
   }
 
@@ -4199,12 +4199,12 @@ LABEL_35:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s:%d ThreadConnection: kWPANTUNDEvent_ReceivedAdv setEventHandler : Received ADV , transition to Child Node = [%s]\n", buf, 0x1Cu);
   }
 
-  v4 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "Network:NodeType");
-  v5 = [(ThreadNetworkManagerInstance *)self defaultChildNode];
-  if (v4)
+  defaultChildNode = [(ThreadNetworkManagerInstance *)self defaultChildNode];
+  if (ctrInternalClientPtr)
   {
-    [v4 setProperty:__p property_val:v5];
+    [ctrInternalClientPtr setProperty:__p property_val:defaultChildNode];
     v6 = *buf;
     v7 = *&buf[8];
     v8 = *&buf[16];
@@ -4272,7 +4272,7 @@ LABEL_35:
   }
 }
 
-- (void)transitionToChildNode:(dict *)a3
+- (void)transitionToChildNode:(dict *)node
 {
   v5 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4304,7 +4304,7 @@ LABEL_35:
       v12 = xpc_null_create();
     }
 
-    v11[0] = a3;
+    v11[0] = node;
     v11[1] = "delayWedConnectionRetryRequest";
     xpc::dict::object_proxy::operator=(v11, &v12, &v13);
     v9 = v13;
@@ -4460,10 +4460,10 @@ LABEL_35:
 - (BOOL)getFWUpdateStatus
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(ThreadNetworkManagerInstance *)self isFWUpdateInProgress];
+  isFWUpdateInProgress = [(ThreadNetworkManagerInstance *)self isFWUpdateInProgress];
 
   objc_destroyWeak(&location);
-  return v4;
+  return isFWUpdateInProgress;
 }
 
 - (void)resetFWUpdateStatus
@@ -4524,16 +4524,16 @@ LABEL_35:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)checkIfDuplicateWedAttachRequest:(const char *)a3
+- (BOOL)checkIfDuplicateWedAttachRequest:(const char *)request
 {
   v5 = objc_initWeak(&location, self);
-  std::string::basic_string[abi:ne200100]<0>(v20, a3);
+  std::string::basic_string[abi:ne200100]<0>(v20, request);
   v19.var0 = 0;
-  v6 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "NCP:WedExtendedAddress");
-  if (v6)
+  if (ctrInternalClientPtr)
   {
-    [v6 getProperty:__p output:&v19];
+    [ctrInternalClientPtr getProperty:__p output:&v19];
     v7 = *buf == 0;
     if (buf[31] < 0)
     {
@@ -4575,7 +4575,7 @@ LABEL_35:
       *&buf[12] = 1024;
       *&buf[14] = 1217;
       *&buf[18] = 2080;
-      *&buf[20] = a3;
+      *&buf[20] = request;
       *&buf[28] = 2080;
       *&buf[30] = v10;
       v11 = "%s:%d Duplicate wed attach request found, input extendedMACAddress : %s, stored MAC addr :%s";
@@ -4600,7 +4600,7 @@ LABEL_35:
       *&buf[12] = 1024;
       *&buf[14] = 1222;
       *&buf[18] = 2080;
-      *&buf[20] = a3;
+      *&buf[20] = request;
       *&buf[28] = 2080;
       *&buf[30] = v13;
       v11 = "%s:%d Not a Duplicate wed attach request, input extendedMACAddress : %s, stored MAC addr :%s";
@@ -4639,10 +4639,10 @@ LABEL_23:
   return v8;
 }
 
-- (void)UpdateOutputWithBackOffTimerValue:(const char *)a3 output:(dict *)a4
+- (void)UpdateOutputWithBackOffTimerValue:(const char *)value output:(dict *)output
 {
   v7 = objc_initWeak(&location, self);
-  v8 = std::string::basic_string[abi:ne200100]<0>(buf, a3);
+  v8 = std::string::basic_string[abi:ne200100]<0>(buf, value);
   stringToLowercase(v8, __p);
   if (SBYTE3(v69) < 0)
   {
@@ -4654,9 +4654,9 @@ LABEL_23:
     v9 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v60 = a4;
+      outputCopy9 = output;
       v61 = "delayWedConnectionRetryRequest";
-      v10 = xpc::dict::object_proxy::operator*(&v60);
+      v10 = xpc::dict::object_proxy::operator*(&outputCopy9);
       *buf = 136315650;
       *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) UpdateOutputWithBackOffTimerValue:output:]";
       v66 = 1024;
@@ -4684,9 +4684,9 @@ LABEL_23:
       v58 = xpc_null_create();
     }
 
-    v60 = a4;
+    outputCopy9 = output;
     v61 = "delayWedConnectionRetryRequest";
-    xpc::dict::object_proxy::operator=(&v60, &v58, &v59);
+    xpc::dict::object_proxy::operator=(&outputCopy9, &v58, &v59);
     v13 = v59;
     v59 = 0;
 
@@ -4726,9 +4726,9 @@ LABEL_23:
         v48 = xpc_null_create();
       }
 
-      v60 = a4;
+      outputCopy9 = output;
       v61 = "delayWedConnectionRetryRequest";
-      xpc::dict::object_proxy::operator=(&v60, &v48, &v49);
+      xpc::dict::object_proxy::operator=(&outputCopy9, &v48, &v49);
       v18 = v49;
       v49 = 0;
 
@@ -4777,9 +4777,9 @@ LABEL_23:
               v50 = xpc_null_create();
             }
 
-            v60 = a4;
+            outputCopy9 = output;
             v61 = "delayWedConnectionRetryRequest";
-            xpc::dict::object_proxy::operator=(&v60, &v50, &v51);
+            xpc::dict::object_proxy::operator=(&outputCopy9, &v50, &v51);
             v38 = v51;
             v51 = 0;
 
@@ -4789,7 +4789,7 @@ LABEL_23:
 
           else
           {
-            v60 = __p;
+            outputCopy9 = __p;
             v31 = std::__tree<std::__value_type<std::string,trackerInfo>,std::__map_value_compare<std::string,std::__value_type<std::string,trackerInfo>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,trackerInfo>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&ProvideEmacTracker, __p);
             std::to_string(buf, 500 * *(v31 + 56));
             if (SBYTE3(v69) >= 0)
@@ -4809,9 +4809,9 @@ LABEL_23:
               v52 = xpc_null_create();
             }
 
-            v60 = a4;
+            outputCopy9 = output;
             v61 = "delayWedConnectionRetryRequest";
-            xpc::dict::object_proxy::operator=(&v60, &v52, &v53);
+            xpc::dict::object_proxy::operator=(&outputCopy9, &v52, &v53);
             v34 = v53;
             v53 = 0;
 
@@ -4840,9 +4840,9 @@ LABEL_23:
             v54 = xpc_null_create();
           }
 
-          v60 = a4;
+          outputCopy9 = output;
           v61 = "delayWedConnectionRetryRequest";
-          xpc::dict::object_proxy::operator=(&v60, &v54, &v55);
+          xpc::dict::object_proxy::operator=(&outputCopy9, &v54, &v55);
           v29 = v55;
           v55 = 0;
 
@@ -4873,9 +4873,9 @@ LABEL_23:
           v56 = xpc_null_create();
         }
 
-        v60 = a4;
+        outputCopy9 = output;
         v61 = "delayWedConnectionRetryRequest";
-        xpc::dict::object_proxy::operator=(&v60, &v56, &v57);
+        xpc::dict::object_proxy::operator=(&outputCopy9, &v56, &v57);
         v25 = v57;
         v57 = 0;
 
@@ -4901,11 +4901,11 @@ LABEL_23:
           v41 = __p[0];
         }
 
-        v60 = __p;
+        outputCopy9 = __p;
         v42 = *(std::__tree<std::__value_type<std::string,trackerInfo>,std::__map_value_compare<std::string,std::__value_type<std::string,trackerInfo>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,trackerInfo>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&ProvideEmacTracker, __p) + 56);
-        v60 = a4;
+        outputCopy9 = output;
         v61 = "delayWedConnectionRetryRequest";
-        v43 = xpc::dict::object_proxy::operator*(&v60);
+        v43 = xpc::dict::object_proxy::operator*(&outputCopy9);
         *buf = 136316418;
         *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) UpdateOutputWithBackOffTimerValue:output:]";
         v66 = 1024;
@@ -4935,11 +4935,11 @@ LABEL_23:
         v45 = __p[0];
       }
 
-      v60 = __p;
+      outputCopy9 = __p;
       v46 = *(std::__tree<std::__value_type<std::string,trackerInfo>,std::__map_value_compare<std::string,std::__value_type<std::string,trackerInfo>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,trackerInfo>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&ProvideEmacTracker, __p) + 56);
-      v60 = a4;
+      outputCopy9 = output;
       v61 = "delayWedConnectionRetryRequest";
-      v47 = xpc::dict::object_proxy::operator*(&v60);
+      v47 = xpc::dict::object_proxy::operator*(&outputCopy9);
       *buf = 136316162;
       *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) UpdateOutputWithBackOffTimerValue:output:]";
       v66 = 1024;
@@ -4962,7 +4962,7 @@ LABEL_23:
   objc_destroyWeak(&location);
 }
 
-- (int)provideExtendedMACAddress:(const char *)a3 output:(dict *)a4
+- (int)provideExtendedMACAddress:(const char *)address output:(dict *)output
 {
   v7 = objc_initWeak(&location, self);
   [(ThreadNetworkManagerInstance *)self reset];
@@ -4985,7 +4985,7 @@ LABEL_23:
       nl::wpantund::ncp_state_to_string([(ThreadNetworkManagerInstance *)self lastKnownNCPState], v116);
       v13 = v117;
       v14 = *v116;
-      v15 = [(ThreadNetworkManagerInstance *)self lastKnownNodeType];
+      lastKnownNodeType = [(ThreadNetworkManagerInstance *)self lastKnownNodeType];
       v16 = v116;
       *buf = 136316162;
       *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) provideExtendedMACAddress:output:]";
@@ -4999,7 +4999,7 @@ LABEL_23:
       *&buf[18] = 2080;
       *&buf[20] = v16;
       *&buf[28] = 1024;
-      *&buf[30] = v15;
+      *&buf[30] = lastKnownNodeType;
       *&buf[34] = 1024;
       *&buf[36] = 1;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s:%d Cmd received in state=[%s], Node=[%d], Error=[%d]", buf, 0x28u);
@@ -5087,7 +5087,7 @@ LABEL_10:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       nl::wpantund::ncp_state_to_string([(ThreadNetworkManagerInstance *)self lastKnownNCPState], v116);
-      [(ThreadNetworkManagerInstance(SM_extension) *)v116 provideExtendedMACAddress:a3 output:buf, v23];
+      [(ThreadNetworkManagerInstance(SM_extension) *)v116 provideExtendedMACAddress:address output:buf, v23];
     }
 
     goto LABEL_10;
@@ -5113,7 +5113,7 @@ LABEL_10:
       v109 = xpc_null_create();
     }
 
-    *v116 = a4;
+    *v116 = output;
     *&v116[8] = "delayWedConnectionRetryRequest";
     xpc::dict::object_proxy::operator=(v116, &v109, &v110);
     v20 = v110;
@@ -5133,7 +5133,7 @@ LABEL_10:
       nl::wpantund::ncp_state_to_string([(ThreadNetworkManagerInstance *)self lastKnownNCPState], v116);
       v41 = v117;
       v42 = *v116;
-      v112.__r_.__value_.__r.__words[0] = a4;
+      v112.__r_.__value_.__r.__words[0] = output;
       v112.__r_.__value_.__l.__size_ = "delayWedConnectionRetryRequest";
       v43 = xpc::dict::object_proxy::operator*(&v112);
       v44 = v43;
@@ -5150,7 +5150,7 @@ LABEL_10:
       *&buf[18] = 2080;
       *&buf[20] = v45;
       *&buf[28] = 2080;
-      *&buf[30] = a3;
+      *&buf[30] = address;
       *&buf[38] = 2112;
       *&buf[40] = v43;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s:%d Mode change is in progress in state %s, extendedMACAddress : %s Backoff by output[DELAY_WED_CONNECTION_RETRY_REQUEST_KEY] = %@", buf, 0x30u);
@@ -5169,7 +5169,7 @@ LABEL_10:
   *(v108 + 3) = *&buf[19];
   v25 = buf[23];
   v107.var0 = 0;
-  v26 = [(ThreadNetworkManagerInstance *)self validateExtendedMACAddress:a3];
+  v26 = [(ThreadNetworkManagerInstance *)self validateExtendedMACAddress:address];
   v27 = v26;
   if (v26)
   {
@@ -5225,11 +5225,11 @@ LABEL_74:
     goto LABEL_194;
   }
 
-  v33 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v105, "Network:NodeType");
-  if (v33)
+  if (ctrInternalClientPtr)
   {
-    [v33 getProperty:v105 output:&v107];
+    [ctrInternalClientPtr getProperty:v105 output:&v107];
     v34 = *buf == 0;
   }
 
@@ -5285,11 +5285,11 @@ LABEL_74:
     }
 
     [(ThreadNetworkManagerInstance *)self setModeChangeInProgress:1];
-    v40 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(v103, "Network:NodeType");
-    if (v40)
+    if (ctrInternalClientPtr2)
     {
-      [v40 setProperty:v103 property_val:"sleepy-router"];
+      [ctrInternalClientPtr2 setProperty:v103 property_val:"sleepy-router"];
     }
 
     else
@@ -5315,8 +5315,8 @@ LABEL_74:
 
     [(ThreadNetworkManagerInstance *)self setNetworkNodeTypeChangeNotify:1];
     v46 = dispatch_time(0, 15000000000);
-    v47 = [(ThreadNetworkManagerInstance *)self semaphoreNetworkNodeTypeChange];
-    v48 = dispatch_semaphore_wait(v47, v46);
+    semaphoreNetworkNodeTypeChange = [(ThreadNetworkManagerInstance *)self semaphoreNetworkNodeTypeChange];
+    v48 = dispatch_semaphore_wait(semaphoreNetworkNodeTypeChange, v46);
 
     if (v48)
     {
@@ -5364,11 +5364,11 @@ LABEL_74:
   {
     [(ThreadNetworkManagerInstance *)self setWakeOnDeviceChangeNotify:1];
     [(ThreadNetworkManagerInstance *)self noteTimeWhenWEDDetachStart];
-    v50 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-    v51 = v50;
-    if (v50)
+    ctrInternalClientPtr3 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    v51 = ctrInternalClientPtr3;
+    if (ctrInternalClientPtr3)
     {
-      [v50 wedStop];
+      [ctrInternalClientPtr3 wedStop];
       v52 = *buf;
     }
 
@@ -5470,7 +5470,7 @@ LABEL_74:
 
       if (v52 == 14)
       {
-        [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:a4];
+        [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:output];
       }
 
       goto LABEL_133;
@@ -5529,8 +5529,8 @@ LABEL_74:
     }
 
     v58 = dispatch_time(0, 10000000000);
-    v59 = [(ThreadNetworkManagerInstance *)self semaphoreWakeOnDeviceChange];
-    LOBYTE(v58) = dispatch_semaphore_wait(v59, v58) == 0;
+    semaphoreWakeOnDeviceChange = [(ThreadNetworkManagerInstance *)self semaphoreWakeOnDeviceChange];
+    LOBYTE(v58) = dispatch_semaphore_wait(semaphoreWakeOnDeviceChange, v58) == 0;
 
     if ((v58 & 1) == 0)
     {
@@ -5559,7 +5559,7 @@ LABEL_169:
     [(ThreadNetworkManagerInstance *)self setWakeOnDeviceChangeNotify:0];
     if ([(ThreadNetworkManagerInstance *)self wedStatus]== 2)
     {
-      [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:a4];
+      [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:output];
       v60 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
@@ -5632,11 +5632,11 @@ LABEL_141:
 
     if ([(ThreadNetworkManagerInstance *)self wedAttachRequest])
     {
-      v69 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-      v70 = v69;
-      if (v69)
+      ctrInternalClientPtr4 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      v70 = ctrInternalClientPtr4;
+      if (ctrInternalClientPtr4)
       {
-        [v69 wedStart:v27];
+        [ctrInternalClientPtr4 wedStart:v27];
         v71 = *buf;
       }
 
@@ -5654,11 +5654,11 @@ LABEL_141:
 
     else
     {
-      v72 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-      v70 = v72;
-      if (v72)
+      ctrInternalClientPtr5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+      v70 = ctrInternalClientPtr5;
+      if (ctrInternalClientPtr5)
       {
-        [v72 wedStop];
+        [ctrInternalClientPtr5 wedStop];
         v71 = *buf;
       }
 
@@ -5761,7 +5761,7 @@ LABEL_141:
 
       if (v71 == 14)
       {
-        [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:a4];
+        [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:output];
         [(ThreadNetworkManagerInstance *)self updateBusyFailureCount];
       }
 
@@ -5821,8 +5821,8 @@ LABEL_141:
     }
 
     v78 = dispatch_time(0, 10000000000);
-    v79 = [(ThreadNetworkManagerInstance *)self semaphoreWakeOnDeviceChange];
-    LOBYTE(v78) = dispatch_semaphore_wait(v79, v78) == 0;
+    semaphoreWakeOnDeviceChange2 = [(ThreadNetworkManagerInstance *)self semaphoreWakeOnDeviceChange];
+    LOBYTE(v78) = dispatch_semaphore_wait(semaphoreWakeOnDeviceChange2, v78) == 0;
 
     if ((v78 & 1) == 0)
     {
@@ -5866,7 +5866,7 @@ LABEL_194:
 
     if ([(ThreadNetworkManagerInstance *)self wedStatus]== 2)
     {
-      [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:a4];
+      [(ThreadNetworkManagerInstance *)self UpdateOutputWithBackOffTimerValue:v27 output:output];
       v80 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
       {
@@ -5887,7 +5887,7 @@ LABEL_194:
         v99 = xpc_null_create();
       }
 
-      *buf = a4;
+      *buf = output;
       *&buf[8] = "extendedMACAddress";
       xpc::dict::object_proxy::operator=(buf, &v99, &v100);
       v83 = v100;
@@ -5998,12 +5998,12 @@ LABEL_11:
       v7 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(ThreadNetworkManagerInstance *)self wedAttachRequest];
-        v9 = [(ThreadNetworkManagerInstance *)self wedStatus];
+        wedAttachRequest = [(ThreadNetworkManagerInstance *)self wedAttachRequest];
+        wedStatus = [(ThreadNetworkManagerInstance *)self wedStatus];
         *buf = 67109376;
-        *&buf[4] = v8;
+        *&buf[4] = wedAttachRequest;
         *&buf[8] = 1024;
-        *&buf[10] = v9;
+        *&buf[10] = wedStatus;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ThreadConnection: Avoid quick network SR Discovery scan as WED connection is ongoing, wedAttachRequest = %d, wedStatus = %d \n", buf, 0xEu);
       }
 
@@ -6023,11 +6023,11 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ThreadConnection: Peform quick network SR Discovery scan \n", buf, 2u);
     }
 
-    v14 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(__p, "StartCurrentNetworkDiscoveryScan");
-    if (v14)
+    if (ctrInternalClientPtr)
     {
-      [v14 setProperty:__p property_val:"quick-scan"];
+      [ctrInternalClientPtr setProperty:__p property_val:"quick-scan"];
       if ((v6 & 0x80000000) == 0)
       {
 LABEL_19:
@@ -6061,11 +6061,11 @@ LABEL_19:
   v10 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ThreadNetworkManagerInstance *)self geoAvailable];
+    geoAvailable = [(ThreadNetworkManagerInstance *)self geoAvailable];
     nl::wpantund::node_type_to_string([(ThreadNetworkManagerInstance *)self lastKnownNodeType], buf);
     v12 = (SBYTE7(v23) & 0x80u) == 0 ? buf : *buf;
     *v18 = 67109378;
-    v19 = v11;
+    v19 = geoAvailable;
     v20 = 2080;
     v21 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ThreadConnection: Avoid quick network SR Discovery scan as Geo(%d) is not enabled, or Node type is non SR, node: %s", v18, 0x12u);
@@ -6322,11 +6322,11 @@ LABEL_13:
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   v3 = *buf;
   v4 = buf[23];
-  v5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "wasDeviceEverAChildInCurrentNetwork");
-  if (v5)
+  if (ctrInternalClientPtr)
   {
-    [v5 getProperty:__p output:&v17];
+    [ctrInternalClientPtr getProperty:__p output:&v17];
     v6 = *buf == 0;
     if ((v4 & 0x80000000) == 0)
     {
@@ -6373,14 +6373,14 @@ LABEL_4:
   v11 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(ThreadNetworkManagerInstance *)self isGeoAvailable];
-    v13 = [(ThreadNetworkManagerInstance *)self lastKnownNodeType];
+    isGeoAvailable = [(ThreadNetworkManagerInstance *)self isGeoAvailable];
+    lastKnownNodeType = [(ThreadNetworkManagerInstance *)self lastKnownNodeType];
     *buf = 136315906;
     *&buf[4] = "[ThreadNetworkManagerInstance(SM_extension) getWasChildStatus]";
     *&buf[12] = 1024;
-    *&buf[14] = v12;
+    *&buf[14] = isGeoAvailable;
     *&buf[18] = 1024;
-    *&buf[20] = v13;
+    *&buf[20] = lastKnownNodeType;
     *&buf[24] = 1024;
     *&buf[26] = v9;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s:isGeo=%d,lastKnownNodeType=%d,wasChild=%d", buf, 0x1Eu);
@@ -6605,11 +6605,11 @@ LABEL_4:
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   v3 = *buf;
   v4 = SBYTE7(v19);
-  v5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-  v6 = v5;
-  if (v5)
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  v6 = ctrInternalClientPtr;
+  if (ctrInternalClientPtr)
   {
-    [v5 getNCPStatus:&v17];
+    [ctrInternalClientPtr getNCPStatus:&v17];
     v7 = *buf == 0;
     if ((v4 & 0x80000000) == 0)
     {
@@ -6690,17 +6690,17 @@ LABEL_12:
   return v13;
 }
 
-- (id)getNCPPropertyInDict:(const char *)a3
+- (id)getNCPPropertyInDict:(const char *)dict
 {
   v19 = 0;
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   v5 = *buf;
   v6 = buf[23];
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-  std::string::basic_string[abi:ne200100]<0>(__p, a3);
-  if (v7)
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  std::string::basic_string[abi:ne200100]<0>(__p, dict);
+  if (ctrInternalClientPtr)
   {
-    [v7 getProperty:__p output:&v19];
+    [ctrInternalClientPtr getProperty:__p output:&v19];
     v8 = *buf == 0;
     if ((v6 & 0x80000000) == 0)
     {
@@ -6759,7 +6759,7 @@ LABEL_20:
     *buf = 136315394;
     *&buf[4] = "[ThreadNetworkManagerInstance(syslog_extension) getNCPPropertyInDict:]";
     *&buf[12] = 2080;
-    *&buf[14] = a3;
+    *&buf[14] = dict;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s : Failed to get the NCP Property %s", buf, 0x16u);
   }
 
@@ -6786,11 +6786,11 @@ LABEL_12:
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   v6 = *buf;
   v7 = buf[23];
-  v8 = [v4 CtrInternalClientPtr];
+  ctrInternalClientPtr = [v4 CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, v3);
-  if (v8)
+  if (ctrInternalClientPtr)
   {
-    [v8 getProperty:__p output:&v16];
+    [ctrInternalClientPtr getProperty:__p output:&v16];
     v9 = *buf == 0;
     if ((v7 & 0x80000000) == 0)
     {
@@ -7318,22 +7318,22 @@ LABEL_4:
   return v54;
 }
 
-- (id)getNCPPreferredNetworkInDict:(id)a3
+- (id)getNCPPreferredNetworkInDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   context = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 network];
-  v6 = [v5 extendedPANID];
-  if (v6)
+  network = [dictCopy network];
+  extendedPANID = [network extendedPANID];
+  if (extendedPANID)
   {
-    v7 = [v3 network];
-    v8 = [v7 extendedPANID];
-    v9 = [v8 bytes];
-    v10 = [v3 network];
-    v11 = [v10 extendedPANID];
-    v12 = [v11 length];
-    ctu::hex(v123, v9, v12, v13);
+    network2 = [dictCopy network];
+    extendedPANID2 = [network2 extendedPANID];
+    bytes = [extendedPANID2 bytes];
+    network3 = [dictCopy network];
+    extendedPANID3 = [network3 extendedPANID];
+    v12 = [extendedPANID3 length];
+    ctu::hex(v123, bytes, v12, v13);
   }
 
   else
@@ -7341,17 +7341,17 @@ LABEL_4:
     std::string::basic_string[abi:ne200100]<0>(v123, "(unknown)");
   }
 
-  v14 = [v3 borderAgent];
-  v15 = [v14 discriminatorId];
-  if (v15)
+  borderAgent = [dictCopy borderAgent];
+  discriminatorId = [borderAgent discriminatorId];
+  if (discriminatorId)
   {
-    v16 = [v3 borderAgent];
-    v17 = [v16 discriminatorId];
-    v18 = [v17 bytes];
-    v19 = [v3 borderAgent];
-    v20 = [v19 discriminatorId];
-    v21 = [v20 length];
-    ctu::hex(v121, v18, v21, v22);
+    borderAgent2 = [dictCopy borderAgent];
+    discriminatorId2 = [borderAgent2 discriminatorId];
+    bytes2 = [discriminatorId2 bytes];
+    borderAgent3 = [dictCopy borderAgent];
+    discriminatorId3 = [borderAgent3 discriminatorId];
+    v21 = [discriminatorId3 length];
+    ctu::hex(v121, bytes2, v21, v22);
   }
 
   else
@@ -7359,17 +7359,17 @@ LABEL_4:
     std::string::basic_string[abi:ne200100]<0>(v121, "(unknown)");
   }
 
-  v23 = [v3 credentialsDataSet];
-  v24 = [v23 dataSetArray];
-  if (v24)
+  credentialsDataSet = [dictCopy credentialsDataSet];
+  dataSetArray = [credentialsDataSet dataSetArray];
+  if (dataSetArray)
   {
-    v25 = [v3 credentialsDataSet];
-    v26 = [v25 dataSetArray];
-    v27 = [v26 bytes];
-    v28 = [v3 credentialsDataSet];
-    v29 = [v28 dataSetArray];
-    v30 = [v29 length];
-    ctu::hex(v119, v27, v30, v31);
+    credentialsDataSet2 = [dictCopy credentialsDataSet];
+    dataSetArray2 = [credentialsDataSet2 dataSetArray];
+    bytes3 = [dataSetArray2 bytes];
+    credentialsDataSet3 = [dictCopy credentialsDataSet];
+    dataSetArray3 = [credentialsDataSet3 dataSetArray];
+    v30 = [dataSetArray3 length];
+    ctu::hex(v119, bytes3, v30, v31);
   }
 
   else
@@ -7377,14 +7377,14 @@ LABEL_4:
     std::string::basic_string[abi:ne200100]<0>(v119, "(unknown)");
   }
 
-  v32 = [v3 uniqueIdentifier];
+  uniqueIdentifier = [dictCopy uniqueIdentifier];
 
   v33 = ot::Message::GetDatagramTag;
-  if (v32)
+  if (uniqueIdentifier)
   {
-    v34 = [v3 uniqueIdentifier];
-    v35 = [v34 UUIDString];
-    v36 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s", [v35 UTF8String], context);
+    uniqueIdentifier2 = [dictCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier2 UUIDString];
+    v36 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s", [uUIDString UTF8String], context);
 
     [v4 setObject:v36 forKey:@"UUID"];
   }
@@ -7403,15 +7403,15 @@ LABEL_4:
   v38 = [NSString stringWithFormat:@"%s", v37];
 
   [v4 setObject:v38 forKey:@"borderAgentDiscriminatorID"];
-  v39 = [v3 network];
-  v40 = [v39 networkName];
-  v41 = v40;
-  if (!v40)
+  network4 = [dictCopy network];
+  networkName = [network4 networkName];
+  v41 = networkName;
+  if (!networkName)
   {
-    v40 = @"(unknown)";
+    networkName = @"(unknown)";
   }
 
-  v42 = [NSString stringWithFormat:@"%s", [(__CFString *)v40 UTF8String]];
+  v42 = [NSString stringWithFormat:@"%s", [(__CFString *)networkName UTF8String]];
 
   [v4 setObject:v42 forKey:@"networkName"];
   v43 = v123;
@@ -7423,18 +7423,18 @@ LABEL_4:
   v44 = [NSString stringWithFormat:@"%s", v43];
 
   [v4 setObject:v44 forKey:@"xpanid"];
-  v45 = [v3 credentials];
-  v46 = [v45 PANID];
+  credentials = [dictCopy credentials];
+  pANID = [credentials PANID];
 
-  if (v46)
+  if (pANID)
   {
-    v47 = [v3 credentials];
-    v48 = [v47 PANID];
-    v49 = [v48 bytes];
-    v50 = [v3 credentials];
-    v51 = [v50 PANID];
-    v52 = [v51 length];
-    ctu::hex(__p, v49, v52, v53);
+    credentials2 = [dictCopy credentials];
+    pANID2 = [credentials2 PANID];
+    bytes4 = [pANID2 bytes];
+    credentials3 = [dictCopy credentials];
+    pANID3 = [credentials3 PANID];
+    v52 = [pANID3 length];
+    ctu::hex(__p, bytes4, v52, v53);
     if (v118 >= 0)
     {
       v54 = __p;
@@ -7461,19 +7461,19 @@ LABEL_4:
     v55 = v44;
   }
 
-  v56 = [v3 credentials];
-  v57 = [v56 masterKey];
+  credentials4 = [dictCopy credentials];
+  masterKey = [credentials4 masterKey];
 
-  if (v57)
+  if (masterKey)
   {
     v58 = v33[324];
-    v59 = [v3 credentials];
-    v60 = [v59 masterKey];
-    v61 = [v60 bytes];
-    v62 = [v3 credentials];
-    v63 = [v62 masterKey];
-    v64 = [v63 length];
-    ctu::hex(__p, v61, v64, v65);
+    credentials5 = [dictCopy credentials];
+    masterKey2 = [credentials5 masterKey];
+    bytes5 = [masterKey2 bytes];
+    credentials6 = [dictCopy credentials];
+    masterKey3 = [credentials6 masterKey];
+    v64 = [masterKey3 length];
+    ctu::hex(__p, bytes5, v64, v65);
     if (v118 >= 0)
     {
       v66 = __p;
@@ -7500,19 +7500,19 @@ LABEL_4:
     v67 = v55;
   }
 
-  v68 = [v3 credentials];
-  v69 = [v68 PSKc];
+  credentials7 = [dictCopy credentials];
+  pSKc = [credentials7 PSKc];
 
-  if (v69)
+  if (pSKc)
   {
     v70 = v33[324];
-    v71 = [v3 credentials];
-    v72 = [v71 PSKc];
-    v73 = [v72 bytes];
-    v74 = [v3 credentials];
-    v75 = [v74 PSKc];
-    v76 = [v75 length];
-    ctu::hex(__p, v73, v76, v77);
+    credentials8 = [dictCopy credentials];
+    pSKc2 = [credentials8 PSKc];
+    bytes6 = [pSKc2 bytes];
+    credentials9 = [dictCopy credentials];
+    pSKc3 = [credentials9 PSKc];
+    v76 = [pSKc3 length];
+    ctu::hex(__p, bytes6, v76, v77);
     if (v118 >= 0)
     {
       v78 = __p;
@@ -7539,25 +7539,25 @@ LABEL_4:
     v79 = v67;
   }
 
-  v80 = [v3 credentials];
-  v81 = [v80 passPhrase];
+  credentials10 = [dictCopy credentials];
+  passPhrase = [credentials10 passPhrase];
 
-  if (v81)
+  if (passPhrase)
   {
     v82 = v33[324];
-    v83 = [v3 credentials];
-    v84 = [v83 passPhrase];
-    v85 = [v82 stringWithFormat:@"%s", objc_msgSend(v84, "UTF8String")];
+    credentials11 = [dictCopy credentials];
+    passPhrase2 = [credentials11 passPhrase];
+    v85 = [v82 stringWithFormat:@"%s", objc_msgSend(passPhrase2, "UTF8String")];
 
     v79 = v85;
     [v4 setObject:v85 forKey:@"passPhrase"];
   }
 
-  v86 = [v3 credentials];
-  v87 = [v86 channel];
+  credentials12 = [dictCopy credentials];
+  channel = [credentials12 channel];
   v88 = kTHNetworkChannel_None;
 
-  if (v87 == v88)
+  if (channel == v88)
   {
     v89 = ot::Message::GetDatagramTag;
   }
@@ -7565,8 +7565,8 @@ LABEL_4:
   else
   {
     v89 = ot::Message::GetDatagramTag;
-    v90 = [v3 credentials];
-    v91 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [v90 channel]);
+    credentials13 = [dictCopy credentials];
+    v91 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%u", [credentials13 channel]);
 
     v79 = v91;
     [v4 setObject:v91 forKey:@"channel"];
@@ -7581,15 +7581,15 @@ LABEL_4:
   v93 = [v89[324] stringWithFormat:@"%{sensitive}s", v92];
 
   [v4 setObject:v93 forKey:@"datasetCredentials"];
-  v94 = [v3 credentials];
-  v95 = [v94 userInfo];
+  credentials14 = [dictCopy credentials];
+  userInfo = [credentials14 userInfo];
 
-  if (v95)
+  if (userInfo)
   {
     v96 = v89[324];
-    v97 = [v3 credentials];
-    v98 = [v97 userInfo];
-    v99 = [v96 stringWithFormat:@"%s", objc_msgSend(v98, "UTF8String")];
+    credentials15 = [dictCopy credentials];
+    userInfo2 = [credentials15 userInfo];
+    v99 = [v96 stringWithFormat:@"%s", objc_msgSend(userInfo2, "UTF8String")];
 
     [v4 setObject:v99 forKey:@"datasetUserInfo"];
   }
@@ -7599,38 +7599,38 @@ LABEL_4:
     v99 = v93;
   }
 
-  v100 = [v3 keychainAccessGroup];
+  keychainAccessGroup = [dictCopy keychainAccessGroup];
 
-  if (v100)
+  if (keychainAccessGroup)
   {
     v101 = v89[324];
-    v102 = [v3 keychainAccessGroup];
-    v103 = [v101 stringWithFormat:@"%s", objc_msgSend(v102, "UTF8String")];
+    keychainAccessGroup2 = [dictCopy keychainAccessGroup];
+    v103 = [v101 stringWithFormat:@"%s", objc_msgSend(keychainAccessGroup2, "UTF8String")];
 
     v99 = v103;
     [v4 setObject:v103 forKey:@"accessGroup"];
   }
 
-  v104 = [v3 creationDate];
+  creationDate = [dictCopy creationDate];
 
-  if (v104)
+  if (creationDate)
   {
     v105 = v89[324];
-    v106 = [v3 creationDate];
-    v107 = [v106 description];
+    creationDate2 = [dictCopy creationDate];
+    v107 = [creationDate2 description];
     v108 = [v105 stringWithFormat:@"%s", objc_msgSend(v107, "UTF8String")];
 
     v99 = v108;
     [v4 setObject:v108 forKey:@"createdOn"];
   }
 
-  v109 = [v3 lastModificationDate];
+  lastModificationDate = [dictCopy lastModificationDate];
 
-  if (v109)
+  if (lastModificationDate)
   {
     v110 = v89[324];
-    v111 = [v3 lastModificationDate];
-    v112 = [v111 description];
+    lastModificationDate2 = [dictCopy lastModificationDate];
+    v112 = [lastModificationDate2 description];
     v113 = [v110 stringWithFormat:@"%s", objc_msgSend(v112, "UTF8String")];
 
     v99 = v113;
@@ -7658,29 +7658,29 @@ LABEL_4:
   return v114;
 }
 
-- (void)captureNCPStateInformation:(id *)a3
+- (void)captureNCPStateInformation:(id *)information
 {
-  v8 = *a3;
-  v4 = [(ThreadNetworkManagerInstance *)self getNCPStatusInDict];
-  if (v4)
+  v8 = *information;
+  getNCPStatusInDict = [(ThreadNetworkManagerInstance *)self getNCPStatusInDict];
+  if (getNCPStatusInDict)
   {
-    [v8 setObject:v4 forKey:@"NCP Status"];
+    [v8 setObject:getNCPStatusInDict forKey:@"NCP Status"];
   }
 
-  v5 = [(ThreadNetworkManagerInstance *)self getPreferredNetwork];
-  if (v5)
+  getPreferredNetwork = [(ThreadNetworkManagerInstance *)self getPreferredNetwork];
+  if (getPreferredNetwork)
   {
-    v6 = [(ThreadNetworkManagerInstance *)self getNCPPreferredNetworkInDict:v5];
+    v6 = [(ThreadNetworkManagerInstance *)self getNCPPreferredNetworkInDict:getPreferredNetwork];
     if (v6)
     {
       [v8 setObject:v6 forKey:@"NCP PreferredNetwork"];
     }
   }
 
-  v7 = [(ThreadNetworkManagerInstance *)self getRCPProperties];
-  if (v7)
+  getRCPProperties = [(ThreadNetworkManagerInstance *)self getRCPProperties];
+  if (getRCPProperties)
   {
-    [v8 setObject:v7 forKey:@"RCP Properties"];
+    [v8 setObject:getRCPProperties forKey:@"RCP Properties"];
   }
 }
 
@@ -7788,19 +7788,19 @@ _DWORD *__68__ThreadNetworkManagerInstance_syslog_extension__initSyslogDumpInfo_
   return v11;
 }
 
-- (id)init:(id)a3 statsQueue:(id)a4
+- (id)init:(id)init statsQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = ThreadNetworkManagerInstance;
   v9 = [(ThreadNetworkManagerInstance *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_fQueue, a3);
-    objc_storeStrong(p_isa + 21, a4);
-    [p_isa createDriverInterface:v7];
+    objc_storeStrong(&v9->_fQueue, init);
+    objc_storeStrong(p_isa + 21, queue);
+    [p_isa createDriverInterface:initCopy];
   }
 
   return p_isa;
@@ -7837,20 +7837,20 @@ _DWORD *__68__ThreadNetworkManagerInstance_syslog_extension__initSyslogDumpInfo_
   }
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  v9 = [(ThreadNetworkfinder *)self->_BAFinder findNWs];
+  findNWs = [(ThreadNetworkfinder *)self->_BAFinder findNWs];
   v10 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v17 = "[ThreadNetworkManagerInstance getCountOfAvailableNetworksForCommissioning]";
     v18 = 2048;
-    v19 = v9;
+    v19 = findNWs;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s : Found networks : %lu", buf, 0x16u);
   }
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return v9;
+  return findNWs;
 }
 
 void __75__ThreadNetworkManagerInstance_getCountOfAvailableNetworksForCommissioning__block_invoke(uint64_t a1)
@@ -7904,9 +7904,9 @@ void __75__ThreadNetworkManagerInstance_getCountOfAvailableNetworksForCommission
   return RcpHostContext::isThreadGeoEnabled(v3);
 }
 
-- (void)createDriverInterface:(id)a3
+- (void)createDriverInterface:(id)interface
 {
-  v59 = a3;
+  interfaceCopy = interface;
   v4 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -7973,7 +7973,7 @@ void __75__ThreadNetworkManagerInstance_getCountOfAvailableNetworksForCommission
   v105[2] = __54__ThreadNetworkManagerInstance_createDriverInterface___block_invoke;
   v105[3] = &unk_1004C85D0;
   objc_copyWeak(&v106, &location);
-  v21 = v59;
+  v21 = interfaceCopy;
   v104 = v21;
   [(CtrInternalClient *)v20 setEventHandler:v107 InternalClientEventBlock:v105 dqueue:&v104];
   v22 = v104;
@@ -8144,9 +8144,9 @@ void __75__ThreadNetworkManagerInstance_getCountOfAvailableNetworksForCommission
   }
 
   [(ThreadNetworkManagerInstance *)self registerStateMachineWedEventHandlers];
-  v47 = [(ThreadNetworkManagerInstance *)self getDefaultChildNode];
+  getDefaultChildNode = [(ThreadNetworkManagerInstance *)self getDefaultChildNode];
   v48 = "sleepy-end-device";
-  if (v47)
+  if (getDefaultChildNode)
   {
     v48 = "synchronized-sleepy-end-device";
   }
@@ -8174,9 +8174,9 @@ void __75__ThreadNetworkManagerInstance_getCountOfAvailableNetworksForCommission
     _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "WiFi Status is: %d", buf, 8u);
   }
 
-  v53 = [(ThreadNetworkManagerInstance *)self getHardwareAddress];
+  getHardwareAddress = [(ThreadNetworkManagerInstance *)self getHardwareAddress];
   hwAddr = self->_hwAddr;
-  self->_hwAddr = v53;
+  self->_hwAddr = getHardwareAddress;
 
   if (self->_hwAddr)
   {
@@ -9069,11 +9069,11 @@ LABEL_13:
   return p_super;
 }
 
-- (void)setDeviceNode:(BOOL)a3 geoAvailable:(BOOL)a4 defaultChildNode:(BOOL)a5
+- (void)setDeviceNode:(BOOL)node geoAvailable:(BOOL)available defaultChildNode:(BOOL)childNode
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  childNodeCopy = childNode;
+  availableCopy = available;
+  nodeCopy = node;
   SystemUptimeInSec = getSystemUptimeInSec();
   v10 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -9082,11 +9082,11 @@ LABEL_13:
     *buf = 136316418;
     v22 = "[ThreadNetworkManagerInstance setDeviceNode:geoAvailable:defaultChildNode:]";
     v23 = 1024;
-    *v24 = v7;
+    *v24 = nodeCopy;
     *&v24[4] = 1024;
-    *&v24[6] = v6;
+    *&v24[6] = availableCopy;
     LOWORD(v25) = 1024;
-    *(&v25 + 2) = v5;
+    *(&v25 + 2) = childNodeCopy;
     HIWORD(v25) = 2048;
     v26 = SystemUptimeInSec;
     v27 = 2048;
@@ -9096,7 +9096,7 @@ LABEL_13:
 
   if (![(ThreadNetworkManagerInstance *)self isStateMachineWedEnabled])
   {
-    if (!v7)
+    if (!nodeCopy)
     {
       v16 = 9;
       goto LABEL_18;
@@ -9111,21 +9111,21 @@ LABEL_18:
 
   self->_wedStatus = 0;
   self->_wedAttachRequest = 0;
-  self->_geoAvailable = v6;
+  self->_geoAvailable = availableCopy;
   self->_wasChildStatus = 0;
-  if (v7)
+  if (nodeCopy)
   {
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!availableCopy)
   {
     v16 = 8;
     goto LABEL_18;
   }
 
   v12 = "sleepy-end-device";
-  if (v5)
+  if (childNodeCopy)
   {
     v12 = "synchronized-sleepy-end-device";
   }
@@ -9180,17 +9180,17 @@ LABEL_19:
   }
 }
 
-- (dict)threadNetworkManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (dict)threadNetworkManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v5 = v3;
   v8 = v4;
   v9 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a3;
-    if (*(&a3->var0.var1 + 23) < 0)
+    var0 = std;
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      var0 = a3->var0.var1.var0;
+      var0 = std->var0.var1.var0;
     }
 
     *buf = 136315138;
@@ -9231,7 +9231,7 @@ LABEL_19:
   if (!std::string::compare(&v104, "setChannel"))
   {
     xpc::dict::dict(&v101, v5);
-    v23 = [(ThreadNetworkManagerInstance *)self setChannelUsingChannelManger:&v101];
+    threadStop = [(ThreadNetworkManagerInstance *)self setChannelUsingChannelManger:&v101];
     v24 = v101;
     v101 = 0;
 
@@ -9241,7 +9241,7 @@ LABEL_19:
   if (!std::string::compare(&v104, "attachToNetwork"))
   {
     xpc::dict::dict(&v100, v5);
-    v23 = [(ThreadNetworkManagerInstance *)self attachToNetwork:&v100 output:&xdict];
+    threadStop = [(ThreadNetworkManagerInstance *)self attachToNetwork:&v100 output:&xdict];
     v25 = v100;
     v100 = 0;
 
@@ -9251,7 +9251,7 @@ LABEL_19:
   if (!std::string::compare(&v104, "commissionOrFormNetwork"))
   {
     xpc::dict::dict(&v99, v5);
-    v23 = [(ThreadNetworkManagerInstance *)self commissionOrFormNetwork:&v99 is_attaching:0 cfg_attach:&v110 output:&xdict];
+    threadStop = [(ThreadNetworkManagerInstance *)self commissionOrFormNetwork:&v99 is_attaching:0 cfg_attach:&v110 output:&xdict];
     v26 = v99;
     v99 = 0;
 
@@ -9269,12 +9269,12 @@ LABEL_19:
     v30 = xpc::dict::operator*(v5);
     v31 = xpc_dictionary_get_string(v30, "activeOperationalDataset");
 
-    if (*(&a3->var0.var1 + 23) < 0)
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      a3 = a3->var0.var1.var0;
+      std = std->var0.var1.var0;
     }
 
-    if (!strcmp(a3->var0.var0.var0, "wpanctl"))
+    if (!strcmp(std->var0.var0.var0, "wpanctl"))
     {
       self->_mIsTestClient = 1;
     }
@@ -9342,7 +9342,7 @@ LABEL_60:
     }
 
     self->_createNetwork = 1;
-    v23 = [(ThreadNetworkManagerInstance *)self threadStart:v28 activeOperationalDataset:v31 isPrimaryUser:v52 routerMode:v50 geoAvailable:v37 defaultChildNode:v33 output:&xdict];
+    threadStop = [(ThreadNetworkManagerInstance *)self threadStart:v28 activeOperationalDataset:v31 isPrimaryUser:v52 routerMode:v50 geoAvailable:v37 defaultChildNode:v33 output:&xdict];
     self->_waitForSync = 0;
     SystemUptimeInSec = getSystemUptimeInSec();
     DaemonUptimeInSec = getDaemonUptimeInSec();
@@ -9357,7 +9357,7 @@ LABEL_60:
       *&buf[22] = 2080;
       *&buf[24] = "[ThreadNetworkManagerInstance threadNetworkManagerInstance_MsgHandler:message:]";
       *&buf[32] = 1024;
-      *&buf[34] = v23;
+      *&buf[34] = threadStop;
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "[%llu, %llu] %s: threadStart finished with ret : %d", buf, 0x26u);
     }
 
@@ -9372,9 +9372,9 @@ LABEL_60:
     v40 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      if (*(&a3->var0.var1 + 23) < 0)
+      if (*(&std->var0.var1 + 23) < 0)
       {
-        a3 = a3->var0.var1.var0;
+        std = std->var0.var1.var0;
       }
 
       v41 = &v104;
@@ -9384,7 +9384,7 @@ LABEL_60:
       }
 
       *buf = 136315650;
-      *&buf[4] = a3;
+      *&buf[4] = std;
       *&buf[12] = 2080;
       *&buf[14] = v41;
       *&buf[22] = 1024;
@@ -9401,7 +9401,7 @@ LABEL_60:
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Calling threadStop", buf, 2u);
       }
 
-      v23 = [(ThreadNetworkManagerInstance *)self threadStop];
+      threadStop = [(ThreadNetworkManagerInstance *)self threadStop];
       xpc_dictionary_set_BOOL(xdict, "threadStop", 1);
     }
 
@@ -9414,7 +9414,7 @@ LABEL_60:
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "Calling threadLeave", buf, 2u);
       }
 
-      v23 = [(ThreadNetworkManagerInstance *)self threadLeave];
+      threadStop = [(ThreadNetworkManagerInstance *)self threadLeave];
       [(ThreadNetworkManagerInstance *)self resetMetricsBetweenRoleChanges];
     }
   }
@@ -9508,9 +9508,9 @@ LABEL_60:
         v71 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
         {
-          if (*(&a3->var0.var1 + 23) < 0)
+          if (*(&std->var0.var1 + 23) < 0)
           {
-            a3 = a3->var0.var1.var0;
+            std = std->var0.var1.var0;
           }
 
           v72 = &v104;
@@ -9520,7 +9520,7 @@ LABEL_60:
           }
 
           *buf = 136315394;
-          *&buf[4] = a3;
+          *&buf[4] = std;
           *&buf[12] = 2080;
           *&buf[14] = v72;
           _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "Got command from %s for method %s", buf, 0x16u);
@@ -9562,16 +9562,16 @@ LABEL_60:
             [ThreadNetworkManagerInstance threadNetworkManagerInstance_MsgHandler:&v104 message:?];
           }
 
-          v23 = 1;
+          threadStop = 1;
           goto LABEL_96;
         }
 
         v80 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
         {
-          if (*(&a3->var0.var1 + 23) < 0)
+          if (*(&std->var0.var1 + 23) < 0)
           {
-            a3 = a3->var0.var1.var0;
+            std = std->var0.var1.var0;
           }
 
           v81 = &v104;
@@ -9581,7 +9581,7 @@ LABEL_60:
           }
 
           *buf = 136315394;
-          *&buf[4] = a3;
+          *&buf[4] = std;
           *&buf[12] = 2080;
           *&buf[14] = v81;
           _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_INFO, "Got command from %s for method %s", buf, 0x16u);
@@ -9629,7 +9629,7 @@ LABEL_60:
         v63 = [(ThreadNetworkManagerInstance *)self updateHomeThreadInfo:buf];
       }
 
-      v23 = v63;
+      threadStop = v63;
       goto LABEL_96;
     }
 
@@ -9648,23 +9648,23 @@ LABEL_60:
       _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "%s:%d: Calling provideEMACAddress, Got the eMAC : 0x%s, ", buf, 0x1Cu);
     }
 
-    v23 = [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v44 output:&xdict];
+    threadStop = [(ThreadNetworkManagerInstance *)self provideExtendedMACAddress:v44 output:&xdict];
     v46 = log_get_logging_obg("com.apple.wpantund.tnm", "Wed");
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [(ThreadNetworkManagerInstance *)self modeChangeInProgress];
+      modeChangeInProgress = [(ThreadNetworkManagerInstance *)self modeChangeInProgress];
       *buf = 136315906;
       *&buf[4] = "[ThreadNetworkManagerInstance threadNetworkManagerInstance_MsgHandler:message:]";
       *&buf[12] = 1024;
       *&buf[14] = 846;
       *&buf[18] = 1024;
-      *&buf[20] = v47;
+      *&buf[20] = modeChangeInProgress;
       *&buf[24] = 1024;
-      *&buf[26] = v23;
+      *&buf[26] = threadStop;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "%s:%d: Check if possible to transition to child Node, modeChangeInProgress = %d, ret = %d", buf, 0x1Eu);
     }
 
-    if ((v23 == 1 || !v44) && ![(ThreadNetworkManagerInstance *)self modeChangeInProgress])
+    if ((threadStop == 1 || !v44) && ![(ThreadNetworkManagerInstance *)self modeChangeInProgress])
     {
       [(ThreadNetworkManagerInstance *)self transitionToChildNode:&xdict];
     }
@@ -9693,7 +9693,7 @@ LABEL_96:
   }
 
   xpc_dictionary_set_string(xdict, "property_name", v91);
-  xpc_dictionary_set_int64(xdict, "ret", v23);
+  xpc_dictionary_set_int64(xdict, "ret", threadStop);
   xpc::dict::dict(v8, &xdict);
   if (v103 < 0)
   {
@@ -9711,10 +9711,10 @@ LABEL_96:
   return v93;
 }
 
-- (void)appendValMapToDict:(id)a3 value:(any)a4
+- (void)appendValMapToDict:(id)dict value:(any)value
 {
-  v5 = a3;
-  boost::any_cast<std::map<std::string,boost::any>>(a4.var0, &v13);
+  dictCopy = dict;
+  boost::any_cast<std::map<std::string,boost::any>>(value.var0, &v13);
   v6 = v13;
   if (v13 != v14)
   {
@@ -9728,7 +9728,7 @@ LABEL_96:
       }
 
       v9 = [NSString stringWithUTF8String:v8];
-      [v5 setObject:v7 forKey:v9];
+      [dictCopy setObject:v7 forKey:v9];
 
       v10 = v6[1];
       if (v10)
@@ -9763,11 +9763,11 @@ LABEL_96:
   std::__tree<std::__value_type<std::string,boost::any>,std::__map_value_compare<std::string,std::__value_type<std::string,boost::any>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,boost::any>>>::destroy(&v13, v14[0]);
 }
 
-- (void)updateInternalDBForCommonDimensions:(id)a3 coexCntrsDict:(id)a4 coexDict:(id)a5
+- (void)updateInternalDBForCommonDimensions:(id)dimensions coexCntrsDict:(id)dict coexDict:(id)coexDict
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dimensionsCopy = dimensions;
+  dictCopy = dict;
+  coexDictCopy = coexDict;
   std::string::basic_string[abi:ne200100]<0>(&v42, "Command error");
   v11 = v42;
   v12 = SBYTE7(v43);
@@ -9840,7 +9840,7 @@ LABEL_4:
   *&v42 = &v45;
   *(&v42 + 1) = "value";
   v23 = xpc::dict::object_proxy::operator*(&v42);
-  CAMetricsHandlers_handle_getprop_allipv6(v23, v8);
+  CAMetricsHandlers_handle_getprop_allipv6(v23, dimensionsCopy);
 
 LABEL_15:
   v38 = 0;
@@ -9909,7 +9909,7 @@ LABEL_18:
   *&v42 = &v45;
   *(&v42 + 1) = "value";
   v33 = xpc::dict::object_proxy::operator*(&v42);
-  CAMetricsHandlers_handle_getprop_threadmle(v33, v8);
+  CAMetricsHandlers_handle_getprop_threadmle(v33, dimensionsCopy);
 
 LABEL_29:
   if (v38)
@@ -9931,9 +9931,9 @@ LABEL_29:
   }
 }
 
-- (void)addCommonDimensions:(id)a3
+- (void)addCommonDimensions:(id)dimensions
 {
-  v4 = a3;
+  dimensionsCopy = dimensions;
   std::string::basic_string[abi:ne200100]<0>(v102, "Command error");
   __p = *v102;
   v5 = v102[23];
@@ -9953,7 +9953,7 @@ LABEL_29:
     [NSNumber numberWithBool:0];
   }
   v6 = ;
-  [(NSMutableDictionary *)v4 setObject:v6 forKey:@"is_state_associated"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v6 forKey:@"is_state_associated"];
 
   CtrInternalClientPtr = self->_CtrInternalClientPtr;
   std::string::basic_string[abi:ne200100]<0>(v95, "thread_version");
@@ -10012,7 +10012,7 @@ LABEL_7:
   }
 
   v15 = [NSString stringWithCString:v14 encoding:v13];
-  [(NSMutableDictionary *)v4 setObject:v15 forKey:@"thread_version"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v15 forKey:@"thread_version"];
 
   if ((v102[23] & 0x80000000) != 0)
   {
@@ -10071,7 +10071,7 @@ LABEL_21:
     [NSNumber numberWithBool:0];
   }
   v19 = ;
-  [(NSMutableDictionary *)v4 setObject:v19 forKey:@"is_network_data_full_no_unicast_service"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v19 forKey:@"is_network_data_full_no_unicast_service"];
 
 LABEL_31:
   if (!RcpHostContext::sRcpHostContext)
@@ -10089,7 +10089,7 @@ LABEL_31:
     [NSNumber numberWithBool:0];
   }
   v20 = ;
-  [(NSMutableDictionary *)v4 setObject:v20 forKey:@"is_radio_tx_timeout"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v20 forKey:@"is_radio_tx_timeout"];
 
   if (!RcpHostContext::sRcpHostContext)
   {
@@ -10106,7 +10106,7 @@ LABEL_31:
     [NSNumber numberWithBool:0];
   }
   v21 = ;
-  [(NSMutableDictionary *)v4 setObject:v21 forKey:@"is_buffer_limit_exceeded"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v21 forKey:@"is_buffer_limit_exceeded"];
 
   if (!RcpHostContext::sRcpHostContext)
   {
@@ -10123,7 +10123,7 @@ LABEL_31:
     [NSNumber numberWithBool:0];
   }
   v22 = ;
-  [(NSMutableDictionary *)v4 setObject:v22 forKey:@"is_non_converging_prefix"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v22 forKey:@"is_non_converging_prefix"];
 
   if (!RcpHostContext::sRcpHostContext)
   {
@@ -10140,7 +10140,7 @@ LABEL_31:
     [NSNumber numberWithBool:0];
   }
   v23 = ;
-  [(NSMutableDictionary *)v4 setObject:v23 forKey:@"is_non_converging_unicast_srp_service"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v23 forKey:@"is_non_converging_unicast_srp_service"];
 
   if (!RcpHostContext::sRcpHostContext)
   {
@@ -10157,7 +10157,7 @@ LABEL_31:
     [NSNumber numberWithBool:0];
   }
   v24 = ;
-  [(NSMutableDictionary *)v4 setObject:v24 forKey:@"is_network_data_full"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v24 forKey:@"is_network_data_full"];
 
   v25 = self->_CtrInternalClientPtr;
   std::string::basic_string[abi:ne200100]<0>(v91, "numOnMeshPrefixes");
@@ -10210,7 +10210,7 @@ LABEL_54:
     [NSNumber numberWithBool:1];
   }
   v28 = ;
-  [(NSMutableDictionary *)v4 setObject:v28 forKey:@"is_multiple_prefix_detected"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v28 forKey:@"is_multiple_prefix_detected"];
 
 LABEL_64:
   v29 = self->_CtrInternalClientPtr;
@@ -10281,7 +10281,7 @@ LABEL_67:
     v33 = @"small";
   }
 
-  [(NSMutableDictionary *)v4 setObject:v33 forKey:@"thread_mesh_size"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v33 forKey:@"thread_mesh_size"];
 LABEL_81:
   v34 = self->_CtrInternalClientPtr;
   std::string::basic_string[abi:ne200100]<0>(v87, "Network:NodeType");
@@ -10339,7 +10339,7 @@ LABEL_84:
   }
 
   v41 = [NSString stringWithCString:v40 encoding:v39];
-  [(NSMutableDictionary *)v4 setObject:v41 forKey:@"last_known_device_role"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v41 forKey:@"last_known_device_role"];
 
   if ((v102[23] & 0x80000000) != 0)
   {
@@ -10347,8 +10347,8 @@ LABEL_84:
   }
 
 LABEL_95:
-  v42 = [(ThreadNetworkManagerInstance *)self CAgetPrevValidDeviceRole];
-  [(NSMutableDictionary *)v4 setObject:v42 forKey:@"prev_device_role"];
+  cAgetPrevValidDeviceRole = [(ThreadNetworkManagerInstance *)self CAgetPrevValidDeviceRole];
+  [(NSMutableDictionary *)dimensionsCopy setObject:cAgetPrevValidDeviceRole forKey:@"prev_device_role"];
 
   v86 = 0;
   v43 = self->_CtrInternalClientPtr;
@@ -10406,12 +10406,12 @@ LABEL_98:
   }
 
   v49 = [v48 objectForKey:@"num_firmware_resets"];
-  v50 = [v49 intValue];
+  intValue = [v49 intValue];
   v51 = [v48 objectForKey:@"num_daemon_restart_due_to_crashes_or_jetsams"];
-  v52 = [v51 intValue];
+  intValue2 = [v51 intValue];
   v53 = [v48 objectForKey:@"num_daemon_restart_due_to_reboots"];
-  v54 = [v53 intValue];
-  if (v50 < 1)
+  intValue3 = [v53 intValue];
+  if (intValue < 1)
   {
     [NSNumber numberWithBool:0];
   }
@@ -10421,9 +10421,9 @@ LABEL_98:
     [NSNumber numberWithBool:1];
   }
   v55 = ;
-  [(NSMutableDictionary *)v4 setObject:v55 forKey:@"is_fwreset_detected"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v55 forKey:@"is_fwreset_detected"];
 
-  if (v52 < 1)
+  if (intValue2 < 1)
   {
     [NSNumber numberWithBool:0];
   }
@@ -10433,9 +10433,9 @@ LABEL_98:
     [NSNumber numberWithBool:1];
   }
   v56 = ;
-  [(NSMutableDictionary *)v4 setObject:v56 forKey:@"is_daemon_crash_jetsam_detected"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v56 forKey:@"is_daemon_crash_jetsam_detected"];
 
-  if (v54 < 1)
+  if (intValue3 < 1)
   {
     [NSNumber numberWithBool:0];
   }
@@ -10445,7 +10445,7 @@ LABEL_98:
     [NSNumber numberWithBool:1];
   }
   v57 = ;
-  [(NSMutableDictionary *)v4 setObject:v57 forKey:@"is_daemon_reboot_detected"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v57 forKey:@"is_daemon_reboot_detected"];
 
 LABEL_118:
   v82 = 0;
@@ -10504,9 +10504,9 @@ LABEL_121:
   }
 
   v64 = [v63 objectForKey:@"is_primary_resident"];
-  v65 = [v64 intValue];
+  intValue4 = [v64 intValue];
   v66 = [v63 objectForKey:@"is_primary_resident_thread_capable"];
-  v67 = [v66 intValue];
+  intValue5 = [v66 intValue];
   v68 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
   {
@@ -10517,15 +10517,15 @@ LABEL_121:
     *&v102[18] = 2112;
     *&v102[20] = v64;
     *&v102[28] = 1024;
-    *&v102[30] = v65;
+    *&v102[30] = intValue4;
     v103 = 2112;
     v104 = v66;
     v105 = 1024;
-    v106 = v67;
+    v106 = intValue5;
     _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_INFO, "%s:%d: is_primary_resident=%@ %d is_primary_resident_thread_capable=%@ %d", v102, 0x32u);
   }
 
-  if (v65 < 1)
+  if (intValue4 < 1)
   {
     [NSNumber numberWithBool:0];
   }
@@ -10535,9 +10535,9 @@ LABEL_121:
     [NSNumber numberWithBool:1];
   }
   v69 = ;
-  [(NSMutableDictionary *)v4 setObject:v69 forKey:@"is_primary_resident"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v69 forKey:@"is_primary_resident"];
 
-  if (v67 < 1)
+  if (intValue5 < 1)
   {
     [NSNumber numberWithBool:0];
   }
@@ -10547,10 +10547,10 @@ LABEL_121:
     [NSNumber numberWithBool:1];
   }
   v70 = ;
-  [(NSMutableDictionary *)v4 setObject:v70 forKey:@"is_primary_resident_thread_capable"];
+  [(NSMutableDictionary *)dimensionsCopy setObject:v70 forKey:@"is_primary_resident_thread_capable"];
 
 LABEL_140:
-  CAMetricsHandlers_handle_common_dimensions(v4);
+  CAMetricsHandlers_handle_common_dimensions(dimensionsCopy);
   if (v82)
   {
     (*(*v82 + 8))(v82);
@@ -12202,9 +12202,9 @@ LABEL_71:
   }
 }
 
-- (void)submitHistogramCAEvent:(id)a3 histValues:(void *)a4
+- (void)submitHistogramCAEvent:(id)event histValues:(void *)values
 {
-  v22 = a3;
+  eventCopy = event;
   v6 = +[NSMutableDictionary dictionary];
   if (byte_1004E5C7F >= 0)
   {
@@ -12230,10 +12230,10 @@ LABEL_71:
   }
 
   v10 = [NSString stringWithUTF8String:v9];
-  v21 = self;
+  selfCopy = self;
   [v6 setObject:v10 forKey:@"header_vendor_version"];
 
-  v11 = *(a4 + 2);
+  v11 = *(values + 2);
   if (v11)
   {
     while (1)
@@ -12293,7 +12293,7 @@ LABEL_71:
   else
   {
 LABEL_16:
-    [(ThreadNetworkManagerInstance *)v21 addCommonDimensions:v6];
+    [(ThreadNetworkManagerInstance *)selfCopy addCommonDimensions:v6];
     v23 = v6;
     AnalyticsSendExplodingEventLazy();
     v18 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
@@ -12302,7 +12302,7 @@ LABEL_16:
       *buf = 136315394;
       v25 = "[ThreadNetworkManagerInstance submitHistogramCAEvent:histValues:]";
       v26 = 2112;
-      v27 = v22;
+      v27 = eventCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: Triggered %@", buf, 0x16u);
     }
 
@@ -12812,9 +12812,9 @@ LABEL_50:
   }
 }
 
-- (void)getIPMLEMetrics:(id)a3
+- (void)getIPMLEMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   std::string::basic_string[abi:ne200100]<0>(buf, "Command success");
   v5 = *buf;
   v6 = v15;
@@ -12830,7 +12830,7 @@ LABEL_50:
   }
 
   v9 = [NSString stringWithUTF8String:v8];
-  [v4 setObject:v9 forKey:@"header_daemon_version"];
+  [metricsCopy setObject:v9 forKey:@"header_daemon_version"];
 
   if (byte_1004E5C97 >= 0)
   {
@@ -12843,10 +12843,10 @@ LABEL_50:
   }
 
   v11 = [NSString stringWithUTF8String:v10];
-  [v4 setObject:v11 forKey:@"header_vendor_version"];
+  [metricsCopy setObject:v11 forKey:@"header_vendor_version"];
 
-  [(ThreadNetworkManagerInstance *)self addCommonDimensions:v4];
-  v12 = v4;
+  [(ThreadNetworkManagerInstance *)self addCommonDimensions:metricsCopy];
+  v12 = metricsCopy;
   AnalyticsSendEventLazy();
   [(ThreadNetworkManagerInstance *)self resetIPMLEMetrics];
   v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
@@ -13987,7 +13987,7 @@ LABEL_27:
   return self->_keyChainStore == 0;
 }
 
-- (int)retrieveActiveDataSetRecordForUniqueId:(const char *)a3 record:(id *)a4
+- (int)retrieveActiveDataSetRecordForUniqueId:(const char *)id record:(id *)record
 {
   v42 = 0;
   v43 = &v42;
@@ -14022,7 +14022,7 @@ LABEL_27:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!id)
   {
     v17 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -14080,7 +14080,7 @@ LABEL_15:
 
     else if (!v34[5])
     {
-      *a4 = v28[5];
+      *record = v28[5];
       v18 = *(v43 + 6);
       goto LABEL_22;
     }
@@ -14146,7 +14146,7 @@ void __78__ThreadNetworkManagerInstance_retrieveActiveDataSetRecordForUniqueId_r
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)retrieveCredentialsForUniqueId:(const char *)a3 credentialsRecord_t:(id *)a4
+- (int)retrieveCredentialsForUniqueId:(const char *)id credentialsRecord_t:(id *)record_t
 {
   v42 = 0;
   v43 = &v42;
@@ -14181,7 +14181,7 @@ void __78__ThreadNetworkManagerInstance_retrieveActiveDataSetRecordForUniqueId_r
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!id)
   {
     v17 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -14239,7 +14239,7 @@ LABEL_15:
 
     else if (!v34[5])
     {
-      *a4 = v28[5];
+      *record_t = v28[5];
       v18 = *(v43 + 6);
       goto LABEL_22;
     }
@@ -14305,12 +14305,12 @@ void __83__ThreadNetworkManagerInstance_retrieveCredentialsForUniqueId_credentia
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)validateDataSetTLVs:(id)a3 creds:(id *)a4
+- (BOOL)validateDataSetTLVs:(id)vs creds:(id *)creds
 {
-  v4 = a3;
-  v73 = v4;
-  v5 = [v73 bytes];
-  v6 = [v4 length];
+  vsCopy = vs;
+  v73 = vsCopy;
+  bytes = [v73 bytes];
+  v6 = [vsCopy length];
   v80 = +[NSMutableSet set];
   v7 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -14318,7 +14318,7 @@ void __83__ThreadNetworkManagerInstance_retrieveCredentialsForUniqueId_credentia
     [ThreadNetworkManagerInstance validateDataSetTLVs:creds:];
   }
 
-  encode_data_into_string(v5, v6, v85, 0x3E8uLL, 0);
+  encode_data_into_string(bytes, v6, v85, 0x3E8uLL, 0);
   v8 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -14359,7 +14359,7 @@ LABEL_167:
         goto LABEL_168;
       }
 
-      v12 = v5[v11];
+      v12 = bytes[v11];
       v13 = v10 + 2;
       v14 = v10 + 2 + v12;
       if (v14 > v6)
@@ -14373,7 +14373,7 @@ LABEL_167:
         goto LABEL_165;
       }
 
-      v15 = v5[v10];
+      v15 = bytes[v10];
       v16 = [NSNumber numberWithChar:v15];
       if ([v80 containsObject:v16])
       {
@@ -14417,7 +14417,7 @@ LABEL_167:
             goto LABEL_164;
           }
 
-          v32 = [NSData dataWithBytes:&v5[v13] length:16];
+          v32 = [NSData dataWithBytes:&bytes[v13] length:16];
 
           v19 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -14486,7 +14486,7 @@ LABEL_167:
               goto LABEL_164;
             }
 
-            if (!v5[v13] && !v5[v10 + 3])
+            if (!bytes[v13] && !bytes[v10 + 3])
             {
               v62 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
               if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -14518,7 +14518,7 @@ LABEL_167:
               goto LABEL_164;
             }
 
-            v39 = [NSData dataWithBytes:&v5[v13] length:8];
+            v39 = [NSData dataWithBytes:&bytes[v13] length:8];
 
             if (!v39)
             {
@@ -14559,7 +14559,7 @@ LABEL_167:
                 goto LABEL_164;
               }
 
-              if ((v5[v21 - 1] & 0xFD) != 0)
+              if ((bytes[v21 - 1] & 0xFD) != 0)
               {
                 v62 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -14570,7 +14570,7 @@ LABEL_167:
                 goto LABEL_164;
               }
 
-              v23 = v5[v21];
+              v23 = bytes[v21];
               v21 += 6;
               if (v23 != 4)
               {
@@ -14644,7 +14644,7 @@ LABEL_86:
           goto LABEL_164;
         }
 
-        v34 = [NSData dataWithBytes:&v5[v13] length:8];
+        v34 = [NSData dataWithBytes:&bytes[v13] length:8];
 
         v19 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -14685,7 +14685,7 @@ LABEL_164:
           goto LABEL_165;
         }
 
-        v18 = [NSData dataWithBytes:&v5[v13] length:16];
+        v18 = [NSData dataWithBytes:&bytes[v13] length:16];
 
         v19 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -14701,7 +14701,7 @@ LABEL_164:
         goto LABEL_84;
       }
 
-      memcpy(__dst, &v5[v13], v12);
+      memcpy(__dst, &bytes[v13], v12);
       __dst[v12] = 0;
       v36 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -14766,7 +14766,7 @@ LABEL_85:
         goto LABEL_164;
       }
 
-      v25 = [NSData dataWithBytes:&v5[v13] length:2];
+      v25 = [NSData dataWithBytes:&bytes[v13] length:2];
 
       v19 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -14803,7 +14803,7 @@ LABEL_85:
       goto LABEL_164;
     }
 
-    if (v5[v13])
+    if (bytes[v13])
     {
       v62 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -14814,7 +14814,7 @@ LABEL_85:
       goto LABEL_164;
     }
 
-    v9 = v5[v10 + 4];
+    v9 = bytes[v10 + 4];
     if ((v9 - 27) <= 0xEFu)
     {
       v62 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -14928,7 +14928,7 @@ LABEL_91:
   }
 
   v50 = [[THThreadNetworkCredentialsActiveDataSetRecord alloc] initWithBorderAgent:v49 credentialsDataSet:v44 network:v43 credentials:v41 uniqueIdentifier:0 keychainAccessGroup:@"000000000000" creationDate:0 lastModificationDate:0];
-  *a4 = v50;
+  *creds = v50;
   if (!v50)
   {
     v66 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -14940,18 +14940,18 @@ LABEL_91:
     goto LABEL_167;
   }
 
-  v51 = [v50 credentials];
-  [v51 setIsActiveDevice:1];
+  credentials = [v50 credentials];
+  [credentials setIsActiveDevice:1];
 
   v52 = [THThreadNetworkCredentialsDataSet alloc];
-  v53 = [*a4 credentialsDataSet];
-  v54 = [v53 dataSetArray];
-  v55 = [*a4 credentials];
-  v56 = [v55 userInfo];
-  v57 = v53;
-  v58 = [v52 initWithDataSetArray:v54 userInfo:v56];
-  v59 = [*a4 credentials];
-  [v59 setCredentialsDataSet:v58];
+  credentialsDataSet = [*creds credentialsDataSet];
+  dataSetArray = [credentialsDataSet dataSetArray];
+  credentials2 = [*creds credentials];
+  userInfo = [credentials2 userInfo];
+  v57 = credentialsDataSet;
+  v58 = [v52 initWithDataSetArray:dataSetArray userInfo:userInfo];
+  credentials3 = [*creds credentials];
+  [credentials3 setCredentialsDataSet:v58];
 
   v60 = 1;
 LABEL_168:
@@ -14959,23 +14959,23 @@ LABEL_168:
   return v60;
 }
 
-- (int)howToGetOnTheNetwork:(id)a3
+- (int)howToGetOnTheNetwork:(id)network
 {
-  v3 = a3;
-  v4 = [v3 network];
-  v5 = [v3 credentials];
+  networkCopy = network;
+  network = [networkCopy network];
+  credentials = [networkCopy credentials];
   if (_os_feature_enabled_impl())
   {
-    v6 = [v4 networkName];
-    if (v6)
+    networkName = [network networkName];
+    if (networkName)
     {
-      v7 = [v4 extendedPANID];
-      if (v7)
+      extendedPANID = [network extendedPANID];
+      if (extendedPANID)
       {
-        v8 = [v5 credentialsDataSet];
-        v9 = [v8 dataSetArray];
+        credentialsDataSet = [credentials credentialsDataSet];
+        dataSetArray = [credentialsDataSet dataSetArray];
 
-        if (v9)
+        if (dataSetArray)
         {
           v10 = 7;
           goto LABEL_21;
@@ -14988,15 +14988,15 @@ LABEL_168:
     }
   }
 
-  v11 = [v5 masterKey];
-  if (v11)
+  masterKey = [credentials masterKey];
+  if (masterKey)
   {
-    v12 = [v5 PANID];
-    if (v12 && [v5 channel] != 255 && (objc_msgSend(v4, "networkName"), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    pANID = [credentials PANID];
+    if (pANID && [credentials channel] != 255 && (objc_msgSend(network, "networkName"), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = [v4 extendedPANID];
+      extendedPANID2 = [network extendedPANID];
 
-      if (v14)
+      if (extendedPANID2)
       {
         v10 = 0;
         goto LABEL_21;
@@ -15008,24 +15008,24 @@ LABEL_168:
     }
   }
 
-  v15 = [v5 passPhrase];
-  if (!v15)
+  passPhrase = [credentials passPhrase];
+  if (!passPhrase)
   {
 LABEL_20:
     v10 = 9;
     goto LABEL_21;
   }
 
-  v16 = [v4 networkName];
-  if (!v16)
+  networkName2 = [network networkName];
+  if (!networkName2)
   {
 
     goto LABEL_20;
   }
 
-  v17 = [v4 extendedPANID];
+  extendedPANID3 = [network extendedPANID];
 
-  if (v17)
+  if (extendedPANID3)
   {
     v10 = 2;
   }
@@ -15040,20 +15040,20 @@ LABEL_21:
   return v10;
 }
 
-- (int)howToStartThreadNetwork:(const char *)a3 activeOperationalDataset:(const char *)a4 credentialsRecord_t:(id *)a5
+- (int)howToStartThreadNetwork:(const char *)network activeOperationalDataset:(const char *)dataset credentialsRecord_t:(id *)record_t
 {
-  v9 = a3 | a4;
+  v9 = network | dataset;
   v10 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   v11 = v10;
   if (v9)
   {
     v13 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if (a4)
+    if (dataset)
     {
       if (v13)
       {
         v18 = 136315138;
-        v19 = a4;
+        datasetCopy = dataset;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "activeOperationalDataset is available to start thread network %s", &v18, 0xCu);
       }
 
@@ -15065,13 +15065,13 @@ LABEL_21:
       if (v13)
       {
         v18 = 136315394;
-        v19 = "[ThreadNetworkManagerInstance howToStartThreadNetwork:activeOperationalDataset:credentialsRecord_t:]";
+        datasetCopy = "[ThreadNetworkManagerInstance howToStartThreadNetwork:activeOperationalDataset:credentialsRecord_t:]";
         v20 = 2080;
-        v21 = a3;
+        networkCopy2 = network;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s: unique Network Id is %s", &v18, 0x16u);
       }
 
-      if ([(ThreadNetworkManagerInstance *)self retrieveActiveDataSetRecordForUniqueId:a3 record:a5])
+      if ([(ThreadNetworkManagerInstance *)self retrieveActiveDataSetRecordForUniqueId:network record:record_t])
       {
         v14 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -15084,16 +15084,16 @@ LABEL_21:
 
       else
       {
-        tnmDumpRecord(*a5);
-        if ([(ThreadNetworkManagerInstance *)self alreadyOnTheSameNetwork:*a5])
+        tnmDumpRecord(*record_t);
+        if ([(ThreadNetworkManagerInstance *)self alreadyOnTheSameNetwork:*record_t])
         {
           v15 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
             v18 = 136315394;
-            v19 = "[ThreadNetworkManagerInstance howToStartThreadNetwork:activeOperationalDataset:credentialsRecord_t:]";
+            datasetCopy = "[ThreadNetworkManagerInstance howToStartThreadNetwork:activeOperationalDataset:credentialsRecord_t:]";
             v20 = 2080;
-            v21 = a3;
+            networkCopy2 = network;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: Already on the same network %s", &v18, 0x16u);
           }
 
@@ -15102,16 +15102,16 @@ LABEL_21:
 
         else
         {
-          v12 = [(ThreadNetworkManagerInstance *)self howToGetOnTheNetwork:*a5];
+          v12 = [(ThreadNetworkManagerInstance *)self howToGetOnTheNetwork:*record_t];
         }
 
         v16 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v18 = 136315394;
-          v19 = "[ThreadNetworkManagerInstance howToStartThreadNetwork:activeOperationalDataset:credentialsRecord_t:]";
+          datasetCopy = "[ThreadNetworkManagerInstance howToStartThreadNetwork:activeOperationalDataset:credentialsRecord_t:]";
           v20 = 1024;
-          LODWORD(v21) = v12;
+          LODWORD(networkCopy2) = v12;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s: ret is  %d", &v18, 0x12u);
         }
       }
@@ -15140,9 +15140,9 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)alreadyOnTheSameNetwork:(id)a3
+- (BOOL)alreadyOnTheSameNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   v5 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -15173,17 +15173,17 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (![(ThreadNetworkManagerInstance *)self isCurrentNetworkSameAsOneToStart:v4])
+  if (![(ThreadNetworkManagerInstance *)self isCurrentNetworkSameAsOneToStart:networkCopy])
   {
     v13 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v4 network];
-      v15 = [v14 networkName];
-      v16 = v15;
-      v17 = [v15 UTF8String];
+      network = [networkCopy network];
+      networkName = [network networkName];
+      v16 = networkName;
+      uTF8String = [networkName UTF8String];
       *__p = 136315138;
-      *&__p[4] = v17;
+      *&__p[4] = uTF8String;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Not on the same network ID : %s", __p, 0xCu);
     }
 
@@ -15194,14 +15194,14 @@ LABEL_18:
   v7 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v4 network];
-    v9 = [v8 networkName];
-    v10 = v9;
-    v11 = [v9 UTF8String];
+    network2 = [networkCopy network];
+    networkName2 = [network2 networkName];
+    v10 = networkName2;
+    uTF8String2 = [networkName2 UTF8String];
     *__p = 136315394;
     *&__p[4] = "[ThreadNetworkManagerInstance alreadyOnTheSameNetwork:]";
     v22 = 2080;
-    v23 = v11;
+    v23 = uTF8String2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s : Already joined on the same network : Unique ID : %s", __p, 0x16u);
   }
 
@@ -15211,9 +15211,9 @@ LABEL_19:
   return v12;
 }
 
-- (void)deleteCurrentNetwork:(id)a3
+- (void)deleteCurrentNetwork:(id)network
 {
-  v5 = a3;
+  networkCopy = network;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -15231,7 +15231,7 @@ LABEL_19:
     v21 = &v22;
     v8 = v6;
     v20 = v8;
-    [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore deleteActiveDataSetRecordForThreadBorderAgent:v5 completion:&v16];
+    [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore deleteActiveDataSetRecordForThreadBorderAgent:networkCopy completion:&v16];
     v9 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v8, v9))
     {
@@ -15256,25 +15256,25 @@ LABEL_10:
       {
         v11 = [v23[5] description];
         v12 = v11;
-        v13 = [v11 UTF8String];
-        if (v13)
+        uTF8String = [v11 UTF8String];
+        if (uTF8String)
         {
           v3 = [v23[5] description];
           v15 = v3;
-          v14 = [v3 UTF8String];
+          uTF8String2 = [v3 UTF8String];
         }
 
         else
         {
-          v14 = "(unknown error)";
+          uTF8String2 = "(unknown error)";
         }
 
         *buf = 136315394;
         v29 = "[ThreadNetworkManagerInstance deleteCurrentNetwork:]";
         v30 = 2080;
-        v31 = v14;
+        v31 = uTF8String2;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s : Error: failed to delete (%s)\n", buf, 0x16u);
-        if (v13)
+        if (uTF8String)
         {
         }
       }
@@ -15313,15 +15313,15 @@ void __53__ThreadNetworkManagerInstance_deleteCurrentNetwork___block_invoke(uint
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)updatePrimaryResident:(const char *)a3 isPrimaryResident:(BOOL)a4 isPrimaryResidentThreadCapable:(BOOL)a5
+- (int)updatePrimaryResident:(const char *)resident isPrimaryResident:(BOOL)primaryResident isPrimaryResidentThreadCapable:(BOOL)capable
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "Command Error");
   v9 = __p[0];
   v10 = SBYTE7(v22);
   CtrInternalClientPtr = self->_CtrInternalClientPtr;
-  v18[0] = a4;
-  v18[1] = a5;
-  v19 = a3;
+  v18[0] = primaryResident;
+  v18[1] = capable;
+  residentCopy = resident;
   v20 = 0;
   if (CtrInternalClientPtr)
   {
@@ -15375,14 +15375,14 @@ LABEL_6:
   return v15;
 }
 
-- (int)updateHomeThreadInfo:(id *)a3
+- (int)updateHomeThreadInfo:(id *)info
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "Command Error");
   v5 = __p[0];
   v6 = SBYTE7(v17);
   CtrInternalClientPtr = self->_CtrInternalClientPtr;
-  v14 = vuzp1q_s32(*&a3->var0, *&a3->var2);
-  v15 = vmovn_s64(*&a3->var4);
+  v14 = vuzp1q_s32(*&info->var0, *&info->var2);
+  v15 = vmovn_s64(*&info->var4);
   if (CtrInternalClientPtr)
   {
     [CtrInternalClientPtr updateHomeThreadInfo:&v14];
@@ -15455,8 +15455,8 @@ LABEL_6:
     }
   }
 
-  v5 = [(ThreadNetworkManagerInstance *)self getThreadSessionStatus];
-  if ((v5 & 1) == 0)
+  getThreadSessionStatus = [(ThreadNetworkManagerInstance *)self getThreadSessionStatus];
+  if ((getThreadSessionStatus & 1) == 0)
   {
     v6 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -15500,7 +15500,7 @@ LABEL_6:
     }
 
 LABEL_22:
-    if (!v5)
+    if (!getThreadSessionStatus)
     {
       goto LABEL_27;
     }
@@ -15517,7 +15517,7 @@ LABEL_22:
   v9 = v12;
 LABEL_25:
   operator delete(v9[1]);
-  if (v5)
+  if (getThreadSessionStatus)
   {
 LABEL_26:
     [(ThreadNetworkManagerInstance *)self generateThreadSessionEvent:0];
@@ -15548,8 +15548,8 @@ LABEL_27:
     }
   }
 
-  v5 = [(ThreadNetworkManagerInstance *)self getThreadSessionStatus];
-  if ((v5 & 1) == 0)
+  getThreadSessionStatus = [(ThreadNetworkManagerInstance *)self getThreadSessionStatus];
+  if ((getThreadSessionStatus & 1) == 0)
   {
     v6 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -15586,7 +15586,7 @@ LABEL_27:
   lastKnownJoinedNetworkRecord = self->_lastKnownJoinedNetworkRecord;
   self->_lastKnownJoinedNetworkRecord = 0;
 
-  if (v5)
+  if (getThreadSessionStatus)
   {
     [(ThreadNetworkManagerInstance *)self generateThreadSessionEvent:0];
   }
@@ -15594,9 +15594,9 @@ LABEL_27:
   return 0;
 }
 
-- (void)coexCounterCollection:(BOOL)a3
+- (void)coexCounterCollection:(BOOL)collection
 {
-  if (a3)
+  if (collection)
   {
     CtrInternalClientPtr = self->_CtrInternalClientPtr;
     std::string::basic_string[abi:ne200100]<0>(v10, "vendor:coex:rcp2:state:collection");
@@ -15693,7 +15693,7 @@ LABEL_23:
   }
 }
 
-- (int)threadStart:(const char *)a3 activeOperationalDataset:(const char *)a4 output:(dict *)a5
+- (int)threadStart:(const char *)start activeOperationalDataset:(const char *)dataset output:(dict *)output
 {
   v9 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -15706,8 +15706,8 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s: Cmd received in state %d", buf, 0x12u);
   }
 
-  v11 = [(ThreadNetworkManagerInstance *)self initializeKeyChainStore];
-  if (v11)
+  initializeKeyChainStore = [(ThreadNetworkManagerInstance *)self initializeKeyChainStore];
+  if (initializeKeyChainStore)
   {
     v12 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -15724,31 +15724,31 @@ LABEL_22:
   if (!_os_feature_enabled_impl())
   {
     v35 = 0;
-    v19 = [(ThreadNetworkManagerInstance *)self howToStartThreadNetwork:a3 activeOperationalDataset:0 credentialsRecord_t:&v35];
+    v19 = [(ThreadNetworkManagerInstance *)self howToStartThreadNetwork:start activeOperationalDataset:0 credentialsRecord_t:&v35];
     v15 = v35;
     if (v19 - 1 < 2)
     {
-      xpc::dict::dict(&v32, &a5->var0.var0);
-      v11 = [(ThreadNetworkManagerInstance *)self formNewNetwork:&v32];
+      xpc::dict::dict(&v32, &output->var0.var0);
+      initializeKeyChainStore = [(ThreadNetworkManagerInstance *)self formNewNetwork:&v32];
       v23 = v32;
       v32 = 0;
 
       v17 = 0;
-      v18 = v32;
+      uniqueIdentifier = v32;
     }
 
     else
     {
       if (!v19)
       {
-        if ([(ThreadNetworkManagerInstance *)self attachWithAllCreds:a3 credentialsRecord_t:v15 output:a5])
+        if ([(ThreadNetworkManagerInstance *)self attachWithAllCreds:start credentialsRecord_t:v15 output:output])
         {
-          v11 = [(ThreadNetworkManagerInstance *)self formNetworkWithCreds:a3 credentialsRecord_t:v15 output:a5];
+          initializeKeyChainStore = [(ThreadNetworkManagerInstance *)self formNetworkWithCreds:start credentialsRecord_t:v15 output:output];
         }
 
         else
         {
-          v11 = 0;
+          initializeKeyChainStore = 0;
         }
 
         v17 = 0;
@@ -15758,18 +15758,18 @@ LABEL_22:
       if (v19 != 5)
       {
         v17 = 0;
-        v11 = 1;
+        initializeKeyChainStore = 1;
         goto LABEL_38;
       }
 
-      v20 = xpc_string_create(a3);
+      v20 = xpc_string_create(start);
       v33 = v20;
       if (!v20)
       {
         v33 = xpc_null_create();
       }
 
-      *buf = a5;
+      *buf = output;
       *&buf[8] = "outputUniqueNetworkId";
       xpc::dict::object_proxy::operator=(buf, &v33, &v34);
       v21 = v34;
@@ -15778,9 +15778,9 @@ LABEL_22:
       v22 = v33;
       v33 = 0;
 
-      v11 = 0;
+      initializeKeyChainStore = 0;
       v17 = 0;
-      v18 = v33;
+      uniqueIdentifier = v33;
     }
 
 LABEL_24:
@@ -15806,7 +15806,7 @@ LABEL_39:
       [ThreadNetworkManagerInstance threadStart:activeOperationalDataset:output:];
     }
 
-    v11 = 1;
+    initializeKeyChainStore = 1;
     goto LABEL_22;
   }
 
@@ -15816,7 +15816,7 @@ LABEL_39:
   }
 
   RcpHostContext::init_threadstart_metrics(RcpHostContext::sRcpHostContext);
-  v13 = [(ThreadNetworkManagerInstance *)self checkPreferredAndJoin:a5 isCalledFromTimer:0];
+  v13 = [(ThreadNetworkManagerInstance *)self checkPreferredAndJoin:output isCalledFromTimer:0];
   gettimeofday(&v42, &v40);
   if (!v13)
   {
@@ -15831,7 +15831,7 @@ LABEL_39:
     }
 
     v17 = 0;
-    v11 = 0;
+    initializeKeyChainStore = 0;
     v15 = 0;
     v41 = v42;
     v25 = 1;
@@ -15839,21 +15839,21 @@ LABEL_39:
   }
 
   v39 = 0;
-  v14 = [(ThreadNetworkManagerInstance *)self howToStartThreadNetwork:a3 activeOperationalDataset:a4 credentialsRecord_t:&v39];
+  v14 = [(ThreadNetworkManagerInstance *)self howToStartThreadNetwork:start activeOperationalDataset:dataset credentialsRecord_t:&v39];
   v15 = v39;
-  v11 = 1;
+  initializeKeyChainStore = 1;
   if (v14 > 4)
   {
     if (v14 == 5)
     {
-      v29 = xpc_string_create(a3);
+      v29 = xpc_string_create(start);
       v37 = v29;
       if (!v29)
       {
         v37 = xpc_null_create();
       }
 
-      *buf = a5;
+      *buf = output;
       *&buf[8] = "outputUniqueNetworkId";
       xpc::dict::object_proxy::operator=(buf, &v37, &v38);
       v30 = v38;
@@ -15862,7 +15862,7 @@ LABEL_39:
       v31 = v37;
       v37 = 0;
 
-      v11 = 0;
+      initializeKeyChainStore = 0;
       goto LABEL_47;
     }
 
@@ -15873,13 +15873,13 @@ LABEL_39:
         goto LABEL_47;
       }
 
-      [(ThreadNetworkManagerInstance *)self startThreadNetworkWithAOD:a4 output:a5];
+      [(ThreadNetworkManagerInstance *)self startThreadNetworkWithAOD:dataset output:output];
     }
 
-    v18 = [v15 uniqueIdentifier];
-    v26 = [v18 UUIDString];
-    v27 = v26;
-    v11 = -[ThreadNetworkManagerInstance formNetworkWithAOD:record:output:](self, "formNetworkWithAOD:record:output:", [v26 UTF8String], v15, a5);
+    uniqueIdentifier = [v15 uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v27 = uUIDString;
+    initializeKeyChainStore = -[ThreadNetworkManagerInstance formNetworkWithAOD:record:output:](self, "formNetworkWithAOD:record:output:", [uUIDString UTF8String], v15, output);
 
     v17 = 1;
     goto LABEL_24;
@@ -15887,19 +15887,19 @@ LABEL_39:
 
   if ((v14 - 1) < 3)
   {
-    xpc::dict::dict(&v36, &a5->var0.var0);
-    v11 = [(ThreadNetworkManagerInstance *)self formNewNetwork:&v36];
+    xpc::dict::dict(&v36, &output->var0.var0);
+    initializeKeyChainStore = [(ThreadNetworkManagerInstance *)self formNewNetwork:&v36];
     v16 = v36;
     v36 = 0;
 
     v17 = 0;
-    v18 = v36;
+    uniqueIdentifier = v36;
     goto LABEL_24;
   }
 
   if (!v14)
   {
-    v11 = [(ThreadNetworkManagerInstance *)self formNetworkWithCreds:a3 credentialsRecord_t:v15 output:a5];
+    initializeKeyChainStore = [(ThreadNetworkManagerInstance *)self formNetworkWithCreds:start credentialsRecord_t:v15 output:output];
   }
 
 LABEL_47:
@@ -15911,12 +15911,12 @@ LABEL_47:
   RcpHostContext::clear_threadstart_metrics(RcpHostContext::sRcpHostContext);
 LABEL_41:
 
-  return v11;
+  return initializeKeyChainStore;
 }
 
-- (int)deleteCredentialsForThisNetwork:(id)a3
+- (int)deleteCredentialsForThisNetwork:(id)network
 {
-  v5 = a3;
+  networkCopy = network;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -15934,7 +15934,7 @@ LABEL_41:
     v23 = &v24;
     v8 = v6;
     v22 = v8;
-    [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore deleteRecordForNetwork:v5 completion:&v18];
+    [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore deleteRecordForNetwork:networkCopy completion:&v18];
     v9 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v8, v9))
     {
@@ -15958,25 +15958,25 @@ LABEL_41:
       {
         v13 = [v25[5] description];
         v14 = v13;
-        v15 = [v13 UTF8String];
-        if (v15)
+        uTF8String = [v13 UTF8String];
+        if (uTF8String)
         {
           v3 = [v25[5] description];
           v17 = v3;
-          v16 = [v3 UTF8String];
+          uTF8String2 = [v3 UTF8String];
         }
 
         else
         {
-          v16 = "(unknown error)";
+          uTF8String2 = "(unknown error)";
         }
 
         *buf = 136315394;
         v31 = "[ThreadNetworkManagerInstance deleteCredentialsForThisNetwork:]";
         v32 = 2080;
-        v33 = v16;
+        v33 = uTF8String2;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s : Error: failed to delete (%s)\n", buf, 0x16u);
-        if (v15)
+        if (uTF8String)
         {
         }
       }
@@ -16020,9 +16020,9 @@ void __64__ThreadNetworkManagerInstance_deleteCredentialsForThisNetwork___block_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)getMeCredentialsForThisNetwork:(id)a3 credentialsRecord_t:(id *)a4
+- (int)getMeCredentialsForThisNetwork:(id)network credentialsRecord_t:(id *)record_t
 {
-  v7 = a3;
+  networkCopy = network;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -16047,7 +16047,7 @@ void __64__ThreadNetworkManagerInstance_deleteCredentialsForThisNetwork___block_
     v38 = &v39;
     v10 = v8;
     v36 = v10;
-    [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore retrieveAllRecordsForNetwork:v7 completion:v35];
+    [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore retrieveAllRecordsForNetwork:networkCopy completion:v35];
     v11 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v10, v11))
     {
@@ -16069,25 +16069,25 @@ void __64__ThreadNetworkManagerInstance_deleteCredentialsForThisNetwork___block_
         {
           v21 = [v40[5] description];
           v22 = v21;
-          v23 = [v21 UTF8String];
-          if (v23)
+          uTF8String = [v21 UTF8String];
+          if (uTF8String)
           {
             v4 = [v40[5] description];
             v29 = v4;
-            v24 = [v4 UTF8String];
+            uTF8String2 = [v4 UTF8String];
           }
 
           else
           {
-            v24 = "(unknown error)";
+            uTF8String2 = "(unknown error)";
           }
 
           *buf = 136315394;
           v53 = "[ThreadNetworkManagerInstance getMeCredentialsForThisNetwork:credentialsRecord_t:]";
           v54 = 2080;
-          v55 = v24;
+          v55 = uTF8String2;
           _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s : Error: failed to retrieve (%s)\n", buf, 0x16u);
-          if (v23)
+          if (uTF8String)
           {
           }
         }
@@ -16107,25 +16107,25 @@ void __64__ThreadNetworkManagerInstance_deleteCredentialsForThisNetwork___block_
         {
           v25 = [v40[5] description];
           v26 = v25;
-          v27 = [v25 UTF8String];
-          if (v27)
+          uTF8String3 = [v25 UTF8String];
+          if (uTF8String3)
           {
             v4 = [v40[5] description];
             v30 = v4;
-            v28 = [v4 UTF8String];
+            uTF8String4 = [v4 UTF8String];
           }
 
           else
           {
-            v28 = "(unknown error)";
+            uTF8String4 = "(unknown error)";
           }
 
           *buf = 136315394;
           v53 = "[ThreadNetworkManagerInstance getMeCredentialsForThisNetwork:credentialsRecord_t:]";
           v54 = 2080;
-          v55 = v28;
+          v55 = uTF8String4;
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s : Error: failed to retrieve (%s), zero records found\n", buf, 0x16u);
-          if (v27)
+          if (uTF8String3)
           {
           }
         }
@@ -16154,7 +16154,7 @@ void __64__ThreadNetworkManagerInstance_deleteCredentialsForThisNetwork___block_
             v19 = *(*(&v31 + 1) + 8 * i);
             if (v19)
             {
-              *a4 = v19;
+              *record_t = v19;
               goto LABEL_26;
             }
           }
@@ -16215,10 +16215,10 @@ void __83__ThreadNetworkManagerInstance_getMeCredentialsForThisNetwork_credentia
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fillupThreadCredentialsToSelfHealThreadNetwork:(id)a3 store:(id)a4
+- (void)fillupThreadCredentialsToSelfHealThreadNetwork:(id)network store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  networkCopy = network;
+  storeCopy = store;
   [(ThreadNetworkManagerInstance *)self getNCPState:0];
   v8 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -16256,7 +16256,7 @@ void __83__ThreadNetworkManagerInstance_getMeCredentialsForThisNetwork_credentia
       v61[3] = &unk_1004C88F8;
       v61[4] = self;
       v61[5] = buf;
-      [v7 deletePreferredNetworkEntryWithCompletion:v6 completion:v61];
+      [storeCopy deletePreferredNetworkEntryWithCompletion:networkCopy completion:v61];
       _Block_object_dispose(buf, 8);
     }
 
@@ -16422,31 +16422,31 @@ LABEL_23:
     v51 = v24;
   }
 
-  v26 = [v6 network];
-  v27 = [v26 networkName];
-  if ([v27 isEqualToString:v40])
+  network = [networkCopy network];
+  networkName = [network networkName];
+  if ([networkName isEqualToString:v40])
   {
-    v28 = [v6 network];
-    v29 = [v28 extendedPANID];
-    v30 = [v29 isEqualToData:v39];
+    network2 = [networkCopy network];
+    extendedPANID = [network2 extendedPANID];
+    v30 = [extendedPANID isEqualToData:v39];
 
     if (v30)
     {
       v31 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v32 = [v6 network];
-        v33 = [v32 networkName];
-        v34 = [v6 network];
-        v35 = [v34 extendedPANID];
+        network3 = [networkCopy network];
+        networkName2 = [network3 networkName];
+        network4 = [networkCopy network];
+        extendedPANID2 = [network4 extendedPANID];
         *buf = 136316418;
         *&buf[4] = "[ThreadNetworkManagerInstance fillupThreadCredentialsToSelfHealThreadNetwork:store:]";
         *&buf[12] = 1024;
         *&buf[14] = 3806;
         *&buf[18] = 2112;
-        *&buf[20] = v33;
+        *&buf[20] = networkName2;
         *&buf[28] = 2112;
-        *&buf[30] = v35;
+        *&buf[30] = extendedPANID2;
         *&buf[38] = 2112;
         v63 = v40;
         v64 = 2112;
@@ -16481,7 +16481,7 @@ LABEL_23:
   v43[4] = self;
   v43[5] = buf;
   v43[6] = &v45;
-  [v7 deletePreferredNetworkEntryWithCompletion:v6 completion:v43];
+  [storeCopy deletePreferredNetworkEntryWithCompletion:networkCopy completion:v43];
   _Block_object_dispose(buf, 8);
 
 LABEL_48:
@@ -16830,9 +16830,9 @@ void __51__ThreadNetworkManagerInstance_getPreferredNetwork__block_invoke(uint64
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)checkPreferredAndJoin:(dict *)a3 isCalledFromTimer:(BOOL)a4
+- (int)checkPreferredAndJoin:(dict *)join isCalledFromTimer:(BOOL)timer
 {
-  v4 = a4;
+  timerCopy = timer;
   v7 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -16843,18 +16843,18 @@ void __51__ThreadNetworkManagerInstance_getPreferredNetwork__block_invoke(uint64
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s:%d: Checking for Preferred network availability to join", buf, 0x12u);
   }
 
-  v8 = [(ThreadNetworkManagerInstance *)self getPreferredNetwork];
-  if (!v8)
+  getPreferredNetwork = [(ThreadNetworkManagerInstance *)self getPreferredNetwork];
+  if (!getPreferredNetwork)
   {
-    v11 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
+    uniqueIdentifier = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     v14 = 1;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(uniqueIdentifier, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       *&buf[4] = "[ThreadNetworkManagerInstance checkPreferredAndJoin:isCalledFromTimer:]";
       *&buf[12] = 1024;
       *&buf[14] = 3911;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s:%d: No Preferred Network found ", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, uniqueIdentifier, OS_LOG_TYPE_INFO, "%s:%d: No Preferred Network found ", buf, 0x12u);
     }
 
     goto LABEL_12;
@@ -16884,18 +16884,18 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s : %d :  Joining the Preferred Network...\n", buf, 0x12u);
     }
 
-    v11 = [v8 uniqueIdentifier];
-    v12 = [v11 UUIDString];
-    v13 = v12;
-    v14 = -[ThreadNetworkManagerInstance formNetworkWithAOD:record:output:](self, "formNetworkWithAOD:record:output:", [v12 UTF8String], v8, a3);
+    uniqueIdentifier = [getPreferredNetwork uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v13 = uUIDString;
+    v14 = -[ThreadNetworkManagerInstance formNetworkWithAOD:record:output:](self, "formNetworkWithAOD:record:output:", [uUIDString UTF8String], getPreferredNetwork, join);
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if (![(ThreadNetworkManagerInstance *)self isCurrentNetworkSameAsOneToStart:v8])
+  if (![(ThreadNetworkManagerInstance *)self isCurrentNetworkSameAsOneToStart:getPreferredNetwork])
   {
-    if (v4)
+    if (timerCopy)
     {
       v28 = RcpHostContext::sRcpHostContext;
       if (!RcpHostContext::sRcpHostContext)
@@ -16948,30 +16948,30 @@ LABEL_12:
   v16 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v8 network];
-    v18 = [v17 networkName];
-    v19 = v18;
-    v20 = [v18 UTF8String];
+    network = [getPreferredNetwork network];
+    networkName = [network networkName];
+    v19 = networkName;
+    uTF8String = [networkName UTF8String];
     *buf = 136315394;
     *&buf[4] = "[ThreadNetworkManagerInstance checkPreferredAndJoin:isCalledFromTimer:]";
     *&buf[12] = 2080;
-    *&buf[14] = v20;
+    *&buf[14] = uTF8String;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s : Already joined on the same network : Network name : %s", buf, 0x16u);
   }
 
-  v21 = [v8 uniqueIdentifier];
-  v22 = [v21 UUIDString];
-  v23 = v22;
-  v24 = [v22 UTF8String];
+  uniqueIdentifier2 = [getPreferredNetwork uniqueIdentifier];
+  uUIDString2 = [uniqueIdentifier2 UUIDString];
+  v23 = uUIDString2;
+  uTF8String2 = [uUIDString2 UTF8String];
 
-  v25 = xpc_string_create(v24);
+  v25 = xpc_string_create(uTF8String2);
   v41 = v25;
   if (!v25)
   {
     v41 = xpc_null_create();
   }
 
-  *buf = a3;
+  *buf = join;
   *&buf[8] = "outputUniqueNetworkId";
   xpc::dict::object_proxy::operator=(buf, &v41, &v42);
   v26 = v42;
@@ -16980,16 +16980,16 @@ LABEL_12:
   v27 = v41;
   v41 = 0;
 
-  [(ThreadNetworkManagerInstance *)self saveLastKnownJoinedNetwork:v24 datasetRecord:v8];
+  [(ThreadNetworkManagerInstance *)self saveLastKnownJoinedNetwork:uTF8String2 datasetRecord:getPreferredNetwork];
   v14 = 0;
 LABEL_13:
 
   return v14;
 }
 
-- (int)getMePassPhraseForThisNetwork:(id)a3 passPhrase:(id *)a4
+- (int)getMePassPhraseForThisNetwork:(id)network passPhrase:(id *)phrase
 {
-  v7 = a3;
+  networkCopy = network;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -17012,7 +17012,7 @@ LABEL_13:
   v46 = &v47;
   v10 = v8;
   v44 = v10;
-  [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore retrieveAllRecordsForNetwork:v7 completion:v43];
+  [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore retrieveAllRecordsForNetwork:networkCopy completion:v43];
   v11 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v10, v11))
   {
@@ -17034,23 +17034,23 @@ LABEL_19:
     {
       v26 = [v48[5] description];
       v27 = v26;
-      v28 = [v26 UTF8String];
-      if (v28)
+      uTF8String = [v26 UTF8String];
+      if (uTF8String)
       {
         v4 = [v48[5] description];
         v37 = v4;
-        v29 = [v4 UTF8String];
+        uTF8String2 = [v4 UTF8String];
       }
 
       else
       {
-        v29 = "(unknown error)";
+        uTF8String2 = "(unknown error)";
       }
 
       *buf = 136315138;
-      v60 = v29;
+      v60 = uTF8String2;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Error: failed to retrieve (%s)\n", buf, 0xCu);
-      if (v28)
+      if (uTF8String)
       {
       }
     }
@@ -17063,23 +17063,23 @@ LABEL_19:
     {
       v33 = [v48[5] description];
       v34 = v33;
-      v35 = [v33 UTF8String];
-      if (v35)
+      uTF8String3 = [v33 UTF8String];
+      if (uTF8String3)
       {
         v4 = [v48[5] description];
         v38 = v4;
-        v36 = [v4 UTF8String];
+        uTF8String4 = [v4 UTF8String];
       }
 
       else
       {
-        v36 = "(unknown error)";
+        uTF8String4 = "(unknown error)";
       }
 
       *buf = 136315138;
-      v60 = v36;
+      v60 = uTF8String4;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Error: failed to retrieve (%s), zero records found\n", buf, 0xCu);
-      if (v35)
+      if (uTF8String3)
       {
       }
     }
@@ -17107,25 +17107,25 @@ LABEL_19:
       }
 
       v18 = *(*(&v39 + 1) + 8 * i);
-      v19 = [v18 credentials];
-      v20 = [v19 passPhrase];
-      v21 = v20 == 0;
+      credentials = [v18 credentials];
+      passPhrase = [credentials passPhrase];
+      v21 = passPhrase == 0;
 
       if (!v21)
       {
-        v23 = [v18 credentials];
-        *a4 = [v23 passPhrase];
+        credentials2 = [v18 credentials];
+        *phrase = [credentials2 passPhrase];
 
         v24 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v30 = *a4;
-          v31 = [v18 credentials];
-          v32 = [v31 passPhrase];
+          v30 = *phrase;
+          credentials3 = [v18 credentials];
+          passPhrase2 = [credentials3 passPhrase];
           *buf = 138412546;
           v60 = v30;
           v61 = 2112;
-          v62 = v32;
+          v62 = passPhrase2;
           _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "**passPhrase : %@, passphrase  : %@ : ", buf, 0x16u);
         }
 
@@ -17189,21 +17189,21 @@ void __73__ThreadNetworkManagerInstance_getMePassPhraseForThisNetwork_passPhrase
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)dataFromHexString:(id)a3
+- (id)dataFromHexString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
+  stringCopy = string;
+  lowercaseString = [stringCopy lowercaseString];
 
   v5 = objc_opt_new();
   v16 = 0;
-  v6 = [v4 length];
+  v6 = [lowercaseString length];
   if (v6 >= 2)
   {
     v7 = 0;
     v8 = v6 - 1;
     do
     {
-      v9 = [v4 characterAtIndex:v7];
+      v9 = [lowercaseString characterAtIndex:v7];
       v10 = v7 + 1;
       if (v9 >= 48)
       {
@@ -17213,7 +17213,7 @@ void __73__ThreadNetworkManagerInstance_getMePassPhraseForThisNetwork_passPhrase
         if (v11 <= 0x66 && !v13)
         {
           __str[0] = v9;
-          __str[1] = [v4 characterAtIndex:v10];
+          __str[1] = [lowercaseString characterAtIndex:v10];
           HIBYTE(v16) = strtol(__str, 0, 16);
           [v5 appendBytes:&v16 + 1 length:1];
           v10 = v7 + 2;
@@ -17229,7 +17229,7 @@ void __73__ThreadNetworkManagerInstance_getMePassPhraseForThisNetwork_passPhrase
   return v5;
 }
 
-- (int)joinerAttach:(const char *)a3 output:(dict *)a4
+- (int)joinerAttach:(const char *)attach output:(dict *)output
 {
   std::string::basic_string[abi:ne200100]<0>(&v27, "Command Error");
   v7 = v27;
@@ -17298,7 +17298,7 @@ LABEL_4:
   std::string::basic_string[abi:ne200100]<0>(&buf, "Command is Successful");
   v16 = buf;
   v17 = SBYTE7(v34);
-  [(ThreadNetworkManagerInstance *)self saveThreadConfiguration:a4 passPhrase:a3];
+  [(ThreadNetworkManagerInstance *)self saveThreadConfiguration:output passPhrase:attach];
   v18 = buf;
   if (v17 < 0)
   {
@@ -17415,9 +17415,9 @@ LABEL_25:
   }
 }
 
-- (void)sendThirdPartyMetricsInfo:(unsigned int)a3 prefNws:(unsigned int)a4 prefNwsByApple:(unsigned int)a5
+- (void)sendThirdPartyMetricsInfo:(unsigned int)info prefNws:(unsigned int)nws prefNwsByApple:(unsigned int)apple
 {
-  if (CAMetricsHandlers_ctcsmetrics_update(a3, a4, a5))
+  if (CAMetricsHandlers_ctcsmetrics_update(info, nws, apple))
   {
     *v21 = 0;
     v20 = 0;
@@ -17524,7 +17524,7 @@ id __61__ThreadNetworkManagerInstance_retrieveAndPostThirdPartyInfo__block_invok
   return [*(a1 + 32) sendThirdPartyMetricsInfo:a2 prefNws:a3 prefNwsByApple:a4];
 }
 
-- (int)startThreadNetworkWithAOD:(const char *)a3 output:(dict *)a4
+- (int)startThreadNetworkWithAOD:(const char *)d output:(dict *)output
 {
   v6 = std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   __p = *buf;
@@ -17536,7 +17536,7 @@ id __61__ThreadNetworkManagerInstance_retrieveAndPostThirdPartyInfo__block_invok
   v49 = buf[23];
   v66 = 0uLL;
   v67 = 0;
-  v8 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", a3, +[NSString defaultCStringEncoding]);
+  v8 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", d, +[NSString defaultCStringEncoding]);
   if (!v8)
   {
     v15 = log_get_logging_obg("com.apple.wpantund.tnm", "form");
@@ -17561,9 +17561,9 @@ id __61__ThreadNetworkManagerInstance_retrieveAndPostThirdPartyInfo__block_invok
   if (v9)
   {
     v11 = v9;
-    v12 = [v9 bytes];
+    bytes = [v9 bytes];
     v13 = [v9 length];
-    ctu::hex(buf, v12, v13, v14);
+    ctu::hex(buf, bytes, v13, v14);
   }
 
   else
@@ -17645,12 +17645,12 @@ LABEL_55:
       v19 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v18 network];
-        v21 = [v20 networkName];
-        v22 = v21;
-        v23 = [v21 UTF8String];
+        network = [v18 network];
+        networkName = [network networkName];
+        v22 = networkName;
+        uTF8String = [networkName UTF8String];
         *buf = 136315138;
-        *&buf[4] = v23;
+        *&buf[4] = uTF8String;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "startThreadNetworkWithAOD: Already joined on the same network : Network name : %s", buf, 0xCu);
       }
 
@@ -18015,10 +18015,10 @@ LABEL_69:
   return v24;
 }
 
-- (int)formNetworkWithAOD:(const char *)a3 record:(id)a4 output:(dict *)a5
+- (int)formNetworkWithAOD:(const char *)d record:(id)record output:(dict *)output
 {
-  v67 = a5;
-  v6 = a4;
+  outputCopy = output;
+  recordCopy = record;
   v7 = std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   __p = *buf;
   v97[0] = *&buf[16];
@@ -18030,29 +18030,29 @@ LABEL_69:
   v8 = log_get_logging_obg("com.apple.wpantund.tnm", "form");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 credentialsDataSet];
-    v10 = [v9 dataSetArray];
+    credentialsDataSet = [recordCopy credentialsDataSet];
+    dataSetArray = [credentialsDataSet dataSetArray];
     *buf = 136315650;
     *&buf[4] = "[ThreadNetworkManagerInstance formNetworkWithAOD:record:output:]";
     *&buf[12] = 1024;
     *&buf[14] = 4691;
     *&buf[18] = 2112;
-    *&buf[20] = v10;
+    *&buf[20] = dataSetArray;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s:%d: dsString Data: %@ ", buf, 0x1Cu);
   }
 
-  v11 = [v6 credentialsDataSet];
-  v12 = [v11 dataSetArray];
-  if (v12)
+  credentialsDataSet2 = [recordCopy credentialsDataSet];
+  dataSetArray2 = [credentialsDataSet2 dataSetArray];
+  if (dataSetArray2)
   {
-    v13 = [v6 credentialsDataSet];
-    v14 = [v13 dataSetArray];
-    v15 = v14;
-    v16 = [v14 bytes];
-    v17 = [v6 credentialsDataSet];
-    v18 = [v17 dataSetArray];
-    v19 = [v18 length];
-    ctu::hex(v95, v16, v19, v20);
+    credentialsDataSet3 = [recordCopy credentialsDataSet];
+    dataSetArray3 = [credentialsDataSet3 dataSetArray];
+    v15 = dataSetArray3;
+    bytes = [dataSetArray3 bytes];
+    credentialsDataSet4 = [recordCopy credentialsDataSet];
+    dataSetArray4 = [credentialsDataSet4 dataSetArray];
+    v19 = [dataSetArray4 length];
+    ctu::hex(v95, bytes, v19, v20);
   }
 
   else
@@ -18077,9 +18077,9 @@ LABEL_69:
     goto LABEL_84;
   }
 
-  v22 = [v6 credentialsDataSet];
-  v23 = [v22 dataSetArray];
-  v24 = [(ThreadNetworkManagerInstance *)self validateDataSetTLVs:v23];
+  credentialsDataSet5 = [recordCopy credentialsDataSet];
+  dataSetArray5 = [credentialsDataSet5 dataSetArray];
+  v24 = [(ThreadNetworkManagerInstance *)self validateDataSetTLVs:dataSetArray5];
 
   if ((v24 & 1) == 0)
   {
@@ -18089,7 +18089,7 @@ LABEL_69:
       [ThreadNetworkManagerInstance formNetworkWithAOD:v95 record:? output:?];
     }
 
-    v32 = [(ThreadNetworkManagerInstance *)self formNetworkWithCreds:a3 credentialsRecord_t:v6 output:v67];
+    v32 = [(ThreadNetworkManagerInstance *)self formNetworkWithCreds:d credentialsRecord_t:recordCopy output:outputCopy];
     goto LABEL_92;
   }
 
@@ -18126,7 +18126,7 @@ LABEL_69:
       v28 = v95[0];
     }
 
-    [CtrInternalClientPtr setProperty:v93 property_val:v28, v67];
+    [CtrInternalClientPtr setProperty:v93 property_val:v28, outputCopy];
     v29 = *buf;
   }
 
@@ -18672,15 +18672,15 @@ LABEL_69:
     goto LABEL_84;
   }
 
-  [(ThreadNetworkManagerInstance *)self saveLastKnownJoinedNetwork:a3 datasetRecord:v6];
-  v60 = xpc_string_create(a3);
+  [(ThreadNetworkManagerInstance *)self saveLastKnownJoinedNetwork:d datasetRecord:recordCopy];
+  v60 = xpc_string_create(d);
   v79 = v60;
   if (!v60)
   {
     v79 = xpc_null_create();
   }
 
-  *buf = v67;
+  *buf = outputCopy;
   *&buf[8] = "outputUniqueNetworkId";
   xpc::dict::object_proxy::operator=(buf, &v79, v80);
   v61 = v80[0];
@@ -18710,9 +18710,9 @@ LABEL_92:
   return v32;
 }
 
-- (int)formNetworkWithCreds:(const char *)a3 credentialsRecord_t:(id)a4 output:(dict *)a5
+- (int)formNetworkWithCreds:(const char *)creds credentialsRecord_t:(id)record_t output:(dict *)output
 {
-  v6 = a4;
+  record_tCopy = record_t;
   v109[0] = 0;
   v109[1] = 0;
   v110 = 0;
@@ -18740,40 +18740,40 @@ LABEL_92:
 
   v85 = defaultChildNode;
   v9 = buf[23];
-  v10 = [v6 credentials];
-  v84 = [v10 channel];
+  credentials = [record_tCopy credentials];
+  channel = [credentials channel];
 
-  v11 = [v6 credentials];
-  v12 = [v11 PANID];
-  v13 = v12;
-  v83 = *[v12 bytes];
+  credentials2 = [record_tCopy credentials];
+  pANID = [credentials2 PANID];
+  v13 = pANID;
+  v83 = *[pANID bytes];
 
-  v14 = [v6 network];
-  v15 = [v14 extendedPANID];
-  v16 = v15;
-  v17 = *[v15 bytes];
+  network = [record_tCopy network];
+  extendedPANID = [network extendedPANID];
+  v16 = extendedPANID;
+  v17 = *[extendedPANID bytes];
 
-  v18 = [v6 network];
-  v19 = [v18 networkName];
-  v20 = v19;
-  v87 = [v19 UTF8String];
+  network2 = [record_tCopy network];
+  networkName = [network2 networkName];
+  v20 = networkName;
+  uTF8String = [networkName UTF8String];
 
-  v21 = [v6 credentials];
-  v22 = [v21 masterKey];
-  v23 = v22;
-  v24 = [v22 bytes];
+  credentials3 = [record_tCopy credentials];
+  masterKey = [credentials3 masterKey];
+  v23 = masterKey;
+  bytes = [masterKey bytes];
 
-  v124 = *v24;
-  v25 = [v6 credentials];
-  v26 = [v25 PSKc];
-  LODWORD(v15) = v26 == 0;
+  v124 = *bytes;
+  credentials4 = [record_tCopy credentials];
+  pSKc = [credentials4 PSKc];
+  LODWORD(extendedPANID) = pSKc == 0;
 
   v86 = bswap64(v17);
-  if (v15)
+  if (extendedPANID)
   {
-    v41 = [v6 credentials];
-    v42 = [v41 passPhrase];
-    v43 = v42 == 0;
+    credentials5 = [record_tCopy credentials];
+    passPhrase = [credentials5 passPhrase];
+    v43 = passPhrase == 0;
 
     if (v43)
     {
@@ -18786,14 +18786,14 @@ LABEL_92:
       goto LABEL_71;
     }
 
-    *buf = v87;
+    *buf = uTF8String;
     *&buf[8] = 0;
     *&buf[16] = 0;
     *&buf[24] = v86;
-    v44 = [v6 credentials];
-    v45 = [v44 passPhrase];
-    v46 = v45;
-    *&buf[16] = [v45 UTF8String];
+    credentials6 = [record_tCopy credentials];
+    passPhrase2 = [credentials6 passPhrase];
+    v46 = passPhrase2;
+    *&buf[16] = [passPhrase2 UTF8String];
 
     [(ThreadNetworkManagerInstance *)self getPskc:buf pskc_str:v109];
     v47 = *v123;
@@ -18849,21 +18849,21 @@ LABEL_92:
     v27 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
-      v28 = [v6 credentials];
-      v29 = [v28 PSKc];
+      credentials7 = [record_tCopy credentials];
+      pSKc2 = [credentials7 PSKc];
       *buf = 136315394;
       *&buf[4] = "[ThreadNetworkManagerInstance formNetworkWithCreds:credentialsRecord_t:output:]";
       *&buf[12] = 2112;
-      *&buf[14] = v29;
+      *&buf[14] = pSKc2;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s: Creds PSKC : %@", buf, 0x16u);
     }
 
     *buf = 0;
     *&buf[8] = 0;
-    v30 = [v6 credentials];
-    v31 = [v30 PSKc];
-    v32 = v31;
-    *buf = *[v31 bytes];
+    credentials8 = [record_tCopy credentials];
+    pSKc3 = [credentials8 PSKc];
+    v32 = pSKc3;
+    *buf = *[pSKc3 bytes];
 
     encode_data_into_string(buf, 16, v125, 0x24uLL, 0);
     v33 = v125;
@@ -19090,9 +19090,9 @@ LABEL_72:
   }
 
   v56 = self->_CtrInternalClientPtr;
-  *buf = v87;
+  *buf = uTF8String;
   buf[8] = 1;
-  *&buf[10] = v84;
+  *&buf[10] = channel;
   buf[12] = 0;
   *&buf[13] = v107;
   buf[15] = v108;
@@ -19258,7 +19258,7 @@ LABEL_68:
     v97 = xpc_null_create();
   }
 
-  *v123 = a5;
+  *v123 = output;
   *&v123[8] = "outputUniqueNetworkId";
   xpc::dict::object_proxy::operator=(v123, &v97, &v98);
   v70 = v98;
@@ -19267,10 +19267,10 @@ LABEL_68:
   v71 = v97;
   v97 = 0;
 
-  v72 = [v6 credentials];
-  v73 = [v72 passPhrase];
-  v74 = v73;
-  -[ThreadNetworkManagerInstance saveThreadConfiguration:passPhrase:](self, "saveThreadConfiguration:passPhrase:", a5, [v73 UTF8String]);
+  credentials9 = [record_tCopy credentials];
+  passPhrase3 = [credentials9 passPhrase];
+  v74 = passPhrase3;
+  -[ThreadNetworkManagerInstance saveThreadConfiguration:passPhrase:](self, "saveThreadConfiguration:passPhrase:", output, [passPhrase3 UTF8String]);
   v75 = *v123;
   if (v9 < 0)
   {
@@ -19302,7 +19302,7 @@ LABEL_68:
     goto LABEL_72;
   }
 
-  [(ThreadNetworkManagerInstance *)self saveLastKnownJoinedNetwork:stringa datasetRecord:v6];
+  [(ThreadNetworkManagerInstance *)self saveLastKnownJoinedNetwork:stringa datasetRecord:record_tCopy];
   v77 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
   if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
   {
@@ -19366,9 +19366,9 @@ LABEL_83:
   return v61;
 }
 
-- (int)attachWithAllCreds:(const char *)a3 credentialsRecord_t:(id)a4 output:(dict *)a5
+- (int)attachWithAllCreds:(const char *)creds credentialsRecord_t:(id)record_t output:(dict *)output
 {
-  v6 = a4;
+  record_tCopy = record_t;
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   __p = *buf;
   v54[0] = *v57;
@@ -19383,35 +19383,35 @@ LABEL_83:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "attachWithAllCreds Cmd received in state %d", buf, 8u);
   }
 
-  v10 = [v6 credentials];
-  v11 = [v10 channel];
+  credentials = [record_tCopy credentials];
+  channel = [credentials channel];
 
-  v12 = [v6 credentials];
-  v13 = [v12 PANID];
-  v14 = v13;
-  v15 = *[v13 bytes];
+  credentials2 = [record_tCopy credentials];
+  pANID = [credentials2 PANID];
+  v14 = pANID;
+  v15 = *[pANID bytes];
 
-  v16 = [v6 network];
-  v17 = [v16 extendedPANID];
-  v18 = v17;
-  v19 = *[v17 bytes];
+  network = [record_tCopy network];
+  extendedPANID = [network extendedPANID];
+  v18 = extendedPANID;
+  v19 = *[extendedPANID bytes];
 
-  v20 = [v6 network];
-  v21 = [v20 networkName];
-  v22 = v21;
-  v23 = [v21 UTF8String];
+  network2 = [record_tCopy network];
+  networkName = [network2 networkName];
+  v22 = networkName;
+  uTF8String = [networkName UTF8String];
 
-  v24 = [v6 credentials];
-  v25 = [v24 masterKey];
-  v26 = v25;
-  v27 = [v25 bytes];
+  credentials3 = [record_tCopy credentials];
+  masterKey = [credentials3 masterKey];
+  v26 = masterKey;
+  bytes = [masterKey bytes];
 
-  v63 = *v27;
+  v63 = *bytes;
   CAMetricsHandlers_joinattempt_start();
   CtrInternalClientPtr = self->_CtrInternalClientPtr;
-  *buf = v23;
+  *buf = uTF8String;
   v56 = "router";
-  *v57 = v11;
+  *v57 = channel;
   *&v57[2] = bswap32(v15) >> 16;
   v59 = bswap64(v19);
   v60 = v63;
@@ -19561,14 +19561,14 @@ LABEL_6:
       }
     }
 
-    v37 = xpc_string_create(a3);
+    v37 = xpc_string_create(creds);
     v49 = v37;
     if (!v37)
     {
       v49 = xpc_null_create();
     }
 
-    *v62 = a5;
+    *v62 = output;
     *&v62[8] = "outputUniqueNetworkId";
     xpc::dict::object_proxy::operator=(v62, &v49, &v50);
     v38 = v50;
@@ -19589,37 +19589,37 @@ LABEL_6:
   return v33;
 }
 
-- (BOOL)isNetworkSame:(Ctr_attachToNetwork *)a3 nwname:(void *)a4 xpan:(void *)a5
+- (BOOL)isNetworkSame:(Ctr_attachToNetwork *)same nwname:(void *)nwname xpan:(void *)xpan
 {
   v8 = [NSMutableString stringWithCapacity:0];
-  v9 = [NSString stringWithFormat:@"%08llX", a3->var6];
+  v9 = [NSString stringWithFormat:@"%08llX", same->var6];
   [v8 appendString:v9];
 
-  std::string::basic_string[abi:ne200100]<0>(v33, a3->var0);
+  std::string::basic_string[abi:ne200100]<0>(v33, same->var0);
   v10 = v8;
   std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
   v11 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    if (*(a4 + 23) >= 0)
+    if (*(nwname + 23) >= 0)
     {
-      v12 = a4;
+      nwnameCopy = nwname;
     }
 
     else
     {
-      v12 = *a4;
+      nwnameCopy = *nwname;
     }
 
-    var0 = a3->var0;
-    if (*(a5 + 23) >= 0)
+    var0 = same->var0;
+    if (*(xpan + 23) >= 0)
     {
-      v14 = a5;
+      xpanCopy = xpan;
     }
 
     else
     {
-      v14 = *a5;
+      xpanCopy = *xpan;
     }
 
     v15 = __p;
@@ -19629,11 +19629,11 @@ LABEL_6:
     }
 
     *buf = 136315906;
-    v36 = v12;
+    v36 = nwnameCopy;
     v37 = 2080;
     v38 = var0;
     v39 = 2080;
-    v40 = v14;
+    v40 = xpanCopy;
     v41 = 2080;
     v42 = v15;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "  Network Name : %s, Network to attach : %s, XPAN : %s, XPAN to attach : %s", buf, 0x2Au);
@@ -19649,11 +19649,11 @@ LABEL_6:
     v16 = v33[1];
   }
 
-  v17 = *(a4 + 23);
+  v17 = *(nwname + 23);
   v18 = v17;
   if ((v17 & 0x80u) != 0)
   {
-    v17 = *(a4 + 1);
+    v17 = *(nwname + 1);
   }
 
   if (v16 != v17)
@@ -19662,8 +19662,8 @@ LABEL_6:
   }
 
   v19 = (v34 & 0x80u) == 0 ? v33 : v33[0];
-  v20 = *a4;
-  v21 = v18 >= 0 ? a4 : *a4;
+  v20 = *nwname;
+  v21 = v18 >= 0 ? nwname : *nwname;
   if (memcmp(v19, v21, v16))
   {
     goto LABEL_37;
@@ -19679,14 +19679,14 @@ LABEL_6:
     v22 = __p[1];
   }
 
-  v23 = *(a5 + 23);
+  v23 = *(xpan + 23);
   v24 = v23;
   if ((v23 & 0x80u) != 0)
   {
-    v23 = *(a5 + 1);
+    v23 = *(xpan + 1);
   }
 
-  if (v22 == v23 && ((v32 & 0x80u) == 0 ? (v25 = __p) : (v25 = __p[0]), (v26 = *a5, v24 >= 0) ? (v27 = a5) : (v27 = *a5), !memcmp(v25, v27, v22)))
+  if (v22 == v23 && ((v32 & 0x80u) == 0 ? (v25 = __p) : (v25 = __p[0]), (v26 = *xpan, v24 >= 0) ? (v27 = xpan) : (v27 = *xpan), !memcmp(v25, v27, v22)))
   {
     v30 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
@@ -19717,13 +19717,13 @@ LABEL_37:
   return v28;
 }
 
-- (BOOL)areTwoNetworksSame:(id)a3 nwname:(id)a4 creds_xpan:(id)a5 xpan:(id)a6
+- (BOOL)areTwoNetworksSame:(id)same nwname:(id)nwname creds_xpan:(id)creds_xpan xpan:(id)xpan
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 isEqualToString:v10] && objc_msgSend(v11, "isEqualToData:", v12))
+  sameCopy = same;
+  nwnameCopy = nwname;
+  creds_xpanCopy = creds_xpan;
+  xpanCopy = xpan;
+  if ([sameCopy isEqualToString:nwnameCopy] && objc_msgSend(creds_xpanCopy, "isEqualToData:", xpanCopy))
   {
     v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -19763,9 +19763,9 @@ LABEL_37:
   return clearThreadConfiguration();
 }
 
-- (BOOL)isCurrentNetworkSameAsOneToStart:(id)a3
+- (BOOL)isCurrentNetworkSameAsOneToStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   __p = 0;
   v59 = 0;
   v60 = 0;
@@ -19788,8 +19788,8 @@ LABEL_37:
   v10 = buf[31];
   if (v7)
   {
-    v11 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    network3 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
+    if (os_log_type_enabled(network3, OS_LOG_TYPE_INFO))
     {
       if (v10 < 0)
       {
@@ -19811,7 +19811,7 @@ LABEL_37:
       v54 = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
       v55 = 2080;
       v56 = v12;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s: Failed to get the NCP Network Info : %s", v53, 0x16u);
+      _os_log_impl(&_mh_execute_header, network3, OS_LOG_TYPE_INFO, "%s: Failed to get the NCP Network Info : %s", v53, 0x16u);
       if ((buf[23] & 0x80000000) != 0)
       {
         operator delete(*buf);
@@ -19826,15 +19826,15 @@ LABEL_37:
   v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v4 network];
-    v15 = [v14 networkName];
+    network = [startCopy network];
+    networkName = [network networkName];
     v16 = [NSString stringWithUTF8String:v61];
     *buf = 136315906;
     *&buf[4] = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
     *&buf[12] = 1024;
     *&buf[14] = 5174;
     *&buf[18] = 2112;
-    *&buf[20] = v15;
+    *&buf[20] = networkName;
     *&buf[28] = 2112;
     *&buf[30] = v16;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s : %d : cnwname : %@, cfgnwname : %@", buf, 0x26u);
@@ -19843,15 +19843,15 @@ LABEL_37:
   v17 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v4 network];
-    v19 = [v18 extendedPANID];
+    network2 = [startCopy network];
+    extendedPANID = [network2 extendedPANID];
     v20 = [NSData dataWithBytes:&v50 length:8];
     *buf = 136315906;
     *&buf[4] = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
     *&buf[12] = 1024;
     *&buf[14] = 5175;
     *&buf[18] = 2112;
-    *&buf[20] = v19;
+    *&buf[20] = extendedPANID;
     *&buf[28] = 2112;
     *&buf[30] = v20;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s : %d : cxpan : %@, cfgxpan : %@", buf, 0x26u);
@@ -19860,15 +19860,15 @@ LABEL_37:
   v21 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [v4 credentials];
-    v23 = [v22 masterKey];
+    credentials = [startCopy credentials];
+    masterKey = [credentials masterKey];
     v24 = [NSData dataWithBytes:v63 length:16];
     *buf = 136315906;
     *&buf[4] = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
     *&buf[12] = 1024;
     *&buf[14] = 5176;
     *&buf[18] = 2112;
-    *&buf[20] = v23;
+    *&buf[20] = masterKey;
     *&buf[28] = 2112;
     *&buf[30] = v24;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s : %d : ckey : %@, cfgkey : %@", buf, 0x26u);
@@ -19877,15 +19877,15 @@ LABEL_37:
   v25 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v26 = [v4 credentials];
-    v27 = [v26 PANID];
+    credentials2 = [startCopy credentials];
+    pANID = [credentials2 PANID];
     v28 = [NSData dataWithBytes:&v51 length:2];
     *buf = 136315906;
     *&buf[4] = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
     *&buf[12] = 1024;
     *&buf[14] = 5177;
     *&buf[18] = 2112;
-    *&buf[20] = v27;
+    *&buf[20] = pANID;
     *&buf[28] = 2112;
     *&buf[30] = v28;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s : %d : cpan : %@, cfgpan : %@", buf, 0x26u);
@@ -19894,23 +19894,23 @@ LABEL_37:
   v29 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [v4 credentials];
-    v31 = [v30 channel];
+    credentials3 = [startCopy credentials];
+    channel = [credentials3 channel];
     *buf = 136315906;
     *&buf[4] = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
     *&buf[12] = 1024;
     *&buf[14] = 5178;
     *&buf[18] = 1024;
-    *&buf[20] = v31;
+    *&buf[20] = channel;
     *&buf[24] = 1024;
     *&buf[26] = v57[0];
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%s : %d : cchannel : %d, cfgchannel : %d", buf, 0x1Eu);
   }
 
-  v11 = [v4 network];
-  v32 = [v11 networkName];
+  network3 = [startCopy network];
+  networkName2 = [network3 networkName];
   v33 = [NSString stringWithUTF8String:v61];
-  if (([v32 isEqualToString:v33] & 1) == 0)
+  if (([networkName2 isEqualToString:v33] & 1) == 0)
   {
 
 LABEL_30:
@@ -19918,33 +19918,33 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v48 = [v4 network];
-  v34 = [v48 extendedPANID];
+  network4 = [startCopy network];
+  extendedPANID2 = [network4 extendedPANID];
   v35 = [NSData dataWithBytes:&v50 length:8];
-  if (![v34 isEqualToData:v35])
+  if (![extendedPANID2 isEqualToData:v35])
   {
 
     goto LABEL_30;
   }
 
-  v46 = [v4 credentials];
-  v47 = [v46 masterKey];
+  credentials4 = [startCopy credentials];
+  masterKey2 = [credentials4 masterKey];
   v45 = [NSData dataWithBytes:v63 length:16];
-  if (![v47 isEqualToData:?])
+  if (![masterKey2 isEqualToData:?])
   {
 
     goto LABEL_30;
   }
 
-  v42 = [v4 credentials];
-  v43 = v34;
-  v44 = [v42 PANID];
+  credentials5 = [startCopy credentials];
+  v43 = extendedPANID2;
+  pANID2 = [credentials5 PANID];
   v36 = [NSData dataWithBytes:&v51 length:2];
-  if ([v44 isEqualToData:v36])
+  if ([pANID2 isEqualToData:v36])
   {
-    v37 = [v4 credentials];
-    v38 = [v37 channel];
-    v39 = v57[0] == v38;
+    credentials6 = [startCopy credentials];
+    channel2 = [credentials6 channel];
+    v39 = v57[0] == channel2;
   }
 
   else
@@ -19954,15 +19954,15 @@ LABEL_30:
 
   if (v39)
   {
-    v11 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
+    network3 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     v40 = 1;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(network3, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       *&buf[4] = "[ThreadNetworkManagerInstance isCurrentNetworkSameAsOneToStart:]";
       *&buf[12] = 1024;
       *&buf[14] = 5186;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s : %d : Returning true..", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, network3, OS_LOG_TYPE_INFO, "%s : %d : Returning true..", buf, 0x12u);
     }
 
 LABEL_31:
@@ -20009,8 +20009,8 @@ LABEL_33:
   {
     if (self->_keyChainStore)
     {
-      v4 = [(ThreadNetworkManagerInstance *)self getPreferredNetworkWithNoScan];
-      if (!v4)
+      getPreferredNetworkWithNoScan = [(ThreadNetworkManagerInstance *)self getPreferredNetworkWithNoScan];
+      if (!getPreferredNetworkWithNoScan)
       {
         v13 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -20024,19 +20024,19 @@ LABEL_33:
       lastKnownJoinedNetworkRecord = self->_lastKnownJoinedNetworkRecord;
       if (lastKnownJoinedNetworkRecord)
       {
-        v6 = [(THThreadNetworkCredentialsActiveDataSetRecord *)lastKnownJoinedNetworkRecord credentialsDataSet];
-        v7 = [v6 dataSetArray];
-        if ([v7 length])
+        credentialsDataSet = [(THThreadNetworkCredentialsActiveDataSetRecord *)lastKnownJoinedNetworkRecord credentialsDataSet];
+        dataSetArray = [credentialsDataSet dataSetArray];
+        if ([dataSetArray length])
         {
-          v37 = [v4 credentialsDataSet];
-          v8 = [v37 dataSetArray];
-          if ([v8 length])
+          credentialsDataSet2 = [getPreferredNetworkWithNoScan credentialsDataSet];
+          dataSetArray2 = [credentialsDataSet2 dataSetArray];
+          if ([dataSetArray2 length])
           {
-            v9 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self->_lastKnownJoinedNetworkRecord credentialsDataSet];
-            v2 = [v9 dataSetArray];
-            v10 = [v4 credentialsDataSet];
-            v11 = [v10 dataSetArray];
-            v12 = [v2 isEqualToData:v11];
+            credentialsDataSet3 = [(THThreadNetworkCredentialsActiveDataSetRecord *)self->_lastKnownJoinedNetworkRecord credentialsDataSet];
+            dataSetArray3 = [credentialsDataSet3 dataSetArray];
+            credentialsDataSet4 = [getPreferredNetworkWithNoScan credentialsDataSet];
+            dataSetArray4 = [credentialsDataSet4 dataSetArray];
+            v12 = [dataSetArray3 isEqualToData:dataSetArray4];
 
             if ((v12 & 1) == 0)
             {
@@ -20051,7 +20051,7 @@ LABEL_33:
               }
 
 LABEL_17:
-              LOBYTE(v2) = 0;
+              LOBYTE(dataSetArray3) = 0;
 LABEL_56:
 
               goto LABEL_57;
@@ -20063,49 +20063,49 @@ LABEL_56:
       }
 
 LABEL_20:
-      v14 = [(ThreadNetworkManagerInstance *)self getCurrentCredentialsDataSet];
-      v13 = v14;
-      if (v14)
+      getCurrentCredentialsDataSet = [(ThreadNetworkManagerInstance *)self getCurrentCredentialsDataSet];
+      v13 = getCurrentCredentialsDataSet;
+      if (getCurrentCredentialsDataSet)
       {
-        v15 = [v14 dataSetArray];
-        v16 = [v15 length] == 0;
+        dataSetArray5 = [getCurrentCredentialsDataSet dataSetArray];
+        v16 = [dataSetArray5 length] == 0;
 
         if (!v16)
         {
-          v17 = [v13 dataSetArray];
-          if ([v17 length])
+          dataSetArray6 = [v13 dataSetArray];
+          if ([dataSetArray6 length])
           {
-            v18 = [v4 credentialsDataSet];
-            v19 = [v18 dataSetArray];
-            if ([v19 length])
+            credentialsDataSet5 = [getPreferredNetworkWithNoScan credentialsDataSet];
+            dataSetArray7 = [credentialsDataSet5 dataSetArray];
+            if ([dataSetArray7 length])
             {
-              v20 = [v13 dataSetArray];
-              v2 = [v4 credentialsDataSet];
-              v21 = [v2 dataSetArray];
-              v22 = [v20 isEqualToData:v21];
+              dataSetArray8 = [v13 dataSetArray];
+              dataSetArray3 = [getPreferredNetworkWithNoScan credentialsDataSet];
+              v2DataSetArray = [dataSetArray3 dataSetArray];
+              v22 = [dataSetArray8 isEqualToData:v2DataSetArray];
 
               if (v22)
               {
-                v23 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
-                LOBYTE(v2) = 1;
-                if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+                getCurrentBorderAgent = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
+                LOBYTE(dataSetArray3) = 1;
+                if (os_log_type_enabled(getCurrentBorderAgent, OS_LOG_TYPE_INFO))
                 {
                   *buf = 136315394;
                   v51 = "[ThreadNetworkManagerInstance updatePreferredNetworkForDatasetChange]";
                   v52 = 1024;
                   v53 = 5239;
-                  _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, " %s:%d No need to update preferred network !", buf, 0x12u);
+                  _os_log_impl(&_mh_execute_header, getCurrentBorderAgent, OS_LOG_TYPE_INFO, " %s:%d No need to update preferred network !", buf, 0x12u);
                 }
 
                 goto LABEL_55;
               }
 
 LABEL_34:
-              v23 = [(ThreadNetworkManagerInstance *)self getCurrentBorderAgent];
-              if (v23)
+              getCurrentBorderAgent = [(ThreadNetworkManagerInstance *)self getCurrentBorderAgent];
+              if (getCurrentBorderAgent)
               {
-                v24 = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid];
-                if (v24)
+                getCurrentNetworkNameAndXpanid = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid];
+                if (getCurrentNetworkNameAndXpanid)
                 {
                   v25 = 1;
                   while (1)
@@ -20134,7 +20134,7 @@ LABEL_34:
                       v38[4] = self;
                       v30 = v28;
                       v39 = v30;
-                      [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore updatePreferredNetworkWithNewDataset:v23 network:v24 credentialsDataSet:v13 completion:v38];
+                      [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore updatePreferredNetworkWithNewDataset:getCurrentBorderAgent network:getCurrentNetworkNameAndXpanid credentialsDataSet:v13 completion:v38];
                       v31 = dispatch_time(0, 150000000000);
                       if (dispatch_semaphore_wait(v30, v31))
                       {
@@ -20149,14 +20149,14 @@ LABEL_34:
                         }
 
                         v33 = 0;
-                        LOBYTE(v2) = 0;
+                        LOBYTE(dataSetArray3) = 0;
                       }
 
                       else
                       {
                         v34 = v45[5];
                         v33 = v34 != 0;
-                        LOBYTE(v2) = (v34 == 0) | v2;
+                        LOBYTE(dataSetArray3) = (v34 == 0) | dataSetArray3;
                       }
 
                       if (!v33)
@@ -20168,7 +20168,7 @@ LABEL_34:
                     v25 = 0;
                     if ((v26 & 1) == 0)
                     {
-                      LOBYTE(v2) = 0;
+                      LOBYTE(dataSetArray3) = 0;
                       goto LABEL_54;
                     }
                   }
@@ -20183,14 +20183,14 @@ LABEL_34:
 
               else
               {
-                v24 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
-                if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+                getCurrentNetworkNameAndXpanid = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
+                if (os_log_type_enabled(getCurrentNetworkNameAndXpanid, OS_LOG_TYPE_ERROR))
                 {
                   [ThreadNetworkManagerInstance updatePreferredNetworkForDatasetChange];
                 }
               }
 
-              LOBYTE(v2) = 0;
+              LOBYTE(dataSetArray3) = 0;
 LABEL_54:
 
               goto LABEL_55;
@@ -20200,8 +20200,8 @@ LABEL_54:
           goto LABEL_34;
         }
 
-        v23 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        getCurrentBorderAgent = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
+        if (os_log_type_enabled(getCurrentBorderAgent, OS_LOG_TYPE_ERROR))
         {
           [ThreadNetworkManagerInstance updatePreferredNetworkForDatasetChange];
         }
@@ -20209,21 +20209,21 @@ LABEL_54:
 
       else
       {
-        v23 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        getCurrentBorderAgent = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
+        if (os_log_type_enabled(getCurrentBorderAgent, OS_LOG_TYPE_ERROR))
         {
           [ThreadNetworkManagerInstance updatePreferredNetworkForDatasetChange];
         }
       }
 
-      LOBYTE(v2) = 0;
+      LOBYTE(dataSetArray3) = 0;
 LABEL_55:
 
       goto LABEL_56;
     }
 
-    v4 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    getPreferredNetworkWithNoScan = log_get_logging_obg("com.apple.wpantund.tnm", "default");
+    if (os_log_type_enabled(getPreferredNetworkWithNoScan, OS_LOG_TYPE_ERROR))
     {
       [ThreadNetworkManagerInstance updatePreferredNetworkForDatasetChange];
     }
@@ -20231,20 +20231,20 @@ LABEL_55:
 
   else
   {
-    v4 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    getPreferredNetworkWithNoScan = log_get_logging_obg("com.apple.wpantund.tnm", "default");
+    if (os_log_type_enabled(getPreferredNetworkWithNoScan, OS_LOG_TYPE_ERROR))
     {
       [ThreadNetworkManagerInstance updatePreferredNetworkForDatasetChange];
     }
   }
 
-  LOBYTE(v2) = 0;
+  LOBYTE(dataSetArray3) = 0;
 LABEL_57:
 
   _Block_object_dispose(v42, 8);
   _Block_object_dispose(&v44, 8);
 
-  return v2 & 1;
+  return dataSetArray3 & 1;
 }
 
 void __70__ThreadNetworkManagerInstance_updatePreferredNetworkForDatasetChange__block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -20506,8 +20506,8 @@ LABEL_45:
 
 - (id)getCurrentNetworkCredentials
 {
-  v3 = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid];
-  if (!v3)
+  getCurrentNetworkNameAndXpanid = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid];
+  if (!getCurrentNetworkNameAndXpanid)
   {
     v8 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -20520,7 +20520,7 @@ LABEL_45:
   }
 
   v12 = 0;
-  v4 = [(ThreadNetworkManagerInstance *)self getMeCredentialsForThisNetwork:v3 credentialsRecord_t:&v12];
+  v4 = [(ThreadNetworkManagerInstance *)self getMeCredentialsForThisNetwork:getCurrentNetworkNameAndXpanid credentialsRecord_t:&v12];
   v5 = v12;
   v6 = v5;
   if (v4)
@@ -20528,9 +20528,9 @@ LABEL_45:
     v7 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [v3 networkName];
+      [getCurrentNetworkNameAndXpanid networkName];
       objc_claimAutoreleasedReturnValue();
-      [v3 extendedPANID];
+      [getCurrentNetworkNameAndXpanid extendedPANID];
       objc_claimAutoreleasedReturnValue();
       [ThreadNetworkManagerInstance getCurrentNetworkCredentials];
     }
@@ -20545,9 +20545,9 @@ LABEL_9:
     v10 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [v3 networkName];
+      [getCurrentNetworkNameAndXpanid networkName];
       objc_claimAutoreleasedReturnValue();
-      [v3 extendedPANID];
+      [getCurrentNetworkNameAndXpanid extendedPANID];
       objc_claimAutoreleasedReturnValue();
       [ThreadNetworkManagerInstance getCurrentNetworkCredentials];
     }
@@ -20580,8 +20580,8 @@ LABEL_15:
     [ThreadNetworkManagerInstance getCurrentNetworkCredentialsActiveDataSetRecord];
   }
 
-  v5 = [(ThreadNetworkManagerInstance *)self getCurrentBorderAgent];
-  if (!v5)
+  getCurrentBorderAgent = [(ThreadNetworkManagerInstance *)self getCurrentBorderAgent];
+  if (!getCurrentBorderAgent)
   {
     v11 = 0;
     goto LABEL_18;
@@ -20609,7 +20609,7 @@ LABEL_15:
   v21 = &v22;
   v8 = v6;
   v19 = v8;
-  [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore retrieveActiveDataSetRecordWithTLVsForThreadBorderAgent:v5 completion:v18];
+  [(THThreadNetworkCredentialsStoreLocalClient *)keyChainStore retrieveActiveDataSetRecordWithTLVsForThreadBorderAgent:getCurrentBorderAgent completion:v18];
   v9 = dispatch_time(0, 5000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
@@ -20633,25 +20633,25 @@ LABEL_15:
     {
       v13 = [v23[5] description];
       v14 = v13;
-      v15 = [v13 UTF8String];
-      if (v15)
+      uTF8String = [v13 UTF8String];
+      if (uTF8String)
       {
         v2 = [v23[5] description];
         v17 = v2;
-        v16 = [v2 UTF8String];
+        uTF8String2 = [v2 UTF8String];
       }
 
       else
       {
-        v16 = "(unknown error)";
+        uTF8String2 = "(unknown error)";
       }
 
       *buf = 136315394;
       v35 = "[ThreadNetworkManagerInstance getCurrentNetworkCredentialsActiveDataSetRecord]";
       v36 = 2080;
-      v37 = v16;
+      v37 = uTF8String2;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s : Error: failed to retrieve (%s)\n", buf, 0x16u);
-      if (v15)
+      if (uTF8String)
       {
       }
     }
@@ -21289,12 +21289,12 @@ LABEL_64:
   }
 
   v68 = dispatch_semaphore_create(0);
-  v67 = [v6 getCurrentBorderAgent];
-  if (v67)
+  getCurrentBorderAgent = [v6 getCurrentBorderAgent];
+  if (getCurrentBorderAgent)
   {
-    v46 = [v6 getCurrentCredentialsDataSet];
-    v66 = v46;
-    if (!v46)
+    getCurrentCredentialsDataSet = [v6 getCurrentCredentialsDataSet];
+    v66 = getCurrentCredentialsDataSet;
+    if (!getCurrentCredentialsDataSet)
     {
       retstr->var0 = 1;
       retstr->var1.var0.var1.var1 = 0;
@@ -21313,7 +21313,7 @@ LABEL_64:
     v80 = &v91;
     v49 = v68;
     v78 = v49;
-    [v47 storeThreadNetworkCredentialActiveDataSet:v67 network:v69 credentialsDataSet:v46 waitForSync:v48 completion:v77];
+    [v47 storeThreadNetworkCredentialActiveDataSet:getCurrentBorderAgent network:v69 credentialsDataSet:getCurrentCredentialsDataSet waitForSync:v48 completion:v77];
     v42 = v70;
     v50 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
     if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
@@ -21349,11 +21349,11 @@ LABEL_64:
       v57 = v92[5];
       if (!v57)
       {
-        v58 = [*(*&buf[8] + 40) UUIDString];
+        uUIDString = [*(*&buf[8] + 40) UUIDString];
         if (xpc::dict::operator BOOL(v5))
         {
-          v59 = v58;
-          v60 = xpc_string_create([v58 UTF8String]);
+          v59 = uUIDString;
+          v60 = xpc_string_create([uUIDString UTF8String]);
           v75 = v60;
           if (!v60)
           {
@@ -21373,12 +21373,12 @@ LABEL_64:
         v63 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
-          v64 = v58;
-          v65 = [v58 UTF8String];
+          v64 = uUIDString;
+          uTF8String = [uUIDString UTF8String];
           *v98 = 136315394;
           *&v98[4] = "[ThreadNetworkManagerInstance saveThreadConfigurationAOD:passPhrase:]";
           *&v98[12] = 2080;
-          *&v98[14] = v65;
+          *&v98[14] = uTF8String;
           _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "%s : #mOS: uniqueNetworkId: %s", v98, 0x16u);
         }
 
@@ -21861,7 +21861,7 @@ LABEL_45:
       v87 = &v104;
       v85 = dsema;
       [v52 storeCredentials:v51 waitForSync:v53 forNetwork:v72 completion:v84];
-      v49 = v85;
+      getCurrentCredentialsDataSet = v85;
       goto LABEL_74;
     }
 
@@ -21873,14 +21873,14 @@ LABEL_84:
     goto LABEL_92;
   }
 
-  v48 = [v7 getCurrentBorderAgent];
-  if (!v48)
+  getCurrentBorderAgent = [v7 getCurrentBorderAgent];
+  if (!getCurrentBorderAgent)
   {
     goto LABEL_84;
   }
 
-  v49 = [v7 getCurrentCredentialsDataSet];
-  if (!v49)
+  getCurrentCredentialsDataSet = [v7 getCurrentCredentialsDataSet];
+  if (!getCurrentCredentialsDataSet)
   {
     retstr->var0 = 1;
     retstr->var1.var0.var1.var1 = 0;
@@ -21891,7 +21891,7 @@ LABEL_84:
   }
 
   LOBYTE(v69) = 1;
-  v50 = [[THThreadNetworkCredentials alloc] initWithMasterKey:v76 passPhrase:v79 PSKc:v75 channel:v43 PANID:v74 userInfo:0 credentialDataSet:v49 isActiveDevice:v69];
+  v50 = [[THThreadNetworkCredentials alloc] initWithMasterKey:v76 passPhrase:v79 PSKc:v75 channel:v43 PANID:v74 userInfo:0 credentialDataSet:getCurrentCredentialsDataSet isActiveDevice:v69];
   if (!v50)
   {
     retstr->var0 = 1;
@@ -21911,11 +21911,11 @@ LABEL_84:
   v92 = buf;
   v88[4] = v7;
   v89 = v72;
-  v51 = v48;
+  v51 = getCurrentBorderAgent;
   v90 = v51;
   v93 = &v104;
   v91 = dsema;
-  [v70 storeThreadNetworkCredentialActiveDataSet:v51 network:v89 credentials:v50 credentialsDataSet:v49 waitForSync:v71 completion:v88];
+  [v70 storeThreadNetworkCredentialActiveDataSet:v51 network:v89 credentials:v50 credentialsDataSet:getCurrentCredentialsDataSet waitForSync:v71 completion:v88];
 
 LABEL_74:
   v54 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
@@ -21952,13 +21952,13 @@ LABEL_74:
     v59 = v105[5];
     if (!v59)
     {
-      v60 = [*(*&buf[8] + 40) UUIDString];
-      v61 = v60;
-      *v80 = v60;
+      uUIDString = [*(*&buf[8] + 40) UUIDString];
+      v61 = uUIDString;
+      *v80 = uUIDString;
       if (xpc::dict::operator BOOL(v6))
       {
-        v62 = v60;
-        v63 = xpc_string_create([v60 UTF8String]);
+        v62 = uUIDString;
+        v63 = xpc_string_create([uUIDString UTF8String]);
         v82 = v63;
         if (!v63)
         {
@@ -21978,12 +21978,12 @@ LABEL_74:
       v66 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
       if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
       {
-        v67 = v60;
-        v68 = [v60 UTF8String];
+        v67 = uUIDString;
+        uTF8String = [uUIDString UTF8String];
         *v111 = 136315394;
         *&v111[4] = "[ThreadNetworkManagerInstance saveThreadConfiguration:passPhrase:uuid:]";
         *&v111[12] = 2080;
-        *&v111[14] = v68;
+        *&v111[14] = uTF8String;
         _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_INFO, "%s : #mOS: uniqueNetworkId: %s", v111, 0x16u);
       }
 
@@ -22359,12 +22359,12 @@ void __72__ThreadNetworkManagerInstance_saveThreadConfiguration_passPhrase_uuid_
   return result;
 }
 
-- (void)saveLastKnownJoinedNetwork:(const char *)a3 datasetRecord:(id)a4
+- (void)saveLastKnownJoinedNetwork:(const char *)network datasetRecord:(id)record
 {
-  v7 = a4;
-  if (v7)
+  recordCopy = record;
+  if (recordCopy)
   {
-    objc_storeStrong(&self->_lastKnownJoinedNetworkRecord, a4);
+    objc_storeStrong(&self->_lastKnownJoinedNetworkRecord, record);
     v8 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -22379,7 +22379,7 @@ void __72__ThreadNetworkManagerInstance_saveThreadConfiguration_passPhrase_uuid_
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!network)
   {
 LABEL_5:
     v9 = 0;
@@ -22387,7 +22387,7 @@ LABEL_5:
   }
 
   v14 = 0;
-  v10 = [(ThreadNetworkManagerInstance *)self retrieveActiveDataSetRecordForUniqueId:a3 record:&v14];
+  v10 = [(ThreadNetworkManagerInstance *)self retrieveActiveDataSetRecordForUniqueId:network record:&v14];
   v11 = v14;
   v9 = v14;
   if (v10)
@@ -22418,7 +22418,7 @@ LABEL_5:
 LABEL_6:
 }
 
-- (int)formNewNetwork:(dict)a3
+- (int)formNewNetwork:(dict)network
 {
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   __s = *buf;
@@ -22644,11 +22644,11 @@ LABEL_42:
   [v30 appendString:v31];
 
   v32 = [NSMutableString stringWithCapacity:0];
-  v33 = [NSString stringWithFormat:@"%08llX", NewXPANIDAsInt];
-  [v32 appendString:v33];
+  newXPANIDAsInt = [NSString stringWithFormat:@"%08llX", NewXPANIDAsInt];
+  [v32 appendString:newXPANIDAsInt];
 
   sleep(2u);
-  [(ThreadNetworkManagerInstance *)self saveThreadConfigurationAOD:a3.var0.var0 passPhrase:v19];
+  [(ThreadNetworkManagerInstance *)self saveThreadConfigurationAOD:network.var0.var0 passPhrase:v19];
   v34 = *v80;
   if (v45 < 0)
   {
@@ -22746,7 +22746,7 @@ LABEL_56:
   return v36;
 }
 
-- (int)attachToNetwork:(dict)a3 output:(dict *)a4
+- (int)attachToNetwork:(dict)network output:(dict *)output
 {
   string = 0;
   v72 = 0;
@@ -22769,7 +22769,7 @@ LABEL_56:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Attach NW Cmd received in state %d", buf, 8u);
   }
 
-  v9 = xpc::dict::operator*(a3.var0.var0);
+  v9 = xpc::dict::operator*(network.var0.var0);
   v10 = xpc_dictionary_get_BOOL(v9, "clearThreadCredentials");
   LOBYTE(v73) = v10;
 
@@ -22793,46 +22793,46 @@ LABEL_56:
     goto LABEL_41;
   }
 
-  v13 = xpc::dict::operator*(a3.var0.var0);
+  v13 = xpc::dict::operator*(network.var0.var0);
   v14 = xpc_dictionary_get_BOOL(v13, "hasNetworkKey");
   HIBYTE(v73) = v14;
 
   if (!v14)
   {
-    v29 = xpc::dict::operator*(a3.var0.var0);
+    v29 = xpc::dict::operator*(network.var0.var0);
     LOBYTE(v74) = xpc_dictionary_get_uint64(v29, "channel");
     v74 = v74;
 
-    v30 = xpc::dict::operator*(a3.var0.var0);
+    v30 = xpc::dict::operator*(network.var0.var0);
     uint64 = xpc_dictionary_get_uint64(v30, "panid");
 
-    v31 = xpc::dict::operator*(a3.var0.var0);
+    v31 = xpc::dict::operator*(network.var0.var0);
     v76 = xpc_dictionary_get_uint64(v31, "xpanid");
 
-    v32 = xpc::dict::operator*(a3.var0.var0);
+    v32 = xpc::dict::operator*(network.var0.var0);
     string = xpc_dictionary_get_string(v32, "network_name");
 
-    xpc::dict::dict(&v49, a3.var0.var0);
-    v33 = [(ThreadNetworkManagerInstance *)self commissionOrFormNetwork:&v49 is_attaching:1 cfg_attach:&string output:a4];
+    xpc::dict::dict(&v49, network.var0.var0);
+    v33 = [(ThreadNetworkManagerInstance *)self commissionOrFormNetwork:&v49 is_attaching:1 cfg_attach:&string output:output];
     v34 = v49;
     v49 = 0;
 
     goto LABEL_42;
   }
 
-  v15 = xpc::dict::operator*(a3.var0.var0);
+  v15 = xpc::dict::operator*(network.var0.var0);
   v16 = xpc_dictionary_get_uint64(v15, "channel");
 
-  v17 = xpc::dict::operator*(a3.var0.var0);
+  v17 = xpc::dict::operator*(network.var0.var0);
   v43 = xpc_dictionary_get_uint64(v17, "panid");
 
-  v18 = xpc::dict::operator*(a3.var0.var0);
+  v18 = xpc::dict::operator*(network.var0.var0);
   v42 = xpc_dictionary_get_uint64(v18, "xpanid");
 
-  v19 = xpc::dict::operator*(a3.var0.var0);
+  v19 = xpc::dict::operator*(network.var0.var0);
   v41 = xpc_dictionary_get_string(v19, "network_name");
 
-  v20 = xpc::dict::operator*(a3.var0.var0);
+  v20 = xpc::dict::operator*(network.var0.var0);
   data = xpc_dictionary_get_data(v20, "network_key", &length);
 
   v22 = v16;
@@ -22993,7 +22993,7 @@ LABEL_41:
   }
 
 LABEL_34:
-  [(ThreadNetworkManagerInstance *)self saveThreadConfiguration:a4];
+  [(ThreadNetworkManagerInstance *)self saveThreadConfiguration:output];
   v38 = *v48;
   if (v47 < 0)
   {
@@ -23039,9 +23039,9 @@ LABEL_44:
   return v33;
 }
 
-- (int)setChannelUsingChannelManger:(dict)a3
+- (int)setChannelUsingChannelManger:(dict)manger
 {
-  v4 = xpc::dict::operator*(a3.var0.var0);
+  v4 = xpc::dict::operator*(manger.var0.var0);
   string = xpc_dictionary_get_string(v4, "property_value");
 
   v6 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
@@ -23311,9 +23311,9 @@ LABEL_42:
   return v11;
 }
 
-- (int)setChannel:(dict)a3
+- (int)setChannel:(dict)channel
 {
-  v4 = xpc::dict::operator*(a3.var0.var0);
+  v4 = xpc::dict::operator*(channel.var0.var0);
   string = xpc_dictionary_get_string(v4, "property_value");
 
   v6 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
@@ -25231,9 +25231,9 @@ LABEL_417:
   return 1;
 }
 
-- (void)getNCPState:(BOOL)a3
+- (void)getNCPState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   tv_sec = buf[0].tv_sec;
   tv_sec_high = SHIBYTE(buf[1].tv_sec);
@@ -25339,7 +25339,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "TNM read NCP state as: %s, %d \n", buf, 0x12u);
     }
 
-    if (v3)
+    if (stateCopy)
     {
       [(ThreadNetworkManagerInstance *)self checkAndResumeNW];
     }
@@ -26155,14 +26155,14 @@ void __45__ThreadNetworkManagerInstance_resumeNetwork__block_invoke(uint64_t a1)
       *(v26 + 3) = *(__p + 3);
     }
 
-    v13 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-    v14 = v13;
+    ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    v14 = ctrInternalClientPtr;
     v24[0] = 60;
     v24[1] = 0xFFFF000000000000;
     v25 = 2;
-    if (v13)
+    if (ctrInternalClientPtr)
     {
-      [v13 scan:v24];
+      [ctrInternalClientPtr scan:v24];
       v15 = *buf;
       if ((v12 & 0x80000000) == 0)
       {
@@ -26436,15 +26436,15 @@ LABEL_26:
   }
 }
 
-- (unint64_t)getCountOfThreadBorderRoutersWithMdns:(id)a3
+- (unint64_t)getCountOfThreadBorderRoutersWithMdns:(id)mdns
 {
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__0;
   v27 = __Block_byref_object_dispose__0;
-  v3 = a3;
-  v28 = v3;
+  mdnsCopy = mdns;
+  v28 = mdnsCopy;
   v4 = dispatch_semaphore_create(0);
   v17 = 0;
   v18 = &v17;
@@ -26489,7 +26489,7 @@ LABEL_26:
   }
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  v10 = [v24[5] findNWs];
+  findNWs = [v24[5] findNWs];
   v11 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -26499,7 +26499,7 @@ LABEL_26:
   _Block_object_dispose(&v17, 8);
   _Block_object_dispose(&v23, 8);
 
-  return v10;
+  return findNWs;
 }
 
 intptr_t __70__ThreadNetworkManagerInstance_getCountOfThreadBorderRoutersWithMdns___block_invoke(uint64_t a1)
@@ -26524,12 +26524,12 @@ intptr_t __70__ThreadNetworkManagerInstance_getCountOfThreadBorderRoutersWithMdn
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)checkIfNetworkIsFoundInMDNSScan:(id)a3 borderAgentID:(id)a4
+- (BOOL)checkIfNetworkIsFoundInMDNSScan:(id)scan borderAgentID:(id)d
 {
-  v59 = a3;
-  v58 = a4;
+  scanCopy = scan;
+  dCopy = d;
   v6 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
-  v66 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -26539,14 +26539,14 @@ intptr_t __70__ThreadNetworkManagerInstance_getCountOfThreadBorderRoutersWithMdn
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s:%d: Entered. Checking if Network matches with Mdns", buf, 0x12u);
   }
 
-  v7 = self;
+  selfCopy3 = self;
   if (!self->_BAFinder)
   {
     v8 = [objc_opt_new() init];
     BAFinder = self->_BAFinder;
     self->_BAFinder = v8;
 
-    v7 = self;
+    selfCopy3 = self;
     if (!self->_BAFinder)
     {
       v55 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -26563,18 +26563,18 @@ intptr_t __70__ThreadNetworkManagerInstance_getCountOfThreadBorderRoutersWithMdn
     }
   }
 
-  v65 = [(ThreadNetworkManagerInstance *)v7 getCountOfThreadBorderRoutersWithMdns:?];
+  v65 = [(ThreadNetworkManagerInstance *)selfCopy3 getCountOfThreadBorderRoutersWithMdns:?];
   if (!v65)
   {
 LABEL_80:
     v52 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
-      v53 = [v59 networkName];
-      [(ThreadNetworkManagerInstance *)v53 checkIfNetworkIsFoundInMDNSScan:buf borderAgentID:v52];
+      networkName = [scanCopy networkName];
+      [(ThreadNetworkManagerInstance *)networkName checkIfNetworkIsFoundInMDNSScan:buf borderAgentID:v52];
     }
 
-    [(ThreadNetworkfinder *)v66->_BAFinder clear];
+    [(ThreadNetworkfinder *)selfCopy->_BAFinder clear];
 LABEL_83:
     v56 = 0;
     goto LABEL_84;
@@ -26585,7 +26585,7 @@ LABEL_83:
   v57 = v10;
   while (1)
   {
-    v12 = [(ThreadNetworkfinder *)v7->_BAFinder getBorderAgentForIndex:v11, v57];
+    v12 = [(ThreadNetworkfinder *)selfCopy3->_BAFinder getBorderAgentForIndex:v11, v57];
     v13 = v12;
     if (v12)
     {
@@ -26601,15 +26601,15 @@ LABEL_25:
 
 LABEL_26:
     ++v11;
-    v7 = v66;
+    selfCopy3 = selfCopy;
     if (v65 == v11)
     {
       goto LABEL_80;
     }
   }
 
-  v14 = [v12 addresses];
-  v15 = v14 == 0;
+  addresses = [v12 addresses];
+  v15 = addresses == 0;
 
   if (v15)
   {
@@ -26633,8 +26633,8 @@ LABEL_62:
     goto LABEL_23;
   }
 
-  v16 = [v13 TXTRecordData];
-  v64 = [NSNetService dictionaryFromTXTRecordData:v16];
+  tXTRecordData = [v13 TXTRecordData];
+  v64 = [NSNetService dictionaryFromTXTRecordData:tXTRecordData];
 
   if (!v64)
   {
@@ -26763,8 +26763,8 @@ LABEL_34:
   v60 = [[NSString alloc] initWithData:v61 encoding:4];
   if (!v60)
   {
-    v37 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    networkName3 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
+    if (os_log_type_enabled(networkName3, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
       v68 = "[ThreadNetworkManagerInstance checkIfNetworkIsFoundInMDNSScan:borderAgentID:]";
@@ -26772,7 +26772,7 @@ LABEL_34:
       *v70 = 7048;
       *&v70[4] = 2112;
       *&v70[6] = v13;
-      _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%s : %d network name nsstring conversion failure for server : %@, continue to next network", buf, 0x1Cu);
+      _os_log_error_impl(&_mh_execute_header, networkName3, OS_LOG_TYPE_ERROR, "%s : %d network name nsstring conversion failure for server : %@, continue to next network", buf, 0x1Cu);
     }
 
     v25 = 0;
@@ -26787,18 +26787,18 @@ LABEL_34:
     v34 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [v59 networkName];
-      v36 = [v59 extendedPANID];
+      networkName2 = [scanCopy networkName];
+      extendedPANID = [scanCopy extendedPANID];
       *buf = 136316930;
       v68 = "[ThreadNetworkManagerInstance checkIfNetworkIsFoundInMDNSScan:borderAgentID:]";
       v69 = 1024;
       *v70 = 7079;
       *&v70[4] = 2112;
-      *&v70[6] = v35;
+      *&v70[6] = networkName2;
       v71 = 2112;
-      v72 = v36;
+      v72 = extendedPANID;
       v73 = 2112;
-      v74 = v58;
+      v74 = dCopy;
       v75 = 2112;
       v76 = v60;
       v77 = 2112;
@@ -26808,32 +26808,32 @@ LABEL_34:
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "%s:%d: Comparing  => storing(network name:%@, xpanid :%@, baid : %@), mdns (network name:%@, xpanid:%@, baid : %@)", buf, 0x4Eu);
     }
 
-    v37 = [v59 networkName];
-    if ([v37 isEqualToString:v60])
+    networkName3 = [scanCopy networkName];
+    if ([networkName3 isEqualToString:v60])
     {
-      v38 = [v59 extendedPANID];
-      if ([v38 isEqualToData:v63])
+      extendedPANID2 = [scanCopy extendedPANID];
+      if ([extendedPANID2 isEqualToData:v63])
       {
-        v39 = [v58 isEqualToData:v62];
+        v39 = [dCopy isEqualToData:v62];
 
         if (v39)
         {
           v40 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
-            v41 = [v59 networkName];
+            networkName4 = [scanCopy networkName];
             *buf = v57;
             v68 = "[ThreadNetworkManagerInstance checkIfNetworkIsFoundInMDNSScan:borderAgentID:]";
             v69 = 1024;
             *v70 = 7084;
             *&v70[4] = 2112;
-            *&v70[6] = v41;
+            *&v70[6] = networkName4;
             v71 = 2112;
             v72 = v60;
             _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "%s : %d: Network :%@ matches with mdns record :%@", buf, 0x26u);
           }
 
-          [(ThreadNetworkfinder *)v66->_BAFinder clear];
+          [(ThreadNetworkfinder *)selfCopy->_BAFinder clear];
           v42 = 1;
           v25 = 0;
           v26 = 0;
@@ -26870,8 +26870,8 @@ LABEL_72:
   v27 = v44;
   if (!v28 || !v44)
   {
-    v37 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    networkName3 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
+    if (os_log_type_enabled(networkName3, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
       v68 = "[ThreadNetworkManagerInstance checkIfNetworkIsFoundInMDNSScan:borderAgentID:]";
@@ -26879,7 +26879,7 @@ LABEL_72:
       *v70 = 7056;
       *&v70[4] = 2112;
       *&v70[6] = v13;
-      _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%s : %d xpanid and baid nsstring conversion failure, server : %@, continue to next network", buf, 0x1Cu);
+      _os_log_error_impl(&_mh_execute_header, networkName3, OS_LOG_TYPE_ERROR, "%s : %d xpanid and baid nsstring conversion failure, server : %@, continue to next network", buf, 0x1Cu);
     }
 
     v25 = 0;
@@ -26887,13 +26887,13 @@ LABEL_72:
     goto LABEL_68;
   }
 
-  v26 = [(ThreadNetworkManagerInstance *)v66 dataFromHexString:v28];
-  v45 = [(ThreadNetworkManagerInstance *)v66 dataFromHexString:v27];
+  v26 = [(ThreadNetworkManagerInstance *)selfCopy dataFromHexString:v28];
+  v45 = [(ThreadNetworkManagerInstance *)selfCopy dataFromHexString:v27];
   v25 = v45;
   if (!v26 || !v45)
   {
-    v37 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    networkName3 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
+    if (os_log_type_enabled(networkName3, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
       v68 = "[ThreadNetworkManagerInstance checkIfNetworkIsFoundInMDNSScan:borderAgentID:]";
@@ -26901,7 +26901,7 @@ LABEL_72:
       *v70 = 7064;
       *&v70[4] = 2112;
       *&v70[6] = v13;
-      _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%s : %d hex string conversion to nsdata failure for server : %@, continue to next network", buf, 0x1Cu);
+      _os_log_error_impl(&_mh_execute_header, networkName3, OS_LOG_TYPE_ERROR, "%s : %d hex string conversion to nsdata failure for server : %@, continue to next network", buf, 0x1Cu);
     }
 
 LABEL_68:
@@ -26927,43 +26927,43 @@ LABEL_68:
     v77 = 2112;
     v78 = v25;
     v79 = 2112;
-    v80 = v58;
+    v80 = dCopy;
     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "%s:%d: network name str : %@, xpan id str : %@, baid str : %@, foundxpanid : %@, foundbaid : %@, borderAgentID : %@", buf, 0x4Eu);
   }
 
-  v37 = [v59 networkName];
-  if (![v37 isEqualToString:v60])
+  networkName3 = [scanCopy networkName];
+  if (![networkName3 isEqualToString:v60])
   {
     goto LABEL_71;
   }
 
-  v47 = [v59 extendedPANID];
-  if (([v47 isEqualToData:v26] & 1) == 0)
+  extendedPANID3 = [scanCopy extendedPANID];
+  if (([extendedPANID3 isEqualToData:v26] & 1) == 0)
   {
 
     goto LABEL_71;
   }
 
-  v42 = [v58 isEqualToData:v25];
+  v42 = [dCopy isEqualToData:v25];
 
   if (v42)
   {
     v48 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
     if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
     {
-      v49 = [v59 networkName];
+      networkName5 = [scanCopy networkName];
       *buf = v57;
       v68 = "[ThreadNetworkManagerInstance checkIfNetworkIsFoundInMDNSScan:borderAgentID:]";
       v69 = 1024;
       *v70 = 7073;
       *&v70[4] = 2112;
-      *&v70[6] = v49;
+      *&v70[6] = networkName5;
       v71 = 2112;
       v72 = v60;
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "%s : %d: Network :%@ matches with mdns record :%@", buf, 0x26u);
     }
 
-    [(ThreadNetworkfinder *)v66->_BAFinder clear];
+    [(ThreadNetworkfinder *)selfCopy->_BAFinder clear];
     v42 = 1;
   }
 
@@ -26985,11 +26985,11 @@ LABEL_84:
   return v56;
 }
 
-- (BOOL)checkAndUpdateNetworkParamsFromMdnsScan:(id)a3 borderAgentID:(id)a4 leaderBorderAgentID:(id)a5 isNwFound:(BOOL *)a6 numAppleBRs:(int *)a7 numThirdPartyBRs:(int *)a8 isLeaderAppleDevice:(BOOL *)a9 numThreadNwsFound:(int *)a10 shouldRunPeriodicTdm:(BOOL *)a11
+- (BOOL)checkAndUpdateNetworkParamsFromMdnsScan:(id)scan borderAgentID:(id)d leaderBorderAgentID:(id)iD isNwFound:(BOOL *)found numAppleBRs:(int *)rs numThirdPartyBRs:(int *)bRs isLeaderAppleDevice:(BOOL *)device numThreadNwsFound:(int *)self0 shouldRunPeriodicTdm:(BOOL *)self1
 {
-  v104 = a3;
-  v106 = a4;
-  v99 = a5;
+  scanCopy = scan;
+  dCopy = d;
+  iDCopy = iD;
   v13 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -27000,16 +27000,16 @@ LABEL_84:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s:%d: Entered. Check and update network parameters from meshcop mDNS scan ", buf, 0x12u);
   }
 
-  *a6 = 0;
-  *a8 = 0;
-  *a7 = 0;
-  *a9 = 0;
-  *a10 = 0;
-  *a11 = 0;
-  v14 = v106;
-  encode_data_into_string([v106 bytes], objc_msgSend(v106, "length"), buf, 0x100uLL, 0);
+  *found = 0;
+  *bRs = 0;
+  *rs = 0;
+  *device = 0;
+  *nwsFound = 0;
+  *tdm = 0;
+  v14 = dCopy;
+  encode_data_into_string([dCopy bytes], objc_msgSend(dCopy, "length"), buf, 0x100uLL, 0);
   v105 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", buf, +[NSString defaultCStringEncoding]);
-  v15 = self;
+  selfCopy2 = self;
   if (!self->_BAFinder)
   {
     v16 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -27026,7 +27026,7 @@ LABEL_84:
     BAFinder = self->_BAFinder;
     self->_BAFinder = v17;
 
-    v15 = self;
+    selfCopy2 = self;
     if (!self->_BAFinder)
     {
       v86 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -27045,7 +27045,7 @@ LABEL_84:
     }
   }
 
-  v19 = [(ThreadNetworkManagerInstance *)v15 getCountOfThreadBorderRoutersWithMdns:?];
+  v19 = [(ThreadNetworkManagerInstance *)selfCopy2 getCountOfThreadBorderRoutersWithMdns:?];
   if (!v19)
   {
     v74 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -27071,8 +27071,8 @@ LABEL_84:
       goto LABEL_97;
     }
 
-    v23 = [v21 addresses];
-    v24 = v23 == 0;
+    addresses = [v21 addresses];
+    v24 = addresses == 0;
 
     if (v24)
     {
@@ -27089,8 +27089,8 @@ LABEL_84:
       goto LABEL_96;
     }
 
-    v25 = [v22 TXTRecordData];
-    v26 = [NSNetService dictionaryFromTXTRecordData:v25];
+    tXTRecordData = [v22 TXTRecordData];
+    v26 = [NSNetService dictionaryFromTXTRecordData:tXTRecordData];
 
     if (!v26)
     {
@@ -27202,13 +27202,13 @@ LABEL_32:
 
         [v100 addObject:v32];
         v37 = [v98 containsString:@"Apple"];
-        v38 = a8;
+        rsCopy = bRs;
         if (v37)
         {
-          v38 = a7;
+          rsCopy = rs;
         }
 
-        ++*v38;
+        ++*rsCopy;
         if ((v31 & 1) == 0)
         {
           v47 = [[NSString alloc] initWithData:v110 encoding:4];
@@ -27223,12 +27223,12 @@ LABEL_32:
             v94 = v50;
             if (v50 && v51)
             {
-              if ([v99 isEqualToData:v51] && (objc_msgSend(v104, "networkName"), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "isEqualToString:", v32), v53, v54))
+              if ([iDCopy isEqualToData:v51] && (objc_msgSend(scanCopy, "networkName"), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "isEqualToString:", v32), v53, v54))
               {
                 v93 = 1;
                 if ([v98 isEqualToString:@"Apple"])
                 {
-                  *a9 = 1;
+                  *device = 1;
                 }
               }
 
@@ -27237,32 +27237,32 @@ LABEL_32:
                 v93 = 0;
               }
 
-              v66 = [v104 networkName];
-              if ([v66 isEqualToString:v32])
+              networkName = [scanCopy networkName];
+              if ([networkName isEqualToString:v32])
               {
-                v67 = [v104 extendedPANID];
-                if ([v67 isEqualToData:v94])
+                extendedPANID = [scanCopy extendedPANID];
+                if ([extendedPANID isEqualToData:v94])
                 {
-                  v68 = [v106 isEqualToData:v52];
+                  v68 = [dCopy isEqualToData:v52];
 
                   if (v68)
                   {
                     v69 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
                     if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
                     {
-                      v70 = [v104 networkName];
+                      networkName2 = [scanCopy networkName];
                       *v113 = 136315906;
                       v114 = "[ThreadNetworkManagerInstance checkAndUpdateNetworkParamsFromMdnsScan:borderAgentID:leaderBorderAgentID:isNwFound:numAppleBRs:numThirdPartyBRs:isLeaderAppleDevice:numThreadNwsFound:shouldRunPeriodicTdm:]";
                       v115 = 1024;
                       LODWORD(v116) = 7246;
                       WORD2(v116) = 2112;
-                      *(&v116 + 6) = v70;
+                      *(&v116 + 6) = networkName2;
                       HIWORD(v116) = 2112;
                       *v117 = v32;
                       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "%s : %d: Network :%@ matches with mdns record :%@", v113, 0x26u);
                     }
 
-                    *a6 = 1;
+                    *found = 1;
                   }
                 }
 
@@ -27293,7 +27293,7 @@ LABEL_32:
                 v120 = 2112;
                 v121 = v52;
                 v122 = 2112;
-                v123 = v106;
+                v123 = dCopy;
                 v124 = 2112;
                 v125 = v107;
                 v126 = 1024;
@@ -27336,32 +27336,32 @@ LABEL_32:
           goto LABEL_92;
         }
 
-        v39 = [v104 networkName];
-        if ([v39 isEqualToString:v32])
+        networkName3 = [scanCopy networkName];
+        if ([networkName3 isEqualToString:v32])
         {
-          v40 = [v104 extendedPANID];
-          if ([v40 isEqualToData:v110])
+          extendedPANID2 = [scanCopy extendedPANID];
+          if ([extendedPANID2 isEqualToData:v110])
           {
-            v41 = [v106 isEqualToData:v109];
+            v41 = [dCopy isEqualToData:v109];
 
             if (v41)
             {
               v42 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
               if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
               {
-                v43 = [v104 networkName];
+                networkName4 = [scanCopy networkName];
                 *v113 = 136315906;
                 v114 = "[ThreadNetworkManagerInstance checkAndUpdateNetworkParamsFromMdnsScan:borderAgentID:leaderBorderAgentID:isNwFound:numAppleBRs:numThirdPartyBRs:isLeaderAppleDevice:numThreadNwsFound:shouldRunPeriodicTdm:]";
                 v115 = 1024;
                 LODWORD(v116) = 7256;
                 WORD2(v116) = 2112;
-                *(&v116 + 6) = v43;
+                *(&v116 + 6) = networkName4;
                 HIWORD(v116) = 2112;
                 *v117 = v32;
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "%s : %d: Network :%@ matches with mdns record :%@", v113, 0x26u);
               }
 
-              *a6 = 1;
+              *found = 1;
             }
           }
 
@@ -27374,17 +27374,17 @@ LABEL_32:
         {
         }
 
-        v56 = [v104 networkName];
-        if ([v56 isEqualToString:v32])
+        networkName5 = [scanCopy networkName];
+        if ([networkName5 isEqualToString:v32])
         {
-          v57 = [v99 isEqualToData:v109];
+          v57 = [iDCopy isEqualToData:v109];
 
           if (v57)
           {
             v96 = 1;
             if ([v98 isEqualToString:@"Apple"])
             {
-              *a9 = 1;
+              *device = 1;
             }
 
             goto LABEL_69;
@@ -27397,11 +27397,11 @@ LABEL_32:
 
         v96 = 0;
 LABEL_69:
-        v58 = [v104 networkName];
-        if ([v58 isEqualToString:v32])
+        networkName6 = [scanCopy networkName];
+        if ([networkName6 isEqualToString:v32])
         {
-          v59 = [v104 extendedPANID];
-          if ([v59 isEqualToData:v110])
+          extendedPANID3 = [scanCopy extendedPANID];
+          if ([extendedPANID3 isEqualToData:v110])
           {
             v60 = [v98 isEqualToString:@"Apple"];
 
@@ -27426,18 +27426,18 @@ LABEL_69:
         log = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
         if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
         {
-          v64 = [v104 networkName];
-          v65 = [v104 extendedPANID];
+          networkName7 = [scanCopy networkName];
+          extendedPANID4 = [scanCopy extendedPANID];
           *v113 = 136317442;
           v114 = "[ThreadNetworkManagerInstance checkAndUpdateNetworkParamsFromMdnsScan:borderAgentID:leaderBorderAgentID:isNwFound:numAppleBRs:numThirdPartyBRs:isLeaderAppleDevice:numThreadNwsFound:shouldRunPeriodicTdm:]";
           v115 = 1024;
           LODWORD(v116) = 7289;
           WORD2(v116) = 2112;
-          *(&v116 + 6) = v64;
+          *(&v116 + 6) = networkName7;
           HIWORD(v116) = 2112;
-          *v117 = v65;
+          *v117 = extendedPANID4;
           *&v117[8] = 2112;
-          *&v117[10] = v106;
+          *&v117[10] = dCopy;
           v118 = 2112;
           v119 = v32;
           v120 = 2112;
@@ -27567,7 +27567,7 @@ LABEL_97:
 
           if (v92)
           {
-            *a11 = 1;
+            *tdm = 1;
           }
 
           ++v89;
@@ -27589,19 +27589,19 @@ LABEL_97:
     v73 = 0;
 LABEL_109:
 
-    *a11 = v73;
+    *tdm = v73;
   }
 
-  *a10 = [v100 count];
+  *nwsFound = [v100 count];
   v76 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
   if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
   {
-    v77 = *a7;
-    v78 = *a8;
-    v79 = *a9;
-    v80 = *a10;
-    v81 = *a6;
-    v82 = *a11;
+    v77 = *rs;
+    v78 = *bRs;
+    v79 = *device;
+    v80 = *nwsFound;
+    v81 = *found;
+    v82 = *tdm;
     *v113 = 136316930;
     v114 = "[ThreadNetworkManagerInstance checkAndUpdateNetworkParamsFromMdnsScan:borderAgentID:leaderBorderAgentID:isNwFound:numAppleBRs:numThirdPartyBRs:isLeaderAppleDevice:numThreadNwsFound:shouldRunPeriodicTdm:]";
     v115 = 1024;
@@ -27629,9 +27629,9 @@ LABEL_125:
   return v75;
 }
 
-- (BOOL)updateMeshcopRelatedParams:(BOOL *)a3 numAppleBRs:(int *)a4 numThirdPartyBRs:(int *)a5 isLeaderAppleDevice:(BOOL *)a6 numThreadNwsFound:(int *)a7 shouldRunPeriodicTdm:(BOOL *)a8
+- (BOOL)updateMeshcopRelatedParams:(BOOL *)params numAppleBRs:(int *)rs numThirdPartyBRs:(int *)bRs isLeaderAppleDevice:(BOOL *)device numThreadNwsFound:(int *)found shouldRunPeriodicTdm:(BOOL *)tdm
 {
-  v9 = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid:a3];
+  v9 = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid:params];
   v38.var0 = 0;
   CtrInternalClientPtr = self->_CtrInternalClientPtr;
   std::string::basic_string[abi:ne200100]<0>(v36, "NCP:ExtendedAddress");
@@ -27804,7 +27804,7 @@ LABEL_40:
 
 - (BOOL)checkIfMdnsIsPublishedForBAID
 {
-  v3 = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid];
+  getCurrentNetworkNameAndXpanid = [(ThreadNetworkManagerInstance *)self getCurrentNetworkNameAndXpanid];
   v19.var0 = 0;
   CtrInternalClientPtr = self->_CtrInternalClientPtr;
   std::string::basic_string[abi:ne200100]<0>(v15, "NCP:ExtendedAddress");
@@ -27859,7 +27859,7 @@ LABEL_7:
       operator delete(__p[0]);
     }
 
-    v12 = [(ThreadNetworkManagerInstance *)self checkIfNetworkIsFoundInMDNSScan:v3 borderAgentID:v11];
+    v12 = [(ThreadNetworkManagerInstance *)self checkIfNetworkIsFoundInMDNSScan:getCurrentNetworkNameAndXpanid borderAgentID:v11];
     if (v12)
     {
       v13 = log_get_logging_obg("com.apple.wpantund.tnm", "threadStart");
@@ -28581,9 +28581,9 @@ void __59__ThreadNetworkManagerInstance_startNetworkTopologyBuilder__block_invok
   std::string::basic_string[abi:ne200100]<0>(&v33, "Command success");
   v3 = v33;
   v4 = SBYTE7(v34);
-  v5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
 
-  if (!v5)
+  if (!ctrInternalClientPtr)
   {
     v9 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -28596,11 +28596,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v6 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "coex:rcp2:btwifi:load");
-  if (v6)
+  if (ctrInternalClientPtr2)
   {
-    [v6 getProperty:__p output:&v35];
+    [ctrInternalClientPtr2 getProperty:__p output:&v35];
     v7 = v33 == 0;
     if ((v4 & 0x80000000) == 0)
     {
@@ -28707,9 +28707,9 @@ LABEL_25:
   }
 }
 
-- (BOOL)generateThreadSessionEvent:(BOOL)a3
+- (BOOL)generateThreadSessionEvent:(BOOL)event
 {
-  v74 = a3;
+  eventCopy = event;
   if (![(ThreadNetworkManagerInstance *)self getIsAssociatedFirstTimeAfterThreadStart])
   {
 LABEL_10:
@@ -28798,7 +28798,7 @@ LABEL_11:
   v25 = [NSNumber numberWithUnsignedLongLong:qword_1004E5E08];
   [v13 setObject:v25 forKey:@"wed_link_failure_count"];
 
-  if (v74)
+  if (eventCopy)
   {
     [v13 setObject:@"timer" forKey:@"trigger_type"];
     v26 = [NSNumber numberWithUnsignedInt:[(ThreadNetworkManagerInstance *)self getCounterThreadStartFailDueToBluetoothOff]];
@@ -28888,11 +28888,11 @@ LABEL_11:
   v37 = [NSNumber numberWithUnsignedLong:dword_1004E5CD0];
   [v13 setObject:v37 forKey:@"stop_pairing_total_count"];
 
-  v38 = [NSNumber numberWithUnsignedLong:qword_1004E5CD8 / 0x3E8uLL];
-  [v13 setObject:v38 forKey:@"duration_pairing_total"];
+  0x3E8uLL = [NSNumber numberWithUnsignedLong:qword_1004E5CD8 / 0x3E8uLL];
+  [v13 setObject:0x3E8uLL forKey:@"duration_pairing_total"];
 
-  v39 = [NSNumber numberWithUnsignedLong:qword_1004E5CE0 / 0x3E8uLL];
-  [v13 setObject:v39 forKey:@"duration_pairing_success"];
+  0x3E8uLL2 = [NSNumber numberWithUnsignedLong:qword_1004E5CE0 / 0x3E8uLL];
+  [v13 setObject:0x3E8uLL2 forKey:@"duration_pairing_success"];
 
   v40 = [NSNumber numberWithUnsignedLong:dword_1004E5CF8];
   [v13 setObject:v40 forKey:@"start_fwupdate_total_count"];
@@ -28916,11 +28916,11 @@ LABEL_11:
   v44 = [NSNumber numberWithUnsignedLong:dword_1004E5D00];
   [v13 setObject:v44 forKey:@"stop_fwupdate_total_count"];
 
-  v45 = [NSNumber numberWithUnsignedLong:qword_1004E5D08 / 0x3E8uLL];
-  [v13 setObject:v45 forKey:@"duration_fwupdate_total"];
+  0x3E8uLL3 = [NSNumber numberWithUnsignedLong:qword_1004E5D08 / 0x3E8uLL];
+  [v13 setObject:0x3E8uLL3 forKey:@"duration_fwupdate_total"];
 
-  v46 = [NSNumber numberWithUnsignedLong:qword_1004E5D10 / 0x3E8uLL];
-  [v13 setObject:v46 forKey:@"duration_fwupdate_success"];
+  0x3E8uLL4 = [NSNumber numberWithUnsignedLong:qword_1004E5D10 / 0x3E8uLL];
+  [v13 setObject:0x3E8uLL4 forKey:@"duration_fwupdate_success"];
 
   if (qword_1004E5D58)
   {
@@ -28960,7 +28960,7 @@ LABEL_11:
           {
             v84 = buf;
             v56 = std::__tree<std::__value_type<std::string,boost::any>,std::__map_value_compare<std::string,std::__value_type<std::string,boost::any>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,boost::any>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string const&>,std::tuple<>>(&qword_1004E5D48, buf);
-            v57 = [NSNumber numberWithUnsignedLong:any_to_uint64(v56 + 7, 0) / 0x3E8];
+            0x3E8 = [NSNumber numberWithUnsignedLong:any_to_uint64(v56 + 7, 0) / 0x3E8];
             if ((v77 & 0x80u) == 0)
             {
               v58 = v76;
@@ -28972,7 +28972,7 @@ LABEL_11:
             }
 
             v59 = [NSString stringWithUTF8String:v58];
-            [v13 setObject:v57 forKey:v59];
+            [v13 setObject:0x3E8 forKey:v59];
 
             v55 = v77;
           }
@@ -29035,7 +29035,7 @@ LABEL_11:
   [(ThreadNetworkManagerInstance *)self resetThreadSessionMetrics];
   [(ThreadNetworkManagerInstance *)self resetThreadSessionWEDConnectionHistory];
   [(ThreadNetworkManagerInstance *)self CAresetCoexTaskPeriodMetrics];
-  if (v74)
+  if (eventCopy)
   {
     [(ThreadNetworkManagerInstance *)self resetPeriodicRCP2_threadSessionMetrics];
     if ([(ThreadNetworkManagerInstance *)self getThreadSessionStatus])
@@ -29050,7 +29050,7 @@ LABEL_11:
   if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
   {
     v72 = "sessionEnd";
-    if (v74)
+    if (eventCopy)
     {
       v72 = "Timer";
     }
@@ -29132,9 +29132,9 @@ LABEL_11:
 
       v14 = [NSString stringWithUTF8String:v13];
       v15 = v14;
-      v16 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       *buf = 136315138;
-      v21 = v16;
+      v21 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "TNM:NCPState:%s is not associated.", buf, 0xCu);
 
       if (v19 < 0)
@@ -29148,17 +29148,17 @@ LABEL_11:
   }
 }
 
-- (void)getCurrentBTWifiLoad:(id)a3
+- (void)getCurrentBTWifiLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v28 = 0;
   std::string::basic_string[abi:ne200100]<0>(buf, "Command success");
   v5 = *buf;
   v6 = SBYTE7(v30);
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-  if (v4)
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  if (loadCopy)
   {
-    v8 = v7 == 0;
+    v8 = ctrInternalClientPtr == 0;
   }
 
   else
@@ -29181,9 +29181,9 @@ LABEL_11:
     goto LABEL_30;
   }
 
-  v11 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "coex:rcp2:btwifi:load");
-  if (!v11)
+  if (!ctrInternalClientPtr2)
   {
     *buf = 0u;
     v30 = 0u;
@@ -29196,7 +29196,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  [v11 getProperty:__p output:&v28];
+  [ctrInternalClientPtr2 getProperty:__p output:&v28];
   v12 = *buf == 0;
   if (v6 < 0)
   {
@@ -29253,7 +29253,7 @@ LABEL_14:
       *buf = &v24;
       *&buf[8] = "value";
       v20 = xpc::dict::object_proxy::operator*(buf);
-      CAMetricsHandlers_handle_getprop_BTWifiLoadInfo(v20, v4);
+      CAMetricsHandlers_handle_getprop_BTWifiLoadInfo(v20, loadCopy);
 
       v21 = v24;
       v24 = 0;
@@ -29286,11 +29286,11 @@ LABEL_30:
 - (void)CAgetCoexCounter
 {
   v7 = 0;
-  v2 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(v5, "vendor:coex:rcp2:counters");
-  if (v2)
+  if (ctrInternalClientPtr)
   {
-    [v2 getProperty:v5 output:&v7];
+    [ctrInternalClientPtr getProperty:v5 output:&v7];
     v3 = LODWORD(__p[0]) == 0;
     if (SHIBYTE(v9) < 0)
     {
@@ -29327,25 +29327,25 @@ LABEL_30:
   }
 }
 
-- (void)updateThreadSessionmetrics:(id)a3 previousNodeType:(id)a4
+- (void)updateThreadSessionmetrics:(id)sessionmetrics previousNodeType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  sessionmetricsCopy = sessionmetrics;
+  typeCopy = type;
   v8 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     *&buf[4] = "TNMRCP2:CA:";
     v28 = 2080;
-    v29 = [v7 UTF8String];
+    uTF8String = [typeCopy UTF8String];
     v30 = 2080;
-    v31 = [v6 UTF8String];
+    uTF8String2 = [sessionmetricsCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%sPrevRole:%s,CurRole:%s", buf, 0x20u);
   }
 
   [(ThreadNetworkManagerInstance *)self getNCPState:0];
-  v9 = v6;
-  std::string::basic_string[abi:ne200100]<0>(buf, [v6 UTF8String]);
+  v9 = sessionmetricsCopy;
+  std::string::basic_string[abi:ne200100]<0>(buf, [sessionmetricsCopy UTF8String]);
   v10 = nl::wpantund::string_to_node_type(buf);
   if (SHIBYTE(v30) < 0)
   {
@@ -29367,16 +29367,16 @@ LABEL_30:
       v11 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = v7;
-        v13 = [v7 UTF8String];
-        v14 = v6;
-        v15 = [v6 UTF8String];
+        v12 = typeCopy;
+        uTF8String3 = [typeCopy UTF8String];
+        v14 = sessionmetricsCopy;
+        uTF8String4 = [sessionmetricsCopy UTF8String];
         *buf = 136315650;
         *&buf[4] = "TNMRCP2:CA:";
         v28 = 2080;
-        v29 = v13;
+        uTF8String = uTF8String3;
         v30 = 2080;
-        v31 = v15;
+        uTF8String2 = uTF8String4;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%sBecause of no intermediate transition notification,skipping role transition CA event where prevRole:%s, curRole:%s", buf, 0x20u);
       }
     }
@@ -29386,7 +29386,7 @@ LABEL_30:
       mThreadInfoBetweenRoles = time_ms();
       v26[0] = qword_1004E5D80;
       v26[1] = @"->";
-      v26[2] = v6;
+      v26[2] = sessionmetricsCopy;
       v20 = [NSArray arrayWithObjects:v26 count:3];
       v21 = [v20 componentsJoinedByString:@" "];
       v22 = qword_1004E5D78;
@@ -29397,7 +29397,7 @@ LABEL_30:
     }
 
     objc_storeStrong(&qword_1004E5D88, qword_1004E5D80);
-    v25 = v6;
+    v25 = sessionmetricsCopy;
     v19 = [NSArray arrayWithObjects:&v25 count:1];
     v23 = [v19 componentsJoinedByString:&stru_1004D2028];
     v24 = qword_1004E5D80;
@@ -29455,11 +29455,11 @@ LABEL_21:
   std::string::basic_string[abi:ne200100]<0>(buf, "Command success");
   v3 = *buf;
   v4 = SBYTE7(v13);
-  v5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "vendor:coex:rcp2:state:table:reset");
-  if (v5)
+  if (ctrInternalClientPtr)
   {
-    [v5 setProperty:__p property_val:"0"];
+    [ctrInternalClientPtr setProperty:__p property_val:"0"];
     v6 = *buf == 0;
     if ((v4 & 0x80000000) == 0)
     {
@@ -29505,9 +29505,9 @@ LABEL_4:
   }
 }
 
-- (void)getRCP2CoexMetrics:(BOOL)a3
+- (void)getRCP2CoexMetrics:(BOOL)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v5 = +[NSMutableDictionary dictionary];
   std::string::basic_string[abi:ne200100]<0>(buf, "Command success");
   v6 = *buf;
@@ -29541,11 +29541,11 @@ LABEL_4:
   [v5 setObject:v12 forKey:@"header_vendor_version"];
 
   v33 = 0;
-  v13 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "coex:rcp2:coex:counters:asvalmap");
-  if (v13)
+  if (ctrInternalClientPtr)
   {
-    [v13 getProperty:__p output:&v33];
+    [ctrInternalClientPtr getProperty:__p output:&v33];
     v14 = *buf == 0;
     if ((v7 & 0x80000000) == 0)
     {
@@ -29605,7 +29605,7 @@ LABEL_10:
     CAMetricsHandlers_handle_getprop_vendorcoex_RCP2_counters(v23, v5);
   }
 
-  if (v3)
+  if (metricsCopy)
   {
     v24 = @"timer";
   }
@@ -29654,9 +29654,9 @@ LABEL_10:
   qword_1004E5D80 = @"unknown";
 }
 
-- (void)CAgetPcapMetrics:(BOOL)a3
+- (void)CAgetPcapMetrics:(BOOL)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   if ([(ThreadNetworkManagerInstance *)self getThreadSessionStatus])
   {
     v5 = +[NSMutableDictionary dictionary];
@@ -29691,11 +29691,11 @@ LABEL_10:
     [v5 setObject:v11 forKey:@"header_vendor_version"];
 
     v33 = 0;
-    v12 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(__p, "rcp2PcapState");
-    if (v12)
+    if (ctrInternalClientPtr)
     {
-      [v12 getProperty:__p output:&v33];
+      [ctrInternalClientPtr getProperty:__p output:&v33];
       v13 = *buf == 0;
       if ((v7 & 0x80000000) == 0)
       {
@@ -29758,7 +29758,7 @@ LABEL_11:
         else
         {
 LABEL_24:
-          if (v3)
+          if (metricsCopy)
           {
             v26 = @"timer";
           }
@@ -29825,18 +29825,18 @@ LABEL_24:
 LABEL_34:
 }
 
-- (void)resetMetrics:(id)a3
+- (void)resetMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   std::string::basic_string[abi:ne200100]<0>(buf, "Command success");
   v5 = *buf;
   v6 = SBYTE7(v17);
-  v7 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
-  v8 = v4;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
-  if (v7)
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  v8 = metricsCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, [metricsCopy UTF8String]);
+  if (ctrInternalClientPtr)
   {
-    [v7 setProperty:__p property_val:"0"];
+    [ctrInternalClientPtr setProperty:__p property_val:"0"];
     v9 = *buf == 0;
     if ((v6 & 0x80000000) == 0)
     {
@@ -29870,8 +29870,8 @@ LABEL_4:
     v12 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = v4;
-      -[ThreadNetworkManagerInstance(RCP2CAMetrics_extension) resetMetrics:].cold.1([v4 UTF8String], buf, v12);
+      v13 = metricsCopy;
+      -[ThreadNetworkManagerInstance(RCP2CAMetrics_extension) resetMetrics:].cold.1([metricsCopy UTF8String], buf, v12);
     }
   }
 
@@ -29985,23 +29985,23 @@ LABEL_18:
   [(ThreadNetworkManagerInstance *)self resetCounterThreadSessionStoppedDueToAPOff];
 }
 
-- (void)getThreadSessionWEDConnectionHistory:(id)a3
+- (void)getThreadSessionWEDConnectionHistory:(id)history
 {
-  v8 = a3;
+  historyCopy = history;
   v3 = [NSNumber numberWithUnsignedInt:mObjectWEDHistory];
-  [v8 setObject:v3 forKey:@"wed_total_conn_req_count"];
+  [historyCopy setObject:v3 forKey:@"wed_total_conn_req_count"];
 
   v4 = [NSNumber numberWithUnsignedInt:HIDWORD(mObjectWEDHistory)];
-  [v8 setObject:v4 forKey:@"wed_conn_req_success_count"];
+  [historyCopy setObject:v4 forKey:@"wed_conn_req_success_count"];
 
   v5 = [NSNumber numberWithUnsignedInt:HIDWORD(qword_1004E5E00)];
-  [v8 setObject:v5 forKey:@"wed_conn_req_fail_count"];
+  [historyCopy setObject:v5 forKey:@"wed_conn_req_fail_count"];
 
   v6 = [NSNumber numberWithUnsignedInt:HIDWORD(qword_1004E5E08)];
-  [v8 setObject:v6 forKey:@"wed_conn_req_kbusy_fail_count"];
+  [historyCopy setObject:v6 forKey:@"wed_conn_req_kbusy_fail_count"];
 
   v7 = [NSNumber numberWithUnsignedInt:qword_1004E5E00];
-  [v8 setObject:v7 forKey:@"wed_duplicate_conn_req_count"];
+  [historyCopy setObject:v7 forKey:@"wed_duplicate_conn_req_count"];
 }
 
 - (void)resetThreadSessionWEDConnectionHistory
@@ -30011,9 +30011,9 @@ LABEL_18:
   qword_1004E5E08 = 0;
 }
 
-- (void)getStreamRawResponseHistogramMetric:(BOOL)a3
+- (void)getStreamRawResponseHistogramMetric:(BOOL)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v5 = +[NSMutableDictionary dictionary];
   std::string::basic_string[abi:ne200100]<0>(buf, "Command success");
   v6 = *buf;
@@ -30046,11 +30046,11 @@ LABEL_18:
   [v5 setObject:v11 forKey:@"header_vendor_version"];
 
   v33 = 0;
-  v12 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "streamRawRespTimeHist");
-  if (v12)
+  if (ctrInternalClientPtr)
   {
-    [v12 getProperty:__p output:&v33];
+    [ctrInternalClientPtr getProperty:__p output:&v33];
     v13 = *buf == 0;
     if ((v7 & 0x80000000) == 0)
     {
@@ -30128,7 +30128,7 @@ LABEL_10:
   else
   {
 LABEL_21:
-    if (v3)
+    if (metricCopy)
     {
       v26 = @"timer";
     }
@@ -30171,11 +30171,11 @@ LABEL_21:
   std::string::basic_string[abi:ne200100]<0>(&v19, "Command success");
   v3 = v19;
   v4 = SBYTE7(v20);
-  v5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "vendor:MAC:packet:RSSIHistogram");
-  if (v5)
+  if (ctrInternalClientPtr)
   {
-    [v5 setProperty:__p property_val:"0"];
+    [ctrInternalClientPtr setProperty:__p property_val:"0"];
     v6 = v19 == 0;
     if ((v4 & 0x80000000) == 0)
     {
@@ -30219,16 +30219,16 @@ LABEL_4:
   }
 }
 
-- (void)noteTimeWhenWEDAttachStart:(id)a3
+- (void)noteTimeWhenWEDAttachStart:(id)start
 {
-  v4 = a3;
-  if (qword_1004E5DF0 != v4 && byte_1004E5DE8 == 0)
+  startCopy = start;
+  if (qword_1004E5DF0 != startCopy && byte_1004E5DE8 == 0)
   {
-    v6 = v4;
+    v6 = startCopy;
     byte_1004E5DE8 = 0;
     *&currentWEDInfo = time_ms();
-    objc_storeStrong(&qword_1004E5DF0, a3);
-    v4 = v6;
+    objc_storeStrong(&qword_1004E5DF0, start);
+    startCopy = v6;
   }
 }
 
@@ -30251,13 +30251,13 @@ LABEL_4:
   }
 }
 
-- (void)noteTimeWhenWEDAttachCompleteSuccessOrFail:(BOOL)a3
+- (void)noteTimeWhenWEDAttachCompleteSuccessOrFail:(BOOL)fail
 {
-  v3 = a3;
+  failCopy = fail;
   v4 = time_ms();
   v5 = v4;
   *(&currentWEDInfo + 1) = v4;
-  if (!v3)
+  if (!failCopy)
   {
     if (HIDWORD(qword_1004E5E00) == -1)
     {
@@ -30335,15 +30335,15 @@ LABEL_15:
   }
 }
 
-- (void)noteTimeWhenWEDDetachCompleteSuccessOrFail:(BOOL)a3
+- (void)noteTimeWhenWEDDetachCompleteSuccessOrFail:(BOOL)fail
 {
-  v3 = a3;
+  failCopy = fail;
   v5 = time_ms();
   qword_1004E5DC8 = v5;
   if (v5 >= qword_1004E5DC0)
   {
     byte_1004E5DE8 = 0;
-    if (v3)
+    if (failCopy)
     {
       qword_1004E5DE0 = v5 - currentWEDInfo;
     }
@@ -30470,8 +30470,8 @@ LABEL_15:
   v8 = [NSNumber numberWithUnsignedLongLong:qword_1004E5DD0];
   [v3 setObject:v8 forKey:@"wed_duration_to_attach"];
 
-  v9 = [NSNumber numberWithUnsignedLongLong:qword_1004E5DE0 / 0x3E8uLL];
-  [v3 setObject:v9 forKey:@"wed_duration_attach_to_detach"];
+  0x3E8uLL = [NSNumber numberWithUnsignedLongLong:qword_1004E5DE0 / 0x3E8uLL];
+  [v3 setObject:0x3E8uLL forKey:@"wed_duration_attach_to_detach"];
 
   v10 = [NSNumber numberWithUnsignedLongLong:qword_1004E5DD8];
   [v3 setObject:v10 forKey:@"wed_duration_attach_connectionfail"];
@@ -30494,18 +30494,18 @@ LABEL_15:
   [(ThreadNetworkManagerInstance *)self resetCurrentWEDInfoMetrics];
 }
 
-- (void)getBTWifiLoadInfoEvent:(any)a3
+- (void)getBTWifiLoadInfoEvent:(any)event
 {
   v5 = +[NSMutableDictionary dictionary];
   std::string::basic_string[abi:ne200100]<0>(buf, "Command Error");
   v6 = *buf;
   v7 = SBYTE7(v42);
   v43.var0 = 0;
-  v8 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+  ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
   std::string::basic_string[abi:ne200100]<0>(__p, "NCP:Channel");
-  if (v8)
+  if (ctrInternalClientPtr)
   {
-    [v8 getProperty:__p output:&v43];
+    [ctrInternalClientPtr getProperty:__p output:&v43];
     v9 = *buf == 0;
     if ((v7 & 0x80000000) == 0)
     {
@@ -30577,17 +30577,17 @@ LABEL_4:
 
   v24 = xpc_null_create();
   v38 = v24;
-  if (*a3.var0)
+  if (*event.var0)
   {
-    v37 = (*(**a3.var0 + 24))(*a3.var0);
+    v37 = (*(**event.var0 + 24))(*event.var0);
     [(ThreadNetworkManagerInstance *)self calculateCoexTaskPeriod:&v37];
     if (v37)
     {
       (*(*v37 + 8))(v37);
     }
 
-    v25 = *a3.var0;
-    if (*a3.var0)
+    v25 = *event.var0;
+    if (*event.var0)
     {
       v25 = (*(*v25 + 24))(v25);
     }
@@ -30642,9 +30642,9 @@ LABEL_4:
   }
 }
 
-- (void)calculateCoexTaskPeriod:(any)a3
+- (void)calculateCoexTaskPeriod:(any)period
 {
-  boost::any_cast<std::map<std::string,boost::any>>(a3.var0, &v54);
+  boost::any_cast<std::map<std::string,boost::any>>(period.var0, &v54);
   v53 = 0;
   v48 = time_ms();
   v3 = log_get_logging_obg("com.apple.wpantund.tnm", "default");
@@ -30940,11 +30940,11 @@ LABEL_105:
   v4 = SBYTE7(v14);
   if (self)
   {
-    v5 = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
+    ctrInternalClientPtr = [(ThreadNetworkManagerInstance *)self CtrInternalClientPtr];
     std::string::basic_string[abi:ne200100]<0>(__p, "coex:rcp2:btwifi:load");
-    if (v5)
+    if (ctrInternalClientPtr)
     {
-      [v5 getProperty:__p output:&v12];
+      [ctrInternalClientPtr getProperty:__p output:&v12];
       v6 = *buf == 0;
       if ((v4 & 0x80000000) == 0)
       {
@@ -31013,13 +31013,13 @@ LABEL_15:
   }
 }
 
-- (void)updateThreadSessionStopReason:(id)a3
+- (void)updateThreadSessionStopReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isEqualToString:&stru_1004D2028])
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (reasonCopy && ![reasonCopy isEqualToString:&stru_1004D2028])
   {
-    objc_storeStrong(&qword_1004E5D28, a3);
+    objc_storeStrong(&qword_1004E5D28, reason);
   }
 
   else
@@ -31032,9 +31032,9 @@ LABEL_15:
   }
 }
 
-- (void)getThreadSessionRejectInfoMetrics:(id)a3
+- (void)getThreadSessionRejectInfoMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = +[NSMutableDictionary dictionary];
   if (v5)
   {
@@ -31064,7 +31064,7 @@ LABEL_15:
     v9 = [NSString stringWithUTF8String:v8];
     [v5 setObject:v9 forKey:@"header_vendor_version"];
 
-    [v5 setObject:v4 forKey:@"threadstart_rejected"];
+    [v5 setObject:metricsCopy forKey:@"threadstart_rejected"];
     [(ThreadNetworkManagerInstance *)self getCurrentBTWifiLoad:v5];
     [(ThreadNetworkManagerInstance *)self addCommonDimensions:v5];
     v20 = _NSConcreteStackBlock;
@@ -31148,8 +31148,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v24 = [NSNumber numberWithUnsignedLong:(v8 - mAPInfo) / 0x3E8];
-  [v3 setObject:v24 forKey:@"duration_ap_on"];
+  0x3E8 = [NSNumber numberWithUnsignedLong:(v8 - mAPInfo) / 0x3E8];
+  [v3 setObject:0x3E8 forKey:@"duration_ap_on"];
 
   v25 = [NSNumber numberWithUnsignedInt:[(ThreadNetworkManagerInstance *)self getCounterThreadStartFailDueToBluetoothOff]];
   [v3 setObject:v25 forKey:@"BTOff_threadStart_count"];
@@ -31186,10 +31186,10 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)CAincrementStartProcessCount:(BOOL)a3
+- (void)CAincrementStartProcessCount:(BOOL)count
 {
   v3 = 88;
-  if (a3)
+  if (count)
   {
     v3 = 40;
   }
@@ -31198,10 +31198,10 @@ LABEL_16:
   [(ThreadNetworkManagerInstance *)self CAnoteStartProcessReqTime:?];
 }
 
-- (void)CAincrementStartProcessSuccessCount:(BOOL)a3
+- (void)CAincrementStartProcessSuccessCount:(BOOL)count
 {
   v3 = 92;
-  if (a3)
+  if (count)
   {
     v3 = 44;
   }
@@ -31209,10 +31209,10 @@ LABEL_16:
   ++*(&threadSessionMetrics + v3);
 }
 
-- (void)CAincrementStopProcessCount:(BOOL)a3
+- (void)CAincrementStopProcessCount:(BOOL)count
 {
   v3 = 6;
-  if (a3)
+  if (count)
   {
     v3 = 3;
   }
@@ -31220,10 +31220,10 @@ LABEL_16:
   ++LODWORD(threadSessionMetrics[v3]);
 }
 
-- (void)CAincrementStopProcessSuccessCount:(BOOL)a3
+- (void)CAincrementStopProcessSuccessCount:(BOOL)count
 {
   v3 = 100;
-  if (a3)
+  if (count)
   {
     v3 = 52;
   }
@@ -31231,18 +31231,18 @@ LABEL_16:
   ++*(threadSessionMetrics + v3);
 }
 
-- (void)CAnoteStartProcessReqTime:(BOOL)a3
+- (void)CAnoteStartProcessReqTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = time_ms();
   v5 = 120;
-  if (v3)
+  if (timeCopy)
   {
     v5 = 72;
   }
 
   v6 = 8;
-  if (v3)
+  if (timeCopy)
   {
     v6 = 5;
   }
@@ -31251,12 +31251,12 @@ LABEL_16:
   *&threadSessionMetrics[v6] = v4;
 }
 
-- (void)CAnoteStopProcessReqTimeSuccessOrFail:(BOOL)a3 isProcessPairing:(BOOL)a4
+- (void)CAnoteStopProcessReqTimeSuccessOrFail:(BOOL)fail isProcessPairing:(BOOL)pairing
 {
-  v4 = a4;
-  v5 = a3;
+  pairingCopy = pairing;
+  failCopy = fail;
   v6 = time_ms();
-  if (v4)
+  if (pairingCopy)
   {
     if (qword_1004E5CE8)
     {
@@ -31278,7 +31278,7 @@ LABEL_16:
       v8 = 0;
     }
 
-    if (v5)
+    if (failCopy)
     {
       qword_1004E5CE0 += v8;
     }
@@ -31308,7 +31308,7 @@ LABEL_16:
       v8 = 0;
     }
 
-    if (v5)
+    if (failCopy)
     {
       qword_1004E5D10 += v8;
     }

@@ -1,8 +1,8 @@
 @interface TVUpNextQueueButtonView
 - (CGSize)intrinsicContentSize;
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TVUpNextQueueButtonView
@@ -23,7 +23,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20C0BCFF8();
   v5 = v4;
 
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithCoder:(id)a3
+- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI23TVUpNextQueueButtonView_layout) = 0x4050800000000000;
   v3 = OBJC_IVAR____TtC9SeymourUI23TVUpNextQueueButtonView_buttonContentView;
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI23TVUpNextQueueButtonView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

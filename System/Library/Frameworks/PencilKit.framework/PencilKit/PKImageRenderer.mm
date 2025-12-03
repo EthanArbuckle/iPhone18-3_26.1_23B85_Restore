@@ -1,64 +1,64 @@
 @interface PKImageRenderer
-+ (CGImage)createImageByUnpremultiplyingAlphaInImage:(CGImage *)a3;
-+ (CGImage)createJPEGCopyFrom:(CGImage *)a3 compressionQuality:(double)a4;
-+ (void)_fuzzTestUnzippedData:(id)a3;
++ (CGImage)createImageByUnpremultiplyingAlphaInImage:(CGImage *)image;
++ (CGImage)createJPEGCopyFrom:(CGImage *)from compressionQuality:(double)quality;
++ (void)_fuzzTestUnzippedData:(id)data;
 - (BOOL)invertColors;
 - (CGSize)size;
-- (PKImageRenderer)initWithSize:(CGSize)a3 scale:(double)a4 renderQueue:(id)a5 sixChannelBlending:(BOOL)a6 transparentBlending:(BOOL)a7 extendedDynamicRange:(BOOL)a8;
-- (id)initSyncWithSize:(CGSize)a3 scale:(double)a4 extendedDynamicRange:(BOOL)a5;
-- (int64_t)blendingModeForSixChannelBlending:(BOOL)a3 withTransparentBlending:(BOOL)a4;
-- (void)_renderCGStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7;
-- (void)buildStrokeRenderCacheForDrawing:(id)a3;
+- (PKImageRenderer)initWithSize:(CGSize)size scale:(double)scale renderQueue:(id)queue sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending extendedDynamicRange:(BOOL)range;
+- (id)initSyncWithSize:(CGSize)size scale:(double)scale extendedDynamicRange:(BOOL)range;
+- (int64_t)blendingModeForSixChannelBlending:(BOOL)blending withTransparentBlending:(BOOL)transparentBlending;
+- (void)_renderCGStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion;
+- (void)buildStrokeRenderCacheForDrawing:(id)drawing;
 - (void)cancel;
 - (void)dealloc;
-- (void)renderCGStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6;
-- (void)renderCGStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7;
-- (void)renderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6;
-- (void)renderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7;
-- (void)renderStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6;
-- (void)renderStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7;
+- (void)renderCGStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion;
+- (void)renderCGStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion;
+- (void)renderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion;
+- (void)renderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion;
+- (void)renderStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion;
+- (void)renderStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion;
 - (void)resume;
-- (void)setupWithSize:(CGSize)a3 scale:(double)a4 renderQueue:(id)a5 sixChannelBlending:(BOOL)a6 synchronous:(BOOL)a7 transparentBlending:(BOOL)a8 extendedDynamicRange:(BOOL)a9;
-- (void)sixChannelCGRenderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6;
-- (void)sixChannelCGRenderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7;
-- (void)sixChannelCGRenderStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6;
-- (void)sixChannelPDFRenderDrawing:(id)a3 context:(CGContext *)a4 clippedToStrokeSpaceRect:(CGRect)a5 scale:(double)a6 completion:(id)a7;
+- (void)setupWithSize:(CGSize)size scale:(double)scale renderQueue:(id)queue sixChannelBlending:(BOOL)blending synchronous:(BOOL)synchronous transparentBlending:(BOOL)transparentBlending extendedDynamicRange:(BOOL)range;
+- (void)sixChannelCGRenderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion;
+- (void)sixChannelCGRenderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion;
+- (void)sixChannelCGRenderStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion;
+- (void)sixChannelPDFRenderDrawing:(id)drawing context:(CGContext *)context clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion;
 @end
 
 @implementation PKImageRenderer
 
-- (PKImageRenderer)initWithSize:(CGSize)a3 scale:(double)a4 renderQueue:(id)a5 sixChannelBlending:(BOOL)a6 transparentBlending:(BOOL)a7 extendedDynamicRange:(BOOL)a8
+- (PKImageRenderer)initWithSize:(CGSize)size scale:(double)scale renderQueue:(id)queue sixChannelBlending:(BOOL)blending transparentBlending:(BOOL)transparentBlending extendedDynamicRange:(BOOL)range
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  height = a3.height;
-  width = a3.width;
-  v15 = a5;
+  rangeCopy = range;
+  transparentBlendingCopy = transparentBlending;
+  blendingCopy = blending;
+  height = size.height;
+  width = size.width;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = PKImageRenderer;
   v16 = [(PKImageRenderer *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(PKImageRenderer *)v16 setupWithSize:v15 scale:v10 renderQueue:0 sixChannelBlending:v9 synchronous:v8 transparentBlending:width extendedDynamicRange:height, a4];
+    [(PKImageRenderer *)v16 setupWithSize:queueCopy scale:blendingCopy renderQueue:0 sixChannelBlending:transparentBlendingCopy synchronous:rangeCopy transparentBlending:width extendedDynamicRange:height, scale];
   }
 
   return v17;
 }
 
-- (id)initSyncWithSize:(CGSize)a3 scale:(double)a4 extendedDynamicRange:(BOOL)a5
+- (id)initSyncWithSize:(CGSize)size scale:(double)scale extendedDynamicRange:(BOOL)range
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  rangeCopy = range;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = PKImageRenderer;
   v9 = [(PKImageRenderer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(PKImageRenderer *)v9 setupWithSize:0 scale:0 renderQueue:1 sixChannelBlending:0 synchronous:v5 transparentBlending:width extendedDynamicRange:height, a4];
+    [(PKImageRenderer *)v9 setupWithSize:0 scale:0 renderQueue:1 sixChannelBlending:0 synchronous:rangeCopy transparentBlending:width extendedDynamicRange:height, scale];
   }
 
   return v10;
@@ -66,9 +66,9 @@
 
 - (void)dealloc
 {
-  v3 = [(PKImageRenderer *)self synchronous];
+  synchronous = [(PKImageRenderer *)self synchronous];
   rendererController = self->_rendererController;
-  if (v3)
+  if (synchronous)
   {
     if (rendererController)
     {
@@ -86,38 +86,38 @@
   [(PKImageRenderer *)&v5 dealloc];
 }
 
-- (void)setupWithSize:(CGSize)a3 scale:(double)a4 renderQueue:(id)a5 sixChannelBlending:(BOOL)a6 synchronous:(BOOL)a7 transparentBlending:(BOOL)a8 extendedDynamicRange:(BOOL)a9
+- (void)setupWithSize:(CGSize)size scale:(double)scale renderQueue:(id)queue sixChannelBlending:(BOOL)blending synchronous:(BOOL)synchronous transparentBlending:(BOOL)transparentBlending extendedDynamicRange:(BOOL)range
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a4;
-  height = a3.height;
-  width = a3.width;
-  self->_size = a3;
-  self->_extendedDynamicRange = a9;
-  v16 = fmax(round(a3.width * a4), 1.0);
-  v17 = fmax(round(a3.height * a4), 1.0);
-  [PKMetalUtility clampedPixelSize:a5, v16, v17];
+  transparentBlendingCopy = transparentBlending;
+  synchronousCopy = synchronous;
+  blendingCopy = blending;
+  scaleCopy = scale;
+  height = size.height;
+  width = size.width;
+  self->_size = size;
+  self->_extendedDynamicRange = range;
+  v16 = fmax(round(size.width * scale), 1.0);
+  v17 = fmax(round(size.height * scale), 1.0);
+  [PKMetalUtility clampedPixelSize:queue, v16, v17];
   v20 = v18;
   v21 = v19;
   if (v16 != v18 || v17 != v19)
   {
-    v12 = v18 / v16 * v12;
+    scaleCopy = v18 / v16 * scaleCopy;
   }
 
-  self->_scale = v12;
-  self->_synchronous = v10;
+  self->_scale = scaleCopy;
+  self->_synchronous = synchronousCopy;
   if (+[PKMetalUtility isMetalAvailable])
   {
-    v23 = [(PKImageRenderer *)self blendingModeForSixChannelBlending:v11 withTransparentBlending:v9];
+    v23 = [(PKImageRenderer *)self blendingModeForSixChannelBlending:blendingCopy withTransparentBlending:transparentBlendingCopy];
     v28 = objc_alloc_init(PKMetalConfig);
-    v24 = [[PKMetalRendererController alloc] initWithPixelSize:v23 actualSize:self->_extendedDynamicRange pixelFormat:v28 sixChannelBlendingMode:v20 wantsExtendedDynamicRangeContent:v21 metalConfig:width, height];
+    height = [[PKMetalRendererController alloc] initWithPixelSize:v23 actualSize:self->_extendedDynamicRange pixelFormat:v28 sixChannelBlendingMode:v20 wantsExtendedDynamicRangeContent:v21 metalConfig:width, height];
     rendererController = self->_rendererController;
-    self->_rendererController = v24;
+    self->_rendererController = height;
 
     v26 = self->_rendererController;
-    if (v10)
+    if (synchronousCopy)
     {
       v27 = v28;
       if (v26)
@@ -135,15 +135,15 @@
   }
 }
 
-- (int64_t)blendingModeForSixChannelBlending:(BOOL)a3 withTransparentBlending:(BOOL)a4
+- (int64_t)blendingModeForSixChannelBlending:(BOOL)blending withTransparentBlending:(BOOL)transparentBlending
 {
   v4 = 4;
-  if (!a3 || a4)
+  if (!blending || transparentBlending)
   {
     v4 = 0;
   }
 
-  if (a3 && a4)
+  if (blending && transparentBlending)
   {
     return 5;
   }
@@ -154,52 +154,52 @@
   }
 }
 
-- (void)renderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6
+- (void)renderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a6;
-  v13 = [a3 strokes];
-  v14 = [v13 copy];
-  [(PKImageRenderer *)self renderStrokes:v14 clippedToStrokeSpaceRect:v15 scale:x completion:y, width, height, a5];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  strokes = [drawing strokes];
+  v14 = [strokes copy];
+  [(PKImageRenderer *)self renderStrokes:v14 clippedToStrokeSpaceRect:completionCopy scale:x completion:y, width, height, scale];
 }
 
-- (void)renderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)renderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = [a3 strokes];
-  v17 = [v16 copy];
-  v18 = *&a6->c;
-  v19[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  strokes = [drawing strokes];
+  v17 = [strokes copy];
+  v18 = *&transform->c;
+  v19[0] = *&transform->a;
   v19[1] = v18;
-  v19[2] = *&a6->tx;
-  [(PKImageRenderer *)self renderStrokes:v17 clippedToStrokeSpaceRect:v19 scale:v15 strokeTransform:x completion:y, width, height, a5];
+  v19[2] = *&transform->tx;
+  [(PKImageRenderer *)self renderStrokes:v17 clippedToStrokeSpaceRect:v19 scale:completionCopy strokeTransform:x completion:y, width, height, scale];
 }
 
-- (void)renderCGStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)renderCGStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = *&a6->c;
-  v20[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  v16 = *&transform->c;
+  v20[0] = *&transform->a;
   v20[1] = v16;
-  v20[2] = *&a6->tx;
+  v20[2] = *&transform->tx;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __93__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_strokeTransform_completion___block_invoke;
   v18[3] = &unk_1E82D9DD0;
-  v19 = v15;
-  v17 = v15;
-  [(PKImageRenderer *)self _renderCGStrokes:a3 clippedToStrokeSpaceRect:v20 scale:v18 strokeTransform:x completion:y, width, height, a5];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [(PKImageRenderer *)self _renderCGStrokes:strokes clippedToStrokeSpaceRect:v20 scale:v18 strokeTransform:x completion:y, width, height, scale];
 }
 
 uint64_t __93__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_strokeTransform_completion___block_invoke(uint64_t a1, CGImageRef image)
@@ -210,13 +210,13 @@ uint64_t __93__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_st
   return v3();
 }
 
-- (void)renderCGStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6
+- (void)renderCGStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
   v14 = *(MEMORY[0x1E695EFD0] + 16);
   v18[0] = *MEMORY[0x1E695EFD0];
   v18[1] = v14;
@@ -225,9 +225,9 @@ uint64_t __93__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_st
   v16[1] = 3221225472;
   v16[2] = __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_completion___block_invoke;
   v16[3] = &unk_1E82D9DD0;
-  v17 = v13;
-  v15 = v13;
-  [(PKImageRenderer *)self _renderCGStrokes:a3 clippedToStrokeSpaceRect:v18 scale:v16 strokeTransform:x completion:y, width, height, a5];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(PKImageRenderer *)self _renderCGStrokes:strokes clippedToStrokeSpaceRect:v18 scale:v16 strokeTransform:x completion:y, width, height, scale];
 }
 
 uint64_t __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_completion___block_invoke(uint64_t a1, CGImageRef image)
@@ -238,15 +238,15 @@ uint64_t __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_co
   return v3();
 }
 
-- (void)_renderCGStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)_renderCGStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
-  v16 = a7;
-  v17 = v16;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  v17 = completionCopy;
   if (self->_rendererController)
   {
     v18 = *(MEMORY[0x1E695EFD0] + 16);
@@ -260,7 +260,7 @@ uint64_t __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_co
     if (CGRectIsNull(*(&v18 - 8)))
     {
       t1 = v57;
-      CGAffineTransformMakeScale(&t2, a5, a5);
+      CGAffineTransformMakeScale(&t2, scale, scale);
       CGAffineTransformConcat(&v57, &t1, &t2);
       v51 = height;
       v52 = width;
@@ -271,21 +271,21 @@ uint64_t __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_co
       [(PKImageRenderer *)self size];
       v23 = v22;
       [(PKImageRenderer *)self size];
-      v24 = v23 / width;
+      scaleCopy = v23 / width;
       v26 = v25 / height;
       if (v23 / width >= v26)
       {
-        v24 = v26;
+        scaleCopy = v26;
       }
 
-      if (v24 > a5)
+      if (scaleCopy > scale)
       {
-        v24 = a5;
+        scaleCopy = scale;
       }
 
       scale = self->_scale;
       memset(&t1, 0, sizeof(t1));
-      CGAffineTransformMakeScale(&t1, v24 * scale, v24 * scale);
+      CGAffineTransformMakeScale(&t1, scaleCopy * scale, scaleCopy * scale);
       t2 = t1;
       v58.origin.x = x;
       v58.origin.y = y;
@@ -358,21 +358,21 @@ uint64_t __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_co
     {
       v40 = *MEMORY[0x1E695EFF8];
       v41 = *(MEMORY[0x1E695EFF8] + 8);
-      v44 = [PKStroke _strokesByCullingStrokes:v15 toRectangle:x, y, width, height];
+      height = [PKStroke _strokesByCullingStrokes:strokesCopy toRectangle:x, y, width, height];
 
-      v15 = v44;
+      strokesCopy = height;
     }
 
     if ([(PKImageRenderer *)self synchronous])
     {
-      v45 = [(PKImageRenderer *)self rendererController];
+      rendererController = [(PKImageRenderer *)self rendererController];
       t2 = v57;
-      v46 = *&a6->c;
-      *&v54.a = *&a6->a;
+      v46 = *&transform->c;
+      *&v54.a = *&transform->a;
       *&v54.c = v46;
-      *&v54.tx = *&a6->tx;
+      *&v54.tx = *&transform->tx;
       CGAffineTransformConcat(&t1, &t2, &v54);
-      v47 = [(PKMetalRendererController *)v45 renderStrokesSync:v15 clippedToStrokeSpaceRect:&t1 strokeTransform:x imageClipRect:y, width, height, v40, v41, v52, v51];
+      v47 = [(PKMetalRendererController *)rendererController renderStrokesSync:strokesCopy clippedToStrokeSpaceRect:&t1 strokeTransform:x imageClipRect:y, width, height, v40, v41, v52, v51];
 
       (v17)[2](v17, v47, 0);
       CGImageRelease(v47);
@@ -380,53 +380,53 @@ uint64_t __77__PKImageRenderer_renderCGStrokes_clippedToStrokeSpaceRect_scale_co
 
     else
     {
-      v48 = [(PKImageRenderer *)self rendererController];
+      rendererController2 = [(PKImageRenderer *)self rendererController];
       t2 = v57;
-      v49 = *&a6->c;
-      *&v54.a = *&a6->a;
+      v49 = *&transform->c;
+      *&v54.a = *&transform->a;
       *&v54.c = v49;
-      *&v54.tx = *&a6->tx;
+      *&v54.tx = *&transform->tx;
       CGAffineTransformConcat(&t1, &t2, &v54);
-      [(PKMetalRendererController *)v48 renderStrokes:v15 clippedToStrokeSpaceRect:&t1 strokeTransform:v17 imageClipRect:x completion:y, width, height, v40, v41, v52, v51];
+      [(PKMetalRendererController *)rendererController2 renderStrokes:strokesCopy clippedToStrokeSpaceRect:&t1 strokeTransform:v17 imageClipRect:x completion:y, width, height, v40, v41, v52, v51];
     }
   }
 
   else
   {
-    (*(v16 + 2))(v16, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)renderStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6
+- (void)renderStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion
 {
   v6 = *(MEMORY[0x1E695EFD0] + 16);
   v7[0] = *MEMORY[0x1E695EFD0];
   v7[1] = v6;
   v7[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(PKImageRenderer *)self renderStrokes:a3 clippedToStrokeSpaceRect:v7 scale:a6 strokeTransform:a4.origin.x completion:a4.origin.y, a4.size.width, a4.size.height, a5];
+  [(PKImageRenderer *)self renderStrokes:strokes clippedToStrokeSpaceRect:v7 scale:completion strokeTransform:rect.origin.x completion:rect.origin.y, rect.size.width, rect.size.height, scale];
 }
 
-- (void)renderStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)renderStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__PKImageRenderer_renderStrokes_clippedToStrokeSpaceRect_scale_strokeTransform_completion___block_invoke;
   aBlock[3] = &unk_1E82D9DF8;
   aBlock[4] = self;
-  v22 = v15;
-  v16 = v15;
-  v17 = a3;
+  v22 = completionCopy;
+  v16 = completionCopy;
+  strokesCopy = strokes;
   v18 = _Block_copy(aBlock);
-  v19 = *&a6->c;
-  v20[0] = *&a6->a;
+  v19 = *&transform->c;
+  v20[0] = *&transform->a;
   v20[1] = v19;
-  v20[2] = *&a6->tx;
-  [(PKImageRenderer *)self renderCGStrokes:v17 clippedToStrokeSpaceRect:v20 scale:v18 strokeTransform:x completion:y, width, height, a5];
+  v20[2] = *&transform->tx;
+  [(PKImageRenderer *)self renderCGStrokes:strokesCopy clippedToStrokeSpaceRect:v20 scale:v18 strokeTransform:x completion:y, width, height, scale];
 }
 
 void __91__PKImageRenderer_renderStrokes_clippedToStrokeSpaceRect_scale_strokeTransform_completion___block_invoke(uint64_t a1, CGImage *a2)
@@ -451,81 +451,81 @@ void __91__PKImageRenderer_renderStrokes_clippedToStrokeSpaceRect_scale_strokeTr
   }
 }
 
-- (void)sixChannelCGRenderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6
+- (void)sixChannelCGRenderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = [a3 strokes];
-  v15 = [v14 copy];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  strokes = [drawing strokes];
+  v15 = [strokes copy];
   v16 = *(MEMORY[0x1E695EFD0] + 16);
   v17[0] = *MEMORY[0x1E695EFD0];
   v17[1] = v16;
   v17[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(PKImageRenderer *)self _renderCGStrokes:v15 clippedToStrokeSpaceRect:v17 scale:v13 strokeTransform:x completion:y, width, height, a5];
+  [(PKImageRenderer *)self _renderCGStrokes:v15 clippedToStrokeSpaceRect:v17 scale:completionCopy strokeTransform:x completion:y, width, height, scale];
 }
 
-- (void)sixChannelCGRenderStrokes:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 completion:(id)a6
+- (void)sixChannelCGRenderStrokes:(id)strokes clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion
 {
   v6 = *(MEMORY[0x1E695EFD0] + 16);
   v7[0] = *MEMORY[0x1E695EFD0];
   v7[1] = v6;
   v7[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(PKImageRenderer *)self _renderCGStrokes:a3 clippedToStrokeSpaceRect:v7 scale:a6 strokeTransform:a4.origin.x completion:a4.origin.y, a4.size.width, a4.size.height, a5];
+  [(PKImageRenderer *)self _renderCGStrokes:strokes clippedToStrokeSpaceRect:v7 scale:completion strokeTransform:rect.origin.x completion:rect.origin.y, rect.size.width, rect.size.height, scale];
 }
 
-- (void)sixChannelCGRenderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5 strokeTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)sixChannelCGRenderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale strokeTransform:(CGAffineTransform *)transform completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a7;
-  v16 = [a3 strokes];
-  v17 = [v16 copy];
-  v18 = *&a6->c;
-  v19[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  strokes = [drawing strokes];
+  v17 = [strokes copy];
+  v18 = *&transform->c;
+  v19[0] = *&transform->a;
   v19[1] = v18;
-  v19[2] = *&a6->tx;
-  [(PKImageRenderer *)self _renderCGStrokes:v17 clippedToStrokeSpaceRect:v19 scale:v15 strokeTransform:x completion:y, width, height, a5];
+  v19[2] = *&transform->tx;
+  [(PKImageRenderer *)self _renderCGStrokes:v17 clippedToStrokeSpaceRect:v19 scale:completionCopy strokeTransform:x completion:y, width, height, scale];
 }
 
-+ (CGImage)createImageByUnpremultiplyingAlphaInImage:(CGImage *)a3
++ (CGImage)createImageByUnpremultiplyingAlphaInImage:(CGImage *)image
 {
   v4 = [MEMORY[0x1E695F658] imageWithCGImage:?];
-  v5 = [v4 imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [v4 imageByUnpremultiplyingAlpha];
 
-  [v5 extent];
-  v6 = [v5 imageBySettingAlphaOneInExtent:?];
+  [imageByUnpremultiplyingAlpha extent];
+  v6 = [imageByUnpremultiplyingAlpha imageBySettingAlphaOneInExtent:?];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  ColorSpace = CGImageGetColorSpace(a3);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  ColorSpace = CGImageGetColorSpace(image);
   if (ColorSpace)
   {
-    [v7 setObject:ColorSpace forKeyedSubscript:*MEMORY[0x1E695F838]];
-    [v7 setObject:ColorSpace forKeyedSubscript:*MEMORY[0x1E695F868]];
+    [dictionary setObject:ColorSpace forKeyedSubscript:*MEMORY[0x1E695F838]];
+    [dictionary setObject:ColorSpace forKeyedSubscript:*MEMORY[0x1E695F868]];
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695F620]) initWithOptions:v7];
+  v9 = [objc_alloc(MEMORY[0x1E695F620]) initWithOptions:dictionary];
   [v6 extent];
   v10 = [v9 createCGImage:v6 fromRect:?];
 
   return v10;
 }
 
-+ (CGImage)createJPEGCopyFrom:(CGImage *)a3 compressionQuality:(double)a4
++ (CGImage)createJPEGCopyFrom:(CGImage *)from compressionQuality:(double)quality
 {
-  ImageAtIndex = a3;
+  ImageAtIndex = from;
   keys[1] = *MEMORY[0x1E69E9840];
-  v23 = a4;
-  if (!a3)
+  qualityCopy = quality;
+  if (!from)
   {
     return ImageAtIndex;
   }
 
-  UTType = CGImageGetUTType(a3);
+  UTType = CGImageGetUTType(from);
   if (UTType && CFEqual(UTType, @"public.jpeg"))
   {
     return 0;
@@ -534,7 +534,7 @@ void __91__PKImageRenderer_renderStrokes_clippedToStrokeSpaceRect_scale_strokeTr
   if (CGImageHasAlpha())
   {
     MaskFromAlpha = CGImageCreateMaskFromAlpha();
-    v9 = [a1 createImageByUnpremultiplyingAlphaInImage:{ImageAtIndex, *&v23}];
+    v9 = [self createImageByUnpremultiplyingAlphaInImage:{ImageAtIndex, *&qualityCopy}];
     ImageAtIndex = v9;
   }
 
@@ -566,10 +566,10 @@ void __91__PKImageRenderer_renderStrokes_clippedToStrokeSpaceRect_scale_strokeTr
 
   v13 = v12;
   v14 = 0;
-  if (a4 >= 0.0 && a4 <= 1.0)
+  if (quality >= 0.0 && quality <= 1.0)
   {
     v15 = *MEMORY[0x1E695E480];
-    v16 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberDoubleType, &v23);
+    v16 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberDoubleType, &qualityCopy);
     if (v16)
     {
       v17 = v16;
@@ -629,45 +629,45 @@ void __91__PKImageRenderer_renderStrokes_clippedToStrokeSpaceRect_scale_strokeTr
   return ImageAtIndex;
 }
 
-- (void)sixChannelPDFRenderDrawing:(id)a3 context:(CGContext *)a4 clippedToStrokeSpaceRect:(CGRect)a5 scale:(double)a6 completion:(id)a7
+- (void)sixChannelPDFRenderDrawing:(id)drawing context:(CGContext *)context clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a7;
-  v15 = v14;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  drawingCopy = drawing;
+  completionCopy = completion;
+  v15 = completionCopy;
   if (self->_rendererController)
   {
-    v41 = v14;
-    v42 = v13;
-    v16 = [v13 strokes];
-    v17 = [MEMORY[0x1E695DF70] array];
-    v18 = [v16 count];
+    v41 = completionCopy;
+    v42 = drawingCopy;
+    strokes = [drawingCopy strokes];
+    array = [MEMORY[0x1E695DF70] array];
+    v18 = [strokes count];
     v19 = 0;
     while (v19 < v18)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = [v16 objectAtIndexedSubscript:v19];
+      v21 = [strokes objectAtIndexedSubscript:v19];
       [v21 renderBounds];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
       v30 = __96__PKImageRenderer_sixChannelPDFRenderDrawing_context_clippedToStrokeSpaceRect_scale_completion___block_invoke(v21);
-      [v17 addObject:v21];
+      [array addObject:v21];
       if (++v19 < v18)
       {
         while (1)
         {
-          v31 = [v16 objectAtIndexedSubscript:v19];
+          v31 = [strokes objectAtIndexedSubscript:v19];
           if (v30 != __96__PKImageRenderer_sixChannelPDFRenderDrawing_context_clippedToStrokeSpaceRect_scale_completion___block_invoke(v31))
           {
             break;
           }
 
-          [v17 addObject:v31];
+          [array addObject:v31];
           [v31 renderBounds];
           v51.origin.x = v32;
           v51.origin.y = v33;
@@ -719,26 +719,26 @@ LABEL_9:
         *&v45[9] = y;
         *&v45[10] = width;
         *&v45[11] = height;
-        v45[12] = a4;
+        v45[12] = context;
         v46 = v30;
-        [(PKImageRenderer *)self renderCGStrokes:v17 clippedToStrokeSpaceRect:v45 scale:x completion:y, width, height, a6];
+        [(PKImageRenderer *)self renderCGStrokes:array clippedToStrokeSpaceRect:v45 scale:x completion:y, width, height, scale];
       }
 
-      [v17 removeAllObjects];
+      [array removeAllObjects];
 
       objc_autoreleasePoolPop(v20);
     }
 
-    v40 = [(PKImageRenderer *)self rendererController];
-    [(PKMetalRendererController *)v40 callBlockOnRenderQueue:v41];
+    rendererController = [(PKImageRenderer *)self rendererController];
+    [(PKMetalRendererController *)rendererController callBlockOnRenderQueue:v41];
 
     v15 = v41;
-    v13 = v42;
+    drawingCopy = v42;
   }
 
   else
   {
-    (*(v14 + 2))(v14);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -835,23 +835,23 @@ void __96__PKImageRenderer_sixChannelPDFRenderDrawing_context_clippedToStrokeSpa
 
 - (void)cancel
 {
-  v2 = [(PKImageRenderer *)self rendererController];
-  [(PKMetalRendererController *)v2 cancelLongRunningRenders];
+  rendererController = [(PKImageRenderer *)self rendererController];
+  [(PKMetalRendererController *)rendererController cancelLongRunningRenders];
 }
 
 - (void)resume
 {
-  v2 = [(PKImageRenderer *)self rendererController];
-  [(PKMetalRendererController *)v2 resumeLongRunningRendersAfterAllWorkIsDone];
+  rendererController = [(PKImageRenderer *)self rendererController];
+  [(PKMetalRendererController *)rendererController resumeLongRunningRendersAfterAllWorkIsDone];
 }
 
-+ (void)_fuzzTestUnzippedData:(id)a3
++ (void)_fuzzTestUnzippedData:(id)data
 {
-  v3 = a3;
-  v4 = [(PKVersionedDocument *)[PKDrawingVersionedDocument alloc] initWithUnzippedData:v3];
+  dataCopy = data;
+  v4 = [(PKVersionedDocument *)[PKDrawingVersionedDocument alloc] initWithUnzippedData:dataCopy];
   v5 = [[PKImageRenderer alloc] initWithSize:240.0 scale:320.0, 1.0];
   v6 = dispatch_semaphore_create(0);
-  v7 = [(PKDrawingVersionedDocument *)v4 drawing];
+  drawing = [(PKDrawingVersionedDocument *)v4 drawing];
   v8 = *MEMORY[0x1E695F050];
   v9 = *(MEMORY[0x1E695F050] + 8);
   v10 = *(MEMORY[0x1E695F050] + 16);
@@ -862,20 +862,20 @@ void __96__PKImageRenderer_sixChannelPDFRenderDrawing_context_clippedToStrokeSpa
   v13[3] = &unk_1E82D9E40;
   v12 = v6;
   v14 = v12;
-  [(PKImageRenderer *)v5 renderDrawing:v7 clippedToStrokeSpaceRect:v13 scale:v8 completion:v9, v10, v11, 0.3125];
+  [(PKImageRenderer *)v5 renderDrawing:drawing clippedToStrokeSpaceRect:v13 scale:v8 completion:v9, v10, v11, 0.3125];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)buildStrokeRenderCacheForDrawing:(id)a3
+- (void)buildStrokeRenderCacheForDrawing:(id)drawing
 {
-  v6 = a3;
+  drawingCopy = drawing;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     rendererController = self->_rendererController;
-    v5 = [v6 strokes];
-    [(PKMetalRendererController *)rendererController buildRenderCacheForStrokes:v5];
+    strokes = [drawingCopy strokes];
+    [(PKMetalRendererController *)rendererController buildRenderCacheForStrokes:strokes];
   }
 }
 

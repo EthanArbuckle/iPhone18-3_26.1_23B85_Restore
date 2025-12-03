@@ -1,62 +1,62 @@
 @interface ICASNoteAttachmentItemData
-- (ICASNoteAttachmentItemData)initWithTotalCountOfNotesWithAttachmentDocScan:(id)a3 totalCountOfNotesWithAttachmentInlineDrawingV1:(id)a4 totalCountOfNotesWithAttachmentInlineDrawingV2:(id)a5 totalCountOfNotesWithAttachmentPaperKit:(id)a6 totalCountOfNotesWithAttachmentFullscreenDrawing:(id)a7 totalCountOfNotesWithAttachmentTables:(id)a8 totalCountOfNotesWithAttachmentOther:(id)a9 totalCountOfNotesWithAttachmentRichUrl:(id)a10 totalCountOfNotesWithAttachmentMapLink:(id)a11 totalCountOfNotesWithAttachmentDeepLink:(id)a12 totalCountOfNotesWithPaperDocument:(id)a13 totalCountOfNotesWithPdfDocument:(id)a14 totalCountOfNotesWithNoteLinks:(id)a15 totalCountOfNotesWithFolderLinks:(id)a16 totalCountOfNotesWithAttachmentAudio:(id)a17 totalCountOfAudioAttachments:(id)a18 totalCountOfAudioAttachmentsRecordedInNotes:(id)a19 totalCountOfAudioAttachmentsWithAppendedAudio:(id)a20 totalCountOfNotesWithAttachmentAudioTranscript:(id)a21 totalCountOfNotesWithAttachmentAudioSummary:(id)a22;
+- (ICASNoteAttachmentItemData)initWithTotalCountOfNotesWithAttachmentDocScan:(id)scan totalCountOfNotesWithAttachmentInlineDrawingV1:(id)v1 totalCountOfNotesWithAttachmentInlineDrawingV2:(id)v2 totalCountOfNotesWithAttachmentPaperKit:(id)kit totalCountOfNotesWithAttachmentFullscreenDrawing:(id)drawing totalCountOfNotesWithAttachmentTables:(id)tables totalCountOfNotesWithAttachmentOther:(id)other totalCountOfNotesWithAttachmentRichUrl:(id)self0 totalCountOfNotesWithAttachmentMapLink:(id)self1 totalCountOfNotesWithAttachmentDeepLink:(id)self2 totalCountOfNotesWithPaperDocument:(id)self3 totalCountOfNotesWithPdfDocument:(id)self4 totalCountOfNotesWithNoteLinks:(id)self5 totalCountOfNotesWithFolderLinks:(id)self6 totalCountOfNotesWithAttachmentAudio:(id)self7 totalCountOfAudioAttachments:(id)self8 totalCountOfAudioAttachmentsRecordedInNotes:(id)self9 totalCountOfAudioAttachmentsWithAppendedAudio:(id)appendedAudio totalCountOfNotesWithAttachmentAudioTranscript:(id)transcript totalCountOfNotesWithAttachmentAudioSummary:(id)summary;
 - (id)toDict;
 @end
 
 @implementation ICASNoteAttachmentItemData
 
-- (ICASNoteAttachmentItemData)initWithTotalCountOfNotesWithAttachmentDocScan:(id)a3 totalCountOfNotesWithAttachmentInlineDrawingV1:(id)a4 totalCountOfNotesWithAttachmentInlineDrawingV2:(id)a5 totalCountOfNotesWithAttachmentPaperKit:(id)a6 totalCountOfNotesWithAttachmentFullscreenDrawing:(id)a7 totalCountOfNotesWithAttachmentTables:(id)a8 totalCountOfNotesWithAttachmentOther:(id)a9 totalCountOfNotesWithAttachmentRichUrl:(id)a10 totalCountOfNotesWithAttachmentMapLink:(id)a11 totalCountOfNotesWithAttachmentDeepLink:(id)a12 totalCountOfNotesWithPaperDocument:(id)a13 totalCountOfNotesWithPdfDocument:(id)a14 totalCountOfNotesWithNoteLinks:(id)a15 totalCountOfNotesWithFolderLinks:(id)a16 totalCountOfNotesWithAttachmentAudio:(id)a17 totalCountOfAudioAttachments:(id)a18 totalCountOfAudioAttachmentsRecordedInNotes:(id)a19 totalCountOfAudioAttachmentsWithAppendedAudio:(id)a20 totalCountOfNotesWithAttachmentAudioTranscript:(id)a21 totalCountOfNotesWithAttachmentAudioSummary:(id)a22
+- (ICASNoteAttachmentItemData)initWithTotalCountOfNotesWithAttachmentDocScan:(id)scan totalCountOfNotesWithAttachmentInlineDrawingV1:(id)v1 totalCountOfNotesWithAttachmentInlineDrawingV2:(id)v2 totalCountOfNotesWithAttachmentPaperKit:(id)kit totalCountOfNotesWithAttachmentFullscreenDrawing:(id)drawing totalCountOfNotesWithAttachmentTables:(id)tables totalCountOfNotesWithAttachmentOther:(id)other totalCountOfNotesWithAttachmentRichUrl:(id)self0 totalCountOfNotesWithAttachmentMapLink:(id)self1 totalCountOfNotesWithAttachmentDeepLink:(id)self2 totalCountOfNotesWithPaperDocument:(id)self3 totalCountOfNotesWithPdfDocument:(id)self4 totalCountOfNotesWithNoteLinks:(id)self5 totalCountOfNotesWithFolderLinks:(id)self6 totalCountOfNotesWithAttachmentAudio:(id)self7 totalCountOfAudioAttachments:(id)self8 totalCountOfAudioAttachmentsRecordedInNotes:(id)self9 totalCountOfAudioAttachmentsWithAppendedAudio:(id)appendedAudio totalCountOfNotesWithAttachmentAudioTranscript:(id)transcript totalCountOfNotesWithAttachmentAudioSummary:(id)summary
 {
-  v55 = a3;
-  v37 = a4;
-  v54 = a4;
-  v38 = a5;
-  v53 = a5;
-  v39 = a6;
-  v52 = a6;
-  v40 = a7;
-  v51 = a7;
-  v50 = a8;
-  v49 = a9;
-  v48 = a10;
-  v47 = a11;
-  v46 = a12;
-  v45 = a13;
-  v44 = a14;
-  v27 = a15;
-  v28 = a16;
-  v29 = a17;
-  v30 = a18;
-  v31 = a19;
-  v43 = a20;
-  v42 = a21;
-  v32 = a22;
+  scanCopy = scan;
+  v1Copy = v1;
+  v1Copy2 = v1;
+  v2Copy = v2;
+  v2Copy2 = v2;
+  kitCopy = kit;
+  kitCopy2 = kit;
+  drawingCopy = drawing;
+  drawingCopy2 = drawing;
+  tablesCopy = tables;
+  otherCopy = other;
+  urlCopy = url;
+  linkCopy = link;
+  deepLinkCopy = deepLink;
+  documentCopy = document;
+  pdfDocumentCopy = pdfDocument;
+  linksCopy = links;
+  folderLinksCopy = folderLinks;
+  audioCopy = audio;
+  attachmentsCopy = attachments;
+  notesCopy = notes;
+  appendedAudioCopy = appendedAudio;
+  transcriptCopy = transcript;
+  summaryCopy = summary;
   v56.receiver = self;
   v56.super_class = ICASNoteAttachmentItemData;
   v33 = [(ICASNoteAttachmentItemData *)&v56 init];
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_totalCountOfNotesWithAttachmentDocScan, a3);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentInlineDrawingV1, v37);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentInlineDrawingV2, v38);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentPaperKit, v39);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentFullscreenDrawing, v40);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentTables, a8);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentOther, a9);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentRichUrl, a10);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentMapLink, a11);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentDeepLink, a12);
-    objc_storeStrong(&v34->_totalCountOfNotesWithPaperDocument, a13);
-    objc_storeStrong(&v34->_totalCountOfNotesWithPdfDocument, a14);
-    objc_storeStrong(&v34->_totalCountOfNotesWithNoteLinks, a15);
-    objc_storeStrong(&v34->_totalCountOfNotesWithFolderLinks, a16);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentAudio, a17);
-    objc_storeStrong(&v34->_totalCountOfAudioAttachments, a18);
-    objc_storeStrong(&v34->_totalCountOfAudioAttachmentsRecordedInNotes, a19);
-    objc_storeStrong(&v34->_totalCountOfAudioAttachmentsWithAppendedAudio, a20);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentAudioTranscript, a21);
-    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentAudioSummary, a22);
+    objc_storeStrong(&v33->_totalCountOfNotesWithAttachmentDocScan, scan);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentInlineDrawingV1, v1Copy);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentInlineDrawingV2, v2Copy);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentPaperKit, kitCopy);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentFullscreenDrawing, drawingCopy);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentTables, tables);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentOther, other);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentRichUrl, url);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentMapLink, link);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentDeepLink, deepLink);
+    objc_storeStrong(&v34->_totalCountOfNotesWithPaperDocument, document);
+    objc_storeStrong(&v34->_totalCountOfNotesWithPdfDocument, pdfDocument);
+    objc_storeStrong(&v34->_totalCountOfNotesWithNoteLinks, links);
+    objc_storeStrong(&v34->_totalCountOfNotesWithFolderLinks, folderLinks);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentAudio, audio);
+    objc_storeStrong(&v34->_totalCountOfAudioAttachments, attachments);
+    objc_storeStrong(&v34->_totalCountOfAudioAttachmentsRecordedInNotes, notes);
+    objc_storeStrong(&v34->_totalCountOfAudioAttachmentsWithAppendedAudio, appendedAudio);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentAudioTranscript, transcript);
+    objc_storeStrong(&v34->_totalCountOfNotesWithAttachmentAudioSummary, summary);
   }
 
   return v34;
@@ -66,285 +66,285 @@
 {
   v67[20] = *MEMORY[0x277D85DE8];
   v66[0] = @"totalCountOfNotesWithAttachmentDocScan";
-  v65 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDocScan];
-  if (v65)
+  totalCountOfNotesWithAttachmentDocScan = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDocScan];
+  if (totalCountOfNotesWithAttachmentDocScan)
   {
-    v3 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDocScan];
+    totalCountOfNotesWithAttachmentDocScan2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDocScan];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    totalCountOfNotesWithAttachmentDocScan2 = objc_opt_new();
   }
 
-  v64 = v3;
-  v67[0] = v3;
+  v64 = totalCountOfNotesWithAttachmentDocScan2;
+  v67[0] = totalCountOfNotesWithAttachmentDocScan2;
   v66[1] = @"totalCountOfNotesWithAttachmentInlineDrawingV1";
-  v63 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV1];
-  if (v63)
+  totalCountOfNotesWithAttachmentInlineDrawingV1 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV1];
+  if (totalCountOfNotesWithAttachmentInlineDrawingV1)
   {
-    v4 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV1];
+    totalCountOfNotesWithAttachmentInlineDrawingV12 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV1];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    totalCountOfNotesWithAttachmentInlineDrawingV12 = objc_opt_new();
   }
 
-  v62 = v4;
-  v67[1] = v4;
+  v62 = totalCountOfNotesWithAttachmentInlineDrawingV12;
+  v67[1] = totalCountOfNotesWithAttachmentInlineDrawingV12;
   v66[2] = @"totalCountOfNotesWithAttachmentInlineDrawingV2";
-  v61 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV2];
-  if (v61)
+  totalCountOfNotesWithAttachmentInlineDrawingV2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV2];
+  if (totalCountOfNotesWithAttachmentInlineDrawingV2)
   {
-    v5 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV2];
+    totalCountOfNotesWithAttachmentInlineDrawingV22 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentInlineDrawingV2];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    totalCountOfNotesWithAttachmentInlineDrawingV22 = objc_opt_new();
   }
 
-  v60 = v5;
-  v67[2] = v5;
+  v60 = totalCountOfNotesWithAttachmentInlineDrawingV22;
+  v67[2] = totalCountOfNotesWithAttachmentInlineDrawingV22;
   v66[3] = @"totalCountOfNotesWithAttachmentPaperKit";
-  v59 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentPaperKit];
-  if (v59)
+  totalCountOfNotesWithAttachmentPaperKit = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentPaperKit];
+  if (totalCountOfNotesWithAttachmentPaperKit)
   {
-    v6 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentPaperKit];
+    totalCountOfNotesWithAttachmentPaperKit2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentPaperKit];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    totalCountOfNotesWithAttachmentPaperKit2 = objc_opt_new();
   }
 
-  v58 = v6;
-  v67[3] = v6;
+  v58 = totalCountOfNotesWithAttachmentPaperKit2;
+  v67[3] = totalCountOfNotesWithAttachmentPaperKit2;
   v66[4] = @"totalCountOfNotesWithAttachmentFullscreenDrawing";
-  v57 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentFullscreenDrawing];
-  if (v57)
+  totalCountOfNotesWithAttachmentFullscreenDrawing = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentFullscreenDrawing];
+  if (totalCountOfNotesWithAttachmentFullscreenDrawing)
   {
-    v7 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentFullscreenDrawing];
+    totalCountOfNotesWithAttachmentFullscreenDrawing2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentFullscreenDrawing];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    totalCountOfNotesWithAttachmentFullscreenDrawing2 = objc_opt_new();
   }
 
-  v56 = v7;
-  v67[4] = v7;
+  v56 = totalCountOfNotesWithAttachmentFullscreenDrawing2;
+  v67[4] = totalCountOfNotesWithAttachmentFullscreenDrawing2;
   v66[5] = @"totalCountOfNotesWithAttachmentTables";
-  v55 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentTables];
-  if (v55)
+  totalCountOfNotesWithAttachmentTables = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentTables];
+  if (totalCountOfNotesWithAttachmentTables)
   {
-    v8 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentTables];
+    totalCountOfNotesWithAttachmentTables2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentTables];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    totalCountOfNotesWithAttachmentTables2 = objc_opt_new();
   }
 
-  v54 = v8;
-  v67[5] = v8;
+  v54 = totalCountOfNotesWithAttachmentTables2;
+  v67[5] = totalCountOfNotesWithAttachmentTables2;
   v66[6] = @"totalCountOfNotesWithAttachmentOther";
-  v53 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentOther];
-  if (v53)
+  totalCountOfNotesWithAttachmentOther = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentOther];
+  if (totalCountOfNotesWithAttachmentOther)
   {
-    v9 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentOther];
+    totalCountOfNotesWithAttachmentOther2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentOther];
   }
 
   else
   {
-    v9 = objc_opt_new();
+    totalCountOfNotesWithAttachmentOther2 = objc_opt_new();
   }
 
-  v52 = v9;
-  v67[6] = v9;
+  v52 = totalCountOfNotesWithAttachmentOther2;
+  v67[6] = totalCountOfNotesWithAttachmentOther2;
   v66[7] = @"totalCountOfNotesWithAttachmentRichUrl";
-  v51 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentRichUrl];
-  if (v51)
+  totalCountOfNotesWithAttachmentRichUrl = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentRichUrl];
+  if (totalCountOfNotesWithAttachmentRichUrl)
   {
-    v10 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentRichUrl];
+    totalCountOfNotesWithAttachmentRichUrl2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentRichUrl];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    totalCountOfNotesWithAttachmentRichUrl2 = objc_opt_new();
   }
 
-  v50 = v10;
-  v67[7] = v10;
+  v50 = totalCountOfNotesWithAttachmentRichUrl2;
+  v67[7] = totalCountOfNotesWithAttachmentRichUrl2;
   v66[8] = @"totalCountOfNotesWithAttachmentMapLink";
-  v49 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentMapLink];
-  if (v49)
+  totalCountOfNotesWithAttachmentMapLink = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentMapLink];
+  if (totalCountOfNotesWithAttachmentMapLink)
   {
-    v11 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentMapLink];
+    totalCountOfNotesWithAttachmentMapLink2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentMapLink];
   }
 
   else
   {
-    v11 = objc_opt_new();
+    totalCountOfNotesWithAttachmentMapLink2 = objc_opt_new();
   }
 
-  v48 = v11;
-  v67[8] = v11;
+  v48 = totalCountOfNotesWithAttachmentMapLink2;
+  v67[8] = totalCountOfNotesWithAttachmentMapLink2;
   v66[9] = @"totalCountOfNotesWithAttachmentDeepLink";
-  v47 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDeepLink];
-  if (v47)
+  totalCountOfNotesWithAttachmentDeepLink = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDeepLink];
+  if (totalCountOfNotesWithAttachmentDeepLink)
   {
-    v12 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDeepLink];
+    totalCountOfNotesWithAttachmentDeepLink2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentDeepLink];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    totalCountOfNotesWithAttachmentDeepLink2 = objc_opt_new();
   }
 
-  v46 = v12;
-  v67[9] = v12;
+  v46 = totalCountOfNotesWithAttachmentDeepLink2;
+  v67[9] = totalCountOfNotesWithAttachmentDeepLink2;
   v66[10] = @"totalCountOfNotesWithPaperDocument";
-  v45 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPaperDocument];
-  if (v45)
+  totalCountOfNotesWithPaperDocument = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPaperDocument];
+  if (totalCountOfNotesWithPaperDocument)
   {
-    v13 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPaperDocument];
+    totalCountOfNotesWithPaperDocument2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPaperDocument];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    totalCountOfNotesWithPaperDocument2 = objc_opt_new();
   }
 
-  v44 = v13;
-  v67[10] = v13;
+  v44 = totalCountOfNotesWithPaperDocument2;
+  v67[10] = totalCountOfNotesWithPaperDocument2;
   v66[11] = @"totalCountOfNotesWithPdfDocument";
-  v43 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPdfDocument];
-  if (v43)
+  totalCountOfNotesWithPdfDocument = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPdfDocument];
+  if (totalCountOfNotesWithPdfDocument)
   {
-    v14 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPdfDocument];
+    totalCountOfNotesWithPdfDocument2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithPdfDocument];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    totalCountOfNotesWithPdfDocument2 = objc_opt_new();
   }
 
-  v42 = v14;
-  v67[11] = v14;
+  v42 = totalCountOfNotesWithPdfDocument2;
+  v67[11] = totalCountOfNotesWithPdfDocument2;
   v66[12] = @"totalCountOfNotesWithNoteLinks";
-  v41 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithNoteLinks];
-  if (v41)
+  totalCountOfNotesWithNoteLinks = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithNoteLinks];
+  if (totalCountOfNotesWithNoteLinks)
   {
-    v15 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithNoteLinks];
+    totalCountOfNotesWithNoteLinks2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithNoteLinks];
   }
 
   else
   {
-    v15 = objc_opt_new();
+    totalCountOfNotesWithNoteLinks2 = objc_opt_new();
   }
 
-  v40 = v15;
-  v67[12] = v15;
+  v40 = totalCountOfNotesWithNoteLinks2;
+  v67[12] = totalCountOfNotesWithNoteLinks2;
   v66[13] = @"totalCountOfNotesWithFolderLinks";
-  v39 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithFolderLinks];
-  if (v39)
+  totalCountOfNotesWithFolderLinks = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithFolderLinks];
+  if (totalCountOfNotesWithFolderLinks)
   {
-    v16 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithFolderLinks];
+    totalCountOfNotesWithFolderLinks2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithFolderLinks];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    totalCountOfNotesWithFolderLinks2 = objc_opt_new();
   }
 
-  v38 = v16;
-  v67[13] = v16;
+  v38 = totalCountOfNotesWithFolderLinks2;
+  v67[13] = totalCountOfNotesWithFolderLinks2;
   v66[14] = @"totalCountOfNotesWithAttachmentAudio";
-  v37 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudio];
-  if (v37)
+  totalCountOfNotesWithAttachmentAudio = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudio];
+  if (totalCountOfNotesWithAttachmentAudio)
   {
-    v17 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudio];
+    totalCountOfNotesWithAttachmentAudio2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudio];
   }
 
   else
   {
-    v17 = objc_opt_new();
+    totalCountOfNotesWithAttachmentAudio2 = objc_opt_new();
   }
 
-  v36 = v17;
-  v67[14] = v17;
+  v36 = totalCountOfNotesWithAttachmentAudio2;
+  v67[14] = totalCountOfNotesWithAttachmentAudio2;
   v66[15] = @"totalCountOfAudioAttachments";
-  v18 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachments];
-  if (v18)
+  totalCountOfAudioAttachments = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachments];
+  if (totalCountOfAudioAttachments)
   {
-    v19 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachments];
+    totalCountOfAudioAttachments2 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachments];
   }
 
   else
   {
-    v19 = objc_opt_new();
+    totalCountOfAudioAttachments2 = objc_opt_new();
   }
 
-  v20 = v19;
-  v67[15] = v19;
+  v20 = totalCountOfAudioAttachments2;
+  v67[15] = totalCountOfAudioAttachments2;
   v66[16] = @"totalCountOfAudioAttachmentsRecordedInNotes";
-  v21 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsRecordedInNotes];
-  if (v21)
+  totalCountOfAudioAttachmentsRecordedInNotes = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsRecordedInNotes];
+  if (totalCountOfAudioAttachmentsRecordedInNotes)
   {
-    v22 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsRecordedInNotes];
+    totalCountOfAudioAttachmentsRecordedInNotes2 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsRecordedInNotes];
   }
 
   else
   {
-    v22 = objc_opt_new();
+    totalCountOfAudioAttachmentsRecordedInNotes2 = objc_opt_new();
   }
 
-  v23 = v22;
-  v67[16] = v22;
+  v23 = totalCountOfAudioAttachmentsRecordedInNotes2;
+  v67[16] = totalCountOfAudioAttachmentsRecordedInNotes2;
   v66[17] = @"totalCountOfAudioAttachmentsWithAppendedAudio";
-  v24 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsWithAppendedAudio];
-  if (v24)
+  totalCountOfAudioAttachmentsWithAppendedAudio = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsWithAppendedAudio];
+  if (totalCountOfAudioAttachmentsWithAppendedAudio)
   {
-    v25 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsWithAppendedAudio];
+    totalCountOfAudioAttachmentsWithAppendedAudio2 = [(ICASNoteAttachmentItemData *)self totalCountOfAudioAttachmentsWithAppendedAudio];
   }
 
   else
   {
-    v25 = objc_opt_new();
+    totalCountOfAudioAttachmentsWithAppendedAudio2 = objc_opt_new();
   }
 
-  v26 = v25;
-  v67[17] = v25;
+  v26 = totalCountOfAudioAttachmentsWithAppendedAudio2;
+  v67[17] = totalCountOfAudioAttachmentsWithAppendedAudio2;
   v66[18] = @"totalCountOfNotesWithAttachmentAudioTranscript";
-  v27 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioTranscript];
-  if (v27)
+  totalCountOfNotesWithAttachmentAudioTranscript = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioTranscript];
+  if (totalCountOfNotesWithAttachmentAudioTranscript)
   {
-    v28 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioTranscript];
+    totalCountOfNotesWithAttachmentAudioTranscript2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioTranscript];
   }
 
   else
   {
-    v28 = objc_opt_new();
+    totalCountOfNotesWithAttachmentAudioTranscript2 = objc_opt_new();
   }
 
-  v29 = v28;
-  v67[18] = v28;
+  v29 = totalCountOfNotesWithAttachmentAudioTranscript2;
+  v67[18] = totalCountOfNotesWithAttachmentAudioTranscript2;
   v66[19] = @"totalCountOfNotesWithAttachmentAudioSummary";
-  v30 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioSummary];
-  if (v30)
+  totalCountOfNotesWithAttachmentAudioSummary = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioSummary];
+  if (totalCountOfNotesWithAttachmentAudioSummary)
   {
-    v31 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioSummary];
+    totalCountOfNotesWithAttachmentAudioSummary2 = [(ICASNoteAttachmentItemData *)self totalCountOfNotesWithAttachmentAudioSummary];
   }
 
   else
   {
-    v31 = objc_opt_new();
+    totalCountOfNotesWithAttachmentAudioSummary2 = objc_opt_new();
   }
 
-  v32 = v31;
-  v67[19] = v31;
+  v32 = totalCountOfNotesWithAttachmentAudioSummary2;
+  v67[19] = totalCountOfNotesWithAttachmentAudioSummary2;
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:20];
 
   v33 = *MEMORY[0x277D85DE8];

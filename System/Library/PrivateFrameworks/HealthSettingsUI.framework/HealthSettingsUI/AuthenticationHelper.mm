@@ -1,24 +1,24 @@
 @interface AuthenticationHelper
-+ (void)_authenticateWithGuard:(id)a3 completion:(id)a4;
-+ (void)authenticateWithCompletion:(id)a3;
++ (void)_authenticateWithGuard:(id)guard completion:(id)completion;
++ (void)authenticateWithCompletion:(id)completion;
 @end
 
 @implementation AuthenticationHelper
 
-+ (void)_authenticateWithGuard:(id)a3 completion:(id)a4
++ (void)_authenticateWithGuard:(id)guard completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277CEBE80];
   v7 = *MEMORY[0x277CCE3A8];
-  v8 = a3;
+  guardCopy = guard;
   v9 = [v6 applicationWithBundleIdentifier:v7];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__AuthenticationHelper__authenticateWithGuard_completion___block_invoke;
   v11[3] = &unk_2796E54C0;
-  v12 = v5;
-  v10 = v5;
-  [v8 authenticateForSubject:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [guardCopy authenticateForSubject:v9 completion:v11];
 }
 
 void __58__AuthenticationHelper__authenticateWithGuard_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -36,12 +36,12 @@ void __58__AuthenticationHelper__authenticateWithGuard_completion___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-+ (void)authenticateWithCompletion:(id)a3
++ (void)authenticateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CEBE98];
-  v5 = a3;
-  v6 = [v4 sharedGuard];
-  [a1 _authenticateWithGuard:v6 completion:v5];
+  completionCopy = completion;
+  sharedGuard = [v4 sharedGuard];
+  [self _authenticateWithGuard:sharedGuard completion:completionCopy];
 }
 
 @end

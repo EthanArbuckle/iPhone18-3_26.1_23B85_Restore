@@ -1,15 +1,15 @@
 @interface MPPMediaPredicateValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)setHasBoolPredicateValue:(BOOL)a3;
-- (void)setHasFloatPredicateValue:(BOOL)a3;
-- (void)setHasIntegerPredicateValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBoolPredicateValue:(BOOL)value;
+- (void)setHasFloatPredicateValue:(BOOL)value;
+- (void)setHasIntegerPredicateValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPMediaPredicateValue
@@ -113,23 +113,23 @@
   return v17 ^ [(NSData *)self->_bytesPredicateValue hash]^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_type != *(v4 + 12))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_type != *(equalCopy + 12))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[56] & 2) == 0 || self->_integerPredicateValue != *(v4 + 2))
+    if ((equalCopy[56] & 2) == 0 || self->_integerPredicateValue != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((v4[56] & 2) != 0)
+  else if ((equalCopy[56] & 2) != 0)
   {
 LABEL_27:
     v7 = 0;
@@ -138,51 +138,51 @@ LABEL_27:
 
   if (*&self->_has)
   {
-    if ((v4[56] & 1) == 0 || self->_doublePredicateValue != *(v4 + 1))
+    if ((equalCopy[56] & 1) == 0 || self->_doublePredicateValue != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (v4[56])
+  else if (equalCopy[56])
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[56] & 4) == 0 || self->_floatPredicateValue != *(v4 + 8))
+    if ((equalCopy[56] & 4) == 0 || self->_floatPredicateValue != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((v4[56] & 4) != 0)
+  else if ((equalCopy[56] & 4) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[56] & 8) == 0 || self->_BOOLPredicateValue != v4[52])
+    if ((equalCopy[56] & 8) == 0 || self->_BOOLPredicateValue != equalCopy[52])
     {
       goto LABEL_27;
     }
   }
 
-  else if ((v4[56] & 8) != 0)
+  else if ((equalCopy[56] & 8) != 0)
   {
     goto LABEL_27;
   }
 
   stringPredicateValue = self->_stringPredicateValue;
-  if (stringPredicateValue | *(v4 + 5) && ![(NSString *)stringPredicateValue isEqual:?])
+  if (stringPredicateValue | *(equalCopy + 5) && ![(NSString *)stringPredicateValue isEqual:?])
   {
     goto LABEL_27;
   }
 
   bytesPredicateValue = self->_bytesPredicateValue;
-  if (bytesPredicateValue | *(v4 + 3))
+  if (bytesPredicateValue | *(equalCopy + 3))
   {
     v7 = [(NSData *)bytesPredicateValue isEqual:?];
   }
@@ -197,9 +197,9 @@ LABEL_28:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 48) = self->_type;
   has = self->_has;
@@ -250,114 +250,114 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_stringPredicateValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringPredicateValue copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
-  v10 = [(NSData *)self->_bytesPredicateValue copyWithZone:a3];
+  v10 = [(NSData *)self->_bytesPredicateValue copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setType:{-[MPPMediaPredicateValue type](self, "type")}];
+  toCopy = to;
+  [toCopy setType:{-[MPPMediaPredicateValue type](self, "type")}];
   if ([(MPPMediaPredicateValue *)self hasIntegerPredicateValue])
   {
-    [v6 setIntegerPredicateValue:{-[MPPMediaPredicateValue integerPredicateValue](self, "integerPredicateValue")}];
+    [toCopy setIntegerPredicateValue:{-[MPPMediaPredicateValue integerPredicateValue](self, "integerPredicateValue")}];
   }
 
   if ([(MPPMediaPredicateValue *)self hasDoublePredicateValue])
   {
     [(MPPMediaPredicateValue *)self doublePredicateValue];
-    [v6 setDoublePredicateValue:?];
+    [toCopy setDoublePredicateValue:?];
   }
 
   if ([(MPPMediaPredicateValue *)self hasFloatPredicateValue])
   {
     [(MPPMediaPredicateValue *)self floatPredicateValue];
-    [v6 setFloatPredicateValue:?];
+    [toCopy setFloatPredicateValue:?];
   }
 
   if ([(MPPMediaPredicateValue *)self hasBoolPredicateValue])
   {
-    [v6 setBoolPredicateValue:{-[MPPMediaPredicateValue BOOLPredicateValue](self, "BOOLPredicateValue")}];
+    [toCopy setBoolPredicateValue:{-[MPPMediaPredicateValue BOOLPredicateValue](self, "BOOLPredicateValue")}];
   }
 
   if ([(MPPMediaPredicateValue *)self hasStringPredicateValue])
   {
-    v4 = [(MPPMediaPredicateValue *)self stringPredicateValue];
-    [v6 setStringPredicateValue:v4];
+    stringPredicateValue = [(MPPMediaPredicateValue *)self stringPredicateValue];
+    [toCopy setStringPredicateValue:stringPredicateValue];
   }
 
   if ([(MPPMediaPredicateValue *)self hasBytesPredicateValue])
   {
-    v5 = [(MPPMediaPredicateValue *)self bytesPredicateValue];
-    [v6 setBytesPredicateValue:v5];
+    bytesPredicateValue = [(MPPMediaPredicateValue *)self bytesPredicateValue];
+    [toCopy setBytesPredicateValue:bytesPredicateValue];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  [v9 writeInt32:self->_type forTag:1];
+  toCopy = to;
+  [toCopy writeInt32:self->_type forTag:1];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v9 writeInt64:self->_integerPredicateValue forTag:2];
+    [toCopy writeInt64:self->_integerPredicateValue forTag:2];
     has = self->_has;
   }
 
   if (has)
   {
-    [v9 writeDouble:3 forTag:self->_doublePredicateValue];
+    [toCopy writeDouble:3 forTag:self->_doublePredicateValue];
     has = self->_has;
   }
 
-  v6 = v9;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     *&v4 = self->_floatPredicateValue;
-    [v9 writeFloat:4 forTag:v4];
-    v6 = v9;
+    [toCopy writeFloat:4 forTag:v4];
+    v6 = toCopy;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    [v9 writeBOOL:self->_BOOLPredicateValue forTag:5];
-    v6 = v9;
+    [toCopy writeBOOL:self->_BOOLPredicateValue forTag:5];
+    v6 = toCopy;
   }
 
   stringPredicateValue = self->_stringPredicateValue;
   if (stringPredicateValue)
   {
-    [v9 writeString:stringPredicateValue forTag:6];
-    v6 = v9;
+    [toCopy writeString:stringPredicateValue forTag:6];
+    v6 = toCopy;
   }
 
   bytesPredicateValue = self->_bytesPredicateValue;
   if (bytesPredicateValue)
   {
-    [v9 writeData:bytesPredicateValue forTag:7];
-    v6 = v9;
+    [toCopy writeData:bytesPredicateValue forTag:7];
+    v6 = toCopy;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_type];
-  [v3 setObject:v4 forKey:@"type"];
+  [dictionary setObject:v4 forKey:@"type"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_integerPredicateValue];
-    [v3 setObject:v11 forKey:@"integerPredicateValue"];
+    [dictionary setObject:v11 forKey:@"integerPredicateValue"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -378,7 +378,7 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_doublePredicateValue];
-  [v3 setObject:v12 forKey:@"doublePredicateValue"];
+  [dictionary setObject:v12 forKey:@"doublePredicateValue"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -395,29 +395,29 @@ LABEL_4:
 LABEL_15:
   *&v5 = self->_floatPredicateValue;
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-  [v3 setObject:v13 forKey:@"floatPredicateValue"];
+  [dictionary setObject:v13 forKey:@"floatPredicateValue"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_BOOLPredicateValue];
-    [v3 setObject:v7 forKey:@"BOOLPredicateValue"];
+    [dictionary setObject:v7 forKey:@"BOOLPredicateValue"];
   }
 
 LABEL_6:
   stringPredicateValue = self->_stringPredicateValue;
   if (stringPredicateValue)
   {
-    [v3 setObject:stringPredicateValue forKey:@"stringPredicateValue"];
+    [dictionary setObject:stringPredicateValue forKey:@"stringPredicateValue"];
   }
 
   bytesPredicateValue = self->_bytesPredicateValue;
   if (bytesPredicateValue)
   {
-    [v3 setObject:bytesPredicateValue forKey:@"bytesPredicateValue"];
+    [dictionary setObject:bytesPredicateValue forKey:@"bytesPredicateValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -426,15 +426,15 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = MPPMediaPredicateValue;
   v4 = [(MPPMediaPredicateValue *)&v8 description];
-  v5 = [(MPPMediaPredicateValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPMediaPredicateValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasBoolPredicateValue:(BOOL)a3
+- (void)setHasBoolPredicateValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -447,9 +447,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasFloatPredicateValue:(BOOL)a3
+- (void)setHasFloatPredicateValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -462,9 +462,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIntegerPredicateValue:(BOOL)a3
+- (void)setHasIntegerPredicateValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }

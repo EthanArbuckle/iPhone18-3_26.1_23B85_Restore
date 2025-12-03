@@ -1,18 +1,18 @@
 @interface UILabelAccessibility
-- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)a3;
+- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)selector;
 - (BOOL)accessibilityRespondsToUserInteraction;
 - (BOOL)isAccessibilityElement;
 - (double)_accessibilityFontSize;
-- (id)_accessibilityLabel:(void *)a1;
-- (id)_axCleanupNewlines:(uint64_t)a1;
-- (id)_axOriginalLabelText:(void *)a1;
+- (id)_accessibilityLabel:(void *)label;
+- (id)_axCleanupNewlines:(uint64_t)newlines;
+- (id)_axOriginalLabelText:(void *)text;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityLocalizationBundleID;
 - (id)accessibilityLocalizationBundlePath;
 - (id)accessibilityLocalizedStringKey;
 - (id)accessibilityLocalizedStringTableName;
 - (id)accessibilityValue;
-- (id)copyAttributedText:(id)a3 withAttributes:(id)a4;
+- (id)copyAttributedText:(id)text withAttributes:(id)attributes;
 - (unint64_t)accessibilityTraits;
 @end
 
@@ -20,39 +20,39 @@
 
 - (double)_accessibilityFontSize
 {
-  v4 = [(UILabelAccessibility *)self font];
-  [v4 pointSize];
+  font = [(UILabelAccessibility *)self font];
+  [font pointSize];
   v5 = v2;
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](font);
   return v5;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v11 = [(UILabelAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-  if (v11)
+  isAccessibilityUserDefinedElement = [(UILabelAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v10 = [(UILabelAccessibility *)v17 isAccessibilityUserDefinedElement];
-    v18 = [v10 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v10);
+    isAccessibilityUserDefinedElement2 = [(UILabelAccessibility *)selfCopy isAccessibilityUserDefinedElement];
+    v18 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
   {
-    [(UILabelAccessibility *)v17 alpha];
-    if (v3 <= 0.0 || (v9 = 1, ([(UILabelAccessibility *)v17 isHidden]& 1) != 0))
+    [(UILabelAccessibility *)selfCopy alpha];
+    if (v3 <= 0.0 || (_accessibilityOverridesInvisibility = 1, ([(UILabelAccessibility *)selfCopy isHidden]& 1) != 0))
     {
-      v9 = [(UILabelAccessibility *)v17 _accessibilityOverridesInvisibility];
+      _accessibilityOverridesInvisibility = [(UILabelAccessibility *)selfCopy _accessibilityOverridesInvisibility];
     }
 
-    v15 = v9 & 1;
-    if (v9)
+    v15 = _accessibilityOverridesInvisibility & 1;
+    if (_accessibilityOverridesInvisibility)
     {
       context = objc_autoreleasePoolPush();
-      v14 = [(UILabelAccessibility *)v17 _accessibilityLabel:?];
+      v14 = [(UILabelAccessibility *)selfCopy _accessibilityLabel:?];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -62,7 +62,7 @@
         MEMORY[0x29EDC9740](v5);
       }
 
-      v7 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
       location = [v14 stringByTrimmingCharactersInSet:?];
       if ([location length])
       {
@@ -93,13 +93,13 @@
   return v18 & 1;
 }
 
-- (id)_accessibilityLabel:(void *)a1
+- (id)_accessibilityLabel:(void *)label
 {
-  v6 = a1;
+  labelCopy = label;
   v5 = a2;
-  if (a1)
+  if (label)
   {
-    location = [v6 accessibilityUserDefinedLabel];
+    location = [labelCopy accessibilityUserDefinedLabel];
     if (location)
     {
       v7 = MEMORY[0x29EDC9748](location);
@@ -107,7 +107,7 @@
 
     else
     {
-      v7 = [(UILabelAccessibility *)v6 _axOriginalLabelText:?];
+      v7 = [(UILabelAccessibility *)labelCopy _axOriginalLabelText:?];
     }
 
     objc_storeStrong(&location, 0);
@@ -123,13 +123,13 @@
   return v2;
 }
 
-- (id)_axCleanupNewlines:(uint64_t)a1
+- (id)_axCleanupNewlines:(uint64_t)newlines
 {
   v35 = *MEMORY[0x29EDCA608];
-  v26 = a1;
+  newlinesCopy = newlines;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v26)
+  if (newlinesCopy)
   {
     if (location)
     {
@@ -175,9 +175,9 @@
         }
 
         memset(__b, 0, sizeof(__b));
-        v12 = [v23 reverseObjectEnumerator];
-        obj = [v12 allObjects];
-        v14 = [obj countByEnumeratingWithState:__b objects:v34 count:{16, MEMORY[0x29EDC9740](v12).n128_f64[0]}];
+        reverseObjectEnumerator = [v23 reverseObjectEnumerator];
+        obj = [reverseObjectEnumerator allObjects];
+        v14 = [obj countByEnumeratingWithState:__b objects:v34 count:{16, MEMORY[0x29EDC9740](reverseObjectEnumerator).n128_f64[0]}];
         if (v14)
         {
           v9 = *__b[2];
@@ -193,8 +193,8 @@
 
             v19 = *(__b[1] + 8 * v10);
             v7 = v22[0];
-            v17 = [v19 range];
-            [v7 replaceCharactersInRange:v17 withString:{v4, @" "}];
+            range = [v19 range];
+            [v7 replaceCharactersInRange:range withString:{v4, @" "}];
             ++v10;
             if (v8 + 1 >= v11)
             {
@@ -251,11 +251,11 @@ double __43__UILabelAccessibility__axCleanupNewlines___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)a3
+- (BOOL)_accessibilityOverridesPotentiallyAttributedAPISelector:(SEL)selector
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  name = a3;
+  name = selector;
   v12 = &_accessibilityOverridesPotentiallyAttributedAPISelector__onceToken;
   location = 0;
   objc_storeStrong(&location, &__block_literal_global_298);
@@ -277,7 +277,7 @@ double __43__UILabelAccessibility__axCleanupNewlines___block_invoke(uint64_t a1)
     return InstanceMethod != _accessibilityOverridesPotentiallyAttributedAPISelector__accessibilityAttributedLabelBaseMethod;
   }
 
-  v5.receiver = v9;
+  v5.receiver = selfCopy;
   v5.super_class = UILabelAccessibility;
   return [(UILabelAccessibility *)&v5 _accessibilityOverridesPotentiallyAttributedAPISelector:name];
 }
@@ -294,46 +294,46 @@ Method __80__UILabelAccessibility__accessibilityOverridesPotentiallyAttributedAP
 
 - (id)accessibilityValue
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   if (([(UILabelAccessibility *)self accessibilityExposeLabelAsValue]& 1) != 0)
   {
-    v7 = [(UILabelAccessibility *)v6 _axOriginalLabelText:?];
+    accessibilityValue = [(UILabelAccessibility *)selfCopy _axOriginalLabelText:?];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UILabelAccessibility;
-    v7 = [(UILabelAccessibility *)&v4 accessibilityValue];
+    accessibilityValue = [(UILabelAccessibility *)&v4 accessibilityValue];
   }
 
-  v2 = v7;
+  v2 = accessibilityValue;
 
   return v2;
 }
 
-- (id)_axOriginalLabelText:(void *)a1
+- (id)_axOriginalLabelText:(void *)text
 {
-  v43 = a1;
+  textCopy = text;
   v42 = a2;
-  if (!a1)
+  if (!text)
   {
     v44 = 0;
     goto LABEL_35;
   }
 
-  v41 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%p-_axOriginalLabelText", v43];
-  v23 = [*MEMORY[0x29EDC7300] objectForKeyedSubscript:v41];
+  textCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%p-_axOriginalLabelText", textCopy];
+  v23 = [*MEMORY[0x29EDC7300] objectForKeyedSubscript:textCopy];
   *&v2 = MEMORY[0x29EDC9740](v23).n128_u64[0];
   if (!v23)
   {
-    v21 = [v43 accessibilityIdentification];
-    v22 = [v21 isEqualToString:@"doubleHeightLabel"];
-    *&v3 = MEMORY[0x29EDC9740](v21).n128_u64[0];
+    accessibilityIdentification = [textCopy accessibilityIdentification];
+    v22 = [accessibilityIdentification isEqualToString:@"doubleHeightLabel"];
+    *&v3 = MEMORY[0x29EDC9740](accessibilityIdentification).n128_u64[0];
     if (v22)
     {
-      v39 = [v43 safeValueForKey:{@"text", v3}];
+      v39 = [textCopy safeValueForKey:{@"text", v3}];
       if (v42)
       {
         v38 = 0;
@@ -355,7 +355,7 @@ Method __80__UILabelAccessibility__accessibilityOverridesPotentiallyAttributedAP
           v5 = objc_allocWithZone(MEMORY[0x29EDBD7E8]);
           v34 = [v5 initWithString:v39];
           [v34 setAttribute:*MEMORY[0x29EDB8F00] forKey:v38 withRange:{v36, v37}];
-          [*MEMORY[0x29EDC7300] setObject:v34 forKeyedSubscript:v41];
+          [*MEMORY[0x29EDC7300] setObject:v34 forKeyedSubscript:textCopy];
           v44 = MEMORY[0x29EDC9748](v34);
           v40 = 1;
           objc_storeStrong(&v34, 0);
@@ -366,7 +366,7 @@ Method __80__UILabelAccessibility__accessibilityOverridesPotentiallyAttributedAP
 
       else
       {
-        [*MEMORY[0x29EDC7300] setObject:v39 forKeyedSubscript:v41];
+        [*MEMORY[0x29EDC7300] setObject:v39 forKeyedSubscript:textCopy];
         v44 = MEMORY[0x29EDC9748](v39);
         v40 = 1;
       }
@@ -380,7 +380,7 @@ Method __80__UILabelAccessibility__accessibilityOverridesPotentiallyAttributedAP
 
     v32 = 0;
     objc_opt_class();
-    v18 = [v43 safeValueForKey:@"attributedText"];
+    v18 = [textCopy safeValueForKey:@"attributedText"];
     v31 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v18);
     v30 = MEMORY[0x29EDC9748](v31);
@@ -391,11 +391,11 @@ Method __80__UILabelAccessibility__accessibilityOverridesPotentiallyAttributedAP
     {
       if ((v42 & 1) == 0)
       {
-        v6 = [v33 string];
+        string = [v33 string];
         v7 = v29;
-        v29 = v6;
+        v29 = string;
         *&v8 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-        [*MEMORY[0x29EDC7300] setObject:v29 forKeyedSubscript:{v41, v8}];
+        [*MEMORY[0x29EDC7300] setObject:v29 forKeyedSubscript:{textCopy, v8}];
         v44 = MEMORY[0x29EDC9748](v29);
         v40 = 1;
 LABEL_33:
@@ -421,7 +421,7 @@ LABEL_33:
           [v28 removeAttributes:_axOriginalLabelText__Attributes];
         }
 
-        v27 = [v43 _accessibilityValueForKey:*MEMORY[0x29EDC7610]];
+        v27 = [textCopy _accessibilityValueForKey:*MEMORY[0x29EDC7610]];
         if (v27)
         {
           obj = [v28 stringByReplacingOccurrencesOfString:v27 withString:{@", "}];
@@ -434,8 +434,8 @@ LABEL_33:
           objc_storeStrong(&obj, 0);
         }
 
-        v25 = [(UILabelAccessibility *)v43 _axCleanupNewlines:v28];
-        [*MEMORY[0x29EDC7300] setObject:v25 forKeyedSubscript:v41];
+        v25 = [(UILabelAccessibility *)textCopy _axCleanupNewlines:v28];
+        [*MEMORY[0x29EDC7300] setObject:v25 forKeyedSubscript:textCopy];
         v44 = MEMORY[0x29EDC9748](v25);
         v40 = 1;
         objc_storeStrong(&v25, 0);
@@ -456,17 +456,17 @@ LABEL_33:
 
     if (![v29 length])
     {
-      v9 = [v43 safeValueForKey:@"text"];
+      v9 = [textCopy safeValueForKey:@"text"];
       v10 = v29;
       v29 = v9;
       MEMORY[0x29EDC9740](v10);
     }
 
-    v11 = [(UILabelAccessibility *)v43 _axCleanupNewlines:v29];
+    v11 = [(UILabelAccessibility *)textCopy _axCleanupNewlines:v29];
     v12 = v29;
     v29 = v11;
     *&v13 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-    v24 = [v43 _accessibilityValueForKey:{*MEMORY[0x29EDC7610], v13}];
+    v24 = [textCopy _accessibilityValueForKey:{*MEMORY[0x29EDC7610], v13}];
     if (v24)
     {
       v14 = [v29 stringByReplacingOccurrencesOfString:v24 withString:{@", "}];
@@ -475,17 +475,17 @@ LABEL_33:
       MEMORY[0x29EDC9740](v15);
     }
 
-    [*MEMORY[0x29EDC7300] setObject:v29 forKeyedSubscript:v41];
+    [*MEMORY[0x29EDC7300] setObject:v29 forKeyedSubscript:textCopy];
     v44 = MEMORY[0x29EDC9748](v29);
     v40 = 1;
     objc_storeStrong(&v24, 0);
     goto LABEL_33;
   }
 
-  v44 = [*MEMORY[0x29EDC7300] objectForKeyedSubscript:{v41, v2}];
+  v44 = [*MEMORY[0x29EDC7300] objectForKeyedSubscript:{textCopy, v2}];
   v40 = 1;
 LABEL_34:
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&textCopy, 0);
 LABEL_35:
   v16 = v44;
 
@@ -499,35 +499,35 @@ LABEL_35:
   location[0] = [(UILabelAccessibility *)self accessibilityLabel];
   if ([location[0] isAXAttributedString])
   {
-    v5 = [location[0] cfAttributedString];
+    cfAttributedString = [location[0] cfAttributedString];
   }
 
   else if (location[0])
   {
-    v5 = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:location[0]];
+    cfAttributedString = [objc_alloc(MEMORY[0x29EDB9F30]) initWithString:location[0]];
   }
 
   else
   {
-    v5 = 0;
+    cfAttributedString = 0;
   }
 
   objc_storeStrong(location, 0);
-  v2 = v5;
+  v2 = cfAttributedString;
 
   return v2;
 }
 
-- (id)copyAttributedText:(id)a3 withAttributes:(id)a4
+- (id)copyAttributedText:(id)text withAttributes:(id)attributes
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, attributes);
   v14 = 0;
-  v10 = [(UILabelAccessibility *)v18 safeValueForKey:@"defaultAttributes"];
+  v10 = [(UILabelAccessibility *)selfCopy safeValueForKey:@"defaultAttributes"];
   v13 = __UIAccessibilitySafeClass();
   MEMORY[0x29EDC9740](v10);
   v12 = MEMORY[0x29EDC9748](v13);
@@ -537,9 +537,9 @@ LABEL_35:
   v4 = objc_alloc(MEMORY[0x29EDBA038]);
   v11 = [v4 initWithString:location[0] attributes:v15];
   v6 = v11;
-  v7 = [location[0] _accessibilityAttributedLocalizedString];
+  _accessibilityAttributedLocalizedString = [location[0] _accessibilityAttributedLocalizedString];
   [v6 _setAccessibilityAttributedLocalizedString:?];
-  MEMORY[0x29EDC9740](v7);
+  MEMORY[0x29EDC9740](_accessibilityAttributedLocalizedString);
   v8 = MEMORY[0x29EDC9748](v11);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v15, 0);
@@ -550,21 +550,21 @@ LABEL_35:
 
 - (id)accessibilityLocalizedStringKey
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v9 = 0;
   objc_opt_class();
-  v4 = [(UILabelAccessibility *)v11 safeValueForKey:@"attributedText"];
+  v4 = [(UILabelAccessibility *)selfCopy safeValueForKey:@"attributedText"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v7 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   v10[0] = v7;
-  v6 = [v7 _accessibilityAttributedLocalizedString];
-  v5 = [v6 attributeValueForKey:@"UIAccessibilityTokenLocalizedStringKey"];
+  _accessibilityAttributedLocalizedString = [v7 _accessibilityAttributedLocalizedString];
+  v5 = [_accessibilityAttributedLocalizedString attributeValueForKey:@"UIAccessibilityTokenLocalizedStringKey"];
   v3 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v10, 0);
 
   return v3;
@@ -572,21 +572,21 @@ LABEL_35:
 
 - (id)accessibilityLocalizationBundleID
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v9 = 0;
   objc_opt_class();
-  v4 = [(UILabelAccessibility *)v11 safeValueForKey:@"attributedText"];
+  v4 = [(UILabelAccessibility *)selfCopy safeValueForKey:@"attributedText"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v7 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   v10[0] = v7;
-  v6 = [v7 _accessibilityAttributedLocalizedString];
-  v5 = [v6 attributeValueForKey:@"UIAccessibilityTokenLocalizedStringBundleID"];
+  _accessibilityAttributedLocalizedString = [v7 _accessibilityAttributedLocalizedString];
+  v5 = [_accessibilityAttributedLocalizedString attributeValueForKey:@"UIAccessibilityTokenLocalizedStringBundleID"];
   v3 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v10, 0);
 
   return v3;
@@ -594,21 +594,21 @@ LABEL_35:
 
 - (id)accessibilityLocalizationBundlePath
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v9 = 0;
   objc_opt_class();
-  v4 = [(UILabelAccessibility *)v11 safeValueForKey:@"attributedText"];
+  v4 = [(UILabelAccessibility *)selfCopy safeValueForKey:@"attributedText"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v7 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   v10[0] = v7;
-  v6 = [v7 _accessibilityAttributedLocalizedString];
-  v5 = [v6 attributeValueForKey:@"UIAccessibilityTokenLocalizationBundlePath"];
+  _accessibilityAttributedLocalizedString = [v7 _accessibilityAttributedLocalizedString];
+  v5 = [_accessibilityAttributedLocalizedString attributeValueForKey:@"UIAccessibilityTokenLocalizationBundlePath"];
   v3 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v10, 0);
 
   return v3;
@@ -616,21 +616,21 @@ LABEL_35:
 
 - (id)accessibilityLocalizedStringTableName
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v9 = 0;
   objc_opt_class();
-  v4 = [(UILabelAccessibility *)v11 safeValueForKey:@"attributedText"];
+  v4 = [(UILabelAccessibility *)selfCopy safeValueForKey:@"attributedText"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v7 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   v10[0] = v7;
-  v6 = [v7 _accessibilityAttributedLocalizedString];
-  v5 = [v6 attributeValueForKey:@"UIAccessibilityTokenLocalizedStringTableName"];
+  _accessibilityAttributedLocalizedString = [v7 _accessibilityAttributedLocalizedString];
+  v5 = [_accessibilityAttributedLocalizedString attributeValueForKey:@"UIAccessibilityTokenLocalizedStringTableName"];
   v3 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v10, 0);
 
   return v3;
@@ -653,32 +653,32 @@ double __45__UILabelAccessibility__axOriginalLabelText___block_invoke(uint64_t a
 
 - (unint64_t)accessibilityTraits
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v9 = [(UILabelAccessibility *)self accessibilityUserDefinedTraits];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v9)
+  accessibilityUserDefinedTraits = [(UILabelAccessibility *)self accessibilityUserDefinedTraits];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedTraits).n128_u64[0];
+  if (accessibilityUserDefinedTraits)
   {
-    v8 = [(UILabelAccessibility *)v19 accessibilityUserDefinedTraits];
-    v20 = [v8 unsignedLongLongValue];
-    MEMORY[0x29EDC9740](v8);
+    accessibilityUserDefinedTraits2 = [(UILabelAccessibility *)selfCopy accessibilityUserDefinedTraits];
+    unsignedLongLongValue = [accessibilityUserDefinedTraits2 unsignedLongLongValue];
+    MEMORY[0x29EDC9740](accessibilityUserDefinedTraits2);
   }
 
   else
   {
     v5 = *MEMORY[0x29EDC7FD0];
-    v16.receiver = v19;
+    v16.receiver = selfCopy;
     v16.super_class = UILabelAccessibility;
     v17 = v5 | [(UILabelAccessibility *)&v16 accessibilityTraits];
-    v6 = [(UILabelAccessibility *)v19 accessibilityIdentification];
-    v7 = [v6 isEqualToString:@"doubleHeightLabel"];
-    MEMORY[0x29EDC9740](v6);
+    accessibilityIdentification = [(UILabelAccessibility *)selfCopy accessibilityIdentification];
+    v7 = [accessibilityIdentification isEqualToString:@"doubleHeightLabel"];
+    MEMORY[0x29EDC9740](accessibilityIdentification);
     if (v7)
     {
       v17 |= *MEMORY[0x29EDC7FF0];
     }
 
-    v15 = MEMORY[0x29EDC9748](v19);
+    v15 = MEMORY[0x29EDC9748](selfCopy);
     v10 = 0;
     HasButtonLikeGesture = 0;
     if ([v15 isUserInteractionEnabled])
@@ -703,42 +703,42 @@ double __45__UILabelAccessibility__axOriginalLabelText___block_invoke(uint64_t a
       v17 |= *MEMORY[0x29EDC7F70];
     }
 
-    v20 = v17;
+    unsignedLongLongValue = v17;
     objc_storeStrong(&v15, 0);
   }
 
-  return v20;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v7 = [(UILabelAccessibility *)self accessibilityIdentification];
-  v8 = [v7 isEqualToString:@"doubleHeightLabel"];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
+  accessibilityIdentification = [(UILabelAccessibility *)self accessibilityIdentification];
+  v8 = [accessibilityIdentification isEqualToString:@"doubleHeightLabel"];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityIdentification).n128_u64[0];
   if (v8)
   {
     return 1;
   }
 
-  v6 = [(UILabelAccessibility *)v11 storedAccessibilityRespondsToUserInteraction];
-  *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v6)
+  storedAccessibilityRespondsToUserInteraction = [(UILabelAccessibility *)selfCopy storedAccessibilityRespondsToUserInteraction];
+  *&v3 = MEMORY[0x29EDC9740](storedAccessibilityRespondsToUserInteraction).n128_u64[0];
+  if (storedAccessibilityRespondsToUserInteraction)
   {
-    v5 = [(UILabelAccessibility *)v11 storedAccessibilityRespondsToUserInteraction];
-    v12 = [v5 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v5);
+    storedAccessibilityRespondsToUserInteraction2 = [(UILabelAccessibility *)selfCopy storedAccessibilityRespondsToUserInteraction];
+    v12 = [storedAccessibilityRespondsToUserInteraction2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](storedAccessibilityRespondsToUserInteraction2);
   }
 
-  else if (([(UILabelAccessibility *)v11 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  else if (([(UILabelAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
     return 0;
   }
 
   else
   {
-    v9.receiver = v11;
+    v9.receiver = selfCopy;
     v9.super_class = UILabelAccessibility;
     return [(UILabelAccessibility *)&v9 accessibilityRespondsToUserInteraction];
   }

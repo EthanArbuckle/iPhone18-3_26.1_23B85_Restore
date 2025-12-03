@@ -7,30 +7,30 @@
 - (NSSet)actionsToDeliverToHostableEntity;
 - (SBApplicationSceneHandle)applicationSceneHandle;
 - (SBApplicationSceneHandle)sceneHandleForTraitsParticipant;
-- (id)acquireLiveContentAssertionForReason:(id)a3;
+- (id)acquireLiveContentAssertionForReason:(id)reason;
 - (id)hostedAppSceneHandle;
 - (id)hostedAppSceneHandles;
-- (id)traitsParticipantForSceneHandle:(id)a3;
+- (id)traitsParticipantForSceneHandle:(id)handle;
 - (int64_t)_effectiveContentMode;
 - (int64_t)hostableEntityContentMode;
 - (int64_t)hostableEntityOrientation;
 - (void)_addEntityViewControllerIfNeeded;
 - (void)_updateContentMode;
-- (void)addGrabberView:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)aggregatePresentation:(id)a3;
+- (void)addGrabberView:(id)view;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)aggregatePresentation:(id)presentation;
 - (void)dealloc;
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4;
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4;
-- (void)hostableEntityPresenter:(id)a3 didFailToActivate:(id)a4;
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3;
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting;
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting;
+- (void)hostableEntityPresenter:(id)presenter didFailToActivate:(id)activate;
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation;
 - (void)invalidate;
-- (void)setActionsToDeliverToHostableEntity:(id)a3;
-- (void)setHomeGrabberView:(id)a3;
-- (void)setHostedAppReferenceSize:(CGSize)a3 withInterfaceOrientation:(int64_t)a4;
-- (void)setHostedEntity:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setActionsToDeliverToHostableEntity:(id)entity;
+- (void)setHomeGrabberView:(id)view;
+- (void)setHostedAppReferenceSize:(CGSize)size withInterfaceOrientation:(int64_t)orientation;
+- (void)setHostedEntity:(id)entity;
+- (void)setInvalidationHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -59,25 +59,25 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSCoverSheetViewPresenting *)self->_entityViewController sceneHandleForTraitsParticipant];
+    sceneHandleForTraitsParticipant = [(CSCoverSheetViewPresenting *)self->_entityViewController sceneHandleForTraitsParticipant];
   }
 
   else
   {
-    v3 = 0;
+    sceneHandleForTraitsParticipant = 0;
   }
 
-  return v3;
+  return sceneHandleForTraitsParticipant;
 }
 
 - (void)_updateContentMode
 {
-  v3 = [(CSHostedEntityViewController *)self _effectiveContentMode];
+  _effectiveContentMode = [(CSHostedEntityViewController *)self _effectiveContentMode];
   if (objc_opt_respondsToSelector())
   {
     entityViewController = self->_entityViewController;
 
-    [(CSCoverSheetViewPresenting *)entityViewController setHostableEntityContentMode:v3];
+    [(CSCoverSheetViewPresenting *)entityViewController setHostableEntityContentMode:_effectiveContentMode];
   }
 }
 
@@ -100,22 +100,22 @@
   [(CSCoverSheetViewControllerBase *)&v3 dealloc];
 }
 
-- (void)setHostedEntity:(id)a3
+- (void)setHostedEntity:(id)entity
 {
-  v5 = a3;
-  if (self->_hostedEntity != v5)
+  entityCopy = entity;
+  if (self->_hostedEntity != entityCopy)
   {
     if (self->_entityViewController)
     {
       if (objc_opt_respondsToSelector())
       {
-        v6 = [(CSCoverSheetViewPresenting *)self->_entityViewController actionsToDeliverToHostableEntity];
+        actionsToDeliverToHostableEntity = [(CSCoverSheetViewPresenting *)self->_entityViewController actionsToDeliverToHostableEntity];
         [(CSCoverSheetViewPresenting *)self->_entityViewController setActionsToDeliverToHostableEntity:0];
       }
 
       else
       {
-        v6 = 0;
+        actionsToDeliverToHostableEntity = 0;
       }
 
       entityViewController = self->_entityViewController;
@@ -123,8 +123,8 @@
       v13 = 3221225472;
       v14 = __48__CSHostedEntityViewController_setHostedEntity___block_invoke;
       v15 = &unk_27838BA70;
-      v16 = v5;
-      v17 = self;
+      v16 = entityCopy;
+      selfCopy = self;
       [(CSHostedEntityViewController *)self bs_removeChildViewController:entityViewController animated:0 transitionBlock:&v12];
       v9 = self->_entityViewController;
       self->_entityViewController = 0;
@@ -134,26 +134,26 @@
 
     else
     {
-      v6 = self->_pendingActionsToDeliverToHostableEntity;
+      actionsToDeliverToHostableEntity = self->_pendingActionsToDeliverToHostableEntity;
       pendingActionsToDeliverToHostableEntity = self->_pendingActionsToDeliverToHostableEntity;
       self->_pendingActionsToDeliverToHostableEntity = 0;
     }
 
-    objc_storeStrong(&self->_hostedEntity, a3);
-    v10 = [(CSHostableEntity *)self->_hostedEntity hostingViewController];
+    objc_storeStrong(&self->_hostedEntity, entity);
+    hostingViewController = [(CSHostableEntity *)self->_hostedEntity hostingViewController];
     v11 = self->_entityViewController;
-    self->_entityViewController = v10;
+    self->_entityViewController = hostingViewController;
 
     [(CSCoverSheetViewPresenting *)self->_entityViewController setEntityPresenterDelegate:self];
     [(CSHostedEntityViewController *)self _addEntityViewControllerIfNeeded];
     if (objc_opt_respondsToSelector())
     {
-      [(CSCoverSheetViewPresenting *)self->_entityViewController setActionsToDeliverToHostableEntity:v6];
+      [(CSCoverSheetViewPresenting *)self->_entityViewController setActionsToDeliverToHostableEntity:actionsToDeliverToHostableEntity];
     }
 
     else
     {
-      objc_storeStrong(&self->_pendingActionsToDeliverToHostableEntity, v6);
+      objc_storeStrong(&self->_pendingActionsToDeliverToHostableEntity, actionsToDeliverToHostableEntity);
     }
 
     [(CSCoverSheetViewControllerBase *)self rebuildBehavior:v12];
@@ -177,9 +177,9 @@ void __48__CSHostedEntityViewController_setHostedEntity___block_invoke(uint64_t 
   v3[2]();
 }
 
-- (id)acquireLiveContentAssertionForReason:(id)a3
+- (id)acquireLiveContentAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   liveContentAssertions = self->_liveContentAssertions;
   if (!liveContentAssertions)
   {
@@ -201,7 +201,7 @@ void __48__CSHostedEntityViewController_setHostedEntity___block_invoke(uint64_t 
     liveContentAssertions = self->_liveContentAssertions;
   }
 
-  v11 = [(BSCompoundAssertion *)liveContentAssertions acquireForReason:v4, v13, v14, v15, v16];
+  v11 = [(BSCompoundAssertion *)liveContentAssertions acquireForReason:reasonCopy, v13, v14, v15, v16];
 
   return v11;
 }
@@ -228,31 +228,31 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
   [(CSHostedEntityViewController *)self _addEntityViewControllerIfNeeded];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v5.receiver = self;
   v5.super_class = CSHostedEntityViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregateBehavior:v4];
-  [v4 unionBehavior:{self->_entityViewController, v5.receiver, v5.super_class}];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v5 aggregateBehavior:behaviorCopy];
+  [behaviorCopy unionBehavior:{self->_entityViewController, v5.receiver, v5.super_class}];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v5.receiver = self;
   v5.super_class = CSHostedEntityViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregateAppearance:v4];
-  [v4 unionAppearance:{self->_entityViewController, v5.receiver, v5.super_class}];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v5 aggregateAppearance:appearanceCopy];
+  [appearanceCopy unionAppearance:{self->_entityViewController, v5.receiver, v5.super_class}];
 }
 
-- (void)aggregatePresentation:(id)a3
+- (void)aggregatePresentation:(id)presentation
 {
   v5.receiver = self;
   v5.super_class = CSHostedEntityViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 aggregatePresentation:v4];
-  [v4 unionPresentation:{self->_entityViewController, v5.receiver, v5.super_class}];
+  presentationCopy = presentation;
+  [(CSCoverSheetViewControllerBase *)&v5 aggregatePresentation:presentationCopy];
+  [presentationCopy unionPresentation:{self->_entityViewController, v5.receiver, v5.super_class}];
 }
 
 - (BOOL)canHostAnApp
@@ -271,47 +271,47 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSCoverSheetViewPresenting *)self->_entityViewController hostedAppSceneHandle];
+    hostedAppSceneHandle = [(CSCoverSheetViewPresenting *)self->_entityViewController hostedAppSceneHandle];
   }
 
   else
   {
-    v3 = 0;
+    hostedAppSceneHandle = 0;
   }
 
-  return v3;
+  return hostedAppSceneHandle;
 }
 
 - (id)hostedAppSceneHandles
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSCoverSheetViewPresenting *)self->_entityViewController hostedAppSceneHandles];
+    hostedAppSceneHandles = [(CSCoverSheetViewPresenting *)self->_entityViewController hostedAppSceneHandles];
   }
 
   else
   {
-    v3 = 0;
+    hostedAppSceneHandles = 0;
   }
 
-  return v3;
+  return hostedAppSceneHandles;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    [(CSCoverSheetViewPresenting *)self->_entityViewController setInvalidationHandler:v4];
+    [(CSCoverSheetViewPresenting *)self->_entityViewController setInvalidationHandler:handlerCopy];
   }
 }
 
-- (id)traitsParticipantForSceneHandle:(id)a3
+- (id)traitsParticipantForSceneHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CSCoverSheetViewPresenting *)self->_entityViewController traitsParticipantForSceneHandle:v4];
+    v5 = [(CSCoverSheetViewPresenting *)self->_entityViewController traitsParticipantForSceneHandle:handleCopy];
   }
 
   else
@@ -322,25 +322,25 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
   return v5;
 }
 
-- (void)setHostedAppReferenceSize:(CGSize)a3 withInterfaceOrientation:(int64_t)a4
+- (void)setHostedAppReferenceSize:(CGSize)size withInterfaceOrientation:(int64_t)orientation
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (objc_opt_respondsToSelector())
   {
     entityViewController = self->_entityViewController;
 
-    [(CSCoverSheetViewPresenting *)entityViewController setHostedAppReferenceSize:a4 withInterfaceOrientation:width, height];
+    [(CSCoverSheetViewPresenting *)entityViewController setHostedAppReferenceSize:orientation withInterfaceOrientation:width, height];
   }
 }
 
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation
 {
   if (objc_opt_respondsToSelector())
   {
     entityViewController = self->_entityViewController;
 
-    [(CSCoverSheetViewPresenting *)entityViewController hostedAppWillRotateToInterfaceOrientation:a3];
+    [(CSCoverSheetViewPresenting *)entityViewController hostedAppWillRotateToInterfaceOrientation:orientation];
   }
 }
 
@@ -372,30 +372,30 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSCoverSheetViewPresenting *)self->_entityViewController actionsToDeliverToHostableEntity];
+    actionsToDeliverToHostableEntity = [(CSCoverSheetViewPresenting *)self->_entityViewController actionsToDeliverToHostableEntity];
   }
 
   else
   {
-    v3 = 0;
+    actionsToDeliverToHostableEntity = 0;
   }
 
-  return v3;
+  return actionsToDeliverToHostableEntity;
 }
 
-- (void)setActionsToDeliverToHostableEntity:(id)a3
+- (void)setActionsToDeliverToHostableEntity:(id)entity
 {
-  v8 = a3;
+  entityCopy = entity;
   v4 = objc_opt_respondsToSelector();
   entityViewController = self->_entityViewController;
   if (v4)
   {
-    [(CSCoverSheetViewPresenting *)entityViewController setActionsToDeliverToHostableEntity:v8];
+    [(CSCoverSheetViewPresenting *)entityViewController setActionsToDeliverToHostableEntity:entityCopy];
   }
 
   else if (!entityViewController)
   {
-    v6 = [v8 copy];
+    v6 = [entityCopy copy];
     pendingActionsToDeliverToHostableEntity = self->_pendingActionsToDeliverToHostableEntity;
     self->_pendingActionsToDeliverToHostableEntity = v6;
   }
@@ -417,60 +417,60 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSCoverSheetViewPresenting *)self->_entityViewController sceneForTraitsParticipant];
+    sceneForTraitsParticipant = [(CSCoverSheetViewPresenting *)self->_entityViewController sceneForTraitsParticipant];
   }
 
   else
   {
-    v3 = 0;
+    sceneForTraitsParticipant = 0;
   }
 
-  return v3;
+  return sceneForTraitsParticipant;
 }
 
-- (void)setHomeGrabberView:(id)a3
+- (void)setHomeGrabberView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(UIView *)self->_grabberView removeFromSuperview];
-    objc_storeStrong(&self->_grabberView, a3);
-    v5 = [(CSHostedEntityViewController *)self view];
+    objc_storeStrong(&self->_grabberView, view);
+    view = [(CSHostedEntityViewController *)self view];
     grabberView = self->_grabberView;
-    [v5 bounds];
+    [view bounds];
     [(UIView *)grabberView setFrame:?];
     [(UIView *)self->_grabberView setAutoresizingMask:18];
-    [v5 addSubview:self->_grabberView];
+    [view addSubview:self->_grabberView];
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting
 {
-  v6 = a4;
-  v5 = [(CSHostedEntityViewController *)self entityPresenterDelegate];
+  hostingCopy = hosting;
+  entityPresenterDelegate = [(CSHostedEntityViewController *)self entityPresenterDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 hostableEntityPresenter:self didBeginHosting:v6];
+    [entityPresenterDelegate hostableEntityPresenter:self didBeginHosting:hostingCopy];
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting
 {
-  v6 = a4;
-  v5 = [(CSHostedEntityViewController *)self entityPresenterDelegate];
+  hostingCopy = hosting;
+  entityPresenterDelegate = [(CSHostedEntityViewController *)self entityPresenterDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 hostableEntityPresenter:self didEndHosting:v6];
+    [entityPresenterDelegate hostableEntityPresenter:self didEndHosting:hostingCopy];
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didFailToActivate:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didFailToActivate:(id)activate
 {
-  v6 = a4;
-  v5 = [(CSHostedEntityViewController *)self entityPresenterDelegate];
+  activateCopy = activate;
+  entityPresenterDelegate = [(CSHostedEntityViewController *)self entityPresenterDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 hostableEntityPresenter:self didFailToActivate:v6];
+    [entityPresenterDelegate hostableEntityPresenter:self didFailToActivate:activateCopy];
   }
 }
 
@@ -490,11 +490,11 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
   return v3;
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = NSClassFromString(&cfstr_Sbhomegrabberv.isa);
-  v8 = v4;
+  v8 = viewCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -533,22 +533,22 @@ void __69__CSHostedEntityViewController_acquireLiveContentAssertionForReason___b
 
 - (void)_addEntityViewControllerIfNeeded
 {
-  v3 = [(CSHostedEntityViewController *)self viewIfLoaded];
-  v4 = [(CSCoverSheetViewPresenting *)self->_entityViewController parentViewController];
+  viewIfLoaded = [(CSHostedEntityViewController *)self viewIfLoaded];
+  parentViewController = [(CSCoverSheetViewPresenting *)self->_entityViewController parentViewController];
 
-  if (v4 != self && v3 != 0)
+  if (parentViewController != self && viewIfLoaded != 0)
   {
     [(CSHostedEntityViewController *)self _updateContentMode];
-    v6 = [(CSCoverSheetViewPresenting *)self->_entityViewController view];
+    view = [(CSCoverSheetViewPresenting *)self->_entityViewController view];
     entityViewController = self->_entityViewController;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__CSHostedEntityViewController__addEntityViewControllerIfNeeded__block_invoke;
     v9[3] = &unk_27838D0F8;
-    v10 = v6;
-    v11 = v3;
-    v12 = self;
-    v8 = v6;
+    v10 = view;
+    v11 = viewIfLoaded;
+    selfCopy = self;
+    v8 = view;
     [(CSHostedEntityViewController *)self bs_addChildViewController:entityViewController animated:0 transitionBlock:v9];
   }
 }

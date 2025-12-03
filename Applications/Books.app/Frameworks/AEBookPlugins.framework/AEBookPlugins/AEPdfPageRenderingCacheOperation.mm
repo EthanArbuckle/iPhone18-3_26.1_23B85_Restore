@@ -1,7 +1,7 @@
 @interface AEPdfPageRenderingCacheOperation
 - (AEPdfPageRenderingCacheOperation)init;
-- (id)callbackInvocationWithImage:(id)a3;
-- (id)generateImage:(CGSize)a3;
+- (id)callbackInvocationWithImage:(id)image;
+- (id)generateImage:(CGSize)image;
 @end
 
 @implementation AEPdfPageRenderingCacheOperation
@@ -13,27 +13,27 @@
   return [(AEPdfPageRenderingCacheOperation *)&v3 initWithOptions:0];
 }
 
-- (id)callbackInvocationWithImage:(id)a3
+- (id)callbackInvocationWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [(AEPdfPageRenderingCacheOperation *)self renderingCacheCallbackInvocationWithImage:v4 pageNumber:[(AEPdfPageRenderingCacheOperation *)self pageNumber]];
+  imageCopy = image;
+  v5 = [(AEPdfPageRenderingCacheOperation *)self renderingCacheCallbackInvocationWithImage:imageCopy pageNumber:[(AEPdfPageRenderingCacheOperation *)self pageNumber]];
 
   return v5;
 }
 
-- (id)generateImage:(CGSize)a3
+- (id)generateImage:(CGSize)image
 {
-  v4 = [BKPDFModernBookViewController pageIndexForPageNumber:[(AEPdfPageRenderingCacheOperation *)self pageNumber:a3.width]];
+  v4 = [BKPDFModernBookViewController pageIndexForPageNumber:[(AEPdfPageRenderingCacheOperation *)self pageNumber:image.width]];
   v5 = +[AEPdfCache sharedInstance];
   v6 = [(AEPdfPageRenderingCacheOperation *)self url];
   v7 = [v5 copyCacheObjectForURL:v6];
 
-  v8 = [v7 document];
-  v9 = [(AEPdfPageRenderingCacheOperation *)self imageCache];
-  [v9 primaryImageSize];
-  v10 = [AEPDFPlugin generateImageForDocument:v8 pageIndex:v4 size:?];
+  document = [v7 document];
+  imageCache = [(AEPdfPageRenderingCacheOperation *)self imageCache];
+  [imageCache primaryImageSize];
+  v10 = [AEPDFPlugin generateImageForDocument:document pageIndex:v4 size:?];
 
-  if (v10 && [v8 isLocked])
+  if (v10 && [document isLocked])
   {
     [(AEPdfPageRenderingCacheOperation *)self setSerializeFormat:0xFFFFFFFFLL];
   }

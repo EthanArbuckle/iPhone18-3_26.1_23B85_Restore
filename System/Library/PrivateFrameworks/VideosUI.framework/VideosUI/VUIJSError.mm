@@ -1,5 +1,5 @@
 @interface VUIJSError
-- (VUIJSError)initWithError:(id)a3 appContext:(id)a4;
+- (VUIJSError)initWithError:(id)error appContext:(id)context;
 - (id)code;
 - (id)description;
 - (id)domain;
@@ -10,27 +10,27 @@
 
 @implementation VUIJSError
 
-- (VUIJSError)initWithError:(id)a3 appContext:(id)a4
+- (VUIJSError)initWithError:(id)error appContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(VUIJSObject *)self initWithAppContext:v8];
+  errorCopy = error;
+  contextCopy = context;
+  v9 = [(VUIJSObject *)self initWithAppContext:contextCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_wrappedError, a3);
-    v11 = [(NSError *)v10->_wrappedError userInfo];
-    v12 = [v11 objectForKey:*MEMORY[0x1E696AA08]];
+    objc_storeStrong(&v9->_wrappedError, error);
+    userInfo = [(NSError *)v10->_wrappedError userInfo];
+    v12 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
     if (v12)
     {
-      v13 = [[VUIJSError alloc] initWithError:v12 appContext:v8];
+      v13 = [[VUIJSError alloc] initWithError:v12 appContext:contextCopy];
       jsUnderlyingError = v10->_jsUnderlyingError;
       v10->_jsUnderlyingError = v13;
 
-      v15 = [v8 jsContext];
-      v16 = [v15 virtualMachine];
-      [v16 addManagedReference:v10->_jsUnderlyingError withOwner:v10];
+      jsContext = [contextCopy jsContext];
+      virtualMachine = [jsContext virtualMachine];
+      [virtualMachine addManagedReference:v10->_jsUnderlyingError withOwner:v10];
     }
   }
 
@@ -40,50 +40,50 @@
 - (id)code
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(VUIJSError *)self wrappedError];
-  v4 = [v2 numberWithInteger:{objc_msgSend(v3, "code")}];
+  wrappedError = [(VUIJSError *)self wrappedError];
+  v4 = [v2 numberWithInteger:{objc_msgSend(wrappedError, "code")}];
 
   return v4;
 }
 
 - (id)domain
 {
-  v2 = [(VUIJSError *)self wrappedError];
-  v3 = [v2 domain];
+  wrappedError = [(VUIJSError *)self wrappedError];
+  domain = [wrappedError domain];
 
-  return v3;
+  return domain;
 }
 
 - (id)description
 {
-  v2 = [(VUIJSError *)self wrappedError];
-  v3 = [v2 localizedDescription];
+  wrappedError = [(VUIJSError *)self wrappedError];
+  localizedDescription = [wrappedError localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 - (id)failureReason
 {
-  v2 = [(VUIJSError *)self wrappedError];
-  v3 = [v2 localizedFailureReason];
+  wrappedError = [(VUIJSError *)self wrappedError];
+  localizedFailureReason = [wrappedError localizedFailureReason];
 
-  return v3;
+  return localizedFailureReason;
 }
 
 - (id)recoverySuggestion
 {
-  v2 = [(VUIJSError *)self wrappedError];
-  v3 = [v2 localizedRecoverySuggestion];
+  wrappedError = [(VUIJSError *)self wrappedError];
+  localizedRecoverySuggestion = [wrappedError localizedRecoverySuggestion];
 
-  return v3;
+  return localizedRecoverySuggestion;
 }
 
 - (id)userInfo
 {
-  v2 = [(VUIJSError *)self wrappedError];
-  v3 = [v2 userInfo];
+  wrappedError = [(VUIJSError *)self wrappedError];
+  userInfo = [wrappedError userInfo];
 
-  return v3;
+  return userInfo;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface NURAWImageSourceNode
-+ (id)_firstFilterOfType:(int)a3 inArray:(id)a4;
-+ (int)_filterTypeForClassName:(id)a3;
-- (BOOL)_hasLensCorrectionFilter:(id)a3;
-- (BOOL)load:(id *)a3;
++ (id)_firstFilterOfType:(int)type inArray:(id)array;
++ (int)_filterTypeForClassName:(id)name;
+- (BOOL)_hasLensCorrectionFilter:(id)filter;
+- (BOOL)load:(id *)load;
 - (BOOL)shouldGenerateMeteorGainMap;
-- (BOOL)supportsPipelineState:(id)a3 error:(id *)a4;
-- (NURAWImageSourceNode)initWithImageSource:(CGImageSource *)a3 identifier:(id)a4;
-- (NURAWImageSourceNode)initWithURL:(id)a3 UTI:(id)a4 identifier:(id)a5;
-- (NURAWImageSourceNode)initWithURL:(id)a3 UTI:(id)a4 settings:(id)a5;
-- (id)_RAWCameraSpaceProperties:(id)a3 RAWProperties:(id)a4;
-- (id)_RAWToneCurveProperties:(id)a3;
-- (id)_appendFilter:(id)a3 filterType:(int)a4 settings:(id)a5 source:(id)a6;
-- (id)_cachedRawImagePropertiesForOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImageGeometryWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
-- (id)_neutralColorArrayForSettings:(id)a3;
-- (id)_neutralColorVectorForSettings:(id)a3;
-- (id)_rawFiltersWithSourceOptions:(id)a3 error:(id *)a4;
-- (id)_rawMethodVersionForSettings:(id)a3 error:(id *)a4;
-- (id)_sourceOptionsForSettings:(id)a3 rawMethodVersion:(id)a4 sushiLevel:(id)a5;
-- (id)preparedNodeWithSourceContainer:(id)a3 pipelineState:(id)a4 pipelineSettings:(id)a5 sourceSettings:(id)a6 error:(id *)a7;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (id)sourceOptionsForSettings:(id)a3 error:(id *)a4;
-- (void)_addDefaultFinalizedSourceOptions:(id)a3;
-- (void)_processRAWProperties:(id)a3;
+- (BOOL)supportsPipelineState:(id)state error:(id *)error;
+- (NURAWImageSourceNode)initWithImageSource:(CGImageSource *)source identifier:(id)identifier;
+- (NURAWImageSourceNode)initWithURL:(id)l UTI:(id)i identifier:(id)identifier;
+- (NURAWImageSourceNode)initWithURL:(id)l UTI:(id)i settings:(id)settings;
+- (id)_RAWCameraSpaceProperties:(id)properties RAWProperties:(id)wProperties;
+- (id)_RAWToneCurveProperties:(id)properties;
+- (id)_appendFilter:(id)filter filterType:(int)type settings:(id)settings source:(id)source;
+- (id)_cachedRawImagePropertiesForOptions:(id)options error:(id *)error;
+- (id)_evaluateImageGeometryWithSourceOptions:(id)options error:(id *)error;
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error;
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
+- (id)_neutralColorArrayForSettings:(id)settings;
+- (id)_neutralColorVectorForSettings:(id)settings;
+- (id)_rawFiltersWithSourceOptions:(id)options error:(id *)error;
+- (id)_rawMethodVersionForSettings:(id)settings error:(id *)error;
+- (id)_sourceOptionsForSettings:(id)settings rawMethodVersion:(id)version sushiLevel:(id)level;
+- (id)preparedNodeWithSourceContainer:(id)container pipelineState:(id)state pipelineSettings:(id)settings sourceSettings:(id)sourceSettings error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
+- (id)sourceOptionsForSettings:(id)settings error:(id *)error;
+- (void)_addDefaultFinalizedSourceOptions:(id)options;
+- (void)_processRAWProperties:(id)properties;
 @end
 
 @implementation NURAWImageSourceNode
 
-- (id)preparedNodeWithSourceContainer:(id)a3 pipelineState:(id)a4 pipelineSettings:(id)a5 sourceSettings:(id)a6 error:(id *)a7
+- (id)preparedNodeWithSourceContainer:(id)container pipelineState:(id)state pipelineSettings:(id)settings sourceSettings:(id)sourceSettings error:(id *)error
 {
   v175 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v135 = a5;
-  v14 = a6;
-  v15 = [(NURAWImageSourceNode *)self sourceOptionsForSettings:v14 error:a7];
-  if (!v15 || (v139 = self, ![(NURAWImageSourceNode *)self supportsPipelineState:v13 error:a7]))
+  containerCopy = container;
+  stateCopy = state;
+  settingsCopy = settings;
+  sourceSettingsCopy = sourceSettings;
+  v15 = [(NURAWImageSourceNode *)self sourceOptionsForSettings:sourceSettingsCopy error:error];
+  if (!v15 || (v139 = self, ![(NURAWImageSourceNode *)self supportsPipelineState:stateCopy error:error]))
   {
     v20 = 0;
     goto LABEL_92;
@@ -66,8 +66,8 @@
         v101 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v102 = MEMORY[0x1E696AF00];
         v103 = v101;
-        v104 = [v102 callStackSymbols];
-        v105 = [v104 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v102 callStackSymbols];
+        v105 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v172 = v101;
         v173 = 2114;
@@ -78,8 +78,8 @@
 
     else if (v91)
     {
-      v92 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v93 = [v92 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v93 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v172 = v93;
       _os_log_error_impl(&dword_1C0184000, v90, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -110,8 +110,8 @@
         v110 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v111 = MEMORY[0x1E696AF00];
         v112 = v110;
-        v113 = [v111 callStackSymbols];
-        v114 = [v113 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v111 callStackSymbols];
+        v114 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v172 = v110;
         v173 = 2114;
@@ -122,8 +122,8 @@
 
     else if (v98)
     {
-      v99 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v100 = [v99 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v100 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v172 = v100;
       _os_log_error_impl(&dword_1C0184000, v97, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -132,13 +132,13 @@
     _NUAssertFailHandler("[NURAWImageSourceNode preparedNodeWithSourceContainer:pipelineState:pipelineSettings:sourceSettings:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 833, @"Missing sushi level", v115, v116, v117, v118, v119);
   }
 
-  if ([v13 auxiliaryImageType] == 1)
+  if ([stateCopy auxiliaryImageType] == 1)
   {
     v19 = 1;
 LABEL_7:
-    v140 = v19;
+    auxiliaryImageType = v19;
 LABEL_14:
-    v21 = [(NURAWImageSourceNode *)self _rawFiltersWithSourceOptions:v15 error:a7];
+    v21 = [(NURAWImageSourceNode *)self _rawFiltersWithSourceOptions:v15 error:error];
     if (!v21)
     {
       v20 = 0;
@@ -148,9 +148,9 @@ LABEL_90:
     }
 
     v127 = [(NURAWImageSourceNode *)self _RAWToneCurveProperties:v21];
-    if (v140 == 1)
+    if (auxiliaryImageType == 1)
     {
-      v138 = [v13 beginGroupWithName:@"RAW" error:a7];
+      v138 = [stateCopy beginGroupWithName:@"RAW" error:error];
       if (!v138)
       {
         v20 = 0;
@@ -165,14 +165,14 @@ LABEL_89:
       v138 = 0;
     }
 
-    v131 = a7;
+    errorCopy = error;
     v121 = v18;
     v122 = v16;
-    v133 = v13;
-    v146 = v140 == 7;
+    v133 = stateCopy;
+    v146 = auxiliaryImageType == 7;
     v123 = v15;
-    v124 = v12;
-    v22 = [[NUSubsampleNode alloc] initWithPreparedSource:self container:v12 pipelineSettings:v135 sourceOptions:v15];
+    v124 = containerCopy;
+    v22 = [[NUSubsampleNode alloc] initWithPreparedSource:self container:containerCopy pipelineSettings:settingsCopy sourceOptions:v15];
     v149 = 0u;
     v150 = 0u;
     v151 = 0u;
@@ -190,8 +190,8 @@ LABEL_89:
       v23 = v22;
 LABEL_83:
 
-      v13 = v133;
-      if (v138 && ![v133 endGroupWithName:@"RAW" error:v131])
+      stateCopy = v133;
+      if (v138 && ![v133 endGroupWithName:@"RAW" error:errorCopy])
       {
         v20 = 0;
       }
@@ -203,7 +203,7 @@ LABEL_83:
       }
 
       v15 = v123;
-      v12 = v124;
+      containerCopy = v124;
       v18 = v121;
       v16 = v122;
       v85 = v132;
@@ -224,8 +224,8 @@ LABEL_88:
     v125 = *MEMORY[0x1E695FA58];
     v145 = v22;
     v23 = v22;
-    v142 = v14;
-    v24 = self;
+    v142 = sourceSettingsCopy;
+    selfCopy = self;
 LABEL_22:
     v25 = 0;
     while (1)
@@ -241,7 +241,7 @@ LABEL_22:
       v28 = [objc_opt_class() _filterTypeForClassName:v144];
       v29 = v28;
       v30 = v28 < 4;
-      v33 = (v28 < 9 || v140 != 7) && v28 < 0xB;
+      v33 = (v28 < 9 || auxiliaryImageType != 7) && v28 < 0xB;
       v23 = v23;
 
       v34 = v145;
@@ -249,9 +249,9 @@ LABEL_22:
       v148 = v23;
       if (((v30 | HIDWORD(v143)) & 1) == 0)
       {
-        v35 = [(NUSourceNode *)v24 _addResampleNode:v23 subsampleNode:v132];
+        v35 = [(NUSourceNode *)selfCopy _addResampleNode:v23 subsampleNode:v132];
 
-        v36 = [(NUSourceNode *)v24 _addScaleNode:v35 pipelineState:v133 pipelineSettings:v135 sourceSettings:v14];
+        v36 = [(NUSourceNode *)selfCopy _addScaleNode:v35 pipelineState:v133 pipelineSettings:settingsCopy sourceSettings:sourceSettingsCopy];
 
         v34 = v36;
         HIDWORD(v143) = 1;
@@ -265,9 +265,9 @@ LABEL_22:
 
       else
       {
-        v38 = [(NUSourceNode *)v24 _addOrientationNode:v23 sourceSettings:v14 error:v131];
+        v38 = [(NUSourceNode *)selfCopy _addOrientationNode:v23 sourceSettings:sourceSettingsCopy error:errorCopy];
 
-        v37 = [(NUSourceNode *)v24 _addOrientationNode:v34 sourceSettings:v14 error:v131];
+        v37 = [(NUSourceNode *)selfCopy _addOrientationNode:v34 sourceSettings:sourceSettingsCopy error:errorCopy];
 
         if (!v38)
         {
@@ -276,9 +276,9 @@ LABEL_22:
           v20 = 0;
           v84 = v37;
           v15 = v123;
-          v12 = v124;
+          containerCopy = v124;
           v85 = v132;
-          v13 = v133;
+          stateCopy = v133;
           v18 = v121;
           v16 = v122;
           goto LABEL_88;
@@ -318,14 +318,14 @@ LABEL_63:
         v23 = v46;
 LABEL_64:
         v47 = v23;
-        v23 = [(NURAWImageSourceNode *)v24 _appendFilter:v26 filterType:v29 settings:v14 source:v23];
+        v23 = [(NURAWImageSourceNode *)selfCopy _appendFilter:v26 filterType:v29 settings:sourceSettingsCopy source:v23];
 
-        v145 = [(NURAWImageSourceNode *)v24 _appendFilter:v26 filterType:v29 settings:0 source:v37];
+        v145 = [(NURAWImageSourceNode *)selfCopy _appendFilter:v26 filterType:v29 settings:0 source:v37];
 
         if (((v29 == 9) & v146) == 1)
         {
-          v48 = [v14 objectForKeyedSubscript:@"gainMapVersion"];
-          v49 = [v14 objectForKeyedSubscript:@"gainMapParameters"];
+          v48 = [sourceSettingsCopy objectForKeyedSubscript:@"gainMapVersion"];
+          v49 = [sourceSettingsCopy objectForKeyedSubscript:@"gainMapParameters"];
           v50 = [[NURAWGainMapNode alloc] initWithInput:v23 gainMapVersion:v48 gainMapParameters:v49];
 
           v23 = v50;
@@ -334,9 +334,9 @@ LABEL_64:
         if (v42)
         {
           v51 = [v142 objectForKeyedSubscript:@"debugTransferTone"];
-          v52 = [v51 BOOLValue];
+          bOOLValue = [v51 BOOLValue];
 
-          if (v52)
+          if (bOOLValue)
           {
             [v127 baselineExposure];
             v54 = v53;
@@ -392,15 +392,15 @@ LABEL_64:
           }
         }
 
-        v24 = v139;
+        selfCopy = v139;
         v146 |= v29 == 5;
         if (v43)
         {
-          v14 = v142;
+          sourceSettingsCopy = v142;
           v74 = [v142 objectForKeyedSubscript:@"debugTransferTone"];
-          v75 = [v74 BOOLValue];
+          bOOLValue2 = [v74 BOOLValue];
 
-          if (v75)
+          if (bOOLValue2)
           {
             v76 = [v142 objectForKeyedSubscript:v125];
             v77 = v76;
@@ -431,7 +431,7 @@ LABEL_64:
 
         else
         {
-          v14 = v142;
+          sourceSettingsCopy = v142;
         }
 
         goto LABEL_77;
@@ -440,7 +440,7 @@ LABEL_64:
       v42 = v29 == 10;
       v43 = v29 == 14;
       v44 = v29 == 14 || v29 == 10;
-      if (!v44 || v140 != 10)
+      if (!v44 || auxiliaryImageType != 10)
       {
         goto LABEL_64;
       }
@@ -461,21 +461,21 @@ LABEL_77:
     }
   }
 
-  if ([v13 auxiliaryImageType] == 7 && -[NURAWImageSourceNode shouldGenerateMeteorGainMap](self, "shouldGenerateMeteorGainMap"))
+  if ([stateCopy auxiliaryImageType] == 7 && -[NURAWImageSourceNode shouldGenerateMeteorGainMap](self, "shouldGenerateMeteorGainMap"))
   {
     v19 = 7;
     goto LABEL_7;
   }
 
-  if ([v13 auxiliaryImageType] == 10)
+  if ([stateCopy auxiliaryImageType] == 10)
   {
-    v140 = [v13 auxiliaryImageType];
+    auxiliaryImageType = [stateCopy auxiliaryImageType];
     goto LABEL_14;
   }
 
   v153.receiver = self;
   v153.super_class = NURAWImageSourceNode;
-  v20 = [(NUCGImageSourceNode *)&v153 preparedNodeWithSourceContainer:v12 pipelineState:v13 pipelineSettings:v135 sourceSettings:v14 error:a7];
+  v20 = [(NUCGImageSourceNode *)&v153 preparedNodeWithSourceContainer:containerCopy pipelineState:stateCopy pipelineSettings:settingsCopy sourceSettings:sourceSettingsCopy error:error];
 LABEL_91:
 
 LABEL_92:
@@ -483,9 +483,9 @@ LABEL_92:
   return v20;
 }
 
-- (id)_rawFiltersWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_rawFiltersWithSourceOptions:(id)options error:(id *)error
 {
-  v4 = [(NURAWImageSourceNode *)self _cachedRawImagePropertiesForOptions:a3 error:a4];
+  v4 = [(NURAWImageSourceNode *)self _cachedRawImagePropertiesForOptions:options error:error];
   v5 = v4;
   if (v4)
   {
@@ -531,33 +531,33 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
   return v3;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v12 auxiliaryImageType] == 7 && -[NURAWImageSourceNode shouldGenerateMeteorGainMap](self, "shouldGenerateMeteorGainMap") || objc_msgSend(v12, "auxiliaryImageType") == 10)
+  inputsCopy = inputs;
+  settingsCopy = settings;
+  stateCopy = state;
+  if ([stateCopy auxiliaryImageType] == 7 && -[NURAWImageSourceNode shouldGenerateMeteorGainMap](self, "shouldGenerateMeteorGainMap") || objc_msgSend(stateCopy, "auxiliaryImageType") == 10)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = NURAWImageSourceNode;
-    v13 = [(NUCGImageSourceNode *)&v16 resolvedNodeWithCachedInputs:v10 settings:v11 pipelineState:v12 error:a6];
+    selfCopy = [(NUCGImageSourceNode *)&v16 resolvedNodeWithCachedInputs:inputsCopy settings:settingsCopy pipelineState:stateCopy error:error];
   }
 
-  v14 = v13;
+  v14 = selfCopy;
 
   return v14;
 }
 
-- (BOOL)supportsPipelineState:(id)a3 error:(id *)a4
+- (BOOL)supportsPipelineState:(id)state error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  stateCopy = state;
+  if (!error)
   {
     v10 = NUAssertLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -578,8 +578,8 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -590,8 +590,8 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -600,8 +600,8 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
     _NUAssertFailHandler("[NURAWImageSourceNode supportsPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 751, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "error != nil");
   }
 
-  v7 = v6;
-  if ([v6 mediaComponentType] == 1)
+  v7 = stateCopy;
+  if ([stateCopy mediaComponentType] == 1)
   {
     if ([v7 auxiliaryImageType] == 7 && -[NURAWImageSourceNode shouldGenerateMeteorGainMap](self, "shouldGenerateMeteorGainMap") || objc_msgSend(v7, "auxiliaryImageType") == 10)
     {
@@ -612,14 +612,14 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
     {
       v26.receiver = self;
       v26.super_class = NURAWImageSourceNode;
-      v8 = [(NUCGImageSourceNode *)&v26 supportsPipelineState:v7 error:a4];
+      v8 = [(NUCGImageSourceNode *)&v26 supportsPipelineState:v7 error:error];
     }
   }
 
   else
   {
     [NUError mismatchError:@"expected image media type" object:v7];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   return v8;
@@ -638,8 +638,8 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
     return 0;
   }
 
-  v4 = [(NUCGImageSourceNode *)self cgImageProperties];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
+  cgImageProperties = [(NUCGImageSourceNode *)self cgImageProperties];
+  v5 = [cgImageProperties objectForKeyedSubscript:*MEMORY[0x1E696E090]];
 
   v6 = [v5 objectForKeyedSubscript:@"kCGImageSourceMethodVersion"];
   v7 = v6;
@@ -709,13 +709,13 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
   return v3;
 }
 
-- (id)sourceOptionsForSettings:(id)a3 error:(id *)a4
+- (id)sourceOptionsForSettings:(id)settings error:(id *)error
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(NUSourceNode *)self isValid:a4])
+  settingsCopy = settings;
+  if ([(NUSourceNode *)self isValid:error])
   {
-    v7 = [(NURAWImageSourceNode *)self _rawMethodVersionForSettings:v6 error:a4];
+    v7 = [(NURAWImageSourceNode *)self _rawMethodVersionForSettings:settingsCopy error:error];
     v8 = v7;
     if (v7)
     {
@@ -725,10 +725,10 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
       v19[0] = v7;
       v19[1] = @"1";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-      v11 = [(NURAWImageSourceNode *)self _cachedRawImagePropertiesForOptions:v10 error:a4];
+      v11 = [(NURAWImageSourceNode *)self _cachedRawImagePropertiesForOptions:v10 error:error];
       if (v11)
       {
-        v12 = [v6 objectForKeyedSubscript:v9];
+        v12 = [settingsCopy objectForKeyedSubscript:v9];
         v13 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
         v14 = [v13 objectForKeyedSubscript:@"kCGImageSourceSupportedSushiLevels"];
 
@@ -750,7 +750,7 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
           }
         }
 
-        v16 = [(NURAWImageSourceNode *)self _sourceOptionsForSettings:v6 rawMethodVersion:v8 sushiLevel:v15];
+        v16 = [(NURAWImageSourceNode *)self _sourceOptionsForSettings:settingsCopy rawMethodVersion:v8 sushiLevel:v15];
       }
 
       else
@@ -773,22 +773,22 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
   return v16;
 }
 
-- (id)_appendFilter:(id)a3 filterType:(int)a4 settings:(id)a5 source:(id)a6
+- (id)_appendFilter:(id)filter filterType:(int)type settings:(id)settings source:(id)source
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  v8 = *&type;
+  filterCopy = filter;
+  settingsCopy = settings;
+  sourceCopy = source;
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   switch(v8)
   {
     case 1:
       v14 = [NURAWDemosaicNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 1;
       goto LABEL_22;
     case 2:
-      v34 = [v10 valueForKey:@"inputCropRect"];
+      v34 = [filterCopy valueForKey:@"inputCropRect"];
       v35 = [NUCropNode alloc];
       [v34 CGRectValue];
       v59.origin.x = v36;
@@ -798,26 +798,26 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
       NU::RectT<long>::RectT(v58, &v59, 2);
       v57[0] = v58[0];
       v57[1] = v58[1];
-      v40 = [(NUCropNode *)v35 initWithRect:v57 input:v12];
+      v40 = [(NUCropNode *)v35 initWithRect:v57 input:sourceCopy];
       goto LABEL_34;
     case 3:
       v14 = [NURAWGeometryResetNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 3;
       goto LABEL_22;
     case 4:
-      v25 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FAC0]];
+      v25 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAC0]];
       if (v25)
       {
         [v13 setObject:v25 forKeyedSubscript:@"inputLNRAmount"];
       }
 
-      v26 = [v11 objectForKeyedSubscript:@"inputUILuminanceNoiseReductionAmount"];
+      v26 = [settingsCopy objectForKeyedSubscript:@"inputUILuminanceNoiseReductionAmount"];
 
       if (v26)
       {
-        v27 = [(NUCGImageSourceNode *)self cgImageProperties];
-        v28 = [v27 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
+        cgImageProperties = [(NUCGImageSourceNode *)self cgImageProperties];
+        v28 = [cgImageProperties objectForKeyedSubscript:*MEMORY[0x1E696E090]];
 
         v29 = [v28 objectForKeyedSubscript:@"kCGImageSourceLuminanceNoiseReductionAmount"];
         [v29 doubleValue];
@@ -838,14 +838,14 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
         [v13 setObject:v49 forKeyedSubscript:@"inputLNRAmount"];
       }
 
-      v50 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FA80]];
+      v50 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FA80]];
 
       if (v50)
       {
         [v13 setObject:v50 forKeyedSubscript:@"inputCNRAmount"];
       }
 
-      v34 = [v11 objectForKeyedSubscript:@"inputUIColorNoiseReductionAmount"];
+      v34 = [settingsCopy objectForKeyedSubscript:@"inputUIColorNoiseReductionAmount"];
 
       if (v34)
       {
@@ -854,99 +854,99 @@ uint64_t __59__NURAWImageSourceNode__rawFiltersWithSourceOptions_error___block_i
         [v13 setObject:v52 forKeyedSubscript:@"inputCNRAmount"];
       }
 
-      v53 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FB08]];
+      v53 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FB08]];
       [v13 setObject:v53 forKeyedSubscript:@"inputSharpenAmount"];
 
-      v54 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FAF8]];
+      v54 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAF8]];
       [v13 setObject:v54 forKeyedSubscript:@"inputContrastAmount"];
 
-      v55 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FB00]];
+      v55 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FB00]];
       [v13 setObject:v55 forKeyedSubscript:@"inputDetailAmount"];
 
       v56 = [NURenderPipelineFunction functionWithName:@"RAWInputScaleFactor" parameters:MEMORY[0x1E695E0F0] evaluationBlock:&__block_literal_global_227];
       [v13 setObject:v56 forKeyedSubscript:@"inputScaleFactor"];
 
-      v40 = [[NURawFilterNode alloc] initWithRawFilter:v10 type:4 settings:v13 input:v12];
+      v40 = [[NURawFilterNode alloc] initWithRawFilter:filterCopy type:4 settings:v13 input:sourceCopy];
 LABEL_34:
       p_super = v40;
 
       goto LABEL_24;
     case 6:
-      v18 = [(NURAWImageSourceNode *)self _neutralColorArrayForSettings:v11];
+      v18 = [(NURAWImageSourceNode *)self _neutralColorArrayForSettings:settingsCopy];
       [v13 setObject:v18 forKeyedSubscript:@"inputNeutral"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 6;
       goto LABEL_22;
     case 7:
-      v21 = [(NURAWImageSourceNode *)self _neutralColorVectorForSettings:v11];
+      v21 = [(NURAWImageSourceNode *)self _neutralColorVectorForSettings:settingsCopy];
       [v13 setObject:v21 forKeyedSubscript:@"inputWhitePoint"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 7;
       goto LABEL_22;
     case 8:
-      v41 = [(NURAWImageSourceNode *)self _neutralColorVectorForSettings:v11];
+      v41 = [(NURAWImageSourceNode *)self _neutralColorVectorForSettings:settingsCopy];
       [v13 setObject:v41 forKeyedSubscript:@"inputWhitePoint"];
 
-      v42 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FAA0]];
+      v42 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAA0]];
       [v13 setObject:v42 forKeyedSubscript:@"inputExposure"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 8;
       goto LABEL_22;
     case 9:
-      v43 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FAA0]];
+      v43 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAA0]];
       [v13 setObject:v43 forKeyedSubscript:@"inputExposure"];
 
-      v44 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FA50]];
+      v44 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FA50]];
       [v13 setObject:v44 forKeyedSubscript:@"inputBias"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 9;
       goto LABEL_22;
     case 10:
-      v45 = [v11 objectForKeyedSubscript:@"inputToneMapping"];
+      v45 = [settingsCopy objectForKeyedSubscript:@"inputToneMapping"];
       [v13 setObject:v45 forKeyedSubscript:@"inputStrength"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 10;
       goto LABEL_22;
     case 11:
       goto LABEL_8;
     case 12:
-      v17 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FA58]];
+      v17 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FA58]];
       [v13 setObject:v17 forKeyedSubscript:@"inputBoostAmount"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 12;
       goto LABEL_22;
     case 13:
-      v22 = [v11 objectForKeyedSubscript:@"debugDisableGamutMap"];
-      v23 = [v22 BOOLValue];
+      v22 = [settingsCopy objectForKeyedSubscript:@"debugDisableGamutMap"];
+      bOOLValue = [v22 BOOLValue];
 
-      if (v23)
+      if (bOOLValue)
       {
 LABEL_8:
-        v24 = v12;
+        v24 = sourceCopy;
       }
 
       else
       {
-        v46 = [v11 objectForKeyedSubscript:@"inputGamutMapMax"];
+        v46 = [settingsCopy objectForKeyedSubscript:@"inputGamutMapMax"];
         [v13 setObject:v46 forKeyedSubscript:@"inputGamutMapMax"];
 
         v14 = [NURawFilterNode alloc];
-        v15 = v10;
+        v15 = filterCopy;
         v16 = 13;
 LABEL_22:
-        v24 = [(NURawFilterNode *)v14 initWithRawFilter:v15 type:v16 settings:v13 input:v12];
+        v24 = [(NURawFilterNode *)v14 initWithRawFilter:v15 type:v16 settings:v13 input:sourceCopy];
       }
 
       p_super = &v24->super;
@@ -954,19 +954,19 @@ LABEL_24:
 
       return p_super;
     case 14:
-      v19 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FA58]];
+      v19 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FA58]];
       [v13 setObject:v19 forKeyedSubscript:@"inputBoostAmount"];
 
-      v20 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FA60]];
+      v20 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FA60]];
       [v13 setObject:v20 forKeyedSubscript:@"inputBoostShadowAmount"];
 
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = 14;
       goto LABEL_22;
     default:
       v14 = [NURawFilterNode alloc];
-      v15 = v10;
+      v15 = filterCopy;
       v16 = v8;
       goto LABEL_22;
   }
@@ -981,17 +981,17 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
   return [v2 numberWithDouble:v5];
 }
 
-- (id)_cachedRawImagePropertiesForOptions:(id)a3 error:(id *)a4
+- (id)_cachedRawImagePropertiesForOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSCache *)self->_propertiesByOptionCache objectForKey:v6];
+  optionsCopy = options;
+  v7 = [(NSCache *)self->_propertiesByOptionCache objectForKey:optionsCopy];
   if (!v7)
   {
-    v7 = [(NUCGImageSourceNode *)self _evaluateRawImagePropertiesWithSourceOptions:v6 error:a4];
+    v7 = [(NUCGImageSourceNode *)self _evaluateRawImagePropertiesWithSourceOptions:optionsCopy error:error];
     if (v7)
     {
       propertiesByOptionCache = self->_propertiesByOptionCache;
-      v9 = [v6 copy];
+      v9 = [optionsCopy copy];
       [(NSCache *)propertiesByOptionCache setObject:v7 forKey:v9];
     }
   }
@@ -999,13 +999,13 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
   return v7;
 }
 
-- (id)_sourceOptionsForSettings:(id)a3 rawMethodVersion:(id)a4 sushiLevel:(id)a5
+- (id)_sourceOptionsForSettings:(id)settings rawMethodVersion:(id)version sushiLevel:(id)level
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  settingsCopy = settings;
+  versionCopy = version;
+  levelCopy = level;
+  if (!versionCopy)
   {
     v22 = NUAssertLogger();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1026,8 +1026,8 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v57 = v36;
         v58 = 2114;
@@ -1038,8 +1038,8 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v57 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1048,8 +1048,8 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
     _NUAssertFailHandler("[NURAWImageSourceNode _sourceOptionsForSettings:rawMethodVersion:sushiLevel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 412, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "rawMethodVersion != nil");
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = levelCopy;
+  if (!levelCopy)
   {
     v29 = NUAssertLogger();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1070,8 +1070,8 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v46 callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v57 = v45;
         v58 = 2114;
@@ -1082,8 +1082,8 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v57 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1093,9 +1093,9 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696E0D8]];
+  [v12 setObject:versionCopy forKeyedSubscript:*MEMORY[0x1E696E0D8]];
   [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696E0C0]];
-  if ([v9 integerValue] > 5)
+  if ([versionCopy integerValue] > 5)
   {
     if (![v11 isEqualToString:@"1"])
     {
@@ -1103,19 +1103,19 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
     }
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v16 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FAC0]];
+    v16 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAC0]];
     [v14 setObject:v16 forKeyedSubscript:@"kCGImageSourceLuminanceNoiseReductionAmount"];
 
-    v17 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FA80]];
+    v17 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FA80]];
     [v14 setObject:v17 forKeyedSubscript:@"kCGImageSourceColorNoiseReductionAmount"];
 
-    v18 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FB08]];
+    v18 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FB08]];
     [v14 setObject:v18 forKeyedSubscript:@"kCGImageSourceNoiseReductionSharpnessAmount"];
 
-    v19 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FAF8]];
+    v19 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAF8]];
     [v14 setObject:v19 forKeyedSubscript:@"kCGImageSourceNoiseReductionContrastAmount"];
 
-    v20 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695FB00]];
+    v20 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FB00]];
     [v14 setObject:v20 forKeyedSubscript:@"kCGImageSourceNoiseReductionDetailAmount"];
 
     if ([v14 count])
@@ -1126,7 +1126,7 @@ uint64_t __65__NURAWImageSourceNode__appendFilter_filterType_settings_source___b
 
   else
   {
-    v13 = [(NURAWImageSourceNode *)self _neutralColorArrayForSettings:v8];
+    v13 = [(NURAWImageSourceNode *)self _neutralColorArrayForSettings:settingsCopy];
     v14 = v13;
     if (v13)
     {
@@ -1142,11 +1142,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)_neutralColorVectorForSettings:(id)a3
+- (id)_neutralColorVectorForSettings:(id)settings
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NURAWImageSourceNode *)self _neutralColorArrayForSettings:v4];
+  settingsCopy = settings;
+  v5 = [(NURAWImageSourceNode *)self _neutralColorArrayForSettings:settingsCopy];
   v6 = v5;
   if (v5)
   {
@@ -1155,9 +1155,9 @@ LABEL_10:
       v15 = NUAssertLogger();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Incorrect count for neutral: %@, %@", v6, v4];
+        settingsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Incorrect count for neutral: %@, %@", v6, settingsCopy];
         *buf = 138543362;
-        v32 = v16;
+        v32 = settingsCopy;
         _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
       }
 
@@ -1171,8 +1171,8 @@ LABEL_10:
           v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v23 = MEMORY[0x1E696AF00];
           v24 = v22;
-          v25 = [v23 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v23 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = v22;
           v33 = 2114;
@@ -1183,8 +1183,8 @@ LABEL_10:
 
       else if (v19)
       {
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v32 = v21;
         _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1210,12 +1210,12 @@ LABEL_10:
   return v13;
 }
 
-- (id)_neutralColorArrayForSettings:(id)a3
+- (id)_neutralColorArrayForSettings:(id)settings
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695FAE8]];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695FAF0]];
+  settingsCopy = settings;
+  v4 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAE8]];
+  v5 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAF0]];
   v6 = v5;
   if (v4)
   {
@@ -1229,8 +1229,8 @@ LABEL_10:
 
   if (v7)
   {
-    v14 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695FAD8]];
-    v8 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695FAE0]];
+    v14 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAD8]];
+    v8 = [settingsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAE0]];
     v15 = v8;
     if (v14)
     {
@@ -1276,11 +1276,11 @@ LABEL_13:
   return v10;
 }
 
-- (id)_rawMethodVersionForSettings:(id)a3 error:(id *)a4
+- (id)_rawMethodVersionForSettings:(id)settings error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  settingsCopy = settings;
+  if (!error)
   {
     v17 = NUAssertLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1301,8 +1301,8 @@ LABEL_13:
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v31;
         v51 = 2114;
@@ -1313,8 +1313,8 @@ LABEL_13:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1323,9 +1323,9 @@ LABEL_13:
     _NUAssertFailHandler("[NURAWImageSourceNode _rawMethodVersionForSettings:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 353, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "error != nil");
   }
 
-  v7 = v6;
-  v8 = [(NUCGImageSourceNode *)self cgImageProperties];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
+  v7 = settingsCopy;
+  cgImageProperties = [(NUCGImageSourceNode *)self cgImageProperties];
+  v9 = [cgImageProperties objectForKeyedSubscript:*MEMORY[0x1E696E090]];
 
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696E088]];
   if (!v10)
@@ -1349,8 +1349,8 @@ LABEL_13:
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v40;
         v51 = 2114;
@@ -1361,8 +1361,8 @@ LABEL_13:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1375,7 +1375,7 @@ LABEL_13:
   v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695FA90]];
   if (v12)
   {
-    v13 = v12;
+    lastObject2 = v12;
     if (([v11 containsObject:v12] & 1) == 0)
     {
       if (_NULogOnceToken != -1)
@@ -1387,30 +1387,30 @@ LABEL_13:
       if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v50 = v13;
+        v50 = lastObject2;
         v51 = 2112;
         v52 = v11;
         _os_log_impl(&dword_1C0184000, v14, OS_LOG_TYPE_INFO, "Requested kCIInputDecoderVersionKey %@ is not available: %@, falling back to newest", buf, 0x16u);
       }
 
-      v15 = [v11 lastObject];
+      lastObject = [v11 lastObject];
 
-      v13 = v15;
+      lastObject2 = lastObject;
     }
   }
 
   else
   {
-    v13 = [v11 lastObject];
+    lastObject2 = [v11 lastObject];
   }
 
-  return v13;
+  return lastObject2;
 }
 
-- (BOOL)load:(id *)a3
+- (BOOL)load:(id *)load
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!load)
   {
     v10 = NUAssertLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1431,8 +1431,8 @@ LABEL_13:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -1443,8 +1443,8 @@ LABEL_13:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1456,27 +1456,27 @@ LABEL_13:
   v26.receiver = self;
   v26.super_class = NURAWImageSourceNode;
   v5 = [(NUCGImageSourceNode *)&v26 load:?];
-  v6 = [(NUCGImageSourceNode *)self cgImageProperties];
-  v7 = v6;
-  if (v6)
+  cgImageProperties = [(NUCGImageSourceNode *)self cgImageProperties];
+  v7 = cgImageProperties;
+  if (cgImageProperties)
   {
-    v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
+    v8 = [cgImageProperties objectForKeyedSubscript:*MEMORY[0x1E696E090]];
 
     if (!v8)
     {
       [NUError unsupportedError:@"Unsupported RAW source" object:self];
-      *a3 = v5 = 0;
+      *load = v5 = 0;
     }
   }
 
   return v5;
 }
 
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a4)
+  optionsCopy = options;
+  if (!factor)
   {
     v14 = NUAssertLogger();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1497,8 +1497,8 @@ LABEL_13:
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v21;
         v33 = 2114;
@@ -1509,8 +1509,8 @@ LABEL_13:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1519,53 +1519,53 @@ LABEL_13:
     _NUAssertFailHandler("[NURAWImageSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 321, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "subsampleFactor != NULL");
   }
 
-  v9 = v8;
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696E0D8]];
-  v11 = [v10 intValue];
+  v9 = optionsCopy;
+  v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E696E0D8]];
+  intValue = [v10 intValue];
 
-  if (v11 <= 5 && *a4 >= 2)
+  if (intValue <= 5 && *factor >= 2)
   {
-    *a4 = 1;
+    *factor = 1;
   }
 
   v30.receiver = self;
   v30.super_class = NURAWImageSourceNode;
-  v12 = [(NUCGImageSourceNode *)&v30 _evaluateImageWithSourceOptions:v9 subsampleFactor:a4 error:a5];
+  v12 = [(NUCGImageSourceNode *)&v30 _evaluateImageWithSourceOptions:v9 subsampleFactor:factor error:error];
 
   return v12;
 }
 
-- (id)_evaluateImageGeometryWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImageGeometryWithSourceOptions:(id)options error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = NURAWImageSourceNode;
-  v4 = [(NUCGImageSourceNode *)&v6 _evaluateImageGeometryWithSourceOptions:a3 error:a4];
+  v4 = [(NUCGImageSourceNode *)&v6 _evaluateImageGeometryWithSourceOptions:options error:error];
 
   return v4;
 }
 
-- (id)_evaluateImagePropertiesWithSourceOptions:(id)a3 error:(id *)a4
+- (id)_evaluateImagePropertiesWithSourceOptions:(id)options error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = NURAWImageSourceNode;
-  v5 = [(NUCGImageSourceNode *)&v7 _evaluateImagePropertiesWithSourceOptions:a3 error:a4];
+  v5 = [(NUCGImageSourceNode *)&v7 _evaluateImagePropertiesWithSourceOptions:options error:error];
   [(NURAWImageSourceNode *)self _processRAWProperties:v5];
 
   return v5;
 }
 
-- (void)_processRAWProperties:(id)a3
+- (void)_processRAWProperties:(id)properties
 {
-  v50 = a3;
-  v4 = [v50 metadata];
+  propertiesCopy = properties;
+  metadata = [propertiesCopy metadata];
   v5 = *MEMORY[0x1E696DF00];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DF00]];
+  v6 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DF00]];
 
-  v7 = [v50 metadata];
+  metadata2 = [propertiesCopy metadata];
   v8 = *MEMORY[0x1E696E090];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
+  v9 = [metadata2 objectForKeyedSubscript:*MEMORY[0x1E696E090]];
 
-  if (!(v6 | v9) || (([v50 metadata], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "mutableCopy"), v10, objc_msgSend(v11, "removeObjectForKey:", v5), objc_msgSend(v11, "removeObjectForKey:", v8), objc_msgSend(v50, "setMetadata:", v11), v11, v6) ? (v12 = v9 == 0) : (v12 = 1), v12))
+  if (!(v6 | v9) || (([propertiesCopy metadata], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "mutableCopy"), v10, objc_msgSend(v11, "removeObjectForKey:", v5), objc_msgSend(v11, "removeObjectForKey:", v8), objc_msgSend(propertiesCopy, "setMetadata:", v11), v11, v6) ? (v12 = v9 == 0) : (v12 = 1), v12))
   {
     v13 = 0;
   }
@@ -1639,8 +1639,8 @@ LABEL_13:
   v33 = [(NURAWImageSourceNode *)self _RAWToneCurveProperties:v32];
   [(_NURAWImageProperties *)v13 setRawToneCurveProperties:v33];
 
-  v34 = [v50 metadata];
-  v35 = [v34 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  metadata3 = [propertiesCopy metadata];
+  v35 = [metadata3 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
 
   v36 = *MEMORY[0x1E69867F8];
   v37 = [v35 objectForKeyedSubscript:*MEMORY[0x1E69867F8]];
@@ -1650,9 +1650,9 @@ LABEL_13:
   if (isKindOfClass)
   {
     v39 = [v35 objectForKeyedSubscript:v36];
-    v40 = [v39 unsignedIntValue];
+    unsignedIntValue = [v39 unsignedIntValue];
 
-    if ((v40 & 0x10000) != 0)
+    if ((unsignedIntValue & 0x10000) != 0)
     {
       [(_NURAWImageProperties *)v13 setIsAppleProRaw:1];
     }
@@ -1665,14 +1665,14 @@ LABEL_13:
   if (v42)
   {
     v43 = [v35 objectForKeyedSubscript:@"23"];
-    v44 = [v43 unsignedLongLongValue];
+    unsignedLongLongValue = [v43 unsignedLongLongValue];
 
-    if ((v44 & 4) != 0)
+    if ((unsignedLongLongValue & 4) != 0)
     {
       [(_NURAWImageProperties *)v13 setIsSensorRawCapture:1];
     }
 
-    if ((v44 & 0x100000) != 0)
+    if ((unsignedLongLongValue & 0x100000) != 0)
     {
       [(_NURAWImageProperties *)v13 setIsUnifiedBracketingHDRCapture:1];
     }
@@ -1685,9 +1685,9 @@ LABEL_13:
   if (v46)
   {
     v47 = [v35 objectForKeyedSubscript:@"20"];
-    v48 = [v47 intValue];
+    intValue = [v47 intValue];
 
-    if (v48 == 12)
+    if (intValue == 12)
     {
       [(_NURAWImageProperties *)v13 setIsDeepFusion:1];
     }
@@ -1696,24 +1696,24 @@ LABEL_13:
   v49 = [v6 objectForKeyedSubscript:@"filters"];
   [(_NURAWImageProperties *)v13 setHasLensCorrection:[(NURAWImageSourceNode *)self _hasLensCorrectionFilter:v49]];
 
-  [v50 setRawProperties:v13];
+  [propertiesCopy setRawProperties:v13];
 }
 
-- (BOOL)_hasLensCorrectionFilter:(id)a3
+- (BOOL)_hasLensCorrectionFilter:(id)filter
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _firstFilterOfType:5 inArray:v3];
+  filterCopy = filter;
+  v4 = [objc_opt_class() _firstFilterOfType:5 inArray:filterCopy];
 
   return v4 != 0;
 }
 
-- (id)_RAWToneCurveProperties:(id)a3
+- (id)_RAWToneCurveProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _firstFilterOfType:14 inArray:v3];
+  propertiesCopy = properties;
+  v4 = [objc_opt_class() _firstFilterOfType:14 inArray:propertiesCopy];
   if (v4)
   {
-    v5 = [objc_opt_class() _firstFilterOfType:10 inArray:v3];
+    v5 = [objc_opt_class() _firstFilterOfType:10 inArray:propertiesCopy];
     v6 = [[_NURAWToneCurveProperties alloc] initWithToneCurveFilter:v4 gainMapTableFilter:v5];
   }
 
@@ -1725,57 +1725,57 @@ LABEL_13:
   return v6;
 }
 
-- (id)_RAWCameraSpaceProperties:(id)a3 RAWProperties:(id)a4
+- (id)_RAWCameraSpaceProperties:(id)properties RAWProperties:(id)wProperties
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _firstFilterOfType:6 inArray:v6];
+  wPropertiesCopy = wProperties;
+  propertiesCopy = properties;
+  v7 = [objc_opt_class() _firstFilterOfType:6 inArray:propertiesCopy];
 
-  [v5 setRawConvert:v7];
-  v8 = [v5 rawConvert];
+  [wPropertiesCopy setRawConvert:v7];
+  rawConvert = [wPropertiesCopy rawConvert];
 
-  if (v8)
+  if (rawConvert)
   {
-    v8 = objc_alloc_init(_NURAWCameraSpaceProperties);
-    v9 = [v5 rawConvert];
-    v10 = [v9 valueForKey:@"inputXYZtoCamera1"];
-    [(_NURAWCameraSpaceProperties *)v8 setXyzToCamera1:v10];
+    rawConvert = objc_alloc_init(_NURAWCameraSpaceProperties);
+    rawConvert2 = [wPropertiesCopy rawConvert];
+    v10 = [rawConvert2 valueForKey:@"inputXYZtoCamera1"];
+    [(_NURAWCameraSpaceProperties *)rawConvert setXyzToCamera1:v10];
 
-    v11 = [v5 rawConvert];
-    v12 = [v11 valueForKey:@"inputXYZtoCamera2"];
-    [(_NURAWCameraSpaceProperties *)v8 setXyzToCamera2:v12];
+    rawConvert3 = [wPropertiesCopy rawConvert];
+    v12 = [rawConvert3 valueForKey:@"inputXYZtoCamera2"];
+    [(_NURAWCameraSpaceProperties *)rawConvert setXyzToCamera2:v12];
 
-    v13 = [v5 rawConvert];
-    v14 = [v13 valueForKey:@"inputRange"];
+    rawConvert4 = [wPropertiesCopy rawConvert];
+    v14 = [rawConvert4 valueForKey:@"inputRange"];
     [v14 doubleValue];
-    [(_NURAWCameraSpaceProperties *)v8 setWhiteValue:?];
+    [(_NURAWCameraSpaceProperties *)rawConvert setWhiteValue:?];
 
-    v15 = [v5 rawConvert];
-    v16 = [v15 valueForKey:@"inputFactor"];
+    rawConvert5 = [wPropertiesCopy rawConvert];
+    v16 = [rawConvert5 valueForKey:@"inputFactor"];
     [v16 doubleValue];
-    [(_NURAWCameraSpaceProperties *)v8 setWhiteFactor:?];
+    [(_NURAWCameraSpaceProperties *)rawConvert setWhiteFactor:?];
   }
 
-  return v8;
+  return rawConvert;
 }
 
-- (void)_addDefaultFinalizedSourceOptions:(id)a3
+- (void)_addDefaultFinalizedSourceOptions:(id)options
 {
   v5.receiver = self;
   v5.super_class = NURAWImageSourceNode;
-  v3 = a3;
-  [(NUCGImageSourceNode *)&v5 _addDefaultFinalizedSourceOptions:v3];
+  optionsCopy = options;
+  [(NUCGImageSourceNode *)&v5 _addDefaultFinalizedSourceOptions:optionsCopy];
   v4 = MEMORY[0x1E695E118];
-  [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{*MEMORY[0x1E696E080], v5.receiver, v5.super_class}];
-  [v3 setObject:@"1" forKeyedSubscript:*MEMORY[0x1E696E0C0]];
-  [v3 setObject:v4 forKeyedSubscript:@"kCGImageSourceShouldUseRawDataForFullSize"];
+  [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:{*MEMORY[0x1E696E080], v5.receiver, v5.super_class}];
+  [optionsCopy setObject:@"1" forKeyedSubscript:*MEMORY[0x1E696E0C0]];
+  [optionsCopy setObject:v4 forKeyedSubscript:@"kCGImageSourceShouldUseRawDataForFullSize"];
 }
 
-- (NURAWImageSourceNode)initWithURL:(id)a3 UTI:(id)a4 settings:(id)a5
+- (NURAWImageSourceNode)initWithURL:(id)l UTI:(id)i settings:(id)settings
 {
   v9.receiver = self;
   v9.super_class = NURAWImageSourceNode;
-  v5 = [(NUCGImageSourceNode *)&v9 initWithURL:a3 UTI:a4 settings:a5];
+  v5 = [(NUCGImageSourceNode *)&v9 initWithURL:l UTI:i settings:settings];
   v6 = objc_alloc_init(MEMORY[0x1E695DEE0]);
   propertiesByOptionCache = v5->_propertiesByOptionCache;
   v5->_propertiesByOptionCache = v6;
@@ -1785,13 +1785,13 @@ LABEL_13:
   return v5;
 }
 
-- (NURAWImageSourceNode)initWithURL:(id)a3 UTI:(id)a4 identifier:(id)a5
+- (NURAWImageSourceNode)initWithURL:(id)l UTI:(id)i identifier:(id)identifier
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  iCopy = i;
+  identifierCopy = identifier;
+  if (!lCopy)
   {
     v15 = NUAssertLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1812,8 +1812,8 @@ LABEL_13:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v29;
         v51 = 2114;
@@ -1824,8 +1824,8 @@ LABEL_13:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1834,8 +1834,8 @@ LABEL_13:
     _NUAssertFailHandler("[NURAWImageSourceNode initWithURL:UTI:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 135, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "URL != nil");
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = identifierCopy;
+  if (!identifierCopy)
   {
     v22 = NUAssertLogger();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1856,8 +1856,8 @@ LABEL_13:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v38;
         v51 = 2114;
@@ -1868,8 +1868,8 @@ LABEL_13:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1881,17 +1881,17 @@ LABEL_13:
   v47[0] = @"asRAW";
   v47[1] = @"identifier";
   v48[0] = MEMORY[0x1E695E118];
-  v48[1] = v10;
+  v48[1] = identifierCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-  v13 = [(NURAWImageSourceNode *)self initWithURL:v8 UTI:v9 settings:v12];
+  v13 = [(NURAWImageSourceNode *)self initWithURL:lCopy UTI:iCopy settings:v12];
 
   return v13;
 }
 
-- (NURAWImageSourceNode)initWithImageSource:(CGImageSource *)a3 identifier:(id)a4
+- (NURAWImageSourceNode)initWithImageSource:(CGImageSource *)source identifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_712);
@@ -1935,8 +1935,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1952,8 +1952,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -1969,27 +1969,27 @@ LABEL_14:
   _NUAssertFailHandler("[NURAWImageSourceNode initWithImageSource:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+RAW.m", 130, @"Initializer not available: [%@ %@], use designated initializer instead.", v28, v29, v30, v31, v27);
 }
 
-+ (int)_filterTypeForClassName:(id)a3
++ (int)_filterTypeForClassName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (_filterTypeForClassName__onceToken != -1)
   {
     dispatch_once(&_filterTypeForClassName__onceToken, &__block_literal_global);
   }
 
-  v4 = [_filterTypeForClassName__typeMapping objectForKeyedSubscript:v3];
+  v4 = [_filterTypeForClassName__typeMapping objectForKeyedSubscript:nameCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 void __48__NURAWImageSourceNode__filterTypeForClassName___block_invoke()
@@ -1998,15 +1998,15 @@ void __48__NURAWImageSourceNode__filterTypeForClassName___block_invoke()
   _filterTypeForClassName__typeMapping = &unk_1F3F828D8;
 }
 
-+ (id)_firstFilterOfType:(int)a3 inArray:(id)a4
++ (id)_firstFilterOfType:(int)type inArray:(id)array
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2017,14 +2017,14 @@ void __48__NURAWImageSourceNode__filterTypeForClassName___block_invoke()
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 attributes];
-        v13 = [v12 objectForKeyedSubscript:@"CIAttributeFilterName"];
+        attributes = [v11 attributes];
+        v13 = [attributes objectForKeyedSubscript:@"CIAttributeFilterName"];
 
-        if ([a1 _filterTypeForClassName:v13] == a3)
+        if ([self _filterTypeForClassName:v13] == type)
         {
           v14 = v11;
 
@@ -2032,7 +2032,7 @@ void __48__NURAWImageSourceNode__filterTypeForClassName___block_invoke()
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;

@@ -1,45 +1,45 @@
 @interface PLBatteryUIUtilities
-+ (BOOL)hasBatteryLevelDataAtTapIndex:(int)a3 fromGraphData:(id)a4 queryRange:(int)a5;
++ (BOOL)hasBatteryLevelDataAtTapIndex:(int)index fromGraphData:(id)data queryRange:(int)range;
 + (BOOL)inDemoMode;
 + (BOOL)is24HourClock;
-+ (BOOL)isDateMidnight:(id)a3;
-+ (BOOL)isDateStartOfWeek:(id)a3;
++ (BOOL)isDateMidnight:(id)midnight;
++ (BOOL)isDateStartOfWeek:(id)week;
 + (BOOL)isDeviceLayoutRTL;
 + (BOOL)isInUnitTest;
-+ (BOOL)isTappedIntervalCurrentBucket:(int)a3 withQueryRange:(int)a4 andEndTime:(id)a5;
-+ (double)getOneLineWidthOfText:(id)a3 withFont:(id)a4;
-+ (double)millisecondsFromMachTime:(unint64_t)a3;
-+ (id)accessibilityDescriptionForChargingTime:(double)a3;
-+ (id)accessibilityDescriptionForDate:(double)a3;
-+ (id)accessibilityDescriptionForDateTime:(double)a3;
-+ (id)accessibilityDescriptionForHour:(double)a3 duration:(double)a4;
-+ (id)accessibilityDescriptionForTimeInterval:(double)a3;
-+ (id)clipWithRoundedCorner:(double)a3 toImage:(id)a4;
++ (BOOL)isTappedIntervalCurrentBucket:(int)bucket withQueryRange:(int)range andEndTime:(id)time;
++ (double)getOneLineWidthOfText:(id)text withFont:(id)font;
++ (double)millisecondsFromMachTime:(unint64_t)time;
++ (id)accessibilityDescriptionForChargingTime:(double)time;
++ (id)accessibilityDescriptionForDate:(double)date;
++ (id)accessibilityDescriptionForDateTime:(double)time;
++ (id)accessibilityDescriptionForHour:(double)hour duration:(double)duration;
++ (id)accessibilityDescriptionForTimeInterval:(double)interval;
++ (id)clipWithRoundedCorner:(double)corner toImage:(id)image;
 + (id)containerPath;
-+ (id)convertImage:(id)a3 toColor:(id)a4;
-+ (id)convertImageToGrayScale:(id)a3;
-+ (id)getDefaultValueForKey:(id)a3;
-+ (id)getLocalizedStringFromNumber:(id)a3;
-+ (id)getLocalizedTimeStringFromFutureDate:(id)a3;
-+ (id)getRelativeDateStringForDate:(id)a3;
-+ (id)getScreenOnOffSecsAtTapIndex:(int)a3 fromGraphData:(id)a4 queryRange:(int)a5;
-+ (id)iconUTTypeIdentifierForNonApp:(id)a3;
-+ (id)iconUTTypeIdentifierForSuggestion:(int)a3;
-+ (id)loadDataFromJSONResource:(id)a3;
++ (id)convertImage:(id)image toColor:(id)color;
++ (id)convertImageToGrayScale:(id)scale;
++ (id)getDefaultValueForKey:(id)key;
++ (id)getLocalizedStringFromNumber:(id)number;
++ (id)getLocalizedTimeStringFromFutureDate:(id)date;
++ (id)getRelativeDateStringForDate:(id)date;
++ (id)getScreenOnOffSecsAtTapIndex:(int)index fromGraphData:(id)data queryRange:(int)range;
++ (id)iconUTTypeIdentifierForNonApp:(id)app;
++ (id)iconUTTypeIdentifierForSuggestion:(int)suggestion;
++ (id)loadDataFromJSONResource:(id)resource;
 + (id)localizedLPMFooterString;
-+ (id)localizedStringForDateComponents:(id)a3;
-+ (id)localizedStringWithHour:(int)a3;
-+ (id)localizedStringWithMin:(int)a3;
-+ (id)localizedStringWithPercentage:(double)a3;
++ (id)localizedStringForDateComponents:(id)components;
++ (id)localizedStringWithHour:(int)hour;
++ (id)localizedStringWithMin:(int)min;
++ (id)localizedStringWithPercentage:(double)percentage;
 + (id)percentFormatter;
-+ (id)scaledScreenOn:(double)a3 screenOff:(double)a4 andMaxTotalTime:(double)a5;
++ (id)scaledScreenOn:(double)on screenOff:(double)off andMaxTotalTime:(double)time;
 + (id)screenOffColor;
-+ (id)specFromDictionary:(id)a3;
-+ (int)getNumOfBreakdownEntriesAtTapIndex:(int)a3 fromBreakdownData:(id)a4 queryRange:(int)a5;
++ (id)specFromDictionary:(id)dictionary;
++ (int)getNumOfBreakdownEntriesAtTapIndex:(int)index fromBreakdownData:(id)data queryRange:(int)range;
 + (int64_t)localizedDateComponentsUnitsStyle;
 + (int64_t)localizedLeftTextAlignment;
 + (int64_t)localizedRightTextAlignment;
-+ (void)setDefaultValue:(id)a3 forKey:(id)a4;
++ (void)setDefaultValue:(id)value forKey:(id)key;
 @end
 
 @implementation PLBatteryUIUtilities
@@ -47,8 +47,8 @@
 + (int64_t)localizedDateComponentsUnitsStyle
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [v2 firstObject];
-  v4 = [v3 hasPrefix:@"en"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject hasPrefix:@"en"];
 
   if (v4)
   {
@@ -61,80 +61,80 @@
   }
 }
 
-+ (id)localizedStringWithHour:(int)a3
++ (id)localizedStringWithHour:(int)hour
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_3C10C;
   block[3] = &unk_164FE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_187C38 != -1)
   {
     dispatch_once(&qword_187C38, block);
   }
 
-  v4 = [qword_187C40 stringFromTimeInterval:(3600 * a3)];
+  v4 = [qword_187C40 stringFromTimeInterval:(3600 * hour)];
 
   return v4;
 }
 
-+ (id)localizedStringWithMin:(int)a3
++ (id)localizedStringWithMin:(int)min
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_3C250;
   block[3] = &unk_164FE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_187C48 != -1)
   {
     dispatch_once(&qword_187C48, block);
   }
 
-  v4 = [qword_187C50 stringFromTimeInterval:(60 * a3)];
+  v4 = [qword_187C50 stringFromTimeInterval:(60 * min)];
 
   return v4;
 }
 
-+ (double)getOneLineWidthOfText:(id)a3 withFont:(id)a4
++ (double)getOneLineWidthOfText:(id)text withFont:(id)font
 {
   v11 = NSFontAttributeName;
-  v12 = a4;
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+  fontCopy = font;
+  fontCopy2 = font;
+  textCopy = text;
+  v7 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v11 count:1];
 
-  [v6 boundingRectWithSize:3 options:v7 attributes:0 context:{3.40282347e38, 3.40282347e38}];
+  [textCopy boundingRectWithSize:3 options:v7 attributes:0 context:{3.40282347e38, 3.40282347e38}];
   v9 = v8;
 
   return v9;
 }
 
-+ (BOOL)isDateStartOfWeek:(id)a3
++ (BOOL)isDateStartOfWeek:(id)week
 {
-  v3 = a3;
+  weekCopy = week;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 components:512 fromDate:v3];
+  v5 = [v4 components:512 fromDate:weekCopy];
 
-  v6 = [v5 weekday];
-  LOBYTE(v6) = v6 == (CalWeekStartForDisplay() + 1);
+  weekday = [v5 weekday];
+  LOBYTE(weekday) = weekday == (CalWeekStartForDisplay() + 1);
 
-  return v6;
+  return weekday;
 }
 
-+ (int)getNumOfBreakdownEntriesAtTapIndex:(int)a3 fromBreakdownData:(id)a4 queryRange:(int)a5
++ (int)getNumOfBreakdownEntriesAtTapIndex:(int)index fromBreakdownData:(id)data queryRange:(int)range
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy)
   {
-    if (a5)
+    if (range)
     {
-      v9 = [v7 objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekTapKey"];
+      v9 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIQueryRangeWeekTapKey"];
       v10 = v9;
-      if (v9 && [v9 count] > a3)
+      if (v9 && [v9 count] > index)
       {
 LABEL_9:
-        v13 = [v10 objectAtIndexedSubscript:a3];
+        v13 = [v10 objectAtIndexedSubscript:index];
         v14 = [v13 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
         v11 = [v14 count];
 
@@ -145,9 +145,9 @@ LABEL_11:
 
     else
     {
-      v12 = [v7 objectForKeyedSubscript:@"PLBatteryUIQueryRangeDayTapKey"];
+      v12 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIQueryRangeDayTapKey"];
       v10 = v12;
-      if (v12 && [v12 count] > a3)
+      if (v12 && [v12 count] > index)
       {
         goto LABEL_9;
       }
@@ -163,19 +163,19 @@ LABEL_12:
   return v11;
 }
 
-+ (id)getScreenOnOffSecsAtTapIndex:(int)a3 fromGraphData:(id)a4 queryRange:(int)a5
++ (id)getScreenOnOffSecsAtTapIndex:(int)index fromGraphData:(id)data queryRange:(int)range
 {
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!dataCopy)
   {
     v22 = 0;
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!range)
   {
-    v23 = [v7 objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
+    v23 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
     v24 = [v23 objectForKeyedSubscript:@"PLBatteryUIScreenOnTimeKey"];
     v10 = [v24 objectForKeyedSubscript:@"PLBatteryUIGraphHourly"];
 
@@ -184,17 +184,17 @@ LABEL_12:
     v18 = [v26 objectForKeyedSubscript:@"PLBatteryUIGraphHourly"];
 
     v11 = 0.0;
-    if (!v10 || !v18 || [v10 count] <= a3 || objc_msgSend(v18, "count") <= a3)
+    if (!v10 || !v18 || [v10 count] <= index || objc_msgSend(v18, "count") <= index)
     {
       v17 = 0.0;
       goto LABEL_15;
     }
 
-    v27 = [v10 objectAtIndexedSubscript:a3];
+    v27 = [v10 objectAtIndexedSubscript:index];
     [v27 doubleValue];
     v17 = v28;
 
-    v19 = [v18 objectAtIndexedSubscript:a3];
+    v19 = [v18 objectAtIndexedSubscript:index];
     [v19 doubleValue];
     v11 = v29;
 LABEL_6:
@@ -203,19 +203,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"PLBatteryUIGraphDays"];
+  v9 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIGraphDays"];
   v10 = v9;
   v11 = 0.0;
-  if (v9 && [v9 count] > a3)
+  if (v9 && [v9 count] > index)
   {
-    v12 = a3;
-    v13 = [v10 objectAtIndexedSubscript:a3];
+    indexCopy = index;
+    v13 = [v10 objectAtIndexedSubscript:index];
     v14 = [v13 objectForKeyedSubscript:@"PLBatteryUIScreenOnTimeKey"];
     v15 = [v14 objectForKeyedSubscript:@"PLBatteryUIGraphTotal"];
     [v15 doubleValue];
     v17 = v16;
 
-    v18 = [v10 objectAtIndexedSubscript:v12];
+    v18 = [v10 objectAtIndexedSubscript:indexCopy];
     v19 = [v18 objectForKeyedSubscript:@"PLBatteryUIScreenOffTimeKey"];
     v20 = [v19 objectForKeyedSubscript:@"PLBatteryUIGraphTotal"];
     [v20 doubleValue];
@@ -238,23 +238,23 @@ LABEL_17:
   return v22;
 }
 
-+ (BOOL)hasBatteryLevelDataAtTapIndex:(int)a3 fromGraphData:(id)a4 queryRange:(int)a5
++ (BOOL)hasBatteryLevelDataAtTapIndex:(int)index fromGraphData:(id)data queryRange:(int)range
 {
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!dataCopy)
   {
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!range)
   {
-    v15 = [v7 objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
+    v15 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIGraph24hrs"];
     v10 = [v15 objectForKeyedSubscript:@"PLBatteryUIBatteryLevelsKey"];
 
     if (v10)
     {
-      v16 = 4 * a3;
+      v16 = 4 * index;
       v17 = 4;
       while ([v10 count] > v16)
       {
@@ -265,12 +265,12 @@ LABEL_17:
           if ([v18 count] == &dword_0 + 2)
           {
             v20 = [v19 objectAtIndexedSubscript:1];
-            v21 = [v20 intValue];
+            intValue = [v20 intValue];
 
             v22 = [v19 objectAtIndexedSubscript:0];
-            v23 = [v22 intValue];
+            intValue2 = [v22 intValue];
 
-            if ((v21 & 1) == 0 && v23 >= 1)
+            if ((intValue & 1) == 0 && intValue2 >= 1)
             {
 
               v14 = 1;
@@ -294,52 +294,52 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"PLBatteryUIGraphDays"];
+  v9 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIGraphDays"];
   v10 = v9;
-  if (!v9 || [v9 count] <= a3)
+  if (!v9 || [v9 count] <= index)
   {
 LABEL_14:
     v14 = 0;
     goto LABEL_15;
   }
 
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  v11 = [v10 objectAtIndexedSubscript:index];
   v12 = [v11 objectForKeyedSubscript:@"PLBatteryUIEnergyKey"];
-  v13 = [v12 intValue];
+  intValue3 = [v12 intValue];
 
-  v14 = v13 > 0;
+  v14 = intValue3 > 0;
 LABEL_15:
 
 LABEL_17:
   return v14;
 }
 
-+ (BOOL)isDateMidnight:(id)a3
++ (BOOL)isDateMidnight:(id)midnight
 {
-  v3 = a3;
+  midnightCopy = midnight;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 startOfDayForDate:v3];
-  v6 = [v5 isEqual:v3];
+  v5 = [v4 startOfDayForDate:midnightCopy];
+  v6 = [v5 isEqual:midnightCopy];
 
   return v6;
 }
 
-+ (id)convertImageToGrayScale:(id)a3
++ (id)convertImageToGrayScale:(id)scale
 {
-  v3 = a3;
-  [v3 size];
+  scaleCopy = scale;
+  [scaleCopy size];
   v5 = v4;
-  [v3 size];
+  [scaleCopy size];
   v7 = v6;
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v9 = CGBitmapContextCreate(0, v5, v7, 8uLL, 0, DeviceGray, 1u);
-  v10 = [v3 CGImage];
+  cGImage = [scaleCopy CGImage];
 
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
   v15.size.width = v5;
   v15.size.height = v7;
-  CGContextDrawImage(v9, v15, v10);
+  CGContextDrawImage(v9, v15, cGImage);
   Image = CGBitmapContextCreateImage(v9);
   v12 = [UIImage imageWithCGImage:Image];
   CGImageRelease(Image);
@@ -349,10 +349,10 @@ LABEL_17:
   return v12;
 }
 
-+ (id)convertImage:(id)a3 toColor:(id)a4
++ (id)convertImage:(id)image toColor:(id)color
 {
-  v5 = a4;
-  v6 = [a3 imageWithRenderingMode:2];
+  colorCopy = color;
+  v6 = [image imageWithRenderingMode:2];
   [v6 size];
   v8 = v7;
   v10 = v9;
@@ -361,7 +361,7 @@ LABEL_17:
   v19.width = v8;
   v19.height = v10;
   UIGraphicsBeginImageContextWithOptions(v19, 0, v12);
-  [v5 set];
+  [colorCopy set];
 
   [v6 size];
   v14 = v13;
@@ -373,10 +373,10 @@ LABEL_17:
   return v16;
 }
 
-+ (id)clipWithRoundedCorner:(double)a3 toImage:(id)a4
++ (id)clipWithRoundedCorner:(double)corner toImage:(id)image
 {
-  v5 = a4;
-  [v5 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
   v10 = +[UIScreen mainScreen];
@@ -386,18 +386,18 @@ LABEL_17:
   v25.height = v9;
   UIGraphicsBeginImageContextWithOptions(v25, 0, v12);
 
-  [v5 size];
+  [imageCopy size];
   v14 = v13;
-  [v5 size];
+  [imageCopy size];
   v16 = v15;
-  [v5 size];
-  v18 = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:0.0, v14, v16, v17 * a3];
-  [v18 addClip];
+  [imageCopy size];
+  corner = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:0.0, v14, v16, v17 * corner];
+  [corner addClip];
 
-  [v5 size];
+  [imageCopy size];
   v20 = v19;
-  [v5 size];
-  [v5 drawInRect:{0.0, 0.0, v20, v21}];
+  [imageCopy size];
+  [imageCopy drawInRect:{0.0, 0.0, v20, v21}];
 
   v22 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -414,14 +414,14 @@ LABEL_17:
   return v4;
 }
 
-+ (BOOL)isTappedIntervalCurrentBucket:(int)a3 withQueryRange:(int)a4 andEndTime:(id)a5
++ (BOOL)isTappedIntervalCurrentBucket:(int)bucket withQueryRange:(int)range andEndTime:(id)time
 {
-  if (a4)
+  if (range)
   {
-    return a3 == 9;
+    return bucket == 9;
   }
 
-  v6 = [a5 dateByAddingTimeInterval:(23 - a3) * -3600.0];
+  v6 = [time dateByAddingTimeInterval:(23 - bucket) * -3600.0];
   v7 = [v6 dateByAddingTimeInterval:-3600.0];
   v8 = +[NSDate date];
   [v8 timeIntervalSinceDate:v7];
@@ -439,19 +439,19 @@ LABEL_17:
   return v5;
 }
 
-+ (id)scaledScreenOn:(double)a3 screenOff:(double)a4 andMaxTotalTime:(double)a5
++ (id)scaledScreenOn:(double)on screenOff:(double)off andMaxTotalTime:(double)time
 {
-  v5 = a4;
-  v6 = a3 + a4;
-  if (v6 > a5)
+  offCopy = off;
+  v6 = on + off;
+  if (v6 > time)
   {
-    a3 = a3 * a5 / v6;
-    v5 = v5 * a5 / v6;
+    on = on * time / v6;
+    offCopy = offCopy * time / v6;
   }
 
-  v7 = [NSNumber numberWithDouble:a3];
+  v7 = [NSNumber numberWithDouble:on];
   v11[0] = v7;
-  v8 = [NSNumber numberWithDouble:v5];
+  v8 = [NSNumber numberWithDouble:offCopy];
   v11[1] = v8;
   v9 = [NSArray arrayWithObjects:v11 count:2];
 
@@ -468,7 +468,7 @@ LABEL_17:
   return byte_187C58;
 }
 
-+ (id)iconUTTypeIdentifierForSuggestion:(int)a3
++ (id)iconUTTypeIdentifierForSuggestion:(int)suggestion
 {
   v4 = +[PLModelingUtilities isiPhone];
   v5 = @"ipad";
@@ -479,9 +479,9 @@ LABEL_17:
 
   v6 = v5;
   v7 = @"com.apple.graphic-icon.auto-brightness";
-  if (a3 > 7)
+  if (suggestion > 7)
   {
-    switch(a3)
+    switch(suggestion)
     {
       case 8:
         v7 = @"com.apple.graphic-icon.recent-usage";
@@ -496,13 +496,13 @@ LABEL_17:
 
   else
   {
-    if ((a3 - 3) < 5)
+    if ((suggestion - 3) < 5)
     {
 LABEL_5:
       v8 = BUILogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        sub_114980(a3, v8);
+        sub_114980(suggestion, v8);
       }
 
       v7 = 0;
@@ -510,12 +510,12 @@ LABEL_5:
     }
 
     v9 = @"com.apple.graphic-icon.display";
-    if (a3 != 2)
+    if (suggestion != 2)
     {
       v9 = @"com.apple.graphic-icon.auto-brightness";
     }
 
-    if (a3 == 1)
+    if (suggestion == 1)
     {
       v7 = @"com.apple.graphic-icon.auto-lock";
     }
@@ -531,9 +531,9 @@ LABEL_18:
   return v7;
 }
 
-+ (id)iconUTTypeIdentifierForNonApp:(id)a3
++ (id)iconUTTypeIdentifierForNonApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = +[PLModelingUtilities isiPhone];
   v5 = @"ipad";
   if (v4)
@@ -542,52 +542,52 @@ LABEL_18:
   }
 
   v6 = v5;
-  if ([v3 isEqualToString:@"DeviceSetup"])
+  if ([appCopy isEqualToString:@"DeviceSetup"])
   {
     [NSString stringWithFormat:@"com.apple.graphic-icon.%@.battery-ongoing-restore", v6];
     v7 = LABEL_5:;
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"EN"])
+  if ([appCopy isEqualToString:@"EN"])
   {
     v7 = @"com.apple.graphic-icon.exposure-notifications";
   }
 
-  else if ([v3 isEqualToString:@"Flashlight"])
+  else if ([appCopy isEqualToString:@"Flashlight"])
   {
     v7 = @"com.apple.graphic-icon.flashlight";
   }
 
   else
   {
-    if ([v3 isEqualToString:@"HLS"])
+    if ([appCopy isEqualToString:@"HLS"])
     {
       [NSString stringWithFormat:@"com.apple.graphic-icon.apps-on-%@", v6];
       goto LABEL_5;
     }
 
-    if ([v3 isEqualToString:@"PoorCellCondition"])
+    if ([appCopy isEqualToString:@"PoorCellCondition"])
     {
       v7 = @"com.apple.graphic-icon.cellular-settings";
     }
 
-    else if ([v3 isEqualToString:@"PowerOutAccessories"])
+    else if ([appCopy isEqualToString:@"PowerOutAccessories"])
     {
       v7 = @"com.apple.graphic-icon.usb";
     }
 
-    else if ([v3 isEqualToString:@"SoundRecognition"])
+    else if ([appCopy isEqualToString:@"SoundRecognition"])
     {
       v7 = @"com.apple.graphic-icon.sound-recognition";
     }
 
-    else if ([v3 isEqualToString:@"Hotspot"])
+    else if ([appCopy isEqualToString:@"Hotspot"])
     {
       v7 = @"com.apple.graphic-icon.personal-hotspot";
     }
 
-    else if ([v3 isEqualToString:@"DeletedApp"])
+    else if ([appCopy isEqualToString:@"DeletedApp"])
     {
       v7 = @"com.apple.graphic-icon.uninstalled-apps";
     }
@@ -597,7 +597,7 @@ LABEL_18:
       v9 = BUILogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        sub_1149F8(v3, v9);
+        sub_1149F8(appCopy, v9);
       }
 
       v7 = 0;
@@ -646,10 +646,10 @@ LABEL_10:
   return v7;
 }
 
-+ (id)specFromDictionary:(id)a3
++ (id)specFromDictionary:(id)dictionary
 {
   v14 = 0;
-  v3 = [NSJSONSerialization dataWithJSONObject:a3 options:0 error:&v14];
+  v3 = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&v14];
   if (v14)
   {
     v4 = BUILogCommon();
@@ -669,11 +669,11 @@ LABEL_10:
   return v12;
 }
 
-+ (id)loadDataFromJSONResource:(id)a3
++ (id)loadDataFromJSONResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 pathForResource:v3 ofType:0];
+  v5 = [v4 pathForResource:resourceCopy ofType:0];
 
   if (v5)
   {
@@ -706,14 +706,14 @@ LABEL_10:
   return v7;
 }
 
-+ (double)millisecondsFromMachTime:(unint64_t)a3
++ (double)millisecondsFromMachTime:(unint64_t)time
 {
   if (qword_187CE8 != -1)
   {
     sub_1151BC();
   }
 
-  return *&qword_187CF0 * a3 / 1000000.0;
+  return *&qword_187CF0 * time / 1000000.0;
 }
 
 + (BOOL)is24HourClock
@@ -725,11 +725,11 @@ LABEL_10:
   return v3;
 }
 
-+ (id)getLocalizedStringFromNumber:(id)a3
++ (id)getLocalizedStringFromNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[PLBatteryUIUtilities percentFormatter];
-  v5 = [v4 stringFromNumber:v3];
+  v5 = [v4 stringFromNumber:numberCopy];
 
   return v5;
 }
@@ -768,19 +768,19 @@ LABEL_10:
   return byte_187D20;
 }
 
-+ (id)getDefaultValueForKey:(id)a3
++ (id)getDefaultValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   +[PLBatteryUIUtilities containerPath];
   v4 = _CFPreferencesCopyAppValueWithContainer();
 
   return v4;
 }
 
-+ (void)setDefaultValue:(id)a3 forKey:(id)a4
++ (void)setDefaultValue:(id)value forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  valueCopy = value;
   +[PLBatteryUIUtilities containerPath];
   _CFPreferencesSetAppValueWithContainer();
 }
@@ -819,35 +819,35 @@ LABEL_10:
   }
 }
 
-+ (id)localizedStringWithPercentage:(double)a3
++ (id)localizedStringWithPercentage:(double)percentage
 {
-  v3 = [NSNumber numberWithDouble:a3 / 100.0];
+  v3 = [NSNumber numberWithDouble:percentage / 100.0];
   v4 = [NSNumberFormatter localizedStringFromNumber:v3 numberStyle:3];
 
   return v4;
 }
 
-+ (id)localizedStringForDateComponents:(id)a3
++ (id)localizedStringForDateComponents:(id)components
 {
   v3 = qword_187D38;
-  v4 = a3;
+  componentsCopy = components;
   if (v3 != -1)
   {
     sub_11529C();
   }
 
-  v5 = [qword_187D30 dateFromComponents:v4];
+  v5 = [qword_187D30 dateFromComponents:componentsCopy];
 
   v6 = [qword_187D28 stringFromDate:v5];
 
   return v6;
 }
 
-+ (id)getRelativeDateStringForDate:(id)a3
++ (id)getRelativeDateStringForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSDate date];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:dateCopy];
   if (v5 < 0.0)
   {
     v6 = &stru_16CDB8;
@@ -861,7 +861,7 @@ LABEL_10:
   [v9 setLocale:v10];
 
   [v9 setDoesRelativeDateFormatting:1];
-  if (![v8 isDate:v3 inSameDayAsDate:v4])
+  if (![v8 isDate:dateCopy inSameDayAsDate:v4])
   {
     if (v7 >= 604800.0)
     {
@@ -882,27 +882,27 @@ LABEL_10:
     [v9 setDateStyle:0];
     [v9 setTimeStyle:1];
 LABEL_11:
-    v13 = [v9 stringFromDate:v3];
+    text = [v9 stringFromDate:dateCopy];
     goto LABEL_12;
   }
 
   v11 = objc_alloc_init(BSUIRelativeDateLabel);
   [v11 timerFiredWithValue:? forResolution:? comparedToNow:?];
-  v13 = [v11 text];
+  text = [v11 text];
 
 LABEL_12:
-  v6 = v13;
+  v6 = text;
 
 LABEL_13:
 
   return v6;
 }
 
-+ (id)getLocalizedTimeStringFromFutureDate:(id)a3
++ (id)getLocalizedTimeStringFromFutureDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSDate date];
-  [v3 timeIntervalSinceDate:v4];
+  [dateCopy timeIntervalSinceDate:v4];
   if (v5 >= 0.0)
   {
     v7 = v5;
@@ -912,17 +912,17 @@ LABEL_13:
     [v9 setLocale:v10];
 
     [v9 setDoesRelativeDateFormatting:1];
-    if ([v8 isDate:v3 inSameDayAsDate:v4])
+    if ([v8 isDate:dateCopy inSameDayAsDate:v4])
     {
       [v9 setDateStyle:0];
       [v9 setTimeStyle:1];
       v11 = BUILogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        sub_1152B0(v3, v11);
+        sub_1152B0(dateCopy, v11);
       }
 
-      v12 = [v9 stringFromDate:v3];
+      v12 = [v9 stringFromDate:dateCopy];
       v13 = BUILogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -943,7 +943,7 @@ LABEL_13:
       }
 
       [v9 setLocalizedDateFormatFromTemplate:v14];
-      v12 = [v9 stringFromDate:v3];
+      v12 = [v9 stringFromDate:dateCopy];
     }
 
     v6 = v12;
@@ -957,7 +957,7 @@ LABEL_13:
   return v6;
 }
 
-+ (id)accessibilityDescriptionForHour:(double)a3 duration:(double)a4
++ (id)accessibilityDescriptionForHour:(double)hour duration:(double)duration
 {
   if (qword_187D78 != -1)
   {
@@ -966,17 +966,17 @@ LABEL_13:
 
   v6 = BatteryUILocalization(@"AX_BUIGRAPH_TO");
   v7 = qword_187D70;
-  v8 = [NSDate dateWithTimeIntervalSince1970:a3];
+  v8 = [NSDate dateWithTimeIntervalSince1970:hour];
   v9 = [v7 stringFromDate:v8];
   v10 = qword_187D70;
-  v11 = [NSDate dateWithTimeIntervalSince1970:a3 + a4];
-  v12 = [v10 stringFromDate:v11];
+  duration = [NSDate dateWithTimeIntervalSince1970:hour + duration];
+  v12 = [v10 stringFromDate:duration];
   v13 = [NSString localizedStringWithFormat:v6, v9, v12];
 
   return v13;
 }
 
-+ (id)accessibilityDescriptionForChargingTime:(double)a3
++ (id)accessibilityDescriptionForChargingTime:(double)time
 {
   if (qword_187D88 != -1)
   {
@@ -984,13 +984,13 @@ LABEL_13:
   }
 
   v4 = qword_187D80;
-  v5 = [NSDate dateWithTimeIntervalSince1970:a3];
+  v5 = [NSDate dateWithTimeIntervalSince1970:time];
   v6 = [v4 stringFromDate:v5];
 
   return v6;
 }
 
-+ (id)accessibilityDescriptionForDate:(double)a3
++ (id)accessibilityDescriptionForDate:(double)date
 {
   if (qword_187D98 != -1)
   {
@@ -998,13 +998,13 @@ LABEL_13:
   }
 
   v4 = qword_187D90;
-  v5 = [NSDate dateWithTimeIntervalSince1970:a3];
+  v5 = [NSDate dateWithTimeIntervalSince1970:date];
   v6 = [v4 stringFromDate:v5];
 
   return v6;
 }
 
-+ (id)accessibilityDescriptionForDateTime:(double)a3
++ (id)accessibilityDescriptionForDateTime:(double)time
 {
   if (qword_187DA8 != -1)
   {
@@ -1012,22 +1012,22 @@ LABEL_13:
   }
 
   v4 = qword_187DA0;
-  v5 = [NSDate dateWithTimeIntervalSince1970:a3];
+  v5 = [NSDate dateWithTimeIntervalSince1970:time];
   v6 = [v4 stringFromDate:v5];
 
   return v6;
 }
 
-+ (id)accessibilityDescriptionForTimeInterval:(double)a3
++ (id)accessibilityDescriptionForTimeInterval:(double)interval
 {
   if (qword_187DB8 != -1)
   {
     sub_115418();
   }
 
-  if (a3 >= 60.0)
+  if (interval >= 60.0)
   {
-    [qword_187DB0 stringFromTimeInterval:a3];
+    [qword_187DB0 stringFromTimeInterval:interval];
   }
 
   else

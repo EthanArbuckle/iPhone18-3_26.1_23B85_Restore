@@ -1,14 +1,14 @@
 @interface _UIViewAnimationFrame
 - (id)description;
-- (int64_t)compareStartTimes:(id)a3;
+- (int64_t)compareStartTimes:(id)times;
 @end
 
 @implementation _UIViewAnimationFrame
 
-- (int64_t)compareStartTimes:(id)a3
+- (int64_t)compareStartTimes:(id)times
 {
   startTime = self->_startTime;
-  v4 = *(a3 + 2);
+  v4 = *(times + 2);
   if (startTime < v4)
   {
     return -1;

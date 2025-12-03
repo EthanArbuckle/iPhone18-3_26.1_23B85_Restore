@@ -1,27 +1,27 @@
 @interface UISegmentedControlCarPlayGlassStyleProvider
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6;
-- (id)highlightColorForSegmentSelected:(BOOL)a3 highlighted:(BOOL)a4 traitCollection:(id)a5 tintColor:(id)a6;
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state;
+- (id)highlightColorForSegmentSelected:(BOOL)selected highlighted:(BOOL)highlighted traitCollection:(id)collection tintColor:(id)color;
 @end
 
 @implementation UISegmentedControlCarPlayGlassStyleProvider
 
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a3;
-  v9 = v8;
-  if ((v6 & 8) != 0)
+  stateCopy = state;
+  selectedCopy = selected;
+  segmentCopy = segment;
+  v9 = segmentCopy;
+  if ((stateCopy & 8) != 0)
   {
     v11 = +[UIColor _carSystemFocusLabelColor];
   }
 
   else
   {
-    if (v7)
+    if (selectedCopy)
     {
-      v10 = [v8 traitCollection];
-      if ([v10 userInterfaceStyle] == 2)
+      traitCollection = [segmentCopy traitCollection];
+      if ([traitCollection userInterfaceStyle] == 2)
       {
         +[UIColor whiteColor];
       }
@@ -44,13 +44,13 @@ LABEL_10:
   return v12;
 }
 
-- (id)highlightColorForSegmentSelected:(BOOL)a3 highlighted:(BOOL)a4 traitCollection:(id)a5 tintColor:(id)a6
+- (id)highlightColorForSegmentSelected:(BOOL)selected highlighted:(BOOL)highlighted traitCollection:(id)collection tintColor:(id)color
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (v7)
+  highlightedCopy = highlighted;
+  selectedCopy = selected;
+  collectionCopy = collection;
+  colorCopy = color;
+  if (highlightedCopy)
   {
     v11 = +[UIColor _carSystemFocusColor];
 LABEL_3:
@@ -58,9 +58,9 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (selectedCopy)
   {
-    if ([v9 userInterfaceStyle] == 2)
+    if ([collectionCopy userInterfaceStyle] == 2)
     {
       +[UIColor secondarySystemFillColor];
     }

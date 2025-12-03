@@ -1,34 +1,34 @@
 @interface MADVITextLookupResult
-- (MADVITextLookupResult)initWithCoder:(id)a3;
-- (MADVITextLookupResult)initWithSearchSections:(id)a3;
+- (MADVITextLookupResult)initWithCoder:(id)coder;
+- (MADVITextLookupResult)initWithSearchSections:(id)sections;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVITextLookupResult
 
-- (MADVITextLookupResult)initWithSearchSections:(id)a3
+- (MADVITextLookupResult)initWithSearchSections:(id)sections
 {
-  v5 = a3;
+  sectionsCopy = sections;
   v9.receiver = self;
   v9.super_class = MADVITextLookupResult;
   v6 = [(MADResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchSections, a3);
+    objc_storeStrong(&v6->_searchSections, sections);
   }
 
   return v7;
 }
 
-- (MADVITextLookupResult)initWithCoder:(id)a3
+- (MADVITextLookupResult)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MADVITextLookupResult;
-  v5 = [(MADResult *)&v14 initWithCoder:v4];
+  v5 = [(MADResult *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -55,7 +55,7 @@
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v10 = [v6 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"SearchSections"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"SearchSections"];
     searchSections = v5->_searchSections;
     v5->_searchSections = v11;
   }
@@ -63,35 +63,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVITextLookupResult;
-  v4 = a3;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_searchSections forKey:{@"SearchSections", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_searchSections forKey:{@"SearchSections", v5.receiver, v5.super_class}];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"searchSections:\n"];
+  [string appendFormat:@"searchSections:\n"];
   if ([(NSArray *)self->_searchSections count])
   {
     v6 = 0;
-    v33 = self;
+    selfCopy = self;
     do
     {
       context = objc_autoreleasePoolPush();
       v35 = v6;
       v7 = [(NSArray *)self->_searchSections objectAtIndexedSubscript:v6];
-      [v3 appendFormat:@"<results:["];
-      v8 = [v7 results];
-      v9 = [v8 count];
+      [string appendFormat:@"<results:["];
+      results = [v7 results];
+      v9 = [results count];
 
       if (v9)
       {
@@ -99,78 +99,78 @@
         do
         {
           v11 = objc_autoreleasePoolPush();
-          v12 = [v7 results];
-          v13 = [v12 objectAtIndexedSubscript:v10];
+          results2 = [v7 results];
+          v13 = [results2 objectAtIndexedSubscript:v10];
           v14 = [v13 description];
-          [v3 appendFormat:@"%@ ", v14];
+          [string appendFormat:@"%@ ", v14];
 
-          v15 = [v7 results];
-          v16 = [v15 objectAtIndexedSubscript:v10];
-          v17 = [v16 title];
-          v18 = [v17 text];
-          [v3 appendFormat:@"(title: %@)", v18];
+          results3 = [v7 results];
+          v16 = [results3 objectAtIndexedSubscript:v10];
+          title = [v16 title];
+          text = [title text];
+          [string appendFormat:@"(title: %@)", text];
 
-          v19 = [v7 results];
-          v20 = [v19 count] - 1;
+          results4 = [v7 results];
+          v20 = [results4 count] - 1;
 
           if (v10 < v20)
           {
-            [v3 appendFormat:@", "];
+            [string appendFormat:@", "];
           }
 
           objc_autoreleasePoolPop(v11);
           ++v10;
-          v21 = [v7 results];
-          v22 = [v21 count];
+          results5 = [v7 results];
+          v22 = [results5 count];
         }
 
         while (v10 < v22);
       }
 
-      [v3 appendFormat:@"] "];
-      [v3 appendFormat:@"maxInitiallyVisibleResults:%lu ", objc_msgSend(v7, "maxInitiallyVisibleResults")];
-      v23 = [v7 isInitiallyHidden];
+      [string appendFormat:@"] "];
+      [string appendFormat:@"maxInitiallyVisibleResults:%lu ", objc_msgSend(v7, "maxInitiallyVisibleResults")];
+      isInitiallyHidden = [v7 isInitiallyHidden];
       v24 = @"NO";
-      if (v23)
+      if (isInitiallyHidden)
       {
         v24 = @"YES";
       }
 
-      [v3 appendFormat:@"isInitiallyHidden:%@ ", v24];
-      v25 = [v7 identifier];
-      [v3 appendFormat:@"identifier:%@ ", v25];
+      [string appendFormat:@"isInitiallyHidden:%@ ", v24];
+      identifier = [v7 identifier];
+      [string appendFormat:@"identifier:%@ ", identifier];
 
-      v26 = [v7 bundleIdentifier];
-      [v3 appendFormat:@"bundleIdentifier:%@ ", v26];
+      bundleIdentifier = [v7 bundleIdentifier];
+      [string appendFormat:@"bundleIdentifier:%@ ", bundleIdentifier];
 
-      v27 = [v7 title];
-      [v3 appendFormat:@"title:%@ ", v27];
+      title2 = [v7 title];
+      [string appendFormat:@"title:%@ ", title2];
 
-      v28 = [v7 moreText];
-      [v3 appendFormat:@"moreText:%@ ", v28];
+      moreText = [v7 moreText];
+      [string appendFormat:@"moreText:%@ ", moreText];
 
-      v29 = [v7 button];
-      v30 = [v29 description];
-      [v3 appendFormat:@"button:%@ ", v30];
+      button = [v7 button];
+      v30 = [button description];
+      [string appendFormat:@"button:%@ ", v30];
 
       [v7 rankingScore];
-      [v3 appendFormat:@"rankingScore:%lf>", v31];
-      self = v33;
-      if (v35 < [(NSArray *)v33->_searchSections count]- 1)
+      [string appendFormat:@"rankingScore:%lf>", v31];
+      self = selfCopy;
+      if (v35 < [(NSArray *)selfCopy->_searchSections count]- 1)
       {
-        [v3 appendFormat:@", \n"];
+        [string appendFormat:@", \n"];
       }
 
       objc_autoreleasePoolPop(context);
       v6 = v35 + 1;
     }
 
-    while (v35 + 1 < [(NSArray *)v33->_searchSections count]);
+    while (v35 + 1 < [(NSArray *)selfCopy->_searchSections count]);
   }
 
-  [v3 appendFormat:@">"];
+  [string appendFormat:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

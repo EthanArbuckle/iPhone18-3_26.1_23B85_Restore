@@ -1,31 +1,31 @@
 @interface PKAddAutoFillCardViewController
-- (PKAddAutoFillCardViewController)initWithCoder:(id)a3;
-- (PKAddAutoFillCardViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (PKAddAutoFillCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PKAddAutoFillCardViewController)initWithRootViewController:(id)a3;
-- (PKAddAutoFillCardViewController)initWithWebService:(id)a3 context:(int64_t)a4 delegate:(id)a5 primaryAccountIdentifier:(id)a6 passUniqueIdentifier:(id)a7 displayablePaymentCredentialType:(id)a8;
-- (void)cameraCaptureViewController:(id)a3 didRecognizeObjects:(id)a4;
-- (void)cameraCaptureViewControllerDidSelectManualEntry:(id)a3;
+- (PKAddAutoFillCardViewController)initWithCoder:(id)coder;
+- (PKAddAutoFillCardViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (PKAddAutoFillCardViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PKAddAutoFillCardViewController)initWithRootViewController:(id)controller;
+- (PKAddAutoFillCardViewController)initWithWebService:(id)service context:(int64_t)context delegate:(id)delegate primaryAccountIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier displayablePaymentCredentialType:(id)type;
+- (void)cameraCaptureViewController:(id)controller didRecognizeObjects:(id)objects;
+- (void)cameraCaptureViewControllerDidSelectManualEntry:(id)entry;
 - (void)reset;
 @end
 
 @implementation PKAddAutoFillCardViewController
 
-- (PKAddAutoFillCardViewController)initWithWebService:(id)a3 context:(int64_t)a4 delegate:(id)a5 primaryAccountIdentifier:(id)a6 passUniqueIdentifier:(id)a7 displayablePaymentCredentialType:(id)a8
+- (PKAddAutoFillCardViewController)initWithWebService:(id)service context:(int64_t)context delegate:(id)delegate primaryAccountIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier displayablePaymentCredentialType:(id)type
 {
-  v9 = a7;
-  if (a6)
+  uniqueIdentifierCopy = uniqueIdentifier;
+  if (identifier)
   {
     v14 = sub_1BE052434();
     v16 = v15;
-    if (v9)
+    if (uniqueIdentifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v18 = 0;
-    if (a8)
+    if (type)
     {
       goto LABEL_4;
     }
@@ -37,31 +37,31 @@ LABEL_7:
 
   v14 = 0;
   v16 = 0;
-  if (!a7)
+  if (!uniqueIdentifier)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v9 = sub_1BE052434();
+  uniqueIdentifierCopy = sub_1BE052434();
   v18 = v17;
-  if (!a8)
+  if (!type)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  a8 = sub_1BE052434();
+  type = sub_1BE052434();
   v20 = v19;
 LABEL_8:
-  v21 = a3;
+  serviceCopy = service;
   swift_unknownObjectRetain();
   swift_getObjectType();
-  sub_1BD88B048(v21, a4, a5, v14, v16, v9, v18, a8, v20, self);
+  sub_1BD88B048(serviceCopy, context, delegate, v14, v16, uniqueIdentifierCopy, v18, type, v20, self);
   return result;
 }
 
-- (PKAddAutoFillCardViewController)initWithCoder:(id)a3
+- (PKAddAutoFillCardViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___PKAddAutoFillCardViewController_context) = 0;
   swift_unknownObjectWeakInit();
@@ -79,13 +79,13 @@ LABEL_8:
   return result;
 }
 
-- (void)cameraCaptureViewController:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraCaptureViewController:(id)controller didRecognizeObjects:(id)objects
 {
-  if (a4)
+  if (objects)
   {
     v5 = sub_1BE052744();
     v6 = *(&self->super.super.super.super.isa + OBJC_IVAR___PKAddAutoFillCardViewController_fieldsModel);
-    v8 = self;
+    selfCopy = self;
     v7 = v6;
     sub_1BD9F46CC(v5, v7);
 
@@ -98,19 +98,19 @@ LABEL_8:
   }
 }
 
-- (void)cameraCaptureViewControllerDidSelectManualEntry:(id)a3
+- (void)cameraCaptureViewControllerDidSelectManualEntry:(id)entry
 {
-  v3 = self;
+  selfCopy = self;
   sub_1BD88AA80();
 }
 
 - (void)reset
 {
-  v5 = self;
-  v2 = [(PKAddAutoFillCardViewController *)v5 topViewController];
-  if (v2)
+  selfCopy = self;
+  topViewController = [(PKAddAutoFillCardViewController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v3 = v2;
+    v3 = topViewController;
     type metadata accessor for AutofillManualEntryViewController();
     if (swift_dynamicCastClass())
     {
@@ -120,27 +120,27 @@ LABEL_8:
 
     else
     {
-      v4 = v5;
-      v5 = v3;
+      v4 = selfCopy;
+      selfCopy = v3;
     }
   }
 }
 
-- (PKAddAutoFillCardViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (PKAddAutoFillCardViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (PKAddAutoFillCardViewController)initWithRootViewController:(id)a3
+- (PKAddAutoFillCardViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (PKAddAutoFillCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKAddAutoFillCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

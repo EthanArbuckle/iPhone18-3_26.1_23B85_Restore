@@ -1,30 +1,30 @@
 @interface PLCloudMasterMediaMetadata
 - (id)payloadID;
-- (id)payloadsForChangedKeys:(id)a3;
-- (void)_addPayloadIfValidForAsset:(id)a3 changedKeys:(id)a4 toPayloads:(id)a5 modelProperties:(id)a6;
+- (id)payloadsForChangedKeys:(id)keys;
+- (void)_addPayloadIfValidForAsset:(id)asset changedKeys:(id)keys toPayloads:(id)payloads modelProperties:(id)properties;
 @end
 
 @implementation PLCloudMasterMediaMetadata
 
-- (id)payloadsForChangedKeys:(id)a3
+- (id)payloadsForChangedKeys:(id)keys
 {
   v37 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  keysCopy = keys;
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PLCloudMasterMediaMetadata *)self cloudMaster];
+  cloudMaster = [(PLCloudMasterMediaMetadata *)self cloudMaster];
 
-  if (v4)
+  if (cloudMaster)
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v5 = self;
-    v6 = [(PLCloudMasterMediaMetadata *)self cloudMaster];
-    v7 = [v6 assets];
+    selfCopy = self;
+    cloudMaster2 = [(PLCloudMasterMediaMetadata *)self cloudMaster];
+    assets = [cloudMaster2 assets];
 
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    obj = assets;
+    v8 = [assets countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -41,10 +41,10 @@
           v12 = *(*(&v32 + 1) + 8 * i);
           v13 = +[PLAssetJournalEntryPayload modelProperties];
           v14 = [v13 objectForKeyedSubscript:@"master"];
-          v15 = [v14 subRelationshipProperties];
-          v16 = [v15 objectForKeyedSubscript:@"mediaMetadata"];
-          v17 = [v16 subRelationshipProperties];
-          [(PLCloudMasterMediaMetadata *)v5 _addPayloadIfValidForAsset:v12 changedKeys:v31 toPayloads:v30 modelProperties:v17];
+          subRelationshipProperties = [v14 subRelationshipProperties];
+          v16 = [subRelationshipProperties objectForKeyedSubscript:@"mediaMetadata"];
+          subRelationshipProperties2 = [v16 subRelationshipProperties];
+          [(PLCloudMasterMediaMetadata *)selfCopy _addPayloadIfValidForAsset:v12 changedKeys:keysCopy toPayloads:v30 modelProperties:subRelationshipProperties2];
         }
 
         v9 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -56,19 +56,19 @@
 
   else
   {
-    v18 = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
+    additionalAssetAttributes = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
 
-    if (v18)
+    if (additionalAssetAttributes)
     {
-      v19 = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
-      v20 = [v19 asset];
+      additionalAssetAttributes2 = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
+      asset = [additionalAssetAttributes2 asset];
 
       v21 = +[PLAssetJournalEntryPayload modelProperties];
       v22 = [v21 objectForKeyedSubscript:@"additionalAttributes"];
-      v23 = [v22 subRelationshipProperties];
-      v24 = [v23 objectForKeyedSubscript:@"mediaMetadata"];
-      v25 = [v24 subRelationshipProperties];
-      [(PLCloudMasterMediaMetadata *)self _addPayloadIfValidForAsset:v20 changedKeys:v31 toPayloads:v30 modelProperties:v25];
+      subRelationshipProperties3 = [v22 subRelationshipProperties];
+      v24 = [subRelationshipProperties3 objectForKeyedSubscript:@"mediaMetadata"];
+      subRelationshipProperties4 = [v24 subRelationshipProperties];
+      [(PLCloudMasterMediaMetadata *)self _addPayloadIfValidForAsset:asset changedKeys:keysCopy toPayloads:v30 modelProperties:subRelationshipProperties4];
     }
   }
 
@@ -87,36 +87,36 @@
   return v26;
 }
 
-- (void)_addPayloadIfValidForAsset:(id)a3 changedKeys:(id)a4 toPayloads:(id)a5 modelProperties:(id)a6
+- (void)_addPayloadIfValidForAsset:(id)asset changedKeys:(id)keys toPayloads:(id)payloads modelProperties:(id)properties
 {
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 payloadID];
-  if (v14)
+  assetCopy = asset;
+  keysCopy = keys;
+  payloadsCopy = payloads;
+  propertiesCopy = properties;
+  payloadID = [assetCopy payloadID];
+  if (payloadID)
   {
-    if ([v10 isValidForJournalPersistence])
+    if ([assetCopy isValidForJournalPersistence])
     {
-      v15 = [[PLAssetJournalEntryPayload alloc] initWithCloudMasterMediaMetadata:self payloadID:v14 changedKeys:v11 modelProperties:v13];
+      v15 = [[PLAssetJournalEntryPayload alloc] initWithCloudMasterMediaMetadata:self payloadID:payloadID changedKeys:keysCopy modelProperties:propertiesCopy];
       if (v15)
       {
-        [v12 addObject:v15];
+        [payloadsCopy addObject:v15];
       }
 
 LABEL_8:
     }
   }
 
-  else if (v10)
+  else if (assetCopy)
   {
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(&v15->super.super, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v10 objectID];
+      objectID = [assetCopy objectID];
       v17 = 138543362;
-      v18 = v16;
+      v18 = objectID;
       _os_log_impl(&dword_19BF1F000, &v15->super.super, OS_LOG_TYPE_ERROR, "Skipping payload for CloudMasterMediaMetadata update with nil payloadID for existing object: %{public}@", &v17, 0xCu);
     }
 
@@ -126,26 +126,26 @@ LABEL_8:
 
 - (id)payloadID
 {
-  v3 = [(PLCloudMasterMediaMetadata *)self cloudMaster];
+  cloudMaster = [(PLCloudMasterMediaMetadata *)self cloudMaster];
 
-  if (v3)
+  if (cloudMaster)
   {
-    v4 = [(PLCloudMasterMediaMetadata *)self cloudMaster];
-    v5 = [v4 cloudMasterGUID];
-    v6 = [PLJournalEntryPayloadIDFactory payloadIDWithString:v5];
+    cloudMaster2 = [(PLCloudMasterMediaMetadata *)self cloudMaster];
+    cloudMasterGUID = [cloudMaster2 cloudMasterGUID];
+    v6 = [PLJournalEntryPayloadIDFactory payloadIDWithString:cloudMasterGUID];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
+  additionalAssetAttributes = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
 
-  if (v7)
+  if (additionalAssetAttributes)
   {
-    v4 = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
-    v5 = [v4 asset];
-    v8 = [v5 uuid];
-    v6 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v8];
+    cloudMaster2 = [(PLCloudMasterMediaMetadata *)self additionalAssetAttributes];
+    cloudMasterGUID = [cloudMaster2 asset];
+    uuid = [cloudMasterGUID uuid];
+    v6 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
     goto LABEL_5;
   }

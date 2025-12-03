@@ -1,10 +1,10 @@
 @interface GCGenericDeviceRumbleOutputModelBuilder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceRumbleOutputModelBuilder)init;
 - (id)build;
 - (unint64_t)hash;
 - (void)build;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 - (void)reset;
 @end
 
@@ -19,15 +19,15 @@
   return v2;
 }
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 elementIdentifier];
-  [(GCGenericDeviceRumbleOutputModelBuilder *)self setElementIdentifier:v5];
+  modelCopy = model;
+  elementIdentifier = [modelCopy elementIdentifier];
+  [(GCGenericDeviceRumbleOutputModelBuilder *)self setElementIdentifier:elementIdentifier];
 
-  v6 = [v4 fields];
+  fields = [modelCopy fields];
 
-  [(GCGenericDeviceRumbleOutputModelBuilder *)self setFields:v6];
+  [(GCGenericDeviceRumbleOutputModelBuilder *)self setFields:fields];
 }
 
 - (void)reset
@@ -40,23 +40,23 @@
 - (id)build
 {
   v4 = objc_alloc([objc_opt_class() modelClass]);
-  v5 = [(GCGenericDeviceRumbleOutputModelBuilder *)self elementIdentifier];
-  if (!v5)
+  elementIdentifier = [(GCGenericDeviceRumbleOutputModelBuilder *)self elementIdentifier];
+  if (!elementIdentifier)
   {
     [(GCGenericDeviceRumbleOutputModelBuilder *)a2 build];
   }
 
-  v6 = [v5 copy];
+  v6 = [elementIdentifier copy];
   v7 = v4[1];
   v4[1] = v6;
 
-  v8 = [(GCGenericDeviceRumbleOutputModelBuilder *)self fields];
-  if (!v8)
+  fields = [(GCGenericDeviceRumbleOutputModelBuilder *)self fields];
+  if (!fields)
   {
     [(GCGenericDeviceRumbleOutputModelBuilder *)a2 build];
   }
 
-  v9 = [v8 copy];
+  v9 = [fields copy];
   v10 = v4[2];
   v4[2] = v9;
 
@@ -65,25 +65,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [objc_opt_class() modelClass];
+  modelClass = [objc_opt_class() modelClass];
 
-  return [v2 hash];
+  return [modelClass hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqual:self];
+    v5 = [equalCopy isEqual:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GCGenericDeviceRumbleOutputModelBuilder;
-    v5 = [(GCGenericDeviceRumbleOutputModelBuilder *)&v8 isEqual:v4];
+    v5 = [(GCGenericDeviceRumbleOutputModelBuilder *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -93,8 +93,8 @@
 
 - (void)build
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCGenericDeviceRumbleOutputModel.m" lineNumber:133 description:@"'fields' can not be nil"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCGenericDeviceRumbleOutputModel.m" lineNumber:133 description:@"'fields' can not be nil"];
 }
 
 @end

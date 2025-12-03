@@ -1,28 +1,28 @@
 @interface CKDAccountDataSecurityObserver
-- (BOOL)accountSupportsManatee:(id)a3;
-- (CKDAccountDataSecurityObserver)initWithDeviceContext:(id)a3 stateControllerProvider:(id)a4 walrusStateControllerProvider:(id)a5;
+- (BOOL)accountSupportsManatee:(id)manatee;
+- (CKDAccountDataSecurityObserver)initWithDeviceContext:(id)context stateControllerProvider:(id)provider walrusStateControllerProvider:(id)controllerProvider;
 - (CKDAccountDataSecurityObserverDelegate)delegate;
 - (CKDLogicalDeviceContext)deviceContext;
 - (NSError)lastCDPErrorForWalrusStatus;
-- (id)stateControllerWithContext:(id)a3;
-- (id)validateCachedDataSecurityRequirementsAndReturnWalrusResultForAccount:(id)a3 isServiceManatee:(BOOL)a4 errorPtr:(id *)a5;
-- (id)walrusStatusProviderWithContext:(id)a3;
-- (int64_t)_fetchManateeAvailability:(id *)a3;
+- (id)stateControllerWithContext:(id)context;
+- (id)validateCachedDataSecurityRequirementsAndReturnWalrusResultForAccount:(id)account isServiceManatee:(BOOL)manatee errorPtr:(id *)ptr;
+- (id)walrusStatusProviderWithContext:(id)context;
+- (int64_t)_fetchManateeAvailability:(id *)availability;
 - (int64_t)cachedWalrusStatusForLoggedInAccount;
-- (void)_fetchAndUpdateWalrusStatusForLoggedInAccountWithCompletionHandler:(id)a3;
-- (void)_fetchWalrusStatusForLoggedInAccountWithCompletionHandler:(id)a3;
+- (void)_fetchAndUpdateWalrusStatusForLoggedInAccountWithCompletionHandler:(id)handler;
+- (void)_fetchWalrusStatusForLoggedInAccountWithCompletionHandler:(id)handler;
 - (void)_lockedFetchAndUpdateManateeAvailability;
-- (void)_lockedSetManateeAvailableForLoggedInAccount:(int64_t)a3;
-- (void)_setCachedWalrusStatusForLoggedInAccount:(int64_t)a3 shouldNotifyIfChanged:(BOOL)a4;
+- (void)_lockedSetManateeAvailableForLoggedInAccount:(int64_t)account;
+- (void)_setCachedWalrusStatusForLoggedInAccount:(int64_t)account shouldNotifyIfChanged:(BOOL)changed;
 - (void)clearCachedValuesForTesting;
 - (void)dealloc;
-- (void)handleManateeStatusUpdateNotificationWithAvailability:(id)a3;
+- (void)handleManateeStatusUpdateNotificationWithAvailability:(id)availability;
 - (void)handleWalrusStateChanged;
-- (void)manateeStatusForAccount:(id)a3 isSecondaryAccount:(BOOL)a4 allowFetch:(BOOL)a5 completionHandler:(id)a6;
+- (void)manateeStatusForAccount:(id)account isSecondaryAccount:(BOOL)secondaryAccount allowFetch:(BOOL)fetch completionHandler:(id)handler;
 - (void)postClouddWalrusUpdateNotification;
-- (void)setLastCDPErrorForWalrusStatus:(id)a3;
-- (void)validateDataSecurityStatusesForAccount:(id)a3 isServiceManatee:(BOOL)a4 clientSDKVersionLaterThanSkyStar:(BOOL)a5 completionHandler:(id)a6;
-- (void)walrusStatusForAccount:(id)a3 isSecondaryAccount:(BOOL)a4 checkCache:(BOOL)a5 allowFetch:(BOOL)a6 completionHandler:(id)a7;
+- (void)setLastCDPErrorForWalrusStatus:(id)status;
+- (void)validateDataSecurityStatusesForAccount:(id)account isServiceManatee:(BOOL)manatee clientSDKVersionLaterThanSkyStar:(BOOL)star completionHandler:(id)handler;
+- (void)walrusStatusForAccount:(id)account isSecondaryAccount:(BOOL)secondaryAccount checkCache:(BOOL)cache allowFetch:(BOOL)fetch completionHandler:(id)handler;
 @end
 
 @implementation CKDAccountDataSecurityObserver
@@ -51,23 +51,23 @@
   return v3;
 }
 
-- (CKDAccountDataSecurityObserver)initWithDeviceContext:(id)a3 stateControllerProvider:(id)a4 walrusStateControllerProvider:(id)a5
+- (CKDAccountDataSecurityObserver)initWithDeviceContext:(id)context stateControllerProvider:(id)provider walrusStateControllerProvider:(id)controllerProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  providerCopy = provider;
+  controllerProviderCopy = controllerProvider;
   v49.receiver = self;
   v49.super_class = CKDAccountDataSecurityObserver;
   v11 = [(CKDAccountDataSecurityObserver *)&v49 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_deviceContext, v8);
-    v15 = objc_msgSend_copy(v9, v13, v14);
+    objc_storeWeak(&v11->_deviceContext, contextCopy);
+    v15 = objc_msgSend_copy(providerCopy, v13, v14);
     stateControllerProvider = v12->_stateControllerProvider;
     v12->_stateControllerProvider = v15;
 
-    v19 = objc_msgSend_copy(v10, v17, v18);
+    v19 = objc_msgSend_copy(controllerProviderCopy, v17, v18);
     walrusStateControllerProvider = v12->_walrusStateControllerProvider;
     v12->_walrusStateControllerProvider = v19;
 
@@ -131,35 +131,35 @@
   [(CKDAccountDataSecurityObserver *)&v9 dealloc];
 }
 
-- (id)stateControllerWithContext:(id)a3
+- (id)stateControllerWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_stateControllerProvider(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_stateControllerProvider(self, v8, v9);
-    v11 = (*(v10 + 16))(v10, v4);
+    v11 = (*(v10 + 16))(v10, contextCopy);
 
-    v4 = v10;
+    contextCopy = v10;
   }
 
   else
   {
     v12 = objc_alloc(MEMORY[0x277CFD548]);
-    v11 = objc_msgSend_initWithContext_(v12, v13, v4);
+    v11 = objc_msgSend_initWithContext_(v12, v13, contextCopy);
   }
 
   return v11;
 }
 
-- (void)_lockedSetManateeAvailableForLoggedInAccount:(int64_t)a3
+- (void)_lockedSetManateeAvailableForLoggedInAccount:(int64_t)account
 {
-  v5 = objc_msgSend_statusQueue(self, a2, a3);
+  v5 = objc_msgSend_statusQueue(self, a2, account);
   dispatch_assert_queue_barrier(v5);
 
   manateeAvailableForLoggedInAccount = self->_manateeAvailableForLoggedInAccount;
-  if (manateeAvailableForLoggedInAccount != -1 && manateeAvailableForLoggedInAccount != a3)
+  if (manateeAvailableForLoggedInAccount != -1 && manateeAvailableForLoggedInAccount != account)
   {
     v10 = objc_msgSend_sharedAccountStore(CKDAccountStore, v6, v7);
     v13 = objc_msgSend_primaryAccount(v10, v11, v12);
@@ -169,21 +169,21 @@
     objc_msgSend_accountDataSecurityObserver_didUpdateManateeStatusForAccountID_(v19, v20, self, v16);
   }
 
-  self->_manateeAvailableForLoggedInAccount = a3;
+  self->_manateeAvailableForLoggedInAccount = account;
 }
 
-- (int64_t)_fetchManateeAvailability:(id *)a3
+- (int64_t)_fetchManateeAvailability:(id *)availability
 {
-  v5 = objc_msgSend_contextForPrimaryAccount(MEMORY[0x277CFD4A8], a2, a3);
+  v5 = objc_msgSend_contextForPrimaryAccount(MEMORY[0x277CFD4A8], a2, availability);
   v7 = objc_msgSend_stateControllerWithContext_(self, v6, v5);
   v21 = 0;
   isManateeAvailable = objc_msgSend_isManateeAvailable_(v7, v8, &v21);
   v10 = v21;
 
-  if (a3)
+  if (availability)
   {
     v13 = v10;
-    *a3 = v10;
+    *availability = v10;
   }
 
   if ((isManateeAvailable & 1) == 0)
@@ -214,9 +214,9 @@ LABEL_10:
   return v14;
 }
 
-- (void)handleManateeStatusUpdateNotificationWithAvailability:(id)a3
+- (void)handleManateeStatusUpdateNotificationWithAvailability:(id)availability
 {
-  v4 = a3;
+  availabilityCopy = availability;
   v7 = objc_msgSend_deviceContext(self, v5, v6);
   isLiveDevice = objc_msgSend_isLiveDevice(v7, v8, v9);
 
@@ -227,8 +227,8 @@ LABEL_10:
     v14[1] = 3221225472;
     v14[2] = sub_22510E288;
     v14[3] = &unk_278545898;
-    v15 = v4;
-    v16 = self;
+    v15 = availabilityCopy;
+    selfCopy = self;
     dispatch_barrier_async(v13, v14);
   }
 }
@@ -301,16 +301,16 @@ LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manateeStatusForAccount:(id)a3 isSecondaryAccount:(BOOL)a4 allowFetch:(BOOL)a5 completionHandler:(id)a6
+- (void)manateeStatusForAccount:(id)account isSecondaryAccount:(BOOL)secondaryAccount allowFetch:(BOOL)fetch completionHandler:(id)handler
 {
-  v8 = a4;
+  secondaryAccountCopy = secondaryAccount;
   v76 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  accountCopy = account;
+  handlerCopy = handler;
   v14 = objc_msgSend_deviceContext(self, v12, v13);
   if ((objc_msgSend_isLiveDevice(v14, v15, v16) & 1) == 0)
   {
-    if (v11)
+    if (handlerCopy)
     {
       v41 = objc_msgSend_testDevice(v14, v17, v18);
       if (objc_msgSend_deviceToDeviceEncryptionEnabled(v41, v42, v43) && (objc_msgSend_daemonAccount(v41, v44, v45), v46 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend_deviceToDeviceEncryptionSupportedByAccount(v46, v47, v48), v46, (v49 & 1) != 0))
@@ -348,25 +348,25 @@ LABEL_10:
         v50 = 0;
       }
 
-      v11[2](v11, v50, 0);
+      handlerCopy[2](handlerCopy, v50, 0);
     }
 
     goto LABEL_29;
   }
 
-  if (!v10)
+  if (!accountCopy)
   {
     goto LABEL_23;
   }
 
-  v19 = objc_msgSend_altDSID(v10, v17, v18);
+  v19 = objc_msgSend_altDSID(accountCopy, v17, v18);
   if (!objc_msgSend_length(v19, v20, v21))
   {
 
     goto LABEL_23;
   }
 
-  v24 = objc_msgSend_accountID(v10, v22, v23);
+  v24 = objc_msgSend_accountID(accountCopy, v22, v23);
   v27 = objc_msgSend_length(v24, v25, v26);
 
   if (!v27)
@@ -385,9 +385,9 @@ LABEL_23:
     }
 
 LABEL_27:
-    if (v11)
+    if (handlerCopy)
     {
-      v11[2](v11, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
 
     goto LABEL_29;
@@ -398,7 +398,7 @@ LABEL_27:
 
   if (!v33)
   {
-    if (!v8)
+    if (!secondaryAccountCopy)
     {
       v57 = objc_msgSend_statusQueue(self, v34, v35);
       block[0] = MEMORY[0x277D85DD0];
@@ -406,8 +406,8 @@ LABEL_27:
       block[2] = sub_22510EAA0;
       block[3] = &unk_2785458C0;
       block[4] = self;
-      v71 = a5;
-      v70 = v11;
+      fetchCopy = fetch;
+      v70 = handlerCopy;
       dispatch_barrier_async(v57, block);
 
       goto LABEL_29;
@@ -436,16 +436,16 @@ LABEL_27:
     *buf = 138412290;
     v73 = v68;
     _os_log_debug_impl(&dword_22506F000, v40, OS_LOG_TYPE_DEBUG, "Manatee override behavior option is set. Returning manatee enabled value from behavior option: %@", buf, 0xCu);
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
   }
 
-  else if (v11)
+  else if (handlerCopy)
   {
 LABEL_10:
-    v11[2](v11, v39, 0);
+    handlerCopy[2](handlerCopy, v39, 0);
   }
 
 LABEL_29:
@@ -453,13 +453,13 @@ LABEL_29:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)accountSupportsManatee:(id)a3
+- (BOOL)accountSupportsManatee:(id)manatee
 {
-  v4 = a3;
+  manateeCopy = manatee;
   v7 = objc_msgSend_deviceContext(self, v5, v6);
   if (objc_msgSend_isLiveDevice(v7, v8, v9))
   {
-    v12 = objc_msgSend_dsid(v4, v10, v11);
+    v12 = objc_msgSend_dsid(manateeCopy, v10, v11);
 
     if (!v12)
     {
@@ -468,7 +468,7 @@ LABEL_29:
     }
 
     v13 = objc_alloc(MEMORY[0x277D42EF8]);
-    v16 = objc_msgSend_dsid(v4, v14, v15);
+    v16 = objc_msgSend_dsid(manateeCopy, v14, v15);
     v18 = objc_msgSend_initWithDSID_(v13, v17, v16);
 
     v21 = objc_msgSend_accountStatus(v18, v19, v20) == 1;
@@ -485,23 +485,23 @@ LABEL_6:
   return v21;
 }
 
-- (id)walrusStatusProviderWithContext:(id)a3
+- (id)walrusStatusProviderWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_walrusStateControllerProvider(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_walrusStateControllerProvider(self, v8, v9);
-    v11 = (*(v10 + 16))(v10, v4);
+    v11 = (*(v10 + 16))(v10, contextCopy);
 
-    v4 = v10;
+    contextCopy = v10;
   }
 
   else
   {
     v12 = objc_alloc(MEMORY[0x277CFD568]);
-    v11 = objc_msgSend_initWithContext_(v12, v13, v4);
+    v11 = objc_msgSend_initWithContext_(v12, v13, contextCopy);
   }
 
   return v11;
@@ -524,9 +524,9 @@ LABEL_6:
   objc_msgSend_walrusStatusForAccount_isSecondaryAccount_checkCache_allowFetch_completionHandler_(self, v4, 0, 0, 0, 1, 0);
 }
 
-- (void)_fetchWalrusStatusForLoggedInAccountWithCompletionHandler:(id)a3
+- (void)_fetchWalrusStatusForLoggedInAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -541,11 +541,11 @@ LABEL_6:
     _os_log_debug_impl(&dword_22506F000, v7, OS_LOG_TYPE_DEBUG, "Fetching walrus state from CoreCDP", buf, 2u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = objc_msgSend_contextForPrimaryAccount(MEMORY[0x277CFD4A8], v9, v10);
   v14 = objc_msgSend_dsid(v11, v12, v13);
-  v17 = objc_msgSend_primaryAccountContext(v8, v15, v16);
+  v17 = objc_msgSend_primaryAccountContext(selfCopy, v15, v16);
   v20 = objc_msgSend_dsid(v17, v18, v19);
 
   if (v14 != v20)
@@ -562,34 +562,34 @@ LABEL_6:
       _os_log_impl(&dword_22506F000, v23, OS_LOG_TYPE_INFO, "Primary account has changed, replacing walrus status provider", buf, 2u);
     }
 
-    objc_msgSend_setPrimaryAccountContext_(v8, v24, v11);
-    v26 = objc_msgSend_walrusStatusProviderWithContext_(v8, v25, v11);
-    walrusStateController = v8->_walrusStateController;
-    v8->_walrusStateController = v26;
+    objc_msgSend_setPrimaryAccountContext_(selfCopy, v24, v11);
+    v26 = objc_msgSend_walrusStatusProviderWithContext_(selfCopy, v25, v11);
+    walrusStateController = selfCopy->_walrusStateController;
+    selfCopy->_walrusStateController = v26;
   }
 
-  v28 = objc_msgSend_walrusStateController(v8, v21, v22);
+  v28 = objc_msgSend_walrusStateController(selfCopy, v21, v22);
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = sub_22510F494;
   v31[3] = &unk_278545910;
-  v32 = v4;
-  v29 = v4;
+  v32 = handlerCopy;
+  v29 = handlerCopy;
   objc_msgSend_walrusStatusWithCompletion_(v28, v30, v31);
 }
 
-- (void)_fetchAndUpdateWalrusStatusForLoggedInAccountWithCompletionHandler:(id)a3
+- (void)_fetchAndUpdateWalrusStatusForLoggedInAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22510F7F8;
   v7[3] = &unk_278545938;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = handlerCopy;
   v8 = v5;
   objc_msgSend__fetchWalrusStatusForLoggedInAccountWithCompletionHandler_(self, v6, v7);
 
@@ -597,11 +597,11 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_setCachedWalrusStatusForLoggedInAccount:(int64_t)a3 shouldNotifyIfChanged:(BOOL)a4
+- (void)_setCachedWalrusStatusForLoggedInAccount:(int64_t)account shouldNotifyIfChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   os_unfair_lock_lock(&unk_280D54EB0);
-  if (self->_cachedWalrusStatusForLoggedInAccount == a3)
+  if (self->_cachedWalrusStatusForLoggedInAccount == account)
   {
 
     os_unfair_lock_unlock(&unk_280D54EB0);
@@ -609,9 +609,9 @@ LABEL_6:
 
   else
   {
-    self->_cachedWalrusStatusForLoggedInAccount = a3;
+    self->_cachedWalrusStatusForLoggedInAccount = account;
     os_unfair_lock_unlock(&unk_280D54EB0);
-    if (v4)
+    if (changedCopy)
     {
       v9 = objc_msgSend_sharedAccountStore(CKDAccountStore, v7, v8);
       v12 = objc_msgSend_primaryAccount(v9, v10, v11);
@@ -623,24 +623,24 @@ LABEL_6:
   }
 }
 
-- (void)setLastCDPErrorForWalrusStatus:(id)a3
+- (void)setLastCDPErrorForWalrusStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&unk_280D54EB0);
   lastCDPErrorForWalrusStatus = self->_lastCDPErrorForWalrusStatus;
-  self->_lastCDPErrorForWalrusStatus = v4;
+  self->_lastCDPErrorForWalrusStatus = statusCopy;
 
   os_unfair_lock_unlock(&unk_280D54EB0);
 }
 
-- (void)walrusStatusForAccount:(id)a3 isSecondaryAccount:(BOOL)a4 checkCache:(BOOL)a5 allowFetch:(BOOL)a6 completionHandler:(id)a7
+- (void)walrusStatusForAccount:(id)account isSecondaryAccount:(BOOL)secondaryAccount checkCache:(BOOL)cache allowFetch:(BOOL)fetch completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
+  cacheCopy = cache;
+  secondaryAccountCopy = secondaryAccount;
   v70 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v16 = a7;
-  if (!v9 && !a6)
+  accountCopy = account;
+  handlerCopy = handler;
+  if (!cacheCopy && !fetch)
   {
     v60 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v60, v61, a2, self, @"CKDAccountDataSecurityObserver.m", 716, @"checkCache and allowFetch cannot both be NO");
@@ -660,11 +660,11 @@ LABEL_6:
       v62[2] = sub_22510FF9C;
       v62[3] = &unk_278545898;
       v62[4] = self;
-      v63 = v13;
+      v63 = accountCopy;
       dispatch_async(v28, v62);
     }
 
-    if (!v16)
+    if (!handlerCopy)
     {
       goto LABEL_26;
     }
@@ -681,15 +681,15 @@ LABEL_6:
       v35 = 2;
     }
 
-    v16[2](v16, v35, 0);
+    handlerCopy[2](handlerCopy, v35, 0);
     goto LABEL_15;
   }
 
-  if (v10)
+  if (secondaryAccountCopy)
   {
-    if (v16)
+    if (handlerCopy)
     {
-      v16[2](v16, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
 
     goto LABEL_26;
@@ -702,7 +702,7 @@ LABEL_6:
   {
     v49 = objc_msgSend_cachedWalrusStatusForLoggedInAccount(self, v40, v41);
     v29 = objc_msgSend_lastCDPErrorForWalrusStatus(self, v50, v51);
-    if (v9 && v49)
+    if (cacheCopy && v49)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -745,7 +745,7 @@ LABEL_6:
         v59 = v53;
         _os_log_debug_impl(&dword_22506F000, v59, OS_LOG_TYPE_DEBUG, "Returning cached walrus status originally retrieved from CoreCDP: walrus is %{public}@.%{public}@%@", buf, 0x20u);
 
-        if (!v16)
+        if (!handlerCopy)
         {
           goto LABEL_16;
         }
@@ -753,10 +753,10 @@ LABEL_6:
         goto LABEL_33;
       }
 
-      if (v16)
+      if (handlerCopy)
       {
 LABEL_33:
-        (v16)[2](v16, v49, v29);
+        (handlerCopy)[2](handlerCopy, v49, v29);
       }
 
 LABEL_16:
@@ -764,16 +764,16 @@ LABEL_16:
       goto LABEL_26;
     }
 
-    if (a6)
+    if (fetch)
     {
-      objc_msgSend__fetchAndUpdateWalrusStatusForLoggedInAccountWithCompletionHandler_(self, v52, v16);
+      objc_msgSend__fetchAndUpdateWalrusStatusForLoggedInAccountWithCompletionHandler_(self, v52, handlerCopy);
       goto LABEL_16;
     }
 
     v32 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v52, *MEMORY[0x277CBC120], 1017, @"There is no walrus availability cached but we are not allowed to fetch.");
-    if (v16)
+    if (handlerCopy)
     {
-      (v16)[2](v16, v49, v32);
+      (handlerCopy)[2](handlerCopy, v49, v32);
     }
 
 LABEL_15:
@@ -792,7 +792,7 @@ LABEL_15:
   v46 = *MEMORY[0x277CBC830];
   if (!os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
-    if (!v16)
+    if (!handlerCopy)
     {
       goto LABEL_26;
     }
@@ -809,7 +809,7 @@ LABEL_15:
   *buf = 138412290;
   v65 = v54;
   _os_log_debug_impl(&dword_22506F000, v46, OS_LOG_TYPE_DEBUG, "Returning fake walrus enabled value from behavior option: %@", buf, 0xCu);
-  if (v16)
+  if (handlerCopy)
   {
 LABEL_22:
     if (v45)
@@ -822,7 +822,7 @@ LABEL_22:
       v47 = 2;
     }
 
-    v16[2](v16, v47, 0);
+    handlerCopy[2](handlerCopy, v47, 0);
   }
 
 LABEL_26:
@@ -836,12 +836,12 @@ LABEL_26:
   objc_msgSend_postNotificationName_object_(v5, v4, @"CDPWalrusStateChangeNotification", self);
 }
 
-- (void)validateDataSecurityStatusesForAccount:(id)a3 isServiceManatee:(BOOL)a4 clientSDKVersionLaterThanSkyStar:(BOOL)a5 completionHandler:(id)a6
+- (void)validateDataSecurityStatusesForAccount:(id)account isServiceManatee:(BOOL)manatee clientSDKVersionLaterThanSkyStar:(BOOL)star completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = self;
-  objc_sync_enter(v12);
+  accountCopy = account;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v59[0] = 0;
   v59[1] = v59;
   v59[2] = 0x3032000000;
@@ -863,42 +863,42 @@ LABEL_26:
   v57[0] = 0;
   v57[1] = v57;
   v57[2] = 0x2020000000;
-  v58 = a4;
+  manateeCopy = manatee;
   v55[0] = 0;
   v55[1] = v55;
   v55[2] = 0x2020000000;
   v56 = 0;
-  if (objc_msgSend_isPrimaryAccount(v10, v24, v25))
+  if (objc_msgSend_isPrimaryAccount(accountCopy, v24, v25))
   {
     v28 = 0;
   }
 
   else
   {
-    v29 = objc_msgSend_deviceContext(v12, v26, v27);
+    v29 = objc_msgSend_deviceContext(selfCopy, v26, v27);
     v32 = objc_msgSend_testDeviceReference(v29, v30, v31);
     v28 = v32 == 0;
   }
 
-  objc_initWeak(&location, v12);
+  objc_initWeak(&location, selfCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_225110688;
   aBlock[3] = &unk_2785459B0;
   objc_copyWeak(&v50, &location);
   v47 = v59;
-  v33 = v11;
+  v33 = handlerCopy;
   v46 = v33;
   v48 = v57;
   v49 = v55;
-  v51 = a5;
-  v34 = v10;
+  starCopy = star;
+  v34 = accountCopy;
   v45 = v34;
   v52 = v23;
   v53 = v28;
   v35 = _Block_copy(aBlock);
   v36 = v35;
-  if (a4)
+  if (manatee)
   {
     (*(v35 + 2))(v35);
   }
@@ -914,7 +914,7 @@ LABEL_26:
     v42 = v59;
     v43 = v57;
     v40 = v36;
-    objc_msgSend_walrusStatusForAccount_isSecondaryAccount_checkCache_allowFetch_completionHandler_(v12, v37, v39, v28, 1, 1, v38);
+    objc_msgSend_walrusStatusForAccount_isSecondaryAccount_checkCache_allowFetch_completionHandler_(selfCopy, v37, v39, v28, 1, 1, v38);
   }
 
   objc_destroyWeak(&v50);
@@ -923,16 +923,16 @@ LABEL_26:
   _Block_object_dispose(v57, 8);
   _Block_object_dispose(v59, 8);
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)validateCachedDataSecurityRequirementsAndReturnWalrusResultForAccount:(id)a3 isServiceManatee:(BOOL)a4 errorPtr:(id *)a5
+- (id)validateCachedDataSecurityRequirementsAndReturnWalrusResultForAccount:(id)account isServiceManatee:(BOOL)manatee errorPtr:(id *)ptr
 {
-  v6 = a4;
+  manateeCopy = manatee;
   v64 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
+  accountCopy = account;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = objc_msgSend_sharedOptions(MEMORY[0x277CBC1D8], v10, v11);
   if (objc_msgSend_fakeManateeOverride(v12, v13, v14))
   {
@@ -945,10 +945,10 @@ LABEL_26:
     v20 = 0;
   }
 
-  if (objc_msgSend_isPrimaryAccount(v8, v21, v22))
+  if (objc_msgSend_isPrimaryAccount(accountCopy, v21, v22))
   {
     v25 = 0;
-    if (v6)
+    if (manateeCopy)
     {
 LABEL_6:
       v26 = 5006;
@@ -958,17 +958,17 @@ LABEL_6:
 
   else
   {
-    v27 = objc_msgSend_deviceContext(v9, v23, v24);
+    v27 = objc_msgSend_deviceContext(selfCopy, v23, v24);
     v30 = objc_msgSend_testDeviceReference(v27, v28, v29);
     v25 = v30 == 0;
 
-    if (v6)
+    if (manateeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  if (!objc_msgSend_isWalrusEnabledForAccount_isSecondaryAccount_allowFetch_error_(v9, v23, v8, v25, 0, 0))
+  if (!objc_msgSend_isWalrusEnabledForAccount_isSecondaryAccount_allowFetch_error_(selfCopy, v23, accountCopy, v25, 0, 0))
   {
     v35 = 0;
     v42 = 0;
@@ -983,7 +983,7 @@ LABEL_6:
   v31 = *MEMORY[0x277CBC858];
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
-    v58 = objc_msgSend_accountID(v8, v32, v33);
+    v58 = objc_msgSend_accountID(accountCopy, v32, v33);
     *buf = 138412290;
     v61 = v58;
     _os_log_debug_impl(&dword_22506F000, v31, OS_LOG_TYPE_DEBUG, "(Cached) Walrus enabled for account with ID %@", buf, 0xCu);
@@ -991,15 +991,15 @@ LABEL_6:
 
   v26 = 5014;
 LABEL_14:
-  v35 = !v6;
-  if (!((objc_msgSend_accountType(v8, v23, v24) != 2) | v20 & 1 | *MEMORY[0x277CBC810] & 1))
+  v35 = !manateeCopy;
+  if (!((objc_msgSend_accountType(accountCopy, v23, v24) != 2) | v20 & 1 | *MEMORY[0x277CBC810] & 1))
   {
     v42 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v34, *MEMORY[0x277CBC120], v26, @"Manatee is not available for explicit-credential accounts");
     goto LABEL_32;
   }
 
   v59 = 0;
-  error = objc_msgSend_isManateeAvailableForAccount_isSecondaryAccount_allowFetch_error_(v9, v34, v8, v25, 0, &v59);
+  error = objc_msgSend_isManateeAvailableForAccount_isSecondaryAccount_allowFetch_error_(selfCopy, v34, accountCopy, v25, 0, &v59);
   v37 = v59;
   v40 = v37;
   if (v37)
@@ -1035,7 +1035,7 @@ LABEL_27:
         if (os_log_type_enabled(*MEMORY[0x277CBC858], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v61 = v8;
+          v61 = accountCopy;
           v62 = 2114;
           v63 = v42;
           _os_log_debug_impl(&dword_22506F000, v51, OS_LOG_TYPE_DEBUG, "Manatee not available for account %@. Error: %{public}@.", buf, 0x16u);
@@ -1049,7 +1049,7 @@ LABEL_27:
     {
     }
 
-    v50 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v48, v47, v26, v40, @"Manatee is not available for account %@", v8);
+    v50 = objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v48, v47, v26, v40, @"Manatee is not available for account %@", accountCopy);
     goto LABEL_27;
   }
 
@@ -1057,10 +1057,10 @@ LABEL_27:
 LABEL_31:
 
 LABEL_32:
-  if (a5)
+  if (ptr)
   {
     v52 = v42;
-    *a5 = v42;
+    *ptr = v42;
   }
 
   if (v42)
@@ -1074,7 +1074,7 @@ LABEL_32:
     IsWalrusEnabled = objc_msgSend_initWithIsWalrusEnabled_(v54, v55, v35);
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   v56 = *MEMORY[0x277D85DE8];
 
   return IsWalrusEnabled;

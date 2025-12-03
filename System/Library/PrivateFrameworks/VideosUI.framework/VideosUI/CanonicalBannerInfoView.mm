@@ -1,12 +1,12 @@
 @interface CanonicalBannerInfoView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation CanonicalBannerInfoView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = self;
+  selfCopy = self;
   sub_1E39A6AE8();
   v6 = v5;
   v8 = v7;

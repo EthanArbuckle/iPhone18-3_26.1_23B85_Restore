@@ -1,19 +1,19 @@
 @interface FAScreenTimeWrapper
 - (BOOL)activityEnabledForUser;
-- (FAScreenTimeWrapper)initWithUserDSID:(id)a3;
+- (FAScreenTimeWrapper)initWithUserDSID:(id)d;
 - (id)getScreenTimeUsageGraphForUser;
 - (void)refresh;
 @end
 
 @implementation FAScreenTimeWrapper
 
-- (FAScreenTimeWrapper)initWithUserDSID:(id)a3
+- (FAScreenTimeWrapper)initWithUserDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = FAScreenTimeWrapper;
   v5 = [(FAScreenTimeWrapper *)&v16 init];
-  if (v5 && [v4 intValue] != -1)
+  if (v5 && [dCopy intValue] != -1)
   {
     v6 = dispatch_group_create();
     dispatch_group_enter(v6);
@@ -23,7 +23,7 @@
     block[2] = __40__FAScreenTimeWrapper_initWithUserDSID___block_invoke;
     block[3] = &unk_2782F3190;
     v13 = v5;
-    v14 = v4;
+    v14 = dCopy;
     v8 = v6;
     v15 = v8;
     dispatch_sync(v7, block);
@@ -57,10 +57,10 @@ void __40__FAScreenTimeWrapper_initWithUserDSID___block_invoke(uint64_t a1)
 
 - (id)getScreenTimeUsageGraphForUser
 {
-  v3 = [(FAScreenTimeWrapper *)self userDSID];
-  v4 = [v3 intValue];
+  userDSID = [(FAScreenTimeWrapper *)self userDSID];
+  intValue = [userDSID intValue];
 
-  if (v4 == -1)
+  if (intValue == -1)
   {
     provider = 0;
   }
@@ -82,16 +82,16 @@ void __40__FAScreenTimeWrapper_initWithUserDSID___block_invoke(uint64_t a1)
   provider = self->_provider;
   if (provider)
   {
-    v4 = [(STUsageSummaryTableViewCellProvider *)provider shouldShowUsageSummaryForUser];
+    shouldShowUsageSummaryForUser = [(STUsageSummaryTableViewCellProvider *)provider shouldShowUsageSummaryForUser];
   }
 
   else
   {
-    v4 = 0;
+    shouldShowUsageSummaryForUser = 0;
   }
 
-  [(FAScreenTimeWrapper *)self setPreviousState:v4];
-  return v4;
+  [(FAScreenTimeWrapper *)self setPreviousState:shouldShowUsageSummaryForUser];
+  return shouldShowUsageSummaryForUser;
 }
 
 - (void)refresh

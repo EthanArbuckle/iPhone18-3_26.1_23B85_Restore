@@ -2,49 +2,49 @@
 - (BOOL)_shouldLockoutForHello;
 - (BOOL)_shouldLockoutUntilAllAssetsForegrounded;
 - (BOOL)_shouldLockoutUntilMainAssetForegrounded;
-- (DBLockOutController)initWithWindowScene:(id)a3 environmentConfiguration:(id)a4 dashboardStateProvider:(id)a5 delegate:(id)a6;
+- (DBLockOutController)initWithWindowScene:(id)scene environmentConfiguration:(id)configuration dashboardStateProvider:(id)provider delegate:(id)delegate;
 - (DBLockoutControllerDelegate)delegate;
 - (id)_windowBackgroundColorForCurrentMode;
-- (id)wallpaperViewForLockOutViewController:(id)a3;
+- (id)wallpaperViewForLockOutViewController:(id)controller;
 - (void)_markHelloCompleted;
-- (void)buddyMonitorDidChangeFinished:(id)a3;
-- (void)disclosureMonitorDidChangeActive:(id)a3;
-- (void)environmentConfigurationPairedVehiclesDidChange:(id)a3;
+- (void)buddyMonitorDidChangeFinished:(id)finished;
+- (void)disclosureMonitorDidChangeActive:(id)active;
+- (void)environmentConfigurationPairedVehiclesDidChange:(id)change;
 - (void)handleAllAssetsForegrounded;
 - (void)handleMainAssetForegrounded;
 - (void)invalidate;
-- (void)keybagMonitorLockStateDidChange:(id)a3;
-- (void)lockOutViewController:(id)a3 didTapButtonOfType:(unint64_t)a4;
-- (void)lockOutViewControllerWantsToDismiss:(id)a3;
-- (void)registerAutomakerOverlayStateMonitor:(id)a3;
-- (void)siriMonitorDidChangeEnabled:(id)a3;
-- (void)thermalMonitorLevelDidChange:(id)a3;
-- (void)updateLockOutModeAnimated:(BOOL)a3 takeScreen:(BOOL)a4;
+- (void)keybagMonitorLockStateDidChange:(id)change;
+- (void)lockOutViewController:(id)controller didTapButtonOfType:(unint64_t)type;
+- (void)lockOutViewControllerWantsToDismiss:(id)dismiss;
+- (void)registerAutomakerOverlayStateMonitor:(id)monitor;
+- (void)siriMonitorDidChangeEnabled:(id)enabled;
+- (void)thermalMonitorLevelDidChange:(id)change;
+- (void)updateLockOutModeAnimated:(BOOL)animated takeScreen:(BOOL)screen;
 @end
 
 @implementation DBLockOutController
 
-- (DBLockOutController)initWithWindowScene:(id)a3 environmentConfiguration:(id)a4 dashboardStateProvider:(id)a5 delegate:(id)a6
+- (DBLockOutController)initWithWindowScene:(id)scene environmentConfiguration:(id)configuration dashboardStateProvider:(id)provider delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sceneCopy = scene;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v44.receiver = self;
   v44.super_class = DBLockOutController;
   v14 = [(DBLockOutController *)&v44 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v13);
-    objc_storeStrong(&v15->_environmentConfiguration, a4);
-    [v11 addObserver:v15];
-    v16 = [v11 thermalMonitor];
-    [v16 addObserver:v15];
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_environmentConfiguration, configuration);
+    [configurationCopy addObserver:v15];
+    thermalMonitor = [configurationCopy thermalMonitor];
+    [thermalMonitor addObserver:v15];
 
-    objc_storeStrong(&v15->_dashboardStateProvider, a5);
-    v17 = [v11 displayConfiguration];
-    [v11 currentSafeViewAreaFrame];
+    objc_storeStrong(&v15->_dashboardStateProvider, provider);
+    displayConfiguration = [configurationCopy displayConfiguration];
+    [configurationCopy currentSafeViewAreaFrame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -75,19 +75,19 @@
     v15->_overlayStateMonitor = v34;
 
     [(DBAutomakerOverlayStateMonitor *)v15->_overlayStateMonitor registerObserver:v15];
-    v36 = [[_TtC9DashBoard15DBLockOutWindow alloc] initWithWindowScene:v10 frame:v19, v21, v23, v25];
+    v36 = [[_TtC9DashBoard15DBLockOutWindow alloc] initWithWindowScene:sceneCopy frame:v19, v21, v23, v25];
     lockOutWindow = v15->_lockOutWindow;
     v15->_lockOutWindow = v36;
 
     v38 = v15->_lockOutWindow;
-    v39 = [(DBLockOutController *)v15 _windowBackgroundColorForCurrentMode];
-    [(DBLockOutWindow *)v38 setBackgroundColor:v39];
+    _windowBackgroundColorForCurrentMode = [(DBLockOutController *)v15 _windowBackgroundColorForCurrentMode];
+    [(DBLockOutWindow *)v38 setBackgroundColor:_windowBackgroundColorForCurrentMode];
 
-    v40 = [(DBLockOutWindow *)v15->_lockOutWindow layer];
-    [v40 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer = [(DBLockOutWindow *)v15->_lockOutWindow layer];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
     [(DBLockOutWindow *)v15->_lockOutWindow setClipsToBounds:1];
-    v41 = [[DBLockOutViewController alloc] initWithEnvironmentConfiguration:v11];
+    v41 = [[DBLockOutViewController alloc] initWithEnvironmentConfiguration:configurationCopy];
     lockOutViewController = v15->_lockOutViewController;
     v15->_lockOutViewController = v41;
 
@@ -99,28 +99,28 @@
   return v15;
 }
 
-- (void)updateLockOutModeAnimated:(BOOL)a3 takeScreen:(BOOL)a4
+- (void)updateLockOutModeAnimated:(BOOL)animated takeScreen:(BOOL)screen
 {
-  v4 = a4;
-  v5 = a3;
+  screenCopy = screen;
+  animatedCopy = animated;
   v45 = *MEMORY[0x277D85DE8];
-  v7 = [(DBLockOutController *)self environmentConfiguration];
-  v8 = [v7 thermalMonitor];
-  v9 = [v8 isThermalBlocked];
+  environmentConfiguration = [(DBLockOutController *)self environmentConfiguration];
+  thermalMonitor = [environmentConfiguration thermalMonitor];
+  isThermalBlocked = [thermalMonitor isThermalBlocked];
 
-  if (v9)
+  if (isThermalBlocked)
   {
     v10 = 4;
     goto LABEL_15;
   }
 
-  v11 = [(DBLockOutController *)self keybagMonitor];
-  if ([v11 isLocked])
+  keybagMonitor = [(DBLockOutController *)self keybagMonitor];
+  if ([keybagMonitor isLocked])
   {
-    v12 = [(DBLockOutController *)self environmentConfiguration];
-    v13 = [v12 isPairedVehicle];
+    environmentConfiguration2 = [(DBLockOutController *)self environmentConfiguration];
+    isPairedVehicle = [environmentConfiguration2 isPairedVehicle];
 
-    if (!v13)
+    if (!isPairedVehicle)
     {
       goto LABEL_8;
     }
@@ -130,30 +130,30 @@
   {
   }
 
-  v14 = [(DBLockOutController *)self keybagMonitor];
-  v15 = [v14 isBlocked];
+  keybagMonitor2 = [(DBLockOutController *)self keybagMonitor];
+  isBlocked = [keybagMonitor2 isBlocked];
 
-  if (v15)
+  if (isBlocked)
   {
 LABEL_8:
     v10 = 2;
     goto LABEL_15;
   }
 
-  v16 = [(DBLockOutController *)self siriMonitor];
-  v17 = [v16 siriEnabled];
+  siriMonitor = [(DBLockOutController *)self siriMonitor];
+  siriEnabled = [siriMonitor siriEnabled];
 
-  if (v17)
+  if (siriEnabled)
   {
-    v18 = [(DBLockOutController *)self buddyMonitor];
-    v19 = [v18 buddyFinished];
+    buddyMonitor = [(DBLockOutController *)self buddyMonitor];
+    buddyFinished = [buddyMonitor buddyFinished];
 
-    if (v19)
+    if (buddyFinished)
     {
-      v20 = [(DBLockOutController *)self disclosureMonitor];
-      v21 = [v20 active];
+      disclosureMonitor = [(DBLockOutController *)self disclosureMonitor];
+      active = [disclosureMonitor active];
 
-      if (v21)
+      if (active)
       {
         v10 = 7;
       }
@@ -178,10 +178,10 @@ LABEL_8:
 
       else
       {
-        v41 = [(DBLockOutController *)self overlayStateMonitor];
-        v42 = [v41 lockOut];
+        overlayStateMonitor = [(DBLockOutController *)self overlayStateMonitor];
+        lockOut = [overlayStateMonitor lockOut];
 
-        if (v42)
+        if (lockOut)
         {
           v10 = 10;
         }
@@ -220,7 +220,7 @@ LABEL_15:
     _os_log_impl(&dword_248146000, v23, OS_LOG_TYPE_DEFAULT, "[DBLockOutController] Setting new lock out mode: %@", &v43, 0xCu);
   }
 
-  v25 = [(DBLockOutController *)self lockOutMode];
+  lockOutMode = [(DBLockOutController *)self lockOutMode];
   [(DBLockOutController *)self setLockOutMode:v10];
   if ([(DBLockOutController *)self isLockedOut])
   {
@@ -232,16 +232,16 @@ LABEL_15:
     v26 = 2;
   }
 
-  v27 = [(DBLockOutController *)self dashboardStateProvider];
-  [v27 setLockoutState:v26];
+  dashboardStateProvider = [(DBLockOutController *)self dashboardStateProvider];
+  [dashboardStateProvider setLockoutState:v26];
 
-  v28 = [(DBLockOutController *)self delegate];
-  [v28 lockOutController:self didChangeFromLockoutMode:v25 toLockOutMode:v10 animated:v5 takeScreen:v4];
+  delegate = [(DBLockOutController *)self delegate];
+  [delegate lockOutController:self didChangeFromLockoutMode:lockOutMode toLockOutMode:v10 animated:animatedCopy takeScreen:screenCopy];
 
   if ([(DBLockOutController *)self isLockedOut])
   {
-    v29 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
-    if (v29)
+    lockOutLayoutElementAssertion = [(DBLockOutController *)self lockOutLayoutElementAssertion];
+    if (lockOutLayoutElementAssertion)
     {
     }
 
@@ -258,9 +258,9 @@ LABEL_15:
       v37 = [v36 initWithIdentifier:*MEMORY[0x277D0ABA0]];
       [v37 setLevel:3];
       [v37 setFillsDisplayBounds:1];
-      v38 = [(DBLockOutController *)self environmentConfiguration];
-      v39 = [v38 displayLayoutPublisher];
-      v40 = [v39 addElement:v37];
+      environmentConfiguration3 = [(DBLockOutController *)self environmentConfiguration];
+      displayLayoutPublisher = [environmentConfiguration3 displayLayoutPublisher];
+      v40 = [displayLayoutPublisher addElement:v37];
       [(DBLockOutController *)self setLockOutLayoutElementAssertion:v40];
 
       if (v22)
@@ -274,9 +274,9 @@ LABEL_15:
 
   if (![(DBLockOutController *)self isLockedOut])
   {
-    v30 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
+    lockOutLayoutElementAssertion2 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
 
-    if (v30)
+    if (lockOutLayoutElementAssertion2)
     {
       v31 = DBLogForCategory(0);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -285,8 +285,8 @@ LABEL_15:
         _os_log_impl(&dword_248146000, v31, OS_LOG_TYPE_DEFAULT, "Invalidating layout element for lock out screen", &v43, 2u);
       }
 
-      v32 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
-      [v32 invalidate];
+      lockOutLayoutElementAssertion3 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
+      [lockOutLayoutElementAssertion3 invalidate];
 
       [(DBLockOutController *)self setLockOutLayoutElementAssertion:0];
     }
@@ -296,21 +296,21 @@ LABEL_15:
   {
 LABEL_35:
     lockOutWindow = self->_lockOutWindow;
-    v34 = [(DBLockOutController *)self _windowBackgroundColorForCurrentMode];
-    [(DBLockOutWindow *)lockOutWindow setBackgroundColor:v34];
+    _windowBackgroundColorForCurrentMode = [(DBLockOutController *)self _windowBackgroundColorForCurrentMode];
+    [(DBLockOutWindow *)lockOutWindow setBackgroundColor:_windowBackgroundColorForCurrentMode];
   }
 }
 
 - (void)invalidate
 {
-  v3 = [(DBLockOutController *)self lockOutWindow];
-  [v3 setHidden:1];
+  lockOutWindow = [(DBLockOutController *)self lockOutWindow];
+  [lockOutWindow setHidden:1];
 
   [(DBLockOutController *)self setLockOutWindow:0];
   [(DBLockOutController *)self setLockOutViewController:0];
-  v4 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
+  lockOutLayoutElementAssertion = [(DBLockOutController *)self lockOutLayoutElementAssertion];
 
-  if (v4)
+  if (lockOutLayoutElementAssertion)
   {
     v5 = DBLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -319,8 +319,8 @@ LABEL_35:
       _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating layout element for lock out screen", v7, 2u);
     }
 
-    v6 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
-    [v6 invalidate];
+    lockOutLayoutElementAssertion2 = [(DBLockOutController *)self lockOutLayoutElementAssertion];
+    [lockOutLayoutElementAssertion2 invalidate];
 
     [(DBLockOutController *)self setLockOutLayoutElementAssertion:0];
   }
@@ -344,20 +344,20 @@ LABEL_35:
 
 - (id)_windowBackgroundColorForCurrentMode
 {
-  v2 = [(DBLockOutController *)self lockOutMode];
-  if (v2 == 1)
+  lockOutMode = [(DBLockOutController *)self lockOutMode];
+  if (lockOutMode == 1)
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  else if (v2 == 9)
+  else if (lockOutMode == 9)
   {
-    v3 = 0;
+    blackColor = 0;
   }
 
   else
   {
-    if (v2 == 10)
+    if (lockOutMode == 10)
     {
       [MEMORY[0x277D75348] clearColor];
     }
@@ -366,35 +366,35 @@ LABEL_35:
     {
       [MEMORY[0x277D75348] tableBackgroundColor];
     }
-    v3 = ;
+    blackColor = ;
   }
 
-  return v3;
+  return blackColor;
 }
 
 - (BOOL)_shouldLockoutForHello
 {
-  v3 = [(DBLockOutController *)self environmentConfiguration];
-  if (![v3 supportsGaugeCluster])
+  environmentConfiguration = [(DBLockOutController *)self environmentConfiguration];
+  if (![environmentConfiguration supportsGaugeCluster])
   {
     goto LABEL_5;
   }
 
-  v4 = [(DBLockOutController *)self environmentConfiguration];
-  v5 = [v4 supportsDisplayPlugin];
+  environmentConfiguration2 = [(DBLockOutController *)self environmentConfiguration];
+  supportsDisplayPlugin = [environmentConfiguration2 supportsDisplayPlugin];
 
-  if (!v5)
+  if (!supportsDisplayPlugin)
   {
     return 0;
   }
 
-  v6 = [(DBLockOutController *)self environmentConfiguration];
-  v3 = [v6 vehicle];
+  environmentConfiguration3 = [(DBLockOutController *)self environmentConfiguration];
+  environmentConfiguration = [environmentConfiguration3 vehicle];
 
-  if (v3)
+  if (environmentConfiguration)
   {
-    v7 = [v3 finishedWelcome];
-    v8 = v7 == 0;
+    finishedWelcome = [environmentConfiguration finishedWelcome];
+    v8 = finishedWelcome == 0;
   }
 
   else
@@ -408,13 +408,13 @@ LABEL_5:
 
 - (BOOL)_shouldLockoutUntilAllAssetsForegrounded
 {
-  v3 = [(DBLockOutController *)self environmentConfiguration];
-  if ([v3 supportsGaugeCluster])
+  environmentConfiguration = [(DBLockOutController *)self environmentConfiguration];
+  if ([environmentConfiguration supportsGaugeCluster])
   {
-    v4 = [(DBLockOutController *)self environmentConfiguration];
-    v5 = [v4 supportsDisplayPlugin];
+    environmentConfiguration2 = [(DBLockOutController *)self environmentConfiguration];
+    supportsDisplayPlugin = [environmentConfiguration2 supportsDisplayPlugin];
 
-    if (v5)
+    if (supportsDisplayPlugin)
     {
       return ![(DBLockOutController *)self allAssetsForegrounded];
     }
@@ -429,13 +429,13 @@ LABEL_5:
 
 - (BOOL)_shouldLockoutUntilMainAssetForegrounded
 {
-  v3 = [(DBLockOutController *)self environmentConfiguration];
-  if ([v3 supportsGaugeCluster])
+  environmentConfiguration = [(DBLockOutController *)self environmentConfiguration];
+  if ([environmentConfiguration supportsGaugeCluster])
   {
-    v4 = [(DBLockOutController *)self environmentConfiguration];
-    v5 = [v4 supportsDisplayPlugin];
+    environmentConfiguration2 = [(DBLockOutController *)self environmentConfiguration];
+    supportsDisplayPlugin = [environmentConfiguration2 supportsDisplayPlugin];
 
-    if (v5)
+    if (supportsDisplayPlugin)
     {
       return ![(DBLockOutController *)self mainAssetForegrounded];
     }
@@ -448,7 +448,7 @@ LABEL_5:
   return 0;
 }
 
-- (void)keybagMonitorLockStateDidChange:(id)a3
+- (void)keybagMonitorLockStateDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -458,7 +458,7 @@ LABEL_5:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)thermalMonitorLevelDidChange:(id)a3
+- (void)thermalMonitorLevelDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -468,7 +468,7 @@ LABEL_5:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)disclosureMonitorDidChangeActive:(id)a3
+- (void)disclosureMonitorDidChangeActive:(id)active
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -478,27 +478,27 @@ LABEL_5:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)registerAutomakerOverlayStateMonitor:(id)a3
+- (void)registerAutomakerOverlayStateMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(DBLockOutController *)self overlayStateMonitor];
-  [v5 registerObserver:v4];
+  monitorCopy = monitor;
+  overlayStateMonitor = [(DBLockOutController *)self overlayStateMonitor];
+  [overlayStateMonitor registerObserver:monitorCopy];
 }
 
-- (id)wallpaperViewForLockOutViewController:(id)a3
+- (id)wallpaperViewForLockOutViewController:(id)controller
 {
-  v4 = [(DBLockOutController *)self delegate];
-  v5 = [v4 wallpaperViewForLockOutController:self];
+  delegate = [(DBLockOutController *)self delegate];
+  v5 = [delegate wallpaperViewForLockOutController:self];
 
   return v5;
 }
 
-- (void)lockOutViewController:(id)a3 didTapButtonOfType:(unint64_t)a4
+- (void)lockOutViewController:(id)controller didTapButtonOfType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 > 1001)
+  controllerCopy = controller;
+  if (type > 1001)
   {
-    if (a4 == 1004)
+    if (type == 1004)
     {
       v10 = DBLogForCategory(0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -507,12 +507,12 @@ LABEL_5:
         _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_INFO, "[LockOut] Action: features off", v12, 2u);
       }
 
-      v7 = [(DBLockOutController *)self disclosureMonitor];
-      [v7 turnFeaturesOff];
+      disclosureMonitor = [(DBLockOutController *)self disclosureMonitor];
+      [disclosureMonitor turnFeaturesOff];
       goto LABEL_19;
     }
 
-    if (a4 == 1003)
+    if (type == 1003)
     {
       v11 = DBLogForCategory(0);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -521,12 +521,12 @@ LABEL_5:
         _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_INFO, "[LockOut] Action: disclosure safe", v13, 2u);
       }
 
-      v7 = [(DBLockOutController *)self disclosureMonitor];
-      [v7 markSafe];
+      disclosureMonitor = [(DBLockOutController *)self disclosureMonitor];
+      [disclosureMonitor markSafe];
       goto LABEL_19;
     }
 
-    if (a4 != 1002)
+    if (type != 1002)
     {
       goto LABEL_20;
     }
@@ -539,26 +539,26 @@ LABEL_10:
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_INFO, "[LockOut] Action: requesting car UI", v15, 2u);
     }
 
-    v7 = [(DBLockOutController *)self environmentConfiguration];
-    v9 = [v7 session];
-    [v9 requestCarUI];
+    disclosureMonitor = [(DBLockOutController *)self environmentConfiguration];
+    session = [disclosureMonitor session];
+    [session requestCarUI];
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  if (a4 == 1000)
+  if (type == 1000)
   {
     goto LABEL_10;
   }
 
-  if (a4 == 1001)
+  if (type == 1001)
   {
-    v7 = DBLogForCategory(0);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    disclosureMonitor = DBLogForCategory(0);
+    if (os_log_type_enabled(disclosureMonitor, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_INFO, "[LockOut] Action: enabling siri", buf, 2u);
+      _os_log_impl(&dword_248146000, disclosureMonitor, OS_LOG_TYPE_INFO, "[LockOut] Action: enabling siri", buf, 2u);
     }
 
     goto LABEL_19;
@@ -567,9 +567,9 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)lockOutViewControllerWantsToDismiss:(id)a3
+- (void)lockOutViewControllerWantsToDismiss:(id)dismiss
 {
-  if ([a3 lockOutMode] == 9)
+  if ([dismiss lockOutMode] == 9)
   {
     [(DBLockOutController *)self _markHelloCompleted];
   }
@@ -577,7 +577,7 @@ LABEL_20:
   [(DBLockOutController *)self updateLockOutModeAnimated:1];
 }
 
-- (void)environmentConfigurationPairedVehiclesDidChange:(id)a3
+- (void)environmentConfigurationPairedVehiclesDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -587,7 +587,7 @@ LABEL_20:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)siriMonitorDidChangeEnabled:(id)a3
+- (void)siriMonitorDidChangeEnabled:(id)enabled
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -597,7 +597,7 @@ LABEL_20:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)buddyMonitorDidChangeFinished:(id)a3
+- (void)buddyMonitorDidChangeFinished:(id)finished
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -609,12 +609,12 @@ LABEL_20:
 
 - (void)_markHelloCompleted
 {
-  v2 = [(DBLockOutController *)self environmentConfiguration];
-  v4 = [v2 vehicle];
+  environmentConfiguration = [(DBLockOutController *)self environmentConfiguration];
+  vehicle = [environmentConfiguration vehicle];
 
-  [v4 setFinishedWelcome:MEMORY[0x277CBEC38]];
+  [vehicle setFinishedWelcome:MEMORY[0x277CBEC38]];
   v3 = objc_alloc_init(MEMORY[0x277CF8A68]);
-  [v3 saveVehicle:v4 completion:&__block_literal_global_29];
+  [v3 saveVehicle:vehicle completion:&__block_literal_global_29];
 }
 
 void __42__DBLockOutController__markHelloCompleted__block_invoke(uint64_t a1, uint64_t a2, void *a3)

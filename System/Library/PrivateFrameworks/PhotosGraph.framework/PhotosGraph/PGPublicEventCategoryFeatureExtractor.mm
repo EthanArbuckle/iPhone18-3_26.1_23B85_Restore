@@ -1,18 +1,18 @@
 @interface PGPublicEventCategoryFeatureExtractor
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4;
-+ (id)_processedLabelsForVersion:(int64_t)a3;
-+ (id)_rawLabelsForVersion:(int64_t)a3;
-- (PGPublicEventCategoryFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label;
++ (id)_processedLabelsForVersion:(int64_t)version;
++ (id)_rawLabelsForVersion:(int64_t)version;
+- (PGPublicEventCategoryFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGPublicEventCategoryFeatureExtractor
 
-- (PGPublicEventCategoryFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGPublicEventCategoryFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v6 = [objc_opt_class() _processedLabelsForVersion:a3];
+  v6 = [objc_opt_class() _processedLabelsForVersion:version];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [objc_opt_class() _rawLabelsForVersion:a3];
+  v8 = [objc_opt_class() _rawLabelsForVersion:version];
   v9 = [v7 setWithArray:v8];
 
   v10 = MEMORY[0x277D22C90];
@@ -23,13 +23,13 @@
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v14 = [v10 chain:v13];
 
-  v15 = [objc_opt_class() _labelProcessingForVersion:a3 label:@"None"];
+  v15 = [objc_opt_class() _labelProcessingForVersion:version label:@"None"];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __63__PGPublicEventCategoryFeatureExtractor_initWithVersion_error___block_invoke;
   v21[3] = &unk_27887FBF8;
   v22 = v9;
-  v23 = a3;
+  versionCopy = version;
   v20.receiver = self;
   v20.super_class = PGPublicEventCategoryFeatureExtractor;
   v16 = v9;
@@ -54,28 +54,28 @@ id __63__PGPublicEventCategoryFeatureExtractor_initWithVersion_error___block_inv
   return v5;
 }
 
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label
 {
-  v5 = a4;
+  labelCopy = label;
   v6 = @"None";
   v7 = @"None";
-  if ((a3 - 2) >= 2)
+  if ((version - 2) >= 2)
   {
-    if (a3 != 1)
+    if (version != 1)
     {
       goto LABEL_6;
     }
 
-    v6 = v5;
+    v6 = labelCopy;
     v8 = @"None";
   }
 
   else
   {
-    v8 = [v5 stringByReplacingOccurrencesOfString:@"GEOSpatialEventLookupCategory" withString:&stru_2843F5C58];
+    v8 = [labelCopy stringByReplacingOccurrencesOfString:@"GEOSpatialEventLookupCategory" withString:&stru_2843F5C58];
     v9 = MEMORY[0x277CCACA8];
-    v10 = [objc_opt_class() prefix];
-    v6 = [v9 stringWithFormat:@"%@_%@", v10, v8];
+    prefix = [objc_opt_class() prefix];
+    v6 = [v9 stringWithFormat:@"%@_%@", prefix, v8];
   }
 
 LABEL_6:
@@ -83,12 +83,12 @@ LABEL_6:
   return v6;
 }
 
-+ (id)_rawLabelsForVersion:(int64_t)a3
++ (id)_rawLabelsForVersion:(int64_t)version
 {
   v6[8] = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) >= 2)
+  if ((version - 1) >= 2)
   {
-    if (a3 == 3)
+    if (version == 3)
     {
       v6[0] = @"GEOSpatialEventLookupCategoryArtsAndMuseums";
       v6[1] = @"GEOSpatialEventLookupCategoryDance";
@@ -117,10 +117,10 @@ LABEL_6:
   return v3;
 }
 
-+ (id)_processedLabelsForVersion:(int64_t)a3
++ (id)_processedLabelsForVersion:(int64_t)version
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [a1 _rawLabelsForVersion:?];
+  v5 = [self _rawLabelsForVersion:?];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
@@ -141,7 +141,7 @@ LABEL_6:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [a1 _labelProcessingForVersion:a3 label:{*(*(&v15 + 1) + 8 * i), v15}];
+        v12 = [self _labelProcessingForVersion:version label:{*(*(&v15 + 1) + 8 * i), v15}];
         [v6 addObject:v12];
       }
 

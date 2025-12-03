@@ -3,119 +3,119 @@
 - (BOOL)_enableFeedback;
 - (BOOL)_showFeedbackThumbs;
 - (BOOL)isIpadLayout;
-- (CGPoint)originalPointFromOverlayViewPoint:(CGPoint)a3;
-- (CGPoint)transformedPoint:(CGPoint)a3;
+- (CGPoint)originalPointFromOverlayViewPoint:(CGPoint)point;
+- (CGPoint)transformedPoint:(CGPoint)point;
 - (CGSize)imageSize;
 - (PLImageGeometry)geometry;
-- (PUCleanupToolController)initWithCoder:(id)a3;
-- (PUCleanupToolController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUCleanupToolController)initWithCoder:(id)coder;
+- (PUCleanupToolController)initWithNibName:(id)name bundle:(id)bundle;
 - (PXEditCleanupFeedbackActionPerformer)feedbackActionPerformer;
 - (double)currentRenderViewWidth;
-- (double)subjectExclusionMaskBrushRadiusForScreenSpaceRadius:(double)a3;
-- (float)brushRadiusForTouchType:(int64_t)a3;
-- (float)scaledBrushRadiusForTouchType:(int64_t)a3;
+- (double)subjectExclusionMaskBrushRadiusForScreenSpaceRadius:(double)radius;
+- (float)brushRadiusForTouchType:(int64_t)type;
+- (float)scaledBrushRadiusForTouchType:(int64_t)type;
 - (id)_createSubjectExclusionMask;
 - (id)_newOverlayMask;
-- (id)brushStrokeExclusionMaskForStrokeStartingAtImageSpacePoint:(CGPoint)a3 withRadius:(double)a4;
+- (id)brushStrokeExclusionMaskForStrokeStartingAtImageSpacePoint:(CGPoint)point withRadius:(double)radius;
 - (id)cleanupActionNames;
 - (id)feedbackView;
 - (id)internalToolActionsForMenu;
-- (id)sourceImageOfSize:(CGSize)a3;
+- (id)sourceImageOfSize:(CGSize)size;
 - (id)toolActionsForMenu;
 - (id)trailingToolbarViews;
-- (id)transformedImage:(id)a3 error:(id *)a4;
-- (id)transformedImageForBrushStrokeExclusionMask:(id)a3;
+- (id)transformedImage:(id)image error:(id *)error;
+- (id)transformedImageForBrushStrokeExclusionMask:(id)mask;
 - (int64_t)currentLayoutStyle;
 - (int64_t)segmentationCount;
-- (void)_addImageSpaceInpaintingStroke:(id)a3 closeAndFillStroke:(BOOL)a4 needsFacePixellation:(BOOL)a5 recordStroke:(BOOL)a6 exclusionMask:(id)a7 exclusionMaskHitTestRadius:(double)a8 retouchBrush:(BOOL)a9 completion:(id)a10;
+- (void)_addImageSpaceInpaintingStroke:(id)stroke closeAndFillStroke:(BOOL)fillStroke needsFacePixellation:(BOOL)pixellation recordStroke:(BOOL)recordStroke exclusionMask:(id)mask exclusionMaskHitTestRadius:(double)radius retouchBrush:(BOOL)brush completion:(id)self0;
 - (void)_addOverlayIfNeeded;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_brushModeButtonTapped:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_brushModeButtonTapped:(id)tapped;
 - (void)_createFaceRectsView;
 - (void)_createMaskView;
 - (void)_createRendererIfNeeded;
 - (void)_createVFXMaskOverlays;
-- (void)_didRedo:(id)a3;
-- (void)_didUndo:(id)a3;
+- (void)_didRedo:(id)redo;
+- (void)_didUndo:(id)undo;
 - (void)_disableUI;
-- (void)_displayProcessingWithSelectedMask:(id)a3 unselectedMaskImage:(id)a4 exclusionMasks:(id)a5 point:(CGPoint)a6;
-- (void)_displayProcessingWithSelectedMaskImage:(id)a3 unselectedMaskImage:(id)a4 exclusionMasks:(id)a5 point:(CGPoint)a6;
+- (void)_displayProcessingWithSelectedMask:(id)mask unselectedMaskImage:(id)image exclusionMasks:(id)masks point:(CGPoint)point;
+- (void)_displayProcessingWithSelectedMaskImage:(id)image unselectedMaskImage:(id)maskImage exclusionMasks:(id)masks point:(CGPoint)point;
 - (void)_donateTipsAppCleanupSignal;
 - (void)_handleMaskContextFailure;
 - (void)_handleOperationExceedsSizeLimit;
 - (void)_interactionOccurred;
-- (void)_prepareViewsForCleanupIfReadyAndNotify:(id)a3;
+- (void)_prepareViewsForCleanupIfReadyAndNotify:(id)notify;
 - (void)_removePreparingProgress;
-- (void)_reportFeedbackAction:(unint64_t)a3;
-- (void)_resetTapped:(id)a3;
-- (void)_setBusy:(BOOL)a3;
-- (void)_setCleanupMode:(unint64_t)a3;
-- (void)_setLastInteractionPixelCount:(int64_t)a3;
-- (void)_setShowCleanupBrushSizeSlider:(id)a3 show:(BOOL)a4 animate:(BOOL)a5;
-- (void)_setupCleanupBrushSizeSlider:(id)a3 label:(id)a4;
+- (void)_reportFeedbackAction:(unint64_t)action;
+- (void)_resetTapped:(id)tapped;
+- (void)_setBusy:(BOOL)busy;
+- (void)_setCleanupMode:(unint64_t)mode;
+- (void)_setLastInteractionPixelCount:(int64_t)count;
+- (void)_setShowCleanupBrushSizeSlider:(id)slider show:(BOOL)show animate:(BOOL)animate;
+- (void)_setupCleanupBrushSizeSlider:(id)slider label:(id)label;
 - (void)_setupCleanupBrushSizeSliders;
 - (void)_setupResetButton;
-- (void)_showCleanupBrushSizeSlider:(id)a3 label:(id)a4 show:(BOOL)a5;
+- (void)_showCleanupBrushSizeSlider:(id)slider label:(id)label show:(BOOL)show;
 - (void)_showPreparingProgress;
-- (void)_thermalStateDidChange:(id)a3;
+- (void)_thermalStateDidChange:(id)change;
 - (void)_updateBrushModeButton;
 - (void)_updateFaceRectsView;
 - (void)_updateFeedbackViewVisibility;
 - (void)_updateMaskContext;
 - (void)_updateMaskViewForDefaultMode;
 - (void)_updateMaskViewForDefaultModeIfNecessary;
-- (void)_updateMaskViewWithUnselectedMaskImage:(id)a3 foregroundMasks:(id)a4 backgroundMasks:(id)a5;
+- (void)_updateMaskViewWithUnselectedMaskImage:(id)image foregroundMasks:(id)masks backgroundMasks:(id)backgroundMasks;
 - (void)_updatePreparingProgressConstraints;
 - (void)_updatePromptViewPlatter;
 - (void)_updateResetButtonState;
 - (void)_updateToolConstraints;
-- (void)_updateVFXMaskOverlayWithSelectedMask:(id)a3 point:(CGPoint)a4;
-- (void)addAttachmentsForTapToRadar:(id)a3;
+- (void)_updateVFXMaskOverlayWithSelectedMask:(id)mask point:(CGPoint)point;
+- (void)addAttachmentsForTapToRadar:(id)radar;
 - (void)addDeclutter;
-- (void)addImageSpaceInpaintingStroke:(id)a3 exclusionMask:(id)a4 closeAndFillStroke:(BOOL)a5 needsFacePixellation:(BOOL)a6 recordStroke:(BOOL)a7 completion:(id)a8;
-- (void)addObjectRemovalAtImageSpacePoint:(CGPoint)a3 completion:(id)a4;
-- (void)addObjectRemovalAtPoint:(CGPoint)a3;
-- (void)addObjectRemovalUsingImageSpaceStroke:(id)a3 exclusionMask:(id)a4 completion:(id)a5;
-- (void)addObjectRemovalUsingStroke:(id)a3 exclusionMask:(id)a4;
-- (void)addStroke:(id)a3 closeAndFillStroke:(BOOL)a4 completion:(id)a5;
-- (void)addUserPromptViewOfType:(unint64_t)a3 animated:(BOOL)a4;
-- (void)checkPotentialInpaintOperation:(id)a3 handler:(id)a4;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)createAllAvailableMasks:(id)a3;
-- (void)deleteUserPromptViewAnimated:(BOOL)a3 completion:(id)a4;
+- (void)addImageSpaceInpaintingStroke:(id)stroke exclusionMask:(id)mask closeAndFillStroke:(BOOL)fillStroke needsFacePixellation:(BOOL)pixellation recordStroke:(BOOL)recordStroke completion:(id)completion;
+- (void)addObjectRemovalAtImageSpacePoint:(CGPoint)point completion:(id)completion;
+- (void)addObjectRemovalAtPoint:(CGPoint)point;
+- (void)addObjectRemovalUsingImageSpaceStroke:(id)stroke exclusionMask:(id)mask completion:(id)completion;
+- (void)addObjectRemovalUsingStroke:(id)stroke exclusionMask:(id)mask;
+- (void)addStroke:(id)stroke closeAndFillStroke:(BOOL)fillStroke completion:(id)completion;
+- (void)addUserPromptViewOfType:(unint64_t)type animated:(BOOL)animated;
+- (void)checkPotentialInpaintOperation:(id)operation handler:(id)handler;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)createAllAvailableMasks:(id)masks;
+- (void)deleteUserPromptViewAnimated:(BOOL)animated completion:(id)completion;
 - (void)didBecomeActiveTool;
 - (void)didResignActiveTool;
-- (void)feedbackThumbsButtonAction:(id)a3;
-- (void)hidePromptViewIfNeededAnimated:(BOOL)a3;
+- (void)feedbackThumbsButtonAction:(id)action;
+- (void)hidePromptViewIfNeededAnimated:(BOOL)animated;
 - (void)leavingEditWithCancel;
-- (void)mediaView:(id)a3 didZoom:(double)a4;
-- (void)mediaViewDidEndZooming:(id)a3;
-- (void)mediaViewDidScroll:(id)a3;
+- (void)mediaView:(id)view didZoom:(double)zoom;
+- (void)mediaViewDidEndZooming:(id)zooming;
+- (void)mediaViewDidScroll:(id)scroll;
 - (void)mediaViewIsReady;
-- (void)mediaViewWillBeginZooming:(id)a3;
-- (void)modifyInpaintAdjustmentWithBlock:(id)a3 actionStringKey:(id)a4 completion:(id)a5;
-- (void)ppt_replayCleanupBrushStrokeWithCompletionBlock:(id)a3;
-- (void)prepareForSave:(BOOL)a3;
+- (void)mediaViewWillBeginZooming:(id)zooming;
+- (void)modifyInpaintAdjustmentWithBlock:(id)block actionStringKey:(id)key completion:(id)completion;
+- (void)ppt_replayCleanupBrushStrokeWithCompletionBlock:(id)block;
+- (void)prepareForSave:(BOOL)save;
 - (void)previewingOriginalDidStart;
 - (void)previewingOriginalDidStop;
 - (void)reactivate;
-- (void)redoInitiated:(id)a3;
-- (void)reloadToolbarButtons:(BOOL)a3;
-- (void)replayBrushstrokesWithCompletion:(id)a3;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6;
-- (void)sliderDidScroll:(id)a3;
-- (void)toolControllerWantsToShowOriginal:(BOOL)a3;
-- (void)undoInitiated:(id)a3;
+- (void)redoInitiated:(id)initiated;
+- (void)reloadToolbarButtons:(BOOL)buttons;
+- (void)replayBrushstrokesWithCompletion:(id)completion;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator;
+- (void)sliderDidScroll:(id)scroll;
+- (void)toolControllerWantsToShowOriginal:(BOOL)original;
+- (void)undoInitiated:(id)initiated;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willBecomeActiveTool;
 - (void)willResignActiveTool;
 @end
@@ -137,16 +137,16 @@
     }
 
     v4 = [PUCleanupToolFaceRectsView alloc];
-    v5 = [(PUPhotoEditToolController *)self delegate];
-    v6 = [v5 mediaView];
-    v7 = [(PUCleanupToolFaceRectsView *)v4 initWithMediaView:v6 isHDR:self->_needsHDRUI delegate:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
+    v7 = [(PUCleanupToolFaceRectsView *)v4 initWithMediaView:mediaView isHDR:self->_needsHDRUI delegate:self];
     faceRectsView = self->_faceRectsView;
     self->_faceRectsView = v7;
 
     [(PUCleanupToolFaceRectsView *)self->_faceRectsView setUserInteractionEnabled:0];
     [(PUCleanupToolFaceRectsView *)self->_faceRectsView setBackgroundColor:0];
-    v9 = [(PUCleanupToolController *)self view];
-    [v9 insertSubview:self->_faceRectsView aboveSubview:self->_retouchVFXOverlay];
+    view = [(PUCleanupToolController *)self view];
+    [view insertSubview:self->_faceRectsView aboveSubview:self->_retouchVFXOverlay];
 
     [(PUCleanupToolFaceRectsView *)self->_faceRectsView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
@@ -155,34 +155,34 @@
 - (void)_updateFaceRectsView
 {
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [v3 retouchShowsFaceRects];
+  retouchShowsFaceRects = [v3 retouchShowsFaceRects];
 
-  if (v4)
+  if (retouchShowsFaceRects)
   {
     faceRectsView = self->_faceRectsView;
-    v7 = [(PIInpaintMaskContext *)self->_maskContext detectedFaces];
-    v6 = [(PUPhotoEditToolController *)self compositionController];
-    -[PUCleanupToolFaceRectsView updateDetectedFaces:imageOrientation:](faceRectsView, "updateDetectedFaces:imageOrientation:", v7, [v6 imageOrientation]);
+    detectedFaces = [(PIInpaintMaskContext *)self->_maskContext detectedFaces];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    -[PUCleanupToolFaceRectsView updateDetectedFaces:imageOrientation:](faceRectsView, "updateDetectedFaces:imageOrientation:", detectedFaces, [compositionController imageOrientation]);
   }
 }
 
-- (id)sourceImageOfSize:(CGSize)a3
+- (id)sourceImageOfSize:(CGSize)size
 {
-  v3 = [(PUPhotoEditToolController *)self delegate:a3.width];
-  v4 = [v3 mediaView];
+  v3 = [(PUPhotoEditToolController *)self delegate:size.width];
+  mediaView = [v3 mediaView];
 
-  v5 = [v4 snapshotImage];
+  snapshotImage = [mediaView snapshotImage];
 
-  return v5;
+  return snapshotImage;
 }
 
 - (double)currentRenderViewWidth
 {
-  v2 = [(PUPhotoEditToolController *)self delegate];
-  v3 = [v2 mediaView];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  mediaView = [delegate mediaView];
 
-  v4 = [v3 _renderView];
-  [v4 frame];
+  _renderView = [mediaView _renderView];
+  [_renderView frame];
   v6 = v5;
 
   return v6;
@@ -190,45 +190,45 @@
 
 - (int64_t)currentLayoutStyle
 {
-  v2 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v3 = [v2 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  return v3;
+  return currentLayoutStyle;
 }
 
 - (BOOL)_enableFeedback
 {
-  v2 = [(PUCleanupToolController *)self feedbackActionPerformer];
-  v3 = [v2 didLoadInjectedActionPerformer];
+  feedbackActionPerformer = [(PUCleanupToolController *)self feedbackActionPerformer];
+  didLoadInjectedActionPerformer = [feedbackActionPerformer didLoadInjectedActionPerformer];
 
-  return v3;
+  return didLoadInjectedActionPerformer;
 }
 
 - (BOOL)_showFeedbackThumbs
 {
   HasInternalUI = PFOSVariantHasInternalUI();
   v4 = +[PUPhotoEditProtoSettings sharedInstance];
-  v5 = [v4 feedbackUIFCS];
+  feedbackUIFCS = [v4 feedbackUIFCS];
 
-  return [(PUCleanupToolController *)self _enableFeedback]& HasInternalUI & (v5 ^ 1);
+  return [(PUCleanupToolController *)self _enableFeedback]& HasInternalUI & (feedbackUIFCS ^ 1);
 }
 
 - (void)_updateFeedbackViewVisibility
 {
-  v3 = [(PUCleanupToolController *)self feedbackView];
-  if (v3)
+  feedbackView = [(PUCleanupToolController *)self feedbackView];
+  if (feedbackView)
   {
-    v4 = [(PUPhotoEditToolController *)self delegate];
-    v5 = [v4 mediaView];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
 
     [(PUCleanupUserPromptView *)self->_userPromptView alpha];
-    [v5 zoomScale];
-    [v5 minimumZoomScale];
-    v6 = [(PUPhotoEditToolController *)self compositionController];
-    v7 = [v6 inpaintAdjustmentController];
-    [v7 enabled];
+    [mediaView zoomScale];
+    [mediaView minimumZoomScale];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    inpaintAdjustmentController = [compositionController inpaintAdjustmentController];
+    [inpaintAdjustmentController enabled];
 
-    v8 = v3;
+    v8 = feedbackView;
     pl_dispatch_on_main_queue();
   }
 }
@@ -259,30 +259,30 @@ void __56__PUCleanupToolController__updateFeedbackViewVisibility__block_invoke(u
     goto LABEL_6;
   }
 
-  v3 = [(PUCleanupToolController *)self feedbackViewContainer];
+  feedbackViewContainer = [(PUCleanupToolController *)self feedbackViewContainer];
 
-  if (v3)
+  if (feedbackViewContainer)
   {
-    v4 = [(PUCleanupToolController *)self feedbackViewContainer];
+    feedbackViewContainer2 = [(PUCleanupToolController *)self feedbackViewContainer];
     goto LABEL_7;
   }
 
   if ([(PUCleanupToolController *)self _enableFeedback])
   {
     v5 = MEMORY[0x1E69DCAD8];
-    v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v32[0] = v6;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v32[0] = secondaryLabelColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
     v8 = [v5 configurationWithPaletteColors:v7];
 
     v9 = [MEMORY[0x1E69DCAD8] configurationWithScale:2];
     v10 = [v8 configurationByApplyingConfiguration:v9];
 
-    v11 = [(PUCleanupToolController *)self feedbackActionPerformer];
-    v12 = [v11 actionIconForFeedbackType:1 hasResponse:0];
+    feedbackActionPerformer = [(PUCleanupToolController *)self feedbackActionPerformer];
+    v12 = [feedbackActionPerformer actionIconForFeedbackType:1 hasResponse:0];
 
-    v13 = [(PUCleanupToolController *)self feedbackActionPerformer];
-    v14 = [v13 actionIconForFeedbackType:2 hasResponse:0];
+    feedbackActionPerformer2 = [(PUCleanupToolController *)self feedbackActionPerformer];
+    v14 = [feedbackActionPerformer2 actionIconForFeedbackType:2 hasResponse:0];
 
     v15 = MEMORY[0x1E69DC738];
     v16 = [v12 imageWithConfiguration:v10];
@@ -299,45 +299,45 @@ void __56__PUCleanupToolController__updateFeedbackViewVisibility__block_invoke(u
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = +[PUInterfaceManager currentTheme];
-    v23 = [v22 photoEditingFeedbackPlatterColor];
-    [v21 setBackgroundColor:v23];
+    photoEditingFeedbackPlatterColor = [v22 photoEditingFeedbackPlatterColor];
+    [v21 setBackgroundColor:photoEditingFeedbackPlatterColor];
 
-    v24 = [v21 layer];
+    layer = [v21 layer];
     LODWORD(v25) = 1039516303;
-    [v24 setShadowOpacity:v25];
+    [layer setShadowOpacity:v25];
 
-    v26 = [v21 layer];
-    [v26 setShadowOffset:{0.0, 2.0}];
+    layer2 = [v21 layer];
+    [layer2 setShadowOffset:{0.0, 2.0}];
 
-    v27 = [v21 layer];
-    [v27 setShadowRadius:8.0];
+    layer3 = [v21 layer];
+    [layer3 setShadowRadius:8.0];
 
     v28 = *MEMORY[0x1E69796E8];
-    v29 = [v21 layer];
-    [v29 setCornerCurve:v28];
+    layer4 = [v21 layer];
+    [layer4 setCornerCurve:v28];
 
     [v21 setAlpha:0.0];
     [(PUCleanupToolController *)self setFeedbackViewContainer:v21];
     [(PUCleanupToolController *)self setFeedbackThumbsUpButton:v17];
     [(PUCleanupToolController *)self setFeedbackThumbsDownButton:v20];
-    v30 = [(PUCleanupToolController *)self view];
-    [v30 addSubview:v21];
+    view = [(PUCleanupToolController *)self view];
+    [view addSubview:v21];
 
-    v4 = [(PUCleanupToolController *)self feedbackViewContainer];
+    feedbackViewContainer2 = [(PUCleanupToolController *)self feedbackViewContainer];
   }
 
   else
   {
 LABEL_6:
-    v4 = 0;
+    feedbackViewContainer2 = 0;
   }
 
 LABEL_7:
 
-  return v4;
+  return feedbackViewContainer2;
 }
 
-- (void)hidePromptViewIfNeededAnimated:(BOOL)a3
+- (void)hidePromptViewIfNeededAnimated:(BOOL)animated
 {
   userPromptView = self->_userPromptView;
   if (userPromptView)
@@ -391,11 +391,11 @@ uint64_t __58__PUCleanupToolController_hidePromptViewIfNeededAnimated___block_in
   return [v2 _updateFeedbackViewVisibility];
 }
 
-- (void)deleteUserPromptViewAnimated:(BOOL)a3 completion:(id)a4
+- (void)deleteUserPromptViewAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_userPromptView)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -403,10 +403,10 @@ uint64_t __58__PUCleanupToolController_hidePromptViewIfNeededAnimated___block_in
     aBlock[2] = __67__PUCleanupToolController_deleteUserPromptViewAnimated_completion___block_invoke;
     aBlock[3] = &unk_1E7B80B48;
     aBlock[4] = self;
-    v15 = v6;
+    v15 = completionCopy;
     v8 = _Block_copy(aBlock);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
       [(PUCleanupUserPromptView *)self->_userPromptView setAlpha:1.0];
       v10 = MEMORY[0x1E69DD250];
@@ -466,28 +466,28 @@ uint64_t __67__PUCleanupToolController_deleteUserPromptViewAnimated_completion__
   return result;
 }
 
-- (void)addUserPromptViewOfType:(unint64_t)a3 animated:(BOOL)a4
+- (void)addUserPromptViewOfType:(unint64_t)type animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   userPromptView = self->_userPromptView;
-  if (!userPromptView || [(PUCleanupUserPromptView *)userPromptView type]!= a3)
+  if (!userPromptView || [(PUCleanupUserPromptView *)userPromptView type]!= type)
   {
     [(PUCleanupToolController *)self deleteUserPromptViewAnimated:0 completion:0];
-    v8 = [[PUCleanupUserPromptView alloc] initWithType:a3 showPlatter:1];
+    v8 = [[PUCleanupUserPromptView alloc] initWithType:type showPlatter:1];
     v9 = self->_userPromptView;
     self->_userPromptView = v8;
 
     [(PUCleanupUserPromptView *)self->_userPromptView setLayoutDelegate:self];
     [(PUCleanupUserPromptView *)self->_userPromptView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUCleanupUserPromptView *)self->_userPromptView setUserInteractionEnabled:0];
-    v10 = [(PUCleanupToolController *)self view];
-    [v10 addSubview:self->_userPromptView];
+    view = [(PUCleanupToolController *)self view];
+    [view addSubview:self->_userPromptView];
 
     [(PUCleanupUserPromptView *)self->_userPromptView enableAnimation:1];
-    v11 = [(PUCleanupToolController *)self view];
-    [v11 setNeedsUpdateConstraints];
+    view2 = [(PUCleanupToolController *)self view];
+    [view2 setNeedsUpdateConstraints];
 
-    if (a3 - 3 <= 2)
+    if (type - 3 <= 2)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -498,11 +498,11 @@ uint64_t __67__PUCleanupToolController_deleteUserPromptViewAnimated_completion__
       userPromptViewTimer = self->_userPromptViewTimer;
       self->_userPromptViewTimer = v12;
 
-      v14 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v14 addTimer:self->_userPromptViewTimer forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:self->_userPromptViewTimer forMode:*MEMORY[0x1E695DA28]];
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       [(PUCleanupUserPromptView *)self->_userPromptView setAlpha:0.0];
       v15[4] = self;
@@ -541,12 +541,12 @@ uint64_t __60__PUCleanupToolController_addUserPromptViewOfType_animated___block_
   geometry = self->_geometry;
   if (!geometry)
   {
-    v4 = [(PUPhotoEditToolController *)self compositionController];
-    v5 = [v4 imageOrientation];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    imageOrientation = [compositionController imageOrientation];
 
     v6 = objc_alloc(MEMORY[0x1E69BE490]);
     [(PUCleanupToolController *)self imageSize];
-    v7 = [v6 initWithInputSize:v5 inputOrientation:?];
+    v7 = [v6 initWithInputSize:imageOrientation inputOrientation:?];
     v8 = self->_geometry;
     self->_geometry = v7;
 
@@ -561,11 +561,11 @@ uint64_t __60__PUCleanupToolController_addUserPromptViewOfType_animated___block_
 - (CGSize)imageSize
 {
   [(PUCleanupToolController *)self _createRendererIfNeeded];
-  v3 = [(PUCleanupToolController *)self renderer];
-  v4 = [(PUPhotoEditToolController *)self compositionController];
-  v5 = [v4 composition];
-  v6 = [MEMORY[0x1E69BDEF0] pipelineFiltersForCropping];
-  v7 = [v3 getGeometryForComposition:v5 pipelineFilters:v6];
+  renderer = [(PUCleanupToolController *)self renderer];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
+  pipelineFiltersForCropping = [MEMORY[0x1E69BDEF0] pipelineFiltersForCropping];
+  v7 = [renderer getGeometryForComposition:composition pipelineFilters:pipelineFiltersForCropping];
 
   [v7 size];
   NUPixelSizeToCGSize();
@@ -579,12 +579,12 @@ uint64_t __60__PUCleanupToolController_addUserPromptViewOfType_animated___block_
   return result;
 }
 
-- (CGPoint)transformedPoint:(CGPoint)a3
+- (CGPoint)transformedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  [v6 toolController:0 viewPointFromOriginalPoint:self->_maskView view:{x, y}];
+  y = point.y;
+  x = point.x;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolController:0 viewPointFromOriginalPoint:self->_maskView view:{x, y}];
   v8 = v7;
   v10 = v9;
 
@@ -595,30 +595,30 @@ uint64_t __60__PUCleanupToolController_addUserPromptViewOfType_animated___block_
   return result;
 }
 
-- (id)transformedImage:(id)a3 error:(id *)a4
+- (id)transformedImage:(id)image error:(id *)error
 {
   v6 = MEMORY[0x1E69B3DB8];
-  v7 = a3;
-  v8 = [(PUPhotoEditToolController *)self compositionController];
-  v9 = [v8 composition];
+  imageCopy = image;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
   [(PUCleanupToolController *)self imageSize];
-  v10 = [v6 transformedImage:v7 forComposition:v9 imageSize:a4 error:?];
+  v10 = [v6 transformedImage:imageCopy forComposition:composition imageSize:error error:?];
 
   return v10;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
-  NSLog(&cfstr_VfxSettingsCha.isa, v5);
-  v6 = [v5 isEqualToString:@"retouchShowVFXControls"];
+  keyCopy = key;
+  NSLog(&cfstr_VfxSettingsCha.isa, keyCopy);
+  v6 = [keyCopy isEqualToString:@"retouchShowVFXControls"];
 
   if (v6)
   {
     v7 = +[PUPhotoEditProtoSettings sharedInstance];
-    v8 = [v7 retouchShowVFXControls];
+    retouchShowVFXControls = [v7 retouchShowVFXControls];
 
-    if (v8)
+    if (retouchShowVFXControls)
     {
       retouchVFXOverlay = self->_retouchVFXOverlay;
 
@@ -627,16 +627,16 @@ uint64_t __60__PUCleanupToolController_addUserPromptViewOfType_animated___block_
   }
 }
 
-- (void)ppt_replayCleanupBrushStrokeWithCompletionBlock:(id)a3
+- (void)ppt_replayCleanupBrushStrokeWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__PUCleanupToolController_ppt_replayCleanupBrushStrokeWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E7B80B48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PUCleanupToolController *)self _prepareViewsForCleanupIfReadyAndNotify:v6];
 }
 
@@ -653,20 +653,20 @@ void __75__PUCleanupToolController_ppt_replayCleanupBrushStrokeWithCompletionBlo
   dispatch_after(v2, MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)addAttachmentsForTapToRadar:(id)a3
+- (void)addAttachmentsForTapToRadar:(id)radar
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUCleanupToolController *)self maskContext];
-  v6 = [v5 segmentationResult];
+  radarCopy = radar;
+  maskContext = [(PUCleanupToolController *)self maskContext];
+  segmentationResult = [maskContext segmentationResult];
 
-  v7 = [v6 foregroundInstances];
-  v8 = [v6 backgroundInstances];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 temporaryDirectory];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
-  v13 = [v10 URLByAppendingPathComponent:v12 isDirectory:1];
+  foregroundInstances = [segmentationResult foregroundInstances];
+  backgroundInstances = [segmentationResult backgroundInstances];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v13 = [temporaryDirectory URLByAppendingPathComponent:uUIDString isDirectory:1];
 
   DeviceGray = CGColorSpaceCreateDeviceGray();
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -675,56 +675,56 @@ void __75__PUCleanupToolController_ppt_replayCleanupBrushStrokeWithCompletionBlo
   aBlock[3] = &unk_1E7B76920;
   v55 = v13;
   v69 = v55;
-  v59 = v9;
+  v59 = defaultManager;
   v70 = v59;
-  v71 = self;
+  selfCopy = self;
   v72 = DeviceGray;
   v15 = _Block_copy(aBlock);
   v16 = v15;
-  if (v7)
+  if (foregroundInstances)
   {
-    v17 = v15[2](v15, v7, @"foreground");
-    [v4 addAttachment:v17];
+    v17 = v15[2](v15, foregroundInstances, @"foreground");
+    [radarCopy addAttachment:v17];
   }
 
-  if (v8)
+  if (backgroundInstances)
   {
-    v18 = v16[2](v16, v8, @"background");
-    [v4 addAttachment:v18];
+    v18 = v16[2](v16, backgroundInstances, @"background");
+    [radarCopy addAttachment:v18];
   }
 
   CGColorSpaceRelease(DeviceGray);
-  v19 = [MEMORY[0x1E69BDE40] globalSettings];
-  v57 = v7;
-  v58 = v6;
-  v56 = v8;
-  if ([v19 inpaintDumpsOriginalMasks])
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  v57 = foregroundInstances;
+  v58 = segmentationResult;
+  v56 = backgroundInstances;
+  if ([globalSettings inpaintDumpsOriginalMasks])
   {
-    v20 = 1;
+    inpaintDumpsInputImages = 1;
   }
 
   else
   {
-    v20 = [MEMORY[0x1E69B3AB0] inpaintDumpsInputImages];
+    inpaintDumpsInputImages = [MEMORY[0x1E69B3AB0] inpaintDumpsInputImages];
   }
 
   v54 = v16;
 
   v21 = +[PUPhotoEditProtoSettings sharedInstance];
-  v22 = [v21 retouchDumpsCoreImageInputs];
+  retouchDumpsCoreImageInputs = [v21 retouchDumpsCoreImageInputs];
 
-  if (!v20 || (v22 & 1) == 0)
+  if (!inpaintDumpsInputImages || (retouchDumpsCoreImageInputs & 1) == 0)
   {
-    v23 = [MEMORY[0x1E69BDE40] globalSettings];
-    [v23 setInpaintDumpsOriginalMasks:1];
+    globalSettings2 = [MEMORY[0x1E69BDE40] globalSettings];
+    [globalSettings2 setInpaintDumpsOriginalMasks:1];
 
     v24 = +[PUPhotoEditProtoSettings sharedInstance];
     [v24 setRetouchDumpsCoreImageInputs:1];
 
     v25 = objc_alloc(MEMORY[0x1E69B39A0]);
-    v26 = [(PUPhotoEditToolController *)self compositionController];
-    v27 = [v26 composition];
-    v28 = [v25 initWithComposition:v27];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
+    v28 = [v25 initWithComposition:composition];
 
     v67 = 0;
     v29 = [v28 submitSynchronous:&v67];
@@ -740,11 +740,11 @@ void __75__PUCleanupToolController_ppt_replayCleanupBrushStrokeWithCompletionBlo
       }
     }
 
-    v32 = [MEMORY[0x1E69BDE40] globalSettings];
-    [v32 setInpaintDumpsOriginalMasks:v20];
+    globalSettings3 = [MEMORY[0x1E69BDE40] globalSettings];
+    [globalSettings3 setInpaintDumpsOriginalMasks:inpaintDumpsInputImages];
 
     v33 = +[PUPhotoEditProtoSettings sharedInstance];
-    [v33 setRetouchDumpsCoreImageInputs:v22];
+    [v33 setRetouchDumpsCoreImageInputs:retouchDumpsCoreImageInputs];
   }
 
   v34 = MEMORY[0x1E695DFF8];
@@ -773,12 +773,12 @@ void __75__PUCleanupToolController_ppt_replayCleanupBrushStrokeWithCompletionBlo
         }
 
         v43 = *(*(&v63 + 1) + 8 * i);
-        v44 = [v43 path];
-        v45 = [v44 lastPathComponent];
+        path = [v43 path];
+        lastPathComponent = [path lastPathComponent];
 
-        if ([v45 hasPrefix:v37] && objc_msgSend(v45, "containsString:", @"inpaint"))
+        if ([lastPathComponent hasPrefix:v37] && objc_msgSend(lastPathComponent, "containsString:", @"inpaint"))
         {
-          [v4 addAttachment:v43];
+          [radarCopy addAttachment:v43];
         }
       }
 
@@ -793,18 +793,18 @@ void __75__PUCleanupToolController_ppt_replayCleanupBrushStrokeWithCompletionBlo
   v60[2] = __55__PUCleanupToolController_addAttachmentsForTapToRadar___block_invoke_295;
   v60[3] = &unk_1E7B7C540;
   v61 = v59;
-  v62 = v4;
-  v46 = v4;
+  v62 = radarCopy;
+  v46 = radarCopy;
   v47 = v59;
   v48 = _Block_copy(v60);
-  v49 = [MEMORY[0x1E69B3AB0] tempDir];
-  v50 = [v49 stringByAppendingPathComponent:@"input.heic"];
+  tempDir = [MEMORY[0x1E69B3AB0] tempDir];
+  v50 = [tempDir stringByAppendingPathComponent:@"input.heic"];
   v48[2](v48, v50);
 
-  v51 = [v49 stringByAppendingPathComponent:@"inpaintMask.png"];
+  v51 = [tempDir stringByAppendingPathComponent:@"inpaintMask.png"];
   v48[2](v48, v51);
 
-  v52 = [v49 stringByAppendingPathComponent:@"exclusionMask.png"];
+  v52 = [tempDir stringByAppendingPathComponent:@"exclusionMask.png"];
   v48[2](v48, v52);
 }
 
@@ -868,22 +868,22 @@ void __55__PUCleanupToolController_addAttachmentsForTapToRadar___block_invoke_29
   return feedbackActionPerformer;
 }
 
-- (void)feedbackThumbsButtonAction:(id)a3
+- (void)feedbackThumbsButtonAction:(id)action
 {
-  v8 = a3;
-  v4 = [(PUCleanupToolController *)self feedbackThumbsUpButton];
+  actionCopy = action;
+  feedbackThumbsUpButton = [(PUCleanupToolController *)self feedbackThumbsUpButton];
 
-  if (v4 == v8)
+  if (feedbackThumbsUpButton == actionCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v5 = [(PUCleanupToolController *)self feedbackThumbsDownButton];
+    feedbackThumbsDownButton = [(PUCleanupToolController *)self feedbackThumbsDownButton];
 
-    v6 = v8;
-    if (v5 != v8)
+    v6 = actionCopy;
+    if (feedbackThumbsDownButton != actionCopy)
     {
       goto LABEL_6;
     }
@@ -892,39 +892,39 @@ void __55__PUCleanupToolController_addAttachmentsForTapToRadar___block_invoke_29
   }
 
   [(PUCleanupToolController *)self _reportFeedbackAction:v7];
-  v6 = v8;
+  v6 = actionCopy;
 LABEL_6:
 }
 
-- (void)_reportFeedbackAction:(unint64_t)a3
+- (void)_reportFeedbackAction:(unint64_t)action
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(PUPhotoEditToolController *)self asset];
+  asset = [(PUPhotoEditToolController *)self asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(PUPhotoEditToolController *)self asset];
+    asset2 = [(PUPhotoEditToolController *)self asset];
 
-    if (v6)
+    if (asset2)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69C34D8]);
       [v7 setIncludeOriginalRender:1];
       v8 = [objc_alloc(MEMORY[0x1E69B3A78]) initWithTargetSize:{1024.0, 1024.0}];
       [v7 setScalePolicyForRenders:v8];
 
-      v9 = [(PUPhotoEditToolController *)self delegate];
-      v10 = [v9 editAssetDiagnostics];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      editAssetDiagnostics = [delegate editAssetDiagnostics];
 
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __49__PUCleanupToolController__reportFeedbackAction___block_invoke;
       v14[3] = &unk_1E7B768F8;
-      v15 = v10;
-      v16 = self;
-      v17 = v6;
-      v18 = a3;
-      v11 = v6;
-      v12 = v10;
+      v15 = editAssetDiagnostics;
+      selfCopy = self;
+      v17 = asset2;
+      actionCopy = action;
+      v11 = asset2;
+      v12 = editAssetDiagnostics;
       [v12 collectDiagnosticsWithOptions:v7 completion:v14];
 
       goto LABEL_7;
@@ -938,9 +938,9 @@ LABEL_6:
   v11 = PXAssertGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    v13 = [(PUPhotoEditToolController *)self asset];
+    asset3 = [(PUPhotoEditToolController *)self asset];
     *buf = 138412290;
-    v20 = v13;
+    v20 = asset3;
     _os_log_error_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, "reportAConcern activated when our asset is not a PHAsset (%@)", buf, 0xCu);
   }
 
@@ -988,30 +988,30 @@ void __49__PUCleanupToolController__reportFeedbackAction___block_invoke(uint64_t
   [*(a1 + 32) deleteCollectedFiles];
 }
 
-- (void)replayBrushstrokesWithCompletion:(id)a3
+- (void)replayBrushstrokesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  [v5 modifyAdjustmentWithKey:*MEMORY[0x1E69BE190] modificationBlock:&__block_literal_global_262];
+  completionCopy = completion;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController modifyAdjustmentWithKey:*MEMORY[0x1E69BE190] modificationBlock:&__block_literal_global_262];
 
-  v6 = [(PUPhotoEditToolController *)self compositionController];
-  [v6 removeAdjustmentWithKey:*MEMORY[0x1E69BE028]];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController2 removeAdjustmentWithKey:*MEMORY[0x1E69BE028]];
 
-  v7 = [(PUPhotoEditToolController *)self compositionController];
-  [v7 removeAdjustmentWithKey:@"inpaintMasks"];
+  compositionController3 = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController3 removeAdjustmentWithKey:@"inpaintMasks"];
 
-  v8 = [(PUPhotoEditToolController *)self compositionController];
-  v14 = [v8 brushStrokeHistory];
+  compositionController4 = [(PUPhotoEditToolController *)self compositionController];
+  brushStrokeHistory = [compositionController4 brushStrokeHistory];
 
   v9 = objc_alloc_init(MEMORY[0x1E69BDDC0]);
-  v10 = [(PUPhotoEditToolController *)self compositionController];
-  [v10 setBrushStrokeHistory:v9];
+  compositionController5 = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController5 setBrushStrokeHistory:v9];
 
   v11 = +[PUPhotoEditProtoSettings sharedInstance];
   [v11 replayStrokesPauseInterval];
   v13 = v12;
 
-  [v14 playbackHistoryToReceiver:self options:0 pauseInterval:v4 completion:v13];
+  [brushStrokeHistory playbackHistoryToReceiver:self options:0 pauseInterval:completionCopy completion:v13];
 }
 
 void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1026,16 +1026,16 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
 - (id)internalToolActionsForMenu
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 brushStrokeHistory];
-  v5 = [v4 entryCount];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  brushStrokeHistory = [compositionController brushStrokeHistory];
+  entryCount = [brushStrokeHistory entryCount];
 
-  if (v5)
+  if (entryCount)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(PUPhotoEditToolController *)self compositionController];
-    v8 = [v7 brushStrokeHistory];
-    v9 = [v6 stringWithFormat:@"Replay %ld Brushstrokes", objc_msgSend(v8, "entryCount")];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    brushStrokeHistory2 = [compositionController2 brushStrokeHistory];
+    v9 = [v6 stringWithFormat:@"Replay %ld Brushstrokes", objc_msgSend(brushStrokeHistory2, "entryCount")];
   }
 
   else
@@ -1052,7 +1052,7 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
   v15[4] = self;
   v12 = [v10 actionWithTitle:v9 image:v11 identifier:0 handler:v15];
 
-  if (!v5)
+  if (!entryCount)
   {
     [v12 setAttributes:1];
   }
@@ -1074,8 +1074,8 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
   else
   {
     v3 = PULocalizedString(@"PHOTOEDIT_CLEANUP_FEEDBACK");
-    v4 = [(PUCleanupToolController *)self feedbackActionPerformer];
-    v5 = [v4 actionIconForFeedbackType:3 hasResponse:0];
+    feedbackActionPerformer = [(PUCleanupToolController *)self feedbackActionPerformer];
+    v5 = [feedbackActionPerformer actionIconForFeedbackType:3 hasResponse:0];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -1090,11 +1090,11 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
   return v7;
 }
 
-- (void)_setLastInteractionPixelCount:(int64_t)a3
+- (void)_setLastInteractionPixelCount:(int64_t)count
 {
   if (self->_lastInteractionWasHighRate)
   {
-    v3 = self->_currentInteractionSeriesCumulativePixelCount + a3;
+    v3 = self->_currentInteractionSeriesCumulativePixelCount + count;
     self->_currentInteractionSeriesCumulativePixelCount = v3;
     if (v3 > self->_maxInteractionSeriesCumulativePixelCount)
     {
@@ -1141,34 +1141,34 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
 
 - (int64_t)segmentationCount
 {
-  v2 = [(PUCleanupToolController *)self maskContext];
-  v3 = [v2 segmentationResult];
+  maskContext = [(PUCleanupToolController *)self maskContext];
+  segmentationResult = [maskContext segmentationResult];
 
-  v4 = [v3 instances];
-  v5 = [v4 count];
+  instances = [segmentationResult instances];
+  v5 = [instances count];
 
   return v5;
 }
 
-- (void)_thermalStateDidChange:(id)a3
+- (void)_thermalStateDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v5 = [v4 thermalState];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  thermalState = [processInfo thermalState];
 
-  if (v5 > self->_highestEncounteredThermalState)
+  if (thermalState > self->_highestEncounteredThermalState)
   {
-    self->_highestEncounteredThermalState = v5;
+    self->_highestEncounteredThermalState = thermalState;
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   [(PUCleanupToolController *)self _prepareViewsForCleanupIfReady];
-  v4 = [(PUCleanupToolController *)self view];
-  [v4 setNeedsUpdateConstraints];
+  view = [(PUCleanupToolController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   [(PUCleanupOverlayViewController *)self->_overlayController removeBrushView];
   [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay removeFromSuperview];
@@ -1176,37 +1176,37 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
   self->_retouchVFXOverlay = 0;
 }
 
-- (void)_didRedo:(id)a3
+- (void)_didRedo:(id)redo
 {
   retouchVFXOverlay = self->_retouchVFXOverlay;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 composition];
-  [(PUVFXRetouchOverlay *)retouchVFXOverlay didRenderComposition:v6];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
+  [(PUVFXRetouchOverlay *)retouchVFXOverlay didRenderComposition:composition];
 
   [(PUCleanupToolController *)self _updateFeedbackViewVisibility];
 }
 
-- (void)_didUndo:(id)a3
+- (void)_didUndo:(id)undo
 {
   retouchVFXOverlay = self->_retouchVFXOverlay;
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 composition];
-  [(PUVFXRetouchOverlay *)retouchVFXOverlay didRenderComposition:v6];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
+  [(PUVFXRetouchOverlay *)retouchVFXOverlay didRenderComposition:composition];
 
   [(PUCleanupToolController *)self _updateFeedbackViewVisibility];
 }
 
-- (void)redoInitiated:(id)a3
+- (void)redoInitiated:(id)initiated
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 redoMenuItemTitle];
+  initiatedCopy = initiated;
+  redoMenuItemTitle = [initiatedCopy redoMenuItemTitle];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PUCleanupToolController *)self cleanupActionNames];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  cleanupActionNames = [(PUCleanupToolController *)self cleanupActionNames];
+  v7 = [cleanupActionNames countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1217,21 +1217,21 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cleanupActionNames);
         }
 
-        v11 = [v4 redoMenuTitleForUndoActionName:*(*(&v13 + 1) + 8 * i)];
-        if ([v5 isEqualToString:v11])
+        v11 = [initiatedCopy redoMenuTitleForUndoActionName:*(*(&v13 + 1) + 8 * i)];
+        if ([redoMenuItemTitle isEqualToString:v11])
         {
           [(PUCleanupToolController *)self _setBusy:1 withDelay:1.25];
-          v12 = [(PUPhotoEditToolController *)self delegate];
-          [v12 updateProgressIndicatorAnimated:1];
+          delegate = [(PUPhotoEditToolController *)self delegate];
+          [delegate updateProgressIndicatorAnimated:1];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [cleanupActionNames countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -1244,17 +1244,17 @@ void __60__PUCleanupToolController_replayBrushstrokesWithCompletion___block_invo
 LABEL_11:
 }
 
-- (void)undoInitiated:(id)a3
+- (void)undoInitiated:(id)initiated
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 undoMenuItemTitle];
+  initiatedCopy = initiated;
+  undoMenuItemTitle = [initiatedCopy undoMenuItemTitle];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PUCleanupToolController *)self cleanupActionNames];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  cleanupActionNames = [(PUCleanupToolController *)self cleanupActionNames];
+  v7 = [cleanupActionNames countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1265,21 +1265,21 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cleanupActionNames);
         }
 
-        v11 = [v4 undoMenuTitleForUndoActionName:*(*(&v13 + 1) + 8 * i)];
-        if ([v5 isEqualToString:v11])
+        v11 = [initiatedCopy undoMenuTitleForUndoActionName:*(*(&v13 + 1) + 8 * i)];
+        if ([undoMenuItemTitle isEqualToString:v11])
         {
           [(PUCleanupToolController *)self _setBusy:1 withDelay:1.25];
-          v12 = [(PUPhotoEditToolController *)self delegate];
-          [v12 updateProgressIndicatorAnimated:1];
+          delegate = [(PUPhotoEditToolController *)self delegate];
+          [delegate updateProgressIndicatorAnimated:1];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [cleanupActionNames countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -1308,36 +1308,36 @@ LABEL_11:
 
 - (void)_createRendererIfNeeded
 {
-  v3 = [(PUCleanupToolController *)self renderer];
+  renderer = [(PUCleanupToolController *)self renderer];
 
-  if (v3)
+  if (renderer)
   {
-    v9 = [(PUPhotoEditToolController *)self compositionController];
-    v4 = [(PUCleanupToolController *)self renderer];
-    v5 = v4;
-    v6 = v9;
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    renderer2 = [(PUCleanupToolController *)self renderer];
+    compositionController2 = renderer2;
+    v6 = compositionController;
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x1E69BE658]);
-    v8 = [(PUPhotoEditToolController *)self editSource];
-    v9 = [v7 initWithEditSource:v8 renderPriority:3];
+    editSource = [(PUPhotoEditToolController *)self editSource];
+    compositionController = [v7 initWithEditSource:editSource renderPriority:3];
 
-    [(PUCleanupToolController *)self setRenderer:v9];
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    v4 = v9;
-    v6 = v5;
+    [(PUCleanupToolController *)self setRenderer:compositionController];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    renderer2 = compositionController;
+    v6 = compositionController2;
   }
 
-  [v4 setCompositionController:v6];
+  [renderer2 setCompositionController:v6];
 }
 
-- (void)mediaViewDidScroll:(id)a3
+- (void)mediaViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self isActiveTool];
-  if (!v5)
+  scrollCopy = scroll;
+  isActiveTool = [(PUPhotoEditToolController *)self isActiveTool];
+  if (!isActiveTool)
   {
     goto LABEL_14;
   }
@@ -1345,17 +1345,17 @@ LABEL_11:
   if (self->_cleanupMode == 1)
   {
     v6 = +[PUPhotoEditProtoSettings sharedInstance];
-    v7 = [v6 cleanupMaskDisplayMode];
+    cleanupMaskDisplayMode = [v6 cleanupMaskDisplayMode];
 
-    if ((v7 - 1) >= 2)
+    if ((cleanupMaskDisplayMode - 1) >= 2)
     {
-      if (v7)
+      if (cleanupMaskDisplayMode)
       {
         goto LABEL_12;
       }
 
-      v8 = [v4 _scrollView];
-      if ([v8 isZoomBouncing])
+      _scrollView = [scrollCopy _scrollView];
+      if ([_scrollView isZoomBouncing])
       {
         [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay alpha];
         v12 = v11;
@@ -1368,7 +1368,7 @@ LABEL_11:
           v14[3] = &unk_1E7B80DD0;
           v14[4] = self;
           [MEMORY[0x1E69DD250] performWithoutAnimation:v14];
-          v5 = [(PUCleanupToolController *)self setVFXOverlayHidden:1];
+          isActiveTool = [(PUCleanupToolController *)self setVFXOverlayHidden:1];
         }
 
         goto LABEL_12;
@@ -1377,8 +1377,8 @@ LABEL_11:
 
     else
     {
-      v8 = [v4 _scrollView];
-      if ([v8 isZoomBouncing])
+      _scrollView = [scrollCopy _scrollView];
+      if ([_scrollView isZoomBouncing])
       {
         [(PUCleanupToolMaskView *)self->_maskView alpha];
         v10 = v9;
@@ -1390,7 +1390,7 @@ LABEL_11:
           v13[2] = __46__PUCleanupToolController_mediaViewDidScroll___block_invoke_2;
           v13[3] = &unk_1E7B80DD0;
           v13[4] = self;
-          v5 = [MEMORY[0x1E69DD250] performWithoutAnimation:v13];
+          isActiveTool = [MEMORY[0x1E69DD250] performWithoutAnimation:v13];
         }
 
         goto LABEL_12;
@@ -1399,7 +1399,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (MEMORY[0x1B8C6D660](v5))
+  if (MEMORY[0x1B8C6D660](isActiveTool))
   {
     [(PUCleanupToolController *)self _updatePromptViewPlatter];
   }
@@ -1407,23 +1407,23 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)mediaViewDidEndZooming:(id)a3
+- (void)mediaViewDidEndZooming:(id)zooming
 {
-  v4 = a3;
+  zoomingCopy = zooming;
   if (![(PUPhotoEditToolController *)self isActiveTool]|| self->_cleanupMode != 1)
   {
     goto LABEL_17;
   }
 
-  v5 = [v4 _scrollView];
-  v6 = [v5 isZoomBouncing];
+  _scrollView = [zoomingCopy _scrollView];
+  isZoomBouncing = [_scrollView isZoomBouncing];
 
-  if ((v6 & 1) == 0)
+  if ((isZoomBouncing & 1) == 0)
   {
     v7 = +[PUPhotoEditProtoSettings sharedInstance];
-    v8 = [v7 cleanupMaskDisplayMode];
+    cleanupMaskDisplayMode = [v7 cleanupMaskDisplayMode];
 
-    if ((v8 - 1) < 2)
+    if ((cleanupMaskDisplayMode - 1) < 2)
     {
       [(PUCleanupToolMaskView *)self->_maskView alpha];
       v9 = MEMORY[0x1E69DD250];
@@ -1451,7 +1451,7 @@ LABEL_14:
         v18 = 3221225472;
         v19 = __50__PUCleanupToolController_mediaViewDidEndZooming___block_invoke_8;
         v20 = &unk_1E7B80DD0;
-        v21 = self;
+        selfCopy = self;
         v12 = &v17;
         v11 = 0.2;
       }
@@ -1460,7 +1460,7 @@ LABEL_14:
       goto LABEL_13;
     }
 
-    if (!v8)
+    if (!cleanupMaskDisplayMode)
     {
       [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay alpha];
       v9 = MEMORY[0x1E69DD250];
@@ -1507,15 +1507,15 @@ LABEL_14:
       }
 
 LABEL_13:
-      [v9 animateWithDuration:0 delay:v12 options:v14 animations:0.2 completion:{v11, v17, v18, v19, v20, v21}];
+      [v9 animateWithDuration:0 delay:v12 options:v14 animations:0.2 completion:{v11, v17, v18, v19, v20, selfCopy}];
     }
   }
 
   self->_isZooming = 0;
   v15 = +[PUPhotoEditProtoSettings sharedInstance];
-  v16 = [v15 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode2 = [v15 cleanupMaskDisplayMode];
 
-  if ((v16 - 1) <= 1)
+  if ((cleanupMaskDisplayMode2 - 1) <= 1)
   {
     [(PUCleanupToolMaskView *)self->_maskView setNeedsDisplay];
   }
@@ -1525,7 +1525,7 @@ LABEL_13:
 LABEL_17:
 }
 
-- (void)mediaViewWillBeginZooming:(id)a3
+- (void)mediaViewWillBeginZooming:(id)zooming
 {
   if ([(PUPhotoEditToolController *)self isActiveTool]&& self->_cleanupMode == 1)
   {
@@ -1535,22 +1535,22 @@ LABEL_17:
   }
 }
 
-- (void)mediaView:(id)a3 didZoom:(double)a4
+- (void)mediaView:(id)view didZoom:(double)zoom
 {
-  v9 = a3;
+  viewCopy = view;
   if ([(PUPhotoEditToolController *)self isActiveTool])
   {
     if (self->_cleanupMode == 1)
     {
-      v5 = [v9 _scrollView];
-      v6 = [v5 isZoomBouncing];
+      _scrollView = [viewCopy _scrollView];
+      isZoomBouncing = [_scrollView isZoomBouncing];
 
-      if ((v6 & 1) == 0 && !self->_isZooming)
+      if ((isZoomBouncing & 1) == 0 && !self->_isZooming)
       {
         v7 = +[PUPhotoEditProtoSettings sharedInstance];
-        v8 = [v7 cleanupMaskDisplayMode];
+        cleanupMaskDisplayMode = [v7 cleanupMaskDisplayMode];
 
-        if ((v8 - 1) <= 1)
+        if ((cleanupMaskDisplayMode - 1) <= 1)
         {
           [(PUCleanupToolMaskView *)self->_maskView setNeedsDisplay];
         }
@@ -1570,8 +1570,8 @@ LABEL_17:
 
 LABEL_11:
     [(PUCleanupToolController *)self _setBusy:0];
-    v7 = [(PUPhotoEditToolController *)self delegate];
-    [v7 updateProgressIndicatorAnimated:1];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate updateProgressIndicatorAnimated:1];
 
     return;
   }
@@ -1592,15 +1592,15 @@ LABEL_11:
       }
 
       v3 = MEMORY[0x1E69BDE68];
-      v4 = [(PUCleanupToolController *)self maskContext];
-      v5 = [(PUPhotoEditToolController *)self compositionController];
-      v6 = [v5 composition];
+      maskContext = [(PUCleanupToolController *)self maskContext];
+      compositionController = [(PUPhotoEditToolController *)self compositionController];
+      composition = [compositionController composition];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __43__PUCleanupToolController_mediaViewIsReady__block_invoke;
       v8[3] = &unk_1E7B768B0;
       v8[4] = self;
-      [v3 updateMaskContext:v4 forComposition:v6 requestID:0 completionQueue:MEMORY[0x1E69E96A0] completion:v8];
+      [v3 updateMaskContext:maskContext forComposition:composition requestID:0 completionQueue:MEMORY[0x1E69E96A0] completion:v8];
 
       return;
     }
@@ -1691,20 +1691,20 @@ LABEL_18:
   *(v21 + 1376) = v20;
 }
 
-- (void)_showCleanupBrushSizeSlider:(id)a3 label:(id)a4 show:(BOOL)a5
+- (void)_showCleanupBrushSizeSlider:(id)slider label:(id)label show:(BOOL)show
 {
-  v7 = a3;
-  v8 = a4;
+  sliderCopy = slider;
+  labelCopy = label;
   v9 = MEMORY[0x1E69DD250];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__PUCleanupToolController__showCleanupBrushSizeSlider_label_show___block_invoke;
   v12[3] = &unk_1E7B805E8;
-  v15 = a5;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  showCopy = show;
+  v13 = sliderCopy;
+  v14 = labelCopy;
+  v10 = labelCopy;
+  v11 = sliderCopy;
   [v9 animateWithDuration:v12 animations:&__block_literal_global_238_21545 completion:0.2];
 }
 
@@ -1719,28 +1719,28 @@ uint64_t __66__PUCleanupToolController__showCleanupBrushSizeSlider_label_show___
   return [v5 setAlpha:v4];
 }
 
-- (void)_brushModeButtonTapped:(id)a3
+- (void)_brushModeButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUCleanupToolController.m" lineNumber:2637 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCleanupToolController.m" lineNumber:2637 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
   }
 
-  v7 = [(PUCleanupToolController *)self brushModeButton];
-  v8 = [v7 isSelected];
-  v9 = [(PUCleanupToolController *)self brushModeButton];
-  [v9 setSelected:v8 ^ 1u];
+  brushModeButton = [(PUCleanupToolController *)self brushModeButton];
+  isSelected = [brushModeButton isSelected];
+  brushModeButton2 = [(PUCleanupToolController *)self brushModeButton];
+  [brushModeButton2 setSelected:isSelected ^ 1u];
 
   [(PUCleanupToolController *)self _updateBrushModeButton];
-  v10 = [(PUCleanupToolController *)self brushModeButton];
-  v11 = [v10 isSelected];
+  brushModeButton3 = [(PUCleanupToolController *)self brushModeButton];
+  isSelected2 = [brushModeButton3 isSelected];
 
-  if (v11)
+  if (isSelected2)
   {
     v12 = 2;
   }
@@ -1756,8 +1756,8 @@ uint64_t __66__PUCleanupToolController__showCleanupBrushSizeSlider_label_show___
 - (void)_updateBrushModeButton
 {
   v6 = +[PUInterfaceManager currentTheme];
-  v3 = [(PUCleanupToolController *)self brushModeButton];
-  if ([v3 isSelected])
+  brushModeButton = [(PUCleanupToolController *)self brushModeButton];
+  if ([brushModeButton isSelected])
   {
     [v6 photoEditingToolbarButtonSelectedColor];
   }
@@ -1768,25 +1768,25 @@ uint64_t __66__PUCleanupToolController__showCleanupBrushSizeSlider_label_show___
   }
   v4 = ;
 
-  v5 = [(PUCleanupToolController *)self brushModeButton];
-  [v5 setTintColor:v4];
+  brushModeButton2 = [(PUCleanupToolController *)self brushModeButton];
+  [brushModeButton2 setTintColor:v4];
 }
 
-- (void)_resetTapped:(id)a3
+- (void)_resetTapped:(id)tapped
 {
   [(PUCleanupToolController *)self _setBusy:1];
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  [v4 updateProgressIndicatorAnimated:1];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate updateProgressIndicatorAnimated:1];
 
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v20 = [v5 composition];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
 
   [(PUPhotoEditToolController *)self willModifyAdjustment];
-  v6 = [(PUPhotoEditToolController *)self compositionController];
-  [v6 removeAdjustmentWithKey:*MEMORY[0x1E69BE028]];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController2 removeAdjustmentWithKey:*MEMORY[0x1E69BE028]];
 
-  v7 = [(PUPhotoEditToolController *)self compositionController];
-  [v7 removeAdjustmentWithKey:@"inpaintMasks"];
+  compositionController3 = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController3 removeAdjustmentWithKey:@"inpaintMasks"];
 
   v8 = PULocalizedString(@"PHOTOEDIT_CLEANUP_RESET_ACTION_TITLE");
   v9 = [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v8];
@@ -1794,8 +1794,8 @@ uint64_t __66__PUCleanupToolController__showCleanupBrushSizeSlider_label_show___
   [(PUCleanupToolController *)self _updateResetButtonState];
   [(PUCleanupToolMaskView *)self->_maskView setSampledPoints:0];
   v10 = objc_alloc_init(MEMORY[0x1E69BDDC0]);
-  v11 = [(PUPhotoEditToolController *)self compositionController];
-  [v11 setBrushStrokeHistory:v10];
+  compositionController4 = [(PUPhotoEditToolController *)self compositionController];
+  [compositionController4 setBrushStrokeHistory:v10];
 
   [(PUCleanupToolController *)self _setCleanupMode:1];
   if (_os_feature_enabled_impl())
@@ -1804,33 +1804,33 @@ uint64_t __66__PUCleanupToolController__showCleanupBrushSizeSlider_label_show___
   }
 
   v12 = +[PUPhotoEditProtoSettings sharedInstance];
-  v13 = [v12 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v12 cleanupMaskDisplayMode];
 
-  if (!v13)
+  if (!cleanupMaskDisplayMode)
   {
     retouchVFXOverlay = self->_retouchVFXOverlay;
-    v15 = [(PUPhotoEditToolController *)self compositionController];
-    v16 = [v15 composition];
-    [(PUVFXRetouchOverlay *)retouchVFXOverlay didResetComposition:v16];
+    compositionController5 = [(PUPhotoEditToolController *)self compositionController];
+    composition2 = [compositionController5 composition];
+    [(PUVFXRetouchOverlay *)retouchVFXOverlay didResetComposition:composition2];
   }
 
   [(PUCleanupToolController *)self _updateFeedbackViewVisibility];
   v17 = MEMORY[0x1E69C4258];
-  v18 = [(PUPhotoEditToolController *)self compositionController];
-  v19 = [v18 composition];
-  [v17 reportAnalyticsForChangeFrom:v20 to:v19 actionType:2];
+  compositionController6 = [(PUPhotoEditToolController *)self compositionController];
+  composition3 = [compositionController6 composition];
+  [v17 reportAnalyticsForChangeFrom:composition to:composition3 actionType:2];
 }
 
-- (void)_setCleanupMode:(unint64_t)a3
+- (void)_setCleanupMode:(unint64_t)mode
 {
-  cleanupMode = a3;
-  if (self->_cleanupMode != a3)
+  cleanupMode = mode;
+  if (self->_cleanupMode != mode)
   {
-    self->_cleanupMode = a3;
+    self->_cleanupMode = mode;
     [(PUCleanupToolController *)self _addOverlayIfNeeded];
     [(PUCleanupOverlayViewController *)self->_overlayController setCleanupMode:cleanupMode];
-    v5 = [(PUCleanupToolController *)self view];
-    [v5 setNeedsUpdateConstraints];
+    view = [(PUCleanupToolController *)self view];
+    [view setNeedsUpdateConstraints];
 
     cleanupMode = self->_cleanupMode;
   }
@@ -1881,16 +1881,16 @@ LABEL_15:
   v8 = self->_cleanupMode;
   if (v8 == 2)
   {
-    v16 = [(PUPhotoEditToolController *)self delegate];
-    [v16 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:0];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:0];
 
     [(PUCleanupToolController *)self _updateMaskViewForBrushMode];
-    v18 = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
-    v17 = [v18 layer];
-    [v17 setOpacity:0.0];
+    brushView = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
+    layer = [brushView layer];
+    [layer setOpacity:0.0];
 
-    v13 = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay rootLayer];
-    v14 = v13;
+    rootLayer = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay rootLayer];
+    v14 = rootLayer;
     v15 = 0.0;
   }
 
@@ -1900,8 +1900,8 @@ LABEL_15:
     {
       if (!v8)
       {
-        v9 = [(PUPhotoEditToolController *)self delegate];
-        [v9 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:1];
+        delegate2 = [(PUPhotoEditToolController *)self delegate];
+        [delegate2 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:1];
 
         [(PUCleanupToolController *)self _updateMaskViewForBrushMode];
       }
@@ -1909,39 +1909,39 @@ LABEL_15:
       return;
     }
 
-    v10 = [(PUPhotoEditToolController *)self delegate];
-    [v10 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:0];
+    delegate3 = [(PUPhotoEditToolController *)self delegate];
+    [delegate3 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:0];
 
     [(PUCleanupToolController *)self _updateMaskViewForDefaultModeIfNecessary];
-    v18 = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
-    v11 = [v18 layer];
+    brushView = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
+    layer2 = [brushView layer];
     LODWORD(v12) = 1.0;
-    [v11 setOpacity:v12];
+    [layer2 setOpacity:v12];
 
-    v13 = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay rootLayer];
-    v14 = v13;
+    rootLayer = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay rootLayer];
+    v14 = rootLayer;
     LODWORD(v15) = 1.0;
   }
 
-  [v13 setOpacity:v15];
+  [rootLayer setOpacity:v15];
 }
 
-- (void)modifyInpaintAdjustmentWithBlock:(id)a3 actionStringKey:(id)a4 completion:(id)a5
+- (void)modifyInpaintAdjustmentWithBlock:(id)block actionStringKey:(id)key completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  keyCopy = key;
+  completionCopy = completion;
+  blockCopy = block;
   [(PUCleanupToolController *)self _donateTipsAppCleanupSignal];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__PUCleanupToolController_modifyInpaintAdjustmentWithBlock_actionStringKey_completion___block_invoke;
   v13[3] = &unk_1E7B76888;
-  v14 = v8;
-  v15 = v9;
+  v14 = keyCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v11 = v8;
-  v12 = v9;
-  [(PUCleanupToolController *)self checkPotentialInpaintOperation:v10 handler:v13];
+  v11 = keyCopy;
+  v12 = completionCopy;
+  [(PUCleanupToolController *)self checkPotentialInpaintOperation:blockCopy handler:v13];
 }
 
 void __87__PUCleanupToolController_modifyInpaintAdjustmentWithBlock_actionStringKey_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -2039,88 +2039,88 @@ void __87__PUCleanupToolController_modifyInpaintAdjustmentWithBlock_actionString
   }
 }
 
-- (void)checkPotentialInpaintOperation:(id)a3 handler:(id)a4
+- (void)checkPotentialInpaintOperation:(id)operation handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUPhotoEditToolController *)self compositionController];
-  v9 = [v8 copy];
+  operationCopy = operation;
+  handlerCopy = handler;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  v9 = [compositionController copy];
 
   v10 = *MEMORY[0x1E69BE028];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___block_invoke;
   v38[3] = &unk_1E7B76810;
-  v11 = v6;
+  v11 = operationCopy;
   v39 = v11;
   [v9 modifyAdjustmentWithKey:v10 modificationBlock:v38];
   v12 = [v9 inpaintAdjustmentControllerCreatingIfNecessary:0];
-  v13 = [(PUPhotoEditToolController *)self compositionController];
-  v14 = [v13 composition];
-  v15 = [v12 deltaFromComposition:v14];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController2 composition];
+  v15 = [v12 deltaFromComposition:composition];
 
-  v16 = [v9 composition];
-  v17 = [(PUPhotoEditToolController *)self compositionController];
-  v18 = [v17 composition];
-  if (([v16 isEqualToComposition:v18] & 1) != 0 || !v15)
+  composition2 = [v9 composition];
+  compositionController3 = [(PUPhotoEditToolController *)self compositionController];
+  composition3 = [compositionController3 composition];
+  if (([composition2 isEqualToComposition:composition3] & 1) != 0 || !v15)
   {
   }
 
   else
   {
-    v19 = [v15 isEmpty];
+    isEmpty = [v15 isEmpty];
 
-    if ((v19 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       v20 = +[PUPhotoEditProtoSettings sharedInstance];
-      v21 = [v20 retouchEnablesSensitivityCheck];
+      retouchEnablesSensitivityCheck = [v20 retouchEnablesSensitivityCheck];
 
-      if (v21)
+      if (retouchEnablesSensitivityCheck)
       {
-        v22 = [(PUCleanupToolController *)self sensitivityRequest];
+        sensitivityRequest = [(PUCleanupToolController *)self sensitivityRequest];
 
-        if (!v22)
+        if (!sensitivityRequest)
         {
           v23 = objc_alloc(MEMORY[0x1E69BDF50]);
-          v24 = [v9 composition];
-          v25 = [v23 initWithComposition:v24];
+          composition4 = [v9 composition];
+          v25 = [v23 initWithComposition:composition4];
           [(PUCleanupToolController *)self setSensitivityRequest:v25];
 
           v26 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:1];
-          v27 = [(PUCleanupToolController *)self sensitivityRequest];
-          [v27 setPriority:v26];
+          sensitivityRequest2 = [(PUCleanupToolController *)self sensitivityRequest];
+          [sensitivityRequest2 setPriority:v26];
 
-          v28 = [(PUCleanupToolController *)self sensitivityRequest];
-          [v28 setResponseQueue:MEMORY[0x1E69E96A0]];
+          sensitivityRequest3 = [(PUCleanupToolController *)self sensitivityRequest];
+          [sensitivityRequest3 setResponseQueue:MEMORY[0x1E69E96A0]];
         }
 
-        v29 = [v9 composition];
-        v30 = [(PUCleanupToolController *)self sensitivityRequest];
-        [v30 setComposition:v29];
+        composition5 = [v9 composition];
+        sensitivityRequest4 = [(PUCleanupToolController *)self sensitivityRequest];
+        [sensitivityRequest4 setComposition:composition5];
 
-        v31 = [(PUCleanupToolController *)self isBusy];
-        if (!v31)
+        isBusy = [(PUCleanupToolController *)self isBusy];
+        if (!isBusy)
         {
           [(PUCleanupToolController *)self _setBusy:1];
-          v32 = [(PUPhotoEditToolController *)self delegate];
-          [v32 updateProgressIndicatorAnimated:1];
+          delegate = [(PUPhotoEditToolController *)self delegate];
+          [delegate updateProgressIndicatorAnimated:1];
         }
 
-        v33 = [(PUCleanupToolController *)self sensitivityRequest];
+        sensitivityRequest5 = [(PUCleanupToolController *)self sensitivityRequest];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___block_invoke_2;
         v34[3] = &unk_1E7B76838;
-        v37 = v31;
+        v37 = isBusy;
         v34[4] = self;
-        v36 = v7;
+        v36 = handlerCopy;
         v35 = v15;
-        [v33 submit:v34];
+        [sensitivityRequest5 submit:v34];
       }
 
       else
       {
-        (*(v7 + 2))(v7, 1, v15);
+        (*(handlerCopy + 2))(handlerCopy, 1, v15);
       }
     }
   }
@@ -2165,8 +2165,8 @@ void __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___bloc
 - (void)_handleOperationExceedsSizeLimit
 {
   [(PUCleanupToolController *)self _setBusy:0];
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  [v3 updateProgressIndicatorAnimated:1];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate updateProgressIndicatorAnimated:1];
 
   [(PUCleanupToolController *)self addUserPromptViewOfType:5 animated:1];
   [(PUCleanupToolController *)self fadeOutBrushStrokeWithDuration:0.2];
@@ -2177,11 +2177,11 @@ void __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___bloc
 - (void)previewingOriginalDidStop
 {
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [v3 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v3 cleanupMaskDisplayMode];
 
-  if ((v4 - 1) >= 2)
+  if ((cleanupMaskDisplayMode - 1) >= 2)
   {
-    if (!v4)
+    if (!cleanupMaskDisplayMode)
     {
 
       [(PUCleanupToolController *)self setVFXOverlayHidden:0];
@@ -2199,11 +2199,11 @@ void __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___bloc
 - (void)previewingOriginalDidStart
 {
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [v3 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v3 cleanupMaskDisplayMode];
 
-  if ((v4 - 1) >= 2)
+  if ((cleanupMaskDisplayMode - 1) >= 2)
   {
-    if (!v4)
+    if (!cleanupMaskDisplayMode)
     {
 
       [(PUCleanupToolController *)self setVFXOverlayHidden:1];
@@ -2218,20 +2218,20 @@ void __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___bloc
   }
 }
 
-- (void)toolControllerWantsToShowOriginal:(BOOL)a3
+- (void)toolControllerWantsToShowOriginal:(BOOL)original
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  [v4 toolControllerWantsToToggleOriginal:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerWantsToToggleOriginal:self];
 }
 
-- (id)transformedImageForBrushStrokeExclusionMask:(id)a3
+- (id)transformedImageForBrushStrokeExclusionMask:(id)mask
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (mask)
   {
     v4 = MEMORY[0x1E695F658];
-    v5 = [a3 buffer];
-    v6 = [v4 imageWithCVPixelBuffer:{objc_msgSend(v5, "CVPixelBuffer")}];
+    buffer = [mask buffer];
+    v6 = [v4 imageWithCVPixelBuffer:{objc_msgSend(buffer, "CVPixelBuffer")}];
 
     v11 = 0;
     v7 = [(PUCleanupToolController *)self transformedImage:v6 error:&v11];
@@ -2264,14 +2264,14 @@ void __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___bloc
   return v9;
 }
 
-- (id)brushStrokeExclusionMaskForStrokeStartingAtImageSpacePoint:(CGPoint)a3 withRadius:(double)a4
+- (id)brushStrokeExclusionMaskForStrokeStartingAtImageSpacePoint:(CGPoint)point withRadius:(double)radius
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v18 = *MEMORY[0x1E69E9840];
-  v8 = [(PUCleanupToolController *)self geometry];
+  geometry = [(PUCleanupToolController *)self geometry];
 
-  if (!v8)
+  if (!geometry)
   {
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -2282,17 +2282,17 @@ void __66__PUCleanupToolController_checkPotentialInpaintOperation_handler___bloc
     }
   }
 
-  self->_exclusionMaskHitTestRadius = a4;
-  v10 = [(PUCleanupToolController *)self _createSubjectExclusionMask];
-  v11 = v10;
-  if (v10)
+  self->_exclusionMaskHitTestRadius = radius;
+  _createSubjectExclusionMask = [(PUCleanupToolController *)self _createSubjectExclusionMask];
+  v11 = _createSubjectExclusionMask;
+  if (_createSubjectExclusionMask)
   {
-    [v10 scale];
+    [_createSubjectExclusionMask scale];
     NUScaleInvert();
     NUScaleToDouble();
     v13 = v12;
     v14 = x * v12;
-    if (a4 <= 0.0)
+    if (radius <= 0.0)
     {
       if (![MEMORY[0x1E69BDE68] mask:v11 containsPoint:{v14, y * v13}])
       {
@@ -2315,24 +2315,24 @@ LABEL_11:
 
 - (BOOL)isIpadLayout
 {
-  v2 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v3 = [v2 currentLayoutStyle] == 4;
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  v3 = [photoEditSpec currentLayoutStyle] == 4;
 
   return v3;
 }
 
-- (void)_updateVFXMaskOverlayWithSelectedMask:(id)a3 point:(CGPoint)a4
+- (void)_updateVFXMaskOverlayWithSelectedMask:(id)mask point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([MEMORY[0x1E69B3DB8] isMaskValid:v7])
+  maskCopy = mask;
+  if ([MEMORY[0x1E69B3DB8] isMaskValid:maskCopy])
   {
-    v8 = [(PUPhotoEditToolController *)self compositionController];
-    v9 = [v8 composition];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
 
-    v10 = [v7 imageByApplyingFilter:@"CIMaskToAlpha"];
+    v10 = [maskCopy imageByApplyingFilter:@"CIMaskToAlpha"];
     v14 = 0;
     v11 = [(PUCleanupToolController *)self transformedImage:v10 error:&v14];
     v12 = v14;
@@ -2351,7 +2351,7 @@ LABEL_11:
 
     else
     {
-      [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay selectPoint:v11 withMask:v9 composition:x, y];
+      [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay selectPoint:v11 withMask:composition composition:x, y];
     }
   }
 
@@ -2364,20 +2364,20 @@ LABEL_11:
 - (void)_createVFXMaskOverlays
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self toolContainerView];
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
 
-  if (v3)
+  if (toolContainerView)
   {
     v4 = off_1E7B6E000;
     v5 = +[PUPhotoEditProtoSettings sharedInstance];
     if ([v5 cleanupMaskDisplayMode])
     {
-      v6 = 0;
+      maskContext = 0;
     }
 
     else
     {
-      v6 = [(PUCleanupToolController *)self maskContext];
+      maskContext = [(PUCleanupToolController *)self maskContext];
     }
 
     if (self->_retouchVFXOverlay || ([(PUCleanupToolController *)self maskContext], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
@@ -2388,28 +2388,28 @@ LABEL_25:
     }
 
     v8 = [PUVFXRetouchOverlay alloc];
-    v9 = [(PUPhotoEditToolController *)self compositionController];
-    v10 = [v9 composition];
-    v11 = [(PUPhotoEditToolController *)self delegate];
-    v12 = [v11 mediaView];
-    v13 = [v12 _visibleImageRectOverlayView];
-    v14 = [(PUVFXRetouchOverlay *)v8 initWithComposition:v10 maskContext:v6 constrainingView:v13 isHDR:self->_needsHDRUI overlayDelegate:self];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
+    _visibleImageRectOverlayView = [mediaView _visibleImageRectOverlayView];
+    v14 = [(PUVFXRetouchOverlay *)v8 initWithComposition:composition maskContext:maskContext constrainingView:_visibleImageRectOverlayView isHDR:self->_needsHDRUI overlayDelegate:self];
     retouchVFXOverlay = self->_retouchVFXOverlay;
     self->_retouchVFXOverlay = v14;
 
     [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay setUserInteractionEnabled:0];
-    v16 = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
-    [(PUCleanupOverlayViewController *)self->_overlayController setVfxBrushView:v16];
+    brushView = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
+    [(PUCleanupOverlayViewController *)self->_overlayController setVfxBrushView:brushView];
 
-    v17 = [(PUCleanupToolController *)self view];
-    v18 = [v17 subviews];
+    view = [(PUCleanupToolController *)self view];
+    subviews = [view subviews];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = v18;
+    v19 = subviews;
     v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v20)
     {
@@ -2429,8 +2429,8 @@ LABEL_25:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v26 = [(PUCleanupToolController *)self view];
-            [v26 insertSubview:self->_retouchVFXOverlay aboveSubview:v25];
+            view2 = [(PUCleanupToolController *)self view];
+            [view2 insertSubview:self->_retouchVFXOverlay aboveSubview:v25];
 
             v22 = 1;
           }
@@ -2459,14 +2459,14 @@ LABEL_25:
       _os_log_error_impl(&dword_1B36F3000, v27, OS_LOG_TYPE_ERROR, "Couldn't find PUCleanupOverlayView in subviews array.", v32, 2u);
     }
 
-    v28 = [(PUCleanupToolController *)self view];
-    [v28 addSubview:self->_retouchVFXOverlay];
+    view3 = [(PUCleanupToolController *)self view];
+    [view3 addSubview:self->_retouchVFXOverlay];
 
 LABEL_22:
-    v29 = [(__objc2_class *)v4[68] sharedInstance];
-    v30 = [v29 retouchShowVFXControls];
+    sharedInstance = [(__objc2_class *)v4[68] sharedInstance];
+    retouchShowVFXControls = [sharedInstance retouchShowVFXControls];
 
-    if (v30)
+    if (retouchShowVFXControls)
     {
       [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay showControlsInViewController:self];
     }
@@ -2475,8 +2475,8 @@ LABEL_22:
   }
 
 LABEL_26:
-  v31 = [(PUCleanupToolController *)self view];
-  [v31 setNeedsUpdateConstraints];
+  view4 = [(PUCleanupToolController *)self view];
+  [view4 setNeedsUpdateConstraints];
 }
 
 - (void)_createMaskView
@@ -2484,10 +2484,10 @@ LABEL_26:
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_maskView)
   {
-    v3 = [(PUPhotoEditToolController *)self delegate];
-    v4 = [v3 mediaView];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
 
-    [v4 bounds];
+    [mediaView bounds];
     v6 = v5;
     v8 = v7;
     v9 = PLPhotoEditGetLog();
@@ -2501,34 +2501,34 @@ LABEL_26:
       _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEBUG, "mediaViewSize: %@", &v18, 0xCu);
     }
 
-    v11 = [[PUCleanupToolMaskView alloc] initWithMediaView:v4 isHDR:self->_needsHDRUI];
+    v11 = [[PUCleanupToolMaskView alloc] initWithMediaView:mediaView isHDR:self->_needsHDRUI];
     maskView = self->_maskView;
     self->_maskView = v11;
 
     [(PUCleanupToolMaskView *)self->_maskView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(PUCleanupToolMaskView *)self->_maskView layer];
-    [v13 setMasksToBounds:1];
+    layer = [(PUCleanupToolMaskView *)self->_maskView layer];
+    [layer setMasksToBounds:1];
 
     v14 = self->_maskView;
-    v15 = [(PUCleanupToolMaskView *)v14 layer];
-    [v15 setDelegate:v14];
+    layer2 = [(PUCleanupToolMaskView *)v14 layer];
+    [layer2 setDelegate:v14];
 
     [(PUCleanupToolMaskView *)self->_maskView setMaskTransformerDelegate:self];
     [(PUCleanupToolMaskView *)self->_maskView setUserInteractionEnabled:0];
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(PUCleanupToolMaskView *)self->_maskView setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PUCleanupToolMaskView *)self->_maskView setBackgroundColor:clearColor];
 
-    v17 = [(PUCleanupToolController *)self view];
-    [v17 insertSubview:self->_maskView atIndex:0];
+    view = [(PUCleanupToolController *)self view];
+    [view insertSubview:self->_maskView atIndex:0];
   }
 }
 
 - (void)_updateMaskViewForDefaultMode
 {
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [v3 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v3 cleanupMaskDisplayMode];
 
-  if (v4 == 2)
+  if (cleanupMaskDisplayMode == 2)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -2538,10 +2538,10 @@ LABEL_26:
     [(PUCleanupToolController *)self createAllAvailableMasks:v6];
   }
 
-  else if (v4 == 1)
+  else if (cleanupMaskDisplayMode == 1)
   {
-    v5 = [(PUCleanupToolController *)self _newOverlayMask];
-    [(PUCleanupToolController *)self _updateMaskViewWithUnselectedMaskImage:v5 foregroundMasks:0 backgroundMasks:0];
+    _newOverlayMask = [(PUCleanupToolController *)self _newOverlayMask];
+    [(PUCleanupToolController *)self _updateMaskViewWithUnselectedMaskImage:_newOverlayMask foregroundMasks:0 backgroundMasks:0];
   }
 }
 
@@ -2569,20 +2569,20 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
   }
 }
 
-- (void)_displayProcessingWithSelectedMaskImage:(id)a3 unselectedMaskImage:(id)a4 exclusionMasks:(id)a5 point:(CGPoint)a6
+- (void)_displayProcessingWithSelectedMaskImage:(id)image unselectedMaskImage:(id)maskImage exclusionMasks:(id)masks point:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
+  y = point.y;
+  x = point.x;
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v37 = a4;
-  v11 = a5;
-  v12 = v10;
+  imageCopy = image;
+  maskImageCopy = maskImage;
+  masksCopy = masks;
+  v12 = imageCopy;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v13 = [v11 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  v13 = [masksCopy countByEnumeratingWithState:&v40 objects:v44 count:16];
   v38 = v12;
   if (v13)
   {
@@ -2596,12 +2596,12 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
       {
         if (*v41 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(masksCopy);
         }
 
         v18 = MEMORY[0x1E695F658];
-        v19 = [*(*(&v40 + 1) + 8 * v16) buffer];
-        v20 = [v18 imageWithCVPixelBuffer:{objc_msgSend(v19, "CVPixelBuffer")}];
+        buffer = [*(*(&v40 + 1) + 8 * v16) buffer];
+        v20 = [v18 imageWithCVPixelBuffer:{objc_msgSend(buffer, "CVPixelBuffer")}];
 
         [v17 extent];
         v22 = v21;
@@ -2613,24 +2613,24 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
         CGAffineTransformMakeScale(&v39, v24, v26 / v27);
         v28 = [v20 imageByApplyingTransform:&v39];
 
-        v29 = [MEMORY[0x1E695F608] subtract];
-        v12 = [v29 applyWithForeground:v28 background:v17];
+        subtract = [MEMORY[0x1E695F608] subtract];
+        v12 = [subtract applyWithForeground:v28 background:v17];
 
         ++v16;
         v17 = v12;
       }
 
       while (v14 != v16);
-      v14 = [v11 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v14 = [masksCopy countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v14);
   }
 
   v30 = +[PUPhotoEditProtoSettings sharedInstance];
-  v31 = [v30 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v30 cleanupMaskDisplayMode];
 
-  if (!v31)
+  if (!cleanupMaskDisplayMode)
   {
     if (v12)
     {
@@ -2645,11 +2645,11 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
 
   v32 = [v12 imageByApplyingFilter:@"CIColorInvert"];
   v33 = +[PUPhotoEditProtoSettings sharedInstance];
-  v34 = [v33 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode2 = [v33 cleanupMaskDisplayMode];
 
-  if ((v34 - 1) <= 1)
+  if ((cleanupMaskDisplayMode2 - 1) <= 1)
   {
-    [(PUCleanupToolMaskView *)self->_maskView setMask:v37];
+    [(PUCleanupToolMaskView *)self->_maskView setMask:maskImageCopy];
     [(PUCleanupToolMaskView *)self->_maskView setSelectedMask:v32];
     [(PUCleanupToolMaskView *)self->_maskView setForegroundMasks:0];
     [(PUCleanupToolMaskView *)self->_maskView setBackgroundMasks:0];
@@ -2660,38 +2660,38 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
   if (v32)
   {
     [(PUCleanupToolController *)self _setBusy:1 withDelay:15.0];
-    v35 = [(PUPhotoEditToolController *)self delegate];
-    [v35 updateProgressIndicatorAnimated:1];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    [delegate updateProgressIndicatorAnimated:1];
   }
 }
 
-- (void)_displayProcessingWithSelectedMask:(id)a3 unselectedMaskImage:(id)a4 exclusionMasks:(id)a5 point:(CGPoint)a6
+- (void)_displayProcessingWithSelectedMask:(id)mask unselectedMaskImage:(id)image exclusionMasks:(id)masks point:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
+  y = point.y;
+  x = point.x;
   v11 = MEMORY[0x1E695F658];
-  v12 = a5;
-  v13 = a4;
-  v14 = [a3 buffer];
-  v15 = [v11 imageWithCVPixelBuffer:{objc_msgSend(v14, "CVPixelBuffer")}];
+  masksCopy = masks;
+  imageCopy = image;
+  buffer = [mask buffer];
+  v15 = [v11 imageWithCVPixelBuffer:{objc_msgSend(buffer, "CVPixelBuffer")}];
 
-  [(PUCleanupToolController *)self _displayProcessingWithSelectedMaskImage:v15 unselectedMaskImage:v13 exclusionMasks:v12 point:x, y];
+  [(PUCleanupToolController *)self _displayProcessingWithSelectedMaskImage:v15 unselectedMaskImage:imageCopy exclusionMasks:masksCopy point:x, y];
 }
 
-- (void)_updateMaskViewWithUnselectedMaskImage:(id)a3 foregroundMasks:(id)a4 backgroundMasks:(id)a5
+- (void)_updateMaskViewWithUnselectedMaskImage:(id)image foregroundMasks:(id)masks backgroundMasks:(id)backgroundMasks
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  imageCopy = image;
+  masksCopy = masks;
+  backgroundMasksCopy = backgroundMasks;
   v10 = +[PUPhotoEditProtoSettings sharedInstance];
-  v11 = [v10 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v10 cleanupMaskDisplayMode];
 
-  if ((v11 - 1) <= 1)
+  if ((cleanupMaskDisplayMode - 1) <= 1)
   {
-    [(PUCleanupToolMaskView *)self->_maskView setMask:v12];
+    [(PUCleanupToolMaskView *)self->_maskView setMask:imageCopy];
     [(PUCleanupToolMaskView *)self->_maskView setSelectedMask:0];
-    [(PUCleanupToolMaskView *)self->_maskView setForegroundMasks:v8];
-    [(PUCleanupToolMaskView *)self->_maskView setBackgroundMasks:v9];
+    [(PUCleanupToolMaskView *)self->_maskView setForegroundMasks:masksCopy];
+    [(PUCleanupToolMaskView *)self->_maskView setBackgroundMasks:backgroundMasksCopy];
     [(PUCleanupToolMaskView *)self->_maskView setNeedsDisplay];
   }
 }
@@ -2707,15 +2707,15 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
   if ([MEMORY[0x1E69B3AB0] preserveSubjectsWhenInpainting] && self->_cleanupMode == 1)
   {
     v3 = MEMORY[0x1E69BDE68];
-    v4 = [(PUCleanupToolController *)self maskContext];
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    v6 = [v5 composition];
+    maskContext = [(PUCleanupToolController *)self maskContext];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __54__PUCleanupToolController__createSubjectExclusionMask__block_invoke;
     v9[3] = &unk_1E7B7C288;
     v9[4] = &v10;
-    [v3 createSubjectMaskForContext:v4 composition:v6 completion:v9];
+    [v3 createSubjectMaskForContext:maskContext composition:composition completion:v9];
   }
 
   v7 = v11[5];
@@ -2733,42 +2733,42 @@ void __56__PUCleanupToolController__updateMaskViewForDefaultMode__block_invoke(u
   v21 = __Block_byref_object_dispose__21604;
   v22 = 0;
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [v3 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v3 cleanupMaskDisplayMode];
 
-  if (v4 == 1)
+  if (cleanupMaskDisplayMode == 1)
   {
-    v9 = [(PUCleanupToolController *)self maskContext];
+    maskContext = [(PUCleanupToolController *)self maskContext];
 
-    if (v9)
+    if (maskContext)
     {
       v10 = MEMORY[0x1E69BDE68];
-      v6 = [(PUCleanupToolController *)self maskContext];
-      v11 = [(PUPhotoEditToolController *)self compositionController];
-      v12 = [v11 composition];
+      maskContext2 = [(PUCleanupToolController *)self maskContext];
+      compositionController = [(PUPhotoEditToolController *)self compositionController];
+      composition = [compositionController composition];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __42__PUCleanupToolController__newOverlayMask__block_invoke;
       v16[3] = &unk_1E7B767C0;
       v16[4] = self;
       v16[5] = &v17;
-      [v10 createDeclutterMaskForContext:v6 composition:v12 completion:v16];
+      [v10 createDeclutterMaskForContext:maskContext2 composition:composition completion:v16];
 
       goto LABEL_6;
     }
   }
 
-  else if (v4 == 2)
+  else if (cleanupMaskDisplayMode == 2)
   {
     v5 = MEMORY[0x1E69BDE68];
-    v6 = [(PUCleanupToolController *)self maskContext];
-    v7 = [(PUPhotoEditToolController *)self compositionController];
-    v8 = [v7 composition];
+    maskContext2 = [(PUCleanupToolController *)self maskContext];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    composition2 = [compositionController2 composition];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __42__PUCleanupToolController__newOverlayMask__block_invoke_2;
     v15[3] = &unk_1E7B7C288;
     v15[4] = &v17;
-    [v5 createAvailableObjectsMaskForContext:v6 composition:v8 completion:v15];
+    [v5 createAvailableObjectsMaskForContext:maskContext2 composition:composition2 completion:v15];
 
 LABEL_6:
   }
@@ -2845,36 +2845,36 @@ uint64_t __42__PUCleanupToolController__newOverlayMask__block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)createAllAvailableMasks:(id)a3
+- (void)createAllAvailableMasks:(id)masks
 {
-  v4 = a3;
-  v5 = [(PUCleanupToolController *)self maskContext];
-  v6 = [v5 segmentationResult];
+  masksCopy = masks;
+  maskContext = [(PUCleanupToolController *)self maskContext];
+  segmentationResult = [maskContext segmentationResult];
 
-  v27 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
-  if (v6)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (segmentationResult)
   {
-    v26 = v4;
-    v8 = [v6 instances];
-    v9 = [v8 copy];
+    v26 = masksCopy;
+    instances = [segmentationResult instances];
+    v9 = [instances copy];
 
     v10 = MEMORY[0x1E69BDE68];
-    v11 = [(PUPhotoEditToolController *)self compositionController];
-    v12 = [v11 composition];
-    v13 = [(PUCleanupToolController *)self maskContext];
-    v14 = [v10 removeOperationsFromInstances:v9 composition:v12 context:v13];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
+    maskContext2 = [(PUCleanupToolController *)self maskContext];
+    v14 = [v10 removeOperationsFromInstances:v9 composition:composition context:maskContext2];
 
-    v15 = [v14 firstIndex];
-    if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v14 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = v15;
+      v16 = firstIndex;
       v17 = 0;
       do
       {
         v18 = v17;
         v28 = 0;
-        v19 = [v6 newMaskForInstance:v16 error:&v28];
+        v19 = [segmentationResult newMaskForInstance:v16 error:&v28];
         v17 = v28;
 
         v20 = [MEMORY[0x1E695F658] imageWithCVImageBuffer:{objc_msgSend(v19, "CVPixelBuffer")}];
@@ -2883,17 +2883,17 @@ uint64_t __42__PUCleanupToolController__newOverlayMask__block_invoke_2(uint64_t 
           v21 = v20;
           v22 = [v20 imageByApplyingFilter:@"CIColorInvert"];
 
-          v23 = [v6 foregroundInstances];
-          v24 = [v23 containsIndex:v16];
+          foregroundInstances = [segmentationResult foregroundInstances];
+          v24 = [foregroundInstances containsIndex:v16];
 
           if (v24)
           {
-            v25 = v7;
+            v25 = array2;
           }
 
           else
           {
-            v25 = v27;
+            v25 = array;
           }
 
           [v25 addObject:v22];
@@ -2905,59 +2905,59 @@ uint64_t __42__PUCleanupToolController__newOverlayMask__block_invoke_2(uint64_t 
       while (v16 != 0x7FFFFFFFFFFFFFFFLL);
     }
 
-    v4 = v26;
+    masksCopy = v26;
   }
 
-  v4[2](v4, v27, v7, 0);
+  masksCopy[2](masksCopy, array, array2, 0);
 }
 
-- (void)addObjectRemovalUsingImageSpaceStroke:(id)a3 exclusionMask:(id)a4 completion:(id)a5
+- (void)addObjectRemovalUsingImageSpaceStroke:(id)stroke exclusionMask:(id)mask completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PUPhotoEditToolController *)self delegate];
-  v12 = [v11 mediaView];
-  v13 = [v12 _scrollView];
-  [v13 contentSize];
+  strokeCopy = stroke;
+  maskCopy = mask;
+  completionCopy = completion;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  mediaView = [delegate mediaView];
+  _scrollView = [mediaView _scrollView];
+  [_scrollView contentSize];
   v15 = v14;
 
-  v16 = [(PUCleanupToolController *)self geometry];
-  [v16 outputRect];
+  geometry = [(PUCleanupToolController *)self geometry];
+  [geometry outputRect];
   v18 = v17;
 
-  v19 = v9;
+  v19 = maskCopy;
   exclusionMaskHitTestRadius = self->_exclusionMaskHitTestRadius;
-  v21 = [(PUCleanupToolController *)self isBusy];
-  if (!v21)
+  isBusy = [(PUCleanupToolController *)self isBusy];
+  if (!isBusy)
   {
     [(PUCleanupToolController *)self _setBusy:1];
-    v22 = [(PUPhotoEditToolController *)self delegate];
-    [v22 updateProgressIndicatorAnimated:1];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    [delegate2 updateProgressIndicatorAnimated:1];
 
     [(PUCleanupOverlayViewController *)self->_overlayController setCleanupMode:0];
   }
 
   [(PUCleanupToolController *)self _interactionOccurred];
   v23 = objc_alloc_init(MEMORY[0x1E69C4270]);
-  v24 = [(PUCleanupToolController *)self maskContext];
-  v25 = [(PUPhotoEditToolController *)self compositionController];
-  v26 = [(PUCleanupToolController *)self geometry];
-  v27 = [(PIInpaintMaskContext *)self->_maskContext detectedFaces];
+  maskContext = [(PUCleanupToolController *)self maskContext];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  geometry2 = [(PUCleanupToolController *)self geometry];
+  detectedFaces = [(PIInpaintMaskContext *)self->_maskContext detectedFaces];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __90__PUCleanupToolController_addObjectRemovalUsingImageSpaceStroke_exclusionMask_completion___block_invoke;
   v31[3] = &unk_1E7B76798;
-  v36 = v21;
+  v36 = isBusy;
   v31[4] = self;
-  v32 = v8;
+  v32 = strokeCopy;
   v35 = exclusionMaskHitTestRadius;
   v33 = v19;
-  v34 = v10;
-  v28 = v10;
+  v34 = completionCopy;
+  v28 = completionCopy;
   v29 = v19;
-  v30 = v8;
-  [v23 analyzeStrokeMaskIntersections:v30 inpaintMaskContext:v24 compositionController:v25 geometry:v26 imageToScreenSpaceScale:v27 faceRects:v31 completion:v15 / v18];
+  v30 = strokeCopy;
+  [v23 analyzeStrokeMaskIntersections:v30 inpaintMaskContext:maskContext compositionController:compositionController geometry:geometry2 imageToScreenSpaceScale:detectedFaces faceRects:v31 completion:v15 / v18];
 }
 
 void __90__PUCleanupToolController_addObjectRemovalUsingImageSpaceStroke_exclusionMask_completion___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5, char a6, char a7, char a8)
@@ -3313,38 +3313,38 @@ id __90__PUCleanupToolController_addObjectRemovalUsingImageSpaceStroke_exclusion
   return v5;
 }
 
-- (void)addObjectRemovalUsingStroke:(id)a3 exclusionMask:(id)a4
+- (void)addObjectRemovalUsingStroke:(id)stroke exclusionMask:(id)mask
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v28 = a4;
+  strokeCopy = stroke;
+  maskCopy = mask;
   v7 = objc_alloc(MEMORY[0x1E69B3B90]);
-  [v6 radius];
+  [strokeCopy radius];
   v8 = *(MEMORY[0x1E69B3900] + 16);
   *buf = *MEMORY[0x1E69B3900];
   v30 = v8;
   v9 = [v7 initWithRadius:buf softness:0 opacity:? clipRect:? pressureMode:?];
-  v10 = [MEMORY[0x1E696AD60] string];
-  [v10 appendString:@"addObjectRemovalUsingStroke"];
-  if ([v6 pointCount] >= 1)
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"addObjectRemovalUsingStroke"];
+  if ([strokeCopy pointCount] >= 1)
   {
     v11 = 0;
     do
     {
-      [v6 pointAtIndex:v11];
+      [strokeCopy pointAtIndex:v11];
       v13 = v12;
-      [v6 pointAtIndex:v11];
+      [strokeCopy pointAtIndex:v11];
       v15 = v14;
       v16 = MEMORY[0x1E696AEC0];
       v32.x = v13;
       v32.y = v14;
       v17 = NSStringFromCGPoint(v32);
       v18 = [v16 stringWithFormat:@"\n\t%@", v17];
-      [v10 appendString:v18];
+      [string appendString:v18];
 
-      v19 = [(PUPhotoEditToolController *)self delegate];
-      v20 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-      [v19 toolController:self originalPointFromViewPoint:v20 view:{v13, v15}];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+      [delegate toolController:self originalPointFromViewPoint:view view:{v13, v15}];
       v22 = v21;
       v24 = v23;
 
@@ -3354,38 +3354,38 @@ id __90__PUCleanupToolController_addObjectRemovalUsingImageSpaceStroke_exclusion
       ++v11;
     }
 
-    while ([v6 pointCount] > v11);
+    while ([strokeCopy pointCount] > v11);
   }
 
   v27 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v10;
+    *&buf[4] = string;
     _os_log_impl(&dword_1B36F3000, v27, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  [(PUCleanupToolController *)self addObjectRemovalUsingImageSpaceStroke:v9 exclusionMask:v28 completion:0];
+  [(PUCleanupToolController *)self addObjectRemovalUsingImageSpaceStroke:v9 exclusionMask:maskCopy completion:0];
 }
 
-- (void)addObjectRemovalAtImageSpacePoint:(CGPoint)a3 completion:(id)a4
+- (void)addObjectRemovalAtImageSpacePoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
   self->_redactionState = 0;
   v8 = [objc_alloc(MEMORY[0x1E69BDDC8]) initWithObjectRemovalAtPoint:{x, y}];
-  v9 = [(PUPhotoEditToolController *)self compositionController];
-  v10 = [v9 brushStrokeHistory];
-  [v10 addEntry:v8];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  brushStrokeHistory = [compositionController brushStrokeHistory];
+  [brushStrokeHistory addEntry:v8];
 
   [(PUCleanupToolController *)self _interactionOccurred];
   v11 = objc_alloc_init(MEMORY[0x1E69C4270]);
   [(PUCleanupToolController *)self brushRadiusForTouchType:0];
   v13 = v12;
-  v14 = [(PUCleanupToolController *)self maskContext];
-  v15 = [(PUPhotoEditToolController *)self compositionController];
-  v16 = [(PUCleanupToolController *)self geometry];
+  maskContext = [(PUCleanupToolController *)self maskContext];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  geometry = [(PUCleanupToolController *)self geometry];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion___block_invoke;
@@ -3393,9 +3393,9 @@ id __90__PUCleanupToolController_addObjectRemovalUsingImageSpaceStroke_exclusion
   v20 = x;
   v21 = y;
   v18[4] = self;
-  v19 = v7;
-  v17 = v7;
-  [v11 hitTestSegmentation:v14 radius:v15 inpaintMaskContext:v16 compositionController:v18 geometry:x completion:{y, v13}];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [v11 hitTestSegmentation:maskContext radius:compositionController2 inpaintMaskContext:geometry compositionController:v18 geometry:x completion:{y, v13}];
 }
 
 void __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion___block_invoke(uint64_t a1, void *a2)
@@ -3521,42 +3521,42 @@ void __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion_
   [v5 appendRemovalOperationWithMasks:v6 exclusionMasks:v7 options:v3 error:&v8];
 }
 
-- (void)addObjectRemovalAtPoint:(CGPoint)a3
+- (void)addObjectRemovalAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v6 toolController:self originalPointFromViewPoint:v7 view:{x, y}];
+  y = point.y;
+  x = point.x;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [delegate toolController:self originalPointFromViewPoint:view view:{x, y}];
   v9 = v8;
   v11 = v10;
 
   [(PUCleanupToolController *)self addObjectRemovalAtImageSpacePoint:0 completion:v9, v11];
 }
 
-- (void)addStroke:(id)a3 closeAndFillStroke:(BOOL)a4 completion:(id)a5
+- (void)addStroke:(id)stroke closeAndFillStroke:(BOOL)fillStroke completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  fillStrokeCopy = fillStroke;
+  strokeCopy = stroke;
+  completionCopy = completion;
   v10 = objc_alloc(MEMORY[0x1E69B3B90]);
-  [v8 radius];
+  [strokeCopy radius];
   v11 = *(MEMORY[0x1E69B3900] + 16);
   v26[0] = *MEMORY[0x1E69B3900];
   v26[1] = v11;
   v12 = [v10 initWithRadius:v26 softness:0 opacity:? clipRect:? pressureMode:?];
-  if ([v8 pointCount] >= 1)
+  if ([strokeCopy pointCount] >= 1)
   {
     v13 = 0;
     do
     {
-      [v8 pointAtIndex:v13];
+      [strokeCopy pointAtIndex:v13];
       v15 = v14;
-      [v8 pointAtIndex:v13];
+      [strokeCopy pointAtIndex:v13];
       v17 = v16;
-      v18 = [(PUPhotoEditToolController *)self delegate];
-      v19 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-      [v18 toolController:self originalPointFromViewPoint:v19 view:{v15, v17}];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+      [delegate toolController:self originalPointFromViewPoint:view view:{v15, v17}];
       v21 = v20;
       v23 = v22;
 
@@ -3566,44 +3566,44 @@ void __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion_
       ++v13;
     }
 
-    while ([v8 pointCount] > v13);
+    while ([strokeCopy pointCount] > v13);
   }
 
-  [(PUCleanupToolController *)self addImageSpaceInpaintingStroke:v12 exclusionMask:0 closeAndFillStroke:v6 needsFacePixellation:0 recordStroke:1 completion:v9];
+  [(PUCleanupToolController *)self addImageSpaceInpaintingStroke:v12 exclusionMask:0 closeAndFillStroke:fillStrokeCopy needsFacePixellation:0 recordStroke:1 completion:completionCopy];
 }
 
-- (void)_addImageSpaceInpaintingStroke:(id)a3 closeAndFillStroke:(BOOL)a4 needsFacePixellation:(BOOL)a5 recordStroke:(BOOL)a6 exclusionMask:(id)a7 exclusionMaskHitTestRadius:(double)a8 retouchBrush:(BOOL)a9 completion:(id)a10
+- (void)_addImageSpaceInpaintingStroke:(id)stroke closeAndFillStroke:(BOOL)fillStroke needsFacePixellation:(BOOL)pixellation recordStroke:(BOOL)recordStroke exclusionMask:(id)mask exclusionMaskHitTestRadius:(double)radius retouchBrush:(BOOL)brush completion:(id)self0
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
+  recordStrokeCopy = recordStroke;
+  pixellationCopy = pixellation;
+  fillStrokeCopy = fillStroke;
   v49[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a7;
-  v18 = a10;
-  if (v12)
+  strokeCopy = stroke;
+  maskCopy = mask;
+  completionCopy = completion;
+  if (recordStrokeCopy)
   {
-    v19 = [objc_alloc(MEMORY[0x1E69BDDC8]) initWithStroke:v16 closed:v14 skipSegmentationIntersections:1 needsFacePixellation:v13 subjectHitTestRadius:a8];
-    v20 = [(PUPhotoEditToolController *)self compositionController];
-    v21 = [v20 brushStrokeHistory];
-    [v21 addEntry:v19];
+    v19 = [objc_alloc(MEMORY[0x1E69BDDC8]) initWithStroke:strokeCopy closed:fillStrokeCopy skipSegmentationIntersections:1 needsFacePixellation:pixellationCopy subjectHitTestRadius:radius];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    brushStrokeHistory = [compositionController brushStrokeHistory];
+    [brushStrokeHistory addEntry:v19];
   }
 
-  v22 = [v16 ciImageTiled:0 closed:1 pressureMode:2 filled:v14];
+  v22 = [strokeCopy ciImageTiled:0 closed:1 pressureMode:2 filled:fillStrokeCopy];
   v23 = MEMORY[0x1E695F658];
-  v24 = [MEMORY[0x1E695F610] blackColor];
-  v25 = [v23 imageWithColor:v24];
+  blackColor = [MEMORY[0x1E695F610] blackColor];
+  v25 = [v23 imageWithColor:blackColor];
 
   v26 = [v22 imageByCompositingOverImage:v25];
   [(PUCleanupToolController *)self imageSize];
   v43 = [v26 imageByCroppingToRect:{0.0, 0.0, v27, v28}];
 
   [(PUCleanupToolController *)self _setBusy:1 withDelay:15.0];
-  v29 = [(PUPhotoEditToolController *)self delegate];
-  [v29 updateProgressIndicatorAnimated:1];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate updateProgressIndicatorAnimated:1];
 
   isUnsafeInitially = self->_isUnsafeInitially;
-  if (isUnsafeInitially || v13)
+  if (isUnsafeInitially || pixellationCopy)
   {
     v31 = !isUnsafeInitially;
     v32 = 1;
@@ -3617,14 +3617,14 @@ void __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion_
 
   v33 = MEMORY[0x1E69BDE68];
   [(PUCleanupToolController *)self imageSize];
-  v34 = [v33 brushStrokeExceedsSizeLimit:v16 imageSize:v14 closeAndFillStroke:?];
+  v34 = [v33 brushStrokeExceedsSizeLimit:strokeCopy imageSize:fillStrokeCopy closeAndFillStroke:?];
   redactionState = self->_redactionState;
   if (redactionState || !v34)
   {
-    v41 = v17;
-    if (v17)
+    v41 = maskCopy;
+    if (maskCopy)
     {
-      v49[0] = v17;
+      v49[0] = maskCopy;
       v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
       redactionState = self->_redactionState;
     }
@@ -3647,15 +3647,15 @@ void __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion_
     cleanupMode = self->_cleanupMode;
     if (cleanupMode == 1)
     {
-      v39 = [(PUCleanupToolController *)self _newOverlayMask];
+      _newOverlayMask = [(PUCleanupToolController *)self _newOverlayMask];
     }
 
     else
     {
-      v39 = 0;
+      _newOverlayMask = 0;
     }
 
-    [(PUCleanupToolController *)self _displayProcessingWithSelectedMaskImage:v37 unselectedMaskImage:v39 exclusionMasks:v36 point:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+    [(PUCleanupToolController *)self _displayProcessingWithSelectedMaskImage:v37 unselectedMaskImage:_newOverlayMask exclusionMasks:v36 point:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     if (cleanupMode == 1)
     {
     }
@@ -3665,22 +3665,22 @@ void __72__PUCleanupToolController_addObjectRemovalAtImageSpacePoint_completion_
     v44[2] = __176__PUCleanupToolController__addImageSpaceInpaintingStroke_closeAndFillStroke_needsFacePixellation_recordStroke_exclusionMask_exclusionMaskHitTestRadius_retouchBrush_completion___block_invoke;
     v44[3] = &unk_1E7B766D8;
     v44[4] = self;
-    v47 = v14;
-    v48 = a9;
-    v45 = v16;
+    v47 = fillStrokeCopy;
+    brushCopy = brush;
+    v45 = strokeCopy;
     v46 = v36;
     v40 = v36;
-    [(PUCleanupToolController *)self modifyInpaintAdjustmentWithBlock:v44 actionStringKey:@"PHOTOEDIT_CLEANUP_CLEAN_UP_ACTION_TITLE" completion:v18];
+    [(PUCleanupToolController *)self modifyInpaintAdjustmentWithBlock:v44 actionStringKey:@"PHOTOEDIT_CLEANUP_CLEAN_UP_ACTION_TITLE" completion:completionCopy];
 
-    v17 = v41;
+    maskCopy = v41;
   }
 
   else
   {
     [(PUCleanupToolController *)self _handleOperationExceedsSizeLimit];
-    if (v18)
+    if (completionCopy)
     {
-      v18[2](v18);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -3752,17 +3752,17 @@ void __176__PUCleanupToolController__addImageSpaceInpaintingStroke_closeAndFillS
   [*(a1 + 32) _setLastInteractionPixelCount:0];
 }
 
-- (void)addImageSpaceInpaintingStroke:(id)a3 exclusionMask:(id)a4 closeAndFillStroke:(BOOL)a5 needsFacePixellation:(BOOL)a6 recordStroke:(BOOL)a7 completion:(id)a8
+- (void)addImageSpaceInpaintingStroke:(id)stroke exclusionMask:(id)mask closeAndFillStroke:(BOOL)fillStroke needsFacePixellation:(BOOL)pixellation recordStroke:(BOOL)recordStroke completion:(id)completion
 {
-  v8 = a7;
-  v9 = a6;
-  v10 = a5;
+  recordStrokeCopy = recordStroke;
+  pixellationCopy = pixellation;
+  fillStrokeCopy = fillStroke;
   self->_redactionState = 0;
-  v14 = a8;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  maskCopy = mask;
+  strokeCopy = stroke;
   [(PUCleanupToolController *)self _interactionOccurred];
-  [(PUCleanupToolController *)self _addImageSpaceInpaintingStroke:v16 closeAndFillStroke:v10 needsFacePixellation:v9 recordStroke:v8 exclusionMask:v15 exclusionMaskHitTestRadius:1 retouchBrush:self->_exclusionMaskHitTestRadius completion:v14];
+  [(PUCleanupToolController *)self _addImageSpaceInpaintingStroke:strokeCopy closeAndFillStroke:fillStrokeCopy needsFacePixellation:pixellationCopy recordStroke:recordStrokeCopy exclusionMask:maskCopy exclusionMaskHitTestRadius:1 retouchBrush:self->_exclusionMaskHitTestRadius completion:completionCopy];
 }
 
 - (void)addDeclutter
@@ -3770,15 +3770,15 @@ void __176__PUCleanupToolController__addImageSpaceInpaintingStroke_closeAndFillS
   self->_redactionState = 0;
   [(PUCleanupToolController *)self hidePromptViewIfNeededAnimated:0];
   v3 = MEMORY[0x1E69BDE68];
-  v4 = [(PUCleanupToolController *)self maskContext];
-  v5 = [(PUPhotoEditToolController *)self compositionController];
-  v6 = [v5 composition];
+  maskContext = [(PUCleanupToolController *)self maskContext];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__PUCleanupToolController_addDeclutter__block_invoke;
   v7[3] = &unk_1E7B766B0;
   v7[4] = self;
-  [v3 createDeclutterMaskForContext:v4 composition:v6 completion:v7];
+  [v3 createDeclutterMaskForContext:maskContext composition:composition completion:v7];
 }
 
 void __39__PUCleanupToolController_addDeclutter__block_invoke(uint64_t a1, void *a2)
@@ -3852,13 +3852,13 @@ void __39__PUCleanupToolController_addDeclutter__block_invoke_2(void *a1, void *
   }
 }
 
-- (CGPoint)originalPointFromOverlayViewPoint:(CGPoint)a3
+- (CGPoint)originalPointFromOverlayViewPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v6 toolController:self originalPointFromViewPoint:v7 view:{x, y}];
+  y = point.y;
+  x = point.x;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [delegate toolController:self originalPointFromViewPoint:view view:{x, y}];
   v9 = v8;
   v11 = v10;
 
@@ -3869,16 +3869,16 @@ void __39__PUCleanupToolController_addDeclutter__block_invoke_2(void *a1, void *
   return result;
 }
 
-- (float)scaledBrushRadiusForTouchType:(int64_t)a3
+- (float)scaledBrushRadiusForTouchType:(int64_t)type
 {
   LODWORD(v3) = 1.0;
   if (self->_cleanupMode - 1 <= 1)
   {
     LODWORD(v3) = 5.0;
-    if (a3 != 2)
+    if (type != 2)
     {
-      v5 = [MEMORY[0x1E69C4290] globalSettings];
-      [v5 retouchDefaultModeBrushSizeDefault];
+      globalSettings = [MEMORY[0x1E69C4290] globalSettings];
+      [globalSettings retouchDefaultModeBrushSizeDefault];
       v7 = v6;
 
       cleanupMode = self->_cleanupMode;
@@ -3924,27 +3924,27 @@ void __39__PUCleanupToolController_addDeclutter__block_invoke_2(void *a1, void *
   return *&v3;
 }
 
-- (double)subjectExclusionMaskBrushRadiusForScreenSpaceRadius:(double)a3
+- (double)subjectExclusionMaskBrushRadiusForScreenSpaceRadius:(double)radius
 {
-  v5 = [(PUPhotoEditToolController *)self delegate];
-  v6 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v5 toolController:self originalPointFromViewPoint:v6 view:{0.0, 0.0}];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [delegate toolController:self originalPointFromViewPoint:view view:{0.0, 0.0}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(PUPhotoEditToolController *)self delegate];
-  v12 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v11 toolController:self originalPointFromViewPoint:v12 view:{a3, 0.0}];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  view2 = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [delegate2 toolController:self originalPointFromViewPoint:view2 view:{radius, 0.0}];
   v14 = v13;
   v16 = v15;
 
   return ceil(sqrt((v10 - v16) * (v10 - v16) + (v8 - v14) * (v8 - v14)));
 }
 
-- (float)brushRadiusForTouchType:(int64_t)a3
+- (float)brushRadiusForTouchType:(int64_t)type
 {
   cleanupMode = self->_cleanupMode;
-  if (a3 == 2)
+  if (type == 2)
   {
     if (cleanupMode)
     {
@@ -3986,8 +3986,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E69C4290] globalSettings];
-  [v8 retouchDefaultModeBrushSizeDefault];
+  globalSettings = [MEMORY[0x1E69C4290] globalSettings];
+  [globalSettings retouchDefaultModeBrushSizeDefault];
   v10 = v9;
 
   if ([(PUCleanupToolController *)self isIpadLayout])
@@ -4001,85 +4001,85 @@ LABEL_10:
   }
 
 LABEL_14:
-  v11 = [(PUPhotoEditToolController *)self delegate];
-  v12 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v11 toolController:self originalPointFromViewPoint:v12 view:{0.0, 0.0}];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [delegate toolController:self originalPointFromViewPoint:view view:{0.0, 0.0}];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(PUPhotoEditToolController *)self delegate];
-  v18 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v17 toolController:self originalPointFromViewPoint:v18 view:{v5, 0.0}];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  view2 = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [delegate2 toolController:self originalPointFromViewPoint:view2 view:{v5, 0.0}];
   v20 = v19;
   v22 = v21;
 
   return ceil(sqrt((v16 - v22) * (v16 - v22) + (v14 - v20) * (v14 - v20)));
 }
 
-- (void)reloadToolbarButtons:(BOOL)a3
+- (void)reloadToolbarButtons:(BOOL)buttons
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 isLoopingVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isLoopingVideo = [delegate isLoopingVideo];
 
-  if ((v5 & 1) == 0)
+  if ((isLoopingVideo & 1) == 0)
   {
-    v6 = [(PUPhotoEditToolController *)self delegate];
-    [v6 isStandardVideo];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    [delegate2 isStandardVideo];
   }
 }
 
 - (void)_addOverlayIfNeeded
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 isLoopingVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isLoopingVideo = [delegate isLoopingVideo];
 
-  if ((v4 & 1) == 0)
+  if ((isLoopingVideo & 1) == 0)
   {
-    v5 = [(PUPhotoEditToolController *)self delegate];
-    v6 = [v5 isStandardVideo];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    isStandardVideo = [delegate2 isStandardVideo];
 
-    if ((v6 & 1) == 0 && !self->_overlayController)
+    if ((isStandardVideo & 1) == 0 && !self->_overlayController)
     {
-      v7 = [(PUPhotoEditToolController *)self delegate];
-      v15 = [v7 mediaView];
+      delegate3 = [(PUPhotoEditToolController *)self delegate];
+      mediaView = [delegate3 mediaView];
 
-      v8 = [[PUCleanupOverlayViewController alloc] initWithMediaView:v15 isHDR:self->_needsHDRUI];
+      v8 = [[PUCleanupOverlayViewController alloc] initWithMediaView:mediaView isHDR:self->_needsHDRUI];
       overlayController = self->_overlayController;
       self->_overlayController = v8;
 
       [(PUCleanupOverlayViewController *)self->_overlayController setOverlayControllerDelegate:self];
-      v10 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-      [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v11 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-      [v11 setClipsToBounds:1];
+      view2 = [(PUCleanupOverlayViewController *)self->_overlayController view];
+      [view2 setClipsToBounds:1];
 
-      v12 = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
-      [(PUCleanupOverlayViewController *)self->_overlayController setVfxBrushView:v12];
+      brushView = [(PUVFXRetouchOverlay *)self->_retouchVFXOverlay brushView];
+      [(PUCleanupOverlayViewController *)self->_overlayController setVfxBrushView:brushView];
 
       [(PUCleanupToolController *)self addChildViewController:self->_overlayController];
       [(PUCleanupOverlayViewController *)self->_overlayController didMoveToParentViewController:self];
-      v13 = [(PUCleanupToolController *)self view];
-      v14 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-      [v13 insertSubview:v14 atIndex:0];
+      view3 = [(PUCleanupToolController *)self view];
+      view4 = [(PUCleanupOverlayViewController *)self->_overlayController view];
+      [view3 insertSubview:view4 atIndex:0];
     }
   }
 }
 
-- (void)sliderDidScroll:(id)a3
+- (void)sliderDidScroll:(id)scroll
 {
-  v9 = a3;
-  if (([(CEKSlider *)v9 isHidden]& 1) == 0)
+  scrollCopy = scroll;
+  if (([(CEKSlider *)scrollCopy isHidden]& 1) == 0)
   {
-    v4 = v9;
-    if (self->_brushModeBrushSizeSlider == v9)
+    v4 = scrollCopy;
+    if (self->_brushModeBrushSizeSlider == scrollCopy)
     {
       v6 = &OBJC_IVAR___PUCleanupToolController__brushModeBrushSizeLabel;
     }
 
     else
     {
-      if (self->_defaultModeBrushSizeSlider != v9)
+      if (self->_defaultModeBrushSizeSlider != scrollCopy)
       {
         v5 = 0;
 LABEL_8:
@@ -4095,30 +4095,30 @@ LABEL_8:
     }
 
     v5 = *(&self->super.super.super.super.isa + *v6);
-    v4 = v9;
+    v4 = scrollCopy;
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_setBusy:(BOOL)a3
+- (void)_setBusy:(BOOL)busy
 {
-  self->_busy = a3;
-  if (!a3)
+  self->_busy = busy;
+  if (!busy)
   {
     self->_progressDelay = 15.0;
   }
 }
 
-- (void)_setShowCleanupBrushSizeSlider:(id)a3 show:(BOOL)a4 animate:(BOOL)a5
+- (void)_setShowCleanupBrushSizeSlider:(id)slider show:(BOOL)show animate:(BOOL)animate
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ([v7 isHidden] == v6)
+  animateCopy = animate;
+  showCopy = show;
+  sliderCopy = slider;
+  if ([sliderCopy isHidden] == showCopy)
   {
-    if (v6)
+    if (showCopy)
     {
       v8 = 1.0;
     }
@@ -4132,12 +4132,12 @@ LABEL_9:
     aBlock[1] = 3221225472;
     aBlock[2] = __71__PUCleanupToolController__setShowCleanupBrushSizeSlider_show_animate___block_invoke;
     aBlock[3] = &unk_1E7B7FF70;
-    v9 = v7;
+    v9 = sliderCopy;
     v19 = v9;
     v20 = v8;
     v10 = _Block_copy(aBlock);
     v11 = v10;
-    if (v5)
+    if (animateCopy)
     {
       v12 = MEMORY[0x1E69DD250];
       v16[0] = MEMORY[0x1E69E9820];
@@ -4150,39 +4150,39 @@ LABEL_9:
       v13[2] = __71__PUCleanupToolController__setShowCleanupBrushSizeSlider_show_animate___block_invoke_3;
       v13[3] = &unk_1E7B7DC88;
       v14 = v9;
-      v15 = v6;
+      v15 = showCopy;
       [v12 animateWithDuration:v16 animations:v13 completion:0.25];
     }
 
     else
     {
       v10[2](v10);
-      [v9 setHidden:v6 ^ 1u];
+      [v9 setHidden:showCopy ^ 1u];
     }
   }
 }
 
 - (void)leavingEditWithCancel
 {
-  v2 = [(PUCleanupToolController *)self modelDeliveryManager];
-  [v2 stopNetworkMonitoring];
+  modelDeliveryManager = [(PUCleanupToolController *)self modelDeliveryManager];
+  [modelDeliveryManager stopNetworkMonitoring];
 }
 
-- (void)prepareForSave:(BOOL)a3
+- (void)prepareForSave:(BOOL)save
 {
-  v3 = [(PUCleanupToolController *)self modelDeliveryManager];
-  [v3 stopNetworkMonitoring];
+  modelDeliveryManager = [(PUCleanupToolController *)self modelDeliveryManager];
+  [modelDeliveryManager stopNetworkMonitoring];
 }
 
 - (BOOL)_canReset
 {
-  v2 = [(PUPhotoEditToolController *)self compositionController];
-  v3 = [v2 inpaintAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  inpaintAdjustmentController = [compositionController inpaintAdjustmentController];
 
-  if (v3)
+  if (inpaintAdjustmentController)
   {
-    v4 = [v3 adjustment];
-    v5 = [v4 objectForKeyedSubscript:@"operations"];
+    adjustment = [inpaintAdjustmentController adjustment];
+    v5 = [adjustment objectForKeyedSubscript:@"operations"];
     v6 = [v5 count] != 0;
   }
 
@@ -4199,8 +4199,8 @@ LABEL_9:
   v6[1] = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(PUCleanupToolController *)self brushModeButton];
-    v6[0] = v3;
+    brushModeButton = [(PUCleanupToolController *)self brushModeButton];
+    v6[0] = brushModeButton;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -4214,12 +4214,12 @@ LABEL_9:
 
 - (void)reactivate
 {
-  v3 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
+  ppt_didBecomeActiveToolBlock = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
 
-  if (v3)
+  if (ppt_didBecomeActiveToolBlock)
   {
-    v4 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
-    v4[2]();
+    ppt_didBecomeActiveToolBlock2 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
+    ppt_didBecomeActiveToolBlock2[2]();
   }
 }
 
@@ -4232,29 +4232,29 @@ LABEL_9:
 
 - (void)willResignActiveTool
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 mediaView];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  mediaView = [delegate mediaView];
 
   savedMediaViewScrollViewMinimumNumberOfTouches = self->_savedMediaViewScrollViewMinimumNumberOfTouches;
   if (savedMediaViewScrollViewMinimumNumberOfTouches)
   {
-    v6 = [(NSNumber *)savedMediaViewScrollViewMinimumNumberOfTouches unsignedIntegerValue];
+    unsignedIntegerValue = [(NSNumber *)savedMediaViewScrollViewMinimumNumberOfTouches unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  v7 = [v4 _scrollView];
-  v8 = [v7 panGestureRecognizer];
-  [v8 setMinimumNumberOfTouches:v6];
+  _scrollView = [mediaView _scrollView];
+  panGestureRecognizer = [_scrollView panGestureRecognizer];
+  [panGestureRecognizer setMinimumNumberOfTouches:unsignedIntegerValue];
 
-  v9 = [(PUCleanupToolController *)self feedbackView];
-  [v9 setHidden:1];
+  feedbackView = [(PUCleanupToolController *)self feedbackView];
+  [feedbackView setHidden:1];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 removeObserver:self name:*MEMORY[0x1E696A7E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696A7E0] object:0];
 
   v11.receiver = self;
   v11.super_class = PUCleanupToolController;
@@ -4267,30 +4267,30 @@ LABEL_9:
   v14.super_class = PUCleanupToolController;
   [(PUPhotoEditToolController *)&v14 didBecomeActiveTool];
   [(PUCleanupToolController *)self _prepareViewsForCleanupIfReady];
-  v3 = [(PUCleanupToolController *)self view];
-  [v3 setNeedsUpdateConstraints];
+  view = [(PUCleanupToolController *)self view];
+  [view setNeedsUpdateConstraints];
 
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 mediaView];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  mediaView = [delegate mediaView];
 
   if (!self->_savedMediaViewScrollViewMinimumNumberOfTouches)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [v5 _scrollView];
-    v8 = [v7 panGestureRecognizer];
-    v9 = [v6 numberWithUnsignedInteger:{objc_msgSend(v8, "minimumNumberOfTouches")}];
+    _scrollView = [mediaView _scrollView];
+    panGestureRecognizer = [_scrollView panGestureRecognizer];
+    v9 = [v6 numberWithUnsignedInteger:{objc_msgSend(panGestureRecognizer, "minimumNumberOfTouches")}];
     savedMediaViewScrollViewMinimumNumberOfTouches = self->_savedMediaViewScrollViewMinimumNumberOfTouches;
     self->_savedMediaViewScrollViewMinimumNumberOfTouches = v9;
   }
 
-  v11 = [v5 _scrollView];
-  v12 = [v11 panGestureRecognizer];
-  [v12 setMinimumNumberOfTouches:2];
+  _scrollView2 = [mediaView _scrollView];
+  panGestureRecognizer2 = [_scrollView2 panGestureRecognizer];
+  [panGestureRecognizer2 setMinimumNumberOfTouches:2];
 
   [(PUCleanupToolController *)self _updateFeedbackViewVisibility];
   [(PUCleanupToolController *)self _thermalStateDidChange:0];
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 addObserver:self selector:sel__thermalStateDidChange_ name:*MEMORY[0x1E696A7E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__thermalStateDidChange_ name:*MEMORY[0x1E696A7E0] object:0];
 }
 
 - (void)willBecomeActiveTool
@@ -4300,12 +4300,12 @@ LABEL_9:
   [(PUPhotoEditToolController *)&v2 willBecomeActiveTool];
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = PUCleanupToolController;
-  [(PUPhotoEditToolController *)&v12 setLayoutOrientation:a3 withTransitionCoordinator:v6];
+  [(PUPhotoEditToolController *)&v12 setLayoutOrientation:orientation withTransitionCoordinator:coordinatorCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke;
@@ -4313,14 +4313,14 @@ LABEL_9:
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (v6)
+  if (coordinatorCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke_2;
     v9[3] = &unk_1E7B7ABE0;
     v10 = v7;
-    [v6 animateAlongsideTransition:v9 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   }
 
   else
@@ -4360,8 +4360,8 @@ void __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinato
       goto LABEL_30;
     }
 
-    v5 = [(PUPhotoEditToolController *)self toolContainerView];
-    v116 = v5;
+    toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+    v116 = toolContainerView;
     if ([(PUCleanupToolController *)self isPortrait]&& ![(PUCleanupToolController *)self isIpadLayout])
     {
       defaultModeBrushSizeSlider = self->_defaultModeBrushSizeSlider;
@@ -4374,37 +4374,37 @@ void __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinato
         *&v122.tx = *(MEMORY[0x1E695EFD0] + 32);
         [(CEKSlider *)defaultModeBrushSizeSlider setTransform:&v122];
         v100 = self->_toolConstraints;
-        v118 = [(CEKSlider *)self->_defaultModeBrushSizeSlider heightAnchor];
-        v114 = [v118 constraintEqualToConstant:66.0];
+        heightAnchor = [(CEKSlider *)self->_defaultModeBrushSizeSlider heightAnchor];
+        v114 = [heightAnchor constraintEqualToConstant:66.0];
         v133[0] = v114;
-        v110 = [(CEKSlider *)self->_defaultModeBrushSizeSlider widthAnchor];
-        v104 = [v5 widthAnchor];
-        v60 = [v110 constraintEqualToAnchor:v104];
+        widthAnchor = [(CEKSlider *)self->_defaultModeBrushSizeSlider widthAnchor];
+        widthAnchor2 = [toolContainerView widthAnchor];
+        v60 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         v133[1] = v60;
-        v61 = [v5 centerXAnchor];
-        v62 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerXAnchor];
-        v63 = [v61 constraintEqualToAnchor:v62];
+        centerXAnchor = [toolContainerView centerXAnchor];
+        centerXAnchor2 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerXAnchor];
+        v63 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v133[2] = v63;
-        v64 = [v116 bottomAnchor];
-        v65 = [(CEKSlider *)self->_defaultModeBrushSizeSlider bottomAnchor];
-        v66 = [v64 constraintEqualToAnchor:v65 constant:0.0];
+        bottomAnchor = [v116 bottomAnchor];
+        bottomAnchor2 = [(CEKSlider *)self->_defaultModeBrushSizeSlider bottomAnchor];
+        v66 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
         v133[3] = v66;
         v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v133 count:4];
         [(NSMutableArray *)v100 addObjectsFromArray:v67];
 
         v68 = self->_toolConstraints;
-        v69 = [(UILabel *)self->_defaultModeBrushSizeLabel centerXAnchor];
-        v70 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerXAnchor];
-        v71 = [v69 constraintEqualToAnchor:v70];
+        centerXAnchor3 = [(UILabel *)self->_defaultModeBrushSizeLabel centerXAnchor];
+        centerXAnchor4 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerXAnchor];
+        v71 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
         v132[0] = v71;
-        v72 = [(UILabel *)self->_defaultModeBrushSizeLabel bottomAnchor];
-        v73 = [(CEKSlider *)self->_defaultModeBrushSizeSlider topAnchor];
-        v74 = [v72 constraintEqualToAnchor:v73 constant:10.0];
+        bottomAnchor3 = [(UILabel *)self->_defaultModeBrushSizeLabel bottomAnchor];
+        topAnchor = [(CEKSlider *)self->_defaultModeBrushSizeSlider topAnchor];
+        v74 = [bottomAnchor3 constraintEqualToAnchor:topAnchor constant:10.0];
         v132[1] = v74;
         v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v132 count:2];
         [(NSMutableArray *)v68 addObjectsFromArray:v75];
 
-        v5 = v116;
+        toolContainerView = v116;
         v58 = MEMORY[0x1E695EFD0];
       }
 
@@ -4420,78 +4420,78 @@ void __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinato
       *&v122.tx = v58[2];
       [(CEKSlider *)brushModeBrushSizeSlider setTransform:&v122];
       v101 = self->_toolConstraints;
-      v119 = [(CEKSlider *)self->_brushModeBrushSizeSlider heightAnchor];
-      v115 = [v119 constraintEqualToConstant:66.0];
+      heightAnchor2 = [(CEKSlider *)self->_brushModeBrushSizeSlider heightAnchor];
+      v115 = [heightAnchor2 constraintEqualToConstant:66.0];
       v131[0] = v115;
-      v111 = [(CEKSlider *)self->_brushModeBrushSizeSlider widthAnchor];
-      v105 = [v5 widthAnchor];
-      v78 = [v111 constraintEqualToAnchor:v105];
+      widthAnchor3 = [(CEKSlider *)self->_brushModeBrushSizeSlider widthAnchor];
+      widthAnchor4 = [toolContainerView widthAnchor];
+      v78 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
       v131[1] = v78;
-      v79 = [v5 centerXAnchor];
-      v80 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerXAnchor];
-      v81 = [v79 constraintEqualToAnchor:v80];
+      centerXAnchor5 = [toolContainerView centerXAnchor];
+      centerXAnchor6 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerXAnchor];
+      v81 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
       v131[2] = v81;
-      v82 = [v116 bottomAnchor];
-      v83 = [(CEKSlider *)self->_brushModeBrushSizeSlider bottomAnchor];
-      v84 = [v82 constraintEqualToAnchor:v83 constant:0.0];
+      bottomAnchor4 = [v116 bottomAnchor];
+      bottomAnchor5 = [(CEKSlider *)self->_brushModeBrushSizeSlider bottomAnchor];
+      v84 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:0.0];
       v131[3] = v84;
       v85 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:4];
       [(NSMutableArray *)v101 addObjectsFromArray:v85];
 
       v86 = self->_toolConstraints;
-      v87 = [(UILabel *)self->_brushModeBrushSizeLabel centerXAnchor];
-      v88 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerXAnchor];
-      v117 = v87;
-      v89 = [v87 constraintEqualToAnchor:v88];
+      centerXAnchor7 = [(UILabel *)self->_brushModeBrushSizeLabel centerXAnchor];
+      centerXAnchor8 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerXAnchor];
+      v117 = centerXAnchor7;
+      v89 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
       v130[0] = v89;
-      v90 = [(UILabel *)self->_brushModeBrushSizeLabel bottomAnchor];
-      v91 = [(CEKSlider *)self->_brushModeBrushSizeSlider topAnchor];
-      v92 = [v90 constraintEqualToAnchor:v91 constant:10.0];
+      bottomAnchor6 = [(UILabel *)self->_brushModeBrushSizeLabel bottomAnchor];
+      topAnchor2 = [(CEKSlider *)self->_brushModeBrushSizeSlider topAnchor];
+      v92 = [bottomAnchor6 constraintEqualToAnchor:topAnchor2 constant:10.0];
       v130[1] = v92;
       v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:2];
       [(NSMutableArray *)v86 addObjectsFromArray:v93];
 
-      v5 = v116;
+      toolContainerView = v116;
     }
 
     else
     {
       v6 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-      [v5 addLayoutGuide:v6];
+      [toolContainerView addLayoutGuide:v6];
       v106 = self->_toolConstraints;
-      v7 = [v6 widthAnchor];
-      v8 = [v7 constraintEqualToConstant:66.0];
+      widthAnchor5 = [v6 widthAnchor];
+      v8 = [widthAnchor5 constraintEqualToConstant:66.0];
       v129[0] = v8;
-      v9 = [v6 heightAnchor];
-      v10 = [v5 heightAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      heightAnchor3 = [v6 heightAnchor];
+      heightAnchor4 = [toolContainerView heightAnchor];
+      v11 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
       v129[1] = v11;
-      v12 = [v5 centerYAnchor];
+      centerYAnchor = [toolContainerView centerYAnchor];
       v117 = v6;
-      v13 = [v6 centerYAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      centerYAnchor2 = [v6 centerYAnchor];
+      v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v129[2] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:3];
       [(NSMutableArray *)v106 addObjectsFromArray:v15];
 
       if ([(PUPhotoEditToolController *)self layoutOrientation]== 3 || [(PUPhotoEditToolController *)self layoutOrientation]== 2 || [(PUCleanupToolController *)self isIpadLayout])
       {
-        v5 = v116;
+        toolContainerView = v116;
         v16 = self->_toolConstraints;
-        v17 = [v116 rightAnchor];
-        v18 = [v117 rightAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18 constant:0.0];
+        rightAnchor = [v116 rightAnchor];
+        rightAnchor2 = [v117 rightAnchor];
+        v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
         v128 = v19;
         v20 = &v128;
       }
 
       else
       {
-        v5 = v116;
+        toolContainerView = v116;
         v16 = self->_toolConstraints;
-        v17 = [v116 leftAnchor];
-        v18 = [v117 leftAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        rightAnchor = [v116 leftAnchor];
+        rightAnchor2 = [v117 leftAnchor];
+        v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
         v127 = v19;
         v20 = &v127;
       }
@@ -4502,33 +4502,33 @@ void __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinato
       if (self->_defaultModeBrushSizeSlider)
       {
         v107 = self->_toolConstraints;
-        v22 = [(UILabel *)self->_defaultModeBrushSizeLabel centerYAnchor];
-        v23 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerYAnchor];
-        v24 = [v22 constraintEqualToAnchor:v23];
+        centerYAnchor3 = [(UILabel *)self->_defaultModeBrushSizeLabel centerYAnchor];
+        centerYAnchor4 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerYAnchor];
+        v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v126[0] = v24;
-        v25 = [(UILabel *)self->_defaultModeBrushSizeLabel trailingAnchor];
-        v26 = [v5 trailingAnchor];
-        v27 = [v25 constraintEqualToAnchor:v26 constant:-56.0];
+        trailingAnchor = [(UILabel *)self->_defaultModeBrushSizeLabel trailingAnchor];
+        trailingAnchor2 = [toolContainerView trailingAnchor];
+        v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-56.0];
         v126[1] = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v126 count:2];
         [(NSMutableArray *)v107 addObjectsFromArray:v28];
 
         v94 = self->_toolConstraints;
-        v108 = [(CEKSlider *)self->_defaultModeBrushSizeSlider heightAnchor];
-        v102 = [v117 widthAnchor];
-        v98 = [v108 constraintEqualToAnchor:v102];
+        heightAnchor5 = [(CEKSlider *)self->_defaultModeBrushSizeSlider heightAnchor];
+        widthAnchor6 = [v117 widthAnchor];
+        v98 = [heightAnchor5 constraintEqualToAnchor:widthAnchor6];
         v125[0] = v98;
-        v96 = [(CEKSlider *)self->_defaultModeBrushSizeSlider widthAnchor];
-        v29 = [v117 heightAnchor];
-        v30 = [v96 constraintEqualToAnchor:v29];
+        widthAnchor7 = [(CEKSlider *)self->_defaultModeBrushSizeSlider widthAnchor];
+        heightAnchor6 = [v117 heightAnchor];
+        v30 = [widthAnchor7 constraintEqualToAnchor:heightAnchor6];
         v125[1] = v30;
-        v31 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerXAnchor];
-        v32 = [v117 centerXAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32];
+        centerXAnchor9 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerXAnchor];
+        centerXAnchor10 = [v117 centerXAnchor];
+        v33 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
         v125[2] = v33;
-        v34 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerYAnchor];
-        v35 = [v117 centerYAnchor];
-        v36 = [v34 constraintEqualToAnchor:v35];
+        centerYAnchor5 = [(CEKSlider *)self->_defaultModeBrushSizeSlider centerYAnchor];
+        centerYAnchor6 = [v117 centerYAnchor];
+        v36 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
         v125[3] = v36;
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v125 count:4];
         [(NSMutableArray *)v94 addObjectsFromArray:v37];
@@ -4551,39 +4551,39 @@ void __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinato
         v39 = self->_defaultModeBrushSizeSlider;
         v122 = v121;
         [(CEKSlider *)v39 setTransform:&v122];
-        v5 = v116;
+        toolContainerView = v116;
       }
 
       if (self->_brushModeBrushSizeSlider)
       {
         v112 = self->_toolConstraints;
-        v40 = [(UILabel *)self->_brushModeBrushSizeLabel centerYAnchor];
-        v41 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerYAnchor];
-        v42 = [v40 constraintEqualToAnchor:v41];
+        centerYAnchor7 = [(UILabel *)self->_brushModeBrushSizeLabel centerYAnchor];
+        centerYAnchor8 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerYAnchor];
+        v42 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
         v124[0] = v42;
-        v43 = [(UILabel *)self->_brushModeBrushSizeLabel trailingAnchor];
-        v44 = [v5 trailingAnchor];
-        v45 = [v43 constraintEqualToAnchor:v44 constant:-56.0];
+        trailingAnchor3 = [(UILabel *)self->_brushModeBrushSizeLabel trailingAnchor];
+        trailingAnchor4 = [toolContainerView trailingAnchor];
+        v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-56.0];
         v124[1] = v45;
         v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:2];
         [(NSMutableArray *)v112 addObjectsFromArray:v46];
 
         v95 = self->_toolConstraints;
-        v113 = [(CEKSlider *)self->_brushModeBrushSizeSlider heightAnchor];
-        v109 = [v117 widthAnchor];
-        v103 = [v113 constraintEqualToAnchor:v109];
+        heightAnchor7 = [(CEKSlider *)self->_brushModeBrushSizeSlider heightAnchor];
+        widthAnchor8 = [v117 widthAnchor];
+        v103 = [heightAnchor7 constraintEqualToAnchor:widthAnchor8];
         v123[0] = v103;
-        v99 = [(CEKSlider *)self->_brushModeBrushSizeSlider widthAnchor];
-        v97 = [v117 heightAnchor];
-        v47 = [v99 constraintEqualToAnchor:v97];
+        widthAnchor9 = [(CEKSlider *)self->_brushModeBrushSizeSlider widthAnchor];
+        heightAnchor8 = [v117 heightAnchor];
+        v47 = [widthAnchor9 constraintEqualToAnchor:heightAnchor8];
         v123[1] = v47;
-        v48 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerXAnchor];
-        v49 = [v117 centerXAnchor];
-        v50 = [v48 constraintEqualToAnchor:v49];
+        centerXAnchor11 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerXAnchor];
+        centerXAnchor12 = [v117 centerXAnchor];
+        v50 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
         v123[2] = v50;
-        v51 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerYAnchor];
-        v52 = [v117 centerYAnchor];
-        v53 = [v51 constraintEqualToAnchor:v52];
+        centerYAnchor9 = [(CEKSlider *)self->_brushModeBrushSizeSlider centerYAnchor];
+        centerYAnchor10 = [v117 centerYAnchor];
+        v53 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
         v123[3] = v53;
         v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:4];
         [(NSMutableArray *)v95 addObjectsFromArray:v54];
@@ -4606,7 +4606,7 @@ void __74__PUCleanupToolController_setLayoutOrientation_withTransitionCoordinato
         v56 = self->_brushModeBrushSizeSlider;
         v122 = v120;
         [(CEKSlider *)v56 setTransform:&v122];
-        v5 = v116;
+        toolContainerView = v116;
       }
     }
 
@@ -4618,378 +4618,378 @@ LABEL_30:
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v171[4] = *MEMORY[0x1E69E9840];
   [(PUCleanupToolController *)self _updateToolConstraints];
-  v3 = [(PUPhotoEditToolController *)v2 delegate];
-  v4 = [v3 mediaView];
+  delegate = [(PUPhotoEditToolController *)selfCopy delegate];
+  mediaView = [delegate mediaView];
 
-  overlayController = v2->_overlayController;
+  overlayController = selfCopy->_overlayController;
   if (overlayController)
   {
-    v6 = [(PUCleanupOverlayViewController *)overlayController view];
+    view = [(PUCleanupOverlayViewController *)overlayController view];
 
-    if (v6)
+    if (view)
     {
-      v7 = [(PUCleanupOverlayViewController *)v2->_overlayController view];
-      v8 = [v7 widthAnchor];
-      v9 = [(PUCleanupToolController *)v2 view];
-      v10 = [v9 widthAnchor];
-      v11 = [v8 constraintEqualToAnchor:v10];
+      view2 = [(PUCleanupOverlayViewController *)selfCopy->_overlayController view];
+      widthAnchor = [view2 widthAnchor];
+      view3 = [(PUCleanupToolController *)selfCopy view];
+      widthAnchor2 = [view3 widthAnchor];
+      v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v11 setActive:1];
 
-      v12 = [(PUCleanupOverlayViewController *)v2->_overlayController view];
-      v13 = [v12 heightAnchor];
-      v14 = [(PUCleanupToolController *)v2 view];
-      v15 = [v14 heightAnchor];
-      v16 = [v13 constraintEqualToAnchor:v15];
+      view4 = [(PUCleanupOverlayViewController *)selfCopy->_overlayController view];
+      heightAnchor = [view4 heightAnchor];
+      view5 = [(PUCleanupToolController *)selfCopy view];
+      heightAnchor2 = [view5 heightAnchor];
+      v16 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       [v16 setActive:1];
 
-      v17 = [(PUCleanupOverlayViewController *)v2->_overlayController view];
-      v18 = [v17 centerXAnchor];
-      v19 = [(PUCleanupToolController *)v2 view];
-      v20 = [v19 centerXAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20];
+      view6 = [(PUCleanupOverlayViewController *)selfCopy->_overlayController view];
+      centerXAnchor = [view6 centerXAnchor];
+      view7 = [(PUCleanupToolController *)selfCopy view];
+      centerXAnchor2 = [view7 centerXAnchor];
+      v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v21 setActive:1];
 
-      v22 = [(PUCleanupOverlayViewController *)v2->_overlayController view];
-      v23 = [v22 centerYAnchor];
-      v24 = [(PUCleanupToolController *)v2 view];
-      v25 = [v24 centerYAnchor];
-      v26 = [v23 constraintEqualToAnchor:v25];
+      view8 = [(PUCleanupOverlayViewController *)selfCopy->_overlayController view];
+      centerYAnchor = [view8 centerYAnchor];
+      view9 = [(PUCleanupToolController *)selfCopy view];
+      centerYAnchor2 = [view9 centerYAnchor];
+      v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v26 setActive:1];
     }
   }
 
-  maskView = v2->_maskView;
+  maskView = selfCopy->_maskView;
   if (maskView)
   {
-    v28 = [(PUCleanupToolMaskView *)maskView window];
+    window = [(PUCleanupToolMaskView *)maskView window];
 
-    if (v28)
+    if (window)
     {
       v29 = +[PUPhotoEditProtoSettings sharedInstance];
-      v30 = [v29 cleanupMaskDisplayMode];
+      cleanupMaskDisplayMode = [v29 cleanupMaskDisplayMode];
 
-      if (v30)
+      if (cleanupMaskDisplayMode)
       {
-        v31 = [(PUCleanupToolMaskView *)v2->_maskView topAnchor];
-        v32 = [v4 imageTopAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32];
+        topAnchor = [(PUCleanupToolMaskView *)selfCopy->_maskView topAnchor];
+        imageTopAnchor = [mediaView imageTopAnchor];
+        v33 = [topAnchor constraintEqualToAnchor:imageTopAnchor];
         [v33 setActive:1];
 
-        v34 = [(PUCleanupToolMaskView *)v2->_maskView bottomAnchor];
-        v35 = [v4 imageBottomAnchor];
-        v36 = [v34 constraintEqualToAnchor:v35];
+        bottomAnchor = [(PUCleanupToolMaskView *)selfCopy->_maskView bottomAnchor];
+        imageBottomAnchor = [mediaView imageBottomAnchor];
+        v36 = [bottomAnchor constraintEqualToAnchor:imageBottomAnchor];
         [v36 setActive:1];
 
-        v37 = [(PUCleanupToolMaskView *)v2->_maskView leftAnchor];
-        v38 = [v4 imageLeftAnchor];
-        v39 = [v37 constraintEqualToAnchor:v38];
+        leftAnchor = [(PUCleanupToolMaskView *)selfCopy->_maskView leftAnchor];
+        imageLeftAnchor = [mediaView imageLeftAnchor];
+        v39 = [leftAnchor constraintEqualToAnchor:imageLeftAnchor];
         [v39 setActive:1];
 
-        v40 = [(PUCleanupToolMaskView *)v2->_maskView rightAnchor];
-        v41 = [v4 imageRightAnchor];
-        v42 = [v40 constraintEqualToAnchor:v41];
-        [v42 setActive:1];
+        rightAnchor = [(PUCleanupToolMaskView *)selfCopy->_maskView rightAnchor];
+        imageRightAnchor = [mediaView imageRightAnchor];
+        v40RightAnchor = [rightAnchor constraintEqualToAnchor:imageRightAnchor];
+        [v40RightAnchor setActive:1];
       }
 
       else
       {
-        v43 = [(PUPhotoEditToolController *)v2 delegate];
-        v44 = [v43 mediaView];
-        v40 = [v44 _visibleImageRectOverlayView];
+        delegate2 = [(PUPhotoEditToolController *)selfCopy delegate];
+        mediaView2 = [delegate2 mediaView];
+        rightAnchor = [mediaView2 _visibleImageRectOverlayView];
 
-        v45 = [(PUCleanupToolMaskView *)v2->_maskView topAnchor];
-        v46 = [v40 topAnchor];
-        v47 = [v45 constraintEqualToAnchor:v46];
+        topAnchor2 = [(PUCleanupToolMaskView *)selfCopy->_maskView topAnchor];
+        topAnchor3 = [rightAnchor topAnchor];
+        v47 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
         [v47 setActive:1];
 
-        v48 = [(PUCleanupToolMaskView *)v2->_maskView bottomAnchor];
-        v49 = [v40 bottomAnchor];
-        v50 = [v48 constraintEqualToAnchor:v49];
+        bottomAnchor2 = [(PUCleanupToolMaskView *)selfCopy->_maskView bottomAnchor];
+        bottomAnchor3 = [rightAnchor bottomAnchor];
+        v50 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
         [v50 setActive:1];
 
-        v51 = [(PUCleanupToolMaskView *)v2->_maskView leftAnchor];
-        v52 = [v40 leftAnchor];
-        v53 = [v51 constraintEqualToAnchor:v52];
+        leftAnchor2 = [(PUCleanupToolMaskView *)selfCopy->_maskView leftAnchor];
+        leftAnchor3 = [rightAnchor leftAnchor];
+        v53 = [leftAnchor2 constraintEqualToAnchor:leftAnchor3];
         [v53 setActive:1];
 
-        v41 = [(PUCleanupToolMaskView *)v2->_maskView rightAnchor];
-        v42 = [v40 rightAnchor];
-        v54 = [v41 constraintEqualToAnchor:v42];
+        imageRightAnchor = [(PUCleanupToolMaskView *)selfCopy->_maskView rightAnchor];
+        v40RightAnchor = [rightAnchor rightAnchor];
+        v54 = [imageRightAnchor constraintEqualToAnchor:v40RightAnchor];
         [v54 setActive:1];
       }
     }
   }
 
-  v55 = +[PUPhotoEditProtoSettings sharedInstance];
-  if ([v55 retouchShowsFaceRects])
+  rightAnchor2 = +[PUPhotoEditProtoSettings sharedInstance];
+  if ([rightAnchor2 retouchShowsFaceRects])
   {
-    faceRectsView = v2->_faceRectsView;
+    faceRectsView = selfCopy->_faceRectsView;
     if (faceRectsView)
     {
-      v57 = [(PUCleanupToolFaceRectsView *)faceRectsView window];
+      window2 = [(PUCleanupToolFaceRectsView *)faceRectsView window];
 
-      if (!v57)
+      if (!window2)
       {
         goto LABEL_15;
       }
 
-      v58 = [(PUCleanupToolFaceRectsView *)v2->_faceRectsView topAnchor];
-      v59 = [v4 imageTopAnchor];
-      v60 = [v58 constraintEqualToAnchor:v59];
+      topAnchor4 = [(PUCleanupToolFaceRectsView *)selfCopy->_faceRectsView topAnchor];
+      imageTopAnchor2 = [mediaView imageTopAnchor];
+      v60 = [topAnchor4 constraintEqualToAnchor:imageTopAnchor2];
       [v60 setActive:1];
 
-      v61 = [(PUCleanupToolFaceRectsView *)v2->_faceRectsView bottomAnchor];
-      v62 = [v4 imageBottomAnchor];
-      v63 = [v61 constraintEqualToAnchor:v62];
+      bottomAnchor4 = [(PUCleanupToolFaceRectsView *)selfCopy->_faceRectsView bottomAnchor];
+      imageBottomAnchor2 = [mediaView imageBottomAnchor];
+      v63 = [bottomAnchor4 constraintEqualToAnchor:imageBottomAnchor2];
       [v63 setActive:1];
 
-      v64 = [(PUCleanupToolFaceRectsView *)v2->_faceRectsView leftAnchor];
-      v65 = [v4 imageLeftAnchor];
-      v66 = [v64 constraintEqualToAnchor:v65];
+      leftAnchor4 = [(PUCleanupToolFaceRectsView *)selfCopy->_faceRectsView leftAnchor];
+      imageLeftAnchor2 = [mediaView imageLeftAnchor];
+      v66 = [leftAnchor4 constraintEqualToAnchor:imageLeftAnchor2];
       [v66 setActive:1];
 
-      v55 = [(PUCleanupToolFaceRectsView *)v2->_faceRectsView rightAnchor];
-      v67 = [v4 imageRightAnchor];
-      v68 = [v55 constraintEqualToAnchor:v67];
+      rightAnchor2 = [(PUCleanupToolFaceRectsView *)selfCopy->_faceRectsView rightAnchor];
+      imageRightAnchor2 = [mediaView imageRightAnchor];
+      v68 = [rightAnchor2 constraintEqualToAnchor:imageRightAnchor2];
       [v68 setActive:1];
     }
   }
 
 LABEL_15:
-  retouchVFXOverlay = v2->_retouchVFXOverlay;
+  retouchVFXOverlay = selfCopy->_retouchVFXOverlay;
   if (retouchVFXOverlay)
   {
-    v70 = [(PUVFXRetouchOverlay *)retouchVFXOverlay topAnchor];
-    v71 = [v4 imageTopAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    topAnchor5 = [(PUVFXRetouchOverlay *)retouchVFXOverlay topAnchor];
+    imageTopAnchor3 = [mediaView imageTopAnchor];
+    v72 = [topAnchor5 constraintEqualToAnchor:imageTopAnchor3];
     [v72 setActive:1];
 
-    v73 = [(PUVFXRetouchOverlay *)v2->_retouchVFXOverlay bottomAnchor];
-    v74 = [v4 imageBottomAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74];
+    bottomAnchor5 = [(PUVFXRetouchOverlay *)selfCopy->_retouchVFXOverlay bottomAnchor];
+    imageBottomAnchor3 = [mediaView imageBottomAnchor];
+    v75 = [bottomAnchor5 constraintEqualToAnchor:imageBottomAnchor3];
     [v75 setActive:1];
 
-    v76 = [(PUVFXRetouchOverlay *)v2->_retouchVFXOverlay leftAnchor];
-    v77 = [v4 imageLeftAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77];
+    leftAnchor5 = [(PUVFXRetouchOverlay *)selfCopy->_retouchVFXOverlay leftAnchor];
+    imageLeftAnchor3 = [mediaView imageLeftAnchor];
+    v78 = [leftAnchor5 constraintEqualToAnchor:imageLeftAnchor3];
     [v78 setActive:1];
 
-    v79 = [(PUVFXRetouchOverlay *)v2->_retouchVFXOverlay rightAnchor];
-    v80 = [v4 imageRightAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80];
+    rightAnchor3 = [(PUVFXRetouchOverlay *)selfCopy->_retouchVFXOverlay rightAnchor];
+    imageRightAnchor3 = [mediaView imageRightAnchor];
+    v81 = [rightAnchor3 constraintEqualToAnchor:imageRightAnchor3];
     [v81 setActive:1];
   }
 
-  if (v2->_userPromptView)
+  if (selfCopy->_userPromptView)
   {
-    [MEMORY[0x1E696ACD8] deactivateConstraints:v2->_userPromptViewConstraints];
+    [MEMORY[0x1E696ACD8] deactivateConstraints:selfCopy->_userPromptViewConstraints];
     v82 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    userPromptViewConstraints = v2->_userPromptViewConstraints;
-    v2->_userPromptViewConstraints = v82;
+    userPromptViewConstraints = selfCopy->_userPromptViewConstraints;
+    selfCopy->_userPromptViewConstraints = v82;
 
-    v151 = v2->_userPromptViewConstraints;
-    v165 = [(PUCleanupUserPromptView *)v2->_userPromptView heightAnchor];
-    v163 = [v165 constraintGreaterThanOrEqualToConstant:44.0];
+    v151 = selfCopy->_userPromptViewConstraints;
+    heightAnchor3 = [(PUCleanupUserPromptView *)selfCopy->_userPromptView heightAnchor];
+    v163 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:44.0];
     v171[0] = v163;
-    v159 = [(PUCleanupUserPromptView *)v2->_userPromptView leadingAnchor];
-    v161 = [(PUCleanupToolController *)v2 view];
-    v157 = [v161 superview];
-    v155 = [v157 leadingAnchor];
-    v153 = [v159 constraintEqualToAnchor:v155];
+    leadingAnchor = [(PUCleanupUserPromptView *)selfCopy->_userPromptView leadingAnchor];
+    view10 = [(PUCleanupToolController *)selfCopy view];
+    superview = [view10 superview];
+    leadingAnchor2 = [superview leadingAnchor];
+    v153 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v171[1] = v153;
-    v147 = [(PUCleanupUserPromptView *)v2->_userPromptView trailingAnchor];
-    v149 = [(PUCleanupToolController *)v2 view];
-    v145 = [v149 superview];
-    v143 = [v145 trailingAnchor];
-    v84 = [v147 constraintEqualToAnchor:v143];
+    trailingAnchor = [(PUCleanupUserPromptView *)selfCopy->_userPromptView trailingAnchor];
+    view11 = [(PUCleanupToolController *)selfCopy view];
+    superview2 = [view11 superview];
+    trailingAnchor2 = [superview2 trailingAnchor];
+    v84 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v171[2] = v84;
-    v85 = [(PUCleanupUserPromptView *)v2->_userPromptView bottomAnchor];
-    v86 = [(PUCleanupToolController *)v2 view];
-    v87 = [v86 safeAreaLayoutGuide];
-    v88 = [v87 bottomAnchor];
-    [v85 constraintEqualToAnchor:v88];
-    v90 = v89 = v2;
+    bottomAnchor6 = [(PUCleanupUserPromptView *)selfCopy->_userPromptView bottomAnchor];
+    view12 = [(PUCleanupToolController *)selfCopy view];
+    safeAreaLayoutGuide = [view12 safeAreaLayoutGuide];
+    bottomAnchor7 = [safeAreaLayoutGuide bottomAnchor];
+    [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
+    v90 = v89 = selfCopy;
     v171[3] = v90;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v171 count:4];
-    v92 = v91 = v4;
+    v92 = v91 = mediaView;
     [(NSMutableArray *)v151 addObjectsFromArray:v92];
 
-    v4 = v91;
-    v2 = v89;
+    mediaView = v91;
+    selfCopy = v89;
 
     [MEMORY[0x1E696ACD8] activateConstraints:v89->_userPromptViewConstraints];
   }
 
-  [(PUCleanupToolController *)v2 _updatePreparingProgressConstraints];
-  v93 = [(PUCleanupToolController *)v2 feedbackView];
-  if (v93)
+  [(PUCleanupToolController *)selfCopy _updatePreparingProgressConstraints];
+  feedbackView = [(PUCleanupToolController *)selfCopy feedbackView];
+  if (feedbackView)
   {
-    v94 = [(PUCleanupToolController *)v2 feedbackViewContainerConstraints];
+    feedbackViewContainerConstraints = [(PUCleanupToolController *)selfCopy feedbackViewContainerConstraints];
 
-    if (v94)
+    if (feedbackViewContainerConstraints)
     {
       v95 = MEMORY[0x1E696ACD8];
-      v96 = [(PUCleanupToolController *)v2 feedbackViewContainerConstraints];
-      [v95 deactivateConstraints:v96];
+      feedbackViewContainerConstraints2 = [(PUCleanupToolController *)selfCopy feedbackViewContainerConstraints];
+      [v95 deactivateConstraints:feedbackViewContainerConstraints2];
 
-      [(PUCleanupToolController *)v2 setFeedbackViewContainerConstraints:0];
+      [(PUCleanupToolController *)selfCopy setFeedbackViewContainerConstraints:0];
     }
 
-    v97 = [MEMORY[0x1E695DF70] array];
-    v98 = [(PUCleanupToolController *)v2 feedbackThumbsUpButton];
-    v99 = [(PUCleanupToolController *)v2 feedbackThumbsDownButton];
-    v100 = [(PUCleanupToolController *)v2 isIpadLayout];
-    v166 = v99;
-    v167 = v98;
-    if (v100 || [(PUPhotoEditToolController *)v2 layoutOrientation]== 3 || [(PUPhotoEditToolController *)v2 layoutOrientation]== 2)
+    array = [MEMORY[0x1E695DF70] array];
+    feedbackThumbsUpButton = [(PUCleanupToolController *)selfCopy feedbackThumbsUpButton];
+    feedbackThumbsDownButton = [(PUCleanupToolController *)selfCopy feedbackThumbsDownButton];
+    isIpadLayout = [(PUCleanupToolController *)selfCopy isIpadLayout];
+    v166 = feedbackThumbsDownButton;
+    v167 = feedbackThumbsUpButton;
+    if (isIpadLayout || [(PUPhotoEditToolController *)selfCopy layoutOrientation]== 3 || [(PUPhotoEditToolController *)selfCopy layoutOrientation]== 2)
     {
-      v128 = v4;
-      v101 = [v98 topAnchor];
-      v162 = [v93 topAnchor];
-      v164 = v101;
-      v160 = [v101 constraintEqualToAnchor:16.0 constant:?];
+      v128 = mediaView;
+      topAnchor6 = [feedbackThumbsUpButton topAnchor];
+      topAnchor7 = [feedbackView topAnchor];
+      v164 = topAnchor6;
+      v160 = [topAnchor6 constraintEqualToAnchor:16.0 constant:?];
       v170[0] = v160;
-      v102 = [v99 topAnchor];
-      v156 = [v98 bottomAnchor];
-      v158 = v102;
-      v154 = [v102 constraintEqualToAnchor:16.0 constant:?];
+      topAnchor8 = [feedbackThumbsDownButton topAnchor];
+      bottomAnchor8 = [feedbackThumbsUpButton bottomAnchor];
+      v158 = topAnchor8;
+      v154 = [topAnchor8 constraintEqualToAnchor:16.0 constant:?];
       v170[1] = v154;
-      v103 = [v99 bottomAnchor];
-      v150 = [v93 bottomAnchor];
-      v152 = v103;
-      v148 = [v103 constraintEqualToAnchor:-16.0 constant:?];
+      bottomAnchor9 = [feedbackThumbsDownButton bottomAnchor];
+      bottomAnchor10 = [feedbackView bottomAnchor];
+      v152 = bottomAnchor9;
+      v148 = [bottomAnchor9 constraintEqualToAnchor:-16.0 constant:?];
       v170[2] = v148;
-      v104 = [v98 leftAnchor];
-      v144 = [v93 leftAnchor];
-      v146 = v104;
-      v142 = [v104 constraintEqualToAnchor:7.0 constant:?];
+      leftAnchor6 = [feedbackThumbsUpButton leftAnchor];
+      leftAnchor7 = [feedbackView leftAnchor];
+      v146 = leftAnchor6;
+      v142 = [leftAnchor6 constraintEqualToAnchor:7.0 constant:?];
       v170[3] = v142;
-      v105 = [v98 rightAnchor];
-      v140 = [v93 rightAnchor];
-      v141 = v105;
-      v139 = [v105 constraintEqualToAnchor:-7.0 constant:?];
+      rightAnchor4 = [feedbackThumbsUpButton rightAnchor];
+      rightAnchor5 = [feedbackView rightAnchor];
+      v141 = rightAnchor4;
+      v139 = [rightAnchor4 constraintEqualToAnchor:-7.0 constant:?];
       v170[4] = v139;
-      v106 = [v99 leftAnchor];
-      v137 = [v93 leftAnchor];
-      v138 = v106;
-      v136 = [v106 constraintEqualToAnchor:7.0 constant:?];
+      leftAnchor8 = [feedbackThumbsDownButton leftAnchor];
+      leftAnchor9 = [feedbackView leftAnchor];
+      v138 = leftAnchor8;
+      v136 = [leftAnchor8 constraintEqualToAnchor:7.0 constant:?];
       v170[5] = v136;
-      v107 = [v99 rightAnchor];
-      v134 = [v93 rightAnchor];
-      v135 = v107;
-      v133 = [v107 constraintEqualToAnchor:-7.0 constant:?];
-      v170[6] = v133;
-      v108 = [v93 centerYAnchor];
-      v131 = [(PUCleanupToolController *)v2 view];
-      v130 = [v131 superview];
-      [v130 centerYAnchor];
-      v129 = v132 = v108;
-      v109 = [v108 constraintEqualToAnchor:?];
-      v170[7] = v109;
-      v110 = v97;
-      if (v100)
+      rightAnchor6 = [feedbackThumbsDownButton rightAnchor];
+      rightAnchor7 = [feedbackView rightAnchor];
+      v135 = rightAnchor6;
+      superview4 = [rightAnchor6 constraintEqualToAnchor:-7.0 constant:?];
+      v170[6] = superview4;
+      centerYAnchor3 = [feedbackView centerYAnchor];
+      view13 = [(PUCleanupToolController *)selfCopy view];
+      superview3 = [view13 superview];
+      [superview3 centerYAnchor];
+      view15 = v132 = centerYAnchor3;
+      safeAreaLayoutGuide3 = [centerYAnchor3 constraintEqualToAnchor:?];
+      v170[7] = safeAreaLayoutGuide3;
+      v110 = array;
+      if (isIpadLayout)
       {
-        v111 = [v93 rightAnchor];
-        v112 = v2;
-        v113 = [(PUCleanupToolController *)v2 view];
-        v114 = [v113 safeAreaLayoutGuide];
-        v115 = [v114 rightAnchor];
+        rightAnchor8 = [feedbackView rightAnchor];
+        v112 = selfCopy;
+        view14 = [(PUCleanupToolController *)selfCopy view];
+        safeAreaLayoutGuide2 = [view14 safeAreaLayoutGuide];
+        rightAnchor9 = [safeAreaLayoutGuide2 rightAnchor];
         v116 = -27.0;
       }
 
       else
       {
-        v111 = [v93 leftAnchor];
-        v112 = v2;
-        v113 = [(PUCleanupToolController *)v2 view];
-        v114 = [v113 safeAreaLayoutGuide];
-        v115 = [v114 leftAnchor];
+        rightAnchor8 = [feedbackView leftAnchor];
+        v112 = selfCopy;
+        view14 = [(PUCleanupToolController *)selfCopy view];
+        safeAreaLayoutGuide2 = [view14 safeAreaLayoutGuide];
+        rightAnchor9 = [safeAreaLayoutGuide2 leftAnchor];
         v116 = 18.0;
       }
 
-      v117 = [v111 constraintEqualToAnchor:v115 constant:v116];
+      v117 = [rightAnchor8 constraintEqualToAnchor:rightAnchor9 constant:v116];
       v170[8] = v117;
       v118 = [MEMORY[0x1E695DEC8] arrayWithObjects:v170 count:9];
       [v110 addObjectsFromArray:v118];
 
-      v4 = v128;
-      v2 = v112;
+      mediaView = v128;
+      selfCopy = v112;
     }
 
     else
     {
-      v120 = [v98 topAnchor];
-      v162 = [v93 topAnchor];
-      v164 = v120;
-      v160 = [v120 constraintEqualToAnchor:7.0 constant:?];
+      topAnchor9 = [feedbackThumbsUpButton topAnchor];
+      topAnchor7 = [feedbackView topAnchor];
+      v164 = topAnchor9;
+      v160 = [topAnchor9 constraintEqualToAnchor:7.0 constant:?];
       v169[0] = v160;
-      v121 = [v98 bottomAnchor];
-      v156 = [v93 bottomAnchor];
-      v158 = v121;
-      v154 = [v121 constraintEqualToAnchor:-7.0 constant:?];
+      bottomAnchor11 = [feedbackThumbsUpButton bottomAnchor];
+      bottomAnchor8 = [feedbackView bottomAnchor];
+      v158 = bottomAnchor11;
+      v154 = [bottomAnchor11 constraintEqualToAnchor:-7.0 constant:?];
       v169[1] = v154;
-      v122 = [v99 topAnchor];
-      v150 = [v98 topAnchor];
-      v152 = v122;
-      v148 = [v122 constraintEqualToAnchor:0.0 constant:?];
+      topAnchor10 = [feedbackThumbsDownButton topAnchor];
+      bottomAnchor10 = [feedbackThumbsUpButton topAnchor];
+      v152 = topAnchor10;
+      v148 = [topAnchor10 constraintEqualToAnchor:0.0 constant:?];
       v169[2] = v148;
-      v123 = [v98 leftAnchor];
-      v144 = [v93 leftAnchor];
-      v146 = v123;
-      v142 = [v123 constraintEqualToAnchor:16.0 constant:?];
+      leftAnchor10 = [feedbackThumbsUpButton leftAnchor];
+      leftAnchor7 = [feedbackView leftAnchor];
+      v146 = leftAnchor10;
+      v142 = [leftAnchor10 constraintEqualToAnchor:16.0 constant:?];
       v169[3] = v142;
-      v124 = [v98 rightAnchor];
-      v140 = [v99 leftAnchor];
-      v141 = v124;
-      v139 = [v124 constraintEqualToAnchor:-16.0 constant:?];
+      rightAnchor10 = [feedbackThumbsUpButton rightAnchor];
+      rightAnchor5 = [feedbackThumbsDownButton leftAnchor];
+      v141 = rightAnchor10;
+      v139 = [rightAnchor10 constraintEqualToAnchor:-16.0 constant:?];
       v169[4] = v139;
-      v125 = [v99 rightAnchor];
-      v137 = [v93 rightAnchor];
-      v138 = v125;
-      v136 = [v125 constraintEqualToAnchor:-16.0 constant:?];
+      rightAnchor11 = [feedbackThumbsDownButton rightAnchor];
+      leftAnchor9 = [feedbackView rightAnchor];
+      v138 = rightAnchor11;
+      v136 = [rightAnchor11 constraintEqualToAnchor:-16.0 constant:?];
       v169[5] = v136;
-      v126 = [v93 centerXAnchor];
-      v134 = [(PUCleanupToolController *)v2 view];
-      v133 = [v134 superview];
-      [v133 centerXAnchor];
-      v132 = v135 = v126;
-      v131 = [v126 constraintEqualToAnchor:?];
-      v169[6] = v131;
-      v127 = [v93 centerYAnchor];
-      v129 = [(PUCleanupToolController *)v2 view];
-      v109 = [v129 safeAreaLayoutGuide];
-      v111 = [v109 bottomAnchor];
-      v130 = v127;
-      v113 = [v127 constraintEqualToAnchor:v111 constant:-92.0];
-      v169[7] = v113;
-      v114 = [MEMORY[0x1E695DEC8] arrayWithObjects:v169 count:8];
-      [v97 addObjectsFromArray:v114];
-      v110 = v97;
+      centerXAnchor3 = [feedbackView centerXAnchor];
+      rightAnchor7 = [(PUCleanupToolController *)selfCopy view];
+      superview4 = [rightAnchor7 superview];
+      [superview4 centerXAnchor];
+      v132 = v135 = centerXAnchor3;
+      view13 = [centerXAnchor3 constraintEqualToAnchor:?];
+      v169[6] = view13;
+      centerYAnchor4 = [feedbackView centerYAnchor];
+      view15 = [(PUCleanupToolController *)selfCopy view];
+      safeAreaLayoutGuide3 = [view15 safeAreaLayoutGuide];
+      rightAnchor8 = [safeAreaLayoutGuide3 bottomAnchor];
+      superview3 = centerYAnchor4;
+      view14 = [centerYAnchor4 constraintEqualToAnchor:rightAnchor8 constant:-92.0];
+      v169[7] = view14;
+      safeAreaLayoutGuide2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v169 count:8];
+      [array addObjectsFromArray:safeAreaLayoutGuide2];
+      v110 = array;
     }
 
-    v119 = [v93 layer];
-    [v119 setCornerRadius:17.0];
+    layer = [feedbackView layer];
+    [layer setCornerRadius:17.0];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v110];
-    [(PUCleanupToolController *)v2 setFeedbackViewContainerConstraints:v110];
+    [(PUCleanupToolController *)selfCopy setFeedbackViewContainerConstraints:v110];
   }
 
-  v168.receiver = v2;
+  v168.receiver = selfCopy;
   v168.super_class = PUCleanupToolController;
   [(PUCleanupToolController *)&v168 updateViewConstraints];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v28.receiver = self;
   v28.super_class = PUCleanupToolController;
-  [(PUPhotoEditToolController *)&v28 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PUPhotoEditToolController *)&v28 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   userPromptView = self->_userPromptView;
   if (userPromptView)
   {
@@ -4997,7 +4997,7 @@ LABEL_15:
     v10 = self->_userPromptView;
     if (v10)
     {
-      v11 = [(PUCleanupUserPromptView *)v10 type];
+      type = [(PUCleanupUserPromptView *)v10 type];
       goto LABEL_6;
     }
   }
@@ -5007,7 +5007,7 @@ LABEL_15:
     v9 = 0;
   }
 
-  v11 = 1;
+  type = 1;
 LABEL_6:
   [(PUCleanupToolController *)self deleteUserPromptViewAnimated:0 completion:0];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -5016,12 +5016,12 @@ LABEL_6:
   aBlock[3] = &unk_1E7B7FA58;
   v27 = v9;
   aBlock[4] = self;
-  aBlock[5] = v11;
+  aBlock[5] = type;
   v12 = _Block_copy(aBlock);
   v13 = +[PUPhotoEditProtoSettings sharedInstance];
-  v14 = [v13 cleanupMaskDisplayMode];
+  cleanupMaskDisplayMode = [v13 cleanupMaskDisplayMode];
 
-  if ((v14 - 1) < 2)
+  if ((cleanupMaskDisplayMode - 1) < 2)
   {
     maskView = self->_maskView;
     if (maskView)
@@ -5030,9 +5030,9 @@ LABEL_6:
     }
 
     v16 = +[PUPhotoEditProtoSettings sharedInstance];
-    v17 = [v16 retouchShowsFaceRects];
+    retouchShowsFaceRects = [v16 retouchShowsFaceRects];
 
-    if (v17)
+    if (retouchShowsFaceRects)
     {
       [(PUCleanupToolFaceRectsView *)self->_faceRectsView setAlpha:0.0];
     }
@@ -5043,12 +5043,12 @@ LABEL_6:
     v19[3] = &unk_1E7B76660;
     v19[4] = self;
     v20 = v12;
-    [v7 animateAlongsideTransition:0 completion:v19];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v19];
     v18 = v20;
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!cleanupMaskDisplayMode)
   {
     if (self->_retouchVFXOverlay)
     {
@@ -5065,7 +5065,7 @@ LABEL_6:
       v23[3] = &unk_1E7B76660;
       v23[4] = self;
       v24 = v12;
-      [v7 animateAlongsideTransition:0 completion:v23];
+      [coordinatorCopy animateAlongsideTransition:0 completion:v23];
       v18 = v24;
     }
 
@@ -5076,7 +5076,7 @@ LABEL_6:
       v21[2] = __78__PUCleanupToolController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_7;
       v21[3] = &unk_1E7B7ABE0;
       v22 = v12;
-      [v7 animateAlongsideTransition:0 completion:v21];
+      [coordinatorCopy animateAlongsideTransition:0 completion:v21];
       v18 = v22;
     }
 
@@ -5183,29 +5183,29 @@ void __78__PUCleanupToolController_viewWillTransitionToSize_withTransitionCoordi
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v24.receiver = self;
   v24.super_class = PUCleanupToolController;
-  [(PUPhotoEditToolController *)&v24 viewDidAppear:a3];
-  v4 = [(PUCleanupToolController *)self modelDeliveryManager];
-  v5 = [v4 ready];
+  [(PUPhotoEditToolController *)&v24 viewDidAppear:appear];
+  modelDeliveryManager = [(PUCleanupToolController *)self modelDeliveryManager];
+  ready = [modelDeliveryManager ready];
 
-  if (v5)
+  if (ready)
   {
     [(PUCleanupToolController *)self _prepareViewsForCleanupIfReady];
     v6 = +[PUPhotoEditProtoSettings sharedInstance];
-    v7 = [v6 cleanupMaskDisplayMode];
+    cleanupMaskDisplayMode = [v6 cleanupMaskDisplayMode];
 
-    if ((v7 - 1) >= 2)
+    if ((cleanupMaskDisplayMode - 1) >= 2)
     {
-      if (!v7)
+      if (!cleanupMaskDisplayMode)
       {
         retouchVFXOverlay = self->_retouchVFXOverlay;
         if (retouchVFXOverlay)
         {
-          v10 = [(PUVFXRetouchOverlay *)retouchVFXOverlay layer];
-          [v10 setOpacity:0.0];
+          layer = [(PUVFXRetouchOverlay *)retouchVFXOverlay layer];
+          [layer setOpacity:0.0];
 
           v11 = dispatch_time(0, 350000000);
           block[0] = MEMORY[0x1E69E9820];
@@ -5231,9 +5231,9 @@ void __78__PUCleanupToolController_viewWillTransitionToSize_withTransitionCoordi
 
   else
   {
-    v8 = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
+    modelDeliveryProgressViewController = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
 
-    if (v8)
+    if (modelDeliveryProgressViewController)
     {
       [(PUCleanupToolController *)self _updatePreparingProgressConstraints];
     }
@@ -5244,7 +5244,7 @@ void __78__PUCleanupToolController_viewWillTransitionToSize_withTransitionCoordi
       v12 = objc_alloc_init(MEMORY[0x1E69C36B8]);
       [(PUCleanupToolController *)self setModelDeliveryProgressViewController:v12];
 
-      v13 = [(PUCleanupToolController *)self modelDeliveryManager];
+      modelDeliveryManager2 = [(PUCleanupToolController *)self modelDeliveryManager];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __41__PUCleanupToolController_viewDidAppear___block_invoke;
@@ -5255,7 +5255,7 @@ void __78__PUCleanupToolController_viewWillTransitionToSize_withTransitionCoordi
       v19[2] = __41__PUCleanupToolController_viewDidAppear___block_invoke_107;
       v19[3] = &unk_1E7B7FA30;
       objc_copyWeak(&v20, &location);
-      [v13 preparePackageWithProgress:v21 updateHandler:v19];
+      [modelDeliveryManager2 preparePackageWithProgress:v21 updateHandler:v19];
 
       v14 = dispatch_time(0, 1000000000);
       v18[0] = MEMORY[0x1E69E9820];
@@ -5270,13 +5270,13 @@ void __78__PUCleanupToolController_viewWillTransitionToSize_withTransitionCoordi
     }
   }
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 addObserver:self selector:sel__willUndo_ name:*MEMORY[0x1E696AA48] object:0];
-  [v15 addObserver:self selector:sel__willRedo_ name:*MEMORY[0x1E696AA40] object:0];
-  [v15 addObserver:self selector:sel__didUndo_ name:*MEMORY[0x1E696AA30] object:0];
-  [v15 addObserver:self selector:sel__didRedo_ name:*MEMORY[0x1E696AA28] object:0];
-  [v15 addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
-  [v15 addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__willUndo_ name:*MEMORY[0x1E696AA48] object:0];
+  [defaultCenter addObserver:self selector:sel__willRedo_ name:*MEMORY[0x1E696AA40] object:0];
+  [defaultCenter addObserver:self selector:sel__didUndo_ name:*MEMORY[0x1E696AA30] object:0];
+  [defaultCenter addObserver:self selector:sel__didRedo_ name:*MEMORY[0x1E696AA28] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 }
 
 void __41__PUCleanupToolController_viewDidAppear___block_invoke(uint64_t a1, uint64_t a2, double a3)
@@ -5393,14 +5393,14 @@ void __41__PUCleanupToolController_viewDidAppear___block_invoke_108(uint64_t a1)
   v3 = _Block_copy(aBlock);
   if (self->_maskContext)
   {
-    v4 = [(PUCleanupToolController *)self view];
-    v5 = [v4 window];
-    if (v5)
+    view = [(PUCleanupToolController *)self view];
+    window = [view window];
+    if (window)
     {
-      v6 = v5;
-      v7 = [(PUPhotoEditToolController *)self isActiveTool];
+      v6 = window;
+      isActiveTool = [(PUPhotoEditToolController *)self isActiveTool];
 
-      if (v7)
+      if (isActiveTool)
       {
         v3[2](v3);
         goto LABEL_11;
@@ -5423,15 +5423,15 @@ void __41__PUCleanupToolController_viewDidAppear___block_invoke_108(uint64_t a1)
   {
     self->_maskContextCreationHasBegun = 1;
     v8 = MEMORY[0x1E69BDE68];
-    v9 = [(PUPhotoEditToolController *)self compositionController];
-    v10 = [v9 composition];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__PUCleanupToolController__updateMaskContext__block_invoke_2_101;
     v13[3] = &unk_1E7B76610;
     v13[4] = self;
     v14 = v3;
-    [v8 createMaskContextForComposition:v10 requestID:0 completionQueue:MEMORY[0x1E69E96A0] completion:v13];
+    [v8 createMaskContextForComposition:composition requestID:0 completionQueue:MEMORY[0x1E69E96A0] completion:v13];
   }
 
 LABEL_11:
@@ -5644,18 +5644,18 @@ uint64_t __45__PUCleanupToolController__updateMaskContext__block_invoke_94(uint6
 - (void)_disableUI
 {
   [(PUCleanupToolController *)self setVFXOverlayHidden:1];
-  v3 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v3 setHidden:1];
+  view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [view setHidden:1];
 
   overlayController = self->_overlayController;
 
   [(PUCleanupOverlayViewController *)overlayController disableUI];
 }
 
-- (void)_prepareViewsForCleanupIfReadyAndNotify:(id)a3
+- (void)_prepareViewsForCleanupIfReadyAndNotify:(id)notify
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notifyCopy = notify;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     _PFAssertFailHandler();
@@ -5666,33 +5666,33 @@ uint64_t __45__PUCleanupToolController__updateMaskContext__block_invoke_94(uint6
     goto LABEL_10;
   }
 
-  v5 = [(PUCleanupToolController *)self modelDeliveryManager];
-  if (![v5 ready])
+  modelDeliveryManager = [(PUCleanupToolController *)self modelDeliveryManager];
+  if (![modelDeliveryManager ready])
   {
     goto LABEL_9;
   }
 
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [v6 mediaView];
-  if (!v7)
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  mediaView = [delegate mediaView];
+  if (!mediaView)
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = v7;
-  v9 = [(PUPhotoEditToolController *)self isActiveTool];
+  v8 = mediaView;
+  isActiveTool = [(PUPhotoEditToolController *)self isActiveTool];
 
-  if (v9)
+  if (isActiveTool)
   {
     if (self->_cleanupViewsHaveBeenPrepared)
     {
       [(PUCleanupToolController *)self _updateMaskContext];
 LABEL_45:
-      if (v4)
+      if (notifyCopy)
       {
-        v4[2](v4);
+        notifyCopy[2](notifyCopy);
       }
 
       goto LABEL_25;
@@ -5701,8 +5701,8 @@ LABEL_45:
     [(PUCleanupToolController *)self _removePreparingProgress];
     [(PUCleanupToolController *)self _updateResetButtonState];
     v21 = self->_cleanupMode - 3 < 0xFFFFFFFFFFFFFFFELL;
-    v22 = [(PUPhotoEditToolController *)self delegate];
-    [v22 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:v21];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    [delegate2 toolControllerDidChangeWantsTapToToggleOriginalEnabled:self enabled:v21];
 
     [(PUCleanupToolController *)self _updateMaskContext];
     [(PUCleanupToolController *)self _addOverlayIfNeeded];
@@ -5713,13 +5713,13 @@ LABEL_45:
       [(PUCleanupOverlayViewController *)overlayController mediaViewIsReady];
     }
 
-    v24 = [(PUCleanupToolController *)self view];
-    [v24 setNeedsUpdateConstraints];
+    view = [(PUCleanupToolController *)self view];
+    [view setNeedsUpdateConstraints];
 
     v25 = +[PUPhotoEditProtoSettings sharedInstance];
-    v26 = [v25 cleanupMaskDisplayMode];
+    cleanupMaskDisplayMode = [v25 cleanupMaskDisplayMode];
 
-    if ((v26 - 1) > 1 || (maskView = self->_maskView) == 0)
+    if ((cleanupMaskDisplayMode - 1) > 1 || (maskView = self->_maskView) == 0)
     {
 LABEL_36:
       v29 = +[PUPhotoEditProtoSettings sharedInstance];
@@ -5802,8 +5802,8 @@ LABEL_10:
       v11 = @"NO";
     }
 
-    v12 = [(PUCleanupToolController *)self modelDeliveryManager];
-    if ([v12 ready])
+    modelDeliveryManager2 = [(PUCleanupToolController *)self modelDeliveryManager];
+    if ([modelDeliveryManager2 ready])
     {
       v13 = @"YES";
     }
@@ -5813,8 +5813,8 @@ LABEL_10:
       v13 = @"NO";
     }
 
-    v14 = [(PUPhotoEditToolController *)self delegate];
-    v15 = [v14 mediaView];
+    delegate3 = [(PUPhotoEditToolController *)self delegate];
+    mediaView2 = [delegate3 mediaView];
     *buf = 138413058;
     if ([(PUPhotoEditToolController *)self isActiveTool])
     {
@@ -5830,25 +5830,25 @@ LABEL_10:
     v45 = 2112;
     v46 = v13;
     v47 = 2112;
-    v48 = v15;
+    v48 = mediaView2;
     v49 = 2112;
     v50 = v16;
     _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_DEBUG, "_prepareViewsForCleanupIfReady; not ready. _mediaViewIsReady: %@, modelDeliveryManager ready: %@, mediaView: %@, isActiveTool: %@", buf, 0x2Au);
   }
 
-  if (v4)
+  if (notifyCopy)
   {
     v17 = self->_tasksWaitingOnCleanupReady;
     if (!v17)
     {
-      v18 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v19 = self->_tasksWaitingOnCleanupReady;
-      self->_tasksWaitingOnCleanupReady = v18;
+      self->_tasksWaitingOnCleanupReady = array;
 
       v17 = self->_tasksWaitingOnCleanupReady;
     }
 
-    v20 = _Block_copy(v4);
+    v20 = _Block_copy(notifyCopy);
     [(NSMutableArray *)v17 addObject:v20];
   }
 
@@ -5857,9 +5857,9 @@ LABEL_25:
 
 - (void)_removePreparingProgress
 {
-  v3 = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  modelDeliveryProgressViewController = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
+  view = [modelDeliveryProgressViewController view];
+  [view removeFromSuperview];
 
   [(PUCleanupToolController *)self setModelDeliveryProgressViewController:0];
 }
@@ -5867,34 +5867,34 @@ LABEL_25:
 - (void)_updatePreparingProgressConstraints
 {
   v48[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PUCleanupToolController *)self view];
-  v4 = [v3 window];
+  view = [(PUCleanupToolController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
-    v6 = [v5 view];
+    modelDeliveryProgressViewController = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
+    view2 = [modelDeliveryProgressViewController view];
 
-    if (v6)
+    if (view2)
     {
-      v7 = [v6 superview];
-      if (v7)
+      superview = [view2 superview];
+      if (superview)
       {
-        v8 = v7;
-        v9 = [v6 window];
+        v8 = superview;
+        window2 = [view2 window];
 
-        if (v9)
+        if (window2)
         {
           if ([(PUCleanupToolController *)self isIpadLayout])
           {
 LABEL_6:
-            v10 = [(PUCleanupToolController *)self modelDeliveryProgressConstraints];
+            modelDeliveryProgressConstraints = [(PUCleanupToolController *)self modelDeliveryProgressConstraints];
 
-            if (v10)
+            if (modelDeliveryProgressConstraints)
             {
               v11 = MEMORY[0x1E696ACD8];
-              v12 = [(PUCleanupToolController *)self modelDeliveryProgressConstraints];
-              [v11 deactivateConstraints:v12];
+              modelDeliveryProgressConstraints2 = [(PUCleanupToolController *)self modelDeliveryProgressConstraints];
+              [v11 deactivateConstraints:modelDeliveryProgressConstraints2];
 
               [(PUCleanupToolController *)self setModelDeliveryProgressConstraints:0];
             }
@@ -5911,64 +5911,64 @@ LABEL_6:
                 v13 = 352.0;
               }
 
-              v14 = [v6 centerXAnchor];
-              v46 = [(PUCleanupToolController *)self view];
-              v45 = [v46 centerXAnchor];
-              v44 = [v14 constraintEqualToAnchor:?];
+              centerXAnchor = [view2 centerXAnchor];
+              view3 = [(PUCleanupToolController *)self view];
+              centerXAnchor2 = [view3 centerXAnchor];
+              v44 = [centerXAnchor constraintEqualToAnchor:?];
               v48[0] = v44;
-              v43 = [v6 widthAnchor];
-              v42 = [v43 constraintEqualToConstant:v13];
+              widthAnchor = [view2 widthAnchor];
+              v42 = [widthAnchor constraintEqualToConstant:v13];
               v48[1] = v42;
-              v15 = [v6 bottomAnchor];
-              v16 = [(PUCleanupToolController *)self view];
-              v17 = [v16 safeAreaLayoutGuide];
-              v18 = [v17 bottomAnchor];
-              v19 = [v15 constraintEqualToAnchor:v18 constant:-11.0];
-              v48[2] = v19;
+              bottomAnchor = [view2 bottomAnchor];
+              view4 = [(PUCleanupToolController *)self view];
+              safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+              bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+              safeAreaLayoutGuide2 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-11.0];
+              v48[2] = safeAreaLayoutGuide2;
               v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:3];
             }
 
             else
             {
-              v26 = [v6 leadingAnchor];
-              v27 = [(PUCleanupToolController *)self view];
-              v28 = [v27 leadingAnchor];
-              v29 = [v26 constraintEqualToAnchor:v28 constant:10.0];
+              leadingAnchor = [view2 leadingAnchor];
+              view5 = [(PUCleanupToolController *)self view];
+              leadingAnchor2 = [view5 leadingAnchor];
+              v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
 
-              v30 = [v6 trailingAnchor];
-              v31 = [(PUCleanupToolController *)self view];
-              v32 = [v31 trailingAnchor];
-              v33 = [v30 constraintEqualToAnchor:v32 constant:-10.0];
+              trailingAnchor = [view2 trailingAnchor];
+              view6 = [(PUCleanupToolController *)self view];
+              trailingAnchor2 = [view6 trailingAnchor];
+              v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
 
               v41 = v29;
               LODWORD(v34) = 1132068864;
               [v29 setPriority:v34];
               LODWORD(v35) = 1132068864;
               [v33 setPriority:v35];
-              v36 = [(PUPhotoEditToolController *)self delegate];
-              v37 = [v36 toolControllerMainContainerView:self];
+              delegate = [(PUPhotoEditToolController *)self delegate];
+              v37 = [delegate toolControllerMainContainerView:self];
 
-              v38 = [v6 centerXAnchor];
-              v45 = v37;
-              v43 = [v37 centerXAnchor];
-              v44 = v38;
-              v42 = [v38 constraintEqualToAnchor:?];
+              centerXAnchor3 = [view2 centerXAnchor];
+              centerXAnchor2 = v37;
+              widthAnchor = [v37 centerXAnchor];
+              v44 = centerXAnchor3;
+              v42 = [centerXAnchor3 constraintEqualToAnchor:?];
               v47[0] = v42;
               v47[1] = v29;
-              v46 = v33;
+              view3 = v33;
               v47[2] = v33;
-              v15 = [v6 widthAnchor];
-              v16 = [v15 constraintLessThanOrEqualToConstant:374.0];
-              v47[3] = v16;
-              v17 = [v6 bottomAnchor];
-              v18 = [(PUCleanupToolController *)self view];
-              v19 = [v18 safeAreaLayoutGuide];
-              v39 = [v19 bottomAnchor];
-              v40 = [v17 constraintEqualToAnchor:v39 constant:-13.0];
+              bottomAnchor = [view2 widthAnchor];
+              view4 = [bottomAnchor constraintLessThanOrEqualToConstant:374.0];
+              v47[3] = view4;
+              safeAreaLayoutGuide = [view2 bottomAnchor];
+              bottomAnchor2 = [(PUCleanupToolController *)self view];
+              safeAreaLayoutGuide2 = [bottomAnchor2 safeAreaLayoutGuide];
+              bottomAnchor3 = [safeAreaLayoutGuide2 bottomAnchor];
+              v40 = [safeAreaLayoutGuide constraintEqualToAnchor:bottomAnchor3 constant:-13.0];
               v47[4] = v40;
               v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:5];
 
-              v14 = v41;
+              centerXAnchor = v41;
             }
 
             [MEMORY[0x1E696ACD8] activateConstraints:v20];
@@ -5977,18 +5977,18 @@ LABEL_6:
             goto LABEL_19;
           }
 
-          v21 = [(PUPhotoEditToolController *)self delegate];
-          v22 = [v21 toolControllerMainContainerView:self];
+          delegate2 = [(PUPhotoEditToolController *)self delegate];
+          v22 = [delegate2 toolControllerMainContainerView:self];
 
           if (v22)
           {
-            v23 = [v22 superview];
-            if (v23)
+            superview2 = [v22 superview];
+            if (superview2)
             {
-              v24 = v23;
-              v25 = [v22 window];
+              v24 = superview2;
+              window3 = [v22 window];
 
-              if (v25)
+              if (window3)
               {
                 goto LABEL_6;
               }
@@ -6013,21 +6013,21 @@ LABEL_19:
   {
     [(PUCleanupUserPromptView *)userPromptView updateConstraintsIfNeeded];
     [(PUCleanupUserPromptView *)self->_userPromptView layoutIfNeeded];
-    v4 = [(PUPhotoEditToolController *)self delegate];
-    v30 = [v4 mediaView];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
 
     [(PUCleanupUserPromptView *)self->_userPromptView frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v30 imageFrame];
+    [mediaView imageFrame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(PUCleanupToolController *)self view];
-    [v30 convertRect:v21 toView:{v14, v16, v18, v20}];
+    view = [(PUCleanupToolController *)self view];
+    [mediaView convertRect:view toView:{v14, v16, v18, v20}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -6049,8 +6049,8 @@ LABEL_19:
 {
   v4.receiver = self;
   v4.super_class = PUCleanupToolController;
-  v3 = [(PUPhotoEditToolController *)&v4 viewDidLayoutSubviews];
-  if (MEMORY[0x1B8C6D660](v3))
+  viewDidLayoutSubviews = [(PUPhotoEditToolController *)&v4 viewDidLayoutSubviews];
+  if (MEMORY[0x1B8C6D660](viewDidLayoutSubviews))
   {
     [(PUCleanupToolController *)self _updatePromptViewPlatter];
   }
@@ -6058,30 +6058,30 @@ LABEL_19:
 
 - (void)_showPreparingProgress
 {
-  v3 = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
-  [v3 setIsiPadConfiguration:{-[PUCleanupToolController isIpadLayout](self, "isIpadLayout")}];
+  modelDeliveryProgressViewController = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
+  [modelDeliveryProgressViewController setIsiPadConfiguration:{-[PUCleanupToolController isIpadLayout](self, "isIpadLayout")}];
 
-  v4 = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
-  v6 = [v4 view];
+  modelDeliveryProgressViewController2 = [(PUCleanupToolController *)self modelDeliveryProgressViewController];
+  view = [modelDeliveryProgressViewController2 view];
 
-  v5 = [(PUCleanupToolController *)self view];
-  [v5 addSubview:v6];
+  view2 = [(PUCleanupToolController *)self view];
+  [view2 addSubview:view];
 
   [(PUCleanupToolController *)self _updatePreparingProgressConstraints];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = PUCleanupToolController;
-  [(PUPhotoEditToolController *)&v3 viewWillAppear:a3];
+  [(PUPhotoEditToolController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v17.receiver = self;
   v17.super_class = PUCleanupToolController;
-  [(PUCleanupToolController *)&v17 viewWillDisappear:a3];
+  [(PUCleanupToolController *)&v17 viewWillDisappear:disappear];
   maskView = self->_maskView;
   if (maskView)
   {
@@ -6091,9 +6091,9 @@ LABEL_19:
   }
 
   v6 = +[PUPhotoEditProtoSettings sharedInstance];
-  v7 = [v6 retouchShowsFaceRects];
+  retouchShowsFaceRects = [v6 retouchShowsFaceRects];
 
-  if (v7)
+  if (retouchShowsFaceRects)
   {
     [(PUCleanupToolFaceRectsView *)self->_faceRectsView removeFromSuperview];
     faceRectsView = self->_faceRectsView;
@@ -6111,8 +6111,8 @@ LABEL_19:
   if (_os_feature_enabled_impl())
   {
     [(PUCleanupToolController *)self _setCleanupMode:1];
-    v10 = [(PUCleanupToolController *)self brushModeButton];
-    [v10 setSelected:0];
+    brushModeButton = [(PUCleanupToolController *)self brushModeButton];
+    [brushModeButton setSelected:0];
 
     [(PUCleanupToolController *)self _updateBrushModeButton];
   }
@@ -6122,8 +6122,8 @@ LABEL_19:
   self->_retouchVFXOverlay = 0;
 
   [(PUCleanupOverlayViewController *)self->_overlayController willMoveToParentViewController:0];
-  v12 = [(PUCleanupOverlayViewController *)self->_overlayController view];
-  [v12 removeFromSuperview];
+  view = [(PUCleanupOverlayViewController *)self->_overlayController view];
+  [view removeFromSuperview];
 
   [(PUCleanupOverlayViewController *)self->_overlayController removeFromParentViewController];
   overlayController = self->_overlayController;
@@ -6139,8 +6139,8 @@ LABEL_19:
   tasksWaitingOnCleanupReady = self->_tasksWaitingOnCleanupReady;
   self->_tasksWaitingOnCleanupReady = 0;
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -6148,18 +6148,18 @@ LABEL_19:
   v18.receiver = self;
   v18.super_class = PUCleanupToolController;
   [(PUCleanupToolController *)&v18 viewDidLoad];
-  v3 = [(PUPhotoEditToolController *)self toolContainerView];
-  [v3 setAccessibilityLabel:@"toolContainer"];
-  [v3 addSubview:self->_defaultModeBrushSizeSlider];
-  [v3 addSubview:self->_defaultModeBrushSizeLabel];
-  [v3 addSubview:self->_brushModeBrushSizeSlider];
-  [v3 addSubview:self->_brushModeBrushSizeLabel];
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+  [toolContainerView setAccessibilityLabel:@"toolContainer"];
+  [toolContainerView addSubview:self->_defaultModeBrushSizeSlider];
+  [toolContainerView addSubview:self->_defaultModeBrushSizeLabel];
+  [toolContainerView addSubview:self->_brushModeBrushSizeSlider];
+  [toolContainerView addSubview:self->_brushModeBrushSizeLabel];
   if (_os_feature_enabled_impl() && !self->_brushModeButton)
   {
     objc_initWeak(&location, self);
     v4 = PULocalizedString(@"PHOTOEDIT_CLEANUP_BRUSH_MODE_ACCESSIBILITY_LABEL");
-    v5 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v6 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"paintbrush.pointed" selectedImageNamed:@"paintbrush.pointed.fill" accessibilityLabel:v4 spec:v5];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    v6 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"paintbrush.pointed" selectedImageNamed:@"paintbrush.pointed.fill" accessibilityLabel:v4 spec:photoEditSpec];
 
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
@@ -6169,11 +6169,11 @@ LABEL_19:
     [v6 setActionBlock:&v12];
     [(PUCleanupToolController *)self setBrushModeButton:v6, v12, v13, v14, v15];
     cleanupMode = self->_cleanupMode;
-    v8 = [(PUCleanupToolController *)self brushModeButton];
-    [v8 setSelected:cleanupMode == 2];
+    brushModeButton = [(PUCleanupToolController *)self brushModeButton];
+    [brushModeButton setSelected:cleanupMode == 2];
 
-    v9 = [(PUCleanupToolController *)self brushModeButton];
-    [v9 setEnabled:0];
+    brushModeButton2 = [(PUCleanupToolController *)self brushModeButton];
+    [brushModeButton2 setEnabled:0];
 
     [(PUCleanupToolController *)self _updateBrushModeButton];
     objc_destroyWeak(&v16);
@@ -6181,13 +6181,13 @@ LABEL_19:
     objc_destroyWeak(&location);
   }
 
-  v10 = [MEMORY[0x1E69C4290] globalSettings];
-  v11 = [v10 retouchShowsDefaultModeSlider];
+  globalSettings = [MEMORY[0x1E69C4290] globalSettings];
+  retouchShowsDefaultModeSlider = [globalSettings retouchShowsDefaultModeSlider];
 
-  if (v11)
+  if (retouchShowsDefaultModeSlider)
   {
-    [v3 addSubview:self->_defaultModeBrushSizeSlider];
-    [v3 addSubview:self->_defaultModeBrushSizeLabel];
+    [toolContainerView addSubview:self->_defaultModeBrushSizeSlider];
+    [toolContainerView addSubview:self->_defaultModeBrushSizeLabel];
   }
 }
 
@@ -6201,9 +6201,9 @@ void __38__PUCleanupToolController_viewDidLoad__block_invoke(uint64_t a1, void *
 - (void)_setupResetButton
 {
   v3 = PULocalizedString(@"PHOTOEDIT_CLEANUP_RESET");
-  v4 = [v3 localizedUppercaseString];
+  localizedUppercaseString = [v3 localizedUppercaseString];
 
-  v5 = [PUPhotoEditToolActivationButton buttonWithTitle:v4];
+  v5 = [PUPhotoEditToolActivationButton buttonWithTitle:localizedUppercaseString];
   objc_storeStrong(&self->_resetButton, v5);
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69E9820];
@@ -6244,11 +6244,11 @@ void __44__PUCleanupToolController__setupResetButton__block_invoke(uint64_t a1, 
 
   [(PUCleanupToolController *)self _setupCleanupBrushSizeSlider:self->_defaultModeBrushSizeSlider label:self->_defaultModeBrushSizeLabel];
   [(PUCleanupToolController *)self _setupCleanupBrushSizeSlider:self->_brushModeBrushSizeSlider label:self->_brushModeBrushSizeLabel];
-  v11 = [MEMORY[0x1E69C4290] globalSettings];
-  -[CEKSlider setHidden:](self->_defaultModeBrushSizeSlider, "setHidden:", [v11 retouchShowsDefaultModeSlider] ^ 1);
+  globalSettings = [MEMORY[0x1E69C4290] globalSettings];
+  -[CEKSlider setHidden:](self->_defaultModeBrushSizeSlider, "setHidden:", [globalSettings retouchShowsDefaultModeSlider] ^ 1);
 
-  v12 = [MEMORY[0x1E69C4290] globalSettings];
-  -[UILabel setHidden:](self->_defaultModeBrushSizeLabel, "setHidden:", [v12 retouchShowsDefaultModeSlider] ^ 1);
+  globalSettings2 = [MEMORY[0x1E69C4290] globalSettings];
+  -[UILabel setHidden:](self->_defaultModeBrushSizeLabel, "setHidden:", [globalSettings2 retouchShowsDefaultModeSlider] ^ 1);
 
   v13 = _os_feature_enabled_impl();
   [(CEKSlider *)self->_brushModeBrushSizeSlider setHidden:v13 ^ 1u];
@@ -6257,125 +6257,125 @@ void __44__PUCleanupToolController__setupResetButton__block_invoke(uint64_t a1, 
   [(UILabel *)v14 setHidden:v13 ^ 1u];
 }
 
-- (void)_setupCleanupBrushSizeSlider:(id)a3 label:(id)a4
+- (void)_setupCleanupBrushSizeSlider:(id)slider label:(id)label
 {
-  v13 = a3;
-  v6 = a4;
-  [(CEKSlider *)v13 setDelegate:self];
-  [(CEKSlider *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(CEKSlider *)v13 setUseTickMarkLegibilityShadows:1];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [(CEKSlider *)v13 setBackgroundColor:v7];
+  sliderCopy = slider;
+  labelCopy = label;
+  [(CEKSlider *)sliderCopy setDelegate:self];
+  [(CEKSlider *)sliderCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(CEKSlider *)sliderCopy setUseTickMarkLegibilityShadows:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(CEKSlider *)sliderCopy setBackgroundColor:clearColor];
 
-  if (self->_brushModeBrushSizeSlider == v13)
+  if (self->_brushModeBrushSizeSlider == sliderCopy)
   {
-    [(CEKSlider *)v13 setAlpha:0.0];
-    [v6 setAlpha:0.0];
-    [(CEKSlider *)v13 setMinimumValue:3.0];
-    [(CEKSlider *)v13 setMaximumValue:40.0];
-    [(CEKSlider *)v13 setDefaultValue:10.0];
+    [(CEKSlider *)sliderCopy setAlpha:0.0];
+    [labelCopy setAlpha:0.0];
+    [(CEKSlider *)sliderCopy setMinimumValue:3.0];
+    [(CEKSlider *)sliderCopy setMaximumValue:40.0];
+    [(CEKSlider *)sliderCopy setDefaultValue:10.0];
     v10 = 10.0;
   }
 
   else
   {
-    [(CEKSlider *)v13 setMinimumValue:3.0];
-    [(CEKSlider *)v13 setMaximumValue:40.0];
-    v8 = [MEMORY[0x1E69C4290] globalSettings];
-    [v8 retouchDefaultModeBrushSizeDefault];
-    [(CEKSlider *)v13 setDefaultValue:?];
+    [(CEKSlider *)sliderCopy setMinimumValue:3.0];
+    [(CEKSlider *)sliderCopy setMaximumValue:40.0];
+    globalSettings = [MEMORY[0x1E69C4290] globalSettings];
+    [globalSettings retouchDefaultModeBrushSizeDefault];
+    [(CEKSlider *)sliderCopy setDefaultValue:?];
 
     if ([(PUCleanupToolController *)self isIpadLayout])
     {
-      [(CEKSlider *)v13 defaultValue];
-      [(CEKSlider *)v13 setDefaultValue:v9 * 1.25];
+      [(CEKSlider *)sliderCopy defaultValue];
+      [(CEKSlider *)sliderCopy setDefaultValue:v9 * 1.25];
     }
 
-    [(CEKSlider *)v13 defaultValue];
+    [(CEKSlider *)sliderCopy defaultValue];
   }
 
-  [(CEKSlider *)v13 setValue:v10];
+  [(CEKSlider *)sliderCopy setValue:v10];
   if (objc_opt_respondsToSelector())
   {
-    [(CEKSlider *)v13 defaultValue];
-    [(CEKSlider *)v13 setMarkedValue:?];
+    [(CEKSlider *)sliderCopy defaultValue];
+    [(CEKSlider *)sliderCopy setMarkedValue:?];
   }
 
-  [(CEKSlider *)v13 value];
+  [(CEKSlider *)sliderCopy value];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", llround(v11)];
-  [v6 setText:v12];
+  [labelCopy setText:v12];
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [labelCopy setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_updateResetButtonState
 {
-  v3 = [(PUCleanupToolController *)self _canReset];
-  [(PUPhotoEditToolActivationButton *)self->_resetButton setHidden:v3 ^ 1];
+  _canReset = [(PUCleanupToolController *)self _canReset];
+  [(PUPhotoEditToolActivationButton *)self->_resetButton setHidden:_canReset ^ 1];
   resetButton = self->_resetButton;
 
-  [(PUPhotoEditToolActivationButton *)resetButton setSelected:v3];
+  [(PUPhotoEditToolActivationButton *)resetButton setSelected:_canReset];
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
-  v4 = a3;
+  adjustmentsCopy = adjustments;
   v5.receiver = self;
   v5.super_class = PUCleanupToolController;
-  [(PUPhotoEditToolController *)&v5 compositionControllerDidChangeForAdjustments:v4];
-  if ([v4 containsObject:*MEMORY[0x1E69BE028]])
+  [(PUPhotoEditToolController *)&v5 compositionControllerDidChangeForAdjustments:adjustmentsCopy];
+  if ([adjustmentsCopy containsObject:*MEMORY[0x1E69BE028]])
   {
     [(PUCleanupToolController *)self _updateResetButtonState];
   }
 
-  if (!-[PUPhotoEditToolController isActiveTool](self, "isActiveTool") && [v4 containsObject:*MEMORY[0x1E69BE030]])
+  if (!-[PUPhotoEditToolController isActiveTool](self, "isActiveTool") && [adjustmentsCopy containsObject:*MEMORY[0x1E69BE030]])
   {
     [(PUCleanupToolController *)self setMaskContext:0];
     self->_maskContextCreationHasBegun = 0;
   }
 }
 
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator
 {
   v29 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = PUCleanupToolController;
-  v10 = a4;
-  [(PUPhotoEditToolController *)&v26 setupWithAsset:a3 compositionController:v10 editSource:a5 valuesCalculator:a6];
+  controllerCopy = controller;
+  [(PUPhotoEditToolController *)&v26 setupWithAsset:asset compositionController:controllerCopy editSource:source valuesCalculator:calculator];
   self->_mediaViewIsReady = 0;
   self->_cleanupViewsHaveBeenPrepared = 0;
-  v11 = [v10 composition];
+  composition = [controllerCopy composition];
 
-  v12 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithComposition:v11];
+  v12 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithComposition:composition];
   [v12 setName:@"PUCleanupToolController-imageProperties"];
   v25 = 0;
   v13 = [v12 submitSynchronous:&v25];
   v14 = v25;
-  v15 = [v13 properties];
-  if ([v15 isHDR])
+  properties = [v13 properties];
+  if ([properties isHDR])
   {
-    v16 = 1;
+    hasGainMap = 1;
   }
 
   else
   {
-    v16 = [v15 hasGainMap];
+    hasGainMap = [properties hasGainMap];
   }
 
-  self->_needsHDRUI = v16;
-  v17 = [(PUPhotoEditToolController *)self compositionController];
-  v18 = [v17 brushStrokeHistory];
+  self->_needsHDRUI = hasGainMap;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  brushStrokeHistory = [compositionController brushStrokeHistory];
 
-  if (v18)
+  if (brushStrokeHistory)
   {
     v19 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(PUPhotoEditToolController *)self compositionController];
-      v21 = [v20 brushStrokeHistory];
-      v22 = [v21 entryCount];
+      compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+      brushStrokeHistory2 = [compositionController2 brushStrokeHistory];
+      entryCount = [brushStrokeHistory2 entryCount];
       *buf = 134217984;
-      v28 = v22;
+      v28 = entryCount;
       _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_DEBUG, "Loaded brush stroke history with %ld entries", buf, 0xCu);
     }
   }
@@ -6383,8 +6383,8 @@ void __44__PUCleanupToolController__setupResetButton__block_invoke(uint64_t a1, 
   else
   {
     v23 = objc_alloc_init(MEMORY[0x1E69BDDC0]);
-    v24 = [(PUPhotoEditToolController *)self compositionController];
-    [v24 setBrushStrokeHistory:v23];
+    compositionController3 = [(PUPhotoEditToolController *)self compositionController];
+    [compositionController3 setBrushStrokeHistory:v23];
 
     v19 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -6395,11 +6395,11 @@ void __44__PUCleanupToolController__setupResetButton__block_invoke(uint64_t a1, 
   }
 }
 
-- (PUCleanupToolController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUCleanupToolController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PUCleanupToolController;
-  v4 = [(PUPhotoEditToolController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PUPhotoEditToolController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -6409,11 +6409,11 @@ void __44__PUCleanupToolController__setupResetButton__block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (PUCleanupToolController)initWithCoder:(id)a3
+- (PUCleanupToolController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PUCleanupToolController;
-  v3 = [(PUCleanupToolController *)&v6 initWithCoder:a3];
+  v3 = [(PUCleanupToolController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

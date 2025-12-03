@@ -1,15 +1,15 @@
 @interface MUPlaceSectionRowView
-+ (id)rowViewWithContentView:(id)a3;
++ (id)rowViewWithContentView:(id)view;
 - (BOOL)supportsInteractionMenuItems;
-- (MUPlaceSectionRowView)initWithFrame:(CGRect)a3;
+- (MUPlaceSectionRowView)initWithFrame:(CGRect)frame;
 - (id)_createCopyAction;
-- (id)_speechMenuElementFromSuggestedActions:(id)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)_updateBackgroundColor:(BOOL)a3;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (id)_speechMenuElementFromSuggestedActions:(id)actions;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)_updateBackgroundColor:(BOOL)color;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation MUPlaceSectionRowView
@@ -44,15 +44,15 @@ void __42__MUPlaceSectionRowView__createCopyAction__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_speechMenuElementFromSuggestedActions:(id)a3
+- (id)_speechMenuElementFromSuggestedActions:(id)actions
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  actionsCopy = actions;
+  v4 = [actionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -64,7 +64,7 @@ void __42__MUPlaceSectionRowView__createCopyAction__block_invoke(uint64_t a1)
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -72,8 +72,8 @@ void __42__MUPlaceSectionRowView__createCopyAction__block_invoke(uint64_t a1)
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 identifier];
-          v12 = [v11 isEqualToString:v7];
+          identifier = [v10 identifier];
+          v12 = [identifier isEqualToString:v7];
 
           if (v12)
           {
@@ -82,7 +82,7 @@ void __42__MUPlaceSectionRowView__createCopyAction__block_invoke(uint64_t a1)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [actionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -96,35 +96,35 @@ LABEL_12:
   return v10;
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86__MUPlaceSectionRowView_editMenuInteraction_willDismissMenuForConfiguration_animator___block_invoke;
   v5[3] = &unk_1E821A268;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, configuration}];
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = a5;
-  v7 = [MEMORY[0x1E695DF70] array];
+  actionsCopy = actions;
+  array = [MEMORY[0x1E695DF70] array];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(MUPlaceSectionRowView *)self _createCopyAction];
-    [v7 addObject:v8];
+    _createCopyAction = [(MUPlaceSectionRowView *)self _createCopyAction];
+    [array addObject:_createCopyAction];
   }
 
-  v9 = [(MUPlaceSectionRowView *)self _speechMenuElementFromSuggestedActions:v6];
-  [v7 _mapsui_addObjectIfNotNil:v9];
+  v9 = [(MUPlaceSectionRowView *)self _speechMenuElementFromSuggestedActions:actionsCopy];
+  [array _mapsui_addObjectIfNotNil:v9];
 
-  if (![v7 count])
+  if (![array count])
   {
     [(MUPlaceSectionRowView *)self setSelected:0];
   }
 
-  v10 = [MEMORY[0x1E69DCC60] menuWithChildren:v7];
+  v10 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
 
   return v10;
 }
@@ -144,42 +144,42 @@ LABEL_12:
   return v2 & 1;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUPlaceSectionRowView;
-  [(MUPlaceSectionRowView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MUPlaceSectionRowView *)&v5 touchesCancelled:cancelled withEvent:event];
   if ([(MUPlaceSectionRowView *)self handlesHighlighting])
   {
     [(MUPlaceSectionRowView *)self setSelected:0];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUPlaceSectionRowView;
-  [(MUPlaceSectionRowView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MUPlaceSectionRowView *)&v5 touchesEnded:ended withEvent:event];
   if ([(MUPlaceSectionRowView *)self handlesHighlighting])
   {
     [(MUPlaceSectionRowView *)self setSelected:0];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUPlaceSectionRowView;
-  [(MUPlaceSectionRowView *)&v5 touchesBegan:a3 withEvent:a4];
+  [(MUPlaceSectionRowView *)&v5 touchesBegan:began withEvent:event];
   if ([(MUPlaceSectionRowView *)self handlesHighlighting])
   {
     [(MUPlaceSectionRowView *)self setSelected:1];
   }
 }
 
-- (void)_updateBackgroundColor:(BOOL)a3
+- (void)_updateBackgroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   if (self->_selected)
   {
     +[MUInfoCardStyle rowSelectedColor];
@@ -191,7 +191,7 @@ LABEL_12:
   }
   v5 = ;
   v6 = v5;
-  if (v3)
+  if (colorCopy)
   {
     v7 = MEMORY[0x1E69DD250];
     v8 = *MEMORY[0x1E696F4E0];
@@ -210,11 +210,11 @@ LABEL_12:
   }
 }
 
-- (MUPlaceSectionRowView)initWithFrame:(CGRect)a3
+- (MUPlaceSectionRowView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MUPlaceSectionRowView;
-  v3 = [(MKViewWithHairline *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKViewWithHairline *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3 && [(MUPlaceSectionRowView *)v3 supportsInteractionMenuItems])
   {
@@ -229,13 +229,13 @@ LABEL_12:
   return v4;
 }
 
-+ (id)rowViewWithContentView:(id)a3
++ (id)rowViewWithContentView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [MUPlaceSectionRowView alloc];
   v5 = [(MUPlaceSectionRowView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  [(MUPlaceSectionRowView *)v5 addSubview:v3];
-  v6 = [[MUEdgeLayout alloc] initWithItem:v3 container:v5];
+  [(MUPlaceSectionRowView *)v5 addSubview:viewCopy];
+  v6 = [[MUEdgeLayout alloc] initWithItem:viewCopy container:v5];
 
   [(MUConstraintLayout *)v6 activate];
 

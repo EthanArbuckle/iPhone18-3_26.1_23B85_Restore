@@ -1,24 +1,24 @@
 @interface UIListContentTextProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIColor)resolvedColor;
 - (UIConfigurationColorTransformer)colorTransformer;
 - (UIListContentTextProperties)init;
-- (UIListContentTextProperties)initWithCoder:(id)a3;
+- (UIListContentTextProperties)initWithCoder:(id)coder;
 - (__CFString)_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)_effectiveTextAlignment;
-- (uint64_t)_isEqualToProperties:(int)a3 compareText:;
-- (uint64_t)_isEqualToPropertiesQuick:(int)a3 compareText:;
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1;
-- (void)_applyToLabel:(uint64_t)a1;
-- (void)_applyToTextField:(id)a3;
-- (void)_configureWithConstants:(void *)a3 traitCollection:(uint64_t)a4 forSidebar:;
-- (void)_setColorTransformer:(uint64_t)a1;
-- (void)_setColorTransformerIdentifier:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributedText:(void *)a1;
-- (void)setText:(id)a3;
+- (uint64_t)_isEqualToProperties:(int)properties compareText:;
+- (uint64_t)_isEqualToPropertiesQuick:(int)quick compareText:;
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties;
+- (void)_applyToLabel:(uint64_t)label;
+- (void)_applyToTextField:(id)field;
+- (void)_configureWithConstants:(void *)constants traitCollection:(uint64_t)collection forSidebar:;
+- (void)_setColorTransformer:(uint64_t)transformer;
+- (void)_setColorTransformerIdentifier:(uint64_t)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributedText:(void *)text;
+- (void)setText:(id)text;
 @end
 
 @implementation UIListContentTextProperties
@@ -82,52 +82,52 @@
   }
 }
 
-- (UIListContentTextProperties)initWithCoder:(id)a3
+- (UIListContentTextProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = UIListContentTextProperties;
   v5 = [(UIListContentTextProperties *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"font"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"font"];
     font = v5->_font;
     v5->_font = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     color = v5->_color;
     v5->_color = v10;
 
-    -[UIListContentTextProperties _setColorTransformerIdentifier:](v5, [v4 decodeIntegerForKey:@"colorTransformerIdentifier"]);
-    v5->_alignment = [v4 decodeIntegerForKey:@"alignment"];
-    v5->_lineBreakMode = [v4 decodeIntegerForKey:@"lineBreakMode"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributedText"];
+    -[UIListContentTextProperties _setColorTransformerIdentifier:](v5, [coderCopy decodeIntegerForKey:@"colorTransformerIdentifier"]);
+    v5->_alignment = [coderCopy decodeIntegerForKey:@"alignment"];
+    v5->_lineBreakMode = [coderCopy decodeIntegerForKey:@"lineBreakMode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributedText"];
     attributedText = v5->_attributedText;
     v5->_attributedText = v12;
 
-    v5->_numberOfLines = [v4 decodeIntegerForKey:@"numberOfLines"];
-    v5->_adjustsFontSizeToFitWidth = [v4 decodeBoolForKey:@"adjustsFontSizeToFitWidth"];
-    [v4 decodeDoubleForKey:@"minimumScaleFactor"];
+    v5->_numberOfLines = [coderCopy decodeIntegerForKey:@"numberOfLines"];
+    v5->_adjustsFontSizeToFitWidth = [coderCopy decodeBoolForKey:@"adjustsFontSizeToFitWidth"];
+    [coderCopy decodeDoubleForKey:@"minimumScaleFactor"];
     v5->_minimumScaleFactor = v14;
-    v5->_allowsDefaultTighteningForTruncation = [v4 decodeBoolForKey:@"allowsDefaultTighteningForTruncation"];
-    v5->_adjustsFontForContentSizeCategory = [v4 decodeBoolForKey:@"adjustsFontForContentSizeCategory"];
-    v5->_showsExpansionTextWhenTruncated = [v4 decodeBoolForKey:@"showsExpansionTextWhenTruncated"];
-    v5->_transform = [v4 decodeIntegerForKey:@"transform"];
-    v5->__enablesMarqueeWhenAncestorFocused = [v4 decodeBoolForKey:@"marqueeWhenAncestorFocused"];
-    if ([v4 containsValueForKey:@"monochromaticTreatment"])
+    v5->_allowsDefaultTighteningForTruncation = [coderCopy decodeBoolForKey:@"allowsDefaultTighteningForTruncation"];
+    v5->_adjustsFontForContentSizeCategory = [coderCopy decodeBoolForKey:@"adjustsFontForContentSizeCategory"];
+    v5->_showsExpansionTextWhenTruncated = [coderCopy decodeBoolForKey:@"showsExpansionTextWhenTruncated"];
+    v5->_transform = [coderCopy decodeIntegerForKey:@"transform"];
+    v5->__enablesMarqueeWhenAncestorFocused = [coderCopy decodeBoolForKey:@"marqueeWhenAncestorFocused"];
+    if ([coderCopy containsValueForKey:@"monochromaticTreatment"])
     {
-      v5->__monochromaticTreatment = [v4 decodeIntegerForKey:@"monochromaticTreatment"];
+      v5->__monochromaticTreatment = [coderCopy decodeIntegerForKey:@"monochromaticTreatment"];
     }
 
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"font"];
-    *&v5->_textFlags = *&v5->_textFlags & 0xFFFE | [v4 decodeBoolForKey:v15];
+    *&v5->_textFlags = *&v5->_textFlags & 0xFFFE | [coderCopy decodeBoolForKey:v15];
 
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"color"];
-    if ([v4 decodeBoolForKey:v16])
+    if ([coderCopy decodeBoolForKey:v16])
     {
       v17 = 2;
     }
@@ -140,7 +140,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFFFD | v17;
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"colorTransformerIdentifier"];
-    if ([v4 decodeBoolForKey:v18])
+    if ([coderCopy decodeBoolForKey:v18])
     {
       v19 = 4;
     }
@@ -153,7 +153,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFFFB | v19;
 
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"alignment"];
-    if ([v4 decodeBoolForKey:v20])
+    if ([coderCopy decodeBoolForKey:v20])
     {
       v21 = 8;
     }
@@ -166,7 +166,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFFF7 | v21;
 
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"lineBreakMode"];
-    if ([v4 decodeBoolForKey:v22])
+    if ([coderCopy decodeBoolForKey:v22])
     {
       v23 = 16;
     }
@@ -179,7 +179,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFFEF | v23;
 
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"numberOfLines"];
-    if ([v4 decodeBoolForKey:v24])
+    if ([coderCopy decodeBoolForKey:v24])
     {
       v25 = 32;
     }
@@ -192,7 +192,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFFDF | v25;
 
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"adjustsFontSizeToFitWidth"];
-    if ([v4 decodeBoolForKey:v26])
+    if ([coderCopy decodeBoolForKey:v26])
     {
       v27 = 64;
     }
@@ -205,7 +205,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFFBF | v27;
 
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"minimumScaleFactor"];
-    if ([v4 decodeBoolForKey:v28])
+    if ([coderCopy decodeBoolForKey:v28])
     {
       v29 = 128;
     }
@@ -218,7 +218,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFF7F | v29;
 
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"allowsDefaultTighteningForTruncation"];
-    if ([v4 decodeBoolForKey:v30])
+    if ([coderCopy decodeBoolForKey:v30])
     {
       v31 = 256;
     }
@@ -231,7 +231,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFEFF | v31;
 
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"adjustsFontForContentSizeCategory"];
-    if ([v4 decodeBoolForKey:v32])
+    if ([coderCopy decodeBoolForKey:v32])
     {
       v33 = 512;
     }
@@ -244,7 +244,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFDFF | v33;
 
     v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"showsExpansionTextWhenTruncated"];
-    if ([v4 decodeBoolForKey:v34])
+    if ([coderCopy decodeBoolForKey:v34])
     {
       v35 = 1024;
     }
@@ -257,7 +257,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xFBFF | v35;
 
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"transform"];
-    if ([v4 decodeBoolForKey:v36])
+    if ([coderCopy decodeBoolForKey:v36])
     {
       v37 = 2048;
     }
@@ -270,7 +270,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xF7FF | v37;
 
     v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"marqueeWhenAncestorFocused"];
-    if ([v4 decodeBoolForKey:v38])
+    if ([coderCopy decodeBoolForKey:v38])
     {
       v39 = 4096;
     }
@@ -283,7 +283,7 @@
     *&v5->_textFlags = *&v5->_textFlags & 0xEFFF | v39;
 
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"monochromaticTreatment"];
-    if ([v4 decodeBoolForKey:v40])
+    if ([coderCopy decodeBoolForKey:v40])
     {
       v41 = 0x2000;
     }
@@ -299,15 +299,15 @@
   return v5;
 }
 
-- (void)_setColorTransformerIdentifier:(uint64_t)a1
+- (void)_setColorTransformerIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v4 = _UIConfigurationColorTransformerForIdentifier(a2);
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v4;
+    v5 = *(identifier + 48);
+    *(identifier + 48) = v4;
 
-    if (*(a1 + 48))
+    if (*(identifier + 48))
     {
       v6 = a2;
     }
@@ -317,90 +317,90 @@
       v6 = 0;
     }
 
-    *(a1 + 112) = v6;
+    *(identifier + 112) = v6;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeObject:self->_font forKey:@"font"];
-  [v5 encodeObject:self->_color forKey:@"color"];
-  [v5 encodeInteger:self->_colorTransformerIdentifier forKey:@"colorTransformerIdentifier"];
-  [v5 encodeInteger:self->_alignment forKey:@"alignment"];
-  [v5 encodeInteger:self->_lineBreakMode forKey:@"lineBreakMode"];
-  [v5 encodeObject:self->_attributedText forKey:@"attributedText"];
-  [v5 encodeInteger:self->_numberOfLines forKey:@"numberOfLines"];
-  [v5 encodeBool:self->_adjustsFontSizeToFitWidth forKey:@"adjustsFontSizeToFitWidth"];
-  [v5 encodeDouble:@"minimumScaleFactor" forKey:self->_minimumScaleFactor];
-  [v5 encodeBool:self->_allowsDefaultTighteningForTruncation forKey:@"allowsDefaultTighteningForTruncation"];
-  [v5 encodeBool:self->_adjustsFontForContentSizeCategory forKey:@"adjustsFontForContentSizeCategory"];
-  [v5 encodeBool:self->_showsExpansionTextWhenTruncated forKey:@"showsExpansionTextWhenTruncated"];
-  [v5 encodeInteger:self->_transform forKey:@"transform"];
-  [v5 encodeBool:self->__enablesMarqueeWhenAncestorFocused forKey:@"marqueeWhenAncestorFocused"];
-  [v5 encodeInteger:self->__monochromaticTreatment forKey:@"monochromaticTreatment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeObject:self->_font forKey:@"font"];
+  [coderCopy encodeObject:self->_color forKey:@"color"];
+  [coderCopy encodeInteger:self->_colorTransformerIdentifier forKey:@"colorTransformerIdentifier"];
+  [coderCopy encodeInteger:self->_alignment forKey:@"alignment"];
+  [coderCopy encodeInteger:self->_lineBreakMode forKey:@"lineBreakMode"];
+  [coderCopy encodeObject:self->_attributedText forKey:@"attributedText"];
+  [coderCopy encodeInteger:self->_numberOfLines forKey:@"numberOfLines"];
+  [coderCopy encodeBool:self->_adjustsFontSizeToFitWidth forKey:@"adjustsFontSizeToFitWidth"];
+  [coderCopy encodeDouble:@"minimumScaleFactor" forKey:self->_minimumScaleFactor];
+  [coderCopy encodeBool:self->_allowsDefaultTighteningForTruncation forKey:@"allowsDefaultTighteningForTruncation"];
+  [coderCopy encodeBool:self->_adjustsFontForContentSizeCategory forKey:@"adjustsFontForContentSizeCategory"];
+  [coderCopy encodeBool:self->_showsExpansionTextWhenTruncated forKey:@"showsExpansionTextWhenTruncated"];
+  [coderCopy encodeInteger:self->_transform forKey:@"transform"];
+  [coderCopy encodeBool:self->__enablesMarqueeWhenAncestorFocused forKey:@"marqueeWhenAncestorFocused"];
+  [coderCopy encodeInteger:self->__monochromaticTreatment forKey:@"monochromaticTreatment"];
   LOWORD(text) = self->_textFlags;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"font"];
-  [v5 encodeBool:text & 1 forKey:v6];
+  [coderCopy encodeBool:text & 1 forKey:v6];
 
   v7 = (*&self->_textFlags >> 1) & 1;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"color"];
-  [v5 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:v7 forKey:v8];
 
   v9 = (*&self->_textFlags >> 2) & 1;
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"colorTransformerIdentifier"];
-  [v5 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:v9 forKey:v10];
 
   v11 = (*&self->_textFlags >> 3) & 1;
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"alignment"];
-  [v5 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:v11 forKey:v12];
 
   v13 = (*&self->_textFlags >> 4) & 1;
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"lineBreakMode"];
-  [v5 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:v13 forKey:v14];
 
   v15 = (*&self->_textFlags >> 5) & 1;
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"numberOfLines"];
-  [v5 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:v15 forKey:v16];
 
   v17 = (*&self->_textFlags >> 6) & 1;
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"adjustsFontSizeToFitWidth"];
-  [v5 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:v17 forKey:v18];
 
   v19 = (*&self->_textFlags >> 7) & 1;
   v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"minimumScaleFactor"];
-  [v5 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:v19 forKey:v20];
 
   v21 = HIBYTE(*&self->_textFlags) & 1;
   v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"allowsDefaultTighteningForTruncation"];
-  [v5 encodeBool:v21 forKey:v22];
+  [coderCopy encodeBool:v21 forKey:v22];
 
   v23 = (*&self->_textFlags >> 9) & 1;
   v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"adjustsFontForContentSizeCategory"];
-  [v5 encodeBool:v23 forKey:v24];
+  [coderCopy encodeBool:v23 forKey:v24];
 
   v25 = (*&self->_textFlags >> 10) & 1;
   v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"showsExpansionTextWhenTruncated"];
-  [v5 encodeBool:v25 forKey:v26];
+  [coderCopy encodeBool:v25 forKey:v26];
 
   v27 = (*&self->_textFlags >> 11) & 1;
   v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"transform"];
-  [v5 encodeBool:v27 forKey:v28];
+  [coderCopy encodeBool:v27 forKey:v28];
 
   v29 = (*&self->_textFlags >> 12) & 1;
   v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"marqueeWhenAncestorFocused"];
-  [v5 encodeBool:v29 forKey:v30];
+  [coderCopy encodeBool:v29 forKey:v30];
 
   v31 = (*&self->_textFlags >> 13) & 1;
   v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"monochromaticTreatment"];
-  [v5 encodeBool:v31 forKey:v32];
+  [coderCopy encodeBool:v31 forKey:v32];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(NSString *)self->_text copy];
@@ -435,16 +435,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(UIListContentTextProperties *)self _isEqualToProperties:v5 compareText:0];
   }
@@ -457,21 +457,21 @@
   return v6;
 }
 
-- (uint64_t)_isEqualToProperties:(int)a3 compareText:
+- (uint64_t)_isEqualToProperties:(int)properties compareText:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    if (([(UIListContentTextProperties *)a1 _isEqualToPropertiesQuick:v5 compareText:a3]& 1) != 0)
+    if (([(UIListContentTextProperties *)self _isEqualToPropertiesQuick:v5 compareText:properties]& 1) != 0)
     {
-      a1 = 1;
+      self = 1;
       goto LABEL_31;
     }
 
-    if (a3)
+    if (properties)
     {
       v6 = *(v5 + 3);
-      v7 = *(a1 + 24);
+      v7 = *(self + 24);
       v8 = v6;
       v9 = v8;
       if (v7 == v8)
@@ -494,7 +494,7 @@
       }
 
       v11 = *(v5 + 9);
-      v7 = *(a1 + 72);
+      v7 = *(self + 72);
       v12 = v11;
       v9 = v12;
       if (v7 == v12)
@@ -517,13 +517,13 @@
       }
     }
 
-    if (*(a1 + 104) != *(v5 + 13))
+    if (*(self + 104) != *(v5 + 13))
     {
       goto LABEL_30;
     }
 
     v14 = *(v5 + 4);
-    v7 = *(a1 + 32);
+    v7 = *(self + 32);
     v15 = v14;
     v9 = v15;
     if (v7 == v15)
@@ -546,7 +546,7 @@
     }
 
     v17 = *(v5 + 5);
-    v7 = *(a1 + 40);
+    v7 = *(self + 40);
     v18 = v17;
     v9 = v18;
     if (v7 == v18)
@@ -562,16 +562,16 @@
       if (v19)
       {
 LABEL_33:
-        v21 = *(a1 + 112);
-        if (v21 == *(v5 + 14) && (v21 != 1 || *(a1 + 48) == *(v5 + 6)) && *(a1 + 56) == *(v5 + 7) && *(a1 + 64) == *(v5 + 8) && *(a1 + 80) == *(v5 + 10) && *(a1 + 12) == v5[12] && *(a1 + 88) == *(v5 + 11) && *(a1 + 13) == v5[13] && *(a1 + 14) == v5[14] && *(a1 + 15) == v5[15] && *(a1 + 96) == *(v5 + 12))
+        v21 = *(self + 112);
+        if (v21 == *(v5 + 14) && (v21 != 1 || *(self + 48) == *(v5 + 6)) && *(self + 56) == *(v5 + 7) && *(self + 64) == *(v5 + 8) && *(self + 80) == *(v5 + 10) && *(self + 12) == v5[12] && *(self + 88) == *(v5 + 11) && *(self + 13) == v5[13] && *(self + 14) == v5[14] && *(self + 15) == v5[15] && *(self + 96) == *(v5 + 12))
         {
-          a1 = *(a1 + 16) == v5[16];
+          self = *(self + 16) == v5[16];
           goto LABEL_31;
         }
       }
 
 LABEL_30:
-      a1 = 0;
+      self = 0;
       goto LABEL_31;
     }
 
@@ -582,28 +582,28 @@ LABEL_29:
 
 LABEL_31:
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_isEqualToPropertiesQuick:(int)a3 compareText:
+- (uint64_t)_isEqualToPropertiesQuick:(int)quick compareText:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_35;
   }
 
-  if (v5 == a1)
+  if (v5 == self)
   {
-    a1 = 1;
+    self = 1;
     goto LABEL_35;
   }
 
-  if (a3)
+  if (quick)
   {
     v7 = v5[3];
-    v8 = *(a1 + 24);
+    v8 = *(self + 24);
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -626,7 +626,7 @@ LABEL_31:
     }
 
     v12 = *(v6 + 9);
-    v8 = *(a1 + 72);
+    v8 = *(self + 72);
     v13 = v12;
     v10 = v13;
     if (v8 != v13)
@@ -646,42 +646,42 @@ LABEL_31:
 LABEL_16:
 
 LABEL_34:
-      a1 = 0;
+      self = 0;
       goto LABEL_35;
     }
   }
 
 LABEL_18:
-  if (*(a1 + 104) != *(v6 + 13))
+  if (*(self + 104) != *(v6 + 13))
   {
     goto LABEL_34;
   }
 
-  if (*(a1 + 32) != *(v6 + 4))
+  if (*(self + 32) != *(v6 + 4))
   {
     goto LABEL_34;
   }
 
-  if (*(a1 + 40) != *(v6 + 5))
+  if (*(self + 40) != *(v6 + 5))
   {
     goto LABEL_34;
   }
 
-  v15 = *(a1 + 112);
-  if (v15 != *(v6 + 14) || v15 == 1 && *(a1 + 48) != *(v6 + 6))
+  v15 = *(self + 112);
+  if (v15 != *(v6 + 14) || v15 == 1 && *(self + 48) != *(v6 + 6))
   {
     goto LABEL_34;
   }
 
-  if (*(a1 + 56) != *(v6 + 7) || *(a1 + 64) != *(v6 + 8) || *(a1 + 80) != *(v6 + 10) || *(a1 + 12) != *(v6 + 12) || *(a1 + 88) != v6[11] || *(a1 + 13) != *(v6 + 13) || *(a1 + 14) != *(v6 + 14) || *(a1 + 15) != *(v6 + 15) || *(a1 + 96) != *(v6 + 12))
+  if (*(self + 56) != *(v6 + 7) || *(self + 64) != *(v6 + 8) || *(self + 80) != *(v6 + 10) || *(self + 12) != *(v6 + 12) || *(self + 88) != v6[11] || *(self + 13) != *(v6 + 13) || *(self + 14) != *(v6 + 14) || *(self + 15) != *(v6 + 15) || *(self + 96) != *(v6 + 12))
   {
     goto LABEL_34;
   }
 
-  a1 = *(a1 + 16) == *(v6 + 16);
+  self = *(self + 16) == *(v6 + 16);
 LABEL_35:
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -693,8 +693,8 @@ LABEL_35:
     v5 = MEMORY[0x1E696AEC0];
     if (v4)
     {
-      v6 = [(NSAttributedString *)self->_attributedText string];
-      v7 = _UIViewTextRedactedIfNecessaryForDescription(v6);
+      string = [(NSAttributedString *)self->_attributedText string];
+      v7 = _UIViewTextRedactedIfNecessaryForDescription(string);
       v8 = [v5 stringWithFormat:@"attributedText = %@", v7];
       [v3 addObject:v8];
 
@@ -703,8 +703,8 @@ LABEL_15:
     }
 
     [MEMORY[0x1E696AEC0] stringWithFormat:@"attributedText = %@", self->_attributedText];
-    v6 = LABEL_14:;
-    [v3 addObject:v6];
+    string = LABEL_14:;
+    [v3 addObject:string];
     goto LABEL_15;
   }
 
@@ -801,19 +801,19 @@ LABEL_16:
 
 - (__CFString)_shortDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([(__CFString *)a1 _hasText])
+    if ([(__CFString *)self _hasText])
     {
-      if (v1[2].info)
+      if (selfCopy[2].info)
       {
         v2 = +[UIView _shouldRedactTextInDescription];
-        info = v1[2].info;
+        info = selfCopy[2].info;
         if (v2)
         {
-          v4 = [info string];
-          v1 = _UIViewTextRedactedIfNecessaryForDescription(v4);
+          string = [info string];
+          selfCopy = _UIViewTextRedactedIfNecessaryForDescription(string);
 
           goto LABEL_10;
         }
@@ -823,78 +823,78 @@ LABEL_16:
 
       else
       {
-        v5 = _UIViewTextRedactedIfNecessaryForDescription(v1->length);
+        v5 = _UIViewTextRedactedIfNecessaryForDescription(selfCopy->length);
       }
 
-      v1 = v5;
+      selfCopy = v5;
     }
 
     else
     {
-      v1 = @"none";
+      selfCopy = @"none";
     }
   }
 
 LABEL_10:
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_applyToLabel:(uint64_t)a1
+- (void)_applyToLabel:(uint64_t)label
 {
   v3 = a2;
-  if (!a1)
+  if (!label)
   {
     goto LABEL_28;
   }
 
   v15 = v3;
-  if (!*(a1 + 72))
+  if (!*(label + 72))
   {
-    v4 = [v3 _content];
-    v5 = [v4 isAttributed];
+    _content = [v3 _content];
+    isAttributed = [_content isAttributed];
 
-    if (v5)
+    if (isAttributed)
     {
       [v15 setAttributedText:0];
     }
   }
 
-  v6 = *(a1 + 96);
+  v6 = *(label + 96);
   switch(v6)
   {
     case 3:
-      v7 = [*(a1 + 24) localizedCapitalizedString];
+      localizedCapitalizedString = [*(label + 24) localizedCapitalizedString];
       goto LABEL_11;
     case 2:
-      v7 = [*(a1 + 24) localizedLowercaseString];
+      localizedCapitalizedString = [*(label + 24) localizedLowercaseString];
       goto LABEL_11;
     case 1:
-      v7 = [*(a1 + 24) localizedUppercaseString];
+      localizedCapitalizedString = [*(label + 24) localizedUppercaseString];
 LABEL_11:
-      v8 = v7;
-      [v15 setText:v7];
+      v8 = localizedCapitalizedString;
+      [v15 setText:localizedCapitalizedString];
 
       goto LABEL_13;
   }
 
-  [v15 setText:*(a1 + 24)];
+  [v15 setText:*(label + 24)];
 LABEL_13:
-  v9 = *(a1 + 32);
-  if (*(a1 + 14) == 1 && [v15 adjustsFontForContentSizeCategory])
+  v9 = *(label + 32);
+  if (*(label + 14) == 1 && [v15 adjustsFontForContentSizeCategory])
   {
-    v10 = [v15 traitCollection];
-    v11 = [v9 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v10];
+    traitCollection = [v15 traitCollection];
+    v11 = [v9 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
     v9 = v11;
   }
 
   [v15 setFont:v9];
-  v12 = [a1 resolvedColor];
-  [v15 setTextColor:v12];
+  resolvedColor = [label resolvedColor];
+  [v15 setTextColor:resolvedColor];
 
-  [v15 setTextAlignment:{objc_msgSend(a1, "_effectiveTextAlignment")}];
-  if (*(a1 + 56))
+  [v15 setTextAlignment:{objc_msgSend(label, "_effectiveTextAlignment")}];
+  if (*(label + 56))
   {
     v13 = 5;
   }
@@ -910,22 +910,22 @@ LABEL_13:
   }
 
   [v15 setContentMode:v13];
-  [v15 setLineBreakMode:*(a1 + 64)];
-  if (*(a1 + 72))
+  [v15 setLineBreakMode:*(label + 64)];
+  if (*(label + 72))
   {
     [v15 setAttributedText:?];
   }
 
-  [v15 setNumberOfLines:*(a1 + 80)];
-  [v15 setAdjustsFontSizeToFitWidth:*(a1 + 12)];
-  [v15 setMinimumScaleFactor:*(a1 + 88)];
-  [v15 setAllowsDefaultTighteningForTruncation:*(a1 + 13)];
-  [v15 setAdjustsFontForContentSizeCategory:*(a1 + 14)];
-  [v15 setShowsExpansionTextWhenTruncated:*(a1 + 15)];
-  v14 = *(a1 + 104);
+  [v15 setNumberOfLines:*(label + 80)];
+  [v15 setAdjustsFontSizeToFitWidth:*(label + 12)];
+  [v15 setMinimumScaleFactor:*(label + 88)];
+  [v15 setAllowsDefaultTighteningForTruncation:*(label + 13)];
+  [v15 setAdjustsFontForContentSizeCategory:*(label + 14)];
+  [v15 setShowsExpansionTextWhenTruncated:*(label + 15)];
+  v14 = *(label + 104);
   if (v14 == -1)
   {
-    v14 = (*(a1 + 8) & 2) == 0;
+    v14 = (*(label + 8) & 2) == 0;
   }
 
   if (v14 == 1)
@@ -939,49 +939,49 @@ LABEL_13:
 LABEL_28:
 }
 
-- (void)_applyToTextField:(id)a3
+- (void)_applyToTextField:(id)field
 {
-  v4 = a3;
-  v13 = v4;
+  fieldCopy = field;
+  v13 = fieldCopy;
   if (!self->_attributedText)
   {
-    [v4 setAttributedText:0];
-    v4 = v13;
+    [fieldCopy setAttributedText:0];
+    fieldCopy = v13;
   }
 
   transform = self->_transform;
   switch(transform)
   {
     case 3:
-      v6 = [(NSString *)self->_text localizedCapitalizedString];
+      localizedCapitalizedString = [(NSString *)self->_text localizedCapitalizedString];
       break;
     case 2:
-      v6 = [(NSString *)self->_text localizedLowercaseString];
+      localizedCapitalizedString = [(NSString *)self->_text localizedLowercaseString];
       break;
     case 1:
-      v6 = [(NSString *)self->_text localizedUppercaseString];
+      localizedCapitalizedString = [(NSString *)self->_text localizedUppercaseString];
       break;
     default:
-      [v4 setText:self->_text];
+      [fieldCopy setText:self->_text];
       goto LABEL_11;
   }
 
-  v7 = v6;
-  [v13 setText:v6];
+  v7 = localizedCapitalizedString;
+  [v13 setText:localizedCapitalizedString];
 
 LABEL_11:
   v8 = self->_font;
   if (self->_adjustsFontForContentSizeCategory && [v13 adjustsFontForContentSizeCategory])
   {
-    v9 = [v13 traitCollection];
-    v10 = [(UIFont *)v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v9];
+    traitCollection = [v13 traitCollection];
+    v10 = [(UIFont *)v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
     v8 = v10;
   }
 
   [v13 setFont:v8];
-  v11 = [(UIListContentTextProperties *)self resolvedColor];
-  [v13 setTextColor:v11];
+  resolvedColor = [(UIListContentTextProperties *)self resolvedColor];
+  [v13 setTextColor:resolvedColor];
 
   [v13 setTextAlignment:{-[UIListContentTextProperties _effectiveTextAlignment](self, "_effectiveTextAlignment")}];
   if (self->_alignment)
@@ -1009,12 +1009,12 @@ LABEL_11:
   [v13 setAdjustsFontForContentSizeCategory:self->_adjustsFontForContentSizeCategory];
 }
 
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties
 {
   v3 = a2;
-  if (a1)
+  if (properties)
   {
-    v4 = *(a1 + 8);
+    v4 = *(properties + 8);
     v19 = v3;
     if (v4)
     {
@@ -1036,8 +1036,8 @@ LABEL_11:
         v5 = 0;
       }
 
-      objc_storeStrong((a1 + 32), v5);
-      v4 = *(a1 + 8);
+      objc_storeStrong((properties + 32), v5);
+      v4 = *(properties + 8);
       v3 = v19;
       if ((v4 & 2) != 0)
       {
@@ -1061,8 +1061,8 @@ LABEL_4:
       v6 = 0;
     }
 
-    objc_storeStrong((a1 + 40), v6);
-    v4 = *(a1 + 8);
+    objc_storeStrong((properties + 40), v6);
+    v4 = *(properties + 8);
     v3 = v19;
     if ((v4 & 4) != 0)
     {
@@ -1086,8 +1086,8 @@ LABEL_23:
       v7 = 0;
     }
 
-    [(UIListContentTextProperties *)a1 _setColorTransformer:v7];
-    v4 = *(a1 + 8);
+    [(UIListContentTextProperties *)properties _setColorTransformer:v7];
+    v4 = *(properties + 8);
     v3 = v19;
     if ((v4 & 8) != 0)
     {
@@ -1111,7 +1111,7 @@ LABEL_26:
       v8 = 0;
     }
 
-    *(a1 + 56) = v8;
+    *(properties + 56) = v8;
     if ((v4 & 0x10) != 0)
     {
 LABEL_7:
@@ -1134,7 +1134,7 @@ LABEL_29:
       v9 = 0;
     }
 
-    *(a1 + 64) = v9;
+    *(properties + 64) = v9;
     if ((v4 & 0x20) != 0)
     {
 LABEL_8:
@@ -1157,7 +1157,7 @@ LABEL_32:
       v10 = 0;
     }
 
-    *(a1 + 80) = v10;
+    *(properties + 80) = v10;
     if ((v4 & 0x40) != 0)
     {
 LABEL_9:
@@ -1180,7 +1180,7 @@ LABEL_35:
       v11 = 0;
     }
 
-    *(a1 + 12) = v11 & 1;
+    *(properties + 12) = v11 & 1;
     if ((v4 & 0x80) != 0)
     {
 LABEL_10:
@@ -1203,7 +1203,7 @@ LABEL_38:
       v12 = 0;
     }
 
-    *(a1 + 88) = v12;
+    *(properties + 88) = v12;
     if ((v4 & 0x100) != 0)
     {
 LABEL_11:
@@ -1226,7 +1226,7 @@ LABEL_41:
       v13 = 0;
     }
 
-    *(a1 + 13) = v13 & 1;
+    *(properties + 13) = v13 & 1;
     if ((v4 & 0x200) != 0)
     {
 LABEL_12:
@@ -1249,7 +1249,7 @@ LABEL_44:
       v14 = 0;
     }
 
-    *(a1 + 14) = v14 & 1;
+    *(properties + 14) = v14 & 1;
     if ((v4 & 0x400) != 0)
     {
 LABEL_13:
@@ -1272,7 +1272,7 @@ LABEL_47:
       v15 = 0;
     }
 
-    *(a1 + 15) = v15 & 1;
+    *(properties + 15) = v15 & 1;
     if ((v4 & 0x800) != 0)
     {
 LABEL_14:
@@ -1295,7 +1295,7 @@ LABEL_50:
       v16 = 0;
     }
 
-    *(a1 + 96) = v16;
+    *(properties + 96) = v16;
     if ((v4 & 0x1000) != 0)
     {
 LABEL_15:
@@ -1315,7 +1315,7 @@ LABEL_56:
         v18 = 0;
       }
 
-      *(a1 + 104) = v18;
+      *(properties + 104) = v18;
       goto LABEL_59;
     }
 
@@ -1330,7 +1330,7 @@ LABEL_53:
       v17 = 0;
     }
 
-    *(a1 + 16) = v17 & 1;
+    *(properties + 16) = v17 & 1;
     if ((v4 & 0x2000) != 0)
     {
       goto LABEL_59;
@@ -1342,24 +1342,24 @@ LABEL_53:
 LABEL_59:
 }
 
-- (void)_setColorTransformer:(uint64_t)a1
+- (void)_setColorTransformer:(uint64_t)transformer
 {
-  if (a1)
+  if (transformer)
   {
     v3 = a2;
-    *(a1 + 112) = _UIConfigurationIdentifierForColorTransformer(v3);
+    *(transformer + 112) = _UIConfigurationIdentifierForColorTransformer(v3);
     v4 = [v3 copy];
 
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v4;
+    v5 = *(transformer + 48);
+    *(transformer + 48) = v4;
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  newValue = v4;
-  if (v4)
+  textCopy = text;
+  newValue = textCopy;
+  if (textCopy)
   {
     attributedText = self->_attributedText;
     self->_attributedText = 0;
@@ -1371,7 +1371,7 @@ LABEL_59:
   }
 
   objc_setProperty_nonatomic_copy(self, v5, newValue, 24);
-  v4 = newValue;
+  textCopy = newValue;
 LABEL_5:
 }
 
@@ -1382,37 +1382,37 @@ LABEL_5:
   return v2;
 }
 
-- (void)setAttributedText:(void *)a1
+- (void)setAttributedText:(void *)text
 {
   v3 = a2;
-  if (a1)
+  if (text)
   {
     newValue = v3;
     if (v3)
     {
-      v5 = a1[3];
-      a1[3] = 0;
+      v5 = text[3];
+      text[3] = 0;
     }
 
-    objc_setProperty_nonatomic_copy(a1, v4, newValue, 72);
+    objc_setProperty_nonatomic_copy(text, v4, newValue, 72);
     v3 = newValue;
   }
 }
 
-- (void)_configureWithConstants:(void *)a3 traitCollection:(uint64_t)a4 forSidebar:
+- (void)_configureWithConstants:(void *)constants traitCollection:(uint64_t)collection forSidebar:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a3;
+    constantsCopy = constants;
     v8 = a2;
-    *(a1 + 80) = [v8 defaultLabelNumberOfLinesForSidebar:a4 traitCollection:v7];
-    *(a1 + 13) = [v8 defaultLabelAllowsTighteningForTruncationForSidebar:a4 traitCollection:v7];
-    [v8 defaultLabelMinimumScaleFactorForSidebar:a4 traitCollection:v7];
+    *(self + 80) = [v8 defaultLabelNumberOfLinesForSidebar:collection traitCollection:constantsCopy];
+    *(self + 13) = [v8 defaultLabelAllowsTighteningForTruncationForSidebar:collection traitCollection:constantsCopy];
+    [v8 defaultLabelMinimumScaleFactorForSidebar:collection traitCollection:constantsCopy];
     v10 = v9;
 
-    *(a1 + 12) = v10 > 0.0;
-    *(a1 + 88) = v10;
-    *(a1 + 14) = 257;
+    *(self + 12) = v10 > 0.0;
+    *(self + 88) = v10;
+    *(self + 14) = 257;
   }
 }
 

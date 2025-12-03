@@ -1,28 +1,28 @@
 @interface FLOWSchemaFLOWBriefingContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWBriefingContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWBriefingContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWBriefingContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWBriefingContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)enabledFeaturesAtIndex:(unint64_t)a3;
+- (int)enabledFeaturesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addEnabledFeatures:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addEnabledFeatures:(int)features;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWBriefingContext
 
-- (FLOWSchemaFLOWBriefingContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWBriefingContext)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = FLOWSchemaFLOWBriefingContext;
   v5 = [(FLOWSchemaFLOWBriefingContext *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"enabledFeatures"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"enabledFeatures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:{@"briefingAttribute", v16}];
+    v13 = [dictionaryCopy objectForKeyedSubscript:{@"briefingAttribute", v16}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWBriefingContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWBriefingContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWBriefingContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWBriefingContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWBriefingContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,7 +113,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(FLOWSchemaFLOWBriefingContext *)self briefingAttribute]- 1;
@@ -127,19 +127,19 @@
       v5 = off_1E78D4FF0[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"briefingAttribute"];
+    [dictionary setObject:v5 forKeyedSubscript:@"briefingAttribute"];
   }
 
   if ([(NSArray *)self->_enabledFeatures count])
   {
-    v6 = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"enabledFeatures"];
+    enabledFeatures = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
+    v7 = [enabledFeatures copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"enabledFeatures"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,18 +158,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
-  v6 = [v4 enabledFeatures];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  enabledFeatures = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
+  enabledFeatures2 = [equalCopy enabledFeatures];
+  v7 = enabledFeatures2;
+  if ((enabledFeatures != 0) == (enabledFeatures2 == 0))
   {
 
 LABEL_12:
@@ -177,13 +177,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
-  if (v8)
+  enabledFeatures3 = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
+  if (enabledFeatures3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
-    v11 = [v4 enabledFeatures];
-    v12 = [v10 isEqual:v11];
+    v9 = enabledFeatures3;
+    enabledFeatures4 = [(FLOWSchemaFLOWBriefingContext *)self enabledFeatures];
+    enabledFeatures5 = [equalCopy enabledFeatures];
+    v12 = [enabledFeatures4 isEqual:enabledFeatures5];
 
     if (!v12)
     {
@@ -195,7 +195,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -203,7 +203,7 @@ LABEL_12:
   if (*&self->_has)
   {
     briefingAttribute = self->_briefingAttribute;
-    if (briefingAttribute != [v4 briefingAttribute])
+    if (briefingAttribute != [equalCopy briefingAttribute])
     {
       goto LABEL_12;
     }
@@ -215,10 +215,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -257,23 +257,23 @@ LABEL_13:
   }
 }
 
-- (int)enabledFeaturesAtIndex:(unint64_t)a3
+- (int)enabledFeaturesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_enabledFeatures objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_enabledFeatures objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addEnabledFeatures:(int)a3
+- (void)addEnabledFeatures:(int)features
 {
-  v3 = *&a3;
+  v3 = *&features;
   enabledFeatures = self->_enabledFeatures;
   if (!enabledFeatures)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_enabledFeatures;
-    self->_enabledFeatures = v6;
+    self->_enabledFeatures = array;
 
     enabledFeatures = self->_enabledFeatures;
   }

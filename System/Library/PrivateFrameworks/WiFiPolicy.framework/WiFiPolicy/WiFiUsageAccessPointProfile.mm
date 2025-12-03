@@ -1,28 +1,28 @@
 @interface WiFiUsageAccessPointProfile
-+ (BOOL)_compareBytes:(id)a3 FromStart:(unint64_t)a4 WithLen:(unint64_t)a5 With:(id)a6;
-+ (BOOL)_isProfileValidForStorage:(id)a3;
-+ (BOOL)_isProfileValidForUse:(id)a3 withCachedDict:(id)a4 onlyIfCurrent:(BOOL)a5 withError:(id *)a6;
++ (BOOL)_compareBytes:(id)bytes FromStart:(unint64_t)start WithLen:(unint64_t)len With:(id)with;
++ (BOOL)_isProfileValidForStorage:(id)storage;
++ (BOOL)_isProfileValidForUse:(id)use withCachedDict:(id)dict onlyIfCurrent:(BOOL)current withError:(id *)error;
 + (id)_config;
-+ (id)_loadFromUserDefaults:(id)a3 withKey:(id)a4 withCachedData:(id)a5 withError:(id *)a6;
-+ (id)_toMobileAssetsProfile:(id)a3;
-+ (id)apNameForBSSID:(id)a3;
++ (id)_loadFromUserDefaults:(id)defaults withKey:(id)key withCachedData:(id)data withError:(id *)error;
++ (id)_toMobileAssetsProfile:(id)profile;
++ (id)apNameForBSSID:(id)d;
 + (id)beaconsAndWPSInfo;
-+ (id)errorStringForTelemetry:(id)a3;
-+ (id)longProfileForBSSID:(id)a3 withError:(id *)a4;
-+ (id)profileFromBeaconData:(id)a3 andParsedIE:(id)a4;
-+ (id)shortProfileForBSSID:(id)a3 withError:(id *)a4;
-+ (void)_applyMask:(id)a3 FromStart:(unint64_t)a4 WithLen:(unint64_t)a5 WithMask:(id)a6 AppendTo:(id)a7;
++ (id)errorStringForTelemetry:(id)telemetry;
++ (id)longProfileForBSSID:(id)d withError:(id *)error;
++ (id)profileFromBeaconData:(id)data andParsedIE:(id)e;
++ (id)shortProfileForBSSID:(id)d withError:(id *)error;
++ (void)_applyMask:(id)mask FromStart:(unint64_t)start WithLen:(unint64_t)len WithMask:(id)withMask AppendTo:(id)to;
 + (void)_cleanUpStaleProfiles;
 + (void)_defaults;
 + (void)_endPrevAssoc;
-+ (void)_extractFieldsFor:(id)a3 From:(id)a4 Into:(id)a5;
-+ (void)_saveToUserDefaults:(id)a3 withKey:(id)a4 andValue:(id)a5;
-+ (void)_submitProfileFor:(id)a3 withCachedDict:(id)a4 AndEraseWithLog:(id)a5;
++ (void)_extractFieldsFor:(id)for From:(id)from Into:(id)into;
++ (void)_saveToUserDefaults:(id)defaults withKey:(id)key andValue:(id)value;
++ (void)_submitProfileFor:(id)for withCachedDict:(id)dict AndEraseWithLog:(id)log;
 + (void)initialize;
-+ (void)submitToCAForBSSID:(id)a3;
++ (void)submitToCAForBSSID:(id)d;
 + (void)updateConfig;
-+ (void)updateWithAssocTime:(double)a3 forBssid:(id)a4;
-+ (void)updateWithWPS:(id)a3;
++ (void)updateWithAssocTime:(double)time forBssid:(id)bssid;
++ (void)updateWithWPS:(id)s;
 @end
 
 @implementation WiFiUsageAccessPointProfile
@@ -103,14 +103,14 @@ LABEL_43:
       v27 = _configError;
       _configError = v26;
 
-      [a1 _defaults];
+      [self _defaults];
       goto LABEL_44;
     }
   }
 
   else
   {
-    [a1 _defaults];
+    [self _defaults];
   }
 
   v5 = _apProfileVersionString;
@@ -319,14 +319,14 @@ LABEL_55:
 
   objc_storeStrong(&_apProfileVendorExcludeFields, v21);
   v22 = MEMORY[0x277CCACA8];
-  v23 = [a1 _config];
-  v24 = [v22 stringWithFormat:@"%s: configParseError:%@ (%@)]\n%@", "+[WiFiUsageAccessPointProfile updateConfig]", @"NO", &stru_28487EF20, v23];
+  _config = [self _config];
+  v24 = [v22 stringWithFormat:@"%s: configParseError:%@ (%@)]\n%@", "+[WiFiUsageAccessPointProfile updateConfig]", @"NO", &stru_28487EF20, _config];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v24, "UTF8String")];
     *buf = 136446210;
-    v30 = [v25 UTF8String];
+    uTF8String = [v25 UTF8String];
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
@@ -334,18 +334,18 @@ LABEL_55:
 LABEL_44:
   if (*(p_info + 1240) == 1)
   {
-    [a1 _cleanUpStaleProfiles];
+    [self _cleanUpStaleProfiles];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_isProfileValidForStorage:(id)a3
++ (BOOL)_isProfileValidForStorage:(id)storage
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"apProfileVersion"];
-  v5 = [v3 objectForKey:@"apProfileCacheTimestampCreated"];
+  storageCopy = storage;
+  v4 = [storageCopy objectForKey:@"apProfileVersion"];
+  v5 = [storageCopy objectForKey:@"apProfileCacheTimestampCreated"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -392,17 +392,17 @@ LABEL_10:
 {
   v63 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v3 = [a1 _getDefaults];
-  v4 = [v3 dictionaryRepresentation];
+  _getDefaults = [self _getDefaults];
+  dictionaryRepresentation = [_getDefaults dictionaryRepresentation];
 
-  v44 = [MEMORY[0x277CBEB18] array];
-  v43 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v49 objects:v62 count:16];
+  allKeys = [dictionaryRepresentation allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v49 objects:v62 count:16];
   if (v6)
   {
     v7 = v6;
@@ -413,7 +413,7 @@ LABEL_10:
       {
         if (*v50 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v49 + 1) + 8 * i);
@@ -421,21 +421,21 @@ LABEL_10:
 
         if (v11)
         {
-          v12 = [v4 objectForKey:v10];
-          if ([a1 _isProfileValidForStorage:v12])
+          v12 = [dictionaryRepresentation objectForKey:v10];
+          if ([self _isProfileValidForStorage:v12])
           {
             v13 = [v12 objectForKey:@"apProfileCacheTimestamp"];
-            [v43 setObject:v10 forKeyedSubscript:v13];
+            [dictionary setObject:v10 forKeyedSubscript:v13];
           }
 
           else
           {
-            [v44 addObject:v10];
+            [array addObject:v10];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v49 objects:v62 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v49 objects:v62 count:16];
     }
 
     while (v7);
@@ -443,8 +443,8 @@ LABEL_10:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v44 count];
-    v15 = [v43 count];
+    v14 = [array count];
+    v15 = [dictionary count];
     *buf = 136315906;
     v55 = "+[WiFiUsageAccessPointProfile _cleanUpStaleProfiles]";
     v56 = 2048;
@@ -456,23 +456,23 @@ LABEL_10:
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - staleEntries:%lu validEntries:%lu _maxProfiles:%lu", buf, 0x2Au);
   }
 
-  v16 = [v43 count];
+  v16 = [dictionary count];
   if (v16 > _maxProfiles)
   {
-    v17 = [v43 allKeys];
-    v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+    allKeys2 = [dictionary allKeys];
+    v18 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: sortedEntries:%@", "+[WiFiUsageAccessPointProfile _cleanUpStaleProfiles]", v18];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v19, "UTF8String")];
-      v21 = [v20 UTF8String];
+      uTF8String = [v20 UTF8String];
       *buf = 136446210;
-      v55 = v21;
+      v55 = uTF8String;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
     }
 
-    v22 = [v43 count];
+    v22 = [dictionary count];
     if (v22 != _maxProfiles)
     {
       v23 = 0;
@@ -480,13 +480,13 @@ LABEL_10:
       do
       {
         v25 = [v18 objectAtIndexedSubscript:v23];
-        v26 = [v43 objectForKeyedSubscript:v25];
-        [v44 addObject:v26];
+        v26 = [dictionary objectForKeyedSubscript:v25];
+        [array addObject:v26];
 
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v27 = [v18 objectAtIndexedSubscript:v23];
-          v28 = [v43 objectForKeyedSubscript:v27];
+          v28 = [dictionary objectForKeyedSubscript:v27];
           *buf = 136315394;
           v55 = "+[WiFiUsageAccessPointProfile _cleanUpStaleProfiles]";
           v56 = 2112;
@@ -495,7 +495,7 @@ LABEL_10:
         }
 
         ++v23;
-        v29 = [v43 count];
+        v29 = [dictionary count];
       }
 
       while (v29 - _maxProfiles > v23);
@@ -504,8 +504,8 @@ LABEL_10:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v44 count];
-    v31 = [v43 count];
+    v30 = [array count];
+    v31 = [dictionary count];
     *buf = 136315906;
     v55 = "+[WiFiUsageAccessPointProfile _cleanUpStaleProfiles]";
     v56 = 2048;
@@ -521,7 +521,7 @@ LABEL_10:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v32 = v44;
+  v32 = array;
   v33 = [v32 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v33)
   {
@@ -537,9 +537,9 @@ LABEL_10:
         }
 
         v37 = *(*(&v45 + 1) + 8 * j);
-        v38 = [v4 objectForKeyedSubscript:v37];
+        v38 = [dictionaryRepresentation objectForKeyedSubscript:v37];
         v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"stale (from %s)", "+[WiFiUsageAccessPointProfile _cleanUpStaleProfiles]"];
-        [a1 _submitProfileFor:v37 withCachedDict:v38 AndEraseWithLog:v39];
+        [self _submitProfileFor:v37 withCachedDict:v38 AndEraseWithLog:v39];
       }
 
       v34 = [v32 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -548,8 +548,8 @@ LABEL_10:
     while (v34);
   }
 
-  v40 = [a1 _getDefaults];
-  [v40 synchronize];
+  _getDefaults2 = [self _getDefaults];
+  [_getDefaults2 synchronize];
 
   objc_autoreleasePoolPop(context);
   v41 = *MEMORY[0x277D85DE8];
@@ -558,15 +558,15 @@ LABEL_10:
 + (void)_endPrevAssoc
 {
   v46 = *MEMORY[0x277D85DE8];
-  v2 = [a1 _getDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  _getDefaults = [self _getDefaults];
+  dictionaryRepresentation = [_getDefaults dictionaryRepresentation];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v30 = v3;
-  obj = [v3 allKeys];
+  v30 = dictionaryRepresentation;
+  obj = [dictionaryRepresentation allKeys];
   v4 = [obj countByEnumeratingWithState:&v31 objects:v45 count:16];
   if (v4)
   {
@@ -591,24 +591,24 @@ LABEL_10:
         {
           v12 = [v30 objectForKey:v10];
           v13 = [v12 objectForKeyedSubscript:@"apProfileMaxAssocTime"];
-          v14 = [v13 unsignedIntegerValue];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
 
           v15 = [v12 objectForKeyedSubscript:@"apProfileCacheTimestamp"];
           v16 = [v12 objectForKeyedSubscript:@"apProfileForLatestAssoc"];
-          v17 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
 
           [v15 timeIntervalSinceNow];
-          if (v17)
+          if (bOOLValue)
           {
             v19 = -v18;
-            if (v14 >= v19)
+            if (unsignedIntegerValue >= v19)
             {
-              v22 = a1;
+              selfCopy2 = self;
             }
 
             else
             {
-              v20 = *&_apProfileMinAssoc > v14;
+              v20 = *&_apProfileMinAssoc > unsignedIntegerValue;
               if (*&_apProfileMinAssoc > v19)
               {
                 v20 = 0;
@@ -616,19 +616,19 @@ LABEL_10:
 
               v7 |= v20;
               v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v19];
-              v22 = a1;
-              [a1 _saveToUserDefaults:v10 withKey:@"apProfileMaxAssocTime" andValue:v21];
+              selfCopy2 = self;
+              [self _saveToUserDefaults:v10 withKey:@"apProfileMaxAssocTime" andValue:v21];
             }
 
-            [v22 _saveToUserDefaults:v10 withKey:@"apProfileForLatestAssoc" andValue:MEMORY[0x277CBEC28]];
+            [selfCopy2 _saveToUserDefaults:v10 withKey:@"apProfileForLatestAssoc" andValue:MEMORY[0x277CBEC28]];
             if (v7)
             {
-              if ([v22 _isProfileValidForUse:v10 withCachedDict:0 withError:0])
+              if ([selfCopy2 _isProfileValidForUse:v10 withCachedDict:0 withError:0])
               {
                 v23 = MEMORY[0x277D86220];
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                 {
-                  v24 = [v22 profileForBSSID:v10 withError:0];
+                  v24 = [selfCopy2 profileForBSSID:v10 withError:0];
                   *buf = v27;
                   v36 = "+[WiFiUsageAccessPointProfile _endPrevAssoc]";
                   v37 = 2160;
@@ -660,19 +660,19 @@ LABEL_10:
     while (v6);
   }
 
-  v25 = [a1 _getDefaults];
-  [v25 synchronize];
+  _getDefaults2 = [self _getDefaults];
+  [_getDefaults2 synchronize];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_compareBytes:(id)a3 FromStart:(unint64_t)a4 WithLen:(unint64_t)a5 With:(id)a6
++ (BOOL)_compareBytes:(id)bytes FromStart:(unint64_t)start WithLen:(unint64_t)len With:(id)with
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 length];
-  if (a5 > 4 || v11 < a5 + a4)
+  bytesCopy = bytes;
+  withCopy = with;
+  v11 = [bytesCopy length];
+  if (len > 4 || v11 < len + start)
   {
     v14 = 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -680,11 +680,11 @@ LABEL_10:
       *v17 = 136316162;
       *&v17[4] = "+[WiFiUsageAccessPointProfile _compareBytes:FromStart:WithLen:With:]";
       v18 = 2048;
-      v19 = [v9 length];
+      v19 = [bytesCopy length];
       v20 = 2048;
-      v21 = a4;
+      startCopy = start;
       v22 = 2048;
-      v23 = a5;
+      lenCopy = len;
       v24 = 2048;
       v25 = 4;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - fieldData len is %lu but start=%lu and len=%lu (<= %lu) - returning FALSE", v17, 0x34u);
@@ -694,18 +694,18 @@ LABEL_10:
 
   else
   {
-    v12 = [v9 bytes];
-    *v17 = [v10 unsignedIntValue];
-    if (a5)
+    bytes = [bytesCopy bytes];
+    *v17 = [withCopy unsignedIntValue];
+    if (len)
     {
-      v13 = (v12 + a4);
+      v13 = (bytes + start);
       v14 = 1;
       do
       {
-        v14 = v14 && v17[--a5] == *v13++;
+        v14 = v14 && v17[--len] == *v13++;
       }
 
-      while (a5);
+      while (len);
     }
 
     else
@@ -718,22 +718,22 @@ LABEL_10:
   return v14;
 }
 
-+ (void)_applyMask:(id)a3 FromStart:(unint64_t)a4 WithLen:(unint64_t)a5 WithMask:(id)a6 AppendTo:(id)a7
++ (void)_applyMask:(id)mask FromStart:(unint64_t)start WithLen:(unint64_t)len WithMask:(id)withMask AppendTo:(id)to
 {
-  v17 = a3;
-  v11 = a6;
-  v12 = a7;
-  if ([v17 length] >= a5 + a4)
+  maskCopy = mask;
+  withMaskCopy = withMask;
+  toCopy = to;
+  if ([maskCopy length] >= len + start)
   {
-    v13 = [v17 bytes];
-    v18 = [v11 unsignedIntValue];
-    if (a5)
+    bytes = [maskCopy bytes];
+    unsignedIntValue = [withMaskCopy unsignedIntValue];
+    if (len)
     {
-      v14 = (v13 + a4);
-      v15 = &v18;
+      v14 = (bytes + start);
+      v15 = &unsignedIntValue;
       do
       {
-        if (v11)
+        if (withMaskCopy)
         {
           v16 = (*v14 & *v15);
         }
@@ -743,31 +743,31 @@ LABEL_10:
           v16 = *v14;
         }
 
-        [v12 appendFormat:@"%02X", v16];
+        [toCopy appendFormat:@"%02X", v16];
         ++v14;
         v15 = (v15 + 1);
-        --a5;
+        --len;
       }
 
-      while (a5);
+      while (len);
     }
   }
 }
 
-+ (void)_extractFieldsFor:(id)a3 From:(id)a4 Into:(id)a5
++ (void)_extractFieldsFor:(id)for From:(id)from Into:(id)into
 {
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:@"subfields"];
+  forCopy = for;
+  fromCopy = from;
+  intoCopy = into;
+  v10 = [forCopy objectForKeyedSubscript:@"subfields"];
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"subfields"];
+    v11 = [forCopy objectForKeyedSubscript:@"subfields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v7 objectForKeyedSubscript:@"subfields"];
+      v12 = [forCopy objectForKeyedSubscript:@"subfields"];
     }
 
     else
@@ -781,14 +781,14 @@ LABEL_10:
     v12 = 0;
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"len"];
+  v13 = [forCopy objectForKeyedSubscript:@"len"];
   if (v13)
   {
-    v14 = [v7 objectForKeyedSubscript:@"len"];
+    v14 = [forCopy objectForKeyedSubscript:@"len"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v7 objectForKeyedSubscript:@"len"];
+      v15 = [forCopy objectForKeyedSubscript:@"len"];
     }
 
     else
@@ -802,14 +802,14 @@ LABEL_10:
     v15 = 0;
   }
 
-  v16 = [v7 objectForKeyedSubscript:@"mask"];
+  v16 = [forCopy objectForKeyedSubscript:@"mask"];
   if (v16)
   {
-    v17 = [v7 objectForKeyedSubscript:@"mask"];
+    v17 = [forCopy objectForKeyedSubscript:@"mask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v7 objectForKeyedSubscript:@"mask"];
+      v18 = [forCopy objectForKeyedSubscript:@"mask"];
     }
 
     else
@@ -827,9 +827,9 @@ LABEL_10:
   {
     v47 = v18;
     v48 = v15;
-    v51 = v9;
+    v51 = intoCopy;
     v49 = v12;
-    v50 = v7;
+    v50 = forCopy;
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
@@ -873,7 +873,7 @@ LABEL_10:
             v27 = 0;
           }
 
-          v28 = v8;
+          v28 = fromCopy;
 
           v29 = [v23 objectForKeyedSubscript:@"len"];
           if (v29)
@@ -923,29 +923,29 @@ LABEL_10:
             v38 = 0;
           }
 
-          v8 = v28;
+          fromCopy = v28;
           if ([v28 length])
           {
             if (v32 && v27)
             {
-              v39 = [v27 integerValue];
-              v40 = [v32 unsignedIntValue];
-              v41 = v39;
+              integerValue = [v27 integerValue];
+              unsignedIntValue = [v32 unsignedIntValue];
+              v41 = integerValue;
               v20 = 0x277CCA000;
-              [a1 _applyMask:v28 FromStart:v41 WithLen:v40 WithMask:v38 AppendTo:v51];
+              [self _applyMask:v28 FromStart:v41 WithLen:unsignedIntValue WithMask:v38 AppendTo:v51];
             }
 
             else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              v42 = [v27 unsignedIntValue];
-              v43 = [v32 unsignedIntValue];
+              unsignedIntValue2 = [v27 unsignedIntValue];
+              unsignedIntValue3 = [v32 unsignedIntValue];
               *buf = 136315906;
               v60 = "+[WiFiUsageAccessPointProfile _extractFieldsFor:From:Into:]";
               v61 = 1024;
-              v62 = v42;
+              v62 = unsignedIntValue2;
               v20 = 0x277CCA000;
               v63 = 1024;
-              v64 = v43;
+              v64 = unsignedIntValue3;
               v65 = 2112;
               v66 = v23;
               _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - Subfield has wrong format (start:%u, len:%u) - ignoring %@", buf, 0x22u);
@@ -960,35 +960,35 @@ LABEL_10:
     }
 
     v12 = v49;
-    v7 = v50;
-    v9 = v51;
+    forCopy = v50;
+    intoCopy = v51;
     v18 = v47;
     v15 = v48;
   }
 
   else
   {
-    v44 = [v8 length];
+    v44 = [fromCopy length];
     if (v44 >= [v15 unsignedIntValue])
     {
-      v45 = [v15 unsignedIntValue];
+      unsignedIntValue4 = [v15 unsignedIntValue];
     }
 
     else
     {
-      v45 = [v8 length];
+      unsignedIntValue4 = [fromCopy length];
     }
 
-    [a1 _applyMask:v8 FromStart:0 WithLen:v45 WithMask:v18 AppendTo:v9];
+    [self _applyMask:fromCopy FromStart:0 WithLen:unsignedIntValue4 WithMask:v18 AppendTo:intoCopy];
   }
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_toMobileAssetsProfile:(id)a3
++ (id)_toMobileAssetsProfile:(id)profile
 {
   v132 = *MEMORY[0x277D85DE8];
-  v91 = a3;
+  profileCopy = profile;
   v90 = objc_opt_new();
   v85 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v85 setNumberStyle:1];
@@ -1083,9 +1083,9 @@ LABEL_10:
           {
             v16 = [v9 substringFromIndex:{objc_msgSend(@"EL ", "length")}];
             v17 = [v85 numberFromString:v16];
-            v18 = [v91 taggedIEList];
+            taggedIEList = [profileCopy taggedIEList];
             v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"BeaconInformationElement_", v16];
-            v20 = [v18 objectForKeyedSubscript:v19];
+            v20 = [taggedIEList objectForKeyedSubscript:v19];
 
             [v90 appendFormat:@"%02X", objc_msgSend(v17, "unsignedIntValue")];
             if (_apProfileIncludeIELen == 1)
@@ -1110,15 +1110,15 @@ LABEL_10:
               [v90 appendString:v26];
             }
 
-            [a1 _extractFieldsFor:v6 From:v20 Into:v90];
+            [self _extractFieldsFor:v6 From:v20 Into:v90];
           }
 
           else
           {
             if (![v9 hasPrefix:@"exEL "])
             {
-              v27 = [v91 valueForKey:v9];
-              v28 = [v27 unsignedLongValue];
+              v27 = [profileCopy valueForKey:v9];
+              unsignedLongValue = [v27 unsignedLongValue];
 
               v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%%0%ulX", 2 * objc_msgSend(v12, "unsignedIntValue")];
               if (v12)
@@ -1127,29 +1127,29 @@ LABEL_10:
                 {
                   if (v15)
                   {
-                    v28 &= [v15 unsignedLongValue];
+                    unsignedLongValue &= [v15 unsignedLongValue];
                   }
 
                   if ([v12 longValue] == -1)
                   {
-                    [v90 appendFormat:@"%lu", v28];
+                    [v90 appendFormat:@"%lu", unsignedLongValue];
                   }
 
                   else
                   {
-                    [v90 appendFormat:v29, v28];
+                    [v90 appendFormat:v29, unsignedLongValue];
                   }
                 }
 
                 else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                 {
-                  v30 = [v12 longValue];
+                  longValue = [v12 longValue];
                   *buf = 136315906;
                   v124 = "+[WiFiUsageAccessPointProfile _toMobileAssetsProfile:]";
                   v125 = 2112;
                   v126 = v6;
                   v127 = 2048;
-                  v128 = v30;
+                  v128 = longValue;
                   v129 = 2048;
                   v130 = 8;
                   v31 = MEMORY[0x277D86220];
@@ -1177,9 +1177,9 @@ LABEL_51:
 
             v21 = [v9 substringFromIndex:{objc_msgSend(@"exEL ", "length")}];
             v22 = [v85 numberFromString:v21];
-            v23 = [v91 extendedIEList];
+            extendedIEList = [profileCopy extendedIEList];
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@255_%@", @"BeaconInformationElement_", v21];
-            v25 = [v23 objectForKeyedSubscript:v24];
+            v25 = [extendedIEList objectForKeyedSubscript:v24];
 
             [v90 appendString:@"FF"];
             if (_apProfileIncludeIELen == 1)
@@ -1205,7 +1205,7 @@ LABEL_51:
             }
 
             [v90 appendFormat:@"%02X", objc_msgSend(v22, "unsignedIntValue")];
-            [a1 _extractFieldsFor:v6 From:v25 Into:v90];
+            [self _extractFieldsFor:v6 From:v25 Into:v90];
           }
         }
 
@@ -1235,9 +1235,9 @@ LABEL_57:
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v35 = [v91 vendorIEList];
-  v36 = [v35 allKeys];
-  v37 = [v36 sortedArrayUsingSelector:?];
+  vendorIEList = [profileCopy vendorIEList];
+  allKeys = [vendorIEList allKeys];
+  v37 = [allKeys sortedArrayUsingSelector:?];
 
   v86 = v37;
   v89 = [v37 countByEnumeratingWithState:&v111 objects:v122 count:16];
@@ -1259,8 +1259,8 @@ LABEL_57:
 
       v93 = i;
       v40 = *(*(&v111 + 1) + 8 * i);
-      v41 = [v91 vendorIEList];
-      obja = [v41 objectForKeyedSubscript:v40];
+      vendorIEList2 = [profileCopy vendorIEList];
+      obja = [vendorIEList2 objectForKeyedSubscript:v40];
 
       if (_apProfileListVendorIEs == 1)
       {
@@ -1356,7 +1356,7 @@ LABEL_88:
             }
 
             v55 = [obja length];
-            if (v55 >= [v49 unsignedIntValue] && objc_msgSend(a1, "_compareBytes:FromStart:WithLen:With:", obja, 0, objc_msgSend(v49, "unsignedIntValue"), v53))
+            if (v55 >= [v49 unsignedIntValue] && objc_msgSend(self, "_compareBytes:FromStart:WithLen:With:", obja, 0, objc_msgSend(v49, "unsignedIntValue"), v53))
             {
 
               v38 = v90;
@@ -1470,12 +1470,12 @@ LABEL_116:
           }
 
           v69 = [obja length];
-          if (v69 >= [v63 unsignedIntValue] && objc_msgSend(a1, "_compareBytes:FromStart:WithLen:With:", obja, 0, objc_msgSend(v63, "unsignedIntValue"), v67))
+          if (v69 >= [v63 unsignedIntValue] && objc_msgSend(self, "_compareBytes:FromStart:WithLen:With:", obja, 0, objc_msgSend(v63, "unsignedIntValue"), v67))
           {
             v73 = objc_opt_new();
             v74 = v60;
             v76 = obja;
-            [a1 _extractFieldsFor:v74 From:obja Into:v73];
+            [self _extractFieldsFor:v74 From:obja Into:v73];
             [v87 addObject:v73];
 
             v38 = v90;
@@ -1497,7 +1497,7 @@ LABEL_120:
       v76 = obja;
       if (_apProfileListVendorIEs == 1)
       {
-        v70 = [obja bytes];
+        bytes = [obja bytes];
         v71 = [obja length];
         v72 = _apProfileListVendorIEsLen;
         if (v71 < _apProfileListVendorIEsLen)
@@ -1505,7 +1505,7 @@ LABEL_120:
           v72 = [obja length];
         }
 
-        v98 = [WiFiUsagePrivacyFilter toHEXString:v70 length:v72];
+        v98 = [WiFiUsagePrivacyFilter toHEXString:bytes length:v72];
         [v87 addObject:?];
 LABEL_124:
       }
@@ -1521,8 +1521,8 @@ LABEL_127:
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v77 = [v87 allObjects];
-  v78 = [v77 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v87 allObjects];
+  v78 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v79 = [v78 countByEnumeratingWithState:&v99 objects:v119 count:16];
   if (v79)
@@ -1552,74 +1552,74 @@ LABEL_127:
   return v38;
 }
 
-+ (id)_loadFromUserDefaults:(id)a3 withKey:(id)a4 withCachedData:(id)a5 withError:(id *)a6
++ (id)_loadFromUserDefaults:(id)defaults withKey:(id)key withCachedData:(id)data withError:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  defaultsCopy = defaults;
+  keyCopy = key;
+  dataCopy = data;
+  v13 = dataCopy;
+  if (!defaultsCopy)
   {
-    v15 = 0;
+    errorCopy = 0;
     goto LABEL_19;
   }
 
-  if (v12)
+  if (dataCopy)
   {
-    v14 = v12;
-    if (!v11)
+    v14 = dataCopy;
+    if (!keyCopy)
     {
 LABEL_11:
       if (v14)
       {
-        a6 = [v14 mutableCopy];
+        error = [v14 mutableCopy];
         v17 = [v14 objectForKeyedSubscript:@"apProfileBeaconInfo"];
-        [a6 addEntriesFromDictionary:v17];
+        [error addEntriesFromDictionary:v17];
 
         v18 = [v14 objectForKeyedSubscript:@"apProfileWPSInfo"];
-        [a6 addEntriesFromDictionary:v18];
+        [error addEntriesFromDictionary:v18];
 
-        [a6 setValue:0 forKey:@"apProfileBeaconInfo"];
-        [a6 setValue:0 forKey:@"apProfileWPSInfo"];
-        v19 = [a6 objectForKeyedSubscript:@"apProfileCacheTimestampCreated"];
+        [error setValue:0 forKey:@"apProfileBeaconInfo"];
+        [error setValue:0 forKey:@"apProfileWPSInfo"];
+        v19 = [error objectForKeyedSubscript:@"apProfileCacheTimestampCreated"];
         [v19 timeIntervalSinceNow];
         v21 = -v20;
 
-        v22 = [a1 _getBinTimeInterval:1 As:v21];
-        [a6 setValue:v22 forKey:@"ageAtRemoval"];
+        v22 = [self _getBinTimeInterval:1 As:v21];
+        [error setValue:v22 forKey:@"ageAtRemoval"];
 
-        [a6 setValue:0 forKey:@"apProfileCacheTimestampCreated"];
-        v23 = [a6 objectForKeyedSubscript:@"apProfileCacheTimestamp"];
+        [error setValue:0 forKey:@"apProfileCacheTimestampCreated"];
+        v23 = [error objectForKeyedSubscript:@"apProfileCacheTimestamp"];
         [v23 timeIntervalSinceNow];
         v25 = -v24;
 
-        v26 = [a1 _getBinTimeInterval:1 As:v25];
-        [a6 setValue:v26 forKey:@"timeSinceLastRefresh"];
+        v26 = [self _getBinTimeInterval:1 As:v25];
+        [error setValue:v26 forKey:@"timeSinceLastRefresh"];
 
-        [a6 setValue:0 forKey:@"apProfileCacheTimestamp"];
-        [a6 setValue:0 forKey:@"submittedToCA"];
+        [error setValue:0 forKey:@"apProfileCacheTimestamp"];
+        [error setValue:0 forKey:@"submittedToCA"];
         v27 = [v14 objectForKey:@"apProfileBeaconInfoParsingSuccessful"];
-        v28 = [v27 BOOLValue];
+        bOOLValue = [v27 BOOLValue];
 
-        if (v28)
+        if (bOOLValue)
         {
-          [a6 setValue:0 forKey:@"apProfileBeaconRaw"];
+          [error setValue:0 forKey:@"apProfileBeaconRaw"];
         }
 
         goto LABEL_18;
       }
 
-      if (a6)
+      if (error)
       {
         v29 = MEMORY[0x277CCA9B8];
         v34 = *MEMORY[0x277CCA470];
         v35[0] = @"Unknown";
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-        *a6 = [v29 errorWithDomain:@"com.apple.wifi.policy.approfile" code:3 userInfo:v30];
+        *error = [v29 errorWithDomain:@"com.apple.wifi.policy.approfile" code:3 userInfo:v30];
 
 LABEL_17:
-        a6 = 0;
+        error = 0;
         goto LABEL_18;
       }
 
@@ -1629,10 +1629,10 @@ LABEL_17:
 
   else
   {
-    v16 = [a1 _getDefaults];
-    v14 = [v16 dictionaryForKey:v10];
+    _getDefaults = [self _getDefaults];
+    v14 = [_getDefaults dictionaryForKey:defaultsCopy];
 
-    if (!v11)
+    if (!keyCopy)
     {
       goto LABEL_11;
     }
@@ -1643,65 +1643,65 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  if ([v11 isEqualToString:@"apProfileID"] && !objc_msgSend(a1, "_isProfileValidForStorage:", v14))
+  if ([keyCopy isEqualToString:@"apProfileID"] && !objc_msgSend(self, "_isProfileValidForStorage:", v14))
   {
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"stale (from %s)", "+[WiFiUsageAccessPointProfile _loadFromUserDefaults:withKey:withCachedData:withError:]"];
-    [a1 _submitProfileFor:v10 withCachedDict:v14 AndEraseWithLog:v31];
+    [self _submitProfileFor:defaultsCopy withCachedDict:v14 AndEraseWithLog:v31];
 
     goto LABEL_17;
   }
 
-  a6 = [v14 objectForKey:v11];
+  error = [v14 objectForKey:keyCopy];
 LABEL_18:
-  v15 = a6;
+  errorCopy = error;
 
 LABEL_19:
   v32 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return errorCopy;
 }
 
-+ (void)_saveToUserDefaults:(id)a3 withKey:(id)a4 andValue:(id)a5
++ (void)_saveToUserDefaults:(id)defaults withKey:(id)key andValue:(id)value
 {
-  v19 = a3;
+  defaultsCopy = defaults;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 dictionary];
-  v12 = [a1 _getDefaults];
-  v13 = [WiFiUsagePrivacyFilter reformatMACAddress:v19];
-  v14 = [v12 dictionaryForKey:v13];
+  valueCopy = value;
+  keyCopy = key;
+  dictionary = [v8 dictionary];
+  _getDefaults = [self _getDefaults];
+  v13 = [WiFiUsagePrivacyFilter reformatMACAddress:defaultsCopy];
+  v14 = [_getDefaults dictionaryForKey:v13];
 
   if (v14)
   {
-    [v11 addEntriesFromDictionary:v14];
+    [dictionary addEntriesFromDictionary:v14];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v11 setValue:v15 forKey:@"apProfileCacheTimestampCreated"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [dictionary setValue:date forKey:@"apProfileCacheTimestampCreated"];
 
-    [v11 setValue:_apProfileVersionString forKey:@"apProfileVersion"];
+    [dictionary setValue:_apProfileVersionString forKey:@"apProfileVersion"];
   }
 
-  [v11 setValue:v9 forKey:v10];
+  [dictionary setValue:valueCopy forKey:keyCopy];
 
-  v16 = [MEMORY[0x277CBEAA8] date];
-  [v11 setValue:v16 forKey:@"apProfileCacheTimestamp"];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [dictionary setValue:date2 forKey:@"apProfileCacheTimestamp"];
 
-  v17 = [a1 _getDefaults];
-  v18 = [WiFiUsagePrivacyFilter reformatMACAddress:v19];
-  [v17 setObject:v11 forKey:v18];
+  _getDefaults2 = [self _getDefaults];
+  v18 = [WiFiUsagePrivacyFilter reformatMACAddress:defaultsCopy];
+  [_getDefaults2 setObject:dictionary forKey:v18];
 }
 
-+ (id)profileFromBeaconData:(id)a3 andParsedIE:(id)a4
++ (id)profileFromBeaconData:(id)data andParsedIE:(id)e
 {
   v118 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ([v7 objectForKeyedSubscript:@"BSSID"], v9 = objc_claimAutoreleasedReturnValue(), +[WiFiUsagePrivacyFilter reformatMACAddress:](WiFiUsagePrivacyFilter, "reformatMACAddress:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  dataCopy = data;
+  eCopy = e;
+  v8 = eCopy;
+  if (!eCopy || ([eCopy objectForKeyedSubscript:@"BSSID"], v9 = objc_claimAutoreleasedReturnValue(), +[WiFiUsagePrivacyFilter reformatMACAddress:](WiFiUsagePrivacyFilter, "reformatMACAddress:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1734,38 +1734,38 @@ LABEL_19:
     goto LABEL_74;
   }
 
-  [a1 _endPrevAssoc];
-  v13 = objc_alloc_init(a1);
+  [self _endPrevAssoc];
+  v13 = objc_alloc_init(self);
   [v13 setBssid:0];
   [v13 setApProfile:0];
-  if (!v6)
+  if (!dataCopy)
   {
-    [a1 updateWithWPS:v8];
+    [self updateWithWPS:v8];
     goto LABEL_17;
   }
 
-  v107 = a1;
-  v14 = [[WiFiUsageParsedBeacon alloc] initWithBeaconData:v6 andAdditionalMetadata:v8];
-  v15 = [(WiFiUsageParsedBeacon *)v14 bssid];
-  [v13 setBssid:v15];
+  selfCopy = self;
+  v14 = [[WiFiUsageParsedBeacon alloc] initWithBeaconData:dataCopy andAdditionalMetadata:v8];
+  bssid = [(WiFiUsageParsedBeacon *)v14 bssid];
+  [v13 setBssid:bssid];
 
-  v16 = [(WiFiUsageParsedBeacon *)v14 vendorIEList];
-  v17 = [v16 allKeys];
+  vendorIEList = [(WiFiUsageParsedBeacon *)v14 vendorIEList];
+  allKeys = [vendorIEList allKeys];
   v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF BEGINSWITH[c] '00:17:F2-6' OR SELF BEGINSWITH[c] '00:17:F2-9'"];
-  v19 = [v17 filteredArrayUsingPredicate:v18];
+  v19 = [allKeys filteredArrayUsingPredicate:v18];
 
   v108 = v14;
   if ([(__CFString *)v19 count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v13 bssid];
+      bssid2 = [v13 bssid];
       *buf = 136315906;
       *&buf[4] = "+[WiFiUsageAccessPointProfile profileFromBeaconData:andParsedIE:]";
       *&buf[12] = 2160;
       *&buf[14] = 1752392040;
       v110 = 2112;
-      v111 = v20;
+      v111 = bssid2;
       v112 = 2112;
       v113 = v19;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: (%{mask.hash}@) contains PersonalHotspotIEs:%@ -- skip", buf, 0x2Au);
@@ -1775,37 +1775,37 @@ LABEL_19:
   }
 
   v106 = v19;
-  v22 = [(WiFiUsageParsedBeacon *)v14 taggedIEList];
+  taggedIEList = [(WiFiUsageParsedBeacon *)v14 taggedIEList];
   v23 = MEMORY[0x277CBEC28];
-  v24 = [v22 allKeysForObject:MEMORY[0x277CBEC28]];
+  v24 = [taggedIEList allKeysForObject:MEMORY[0x277CBEC28]];
 
-  v25 = [(WiFiUsageParsedBeacon *)v14 extendedIEList];
-  v26 = [v25 allKeysForObject:v23];
+  extendedIEList = [(WiFiUsageParsedBeacon *)v14 extendedIEList];
+  v26 = [extendedIEList allKeysForObject:v23];
 
-  v27 = [(WiFiUsageParsedBeacon *)v14 parsingSuccessful];
+  parsingSuccessful = [(WiFiUsageParsedBeacon *)v14 parsingSuccessful];
   v28 = v14;
   v29 = v24;
-  if (v27 && ![v24 count] && !objc_msgSend(v26, "count"))
+  if (parsingSuccessful && ![v24 count] && !objc_msgSend(v26, "count"))
   {
     goto LABEL_26;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v13 bssid];
-    v31 = [(WiFiUsageParsedBeacon *)v28 parsingSuccessful];
+    bssid3 = [v13 bssid];
+    parsingSuccessful2 = [(WiFiUsageParsedBeacon *)v28 parsingSuccessful];
     *buf = 136316418;
     v32 = @"NO";
     *&buf[4] = "+[WiFiUsageAccessPointProfile profileFromBeaconData:andParsedIE:]";
     *&buf[12] = 2160;
     *&buf[14] = 1752392040;
     v110 = 2112;
-    if (v31)
+    if (parsingSuccessful2)
     {
       v32 = @"YES";
     }
 
-    v111 = v30;
+    v111 = bssid3;
     v112 = 2112;
     v113 = v32;
     v114 = 2112;
@@ -1819,18 +1819,18 @@ LABEL_19:
   {
 LABEL_26:
     v102 = v26;
-    v33 = [v13 bssid];
-    v104 = [WiFiUsageAccessPointProfile _cachedProfile:v33];
+    bssid4 = [v13 bssid];
+    v104 = [WiFiUsageAccessPointProfile _cachedProfile:bssid4];
 
-    v34 = [v13 bssid];
-    v35 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v34 withKey:@"apProfileBeaconInfoOccurrencies" withCachedData:0];
-    v36 = [v35 unsignedIntegerValue];
+    bssid5 = [v13 bssid];
+    v35 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:bssid5 withKey:@"apProfileBeaconInfoOccurrencies" withCachedData:0];
+    unsignedIntegerValue = [v35 unsignedIntegerValue];
 
-    v37 = [v13 bssid];
-    v103 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v37 withKey:@"apProfileCacheTimestamp" withCachedData:0];
+    bssid6 = [v13 bssid];
+    v103 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:bssid6 withKey:@"apProfileCacheTimestamp" withCachedData:0];
 
-    v38 = [v13 bssid];
-    v105 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v38 withKey:@"apProfile_shortID" withCachedData:0];
+    bssid7 = [v13 bssid];
+    v105 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:bssid7 withKey:@"apProfile_shortID" withCachedData:0];
 
     v28 = v108;
     if (_apProfileVersion == 1)
@@ -1839,9 +1839,9 @@ LABEL_26:
       [v13 setApProfile:v39];
     }
 
-    v40 = [v13 apProfile];
+    apProfile = [v13 apProfile];
     v41 = v106;
-    if (!v40)
+    if (!apProfile)
     {
       v101 = 0;
 LABEL_65:
@@ -1849,7 +1849,7 @@ LABEL_65:
       goto LABEL_66;
     }
 
-    v42 = v40;
+    v42 = apProfile;
     v43 = v103;
     if (v103)
     {
@@ -1861,17 +1861,17 @@ LABEL_65:
       {
         v101 = 0;
 LABEL_66:
-        v90 = [v13 bssid];
-        v91 = [v90 isEqualToString:v10];
+        bssid8 = [v13 bssid];
+        v91 = [bssid8 isEqualToString:v10];
 
         if (v91)
         {
-          v92 = [v13 bssid];
-          [WiFiUsageAccessPointProfile _saveToUserDefaults:v92 withKey:@"apProfileForLatestAssoc" andValue:MEMORY[0x277CBEC38]];
+          bssid9 = [v13 bssid];
+          [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid9 withKey:@"apProfileForLatestAssoc" andValue:MEMORY[0x277CBEC38]];
         }
 
-        v93 = [(WiFiUsageParsedBeacon *)v28 dictionaryRepresentation];
-        v94 = [v93 objectForKeyedSubscript:@"hasColocatedMLOs"];
+        dictionaryRepresentation = [(WiFiUsageParsedBeacon *)v28 dictionaryRepresentation];
+        v94 = [dictionaryRepresentation objectForKeyedSubscript:@"hasColocatedMLOs"];
         [v13 setHasColocatedMLOs:{objc_msgSend(v94, "length") != 0}];
 
         v47 = 1;
@@ -1885,12 +1885,12 @@ LABEL_66:
     {
     }
 
-    v49 = [v13 apProfile];
-    v50 = [v49 isEqualToString:v104];
+    apProfile2 = [v13 apProfile];
+    v50 = [apProfile2 isEqualToString:v104];
 
-    if (v36 && v36 + v50 && v50 && v105 && (v51 = [v105 length], v51 == 2 * _shortProfileBytesLen))
+    if (unsignedIntegerValue && unsignedIntegerValue + v50 && v50 && v105 && (v51 = [v105 length], v51 == 2 * _shortProfileBytesLen))
     {
-      v98 = v36 + v50;
+      v98 = unsignedIntegerValue + v50;
       v101 = 0;
       v52 = v108;
       v53 = 0x2789C5000;
@@ -1898,18 +1898,18 @@ LABEL_66:
 
     else
     {
-      v54 = [v13 bssid];
+      bssid10 = [v13 bssid];
       v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"replaced (from %s)", "+[WiFiUsageAccessPointProfile profileFromBeaconData:andParsedIE:]"];
-      [v107 _submitProfileFor:v54 withCachedDict:0 AndEraseWithLog:v55];
+      [selfCopy _submitProfileFor:bssid10 withCachedDict:0 AndEraseWithLog:v55];
 
-      v56 = [v13 bssid];
-      v57 = [v13 apProfile];
-      [WiFiUsageAccessPointProfile _saveToUserDefaults:v56 withKey:@"apProfileID" andValue:v57];
+      bssid11 = [v13 bssid];
+      apProfile3 = [v13 apProfile];
+      [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid11 withKey:@"apProfileID" andValue:apProfile3];
 
-      v99 = [v13 bssid];
-      v58 = [v13 apProfile];
+      bssid12 = [v13 bssid];
+      apProfile4 = [v13 apProfile];
       v59 = _shortProfileBytesLen;
-      v60 = v58;
+      v60 = apProfile4;
       v61 = v60;
       memset(buf, 0, 20);
       if (v60)
@@ -1939,35 +1939,35 @@ LABEL_66:
         v63 = v64;
       }
 
-      [WiFiUsageAccessPointProfile _saveToUserDefaults:v99 withKey:@"apProfile_shortID" andValue:v63];
+      [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid12 withKey:@"apProfile_shortID" andValue:v63];
       v53 = 0x2789C5000uLL;
-      v65 = [v13 bssid];
+      bssid13 = [v13 bssid];
       v52 = v108;
-      v66 = [(WiFiUsageParsedBeacon *)v108 dictionaryRepresentation];
-      [WiFiUsageAccessPointProfile _saveToUserDefaults:v65 withKey:@"apProfileBeaconInfo" andValue:v66];
+      dictionaryRepresentation2 = [(WiFiUsageParsedBeacon *)v108 dictionaryRepresentation];
+      [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid13 withKey:@"apProfileBeaconInfo" andValue:dictionaryRepresentation2];
 
-      v67 = [v13 bssid];
-      [WiFiUsageAccessPointProfile _saveToUserDefaults:v67 withKey:@"apProfileBeaconRaw" andValue:v6];
+      bssid14 = [v13 bssid];
+      [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid14 withKey:@"apProfileBeaconRaw" andValue:dataCopy];
 
       v98 = 1;
       v101 = 1;
     }
 
     v68 = *(v53 + 3472);
-    v69 = [v13 bssid];
-    v70 = [v68 _loadFromUserDefaults:v69 withKey:@"apProfileBeaconInfo" withCachedData:0];
+    bssid15 = [v13 bssid];
+    v70 = [v68 _loadFromUserDefaults:bssid15 withKey:@"apProfileBeaconInfo" withCachedData:0];
 
     v97 = v70;
     v100 = [v70 objectForKey:@"apName"];
-    v71 = [(WiFiUsageParsedBeacon *)v52 apName];
-    if (v71)
+    apName = [(WiFiUsageParsedBeacon *)v52 apName];
+    if (apName)
     {
-      v72 = v71;
+      v72 = apName;
       if (v100)
       {
         v52 = v108;
-        v73 = [(WiFiUsageParsedBeacon *)v108 apName];
-        v74 = [v73 isEqualToString:v100];
+        apName2 = [(WiFiUsageParsedBeacon *)v108 apName];
+        v74 = [apName2 isEqualToString:v100];
 
         v53 = 0x2789C5000;
         if (v74)
@@ -1984,18 +1984,18 @@ LABEL_66:
       }
 
       v75 = *(v53 + 3472);
-      v76 = [v13 bssid];
-      v77 = [(WiFiUsageParsedBeacon *)v52 dictionaryRepresentation];
-      [v75 _saveToUserDefaults:v76 withKey:@"apProfileBeaconInfo" andValue:v77];
+      bssid16 = [v13 bssid];
+      dictionaryRepresentation3 = [(WiFiUsageParsedBeacon *)v52 dictionaryRepresentation];
+      [v75 _saveToUserDefaults:bssid16 withKey:@"apProfileBeaconInfo" andValue:dictionaryRepresentation3];
 
       v78 = *(v53 + 3472);
-      v79 = [v13 bssid];
-      [v78 _saveToUserDefaults:v79 withKey:@"apProfileBeaconRaw" andValue:v6];
+      bssid17 = [v13 bssid];
+      [v78 _saveToUserDefaults:bssid17 withKey:@"apProfileBeaconRaw" andValue:dataCopy];
     }
 
 LABEL_56:
     v80 = *(v53 + 3472);
-    v81 = [v13 bssid];
+    bssid18 = [v13 bssid];
     v82 = MEMORY[0x277CCABB0];
     if ([(WiFiUsageParsedBeacon *)v52 parsingSuccessful])
     {
@@ -2020,23 +2020,23 @@ LABEL_56:
     }
 
     v85 = [v82 numberWithBool:v84];
-    [v80 _saveToUserDefaults:v81 withKey:@"apProfileBeaconInfoParsingSuccessful" andValue:v85];
+    [v80 _saveToUserDefaults:bssid18 withKey:@"apProfileBeaconInfoParsingSuccessful" andValue:v85];
 
-    v86 = [v13 bssid];
+    bssid19 = [v13 bssid];
     if ([(WiFiUsageParsedBeacon *)v108 parsingSuccessful])
     {
-      [WiFiUsageAccessPointProfile _saveToUserDefaults:v86 withKey:@"apProfileBeaconInfoParsingErrorAfter" andValue:0];
+      [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid19 withKey:@"apProfileBeaconInfoParsingErrorAfter" andValue:0];
     }
 
     else
     {
-      v87 = [(WiFiUsageParsedBeacon *)v108 lastParsedOK];
-      [WiFiUsageAccessPointProfile _saveToUserDefaults:v86 withKey:@"apProfileBeaconInfoParsingErrorAfter" andValue:v87];
+      lastParsedOK = [(WiFiUsageParsedBeacon *)v108 lastParsedOK];
+      [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid19 withKey:@"apProfileBeaconInfoParsingErrorAfter" andValue:lastParsedOK];
     }
 
-    v88 = [v13 bssid];
+    bssid20 = [v13 bssid];
     v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v98];
-    [WiFiUsageAccessPointProfile _saveToUserDefaults:v88 withKey:@"apProfileBeaconInfoOccurrencies" andValue:v89];
+    [WiFiUsageAccessPointProfile _saveToUserDefaults:bssid20 withKey:@"apProfileBeaconInfoOccurrencies" andValue:v89];
 
     v28 = v108;
     v29 = v83;
@@ -2055,10 +2055,10 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  [v107 updateWithWPS:v8];
+  [selfCopy updateWithWPS:v8];
   if (v48)
   {
-    [v107 _cleanUpStaleProfiles];
+    [selfCopy _cleanUpStaleProfiles];
   }
 
 LABEL_17:
@@ -2071,71 +2071,71 @@ LABEL_74:
   return v21;
 }
 
-+ (void)updateWithWPS:(id)a3
++ (void)updateWithWPS:(id)s
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sCopy = s;
+  v4 = sCopy;
+  if (sCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"BSSID"];
+    v5 = [sCopy objectForKeyedSubscript:@"BSSID"];
     if (v5)
     {
       v6 = [v4 objectForKeyedSubscript:@"WPS_PROB_RESP_IE"];
       if (v6)
       {
-        v7 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v8 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_PRIMARY_DEV_TYPE"];
         v9 = v8;
         if (v8)
         {
           v10 = [v8 objectForKeyedSubscript:@"WPS_DEV_TYPE_CAT"];
-          [v7 setObject:v10 forKeyedSubscript:@"apProfileWPSDeviceCategory"];
+          [dictionary setObject:v10 forKeyedSubscript:@"apProfileWPSDeviceCategory"];
 
           v11 = [v9 objectForKeyedSubscript:@"WPS_DEV_TYPE_SUB_CAT"];
-          [v7 setObject:v11 forKeyedSubscript:@"apProfileWPSDeviceSubcategory"];
+          [dictionary setObject:v11 forKeyedSubscript:@"apProfileWPSDeviceSubcategory"];
         }
 
         v12 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_MODEL_NAME"];
         v13 = [WiFiUsagePrivacyFilter reformatMACAddress:v12];
         if (v13)
         {
-          [v7 setObject:@"dropped" forKeyedSubscript:@"apProfileWPSDeviceModelName"];
+          [dictionary setObject:@"dropped" forKeyedSubscript:@"apProfileWPSDeviceModelName"];
         }
 
         else
         {
           v14 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_MODEL_NAME"];
-          [v7 setObject:v14 forKeyedSubscript:@"apProfileWPSDeviceModelName"];
+          [dictionary setObject:v14 forKeyedSubscript:@"apProfileWPSDeviceModelName"];
         }
 
         v15 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_MODEL_NUM"];
         v16 = [WiFiUsagePrivacyFilter reformatMACAddress:v15];
         if (v16)
         {
-          [v7 setObject:@"dropped" forKeyedSubscript:@"apProfileWPSDeviceModelNumber"];
+          [dictionary setObject:@"dropped" forKeyedSubscript:@"apProfileWPSDeviceModelNumber"];
         }
 
         else
         {
           v17 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_MODEL_NUM"];
-          [v7 setObject:v17 forKeyedSubscript:@"apProfileWPSDeviceModelNumber"];
+          [dictionary setObject:v17 forKeyedSubscript:@"apProfileWPSDeviceModelNumber"];
         }
 
         v18 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_MANUFACTURER"];
         v19 = [WiFiUsagePrivacyFilter reformatMACAddress:v18];
         if (v19)
         {
-          [v7 setObject:@"dropped" forKeyedSubscript:@"apProfileWPSDeviceManufacturer"];
+          [dictionary setObject:@"dropped" forKeyedSubscript:@"apProfileWPSDeviceManufacturer"];
         }
 
         else
         {
           v20 = [v6 objectForKeyedSubscript:@"IE_KEY_WPS_MANUFACTURER"];
-          [v7 setObject:v20 forKeyedSubscript:@"apProfileWPSDeviceManufacturer"];
+          [dictionary setObject:v20 forKeyedSubscript:@"apProfileWPSDeviceManufacturer"];
         }
 
-        [WiFiUsageAccessPointProfile _saveToUserDefaults:v5 withKey:@"apProfileWPSInfo" andValue:v7];
+        [WiFiUsageAccessPointProfile _saveToUserDefaults:v5 withKey:@"apProfileWPSInfo" andValue:dictionary];
       }
     }
 
@@ -2150,27 +2150,27 @@ LABEL_74:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateWithAssocTime:(double)a3 forBssid:(id)a4
++ (void)updateWithAssocTime:(double)time forBssid:(id)bssid
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = [WiFiUsagePrivacyFilter reformatMACAddress:a4];
+  v6 = [WiFiUsagePrivacyFilter reformatMACAddress:bssid];
   v7 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v6 withKey:@"apProfileVersion" withCachedData:0];
   if (v7)
   {
     v8 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v6 withKey:@"apProfileMaxAssocTime" withCachedData:0];
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    if (v9 <= a3)
+    if (unsignedIntegerValue <= time)
     {
       v10 = *&_apProfileMinAssoc;
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
-      [a1 _saveToUserDefaults:v6 withKey:@"apProfileMaxAssocTime" andValue:v11];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:time];
+      [self _saveToUserDefaults:v6 withKey:@"apProfileMaxAssocTime" andValue:v11];
 
       [WiFiUsageAccessPointProfile _saveToUserDefaults:v6 withKey:@"apProfileForLatestAssoc" andValue:MEMORY[0x277CBEC28]];
-      v12 = v10 <= v9 || v10 > a3;
-      if (!v12 && [a1 _isProfileValidForUse:v6 withCachedDict:0 withError:0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+      v12 = v10 <= unsignedIntegerValue || v10 > time;
+      if (!v12 && [self _isProfileValidForUse:v6 withCachedDict:0 withError:0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [a1 profileForBSSID:v6 withError:0];
+        v13 = [self profileForBSSID:v6 withError:0];
         v15 = 136316162;
         v16 = "+[WiFiUsageAccessPointProfile updateWithAssocTime:forBssid:]";
         v17 = 2160;
@@ -2194,18 +2194,18 @@ LABEL_74:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_submitProfileFor:(id)a3 withCachedDict:(id)a4 AndEraseWithLog:(id)a5
++ (void)_submitProfileFor:(id)for withCachedDict:(id)dict AndEraseWithLog:(id)log
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v8 withKey:@"apProfileVersion" withCachedData:v9];
+  forCopy = for;
+  dictCopy = dict;
+  logCopy = log;
+  v11 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:forCopy withKey:@"apProfileVersion" withCachedData:dictCopy];
   if (v11)
   {
-    v12 = [a1 _isProfileValidForUse:v8 withCachedDict:v9 withError:0];
-    v13 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v8 withKey:@"submittedToCA" withCachedData:v9];
-    v14 = [v13 BOOLValue];
+    v12 = [self _isProfileValidForUse:forCopy withCachedDict:dictCopy withError:0];
+    v13 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:forCopy withKey:@"submittedToCA" withCachedData:dictCopy];
+    bOOLValue = [v13 BOOLValue];
 
     v15 = MEMORY[0x277D86220];
     v16 = MEMORY[0x277D86220];
@@ -2222,7 +2222,7 @@ LABEL_74:
         v18 = @"NOT ";
       }
 
-      if (v14)
+      if (bOOLValue)
       {
         v19 = &stru_28487EF20;
       }
@@ -2232,7 +2232,7 @@ LABEL_74:
         v19 = @"NOT ";
       }
 
-      if (v14)
+      if (bOOLValue)
       {
         v20 = &stru_28487EF20;
       }
@@ -2242,7 +2242,7 @@ LABEL_74:
         v20 = @"-- skip";
       }
 
-      if (((v14 | v12) & 1) == 0)
+      if (((bOOLValue | v12) & 1) == 0)
       {
         if (+[WiFiUsagePrivacyFilter isInternalInstall])
         {
@@ -2258,7 +2258,7 @@ LABEL_74:
       *buf = 136316418;
       v30 = "+[WiFiUsageAccessPointProfile _submitProfileFor:withCachedDict:AndEraseWithLog:]";
       v31 = 2112;
-      v32 = v8;
+      v32 = forCopy;
       v33 = 2112;
       v34 = v18;
       v35 = 2112;
@@ -2266,22 +2266,22 @@ LABEL_74:
       v37 = 2112;
       v38 = v20;
       v39 = 2112;
-      v40 = v10;
+      v40 = logCopy;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: profile for %@ is %@valid and %@already sentToCA%@ (%@)", buf, 0x3Eu);
       v17 = 0x2789C5000uLL;
     }
 
-    if ((v14 & 1) == 0 && ((v12 & 1) != 0 || [*(v17 + 3912) isInternalInstall]))
+    if ((bOOLValue & 1) == 0 && ((v12 & 1) != 0 || [*(v17 + 3912) isInternalInstall]))
     {
-      v21 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v8 withKey:0 withCachedData:v9];
+      v21 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:forCopy withKey:0 withCachedData:dictCopy];
       if (v21)
       {
         v22 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        [a1 _saveToUserDefaults:v8 withKey:@"submittedToCA" andValue:v22];
+        [self _saveToUserDefaults:forCopy withKey:@"submittedToCA" andValue:v22];
 
-        if (v10)
+        if (logCopy)
         {
-          v23 = -[__CFString componentsSeparatedByString:](v10, "componentsSeparatedByString:", @"(");
+          v23 = -[__CFString componentsSeparatedByString:](logCopy, "componentsSeparatedByString:", @"(");
           v24 = [v23 objectAtIndexedSubscript:0];
           [v21 setValue:v24 forKey:@"reasonForSending"];
         }
@@ -2296,13 +2296,13 @@ LABEL_74:
       v21 = 0;
     }
 
-    v25 = [a1 _getDefaults];
-    v26 = [*(v17 + 3912) reformatMACAddress:v8];
-    [v25 removeObjectForKey:v26];
+    _getDefaults = [self _getDefaults];
+    v26 = [*(v17 + 3912) reformatMACAddress:forCopy];
+    [_getDefaults removeObjectForKey:v26];
 
-    if (v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+    if (logCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [*(v17 + 3912) reformatMACAddress:v8];
+      v27 = [*(v17 + 3912) reformatMACAddress:forCopy];
       *buf = 136315906;
       v30 = "+[WiFiUsageAccessPointProfile _submitProfileFor:withCachedDict:AndEraseWithLog:]";
       v31 = 2160;
@@ -2310,7 +2310,7 @@ LABEL_74:
       v33 = 2112;
       v34 = v27;
       v35 = 2112;
-      v36 = v10;
+      v36 = logCopy;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: removed %{mask.hash}@ from defaults: %@", buf, 0x2Au);
     }
   }
@@ -2323,27 +2323,27 @@ LABEL_74:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)submitToCAForBSSID:(id)a3
++ (void)submitToCAForBSSID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [WiFiUsagePrivacyFilter reformatMACAddress:a3];
+  v4 = [WiFiUsagePrivacyFilter reformatMACAddress:d];
   v5 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v4 withKey:@"apProfileVersion" withCachedData:0];
   if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[WiFiUsageAccessPointProfile submitToCAForBSSID:];
   }
 
-  if (([a1 _isProfileValidForUse:v4 withCachedDict:0 withError:0] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (([self _isProfileValidForUse:v4 withCachedDict:0 withError:0] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[WiFiUsageAccessPointProfile submitToCAForBSSID:];
   }
 
   v6 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v4 withKey:@"submittedToCA" withCachedData:0];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [(WiFiUsageAccessPointProfile *)v4 submitToCAForBSSID:v7];
+    [(WiFiUsageAccessPointProfile *)v4 submitToCAForBSSID:bOOLValue];
   }
 
   v8 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v4 withKey:0 withCachedData:0];
@@ -2356,7 +2356,7 @@ LABEL_74:
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v10, "UTF8String")];
       *buf = 136446210;
-      v15 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
     }
 
@@ -2367,20 +2367,20 @@ LABEL_74:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_isProfileValidForUse:(id)a3 withCachedDict:(id)a4 onlyIfCurrent:(BOOL)a5 withError:(id *)a6
++ (BOOL)_isProfileValidForUse:(id)use withCachedDict:(id)dict onlyIfCurrent:(BOOL)current withError:(id *)error
 {
-  v7 = a5;
+  currentCopy = current;
   v80[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  useCopy = use;
+  dictCopy = dict;
+  if (useCopy)
   {
-    v11 = [WiFiUsagePrivacyFilter reformatMACAddress:v9];
+    v11 = [WiFiUsagePrivacyFilter reformatMACAddress:useCopy];
 
     if (_apProfileVersion)
     {
-      v12 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileVersion" withCachedData:v10 withError:a6];
-      if (a6 && *a6)
+      v12 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileVersion" withCachedData:dictCopy withError:error];
+      if (error && *error)
       {
         v13 = 0;
 LABEL_41:
@@ -2388,22 +2388,22 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v15 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileBeaconInfoOccurrencies" withCachedData:v10];
-      v48 = [v15 unsignedIntegerValue];
+      v15 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileBeaconInfoOccurrencies" withCachedData:dictCopy];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-      v16 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileMaxAssocTime" withCachedData:v10];
-      v47 = [v16 unsignedIntegerValue];
+      v16 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileMaxAssocTime" withCachedData:dictCopy];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-      v17 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileCacheTimestamp" withCachedData:v10];
-      v18 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileForLatestAssoc" withCachedData:v10];
-      v19 = [v18 BOOLValue];
+      v17 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileCacheTimestamp" withCachedData:dictCopy];
+      v18 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileForLatestAssoc" withCachedData:dictCopy];
+      bOOLValue = [v18 BOOLValue];
 
-      v20 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileBeaconInfoParsingSuccessful" withCachedData:v10];
-      v21 = [v20 BOOLValue];
+      v20 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileBeaconInfoParsingSuccessful" withCachedData:dictCopy];
+      bOOLValue2 = [v20 BOOLValue];
 
-      v22 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileBeaconInfoParsingErrorAfter" withCachedData:v10];
+      v22 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v11 withKey:@"apProfileBeaconInfoParsingErrorAfter" withCachedData:dictCopy];
       v23 = v22;
-      if (v7 && (v19 & 1) == 0)
+      if (currentCopy && (bOOLValue & 1) == 0)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
@@ -2418,7 +2418,7 @@ LABEL_41:
           _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: bssid %{mask.hash}@ has not been derived from a beacon retrieved after the current association (last updated: %@)", buf, 0x2Au);
         }
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_18;
         }
@@ -2434,7 +2434,7 @@ LABEL_41:
 
       v28 = v22;
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ([_apProfileVersionString isEqualToString:v12] & v21) == 1 && v48 >= _apProfileMinOccurrencies && (*&_apProfileMinAssoc <= v47 || v19 && (objc_msgSend(v17, "timeIntervalSinceNow", v47, *&_apProfileMinAssoc), *&_apProfileMinAssoc < -v29)))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ([_apProfileVersionString isEqualToString:v12] & bOOLValue2) == 1 && unsignedIntegerValue >= _apProfileMinOccurrencies && (*&_apProfileMinAssoc <= unsignedIntegerValue2 || bOOLValue && (objc_msgSend(v17, "timeIntervalSinceNow", unsignedIntegerValue2, *&_apProfileMinAssoc), *&_apProfileMinAssoc < -v29)))
       {
         v13 = 1;
       }
@@ -2447,7 +2447,7 @@ LABEL_41:
           {
             v30 = _apProfileVersionString;
             v31 = @"NO";
-            if (v21)
+            if (bOOLValue2)
             {
               v32 = @"YES";
             }
@@ -2458,7 +2458,7 @@ LABEL_41:
             }
 
             v46 = _apProfileMinAssoc;
-            if (v19)
+            if (bOOLValue)
             {
               v31 = @"YES";
             }
@@ -2477,11 +2477,11 @@ LABEL_41:
             v63 = 2112;
             v64 = v32;
             v65 = 2048;
-            v66 = v48;
+            v66 = unsignedIntegerValue;
             v67 = 2048;
             v68 = v44;
             v69 = 2048;
-            v70 = v47;
+            v70 = unsignedIntegerValue2;
             v71 = 2048;
             v72 = v46;
             v73 = 2112;
@@ -2492,17 +2492,17 @@ LABEL_41:
           }
 
           v23 = v28;
-          if ((v21 & 1) == 0)
+          if ((bOOLValue2 & 1) == 0)
           {
             v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Parsing Failed. Last Parsed: %@", v28];
             v25 = v37;
-            if (a6)
+            if (error)
             {
               v38 = MEMORY[0x277CCA9B8];
               v53 = *MEMORY[0x277CCA470];
               v54 = v37;
               v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-              *a6 = [v38 errorWithDomain:@"com.apple.wifi.policy.approfile" code:4 userInfo:v39];
+              *error = [v38 errorWithDomain:@"com.apple.wifi.policy.approfile" code:4 userInfo:v39];
 
               v23 = v28;
             }
@@ -2510,20 +2510,20 @@ LABEL_41:
             goto LABEL_17;
           }
 
-          if (v48 >= _apProfileMinOccurrencies)
+          if (unsignedIntegerValue >= _apProfileMinOccurrencies)
           {
-            v40 = v47;
+            v40 = unsignedIntegerValue2;
             v41 = *&_apProfileMinAssoc;
-            if (*&_apProfileMinAssoc <= v47)
+            if (*&_apProfileMinAssoc <= unsignedIntegerValue2)
             {
-              if (!v19)
+              if (!bOOLValue)
               {
                 goto LABEL_18;
               }
 
               [v17 timeIntervalSinceNow];
               v13 = 0;
-              if (!a6)
+              if (!error)
               {
                 goto LABEL_40;
               }
@@ -2536,7 +2536,7 @@ LABEL_41:
               }
             }
 
-            else if (!a6)
+            else if (!error)
             {
               goto LABEL_18;
             }
@@ -2551,7 +2551,7 @@ LABEL_41:
 
           else
           {
-            if (!a6)
+            if (!error)
             {
               goto LABEL_18;
             }
@@ -2565,7 +2565,7 @@ LABEL_41:
           }
 
 LABEL_16:
-          *a6 = [v26 errorWithDomain:@"com.apple.wifi.policy.approfile" code:v27 userInfo:v25];
+          *error = [v26 errorWithDomain:@"com.apple.wifi.policy.approfile" code:v27 userInfo:v25];
 LABEL_17:
 
 LABEL_18:
@@ -2582,14 +2582,14 @@ LABEL_40:
       goto LABEL_40;
     }
 
-    if (a6)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v79 = *MEMORY[0x277CCA470];
       v80[0] = @"WUAPProfileErrorPreInit";
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:&v79 count:1];
       [v14 errorWithDomain:@"com.apple.wifi.policy.approfile" code:1 userInfo:v12];
-      *a6 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_41;
     }
   }
@@ -2606,10 +2606,10 @@ LABEL_42:
   return v13;
 }
 
-+ (id)longProfileForBSSID:(id)a3 withError:(id *)a4
++ (id)longProfileForBSSID:(id)d withError:(id *)error
 {
-  v6 = [WiFiUsagePrivacyFilter reformatMACAddress:a3];
-  v7 = [a1 _isProfileValidForUse:v6 withCachedDict:0 withError:a4];
+  v6 = [WiFiUsagePrivacyFilter reformatMACAddress:d];
+  v7 = [self _isProfileValidForUse:v6 withCachedDict:0 withError:error];
   v8 = 0;
   if (v7)
   {
@@ -2620,10 +2620,10 @@ LABEL_42:
   return v8;
 }
 
-+ (id)shortProfileForBSSID:(id)a3 withError:(id *)a4
++ (id)shortProfileForBSSID:(id)d withError:(id *)error
 {
-  v6 = [WiFiUsagePrivacyFilter reformatMACAddress:a3];
-  v7 = [a1 _isProfileValidForUse:v6 withCachedDict:0 withError:a4];
+  v6 = [WiFiUsagePrivacyFilter reformatMACAddress:d];
+  v7 = [self _isProfileValidForUse:v6 withCachedDict:0 withError:error];
   v8 = 0;
   if (v7)
   {
@@ -2634,10 +2634,10 @@ LABEL_42:
   return v8;
 }
 
-+ (id)errorStringForTelemetry:(id)a3
++ (id)errorStringForTelemetry:(id)telemetry
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA470]];
+  userInfo = [telemetry userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA470]];
 
   if (v4 && [v4 hasPrefix:@"WUAPProfile"])
   {
@@ -2657,15 +2657,15 @@ LABEL_42:
 + (id)beaconsAndWPSInfo
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [a1 _getDefaults];
-  v4 = [v3 dictionaryRepresentation];
+  _getDefaults = [self _getDefaults];
+  dictionaryRepresentation = [_getDefaults dictionaryRepresentation];
 
   v30 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [v4 allKeys];
+  obj = [dictionaryRepresentation allKeys];
   v5 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v5)
   {
@@ -2686,13 +2686,13 @@ LABEL_42:
         if (v10)
         {
           v11 = objc_opt_new();
-          v12 = [v4 objectForKeyedSubscript:v9];
-          v13 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfileBeaconInfo" withCachedData:v12];
+          v12 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v13 = [self _loadFromUserDefaults:v9 withKey:@"apProfileBeaconInfo" withCachedData:v12];
           v14 = [v13 objectForKey:@"BeaconInformationElement_0"];
 
           [v11 setBssid:v9];
-          v15 = [v4 objectForKeyedSubscript:v9];
-          v16 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfileBeaconRaw" withCachedData:v15];
+          v15 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v16 = [self _loadFromUserDefaults:v9 withKey:@"apProfileBeaconRaw" withCachedData:v15];
           [v11 setBeacon:v16];
 
           if (v14)
@@ -2701,24 +2701,24 @@ LABEL_42:
             [v11 setSsid:v17];
           }
 
-          v18 = [v4 objectForKeyedSubscript:v9];
-          v19 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfileWPSInfo" withCachedData:v18];
+          v18 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v19 = [self _loadFromUserDefaults:v9 withKey:@"apProfileWPSInfo" withCachedData:v18];
           [v11 setApProfileWPSInfo:v19];
 
-          v20 = [v4 objectForKeyedSubscript:v9];
-          v21 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfileVersion" withCachedData:v20];
+          v20 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v21 = [self _loadFromUserDefaults:v9 withKey:@"apProfileVersion" withCachedData:v20];
           [v11 setApProfileVersion:v21];
 
-          v22 = [v4 objectForKeyedSubscript:v9];
-          v23 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfileID" withCachedData:v22];
+          v22 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v23 = [self _loadFromUserDefaults:v9 withKey:@"apProfileID" withCachedData:v22];
           [v11 setApProfileID:v23];
 
-          v24 = [v4 objectForKeyedSubscript:v9];
-          v25 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfile_shortID" withCachedData:v24];
+          v24 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v25 = [self _loadFromUserDefaults:v9 withKey:@"apProfile_shortID" withCachedData:v24];
           [v11 setApProfile_shortID:v25];
 
-          v26 = [v4 objectForKeyedSubscript:v9];
-          v27 = [a1 _loadFromUserDefaults:v9 withKey:@"apProfileCacheTimestampCreated" withCachedData:v26];
+          v26 = [dictionaryRepresentation objectForKeyedSubscript:v9];
+          v27 = [self _loadFromUserDefaults:v9 withKey:@"apProfileCacheTimestampCreated" withCachedData:v26];
 
           if (v11 && v27)
           {
@@ -2738,9 +2738,9 @@ LABEL_42:
   return v30;
 }
 
-+ (id)apNameForBSSID:(id)a3
++ (id)apNameForBSSID:(id)d
 {
-  v3 = [WiFiUsagePrivacyFilter reformatMACAddress:a3];
+  v3 = [WiFiUsagePrivacyFilter reformatMACAddress:d];
   v4 = [WiFiUsageAccessPointProfile _loadFromUserDefaults:v3 withKey:@"apProfileBeaconInfo" withCachedData:0];
   v5 = v4;
   if (v4)

@@ -1,29 +1,29 @@
 @interface IOUIANCriticalUIView
 + (id)_createHeaderLabel;
 + (id)_createMessageLabel;
-- (IOUIANCriticalUIView)initWithFrame:(CGRect)a3;
+- (IOUIANCriticalUIView)initWithFrame:(CGRect)frame;
 - (IOUIANCriticalUIViewDelegate)delegate;
 - (NSString)buttonTitle;
 - (NSString)headerText;
 - (NSString)messageText;
 - (UIImage)image;
-- (void)handleButtonAction:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setDebugViews:(BOOL)a3;
-- (void)setHeaderText:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageWithSystemImageNamed:(id)a3 andConfiguration:(id)a4;
-- (void)setMessageText:(id)a3;
+- (void)handleButtonAction:(id)action;
+- (void)setButtonTitle:(id)title;
+- (void)setDebugViews:(BOOL)views;
+- (void)setHeaderText:(id)text;
+- (void)setImage:(id)image;
+- (void)setImageWithSystemImageNamed:(id)named andConfiguration:(id)configuration;
+- (void)setMessageText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation IOUIANCriticalUIView
 
-- (IOUIANCriticalUIView)initWithFrame:(CGRect)a3
+- (IOUIANCriticalUIView)initWithFrame:(CGRect)frame
 {
   v81.receiver = self;
   v81.super_class = IOUIANCriticalUIView;
-  v3 = [(IOUIANCriticalUIView *)&v81 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IOUIANCriticalUIView *)&v81 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIView);
@@ -48,86 +48,86 @@
 
     [(UIView *)v3->_contentView addSubview:v3->_messageLabel];
     [(IOUIANCriticalUIView *)v3 addSubview:v3->_contentView];
-    v80 = [(IOUIANCriticalUIView *)v3 contentView];
-    v79 = [v80 centerYAnchor];
-    v78 = [(IOUIANCriticalUIView *)v3 centerYAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78];
+    contentView = [(IOUIANCriticalUIView *)v3 contentView];
+    centerYAnchor = [contentView centerYAnchor];
+    centerYAnchor2 = [(IOUIANCriticalUIView *)v3 centerYAnchor];
+    v77 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v82[0] = v77;
-    v76 = [(IOUIANCriticalUIView *)v3 contentView];
-    v75 = [v76 leadingAnchor];
-    v74 = [(IOUIANCriticalUIView *)v3 leadingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    contentView2 = [(IOUIANCriticalUIView *)v3 contentView];
+    leadingAnchor = [contentView2 leadingAnchor];
+    leadingAnchor2 = [(IOUIANCriticalUIView *)v3 leadingAnchor];
+    v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v82[1] = v73;
-    v72 = [(IOUIANCriticalUIView *)v3 contentView];
-    v71 = [v72 trailingAnchor];
-    v70 = [(IOUIANCriticalUIView *)v3 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    contentView3 = [(IOUIANCriticalUIView *)v3 contentView];
+    trailingAnchor = [contentView3 trailingAnchor];
+    trailingAnchor2 = [(IOUIANCriticalUIView *)v3 trailingAnchor];
+    v69 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v82[2] = v69;
-    v68 = [(IOUIANCriticalUIView *)v3 contentView];
-    v66 = [v68 topAnchor];
-    v67 = [(IOUIANCriticalUIView *)v3 imageView];
-    v65 = [v67 topAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    contentView4 = [(IOUIANCriticalUIView *)v3 contentView];
+    topAnchor = [contentView4 topAnchor];
+    imageView = [(IOUIANCriticalUIView *)v3 imageView];
+    topAnchor2 = [imageView topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v82[3] = v64;
-    v63 = [(IOUIANCriticalUIView *)v3 contentView];
-    v61 = [v63 bottomAnchor];
-    v62 = [(IOUIANCriticalUIView *)v3 messageLabel];
-    v60 = [v62 bottomAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    contentView5 = [(IOUIANCriticalUIView *)v3 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    messageLabel = [(IOUIANCriticalUIView *)v3 messageLabel];
+    bottomAnchor2 = [messageLabel bottomAnchor];
+    v59 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v82[4] = v59;
-    v58 = [(IOUIANCriticalUIView *)v3 imageView];
-    v56 = [v58 topAnchor];
-    v57 = [(IOUIANCriticalUIView *)v3 contentView];
-    v55 = [v57 topAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    imageView2 = [(IOUIANCriticalUIView *)v3 imageView];
+    topAnchor3 = [imageView2 topAnchor];
+    contentView6 = [(IOUIANCriticalUIView *)v3 contentView];
+    topAnchor4 = [contentView6 topAnchor];
+    v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v82[5] = v54;
-    v53 = [(IOUIANCriticalUIView *)v3 imageView];
-    v51 = [v53 centerXAnchor];
-    v52 = [(IOUIANCriticalUIView *)v3 contentView];
-    v50 = [v52 centerXAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    imageView3 = [(IOUIANCriticalUIView *)v3 imageView];
+    centerXAnchor = [imageView3 centerXAnchor];
+    contentView7 = [(IOUIANCriticalUIView *)v3 contentView];
+    centerXAnchor2 = [contentView7 centerXAnchor];
+    v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v82[6] = v49;
-    v48 = [(IOUIANCriticalUIView *)v3 headerLabel];
-    v46 = [v48 topAnchor];
-    v47 = [(IOUIANCriticalUIView *)v3 imageView];
-    v45 = [v47 bottomAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45 constant:20.0];
+    headerLabel = [(IOUIANCriticalUIView *)v3 headerLabel];
+    topAnchor5 = [headerLabel topAnchor];
+    imageView4 = [(IOUIANCriticalUIView *)v3 imageView];
+    bottomAnchor3 = [imageView4 bottomAnchor];
+    v44 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
     v82[7] = v44;
-    v43 = [(IOUIANCriticalUIView *)v3 headerLabel];
-    v41 = [v43 leadingAnchor];
-    v42 = [(IOUIANCriticalUIView *)v3 contentView];
-    v40 = [v42 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    headerLabel2 = [(IOUIANCriticalUIView *)v3 headerLabel];
+    leadingAnchor3 = [headerLabel2 leadingAnchor];
+    contentView8 = [(IOUIANCriticalUIView *)v3 contentView];
+    leadingAnchor4 = [contentView8 leadingAnchor];
+    v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v82[8] = v39;
-    v38 = [(IOUIANCriticalUIView *)v3 headerLabel];
-    v36 = [v38 trailingAnchor];
-    v37 = [(IOUIANCriticalUIView *)v3 contentView];
-    v35 = [v37 trailingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    headerLabel3 = [(IOUIANCriticalUIView *)v3 headerLabel];
+    trailingAnchor3 = [headerLabel3 trailingAnchor];
+    contentView9 = [(IOUIANCriticalUIView *)v3 contentView];
+    trailingAnchor4 = [contentView9 trailingAnchor];
+    v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v82[9] = v34;
-    v33 = [(IOUIANCriticalUIView *)v3 messageLabel];
-    v31 = [v33 topAnchor];
-    v32 = [(IOUIANCriticalUIView *)v3 headerLabel];
-    v30 = [v32 bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30 constant:16.0];
+    messageLabel2 = [(IOUIANCriticalUIView *)v3 messageLabel];
+    topAnchor6 = [messageLabel2 topAnchor];
+    headerLabel4 = [(IOUIANCriticalUIView *)v3 headerLabel];
+    bottomAnchor4 = [headerLabel4 bottomAnchor];
+    v29 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:16.0];
     v82[10] = v29;
-    v28 = [(IOUIANCriticalUIView *)v3 messageLabel];
-    v26 = [v28 leadingAnchor];
-    v27 = [(IOUIANCriticalUIView *)v3 contentView];
-    v25 = [v27 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    messageLabel3 = [(IOUIANCriticalUIView *)v3 messageLabel];
+    leadingAnchor5 = [messageLabel3 leadingAnchor];
+    contentView10 = [(IOUIANCriticalUIView *)v3 contentView];
+    leadingAnchor6 = [contentView10 leadingAnchor];
+    v24 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v82[11] = v24;
-    v23 = [(IOUIANCriticalUIView *)v3 messageLabel];
-    v22 = [v23 trailingAnchor];
-    v12 = [(IOUIANCriticalUIView *)v3 contentView];
-    v13 = [v12 trailingAnchor];
-    v14 = [v22 constraintEqualToAnchor:v13];
+    messageLabel4 = [(IOUIANCriticalUIView *)v3 messageLabel];
+    trailingAnchor5 = [messageLabel4 trailingAnchor];
+    contentView11 = [(IOUIANCriticalUIView *)v3 contentView];
+    trailingAnchor6 = [contentView11 trailingAnchor];
+    v14 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v82[12] = v14;
-    v15 = [(IOUIANCriticalUIView *)v3 messageLabel];
-    v16 = [v15 bottomAnchor];
-    v17 = [(IOUIANCriticalUIView *)v3 contentView];
-    v18 = [v17 bottomAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    messageLabel5 = [(IOUIANCriticalUIView *)v3 messageLabel];
+    bottomAnchor5 = [messageLabel5 bottomAnchor];
+    contentView12 = [(IOUIANCriticalUIView *)v3 contentView];
+    bottomAnchor6 = [contentView12 bottomAnchor];
+    v19 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v82[13] = v19;
     v20 = [NSArray arrayWithObjects:v82 count:14];
     [NSLayoutConstraint activateConstraints:v20];
@@ -136,42 +136,42 @@
   return v3;
 }
 
-- (void)setDebugViews:(BOOL)a3
+- (void)setDebugViews:(BOOL)views
 {
-  self->_debugViews = a3;
-  if (a3)
+  self->_debugViews = views;
+  if (views)
   {
     v4 = +[UIColor blueColor];
     [(IOUIANCriticalUIView *)self setBackgroundColor:v4];
 
-    v6 = +[UIColor redColor];
-    v5 = [(IOUIANCriticalUIView *)self contentView];
-    [v5 setBackgroundColor:v6];
+    contentView2 = +[UIColor redColor];
+    contentView = [(IOUIANCriticalUIView *)self contentView];
+    [contentView setBackgroundColor:contentView2];
   }
 
   else
   {
     [(IOUIANCriticalUIView *)self setBackgroundColor:0];
-    v6 = [(IOUIANCriticalUIView *)self contentView];
-    [v6 setBackgroundColor:0];
+    contentView2 = [(IOUIANCriticalUIView *)self contentView];
+    [contentView2 setBackgroundColor:0];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(IOUIANCriticalUIView *)self button];
+  button = [(IOUIANCriticalUIView *)self button];
 
-  if (v3)
+  if (button)
   {
-    v4 = [(IOUIANCriticalUIView *)self button];
-    v5 = [v4 centerXAnchor];
-    v6 = [(IOUIANCriticalUIView *)self centerXAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    button2 = [(IOUIANCriticalUIView *)self button];
+    centerXAnchor = [button2 centerXAnchor];
+    centerXAnchor2 = [(IOUIANCriticalUIView *)self centerXAnchor];
+    v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v14[0] = v7;
-    v8 = [(IOUIANCriticalUIView *)self button];
-    v9 = [v8 bottomAnchor];
-    v10 = [(IOUIANCriticalUIView *)self bottomAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:-24.0];
+    button3 = [(IOUIANCriticalUIView *)self button];
+    bottomAnchor = [button3 bottomAnchor];
+    bottomAnchor2 = [(IOUIANCriticalUIView *)self bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-24.0];
     v14[1] = v11;
     v12 = [NSArray arrayWithObjects:v14 count:2];
     [NSLayoutConstraint activateConstraints:v12];
@@ -184,99 +184,99 @@
 
 - (UIImage)image
 {
-  v2 = [(IOUIANCriticalUIView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(IOUIANCriticalUIView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(IOUIANCriticalUIView *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(IOUIANCriticalUIView *)self imageView];
+  [imageView setImage:imageCopy];
 }
 
-- (void)setImageWithSystemImageNamed:(id)a3 andConfiguration:(id)a4
+- (void)setImageWithSystemImageNamed:(id)named andConfiguration:(id)configuration
 {
-  v5 = [UIImage systemImageNamed:a3 withConfiguration:a4];
+  v5 = [UIImage systemImageNamed:named withConfiguration:configuration];
   [(IOUIANCriticalUIView *)self setImage:v5];
 }
 
 - (NSString)headerText
 {
-  v2 = [(IOUIANCriticalUIView *)self headerLabel];
-  v3 = [v2 text];
+  headerLabel = [(IOUIANCriticalUIView *)self headerLabel];
+  text = [headerLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setHeaderText:(id)a3
+- (void)setHeaderText:(id)text
 {
-  v4 = a3;
-  v5 = [(IOUIANCriticalUIView *)self headerLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  headerLabel = [(IOUIANCriticalUIView *)self headerLabel];
+  [headerLabel setText:textCopy];
 }
 
 - (NSString)messageText
 {
-  v2 = [(IOUIANCriticalUIView *)self messageLabel];
-  v3 = [v2 text];
+  messageLabel = [(IOUIANCriticalUIView *)self messageLabel];
+  text = [messageLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setMessageText:(id)a3
+- (void)setMessageText:(id)text
 {
-  v4 = a3;
-  v5 = [(IOUIANCriticalUIView *)self messageLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  messageLabel = [(IOUIANCriticalUIView *)self messageLabel];
+  [messageLabel setText:textCopy];
 }
 
 - (NSString)buttonTitle
 {
-  v2 = [(IOUIANCriticalUIView *)self button];
-  v3 = [v2 titleLabel];
-  v4 = [v3 text];
+  button = [(IOUIANCriticalUIView *)self button];
+  titleLabel = [button titleLabel];
+  text = [titleLabel text];
 
-  return v4;
+  return text;
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v11 = a3;
-  v4 = [(IOUIANCriticalUIView *)self button];
-  if (v11)
+  titleCopy = title;
+  button = [(IOUIANCriticalUIView *)self button];
+  if (titleCopy)
   {
 
-    if (!v4)
+    if (!button)
     {
       v5 = +[IOUIANCriticalUIButton button];
       [(IOUIANCriticalUIView *)self setButton:v5];
 
-      v6 = [(IOUIANCriticalUIView *)self button];
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+      button2 = [(IOUIANCriticalUIView *)self button];
+      [button2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v7 = [(IOUIANCriticalUIView *)self button];
-      [v7 setDelegate:self];
+      button3 = [(IOUIANCriticalUIView *)self button];
+      [button3 setDelegate:self];
 
-      v8 = [(IOUIANCriticalUIView *)self button];
-      [(IOUIANCriticalUIView *)self addSubview:v8];
+      button4 = [(IOUIANCriticalUIView *)self button];
+      [(IOUIANCriticalUIView *)self addSubview:button4];
 
       [(IOUIANCriticalUIView *)self setNeedsUpdateConstraints];
     }
 
-    v9 = [(IOUIANCriticalUIView *)self button];
-    [v9 setTitle:v11 forState:0];
+    button5 = [(IOUIANCriticalUIView *)self button];
+    [button5 setTitle:titleCopy forState:0];
   }
 
   else
   {
 
-    if (v4)
+    if (button)
     {
-      v10 = [(IOUIANCriticalUIView *)self button];
-      [v10 removeFromSuperview];
+      button6 = [(IOUIANCriticalUIView *)self button];
+      [button6 removeFromSuperview];
 
       [(IOUIANCriticalUIView *)self setButton:0];
       [(IOUIANCriticalUIView *)self setNeedsUpdateConstraints];
@@ -320,15 +320,15 @@
   return v2;
 }
 
-- (void)handleButtonAction:(id)a3
+- (void)handleButtonAction:(id)action
 {
-  v4 = [(IOUIANCriticalUIView *)self delegate];
+  delegate = [(IOUIANCriticalUIView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(IOUIANCriticalUIView *)self delegate];
-    [v6 handleButtonAction:self];
+    delegate2 = [(IOUIANCriticalUIView *)self delegate];
+    [delegate2 handleButtonAction:self];
   }
 }
 

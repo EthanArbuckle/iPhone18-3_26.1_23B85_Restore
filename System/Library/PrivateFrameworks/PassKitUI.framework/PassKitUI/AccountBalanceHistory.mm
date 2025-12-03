@@ -1,23 +1,23 @@
 @interface AccountBalanceHistory
 - (_TtC9PassKitUI21AccountBalanceHistory)init;
-- (void)accountChanged:(id)a3;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)accountChanged:(id)changed;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 @end
 
 @implementation AccountBalanceHistory
 
-- (void)accountChanged:(id)a3
+- (void)accountChanged:(id)changed
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD0E3720(a3);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1BD0E3720(changed);
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1BD0E5EE4(*&a4 & 0x101);
+  selfCopy = self;
+  sub_1BD0E5EE4(*&state & 0x101);
   swift_unknownObjectRelease();
 }
 

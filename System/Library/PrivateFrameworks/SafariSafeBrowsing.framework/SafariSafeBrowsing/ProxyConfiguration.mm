@@ -1,18 +1,18 @@
 @interface ProxyConfiguration
-+ (BOOL)isProxyError:(id)a3;
-- (ProxyConfiguration)initWithDeviceIdentificationToken:(id)a3;
-- (void)applyToRequest:(id)a3;
++ (BOOL)isProxyError:(id)error;
+- (ProxyConfiguration)initWithDeviceIdentificationToken:(id)token;
+- (void)applyToRequest:(id)request;
 @end
 
 @implementation ProxyConfiguration
 
-+ (BOOL)isProxyError:(id)a3
++ (BOOL)isProxyError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CBACE8]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CBACE8]])
   {
-    v5 = [v3 code] == 310;
+    v5 = [errorCopy code] == 310;
   }
 
   else
@@ -23,15 +23,15 @@
   return v5;
 }
 
-- (ProxyConfiguration)initWithDeviceIdentificationToken:(id)a3
+- (ProxyConfiguration)initWithDeviceIdentificationToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v14.receiver = self;
   v14.super_class = ProxyConfiguration;
   v6 = [(ProxyConfiguration *)&v14 init];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (tokenCopy && v6)
   {
     if (Backend::Google::SSBUtilities::shouldConsultWithTencent(v6))
     {
@@ -41,10 +41,10 @@
     else
     {
       v9 = +[RemoteConfigurationController sharedController];
-      v10 = [v9 googleProviderConfiguration];
-      v11 = [v10 proxyOff];
+      googleProviderConfiguration = [v9 googleProviderConfiguration];
+      proxyOff = [googleProviderConfiguration proxyOff];
 
-      if (v11)
+      if (proxyOff)
       {
         v8 = 0;
       }
@@ -54,7 +54,7 @@
         proxy = v7->_proxy;
         v7->_proxy = &unk_2838D2380;
 
-        objc_storeStrong(&v7->_deviceIdentificationToken, a3);
+        objc_storeStrong(&v7->_deviceIdentificationToken, token);
         v8 = v7;
       }
     }
@@ -63,30 +63,30 @@
   return v8;
 }
 
-- (void)applyToRequest:(id)a3
+- (void)applyToRequest:(id)request
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ProxyConfiguration *)self proxy];
+  requestCopy = request;
+  proxy = [(ProxyConfiguration *)self proxy];
 
-  if (v5)
+  if (proxy)
   {
-    v6 = [(ProxyConfiguration *)self proxy];
+    proxy2 = [(ProxyConfiguration *)self proxy];
     CFURLRequestSetProxySettings();
   }
 
-  v7 = [(ProxyConfiguration *)self deviceIdentificationToken];
+  deviceIdentificationToken = [(ProxyConfiguration *)self deviceIdentificationToken];
 
-  if (v7)
+  if (deviceIdentificationToken)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(ProxyConfiguration *)self deviceIdentificationToken];
-    v9 = [v8 allKeys];
+    deviceIdentificationToken2 = [(ProxyConfiguration *)self deviceIdentificationToken];
+    allKeys = [deviceIdentificationToken2 allKeys];
 
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = *v18;
@@ -97,20 +97,20 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v17 + 1) + 8 * v12);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [(ProxyConfiguration *)self deviceIdentificationToken];
-            v15 = [v14 objectForKeyedSubscript:v13];
+            deviceIdentificationToken3 = [(ProxyConfiguration *)self deviceIdentificationToken];
+            v15 = [deviceIdentificationToken3 objectForKeyedSubscript:v13];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v4 setValue:v15 forHTTPHeaderField:v13];
+              [requestCopy setValue:v15 forHTTPHeaderField:v13];
             }
           }
 
@@ -118,7 +118,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);

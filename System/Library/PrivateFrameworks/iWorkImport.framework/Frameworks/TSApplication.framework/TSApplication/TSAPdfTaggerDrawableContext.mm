@@ -1,19 +1,19 @@
 @interface TSAPdfTaggerDrawableContext
-- (TSAPdfTaggerDrawableContext)initWithStateOfTagger:(id)a3 drawableRep:(id)a4;
+- (TSAPdfTaggerDrawableContext)initWithStateOfTagger:(id)tagger drawableRep:(id)rep;
 @end
 
 @implementation TSAPdfTaggerDrawableContext
 
-- (TSAPdfTaggerDrawableContext)initWithStateOfTagger:(id)a3 drawableRep:(id)a4
+- (TSAPdfTaggerDrawableContext)initWithStateOfTagger:(id)tagger drawableRep:(id)rep
 {
-  v7 = a4;
+  repCopy = rep;
   v11.receiver = self;
   v11.super_class = TSAPdfTaggerDrawableContext;
-  v8 = [(TSAPdfTaggerContext *)&v11 initWithStateOfTagger:a3];
+  v8 = [(TSAPdfTaggerContext *)&v11 initWithStateOfTagger:tagger];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_drawableRep, a4);
+    objc_storeStrong(&v8->_drawableRep, rep);
   }
 
   return v9;

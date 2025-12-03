@@ -1,16 +1,16 @@
 @interface SKUIStyledButton
-+ (CGSize)sizeForTextSize:(CGSize)a3 buttonType:(int64_t)a4;
-+ (CGSize)sizeForTextSize:(CGSize)a3 buttonType:(int64_t)a4 borderStyle:(id)a5;
-+ (CGSize)sizeForTextSize:(CGSize)a3 buttonType:(int64_t)a4 borderStyle:(id)a5 interiorPadding:(double)a6;
-+ (int64_t)buttonTypeForElement:(id)a3;
++ (CGSize)sizeForTextSize:(CGSize)size buttonType:(int64_t)type;
++ (CGSize)sizeForTextSize:(CGSize)size buttonType:(int64_t)type borderStyle:(id)style;
++ (CGSize)sizeForTextSize:(CGSize)size buttonType:(int64_t)type borderStyle:(id)style interiorPadding:(double)padding;
++ (int64_t)buttonTypeForElement:(id)element;
 - (BOOL)_usesTintColor;
 - (BOOL)isUsingItemOfferAppearance;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)setValuesUsingBuyButtonDescriptor:(id)a3 itemState:(id)a4 clientContext:(id)a5 animated:(BOOL)a6;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)setValuesUsingBuyButtonDescriptor:(id)descriptor itemState:(id)state clientContext:(id)context animated:(BOOL)animated;
 - (CGRect)hitRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SKUIItemOfferButtonDelegate)itemOfferDelegate;
-- (SKUIStyledButton)initWithFrame:(CGRect)a3;
+- (SKUIStyledButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)bigHitInsets;
 - (UIEdgeInsets)buttonPadding;
 - (id)_borderColor;
@@ -20,30 +20,30 @@
 - (void)_reloadDisclosureImage;
 - (void)_reloadImageView;
 - (void)_reloadOverrideTextColor;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBorderStyle:(id)a3;
-- (void)setButtonType:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItemOfferDelegate:(id)a3;
-- (void)setTitleLayout:(id)a3 forceRefresh:(BOOL)a4;
-- (void)setUsesTintColor:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBorderStyle:(id)style;
+- (void)setButtonType:(int64_t)type;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItemOfferDelegate:(id)delegate;
+- (void)setTitleLayout:(id)layout forceRefresh:(BOOL)refresh;
+- (void)setUsesTintColor:(BOOL)color;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SKUIStyledButton
 
-- (SKUIStyledButton)initWithFrame:(CGRect)a3
+- (SKUIStyledButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIStyledButton initWithFrame:];
@@ -68,13 +68,13 @@
   [(SKUIStyledButton *)&v3 dealloc];
 }
 
-+ (int64_t)buttonTypeForElement:(id)a3
++ (int64_t)buttonTypeForElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 children];
-  v5 = [v4 count];
+  elementCopy = element;
+  children = [elementCopy children];
+  v5 = [children count];
 
-  if (v5 && ([v3 children], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), v6, v8 = objc_msgSend(v7, "elementType"), v7, v8 == 49))
+  if (v5 && ([elementCopy children], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), v6, v8 = objc_msgSend(v7, "elementType"), v7, v8 == 49))
   {
     v9 = 6;
   }
@@ -87,54 +87,54 @@
   return v9;
 }
 
-+ (CGSize)sizeForTextSize:(CGSize)a3 buttonType:(int64_t)a4
++ (CGSize)sizeForTextSize:(CGSize)size buttonType:(int64_t)type
 {
-  [a1 sizeForTextSize:a4 buttonType:0 borderStyle:a3.width interiorPadding:{a3.height, -1.0}];
+  [self sizeForTextSize:type buttonType:0 borderStyle:size.width interiorPadding:{size.height, -1.0}];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeForTextSize:(CGSize)a3 buttonType:(int64_t)a4 borderStyle:(id)a5
++ (CGSize)sizeForTextSize:(CGSize)size buttonType:(int64_t)type borderStyle:(id)style
 {
-  [a1 sizeForTextSize:a4 buttonType:a5 borderStyle:a3.width interiorPadding:{a3.height, -1.0}];
+  [self sizeForTextSize:type buttonType:style borderStyle:size.width interiorPadding:{size.height, -1.0}];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (CGSize)sizeForTextSize:(CGSize)a3 buttonType:(int64_t)a4 borderStyle:(id)a5 interiorPadding:(double)a6
++ (CGSize)sizeForTextSize:(CGSize)size buttonType:(int64_t)type borderStyle:(id)style interiorPadding:(double)padding
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
-  v11 = v10;
-  if (a4 > 4)
+  height = size.height;
+  width = size.width;
+  styleCopy = style;
+  v11 = styleCopy;
+  if (type > 4)
   {
-    if ((a4 - 5) < 2)
+    if ((type - 5) < 2)
     {
       v12 = width + 5.0;
-      if (a6 >= 0.0)
+      if (padding >= 0.0)
       {
         width = v12 + 5.0;
       }
 
       else
       {
-        width = v12 + a6;
+        width = v12 + padding;
       }
     }
 
     goto LABEL_12;
   }
 
-  if ((a4 - 3) < 2)
+  if ((type - 3) < 2)
   {
     width = width + 7.0;
 LABEL_12:
-    if (a4 != 1 && v10)
+    if (type != 1 && styleCopy)
     {
-      [v10 borderWidth];
+      [styleCopy borderWidth];
       *&v13 = v13 + v13;
       v14 = floorf(*&v13);
       [v11 contentInset];
@@ -146,7 +146,7 @@ LABEL_12:
         v20 = v17;
       }
 
-      if (a4 == 7)
+      if (type == 7)
       {
         height = v17;
       }
@@ -160,9 +160,9 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       width = width + 9.0;
     }
@@ -196,11 +196,11 @@ LABEL_22:
   return itemOfferButton;
 }
 
-- (void)setBorderStyle:(id)a3
+- (void)setBorderStyle:(id)style
 {
-  if (self->_borderStyle != a3)
+  if (self->_borderStyle != style)
   {
-    v4 = [a3 copy];
+    v4 = [style copy];
     borderStyle = self->_borderStyle;
     self->_borderStyle = v4;
 
@@ -214,8 +214,8 @@ LABEL_22:
         self->_borderView = v7;
 
         v9 = self->_borderView;
-        v10 = [(SKUIStyledButton *)self backgroundColor];
-        [(SKUIShapeView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SKUIStyledButton *)self backgroundColor];
+        [(SKUIShapeView *)v9 setBackgroundColor:backgroundColor];
 
         [(SKUIShapeView *)self->_borderView setUserInteractionEnabled:0];
         [(SKUIStyledButton *)self insertSubview:self->_borderView atIndex:0];
@@ -232,20 +232,20 @@ LABEL_22:
 
     [(SKUIShapeView *)borderView setHidden:v11];
     attributedStringView = self->_attributedStringView;
-    v13 = [(SKUIStyledButton *)self _textBackgroundColor];
-    [(SKUIAttributedStringView *)attributedStringView setBackgroundColor:v13];
+    _textBackgroundColor = [(SKUIStyledButton *)self _textBackgroundColor];
+    [(SKUIAttributedStringView *)attributedStringView setBackgroundColor:_textBackgroundColor];
 
     [(SKUIStyledButton *)self setNeedsLayout];
   }
 }
 
-- (void)setButtonType:(int64_t)a3
+- (void)setButtonType:(int64_t)type
 {
-  if (self->_buttonType != a3)
+  if (self->_buttonType != type)
   {
     v10 = v3;
-    self->_buttonType = a3;
-    if ((a3 - 5) > 1)
+    self->_buttonType = type;
+    if ((type - 5) > 1)
     {
       imageView = self->_imageView;
       if (imageView)
@@ -267,14 +267,14 @@ LABEL_22:
   }
 }
 
-- (void)setTitleLayout:(id)a3 forceRefresh:(BOOL)a4
+- (void)setTitleLayout:(id)layout forceRefresh:(BOOL)refresh
 {
-  v4 = a4;
-  v14 = a3;
-  v6 = [(SKUIStyledButton *)self titleLayout];
+  refreshCopy = refresh;
+  layoutCopy = layout;
+  titleLayout = [(SKUIStyledButton *)self titleLayout];
 
-  v8 = v14;
-  if (v6 != v14 || v4)
+  v8 = layoutCopy;
+  if (titleLayout != layoutCopy || refreshCopy)
   {
     attributedStringView = self->_attributedStringView;
     if (!attributedStringView)
@@ -284,35 +284,35 @@ LABEL_22:
       self->_attributedStringView = v10;
 
       v12 = self->_attributedStringView;
-      v13 = [(SKUIStyledButton *)self _textBackgroundColor];
-      [(SKUIAttributedStringView *)v12 setBackgroundColor:v13];
+      _textBackgroundColor = [(SKUIStyledButton *)self _textBackgroundColor];
+      [(SKUIAttributedStringView *)v12 setBackgroundColor:_textBackgroundColor];
 
       [(SKUIAttributedStringView *)self->_attributedStringView setUserInteractionEnabled:0];
       [(SKUIStyledButton *)self addSubview:self->_attributedStringView];
       attributedStringView = self->_attributedStringView;
     }
 
-    [(SKUIAttributedStringView *)attributedStringView setLayout:v14];
+    [(SKUIAttributedStringView *)attributedStringView setLayout:layoutCopy];
     [(SKUIStyledButton *)self _reloadOverrideTextColor];
-    v7 = [(SKUIStyledButton *)self _reloadDisclosureImage];
-    v8 = v14;
+    _reloadDisclosureImage = [(SKUIStyledButton *)self _reloadDisclosureImage];
+    v8 = layoutCopy;
   }
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](_reloadDisclosureImage, v8);
 }
 
-- (void)setUsesTintColor:(BOOL)a3
+- (void)setUsesTintColor:(BOOL)color
 {
-  if (self->_usesTintColor != a3)
+  if (self->_usesTintColor != color)
   {
-    self->_usesTintColor = a3;
+    self->_usesTintColor = color;
     [(SKUIStyledButton *)self _reloadOverrideTextColor];
   }
 }
 
-- (void)setItemOfferDelegate:(id)a3
+- (void)setItemOfferDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_itemOfferDelegate);
 
   if (WeakRetained != obj)
@@ -322,22 +322,22 @@ LABEL_22:
   }
 }
 
-- (BOOL)setValuesUsingBuyButtonDescriptor:(id)a3 itemState:(id)a4 clientContext:(id)a5 animated:(BOOL)a6
+- (BOOL)setValuesUsingBuyButtonDescriptor:(id)descriptor itemState:(id)state clientContext:(id)context animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [objc_opt_class() usesItemOfferAppearanceForButtonType:self->_buttonType itemState:v11];
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  stateCopy = state;
+  contextCopy = context;
+  v13 = [objc_opt_class() usesItemOfferAppearanceForButtonType:self->_buttonType itemState:stateCopy];
   if (v13)
   {
     p_itemOfferButton = &self->_itemOfferButton;
     itemOfferButton = self->_itemOfferButton;
     if (itemOfferButton)
     {
-      if (![(SKUIItemOfferButton *)itemOfferButton setValuesUsingBuyButtonDescriptor:v10 itemState:v11 clientContext:v12 animated:v6])
+      if (![(SKUIItemOfferButton *)itemOfferButton setValuesUsingBuyButtonDescriptor:descriptorCopy itemState:stateCopy clientContext:contextCopy animated:animatedCopy])
       {
-        v16 = 0;
+        isUsingItemOfferAppearance = 0;
 LABEL_8:
         [(SKUIAttributedStringView *)self->_attributedStringView setHidden:1];
         goto LABEL_9;
@@ -356,56 +356,56 @@ LABEL_8:
       [*p_itemOfferButton addTarget:self action:sel__itemOfferButtonAction_ forControlEvents:0x20000];
       [*p_itemOfferButton addTarget:self action:sel__showConfirmationAction_ forControlEvents:0x40000];
       v20 = *p_itemOfferButton;
-      v21 = [(SKUIStyledButton *)self backgroundColor];
-      [v20 setBackgroundColor:v21];
+      backgroundColor = [(SKUIStyledButton *)self backgroundColor];
+      [v20 setBackgroundColor:backgroundColor];
 
       v22 = *p_itemOfferButton;
       WeakRetained = objc_loadWeakRetained(&self->_itemOfferDelegate);
       [v22 setItemOfferDelegate:WeakRetained];
 
-      [*p_itemOfferButton setValuesUsingBuyButtonDescriptor:v10 itemState:v11 clientContext:v12 animated:v6];
+      [*p_itemOfferButton setValuesUsingBuyButtonDescriptor:descriptorCopy itemState:stateCopy clientContext:contextCopy animated:animatedCopy];
       [(SKUIStyledButton *)self addSubview:*p_itemOfferButton];
     }
 
     [(SKUIStyledButton *)self setNeedsLayout];
-    v16 = 1;
+    isUsingItemOfferAppearance = 1;
     goto LABEL_8;
   }
 
-  v16 = [(SKUIStyledButton *)self isUsingItemOfferAppearance];
+  isUsingItemOfferAppearance = [(SKUIStyledButton *)self isUsingItemOfferAppearance];
   [(SKUIAttributedStringView *)self->_attributedStringView setHidden:0];
   p_itemOfferButton = &self->_itemOfferButton;
 LABEL_9:
   [*p_itemOfferButton setHidden:v13 ^ 1u];
 
-  return v16;
+  return isUsingItemOfferAppearance;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(SKUIStyledButton *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(SKUIStyledButton *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = SKUIStyledButton;
-    [(SKUIStyledButton *)&v5 setEnabled:v3];
+    [(SKUIStyledButton *)&v5 setEnabled:enabledCopy];
     [(SKUIStyledButton *)self _reloadOverrideTextColor];
     [(SKUIStyledButton *)self setNeedsLayout];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_didInitialHighlightForTouch = 0;
   v4.receiver = self;
   v4.super_class = SKUIStyledButton;
-  [(SKUIStyledButton *)&v4 touchesBegan:a3 withEvent:a4];
+  [(SKUIStyledButton *)&v4 touchesBegan:began withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if ([(SKUIStyledButton *)self isTouchInside])
   {
     itemOfferButton = self->_itemOfferButton;
@@ -417,7 +417,7 @@ LABEL_9:
 
   v9.receiver = self;
   v9.super_class = SKUIStyledButton;
-  [(SKUIStyledButton *)&v9 touchesEnded:v6 withEvent:v7];
+  [(SKUIStyledButton *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (CGRect)hitRect
@@ -459,17 +459,17 @@ LABEL_9:
   borderView = self->_borderView;
   if (borderView && ([(SKUIShapeView *)borderView isHidden]& 1) == 0)
   {
-    v12 = [(SKUIShapeView *)self->_borderView layer];
-    v13 = [(SKUIStyledButton *)self _borderFillColor];
-    [v12 setFillColor:{objc_msgSend(v13, "CGColor")}];
+    layer = [(SKUIShapeView *)self->_borderView layer];
+    _borderFillColor = [(SKUIStyledButton *)self _borderFillColor];
+    [layer setFillColor:{objc_msgSend(_borderFillColor, "CGColor")}];
 
     [(SKUIButtonBorderStyle *)self->_borderStyle borderWidth];
-    [v12 setLineWidth:?];
+    [layer setLineWidth:?];
     v14 = [(SKUIButtonBorderStyle *)self->_borderStyle bezierPathWithBounds:v4, v6, v8, v10];
-    [v12 setPath:{objc_msgSend(v14, "CGPath")}];
+    [layer setPath:{objc_msgSend(v14, "CGPath")}];
 
-    v15 = [(SKUIStyledButton *)self _borderColor];
-    [v12 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
+    _borderColor = [(SKUIStyledButton *)self _borderColor];
+    [layer setStrokeColor:{objc_msgSend(_borderColor, "CGColor")}];
 
     [(SKUIShapeView *)self->_borderView setFrame:v4, v6, v8, v10];
     [(SKUIButtonBorderStyle *)self->_borderStyle contentInset];
@@ -636,11 +636,11 @@ LABEL_34:
     }
 
     v70 = v4;
-    v71 = [(SKUIAttributedStringView *)self->_attributedStringView layout];
-    if ([v71 numberOfLines] == 1 && self->_buttonType != 2)
+    layout = [(SKUIAttributedStringView *)self->_attributedStringView layout];
+    if ([layout numberOfLines] == 1 && self->_buttonType != 2)
     {
-      v80 = [(SKUIAttributedStringView *)self->_attributedStringView layout];
-      [v80 baselineOffset];
+      layout2 = [(SKUIAttributedStringView *)self->_attributedStringView layout];
+      [layout2 baselineOffset];
       *&v81 = v81 + rect - v31;
       v73 = ceilf(*&v81);
     }
@@ -681,9 +681,9 @@ LABEL_34:
   }
 
 LABEL_37:
-  v84 = [(SKUIStyledButton *)self isEnabled];
+  isEnabled = [(SKUIStyledButton *)self isEnabled];
   v85 = 1.0;
-  if (v84)
+  if (isEnabled)
   {
     v86 = 1.0;
   }
@@ -694,10 +694,10 @@ LABEL_37:
   }
 
   [(SKUIShapeView *)self->_borderView setAlpha:v86];
-  if ((v84 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v87 = [(SKUIButtonBorderStyle *)self->_borderStyle fillColor];
-    if (v87)
+    fillColor = [(SKUIButtonBorderStyle *)self->_borderStyle fillColor];
+    if (fillColor)
     {
       v85 = 1.0;
     }
@@ -714,10 +714,10 @@ LABEL_37:
   [(UIImageView *)v88 setAlpha:v85];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   if (self->_useBigHitTarget)
   {
     [(SKUIStyledButton *)self hitRect];
@@ -731,46 +731,46 @@ LABEL_37:
   {
     v13.receiver = self;
     v13.super_class = SKUIStyledButton;
-    return [(SKUIStyledButton *)&v13 pointInside:a4 withEvent:a3.x, a3.y];
+    return [(SKUIStyledButton *)&v13 pointInside:event withEvent:inside.x, inside.y];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = SKUIStyledButton;
-  v4 = a3;
-  [(SKUIStyledButton *)&v7 setBackgroundColor:v4];
+  colorCopy = color;
+  [(SKUIStyledButton *)&v7 setBackgroundColor:colorCopy];
   attributedStringView = self->_attributedStringView;
   v6 = [(SKUIStyledButton *)self _textBackgroundColor:v7.receiver];
   [(SKUIAttributedStringView *)attributedStringView setBackgroundColor:v6];
 
-  [(SKUIShapeView *)self->_borderView setBackgroundColor:v4];
-  [(UIImageView *)self->_disclosureImageView setBackgroundColor:v4];
-  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:v4];
+  [(SKUIShapeView *)self->_borderView setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_disclosureImageView setBackgroundColor:colorCopy];
+  [(SKUIItemOfferButton *)self->_itemOfferButton setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(SKUIStyledButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(SKUIStyledButton *)self isHighlighted]!= highlighted)
   {
     v18.receiver = self;
     v18.super_class = SKUIStyledButton;
-    [(SKUIStyledButton *)&v18 setHighlighted:v3];
+    [(SKUIStyledButton *)&v18 setHighlighted:highlightedCopy];
     if (self->_borderView && ([(SKUIButtonBorderStyle *)self->_borderStyle fillColor], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
     {
-      v7 = [(SKUIShapeView *)self->_borderView layer];
+      layer = [(SKUIShapeView *)self->_borderView layer];
       v8 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA658]];
-      [v7 setCompositingFilter:v8];
+      [layer setCompositingFilter:v8];
 
-      [v7 removeAnimationForKey:@"borderAnimation"];
-      v9 = [MEMORY[0x277D75348] clearColor];
-      [(SKUIStyledButton *)self setBackgroundColor:v9];
+      [layer removeAnimationForKey:@"borderAnimation"];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SKUIStyledButton *)self setBackgroundColor:clearColor];
 
       [(SKUIStyledButton *)self bringSubviewToFront:self->_borderView];
       v10 = 0.47;
-      if (v3 && !self->_didInitialHighlightForTouch)
+      if (highlightedCopy && !self->_didInitialHighlightForTouch)
       {
         self->_didInitialHighlightForTouch = 1;
         v10 = 0.01;
@@ -784,28 +784,28 @@ LABEL_37:
       UIAnimationDragCoefficient();
       *&v13 = 1.0 / v12;
       [v11 setSpeed:v13];
-      if (v3)
+      if (highlightedCopy)
       {
-        v14 = [(SKUIShapeView *)self->_borderView backgroundColor];
-        [v11 setFromValue:{objc_msgSend(v14, "CGColor")}];
+        backgroundColor = [(SKUIShapeView *)self->_borderView backgroundColor];
+        [v11 setFromValue:{objc_msgSend(backgroundColor, "CGColor")}];
 
-        [v11 setToValue:{objc_msgSend(v7, "strokeColor")}];
+        [v11 setToValue:{objc_msgSend(layer, "strokeColor")}];
       }
 
       else
       {
-        [v11 setFromValue:{objc_msgSend(v7, "strokeColor")}];
-        v16 = [(SKUIShapeView *)self->_borderView backgroundColor];
-        [v11 setToValue:{objc_msgSend(v16, "CGColor")}];
+        [v11 setFromValue:{objc_msgSend(layer, "strokeColor")}];
+        backgroundColor2 = [(SKUIShapeView *)self->_borderView backgroundColor];
+        [v11 setToValue:{objc_msgSend(backgroundColor2, "CGColor")}];
       }
 
-      [v7 addAnimation:v11 forKey:@"borderAnimation"];
+      [layer addAnimation:v11 forKey:@"borderAnimation"];
     }
 
     else
     {
       v6 = 1.0;
-      if (v3 && (v6 = 0.2, !self->_didInitialHighlightForTouch))
+      if (highlightedCopy && (v6 = 0.2, !self->_didInitialHighlightForTouch))
       {
         borderView = self->_borderView;
         if (borderView || ([(SKUIAttributedStringView *)self->_attributedStringView setAlpha:0.2], [(UIImageView *)self->_disclosureImageView setAlpha:0.2], (borderView = self->_imageView) != 0))
@@ -857,16 +857,16 @@ void *__35__SKUIStyledButton_setHighlighted___block_invoke(uint64_t a1)
   return [result setAlpha:v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SKUIAttributedStringView *)self->_attributedStringView sizeThatFits:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(UIImageView *)self->_disclosureImageView image];
+  image = [(UIImageView *)self->_disclosureImageView image];
 
-  if (v10)
+  if (image)
   {
     [(UIImageView *)self->_disclosureImageView sizeThatFits:width, height];
     v12 = v11;
@@ -882,9 +882,9 @@ void *__35__SKUIStyledButton_setHighlighted___block_invoke(uint64_t a1)
   imageView = self->_imageView;
   if (imageView)
   {
-    v16 = [(SKUIImageView *)imageView image];
+    image2 = [(SKUIImageView *)imageView image];
 
-    if (v16)
+    if (image2)
     {
       [(SKUIImageView *)self->_imageView sizeThatFits:width, height];
       v12 = v17;
@@ -980,28 +980,28 @@ LABEL_16:
     [(SKUIStyledButton *)self _reloadDisclosureImage];
   }
 
-  v3 = [(SKUIShapeView *)self->_borderView layer];
-  v4 = [(SKUIStyledButton *)self _borderFillColor];
-  [v3 setFillColor:{objc_msgSend(v4, "CGColor")}];
+  layer = [(SKUIShapeView *)self->_borderView layer];
+  _borderFillColor = [(SKUIStyledButton *)self _borderFillColor];
+  [layer setFillColor:{objc_msgSend(_borderFillColor, "CGColor")}];
 
-  v5 = [(SKUIStyledButton *)self _borderColor];
-  [v3 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
+  _borderColor = [(SKUIStyledButton *)self _borderColor];
+  [layer setStrokeColor:{objc_msgSend(_borderColor, "CGColor")}];
 
   v6.receiver = self;
   v6.super_class = SKUIStyledButton;
   [(SKUIStyledButton *)&v6 tintColorDidChange];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v8 = [(SKUIShapeView *)self->_borderView layer:a3];
+  v8 = [(SKUIShapeView *)self->_borderView layer:stop];
   if ([(SKUIStyledButton *)self isHighlighted])
   {
     v5 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA658]];
     [v8 setCompositingFilter:v5];
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIStyledButton *)self setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIStyledButton *)self setBackgroundColor:clearColor];
 
     [(SKUIStyledButton *)self bringSubviewToFront:self->_borderView];
   }
@@ -1009,8 +1009,8 @@ LABEL_16:
   else
   {
     [v8 setCompositingFilter:0];
-    v7 = [(SKUIShapeView *)self->_borderView backgroundColor];
-    [(SKUIStyledButton *)self setBackgroundColor:v7];
+    backgroundColor = [(SKUIShapeView *)self->_borderView backgroundColor];
+    [(SKUIStyledButton *)self setBackgroundColor:backgroundColor];
 
     [(SKUIStyledButton *)self sendSubviewToBack:self->_borderView];
   }
@@ -1018,11 +1018,11 @@ LABEL_16:
 
 - (id)_borderColor
 {
-  v3 = [(SKUIButtonBorderStyle *)self->_borderStyle borderColor];
-  v4 = v3;
-  if (v3)
+  borderColor = [(SKUIButtonBorderStyle *)self->_borderStyle borderColor];
+  v4 = borderColor;
+  if (borderColor)
   {
-    if ([v3 colorType] == 1)
+    if ([borderColor colorType] == 1)
     {
       [(SKUIStyledButton *)self tintColor];
     }
@@ -1044,11 +1044,11 @@ LABEL_16:
 
 - (id)_borderFillColor
 {
-  v3 = [(SKUIButtonBorderStyle *)self->_borderStyle fillColor];
-  v4 = v3;
-  if (v3)
+  fillColor = [(SKUIButtonBorderStyle *)self->_borderStyle fillColor];
+  v4 = fillColor;
+  if (fillColor)
   {
-    if ([v3 colorType] == 1)
+    if ([fillColor colorType] == 1)
     {
       [(SKUIStyledButton *)self tintColor];
     }
@@ -1057,15 +1057,15 @@ LABEL_16:
     {
       [v4 color];
     }
-    v5 = ;
+    backgroundColor = ;
   }
 
   else
   {
-    v5 = [(SKUIStyledButton *)self backgroundColor];
+    backgroundColor = [(SKUIStyledButton *)self backgroundColor];
   }
 
-  v6 = v5;
+  v6 = backgroundColor;
 
   return v6;
 }
@@ -1121,10 +1121,10 @@ LABEL_7:
 
   v10 = 0;
 LABEL_9:
-  v11 = [v10 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v10 imageFlippedForRightToLeftLayoutDirection];
 
   disclosureImageView = self->_disclosureImageView;
-  if (v11)
+  if (imageFlippedForRightToLeftLayoutDirection)
   {
     if (!disclosureImageView)
     {
@@ -1133,8 +1133,8 @@ LABEL_9:
       self->_disclosureImageView = v13;
 
       v15 = self->_disclosureImageView;
-      v16 = [(SKUIStyledButton *)self backgroundColor];
-      [(UIImageView *)v15 setBackgroundColor:v16];
+      backgroundColor = [(SKUIStyledButton *)self backgroundColor];
+      [(UIImageView *)v15 setBackgroundColor:backgroundColor];
 
       v17 = self->_disclosureImageView;
       v21 = v22;
@@ -1148,17 +1148,17 @@ LABEL_9:
     [(UIImageView *)disclosureImageView setHidden:1];
   }
 
-  v18 = [(SKUIStyledButton *)self _textColor];
-  v19 = v18;
-  if (v11 && v18)
+  _textColor = [(SKUIStyledButton *)self _textColor];
+  v19 = _textColor;
+  if (imageFlippedForRightToLeftLayoutDirection && _textColor)
   {
-    [(UIImageView *)self->_disclosureImageView setTintColor:v18];
-    v20 = [v11 imageWithRenderingMode:2];
+    [(UIImageView *)self->_disclosureImageView setTintColor:_textColor];
+    v20 = [imageFlippedForRightToLeftLayoutDirection imageWithRenderingMode:2];
 
-    v11 = v20;
+    imageFlippedForRightToLeftLayoutDirection = v20;
   }
 
-  [(UIImageView *)self->_disclosureImageView setImage:v11];
+  [(UIImageView *)self->_disclosureImageView setImage:imageFlippedForRightToLeftLayoutDirection];
 }
 
 - (void)_reloadOverrideTextColor
@@ -1166,8 +1166,8 @@ LABEL_9:
   if ([(SKUIStyledButton *)self isEnabled]&& [(SKUIStyledButton *)self _usesTintColor])
   {
     attributedStringView = self->_attributedStringView;
-    v5 = [(SKUIStyledButton *)self tintColor];
-    [(SKUIAttributedStringView *)attributedStringView setTextColor:v5];
+    tintColor = [(SKUIStyledButton *)self tintColor];
+    [(SKUIAttributedStringView *)attributedStringView setTextColor:tintColor];
   }
 
   else
@@ -1198,26 +1198,26 @@ LABEL_9:
 {
   if ([(SKUIStyledButton *)self isEnabled]&& [(SKUIStyledButton *)self _usesTintColor])
   {
-    v3 = [(SKUIStyledButton *)self tintColor];
+    tintColor = [(SKUIStyledButton *)self tintColor];
   }
 
   else
   {
-    v4 = [(SKUIAttributedStringView *)self->_attributedStringView layout];
-    v5 = [v4 attributedString];
+    layout = [(SKUIAttributedStringView *)self->_attributedStringView layout];
+    attributedString = [layout attributedString];
 
-    if ([v5 length])
+    if ([attributedString length])
     {
-      v3 = [v5 attribute:*MEMORY[0x277D740C0] atIndex:0 effectiveRange:0];
+      tintColor = [attributedString attribute:*MEMORY[0x277D740C0] atIndex:0 effectiveRange:0];
     }
 
     else
     {
-      v3 = 0;
+      tintColor = 0;
     }
   }
 
-  return v3;
+  return tintColor;
 }
 
 - (BOOL)_usesTintColor
@@ -1227,12 +1227,12 @@ LABEL_9:
     return 1;
   }
 
-  v3 = [(SKUIAttributedStringView *)self->_attributedStringView layout];
-  v4 = [v3 attributedString];
+  layout = [(SKUIAttributedStringView *)self->_attributedStringView layout];
+  attributedString = [layout attributedString];
 
-  if ([v4 length])
+  if ([attributedString length])
   {
-    v5 = [v4 attribute:*MEMORY[0x277D740C0] atIndex:0 effectiveRange:0];
+    v5 = [attributedString attribute:*MEMORY[0x277D740C0] atIndex:0 effectiveRange:0];
     v2 = v5 == 0;
   }
 

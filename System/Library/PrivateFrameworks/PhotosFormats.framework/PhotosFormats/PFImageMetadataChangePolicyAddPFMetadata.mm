@@ -1,38 +1,38 @@
 @interface PFImageMetadataChangePolicyAddPFMetadata
-+ (id)policyWithKey:(id)a3 value:(id)a4;
-- (PFImageMetadataChangePolicyAddPFMetadata)initWithCoder:(id)a3;
-- (id)processMetadata:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)policyWithKey:(id)key value:(id)value;
+- (PFImageMetadataChangePolicyAddPFMetadata)initWithCoder:(id)coder;
+- (id)processMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFImageMetadataChangePolicyAddPFMetadata
 
-+ (id)policyWithKey:(id)a3 value:(id)a4
++ (id)policyWithKey:(id)key value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
+  valueCopy = value;
+  keyCopy = key;
   v7 = objc_opt_new();
-  [v7 setKey:v6];
+  [v7 setKey:keyCopy];
 
-  [v7 setValue:v5];
+  [v7 setValue:valueCopy];
 
   return v7;
 }
 
-- (id)processMetadata:(id)a3
+- (id)processMetadata:(id)metadata
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
-  if (v4)
+  metadataCopy = metadata;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
+  if (metadataCopy)
   {
-    [v5 addEntriesFromDictionary:v4];
+    [dictionary addEntriesFromDictionary:metadataCopy];
   }
 
   v7 = [(PFImageMetadataChangePolicyAddPFMetadata *)self key];
-  v8 = [(PFImageMetadataChangePolicyAddPFMetadata *)self value];
-  v9 = [PFMetadataUtilities addMakerApplePropertyWithKey:v7 value:v8 toProperties:v6];
+  value = [(PFImageMetadataChangePolicyAddPFMetadata *)self value];
+  v9 = [PFMetadataUtilities addMakerApplePropertyWithKey:v7 value:value toProperties:v6];
 
   if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -44,28 +44,28 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PFImageMetadataChangePolicyAddPFMetadata *)self key];
-  [v4 encodeObject:v5 forKey:@"mediaMetadataType"];
+  [coderCopy encodeObject:v5 forKey:@"mediaMetadataType"];
 
-  v6 = [(PFImageMetadataChangePolicyAddPFMetadata *)self value];
-  [v4 encodeObject:v6 forKey:@"mediaMetadataValue"];
+  value = [(PFImageMetadataChangePolicyAddPFMetadata *)self value];
+  [coderCopy encodeObject:value forKey:@"mediaMetadataValue"];
 }
 
-- (PFImageMetadataChangePolicyAddPFMetadata)initWithCoder:(id)a3
+- (PFImageMetadataChangePolicyAddPFMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"mediaMetadataType"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"mediaMetadataType"])
   {
-    v5 = [v4 decodeObjectForKey:@"mediaMetadataType"];
+    v5 = [coderCopy decodeObjectForKey:@"mediaMetadataType"];
     [(PFImageMetadataChangePolicyAddPFMetadata *)self setKey:v5];
   }
 
-  if ([v4 containsValueForKey:@"mediaMetadataValue"])
+  if ([coderCopy containsValueForKey:@"mediaMetadataValue"])
   {
-    v6 = [v4 decodeObjectForKey:@"mediaMetadataValue"];
+    v6 = [coderCopy decodeObjectForKey:@"mediaMetadataValue"];
     [(PFImageMetadataChangePolicyAddPFMetadata *)self setValue:v6];
   }
 

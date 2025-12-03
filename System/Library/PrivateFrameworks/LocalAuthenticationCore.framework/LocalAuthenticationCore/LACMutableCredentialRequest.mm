@@ -1,9 +1,9 @@
 @interface LACMutableCredentialRequest
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LACMutableCredentialRequest)init;
 - (NSString)description;
-- (void)setAuditToken:(id *)a3;
+- (void)setAuditToken:(id *)token;
 @end
 
 @implementation LACMutableCredentialRequest
@@ -22,62 +22,62 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 conformsToProtocol:&unk_1F26A4CA0])
+  equalCopy = equal;
+  if (![equalCopy conformsToProtocol:&unk_1F26A4CA0])
   {
     v15 = 0;
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(LACMutableCredentialRequest *)self identifier];
-  if (v6 != [v5 identifier])
+  v5 = equalCopy;
+  identifier = [(LACMutableCredentialRequest *)self identifier];
+  if (identifier != [v5 identifier])
   {
     goto LABEL_7;
   }
 
-  v7 = [(LACMutableCredentialRequest *)self credential];
-  if (v7 != [v5 credential])
+  credential = [(LACMutableCredentialRequest *)self credential];
+  if (credential != [v5 credential])
   {
     goto LABEL_7;
   }
 
-  v8 = [(LACMutableCredentialRequest *)self userID];
-  if (v8 != [v5 userID])
+  userID = [(LACMutableCredentialRequest *)self userID];
+  if (userID != [v5 userID])
   {
     goto LABEL_7;
   }
 
-  v9 = [(LACMutableCredentialRequest *)self externalizedContext];
-  v10 = [v5 externalizedContext];
-  v11 = v10;
-  if (v9 == v10)
+  externalizedContext = [(LACMutableCredentialRequest *)self externalizedContext];
+  externalizedContext2 = [v5 externalizedContext];
+  v11 = externalizedContext2;
+  if (externalizedContext == externalizedContext2)
   {
 
     goto LABEL_12;
   }
 
-  v12 = [(LACMutableCredentialRequest *)self externalizedContext];
-  v13 = [v5 externalizedContext];
-  v14 = [v12 isEqualToData:v13];
+  externalizedContext3 = [(LACMutableCredentialRequest *)self externalizedContext];
+  externalizedContext4 = [v5 externalizedContext];
+  v14 = [externalizedContext3 isEqualToData:externalizedContext4];
 
   if (v14)
   {
 LABEL_12:
-    v17 = [(LACMutableCredentialRequest *)self contextID];
-    v18 = [v5 contextID];
-    if (v17 == v18)
+    contextID = [(LACMutableCredentialRequest *)self contextID];
+    contextID2 = [v5 contextID];
+    if (contextID == contextID2)
     {
       v15 = 1;
     }
 
     else
     {
-      v19 = [(LACMutableCredentialRequest *)self contextID];
-      v20 = [v5 contextID];
-      v15 = [v19 isEqual:v20];
+      contextID3 = [(LACMutableCredentialRequest *)self contextID];
+      contextID4 = [v5 contextID];
+      v15 = [contextID3 isEqual:contextID4];
     }
 
     goto LABEL_8;
@@ -107,8 +107,8 @@ LABEL_10:
   v16[2] = v7;
   v15[3] = @"contextID";
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(LACMutableCredentialRequest *)self contextID];
-  v10 = [v8 stringWithFormat:@"%@", v9];
+  contextID = [(LACMutableCredentialRequest *)self contextID];
+  v10 = [v8 stringWithFormat:@"%@", contextID];
   v16[3] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v12 = [v3 stringWithFormat:@"<%@ %p %@>", v4, self, v11];;
@@ -126,10 +126,10 @@ LABEL_10:
   return self;
 }
 
-- (void)setAuditToken:(id *)a3
+- (void)setAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_auditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_auditToken.val[4] = *&token->var0[4];
   *self->_auditToken.val = v3;
 }
 

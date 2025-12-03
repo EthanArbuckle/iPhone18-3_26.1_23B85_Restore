@@ -6,7 +6,7 @@
 
 - (void)didTapEphemeralAlertStack
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDEphemeralNotice.didTapEphemeralAlertStack()();
 }
 

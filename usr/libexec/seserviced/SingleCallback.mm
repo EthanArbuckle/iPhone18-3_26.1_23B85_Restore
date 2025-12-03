@@ -1,15 +1,15 @@
 @interface SingleCallback
 - (_TtC10seserviced14SingleCallback)init;
-- (void)invoke:(id)a3;
+- (void)invoke:(id)invoke;
 @end
 
 @implementation SingleCallback
 
-- (void)invoke:(id)a3
+- (void)invoke:(id)invoke
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(invoke);
   v5 = *(**(&self->super.isa + OBJC_IVAR____TtC10seserviced14SingleCallback_invoked) + 136);
-  v8 = self;
+  selfCopy = self;
   v6 = v5();
   v7 = 0;
   atomic_compare_exchange_strong(v6, &v7, 1u);

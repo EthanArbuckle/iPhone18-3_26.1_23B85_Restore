@@ -2,10 +2,10 @@
 - (TSTCSEData)init;
 - (id).cxx_construct;
 - (id)description;
-- (id)expressionsIdenticalToExpression:(id)a3;
-- (id)expressionsMatchingCSENodeData:(TSTCSENodeData)a3 forNode:(id)a4;
-- (unint64_t)expressionSize:(id)a3;
-- (void)recordExpression:(id)a3 data:(TSTCSENodeData)a4;
+- (id)expressionsIdenticalToExpression:(id)expression;
+- (id)expressionsMatchingCSENodeData:(TSTCSENodeData)data forNode:(id)node;
+- (unint64_t)expressionSize:(id)size;
+- (void)recordExpression:(id)expression data:(TSTCSENodeData)data;
 @end
 
 @implementation TSTCSEData
@@ -29,16 +29,16 @@
   return v2;
 }
 
-- (void)recordExpression:(id)a3 data:(TSTCSENodeData)a4
+- (void)recordExpression:(id)expression data:(TSTCSENodeData)data
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v7 = a3;
-  v31[0] = v7;
+  var1 = data.var1;
+  var0 = data.var0;
+  expressionCopy = expression;
+  v31[0] = expressionCopy;
   v31[1] = var0;
   v31[2] = var1;
   sub_22113183C(&self->_nodesToData.__table_.__bucket_list_.__ptr_, v31);
-  objc_msgSend_addObject_(self->_retainedExpressions, v8, v7, v9, v10);
+  objc_msgSend_addObject_(self->_retainedExpressions, v8, expressionCopy, v9, v10);
   hashesToNodeSets = self->_hashesToNodeSets;
   v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v12, var0, v13, v14);
   v19 = objc_msgSend_objectForKey_(hashesToNodeSets, v16, v15, v17, v18);
@@ -53,14 +53,14 @@
     v19 = v23;
   }
 
-  objc_msgSend_addObject_(v19, v20, v7, v21, v22);
+  objc_msgSend_addObject_(v19, v20, expressionCopy, v21, v22);
 }
 
-- (id)expressionsMatchingCSENodeData:(TSTCSENodeData)a3 forNode:(id)a4
+- (id)expressionsMatchingCSENodeData:(TSTCSENodeData)data forNode:(id)node
 {
-  var0 = a3.var0;
+  var0 = data.var0;
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nodeCopy = node;
   hashesToNodeSets = self->_hashesToNodeSets;
   v11 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, var0, v9, v10);
   v15 = objc_msgSend_objectForKey_(hashesToNodeSets, v12, v11, v13, v14);
@@ -85,7 +85,7 @@
         }
 
         v29 = *(*(&v35 + 1) + 8 * i);
-        if (objc_msgSend_isEqualToExpressionNode_(v6, v23, v29, v24, v25, v35))
+        if (objc_msgSend_isEqualToExpressionNode_(nodeCopy, v23, v29, v24, v25, v35))
         {
           objc_msgSend_addObject_(v20, v23, v29, v24, v25);
         }
@@ -102,14 +102,14 @@
   return v33;
 }
 
-- (id)expressionsIdenticalToExpression:(id)a3
+- (id)expressionsIdenticalToExpression:(id)expression
 {
-  v4 = a3;
-  v9 = v4;
+  expressionCopy = expression;
+  v9 = expressionCopy;
   v5 = sub_2210BE30C(&self->_nodesToData.__table_.__bucket_list_.__ptr_, &v9);
   if (v5)
   {
-    v7 = objc_msgSend_expressionsMatchingCSENodeData_forNode_(self, v6, v5[3], v5[4], v4);
+    v7 = objc_msgSend_expressionsMatchingCSENodeData_forNode_(self, v6, v5[3], v5[4], expressionCopy);
   }
 
   else
@@ -120,10 +120,10 @@
   return v7;
 }
 
-- (unint64_t)expressionSize:(id)a3
+- (unint64_t)expressionSize:(id)size
 {
-  v4 = a3;
-  v8 = v4;
+  sizeCopy = size;
+  v8 = sizeCopy;
   v5 = sub_2210BE30C(&self->_nodesToData.__table_.__bucket_list_.__ptr_, &v8);
   if (v5)
   {

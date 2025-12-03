@@ -3,46 +3,46 @@
 + (id)signpostLog;
 - (BOOL)_rebuildStatus;
 - (BOOL)_shouldForceStatus;
-- (BOOL)preferUnreadCountInsteadOfTotalCount:(id)a3;
+- (BOOL)preferUnreadCountInsteadOfTotalCount:(id)count;
 - (BOOL)shouldShowSubtitle;
 - (MailMainScene)scene;
 - (MailStatusDelegate)delegate;
 - (MailStatusInfo)statusInfo;
-- (MailStatusViewController)initWithMailboxRepository:(id)a3 outgoingMessageRepository:(id)a4 scene:(id)a5;
+- (MailStatusViewController)initWithMailboxRepository:(id)repository outgoingMessageRepository:(id)messageRepository scene:(id)scene;
 - (id)_forcedStatusInfo;
-- (id)accountStatusErrorAttributedStringForAccountWithErrors:(id)a3;
-- (id)actionBlockForAccountError:(id)a3 error:(id)a4 description:(id)a5 failureReason:(id)a6;
+- (id)accountStatusErrorAttributedStringForAccountWithErrors:(id)errors;
+- (id)actionBlockForAccountError:(id)error error:(id)a4 description:(id)description failureReason:(id)reason;
 - (id)mailboxQualifier;
 - (id)networkStatusErrorString;
-- (id)statusBarView:(id)a3 preferredPrefixFromStatusInfo:(id)a4;
+- (id)statusBarView:(id)view preferredPrefixFromStatusInfo:(id)info;
 - (int64_t)currentState;
 - (int64_t)interfaceOrientation;
 - (unint64_t)signpostID;
-- (void)_performStatusUpdateAndSignpostForMailboxObjectID:(id)a3;
+- (void)_performStatusUpdateAndSignpostForMailboxObjectID:(id)d;
 - (void)_reset;
 - (void)_subtitlePressed;
-- (void)_updateStatusView:(id)a3 statusInfo:(id)a4;
-- (void)_updateStatusViewsWithStatusInfo:(id)a3;
-- (void)badgeCountUpdated:(id)a3 badgeCount:(int64_t)a4;
-- (void)currentStatusInfoWithCompletion:(id)a3;
-- (void)hasDelayedMessagesDidChange:(BOOL)a3;
-- (void)iCloudQuotaOfferUpdated:(id)a3 offer:(id)a4;
-- (void)mailStatusBarViewFilterCriteriaButtonTapped:(id)a3;
-- (void)mailStatusBarViewUndoButtonTapped:(id)a3;
-- (void)mailStatusObserver:(id)a3 didChangeInAppMessage:(id)a4;
-- (void)mailboxStatusUpdatedWithStatusInfo:(id)a3 forMailboxObjectID:(id)a4;
-- (void)networkStatusChanged:(id)a3;
-- (void)numberOfPendingMessagesChanged:(unint64_t)a3;
+- (void)_updateStatusView:(id)view statusInfo:(id)info;
+- (void)_updateStatusViewsWithStatusInfo:(id)info;
+- (void)badgeCountUpdated:(id)updated badgeCount:(int64_t)count;
+- (void)currentStatusInfoWithCompletion:(id)completion;
+- (void)hasDelayedMessagesDidChange:(BOOL)change;
+- (void)iCloudQuotaOfferUpdated:(id)updated offer:(id)offer;
+- (void)mailStatusBarViewFilterCriteriaButtonTapped:(id)tapped;
+- (void)mailStatusBarViewUndoButtonTapped:(id)tapped;
+- (void)mailStatusObserver:(id)observer didChangeInAppMessage:(id)message;
+- (void)mailboxStatusUpdatedWithStatusInfo:(id)info forMailboxObjectID:(id)d;
+- (void)networkStatusChanged:(id)changed;
+- (void)numberOfPendingMessagesChanged:(unint64_t)changed;
 - (void)resetAccountErrors;
-- (void)setStatusInfo:(id)a3;
-- (void)signpostPreviousStatus:(id)a3 andCurrentStatus:(id)a4 usingMailboxObjectID:(id)a5;
-- (void)startObservingForActivityStatusMailboxes:(id)a3 badgeCountStatusMailboxes:(id)a4 delegate:(id)a5 filterPredicate:(id)a6 label:(id)a7;
-- (void)startObservingForVisibleMailboxes:(id)a3 delegate:(id)a4 filterPredicate:(id)a5 label:(id)a6;
+- (void)setStatusInfo:(id)info;
+- (void)signpostPreviousStatus:(id)status andCurrentStatus:(id)currentStatus usingMailboxObjectID:(id)d;
+- (void)startObservingForActivityStatusMailboxes:(id)mailboxes badgeCountStatusMailboxes:(id)statusMailboxes delegate:(id)delegate filterPredicate:(id)predicate label:(id)label;
+- (void)startObservingForVisibleMailboxes:(id)mailboxes delegate:(id)delegate filterPredicate:(id)predicate label:(id)label;
 - (void)stopObserving;
 - (void)tintColorDidChange;
-- (void)updateBarItemTitle:(id)a3 secondaryTitle:(id)a4;
-- (void)updatePrimaryStatusPrefix:(id)a3 secondaryStatusPrefix:(id)a4;
-- (void)updateStatusWithFilterCriteria:(id)a3;
+- (void)updateBarItemTitle:(id)title secondaryTitle:(id)secondaryTitle;
+- (void)updatePrimaryStatusPrefix:(id)prefix secondaryStatusPrefix:(id)statusPrefix;
+- (void)updateStatusWithFilterCriteria:(id)criteria;
 @end
 
 @implementation MailStatusViewController
@@ -54,19 +54,19 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = 0;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%p Set delegate:%@", buf, 0x16u);
   }
 
-  v4 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000F63C;
   v5[3] = &unk_10064C7E8;
   v5[4] = self;
-  [v4 performBlock:v5];
+  [mailboxStatusScheduler performBlock:v5];
 }
 
 + (OS_os_log)log
@@ -75,7 +75,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000E0B0;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD1B0 != -1)
   {
     dispatch_once(&qword_1006DD1B0, block);
@@ -92,7 +92,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000F5A0;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD1C0 != -1)
   {
     dispatch_once(&qword_1006DD1C0, block);
@@ -105,21 +105,21 @@
 
 - (void)_reset
 {
-  v6 = [(MailStatusViewController *)self mailboxStatusInfos];
-  [v6 removeAllObjects];
+  mailboxStatusInfos = [(MailStatusViewController *)self mailboxStatusInfos];
+  [mailboxStatusInfos removeAllObjects];
 
   [(MailStatusViewController *)self setBadgeCount:0];
   [(MailStatusViewController *)self setFilterCriteria:0];
-  v7 = [(MailStatusViewController *)self statusInfo];
+  statusInfo = [(MailStatusViewController *)self statusInfo];
   v3 = objc_alloc_init(MailStatusInfo);
   [(MailStatusInfo *)v3 setStatus:&stru_100662A88];
   [(MailStatusInfo *)v3 setState:2];
   [(MailStatusViewController *)self setStatusInfo:v3];
   v4 = v3;
-  [(MailStatusViewController *)self signpostPreviousStatus:v7 andCurrentStatus:v4 usingMailboxObjectID:0];
+  [(MailStatusViewController *)self signpostPreviousStatus:statusInfo andCurrentStatus:v4 usingMailboxObjectID:0];
   [(MailStatusViewController *)self _updateStatusViewsWithStatusInfo:v4];
-  v5 = [(MailStatusViewController *)self statusObserver];
-  [v5 checkForiCloudQuotaUpsellOffer];
+  statusObserver = [(MailStatusViewController *)self statusObserver];
+  [statusObserver checkForiCloudQuotaUpsellOffer];
 }
 
 - (MailStatusInfo)statusInfo
@@ -141,34 +141,34 @@
 - (BOOL)_shouldForceStatus
 {
   v3 = +[EFDevice currentDevice];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  return (v4 & 1) != 0 && [(MailStatusViewController *)self forcedStatus]!= 0;
+  return (isInternal & 1) != 0 && [(MailStatusViewController *)self forcedStatus]!= 0;
 }
 
 - (BOOL)shouldShowSubtitle
 {
-  v2 = [(MailStatusViewController *)self delegate];
-  v3 = [v2 shouldShowSubtitle];
+  delegate = [(MailStatusViewController *)self delegate];
+  shouldShowSubtitle = [delegate shouldShowSubtitle];
 
-  return v3;
+  return shouldShowSubtitle;
 }
 
 - (id)networkStatusErrorString
 {
   v2 = +[MFNetworkController sharedInstance];
-  v3 = [v2 dataStatus];
+  dataStatus = [v2 dataStatus];
 
   v4 = +[MailStatusViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [NSNumber numberWithInteger:v3];
+    v5 = [NSNumber numberWithInteger:dataStatus];
     *buf = 138543362;
     v16 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Current network data status: %{public}@", buf, 0xCu);
   }
 
-  if (v3)
+  if (dataStatus)
   {
     v6 = +[NSBundle mainBundle];
     v7 = MFLookupLocalizedString();
@@ -191,10 +191,10 @@
 
 - (BOOL)_rebuildStatus
 {
-  v64 = [(MailStatusViewController *)self mailboxStatusInfos];
+  mailboxStatusInfos = [(MailStatusViewController *)self mailboxStatusInfos];
   v80 = +[NSDate date];
   v65 = objc_alloc_init(NSMutableArray);
-  v2 = self;
+  selfCopy4 = self;
   [(MailStatusViewController *)self setPressedBlock:0];
   os_unfair_lock_lock(&self->_numberOfPendingMessagesLock);
   numberOfPendingMessages = self->_numberOfPendingMessages;
@@ -207,7 +207,7 @@
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v5 = v64;
+    v5 = mailboxStatusInfos;
     v6 = [v5 countByEnumeratingWithState:&v90 objects:v99 count:16];
     if (v6)
     {
@@ -237,7 +237,7 @@
     v78 = 0;
     v79 = 0;
     v10 = 0;
-    v67 = 0;
+    iCloudQuotaOfferShouldPersist = 0;
     v11 = 0;
     v12 = 0;
     v72 = 0;
@@ -256,7 +256,7 @@
     v78 = 0;
     v79 = 0;
     v10 = 0;
-    v67 = 0;
+    iCloudQuotaOfferShouldPersist = 0;
     v11 = 0;
     v12 = 0;
     v72 = 0;
@@ -271,7 +271,7 @@
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v64;
+  obj = mailboxStatusInfos;
   v13 = [obj countByEnumeratingWithState:&v86 objects:v98 count:16];
   if (!v13)
   {
@@ -280,7 +280,7 @@
     v70 = 0;
     v78 = 0;
     v79 = 0;
-    v67 = 0;
+    iCloudQuotaOfferShouldPersist = 0;
     v11 = 0;
     v12 = 0;
     v72 = 0;
@@ -296,7 +296,7 @@
   v70 = 0;
   v78 = 0;
   v79 = 0;
-  v67 = 0;
+  iCloudQuotaOfferShouldPersist = 0;
   v11 = 0;
   v12 = 0;
   v72 = 0;
@@ -317,30 +317,30 @@
 
       v15 = *(*(&v86 + 1) + 8 * j);
       v16 = [obj objectForKeyedSubscript:v15];
-      v17 = [v16 lastUpdateTime];
-      v18 = [v17 compare:v80] == 1;
+      lastUpdateTime = [v16 lastUpdateTime];
+      v18 = [lastUpdateTime compare:v80] == 1;
 
       if (v18)
       {
-        v19 = [v16 lastUpdateTime];
+        lastUpdateTime2 = [v16 lastUpdateTime];
 
-        v80 = v19;
+        v80 = lastUpdateTime2;
       }
 
-      v20 = [v16 progress];
-      v21 = v20;
-      if (v20 && [v20 totalUnitCount] >= 1)
+      progress = [v16 progress];
+      v21 = progress;
+      if (progress && [progress totalUnitCount] >= 1)
       {
         if (!v72)
         {
           v72 = [[NSProgress alloc] initWithParent:0 userInfo:0];
         }
 
-        v22 = [v16 status];
+        status = [v16 status];
 
         v81 = +[NSProgress discreteProgressWithTotalUnitCount:](NSProgress, "discreteProgressWithTotalUnitCount:", [v21 totalUnitCount]);
-        v23 = [v16 progress];
-        [v81 setCompletedUnitCount:{objc_msgSend(v23, "completedUnitCount")}];
+        progress2 = [v16 progress];
+        [v81 setCompletedUnitCount:{objc_msgSend(progress2, "completedUnitCount")}];
 
         [v72 addChild:v81 withPendingUnitCount:1];
         v24 = 3;
@@ -355,71 +355,71 @@
 
       if ([v16 state] == 2)
       {
-        v22 = [v16 status];
+        status = [v16 status];
         v24 = 2;
 LABEL_29:
         v74 = v24;
 
-        v81 = v22;
+        v81 = status;
       }
 
 LABEL_30:
       if ([v16 state] == 1)
       {
-        v25 = [v16 status];
+        status2 = [v16 status];
 
-        v70 = v25;
+        v70 = status2;
       }
 
-      v26 = [v16 iCloudQuotaOfferText];
+      iCloudQuotaOfferText = [v16 iCloudQuotaOfferText];
 
-      if (v26)
+      if (iCloudQuotaOfferText)
       {
-        v27 = [v16 iCloudQuotaOfferText];
+        iCloudQuotaOfferText2 = [v16 iCloudQuotaOfferText];
 
-        v28 = [v16 iCloudQuotaOfferLink];
+        iCloudQuotaOfferLink = [v16 iCloudQuotaOfferLink];
 
-        v73 = v28;
-        v77 = v27;
+        v73 = iCloudQuotaOfferLink;
+        v77 = iCloudQuotaOfferText2;
       }
 
-      v29 = [v16 iCloudQuotaOfferInlineText];
+      iCloudQuotaOfferInlineText = [v16 iCloudQuotaOfferInlineText];
 
-      if (v29)
+      if (iCloudQuotaOfferInlineText)
       {
-        v30 = [v16 iCloudQuotaOfferInlineText];
+        iCloudQuotaOfferInlineText2 = [v16 iCloudQuotaOfferInlineText];
 
-        v31 = [v16 iCloudQuotaOfferLargeText];
+        iCloudQuotaOfferLargeText = [v16 iCloudQuotaOfferLargeText];
 
-        v32 = [v16 iCloudQuotaOfferCallToAction];
+        iCloudQuotaOfferCallToAction = [v16 iCloudQuotaOfferCallToAction];
 
-        v67 = [v16 iCloudQuotaOfferShouldPersist];
-        v78 = v32;
-        v11 = v31;
-        v12 = v30;
+        iCloudQuotaOfferShouldPersist = [v16 iCloudQuotaOfferShouldPersist];
+        v78 = iCloudQuotaOfferCallToAction;
+        v11 = iCloudQuotaOfferLargeText;
+        v12 = iCloudQuotaOfferInlineText2;
       }
 
       if ([v16 hasAccountError])
       {
-        v33 = [(MailStatusViewController *)self mailboxRepository];
-        v34 = [v33 mailboxForObjectID:v15];
+        mailboxRepository = [(MailStatusViewController *)self mailboxRepository];
+        v34 = [mailboxRepository mailboxForObjectID:v15];
         v35 = [v34 result:0];
 
-        v36 = [v35 account];
-        if (v36)
+        account = [v35 account];
+        if (account)
         {
-          [v65 addObject:v36];
+          [v65 addObject:account];
         }
 
-        v37 = [v16 error];
+        error = [v16 error];
 
-        v38 = [v16 accountErrorTitle];
+        accountErrorTitle = [v16 accountErrorTitle];
 
-        v39 = [v16 failureReasonDescription];
+        failureReasonDescription = [v16 failureReasonDescription];
 
-        v79 = v37;
-        v75 = v38;
-        v69 = v39;
+        v79 = error;
+        v75 = accountErrorTitle;
+        v69 = failureReasonDescription;
       }
     }
 
@@ -438,18 +438,18 @@ LABEL_44:
     goto LABEL_50;
   }
 
-  v2 = self;
+  selfCopy4 = self;
   if (v73)
   {
-    v42 = [(MailStatusViewController *)self scene];
-    v43 = [v42 masterNavigationController];
+    scene = [(MailStatusViewController *)self scene];
+    masterNavigationController = [scene masterNavigationController];
 
     v84[0] = _NSConcreteStackBlock;
     v84[1] = 3221225472;
     v84[2] = sub_10013820C;
     v84[3] = &unk_10064C7E8;
-    v85 = v43;
-    v41 = v43;
+    v85 = masterNavigationController;
+    v41 = masterNavigationController;
     [(MailStatusViewController *)self setPressedBlock:v84];
 
     v10 = 0;
@@ -468,7 +468,7 @@ LABEL_44:
     v41 = v83;
 LABEL_50:
 
-    v2 = self;
+    selfCopy4 = self;
   }
 
   else
@@ -480,13 +480,13 @@ LABEL_50:
   {
     v80 = +[NSDate now];
 LABEL_10:
-    v2 = self;
+    selfCopy4 = self;
   }
 
 LABEL_52:
-  v44 = [(MailStatusViewController *)v2 filterCriteria];
+  filterCriteria = [(MailStatusViewController *)selfCopy4 filterCriteria];
 
-  if (v44)
+  if (filterCriteria)
   {
     v45 = 5;
   }
@@ -498,13 +498,13 @@ LABEL_52:
 
   if ([(MailStatusViewController *)self _shouldForceStatus])
   {
-    v46 = [(MailStatusViewController *)self _forcedStatusInfo];
+    _forcedStatusInfo = [(MailStatusViewController *)self _forcedStatusInfo];
   }
 
   else
   {
-    v46 = objc_alloc_init(MailStatusInfo);
-    [(MailStatusInfo *)v46 setState:v45];
+    _forcedStatusInfo = objc_alloc_init(MailStatusInfo);
+    [(MailStatusInfo *)_forcedStatusInfo setState:v45];
     if (v81)
     {
       v47 = v81;
@@ -515,19 +515,19 @@ LABEL_52:
       v47 = v70;
     }
 
-    [(MailStatusInfo *)v46 setStatus:v47];
-    -[MailStatusInfo setHasAccountError:](v46, "setHasAccountError:", [v65 count] != 0);
-    [(MailStatusInfo *)v46 setLastUpdateTime:v80];
-    v48 = [(MailStatusViewController *)self primaryStatusPrefix];
-    [(MailStatusInfo *)v46 setPrimaryStatusPrefix:v48];
+    [(MailStatusInfo *)_forcedStatusInfo setStatus:v47];
+    -[MailStatusInfo setHasAccountError:](_forcedStatusInfo, "setHasAccountError:", [v65 count] != 0);
+    [(MailStatusInfo *)_forcedStatusInfo setLastUpdateTime:v80];
+    primaryStatusPrefix = [(MailStatusViewController *)self primaryStatusPrefix];
+    [(MailStatusInfo *)_forcedStatusInfo setPrimaryStatusPrefix:primaryStatusPrefix];
 
-    v49 = [(MailStatusViewController *)self secondaryStatusPrefix];
-    [(MailStatusInfo *)v46 setSecondaryStatusPrefix:v49];
+    secondaryStatusPrefix = [(MailStatusViewController *)self secondaryStatusPrefix];
+    [(MailStatusInfo *)_forcedStatusInfo setSecondaryStatusPrefix:secondaryStatusPrefix];
 
-    [(MailStatusInfo *)v46 setShouldShowSubtitle:[(MailStatusViewController *)self shouldShowSubtitle]];
+    [(MailStatusInfo *)_forcedStatusInfo setShouldShowSubtitle:[(MailStatusViewController *)self shouldShowSubtitle]];
     if ((MUISolariumFeatureEnabled() & 1) == 0)
     {
-      v50 = [(MailStatusInfo *)v46 shouldShowSubtitle];
+      shouldShowSubtitle = [(MailStatusInfo *)_forcedStatusInfo shouldShowSubtitle];
       if (v73)
       {
         v51 = 1;
@@ -535,62 +535,62 @@ LABEL_52:
 
       else
       {
-        v51 = v50;
+        v51 = shouldShowSubtitle;
       }
 
-      [(MailStatusInfo *)v46 setShouldShowSubtitle:v51];
+      [(MailStatusInfo *)_forcedStatusInfo setShouldShowSubtitle:v51];
     }
 
-    v52 = [(MailStatusViewController *)self networkStatusErrorString];
-    [(MailStatusInfo *)v46 setNetworkingAccountErrorString:v52];
+    networkStatusErrorString = [(MailStatusViewController *)self networkStatusErrorString];
+    [(MailStatusInfo *)_forcedStatusInfo setNetworkingAccountErrorString:networkStatusErrorString];
 
-    [(MailStatusInfo *)v46 setAccountErrorString:v10];
-    v53 = [(MailStatusViewController *)self delegate];
-    if ([v53 shouldShowUnreadCountForMailStatusViewController:self])
+    [(MailStatusInfo *)_forcedStatusInfo setAccountErrorString:v10];
+    delegate = [(MailStatusViewController *)self delegate];
+    if ([delegate shouldShowUnreadCountForMailStatusViewController:self])
     {
-      v54 = [(MailStatusViewController *)self badgeCount];
+      badgeCount = [(MailStatusViewController *)self badgeCount];
     }
 
     else
     {
-      v54 = 0;
+      badgeCount = 0;
     }
 
-    [(MailStatusInfo *)v46 setBadgeCount:v54];
+    [(MailStatusInfo *)_forcedStatusInfo setBadgeCount:badgeCount];
 
-    [(MailStatusInfo *)v46 setUnsentCount:v63];
-    [(MailStatusInfo *)v46 setProgress:v72];
-    [(MailStatusInfo *)v46 setICloudQuotaOfferText:v77];
-    [(MailStatusInfo *)v46 setICloudQuotaOfferLink:v73];
-    [(MailStatusInfo *)v46 setICloudQuotaOfferInlineText:v12];
-    [(MailStatusInfo *)v46 setICloudQuotaOfferLargeText:v11];
-    [(MailStatusInfo *)v46 setICloudQuotaOfferCallToAction:v78];
-    [(MailStatusInfo *)v46 setICloudQuotaOfferShouldPersist:v67 & 1];
-    v55 = [(MailStatusViewController *)self filterCriteria];
-    [(MailStatusInfo *)v46 setFilterCriteria:v55];
+    [(MailStatusInfo *)_forcedStatusInfo setUnsentCount:v63];
+    [(MailStatusInfo *)_forcedStatusInfo setProgress:v72];
+    [(MailStatusInfo *)_forcedStatusInfo setICloudQuotaOfferText:v77];
+    [(MailStatusInfo *)_forcedStatusInfo setICloudQuotaOfferLink:v73];
+    [(MailStatusInfo *)_forcedStatusInfo setICloudQuotaOfferInlineText:v12];
+    [(MailStatusInfo *)_forcedStatusInfo setICloudQuotaOfferLargeText:v11];
+    [(MailStatusInfo *)_forcedStatusInfo setICloudQuotaOfferCallToAction:v78];
+    [(MailStatusInfo *)_forcedStatusInfo setICloudQuotaOfferShouldPersist:iCloudQuotaOfferShouldPersist & 1];
+    filterCriteria2 = [(MailStatusViewController *)self filterCriteria];
+    [(MailStatusInfo *)_forcedStatusInfo setFilterCriteria:filterCriteria2];
 
-    v56 = [(MailStatusViewController *)self statusInfo];
-    v57 = [v56 formattedStatuses];
-    [(MailStatusInfo *)v46 setFormattedStatuses:v57];
+    statusInfo = [(MailStatusViewController *)self statusInfo];
+    formattedStatuses = [statusInfo formattedStatuses];
+    [(MailStatusInfo *)_forcedStatusInfo setFormattedStatuses:formattedStatuses];
   }
 
-  v58 = [(MailStatusViewController *)self statusInfo];
-  v59 = [(MailStatusInfo *)v46 isEqual:v58];
+  statusInfo2 = [(MailStatusViewController *)self statusInfo];
+  v59 = [(MailStatusInfo *)_forcedStatusInfo isEqual:statusInfo2];
 
   if ((v59 & 1) == 0)
   {
     v60 = +[MailStatusViewController log];
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
     {
-      v61 = [(MailStatusInfo *)v46 ef_publicDescription];
+      ef_publicDescription = [(MailStatusInfo *)_forcedStatusInfo ef_publicDescription];
       *buf = 134218242;
-      v95 = self;
+      selfCopy5 = self;
       v96 = 2112;
-      v97 = v61;
+      v97 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "%p rebuildStatus - setting new statusInfo:%@", buf, 0x16u);
     }
 
-    [(MailStatusViewController *)self setStatusInfo:v46];
+    [(MailStatusViewController *)self setStatusInfo:_forcedStatusInfo];
   }
 
   return v59 ^ 1;
@@ -598,45 +598,45 @@ LABEL_52:
 
 - (void)resetAccountErrors
 {
-  v3 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001790C;
   v4[3] = &unk_10064C7E8;
   v4[4] = self;
-  [v3 performSyncBlock:v4];
+  [mailboxStatusScheduler performSyncBlock:v4];
 }
 
 - (id)mailboxQualifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained mailboxQualifier];
+  mailboxQualifier = [WeakRetained mailboxQualifier];
 
-  return v3;
+  return mailboxQualifier;
 }
 
 - (void)tintColorDidChange
 {
-  v3 = [(MailStatusViewController *)self primaryStatusView];
-  v4 = [v3 tintColor];
-  [(MailStatusViewController *)self setStatusBarViewTintColor:v4];
+  primaryStatusView = [(MailStatusViewController *)self primaryStatusView];
+  tintColor = [primaryStatusView tintColor];
+  [(MailStatusViewController *)self setStatusBarViewTintColor:tintColor];
 
   [(MailStatusViewController *)self _performStatusUpdate];
 }
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (MailStatusViewController)initWithMailboxRepository:(id)a3 outgoingMessageRepository:(id)a4 scene:(id)a5
+- (MailStatusViewController)initWithMailboxRepository:(id)repository outgoingMessageRepository:(id)messageRepository scene:(id)scene
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  repositoryCopy = repository;
+  messageRepositoryCopy = messageRepository;
+  sceneCopy = scene;
   v45.receiver = self;
   v45.super_class = MailStatusViewController;
   v12 = [(MailStatusViewController *)&v45 init];
@@ -646,15 +646,15 @@ LABEL_52:
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v17 = [(MailStatusBarView *)v13 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(MailStatusBarView *)v13 initWithFrame:CGRectZero.origin.x, y, width, height];
     primaryStatusView = v12->_primaryStatusView;
-    v12->_primaryStatusView = v17;
+    v12->_primaryStatusView = height;
 
     [(MailStatusBarView *)v12->_primaryStatusView setTarget:v12 withAction:"_subtitlePressed"];
     [(MailStatusBarView *)v12->_primaryStatusView setDelegate:v12];
-    v19 = [(MailStatusBarView *)v12->_primaryStatusView tintColor];
+    tintColor = [(MailStatusBarView *)v12->_primaryStatusView tintColor];
     statusBarViewTintColor = v12->_statusBarViewTintColor;
-    v12->_statusBarViewTintColor = v19;
+    v12->_statusBarViewTintColor = tintColor;
 
     v21 = [[UIBarButtonItem alloc] initWithCustomView:v12->_primaryStatusView];
     mailStatusBarButtonItem = v12->_mailStatusBarButtonItem;
@@ -662,9 +662,9 @@ LABEL_52:
 
     if (MUISolariumFeatureEnabled())
     {
-      v23 = [[MailStatusBarView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+      height2 = [[MailStatusBarView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
       secondaryStatusView = v12->_secondaryStatusView;
-      v12->_secondaryStatusView = v23;
+      v12->_secondaryStatusView = height2;
 
       [(MailStatusBarView *)v12->_secondaryStatusView setTextAlignment:0];
       [(MailStatusBarView *)v12->_secondaryStatusView setShouldShowLargeTitle:1];
@@ -673,9 +673,9 @@ LABEL_52:
     }
 
     v25 = +[EFDevice currentDevice];
-    v26 = [v25 isInternal];
+    isInternal = [v25 isInternal];
 
-    if (v26)
+    if (isInternal)
     {
       v27 = +[NSUserDefaults em_userDefaults];
       v28 = EMUserDefaultForceStatus;
@@ -696,8 +696,8 @@ LABEL_52:
       objc_destroyWeak(&location);
     }
 
-    objc_storeStrong(&v12->_mailboxRepository, a3);
-    objc_storeStrong(&v12->_outgoingMessageRepository, a4);
+    objc_storeStrong(&v12->_mailboxRepository, repository);
+    objc_storeStrong(&v12->_outgoingMessageRepository, messageRepository);
     v32 = [[MailStatusObserver alloc] initWithMailboxRepository:v12->_mailboxRepository delegate:v12];
     statusObserver = v12->_statusObserver;
     v12->_statusObserver = v32;
@@ -717,72 +717,72 @@ LABEL_52:
     statusInfo = v12->_statusInfo;
     v12->_statusInfo = v39;
 
-    objc_storeWeak(&v12->_scene, v11);
+    objc_storeWeak(&v12->_scene, sceneCopy);
     v12->_hasDelayedMessages = 0;
   }
 
   return v12;
 }
 
-- (void)startObservingForVisibleMailboxes:(id)a3 delegate:(id)a4 filterPredicate:(id)a5 label:(id)a6
+- (void)startObservingForVisibleMailboxes:(id)mailboxes delegate:(id)delegate filterPredicate:(id)predicate label:(id)label
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  mailboxesCopy = mailboxes;
+  delegateCopy = delegate;
+  predicateCopy = predicate;
+  labelCopy = label;
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100137854;
   v15[3] = &unk_10064C7E8;
   v15[4] = self;
-  [v14 performBlock:v15];
+  [mailboxStatusScheduler performBlock:v15];
 
-  [(MailStatusViewController *)self startObservingForActivityStatusMailboxes:v10 badgeCountStatusMailboxes:v10 delegate:v11 filterPredicate:v12 label:v13];
+  [(MailStatusViewController *)self startObservingForActivityStatusMailboxes:mailboxesCopy badgeCountStatusMailboxes:mailboxesCopy delegate:delegateCopy filterPredicate:predicateCopy label:labelCopy];
 }
 
-- (void)startObservingForActivityStatusMailboxes:(id)a3 badgeCountStatusMailboxes:(id)a4 delegate:(id)a5 filterPredicate:(id)a6 label:(id)a7
+- (void)startObservingForActivityStatusMailboxes:(id)mailboxes badgeCountStatusMailboxes:(id)statusMailboxes delegate:(id)delegate filterPredicate:(id)predicate label:(id)label
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  objc_storeWeak(&self->_delegate, v14);
+  mailboxesCopy = mailboxes;
+  statusMailboxesCopy = statusMailboxes;
+  delegateCopy = delegate;
+  predicateCopy = predicate;
+  labelCopy = label;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v17 = +[MailStatusViewController log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
-    v31 = v14;
+    v31 = delegateCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%p Set delegate:%@", buf, 0x16u);
   }
 
-  v18 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100137AFC;
   v23[3] = &unk_100651378;
   v23[4] = self;
-  v19 = v12;
+  v19 = mailboxesCopy;
   v24 = v19;
-  v20 = v13;
+  v20 = statusMailboxesCopy;
   v25 = v20;
-  v21 = v15;
+  v21 = predicateCopy;
   v26 = v21;
-  v22 = v16;
+  v22 = labelCopy;
   v27 = v22;
-  [v18 performBlock:v23];
+  [mailboxStatusScheduler performBlock:v23];
 }
 
-- (void)setStatusInfo:(id)a3
+- (void)setStatusInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_statusInfoLock);
-  if (self->_statusInfo != v5)
+  if (self->_statusInfo != infoCopy)
   {
-    objc_storeStrong(&self->_statusInfo, a3);
+    objc_storeStrong(&self->_statusInfo, info);
   }
 
   os_unfair_lock_unlock(&self->_statusInfoLock);
@@ -790,53 +790,53 @@ LABEL_52:
 
 - (void)_subtitlePressed
 {
-  v3 = [(MailStatusViewController *)self pressedBlock];
+  pressedBlock = [(MailStatusViewController *)self pressedBlock];
 
-  if (v3)
+  if (pressedBlock)
   {
-    v4 = [(MailStatusViewController *)self pressedBlock];
-    v4[2]();
+    pressedBlock2 = [(MailStatusViewController *)self pressedBlock];
+    pressedBlock2[2]();
   }
 }
 
-- (void)_performStatusUpdateAndSignpostForMailboxObjectID:(id)a3
+- (void)_performStatusUpdateAndSignpostForMailboxObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  dCopy = d;
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100137FD8;
   v7[3] = &unk_10064C660;
   v7[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [mailboxStatusScheduler performBlock:v7];
 }
 
-- (void)_updateStatusViewsWithStatusInfo:(id)a3
+- (void)_updateStatusViewsWithStatusInfo:(id)info
 {
-  v6 = a3;
-  v4 = [(MailStatusViewController *)self primaryStatusView];
-  [(MailStatusViewController *)self _updateStatusView:v4 statusInfo:v6];
+  infoCopy = info;
+  primaryStatusView = [(MailStatusViewController *)self primaryStatusView];
+  [(MailStatusViewController *)self _updateStatusView:primaryStatusView statusInfo:infoCopy];
 
-  v5 = [(MailStatusViewController *)self secondaryStatusView];
-  [(MailStatusViewController *)self _updateStatusView:v5 statusInfo:v6];
+  secondaryStatusView = [(MailStatusViewController *)self secondaryStatusView];
+  [(MailStatusViewController *)self _updateStatusView:secondaryStatusView statusInfo:infoCopy];
 }
 
-- (void)_updateStatusView:(id)a3 statusInfo:(id)a4
+- (void)_updateStatusView:(id)view statusInfo:(id)info
 {
-  v6 = a3;
-  v5 = [a4 copy];
-  [v6 setNeedsDisplayWithStatusInfo:v5];
+  viewCopy = view;
+  v5 = [info copy];
+  [viewCopy setNeedsDisplayWithStatusInfo:v5];
 }
 
 - (id)_forcedStatusInfo
 {
   v3 = objc_alloc_init(MailStatusInfo);
   [(MailStatusInfo *)v3 setShouldShowSubtitle:MUISolariumFeatureEnabled() ^ 1];
-  v4 = [(MailStatusViewController *)self forcedStatus];
+  forcedStatus = [(MailStatusViewController *)self forcedStatus];
   v5 = 0;
-  switch(v4)
+  switch(forcedStatus)
   {
     case 0:
       goto LABEL_17;
@@ -973,9 +973,9 @@ LABEL_4:
       [(MailStatusInfo *)v3 setICloudQuotaOfferInlineText:v22];
 
       v23 = [NSAttributedString alloc];
-      v24 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote, NSFontAttributeName];
+      nSFontAttributeName = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote, NSFontAttributeName];
       v52[1] = NSForegroundColorAttributeName;
-      v53[0] = v24;
+      v53[0] = nSFontAttributeName;
       v25 = +[UIColor secondaryLabelColor];
       v53[1] = v25;
       v26 = [NSDictionary dictionaryWithObjects:v53 forKeys:v52 count:2];
@@ -1000,21 +1000,21 @@ LABEL_17:
 
 - (int64_t)currentState
 {
-  v2 = [(MailStatusViewController *)self statusInfo];
-  v3 = [v2 state];
+  statusInfo = [(MailStatusViewController *)self statusInfo];
+  state = [statusInfo state];
 
-  return v3;
+  return state;
 }
 
-- (void)updatePrimaryStatusPrefix:(id)a3 secondaryStatusPrefix:(id)a4
+- (void)updatePrimaryStatusPrefix:(id)prefix secondaryStatusPrefix:(id)statusPrefix
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MailStatusViewController *)self primaryStatusPrefix];
-  if ([v6 isEqualToString:v8])
+  prefixCopy = prefix;
+  statusPrefixCopy = statusPrefix;
+  primaryStatusPrefix = [(MailStatusViewController *)self primaryStatusPrefix];
+  if ([prefixCopy isEqualToString:primaryStatusPrefix])
   {
-    v9 = [(MailStatusViewController *)self secondaryStatusPrefix];
-    v10 = [v7 isEqualToString:v9];
+    secondaryStatusPrefix = [(MailStatusViewController *)self secondaryStatusPrefix];
+    v10 = [statusPrefixCopy isEqualToString:secondaryStatusPrefix];
 
     if (v10)
     {
@@ -1026,49 +1026,49 @@ LABEL_17:
   {
   }
 
-  v11 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100138ED8;
   v12[3] = &unk_10064C6B0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  [v11 performBlock:v12];
+  v13 = prefixCopy;
+  v14 = statusPrefixCopy;
+  [mailboxStatusScheduler performBlock:v12];
 
   [(MailStatusViewController *)self _performStatusUpdate];
 LABEL_6:
 }
 
-- (void)updateStatusWithFilterCriteria:(id)a3
+- (void)updateStatusWithFilterCriteria:(id)criteria
 {
-  v4 = a3;
-  v5 = [(MailStatusViewController *)self filterCriteria];
-  v6 = [v5 isEqualToString:v4];
+  criteriaCopy = criteria;
+  filterCriteria = [(MailStatusViewController *)self filterCriteria];
+  v6 = [filterCriteria isEqualToString:criteriaCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(MailStatusViewController *)self mailboxStatusScheduler];
+    mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
     v8 = _NSConcreteStackBlock;
     v9 = 3221225472;
     v10 = sub_100139034;
     v11 = &unk_10064C660;
-    v12 = self;
-    v13 = v4;
-    [v7 performBlock:&v8];
+    selfCopy = self;
+    v13 = criteriaCopy;
+    [mailboxStatusScheduler performBlock:&v8];
 
     [(MailStatusViewController *)self _performStatusUpdate:v8];
   }
 }
 
-- (void)signpostPreviousStatus:(id)a3 andCurrentStatus:(id)a4 usingMailboxObjectID:(id)a5
+- (void)signpostPreviousStatus:(id)status andCurrentStatus:(id)currentStatus usingMailboxObjectID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v30 = v8;
-  v31 = a5;
-  v10 = [v8 state];
-  if (v10 == [v9 state])
+  statusCopy = status;
+  currentStatusCopy = currentStatus;
+  v30 = statusCopy;
+  dCopy = d;
+  state = [statusCopy state];
+  if (state == [currentStatusCopy state])
   {
     v11 = 0;
     v12 = 0;
@@ -1076,19 +1076,19 @@ LABEL_6:
 
   else
   {
-    v11 = [v8 state] == 1;
-    v12 = [v9 state] == 1;
+    v11 = [statusCopy state] == 1;
+    v12 = [currentStatusCopy state] == 1;
   }
 
   v13 = +[MailStatusViewController signpostLog];
   v14 = os_signpost_id_make_with_pointer(v13, self);
 
   v15 = [NSString stringWithFormat:@"<%@: %p>", objc_opt_class(), self];
-  v16 = [v31 ef_publicDescription];
-  v17 = [v8 ef_publicDescription];
-  v18 = v9;
-  v19 = [v9 ef_publicDescription];
-  v20 = [NSString stringWithFormat:@"mailbox=%@\n    previously= %@\n    currently=  %@", v16, v17, v19];
+  ef_publicDescription = [dCopy ef_publicDescription];
+  ef_publicDescription2 = [statusCopy ef_publicDescription];
+  v18 = currentStatusCopy;
+  ef_publicDescription3 = [currentStatusCopy ef_publicDescription];
+  v20 = [NSString stringWithFormat:@"mailbox=%@\n    previously= %@\n    currently=  %@", ef_publicDescription, ef_publicDescription2, ef_publicDescription3];
 
   if (v11)
   {
@@ -1150,138 +1150,138 @@ LABEL_15:
   }
 }
 
-- (void)currentStatusInfoWithCompletion:(id)a3
+- (void)currentStatusInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  completionCopy = completion;
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001394A8;
   v7[3] = &unk_10064D270;
-  v6 = v4;
+  v6 = completionCopy;
   v7[4] = self;
   v8 = v6;
-  [v5 performBlock:v7];
+  [mailboxStatusScheduler performBlock:v7];
 }
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(MailStatusViewController *)self scene];
-  v3 = [v2 interfaceOrientation];
+  scene = [(MailStatusViewController *)self scene];
+  interfaceOrientation = [scene interfaceOrientation];
 
-  return v3;
+  return interfaceOrientation;
 }
 
-- (void)updateBarItemTitle:(id)a3 secondaryTitle:(id)a4
+- (void)updateBarItemTitle:(id)title secondaryTitle:(id)secondaryTitle
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MailStatusViewController *)self mailStatusBarButtonItem];
-  if (v7)
+  titleCopy = title;
+  secondaryTitleCopy = secondaryTitle;
+  mailStatusBarButtonItem = [(MailStatusViewController *)self mailStatusBarButtonItem];
+  if (mailStatusBarButtonItem)
   {
-    v8 = [v11 length];
+    v8 = [titleCopy length];
 
     if (v8)
     {
-      v9 = [NSMutableString stringWithString:v11];
-      if (-[MailStatusViewController shouldShowSubtitle](self, "shouldShowSubtitle") && [v6 length])
+      v9 = [NSMutableString stringWithString:titleCopy];
+      if (-[MailStatusViewController shouldShowSubtitle](self, "shouldShowSubtitle") && [secondaryTitleCopy length])
       {
         [v9 appendString:@"\n\n"];
-        [v9 appendString:v6];
+        [v9 appendString:secondaryTitleCopy];
       }
 
       if ([v9 length])
       {
-        v10 = [(MailStatusViewController *)self mailStatusBarButtonItem];
-        [v10 setTitle:v9];
+        mailStatusBarButtonItem2 = [(MailStatusViewController *)self mailStatusBarButtonItem];
+        [mailStatusBarButtonItem2 setTitle:v9];
       }
     }
   }
 }
 
-- (void)mailStatusBarViewUndoButtonTapped:(id)a3
+- (void)mailStatusBarViewUndoButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained mailStatusViewControllerUndoButtonTapped:self];
 }
 
-- (void)mailStatusBarViewFilterCriteriaButtonTapped:(id)a3
+- (void)mailStatusBarViewFilterCriteriaButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained mailStatusViewControllerFilterCriteriaButtonTapped:v4];
+  [WeakRetained mailStatusViewControllerFilterCriteriaButtonTapped:tappedCopy];
 }
 
-- (id)statusBarView:(id)a3 preferredPrefixFromStatusInfo:(id)a4
+- (id)statusBarView:(id)view preferredPrefixFromStatusInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MailStatusViewController *)self primaryStatusView];
+  viewCopy = view;
+  infoCopy = info;
+  primaryStatusView = [(MailStatusViewController *)self primaryStatusView];
 
-  if (v8 == v6)
+  if (primaryStatusView == viewCopy)
   {
-    v11 = [v7 primaryStatusPrefix];
+    primaryStatusPrefix = [infoCopy primaryStatusPrefix];
   }
 
   else
   {
-    v9 = [(MailStatusViewController *)self secondaryStatusView];
+    secondaryStatusView = [(MailStatusViewController *)self secondaryStatusView];
 
-    if (v9 != v6)
+    if (secondaryStatusView != viewCopy)
     {
       v10 = 0;
       goto LABEL_7;
     }
 
-    v11 = [v7 secondaryStatusPrefix];
+    primaryStatusPrefix = [infoCopy secondaryStatusPrefix];
   }
 
-  v10 = v11;
+  v10 = primaryStatusPrefix;
 LABEL_7:
 
   return v10;
 }
 
-- (void)mailboxStatusUpdatedWithStatusInfo:(id)a3 forMailboxObjectID:(id)a4
+- (void)mailboxStatusUpdatedWithStatusInfo:(id)info forMailboxObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  infoCopy = info;
+  dCopy = d;
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10013998C;
   v11[3] = &unk_10064C6B0;
   v11[4] = self;
-  v9 = v7;
+  v9 = dCopy;
   v12 = v9;
-  v10 = v6;
+  v10 = infoCopy;
   v13 = v10;
-  [v8 performSyncBlock:v11];
+  [mailboxStatusScheduler performSyncBlock:v11];
 
   [(MailStatusViewController *)self _performStatusUpdateAndSignpostForMailboxObjectID:v9];
 }
 
-- (void)badgeCountUpdated:(id)a3 badgeCount:(int64_t)a4
+- (void)badgeCountUpdated:(id)updated badgeCount:(int64_t)count
 {
-  v6 = [(MailStatusViewController *)self mailboxStatusScheduler];
+  mailboxStatusScheduler = [(MailStatusViewController *)self mailboxStatusScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100139BC8;
   v7[3] = &unk_10064DE08;
   v7[4] = self;
-  v7[5] = a4;
-  [v6 performBlock:v7];
+  v7[5] = count;
+  [mailboxStatusScheduler performBlock:v7];
 
   [(MailStatusViewController *)self _performStatusUpdate];
 }
 
-- (BOOL)preferUnreadCountInsteadOfTotalCount:(id)a3
+- (BOOL)preferUnreadCountInsteadOfTotalCount:(id)count
 {
-  v4 = [(MailStatusViewController *)self delegate];
-  v5 = v4;
-  if (v4)
+  delegate = [(MailStatusViewController *)self delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    v6 = [v4 shouldShowUnreadCountForMailStatusViewController:self];
+    v6 = [delegate shouldShowUnreadCountForMailStatusViewController:self];
   }
 
   else
@@ -1292,10 +1292,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)numberOfPendingMessagesChanged:(unint64_t)a3
+- (void)numberOfPendingMessagesChanged:(unint64_t)changed
 {
   os_unfair_lock_lock(&self->_numberOfPendingMessagesLock);
-  if (self->_numberOfPendingMessages == a3)
+  if (self->_numberOfPendingMessages == changed)
   {
 
     os_unfair_lock_unlock(&self->_numberOfPendingMessagesLock);
@@ -1303,18 +1303,18 @@ LABEL_7:
 
   else
   {
-    self->_numberOfPendingMessages = a3;
+    self->_numberOfPendingMessages = changed;
     os_unfair_lock_unlock(&self->_numberOfPendingMessagesLock);
 
     [(MailStatusViewController *)self _performStatusUpdate];
   }
 }
 
-- (void)hasDelayedMessagesDidChange:(BOOL)a3
+- (void)hasDelayedMessagesDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_hasDelayedMessagesLock);
-  if (self->_hasDelayedMessages == v3)
+  if (self->_hasDelayedMessages == changeCopy)
   {
 
     os_unfair_lock_unlock(&self->_hasDelayedMessagesLock);
@@ -1322,28 +1322,28 @@ LABEL_7:
 
   else
   {
-    self->_hasDelayedMessages = v3;
+    self->_hasDelayedMessages = changeCopy;
     os_unfair_lock_unlock(&self->_hasDelayedMessagesLock);
 
     [(MailStatusViewController *)self _performStatusUpdate];
   }
 }
 
-- (id)accountStatusErrorAttributedStringForAccountWithErrors:(id)a3
+- (id)accountStatusErrorAttributedStringForAccountWithErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v23 = NSForegroundColorAttributeName;
   v5 = +[UIColor systemGrayColor];
   v24 = v5;
   v20 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
-  if ([v4 count] == 1)
+  if ([errorsCopy count] == 1)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"ACCOUNT_ERROR" value:&stru_100662A88 table:@"Main"];
-    v8 = [v4 firstObject];
-    v9 = [v8 name];
-    v10 = [NSString stringWithFormat:v7, v9];
+    firstObject = [errorsCopy firstObject];
+    name = [firstObject name];
+    v10 = [NSString stringWithFormat:v7, name];
   }
 
   else
@@ -1354,8 +1354,8 @@ LABEL_7:
 
   v11 = [[NSMutableAttributedString alloc] initWithString:v10 attributes:v20];
   v21 = NSForegroundColorAttributeName;
-  v12 = [(MailStatusViewController *)self statusBarViewTintColor];
-  v22 = v12;
+  statusBarViewTintColor = [(MailStatusViewController *)self statusBarViewTintColor];
+  v22 = statusBarViewTintColor;
   v13 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
   v14 = [NSAttributedString alloc];
@@ -1371,40 +1371,40 @@ LABEL_7:
   return v11;
 }
 
-- (void)iCloudQuotaOfferUpdated:(id)a3 offer:(id)a4
+- (void)iCloudQuotaOfferUpdated:(id)updated offer:(id)offer
 {
-  v5 = a4;
-  v8 = v5;
-  v9 = self;
+  offerCopy = offer;
+  v8 = offerCopy;
+  selfCopy = self;
   v6 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v6 performBlock:&v7];
 }
 
-- (void)mailStatusObserver:(id)a3 didChangeInAppMessage:(id)a4
+- (void)mailStatusObserver:(id)observer didChangeInAppMessage:(id)message
 {
-  v5 = a4;
-  v8 = v5;
-  v9 = self;
+  messageCopy = message;
+  v8 = messageCopy;
+  selfCopy = self;
   v6 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v6 performBlock:&v7];
 }
 
-- (id)actionBlockForAccountError:(id)a3 error:(id)a4 description:(id)a5 failureReason:(id)a6
+- (id)actionBlockForAccountError:(id)error error:(id)a4 description:(id)description failureReason:(id)reason
 {
-  v9 = a3;
+  errorCopy = error;
   v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  if ([v9 count] == 1)
+  descriptionCopy = description;
+  reasonCopy = reason;
+  if ([errorCopy count] == 1)
   {
-    v10 = [v31 code];
-    v11 = [MFError errorWithDomain:MFMessageErrorDomain code:v10 localizedDescription:v30];
-    [v11 setUserInfoObject:v29 forKey:NSLocalizedFailureReasonErrorKey];
-    v12 = [v9 firstObject];
-    v13 = [v12 objectID];
-    v14 = [v13 representedObjectID];
+    code = [v31 code];
+    v11 = [MFError errorWithDomain:MFMessageErrorDomain code:code localizedDescription:descriptionCopy];
+    [v11 setUserInfoObject:reasonCopy forKey:NSLocalizedFailureReasonErrorKey];
+    firstObject = [errorCopy firstObject];
+    objectID = [firstObject objectID];
+    representedObjectID = [objectID representedObjectID];
 
-    v15 = [MailAccount accountWithUniqueId:v14];
+    v15 = [MailAccount accountWithUniqueId:representedObjectID];
   }
 
   else
@@ -1414,7 +1414,7 @@ LABEL_7:
     v35[2] = sub_10013AE34;
     v35[3] = &unk_1006513A0;
     v36 = v31;
-    v16 = [v9 ef_compactMap:v35];
+    v16 = [errorCopy ef_compactMap:v35];
     v17 = objc_alloc_init(MUILocalizationListFormatter);
     v18 = [v17 localizedStringFromList:v16];
     v19 = +[NSBundle mainBundle];
@@ -1442,15 +1442,15 @@ LABEL_7:
   return v27;
 }
 
-- (void)networkStatusChanged:(id)a3
+- (void)networkStatusChanged:(id)changed
 {
   v4 = +[MFNetworkController sharedInstance];
-  v5 = [v4 dataStatus];
+  dataStatus = [v4 dataStatus];
 
   v6 = +[MailStatusViewController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [NSNumber numberWithInteger:v5];
+    v7 = [NSNumber numberWithInteger:dataStatus];
     v8 = 138543362;
     v9 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Network status changed: %{public}@", &v8, 0xCu);

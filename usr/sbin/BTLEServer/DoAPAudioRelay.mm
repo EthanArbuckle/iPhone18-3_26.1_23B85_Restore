@@ -1,6 +1,6 @@
 @interface DoAPAudioRelay
 - (BOOL)isHubConnected;
-- (DoAPAudioRelay)initWithIdentifier:(id)a3 deviceType:(int64_t)a4 properties:(id)a5 codecType:(unsigned __int8)a6 hub:(id)a7;
+- (DoAPAudioRelay)initWithIdentifier:(id)identifier deviceType:(int64_t)type properties:(id)properties codecType:(unsigned __int8)codecType hub:(id)hub;
 - (DoAPAudioRelayHub)hub;
 - (DoAPAudioRelaySource)delegate;
 - (void)cancelStream;
@@ -9,31 +9,31 @@
 - (void)handleStopStream;
 - (void)invalidate;
 - (void)publish;
-- (void)sendAudioFrame:(id)a3;
-- (void)sendMsg:(const char *)a3 args:(id)a4;
-- (void)startStream:(id)a3;
-- (void)stopStream:(id)a3;
+- (void)sendAudioFrame:(id)frame;
+- (void)sendMsg:(const char *)msg args:(id)args;
+- (void)startStream:(id)stream;
+- (void)stopStream:(id)stream;
 @end
 
 @implementation DoAPAudioRelay
 
-- (DoAPAudioRelay)initWithIdentifier:(id)a3 deviceType:(int64_t)a4 properties:(id)a5 codecType:(unsigned __int8)a6 hub:(id)a7
+- (DoAPAudioRelay)initWithIdentifier:(id)identifier deviceType:(int64_t)type properties:(id)properties codecType:(unsigned __int8)codecType hub:(id)hub
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  hubCopy = hub;
   v19.receiver = self;
   v19.super_class = DoAPAudioRelay;
   v16 = [(DoAPAudioRelay *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_identifier, a3);
-    objc_storeWeak(&v17->_hub, v15);
+    objc_storeStrong(&v16->_identifier, identifier);
+    objc_storeWeak(&v17->_hub, hubCopy);
     v17->_isStreaming = 0;
-    objc_storeStrong(&v17->_hidProperties, a5);
-    v17->_codec = a6;
-    v17->_deviceType = a4;
+    objc_storeStrong(&v17->_hidProperties, properties);
+    v17->_codec = codecType;
+    v17->_deviceType = type;
   }
 
   return v17;
@@ -41,16 +41,16 @@
 
 - (BOOL)isHubConnected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(DoAPAudioRelay *)self hub];
-  LOBYTE(v2) = [v3 isXpcConnectedForDeviceType:v2->_deviceType];
+  LOBYTE(selfCopy) = [v3 isXpcConnectedForDeviceType:selfCopy->_deviceType];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)sendAudioFrame:(id)a3
+- (void)sendAudioFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
@@ -58,7 +58,7 @@
   }
 
   v14 = @"kMsgArgData";
-  v15 = v4;
+  v15 = frameCopy;
   v13 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   [(DoAPAudioRelay *)self sendMsg:"AudioFrame" args:v13];
 }
@@ -93,21 +93,21 @@
   v4 = [NSNumber numberWithInteger:[(DoAPAudioRelay *)self deviceType]];
   [v3 setValue:v4 forKey:@"kMsgDeviceType"];
 
-  v5 = [(DoAPAudioRelay *)self hidProperties];
+  hidProperties = [(DoAPAudioRelay *)self hidProperties];
 
-  if (v5)
+  if (hidProperties)
   {
-    v6 = [(DoAPAudioRelay *)self hidProperties];
-    v7 = [v6 objectForKeyedSubscript:@"ProductID"];
+    hidProperties2 = [(DoAPAudioRelay *)self hidProperties];
+    v7 = [hidProperties2 objectForKeyedSubscript:@"ProductID"];
     [v3 setValue:v7 forKey:@"kMsgPidNum"];
   }
 
-  v8 = [(DoAPAudioRelay *)self identifier];
+  identifier = [(DoAPAudioRelay *)self identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [(DoAPAudioRelay *)self identifier];
-    [v3 setValue:v9 forKey:@"kMsgArgIdentifier"];
+    identifier2 = [(DoAPAudioRelay *)self identifier];
+    [v3 setValue:identifier2 forKey:@"kMsgArgIdentifier"];
   }
 
   if ([(DoAPAudioRelay *)self codec])
@@ -161,9 +161,9 @@
   [(DoAPAudioRelay *)self stopStream:&stru_1000BDCA8];
 }
 
-- (void)startStream:(id)a3
+- (void)startStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(DoAPAudioRelay *)self setIsStreaming:1];
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -171,13 +171,13 @@
     sub_10007531C(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(DoAPAudioRelay *)self delegate];
-  [v13 doapAudioWillStart:v4];
+  delegate = [(DoAPAudioRelay *)self delegate];
+  [delegate doapAudioWillStart:streamCopy];
 }
 
-- (void)stopStream:(id)a3
+- (void)stopStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(DoAPAudioRelay *)self setIsStreaming:0];
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -185,23 +185,23 @@
     sub_100075354(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(DoAPAudioRelay *)self delegate];
-  [v13 doapAudioDidStop:v4];
+  delegate = [(DoAPAudioRelay *)self delegate];
+  [delegate doapAudioDidStop:streamCopy];
 }
 
-- (void)sendMsg:(const char *)a3 args:(id)a4
+- (void)sendMsg:(const char *)msg args:(id)args
 {
-  v10 = a4;
-  v6 = [(DoAPAudioRelay *)self identifier];
-  v7 = [NSMutableDictionary dictionaryWithObject:v6 forKey:@"kMsgArgIdentifier"];
+  argsCopy = args;
+  identifier = [(DoAPAudioRelay *)self identifier];
+  v7 = [NSMutableDictionary dictionaryWithObject:identifier forKey:@"kMsgArgIdentifier"];
 
-  if (v10)
+  if (argsCopy)
   {
-    [v7 addEntriesFromDictionary:v10];
+    [v7 addEntriesFromDictionary:argsCopy];
   }
 
   v8 = [(DoAPAudioRelay *)self hub];
-  v9 = [NSString stringWithUTF8String:a3];
+  v9 = [NSString stringWithUTF8String:msg];
   [v8 sendMsgIfCheckedIn:v9 args:v7 forClient:{-[DoAPAudioRelay deviceType](self, "deviceType")}];
 }
 

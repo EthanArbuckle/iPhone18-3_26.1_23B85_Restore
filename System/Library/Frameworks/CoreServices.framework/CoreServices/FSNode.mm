@@ -1,79 +1,79 @@
 @interface FSNode
-+ (BOOL)canAccessURL:(id)a3 fromSandboxWithAuditToken:(id *)a4 operation:(const char *)a5;
-+ (BOOL)canAccessURL:(id)a3 withAuditToken:(id *)a4 operation:(const char *)a5;
-+ (BOOL)canReadMetadataOfURL:(id)a3 fromSandboxWithAuditToken:(id *)a4;
-+ (BOOL)canReadMetadataOfURL:(id)a3 withAuditToken:(id *)a4;
-+ (BOOL)getFileSystemRepresentation:(char)a3[1024] forBookmarkData:(id)a4;
-+ (BOOL)getVolumeIdentifier:(unint64_t *)a3 forBookmarkData:(id)a4 error:(id *)a5;
-+ (BOOL)isBookmarkDataFull:(id)a3;
-+ (id)_resolvedURLFromAliasFile:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
-+ (id)nameForBookmarkData:(id)a3 error:(id *)a4;
-+ (id)pathForBookmarkData:(id)a3 error:(id *)a4;
++ (BOOL)canAccessURL:(id)l fromSandboxWithAuditToken:(id *)token operation:(const char *)operation;
++ (BOOL)canAccessURL:(id)l withAuditToken:(id *)token operation:(const char *)operation;
++ (BOOL)canReadMetadataOfURL:(id)l fromSandboxWithAuditToken:(id *)token;
++ (BOOL)canReadMetadataOfURL:(id)l withAuditToken:(id *)token;
++ (BOOL)getFileSystemRepresentation:(char)representation[1024] forBookmarkData:(id)data;
++ (BOOL)getVolumeIdentifier:(unint64_t *)identifier forBookmarkData:(id)data error:(id *)error;
++ (BOOL)isBookmarkDataFull:(id)full;
++ (id)_resolvedURLFromAliasFile:(id)file flags:(unsigned int)flags error:(id *)error;
++ (id)nameForBookmarkData:(id)data error:(id *)error;
++ (id)pathForBookmarkData:(id)data error:(id *)error;
 + (id)prebootVolumeNode;
-+ (id)relativePathToFullPath:(id)a3 fromBasePath:(id)a4;
++ (id)relativePathToFullPath:(id)path fromBasePath:(id)basePath;
 + (id)rootVolumeNode;
 + (id)systemDataVolumeNode;
 + (id)userDataVolumeNode;
-- (BOOL)canReadFromSandboxWithAuditToken:(id *)a3;
-- (BOOL)canReadMetadataFromSandboxWithAuditToken:(id *)a3;
-- (BOOL)canReadMetadataWithAuditToken:(id *)a3;
-- (BOOL)canReadWithAuditToken:(id *)a3;
-- (BOOL)canWriteFromSandboxWithAuditToken:(id *)a3;
-- (BOOL)canWriteWithAuditToken:(id *)a3;
-- (BOOL)childNodeWithRelativePathExists:(id)a3;
-- (BOOL)getDeviceNumber:(int *)a3 error:(id *)a4;
-- (BOOL)getFSID:(fsid *)a3 error:(id *)a4;
-- (BOOL)getFileIdentifier:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)getFileSystemRepresentation:(char)a3[1024] error:(id *)a4;
-- (BOOL)getFinderInfo:(id *)a3 error:(id *)a4;
-- (BOOL)getHFSType:(unsigned int *)a3 creator:(unsigned int *)a4 error:(id *)a5;
-- (BOOL)getInodeNumber:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)getIsDirectory_NoIO:(BOOL *)a3;
-- (BOOL)getLength:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)getOwnerUID:(unsigned int *)a3 error:(id *)a4;
-- (BOOL)getResourceValue:(id *)a3 forKey:(id)a4 options:(unsigned __int8)a5 error:(id *)a6;
-- (BOOL)getVolumeIdentifier:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)getWriterBundleIdentifier:(id *)a3 error:(id *)a4;
+- (BOOL)canReadFromSandboxWithAuditToken:(id *)token;
+- (BOOL)canReadMetadataFromSandboxWithAuditToken:(id *)token;
+- (BOOL)canReadMetadataWithAuditToken:(id *)token;
+- (BOOL)canReadWithAuditToken:(id *)token;
+- (BOOL)canWriteFromSandboxWithAuditToken:(id *)token;
+- (BOOL)canWriteWithAuditToken:(id *)token;
+- (BOOL)childNodeWithRelativePathExists:(id)exists;
+- (BOOL)getDeviceNumber:(int *)number error:(id *)error;
+- (BOOL)getFSID:(fsid *)d error:(id *)error;
+- (BOOL)getFileIdentifier:(unint64_t *)identifier error:(id *)error;
+- (BOOL)getFileSystemRepresentation:(char)representation[1024] error:(id *)error;
+- (BOOL)getFinderInfo:(id *)info error:(id *)error;
+- (BOOL)getHFSType:(unsigned int *)type creator:(unsigned int *)creator error:(id *)error;
+- (BOOL)getInodeNumber:(unint64_t *)number error:(id *)error;
+- (BOOL)getIsDirectory_NoIO:(BOOL *)o;
+- (BOOL)getLength:(unint64_t *)length error:(id *)error;
+- (BOOL)getOwnerUID:(unsigned int *)d error:(id *)error;
+- (BOOL)getResourceValue:(id *)value forKey:(id)key options:(unsigned __int8)options error:(id *)error;
+- (BOOL)getVolumeIdentifier:(unint64_t *)identifier error:(id *)error;
+- (BOOL)getWriterBundleIdentifier:(id *)identifier error:(id *)error;
 - (BOOL)hasPackageBit;
 - (BOOL)isAVCHDCollection;
 - (BOOL)isAliasFile;
 - (BOOL)isDirectory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExecutable;
 - (BOOL)isExecutableModeFile;
 - (BOOL)isSecuredSystemContent;
 - (BOOL)isSideFault;
 - (BOOL)isVolume;
-- (BOOL)setExtendedAttribute:(id)a3 name:(id)a4 options:(int)a5 error:(id *)a6;
-- (BOOL)setFinderInfo:(id *)a3 error:(id *)a4;
-- (BOOL)setResourceValue:(id)a3 forKey:(id)a4 options:(unsigned __int8)a5 error:(id *)a6;
-- (FSNode)initWithCoder:(id)a3;
-- (FSNode)initWithURL:(id)a3 flags:(unsigned int)a4 error:(id *)a5;
+- (BOOL)setExtendedAttribute:(id)attribute name:(id)name options:(int)options error:(id *)error;
+- (BOOL)setFinderInfo:(id *)info error:(id *)error;
+- (BOOL)setResourceValue:(id)value forKey:(id)key options:(unsigned __int8)options error:(id *)error;
+- (FSNode)initWithCoder:(id)coder;
+- (FSNode)initWithURL:(id)l flags:(unsigned int)flags error:(id *)error;
 - (NSString)description;
-- (__CFBundle)copyCFBundleWithError:(id *)a3;
+- (__CFBundle)copyCFBundleWithError:(id *)error;
 - (id)URL;
-- (id)bookmarkDataWithOptions:(unint64_t)a3 relativeToNode:(id)a4 error:(id *)a5;
-- (id)bundleIdentifierWithContext:(LSContext *)a3 error:(id *)a4;
-- (id)bundleInfoDictionaryWithError:(id *)a3;
-- (id)canonical:(BOOL)a3 pathWithError:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)diskImageURLWithFlags:(unsigned int)a3 error:(id *)a4;
-- (id)extendedAttributeWithName:(id)a3 options:(int)a4 error:(id *)a5;
-- (id)extensionWithError:(id *)a3;
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToNode:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7;
-- (id)nameWithError:(id *)a3;
+- (id)bookmarkDataWithOptions:(unint64_t)options relativeToNode:(id)node error:(id *)error;
+- (id)bundleIdentifierWithContext:(LSContext *)context error:(id *)error;
+- (id)bundleInfoDictionaryWithError:(id *)error;
+- (id)canonical:(BOOL)canonical pathWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)diskImageURLWithFlags:(unsigned int)flags error:(id *)error;
+- (id)extendedAttributeWithName:(id)name options:(int)options error:(id *)error;
+- (id)extensionWithError:(id *)error;
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToNode:(id)node bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
+- (id)nameWithError:(id *)error;
 - (id)redactedDescription;
 - (id)referringAliasNode;
-- (id)sideFaultResourceValuesWithError:(id *)a3;
-- (id)temporaryDirectoryNodeWithFlags:(unsigned int)a3 error:(id *)a4;
-- (id)volumeNodeWithFlags:(unsigned int)a3 error:(id *)a4;
+- (id)sideFaultResourceValuesWithError:(id *)error;
+- (id)temporaryDirectoryNodeWithFlags:(unsigned int)flags error:(id *)error;
+- (id)volumeNodeWithFlags:(unsigned int)flags error:(id *)error;
 - (unint64_t)hash;
 - (void)clearURLPropertyCacheIfStale;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)prepareForReuse;
-- (void)removeCachedResourceValueForKey:(id)a3;
-- (void)setReferringAliasNode:(id)a3;
-- (void)setTemporaryResourceValue:(id)a3 forKey:(id)a4;
+- (void)removeCachedResourceValueForKey:(id)key;
+- (void)setReferringAliasNode:(id)node;
+- (void)setTemporaryResourceValue:(id)value forKey:(id)key;
 @end
 
 @implementation FSNode
@@ -82,8 +82,8 @@
 {
   if ((*(self + 24) & 0x10) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"FSUtils.mm" lineNumber:484 description:{@"Attempted to use uninitialized FSNode %p.", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FSUtils.mm" lineNumber:484 description:{@"Attempted to use uninitialized FSNode %p.", self}];
   }
 
   url = self->_url;
@@ -114,22 +114,22 @@
 
 - (BOOL)isVolume
 {
-  v3 = [(FSNode *)self isDirectory];
-  if (v3)
+  isDirectory = [(FSNode *)self isDirectory];
+  if (isDirectory)
   {
     if (_FSNodeGetSimpleBoolValue(self, *MEMORY[0x1E695DBE8], 8, 0))
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isDirectory) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(FSNode *)self isMountTrigger];
+      LOBYTE(isDirectory) = [(FSNode *)self isMountTrigger];
     }
   }
 
-  return v3;
+  return isDirectory;
 }
 
 - (BOOL)isDirectory
@@ -163,15 +163,15 @@
 - (BOOL)hasPackageBit
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(FSNode *)self isDirectory];
-  if (v3)
+  isDirectory = [(FSNode *)self isDirectory];
+  if (isDirectory)
   {
     v4 = [(FSNode *)self getFinderInfo:v7 error:0];
-    v3 = *&v4 & ((v8 & 0x2000) >> 13);
+    isDirectory = *&v4 & ((v8 & 0x2000) >> 13);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return isDirectory;
 }
 
 - (BOOL)isAVCHDCollection
@@ -227,8 +227,8 @@ LABEL_10:
 {
   if ((*(self + 24) & 0x10) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"FSUtils.mm" lineNumber:280 description:{@"Attempted to prepare FSNode %p for reuse, but it was already prepared.", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FSUtils.mm" lineNumber:280 description:{@"Attempted to prepare FSNode %p for reuse, but it was already prepared.", self}];
   }
 
   url = self->_url;
@@ -240,13 +240,13 @@ LABEL_10:
 
 - (BOOL)isAliasFile
 {
-  v3 = [(FSNode *)self isResolvable];
-  if (v3)
+  isResolvable = [(FSNode *)self isResolvable];
+  if (isResolvable)
   {
-    LOBYTE(v3) = ![(FSNode *)self isSymbolicLink];
+    LOBYTE(isResolvable) = ![(FSNode *)self isSymbolicLink];
   }
 
-  return v3;
+  return isResolvable;
 }
 
 - (BOOL)isExecutable
@@ -298,7 +298,7 @@ LABEL_10:
   return v5;
 }
 
-- (FSNode)initWithURL:(id)a3 flags:(unsigned int)a4 error:(id *)a5
+- (FSNode)initWithURL:(id)l flags:(unsigned int)flags error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v29.receiver = self;
@@ -307,10 +307,10 @@ LABEL_10:
   v10 = v9;
   if (!v9)
   {
-    if (a5)
+    if (error)
     {
       _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10810, 0, "[FSNode initWithURL:flags:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 248);
-      *a5 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_43;
     }
 
@@ -321,8 +321,8 @@ LABEL_42:
 
   if ((*(v9 + 24) & 0x10) != 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:v10 file:@"FSUtils.mm" lineNumber:174 description:{@"Attempted to initialize FSNode %p that was already initialized", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v10 file:@"FSUtils.mm" lineNumber:174 description:{@"Attempted to initialize FSNode %p that was already initialized", v10}];
   }
 
   p_url = &v10->_url;
@@ -330,15 +330,15 @@ LABEL_42:
   v10->_url = 0;
 
   v10->_cacheExpiration = -1;
-  *(v10 + 24) = (a4 >> 3) & 8 | *(v10 + 24) & 0xE0 | 0x10;
-  if (!a3 || ![a3 isFileURL])
+  *(v10 + 24) = (flags >> 3) & 8 | *(v10 + 24) & 0xE0 | 0x10;
+  if (!l || ![l isFileURL])
   {
-    if (a5)
+    if (error)
     {
       v30 = *MEMORY[0x1E696A278];
       v31[0] = @"aURL";
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      *a5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v21, "[FSNode initWithURL:flags:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 243);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v21, "[FSNode initWithURL:flags:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 243);
     }
 
     goto LABEL_42;
@@ -350,10 +350,10 @@ LABEL_42:
     *p_url = 0;
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((flags & 0x20) != 0)
   {
     v28 = 0;
-    v14 = [a3 getResourceValue:&v28 forKey:*MEMORY[0x1E695DA88] error:0];
+    v14 = [l getResourceValue:&v28 forKey:*MEMORY[0x1E695DA88] error:0];
     v15 = v28;
     if (v15)
     {
@@ -367,9 +367,9 @@ LABEL_42:
 
     if (v16 == 1)
     {
-      v17 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v15 isDirectory:{objc_msgSend(a3, "hasDirectoryPath")}];
+      v17 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v15 isDirectory:{objc_msgSend(l, "hasDirectoryPath")}];
       v18 = v17;
-      if (v17 && ([v17 isEqual:a3] & 1) == 0)
+      if (v17 && ([v17 isEqual:l] & 1) == 0)
       {
         objc_storeStrong(&v10->_url, v18);
       }
@@ -378,23 +378,23 @@ LABEL_42:
 
   if (!*p_url)
   {
-    objc_storeStrong(&v10->_url, a3);
+    objc_storeStrong(&v10->_url, l);
   }
 
-  LODWORD(v19) = (a4 >> 2) & 0x10 | a4;
-  if ((a4 & 8) != 0)
+  LODWORD(v19) = (flags >> 2) & 0x10 | flags;
+  if ((flags & 8) != 0)
   {
     *(v10 + 24) = *(v10 + 24) & 0xFC | 2;
   }
 
-  if ((a4 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     v20 = v10;
     goto LABEL_35;
   }
 
   v19 = v19 | 1;
-  v22 = [(FSNode *)v10 resolvedNodeWithFlags:v19 error:a5];
+  v22 = [(FSNode *)v10 resolvedNodeWithFlags:v19 error:error];
   v23 = v22;
   if (!v22)
   {
@@ -413,7 +413,7 @@ LABEL_42:
   }
 
 LABEL_35:
-  if ((v19 & 1) != 0 && ![(FSNode *)v20 checkResourceIsReachableAndReturnError:a5])
+  if ((v19 & 1) != 0 && ![(FSNode *)v20 checkResourceIsReachableAndReturnError:error])
   {
 
     goto LABEL_42;
@@ -435,14 +435,14 @@ LABEL_43:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -453,10 +453,10 @@ LABEL_43:
     return 0;
   }
 
-  v5 = self;
-  v6 = a3;
-  v7 = [(FSNode *)v5 URL];
-  v8 = [v6 URL];
+  selfCopy = self;
+  equalCopy = equal;
+  v7 = [(FSNode *)selfCopy URL];
+  v8 = [equalCopy URL];
   v9 = v8;
   if (v7 && v8 && ([v7 isEqual:v8] & 1) != 0)
   {
@@ -467,10 +467,10 @@ LABEL_43:
   {
     v14 = 0;
     v11 = *MEMORY[0x1E695DB00];
-    if ([(FSNode *)v5 getResourceValue:&v14 forKey:*MEMORY[0x1E695DB00] options:1 error:0])
+    if ([(FSNode *)selfCopy getResourceValue:&v14 forKey:*MEMORY[0x1E695DB00] options:1 error:0])
     {
       v13 = 0;
-      if ([v6 getResourceValue:&v13 forKey:v11 options:1 error:0])
+      if ([equalCopy getResourceValue:&v13 forKey:v11 options:1 error:0])
       {
         v10 = [v14 isEqual:v13];
       }
@@ -570,9 +570,9 @@ LABEL_43:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(FSNode *)self URL];
@@ -581,16 +581,16 @@ LABEL_43:
       if ([__LSDefaultsGetSharedInstance() hasServer])
       {
         v6 = v5;
-        v7 = *(v4 + 8);
+        relativeString = *(v4 + 8);
         *(v4 + 8) = v6;
       }
 
       else
       {
         v8 = objc_alloc(MEMORY[0x1E695DFF8]);
-        v7 = [v5 relativeString];
-        v9 = [v5 baseURL];
-        v10 = [v8 initWithString:v7 relativeToURL:v9];
+        relativeString = [v5 relativeString];
+        baseURL = [v5 baseURL];
+        v10 = [v8 initWithString:relativeString relativeToURL:baseURL];
         v11 = *(v4 + 8);
         *(v4 + 8) = v10;
       }
@@ -598,10 +598,10 @@ LABEL_43:
 
     *(v4 + 16) = self->_cacheExpiration;
     *(v4 + 24) = *(v4 + 24) & 0xFC | *(self + 24) & 3;
-    v12 = [(FSNode *)self referringAliasNode];
-    if (v12)
+    referringAliasNode = [(FSNode *)self referringAliasNode];
+    if (referringAliasNode)
     {
-      [v4 setReferringAliasNode:v12];
+      [v4 setReferringAliasNode:referringAliasNode];
     }
 
     *(v4 + 24) &= ~8u;
@@ -618,24 +618,24 @@ LABEL_43:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = [(FSNode *)self URL];
-  [a3 encodeObject:? forKey:?];
+  [coder encodeObject:? forKey:?];
 
-  [a3 encodeInt64:*(self + 24) & 3 forKey:@"isDirectory"];
-  v6 = [(FSNode *)self referringAliasNode];
-  [a3 encodeObject:? forKey:?];
+  [coder encodeInt64:*(self + 24) & 3 forKey:@"isDirectory"];
+  referringAliasNode = [(FSNode *)self referringAliasNode];
+  [coder encodeObject:? forKey:?];
 }
 
-- (FSNode)initWithCoder:(id)a3
+- (FSNode)initWithCoder:(id)coder
 {
-  v5 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+  v5 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
   v6 = v5;
   if (v5 && ([v5 isFileURL] & 1) != 0)
   {
-    v7 = [a3 decodeInt64ForKey:@"isDirectory"];
-    v8 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"referringAliasNode"];
+    v7 = [coder decodeInt64ForKey:@"isDirectory"];
+    v8 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"referringAliasNode"];
     v13 = 0;
     v9 = [(FSNode *)self initWithURL:v6 flags:0 error:&v13];
     v10 = v13;
@@ -650,14 +650,14 @@ LABEL_43:
 
     else
     {
-      [a3 failWithError:v10];
+      [coder failWithError:v10];
     }
   }
 
   else
   {
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[FSNode initWithCoder:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 450);
-    [a3 failWithError:v11];
+    [coder failWithError:v11];
 
     v9 = 0;
   }
@@ -665,36 +665,36 @@ LABEL_43:
   return v9;
 }
 
-- (BOOL)getResourceValue:(id *)a3 forKey:(id)a4 options:(unsigned __int8)a5 error:(id *)a6
+- (BOOL)getResourceValue:(id *)value forKey:(id)key options:(unsigned __int8)options error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   propertyValueTypeRefPtr = 0;
-  if (!a4)
+  if (!key)
   {
-    if (a6)
+    if (error)
     {
       v26 = *MEMORY[0x1E696A278];
       v27[0] = @"key";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-      *a6 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v14, "[FSNode getResourceValue:forKey:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 781);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v14, "[FSNode getResourceValue:forKey:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 781);
     }
 
     goto LABEL_32;
   }
 
-  if ((*(self + 24) & 3) != 0 && [a4 isEqual:*MEMORY[0x1E695DB78]])
+  if ((*(self + 24) & 3) != 0 && [key isEqual:*MEMORY[0x1E695DB78]])
   {
     propertyValueTypeRefPtr = [MEMORY[0x1E696AD98] numberWithBool:(*(self + 24) & 3) == 2];
     goto LABEL_23;
   }
 
   [(FSNode *)self clearURLPropertyCacheIfStale];
-  if (a5)
+  if (options)
   {
     v24 = 0;
     v15 = [(FSNode *)self URL];
     v16 = v15;
-    if (a6)
+    if (error)
     {
       v17 = &v24;
     }
@@ -704,11 +704,11 @@ LABEL_43:
       v17 = 0;
     }
 
-    v18 = CFURLCopyResourcePropertyForKey(v15, a4, &propertyValueTypeRefPtr, v17);
+    v18 = CFURLCopyResourcePropertyForKey(v15, key, &propertyValueTypeRefPtr, v17);
 
-    if (a6 != 0 && v18 == 0)
+    if (error != 0 && v18 == 0)
     {
-      *a6 = v24;
+      *error = v24;
 
       goto LABEL_32;
     }
@@ -728,12 +728,12 @@ LABEL_32:
 
     if (v12)
     {
-      if (a6)
+      if (error)
       {
         v13 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10655, 0, "[FSNode getResourceValue:forKey:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 812);
 LABEL_27:
         v21 = 0;
-        *a6 = v13;
+        *error = v13;
         goto LABEL_33;
       }
 
@@ -742,7 +742,7 @@ LABEL_27:
   }
 
   v19 = propertyValueTypeRefPtr;
-  if (propertyValueTypeRefPtr && (*(self + 24) & 3) == 0 && [a4 isEqual:*MEMORY[0x1E695DB78]])
+  if (propertyValueTypeRefPtr && (*(self + 24) & 3) == 0 && [key isEqual:*MEMORY[0x1E695DB78]])
   {
     if ([v19 BOOLValue])
     {
@@ -758,9 +758,9 @@ LABEL_27:
   }
 
 LABEL_23:
-  if ((a5 & 2) == 0 && !propertyValueTypeRefPtr)
+  if ((options & 2) == 0 && !propertyValueTypeRefPtr)
   {
-    if (a6)
+    if (error)
     {
       v13 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "[FSNode getResourceValue:forKey:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 825);
       goto LABEL_27;
@@ -769,9 +769,9 @@ LABEL_23:
     goto LABEL_32;
   }
 
-  if (a3)
+  if (value)
   {
-    objc_storeStrong(a3, propertyValueTypeRefPtr);
+    objc_storeStrong(value, propertyValueTypeRefPtr);
   }
 
   v21 = 1;
@@ -781,15 +781,15 @@ LABEL_33:
   return v21;
 }
 
-- (BOOL)setResourceValue:(id)a3 forKey:(id)a4 options:(unsigned __int8)a5 error:(id *)a6
+- (BOOL)setResourceValue:(id)value forKey:(id)key options:(unsigned __int8)options error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a4 && ((a5 & 2) == 0 ? (v8 = a3 == 0) : (v8 = 0), !v8 ? (v9 = 0) : (v9 = 1), (a5 & 1) != 0 && (v9 & 1) == 0))
+  if (key && ((options & 2) == 0 ? (v8 = value == 0) : (v8 = 0), !v8 ? (v9 = 0) : (v9 = 1), (options & 1) != 0 && (v9 & 1) == 0))
   {
     v18 = 0;
     v11 = [(FSNode *)self URL];
     v12 = v11;
-    if (a6)
+    if (error)
     {
       v13 = &v18;
     }
@@ -799,22 +799,22 @@ LABEL_33:
       v13 = 0;
     }
 
-    v14 = CFURLSetResourcePropertyForKey(v11, a4, a3, v13) != 0;
+    v14 = CFURLSetResourcePropertyForKey(v11, key, value, v13) != 0;
 
-    if (a6 != 0 && !v14)
+    if (error != 0 && !v14)
     {
-      *a6 = v18;
+      *error = v18;
     }
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
       v19 = *MEMORY[0x1E696A278];
       v20[0] = @"invalid input parameters";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a6 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[FSNode setResourceValue:forKey:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 851);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[FSNode setResourceValue:forKey:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 851);
     }
 
     v14 = 0;
@@ -824,25 +824,25 @@ LABEL_33:
   return v14;
 }
 
-- (void)removeCachedResourceValueForKey:(id)a3
+- (void)removeCachedResourceValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(FSNode *)self URL];
-    CFURLClearResourcePropertyCacheForKey(v4, a3);
+    CFURLClearResourcePropertyCacheForKey(v4, key);
   }
 }
 
-- (void)setTemporaryResourceValue:(id)a3 forKey:(id)a4
+- (void)setTemporaryResourceValue:(id)value forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = [(FSNode *)self URL];
-    CFURLSetTemporaryResourcePropertyForKey(v6, a4, a3);
+    CFURLSetTemporaryResourcePropertyForKey(v6, key, value);
   }
 }
 
-- (id)sideFaultResourceValuesWithError:(id *)a3
+- (id)sideFaultResourceValuesWithError:(id *)error
 {
   v5 = [(FSNode *)self nameWithError:?];
   if (!v5)
@@ -854,10 +854,10 @@ LABEL_9:
 
   if (!_CFURLIsPromiseName())
   {
-    if (a3)
+    if (error)
     {
       _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10817, 0, "[FSNode sideFaultResourceValuesWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 897);
-      *a3 = v7 = 0;
+      *error = v7 = 0;
       goto LABEL_10;
     }
 
@@ -867,9 +867,9 @@ LABEL_9:
   v6 = [(FSNode *)self URL];
   v7 = _CFURLCopyPropertiesOfPromiseAtURL();
 
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
 LABEL_10:
@@ -877,21 +877,21 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)childNodeWithRelativePathExists:(id)a3
+- (BOOL)childNodeWithRelativePathExists:(id)exists
 {
-  v3 = [(FSNode *)self childNodeWithRelativePath:a3 flags:1 error:0];
+  v3 = [(FSNode *)self childNodeWithRelativePath:exists flags:1 error:0];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)volumeNodeWithFlags:(unsigned int)a3 error:(id *)a4
+- (id)volumeNodeWithFlags:(unsigned int)flags error:(id *)error
 {
   v9 = 0;
-  if ([(FSNode *)self getResourceValue:&v9 forKey:*MEMORY[0x1E695DEB0] options:1 error:a4])
+  if ([(FSNode *)self getResourceValue:&v9 forKey:*MEMORY[0x1E695DEB0] options:1 error:error])
   {
     v6 = [FSNode alloc];
-    v7 = [(FSNode *)v6 initWithURL:v9 flags:a3 | 8 error:a4];
+    v7 = [(FSNode *)v6 initWithURL:v9 flags:flags | 8 error:error];
   }
 
   else
@@ -902,18 +902,18 @@ LABEL_10:
   return v7;
 }
 
-- (id)diskImageURLWithFlags:(unsigned int)a3 error:(id *)a4
+- (id)diskImageURLWithFlags:(unsigned int)flags error:(id *)error
 {
   v6 = 0;
-  [(FSNode *)self getResourceValue:&v6 forKey:*MEMORY[0x1E695E278] options:1 error:a4];
+  [(FSNode *)self getResourceValue:&v6 forKey:*MEMORY[0x1E695E278] options:1 error:error];
   v4 = v6;
 
   return v4;
 }
 
-- (void)setReferringAliasNode:(id)a3
+- (void)setReferringAliasNode:(id)node
 {
-  if (a3)
+  if (node)
   {
     v4 = 4;
   }
@@ -928,59 +928,59 @@ LABEL_10:
     v4 = 0;
   }
 
-  objc_setAssociatedObject(self, &_kFSNodeReferringAliasNodeKey, a3, 1);
+  objc_setAssociatedObject(self, &_kFSNodeReferringAliasNodeKey, node, 1);
   *(self + 24) = *(self + 24) & 0xFB | v4;
 }
 
-+ (id)_resolvedURLFromAliasFile:(id)a3 flags:(unsigned int)a4 error:(id *)a5
++ (id)_resolvedURLFromAliasFile:(id)file flags:(unsigned int)flags error:(id *)error
 {
-  v5 = a5;
+  errorCopy = error;
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (file)
   {
-    v7 = [a3 URL];
-    if ((a4 & 0x80) != 0)
+    v7 = [file URL];
+    if ((flags & 0x80) != 0)
     {
-      v8 = ~(a4 << 6) & 0x100;
+      v8 = ~(flags << 6) & 0x100;
     }
 
     else
     {
-      v8 = ~(a4 << 6) & 0x100 | 0x200;
+      v8 = ~(flags << 6) & 0x100 | 0x200;
     }
 
-    v5 = [MEMORY[0x1E695DFF8] URLByResolvingAliasFileAtURL:v7 options:v8 error:v5];
+    errorCopy = [MEMORY[0x1E695DFF8] URLByResolvingAliasFileAtURL:v7 options:v8 error:errorCopy];
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = *MEMORY[0x1E696A278];
     v13[0] = @"node";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    *v5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "+[FSNode _resolvedURLFromAliasFile:flags:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 1040);
+    *errorCopy = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "+[FSNode _resolvedURLFromAliasFile:flags:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 1040);
 
-    v5 = 0;
+    errorCopy = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return errorCopy;
 }
 
-- (id)temporaryDirectoryNodeWithFlags:(unsigned int)a3 error:(id *)a4
+- (id)temporaryDirectoryNodeWithFlags:(unsigned int)flags error:(id *)error
 {
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 temporaryDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  if (v7)
+  if (temporaryDirectory)
   {
-    v8 = [[FSNode alloc] initWithURL:v7 flags:a3 | 8 error:a4];
+    v8 = [[FSNode alloc] initWithURL:temporaryDirectory flags:flags | 8 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -120, 0, "[FSNode temporaryDirectoryNodeWithFlags:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 1154);
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -991,36 +991,36 @@ LABEL_10:
   return v8;
 }
 
-+ (id)relativePathToFullPath:(id)a3 fromBasePath:(id)a4
++ (id)relativePathToFullPath:(id)path fromBasePath:(id)basePath
 {
-  v6 = [a3 length];
-  v7 = [a4 length];
-  if (v6 <= v7 || (v8 = v7, [a3 compare:a4 options:0 range:{0, v7}]) || objc_msgSend(a3, "characterAtIndex:", v8) == 47 && (++v8, v6 <= v8))
+  v6 = [path length];
+  v7 = [basePath length];
+  if (v6 <= v7 || (v8 = v7, [path compare:basePath options:0 range:{0, v7}]) || objc_msgSend(path, "characterAtIndex:", v8) == 47 && (++v8, v6 <= v8))
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [a3 substringWithRange:{v8, v6 - v8}];
+    v9 = [path substringWithRange:{v8, v6 - v8}];
   }
 
   return v9;
 }
 
-- (BOOL)getIsDirectory_NoIO:(BOOL *)a3
+- (BOOL)getIsDirectory_NoIO:(BOOL *)o
 {
   v7 = 0;
   v4 = [(FSNode *)self getResourceValue:&v7 forKey:*MEMORY[0x1E695DB78] options:0 error:0];
   v5 = !v4;
-  if (!a3)
+  if (!o)
   {
     v5 = 1;
   }
 
   if ((v5 & 1) == 0)
   {
-    *a3 = [v7 BOOLValue];
+    *o = [v7 BOOLValue];
   }
 
   return v4;
@@ -1047,34 +1047,34 @@ LABEL_10:
   return v3;
 }
 
-- (id)canonical:(BOOL)a3 pathWithError:(id *)a4
+- (id)canonical:(BOOL)canonical pathWithError:(id *)error
 {
-  v5 = a3;
+  canonicalCopy = canonical;
   v20 = 0;
-  if (a3 || !self || (*(self + 24) & 8) == 0 || (url = self->_url, v8 = __CFURLResourceInfoPtr(), v19 = 0, !v8) || !MEMORY[0x1865D5CC0](v8, *MEMORY[0x1E695EBF8], &v19) || (v9 = v19, (v20 = v9) == 0))
+  if (canonical || !self || (*(self + 24) & 8) == 0 || (url = self->_url, v8 = __CFURLResourceInfoPtr(), v19 = 0, !v8) || !MEMORY[0x1865D5CC0](v8, *MEMORY[0x1E695EBF8], &v19) || (v9 = v19, (v20 = v9) == 0))
   {
     v10 = MEMORY[0x1E695DA88];
-    if (!v5)
+    if (!canonicalCopy)
     {
       v10 = MEMORY[0x1E695DC40];
     }
 
     v11 = *v10;
-    if (![(FSNode *)self getResourceValue:&v20 forKey:v11 options:1 error:a4])
+    if (![(FSNode *)self getResourceValue:&v20 forKey:v11 options:1 error:error])
     {
       v12 = [(FSNode *)self URL];
-      v13 = [v12 isFileReferenceURL];
+      isFileReferenceURL = [v12 isFileReferenceURL];
 
-      if ((v13 & 1) == 0)
+      if ((isFileReferenceURL & 1) == 0)
       {
         v14 = [(FSNode *)self URL];
-        v15 = [v14 absoluteURL];
+        absoluteURL = [v14 absoluteURL];
 
-        if (v15)
+        if (absoluteURL)
         {
-          v16 = [v15 path];
+          path = [absoluteURL path];
           v17 = v20;
-          v20 = v16;
+          v20 = path;
         }
       }
     }
@@ -1085,21 +1085,21 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)getFileSystemRepresentation:(char)a3[1024] error:(id *)a4
+- (BOOL)getFileSystemRepresentation:(char)representation[1024] error:(id *)error
 {
-  v6 = [(FSNode *)self pathWithError:a4];
+  v6 = [(FSNode *)self pathWithError:error];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  if (([v6 getFileSystemRepresentation:a3 maxLength:1024] & 1) == 0)
+  if (([v6 getFileSystemRepresentation:representation maxLength:1024] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -2110, 0, "[FSNode getFileSystemRepresentation:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 1395);
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_7;
     }
 
@@ -1114,22 +1114,22 @@ LABEL_7:
   return v8;
 }
 
-- (id)nameWithError:(id *)a3
+- (id)nameWithError:(id *)error
 {
   v13 = 0;
   if (!self || (*(self + 24) & 8) == 0 || (url = self->_url, !__CFURLResourceInfoPtr()) || (MEMORY[0x1865D5CB0](), (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (![(FSNode *)self getResourceValue:&v13 forKey:*MEMORY[0x1E695DC30] options:1 error:a3])
+    if (![(FSNode *)self getResourceValue:&v13 forKey:*MEMORY[0x1E695DC30] options:1 error:error])
     {
       v6 = [(FSNode *)self URL];
-      v7 = [v6 isFileReferenceURL];
+      isFileReferenceURL = [v6 isFileReferenceURL];
 
-      if ((v7 & 1) == 0)
+      if ((isFileReferenceURL & 1) == 0)
       {
         v8 = [(FSNode *)self URL];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = v13;
-        v13 = v9;
+        v13 = lastPathComponent;
       }
     }
   }
@@ -1139,7 +1139,7 @@ LABEL_7:
   return v11;
 }
 
-- (id)extensionWithError:(id *)a3
+- (id)extensionWithError:(id *)error
 {
   v14 = 0;
   if (!self || (*(self + 24) & 8) == 0)
@@ -1167,7 +1167,7 @@ LABEL_4:
 
   v6 = 1;
 LABEL_5:
-  v7 = [(FSNode *)self nameWithError:a3];
+  v7 = [(FSNode *)self nameWithError:error];
   if (v7)
   {
     _CFGetPathExtensionRangesFromPathComponent();
@@ -1281,19 +1281,19 @@ void __28__FSNode_userDataVolumeNode__block_invoke()
   +[FSNode userDataVolumeNode]::result = v1;
 }
 
-- (BOOL)getVolumeIdentifier:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getVolumeIdentifier:(unint64_t *)identifier error:(id *)error
 {
   v8 = 0;
-  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E3F0] options:1 error:a4];
+  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E3F0] options:1 error:error];
   v6 = !v5;
-  if (!a3)
+  if (!identifier)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    *a3 = [v8 unsignedLongLongValue];
+    *identifier = [v8 unsignedLongLongValue];
   }
 
   return v5;
@@ -1356,7 +1356,7 @@ void __28__FSNode_userDataVolumeNode__block_invoke()
     v17 = 2048;
     v18 = v4;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_18162D000, v10, OS_LOG_TYPE_DEBUG, "FSNode.isSecuredSystemContent=%s: device number %llu for %@", buf, 0x20u);
   }
 
@@ -1420,79 +1420,79 @@ void __32__FSNode_isSecuredSystemContent__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getDeviceNumber:(int *)a3 error:(id *)a4
+- (BOOL)getDeviceNumber:(int *)number error:(id *)error
 {
   v8 = 0;
-  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E3E8] options:1 error:a4];
+  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E3E8] options:1 error:error];
   v6 = !v5;
-  if (!a3)
+  if (!number)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    *a3 = [v8 unsignedLongLongValue];
+    *number = [v8 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (BOOL)getInodeNumber:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getInodeNumber:(unint64_t *)number error:(id *)error
 {
   v8 = 0;
-  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E2F0] options:1 error:a4];
+  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E2F0] options:1 error:error];
   v6 = !v5;
-  if (!a3)
+  if (!number)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    *a3 = [v8 unsignedLongLongValue];
+    *number = [v8 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (BOOL)getFileIdentifier:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getFileIdentifier:(unint64_t *)identifier error:(id *)error
 {
   v8 = 0;
-  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E2B0] options:1 error:a4];
+  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E2B0] options:1 error:error];
   v6 = !v5;
-  if (!a3)
+  if (!identifier)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    *a3 = [v8 unsignedLongLongValue];
+    *identifier = [v8 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (BOOL)getOwnerUID:(unsigned int *)a3 error:(id *)a4
+- (BOOL)getOwnerUID:(unsigned int *)d error:(id *)error
 {
   v8 = 0;
-  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E398] options:1 error:a4];
+  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695E398] options:1 error:error];
   v6 = !v5;
-  if (!a3)
+  if (!d)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    *a3 = [v8 unsignedLongLongValue];
+    *d = [v8 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (BOOL)getFSID:(fsid *)a3 error:(id *)a4
+- (BOOL)getFSID:(fsid *)d error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   if ([(FSNode *)self getFileSystemRepresentation:v13 error:?])
@@ -1501,17 +1501,17 @@ void __32__FSNode_isSecuredSystemContent__block_invoke(uint64_t a1)
     v7 = v6 == 0;
     if (v6)
     {
-      if (a4)
+      if (error)
       {
         v8 = *MEMORY[0x1E696A798];
         v9 = __error();
-        *a4 = _LSMakeNSErrorImpl(v8, *v9, 0, "[FSNode getFSID:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2337);
+        *error = _LSMakeNSErrorImpl(v8, *v9, 0, "[FSNode getFSID:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2337);
       }
     }
 
     else
     {
-      *a3 = v12.f_fsid;
+      *d = v12.f_fsid;
     }
   }
 
@@ -1524,18 +1524,18 @@ void __32__FSNode_isSecuredSystemContent__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (__CFBundle)copyCFBundleWithError:(id *)a3
+- (__CFBundle)copyCFBundleWithError:(id *)error
 {
   if (![(FSNode *)self canReadFromSandboxWithAuditToken:0])
   {
-    if (a3)
+    if (error)
     {
       v9 = *MEMORY[0x1E696A768];
       v10 = -10659;
       v11 = 2368;
 LABEL_10:
       _LSMakeNSErrorImpl(v9, v10, 0, "[FSNode copyCFBundleWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", v11);
-      *a3 = Unique = 0;
+      *error = Unique = 0;
       return Unique;
     }
 
@@ -1548,7 +1548,7 @@ LABEL_10:
 
   if (!Unique)
   {
-    if (a3)
+    if (error)
     {
       v9 = *MEMORY[0x1E696A768];
       v10 = -10813;
@@ -1568,7 +1568,7 @@ LABEL_10:
   return Unique;
 }
 
-- (id)bundleInfoDictionaryWithError:(id *)a3
+- (id)bundleInfoDictionaryWithError:(id *)error
 {
   v12 = 0;
   if (![(FSNode *)self getTemporaryResourceValue:&v12 forKey:@"com.apple.LSBundleInfoDictionaryKey"])
@@ -1597,20 +1597,20 @@ LABEL_10:
     v12 = 0;
 
     v9 = v12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!a3)
+  else if (!error)
   {
     goto LABEL_11;
   }
 
   if (!v9)
   {
-    *a3 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "[FSNode bundleInfoDictionaryWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2396);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "[FSNode bundleInfoDictionaryWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2396);
     v9 = v12;
   }
 
@@ -1619,7 +1619,7 @@ LABEL_11:
   return v9;
 }
 
-- (id)bundleIdentifierWithContext:(LSContext *)a3 error:(id *)a4
+- (id)bundleIdentifierWithContext:(LSContext *)context error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
   v23 = 0;
@@ -1636,12 +1636,12 @@ LABEL_11:
 
   if (!v8)
   {
-    if (a3)
+    if (context)
     {
       *buf = 0;
-      if (!_LSBundleFindWithNode(a3, self, 0, buf) && *buf)
+      if (!_LSBundleFindWithNode(context, self, 0, buf) && *buf)
       {
-        db = a3->db;
+        db = context->db;
         v10 = *(*buf + 12);
         [(_LSDatabase *)db store];
         v11 = _CSStringCopyCFString();
@@ -1652,7 +1652,7 @@ LABEL_11:
 
     else
     {
-      v13 = [(FSNode *)self copyCFBundleWithError:a4];
+      v13 = [(FSNode *)self copyCFBundleWithError:error];
       v14 = v13;
       if (v13)
       {
@@ -1673,8 +1673,8 @@ LABEL_11:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               v18 = [(FSNode *)self URL];
-              v19 = [v18 absoluteString];
-              [(FSNode *)v19 bundleIdentifierWithContext:buf error:v17, v18];
+              absoluteString = [v18 absoluteString];
+              [(FSNode *)absoluteString bundleIdentifierWithContext:buf error:v17, v18];
             }
           }
         }
@@ -1688,9 +1688,9 @@ LABEL_11:
       [(FSNode *)self setTemporaryResourceValue:v23 forKey:@"com.apple.LSBundleIdentifierKey"];
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "[FSNode bundleIdentifierWithContext:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2445);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "[FSNode bundleIdentifierWithContext:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2445);
     }
   }
 
@@ -1700,25 +1700,25 @@ LABEL_11:
   return v20;
 }
 
-- (BOOL)getLength:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getLength:(unint64_t *)length error:(id *)error
 {
   v8 = 0;
-  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695DB50] options:1 error:a4];
+  v5 = [(FSNode *)self getResourceValue:&v8 forKey:*MEMORY[0x1E695DB50] options:1 error:error];
   v6 = !v5;
-  if (!a3)
+  if (!length)
   {
     v6 = 1;
   }
 
   if ((v6 & 1) == 0)
   {
-    *a3 = [v8 unsignedLongLongValue];
+    *length = [v8 unsignedLongLongValue];
   }
 
   return v5;
 }
 
-- (BOOL)getHFSType:(unsigned int *)a3 creator:(unsigned int *)a4 error:(id *)a5
+- (BOOL)getHFSType:(unsigned int *)type creator:(unsigned int *)creator error:(id *)error
 {
   v22[4] = *MEMORY[0x1E69E9840];
   if ([(FSNode *)self isDirectory])
@@ -1734,17 +1734,17 @@ LABEL_11:
 LABEL_17:
       if (v22[0] == [FSNode getHFSType:creator:error:]::noHFSCodes)
       {
-        if (a5)
+        if (error)
         {
           _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10813, 0, "[FSNode getHFSType:creator:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2552);
-          *a5 = LOBYTE(v18) = 0;
+          *error = LOBYTE(v18) = 0;
           goto LABEL_23;
         }
       }
 
       else if (v22[0])
       {
-        XCFNumberGetHFSTypeAndCreatorCodes(v22[0], a3, a4);
+        XCFNumberGetHFSTypeAndCreatorCodes(v22[0], type, creator);
         LOBYTE(v18) = 1;
 LABEL_23:
 
@@ -1765,9 +1765,9 @@ LABEL_23:
       if (v11 && [v11 length] >= 8)
       {
         v13 = v12;
-        v14 = [v12 bytes];
-        v16 = *v14;
-        v15 = v14[1];
+        bytes = [v12 bytes];
+        v16 = *bytes;
+        v15 = bytes[1];
 
         v17 = XCFNumberCreateWithHFSTypeAndCreatorCodes(bswap32(v16), bswap32(v15));
 LABEL_16:
@@ -1783,17 +1783,17 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v18 = [(FSNode *)self getFinderInfo:v22 error:a5];
+  v18 = [(FSNode *)self getFinderInfo:v22 error:error];
   if (v18)
   {
-    if (a3)
+    if (type)
     {
-      *a3 = v22[0];
+      *type = v22[0];
     }
 
-    if (a4)
+    if (creator)
     {
-      *a4 = HIDWORD(v22[0]);
+      *creator = HIDWORD(v22[0]);
     }
   }
 
@@ -1809,44 +1809,44 @@ void __35__FSNode_getHFSType_creator_error___block_invoke()
   [FSNode getHFSType:creator:error:]::noHFSCodes = v0;
 }
 
-- (BOOL)getWriterBundleIdentifier:(id *)a3 error:(id *)a4
+- (BOOL)getWriterBundleIdentifier:(id *)identifier error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[FSNode getWriterBundleIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2589);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[FSNode getWriterBundleIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2589);
   }
 
   return 0;
 }
 
-- (BOOL)getFinderInfo:(id *)a3 error:(id *)a4
+- (BOOL)getFinderInfo:(id *)info error:(id *)error
 {
   if (!self || (*(self + 24) & 8) == 0 || (url = self->_url, !__CFURLResourceInfoPtr()) || (v8 = MEMORY[0x1865D5C90]()) == 0)
   {
     v14 = 0;
-    if (![(FSNode *)self getResourceValue:&v14 forKey:*MEMORY[0x1E695E2C0] options:1 error:a4])
+    if (![(FSNode *)self getResourceValue:&v14 forKey:*MEMORY[0x1E695E2C0] options:1 error:error])
     {
       goto LABEL_16;
     }
 
-    v11 = [v14 bytes];
-    if (v11 && [v14 length] >= 0x20)
+    bytes = [v14 bytes];
+    if (bytes && [v14 length] >= 0x20)
     {
-      if (a3)
+      if (info)
       {
-        v12 = v11[1];
-        *a3->var0 = *v11;
-        *a3->var2.var1 = v12;
+        v12 = bytes[1];
+        *info->var0 = *bytes;
+        *info->var2.var1 = v12;
       }
 
       v10 = 1;
       goto LABEL_17;
     }
 
-    if (a4)
+    if (error)
     {
       _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10817, 0, "[FSNode(FinderInfo) getFinderInfo:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2629);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -1860,31 +1860,31 @@ LABEL_17:
     return v10;
   }
 
-  if (a3)
+  if (info)
   {
     v9 = v8[1];
-    *a3->var0 = *v8;
-    *a3->var2.var1 = v9;
+    *info->var0 = *v8;
+    *info->var2.var1 = v9;
   }
 
   return 1;
 }
 
-- (BOOL)setFinderInfo:(id *)a3 error:(id *)a4
+- (BOOL)setFinderInfo:(id *)info error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (info)
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:a3 length:32 freeWhenDone:0];
+    v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:info length:32 freeWhenDone:0];
     if (v6)
     {
-      v7 = [(FSNode *)self setResourceValue:v6 forKey:*MEMORY[0x1E695E2C0] options:3 error:a4];
+      v7 = [(FSNode *)self setResourceValue:v6 forKey:*MEMORY[0x1E695E2C0] options:3 error:error];
     }
 
-    else if (a4)
+    else if (error)
     {
       _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -41, 0, "[FSNode(FinderInfo) setFinderInfo:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2652);
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -1895,12 +1895,12 @@ LABEL_17:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = *MEMORY[0x1E696A278];
       v12[0] = @"finderInfo";
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v8, "[FSNode(FinderInfo) setFinderInfo:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2656);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v8, "[FSNode(FinderInfo) setFinderInfo:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 2656);
     }
 
     v7 = 0;
@@ -1910,25 +1910,25 @@ LABEL_17:
   return v7;
 }
 
-+ (BOOL)canAccessURL:(id)a3 withAuditToken:(id *)a4 operation:(const char *)a5
++ (BOOL)canAccessURL:(id)l withAuditToken:(id *)token operation:(const char *)operation
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  v5 = a4;
-  if (!a4)
+  tokenCopy = token;
+  if (!token)
   {
-    v5 = _LSGetAuditTokenForSelf();
-    if (!v5)
+    tokenCopy = _LSGetAuditTokenForSelf();
+    if (!tokenCopy)
     {
       return 0;
     }
   }
 
   v16 = 0;
-  v7 = [a3 getResourceValue:&v16 forKey:*MEMORY[0x1E695DA88] error:0];
+  v7 = [l getResourceValue:&v16 forKey:*MEMORY[0x1E695DA88] error:0];
   v8 = v16;
   v9 = v8;
   if (v7 && [v8 length])
@@ -1940,8 +1940,8 @@ LABEL_17:
       if ([v10 length] && objc_msgSend(v10, "fileSystemRepresentation"))
       {
         v11 = (*MEMORY[0x1E69E9BD0] | *MEMORY[0x1E69E9BC0]);
-        v14 = *v5;
-        v15 = v5[1];
+        v14 = *tokenCopy;
+        v15 = tokenCopy[1];
         v12 = sandbox_check_by_audit_token() == 0;
       }
 
@@ -1968,18 +1968,18 @@ LABEL_17:
   return v12;
 }
 
-+ (BOOL)canAccessURL:(id)a3 fromSandboxWithAuditToken:(id *)a4 operation:(const char *)a5
++ (BOOL)canAccessURL:(id)l fromSandboxWithAuditToken:(id *)token operation:(const char *)operation
 {
-  if (!a3)
+  if (!l)
   {
     return 0;
   }
 
-  v6 = a4;
-  if (!a4)
+  tokenCopy = token;
+  if (!token)
   {
-    v6 = _LSGetAuditTokenForSelf();
-    if (!v6)
+    tokenCopy = _LSGetAuditTokenForSelf();
+    if (!tokenCopy)
     {
       return 0;
     }
@@ -1987,47 +1987,47 @@ LABEL_17:
 
   v8 = objc_opt_class();
 
-  return [v8 canAccessURL:a3 withAuditToken:v6 operation:a5];
+  return [v8 canAccessURL:l withAuditToken:tokenCopy operation:operation];
 }
 
-- (BOOL)canReadWithAuditToken:(id *)a3
+- (BOOL)canReadWithAuditToken:(id *)token
 {
   v5 = objc_opt_class();
   v6 = [(FSNode *)self URL];
-  LOBYTE(a3) = [v5 canReadURL:v6 withAuditToken:a3];
+  LOBYTE(token) = [v5 canReadURL:v6 withAuditToken:token];
 
-  return a3;
+  return token;
 }
 
-- (BOOL)canWriteWithAuditToken:(id *)a3
+- (BOOL)canWriteWithAuditToken:(id *)token
 {
   v5 = objc_opt_class();
   v6 = [(FSNode *)self URL];
-  LOBYTE(a3) = [v5 canWriteURL:v6 withAuditToken:a3];
+  LOBYTE(token) = [v5 canWriteURL:v6 withAuditToken:token];
 
-  return a3;
+  return token;
 }
 
-- (BOOL)canReadMetadataWithAuditToken:(id *)a3
+- (BOOL)canReadMetadataWithAuditToken:(id *)token
 {
   v5 = objc_opt_class();
   v6 = [(FSNode *)self URL];
-  LOBYTE(a3) = [v5 canReadMetadataOfURL:v6 withAuditToken:a3];
+  LOBYTE(token) = [v5 canReadMetadataOfURL:v6 withAuditToken:token];
 
-  return a3;
+  return token;
 }
 
-+ (BOOL)canReadMetadataOfURL:(id)a3 withAuditToken:(id *)a4
++ (BOOL)canReadMetadataOfURL:(id)l withAuditToken:(id *)token
 {
-  if ([a1 canAccessURL:a3 withAuditToken:a4 operation:"file-read-metadata"])
+  if ([self canAccessURL:l withAuditToken:token operation:"file-read-metadata"])
   {
     return 1;
   }
 
-  v8 = [a3 URLByDeletingLastPathComponent];
-  if (v8)
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  if (uRLByDeletingLastPathComponent)
   {
-    v7 = [a1 canReadURL:v8 withAuditToken:a4];
+    v7 = [self canReadURL:uRLByDeletingLastPathComponent withAuditToken:token];
   }
 
   else
@@ -2038,44 +2038,44 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)canReadFromSandboxWithAuditToken:(id *)a3
+- (BOOL)canReadFromSandboxWithAuditToken:(id *)token
 {
   v5 = objc_opt_class();
   v6 = [(FSNode *)self URL];
-  LOBYTE(a3) = [v5 canReadURL:v6 fromSandboxWithAuditToken:a3];
+  LOBYTE(token) = [v5 canReadURL:v6 fromSandboxWithAuditToken:token];
 
-  return a3;
+  return token;
 }
 
-- (BOOL)canWriteFromSandboxWithAuditToken:(id *)a3
+- (BOOL)canWriteFromSandboxWithAuditToken:(id *)token
 {
   v5 = objc_opt_class();
   v6 = [(FSNode *)self URL];
-  LOBYTE(a3) = [v5 canWriteURL:v6 fromSandboxWithAuditToken:a3];
+  LOBYTE(token) = [v5 canWriteURL:v6 fromSandboxWithAuditToken:token];
 
-  return a3;
+  return token;
 }
 
-- (BOOL)canReadMetadataFromSandboxWithAuditToken:(id *)a3
+- (BOOL)canReadMetadataFromSandboxWithAuditToken:(id *)token
 {
   v5 = objc_opt_class();
   v6 = [(FSNode *)self URL];
-  LOBYTE(a3) = [v5 canReadMetadataOfURL:v6 fromSandboxWithAuditToken:a3];
+  LOBYTE(token) = [v5 canReadMetadataOfURL:v6 fromSandboxWithAuditToken:token];
 
-  return a3;
+  return token;
 }
 
-+ (BOOL)canReadMetadataOfURL:(id)a3 fromSandboxWithAuditToken:(id *)a4
++ (BOOL)canReadMetadataOfURL:(id)l fromSandboxWithAuditToken:(id *)token
 {
-  if ([a1 canAccessURL:a3 fromSandboxWithAuditToken:a4 operation:"file-read-metadata"])
+  if ([self canAccessURL:l fromSandboxWithAuditToken:token operation:"file-read-metadata"])
   {
     return 1;
   }
 
-  v8 = [a3 URLByDeletingLastPathComponent];
-  if (v8)
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  if (uRLByDeletingLastPathComponent)
   {
-    v7 = [a1 canReadURL:v8 fromSandboxWithAuditToken:a4];
+    v7 = [self canReadURL:uRLByDeletingLastPathComponent fromSandboxWithAuditToken:token];
   }
 
   else
@@ -2086,68 +2086,68 @@ LABEL_17:
   return v7;
 }
 
-- (id)extendedAttributeWithName:(id)a3 options:(int)a4 error:(id *)a5
+- (id)extendedAttributeWithName:(id)name options:(int)options error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3 || ![a3 length])
+  if (!name || ![name length])
   {
-    if (a5)
+    if (error)
     {
       v25 = *MEMORY[0x1E696A278];
       v26 = @"name";
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      *a5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v16, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3534);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v16, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3534);
     }
 
     goto LABEL_12;
   }
 
-  if (![(FSNode *)self getFileSystemRepresentation:path error:a5])
+  if (![(FSNode *)self getFileSystemRepresentation:path error:error])
   {
 LABEL_12:
-    v15 = 0;
+    data = 0;
     goto LABEL_13;
   }
 
-  if (([a3 getCString:name maxLength:128 encoding:4] & 1) == 0)
+  if (([name getCString:name maxLength:128 encoding:4] & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v27 = *MEMORY[0x1E696A278];
       v28 = @"Extended attribute name too long or invalid.";
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      *a5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v19, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3499);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v19, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3499);
     }
 
     goto LABEL_12;
   }
 
-  v9 = getxattr(path, name, 0, 0, 0, a4);
+  v9 = getxattr(path, name, 0, 0, 0, options);
   v10 = v9;
   if (v9 < 1)
   {
     if (v9)
     {
-      if (a5)
+      if (error)
       {
         v20 = __error();
         _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], *v20, 0, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3529);
-        *a5 = v15 = 0;
+        *error = data = 0;
         goto LABEL_13;
       }
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DEF0] data];
-      if (v15)
+      data = [MEMORY[0x1E695DEF0] data];
+      if (data)
       {
         goto LABEL_13;
       }
 
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]"];
-      [v23 handleFailureInFunction:v24 file:@"FSUtils.mm" lineNumber:3526 description:@"Failed to allocate empty NSData."];
+      [currentHandler handleFailureInFunction:v24 file:@"FSUtils.mm" lineNumber:3526 description:@"Failed to allocate empty NSData."];
     }
 
     goto LABEL_12;
@@ -2157,23 +2157,23 @@ LABEL_12:
   v12 = v11;
   if (!v11)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_30;
     }
 
     v21 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -41, 0, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3521);
 LABEL_29:
-    v15 = 0;
-    *a5 = v21;
+    data = 0;
+    *error = v21;
     goto LABEL_31;
   }
 
   v13 = v11;
-  v14 = getxattr(path, name, [v12 mutableBytes], objc_msgSend(v12, "length"), 0, a4);
+  v14 = getxattr(path, name, [v12 mutableBytes], objc_msgSend(v12, "length"), 0, options);
   if (v14 < 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -2185,37 +2185,37 @@ LABEL_29:
 
   if (v14 != v10)
   {
-    if (a5)
+    if (error)
     {
       v21 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -1304, 0, "[FSNode(ExtendedAttributes) extendedAttributeWithName:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3514);
       goto LABEL_29;
     }
 
 LABEL_30:
-    v15 = 0;
+    data = 0;
     goto LABEL_31;
   }
 
-  v15 = v12;
+  data = v12;
 LABEL_31:
 
 LABEL_13:
   v17 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return data;
 }
 
-- (BOOL)setExtendedAttribute:(id)a3 name:(id)a4 options:(int)a5 error:(id *)a6
+- (BOOL)setExtendedAttribute:(id)attribute name:(id)name options:(int)options error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a4 || ![a4 length])
+  if (!name || ![name length])
   {
-    if (a6)
+    if (error)
     {
       v19 = *MEMORY[0x1E696A278];
       v20 = @"name";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-      *a6 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "[FSNode(ExtendedAttributes) setExtendedAttribute:name:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3576);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "[FSNode(ExtendedAttributes) setExtendedAttribute:name:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3576);
     }
 
 LABEL_10:
@@ -2223,15 +2223,15 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  LODWORD(v11) = [(FSNode *)self getFileSystemRepresentation:path error:a6];
+  LODWORD(v11) = [(FSNode *)self getFileSystemRepresentation:path error:error];
   if (v11)
   {
-    if ([a4 getCString:name maxLength:128 encoding:4])
+    if ([name getCString:name maxLength:128 encoding:4])
     {
-      if (a3)
+      if (attribute)
       {
-        v12 = a3;
-        if (!setxattr(path, name, [a3 bytes], objc_msgSend(a3, "length"), 0, a5))
+        attributeCopy = attribute;
+        if (!setxattr(path, name, [attribute bytes], objc_msgSend(attribute, "length"), 0, options))
         {
 LABEL_16:
           LOBYTE(v11) = 1;
@@ -2239,28 +2239,28 @@ LABEL_16:
         }
       }
 
-      else if (!removexattr(path, name, a5) || *__error() == 93)
+      else if (!removexattr(path, name, options) || *__error() == 93)
       {
         goto LABEL_16;
       }
 
-      if (a6)
+      if (error)
       {
         v16 = __error();
         v17 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], *v16, 0, "[FSNode(ExtendedAttributes) setExtendedAttribute:name:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3571);
         v11 = v17;
         LOBYTE(v11) = 0;
-        *a6 = v17;
+        *error = v17;
         goto LABEL_11;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v21 = *MEMORY[0x1E696A278];
       v22 = @"Extended attribute name too long or invalid.";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      *a6 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[FSNode(ExtendedAttributes) setExtendedAttribute:name:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3552);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v15, "[FSNode(ExtendedAttributes) setExtendedAttribute:name:options:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3552);
     }
 
     goto LABEL_10;
@@ -2271,10 +2271,10 @@ LABEL_11:
   return v11;
 }
 
-- (id)bookmarkDataWithOptions:(unint64_t)a3 relativeToNode:(id)a4 error:(id *)a5
+- (id)bookmarkDataWithOptions:(unint64_t)options relativeToNode:(id)node error:(id *)error
 {
-  v7 = [(FSNode *)self canonicalPathWithError:a5, a4];
-  if (!v7)
+  node = [(FSNode *)self canonicalPathWithError:error, node];
+  if (!node)
   {
 LABEL_14:
     v12 = 0;
@@ -2284,29 +2284,29 @@ LABEL_14:
   v8 = objc_autoreleasePoolPush();
   if ([(FSNode *)self isDirectory])
   {
-    if (([v7 hasSuffix:@"/"] & 1) == 0)
+    if (([node hasSuffix:@"/"] & 1) == 0)
     {
-      v9 = [v7 stringByAppendingString:@"/"];
+      v9 = [node stringByAppendingString:@"/"];
 
-      v7 = v9;
+      node = v9;
     }
   }
 
   else
   {
-    while ([v7 hasSuffix:@"/"])
+    while ([node hasSuffix:@"/"])
     {
-      v15 = [v7 stringByReplacingCharactersInRange:objc_msgSend(v7 withString:{"length") - 1, 1, &stru_1EEF65710}];
+      v15 = [node stringByReplacingCharactersInRange:objc_msgSend(node withString:{"length") - 1, 1, &stru_1EEF65710}];
 
-      v7 = v15;
+      node = v15;
     }
   }
 
   objc_autoreleasePoolPop(v8);
-  v10 = [v7 fileSystemRepresentation];
-  if (!v10)
+  fileSystemRepresentation = [node fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
-    if (a5)
+    if (error)
     {
       v13 = 3761;
       v14 = -2110;
@@ -2316,15 +2316,15 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v11 = [MEMORY[0x1E695DEF0] dataWithBytes:v10 length:strlen(v10)];
+  v11 = [MEMORY[0x1E695DEF0] dataWithBytes:fileSystemRepresentation length:strlen(fileSystemRepresentation)];
   v12 = v11;
-  if (a5 && !v11)
+  if (error && !v11)
   {
     v13 = 3757;
     v14 = -41;
 LABEL_13:
     _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], v14, 0, "[FSNode(BookmarkData) bookmarkDataWithOptions:relativeToNode:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", v13);
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
 LABEL_15:
@@ -2332,30 +2332,30 @@ LABEL_15:
   return v12;
 }
 
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToNode:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToNode:(id)node bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
-    if (a7)
+    if (error)
     {
       v15 = *MEMORY[0x1E696A278];
       v16 = @"bookmark";
-      v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:{1, a6}];
-      *a7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[FSNode(BookmarkData) initByResolvingBookmarkData:options:relativeToNode:bookmarkDataIsStale:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3846);
+      v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:{1, stale}];
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[FSNode(BookmarkData) initByResolvingBookmarkData:options:relativeToNode:bookmarkDataIsStale:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3846);
     }
 
     goto LABEL_11;
   }
 
-  if (![FSNode getFileSystemRepresentation:__s forBookmarkData:a3, a5, a6])
+  if (![FSNode getFileSystemRepresentation:__s forBookmarkData:data, node, stale])
   {
-    if (a7)
+    if (error)
     {
       v17 = *MEMORY[0x1E696A278];
       v18 = @"bookmark";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      *a7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v12, "[FSNode(BookmarkData) initByResolvingBookmarkData:options:relativeToNode:bookmarkDataIsStale:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3840);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v12, "[FSNode(BookmarkData) initByResolvingBookmarkData:options:relativeToNode:bookmarkDataIsStale:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3840);
     }
 
 LABEL_11:
@@ -2374,18 +2374,18 @@ LABEL_11:
     v10 = 0;
   }
 
-  result = [(FSNode *)self initWithFileSystemRepresentation:__s flags:v10 error:a7];
+  result = [(FSNode *)self initWithFileSystemRepresentation:__s flags:v10 error:error];
 LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)pathForBookmarkData:(id)a3 error:(id *)a4
++ (id)pathForBookmarkData:(id)data error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_11:
       v6 = 0;
@@ -2397,15 +2397,15 @@ LABEL_11:
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v8 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v7, "+[FSNode(BookmarkData) pathForBookmarkData:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3889);
 LABEL_10:
-    *a4 = v8;
+    *error = v8;
 
     goto LABEL_11;
   }
 
-  if (![a1 getFileSystemRepresentation:__s forBookmarkData:a3])
+  if (![self getFileSystemRepresentation:__s forBookmarkData:data])
   {
     v6 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -2413,10 +2413,10 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 stringWithFileSystemRepresentation:__s length:strlen(__s)];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager stringWithFileSystemRepresentation:__s length:strlen(__s)];
 
-  if (a4)
+  if (error)
   {
 LABEL_8:
     if (v6)
@@ -2437,21 +2437,21 @@ LABEL_12:
   return v6;
 }
 
-+ (id)nameForBookmarkData:(id)a3 error:(id *)a4
++ (id)nameForBookmarkData:(id)data error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
-    v5 = [a1 pathForBookmarkData:a3 error:a4];
+    v5 = [self pathForBookmarkData:data error:error];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 lastPathComponent];
-      v8 = v7;
-      if (a4 && !v7)
+      lastPathComponent = [v5 lastPathComponent];
+      v8 = lastPathComponent;
+      if (error && !lastPathComponent)
       {
         _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -37, 0, "+[FSNode(BookmarkData) nameForBookmarkData:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3907);
-        *a4 = v8 = 0;
+        *error = v8 = 0;
       }
     }
 
@@ -2463,12 +2463,12 @@ LABEL_12:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v12 = *MEMORY[0x1E696A278];
       v13[0] = @"bookmark";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-      *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "+[FSNode(BookmarkData) nameForBookmarkData:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3911);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "+[FSNode(BookmarkData) nameForBookmarkData:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/FSUtils.mm", 3911);
     }
 
     v8 = 0;
@@ -2479,13 +2479,13 @@ LABEL_12:
   return v8;
 }
 
-+ (BOOL)getVolumeIdentifier:(unint64_t *)a3 forBookmarkData:(id)a4 error:(id *)a5
++ (BOOL)getVolumeIdentifier:(unint64_t *)identifier forBookmarkData:(id)data error:(id *)error
 {
-  v7 = [[FSNode alloc] initByResolvingBookmarkData:a4 relativeToNode:0 bookmarkDataIsStale:0 error:a5];
+  v7 = [[FSNode alloc] initByResolvingBookmarkData:data relativeToNode:0 bookmarkDataIsStale:0 error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 getVolumeIdentifier:a3 error:a5];
+    v9 = [v7 getVolumeIdentifier:identifier error:error];
   }
 
   else
@@ -2496,25 +2496,25 @@ LABEL_12:
   return v9;
 }
 
-+ (BOOL)isBookmarkDataFull:(id)a3
++ (BOOL)isBookmarkDataFull:(id)full
 {
-  v4 = [a3 length];
+  v4 = [full length];
   if (v4)
   {
-    LOBYTE(v4) = *[a3 bytes] != 47;
+    LOBYTE(v4) = *[full bytes] != 47;
   }
 
   return v4;
 }
 
-+ (BOOL)getFileSystemRepresentation:(char)a3[1024] forBookmarkData:(id)a4
++ (BOOL)getFileSystemRepresentation:(char)representation[1024] forBookmarkData:(id)data
 {
-  v5 = a4;
-  v6 = v5;
+  dataCopy = data;
+  v6 = dataCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (representation && dataCopy)
   {
-    bzero(a3, 0x400uLL);
+    bzero(representation, 0x400uLL);
     v8 = [v6 length];
     if (v8 > 0x3FF)
     {
@@ -2523,7 +2523,7 @@ LABEL_12:
 
     else
     {
-      [v6 getBytes:a3 length:v8];
+      [v6 getBytes:representation length:v8];
       v7 = 1;
     }
   }

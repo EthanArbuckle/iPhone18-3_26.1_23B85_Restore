@@ -1,10 +1,10 @@
 @interface __NSCFTimer
-- (BOOL)isEqual:(id)a3;
-- (__NSCFTimer)initWithFireDate:(id)a3 interval:(double)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7 repeats:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (__NSCFTimer)initWithFireDate:(id)date interval:(double)interval target:(id)target selector:(SEL)selector userInfo:(id)info repeats:(BOOL)repeats;
 - (id)fireDate;
 - (id)userInfo;
 - (void)fire;
-- (void)setFireDate:(id)a3;
+- (void)setFireDate:(id)date;
 @end
 
 @implementation __NSCFTimer
@@ -26,24 +26,24 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  return _CFNonObjCEqual(self, a3) != 0;
+  return _CFNonObjCEqual(self, equal) != 0;
 }
 
-- (void)setFireDate:(id)a3
+- (void)setFireDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
 
   CFRunLoopTimerSetNextFireDate(self, v4);
 }
@@ -53,7 +53,7 @@
   v7 = *MEMORY[0x1E69E9840];
   if ([(__NSCFTimer *)self isValid])
   {
-    v3 = self;
+    selfCopy = self;
     memset(&v6, 0, sizeof(v6));
     CFRunLoopTimerGetContext(self, &v6);
     __CFFireTimer(self, v6.info);
@@ -67,9 +67,9 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (__NSCFTimer)initWithFireDate:(id)a3 interval:(double)a4 target:(id)a5 selector:(SEL)a6 userInfo:(id)a7 repeats:(BOOL)a8
+- (__NSCFTimer)initWithFireDate:(id)date interval:(double)interval target:(id)target selector:(SEL)selector userInfo:(id)info repeats:(BOOL)repeats
 {
-  v8 = a8;
+  repeatsCopy = repeats;
   v22 = *MEMORY[0x1E69E9840];
   v14 = malloc_default_zone();
   v15 = malloc_type_zone_calloc(v14, 1uLL, 0x20uLL, 0x10800406BDE4C18uLL);
@@ -79,23 +79,23 @@
   v21.retain = _timerRetain;
   v21.release = _timerRelease;
   v21.copyDescription = 0;
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
-    a4 = 0.0001;
+    interval = 0.0001;
   }
 
   *v15 = 0;
-  v15[1] = a5;
-  v16[2] = a6;
-  v16[3] = a7;
-  [a3 timeIntervalSinceReferenceDate];
-  v18 = 0.0;
-  if (v8)
+  v15[1] = target;
+  v16[2] = selector;
+  v16[3] = info;
+  [date timeIntervalSinceReferenceDate];
+  intervalCopy = 0.0;
+  if (repeatsCopy)
   {
-    v18 = a4;
+    intervalCopy = interval;
   }
 
-  result = CFRunLoopTimerCreate(0, v17, v18, 0, 0, __CFFireTimer, &v21);
+  result = CFRunLoopTimerCreate(0, v17, intervalCopy, 0, 0, __CFFireTimer, &v21);
   v20 = *MEMORY[0x1E69E9840];
   return result;
 }

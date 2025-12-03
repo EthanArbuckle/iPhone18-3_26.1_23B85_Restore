@@ -1,10 +1,10 @@
 @interface NSBundle
 + (id)_rpFrameworkBundle;
-+ (id)_rpLocalizedAppNameFromBundleID:(id)a3;
-+ (id)_rpLocalizedStringFromFrameworkBundleWithKey:(id)a3;
-+ (id)_rpPluralLocalizedStringFromFrameworkBundleWithKey:(id)a3;
-+ (id)baseIdentifier:(id)a3;
-+ (id)executablePathWithPID:(int)a3;
++ (id)_rpLocalizedAppNameFromBundleID:(id)d;
++ (id)_rpLocalizedStringFromFrameworkBundleWithKey:(id)key;
++ (id)_rpPluralLocalizedStringFromFrameworkBundleWithKey:(id)key;
++ (id)baseIdentifier:(id)identifier;
++ (id)executablePathWithPID:(int)d;
 + (id)fallbackLanguage;
 + (id)preferredLanguage;
 - (id)_rpLocalizedAppName;
@@ -42,17 +42,17 @@
   return v4;
 }
 
-+ (id)_rpLocalizedAppNameFromBundleID:(id)a3
++ (id)_rpLocalizedAppNameFromBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [NSBundle bundleWithIdentifier:v3];
-  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
+  dCopy = d;
+  v4 = [NSBundle bundleWithIdentifier:dCopy];
+  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 localizedName];
-    v8 = v7;
-    if (v7 && ([v7 isEqualToString:&stru_31A68] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"$(PRODUCT_BUNDLE_IDENTIFIER)"))
+    localizedName = [v5 localizedName];
+    v8 = localizedName;
+    if (localizedName && ([localizedName isEqualToString:&stru_31A68] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"$(PRODUCT_BUNDLE_IDENTIFIER)"))
     {
       goto LABEL_8;
     }
@@ -63,13 +63,13 @@
     v8 = 0;
   }
 
-  v9 = [v4 _rpLocalizedAppName];
+  _rpLocalizedAppName = [v4 _rpLocalizedAppName];
 
-  v8 = v9;
-  if (!v9)
+  v8 = _rpLocalizedAppName;
+  if (!_rpLocalizedAppName)
   {
 LABEL_10:
-    v10 = v3;
+    v10 = dCopy;
 
     v8 = v10;
     goto LABEL_11;
@@ -86,42 +86,42 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_rpLocalizedStringFromFrameworkBundleWithKey:(id)a3
++ (id)_rpLocalizedStringFromFrameworkBundleWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[NSBundle _rpFrameworkBundle];
-  v6 = [a1 preferredLanguage];
-  v7 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable" localization:v6];
+  preferredLanguage = [self preferredLanguage];
+  v7 = [v5 localizedStringForKey:keyCopy value:0 table:@"Localizable" localization:preferredLanguage];
 
   if (!v7)
   {
-    v8 = [a1 fallbackLanguage];
-    v7 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable" localization:v8];
+    fallbackLanguage = [self fallbackLanguage];
+    v7 = [v5 localizedStringForKey:keyCopy value:0 table:@"Localizable" localization:fallbackLanguage];
 
     if (!v7)
     {
-      v7 = [v5 localizedStringForKey:v4 value:0 table:@"Localizable"];
+      v7 = [v5 localizedStringForKey:keyCopy value:0 table:@"Localizable"];
     }
   }
 
   return v7;
 }
 
-+ (id)_rpPluralLocalizedStringFromFrameworkBundleWithKey:(id)a3
++ (id)_rpPluralLocalizedStringFromFrameworkBundleWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[NSBundle _rpFrameworkBundle];
-  v6 = [a1 preferredLanguage];
-  v7 = [v5 localizedStringForKey:v4 value:0 table:@"LocalizablePlural" localization:v6];
+  preferredLanguage = [self preferredLanguage];
+  v7 = [v5 localizedStringForKey:keyCopy value:0 table:@"LocalizablePlural" localization:preferredLanguage];
 
   if (!v7)
   {
-    v8 = [a1 fallbackLanguage];
-    v7 = [v5 localizedStringForKey:v4 value:0 table:@"LocalizablePlural" localization:v8];
+    fallbackLanguage = [self fallbackLanguage];
+    v7 = [v5 localizedStringForKey:keyCopy value:0 table:@"LocalizablePlural" localization:fallbackLanguage];
 
     if (!v7)
     {
-      v7 = [v5 localizedStringForKey:v4 value:0 table:@"LocalizablePlural"];
+      v7 = [v5 localizedStringForKey:keyCopy value:0 table:@"LocalizablePlural"];
     }
   }
 
@@ -131,28 +131,28 @@ LABEL_11:
 + (id)fallbackLanguage
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [v2 firstObject];
-  v4 = [v3 componentsSeparatedByString:@"-"];
-  v5 = [v4 firstObject];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject componentsSeparatedByString:@"-"];
+  firstObject2 = [v4 firstObject];
 
-  return v5;
+  return firstObject2;
 }
 
 + (id)preferredLanguage
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [objc_opt_class() _rpFrameworkBundle];
-  v4 = [v3 localizations];
-  v5 = [NSBundle preferredLocalizationsFromArray:v4 forPreferences:v2];
+  _rpFrameworkBundle = [objc_opt_class() _rpFrameworkBundle];
+  localizations = [_rpFrameworkBundle localizations];
+  v5 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v2];
 
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-+ (id)baseIdentifier:(id)a3
++ (id)baseIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [identifier componentsSeparatedByString:@"."];
   v4 = [v3 mutableCopy];
 
   [v4 removeLastObject];
@@ -161,9 +161,9 @@ LABEL_11:
   return v5;
 }
 
-+ (id)executablePathWithPID:(int)a3
++ (id)executablePathWithPID:(int)d
 {
-  v3 = [[NSString alloc] initWithBytes:buffer length:proc_pidpath(a3 encoding:{buffer, 0x1000u), 4}];
+  v3 = [[NSString alloc] initWithBytes:buffer length:proc_pidpath(d encoding:{buffer, 0x1000u), 4}];
 
   return v3;
 }

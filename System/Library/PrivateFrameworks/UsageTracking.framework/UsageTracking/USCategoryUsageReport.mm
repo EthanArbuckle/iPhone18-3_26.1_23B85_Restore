@@ -1,69 +1,69 @@
 @interface USCategoryUsageReport
-- (USCategoryUsageReport)initWithCategoryIdentifier:(id)a3 totalUsageTime:(double)a4 applicationUsage:(id)a5 webUsage:(id)a6;
-- (USCategoryUsageReport)initWithCoder:(id)a3;
+- (USCategoryUsageReport)initWithCategoryIdentifier:(id)identifier totalUsageTime:(double)time applicationUsage:(id)usage webUsage:(id)webUsage;
+- (USCategoryUsageReport)initWithCoder:(id)coder;
 - (id)description;
-- (void)_usCategoryUsageReportCommonInitWithTotalUsageTime:(double)a3 applicationUsage:(id)a4 webUsage:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_usCategoryUsageReportCommonInitWithTotalUsageTime:(double)time applicationUsage:(id)usage webUsage:(id)webUsage;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USCategoryUsageReport
 
-- (USCategoryUsageReport)initWithCategoryIdentifier:(id)a3 totalUsageTime:(double)a4 applicationUsage:(id)a5 webUsage:(id)a6
+- (USCategoryUsageReport)initWithCategoryIdentifier:(id)identifier totalUsageTime:(double)time applicationUsage:(id)usage webUsage:(id)webUsage
 {
   v16.receiver = self;
   v16.super_class = USCategoryUsageReport;
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  webUsageCopy = webUsage;
+  usageCopy = usage;
+  identifierCopy = identifier;
   v12 = [(USCategoryUsageReport *)&v16 init];
-  v13 = [v11 copy];
+  v13 = [identifierCopy copy];
 
   categoryIdentifier = v12->_categoryIdentifier;
   v12->_categoryIdentifier = v13;
 
-  [(USCategoryUsageReport *)v12 _usCategoryUsageReportCommonInitWithTotalUsageTime:v10 applicationUsage:v9 webUsage:a4];
+  [(USCategoryUsageReport *)v12 _usCategoryUsageReportCommonInitWithTotalUsageTime:usageCopy applicationUsage:webUsageCopy webUsage:time];
   return v12;
 }
 
-- (void)_usCategoryUsageReportCommonInitWithTotalUsageTime:(double)a3 applicationUsage:(id)a4 webUsage:(id)a5
+- (void)_usCategoryUsageReportCommonInitWithTotalUsageTime:(double)time applicationUsage:(id)usage webUsage:(id)webUsage
 {
-  self->_totalUsageTime = a3;
-  v7 = a5;
-  v8 = [a4 copy];
+  self->_totalUsageTime = time;
+  webUsageCopy = webUsage;
+  v8 = [usage copy];
   applicationUsage = self->_applicationUsage;
   self->_applicationUsage = v8;
 
-  v10 = [v7 copy];
+  v10 = [webUsageCopy copy];
   webUsage = self->_webUsage;
   self->_webUsage = v10;
 }
 
-- (USCategoryUsageReport)initWithCoder:(id)a3
+- (USCategoryUsageReport)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CategoryIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CategoryIdentifier"];
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ApplicationUsageWithPickupsAndNotifications"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ApplicationUsageWithPickupsAndNotifications"];
   if (!v9)
   {
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"ApplicationUsage"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"ApplicationUsage"];
   }
 
   v10 = objc_alloc(MEMORY[0x277CBEB98]);
   v11 = objc_opt_class();
   v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"WebUsage"];
-  v14 = [v4 containsValueForKey:@"TotalUsageTime"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"WebUsage"];
+  v14 = [coderCopy containsValueForKey:@"TotalUsageTime"];
   v15 = v14;
   if (v5 && v9 && v13 && v14)
   {
     v25.receiver = self;
     v25.super_class = USCategoryUsageReport;
     v16 = [(USCategoryUsageReport *)&v25 init];
-    [v4 decodeDoubleForKey:@"TotalUsageTime"];
+    [coderCopy decodeDoubleForKey:@"TotalUsageTime"];
     v18 = v17;
     v19 = [v5 copy];
     categoryIdentifier = v16->_categoryIdentifier;
@@ -71,7 +71,7 @@
 
     [(USCategoryUsageReport *)v16 _usCategoryUsageReportCommonInitWithTotalUsageTime:v9 applicationUsage:v13 webUsage:v18];
     self = v16;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -90,26 +90,26 @@
     }
 
     v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4865 userInfo:0];
-    [v4 failWithError:v22];
+    [coderCopy failWithError:v22];
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
-  return v21;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   categoryIdentifier = self->_categoryIdentifier;
-  v5 = a3;
-  [v5 encodeObject:categoryIdentifier forKey:@"CategoryIdentifier"];
-  [v5 encodeDouble:@"TotalUsageTime" forKey:self->_totalUsageTime];
-  [v5 encodeObject:self->_applicationUsage forKey:@"ApplicationUsageWithPickupsAndNotifications"];
-  [v5 encodeObject:self->_webUsage forKey:@"WebUsage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:categoryIdentifier forKey:@"CategoryIdentifier"];
+  [coderCopy encodeDouble:@"TotalUsageTime" forKey:self->_totalUsageTime];
+  [coderCopy encodeObject:self->_applicationUsage forKey:@"ApplicationUsageWithPickupsAndNotifications"];
+  [coderCopy encodeObject:self->_webUsage forKey:@"WebUsage"];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > 0.0", @"totalUsageTime"];
   v6 = [(NSArray *)self->_applicationUsage filteredArrayUsingPredicate:v7];
-  [v5 encodeObject:v6 forKey:@"ApplicationUsage"];
+  [coderCopy encodeObject:v6 forKey:@"ApplicationUsage"];
 }
 
 - (id)description
@@ -118,12 +118,12 @@
   v12.receiver = self;
   v12.super_class = USCategoryUsageReport;
   v4 = [(USCategoryUsageReport *)&v12 description];
-  v5 = [(USCategoryUsageReport *)self categoryIdentifier];
+  categoryIdentifier = [(USCategoryUsageReport *)self categoryIdentifier];
   [(USCategoryUsageReport *)self totalUsageTime];
   v7 = v6;
-  v8 = [(USCategoryUsageReport *)self applicationUsage];
-  v9 = [(USCategoryUsageReport *)self webUsage];
-  v10 = [v3 stringWithFormat:@"%@, CategoryIdentifier: %@, TotalUsageTime: %f, ApplicationUsage: %@\nIndependentWebUsage: %@", v4, v5, v7, v8, v9];
+  applicationUsage = [(USCategoryUsageReport *)self applicationUsage];
+  webUsage = [(USCategoryUsageReport *)self webUsage];
+  v10 = [v3 stringWithFormat:@"%@, CategoryIdentifier: %@, TotalUsageTime: %f, ApplicationUsage: %@\nIndependentWebUsage: %@", v4, categoryIdentifier, v7, applicationUsage, webUsage];
 
   return v10;
 }

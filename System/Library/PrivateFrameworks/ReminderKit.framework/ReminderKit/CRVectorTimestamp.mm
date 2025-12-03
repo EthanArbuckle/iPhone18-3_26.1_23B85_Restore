@@ -1,27 +1,27 @@
 @interface CRVectorTimestamp
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRVectorTimestamp)init;
-- (CRVectorTimestamp)initWithCRCoder:(id)a3;
-- (CRVectorTimestamp)initWithProtobufTimestamp:(const void *)a3 decoder:(id)a4;
+- (CRVectorTimestamp)initWithCRCoder:(id)coder;
+- (CRVectorTimestamp)initWithProtobufTimestamp:(const void *)timestamp decoder:(id)decoder;
 - (NSString)description;
-- (id)clockElementForUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deltaSince:(id)a3 in:(id)a4;
+- (id)clockElementForUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deltaSince:(id)since in:(id)in;
 - (id)shortDescription;
 - (id)sortedUUIDs;
-- (id)timestampForReplica:(id)a3;
+- (id)timestampForReplica:(id)replica;
 - (id)tombstone;
-- (unint64_t)clockForUUID:(id)a3;
-- (unint64_t)compare:(id)a3;
-- (unint64_t)subclockForUUID:(id)a3;
-- (void)encodeIntoProtobufTimestamp:(void *)a3 coder:(id)a4;
-- (void)encodeWithCRCoder:(id)a3;
-- (void)incrementClockForUUID:(id)a3;
-- (void)maxClock:(unint64_t)a3 forUUID:(id)a4;
-- (void)mergeWith:(id)a3;
-- (void)minusVectorTimestamp:(id)a3;
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4;
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5;
+- (unint64_t)clockForUUID:(id)d;
+- (unint64_t)compare:(id)compare;
+- (unint64_t)subclockForUUID:(id)d;
+- (void)encodeIntoProtobufTimestamp:(void *)timestamp coder:(id)coder;
+- (void)encodeWithCRCoder:(id)coder;
+- (void)incrementClockForUUID:(id)d;
+- (void)maxClock:(unint64_t)clock forUUID:(id)d;
+- (void)mergeWith:(id)with;
+- (void)minusVectorTimestamp:(id)timestamp;
+- (void)setClock:(unint64_t)clock forUUID:(id)d;
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d;
 @end
 
 @implementation CRVectorTimestamp
@@ -41,13 +41,13 @@
   return v2;
 }
 
-- (CRVectorTimestamp)initWithCRCoder:(id)a3
+- (CRVectorTimestamp)initWithCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 8)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 8)
   {
-    v6 = [(CRVectorTimestamp *)self initWithProtobufTimestamp:*(v5 + 40) decoder:v4];
+    v6 = [(CRVectorTimestamp *)self initWithProtobufTimestamp:*(currentDocumentObjectForDecoding + 40) decoder:coderCopy];
   }
 
   else
@@ -60,38 +60,38 @@
   return v7;
 }
 
-- (void)encodeWithCRCoder:(id)a3
+- (void)encodeWithCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 8)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 8)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 8;
     operator new();
   }
 
-  [(CRVectorTimestamp *)self encodeIntoProtobufTimestamp:*(v4 + 40) coder:v6];
+  [(CRVectorTimestamp *)self encodeIntoProtobufTimestamp:*(currentDocumentObjectForEncoding + 40) coder:coderCopy];
 }
 
-- (CRVectorTimestamp)initWithProtobufTimestamp:(const void *)a3 decoder:(id)a4
+- (CRVectorTimestamp)initWithProtobufTimestamp:(const void *)timestamp decoder:(id)decoder
 {
-  v6 = a4;
+  decoderCopy = decoder;
   v7 = [(CRVectorTimestamp *)self init];
   if (v7)
   {
-    v8 = *(a3 + 12);
+    v8 = *(timestamp + 12);
     if (v8)
     {
-      v9 = *(a3 + 5);
+      v9 = *(timestamp + 5);
       v10 = v9;
       do
       {
         v11 = *v10;
         if (*(*v10 + 32))
         {
-          v12 = [v6 decodeUUIDFromUUIDIndex:*(v11 + 40)];
+          v12 = [decoderCopy decodeUUIDFromUUIDIndex:*(v11 + 40)];
           v13 = objc_alloc_init(CRVectorTimestampElement);
           v14 = v13;
           v15 = *(v11 + 32);
@@ -108,8 +108,8 @@
 
           [(NSMutableDictionary *)v7->_clock setObject:v14 forKeyedSubscript:v12];
 
-          v9 = *(a3 + 5);
-          v8 = *(a3 + 12);
+          v9 = *(timestamp + 5);
+          v8 = *(timestamp + 12);
         }
 
         ++v10;
@@ -122,16 +122,16 @@
   return v7;
 }
 
-- (void)encodeIntoProtobufTimestamp:(void *)a3 coder:(id)a4
+- (void)encodeIntoProtobufTimestamp:(void *)timestamp coder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  coderCopy = coder;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(NSMutableDictionary *)self->_clock allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allKeys = [(NSMutableDictionary *)self->_clock allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = *v22;
@@ -141,45 +141,45 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:v11];
-        v13 = *(a3 + 13);
-        v14 = *(a3 + 12);
+        v13 = *(timestamp + 13);
+        v14 = *(timestamp + 12);
         if (v14 >= v13)
         {
-          if (v13 == *(a3 + 14))
+          if (v13 == *(timestamp + 14))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 5, v13 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(timestamp + 5, v13 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<CRDT::VectorTimestamp_Element>::New();
         }
 
-        v15 = *(a3 + 5);
-        *(a3 + 12) = v14 + 1;
+        v15 = *(timestamp + 5);
+        *(timestamp + 12) = v14 + 1;
         v16 = *(v15 + 8 * v14);
-        v17 = [v6 encodeUUIDIndexFromUUID:v11];
+        v17 = [coderCopy encodeUUIDIndexFromUUID:v11];
         *(v16 + 32) |= 1u;
         *(v16 + 40) = v17;
         if ([v12 clock])
         {
-          v18 = [v12 clock];
+          clock = [v12 clock];
           *(v16 + 32) |= 2u;
-          *(v16 + 48) = v18;
+          *(v16 + 48) = clock;
         }
 
         if ([v12 subclock])
         {
-          v19 = [v12 subclock];
+          subclock = [v12 subclock];
           *(v16 + 32) |= 4u;
-          *(v16 + 56) = v19;
+          *(v16 + 56) = subclock;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -188,123 +188,123 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CRVectorTimestamp);
   [(CRVectorTimestamp *)v4 mergeWith:self];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRVectorTimestamp *)self compare:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CRVectorTimestamp *)self compare:equalCopy]== 0;
 
   return v5;
 }
 
-- (id)timestampForReplica:(id)a3
+- (id)timestampForReplica:(id)replica
 {
-  v4 = a3;
-  v5 = [[CRTimestamp alloc] initWithReplica:v4 andCounter:[(CRVectorTimestamp *)self clockForUUID:v4]];
+  replicaCopy = replica;
+  v5 = [[CRTimestamp alloc] initWithReplica:replicaCopy andCounter:[(CRVectorTimestamp *)self clockForUUID:replicaCopy]];
 
   return v5;
 }
 
-- (id)clockElementForUUID:(id)a3
+- (id)clockElementForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:d];
 
   return v3;
 }
 
-- (unint64_t)clockForUUID:(id)a3
+- (unint64_t)clockForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:a3];
-  v4 = [v3 clock];
+  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:d];
+  clock = [v3 clock];
 
-  return v4;
+  return clock;
 }
 
-- (unint64_t)subclockForUUID:(id)a3
+- (unint64_t)subclockForUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:a3];
-  v4 = [v3 subclock];
+  v3 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:d];
+  subclock = [v3 subclock];
 
-  return v4;
+  return subclock;
 }
 
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4
+- (void)setClock:(unint64_t)clock forUUID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v6 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:?];
   if (!v6)
   {
     v6 = objc_alloc_init(CRVectorTimestampElement);
   }
 
-  [(CRVectorTimestampElement *)v6 setClock:a3];
-  [(NSMutableDictionary *)self->_clock setObject:v6 forKey:v7];
+  [(CRVectorTimestampElement *)v6 setClock:clock];
+  [(NSMutableDictionary *)self->_clock setObject:v6 forKey:dCopy];
 }
 
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d
 {
-  v9 = a5;
+  dCopy = d;
   v8 = objc_alloc_init(CRVectorTimestampElement);
-  [(CRVectorTimestampElement *)v8 setClock:a3];
-  [(CRVectorTimestampElement *)v8 setSubclock:a4];
-  [(NSMutableDictionary *)self->_clock setObject:v8 forKey:v9];
+  [(CRVectorTimestampElement *)v8 setClock:clock];
+  [(CRVectorTimestampElement *)v8 setSubclock:subclock];
+  [(NSMutableDictionary *)self->_clock setObject:v8 forKey:dCopy];
 }
 
-- (void)incrementClockForUUID:(id)a3
+- (void)incrementClockForUUID:(id)d
 {
-  v4 = a3;
-  [(CRVectorTimestamp *)self setClock:[(CRVectorTimestamp *)self clockForUUID:?]+ 1 forUUID:v4];
+  dCopy = d;
+  [(CRVectorTimestamp *)self setClock:[(CRVectorTimestamp *)self clockForUUID:?]+ 1 forUUID:dCopy];
 }
 
-- (void)maxClock:(unint64_t)a3 forUUID:(id)a4
+- (void)maxClock:(unint64_t)clock forUUID:(id)d
 {
-  v9 = a4;
+  dCopy = d;
   v6 = [(NSMutableDictionary *)self->_clock objectForKeyedSubscript:?];
   if (!v6)
   {
     v6 = objc_alloc_init(CRVectorTimestampElement);
   }
 
-  v7 = [(CRVectorTimestampElement *)v6 clock];
-  if (v7 <= a3)
+  clock = [(CRVectorTimestampElement *)v6 clock];
+  if (clock <= clock)
   {
-    v8 = a3;
+    clockCopy = clock;
   }
 
   else
   {
-    v8 = v7;
+    clockCopy = clock;
   }
 
-  [(CRVectorTimestampElement *)v6 setClock:v8];
-  [(NSMutableDictionary *)self->_clock setObject:v6 forKey:v9];
+  [(CRVectorTimestampElement *)v6 setClock:clockCopy];
+  [(NSMutableDictionary *)self->_clock setObject:v6 forKey:dCopy];
 }
 
 - (id)sortedUUIDs
 {
-  v2 = [(NSMutableDictionary *)self->_clock allKeys];
-  v3 = [v2 sortedArrayUsingSelector:sel_CR_compare_];
+  allKeys = [(NSMutableDictionary *)self->_clock allKeys];
+  v3 = [allKeys sortedArrayUsingSelector:sel_CR_compare_];
 
   return v3;
 }
 
-- (unint64_t)compare:(id)a3
+- (unint64_t)compare:(id)compare
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compareCopy = compare;
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [(CRVectorTimestamp *)self allUUIDs];
-  v7 = [v5 setWithArray:v6];
+  allUUIDs = [(CRVectorTimestamp *)self allUUIDs];
+  v7 = [v5 setWithArray:allUUIDs];
 
-  v8 = [v4 allUUIDs];
-  [v7 addObjectsFromArray:v8];
+  allUUIDs2 = [compareCopy allUUIDs];
+  [v7 addObjectsFromArray:allUUIDs2];
 
   v31 = 0u;
   v32 = 0u;
@@ -336,26 +336,26 @@
 
       v14 = *(*(&v29 + 1) + 8 * i);
       v15 = [(CRVectorTimestamp *)self clockElementForUUID:v14, v25];
-      v16 = [v4 clockElementForUUID:v14];
-      v17 = [v15 clock];
-      if (v17 < [v16 clock])
+      v16 = [compareCopy clockElementForUUID:v14];
+      clock = [v15 clock];
+      if (clock < [v16 clock])
       {
 LABEL_7:
         v11 = 1;
         goto LABEL_12;
       }
 
-      v18 = [v15 clock];
-      if (v18 <= [v16 clock])
+      clock2 = [v15 clock];
+      if (clock2 <= [v16 clock])
       {
-        v19 = [v15 subclock];
-        if (v19 < [v16 subclock])
+        subclock = [v15 subclock];
+        if (subclock < [v16 subclock])
         {
           goto LABEL_7;
         }
 
-        v20 = [v15 subclock];
-        v10 |= v20 > [v16 subclock];
+        subclock2 = [v15 subclock];
+        v10 |= subclock2 > [v16 subclock];
       }
 
       else
@@ -392,16 +392,16 @@ LABEL_20:
   return v22;
 }
 
-- (void)minusVectorTimestamp:(id)a3
+- (void)minusVectorTimestamp:(id)timestamp
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timestampCopy = timestamp;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 allUUIDs];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allUUIDs = [timestampCopy allUUIDs];
+  v6 = [allUUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -411,20 +411,20 @@ LABEL_20:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allUUIDs);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(CRVectorTimestamp *)self clockElementForUUID:v9];
-        v11 = [v4 clockElementForUUID:v9];
-        v12 = [v10 clock];
-        if (v12 < [v11 clock] || (v13 = objc_msgSend(v10, "clock"), v13 == objc_msgSend(v11, "clock")) && (v14 = objc_msgSend(v10, "subclock"), v14 <= objc_msgSend(v11, "subclock")))
+        v11 = [timestampCopy clockElementForUUID:v9];
+        clock = [v10 clock];
+        if (clock < [v11 clock] || (v13 = objc_msgSend(v10, "clock"), v13 == objc_msgSend(v11, "clock")) && (v14 = objc_msgSend(v10, "subclock"), v14 <= objc_msgSend(v11, "subclock")))
         {
           [(NSMutableDictionary *)self->_clock removeObjectForKey:v9];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [allUUIDs countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -433,16 +433,16 @@ LABEL_20:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  withCopy = with;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 allUUIDs];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allUUIDs = [withCopy allUUIDs];
+  v6 = [allUUIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = *v19;
@@ -452,29 +452,29 @@ LABEL_20:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allUUIDs);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = [(CRVectorTimestamp *)self clockElementForUUID:v9];
-        v11 = [v4 clockElementForUUID:v9];
-        v12 = [v10 clock];
-        if (v12 > [v11 clock] || (v15 = objc_msgSend(v10, "clock"), v15 == objc_msgSend(v11, "clock")) && (v16 = objc_msgSend(v10, "subclock"), v16 > objc_msgSend(v11, "subclock")))
+        v11 = [withCopy clockElementForUUID:v9];
+        clock = [v10 clock];
+        if (clock > [v11 clock] || (v15 = objc_msgSend(v10, "clock"), v15 == objc_msgSend(v11, "clock")) && (v16 = objc_msgSend(v10, "subclock"), v16 > objc_msgSend(v11, "subclock")))
         {
-          v13 = [v10 clock];
-          v14 = [v10 subclock];
+          clock2 = [v10 clock];
+          subclock = [v10 subclock];
         }
 
         else
         {
-          v13 = [v11 clock];
-          v14 = [v11 subclock];
+          clock2 = [v11 clock];
+          subclock = [v11 subclock];
         }
 
-        [(CRVectorTimestamp *)self setClock:v13 subclock:v14 forUUID:v9];
+        [(CRVectorTimestamp *)self setClock:clock2 subclock:subclock forUUID:v9];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [allUUIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -483,10 +483,10 @@ LABEL_20:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v5 = a3;
-  v6 = a4;
+  sinceCopy = since;
+  inCopy = in;
   v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Cannot calculate deltas for vector timestamps." userInfo:0];
   objc_exception_throw(v7);
 }
@@ -508,8 +508,8 @@ LABEL_20:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(CRVectorTimestamp *)self sortedUUIDs];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    sortedUUIDs = [(CRVectorTimestamp *)self sortedUUIDs];
+    v5 = [sortedUUIDs countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = *v14;
@@ -519,16 +519,16 @@ LABEL_20:
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sortedUUIDs);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
           v9 = [(CRVectorTimestamp *)self clockElementForUUID:v8];
-          v10 = [v8 CR_shortDescription];
-          -[__CFString appendFormat:](v3, "appendFormat:", @"%@:%lu ", v10, [v9 clock]);
+          cR_shortDescription = [v8 CR_shortDescription];
+          -[__CFString appendFormat:](v3, "appendFormat:", @"%@:%lu ", cR_shortDescription, [v9 clock]);
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [sortedUUIDs countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v5);
@@ -559,8 +559,8 @@ LABEL_20:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CRVectorTimestamp *)self sortedUUIDs];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sortedUUIDs = [(CRVectorTimestamp *)self sortedUUIDs];
+  v7 = [sortedUUIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -570,7 +570,7 @@ LABEL_20:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sortedUUIDs);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -578,7 +578,7 @@ LABEL_20:
         [v3 appendFormat:@"  %@:%lu.%lu\n", v10, objc_msgSend(v11, "clock"), objc_msgSend(v11, "subclock")];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [sortedUUIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

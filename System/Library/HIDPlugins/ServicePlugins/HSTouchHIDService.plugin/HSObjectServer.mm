@@ -1,20 +1,20 @@
 @interface HSObjectServer
-+ (HSObjectServer)serverWithAddress:(id)a3 port:(unsigned __int16)a4 config:(const HSObjectServerConfig *)a5;
-- (BOOL)addClient:(FileDescriptor *)a3 config:(const HSObjectServerAddClientConfig *)a4;
-- (HSObjectServer)initWithConfig:(const HSObjectServerConfig *)a3;
++ (HSObjectServer)serverWithAddress:(id)address port:(unsigned __int16)port config:(const HSObjectServerConfig *)config;
+- (BOOL)addClient:(FileDescriptor *)client config:(const HSObjectServerAddClientConfig *)config;
+- (HSObjectServer)initWithConfig:(const HSObjectServerConfig *)config;
 - (id).cxx_construct;
 - (uint64_t)addClient:config:;
 - (void)_close;
-- (void)_handleConnectionClosed:(shared_ptr<HSMapper>)a3;
+- (void)_handleConnectionClosed:(shared_ptr<HSMapper>)closed;
 - (void)addClient:config:;
 - (void)dealloc;
 @end
 
 @implementation HSObjectServer
 
-- (HSObjectServer)initWithConfig:(const HSObjectServerConfig *)a3
+- (HSObjectServer)initWithConfig:(const HSObjectServerConfig *)config
 {
-  WeakRetained = objc_loadWeakRetained(&a3->var0);
+  WeakRetained = objc_loadWeakRetained(&config->var0);
 
   if (!WeakRetained)
   {
@@ -22,7 +22,7 @@
     [v15 handleFailureInMethod:a2 object:self file:@"HSRemoteObject.mm" lineNumber:547 description:{@"Invalid parameter not satisfying: %@", @"config.rootObject"}];
   }
 
-  if (!a3->var1)
+  if (!config->var1)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"HSRemoteObject.mm" lineNumber:548 description:{@"Invalid parameter not satisfying: %@", @"config.handlerQueue"}];
@@ -33,15 +33,15 @@
   v7 = [(HSObjectServer *)&v17 init];
   if (v7)
   {
-    v8 = objc_loadWeakRetained(&a3->var0);
+    v8 = objc_loadWeakRetained(&config->var0);
     objc_storeWeak(v7 + 12, v8);
 
-    objc_storeStrong(v7 + 13, a3->var1);
-    v9 = objc_retainBlock(a3->var2);
+    objc_storeStrong(v7 + 13, config->var1);
+    v9 = objc_retainBlock(config->var2);
     v10 = *(v7 + 14);
     *(v7 + 14) = v9;
 
-    v11 = objc_retainBlock(a3->var3);
+    v11 = objc_retainBlock(config->var3);
     v12 = *(v7 + 15);
     *(v7 + 15) = v11;
 
@@ -65,7 +65,7 @@
   [(HSObjectServer *)&v11 dealloc];
 }
 
-- (BOOL)addClient:(FileDescriptor *)a3 config:(const HSObjectServerAddClientConfig *)a4
+- (BOOL)addClient:(FileDescriptor *)client config:(const HSObjectServerAddClientConfig *)config
 {
   v7 = *(self + 14);
   if (v7)
@@ -75,14 +75,14 @@
 
   objc_initWeak(&location, self);
   objc_copyWeak(&to, self + 12);
-  var0 = a4->var0;
+  var0 = config->var0;
   objc_copyWeak(&from, &location);
   v15 = 0;
   v13 = off_10A1F0;
   objc_moveWeak(&v14, &from);
   v15 = &v13;
   objc_destroyWeak(&from);
-  HSMapper::New(a3, *(self + 13));
+  HSMapper::New(client, *(self + 13));
 }
 
 - (void)_close
@@ -157,9 +157,9 @@
   std::__tree<std::shared_ptr<HSMapper>>::destroy(&v11, v12);
 }
 
-- (void)_handleConnectionClosed:(shared_ptr<HSMapper>)a3
+- (void)_handleConnectionClosed:(shared_ptr<HSMapper>)closed
 {
-  ptr = a3.__ptr_;
+  ptr = closed.__ptr_;
   std::mutex::lock((self + 8));
   std::__tree<std::shared_ptr<HSMapper>>::__erase_unique<std::shared_ptr<HSMapper>>(self + 9, ptr);
   std::mutex::unlock((self + 8));
@@ -191,7 +191,7 @@
   v2 = a2[1];
   *a2 = 0;
   a2[1] = 0;
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v5 = WeakRetained;
   v6 = v3;
   v7 = v2;
@@ -215,7 +215,7 @@
 - (uint64_t)addClient:config:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -231,13 +231,13 @@
   OUTLINED_FUNCTION_1(&dword_0, &_os_log_default, v0, "Assertion failed (%s @ %s:%ju): %s", v1, v2, v3, v4, 2u);
 }
 
-+ (HSObjectServer)serverWithAddress:(id)a3 port:(unsigned __int16)a4 config:(const HSObjectServerConfig *)a5
++ (HSObjectServer)serverWithAddress:(id)address port:(unsigned __int16)port config:(const HSObjectServerConfig *)config
 {
-  v6 = a4;
-  v9 = a3;
-  if (v9)
+  portCopy = port;
+  addressCopy = address;
+  if (addressCopy)
   {
-    if (v6)
+    if (portCopy)
     {
       goto LABEL_3;
     }
@@ -246,19 +246,19 @@
   else
   {
     v12 = +[NSAssertionHandler currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"HSRemoteObject+Additions.mm" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"addr"}];
+    [v12 handleFailureInMethod:a2 object:self file:@"HSRemoteObject+Additions.mm" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"addr"}];
 
-    if (v6)
+    if (portCopy)
     {
       goto LABEL_3;
     }
   }
 
   v13 = +[NSAssertionHandler currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"HSRemoteObject+Additions.mm" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"port > 0"}];
+  [v13 handleFailureInMethod:a2 object:self file:@"HSRemoteObject+Additions.mm" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"port > 0"}];
 
 LABEL_3:
-  HSUtil::CreateServerSocket([v9 UTF8String], v6, v14);
+  HSUtil::CreateServerSocket([addressCopy UTF8String], portCopy, v14);
   if (v15 < 0)
   {
     basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSRemoteObject+Additions.mm", v16);
@@ -272,7 +272,7 @@ LABEL_3:
 
   else
   {
-    v10 = [[HSObjectServerListener alloc] initWithSocket:v14 config:a5];
+    v10 = [[HSObjectServerListener alloc] initWithSocket:v14 config:config];
   }
 
   HSUtil::FileDescriptor::~FileDescriptor(v14);

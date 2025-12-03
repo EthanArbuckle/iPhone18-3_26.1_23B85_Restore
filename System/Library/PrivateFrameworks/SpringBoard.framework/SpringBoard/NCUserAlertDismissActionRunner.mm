@@ -1,22 +1,22 @@
 @interface NCUserAlertDismissActionRunner
-- (void)executeAction:(id)a3 fromOrigin:(id)a4 endpoint:(id)a5 withParameters:(id)a6 completion:(id)a7;
+- (void)executeAction:(id)action fromOrigin:(id)origin endpoint:(id)endpoint withParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation NCUserAlertDismissActionRunner
 
-- (void)executeAction:(id)a3 fromOrigin:(id)a4 endpoint:(id)a5 withParameters:(id)a6 completion:(id)a7
+- (void)executeAction:(id)action fromOrigin:(id)origin endpoint:(id)endpoint withParameters:(id)parameters completion:(id)completion
 {
-  v10 = a7;
-  v8 = [(NCUserAlertActionRunner *)self alertItem];
-  v9 = v8;
-  if (v8)
+  completionCopy = completion;
+  alertItem = [(NCUserAlertActionRunner *)self alertItem];
+  v9 = alertItem;
+  if (alertItem)
   {
-    [v8 deactivate];
+    [alertItem deactivate];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 

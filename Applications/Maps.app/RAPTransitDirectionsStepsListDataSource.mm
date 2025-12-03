@@ -1,10 +1,10 @@
 @interface RAPTransitDirectionsStepsListDataSource
 - (RAPTransitDirectionsStepsListDelegate)rapDelegate;
-- (id)_rapDisclosureViewForCell:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int)_displayModeForItem:(id)a3;
-- (void)_attachDisclosureViewToCell:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)_rapDisclosureViewForCell:(id)cell;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int)_displayModeForItem:(id)item;
+- (void)_attachDisclosureViewToCell:(id)cell;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation RAPTransitDirectionsStepsListDataSource
@@ -16,20 +16,20 @@
   return WeakRetained;
 }
 
-- (int)_displayModeForItem:(id)a3
+- (int)_displayModeForItem:(id)item
 {
-  v3 = a3;
-  if (![v3 conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
+  itemCopy = item;
+  if (![itemCopy conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
   {
     goto LABEL_9;
   }
 
-  v4 = v3;
+  v4 = itemCopy;
   if (([v4 shouldDisplayExpandButton] & 1) == 0 && objc_msgSend(v4, "type") != 3)
   {
 
 LABEL_9:
-    if (([v3 type] & 0xFFFFFFFFFFFFFFFELL) == 6)
+    if (([itemCopy type] & 0xFFFFFFFFFFFFFFFELL) == 6)
     {
       v5 = 3;
     }
@@ -56,9 +56,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)_rapDisclosureViewForCell:(id)a3
+- (id)_rapDisclosureViewForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -71,16 +71,16 @@ LABEL_12:
     [(RAPInstructionIncorrectView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v7) = 1148846080;
     [(RAPInstructionIncorrectView *)v5 setContentCompressionResistancePriority:0 forAxis:v7];
-    v8 = [(RAPTransitDirectionsStepsListDataSource *)self rapDelegate];
-    v9 = [v4 transitListItem];
-    v10 = [v9 matchingRouteStep];
-    v11 = [v4 transitListItem];
-    v12 = [v8 RAPTransitDirectionsStepsList:self shouldShowFlagForStep:v10 listItem:v11];
-    v13 = [(RAPInstructionIncorrectView *)v5 flagView];
-    [v13 setHidden:v12 ^ 1];
+    rapDelegate = [(RAPTransitDirectionsStepsListDataSource *)self rapDelegate];
+    transitListItem = [cellCopy transitListItem];
+    matchingRouteStep = [transitListItem matchingRouteStep];
+    transitListItem2 = [cellCopy transitListItem];
+    v12 = [rapDelegate RAPTransitDirectionsStepsList:self shouldShowFlagForStep:matchingRouteStep listItem:transitListItem2];
+    flagView = [(RAPInstructionIncorrectView *)v5 flagView];
+    [flagView setHidden:v12 ^ 1];
 
-    v14 = [v4 transitListItem];
-    [(RAPInstructionIncorrectView *)v5 setDisplayMode:[(RAPTransitDirectionsStepsListDataSource *)self _displayModeForItem:v14]];
+    transitListItem3 = [cellCopy transitListItem];
+    [(RAPInstructionIncorrectView *)v5 setDisplayMode:[(RAPTransitDirectionsStepsListDataSource *)self _displayModeForItem:transitListItem3]];
 
     if ([(RAPInstructionIncorrectView *)v5 displayMode]== 1 || [(RAPInstructionIncorrectView *)v5 displayMode]== 2)
     {
@@ -88,8 +88,8 @@ LABEL_12:
       v15[1] = 3221225472;
       v15[2] = sub_1007956DC;
       v15[3] = &unk_101661A90;
-      v16 = v4;
-      v17 = self;
+      v16 = cellCopy;
+      selfCopy = self;
       [(RAPInstructionIncorrectView *)v5 setTapblock:v15];
     }
   }
@@ -97,22 +97,22 @@ LABEL_12:
   return v5;
 }
 
-- (void)_attachDisclosureViewToCell:(id)a3
+- (void)_attachDisclosureViewToCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(RAPTransitDirectionsStepsListDataSource *)self _rapDisclosureViewForCell:v4];
+  cellCopy = cell;
+  v5 = [(RAPTransitDirectionsStepsListDataSource *)self _rapDisclosureViewForCell:cellCopy];
   if (v5)
   {
     v6 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v6 addSubview:v5];
-    v7 = [v5 leadingAnchor];
-    v8 = [v6 leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leadingAnchor = [v5 leadingAnchor];
+    leadingAnchor2 = [v6 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[0] = v9;
-    v10 = [v5 trailingAnchor];
-    v11 = [v6 trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [v5 trailingAnchor];
+    trailingAnchor2 = [v6 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[1] = v12;
     v13 = [NSArray arrayWithObjects:v23 count:2];
     [NSLayoutConstraint activateConstraints:v13];
@@ -123,48 +123,48 @@ LABEL_12:
     v6 = 0;
   }
 
-  [v4 setTrailingView:v6];
-  v14 = [v4 trailingView];
+  [cellCopy setTrailingView:v6];
+  trailingView = [cellCopy trailingView];
 
-  if (v14)
+  if (trailingView)
   {
-    v15 = [v4 trailingView];
+    trailingView2 = [cellCopy trailingView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v4 stepView];
-      v17 = [v16 iconImageView];
-      v18 = [v17 imageSource];
-      if (v18)
+      stepView = [cellCopy stepView];
+      iconImageView = [stepView iconImageView];
+      imageSource = [iconImageView imageSource];
+      if (imageSource)
       {
-        [v16 iconImageView];
+        [stepView iconImageView];
       }
 
       else
       {
-        [v16 trailingView];
+        [stepView trailingView];
       }
       v19 = ;
 
-      v15 = v19;
+      trailingView2 = v19;
     }
 
-    v20 = [v5 centerYAnchor];
-    v21 = [v15 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerYAnchor = [v5 centerYAnchor];
+    centerYAnchor2 = [trailingView2 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v22 setActive:1];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = RAPTransitDirectionsStepsListDataSource;
-  [(TransitDirectionsStepsListDataSource *)&v14 tableView:v8 willDisplayCell:v9 forRowAtIndexPath:v10];
-  v11 = v9;
+  [(TransitDirectionsStepsListDataSource *)&v14 tableView:viewCopy willDisplayCell:cellCopy forRowAtIndexPath:pathCopy];
+  v11 = cellCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -180,16 +180,16 @@ LABEL_12:
 
   if (v13)
   {
-    [v13 set_mapkit_forceSeparatorFrameToCGRectZero:{-[TransitDirectionsStepsListDataSource tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v8, objc_msgSend(v10, "section")) - 2 == objc_msgSend(v10, "row")}];
+    [v13 set_mapkit_forceSeparatorFrameToCGRectZero:{-[TransitDirectionsStepsListDataSource tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", viewCopy, objc_msgSend(pathCopy, "section")) - 2 == objc_msgSend(pathCopy, "row")}];
     [v13 setUseLeadingInstructionMarginAsLeadingSeparatorInset:1];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = RAPTransitDirectionsStepsListDataSource;
-  v5 = [(TransitDirectionsStepsListDataSource *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(TransitDirectionsStepsListDataSource *)&v10 tableView:view cellForRowAtIndexPath:path];
   [v5 setAccessoryType:0];
   v6 = +[UIColor secondarySystemGroupedBackgroundColor];
   [v5 setBackgroundColor:v6];
@@ -197,9 +197,9 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 stepView];
-    v8 = [v7 detailButton];
-    [v8 setHidden:1];
+    stepView = [v5 stepView];
+    detailButton = [stepView detailButton];
+    [detailButton setHidden:1];
   }
 
   objc_opt_class();

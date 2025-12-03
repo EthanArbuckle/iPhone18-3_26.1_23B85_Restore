@@ -1,14 +1,14 @@
 @interface SBHMutableAllIconGridSizeClassSet
-- (BOOL)containsGridSizeClass:(id)a3;
+- (BOOL)containsGridSizeClass:(id)class;
 @end
 
 @implementation SBHMutableAllIconGridSizeClassSet
 
-- (BOOL)containsGridSizeClass:(id)a3
+- (BOOL)containsGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(SBHMutableIconGridSizeClassSet *)self _removedGridSizeClasses];
-  v6 = [v5 containsObject:v4];
+  classCopy = class;
+  _removedGridSizeClasses = [(SBHMutableIconGridSizeClassSet *)self _removedGridSizeClasses];
+  v6 = [_removedGridSizeClasses containsObject:classCopy];
 
   return v6 ^ 1;
 }

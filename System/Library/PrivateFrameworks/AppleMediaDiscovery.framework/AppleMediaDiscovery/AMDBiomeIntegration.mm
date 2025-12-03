@@ -1,25 +1,25 @@
 @interface AMDBiomeIntegration
-+ (id)createRowSetFrom:(id)a3 withFetchDescriptor:(id)a4;
-+ (id)fetchDataFromStream:(id)a3 usingDescriptor:(id)a4 error:(id *)a5;
-+ (id)fetchLatestEventTimestampFromEvents:(id)a3;
-+ (id)fetchLatestRowsFromStream:(id)a3 withFields:(id)a4 withBiomeTimestampDict:(id)a5 error:(id *)a6;
-+ (id)queryBiomeFor:(id)a3 withError:(id *)a4;
-+ (id)queryBiomeStream:(id)a3 withEventFields:(id)a4 fromTimestamp:(id)a5 error:(id *)a6;
-+ (id)runBiomeQuery:(id)a3 error:(id *)a4;
-+ (id)writeToAppLanguageBiomeStream:(id)a3 withError:(id *)a4;
-+ (id)writeToBiome:(id)a3 withError:(id *)a4;
++ (id)createRowSetFrom:(id)from withFetchDescriptor:(id)descriptor;
++ (id)fetchDataFromStream:(id)stream usingDescriptor:(id)descriptor error:(id *)error;
++ (id)fetchLatestEventTimestampFromEvents:(id)events;
++ (id)fetchLatestRowsFromStream:(id)stream withFields:(id)fields withBiomeTimestampDict:(id)dict error:(id *)error;
++ (id)queryBiomeFor:(id)for withError:(id *)error;
++ (id)queryBiomeStream:(id)stream withEventFields:(id)fields fromTimestamp:(id)timestamp error:(id *)error;
++ (id)runBiomeQuery:(id)query error:(id *)error;
++ (id)writeToAppLanguageBiomeStream:(id)stream withError:(id *)error;
++ (id)writeToBiome:(id)biome withError:(id *)error;
 @end
 
 @implementation AMDBiomeIntegration
 
-+ (id)queryBiomeFor:(id)a3 withError:(id *)a4
++ (id)queryBiomeFor:(id)for withError:(id *)error
 {
   v160 = *MEMORY[0x277D85DE8];
-  v147 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v145 = a4;
+  objc_storeStrong(location, for);
+  errorCopy = error;
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
@@ -37,7 +37,7 @@
     v140 = MEMORY[0x277D82BE0](@"Nil config passed for Biome Data refresh");
     v62 = [AMDMiscHelpers logAndCreateError:3 errorMessage:v140];
     v4 = v62;
-    *v145 = v62;
+    *errorCopy = v62;
     v148 = 0;
     v139 = 1;
     objc_storeStrong(&v140, 0);
@@ -50,7 +50,7 @@
     v137 = MEMORY[0x277D82BE0](@"Nil config passed for Biome Data refresh");
     v61 = [AMDMiscHelpers logAndCreateError:3 errorMessage:v137];
     v5 = v61;
-    *v145 = v61;
+    *errorCopy = v61;
     v148 = 0;
     v139 = 1;
     objc_storeStrong(&v137, 0);
@@ -63,7 +63,7 @@
     v136 = MEMORY[0x277D82BE0](@"Invalid payload type passed from the server for Biome Data refresh");
     v60 = [AMDMiscHelpers logAndCreateError:3 errorMessage:v136];
     v6 = v60;
-    *v145 = v60;
+    *errorCopy = v60;
     v148 = 0;
     v139 = 1;
     objc_storeStrong(&v136, 0);
@@ -72,16 +72,16 @@
 
   v135 = MEMORY[0x277D82BE0](v138);
   v134 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v133 = [AMDKVStore fetchValueForKey:@"biome_timestamps_dict" error:v145];
-  if (*v145)
+  v133 = [AMDKVStore fetchValueForKey:@"biome_timestamps_dict" error:errorCopy];
+  if (*errorCopy)
   {
     v57 = MEMORY[0x277CCACA8];
-    v58 = [*v145 localizedDescription];
-    v132 = [v57 stringWithFormat:@"Biome book-keeping dict could not be fetched: %@", v58];
-    MEMORY[0x277D82BD8](v58);
+    localizedDescription = [*errorCopy localizedDescription];
+    v132 = [v57 stringWithFormat:@"Biome book-keeping dict could not be fetched: %@", localizedDescription];
+    MEMORY[0x277D82BD8](localizedDescription);
     v59 = [AMDMiscHelpers logAndCreateError:3 errorMessage:v132];
     v7 = v59;
-    *v145 = v59;
+    *errorCopy = v59;
     v148 = 0;
     v139 = 1;
     objc_storeStrong(&v132, 0);
@@ -211,15 +211,15 @@
           if ([v70 count])
           {
             v68 = v110;
-            v14 = [v147 fetchLatestRowsFromStream:v113 withFields:v70 withBiomeTimestampDict:v133 error:&v68];
+            v14 = [selfCopy fetchLatestRowsFromStream:v113 withFields:v70 withBiomeTimestampDict:v133 error:&v68];
             objc_storeStrong(&v110, v68);
             v69 = v14;
             if (v110)
             {
               v12 = v129;
-              v13 = [v110 localizedDescription];
+              localizedDescription2 = [v110 localizedDescription];
               [v12 setObject:? forKey:?];
-              MEMORY[0x277D82BD8](v13);
+              MEMORY[0x277D82BD8](localizedDescription2);
               [v134 addObject:v129];
               v139 = 4;
             }
@@ -327,24 +327,24 @@ LABEL_103:
       v101 = +[AMDSQLite getSharedInstance];
       if (([v101 isUsable] & 1) == 0)
       {
-        v100 = [v101 connectionState];
-        v99 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLite database is not usable: %@", v100];
+        connectionState = [v101 connectionState];
+        v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLite database is not usable: %@", connectionState];
         v98 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v97 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
         {
           v44 = v98;
           v45 = v97;
-          __os_log_helper_16_2_1_8_64(v154, v99);
+          __os_log_helper_16_2_1_8_64(v154, v100);
           _os_log_error_impl(&dword_240CB9000, v44, v45, "%@", v154, 0xCu);
         }
 
         objc_storeStrong(&v98, 0);
-        [v129 setObject:v99 forKey:v113];
+        [v129 setObject:v100 forKey:v113];
         [v134 addObject:v129];
         v139 = 4;
-        objc_storeStrong(&v99, 0);
         objc_storeStrong(&v100, 0);
+        objc_storeStrong(&connectionState, 0);
 LABEL_79:
         objc_storeStrong(&v101, 0);
         objc_storeStrong(&v102, 0);
@@ -359,12 +359,12 @@ LABEL_101:
 
       v41 = [AMDFetchDescriptor alloc];
       v40 = v102;
-      v43 = [v101 getDataSchema];
+      getDataSchema = [v101 getDataSchema];
       v95 = v110;
       v42 = [AMDFetchDescriptor initWithDict:v41 usingSchema:"initWithDict:usingSchema:error:" error:v40];
       objc_storeStrong(&v110, v95);
       v96 = v42;
-      MEMORY[0x277D82BD8](v43);
+      MEMORY[0x277D82BD8](getDataSchema);
       if (v110)
       {
         v94 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -373,19 +373,19 @@ LABEL_101:
         {
           v37 = v94;
           v38 = v93;
-          v39 = [v110 localizedDescription];
-          v92 = MEMORY[0x277D82BE0](v39);
+          localizedDescription3 = [v110 localizedDescription];
+          v92 = MEMORY[0x277D82BE0](localizedDescription3);
           __os_log_helper_16_2_1_8_64(v153, v92);
           _os_log_error_impl(&dword_240CB9000, v37, v38, "%@", v153, 0xCu);
-          MEMORY[0x277D82BD8](v39);
+          MEMORY[0x277D82BD8](localizedDescription3);
           objc_storeStrong(&v92, 0);
         }
 
         objc_storeStrong(&v94, 0);
         v35 = v129;
-        v36 = [v110 localizedDescription];
+        localizedDescription4 = [v110 localizedDescription];
         [v35 setObject:? forKey:?];
-        MEMORY[0x277D82BD8](v36);
+        MEMORY[0x277D82BD8](localizedDescription4);
         [v134 addObject:v129];
         v139 = 4;
         goto LABEL_78;
@@ -413,7 +413,7 @@ LABEL_101:
       }
 
       v87 = v110;
-      v32 = [v147 fetchDataFromStream:v113 usingDescriptor:v96 error:&v87];
+      v32 = [selfCopy fetchDataFromStream:v113 usingDescriptor:v96 error:&v87];
       objc_storeStrong(&v110, v87);
       v88 = v32;
       if (v110)
@@ -424,19 +424,19 @@ LABEL_101:
         {
           v29 = v86;
           v30 = v85;
-          v31 = [v110 localizedDescription];
-          v84 = MEMORY[0x277D82BE0](v31);
+          localizedDescription5 = [v110 localizedDescription];
+          v84 = MEMORY[0x277D82BE0](localizedDescription5);
           __os_log_helper_16_2_1_8_64(v151, v84);
           _os_log_error_impl(&dword_240CB9000, v29, v30, "%@", v151, 0xCu);
-          MEMORY[0x277D82BD8](v31);
+          MEMORY[0x277D82BD8](localizedDescription5);
           objc_storeStrong(&v84, 0);
         }
 
         objc_storeStrong(&v86, 0);
         v27 = v129;
-        v28 = [v110 localizedDescription];
+        localizedDescription6 = [v110 localizedDescription];
         [v27 setObject:? forKey:?];
-        MEMORY[0x277D82BD8](v28);
+        MEMORY[0x277D82BD8](localizedDescription6);
         [v134 addObject:v129];
         v139 = 4;
       }
@@ -452,9 +452,9 @@ LABEL_101:
           if (v110)
           {
             v22 = v129;
-            v23 = [v110 localizedDescription];
+            localizedDescription7 = [v110 localizedDescription];
             [v22 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v23);
+            MEMORY[0x277D82BD8](localizedDescription7);
             [v134 addObject:v129];
             v139 = 4;
           }
@@ -497,9 +497,9 @@ LABEL_101:
 
           v20 = v131;
           v19 = v77;
-          v21 = [v96 getId];
+          getId = [v96 getId];
           [v20 setObject:v19 forKey:?];
-          MEMORY[0x277D82BD8](v21);
+          MEMORY[0x277D82BD8](getId);
           objc_storeStrong(&v77, 0);
           objc_storeStrong(&v78, 0);
         }
@@ -560,9 +560,9 @@ LABEL_104:
   if (v67)
   {
     v10 = v141;
-    v11 = [v67 localizedDescription];
+    localizedDescription8 = [v67 localizedDescription];
     [v10 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](localizedDescription8);
   }
 
   [v141 setObject:v134 forKey:@"biomeUpdateSummaries"];
@@ -586,21 +586,21 @@ LABEL_110:
   return v8;
 }
 
-+ (id)queryBiomeStream:(id)a3 withEventFields:(id)a4 fromTimestamp:(id)a5 error:(id *)a6
++ (id)queryBiomeStream:(id)stream withEventFields:(id)fields fromTimestamp:(id)timestamp error:(id *)error
 {
-  obj = a4;
-  v21 = a5;
-  v22 = a6;
+  obj = fields;
+  timestampCopy = timestamp;
+  errorCopy = error;
   v33 = *MEMORY[0x277D85DE8];
-  v31 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, stream);
   v29 = 0;
   objc_storeStrong(&v29, obj);
   v28 = 0;
-  objc_storeStrong(&v28, v21);
-  v27 = v22;
+  objc_storeStrong(&v28, timestampCopy);
+  v27 = errorCopy;
   v26 = [v29 componentsJoinedByString:{@", "}];
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@", v26, location[0]];
   if (v28)
@@ -630,7 +630,7 @@ LABEL_110:
   v13 = 0;
   objc_storeStrong(&v24, 0);
   v11 = &v25;
-  v12 = [v31 runBiomeQuery:v25 error:v27];
+  v12 = [selfCopy runBiomeQuery:v25 error:v27];
   objc_storeStrong(v11, v13);
   objc_storeStrong(&v26, v13);
   objc_storeStrong(&v28, v13);
@@ -642,13 +642,13 @@ LABEL_110:
   return v9;
 }
 
-+ (id)fetchLatestEventTimestampFromEvents:(id)a3
++ (id)fetchLatestEventTimestampFromEvents:(id)events
 {
   v22 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   v18 = -1.0;
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -714,13 +714,13 @@ LABEL_110:
   return v4;
 }
 
-+ (id)runBiomeQuery:(id)a3 error:(id *)a4
++ (id)runBiomeQuery:(id)query error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, query);
+  errorCopy = error;
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = objc_alloc_init(MEMORY[0x277CF1A88]);
   v16 = [v17 executeQuery:{@"%@", location[0]}];
@@ -736,19 +736,19 @@ LABEL_110:
     }
   }
 
-  v11 = [v16 error];
-  MEMORY[0x277D82BD8](v11);
-  if (v11)
+  error = [v16 error];
+  MEMORY[0x277D82BD8](error);
+  if (error)
   {
     v7 = MEMORY[0x277CCACA8];
-    v9 = [v16 error];
-    v8 = [v9 localizedDescription];
-    v15 = [v7 stringWithFormat:@"Biome query failure: %@", v8];
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    error2 = [v16 error];
+    localizedDescription = [error2 localizedDescription];
+    v15 = [v7 stringWithFormat:@"Biome query failure: %@", localizedDescription];
+    MEMORY[0x277D82BD8](localizedDescription);
+    MEMORY[0x277D82BD8](error2);
     v10 = [AMDMiscHelpers logAndCreateError:3 errorMessage:v15];
     v4 = v10;
-    *v19 = v10;
+    *errorCopy = v10;
     v21 = 0;
     objc_storeStrong(&v15, 0);
   }
@@ -767,21 +767,21 @@ LABEL_110:
   return v5;
 }
 
-+ (id)fetchLatestRowsFromStream:(id)a3 withFields:(id)a4 withBiomeTimestampDict:(id)a5 error:(id *)a6
++ (id)fetchLatestRowsFromStream:(id)stream withFields:(id)fields withBiomeTimestampDict:(id)dict error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v33 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, stream);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, fields);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
-  v29 = a6;
+  objc_storeStrong(&v30, dict);
+  errorCopy = error;
   v28 = [v30 objectForKey:location[0]];
-  v27 = [v33 queryBiomeStream:location[0] withEventFields:v31 fromTimestamp:v28 error:a6];
-  if (*a6)
+  v27 = [selfCopy queryBiomeStream:location[0] withEventFields:v31 fromTimestamp:v28 error:error];
+  if (*error)
   {
     v34 = 0;
     v26 = 1;
@@ -833,8 +833,8 @@ LABEL_110:
     v35[1] = 0x2852A9128;
     v36[1] = v25;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
-    v20 = [AMDSQLite saveEvents:v21 error:v29];
-    if (*v29)
+    v20 = [AMDSQLite saveEvents:v21 error:errorCopy];
+    if (*errorCopy)
     {
       v34 = 0;
       v26 = 1;
@@ -842,7 +842,7 @@ LABEL_110:
 
     else
     {
-      v19 = [v33 fetchLatestEventTimestampFromEvents:v27];
+      v19 = [selfCopy fetchLatestEventTimestampFromEvents:v27];
       if (v19)
       {
         [v30 setObject:v19 forKey:location[0]];
@@ -869,28 +869,28 @@ LABEL_110:
   return v6;
 }
 
-+ (id)fetchDataFromStream:(id)a3 usingDescriptor:(id)a4 error:(id *)a5
++ (id)fetchDataFromStream:(id)stream usingDescriptor:(id)descriptor error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v18 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, stream);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = a5;
-  v14 = [v16 getStatement];
+  objc_storeStrong(&v16, descriptor);
+  errorCopy = error;
+  getStatement = [v16 getStatement];
   v13 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v12 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_1_8_64(v20, v14);
+    __os_log_helper_16_2_1_8_64(v20, getStatement);
     _os_log_impl(&dword_240CB9000, v13, v12, "Biome SQL Query statement: %@", v20, 0xCu);
   }
 
   objc_storeStrong(&v13, 0);
-  v11 = [v18 runBiomeQuery:v14 error:v15];
-  if (*v15)
+  v11 = [selfCopy runBiomeQuery:getStatement error:errorCopy];
+  if (*errorCopy)
   {
     v19 = 0;
     v10 = 1;
@@ -898,7 +898,7 @@ LABEL_110:
 
   else if (v11)
   {
-    v9 = [v18 createRowSetFrom:v11 withFetchDescriptor:v16];
+    v9 = [selfCopy createRowSetFrom:v11 withFetchDescriptor:v16];
     v19 = MEMORY[0x277D82BE0](v9);
     v10 = 1;
     objc_storeStrong(&v9, 0);
@@ -911,7 +911,7 @@ LABEL_110:
   }
 
   objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&getStatement, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -920,34 +920,34 @@ LABEL_110:
   return v5;
 }
 
-+ (id)createRowSetFrom:(id)a3 withFetchDescriptor:(id)a4
++ (id)createRowSetFrom:(id)from withFetchDescriptor:(id)descriptor
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, from);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
-  v36 = [v37 getColumnSpecs];
-  v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v36, "count")}];
-  v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v36, "count")}];
+  objc_storeStrong(&v37, descriptor);
+  getColumnSpecs = [v37 getColumnSpecs];
+  v35 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(getColumnSpecs, "count")}];
+  v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(getColumnSpecs, "count")}];
   for (i = 0; ; ++i)
   {
     v21 = i;
-    if (v21 >= [v36 count])
+    if (v21 >= [getColumnSpecs count])
     {
       break;
     }
 
-    v32 = [v36 objectAtIndex:i];
-    v31 = [v32 getSelectColumnName];
-    v30 = [v32 getTypeString];
+    v32 = [getColumnSpecs objectAtIndex:i];
+    getSelectColumnName = [v32 getSelectColumnName];
+    getTypeString = [v32 getTypeString];
     v16 = v34;
     v42[0] = @"name";
-    v43[0] = v31;
+    v43[0] = getSelectColumnName;
     v42[1] = AMD_SQLITE_TYPE;
-    v43[1] = v30;
+    v43[1] = getTypeString;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
     [v16 addObject:?];
     MEMORY[0x277D82BD8](v17);
@@ -956,8 +956,8 @@ LABEL_110:
     v20 = [v18 initWithCapacity:{objc_msgSend(location[0], "count")}];
     [v19 addObject:?];
     MEMORY[0x277D82BD8](v20);
-    objc_storeStrong(&v30, 0);
-    objc_storeStrong(&v31, 0);
+    objc_storeStrong(&getTypeString, 0);
+    objc_storeStrong(&getSelectColumnName, 0);
     objc_storeStrong(&v32, 0);
   }
 
@@ -983,14 +983,14 @@ LABEL_110:
         for (j = 0; ; ++j)
         {
           v9 = j;
-          if (v9 >= [v36 count])
+          if (v9 >= [getColumnSpecs count])
           {
             break;
           }
 
-          v26 = [v36 objectAtIndex:j];
-          v25 = [v26 getSelectColumnName];
-          v24 = [v29 objectForKey:v25];
+          v26 = [getColumnSpecs objectAtIndex:j];
+          getSelectColumnName2 = [v26 getSelectColumnName];
+          v24 = [v29 objectForKey:getSelectColumnName2];
           if (v24)
           {
             v8 = [v35 objectAtIndex:j];
@@ -1000,14 +1000,14 @@ LABEL_110:
 
           else
           {
-            v4 = [MEMORY[0x277CBEB68] null];
+            null = [MEMORY[0x277CBEB68] null];
             v5 = v24;
-            v24 = v4;
+            v24 = null;
             MEMORY[0x277D82BD8](v5);
           }
 
           objc_storeStrong(&v24, 0);
-          objc_storeStrong(&v25, 0);
+          objc_storeStrong(&getSelectColumnName2, 0);
           objc_storeStrong(&v26, 0);
         }
       }
@@ -1035,7 +1035,7 @@ LABEL_110:
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&getColumnSpecs, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -1043,14 +1043,14 @@ LABEL_110:
   return v7;
 }
 
-+ (id)writeToBiome:(id)a3 withError:(id *)a4
++ (id)writeToBiome:(id)biome withError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v28 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, biome);
+  errorCopy = error;
   if (location[0])
   {
     v24 = [location[0] objectForKey:@"requestArray"];
@@ -1078,7 +1078,7 @@ LABEL_110:
           v20 = [v24 objectForKey:v22];
           if ([v22 isEqualToString:@"AppLanguageConsumption"])
           {
-            v19 = [v28 writeToAppLanguageBiomeStream:v20 withError:v26];
+            v19 = [selfCopy writeToAppLanguageBiomeStream:v20 withError:errorCopy];
             [v23 setObject:v19 forKey:v22];
             objc_storeStrong(&v19, 0);
             v25 = 0;
@@ -1088,7 +1088,7 @@ LABEL_110:
           {
             v9 = [AMDMiscHelpers logAndCreateError:3 errorMessage:@"Biome write is not supported for the current stream"];
             v6 = v9;
-            *v26 = v9;
+            *errorCopy = v9;
             v29 = 0;
             v25 = 1;
           }
@@ -1132,7 +1132,7 @@ LABEL_15:
     {
       v16 = [AMDMiscHelpers logAndCreateError:3 errorMessage:@"Biome write streams payload is invalid"];
       v5 = v16;
-      *v26 = v16;
+      *errorCopy = v16;
       v29 = 0;
       v25 = 1;
     }
@@ -1144,7 +1144,7 @@ LABEL_15:
   {
     v17 = [AMDMiscHelpers logAndCreateError:3 errorMessage:@"Biome write payload is nil"];
     v4 = v17;
-    *v26 = v17;
+    *errorCopy = v17;
     v29 = 0;
     v25 = 1;
   }
@@ -1156,22 +1156,22 @@ LABEL_15:
   return v7;
 }
 
-+ (id)writeToAppLanguageBiomeStream:(id)a3 withError:(id *)a4
++ (id)writeToAppLanguageBiomeStream:(id)stream withError:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30[1] = a4;
+  objc_storeStrong(location, stream);
+  v30[1] = error;
   v30[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
   v29 = 0;
   v16 = BiomeLibrary();
   v15 = [v16 App];
-  v28 = [v15 LanguageConsumption];
+  languageConsumption = [v15 LanguageConsumption];
   MEMORY[0x277D82BD8](v15);
   MEMORY[0x277D82BD8](v16);
-  v27 = [v28 source];
+  source = [languageConsumption source];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v18 = [obj countByEnumeratingWithState:__b objects:v32 count:16];
@@ -1200,9 +1200,9 @@ LABEL_15:
       v21 = [v26 objectForKey:@"contentGenre"];
       v20 = [v26 objectForKey:@"timeSpent"];
       v9 = objc_alloc(MEMORY[0x277CF1000]);
-      v4 = [v24 intValue];
-      v19 = [v9 initWithDataSource:v4 adamID:v23 contentLanguage:v22 contentGenre:v21 timeSpent:v20];
-      [v27 sendEvent:v19];
+      intValue = [v24 intValue];
+      v19 = [v9 initWithDataSource:intValue adamID:v23 contentLanguage:v22 contentGenre:v21 timeSpent:v20];
+      [source sendEvent:v19];
       ++v29;
       objc_storeStrong(&v19, 0);
       objc_storeStrong(&v20, 0);
@@ -1229,8 +1229,8 @@ LABEL_15:
   [v6 setObject:? forKey:?];
   MEMORY[0x277D82BD8](v7);
   v8 = MEMORY[0x277D82BE0](v30[0]);
-  objc_storeStrong(&v27, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&source, 0);
+  objc_storeStrong(&languageConsumption, 0);
   objc_storeStrong(v30, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];

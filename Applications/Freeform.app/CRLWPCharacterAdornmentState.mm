@@ -1,5 +1,5 @@
 @interface CRLWPCharacterAdornmentState
-+ (id)p_deepCopyPathArray:(id)a3;
++ (id)p_deepCopyPathArray:(id)array;
 - (CGRect)currentFillRect;
 - (CGRect)currentStrokeRect;
 - (CRLWPCharacterAdornmentState)init;
@@ -7,8 +7,8 @@
 - (_NSRange)currentStrokeRange;
 - (void)resetFillState;
 - (void)resetStrokeState;
-- (void)setStateWithFill:(id)a3 range:(_NSRange)a4 rect:(CGRect)a5 paths:(id)a6 rubyPaths:(id)a7 shadow:(id)a8 fillsCurrentTextContainer:(BOOL)a9;
-- (void)setStateWithStroke:(id)a3 range:(_NSRange)a4 rect:(CGRect)a5 paths:(id)a6 rubyPaths:(id)a7 shadow:(id)a8;
+- (void)setStateWithFill:(id)fill range:(_NSRange)range rect:(CGRect)rect paths:(id)paths rubyPaths:(id)rubyPaths shadow:(id)shadow fillsCurrentTextContainer:(BOOL)container;
+- (void)setStateWithStroke:(id)stroke range:(_NSRange)range rect:(CGRect)rect paths:(id)paths rubyPaths:(id)rubyPaths shadow:(id)shadow;
 @end
 
 @implementation CRLWPCharacterAdornmentState
@@ -28,22 +28,22 @@
   return v3;
 }
 
-- (void)setStateWithStroke:(id)a3 range:(_NSRange)a4 rect:(CGRect)a5 paths:(id)a6 rubyPaths:(id)a7 shadow:(id)a8
+- (void)setStateWithStroke:(id)stroke range:(_NSRange)range rect:(CGRect)rect paths:(id)paths rubyPaths:(id)rubyPaths shadow:(id)shadow
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  length = a4.length;
-  location = a4.location;
-  v18 = a3;
-  v19 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
+  strokeCopy = stroke;
+  shadowCopy = shadow;
   self->_hasValidStrokeState = 1;
   currentAdornmentStroke = self->_currentAdornmentStroke;
-  self->_currentAdornmentStroke = v18;
-  v28 = v18;
-  v21 = a7;
-  v22 = a6;
+  self->_currentAdornmentStroke = strokeCopy;
+  v28 = strokeCopy;
+  rubyPathsCopy = rubyPaths;
+  pathsCopy = paths;
 
   self->_currentStrokeRange.location = location;
   self->_currentStrokeRange.length = length;
@@ -51,18 +51,18 @@
   self->_currentStrokeRect.origin.y = y;
   self->_currentStrokeRect.size.width = width;
   self->_currentStrokeRect.size.height = height;
-  v23 = [objc_opt_class() p_deepCopyPathArray:v22];
+  v23 = [objc_opt_class() p_deepCopyPathArray:pathsCopy];
 
   currentStrokePaths = self->_currentStrokePaths;
   self->_currentStrokePaths = v23;
 
-  v25 = [objc_opt_class() p_deepCopyPathArray:v21];
+  v25 = [objc_opt_class() p_deepCopyPathArray:rubyPathsCopy];
 
   currentRubyStrokePaths = self->_currentRubyStrokePaths;
   self->_currentRubyStrokePaths = v25;
 
   currentStrokeShadow = self->_currentStrokeShadow;
-  self->_currentStrokeShadow = v19;
+  self->_currentStrokeShadow = shadowCopy;
 }
 
 - (void)resetStrokeState
@@ -87,22 +87,22 @@
   self->_currentStrokeShadow = 0;
 }
 
-- (void)setStateWithFill:(id)a3 range:(_NSRange)a4 rect:(CGRect)a5 paths:(id)a6 rubyPaths:(id)a7 shadow:(id)a8 fillsCurrentTextContainer:(BOOL)a9
+- (void)setStateWithFill:(id)fill range:(_NSRange)range rect:(CGRect)rect paths:(id)paths rubyPaths:(id)rubyPaths shadow:(id)shadow fillsCurrentTextContainer:(BOOL)container
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  length = a4.length;
-  location = a4.location;
-  v19 = a3;
-  v20 = a8;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
+  fillCopy = fill;
+  shadowCopy = shadow;
   self->_hasValidFillState = 1;
   currentAdornmentFill = self->_currentAdornmentFill;
-  self->_currentAdornmentFill = v19;
-  v22 = v19;
-  v23 = a7;
-  v24 = a6;
+  self->_currentAdornmentFill = fillCopy;
+  v22 = fillCopy;
+  rubyPathsCopy = rubyPaths;
+  pathsCopy = paths;
 
   self->_currentFillRange.location = location;
   self->_currentFillRange.length = length;
@@ -110,20 +110,20 @@
   self->_currentFillRect.origin.y = y;
   self->_currentFillRect.size.width = width;
   self->_currentFillRect.size.height = height;
-  v25 = [objc_opt_class() p_deepCopyPathArray:v24];
+  v25 = [objc_opt_class() p_deepCopyPathArray:pathsCopy];
 
   currentFillPaths = self->_currentFillPaths;
   self->_currentFillPaths = v25;
 
-  v27 = [objc_opt_class() p_deepCopyPathArray:v23];
+  v27 = [objc_opt_class() p_deepCopyPathArray:rubyPathsCopy];
 
   currentRubyFillPaths = self->_currentRubyFillPaths;
   self->_currentRubyFillPaths = v27;
 
   currentFillShadow = self->_currentFillShadow;
-  self->_currentFillShadow = v20;
+  self->_currentFillShadow = shadowCopy;
 
-  self->_fillsCurrentTextContainer = a9;
+  self->_fillsCurrentTextContainer = container;
 }
 
 - (void)resetFillState
@@ -153,16 +153,16 @@
   self->_currentDropCapAdornments = v10;
 }
 
-+ (id)p_deepCopyPathArray:(id)a3
++ (id)p_deepCopyPathArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[TSUSparseArray array];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10055ECE8;
   v6[3] = &unk_10184FF28;
   v6[4] = v4;
-  [v3 foreach:v6];
+  [arrayCopy foreach:v6];
 
   return v4;
 }

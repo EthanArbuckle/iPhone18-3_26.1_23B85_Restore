@@ -1,22 +1,22 @@
 @interface NEIssueLinkPresentationSource
 - (LPLinkMetadata)linkMetadata;
-- (NEIssueLinkPresentationSource)initWithIssue:(id)a3;
-- (id)imageItemProviderFromIssue:(id)a3;
-- (id)urlFromIssue:(id)a3;
+- (NEIssueLinkPresentationSource)initWithIssue:(id)issue;
+- (id)imageItemProviderFromIssue:(id)issue;
+- (id)urlFromIssue:(id)issue;
 @end
 
 @implementation NEIssueLinkPresentationSource
 
-- (NEIssueLinkPresentationSource)initWithIssue:(id)a3
+- (NEIssueLinkPresentationSource)initWithIssue:(id)issue
 {
-  v5 = a3;
+  issueCopy = issue;
   v9.receiver = self;
   v9.super_class = NEIssueLinkPresentationSource;
   v6 = [(NEIssueLinkPresentationSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_issue, a3);
+    objc_storeStrong(&v6->_issue, issue);
   }
 
   return v7;
@@ -24,37 +24,37 @@
 
 - (LPLinkMetadata)linkMetadata
 {
-  v3 = [(NEIssueLinkPresentationSource *)self issue];
-  v4 = [(NEIssueLinkPresentationSource *)self titleFromIssue:v3];
+  issue = [(NEIssueLinkPresentationSource *)self issue];
+  v4 = [(NEIssueLinkPresentationSource *)self titleFromIssue:issue];
 
-  v5 = [(NEIssueLinkPresentationSource *)self issue];
-  v6 = [(NEIssueLinkPresentationSource *)self subtitleFromIssue:v5];
+  issue2 = [(NEIssueLinkPresentationSource *)self issue];
+  v6 = [(NEIssueLinkPresentationSource *)self subtitleFromIssue:issue2];
 
-  v7 = [(NEIssueLinkPresentationSource *)self issue];
-  v8 = [(NEIssueLinkPresentationSource *)self urlFromIssue:v7];
+  issue3 = [(NEIssueLinkPresentationSource *)self issue];
+  v8 = [(NEIssueLinkPresentationSource *)self urlFromIssue:issue3];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v4, v6];
-  v10 = [(NEIssueLinkPresentationSource *)self issue];
-  v11 = [(NEIssueLinkPresentationSource *)self imageItemProviderFromIssue:v10];
+  issue4 = [(NEIssueLinkPresentationSource *)self issue];
+  v11 = [(NEIssueLinkPresentationSource *)self imageItemProviderFromIssue:issue4];
 
   v12 = [[NELinkMetadataSource alloc] initWithTitle:v9 url:v8 imageProvider:v11 iconProvider:v11];
-  v13 = [(NELinkMetadataSource *)v12 linkMetadata];
+  linkMetadata = [(NELinkMetadataSource *)v12 linkMetadata];
 
-  return v13;
+  return linkMetadata;
 }
 
-- (id)imageItemProviderFromIssue:(id)a3
+- (id)imageItemProviderFromIssue:(id)issue
 {
-  v3 = a3;
+  issueCopy = issue;
   v4 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v5 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__NEIssueLinkPresentationSource_imageItemProviderFromIssue___block_invoke;
   v8[3] = &unk_1E84CD0B8;
-  v9 = v3;
-  v6 = v3;
-  [v4 registerItemForTypeIdentifier:v5 loadHandler:v8];
+  v9 = issueCopy;
+  v6 = issueCopy;
+  [v4 registerItemForTypeIdentifier:identifier loadHandler:v8];
 
   return v4;
 }
@@ -90,11 +90,11 @@ void __60__NEIssueLinkPresentationSource_imageItemProviderFromIssue___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)urlFromIssue:(id)a3
+- (id)urlFromIssue:(id)issue
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [a3 identifier];
-  v5 = [v3 nss_NewsURLForIssueID:v4];
+  identifier = [issue identifier];
+  v5 = [v3 nss_NewsURLForIssueID:identifier];
 
   return v5;
 }

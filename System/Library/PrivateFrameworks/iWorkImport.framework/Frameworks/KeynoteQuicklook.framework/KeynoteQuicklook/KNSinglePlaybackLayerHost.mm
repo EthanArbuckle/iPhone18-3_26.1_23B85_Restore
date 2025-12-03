@@ -1,23 +1,23 @@
 @interface KNSinglePlaybackLayerHost
 - (KNAnimationScreenEnvironment)screenEnvironment;
-- (KNSinglePlaybackLayerHost)initWithContainerLayer:(id)a3 screenEnvironment:(id)a4;
+- (KNSinglePlaybackLayerHost)initWithContainerLayer:(id)layer screenEnvironment:(id)environment;
 @end
 
 @implementation KNSinglePlaybackLayerHost
 
-- (KNSinglePlaybackLayerHost)initWithContainerLayer:(id)a3 screenEnvironment:(id)a4
+- (KNSinglePlaybackLayerHost)initWithContainerLayer:(id)layer screenEnvironment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  layerCopy = layer;
+  environmentCopy = environment;
   v24.receiver = self;
   v24.super_class = KNSinglePlaybackLayerHost;
   v9 = [(KNSinglePlaybackLayerHost *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_containerLayer, a3);
+    objc_storeStrong(&v9->_containerLayer, layer);
     objc_msgSend_setMasksToBounds_(v10->_containerLayer, v11, 1);
-    v14 = objc_msgSend_copy(v8, v12, v13);
+    v14 = objc_msgSend_copy(environmentCopy, v12, v13);
     screenEnvironment = v10->_screenEnvironment;
     v10->_screenEnvironment = v14;
 

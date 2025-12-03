@@ -1,23 +1,23 @@
 @interface ATXAppProtectionLockedOrHidden
-- (ATXAppProtectionLockedOrHidden)initWithLockedApps:(id)a3 hiddenApps:(id)a4;
+- (ATXAppProtectionLockedOrHidden)initWithLockedApps:(id)apps hiddenApps:(id)hiddenApps;
 @end
 
 @implementation ATXAppProtectionLockedOrHidden
 
-- (ATXAppProtectionLockedOrHidden)initWithLockedApps:(id)a3 hiddenApps:(id)a4
+- (ATXAppProtectionLockedOrHidden)initWithLockedApps:(id)apps hiddenApps:(id)hiddenApps
 {
-  v6 = a3;
-  v7 = a4;
+  appsCopy = apps;
+  hiddenAppsCopy = hiddenApps;
   v14.receiver = self;
   v14.super_class = ATXAppProtectionLockedOrHidden;
   v8 = [(ATXAppProtectionLockedOrHidden *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [appsCopy copy];
     lockedApps = v8->_lockedApps;
     v8->_lockedApps = v9;
 
-    v11 = [v7 copy];
+    v11 = [hiddenAppsCopy copy];
     hiddenApps = v8->_hiddenApps;
     v8->_hiddenApps = v11;
   }

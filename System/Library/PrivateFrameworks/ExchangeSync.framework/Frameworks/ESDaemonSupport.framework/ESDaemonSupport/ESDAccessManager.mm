@@ -1,11 +1,11 @@
 @interface ESDAccessManager
 + (id)sharedManager;
-- (BOOL)isAccountID:(id)a3 folderID:(id)a4 watchedByClientBesides:(id)a5;
+- (BOOL)isAccountID:(id)d folderID:(id)iD watchedByClientBesides:(id)besides;
 - (ESDAccessManager)init;
 - (id)_init;
 - (void)_setupServerConnection;
-- (void)addPersistentClientWithAccountID:(id)a3 clientID:(id)a4 watchedIDs:(id)a5;
-- (void)removeClient:(id)a3;
+- (void)addPersistentClientWithAccountID:(id)d clientID:(id)iD watchedIDs:(id)ds;
+- (void)removeClient:(id)client;
 @end
 
 @implementation ESDAccessManager
@@ -321,51 +321,51 @@ uint64_t __33__ESDAccessManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = DALoggingwithCategory();
   v7 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [(ESDAccessManager *)v5 clients];
+    clients = [(ESDAccessManager *)selfCopy clients];
     v11 = 138412546;
-    v12 = v4;
+    v12 = clientCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = clients;
     _os_log_impl(&dword_24A184000, v6, v7, "ESDAccessManager REMOVING client %@ from Current Clients %@", &v11, 0x16u);
   }
 
-  if (v4)
+  if (clientCopy)
   {
-    v9 = [(ESDAccessManager *)v5 clients];
-    [v9 removeObject:v4];
+    clients2 = [(ESDAccessManager *)selfCopy clients];
+    [clients2 removeObject:clientCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPersistentClientWithAccountID:(id)a3 clientID:(id)a4 watchedIDs:(id)a5
+- (void)addPersistentClientWithAccountID:(id)d clientID:(id)iD watchedIDs:(id)ds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v9)
+  dCopy = d;
+  iDCopy = iD;
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (iDCopy)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = [(ESDAccessManager *)v11 clients];
-    v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    clients = [(ESDAccessManager *)selfCopy clients];
+    v13 = [clients countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v13)
     {
       v14 = *v25;
@@ -375,11 +375,11 @@ uint64_t __33__ESDAccessManager_sharedManager__block_invoke()
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(clients);
           }
 
-          v16 = [*(*(&v24 + 1) + 8 * i) clientBundleID];
-          v17 = [v16 isEqualToString:v9];
+          clientBundleID = [*(*(&v24 + 1) + 8 * i) clientBundleID];
+          v17 = [clientBundleID isEqualToString:iDCopy];
 
           if (v17)
           {
@@ -388,7 +388,7 @@ uint64_t __33__ESDAccessManager_sharedManager__block_invoke()
             if (os_log_type_enabled(v21, v22))
             {
               *buf = 138412290;
-              v29 = v9;
+              v29 = iDCopy;
               _os_log_impl(&dword_24A184000, v21, v22, "Found an existing ESDClient with the same bundle id, not changing the folder list. The client ID is: %@", buf, 0xCu);
             }
 
@@ -397,7 +397,7 @@ uint64_t __33__ESDAccessManager_sharedManager__block_invoke()
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v13 = [clients countByEnumeratingWithState:&v24 objects:v30 count:16];
         if (v13)
         {
           continue;
@@ -413,39 +413,39 @@ uint64_t __33__ESDAccessManager_sharedManager__block_invoke()
   if (os_log_type_enabled(v18, v19))
   {
     *buf = 138412290;
-    v29 = v9;
+    v29 = iDCopy;
     _os_log_impl(&dword_24A184000, v18, v19, "Add ESDClient for client %@", buf, 0xCu);
   }
 
-  v20 = [[ESDClient alloc] initWithClientID:v9];
-  v12 = [(ESDAccessManager *)v11 clients];
-  [v12 addObject:v20];
+  v20 = [[ESDClient alloc] initWithClientID:iDCopy];
+  clients = [(ESDAccessManager *)selfCopy clients];
+  [clients addObject:v20];
 LABEL_17:
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   if (v20)
   {
-    [(ESDClient *)v20 beginMonitoringPersistentFolders:v10 forAccount:v8];
+    [(ESDClient *)v20 beginMonitoringPersistentFolders:dsCopy forAccount:dCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAccountID:(id)a3 folderID:(id)a4 watchedByClientBesides:(id)a5
+- (BOOL)isAccountID:(id)d folderID:(id)iD watchedByClientBesides:(id)besides
 {
   v28 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
+  dCopy = d;
+  iDCopy = iD;
+  besidesCopy = besides;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v10;
-  v11 = [(ESDAccessManager *)v10 clients];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  obj = selfCopy;
+  clients = [(ESDAccessManager *)selfCopy clients];
+  v12 = [clients countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = *v24;
@@ -455,22 +455,22 @@ LABEL_17:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(clients);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 clientUniqueID];
-        v17 = [v9 clientUniqueID];
-        v18 = [v16 isEqualToString:v17];
+        clientUniqueID = [v15 clientUniqueID];
+        clientUniqueID2 = [besidesCopy clientUniqueID];
+        v18 = [clientUniqueID isEqualToString:clientUniqueID2];
 
-        if (v18 & 1) == 0 && ([v15 isMonitoringAccountID:v22 folderID:v8])
+        if (v18 & 1) == 0 && ([v15 isMonitoringAccountID:dCopy folderID:iDCopy])
         {
           LOBYTE(v12) = 1;
           goto LABEL_12;
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [clients countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
         continue;

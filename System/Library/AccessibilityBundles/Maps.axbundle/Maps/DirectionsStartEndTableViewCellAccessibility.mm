@@ -1,24 +1,24 @@
 @interface DirectionsStartEndTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityTableViewCellText;
 @end
 
 @implementation DirectionsStartEndTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DirectionsStartEndTableViewCell" hasInstanceVariable:@"_startEndView" withType:"DirectionsStartEndContentView"];
-  [v3 validateClass:@"DirectionsStartEndContentView" hasInstanceVariable:@"_overviewLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DirectionsStartEndTableViewCell" hasInstanceVariable:@"_startEndView" withType:"DirectionsStartEndContentView"];
+  [validationsCopy validateClass:@"DirectionsStartEndContentView" hasInstanceVariable:@"_overviewLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityTableViewCellText
 {
   v2 = [(DirectionsStartEndTableViewCellAccessibility *)self safeValueForKey:@"_startEndView"];
   v3 = [v2 safeValueForKey:@"_overviewLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

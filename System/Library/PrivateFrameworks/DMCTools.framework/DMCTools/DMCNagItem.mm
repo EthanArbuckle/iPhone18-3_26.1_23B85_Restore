@@ -1,25 +1,25 @@
 @interface DMCNagItem
 + (NSString)migrationNagClientID;
 + (NSString)migrationNagItemID;
-+ (id)migrationNagItemWithDeadline:(id)a3 actionURL:(id)a4 deadlineURL:(id)a5;
++ (id)migrationNagItemWithDeadline:(id)deadline actionURL:(id)l deadlineURL:(id)rL;
 - (BOOL)isMigrationNag;
 - (DMCNagItem)init;
-- (DMCNagItem)initWithStyle:(unint64_t)a3 identifier:(id)a4 clientID:(id)a5 schedule:(id)a6 title:(id)a7 message:(id)a8 notificationTitle:(id)a9 notificationMessage:(id)a10 actionTitle:(id)a11 actionURL:(id)a12 dismissTitle:(id)a13 dismissURL:(id)a14 deadlineURL:(id)a15;
+- (DMCNagItem)initWithStyle:(unint64_t)style identifier:(id)identifier clientID:(id)d schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)self0 actionTitle:(id)self1 actionURL:(id)self2 dismissTitle:(id)self3 dismissURL:(id)self4 deadlineURL:(id)self5;
 - (NSDate)deadline;
 - (NSDictionary)properties;
 - (NSDictionary)schedule;
 - (NSNumber)shortestInterval;
 - (NSString)description;
-- (id)followUpAndReturnError:(id *)a3;
+- (id)followUpAndReturnError:(id *)error;
 - (id)iOSFilesystemURL;
-- (id)localized:(id)a3;
-- (id)localizedFormat:(id)a3 :(id)a4;
-- (id)localizedOptional:(id)a3;
+- (id)localized:(id)localized;
+- (id)localizedFormat:(id)format :(id)a4;
+- (id)localizedOptional:(id)optional;
 - (id)nextNag;
 - (void)didNag;
-- (void)setDeadline:(id)a3;
-- (void)setLastNagString:(id)a3;
-- (void)setSchedule:(id)a3;
+- (void)setDeadline:(id)deadline;
+- (void)setLastNagString:(id)string;
+- (void)setSchedule:(id)schedule;
 @end
 
 @implementation DMCNagItem
@@ -36,7 +36,7 @@
   return v3;
 }
 
-- (void)setSchedule:(id)a3
+- (void)setSchedule:(id)schedule
 {
   sub_247F08408(0, &qword_27EE7ED00, 0x277CCABB0);
   sub_247F23DEC();
@@ -46,9 +46,9 @@
   *(self + OBJC_IVAR___DMCNagItem_schedule) = v4;
 }
 
-- (void)setLastNagString:(id)a3
+- (void)setLastNagString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = sub_247F23F3C();
   }
@@ -72,7 +72,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_247F11C98(v7);
 
   v9 = sub_247F23D8C();
@@ -83,7 +83,7 @@
 
 - (NSNumber)shortestInterval
 {
-  v2 = self;
+  selfCopy = self;
   sub_247F11F6C();
   v4 = v3;
 
@@ -92,7 +92,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   DMCNagItem.description.getter();
 
   v3 = sub_247F23EFC();
@@ -102,7 +102,7 @@
 
 - (NSDictionary)properties
 {
-  v2 = self;
+  selfCopy = self;
   DMCNagItem.properties.getter();
 
   v3 = sub_247F23E9C();
@@ -110,12 +110,12 @@
   return v3;
 }
 
-- (DMCNagItem)initWithStyle:(unint64_t)a3 identifier:(id)a4 clientID:(id)a5 schedule:(id)a6 title:(id)a7 message:(id)a8 notificationTitle:(id)a9 notificationMessage:(id)a10 actionTitle:(id)a11 actionURL:(id)a12 dismissTitle:(id)a13 dismissURL:(id)a14 deadlineURL:(id)a15
+- (DMCNagItem)initWithStyle:(unint64_t)style identifier:(id)identifier clientID:(id)d schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)self0 actionTitle:(id)self1 actionURL:(id)self2 dismissTitle:(id)self3 dismissURL:(id)self4 deadlineURL:(id)self5
 {
-  v63 = a3;
-  v64 = self;
-  v52 = a12;
-  v50 = a11;
+  styleCopy = style;
+  selfCopy = self;
+  lCopy = l;
+  actionTitleCopy = actionTitle;
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE7ED30, &qword_247F25660);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
@@ -142,7 +142,7 @@
   v55 = v29;
   v53 = sub_247F23F3C();
   v51 = v31;
-  if (a9)
+  if (notificationTitle)
   {
     v32 = sub_247F23F3C();
     v48 = v33;
@@ -155,8 +155,8 @@
     v49 = 0;
   }
 
-  v34 = a13;
-  if (a10)
+  dismissTitleCopy = dismissTitle;
+  if (notificationMessage)
   {
     v35 = sub_247F23F3C();
     v46 = v36;
@@ -169,13 +169,13 @@
     v47 = 0;
   }
 
-  v50 = sub_247F23F3C();
+  actionTitleCopy = sub_247F23F3C();
   v38 = v37;
   sub_247F23CFC();
-  if (a13)
+  if (dismissTitle)
   {
     v39 = sub_247F23F3C();
-    v34 = v40;
+    dismissTitleCopy = v40;
   }
 
   else
@@ -183,9 +183,9 @@
     v39 = 0;
   }
 
-  v41 = a14;
-  v42 = a15;
-  if (v41)
+  rLCopy = rL;
+  uRLCopy = uRL;
+  if (rLCopy)
   {
     sub_247F23CFC();
 
@@ -201,7 +201,7 @@
   v44 = v61;
   sub_247F23CFC();
 
-  return DMCNagItem.init(style:identifier:clientID:schedule:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismiss:deadlineURL:)(v63, v60, v59, v58, v57, v56, v55, v54, v53, v51, v49, v48, v47, v46, v50, v38, v24, v39, v34, v18, v44);
+  return DMCNagItem.init(style:identifier:clientID:schedule:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismiss:deadlineURL:)(styleCopy, v60, v59, v58, v57, v56, v55, v54, v53, v51, v49, v48, v47, v46, actionTitleCopy, v38, v24, v39, dismissTitleCopy, v18, v44);
 }
 
 + (NSString)migrationNagItemID
@@ -220,15 +220,15 @@
 
 - (BOOL)isMigrationNag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DMCNagItem.isMigrationNag.getter();
 
   return v3 & 1;
 }
 
-+ (id)migrationNagItemWithDeadline:(id)a3 actionURL:(id)a4 deadlineURL:(id)a5
++ (id)migrationNagItemWithDeadline:(id)deadline actionURL:(id)l deadlineURL:(id)rL
 {
-  v21[1] = a1;
+  v21[1] = self;
   v5 = sub_247F23D3C();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -254,9 +254,9 @@
   return v18;
 }
 
-- (id)followUpAndReturnError:(id *)a3
+- (id)followUpAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = DMCNagItem.followUp()();
 
   return v4;
@@ -264,7 +264,7 @@
 
 - (void)didNag
 {
-  v2 = self;
+  selfCopy = self;
   sub_247F150BC();
 }
 
@@ -274,7 +274,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_247F153A0(v6);
 
   v8 = sub_247F23DEC();
@@ -291,7 +291,7 @@
   return v11;
 }
 
-- (void)setDeadline:(id)a3
+- (void)setDeadline:(id)deadline
 {
   v4 = sub_247F23DEC();
   v5 = *(v4 - 8);
@@ -299,7 +299,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_247F23DCC();
-  v9 = self;
+  selfCopy = self;
   DMCNagItem.setDeadline(_:)(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -312,12 +312,12 @@
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v23 - v5;
   type metadata accessor for DMCNagItem(v7);
-  v8 = self;
-  v9 = [(DMCNagItem *)v8 identifier];
+  selfCopy = self;
+  identifier = [(DMCNagItem *)selfCopy identifier];
   v10 = sub_247F23F3C();
   v12 = v11;
 
-  v13 = [(DMCNagItem *)v8 clientID];
+  clientID = [(DMCNagItem *)selfCopy clientID];
   v14 = sub_247F23F3C();
   v16 = v15;
 
@@ -337,18 +337,18 @@
   return v20;
 }
 
-- (id)localized:(id)a3
+- (id)localized:(id)localized
 {
   sub_247F23F3C();
   sub_247F08408(0, &qword_27EE7EF20, 0x277CCA8D8);
-  v4 = self;
-  v5 = sub_247F2412C();
-  if (!v5)
+  selfCopy = self;
+  mainBundle = sub_247F2412C();
+  if (!mainBundle)
   {
-    v5 = [objc_opt_self() mainBundle];
+    mainBundle = [objc_opt_self() mainBundle];
   }
 
-  v6 = v5;
+  v6 = mainBundle;
   sub_247F23C0C();
 
   v7 = sub_247F23EFC();
@@ -356,20 +356,20 @@
   return v7;
 }
 
-- (id)localizedOptional:(id)a3
+- (id)localizedOptional:(id)optional
 {
-  if (a3)
+  if (optional)
   {
     sub_247F23F3C();
     sub_247F08408(0, &qword_27EE7EF20, 0x277CCA8D8);
-    v4 = self;
-    v5 = sub_247F2412C();
-    if (!v5)
+    selfCopy = self;
+    mainBundle = sub_247F2412C();
+    if (!mainBundle)
     {
-      v5 = [objc_opt_self() mainBundle];
+      mainBundle = [objc_opt_self() mainBundle];
     }
 
-    v6 = v5;
+    v6 = mainBundle;
     sub_247F23C0C();
 
     v7 = sub_247F23EFC();
@@ -383,12 +383,12 @@
   return v7;
 }
 
-- (id)localizedFormat:(id)a3 :(id)a4
+- (id)localizedFormat:(id)format :(id)a4
 {
   v6 = sub_247F23F3C();
   v8 = v7;
-  v9 = self;
-  v10 = [(DMCNagItem *)v9 localized:a3];
+  selfCopy = self;
+  v10 = [(DMCNagItem *)selfCopy localized:format];
   sub_247F23F3C();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE7EF10, &qword_247F25CD8);

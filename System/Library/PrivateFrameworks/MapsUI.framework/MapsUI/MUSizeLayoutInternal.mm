@@ -1,42 +1,42 @@
 @interface MUSizeLayoutInternal
 - (CGSize)size;
 - (MULayoutItem)item;
-- (MUSizeLayoutInternal)initWithItem:(id)a3 size:(CGSize)a4 priority:(float)a5;
+- (MUSizeLayoutInternal)initWithItem:(id)item size:(CGSize)size priority:(float)priority;
 - (float)priority;
-- (void)setItem:(id)a3;
-- (void)setPriority:(float)a3;
-- (void)setSize:(CGSize)a3;
+- (void)setItem:(id)item;
+- (void)setPriority:(float)priority;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation MUSizeLayoutInternal
 
-- (MUSizeLayoutInternal)initWithItem:(id)a3 size:(CGSize)a4 priority:(float)a5
+- (MUSizeLayoutInternal)initWithItem:(id)item size:(CGSize)size priority:(float)priority
 {
-  v6 = a4.width == -1.0;
-  if (a4.width == -1.0)
+  v6 = size.width == -1.0;
+  if (size.width == -1.0)
   {
     width = 0.0;
   }
 
   else
   {
-    width = a4.width;
+    width = size.width;
   }
 
-  v8 = a4.height == -1.0;
-  if (a4.height == -1.0)
+  v8 = size.height == -1.0;
+  if (size.height == -1.0)
   {
     height = 0.0;
   }
 
   else
   {
-    height = a4.height;
+    height = size.height;
   }
 
   v10 = *(swift_getObjectType() + 104);
   v11 = swift_unknownObjectRetain();
-  v12 = v10(v11, *&width, v6, *&height, v8, a5);
+  v12 = v10(v11, *&width, v6, *&height, v8, priority);
   swift_deallocPartialClassInstance();
   return v12;
 }
@@ -44,7 +44,7 @@
 - (MULayoutItem)item
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUSizeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   Strong = swift_unknownObjectWeakLoadStrong();
 
@@ -53,15 +53,15 @@
   return Strong;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (item)
   {
     [swift_unknownObjectRetain() _mapsui_disableTranslatesAutoresizingMaskIntoConstraints];
   }
 
-  v5 = *(&v4->super.super.isa + OBJC_IVAR___MUSizeLayoutInternal_builder);
+  v5 = *(&selfCopy->super.super.isa + OBJC_IVAR___MUSizeLayoutInternal_builder);
   sub_1C5623A68(v8);
   swift_unknownObjectWeakAssign();
   sub_1C5677410(v8, v7);
@@ -74,7 +74,7 @@
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.super.isa) + 0x88);
-  v4 = self;
+  selfCopy = self;
   v5 = COERCE_DOUBLE(v3());
   if (v6)
   {
@@ -86,7 +86,7 @@
     v7 = v5;
   }
 
-  v8 = COERCE_DOUBLE((*((*v2 & v4->super.super.isa) + 0xA0))());
+  v8 = COERCE_DOUBLE((*((*v2 & selfCopy->super.super.isa) + 0xA0))());
   v10 = v9;
 
   if (v10)
@@ -105,18 +105,18 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1C5677C04(width, height);
 }
 
 - (float)priority
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUSizeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
 
   v4 = v7;
@@ -124,13 +124,13 @@
   return v4;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
   v5 = OBJC_IVAR___MUSizeLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUSizeLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  v12 = a3;
+  priorityCopy = priority;
   v8 = *(&self->super.super.isa + v5);
   sub_1C5677410(v11, v10);
   sub_1C5623B40(v10, v9);

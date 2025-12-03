@@ -1,16 +1,16 @@
 @interface ICAirDropNoteActivityItemProvider
-- (ICAirDropNoteActivityItemProvider)initWithTitle:(id)a3 airDropDocumentCreator:(id)a4;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
+- (ICAirDropNoteActivityItemProvider)initWithTitle:(id)title airDropDocumentCreator:(id)creator;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
 - (id)airDropActivityItem;
 - (id)item;
 @end
 
 @implementation ICAirDropNoteActivityItemProvider
 
-- (ICAirDropNoteActivityItemProvider)initWithTitle:(id)a3 airDropDocumentCreator:(id)a4
+- (ICAirDropNoteActivityItemProvider)initWithTitle:(id)title airDropDocumentCreator:(id)creator
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  creatorCopy = creator;
   v8 = objc_alloc_init(MEMORY[0x1E695DFF8]);
   v13.receiver = self;
   v13.super_class = ICAirDropNoteActivityItemProvider;
@@ -21,12 +21,12 @@
     goto LABEL_5;
   }
 
-  if (![v6 length])
+  if (![titleCopy length])
   {
-    v11 = [MEMORY[0x1E69B77F0] defaultTitleForEmptyNote];
-    [(ICAirDropNoteActivityItemProvider *)v9 setTitle:v11];
+    defaultTitleForEmptyNote = [MEMORY[0x1E69B77F0] defaultTitleForEmptyNote];
+    [(ICAirDropNoteActivityItemProvider *)v9 setTitle:defaultTitleForEmptyNote];
 
-    if (v7)
+    if (creatorCopy)
     {
       goto LABEL_4;
     }
@@ -37,14 +37,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [(ICAirDropNoteActivityItemProvider *)v9 setTitle:v6];
-  if (!v7)
+  [(ICAirDropNoteActivityItemProvider *)v9 setTitle:titleCopy];
+  if (!creatorCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  [(ICAirDropNoteActivityItemProvider *)v9 setAirDropDocumentCreator:v7];
+  [(ICAirDropNoteActivityItemProvider *)v9 setAirDropDocumentCreator:creatorCopy];
 LABEL_5:
   v10 = v9;
 LABEL_8:
@@ -54,37 +54,37 @@ LABEL_8:
 
 - (id)item
 {
-  v3 = [(UIActivityItemProvider *)self activityType];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69CDA78]];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v4 = [activityType isEqualToString:*MEMORY[0x1E69CDA78]];
 
   if (v4)
   {
-    v5 = [(ICAirDropNoteActivityItemProvider *)self airDropActivityItem];
+    airDropActivityItem = [(ICAirDropNoteActivityItemProvider *)self airDropActivityItem];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ICAirDropNoteActivityItemProvider;
-    v5 = [(UIActivityItemProvider *)&v7 item];
+    airDropActivityItem = [(UIActivityItemProvider *)&v7 item];
   }
 
-  return v5;
+  return airDropActivityItem;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDA98]])
+  if ([type isEqualToString:*MEMORY[0x1E69CDA98]])
   {
-    v4 = [*MEMORY[0x1E6982DB8] identifier];
+    identifier = [*MEMORY[0x1E6982DB8] identifier];
   }
 
   else
   {
-    v4 = *MEMORY[0x1E69B7978];
+    identifier = *MEMORY[0x1E69B7978];
   }
 
-  return v4;
+  return identifier;
 }
 
 - (id)airDropActivityItem
@@ -97,12 +97,12 @@ LABEL_8:
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"![NSThread isMainThread]" functionName:"-[ICAirDropNoteActivityItemProvider airDropActivityItem]" simulateCrash:1 showAlert:0 format:@"Unexpected call from main thread"];
     }
 
-    v4 = [(ICAirDropNoteActivityItemProvider *)self airDropDocumentCreator];
-    v5 = v4[2]();
+    airDropDocumentCreator = [(ICAirDropNoteActivityItemProvider *)self airDropDocumentCreator];
+    v5 = airDropDocumentCreator[2]();
 
-    v6 = [v5 activityItem];
+    activityItem = [v5 activityItem];
     v7 = self->_airDropActivityItem;
-    self->_airDropActivityItem = v6;
+    self->_airDropActivityItem = activityItem;
 
     airDropActivityItem = self->_airDropActivityItem;
   }

@@ -1,15 +1,15 @@
 @interface PLRemoteDiagnosticsClient
-+ (id)_connectionForListenerEndpoint:(id)a3;
-+ (id)diagnosticsAgentWithErrorHandler:(id)a3;
++ (id)_connectionForListenerEndpoint:(id)endpoint;
++ (id)diagnosticsAgentWithErrorHandler:(id)handler;
 @end
 
 @implementation PLRemoteDiagnosticsClient
 
-+ (id)_connectionForListenerEndpoint:(id)a3
++ (id)_connectionForListenerEndpoint:(id)endpoint
 {
   v3 = MEMORY[0x1E696B0B8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [[v3 alloc] initWithListenerEndpoint:endpointCopy];
 
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F1E8];
   [v5 setRemoteObjectInterface:v6];
@@ -19,21 +19,21 @@
   return v5;
 }
 
-+ (id)diagnosticsAgentWithErrorHandler:(id)a3
++ (id)diagnosticsAgentWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__PLRemoteDiagnosticsClient_diagnosticsAgentWithErrorHandler___block_invoke;
   aBlock[3] = &unk_1E7577430;
-  v5 = v4;
+  v5 = handlerCopy;
   v22 = v5;
   v6 = _Block_copy(aBlock);
   v7 = objc_alloc_init(MEMORY[0x1E69BF288]);
-  v8 = [v7 nonBindingDebugClient];
+  nonBindingDebugClient = [v7 nonBindingDebugClient];
   v19 = 0;
   v20 = 0;
-  v9 = [v8 getPhotosXPCEndpoint:&v20 error:&v19];
+  v9 = [nonBindingDebugClient getPhotosXPCEndpoint:&v20 error:&v19];
   v10 = v20;
   v11 = v19;
   if (v9)
@@ -57,7 +57,7 @@
   {
     v13 = objc_alloc_init(MEMORY[0x1E696B0E0]);
     [v13 _setEndpoint:v10];
-    v14 = [a1 _connectionForListenerEndpoint:v13];
+    v14 = [self _connectionForListenerEndpoint:v13];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __62__PLRemoteDiagnosticsClient_diagnosticsAgentWithErrorHandler___block_invoke_2;

@@ -1,14 +1,14 @@
 @interface AXInvertColors_SiriUICore
-+ (void)installCategories:(id)a3;
++ (void)installCategories:(id)categories;
 @end
 
 @implementation AXInvertColors_SiriUICore
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SUICStreamingTextViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SUICFlamesViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SUICStreamingTextViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SUICFlamesViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

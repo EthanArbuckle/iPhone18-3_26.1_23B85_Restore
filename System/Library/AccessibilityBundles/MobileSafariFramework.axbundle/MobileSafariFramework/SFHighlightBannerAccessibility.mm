@@ -1,17 +1,17 @@
 @interface SFHighlightBannerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SFHighlightBannerAccessibility)initWithHighlight:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SFHighlightBannerAccessibility)initWithHighlight:(id)highlight;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkupButton;
 @end
 
 @implementation SFHighlightBannerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFHighlightBanner" hasInstanceMethod:@"initWithHighlight:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFHighlightBanner" hasInstanceMethod:@"_close" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFHighlightBanner" hasInstanceMethod:@"initWithHighlight:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFHighlightBanner" hasInstanceMethod:@"_close" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,9 +31,9 @@
   v18 = 0u;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,7 +44,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -63,7 +63,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -72,11 +72,11 @@
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (SFHighlightBannerAccessibility)initWithHighlight:(id)a3
+- (SFHighlightBannerAccessibility)initWithHighlight:(id)highlight
 {
   v5.receiver = self;
   v5.super_class = SFHighlightBannerAccessibility;
-  v3 = [(SFHighlightBannerAccessibility *)&v5 initWithHighlight:a3];
+  v3 = [(SFHighlightBannerAccessibility *)&v5 initWithHighlight:highlight];
   [(SFHighlightBannerAccessibility *)v3 _accessibilityMarkupButton];
 
   return v3;

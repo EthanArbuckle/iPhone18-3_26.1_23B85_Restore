@@ -1,28 +1,28 @@
 @interface WebViewSnapshotContentProvider
 - (BOOL)snapshotContentShouldUnderlapTopBackdrop;
 - (CGRect)contentFrame;
-- (CGRect)snapshotContentRectInBounds:(CGRect)a3;
+- (CGRect)snapshotContentRectInBounds:(CGRect)bounds;
 - (UIColor)snapshotBackgroundColor;
-- (WebViewSnapshotContentProvider)initWithWebView:(id)a3 contentFrame:(CGRect)a4;
-- (void)prepareForSnapshotOfSize:(CGSize)a3 completion:(id)a4;
+- (WebViewSnapshotContentProvider)initWithWebView:(id)view contentFrame:(CGRect)frame;
+- (void)prepareForSnapshotOfSize:(CGSize)size completion:(id)completion;
 @end
 
 @implementation WebViewSnapshotContentProvider
 
-- (WebViewSnapshotContentProvider)initWithWebView:(id)a3 contentFrame:(CGRect)a4
+- (WebViewSnapshotContentProvider)initWithWebView:(id)view contentFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = WebViewSnapshotContentProvider;
   v11 = [(WebViewSnapshotContentProvider *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_webView, a3);
+    objc_storeStrong(&v11->_webView, view);
     v12->_contentFrame.origin.x = x;
     v12->_contentFrame.origin.y = y;
     v12->_contentFrame.size.width = width;
@@ -35,27 +35,27 @@
 
 - (UIColor)snapshotBackgroundColor
 {
-  v2 = [(WKWebView *)self->_webView scrollView];
-  v3 = [v2 backgroundColor];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  backgroundColor = [scrollView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (BOOL)snapshotContentShouldUnderlapTopBackdrop
 {
-  v2 = [(WKWebView *)self->_webView scrollView];
-  [v2 contentInset];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  [scrollView contentInset];
   v4 = v3 != 0.0;
 
   return v4;
 }
 
-- (CGRect)snapshotContentRectInBounds:(CGRect)a3
+- (CGRect)snapshotContentRectInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (!self->_snapshotImage)
   {
     [(WKWebView *)self->_webView bounds];
@@ -87,18 +87,18 @@
   return result;
 }
 
-- (void)prepareForSnapshotOfSize:(CGSize)a3 completion:(id)a4
+- (void)prepareForSnapshotOfSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(WKWebView *)self->_webView window];
-  v9 = [v8 windowScene];
-  v10 = [v9 activationState];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  window = [(WKWebView *)self->_webView window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  if (v10 == 2)
+  if (activationState == 2)
   {
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -120,7 +120,7 @@
     v15[2] = __70__WebViewSnapshotContentProvider_prepareForSnapshotOfSize_completion___block_invoke;
     v15[3] = &unk_2781DC608;
     v15[4] = self;
-    v16 = v7;
+    v16 = completionCopy;
     [(WKWebView *)webView takeSnapshotWithConfiguration:v11 completionHandler:v15];
   }
 }

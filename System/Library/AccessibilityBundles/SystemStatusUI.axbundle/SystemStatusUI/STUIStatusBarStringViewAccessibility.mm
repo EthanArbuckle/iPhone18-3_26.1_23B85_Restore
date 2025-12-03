@@ -1,5 +1,5 @@
 @interface STUIStatusBarStringViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -8,11 +8,11 @@
 
 @implementation STUIStatusBarStringViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarStringView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarStringView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -21,15 +21,15 @@
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   v4 = MEMORY[0x29EDBD7E8];
-  v5 = [v3 text];
-  v6 = [v4 axAttributedStringWithString:v5];
+  text = [v3 text];
+  v6 = [v4 axAttributedStringWithString:text];
 
   v7 = [(STUIStatusBarStringViewAccessibility *)self _accessibilityBoolValueForKey:@"AccessibilityStatusBarStringIsTime"];
   v8 = MEMORY[0x29EDB8F00];
   if ((v7 & 1) != 0 || [(STUIStatusBarStringViewAccessibility *)self _accessibilityBoolValueForKey:@"AccessibilityStatusBarStringIsPillTime"])
   {
     v9 = MEMORY[0x29EDBD7E8];
-    v10 = [MEMORY[0x29EDB8DB0] date];
+    date = [MEMORY[0x29EDB8DB0] date];
     v11 = AXDateStringForFormat();
     v12 = [v9 axAttributedStringWithString:v11];
 
@@ -46,15 +46,15 @@
   {
     v17.receiver = self;
     v17.super_class = STUIStatusBarStringViewAccessibility;
-    v13 = [(STUIStatusBarStringViewAccessibility *)&v17 accessibilityLabel];
+    accessibilityLabel = [(STUIStatusBarStringViewAccessibility *)&v17 accessibilityLabel];
 LABEL_11:
-    v14 = v13;
+    v14 = accessibilityLabel;
     goto LABEL_12;
   }
 
   if (![(STUIStatusBarStringViewAccessibility *)self _accessibilityBoolValueForKey:@"AccessibilityStatusBarStringIsDataNetwork"]|| (v16.receiver = self, v16.super_class = STUIStatusBarStringViewAccessibility, [(STUIStatusBarStringViewAccessibility *)&v16 accessibilityLabel], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v13 = v6;
+    accessibilityLabel = v6;
     goto LABEL_11;
   }
 
@@ -92,17 +92,17 @@ LABEL_12:
 {
   v8.receiver = self;
   v8.super_class = STUIStatusBarStringViewAccessibility;
-  v3 = [(STUIStatusBarStringViewAccessibility *)&v8 canBecomeFocused];
+  canBecomeFocused = [(STUIStatusBarStringViewAccessibility *)&v8 canBecomeFocused];
   v4 = __UIAccessibilitySafeClass();
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [v4 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if ((v6 - 4) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((userInterfaceIdiom - 4) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     return [(STUIStatusBarStringViewAccessibility *)self accessibilityRespondsToUserInteraction];
   }
 
-  return v3;
+  return canBecomeFocused;
 }
 
 @end

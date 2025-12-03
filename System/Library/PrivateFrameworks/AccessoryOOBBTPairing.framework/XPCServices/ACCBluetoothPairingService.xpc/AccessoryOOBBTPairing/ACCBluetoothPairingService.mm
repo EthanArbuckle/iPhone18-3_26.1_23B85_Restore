@@ -1,23 +1,23 @@
 @interface ACCBluetoothPairingService
 - (ACCBluetoothPairingService)init;
-- (id)_btDeviceGetMACAddress:(BTDeviceImpl *)a3;
+- (id)_btDeviceGetMACAddress:(BTDeviceImpl *)address;
 - (int)_createPairingAgent;
 - (int)_deletePairingAgent;
 - (void)_AttachToBTServer;
-- (void)_cancelBTOOBPairing:(id)a3;
-- (void)_checkAlreadyPaired:(id)a3 completionHandler:(id)a4;
-- (void)_deviceSupportsContactsSync:(id)a3 _withReply:(id)a4;
-- (void)_getDeviceBTMacAddress:(id)a3;
-- (void)_setBTDeviceSyncSettings:(id)a3;
-- (void)_startBTOOBPairing:(id)a3 pairingDataC192:(id)a4 pairingDataR192:(id)a5 pairingDataC256:(id)a6 pairingDataR256:(id)a7 completionHandler:(id)a8;
-- (void)cancelBTOOBPairing:(id)a3;
-- (void)checkAlreadyPaired:(id)a3 completionHandler:(id)a4;
+- (void)_cancelBTOOBPairing:(id)pairing;
+- (void)_checkAlreadyPaired:(id)paired completionHandler:(id)handler;
+- (void)_deviceSupportsContactsSync:(id)sync _withReply:(id)reply;
+- (void)_getDeviceBTMacAddress:(id)address;
+- (void)_setBTDeviceSyncSettings:(id)settings;
+- (void)_startBTOOBPairing:(id)pairing pairingDataC192:(id)c192 pairingDataR192:(id)r192 pairingDataC256:(id)c256 pairingDataR256:(id)r256 completionHandler:(id)handler;
+- (void)cancelBTOOBPairing:(id)pairing;
+- (void)checkAlreadyPaired:(id)paired completionHandler:(id)handler;
 - (void)cleanup;
 - (void)dealloc;
-- (void)deviceSupportsContactsSync:(id)a3 withReply:(id)a4;
-- (void)getDeviceBTMacAddress:(id)a3;
-- (void)setBTDeviceSyncSettings:(id)a3;
-- (void)startBTOOBPairing:(id)a3 pairingDataC192:(id)a4 pairingDataR192:(id)a5 pairingDataC256:(id)a6 pairingDataR256:(id)a7 completionHandler:(id)a8;
+- (void)deviceSupportsContactsSync:(id)sync withReply:(id)reply;
+- (void)getDeviceBTMacAddress:(id)address;
+- (void)setBTDeviceSyncSettings:(id)settings;
+- (void)startBTOOBPairing:(id)pairing pairingDataC192:(id)c192 pairingDataR192:(id)r192 pairingDataC256:(id)c256 pairingDataR256:(id)r256 completionHandler:(id)handler;
 @end
 
 @implementation ACCBluetoothPairingService
@@ -433,9 +433,9 @@ void __47__ACCBluetoothPairingService__AttachToBTServer__block_invoke(uint64_t a
   }
 }
 
-- (void)_getDeviceBTMacAddress:(id)a3
+- (void)_getDeviceBTMacAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v24 = 0;
   v23 = -21846;
   v22 = -1431655766;
@@ -565,7 +565,7 @@ void __47__ACCBluetoothPairingService__AttachToBTServer__block_invoke(uint64_t a
         else
         {
           v14 = [NSData dataWithBytes:&v22 length:6];
-          v4[2](v4, v14);
+          addressCopy[2](addressCopy, v14);
         }
       }
     }
@@ -595,9 +595,9 @@ void __47__ACCBluetoothPairingService__AttachToBTServer__block_invoke(uint64_t a
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "_getDeviceBTMacAddress Finished, result %d (0x%x)", buf, 0xEu);
     }
 
-    if (v4 && v13)
+    if (addressCopy && v13)
     {
-      v4[2](v4, 0);
+      addressCopy[2](addressCopy, 0);
     }
   }
 
@@ -627,10 +627,10 @@ void __47__ACCBluetoothPairingService__AttachToBTServer__block_invoke(uint64_t a
   }
 }
 
-- (void)_deviceSupportsContactsSync:(id)a3 _withReply:(id)a4
+- (void)_deviceSupportsContactsSync:(id)sync _withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  replyCopy = reply;
   v18 = 0;
   v17 = -1431655766;
   v16 = -21846;
@@ -672,7 +672,7 @@ void __47__ACCBluetoothPairingService__AttachToBTServer__block_invoke(uint64_t a
     goto LABEL_22;
   }
 
-  [v6 getBytes:&v15 length:6];
+  [syncCopy getBytes:&v15 length:6];
   BTSession = self->_BTSession;
   if (BTDeviceFromAddress())
   {
@@ -696,13 +696,13 @@ LABEL_22:
 
   v10 = v17 == 22 || v17 == 17;
 LABEL_23:
-  v7[2](v7, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)deviceSupportsContactsSync:(id)a3 withReply:(id)a4
+- (void)deviceSupportsContactsSync:(id)sync withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   processingQueue = self->_processingQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -710,11 +710,11 @@ LABEL_23:
   v13[2] = __67__ACCBluetoothPairingService_deviceSupportsContactsSync_withReply___block_invoke;
   v13[3] = &unk_10000C478;
   v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v16 = syncCopy;
+  v17 = replyCopy;
+  v10 = replyCopy;
+  v11 = syncCopy;
   v12 = v8;
   dispatch_async(processingQueue, v13);
 }
@@ -788,10 +788,10 @@ id __67__ACCBluetoothPairingService_deviceSupportsContactsSync_withReply___block
   }
 }
 
-- (void)_setBTDeviceSyncSettings:(id)a3
+- (void)_setBTDeviceSyncSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
+  settingsCopy = settings;
+  v5 = settingsCopy;
   v28 = 0;
   v27 = -21846;
   v26 = -1431655766;
@@ -835,7 +835,7 @@ id __67__ACCBluetoothPairingService_deviceSupportsContactsSync_withReply___block
     goto LABEL_28;
   }
 
-  [v4 getBytes:&v26 length:6];
+  [settingsCopy getBytes:&v26 length:6];
   BTSession = self->_BTSession;
   v7 = BTDeviceFromAddress();
   if (v7)
@@ -977,9 +977,9 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)setBTDeviceSyncSettings:(id)a3
+- (void)setBTDeviceSyncSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = +[NSXPCConnection currentConnection];
   processingQueue = self->_processingQueue;
   block[0] = _NSConcreteStackBlock;
@@ -987,9 +987,9 @@ LABEL_30:
   block[2] = __54__ACCBluetoothPairingService_setBTDeviceSyncSettings___block_invoke;
   block[3] = &unk_10000C4A0;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = settingsCopy;
+  v7 = settingsCopy;
   v8 = v5;
   dispatch_async(processingQueue, block);
 }
@@ -1061,9 +1061,9 @@ void __54__ACCBluetoothPairingService_setBTDeviceSyncSettings___block_invoke(uin
   }
 }
 
-- (void)getDeviceBTMacAddress:(id)a3
+- (void)getDeviceBTMacAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = +[NSXPCConnection currentConnection];
   processingQueue = self->_processingQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1071,9 +1071,9 @@ void __54__ACCBluetoothPairingService_setBTDeviceSyncSettings___block_invoke(uin
   block[2] = __52__ACCBluetoothPairingService_getDeviceBTMacAddress___block_invoke;
   block[3] = &unk_10000C4C8;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = addressCopy;
+  v7 = addressCopy;
   v8 = v5;
   dispatch_async(processingQueue, block);
 }
@@ -1277,14 +1277,14 @@ id __52__ACCBluetoothPairingService_getDeviceBTMacAddress___block_invoke(uint64_
   return BTPairingAgentDestroy();
 }
 
-- (void)_startBTOOBPairing:(id)a3 pairingDataC192:(id)a4 pairingDataR192:(id)a5 pairingDataC256:(id)a6 pairingDataR256:(id)a7 completionHandler:(id)a8
+- (void)_startBTOOBPairing:(id)pairing pairingDataC192:(id)c192 pairingDataR192:(id)r192 pairingDataC256:(id)c256 pairingDataR256:(id)r256 completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  pairingCopy = pairing;
+  c192Copy = c192;
+  r192Copy = r192;
+  c256Copy = c256;
+  r256Copy = r256;
+  handlerCopy = handler;
   v61 = 0;
   v60 = -21846;
   v59 = -1431655766;
@@ -1348,19 +1348,19 @@ id __52__ACCBluetoothPairingService_getDeviceBTMacAddress___block_invoke(uint64_
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     *buf = 138413314;
-    *&buf[4] = v15;
+    *&buf[4] = pairingCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = c192Copy;
     v66 = 2112;
-    v67 = v17;
+    v67 = r192Copy;
     v68 = 2112;
-    v69 = v18;
+    v69 = c256Copy;
     v70 = 2112;
-    v71 = v19;
+    v71 = r256Copy;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "_startBTOOBPairing: macAddr: %@ C192:%@ R192:%@ C256:%@ R256:%@", buf, 0x34u);
   }
 
-  if (!v15 || !v16 || !v17)
+  if (!pairingCopy || !c192Copy || !r192Copy)
   {
     if (gLogObjects && gNumLogObjects >= 6)
     {
@@ -1384,18 +1384,18 @@ id __52__ACCBluetoothPairingService_getDeviceBTMacAddress___block_invoke(uint64_
     }
 
     *buf = 138412802;
-    *&buf[4] = v15;
+    *&buf[4] = pairingCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = c192Copy;
     v66 = 2112;
-    v67 = v17;
+    v67 = r192Copy;
     v27 = "ERROR: macAddr(%@) and both pairingData C192(%@) and R192(%@) are required!";
     v28 = v24;
     v29 = 32;
     goto LABEL_45;
   }
 
-  if (v18 && !v19 || !v18 && v19)
+  if (c256Copy && !r256Copy || !c256Copy && r256Copy)
   {
     if (gLogObjects && gNumLogObjects >= 6)
     {
@@ -1419,9 +1419,9 @@ id __52__ACCBluetoothPairingService_getDeviceBTMacAddress___block_invoke(uint64_
     }
 
     *buf = 138412546;
-    *&buf[4] = v18;
+    *&buf[4] = c256Copy;
     *&buf[12] = 2112;
-    *&buf[14] = v19;
+    *&buf[14] = r256Copy;
     v27 = "ERROR: both pairingData C256(%@) and R256(%@) are required!";
     v28 = v24;
     v29 = 22;
@@ -1429,9 +1429,9 @@ LABEL_45:
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, v27, buf, v29);
 LABEL_46:
 
-    if (v20)
+    if (handlerCopy)
     {
-      v20[2](v20, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     goto LABEL_48;
@@ -1440,8 +1440,8 @@ LABEL_46:
   pairingTimer = self->_pairingTimer;
   v33 = dispatch_time(0, 30000000000);
   dispatch_source_set_timer(pairingTimer, v33, 0xFFFFFFFFFFFFFFFFLL, 0);
-  [v15 getBytes:&v59 length:6];
-  v34 = [(ACCBluetoothPairingService *)self _createPairingAgent];
+  [pairingCopy getBytes:&v59 length:6];
+  _createPairingAgent = [(ACCBluetoothPairingService *)self _createPairingAgent];
   if (gLogObjects)
   {
     v35 = gNumLogObjects <= 5;
@@ -1453,8 +1453,8 @@ LABEL_46:
   }
 
   v36 = !v35;
-  v58 = v34;
-  if (v34)
+  v58 = _createPairingAgent;
+  if (_createPairingAgent)
   {
     if (v36)
     {
@@ -1592,16 +1592,16 @@ LABEL_93:
 
   *buf = 0;
   *&buf[8] = 0;
-  [v16 bytes];
-  [v17 bytes];
-  if (v18)
+  [c192Copy bytes];
+  [r192Copy bytes];
+  if (c256Copy)
   {
-    [v18 bytes];
+    [c256Copy bytes];
   }
 
-  if (v19)
+  if (r256Copy)
   {
-    [v19 bytes];
+    [r256Copy bytes];
   }
 
   if (gLogObjects && gNumLogObjects >= 6)
@@ -1707,13 +1707,13 @@ LABEL_68:
 
   if (v58)
   {
-    [(ACCBluetoothPairingService *)self _cancelBTOOBPairing:v15];
+    [(ACCBluetoothPairingService *)self _cancelBTOOBPairing:pairingCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_macAddr, a3);
-    v44 = objc_retainBlock(v20);
+    objc_storeStrong(&self->_macAddr, pairing);
+    v44 = objc_retainBlock(handlerCopy);
     pairingCompletionHandler = self->_pairingCompletionHandler;
     self->_pairingCompletionHandler = v44;
 
@@ -1723,14 +1723,14 @@ LABEL_68:
 LABEL_48:
 }
 
-- (void)startBTOOBPairing:(id)a3 pairingDataC192:(id)a4 pairingDataR192:(id)a5 pairingDataC256:(id)a6 pairingDataR256:(id)a7 completionHandler:(id)a8
+- (void)startBTOOBPairing:(id)pairing pairingDataC192:(id)c192 pairingDataR192:(id)r192 pairingDataC256:(id)c256 pairingDataR256:(id)r256 completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  pairingCopy = pairing;
+  c192Copy = c192;
+  r192Copy = r192;
+  c256Copy = c256;
+  r256Copy = r256;
+  handlerCopy = handler;
   v20 = +[NSXPCConnection currentConnection];
   processingQueue = self->_processingQueue;
   v29[0] = _NSConcreteStackBlock;
@@ -1738,19 +1738,19 @@ LABEL_48:
   v29[2] = __130__ACCBluetoothPairingService_startBTOOBPairing_pairingDataC192_pairingDataR192_pairingDataC256_pairingDataR256_completionHandler___block_invoke;
   v29[3] = &unk_10000C4F0;
   v30 = v20;
-  v31 = self;
-  v32 = v14;
-  v33 = v15;
-  v34 = v16;
-  v35 = v17;
-  v36 = v18;
-  v37 = v19;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v14;
+  selfCopy = self;
+  v32 = pairingCopy;
+  v33 = c192Copy;
+  v34 = r192Copy;
+  v35 = c256Copy;
+  v36 = r256Copy;
+  v37 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = r256Copy;
+  v24 = c256Copy;
+  v25 = r192Copy;
+  v26 = c192Copy;
+  v27 = pairingCopy;
   v28 = v20;
   dispatch_async(processingQueue, v29);
 }
@@ -1830,9 +1830,9 @@ uint64_t (**__130__ACCBluetoothPairingService_startBTOOBPairing_pairingDataC192_
   return result;
 }
 
-- (void)_cancelBTOOBPairing:(id)a3
+- (void)_cancelBTOOBPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   v34 = 0;
   v33 = -21846;
   v32 = -1431655766;
@@ -1896,11 +1896,11 @@ uint64_t (**__130__ACCBluetoothPairingService_startBTOOBPairing_pairingDataC192_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36[0] = v4;
+    v36[0] = pairingCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "_cancelBTOOBPairing: macAddr: %@", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!pairingCopy)
   {
     if (gLogObjects && gNumLogObjects >= 6)
     {
@@ -1935,7 +1935,7 @@ LABEL_57:
     goto LABEL_74;
   }
 
-  [v4 getBytes:&v32 length:6];
+  [pairingCopy getBytes:&v32 length:6];
   if (gLogObjects && gNumLogObjects >= 6)
   {
     v10 = *(gLogObjects + 40);
@@ -2114,9 +2114,9 @@ LABEL_64:
 LABEL_74:
 }
 
-- (void)cancelBTOOBPairing:(id)a3
+- (void)cancelBTOOBPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   v5 = +[NSXPCConnection currentConnection];
   processingQueue = self->_processingQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2124,9 +2124,9 @@ LABEL_74:
   block[2] = __49__ACCBluetoothPairingService_cancelBTOOBPairing___block_invoke;
   block[3] = &unk_10000C4A0;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = pairingCopy;
+  v7 = pairingCopy;
   v8 = v5;
   dispatch_async(processingQueue, block);
 }
@@ -2198,10 +2198,10 @@ void __49__ACCBluetoothPairingService_cancelBTOOBPairing___block_invoke(uint64_t
   }
 }
 
-- (void)_checkAlreadyPaired:(id)a3 completionHandler:(id)a4
+- (void)_checkAlreadyPaired:(id)paired completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pairedCopy = paired;
+  handlerCopy = handler;
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
   *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v61 = v8;
@@ -2270,7 +2270,7 @@ void __49__ACCBluetoothPairingService_cancelBTOOBPairing___block_invoke(uint64_t
       [ACCBluetoothPairingService _checkAlreadyPaired:completionHandler:];
     }
 
-    v14 = [v6 length];
+    v14 = [pairedCopy length];
     if (gLogObjects)
     {
       v15 = gNumLogObjects <= 5;
@@ -2303,12 +2303,12 @@ void __49__ACCBluetoothPairingService_cancelBTOOBPairing___block_invoke(uint64_t
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = v6;
+        v28 = pairedCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "invalid macAddr! %@", buf, 0xCu);
       }
 
 LABEL_41:
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_66;
     }
 
@@ -2379,13 +2379,13 @@ LABEL_41:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v28 = v6;
+      v28 = pairedCopy;
       v29 = 1024;
       v30 = 0;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "_checkAlreadyPaired: %@, foundPaired %d", buf, 0x12u);
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -2412,7 +2412,7 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ERROR: _checkAlreadyPaired: No BTSession!", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_41;
     }
@@ -2421,10 +2421,10 @@ LABEL_41:
 LABEL_66:
 }
 
-- (void)checkAlreadyPaired:(id)a3 completionHandler:(id)a4
+- (void)checkAlreadyPaired:(id)paired completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pairedCopy = paired;
+  handlerCopy = handler;
   v8 = +[NSXPCConnection currentConnection];
   processingQueue = self->_processingQueue;
   v13[0] = _NSConcreteStackBlock;
@@ -2432,11 +2432,11 @@ LABEL_66:
   v13[2] = __67__ACCBluetoothPairingService_checkAlreadyPaired_completionHandler___block_invoke;
   v13[3] = &unk_10000C478;
   v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v16 = pairedCopy;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = pairedCopy;
   v12 = v8;
   dispatch_async(processingQueue, v13);
 }
@@ -2510,7 +2510,7 @@ id __67__ACCBluetoothPairingService_checkAlreadyPaired_completionHandler___block
   }
 }
 
-- (id)_btDeviceGetMACAddress:(BTDeviceImpl *)a3
+- (id)_btDeviceGetMACAddress:(BTDeviceImpl *)address
 {
   v10 = -21846;
   v9 = -1431655766;
@@ -2555,7 +2555,7 @@ id __67__ACCBluetoothPairingService_checkAlreadyPaired_completionHandler___block
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCBluetoothPairingService *)a3 _btDeviceGetMACAddress:v4, v7];
+    [(ACCBluetoothPairingService *)address _btDeviceGetMACAddress:v4, v7];
   }
 
   return v4;

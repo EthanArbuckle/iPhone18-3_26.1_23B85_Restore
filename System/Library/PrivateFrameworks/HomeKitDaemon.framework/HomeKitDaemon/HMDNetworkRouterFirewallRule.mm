@@ -1,7 +1,7 @@
 @interface HMDNetworkRouterFirewallRule
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (HMDNetworkRouterFirewallRule)initWithJSONDictionary:(id)a3 name:(id)a4 critical:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMDNetworkRouterFirewallRule)initWithJSONDictionary:(id)dictionary name:(id)name critical:(BOOL)critical;
 - (NSDictionary)prettyJSONDictionary;
 - (NSString)jsonString;
 - (id)attributeDescriptions;
@@ -13,11 +13,11 @@
 - (NSString)jsonString
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterFirewallRule *)self jsonDictionary];
-  if (v3)
+  jsonDictionary = [(HMDNetworkRouterFirewallRule *)self jsonDictionary];
+  if (jsonDictionary)
   {
     v15 = 0;
-    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:2 error:&v15];
+    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:jsonDictionary options:2 error:&v15];
     v5 = v15;
     if (v4)
     {
@@ -27,7 +27,7 @@
     else
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
@@ -35,14 +35,14 @@
         *buf = 138543874;
         v17 = v10;
         v18 = 2112;
-        v19 = v8;
+        v19 = selfCopy;
         v20 = 2112;
         v21 = v5;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Failed to convert firewall WAN rule %@ to JSON: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v7);
-      v11 = [[HMDAssertionLogEvent alloc] initWithReason:@"Failed to convert firewall WAN rule %@ to JSON: %@", v8, v5];
+      v11 = [[HMDAssertionLogEvent alloc] initWithReason:@"Failed to convert firewall WAN rule %@ to JSON: %@", selfCopy, v5];
       v12 = +[HMDMetricsManager sharedLogEventSubmitter];
       [v12 submitLogEvent:v11];
 
@@ -64,8 +64,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"name";
-  v2 = [(HMDNetworkRouterFirewallRule *)self name];
-  v7[0] = v2;
+  name = [(HMDNetworkRouterFirewallRule *)self name];
+  v7[0] = name;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -77,8 +77,8 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDNetworkRouterFirewallRule *)self name];
-  v5 = [v3 initWithName:@"Name" value:v4];
+  name = [(HMDNetworkRouterFirewallRule *)self name];
+  v5 = [v3 initWithName:@"Name" value:name];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDNetworkRouterFirewallRule isCritical](self, "isCritical")}];
@@ -93,16 +93,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNetworkRouterFirewallRule *)self name];
-  v4 = [v3 hash];
+  name = [(HMDNetworkRouterFirewallRule *)self name];
+  v4 = [name hash];
 
   return v4 ^ [(HMDNetworkRouterFirewallRule *)self isCritical];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -112,7 +112,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -123,12 +123,12 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDNetworkRouterFirewallRule *)self name];
-      v8 = [(HMDNetworkRouterFirewallRule *)v6 name];
-      if ([v7 isEqualToString:v8])
+      name = [(HMDNetworkRouterFirewallRule *)self name];
+      name2 = [(HMDNetworkRouterFirewallRule *)v6 name];
+      if ([name isEqualToString:name2])
       {
-        v9 = [(HMDNetworkRouterFirewallRule *)self isCritical];
-        v10 = v9 ^ [(HMDNetworkRouterFirewallRule *)v6 isCritical]^ 1;
+        isCritical = [(HMDNetworkRouterFirewallRule *)self isCritical];
+        v10 = isCritical ^ [(HMDNetworkRouterFirewallRule *)v6 isCritical]^ 1;
       }
 
       else
@@ -146,19 +146,19 @@
   return v10;
 }
 
-- (HMDNetworkRouterFirewallRule)initWithJSONDictionary:(id)a3 name:(id)a4 critical:(BOOL)a5
+- (HMDNetworkRouterFirewallRule)initWithJSONDictionary:(id)dictionary name:(id)name critical:(BOOL)critical
 {
-  v9 = a3;
-  v10 = a4;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = HMDNetworkRouterFirewallRule;
   v11 = [(HMDNetworkRouterFirewallRule *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a4);
-    v12->_critical = a5;
-    objc_storeStrong(&v12->_jsonDictionary, a3);
+    objc_storeStrong(&v11->_name, name);
+    v12->_critical = critical;
+    objc_storeStrong(&v12->_jsonDictionary, dictionary);
     v13 = v12;
   }
 

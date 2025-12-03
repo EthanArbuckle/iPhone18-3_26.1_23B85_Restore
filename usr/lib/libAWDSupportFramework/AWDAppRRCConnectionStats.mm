@@ -1,20 +1,20 @@
 @interface AWDAppRRCConnectionStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRAT:(id)a3;
+- (int)StringAsRAT:(id)t;
 - (int)rAT;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBundleFGDuration:(BOOL)a3;
-- (void)setHasNumMOConnectionTriggered:(BOOL)a3;
-- (void)setHasNumMTConnectionTriggered:(BOOL)a3;
-- (void)setHasRAT:(BOOL)a3;
-- (void)setHasTotalBytesTransferred:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBundleFGDuration:(BOOL)duration;
+- (void)setHasNumMOConnectionTriggered:(BOOL)triggered;
+- (void)setHasNumMTConnectionTriggered:(BOOL)triggered;
+- (void)setHasRAT:(BOOL)t;
+- (void)setHasTotalBytesTransferred:(BOOL)transferred;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDAppRRCConnectionStats
@@ -40,9 +40,9 @@
   }
 }
 
-- (void)setHasRAT:(BOOL)a3
+- (void)setHasRAT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 16;
   }
@@ -55,44 +55,44 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsRAT:(id)a3
+- (int)StringAsRAT:(id)t
 {
-  if ([a3 isEqualToString:@"RAT_TYPE_UNKNOWN"])
+  if ([t isEqualToString:@"RAT_TYPE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_UMTS"])
+  if ([t isEqualToString:@"RAT_TYPE_UMTS"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_GSM"])
+  if ([t isEqualToString:@"RAT_TYPE_GSM"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_WCDMA"])
+  if ([t isEqualToString:@"RAT_TYPE_WCDMA"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_1xEVDO"])
+  if ([t isEqualToString:@"RAT_TYPE_1xEVDO"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_LTE"])
+  if ([t isEqualToString:@"RAT_TYPE_LTE"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_TDSCDMA"])
+  if ([t isEqualToString:@"RAT_TYPE_TDSCDMA"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_TDLTE"])
+  if ([t isEqualToString:@"RAT_TYPE_TDLTE"])
   {
     return 7;
   }
@@ -100,9 +100,9 @@
   return 0;
 }
 
-- (void)setHasBundleFGDuration:(BOOL)a3
+- (void)setHasBundleFGDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNumMOConnectionTriggered:(BOOL)a3
+- (void)setHasNumMOConnectionTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 4;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumMTConnectionTriggered:(BOOL)a3
+- (void)setHasNumMTConnectionTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 8;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTotalBytesTransferred:(BOOL)a3
+- (void)setHasTotalBytesTransferred:(BOOL)transferred
 {
-  if (a3)
+  if (transferred)
   {
     v3 = 32;
   }
@@ -169,7 +169,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
     rAT = self->_rAT;
@@ -183,19 +183,19 @@
       v5 = off_29EE32B68[rAT];
     }
 
-    [v3 setObject:v5 forKey:@"RAT"];
+    [dictionary setObject:v5 forKey:@"RAT"];
   }
 
   bundleName = self->_bundleName;
   if (bundleName)
   {
-    [v3 setObject:bundleName forKey:@"bundleName"];
+    [dictionary setObject:bundleName forKey:@"bundleName"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bundleFGDuration), @"bundleFGDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bundleFGDuration), @"bundleFGDuration"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -214,7 +214,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bundleBGDuration), @"bundleBGDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bundleBGDuration), @"bundleBGDuration"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -225,17 +225,17 @@ LABEL_11:
     }
 
 LABEL_18:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numMTConnectionTriggered), @"numMTConnectionTriggered"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numMTConnectionTriggered), @"numMTConnectionTriggered"}];
     if ((*&self->_has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_13;
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numMOConnectionTriggered), @"numMOConnectionTriggered"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numMOConnectionTriggered), @"numMOConnectionTriggered"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -246,13 +246,13 @@ LABEL_12:
   if ((has & 0x20) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalBytesTransferred), @"totalBytesTransferred"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalBytesTransferred), @"totalBytesTransferred"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 0x10) != 0)
   {
@@ -331,24 +331,24 @@ LABEL_15:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x10) != 0)
   {
-    *(a3 + 8) = self->_rAT;
-    *(a3 + 40) |= 0x10u;
+    *(to + 8) = self->_rAT;
+    *(to + 40) |= 0x10u;
   }
 
   if (self->_bundleName)
   {
-    [a3 setBundleName:?];
+    [to setBundleName:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_bundleFGDuration;
-    *(a3 + 40) |= 2u;
+    *(to + 3) = self->_bundleFGDuration;
+    *(to + 40) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -367,8 +367,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 2) = self->_bundleBGDuration;
-  *(a3 + 40) |= 1u;
+  *(to + 2) = self->_bundleBGDuration;
+  *(to + 40) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -382,8 +382,8 @@ LABEL_8:
   }
 
 LABEL_14:
-  *(a3 + 6) = self->_numMOConnectionTriggered;
-  *(a3 + 40) |= 4u;
+  *(to + 6) = self->_numMOConnectionTriggered;
+  *(to + 40) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -397,21 +397,21 @@ LABEL_9:
   }
 
 LABEL_15:
-  *(a3 + 7) = self->_numMTConnectionTriggered;
-  *(a3 + 40) |= 8u;
+  *(to + 7) = self->_numMTConnectionTriggered;
+  *(to + 40) |= 8u;
   if ((*&self->_has & 0x20) == 0)
   {
     return;
   }
 
 LABEL_10:
-  *(a3 + 9) = self->_totalBytesTransferred;
-  *(a3 + 40) |= 0x20u;
+  *(to + 9) = self->_totalBytesTransferred;
+  *(to + 40) |= 0x20u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -419,7 +419,7 @@ LABEL_10:
     *(v5 + 40) |= 0x10u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_bundleName copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_bundleName copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -485,22 +485,22 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 40);
+    v7 = *(equal + 40);
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 40) & 0x10) == 0 || self->_rAT != *(a3 + 8))
+      if ((*(equal + 40) & 0x10) == 0 || self->_rAT != *(equal + 8))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 40) & 0x10) != 0)
+    else if ((*(equal + 40) & 0x10) != 0)
     {
 LABEL_34:
       LOBYTE(v5) = 0;
@@ -508,7 +508,7 @@ LABEL_34:
     }
 
     bundleName = self->_bundleName;
-    if (bundleName | *(a3 + 2))
+    if (bundleName | *(equal + 2))
     {
       v5 = [(NSString *)bundleName isEqual:?];
       if (!v5)
@@ -521,60 +521,60 @@ LABEL_34:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_bundleFGDuration != *(a3 + 3))
+      if ((*(equal + 40) & 2) == 0 || self->_bundleFGDuration != *(equal + 3))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_34;
     }
 
     if (has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_bundleBGDuration != *(a3 + 2))
+      if ((*(equal + 40) & 1) == 0 || self->_bundleBGDuration != *(equal + 2))
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_34;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_numMOConnectionTriggered != *(a3 + 6))
+      if ((*(equal + 40) & 4) == 0 || self->_numMOConnectionTriggered != *(equal + 6))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
       goto LABEL_34;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_numMTConnectionTriggered != *(a3 + 7))
+      if ((*(equal + 40) & 8) == 0 || self->_numMTConnectionTriggered != *(equal + 7))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 40) & 8) != 0)
+    else if ((*(equal + 40) & 8) != 0)
     {
       goto LABEL_34;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 0x20) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 0x20) == 0;
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 40) & 0x20) == 0 || self->_totalBytesTransferred != *(a3 + 9))
+      if ((*(equal + 40) & 0x20) == 0 || self->_totalBytesTransferred != *(equal + 9))
       {
         goto LABEL_34;
       }
@@ -665,25 +665,25 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 40) & 0x10) != 0)
+  if ((*(from + 40) & 0x10) != 0)
   {
-    self->_rAT = *(a3 + 8);
+    self->_rAT = *(from + 8);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDAppRRCConnectionStats *)self setBundleName:?];
   }
 
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 2) != 0)
   {
-    self->_bundleFGDuration = *(a3 + 3);
+    self->_bundleFGDuration = *(from + 3);
     *&self->_has |= 2u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -696,14 +696,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 40) & 1) == 0)
+  else if ((*(from + 40) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_bundleBGDuration = *(a3 + 2);
+  self->_bundleBGDuration = *(from + 2);
   *&self->_has |= 1u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -716,9 +716,9 @@ LABEL_8:
   }
 
 LABEL_14:
-  self->_numMOConnectionTriggered = *(a3 + 6);
+  self->_numMOConnectionTriggered = *(from + 6);
   *&self->_has |= 4u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -731,15 +731,15 @@ LABEL_9:
   }
 
 LABEL_15:
-  self->_numMTConnectionTriggered = *(a3 + 7);
+  self->_numMTConnectionTriggered = *(from + 7);
   *&self->_has |= 8u;
-  if ((*(a3 + 40) & 0x20) == 0)
+  if ((*(from + 40) & 0x20) == 0)
   {
     return;
   }
 
 LABEL_10:
-  self->_totalBytesTransferred = *(a3 + 9);
+  self->_totalBytesTransferred = *(from + 9);
   *&self->_has |= 0x20u;
 }
 

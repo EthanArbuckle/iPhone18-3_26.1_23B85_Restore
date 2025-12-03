@@ -2,47 +2,47 @@
 + (id)privateDatabaseSchema;
 + (id)recordSchemas;
 + (id)testingDatabase;
-- (char)_queueForOperation:(char *)a1;
-- (id)_clientRecordID:(id)a1;
-- (id)_clientToServerRecord:(uint64_t)a1;
-- (id)_clientToServerRecordZoneID:(id)a1;
-- (id)_mapObjects:(char)a3 toClient:(void *)a4 withBlock:;
-- (id)_mapRecordIDs:(char)a3 toClient:;
-- (id)_mapRecordZoneIDs:(char)a3 toClient:;
-- (id)_mapRecordZoneIDs:(char)a3 toClient:(char)a4 expectUnknownZones:;
-- (id)_mapRecords:(char)a3 toClient:;
-- (id)_mapZones:(char)a3 toClient:;
-- (id)_serverToClientError:(uint64_t)a1;
-- (id)_serverToClientRecord:(uint64_t)a1;
-- (id)_serverToClientRecordZoneID:(id)a1;
-- (id)_serverToClientRecordZoneID:(id)a1 expectUnknownZones:(void *)a2;
+- (char)_queueForOperation:(char *)operation;
+- (id)_clientRecordID:(id)d;
+- (id)_clientToServerRecord:(uint64_t)record;
+- (id)_clientToServerRecordZoneID:(id)d;
+- (id)_mapObjects:(char)objects toClient:(void *)client withBlock:;
+- (id)_mapRecordIDs:(char)ds toClient:;
+- (id)_mapRecordZoneIDs:(char)ds toClient:;
+- (id)_mapRecordZoneIDs:(char)ds toClient:(char)client expectUnknownZones:;
+- (id)_mapRecords:(char)records toClient:;
+- (id)_mapZones:(char)zones toClient:;
+- (id)_serverToClientError:(uint64_t)error;
+- (id)_serverToClientRecord:(uint64_t)record;
+- (id)_serverToClientRecordZoneID:(id)d;
+- (id)_serverToClientRecordZoneID:(id)d expectUnknownZones:(void *)zones;
 - (id)databaseWithZoneWidePCS;
-- (id)initWithCKProperties:(void *)a3 schema:(void *)a4 middleware:(void *)a5 encryptionDelegate:(void *)a6 networkBehaviorMonitor:;
-- (id)initWithContainerIdentifier:(void *)a3 secureContainerIdentifier:(char)a4 productionEnvironment:(void *)a5 encryptionDelegate:(void *)a6 networkBehaviorMonitor:(char)a7 privateDataSyncingEnabled:;
-- (id)pruningAssistantForZoneName:(id *)a1;
+- (id)initWithCKProperties:(void *)properties schema:(void *)schema middleware:(void *)middleware encryptionDelegate:(void *)delegate networkBehaviorMonitor:;
+- (id)initWithContainerIdentifier:(void *)identifier secureContainerIdentifier:(char)containerIdentifier productionEnvironment:(void *)environment encryptionDelegate:(void *)delegate networkBehaviorMonitor:(char)monitor privateDataSyncingEnabled:;
+- (id)pruningAssistantForZoneName:(id *)name;
 - (id)secureDatabase;
-- (id)t_initWithContainers:(void *)a3 database:(void *)a4 databaseWithZoneWidePCS:(void *)a5 secureDatabase:(void *)a6 schema:(void *)a7 middleware:(void *)a8 encryptionDelegate:(void *)a9 networkBehaviorMonitor:;
-- (void)_addCKOperation:(uint64_t)a3 destination:;
+- (id)t_initWithContainers:(void *)containers database:(void *)database databaseWithZoneWidePCS:(void *)s secureDatabase:(void *)secureDatabase schema:(void *)schema middleware:(void *)middleware encryptionDelegate:(void *)delegate networkBehaviorMonitor:;
+- (void)_addCKOperation:(uint64_t)operation destination:;
 - (void)_beginInitialStartUpIfNeeded;
 - (void)_continueStartUp;
-- (void)_finishStartUpWithError:(uint64_t)a1;
+- (void)_finishStartUpWithError:(uint64_t)error;
 - (void)_possiblyRetryStartUp;
-- (void)_possiblySimulateCrashForError:(void *)a1 message:(void *)a2;
-- (void)_preflightOperation:(void *)a1;
-- (void)_preflightRecordsInDatabaseChangesOperation:(uint64_t)a1;
-- (void)addCKOperation:(uint64_t)a3 destination:;
-- (void)addOperation:(uint64_t)a1;
-- (void)enumerateActiveDestinationsWithOptions:(void *)a3 handler:;
-- (void)enumeratePayloadsWithRecordIDs:(void *)a3 records:(void *)a4 zoneIDs:(void *)a5 zones:(uint64_t)a6 options:(void *)a7 payloadHandler:;
-- (void)fetchAllDatabaseChangesWithServerChangeToken:(id)a3 qualityOfService:(int64_t)a4 completionQueue:(id)a5 completionHandler:(id)a6;
-- (void)fetchSecureDatabaseSupportedWithCompletionHandler:(uint64_t)a1;
-- (void)registerZonePruningAssistants:(uint64_t)a1;
-- (void)registerZoneRestorationSources:(uint64_t)a1;
-- (void)reportEncryptionMigrationError:(uint64_t)a1;
-- (void)reportPostMigrationCleanupError:(uint64_t)a1;
-- (void)reportRecoverableStartUpError:(uint64_t)a1;
-- (void)t_performStartUpWithCompletion:(uint64_t)a1;
-- (void)takeDatabaseOfflineDueToError:(uint64_t)a1;
+- (void)_possiblySimulateCrashForError:(void *)error message:(void *)message;
+- (void)_preflightOperation:(void *)operation;
+- (void)_preflightRecordsInDatabaseChangesOperation:(uint64_t)operation;
+- (void)addCKOperation:(uint64_t)operation destination:;
+- (void)addOperation:(uint64_t)operation;
+- (void)enumerateActiveDestinationsWithOptions:(void *)options handler:;
+- (void)enumeratePayloadsWithRecordIDs:(void *)ds records:(void *)records zoneIDs:(void *)iDs zones:(uint64_t)zones options:(void *)options payloadHandler:;
+- (void)fetchAllDatabaseChangesWithServerChangeToken:(id)token qualityOfService:(int64_t)service completionQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchSecureDatabaseSupportedWithCompletionHandler:(uint64_t)handler;
+- (void)registerZonePruningAssistants:(uint64_t)assistants;
+- (void)registerZoneRestorationSources:(uint64_t)sources;
+- (void)reportEncryptionMigrationError:(uint64_t)error;
+- (void)reportPostMigrationCleanupError:(uint64_t)error;
+- (void)reportRecoverableStartUpError:(uint64_t)error;
+- (void)t_performStartUpWithCompletion:(uint64_t)completion;
+- (void)takeDatabaseOfflineDueToError:(uint64_t)error;
 - (void)zoneIDsUsingSecureContainer;
 @end
 
@@ -1349,28 +1349,28 @@
   return v25;
 }
 
-- (id)initWithCKProperties:(void *)a3 schema:(void *)a4 middleware:(void *)a5 encryptionDelegate:(void *)a6 networkBehaviorMonitor:
+- (id)initWithCKProperties:(void *)properties schema:(void *)schema middleware:(void *)middleware encryptionDelegate:(void *)delegate networkBehaviorMonitor:
 {
   v55 = *MEMORY[0x1E69E9840];
   v12 = a2;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v53.receiver = a1;
+  propertiesCopy = properties;
+  schemaCopy = schema;
+  middlewareCopy = middleware;
+  delegateCopy = delegate;
+  v53.receiver = self;
   v53.super_class = FCCKPrivateDatabase;
   v17 = objc_msgSendSuper2(&v53, sel_init);
   v18 = v17;
   if (v17)
   {
-    v45 = v16;
+    v45 = delegateCopy;
     v47 = v12;
     objc_storeStrong(v17 + 9, a2);
-    objc_storeStrong(v18 + 10, a3);
-    objc_storeStrong(v18 + 15, a4);
-    v46 = v15;
-    objc_storeWeak(v18 + 2, v15);
-    objc_storeStrong(v18 + 3, a6);
+    objc_storeStrong(v18 + 10, properties);
+    objc_storeStrong(v18 + 15, schema);
+    v46 = middlewareCopy;
+    objc_storeWeak(v18 + 2, middlewareCopy);
+    objc_storeStrong(v18 + 3, delegate);
     v19 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v20 = dispatch_queue_create("com.apple.news.FCCKPrivateDatabase", v19);
     v21 = v18[11];
@@ -1456,54 +1456,54 @@
     v18[18] = v48;
 
     v12 = v47;
-    v15 = v46;
-    v16 = v45;
+    middlewareCopy = v46;
+    delegateCopy = v45;
   }
 
   v43 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (id)initWithContainerIdentifier:(void *)a3 secureContainerIdentifier:(char)a4 productionEnvironment:(void *)a5 encryptionDelegate:(void *)a6 networkBehaviorMonitor:(char)a7 privateDataSyncingEnabled:
+- (id)initWithContainerIdentifier:(void *)identifier secureContainerIdentifier:(char)containerIdentifier productionEnvironment:(void *)environment encryptionDelegate:(void *)delegate networkBehaviorMonitor:(char)monitor privateDataSyncingEnabled:
 {
   v13 = a2;
-  v14 = a3;
-  v34 = a1;
-  v35 = v14;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v35 = identifierCopy;
   v36 = v13;
-  if (a1)
+  if (self)
   {
-    v15 = v14;
+    v15 = identifierCopy;
     v16 = MEMORY[0x1E69B68D8];
-    v33 = a6;
-    v32 = a5;
+    delegateCopy = delegate;
+    environmentCopy = environment;
     v17 = [v16 alloc];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __167__FCCKPrivateDatabase_initWithContainerIdentifier_secureContainerIdentifier_productionEnvironment_encryptionDelegate_networkBehaviorMonitor_privateDataSyncingEnabled___block_invoke;
     v37[3] = &unk_1E7C3F960;
-    v40 = a4;
+    containerIdentifierCopy = containerIdentifier;
     v38 = v13;
     v39 = v15;
     v30 = [v17 initWithConstructor:v37];
     v18 = +[FCCKPrivateDatabase privateDatabaseSchema];
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = objc_alloc_init(FCCKDatabaseQualityOfServiceUpgradingMiddleware);
-    [v19 addObject:v31];
+    [array addObject:v31];
     v28 = [[FCCKDatabaseLoggingMiddleware alloc] initAllowingNilDesiredKeys:?];
-    v27 = [[FCCKDatabaseUserAuthenticationMiddleware alloc] initWithPrivateDataSyncingEnabled:a7];
+    v27 = [[FCCKDatabaseUserAuthenticationMiddleware alloc] initWithPrivateDataSyncingEnabled:monitor];
     v20 = objc_alloc_init(FCCKDatabaseRecordVersionMiddleware);
     v29 = objc_alloc_init(FCCKAESSIVRecordNameCipher);
     objc_opt_self();
     v21 = [[FCCKDatabaseEncryptionMiddleware alloc] initWithEncryptionSchema:v18 recordNameCipher:v29];
     v22 = [[FCCKDatabaseEncryptedZoneMigrator alloc] initWithSchema:v18 recordEncryptionMiddleware:v21 deprecatedBlock:&__block_literal_global_242_0];
     v23 = [[FCCKDatabaseEncryptionStartUpMiddleware alloc] initWithEncryptionMigrator:v22];
-    [v19 addObject:v23];
-    [v19 addObject:v28];
-    [v19 addObject:v27];
-    [v19 addObject:v20];
-    [v19 addObject:v21];
-    v24 = [(FCCKPrivateDatabase *)v34 initWithCKProperties:v30 schema:v18 middleware:v19 encryptionDelegate:v32 networkBehaviorMonitor:v33];
+    [array addObject:v23];
+    [array addObject:v28];
+    [array addObject:v27];
+    [array addObject:v20];
+    [array addObject:v21];
+    v24 = [(FCCKPrivateDatabase *)selfCopy initWithCKProperties:v30 schema:v18 middleware:array encryptionDelegate:environmentCopy networkBehaviorMonitor:delegateCopy];
 
     v25 = v24;
   }
@@ -1584,33 +1584,33 @@ void __167__FCCKPrivateDatabase_initWithContainerIdentifier_secureContainerIdent
   }
 }
 
-- (id)t_initWithContainers:(void *)a3 database:(void *)a4 databaseWithZoneWidePCS:(void *)a5 secureDatabase:(void *)a6 schema:(void *)a7 middleware:(void *)a8 encryptionDelegate:(void *)a9 networkBehaviorMonitor:
+- (id)t_initWithContainers:(void *)containers database:(void *)database databaseWithZoneWidePCS:(void *)s secureDatabase:(void *)secureDatabase schema:(void *)schema middleware:(void *)middleware encryptionDelegate:(void *)delegate networkBehaviorMonitor:
 {
   v16 = a2;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  if (a1)
+  containersCopy = containers;
+  databaseCopy = database;
+  sCopy = s;
+  if (self)
   {
     v20 = MEMORY[0x1E69B68D8];
-    v21 = a9;
-    v22 = a8;
-    v23 = a7;
-    v24 = a6;
+    delegateCopy = delegate;
+    middlewareCopy = middleware;
+    schemaCopy = schema;
+    secureDatabaseCopy = secureDatabase;
     v25 = [v20 alloc];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __152__FCCKPrivateDatabase_t_initWithContainers_database_databaseWithZoneWidePCS_secureDatabase_schema_middleware_encryptionDelegate_networkBehaviorMonitor___block_invoke;
     v28[3] = &unk_1E7C3F988;
     v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
+    v30 = containersCopy;
+    v31 = databaseCopy;
+    v32 = sCopy;
     v26 = [v25 initWithConstructor:v28];
-    a1 = [(FCCKPrivateDatabase *)a1 initWithCKProperties:v26 schema:v24 middleware:v23 encryptionDelegate:v22 networkBehaviorMonitor:v21];
+    self = [(FCCKPrivateDatabase *)self initWithCKProperties:v26 schema:secureDatabaseCopy middleware:schemaCopy encryptionDelegate:middlewareCopy networkBehaviorMonitor:delegateCopy];
   }
 
-  return a1;
+  return self;
 }
 
 id *__152__FCCKPrivateDatabase_t_initWithContainers_database_databaseWithZoneWidePCS_secureDatabase_schema_middleware_encryptionDelegate_networkBehaviorMonitor___block_invoke(void **a1)
@@ -1628,40 +1628,40 @@ id *__152__FCCKPrivateDatabase_t_initWithContainers_database_databaseWithZoneWid
   return v3;
 }
 
-- (void)addOperation:(uint64_t)a1
+- (void)addOperation:(uint64_t)operation
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (operation)
   {
-    [v3 setDatabase:a1];
+    [v3 setDatabase:operation];
     if ([v4 skipPreflight])
     {
-      v5 = [(FCCKPrivateDatabase *)a1 _queueForOperation:v4];
+      v5 = [(FCCKPrivateDatabase *)operation _queueForOperation:v4];
       [v5 addOperation:v4];
     }
 
     else
     {
-      v6 = [v4 qualityOfService];
-      v7 = *(a1 + 88);
+      qualityOfService = [v4 qualityOfService];
+      v7 = *(operation + 88);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __36__FCCKPrivateDatabase_addOperation___block_invoke;
       v8[3] = &unk_1E7C393F8;
-      v8[4] = a1;
-      v10 = v6;
+      v8[4] = operation;
+      v10 = qualityOfService;
       v9 = v4;
-      FCDispatchAsyncWithQualityOfService(v7, v6, v8);
+      FCDispatchAsyncWithQualityOfService(v7, qualityOfService, v8);
     }
   }
 }
 
-- (char)_queueForOperation:(char *)a1
+- (char)_queueForOperation:(char *)operation
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (operation)
   {
     if ([v3 skipPreflight])
     {
@@ -1670,18 +1670,18 @@ id *__152__FCCKPrivateDatabase_t_initWithContainers_database_databaseWithZoneWid
 
     else
     {
-      v6 = [v4 relativePriority];
+      relativePriority = [v4 relativePriority];
       v5 = 96;
-      if (v6 > 0)
+      if (relativePriority > 0)
       {
         v5 = 104;
       }
     }
 
-    a1 = *&a1[v5];
+    operation = *&operation[v5];
   }
 
-  return a1;
+  return operation;
 }
 
 void __36__FCCKPrivateDatabase_addOperation___block_invoke(uint64_t a1)
@@ -1746,20 +1746,20 @@ void __36__FCCKPrivateDatabase_addOperation___block_invoke(uint64_t a1)
 - (void)_beginInitialStartUpIfNeeded
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 9) & 1) == 0)
+  if (self && (*(self + 9) & 1) == 0)
   {
     v2 = FCPrivateDataEncryptionLog;
     if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
     {
-      v3 = *(a1 + 128);
+      v3 = *(self + 128);
       v6 = 138412290;
       v7 = v3;
       v4 = v2;
       _os_log_impl(&dword_1B63EF000, v4, OS_LOG_TYPE_DEFAULT, "Starting up with middleware: %@", &v6, 0xCu);
     }
 
-    *(a1 + 9) = 1;
-    [(FCCKPrivateDatabase *)a1 _continueStartUp];
+    *(self + 9) = 1;
+    [(FCCKPrivateDatabase *)self _continueStartUp];
   }
 
   v5 = *MEMORY[0x1E69E9840];
@@ -1802,16 +1802,16 @@ LABEL_6:
 
 - (void)_possiblyRetryStartUp
 {
-  if ((*(a1 + 11) & 1) == 0 && *(a1 + 160) == 1)
+  if ((*(self + 11) & 1) == 0 && *(self + 160) == 1)
   {
-    v2 = [MEMORY[0x1E695DF00] date];
-    [v2 timeIntervalSinceDate:*(a1 + 176)];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:*(self + 176)];
     v4 = v3;
 
-    if (v4 >= fmin(exp2((*(a1 + 168) - 1)) * 5.0, 60.0))
+    if (v4 >= fmin(exp2((*(self + 168) - 1)) * 5.0, 60.0))
     {
 
-      [(FCCKPrivateDatabase *)a1 _continueStartUp];
+      [(FCCKPrivateDatabase *)self _continueStartUp];
     }
   }
 }
@@ -1851,44 +1851,44 @@ LABEL_6:
   [v4 addOperation:*(a1 + 40)];
 }
 
-- (void)registerZoneRestorationSources:(uint64_t)a1
+- (void)registerZoneRestorationSources:(uint64_t)sources
 {
   v4 = a2;
-  if (a1)
+  if (sources)
   {
-    objc_storeStrong((a1 + 184), a2);
+    objc_storeStrong((sources + 184), a2);
   }
 }
 
-- (void)registerZonePruningAssistants:(uint64_t)a1
+- (void)registerZonePruningAssistants:(uint64_t)assistants
 {
   v4 = a2;
-  if (a1)
+  if (assistants)
   {
-    objc_storeStrong((a1 + 192), a2);
+    objc_storeStrong((assistants + 192), a2);
   }
 }
 
-- (id)pruningAssistantForZoneName:(id *)a1
+- (id)pruningAssistantForZoneName:(id *)name
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v22 = v3;
-  if (a1)
+  if (name)
   {
     v4 = MEMORY[0x1E695BA90];
     v5 = v3;
     v6 = [v4 alloc];
     v7 = [v6 initWithZoneName:v5 ownerName:*MEMORY[0x1E695B728]];
 
-    v8 = [(FCCKPrivateDatabase *)a1 _serverToClientRecordZoneID:v7];
-    v9 = [v8 zoneName];
+    v8 = [(FCCKPrivateDatabase *)name _serverToClientRecordZoneID:v7];
+    zoneName = [v8 zoneName];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = a1[24];
+    v10 = name[24];
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v35 count:16];
     if (v11)
     {
@@ -1906,7 +1906,7 @@ LABEL_6:
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          if ([v17 canHelpPruneZoneName:v9])
+          if ([v17 canHelpPruneZoneName:zoneName])
           {
             if (v13 && os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
@@ -1950,24 +1950,24 @@ LABEL_6:
   return v13;
 }
 
-- (void)fetchSecureDatabaseSupportedWithCompletionHandler:(uint64_t)a1
+- (void)fetchSecureDatabaseSupportedWithCompletionHandler:(uint64_t)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v4 = [(FCCKPrivateDatabase *)a1 secureDatabase];
-    v5 = [v4 container];
+    secureDatabase = [(FCCKPrivateDatabase *)handler secureDatabase];
+    container = [secureDatabase container];
 
-    if (v5)
+    if (container)
     {
-      v6 = [(FCCKPrivateDatabase *)a1 secureDatabase];
-      v7 = [v6 container];
+      secureDatabase2 = [(FCCKPrivateDatabase *)handler secureDatabase];
+      container2 = [secureDatabase2 container];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __73__FCCKPrivateDatabase_fetchSecureDatabaseSupportedWithCompletionHandler___block_invoke;
       v8[3] = &unk_1E7C3F9B0;
       v9 = v3;
-      [v7 accountInfoWithCompletionHandler:v8];
+      [container2 accountInfoWithCompletionHandler:v8];
     }
 
     else
@@ -1979,14 +1979,14 @@ LABEL_6:
 
 - (id)secureDatabase
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 72);
-    v2 = [v1 value];
-    v3 = v2;
-    if (v2)
+    v1 = *(self + 72);
+    value = [v1 value];
+    v3 = value;
+    if (value)
     {
-      v4 = *(v2 + 24);
+      v4 = *(value + 24);
     }
 
     else
@@ -2012,30 +2012,30 @@ void __73__FCCKPrivateDatabase_fetchSecureDatabaseSupportedWithCompletionHandler
   (*(v4 + 16))(v4, [a2 supportsDeviceToDeviceEncryption], v5);
 }
 
-- (void)enumeratePayloadsWithRecordIDs:(void *)a3 records:(void *)a4 zoneIDs:(void *)a5 zones:(uint64_t)a6 options:(void *)a7 payloadHandler:
+- (void)enumeratePayloadsWithRecordIDs:(void *)ds records:(void *)records zoneIDs:(void *)iDs zones:(uint64_t)zones options:(void *)options payloadHandler:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  if (a1)
+  dsCopy = ds;
+  recordsCopy = records;
+  iDsCopy = iDs;
+  optionsCopy = options;
+  if (self)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneIDs_zones_options_payloadHandler___block_invoke;
     aBlock[3] = &unk_1E7C3FA78;
-    v28 = a6;
-    aBlock[4] = a1;
+    zonesCopy = zones;
+    aBlock[4] = self;
     v23 = v13;
-    v24 = v14;
-    v25 = v15;
-    v26 = v16;
-    v27 = v17;
+    v24 = dsCopy;
+    v25 = recordsCopy;
+    v26 = iDsCopy;
+    v27 = optionsCopy;
     v18 = _Block_copy(aBlock);
     v19 = v18;
     v20 = *(v18 + 2);
-    if ((a6 & 2) != 0)
+    if ((zones & 2) != 0)
     {
       v20(v18, 1, &__block_literal_global_61);
       (v19)[2](v19, 2, &__block_literal_global_137);
@@ -2156,24 +2156,24 @@ uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneID
   return v9;
 }
 
-- (id)_clientToServerRecordZoneID:(id)a1
+- (id)_clientToServerRecordZoneID:(id)d
 {
-  v2 = a1;
+  dCopy = d;
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
     v9 = a2;
     v3 = MEMORY[0x1E695DEC8];
     v4 = a2;
     v5 = [v3 arrayWithObjects:&v9 count:1];
 
-    v6 = [(FCCKPrivateDatabase *)v2 _mapRecordZoneIDs:v5 toClient:0];
-    v2 = [v6 firstObject];
+    v6 = [(FCCKPrivateDatabase *)dCopy _mapRecordZoneIDs:v5 toClient:0];
+    dCopy = [v6 firstObject];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return dCopy;
 }
 
 uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneIDs_zones_options_payloadHandler___block_invoke_3(uint64_t a1, void *a2)
@@ -2319,34 +2319,34 @@ uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneID
   return v2 & 1;
 }
 
-- (void)enumerateActiveDestinationsWithOptions:(void *)a3 handler:
+- (void)enumerateActiveDestinationsWithOptions:(void *)options handler:
 {
-  v5 = a3;
-  if (a1)
+  optionsCopy = options;
+  if (self)
   {
-    v6 = *(a1 + 40);
-    v9 = v5;
-    (*(v5 + 2))(v5, 1);
-    v5 = v9;
+    v6 = *(self + 40);
+    v9 = optionsCopy;
+    (*(optionsCopy + 2))(optionsCopy, 1);
+    optionsCopy = v9;
     if (v6 >= 1)
     {
-      v7 = [(FCCKPrivateDatabase *)a1 secureDatabase];
+      secureDatabase = [(FCCKPrivateDatabase *)self secureDatabase];
 
-      if (v7)
+      if (secureDatabase)
       {
         (*(v9 + 2))(v9, 3);
       }
 
-      v5 = v9;
+      optionsCopy = v9;
       if ((a2 & 2) != 0)
       {
-        v8 = [(FCCKPrivateDatabase *)a1 databaseWithZoneWidePCS];
+        databaseWithZoneWidePCS = [(FCCKPrivateDatabase *)self databaseWithZoneWidePCS];
 
-        v5 = v9;
-        if (v8)
+        optionsCopy = v9;
+        if (databaseWithZoneWidePCS)
         {
           (*(v9 + 2))(v9, 2);
-          v5 = v9;
+          optionsCopy = v9;
         }
       }
     }
@@ -2355,14 +2355,14 @@ uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneID
 
 - (id)databaseWithZoneWidePCS
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 72);
-    v2 = [v1 value];
-    v3 = v2;
-    if (v2)
+    v1 = *(self + 72);
+    value = [v1 value];
+    v3 = value;
+    if (value)
     {
-      v4 = *(v2 + 16);
+      v4 = *(value + 16);
     }
 
     else
@@ -2381,36 +2381,36 @@ uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneID
   return v5;
 }
 
-- (void)addCKOperation:(uint64_t)a3 destination:
+- (void)addCKOperation:(uint64_t)operation destination:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    [(FCCKPrivateDatabase *)a1 _preflightOperation:v5];
-    [(FCCKPrivateDatabase *)a1 _addCKOperation:v5 destination:a3];
+    [(FCCKPrivateDatabase *)self _preflightOperation:v5];
+    [(FCCKPrivateDatabase *)self _addCKOperation:v5 destination:operation];
   }
 }
 
-- (void)_preflightOperation:(void *)a1
+- (void)_preflightOperation:(void *)operation
 {
   v55 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (operation)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;
-      v5 = [v4 recordsToSave];
-      v6 = [(FCCKPrivateDatabase *)a1 _mapRecords:v5 toClient:0];
+      recordsToSave = [v4 recordsToSave];
+      v6 = [(FCCKPrivateDatabase *)operation _mapRecords:recordsToSave toClient:0];
       [v4 setRecordsToSave:v6];
 
-      v7 = [v4 recordIDsToDelete];
-      v8 = [(FCCKPrivateDatabase *)a1 _mapRecordIDs:v7 toClient:0];
+      recordIDsToDelete = [v4 recordIDsToDelete];
+      v8 = [(FCCKPrivateDatabase *)operation _mapRecordIDs:recordIDsToDelete toClient:0];
       [v4 setRecordIDsToDelete:v8];
 
-      v9 = [v4 perRecordCompletionBlock];
-      if (v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      perRecordCompletionBlock = [v4 perRecordCompletionBlock];
+      if (perRecordCompletionBlock && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CKModifyRecordsOperation.perRecordCompletionBlock is not supported"];
         *buf = 136315906;
@@ -2424,9 +2424,9 @@ uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneID
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
       }
 
-      v10 = [v4 modifyRecordsCompletionBlock];
-      v11 = v10;
-      if (!v10)
+      modifyRecordsCompletionBlock = [v4 modifyRecordsCompletionBlock];
+      v11 = modifyRecordsCompletionBlock;
+      if (!modifyRecordsCompletionBlock)
       {
         goto LABEL_15;
       }
@@ -2435,8 +2435,8 @@ uint64_t __99__FCCKPrivateDatabase_enumeratePayloadsWithRecordIDs_records_zoneID
       *&buf[8] = 3221225472;
       *&buf[16] = __58__FCCKPrivateDatabase__preflightRecordsInModifyOperation___block_invoke;
       *&v53 = &unk_1E7C3FAC0;
-      *(&v53 + 1) = a1;
-      v54 = v10;
+      *(&v53 + 1) = operation;
+      v54 = modifyRecordsCompletionBlock;
       [v4 setModifyRecordsCompletionBlock:buf];
 LABEL_14:
 
@@ -2450,12 +2450,12 @@ LABEL_16:
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;
-      v12 = [v4 recordIDs];
-      v13 = [(FCCKPrivateDatabase *)a1 _mapRecordIDs:v12 toClient:0];
+      recordIDs = [v4 recordIDs];
+      v13 = [(FCCKPrivateDatabase *)operation _mapRecordIDs:recordIDs toClient:0];
       [v4 setRecordIDs:v13];
 
-      v9 = [v4 perRecordCompletionBlock];
-      if (v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      perRecordCompletionBlock = [v4 perRecordCompletionBlock];
+      if (perRecordCompletionBlock && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CKFetchRecordsOperation.perRecordCompletionBlock is not supported"];
         *buf = 136315906;
@@ -2469,9 +2469,9 @@ LABEL_16:
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
       }
 
-      v14 = [v4 fetchRecordsCompletionBlock];
-      v11 = v14;
-      if (!v14)
+      fetchRecordsCompletionBlock = [v4 fetchRecordsCompletionBlock];
+      v11 = fetchRecordsCompletionBlock;
+      if (!fetchRecordsCompletionBlock)
       {
         goto LABEL_15;
       }
@@ -2480,8 +2480,8 @@ LABEL_16:
       *&buf[8] = 3221225472;
       *&buf[16] = __57__FCCKPrivateDatabase__preflightRecordsInFetchOperation___block_invoke;
       *&v53 = &unk_1E7C37C88;
-      *(&v53 + 1) = a1;
-      v54 = v14;
+      *(&v53 + 1) = operation;
+      v54 = fetchRecordsCompletionBlock;
       [v4 setFetchRecordsCompletionBlock:buf];
       goto LABEL_14;
     }
@@ -2490,17 +2490,17 @@ LABEL_16:
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;
-      v16 = [v4 recordZonesToSave];
-      v17 = [(FCCKPrivateDatabase *)a1 _mapZones:v16 toClient:0];
+      recordZonesToSave = [v4 recordZonesToSave];
+      v17 = [(FCCKPrivateDatabase *)operation _mapZones:recordZonesToSave toClient:0];
       [v4 setRecordZonesToSave:v17];
 
-      v18 = [v4 recordZoneIDsToDelete];
-      v19 = [(FCCKPrivateDatabase *)a1 _mapRecordZoneIDs:v18 toClient:0];
+      recordZoneIDsToDelete = [v4 recordZoneIDsToDelete];
+      v19 = [(FCCKPrivateDatabase *)operation _mapRecordZoneIDs:recordZoneIDsToDelete toClient:0];
       [v4 setRecordZoneIDsToDelete:v19];
 
-      v20 = [v4 modifyRecordZonesCompletionBlock];
-      v9 = v20;
-      if (!v20)
+      modifyRecordZonesCompletionBlock = [v4 modifyRecordZonesCompletionBlock];
+      perRecordCompletionBlock = modifyRecordZonesCompletionBlock;
+      if (!modifyRecordZonesCompletionBlock)
       {
         goto LABEL_16;
       }
@@ -2509,8 +2509,8 @@ LABEL_16:
       *&buf[8] = 3221225472;
       *&buf[16] = __63__FCCKPrivateDatabase__preflightZoneIDsInModifyZonesOperation___block_invoke;
       *&v53 = &unk_1E7C3FAC0;
-      *(&v53 + 1) = a1;
-      v54 = v20;
+      *(&v53 + 1) = operation;
+      v54 = modifyRecordZonesCompletionBlock;
       [v4 setModifyRecordZonesCompletionBlock:buf];
 LABEL_24:
 
@@ -2521,13 +2521,13 @@ LABEL_24:
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;
-      v21 = [v4 recordZoneIDs];
-      v22 = [(FCCKPrivateDatabase *)a1 _mapRecordZoneIDs:v21 toClient:0];
+      recordZoneIDs = [v4 recordZoneIDs];
+      v22 = [(FCCKPrivateDatabase *)operation _mapRecordZoneIDs:recordZoneIDs toClient:0];
       [v4 setRecordZoneIDs:v22];
 
-      v23 = [v4 fetchRecordZonesCompletionBlock];
-      v9 = v23;
-      if (!v23)
+      fetchRecordZonesCompletionBlock = [v4 fetchRecordZonesCompletionBlock];
+      perRecordCompletionBlock = fetchRecordZonesCompletionBlock;
+      if (!fetchRecordZonesCompletionBlock)
       {
         goto LABEL_16;
       }
@@ -2536,8 +2536,8 @@ LABEL_24:
       *&buf[8] = 3221225472;
       *&buf[16] = __63__FCCKPrivateDatabase__preflightZonesIDsInFetchZonesOperation___block_invoke;
       *&v53 = &unk_1E7C37C88;
-      *(&v53 + 1) = a1;
-      v54 = v23;
+      *(&v53 + 1) = operation;
+      v54 = fetchRecordZonesCompletionBlock;
       [v4 setFetchRecordZonesCompletionBlock:buf];
       goto LABEL_24;
     }
@@ -2546,92 +2546,92 @@ LABEL_24:
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;
-      v24 = [v4 recordZoneIDs];
+      recordZoneIDs2 = [v4 recordZoneIDs];
 
-      if (v24)
+      if (recordZoneIDs2)
       {
-        v25 = [v4 recordZoneIDs];
-        v26 = [(FCCKPrivateDatabase *)a1 _mapRecordZoneIDs:v25 toClient:0];
+        recordZoneIDs3 = [v4 recordZoneIDs];
+        v26 = [(FCCKPrivateDatabase *)operation _mapRecordZoneIDs:recordZoneIDs3 toClient:0];
         [v4 setRecordZoneIDs:v26];
       }
 
-      v27 = [v4 configurationsByRecordZoneID];
+      configurationsByRecordZoneID = [v4 configurationsByRecordZoneID];
 
-      if (v27)
+      if (configurationsByRecordZoneID)
       {
-        v28 = [v4 configurationsByRecordZoneID];
+        configurationsByRecordZoneID2 = [v4 configurationsByRecordZoneID];
         v51[0] = MEMORY[0x1E69E9820];
         v51[1] = 3221225472;
         v51[2] = __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke;
         v51[3] = &unk_1E7C3FAE8;
-        v51[4] = a1;
-        v29 = [v28 fc_dictionaryByTransformingKeysWithBlock:v51];
+        v51[4] = operation;
+        v29 = [configurationsByRecordZoneID2 fc_dictionaryByTransformingKeysWithBlock:v51];
         [v4 setConfigurationsByRecordZoneID:v29];
       }
 
-      v30 = [v4 recordChangedBlock];
-      v9 = v30;
-      if (v30)
+      recordChangedBlock = [v4 recordChangedBlock];
+      perRecordCompletionBlock = recordChangedBlock;
+      if (recordChangedBlock)
       {
         *buf = MEMORY[0x1E69E9820];
         *&buf[8] = 3221225472;
         *&buf[16] = __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_2;
         *&v53 = &unk_1E7C3FB10;
-        v31 = v30;
-        *(&v53 + 1) = a1;
+        v31 = recordChangedBlock;
+        *(&v53 + 1) = operation;
         v54 = v31;
         [v4 setRecordChangedBlock:buf];
       }
 
-      v32 = [v4 recordWithIDWasDeletedBlock];
-      v11 = v32;
-      if (v32)
+      recordWithIDWasDeletedBlock = [v4 recordWithIDWasDeletedBlock];
+      v11 = recordWithIDWasDeletedBlock;
+      if (recordWithIDWasDeletedBlock)
       {
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
         v49[2] = __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_3;
         v49[3] = &unk_1E7C3FB38;
-        v49[4] = a1;
-        v50 = v32;
+        v49[4] = operation;
+        v50 = recordWithIDWasDeletedBlock;
         [v4 setRecordWithIDWasDeletedBlock:v49];
       }
 
-      v33 = [v4 recordZoneChangeTokensUpdatedBlock];
-      v34 = v33;
-      if (v33)
+      recordZoneChangeTokensUpdatedBlock = [v4 recordZoneChangeTokensUpdatedBlock];
+      v34 = recordZoneChangeTokensUpdatedBlock;
+      if (recordZoneChangeTokensUpdatedBlock)
       {
         v47[0] = MEMORY[0x1E69E9820];
         v47[1] = 3221225472;
         v47[2] = __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_4;
         v47[3] = &unk_1E7C3FB60;
-        v47[4] = a1;
-        v48 = v33;
+        v47[4] = operation;
+        v48 = recordZoneChangeTokensUpdatedBlock;
         [v4 setRecordZoneChangeTokensUpdatedBlock:v47];
       }
 
-      v35 = [v4 recordZoneFetchCompletionBlock];
-      v36 = v35;
-      if (v35)
+      recordZoneFetchCompletionBlock = [v4 recordZoneFetchCompletionBlock];
+      v36 = recordZoneFetchCompletionBlock;
+      if (recordZoneFetchCompletionBlock)
       {
         v45[0] = MEMORY[0x1E69E9820];
         v45[1] = 3221225472;
         v45[2] = __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_5;
         v45[3] = &unk_1E7C3FB88;
-        v45[4] = a1;
-        v46 = v35;
+        v45[4] = operation;
+        v46 = recordZoneFetchCompletionBlock;
         [v4 setRecordZoneFetchCompletionBlock:v45];
       }
 
-      v37 = [v4 fetchRecordZoneChangesCompletionBlock];
-      v38 = v37;
-      if (v37)
+      fetchRecordZoneChangesCompletionBlock = [v4 fetchRecordZoneChangesCompletionBlock];
+      v38 = fetchRecordZoneChangesCompletionBlock;
+      if (fetchRecordZoneChangesCompletionBlock)
       {
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
         v43[2] = __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_6;
         v43[3] = &unk_1E7C39710;
-        v43[4] = a1;
-        v44 = v37;
+        v43[4] = operation;
+        v44 = fetchRecordZoneChangesCompletionBlock;
         [v4 setFetchRecordZoneChangesCompletionBlock:v43];
       }
 
@@ -2641,7 +2641,7 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(FCCKPrivateDatabase *)a1 _preflightRecordsInDatabaseChangesOperation:v3];
+      [(FCCKPrivateDatabase *)operation _preflightRecordsInDatabaseChangesOperation:v3];
       goto LABEL_17;
     }
 
@@ -2695,17 +2695,17 @@ LABEL_17:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addCKOperation:(uint64_t)a3 destination:
+- (void)_addCKOperation:(uint64_t)operation destination:
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = *(a1 + 136);
+    v6 = *(self + 136);
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v35 count:16];
     if (v7)
     {
@@ -2724,7 +2724,7 @@ LABEL_4:
 
         v13 = *(*(&v23 + 1) + 8 * v11);
         v22 = v12;
-        v14 = [v13 database:a1 willEnqueueOperation:v5 error:&v22];
+        v14 = [v13 database:self willEnqueueOperation:v5 error:&v22];
         v9 = v22;
 
         if (v14 == 2)
@@ -2756,44 +2756,44 @@ LABEL_4:
 
     v9 = 0;
 LABEL_14:
-    if (a3 > 1)
+    if (operation > 1)
     {
-      if (a3 == 2)
+      if (operation == 2)
       {
-        v19 = [(FCCKPrivateDatabase *)a1 databaseWithZoneWidePCS];
+        databaseWithZoneWidePCS = [(FCCKPrivateDatabase *)self databaseWithZoneWidePCS];
       }
 
       else
       {
-        if (a3 != 3)
+        if (operation != 3)
         {
           goto LABEL_29;
         }
 
-        v19 = [(FCCKPrivateDatabase *)a1 secureDatabase];
+        databaseWithZoneWidePCS = [(FCCKPrivateDatabase *)self secureDatabase];
       }
 
-      v20 = v19;
-      [v19 addOperation:v5];
+      v20 = databaseWithZoneWidePCS;
+      [databaseWithZoneWidePCS addOperation:v5];
     }
 
     else
     {
-      if (a3)
+      if (operation)
       {
-        if (a3 != 1)
+        if (operation != 1)
         {
 LABEL_29:
 
           goto LABEL_30;
         }
 
-        v15 = *(a1 + 72);
-        v16 = [v15 value];
-        v17 = v16;
-        if (v16)
+        v15 = *(self + 72);
+        value = [v15 value];
+        v17 = value;
+        if (value)
         {
-          v18 = *(v16 + 8);
+          v18 = *(value + 8);
         }
 
         else
@@ -2837,18 +2837,18 @@ LABEL_30:
 - (void)_continueStartUp
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_6:
     v8 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  *(a1 + 11) = 1;
-  if ([*(a1 + 128) count])
+  *(self + 11) = 1;
+  if ([*(self + 128) count])
   {
-    v2 = *(a1 + 128);
-    v3 = [v2 firstObject];
+    v2 = *(self + 128);
+    firstObject = [v2 firstObject];
 
     v4 = FCPrivateDataEncryptionLog;
     if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
@@ -2864,33 +2864,33 @@ LABEL_6:
     v10[1] = 3221225472;
     v10[2] = __39__FCCKPrivateDatabase__continueStartUp__block_invoke;
     v10[3] = &unk_1E7C36C80;
-    v11 = v3;
-    v12 = a1;
-    v7 = v3;
-    [v7 performStartUpForDatabase:a1 completion:v10];
+    v11 = firstObject;
+    selfCopy = self;
+    v7 = firstObject;
+    [v7 performStartUpForDatabase:self completion:v10];
 
     goto LABEL_6;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  [(FCCKPrivateDatabase *)a1 _finishStartUpWithError:?];
+  [(FCCKPrivateDatabase *)self _finishStartUpWithError:?];
 }
 
-- (void)t_performStartUpWithCompletion:(uint64_t)a1
+- (void)t_performStartUpWithCompletion:(uint64_t)completion
 {
-  if (a1)
+  if (completion)
   {
-    v3 = *(a1 + 88);
+    v3 = *(completion + 88);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __54__FCCKPrivateDatabase_t_performStartUpWithCompletion___block_invoke;
     block[3] = &unk_1E7C36EA0;
-    block[4] = a1;
+    block[4] = completion;
     v4 = a2;
     dispatch_async(v3, block);
-    v5 = *(a1 + 152);
-    v6 = *(a1 + 88);
+    v5 = *(completion + 152);
+    v6 = *(completion + 88);
     v7 = v5;
     dispatch_group_notify(v7, v6, v4);
   }
@@ -2972,11 +2972,11 @@ void __39__FCCKPrivateDatabase__continueStartUp__block_invoke_145(uint64_t a1)
   }
 }
 
-- (void)_finishStartUpWithError:(uint64_t)a1
+- (void)_finishStartUpWithError:(uint64_t)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = FCPrivateDataEncryptionLog;
     if (v3)
@@ -2984,7 +2984,7 @@ void __39__FCCKPrivateDatabase__continueStartUp__block_invoke_145(uint64_t a1)
       if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_ERROR))
       {
         v5 = @"disabled";
-        if (*(a1 + 40) > 0)
+        if (*(error + 40) > 0)
         {
           v5 = @"enabled";
         }
@@ -2999,7 +2999,7 @@ void __39__FCCKPrivateDatabase__continueStartUp__block_invoke_145(uint64_t a1)
 
     else if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = *(a1 + 40);
+      v6 = *(error + 40);
       if (v6 <= 0)
       {
         v7 = @"disabled";
@@ -3025,84 +3025,84 @@ void __39__FCCKPrivateDatabase__continueStartUp__block_invoke_145(uint64_t a1)
       [FCCKPrivateDatabase _possiblySimulateCrashForError:v3 message:@"Private database startup failed with fatal error"];
     }
 
-    *(a1 + 11) = 0;
-    *(a1 + 160) = started;
-    if ((*(a1 + 10) & 1) == 0)
+    *(error + 11) = 0;
+    *(error + 160) = started;
+    if ((*(error + 10) & 1) == 0)
     {
-      *(a1 + 10) = 1;
-      dispatch_group_leave(*(a1 + 152));
+      *(error + 10) = 1;
+      dispatch_group_leave(*(error + 152));
     }
 
     if (started)
     {
-      ++*(a1 + 168);
-      v11 = [MEMORY[0x1E695DF00] date];
-      v12 = *(a1 + 176);
-      *(a1 + 176) = v11;
+      ++*(error + 168);
+      date = [MEMORY[0x1E695DF00] date];
+      v12 = *(error + 176);
+      *(error + 176) = date;
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_preflightRecordsInDatabaseChangesOperation:(uint64_t)a1
+- (void)_preflightRecordsInDatabaseChangesOperation:(uint64_t)operation
 {
   v3 = a2;
-  v4 = [v3 recordZoneWithIDChangedBlock];
-  v5 = v4;
-  if (v4)
+  recordZoneWithIDChangedBlock = [v3 recordZoneWithIDChangedBlock];
+  v5 = recordZoneWithIDChangedBlock;
+  if (recordZoneWithIDChangedBlock)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __67__FCCKPrivateDatabase__preflightRecordsInDatabaseChangesOperation___block_invoke;
     v14[3] = &unk_1E7C3FBB0;
-    v14[4] = a1;
-    v15 = v4;
+    v14[4] = operation;
+    v15 = recordZoneWithIDChangedBlock;
     [v3 setRecordZoneWithIDChangedBlock:v14];
   }
 
-  v6 = [v3 recordZoneWithIDWasDeletedBlock];
-  v7 = v6;
-  if (v6)
+  recordZoneWithIDWasDeletedBlock = [v3 recordZoneWithIDWasDeletedBlock];
+  v7 = recordZoneWithIDWasDeletedBlock;
+  if (recordZoneWithIDWasDeletedBlock)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67__FCCKPrivateDatabase__preflightRecordsInDatabaseChangesOperation___block_invoke_2;
     v12[3] = &unk_1E7C3FBB0;
-    v12[4] = a1;
-    v13 = v6;
+    v12[4] = operation;
+    v13 = recordZoneWithIDWasDeletedBlock;
     [v3 setRecordZoneWithIDWasDeletedBlock:v12];
   }
 
-  v8 = [v3 fetchDatabaseChangesCompletionBlock];
-  v9 = v8;
-  if (v8)
+  fetchDatabaseChangesCompletionBlock = [v3 fetchDatabaseChangesCompletionBlock];
+  v9 = fetchDatabaseChangesCompletionBlock;
+  if (fetchDatabaseChangesCompletionBlock)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67__FCCKPrivateDatabase__preflightRecordsInDatabaseChangesOperation___block_invoke_3;
     v10[3] = &unk_1E7C3FBD8;
-    v10[4] = a1;
-    v11 = v8;
+    v10[4] = operation;
+    v11 = fetchDatabaseChangesCompletionBlock;
     [v3 setFetchDatabaseChangesCompletionBlock:v10];
   }
 }
 
-- (id)_mapRecords:(char)a3 toClient:
+- (id)_mapRecords:(char)records toClient:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if ((a3 & 1) == 0)
+    if ((records & 1) == 0)
     {
       v7 = v5;
-      v8 = *(a1 + 80);
+      v8 = *(self + 80);
       if (v8)
       {
       }
 
-      else if (*(a1 + 40) <= 0)
+      else if (*(self + 40) <= 0)
       {
         NSClassFromString(&cfstr_Xctest.isa);
       }
@@ -3112,9 +3112,9 @@ void __39__FCCKPrivateDatabase__continueStartUp__block_invoke_145(uint64_t a1)
     v11[1] = 3221225472;
     v11[2] = __44__FCCKPrivateDatabase__mapRecords_toClient___block_invoke;
     v11[3] = &unk_1E7C3FCA0;
-    v12 = a3;
-    v11[4] = a1;
-    v9 = [(FCCKPrivateDatabase *)a1 _mapObjects:v6 toClient:a3 withBlock:v11];
+    recordsCopy = records;
+    v11[4] = self;
+    v9 = [(FCCKPrivateDatabase *)self _mapObjects:v6 toClient:records withBlock:v11];
   }
 
   else
@@ -3125,21 +3125,21 @@ void __39__FCCKPrivateDatabase__continueStartUp__block_invoke_145(uint64_t a1)
   return v9;
 }
 
-- (id)_mapRecordIDs:(char)a3 toClient:
+- (id)_mapRecordIDs:(char)ds toClient:
 {
-  if (a1)
+  if (self)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __46__FCCKPrivateDatabase__mapRecordIDs_toClient___block_invoke;
     v5[3] = &unk_1E7C3FC50;
-    v6 = a3;
-    v5[4] = a1;
-    a1 = [(FCCKPrivateDatabase *)a1 _mapObjects:a2 toClient:a3 withBlock:v5];
+    dsCopy = ds;
+    v5[4] = self;
+    self = [(FCCKPrivateDatabase *)self _mapObjects:a2 toClient:ds withBlock:v5];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __58__FCCKPrivateDatabase__preflightRecordsInModifyOperation___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -3155,30 +3155,30 @@ void __58__FCCKPrivateDatabase__preflightRecordsInModifyOperation___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_serverToClientError:(uint64_t)a1
+- (id)_serverToClientError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
     v5 = v3;
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 domain];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E695B740]];
+      domain = [v5 domain];
+      v8 = [domain isEqualToString:*MEMORY[0x1E695B740]];
 
       if (v8)
       {
-        v9 = [v6 userInfo];
+        userInfo = [v6 userInfo];
         v10 = *MEMORY[0x1E695B798];
-        v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E695B798]];
+        v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B798]];
         v12 = *MEMORY[0x1E695B7B0];
-        v13 = [v9 objectForKeyedSubscript:*MEMORY[0x1E695B7B0]];
+        v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B7B0]];
         v31 = *MEMORY[0x1E695B7C0];
-        v14 = [v9 objectForKeyedSubscript:?];
+        v14 = [userInfo objectForKeyedSubscript:?];
         v32 = *MEMORY[0x1E695B7B8];
-        v15 = [v9 objectForKeyedSubscript:?];
+        v15 = [userInfo objectForKeyedSubscript:?];
         v16 = v15;
         if (v11)
         {
@@ -3193,14 +3193,14 @@ void __58__FCCKPrivateDatabase__preflightRecordsInModifyOperation___block_invoke
         if (!v17 || v14 != 0 || v15 != 0)
         {
           v33 = v13;
-          v20 = [v9 mutableCopy];
+          v20 = [userInfo mutableCopy];
           if (v11)
           {
             v34[0] = MEMORY[0x1E69E9820];
             v34[1] = 3221225472;
             v34[2] = __44__FCCKPrivateDatabase__serverToClientError___block_invoke;
             v34[3] = &unk_1E7C3FD18;
-            v34[4] = a1;
+            v34[4] = error;
             [v11 fc_dictionaryByTransformingKeysWithBlock:v34];
             v21 = v30 = v11;
             [v20 setObject:v21 forKeyedSubscript:v10];
@@ -3210,27 +3210,27 @@ void __58__FCCKPrivateDatabase__preflightRecordsInModifyOperation___block_invoke
 
           if (v33)
           {
-            v22 = [(FCCKPrivateDatabase *)a1 _serverToClientRecord:v33];
+            v22 = [(FCCKPrivateDatabase *)error _serverToClientRecord:v33];
             [v20 setObject:v22 forKeyedSubscript:v12];
           }
 
           v23 = v20;
           if (v14)
           {
-            v24 = [(FCCKPrivateDatabase *)a1 _serverToClientRecord:v14];
+            v24 = [(FCCKPrivateDatabase *)error _serverToClientRecord:v14];
             [v20 setObject:v24 forKeyedSubscript:v31];
           }
 
           v13 = v33;
           if (v16)
           {
-            v25 = [(FCCKPrivateDatabase *)a1 _serverToClientRecord:v16];
+            v25 = [(FCCKPrivateDatabase *)error _serverToClientRecord:v16];
             [v23 setObject:v25 forKeyedSubscript:v32];
           }
 
           v26 = MEMORY[0x1E696ABC0];
-          v27 = [v6 domain];
-          v28 = [v26 errorWithDomain:v27 code:objc_msgSend(v6 userInfo:{"code"), v23}];
+          domain2 = [v6 domain];
+          v28 = [v26 errorWithDomain:domain2 code:objc_msgSend(v6 userInfo:{"code"), v23}];
 
           v6 = v28;
         }
@@ -3246,15 +3246,15 @@ void __58__FCCKPrivateDatabase__preflightRecordsInModifyOperation___block_invoke
   return v6;
 }
 
-- (id)_mapRecordZoneIDs:(char)a3 toClient:
+- (id)_mapRecordZoneIDs:(char)ds toClient:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(FCCKPrivateDatabase *)a1 _mapRecordZoneIDs:a2 toClient:a3 expectUnknownZones:0];
+    self = [(FCCKPrivateDatabase *)self _mapRecordZoneIDs:a2 toClient:ds expectUnknownZones:0];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_2(uint64_t a1, void *a2)
@@ -3264,23 +3264,23 @@ void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___b
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)_serverToClientRecord:(uint64_t)a1
+- (id)_serverToClientRecord:(uint64_t)record
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  v5 = 0;
-  if (a1 && v3)
+  firstObject = 0;
+  if (record && v3)
   {
     v10[0] = v3;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v7 = [(FCCKPrivateDatabase *)a1 _mapRecords:v6 toClient:1];
-    v5 = [v7 firstObject];
+    v7 = [(FCCKPrivateDatabase *)record _mapRecords:v6 toClient:1];
+    firstObject = [v7 firstObject];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return firstObject;
 }
 
 void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -3313,24 +3313,24 @@ void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___b
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_clientRecordID:(id)a1
+- (id)_clientRecordID:(id)d
 {
-  v2 = a1;
+  dCopy = d;
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
     v9 = a2;
     v3 = MEMORY[0x1E695DEC8];
     v4 = a2;
     v5 = [v3 arrayWithObjects:&v9 count:1];
 
-    v6 = [(FCCKPrivateDatabase *)v2 _mapRecordIDs:v5 toClient:1];
-    v2 = [v6 firstObject];
+    v6 = [(FCCKPrivateDatabase *)dCopy _mapRecordIDs:v5 toClient:1];
+    dCopy = [v6 firstObject];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return dCopy;
 }
 
 void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_4(uint64_t a1, void *a2, void *a3, void *a4)
@@ -3343,24 +3343,24 @@ void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___b
   (*(v6 + 16))(v6, v10, v9, v8);
 }
 
-- (id)_serverToClientRecordZoneID:(id)a1
+- (id)_serverToClientRecordZoneID:(id)d
 {
-  v2 = a1;
+  dCopy = d;
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
     v9 = a2;
     v3 = MEMORY[0x1E695DEC8];
     v4 = a2;
     v5 = [v3 arrayWithObjects:&v9 count:1];
 
-    v6 = [(FCCKPrivateDatabase *)v2 _mapRecordZoneIDs:v5 toClient:1];
-    v2 = [v6 firstObject];
+    v6 = [(FCCKPrivateDatabase *)dCopy _mapRecordZoneIDs:v5 toClient:1];
+    dCopy = [v6 firstObject];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return dCopy;
 }
 
 void __69__FCCKPrivateDatabase__preflightRecordsInRecordZoneChangesOperation___block_invoke_5(uint64_t a1, void *a2, void *a3, void *a4, uint64_t a5, void *a6)
@@ -3390,24 +3390,24 @@ void __67__FCCKPrivateDatabase__preflightRecordsInDatabaseChangesOperation___blo
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)_serverToClientRecordZoneID:(id)a1 expectUnknownZones:(void *)a2
+- (id)_serverToClientRecordZoneID:(id)d expectUnknownZones:(void *)zones
 {
-  v2 = a1;
+  dCopy = d;
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
-    v9 = a2;
+    zonesCopy = zones;
     v3 = MEMORY[0x1E695DEC8];
-    v4 = a2;
-    v5 = [v3 arrayWithObjects:&v9 count:1];
+    zonesCopy2 = zones;
+    v5 = [v3 arrayWithObjects:&zonesCopy count:1];
 
-    v6 = [(FCCKPrivateDatabase *)v2 _mapRecordZoneIDs:v5 toClient:1 expectUnknownZones:1];
-    v2 = [v6 firstObject];
+    v6 = [(FCCKPrivateDatabase *)dCopy _mapRecordZoneIDs:v5 toClient:1 expectUnknownZones:1];
+    dCopy = [v6 firstObject];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return dCopy;
 }
 
 void __67__FCCKPrivateDatabase__preflightRecordsInDatabaseChangesOperation___block_invoke_2(uint64_t a1, void *a2)
@@ -3519,21 +3519,21 @@ void __63__FCCKPrivateDatabase__preflightZonesIDsInFetchZonesOperation___block_i
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_mapZones:(char)a3 toClient:
+- (id)_mapZones:(char)zones toClient:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    if ((a3 & 1) == 0)
+    if ((zones & 1) == 0)
     {
       v7 = v5;
-      v8 = *(a1 + 80);
+      v8 = *(self + 80);
       if (v8)
       {
       }
 
-      else if (*(a1 + 40) <= 0)
+      else if (*(self + 40) <= 0)
       {
         NSClassFromString(&cfstr_Xctest.isa);
       }
@@ -3543,9 +3543,9 @@ void __63__FCCKPrivateDatabase__preflightZonesIDsInFetchZonesOperation___block_i
     v11[1] = 3221225472;
     v11[2] = __42__FCCKPrivateDatabase__mapZones_toClient___block_invoke;
     v11[3] = &unk_1E7C3FCC8;
-    v12 = a3;
-    v11[4] = a1;
-    v9 = [(FCCKPrivateDatabase *)a1 _mapObjects:v6 toClient:a3 withBlock:v11];
+    zonesCopy = zones;
+    v11[4] = self;
+    v9 = [(FCCKPrivateDatabase *)self _mapObjects:v6 toClient:zones withBlock:v11];
   }
 
   else
@@ -3627,13 +3627,13 @@ LABEL_8:
   return v7;
 }
 
-- (id)_mapObjects:(char)a3 toClient:(void *)a4 withBlock:
+- (id)_mapObjects:(char)objects toClient:(void *)client withBlock:
 {
   v37 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a4;
+  clientCopy = client;
   v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v25 = *(a1 + 144);
+  v25 = *(self + 144);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -3657,18 +3657,18 @@ LABEL_8:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        if (a3)
+        if (objects)
         {
-          v10 = [v25 reverseObjectEnumerator];
+          reverseObjectEnumerator = [v25 reverseObjectEnumerator];
         }
 
         else
         {
-          v10 = v25;
+          reverseObjectEnumerator = v25;
         }
 
-        v11 = v10;
-        v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v11 = reverseObjectEnumerator;
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v12)
         {
           v13 = v12;
@@ -3685,7 +3685,7 @@ LABEL_11:
 
             v17 = *(*(&v27 + 1) + 8 * v15);
             v18 = objc_autoreleasePoolPush();
-            v9 = v7[2](v7, v16, v17);
+            v9 = clientCopy[2](clientCopy, v16, v17);
 
             objc_autoreleasePoolPop(v18);
             if (!v9)
@@ -3733,16 +3733,16 @@ LABEL_19:
   return v21;
 }
 
-- (id)_mapRecordZoneIDs:(char)a3 toClient:(char)a4 expectUnknownZones:
+- (id)_mapRecordZoneIDs:(char)ds toClient:(char)client expectUnknownZones:
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__FCCKPrivateDatabase__mapRecordZoneIDs_toClient_expectUnknownZones___block_invoke;
   v6[3] = &unk_1E7C3FC78;
-  v7 = a3;
-  v6[4] = a1;
-  v8 = a4;
-  v4 = [(FCCKPrivateDatabase *)a1 _mapObjects:a2 toClient:a3 withBlock:v6];
+  dsCopy = ds;
+  v6[4] = self;
+  clientCopy = client;
+  v4 = [(FCCKPrivateDatabase *)self _mapObjects:a2 toClient:ds withBlock:v6];
 
   return v4;
 }
@@ -3827,23 +3827,23 @@ LABEL_12:
   return v9;
 }
 
-- (id)_clientToServerRecord:(uint64_t)a1
+- (id)_clientToServerRecord:(uint64_t)record
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  v5 = 0;
-  if (a1 && v3)
+  firstObject = 0;
+  if (record && v3)
   {
     v10[0] = v3;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v7 = [(FCCKPrivateDatabase *)a1 _mapRecords:v6 toClient:0];
-    v5 = [v7 firstObject];
+    v7 = [(FCCKPrivateDatabase *)record _mapRecords:v6 toClient:0];
+    firstObject = [v7 firstObject];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return firstObject;
 }
 
 id __44__FCCKPrivateDatabase__mapRecords_toClient___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4035,24 +4035,24 @@ id __44__FCCKPrivateDatabase__serverToClientError___block_invoke(uint64_t a1, vo
 
 - (void)zoneIDsUsingSecureContainer
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [MEMORY[0x1E695DFA8] set];
-    v3 = v1[10];
-    v4 = v1[5];
+    v3 = selfCopy[10];
+    v4 = selfCopy[5];
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __50__FCCKPrivateDatabase_zoneIDsUsingSecureContainer__block_invoke;
     v10 = &unk_1E7C3FD40;
     v11 = v2;
-    v12 = v1;
+    v12 = selfCopy;
     v5 = v2;
     [(FCCKPrivateDatabaseSchema *)v3 enumerateZoneSchemasForVersion:v4 withBlock:&v7];
-    v1 = [v5 allObjects];
+    selfCopy = [v5 allObjects];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __50__FCCKPrivateDatabase_zoneIDsUsingSecureContainer__block_invoke(uint64_t a1, void *a2)
@@ -4111,11 +4111,11 @@ void __50__FCCKPrivateDatabase_zoneIDsUsingSecureContainer__block_invoke(uint64_
   }
 }
 
-- (void)takeDatabaseOfflineDueToError:(uint64_t)a1
+- (void)takeDatabaseOfflineDueToError:(uint64_t)error
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = FCPrivateDataEncryptionLog;
     if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_ERROR))
@@ -4125,12 +4125,12 @@ void __50__FCCKPrivateDatabase_zoneIDsUsingSecureContainer__block_invoke(uint64_
       _os_log_error_impl(&dword_1B63EF000, v4, OS_LOG_TYPE_ERROR, "Taking database offline due to error: %{public}@", buf, 0xCu);
     }
 
-    v5 = *(a1 + 88);
+    v5 = *(error + 88);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__FCCKPrivateDatabase_takeDatabaseOfflineDueToError___block_invoke;
     block[3] = &unk_1E7C36EA0;
-    block[4] = a1;
+    block[4] = error;
     dispatch_sync(v5, block);
   }
 
@@ -4172,19 +4172,19 @@ uint64_t __53__FCCKPrivateDatabase_takeDatabaseOfflineDueToError___block_invoke(
   return result;
 }
 
-- (void)reportRecoverableStartUpError:(uint64_t)a1
+- (void)reportRecoverableStartUpError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     [FCCKPrivateDatabase _possiblySimulateCrashForError:a2 message:@"Private database startup failed with recoverable error"];
   }
 }
 
-- (void)_possiblySimulateCrashForError:(void *)a1 message:(void *)a2
+- (void)_possiblySimulateCrashForError:(void *)error message:(void *)message
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = a2;
+  errorCopy = error;
+  messageCopy = message;
   if (NFInternalBuild())
   {
     v5 = NewsCoreUserDefaults();
@@ -4194,7 +4194,7 @@ uint64_t __53__FCCKPrivateDatabase_takeDatabaseOfflineDueToError___block_invoke(
 
     else
     {
-      v7 = FCShouldErrorBeExcludedFromSimulatedCrashes(v3);
+      v7 = FCShouldErrorBeExcludedFromSimulatedCrashes(errorCopy);
 
       if ((v7 & 1) == 0)
       {
@@ -4202,9 +4202,9 @@ uint64_t __53__FCCKPrivateDatabase_takeDatabaseOfflineDueToError___block_invoke(
         if (os_log_type_enabled(FCPrivateDataEncryptionCrashLog, OS_LOG_TYPE_INFO))
         {
           v9 = 138543618;
-          v10 = v4;
+          v10 = messageCopy;
           v11 = 2114;
-          v12 = v3;
+          v12 = errorCopy;
           _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_INFO, "%{public}@: %{public}@", &v9, 0x16u);
           v8 = FCPrivateDataEncryptionCrashLog;
         }
@@ -4212,9 +4212,9 @@ uint64_t __53__FCCKPrivateDatabase_takeDatabaseOfflineDueToError___block_invoke(
         if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
         {
           v9 = 138543618;
-          v10 = v4;
+          v10 = messageCopy;
           v11 = 2114;
-          v12 = v3;
+          v12 = errorCopy;
           _os_log_fault_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_FAULT, "%{public}@: %{public}@", &v9, 0x16u);
         }
       }
@@ -4224,17 +4224,17 @@ uint64_t __53__FCCKPrivateDatabase_takeDatabaseOfflineDueToError___block_invoke(
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportEncryptionMigrationError:(uint64_t)a1
+- (void)reportEncryptionMigrationError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     [FCCKPrivateDatabase _possiblySimulateCrashForError:a2 message:@"Private database encryption migration failed with error"];
   }
 }
 
-- (void)reportPostMigrationCleanupError:(uint64_t)a1
+- (void)reportPostMigrationCleanupError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     [FCCKPrivateDatabase _possiblySimulateCrashForError:a2 message:@"Private database encryption data cleanup failed with error"];
   }
@@ -4283,25 +4283,25 @@ uint64_t __64__FCCKPrivateDatabase__privateDatabaseDeprecatedRecordTestBlock__bl
   return v6 & 1;
 }
 
-- (void)fetchAllDatabaseChangesWithServerChangeToken:(id)a3 qualityOfService:(int64_t)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)fetchAllDatabaseChangesWithServerChangeToken:(id)token qualityOfService:(int64_t)service completionQueue:(id)queue completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  tokenCopy = token;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v13 = objc_alloc_init(FCCKPrivateFetchDatabaseChangesOperation);
-    [(FCCKPrivateFetchDatabaseChangesOperation *)v13 setPreviousServerChangeToken:v10];
-    [(FCOperation *)v13 setQualityOfService:a4];
-    if (a4 == 9)
+    [(FCCKPrivateFetchDatabaseChangesOperation *)v13 setPreviousServerChangeToken:tokenCopy];
+    [(FCOperation *)v13 setQualityOfService:service];
+    if (service == 9)
     {
       v14 = -1;
     }
 
     else
     {
-      v14 = a4 == 33 || a4 == 25;
+      v14 = service == 33 || service == 25;
     }
 
     [(FCOperation *)v13 setRelativePriority:v14];
@@ -4310,10 +4310,10 @@ uint64_t __64__FCCKPrivateDatabase__privateDatabaseDeprecatedRecordTestBlock__bl
     v17[2] = __130__FCCKPrivateDatabase_Additions__fetchAllDatabaseChangesWithServerChangeToken_qualityOfService_completionQueue_completionHandler___block_invoke;
     v17[3] = &unk_1E7C40E20;
     v17[4] = self;
-    v21 = a4;
-    v18 = v11;
-    v20 = v12;
-    v19 = v10;
+    serviceCopy = service;
+    v18 = queueCopy;
+    v20 = handlerCopy;
+    v19 = tokenCopy;
     [(FCCKPrivateFetchDatabaseChangesOperation *)v13 setFetchDatabaseChangesCompletionBlock:v17];
     [(FCCKPrivateDatabase *)self addOperation:v13];
   }

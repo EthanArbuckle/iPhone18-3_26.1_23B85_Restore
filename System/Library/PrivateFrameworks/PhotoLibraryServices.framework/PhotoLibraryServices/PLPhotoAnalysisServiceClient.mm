@@ -1,155 +1,155 @@
 @interface PLPhotoAnalysisServiceClient
-- (BOOL)rebuildPersonsWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)reclusterFacesWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)reportMetricsWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)a3 withError:(id *)a4;
-- (BOOL)requestAssetRevGeocodingWithError:(id *)a3;
-- (BOOL)requestEnrichmentWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestHighlightEnrichmentWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)requestInvalidatePersistentCaches:(id *)a3;
-- (BOOL)requestInvalidateTransientCaches:(id *)a3;
-- (BOOL)requestSetDefaultsObject:(id)a3 forKey:(id)a4 withError:(id *)a5;
-- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)a3;
-- (BOOL)requestSyndicationLibraryRevGeocodingWithError:(id *)a3;
-- (BOOL)requestTitleForAssetCollectionWithLocalIdentifier:(id)a3 format:(int64_t)a4 title:(id *)a5 subtitle:(id *)a6 error:(id *)a7;
-- (BOOL)requestTitleForCollectionMomentListWithLocalIdentifier:(id)a3 format:(int64_t)a4 title:(id *)a5 subtitle:(id *)a6 error:(id *)a7;
-- (BOOL)requestTitleForPersonLocalIdentifiers:(id)a3 format:(int64_t)a4 title:(id *)a5 subtitle:(id *)a6 error:(id *)a7;
-- (BOOL)resetFaceClassificationModel:(id *)a3;
-- (BOOL)resetFaceClusteringState:(id *)a3;
+- (BOOL)rebuildPersonsWithOptions:(id)options error:(id *)error;
+- (BOOL)reclusterFacesWithOptions:(id)options error:(id *)error;
+- (BOOL)reportMetricsWithOptions:(id)options error:(id *)error;
+- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)identifiers withError:(id *)error;
+- (BOOL)requestAssetRevGeocodingWithError:(id *)error;
+- (BOOL)requestEnrichmentWithOptions:(id)options error:(id *)error;
+- (BOOL)requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier:(id)identifier withOptions:(id)options error:(id *)error;
+- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)options error:(id *)error;
+- (BOOL)requestHighlightEnrichmentWithOptions:(id)options error:(id *)error;
+- (BOOL)requestInvalidatePersistentCaches:(id *)caches;
+- (BOOL)requestInvalidateTransientCaches:(id *)caches;
+- (BOOL)requestSetDefaultsObject:(id)object forKey:(id)key withError:(id *)error;
+- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)error;
+- (BOOL)requestSyndicationLibraryRevGeocodingWithError:(id *)error;
+- (BOOL)requestTitleForAssetCollectionWithLocalIdentifier:(id)identifier format:(int64_t)format title:(id *)title subtitle:(id *)subtitle error:(id *)error;
+- (BOOL)requestTitleForCollectionMomentListWithLocalIdentifier:(id)identifier format:(int64_t)format title:(id *)title subtitle:(id *)subtitle error:(id *)error;
+- (BOOL)requestTitleForPersonLocalIdentifiers:(id)identifiers format:(int64_t)format title:(id *)title subtitle:(id *)subtitle error:(id *)error;
+- (BOOL)resetFaceClassificationModel:(id *)model;
+- (BOOL)resetFaceClusteringState:(id *)state;
 - (PLPhotoAnalysisServiceClient)init;
-- (PLPhotoAnalysisServiceClient)initWithLibraryURL:(id)a3;
+- (PLPhotoAnalysisServiceClient)initWithLibraryURL:(id)l;
 - (id)_xpcConnection;
-- (id)differencesBetweenClustersInClusterCacheAndLibrary:(id *)a3;
-- (id)dumpAnalysisStatusError:(id *)a3;
+- (id)differencesBetweenClustersInClusterCacheAndLibrary:(id *)library;
+- (id)dumpAnalysisStatusError:(id *)error;
 - (id)executiveService;
-- (id)faceCandidatesForKeyFaceForPersonsWithLocalIdentifiers:(id)a3 error:(id *)a4;
+- (id)faceCandidatesForKeyFaceForPersonsWithLocalIdentifiers:(id)identifiers error:(id *)error;
 - (id)legacyService;
 - (id)momentGraphService;
 - (id)photoLibraryService;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)requestAllSocialGroupsForMemberLocalIdentifier:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (id)requestAssetLocalIdentifiersByCityNameWithError:(id *)a3;
-- (id)requestAssetsForPersonLocalIdentifiers:(id)a3 withError:(id *)a4;
-- (id)requestAvailableSuggestionTypeInfosWithOptions:(id)a3 error:(id *)a4;
-- (id)requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)requestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (id)requestComposabilityScoresOfAssetsForLocalIdentifiers:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)requestConfidenceByMomentLocalIdentifierForMeaning:(id)a3 useAlternativeMeaningEdge:(BOOL)a4 onlyHighPrecision:(BOOL)a5 error:(id *)a6;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)requestAllSocialGroupsForMemberLocalIdentifier:(id)identifier withOptions:(id)options error:(id *)error;
+- (id)requestAssetLocalIdentifiersByCityNameWithError:(id *)error;
+- (id)requestAssetsForPersonLocalIdentifiers:(id)identifiers withError:(id *)error;
+- (id)requestAvailableSuggestionTypeInfosWithOptions:(id)options error:(id *)error;
+- (id)requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID:(id)d options:(id)options error:(id *)error;
+- (id)requestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)d withOptions:(id)options error:(id *)error;
+- (id)requestComposabilityScoresOfAssetsForLocalIdentifiers:(id)identifiers options:(id)options error:(id *)error;
+- (id)requestConfidenceByMomentLocalIdentifierForMeaning:(id)meaning useAlternativeMeaningEdge:(BOOL)edge onlyHighPrecision:(BOOL)precision error:(id *)error;
 - (id)requestContextDictionary;
-- (id)requestCuratedAssetForAssetCollectionWithLocalIdentifier:(id)a3 referenceAssetLocalIdentifier:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)requestCuratedAssetsForAssetCollectionWithLocalIdentifier:(id)a3 duration:(unint64_t)a4 options:(id)a5 error:(id *)a6;
-- (id)requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)requestCurationDebugInformationForAssetLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestCurationOfLength:(unint64_t)a3 forMemoryForLocalIdentifier:(id)a4 withOptions:(id)a5 error:(id *)a6;
-- (id)requestCurationScoreByAssetUUIDForAssetUUIDs:(id)a3 error:(id *)a4;
-- (id)requestDefaultsObjectForKey:(id)a3 withError:(id *)a4;
-- (id)requestEnergyStatusWithError:(id *)a3;
-- (id)requestExportGraphForPurpose:(id)a3 error:(id *)a4;
-- (id)requestGeoHashForAssetLocalIdentifiers:(id)a3 geoHashSize:(id)a4 error:(id *)a5;
-- (id)requestGraphInferencesSummaryWithDateInterval:(id)a3 error:(id *)a4;
-- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)a3 error:(id *)a4;
-- (id)requestGraphPerformQuery:(id)a3 error:(id *)a4;
-- (id)requestGraphStatisticsWithOptions:(id)a3 error:(id *)a4;
-- (id)requestGraphStatus:(id *)a3;
-- (id)requestHighlightDebugInformationForHighlightWithLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestIconicSceneScoreForAssetLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)requestKeyAssetLocalIdentifierForPrototypeCategory:(id)a3 error:(id *)a4;
-- (id)requestMeaningScoreDebugDescriptionForMomentLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestMemoryDebugInformationForMemoryWithLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestNightlySuggestionsForPosterConfiguration:(id)a3 atDate:(id)a4 error:(id *)a5;
-- (id)requestOnDemandFaceCropsForFaceLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)a3 error:(id *)a4;
-- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)a3 error:(id *)a4;
-- (id)requestRelatedMomentsForPersonLocalIdentifiers:(id)a3 withError:(id *)a4;
-- (id)requestRelationshipInferencesForPersonLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestSignalModelInfosWithError:(id *)a3;
-- (id)requestSocialGroupsOverlappingMemberLocalIdentifiers:(id)a3 withError:(id *)a4;
-- (id)requestSortedArrayOfPersonLocalIdentifiers:(id)a3 withError:(id *)a4;
-- (id)requestSuggestedContributionsForAssetsMetadata:(id)a3 error:(id *)a4;
-- (id)requestSuggestedMePersonIdentifierWithError:(id *)a3;
-- (id)requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (id)requestSuggestedPersonsWithOptions:(id)a3 error:(id *)a4;
-- (id)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)a3 momentLocalIdentifiers:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)requestSuggestionInfosWithOptions:(id)a3 error:(id *)a4;
-- (id)requestSummaryCurationForHighlightLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)a3 error:(id *)a4;
-- (id)requestTrendsByIdentifierWithCadence:(id)a3 forYear:(unint64_t)a4 error:(id *)a5;
-- (id)requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier:(id)a3 error:(id *)a4;
-- (id)requestUpNextMemoryLocalIdentifiersWithOptions:(id)a3 error:(id *)a4;
-- (id)requestUtilityAssetInformationWithError:(id *)a3;
-- (id)requestUtilityAssetLocalIdentifiersWithError:(id *)a3;
-- (id)runCurationWithItems:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)requestCuratedAssetForAssetCollectionWithLocalIdentifier:(id)identifier referenceAssetLocalIdentifier:(id)localIdentifier options:(id)options error:(id *)error;
+- (id)requestCuratedAssetsForAssetCollectionWithLocalIdentifier:(id)identifier duration:(unint64_t)duration options:(id)options error:(id *)error;
+- (id)requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)requestCurationDebugInformationForAssetLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestCurationOfLength:(unint64_t)length forMemoryForLocalIdentifier:(id)identifier withOptions:(id)options error:(id *)error;
+- (id)requestCurationScoreByAssetUUIDForAssetUUIDs:(id)ds error:(id *)error;
+- (id)requestDefaultsObjectForKey:(id)key withError:(id *)error;
+- (id)requestEnergyStatusWithError:(id *)error;
+- (id)requestExportGraphForPurpose:(id)purpose error:(id *)error;
+- (id)requestGeoHashForAssetLocalIdentifiers:(id)identifiers geoHashSize:(id)size error:(id *)error;
+- (id)requestGraphInferencesSummaryWithDateInterval:(id)interval error:(id *)error;
+- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)interval error:(id *)error;
+- (id)requestGraphPerformQuery:(id)query error:(id *)error;
+- (id)requestGraphStatisticsWithOptions:(id)options error:(id *)error;
+- (id)requestGraphStatus:(id *)status;
+- (id)requestHighlightDebugInformationForHighlightWithLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestIconicSceneScoreForAssetLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)requestKeyAssetLocalIdentifierForPrototypeCategory:(id)category error:(id *)error;
+- (id)requestMeaningScoreDebugDescriptionForMomentLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestMemoryDebugInformationForMemoryWithLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestNightlySuggestionsForPosterConfiguration:(id)configuration atDate:(id)date error:(id *)error;
+- (id)requestOnDemandFaceCropsForFaceLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)ds error:(id *)error;
+- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)ds error:(id *)error;
+- (id)requestRelatedMomentsForPersonLocalIdentifiers:(id)identifiers withError:(id *)error;
+- (id)requestRelationshipInferencesForPersonLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestSignalModelInfosWithError:(id *)error;
+- (id)requestSocialGroupsOverlappingMemberLocalIdentifiers:(id)identifiers withError:(id *)error;
+- (id)requestSortedArrayOfPersonLocalIdentifiers:(id)identifiers withError:(id *)error;
+- (id)requestSuggestedContributionsForAssetsMetadata:(id)metadata error:(id *)error;
+- (id)requestSuggestedMePersonIdentifierWithError:(id *)error;
+- (id)requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers:(id)identifiers withOptions:(id)options error:(id *)error;
+- (id)requestSuggestedPersonsWithOptions:(id)options error:(id *)error;
+- (id)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)identifiers momentLocalIdentifiers:(id)localIdentifiers options:(id)options error:(id *)error;
+- (id)requestSuggestionInfosWithOptions:(id)options error:(id *)error;
+- (id)requestSummaryCurationForHighlightLocalIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)identifiers error:(id *)error;
+- (id)requestTrendsByIdentifierWithCadence:(id)cadence forYear:(unint64_t)year error:(id *)error;
+- (id)requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier:(id)identifier error:(id *)error;
+- (id)requestUpNextMemoryLocalIdentifiersWithOptions:(id)options error:(id *)error;
+- (id)requestUtilityAssetInformationWithError:(id *)error;
+- (id)requestUtilityAssetLocalIdentifiersWithError:(id *)error;
+- (id)runCurationWithItems:(id)items options:(id)options error:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (id)testService;
 - (id)wallpaperService;
 - (id)xpcConnection;
 - (int)photoanalysisdPid;
-- (int64_t)suggestedPersonsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 completion:(id)a6;
-- (int64_t)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)a3 forceUpdate:(BOOL)a4 completion:(id)a5;
-- (void)_resetServicesIncludingConnection:(BOOL)a3;
-- (void)_setupLegacyServiceInterface:(id)a3;
-- (void)_setupServiceProviderInterface:(id)a3;
+- (int64_t)suggestedPersonsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions completion:(id)completion;
+- (int64_t)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)identifiers forceUpdate:(BOOL)update completion:(id)completion;
+- (void)_resetServicesIncludingConnection:(BOOL)connection;
+- (void)_setupLegacyServiceInterface:(id)interface;
+- (void)_setupServiceProviderInterface:(id)interface;
 - (void)_setupServices;
 - (void)_setupXPCConnection;
-- (void)asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)a3 withOptions:(id)a4 reply:(id)a5;
-- (void)cacheCPAnalyticsPropertiesWithReply:(id)a3;
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4;
+- (void)asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)d withOptions:(id)options reply:(id)reply;
+- (void)cacheCPAnalyticsPropertiesWithReply:(id)reply;
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply;
 - (void)dealloc;
-- (void)dispatchOnQueue:(id)a3 blockWithoutBoost:(id)a4;
-- (void)exportWallpaperForAssets:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)generateMemoriesWithOptions:(id)a3 reply:(id)a4;
-- (void)generateSuggestionsWithOptions:(id)a3 reply:(id)a4;
-- (void)notifyLibraryAvailableAtURLForMediaanalysisd:(id)a3;
-- (void)notifyLibraryAvailableAtURLForPhotoanalysisd:(id)a3;
-- (void)notifyWhenGraphReadyWithCoalescingIdentifier:(id)a3 reply:(id)a4;
-- (void)personPromoterAdvancedStatus:(id)a3;
-- (void)personPromoterStatus:(id)a3;
-- (void)recordFeatureUsageFromCounts:(id)a3 reply:(id)a4;
-- (void)reloadAlbumWidgetTimelineWithReply:(id)a3;
-- (void)reloadForYouWidgetTimelineWithReply:(id)a3;
-- (void)reloadWallpaperSuggestions:(id)a3 reply:(id)a4;
-- (void)requestCacheSongSourceWithOptions:(id)a3 reply:(id)a4;
-- (void)requestClearMusicCacheWithOptions:(id)a3 reply:(id)a4;
-- (void)requestExternalAssetRelevanceProcessingWithReply:(id)a3;
-- (void)requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 reply:(id)a4;
-- (void)requestFlexMusicCurationDebugInformationForSongWithUID:(id)a3 reply:(id)a4;
-- (void)requestFlexMusicCurationForAssetCollectionLocalIdentifier:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestFlexMusicCurationForAssetLocalIdentifiers:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestFlexMusicCurationWithOptions:(id)a3 reply:(id)a4;
-- (void)requestGenerateQuestionsWithOptions:(id)a3 reply:(id)a4;
-- (void)requestGraphModelResultWithOptions:(id)a3 progress:(id)a4 reply:(id)a5;
-- (void)requestGraphRebuildFractionCompletedWithReply:(id)a3;
-- (void)requestHighlightEstimatesWithReply:(id)a3;
-- (void)requestMaestroSongsWithOptions:(id)a3 reply:(id)a4;
-- (void)requestModelInference:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestMusicCacheStatusWithReply:(id)a3;
-- (void)requestMusicCatalogAdamIDsForPurchasedSongID:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 reply:(id)a4;
-- (void)requestMusicCurationDebugInformationForSongWithAdamID:(id)a3 reply:(id)a4;
-- (void)requestMusicCurationForAssetCollectionLocalIdentifier:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestMusicCurationForAssetLocalIdentifiers:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestMusicCurationWithOptions:(id)a3 reply:(id)a4;
-- (void)requestOnDemandTasksWithOptions:(id)a3 reply:(id)a4;
-- (void)requestPeopleForWallpaperSuggestionsWithOptions:(id)a3 reply:(id)a4;
-- (void)requestPrecachingOfAudioDataForAdamIDs:(id)a3 reply:(id)a4;
-- (void)requestRecentlyUsedSongsWithOptions:(id)a3 reply:(id)a4;
-- (void)requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply:(id)a3;
-- (void)requestRunPFLWithAttachments:(id)a3 recipeUserInfo:(id)a4 resultBlock:(id)a5;
-- (void)requestRunShadowEvaluationWithRecipe:(id)a3 models:(id)a4 trialDeploymentID:(id)a5 trialExperimentID:(id)a6 trialTreatmentID:(id)a7 resultBlock:(id)a8;
-- (void)requestSongsForAdamIDs:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)requestSyndicationProcessingWithOptions:(id)a3 reply:(id)a4;
-- (void)requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:(id)a3 reply:(id)a4;
-- (void)requestWallpaperProperties:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)runPerformanceTest:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)simulateMemoriesNotificationWithOptions:(id)a3 reply:(id)a4;
-- (void)warmupLegacyStorytellingWorkerForDuration:(double)a3 operationID:(id)a4 reply:(id)a5;
-- (void)writeQALog:(id)a3;
+- (void)dispatchOnQueue:(id)queue blockWithoutBoost:(id)boost;
+- (void)exportWallpaperForAssets:(id)assets options:(id)options reply:(id)reply;
+- (void)generateMemoriesWithOptions:(id)options reply:(id)reply;
+- (void)generateSuggestionsWithOptions:(id)options reply:(id)reply;
+- (void)notifyLibraryAvailableAtURLForMediaanalysisd:(id)mediaanalysisd;
+- (void)notifyLibraryAvailableAtURLForPhotoanalysisd:(id)photoanalysisd;
+- (void)notifyWhenGraphReadyWithCoalescingIdentifier:(id)identifier reply:(id)reply;
+- (void)personPromoterAdvancedStatus:(id)status;
+- (void)personPromoterStatus:(id)status;
+- (void)recordFeatureUsageFromCounts:(id)counts reply:(id)reply;
+- (void)reloadAlbumWidgetTimelineWithReply:(id)reply;
+- (void)reloadForYouWidgetTimelineWithReply:(id)reply;
+- (void)reloadWallpaperSuggestions:(id)suggestions reply:(id)reply;
+- (void)requestCacheSongSourceWithOptions:(id)options reply:(id)reply;
+- (void)requestClearMusicCacheWithOptions:(id)options reply:(id)reply;
+- (void)requestExternalAssetRelevanceProcessingWithReply:(id)reply;
+- (void)requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier reply:(id)reply;
+- (void)requestFlexMusicCurationDebugInformationForSongWithUID:(id)d reply:(id)reply;
+- (void)requestFlexMusicCurationForAssetCollectionLocalIdentifier:(id)identifier options:(id)options reply:(id)reply;
+- (void)requestFlexMusicCurationForAssetLocalIdentifiers:(id)identifiers options:(id)options reply:(id)reply;
+- (void)requestFlexMusicCurationWithOptions:(id)options reply:(id)reply;
+- (void)requestGenerateQuestionsWithOptions:(id)options reply:(id)reply;
+- (void)requestGraphModelResultWithOptions:(id)options progress:(id)progress reply:(id)reply;
+- (void)requestGraphRebuildFractionCompletedWithReply:(id)reply;
+- (void)requestHighlightEstimatesWithReply:(id)reply;
+- (void)requestMaestroSongsWithOptions:(id)options reply:(id)reply;
+- (void)requestModelInference:(id)inference options:(id)options reply:(id)reply;
+- (void)requestMusicCacheStatusWithReply:(id)reply;
+- (void)requestMusicCatalogAdamIDsForPurchasedSongID:(id)d options:(id)options reply:(id)reply;
+- (void)requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier reply:(id)reply;
+- (void)requestMusicCurationDebugInformationForSongWithAdamID:(id)d reply:(id)reply;
+- (void)requestMusicCurationForAssetCollectionLocalIdentifier:(id)identifier options:(id)options reply:(id)reply;
+- (void)requestMusicCurationForAssetLocalIdentifiers:(id)identifiers options:(id)options reply:(id)reply;
+- (void)requestMusicCurationWithOptions:(id)options reply:(id)reply;
+- (void)requestOnDemandTasksWithOptions:(id)options reply:(id)reply;
+- (void)requestPeopleForWallpaperSuggestionsWithOptions:(id)options reply:(id)reply;
+- (void)requestPrecachingOfAudioDataForAdamIDs:(id)ds reply:(id)reply;
+- (void)requestRecentlyUsedSongsWithOptions:(id)options reply:(id)reply;
+- (void)requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply:(id)reply;
+- (void)requestRunPFLWithAttachments:(id)attachments recipeUserInfo:(id)info resultBlock:(id)block;
+- (void)requestRunShadowEvaluationWithRecipe:(id)recipe models:(id)models trialDeploymentID:(id)d trialExperimentID:(id)iD trialTreatmentID:(id)treatmentID resultBlock:(id)block;
+- (void)requestSongsForAdamIDs:(id)ds options:(id)options reply:(id)reply;
+- (void)requestSyndicationProcessingWithOptions:(id)options reply:(id)reply;
+- (void)requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:(id)ds reply:(id)reply;
+- (void)requestWallpaperProperties:(id)properties options:(id)options reply:(id)reply;
+- (void)runPerformanceTest:(id)test options:(id)options reply:(id)reply;
+- (void)simulateMemoriesNotificationWithOptions:(id)options reply:(id)reply;
+- (void)warmupLegacyStorytellingWorkerForDuration:(double)duration operationID:(id)d reply:(id)reply;
+- (void)writeQALog:(id)log;
 @end
 
 @implementation PLPhotoAnalysisServiceClient
@@ -157,7 +157,7 @@
 - (id)momentGraphService
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   v4 = self->_momentGraphService;
   os_unfair_lock_unlock(&self->_connectionLock);
 
@@ -185,9 +185,9 @@
   return xpcConnection;
 }
 
-- (id)requestOnDemandFaceCropsForFaceLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestOnDemandFaceCropsForFaceLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -206,7 +206,7 @@
   v12[3] = __Block_byref_object_copy__17777;
   v12[4] = __Block_byref_object_dispose__17778;
   v13 = 0;
-  v6 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __94__PLPhotoAnalysisServiceClient_Vision__requestOnDemandFaceCropsForFaceLocalIdentifiers_error___block_invoke;
@@ -219,7 +219,7 @@
   v10[3] = &unk_1E75773E0;
   v10[4] = &v16;
   v10[5] = v12;
-  [v7 requestOnDemandFaceCropsForFaceLocalIdentifiers:v5 context:v6 reply:v10];
+  [v7 requestOnDemandFaceCropsForFaceLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v10];
 
   v8 = v17[5];
   _Block_object_dispose(v12, 8);
@@ -244,19 +244,19 @@ void __94__PLPhotoAnalysisServiceClient_Vision__requestOnDemandFaceCropsForFaceL
   *(v9 + 40) = v6;
 }
 
-- (BOOL)rebuildPersonsWithOptions:(id)a3 error:(id *)a4
+- (BOOL)rebuildPersonsWithOptions:(id)options error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
-  v8 = [v7 mutableCopy];
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  dictionary = [requestContextDictionary mutableCopy];
 
-  if (!v8)
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v8 addEntriesFromDictionary:v6];
+  [dictionary addEntriesFromDictionary:optionsCopy];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -267,7 +267,7 @@ void __94__PLPhotoAnalysisServiceClient_Vision__requestOnDemandFaceCropsForFaceL
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v9 = [v6 objectForKeyedSubscript:@"personLocalIdentifier"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"personLocalIdentifier"];
   v10 = v9;
   if (v9)
   {
@@ -281,7 +281,7 @@ void __94__PLPhotoAnalysisServiceClient_Vision__requestOnDemandFaceCropsForFaceL
   }
 
   v12 = dispatch_block_create(0, &__block_literal_global_153);
-  v13 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__PLPhotoAnalysisServiceClient_Vision__rebuildPersonsWithOptions_error___block_invoke_3;
@@ -290,13 +290,13 @@ void __94__PLPhotoAnalysisServiceClient_Vision__requestOnDemandFaceCropsForFaceL
   v20 = &v25;
   v14 = v12;
   v18 = v14;
-  [PLMediaAnalysisServiceRequestAdapter requestRebuildPersonsWithLocalIdentifiers:v11 photoLibraryURL:v13 progressHandler:&__block_literal_global_155 completionHandler:v17];
+  [PLMediaAnalysisServiceRequestAdapter requestRebuildPersonsWithLocalIdentifiers:v11 photoLibraryURL:libraryURL progressHandler:&__block_literal_global_155 completionHandler:v17];
 
   dispatch_block_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   v15 = *(v22 + 24);
-  if (a4 && (v22[3] & 1) == 0)
+  if (error && (v22[3] & 1) == 0)
   {
-    *a4 = v26[5];
+    *error = v26[5];
     v15 = *(v22 + 24);
   }
 
@@ -314,9 +314,9 @@ void __72__PLPhotoAnalysisServiceClient_Vision__rebuildPersonsWithOptions_error_
   (*(a1[4] + 16))();
 }
 
-- (id)faceCandidatesForKeyFaceForPersonsWithLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)faceCandidatesForKeyFaceForPersonsWithLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -330,7 +330,7 @@ void __72__PLPhotoAnalysisServiceClient_Vision__rebuildPersonsWithOptions_error_
   v21 = __Block_byref_object_dispose__17778;
   v22 = 0;
   v7 = dispatch_block_create(0, &__block_literal_global_144_17784);
-  v8 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__PLPhotoAnalysisServiceClient_Vision__faceCandidatesForKeyFaceForPersonsWithLocalIdentifiers_error___block_invoke_3;
@@ -339,13 +339,13 @@ void __72__PLPhotoAnalysisServiceClient_Vision__rebuildPersonsWithOptions_error_
   v16 = &v23;
   v9 = v7;
   v14 = v9;
-  [PLMediaAnalysisServiceRequestAdapter requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:v6 photoLibraryURL:v8 progessHandler:&__block_literal_global_146 completionHandler:v13];
+  [PLMediaAnalysisServiceRequestAdapter requestFaceCandidatesforKeyFaceForPersonsWithLocalIdentifiers:identifiersCopy photoLibraryURL:libraryURL progessHandler:&__block_literal_global_146 completionHandler:v13];
 
   dispatch_block_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v24[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v18[5];
+    *error = v18[5];
     v10 = v24[5];
   }
 
@@ -370,9 +370,9 @@ void __101__PLPhotoAnalysisServiceClient_Vision__faceCandidatesForKeyFaceForPers
   (*(a1[4] + 16))();
 }
 
-- (void)personPromoterAdvancedStatus:(id)a3
+- (void)personPromoterAdvancedStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = dispatch_block_create(0, &__block_literal_global_140);
   v18 = 0;
   v19 = &v18;
@@ -386,7 +386,7 @@ void __101__PLPhotoAnalysisServiceClient_Vision__faceCandidatesForKeyFaceForPers
   v15 = __Block_byref_object_copy__17777;
   v16 = __Block_byref_object_dispose__17778;
   v17 = 0;
-  v6 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__PLPhotoAnalysisServiceClient_Vision__personPromoterAdvancedStatus___block_invoke_3;
@@ -395,12 +395,12 @@ void __101__PLPhotoAnalysisServiceClient_Vision__faceCandidatesForKeyFaceForPers
   v11 = &v12;
   v7 = v5;
   v9 = v7;
-  [PLMediaAnalysisServiceRequestAdapter requestPersonPromoterStatusWithAdvancedFlag:1 photoLibraryURL:v6 progressHandler:&__block_literal_global_142 completionHandler:v8];
+  [PLMediaAnalysisServiceRequestAdapter requestPersonPromoterStatusWithAdvancedFlag:1 photoLibraryURL:libraryURL progressHandler:&__block_literal_global_142 completionHandler:v8];
 
   dispatch_block_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (v4)
+  if (statusCopy)
   {
-    v4[2](v4, v19[5], v13[5]);
+    statusCopy[2](statusCopy, v19[5], v13[5]);
   }
 
   _Block_object_dispose(&v12, 8);
@@ -424,9 +424,9 @@ void __69__PLPhotoAnalysisServiceClient_Vision__personPromoterAdvancedStatus___b
   (*(a1[4] + 16))();
 }
 
-- (void)personPromoterStatus:(id)a3
+- (void)personPromoterStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = dispatch_block_create(0, &__block_literal_global_136_17788);
   v18 = 0;
   v19 = &v18;
@@ -440,7 +440,7 @@ void __69__PLPhotoAnalysisServiceClient_Vision__personPromoterAdvancedStatus___b
   v15 = __Block_byref_object_copy__17777;
   v16 = __Block_byref_object_dispose__17778;
   v17 = 0;
-  v6 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__PLPhotoAnalysisServiceClient_Vision__personPromoterStatus___block_invoke_3;
@@ -449,12 +449,12 @@ void __69__PLPhotoAnalysisServiceClient_Vision__personPromoterAdvancedStatus___b
   v11 = &v12;
   v7 = v5;
   v9 = v7;
-  [PLMediaAnalysisServiceRequestAdapter requestPersonPromoterStatusWithAdvancedFlag:0 photoLibraryURL:v6 progressHandler:&__block_literal_global_138 completionHandler:v8];
+  [PLMediaAnalysisServiceRequestAdapter requestPersonPromoterStatusWithAdvancedFlag:0 photoLibraryURL:libraryURL progressHandler:&__block_literal_global_138 completionHandler:v8];
 
   dispatch_block_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (v4)
+  if (statusCopy)
   {
-    v4[2](v4, v19[5], v13[5]);
+    statusCopy[2](statusCopy, v19[5], v13[5]);
   }
 
   _Block_object_dispose(&v12, 8);
@@ -478,7 +478,7 @@ void __61__PLPhotoAnalysisServiceClient_Vision__personPromoterStatus___block_inv
   (*(a1[4] + 16))();
 }
 
-- (id)differencesBetweenClustersInClusterCacheAndLibrary:(id *)a3
+- (id)differencesBetweenClustersInClusterCacheAndLibrary:(id *)library
 {
   v21 = 0;
   v22 = &v21;
@@ -493,7 +493,7 @@ void __61__PLPhotoAnalysisServiceClient_Vision__personPromoterStatus___block_inv
   v19 = __Block_byref_object_dispose__17778;
   v20 = 0;
   v5 = dispatch_block_create(0, &__block_literal_global_131);
-  v6 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__PLPhotoAnalysisServiceClient_Vision__differencesBetweenClustersInClusterCacheAndLibrary___block_invoke_3;
@@ -502,13 +502,13 @@ void __61__PLPhotoAnalysisServiceClient_Vision__personPromoterStatus___block_inv
   v14 = &v15;
   v7 = v5;
   v12 = v7;
-  [PLMediaAnalysisServiceRequestAdapter requestClusterCacheValidationWithPhotoLibraryURL:v6 progressHandler:&__block_literal_global_133 completionHandler:v11];
+  [PLMediaAnalysisServiceRequestAdapter requestClusterCacheValidationWithPhotoLibraryURL:libraryURL progressHandler:&__block_literal_global_133 completionHandler:v11];
 
   dispatch_block_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v22[5];
-  if (a3 && !v8)
+  if (library && !v8)
   {
-    *a3 = v16[5];
+    *library = v16[5];
     v8 = v22[5];
   }
 
@@ -537,9 +537,9 @@ void __91__PLPhotoAnalysisServiceClient_Vision__differencesBetweenClustersInClus
   (*(a1[4] + 16))();
 }
 
-- (BOOL)reclusterFacesWithOptions:(id)a3 error:(id *)a4
+- (BOOL)reclusterFacesWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -551,7 +551,7 @@ void __91__PLPhotoAnalysisServiceClient_Vision__differencesBetweenClustersInClus
   v18 = 0x2020000000;
   v19 = 0;
   v7 = dispatch_block_create(0, &__block_literal_global_127);
-  v8 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__PLPhotoAnalysisServiceClient_Vision__reclusterFacesWithOptions_error___block_invoke_3;
@@ -560,13 +560,13 @@ void __91__PLPhotoAnalysisServiceClient_Vision__differencesBetweenClustersInClus
   v15 = &v20;
   v9 = v7;
   v13 = v9;
-  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClusteringStateWithPhotoLibraryURL:v8 progressHandler:&__block_literal_global_129 completionHandler:v12];
+  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClusteringStateWithPhotoLibraryURL:libraryURL progressHandler:&__block_literal_global_129 completionHandler:v12];
 
   dispatch_block_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = *(v17 + 24);
-  if (a4 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v10 = *(v17 + 24);
   }
 
@@ -584,7 +584,7 @@ void __72__PLPhotoAnalysisServiceClient_Vision__reclusterFacesWithOptions_error_
   (*(a1[4] + 16))();
 }
 
-- (BOOL)resetFaceClassificationModel:(id *)a3
+- (BOOL)resetFaceClassificationModel:(id *)model
 {
   v18 = 0;
   v19 = &v18;
@@ -597,7 +597,7 @@ void __72__PLPhotoAnalysisServiceClient_Vision__reclusterFacesWithOptions_error_
   v16 = 0x2020000000;
   v17 = 0;
   v5 = dispatch_block_create(0, &__block_literal_global_123);
-  v6 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__PLPhotoAnalysisServiceClient_Vision__resetFaceClassificationModel___block_invoke_3;
@@ -606,13 +606,13 @@ void __72__PLPhotoAnalysisServiceClient_Vision__reclusterFacesWithOptions_error_
   v13 = &v18;
   v7 = v5;
   v11 = v7;
-  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClassificationModelForPhotoLibraryURL:v6 progressHandler:&__block_literal_global_125 completionHandler:v10];
+  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClassificationModelForPhotoLibraryURL:libraryURL progressHandler:&__block_literal_global_125 completionHandler:v10];
 
   dispatch_block_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (model && (v15[3] & 1) == 0)
   {
-    *a3 = v19[5];
+    *model = v19[5];
     v8 = *(v15 + 24);
   }
 
@@ -630,7 +630,7 @@ void __69__PLPhotoAnalysisServiceClient_Vision__resetFaceClassificationModel___b
   (*(a1[4] + 16))();
 }
 
-- (BOOL)resetFaceClusteringState:(id *)a3
+- (BOOL)resetFaceClusteringState:(id *)state
 {
   v18 = 0;
   v19 = &v18;
@@ -643,7 +643,7 @@ void __69__PLPhotoAnalysisServiceClient_Vision__resetFaceClassificationModel___b
   v16 = 0x2020000000;
   v17 = 0;
   v5 = dispatch_block_create(0, &__block_literal_global_119);
-  v6 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PLPhotoAnalysisServiceClient_Vision__resetFaceClusteringState___block_invoke_3;
@@ -652,13 +652,13 @@ void __69__PLPhotoAnalysisServiceClient_Vision__resetFaceClassificationModel___b
   v13 = &v18;
   v7 = v5;
   v11 = v7;
-  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClusteringStateWithPhotoLibraryURL:v6 progressHandler:&__block_literal_global_121_17790 completionHandler:v10];
+  [PLMediaAnalysisServiceRequestAdapter requestResetFaceClusteringStateWithPhotoLibraryURL:libraryURL progressHandler:&__block_literal_global_121_17790 completionHandler:v10];
 
   dispatch_block_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (state && (v15[3] & 1) == 0)
   {
-    *a3 = v19[5];
+    *state = v19[5];
     v8 = *(v15 + 24);
   }
 
@@ -676,24 +676,24 @@ void __65__PLPhotoAnalysisServiceClient_Vision__resetFaceClusteringState___block
   (*(a1[4] + 16))();
 }
 
-- (int64_t)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)a3 forceUpdate:(BOOL)a4 completion:(id)a5
+- (int64_t)updateKeyFacesOfPersonsWithLocalIdentifiers:(id)identifiers forceUpdate:(BOOL)update completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  updateCopy = update;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v9 = a3;
-  v10 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  identifiersCopy = identifiers;
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __107__PLPhotoAnalysisServiceClient_Vision__updateKeyFacesOfPersonsWithLocalIdentifiers_forceUpdate_completion___block_invoke_2;
   v14[3] = &unk_1E7568468;
-  v15 = v8;
+  v15 = completionCopy;
   v16 = &v17;
-  v11 = v8;
-  v12 = [PLMediaAnalysisServiceRequestAdapter requestUpdateKeyFacesOfPersonsWithLocalIdentifiers:v9 forceUpdate:v5 photoLibraryURL:v10 progessHandler:&__block_literal_global_115 completionHandler:v14];
+  v11 = completionCopy;
+  v12 = [PLMediaAnalysisServiceRequestAdapter requestUpdateKeyFacesOfPersonsWithLocalIdentifiers:identifiersCopy forceUpdate:updateCopy photoLibraryURL:libraryURL progessHandler:&__block_literal_global_115 completionHandler:v14];
 
   v18[3] = v12;
   _Block_object_dispose(&v17, 8);
@@ -701,45 +701,45 @@ void __65__PLPhotoAnalysisServiceClient_Vision__resetFaceClusteringState___block
   return v12;
 }
 
-- (int64_t)suggestedPersonsForPersonWithLocalIdentifier:(id)a3 toBeConfirmedPersonSuggestions:(id)a4 toBeRejectedPersonSuggestions:(id)a5 completion:(id)a6
+- (int64_t)suggestedPersonsForPersonWithLocalIdentifier:(id)identifier toBeConfirmedPersonSuggestions:(id)suggestions toBeRejectedPersonSuggestions:(id)personSuggestions completion:(id)completion
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v13 valueForKey:@"suggestionDictionaryRepresentation"];
+  completionCopy = completion;
+  personSuggestionsCopy = personSuggestions;
+  suggestionsCopy = suggestions;
+  identifierCopy = identifier;
+  v15 = [suggestionsCopy valueForKey:@"suggestionDictionaryRepresentation"];
   v16 = [v15 count];
-  v17 = [v13 count];
+  v17 = [suggestionsCopy count];
 
   if (v16 != v17)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient+Vision.m" lineNumber:90 description:@"dictionary representation failure for confirmed face suggestions"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient+Vision.m" lineNumber:90 description:@"dictionary representation failure for confirmed face suggestions"];
   }
 
-  v18 = [v12 valueForKey:@"suggestionDictionaryRepresentation"];
+  v18 = [personSuggestionsCopy valueForKey:@"suggestionDictionaryRepresentation"];
   v19 = [v18 count];
-  v20 = [v12 count];
+  v20 = [personSuggestionsCopy count];
 
   if (v19 != v20)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient+Vision.m" lineNumber:93 description:@"dictionary representation failure for rejected face suggestions"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient+Vision.m" lineNumber:93 description:@"dictionary representation failure for rejected face suggestions"];
   }
 
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v21 = [(PLPhotoAnalysisServiceClient *)self libraryURL];
+  libraryURL = [(PLPhotoAnalysisServiceClient *)self libraryURL];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLocalIdentifier_toBeConfirmedPersonSuggestions_toBeRejectedPersonSuggestions_completion___block_invoke_2;
   v27[3] = &unk_1E7568440;
-  v28 = v11;
+  v28 = completionCopy;
   v29 = &v30;
-  v22 = v11;
-  v23 = [PLMediaAnalysisServiceRequestAdapter requestSuggestedPersonsForPersonWithLocalIdentifier:v14 toBeConfirmedPersonSuggestions:v15 toBeRejectedPersonSuggestions:v18 photoLibraryURL:v21 progessHandler:&__block_literal_global_17795 completionHandler:v27];
+  v22 = completionCopy;
+  v23 = [PLMediaAnalysisServiceRequestAdapter requestSuggestedPersonsForPersonWithLocalIdentifier:identifierCopy toBeConfirmedPersonSuggestions:v15 toBeRejectedPersonSuggestions:v18 photoLibraryURL:libraryURL progessHandler:&__block_literal_global_17795 completionHandler:v27];
 
   v31[3] = v23;
   _Block_object_dispose(&v30, 8);
@@ -801,7 +801,7 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
 - (id)legacyService
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   v4 = self->_legacyService;
   os_unfair_lock_unlock(&self->_connectionLock);
   if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -813,27 +813,27 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   return v4;
 }
 
-- (void)dispatchOnQueue:(id)a3 blockWithoutBoost:(id)a4
+- (void)dispatchOnQueue:(id)queue blockWithoutBoost:(id)boost
 {
-  v5 = a3;
-  v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_DETACHED, QOS_CLASS_BACKGROUND, 0, a4);
-  dispatch_async(v5, v6);
+  queueCopy = queue;
+  v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_DETACHED, QOS_CLASS_BACKGROUND, 0, boost);
+  dispatch_async(queueCopy, v6);
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self legacyService];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  legacyService = [(PLPhotoAnalysisServiceClient *)self legacyService];
+  v6 = [legacyService remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self legacyService];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  legacyService = [(PLPhotoAnalysisServiceClient *)self legacyService];
+  v6 = [legacyService synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -851,15 +851,15 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
 - (id)xpcConnection
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   os_unfair_lock_unlock(&self->_connectionLock);
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+  if (!_xpcConnection && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     *v5 = 0;
     _os_log_fault_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "The XPC connection to PAD is unexpectedly nil", v5, 2u);
   }
 
-  return v3;
+  return _xpcConnection;
 }
 
 - (void)_setupServices
@@ -944,21 +944,21 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   self->_wallpaperService = v38;
 }
 
-- (void)_setupServiceProviderInterface:(id)a3
+- (void)_setupServiceProviderInterface:(id)interface
 {
   v4 = MEMORY[0x1E696B0D0];
-  v20 = a3;
+  interfaceCopy = interface;
   v5 = [v4 interfaceWithProtocol:&unk_1F109F2A8];
   legacyServiceInterface = self->_legacyServiceInterface;
   self->_legacyServiceInterface = v5;
 
   [(PLPhotoAnalysisServiceClient *)self _setupLegacyServiceInterface:self->_legacyServiceInterface];
-  [v20 setInterface:self->_legacyServiceInterface forSelector:sel_legacyStorytellingServiceAt_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setInterface:self->_legacyServiceInterface forSelector:sel_legacyStorytellingServiceAt_reply_ argumentIndex:0 ofReply:1];
   v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F308];
   photoLibraryServiceInterface = self->_photoLibraryServiceInterface;
   self->_photoLibraryServiceInterface = v7;
 
-  [v20 setInterface:self->_photoLibraryServiceInterface forSelector:sel_photoLibraryServiceAt_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setInterface:self->_photoLibraryServiceInterface forSelector:sel_photoLibraryServiceAt_reply_ argumentIndex:0 ofReply:1];
   v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F368];
   momentGraphServiceInterface = self->_momentGraphServiceInterface;
   self->_momentGraphServiceInterface = v9;
@@ -970,39 +970,39 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   [v13 addObject:objc_opt_class()];
   [(NSXPCInterface *)self->_momentGraphServiceInterface setClasses:v13 forSelector:sel_requestAssetSearchKeywordsForAssetCollectionUUIDs_ofType_operationID_reply_ argumentIndex:0 ofReply:1];
 
-  [v20 setInterface:self->_momentGraphServiceInterface forSelector:sel_momentGraphServiceAt_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setInterface:self->_momentGraphServiceInterface forSelector:sel_momentGraphServiceAt_reply_ argumentIndex:0 ofReply:1];
   v14 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F3C8];
   testServiceInterface = self->_testServiceInterface;
   self->_testServiceInterface = v14;
 
-  [v20 setInterface:self->_testServiceInterface forSelector:sel_testServiceAt_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setInterface:self->_testServiceInterface forSelector:sel_testServiceAt_reply_ argumentIndex:0 ofReply:1];
   v16 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F428];
   executiveServiceInterface = self->_executiveServiceInterface;
   self->_executiveServiceInterface = v16;
 
-  [v20 setInterface:self->_executiveServiceInterface forSelector:sel_executiveServiceAt_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setInterface:self->_executiveServiceInterface forSelector:sel_executiveServiceAt_reply_ argumentIndex:0 ofReply:1];
   v18 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F109F488];
   wallpaperServiceInterface = self->_wallpaperServiceInterface;
   self->_wallpaperServiceInterface = v18;
 
-  [v20 setInterface:self->_wallpaperServiceInterface forSelector:sel_wallpaperServiceAt_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setInterface:self->_wallpaperServiceInterface forSelector:sel_wallpaperServiceAt_reply_ argumentIndex:0 ofReply:1];
 }
 
-- (void)_setupLegacyServiceInterface:(id)a3
+- (void)_setupLegacyServiceInterface:(id)interface
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFA8];
-  v4 = a3;
-  v5 = [v4 classesForSelector:sel_cancelOperationsWithIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
+  interfaceCopy = interface;
+  v5 = [interfaceCopy classesForSelector:sel_cancelOperationsWithIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
   v6 = [v3 setWithSet:v5];
 
   v33[0] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   [v6 addObjectsFromArray:v7];
 
-  [v4 setClasses:v6 forSelector:sel_cancelOperationsWithIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v6 forSelector:sel_cancelOperationsWithIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [v4 classesForSelector:sel_requestAvailableSuggestionTypeInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
+  v9 = [interfaceCopy classesForSelector:sel_requestAvailableSuggestionTypeInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
   v10 = [v8 setWithSet:v9];
 
   v32[0] = objc_opt_class();
@@ -1011,9 +1011,9 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
   [v10 addObjectsFromArray:v11];
 
-  [v4 setClasses:v10 forSelector:sel_requestAvailableSuggestionTypeInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v10 forSelector:sel_requestAvailableSuggestionTypeInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
   v12 = MEMORY[0x1E695DFA8];
-  v13 = [v4 classesForSelector:sel_requestSuggestionInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
+  v13 = [interfaceCopy classesForSelector:sel_requestSuggestionInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
   v14 = [v12 setWithSet:v13];
 
   v31[0] = objc_opt_class();
@@ -1022,9 +1022,9 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:3];
   [v14 addObjectsFromArray:v15];
 
-  [v4 setClasses:v14 forSelector:sel_requestSuggestionInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v14 forSelector:sel_requestSuggestionInfosWithOptions_context_reply_ argumentIndex:0 ofReply:1];
   v16 = MEMORY[0x1E695DFA8];
-  v17 = [v4 classesForSelector:sel_requestGraphInferencesSummaryWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
+  v17 = [interfaceCopy classesForSelector:sel_requestGraphInferencesSummaryWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
   v18 = [v16 setWithSet:v17];
 
   v30[0] = objc_opt_class();
@@ -1035,9 +1035,9 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:5];
   [v18 addObjectsFromArray:v19];
 
-  [v4 setClasses:v18 forSelector:sel_requestGraphInferencesSummaryWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v18 forSelector:sel_requestGraphInferencesSummaryWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
   v20 = MEMORY[0x1E695DFA8];
-  v21 = [v4 classesForSelector:sel_requestGraphInferencesSummaryWithMomentLocalIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
+  v21 = [interfaceCopy classesForSelector:sel_requestGraphInferencesSummaryWithMomentLocalIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
   v22 = [v20 setWithSet:v21];
 
   v29[0] = objc_opt_class();
@@ -1048,9 +1048,9 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:5];
   [v22 addObjectsFromArray:v23];
 
-  [v4 setClasses:v22 forSelector:sel_requestGraphInferencesSummaryWithMomentLocalIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v22 forSelector:sel_requestGraphInferencesSummaryWithMomentLocalIdentifiers_context_reply_ argumentIndex:0 ofReply:1];
   v24 = MEMORY[0x1E695DFA8];
-  v25 = [v4 classesForSelector:sel_requestGraphMomentLocalIdentifiersWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
+  v25 = [interfaceCopy classesForSelector:sel_requestGraphMomentLocalIdentifiersWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
   v26 = [v24 setWithSet:v25];
 
   v28[0] = objc_opt_class();
@@ -1058,7 +1058,7 @@ void __157__PLPhotoAnalysisServiceClient_Vision__suggestedPersonsForPersonWithLo
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   [v26 addObjectsFromArray:v27];
 
-  [v4 setClasses:v26 forSelector:sel_requestGraphMomentLocalIdentifiersWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v26 forSelector:sel_requestGraphMomentLocalIdentifiersWithDateInterval_context_reply_ argumentIndex:0 ofReply:1];
 }
 
 - (void)_setupXPCConnection
@@ -1115,11 +1115,11 @@ void __51__PLPhotoAnalysisServiceClient__setupXPCConnection__block_invoke_85(uin
   [WeakRetained _resetServicesIncludingConnection:0];
 }
 
-- (void)_resetServicesIncludingConnection:(BOOL)a3
+- (void)_resetServicesIncludingConnection:(BOOL)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_connectionLock);
-  if (v3)
+  if (connectionCopy)
   {
     xpcConnection = self->_xpcConnection;
     self->_xpcConnection = 0;
@@ -1146,21 +1146,21 @@ void __51__PLPhotoAnalysisServiceClient__setupXPCConnection__block_invoke_85(uin
   os_unfair_lock_unlock(&self->_connectionLock);
 }
 
-- (void)writeQALog:(id)a3
+- (void)writeQALog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v5 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:&__block_literal_global_79642];
-  [v5 writeQALog:v4];
+  [v5 writeQALog:logCopy];
 }
 
-- (void)notifyLibraryAvailableAtURLForMediaanalysisd:(id)a3
+- (void)notifyLibraryAvailableAtURLForMediaanalysisd:(id)mediaanalysisd
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  mediaanalysisdCopy = mediaanalysisd;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = mediaanalysisdCopy;
     _os_log_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Notifying mediaanalysisd of photo library available at %@", &v7, 0xCu);
   }
 
@@ -1169,8 +1169,8 @@ void __51__PLPhotoAnalysisServiceClient__setupXPCConnection__block_invoke_85(uin
   [v4 setRemoteObjectInterface:v5];
 
   [v4 resume];
-  v6 = [v4 _unboostingRemoteObjectProxy];
-  [v6 notifyLibraryAvailableAtURL:v3];
+  _unboostingRemoteObjectProxy = [v4 _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy notifyLibraryAvailableAtURL:mediaanalysisdCopy];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     LOWORD(v7) = 0;
@@ -1180,50 +1180,50 @@ void __51__PLPhotoAnalysisServiceClient__setupXPCConnection__block_invoke_85(uin
   [v4 invalidate];
 }
 
-- (void)notifyLibraryAvailableAtURLForPhotoanalysisd:(id)a3
+- (void)notifyLibraryAvailableAtURLForPhotoanalysisd:(id)photoanalysisd
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  photoanalysisdCopy = photoanalysisd;
+  v10 = photoanalysisdCopy;
+  if (!photoanalysisdCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"libraryURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"libraryURL"}];
 
-    v5 = 0;
+    photoanalysisdCopy = 0;
   }
 
-  if (([v5 isEqual:self->_libraryURL] & 1) == 0)
+  if (([photoanalysisdCopy isEqual:self->_libraryURL] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"[libraryURL isEqual:_libraryURL]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"[libraryURL isEqual:_libraryURL]"}];
   }
 
-  v6 = [(PLPhotoAnalysisServiceClient *)self xpcConnection];
-  v7 = [v6 _unboostingRemoteObjectProxy];
-  [v7 notifyLibraryAvailableAtURL:v10];
+  xpcConnection = [(PLPhotoAnalysisServiceClient *)self xpcConnection];
+  _unboostingRemoteObjectProxy = [xpcConnection _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy notifyLibraryAvailableAtURL:v10];
 }
 
-- (void)cancelOperationsWithIdentifiers:(id)a3 reply:(id)a4
+- (void)cancelOperationsWithIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__PLPhotoAnalysisServiceClient_cancelOperationsWithIdentifiers_reply___block_invoke;
   v15[3] = &unk_1E7576050;
-  v8 = v7;
-  v16 = v6;
+  v8 = replyCopy;
+  v16 = identifiersCopy;
   v17 = v8;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__PLPhotoAnalysisServiceClient_cancelOperationsWithIdentifiers_reply___block_invoke_2;
   v13[3] = &unk_1E7572328;
   v14 = v8;
   v12 = v8;
-  [v10 cancelOperationsWithIdentifiers:v9 context:v11 reply:v13];
+  [v10 cancelOperationsWithIdentifiers:v9 context:requestContextDictionary reply:v13];
 }
 
 void __70__PLPhotoAnalysisServiceClient_cancelOperationsWithIdentifiers_reply___block_invoke(uint64_t a1, void *a2)
@@ -1278,7 +1278,7 @@ uint64_t __70__PLPhotoAnalysisServiceClient_cancelOperationsWithIdentifiers_repl
   return result;
 }
 
-- (id)dumpAnalysisStatusError:(id *)a3
+- (id)dumpAnalysisStatusError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1292,13 +1292,13 @@ uint64_t __70__PLPhotoAnalysisServiceClient_cancelOperationsWithIdentifiers_repl
   v14 = __Block_byref_object_copy__79662;
   v15 = __Block_byref_object_dispose__79663;
   v16 = 0;
-  v4 = [(PLPhotoAnalysisServiceClient *)self executiveService];
+  executiveService = [(PLPhotoAnalysisServiceClient *)self executiveService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__PLPhotoAnalysisServiceClient_dumpAnalysisStatusError___block_invoke;
   v10[3] = &unk_1E75773B8;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [executiveService synchronousRemoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__PLPhotoAnalysisServiceClient_dumpAnalysisStatusError___block_invoke_2;
@@ -1307,12 +1307,12 @@ uint64_t __70__PLPhotoAnalysisServiceClient_cancelOperationsWithIdentifiers_repl
   v9[5] = &v11;
   [v5 requestAnalysisStatusWithReply:v9];
 
-  if (a3)
+  if (error)
   {
     v6 = v18[5];
     if (v6)
     {
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -1336,10 +1336,10 @@ void __56__PLPhotoAnalysisServiceClient_dumpAnalysisStatusError___block_invoke_2
 
 - (int)photoanalysisdPid
 {
-  v2 = [(PLPhotoAnalysisServiceClient *)self xpcConnection];
-  v3 = [v2 processIdentifier];
+  xpcConnection = [(PLPhotoAnalysisServiceClient *)self xpcConnection];
+  processIdentifier = [xpcConnection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (void)dealloc
@@ -1350,31 +1350,31 @@ void __56__PLPhotoAnalysisServiceClient_dumpAnalysisStatusError___block_invoke_2
   [(PLPhotoAnalysisServiceClient *)&v3 dealloc];
 }
 
-- (PLPhotoAnalysisServiceClient)initWithLibraryURL:(id)a3
+- (PLPhotoAnalysisServiceClient)initWithLibraryURL:(id)l
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"libraryURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"libraryURL"}];
   }
 
-  v7 = [v6 path];
-  v8 = [v7 hasPrefix:@"/var/mobile/Media/PhotoData"];
+  path = [lCopy path];
+  v8 = [path hasPrefix:@"/var/mobile/Media/PhotoData"];
 
   if (v8)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"![libraryURL.path hasPrefix:@/var/mobile/Media/PhotoData]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"![libraryURL.path hasPrefix:@/var/mobile/Media/PhotoData]"}];
 
-    if (!v6)
+    if (!lCopy)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!v6)
+  else if (!lCopy)
   {
 LABEL_8:
 
@@ -1391,10 +1391,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v9->_libraryURL, a3);
+  objc_storeStrong(&v9->_libraryURL, l);
   v20 = @"PHPhotoAnalysisOptionPhotoLibraryURLKey";
-  v10 = [(NSURL *)self->_libraryURL absoluteString];
-  v21[0] = v10;
+  absoluteString = [(NSURL *)self->_libraryURL absoluteString];
+  v21[0] = absoluteString;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   cachedRequestContextDictionary = self->_cachedRequestContextDictionary;
   self->_cachedRequestContextDictionary = v11;
@@ -1412,8 +1412,8 @@ LABEL_9:
 
 - (PLPhotoAnalysisServiceClient)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:61 description:@"Invalid initialization"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoAnalysisServiceClient.m" lineNumber:61 description:@"Invalid initialization"];
 
   return 0;
 }
@@ -1421,7 +1421,7 @@ LABEL_9:
 - (id)wallpaperService
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   v4 = self->_wallpaperService;
   os_unfair_lock_unlock(&self->_connectionLock);
 
@@ -1431,7 +1431,7 @@ LABEL_9:
 - (id)executiveService
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   v4 = self->_executiveService;
   os_unfair_lock_unlock(&self->_connectionLock);
 
@@ -1441,7 +1441,7 @@ LABEL_9:
 - (id)testService
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   v4 = self->_testService;
   os_unfair_lock_unlock(&self->_connectionLock);
 
@@ -1451,22 +1451,22 @@ LABEL_9:
 - (id)photoLibraryService
 {
   os_unfair_lock_lock(&self->_connectionLock);
-  v3 = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
+  _xpcConnection = [(PLPhotoAnalysisServiceClient *)self _xpcConnection];
   v4 = self->_photoLibraryService;
   os_unfair_lock_unlock(&self->_connectionLock);
 
   return v4;
 }
 
-- (void)cacheCPAnalyticsPropertiesWithReply:(id)a3
+- (void)cacheCPAnalyticsPropertiesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PLPhotoAnalysisServiceClient_Job__cacheCPAnalyticsPropertiesWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1475,7 +1475,7 @@ LABEL_9:
   v9[3] = &unk_1E75774A8;
   v10 = v6;
   v8 = v6;
-  [v7 cacheCPAnalyticsPropertiesWithContext:v5 reply:v9];
+  [v7 cacheCPAnalyticsPropertiesWithContext:requestContextDictionary reply:v9];
 }
 
 uint64_t __73__PLPhotoAnalysisServiceClient_Job__cacheCPAnalyticsPropertiesWithReply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1500,16 +1500,16 @@ uint64_t __73__PLPhotoAnalysisServiceClient_Job__cacheCPAnalyticsPropertiesWithR
   return result;
 }
 
-- (void)recordFeatureUsageFromCounts:(id)a3 reply:(id)a4
+- (void)recordFeatureUsageFromCounts:(id)counts reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  countsCopy = counts;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__PLPhotoAnalysisServiceClient_Job__recordFeatureUsageFromCounts_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -1518,7 +1518,7 @@ uint64_t __73__PLPhotoAnalysisServiceClient_Job__cacheCPAnalyticsPropertiesWithR
   v12[3] = &unk_1E75774A8;
   v13 = v9;
   v11 = v9;
-  [v10 recordFeatureUsageFromCounts:v7 context:v8 reply:v12];
+  [v10 recordFeatureUsageFromCounts:countsCopy context:requestContextDictionary reply:v12];
 }
 
 uint64_t __72__PLPhotoAnalysisServiceClient_Job__recordFeatureUsageFromCounts_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1543,15 +1543,15 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Job__recordFeatureUsageFromCounts_re
   return result;
 }
 
-- (void)reloadAlbumWidgetTimelineWithReply:(id)a3
+- (void)reloadAlbumWidgetTimelineWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__PLPhotoAnalysisServiceClient_Job__reloadAlbumWidgetTimelineWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
   v7 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1560,7 +1560,7 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Job__recordFeatureUsageFromCounts_re
   v9[3] = &unk_1E75774A8;
   v10 = v6;
   v8 = v6;
-  [v7 reloadAlbumWidgetTimelineWithContext:v5 reply:v9];
+  [v7 reloadAlbumWidgetTimelineWithContext:requestContextDictionary reply:v9];
 }
 
 uint64_t __72__PLPhotoAnalysisServiceClient_Job__reloadAlbumWidgetTimelineWithReply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1585,15 +1585,15 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Job__reloadAlbumWidgetTimelineWithRe
   return result;
 }
 
-- (void)reloadForYouWidgetTimelineWithReply:(id)a3
+- (void)reloadForYouWidgetTimelineWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PLPhotoAnalysisServiceClient_Job__reloadForYouWidgetTimelineWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
   v7 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1602,7 +1602,7 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Job__reloadAlbumWidgetTimelineWithRe
   v9[3] = &unk_1E75774A8;
   v10 = v6;
   v8 = v6;
-  [v7 reloadForYouWidgetTimelineWithContext:v5 reply:v9];
+  [v7 reloadForYouWidgetTimelineWithContext:requestContextDictionary reply:v9];
 }
 
 uint64_t __73__PLPhotoAnalysisServiceClient_Job__reloadForYouWidgetTimelineWithReply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1627,16 +1627,16 @@ uint64_t __73__PLPhotoAnalysisServiceClient_Job__reloadForYouWidgetTimelineWithR
   return result;
 }
 
-- (void)warmupLegacyStorytellingWorkerForDuration:(double)a3 operationID:(id)a4 reply:(id)a5
+- (void)warmupLegacyStorytellingWorkerForDuration:(double)duration operationID:(id)d reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __99__PLPhotoAnalysisServiceClient_Graph__warmupLegacyStorytellingWorkerForDuration_operationID_reply___block_invoke;
   v15[3] = &unk_1E7577430;
-  v9 = v8;
+  v9 = replyCopy;
   v16 = v9;
-  v10 = a4;
+  dCopy = d;
   v11 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1644,7 +1644,7 @@ uint64_t __73__PLPhotoAnalysisServiceClient_Job__reloadForYouWidgetTimelineWithR
   v13[3] = &unk_1E7577430;
   v14 = v9;
   v12 = v9;
-  [v11 warmupLegacyStorytellingWorkerForDuration:v10 operationID:v13 reply:a3];
+  [v11 warmupLegacyStorytellingWorkerForDuration:dCopy operationID:v13 reply:duration];
 }
 
 uint64_t __99__PLPhotoAnalysisServiceClient_Graph__warmupLegacyStorytellingWorkerForDuration_operationID_reply___block_invoke(uint64_t a1)
@@ -1669,51 +1669,51 @@ uint64_t __99__PLPhotoAnalysisServiceClient_Graph__warmupLegacyStorytellingWorke
   return result;
 }
 
-- (void)requestGraphModelResultWithOptions:(id)a3 progress:(id)a4 reply:(id)a5
+- (void)requestGraphModelResultWithOptions:(id)options progress:(id)progress reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__PLPhotoAnalysisServiceClient_Graph__requestGraphModelResultWithOptions_progress_reply___block_invoke;
   v20[3] = &unk_1E7577430;
-  v9 = v8;
+  v9 = replyCopy;
   v21 = v9;
-  v10 = a4;
-  v11 = a3;
+  progressCopy = progress;
+  optionsCopy = options;
   v12 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v20];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
-  [v10 becomeCurrentWithPendingUnitCount:1];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  [progressCopy becomeCurrentWithPendingUnitCount:1];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __89__PLPhotoAnalysisServiceClient_Graph__requestGraphModelResultWithOptions_progress_reply___block_invoke_2;
   v18 = &unk_1E7577458;
   v19 = v9;
   v14 = v9;
-  [v12 requestGraphModelResultWithOptions:v11 context:v13 reply:&v15];
+  [v12 requestGraphModelResultWithOptions:optionsCopy context:requestContextDictionary reply:&v15];
 
-  [v10 resignCurrent];
+  [progressCopy resignCurrent];
 }
 
-- (void)runPerformanceTest:(id)a3 options:(id)a4 reply:(id)a5
+- (void)runPerformanceTest:(id)test options:(id)options reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__PLPhotoAnalysisServiceClient_Graph__runPerformanceTest_options_reply___block_invoke;
   v17[3] = &unk_1E7577430;
-  v9 = v8;
+  v9 = replyCopy;
   v18 = v9;
-  v10 = a4;
-  v11 = a3;
+  optionsCopy = options;
+  testCopy = test;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v17];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__PLPhotoAnalysisServiceClient_Graph__runPerformanceTest_options_reply___block_invoke_2;
   v15[3] = &unk_1E75774A8;
   v16 = v9;
   v14 = v9;
-  [v12 runPerformanceTest:v11 options:v10 context:v13 reply:v15];
+  [v12 runPerformanceTest:testCopy options:optionsCopy context:requestContextDictionary reply:v15];
 }
 
 uint64_t __72__PLPhotoAnalysisServiceClient_Graph__runPerformanceTest_options_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1738,7 +1738,7 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Graph__runPerformanceTest_options_re
   return result;
 }
 
-- (id)requestEnergyStatusWithError:(id *)a3
+- (id)requestEnergyStatusWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1758,20 +1758,20 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Graph__runPerformanceTest_options_re
   v12[3] = &unk_1E75773B8;
   v12[4] = &v19;
   v5 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v6 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PLPhotoAnalysisServiceClient_Graph__requestEnergyStatusWithError___block_invoke_2;
   v11[3] = &unk_1E7577790;
   v11[4] = &v13;
-  [v5 requestEnergyStatusWithContext:v6 reply:v11];
+  [v5 requestEnergyStatusWithContext:requestContextDictionary reply:v11];
 
   v7 = v20[5];
   v8 = v7;
-  if (v7 && a3)
+  if (v7 && error)
   {
     v8 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   v9 = v14[5];
@@ -1782,26 +1782,26 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Graph__runPerformanceTest_options_re
   return v9;
 }
 
-- (void)exportWallpaperForAssets:(id)a3 options:(id)a4 reply:(id)a5
+- (void)exportWallpaperForAssets:(id)assets options:(id)options reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __78__PLPhotoAnalysisServiceClient_Graph__exportWallpaperForAssets_options_reply___block_invoke;
   v17[3] = &unk_1E7577430;
-  v9 = v8;
+  v9 = replyCopy;
   v18 = v9;
-  v10 = a4;
-  v11 = a3;
+  optionsCopy = options;
+  assetsCopy = assets;
   v12 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__PLPhotoAnalysisServiceClient_Graph__exportWallpaperForAssets_options_reply___block_invoke_2;
   v15[3] = &unk_1E75774A8;
   v16 = v9;
   v14 = v9;
-  [v12 exportWallpaperForAssets:v11 options:v10 context:v13 reply:v15];
+  [v12 exportWallpaperForAssets:assetsCopy options:optionsCopy context:requestContextDictionary reply:v15];
 }
 
 uint64_t __78__PLPhotoAnalysisServiceClient_Graph__exportWallpaperForAssets_options_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1826,26 +1826,26 @@ uint64_t __78__PLPhotoAnalysisServiceClient_Graph__exportWallpaperForAssets_opti
   return result;
 }
 
-- (void)requestWallpaperProperties:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestWallpaperProperties:(id)properties options:(id)options reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __80__PLPhotoAnalysisServiceClient_Graph__requestWallpaperProperties_options_reply___block_invoke;
   v17[3] = &unk_1E7577430;
-  v9 = v8;
+  v9 = replyCopy;
   v18 = v9;
-  v10 = a4;
-  v11 = a3;
+  optionsCopy = options;
+  propertiesCopy = properties;
   v12 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__PLPhotoAnalysisServiceClient_Graph__requestWallpaperProperties_options_reply___block_invoke_2;
   v15[3] = &unk_1E7577458;
   v16 = v9;
   v14 = v9;
-  [v12 requestWallpaperPropertiesForAssets:v11 options:v10 context:v13 reply:v15];
+  [v12 requestWallpaperPropertiesForAssets:propertiesCopy options:optionsCopy context:requestContextDictionary reply:v15];
 }
 
 uint64_t __80__PLPhotoAnalysisServiceClient_Graph__requestWallpaperProperties_options_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1870,25 +1870,25 @@ uint64_t __80__PLPhotoAnalysisServiceClient_Graph__requestWallpaperProperties_op
   return result;
 }
 
-- (void)requestPeopleForWallpaperSuggestionsWithOptions:(id)a3 reply:(id)a4
+- (void)requestPeopleForWallpaperSuggestionsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__PLPhotoAnalysisServiceClient_Graph__requestPeopleForWallpaperSuggestionsWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v7 = v6;
+  v7 = replyCopy;
   v15 = v7;
-  v8 = a3;
+  optionsCopy = options;
   v9 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__PLPhotoAnalysisServiceClient_Graph__requestPeopleForWallpaperSuggestionsWithOptions_reply___block_invoke_2;
   v12[3] = &unk_1E7577458;
   v13 = v7;
   v11 = v7;
-  [v9 requestPeopleForWallpaperSuggestionsWithOptions:v8 context:v10 reply:v12];
+  [v9 requestPeopleForWallpaperSuggestionsWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
 uint64_t __93__PLPhotoAnalysisServiceClient_Graph__requestPeopleForWallpaperSuggestionsWithOptions_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1913,25 +1913,25 @@ uint64_t __93__PLPhotoAnalysisServiceClient_Graph__requestPeopleForWallpaperSugg
   return result;
 }
 
-- (void)reloadWallpaperSuggestions:(id)a3 reply:(id)a4
+- (void)reloadWallpaperSuggestions:(id)suggestions reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__PLPhotoAnalysisServiceClient_Graph__reloadWallpaperSuggestions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v7 = v6;
+  v7 = replyCopy;
   v15 = v7;
-  v8 = a3;
+  suggestionsCopy = suggestions;
   v9 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__PLPhotoAnalysisServiceClient_Graph__reloadWallpaperSuggestions_reply___block_invoke_2;
   v12[3] = &unk_1E75774A8;
   v13 = v7;
   v11 = v7;
-  [v9 reloadWallpaperSuggestionsWithSuggestionUUIDs:v8 context:v10 reply:v12];
+  [v9 reloadWallpaperSuggestionsWithSuggestionUUIDs:suggestionsCopy context:requestContextDictionary reply:v12];
 }
 
 uint64_t __72__PLPhotoAnalysisServiceClient_Graph__reloadWallpaperSuggestions_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -1956,10 +1956,10 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Graph__reloadWallpaperSuggestions_re
   return result;
 }
 
-- (id)requestNightlySuggestionsForPosterConfiguration:(id)a3 atDate:(id)a4 error:(id *)a5
+- (id)requestNightlySuggestionsForPosterConfiguration:(id)configuration atDate:(id)date error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  dateCopy = date;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1984,16 +1984,16 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Graph__reloadWallpaperSuggestions_re
   v16[3] = &unk_1E75773B8;
   v16[4] = &v29;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __100__PLPhotoAnalysisServiceClient_Graph__requestNightlySuggestionsForPosterConfiguration_atDate_error___block_invoke_2;
   v15[3] = &unk_1E75773E0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v10 requestNightlySuggestionsForPosterConfiguration:v8 atDate:v9 context:v11 reply:v15];
+  [v10 requestNightlySuggestionsForPosterConfiguration:configurationCopy atDate:dateCopy context:requestContextDictionary reply:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v30[5];
     if (!v12)
@@ -2001,7 +2001,7 @@ uint64_t __72__PLPhotoAnalysisServiceClient_Graph__reloadWallpaperSuggestions_re
       v12 = v24[5];
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v18[5];
@@ -2027,24 +2027,24 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestNightlySuggestionsForPost
   *(v9 + 40) = v6;
 }
 
-- (void)requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply:(id)a3
+- (void)requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __101__PLPhotoAnalysisServiceClient_Graph__requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v5 = v4;
+  v5 = replyCopy;
   v12 = v5;
   v6 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __101__PLPhotoAnalysisServiceClient_Graph__requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply___block_invoke_2;
   v9[3] = &unk_1E75774A8;
   v10 = v5;
   v8 = v5;
-  [v6 requestReprocessSuggestionsOnLibraryScopeRulesChangeWithContext:v7 reply:v9];
+  [v6 requestReprocessSuggestionsOnLibraryScopeRulesChangeWithContext:requestContextDictionary reply:v9];
 }
 
 uint64_t __101__PLPhotoAnalysisServiceClient_Graph__requestReprocessSuggestionsOnLibraryScopeRulesChangeWithReply___block_invoke(uint64_t a1, uint64_t a2)
@@ -2069,17 +2069,17 @@ uint64_t __101__PLPhotoAnalysisServiceClient_Graph__requestReprocessSuggestionsO
   return result;
 }
 
-- (void)asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)a3 withOptions:(id)a4 reply:(id)a5
+- (void)asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)d withOptions:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  dCopy = d;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __121__PLPhotoAnalysisServiceClient_Graph__asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID_withOptions_reply___block_invoke;
   v17[3] = &unk_1E7577430;
-  v12 = v8;
+  v12 = replyCopy;
   v18 = v12;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
@@ -2088,7 +2088,7 @@ uint64_t __101__PLPhotoAnalysisServiceClient_Graph__requestReprocessSuggestionsO
   v15[3] = &unk_1E7577458;
   v16 = v12;
   v14 = v12;
-  [v13 requestCameraSmartSharingProcessingForLibraryScopeWithUUID:v10 withOptions:v9 context:v11 reply:v15];
+  [v13 requestCameraSmartSharingProcessingForLibraryScopeWithUUID:dCopy withOptions:optionsCopy context:requestContextDictionary reply:v15];
 }
 
 uint64_t __121__PLPhotoAnalysisServiceClient_Graph__asyncRequestCameraSmartSharingProcessingForLibraryScopeWithUUID_withOptions_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -2113,10 +2113,10 @@ uint64_t __121__PLPhotoAnalysisServiceClient_Graph__asyncRequestCameraSmartShari
   return result;
 }
 
-- (id)requestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (id)requestCameraSmartSharingProcessingForLibraryScopeWithUUID:(id)d withOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2141,16 +2141,16 @@ uint64_t __121__PLPhotoAnalysisServiceClient_Graph__asyncRequestCameraSmartShari
   v16[3] = &unk_1E75773B8;
   v16[4] = &v29;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __116__PLPhotoAnalysisServiceClient_Graph__requestCameraSmartSharingProcessingForLibraryScopeWithUUID_withOptions_error___block_invoke_2;
   v15[3] = &unk_1E75773E0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v10 requestCameraSmartSharingProcessingForLibraryScopeWithUUID:v8 withOptions:v9 context:v11 reply:v15];
+  [v10 requestCameraSmartSharingProcessingForLibraryScopeWithUUID:dCopy withOptions:optionsCopy context:requestContextDictionary reply:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v30[5];
     if (!v12)
@@ -2158,7 +2158,7 @@ uint64_t __121__PLPhotoAnalysisServiceClient_Graph__asyncRequestCameraSmartShari
       v12 = v24[5];
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v18[5];
@@ -2184,7 +2184,7 @@ void __116__PLPhotoAnalysisServiceClient_Graph__requestCameraSmartSharingProcess
   *(v9 + 40) = v6;
 }
 
-- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)a3
+- (BOOL)requestStartSharedLibrarySuggestionResultWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -2208,16 +2208,16 @@ void __116__PLPhotoAnalysisServiceClient_Graph__requestCameraSmartSharingProcess
   v11[3] = &unk_1E75773B8;
   v11[4] = &v22;
   v5 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v11];
-  v6 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__PLPhotoAnalysisServiceClient_Graph__requestStartSharedLibrarySuggestionResultWithError___block_invoke_2;
   v10[3] = &unk_1E7577598;
   v10[4] = &v16;
   v10[5] = &v12;
-  [v5 requestStartSharedLibrarySuggestionResultWithContext:v6 reply:v10];
+  [v5 requestStartSharedLibrarySuggestionResultWithContext:requestContextDictionary reply:v10];
 
-  if (a3)
+  if (error)
   {
     v7 = v23[5];
     if (!v7)
@@ -2225,7 +2225,7 @@ void __116__PLPhotoAnalysisServiceClient_Graph__requestCameraSmartSharingProcess
       v7 = v17[5];
     }
 
-    *a3 = v7;
+    *error = v7;
   }
 
   v8 = *(v13 + 24);
@@ -2243,10 +2243,10 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestStartSharedLibrarySuggesti
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (id)requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (id)requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers:(id)identifiers withOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2271,16 +2271,16 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestStartSharedLibrarySuggesti
   v16[3] = &unk_1E75773B8;
   v16[4] = &v29;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __121__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers_withOptions_error___block_invoke_2;
   v15[3] = &unk_1E7577408;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v10 requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers:v8 withOptions:v9 context:v11 reply:v15];
+  [v10 requestSuggestedMomentLocalIdentifiersForPersonLocalIdentifiers:identifiersCopy withOptions:optionsCopy context:requestContextDictionary reply:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v30[5];
     if (!v12)
@@ -2288,7 +2288,7 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestStartSharedLibrarySuggesti
       v12 = v24[5];
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v18[5];
@@ -2314,10 +2314,10 @@ void __121__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMomentLocalIdent
   *(v9 + 40) = v6;
 }
 
-- (BOOL)requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier:(id)identifier withOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -2340,16 +2340,16 @@ void __121__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMomentLocalIdent
   v16[3] = &unk_1E75773B8;
   v16[4] = &v27;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __119__PLPhotoAnalysisServiceClient_Graph__requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier_withOptions_error___block_invoke_2;
   v15[3] = &unk_1E7577598;
   v15[4] = &v17;
   v15[5] = &v21;
-  [v10 requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier:v8 withOptions:v9 context:v11 reply:v15];
+  [v10 requestGenerateDefaultRulesForLibraryScopeWithLocalIdentifier:identifierCopy withOptions:optionsCopy context:requestContextDictionary reply:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v28[5];
     if (!v12)
@@ -2357,7 +2357,7 @@ void __121__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMomentLocalIdent
       v12 = v22[5];
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = *(v18 + 24);
@@ -2368,25 +2368,25 @@ void __121__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMomentLocalIdent
   return v13;
 }
 
-- (void)requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:(id)a3 reply:(id)a4
+- (void)requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:(id)ds reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __108__PLPhotoAnalysisServiceClient_Graph__requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v7 = v6;
+  v7 = replyCopy;
   v15 = v7;
-  v8 = a3;
+  dsCopy = ds;
   v9 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __108__PLPhotoAnalysisServiceClient_Graph__requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs_reply___block_invoke_2;
   v12[3] = &unk_1E75774A8;
   v13 = v7;
   v11 = v7;
-  [v9 requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:v8 context:v10 reply:v12];
+  [v9 requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs:dsCopy context:requestContextDictionary reply:v12];
 }
 
 uint64_t __108__PLPhotoAnalysisServiceClient_Graph__requestUpdateFeaturedContentBasedOnUserFeedbackWithPersonUUIDs_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -2411,9 +2411,9 @@ uint64_t __108__PLPhotoAnalysisServiceClient_Graph__requestUpdateFeaturedContent
   return result;
 }
 
-- (id)requestMeaningScoreDebugDescriptionForMomentLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestMeaningScoreDebugDescriptionForMomentLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2432,18 +2432,18 @@ uint64_t __108__PLPhotoAnalysisServiceClient_Graph__requestUpdateFeaturedContent
   v12[3] = &unk_1E75773B8;
   v12[4] = &v19;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __105__PLPhotoAnalysisServiceClient_Graph__requestMeaningScoreDebugDescriptionForMomentLocalIdentifier_error___block_invoke_2;
   v11[3] = &unk_1E75774D0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 requestMeaningScoreDebugDescriptionForMomentLocalIdentifier:v6 context:v8 reply:v11];
+  [v7 requestMeaningScoreDebugDescriptionForMomentLocalIdentifier:identifierCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = v14[5];
@@ -2468,7 +2468,7 @@ void __105__PLPhotoAnalysisServiceClient_Graph__requestMeaningScoreDebugDescript
   *(v9 + 40) = v6;
 }
 
-- (id)requestAssetLocalIdentifiersByCityNameWithError:(id *)a3
+- (id)requestAssetLocalIdentifiersByCityNameWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -2488,18 +2488,18 @@ void __105__PLPhotoAnalysisServiceClient_Graph__requestMeaningScoreDebugDescript
   v10[3] = &unk_1E75773B8;
   v10[4] = &v17;
   v5 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v10];
-  v6 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__PLPhotoAnalysisServiceClient_Graph__requestAssetLocalIdentifiersByCityNameWithError___block_invoke_2;
   v9[3] = &unk_1E75773E0;
   v9[4] = &v11;
   v9[5] = &v17;
-  [v5 requestAssetLocalIdentifiersByCityNameWithContext:v6 reply:v9];
+  [v5 requestAssetLocalIdentifiersByCityNameWithContext:requestContextDictionary reply:v9];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   v7 = v12[5];
@@ -2524,11 +2524,11 @@ void __87__PLPhotoAnalysisServiceClient_Graph__requestAssetLocalIdentifiersByCit
   *(v9 + 40) = v6;
 }
 
-- (id)requestConfidenceByMomentLocalIdentifierForMeaning:(id)a3 useAlternativeMeaningEdge:(BOOL)a4 onlyHighPrecision:(BOOL)a5 error:(id *)a6
+- (id)requestConfidenceByMomentLocalIdentifierForMeaning:(id)meaning useAlternativeMeaningEdge:(BOOL)edge onlyHighPrecision:(BOOL)precision error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  precisionCopy = precision;
+  edgeCopy = edge;
+  meaningCopy = meaning;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2547,18 +2547,18 @@ void __87__PLPhotoAnalysisServiceClient_Graph__requestAssetLocalIdentifiersByCit
   v16[3] = &unk_1E75773B8;
   v16[4] = &v23;
   v11 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v12 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __140__PLPhotoAnalysisServiceClient_Graph__requestConfidenceByMomentLocalIdentifierForMeaning_useAlternativeMeaningEdge_onlyHighPrecision_error___block_invoke_2;
   v15[3] = &unk_1E75773E0;
   v15[4] = &v17;
   v15[5] = &v23;
-  [v11 requestConfidenceByMomentLocalIdentifierForMeaning:v10 useAlternativeMeaningEdge:v8 onlyHighPrecision:v7 context:v12 reply:v15];
+  [v11 requestConfidenceByMomentLocalIdentifierForMeaning:meaningCopy useAlternativeMeaningEdge:edgeCopy onlyHighPrecision:precisionCopy context:requestContextDictionary reply:v15];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v24[5];
+    *error = v24[5];
   }
 
   v13 = v18[5];
@@ -2583,7 +2583,7 @@ void __140__PLPhotoAnalysisServiceClient_Graph__requestConfidenceByMomentLocalId
   *(v9 + 40) = v6;
 }
 
-- (id)requestUtilityAssetLocalIdentifiersWithError:(id *)a3
+- (id)requestUtilityAssetLocalIdentifiersWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -2603,18 +2603,18 @@ void __140__PLPhotoAnalysisServiceClient_Graph__requestConfidenceByMomentLocalId
   v10[3] = &unk_1E75773B8;
   v10[4] = &v17;
   v5 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v10];
-  v6 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetLocalIdentifiersWithError___block_invoke_2;
   v9[3] = &unk_1E75773E0;
   v9[4] = &v11;
   v9[5] = &v17;
-  [v5 requestUtilityAssetLocalIdentifiersWithContext:v6 reply:v9];
+  [v5 requestUtilityAssetLocalIdentifiersWithContext:requestContextDictionary reply:v9];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   v7 = v12[5];
@@ -2639,9 +2639,9 @@ void __84__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetLocalIdentifie
   *(v9 + 40) = v6;
 }
 
-- (id)requestTrendsByIdentifierWithCadence:(id)a3 forYear:(unint64_t)a4 error:(id *)a5
+- (id)requestTrendsByIdentifierWithCadence:(id)cadence forYear:(unint64_t)year error:(id *)error
 {
-  v8 = a3;
+  cadenceCopy = cadence;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2660,18 +2660,18 @@ void __84__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetLocalIdentifie
   v14[3] = &unk_1E75773B8;
   v14[4] = &v21;
   v9 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __90__PLPhotoAnalysisServiceClient_Graph__requestTrendsByIdentifierWithCadence_forYear_error___block_invoke_2;
   v13[3] = &unk_1E75773E0;
   v13[4] = &v15;
   v13[5] = &v21;
-  [v9 requestTrendsByIdentifierWithCadence:v8 forYear:a4 context:v10 reply:v13];
+  [v9 requestTrendsByIdentifierWithCadence:cadenceCopy forYear:year context:requestContextDictionary reply:v13];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v11 = v16[5];
@@ -2696,9 +2696,9 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestTrendsByIdentifierWithCade
   *(v9 + 40) = v6;
 }
 
-- (id)requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2717,18 +2717,18 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestTrendsByIdentifierWithCade
   v12[3] = &unk_1E75773B8;
   v12[4] = &v19;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __107__PLPhotoAnalysisServiceClient_Graph__requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier_error___block_invoke_2;
   v11[3] = &unk_1E7577408;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier:v6 context:v8 reply:v11];
+  [v7 requestUpNextAssetLocalIdentifiersForAssetWithLocalIdentifier:identifierCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = v14[5];
@@ -2753,9 +2753,9 @@ void __107__PLPhotoAnalysisServiceClient_Graph__requestUpNextAssetLocalIdentifie
   *(v9 + 40) = v6;
 }
 
-- (id)requestKeyAssetLocalIdentifierForPrototypeCategory:(id)a3 error:(id *)a4
+- (id)requestKeyAssetLocalIdentifierForPrototypeCategory:(id)category error:(id *)error
 {
-  v6 = a3;
+  categoryCopy = category;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2774,18 +2774,18 @@ void __107__PLPhotoAnalysisServiceClient_Graph__requestUpNextAssetLocalIdentifie
   v12[3] = &unk_1E75773B8;
   v12[4] = &v19;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __96__PLPhotoAnalysisServiceClient_Graph__requestKeyAssetLocalIdentifierForPrototypeCategory_error___block_invoke_2;
   v11[3] = &unk_1E75774D0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 requestKeyAssetLocalIdentifierForPrototypeCategory:v6 context:v8 reply:v11];
+  [v7 requestKeyAssetLocalIdentifierForPrototypeCategory:categoryCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = v14[5];
@@ -2810,10 +2810,10 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestKeyAssetLocalIdentifierFor
   *(v9 + 40) = v6;
 }
 
-- (id)requestUpNextMemoryLocalIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)requestUpNextMemoryLocalIdentifiersWithOptions:(id)options error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -2845,14 +2845,14 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestKeyAssetLocalIdentifierFor
   v22[3] = &unk_1E75773B8;
   v22[4] = &v30;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v22];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __92__PLPhotoAnalysisServiceClient_Graph__requestUpNextMemoryLocalIdentifiersWithOptions_error___block_invoke_2;
   v21[3] = &unk_1E75773E0;
   v21[4] = &v24;
   v21[5] = &v30;
-  [v12 requestUpNextMemoriesWithOptions:v6 context:v13 reply:v21];
+  [v12 requestUpNextMemoriesWithOptions:optionsCopy context:requestContextDictionary reply:v21];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -2874,9 +2874,9 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestKeyAssetLocalIdentifierFor
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v31[5];
+    *error = v31[5];
   }
 
   v19 = v25[5];
@@ -2901,10 +2901,10 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestUpNextMemoryLocalIdentifie
   *(v9 + 40) = v6;
 }
 
-- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)a3 error:(id *)a4
+- (id)requestPersonalTraitsForAssetsWithUUIDs:(id)ds error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dsCopy = ds;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -2930,20 +2930,20 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestUpNextMemoryLocalIdentifie
   }
 
   v11 = mach_absolute_time();
-  v12 = [(PLPhotoAnalysisServiceClient *)self momentGraphService];
+  momentGraphService = [(PLPhotoAnalysisServiceClient *)self momentGraphService];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __85__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForAssetsWithUUIDs_error___block_invoke;
   v24[3] = &unk_1E75773B8;
   v24[4] = &v32;
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v13 = [momentGraphService synchronousRemoteObjectProxyWithErrorHandler:v24];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __85__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForAssetsWithUUIDs_error___block_invoke_2;
   v23[3] = &unk_1E7577408;
   v23[4] = &v26;
   v23[5] = &v32;
-  [v13 requestPersonalTraitsForAssetUUIDs:v6 operationID:&stru_1F0F06D80 reply:v23];
+  [v13 requestPersonalTraitsForAssetUUIDs:dsCopy operationID:&stru_1F0F06D80 reply:v23];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -2967,10 +2967,10 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestUpNextMemoryLocalIdentifie
 
   v19 = v33[5];
   v20 = v19;
-  if (v19 && a4)
+  if (v19 && error)
   {
     v20 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = v27[5];
@@ -2995,10 +2995,10 @@ void __85__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForAssetsWit
   *(v9 + 40) = v6;
 }
 
-- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)a3 error:(id *)a4
+- (id)requestPersonalTraitsForHighlightsWithUUIDs:(id)ds error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dsCopy = ds;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3024,20 +3024,20 @@ void __85__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForAssetsWit
   }
 
   v11 = mach_absolute_time();
-  v12 = [(PLPhotoAnalysisServiceClient *)self momentGraphService];
+  momentGraphService = [(PLPhotoAnalysisServiceClient *)self momentGraphService];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __89__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForHighlightsWithUUIDs_error___block_invoke;
   v24[3] = &unk_1E75773B8;
   v24[4] = &v32;
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v24];
+  v13 = [momentGraphService synchronousRemoteObjectProxyWithErrorHandler:v24];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __89__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForHighlightsWithUUIDs_error___block_invoke_2;
   v23[3] = &unk_1E7577408;
   v23[4] = &v26;
   v23[5] = &v32;
-  [v13 requestPersonalTraitsForHighlightUUIDs:v6 operationID:&stru_1F0F06D80 reply:v23];
+  [v13 requestPersonalTraitsForHighlightUUIDs:dsCopy operationID:&stru_1F0F06D80 reply:v23];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -3061,10 +3061,10 @@ void __85__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForAssetsWit
 
   v19 = v33[5];
   v20 = v19;
-  if (v19 && a4)
+  if (v19 && error)
   {
     v20 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = v27[5];
@@ -3089,10 +3089,10 @@ void __89__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForHighlight
   *(v9 + 40) = v6;
 }
 
-- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)a3 error:(id *)a4
+- (id)requestGraphMomentLocalIdentifiersWithDateInterval:(id)interval error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  intervalCopy = interval;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3124,14 +3124,14 @@ void __89__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForHighlight
   v24[3] = &unk_1E75773B8;
   v24[4] = &v32;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v24];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __96__PLPhotoAnalysisServiceClient_Graph__requestGraphMomentLocalIdentifiersWithDateInterval_error___block_invoke_2;
   v23[3] = &unk_1E7577408;
   v23[4] = &v26;
   v23[5] = &v32;
-  [v12 requestGraphMomentLocalIdentifiersWithDateInterval:v6 context:v13 reply:v23];
+  [v12 requestGraphMomentLocalIdentifiersWithDateInterval:intervalCopy context:requestContextDictionary reply:v23];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -3155,10 +3155,10 @@ void __89__PLPhotoAnalysisServiceClient_Graph__requestPersonalTraitsForHighlight
 
   v19 = v33[5];
   v20 = v19;
-  if (v19 && a4)
+  if (v19 && error)
   {
     v20 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = v27[5];
@@ -3183,10 +3183,10 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestGraphMomentLocalIdentifier
   *(v9 + 40) = v6;
 }
 
-- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestGraphInferencesSummaryWithMomentLocalIdentifiers:(id)identifiers error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3218,14 +3218,14 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestGraphMomentLocalIdentifier
   v24[3] = &unk_1E75773B8;
   v24[4] = &v32;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v24];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __101__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWithMomentLocalIdentifiers_error___block_invoke_2;
   v23[3] = &unk_1E75773E0;
   v23[4] = &v26;
   v23[5] = &v32;
-  [v12 requestGraphInferencesSummaryWithMomentLocalIdentifiers:v6 context:v13 reply:v23];
+  [v12 requestGraphInferencesSummaryWithMomentLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v23];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -3249,10 +3249,10 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestGraphMomentLocalIdentifier
 
   v19 = v33[5];
   v20 = v19;
-  if (v19 && a4)
+  if (v19 && error)
   {
     v20 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = v27[5];
@@ -3277,10 +3277,10 @@ void __101__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWit
   *(v9 + 40) = v6;
 }
 
-- (id)requestGraphInferencesSummaryWithDateInterval:(id)a3 error:(id *)a4
+- (id)requestGraphInferencesSummaryWithDateInterval:(id)interval error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  intervalCopy = interval;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3312,14 +3312,14 @@ void __101__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWit
   v24[3] = &unk_1E75773B8;
   v24[4] = &v32;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v24];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __91__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWithDateInterval_error___block_invoke_2;
   v23[3] = &unk_1E75773E0;
   v23[4] = &v26;
   v23[5] = &v32;
-  [v12 requestGraphInferencesSummaryWithDateInterval:v6 context:v13 reply:v23];
+  [v12 requestGraphInferencesSummaryWithDateInterval:intervalCopy context:requestContextDictionary reply:v23];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -3343,10 +3343,10 @@ void __101__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWit
 
   v19 = v33[5];
   v20 = v19;
-  if (v19 && a4)
+  if (v19 && error)
   {
     v20 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v21 = v27[5];
@@ -3371,7 +3371,7 @@ void __91__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWith
   *(v9 + 40) = v6;
 }
 
-- (id)requestSuggestedMePersonIdentifierWithError:(id *)a3
+- (id)requestSuggestedMePersonIdentifierWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -3391,7 +3391,7 @@ void __91__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWith
   v15 = __Block_byref_object_copy__111939;
   v16 = __Block_byref_object_dispose__111940;
   v17 = 0;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMePersonIdentifierWithError___block_invoke;
@@ -3404,9 +3404,9 @@ void __91__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWith
   v10[3] = &unk_1E75774D0;
   v10[4] = &v24;
   v10[5] = &v12;
-  [v6 requestInferredMePersonLocalIdentifierWithErrorForContext:v5 reply:v10];
+  [v6 requestInferredMePersonLocalIdentifierWithErrorForContext:requestContextDictionary reply:v10];
 
-  if (a3)
+  if (error)
   {
     v7 = v19[5];
     if (!v7)
@@ -3414,7 +3414,7 @@ void __91__PLPhotoAnalysisServiceClient_Graph__requestGraphInferencesSummaryWith
       v7 = v13[5];
     }
 
-    *a3 = v7;
+    *error = v7;
   }
 
   v8 = v25[5];
@@ -3441,11 +3441,11 @@ void __83__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMePersonIdentifie
   *(v9 + 40) = v6;
 }
 
-- (id)requestComposabilityScoresOfAssetsForLocalIdentifiers:(id)a3 options:(id)a4 error:(id *)a5
+- (id)requestComposabilityScoresOfAssetsForLocalIdentifiers:(id)identifiers options:(id)options error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -3477,14 +3477,14 @@ void __83__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMePersonIdentifie
   v25[3] = &unk_1E75773B8;
   v25[4] = &v33;
   v15 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v25];
-  v16 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __107__PLPhotoAnalysisServiceClient_Graph__requestComposabilityScoresOfAssetsForLocalIdentifiers_options_error___block_invoke_2;
   v24[3] = &unk_1E75773E0;
   v24[4] = &v27;
   v24[5] = &v33;
-  [v15 requestComposabilityScoresOfAssetsForLocalIdentifiers:v8 options:v9 context:v16 reply:v24];
+  [v15 requestComposabilityScoresOfAssetsForLocalIdentifiers:identifiersCopy options:optionsCopy context:requestContextDictionary reply:v24];
 
   v17 = mach_absolute_time();
   numer = info.numer;
@@ -3506,9 +3506,9 @@ void __83__PLPhotoAnalysisServiceClient_Graph__requestSuggestedMePersonIdentifie
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v34[5];
+    *error = v34[5];
   }
 
   v22 = v28[5];
@@ -3533,10 +3533,10 @@ void __107__PLPhotoAnalysisServiceClient_Graph__requestComposabilityScoresOfAsse
   *(v9 + 40) = v6;
 }
 
-- (id)requestSuggestedPersonsWithOptions:(id)a3 error:(id *)a4
+- (id)requestSuggestedPersonsWithOptions:(id)options error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -3568,14 +3568,14 @@ void __107__PLPhotoAnalysisServiceClient_Graph__requestComposabilityScoresOfAsse
   v22[3] = &unk_1E75773B8;
   v22[4] = &v30;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v22];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __80__PLPhotoAnalysisServiceClient_Graph__requestSuggestedPersonsWithOptions_error___block_invoke_2;
   v21[3] = &unk_1E7577408;
   v21[4] = &v24;
   v21[5] = &v30;
-  [v12 requestSuggestedPersonsWithOptions:v6 context:v13 reply:v21];
+  [v12 requestSuggestedPersonsWithOptions:optionsCopy context:requestContextDictionary reply:v21];
 
   v14 = mach_absolute_time();
   numer = info.numer;
@@ -3597,9 +3597,9 @@ void __107__PLPhotoAnalysisServiceClient_Graph__requestComposabilityScoresOfAsse
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v31[5];
+    *error = v31[5];
   }
 
   v19 = v25[5];
@@ -3624,10 +3624,10 @@ void __80__PLPhotoAnalysisServiceClient_Graph__requestSuggestedPersonsWithOption
   *(v9 + 40) = v6;
 }
 
-- (id)requestRelationshipInferencesForPersonLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestRelationshipInferencesForPersonLocalIdentifiers:(id)identifiers error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -3659,18 +3659,18 @@ void __80__PLPhotoAnalysisServiceClient_Graph__requestSuggestedPersonsWithOption
   v22[3] = &unk_1E75773B8;
   v22[4] = &v30;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v22];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __100__PLPhotoAnalysisServiceClient_Graph__requestRelationshipInferencesForPersonLocalIdentifiers_error___block_invoke_2;
   v21[3] = &unk_1E75773E0;
   v21[4] = &v24;
   v21[5] = &v30;
-  [v12 requestRelationshipInferencesForPersonLocalIdentifiers:v6 context:v13 reply:v21];
+  [v12 requestRelationshipInferencesForPersonLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v21];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v31[5];
+    *error = v31[5];
   }
 
   v14 = mach_absolute_time();
@@ -3715,26 +3715,26 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestRelationshipInferencesFor
   *(v9 + 40) = v6;
 }
 
-- (void)requestModelInference:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestModelInference:(id)inference options:(id)options reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options_reply___block_invoke;
   v17[3] = &unk_1E7577430;
-  v9 = v8;
+  v9 = replyCopy;
   v18 = v9;
-  v10 = a4;
-  v11 = a3;
+  optionsCopy = options;
+  inferenceCopy = inference;
   v12 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options_reply___block_invoke_2;
   v15[3] = &unk_1E75774A8;
   v16 = v9;
   v14 = v9;
-  [v12 runModelInferenceForFingerprintVersion:v11 options:v10 context:v13 reply:v15];
+  [v12 runModelInferenceForFingerprintVersion:inferenceCopy options:optionsCopy context:requestContextDictionary reply:v15];
 }
 
 uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -3759,14 +3759,14 @@ uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options
   return result;
 }
 
-- (void)requestRunShadowEvaluationWithRecipe:(id)a3 models:(id)a4 trialDeploymentID:(id)a5 trialExperimentID:(id)a6 trialTreatmentID:(id)a7 resultBlock:(id)a8
+- (void)requestRunShadowEvaluationWithRecipe:(id)recipe models:(id)models trialDeploymentID:(id)d trialExperimentID:(id)iD trialTreatmentID:(id)treatmentID resultBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  recipeCopy = recipe;
+  modelsCopy = models;
+  dCopy = d;
+  iDCopy = iD;
+  treatmentIDCopy = treatmentID;
+  blockCopy = block;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -3785,13 +3785,13 @@ uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options
   v24[3] = &unk_1E75773B8;
   v24[4] = &v31;
   v20 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v24];
-  v21 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __148__PLPhotoAnalysisServiceClient_Graph__requestRunShadowEvaluationWithRecipe_models_trialDeploymentID_trialExperimentID_trialTreatmentID_resultBlock___block_invoke_2;
   v23[3] = &unk_1E75773B8;
   v23[4] = &v25;
-  [v20 runShadowEvaluationWithRecipe:v14 models:v15 trialDeploymentID:v16 trialExperimentID:v17 trialTreatmentID:v18 context:v21 resultBlock:v23];
+  [v20 runShadowEvaluationWithRecipe:recipeCopy models:modelsCopy trialDeploymentID:dCopy trialExperimentID:iDCopy trialTreatmentID:treatmentIDCopy context:requestContextDictionary resultBlock:v23];
 
   v22 = v26[5];
   if (!v22)
@@ -3799,17 +3799,17 @@ uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options
     v22 = v32[5];
   }
 
-  v19[2](v19, v22);
+  blockCopy[2](blockCopy, v22);
   _Block_object_dispose(&v25, 8);
 
   _Block_object_dispose(&v31, 8);
 }
 
-- (void)requestRunPFLWithAttachments:(id)a3 recipeUserInfo:(id)a4 resultBlock:(id)a5
+- (void)requestRunPFLWithAttachments:(id)attachments recipeUserInfo:(id)info resultBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attachmentsCopy = attachments;
+  infoCopy = info;
+  blockCopy = block;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -3840,7 +3840,7 @@ uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options
   v15[3] = &unk_1E75773B8;
   v15[4] = &v34;
   v11 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v15];
-  v12 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__PLPhotoAnalysisServiceClient_Graph__requestRunPFLWithAttachments_recipeUserInfo_resultBlock___block_invoke_2;
@@ -3848,7 +3848,7 @@ uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options
   v14[4] = &v22;
   v14[5] = &v16;
   v14[6] = &v28;
-  [v11 requestRunPFLWithAttachments:v8 recipeUserInfo:v9 context:v12 resultBlock:v14];
+  [v11 requestRunPFLWithAttachments:attachmentsCopy recipeUserInfo:infoCopy context:requestContextDictionary resultBlock:v14];
 
   v13 = v29[5];
   if (!v13)
@@ -3856,7 +3856,7 @@ uint64_t __75__PLPhotoAnalysisServiceClient_Graph__requestModelInference_options
     v13 = v35[5];
   }
 
-  v10[2](v10, v23[5], v17[5], v13);
+  blockCopy[2](blockCopy, v23[5], v17[5], v13);
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -3885,9 +3885,9 @@ void __95__PLPhotoAnalysisServiceClient_Graph__requestRunPFLWithAttachments_reci
   *(v15 + 40) = v9;
 }
 
-- (BOOL)reportMetricsWithOptions:(id)a3 error:(id *)a4
+- (BOOL)reportMetricsWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -3910,16 +3910,16 @@ void __95__PLPhotoAnalysisServiceClient_Graph__requestRunPFLWithAttachments_reci
   v13[3] = &unk_1E75773B8;
   v13[4] = &v24;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v13];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__PLPhotoAnalysisServiceClient_Graph__reportMetricsWithOptions_error___block_invoke_2;
   v12[3] = &unk_1E7577598;
   v12[4] = &v14;
   v12[5] = &v18;
-  [v7 reportMetricsWithOptions:v6 context:v8 reply:v12];
+  [v7 reportMetricsWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v25[5];
     if (!v9)
@@ -3927,7 +3927,7 @@ void __95__PLPhotoAnalysisServiceClient_Graph__requestRunPFLWithAttachments_reci
       v9 = v19[5];
     }
 
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = *(v15 + 24);
@@ -3938,11 +3938,11 @@ void __95__PLPhotoAnalysisServiceClient_Graph__requestRunPFLWithAttachments_reci
   return v10;
 }
 
-- (id)runCurationWithItems:(id)a3 options:(id)a4 error:(id *)a5
+- (id)runCurationWithItems:(id)items options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  itemsCopy = items;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -3967,11 +3967,11 @@ void __95__PLPhotoAnalysisServiceClient_Graph__requestRunPFLWithAttachments_reci
   v14[3] = &unk_1E75773E0;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v11 runCurationWithItems:v8 options:v9 context:v10 reply:v14];
+  [v11 runCurationWithItems:itemsCopy options:optionsCopy context:requestContextDictionary reply:v14];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v23[5];
+    *error = v23[5];
   }
 
   v12 = v17[5];
@@ -3996,10 +3996,10 @@ void __74__PLPhotoAnalysisServiceClient_Graph__runCurationWithItems_options_erro
   *(v9 + 40) = v6;
 }
 
-- (id)requestCurationScoreByAssetUUIDForAssetUUIDs:(id)a3 error:(id *)a4
+- (id)requestCurationScoreByAssetUUIDForAssetUUIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  dsCopy = ds;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4024,11 +4024,11 @@ void __74__PLPhotoAnalysisServiceClient_Graph__runCurationWithItems_options_erro
   v11[3] = &unk_1E75773E0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 requestCurationScoreByAssetUUIDForAssetUUIDs:v6 context:v7 reply:v11];
+  [v8 requestCurationScoreByAssetUUIDForAssetUUIDs:dsCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = v14[5];
@@ -4053,11 +4053,11 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestCurationScoreByAssetUUIDFo
   *(v9 + 40) = v6;
 }
 
-- (id)requestGeoHashForAssetLocalIdentifiers:(id)a3 geoHashSize:(id)a4 error:(id *)a5
+- (id)requestGeoHashForAssetLocalIdentifiers:(id)identifiers geoHashSize:(id)size error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  identifiersCopy = identifiers;
+  sizeCopy = size;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -4082,11 +4082,11 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestCurationScoreByAssetUUIDFo
   v14[3] = &unk_1E75773E0;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v11 requestGeoHashForAssetLocalIdentifiers:v8 geoHashSize:v9 context:v10 reply:v14];
+  [v11 requestGeoHashForAssetLocalIdentifiers:identifiersCopy geoHashSize:sizeCopy context:requestContextDictionary reply:v14];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v23[5];
+    *error = v23[5];
   }
 
   v12 = v17[5];
@@ -4111,10 +4111,10 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestGeoHashForAssetLocalIdenti
   *(v9 + 40) = v6;
 }
 
-- (id)requestIconicSceneScoreForAssetLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestIconicSceneScoreForAssetLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  identifiersCopy = identifiers;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4139,11 +4139,11 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestGeoHashForAssetLocalIdenti
   v11[3] = &unk_1E75773E0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 requestIconicSceneScoreForAssetLocalIdentifiers:v6 context:v7 reply:v11];
+  [v8 requestIconicSceneScoreForAssetLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = v14[5];
@@ -4168,10 +4168,10 @@ void __93__PLPhotoAnalysisServiceClient_Graph__requestIconicSceneScoreForAssetLo
   *(v9 + 40) = v6;
 }
 
-- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)a3 error:(id *)a4
+- (id)requestTextFeaturesForMomentLocalIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  identifiersCopy = identifiers;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4196,11 +4196,11 @@ void __93__PLPhotoAnalysisServiceClient_Graph__requestIconicSceneScoreForAssetLo
   v11[3] = &unk_1E75773E0;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v8 requestTextFeaturesForMomentLocalIdentifiers:v6 context:v7 reply:v11];
+  [v8 requestTextFeaturesForMomentLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = v14[5];
@@ -4225,9 +4225,9 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestTextFeaturesForMomentLocal
   *(v9 + 40) = v6;
 }
 
-- (id)requestHighlightDebugInformationForHighlightWithLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestHighlightDebugInformationForHighlightWithLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -4252,17 +4252,17 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestTextFeaturesForMomentLocal
   v14[3] = &unk_1E75773B8;
   v14[4] = &v21;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformationForHighlightWithLocalIdentifier_error___block_invoke_2;
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v7 requestHighlightDebugInformationForHighlightWithLocalIdentifier:v6 context:v8 reply:v13];
+  [v7 requestHighlightDebugInformationForHighlightWithLocalIdentifier:identifierCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -4270,7 +4270,7 @@ void __90__PLPhotoAnalysisServiceClient_Graph__requestTextFeaturesForMomentLocal
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -4297,9 +4297,9 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   *(v9 + 40) = v6;
 }
 
-- (BOOL)requestSyndicationLibraryRevGeocodingWithError:(id *)a3
+- (BOOL)requestSyndicationLibraryRevGeocodingWithError:(id *)error
 {
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -4317,11 +4317,11 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v9[2] = __86__PLPhotoAnalysisServiceClient_Graph__requestSyndicationLibraryRevGeocodingWithError___block_invoke_2;
   v9[3] = &unk_1E7577570;
   v9[4] = &v11;
-  [v6 requestRevGeocodingSyndicationLibraryWithContext:v5 reply:v9];
+  [v6 requestRevGeocodingSyndicationLibraryWithContext:requestContextDictionary reply:v9];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v7 = v12[5] == 0;
@@ -4330,10 +4330,10 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   return v7;
 }
 
-- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)a3 withError:(id *)a4
+- (BOOL)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)identifiers withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  identifiersCopy = identifiers;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -4351,11 +4351,11 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v11[2] = __98__PLPhotoAnalysisServiceClient_Graph__requestAssetRevGeocodingForAssetLocalIdentifiers_withError___block_invoke_2;
   v11[3] = &unk_1E75773B8;
   v11[4] = &v13;
-  [v8 requestAssetRevGeocodingForAssetLocalIdentifiers:v6 context:v7 reply:v11];
+  [v8 requestAssetRevGeocodingForAssetLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v14[5] == 0;
@@ -4364,9 +4364,9 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   return v9;
 }
 
-- (BOOL)requestAssetRevGeocodingWithError:(id *)a3
+- (BOOL)requestAssetRevGeocodingWithError:(id *)error
 {
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -4384,11 +4384,11 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v9[2] = __73__PLPhotoAnalysisServiceClient_Graph__requestAssetRevGeocodingWithError___block_invoke_2;
   v9[3] = &unk_1E75773B8;
   v9[4] = &v11;
-  [v6 requestAssetRevGeocodingWithContext:v5 reply:v9];
+  [v6 requestAssetRevGeocodingWithContext:requestContextDictionary reply:v9];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v7 = v12[5] == 0;
@@ -4397,10 +4397,10 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   return v7;
 }
 
-- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)a3 error:(id *)a4
+- (BOOL)requestHighlightCollectionEnrichmentWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -4418,11 +4418,11 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v11[2] = __93__PLPhotoAnalysisServiceClient_Graph__requestHighlightCollectionEnrichmentWithOptions_error___block_invoke_2;
   v11[3] = &unk_1E75773B8;
   v11[4] = &v13;
-  [v8 requestHighlightCollectionEnrichmentWithOptions:v6 context:v7 reply:v11];
+  [v8 requestHighlightCollectionEnrichmentWithOptions:optionsCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v14[5] == 0;
@@ -4431,10 +4431,10 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   return v9;
 }
 
-- (BOOL)requestEnrichmentWithOptions:(id)a3 error:(id *)a4
+- (BOOL)requestEnrichmentWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -4452,11 +4452,11 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v11[2] = __74__PLPhotoAnalysisServiceClient_Graph__requestEnrichmentWithOptions_error___block_invoke_2;
   v11[3] = &unk_1E75773B8;
   v11[4] = &v13;
-  [v8 requestEnrichmentWithOptions:v6 context:v7 reply:v11];
+  [v8 requestEnrichmentWithOptions:optionsCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v14[5] == 0;
@@ -4465,10 +4465,10 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   return v9;
 }
 
-- (BOOL)requestHighlightEnrichmentWithOptions:(id)a3 error:(id *)a4
+- (BOOL)requestHighlightEnrichmentWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -4486,11 +4486,11 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v11[2] = __83__PLPhotoAnalysisServiceClient_Graph__requestHighlightEnrichmentWithOptions_error___block_invoke_2;
   v11[3] = &unk_1E75773B8;
   v11[4] = &v13;
-  [v8 requestHighlightEnrichmentWithOptions:v6 context:v7 reply:v11];
+  [v8 requestHighlightEnrichmentWithOptions:optionsCopy context:requestContextDictionary reply:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v14[5] == 0;
@@ -4499,10 +4499,10 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   return v9;
 }
 
-- (id)requestSuggestedContributionsForAssetsMetadata:(id)a3 error:(id *)a4
+- (id)requestSuggestedContributionsForAssetsMetadata:(id)metadata error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  metadataCopy = metadata;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -4521,7 +4521,7 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v28 = __Block_byref_object_copy__111939;
   v29 = __Block_byref_object_dispose__111940;
   v30 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v8 = PLPhotoAnalysisQueriesGetLog();
   v9 = os_signpost_id_generate(v8);
   info = 0;
@@ -4547,9 +4547,9 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
   v22[3] = &unk_1E7577408;
   v22[4] = &v37;
   v22[5] = &v25;
-  [v13 requestSuggestedContributionsForAssetsMetadata:v6 options:0 context:v7 reply:v22];
+  [v13 requestSuggestedContributionsForAssetsMetadata:metadataCopy options:0 context:requestContextDictionary reply:v22];
 
-  if (a4 && !v38[5])
+  if (error && !v38[5])
   {
     v14 = v32[5];
     if (!v14)
@@ -4557,7 +4557,7 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestHighlightDebugInformation
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = mach_absolute_time();
@@ -4604,10 +4604,10 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSuggestedContributionsForA
   *(v9 + 40) = v6;
 }
 
-- (id)requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID:(id)a3 options:(id)a4 error:(id *)a5
+- (id)requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID:(id)d options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -4626,7 +4626,7 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSuggestedContributionsForA
   v21 = __Block_byref_object_copy__111939;
   v22 = __Block_byref_object_dispose__111940;
   v23 = 0;
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __109__PLPhotoAnalysisServiceClient_Graph__requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID_options_error___block_invoke;
@@ -4639,10 +4639,10 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSuggestedContributionsForA
   v16[3] = &unk_1E75773E0;
   v16[4] = &v30;
   v16[5] = &v18;
-  [v11 requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID:v8 options:v9 context:v10 reply:v16];
+  [v11 requestBatchSuggestedRecipientsForMomentUUIDByAssetUUID:dCopy options:optionsCopy context:requestContextDictionary reply:v16];
 
   v12 = v31[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v13 = v25[5];
     if (!v13)
@@ -4650,7 +4650,7 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSuggestedContributionsForA
       v13 = v19[5];
     }
 
-    *a5 = v13;
+    *error = v13;
     v12 = v31[5];
   }
 
@@ -4678,12 +4678,12 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestBatchSuggestedRecipientsF
   *(v9 + 40) = v6;
 }
 
-- (id)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)a3 momentLocalIdentifiers:(id)a4 options:(id)a5 error:(id *)a6
+- (id)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)identifiers momentLocalIdentifiers:(id)localIdentifiers options:(id)options error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifiersCopy = identifiers;
+  localIdentifiersCopy = localIdentifiers;
+  optionsCopy = options;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -4702,7 +4702,7 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestBatchSuggestedRecipientsF
   v34 = __Block_byref_object_copy__111939;
   v35 = __Block_byref_object_dispose__111940;
   v36 = 0;
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14 = PLPhotoAnalysisQueriesGetLog();
   v15 = os_signpost_id_generate(v14);
   info = 0;
@@ -4728,9 +4728,9 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestBatchSuggestedRecipientsF
   v28[3] = &unk_1E7577408;
   v28[4] = &v43;
   v28[5] = &v31;
-  [v19 requestSuggestedRecipientsForAssetLocalIdentifiers:v10 momentLocalIdentifiers:v11 options:v12 context:v13 reply:v28];
+  [v19 requestSuggestedRecipientsForAssetLocalIdentifiers:identifiersCopy momentLocalIdentifiers:localIdentifiersCopy options:optionsCopy context:requestContextDictionary reply:v28];
 
-  if (a6 && !v44[5])
+  if (error && !v44[5])
   {
     v20 = v38[5];
     if (!v20)
@@ -4738,7 +4738,7 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestBatchSuggestedRecipientsF
       v20 = v32[5];
     }
 
-    *a6 = v20;
+    *error = v20;
   }
 
   v21 = mach_absolute_time();
@@ -4785,9 +4785,9 @@ void __127__PLPhotoAnalysisServiceClient_Graph__requestSuggestedRecipientsForAss
   *(v9 + 40) = v6;
 }
 
-- (BOOL)requestTitleForPersonLocalIdentifiers:(id)a3 format:(int64_t)a4 title:(id *)a5 subtitle:(id *)a6 error:(id *)a7
+- (BOOL)requestTitleForPersonLocalIdentifiers:(id)identifiers format:(int64_t)format title:(id *)title subtitle:(id *)subtitle error:(id *)error
 {
-  v12 = a3;
+  identifiersCopy = identifiers;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4806,7 +4806,7 @@ void __127__PLPhotoAnalysisServiceClient_Graph__requestSuggestedRecipientsForAss
   v22 = __Block_byref_object_copy__111939;
   v23 = __Block_byref_object_dispose__111940;
   v24 = 0;
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __105__PLPhotoAnalysisServiceClient_Graph__requestTitleForPersonLocalIdentifiers_format_title_subtitle_error___block_invoke;
@@ -4820,21 +4820,21 @@ void __127__PLPhotoAnalysisServiceClient_Graph__requestSuggestedRecipientsForAss
   v17[4] = &v31;
   v17[5] = &v25;
   v17[6] = &v19;
-  [v14 requestTitleForPersonLocalIdentifiers:v12 format:a4 context:v13 reply:v17];
+  [v14 requestTitleForPersonLocalIdentifiers:identifiersCopy format:format context:requestContextDictionary reply:v17];
 
-  if (a5)
+  if (title)
   {
-    *a5 = v32[5];
+    *title = v32[5];
   }
 
-  if (a6)
+  if (subtitle)
   {
-    *a6 = v26[5];
+    *subtitle = v26[5];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v20[5];
+    *error = v20[5];
   }
 
   v15 = v20[5] == 0;
@@ -4862,9 +4862,9 @@ void __105__PLPhotoAnalysisServiceClient_Graph__requestTitleForPersonLocalIdenti
   }
 }
 
-- (BOOL)requestTitleForAssetCollectionWithLocalIdentifier:(id)a3 format:(int64_t)a4 title:(id *)a5 subtitle:(id *)a6 error:(id *)a7
+- (BOOL)requestTitleForAssetCollectionWithLocalIdentifier:(id)identifier format:(int64_t)format title:(id *)title subtitle:(id *)subtitle error:(id *)error
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4883,7 +4883,7 @@ void __105__PLPhotoAnalysisServiceClient_Graph__requestTitleForPersonLocalIdenti
   v22 = __Block_byref_object_copy__111939;
   v23 = __Block_byref_object_dispose__111940;
   v24 = 0;
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __117__PLPhotoAnalysisServiceClient_Graph__requestTitleForAssetCollectionWithLocalIdentifier_format_title_subtitle_error___block_invoke;
@@ -4897,21 +4897,21 @@ void __105__PLPhotoAnalysisServiceClient_Graph__requestTitleForPersonLocalIdenti
   v17[4] = &v31;
   v17[5] = &v25;
   v17[6] = &v19;
-  [v14 requestTitleForAssetCollectionWithLocalIdentifier:v12 format:a4 context:v13 reply:v17];
+  [v14 requestTitleForAssetCollectionWithLocalIdentifier:identifierCopy format:format context:requestContextDictionary reply:v17];
 
-  if (a5)
+  if (title)
   {
-    *a5 = v32[5];
+    *title = v32[5];
   }
 
-  if (a6)
+  if (subtitle)
   {
-    *a6 = v26[5];
+    *subtitle = v26[5];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v20[5];
+    *error = v20[5];
   }
 
   v15 = v20[5] == 0;
@@ -4939,9 +4939,9 @@ void __117__PLPhotoAnalysisServiceClient_Graph__requestTitleForAssetCollectionWi
   }
 }
 
-- (BOOL)requestTitleForCollectionMomentListWithLocalIdentifier:(id)a3 format:(int64_t)a4 title:(id *)a5 subtitle:(id *)a6 error:(id *)a7
+- (BOOL)requestTitleForCollectionMomentListWithLocalIdentifier:(id)identifier format:(int64_t)format title:(id *)title subtitle:(id *)subtitle error:(id *)error
 {
-  v12 = a3;
+  identifierCopy = identifier;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4960,7 +4960,7 @@ void __117__PLPhotoAnalysisServiceClient_Graph__requestTitleForAssetCollectionWi
   v22 = __Block_byref_object_copy__111939;
   v23 = __Block_byref_object_dispose__111940;
   v24 = 0;
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentListWithLocalIdentifier_format_title_subtitle_error___block_invoke;
@@ -4974,21 +4974,21 @@ void __117__PLPhotoAnalysisServiceClient_Graph__requestTitleForAssetCollectionWi
   v17[4] = &v31;
   v17[5] = &v25;
   v17[6] = &v19;
-  [v14 requestTitleForCollectionMomentListWithLocalIdentifier:v12 format:a4 context:v13 reply:v17];
+  [v14 requestTitleForCollectionMomentListWithLocalIdentifier:identifierCopy format:format context:requestContextDictionary reply:v17];
 
-  if (a5)
+  if (title)
   {
-    *a5 = v32[5];
+    *title = v32[5];
   }
 
-  if (a6)
+  if (subtitle)
   {
-    *a6 = v26[5];
+    *subtitle = v26[5];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v20[5];
+    *error = v20[5];
   }
 
   v15 = v20[5] == 0;
@@ -5016,10 +5016,10 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
   }
 }
 
-- (BOOL)requestSetDefaultsObject:(id)a3 forKey:(id)a4 withError:(id *)a5
+- (BOOL)requestSetDefaultsObject:(id)object forKey:(id)key withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -5032,7 +5032,7 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
   v20 = __Block_byref_object_copy__111939;
   v21 = __Block_byref_object_dispose__111940;
   v22 = 0;
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __81__PLPhotoAnalysisServiceClient_Graph__requestSetDefaultsObject_forKey_withError___block_invoke;
@@ -5044,9 +5044,9 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
   v15[2] = __81__PLPhotoAnalysisServiceClient_Graph__requestSetDefaultsObject_forKey_withError___block_invoke_2;
   v15[3] = &unk_1E75773B8;
   v15[4] = &v17;
-  [v11 requestSetDefaultsObject:v8 forKey:v9 context:v10 reply:v15];
+  [v11 requestSetDefaultsObject:objectCopy forKey:keyCopy context:requestContextDictionary reply:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v24[5];
     if (!v12)
@@ -5054,7 +5054,7 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
       v12 = v18[5];
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   if (v24[5])
@@ -5073,9 +5073,9 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
   return v13;
 }
 
-- (id)requestDefaultsObjectForKey:(id)a3 withError:(id *)a4
+- (id)requestDefaultsObjectForKey:(id)key withError:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -5094,7 +5094,7 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
   v17 = __Block_byref_object_copy__111939;
   v18 = __Block_byref_object_dispose__111940;
   v19 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withError___block_invoke;
@@ -5107,9 +5107,9 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
   v12[3] = &unk_1E7577520;
   v12[4] = &v14;
   v12[5] = &v20;
-  [v8 requestDefaultsObjectForKey:v6 context:v7 reply:v12];
+  [v8 requestDefaultsObjectForKey:keyCopy context:requestContextDictionary reply:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v27[5];
     if (!v9)
@@ -5117,7 +5117,7 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestTitleForCollectionMomentL
       v9 = v21[5];
     }
 
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v15[5];
@@ -5144,7 +5144,7 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   *(v9 + 40) = v6;
 }
 
-- (BOOL)requestInvalidatePersistentCaches:(id *)a3
+- (BOOL)requestInvalidatePersistentCaches:(id *)caches
 {
   v12 = 0;
   v13 = &v12;
@@ -5152,7 +5152,7 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v15 = __Block_byref_object_copy__111939;
   v16 = __Block_byref_object_dispose__111940;
   v17 = 0;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PLPhotoAnalysisServiceClient_Graph__requestInvalidatePersistentCaches___block_invoke;
@@ -5164,13 +5164,13 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v10[2] = __73__PLPhotoAnalysisServiceClient_Graph__requestInvalidatePersistentCaches___block_invoke_2;
   v10[3] = &unk_1E75773B8;
   v10[4] = &v12;
-  [v6 requestInvalidateServicePersistentCachesWithContext:v5 reply:v10];
+  [v6 requestInvalidateServicePersistentCachesWithContext:requestContextDictionary reply:v10];
 
   v7 = v13[5];
-  if (a3 && v7)
+  if (caches && v7)
   {
     v7 = v7;
-    *a3 = v7;
+    *caches = v7;
   }
 
   v8 = v7 == 0;
@@ -5179,7 +5179,7 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   return v8;
 }
 
-- (BOOL)requestInvalidateTransientCaches:(id *)a3
+- (BOOL)requestInvalidateTransientCaches:(id *)caches
 {
   v12 = 0;
   v13 = &v12;
@@ -5187,7 +5187,7 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v15 = __Block_byref_object_copy__111939;
   v16 = __Block_byref_object_dispose__111940;
   v17 = 0;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__PLPhotoAnalysisServiceClient_Graph__requestInvalidateTransientCaches___block_invoke;
@@ -5199,13 +5199,13 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v10[2] = __72__PLPhotoAnalysisServiceClient_Graph__requestInvalidateTransientCaches___block_invoke_2;
   v10[3] = &unk_1E75773B8;
   v10[4] = &v12;
-  [v6 requestInvalidateServiceTransientCachesWithContext:v5 reply:v10];
+  [v6 requestInvalidateServiceTransientCachesWithContext:requestContextDictionary reply:v10];
 
   v7 = v13[5];
-  if (a3 && v7)
+  if (caches && v7)
   {
     v7 = v7;
-    *a3 = v7;
+    *caches = v7;
   }
 
   v8 = v7 == 0;
@@ -5214,15 +5214,15 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   return v8;
 }
 
-- (void)requestGraphRebuildFractionCompletedWithReply:(id)a3
+- (void)requestGraphRebuildFractionCompletedWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__PLPhotoAnalysisServiceClient_Graph__requestGraphRebuildFractionCompletedWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
   v7 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -5231,12 +5231,12 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v9[3] = &unk_1E7577480;
   v10 = v6;
   v8 = v6;
-  [v7 requestGraphRebuildFractionCompletedWithContext:v5 reply:v9];
+  [v7 requestGraphRebuildFractionCompletedWithContext:requestContextDictionary reply:v9];
 }
 
-- (id)requestGraphPerformQuery:(id)a3 error:(id *)a4
+- (id)requestGraphPerformQuery:(id)query error:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5255,7 +5255,7 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__PLPhotoAnalysisServiceClient_Graph__requestGraphPerformQuery_error___block_invoke;
@@ -5268,10 +5268,10 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestGraphServicePerformsQueryWithContext:v7 query:v6 reply:v13];
+  [v8 requestGraphServicePerformsQueryWithContext:requestContextDictionary query:queryCopy reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -5279,7 +5279,7 @@ void __77__PLPhotoAnalysisServiceClient_Graph__requestDefaultsObjectForKey_withE
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -5307,7 +5307,7 @@ void __70__PLPhotoAnalysisServiceClient_Graph__requestGraphPerformQuery_error___
   *(v9 + 40) = v6;
 }
 
-- (id)requestGraphStatus:(id *)a3
+- (id)requestGraphStatus:(id *)status
 {
   v25 = 0;
   v26 = &v25;
@@ -5327,7 +5327,7 @@ void __70__PLPhotoAnalysisServiceClient_Graph__requestGraphPerformQuery_error___
   v16 = __Block_byref_object_copy__111939;
   v17 = __Block_byref_object_dispose__111940;
   v18 = 0;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__PLPhotoAnalysisServiceClient_Graph__requestGraphStatus___block_invoke;
@@ -5340,7 +5340,7 @@ void __70__PLPhotoAnalysisServiceClient_Graph__requestGraphPerformQuery_error___
   v11[3] = &unk_1E75773E0;
   v11[4] = &v25;
   v11[5] = &v13;
-  [v6 requestGraphServiceStatusWithContext:v5 reply:v11];
+  [v6 requestGraphServiceStatusWithContext:requestContextDictionary reply:v11];
 
   if (v26[5])
   {
@@ -5348,7 +5348,7 @@ void __70__PLPhotoAnalysisServiceClient_Graph__requestGraphPerformQuery_error___
     v8 = [(PLPhotosKnowledgeGraphAvailabilityStatus *)v7 initWithDictionary:v26[5]];
   }
 
-  else if (a3)
+  else if (status)
   {
     v9 = v20[5];
     if (!v9)
@@ -5357,7 +5357,7 @@ void __70__PLPhotoAnalysisServiceClient_Graph__requestGraphPerformQuery_error___
     }
 
     v8 = 0;
-    *a3 = v9;
+    *status = v9;
   }
 
   else
@@ -5387,29 +5387,29 @@ void __58__PLPhotoAnalysisServiceClient_Graph__requestGraphStatus___block_invoke
   *(v9 + 40) = v6;
 }
 
-- (void)requestHighlightEstimatesWithReply:(id)a3
+- (void)requestHighlightEstimatesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__PLPhotoAnalysisServiceClient_Graph__requestHighlightEstimatesWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v5 = v4;
+  v5 = replyCopy;
   v12 = v5;
   v6 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__PLPhotoAnalysisServiceClient_Graph__requestHighlightEstimatesWithReply___block_invoke_2;
   v9[3] = &unk_1E75774F8;
   v10 = v5;
   v8 = v5;
-  [v6 requestHighlightEstimatesWithContext:v7 reply:v9];
+  [v6 requestHighlightEstimatesWithContext:requestContextDictionary reply:v9];
 }
 
-- (id)requestGraphStatisticsWithOptions:(id)a3 error:(id *)a4
+- (id)requestGraphStatisticsWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5428,7 +5428,7 @@ void __58__PLPhotoAnalysisServiceClient_Graph__requestGraphStatus___block_invoke
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__PLPhotoAnalysisServiceClient_Graph__requestGraphStatisticsWithOptions_error___block_invoke;
@@ -5441,10 +5441,10 @@ void __58__PLPhotoAnalysisServiceClient_Graph__requestGraphStatus___block_invoke
   v13[3] = &unk_1E75774D0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestGraphServiceStatisticsWithOptions:v6 context:v7 reply:v13];
+  [v8 requestGraphServiceStatisticsWithOptions:optionsCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -5452,7 +5452,7 @@ void __58__PLPhotoAnalysisServiceClient_Graph__requestGraphStatus___block_invoke
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -5480,9 +5480,9 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestGraphStatisticsWithOptions
   *(v9 + 40) = v6;
 }
 
-- (id)requestExportGraphForPurpose:(id)a3 error:(id *)a4
+- (id)requestExportGraphForPurpose:(id)purpose error:(id *)error
 {
-  v6 = a3;
+  purposeCopy = purpose;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5501,7 +5501,7 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestGraphStatisticsWithOptions
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__PLPhotoAnalysisServiceClient_Graph__requestExportGraphForPurpose_error___block_invoke;
@@ -5514,10 +5514,10 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestGraphStatisticsWithOptions
   v13[3] = &unk_1E75774D0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestExportGraphServiceForPurpose:v6 context:v7 reply:v13];
+  [v8 requestExportGraphServiceForPurpose:purposeCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -5525,7 +5525,7 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestGraphStatisticsWithOptions
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -5553,9 +5553,9 @@ void __74__PLPhotoAnalysisServiceClient_Graph__requestExportGraphForPurpose_erro
   *(v9 + 40) = v6;
 }
 
-- (id)requestSuggestionInfosWithOptions:(id)a3 error:(id *)a4
+- (id)requestSuggestionInfosWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5580,17 +5580,17 @@ void __74__PLPhotoAnalysisServiceClient_Graph__requestExportGraphForPurpose_erro
   v14[3] = &unk_1E75773B8;
   v14[4] = &v21;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__PLPhotoAnalysisServiceClient_Graph__requestSuggestionInfosWithOptions_error___block_invoke_2;
   v13[3] = &unk_1E7577408;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v7 requestSuggestionInfosWithOptions:v6 context:v8 reply:v13];
+  [v7 requestSuggestionInfosWithOptions:optionsCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -5598,7 +5598,7 @@ void __74__PLPhotoAnalysisServiceClient_Graph__requestExportGraphForPurpose_erro
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -5625,9 +5625,9 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestSuggestionInfosWithOptions
   *(v9 + 40) = v6;
 }
 
-- (id)requestAvailableSuggestionTypeInfosWithOptions:(id)a3 error:(id *)a4
+- (id)requestAvailableSuggestionTypeInfosWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5652,17 +5652,17 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestSuggestionInfosWithOptions
   v14[3] = &unk_1E75773B8;
   v14[4] = &v21;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __92__PLPhotoAnalysisServiceClient_Graph__requestAvailableSuggestionTypeInfosWithOptions_error___block_invoke_2;
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v7 requestAvailableSuggestionTypeInfosWithOptions:v6 context:v8 reply:v13];
+  [v7 requestAvailableSuggestionTypeInfosWithOptions:optionsCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -5670,7 +5670,7 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestSuggestionInfosWithOptions
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -5697,10 +5697,10 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestAvailableSuggestionTypeInf
   *(v9 + 40) = v6;
 }
 
-- (id)requestCurationOfLength:(unint64_t)a3 forMemoryForLocalIdentifier:(id)a4 withOptions:(id)a5 error:(id *)a6
+- (id)requestCurationOfLength:(unint64_t)length forMemoryForLocalIdentifier:(id)identifier withOptions:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -5725,17 +5725,17 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestAvailableSuggestionTypeInf
   v19[3] = &unk_1E75773B8;
   v19[4] = &v26;
   v12 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v19];
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __109__PLPhotoAnalysisServiceClient_Graph__requestCurationOfLength_forMemoryForLocalIdentifier_withOptions_error___block_invoke_2;
   v18[3] = &unk_1E7577408;
   v18[4] = &v32;
   v18[5] = &v20;
-  [v12 requestCurationOfLength:a3 forMemoryForLocalIdentifier:v10 withOptions:v11 context:v13 reply:v18];
+  [v12 requestCurationOfLength:length forMemoryForLocalIdentifier:identifierCopy withOptions:optionsCopy context:requestContextDictionary reply:v18];
 
   v14 = v33[5];
-  if (a6 && !v14)
+  if (error && !v14)
   {
     v15 = v27[5];
     if (!v15)
@@ -5743,7 +5743,7 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestAvailableSuggestionTypeInf
       v15 = v21[5];
     }
 
-    *a6 = v15;
+    *error = v15;
     v14 = v33[5];
   }
 
@@ -5770,9 +5770,9 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestCurationOfLength_forMemor
   *(v9 + 40) = v6;
 }
 
-- (id)requestMemoryDebugInformationForMemoryWithLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestMemoryDebugInformationForMemoryWithLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -5797,17 +5797,17 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestCurationOfLength_forMemor
   v14[3] = &unk_1E75773B8;
   v14[4] = &v21;
   v7 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __103__PLPhotoAnalysisServiceClient_Graph__requestMemoryDebugInformationForMemoryWithLocalIdentifier_error___block_invoke_2;
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v7 requestMemoryDebugInformationForMemoryWithLocalIdentifier:v6 context:v8 reply:v13];
+  [v7 requestMemoryDebugInformationForMemoryWithLocalIdentifier:identifierCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -5815,7 +5815,7 @@ void __109__PLPhotoAnalysisServiceClient_Graph__requestCurationOfLength_forMemor
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -5842,10 +5842,10 @@ void __103__PLPhotoAnalysisServiceClient_Graph__requestMemoryDebugInformationFor
   *(v9 + 40) = v6;
 }
 
-- (id)requestSummaryCurationForHighlightLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)requestSummaryCurationForHighlightLocalIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -5870,17 +5870,17 @@ void __103__PLPhotoAnalysisServiceClient_Graph__requestMemoryDebugInformationFor
   v17[3] = &unk_1E75773B8;
   v17[4] = &v24;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v17];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __103__PLPhotoAnalysisServiceClient_Graph__requestSummaryCurationForHighlightLocalIdentifier_options_error___block_invoke_2;
   v16[3] = &unk_1E7577408;
   v16[4] = &v30;
   v16[5] = &v18;
-  [v10 requestSummaryCurationForHighlightLocalIdentifier:v8 options:v9 context:v11 reply:v16];
+  [v10 requestSummaryCurationForHighlightLocalIdentifier:identifierCopy options:optionsCopy context:requestContextDictionary reply:v16];
 
   v12 = v31[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v13 = v25[5];
     if (!v13)
@@ -5888,7 +5888,7 @@ void __103__PLPhotoAnalysisServiceClient_Graph__requestMemoryDebugInformationFor
       v13 = v19[5];
     }
 
-    *a5 = v13;
+    *error = v13;
     v12 = v31[5];
   }
 
@@ -5915,10 +5915,10 @@ void __103__PLPhotoAnalysisServiceClient_Graph__requestSummaryCurationForHighlig
   *(v9 + 40) = v6;
 }
 
-- (id)requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -5943,17 +5943,17 @@ void __103__PLPhotoAnalysisServiceClient_Graph__requestSummaryCurationForHighlig
   v17[3] = &unk_1E75773B8;
   v17[4] = &v24;
   v10 = [(PLPhotoAnalysisServiceClient *)self synchronousRemoteObjectProxyWithErrorHandler:v17];
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __122__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationForAssetCollectionWithLocalIdentifier_options_error___block_invoke_2;
   v16[3] = &unk_1E75773E0;
   v16[4] = &v30;
   v16[5] = &v18;
-  [v10 requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:v8 options:v9 context:v11 reply:v16];
+  [v10 requestCurationDebugInformationForAssetCollectionWithLocalIdentifier:identifierCopy options:optionsCopy context:requestContextDictionary reply:v16];
 
   v12 = v31[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v13 = v25[5];
     if (!v13)
@@ -5961,7 +5961,7 @@ void __103__PLPhotoAnalysisServiceClient_Graph__requestSummaryCurationForHighlig
       v13 = v19[5];
     }
 
-    *a5 = v13;
+    *error = v13;
     v12 = v31[5];
   }
 
@@ -5988,9 +5988,9 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   *(v9 + 40) = v6;
 }
 
-- (id)requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6009,7 +6009,7 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __126__PLPhotoAnalysisServiceClient_Graph__requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier_error___block_invoke;
@@ -6022,10 +6022,10 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:v6 context:v7 reply:v13];
+  [v8 requestSharingMessageSuggestionDebugInformationForAssetCollectionLocalIdentifier:identifierCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6033,7 +6033,7 @@ void __122__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6061,9 +6061,9 @@ void __126__PLPhotoAnalysisServiceClient_Graph__requestSharingMessageSuggestionD
   *(v9 + 40) = v6;
 }
 
-- (id)requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6082,7 +6082,7 @@ void __126__PLPhotoAnalysisServiceClient_Graph__requestSharingMessageSuggestionD
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __119__PLPhotoAnalysisServiceClient_Graph__requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier_error___block_invoke;
@@ -6095,10 +6095,10 @@ void __126__PLPhotoAnalysisServiceClient_Graph__requestSharingMessageSuggestionD
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:v6 context:v7 reply:v13];
+  [v8 requestSharingSuggestionDebugInformationForAssetCollectionLocalIdentifier:identifierCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6106,7 +6106,7 @@ void __126__PLPhotoAnalysisServiceClient_Graph__requestSharingMessageSuggestionD
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6134,7 +6134,7 @@ void __119__PLPhotoAnalysisServiceClient_Graph__requestSharingSuggestionDebugInf
   *(v9 + 40) = v6;
 }
 
-- (id)requestUtilityAssetInformationWithError:(id *)a3
+- (id)requestUtilityAssetInformationWithError:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -6154,7 +6154,7 @@ void __119__PLPhotoAnalysisServiceClient_Graph__requestSharingSuggestionDebugInf
   v16 = __Block_byref_object_copy__111939;
   v17 = __Block_byref_object_dispose__111940;
   v18 = 0;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetInformationWithError___block_invoke;
@@ -6167,10 +6167,10 @@ void __119__PLPhotoAnalysisServiceClient_Graph__requestSharingSuggestionDebugInf
   v11[3] = &unk_1E75773E0;
   v11[4] = &v25;
   v11[5] = &v13;
-  [v6 requestUtilityAssetInformationWithContext:v5 reply:v11];
+  [v6 requestUtilityAssetInformationWithContext:requestContextDictionary reply:v11];
 
   v7 = v26[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
     v8 = v20[5];
     if (!v8)
@@ -6178,7 +6178,7 @@ void __119__PLPhotoAnalysisServiceClient_Graph__requestSharingSuggestionDebugInf
       v8 = v14[5];
     }
 
-    *a3 = v8;
+    *error = v8;
     v7 = v26[5];
   }
 
@@ -6206,9 +6206,9 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetInformationWit
   *(v9 + 40) = v6;
 }
 
-- (id)requestCurationDebugInformationForAssetLocalIdentifier:(id)a3 error:(id *)a4
+- (id)requestCurationDebugInformationForAssetLocalIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6227,7 +6227,7 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetInformationWit
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationForAssetLocalIdentifier_error___block_invoke;
@@ -6240,10 +6240,10 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetInformationWit
   v13[3] = &unk_1E75773E0;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestCurationDebugInformationForAsset:v6 context:v7 reply:v13];
+  [v8 requestCurationDebugInformationForAsset:identifierCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6251,7 +6251,7 @@ void __79__PLPhotoAnalysisServiceClient_Graph__requestUtilityAssetInformationWit
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6279,16 +6279,16 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   *(v9 + 40) = v6;
 }
 
-- (void)requestOnDemandTasksWithOptions:(id)a3 reply:(id)a4
+- (void)requestOnDemandTasksWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__PLPhotoAnalysisServiceClient_Graph__requestOnDemandTasksWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -6297,19 +6297,19 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   v12[3] = &unk_1E75774A8;
   v13 = v9;
   v11 = v9;
-  [v10 requestOnDemandTasksWithOptions:v7 context:v8 reply:v12];
+  [v10 requestOnDemandTasksWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)notifyWhenGraphReadyWithCoalescingIdentifier:(id)a3 reply:(id)a4
+- (void)notifyWhenGraphReadyWithCoalescingIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__PLPhotoAnalysisServiceClient_Graph__notifyWhenGraphReadyWithCoalescingIdentifier_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -6318,10 +6318,10 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   v12[3] = &unk_1E75774A8;
   v13 = v9;
   v11 = v9;
-  [v10 notifyWhenGraphReadyWithCoalescingIdentifier:v7 context:v8 reply:v12];
+  [v10 notifyWhenGraphReadyWithCoalescingIdentifier:identifierCopy context:requestContextDictionary reply:v12];
 }
 
-- (id)requestSignalModelInfosWithError:(id *)a3
+- (id)requestSignalModelInfosWithError:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -6341,7 +6341,7 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   v16 = __Block_byref_object_copy__111939;
   v17 = __Block_byref_object_dispose__111940;
   v18 = 0;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__PLPhotoAnalysisServiceClient_Graph__requestSignalModelInfosWithError___block_invoke;
@@ -6354,10 +6354,10 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
   v11[3] = &unk_1E75773E0;
   v11[4] = &v25;
   v11[5] = &v13;
-  [v6 requestSignalModelInfosWithContext:v5 reply:v11];
+  [v6 requestSignalModelInfosWithContext:requestContextDictionary reply:v11];
 
   v7 = v26[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
     v8 = v20[5];
     if (!v8)
@@ -6365,7 +6365,7 @@ void __100__PLPhotoAnalysisServiceClient_Graph__requestCurationDebugInformationF
       v8 = v14[5];
     }
 
-    *a3 = v8;
+    *error = v8;
     v7 = v26[5];
   }
 
@@ -6393,9 +6393,9 @@ void __72__PLPhotoAnalysisServiceClient_Graph__requestSignalModelInfosWithError_
   *(v9 + 40) = v6;
 }
 
-- (id)requestAssetsForPersonLocalIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestAssetsForPersonLocalIdentifiers:(id)identifiers withError:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6414,7 +6414,7 @@ void __72__PLPhotoAnalysisServiceClient_Graph__requestSignalModelInfosWithError_
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__PLPhotoAnalysisServiceClient_Graph__requestAssetsForPersonLocalIdentifiers_withError___block_invoke;
@@ -6427,10 +6427,10 @@ void __72__PLPhotoAnalysisServiceClient_Graph__requestSignalModelInfosWithError_
   v13[3] = &unk_1E7577408;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestAssetsForPersonLocalIdentifiers:v6 context:v7 reply:v13];
+  [v8 requestAssetsForPersonLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6438,7 +6438,7 @@ void __72__PLPhotoAnalysisServiceClient_Graph__requestSignalModelInfosWithError_
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6466,9 +6466,9 @@ void __88__PLPhotoAnalysisServiceClient_Graph__requestAssetsForPersonLocalIdenti
   *(v9 + 40) = v6;
 }
 
-- (id)requestRelatedMomentsForPersonLocalIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestRelatedMomentsForPersonLocalIdentifiers:(id)identifiers withError:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6487,7 +6487,7 @@ void __88__PLPhotoAnalysisServiceClient_Graph__requestAssetsForPersonLocalIdenti
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __96__PLPhotoAnalysisServiceClient_Graph__requestRelatedMomentsForPersonLocalIdentifiers_withError___block_invoke;
@@ -6500,10 +6500,10 @@ void __88__PLPhotoAnalysisServiceClient_Graph__requestAssetsForPersonLocalIdenti
   v13[3] = &unk_1E7577408;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestRelatedMomentsForPersonLocalIdentifiers:v6 context:v7 reply:v13];
+  [v8 requestRelatedMomentsForPersonLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6511,7 +6511,7 @@ void __88__PLPhotoAnalysisServiceClient_Graph__requestAssetsForPersonLocalIdenti
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6539,9 +6539,9 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestRelatedMomentsForPersonLoc
   *(v9 + 40) = v6;
 }
 
-- (id)requestSocialGroupsOverlappingMemberLocalIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestSocialGroupsOverlappingMemberLocalIdentifiers:(id)identifiers withError:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6560,7 +6560,7 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestRelatedMomentsForPersonLoc
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __102__PLPhotoAnalysisServiceClient_Graph__requestSocialGroupsOverlappingMemberLocalIdentifiers_withError___block_invoke;
@@ -6573,10 +6573,10 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestRelatedMomentsForPersonLoc
   v13[3] = &unk_1E7577408;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestSocialGroupsOverlappingMemberLocalIdentifiers:v6 context:v7 reply:v13];
+  [v8 requestSocialGroupsOverlappingMemberLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6584,7 +6584,7 @@ void __96__PLPhotoAnalysisServiceClient_Graph__requestRelatedMomentsForPersonLoc
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6612,10 +6612,10 @@ void __102__PLPhotoAnalysisServiceClient_Graph__requestSocialGroupsOverlappingMe
   *(v9 + 40) = v6;
 }
 
-- (id)requestAllSocialGroupsForMemberLocalIdentifier:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (id)requestAllSocialGroupsForMemberLocalIdentifier:(id)identifier withOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -6634,7 +6634,7 @@ void __102__PLPhotoAnalysisServiceClient_Graph__requestSocialGroupsOverlappingMe
   v21 = __Block_byref_object_copy__111939;
   v22 = __Block_byref_object_dispose__111940;
   v23 = 0;
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __104__PLPhotoAnalysisServiceClient_Graph__requestAllSocialGroupsForMemberLocalIdentifier_withOptions_error___block_invoke;
@@ -6647,10 +6647,10 @@ void __102__PLPhotoAnalysisServiceClient_Graph__requestSocialGroupsOverlappingMe
   v16[3] = &unk_1E7577408;
   v16[4] = &v30;
   v16[5] = &v18;
-  [v11 requestAllSocialGroupsForMemberLocalIdentifier:v8 options:v9 context:v10 reply:v16];
+  [v11 requestAllSocialGroupsForMemberLocalIdentifier:identifierCopy options:optionsCopy context:requestContextDictionary reply:v16];
 
   v12 = v31[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v13 = v25[5];
     if (!v13)
@@ -6658,7 +6658,7 @@ void __102__PLPhotoAnalysisServiceClient_Graph__requestSocialGroupsOverlappingMe
       v13 = v19[5];
     }
 
-    *a5 = v13;
+    *error = v13;
     v12 = v31[5];
   }
 
@@ -6686,9 +6686,9 @@ void __104__PLPhotoAnalysisServiceClient_Graph__requestAllSocialGroupsForMemberL
   *(v9 + 40) = v6;
 }
 
-- (id)requestSortedArrayOfPersonLocalIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestSortedArrayOfPersonLocalIdentifiers:(id)identifiers withError:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -6707,7 +6707,7 @@ void __104__PLPhotoAnalysisServiceClient_Graph__requestAllSocialGroupsForMemberL
   v18 = __Block_byref_object_copy__111939;
   v19 = __Block_byref_object_dispose__111940;
   v20 = 0;
-  v7 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalIdentifiers_withError___block_invoke;
@@ -6720,10 +6720,10 @@ void __104__PLPhotoAnalysisServiceClient_Graph__requestAllSocialGroupsForMemberL
   v13[3] = &unk_1E7577408;
   v13[4] = &v27;
   v13[5] = &v15;
-  [v8 requestSortedArrayOfPersonLocalIdentifiers:v6 context:v7 reply:v13];
+  [v8 requestSortedArrayOfPersonLocalIdentifiers:identifiersCopy context:requestContextDictionary reply:v13];
 
   v9 = v28[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v22[5];
     if (!v10)
@@ -6731,7 +6731,7 @@ void __104__PLPhotoAnalysisServiceClient_Graph__requestAllSocialGroupsForMemberL
       v10 = v16[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = v28[5];
   }
 
@@ -6759,107 +6759,107 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   *(v9 + 40) = v6;
 }
 
-- (void)requestMaestroSongsWithOptions:(id)a3 reply:(id)a4
+- (void)requestMaestroSongsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__PLPhotoAnalysisServiceClient_Graph__requestMaestroSongsWithOptions_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestMaestroSongsWithOptions:v7 context:v8 reply:v9];
+  [v10 requestMaestroSongsWithOptions:optionsCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestRecentlyUsedSongsWithOptions:(id)a3 reply:(id)a4
+- (void)requestRecentlyUsedSongsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__PLPhotoAnalysisServiceClient_Graph__requestRecentlyUsedSongsWithOptions_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestRecentlyUsedSongsWithOptions:v7 context:v8 reply:v9];
+  [v10 requestRecentlyUsedSongsWithOptions:optionsCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestFlexMusicCurationWithOptions:(id)a3 reply:(id)a4
+- (void)requestFlexMusicCurationWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__PLPhotoAnalysisServiceClient_Graph__requestFlexMusicCurationWithOptions_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestFlexMusicCurationWithOptions:v7 context:v8 reply:v9];
+  [v10 requestFlexMusicCurationWithOptions:optionsCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestMusicCurationWithOptions:(id)a3 reply:(id)a4
+- (void)requestMusicCurationWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PLPhotoAnalysisServiceClient_Graph__requestMusicCurationWithOptions_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestMusicCurationWithOptions:v7 context:v8 reply:v9];
+  [v10 requestMusicCurationWithOptions:optionsCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestCacheSongSourceWithOptions:(id)a3 reply:(id)a4
+- (void)requestCacheSongSourceWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__PLPhotoAnalysisServiceClient_Graph__requestCacheSongSourceWithOptions_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestCacheSongSourceWithOptions:v7 context:v8 reply:v9];
+  [v10 requestCacheSongSourceWithOptions:optionsCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestMusicCatalogAdamIDsForPurchasedSongID:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestMusicCatalogAdamIDsForPurchasedSongID:(id)d options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  dCopy = d;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__PLPhotoAnalysisServiceClient_Graph__requestMusicCatalogAdamIDsForPurchasedSongID_options_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  [v13 requestMusicCatalogAdamIDsForPurchasedSongID:v10 options:v9 context:v11 reply:v12];
+  [v13 requestMusicCatalogAdamIDsForPurchasedSongID:dCopy options:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestClearMusicCacheWithOptions:(id)a3 reply:(id)a4
+- (void)requestClearMusicCacheWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__PLPhotoAnalysisServiceClient_Graph__requestClearMusicCacheWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -6868,187 +6868,187 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v12[3] = &unk_1E7577430;
   v13 = v9;
   v11 = v9;
-  [v10 requestClearMusicCacheWithOptions:v7 context:v8 reply:v12];
+  [v10 requestClearMusicCacheWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 reply:(id)a4
+- (void)requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __123__PLPhotoAnalysisServiceClient_Graph__requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:v7 context:v8 reply:v9];
+  [v10 requestFlexMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:identifierCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestFlexMusicCurationDebugInformationForSongWithUID:(id)a3 reply:(id)a4
+- (void)requestFlexMusicCurationDebugInformationForSongWithUID:(id)d reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  dCopy = d;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __100__PLPhotoAnalysisServiceClient_Graph__requestFlexMusicCurationDebugInformationForSongWithUID_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestFlexMusicCurationDebugInformationForSongWithUID:v7 context:v8 reply:v9];
+  [v10 requestFlexMusicCurationDebugInformationForSongWithUID:dCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)a3 reply:(id)a4
+- (void)requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __119__PLPhotoAnalysisServiceClient_Graph__requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:v7 context:v8 reply:v9];
+  [v10 requestMusicCurationDebugInformationForAssetCollectionWithLocalIdentifier:identifierCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestMusicCurationDebugInformationForSongWithAdamID:(id)a3 reply:(id)a4
+- (void)requestMusicCurationDebugInformationForSongWithAdamID:(id)d reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  dCopy = d;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __99__PLPhotoAnalysisServiceClient_Graph__requestMusicCurationDebugInformationForSongWithAdamID_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestMusicCurationDebugInformationForSongWithAdamID:v7 context:v8 reply:v9];
+  [v10 requestMusicCurationDebugInformationForSongWithAdamID:dCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestPrecachingOfAudioDataForAdamIDs:(id)a3 reply:(id)a4
+- (void)requestPrecachingOfAudioDataForAdamIDs:(id)ds reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  dsCopy = ds;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PLPhotoAnalysisServiceClient_Graph__requestPrecachingOfAudioDataForAdamIDs_reply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v12 = v6;
-  v9 = v6;
+  v12 = replyCopy;
+  v9 = replyCopy;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
-  [v10 requestPrecachingOfAudioDataForAdamIDs:v7 context:v8 reply:v9];
+  [v10 requestPrecachingOfAudioDataForAdamIDs:dsCopy context:requestContextDictionary reply:v9];
 }
 
-- (void)requestMusicCacheStatusWithReply:(id)a3
+- (void)requestMusicCacheStatusWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__PLPhotoAnalysisServiceClient_Graph__requestMusicCacheStatusWithReply___block_invoke;
   v8[3] = &unk_1E7577430;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v8];
-  [v7 requestMusicCacheStatusWithContext:v5 reply:v6];
+  [v7 requestMusicCacheStatusWithContext:requestContextDictionary reply:v6];
 }
 
-- (void)requestSongsForAdamIDs:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestSongsForAdamIDs:(id)ds options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  dsCopy = ds;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__PLPhotoAnalysisServiceClient_Graph__requestSongsForAdamIDs_options_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  [v13 requestSongsForAdamIDs:v10 options:v9 context:v11 reply:v12];
+  [v13 requestSongsForAdamIDs:dsCopy options:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestFlexMusicCurationForAssetLocalIdentifiers:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestFlexMusicCurationForAssetLocalIdentifiers:(id)identifiers options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __102__PLPhotoAnalysisServiceClient_Graph__requestFlexMusicCurationForAssetLocalIdentifiers_options_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  [v13 requestFlexMusicCurationForAssetLocalIdentifiers:v10 options:v9 context:v11 reply:v12];
+  [v13 requestFlexMusicCurationForAssetLocalIdentifiers:identifiersCopy options:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestFlexMusicCurationForAssetCollectionLocalIdentifier:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestFlexMusicCurationForAssetCollectionLocalIdentifier:(id)identifier options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __111__PLPhotoAnalysisServiceClient_Graph__requestFlexMusicCurationForAssetCollectionLocalIdentifier_options_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  [v13 requestFlexMusicCurationForAssetCollectionLocalIdentifier:v10 options:v9 context:v11 reply:v12];
+  [v13 requestFlexMusicCurationForAssetCollectionLocalIdentifier:identifierCopy options:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestMusicCurationForAssetLocalIdentifiers:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestMusicCurationForAssetLocalIdentifiers:(id)identifiers options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__PLPhotoAnalysisServiceClient_Graph__requestMusicCurationForAssetLocalIdentifiers_options_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  [v13 requestMusicCurationForAssetLocalIdentifiers:v10 options:v9 context:v11 reply:v12];
+  [v13 requestMusicCurationForAssetLocalIdentifiers:identifiersCopy options:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestMusicCurationForAssetCollectionLocalIdentifier:(id)a3 options:(id)a4 reply:(id)a5
+- (void)requestMusicCurationForAssetCollectionLocalIdentifier:(id)identifier options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __107__PLPhotoAnalysisServiceClient_Graph__requestMusicCurationForAssetCollectionLocalIdentifier_options_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v15 = v8;
-  v12 = v8;
+  v15 = replyCopy;
+  v12 = replyCopy;
   v13 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
-  [v13 requestMusicCurationForAssetCollectionLocalIdentifier:v10 options:v9 context:v11 reply:v12];
+  [v13 requestMusicCurationForAssetCollectionLocalIdentifier:identifierCopy options:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestExternalAssetRelevanceProcessingWithReply:(id)a3
+- (void)requestExternalAssetRelevanceProcessingWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PLPhotoAnalysisServiceClient_Graph__requestExternalAssetRelevanceProcessingWithReply___block_invoke;
   v11[3] = &unk_1E7577430;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
   v7 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -7057,19 +7057,19 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v9[3] = &unk_1E7577480;
   v10 = v6;
   v8 = v6;
-  [v7 requestExternalAssetRelevanceProcessingWithContext:v5 reply:v9];
+  [v7 requestExternalAssetRelevanceProcessingWithContext:requestContextDictionary reply:v9];
 }
 
-- (void)requestSyndicationProcessingWithOptions:(id)a3 reply:(id)a4
+- (void)requestSyndicationProcessingWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__PLPhotoAnalysisServiceClient_Graph__requestSyndicationProcessingWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -7078,19 +7078,19 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v12[3] = &unk_1E7577458;
   v13 = v9;
   v11 = v9;
-  [v10 requestSyndicationProcessingWithOptions:v7 context:v8 reply:v12];
+  [v10 requestSyndicationProcessingWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)requestGenerateQuestionsWithOptions:(id)a3 reply:(id)a4
+- (void)requestGenerateQuestionsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__PLPhotoAnalysisServiceClient_Graph__requestGenerateQuestionsWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -7099,19 +7099,19 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v12[3] = &unk_1E7577458;
   v13 = v9;
   v11 = v9;
-  [v10 requestGenerateQuestionsWithOptions:v7 context:v8 reply:v12];
+  [v10 requestGenerateQuestionsWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)generateSuggestionsWithOptions:(id)a3 reply:(id)a4
+- (void)generateSuggestionsWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__PLPhotoAnalysisServiceClient_Graph__generateSuggestionsWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -7120,19 +7120,19 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v12[3] = &unk_1E7577458;
   v13 = v9;
   v11 = v9;
-  [v10 generateSuggestionsWithOptions:v7 context:v8 reply:v12];
+  [v10 generateSuggestionsWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)simulateMemoriesNotificationWithOptions:(id)a3 reply:(id)a4
+- (void)simulateMemoriesNotificationWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__PLPhotoAnalysisServiceClient_Graph__simulateMemoriesNotificationWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -7141,19 +7141,19 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v12[3] = &unk_1E7577458;
   v13 = v9;
   v11 = v9;
-  [v10 simulateMemoriesNotificationWithOptions:v7 context:v8 reply:v12];
+  [v10 simulateMemoriesNotificationWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (void)generateMemoriesWithOptions:(id)a3 reply:(id)a4
+- (void)generateMemoriesWithOptions:(id)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  replyCopy = reply;
+  optionsCopy = options;
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__PLPhotoAnalysisServiceClient_Graph__generateMemoriesWithOptions_reply___block_invoke;
   v14[3] = &unk_1E7577430;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
   v10 = [(PLPhotoAnalysisServiceClient *)self remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
@@ -7162,13 +7162,13 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v12[3] = &unk_1E7577458;
   v13 = v9;
   v11 = v9;
-  [v10 generateMemoriesWithOptions:v7 context:v8 reply:v12];
+  [v10 generateMemoriesWithOptions:optionsCopy context:requestContextDictionary reply:v12];
 }
 
-- (id)requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -7187,7 +7187,7 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v21 = __Block_byref_object_copy__111939;
   v22 = __Block_byref_object_dispose__111940;
   v23 = 0;
-  v10 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __118__PLPhotoAnalysisServiceClient_Graph__requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier_options_error___block_invoke;
@@ -7200,10 +7200,10 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
   v16[3] = &unk_1E7577408;
   v16[4] = &v30;
   v16[5] = &v18;
-  [v11 requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:v8 options:v9 context:v10 reply:v16];
+  [v11 requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:identifierCopy options:optionsCopy context:requestContextDictionary reply:v16];
 
   v12 = v31[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v13 = v25[5];
     if (!v13)
@@ -7211,7 +7211,7 @@ void __92__PLPhotoAnalysisServiceClient_Graph__requestSortedArrayOfPersonLocalId
       v13 = v19[5];
     }
 
-    *a5 = v13;
+    *error = v13;
     v12 = v31[5];
   }
 
@@ -7239,10 +7239,10 @@ void __118__PLPhotoAnalysisServiceClient_Graph__requestRepresentativeAssetsForAs
   *(v9 + 40) = v6;
 }
 
-- (id)requestCuratedAssetsForAssetCollectionWithLocalIdentifier:(id)a3 duration:(unint64_t)a4 options:(id)a5 error:(id *)a6
+- (id)requestCuratedAssetsForAssetCollectionWithLocalIdentifier:(id)identifier duration:(unint64_t)duration options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -7261,7 +7261,7 @@ void __118__PLPhotoAnalysisServiceClient_Graph__requestRepresentativeAssetsForAs
   v23 = __Block_byref_object_copy__111939;
   v24 = __Block_byref_object_dispose__111940;
   v25 = 0;
-  v12 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __120__PLPhotoAnalysisServiceClient_Graph__requestCuratedAssetsForAssetCollectionWithLocalIdentifier_duration_options_error___block_invoke;
@@ -7274,10 +7274,10 @@ void __118__PLPhotoAnalysisServiceClient_Graph__requestRepresentativeAssetsForAs
   v18[3] = &unk_1E7577408;
   v18[4] = &v32;
   v18[5] = &v20;
-  [v13 requestCuratedAssetsForAssetCollectionWithLocalIdentifier:v10 duration:a4 options:v11 context:v12 reply:v18];
+  [v13 requestCuratedAssetsForAssetCollectionWithLocalIdentifier:identifierCopy duration:duration options:optionsCopy context:requestContextDictionary reply:v18];
 
   v14 = v33[5];
-  if (a6 && !v14)
+  if (error && !v14)
   {
     v15 = v27[5];
     if (!v15)
@@ -7285,7 +7285,7 @@ void __118__PLPhotoAnalysisServiceClient_Graph__requestRepresentativeAssetsForAs
       v15 = v21[5];
     }
 
-    *a6 = v15;
+    *error = v15;
     v14 = v33[5];
   }
 
@@ -7313,11 +7313,11 @@ void __120__PLPhotoAnalysisServiceClient_Graph__requestCuratedAssetsForAssetColl
   *(v9 + 40) = v6;
 }
 
-- (id)requestCuratedAssetForAssetCollectionWithLocalIdentifier:(id)a3 referenceAssetLocalIdentifier:(id)a4 options:(id)a5 error:(id *)a6
+- (id)requestCuratedAssetForAssetCollectionWithLocalIdentifier:(id)identifier referenceAssetLocalIdentifier:(id)localIdentifier options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  localIdentifierCopy = localIdentifier;
+  optionsCopy = options;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -7336,7 +7336,7 @@ void __120__PLPhotoAnalysisServiceClient_Graph__requestCuratedAssetsForAssetColl
   v24 = __Block_byref_object_copy__111939;
   v25 = __Block_byref_object_dispose__111940;
   v26 = 0;
-  v13 = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
+  requestContextDictionary = [(PLPhotoAnalysisServiceClient *)self requestContextDictionary];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __140__PLPhotoAnalysisServiceClient_Graph__requestCuratedAssetForAssetCollectionWithLocalIdentifier_referenceAssetLocalIdentifier_options_error___block_invoke;
@@ -7349,10 +7349,10 @@ void __120__PLPhotoAnalysisServiceClient_Graph__requestCuratedAssetsForAssetColl
   v19[3] = &unk_1E75773E0;
   v19[4] = &v33;
   v19[5] = &v21;
-  [v14 requestCuratedAssetForAssetCollectionWithLocalIdentifier:v10 referenceAssetLocalIdentifier:v11 options:v12 context:v13 reply:v19];
+  [v14 requestCuratedAssetForAssetCollectionWithLocalIdentifier:identifierCopy referenceAssetLocalIdentifier:localIdentifierCopy options:optionsCopy context:requestContextDictionary reply:v19];
 
   v15 = v34[5];
-  if (a6 && !v15)
+  if (error && !v15)
   {
     v16 = v28[5];
     if (!v16)
@@ -7360,7 +7360,7 @@ void __120__PLPhotoAnalysisServiceClient_Graph__requestCuratedAssetsForAssetColl
       v16 = v22[5];
     }
 
-    *a6 = v16;
+    *error = v16;
     v15 = v34[5];
   }
 

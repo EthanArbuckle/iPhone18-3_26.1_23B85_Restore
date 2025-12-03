@@ -1,7 +1,7 @@
 @interface BWInferenceEngineConfiguration
 - (BWInferenceEngineConfiguration)init;
 - (void)dealloc;
-- (void)setInferenceRequirements:(id)a3;
+- (void)setInferenceRequirements:(id)requirements;
 @end
 
 @implementation BWInferenceEngineConfiguration
@@ -27,13 +27,13 @@
   return v3;
 }
 
-- (void)setInferenceRequirements:(id)a3
+- (void)setInferenceRequirements:(id)requirements
 {
   inferenceRequirements = self->_inferenceRequirements;
-  if (inferenceRequirements != a3)
+  if (inferenceRequirements != requirements)
   {
 
-    self->_inferenceRequirements = a3;
+    self->_inferenceRequirements = requirements;
   }
 }
 

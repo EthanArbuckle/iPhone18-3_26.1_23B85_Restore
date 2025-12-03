@@ -1,29 +1,29 @@
 @interface HDHealthAppEmergencySOSManager
-- (HDHealthAppEmergencySOSManager)initWithProfile:(id)a3;
+- (HDHealthAppEmergencySOSManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)actionIdentifierForOnboardingStatus:(id)a3;
+- (id)actionIdentifierForOnboardingStatus:(id)status;
 - (id)followUpItemDescription;
 - (id)getEmergencyOnboardingStatus;
-- (id)makeFollowUpItemWithActionIdentifier:(id)a3;
+- (id)makeFollowUpItemWithActionIdentifier:(id)identifier;
 - (void)clearPendingFollowUpItems;
 - (void)getEmergencyOnboardingStatus;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)submitFollowUpItem:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)submitFollowUpItem:(id)item;
 - (void)submitSatelliteFollowUpItemIfNeeded;
 @end
 
 @implementation HDHealthAppEmergencySOSManager
 
-- (HDHealthAppEmergencySOSManager)initWithProfile:(id)a3
+- (HDHealthAppEmergencySOSManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HDHealthAppEmergencySOSManager;
   v5 = [(HDHealthAppEmergencySOSManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -40,7 +40,7 @@
   return v6;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v4 = [objc_alloc(MEMORY[0x277CCD238]) initWithDelegate:self queue:self->_queue];
   satelliteStatusClient = self->_satelliteStatusClient;
@@ -54,7 +54,7 @@
   v21 = *MEMORY[0x277D85DE8];
   if (([(HKCoreTelephonySatelliteClient *)self->_satelliteStatusClient isSatelliteSupportedForEmergencyDemo]& 1) != 0)
   {
-    v3 = [(HDHealthAppEmergencySOSManager *)self getEmergencyOnboardingStatus];
+    getEmergencyOnboardingStatus = [(HDHealthAppEmergencySOSManager *)self getEmergencyOnboardingStatus];
     _HKInitializeLogging();
     v4 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -62,14 +62,14 @@
       *buf = 138412546;
       v18 = objc_opt_class();
       v19 = 2112;
-      v20 = v3;
+      v20 = getEmergencyOnboardingStatus;
       v5 = v18;
       _os_log_impl(&dword_22939E000, v4, OS_LOG_TYPE_DEFAULT, "[%@][FollowUp] Fetched emergency onboarding status: %@", buf, 0x16u);
     }
 
-    if (v3)
+    if (getEmergencyOnboardingStatus)
     {
-      if ([v3 intValue] == 3)
+      if ([getEmergencyOnboardingStatus intValue] == 3)
       {
         _HKInitializeLogging();
         v6 = HKLogWellnessDashboard();
@@ -87,14 +87,14 @@
 
       else
       {
-        v13 = [(HDHealthAppEmergencySOSManager *)self followUpController];
+        followUpController = [(HDHealthAppEmergencySOSManager *)self followUpController];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __69__HDHealthAppEmergencySOSManager_submitSatelliteFollowUpItemIfNeeded__block_invoke;
         v15[3] = &unk_2786586A0;
         v15[4] = self;
-        v16 = v3;
-        [v13 pendingFollowUpItemsWithCompletion:v15];
+        v16 = getEmergencyOnboardingStatus;
+        [followUpController pendingFollowUpItemsWithCompletion:v15];
       }
     }
 
@@ -220,11 +220,11 @@ LABEL_20:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)actionIdentifierForOnboardingStatus:(id)a3
+- (id)actionIdentifierForOnboardingStatus:(id)status
 {
-  v3 = [a3 intValue];
+  intValue = [status intValue];
   v4 = MEMORY[0x277CCE328];
-  if (v3 != 1)
+  if (intValue != 1)
   {
     v4 = MEMORY[0x277CCE320];
   }
@@ -234,10 +234,10 @@ LABEL_20:
   return v5;
 }
 
-- (id)makeFollowUpItemWithActionIdentifier:(id)a3
+- (id)makeFollowUpItemWithActionIdentifier:(id)identifier
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x277CFE508]);
   v6 = v5;
   if (v5)
@@ -249,8 +249,8 @@ LABEL_20:
     v9 = [v8 localizedStringForKey:@"STEWIE_FOLLOW_UP_ITEM_TITLE" value:&stru_283CB5B18 table:@"Localizable"];
     [v6 setTitle:v9];
 
-    v10 = [(HDHealthAppEmergencySOSManager *)self followUpItemDescription];
-    [v6 setInformativeText:v10];
+    followUpItemDescription = [(HDHealthAppEmergencySOSManager *)self followUpItemDescription];
+    [v6 setInformativeText:followUpItemDescription];
 
     [v6 setExtensionIdentifier:*MEMORY[0x277CCE318]];
     [v6 setGroupIdentifier:*MEMORY[0x277CFE440]];
@@ -262,15 +262,15 @@ LABEL_20:
     [v6 setUserInfo:v11];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEAA8]);
-    v13 = [MEMORY[0x277CBEA80] currentCalendar];
-    v14 = [v13 hk_dateByAddingDays:30 toDate:v12];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v14 = [currentCalendar hk_dateByAddingDays:30 toDate:v12];
     [v6 setExpirationDate:v14];
 
     v15 = objc_alloc_init(MEMORY[0x277CFE4F8]);
     v16 = v15;
     if (v15)
     {
-      [v15 setIdentifier:v4];
+      [v15 setIdentifier:identifierCopy];
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v18 = [v17 localizedStringForKey:@"STEWIE_FOLLOW_UP_ITEM_BUTTON" value:&stru_283CB5B18 table:@"Localizable"];
       [v16 setLabel:v18];
@@ -302,10 +302,10 @@ LABEL_20:
 {
   v20 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained medicalIDDataManager];
+  medicalIDDataManager = [WeakRetained medicalIDDataManager];
 
   v15 = 0;
-  v4 = [v3 medicalIDSetupStatusWithError:&v15];
+  v4 = [medicalIDDataManager medicalIDSetupStatusWithError:&v15];
   v5 = v15;
   if (v5)
   {
@@ -349,7 +349,7 @@ LABEL_20:
   return v12;
 }
 
-- (void)submitFollowUpItem:(id)a3
+- (void)submitFollowUpItem:(id)item
 {
   followUpController = self->_followUpController;
   v4[0] = MEMORY[0x277D85DD0];
@@ -357,7 +357,7 @@ LABEL_20:
   v4[2] = __53__HDHealthAppEmergencySOSManager_submitFollowUpItem___block_invoke;
   v4[3] = &unk_2786586C8;
   v4[4] = self;
-  [(FLFollowUpController *)followUpController postFollowUpItem:a3 completion:v4];
+  [(FLFollowUpController *)followUpController postFollowUpItem:item completion:v4];
 }
 
 void __53__HDHealthAppEmergencySOSManager_submitFollowUpItem___block_invoke(uint64_t a1, int a2, void *a3)
@@ -468,13 +468,13 @@ void __59__HDHealthAppEmergencySOSManager_clearPendingFollowUpItems__block_invok
 - (void)getEmergencyOnboardingStatus
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a1;
+  selfCopy = self;
   v7 = 138412546;
   v8 = objc_opt_class();
   v9 = 2112;
   v10 = a3;
   v5 = v8;
-  _os_log_error_impl(&dword_22939E000, v4, OS_LOG_TYPE_ERROR, "[%@][FollowUp] Failed to get emergency onboarding status: %@", &v7, 0x16u);
+  _os_log_error_impl(&dword_22939E000, selfCopy, OS_LOG_TYPE_ERROR, "[%@][FollowUp] Failed to get emergency onboarding status: %@", &v7, 0x16u);
 
   v6 = *MEMORY[0x277D85DE8];
 }

@@ -1,22 +1,22 @@
 @interface MailMessageChangeSet
 - (BOOL)commit;
-- (MailMessageChangeSet)initWithMessages:(id)a3 operation:(id)a4;
-- (MailMessageChangeSet)initWithMessages:(id)a3 unreadMessages:(id)a4 readMessages:(id)a5 flaggedMessages:(id)a6 unflaggedMessages:(id)a7 operation:(id)a8;
+- (MailMessageChangeSet)initWithMessages:(id)messages operation:(id)operation;
+- (MailMessageChangeSet)initWithMessages:(id)messages unreadMessages:(id)unreadMessages readMessages:(id)readMessages flaggedMessages:(id)flaggedMessages unflaggedMessages:(id)unflaggedMessages operation:(id)operation;
 - (id)accounts;
-- (id)applyPendingChangeToObjects:(id)a3;
+- (id)applyPendingChangeToObjects:(id)objects;
 - (id)localizedErrorDescription;
 - (id)localizedErrorTitle;
 - (id)stores;
 - (void)_populateMessageSets;
-- (void)_setMessages:(id)a3;
+- (void)_setMessages:(id)messages;
 @end
 
 @implementation MailMessageChangeSet
 
-- (MailMessageChangeSet)initWithMessages:(id)a3 operation:(id)a4
+- (MailMessageChangeSet)initWithMessages:(id)messages operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  operationCopy = operation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -29,8 +29,8 @@
   v9 = v8;
   if (v8)
   {
-    [(MailMessageChangeSet *)v8 _setMessages:v6];
-    objc_storeStrong(&v9->_operation, a4);
+    [(MailMessageChangeSet *)v8 _setMessages:messagesCopy];
+    objc_storeStrong(&v9->_operation, operation);
     [(MailMessageChangeSet *)v9 _populateMessageSets];
     *(&v9->super + 16) |= 1u;
   }
@@ -38,14 +38,14 @@
   return v9;
 }
 
-- (MailMessageChangeSet)initWithMessages:(id)a3 unreadMessages:(id)a4 readMessages:(id)a5 flaggedMessages:(id)a6 unflaggedMessages:(id)a7 operation:(id)a8
+- (MailMessageChangeSet)initWithMessages:(id)messages unreadMessages:(id)unreadMessages readMessages:(id)readMessages flaggedMessages:(id)flaggedMessages unflaggedMessages:(id)unflaggedMessages operation:(id)operation
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  messagesCopy = messages;
+  unreadMessagesCopy = unreadMessages;
+  readMessagesCopy = readMessages;
+  flaggedMessagesCopy = flaggedMessages;
+  unflaggedMessagesCopy = unflaggedMessages;
+  operationCopy = operation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -58,21 +58,21 @@
   v21 = v20;
   if (v20)
   {
-    [(MailMessageChangeSet *)v20 _setMessages:v14];
-    objc_storeStrong(&v21->_operation, a8);
-    v22 = [v15 copy];
+    [(MailMessageChangeSet *)v20 _setMessages:messagesCopy];
+    objc_storeStrong(&v21->_operation, operation);
+    v22 = [unreadMessagesCopy copy];
     messagesMarkedUnread = v21->_messagesMarkedUnread;
     v21->_messagesMarkedUnread = v22;
 
-    v24 = [v16 copy];
+    v24 = [readMessagesCopy copy];
     messagesMarkedRead = v21->_messagesMarkedRead;
     v21->_messagesMarkedRead = v24;
 
-    v26 = [v17 copy];
+    v26 = [flaggedMessagesCopy copy];
     messagesFlagged = v21->_messagesFlagged;
     v21->_messagesFlagged = v26;
 
-    v28 = [v18 copy];
+    v28 = [unflaggedMessagesCopy copy];
     messagesUnflagged = v21->_messagesUnflagged;
     v21->_messagesUnflagged = v28;
 
@@ -82,13 +82,13 @@
   return v21;
 }
 
-- (void)_setMessages:(id)a3
+- (void)_setMessages:(id)messages
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_messagesSet != v4)
+  messagesCopy = messages;
+  v5 = messagesCopy;
+  if (self->_messagesSet != messagesCopy)
   {
-    v6 = [(NSSet *)v4 copy];
+    v6 = [(NSSet *)messagesCopy copy];
     messagesSet = self->_messagesSet;
     self->_messagesSet = v6;
 
@@ -115,8 +115,8 @@
           if ([v13 canBeTriaged])
           {
             v14 = [(MessageToMailboxUidCache *)v8 mailboxForMessage:v13];
-            v15 = [v14 store];
-            [v13 setMessageStore:v15];
+            store = [v14 store];
+            [v13 setMessageStore:store];
           }
         }
 
@@ -322,9 +322,9 @@ LABEL_24:
   }
 }
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   if (![(MCSChange *)self isFinalized])
   {
     __assert_rtn("[MailMessageChangeSet applyPendingChangeToObjects:]", "MailMessageChangeSet.m", 136, "[self isFinalized]");
@@ -335,7 +335,7 @@ LABEL_24:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -386,7 +386,7 @@ LABEL_24:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412802;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
     v11 = v5;
     v12 = 2112;
@@ -423,10 +423,10 @@ LABEL_24:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) messageStore];
-        if (v8)
+        messageStore = [*(*(&v10 + 1) + 8 * i) messageStore];
+        if (messageStore)
         {
-          [v3 addObject:v8];
+          [v3 addObject:messageStore];
         }
       }
 
@@ -451,8 +451,8 @@ LABEL_24:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(MailMessageChangeSet *)self stores];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  stores = [(MailMessageChangeSet *)self stores];
+  v5 = [stores countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -462,17 +462,17 @@ LABEL_24:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(stores);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) account];
-        if (v8)
+        account = [*(*(&v10 + 1) + 8 * i) account];
+        if (account)
         {
-          [v3 addObject:v8];
+          [v3 addObject:account];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [stores countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

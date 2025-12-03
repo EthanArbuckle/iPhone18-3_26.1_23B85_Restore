@@ -3,16 +3,16 @@
 - (_EARProfiler)init;
 - (id).cxx_construct;
 - (id)reportProfilingAsDictionary;
-- (void)addProfilingNetwork:(void *)a3;
+- (void)addProfilingNetwork:(void *)network;
 - (void)cleanupLogfiles;
 - (void)finishProfiling;
 - (void)finishProfilingNetworks;
-- (void)parsePowerSummary:(id)a3 writeTo:(powerSummary *)a4;
+- (void)parsePowerSummary:(id)summary writeTo:(powerSummary *)to;
 - (void)reportProfiling;
 - (void)reset;
 - (void)sample;
-- (void)setPerfProfiler:(BOOL)a3;
-- (void)setPowerProfiler:(BOOL)a3 powerProfilerName:(id)a4;
+- (void)setPerfProfiler:(BOOL)profiler;
+- (void)setPowerProfiler:(BOOL)profiler powerProfilerName:(id)name;
 @end
 
 @implementation _EARProfiler
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __30___EARProfiler_sharedProfiler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[_EARProfiler sharedProfiler]::onceToken != -1)
   {
     dispatch_once(&+[_EARProfiler sharedProfiler]::onceToken, block);
@@ -92,15 +92,15 @@
   self->_runtime_power_logfile_name = v8;
 }
 
-- (void)setPerfProfiler:(BOOL)a3
+- (void)setPerfProfiler:(BOOL)profiler
 {
-  v3 = a3;
-  if ([(_EARProfiler *)self _perfProfiler]!= a3)
+  profilerCopy = profiler;
+  if ([(_EARProfiler *)self _perfProfiler]!= profiler)
   {
-    [(_EARProfiler *)self set_perfProfiler:v3];
-    v5 = [(_EARProfiler *)self _perfProfiler];
+    [(_EARProfiler *)self set_perfProfiler:profilerCopy];
+    _perfProfiler = [(_EARProfiler *)self _perfProfiler];
     v6 = 0.0;
-    if (v5)
+    if (_perfProfiler)
     {
       getrusage(0, &v7);
       v6 = v7.ru_utime.tv_sec + v7.ru_utime.tv_usec * 0.000001;
@@ -110,15 +110,15 @@
   }
 }
 
-- (void)setPowerProfiler:(BOOL)a3 powerProfilerName:(id)a4
+- (void)setPowerProfiler:(BOOL)profiler powerProfilerName:(id)name
 {
-  v5 = a3;
+  profilerCopy = profiler;
   v35 = *MEMORY[0x1E69E9840];
-  v24 = a4;
-  if ([(_EARProfiler *)self _powerProfiler]!= v5)
+  nameCopy = name;
+  if ([(_EARProfiler *)self _powerProfiler]!= profilerCopy)
   {
-    [(_EARProfiler *)self set_powerProfiler:v5];
-    objc_storeStrong(&self->_power_profiler_name, a4);
+    [(_EARProfiler *)self set_powerProfiler:profilerCopy];
+    objc_storeStrong(&self->_power_profiler_name, name);
     if ([(_EARProfiler *)self _powerProfiler])
     {
       v7 = MEMORY[0x1E69E9848];
@@ -302,7 +302,7 @@
   }
 }
 
-- (void)addProfilingNetwork:(void *)a3
+- (void)addProfilingNetwork:(void *)network
 {
   end = self->_networks.__end_;
   cap = self->_networks.__cap_;
@@ -338,7 +338,7 @@
     }
 
     v12 = (8 * v8);
-    *v12 = a3;
+    *v12 = network;
     v6 = (8 * v8 + 8);
     v13 = self->_networks.__begin_;
     v14 = (self->_networks.__end_ - v13);
@@ -356,7 +356,7 @@
 
   else
   {
-    *end = a3;
+    *end = network;
     v6 = end + 1;
   }
 
@@ -473,8 +473,8 @@ LABEL_25:
       do
       {
         v5 = espresso_plan_finish_profiling();
-        v6 = [v5 ane_performance_info];
-        self->_ane_time = [v6 total_ane_time_ns] / 1000000000.0 + self->_ane_time;
+        ane_performance_info = [v5 ane_performance_info];
+        self->_ane_time = [ane_performance_info total_ane_time_ns] / 1000000000.0 + self->_ane_time;
 
         ++begin;
       }
@@ -690,9 +690,9 @@ LABEL_25:
 
 - (void)reportProfiling
 {
-  v3 = [(_EARProfiler *)self _memoryProfiler];
+  _memoryProfiler = [(_EARProfiler *)self _memoryProfiler];
   v4 = MEMORY[0x1E69E9848];
-  if (v3 || [(_EARProfiler *)self _perfProfiler]|| [(_EARProfiler *)self _powerProfiler])
+  if (_memoryProfiler || [(_EARProfiler *)self _perfProfiler]|| [(_EARProfiler *)self _powerProfiler])
   {
     fwrite("================ Profiler Summary ===============\n", 0x32uLL, 1uLL, *v4);
   }
@@ -819,18 +819,18 @@ LABEL_25:
   }
 }
 
-- (void)parsePowerSummary:(id)a3 writeTo:(powerSummary *)a4
+- (void)parsePowerSummary:(id)summary writeTo:(powerSummary *)to
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  *&a4->total_energy = 0u;
-  *&a4->gpu_energy = 0u;
-  *&a4->pcpu_energy = 0u;
-  *&a4->other_energy = 0u;
-  *&a4->ane_power = 0u;
-  *&a4->ecpu_power = 0u;
-  *&a4->dram_power = 0u;
-  v40 = v6;
+  summaryCopy = summary;
+  *&to->total_energy = 0u;
+  *&to->gpu_energy = 0u;
+  *&to->pcpu_energy = 0u;
+  *&to->other_energy = 0u;
+  *&to->ane_power = 0u;
+  *&to->ecpu_power = 0u;
+  *&to->dram_power = 0u;
+  v40 = summaryCopy;
   v39 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:? encoding:? error:?];
   [v39 componentsSeparatedByString:@"\n"];
   v43 = 0u;
@@ -930,36 +930,36 @@ LABEL_34:
             v11 = v17 * v26;
           }
 
-          a4->total_energy = v12 + a4->total_energy;
-          a4->total_power = v11 + a4->total_power;
+          to->total_energy = v12 + to->total_energy;
+          to->total_power = v11 + to->total_power;
           v27 = [v14 containsString:@"ANE"];
-          p_ane_power = &a4->ane_power;
-          p_ane_energy = &a4->ane_energy;
+          p_ane_power = &to->ane_power;
+          p_ane_energy = &to->ane_energy;
           if ((v27 & 1) == 0)
           {
             v30 = [v14 containsString:@"GPU"];
-            p_ane_power = &a4->gpu_power;
-            p_ane_energy = &a4->gpu_energy;
+            p_ane_power = &to->gpu_power;
+            p_ane_energy = &to->gpu_energy;
             if ((v30 & 1) == 0)
             {
               v31 = [v14 containsString:@"ECPU"];
-              p_ane_power = &a4->ecpu_power;
-              p_ane_energy = &a4->ecpu_energy;
+              p_ane_power = &to->ecpu_power;
+              p_ane_energy = &to->ecpu_energy;
               if ((v31 & 1) == 0)
               {
                 v32 = [v14 containsString:@"ECORE"];
-                p_ane_power = &a4->ecpu_power;
-                p_ane_energy = &a4->ecpu_energy;
+                p_ane_power = &to->ecpu_power;
+                p_ane_energy = &to->ecpu_energy;
                 if ((v32 & 1) == 0)
                 {
                   v33 = [v14 containsString:@"PCPU"];
-                  p_ane_power = &a4->pcpu_power;
-                  p_ane_energy = &a4->pcpu_energy;
+                  p_ane_power = &to->pcpu_power;
+                  p_ane_energy = &to->pcpu_energy;
                   if ((v33 & 1) == 0)
                   {
                     v34 = [v14 containsString:@"PCORE"];
-                    p_ane_power = &a4->pcpu_power;
-                    p_ane_energy = &a4->pcpu_energy;
+                    p_ane_power = &to->pcpu_power;
+                    p_ane_energy = &to->pcpu_energy;
                     if ((v34 & 1) == 0)
                     {
                       v35 = [v14 containsString:@"DRAM"];
@@ -969,14 +969,14 @@ LABEL_34:
                         v36 = 40;
                       }
 
-                      p_ane_energy = (&a4->total_energy + v36);
+                      p_ane_energy = (&to->total_energy + v36);
                       v37 = 104;
                       if (v35)
                       {
                         v37 = 96;
                       }
 
-                      p_ane_power = (&a4->total_energy + v37);
+                      p_ane_power = (&to->total_energy + v37);
                     }
                   }
                 }

@@ -1,28 +1,28 @@
 @interface PaymentAutomaticSelectionReaderId
-+ (id)_predicateForPaymentAutomaticSelectionCriterionPID:(int64_t)a3;
-+ (id)_readerIDsInDatabase:(id)a3 withPredicate:(id)a4;
-+ (id)insertReaderIds:(id)a3 withPaymentAutomaticSelectionCriterion:(id)a4 inDatabase:(id)a5;
-+ (id)readerIDsInDatabase:(id)a3 forPaymentAutomaticSelectionCriterionPID:(int64_t)a4;
-+ (void)deleteEntitiesInDatabase:(id)a3 forPaymentAutomaticSelectionCriterionPID:(int64_t)a4;
-- (PaymentAutomaticSelectionReaderId)initWithReaderId:(id)a3 forPaymentAutomaticSelectionCriterionPID:(int64_t)a4 database:(id)a5;
++ (id)_predicateForPaymentAutomaticSelectionCriterionPID:(int64_t)d;
++ (id)_readerIDsInDatabase:(id)database withPredicate:(id)predicate;
++ (id)insertReaderIds:(id)ids withPaymentAutomaticSelectionCriterion:(id)criterion inDatabase:(id)database;
++ (id)readerIDsInDatabase:(id)database forPaymentAutomaticSelectionCriterionPID:(int64_t)d;
++ (void)deleteEntitiesInDatabase:(id)database forPaymentAutomaticSelectionCriterionPID:(int64_t)d;
+- (PaymentAutomaticSelectionReaderId)initWithReaderId:(id)id forPaymentAutomaticSelectionCriterionPID:(int64_t)d database:(id)database;
 @end
 
 @implementation PaymentAutomaticSelectionReaderId
 
-+ (id)readerIDsInDatabase:(id)a3 forPaymentAutomaticSelectionCriterionPID:(int64_t)a4
++ (id)readerIDsInDatabase:(id)database forPaymentAutomaticSelectionCriterionPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPaymentAutomaticSelectionCriterionPID:a4];
-  v8 = [a1 _readerIDsInDatabase:v6 withPredicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentAutomaticSelectionCriterionPID:d];
+  v8 = [self _readerIDsInDatabase:databaseCopy withPredicate:v7];
 
   return v8;
 }
 
-+ (id)_readerIDsInDatabase:(id)a3 withPredicate:(id)a4
++ (id)_readerIDsInDatabase:(id)database withPredicate:(id)predicate
 {
-  if (a4)
+  if (predicate)
   {
-    v4 = [a1 queryWithDatabase:a3 predicate:?];
+    v4 = [self queryWithDatabase:database predicate:?];
     v5 = objc_alloc_init(NSMutableSet);
     v13 = @"reader_id";
     v6 = [NSArray arrayWithObjects:&v13 count:1];
@@ -55,30 +55,30 @@
   return v9;
 }
 
-+ (void)deleteEntitiesInDatabase:(id)a3 forPaymentAutomaticSelectionCriterionPID:(int64_t)a4
++ (void)deleteEntitiesInDatabase:(id)database forPaymentAutomaticSelectionCriterionPID:(int64_t)d
 {
-  v6 = a3;
-  v8 = [a1 _predicateForPaymentAutomaticSelectionCriterionPID:a4];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPaymentAutomaticSelectionCriterionPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)insertReaderIds:(id)a3 withPaymentAutomaticSelectionCriterion:(id)a4 inDatabase:(id)a5
++ (id)insertReaderIds:(id)ids withPaymentAutomaticSelectionCriterion:(id)criterion inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v8 count])
+  idsCopy = ids;
+  criterionCopy = criterion;
+  databaseCopy = database;
+  if (criterionCopy && [idsCopy count])
   {
-    v11 = [v9 persistentID];
-    v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    persistentID = [criterionCopy persistentID];
+    v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(idsCopy, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v22 = v8;
-    v13 = v8;
+    v22 = idsCopy;
+    v13 = idsCopy;
     v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
@@ -93,7 +93,7 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [[a1 alloc] initWithReaderId:*(*(&v23 + 1) + 8 * i) forPaymentAutomaticSelectionCriterionPID:v11 database:v10];
+          v18 = [[self alloc] initWithReaderId:*(*(&v23 + 1) + 8 * i) forPaymentAutomaticSelectionCriterionPID:persistentID database:databaseCopy];
           [v12 safelyAddObject:v18];
         }
 
@@ -115,7 +115,7 @@
 
     v20 = v19;
 
-    v8 = v22;
+    idsCopy = v22;
   }
 
   else
@@ -126,18 +126,18 @@
   return v20;
 }
 
-- (PaymentAutomaticSelectionReaderId)initWithReaderId:(id)a3 forPaymentAutomaticSelectionCriterionPID:(int64_t)a4 database:(id)a5
+- (PaymentAutomaticSelectionReaderId)initWithReaderId:(id)id forPaymentAutomaticSelectionCriterionPID:(int64_t)d database:(id)database
 {
-  v8 = a5;
-  v9 = a3;
+  databaseCopy = database;
+  idCopy = id;
   v10 = objc_alloc_init(NSMutableDictionary);
   v11 = +[NSNull null];
-  v12 = [NSNumber numberWithLongLong:a4];
+  v12 = [NSNumber numberWithLongLong:d];
   [v10 setObject:v12 forKeyedSubscript:@"payment_automatic_selection_criterion_pid"];
 
-  if (v9)
+  if (idCopy)
   {
-    v13 = v9;
+    v13 = idCopy;
   }
 
   else
@@ -147,13 +147,13 @@
 
   [v10 setObject:v13 forKeyedSubscript:@"reader_id"];
 
-  v14 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
+  v14 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
   return v14;
 }
 
-+ (id)_predicateForPaymentAutomaticSelectionCriterionPID:(int64_t)a3
++ (id)_predicateForPaymentAutomaticSelectionCriterionPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_automatic_selection_criterion_pid" equalToValue:v3];
 
   return v4;

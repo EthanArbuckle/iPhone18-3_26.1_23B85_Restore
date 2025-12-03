@@ -1,7 +1,7 @@
 @interface SESBootScopedStorage
 + (_TtC10seserviced20SESBootScopedStorage)shared;
-- (id)getNumberFor:(id)a3;
-- (void)setNumberFor:(id)a3 value:(id)a4;
+- (id)getNumberFor:(id)for;
+- (void)setNumberFor:(id)for value:(id)value;
 @end
 
 @implementation SESBootScopedStorage
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (id)getNumberFor:(id)a3
+- (id)getNumberFor:(id)for
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_100074F10();
   v6 = v5;
   v8 = v7;
@@ -39,13 +39,13 @@
   return v9;
 }
 
-- (void)setNumberFor:(id)a3 value:(id)a4
+- (void)setNumberFor:(id)for value:(id)value
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  sub_10008BD40(v6, v8, [v9 integerValue], 0);
+  valueCopy = value;
+  selfCopy = self;
+  sub_10008BD40(v6, v8, [valueCopy integerValue], 0);
 }
 
 @end

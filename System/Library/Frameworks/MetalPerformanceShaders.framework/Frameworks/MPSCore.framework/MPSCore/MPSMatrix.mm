@@ -1,7 +1,7 @@
 @interface MPSMatrix
-- (BOOL)canAliasWithNDArrayDescriptor:(id)a3;
-- (BOOL)doesAliasWithNDArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canAliasWithNDArrayDescriptor:(id)descriptor;
+- (BOOL)doesAliasWithNDArray:(id)array;
+- (BOOL)isEqual:(id)equal;
 - (MPSMatrix)init;
 - (MPSMatrix)initWithBuffer:(id)buffer descriptor:(MPSMatrixDescriptor *)descriptor;
 - (MPSMatrix)initWithBuffer:(id)buffer offset:(NSUInteger)offset descriptor:(MPSMatrixDescriptor *)descriptor;
@@ -10,8 +10,8 @@
 - (id).cxx_construct;
 - (id)data;
 - (id)debugDescription;
-- (id)initPrivateWithDescriptor:(id)a3 device:(void *)a4;
-- (id)ndArrayWithCommandBuffer:(id)a3 descriptor:(id)a4 aliasing:(unint64_t)a5;
+- (id)initPrivateWithDescriptor:(id)descriptor device:(void *)device;
+- (id)ndArrayWithCommandBuffer:(id)buffer descriptor:(id)descriptor aliasing:(unint64_t)aliasing;
 @end
 
 @implementation MPSMatrix
@@ -28,34 +28,34 @@
   return 0;
 }
 
-- (id)initPrivateWithDescriptor:(id)a3 device:(void *)a4
+- (id)initPrivateWithDescriptor:(id)descriptor device:(void *)device
 {
   v76.receiver = self;
   v76.super_class = MPSMatrix;
   v10 = [(MPSMatrix *)&v76 init];
   if (v10)
   {
-    if (a3)
+    if (descriptor)
     {
-      objc_msgSend_rowBytes(a3, v6, v7, v8, v9);
-      objc_msgSend_columns(a3, v11, v12, v13, v14);
-      objc_msgSend_dataType(a3, v15, v16, v17, v18);
-      v23 = objc_msgSend_rowBytes(a3, v19, v20, v21, v22);
-      v28 = objc_msgSend_columns(a3, v24, v25, v26, v27);
-      if (v23 >= v28 * (objc_msgSend_dataType(a3, v29, v30, v31, v32) >> 3))
+      objc_msgSend_rowBytes(descriptor, v6, v7, v8, v9);
+      objc_msgSend_columns(descriptor, v11, v12, v13, v14);
+      objc_msgSend_dataType(descriptor, v15, v16, v17, v18);
+      v23 = objc_msgSend_rowBytes(descriptor, v19, v20, v21, v22);
+      v28 = objc_msgSend_columns(descriptor, v24, v25, v26, v27);
+      if (v23 >= v28 * (objc_msgSend_dataType(descriptor, v29, v30, v31, v32) >> 3))
       {
-        objc_msgSend_rowBytes(a3, v33, v34, v35, v36);
-        objc_msgSend_dataType(a3, v37, v38, v39, v40);
-        v45 = objc_msgSend_rowBytes(a3, v41, v42, v43, v44);
-        if (!(v45 % (objc_msgSend_dataType(a3, v46, v47, v48, v49) >> 3)))
+        objc_msgSend_rowBytes(descriptor, v33, v34, v35, v36);
+        objc_msgSend_dataType(descriptor, v37, v38, v39, v40);
+        v45 = objc_msgSend_rowBytes(descriptor, v41, v42, v43, v44);
+        if (!(v45 % (objc_msgSend_dataType(descriptor, v46, v47, v48, v49) >> 3)))
         {
-          v10->_device = a4;
-          v10->_rows = objc_msgSend_rows(a3, v50, v51, v52, v53);
-          v10->_columns = objc_msgSend_columns(a3, v54, v55, v56, v57);
-          v10->_matrices = objc_msgSend_matrices(a3, v58, v59, v60, v61);
-          v10->_rowBytes = objc_msgSend_rowBytes(a3, v62, v63, v64, v65);
-          v10->_matrixBytes = objc_msgSend_matrixBytes(a3, v66, v67, v68, v69);
-          v10->_dataType = objc_msgSend_dataType(a3, v70, v71, v72, v73);
+          v10->_device = device;
+          v10->_rows = objc_msgSend_rows(descriptor, v50, v51, v52, v53);
+          v10->_columns = objc_msgSend_columns(descriptor, v54, v55, v56, v57);
+          v10->_matrices = objc_msgSend_matrices(descriptor, v58, v59, v60, v61);
+          v10->_rowBytes = objc_msgSend_rowBytes(descriptor, v62, v63, v64, v65);
+          v10->_matrixBytes = objc_msgSend_matrixBytes(descriptor, v66, v67, v68, v69);
+          v10->_dataType = objc_msgSend_dataType(descriptor, v70, v71, v72, v73);
           return v10;
         }
 
@@ -200,12 +200,12 @@ LABEL_8:
     result = self->_buffer._device;
     if (result)
     {
-      v4 = self;
+      selfCopy = self;
       MPSDevice = MPSDevice::GetMPSDevice(result);
-      if (v4->_buffer._device)
+      if (selfCopy->_buffer._device)
       {
-        requestedSize = v4->_buffer._requestedSize;
-        v7 = v4;
+        requestedSize = selfCopy->_buffer._requestedSize;
+        v7 = selfCopy;
         v8 = MPSDevice;
         v9 = (*(*MPSDevice + 32))();
         v10 = (*(*v8 + 5))(v8);
@@ -237,14 +237,14 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_4;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(isEqual) = 1;
     return isEqual;
@@ -256,20 +256,20 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  isEqual = objc_msgSend_isEqual_(*(self->_device + 2), v6, *(*(a3 + 1) + 16), v7, v8);
+  isEqual = objc_msgSend_isEqual_(*(self->_device + 2), v6, *(*(equal + 1) + 16), v7, v8);
   if (!isEqual)
   {
     return isEqual;
   }
 
-  if (self->_rows != *(a3 + 2) || self->_columns != *(a3 + 3) || self->_rowBytes != *(a3 + 5) || self->_matrices != *(a3 + 4) || self->_matrixBytes != *(a3 + 6) || self->_dataType != *(a3 + 16))
+  if (self->_rows != *(equal + 2) || self->_columns != *(equal + 3) || self->_rowBytes != *(equal + 5) || self->_matrices != *(equal + 4) || self->_matrixBytes != *(equal + 6) || self->_dataType != *(equal + 16))
   {
 LABEL_4:
     LOBYTE(isEqual) = 0;
     return isEqual;
   }
 
-  LOBYTE(isEqual) = sub_22E356128(&self->_buffer, a3 + 9, v10, v11, v12);
+  LOBYTE(isEqual) = sub_22E356128(&self->_buffer, equal + 9, v10, v11, v12);
   return isEqual;
 }
 
@@ -282,30 +282,30 @@ LABEL_4:
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tRows:  \t\t\t%lu\n\tColumns:\t\t%lu\n\tMatrices:\t\t%lu\n\trowBytes:\t\t%lu\n\tmatrixBytes:\t%lu", v6, v7, v4, self->_rows, self->_columns, self->_matrices, self->_rowBytes, self->_matrixBytes);
 }
 
-- (BOOL)canAliasWithNDArrayDescriptor:(id)a3
+- (BOOL)canAliasWithNDArrayDescriptor:(id)descriptor
 {
-  v7 = objc_msgSend_dataType(a3, a2, a3, v3, v4);
-  v8 = *(a3 + 1);
-  if (*(a3 + 268))
+  v7 = objc_msgSend_dataType(descriptor, a2, descriptor, v3, v4);
+  v8 = *(descriptor + 1);
+  if (*(descriptor + 268))
   {
-    v9 = *(a3 + 1) * (v7 >> 3);
+    v9 = *(descriptor + 1) * (v7 >> 3);
   }
 
   else
   {
-    v9 = (*(a3 + 1) * (v7 >> 3) + 15) & 0x3FFFFFFFFFF0;
+    v9 = (*(descriptor + 1) * (v7 >> 3) + 15) & 0x3FFFFFFFFFF0;
   }
 
   v10 = v9 * DWORD1(v8);
   if (self->_matrices == 1)
   {
-    v11 = *(a3 + 28);
+    v11 = *(descriptor + 28);
     if (v11 >= 3)
     {
-      v13 = *(a3 + 3);
-      v12 = *(a3 + 4);
+      v13 = *(descriptor + 3);
+      v12 = *(descriptor + 4);
       v14 = 2;
-      v15 = *(a3 + 2);
+      v15 = *(descriptor + 2);
       do
       {
         v17[0] = v8;
@@ -322,10 +322,10 @@ LABEL_4:
   return v9 == self->_rowBytes && v10 == self->_matrixBytes && self->_offset == 0;
 }
 
-- (BOOL)doesAliasWithNDArray:(id)a3
+- (BOOL)doesAliasWithNDArray:(id)array
 {
   explicit = atomic_load_explicit(&self->_buffer, memory_order_acquire);
-  v6 = atomic_load_explicit(a3 + 65, memory_order_acquire);
+  v6 = atomic_load_explicit(array + 65, memory_order_acquire);
   if (explicit)
   {
     v7 = v6 == 0;
@@ -341,7 +341,7 @@ LABEL_4:
     return 0;
   }
 
-  v8 = objc_msgSend_storageMode(explicit, a2, a3, v3, v4);
+  v8 = objc_msgSend_storageMode(explicit, a2, array, v3, v4);
   if (v8 != objc_msgSend_storageMode(v6, v9, v10, v11, v12))
   {
     return 0;
@@ -374,10 +374,10 @@ LABEL_4:
   return v28 + v27 > v42 && v43 > v27;
 }
 
-- (id)ndArrayWithCommandBuffer:(id)a3 descriptor:(id)a4 aliasing:(unint64_t)a5
+- (id)ndArrayWithCommandBuffer:(id)buffer descriptor:(id)descriptor aliasing:(unint64_t)aliasing
 {
-  canAliasWithNDArrayDescriptor = objc_msgSend_canAliasWithNDArrayDescriptor_(self, a2, a4, a4, a5);
-  if (a5 <= 1 && canAliasWithNDArrayDescriptor)
+  canAliasWithNDArrayDescriptor = objc_msgSend_canAliasWithNDArrayDescriptor_(self, a2, descriptor, descriptor, aliasing);
+  if (aliasing <= 1 && canAliasWithNDArrayDescriptor)
   {
     v10 = [MPSNDArray alloc];
     p_buffer = &self->_buffer;
@@ -390,14 +390,14 @@ LABEL_4:
       explicit = atomic_load_explicit(p_buffer, memory_order_acquire);
     }
 
-    v16 = objc_msgSend_initWithBuffer_descriptor_(v10, v11, explicit, a4, v12);
+    v16 = objc_msgSend_initWithBuffer_descriptor_(v10, v11, explicit, descriptor, v12);
 
     return v16;
   }
 
   else
   {
-    if (a5 == 1)
+    if (aliasing == 1)
     {
       return 0;
     }
@@ -406,30 +406,30 @@ LABEL_4:
     {
       matrixBytes = self->_matrixBytes;
       v35 = self->_rowBytes * self->_rows;
-      v33 = self;
+      selfCopy = self;
       MTLReportFailure();
     }
 
     v19 = [MPSNDArray alloc];
-    v24 = objc_msgSend_device(a3, v20, v21, v22, v23);
-    v18 = objc_msgSend_initWithDevice_descriptor_(v19, v25, v24, a4, v26);
+    v24 = objc_msgSend_device(buffer, v20, v21, v22, v23);
+    v18 = objc_msgSend_initWithDevice_descriptor_(v19, v25, v24, descriptor, v26);
     v27 = malloc_type_calloc(0x10uLL, 8uLL, 0x100004000313F17uLL);
     v29 = v27;
     *v27 = self->_dataType >> 3;
-    if (*(a4 + 28) >= 2uLL)
+    if (*(descriptor + 28) >= 2uLL)
     {
       v27[1] = self->_rowBytes;
-      if (*(a4 + 28) >= 3uLL)
+      if (*(descriptor + 28) >= 3uLL)
       {
         v30 = 3;
         v31 = 2;
         do
         {
-          v27[v31] = v27[v30 - 2] * *(a4 + ((v30 - 2) & 0xFLL) + 4);
+          v27[v31] = v27[v30 - 2] * *(descriptor + ((v30 - 2) & 0xFLL) + 4);
           v31 = v30++;
         }
 
-        while (*(a4 + 28) > v31);
+        while (*(descriptor + 28) > v31);
       }
     }
 
@@ -440,7 +440,7 @@ LABEL_4:
       v32 = atomic_load_explicit(&self->_buffer, memory_order_acquire);
     }
 
-    objc_msgSend_importDataWithCommandBuffer_fromBuffer_sourceDataType_offset_rowStrides_(v18, v28, a3, v32, self->_dataType, self->_offset, v29, v33, matrixBytes, v35);
+    objc_msgSend_importDataWithCommandBuffer_fromBuffer_sourceDataType_offset_rowStrides_(v18, v28, buffer, v32, self->_dataType, self->_offset, v29, selfCopy, matrixBytes, v35);
     free(v29);
     return v18;
   }

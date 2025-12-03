@@ -1,18 +1,18 @@
 @interface TIInputModeController
-+ (id)_inputModesForLocale:(id)a3 language:(id)a4 modeFetcher:(id)a5;
++ (id)_inputModesForLocale:(id)locale language:(id)language modeFetcher:(id)fetcher;
 + (id)sharedInputModeController;
-- (BOOL)identifierIsValidSystemInputMode:(id)a3;
+- (BOOL)identifierIsValidSystemInputMode:(id)mode;
 - (NSArray)enabledInputModeIdentifiers;
 - (NSArray)supportedInputModeIdentifiers;
 - (NSArray)supportedInputModeLanguageAndRegions;
-- (id)_archivedInputModeConfigurationFrom:(id)a3;
+- (id)_archivedInputModeConfigurationFrom:(id)from;
 - (id)_inputModeConfiguration;
-- (id)_inputModesFromInputModeConfiguration:(id)a3;
+- (id)_inputModesFromInputModeConfiguration:(id)configuration;
 - (id)archivedInputModeConfiguration;
 - (id)defaultEnabledInputModesForCurrentLocale;
-- (id)inputModesFromArchivedInputModeConfiguration:(id)a3;
+- (id)inputModesFromArchivedInputModeConfiguration:(id)configuration;
 - (id)suggestedDictationLanguageForDeviceLanguage;
-- (id)transformedInputModesFromInputModes:(id)a3 sourcePlatform:(id)a4 targetPlatform:(id)a5 preferredLanguages:(id)a6 preferredLocale:(id)a7;
+- (id)transformedInputModesFromInputModes:(id)modes sourcePlatform:(id)platform targetPlatform:(id)targetPlatform preferredLanguages:(id)languages preferredLocale:(id)locale;
 @end
 
 @implementation TIInputModeController
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __50__TIInputModeController_sharedInputModeController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInputModeController_createSharedInputModeControllerOnce != -1)
   {
     dispatch_once(&sharedInputModeController_createSharedInputModeControllerOnce, block);
@@ -100,15 +100,15 @@ uint64_t __50__TIInputModeController_sharedInputModeController__block_invoke()
   supportedInputModeLanguageAndRegions = self->_supportedInputModeLanguageAndRegions;
   if (!supportedInputModeLanguageAndRegions)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [(TIInputModeController *)self supportedInputModeIdentifiers];
+    array = [MEMORY[0x1E695DF70] array];
+    supportedInputModeIdentifiers = [(TIInputModeController *)self supportedInputModeIdentifiers];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __61__TIInputModeController_supportedInputModeLanguageAndRegions__block_invoke;
     v14[3] = &unk_1E6F4C340;
-    v6 = v4;
+    v6 = array;
     v15 = v6;
-    [v5 enumerateObjectsUsingBlock:v14];
+    [supportedInputModeIdentifiers enumerateObjectsUsingBlock:v14];
 
     v7 = self->_supportedInputModeLanguageAndRegions;
     self->_supportedInputModeLanguageAndRegions = v6;
@@ -145,12 +145,12 @@ void __61__TIInputModeController_supportedInputModeLanguageAndRegions__block_inv
 - (NSArray)enabledInputModeIdentifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(TIInputModeController *)self inputModesForTesting];
-  v4 = [v3 count];
+  inputModesForTesting = [(TIInputModeController *)self inputModesForTesting];
+  v4 = [inputModesForTesting count];
 
   if (v4)
   {
-    v5 = [(TIInputModeController *)self inputModesForTesting];
+    inputModesForTesting2 = [(TIInputModeController *)self inputModesForTesting];
     goto LABEL_25;
   }
 
@@ -160,13 +160,13 @@ void __61__TIInputModeController_supportedInputModeLanguageAndRegions__block_inv
   if (v7)
   {
     v8 = +[TIPreferencesController sharedPreferencesController];
-    v9 = [v8 valueForKey:0];
+    defaultEnabledInputModesForCurrentLocale2 = [v8 valueForKey:0];
 
-    v10 = [(TIInputModeController *)self enabledInputModes];
-    if ([v10 count])
+    enabledInputModes = [(TIInputModeController *)self enabledInputModes];
+    if ([enabledInputModes count])
     {
-      v11 = [(TIInputModeController *)self enabledInputModes];
-      v12 = [v11 isEqualToArray:v9];
+      enabledInputModes2 = [(TIInputModeController *)self enabledInputModes];
+      v12 = [enabledInputModes2 isEqualToArray:defaultEnabledInputModesForCurrentLocale2];
 
       if (v12)
       {
@@ -178,13 +178,13 @@ void __61__TIInputModeController_supportedInputModeLanguageAndRegions__block_inv
     {
     }
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v9;
-    v14 = v9;
+    v23 = defaultEnabledInputModesForCurrentLocale2;
+    v14 = defaultEnabledInputModesForCurrentLocale2;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v15)
     {
@@ -208,9 +208,9 @@ void __61__TIInputModeController_supportedInputModeLanguageAndRegions__block_inv
             v19 = v20;
           }
 
-          if (([v13 containsObject:v19] & 1) == 0)
+          if (([array containsObject:v19] & 1) == 0)
           {
-            [v13 addObject:v19];
+            [array addObject:v19];
           }
 
           ++v18;
@@ -223,46 +223,46 @@ void __61__TIInputModeController_supportedInputModeLanguageAndRegions__block_inv
       while (v16);
     }
 
-    if ([v13 count])
+    if ([array count])
     {
-      [(TIInputModeController *)self setEnabledInputModes:v13];
+      [(TIInputModeController *)self setEnabledInputModes:array];
     }
 
     else
     {
-      v21 = [(TIInputModeController *)self defaultEnabledInputModesForCurrentLocale];
-      [(TIInputModeController *)self setEnabledInputModes:v21];
+      defaultEnabledInputModesForCurrentLocale = [(TIInputModeController *)self defaultEnabledInputModesForCurrentLocale];
+      [(TIInputModeController *)self setEnabledInputModes:defaultEnabledInputModesForCurrentLocale];
     }
 
-    v9 = v23;
+    defaultEnabledInputModesForCurrentLocale2 = v23;
     goto LABEL_24;
   }
 
-  v9 = [(TIInputModeController *)self defaultEnabledInputModesForCurrentLocale];
-  [(TIInputModeController *)self setEnabledInputModes:v9];
+  defaultEnabledInputModesForCurrentLocale2 = [(TIInputModeController *)self defaultEnabledInputModesForCurrentLocale];
+  [(TIInputModeController *)self setEnabledInputModes:defaultEnabledInputModesForCurrentLocale2];
 LABEL_24:
 
-  v5 = [(TIInputModeController *)self enabledInputModes];
+  inputModesForTesting2 = [(TIInputModeController *)self enabledInputModes];
 LABEL_25:
 
-  return v5;
+  return inputModesForTesting2;
 }
 
 - (id)defaultEnabledInputModesForCurrentLocale
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v5 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v6 = [(TIInputModeController *)self defaultInputModes];
-  if ([v6 count])
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  defaultInputModes = [(TIInputModeController *)self defaultInputModes];
+  if ([defaultInputModes count])
   {
-    v7 = [(TIInputModeController *)self currentLocale];
-    if ([v7 isEqualToString:v4])
+    currentLocale2 = [(TIInputModeController *)self currentLocale];
+    if ([currentLocale2 isEqualToString:localeIdentifier])
     {
-      v8 = [(TIInputModeController *)self preferredLanguages];
-      v9 = [v8 isEqualToArray:v5];
+      preferredLanguages2 = [(TIInputModeController *)self preferredLanguages];
+      v9 = [preferredLanguages2 isEqualToArray:preferredLanguages];
 
       if (v9)
       {
@@ -274,14 +274,14 @@ LABEL_25:
   }
 
 LABEL_7:
-  [(TIInputModeController *)self setCurrentLocale:v4];
-  v10 = [MEMORY[0x1E695DFA0] orderedSet];
+  [(TIInputModeController *)self setCurrentLocale:localeIdentifier];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = v5;
-  v11 = v5;
+  v20 = preferredLanguages;
+  v11 = preferredLanguages;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -296,8 +296,8 @@ LABEL_7:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [TIInputModeController _inputModesForLocale:v4 language:*(*(&v21 + 1) + 8 * i) modeFetcher:&__block_literal_global_85_2416];
-        [v10 addObjectsFromArray:v16];
+        v16 = [TIInputModeController _inputModesForLocale:localeIdentifier language:*(*(&v21 + 1) + 8 * i) modeFetcher:&__block_literal_global_85_2416];
+        [orderedSet addObjectsFromArray:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -306,26 +306,26 @@ LABEL_7:
     while (v13);
   }
 
-  [v10 addObject:@"emoji"];
-  v17 = [v10 array];
-  [(TIInputModeController *)self setDefaultInputModes:v17];
+  [orderedSet addObject:@"emoji"];
+  array = [orderedSet array];
+  [(TIInputModeController *)self setDefaultInputModes:array];
 
-  v5 = v20;
+  preferredLanguages = v20;
 LABEL_15:
-  v18 = [(TIInputModeController *)self defaultInputModes];
+  defaultInputModes2 = [(TIInputModeController *)self defaultInputModes];
 
-  return v18;
+  return defaultInputModes2;
 }
 
-- (id)_inputModesFromInputModeConfiguration:(id)a3
+- (id)_inputModesFromInputModeConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  configurationCopy = configuration;
+  v4 = [configurationCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v4)
   {
     goto LABEL_29;
@@ -340,7 +340,7 @@ LABEL_15:
     {
       if (*v21 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(configurationCopy);
       }
 
       v8 = *(*(&v20 + 1) + 8 * v7);
@@ -407,7 +407,7 @@ LABEL_21:
     }
 
     while (v5 != v7);
-    v15 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v15 = [configurationCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     v5 = v15;
   }
 
@@ -419,22 +419,22 @@ LABEL_30:
   return v18;
 }
 
-- (id)transformedInputModesFromInputModes:(id)a3 sourcePlatform:(id)a4 targetPlatform:(id)a5 preferredLanguages:(id)a6 preferredLocale:(id)a7
+- (id)transformedInputModesFromInputModes:(id)modes sourcePlatform:(id)platform targetPlatform:(id)targetPlatform preferredLanguages:(id)languages preferredLocale:(id)locale
 {
   v68 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v48 = a6;
-  if (![v11 isEqualToString:a5] && (objc_msgSend(v11, "isEqualToString:", @"iOS") & 1) == 0 && objc_msgSend(v11, "isEqualToString:", @"macOS"))
+  modesCopy = modes;
+  platformCopy = platform;
+  languagesCopy = languages;
+  if (![platformCopy isEqualToString:targetPlatform] && (objc_msgSend(platformCopy, "isEqualToString:", @"iOS") & 1) == 0 && objc_msgSend(platformCopy, "isEqualToString:", @"macOS"))
   {
-    v43 = v11;
-    v12 = [MEMORY[0x1E695DF70] array];
+    v43 = platformCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v44 = v10;
-    v13 = v10;
+    v44 = modesCopy;
+    v13 = modesCopy;
     v14 = [v13 countByEnumeratingWithState:&v60 objects:v67 count:16];
     if (!v14)
     {
@@ -444,7 +444,7 @@ LABEL_30:
     v15 = v14;
     v16 = *v61;
     v45 = v13;
-    v46 = v12;
+    v46 = array;
     v47 = *v61;
     while (1)
     {
@@ -474,7 +474,7 @@ LABEL_30:
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v22 = v48;
+          v22 = languagesCopy;
           v23 = [v22 countByEnumeratingWithState:&v56 objects:v66 count:16];
           if (v23)
           {
@@ -494,10 +494,10 @@ LABEL_13:
 
               v28 = *(*(&v56 + 1) + 8 * v26);
               v29 = MEMORY[0x1E695DF58];
-              v30 = [(TIInputModeController *)self supportedInputModeLanguageAndRegions];
+              supportedInputModeLanguageAndRegions = [(TIInputModeController *)self supportedInputModeLanguageAndRegions];
               v65 = v28;
               v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
-              v32 = [v29 mostPreferredLanguageOf:v30 withPreferredLanguages:v31 forUsage:2 options:0];
+              v32 = [v29 mostPreferredLanguageOf:supportedInputModeLanguageAndRegions withPreferredLanguages:v31 forUsage:2 options:0];
 
               v20 = GetInputModeWithHardwareLayoutIfSupported(v32, v21);
 
@@ -522,12 +522,12 @@ LABEL_13:
             }
 
             v13 = v45;
-            v12 = v46;
+            array = v46;
             if (!v20)
             {
 LABEL_23:
-              v34 = [(TIInputModeController *)self supportedInputModeLanguageAndRegions];
-              v35 = [&unk_1EF7CB2F0 arrayByAddingObjectsFromArray:v34];
+              supportedInputModeLanguageAndRegions2 = [(TIInputModeController *)self supportedInputModeLanguageAndRegions];
+              v35 = [&unk_1EF7CB2F0 arrayByAddingObjectsFromArray:supportedInputModeLanguageAndRegions2];
 
               v54 = 0u;
               v55 = 0u;
@@ -589,7 +589,7 @@ LABEL_25:
 LABEL_35:
         if ([v20 length])
         {
-          [v12 addObject:v20];
+          [array addObject:v20];
         }
 
         ++v17;
@@ -601,32 +601,32 @@ LABEL_35:
       {
 LABEL_39:
 
-        v11 = v43;
-        v10 = v44;
+        platformCopy = v43;
+        modesCopy = v44;
         goto LABEL_41;
       }
     }
   }
 
-  v12 = v10;
+  array = modesCopy;
 LABEL_41:
 
-  return v12;
+  return array;
 }
 
 - (id)_inputModeConfiguration
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v3 = [MEMORY[0x1E695DF58] preferredLocale];
-  v4 = [v3 localeIdentifier];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  preferredLocale = [MEMORY[0x1E695DF58] preferredLocale];
+  localeIdentifier = [preferredLocale localeIdentifier];
 
-  if ([v2 count] && objc_msgSend(v4, "length"))
+  if ([preferredLanguages count] && objc_msgSend(localeIdentifier, "length"))
   {
     v5 = +[TIPreferencesController sharedPreferencesController];
-    v6 = [v5 inputModeSelectionSequence];
+    inputModeSelectionSequence = [v5 inputModeSelectionSequence];
 
-    if ([v6 count])
+    if ([inputModeSelectionSequence count])
     {
       v10[0] = @"version";
       v10[1] = @"platform";
@@ -634,10 +634,10 @@ LABEL_41:
       v11[1] = @"iOS";
       v10[2] = @"inputModes";
       v10[3] = @"preferredLanguages";
-      v11[2] = v6;
-      v11[3] = v2;
+      v11[2] = inputModeSelectionSequence;
+      v11[3] = preferredLanguages;
       v10[4] = @"preferredLocale";
-      v11[4] = v4;
+      v11[4] = localeIdentifier;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:5];
       v12[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -657,17 +657,17 @@ LABEL_41:
   return v8;
 }
 
-- (id)inputModesFromArchivedInputModeConfiguration:(id)a3
+- (id)inputModesFromArchivedInputModeConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E696ACD0];
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v5 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
   v15 = 0;
-  v11 = [v4 unarchivedObjectOfClasses:v10 fromData:v6 error:&v15];
+  v11 = [v4 unarchivedObjectOfClasses:v10 fromData:configurationCopy error:&v15];
 
   v12 = v15;
   if (v11)
@@ -684,10 +684,10 @@ LABEL_41:
   return v13;
 }
 
-- (id)_archivedInputModeConfigurationFrom:(id)a3
+- (id)_archivedInputModeConfigurationFrom:(id)from
 {
   v7 = 0;
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:from requiringSecureCoding:1 error:&v7];
   v4 = v7;
   v5 = v4;
   if (!v3)
@@ -700,8 +700,8 @@ LABEL_41:
 
 - (id)archivedInputModeConfiguration
 {
-  v3 = [(TIInputModeController *)self _inputModeConfiguration];
-  v4 = [(TIInputModeController *)self _archivedInputModeConfigurationFrom:v3];
+  _inputModeConfiguration = [(TIInputModeController *)self _inputModeConfiguration];
+  v4 = [(TIInputModeController *)self _archivedInputModeConfigurationFrom:_inputModeConfiguration];
 
   return v4;
 }
@@ -709,14 +709,14 @@ LABEL_41:
 - (id)suggestedDictationLanguageForDeviceLanguage
 {
   v2 = TIGetSuggestedDictationLanguagesForDeviceLanguage();
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (BOOL)identifierIsValidSystemInputMode:(id)a3
+- (BOOL)identifierIsValidSystemInputMode:(id)mode
 {
-  v4 = TIInputModeGetNormalizedIdentifier(a3);
+  v4 = TIInputModeGetNormalizedIdentifier(mode);
   if ([v4 isEqualToString:@"dictation"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"intl") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"intl_HWR"))
   {
     v5 = 1;
@@ -724,16 +724,16 @@ LABEL_41:
 
   else if ([v4 length])
   {
-    v7 = [(TIInputModeController *)self supportedInputModeIdentifiers];
-    v8 = [(TIInputModeController *)self supportedInputModeLanguageAndRegions];
-    if ([v7 containsObject:v4])
+    supportedInputModeIdentifiers = [(TIInputModeController *)self supportedInputModeIdentifiers];
+    supportedInputModeLanguageAndRegions = [(TIInputModeController *)self supportedInputModeLanguageAndRegions];
+    if ([supportedInputModeIdentifiers containsObject:v4])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v8 containsObject:v4];
+      v5 = [supportedInputModeLanguageAndRegions containsObject:v4];
     }
   }
 
@@ -745,69 +745,69 @@ LABEL_41:
   return v5;
 }
 
-+ (id)_inputModesForLocale:(id)a3 language:(id)a4 modeFetcher:(id)a5
++ (id)_inputModesForLocale:(id)locale language:(id)language modeFetcher:(id)fetcher
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  localeCopy = locale;
+  languageCopy = language;
+  fetcherCopy = fetcher;
+  v10 = fetcherCopy;
   v11 = MEMORY[0x1E695E0F0];
-  if (!v7 || !v9)
+  if (!localeCopy || !fetcherCopy)
   {
     goto LABEL_42;
   }
 
-  v12 = [v7 rangeOfString:@"@"];
+  v12 = [localeCopy rangeOfString:@"@"];
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [v7 substringToIndex:v12];
+    v13 = [localeCopy substringToIndex:v12];
 
-    v7 = v13;
+    localeCopy = v13;
   }
 
-  if ([v8 hasPrefix:@"zh-"] && ((objc_msgSend(v7, "hasPrefix:", @"zh-") & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"zh_")))
+  if ([languageCopy hasPrefix:@"zh-"] && ((objc_msgSend(localeCopy, "hasPrefix:", @"zh-") & 1) != 0 || objc_msgSend(localeCopy, "hasPrefix:", @"zh_")))
   {
-    if (![v8 isEqualToString:@"zh-Hant"] || (objc_msgSend(v7, "hasSuffix:", @"TW") & 1) == 0 && (objc_msgSend(v7, "hasSuffix:", @"HK") & 1) == 0 && (objc_msgSend(v7, "hasSuffix:", @"MO") & 1) == 0)
+    if (![languageCopy isEqualToString:@"zh-Hant"] || (objc_msgSend(localeCopy, "hasSuffix:", @"TW") & 1) == 0 && (objc_msgSend(localeCopy, "hasSuffix:", @"HK") & 1) == 0 && (objc_msgSend(localeCopy, "hasSuffix:", @"MO") & 1) == 0)
     {
-      if (![v8 isEqualToString:@"zh-Hans"])
+      if (![languageCopy isEqualToString:@"zh-Hans"])
       {
         v14 = 0;
         goto LABEL_25;
       }
 
-      if (([v7 hasSuffix:@"CN"] & 1) == 0)
+      if (([localeCopy hasSuffix:@"CN"] & 1) == 0)
       {
-        v14 = [v7 hasSuffix:@"SG"];
+        v14 = [localeCopy hasSuffix:@"SG"];
         goto LABEL_25;
       }
     }
 
     v14 = 1;
 LABEL_25:
-    [MEMORY[0x1E695DF58] canonicalLocaleIdentifierFromString:v7];
-    v7 = v15 = v7;
+    [MEMORY[0x1E695DF58] canonicalLocaleIdentifierFromString:localeCopy];
+    localeCopy = v15 = localeCopy;
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  if (v8)
+  if (languageCopy)
   {
     if (_inputModesForLocale_language_modeFetcher__once != -1)
     {
       dispatch_once(&_inputModesForLocale_language_modeFetcher__once, &__block_literal_global_2430);
     }
 
-    v15 = TIInputModeGetComponentsFromIdentifier(v8);
-    v16 = TIInputModeGetComponentsFromIdentifier(v7);
+    v15 = TIInputModeGetComponentsFromIdentifier(languageCopy);
+    v16 = TIInputModeGetComponentsFromIdentifier(localeCopy);
     v17 = *MEMORY[0x1E695D9B0];
     v18 = [v15 objectForKey:*MEMORY[0x1E695D9B0]];
     v19 = [v16 objectForKey:v17];
     if ([v18 isEqualToString:v19])
     {
       v20 = _inputModesForLocale_language_modeFetcher__exceptionListToUseLanguageCode;
-      v21 = [v8 stringByAppendingString:@"/"];
-      v22 = [v21 stringByAppendingString:v7];
+      v21 = [languageCopy stringByAppendingString:@"/"];
+      v22 = [v21 stringByAppendingString:localeCopy];
       v14 = [v20 containsObject:v22] ^ 1;
     }
 
@@ -821,17 +821,17 @@ LABEL_26:
 
   v14 = 1;
 LABEL_27:
-  v23 = (v10)[2](v10, v7);
+  v23 = (v10)[2](v10, localeCopy);
   v11 = v23;
   if (!v14 || ![v23 count])
   {
-    v24 = (v10)[2](v10, v8);
+    v24 = (v10)[2](v10, languageCopy);
     if (![v24 count])
     {
       v25 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v26 = MEMORY[0x1E695DF58];
-      v27 = [v25 preferredLocalizations];
-      v28 = [v27 objectAtIndex:0];
+      preferredLocalizations = [v25 preferredLocalizations];
+      v28 = [preferredLocalizations objectAtIndex:0];
       v29 = [v26 canonicalLanguageIdentifierFromString:v28];
       v30 = (v10)[2](v10, v29);
 

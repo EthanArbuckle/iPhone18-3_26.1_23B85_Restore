@@ -6,12 +6,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(AmbientMatchUIView *)v2 superview];
-  if (v3)
+  selfCopy = self;
+  superview = [(AmbientMatchUIView *)selfCopy superview];
+  if (superview)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = superview;
+    [superview bounds];
     v6 = v5;
     v8 = v7;
   }

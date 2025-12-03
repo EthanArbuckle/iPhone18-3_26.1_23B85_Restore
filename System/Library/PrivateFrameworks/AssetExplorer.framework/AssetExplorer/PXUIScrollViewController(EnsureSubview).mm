@@ -7,12 +7,12 @@
 - (void)ae_ensureSubview:()EnsureSubview
 {
   v6 = a3;
-  v4 = [v6 superview];
-  v5 = [a1 scrollView];
+  superview = [v6 superview];
+  scrollView = [self scrollView];
 
-  if (v4 != v5)
+  if (superview != scrollView)
   {
-    [a1 addSubview:v6];
+    [self addSubview:v6];
   }
 }
 

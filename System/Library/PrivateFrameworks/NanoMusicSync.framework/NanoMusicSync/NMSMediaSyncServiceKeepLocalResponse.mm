@@ -1,17 +1,17 @@
 @interface NMSMediaSyncServiceKeepLocalResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsErrorCode:(id)a3;
-- (int)StringAsValidatorExceptions:(id)a3;
+- (int)StringAsErrorCode:(id)code;
+- (int)StringAsValidatorExceptions:(id)exceptions;
 - (int)errorCode;
-- (int)validatorExceptionAtIndex:(unint64_t)a3;
+- (int)validatorExceptionAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMSMediaSyncServiceKeepLocalResponse
@@ -37,67 +37,67 @@
   }
 }
 
-- (int)StringAsErrorCode:(id)a3
+- (int)StringAsErrorCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Generic"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"Generic"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ValidatorException"];
+    v4 = [codeCopy isEqualToString:@"ValidatorException"];
   }
 
   return v4;
 }
 
-- (int)validatorExceptionAtIndex:(unint64_t)a3
+- (int)validatorExceptionAtIndex:(unint64_t)index
 {
   p_validatorExceptions = &self->_validatorExceptions;
   count = self->_validatorExceptions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_validatorExceptions->list[a3];
+  return p_validatorExceptions->list[index];
 }
 
-- (int)StringAsValidatorExceptions:(id)a3
+- (int)StringAsValidatorExceptions:(id)exceptions
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ExceedsPowerThreshold"])
+  exceptionsCopy = exceptions;
+  if ([exceptionsCopy isEqualToString:@"ExceedsPowerThreshold"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ExceedsCellularPowerThreshold"])
+  else if ([exceptionsCopy isEqualToString:@"ExceedsCellularPowerThreshold"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CellularDownloadNotAllowed"])
+  else if ([exceptionsCopy isEqualToString:@"CellularDownloadNotAllowed"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NoNetwork"])
+  else if ([exceptionsCopy isEqualToString:@"NoNetwork"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NoStorage"])
+  else if ([exceptionsCopy isEqualToString:@"NoStorage"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CellularDataNotAllowed"])
+  else if ([exceptionsCopy isEqualToString:@"CellularDataNotAllowed"])
   {
     v4 = 6;
   }
@@ -116,15 +116,15 @@
   v8.receiver = self;
   v8.super_class = NMSMediaSyncServiceKeepLocalResponse;
   v4 = [(NMSMediaSyncServiceKeepLocalResponse *)&v8 description];
-  v5 = [(NMSMediaSyncServiceKeepLocalResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NMSMediaSyncServiceKeepLocalResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
@@ -146,7 +146,7 @@
       v5 = @"Generic";
     }
 
-    [v3 setObject:v5 forKey:@"errorCode"];
+    [dictionary setObject:v5 forKey:@"errorCode"];
   }
 
   p_validatorExceptions = &self->_validatorExceptions;
@@ -177,21 +177,21 @@
       while (v8 < p_validatorExceptions->count);
     }
 
-    [v3 setObject:v7 forKey:@"validatorException"];
+    [dictionary setObject:v7 forKey:@"validatorException"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   p_validatorExceptions = &self->_validatorExceptions;
@@ -202,7 +202,7 @@
     {
       v8 = p_validatorExceptions->list[v7];
       PBDataWriterWriteInt32Field();
-      v4 = v9;
+      toCopy = v9;
       ++v7;
     }
 
@@ -210,23 +210,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_errorCode;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_errorCode;
+    *(toCopy + 36) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if ([(NMSMediaSyncServiceKeepLocalResponse *)self validatorExceptionsCount])
   {
     [v8 clearValidatorExceptions];
-    v5 = [(NMSMediaSyncServiceKeepLocalResponse *)self validatorExceptionsCount];
-    if (v5)
+    validatorExceptionsCount = [(NMSMediaSyncServiceKeepLocalResponse *)self validatorExceptionsCount];
+    if (validatorExceptionsCount)
     {
-      v6 = v5;
+      v6 = validatorExceptionsCount;
       for (i = 0; i != v6; ++i)
       {
         [v8 addValidatorException:{-[NMSMediaSyncServiceKeepLocalResponse validatorExceptionAtIndex:](self, "validatorExceptionAtIndex:", i)}];
@@ -235,9 +235,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -249,24 +249,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_errorCode != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_errorCode != *(equalCopy + 8))
     {
       goto LABEL_8;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_8:
     IsEqual = 0;
@@ -294,20 +294,20 @@ LABEL_9:
   return PBRepeatedInt32Hash() ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[9])
+  fromCopy = from;
+  if (fromCopy[9])
   {
-    self->_errorCode = v4[8];
+    self->_errorCode = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  v5 = [v4 validatorExceptionsCount];
-  if (v5)
+  v8 = fromCopy;
+  validatorExceptionsCount = [fromCopy validatorExceptionsCount];
+  if (validatorExceptionsCount)
   {
-    v6 = v5;
+    v6 = validatorExceptionsCount;
     for (i = 0; i != v6; ++i)
     {
       -[NMSMediaSyncServiceKeepLocalResponse addValidatorException:](self, "addValidatorException:", [v8 validatorExceptionAtIndex:i]);

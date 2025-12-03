@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationRequired
 - (UARPMetaDataPersonalizationRequired)init;
-- (UARPMetaDataPersonalizationRequired)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationRequired)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationRequired)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationRequired)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationRequired)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationRequired)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationRequired *)self init];
   v7 = v6;
   if (!v6)
@@ -37,7 +37,7 @@
 
   v11.receiver = v6;
   v11.super_class = UARPMetaDataPersonalizationRequired;
-  v8 = [(UARPMetaData *)&v11 numberFromPlistValue:v5];
+  v8 = [(UARPMetaData *)&v11 numberFromPlistValue:valueCopy];
   v9 = v8;
   if (v8)
   {
@@ -50,7 +50,7 @@ LABEL_4:
   return v9;
 }
 
-- (UARPMetaDataPersonalizationRequired)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationRequired)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationRequired *)self init];
   v7 = v6;
@@ -61,7 +61,7 @@ LABEL_4:
 
   v11.receiver = v6;
   v11.super_class = UARPMetaDataPersonalizationRequired;
-  v8 = [(UARPMetaData *)&v11 numberWithLength:a3 value:a4];
+  v8 = [(UARPMetaData *)&v11 numberWithLength:length value:value];
   v9 = v8;
   if (v8)
   {
@@ -85,8 +85,8 @@ LABEL_4:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [NSString stringWithFormat:@"<%@: %u>", v3, [(UARPMetaDataPersonalizationRequired *)self isRequired]];
+  tlvName = [(UARPMetaData *)self tlvName];
+  v4 = [NSString stringWithFormat:@"<%@: %u>", tlvName, [(UARPMetaDataPersonalizationRequired *)self isRequired]];
 
   return v4;
 }

@@ -6,9 +6,9 @@
 
 - (int64_t)blockArgumentIndex
 {
-  v2 = [(NSInvocation *)self methodSignature];
-  v3 = [v2 numberOfArguments];
-  if (v3 < 3)
+  methodSignature = [(NSInvocation *)self methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  if (numberOfArguments < 3)
   {
 LABEL_7:
     v5 = 0x7FFFFFFFFFFFFFFFLL;
@@ -16,11 +16,11 @@ LABEL_7:
 
   else
   {
-    v4 = v3;
+    v4 = numberOfArguments;
     v5 = 2;
     while (1)
     {
-      v6 = [v2 getArgumentTypeAtIndex:v5];
+      v6 = [methodSignature getArgumentTypeAtIndex:v5];
       if (*v6 == 64 && v6[1] == 63 && !v6[2])
       {
         break;

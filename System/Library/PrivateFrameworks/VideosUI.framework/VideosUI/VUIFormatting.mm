@@ -3,13 +3,13 @@
 + (id)rfc1123DateFormatter;
 + (id)sharedInstance;
 - (VUIFormatting)init;
-- (id)formatDate:(id)a3 format:(id)a4;
-- (id)formatDuration:(id)a3 format:(id)a4;
-- (id)formatInitialsForFirstName:(id)a3 lastName:(id)a4;
-- (id)formatLocalizedLocaleIdentifier:(id)a3;
-- (id)formatLocalizedNumber:(id)a3 style:(id)a4 postiveFormat:(id)a5 negativeFormat:(id)a6 currencyCode:(id)a7;
-- (id)formatNumber:(id)a3 style:(id)a4 postiveFormat:(id)a5 negativeFormat:(id)a6;
-- (id)joinComponents:(id)a3 withASCII:(id)a4 arabic:(id)a5 ethiopic:(id)a6 ideograph:(id)a7;
+- (id)formatDate:(id)date format:(id)format;
+- (id)formatDuration:(id)duration format:(id)format;
+- (id)formatInitialsForFirstName:(id)name lastName:(id)lastName;
+- (id)formatLocalizedLocaleIdentifier:(id)identifier;
+- (id)formatLocalizedNumber:(id)number style:(id)style postiveFormat:(id)format negativeFormat:(id)negativeFormat currencyCode:(id)code;
+- (id)formatNumber:(id)number style:(id)style postiveFormat:(id)format negativeFormat:(id)negativeFormat;
+- (id)joinComponents:(id)components withASCII:(id)i arabic:(id)arabic ethiopic:(id)ethiopic ideograph:(id)ideograph;
 @end
 
 @implementation VUIFormatting
@@ -122,15 +122,15 @@ void __33__VUIFormatting_isoDateFormatter__block_invoke()
   return v2;
 }
 
-- (id)formatDate:(id)a3 format:(id)a4
+- (id)formatDate:(id)date format:(id)format
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(__CFString *)v6 length];
+  formatCopy = format;
+  dateCopy = date;
+  v8 = [(__CFString *)formatCopy length];
   v9 = @"default";
   if (v8)
   {
-    v9 = v6;
+    v9 = formatCopy;
   }
 
   v10 = v9;
@@ -153,8 +153,8 @@ void __33__VUIFormatting_isoDateFormatter__block_invoke()
     else
     {
       v12 = MEMORY[0x1E696AB78];
-      v13 = [MEMORY[0x1E695DF58] currentLocale];
-      v14 = [v12 dateFormatFromTemplate:v10 options:0 locale:v13];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      v14 = [v12 dateFormatFromTemplate:v10 options:0 locale:currentLocale];
 
       [v11 setDateFormat:v14];
       if (!v11)
@@ -168,39 +168,39 @@ void __33__VUIFormatting_isoDateFormatter__block_invoke()
 
 LABEL_9:
   os_unfair_lock_unlock(&self->_dateFormattersLock);
-  v15 = [v11 stringFromDate:v7];
+  v15 = [v11 stringFromDate:dateCopy];
 
   return v15;
 }
 
-- (id)formatDuration:(id)a3 format:(id)a4
+- (id)formatDuration:(id)duration format:(id)format
 {
-  v5 = a3;
-  v6 = a4;
-  v42 = v5;
-  if ([v6 rangeOfString:@"H"] != 0x7FFFFFFFFFFFFFFFLL)
+  durationCopy = duration;
+  formatCopy = format;
+  v42 = durationCopy;
+  if ([formatCopy rangeOfString:@"H"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v5 integerValue];
+    integerValue = [durationCopy integerValue];
     goto LABEL_5;
   }
 
-  v7 = [v6 rangeOfString:@"k"];
-  v8 = [v5 integerValue];
+  v7 = [formatCopy rangeOfString:@"k"];
+  integerValue = [durationCopy integerValue];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
-    v9 = v8 / 3600;
+    v9 = integerValue / 3600;
     goto LABEL_6;
   }
 
   v9 = 0;
 LABEL_6:
-  v10 = v8 - 3600 * v9;
+  v10 = integerValue - 3600 * v9;
   v11 = ((v10 * 0x8888888888888889) >> 64) + v10;
   v12 = v11 >> 5;
   v13 = MEMORY[0x1E696AB78];
-  v14 = [MEMORY[0x1E695DF58] currentLocale];
-  v15 = [v13 dateFormatFromTemplate:v6 options:0 locale:v14];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v15 = [v13 dateFormatFromTemplate:formatCopy options:0 locale:currentLocale];
   v16 = [v15 mutableCopy];
 
   if (v9 >= 1)
@@ -254,28 +254,28 @@ LABEL_6:
   return v16;
 }
 
-- (id)formatNumber:(id)a3 style:(id)a4 postiveFormat:(id)a5 negativeFormat:(id)a6
+- (id)formatNumber:(id)number style:(id)style postiveFormat:(id)format negativeFormat:(id)negativeFormat
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  styleCopy = style;
+  formatCopy = format;
+  negativeFormatCopy = negativeFormat;
   v13 = MEMORY[0x1E695DF70];
-  v14 = a3;
+  numberCopy = number;
   v15 = objc_alloc_init(v13);
   v16 = v15;
-  if (v10)
+  if (styleCopy)
   {
-    [v15 addObject:v10];
+    [v15 addObject:styleCopy];
   }
 
-  if (v11)
+  if (formatCopy)
   {
-    [v16 addObject:v11];
+    [v16 addObject:formatCopy];
   }
 
-  if (v12)
+  if (negativeFormatCopy)
   {
-    [v16 addObject:v12];
+    [v16 addObject:negativeFormatCopy];
   }
 
   v17 = [v16 valueForKey:@"description"];
@@ -285,32 +285,32 @@ LABEL_6:
   v19 = [(NSMutableDictionary *)self->_numberFormatters objectForKey:v18];
   if (!v19)
   {
-    if ([v10 isEqualToString:@"noStyle"])
+    if ([styleCopy isEqualToString:@"noStyle"])
     {
       v20 = 0;
     }
 
-    else if ([v10 isEqualToString:@"decimal"])
+    else if ([styleCopy isEqualToString:@"decimal"])
     {
       v20 = 1;
     }
 
-    else if ([v10 isEqualToString:@"currency"])
+    else if ([styleCopy isEqualToString:@"currency"])
     {
       v20 = 2;
     }
 
-    else if ([v10 isEqualToString:@"percent"])
+    else if ([styleCopy isEqualToString:@"percent"])
     {
       v20 = 3;
     }
 
-    else if ([v10 isEqualToString:@"scientific"])
+    else if ([styleCopy isEqualToString:@"scientific"])
     {
       v20 = 4;
     }
 
-    else if ([v10 isEqualToString:@"spellOut"])
+    else if ([styleCopy isEqualToString:@"spellOut"])
     {
       v20 = 5;
     }
@@ -322,14 +322,14 @@ LABEL_6:
 
     v19 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v19 setNumberStyle:v20];
-    if ([v11 length])
+    if ([formatCopy length])
     {
-      [v19 setPositiveFormat:v11];
+      [v19 setPositiveFormat:formatCopy];
     }
 
-    if ([v12 length])
+    if ([negativeFormatCopy length])
     {
-      [v19 setNegativeFormat:v12];
+      [v19 setNegativeFormat:negativeFormatCopy];
     }
 
     if (v19)
@@ -339,39 +339,39 @@ LABEL_6:
   }
 
   os_unfair_lock_unlock(&self->_numberFormattersLock);
-  v21 = [v19 stringFromNumber:v14];
+  v21 = [v19 stringFromNumber:numberCopy];
 
   return v21;
 }
 
-- (id)formatLocalizedNumber:(id)a3 style:(id)a4 postiveFormat:(id)a5 negativeFormat:(id)a6 currencyCode:(id)a7
+- (id)formatLocalizedNumber:(id)number style:(id)style postiveFormat:(id)format negativeFormat:(id)negativeFormat currencyCode:(id)code
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  styleCopy = style;
+  formatCopy = format;
+  negativeFormatCopy = negativeFormat;
+  codeCopy = code;
   v16 = MEMORY[0x1E695DF70];
-  v17 = a3;
+  numberCopy = number;
   v18 = objc_alloc_init(v16);
   v19 = v18;
-  if (v12)
+  if (styleCopy)
   {
-    [v18 addObject:v12];
+    [v18 addObject:styleCopy];
   }
 
-  if (v13)
+  if (formatCopy)
   {
-    [v19 addObject:v13];
+    [v19 addObject:formatCopy];
   }
 
-  if (v14)
+  if (negativeFormatCopy)
   {
-    [v19 addObject:v14];
+    [v19 addObject:negativeFormatCopy];
   }
 
-  if (v15)
+  if (codeCopy)
   {
-    [v19 addObject:v15];
+    [v19 addObject:codeCopy];
   }
 
   v20 = [v19 valueForKey:@"description"];
@@ -381,32 +381,32 @@ LABEL_6:
   v22 = [(NSMutableDictionary *)self->_numberFormatters objectForKey:v21];
   if (!v22)
   {
-    if ([v12 isEqualToString:@"noStyle"])
+    if ([styleCopy isEqualToString:@"noStyle"])
     {
       v23 = 0;
     }
 
-    else if ([v12 isEqualToString:@"decimal"])
+    else if ([styleCopy isEqualToString:@"decimal"])
     {
       v23 = 1;
     }
 
-    else if ([v12 isEqualToString:@"currency"])
+    else if ([styleCopy isEqualToString:@"currency"])
     {
       v23 = 2;
     }
 
-    else if ([v12 isEqualToString:@"percent"])
+    else if ([styleCopy isEqualToString:@"percent"])
     {
       v23 = 3;
     }
 
-    else if ([v12 isEqualToString:@"scientific"])
+    else if ([styleCopy isEqualToString:@"scientific"])
     {
       v23 = 4;
     }
 
-    else if ([v12 isEqualToString:@"spellOut"])
+    else if ([styleCopy isEqualToString:@"spellOut"])
     {
       v23 = 5;
     }
@@ -418,22 +418,22 @@ LABEL_6:
 
     v22 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v22 setNumberStyle:v23];
-    v24 = [MEMORY[0x1E695DF58] currentLocale];
-    [v22 setLocale:v24];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v22 setLocale:currentLocale];
 
-    if ([v13 length])
+    if ([formatCopy length])
     {
-      [v22 setPositiveFormat:v13];
+      [v22 setPositiveFormat:formatCopy];
     }
 
-    if ([v14 length])
+    if ([negativeFormatCopy length])
     {
-      [v22 setNegativeFormat:v14];
+      [v22 setNegativeFormat:negativeFormatCopy];
     }
 
-    if ([v15 length])
+    if ([codeCopy length])
     {
-      [v22 setCurrencyCode:v15];
+      [v22 setCurrencyCode:codeCopy];
     }
 
     if (v22)
@@ -443,24 +443,24 @@ LABEL_6:
   }
 
   os_unfair_lock_unlock(&self->_numberFormattersLock);
-  v25 = [v22 stringFromNumber:v17];
+  v25 = [v22 stringFromNumber:numberCopy];
 
   return v25;
 }
 
-- (id)formatLocalizedLocaleIdentifier:(id)a3
+- (id)formatLocalizedLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 localizedStringForLocaleIdentifier:v3];
+  identifierCopy = identifier;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v5 = [currentLocale localizedStringForLocaleIdentifier:identifierCopy];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DF58] canonicalLocaleIdentifierFromString:v3];
+    v6 = [MEMORY[0x1E695DF58] canonicalLocaleIdentifierFromString:identifierCopy];
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DF58] currentLocale];
-      v5 = [v7 localizedStringForLocaleIdentifier:v6];
+      currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+      v5 = [currentLocale2 localizedStringForLocaleIdentifier:v6];
     }
 
     else
@@ -472,34 +472,34 @@ LABEL_6:
   return v5;
 }
 
-- (id)joinComponents:(id)a3 withASCII:(id)a4 arabic:(id)a5 ethiopic:(id)a6 ideograph:(id)a7
+- (id)joinComponents:(id)components withASCII:(id)i arabic:(id)arabic ethiopic:(id)ethiopic ideograph:(id)ideograph
 {
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v37 = a4;
-  v36 = a5;
-  v35 = a6;
-  v33 = a7;
-  v12 = [v11 count];
+  componentsCopy = components;
+  iCopy = i;
+  arabicCopy = arabic;
+  ethiopicCopy = ethiopic;
+  ideographCopy = ideograph;
+  v12 = [componentsCopy count];
   if (v12)
   {
     v39 = v12 - 1;
     if (v12 == 1)
     {
-      v13 = [v11 objectAtIndexedSubscript:0];
+      v13 = [componentsCopy objectAtIndexedSubscript:0];
       v14 = [v13 description];
 
       goto LABEL_36;
     }
 
-    v15 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     v16 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v32 = v11;
-    obj = v11;
+    v32 = componentsCopy;
+    obj = componentsCopy;
     v17 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v17)
     {
@@ -529,7 +529,7 @@ LABEL_6:
               {
                 v25 = v24 - 1;
                 v26 = [v22 characterAtIndex:v24 - 1];
-                if ([v15 characterIsMember:v26])
+                if ([whitespaceAndNewlineCharacterSet characterIsMember:v26])
                 {
                   goto LABEL_31;
                 }
@@ -549,19 +549,19 @@ LABEL_6:
                 v28 = vdupq_n_s32(v26);
                 if ((vmaxv_u16(vmovn_s32(vcgtq_u32(xmmword_1E4296BD0, vaddq_s32(v28, xmmword_1E4296BC0)))) & 1) != 0 || (v26 & 0xFFFFFF00) == 0x600)
                 {
-                  v29 = v36;
+                  v29 = arabicCopy;
                   goto LABEL_30;
                 }
 
                 if ((v26 - 4608) < 0x1A0)
                 {
-                  v29 = v35;
+                  v29 = ethiopicCopy;
                   goto LABEL_30;
                 }
 
                 if ((vmaxv_u8(vmovn_s16(vuzp1q_s16(vcgtq_u32(xmmword_1E4296C00, vaddq_s32(v28, xmmword_1E4296BE0)), vcgtq_u32(xmmword_1E4296C10, vaddq_s32(v28, xmmword_1E4296BF0))))) & 1) != 0 || (v26 - 194560) < 0x220)
                 {
-                  v29 = v33;
+                  v29 = ideographCopy;
 LABEL_30:
                   v30 = v29;
                   if (v30)
@@ -586,7 +586,7 @@ LABEL_23:
           else if (v19 != v39)
           {
 LABEL_31:
-            v30 = v37;
+            v30 = iCopy;
 LABEL_32:
             [v16 appendString:v30];
           }
@@ -605,7 +605,7 @@ LABEL_32:
     }
 
     v14 = [v16 copy];
-    v11 = v32;
+    componentsCopy = v32;
   }
 
   else
@@ -618,15 +618,15 @@ LABEL_36:
   return v14;
 }
 
-- (id)formatInitialsForFirstName:(id)a3 lastName:(id)a4
+- (id)formatInitialsForFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] || objc_msgSend(v6, "length"))
+  nameCopy = name;
+  lastNameCopy = lastName;
+  if ([nameCopy length] || objc_msgSend(lastNameCopy, "length"))
   {
     v7 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    [v7 setGivenName:v5];
-    [v7 setFamilyName:v6];
+    [v7 setGivenName:nameCopy];
+    [v7 setFamilyName:lastNameCopy];
     v8 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     [v8 setStyle:4];
     [v8 set_ignoresFallbacks:1];
@@ -634,10 +634,10 @@ LABEL_36:
     if (![v9 length])
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [v5 length];
+      v11 = [nameCopy length];
       if (v11)
       {
-        v12 = [v5 substringWithRange:{0, 1}];
+        v12 = [nameCopy substringWithRange:{0, 1}];
       }
 
       else
@@ -645,10 +645,10 @@ LABEL_36:
         v12 = &stru_1F5DB25C0;
       }
 
-      v13 = [v6 length];
+      v13 = [lastNameCopy length];
       if (v13)
       {
-        v14 = [v6 substringWithRange:{0, 1}];
+        v14 = [lastNameCopy substringWithRange:{0, 1}];
       }
 
       else
@@ -684,9 +684,9 @@ LABEL_36:
     v9 = 0;
   }
 
-  v16 = [v9 uppercaseString];
+  uppercaseString = [v9 uppercaseString];
 
-  return v16;
+  return uppercaseString;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface GEOAnalyticDataServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (GEOAnalyticDataServer)initWithDaemon:(id)a3;
-- (void)readNetEventDataWithMessage:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (GEOAnalyticDataServer)initWithDaemon:(id)daemon;
+- (void)readNetEventDataWithMessage:(id)message;
 @end
 
 @implementation GEOAnalyticDataServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (sub_100001334(v10) == 1599)
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  if (sub_100001334(messageCopy) == 1599)
   {
-    if (sub_100001B78(v12, v11, @"analyticdata", v10, &off_100089018, 0))
+    if (sub_100001B78(peerCopy, objectCopy, @"analyticdata", messageCopy, &off_100089018, 0))
     {
-      v13 = [[GEOMessage alloc] initWithXPCMessage:v11 peer:v12];
+      v13 = [[GEOMessage alloc] initWithXPCMessage:objectCopy peer:peerCopy];
       v14 = v13;
       v15 = v13 != 0;
       if (v13)
       {
-        [v13 setSignpostId:a6];
+        [v13 setSignpostId:id];
         [(GEOAnalyticDataServer *)self readNetEventDataWithMessage:v14];
       }
     }
@@ -39,11 +39,11 @@
   return v15;
 }
 
-- (void)readNetEventDataWithMessage:(id)a3
+- (void)readNetEventDataWithMessage:(id)message
 {
-  v10 = a3;
-  v3 = [v10 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"day"];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"day"];
 
   if (v4)
   {
@@ -54,7 +54,7 @@
     {
       empty = xpc_dictionary_create_empty();
       xpc_dictionary_set_fd(empty, "fd", v6);
-      [v10 sendReplyWithXPCUserInfo:empty];
+      [messageCopy sendReplyWithXPCUserInfo:empty];
       close(v6);
       goto LABEL_7;
     }
@@ -69,16 +69,16 @@
 
   empty = [NSError GEOErrorWithCode:v8];
   v9 = [NSDictionary _geo_replyDictionaryForError:empty key:@"err"];
-  [v10 sendReply:v9];
+  [messageCopy sendReply:v9];
 
 LABEL_7:
 }
 
-- (GEOAnalyticDataServer)initWithDaemon:(id)a3
+- (GEOAnalyticDataServer)initWithDaemon:(id)daemon
 {
   v4.receiver = self;
   v4.super_class = GEOAnalyticDataServer;
-  return [(GEOAnalyticDataServer *)&v4 initWithDaemon:a3];
+  return [(GEOAnalyticDataServer *)&v4 initWithDaemon:daemon];
 }
 
 @end

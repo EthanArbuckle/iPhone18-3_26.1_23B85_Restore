@@ -10,8 +10,8 @@
 
 - (id)hmu_accessories
 {
-  v1 = [a1 rooms];
-  v2 = [v1 na_map:&__block_literal_global_0];
+  rooms = [self rooms];
+  v2 = [rooms na_map:&__block_literal_global_0];
   v3 = [v2 na_flatMap:&__block_literal_global_3];
 
   return v3;
@@ -19,8 +19,8 @@
 
 - (id)hmu_homePods
 {
-  v1 = [a1 rooms];
-  v2 = [v1 na_map:&__block_literal_global_5];
+  rooms = [self rooms];
+  v2 = [rooms na_map:&__block_literal_global_5];
   v3 = [v2 na_flatMap:&__block_literal_global_7];
 
   return v3;
@@ -51,9 +51,9 @@
   v9 = [v5 setWithArray:v8];
 
   [v9 addObjectsFromArray:v7];
-  v10 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
 @end

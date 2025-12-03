@@ -7,33 +7,33 @@
 - (PXAudioAssetFetchResult)curatedSongs;
 - (PXStoryAutoEditMomentsProvider)diagnosticsMomentsProvider;
 - (PXStoryRecipeManager)init;
-- (PXStoryRecipeManager)initWithConfiguration:(id)a3;
-- (PXStoryRecipeManager)initWithConfiguration:(id)a3 assetsProducerFactory:(id)a4 persistableRecipeProducerFactory:(id)a5 songsProducerFactory:(id)a6 movieHighlightsProducerFactory:(id)a7 detailedSaliencyProducerFactory:(id)a8 chapterCollectionProducerFactory:(id)a9 stylesProducerFactory:(id)a10 autoEditDecisionListsProducerFactory:(id)a11 autoCurationProducerFactory:(id)a12;
+- (PXStoryRecipeManager)initWithConfiguration:(id)configuration;
+- (PXStoryRecipeManager)initWithConfiguration:(id)configuration assetsProducerFactory:(id)factory persistableRecipeProducerFactory:(id)producerFactory songsProducerFactory:(id)songsProducerFactory movieHighlightsProducerFactory:(id)highlightsProducerFactory detailedSaliencyProducerFactory:(id)saliencyProducerFactory chapterCollectionProducerFactory:(id)collectionProducerFactory stylesProducerFactory:(id)self0 autoEditDecisionListsProducerFactory:(id)self1 autoCurationProducerFactory:(id)self2;
 - (PXStorySongResource)initialSongResource;
 - (id)_collectAutoEditDecisionListsBySong;
-- (id)_diagnosticTextForGenericHUDAtDisplaySize:(CGSize)a3;
-- (id)_monitorForProducer:(unint64_t)a3;
-- (id)_resultForProducer:(unint64_t)a3;
-- (id)_shortDescriptionOfPersistableRecipe:(id)a3;
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
+- (id)_diagnosticTextForGenericHUDAtDisplaySize:(CGSize)size;
+- (id)_monitorForProducer:(unint64_t)producer;
+- (id)_resultForProducer:(unint64_t)producer;
+- (id)_shortDescriptionOfPersistableRecipe:(id)recipe;
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
 - (id)fallbackSongResource;
-- (void)_applyManuallyCuratedAssets:(id)a3 setAsCustomUserAssets:(BOOL)a4;
-- (void)_handleAdditionalAutoEditDecisionListsResult:(id)a3;
-- (void)_handleAssetsResult:(id)a3;
-- (void)_handleAutoEditDecisionListsResult:(id)a3;
-- (void)_handleAutoEditStylesResult:(id)a3;
-- (void)_handleChapterCollectionResult:(id)a3;
-- (void)_handleCuratedAssetsResult:(id)a3 targetOverallDurationInfo:(id *)a4;
-- (void)_handleCurationLengthsResult:(id)a3;
-- (void)_handleDetailedSaliencyResult:(id)a3;
-- (void)_handleInitialAutoEditDecisionListResult:(id)a3;
-- (void)_handleInitialStyleResult:(id)a3;
-- (void)_handleMovieHighlightsResult:(id)a3;
-- (void)_handlePersistableRecipeResult:(id)a3;
-- (void)_handlePersistedSongResourceResult:(id)a3;
-- (void)_handleResult:(id)a3 forProducer:(unint64_t)a4;
-- (void)_handleSongsResult:(id)a3;
+- (void)_applyManuallyCuratedAssets:(id)assets setAsCustomUserAssets:(BOOL)userAssets;
+- (void)_handleAdditionalAutoEditDecisionListsResult:(id)result;
+- (void)_handleAssetsResult:(id)result;
+- (void)_handleAutoEditDecisionListsResult:(id)result;
+- (void)_handleAutoEditStylesResult:(id)result;
+- (void)_handleChapterCollectionResult:(id)result;
+- (void)_handleCuratedAssetsResult:(id)result targetOverallDurationInfo:(id *)info;
+- (void)_handleCurationLengthsResult:(id)result;
+- (void)_handleDetailedSaliencyResult:(id)result;
+- (void)_handleInitialAutoEditDecisionListResult:(id)result;
+- (void)_handleInitialStyleResult:(id)result;
+- (void)_handleMovieHighlightsResult:(id)result;
+- (void)_handlePersistableRecipeResult:(id)result;
+- (void)_handlePersistedSongResourceResult:(id)result;
+- (void)_handleResult:(id)result forProducer:(unint64_t)producer;
+- (void)_handleSongsResult:(id)result;
 - (void)_invalidateAdditionalAutoEditDecisionLists;
 - (void)_invalidateAllAssets;
 - (void)_invalidateAssetCollection;
@@ -69,7 +69,7 @@
 - (void)_invalidateProducersLikelyToKeepUp;
 - (void)_invalidateRecipe;
 - (void)_invalidateRecipeAttributes;
-- (void)_storyQueue_handleChangedAssetsDataSource:(id)a3;
+- (void)_storyQueue_handleChangedAssetsDataSource:(id)source;
 - (void)_updateAdditionalAutoEditDecisionLists;
 - (void)_updateAllAssets;
 - (void)_updateAssetCollection;
@@ -105,78 +105,78 @@
 - (void)_updateProducersLikelyToKeepUp;
 - (void)_updateRecipe;
 - (void)_updateRecipeAttributes;
-- (void)applyKeyAsset:(id)a3;
-- (void)applyManuallyCuratedAssets:(id)a3;
-- (void)applyManuallyRemovedAssets:(id)a3;
-- (void)applyTargetOverallDurationInfo:(id *)a3;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)applyKeyAsset:(id)asset;
+- (void)applyManuallyCuratedAssets:(id)assets;
+- (void)applyManuallyRemovedAssets:(id)assets;
+- (void)applyTargetOverallDurationInfo:(id *)info;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)ensureAutoEditDecisionListForSong:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setAdditionalAutoEditDecisionListsBySong:(id)a3;
-- (void)setAllAssets:(id)a3;
-- (void)setAssetCollection:(id)a3;
-- (void)setAssetsAutoCurationProgress:(id)a3;
-- (void)setAssetsDataSource:(id)a3;
-- (void)setAssetsDataSourceManager:(id)a3;
-- (void)setAssetsProducer:(id)a3;
-- (void)setAssetsProgress:(id)a3;
-- (void)setAssetsResult:(id)a3;
-- (void)setAutoCurationProducer:(id)a3;
-- (void)setAutoEditDecisionListsProducer:(id)a3;
-- (void)setAutoEditDecisionListsProgress:(id)a3;
-- (void)setAutoEditDecisionListsResult:(id)a3;
-- (void)setAutoEditStylesProducer:(id)a3;
-- (void)setAutoEditStylesProgress:(id)a3;
-- (void)setAutoEditStylesResult:(id)a3;
-- (void)setAvailableCurationLengths:(unint64_t)a3;
-- (void)setChapterCollection:(id)a3;
-- (void)setChapterCollectionManager:(id)a3;
-- (void)setChapterCollectionProducer:(id)a3;
-- (void)setChapterCollectionProgress:(id)a3;
-- (void)setChapterCollectionResult:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setCuratedAssets:(id)a3;
-- (void)setCuratedSongsProducer:(id)a3;
-- (void)setCuratedSongsProgress:(id)a3;
-- (void)setCuratedSongsResult:(id)a3;
-- (void)setCurationLengthsProgress:(id)a3;
-- (void)setCurationLengthsResult:(id)a3;
-- (void)setDefaultCurationLength:(unint64_t)a3;
-- (void)setDetailedSaliencyProducer:(id)a3;
-- (void)setDetailedSaliencyProgress:(id)a3;
-- (void)setDetailedSaliencyResult:(id)a3;
-- (void)setFinalizedProducers:(unint64_t)a3;
-- (void)setHasFinalChapterCollectionBeenProduced:(BOOL)a3;
-- (void)setHasFinalDetailedSaliencyBeenProduced:(BOOL)a3;
-- (void)setHasInitialPersistableRecipeBeenProduced:(BOOL)a3;
-- (void)setHaveFinalMovieHighlightsBeenProduced:(BOOL)a3;
-- (void)setInitialAutoEditDecisionListResult:(id)a3;
-- (void)setInitialStyleProducer:(id)a3;
-- (void)setInitialStyleProgress:(id)a3;
-- (void)setInitialStyleResult:(id)a3;
-- (void)setIsRecipeFinal:(BOOL)a3;
-- (void)setKeyAsset:(id)a3;
-- (void)setMovieHighlightsProducer:(id)a3;
-- (void)setMovieHighlightsProgress:(id)a3;
-- (void)setMovieHighlightsResult:(id)a3;
-- (void)setOverallDurationInfo:(id *)a3;
-- (void)setPersistableRecipeProducer:(id)a3;
-- (void)setPersistableRecipeProgress:(id)a3;
-- (void)setPersistableRecipeResult:(id)a3;
-- (void)setPersistedRecipeAssetEdits:(id)a3;
-- (void)setPersistedSongProducer:(id)a3;
-- (void)setPersistedSongProgress:(id)a3;
-- (void)setPersistedSongResult:(id)a3;
-- (void)setProducersLikelyToKeepUp:(unint64_t)a3;
-- (void)setProducersWithInitialResults:(unint64_t)a3;
-- (void)setRecipe:(id)a3;
-- (void)setRecipeAssetEdits:(id)a3;
-- (void)setRecipeAttributes:(unint64_t)a3;
-- (void)setRemainingProducers:(unint64_t)a3;
-- (void)setUntruncatedCuratedAssets:(id)a3;
+- (void)ensureAutoEditDecisionListForSong:(id)song;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setAdditionalAutoEditDecisionListsBySong:(id)song;
+- (void)setAllAssets:(id)assets;
+- (void)setAssetCollection:(id)collection;
+- (void)setAssetsAutoCurationProgress:(id)progress;
+- (void)setAssetsDataSource:(id)source;
+- (void)setAssetsDataSourceManager:(id)manager;
+- (void)setAssetsProducer:(id)producer;
+- (void)setAssetsProgress:(id)progress;
+- (void)setAssetsResult:(id)result;
+- (void)setAutoCurationProducer:(id)producer;
+- (void)setAutoEditDecisionListsProducer:(id)producer;
+- (void)setAutoEditDecisionListsProgress:(id)progress;
+- (void)setAutoEditDecisionListsResult:(id)result;
+- (void)setAutoEditStylesProducer:(id)producer;
+- (void)setAutoEditStylesProgress:(id)progress;
+- (void)setAutoEditStylesResult:(id)result;
+- (void)setAvailableCurationLengths:(unint64_t)lengths;
+- (void)setChapterCollection:(id)collection;
+- (void)setChapterCollectionManager:(id)manager;
+- (void)setChapterCollectionProducer:(id)producer;
+- (void)setChapterCollectionProgress:(id)progress;
+- (void)setChapterCollectionResult:(id)result;
+- (void)setConfiguration:(id)configuration;
+- (void)setCuratedAssets:(id)assets;
+- (void)setCuratedSongsProducer:(id)producer;
+- (void)setCuratedSongsProgress:(id)progress;
+- (void)setCuratedSongsResult:(id)result;
+- (void)setCurationLengthsProgress:(id)progress;
+- (void)setCurationLengthsResult:(id)result;
+- (void)setDefaultCurationLength:(unint64_t)length;
+- (void)setDetailedSaliencyProducer:(id)producer;
+- (void)setDetailedSaliencyProgress:(id)progress;
+- (void)setDetailedSaliencyResult:(id)result;
+- (void)setFinalizedProducers:(unint64_t)producers;
+- (void)setHasFinalChapterCollectionBeenProduced:(BOOL)produced;
+- (void)setHasFinalDetailedSaliencyBeenProduced:(BOOL)produced;
+- (void)setHasInitialPersistableRecipeBeenProduced:(BOOL)produced;
+- (void)setHaveFinalMovieHighlightsBeenProduced:(BOOL)produced;
+- (void)setInitialAutoEditDecisionListResult:(id)result;
+- (void)setInitialStyleProducer:(id)producer;
+- (void)setInitialStyleProgress:(id)progress;
+- (void)setInitialStyleResult:(id)result;
+- (void)setIsRecipeFinal:(BOOL)final;
+- (void)setKeyAsset:(id)asset;
+- (void)setMovieHighlightsProducer:(id)producer;
+- (void)setMovieHighlightsProgress:(id)progress;
+- (void)setMovieHighlightsResult:(id)result;
+- (void)setOverallDurationInfo:(id *)info;
+- (void)setPersistableRecipeProducer:(id)producer;
+- (void)setPersistableRecipeProgress:(id)progress;
+- (void)setPersistableRecipeResult:(id)result;
+- (void)setPersistedRecipeAssetEdits:(id)edits;
+- (void)setPersistedSongProducer:(id)producer;
+- (void)setPersistedSongProgress:(id)progress;
+- (void)setPersistedSongResult:(id)result;
+- (void)setProducersLikelyToKeepUp:(unint64_t)up;
+- (void)setProducersWithInitialResults:(unint64_t)results;
+- (void)setRecipe:(id)recipe;
+- (void)setRecipeAssetEdits:(id)edits;
+- (void)setRecipeAttributes:(unint64_t)attributes;
+- (void)setRemainingProducers:(unint64_t)producers;
+- (void)setUntruncatedCuratedAssets:(id)assets;
 @end
 
 @implementation PXStoryRecipeManager
@@ -193,61 +193,61 @@
   return self;
 }
 
-- (void)_storyQueue_handleChangedAssetsDataSource:(id)a3
+- (void)_storyQueue_handleChangedAssetsDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__PXStoryRecipeManager__storyQueue_handleChangedAssetsDataSource___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sourceCopy;
+  v5 = sourceCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (AssetsDataSourceManagerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (AssetsDataSourceManagerObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v11 = [(PXStoryRecipeManager *)self assetsDataSourceManager];
-      v12 = [v11 dataSource];
+      assetsDataSourceManager = [(PXStoryRecipeManager *)self assetsDataSourceManager];
+      dataSource = [assetsDataSourceManager dataSource];
 
-      v13 = [(PXStoryRecipeManager *)self storyQueue];
+      storyQueue = [(PXStoryRecipeManager *)self storyQueue];
       v14 = MEMORY[0x1E69E96A0];
 
-      if (v13 == v14)
+      if (storyQueue == v14)
       {
-        [(PXStoryRecipeManager *)self _storyQueue_handleChangedAssetsDataSource:v12];
+        [(PXStoryRecipeManager *)self _storyQueue_handleChangedAssetsDataSource:dataSource];
       }
 
       else
       {
-        v15 = [(PXStoryRecipeManager *)self storyQueue];
+        storyQueue2 = [(PXStoryRecipeManager *)self storyQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __53__PXStoryRecipeManager_observable_didChange_context___block_invoke;
         block[3] = &unk_1E774C620;
         block[4] = self;
-        v28 = v12;
-        dispatch_async(v15, block);
+        v28 = dataSource;
+        dispatch_async(storyQueue2, block);
       }
     }
   }
 
-  else if (ChapterCollectionManagerObservationContext == a5)
+  else if (ChapterCollectionManagerObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
       v22 = MEMORY[0x1E69E9820];
       v23 = 3221225472;
       v24 = __53__PXStoryRecipeManager_observable_didChange_context___block_invoke_2;
       v25 = &unk_1E773CCA8;
-      v26 = self;
+      selfCopy = self;
       v10 = &v22;
       goto LABEL_11;
     }
@@ -255,24 +255,24 @@
 
   else
   {
-    if (ProducerMonitorObservationContext != a5)
+    if (ProducerMonitorObservationContext != context)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:2541 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:2541 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (v6)
+    if (changeCopy)
     {
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __53__PXStoryRecipeManager_observable_didChange_context___block_invoke_3;
       v20 = &unk_1E773CCA8;
-      v21 = self;
+      selfCopy2 = self;
       v10 = &v17;
 LABEL_11:
-      [(PXStoryRecipeManager *)self performChanges:v10, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26];
+      [(PXStoryRecipeManager *)self performChanges:v10, v17, v18, v19, v20, selfCopy2, v22, v23, v24, v25, selfCopy];
     }
   }
 }
@@ -281,26 +281,26 @@ LABEL_11:
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
-  v5 = [v4 object];
-  v6 = [v5 count];
+  initialAutoEditDecisionListResult = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+  object = [initialAutoEditDecisionListResult object];
+  v6 = [object count];
 
   if (v6)
   {
-    v7 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
-    v8 = [v7 object];
-    v9 = [v8 firstObject];
+    initialAutoEditDecisionListResult2 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+    object2 = [initialAutoEditDecisionListResult2 object];
+    firstObject = [object2 firstObject];
 
-    v10 = [v9 song];
-    if (v10)
+    song = [firstObject song];
+    if (song)
     {
-      [v3 setObject:v9 forKeyedSubscript:v10];
+      [v3 setObject:firstObject forKeyedSubscript:song];
     }
   }
 
-  v11 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
-  v12 = [v11 object];
-  v13 = [v12 count];
+  autoEditDecisionListsResult = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+  object3 = [autoEditDecisionListsResult object];
+  v13 = [object3 count];
 
   if (v13)
   {
@@ -308,10 +308,10 @@ LABEL_11:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
-    v15 = [v14 object];
+    autoEditDecisionListsResult2 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+    object4 = [autoEditDecisionListsResult2 object];
 
-    v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v16 = [object4 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -322,29 +322,29 @@ LABEL_11:
         {
           if (*v27 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(object4);
           }
 
           v20 = *(*(&v26 + 1) + 8 * i);
-          v21 = [v20 song];
-          if (v21)
+          song2 = [v20 song];
+          if (song2)
           {
-            [v3 setObject:v20 forKeyedSubscript:v21];
+            [v3 setObject:v20 forKeyedSubscript:song2];
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v17 = [object4 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v17);
     }
   }
 
-  v22 = [(PXStoryRecipeManager *)self additionalAutoEditDecisionListsBySong];
-  if ([v22 count])
+  additionalAutoEditDecisionListsBySong = [(PXStoryRecipeManager *)self additionalAutoEditDecisionListsBySong];
+  if ([additionalAutoEditDecisionListsBySong count])
   {
     v23 = [v3 mutableCopy];
-    [v23 addEntriesFromDictionary:v22];
+    [v23 addEntriesFromDictionary:additionalAutoEditDecisionListsBySong];
     v24 = [v23 copy];
 
     v3 = v24;
@@ -362,7 +362,7 @@ LABEL_11:
   v10 = &unk_1E774A7B8;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   v13 = 0;
   v5 = 1;
   do
@@ -390,23 +390,23 @@ void __42__PXStoryRecipeManager_resultsByComponent__block_invoke(uint64_t a1, ui
   [v4 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)_resultForProducer:(unint64_t)a3
+- (id)_resultForProducer:(unint64_t)producer
 {
   v3 = 0;
-  if (a3 <= 63)
+  if (producer <= 63)
   {
-    if (a3 > 7)
+    if (producer > 7)
     {
-      switch(a3)
+      switch(producer)
       {
         case 8uLL:
-          v4 = [(PXStoryRecipeManager *)self persistedSongResult];
+          persistedSongResult = [(PXStoryRecipeManager *)self persistedSongResult];
           break;
         case 0x10uLL:
-          v4 = [(PXStoryRecipeManager *)self curatedSongsResult];
+          persistedSongResult = [(PXStoryRecipeManager *)self curatedSongsResult];
           break;
         case 0x20uLL:
-          v4 = [(PXStoryRecipeManager *)self movieHighlightsResult];
+          persistedSongResult = [(PXStoryRecipeManager *)self movieHighlightsResult];
           break;
         default:
           goto LABEL_34;
@@ -415,15 +415,15 @@ void __42__PXStoryRecipeManager_resultsByComponent__block_invoke(uint64_t a1, ui
 
     else
     {
-      switch(a3)
+      switch(producer)
       {
         case 1uLL:
-          v4 = [(PXStoryRecipeManager *)self assetsResult];
+          persistedSongResult = [(PXStoryRecipeManager *)self assetsResult];
           break;
         case 2uLL:
           goto LABEL_31;
         case 4uLL:
-          v4 = [(PXStoryRecipeManager *)self persistableRecipeResult];
+          persistedSongResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
           break;
         default:
           goto LABEL_34;
@@ -433,18 +433,18 @@ void __42__PXStoryRecipeManager_resultsByComponent__block_invoke(uint64_t a1, ui
     goto LABEL_30;
   }
 
-  if (a3 <= 511)
+  if (producer <= 511)
   {
-    switch(a3)
+    switch(producer)
     {
       case 0x40uLL:
-        v4 = [(PXStoryRecipeManager *)self initialStyleResult];
+        persistedSongResult = [(PXStoryRecipeManager *)self initialStyleResult];
         break;
       case 0x80uLL:
-        v4 = [(PXStoryRecipeManager *)self autoEditStylesResult];
+        persistedSongResult = [(PXStoryRecipeManager *)self autoEditStylesResult];
         break;
       case 0x100uLL:
-        v4 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+        persistedSongResult = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
         break;
       default:
         goto LABEL_34;
@@ -453,35 +453,35 @@ void __42__PXStoryRecipeManager_resultsByComponent__block_invoke(uint64_t a1, ui
     goto LABEL_30;
   }
 
-  if (a3 > 2047)
+  if (producer > 2047)
   {
-    if (a3 == 2048)
+    if (producer == 2048)
     {
-      v4 = [(PXStoryRecipeManager *)self chapterCollectionResult];
+      persistedSongResult = [(PXStoryRecipeManager *)self chapterCollectionResult];
     }
 
     else
     {
-      if (a3 != 4096)
+      if (producer != 4096)
       {
         goto LABEL_34;
       }
 
-      v4 = [(PXStoryRecipeManager *)self detailedSaliencyResult];
+      persistedSongResult = [(PXStoryRecipeManager *)self detailedSaliencyResult];
     }
 
     goto LABEL_30;
   }
 
-  if (a3 == 512)
+  if (producer == 512)
   {
-    v4 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+    persistedSongResult = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
 LABEL_30:
-    v3 = v4;
+    v3 = persistedSongResult;
     goto LABEL_31;
   }
 
-  if (a3 != 1024)
+  if (producer != 1024)
   {
 LABEL_34:
     PXAssertGetLog();
@@ -492,52 +492,52 @@ LABEL_31:
   return v3;
 }
 
-- (id)_monitorForProducer:(unint64_t)a3
+- (id)_monitorForProducer:(unint64_t)producer
 {
-  if (a3 == 4096)
+  if (producer == 4096)
   {
-    v5 = [(PXStoryRecipeManager *)self detailedSaliencyProducerMonitor];
+    detailedSaliencyProducerMonitor = [(PXStoryRecipeManager *)self detailedSaliencyProducerMonitor];
   }
 
   else
   {
-    v5 = 0;
+    detailedSaliencyProducerMonitor = 0;
   }
 
-  return v5;
+  return detailedSaliencyProducerMonitor;
 }
 
 - (void)_updateRecipeAttributes
 {
-  v3 = [(PXStoryRecipeManager *)self recipeAttributes];
-  v4 = [(PXStoryRecipeManager *)self producersWithInitialResults];
-  v5 = [(PXStoryRecipeManager *)self producersRequiredForPlayback]& ~v4;
-  v6 = [(PXStoryRecipeManager *)self producersLikelyToKeepUp];
-  v7 = [(PXStoryRecipeManager *)self producersToMonitor];
+  recipeAttributes = [(PXStoryRecipeManager *)self recipeAttributes];
+  producersWithInitialResults = [(PXStoryRecipeManager *)self producersWithInitialResults];
+  v5 = [(PXStoryRecipeManager *)self producersRequiredForPlayback]& ~producersWithInitialResults;
+  producersLikelyToKeepUp = [(PXStoryRecipeManager *)self producersLikelyToKeepUp];
+  producersToMonitor = [(PXStoryRecipeManager *)self producersToMonitor];
   v8 = 0;
-  if (!v5 && v6 == v7)
+  if (!v5 && producersLikelyToKeepUp == producersToMonitor)
   {
-    v9 = [(PXStoryRecipeManager *)self loadingReadyForPlaybackDate];
+    loadingReadyForPlaybackDate = [(PXStoryRecipeManager *)self loadingReadyForPlaybackDate];
 
-    if (!v9)
+    if (!loadingReadyForPlaybackDate)
     {
-      v10 = [MEMORY[0x1E695DF00] date];
-      [(PXStoryRecipeManager *)self setLoadingReadyForPlaybackDate:v10];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PXStoryRecipeManager *)self setLoadingReadyForPlaybackDate:date];
     }
 
     v8 = 1;
   }
 
-  v11 = [(PXStoryRecipeManager *)self finalizedProducers];
-  if ((~(v11 | [(PXStoryRecipeManager *)self optionalProducers]) & 0x1FFFLL) == 0 || (v3 & 2) != 0)
+  finalizedProducers = [(PXStoryRecipeManager *)self finalizedProducers];
+  if ((~(finalizedProducers | [(PXStoryRecipeManager *)self optionalProducers]) & 0x1FFFLL) == 0 || (recipeAttributes & 2) != 0)
   {
     v8 |= 2uLL;
-    v12 = [(PXStoryRecipeManager *)self loadingFinalDate];
+    loadingFinalDate = [(PXStoryRecipeManager *)self loadingFinalDate];
 
-    if (!v12)
+    if (!loadingFinalDate)
     {
-      v13 = [MEMORY[0x1E695DF00] date];
-      [(PXStoryRecipeManager *)self setLoadingFinalDate:v13];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [(PXStoryRecipeManager *)self setLoadingFinalDate:date2];
     }
   }
 
@@ -546,23 +546,23 @@ LABEL_31:
 
 - (void)_invalidateRecipeAttributes
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateRecipeAttributes];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateRecipeAttributes];
 }
 
 - (void)_updateRecipe
 {
-  v3 = [(PXStoryRecipeManager *)self initialStyleResult];
-  v4 = [v3 object];
-  v5 = [v4 firstObject];
+  initialStyleResult = [(PXStoryRecipeManager *)self initialStyleResult];
+  object = [initialStyleResult object];
+  firstObject = [object firstObject];
 
-  v6 = [(PXStoryRecipeManager *)self autoEditStylesResult];
-  v7 = [v6 object];
+  autoEditStylesResult = [(PXStoryRecipeManager *)self autoEditStylesResult];
+  object2 = [autoEditStylesResult object];
 
-  v25 = v7;
-  if (v5)
+  v25 = object2;
+  if (firstObject)
   {
-    v27 = [[PXStoryStyleConfigurationList alloc] initWithAutoEditStyleConfigurations:v7 initialStyleConfiguration:v5];
+    v27 = [[PXStoryStyleConfigurationList alloc] initWithAutoEditStyleConfigurations:object2 initialStyleConfiguration:firstObject];
   }
 
   else
@@ -570,25 +570,25 @@ LABEL_31:
     v27 = 0;
   }
 
-  v22 = [(PXStoryRecipeManager *)self _collectAutoEditDecisionListsBySong];
+  _collectAutoEditDecisionListsBySong = [(PXStoryRecipeManager *)self _collectAutoEditDecisionListsBySong];
   v8 = [PXStoryRecipe alloc];
-  v20 = [(PXStoryRecipeManager *)self assetCollection];
-  v26 = [(PXStoryRecipeManager *)self keyAsset];
-  v21 = [(PXStoryRecipeManager *)self curatedAssets];
-  v19 = [(PXStoryRecipeManager *)self untruncatedCuratedAssets];
-  v18 = [(PXStoryRecipeManager *)self allAssets];
-  v24 = [(PXStoryRecipeManager *)self movieHighlightsResult];
-  v16 = [v24 object];
-  v23 = [(PXStoryRecipeManager *)self detailedSaliencyResult];
-  v15 = [v23 object];
-  v14 = [(PXStoryRecipeManager *)self chapterCollection];
+  assetCollection = [(PXStoryRecipeManager *)self assetCollection];
+  keyAsset = [(PXStoryRecipeManager *)self keyAsset];
+  curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
+  untruncatedCuratedAssets = [(PXStoryRecipeManager *)self untruncatedCuratedAssets];
+  allAssets = [(PXStoryRecipeManager *)self allAssets];
+  movieHighlightsResult = [(PXStoryRecipeManager *)self movieHighlightsResult];
+  object3 = [movieHighlightsResult object];
+  detailedSaliencyResult = [(PXStoryRecipeManager *)self detailedSaliencyResult];
+  object4 = [detailedSaliencyResult object];
+  chapterCollection = [(PXStoryRecipeManager *)self chapterCollection];
   [(PXStoryRecipeManager *)self overallDurationInfo];
-  v17 = [(PXStoryRecipeManager *)self persistableRecipeResult];
-  v9 = [v17 object];
-  v10 = [v9 recipe];
-  v11 = [(PXStoryRecipeManager *)self initialSongResource];
-  v12 = [(PXStoryRecipeManager *)self fallbackSongResource];
-  v13 = [(PXStoryRecipe *)v8 initWithAssetCollection:v20 keyAsset:v26 curatedAssets:v21 untruncatedCuratedAssets:v19 allAssets:v18 movieHighlights:v16 detailedSaliency:v15 chapterCollection:v14 overallDurationInfo:v28 styleConfigurationList:v27 sourcePersistableRecipe:v10 initialSongResource:v11 fallbackSongResource:v12 autoEditDecisionListsBySong:v22];
+  persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
+  object5 = [persistableRecipeResult object];
+  recipe = [object5 recipe];
+  initialSongResource = [(PXStoryRecipeManager *)self initialSongResource];
+  fallbackSongResource = [(PXStoryRecipeManager *)self fallbackSongResource];
+  v13 = [(PXStoryRecipe *)v8 initWithAssetCollection:assetCollection keyAsset:keyAsset curatedAssets:curatedAssets untruncatedCuratedAssets:untruncatedCuratedAssets allAssets:allAssets movieHighlights:object3 detailedSaliency:object4 chapterCollection:chapterCollection overallDurationInfo:v28 styleConfigurationList:v27 sourcePersistableRecipe:recipe initialSongResource:initialSongResource fallbackSongResource:fallbackSongResource autoEditDecisionListsBySong:_collectAutoEditDecisionListsBySong];
   [(PXStoryRecipeManager *)self setRecipe:v13];
 
   [(PXStoryRecipeManager *)self _invalidateRecipeAttributes];
@@ -596,8 +596,8 @@ LABEL_31:
 
 - (void)_invalidateRecipe
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateRecipe];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateRecipe];
 }
 
 - (void)_updateProducersLikelyToKeepUp
@@ -606,14 +606,14 @@ LABEL_31:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v4 = [(PXStoryRecipeManager *)self producersToMonitor];
+  producersToMonitor = [(PXStoryRecipeManager *)self producersToMonitor];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v7 = __54__PXStoryRecipeManager__updateProducersLikelyToKeepUp__block_invoke;
   v8 = &unk_1E7747118;
-  v11 = v4;
+  v11 = producersToMonitor;
   v12 = a2;
-  v9 = self;
+  selfCopy = self;
   v10 = &v13;
   v17 = 0;
   v5 = 1;
@@ -659,14 +659,14 @@ void __54__PXStoryRecipeManager__updateProducersLikelyToKeepUp__block_invoke(uin
 
 - (void)_invalidateProducersLikelyToKeepUp
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateProducersLikelyToKeepUp];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateProducersLikelyToKeepUp];
 }
 
 - (void)_updateProducerMonitors
 {
-  v3 = [(PXStoryRecipeManager *)self curatedAssets];
-  v4 = [v3 count];
+  curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
+  v4 = [curatedAssets count];
 
   v5 = +[PXStorySettings sharedInstance];
   [v5 estimatedMinimumDurationPerCuratedAsset];
@@ -682,31 +682,31 @@ void __54__PXStoryRecipeManager__updateProducersLikelyToKeepUp__block_invoke(uin
     v8 = 1.0 / (v7 * v4);
   }
 
-  v9 = [(PXStoryRecipeManager *)self detailedSaliencyProducerMonitor];
+  detailedSaliencyProducerMonitor = [(PXStoryRecipeManager *)self detailedSaliencyProducerMonitor];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__PXStoryRecipeManager__updateProducerMonitors__block_invoke_2;
   v10[3] = &__block_descriptor_36_e41_v16__0___PXStoryMutableProducerMonitor__8l;
   v11 = v8;
-  [v9 performChanges:v10];
+  [detailedSaliencyProducerMonitor performChanges:v10];
 }
 
 - (void)_invalidateProducerMonitors
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateProducerMonitors];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateProducerMonitors];
 }
 
-- (void)_handleAutoEditDecisionListsResult:(id)a3
+- (void)_handleAutoEditDecisionListsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXStoryRecipeManager__handleAutoEditDecisionListsResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -733,13 +733,13 @@ uint64_t __59__PXStoryRecipeManager__handleAutoEditDecisionListsResult___block_i
   v7[3] = __Block_byref_object_copy__136816;
   v7[4] = __Block_byref_object_dispose__136817;
   v8 = 0;
-  v3 = [(PXStoryRecipeManager *)self curatedSongs];
-  if (v3)
+  curatedSongs = [(PXStoryRecipeManager *)self curatedSongs];
+  if (curatedSongs)
   {
-    v4 = [(PXStoryRecipeManager *)self persistedSongResult];
-    v5 = [v4 isDegraded];
+    persistedSongResult = [(PXStoryRecipeManager *)self persistedSongResult];
+    isDegraded = [persistedSongResult isDegraded];
 
-    if ((v5 & 1) == 0)
+    if ((isDegraded & 1) == 0)
     {
       [(PXStoryRecipeManager *)self defaultRequestOptions];
       [(PXStoryRecipeManager *)self requiresAutoEditDecisionListsSynchronously];
@@ -829,20 +829,20 @@ LABEL_14:
 
 - (void)_invalidateAutoEditDecisionLists
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAutoEditDecisionLists];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAutoEditDecisionLists];
 }
 
-- (void)_handleInitialAutoEditDecisionListResult:(id)a3
+- (void)_handleInitialAutoEditDecisionListResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PXStoryRecipeManager__handleInitialAutoEditDecisionListResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -863,14 +863,14 @@ uint64_t __65__PXStoryRecipeManager__handleInitialAutoEditDecisionListResult___b
 - (void)_updateInitialAutoEditDecisionList
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryRecipeManager *)self initialSongResource];
-  v4 = v3;
-  if (v3)
+  initialSongResource = [(PXStoryRecipeManager *)self initialSongResource];
+  v4 = initialSongResource;
+  if (initialSongResource)
   {
-    v5 = [v3 px_storyResourceSongAsset];
-    v6 = [v5 flags];
+    px_storyResourceSongAsset = [initialSongResource px_storyResourceSongAsset];
+    flags = [px_storyResourceSongAsset flags];
 
-    if ((v6 & 4) == 0)
+    if ((flags & 4) == 0)
     {
       [(PXStoryRecipeManager *)self defaultRequestOptions];
       [(PXStoryRecipeManager *)self requiresAutoEditDecisionListsSynchronously];
@@ -964,41 +964,41 @@ LABEL_14:
 
 - (void)_invalidateInitialAutoEditDecisionList
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInitialAutoEditDecisionList];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInitialAutoEditDecisionList];
 }
 
 - (void)_updateAutoEditDecisionListsProducer
 {
-  v12 = [(PXStoryRecipeManager *)self configuration];
-  if (([v12 options] & 2) == 0)
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  if (([configuration options] & 2) == 0)
   {
-    v3 = [(PXStoryRecipeManager *)self curatedAssets];
-    if (v3 && [(PXStoryRecipeManager *)self haveFinalMovieHighlightsBeenProduced])
+    curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
+    if (curatedAssets && [(PXStoryRecipeManager *)self haveFinalMovieHighlightsBeenProduced])
     {
-      v4 = [(PXStoryRecipeManager *)self hasFinalChapterCollectionBeenProduced];
+      hasFinalChapterCollectionBeenProduced = [(PXStoryRecipeManager *)self hasFinalChapterCollectionBeenProduced];
 
-      if (v4)
+      if (hasFinalChapterCollectionBeenProduced)
       {
-        v5 = [(PXStoryRecipeManager *)self curatedAssets];
-        v6 = [(PXStoryRecipeManager *)self movieHighlightsResult];
-        v7 = [v6 object];
+        curatedAssets2 = [(PXStoryRecipeManager *)self curatedAssets];
+        movieHighlightsResult = [(PXStoryRecipeManager *)self movieHighlightsResult];
+        object = [movieHighlightsResult object];
 
-        v8 = [(PXStoryRecipeManager *)self chapterCollection];
+        chapterCollection = [(PXStoryRecipeManager *)self chapterCollection];
         v17 = 0u;
         v18 = 0u;
         v15 = 0u;
         v16 = 0u;
         v14 = 0u;
         [(PXStoryRecipeManager *)self overallDurationInfo];
-        v9 = [(PXStoryRecipeManager *)self autoEditDecisionListsProducerFactory];
-        v10 = [(PXStoryRecipeManager *)self assetCollection];
+        autoEditDecisionListsProducerFactory = [(PXStoryRecipeManager *)self autoEditDecisionListsProducerFactory];
+        assetCollection = [(PXStoryRecipeManager *)self assetCollection];
         v13[2] = v16;
         v13[3] = v17;
         v13[4] = v18;
         v13[0] = v14;
         v13[1] = v15;
-        v11 = [v9 autoEditDecisionListsProducerForAssetCollection:v10 displayAssets:v5 movieHighlights:v7 chapterCollection:v8 targetOverallDurationInfo:v13];
+        v11 = [autoEditDecisionListsProducerFactory autoEditDecisionListsProducerForAssetCollection:assetCollection displayAssets:curatedAssets2 movieHighlights:object chapterCollection:chapterCollection targetOverallDurationInfo:v13];
 
         [(PXStoryRecipeManager *)self setAutoEditDecisionListsProducer:v11];
       }
@@ -1010,20 +1010,20 @@ LABEL_14:
 
 - (void)_invalidateAutoEditDecisionListsProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAutoEditDecisionListsProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAutoEditDecisionListsProducer];
 }
 
-- (void)_handleAutoEditStylesResult:(id)a3
+- (void)_handleAutoEditStylesResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PXStoryRecipeManager__handleAutoEditStylesResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -1140,24 +1140,24 @@ LABEL_14:
 
 - (void)_invalidateAutoEditStyles
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAutoEditStyles];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAutoEditStyles];
 }
 
 - (void)_updateAutoEditStylesProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v5 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
-    v8 = [v5 object];
+    autoEditDecisionListsResult = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+    object = [autoEditDecisionListsResult object];
 
-    if (v8)
+    if (object)
     {
-      v6 = [(PXStoryRecipeManager *)self stylesProducerFactory];
-      v7 = [v6 stylesProducerForAutoEditDecisionLists:v8];
+      stylesProducerFactory = [(PXStoryRecipeManager *)self stylesProducerFactory];
+      v7 = [stylesProducerFactory stylesProducerForAutoEditDecisionLists:object];
       [(PXStoryRecipeManager *)self setAutoEditStylesProducer:v7];
     }
   }
@@ -1165,20 +1165,20 @@ LABEL_14:
 
 - (void)_invalidateAutoEditStylesProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAutoEditStylesProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAutoEditStylesProducer];
 }
 
-- (void)_handleInitialStyleResult:(id)a3
+- (void)_handleInitialStyleResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PXStoryRecipeManager__handleInitialStyleResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -1290,42 +1290,42 @@ LABEL_14:
 
 - (void)_invalidateInitialStyle
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInitialStyle];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInitialStyle];
 }
 
 - (void)_updateInitialStyleProducer
 {
   if (!-[PXStoryRecipeManager hasInitialPersistableRecipeBeenProduced](self, "hasInitialPersistableRecipeBeenProduced") || (-[PXStoryRecipeManager configuration](self, "configuration"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 options], v3, (v4 & 2) != 0))
   {
-    v15 = [(PXStoryRecipeManager *)self stylesProducerFactory];
-    v9 = [(PXStoryRecipeManager *)self configuration];
-    v10 = [v9 assetCollection];
-    v13 = [v15 initialStyleProducerForAssetCollection:v10];
-    [(PXStoryRecipeManager *)self setInitialStyleProducer:v13];
+    stylesProducerFactory = [(PXStoryRecipeManager *)self stylesProducerFactory];
+    configuration = [(PXStoryRecipeManager *)self configuration];
+    assetCollection = [configuration assetCollection];
+    stylesProducerFactory2 = [stylesProducerFactory initialStyleProducerForAssetCollection:assetCollection];
+    [(PXStoryRecipeManager *)self setInitialStyleProducer:stylesProducerFactory2];
   }
 
   else
   {
-    v5 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
-    v6 = [v5 object];
-    v15 = [v6 firstObject];
+    initialAutoEditDecisionListResult = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+    object = [initialAutoEditDecisionListResult object];
+    stylesProducerFactory = [object firstObject];
 
-    v7 = [(PXStoryRecipeManager *)self persistableRecipeResult];
-    v8 = [v7 object];
-    v9 = [v8 recipe];
+    persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
+    object2 = [persistableRecipeResult object];
+    configuration = [object2 recipe];
 
-    v10 = [(PXStoryRecipeManager *)self initialSongResource];
-    v11 = [v10 px_storyResourceSongAsset];
-    v12 = [v11 flags];
+    assetCollection = [(PXStoryRecipeManager *)self initialSongResource];
+    px_storyResourceSongAsset = [assetCollection px_storyResourceSongAsset];
+    flags = [px_storyResourceSongAsset flags];
 
-    if ((v12 & 4) != 0)
+    if ((flags & 4) != 0)
     {
       goto LABEL_7;
     }
 
-    v13 = [(PXStoryRecipeManager *)self stylesProducerFactory];
-    v14 = [v13 initialStyleProducerForPersistableRecipe:v9 songResource:v10 autoEditDecisionList:v15];
+    stylesProducerFactory2 = [(PXStoryRecipeManager *)self stylesProducerFactory];
+    v14 = [stylesProducerFactory2 initialStyleProducerForPersistableRecipe:configuration songResource:assetCollection autoEditDecisionList:stylesProducerFactory];
     [(PXStoryRecipeManager *)self setInitialStyleProducer:v14];
   }
 
@@ -1334,16 +1334,16 @@ LABEL_7:
 
 - (void)_invalidateInitialStyleProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInitialStyleProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInitialStyleProducer];
 }
 
 - (void)_updateManuallyCuratedAssets
 {
   if (!self->_manuallyCuratedAssets)
   {
-    v5 = [(PXStoryRecipeManager *)self curatedAssets];
-    if ([v5 count] <= 0)
+    curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
+    if ([curatedAssets count] <= 0)
     {
     }
 
@@ -1353,9 +1353,9 @@ LABEL_7:
 
       if (v6 == 2)
       {
-        v3 = [(PXStoryRecipeManager *)self curatedAssets];
+        curatedAssets2 = [(PXStoryRecipeManager *)self curatedAssets];
         manuallyCuratedAssets = self->_manuallyCuratedAssets;
-        self->_manuallyCuratedAssets = v3;
+        self->_manuallyCuratedAssets = curatedAssets2;
       }
     }
   }
@@ -1363,37 +1363,37 @@ LABEL_7:
 
 - (void)_invalidateManuallyCuratedAssets
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateManuallyCuratedAssets];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateManuallyCuratedAssets];
 }
 
 - (void)_updateKeyAsset
 {
-  v4 = [(PXStoryRecipeManager *)self assetsDataSource];
-  v3 = [v4 keyAsset];
-  [(PXStoryRecipeManager *)self setKeyAsset:v3];
+  assetsDataSource = [(PXStoryRecipeManager *)self assetsDataSource];
+  keyAsset = [assetsDataSource keyAsset];
+  [(PXStoryRecipeManager *)self setKeyAsset:keyAsset];
 }
 
 - (void)_invalidateKeyAsset
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateKeyAsset];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateKeyAsset];
 }
 
 - (void)_updateCuratedAssets
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryRecipeManager *)self assetsDataSource];
-  if ([v3 numberOfSections] < 1)
+  assetsDataSource = [(PXStoryRecipeManager *)self assetsDataSource];
+  if ([assetsDataSource numberOfSections] < 1)
   {
 LABEL_10:
     v5 = 0;
     goto LABEL_11;
   }
 
-  if (v3)
+  if (assetsDataSource)
   {
-    [v3 firstSectionIndexPath];
+    [assetsDataSource firstSectionIndexPath];
   }
 
   else
@@ -1401,18 +1401,18 @@ LABEL_10:
     memset(v11, 0, sizeof(v11));
   }
 
-  v4 = [v3 assetsInSectionIndexPath:v11];
+  v4 = [assetsDataSource assetsInSectionIndexPath:v11];
   v5 = v4;
   if (v4 && ![v4 count])
   {
     v6 = PLStoryGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PXStoryRecipeManager *)self assetCollection];
+      assetCollection = [(PXStoryRecipeManager *)self assetCollection];
       LODWORD(v11[0]) = 138412546;
-      *(v11 + 4) = v3;
+      *(v11 + 4) = assetsDataSource;
       WORD6(v11[0]) = 2112;
-      *(v11 + 14) = v7;
+      *(v11 + 14) = assetCollection;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Assets datasource contains a section, but it has 0 curated assets %@ %@", v11, 0x16u);
     }
 
@@ -1421,9 +1421,9 @@ LABEL_10:
 
 LABEL_11:
   v8 = [PXStorySettings sharedInstance:v11[0]];
-  v9 = [v8 curatedAssetsLimit];
+  curatedAssetsLimit = [v8 curatedAssetsLimit];
 
-  if ([v5 count] > v9 && v5 != 0)
+  if ([v5 count] > curatedAssetsLimit && v5 != 0)
   {
     PXDisplayAssetFetchResultSubfetchResultWithRange();
   }
@@ -1434,23 +1434,23 @@ LABEL_11:
 
 - (void)_invalidateCuratedAssets
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCuratedAssets];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCuratedAssets];
 }
 
 - (void)_updateAllAssets
 {
-  v3 = [(PXStoryRecipeManager *)self assetsDataSource];
-  if ([v3 numberOfSections] < 1)
+  assetsDataSource = [(PXStoryRecipeManager *)self assetsDataSource];
+  if ([assetsDataSource numberOfSections] < 1)
   {
     [(PXStoryRecipeManager *)self setAllAssets:0];
   }
 
   else
   {
-    if (v3)
+    if (assetsDataSource)
     {
-      [v3 firstSectionIndexPath];
+      [assetsDataSource firstSectionIndexPath];
     }
 
     else
@@ -1458,15 +1458,15 @@ LABEL_11:
       memset(v5, 0, sizeof(v5));
     }
 
-    v4 = [v3 uncuratedAssetsInSectionIndexPath:v5];
+    v4 = [assetsDataSource uncuratedAssetsInSectionIndexPath:v5];
     [(PXStoryRecipeManager *)self setAllAssets:v4];
   }
 }
 
 - (void)_invalidateAllAssets
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAllAssets];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAllAssets];
 }
 
 - (void)_updateOverallDurationInfo
@@ -1477,13 +1477,13 @@ LABEL_11:
   v21 = 0u;
   v19 = 0u;
   [(PXStoryRecipeManager *)self overallDurationInfo];
-  v3 = [(PXStoryRecipeManager *)self persistableRecipeResult];
-  v4 = [v3 object];
-  v5 = [v4 recipe];
+  persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
+  object = [persistableRecipeResult object];
+  recipe = [object recipe];
 
-  if (v5)
+  if (recipe)
   {
-    [v5 overallDurationInfo];
+    [recipe overallDurationInfo];
     v21 = v16;
     v22 = v17;
     v23 = v18;
@@ -1491,43 +1491,43 @@ LABEL_11:
     v20 = v15;
   }
 
-  v6 = [(PXStoryRecipeManager *)self curationLengthsResult];
-  if (v6)
+  curationLengthsResult = [(PXStoryRecipeManager *)self curationLengthsResult];
+  if (curationLengthsResult)
   {
 
     if (v19 <= 1)
     {
-      v7 = [(PXStoryRecipeManager *)self defaultCurationLength];
-      if (v7 > 4)
+      defaultCurationLength = [(PXStoryRecipeManager *)self defaultCurationLength];
+      if (defaultCurationLength > 4)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = qword_1A5382640[v7];
+        v8 = qword_1A5382640[defaultCurationLength];
       }
 
       *&v19 = v8;
     }
   }
 
-  v9 = [(PXStoryRecipeManager *)self recipeAssetEdits];
-  v10 = v9;
-  if (v9)
+  recipeAssetEdits = [(PXStoryRecipeManager *)self recipeAssetEdits];
+  v10 = recipeAssetEdits;
+  if (recipeAssetEdits)
   {
-    [v9 overallDurationInfo];
+    [recipeAssetEdits overallDurationInfo];
     if (v14)
     {
-      v11 = [(PXStoryRecipeManager *)self persistedRecipeAssetEdits];
-      v12 = v11;
-      if (v10 == v11)
+      persistedRecipeAssetEdits = [(PXStoryRecipeManager *)self persistedRecipeAssetEdits];
+      v12 = persistedRecipeAssetEdits;
+      if (v10 == persistedRecipeAssetEdits)
       {
       }
 
       else
       {
-        v13 = [v10 isEqual:v11];
+        v13 = [v10 isEqual:persistedRecipeAssetEdits];
 
         if (!v13)
         {
@@ -1555,33 +1555,33 @@ LABEL_16:
 
 - (void)_invalidateOverallDurationInfo
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOverallDurationInfo];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOverallDurationInfo];
 }
 
 - (void)_updateChapterCollection
 {
-  v4 = [(PXStoryRecipeManager *)self chapterCollectionManager];
-  v3 = [v4 chapterCollection];
-  [(PXStoryRecipeManager *)self setChapterCollection:v3];
+  chapterCollectionManager = [(PXStoryRecipeManager *)self chapterCollectionManager];
+  chapterCollection = [chapterCollectionManager chapterCollection];
+  [(PXStoryRecipeManager *)self setChapterCollection:chapterCollection];
 }
 
 - (void)_invalidateChapterCollection
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateChapterCollection];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateChapterCollection];
 }
 
-- (void)_handleChapterCollectionResult:(id)a3
+- (void)_handleChapterCollectionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PXStoryRecipeManager__handleChapterCollectionResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -1603,12 +1603,12 @@ uint64_t __55__PXStoryRecipeManager__handleChapterCollectionResult___block_invok
 - (void)_updateChapterCollectionResult
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryRecipeManager *)self curatedAssets];
-  if (v3)
+  curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
+  if (curatedAssets)
   {
-    v4 = [(PXStoryRecipeManager *)self keyAsset];
+    keyAsset = [(PXStoryRecipeManager *)self keyAsset];
 
-    if (v4)
+    if (keyAsset)
     {
       v6[0] = 0;
       v6[1] = v6;
@@ -1702,40 +1702,40 @@ LABEL_14:
 
 - (void)_invalidateChapterCollectionResult
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateChapterCollectionResult];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateChapterCollectionResult];
 }
 
 - (void)_updateChapterCollectionProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v7 = [(PXStoryRecipeManager *)self chapterCollectionProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self configuration];
-    v6 = [v7 chapterCollectionProducerForConfiguration:v5];
+    chapterCollectionProducerFactory = [(PXStoryRecipeManager *)self chapterCollectionProducerFactory];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v6 = [chapterCollectionProducerFactory chapterCollectionProducerForConfiguration:configuration2];
     [(PXStoryRecipeManager *)self setChapterCollectionProducer:v6];
   }
 }
 
 - (void)_invalidateChapterCollectionProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateChapterCollectionProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateChapterCollectionProducer];
 }
 
-- (void)_handleDetailedSaliencyResult:(id)a3
+- (void)_handleDetailedSaliencyResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PXStoryRecipeManager__handleDetailedSaliencyResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -1847,40 +1847,40 @@ LABEL_14:
 
 - (void)_invalidateDetailedSaliency
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDetailedSaliency];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDetailedSaliency];
 }
 
 - (void)_updateDetailedSaliencyProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v7 = [(PXStoryRecipeManager *)self detailedSaliencyProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self configuration];
-    v6 = [v7 detailedSaliencyProducerForConfiguration:v5];
+    detailedSaliencyProducerFactory = [(PXStoryRecipeManager *)self detailedSaliencyProducerFactory];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v6 = [detailedSaliencyProducerFactory detailedSaliencyProducerForConfiguration:configuration2];
     [(PXStoryRecipeManager *)self setDetailedSaliencyProducer:v6];
   }
 }
 
 - (void)_invalidateDetailedSaliencyProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDetailedSaliencyProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDetailedSaliencyProducer];
 }
 
-- (void)_handleMovieHighlightsResult:(id)a3
+- (void)_handleMovieHighlightsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PXStoryRecipeManager__handleMovieHighlightsResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -1992,40 +1992,40 @@ LABEL_14:
 
 - (void)_invalidateMovieHighlights
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMovieHighlights];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMovieHighlights];
 }
 
 - (void)_updateMovieHighlightsProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v7 = [(PXStoryRecipeManager *)self movieHighlightsProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self configuration];
-    v6 = [v7 movieHighlightsProducerWithConfiguration:v5];
+    movieHighlightsProducerFactory = [(PXStoryRecipeManager *)self movieHighlightsProducerFactory];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v6 = [movieHighlightsProducerFactory movieHighlightsProducerWithConfiguration:configuration2];
     [(PXStoryRecipeManager *)self setMovieHighlightsProducer:v6];
   }
 }
 
 - (void)_invalidateMovieHighlightsProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMovieHighlightsProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMovieHighlightsProducer];
 }
 
-- (void)_handleCurationLengthsResult:(id)a3
+- (void)_handleCurationLengthsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PXStoryRecipeManager__handleCurationLengthsResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -2044,12 +2044,12 @@ void __53__PXStoryRecipeManager__handleCurationLengthsResult___block_invoke(uint
 - (void)_updateCurationLengths
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryRecipeManager *)self allAssets];
-  if (v3)
+  allAssets = [(PXStoryRecipeManager *)self allAssets];
+  if (allAssets)
   {
-    v4 = [(PXStoryRecipeManager *)self curatedAssets];
+    curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
 
-    if (v4)
+    if (curatedAssets)
     {
       v6[0] = 0;
       v6[1] = v6;
@@ -2141,40 +2141,40 @@ LABEL_14:
 
 - (void)_invalidateCurationLengths
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurationLengths];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurationLengths];
 }
 
 - (void)_updateAutoCurationProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v7 = [(PXStoryRecipeManager *)self autoCurationProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self configuration];
-    v6 = [v7 autoCurationProducerForConfiguration:v5];
+    autoCurationProducerFactory = [(PXStoryRecipeManager *)self autoCurationProducerFactory];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v6 = [autoCurationProducerFactory autoCurationProducerForConfiguration:configuration2];
     [(PXStoryRecipeManager *)self setAutoCurationProducer:v6];
   }
 }
 
 - (void)_invalidateAutoCurationProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAutoCurationProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAutoCurationProducer];
 }
 
-- (void)_handleSongsResult:(id)a3
+- (void)_handleSongsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PXStoryRecipeManager__handleSongsResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -2195,15 +2195,15 @@ uint64_t __43__PXStoryRecipeManager__handleSongsResult___block_invoke(uint64_t a
 - (void)_updateCuratedSongs
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryRecipeManager *)self persistedSongResult];
-  if (v3)
+  persistedSongResult = [(PXStoryRecipeManager *)self persistedSongResult];
+  if (persistedSongResult)
   {
-    v4 = [(PXStoryRecipeManager *)self finalizedProducers];
+    finalizedProducers = [(PXStoryRecipeManager *)self finalizedProducers];
 
-    if ((v4 & 0x10) == 0)
+    if ((finalizedProducers & 0x10) == 0)
     {
-      v5 = [(PXStoryRecipeManager *)self initialSongResource];
-      if (!v5 || (v6 = [(PXStoryRecipeManager *)self wantsAutoEditResults], v5, v6))
+      initialSongResource = [(PXStoryRecipeManager *)self initialSongResource];
+      if (!initialSongResource || (v6 = [(PXStoryRecipeManager *)self wantsAutoEditResults], initialSongResource, v6))
       {
         v9[0] = 0;
         v9[1] = v9;
@@ -2301,69 +2301,69 @@ LABEL_14:
 
 - (void)_invalidateCuratedSongs
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCuratedSongs];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCuratedSongs];
 }
 
 - (void)_updateCuratedSongsProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v7 = [(PXStoryRecipeManager *)self songsProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self configuration];
-    v6 = [v7 songsProducerForConfiguration:v5];
+    songsProducerFactory = [(PXStoryRecipeManager *)self songsProducerFactory];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v6 = [songsProducerFactory songsProducerForConfiguration:configuration2];
     [(PXStoryRecipeManager *)self setCuratedSongsProducer:v6];
   }
 }
 
 - (void)_invalidateCuratedSongsProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCuratedSongsProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCuratedSongsProducer];
 }
 
 - (PXStorySongResource)initialSongResource
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 songsConfiguration];
-  v5 = [v4 currentAsset];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  songsConfiguration = [configuration songsConfiguration];
+  currentAsset = [songsConfiguration currentAsset];
 
-  if (!v5)
+  if (!currentAsset)
   {
-    v6 = [(PXStoryRecipeManager *)self persistedSongResult];
-    v5 = [v6 object];
+    persistedSongResult = [(PXStoryRecipeManager *)self persistedSongResult];
+    currentAsset = [persistedSongResult object];
 
-    if (!v5)
+    if (!currentAsset)
     {
-      v7 = [(PXStoryRecipeManager *)self curatedSongs];
-      if ([v7 count] < 1)
+      curatedSongs = [(PXStoryRecipeManager *)self curatedSongs];
+      if ([curatedSongs count] < 1)
       {
-        v5 = 0;
+        currentAsset = 0;
       }
 
       else
       {
-        v5 = [v7 firstObject];
+        currentAsset = [curatedSongs firstObject];
       }
     }
   }
 
-  return v5;
+  return currentAsset;
 }
 
-- (void)_handlePersistedSongResourceResult:(id)a3
+- (void)_handlePersistedSongResourceResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXStoryRecipeManager__handlePersistedSongResourceResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -2474,43 +2474,43 @@ LABEL_14:
 
 - (void)_invalidatePersistedSong
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePersistedSong];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistedSong];
 }
 
 - (void)_updatePersistedSongProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v10 = [(PXStoryRecipeManager *)self songResourceProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self persistableRecipeResult];
-    v6 = [v5 object];
-    v7 = [v6 recipe];
-    v8 = [(PXStoryRecipeManager *)self configuration];
-    v9 = [v10 songResourceProducerForPersistableRecipe:v7 configuration:v8];
+    songResourceProducerFactory = [(PXStoryRecipeManager *)self songResourceProducerFactory];
+    persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
+    object = [persistableRecipeResult object];
+    recipe = [object recipe];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v9 = [songResourceProducerFactory songResourceProducerForPersistableRecipe:recipe configuration:configuration2];
     [(PXStoryRecipeManager *)self setPersistedSongProducer:v9];
   }
 }
 
 - (void)_invalidatePersistedSongProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePersistedSongProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistedSongProducer];
 }
 
-- (void)_handlePersistableRecipeResult:(id)a3
+- (void)_handlePersistableRecipeResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__PXStoryRecipeManager__handlePersistableRecipeResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -2622,40 +2622,40 @@ LABEL_14:
 
 - (void)_invalidatePersistableRecipe
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePersistableRecipe];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistableRecipe];
 }
 
 - (void)_updatePersistableRecipeProducer
 {
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v3 options];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  options = [configuration options];
 
-  if ((v4 & 2) == 0)
+  if ((options & 2) == 0)
   {
-    v7 = [(PXStoryRecipeManager *)self persistableRecipeProducerFactory];
-    v5 = [(PXStoryRecipeManager *)self configuration];
-    v6 = [v7 persistableRecipeProducerForConfiguration:v5];
+    persistableRecipeProducerFactory = [(PXStoryRecipeManager *)self persistableRecipeProducerFactory];
+    configuration2 = [(PXStoryRecipeManager *)self configuration];
+    v6 = [persistableRecipeProducerFactory persistableRecipeProducerForConfiguration:configuration2];
     [(PXStoryRecipeManager *)self setPersistableRecipeProducer:v6];
   }
 }
 
 - (void)_invalidatePersistableRecipeProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePersistableRecipeProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePersistableRecipeProducer];
 }
 
-- (void)_handleAssetsResult:(id)a3
+- (void)_handleAssetsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__PXStoryRecipeManager__handleAssetsResult___block_invoke;
   v6[3] = &unk_1E773C7A8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryRecipeManager *)self performChanges:v6];
 }
 
@@ -2668,8 +2668,8 @@ LABEL_14:
   v6[3] = __Block_byref_object_copy__136816;
   v6[4] = __Block_byref_object_dispose__136817;
   v6[5] = 0;
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = ([v3 options] & 1) == 0;
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  v4 = ([configuration options] & 1) == 0;
 
   if (v4)
   {
@@ -2758,54 +2758,54 @@ LABEL_14:
 
 - (void)_invalidateAssets
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssets];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssets];
 }
 
 - (void)_updateAssetsProducer
 {
-  v5 = [(PXStoryRecipeManager *)self assetsProducerFactory];
-  v3 = [(PXStoryRecipeManager *)self configuration];
-  v4 = [v5 assetsProducerForConfiguration:v3];
+  assetsProducerFactory = [(PXStoryRecipeManager *)self assetsProducerFactory];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  v4 = [assetsProducerFactory assetsProducerForConfiguration:configuration];
   [(PXStoryRecipeManager *)self setAssetsProducer:v4];
 }
 
 - (void)_invalidateAssetsProducer
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetsProducer];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetsProducer];
 }
 
 - (void)_updateAssetCollection
 {
-  v4 = [(PXStoryRecipeManager *)self assetsDataSource];
-  v3 = [v4 firstAssetCollection];
-  [(PXStoryRecipeManager *)self setAssetCollection:v3];
+  assetsDataSource = [(PXStoryRecipeManager *)self assetsDataSource];
+  firstAssetCollection = [assetsDataSource firstAssetCollection];
+  [(PXStoryRecipeManager *)self setAssetCollection:firstAssetCollection];
 }
 
 - (void)_invalidateAssetCollection
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetCollection];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetCollection];
 }
 
 - (PXStoryAutoEditMomentsProvider)diagnosticsMomentsProvider
 {
-  v2 = [(PXStoryRecipeManager *)self autoEditDecisionListsProducer];
+  autoEditDecisionListsProducer = [(PXStoryRecipeManager *)self autoEditDecisionListsProducer];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 diagnosticsMomentsProvider];
+    diagnosticsMomentsProvider = [autoEditDecisionListsProducer diagnosticsMomentsProvider];
   }
 
   else
   {
-    v3 = 0;
+    diagnosticsMomentsProvider = 0;
   }
 
-  return v3;
+  return diagnosticsMomentsProvider;
 }
 
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type
 {
   v24 = 0;
   v25 = &v24;
@@ -2819,37 +2819,37 @@ LABEL_14:
   aBlock[3] = &unk_1E773CA00;
   aBlock[4] = &v24;
   v4 = _Block_copy(aBlock);
-  v5 = [(PXStoryRecipeManager *)self assetsResult];
-  v6 = [v5 error];
-  v4[2](v4, @"Assets", v6);
+  assetsResult = [(PXStoryRecipeManager *)self assetsResult];
+  error = [assetsResult error];
+  v4[2](v4, @"Assets", error);
 
-  v7 = [(PXStoryRecipeManager *)self persistableRecipeResult];
-  v8 = [v7 error];
-  v4[2](v4, @"Persistable Recipe", v8);
+  persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
+  error2 = [persistableRecipeResult error];
+  v4[2](v4, @"Persistable Recipe", error2);
 
-  v9 = [(PXStoryRecipeManager *)self persistedSongResult];
-  v10 = [v9 error];
-  v4[2](v4, @"Persisted Song", v10);
+  persistedSongResult = [(PXStoryRecipeManager *)self persistedSongResult];
+  error3 = [persistedSongResult error];
+  v4[2](v4, @"Persisted Song", error3);
 
-  v11 = [(PXStoryRecipeManager *)self curatedSongsResult];
-  v12 = [v11 error];
-  v4[2](v4, @"Curated Songs", v12);
+  curatedSongsResult = [(PXStoryRecipeManager *)self curatedSongsResult];
+  error4 = [curatedSongsResult error];
+  v4[2](v4, @"Curated Songs", error4);
 
-  v13 = [(PXStoryRecipeManager *)self initialStyleResult];
-  v14 = [v13 error];
-  v4[2](v4, @"Initial Style", v14);
+  initialStyleResult = [(PXStoryRecipeManager *)self initialStyleResult];
+  error5 = [initialStyleResult error];
+  v4[2](v4, @"Initial Style", error5);
 
-  v15 = [(PXStoryRecipeManager *)self autoEditStylesResult];
-  v16 = [v15 error];
-  v4[2](v4, @"AE Styles", v16);
+  autoEditStylesResult = [(PXStoryRecipeManager *)self autoEditStylesResult];
+  error6 = [autoEditStylesResult error];
+  v4[2](v4, @"AE Styles", error6);
 
-  v17 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
-  v18 = [v17 error];
-  v4[2](v4, @"Initial EDL", v18);
+  initialAutoEditDecisionListResult = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+  error7 = [initialAutoEditDecisionListResult error];
+  v4[2](v4, @"Initial EDL", error7);
 
-  v19 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
-  v20 = [v19 error];
-  v4[2](v4, @"Auto EDL", v20);
+  autoEditDecisionListsResult = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+  error8 = [autoEditDecisionListsResult error];
+  v4[2](v4, @"Auto EDL", error8);
 
   v21 = [v25[5] copy];
   _Block_object_dispose(&v24, 8);
@@ -2857,9 +2857,9 @@ LABEL_14:
   return v21;
 }
 
-- (id)_shortDescriptionOfPersistableRecipe:(id)a3
+- (id)_shortDescriptionOfPersistableRecipe:(id)recipe
 {
-  v3 = a3;
+  recipeCopy = recipe;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2869,26 +2869,26 @@ LABEL_14:
   v14 = v5;
   v6 = _Block_copy(aBlock);
   v7 = (v6 + 16);
-  (*(v6 + 2))(v6, [v3 numberOfAssets], @"assets");
-  v8 = [v3 currentStyle];
+  (*(v6 + 2))(v6, [recipeCopy numberOfAssets], @"assets");
+  currentStyle = [recipeCopy currentStyle];
   v9 = @"Y\n";
-  if (!v8)
+  if (!currentStyle)
   {
     v9 = @"N\n";
   }
 
   [v5 appendFormat:@"Custom Style?: %@", v9];
 
-  (*v7)(v6, [v3 numberOfPresentations], @"presentations");
-  v10 = [v3 autoEditDecisionLists];
-  (*v7)(v6, [v10 count], @"AEDLs");
+  (*v7)(v6, [recipeCopy numberOfPresentations], @"presentations");
+  autoEditDecisionLists = [recipeCopy autoEditDecisionLists];
+  (*v7)(v6, [autoEditDecisionLists count], @"AEDLs");
 
-  if (v3)
+  if (recipeCopy)
   {
-    [v3 overallDurationInfo];
+    [recipeCopy overallDurationInfo];
   }
 
-  [v5 appendFormat:@"v%li.%li", objc_msgSend(v3, "majorVersion"), objc_msgSend(v3, "minorVersion")];
+  [v5 appendFormat:@"v%li.%li", objc_msgSend(recipeCopy, "majorVersion"), objc_msgSend(recipeCopy, "minorVersion")];
   v11 = [v5 copy];
 
   return v11;
@@ -2904,7 +2904,7 @@ uint64_t __61__PXStoryRecipeManager__shortDescriptionOfPersistableRecipe___block
   return result;
 }
 
-- (id)_diagnosticTextForGenericHUDAtDisplaySize:(CGSize)a3
+- (id)_diagnosticTextForGenericHUDAtDisplaySize:(CGSize)size
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if (_diagnosticTextForGenericHUDAtDisplaySize__onceToken != -1)
@@ -2919,71 +2919,71 @@ uint64_t __61__PXStoryRecipeManager__shortDescriptionOfPersistableRecipe___block
   v5 = v4;
   v39 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(PXStoryRecipeManager *)self assetsProgress];
-  v8 = [(PXStoryRecipeManager *)self assetsResult];
+  assetsProgress = [(PXStoryRecipeManager *)self assetsProgress];
+  assetsResult = [(PXStoryRecipeManager *)self assetsResult];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___block_invoke_3;
   v37[3] = &unk_1E773C930;
   v37[4] = self;
-  v6[2](v6, @"Assets", v7, v8, v37);
+  v6[2](v6, @"Assets", assetsProgress, assetsResult, v37);
 
-  v9 = [(PXStoryRecipeManager *)self persistableRecipeProgress];
-  v10 = [(PXStoryRecipeManager *)self persistableRecipeResult];
+  persistableRecipeProgress = [(PXStoryRecipeManager *)self persistableRecipeProgress];
+  persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___block_invoke_4;
   v36[3] = &unk_1E773C958;
   v36[4] = self;
-  v6[2](v6, @"Previously Persisted Recipe", v9, v10, v36);
+  v6[2](v6, @"Previously Persisted Recipe", persistableRecipeProgress, persistableRecipeResult, v36);
 
-  v11 = [(PXStoryRecipeManager *)self persistedSongProgress];
-  v12 = [(PXStoryRecipeManager *)self persistedSongResult];
-  v6[2](v6, @"Persisted Song", v11, v12, __block_literal_global_423);
+  persistedSongProgress = [(PXStoryRecipeManager *)self persistedSongProgress];
+  persistedSongResult = [(PXStoryRecipeManager *)self persistedSongResult];
+  v6[2](v6, @"Persisted Song", persistedSongProgress, persistedSongResult, __block_literal_global_423);
 
-  v13 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListProgress];
-  v14 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
-  v6[2](v6, @"Initial EDL", v13, v14, __block_literal_global_432_137008);
+  initialAutoEditDecisionListProgress = [(PXStoryRecipeManager *)self initialAutoEditDecisionListProgress];
+  initialAutoEditDecisionListResult = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+  v6[2](v6, @"Initial EDL", initialAutoEditDecisionListProgress, initialAutoEditDecisionListResult, __block_literal_global_432_137008);
 
-  v15 = [(PXStoryRecipeManager *)self initialStyleProgress];
-  v16 = [(PXStoryRecipeManager *)self initialStyleResult];
-  v6[2](v6, @"Persisted Style", v15, v16, __block_literal_global_444_137010);
+  initialStyleProgress = [(PXStoryRecipeManager *)self initialStyleProgress];
+  initialStyleResult = [(PXStoryRecipeManager *)self initialStyleResult];
+  v6[2](v6, @"Persisted Style", initialStyleProgress, initialStyleResult, __block_literal_global_444_137010);
 
-  v17 = [(PXStoryRecipeManager *)self curatedSongsProgress];
-  v18 = [(PXStoryRecipeManager *)self curatedSongsResult];
-  v6[2](v6, @"Curated Songs", v17, v18, __block_literal_global_453);
+  curatedSongsProgress = [(PXStoryRecipeManager *)self curatedSongsProgress];
+  curatedSongsResult = [(PXStoryRecipeManager *)self curatedSongsResult];
+  v6[2](v6, @"Curated Songs", curatedSongsProgress, curatedSongsResult, __block_literal_global_453);
 
-  v19 = [(PXStoryRecipeManager *)self autoEditDecisionListsProgress];
-  v20 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
-  v6[2](v6, @"Auto EDLs", v19, v20, __block_literal_global_461);
+  autoEditDecisionListsProgress = [(PXStoryRecipeManager *)self autoEditDecisionListsProgress];
+  autoEditDecisionListsResult = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+  v6[2](v6, @"Auto EDLs", autoEditDecisionListsProgress, autoEditDecisionListsResult, __block_literal_global_461);
 
-  v21 = [(PXStoryRecipeManager *)self autoEditStylesProgress];
-  v22 = [(PXStoryRecipeManager *)self autoEditStylesResult];
-  v6[2](v6, @"Auto Edit Styles", v21, v22, __block_literal_global_469_137013);
+  autoEditStylesProgress = [(PXStoryRecipeManager *)self autoEditStylesProgress];
+  autoEditStylesResult = [(PXStoryRecipeManager *)self autoEditStylesResult];
+  v6[2](v6, @"Auto Edit Styles", autoEditStylesProgress, autoEditStylesResult, __block_literal_global_469_137013);
 
   v23 = PXStoryComponentAttributesDescription([(PXStoryRecipeManager *)self recipeAttributes]);
   [v5 appendFormat:@"\nAttributes: %@\n", v23];
 
-  v24 = [(PXStoryRecipeManager *)self loadingReadyForPlaybackDate];
+  loadingReadyForPlaybackDate = [(PXStoryRecipeManager *)self loadingReadyForPlaybackDate];
 
-  if (v24)
+  if (loadingReadyForPlaybackDate)
   {
     v25 = _diagnosticTextForGenericHUDAtDisplaySize__productionDurationFormatter;
-    v26 = [(PXStoryRecipeManager *)self loadingReadyForPlaybackDate];
-    v27 = [(PXStoryRecipeManager *)self loadingStartDate];
-    [v26 timeIntervalSinceDate:v27];
+    loadingReadyForPlaybackDate2 = [(PXStoryRecipeManager *)self loadingReadyForPlaybackDate];
+    loadingStartDate = [(PXStoryRecipeManager *)self loadingStartDate];
+    [loadingReadyForPlaybackDate2 timeIntervalSinceDate:loadingStartDate];
     v28 = [v25 stringFromTimeInterval:?];
     [v5 appendFormat:@"\nReady For Playback In: %@\n", v28];
   }
 
-  v29 = [(PXStoryRecipeManager *)self loadingFinalDate];
+  loadingFinalDate = [(PXStoryRecipeManager *)self loadingFinalDate];
 
-  if (v29)
+  if (loadingFinalDate)
   {
     v30 = _diagnosticTextForGenericHUDAtDisplaySize__productionDurationFormatter;
-    v31 = [(PXStoryRecipeManager *)self loadingFinalDate];
-    v32 = [(PXStoryRecipeManager *)self loadingStartDate];
-    [v31 timeIntervalSinceDate:v32];
+    loadingFinalDate2 = [(PXStoryRecipeManager *)self loadingFinalDate];
+    loadingStartDate2 = [(PXStoryRecipeManager *)self loadingStartDate];
+    [loadingFinalDate2 timeIntervalSinceDate:loadingStartDate2];
     v33 = [v30 stringFromTimeInterval:?];
     [v5 appendFormat:@"\nFinal In: %@\n", v33];
   }
@@ -3246,13 +3246,13 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
   _diagnosticTextForGenericHUDAtDisplaySize__productionDurationFormatter = v0;
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if ([(PXStoryAutoEditDecisionListsProducer *)self->_autoEditDecisionListsProducer handlesDiagnosticTextForHUDType:?])
   {
-    [(PXStoryAutoEditDecisionListsProducer *)self->_autoEditDecisionListsProducer diagnosticTextForHUDType:a3 displaySize:width, height];
+    [(PXStoryAutoEditDecisionListsProducer *)self->_autoEditDecisionListsProducer diagnosticTextForHUDType:type displaySize:width, height];
   }
 
   else
@@ -3264,98 +3264,98 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
   return v8;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
   v7 = [(PXStoryRecipeManager *)self diagnosticTextForHUDType:3 displaySize:*MEMORY[0x1E695F060], v6];
   if (v7)
   {
-    [v4 addAttachmentWithText:v7 name:@"recipe_manager_diagnostic"];
+    [containerCopy addAttachmentWithText:v7 name:@"recipe_manager_diagnostic"];
   }
 
   v8 = [(PXStoryRecipeManager *)self diagnosticTextForHUDType:9 displaySize:v5, v6];
   if (v8)
   {
-    [v4 addAttachmentWithText:v8 name:@"moments_diagnostic"];
+    [containerCopy addAttachmentWithText:v8 name:@"moments_diagnostic"];
   }
 
   v47 = v8;
-  v9 = [(PXStoryRecipeManager *)self diagnosticsMomentsProvider];
-  v10 = [v9 _diagnosticSwiftCodeForMomentsUnitTest];
+  diagnosticsMomentsProvider = [(PXStoryRecipeManager *)self diagnosticsMomentsProvider];
+  _diagnosticSwiftCodeForMomentsUnitTest = [diagnosticsMomentsProvider _diagnosticSwiftCodeForMomentsUnitTest];
 
-  if (v10)
+  if (_diagnosticSwiftCodeForMomentsUnitTest)
   {
-    [v4 addAttachmentWithSwiftCode:v10 name:@"moments_testcase"];
+    [containerCopy addAttachmentWithSwiftCode:_diagnosticSwiftCodeForMomentsUnitTest name:@"moments_testcase"];
   }
 
   v11 = [(PXStoryRecipeManager *)self diagnosticTextForHUDType:8 displaySize:v5, v6];
   if (v11)
   {
-    [v4 addAttachmentWithText:v11 name:@"autoedit_diagnostic"];
+    [containerCopy addAttachmentWithText:v11 name:@"autoedit_diagnostic"];
   }
 
   v45 = v11;
-  v12 = [(PXStoryRecipeManager *)self persistableRecipeResult];
-  v13 = [v12 object];
-  v14 = [v13 recipe];
+  persistableRecipeResult = [(PXStoryRecipeManager *)self persistableRecipeResult];
+  object = [persistableRecipeResult object];
+  recipe = [object recipe];
 
-  if (v14)
+  if (recipe)
   {
     v15 = objc_alloc_init(MEMORY[0x1E69C08B0]);
-    v16 = [v15 archivedJSONDataWithRecipe:v14 options:3];
-    [v4 addAttachmentWithData:v16 name:@"recipe.json"];
+    v16 = [v15 archivedJSONDataWithRecipe:recipe options:3];
+    [containerCopy addAttachmentWithData:v16 name:@"recipe.json"];
   }
 
-  v44 = v14;
-  v46 = v10;
-  v17 = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
-  v18 = [v17 object];
-  v19 = [v18 firstObject];
+  v44 = recipe;
+  v46 = _diagnosticSwiftCodeForMomentsUnitTest;
+  initialAutoEditDecisionListResult = [(PXStoryRecipeManager *)self initialAutoEditDecisionListResult];
+  object2 = [initialAutoEditDecisionListResult object];
+  firstObject = [object2 firstObject];
 
   v20 = 0x1E696A000uLL;
   v49 = v7;
-  v43 = v19;
-  if (v19)
+  v43 = firstObject;
+  if (firstObject)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [v19 song];
-    [v22 pace];
+    song = [firstObject song];
+    [song pace];
     v23 = PFStoryRecipeSongPaceDescription();
-    v24 = [v19 colorGradeCategory];
-    v25 = [v21 stringWithFormat:@"autoEdit_decisionList_%d_%@_%@", 0, v23, v24];
+    colorGradeCategory = [firstObject colorGradeCategory];
+    v25 = [v21 stringWithFormat:@"autoEdit_decisionList_%d_%@_%@", 0, v23, colorGradeCategory];
 
-    v26 = [v19 diagnosticDescription];
-    [v4 addAttachmentWithText:v26 name:v25];
+    diagnosticDescription = [firstObject diagnosticDescription];
+    [containerCopy addAttachmentWithText:diagnosticDescription name:v25];
 
-    v27 = [v19 decisionPapertrail];
-    [v4 addAttachmentWithText:v27 name:@"autoedit_papertrail"];
+    decisionPapertrail = [firstObject decisionPapertrail];
+    [containerCopy addAttachmentWithText:decisionPapertrail name:@"autoedit_papertrail"];
 
-    v19 = 1;
+    firstObject = 1;
   }
 
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v48 = self;
-  v28 = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
-  v29 = [v28 object];
+  selfCopy = self;
+  autoEditDecisionListsResult = [(PXStoryRecipeManager *)self autoEditDecisionListsResult];
+  object3 = [autoEditDecisionListsResult object];
 
-  obj = v29;
-  v52 = [v29 countByEnumeratingWithState:&v53 objects:v57 count:16];
+  obj = object3;
+  v52 = [object3 countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v52)
   {
     v51 = *v54;
     do
     {
       v30 = 0;
-      v31 = v19;
+      v31 = firstObject;
       do
       {
-        v32 = v4;
+        v32 = containerCopy;
         if (*v54 != v51)
         {
           objc_enumerationMutation(obj);
@@ -3363,21 +3363,21 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
 
         v33 = *(*(&v53 + 1) + 8 * v30);
         v34 = *(v20 + 3776);
-        v19 = (v31 + 1);
-        v35 = [v33 song];
-        [v35 pace];
+        firstObject = (v31 + 1);
+        song2 = [v33 song];
+        [song2 pace];
         PFStoryRecipeSongPaceDescription();
         v37 = v36 = v20;
-        v38 = [v33 colorGradeCategory];
-        v39 = [v34 stringWithFormat:@"autoEdit_decisionList_%d_%@_%@", v31, v37, v38];
+        colorGradeCategory2 = [v33 colorGradeCategory];
+        v39 = [v34 stringWithFormat:@"autoEdit_decisionList_%d_%@_%@", v31, v37, colorGradeCategory2];
 
         v20 = v36;
-        v40 = [v33 diagnosticDescription];
-        v4 = v32;
-        [v32 addAttachmentWithText:v40 name:v39];
+        diagnosticDescription2 = [v33 diagnosticDescription];
+        containerCopy = v32;
+        [v32 addAttachmentWithText:diagnosticDescription2 name:v39];
 
         ++v30;
-        v31 = v19;
+        v31 = firstObject;
       }
 
       while (v52 != v30);
@@ -3387,21 +3387,21 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
     while (v52);
   }
 
-  v41 = [(PXStoryRecipeManager *)v48 autoEditDecisionListsProducer];
-  [v4 addSubprovider:v41];
+  autoEditDecisionListsProducer = [(PXStoryRecipeManager *)selfCopy autoEditDecisionListsProducer];
+  [containerCopy addSubprovider:autoEditDecisionListsProducer];
 
-  v42 = [(PXStoryRecipeManager *)v48 recipe];
-  [v4 addSubprovider:v42];
+  recipe2 = [(PXStoryRecipeManager *)selfCopy recipe];
+  [containerCopy addSubprovider:recipe2];
 }
 
-- (void)setAdditionalAutoEditDecisionListsBySong:(id)a3
+- (void)setAdditionalAutoEditDecisionListsBySong:(id)song
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_additionalAutoEditDecisionListsBySong != v4)
+  songCopy = song;
+  v5 = songCopy;
+  if (self->_additionalAutoEditDecisionListsBySong != songCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = songCopy;
+    v6 = [(NSDictionary *)songCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -3415,20 +3415,20 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
   }
 }
 
-- (void)_handleAdditionalAutoEditDecisionListsResult:(id)a3
+- (void)_handleAdditionalAutoEditDecisionListsResult:(id)result
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStoryRecipeManager *)self additionalAutoEditDecisionListsBySong];
-  v6 = [v5 mutableCopy];
+  resultCopy = result;
+  additionalAutoEditDecisionListsBySong = [(PXStoryRecipeManager *)self additionalAutoEditDecisionListsBySong];
+  v6 = [additionalAutoEditDecisionListsBySong mutableCopy];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v17 = v4;
-  v7 = [v4 object];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v17 = resultCopy;
+  object = [resultCopy object];
+  v8 = [object countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3439,14 +3439,14 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(object);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 song];
-        if (v13)
+        song = [v12 song];
+        if (song)
         {
-          [v6 setObject:v12 forKeyedSubscript:v13];
+          [v6 setObject:v12 forKeyedSubscript:song];
         }
 
         else
@@ -3455,7 +3455,7 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v26 = self;
+            selfCopy = self;
             v27 = 2112;
             v28 = v12;
             _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "%@ received additional AEDL with no song! %@", buf, 0x16u);
@@ -3463,7 +3463,7 @@ void __66__PXStoryRecipeManager__diagnosticTextForGenericHUDAtDisplaySize___bloc
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v9 = [object countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v9);
@@ -3491,8 +3491,8 @@ void __69__PXStoryRecipeManager__handleAdditionalAutoEditDecisionListsResult___b
 - (void)_updateAdditionalAutoEditDecisionLists
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryRecipeManager *)self additionalSongs];
-  if ([v3 count])
+  additionalSongs = [(PXStoryRecipeManager *)self additionalSongs];
+  if ([additionalSongs count])
   {
     objc_initWeak(&location, self);
     [(PXStoryRecipeManager *)self storyQueue];
@@ -3565,18 +3565,18 @@ LABEL_13:
 
 - (void)_invalidateAdditionalAutoEditDecisionLists
 {
-  v2 = [(PXStoryRecipeManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAdditionalAutoEditDecisionLists];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAdditionalAutoEditDecisionLists];
 }
 
-- (void)ensureAutoEditDecisionListForSong:(id)a3
+- (void)ensureAutoEditDecisionListForSong:(id)song
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStoryRecipeManager *)self additionalSongs];
-  if (([v5 containsObject:v4] & 1) == 0)
+  songCopy = song;
+  additionalSongs = [(PXStoryRecipeManager *)self additionalSongs];
+  if (([additionalSongs containsObject:songCopy] & 1) == 0)
   {
-    v6 = [v5 setByAddingObject:v4];
+    v6 = [additionalSongs setByAddingObject:songCopy];
     [(PXStoryRecipeManager *)self setAdditionalSongs:v6];
 
     objc_initWeak(&location, self);
@@ -3648,26 +3648,26 @@ LABEL_13:
   [WeakRetained _handleAdditionalAutoEditDecisionListsResult:*(a1 + 48)];
 }
 
-- (void)applyKeyAsset:(id)a3
+- (void)applyKeyAsset:(id)asset
 {
-  v4 = a3;
-  v6 = [(PXStoryRecipeManager *)self recipeAssetEdits];
-  v5 = [v6 copyWithKeyAsset:v4];
+  assetCopy = asset;
+  recipeAssetEdits = [(PXStoryRecipeManager *)self recipeAssetEdits];
+  v5 = [recipeAssetEdits copyWithKeyAsset:assetCopy];
 
   [(PXStoryRecipeManager *)self setRecipeAssetEdits:v5];
 }
 
-- (void)applyManuallyRemovedAssets:(id)a3
+- (void)applyManuallyRemovedAssets:(id)assets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStoryRecipeManager *)self curatedAssets];
-  v6 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(v5, "count")}];
+  assetsCopy = assets;
+  curatedAssets = [(PXStoryRecipeManager *)self curatedAssets];
+  v6 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(curatedAssets, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -3683,7 +3683,7 @@ LABEL_13:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [v5 indexOfObject:{*(*(&v13 + 1) + 8 * v11), v13}];
+        v12 = [curatedAssets indexOfObject:{*(*(&v13 + 1) + 8 * v11), v13}];
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
           [v6 removeIndex:v12];
@@ -3702,11 +3702,11 @@ LABEL_13:
   PXDisplayAssetFetchResultSubfetchResultWithIndexSet();
 }
 
-- (void)_applyManuallyCuratedAssets:(id)a3 setAsCustomUserAssets:(BOOL)a4
+- (void)_applyManuallyCuratedAssets:(id)assets setAsCustomUserAssets:(BOOL)userAssets
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_manuallyCuratedAssets, a3);
+  userAssetsCopy = userAssets;
+  assetsCopy = assets;
+  objc_storeStrong(&self->_manuallyCuratedAssets, assets);
   v8 = *MEMORY[0x1E69C0DB0];
   v19 = *(MEMORY[0x1E69C0DB0] + 16);
   v9 = *(MEMORY[0x1E69C0DB0] + 48);
@@ -3714,23 +3714,23 @@ LABEL_13:
   v21 = v9;
   v22 = *(MEMORY[0x1E69C0DB0] + 64);
   v18 = v8;
-  v10 = [(PXStoryRecipeManager *)self recipeAssetEdits];
+  recipeAssetEdits = [(PXStoryRecipeManager *)self recipeAssetEdits];
   v17 = 2;
-  v11 = [v10 copyWithOverallDurationInfo:&v17 userCuratedAssets:v7];
+  v11 = [recipeAssetEdits copyWithOverallDurationInfo:&v17 userCuratedAssets:assetsCopy];
 
-  if (v4)
+  if (userAssetsCopy)
   {
-    v12 = [v11 copyWithCustomUserAssets:v7];
+    v12 = [v11 copyWithCustomUserAssets:assetsCopy];
 
     v11 = v12;
   }
 
-  v13 = [(PXStoryRecipeManager *)self assetsDataSource];
-  v14 = [v13 keyAsset];
+  assetsDataSource = [(PXStoryRecipeManager *)self assetsDataSource];
+  keyAsset = [assetsDataSource keyAsset];
 
-  if ([v7 count] >= 1 && v14 && (objc_msgSend(v7, "containsObject:", v14) & 1) == 0)
+  if ([assetsCopy count] >= 1 && keyAsset && (objc_msgSend(assetsCopy, "containsObject:", keyAsset) & 1) == 0)
   {
-    v15 = [v7 objectAtIndexedSubscript:0];
+    v15 = [assetsCopy objectAtIndexedSubscript:0];
     v16 = [v11 copyWithKeyAsset:v15];
 
     v11 = v16;
@@ -3739,47 +3739,47 @@ LABEL_13:
   [(PXStoryRecipeManager *)self setRecipeAssetEdits:v11];
 }
 
-- (void)applyManuallyCuratedAssets:(id)a3
+- (void)applyManuallyCuratedAssets:(id)assets
 {
-  v8 = a3;
-  v4 = [(PXStoryRecipeManager *)self recipeAssetEdits];
-  v5 = [v4 customUserAssetsEdit];
-  v6 = [v5 assets];
-  v7 = [v6 count] > 0;
+  assetsCopy = assets;
+  recipeAssetEdits = [(PXStoryRecipeManager *)self recipeAssetEdits];
+  customUserAssetsEdit = [recipeAssetEdits customUserAssetsEdit];
+  assets = [customUserAssetsEdit assets];
+  v7 = [assets count] > 0;
 
-  [(PXStoryRecipeManager *)self _applyManuallyCuratedAssets:v8 setAsCustomUserAssets:v7];
+  [(PXStoryRecipeManager *)self _applyManuallyCuratedAssets:assetsCopy setAsCustomUserAssets:v7];
 }
 
-- (void)_handleCuratedAssetsResult:(id)a3 targetOverallDurationInfo:(id *)a4
+- (void)_handleCuratedAssetsResult:(id)result targetOverallDurationInfo:(id *)info
 {
-  v6 = a3;
-  v7 = [v6 object];
+  resultCopy = result;
+  object = [resultCopy object];
 
-  if (v7)
+  if (object)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __77__PXStoryRecipeManager__handleCuratedAssetsResult_targetOverallDurationInfo___block_invoke;
     v21[3] = &unk_1E773C868;
     v21[4] = self;
-    v8 = *&a4->var1.var1.var3;
-    v25 = *&a4->var1.var1.var0;
+    v8 = *&info->var1.var1.var3;
+    v25 = *&info->var1.var1.var0;
     v26 = v8;
-    v27 = *&a4->var1.var2.var1;
-    v9 = *&a4->var1.var0.var1;
-    v23 = *&a4->var0;
+    v27 = *&info->var1.var2.var1;
+    v9 = *&info->var1.var0.var1;
+    v23 = *&info->var0;
     v24 = v9;
-    v22 = v6;
+    v22 = resultCopy;
     [(PXStoryRecipeManager *)self performChanges:v21];
   }
 
   else
   {
-    v10 = [v6 error];
-    v17 = v10;
-    if (v10)
+    error = [resultCopy error];
+    v17 = error;
+    if (error)
     {
-      v18 = v10;
+      v18 = error;
     }
 
     else
@@ -3789,8 +3789,8 @@ LABEL_13:
 
     v19 = v18;
 
-    v20 = [(PXStoryRecipeManager *)self errorReporter];
-    [v20 setError:v19 forComponent:@"TargetDurationCuration"];
+    errorReporter = [(PXStoryRecipeManager *)self errorReporter];
+    [errorReporter setError:v19 forComponent:@"TargetDurationCuration"];
   }
 }
 
@@ -3811,29 +3811,29 @@ void __77__PXStoryRecipeManager__handleCuratedAssetsResult_targetOverallDuration
   [*(a1 + 32) setRecipeAssetEdits:v7];
 }
 
-- (void)setAssetsAutoCurationProgress:(id)a3
+- (void)setAssetsAutoCurationProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   assetsAutoCurationProgress = self->_assetsAutoCurationProgress;
-  if (assetsAutoCurationProgress != v5)
+  if (assetsAutoCurationProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)assetsAutoCurationProgress cancel];
-    objc_storeStrong(&self->_assetsAutoCurationProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_assetsAutoCurationProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)applyTargetOverallDurationInfo:(id *)a3
+- (void)applyTargetOverallDurationInfo:(id *)info
 {
   v12 = *MEMORY[0x1E69E9840];
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = info->var0;
+  if (!info->var0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:1183 description:{@"Invalid parameter not satisfying: %@", @"targetOverallDurationInfo.kind != PFStoryOverallDurationKindUndefined"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:1183 description:{@"Invalid parameter not satisfying: %@", @"targetOverallDurationInfo.kind != PFStoryOverallDurationKindUndefined"}];
 
-    var0 = a3->var0;
+    var0 = info->var0;
   }
 
   if (var0 != 2)
@@ -3854,15 +3854,15 @@ void __77__PXStoryRecipeManager__handleCuratedAssetsResult_targetOverallDuration
     PXSyncCallbackBegin();
   }
 
-  v6 = [(PXStoryRecipeManager *)self manuallyCuratedAssets];
+  manuallyCuratedAssets = [(PXStoryRecipeManager *)self manuallyCuratedAssets];
 
-  if (!v6)
+  if (!manuallyCuratedAssets)
   {
     PXAssertGetLog();
   }
 
-  v9 = [(PXStoryRecipeManager *)self manuallyCuratedAssets];
-  [(PXStoryRecipeManager *)self applyCustomUserAssets:v9];
+  manuallyCuratedAssets2 = [(PXStoryRecipeManager *)self manuallyCuratedAssets];
+  [(PXStoryRecipeManager *)self applyCustomUserAssets:manuallyCuratedAssets2];
 }
 
 void __55__PXStoryRecipeManager_applyTargetOverallDurationInfo___block_invoke(uint64_t a1, void *a2)
@@ -3953,32 +3953,32 @@ LABEL_14:
   }
 }
 
-- (void)setPersistedRecipeAssetEdits:(id)a3
+- (void)setPersistedRecipeAssetEdits:(id)edits
 {
-  v5 = a3;
+  editsCopy = edits;
   persistedRecipeAssetEdits = self->_persistedRecipeAssetEdits;
-  if (persistedRecipeAssetEdits != v5 && ![(PXStoryRecipeAssetEdits *)persistedRecipeAssetEdits isEqual:v5])
+  if (persistedRecipeAssetEdits != editsCopy && ![(PXStoryRecipeAssetEdits *)persistedRecipeAssetEdits isEqual:editsCopy])
   {
-    v7 = [(PXStoryRecipeAssetEdits *)self->_persistedRecipeAssetEdits userCuratedAssets];
-    v8 = [(PXStoryRecipeAssetEdits *)v5 userCuratedAssets];
-    ResultsEqual = _areFetchResultsEqual(v7, v8);
+    userCuratedAssets = [(PXStoryRecipeAssetEdits *)self->_persistedRecipeAssetEdits userCuratedAssets];
+    userCuratedAssets2 = [(PXStoryRecipeAssetEdits *)editsCopy userCuratedAssets];
+    ResultsEqual = _areFetchResultsEqual(userCuratedAssets, userCuratedAssets2);
 
     if (ResultsEqual)
     {
-      v10 = [(PXStoryRecipeAssetEdits *)self->_persistedRecipeAssetEdits keyAsset];
-      v11 = [(PXStoryRecipeAssetEdits *)v5 keyAsset];
-      v12 = v11;
-      if (v10 == v11)
+      keyAsset = [(PXStoryRecipeAssetEdits *)self->_persistedRecipeAssetEdits keyAsset];
+      keyAsset2 = [(PXStoryRecipeAssetEdits *)editsCopy keyAsset];
+      v12 = keyAsset2;
+      if (keyAsset == keyAsset2)
       {
 
-        objc_storeStrong(&self->_persistedRecipeAssetEdits, a3);
+        objc_storeStrong(&self->_persistedRecipeAssetEdits, edits);
         [(PXStoryRecipeManager *)self _invalidateOverallDurationInfo];
         goto LABEL_10;
       }
 
-      v13 = [v10 isEqual:v11];
+      v13 = [keyAsset isEqual:keyAsset2];
 
-      objc_storeStrong(&self->_persistedRecipeAssetEdits, a3);
+      objc_storeStrong(&self->_persistedRecipeAssetEdits, edits);
       [(PXStoryRecipeManager *)self _invalidateOverallDurationInfo];
       if (v13)
       {
@@ -3988,17 +3988,17 @@ LABEL_14:
 
     else
     {
-      objc_storeStrong(&self->_persistedRecipeAssetEdits, a3);
+      objc_storeStrong(&self->_persistedRecipeAssetEdits, edits);
       [(PXStoryRecipeManager *)self _invalidateOverallDurationInfo];
     }
 
-    v14 = [(PXStoryRecipeManager *)self assetsDataSourceManager];
+    assetsDataSourceManager = [(PXStoryRecipeManager *)self assetsDataSourceManager];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__PXStoryRecipeManager_setPersistedRecipeAssetEdits___block_invoke;
     v15[3] = &unk_1E774A6B8;
     v15[4] = self;
-    [v14 performChanges:v15];
+    [assetsDataSourceManager performChanges:v15];
   }
 
 LABEL_10:
@@ -4012,14 +4012,14 @@ void __53__PXStoryRecipeManager_setPersistedRecipeAssetEdits___block_invoke(uint
   [v3 refreshResultsForAssetCollection:v4];
 }
 
-- (void)setRecipeAssetEdits:(id)a3
+- (void)setRecipeAssetEdits:(id)edits
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  editsCopy = edits;
   recipeAssetEdits = self->_recipeAssetEdits;
-  if (recipeAssetEdits != v5 && ![(PXStoryRecipeAssetEdits *)recipeAssetEdits isEqual:v5])
+  if (recipeAssetEdits != editsCopy && ![(PXStoryRecipeAssetEdits *)recipeAssetEdits isEqual:editsCopy])
   {
-    objc_storeStrong(&self->_recipeAssetEdits, a3);
+    objc_storeStrong(&self->_recipeAssetEdits, edits);
     [(PXStoryRecipeManager *)self signalChange:64];
     v7 = [(PXStoryRecipeManager *)self log];
     v8 = os_signpost_id_make_with_pointer(v7, self);
@@ -4029,7 +4029,7 @@ void __53__PXStoryRecipeManager_setPersistedRecipeAssetEdits___block_invoke(uint
       if (os_signpost_enabled(v7))
       {
         v18 = 134217984;
-        v19 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_END, v9, "PXStoryRecipeManagerChangedAssetEdits", "Context=%{signpost.telemetry:string2}lu ", &v18, 0xCu);
       }
     }
@@ -4041,11 +4041,11 @@ void __53__PXStoryRecipeManager_setPersistedRecipeAssetEdits___block_invoke(uint
       v12 = v11;
       if (os_signpost_enabled(v10))
       {
-        v13 = [(PXStoryRecipeManager *)self logContext];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
         v18 = 134218242;
-        v19 = v13;
+        logContext = logContext2;
         v20 = 2114;
-        v21 = v5;
+        v21 = editsCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, v12, "PXStoryRecipeManagerChangedAssetEdits", "Context=%{signpost.telemetry:string2}lu %{public}@", &v18, 0x16u);
       }
     }
@@ -4057,11 +4057,11 @@ void __53__PXStoryRecipeManager_setPersistedRecipeAssetEdits___block_invoke(uint
       v16 = v15;
       if (os_signpost_enabled(v14))
       {
-        v17 = [(PXStoryRecipeManager *)self logContext];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
         v18 = 134218242;
-        v19 = v17;
+        logContext = logContext3;
         v20 = 2114;
-        v21 = v5;
+        v21 = editsCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PXStoryRecipeManagerChangedAssetEdits", "Context=%{signpost.telemetry:string2}lu %{public}@", &v18, 0x16u);
       }
     }
@@ -4070,60 +4070,60 @@ void __53__PXStoryRecipeManager_setPersistedRecipeAssetEdits___block_invoke(uint
   }
 }
 
-- (void)_handleResult:(id)a3 forProducer:(unint64_t)a4
+- (void)_handleResult:(id)result forProducer:(unint64_t)producer
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(PXStoryRecipeManager *)self setProducersWithInitialResults:[(PXStoryRecipeManager *)self producersWithInitialResults]| a4];
-  if ([v6 isDegraded])
+  resultCopy = result;
+  [(PXStoryRecipeManager *)self setProducersWithInitialResults:[(PXStoryRecipeManager *)self producersWithInitialResults]| producer];
+  if ([resultCopy isDegraded])
   {
-    v7 = [(PXStoryRecipeManager *)self finalizedProducers]& ~a4;
+    v7 = [(PXStoryRecipeManager *)self finalizedProducers]& ~producer;
   }
 
   else
   {
-    v7 = [(PXStoryRecipeManager *)self finalizedProducers]| a4;
+    v7 = [(PXStoryRecipeManager *)self finalizedProducers]| producer;
   }
 
   [(PXStoryRecipeManager *)self setFinalizedProducers:v7];
-  v8 = [v6 error];
-  v9 = v8;
-  if (v8)
+  error = [resultCopy error];
+  v9 = error;
+  if (error)
   {
     v10 = MEMORY[0x1E6991F28];
     v18 = *MEMORY[0x1E6991E28];
-    v19[0] = v8;
+    v19[0] = error;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     [v10 sendEvent:@"com.apple.photos.memory.interactiveMemoryRecipeErrorOccurred" withPayload:v11];
   }
 
-  v12 = [(PXStoryRecipeManager *)self errorReporter];
-  v13 = PXStoryProducerName(a4);
-  [v12 setError:v9 forComponent:v13];
+  errorReporter = [(PXStoryRecipeManager *)self errorReporter];
+  v13 = PXStoryProducerName(producer);
+  [errorReporter setError:v9 forComponent:v13];
 
-  v14 = [(PXStoryRecipeManager *)self _monitorForProducer:a4];
+  v14 = [(PXStoryRecipeManager *)self _monitorForProducer:producer];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __50__PXStoryRecipeManager__handleResult_forProducer___block_invoke;
   v16[3] = &unk_1E773C7F0;
-  v17 = v6;
-  v15 = v6;
+  v17 = resultCopy;
+  v15 = resultCopy;
   [v14 performChanges:v16];
 }
 
-- (void)setRecipeAttributes:(unint64_t)a3
+- (void)setRecipeAttributes:(unint64_t)attributes
 {
   v24 = *MEMORY[0x1E69E9840];
   recipeAttributes = self->_recipeAttributes;
-  if (recipeAttributes == a3)
+  if (recipeAttributes == attributes)
   {
     return;
   }
 
-  v4 = a3;
-  if ((recipeAttributes & 2) == 0 || !(((self->_recipeAttributes & 1) == 0) | a3 & 1))
+  attributesCopy = attributes;
+  if ((recipeAttributes & 2) == 0 || !(((self->_recipeAttributes & 1) == 0) | attributes & 1))
   {
-    if ((((self->_recipeAttributes & 2) == 0) & (((self->_recipeAttributes & 1) == 0) | a3)) != 0)
+    if ((((self->_recipeAttributes & 2) == 0) & (((self->_recipeAttributes & 1) == 0) | attributes)) != 0)
     {
       goto LABEL_8;
     }
@@ -4132,13 +4132,13 @@ LABEL_7:
     PXAssertGetLog();
   }
 
-  if ((a3 & 2) == 0)
+  if ((attributes & 2) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  self->_recipeAttributes = a3;
+  self->_recipeAttributes = attributes;
   [(PXStoryRecipeManager *)self signalChange:4];
   v6 = [(PXStoryRecipeManager *)self log];
   v7 = os_signpost_id_make_with_pointer(v6, self);
@@ -4147,9 +4147,9 @@ LABEL_8:
     v8 = v7;
     if (os_signpost_enabled(v6))
     {
-      v9 = [(PXStoryRecipeManager *)self logContext];
+      logContext = [(PXStoryRecipeManager *)self logContext];
       v20 = 134217984;
-      v21 = v9;
+      v21 = logContext;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXStoryRecipeManagerChangedRecipeAttributes", "Context=%{signpost.telemetry:string2}lu ", &v20, 0xCu);
     }
   }
@@ -4161,10 +4161,10 @@ LABEL_8:
     v12 = v11;
     if (os_signpost_enabled(v10))
     {
-      v13 = [(PXStoryRecipeManager *)self logContext];
-      v14 = PXStoryComponentAttributesDescription(v4);
+      logContext2 = [(PXStoryRecipeManager *)self logContext];
+      v14 = PXStoryComponentAttributesDescription(attributesCopy);
       v20 = 134218242;
-      v21 = v13;
+      v21 = logContext2;
       v22 = 2114;
       v23 = v14;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, v12, "PXStoryRecipeManagerChangedRecipeAttributes", "Context=%{signpost.telemetry:string2}lu %{public}@", &v20, 0x16u);
@@ -4178,10 +4178,10 @@ LABEL_8:
     v17 = v16;
     if (os_signpost_enabled(v15))
     {
-      v18 = [(PXStoryRecipeManager *)self logContext];
-      v19 = PXStoryComponentAttributesDescription(v4);
+      logContext3 = [(PXStoryRecipeManager *)self logContext];
+      v19 = PXStoryComponentAttributesDescription(attributesCopy);
       v20 = 134218242;
-      v21 = v18;
+      v21 = logContext3;
       v22 = 2114;
       v23 = v19;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v17, "PXStoryRecipeManagerChangedRecipeAttributes", "Context=%{signpost.telemetry:string2}lu %{public}@", &v20, 0x16u);
@@ -4191,13 +4191,13 @@ LABEL_8:
   [(PXStoryRecipeManager *)self setIsRecipeFinal:(self->_recipeAttributes >> 1) & 1];
 }
 
-- (void)setIsRecipeFinal:(BOOL)a3
+- (void)setIsRecipeFinal:(BOOL)final
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isRecipeFinal != a3)
+  if (self->_isRecipeFinal != final)
   {
-    v3 = a3;
-    self->_isRecipeFinal = a3;
+    finalCopy = final;
+    self->_isRecipeFinal = final;
     [(PXStoryRecipeManager *)self signalChange:2];
     v5 = [(PXStoryRecipeManager *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -4207,7 +4207,7 @@ LABEL_8:
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryRecipeManagerChangedIsRecipeFinal", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -4219,11 +4219,11 @@ LABEL_8:
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryRecipeManager *)self logContext];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = finalCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryRecipeManagerChangedIsRecipeFinal", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -4235,25 +4235,25 @@ LABEL_8:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryRecipeManager *)self logContext];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = finalCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryRecipeManagerChangedIsRecipeFinal", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (void)setRecipe:(id)a3
+- (void)setRecipe:(id)recipe
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_recipe != v5 && ([(PXStoryRecipe *)v5 isEqual:?]& 1) == 0)
+  recipeCopy = recipe;
+  v6 = recipeCopy;
+  if (self->_recipe != recipeCopy && ([(PXStoryRecipe *)recipeCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_recipe, a3);
+    objc_storeStrong(&self->_recipe, recipe);
     [(PXStoryRecipeManager *)self _invalidateRecipeAttributes];
     [(PXStoryRecipeManager *)self signalChange:1];
     v7 = [(PXStoryRecipeManager *)self log];
@@ -4264,7 +4264,7 @@ LABEL_8:
       if (os_signpost_enabled(v7))
       {
         v22 = 134217984;
-        v23 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_END, v9, "PXStoryRecipeManagerChangedRecipe", "Context=%{signpost.telemetry:string2}lu ", &v22, 0xCu);
       }
     }
@@ -4276,11 +4276,11 @@ LABEL_8:
       v12 = v11;
       if (os_signpost_enabled(v10))
       {
-        v13 = [(PXStoryRecipeManager *)self logContext];
-        v14 = [(PXStoryRecipe *)v6 curatedAssets];
-        v15 = [v14 count];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
+        curatedAssets = [(PXStoryRecipe *)v6 curatedAssets];
+        v15 = [curatedAssets count];
         v22 = 134218496;
-        v23 = v13;
+        logContext = logContext2;
         v24 = 2048;
         v25 = v6;
         v26 = 2048;
@@ -4296,11 +4296,11 @@ LABEL_8:
       v18 = v17;
       if (os_signpost_enabled(v16))
       {
-        v19 = [(PXStoryRecipeManager *)self logContext];
-        v20 = [(PXStoryRecipe *)v6 curatedAssets];
-        v21 = [v20 count];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
+        curatedAssets2 = [(PXStoryRecipe *)v6 curatedAssets];
+        v21 = [curatedAssets2 count];
         v22 = 134218496;
-        v23 = v19;
+        logContext = logContext3;
         v24 = 2048;
         v25 = v6;
         v26 = 2048;
@@ -4311,18 +4311,18 @@ LABEL_8:
   }
 }
 
-- (void)setAutoEditStylesResult:(id)a3
+- (void)setAutoEditStylesResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_autoEditStylesResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_autoEditStylesResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_autoEditStylesResult, a3);
+      objc_storeStrong(&self->_autoEditStylesResult, result);
       [(PXStoryRecipeManager *)self _invalidateRecipe];
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:128];
       v6 = v8;
@@ -4330,49 +4330,49 @@ LABEL_8:
   }
 }
 
-- (void)setAutoEditStylesProgress:(id)a3
+- (void)setAutoEditStylesProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   autoEditStylesProgress = self->_autoEditStylesProgress;
-  if (autoEditStylesProgress != v5)
+  if (autoEditStylesProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)autoEditStylesProgress cancel];
-    objc_storeStrong(&self->_autoEditStylesProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_autoEditStylesProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setAutoEditStylesProducer:(id)a3
+- (void)setAutoEditStylesProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_autoEditStylesProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_autoEditStylesProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStylesProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryStylesProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_autoEditStylesProducer, a3);
+      objc_storeStrong(&self->_autoEditStylesProducer, producer);
       [(PXStoryRecipeManager *)self _updateAutoEditStyles];
       v6 = v8;
     }
   }
 }
 
-- (void)setAutoEditDecisionListsResult:(id)a3
+- (void)setAutoEditDecisionListsResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_autoEditDecisionListsResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_autoEditDecisionListsResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_autoEditDecisionListsResult, a3);
+      objc_storeStrong(&self->_autoEditDecisionListsResult, result);
       [(PXStoryRecipeManager *)self _invalidateAutoEditStylesProducer];
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:512];
       v6 = v8;
@@ -4380,31 +4380,31 @@ LABEL_8:
   }
 }
 
-- (void)setAutoEditDecisionListsProgress:(id)a3
+- (void)setAutoEditDecisionListsProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   autoEditDecisionListsProgress = self->_autoEditDecisionListsProgress;
-  if (autoEditDecisionListsProgress != v5)
+  if (autoEditDecisionListsProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)autoEditDecisionListsProgress cancel];
-    objc_storeStrong(&self->_autoEditDecisionListsProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_autoEditDecisionListsProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setAutoEditDecisionListsProducer:(id)a3
+- (void)setAutoEditDecisionListsProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_autoEditDecisionListsProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_autoEditDecisionListsProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryAutoEditDecisionListsProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryAutoEditDecisionListsProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_autoEditDecisionListsProducer, a3);
+      objc_storeStrong(&self->_autoEditDecisionListsProducer, producer);
       [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionLists];
       [(PXStoryRecipeManager *)self _invalidateAdditionalAutoEditDecisionLists];
       [(PXStoryRecipeManager *)self _invalidateInitialAutoEditDecisionList];
@@ -4413,18 +4413,18 @@ LABEL_8:
   }
 }
 
-- (void)setInitialStyleResult:(id)a3
+- (void)setInitialStyleResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_initialStyleResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_initialStyleResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_initialStyleResult, a3);
+      objc_storeStrong(&self->_initialStyleResult, result);
       [(PXStoryRecipeManager *)self _invalidateRecipe];
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:64];
       v6 = v8;
@@ -4432,31 +4432,31 @@ LABEL_8:
   }
 }
 
-- (void)setInitialStyleProgress:(id)a3
+- (void)setInitialStyleProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   initialStyleProgress = self->_initialStyleProgress;
-  if (initialStyleProgress != v5)
+  if (initialStyleProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)initialStyleProgress cancel];
-    objc_storeStrong(&self->_initialStyleProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_initialStyleProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setInitialStyleProducer:(id)a3
+- (void)setInitialStyleProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_initialStyleProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_initialStyleProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStylesProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryStylesProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_initialStyleProducer, a3);
+      objc_storeStrong(&self->_initialStyleProducer, producer);
       [(PXStoryRecipeManager *)self setHasInitialStyleBeenProduced:0];
       [(PXStoryRecipeManager *)self _invalidateInitialStyle];
       v6 = v8;
@@ -4464,25 +4464,25 @@ LABEL_8:
   }
 }
 
-- (void)setKeyAsset:(id)a3
+- (void)setKeyAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_keyAsset != v5)
+  assetCopy = asset;
+  if (self->_keyAsset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_keyAsset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_keyAsset, asset);
     [(PXStoryRecipeManager *)self _invalidateChapterCollectionResult];
     [(PXStoryRecipeManager *)self _invalidateRecipe];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
-- (void)setAllAssets:(id)a3
+- (void)setAllAssets:(id)assets
 {
-  v6 = a3;
-  if ((_areFetchResultsEqual(v6, self->_allAssets) & 1) == 0)
+  assetsCopy = assets;
+  if ((_areFetchResultsEqual(assetsCopy, self->_allAssets) & 1) == 0)
   {
-    objc_storeStrong(&self->_allAssets, a3);
+    objc_storeStrong(&self->_allAssets, assets);
     cachedAssetsCountHUDDescription = self->_cachedAssetsCountHUDDescription;
     self->_cachedAssetsCountHUDDescription = 0;
 
@@ -4491,23 +4491,23 @@ LABEL_8:
   }
 }
 
-- (void)setUntruncatedCuratedAssets:(id)a3
+- (void)setUntruncatedCuratedAssets:(id)assets
 {
-  v5 = a3;
-  if ((_areFetchResultsEqual(v5, self->_untruncatedCuratedAssets) & 1) == 0)
+  assetsCopy = assets;
+  if ((_areFetchResultsEqual(assetsCopy, self->_untruncatedCuratedAssets) & 1) == 0)
   {
-    objc_storeStrong(&self->_untruncatedCuratedAssets, a3);
+    objc_storeStrong(&self->_untruncatedCuratedAssets, assets);
     [(PXStoryRecipeManager *)self _invalidateRecipe];
   }
 }
 
-- (void)setCuratedAssets:(id)a3
+- (void)setCuratedAssets:(id)assets
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((_areFetchResultsEqual(v5, self->_curatedAssets) & 1) == 0)
+  assetsCopy = assets;
+  if ((_areFetchResultsEqual(assetsCopy, self->_curatedAssets) & 1) == 0)
   {
-    objc_storeStrong(&self->_curatedAssets, a3);
+    objc_storeStrong(&self->_curatedAssets, assets);
     cachedAssetsCountHUDDescription = self->_cachedAssetsCountHUDDescription;
     self->_cachedAssetsCountHUDDescription = 0;
 
@@ -4527,95 +4527,95 @@ LABEL_8:
       if (os_signpost_enabled(v7))
       {
         v10 = 134218240;
-        v11 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         v12 = 2048;
-        v13 = [v5 count];
+        v13 = [assetsCopy count];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXStoryRecipeManagerSetCuratedAssets", "Context=%{signpost.telemetry:string2}lu curatedAssets:%ld", &v10, 0x16u);
       }
     }
   }
 }
 
-- (void)setAvailableCurationLengths:(unint64_t)a3
+- (void)setAvailableCurationLengths:(unint64_t)lengths
 {
-  if (self->_availableCurationLengths != a3)
+  if (self->_availableCurationLengths != lengths)
   {
-    self->_availableCurationLengths = a3;
+    self->_availableCurationLengths = lengths;
     [(PXStoryRecipeManager *)self signalChange:32];
   }
 }
 
-- (void)setDefaultCurationLength:(unint64_t)a3
+- (void)setDefaultCurationLength:(unint64_t)length
 {
-  if (self->_defaultCurationLength != a3)
+  if (self->_defaultCurationLength != length)
   {
-    self->_defaultCurationLength = a3;
+    self->_defaultCurationLength = length;
     [(PXStoryRecipeManager *)self _invalidateOverallDurationInfo];
 
     [(PXStoryRecipeManager *)self signalChange:32];
   }
 }
 
-- (void)setCurationLengthsResult:(id)a3
+- (void)setCurationLengthsResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_curationLengthsResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_curationLengthsResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_curationLengthsResult, a3);
+      objc_storeStrong(&self->_curationLengthsResult, result);
       [(PXStoryRecipeManager *)self _invalidateOverallDurationInfo];
       v6 = v8;
     }
   }
 }
 
-- (void)setAutoCurationProducer:(id)a3
+- (void)setAutoCurationProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_autoCurationProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_autoCurationProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryAutoCurationProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryAutoCurationProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_autoCurationProducer, a3);
+      objc_storeStrong(&self->_autoCurationProducer, producer);
       [(PXStoryRecipeManager *)self _invalidateCurationLengths];
       v6 = v8;
     }
   }
 }
 
-- (void)setCurationLengthsProgress:(id)a3
+- (void)setCurationLengthsProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   curationLengthsProgress = self->_curationLengthsProgress;
-  if (curationLengthsProgress != v5)
+  if (curationLengthsProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)curationLengthsProgress cancel];
-    objc_storeStrong(&self->_curationLengthsProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_curationLengthsProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setOverallDurationInfo:(id *)a3
+- (void)setOverallDurationInfo:(id *)info
 {
   v35 = *MEMORY[0x1E69E9840];
   p_overallDurationInfo = &self->_overallDurationInfo;
-  if (a3->var0 != self->_overallDurationInfo.kind || (v6 = *&a3->var1.var0.var3, v7 = *&a3->var1.var2.var0, *&buf[32] = *&a3->var1.var1.var1, v33 = v7, *&v34 = a3->var1.var2.var3, *buf = *&a3->var1.var0.var0, *&buf[16] = v6, specificDurationInfo = self->_overallDurationInfo.specificDurationInfo, time1 = a3->var1.var0, time2 = self->_overallDurationInfo.specificDurationInfo.minimumDuration, CMTimeCompare(&time1, &time2)) || (time1 = *&buf[24], time2 = specificDurationInfo.preferredDuration, CMTimeCompare(&time1, &time2)) || (*&time1.value = v33, time1.epoch = v34, time2 = specificDurationInfo.maximumDuration, CMTimeCompare(&time1, &time2)))
+  if (info->var0 != self->_overallDurationInfo.kind || (v6 = *&info->var1.var0.var3, v7 = *&info->var1.var2.var0, *&buf[32] = *&info->var1.var1.var1, v33 = v7, *&v34 = info->var1.var2.var3, *buf = *&info->var1.var0.var0, *&buf[16] = v6, specificDurationInfo = self->_overallDurationInfo.specificDurationInfo, time1 = info->var1.var0, time2 = self->_overallDurationInfo.specificDurationInfo.minimumDuration, CMTimeCompare(&time1, &time2)) || (time1 = *&buf[24], time2 = specificDurationInfo.preferredDuration, CMTimeCompare(&time1, &time2)) || (*&time1.value = v33, time1.epoch = v34, time2 = specificDurationInfo.maximumDuration, CMTimeCompare(&time1, &time2)))
   {
-    *&p_overallDurationInfo->kind = *&a3->var0;
-    v8 = *&a3->var1.var0.var1;
-    v9 = *&a3->var1.var1.var0;
-    v10 = *&a3->var1.var2.var1;
-    *&p_overallDurationInfo->specificDurationInfo.preferredDuration.epoch = *&a3->var1.var1.var3;
+    *&p_overallDurationInfo->kind = *&info->var0;
+    v8 = *&info->var1.var0.var1;
+    v9 = *&info->var1.var1.var0;
+    v10 = *&info->var1.var2.var1;
+    *&p_overallDurationInfo->specificDurationInfo.preferredDuration.epoch = *&info->var1.var1.var3;
     *&p_overallDurationInfo->specificDurationInfo.maximumDuration.timescale = v10;
     *&p_overallDurationInfo->specificDurationInfo.minimumDuration.timescale = v8;
     *&p_overallDurationInfo->specificDurationInfo.preferredDuration.value = v9;
@@ -4627,9 +4627,9 @@ LABEL_8:
       v13 = v12;
       if (os_signpost_enabled(v11))
       {
-        v14 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         *buf = 134217984;
-        *&buf[4] = v14;
+        *&buf[4] = logContext;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_END, v13, "PXStoryRecipeManagerChangedOverallDurationInfo", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
       }
     }
@@ -4641,17 +4641,17 @@ LABEL_8:
       v17 = v16;
       if (os_signpost_enabled(v15))
       {
-        v18 = [(PXStoryRecipeManager *)self logContext];
-        v19 = *&a3->var1.var1.var3;
-        *&buf[32] = *&a3->var1.var1.var0;
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
+        v19 = *&info->var1.var1.var3;
+        *&buf[32] = *&info->var1.var1.var0;
         v33 = v19;
-        v34 = *&a3->var1.var2.var1;
-        v20 = *&a3->var1.var0.var1;
-        *buf = *&a3->var0;
+        v34 = *&info->var1.var2.var1;
+        v20 = *&info->var1.var0.var1;
+        *buf = *&info->var0;
         *&buf[16] = v20;
         v21 = PFStoryOverallDurationInfoDescription();
         *buf = 134218242;
-        *&buf[4] = v18;
+        *&buf[4] = logContext2;
         *&buf[12] = 2114;
         *&buf[14] = v21;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v15, OS_SIGNPOST_EVENT, v17, "PXStoryRecipeManagerChangedOverallDurationInfo", "Context=%{signpost.telemetry:string2}lu %{public}@", buf, 0x16u);
@@ -4665,17 +4665,17 @@ LABEL_8:
       v24 = v23;
       if (os_signpost_enabled(v22))
       {
-        v25 = [(PXStoryRecipeManager *)self logContext];
-        v26 = *&a3->var1.var1.var3;
-        *&buf[32] = *&a3->var1.var1.var0;
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
+        v26 = *&info->var1.var1.var3;
+        *&buf[32] = *&info->var1.var1.var0;
         v33 = v26;
-        v34 = *&a3->var1.var2.var1;
-        v27 = *&a3->var1.var0.var1;
-        *buf = *&a3->var0;
+        v34 = *&info->var1.var2.var1;
+        v27 = *&info->var1.var0.var1;
+        *buf = *&info->var0;
         *&buf[16] = v27;
         v28 = PFStoryOverallDurationInfoDescription();
         *buf = 134218242;
-        *&buf[4] = v25;
+        *&buf[4] = logContext3;
         *&buf[12] = 2114;
         *&buf[14] = v28;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v24, "PXStoryRecipeManagerChangedOverallDurationInfo", "Context=%{signpost.telemetry:string2}lu %{public}@", buf, 0x16u);
@@ -4688,89 +4688,89 @@ LABEL_8:
   }
 }
 
-- (void)setChapterCollection:(id)a3
+- (void)setChapterCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_chapterCollection != v5)
+  collectionCopy = collection;
+  if (self->_chapterCollection != collectionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_chapterCollection, a3);
+    v6 = collectionCopy;
+    objc_storeStrong(&self->_chapterCollection, collection);
     [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionListsProducer];
     [(PXStoryRecipeManager *)self _invalidateRecipe];
-    v5 = v6;
+    collectionCopy = v6;
   }
 }
 
-- (void)setChapterCollectionManager:(id)a3
+- (void)setChapterCollectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   chapterCollectionManager = self->_chapterCollectionManager;
-  if (chapterCollectionManager != v5)
+  if (chapterCollectionManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXStoryChapterCollectionManager *)chapterCollectionManager unregisterChangeObserver:self context:ChapterCollectionManagerObservationContext];
-    objc_storeStrong(&self->_chapterCollectionManager, a3);
+    objc_storeStrong(&self->_chapterCollectionManager, manager);
     [(PXStoryChapterCollectionManager *)self->_chapterCollectionManager registerChangeObserver:self context:ChapterCollectionManagerObservationContext];
     [(PXStoryRecipeManager *)self _invalidateChapterCollection];
-    v5 = v7;
+    managerCopy = v7;
   }
 }
 
-- (void)setChapterCollectionResult:(id)a3
+- (void)setChapterCollectionResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_chapterCollectionResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_chapterCollectionResult != resultCopy)
   {
-    v9 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v9 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v9;
     if (!v7)
     {
-      objc_storeStrong(&self->_chapterCollectionResult, a3);
+      objc_storeStrong(&self->_chapterCollectionResult, result);
       [(PXStoryRecipeManager *)self _handleResult:v9 forProducer:2048];
-      v8 = [(PXStoryProducerResult *)self->_chapterCollectionResult object];
-      [(PXStoryRecipeManager *)self setChapterCollectionManager:v8];
+      object = [(PXStoryProducerResult *)self->_chapterCollectionResult object];
+      [(PXStoryRecipeManager *)self setChapterCollectionManager:object];
 
       v6 = v9;
     }
   }
 }
 
-- (void)setHasFinalChapterCollectionBeenProduced:(BOOL)a3
+- (void)setHasFinalChapterCollectionBeenProduced:(BOOL)produced
 {
-  if (self->_hasFinalChapterCollectionBeenProduced != a3)
+  if (self->_hasFinalChapterCollectionBeenProduced != produced)
   {
-    self->_hasFinalChapterCollectionBeenProduced = a3;
+    self->_hasFinalChapterCollectionBeenProduced = produced;
     [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionListsProducer];
   }
 }
 
-- (void)setChapterCollectionProgress:(id)a3
+- (void)setChapterCollectionProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   chapterCollectionProgress = self->_chapterCollectionProgress;
-  if (chapterCollectionProgress != v5)
+  if (chapterCollectionProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)chapterCollectionProgress cancel];
-    objc_storeStrong(&self->_chapterCollectionProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_chapterCollectionProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setChapterCollectionProducer:(id)a3
+- (void)setChapterCollectionProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_chapterCollectionProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_chapterCollectionProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryChapterCollectionProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryChapterCollectionProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_chapterCollectionProducer, a3);
+      objc_storeStrong(&self->_chapterCollectionProducer, producer);
       [(PXStoryRecipeManager *)self setHasFinalChapterCollectionBeenProduced:0];
       [(PXStoryRecipeManager *)self _invalidateChapterCollectionResult];
       v6 = v8;
@@ -4778,18 +4778,18 @@ LABEL_8:
   }
 }
 
-- (void)setDetailedSaliencyResult:(id)a3
+- (void)setDetailedSaliencyResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_detailedSaliencyResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_detailedSaliencyResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_detailedSaliencyResult, a3);
+      objc_storeStrong(&self->_detailedSaliencyResult, result);
       [(PXStoryRecipeManager *)self _invalidateRecipe];
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:4096];
       v6 = v8;
@@ -4797,43 +4797,43 @@ LABEL_8:
   }
 }
 
-- (void)setHasFinalDetailedSaliencyBeenProduced:(BOOL)a3
+- (void)setHasFinalDetailedSaliencyBeenProduced:(BOOL)produced
 {
-  if (self->_hasFinalDetailedSaliencyBeenProduced != a3)
+  if (self->_hasFinalDetailedSaliencyBeenProduced != produced)
   {
-    self->_hasFinalDetailedSaliencyBeenProduced = a3;
+    self->_hasFinalDetailedSaliencyBeenProduced = produced;
     [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionListsProducer];
   }
 }
 
-- (void)setDetailedSaliencyProgress:(id)a3
+- (void)setDetailedSaliencyProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   detailedSaliencyProgress = self->_detailedSaliencyProgress;
-  if (detailedSaliencyProgress != v5)
+  if (detailedSaliencyProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)detailedSaliencyProgress cancel];
-    objc_storeStrong(&self->_detailedSaliencyProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_detailedSaliencyProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setDetailedSaliencyProducer:(id)a3
+- (void)setDetailedSaliencyProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_detailedSaliencyProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_detailedSaliencyProducer != producerCopy)
   {
-    v9 = v5;
-    v7 = [(PXStoryDetailedSaliencyProducer *)v5 isEqual:?];
+    v9 = producerCopy;
+    v7 = [(PXStoryDetailedSaliencyProducer *)producerCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_detailedSaliencyProducer, a3);
+      objc_storeStrong(&self->_detailedSaliencyProducer, producer);
       [(PXStoryRecipeManager *)self setHasFinalDetailedSaliencyBeenProduced:0];
-      v8 = [(PXStoryRecipeManager *)self detailedSaliencyProducerMonitor];
-      [v8 performChanges:&__block_literal_global_137222];
+      detailedSaliencyProducerMonitor = [(PXStoryRecipeManager *)self detailedSaliencyProducerMonitor];
+      [detailedSaliencyProducerMonitor performChanges:&__block_literal_global_137222];
 
       [(PXStoryRecipeManager *)self _invalidateDetailedSaliency];
       v6 = v9;
@@ -4841,18 +4841,18 @@ LABEL_8:
   }
 }
 
-- (void)setMovieHighlightsResult:(id)a3
+- (void)setMovieHighlightsResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_movieHighlightsResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_movieHighlightsResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_movieHighlightsResult, a3);
+      objc_storeStrong(&self->_movieHighlightsResult, result);
       [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionListsProducer];
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:32];
       v6 = v8;
@@ -4860,40 +4860,40 @@ LABEL_8:
   }
 }
 
-- (void)setHaveFinalMovieHighlightsBeenProduced:(BOOL)a3
+- (void)setHaveFinalMovieHighlightsBeenProduced:(BOOL)produced
 {
-  if (self->_haveFinalMovieHighlightsBeenProduced != a3)
+  if (self->_haveFinalMovieHighlightsBeenProduced != produced)
   {
-    self->_haveFinalMovieHighlightsBeenProduced = a3;
+    self->_haveFinalMovieHighlightsBeenProduced = produced;
     [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionListsProducer];
   }
 }
 
-- (void)setMovieHighlightsProgress:(id)a3
+- (void)setMovieHighlightsProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   movieHighlightsProgress = self->_movieHighlightsProgress;
-  if (movieHighlightsProgress != v5)
+  if (movieHighlightsProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)movieHighlightsProgress cancel];
-    objc_storeStrong(&self->_movieHighlightsProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_movieHighlightsProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setMovieHighlightsProducer:(id)a3
+- (void)setMovieHighlightsProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_movieHighlightsProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_movieHighlightsProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryMovieHighlightsProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryMovieHighlightsProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_movieHighlightsProducer, a3);
+      objc_storeStrong(&self->_movieHighlightsProducer, producer);
       [(PXStoryRecipeManager *)self setHaveFinalMovieHighlightsBeenProduced:0];
       [(PXStoryRecipeManager *)self _invalidateMovieHighlights];
       v6 = v8;
@@ -4903,44 +4903,44 @@ LABEL_8:
 
 - (id)fallbackSongResource
 {
-  v2 = [(PXStoryRecipeManager *)self curatedSongsResult];
-  v3 = [v2 object];
-  v4 = [v3 fallbackCuratedAssets];
+  curatedSongsResult = [(PXStoryRecipeManager *)self curatedSongsResult];
+  object = [curatedSongsResult object];
+  fallbackCuratedAssets = [object fallbackCuratedAssets];
 
-  if ([v4 count] < 1)
+  if ([fallbackCuratedAssets count] < 1)
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v5 = [v4 firstObject];
+    firstObject = [fallbackCuratedAssets firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (PXAudioAssetFetchResult)curatedSongs
 {
-  v2 = [(PXStoryRecipeManager *)self curatedSongsResult];
-  v3 = [v2 object];
-  v4 = [v3 curatedAudioAssets];
+  curatedSongsResult = [(PXStoryRecipeManager *)self curatedSongsResult];
+  object = [curatedSongsResult object];
+  curatedAudioAssets = [object curatedAudioAssets];
 
-  return v4;
+  return curatedAudioAssets;
 }
 
-- (void)setCuratedSongsResult:(id)a3
+- (void)setCuratedSongsResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_curatedSongsResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_curatedSongsResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_curatedSongsResult, a3);
+      objc_storeStrong(&self->_curatedSongsResult, result);
       [(PXStoryRecipeManager *)self _invalidateRecipe];
       [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionLists];
       [(PXStoryRecipeManager *)self _invalidateRecipe];
@@ -4952,29 +4952,29 @@ LABEL_8:
   }
 }
 
-- (void)setCuratedSongsProgress:(id)a3
+- (void)setCuratedSongsProgress:(id)progress
 {
-  v5 = a3;
-  if (self->_curatedSongsProgress != v5)
+  progressCopy = progress;
+  if (self->_curatedSongsProgress != progressCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_curatedSongsProgress, a3);
-    v5 = v6;
+    v6 = progressCopy;
+    objc_storeStrong(&self->_curatedSongsProgress, progress);
+    progressCopy = v6;
   }
 }
 
-- (void)setCuratedSongsProducer:(id)a3
+- (void)setCuratedSongsProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_curatedSongsProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_curatedSongsProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStorySongsProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStorySongsProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_curatedSongsProducer, a3);
+      objc_storeStrong(&self->_curatedSongsProducer, producer);
       [(PXStorySongsProducer *)v8 setLogContext:[(PXStoryRecipeManager *)self logContext]];
       [(PXStoryRecipeManager *)self _invalidateCuratedSongs];
       v6 = v8;
@@ -4982,51 +4982,51 @@ LABEL_8:
   }
 }
 
-- (void)setInitialAutoEditDecisionListResult:(id)a3
+- (void)setInitialAutoEditDecisionListResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_initialAutoEditDecisionListResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_initialAutoEditDecisionListResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:256];
-      objc_storeStrong(&self->_initialAutoEditDecisionListResult, a3);
+      objc_storeStrong(&self->_initialAutoEditDecisionListResult, result);
       [(PXStoryRecipeManager *)self _invalidateInitialStyleProducer];
       v6 = v8;
     }
   }
 }
 
-- (void)setPersistedSongProgress:(id)a3
+- (void)setPersistedSongProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   persistedSongProgress = self->_persistedSongProgress;
-  if (persistedSongProgress != v5)
+  if (persistedSongProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)persistedSongProgress cancel];
-    objc_storeStrong(&self->_persistedSongProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_persistedSongProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setPersistedSongResult:(id)a3
+- (void)setPersistedSongResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_persistedSongResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_persistedSongResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
       [(PXStoryRecipeManager *)self _handleResult:v8 forProducer:8];
-      objc_storeStrong(&self->_persistedSongResult, a3);
+      objc_storeStrong(&self->_persistedSongResult, result);
       [(PXStoryRecipeManager *)self _invalidateAutoEditDecisionLists];
       [(PXStoryRecipeManager *)self _invalidateCuratedSongs];
       [(PXStoryRecipeManager *)self _invalidateRecipe];
@@ -5037,12 +5037,12 @@ LABEL_8:
   }
 }
 
-- (void)setPersistedSongProducer:(id)a3
+- (void)setPersistedSongProducer:(id)producer
 {
-  v8 = a3;
+  producerCopy = producer;
   v5 = self->_persistedSongProgress;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == producerCopy)
   {
   }
 
@@ -5052,29 +5052,29 @@ LABEL_8:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_persistedSongProducer, a3);
+      objc_storeStrong(&self->_persistedSongProducer, producer);
       [(PXStoryRecipeManager *)self _invalidatePersistedSong];
     }
   }
 }
 
-- (void)setPersistableRecipeResult:(id)a3
+- (void)setPersistableRecipeResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_persistableRecipeResult != v5 && ![(PXStoryProducerResult *)v5 isEqual:?])
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_persistableRecipeResult != resultCopy && ![(PXStoryProducerResult *)resultCopy isEqual:?])
   {
-    objc_storeStrong(&self->_persistableRecipeResult, a3);
-    v7 = [(PXStoryProducerResult *)v6 object];
-    v8 = [v7 miroInfo];
+    objc_storeStrong(&self->_persistableRecipeResult, result);
+    object = [(PXStoryProducerResult *)v6 object];
+    miroInfo = [object miroInfo];
 
-    if ([v8 containsAnyData])
+    if ([miroInfo containsAnyData])
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __51__PXStoryRecipeManager_setPersistableRecipeResult___block_invoke;
       v9[3] = &unk_1E773CCA8;
-      v10 = v8;
+      v10 = miroInfo;
       [(PXStoryRecipeManager *)self performChanges:v9];
     }
 
@@ -5095,13 +5095,13 @@ void __51__PXStoryRecipeManager_setPersistableRecipeResult___block_invoke(uint64
   [v3 applyManuallyCuratedAssets:v4];
 }
 
-- (void)setHasInitialPersistableRecipeBeenProduced:(BOOL)a3
+- (void)setHasInitialPersistableRecipeBeenProduced:(BOOL)produced
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_hasInitialPersistableRecipeBeenProduced != a3)
+  if (self->_hasInitialPersistableRecipeBeenProduced != produced)
   {
-    v3 = a3;
-    self->_hasInitialPersistableRecipeBeenProduced = a3;
+    producedCopy = produced;
+    self->_hasInitialPersistableRecipeBeenProduced = produced;
     v5 = [(PXStoryRecipeManager *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5110,7 +5110,7 @@ void __51__PXStoryRecipeManager_setPersistableRecipeResult___block_invoke(uint64
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryRecipeManager.hasInitialPersistableRecipeBeenProduced", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -5122,11 +5122,11 @@ void __51__PXStoryRecipeManager_setPersistableRecipeResult___block_invoke(uint64
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryRecipeManager *)self logContext];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = producedCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryRecipeManager.hasInitialPersistableRecipeBeenProduced", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -5138,11 +5138,11 @@ void __51__PXStoryRecipeManager_setPersistableRecipeResult___block_invoke(uint64
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryRecipeManager *)self logContext];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = producedCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryRecipeManager.hasInitialPersistableRecipeBeenProduced", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -5151,140 +5151,140 @@ void __51__PXStoryRecipeManager_setPersistableRecipeResult___block_invoke(uint64
   }
 }
 
-- (void)setPersistableRecipeProgress:(id)a3
+- (void)setPersistableRecipeProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   persistableRecipeProgress = self->_persistableRecipeProgress;
-  if (persistableRecipeProgress != v5)
+  if (persistableRecipeProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)persistableRecipeProgress cancel];
-    objc_storeStrong(&self->_persistableRecipeProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_persistableRecipeProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setPersistableRecipeProducer:(id)a3
+- (void)setPersistableRecipeProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_persistableRecipeProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_persistableRecipeProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryPersistableRecipeProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryPersistableRecipeProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_persistableRecipeProducer, a3);
+      objc_storeStrong(&self->_persistableRecipeProducer, producer);
       [(PXStoryRecipeManager *)self _invalidatePersistableRecipe];
       v6 = v8;
     }
   }
 }
 
-- (void)setAssetsDataSource:(id)a3
+- (void)setAssetsDataSource:(id)source
 {
-  v11 = a3;
+  sourceCopy = source;
   v5 = self->_assetsDataSource;
   v6 = v5;
-  if (v5 != v11)
+  if (v5 != sourceCopy)
   {
-    v7 = [(PXAssetsDataSource *)v5 isEqual:v11];
+    v7 = [(PXAssetsDataSource *)v5 isEqual:sourceCopy];
 
-    v8 = v11;
+    v8 = sourceCopy;
     if (v7)
     {
       goto LABEL_7;
     }
 
-    objc_storeStrong(&self->_assetsDataSource, a3);
-    v6 = [[PXStoryProducerResult alloc] initWithObject:v11];
-    if (([(PXAssetsDataSource *)v11 areAllSectionsConsideredAccurate]& 1) == 0)
+    objc_storeStrong(&self->_assetsDataSource, source);
+    v6 = [[PXStoryProducerResult alloc] initWithObject:sourceCopy];
+    if (([(PXAssetsDataSource *)sourceCopy areAllSectionsConsideredAccurate]& 1) == 0)
     {
       v9 = [(PXStoryProducerResult *)v6 flags:1];
     }
 
     [(PXStoryRecipeManager *)self _handleResult:v6 forProducer:2];
-    v10 = [(PXAssetsDataSource *)v11 firstAssetCollection];
-    [(PXStoryRecipeManager *)self setAssetCollection:v10];
+    firstAssetCollection = [(PXAssetsDataSource *)sourceCopy firstAssetCollection];
+    [(PXStoryRecipeManager *)self setAssetCollection:firstAssetCollection];
 
     [(PXStoryRecipeManager *)self _invalidateCuratedAssets];
     [(PXStoryRecipeManager *)self _invalidateAllAssets];
     [(PXStoryRecipeManager *)self _invalidateKeyAsset];
   }
 
-  v8 = v11;
+  v8 = sourceCopy;
 LABEL_7:
 }
 
-- (void)setAssetsDataSourceManager:(id)a3
+- (void)setAssetsDataSourceManager:(id)manager
 {
-  v9 = a3;
+  managerCopy = manager;
   v5 = self->_assetsDataSourceManager;
-  v6 = v5;
-  if (v5 != v9)
+  dataSource = v5;
+  if (v5 != managerCopy)
   {
-    v7 = [(PXAssetsDataSourceManager *)v5 isEqual:v9];
+    v7 = [(PXAssetsDataSourceManager *)v5 isEqual:managerCopy];
 
-    v8 = v9;
+    v8 = managerCopy;
     if (v7)
     {
       goto LABEL_5;
     }
 
     [(PXAssetsDataSourceManager *)self->_assetsDataSourceManager unregisterChangeObserver:self context:AssetsDataSourceManagerObservationContext];
-    objc_storeStrong(&self->_assetsDataSourceManager, a3);
-    [(PXAssetsDataSourceManager *)v9 registerChangeObserver:self context:AssetsDataSourceManagerObservationContext];
+    objc_storeStrong(&self->_assetsDataSourceManager, manager);
+    [(PXAssetsDataSourceManager *)managerCopy registerChangeObserver:self context:AssetsDataSourceManagerObservationContext];
     [(PXStoryRecipeManager *)self signalChange:16];
-    v6 = [(PXAssetsDataSourceManager *)v9 dataSource];
-    [(PXStoryRecipeManager *)self setAssetsDataSource:v6];
+    dataSource = [(PXAssetsDataSourceManager *)managerCopy dataSource];
+    [(PXStoryRecipeManager *)self setAssetsDataSource:dataSource];
   }
 
-  v8 = v9;
+  v8 = managerCopy;
 LABEL_5:
 }
 
-- (void)setAssetsResult:(id)a3
+- (void)setAssetsResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_assetsResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_assetsResult != resultCopy)
   {
-    v9 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v9 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v9;
     if (!v7)
     {
-      objc_storeStrong(&self->_assetsResult, a3);
+      objc_storeStrong(&self->_assetsResult, result);
       [(PXStoryRecipeManager *)self _handleResult:v9 forProducer:1];
-      v8 = [(PXStoryProducerResult *)v9 object];
-      [(PXStoryRecipeManager *)self setAssetsDataSourceManager:v8];
+      object = [(PXStoryProducerResult *)v9 object];
+      [(PXStoryRecipeManager *)self setAssetsDataSourceManager:object];
 
       v6 = v9;
     }
   }
 }
 
-- (void)setAssetsProgress:(id)a3
+- (void)setAssetsProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   assetsProgress = self->_assetsProgress;
-  if (assetsProgress != v5)
+  if (assetsProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)assetsProgress cancel];
-    objc_storeStrong(&self->_assetsProgress, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_assetsProgress, progress);
+    progressCopy = v7;
   }
 }
 
-- (void)setAssetCollection:(id)a3
+- (void)setAssetCollection:(id)collection
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_assetCollection != v5)
+  collectionCopy = collection;
+  if (self->_assetCollection != collectionCopy)
   {
-    objc_storeStrong(&self->_assetCollection, a3);
+    objc_storeStrong(&self->_assetCollection, collection);
     v6 = [(PXStoryRecipeManager *)self log];
     v7 = os_signpost_id_make_with_pointer(v6, self);
     if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5293,7 +5293,7 @@ LABEL_5:
       if (os_signpost_enabled(v6))
       {
         v21 = 134217984;
-        v22 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXStoryRecipeManager.assetCollection", "Context=%{signpost.telemetry:string2}lu ", &v21, 0xCu);
       }
     }
@@ -5305,15 +5305,15 @@ LABEL_5:
       v11 = v10;
       if (os_signpost_enabled(v9))
       {
-        v12 = [(PXStoryRecipeManager *)self logContext];
-        v13 = [(PXDisplayAssetCollection *)v5 uuid];
-        v14 = [(PXDisplayAssetCollection *)v5 localizedTitle];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
+        uuid = [(PXDisplayAssetCollection *)collectionCopy uuid];
+        localizedTitle = [(PXDisplayAssetCollection *)collectionCopy localizedTitle];
         v21 = 134218498;
-        v22 = v12;
+        logContext = logContext2;
         v23 = 2114;
-        v24 = v13;
+        v24 = uuid;
         v25 = 2114;
-        v26 = v14;
+        v26 = localizedTitle;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_EVENT, v11, "PXStoryRecipeManager.assetCollection", "Context=%{signpost.telemetry:string2}lu uuid:%{public}@ title:%{public}@", &v21, 0x20u);
       }
     }
@@ -5325,15 +5325,15 @@ LABEL_5:
       v17 = v16;
       if (os_signpost_enabled(v15))
       {
-        v18 = [(PXStoryRecipeManager *)self logContext];
-        v19 = [(PXDisplayAssetCollection *)v5 uuid];
-        v20 = [(PXDisplayAssetCollection *)v5 localizedTitle];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
+        uuid2 = [(PXDisplayAssetCollection *)collectionCopy uuid];
+        localizedTitle2 = [(PXDisplayAssetCollection *)collectionCopy localizedTitle];
         v21 = 134218498;
-        v22 = v18;
+        logContext = logContext3;
         v23 = 2114;
-        v24 = v19;
+        v24 = uuid2;
         v25 = 2114;
-        v26 = v20;
+        v26 = localizedTitle2;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v17, "PXStoryRecipeManager.assetCollection", "Context=%{signpost.telemetry:string2}lu uuid:%{public}@ title:%{public}@", &v21, 0x20u);
       }
     }
@@ -5342,18 +5342,18 @@ LABEL_5:
   }
 }
 
-- (void)setAssetsProducer:(id)a3
+- (void)setAssetsProducer:(id)producer
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_assetsProducer != v5)
+  producerCopy = producer;
+  v6 = producerCopy;
+  if (self->_assetsProducer != producerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryAssetsProducer *)v5 isEqual:?];
+    v8 = producerCopy;
+    v7 = [(PXStoryAssetsProducer *)producerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_assetsProducer, a3);
+      objc_storeStrong(&self->_assetsProducer, producer);
       [(PXStoryRecipeManager *)self _invalidateAssets];
       v6 = v8;
     }
@@ -5362,18 +5362,18 @@ LABEL_5:
 
 - (BOOL)wantsAutoEditResults
 {
-  v2 = [(PXStoryRecipeManager *)self configuration];
-  v3 = ([v2 options] & 1) == 0;
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  v3 = ([configuration options] & 1) == 0;
 
   return v3;
 }
 
-- (void)setProducersLikelyToKeepUp:(unint64_t)a3
+- (void)setProducersLikelyToKeepUp:(unint64_t)up
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_producersLikelyToKeepUp != a3)
+  if (self->_producersLikelyToKeepUp != up)
   {
-    self->_producersLikelyToKeepUp = a3;
+    self->_producersLikelyToKeepUp = up;
     [(PXStoryRecipeManager *)self _invalidateRecipeAttributes];
     v4 = [(PXStoryRecipeManager *)self log];
     v5 = os_signpost_id_make_with_pointer(v4, self);
@@ -5383,7 +5383,7 @@ LABEL_5:
       if (os_signpost_enabled(v4))
       {
         v17 = 134217984;
-        v18 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_INTERVAL_END, v6, "PXStoryRecipeManager.producersLikelyToKeepUp", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -5395,10 +5395,10 @@ LABEL_5:
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXStoryRecipeManager *)self logContext];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
         v11 = PXStoryProducersDescription(self->_producersLikelyToKeepUp);
         v17 = 134218242;
-        v18 = v10;
+        logContext = logContext2;
         v19 = 2112;
         v20 = v11;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXStoryRecipeManager.producersLikelyToKeepUp", "Context=%{signpost.telemetry:string2}lu Producers=%{signpost.description:attribute}@", &v17, 0x16u);
@@ -5412,10 +5412,10 @@ LABEL_5:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryRecipeManager *)self logContext];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
         v16 = PXStoryProducersDescription(self->_producersLikelyToKeepUp);
         v17 = 134218242;
-        v18 = v15;
+        logContext = logContext3;
         v19 = 2112;
         v20 = v16;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryRecipeManager.producersLikelyToKeepUp", "Context=%{signpost.telemetry:string2}lu Producers=%{signpost.description:attribute}@", &v17, 0x16u);
@@ -5424,12 +5424,12 @@ LABEL_5:
   }
 }
 
-- (void)setProducersWithInitialResults:(unint64_t)a3
+- (void)setProducersWithInitialResults:(unint64_t)results
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_producersWithInitialResults != a3)
+  if (self->_producersWithInitialResults != results)
   {
-    self->_producersWithInitialResults = a3;
+    self->_producersWithInitialResults = results;
     v4 = [(PXStoryRecipeManager *)self log];
     v5 = os_signpost_id_make_with_pointer(v4, self);
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5438,7 +5438,7 @@ LABEL_5:
       if (os_signpost_enabled(v4))
       {
         v17 = 134217984;
-        v18 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_INTERVAL_END, v6, "PXStoryRecipeManager.producersWithInitialResults", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -5450,10 +5450,10 @@ LABEL_5:
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXStoryRecipeManager *)self logContext];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
         v11 = PXStoryProducersDescription(self->_producersWithInitialResults);
         v17 = 134218242;
-        v18 = v10;
+        logContext = logContext2;
         v19 = 2112;
         v20 = v11;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXStoryRecipeManager.producersWithInitialResults", "Context=%{signpost.telemetry:string2}lu Producers=%{signpost.description:attribute}@", &v17, 0x16u);
@@ -5467,10 +5467,10 @@ LABEL_5:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryRecipeManager *)self logContext];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
         v16 = PXStoryProducersDescription(self->_producersWithInitialResults);
         v17 = 134218242;
-        v18 = v15;
+        logContext = logContext3;
         v19 = 2112;
         v20 = v16;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryRecipeManager.producersWithInitialResults", "Context=%{signpost.telemetry:string2}lu Producers=%{signpost.description:attribute}@", &v17, 0x16u);
@@ -5479,12 +5479,12 @@ LABEL_5:
   }
 }
 
-- (void)setRemainingProducers:(unint64_t)a3
+- (void)setRemainingProducers:(unint64_t)producers
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_remainingProducers != a3)
+  if (self->_remainingProducers != producers)
   {
-    self->_remainingProducers = a3;
+    self->_remainingProducers = producers;
     v4 = [(PXStoryRecipeManager *)self log];
     v5 = os_signpost_id_make_with_pointer(v4, self);
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -5493,7 +5493,7 @@ LABEL_5:
       if (os_signpost_enabled(v4))
       {
         v17 = 134217984;
-        v18 = [(PXStoryRecipeManager *)self logContext];
+        logContext = [(PXStoryRecipeManager *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v4, OS_SIGNPOST_INTERVAL_END, v6, "PXStoryRecipeManager.remainingProducers", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -5505,10 +5505,10 @@ LABEL_5:
       v9 = v8;
       if (os_signpost_enabled(v7))
       {
-        v10 = [(PXStoryRecipeManager *)self logContext];
+        logContext2 = [(PXStoryRecipeManager *)self logContext];
         v11 = PXStoryProducersDescription(self->_remainingProducers);
         v17 = 134218242;
-        v18 = v10;
+        logContext = logContext2;
         v19 = 2112;
         v20 = v11;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_EVENT, v9, "PXStoryRecipeManager.remainingProducers", "Context=%{signpost.telemetry:string2}lu Remaining=%{signpost.description:attribute}@", &v17, 0x16u);
@@ -5522,10 +5522,10 @@ LABEL_5:
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryRecipeManager *)self logContext];
+        logContext3 = [(PXStoryRecipeManager *)self logContext];
         v16 = PXStoryProducersDescription(self->_remainingProducers);
         v17 = 134218242;
-        v18 = v15;
+        logContext = logContext3;
         v19 = 2112;
         v20 = v16;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryRecipeManager.remainingProducers", "Context=%{signpost.telemetry:string2}lu Remaining=%{signpost.description:attribute}@", &v17, 0x16u);
@@ -5534,12 +5534,12 @@ LABEL_5:
   }
 }
 
-- (void)setFinalizedProducers:(unint64_t)a3
+- (void)setFinalizedProducers:(unint64_t)producers
 {
-  if (self->_finalizedProducers != a3)
+  if (self->_finalizedProducers != producers)
   {
-    self->_finalizedProducers = a3;
-    [(PXStoryRecipeManager *)self setRemainingProducers:~a3 & 0x1FFF];
+    self->_finalizedProducers = producers;
+    [(PXStoryRecipeManager *)self setRemainingProducers:~producers & 0x1FFF];
 
     [(PXStoryRecipeManager *)self _invalidateRecipeAttributes];
   }
@@ -5547,20 +5547,20 @@ LABEL_5:
 
 - (BOOL)shouldAvoidSynchronousProductions
 {
-  v2 = [(PXStoryRecipeManager *)self configuration];
-  v3 = ([v2 options] & 0xC) != 0;
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  v3 = ([configuration options] & 0xC) != 0;
 
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_configuration != v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (self->_configuration != configurationCopy)
   {
-    v13 = v5;
-    v7 = [(PXStoryConfiguration *)v5 isEqual:?];
+    v13 = configurationCopy;
+    v7 = [(PXStoryConfiguration *)configurationCopy isEqual:?];
     v6 = v13;
     if ((v7 & 1) == 0)
     {
@@ -5568,13 +5568,13 @@ LABEL_5:
       configuration = self->_configuration;
       self->_configuration = v8;
 
-      v10 = [(PXStoryConfiguration *)v13 storyQueue];
-      v11 = [(PXStoryRecipeManager *)self storyQueue];
+      storyQueue = [(PXStoryConfiguration *)v13 storyQueue];
+      storyQueue2 = [(PXStoryRecipeManager *)self storyQueue];
 
-      if (v10 != v11)
+      if (storyQueue != storyQueue2)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:446 description:@"queue mismatch"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:446 description:@"queue mismatch"];
       }
 
       self->_defaultRequestOptions = 0;
@@ -5604,19 +5604,19 @@ LABEL_5:
   v4.receiver = self;
   v4.super_class = PXStoryRecipeManager;
   [(PXStoryRecipeManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryRecipeManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryRecipeManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryRecipeManager *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryRecipeManager *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryRecipeManager;
-  [(PXStoryRecipeManager *)&v6 performChanges:v4];
+  [(PXStoryRecipeManager *)&v6 performChanges:changesCopy];
 }
 
 - (NSString)description
@@ -5624,8 +5624,8 @@ LABEL_5:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryRecipeManager *)self configuration];
-  v7 = [v3 initWithFormat:@"<%@: %p, configuration: %@>", v5, self, v6];
+  configuration = [(PXStoryRecipeManager *)self configuration];
+  v7 = [v3 initWithFormat:@"<%@: %p, configuration: %@>", v5, self, configuration];
 
   return v7;
 }
@@ -5647,31 +5647,31 @@ LABEL_5:
   [(PXStoryRecipeManager *)&v3 dealloc];
 }
 
-- (PXStoryRecipeManager)initWithConfiguration:(id)a3 assetsProducerFactory:(id)a4 persistableRecipeProducerFactory:(id)a5 songsProducerFactory:(id)a6 movieHighlightsProducerFactory:(id)a7 detailedSaliencyProducerFactory:(id)a8 chapterCollectionProducerFactory:(id)a9 stylesProducerFactory:(id)a10 autoEditDecisionListsProducerFactory:(id)a11 autoCurationProducerFactory:(id)a12
+- (PXStoryRecipeManager)initWithConfiguration:(id)configuration assetsProducerFactory:(id)factory persistableRecipeProducerFactory:(id)producerFactory songsProducerFactory:(id)songsProducerFactory movieHighlightsProducerFactory:(id)highlightsProducerFactory detailedSaliencyProducerFactory:(id)saliencyProducerFactory chapterCollectionProducerFactory:(id)collectionProducerFactory stylesProducerFactory:(id)self0 autoEditDecisionListsProducerFactory:(id)self1 autoCurationProducerFactory:(id)self2
 {
-  v72 = a3;
-  obj = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v20;
-  v23 = a10;
-  v24 = v21;
-  v25 = a11;
-  v26 = v19;
-  v27 = a12;
+  configurationCopy = configuration;
+  obj = factory;
+  producerFactoryCopy = producerFactory;
+  songsProducerFactoryCopy = songsProducerFactory;
+  highlightsProducerFactoryCopy = highlightsProducerFactory;
+  saliencyProducerFactoryCopy = saliencyProducerFactory;
+  collectionProducerFactoryCopy = collectionProducerFactory;
+  v22 = saliencyProducerFactoryCopy;
+  stylesProducerFactoryCopy = stylesProducerFactory;
+  v24 = collectionProducerFactoryCopy;
+  listsProducerFactoryCopy = listsProducerFactory;
+  v26 = highlightsProducerFactoryCopy;
+  curationProducerFactoryCopy = curationProducerFactory;
   v78.receiver = self;
   v78.super_class = PXStoryRecipeManager;
   v28 = [(PXStoryRecipeManager *)&v78 init];
   if (v28)
   {
-    v70 = v27;
-    v29 = [v72 log];
+    v70 = curationProducerFactoryCopy;
+    v29 = [configurationCopy log];
     [(PXStoryRecipeManager *)v28 setLog:v29];
 
-    -[PXStoryRecipeManager setLogContext:](v28, "setLogContext:", [v72 logContext]);
+    -[PXStoryRecipeManager setLogContext:](v28, "setLogContext:", [configurationCopy logContext]);
     v30 = obj;
     if (!obj)
     {
@@ -5683,25 +5683,25 @@ LABEL_5:
     {
     }
 
-    v31 = v17;
-    if (!v17)
+    v31 = producerFactoryCopy;
+    if (!producerFactoryCopy)
     {
       v31 = objc_alloc_init(PXStoryDefaultPersistableRecipeProducerFactory);
     }
 
     objc_storeStrong(&v28->_persistableRecipeProducerFactory, v31);
-    if (!v17)
+    if (!producerFactoryCopy)
     {
     }
 
-    v32 = v18;
-    if (!v18)
+    v32 = songsProducerFactoryCopy;
+    if (!songsProducerFactoryCopy)
     {
       v32 = objc_alloc_init(PXStoryDefaultSongsProducerFactory);
     }
 
     objc_storeStrong(&v28->_songsProducerFactory, v32);
-    if (!v18)
+    if (!songsProducerFactoryCopy)
     {
     }
 
@@ -5738,36 +5738,36 @@ LABEL_5:
     {
     }
 
-    v36 = v23;
-    if (!v23)
+    v36 = stylesProducerFactoryCopy;
+    if (!stylesProducerFactoryCopy)
     {
       v36 = objc_alloc_init(PXStoryDefaultStylesProducerFactory);
     }
 
     objc_storeStrong(&v28->_stylesProducerFactory, v36);
-    if (!v23)
+    if (!stylesProducerFactoryCopy)
     {
     }
 
-    v37 = v25;
-    if (!v25)
+    v37 = listsProducerFactoryCopy;
+    if (!listsProducerFactoryCopy)
     {
-      v37 = [[PXStoryDefaultAutoEditDecisionListsProducerFactory alloc] initWithStoryConfiguration:v72];
+      v37 = [[PXStoryDefaultAutoEditDecisionListsProducerFactory alloc] initWithStoryConfiguration:configurationCopy];
     }
 
     objc_storeStrong(&v28->_autoEditDecisionListsProducerFactory, v37);
-    if (!v25)
+    if (!listsProducerFactoryCopy)
     {
     }
 
-    v38 = v27;
-    if (!v27)
+    v38 = curationProducerFactoryCopy;
+    if (!curationProducerFactoryCopy)
     {
       v38 = objc_alloc_init(PXStoryDefaultAutoCurationProducerFactory);
     }
 
     objc_storeStrong(&v28->_autoCurationProducerFactory, v38);
-    if (!v27)
+    if (!curationProducerFactoryCopy)
     {
     }
 
@@ -5783,13 +5783,13 @@ LABEL_5:
     additionalAutoEditDecisionListsBySong = v28->_additionalAutoEditDecisionListsBySong;
     v28->_additionalAutoEditDecisionListsBySong = v43;
 
-    v45 = [v72 storyQueue];
+    storyQueue = [configurationCopy storyQueue];
     storyQueue = v28->_storyQueue;
-    v28->_storyQueue = v45;
+    v28->_storyQueue = storyQueue;
 
-    v47 = [v72 errorReporter];
+    errorReporter = [configurationCopy errorReporter];
     errorReporter = v28->_errorReporter;
-    v28->_errorReporter = v47;
+    v28->_errorReporter = errorReporter;
 
     v49 = MEMORY[0x1E69C0DB8];
     v50 = *(MEMORY[0x1E69C0DB8] + 48);
@@ -5842,9 +5842,9 @@ LABEL_5:
     [(PXUpdater *)v28->_updater addUpdateSelector:sel__updateProducersLikelyToKeepUp];
     [(PXUpdater *)v28->_updater addUpdateSelector:sel__updateRecipe];
     [(PXUpdater *)v28->_updater addUpdateSelector:sel__updateRecipeAttributes];
-    v56 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     loadingStartDate = v28->_loadingStartDate;
-    v28->_loadingStartDate = v56;
+    v28->_loadingStartDate = date;
 
     if (([(PXStoryConfiguration *)v28->_configuration options]& 3) == 0)
     {
@@ -5854,23 +5854,23 @@ LABEL_5:
       aBlock[3] = &unk_1E773C780;
       v58 = v28;
       v77 = v58;
-      v59 = v25;
-      v60 = v23;
+      v59 = listsProducerFactoryCopy;
+      v60 = stylesProducerFactoryCopy;
       v61 = v24;
       v62 = v22;
       v63 = v26;
-      v64 = v18;
+      v64 = songsProducerFactoryCopy;
       v65 = _Block_copy(aBlock);
       v66 = v65[2]();
       detailedSaliencyProducerMonitor = v58->_detailedSaliencyProducerMonitor;
       v58->_detailedSaliencyProducerMonitor = v66;
 
-      v18 = v64;
+      songsProducerFactoryCopy = v64;
       v26 = v63;
       v22 = v62;
       v24 = v61;
-      v23 = v60;
-      v25 = v59;
+      stylesProducerFactoryCopy = v60;
+      listsProducerFactoryCopy = v59;
     }
 
     v73[0] = MEMORY[0x1E69E9820];
@@ -5878,10 +5878,10 @@ LABEL_5:
     v73[2] = __305__PXStoryRecipeManager_initWithConfiguration_assetsProducerFactory_persistableRecipeProducerFactory_songsProducerFactory_movieHighlightsProducerFactory_detailedSaliencyProducerFactory_chapterCollectionProducerFactory_stylesProducerFactory_autoEditDecisionListsProducerFactory_autoCurationProducerFactory___block_invoke_2;
     v73[3] = &unk_1E773C7A8;
     v74 = v28;
-    v75 = v72;
+    v75 = configurationCopy;
     [(PXStoryRecipeManager *)v74 performChanges:v73];
 
-    v27 = v70;
+    curationProducerFactoryCopy = v70;
   }
 
   return v28;
@@ -5903,13 +5903,13 @@ void __305__PXStoryRecipeManager_initWithConfiguration_assetsProducerFactory_per
   [v4 setConfiguration:*(a1 + 40)];
 }
 
-- (PXStoryRecipeManager)initWithConfiguration:(id)a3
+- (PXStoryRecipeManager)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 detailedSaliencyProducer];
-  if (v5)
+  configurationCopy = configuration;
+  detailedSaliencyProducer = [configurationCopy detailedSaliencyProducer];
+  if (detailedSaliencyProducer)
   {
-    v6 = [[PXStoryPassthroughDetailedSaliencyProducerFactory alloc] initWithDetailedSaliencyProducer:v5];
+    v6 = [[PXStoryPassthroughDetailedSaliencyProducerFactory alloc] initWithDetailedSaliencyProducer:detailedSaliencyProducer];
   }
 
   else
@@ -5917,15 +5917,15 @@ void __305__PXStoryRecipeManager_initWithConfiguration_assetsProducerFactory_per
     v6 = 0;
   }
 
-  v7 = [(PXStoryRecipeManager *)self initWithConfiguration:v4 assetsProducerFactory:0 persistableRecipeProducerFactory:0 songsProducerFactory:0 movieHighlightsProducerFactory:0 detailedSaliencyProducerFactory:v6 chapterCollectionProducerFactory:0 stylesProducerFactory:0 autoEditDecisionListsProducerFactory:0 autoCurationProducerFactory:0];
+  v7 = [(PXStoryRecipeManager *)self initWithConfiguration:configurationCopy assetsProducerFactory:0 persistableRecipeProducerFactory:0 songsProducerFactory:0 movieHighlightsProducerFactory:0 detailedSaliencyProducerFactory:v6 chapterCollectionProducerFactory:0 stylesProducerFactory:0 autoEditDecisionListsProducerFactory:0 autoCurationProducerFactory:0];
 
   return v7;
 }
 
 - (PXStoryRecipeManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:313 description:{@"%s is not available as initializer", "-[PXStoryRecipeManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRecipeManager.m" lineNumber:313 description:{@"%s is not available as initializer", "-[PXStoryRecipeManager init]"}];
 
   abort();
 }

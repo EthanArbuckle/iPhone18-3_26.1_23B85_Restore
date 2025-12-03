@@ -1,9 +1,9 @@
 @interface SPCCurvePoint
-+ (id)pointWithX:(double)a3 y:(double)a4;
++ (id)pointWithX:(double)x y:(double)y;
 - (CGPoint)CGPoint;
 - (CGPoint)leftTangentPoint;
 - (CGPoint)rightTangentPoint;
-- (SPCCurvePoint)initWithX:(double)a3 y:(double)a4;
+- (SPCCurvePoint)initWithX:(double)x y:(double)y;
 @end
 
 @implementation SPCCurvePoint
@@ -37,23 +37,23 @@
   return result;
 }
 
-- (SPCCurvePoint)initWithX:(double)a3 y:(double)a4
+- (SPCCurvePoint)initWithX:(double)x y:(double)y
 {
   v7.receiver = self;
   v7.super_class = SPCCurvePoint;
   result = [(SPCCurvePoint *)&v7 init];
   if (result)
   {
-    result->_x = a3;
-    result->_y = a4;
+    result->_x = x;
+    result->_y = y;
   }
 
   return result;
 }
 
-+ (id)pointWithX:(double)a3 y:(double)a4
++ (id)pointWithX:(double)x y:(double)y
 {
-  v4 = [[SPCCurvePoint alloc] initWithX:a3 y:a4];
+  v4 = [[SPCCurvePoint alloc] initWithX:x y:y];
 
   return v4;
 }

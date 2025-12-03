@@ -20,38 +20,38 @@
   v18 = v17;
 
   v19 = [v16 numberWithDouble:v18];
-  v20 = [v19 stringValue];
-  v45 = [v15 queryItemWithName:@"overrideActivityBeginTime" value:v20];
+  stringValue = [v19 stringValue];
+  v45 = [v15 queryItemWithName:@"overrideActivityBeginTime" value:stringValue];
 
   [v14 addObject:v45];
   v21 = MEMORY[0x277CCAD18];
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  v23 = [v22 stringValue];
-  v43 = [v21 queryItemWithName:@"activityType" value:v23];
+  stringValue2 = [v22 stringValue];
+  v43 = [v21 queryItemWithName:@"activityType" value:stringValue2];
 
   [v14 addObject:v43];
   v24 = MEMORY[0x277CCAD18];
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-  v26 = [v25 stringValue];
-  v27 = [v24 queryItemWithName:@"auxiliaryActivityType" value:v26];
+  stringValue3 = [v25 stringValue];
+  v27 = [v24 queryItemWithName:@"auxiliaryActivityType" value:stringValue3];
 
   [v14 addObject:v27];
   v28 = MEMORY[0x277CCAD18];
   v29 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
-  v30 = [v29 stringValue];
-  v31 = [v28 queryItemWithName:@"swimmingLocationType" value:v30];
+  stringValue4 = [v29 stringValue];
+  v31 = [v28 queryItemWithName:@"swimmingLocationType" value:stringValue4];
 
   [v14 addObject:v31];
   v32 = MEMORY[0x277CCAD18];
   v33 = [MEMORY[0x277CCABB0] numberWithBool:a6];
-  v34 = [v33 stringValue];
-  v35 = [v32 queryItemWithName:@"location" value:v34];
+  stringValue5 = [v33 stringValue];
+  v35 = [v32 queryItemWithName:@"location" value:stringValue5];
 
   [v14 addObject:v35];
   v36 = MEMORY[0x277CCAD18];
   v37 = [MEMORY[0x277CCABB0] numberWithBool:a8];
-  v38 = [v37 stringValue];
-  v39 = [v36 queryItemWithName:@"presentpicker" value:v38];
+  stringValue6 = [v37 stringValue];
+  v39 = [v36 queryItemWithName:@"presentpicker" value:stringValue6];
 
   [v14 addObject:v39];
   v40 = [MEMORY[0x277CCAD18] queryItemWithName:@"workoutidentifier" value:v47];

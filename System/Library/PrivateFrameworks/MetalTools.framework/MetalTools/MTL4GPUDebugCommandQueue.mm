@@ -1,24 +1,24 @@
 @interface MTL4GPUDebugCommandQueue
-- (MTL4GPUDebugCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4;
-- (id)setUpLogState:(unint64_t)a3;
-- (void)_checkReportBuffers:(id)a3 outputArray:(id)a4 encoderLabels:(const void *)a5;
-- (void)_commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5;
+- (MTL4GPUDebugCommandQueue)initWithCommandQueue:(id)queue device:(id)device;
+- (id)setUpLogState:(unint64_t)state;
+- (void)_checkReportBuffers:(id)buffers outputArray:(id)array encoderLabels:(const void *)labels;
+- (void)_commit:(const void *)_commit count:(unint64_t)count options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation MTL4GPUDebugCommandQueue
 
-- (id)setUpLogState:(unint64_t)a3
+- (id)setUpLogState:(unint64_t)state
 {
   v5 = objc_alloc_init(MEMORY[0x277CD6EC8]);
   v6 = v5;
-  v7 = (a3 << 9) & 0xFFFFFFFFFFFFFC00;
-  if (((a3 << 9) & 0xFFFFFFFFFFF00000) != 0)
+  v7 = (state << 9) & 0xFFFFFFFFFFFFFC00;
+  if (((state << 9) & 0xFFFFFFFFFFF00000) != 0)
   {
     v7 = 0x100000;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v8 = 1024;
   }
@@ -40,17 +40,17 @@
   return v9;
 }
 
-- (void)_checkReportBuffers:(id)a3 outputArray:(id)a4 encoderLabels:(const void *)a5
+- (void)_checkReportBuffers:(id)buffers outputArray:(id)array encoderLabels:(const void *)labels
 {
-  if (a3)
+  if (buffers)
   {
-    [(MTL4GPUDebugCommandQueue *)self _decodeReportLogState:a3 outputArray:a4 encoderLabels:a5];
+    [(MTL4GPUDebugCommandQueue *)self _decodeReportLogState:buffers outputArray:array encoderLabels:labels];
   }
 }
 
-- (void)_commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5
+- (void)_commit:(const void *)_commit count:(unint64_t)count options:(id)options
 {
-  v34 = a5;
+  optionsCopy = options;
   v59 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(MEMORY[0x277CD6FA0]);
   [v8 setLabel:@"Commit Residency Set"];
@@ -66,7 +66,7 @@
   v56 = 0;
   if ((BYTE4(device[2].dynamicLibraryObjectCache) & 2) != 0)
   {
-    v11 = [(MTL4GPUDebugCommandQueue *)self setUpLogState:a4];
+    v11 = [(MTL4GPUDebugCommandQueue *)self setUpLogState:count];
     v52[5] = v11;
   }
 
@@ -79,25 +79,25 @@
   v49 = 0;
   v50 = 0;
   __p = 0;
-  if (a4)
+  if (count)
   {
     v12 = 0;
     do
     {
-      v13 = a3[v12];
+      v13 = _commit[v12];
       if (v52[5])
       {
-        [a3[v12] initReportBufferInPrivateData:?];
+        [_commit[v12] initReportBufferInPrivateData:?];
       }
 
-      [v13 preCommit:{self, v34}];
-      v14 = [v13 getRetainedData];
-      v15 = [v14 cbAllocations];
+      [v13 preCommit:{self, optionsCopy}];
+      getRetainedData = [v13 getRetainedData];
+      cbAllocations = [getRetainedData cbAllocations];
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v16 = [v15 countByEnumeratingWithState:&v38 objects:v58 count:16];
+      v16 = [cbAllocations countByEnumeratingWithState:&v38 objects:v58 count:16];
       if (v16)
       {
         v17 = *v39;
@@ -107,13 +107,13 @@
           {
             if (*v39 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(cbAllocations);
             }
 
             [v9 addAllocation:*(*(&v38 + 1) + 8 * i)];
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v38 objects:v58 count:16];
+          v16 = [cbAllocations countByEnumeratingWithState:&v38 objects:v58 count:16];
         }
 
         while (v16);
@@ -154,7 +154,7 @@
         }
 
         v28 = (8 * v24);
-        *v28 = v14;
+        *v28 = getRetainedData;
         v22 = 8 * v24 + 8;
         v29 = v19[6];
         v30 = v19[7] - v29;
@@ -172,7 +172,7 @@
 
       else
       {
-        *v21 = v14;
+        *v21 = getRetainedData;
         v22 = (v21 + 1);
       }
 
@@ -180,7 +180,7 @@
       ++v12;
     }
 
-    while (v12 != a4);
+    while (v12 != count);
   }
 
   [v9 commit];
@@ -196,7 +196,7 @@
   [v9 requestResidency];
   v36.receiver = self;
   v36.super_class = MTL4GPUDebugCommandQueue;
-  [(MTL4ToolsCommandQueue *)&v36 commit:a3 count:a4 options:v35 preprocessHandler:v37];
+  [(MTL4ToolsCommandQueue *)&v36 commit:_commit count:count options:v35 preprocessHandler:v37];
   [(MTLToolsObject *)self->super.super._baseObject removeInternalResidencySet:v9];
 
   [(NSLock *)self->_commitMutex unlock];
@@ -254,15 +254,15 @@ void __50__MTL4GPUDebugCommandQueue__commit_count_options___block_invoke(uint64_
   }
 }
 
-- (MTL4GPUDebugCommandQueue)initWithCommandQueue:(id)a3 device:(id)a4
+- (MTL4GPUDebugCommandQueue)initWithCommandQueue:(id)queue device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MTL4GPUDebugCommandQueue;
-  v5 = [(MTL4ToolsCommandQueue *)&v7 initWithBaseObject:a3 parent:?];
+  v5 = [(MTL4ToolsCommandQueue *)&v7 initWithBaseObject:queue parent:?];
   if (v5)
   {
     v5->_commitMutex = objc_alloc_init(MEMORY[0x277CCAAF8]);
-    v5->_deviceOptions = (a4 + 292);
+    v5->_deviceOptions = (device + 292);
   }
 
   return v5;

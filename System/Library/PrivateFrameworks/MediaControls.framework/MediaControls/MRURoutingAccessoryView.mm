@@ -1,9 +1,9 @@
 @interface MRURoutingAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRURoutingAccessoryView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRURoutingAccessoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setState:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setState:(int64_t)state;
+- (void)setStylingProvider:(id)provider;
 - (void)updateImageViewVisualStyle;
 - (void)updateState;
 - (void)updateVisualStyling;
@@ -11,12 +11,12 @@
 
 @implementation MRURoutingAccessoryView
 
-- (MRURoutingAccessoryView)initWithFrame:(CGRect)a3
+- (MRURoutingAccessoryView)initWithFrame:(CGRect)frame
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = MRURoutingAccessoryView;
-  v3 = [(MRURoutingAccessoryView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRURoutingAccessoryView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -56,7 +56,7 @@
   [(UIActivityIndicatorView *)self->_activityView setFrame:v4, v6, v8, v10];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 28.0;
   v4 = 28.0;
@@ -65,34 +65,34 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(MRURoutingAccessoryView *)self updateState];
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRURoutingAccessoryView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
 - (void)updateVisualStyling
 {
   stylingProvider = self->_stylingProvider;
-  v4 = [(MRURoutingAccessoryView *)self traitCollection];
-  v5 = [(MRUVisualStylingProvider *)stylingProvider colorForStyle:0 traitCollection:v4];
-  v6 = [(MRURoutingAccessoryView *)self activityView];
-  [v6 setColor:v5];
+  traitCollection = [(MRURoutingAccessoryView *)self traitCollection];
+  v5 = [(MRUVisualStylingProvider *)stylingProvider colorForStyle:0 traitCollection:traitCollection];
+  activityView = [(MRURoutingAccessoryView *)self activityView];
+  [activityView setColor:v5];
 
   [(MRURoutingAccessoryView *)self updateImageViewVisualStyle];
 }
@@ -118,8 +118,8 @@ LABEL_13:
 
     stylingProvider = self->_stylingProvider;
     v4 = self->_imageView;
-    v5 = [(MRURoutingAccessoryView *)self traitCollection];
-    v10 = v5;
+    traitCollection = [(MRURoutingAccessoryView *)self traitCollection];
+    v10 = traitCollection;
     v6 = stylingProvider;
     v7 = 2;
   }
@@ -138,13 +138,13 @@ LABEL_13:
 
     v8 = self->_stylingProvider;
     v4 = self->_imageView;
-    v5 = [(MRURoutingAccessoryView *)self traitCollection];
-    v10 = v5;
+    traitCollection = [(MRURoutingAccessoryView *)self traitCollection];
+    v10 = traitCollection;
     v6 = v8;
     v7 = 0;
   }
 
-  [(MRUVisualStylingProvider *)v6 applyStyle:v7 toView:v4 traitCollection:v5];
+  [(MRUVisualStylingProvider *)v6 applyStyle:v7 toView:v4 traitCollection:traitCollection];
 }
 
 - (void)updateState

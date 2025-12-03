@@ -6,7 +6,7 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   PushToTalkTalkPillButton.updateConfiguration()();
 }
 

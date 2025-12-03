@@ -34,11 +34,11 @@
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 superview];
-    v12 = v11;
-    if (v11)
+    superview = [v10 superview];
+    v12 = superview;
+    if (superview)
     {
-      [v11 accessibilityFrame];
+      [superview accessibilityFrame];
       v5 = v13;
       v7 = v14;
       v8 = v15;

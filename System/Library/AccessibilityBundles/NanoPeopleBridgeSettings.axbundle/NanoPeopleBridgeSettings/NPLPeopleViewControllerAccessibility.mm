@@ -1,33 +1,33 @@
 @interface NPLPeopleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityDialPersonViews;
 - (id)_accessibilityElementsForDialPersonViews;
-- (void)_accessibilityAssociateUIAXElement:(id)a3 withPersonView:(id)a4;
+- (void)_accessibilityAssociateUIAXElement:(id)element withPersonView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilitySwapPeopleAtIndex:(unint64_t)a3 andIndex:(unint64_t)a4;
+- (void)_accessibilitySwapPeopleAtIndex:(unint64_t)index andIndex:(unint64_t)andIndex;
 - (void)_accessibilityUpdateDialViewElements;
 - (void)viewDidLoad;
 @end
 
 @implementation NPLPeopleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NPLPeopleViewController"];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"friendGroup" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NPLPeopleViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceVariable:@"_dialPersonViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceVariable:@"_dialView" withType:"UIView"];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_centerPersonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"setEditing:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"NPLPersonView" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FKFriendGroup" hasInstanceVariable:@"_friendsManager" withType:"NSMutableArray"];
-  [v3 validateClass:@"FKFriendGroup" hasInstanceVariable:@"_delegate" withType:"<FKFriendGroupDelegate>"];
-  [v3 validateProtocol:@"FKFriendGroupDelegate" hasRequiredInstanceMethod:@"friendGroup: didMoveFriends:"];
-  [v3 validateClass:@"FKFriendsManager"];
-  [v3 validateClass:@"FKFriendsManager" hasClassMethod:@"managerForDomain:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"FKFriendsManager" hasInstanceMethod:@"syncFriendGroup:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NPLPeopleViewController"];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"friendGroup" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NPLPeopleViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceVariable:@"_dialPersonViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceVariable:@"_dialView" withType:"UIView"];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"_centerPersonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NPLPeopleViewController" hasInstanceMethod:@"setEditing:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NPLPersonView" hasInstanceMethod:@"person" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FKFriendGroup" hasInstanceVariable:@"_friendsManager" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"FKFriendGroup" hasInstanceVariable:@"_delegate" withType:"<FKFriendGroupDelegate>"];
+  [validationsCopy validateProtocol:@"FKFriendGroupDelegate" hasRequiredInstanceMethod:@"friendGroup: didMoveFriends:"];
+  [validationsCopy validateClass:@"FKFriendsManager"];
+  [validationsCopy validateClass:@"FKFriendsManager" hasClassMethod:@"managerForDomain:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"FKFriendsManager" hasInstanceMethod:@"syncFriendGroup:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,18 +38,18 @@
   [(NPLPeopleViewControllerAccessibility *)self _accessibilityUpdateDialViewElements];
 }
 
-- (void)_accessibilitySwapPeopleAtIndex:(unint64_t)a3 andIndex:(unint64_t)a4
+- (void)_accessibilitySwapPeopleAtIndex:(unint64_t)index andIndex:(unint64_t)andIndex
 {
   v7 = [(NPLPeopleViewControllerAccessibility *)self safeValueForKey:@"friendGroup"];
-  v8 = [(NPLPeopleViewControllerAccessibility *)self _accessibilityDialPersonViews];
-  v9 = [v8 objectAtIndex:a3];
-  v10 = [v8 objectAtIndex:a4];
+  _accessibilityDialPersonViews = [(NPLPeopleViewControllerAccessibility *)self _accessibilityDialPersonViews];
+  v9 = [_accessibilityDialPersonViews objectAtIndex:index];
+  v10 = [_accessibilityDialPersonViews objectAtIndex:andIndex];
   v11 = [v9 _accessibilityValueForKey:@"accessibilityFakeElement"];
   v12 = [v10 _accessibilityValueForKey:@"accessibilityFakeElement"];
   [(NPLPeopleViewControllerAccessibility *)self _accessibilityAssociateUIAXElement:v11 withPersonView:v10];
   [(NPLPeopleViewControllerAccessibility *)self _accessibilityAssociateUIAXElement:v12 withPersonView:v9];
-  v20 = a3;
-  v21 = a4;
+  indexCopy = index;
+  andIndexCopy = andIndex;
   v13 = v7;
   v19 = v13;
   AXPerformSafeBlock();
@@ -57,7 +57,7 @@
 
   if (v14)
   {
-    if (a3 >= a4)
+    if (index >= andIndex)
     {
       v15 = @"before.person";
     }
@@ -68,8 +68,8 @@
     }
 
     v16 = accessibilityLocalizedString(v15);
-    v17 = [v9 accessibilityLabel];
-    v18 = [NSString stringWithFormat:v16, v17, _NSConcreteStackBlock, 3221225472, __81__NPLPeopleViewControllerAccessibility__accessibilitySwapPeopleAtIndex_andIndex___block_invoke, &unk_82C0, v13, v20, v21];
+    accessibilityLabel = [v9 accessibilityLabel];
+    andIndexCopy = [NSString stringWithFormat:v16, accessibilityLabel, _NSConcreteStackBlock, 3221225472, __81__NPLPeopleViewControllerAccessibility__accessibilitySwapPeopleAtIndex_andIndex___block_invoke, &unk_82C0, v13, indexCopy, andIndexCopy];
     UIAccessibilitySpeakOrQueueIfNeeded();
   }
 
@@ -182,18 +182,18 @@ uint64_t __81__NPLPeopleViewControllerAccessibility__accessibilitySwapPeopleAtIn
 - (void)_accessibilityUpdateDialViewElements
 {
   v5 = [(NPLPeopleViewControllerAccessibility *)self safeValueForKey:@"_dialView"];
-  v3 = [(NPLPeopleViewControllerAccessibility *)self _accessibilityElementsForDialPersonViews];
-  v4 = [(NPLPeopleViewControllerAccessibility *)self _accessibilityCenterOfDialView];
-  [v3 axSafelyAddObject:v4];
+  _accessibilityElementsForDialPersonViews = [(NPLPeopleViewControllerAccessibility *)self _accessibilityElementsForDialPersonViews];
+  _accessibilityCenterOfDialView = [(NPLPeopleViewControllerAccessibility *)self _accessibilityCenterOfDialView];
+  [_accessibilityElementsForDialPersonViews axSafelyAddObject:_accessibilityCenterOfDialView];
 
-  [v5 setAccessibilityElements:v3];
+  [v5 setAccessibilityElements:_accessibilityElementsForDialPersonViews];
   [v5 _accessibilitySetShouldHitTestFallBackToNearestChild:1];
 }
 
 - (id)_accessibilityElementsForDialPersonViews
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(NPLPeopleViewControllerAccessibility *)self _accessibilityDialPersonViews];
+  _accessibilityDialPersonViews = [(NPLPeopleViewControllerAccessibility *)self _accessibilityDialPersonViews];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __80__NPLPeopleViewControllerAccessibility__accessibilityElementsForDialPersonViews__block_invoke;
@@ -201,7 +201,7 @@ uint64_t __81__NPLPeopleViewControllerAccessibility__accessibilitySwapPeopleAtIn
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [_accessibilityDialPersonViews enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -225,12 +225,12 @@ void __80__NPLPeopleViewControllerAccessibility__accessibilityElementsForDialPer
   [*(a1 + 40) addObject:v3];
 }
 
-- (void)_accessibilityAssociateUIAXElement:(id)a3 withPersonView:(id)a4
+- (void)_accessibilityAssociateUIAXElement:(id)element withPersonView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setAccessibilityDelegate:v5];
-  [v5 _accessibilitySetValue:v6 forKey:@"accessibilityFakeElement" storageMode:0];
+  viewCopy = view;
+  elementCopy = element;
+  [elementCopy setAccessibilityDelegate:viewCopy];
+  [viewCopy _accessibilitySetValue:elementCopy forKey:@"accessibilityFakeElement" storageMode:0];
 }
 
 - (id)_accessibilityDialPersonViews

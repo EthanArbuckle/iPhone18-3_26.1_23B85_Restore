@@ -27,13 +27,13 @@
   v9 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:6];
   v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
 
-  v11 = [(MZUPPMetrics *)self errorDomain];
-  if (v11)
+  errorDomain = [(MZUPPMetrics *)self errorDomain];
+  if (errorDomain)
   {
 
 LABEL_4:
-    v12 = [(MZUPPMetrics *)self errorDomain];
-    [v10 setObject:v12 forKey:@"errordomain"];
+    errorDomain2 = [(MZUPPMetrics *)self errorDomain];
+    [v10 setObject:errorDomain2 forKey:@"errordomain"];
 
     v13 = [NSNumber numberWithInteger:[(MZUPPMetrics *)self errorCode]];
     [v10 setObject:v13 forKey:@"errorcode"];

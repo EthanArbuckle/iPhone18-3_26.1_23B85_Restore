@@ -1,8 +1,8 @@
 @interface ML3SpotlightMatchingNameCache
 + (void)initialize;
-+ (void)loadFromLibrary:(id)a3 namesMatchingString:(id)a4 cancelHandler:(id)a5;
++ (void)loadFromLibrary:(id)library namesMatchingString:(id)string cancelHandler:(id)handler;
 - (id).cxx_construct;
-- (id)_initWithLibrary:(id)a3 matchString:(id)a4 cancelHandler:(id)a5;
+- (id)_initWithLibrary:(id)library matchString:(id)string cancelHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -23,20 +23,20 @@
   [(ML3SpotlightMatchingNameCache *)&v2 dealloc];
 }
 
-- (id)_initWithLibrary:(id)a3 matchString:(id)a4 cancelHandler:(id)a5
+- (id)_initWithLibrary:(id)library matchString:(id)string cancelHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  stringCopy = string;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = ML3SpotlightMatchingNameCache;
   v12 = [(ML3SpotlightMatchingNameCache *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_library, a3);
-    objc_storeStrong(&v13->_matchString, a4);
-    if ([v10 length])
+    objc_storeStrong(&v12->_library, library);
+    objc_storeStrong(&v13->_matchString, string);
+    if ([stringCopy length])
     {
       library = v13->_library;
       v17[0] = MEMORY[0x277D85DD0];
@@ -44,14 +44,14 @@
       v17[2] = __76__ML3SpotlightMatchingNameCache__initWithLibrary_matchString_cancelHandler___block_invoke;
       v17[3] = &unk_2787640C8;
       v18 = @"SELECT name_order FROM sort_map WHERE ML3SearchStringMatch(?, name)";
-      v19 = v10;
+      v19 = stringCopy;
       v20 = v13;
-      v21 = v11;
+      v21 = handlerCopy;
       [(ML3MusicLibrary *)library databaseConnectionAllowingWrites:0 withBlock:v17];
     }
   }
 
-  if (v11 && (v11[2](v11) & 1) != 0)
+  if (handlerCopy && (handlerCopy[2](handlerCopy) & 1) != 0)
   {
     v15 = 0;
   }
@@ -165,22 +165,22 @@ LABEL_17:
   *a4 = v15;
 }
 
-+ (void)loadFromLibrary:(id)a3 namesMatchingString:(id)a4 cancelHandler:(id)a5
++ (void)loadFromLibrary:(id)library namesMatchingString:(id)string cancelHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  libraryCopy = library;
+  stringCopy = string;
+  handlerCopy = handler;
   v10 = __nameCacheLoadingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__ML3SpotlightMatchingNameCache_loadFromLibrary_namesMatchingString_cancelHandler___block_invoke;
   block[3] = &unk_278765798;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = libraryCopy;
+  v16 = stringCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = stringCopy;
+  v13 = libraryCopy;
   dispatch_sync(v10, block);
 }
 
@@ -223,7 +223,7 @@ void __83__ML3SpotlightMatchingNameCache_loadFromLibrary_namesMatchingString_can
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && __nameCacheOnce != -1)
+  if (objc_opt_class() == self && __nameCacheOnce != -1)
   {
 
     dispatch_once(&__nameCacheOnce, &__block_literal_global_19744);

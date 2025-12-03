@@ -1,8 +1,8 @@
 @interface FMNSXPCConnection
-- (FMNSXPCConnection)initWithConfiguration:(id)a3 exportedObject:(id)a4;
+- (FMNSXPCConnection)initWithConfiguration:(id)configuration exportedObject:(id)object;
 - (id)remoteObjectProxy;
 - (int64_t)state;
-- (void)addFailureBlock:(id)a3;
+- (void)addFailureBlock:(id)block;
 - (void)dealloc;
 - (void)destroyXPCConnection;
 @end
@@ -12,13 +12,13 @@
 - (id)remoteObjectProxy
 {
   objc_initWeak(&location, self);
-  v3 = [(FMNSXPCConnection *)self connection];
+  connection = [(FMNSXPCConnection *)self connection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__FMNSXPCConnection_remoteObjectProxy__block_invoke;
   v6[3] = &unk_1E86BE238;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -28,8 +28,8 @@
 
 - (int64_t)state
 {
-  v3 = [(FMNSXPCConnection *)self connection];
-  if (v3)
+  connection = [(FMNSXPCConnection *)self connection];
+  if (connection)
   {
     v4 = 1;
   }
@@ -47,10 +47,10 @@
   return v4;
 }
 
-- (FMNSXPCConnection)initWithConfiguration:(id)a3 exportedObject:(id)a4
+- (FMNSXPCConnection)initWithConfiguration:(id)configuration exportedObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  objectCopy = object;
   v32.receiver = self;
   v32.super_class = FMNSXPCConnection;
   v8 = [(FMNSXPCConnection *)&v32 init];
@@ -67,35 +67,35 @@
     objc_copyWeak(&v30, &location);
     v11 = [v10 addFailureBlock:v29];
     [(FMNSXPCConnection *)v9 setFuture:v10];
-    if ([v6 machService])
+    if ([configurationCopy machService])
     {
       v12 = objc_alloc(MEMORY[0x1E696B0B8]);
-      v13 = [v6 serviceName];
-      v14 = [v12 initWithMachServiceName:v13 options:{objc_msgSend(v6, "options")}];
+      serviceName = [configurationCopy serviceName];
+      v14 = [v12 initWithMachServiceName:serviceName options:{objc_msgSend(configurationCopy, "options")}];
     }
 
     else
     {
       v15 = objc_alloc(MEMORY[0x1E696B0B8]);
-      v13 = [v6 serviceName];
-      v14 = [v15 initWithServiceName:v13];
+      serviceName = [configurationCopy serviceName];
+      v14 = [v15 initWithServiceName:serviceName];
     }
 
     v16 = v14;
 
-    v17 = [v6 remoteInterface];
-    [v16 setRemoteObjectInterface:v17];
+    remoteInterface = [configurationCopy remoteInterface];
+    [v16 setRemoteObjectInterface:remoteInterface];
 
-    v18 = [v6 exportedInterface];
+    exportedInterface = [configurationCopy exportedInterface];
 
-    if (v18)
+    if (exportedInterface)
     {
-      v19 = [v6 exportedInterface];
-      [v16 setExportedInterface:v19];
+      exportedInterface2 = [configurationCopy exportedInterface];
+      [v16 setExportedInterface:exportedInterface2];
 
-      if (v7)
+      if (objectCopy)
       {
-        [v16 setExportedObject:v7];
+        [v16 setExportedObject:objectCopy];
       }
 
       else
@@ -112,7 +112,7 @@
     v26[1] = 3221225472;
     v26[2] = __58__FMNSXPCConnection_initWithConfiguration_exportedObject___block_invoke_3;
     v26[3] = &unk_1E86BE260;
-    v21 = v6;
+    v21 = configurationCopy;
     v27 = v21;
     objc_copyWeak(&v28, &location);
     [v16 setInterruptionHandler:v26];
@@ -222,17 +222,17 @@ void __38__FMNSXPCConnection_remoteObjectProxy__block_invoke(uint64_t a1, void *
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FMNSXPCConnection *)self future];
+  blockCopy = block;
+  future = [(FMNSXPCConnection *)self future];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__FMNSXPCConnection_addFailureBlock___block_invoke;
   v8[3] = &unk_1E86BD2D0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 addFailureBlock:v8];
+  v9 = blockCopy;
+  v6 = blockCopy;
+  v7 = [future addFailureBlock:v8];
 }
 
 uint64_t __37__FMNSXPCConnection_addFailureBlock___block_invoke(uint64_t result, void *a2)
@@ -257,7 +257,7 @@ uint64_t __37__FMNSXPCConnection_addFailureBlock___block_invoke(uint64_t result,
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1DF650000, a2, OS_LOG_TYPE_DEBUG, "Invalidating the xpc connection %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

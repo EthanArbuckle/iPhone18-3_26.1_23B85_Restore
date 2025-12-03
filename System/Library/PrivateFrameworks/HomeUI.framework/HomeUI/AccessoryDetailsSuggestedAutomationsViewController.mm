@@ -1,13 +1,13 @@
 @interface AccessoryDetailsSuggestedAutomationsViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (_TtC6HomeUI50AccessoryDetailsSuggestedAutomationsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (_TtC6HomeUI50AccessoryDetailsSuggestedAutomationsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation AccessoryDetailsSuggestedAutomationsViewController
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v4 = sub_20D5638C8();
   v5 = *(v4 - 8);
@@ -21,20 +21,20 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D0FDC50();
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_20D0FDEC8(v4);
+  moduleCopy = module;
+  selfCopy = self;
+  v6 = sub_20D0FDEC8(moduleCopy);
 
   return v6;
 }
 
-- (_TtC6HomeUI50AccessoryDetailsSuggestedAutomationsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (_TtC6HomeUI50AccessoryDetailsSuggestedAutomationsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

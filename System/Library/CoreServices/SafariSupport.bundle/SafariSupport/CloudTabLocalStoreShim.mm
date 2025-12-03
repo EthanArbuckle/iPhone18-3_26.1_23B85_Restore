@@ -1,18 +1,18 @@
 @interface CloudTabLocalStoreShim
 - (CloudTabLocalStoreDelegate)delegate;
-- (CloudTabLocalStoreShim)initWithCloudTabLocalStore:(id)a3;
-- (void)closeDatabaseWithCompletionHandler:(id)a3;
-- (void)cloudTabLocalStore:(id)a3 hadSevereError:(id)a4;
-- (void)cloudTabLocalStoreDidOpen:(id)a3;
-- (void)deleteDatabaseWithCompletionHandler:(id)a3;
-- (void)deleteRecordsWithPrimaryKeys:(id)a3 completionHandler:(id)a4;
-- (void)getServerChangeTokenDataWithCompletionHandler:(id)a3;
-- (void)getUseManateeContainerForSyncingWithCompletionHandler:(id)a3;
-- (void)loadCloudTabDataWithCompletionHandler:(id)a3;
-- (void)loadCloudTabDeviceWithUUIDString:(id)a3 completionHandler:(id)a4;
+- (CloudTabLocalStoreShim)initWithCloudTabLocalStore:(id)store;
+- (void)closeDatabaseWithCompletionHandler:(id)handler;
+- (void)cloudTabLocalStore:(id)store hadSevereError:(id)error;
+- (void)cloudTabLocalStoreDidOpen:(id)open;
+- (void)deleteDatabaseWithCompletionHandler:(id)handler;
+- (void)deleteRecordsWithPrimaryKeys:(id)keys completionHandler:(id)handler;
+- (void)getServerChangeTokenDataWithCompletionHandler:(id)handler;
+- (void)getUseManateeContainerForSyncingWithCompletionHandler:(id)handler;
+- (void)loadCloudTabDataWithCompletionHandler:(id)handler;
+- (void)loadCloudTabDeviceWithUUIDString:(id)string completionHandler:(id)handler;
 - (void)openDatabaseIfNecessary;
-- (void)saveCloudTabDevices:(id)a3 tabs:(id)a4 closeRequests:(id)a5 completionHandler:(id)a6;
-- (void)setServerChangeTokenData:(id)a3 completionHandler:(id)a4;
+- (void)saveCloudTabDevices:(id)devices tabs:(id)tabs closeRequests:(id)requests completionHandler:(id)handler;
+- (void)setServerChangeTokenData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation CloudTabLocalStoreShim
@@ -25,16 +25,16 @@
   }
 }
 
-- (CloudTabLocalStoreShim)initWithCloudTabLocalStore:(id)a3
+- (CloudTabLocalStoreShim)initWithCloudTabLocalStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = CloudTabLocalStoreShim;
   v6 = [(CloudTabLocalStoreShim *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cloudTabLocalStore, a3);
+    objc_storeStrong(&v6->_cloudTabLocalStore, store);
     [(CloudTabLocalStore *)v7->_cloudTabLocalStore setDelegate:v7];
     v8 = v7;
   }
@@ -42,140 +42,140 @@
   return v7;
 }
 
-- (void)closeDatabaseWithCompletionHandler:(id)a3
+- (void)closeDatabaseWithCompletionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore closeDatabaseWithCompletionHandler:a3];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore closeDatabaseWithCompletionHandler:handler];
   }
 }
 
-- (void)deleteDatabaseWithCompletionHandler:(id)a3
+- (void)deleteDatabaseWithCompletionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore deleteDatabaseWithCompletionHandler:a3];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore deleteDatabaseWithCompletionHandler:handler];
   }
 }
 
-- (void)loadCloudTabDataWithCompletionHandler:(id)a3
+- (void)loadCloudTabDataWithCompletionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore loadCloudTabDataWithCompletionHandler:a3];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore loadCloudTabDataWithCompletionHandler:handler];
   }
 }
 
-- (void)loadCloudTabDeviceWithUUIDString:(id)a3 completionHandler:(id)a4
+- (void)loadCloudTabDeviceWithUUIDString:(id)string completionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore loadCloudTabDeviceWithUUIDString:a3 completionHandler:a4];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore loadCloudTabDeviceWithUUIDString:string completionHandler:handler];
   }
 }
 
-- (void)deleteRecordsWithPrimaryKeys:(id)a3 completionHandler:(id)a4
+- (void)deleteRecordsWithPrimaryKeys:(id)keys completionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a4 + 2))(a4, 101);
+    (*(handler + 2))(handler, 101);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore deleteRecordsWithPrimaryKeys:a3 completionHandler:a4];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore deleteRecordsWithPrimaryKeys:keys completionHandler:handler];
   }
 }
 
-- (void)saveCloudTabDevices:(id)a3 tabs:(id)a4 closeRequests:(id)a5 completionHandler:(id)a6
+- (void)saveCloudTabDevices:(id)devices tabs:(id)tabs closeRequests:(id)requests completionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a6 + 2))(a6, 101);
+    (*(handler + 2))(handler, 101);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore saveCloudTabDevices:a3 tabs:a4 closeRequests:a5 completionHandler:a6];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore saveCloudTabDevices:devices tabs:tabs closeRequests:requests completionHandler:handler];
   }
 }
 
-- (void)getServerChangeTokenDataWithCompletionHandler:(id)a3
+- (void)getServerChangeTokenDataWithCompletionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore getServerChangeTokenDataWithCompletionHandler:a3];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore getServerChangeTokenDataWithCompletionHandler:handler];
   }
 }
 
-- (void)setServerChangeTokenData:(id)a3 completionHandler:(id)a4
+- (void)setServerChangeTokenData:(id)data completionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a4 + 2))(a4, 101);
+    (*(handler + 2))(handler, 101);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore setServerChangeTokenData:a3 completionHandler:a4];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore setServerChangeTokenData:data completionHandler:handler];
   }
 }
 
-- (void)getUseManateeContainerForSyncingWithCompletionHandler:(id)a3
+- (void)getUseManateeContainerForSyncingWithCompletionHandler:(id)handler
 {
   if (self->_disabled)
   {
-    (*(a3 + 2))(a3, 1, 14);
+    (*(handler + 2))(handler, 1, 14);
   }
 
   else
   {
-    [(CloudTabLocalStore *)self->_cloudTabLocalStore getUseManateeContainerForSyncingWithCompletionHandler:a3];
+    [(CloudTabLocalStore *)self->_cloudTabLocalStore getUseManateeContainerForSyncingWithCompletionHandler:handler];
   }
 }
 
-- (void)cloudTabLocalStore:(id)a3 hadSevereError:(id)a4
+- (void)cloudTabLocalStore:(id)store hadSevereError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (!self->_disabled)
   {
-    v7 = v5;
+    v7 = errorCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
       [WeakRetained cloudTabLocalStore:self hadSevereError:v7];
     }
 
-    v5 = v7;
+    errorCopy = v7;
   }
 }
 
-- (void)cloudTabLocalStoreDidOpen:(id)a3
+- (void)cloudTabLocalStoreDidOpen:(id)open
 {
   if (!self->_disabled)
   {

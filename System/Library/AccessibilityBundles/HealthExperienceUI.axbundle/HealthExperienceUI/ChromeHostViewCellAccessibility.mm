@@ -1,6 +1,6 @@
 @interface ChromeHostViewCellAccessibility
 - (BOOL)isAccessibilityElement;
-- (void)setAccessibilityIdentifier:(id)a3;
+- (void)setAccessibilityIdentifier:(id)identifier;
 @end
 
 @implementation ChromeHostViewCellAccessibility
@@ -31,13 +31,13 @@ uint64_t __57__ChromeHostViewCellAccessibility_isAccessibilityElement__block_inv
   return isKindOfClass & 1;
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   UIAccessibilityPostNotification(0x3E9u, 0);
   v5.receiver = self;
   v5.super_class = ChromeHostViewCellAccessibility;
-  [(ChromeHostViewCellAccessibility *)&v5 setAccessibilityIdentifier:v4];
+  [(ChromeHostViewCellAccessibility *)&v5 setAccessibilityIdentifier:identifierCopy];
 }
 
 @end

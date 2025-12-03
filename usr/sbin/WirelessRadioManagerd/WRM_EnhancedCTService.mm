@@ -1,40 +1,40 @@
 @interface WRM_EnhancedCTService
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)wrm_EnhancedCTServiceSingleton;
 - (BOOL)cellularDataEnabled;
 - (BOOL)checkIfServingCellNonLTE;
 - (BOOL)dataAttachedWithCellularNetwork;
-- (BOOL)dataAttachedWithCellularNetwork:(int64_t)a3;
+- (BOOL)dataAttachedWithCellularNetwork:(int64_t)network;
 - (BOOL)deviceICheapFR2Coverage;
 - (BOOL)deviceInRoaming;
-- (BOOL)getDataStallState:(int64_t)a3;
+- (BOOL)getDataStallState:(int64_t)state;
 - (BOOL)ifAutomatedDeviceGroup;
 - (BOOL)ifInternalDevice;
 - (BOOL)isAudioQualityGood;
 - (BOOL)isBetaBuild;
 - (BOOL)isCommCenterAsserted;
 - (BOOL)isDataLQMValid;
-- (BOOL)isDataLQMValid:(int64_t)a3;
+- (BOOL)isDataLQMValid:(int64_t)valid;
 - (BOOL)isDataPreferredSlotCBRS;
 - (BOOL)isDeviceUsingFR2Radio;
 - (BOOL)isIMSPreferenceEnabled;
 - (BOOL)isSimActive;
 - (BOOL)isSuppressSOSOnlyWithLimitedServiceEnabled;
 - (BOOL)isVoLTESupported;
-- (BOOL)isVoNRSupportedOnSlot:(int64_t)a3;
+- (BOOL)isVoNRSupportedOnSlot:(int64_t)slot;
 - (BOOL)isVoNrSupported;
 - (BOOL)isVoiceLQMValid;
-- (BOOL)isVoiceLQMValid:(int64_t)a3;
+- (BOOL)isVoiceLQMValid:(int64_t)valid;
 - (BOOL)isWatchAssociated;
 - (BOOL)isWiFiCallingAllowedInAPM;
 - (BOOL)isWiFiCallingSupportedAnySlot;
-- (BOOL)isWiFiCallingSupportedOnSlot:(int64_t)a3;
+- (BOOL)isWiFiCallingSupportedOnSlot:(int64_t)slot;
 - (BOOL)isWiFiCallingSupportedSlot1;
 - (BOOL)isWiFiCallingSupportedSlot2;
 - (BOOL)qmiClientRunning;
 - (BOOL)registeredWithCellularNetwork;
 - (BOOL)shouldScheduleSpeedTests;
-- (BOOL)validateStrongestSOSTimeStamp:(double)a3;
+- (BOOL)validateStrongestSOSTimeStamp:(double)stamp;
 - (WRM_EnhancedCTService)init;
 - (double)getCurrentAudioErasure;
 - (double)getLastKnownLatitude;
@@ -42,57 +42,57 @@
 - (double)getLastKnownLongitude;
 - (double)getMeasureBWDataSlot;
 - (double)getNrRSRP;
-- (double)getNrRSRP:(int64_t)a3;
+- (double)getNrRSRP:(int64_t)p;
 - (double)getNrRSRQ;
-- (double)getNrRSRQ:(int64_t)a3;
+- (double)getNrRSRQ:(int64_t)q;
 - (double)getNrSNR;
-- (double)getNrSNR:(int64_t)a3;
+- (double)getNrSNR:(int64_t)r;
 - (double)getServingCellECIO;
-- (double)getServingCellECIO:(int64_t)a3;
+- (double)getServingCellECIO:(int64_t)o;
 - (double)getServingCellRSCP;
-- (double)getServingCellRSCP:(int64_t)a3;
+- (double)getServingCellRSCP:(int64_t)p;
 - (double)getServingCellRSRP;
-- (double)getServingCellRSRP:(int64_t)a3;
+- (double)getServingCellRSRP:(int64_t)p;
 - (double)getServingCellRSRQ;
-- (double)getServingCellRSRQ:(int64_t)a3;
+- (double)getServingCellRSRQ:(int64_t)q;
 - (double)getServingCellRSSI;
 - (double)getServingCellSINR;
 - (double)getServingCellSNR;
-- (double)getServingCellSNR:(int64_t)a3;
+- (double)getServingCellSNR:(int64_t)r;
 - (double)initSOSWaypointThreshold;
 - (float)getCurrentMovAvgSignalBars;
-- (id)getCellID:(int64_t)a3;
+- (id)getCellID:(int64_t)d;
 - (id)getCurrentCellularAvailabilityStatus;
 - (id)getInternetInterfaceName;
-- (id)getPLMN:(int64_t)a3;
+- (id)getPLMN:(int64_t)n;
 - (id)getPreviousCellularAvailabilityStatus;
-- (id)intializeInterfaceClient:(int64_t)a3;
+- (id)intializeInterfaceClient:(int64_t)client;
 - (int)combinedRegistrationStatus;
 - (int)getBandInfoDataSlot;
-- (int)getBandInfoOnSlot:(int64_t)a3;
+- (int)getBandInfoOnSlot:(int64_t)slot;
 - (int)getBandWidthDataSlot;
 - (int)getCTDataIndictor;
-- (int)getCTDataIndictor:(int64_t)a3;
+- (int)getCTDataIndictor:(int64_t)indictor;
 - (int)getCellRSRP4G5GvsWiFiThreshold;
 - (int)getCellRSRQ4G5GvsWiFiThreshold;
 - (int)getCellularDataLQM;
-- (int)getCellularDataLQM:(int64_t)a3;
+- (int)getCellularDataLQM:(int64_t)m;
 - (int)getConfiguredMaxBW;
 - (int)getCurrentNRStatusDataSlot;
 - (int)getLteVoiceLQM;
-- (int)getLteVoiceLQM:(int64_t)a3;
+- (int)getLteVoiceLQM:(int64_t)m;
 - (int)getRRCState;
-- (int)getRegistrationStatus:(int64_t)a3;
+- (int)getRegistrationStatus:(int64_t)status;
 - (int)getServingCellType;
-- (int)getServingCellType:(int64_t)a3;
+- (int)getServingCellType:(int64_t)type;
 - (int)getUARFCNDataSlot;
-- (int)getVoiceLQM_sync:(int64_t)a3;
+- (int)getVoiceLQM_sync:(int64_t)m_sync;
 - (int)getWiFiNRStatusDataSlot;
-- (int)parseRegistrationStatusForBiomeStream:(id)a3;
+- (int)parseRegistrationStatusForBiomeStream:(id)stream;
 - (int64_t)getCellularLQM;
 - (int64_t)getCurrentSignalBars;
-- (int64_t)getCurrentSignalBars:(int64_t)a3;
-- (int64_t)getSlotFromUUID:(id)a3;
+- (int64_t)getCurrentSignalBars:(int64_t)bars;
+- (int64_t)getSlotFromUUID:(id)d;
 - (int64_t)getSubscriptionsSlotMap;
 - (unsigned)getCellConfiguredBandwidthThreshold;
 - (unsigned)getLocationDBFR1Count;
@@ -100,99 +100,99 @@
 - (unsigned)getRadioCoverage;
 - (unsigned)getRadioFrequency;
 - (unsigned)getWRMCellOutrankWifiBWThreshold;
-- (void)anyCallStateChange:(int)a3;
-- (void)carrierBundleChange:(id)a3;
-- (void)cellChanged:(id)a3 cell:(id)a4;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
+- (void)anyCallStateChange:(int)change;
+- (void)carrierBundleChange:(id)change;
+- (void)cellChanged:(id)changed cell:(id)cell;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
 - (void)checkAndScheduleSpeedTest;
-- (void)context:(id)a3 capabilitiesChanged:(id)a4;
+- (void)context:(id)context capabilitiesChanged:(id)changed;
 - (void)createWrmSdmLocationManager;
-- (void)currentDataSimChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)currentDataSimChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)enhancedDataLinkQualityChanged:(id)a3 metric:(id)a4;
-- (void)enhancedVoiceLinkQualityChanged:(id)a3 metric:(id)a4;
-- (void)evaluateCbrsInDualSimMode:(BOOL)a3;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)enhancedDataLinkQualityChanged:(id)changed metric:(id)metric;
+- (void)enhancedVoiceLinkQualityChanged:(id)changed metric:(id)metric;
+- (void)evaluateCbrsInDualSimMode:(BOOL)mode;
 - (void)evaluateCbrsInSingleSimMode;
-- (void)feedCellularMetricsWithUUID:(id)a3;
-- (void)fetchWrmSdmLocationDbInfoWithMcc:(unsigned int)a3 Mnc:(unsigned int)a4 CellId:(unint64_t)a5 ForSim:(int64_t)a6;
+- (void)feedCellularMetricsWithUUID:(id)d;
+- (void)fetchWrmSdmLocationDbInfoWithMcc:(unsigned int)mcc Mnc:(unsigned int)mnc CellId:(unint64_t)id ForSim:(int64_t)sim;
 - (void)getCurrentEnhancedCTMetrics;
-- (void)imsRegistrationChanged:(id)a3 info:(id)a4;
+- (void)imsRegistrationChanged:(id)changed info:(id)info;
 - (void)initCellStationManager;
 - (void)initCellularSpeedTest;
 - (void)initCoreTelephonyClient;
 - (void)initLocationController;
 - (void)initMovAverageOfSignalBar;
-- (void)initializeStrongestSOSSignal:(double)a3;
-- (void)interfaceCostExpensiveChanged:(id)a3 isExpensive:(BOOL)a4;
-- (void)internetConnectionStateChanged:(id)a3;
+- (void)initializeStrongestSOSSignal:(double)signal;
+- (void)interfaceCostExpensiveChanged:(id)changed isExpensive:(BOOL)expensive;
+- (void)internetConnectionStateChanged:(id)changed;
 - (void)invalidateAudioQualityMetrics;
-- (void)monitorStrongSOSSignal:(double)a3;
-- (void)plmnChanged:(id)a3 plmn:(id)a4;
-- (void)processDataAttached:(BOOL)a3 :(int64_t)a4;
-- (void)processDataStatus:(id)a3 :(int64_t)a4;
-- (void)processEnhancedDataLQMBlob:(id)a3 :(int64_t)a4;
-- (void)processEnhancedVoiceLinkQualityBlob:(id)a3 :(int64_t)a4;
-- (void)processMobileCountryCode:(id)a3 :(int64_t)a4;
-- (void)processMobileNetworkCode:(id)a3 :(int64_t)a4;
-- (void)processPrivateNwPreferredOverWifiStatus:(BOOL)a3 slot:(int64_t)a4;
-- (void)processPrivateNwSimStatus:(BOOL)a3 slot:(int64_t)a4;
-- (void)processRadioTechnologyInfo:(id)a3 :(int64_t)a4;
-- (void)processRegistrationStatus:(id)a3 :(int64_t)a4;
-- (void)processSignalStrengthInfo:(id)a3 :(int64_t)a4;
-- (void)processSubscriptionInfo:(id)a3 :(id)a4;
-- (void)processVoNRStatus:(BOOL)a3 :(int64_t)a4;
-- (void)processVoiceLinkQualityInfo:(id)a3 :(int64_t)a4;
-- (void)processVoiceLqmQMI:(unsigned __int8)a3 VLQM:(unsigned __int8)a4 IMSPreference:(BOOL)a5 AudioErasure:(double)a6 RSRP:(double)a7;
-- (void)processVolteStatus:(BOOL)a3 :(int64_t)a4;
-- (void)processWiFiCallingStatus:(BOOL)a3 :(int64_t)a4;
-- (void)queryLocationdDBForHarvestingData:(double)a3 :(double)a4;
+- (void)monitorStrongSOSSignal:(double)signal;
+- (void)plmnChanged:(id)changed plmn:(id)plmn;
+- (void)processDataAttached:(BOOL)attached :(int64_t)a4;
+- (void)processDataStatus:(id)status :(int64_t)a4;
+- (void)processEnhancedDataLQMBlob:(id)blob :(int64_t)a4;
+- (void)processEnhancedVoiceLinkQualityBlob:(id)blob :(int64_t)a4;
+- (void)processMobileCountryCode:(id)code :(int64_t)a4;
+- (void)processMobileNetworkCode:(id)code :(int64_t)a4;
+- (void)processPrivateNwPreferredOverWifiStatus:(BOOL)status slot:(int64_t)slot;
+- (void)processPrivateNwSimStatus:(BOOL)status slot:(int64_t)slot;
+- (void)processRadioTechnologyInfo:(id)info :(int64_t)a4;
+- (void)processRegistrationStatus:(id)status :(int64_t)a4;
+- (void)processSignalStrengthInfo:(id)info :(int64_t)a4;
+- (void)processSubscriptionInfo:(id)info :(id)a4;
+- (void)processVoNRStatus:(BOOL)status :(int64_t)a4;
+- (void)processVoiceLinkQualityInfo:(id)info :(int64_t)a4;
+- (void)processVoiceLqmQMI:(unsigned __int8)i VLQM:(unsigned __int8)m IMSPreference:(BOOL)preference AudioErasure:(double)erasure RSRP:(double)p;
+- (void)processVolteStatus:(BOOL)status :(int64_t)a4;
+- (void)processWiFiCallingStatus:(BOOL)status :(int64_t)a4;
+- (void)queryLocationdDBForHarvestingData:(double)data :(double)a4;
 - (void)reloadCellularSpeedTestSettingsFromPreferences;
-- (void)resetCbrsCAMetricSentOnSimSlot:(int64_t)a3;
+- (void)resetCbrsCAMetricSentOnSimSlot:(int64_t)slot;
 - (void)resetCellularDataLQM;
 - (void)resetLteVoiceLQM;
 - (void)resetMovAverageOfSignalBar;
 - (void)resetWiFiNRStatusDataSlot;
 - (void)sendInitialVoiceLqmNotification;
-- (void)setActiveSlot:(int64_t)a3;
-- (void)setCellularSpeedTestSettingsToPreferences:(BOOL)a3;
-- (void)setCellularSpeedTestsDisabled:(BOOL)a3;
-- (void)setNrRSRP:(double)a3 forSim:(int64_t)a4;
-- (void)setNrRSRQ:(double)a3 forSim:(int64_t)a4;
-- (void)setNrSNR:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellECIO:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellRSCP:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellRSRP:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellRSRQ:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellRSSI:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellSINR:(double)a3 forSim:(int64_t)a4;
-- (void)setServingCellSNR:(double)a3 forSim:(int64_t)a4;
-- (void)setTrialParameters:(id)a3;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)smartDataModeChanged:(id)a3 userEnabled:(BOOL)a4;
+- (void)setActiveSlot:(int64_t)slot;
+- (void)setCellularSpeedTestSettingsToPreferences:(BOOL)preferences;
+- (void)setCellularSpeedTestsDisabled:(BOOL)disabled;
+- (void)setNrRSRP:(double)p forSim:(int64_t)sim;
+- (void)setNrRSRQ:(double)q forSim:(int64_t)sim;
+- (void)setNrSNR:(double)r forSim:(int64_t)sim;
+- (void)setServingCellECIO:(double)o forSim:(int64_t)sim;
+- (void)setServingCellRSCP:(double)p forSim:(int64_t)sim;
+- (void)setServingCellRSRP:(double)p forSim:(int64_t)sim;
+- (void)setServingCellRSRQ:(double)q forSim:(int64_t)sim;
+- (void)setServingCellRSSI:(double)i forSim:(int64_t)sim;
+- (void)setServingCellSINR:(double)r forSim:(int64_t)sim;
+- (void)setServingCellSNR:(double)r forSim:(int64_t)sim;
+- (void)setTrialParameters:(id)parameters;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)smartDataModeChanged:(id)changed userEnabled:(BOOL)enabled;
 - (void)subscriptionInfoDidChange;
 - (void)tiggerEnhanceLQMConfiguration;
 - (void)triggerCommCenterForActivation;
 - (void)triggerCommCenterForDeActivation;
 - (void)triggerHarvestedCellEval;
 - (void)triggerLocationUpdate;
-- (void)updateAllowSAonWiFiCarrierBundleKey:(id)a3;
-- (void)updateAudioQualityKaroo:(id *)a3 :(int64_t)a4;
-- (void)updateCellularAvailabilityStatus:(id)a3 :(int64_t)a4 :(double)a5 :(BOOL)a6;
-- (void)updateConfiguredMaxBW:(int64_t)a3 dlbw:(unsigned int)a4 ulbw:(unsigned int)a5;
-- (void)updateCurrentRatInfo:(int64_t)a3 currentNRCell:(int)a4;
-- (void)updateDataStallState:(int64_t)a3 stall:(BOOL)a4;
-- (void)updateGlobalCellID:(unsigned __int8)a3 gci:(id)a4 cellprefix:(int)a5;
-- (void)updateHighRateLikely:(int64_t)a3 highrateIndicator:(BOOL)a4;
-- (void)updateLTEBandwidth:(int64_t)a3 LTEBW:(unsigned int)a4;
+- (void)updateAllowSAonWiFiCarrierBundleKey:(id)key;
+- (void)updateAudioQualityKaroo:(id *)karoo :(int64_t)a4;
+- (void)updateCellularAvailabilityStatus:(id)status :(int64_t)a4 :(double)a5 :(BOOL)a6;
+- (void)updateConfiguredMaxBW:(int64_t)w dlbw:(unsigned int)dlbw ulbw:(unsigned int)ulbw;
+- (void)updateCurrentRatInfo:(int64_t)info currentNRCell:(int)cell;
+- (void)updateDataStallState:(int64_t)state stall:(BOOL)stall;
+- (void)updateGlobalCellID:(unsigned __int8)d gci:(id)gci cellprefix:(int)cellprefix;
+- (void)updateHighRateLikely:(int64_t)likely highrateIndicator:(BOOL)indicator;
+- (void)updateLTEBandwidth:(int64_t)bandwidth LTEBW:(unsigned int)w;
 - (void)updateMovAverageOfSignalBar;
-- (void)updateRLHandoverPolicyCarrierBundleKey:(id)a3;
-- (void)updateUplinkEstimatedBW:(unsigned __int8)a3 bw:(unsigned int)a4 conf:(unsigned int)a5 queue:(unsigned int)a6;
-- (void)updateVoLTESpeechErasure:(unint64_t)a3;
-- (void)updateWrmSdmLocationDbInfoRegister:(BOOL)a3 forSim:(int64_t)a4;
-- (void)voiceLinkQualityChanged:(id)a3 metric:(id)a4;
-- (void)writeToCellularAvailabilityStatusBiomeStream:(double)a3 :(BOOL)a4;
+- (void)updateRLHandoverPolicyCarrierBundleKey:(id)key;
+- (void)updateUplinkEstimatedBW:(unsigned __int8)w bw:(unsigned int)bw conf:(unsigned int)conf queue:(unsigned int)queue;
+- (void)updateVoLTESpeechErasure:(unint64_t)erasure;
+- (void)updateWrmSdmLocationDbInfoRegister:(BOOL)register forSim:(int64_t)sim;
+- (void)voiceLinkQualityChanged:(id)changed metric:(id)metric;
+- (void)writeToCellularAvailabilityStatusBiomeStream:(double)stream :(BOOL)a4;
 @end
 
 @implementation WRM_EnhancedCTService
@@ -203,7 +203,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002D1FC;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7D30 != -1)
   {
     dispatch_once(&qword_1002B7D30, block);
@@ -224,9 +224,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -299,9 +299,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -329,9 +329,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -359,9 +359,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -449,7 +449,7 @@
     v4 = "CTSubscriptionSlotUnknown";
   }
 
-  v5 = [(WRM_EnhancedCTService *)self servCellRadioTechnologyType];
+  servCellRadioTechnologyType = [(WRM_EnhancedCTService *)self servCellRadioTechnologyType];
   v6 = v3 - 1;
   if (v3 - 1) < 0xA && ((0x2FFu >> v6))
   {
@@ -465,7 +465,7 @@
     }
   }
 
-  [WCM_Logging logLevel:22 message:@"%s: active slot %s rat property %@ rat %s", "[WRM_EnhancedCTService getServingCellType]", v4, v5, v7];
+  [WCM_Logging logLevel:22 message:@"%s: active slot %s rat property %@ rat %s", "[WRM_EnhancedCTService getServingCellType]", v4, servCellRadioTechnologyType, v7];
   return v3;
 }
 
@@ -533,13 +533,13 @@
 
 - (BOOL)deviceICheapFR2Coverage
 {
-  v2 = self;
+  selfCopy = self;
   [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService isExpensive](self "isExpensive")];
-  [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService dataModeLTE](v2 "dataModeLTE")];
-  v3 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService detectedFR2CellCountLocDB](v2 "detectedFR2CellCountLocDB")];
-  LODWORD(v2) = v3;
+  [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService dataModeLTE](selfCopy "dataModeLTE")];
+  v3 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService detectedFR2CellCountLocDB](selfCopy "detectedFR2CellCountLocDB")];
+  LODWORD(selfCopy) = v3;
   [WCM_Logging logLevel:22 message:@"deviceICheapFR2Coverage:%d", v3];
-  return v2 != 0;
+  return selfCopy != 0;
 }
 
 - (BOOL)isVoNrSupported
@@ -701,9 +701,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self activeSlot];
+      activeSlot = [(WRM_EnhancedCTService *)self activeSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (activeSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -731,9 +731,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self activeSlot];
+      activeSlot = [(WRM_EnhancedCTService *)self activeSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (activeSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -767,9 +767,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self activeSlot];
+      activeSlot = [(WRM_EnhancedCTService *)self activeSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (activeSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -895,9 +895,9 @@
 
     else
     {
-      v6 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v5 = "Unknown CTSubscriptionSlot!!!";
-      if (v6 == 2)
+      if (dataPreferredSlot == 2)
       {
         v5 = "CTSubscriptionSlotTwo";
       }
@@ -925,9 +925,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -955,9 +955,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -1069,22 +1069,22 @@
   return v2;
 }
 
-- (void)setActiveSlot:(int64_t)a3
+- (void)setActiveSlot:(int64_t)slot
 {
-  if (!a3)
+  if (!slot)
   {
     [WCM_Logging logLevel:22 message:@"%s: Slot set to %s, changing it to Slot 1", "[WRM_EnhancedCTService setActiveSlot:]", "CTSubscriptionSlotUnknown"];
-    a3 = 1;
+    slot = 1;
   }
 
-  *(&self->_dataPreferredSlotOnCBRS + 2) = a3;
+  *(&self->_dataPreferredSlotOnCBRS + 2) = slot;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 wrm_EnhancedCTServiceSingleton];
+  wrm_EnhancedCTServiceSingleton = [self wrm_EnhancedCTServiceSingleton];
 
-  return v3;
+  return wrm_EnhancedCTServiceSingleton;
 }
 
 - (WRM_EnhancedCTService)init
@@ -1201,9 +1201,9 @@
       [objc_msgSend(v2 "radioFrequency")];
       [objc_msgSend(v2 "dataEnabled")];
       [objc_msgSend(v2 "bars")];
-      v8 = [v2 movingAverageSignalBars];
+      movingAverageSignalBars = [v2 movingAverageSignalBars];
       LODWORD(v9) = 5.0;
-      [v8 insertObject:+[NSNumber numberWithFloat:](NSNumber atIndex:{"numberWithFloat:", v9), v5}];
+      [movingAverageSignalBars insertObject:+[NSNumber numberWithFloat:](NSNumber atIndex:{"numberWithFloat:", v9), v5}];
       [objc_msgSend(v2 "servCellRadioTechnologyType")];
       [objc_msgSend(v2 "VoiceLqmValue")];
       [objc_msgSend(v2 "VoiceLqmIsValid")];
@@ -1778,7 +1778,7 @@
   [(WRM_CTService *)&v10 dealloc];
 }
 
-- (BOOL)isWiFiCallingSupportedOnSlot:(int64_t)a3
+- (BOOL)isWiFiCallingSupportedOnSlot:(int64_t)slot
 {
   v6 = 0;
   v7 = &v6;
@@ -1790,7 +1790,7 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -1799,7 +1799,7 @@
 
 - (BOOL)isWiFiCallingSupportedAnySlot
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v6 = &v5;
   v7 = 0x2020000000;
@@ -1811,70 +1811,70 @@
   block[4] = self;
   block[5] = &v5;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
-  [WCM_Logging logLevel:22 message:@"%s: isWiFiCallingSupported %@", "[WRM_EnhancedCTService isWiFiCallingSupportedAnySlot]", [(WRM_EnhancedCTService *)v2 isWiFiCallingSupported]];
-  LOBYTE(v2) = *(v6 + 24);
+  [WCM_Logging logLevel:22 message:@"%s: isWiFiCallingSupported %@", "[WRM_EnhancedCTService isWiFiCallingSupportedAnySlot]", [(WRM_EnhancedCTService *)selfCopy isWiFiCallingSupported]];
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)qmiClientRunning
 {
-  v2 = [(WRM_EnhancedCTService *)self mCTService];
+  mCTService = [(WRM_EnhancedCTService *)self mCTService];
 
-  return [(WRM_CTService *)v2 qmiClientRunning];
+  return [(WRM_CTService *)mCTService qmiClientRunning];
 }
 
 - (BOOL)isSimActive
 {
-  v2 = [(WRM_EnhancedCTService *)self mCTService];
+  mCTService = [(WRM_EnhancedCTService *)self mCTService];
 
-  return [(WRM_CTService *)v2 isSimActive];
+  return [(WRM_CTService *)mCTService isSimActive];
 }
 
 - (void)triggerCommCenterForActivation
 {
-  v2 = [(WRM_EnhancedCTService *)self mCTService];
+  mCTService = [(WRM_EnhancedCTService *)self mCTService];
 
-  [(WRM_CTService *)v2 triggerCommCenterForActivation];
+  [(WRM_CTService *)mCTService triggerCommCenterForActivation];
 }
 
 - (void)triggerCommCenterForDeActivation
 {
-  v2 = [(WRM_EnhancedCTService *)self mCTService];
+  mCTService = [(WRM_EnhancedCTService *)self mCTService];
 
-  [(WRM_CTService *)v2 triggerCommCenterForDeActivation];
+  [(WRM_CTService *)mCTService triggerCommCenterForDeActivation];
 }
 
 - (BOOL)isCommCenterAsserted
 {
-  v2 = [(WRM_EnhancedCTService *)self mCTService];
+  mCTService = [(WRM_EnhancedCTService *)self mCTService];
 
-  return [(WRM_CTService *)v2 isCommCenterAsserted];
+  return [(WRM_CTService *)mCTService isCommCenterAsserted];
 }
 
 - (void)tiggerEnhanceLQMConfiguration
 {
-  v2 = [(WRM_EnhancedCTService *)self mCTService];
+  mCTService = [(WRM_EnhancedCTService *)self mCTService];
 
-  [(WRM_CTService *)v2 tiggerEnhanceLQMConfiguration];
+  [(WRM_CTService *)mCTService tiggerEnhanceLQMConfiguration];
 }
 
-- (BOOL)dataAttachedWithCellularNetwork:(int64_t)a3
+- (BOOL)dataAttachedWithCellularNetwork:(int64_t)network
 {
   v4 = "CTSubscriptionSlotOne";
   v5 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (network == 2)
   {
     v5 = "CTSubscriptionSlotTwo";
   }
 
-  v6 = a3 - 1;
-  if (a3 != 1)
+  v6 = network - 1;
+  if (network != 1)
   {
     v4 = v5;
   }
 
-  if (a3)
+  if (network)
   {
     v7 = v4;
   }
@@ -1962,33 +1962,33 @@
   return v2;
 }
 
-- (void)setTrialParameters:(id)a3
+- (void)setTrialParameters:(id)parameters
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002FC6C;
   v3[3] = &unk_10023DC80;
-  v3[4] = a3;
+  v3[4] = parameters;
   v3[5] = self;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v3);
 }
 
-- (int)getServingCellType:(int64_t)a3
+- (int)getServingCellType:(int64_t)type
 {
   v5 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService servCellRadioTechnologyType](self "servCellRadioTechnologyType")];
   v6 = "CTSubscriptionSlotOne";
   v7 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (type == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (type)
   {
     v8 = v6;
   }
@@ -1998,7 +1998,7 @@
     v8 = "CTSubscriptionSlotUnknown";
   }
 
-  v9 = [(WRM_EnhancedCTService *)self servCellRadioTechnologyType];
+  servCellRadioTechnologyType = [(WRM_EnhancedCTService *)self servCellRadioTechnologyType];
   v10 = v5 - 1;
   if (v5 - 1) < 0xA && ((0x2FFu >> v10))
   {
@@ -2014,20 +2014,20 @@
     }
   }
 
-  [WCM_Logging logLevel:22 message:@"%s: sim slot %s rat property %@ rat %s", "[WRM_EnhancedCTService getServingCellType:]", v8, v9, v11];
+  [WCM_Logging logLevel:22 message:@"%s: sim slot %s rat property %@ rat %s", "[WRM_EnhancedCTService getServingCellType:]", v8, servCellRadioTechnologyType, v11];
   return v5;
 }
 
 - (void)invalidateAudioQualityMetrics
 {
-  v3 = [(WRM_EnhancedCTService *)self PrevAudioQualityWasGood];
+  prevAudioQualityWasGood = [(WRM_EnhancedCTService *)self PrevAudioQualityWasGood];
   v4 = [(WRM_EnhancedCTService *)self activeSlot]- 1;
   v5 = [NSNumber numberWithBool:1];
 
-  [(NSMutableArray *)v3 replaceObjectAtIndex:v4 withObject:v5];
+  [(NSMutableArray *)prevAudioQualityWasGood replaceObjectAtIndex:v4 withObject:v5];
 }
 
-- (void)updateVoLTESpeechErasure:(unint64_t)a3
+- (void)updateVoLTESpeechErasure:(unint64_t)erasure
 {
   if ([(WRM_EnhancedCTService *)self activeSlot])
   {
@@ -2036,28 +2036,28 @@
     v5[2] = sub_10002FF9C;
     v5[3] = &unk_10023DD88;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = erasure;
     dispatch_sync([(WRM_EnhancedCTService *)self queue], v5);
   }
 }
 
-- (int)getLteVoiceLQM:(int64_t)a3
+- (int)getLteVoiceLQM:(int64_t)m
 {
   v4 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService VoiceLqmValue](self "VoiceLqmValue")];
   v5 = "CTSubscriptionSlotUnknown";
   v6 = "CTSubscriptionSlotOne";
   v7 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (m == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 != 1)
+  if (m != 1)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (m)
   {
     v5 = v6;
   }
@@ -2066,7 +2066,7 @@
   return v4;
 }
 
-- (int)getVoiceLQM_sync:(int64_t)a3
+- (int)getVoiceLQM_sync:(int64_t)m_sync
 {
   v6 = 0;
   v7 = &v6;
@@ -2078,7 +2078,7 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = m_sync;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
@@ -2097,9 +2097,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self activeSlot];
+      activeSlot = [(WRM_EnhancedCTService *)self activeSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (activeSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -2115,23 +2115,23 @@
   return v3;
 }
 
-- (BOOL)isVoiceLQMValid:(int64_t)a3
+- (BOOL)isVoiceLQMValid:(int64_t)valid
 {
   v4 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService VoiceLqmIsValid](self "VoiceLqmIsValid")];
   v5 = "CTSubscriptionSlotUnknown";
   v6 = "CTSubscriptionSlotOne";
   v7 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (valid == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 != 1)
+  if (valid != 1)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (valid)
   {
     v5 = v6;
   }
@@ -2148,20 +2148,20 @@
 
 - (void)resetLteVoiceLQM
 {
-  v3 = [(WRM_EnhancedCTService *)self VoiceLqmIsValid];
+  voiceLqmIsValid = [(WRM_EnhancedCTService *)self VoiceLqmIsValid];
   v4 = [(WRM_EnhancedCTService *)self activeSlot]- 1;
   v5 = [NSNumber numberWithBool:0];
 
-  [(NSMutableArray *)v3 replaceObjectAtIndex:v4 withObject:v5];
+  [(NSMutableArray *)voiceLqmIsValid replaceObjectAtIndex:v4 withObject:v5];
 }
 
 - (void)resetCellularDataLQM
 {
-  v3 = [(WRM_EnhancedCTService *)self DataLqmIsValid];
+  dataLqmIsValid = [(WRM_EnhancedCTService *)self DataLqmIsValid];
   v4 = [(WRM_EnhancedCTService *)self activeSlot]- 1;
   v5 = [NSNumber numberWithBool:0];
 
-  [(NSMutableArray *)v3 replaceObjectAtIndex:v4 withObject:v5];
+  [(NSMutableArray *)dataLqmIsValid replaceObjectAtIndex:v4 withObject:v5];
 }
 
 - (BOOL)isDataLQMValid
@@ -2176,9 +2176,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self activeSlot];
+      activeSlot = [(WRM_EnhancedCTService *)self activeSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (activeSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -2200,23 +2200,23 @@
   return v3;
 }
 
-- (BOOL)isDataLQMValid:(int64_t)a3
+- (BOOL)isDataLQMValid:(int64_t)valid
 {
   v4 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService DataLqmIsValid](self "DataLqmIsValid")];
   v5 = "CTSubscriptionSlotUnknown";
   v6 = "CTSubscriptionSlotOne";
   v7 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (valid == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 != 1)
+  if (valid != 1)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (valid)
   {
     v5 = v6;
   }
@@ -2263,9 +2263,9 @@
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self activeSlot];
+      activeSlot = [(WRM_EnhancedCTService *)self activeSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (activeSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -2281,7 +2281,7 @@
   return v3;
 }
 
-- (BOOL)getDataStallState:(int64_t)a3
+- (BOOL)getDataStallState:(int64_t)state
 {
   v6 = 0;
   v7 = &v6;
@@ -2293,30 +2293,30 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = state;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (int)getCellularDataLQM:(int64_t)a3
+- (int)getCellularDataLQM:(int64_t)m
 {
   v4 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService DataLqmValue](self "DataLqmValue")];
   v5 = "CTSubscriptionSlotUnknown";
   v6 = "CTSubscriptionSlotOne";
   v7 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (m == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 != 1)
+  if (m != 1)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (m)
   {
     v5 = v6;
   }
@@ -2325,63 +2325,63 @@
   return v4;
 }
 
-- (void)setServingCellRSSI:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellRSSI:(double)i forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100030C0C;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = i;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setServingCellRSRP:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellRSRP:(double)p forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100030D68;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = p;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setServingCellSNR:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellSNR:(double)r forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100030F04;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = r;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setServingCellSINR:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellSINR:(double)r forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100031060;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = r;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setServingCellRSRQ:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellRSRQ:(double)q forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000311BC;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = q;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
@@ -2403,7 +2403,7 @@
   return v2;
 }
 
-- (double)getServingCellRSRP:(int64_t)a3
+- (double)getServingCellRSRP:(int64_t)p
 {
   v6 = 0;
   v7 = &v6;
@@ -2415,14 +2415,14 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = p;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (double)getServingCellSNR:(int64_t)a3
+- (double)getServingCellSNR:(int64_t)r
 {
   v6 = 0;
   v7 = &v6;
@@ -2434,7 +2434,7 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = r;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -2459,7 +2459,7 @@
   return v2;
 }
 
-- (double)getServingCellRSRQ:(int64_t)a3
+- (double)getServingCellRSRQ:(int64_t)q
 {
   v6 = 0;
   v7 = &v6;
@@ -2471,7 +2471,7 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = q;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -2496,7 +2496,7 @@
   return v2;
 }
 
-- (double)getServingCellRSCP:(int64_t)a3
+- (double)getServingCellRSCP:(int64_t)p
 {
   v6 = 0;
   v7 = &v6;
@@ -2508,7 +2508,7 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = p;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -2533,7 +2533,7 @@
   return v2;
 }
 
-- (double)getServingCellECIO:(int64_t)a3
+- (double)getServingCellECIO:(int64_t)o
 {
   v6 = 0;
   v7 = &v6;
@@ -2545,14 +2545,14 @@
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = o;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (int64_t)getCurrentSignalBars:(int64_t)a3
+- (int64_t)getCurrentSignalBars:(int64_t)bars
 {
   v6 = 0;
   v7 = &v6;
@@ -2563,7 +2563,7 @@
   block[2] = sub_100032204;
   block[3] = &unk_10023DE00;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = bars;
   block[4] = self;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
@@ -2571,16 +2571,16 @@
   return v3;
 }
 
-- (id)getCellID:(int64_t)a3
+- (id)getCellID:(int64_t)d
 {
-  if (a3 == 1)
+  if (d == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    if (a3 != 2)
+    if (d != 2)
     {
       return 0;
     }
@@ -2598,16 +2598,16 @@
   return [v5 copy];
 }
 
-- (id)getPLMN:(int64_t)a3
+- (id)getPLMN:(int64_t)n
 {
-  if (a3 == 1)
+  if (n == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    if (a3 != 2)
+    if (n != 2)
     {
       return 0;
     }
@@ -2625,18 +2625,18 @@
   return v5;
 }
 
-- (int64_t)getSlotFromUUID:(id)a3
+- (int64_t)getSlotFromUUID:(id)d
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v11 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+  dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100032514;
   block[3] = &unk_10023DE28;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   block[6] = &v8;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v5 = v9[3];
@@ -2644,12 +2644,12 @@
   return v5;
 }
 
-- (int)getRegistrationStatus:(int64_t)a3
+- (int)getRegistrationStatus:(int64_t)status
 {
   v3 = *(&self->mWrmSdmLocationMonitoringStarted + 4);
   if (v3)
   {
-    v4 = [v3 objectAtIndexedSubscript:a3 - 1];
+    v4 = [v3 objectAtIndexedSubscript:status - 1];
 
     LODWORD(v3) = [v4 intValue];
   }
@@ -2702,20 +2702,20 @@
   return [v2 intValue];
 }
 
-- (void)updateRLHandoverPolicyCarrierBundleKey:(id)a3
+- (void)updateRLHandoverPolicyCarrierBundleKey:(id)key
 {
-  if ([a3 slotID])
+  if ([key slotID])
   {
-    if ([a3 slotID] == 1)
+    if ([key slotID] == 1)
     {
       v5 = "CTSubscriptionSlotOne";
     }
 
     else
     {
-      v6 = [a3 slotID];
+      slotID = [key slotID];
       v5 = "Unknown CTSubscriptionSlot!!!";
-      if (v6 == 2)
+      if (slotID == 2)
       {
         v5 = "CTSubscriptionSlotTwo";
       }
@@ -2732,7 +2732,7 @@
   {
     v13 = 0;
     v7 = [[CTBundle alloc] initWithBundleType:1];
-    v8 = [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] copyCarrierBundleValue:a3 key:@"EnableIratRLHandoverPolicy" bundleType:v7 error:&v13];
+    v8 = [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] copyCarrierBundleValue:key key:@"EnableIratRLHandoverPolicy" bundleType:v7 error:&v13];
     if (v8)
     {
       v9 = v13 == 0;
@@ -2775,20 +2775,20 @@ LABEL_19:
   [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
 }
 
-- (void)updateAllowSAonWiFiCarrierBundleKey:(id)a3
+- (void)updateAllowSAonWiFiCarrierBundleKey:(id)key
 {
-  if ([a3 slotID])
+  if ([key slotID])
   {
-    if ([a3 slotID] == 1)
+    if ([key slotID] == 1)
     {
       v5 = "CTSubscriptionSlotOne";
     }
 
     else
     {
-      v6 = [a3 slotID];
+      slotID = [key slotID];
       v5 = "Unknown CTSubscriptionSlot!!!";
-      if (v6 == 2)
+      if (slotID == 2)
       {
         v5 = "CTSubscriptionSlotTwo";
       }
@@ -2805,7 +2805,7 @@ LABEL_19:
   {
     v13 = 0;
     v7 = [[CTBundle alloc] initWithBundleType:1];
-    v8 = [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] copyCarrierBundleValue:a3 key:@"AllowSAOnWiFiAssociation" bundleType:v7 error:&v13];
+    v8 = [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] copyCarrierBundleValue:key key:@"AllowSAOnWiFiAssociation" bundleType:v7 error:&v13];
     if (v8)
     {
       v9 = v13 == 0;
@@ -2848,17 +2848,17 @@ LABEL_19:
   [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  if (a3 && [a3 slotID])
+  if (change && [change slotID])
   {
-    [(WRM_EnhancedCTService *)self updateAllowSAonWiFiCarrierBundleKey:a3];
+    [(WRM_EnhancedCTService *)self updateAllowSAonWiFiCarrierBundleKey:change];
 
-    [(WRM_EnhancedCTService *)self updateRLHandoverPolicyCarrierBundleKey:a3];
+    [(WRM_EnhancedCTService *)self updateRLHandoverPolicyCarrierBundleKey:change];
   }
 }
 
-- (BOOL)isVoNRSupportedOnSlot:(int64_t)a3
+- (BOOL)isVoNRSupportedOnSlot:(int64_t)slot
 {
   v6 = 0;
   v7 = &v6;
@@ -2870,7 +2870,7 @@ LABEL_19:
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = slot;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -2970,10 +2970,10 @@ LABEL_12:
           v10 = v55;
           v11 = v4;
           v12 = v4 + 98;
-          v13 = [v8 slotID];
+          slotID = [v8 slotID];
           if (v10 || !v9)
           {
-            if (v13)
+            if (slotID)
             {
               v17 = "CTSubscriptionSlotOne";
               if ([v8 slotID] != 1)
@@ -2997,20 +2997,20 @@ LABEL_12:
 
             -[__objc2_class logLevel:message:](v12, "logLevel:message:", 22, @"%s: getPrivateNetworkCapabilitiesForContext error=%@", v17, [v55 localizedDescription]);
             v18 = 0;
-            v19 = 0;
+            isPrivateNetworkPreferredOverWifi = 0;
           }
 
           else
           {
-            if (v13)
+            if (slotID)
             {
-              v14 = [v8 slotID];
+              slotID2 = [v8 slotID];
               v15 = "CTSubscriptionSlotOne";
-              if (v14 != 1)
+              if (slotID2 != 1)
               {
-                v16 = [v8 slotID];
+                slotID3 = [v8 slotID];
                 v15 = "Unknown CTSubscriptionSlot!!!";
-                if (v16 == 2)
+                if (slotID3 == 2)
                 {
                   v15 = "CTSubscriptionSlotTwo";
                 }
@@ -3023,20 +3023,20 @@ LABEL_12:
             }
 
             [(__objc2_class *)v12 logLevel:22 message:@"%s: getPrivateNetworkCapabilitiesForContext %@", v15, v9];
-            v20 = [v9 isPrivateNetworkModeEnabled];
-            v19 = [v9 isPrivateNetworkPreferredOverWifi];
-            if (v20)
+            isPrivateNetworkModeEnabled = [v9 isPrivateNetworkModeEnabled];
+            isPrivateNetworkPreferredOverWifi = [v9 isPrivateNetworkPreferredOverWifi];
+            if (isPrivateNetworkModeEnabled)
             {
               BYTE4(self->mLastCbrsRecommendation) = 1;
               if ([v8 slotID])
               {
-                v21 = [v8 slotID];
+                slotID4 = [v8 slotID];
                 v22 = "CTSubscriptionSlotOne";
-                if (v21 != 1)
+                if (slotID4 != 1)
                 {
-                  v23 = [v8 slotID];
+                  slotID5 = [v8 slotID];
                   v22 = "Unknown CTSubscriptionSlot!!!";
-                  if (v23 == 2)
+                  if (slotID5 == 2)
                   {
                     v22 = "CTSubscriptionSlotTwo";
                   }
@@ -3059,95 +3059,95 @@ LABEL_12:
           }
 
           -[WRM_EnhancedCTService processPrivateNwSimStatus:slot:](self, "processPrivateNwSimStatus:slot:", v18, [v8 slotID]);
-          -[WRM_EnhancedCTService processPrivateNwPreferredOverWifiStatus:slot:](self, "processPrivateNwPreferredOverWifiStatus:slot:", v19, [v8 slotID]);
-          v24 = [(WRM_EnhancedCTService *)self CTClient];
+          -[WRM_EnhancedCTService processPrivateNwPreferredOverWifiStatus:slot:](self, "processPrivateNwPreferredOverWifiStatus:slot:", isPrivateNetworkPreferredOverWifi, [v8 slotID]);
+          cTClient = [(WRM_EnhancedCTService *)self CTClient];
           v50[0] = _NSConcreteStackBlock;
           v50[1] = 3221225472;
           v50[2] = sub_100033678;
           v50[3] = &unk_10023DE50;
           v50[4] = v8;
           v50[5] = self;
-          [(CoreTelephonyClient *)v24 getSignalStrengthInfo:v8 completion:v50];
-          v25 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient getSignalStrengthInfo:v8 completion:v50];
+          cTClient2 = [(WRM_EnhancedCTService *)self CTClient];
           v49[0] = _NSConcreteStackBlock;
           v49[1] = 3221225472;
           v49[2] = sub_100033738;
           v49[3] = &unk_10023DE78;
           v49[4] = v8;
           v49[5] = self;
-          [(CoreTelephonyClient *)v25 copyIsDataAttached:v8 completion:v49];
-          v26 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient2 copyIsDataAttached:v8 completion:v49];
+          cTClient3 = [(WRM_EnhancedCTService *)self CTClient];
           v48[0] = _NSConcreteStackBlock;
           v48[1] = 3221225472;
           v48[2] = sub_1000337F4;
           v48[3] = &unk_10023DEA0;
           v48[4] = v8;
           v48[5] = self;
-          [(CoreTelephonyClient *)v26 copyRegistrationStatus:v8 completion:v48];
-          v27 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient3 copyRegistrationStatus:v8 completion:v48];
+          cTClient4 = [(WRM_EnhancedCTService *)self CTClient];
           v47[0] = _NSConcreteStackBlock;
           v47[1] = 3221225472;
           v47[2] = sub_1000338B4;
           v47[3] = &unk_10023DEA0;
           v47[4] = v8;
           v47[5] = self;
-          [(CoreTelephonyClient *)v27 copyMobileCountryCode:v8 completion:v47];
-          v28 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient4 copyMobileCountryCode:v8 completion:v47];
+          cTClient5 = [(WRM_EnhancedCTService *)self CTClient];
           v46[0] = _NSConcreteStackBlock;
           v46[1] = 3221225472;
           v46[2] = sub_100033974;
           v46[3] = &unk_10023DEA0;
           v46[4] = v8;
           v46[5] = self;
-          [(CoreTelephonyClient *)v28 copyMobileNetworkCode:v8 completion:v46];
-          v29 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient5 copyMobileNetworkCode:v8 completion:v46];
+          cTClient6 = [(WRM_EnhancedCTService *)self CTClient];
           v45[0] = _NSConcreteStackBlock;
           v45[1] = 3221225472;
           v45[2] = sub_100033A34;
           v45[3] = &unk_10023DEC8;
           v45[4] = v8;
           v45[5] = self;
-          [(CoreTelephonyClient *)v29 context:v8 getCapability:v38 completion:v45];
-          v30 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient6 context:v8 getCapability:v38 completion:v45];
+          cTClient7 = [(WRM_EnhancedCTService *)self CTClient];
           v44[0] = _NSConcreteStackBlock;
           v44[1] = 3221225472;
           v44[2] = sub_100033AF4;
           v44[3] = &unk_10023DEC8;
           v44[4] = v8;
           v44[5] = self;
-          [(CoreTelephonyClient *)v30 context:v8 getCapability:v37 completion:v44];
-          v31 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient7 context:v8 getCapability:v37 completion:v44];
+          cTClient8 = [(WRM_EnhancedCTService *)self CTClient];
           v43[0] = _NSConcreteStackBlock;
           v43[1] = 3221225472;
           v43[2] = sub_100033BB4;
           v43[3] = &unk_10023DEC8;
           v43[4] = v8;
           v43[5] = self;
-          [(CoreTelephonyClient *)v31 context:v8 getCapability:v36 completion:v43];
-          v32 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient8 context:v8 getCapability:v36 completion:v43];
+          cTClient9 = [(WRM_EnhancedCTService *)self CTClient];
           v42[0] = _NSConcreteStackBlock;
           v42[1] = 3221225472;
           v42[2] = sub_100033C74;
           v42[3] = &unk_10023DEA0;
           v42[4] = v8;
           v42[5] = self;
-          [(CoreTelephonyClient *)v32 copyRadioAccessTechnology:v8 completion:v42];
-          v33 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient9 copyRadioAccessTechnology:v8 completion:v42];
+          cTClient10 = [(WRM_EnhancedCTService *)self CTClient];
           v41[0] = _NSConcreteStackBlock;
           v41[1] = 3221225472;
           v41[2] = sub_100033D34;
           v41[3] = &unk_10023DEF0;
           v41[4] = v8;
           v41[5] = self;
-          [(CoreTelephonyClient *)v33 getVoiceLinkQualityMetric:v8 completion:v41];
-          v34 = [(WRM_EnhancedCTService *)self CTClient];
+          [(CoreTelephonyClient *)cTClient10 getVoiceLinkQualityMetric:v8 completion:v41];
+          cTClient11 = [(WRM_EnhancedCTService *)self CTClient];
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
           v40[2] = sub_100033DF4;
           v40[3] = &unk_10023DF18;
           v40[4] = v8;
           v40[5] = self;
-          [(CoreTelephonyClient *)v34 getEnhancedVoiceLinkQualityMetric:v8 completion:v40];
+          [(CoreTelephonyClient *)cTClient11 getEnhancedVoiceLinkQualityMetric:v8 completion:v40];
           [(WRM_EnhancedCTService *)self updateAllowSAonWiFiCarrierBundleKey:v8];
           [(WRM_EnhancedCTService *)self updateRLHandoverPolicyCarrierBundleKey:v8];
           v4 = v11;
@@ -3163,7 +3163,7 @@ LABEL_12:
   [(WRM_EnhancedCTService *)self setMSubscriptionInfoDidChange:0];
 }
 
-- (void)processDataAttached:(BOOL)a3 :(int64_t)a4
+- (void)processDataAttached:(BOOL)attached :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3171,11 +3171,11 @@ LABEL_12:
   block[3] = &unk_10023DF40;
   block[4] = self;
   block[5] = a4;
-  v5 = a3;
+  attachedCopy = attached;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processVolteStatus:(BOOL)a3 :(int64_t)a4
+- (void)processVolteStatus:(BOOL)status :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3183,11 +3183,11 @@ LABEL_12:
   block[3] = &unk_10023DF40;
   block[4] = self;
   block[5] = a4;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processVoNRStatus:(BOOL)a3 :(int64_t)a4
+- (void)processVoNRStatus:(BOOL)status :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3195,41 +3195,41 @@ LABEL_12:
   block[3] = &unk_10023DF40;
   block[4] = self;
   block[5] = a4;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)interfaceCostExpensiveChanged:(id)a3 isExpensive:(BOOL)a4
+- (void)interfaceCostExpensiveChanged:(id)changed isExpensive:(BOOL)expensive
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10003423C;
     block[3] = &unk_10023DF68;
-    v8 = a4;
-    block[4] = a3;
+    expensiveCopy = expensive;
+    block[4] = changed;
     block[5] = self;
     dispatch_async([(WRM_EnhancedCTService *)self queue], block);
   }
 }
 
-- (void)smartDataModeChanged:(id)a3 userEnabled:(BOOL)a4
+- (void)smartDataModeChanged:(id)changed userEnabled:(BOOL)enabled
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000343B8;
     block[3] = &unk_10023DF68;
-    v8 = a4;
-    block[4] = a3;
+    enabledCopy = enabled;
+    block[4] = changed;
     block[5] = self;
     dispatch_async([(WRM_EnhancedCTService *)self queue], block);
   }
 }
 
-- (void)processWiFiCallingStatus:(BOOL)a3 :(int64_t)a4
+- (void)processWiFiCallingStatus:(BOOL)status :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3237,42 +3237,42 @@ LABEL_12:
   block[3] = &unk_10023DF40;
   block[4] = self;
   block[5] = a4;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processPrivateNwSimStatus:(BOOL)a3 slot:(int64_t)a4
+- (void)processPrivateNwSimStatus:(BOOL)status slot:(int64_t)slot
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100034708;
   block[3] = &unk_10023DF40;
   block[4] = self;
-  block[5] = a4;
-  v5 = a3;
+  block[5] = slot;
+  statusCopy = status;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processPrivateNwPreferredOverWifiStatus:(BOOL)a3 slot:(int64_t)a4
+- (void)processPrivateNwPreferredOverWifiStatus:(BOOL)status slot:(int64_t)slot
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100034800;
   block[3] = &unk_10023DF40;
   block[4] = self;
-  block[5] = a4;
-  v5 = a3;
+  block[5] = slot;
+  statusCopy = status;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processRegistrationStatus:(id)a3 :(int64_t)a4
+- (void)processRegistrationStatus:(id)status :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000348F8;
   block[3] = &unk_10023DFB8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = status;
   block[6] = a4;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
@@ -3287,8 +3287,8 @@ LABEL_13:
     return 0;
   }
 
-  v2 = [+[NRPairedDeviceRegistry sharedInstance](NRPairedDeviceRegistry getAllDevicesWithArchivedDevices];
-  if ([v2 count] < 1)
+  getAllDevicesWithArchivedDevices = [+[NRPairedDeviceRegistry sharedInstance](NRPairedDeviceRegistry getAllDevicesWithArchivedDevices];
+  if ([getAllDevicesWithArchivedDevices count] < 1)
   {
     v9 = @"%s: Skipping CellularAvailabilityStatusBiomeStream event on iPhone as no associated watches";
     goto LABEL_13;
@@ -3298,7 +3298,7 @@ LABEL_13:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [getAllDevicesWithArchivedDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3311,7 +3311,7 @@ LABEL_13:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(getAllDevicesWithArchivedDevices);
         }
 
         +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"%s: Associated watches. %@", "-[WRM_EnhancedCTService isWatchAssociated]", [*(*(&v10 + 1) + 8 * v7) valueForProperty:v6]);
@@ -3319,7 +3319,7 @@ LABEL_13:
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [getAllDevicesWithArchivedDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -3328,21 +3328,21 @@ LABEL_13:
   return 1;
 }
 
-- (void)updateCellularAvailabilityStatus:(id)a3 :(int64_t)a4 :(double)a5 :(BOOL)a6
+- (void)updateCellularAvailabilityStatus:(id)status :(int64_t)a4 :(double)a5 :(BOOL)a6
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100034CBC;
   block[3] = &unk_10023DFE0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = status;
   block[6] = a4;
   *&block[7] = a5;
   v7 = a6;
   dispatch_async([(WRM_EnhancedCTService *)self cellularAvailabilityStatusQueue], block);
 }
 
-- (void)processMobileCountryCode:(id)a3 :(int64_t)a4
+- (void)processMobileCountryCode:(id)code :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3350,11 +3350,11 @@ LABEL_13:
   block[3] = &unk_10023DFB8;
   block[5] = self;
   block[6] = a4;
-  block[4] = a3;
+  block[4] = code;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processMobileNetworkCode:(id)a3 :(int64_t)a4
+- (void)processMobileNetworkCode:(id)code :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3362,31 +3362,31 @@ LABEL_13:
   block[3] = &unk_10023DFB8;
   block[5] = self;
   block[6] = a4;
-  block[4] = a3;
+  block[4] = code;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processVoiceLinkQualityInfo:(id)a3 :(int64_t)a4
+- (void)processVoiceLinkQualityInfo:(id)info :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100035110;
   block[3] = &unk_10023DFB8;
-  block[4] = a3;
+  block[4] = info;
   block[5] = self;
   block[6] = a4;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)updateAudioQualityKaroo:(id *)a3 :(int64_t)a4
+- (void)updateAudioQualityKaroo:(id *)karoo :(int64_t)a4
 {
-  var1 = a3->var1;
-  v8 = (100 * a3->var0) / (var1 + 0.000001);
+  var1 = karoo->var1;
+  v8 = (100 * karoo->var0) / (var1 + 0.000001);
   v10 = v8 < 80.0 || var1 < 0x1F5;
   [(NSMutableArray *)[(WRM_EnhancedCTService *)self PrevAudioQualityWasGood] replaceObjectAtIndex:a4 - 1 withObject:[NSNumber numberWithBool:v10]];
-  var0 = a3->var0;
-  p_var1 = &a3->var1;
-  v12 = a3->var1;
+  var0 = karoo->var0;
+  p_var1 = &karoo->var1;
+  v12 = karoo->var1;
   v13 = p_var1[1];
   [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService servCellRSCP](self "servCellRSCP")];
   v16 = v15;
@@ -3394,75 +3394,75 @@ LABEL_13:
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"BB Audio Metrics, CodecType: %d, Total Erasures: %d, Total playbacks: %d, Percent Erasures: %f, RSCP: %f, ECIO:%f, Eval Quality: %d", v13, var0, v12, *&v8, v16, v17, [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService PrevAudioQualityWasGood](self "PrevAudioQualityWasGood")]);
 }
 
-- (void)processEnhancedDataLQMBlob:(id)a3 :(int64_t)a4
+- (void)processEnhancedDataLQMBlob:(id)blob :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000355F0;
   block[3] = &unk_10023DFB8;
-  block[5] = a3;
+  block[5] = blob;
   block[6] = a4;
   block[4] = self;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processEnhancedVoiceLinkQualityBlob:(id)a3 :(int64_t)a4
+- (void)processEnhancedVoiceLinkQualityBlob:(id)blob :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100035A90;
   block[3] = &unk_10023DFB8;
-  block[4] = a3;
+  block[4] = blob;
   block[5] = self;
   block[6] = a4;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processDataStatus:(id)a3 :(int64_t)a4
+- (void)processDataStatus:(id)status :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000369DC;
   block[3] = &unk_10023DFB8;
-  block[4] = a3;
+  block[4] = status;
   block[5] = self;
   block[6] = a4;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processRadioTechnologyInfo:(id)a3 :(int64_t)a4
+- (void)processRadioTechnologyInfo:(id)info :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000371A4;
   block[3] = &unk_10023DFB8;
-  block[4] = a3;
+  block[4] = info;
   block[5] = self;
   block[6] = a4;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processSignalStrengthInfo:(id)a3 :(int64_t)a4
+- (void)processSignalStrengthInfo:(id)info :(int64_t)a4
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000375AC;
   block[3] = &unk_10023DFB8;
-  block[4] = a3;
+  block[4] = info;
   block[5] = self;
   block[6] = a4;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)processSubscriptionInfo:(id)a3 :(id)a4
+- (void)processSubscriptionInfo:(id)info :(id)a4
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100037744;
   v4[3] = &unk_10023DC80;
   v4[4] = self;
-  v4[5] = a3;
-  dispatch_async([(WRM_EnhancedCTService *)self queue:a3], v4);
+  v4[5] = info;
+  dispatch_async([(WRM_EnhancedCTService *)self queue:info], v4);
 }
 
 - (void)initCoreTelephonyClient
@@ -3511,13 +3511,13 @@ LABEL_13:
   return v2;
 }
 
-- (void)internetConnectionStateChanged:(id)a3
+- (void)internetConnectionStateChanged:(id)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100037F20;
   v3[3] = &unk_10023DC80;
-  v3[4] = a3;
+  v3[4] = changed;
   v3[5] = self;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v3);
 }
@@ -3533,41 +3533,41 @@ LABEL_13:
   [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] getSubscriptionInfo:v3];
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ info %@", "[WRM_EnhancedCTService signalStrengthChanged:info:]", a3, a4];
-    v7 = [a3 slotID];
+    [WCM_Logging logLevel:22 message:@"%s context %@ info %@", "[WRM_EnhancedCTService signalStrengthChanged:info:]", changed, info];
+    slotID = [changed slotID];
 
-    [(WRM_EnhancedCTService *)self processSignalStrengthInfo:a4];
+    [(WRM_EnhancedCTService *)self processSignalStrengthInfo:info];
   }
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ status %@", "[WRM_EnhancedCTService displayStatusChanged:status:]", a3, a4];
-    -[WRM_EnhancedCTService processRegistrationStatus::](self, "processRegistrationStatus::", [a4 registrationDisplayStatus], objc_msgSend(a3, "slotID"));
+    [WCM_Logging logLevel:22 message:@"%s context %@ status %@", "[WRM_EnhancedCTService displayStatusChanged:status:]", changed, status];
+    -[WRM_EnhancedCTService processRegistrationStatus::](self, "processRegistrationStatus::", [status registrationDisplayStatus], objc_msgSend(changed, "slotID"));
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000382B0;
     v7[3] = &unk_10023DEA0;
     v7[4] = self;
-    v7[5] = a3;
-    [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] copyRegistrationStatus:a3 completion:v7];
+    v7[5] = changed;
+    [(CoreTelephonyClient *)[(WRM_EnhancedCTService *)self CTClient] copyRegistrationStatus:changed completion:v7];
   }
 }
 
-- (int)parseRegistrationStatusForBiomeStream:(id)a3
+- (int)parseRegistrationStatusForBiomeStream:(id)stream
 {
-  if ([a3 isEqualToString:@"kCTRegistrationStatusRegisteredHome"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"kCTRegistrationStatusRegisteredRoaming"))
+  if ([stream isEqualToString:@"kCTRegistrationStatusRegisteredHome"] & 1) != 0 || (objc_msgSend(stream, "isEqualToString:", @"kCTRegistrationStatusRegisteredRoaming"))
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kCTRegistrationStatusEmergencyOnly"])
+  if ([stream isEqualToString:@"kCTRegistrationStatusEmergencyOnly"])
   {
     if (![(WRM_EnhancedCTService *)self isSuppressSOSOnlyWithLimitedServiceEnabled])
     {
@@ -3578,22 +3578,22 @@ LABEL_13:
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kCTRegistrationStatusNotRegistered"])
+  if ([stream isEqualToString:@"kCTRegistrationStatusNotRegistered"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kCTRegistrationStatusDenied"])
+  if ([stream isEqualToString:@"kCTRegistrationStatusDenied"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kCTRegistrationStatusSearching"])
+  if ([stream isEqualToString:@"kCTRegistrationStatusSearching"])
   {
     return 3;
   }
 
-  result = [a3 isEqualToString:@"kCTRegistrationStatusUnknown"];
+  result = [stream isEqualToString:@"kCTRegistrationStatusUnknown"];
   if (result)
   {
     return 3;
@@ -3648,15 +3648,15 @@ LABEL_13:
   [*(&self->mWatchAssociated + 4) getAirPlaneMode];
   if ([*(&self->mWatchAssociated + 4) isAirPlaneModeEnabled])
   {
-    v3 = 4;
+    combinedRegistrationStatus = 4;
   }
 
   else
   {
-    v3 = [(WRM_EnhancedCTService *)self combinedRegistrationStatus];
+    combinedRegistrationStatus = [(WRM_EnhancedCTService *)self combinedRegistrationStatus];
   }
 
-  return sub_100038520(v3);
+  return sub_100038520(combinedRegistrationStatus);
 }
 
 - (BOOL)isSuppressSOSOnlyWithLimitedServiceEnabled
@@ -3707,19 +3707,19 @@ LABEL_12:
   return 1;
 }
 
-- (void)monitorStrongSOSSignal:(double)a3
+- (void)monitorStrongSOSSignal:(double)signal
 {
-  [WCM_Logging logLevel:24 message:@"%s mStrongestSOSRSRP %f, rsrp %f", "[WRM_EnhancedCTService monitorStrongSOSSignal:]", *(&self->mEnterSOSTimeStamp + 4), *&a3];
-  if (*(&self->mStrongestSOSRSRP + 4) <= a3 || *(&self->mEnterSOSTimeStamp + 4) <= a3)
+  [WCM_Logging logLevel:24 message:@"%s mStrongestSOSRSRP %f, rsrp %f", "[WRM_EnhancedCTService monitorStrongSOSSignal:]", *(&self->mEnterSOSTimeStamp + 4), *&signal];
+  if (*(&self->mStrongestSOSRSRP + 4) <= signal || *(&self->mEnterSOSTimeStamp + 4) <= signal)
   {
-    if (a3 > -44.0 || a3 < -140.0)
+    if (signal > -44.0 || signal < -140.0)
     {
-      [WCM_Logging logLevel:24 message:@"%s Invalid RSRP: %f", "[WRM_EnhancedCTService monitorStrongSOSSignal:]", *&a3, v6];
+      [WCM_Logging logLevel:24 message:@"%s Invalid RSRP: %f", "[WRM_EnhancedCTService monitorStrongSOSSignal:]", *&signal, v6];
     }
 
     else
     {
-      *(&self->mEnterSOSTimeStamp + 4) = a3;
+      *(&self->mEnterSOSTimeStamp + 4) = signal;
       [+[NSDate date](NSDate timeIntervalSince1970];
       *(&self->mPrevCombinedRegistrationStatus + 1) = v5;
       [WCM_Logging logLevel:24 message:@"%s mStrongestSOSRSRP %f, mStrongestSOSTimeStamp %@", "[WRM_EnhancedCTService monitorStrongSOSSignal:]", *(&self->mEnterSOSTimeStamp + 4), [NSDate dateWithTimeIntervalSince1970:?]];
@@ -3727,7 +3727,7 @@ LABEL_12:
   }
 }
 
-- (BOOL)validateStrongestSOSTimeStamp:(double)a3
+- (BOOL)validateStrongestSOSTimeStamp:(double)stamp
 {
   v4 = *(&self->mPrevCombinedRegistrationStatus + 1);
   if (v4 <= 0.0)
@@ -3755,9 +3755,9 @@ LABEL_12:
   {
     *(&self->mPrevCombinedRegistrationStatus + 1) = *(&self->mStrongestSOSTimeStamp + 4) + 180.0;
     [WCM_Logging logLevel:24 message:@"%s Resetting mStrongestSOSTimeStamp to %@ as too close to entry SOS timestamp", "[WRM_EnhancedCTService validateStrongestSOSTimeStamp:]", [NSDate dateWithTimeIntervalSince1970:?]];
-    if (*(&self->mPrevCombinedRegistrationStatus + 1) > a3)
+    if (*(&self->mPrevCombinedRegistrationStatus + 1) > stamp)
     {
-      [WCM_Logging logLevel:24 message:@"%s Invalid mStrongestSOSTimeStamp %@ as SOS patch is less than %d seconds (mEnterSOSTimeStamp %@ - changeTimeStamp %@)", "[WRM_EnhancedCTService validateStrongestSOSTimeStamp:]", [NSDate dateWithTimeIntervalSince1970:?], 180, [NSDate dateWithTimeIntervalSince1970:*(&self->mStrongestSOSTimeStamp + 4)], [NSDate dateWithTimeIntervalSince1970:a3]];
+      [WCM_Logging logLevel:24 message:@"%s Invalid mStrongestSOSTimeStamp %@ as SOS patch is less than %d seconds (mEnterSOSTimeStamp %@ - changeTimeStamp %@)", "[WRM_EnhancedCTService validateStrongestSOSTimeStamp:]", [NSDate dateWithTimeIntervalSince1970:?], 180, [NSDate dateWithTimeIntervalSince1970:*(&self->mStrongestSOSTimeStamp + 4)], [NSDate dateWithTimeIntervalSince1970:stamp]];
       return 0;
     }
   }
@@ -3765,40 +3765,40 @@ LABEL_12:
   return 1;
 }
 
-- (void)initializeStrongestSOSSignal:(double)a3
+- (void)initializeStrongestSOSSignal:(double)signal
 {
-  *(&self->mStrongestSOSTimeStamp + 4) = a3;
+  *(&self->mStrongestSOSTimeStamp + 4) = signal;
   *(&self->mPrevCombinedRegistrationStatus + 1) = 0;
   *(&self->mEnterSOSTimeStamp + 4) = -1000.0;
   [WCM_Logging logLevel:24 message:@"%s Reset to initial values. mEnterSOSTimeStamp %@ mStrongestSOSRSRP %f, mStrongestSOSTimeStamp %@", "[WRM_EnhancedCTService initializeStrongestSOSSignal:]", [NSDate dateWithTimeIntervalSince1970:*(&self->mStrongestSOSTimeStamp + 4)], *(&self->mEnterSOSTimeStamp + 4), [NSDate dateWithTimeIntervalSince1970:*(&self->mPrevCombinedRegistrationStatus + 1)]];
 }
 
-- (void)writeToCellularAvailabilityStatusBiomeStream:(double)a3 :(BOOL)a4
+- (void)writeToCellularAvailabilityStatusBiomeStream:(double)stream :(BOOL)a4
 {
   if (a4)
   {
-    v6 = 4;
+    combinedRegistrationStatus = 4;
   }
 
   else
   {
-    v6 = [(WRM_EnhancedCTService *)self combinedRegistrationStatus];
+    combinedRegistrationStatus = [(WRM_EnhancedCTService *)self combinedRegistrationStatus];
   }
 
   v7 = WRM_IPTelephonyController;
-  if (HIDWORD(self->mCellularAvailabilityStatus) == v6)
+  if (HIDWORD(self->mCellularAvailabilityStatus) == combinedRegistrationStatus)
   {
-    [WCM_Logging logLevel:17 message:@"%s: Skipping event as %d same as previous status %d\n", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", v6, v6];
+    [WCM_Logging logLevel:17 message:@"%s: Skipping event as %d same as previous status %d\n", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", combinedRegistrationStatus, combinedRegistrationStatus];
   }
 
   else
   {
-    [WCM_Logging logLevel:17 message:@"%s: changeTimeStamp %@ combinedRegistrationStatus: %d mCellularAvailabilityStatus %@\n", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", [NSDate dateWithTimeIntervalSince1970:a3], v6, *(&self->mWrmSdmLocationMonitoringStarted + 4)];
+    [WCM_Logging logLevel:17 message:@"%s: changeTimeStamp %@ combinedRegistrationStatus: %d mCellularAvailabilityStatus %@\n", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", [NSDate dateWithTimeIntervalSince1970:stream], combinedRegistrationStatus, *(&self->mWrmSdmLocationMonitoringStarted + 4)];
     v8 = 0.0;
     v9 = &selRef_setMGnssVictimFreq_KHz_;
     if (HIDWORD(self->mCellularAvailabilityStatus) == 2)
     {
-      if ([(WRM_EnhancedCTService *)self validateStrongestSOSTimeStamp:a3])
+      if ([(WRM_EnhancedCTService *)self validateStrongestSOSTimeStamp:stream])
       {
         v8 = *(&self->mPrevCombinedRegistrationStatus + 1);
         v9 = &selRef_setMGnssVictimFreq_KHz_;
@@ -3807,7 +3807,7 @@ LABEL_12:
 
       else
       {
-        [WCM_Logging logLevel:17 message:@"%s Invalid latestStrongTimeStamp %@. Persisting changeTimeStamp %@ for SOS", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", [NSDate dateWithTimeIntervalSince1970:0.0], [NSDate dateWithTimeIntervalSince1970:a3], v22, v23];
+        [WCM_Logging logLevel:17 message:@"%s Invalid latestStrongTimeStamp %@. Persisting changeTimeStamp %@ for SOS", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", [NSDate dateWithTimeIntervalSince1970:0.0], [NSDate dateWithTimeIntervalSince1970:stream], v22, v23];
       }
     }
 
@@ -3840,43 +3840,43 @@ LABEL_12:
     if (v8 == 0.0)
     {
       [WCM_Logging logLevel:17 message:@"%s NIL latestStrongTimeStamp %f  mStrongestSOSTimeStamp %f", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", *&v8, v13];
-      v20 = [objc_alloc(sub_100038FB4()) initWithTimeStamp:+[NSDate dateWithTimeIntervalSince1970:](NSDate deviceType:"dateWithTimeIntervalSince1970:" deviceRegistrationStatus:a3) previousDeviceRegistrationStatus:{2, v6, HIDWORD(self->mCellularAvailabilityStatus)}];
+      v20 = [objc_alloc(sub_100038FB4()) initWithTimeStamp:+[NSDate dateWithTimeIntervalSince1970:](NSDate deviceType:"dateWithTimeIntervalSince1970:" deviceRegistrationStatus:stream) previousDeviceRegistrationStatus:{2, combinedRegistrationStatus, HIDWORD(self->mCellularAvailabilityStatus)}];
     }
 
     else
     {
       [WCM_Logging logLevel:17 message:@"%s NOT NIL latestStrongTimeStamp %f mStrongestSOSTimeStamp %f", "[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", *&v8, v13];
       v14 = objc_alloc(sub_100038FB4());
-      v15 = [NSDate dateWithTimeIntervalSince1970:a3];
+      v15 = [NSDate dateWithTimeIntervalSince1970:stream];
       mCellularAvailabilityStatus_high = HIDWORD(self->mCellularAvailabilityStatus);
       v17 = [NSNumber numberWithBool:0];
       v18 = [NSDate dateWithTimeIntervalSince1970:v8];
       v19 = v15;
       v7 = WRM_IPTelephonyController;
-      v20 = [v14 initWithTimeStamp:v19 deviceType:2 deviceRegistrationStatus:v6 previousDeviceRegistrationStatus:mCellularAvailabilityStatus_high aboveThreshold:v17 latestStrongTimeStamp:v18];
+      v20 = [v14 initWithTimeStamp:v19 deviceType:2 deviceRegistrationStatus:combinedRegistrationStatus previousDeviceRegistrationStatus:mCellularAvailabilityStatus_high aboveThreshold:v17 latestStrongTimeStamp:v18];
     }
 
     v21 = v20;
     [&v7[98] logLevel:17 message:{@"%s Event: %@", "-[WRM_EnhancedCTService writeToCellularAvailabilityStatusBiomeStream::]", objc_msgSend(v20, "description")}];
-    HIDWORD(self->mCellularAvailabilityStatus) = v6;
+    HIDWORD(self->mCellularAvailabilityStatus) = combinedRegistrationStatus;
     [v12 sendEvent:v21];
 
     if (HIDWORD(self->mCellularAvailabilityStatus) == 2)
     {
-      [(WRM_EnhancedCTService *)self initializeStrongestSOSSignal:a3];
+      [(WRM_EnhancedCTService *)self initializeStrongestSOSSignal:stream];
     }
   }
 }
 
-- (void)plmnChanged:(id)a3 plmn:(id)a4
+- (void)plmnChanged:(id)changed plmn:(id)plmn
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100039130;
   block[3] = &unk_10023E058;
-  block[4] = a3;
+  block[4] = changed;
   block[5] = self;
-  block[6] = a4;
+  block[6] = plmn;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
@@ -3903,9 +3903,9 @@ LABEL_12:
 
       else
       {
-        v4 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+        dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
         v3 = "Unknown CTSubscriptionSlot!!!";
-        if (v4 == 2)
+        if (dataPreferredSlot == 2)
         {
           v3 = "CTSubscriptionSlotTwo";
         }
@@ -3930,7 +3930,7 @@ LABEL_12:
         {
           [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService nrCellRSRP](self "nrCellRSRP")];
           v9 = v13;
-          v12 = [(WRM_EnhancedCTService *)self nrCellRSRQ];
+          nrCellRSRQ = [(WRM_EnhancedCTService *)self nrCellRSRQ];
         }
 
         else
@@ -3944,10 +3944,10 @@ LABEL_12:
 
           [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService servCellRSRP](self "servCellRSRP")];
           v9 = v11;
-          v12 = [(WRM_EnhancedCTService *)self servCellRSRQ];
+          nrCellRSRQ = [(WRM_EnhancedCTService *)self servCellRSRQ];
         }
 
-        [-[NSMutableArray objectAtIndex:](v12 objectAtIndex:{v7), "doubleValue"}];
+        [-[NSMutableArray objectAtIndex:](nrCellRSRQ objectAtIndex:{v7), "doubleValue"}];
         v10 = v14;
 LABEL_21:
         v15 = v9 > [v6 nonCbrsExitRsrpMin] && v10 > objc_msgSend(v6, "nonCbrsExitRsrqMin");
@@ -3963,15 +3963,15 @@ LABEL_21:
   }
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  if (![a3 slotID])
+  if (![changed slotID])
   {
     return;
   }
 
-  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"dataPreferredSlot changed to %ld", [a3 slotID]);
-  -[WRM_EnhancedCTService setDataPreferredSlot:](self, "setDataPreferredSlot:", [a3 slotID]);
+  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"dataPreferredSlot changed to %ld", [changed slotID]);
+  -[WRM_EnhancedCTService setDataPreferredSlot:](self, "setDataPreferredSlot:", [changed slotID]);
   if (BYTE4(self->mLastCbrsRecommendation) != 1 || [(WRM_EnhancedCTService *)self numberofSubscriptions]== 1)
   {
     return;
@@ -3993,18 +3993,18 @@ LABEL_21:
     v5 = 2;
   }
 
-  v6 = [a3 slotID];
-  if (v6 == *(&self->mCbrsSwitchingTimer + 4))
+  slotID = [changed slotID];
+  if (slotID == *(&self->mCbrsSwitchingTimer + 4))
   {
     if (*&self->mCellRSRQ4G5GvsWiFiThreshold)
     {
       [*&self->mCellRSRQ4G5GvsWiFiThreshold invalidate];
 
       *&self->mCellRSRQ4G5GvsWiFiThreshold = 0;
-      v6 = *(&self->mCbrsSwitchingTimer + 4);
+      slotID = *(&self->mCbrsSwitchingTimer + 4);
     }
 
-    if (v6 == v5)
+    if (slotID == v5)
     {
       v7 = 15.0;
     }
@@ -4016,13 +4016,13 @@ LABEL_21:
 
     objc_initWeak(&location, self);
     v8 = [WRM_Timer alloc];
-    v9 = [(WRM_EnhancedCTService *)self queue];
+    queue = [(WRM_EnhancedCTService *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100039BD8;
     v11[3] = &unk_10023E080;
     objc_copyWeak(&v12, &location);
-    *&self->mCellRSRQ4G5GvsWiFiThreshold = [(WRM_Timer *)v8 initWithFireTimeIntervalSinceNow:v9 queue:v11 block:v7];
+    *&self->mCellRSRQ4G5GvsWiFiThreshold = [(WRM_Timer *)v8 initWithFireTimeIntervalSinceNow:queue queue:v11 block:v7];
     [WCM_Logging logLevel:22 message:@"CBRS ping-pong timer started for %f seconds", *&v7];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -4035,92 +4035,92 @@ LABEL_18:
   [WCM_Logging logLevel:22 message:v10];
 }
 
-- (void)anyCallStateChange:(int)a3
+- (void)anyCallStateChange:(int)change
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100039CE4;
   v3[3] = &unk_10023DBA0;
   v3[4] = self;
-  v4 = a3;
+  changeCopy = change;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v3);
 }
 
-- (void)evaluateCbrsInDualSimMode:(BOOL)a3
+- (void)evaluateCbrsInDualSimMode:(BOOL)mode
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100039E7C;
   v3[3] = &unk_10023E008;
   v3[4] = self;
-  v4 = a3;
+  modeCopy = mode;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v3);
 }
 
-- (void)voiceLinkQualityChanged:(id)a3 metric:(id)a4
+- (void)voiceLinkQualityChanged:(id)changed metric:(id)metric
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ metric %@", "[WRM_EnhancedCTService voiceLinkQualityChanged:metric:]", a3, a4];
-    v7 = [a3 slotID];
+    [WCM_Logging logLevel:22 message:@"%s context %@ metric %@", "[WRM_EnhancedCTService voiceLinkQualityChanged:metric:]", changed, metric];
+    slotID = [changed slotID];
 
-    [(WRM_EnhancedCTService *)self processVoiceLinkQualityInfo:a4];
+    [(WRM_EnhancedCTService *)self processVoiceLinkQualityInfo:metric];
   }
 }
 
-- (void)enhancedVoiceLinkQualityChanged:(id)a3 metric:(id)a4
+- (void)enhancedVoiceLinkQualityChanged:(id)changed metric:(id)metric
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ metric %@", "[WRM_EnhancedCTService enhancedVoiceLinkQualityChanged:metric:]", a3, a4];
-    v7 = [a3 slotID];
+    [WCM_Logging logLevel:22 message:@"%s context %@ metric %@", "[WRM_EnhancedCTService enhancedVoiceLinkQualityChanged:metric:]", changed, metric];
+    slotID = [changed slotID];
 
-    [(WRM_EnhancedCTService *)self processEnhancedVoiceLinkQualityBlob:a4];
+    [(WRM_EnhancedCTService *)self processEnhancedVoiceLinkQualityBlob:metric];
   }
 }
 
-- (void)enhancedDataLinkQualityChanged:(id)a3 metric:(id)a4
+- (void)enhancedDataLinkQualityChanged:(id)changed metric:(id)metric
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ metric %@", "[WRM_EnhancedCTService enhancedDataLinkQualityChanged:metric:]", a3, a4];
-    v7 = [a3 slotID];
+    [WCM_Logging logLevel:22 message:@"%s context %@ metric %@", "[WRM_EnhancedCTService enhancedDataLinkQualityChanged:metric:]", changed, metric];
+    slotID = [changed slotID];
 
-    [(WRM_EnhancedCTService *)self processEnhancedDataLQMBlob:a4];
+    [(WRM_EnhancedCTService *)self processEnhancedDataLQMBlob:metric];
   }
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
-  if ([a3 slotID])
+  if ([status slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ dataStatus %@", "[WRM_EnhancedCTService dataStatus:dataStatusInfo:]", a3, a4];
-    v7 = [a3 slotID];
+    [WCM_Logging logLevel:22 message:@"%s context %@ dataStatus %@", "[WRM_EnhancedCTService dataStatus:dataStatusInfo:]", status, info];
+    slotID = [status slotID];
 
-    [(WRM_EnhancedCTService *)self processDataStatus:a4];
+    [(WRM_EnhancedCTService *)self processDataStatus:info];
   }
 }
 
-- (void)imsRegistrationChanged:(id)a3 info:(id)a4
+- (void)imsRegistrationChanged:(id)changed info:(id)info
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ info %@", "[WRM_EnhancedCTService imsRegistrationChanged:info:]", a3, a4];
+    [WCM_Logging logLevel:22 message:@"%s context %@ info %@", "[WRM_EnhancedCTService imsRegistrationChanged:info:]", changed, info];
   }
 }
 
-- (void)cellChanged:(id)a3 cell:(id)a4
+- (void)cellChanged:(id)changed cell:(id)cell
 {
-  if ([a3 slotID])
+  if ([changed slotID])
   {
-    [WCM_Logging logLevel:22 message:@"%s context %@ cell info %@", "[WRM_EnhancedCTService cellChanged:cell:]", a3, a4];
-    if (a4)
+    [WCM_Logging logLevel:22 message:@"%s context %@ cell info %@", "[WRM_EnhancedCTService cellChanged:cell:]", changed, cell];
+    if (cell)
     {
-      v7 = [a4 objectForKey:@"kCTRegistrationRadioAccessTechnology"];
+      v7 = [cell objectForKey:@"kCTRegistrationRadioAccessTechnology"];
       [WCM_Logging logLevel:22 message:@"%s rat info %@", "[WRM_EnhancedCTService cellChanged:cell:]", v7];
       if (v7)
       {
-        v8 = [a3 slotID];
+        slotID = [changed slotID];
 
         [(WRM_EnhancedCTService *)self processRadioTechnologyInfo:v7];
       }
@@ -4128,20 +4128,20 @@ LABEL_18:
   }
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
-  if (![a3 slotID])
+  if (![update slotID])
   {
     return;
   }
 
-  [WCM_Logging logLevel:22 message:@"%s context %@ cell info %@", "[WRM_EnhancedCTService cellMonitorUpdate:info:]", a3, a4];
-  v7 = [a4 legacyInfo];
+  [WCM_Logging logLevel:22 message:@"%s context %@ cell info %@", "[WRM_EnhancedCTService cellMonitorUpdate:info:]", update, info];
+  legacyInfo = [info legacyInfo];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  v8 = [legacyInfo countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4152,7 +4152,7 @@ LABEL_18:
       {
         if (*v43 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(legacyInfo);
         }
 
         v12 = *(*(&v42 + 1) + 8 * i);
@@ -4163,23 +4163,23 @@ LABEL_18:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v9 = [legacyInfo countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v9);
   }
 
-  if (!v7 || ![v7 count])
+  if (!legacyInfo || ![legacyInfo count])
   {
     return;
   }
 
-  v41 = a3;
-  if (![v7 count])
+  updateCopy = update;
+  if (![legacyInfo count])
   {
     v28 = 0;
     v40 = 0;
-    LODWORD(v16) = 0;
+    LODWORD(intValue) = 0;
     v30 = 0;
     v29 = 0;
     v27 = WRM_IPTelephonyController;
@@ -4187,12 +4187,12 @@ LABEL_18:
   }
 
   v13 = 0;
-  v33 = 0;
-  v34 = 0;
+  intValue2 = 0;
+  intValue5 = 0;
   v14 = 0;
   v15 = 0;
   v31 = 0;
-  v32 = 0;
+  intValue3 = 0;
   v39 = kCTCellMonitorCellId;
   v38 = kCTCellMonitorUARFCN;
   v37 = kCTCellMonitorBandInfo;
@@ -4200,36 +4200,36 @@ LABEL_18:
   v35 = kCTCellMonitorNRARFCN;
   do
   {
-    v16 = v15;
-    v17 = [v7 objectAtIndex:v13];
+    intValue = v15;
+    v17 = [legacyInfo objectAtIndex:v13];
     v18 = [v17 objectForKeyedSubscript:v39];
     if (v18)
     {
-      v16 = [v18 intValue];
+      intValue = [v18 intValue];
     }
 
     v19 = [v17 objectForKeyedSubscript:v38];
     if (v19)
     {
-      v33 = [v19 intValue];
-      -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellARFCN](self, "cellARFCN"), "replaceObjectAtIndex:withObject:", [v41 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v33));
+      intValue2 = [v19 intValue];
+      -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellARFCN](self, "cellARFCN"), "replaceObjectAtIndex:withObject:", [updateCopy slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", intValue2));
     }
 
     v20 = [v17 objectForKeyedSubscript:v37];
     if (v20)
     {
-      v32 = [v20 intValue];
-      -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellBandInfo](self, "cellBandInfo"), "replaceObjectAtIndex:withObject:", [v41 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v32));
+      intValue3 = [v20 intValue];
+      -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellBandInfo](self, "cellBandInfo"), "replaceObjectAtIndex:withObject:", [updateCopy slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", intValue3));
     }
 
     v21 = [v17 objectForKeyedSubscript:v36];
-    v15 = v16;
+    v15 = intValue;
     if (v21)
     {
-      v22 = [v21 intValue];
-      if (v22 > 49)
+      intValue4 = [v21 intValue];
+      if (intValue4 > 49)
       {
-        switch(v22)
+        switch(intValue4)
         {
           case '2':
             v14 = 10;
@@ -4245,7 +4245,7 @@ LABEL_18:
 
       else
       {
-        switch(v22)
+        switch(intValue4)
         {
           case 6:
             v14 = 1;
@@ -4256,7 +4256,7 @@ LABEL_18:
           case 25:
             v14 = 5;
 LABEL_35:
-            -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellBandwidth](self, "cellBandwidth"), "replaceObjectAtIndex:withObject:", [v41 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v14));
+            -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellBandwidth](self, "cellBandwidth"), "replaceObjectAtIndex:withObject:", [updateCopy slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v14));
             goto LABEL_36;
         }
       }
@@ -4269,60 +4269,60 @@ LABEL_36:
     v23 = [v17 objectForKeyedSubscript:v35];
     if (v23)
     {
-      v34 = [v23 intValue];
+      intValue5 = [v23 intValue];
       v31 = 1;
     }
 
     ++v13;
   }
 
-  while ([v7 count] > v13);
+  while ([legacyInfo count] > v13);
   if (v31)
   {
     v40 = v14;
-    v24 = v41;
-    -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellID](self, "cellID"), "replaceObjectAtIndex:withObject:", [v41 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v16));
+    v24 = updateCopy;
+    -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService cellID](self, "cellID"), "replaceObjectAtIndex:withObject:", [updateCopy slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", intValue));
     v25 = 1;
-    -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService currNRCellFound](self, "currNRCellFound"), "replaceObjectAtIndex:withObject:", [v41 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 1));
-    v26 = [(WRM_EnhancedCTService *)self wifiNRCellFound];
+    -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService currNRCellFound](self, "currNRCellFound"), "replaceObjectAtIndex:withObject:", [updateCopy slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 1));
+    wifiNRCellFound = [(WRM_EnhancedCTService *)self wifiNRCellFound];
     v27 = WRM_IPTelephonyController;
-    v29 = v32;
-    v28 = v33;
+    v29 = intValue3;
+    v28 = intValue2;
     goto LABEL_46;
   }
 
   v40 = v14;
   v27 = WRM_IPTelephonyController;
-  v29 = v32;
-  v28 = v33;
-  v30 = v34;
+  v29 = intValue3;
+  v28 = intValue2;
+  v30 = intValue5;
 LABEL_43:
-  v24 = v41;
-  if ([-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService cellID](self "cellID")] == v16)
+  v24 = updateCopy;
+  if ([-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService cellID](self "cellID")] == intValue)
   {
     v25 = 0;
   }
 
   else
   {
-    v34 = v30;
-    -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService wifiNRCellFound](self, "wifiNRCellFound"), "replaceObjectAtIndex:withObject:", [v41 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 0));
-    v26 = [(WRM_EnhancedCTService *)self currNRCellFound];
+    intValue5 = v30;
+    -[NSMutableArray replaceObjectAtIndex:withObject:](-[WRM_EnhancedCTService wifiNRCellFound](self, "wifiNRCellFound"), "replaceObjectAtIndex:withObject:", [updateCopy slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", 0));
+    wifiNRCellFound = [(WRM_EnhancedCTService *)self currNRCellFound];
     v25 = 0;
 LABEL_46:
-    -[NSMutableArray replaceObjectAtIndex:withObject:](v26, "replaceObjectAtIndex:withObject:", [v24 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v25));
-    v30 = v34;
+    -[NSMutableArray replaceObjectAtIndex:withObject:](wifiNRCellFound, "replaceObjectAtIndex:withObject:", [v24 slotID] - 1, +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v25));
+    v30 = intValue5;
   }
 
   [&v27[98] logLevel:22 message:{@"%s ARFCN: %d, CellBW: %d, CellBandInfo: %d, NRCellFound: %d, nARFCN: %d", "-[WRM_EnhancedCTService cellMonitorUpdate:info:]", v28, v40, v29, v25, v30}];
 }
 
-- (void)context:(id)a3 capabilitiesChanged:(id)a4
+- (void)context:(id)context capabilitiesChanged:(id)changed
 {
-  [WCM_Logging logLevel:22 message:@"%s context %@ capabilitiesChanged info %@", "[WRM_EnhancedCTService context:capabilitiesChanged:]", a3, a4];
-  if ([a3 slotID])
+  [WCM_Logging logLevel:22 message:@"%s context %@ capabilitiesChanged info %@", "[WRM_EnhancedCTService context:capabilitiesChanged:]", context, changed];
+  if ([context slotID])
   {
-    v7 = [a4 objectForKey:kCTCapabilityAgent];
+    v7 = [changed objectForKey:kCTCapabilityAgent];
     if (v7)
     {
       v8 = [v7 objectForKey:@"kCTCapabilityStatus"];
@@ -4330,11 +4330,11 @@ LABEL_46:
       if (objc_opt_isKindOfClass())
       {
         +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"kCTCapabilityVoLTE status %d", [v8 BOOLValue]);
-        -[WRM_EnhancedCTService processVolteStatus::](self, "processVolteStatus::", [v8 BOOLValue], objc_msgSend(a3, "slotID"));
+        -[WRM_EnhancedCTService processVolteStatus::](self, "processVolteStatus::", [v8 BOOLValue], objc_msgSend(context, "slotID"));
       }
     }
 
-    v9 = [a4 objectForKey:kCTCapabilityAgent3];
+    v9 = [changed objectForKey:kCTCapabilityAgent3];
     if (v9)
     {
       v10 = [v9 objectForKey:@"kCTCapabilityStatus"];
@@ -4342,12 +4342,12 @@ LABEL_46:
       if (objc_opt_isKindOfClass())
       {
         +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"kCTCapabilityVoNR status %d", [v10 BOOLValue]);
-        -[WRM_EnhancedCTService processVoNRStatus::](self, "processVoNRStatus::", [v10 BOOLValue], objc_msgSend(a3, "slotID"));
+        -[WRM_EnhancedCTService processVoNRStatus::](self, "processVoNRStatus::", [v10 BOOLValue], objc_msgSend(context, "slotID"));
         [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
       }
     }
 
-    v11 = [a4 objectForKey:kCTCapabilityAgent2];
+    v11 = [changed objectForKey:kCTCapabilityAgent2];
     if (v11)
     {
       v12 = [v11 objectForKey:@"kCTCapabilityStatus"];
@@ -4355,7 +4355,7 @@ LABEL_46:
       if (objc_opt_isKindOfClass())
       {
         +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 22, @"kCTCapabilityWiFiCalling status %d", [v12 BOOLValue]);
-        -[WRM_EnhancedCTService processWiFiCallingStatus::](self, "processWiFiCallingStatus::", [v12 BOOLValue], objc_msgSend(a3, "slotID"));
+        -[WRM_EnhancedCTService processWiFiCallingStatus::](self, "processWiFiCallingStatus::", [v12 BOOLValue], objc_msgSend(context, "slotID"));
         v13 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
         [v13 reEvaluateSAState];
@@ -4389,63 +4389,63 @@ LABEL_46:
   return 1;
 }
 
-- (void)setNrRSRP:(double)a3 forSim:(int64_t)a4
+- (void)setNrRSRP:(double)p forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B374;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = p;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setNrSNR:(double)a3 forSim:(int64_t)a4
+- (void)setNrSNR:(double)r forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B4D8;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = r;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setServingCellECIO:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellECIO:(double)o forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B5FC;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = o;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setServingCellRSCP:(double)a3 forSim:(int64_t)a4
+- (void)setServingCellRSCP:(double)p forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B720;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = p;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)setNrRSRQ:(double)a3 forSim:(int64_t)a4
+- (void)setNrRSRQ:(double)q forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B844;
   block[3] = &unk_10023DDD8;
   block[4] = self;
-  block[5] = a4;
-  *&block[6] = a3;
+  block[5] = sim;
+  *&block[6] = q;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
@@ -4467,7 +4467,7 @@ LABEL_46:
   return v2;
 }
 
-- (double)getNrRSRP:(int64_t)a3
+- (double)getNrRSRP:(int64_t)p
 {
   v6 = 0;
   v7 = &v6;
@@ -4479,7 +4479,7 @@ LABEL_46:
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = p;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -4504,7 +4504,7 @@ LABEL_46:
   return v2;
 }
 
-- (double)getNrSNR:(int64_t)a3
+- (double)getNrSNR:(int64_t)r
 {
   v6 = 0;
   v7 = &v6;
@@ -4516,7 +4516,7 @@ LABEL_46:
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = r;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -4541,7 +4541,7 @@ LABEL_46:
   return v2;
 }
 
-- (double)getNrRSRQ:(int64_t)a3
+- (double)getNrRSRQ:(int64_t)q
 {
   v6 = 0;
   v7 = &v6;
@@ -4553,7 +4553,7 @@ LABEL_46:
   block[3] = &unk_10023DD38;
   block[4] = self;
   block[5] = &v6;
-  block[6] = a3;
+  block[6] = q;
   dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -4622,21 +4622,21 @@ LABEL_46:
   return [v4 intValue];
 }
 
-- (int)getCTDataIndictor:(int64_t)a3
+- (int)getCTDataIndictor:(int64_t)indictor
 {
   v4 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService dataIndicator](self "dataIndicator")];
   v5 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (indictor == 2)
   {
     v5 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 == 1)
+  if (indictor == 1)
   {
     v5 = "CTSubscriptionSlotOne";
   }
 
-  if (!a3)
+  if (!indictor)
   {
     v5 = "CTSubscriptionSlotUnknown";
   }
@@ -4659,23 +4659,23 @@ LABEL_46:
   return v4;
 }
 
-- (int)getBandInfoOnSlot:(int64_t)a3
+- (int)getBandInfoOnSlot:(int64_t)slot
 {
   v4 = [-[NSMutableArray objectAtIndex:](-[WRM_EnhancedCTService cellBandInfo](self "cellBandInfo")];
   v5 = "CTSubscriptionSlotUnknown";
   v6 = "CTSubscriptionSlotOne";
   v7 = "Unknown CTSubscriptionSlot!!!";
-  if (a3 == 2)
+  if (slot == 2)
   {
     v7 = "CTSubscriptionSlotTwo";
   }
 
-  if (a3 != 1)
+  if (slot != 1)
   {
     v6 = v7;
   }
 
-  if (a3)
+  if (slot)
   {
     v5 = v6;
   }
@@ -4696,9 +4696,9 @@ LABEL_46:
 
     else
     {
-      v5 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+      dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
       v4 = "Unknown CTSubscriptionSlot!!!";
-      if (v5 == 2)
+      if (dataPreferredSlot == 2)
       {
         v4 = "CTSubscriptionSlotTwo";
       }
@@ -4716,85 +4716,85 @@ LABEL_46:
 
 - (void)resetWiFiNRStatusDataSlot
 {
-  v3 = [(WRM_EnhancedCTService *)self wifiNRCellFound];
+  wifiNRCellFound = [(WRM_EnhancedCTService *)self wifiNRCellFound];
   v4 = [(WRM_EnhancedCTService *)self dataPreferredSlot]- 1;
   v5 = [NSNumber numberWithInt:0];
 
-  [(NSMutableArray *)v3 replaceObjectAtIndex:v4 withObject:v5];
+  [(NSMutableArray *)wifiNRCellFound replaceObjectAtIndex:v4 withObject:v5];
 }
 
-- (void)updateDataStallState:(int64_t)a3 stall:(BOOL)a4
+- (void)updateDataStallState:(int64_t)state stall:(BOOL)stall
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C83C;
   block[3] = &unk_10023DF40;
-  v5 = a4;
+  stallCopy = stall;
   block[4] = self;
-  block[5] = a3;
+  block[5] = state;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)updateCurrentRatInfo:(int64_t)a3 currentNRCell:(int)a4
+- (void)updateCurrentRatInfo:(int64_t)info currentNRCell:(int)cell
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003CA40;
   block[3] = &unk_10023E0A8;
-  v5 = a4;
+  cellCopy = cell;
   block[4] = self;
-  block[5] = a3;
+  block[5] = info;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)updateLTEBandwidth:(int64_t)a3 LTEBW:(unsigned int)a4
+- (void)updateLTEBandwidth:(int64_t)bandwidth LTEBW:(unsigned int)w
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003CBA8;
   block[3] = &unk_10023E0A8;
-  v5 = a4;
+  wCopy = w;
   block[4] = self;
-  block[5] = a3;
+  block[5] = bandwidth;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)updateConfiguredMaxBW:(int64_t)a3 dlbw:(unsigned int)a4 ulbw:(unsigned int)a5
+- (void)updateConfiguredMaxBW:(int64_t)w dlbw:(unsigned int)dlbw ulbw:(unsigned int)ulbw
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003CD14;
   block[3] = &unk_10023DDD8;
-  v6 = a4;
-  v7 = a5;
+  dlbwCopy = dlbw;
+  ulbwCopy = ulbw;
   block[4] = self;
-  block[5] = a3;
+  block[5] = w;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)updateUplinkEstimatedBW:(unsigned __int8)a3 bw:(unsigned int)a4 conf:(unsigned int)a5 queue:(unsigned int)a6
+- (void)updateUplinkEstimatedBW:(unsigned __int8)w bw:(unsigned int)bw conf:(unsigned int)conf queue:(unsigned int)queue
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003D064;
   block[3] = &unk_10023E0D0;
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = a6;
+  wCopy = w;
+  bwCopy = bw;
+  confCopy = conf;
+  queueCopy = queue;
   block[4] = self;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)updateHighRateLikely:(int64_t)a3 highrateIndicator:(BOOL)a4
+- (void)updateHighRateLikely:(int64_t)likely highrateIndicator:(BOOL)indicator
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003D204;
   block[3] = &unk_10023DF40;
-  v5 = a4;
+  indicatorCopy = indicator;
   block[4] = self;
-  block[5] = a3;
+  block[5] = likely;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
@@ -4839,16 +4839,16 @@ LABEL_46:
   return [objc_msgSend(v2 performSelector:{NSSelectorFromString(@"automatedDeviceGroup")), "length"}] != 0;
 }
 
-- (void)setCellularSpeedTestsDisabled:(BOOL)a3
+- (void)setCellularSpeedTestsDisabled:(BOOL)disabled
 {
   v4 = "NO";
-  if (a3)
+  if (disabled)
   {
     v4 = "YES";
   }
 
   [WCM_Logging logLevel:22 message:@"CellularThroughput cellularSpeedTestsDisabled: %s", v4];
-  byte_1002B7D58 = a3;
+  byte_1002B7D58 = disabled;
 }
 
 - (void)checkAndScheduleSpeedTest
@@ -4950,10 +4950,10 @@ LABEL_13:
   }
 }
 
-- (void)setCellularSpeedTestSettingsToPreferences:(BOOL)a3
+- (void)setCellularSpeedTestSettingsToPreferences:(BOOL)preferences
 {
   v3 = "FALSE";
-  if (a3)
+  if (preferences)
   {
     v3 = "TRUE";
   }
@@ -5099,83 +5099,83 @@ LABEL_13:
   }
 }
 
-- (void)updateWrmSdmLocationDbInfoRegister:(BOOL)a3 forSim:(int64_t)a4
+- (void)updateWrmSdmLocationDbInfoRegister:(BOOL)register forSim:(int64_t)sim
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003F284;
   block[3] = &unk_10023DF40;
   block[4] = self;
-  block[5] = a4;
-  v5 = a3;
+  block[5] = sim;
+  registerCopy = register;
   dispatch_async([(WRM_EnhancedCTService *)self queue], block);
 }
 
-- (void)fetchWrmSdmLocationDbInfoWithMcc:(unsigned int)a3 Mnc:(unsigned int)a4 CellId:(unint64_t)a5 ForSim:(int64_t)a6
+- (void)fetchWrmSdmLocationDbInfoWithMcc:(unsigned int)mcc Mnc:(unsigned int)mnc CellId:(unint64_t)id ForSim:(int64_t)sim
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10003F490;
   v6[3] = &unk_10023E1C8;
-  v7 = a3;
-  v8 = a4;
+  mccCopy = mcc;
+  mncCopy = mnc;
   v6[4] = self;
-  v6[5] = a5;
-  v6[6] = a6;
+  v6[5] = id;
+  v6[6] = sim;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v6);
 }
 
-- (void)updateGlobalCellID:(unsigned __int8)a3 gci:(id)a4 cellprefix:(int)a5
+- (void)updateGlobalCellID:(unsigned __int8)d gci:(id)gci cellprefix:(int)cellprefix
 {
-  if ([(WRM_EnhancedCTService *)self dataPreferredSlot]- 1 == a3)
+  if ([(WRM_EnhancedCTService *)self dataPreferredSlot]- 1 == d)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10003F704;
     block[3] = &unk_10023E218;
-    v9 = a5;
-    block[4] = a4;
+    cellprefixCopy = cellprefix;
+    block[4] = gci;
     block[5] = self;
     dispatch_async([(WRM_EnhancedCTService *)self queue], block);
   }
 }
 
-- (void)queryLocationdDBForHarvestingData:(double)a3 :(double)a4
+- (void)queryLocationdDBForHarvestingData:(double)data :(double)a4
 {
-  v7 = [objc_alloc(sub_1000165F8()) initWithGEOCoordinate:{a3, a4}];
+  v7 = [objc_alloc(sub_1000165F8()) initWithGEOCoordinate:{data, a4}];
   [v7 setHorizontalAccuracy:0.0];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003FA14;
   v8[3] = &unk_10023E240;
-  *&v8[5] = a3;
+  *&v8[5] = data;
   *&v8[6] = a4;
   v8[4] = self;
   [sub_10003F928() fetchDataForLocation:v7 type:1 responseQueue:-[WRM_EnhancedCTService queue](self responseBlock:{"queue"), v8}];
 }
 
-- (void)processVoiceLqmQMI:(unsigned __int8)a3 VLQM:(unsigned __int8)a4 IMSPreference:(BOOL)a5 AudioErasure:(double)a6 RSRP:(double)a7
+- (void)processVoiceLqmQMI:(unsigned __int8)i VLQM:(unsigned __int8)m IMSPreference:(BOOL)preference AudioErasure:(double)erasure RSRP:(double)p
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040120;
   v7[3] = &unk_10023E288;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  *&v7[5] = a6;
-  *&v7[6] = a7;
+  iCopy = i;
+  mCopy = m;
+  preferenceCopy = preference;
+  *&v7[5] = erasure;
+  *&v7[6] = p;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v7);
 }
 
-- (id)intializeInterfaceClient:(int64_t)a3
+- (id)intializeInterfaceClient:(int64_t)client
 {
   v4 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
   v5 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
   if (v4)
   {
-    v6 = [v5 getQmiClientForSim:a3];
+    v6 = [v5 getQmiClientForSim:client];
     if (v6)
     {
       [WCM_Logging logLevel:22 message:@"%s: qmiClient is ready.", "[WRM_EnhancedCTService intializeInterfaceClient:]"];
@@ -5211,39 +5211,39 @@ LABEL_13:
 
 - (BOOL)shouldScheduleSpeedTests
 {
-  v3 = [(WRM_EnhancedCTService *)self ifInternalDevice];
-  if (v3)
+  ifInternalDevice = [(WRM_EnhancedCTService *)self ifInternalDevice];
+  if (ifInternalDevice)
   {
-    v3 = [(WRM_EnhancedCTService *)self ifLimitSpeedTest];
-    if (v3)
+    ifInternalDevice = [(WRM_EnhancedCTService *)self ifLimitSpeedTest];
+    if (ifInternalDevice)
     {
       if ([(WRM_EnhancedCTService *)self ifAutomatedDeviceGroup])
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(ifInternalDevice) = 0;
       }
 
       else
       {
-        LOBYTE(v3) = ![(WRM_EnhancedCTService *)self deviceInRoaming];
+        LOBYTE(ifInternalDevice) = ![(WRM_EnhancedCTService *)self deviceInRoaming];
       }
     }
   }
 
-  return v3;
+  return ifInternalDevice;
 }
 
-- (void)resetCbrsCAMetricSentOnSimSlot:(int64_t)a3
+- (void)resetCbrsCAMetricSentOnSimSlot:(int64_t)slot
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100040990;
   v3[3] = &unk_10023DD88;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = slot;
   dispatch_async([(WRM_EnhancedCTService *)self queue], v3);
 }
 
-- (void)feedCellularMetricsWithUUID:(id)a3
+- (void)feedCellularMetricsWithUUID:(id)d
 {
   v5 = [+[WRM_MetricsService getSingleton](WRM_MetricsService "getSingleton")];
   if (v5)
@@ -5252,13 +5252,13 @@ LABEL_13:
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
-    v24 = [(WRM_EnhancedCTService *)self dataPreferredSlot];
+    dataPreferredSlot = [(WRM_EnhancedCTService *)self dataPreferredSlot];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100040D34;
     block[3] = &unk_10023DE28;
     block[4] = self;
-    block[5] = a3;
+    block[5] = d;
     block[6] = &v21;
     dispatch_sync([(WRM_EnhancedCTService *)self queue], block);
     v7 = [(WRM_EnhancedCTService *)self getCTDataIndictor:v22[3]];

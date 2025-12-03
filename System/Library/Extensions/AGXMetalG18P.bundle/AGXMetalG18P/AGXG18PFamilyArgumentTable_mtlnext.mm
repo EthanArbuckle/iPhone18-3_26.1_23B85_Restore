@@ -1,25 +1,25 @@
 @interface AGXG18PFamilyArgumentTable_mtlnext
-- (AGXG18PFamilyArgumentTable_mtlnext)initWithDescriptor:(id)a3 device:(id)a4;
+- (AGXG18PFamilyArgumentTable_mtlnext)initWithDescriptor:(id)descriptor device:(id)device;
 - (void)dealloc;
-- (void)getBufferBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4;
-- (void)getTextureBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4;
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4;
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4;
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4;
+- (void)getBufferBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count;
+- (void)getTextureBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count;
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index;
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index;
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index;
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index;
 @end
 
 @implementation AGXG18PFamilyArgumentTable_mtlnext
 
-- (void)getTextureBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4
+- (void)getTextureBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     impl = self->_impl;
     v5 = impl[3];
     v6 = *(impl + 2);
-    if (a4 == 1)
+    if (count == 1)
     {
       v7 = 0;
       v8 = 0;
@@ -28,30 +28,30 @@ LABEL_4:
       v10 = v8 + 1;
       do
       {
-        a3[v7] = *(v9 + (v7 << 7) + 56);
+        bindings[v7] = *(v9 + (v7 << 7) + 56);
         v7 = v10++;
       }
 
-      while (v7 < a4);
+      while (v7 < count);
       return;
     }
 
     v8 = 0;
     v7 = 0;
-    if (!a4)
+    if (!count)
     {
       goto LABEL_4;
     }
 
-    if ((a4 - 1) >> 32)
+    if ((count - 1) >> 32)
     {
       goto LABEL_4;
     }
 
-    v7 = a4 & 0x1FFFFFFFELL;
-    v11 = a3 + 1;
+    v7 = count & 0x1FFFFFFFELL;
+    v11 = bindings + 1;
     v12 = (v6 + v5 + 184);
-    v13 = a4 & 0x1FFFFFFFELL;
+    v13 = count & 0x1FFFFFFFELL;
     do
     {
       v14 = *v12;
@@ -63,34 +63,34 @@ LABEL_4:
     }
 
     while (v13);
-    v8 = a4 & 0xFFFFFFFE;
-    if (v7 != a4)
+    v8 = count & 0xFFFFFFFE;
+    if (v7 != count)
     {
       goto LABEL_4;
     }
   }
 }
 
-- (void)getBufferBindings:(MTLResourceID *)a3 bindingCount:(unint64_t)a4
+- (void)getBufferBindings:(MTLResourceID *)bindings bindingCount:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     impl = self->_impl;
     v5 = impl[3];
     v6 = *(impl + 1);
-    if (a4 <= 0xD)
+    if (count <= 0xD)
     {
       goto LABEL_3;
     }
 
     v8 = 0;
     v7 = 0;
-    if (!a4 || (a4 - 1) >> 32)
+    if (!count || (count - 1) >> 32)
     {
       goto LABEL_4;
     }
 
-    if (a3 - v5 - v6 < 0x20)
+    if (bindings - v5 - v6 < 0x20)
     {
 LABEL_3:
       v7 = 0;
@@ -99,10 +99,10 @@ LABEL_3:
 
     else
     {
-      v7 = a4 & 0x1FFFFFFFCLL;
-      v11 = a3 + 2;
+      v7 = count & 0x1FFFFFFFCLL;
+      v11 = bindings + 2;
       v12 = (v6 + v5 + 16);
-      v13 = a4 & 0x1FFFFFFFCLL;
+      v13 = count & 0x1FFFFFFFCLL;
       do
       {
         v14 = *v12;
@@ -114,8 +114,8 @@ LABEL_3:
       }
 
       while (v13);
-      v8 = a4 & 0xFFFFFFFC;
-      if (v7 == a4)
+      v8 = count & 0xFFFFFFFC;
+      if (v7 == count)
       {
         return;
       }
@@ -126,11 +126,11 @@ LABEL_4:
     v10 = v8 + 1;
     do
     {
-      a3[v7] = *(v9 + 8 * v7);
+      bindings[v7] = *(v9 + 8 * v7);
       v7 = v10++;
     }
 
-    while (v7 < a4);
+    while (v7 < count);
   }
 }
 
@@ -148,12 +148,12 @@ LABEL_4:
   [(_MTLObjectWithLabel *)&v4 dealloc];
 }
 
-- (void)setSamplerState:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(MTLResourceID)state atIndex:(unint64_t)index
 {
-  v4 = a4;
-  if (a3._impl)
+  indexCopy = index;
+  if (state._impl)
   {
-    AGX::Mempool<16u,0u,true,0u,0u,AGX::HAL300::SamplerHeapElem>::RangeAllocation::RangeAllocation(v14, self->_device->_impl + 2152, a3._impl);
+    AGX::Mempool<16u,0u,true,0u,0u,AGX::HAL300::SamplerHeapElem>::RangeAllocation::RangeAllocation(v14, self->_device->_impl + 2152, state._impl);
     v7 = v15;
     os_unfair_lock_lock(v15 + 194);
     v8 = v15;
@@ -175,10 +175,10 @@ LABEL_4:
     v10 = 0;
   }
 
-  v12 = 32 * v4;
+  v12 = 32 * indexCopy;
   *(*(self->_impl + 3) + *(self->_impl + 3) + v12 + 8) = v10;
   impl = self->_impl;
-  *(*(impl + 3) + impl[3] + v12) = a3;
+  *(*(impl + 3) + impl[3] + v12) = state;
   if (atomic_load_explicit(impl + 88, memory_order_acquire))
   {
     if (*(impl + 10) != -1)
@@ -190,12 +190,12 @@ LABEL_4:
   }
 }
 
-- (void)setTexture:(MTLResourceID)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(MTLResourceID)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  if (a3._impl)
+  indexCopy = index;
+  if (texture._impl)
   {
-    AGX::Mempool<16u,0u,true,0u,268435456u,AGX::HAL300::TextureHeapElem,AGX::HAL300::TextureHeapElem,unsigned long long>::RangeAllocation::RangeAllocation(v60, self->_device->_impl + 1810, 1u, a3._impl);
+    AGX::Mempool<16u,0u,true,0u,268435456u,AGX::HAL300::TextureHeapElem,AGX::HAL300::TextureHeapElem,unsigned long long>::RangeAllocation::RangeAllocation(v60, self->_device->_impl + 1810, 1u, texture._impl);
     v7 = v61;
     os_unfair_lock_lock((v61 + 1344));
     v8 = v61;
@@ -221,16 +221,16 @@ LABEL_4:
 
     v31 = *v13;
     v32 = *(v13 + 8);
-    v17 = v4;
+    indexCopy2 = indexCopy;
     v57 = *(v13 + 16);
     v58 = *v14;
     v59 = v14[1];
     os_unfair_lock_unlock(v7 + 336);
-    v33 = *(self->_impl + 3) + *(self->_impl + 2) + (v4 << 7);
+    v33 = *(self->_impl + 3) + *(self->_impl + 2) + (indexCopy << 7);
     *(v33 + 64) = v31;
     *(v33 + 72) = v32;
     *(v33 + 80) = v57;
-    v34 = *(self->_impl + 3) + *(self->_impl + 2) + (v4 << 7);
+    v34 = *(self->_impl + 3) + *(self->_impl + 2) + (indexCopy << 7);
     *(v34 + 96) = v58;
     *(v34 + 112) = v59;
     v35 = (v31 >> 4) & 3;
@@ -340,7 +340,7 @@ LABEL_4:
       v53 = 1;
     }
 
-    v54 = (*(self->_impl + 3) + *(self->_impl + 2) + (v4 << 7));
+    v54 = (*(self->_impl + 3) + *(self->_impl + 2) + (indexCopy << 7));
     *v54 = 0;
     v54[1].i32[0] = 0;
     v54[1].i32[1] = v39 - 1;
@@ -351,13 +351,13 @@ LABEL_4:
     v54[4].i32[1] = v49;
     v54[5].i32[0] = v51;
     v54[5].i32[1] = v52;
-    v54[6].i32[0] = a3._impl;
+    v54[6].i32[0] = texture._impl;
     v54[6].i32[1] = 0;
     impl = self->_impl;
-    v55 = &impl[8 * (v4 > 0x3F)];
-    *(v55 + 4) |= 1 << v4;
-    *(v55 + 6) = *(v55 + 6) & ~(1 << v4) | (((v31 >> 61) & 1) << v4);
-    *(v55 + 8) |= 1 << v4;
+    v55 = &impl[8 * (indexCopy > 0x3F)];
+    *(v55 + 4) |= 1 << indexCopy;
+    *(v55 + 6) = *(v55 + 6) & ~(1 << indexCopy) | (((v31 >> 61) & 1) << indexCopy);
+    *(v55 + 8) |= 1 << indexCopy;
     if (v60[0] && (v62 & 1) == 0)
     {
       v56 = v61;
@@ -372,8 +372,8 @@ LABEL_4:
   {
     v15 = self->_impl;
     device = self->_device;
-    v17 = a4;
-    v18 = a4 << 7;
+    indexCopy2 = index;
+    v18 = index << 7;
     v19 = (v15[3] + *(v15 + 2) + v18);
     bzero(v19, 0x38uLL);
     v19[12] = 0;
@@ -388,13 +388,13 @@ LABEL_4:
     *(v24 + 96) = v23[1032];
     *(v24 + 112) = v25;
     impl = self->_impl;
-    v27 = &impl[8 * (v4 > 0x3F)];
-    *(v27 + 4) &= ~(1 << v4);
-    *(v27 + 6) &= ~(1 << v4);
-    *(v27 + 8) &= ~(1 << v4);
+    v27 = &impl[8 * (indexCopy > 0x3F)];
+    *(v27 + 4) &= ~(1 << indexCopy);
+    *(v27 + 6) &= ~(1 << indexCopy);
+    *(v27 + 8) &= ~(1 << indexCopy);
   }
 
-  *(*(impl + 3) + *(impl + 2) + (v17 << 7) + 56) = a3;
+  *(*(impl + 3) + *(impl + 2) + (indexCopy2 << 7) + 56) = texture;
   if (atomic_load_explicit(impl + 88, memory_order_acquire))
   {
     if (*(impl + 10) != -1)
@@ -406,10 +406,10 @@ LABEL_4:
   }
 }
 
-- (void)setResource:(MTLResourceID)a3 atBufferIndex:(unint64_t)a4
+- (void)setResource:(MTLResourceID)resource atBufferIndex:(unint64_t)index
 {
   impl = self->_impl;
-  *(*(impl + 3) + impl[1] + 8 * a4) = a3;
+  *(*(impl + 3) + impl[1] + 8 * index) = resource;
   if (atomic_load_explicit(impl + 88, memory_order_acquire))
   {
     if (*(impl + 10) != -1)
@@ -421,12 +421,12 @@ LABEL_4:
   }
 }
 
-- (void)setAddress:(unint64_t)a3 attributeStride:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setAddress:(unint64_t)address attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
   impl = self->_impl;
   v6 = *(impl + 3);
-  *(v6 + impl[1] + 8 * a5) = a3;
-  *(v6 + impl[5] + 4 * a5) = a4;
+  *(v6 + impl[1] + 8 * index) = address;
+  *(v6 + impl[5] + 4 * index) = stride;
   if (atomic_load_explicit(impl + 88, memory_order_acquire))
   {
     if (*(impl + 10) != -1)
@@ -438,10 +438,10 @@ LABEL_4:
   }
 }
 
-- (void)setAddress:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setAddress:(unint64_t)address atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  *(*(impl + 3) + impl[1] + 8 * a4) = a3;
+  *(*(impl + 3) + impl[1] + 8 * index) = address;
   if (atomic_load_explicit(impl + 88, memory_order_acquire))
   {
     if (*(impl + 10) != -1)
@@ -453,15 +453,15 @@ LABEL_4:
   }
 }
 
-- (AGXG18PFamilyArgumentTable_mtlnext)initWithDescriptor:(id)a3 device:(id)a4
+- (AGXG18PFamilyArgumentTable_mtlnext)initWithDescriptor:(id)descriptor device:(id)device
 {
   v8.receiver = self;
   v8.super_class = AGXG18PFamilyArgumentTable_mtlnext;
   v6 = [_MTL4ArgumentTable initWithDescriptor:sel_initWithDescriptor_device_ device:?];
   if (v6)
   {
-    v6->_device = a4;
-    [a3 supportAttributeStrides];
+    v6->_device = device;
+    [descriptor supportAttributeStrides];
     operator new();
   }
 

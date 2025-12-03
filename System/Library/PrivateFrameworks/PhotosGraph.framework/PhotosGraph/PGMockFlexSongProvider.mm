@@ -1,8 +1,8 @@
 @interface PGMockFlexSongProvider
 - (PGMockFlexSongProvider)init;
-- (id)allFlexSongsAndReturnError:(id *)a3;
+- (id)allFlexSongsAndReturnError:(id *)error;
 - (id)name;
-- (id)usableFlexSongsAndReturnError:(id *)a3;
+- (id)usableFlexSongsAndReturnError:(id *)error;
 @end
 
 @implementation PGMockFlexSongProvider
@@ -17,10 +17,10 @@
   return v2;
 }
 
-- (id)allFlexSongsAndReturnError:(id *)a3
+- (id)allFlexSongsAndReturnError:(id *)error
 {
   v3 = qword_2810A9AB0;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -40,7 +40,7 @@
   return v8;
 }
 
-- (id)usableFlexSongsAndReturnError:(id *)a3
+- (id)usableFlexSongsAndReturnError:(id *)error
 {
   sub_22F1BB79C();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAB1228, &unk_22F771660);

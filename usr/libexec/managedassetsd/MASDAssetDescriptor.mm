@@ -6,27 +6,27 @@
 
 - (BOOL)isValid
 {
-  v3 = [(MASDAssetDescriptor *)self label];
-  if (v3)
+  label = [(MASDAssetDescriptor *)self label];
+  if (label)
   {
-    v4 = v3;
-    v5 = [(MASDAssetDescriptor *)self label];
-    v6 = [v5 isValidMetaDataString];
+    v4 = label;
+    label2 = [(MASDAssetDescriptor *)self label];
+    isValidMetaDataString = [label2 isValidMetaDataString];
 
-    if (!v6)
+    if (!isValidMetaDataString)
     {
       return 0;
     }
   }
 
-  v7 = [(MASDAssetDescriptor *)self algorithmVersion];
-  if (v7)
+  algorithmVersion = [(MASDAssetDescriptor *)self algorithmVersion];
+  if (algorithmVersion)
   {
-    v8 = v7;
-    v9 = [(MASDAssetDescriptor *)self algorithmVersion];
-    v10 = [v9 isValidMetaDataString];
+    v8 = algorithmVersion;
+    algorithmVersion2 = [(MASDAssetDescriptor *)self algorithmVersion];
+    isValidMetaDataString2 = [algorithmVersion2 isValidMetaDataString];
 
-    if (!v10)
+    if (!isValidMetaDataString2)
     {
       return 0;
     }

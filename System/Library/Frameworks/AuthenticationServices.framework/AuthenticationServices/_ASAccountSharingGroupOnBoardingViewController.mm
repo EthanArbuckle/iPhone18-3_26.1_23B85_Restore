@@ -1,5 +1,5 @@
 @interface _ASAccountSharingGroupOnBoardingViewController
-- (_ASAccountSharingGroupOnBoardingViewController)initWithContentType:(unint64_t)a3 group:(id)a4;
+- (_ASAccountSharingGroupOnBoardingViewController)initWithContentType:(unint64_t)type group:(id)group;
 - (_ASAccountSharingGroupOnBoardingViewControllerDelegate)delegate;
 - (void)_addButtons;
 - (void)_cancelButtonSelected;
@@ -12,34 +12,34 @@
 
 @implementation _ASAccountSharingGroupOnBoardingViewController
 
-- (_ASAccountSharingGroupOnBoardingViewController)initWithContentType:(unint64_t)a3 group:(id)a4
+- (_ASAccountSharingGroupOnBoardingViewController)initWithContentType:(unint64_t)type group:(id)group
 {
-  v7 = a4;
-  v8 = v7;
+  groupCopy = group;
+  v8 = groupCopy;
   v9 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v9 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerTitleForMovingCredentialsToGroup];
       v10 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerImageForMovingCredentialsToGroup];
-      v14 = [v8 displayName];
-      v15 = [_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent descriptionForMovingCredentialsToGroup:v14];
+      displayName = [v8 displayName];
+      v15 = [_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent descriptionForMovingCredentialsToGroup:displayName];
     }
 
     else
     {
       v10 = 0;
       v11 = 0;
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_12;
       }
 
       v9 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerTitleForRemovingDuplicateCredentialsInGroup];
       v10 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerImageForRemovingDuplicateCredentialsInGroup];
-      v14 = [v8 displayName];
-      v15 = [_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent descriptionForRemovingDuplicateCredentialsInGroup:v14];
+      displayName = [v8 displayName];
+      v15 = [_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent descriptionForRemovingDuplicateCredentialsInGroup:displayName];
     }
 
     v11 = v15;
@@ -47,17 +47,17 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
       v10 = 0;
       v11 = 0;
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_12;
       }
 
-      v12 = [v7 displayName];
-      v9 = [_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerTitleForWelcomeViewWithGroupName:v12];
+      displayName2 = [groupCopy displayName];
+      v9 = [_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerTitleForWelcomeViewWithGroupName:displayName2];
 
       v13 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent headerImageForWelcomeView];
     }
@@ -79,8 +79,8 @@ LABEL_12:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_group, a4);
-    v17->_contentType = a3;
+    objc_storeStrong(&v16->_group, group);
+    v17->_contentType = type;
     v18 = v17;
   }
 
@@ -100,10 +100,10 @@ LABEL_12:
     v15 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent firstBulletImageForWelcomeView];
     [(_ASAccountSharingGroupOnBoardingViewController *)self addBulletedListItemWithTitle:v13 description:v14 image:v15];
 
-    v16 = [(KCSharingGroup *)self->_group currentUserParticipant];
-    v17 = [v16 permissionLevel];
+    currentUserParticipant = [(KCSharingGroup *)self->_group currentUserParticipant];
+    permissionLevel = [currentUserParticipant permissionLevel];
 
-    if (v17)
+    if (permissionLevel)
     {
       v18 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent secondBulletTitleForWelcomeView];
       v19 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent secondBulletDescriptionForWelcomeView];
@@ -116,8 +116,8 @@ LABEL_12:
     v23 = +[_ASAccountSharingGroupOnBoardingInvitationAcceptanceFlowContent thirdBulletImageForWelcomeView];
     [(_ASAccountSharingGroupOnBoardingViewController *)self addBulletedListItemWithTitle:v21 description:v22 image:v23];
 
-    v10 = [(OBBaseWelcomeController *)self navigationItem];
-    [v10 setHidesBackButton:1 animated:1];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:1];
     goto LABEL_7;
   }
 
@@ -133,10 +133,10 @@ LABEL_12:
     v9 = +[_ASAccountSharingGroupOnBoardingCreateGroupContent secondBulletImage];
     [(_ASAccountSharingGroupOnBoardingViewController *)self addBulletedListItemWithTitle:v7 description:v8 image:v9];
 
-    v10 = +[_ASAccountSharingGroupOnBoardingCreateGroupContent thirdBulletTitle];
+    navigationItem = +[_ASAccountSharingGroupOnBoardingCreateGroupContent thirdBulletTitle];
     v11 = +[_ASAccountSharingGroupOnBoardingCreateGroupContent thirdBulletDescription];
     v12 = +[_ASAccountSharingGroupOnBoardingCreateGroupContent thirdBulletImage];
-    [(_ASAccountSharingGroupOnBoardingViewController *)self addBulletedListItemWithTitle:v10 description:v11 image:v12];
+    [(_ASAccountSharingGroupOnBoardingViewController *)self addBulletedListItemWithTitle:navigationItem description:v11 image:v12];
 
 LABEL_7:
   }
@@ -146,7 +146,7 @@ LABEL_7:
 
 - (void)_addButtons
 {
-  v7 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   contentType = self->_contentType;
   if (contentType <= 1)
   {
@@ -162,13 +162,13 @@ LABEL_7:
   {
 LABEL_6:
     v4 = _WBSLocalizedString();
-    [v7 setTitle:v4 forState:0];
+    [boldButton setTitle:v4 forState:0];
   }
 
 LABEL_7:
-  [v7 addTarget:self action:sel__continueButtonSelected forControlEvents:64];
-  v5 = [(_ASAccountSharingGroupOnBoardingViewController *)self buttonTray];
-  [v5 addButton:v7];
+  [boldButton addTarget:self action:sel__continueButtonSelected forControlEvents:64];
+  buttonTray = [(_ASAccountSharingGroupOnBoardingViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   v6 = self->_contentType;
   if (v6 - 2 >= 2)
@@ -187,24 +187,24 @@ LABEL_7:
 
 - (void)_configureCancelButton
 {
-  v5 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v3 = _WBSLocalizedString();
-  [v5 setTitle:v3 forState:0];
+  [linkButton setTitle:v3 forState:0];
 
-  [v5 addTarget:self action:sel__cancelButtonSelected forControlEvents:64];
-  v4 = [(_ASAccountSharingGroupOnBoardingViewController *)self buttonTray];
-  [v4 addButton:v5];
+  [linkButton addTarget:self action:sel__cancelButtonSelected forControlEvents:64];
+  buttonTray = [(_ASAccountSharingGroupOnBoardingViewController *)self buttonTray];
+  [buttonTray addButton:linkButton];
 }
 
 - (void)_configureNotNowButton
 {
-  v5 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v3 = _WBSLocalizedString();
-  [v5 setTitle:v3 forState:0];
+  [linkButton setTitle:v3 forState:0];
 
-  [v5 addTarget:self action:sel__notNowButtonSelected forControlEvents:64];
-  v4 = [(_ASAccountSharingGroupOnBoardingViewController *)self buttonTray];
-  [v4 addButton:v5];
+  [linkButton addTarget:self action:sel__notNowButtonSelected forControlEvents:64];
+  buttonTray = [(_ASAccountSharingGroupOnBoardingViewController *)self buttonTray];
+  [buttonTray addButton:linkButton];
 }
 
 - (void)_continueButtonSelected
@@ -214,8 +214,8 @@ LABEL_7:
     v3 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v3 startAnimating];
     v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v3];
-    v5 = [(OBBaseWelcomeController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

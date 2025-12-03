@@ -1,27 +1,27 @@
 @interface HAP2AccessoryServerPairingDriverTransportControlWorkItem
 + (id)closeConnection;
 + (id)openConnection;
-- (HAP2AccessoryServerPairingDriverTransportControlWorkItem)initWithConnect:(BOOL)a3;
-- (void)_finishWithError:(id)a3;
-- (void)cancelWithError:(id)a3;
-- (void)runForPairingDriver:(id)a3;
+- (HAP2AccessoryServerPairingDriverTransportControlWorkItem)initWithConnect:(BOOL)connect;
+- (void)_finishWithError:(id)error;
+- (void)cancelWithError:(id)error;
+- (void)runForPairingDriver:(id)driver;
 @end
 
 @implementation HAP2AccessoryServerPairingDriverTransportControlWorkItem
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HAP2AccessoryServerPairingDriverTransportControlWorkItem_cancelWithError___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -39,24 +39,24 @@ void __76__HAP2AccessoryServerPairingDriverTransportControlWorkItem_cancelWithEr
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
-  [v4 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v5 = [(HAP2AccessoryServerPairingDriverTransportControlWorkItem *)self cancelError];
+  cancelError = [(HAP2AccessoryServerPairingDriverTransportControlWorkItem *)self cancelError];
 
-  if (!v5)
+  if (!cancelError)
   {
-    [(HAP2AccessoryServerPairingDriverWorkItem *)self finishWithError:v6];
+    [(HAP2AccessoryServerPairingDriverWorkItem *)self finishWithError:errorCopy];
   }
 }
 
-- (void)runForPairingDriver:(id)a3
+- (void)runForPairingDriver:(id)driver
 {
-  v4 = a3;
-  v5 = [v4 transport];
+  driverCopy = driver;
+  transport = [driverCopy transport];
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
@@ -66,12 +66,12 @@ void __76__HAP2AccessoryServerPairingDriverTransportControlWorkItem_cancelWithEr
   v6 = MEMORY[0x231885210](&v7);
   if ([(HAP2AccessoryServerPairingDriverTransportControlWorkItem *)self connect:v7])
   {
-    [v5 openWithCompletion:v6];
+    [transport openWithCompletion:v6];
   }
 
   else
   {
-    [v5 closeWithError:0 completion:v6];
+    [transport closeWithError:0 completion:v6];
   }
 
   objc_destroyWeak(&v11);
@@ -102,14 +102,14 @@ void __80__HAP2AccessoryServerPairingDriverTransportControlWorkItem_runForPairin
   [WeakRetained _finishWithError:*(a1 + 32)];
 }
 
-- (HAP2AccessoryServerPairingDriverTransportControlWorkItem)initWithConnect:(BOOL)a3
+- (HAP2AccessoryServerPairingDriverTransportControlWorkItem)initWithConnect:(BOOL)connect
 {
   v5.receiver = self;
   v5.super_class = HAP2AccessoryServerPairingDriverTransportControlWorkItem;
   result = [(HAP2AccessoryServerPairingDriverTransportControlWorkItem *)&v5 init];
   if (result)
   {
-    result->_connect = a3;
+    result->_connect = connect;
   }
 
   return result;
@@ -117,14 +117,14 @@ void __80__HAP2AccessoryServerPairingDriverTransportControlWorkItem_runForPairin
 
 + (id)closeConnection
 {
-  v2 = [[a1 alloc] initWithConnect:0];
+  v2 = [[self alloc] initWithConnect:0];
 
   return v2;
 }
 
 + (id)openConnection
 {
-  v2 = [[a1 alloc] initWithConnect:1];
+  v2 = [[self alloc] initWithConnect:1];
 
   return v2;
 }

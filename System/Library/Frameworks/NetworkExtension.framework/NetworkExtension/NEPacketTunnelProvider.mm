@@ -1,55 +1,55 @@
 @interface NEPacketTunnelProvider
-- (NEPacketTunnelProvider)initWithVirtualInterfaceType:(int64_t)a3;
+- (NEPacketTunnelProvider)initWithVirtualInterfaceType:(int64_t)type;
 - (NWUDPSession)createUDPSessionThroughTunnelToEndpoint:(NWEndpoint *)remoteEndpoint fromEndpoint:(NWHostEndpoint *)localEndpoint;
 - (OS_nw_interface)virtualInterface;
 - (id)getTunnelInterface;
 - (void)cancelTunnelWithError:(NSError *)error;
-- (void)setTunnelNetworkSettings:(id)a3 completionHandler:(id)a4;
+- (void)setTunnelNetworkSettings:(id)settings completionHandler:(id)handler;
 - (void)startTunnelWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler;
 - (void)stopTunnelWithReason:(NEProviderStopReason)reason completionHandler:(void *)completionHandler;
 @end
 
 @implementation NEPacketTunnelProvider
 
-- (void)setTunnelNetworkSettings:(id)a3 completionHandler:(id)a4
+- (void)setTunnelNetworkSettings:(id)settings completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  settingsCopy = settings;
+  handlerCopy = handler;
+  v9 = settingsCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_16;
   }
 
-  v10 = [v9 IPv4Settings];
-  if (!v10 || ([v9 IPv4Settings], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "configMethod") == 3))
+  iPv4Settings = [v9 IPv4Settings];
+  if (!iPv4Settings || ([v9 IPv4Settings], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "configMethod") == 3))
   {
-    v11 = [v9 IPv6Settings];
-    if (!v11)
+    iPv6Settings = [v9 IPv6Settings];
+    if (!iPv6Settings)
     {
-      if (v10)
+      if (iPv4Settings)
       {
       }
 
       goto LABEL_16;
     }
 
-    v12 = v11;
-    v13 = [v9 IPv6Settings];
-    v14 = [v13 configMethod];
+    v12 = iPv6Settings;
+    iPv6Settings2 = [v9 IPv6Settings];
+    configMethod = [iPv6Settings2 configMethod];
 
-    if (v10)
+    if (iPv4Settings)
     {
     }
 
-    if (v14 == 2)
+    if (configMethod == 2)
     {
 LABEL_16:
       v22.receiver = self;
       v22.super_class = NEPacketTunnelProvider;
-      [(NETunnelProvider *)&v22 setTunnelNetworkSettings:v9 completionHandler:v8];
+      [(NETunnelProvider *)&v22 setTunnelNetworkSettings:v9 completionHandler:handlerCopy];
       goto LABEL_17;
     }
   }
@@ -86,7 +86,7 @@ LABEL_13:
   v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
   v20 = [v15 errorWithDomain:@"NETunnelProviderErrorDomain" code:1 userInfo:v19];
 
-  v8[2](v8, v20);
+  handlerCopy[2](handlerCopy, v20);
 LABEL_17:
 
   v21 = *MEMORY[0x1E69E9840];
@@ -100,7 +100,7 @@ LABEL_17:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = reason;
     _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_INFO, "%@: Stopping with reason %ld", &v9, 0x16u);
@@ -119,7 +119,7 @@ LABEL_17:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_DEFAULT, "%@: Starting with options %@", &v10, 0x16u);
@@ -137,14 +137,14 @@ LABEL_17:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v4;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: canceling with error %@", &v8, 0x16u);
   }
 
-  v6 = [(NEProvider *)self context];
-  [v6 cancelWithError:v4];
+  context = [(NEProvider *)self context];
+  [context cancelWithError:v4];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -158,14 +158,14 @@ LABEL_17:
   if (v6)
   {
     v10 = MEMORY[0x1E6977E08];
-    v11 = [(NWHostEndpoint *)v6 hostname];
-    v12 = [(NWHostEndpoint *)v6 port];
-    v13 = [v10 endpointWithHostname:v11 port:v12];
+    hostname = [(NWHostEndpoint *)v6 hostname];
+    port = [(NWHostEndpoint *)v6 port];
+    v13 = [v10 endpointWithHostname:hostname port:port];
     [v9 setLocalAddress:v13];
   }
 
-  v14 = [(NEPacketTunnelProvider *)self getTunnelInterface];
-  [v9 setRequiredInterface:v14];
+  getTunnelInterface = [(NEPacketTunnelProvider *)self getTunnelInterface];
+  [v9 setRequiredInterface:getTunnelInterface];
 
   v15 = [objc_alloc(MEMORY[0x1E6977E70]) initWithEndpoint:v8 parameters:v9];
 
@@ -174,12 +174,12 @@ LABEL_17:
 
 - (id)getTunnelInterface
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 packetFlow];
-    if (v2)
+    packetFlow = [self packetFlow];
+    if (packetFlow)
     {
-      v3 = v2[11];
+      v3 = packetFlow[11];
 
       if (!v3)
       {
@@ -187,9 +187,9 @@ LABEL_17:
       }
 
       v4 = objc_alloc(MEMORY[0x1E6977E30]);
-      v5 = [a1 packetFlow];
-      v6 = v5;
-      if (v5 && (v7 = *(v5 + 88)) != 0)
+      packetFlow2 = [self packetFlow];
+      v6 = packetFlow2;
+      if (packetFlow2 && (v7 = *(packetFlow2 + 88)) != 0)
       {
         v8 = CFStringCreateWithCString(*MEMORY[0x1E695E480], (v7 + 265), 0x600u);
       }
@@ -221,24 +221,24 @@ LABEL_10:
 
 - (OS_nw_interface)virtualInterface
 {
-  v3 = [(NEPacketTunnelProvider *)self packetFlow];
-  if (v3)
+  packetFlow = [(NEPacketTunnelProvider *)self packetFlow];
+  if (packetFlow)
   {
-    v4 = v3[11];
+    v4 = packetFlow[11];
 
     if (!v4)
     {
       goto LABEL_7;
     }
 
-    v5 = [(NEPacketTunnelProvider *)self packetFlow];
-    v6 = v5;
-    if (v5)
+    packetFlow2 = [(NEPacketTunnelProvider *)self packetFlow];
+    v6 = packetFlow2;
+    if (packetFlow2)
     {
-      v5 = *(v5 + 88);
+      packetFlow2 = *(packetFlow2 + 88);
     }
 
-    NEVirtualInterfaceGetIndex(v5);
+    NEVirtualInterfaceGetIndex(packetFlow2);
     v4 = nw_interface_create_with_index();
   }
 
@@ -253,7 +253,7 @@ LABEL_7:
   return v4;
 }
 
-- (NEPacketTunnelProvider)initWithVirtualInterfaceType:(int64_t)a3
+- (NEPacketTunnelProvider)initWithVirtualInterfaceType:(int64_t)type
 {
   v13.receiver = self;
   v13.super_class = NEPacketTunnelProvider;
@@ -274,7 +274,7 @@ LABEL_7:
         context = v6->super.super._context;
         v6->super.super._context = v9;
 
-        v6[1].super.super._defaultPath = a3;
+        v6[1].super.super._defaultPath = type;
       }
     }
 

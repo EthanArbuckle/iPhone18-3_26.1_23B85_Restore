@@ -1,96 +1,96 @@
 @interface PCCluster
-+ (id)clusterObjectsFromProtobuf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PCCluster)initWithCoder:(id)a3;
-- (PCCluster)initWithIdentifier:(id)a3 creationDate:(id)a4;
-- (PCCluster)initWithIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 creationDate:(id)a6;
-- (PCCluster)initWithProtobufEquivalent:(id)a3;
++ (id)clusterObjectsFromProtobuf:(id)protobuf;
+- (BOOL)isEqual:(id)equal;
+- (PCCluster)initWithCoder:(id)coder;
+- (PCCluster)initWithIdentifier:(id)identifier creationDate:(id)date;
+- (PCCluster)initWithIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate;
+- (PCCluster)initWithProtobufEquivalent:(id)equivalent;
 - (id)description;
 - (id)sensitiveDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)mapTimePropertiesFromPhenotype:(id)a3 toDictionary:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)mapTimePropertiesFromPhenotype:(id)phenotype toDictionary:(id)dictionary;
 @end
 
 @implementation PCCluster
 
-- (PCCluster)initWithIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 creationDate:(id)a6
+- (PCCluster)initWithIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate creationDate:(id)creationDate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  creationDateCopy = creationDate;
   v18.receiver = self;
   v18.super_class = PCCluster;
   v15 = [(PCCluster *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_startDate, a4);
-    objc_storeStrong(&v16->_endDate, a5);
-    objc_storeStrong(&v16->_creationDate, a6);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_startDate, date);
+    objc_storeStrong(&v16->_endDate, endDate);
+    objc_storeStrong(&v16->_creationDate, creationDate);
   }
 
   return v16;
 }
 
-- (PCCluster)initWithIdentifier:(id)a3 creationDate:(id)a4
+- (PCCluster)initWithIdentifier:(id)identifier creationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = PCCluster;
   v9 = [(PCCluster *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_creationDate, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_creationDate, date);
   }
 
   return v10;
 }
 
-- (PCCluster)initWithProtobufEquivalent:(id)a3
+- (PCCluster)initWithProtobufEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v55.receiver = self;
   v55.super_class = PCCluster;
   v5 = [(PCCluster *)&v55 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = [v4 identifier];
-    v8 = [v6 initWithUUIDString:v7];
+    identifier = [equivalentCopy identifier];
+    v8 = [v6 initWithUUIDString:identifier];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
     v10 = MEMORY[0x1E695DF00];
-    [v4 startTimeCFAbsolute];
+    [equivalentCopy startTimeCFAbsolute];
     v11 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
     startDate = v5->_startDate;
     v5->_startDate = v11;
 
     v13 = MEMORY[0x1E695DF00];
-    [v4 endTimeCFAbsolute];
+    [equivalentCopy endTimeCFAbsolute];
     v14 = [v13 dateWithTimeIntervalSinceReferenceDate:?];
     endDate = v5->_endDate;
     v5->_endDate = v14;
 
-    v16 = [v4 dominantSourceBundleIdentifier];
+    dominantSourceBundleIdentifier = [equivalentCopy dominantSourceBundleIdentifier];
     sourceBundleIdentifier = v5->_sourceBundleIdentifier;
-    v5->_sourceBundleIdentifier = v16;
+    v5->_sourceBundleIdentifier = dominantSourceBundleIdentifier;
 
-    if ([v4 embeddingIdentifiersWithPhenotypesCount])
+    if ([equivalentCopy embeddingIdentifiersWithPhenotypesCount])
     {
-      v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "embeddingIdentifiersWithPhenotypesCount")}];
-      if ([v4 embeddingIdentifiersWithPhenotypesCount])
+      v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(equivalentCopy, "embeddingIdentifiersWithPhenotypesCount")}];
+      if ([equivalentCopy embeddingIdentifiersWithPhenotypesCount])
       {
         v19 = 0;
         do
         {
-          v20 = [v4 embeddingIdentifiersWithPhenotypeAtIndex:v19];
+          v20 = [equivalentCopy embeddingIdentifiersWithPhenotypeAtIndex:v19];
           if (v20)
           {
             [v18 addObject:v20];
@@ -99,7 +99,7 @@
           ++v19;
         }
 
-        while ([v4 embeddingIdentifiersWithPhenotypesCount] > v19);
+        while ([equivalentCopy embeddingIdentifiersWithPhenotypesCount] > v19);
       }
 
       if ([v18 count])
@@ -114,80 +114,80 @@
       }
     }
 
-    v25 = [MEMORY[0x1E695DF90] dictionary];
-    v26 = [v4 clusterPhenotype];
-    if ([v26 hasActivityType])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    clusterPhenotype = [equivalentCopy clusterPhenotype];
+    if ([clusterPhenotype hasActivityType])
     {
-      v27 = [v26 activityType];
-      [v25 setObject:v27 forKeyedSubscript:@"activityType"];
+      activityType = [clusterPhenotype activityType];
+      [dictionary setObject:activityType forKeyedSubscript:@"activityType"];
 
-      v28 = [v26 activityType];
+      activityType2 = [clusterPhenotype activityType];
       activityType = v5->_activityType;
-      v5->_activityType = v28;
+      v5->_activityType = activityType2;
     }
 
-    if ([v26 hasPlaceName])
+    if ([clusterPhenotype hasPlaceName])
     {
-      v30 = [v26 placeName];
-      [v25 setObject:v30 forKeyedSubscript:@"placeName"];
+      placeName = [clusterPhenotype placeName];
+      [dictionary setObject:placeName forKeyedSubscript:@"placeName"];
 
-      v31 = [v26 placeName];
+      placeName2 = [clusterPhenotype placeName];
       placeName = v5->_placeName;
-      v5->_placeName = v31;
+      v5->_placeName = placeName2;
     }
 
-    if ([v26 hasPlaceType])
+    if ([clusterPhenotype hasPlaceType])
     {
-      v33 = [v26 placeType];
-      [v25 setObject:v33 forKeyedSubscript:@"combinedPlaceType"];
+      placeType = [clusterPhenotype placeType];
+      [dictionary setObject:placeType forKeyedSubscript:@"combinedPlaceType"];
 
-      v34 = [v26 placeType];
+      placeType2 = [clusterPhenotype placeType];
       poiCategory = v5->_poiCategory;
-      v5->_poiCategory = v34;
+      v5->_poiCategory = placeType2;
     }
 
-    if ([v26 hasPlaceLocation])
+    if ([clusterPhenotype hasPlaceLocation])
     {
-      v36 = [v26 placeLocation];
+      placeLocation = [clusterPhenotype placeLocation];
       location = v5->_location;
-      v5->_location = v36;
+      v5->_location = placeLocation;
     }
 
-    [(PCCluster *)v5 mapTimePropertiesFromPhenotype:v26 toDictionary:v25];
-    if ([v26 hasTimeOfDayCircularStd])
+    [(PCCluster *)v5 mapTimePropertiesFromPhenotype:clusterPhenotype toDictionary:dictionary];
+    if ([clusterPhenotype hasTimeOfDayCircularStd])
     {
-      [v26 timeOfDayCircularStd];
+      [clusterPhenotype timeOfDayCircularStd];
       v5->_timeOfDayCircularStd = v38;
       v39 = MEMORY[0x1E696AD98];
-      [v26 timeOfDayCircularStd];
+      [clusterPhenotype timeOfDayCircularStd];
       v40 = [v39 numberWithDouble:?];
-      [v25 setObject:v40 forKeyedSubscript:@"timeOfDayCircularStd"];
+      [dictionary setObject:v40 forKeyedSubscript:@"timeOfDayCircularStd"];
     }
 
-    if ([v26 hasLatLongCircularStd])
+    if ([clusterPhenotype hasLatLongCircularStd])
     {
-      [v26 latLongCircularStd];
+      [clusterPhenotype latLongCircularStd];
       v5->_latLongCircularStd = v41;
       v42 = MEMORY[0x1E696AD98];
-      [v26 latLongCircularStd];
+      [clusterPhenotype latLongCircularStd];
       v43 = [v42 numberWithDouble:?];
-      [v25 setObject:v43 forKeyedSubscript:@"latLongCircularStd"];
+      [dictionary setObject:v43 forKeyedSubscript:@"latLongCircularStd"];
     }
 
     v44 = [PCClusterMetadata alloc];
     v45 = v5->_identifier;
-    v46 = [v25 copy];
+    v46 = [dictionary copy];
     v47 = [(PCClusterMetadata *)v44 initWithIdentifier:v45 phenoType:v46];
 
-    if ([v4 embeddingIdentifiersCount])
+    if ([equivalentCopy embeddingIdentifiersCount])
     {
-      v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "embeddingIdentifiersCount")}];
-      if ([v4 embeddingIdentifiersCount])
+      v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(equivalentCopy, "embeddingIdentifiersCount")}];
+      if ([equivalentCopy embeddingIdentifiersCount])
       {
         v49 = 0;
         do
         {
-          v50 = [v4 embeddingIdentifiersAtIndex:v49];
+          v50 = [equivalentCopy embeddingIdentifiersAtIndex:v49];
           if (v50)
           {
             [v48 addObject:v50];
@@ -196,7 +196,7 @@
           ++v49;
         }
 
-        while (v49 < [v4 embeddingIdentifiersCount]);
+        while (v49 < [equivalentCopy embeddingIdentifiersCount]);
       }
 
       if ([v48 count])
@@ -214,84 +214,84 @@
   return v5;
 }
 
-- (void)mapTimePropertiesFromPhenotype:(id)a3 toDictionary:(id)a4
+- (void)mapTimePropertiesFromPhenotype:(id)phenotype toDictionary:(id)dictionary
 {
-  v22 = a3;
-  v5 = a4;
-  if ([v22 hasTimeOfDayCos])
+  phenotypeCopy = phenotype;
+  dictionaryCopy = dictionary;
+  if ([phenotypeCopy hasTimeOfDayCos])
   {
     v6 = MEMORY[0x1E696AD98];
-    [v22 timeOfDayCos];
+    [phenotypeCopy timeOfDayCos];
     v7 = [v6 numberWithDouble:?];
-    [v5 setObject:v7 forKeyedSubscript:@"timeOfDayCos"];
+    [dictionaryCopy setObject:v7 forKeyedSubscript:@"timeOfDayCos"];
   }
 
-  if ([v22 hasTimeOfDaySin])
+  if ([phenotypeCopy hasTimeOfDaySin])
   {
     v8 = MEMORY[0x1E696AD98];
-    [v22 timeOfDaySin];
+    [phenotypeCopy timeOfDaySin];
     v9 = [v8 numberWithDouble:?];
-    [v5 setObject:v9 forKeyedSubscript:@"timeOfDaySin"];
+    [dictionaryCopy setObject:v9 forKeyedSubscript:@"timeOfDaySin"];
   }
 
-  if ([v22 hasDayOfWeekCos])
+  if ([phenotypeCopy hasDayOfWeekCos])
   {
     v10 = MEMORY[0x1E696AD98];
-    [v22 dayOfWeekCos];
+    [phenotypeCopy dayOfWeekCos];
     v11 = [v10 numberWithDouble:?];
-    [v5 setObject:v11 forKeyedSubscript:@"dayOfWeekCos"];
+    [dictionaryCopy setObject:v11 forKeyedSubscript:@"dayOfWeekCos"];
   }
 
-  if ([v22 hasDayOfWeekSin])
+  if ([phenotypeCopy hasDayOfWeekSin])
   {
     v12 = MEMORY[0x1E696AD98];
-    [v22 dayOfWeekSin];
+    [phenotypeCopy dayOfWeekSin];
     v13 = [v12 numberWithDouble:?];
-    [v5 setObject:v13 forKeyedSubscript:@"dayOfWeekSin"];
+    [dictionaryCopy setObject:v13 forKeyedSubscript:@"dayOfWeekSin"];
   }
 
-  if ([v22 hasNormalizedDuration])
+  if ([phenotypeCopy hasNormalizedDuration])
   {
     v14 = MEMORY[0x1E696AD98];
-    [v22 normalizedDuration];
+    [phenotypeCopy normalizedDuration];
     v15 = [v14 numberWithDouble:?];
-    [v5 setObject:v15 forKeyedSubscript:@"normalizedDuration"];
+    [dictionaryCopy setObject:v15 forKeyedSubscript:@"normalizedDuration"];
   }
 
-  if ([v22 hasWeekOfYear])
+  if ([phenotypeCopy hasWeekOfYear])
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v22, "weekOfYear")}];
-    [v5 setObject:v16 forKeyedSubscript:@"weekOfYear"];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(phenotypeCopy, "weekOfYear")}];
+    [dictionaryCopy setObject:v16 forKeyedSubscript:@"weekOfYear"];
   }
 
-  if ([v22 hasIsWeekend])
+  if ([phenotypeCopy hasIsWeekend])
   {
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v22, "isWeekend")}];
-    [v5 setObject:v17 forKeyedSubscript:@"isWeekend"];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(phenotypeCopy, "isWeekend")}];
+    [dictionaryCopy setObject:v17 forKeyedSubscript:@"isWeekend"];
   }
 
-  if ([v22 hasTimeOfDayCircularStd])
+  if ([phenotypeCopy hasTimeOfDayCircularStd])
   {
     v18 = MEMORY[0x1E696AD98];
-    [v22 timeOfDayCircularStd];
+    [phenotypeCopy timeOfDayCircularStd];
     v19 = [v18 numberWithDouble:?];
-    [v5 setObject:v19 forKeyedSubscript:@"timeOfDayCircularStd"];
+    [dictionaryCopy setObject:v19 forKeyedSubscript:@"timeOfDayCircularStd"];
   }
 
-  if ([v22 hasLatLongCircularStd])
+  if ([phenotypeCopy hasLatLongCircularStd])
   {
     v20 = MEMORY[0x1E696AD98];
-    [v22 latLongCircularStd];
+    [phenotypeCopy latLongCircularStd];
     v21 = [v20 numberWithDouble:?];
-    [v5 setObject:v21 forKeyedSubscript:@"latLongCircularStd"];
+    [dictionaryCopy setObject:v21 forKeyedSubscript:@"latLongCircularStd"];
   }
 }
 
-- (PCCluster)initWithCoder:(id)a3
+- (PCCluster)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   v7 = v6;
   if (v5)
   {
@@ -305,7 +305,7 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -314,88 +314,88 @@
     v11 = v10;
     if (v10)
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
       startDate = v11->_startDate;
       v11->_startDate = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
       endDate = v11->_endDate;
       v11->_endDate = v14;
 
       v16 = MEMORY[0x1E695DFD8];
       v17 = objc_opt_class();
       v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"events"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"events"];
       events = v11->_events;
       v11->_events = v19;
 
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
       time = v11->_time;
       v11->_time = v21;
 
-      v23 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subBundleIDs"];
+      v23 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subBundleIDs"];
       subBundleIDs = v11->_subBundleIDs;
       v11->_subBundleIDs = v23;
 
-      v25 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subSuggestionIDs"];
+      v25 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"subSuggestionIDs"];
       subSuggestionIDs = v11->_subSuggestionIDs;
       v11->_subSuggestionIDs = v25;
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeObject:self->_events forKey:@"events"];
-  [v5 encodeObject:self->_time forKey:@"time"];
-  [v5 encodeObject:self->_subBundleIDs forKey:@"subBundleIDs"];
-  [v5 encodeObject:self->_subSuggestionIDs forKey:@"subSuggestionIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_events forKey:@"events"];
+  [coderCopy encodeObject:self->_time forKey:@"time"];
+  [coderCopy encodeObject:self->_subBundleIDs forKey:@"subBundleIDs"];
+  [coderCopy encodeObject:self->_subSuggestionIDs forKey:@"subSuggestionIDs"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PCCluster *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PCCluster *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(PCCluster *)self identifier];
-        if (v8 || ([(PCCluster *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(PCCluster *)self identifier];
+        if (identifier || ([(PCCluster *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(PCCluster *)self identifier];
-          v10 = [(PCCluster *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(PCCluster *)self identifier];
+          identifier3 = [(PCCluster *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 
@@ -425,23 +425,23 @@ LABEL_13:
   v20 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v19 = NSStringFromClass(v3);
-  v18 = [(PCCluster *)self identifier];
-  v23 = [(PCCluster *)self startDate];
-  v4 = [PCEvent formatDate:v23];
-  v22 = [(PCCluster *)self endDate];
-  v5 = [PCEvent formatDate:v22];
-  v17 = [(PCCluster *)self creationDate];
-  v6 = [PCEvent formatDate:v17];
-  v7 = [(PCCluster *)self activityType];
-  v8 = [(PCCluster *)self poiCategory];
-  v9 = [(PCCluster *)self clusterMetadata];
-  v10 = [v9 subSuggestionIDsBeforePruning];
-  v11 = [v10 count];
-  v12 = [(PCCluster *)self subBundleIDs];
+  identifier = [(PCCluster *)self identifier];
+  startDate = [(PCCluster *)self startDate];
+  v4 = [PCEvent formatDate:startDate];
+  endDate = [(PCCluster *)self endDate];
+  v5 = [PCEvent formatDate:endDate];
+  creationDate = [(PCCluster *)self creationDate];
+  v6 = [PCEvent formatDate:creationDate];
+  activityType = [(PCCluster *)self activityType];
+  poiCategory = [(PCCluster *)self poiCategory];
+  clusterMetadata = [(PCCluster *)self clusterMetadata];
+  subSuggestionIDsBeforePruning = [clusterMetadata subSuggestionIDsBeforePruning];
+  v11 = [subSuggestionIDsBeforePruning count];
+  subBundleIDs = [(PCCluster *)self subBundleIDs];
   [(PCCluster *)self timeOfDayCircularStd];
   v14 = v13;
   [(PCCluster *)self latLongCircularStd];
-  v21 = [v20 stringWithFormat:@"<%@ identifier:%@, startDate:%@, endDate:%@, creationDate:%@, activityType:%@, poiCategory:%@, subSuggestionIDsBeforePruningCount:%lu, subBundleIDs:%@, timeCircStd:%.6f, locationCircStd:%.6f>", v19, v18, v4, v5, v6, v7, v8, v11, v12, v14, v15];
+  v21 = [v20 stringWithFormat:@"<%@ identifier:%@, startDate:%@, endDate:%@, creationDate:%@, activityType:%@, poiCategory:%@, subSuggestionIDsBeforePruningCount:%lu, subBundleIDs:%@, timeCircStd:%.6f, locationCircStd:%.6f>", v19, identifier, v4, v5, v6, activityType, poiCategory, v11, subBundleIDs, v14, v15];
 
   return v21;
 }
@@ -450,24 +450,24 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(PCCluster *)self description];
-  v5 = [(PCCluster *)self placeName];
-  v6 = [(PCCluster *)self enclosingArea];
-  v7 = [(PCCluster *)self location];
-  v8 = [v3 stringWithFormat:@"%@ <placeName:%@, enclosingArea:%@, location:%@>", v4, v5, v6, v7];
+  placeName = [(PCCluster *)self placeName];
+  enclosingArea = [(PCCluster *)self enclosingArea];
+  location = [(PCCluster *)self location];
+  v8 = [v3 stringWithFormat:@"%@ <placeName:%@, enclosingArea:%@, location:%@>", v4, placeName, enclosingArea, location];
 
   return v8;
 }
 
-+ (id)clusterObjectsFromProtobuf:(id)a3
++ (id)clusterObjectsFromProtobuf:(id)protobuf
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = protobufCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {

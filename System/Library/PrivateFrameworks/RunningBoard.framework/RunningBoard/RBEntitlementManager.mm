@@ -2,22 +2,22 @@
 + (id)_hardCodedEntitlements;
 - (NSString)debugDescription;
 - (NSString)stateCaptureTitle;
-- (RBEntitlementManager)initWithDomainAttributeEntitlements:(id)a3;
+- (RBEntitlementManager)initWithDomainAttributeEntitlements:(id)entitlements;
 - (id)allEntitlements;
 - (id)captureState;
-- (id)entitlementsForProcess:(id)a3;
+- (id)entitlementsForProcess:(id)process;
 - (uint64_t)_secTask:(CFStringRef)entitlement hasEntitlement:;
-- (void)_entitlementsForProcess:(void *)a1;
-- (void)_removeRestrictedEntitlements:(void *)a3 forProcess:;
-- (void)purgeEntitlementsForProcess:(id)a3;
+- (void)_entitlementsForProcess:(void *)process;
+- (void)_removeRestrictedEntitlements:(void *)entitlements forProcess:;
+- (void)purgeEntitlementsForProcess:(id)process;
 @end
 
 @implementation RBEntitlementManager
 
-- (RBEntitlementManager)initWithDomainAttributeEntitlements:(id)a3
+- (RBEntitlementManager)initWithDomainAttributeEntitlements:(id)entitlements
 {
-  v5 = a3;
-  if (!v5)
+  entitlementsCopy = entitlements;
+  if (!entitlementsCopy)
   {
     [(RBEntitlementManager *)a2 initWithDomainAttributeEntitlements:?];
   }
@@ -29,12 +29,12 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     entitlementsByIdentifier = v7->_entitlementsByIdentifier;
-    v7->_entitlementsByIdentifier = v8;
+    v7->_entitlementsByIdentifier = strongToWeakObjectsMapTable;
 
     v10 = +[RBEntitlementManager _hardCodedEntitlements];
-    v11 = [v5 setByAddingObjectsFromSet:v10];
+    v11 = [entitlementsCopy setByAddingObjectsFromSet:v10];
     availableEntitlements = v7->_availableEntitlements;
     v7->_availableEntitlements = v11;
 
@@ -96,8 +96,8 @@
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
   v13 = [objc_opt_class() description];
-  v14 = [(NSSet *)self->_availableEntitlements allObjects];
-  v15 = [v14 componentsJoinedByString:{@", \n\t\t"}];
+  allObjects = [(NSSet *)self->_availableEntitlements allObjects];
+  v15 = [allObjects componentsJoinedByString:{@", \n\t\t"}];
   v16 = [v12 initWithFormat:@"<%@|  availableEntitlements:[\n\t\t%@\n\t] entitlementsByIdentifier:[\n\t%@\n\t\t]>", v13, v15, v3];
 
   v17 = *MEMORY[0x277D85DE8];
@@ -112,16 +112,16 @@
   return v2;
 }
 
-- (id)entitlementsForProcess:(id)a3
+- (id)entitlementsForProcess:(id)process
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isTerminating])
+  processCopy = process;
+  v5 = processCopy;
+  if (processCopy && ![processCopy isTerminating])
   {
     os_unfair_lock_lock(&self->_lock);
     entitlementsByIdentifier = self->_entitlementsByIdentifier;
-    v10 = [v5 identifier];
-    v8 = [(NSMapTable *)entitlementsByIdentifier objectForKey:v10];
+    identifier = [v5 identifier];
+    v8 = [(NSMapTable *)entitlementsByIdentifier objectForKey:identifier];
 
     if (!v8)
     {
@@ -130,8 +130,8 @@
       v8 = [(RBEntitlements *)v12 _initWithEntitlements:v13];
 
       v14 = self->_entitlementsByIdentifier;
-      v15 = [v5 identifier];
-      [(NSMapTable *)v14 setObject:v8 forKey:v15];
+      identifier2 = [v5 identifier];
+      [(NSMapTable *)v14 setObject:v8 forKey:identifier2];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -147,14 +147,14 @@
   return v8;
 }
 
-- (void)purgeEntitlementsForProcess:(id)a3
+- (void)purgeEntitlementsForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   os_unfair_lock_lock(&self->_lock);
   entitlementsByIdentifier = self->_entitlementsByIdentifier;
-  v6 = [v4 identifier];
+  identifier = [processCopy identifier];
 
-  [(NSMapTable *)entitlementsByIdentifier removeObjectForKey:v6];
+  [(NSMapTable *)entitlementsByIdentifier removeObjectForKey:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -191,30 +191,30 @@ uint64_t __46__RBEntitlementManager__hardCodedEntitlements__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_entitlementsForProcess:(void *)a1
+- (void)_entitlementsForProcess:(void *)process
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (process)
   {
     v4 = [MEMORY[0x277CBEB58] set];
-    v5 = [v3 auditToken];
-    v6 = v5;
-    if (v5)
+    auditToken = [v3 auditToken];
+    v6 = auditToken;
+    if (auditToken)
     {
       memset(&buf, 0, sizeof(buf));
-      [v5 realToken];
+      [auditToken realToken];
       token = buf;
       v11 = SecTaskCreateWithAuditToken(0, &token);
       if (v11)
       {
         v13 = v11;
-        v14 = a1[3];
+        v14 = process[3];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __48__RBEntitlementManager__entitlementsForProcess___block_invoke;
         v16[3] = &unk_279B32FE0;
-        v16[4] = a1;
+        v16[4] = process;
         v18 = v11;
         v15 = v4;
         v17 = v15;
@@ -238,7 +238,7 @@ uint64_t __46__RBEntitlementManager__hardCodedEntitlements__block_invoke()
         }
       }
 
-      [(RBEntitlementManager *)a1 _removeRestrictedEntitlements:v4 forProcess:v3];
+      [(RBEntitlementManager *)process _removeRestrictedEntitlements:v4 forProcess:v3];
       v8 = v4;
     }
 
@@ -255,27 +255,27 @@ uint64_t __46__RBEntitlementManager__hardCodedEntitlements__block_invoke()
       v8 = [MEMORY[0x277CBEB98] set];
     }
 
-    a1 = v8;
+    process = v8;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return process;
 }
 
-- (void)_removeRestrictedEntitlements:(void *)a3 forProcess:
+- (void)_removeRestrictedEntitlements:(void *)entitlements forProcess:
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  entitlementsCopy = entitlements;
+  v7 = entitlementsCopy;
+  if (!self)
   {
     goto LABEL_28;
   }
 
-  v8 = [v6 identity];
-  v24 = [v7 isTestApp];
+  identity = [entitlementsCopy identity];
+  isTestApp = [v7 isTestApp];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -305,19 +305,19 @@ uint64_t __46__RBEntitlementManager__hardCodedEntitlements__block_invoke()
       }
 
       v14 = *(*(&v26 + 1) + 8 * v13);
-      v15 = [*(a1 + 32) objectForKey:{v14, v22, v23}];
+      v15 = [*(self + 32) objectForKey:{v14, v22, v23}];
       v16 = v15;
-      if (v15 && ([v15 containsObject:v8] & 1) == 0)
+      if (v15 && ([v15 containsObject:identity] & 1) == 0)
       {
-        if (!os_variant_has_internal_content() || ([v8 hasConsistentLaunchdJob] & 1) != 0 || (objc_msgSend(v8, "isEmbeddedApplication") & 1) != 0)
+        if (!os_variant_has_internal_content() || ([identity hasConsistentLaunchdJob] & 1) != 0 || (objc_msgSend(identity, "isEmbeddedApplication") & 1) != 0)
         {
-          if (v24)
+          if (isTestApp)
           {
             goto LABEL_18;
           }
         }
 
-        else if (v24 & 1 | (([v8 isXPCService] & 1) == 0))
+        else if (isTestApp & 1 | (([identity isXPCService] & 1) == 0))
         {
           goto LABEL_18;
         }
@@ -326,7 +326,7 @@ uint64_t __46__RBEntitlementManager__hardCodedEntitlements__block_invoke()
         if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
         {
           *buf = 138543618;
-          v31 = v8;
+          v31 = identity;
           v32 = 2114;
           v33 = v14;
           _os_log_fault_impl(&dword_262485000, v17, OS_LOG_TYPE_FAULT, "RunningBoard: Process %{public}@ does not have permission to have entitlement %{public}@", buf, 0x16u);
@@ -371,27 +371,27 @@ LABEL_28:
 - (uint64_t)_secTask:(CFStringRef)entitlement hasEntitlement:
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     error = 0;
     v3 = SecTaskCopyValueForEntitlement(task, entitlement, &error);
     if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
 
     v5 = error;
     if (error)
     {
-      v6 = [(__CFError *)error code];
+      code = [(__CFError *)error code];
       v7 = rbs_general_log();
       v8 = v7;
-      if (v6 == 3)
+      if (code == 3)
       {
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
@@ -411,11 +411,11 @@ LABEL_28:
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4;
+  return bOOLValue;
 }
 
 - (void)initWithDomainAttributeEntitlements:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

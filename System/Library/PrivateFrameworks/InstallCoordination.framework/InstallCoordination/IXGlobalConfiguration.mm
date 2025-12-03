@@ -4,17 +4,17 @@
 - (IXGlobalConfiguration)init;
 - (NSURL)frameworkURL;
 - (NSURL)userVolumeURL;
-- (id)_dataStorageHomeURLWithError:(id *)a3;
-- (id)_userTempDirURLWithError:(id *)a3;
+- (id)_dataStorageHomeURLWithError:(id *)error;
+- (id)_userTempDirURLWithError:(id *)error;
 - (id)dataDirectoryAbortingOnError;
-- (id)dataDirectoryWithError:(id *)a3;
-- (id)extractedInstallableStagingDirectory:(id *)a3;
-- (id)iconStagingDirectoryWithError:(id *)a3;
-- (id)promiseStagingRootAbortingOnErrorForInstallLocation:(id)a3 usingUniqueName:(id)a4;
-- (id)promiseStagingRootForInstallLocation:(id)a3 usingUniqueName:(id)a4 error:(id *)a5;
-- (id)remoteInstallationStagingDirectory:(id *)a3;
+- (id)dataDirectoryWithError:(id *)error;
+- (id)extractedInstallableStagingDirectory:(id *)directory;
+- (id)iconStagingDirectoryWithError:(id *)error;
+- (id)promiseStagingRootAbortingOnErrorForInstallLocation:(id)location usingUniqueName:(id)name;
+- (id)promiseStagingRootForInstallLocation:(id)location usingUniqueName:(id)name error:(id *)error;
+- (id)remoteInstallationStagingDirectory:(id *)directory;
 - (id)removabilityDirectoryAbortingOnError;
-- (id)removabilityDirectoryWithError:(id *)a3;
+- (id)removabilityDirectoryWithError:(id *)error;
 - (void)createDirectories;
 - (void)dataDirectoryAbortingOnError;
 - (void)init;
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __39__IXGlobalConfiguration_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -96,7 +96,7 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)createDirectories
 {
-  OUTLINED_FUNCTION_1_0(a1, a2);
+  OUTLINED_FUNCTION_1_0(self, a2);
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_0();
@@ -104,7 +104,7 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   __break(1u);
 }
 
-- (id)_dataStorageHomeURLWithError:(id *)a3
+- (id)_dataStorageHomeURLWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_dynamicPropertyLock);
   dataStorageHome = self->_dataStorageHome;
@@ -144,18 +144,18 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
 
   v13 = dataStorageHome;
   os_unfair_lock_unlock(&self->_dynamicPropertyLock);
-  if (a3 && !v13)
+  if (error && !v13)
   {
     v14 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v13;
 }
 
-- (id)dataDirectoryWithError:(id *)a3
+- (id)dataDirectoryWithError:(id *)error
 {
-  v3 = [(IXGlobalConfiguration *)self _dataStorageHomeURLWithError:a3];
+  v3 = [(IXGlobalConfiguration *)self _dataStorageHomeURLWithError:error];
   v4 = v3;
   if (v3)
   {
@@ -186,13 +186,13 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)promiseStagingRootForInstallLocation:(id)a3 usingUniqueName:(id)a4 error:(id *)a5
+- (id)promiseStagingRootForInstallLocation:(id)location usingUniqueName:(id)name error:(id *)error
 {
   v7 = MEMORY[0x1E69B1988];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedInstance];
-  v11 = [v10 stagingLocationForInstallLocation:v9 withinStagingSubsytem:2 usingUniqueName:v8 error:a5];
+  nameCopy = name;
+  locationCopy = location;
+  sharedInstance = [v7 sharedInstance];
+  v11 = [sharedInstance stagingLocationForInstallLocation:locationCopy withinStagingSubsytem:2 usingUniqueName:nameCopy error:error];
 
   if (v11)
   {
@@ -202,13 +202,13 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)promiseStagingRootAbortingOnErrorForInstallLocation:(id)a3 usingUniqueName:(id)a4
+- (id)promiseStagingRootAbortingOnErrorForInstallLocation:(id)location usingUniqueName:(id)name
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  nameCopy = name;
   v13 = 0;
-  v8 = [(IXGlobalConfiguration *)self promiseStagingRootForInstallLocation:v6 usingUniqueName:v7 error:&v13];
+  v8 = [(IXGlobalConfiguration *)self promiseStagingRootForInstallLocation:locationCopy usingUniqueName:nameCopy error:&v13];
   v9 = v13;
   if (!v8)
   {
@@ -220,9 +220,9 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
     v12 = v9;
     os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
     v14 = 138412802;
-    v15 = v6;
+    v15 = locationCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = nameCopy;
     v18 = 2112;
     v19 = v12;
     _os_log_send_and_compose_impl();
@@ -235,9 +235,9 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)removabilityDirectoryWithError:(id *)a3
+- (id)removabilityDirectoryWithError:(id *)error
 {
-  v3 = [(IXGlobalConfiguration *)self dataDirectoryWithError:a3];
+  v3 = [(IXGlobalConfiguration *)self dataDirectoryWithError:error];
   v4 = v3;
   if (v3)
   {
@@ -268,9 +268,9 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)remoteInstallationStagingDirectory:(id *)a3
+- (id)remoteInstallationStagingDirectory:(id *)directory
 {
-  v3 = [(IXGlobalConfiguration *)self dataDirectoryWithError:a3];
+  v3 = [(IXGlobalConfiguration *)self dataDirectoryWithError:directory];
   v4 = v3;
   if (v3)
   {
@@ -285,7 +285,7 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_userTempDirURLWithError:(id *)a3
+- (id)_userTempDirURLWithError:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   bzero(v12, 0x400uLL);
@@ -293,7 +293,7 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   {
     v4 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v12 isDirectory:1 relativeToURL:0];
     v5 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -307,7 +307,7 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
     strerror(*v6);
     v5 = _CreateError("[IXGlobalConfiguration _userTempDirURLWithError:]", 312, v8, v7, 0, 0, @"Failed to initialize temporary directory: error = %d (%s)", v9, v7);
     v4 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -316,7 +316,7 @@ uint64_t __39__IXGlobalConfiguration_sharedInstance__block_invoke(uint64_t a1)
   if (!v4)
   {
     v5 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
 LABEL_7:
@@ -326,7 +326,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)iconStagingDirectoryWithError:(id *)a3
+- (id)iconStagingDirectoryWithError:(id *)error
 {
   v9 = 0;
   v4 = [(IXGlobalConfiguration *)self _userTempDirURLWithError:&v9];
@@ -334,7 +334,7 @@ LABEL_7:
   if (v4)
   {
     v6 = [v4 URLByAppendingPathComponent:@"TempIcons" isDirectory:1];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -343,7 +343,7 @@ LABEL_7:
   else
   {
     v6 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -352,7 +352,7 @@ LABEL_7:
   if (!v6)
   {
     v7 = v5;
-    *a3 = v5;
+    *error = v5;
   }
 
 LABEL_7:
@@ -360,7 +360,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)extractedInstallableStagingDirectory:(id *)a3
+- (id)extractedInstallableStagingDirectory:(id *)directory
 {
   v9 = 0;
   v4 = [(IXGlobalConfiguration *)self _userTempDirURLWithError:&v9];
@@ -368,7 +368,7 @@ LABEL_7:
   if (v4)
   {
     v6 = [v4 URLByAppendingPathComponent:@"ExtractedApps" isDirectory:1];
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -377,7 +377,7 @@ LABEL_7:
   else
   {
     v6 = 0;
-    if (!a3)
+    if (!directory)
     {
       goto LABEL_7;
     }
@@ -386,7 +386,7 @@ LABEL_7:
   if (!v6)
   {
     v7 = v5;
-    *a3 = v5;
+    *directory = v5;
   }
 
 LABEL_7:
@@ -396,16 +396,16 @@ LABEL_7:
 
 - (NSURL)frameworkURL
 {
-  v2 = [(IXGlobalConfiguration *)self rootPath];
-  v3 = [v2 urlByAppendingPathComponents:&unk_1F5607670 lastIsDirectory:1];
+  rootPath = [(IXGlobalConfiguration *)self rootPath];
+  v3 = [rootPath urlByAppendingPathComponents:&unk_1F5607670 lastIsDirectory:1];
 
   return v3;
 }
 
 - (NSURL)userVolumeURL
 {
-  v2 = [(IXGlobalConfiguration *)self rootPath];
-  v3 = [v2 urlByAppendingPathComponents:&unk_1F5607688 lastIsDirectory:1];
+  rootPath = [(IXGlobalConfiguration *)self rootPath];
+  v3 = [rootPath urlByAppendingPathComponents:&unk_1F5607688 lastIsDirectory:1];
 
   return v3;
 }
@@ -413,7 +413,7 @@ LABEL_7:
 - (void)init
 {
   v4 = *__error();
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -422,7 +422,7 @@ LABEL_7:
   OUTLINED_FUNCTION_4();
   strerror(v4);
   OUTLINED_FUNCTION_3_0();
-  v5 = *a1;
+  v5 = *self;
   _os_crash_msg();
   __break(1u);
 }
@@ -443,7 +443,7 @@ LABEL_7:
 
 - (void)dataDirectoryAbortingOnError
 {
-  OUTLINED_FUNCTION_1_0(a1, a2);
+  OUTLINED_FUNCTION_1_0(self, a2);
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_0();

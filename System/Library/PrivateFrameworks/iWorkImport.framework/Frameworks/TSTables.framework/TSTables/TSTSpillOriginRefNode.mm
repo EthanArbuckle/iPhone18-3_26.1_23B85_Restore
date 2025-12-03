@@ -1,58 +1,58 @@
 @interface TSTSpillOriginRefNode
 + (id)spillRangeColor;
-- (BOOL)isEqualToExpressionNode:(id)a3;
-- (TSTCSENodeData)recordHashesForSubexpressions:(id)a3;
-- (TSTSpillOriginRefNode)initWithContext:(id)a3 spillOrigin:(TSUChromeCellCoord)a4 isRTL:(BOOL)a5;
-- (TSTSpillOriginRefNode)initWithContext:(id)a3 spillOrigin:(TSUChromeCellCoord)a4 spillingRange:(id)a5 isRTL:(BOOL)a6;
-- (id)initAsCopyOf:(id)a3 intoContext:(id)a4 children:(id)a5;
+- (BOOL)isEqualToExpressionNode:(id)node;
+- (TSTCSENodeData)recordHashesForSubexpressions:(id)subexpressions;
+- (TSTSpillOriginRefNode)initWithContext:(id)context spillOrigin:(TSUChromeCellCoord)origin isRTL:(BOOL)l;
+- (TSTSpillOriginRefNode)initWithContext:(id)context spillOrigin:(TSUChromeCellCoord)origin spillingRange:(id)range isRTL:(BOOL)l;
+- (id)initAsCopyOf:(id)of intoContext:(id)context children:(id)children;
 - (id)string;
-- (void)buildASTNodeArray:(TSCEASTNodeArray *)a3 hostCell:(TSUCellCoord)a4 symbolTable:(void *)a5;
-- (void)insertFormulaText:(id)a3 printingOptions:(unsigned int)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)buildASTNodeArray:(TSCEASTNodeArray *)array hostCell:(TSUCellCoord)cell symbolTable:(void *)table;
+- (void)insertFormulaText:(id)text printingOptions:(unsigned int)options;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTSpillOriginRefNode
 
-- (TSTSpillOriginRefNode)initWithContext:(id)a3 spillOrigin:(TSUChromeCellCoord)a4 isRTL:(BOOL)a5
+- (TSTSpillOriginRefNode)initWithContext:(id)context spillOrigin:(TSUChromeCellCoord)origin isRTL:(BOOL)l
 {
   v8.receiver = self;
   v8.super_class = TSTSpillOriginRefNode;
-  result = [(TSTExpressionNode *)&v8 initWithContext:a3 children:0 firstIndex:0 lastIndex:0];
+  result = [(TSTExpressionNode *)&v8 initWithContext:context children:0 firstIndex:0 lastIndex:0];
   if (result)
   {
-    result->_spillOrigin = a4;
-    result->_isRTL = a5;
+    result->_spillOrigin = origin;
+    result->_isRTL = l;
   }
 
   return result;
 }
 
-- (TSTSpillOriginRefNode)initWithContext:(id)a3 spillOrigin:(TSUChromeCellCoord)a4 spillingRange:(id)a5 isRTL:(BOOL)a6
+- (TSTSpillOriginRefNode)initWithContext:(id)context spillOrigin:(TSUChromeCellCoord)origin spillingRange:(id)range isRTL:(BOOL)l
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  isRTL = objc_msgSend_initWithContext_spillOrigin_isRTL_(self, v12, v10, *&a4, v6);
+  lCopy = l;
+  contextCopy = context;
+  rangeCopy = range;
+  isRTL = objc_msgSend_initWithContext_spillOrigin_isRTL_(self, v12, contextCopy, *&origin, lCopy);
   if (isRTL)
   {
-    v18 = objc_msgSend_copy(v11, v13, v14, v15, v16);
+    v18 = objc_msgSend_copy(rangeCopy, v13, v14, v15, v16);
     chromeSpillingRange = isRTL->_chromeSpillingRange;
     isRTL->_chromeSpillingRange = v18;
 
-    isRTL->_isRTL = v6;
+    isRTL->_isRTL = lCopy;
   }
 
   return isRTL;
 }
 
-- (id)initAsCopyOf:(id)a3 intoContext:(id)a4 children:(id)a5
+- (id)initAsCopyOf:(id)of intoContext:(id)context children:(id)children
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ofCopy = of;
+  contextCopy = context;
+  childrenCopy = children;
   objc_opt_class();
   v14 = TSUDynamicCast();
   if (!v14)
@@ -61,9 +61,9 @@
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSTSpillOriginRefNode initAsCopyOf:intoContext:children:]", v12, v13);
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTSpillOriginRefNode.mm", v18, v19);
     v22 = @"nil";
-    if (v8)
+    if (ofCopy)
     {
-      v22 = v8;
+      v22 = ofCopy;
     }
 
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v20, v16, v21, 80, 0, "Unexpected object in initAsCopyOf:... expected TSTSpillOriginRefNode, got %@", v22);
@@ -73,7 +73,7 @@
 
   v36.receiver = self;
   v36.super_class = TSTSpillOriginRefNode;
-  v27 = [(TSTExpressionNode *)&v36 initAsCopyOf:v8 intoContext:v9 children:v10];
+  v27 = [(TSTExpressionNode *)&v36 initAsCopyOf:ofCopy intoContext:contextCopy children:childrenCopy];
   v32 = v27;
   if (v27)
   {
@@ -86,9 +86,9 @@
   return v32;
 }
 
-- (TSTCSENodeData)recordHashesForSubexpressions:(id)a3
+- (TSTCSENodeData)recordHashesForSubexpressions:(id)subexpressions
 {
-  objc_msgSend_recordExpression_data_(a3, a2, self, 0, 1);
+  objc_msgSend_recordExpression_data_(subexpressions, a2, self, 0, 1);
   v3 = 0;
   v4 = 1;
   result.var1 = v4;
@@ -96,10 +96,10 @@
   return result;
 }
 
-- (BOOL)isEqualToExpressionNode:(id)a3
+- (BOOL)isEqualToExpressionNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v11 = 1;
   }
@@ -108,9 +108,9 @@
   {
     v15.receiver = self;
     v15.super_class = TSTSpillOriginRefNode;
-    if ([(TSTExpressionNode *)&v15 isEqualToExpressionNode:v4])
+    if ([(TSTExpressionNode *)&v15 isEqualToExpressionNode:nodeCopy])
     {
-      v8 = v4;
+      v8 = nodeCopy;
       spillOrigin = self->_spillOrigin;
       v10 = v8->_spillOrigin;
       v11 = 0;
@@ -178,18 +178,18 @@ LABEL_11:
   return v22;
 }
 
-- (void)insertFormulaText:(id)a3 printingOptions:(unsigned int)a4
+- (void)insertFormulaText:(id)text printingOptions:(unsigned int)options
 {
-  v4 = a4;
-  v44 = a3;
-  if (v4)
+  optionsCopy = options;
+  textCopy = text;
+  if (optionsCopy)
   {
     v10 = objc_msgSend_whitespaceBefore(self, v6, v7, v8, v9);
 
     if (v10)
     {
       v15 = objc_msgSend_whitespaceBefore(self, v11, v12, v13, v14);
-      objc_msgSend_takeText_(v44, v16, v15, v17, v18);
+      objc_msgSend_takeText_(textCopy, v16, v15, v17, v18);
     }
   }
 
@@ -197,23 +197,23 @@ LABEL_11:
   v24 = objc_msgSend_context(self, v20, v21, v22, v23);
   v27 = objc_msgSend_initWithContext_expressionNode_(v19, v25, v24, self, v26);
 
-  objc_msgSend_insertUIGraphicalAttachment_(v44, v28, v27, v29, v30);
-  if (v4)
+  objc_msgSend_insertUIGraphicalAttachment_(textCopy, v28, v27, v29, v30);
+  if (optionsCopy)
   {
     v35 = objc_msgSend_whitespaceAfter(self, v31, v32, v33, v34);
 
     if (v35)
     {
       v40 = objc_msgSend_whitespaceAfter(self, v36, v37, v38, v39);
-      objc_msgSend_takeText_(v44, v41, v40, v42, v43);
+      objc_msgSend_takeText_(textCopy, v41, v40, v42, v43);
     }
   }
 }
 
-- (void)buildASTNodeArray:(TSCEASTNodeArray *)a3 hostCell:(TSUCellCoord)a4 symbolTable:(void *)a5
+- (void)buildASTNodeArray:(TSCEASTNodeArray *)array hostCell:(TSUCellCoord)cell symbolTable:(void *)table
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTSpillOriginRefNode buildASTNodeArray:hostCell:symbolTable:]", *&a4, a5);
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTSpillOriginRefNode buildASTNodeArray:hostCell:symbolTable:]", *&cell, table);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTSpillOriginRefNode.mm", v8, v9);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v11, v6, v10, 167, 0, "TSTSpillOriginRef should NOT be in a normal TSTFormula");
 
@@ -222,29 +222,29 @@ LABEL_11:
   objc_msgSend_logBacktraceThrottled(v16, v12, v13, v14, v15);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[234], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[234], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v9 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v4, sub_2214C4BE0, off_2812E4498[234], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2214C4BE0, off_2812E4498[234], v5);
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v9, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy, v8);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v6 = *(a3 + 3);
+    v6 = *(archive + 3);
   }
 
   else
@@ -254,10 +254,10 @@ LABEL_11:
 
   v8.receiver = self;
   v8.super_class = TSTSpillOriginRefNode;
-  [(TSTExpressionNode *)&v8 loadFromArchive:v6 unarchiver:a4];
-  if (*(a3 + 4))
+  [(TSTExpressionNode *)&v8 loadFromArchive:v6 unarchiver:unarchiver];
+  if (*(archive + 4))
   {
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   else
@@ -268,39 +268,39 @@ LABEL_11:
   self->_spillOrigin = sub_2212697C0(v7);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TST::ExpressionNodeArchive>(v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v12.receiver = self;
   v12.super_class = TSTSpillOriginRefNode;
-  [(TSTExpressionNode *)&v12 saveToArchive:v7 archiver:v6];
+  [(TSTExpressionNode *)&v12 saveToArchive:v7 archiver:archiverCopy];
   spillOrigin = self->_spillOrigin;
-  *(a3 + 4) |= 2u;
-  v9 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v9 = *(archive + 4);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellCoordinateArchive>(v10);
-    *(a3 + 4) = v9;
+    *(archive + 4) = v9;
   }
 
   sub_221269820(&spillOrigin, v9);

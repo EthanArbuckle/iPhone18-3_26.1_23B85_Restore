@@ -1,35 +1,35 @@
 @interface HMFVersion
 + (id)logCategory;
-+ (id)versionFromOperatingSystemVersion:(id *)a3;
++ (id)versionFromOperatingSystemVersion:(id *)version;
 + (id)versionRegex;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFVersion)init;
-- (HMFVersion)initWithCoder:(id)a3;
-- (HMFVersion)initWithMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 updateVersion:(unint64_t)a5;
-- (HMFVersion)initWithString:(id)a3;
+- (HMFVersion)initWithCoder:(id)coder;
+- (HMFVersion)initWithMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion updateVersion:(unint64_t)updateVersion;
+- (HMFVersion)initWithString:(id)string;
 - (NSString)versionString;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFVersion
 
 - (NSString)versionString
 {
-  v3 = [(HMFVersion *)self updateVersion];
+  updateVersion = [(HMFVersion *)self updateVersion];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMFVersion *)self majorVersion];
-  v6 = [(HMFVersion *)self minorVersion];
-  if (v3)
+  majorVersion = [(HMFVersion *)self majorVersion];
+  minorVersion = [(HMFVersion *)self minorVersion];
+  if (updateVersion)
   {
-    [v4 stringWithFormat:@"%tu.%tu.%tu", v5, v6, -[HMFVersion updateVersion](self, "updateVersion")];
+    [v4 stringWithFormat:@"%tu.%tu.%tu", majorVersion, minorVersion, -[HMFVersion updateVersion](self, "updateVersion")];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%tu.%tu", v5, v6, v9];
+    [v4 stringWithFormat:@"%tu.%tu", majorVersion, minorVersion, v9];
   }
   v7 = ;
 
@@ -49,38 +49,38 @@
   objc_exception_throw(v7);
 }
 
-- (HMFVersion)initWithMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 updateVersion:(unint64_t)a5
+- (HMFVersion)initWithMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion updateVersion:(unint64_t)updateVersion
 {
   v9.receiver = self;
   v9.super_class = HMFVersion;
   result = [(HMFVersion *)&v9 init];
   if (result)
   {
-    result->_majorVersion = a3;
-    result->_minorVersion = a4;
-    result->_updateVersion = a5;
+    result->_majorVersion = version;
+    result->_minorVersion = minorVersion;
+    result->_updateVersion = updateVersion;
   }
 
   return result;
 }
 
-+ (id)versionFromOperatingSystemVersion:(id *)a3
++ (id)versionFromOperatingSystemVersion:(id *)version
 {
-  v4 = [a1 alloc];
-  v7 = *a3;
+  v4 = [self alloc];
+  v7 = *version;
   v5 = [v4 initWithOperatingSystemVersion:&v7];
 
   return v5;
 }
 
-- (HMFVersion)initWithString:(id)a3
+- (HMFVersion)initWithString:(id)string
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v5 = +[HMFVersion versionRegex];
-    v6 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
 
     if ([v6 count])
     {
@@ -88,10 +88,10 @@
       if ([v7 numberOfRanges])
       {
         v8 = [v7 rangeAtIndex:1];
-        v10 = [v4 substringWithRange:{v8, v9}];
+        v10 = [stringCopy substringWithRange:{v8, v9}];
         if ([v7 numberOfRanges] >= 4 && (v11 = objc_msgSend(v7, "rangeAtIndex:", 3), v12))
         {
-          v13 = [v4 substringWithRange:{v11, v12}];
+          v13 = [stringCopy substringWithRange:{v11, v12}];
         }
 
         else
@@ -101,7 +101,7 @@
 
         if ([v7 numberOfRanges] >= 6 && (v18 = objc_msgSend(v7, "rangeAtIndex:", 5), v19))
         {
-          v20 = [v4 substringWithRange:{v18, v19}];
+          v20 = [stringCopy substringWithRange:{v18, v19}];
         }
 
         else
@@ -111,7 +111,7 @@
 
         self = -[HMFVersion initWithMajorVersion:minorVersion:updateVersion:](self, "initWithMajorVersion:minorVersion:updateVersion:", [v10 integerValue], objc_msgSend(v13, "integerValue"), objc_msgSend(v20, "integerValue"));
 
-        v14 = self;
+        selfCopy = self;
       }
 
       else
@@ -125,12 +125,12 @@
           v26 = 138543618;
           v27 = v23;
           v28 = 2112;
-          v29 = v4;
+          v29 = stringCopy;
           _os_log_impl(&dword_22ADEC000, v22, OS_LOG_TYPE_INFO, "%{public}@Invalid version string: %@", &v26, 0x16u);
         }
 
         objc_autoreleasePoolPop(v21);
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -145,22 +145,22 @@
         v26 = 138543618;
         v27 = v17;
         v28 = 2112;
-        v29 = v4;
+        v29 = stringCopy;
         _os_log_impl(&dword_22ADEC000, v16, OS_LOG_TYPE_INFO, "%{public}@Invalid version string: %@", &v26, 0x16u);
       }
 
       objc_autoreleasePoolPop(v15);
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersion
@@ -174,18 +174,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMFVersion *)self majorVersion];
-  v4 = ([(HMFVersion *)self minorVersion]<< 16) ^ (v3 << 48);
+  majorVersion = [(HMFVersion *)self majorVersion];
+  v4 = ([(HMFVersion *)self minorVersion]<< 16) ^ (majorVersion << 48);
   return v4 ^ [(HMFVersion *)self updateVersion];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -207,57 +207,57 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  compareCopy = compare;
+  v5 = compareCopy;
+  if (self == compareCopy)
   {
     v7 = 0;
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!compareCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = [(HMFVersion *)self majorVersion];
-  if (v6 > [(HMFVersion *)v5 majorVersion])
+  majorVersion = [(HMFVersion *)self majorVersion];
+  if (majorVersion > [(HMFVersion *)v5 majorVersion])
   {
     goto LABEL_4;
   }
 
-  v8 = [(HMFVersion *)self majorVersion];
-  if (v8 < [(HMFVersion *)v5 majorVersion])
+  majorVersion2 = [(HMFVersion *)self majorVersion];
+  if (majorVersion2 < [(HMFVersion *)v5 majorVersion])
   {
 LABEL_7:
     v7 = -1;
     goto LABEL_8;
   }
 
-  v10 = [(HMFVersion *)self minorVersion];
-  if (v10 > [(HMFVersion *)v5 minorVersion])
+  minorVersion = [(HMFVersion *)self minorVersion];
+  if (minorVersion > [(HMFVersion *)v5 minorVersion])
   {
     goto LABEL_4;
   }
 
-  v11 = [(HMFVersion *)self minorVersion];
-  if (v11 < [(HMFVersion *)v5 minorVersion])
+  minorVersion2 = [(HMFVersion *)self minorVersion];
+  if (minorVersion2 < [(HMFVersion *)v5 minorVersion])
   {
     goto LABEL_7;
   }
 
-  v12 = [(HMFVersion *)self updateVersion];
-  if (v12 > [(HMFVersion *)v5 updateVersion])
+  updateVersion = [(HMFVersion *)self updateVersion];
+  if (updateVersion > [(HMFVersion *)v5 updateVersion])
   {
 LABEL_4:
     v7 = 1;
     goto LABEL_8;
   }
 
-  v13 = [(HMFVersion *)self updateVersion];
-  if (v13 >= [(HMFVersion *)v5 updateVersion])
+  updateVersion2 = [(HMFVersion *)self updateVersion];
+  if (updateVersion2 >= [(HMFVersion *)v5 updateVersion])
   {
     v7 = 0;
   }
@@ -298,22 +298,22 @@ void __26__HMFVersion_versionRegex__block_invoke()
   }
 }
 
-- (HMFVersion)initWithCoder:(id)a3
+- (HMFVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HM.major"];
-  v6 = [v4 decodeIntegerForKey:@"HM.minor"];
-  v7 = [v4 decodeIntegerForKey:@"HM.update"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HM.major"];
+  v6 = [coderCopy decodeIntegerForKey:@"HM.minor"];
+  v7 = [coderCopy decodeIntegerForKey:@"HM.update"];
 
   return [(HMFVersion *)self initWithMajorVersion:v5 minorVersion:v6 updateVersion:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMFVersion majorVersion](self forKey:{"majorVersion"), @"HM.major"}];
-  [v4 encodeInteger:-[HMFVersion minorVersion](self forKey:{"minorVersion"), @"HM.minor"}];
-  [v4 encodeInteger:-[HMFVersion updateVersion](self forKey:{"updateVersion"), @"HM.update"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMFVersion majorVersion](self forKey:{"majorVersion"), @"HM.major"}];
+  [coderCopy encodeInteger:-[HMFVersion minorVersion](self forKey:{"minorVersion"), @"HM.minor"}];
+  [coderCopy encodeInteger:-[HMFVersion updateVersion](self forKey:{"updateVersion"), @"HM.update"}];
 }
 
 + (id)logCategory

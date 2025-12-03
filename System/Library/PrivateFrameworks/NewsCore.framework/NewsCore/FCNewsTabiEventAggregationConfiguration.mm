@@ -1,5 +1,5 @@
 @interface FCNewsTabiEventAggregationConfiguration
-- (FCNewsTabiEventAggregationConfiguration)initWithDictionary:(id)a3 outputs:(id)a4;
+- (FCNewsTabiEventAggregationConfiguration)initWithDictionary:(id)dictionary outputs:(id)outputs;
 - (id)description;
 @end
 
@@ -8,16 +8,16 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiEventAggregationConfiguration *)self eventConditions];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\teventConditions: %@;", v5];
+  eventConditions = [(FCNewsTabiEventAggregationConfiguration *)self eventConditions];
+  indentedDescription = [eventConditions indentedDescription];
+  [v3 appendFormat:@"\n\teventConditions: %@;", indentedDescription];
 
   [v3 appendFormat:@"\n\tfullBodyEmbeddingDimension: %lu;", -[FCNewsTabiEventAggregationConfiguration fullBodyEmbeddingDimension](self, "fullBodyEmbeddingDimension")];
   [v3 appendFormat:@"\n\tmaxTopicIds: %lu;", -[FCNewsTabiEventAggregationConfiguration maxTopicIds](self, "maxTopicIds")];
   [v3 appendFormat:@"\n\tmaxSessionEvents: %lu;", -[FCNewsTabiEventAggregationConfiguration maxSessionEvents](self, "maxSessionEvents")];
-  v6 = [(FCNewsTabiEventAggregationConfiguration *)self outputs];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\toutputs: %@;", v7];
+  outputs = [(FCNewsTabiEventAggregationConfiguration *)self outputs];
+  indentedDescription2 = [outputs indentedDescription];
+  [v3 appendFormat:@"\n\toutputs: %@;", indentedDescription2];
 
   [v3 appendFormat:@"\n\ttitleEmbeddingDimension: %lu;", -[FCNewsTabiEventAggregationConfiguration titleEmbeddingDimension](self, "titleEmbeddingDimension")];
   [v3 appendString:@"\n>"];
@@ -25,28 +25,28 @@
   return v3;
 }
 
-- (FCNewsTabiEventAggregationConfiguration)initWithDictionary:(id)a3 outputs:(id)a4
+- (FCNewsTabiEventAggregationConfiguration)initWithDictionary:(id)dictionary outputs:(id)outputs
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  outputsCopy = outputs;
   v9 = [FCNewsTabiEventAggregationConditions alloc];
-  v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v7, @"eventConditions", 0);
+  v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventConditions", 0);
   v11 = [(FCNewsTabiEventAggregationConditions *)v9 initWithDictionary:v10];
 
   if (v11)
   {
     v12 = v11;
-    v13 = FCAppConfigurationNumberValue(v7, @"fullBodyEmbeddingDimension", 0);
+    v13 = FCAppConfigurationNumberValue(dictionaryCopy, @"fullBodyEmbeddingDimension", 0);
     v14 = v13;
     if (v13)
     {
       v15 = v13;
-      v16 = FCAppConfigurationNumberValue(v7, @"maxTopicIds", 0);
+      v16 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxTopicIds", 0);
       v17 = v16;
       if (v16)
       {
         v18 = v16;
-        v19 = FCAppConfigurationNumberValue(v7, @"maxSessionEvents", 0);
+        v19 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxSessionEvents", 0);
         v33 = v19;
         if (v19)
         {
@@ -56,9 +56,9 @@
           v39[1] = 3221225472;
           v39[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_26;
           v39[3] = &unk_1E7C3BA50;
-          v20 = v7;
+          v20 = dictionaryCopy;
           v40 = v20;
-          v41 = v8;
+          v41 = outputsCopy;
           v21 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_26(v39);
           obj = v21;
           if (v21)
@@ -74,7 +74,7 @@
               v18 = v30;
               if (v22)
               {
-                objc_storeStrong(&v22->_dictionary, a3);
+                objc_storeStrong(&v22->_dictionary, dictionary);
                 objc_storeStrong(&v23->_eventConditions, v11);
                 v23->_fullBodyEmbeddingDimension = [v15 intValue];
                 v23->_maxTopicIds = [v30 intValue];
@@ -84,7 +84,7 @@
               }
 
               self = v23;
-              v24 = self;
+              selfCopy = self;
             }
 
             else
@@ -94,7 +94,7 @@
               v35[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_31;
               v35[3] = &unk_1E7C36F98;
               v36 = v20;
-              v24 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_31(v35);
+              selfCopy = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_31(v35);
 
               v18 = v30;
             }
@@ -109,7 +109,7 @@
             v37[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_3;
             v37[3] = &unk_1E7C36F98;
             v38 = v20;
-            v24 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_3(v37);
+            selfCopy = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_3(v37);
             v26 = v38;
             v18 = v30;
           }
@@ -123,8 +123,8 @@
           v42[1] = 3221225472;
           v42[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_25;
           v42[3] = &unk_1E7C36F98;
-          v43 = v7;
-          v24 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_25(v42);
+          v43 = dictionaryCopy;
+          selfCopy = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_25(v42);
           v25 = v43;
         }
       }
@@ -135,8 +135,8 @@
         v44[1] = 3221225472;
         v44[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_24;
         v44[3] = &unk_1E7C36F98;
-        v45 = v7;
-        v24 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_24(v44);
+        v45 = dictionaryCopy;
+        selfCopy = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_24(v44);
         v18 = v45;
       }
     }
@@ -147,8 +147,8 @@
       v46[1] = 3221225472;
       v46[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_23;
       v46[3] = &unk_1E7C36F98;
-      v47 = v7;
-      v24 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_23(v46);
+      v47 = dictionaryCopy;
+      selfCopy = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke_23(v46);
       v15 = v47;
     }
   }
@@ -159,12 +159,12 @@
     v48[1] = 3221225472;
     v48[2] = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke;
     v48[3] = &unk_1E7C36F98;
-    v49 = v7;
-    v24 = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke(v48);
+    v49 = dictionaryCopy;
+    selfCopy = __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke(v48);
     v12 = v49;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 uint64_t __70__FCNewsTabiEventAggregationConfiguration_initWithDictionary_outputs___block_invoke(uint64_t a1)

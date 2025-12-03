@@ -1,13 +1,13 @@
 @interface FMRemoveDeviceViewController
-- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)performRemoveAccessory;
 - (void)performRemoveDevice;
 - (void)removeAccessory;
 - (void)removeItem;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMRemoveDeviceViewController
@@ -24,13 +24,13 @@
   sub_10050ECAC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMRemoveDeviceViewController();
   v4 = v7.receiver;
-  [(FMRemoveDeviceViewController *)&v7 viewWillAppear:v3];
+  [(FMRemoveDeviceViewController *)&v7 viewWillAppear:appearCopy];
   v5 = *(*&v4[OBJC_IVAR____TtC6FindMy28FMRemoveDeviceViewController_mediator] + 56);
 
   v6 = sub_1003CD32C(v4, v5);
@@ -38,44 +38,44 @@
   *&v4[OBJC_IVAR____TtC6FindMy28FMRemoveDeviceViewController_selectionSubscription] = v6;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100504C40(a3);
+  selfCopy = self;
+  sub_100504C40(disappear);
 }
 
 - (void)performRemoveDevice
 {
-  v2 = self;
+  selfCopy = self;
   sub_100508668();
 }
 
 - (void)performRemoveAccessory
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050B560();
 }
 
 - (void)removeAccessory
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050B9F0();
 }
 
 - (void)removeItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_10050C4E8();
 }
 
-- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy28FMRemoveDeviceViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

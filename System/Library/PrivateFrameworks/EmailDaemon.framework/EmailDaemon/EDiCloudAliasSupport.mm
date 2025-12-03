@@ -1,12 +1,12 @@
 @interface EDiCloudAliasSupport
 + (OS_os_log)log;
-- (EDiCloudAliasSupport)initWithAppleAccount:(id)a3;
+- (EDiCloudAliasSupport)initWithAppleAccount:(id)account;
 - (NSString)aliasAuthorizationHeader;
 - (NSString)aliasUserAgent;
 - (NSURL)aliasLookupURL;
-- (id)_prepareAliasDataForEmailAddresses:(id)a3 defaultEmailAddress:(id)a4;
-- (id)anisetteDataWithError:(id *)a3;
-- (void)pushUpdateForAliasDataWithEmailAddresses:(id)a3 defaultEmailAddress:(id)a4;
+- (id)_prepareAliasDataForEmailAddresses:(id)addresses defaultEmailAddress:(id)address;
+- (id)anisetteDataWithError:(id *)error;
+- (void)pushUpdateForAliasDataWithEmailAddresses:(id)addresses defaultEmailAddress:(id)address;
 @end
 
 @implementation EDiCloudAliasSupport
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __27__EDiCloudAliasSupport_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_42 != -1)
   {
     dispatch_once(&log_onceToken_42, block);
@@ -36,27 +36,27 @@ void __27__EDiCloudAliasSupport_log__block_invoke(uint64_t a1)
   log_log_42 = v1;
 }
 
-- (EDiCloudAliasSupport)initWithAppleAccount:(id)a3
+- (EDiCloudAliasSupport)initWithAppleAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = EDiCloudAliasSupport;
   v5 = [(EDiCloudAliasSupport *)&v10 init];
   if (v5)
   {
-    v6 = [v4 parentAccount];
-    if (v6)
+    parentAccount = [accountCopy parentAccount];
+    if (parentAccount)
     {
-      v7 = [v4 parentAccount];
+      parentAccount2 = [accountCopy parentAccount];
     }
 
     else
     {
-      v7 = v4;
+      parentAccount2 = accountCopy;
     }
 
     appleAccount = v5->_appleAccount;
-    v5->_appleAccount = v7;
+    v5->_appleAccount = parentAccount2;
   }
 
   return v5;
@@ -64,8 +64,8 @@ void __27__EDiCloudAliasSupport_log__block_invoke(uint64_t a1)
 
 - (NSURL)aliasLookupURL
 {
-  v2 = [(EDiCloudAliasSupport *)self appleAccount];
-  v3 = [v2 propertiesForDataclass:*MEMORY[0x1E6959B28]];
+  appleAccount = [(EDiCloudAliasSupport *)self appleAccount];
+  v3 = [appleAccount propertiesForDataclass:*MEMORY[0x1E6959B28]];
   v4 = [v3 objectForKey:@"sendFromAddressJSONURL"];
 
   if (v4)
@@ -93,11 +93,11 @@ void __27__EDiCloudAliasSupport_log__block_invoke(uint64_t a1)
 
 - (NSString)aliasAuthorizationHeader
 {
-  v2 = [(EDiCloudAliasSupport *)self appleAccount];
+  appleAccount = [(EDiCloudAliasSupport *)self appleAccount];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [v2 aa_personID];
-  v5 = [v2 aa_authToken];
-  v6 = [v3 stringWithFormat:@"%@:%@", v4, v5];
+  aa_personID = [appleAccount aa_personID];
+  aa_authToken = [appleAccount aa_authToken];
+  v6 = [v3 stringWithFormat:@"%@:%@", aa_personID, aa_authToken];
 
   v7 = [v6 dataUsingEncoding:1];
   v8 = [v7 base64EncodedStringWithOptions:0];
@@ -106,7 +106,7 @@ void __27__EDiCloudAliasSupport_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)anisetteDataWithError:(id *)a3
+- (id)anisetteDataWithError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (anisetteDataWithError__onceToken != -1)
@@ -152,9 +152,9 @@ void __27__EDiCloudAliasSupport_log__block_invoke(uint64_t a1)
       [(EDiCloudAliasSupport *)v21 anisetteDataWithError:v9, ((v6 - v5) * v8 / v7) / 1000000000.0];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v21[0] + 40);
+      *error = *(v21[0] + 40);
     }
   }
 
@@ -217,29 +217,29 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
   *(v4 + 40) = v3;
 }
 
-- (void)pushUpdateForAliasDataWithEmailAddresses:(id)a3 defaultEmailAddress:(id)a4
+- (void)pushUpdateForAliasDataWithEmailAddresses:(id)addresses defaultEmailAddress:(id)address
 {
   v43 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v31 = a4;
+  addressesCopy = addresses;
+  addressCopy = address;
   v6 = +[EDiCloudAliasSupport log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v35) = [v32 count];
+    LODWORD(v35) = [addressesCopy count];
     _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "Pushing update for alias data. Count = %d", buf, 8u);
   }
 
-  v7 = [(EDiCloudAliasSupport *)self aliasLookupURL];
-  if (v7)
+  aliasLookupURL = [(EDiCloudAliasSupport *)self aliasLookupURL];
+  if (aliasLookupURL)
   {
-    v8 = [MEMORY[0x1E696AD68] requestWithURL:v7];
+    v8 = [MEMORY[0x1E696AD68] requestWithURL:aliasLookupURL];
     [v8 setHTTPMethod:@"POST"];
-    v9 = [(EDiCloudAliasSupport *)self aliasAuthorizationHeader];
-    [v8 setValue:v9 forHTTPHeaderField:@"Authorization"];
+    aliasAuthorizationHeader = [(EDiCloudAliasSupport *)self aliasAuthorizationHeader];
+    [v8 setValue:aliasAuthorizationHeader forHTTPHeaderField:@"Authorization"];
 
-    v10 = [(EDiCloudAliasSupport *)self aliasUserAgent];
-    [v8 setValue:v10 forHTTPHeaderField:*MEMORY[0x1E699B188]];
+    aliasUserAgent = [(EDiCloudAliasSupport *)self aliasUserAgent];
+    [v8 setValue:aliasUserAgent forHTTPHeaderField:*MEMORY[0x1E699B188]];
 
     [v8 setValue:@"application/json-rpc; charset=UTF-8" forHTTPHeaderField:*MEMORY[0x1E699B0D0]];
     [v8 ak_addDeviceUDIDHeader];
@@ -249,11 +249,11 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
     v30 = v33;
     if (v11)
     {
-      v12 = [v11 machineID];
-      [v8 setValue:v12 forHTTPHeaderField:@"X-Apple-I-MD-M"];
+      machineID = [v11 machineID];
+      [v8 setValue:machineID forHTTPHeaderField:@"X-Apple-I-MD-M"];
 
-      v13 = [v11 oneTimePassword];
-      [v8 setValue:v13 forHTTPHeaderField:@"X-Apple-I-MD"];
+      oneTimePassword = [v11 oneTimePassword];
+      [v8 setValue:oneTimePassword forHTTPHeaderField:@"X-Apple-I-MD"];
 
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(v11, "routingInfo")];
       [v8 setValue:v14 forHTTPHeaderField:@"X-Apple-I-MD-RINFO"];
@@ -264,20 +264,20 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
       v14 = +[EDiCloudAliasSupport log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(EDiCloudAliasSupport *)self appleAccount];
-        v16 = [v30 ef_publicDescription];
-        [(EDiCloudAliasSupport *)v15 pushUpdateForAliasDataWithEmailAddresses:v16 defaultEmailAddress:v42, v14];
+        appleAccount = [(EDiCloudAliasSupport *)self appleAccount];
+        ef_publicDescription = [v30 ef_publicDescription];
+        [(EDiCloudAliasSupport *)appleAccount pushUpdateForAliasDataWithEmailAddresses:ef_publicDescription defaultEmailAddress:v42, v14];
       }
     }
 
-    v17 = [(EDiCloudAliasSupport *)self _prepareAliasDataForEmailAddresses:v32 defaultEmailAddress:v31];
+    v17 = [(EDiCloudAliasSupport *)self _prepareAliasDataForEmailAddresses:addressesCopy defaultEmailAddress:addressCopy];
     v18 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v17 options:0 error:0];
     [v8 setHTTPBody:v18];
     v19 = EFCopyResponseDataForURLRequest();
     v20 = 0;
     v29 = 0;
-    v21 = [v20 statusCode];
-    if (v21 == 200 && v19)
+    statusCode = [v20 statusCode];
+    if (statusCode == 200 && v19)
     {
       v22 = +[EDiCloudAliasSupport log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -297,14 +297,14 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
       v22 = +[EDiCloudAliasSupport log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v29 ef_publicDescription];
+        ef_publicDescription2 = [v29 ef_publicDescription];
         v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v18 encoding:4];
         *buf = 138413058;
-        v35 = v7;
+        v35 = aliasLookupURL;
         v36 = 2048;
-        v37 = v21;
+        v37 = statusCode;
         v38 = 2114;
-        v39 = v26;
+        v39 = ef_publicDescription2;
         v40 = 2112;
         v28 = v27;
         v41 = v27;
@@ -325,21 +325,21 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_prepareAliasDataForEmailAddresses:(id)a3 defaultEmailAddress:(id)a4
+- (id)_prepareAliasDataForEmailAddresses:(id)addresses defaultEmailAddress:(id)address
 {
   v38 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v29 = a4;
+  addressesCopy = addresses;
+  addressCopy = address;
   v27 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"2.0", @"jsonrpc", @"update", @"method", 0}];
-  v28 = [MEMORY[0x1E695DF90] dictionary];
-  if (v30)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (addressesCopy)
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v30, "count")}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(addressesCopy, "count")}];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = v30;
+    v6 = addressesCopy;
     v7 = [v6 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v7)
     {
@@ -356,20 +356,20 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
           v10 = *(*(&v31 + 1) + 8 * i);
           v35[0] = @"address";
           v11 = v10;
-          v12 = [v11 emailAddressValue];
-          v13 = [v12 simpleAddress];
-          v14 = v13;
-          if (v13)
+          emailAddressValue = [v11 emailAddressValue];
+          simpleAddress = [emailAddressValue simpleAddress];
+          v14 = simpleAddress;
+          if (simpleAddress)
           {
-            v15 = v13;
+            stringValue = simpleAddress;
           }
 
           else
           {
-            v15 = [v11 stringValue];
+            stringValue = [v11 stringValue];
           }
 
-          v16 = v15;
+          v16 = stringValue;
 
           v35[1] = @"canSendFrom";
           v36[0] = v16;
@@ -385,31 +385,31 @@ void __46__EDiCloudAliasSupport_anisetteDataWithError___block_invoke_67(uint64_t
       while (v7);
     }
 
-    [v28 setValue:v5 forKey:@"email"];
+    [dictionary setValue:v5 forKey:@"email"];
   }
 
-  if (v29)
+  if (addressCopy)
   {
-    v19 = v29;
-    v20 = [v19 emailAddressValue];
-    v21 = [v20 simpleAddress];
-    v22 = v21;
-    if (v21)
+    v19 = addressCopy;
+    emailAddressValue2 = [v19 emailAddressValue];
+    simpleAddress2 = [emailAddressValue2 simpleAddress];
+    v22 = simpleAddress2;
+    if (simpleAddress2)
     {
-      v23 = v21;
+      stringValue2 = simpleAddress2;
     }
 
     else
     {
-      v23 = [v19 stringValue];
+      stringValue2 = [v19 stringValue];
     }
 
-    v24 = v23;
+    v24 = stringValue2;
 
-    [v28 setValue:v24 forKey:@"defaultAddress"];
+    [dictionary setValue:v24 forKey:@"defaultAddress"];
   }
 
-  [v27 setValue:v28 forKey:@"params"];
+  [v27 setValue:dictionary forKey:@"params"];
 
   v25 = *MEMORY[0x1E69E9840];
 

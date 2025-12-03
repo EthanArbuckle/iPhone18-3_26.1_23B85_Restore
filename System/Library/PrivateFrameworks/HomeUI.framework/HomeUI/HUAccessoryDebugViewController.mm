@@ -1,17 +1,17 @@
 @interface HUAccessoryDebugViewController
-- (HUAccessoryDebugViewController)initWithHomeKitObject:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HUAccessoryDebugViewController)initWithHomeKitObject:(id)object;
+- (id)buildItemModuleControllerForModule:(id)module;
 @end
 
 @implementation HUAccessoryDebugViewController
 
-- (HUAccessoryDebugViewController)initWithHomeKitObject:(id)a3
+- (HUAccessoryDebugViewController)initWithHomeKitObject:(id)object
 {
-  v6 = a3;
-  if (!v6)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUAccessoryDebugViewController.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"homeKitObject"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessoryDebugViewController.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"homeKitObject"}];
   }
 
   v7 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
@@ -23,7 +23,7 @@
   v16[1] = 3221225472;
   v16[2] = __56__HUAccessoryDebugViewController_initWithHomeKitObject___block_invoke;
   v16[3] = &unk_277DB9F78;
-  v10 = v6;
+  v10 = objectCopy;
   v17 = v10;
   [v7 setItemModuleCreator:v16];
   v15.receiver = self;
@@ -32,7 +32,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_homeKitObject, a3);
+    objc_storeStrong(&v11->_homeKitObject, object);
   }
 
   return v12;
@@ -50,21 +50,21 @@ id __56__HUAccessoryDebugViewController_initWithHomeKitObject___block_invoke(uin
   return v6;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v5 = [[HUAccessoryDebugModuleController alloc] initWithModule:v4];
+  v5 = [[HUAccessoryDebugModuleController alloc] initWithModule:moduleCopy];
   [(HUAccessoryDebugViewController *)self setDebugModuleController:v5];
 
-  v6 = [(HUAccessoryDebugViewController *)self debugModuleController];
+  debugModuleController = [(HUAccessoryDebugViewController *)self debugModuleController];
 
-  return v6;
+  return debugModuleController;
 }
 
 @end

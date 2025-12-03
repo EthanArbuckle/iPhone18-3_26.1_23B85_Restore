@@ -1,7 +1,7 @@
 @interface PXLivePhotoTrimScrubberAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
-- (id)_accessibilityTimeForCMTime:(id *)a3;
+- (id)_accessibilityTimeForCMTime:(id *)time;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
 - (void)_PXLivePhotoTrimScrubber_commonInit;
@@ -13,30 +13,30 @@
 
 @implementation PXLivePhotoTrimScrubberAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"_PXLivePhotoTrimScrubber_commonInit" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"keyTime" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"trimStartTime" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"trimEndTime" withFullSignature:{"{?=qiIq}", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"setKeyTime:" withFullSignature:{"v", "{?=qiIq}", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"setTrimStartTime:" withFullSignature:{"v", "{?=qiIq}", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"setTrimEndTime:" withFullSignature:{"v", "{?=qiIq}", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"handleEndTracking:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_trimEndHandle" withType:"UIImageView"];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_trimStartHandle" withType:"UIImageView"];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_photoLoupe" withType:"PXLivePhotoTrimScrubberLoupeView"];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_trimControlHiddenHelper" withType:"PXLivePhotoTrimScrubberHiddenAnimationHelper"];
-  [v3 validateClass:@"PXLivePhotoTrimScrubberHiddenAnimationHelper" hasInstanceMethod:@"hidden" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"_trackingElement" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"_PXLivePhotoTrimScrubber_commonInit" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"keyTime" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"trimStartTime" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"trimEndTime" withFullSignature:{"{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"setKeyTime:" withFullSignature:{"v", "{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"setTrimStartTime:" withFullSignature:{"v", "{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"setTrimEndTime:" withFullSignature:{"v", "{?=qiIq}", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"handleEndTracking:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_trimEndHandle" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_trimStartHandle" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_photoLoupe" withType:"PXLivePhotoTrimScrubberLoupeView"];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceVariable:@"_trimControlHiddenHelper" withType:"PXLivePhotoTrimScrubberHiddenAnimationHelper"];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubberHiddenAnimationHelper" hasInstanceMethod:@"hidden" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXLivePhotoTrimScrubber" hasInstanceMethod:@"_trackingElement" withFullSignature:{"q", 0}];
 }
 
-- (id)_accessibilityTimeForCMTime:(id *)a3
+- (id)_accessibilityTimeForCMTime:(id *)time
 {
-  v5 = *a3;
+  v5 = *time;
   CMTimeGetSeconds(&v5);
   v3 = UIAXTimeStringForDuration();
 
@@ -50,8 +50,8 @@
   v4 = accessibilityPULocalizedString(@"start.trim.handle");
   [v3 setAccessibilityLabel:v4];
 
-  v5 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | v5];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | accessibilityTraits];
   [v3 _accessibilitySetUserDefinedMediaAnalysisOptions:&unk_2A2288ED0];
   objc_initWeak(&location, v3);
   v17[0] = MEMORY[0x29EDCA5F8];
@@ -374,8 +374,8 @@ void __56__PXLivePhotoTrimScrubberAccessibility__loadStartTrimAX__block_invoke_1
   v4 = accessibilityPULocalizedString(@"end.trim.handle");
   [v3 setAccessibilityLabel:v4];
 
-  v5 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | v5];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | accessibilityTraits];
   [v3 _accessibilitySetUserDefinedMediaAnalysisOptions:&unk_2A2288ED0];
   objc_initWeak(&location, v3);
   v17[0] = MEMORY[0x29EDCA5F8];
@@ -676,8 +676,8 @@ void __54__PXLivePhotoTrimScrubberAccessibility__loadEndTrimAX__block_invoke_10(
   v4 = accessibilityPULocalizedString(@"live.photo.keytime");
   [v3 setAccessibilityLabel:v4];
 
-  v5 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | v5];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F60] | accessibilityTraits];
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x29EDCA5F8];
   v14[1] = 3221225472;
@@ -1030,7 +1030,7 @@ void __55__PXLivePhotoTrimScrubberAccessibility__loadKeyFrameAX__block_invoke_11
   v19 = 3221225472;
   v20 = __58__PXLivePhotoTrimScrubberAccessibility_accessibilityValue__block_invoke;
   v21 = &unk_29F2E6080;
-  v22 = self;
+  selfCopy = self;
   p_lhs = &lhs;
   AXPerformSafeBlock();
   v29 = *(*&lhs.timescale + 32);
@@ -1046,7 +1046,7 @@ void __55__PXLivePhotoTrimScrubberAccessibility__loadKeyFrameAX__block_invoke_11
   v12 = 3221225472;
   v13 = __58__PXLivePhotoTrimScrubberAccessibility_accessibilityValue__block_invoke_2;
   v14 = &unk_29F2E6080;
-  v15 = self;
+  selfCopy2 = self;
   v16 = &lhs;
   AXPerformSafeBlock();
   v17 = *(*&lhs.timescale + 32);
@@ -1127,8 +1127,8 @@ double __58__PXLivePhotoTrimScrubberAccessibility_accessibilityValue__block_invo
 - (id)_accessibilitySupplementaryFooterViews
 {
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v4 = [(PXLivePhotoTrimScrubberAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FA8] & v4) == 0)
+  accessibilityTraits = [(PXLivePhotoTrimScrubberAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FA8] & accessibilityTraits) == 0)
   {
     v5 = [(PXLivePhotoTrimScrubberAccessibility *)self safeUIViewForKey:@"_trimStartHandle"];
     [v3 axSafelyAddObject:v5];

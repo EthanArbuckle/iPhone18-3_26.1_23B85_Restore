@@ -1,18 +1,18 @@
 @interface CMAMessagesExtensionStorageHelper
-+ (void)markFilePurgeableAtURL:(id)a3;
-+ (void)markFilesPurgeableForAsset:(id)a3;
++ (void)markFilePurgeableAtURL:(id)l;
++ (void)markFilesPurgeableForAsset:(id)asset;
 @end
 
 @implementation CMAMessagesExtensionStorageHelper
 
-+ (void)markFilePurgeableAtURL:(id)a3
++ (void)markFilePurgeableAtURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
     v8 = 66057;
-    v5 = fsctl([v3 fileSystemRepresentation], 0xC0084A44uLL, &v8, 0);
+    v5 = fsctl([lCopy fileSystemRepresentation], 0xC0084A44uLL, &v8, 0);
     v6 = os_log_create("com.apple.camera", "CameraMessagesApp");
     v7 = v6;
     if (v5)
@@ -32,21 +32,21 @@
   }
 }
 
-+ (void)markFilesPurgeableForAsset:(id)a3
++ (void)markFilesPurgeableForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 providedFullsizeImageURL];
-  [a1 markFilePurgeableAtURL:v5];
+  assetCopy = asset;
+  providedFullsizeImageURL = [assetCopy providedFullsizeImageURL];
+  [self markFilePurgeableAtURL:providedFullsizeImageURL];
 
-  v6 = [v4 providedFullsizeRenderImageURL];
-  [a1 markFilePurgeableAtURL:v6];
+  providedFullsizeRenderImageURL = [assetCopy providedFullsizeRenderImageURL];
+  [self markFilePurgeableAtURL:providedFullsizeRenderImageURL];
 
-  v7 = [v4 providedVideoURL];
-  [a1 markFilePurgeableAtURL:v7];
+  providedVideoURL = [assetCopy providedVideoURL];
+  [self markFilePurgeableAtURL:providedVideoURL];
 
-  v8 = [v4 providedFullsizeRenderVideoURL];
+  providedFullsizeRenderVideoURL = [assetCopy providedFullsizeRenderVideoURL];
 
-  [a1 markFilePurgeableAtURL:v8];
+  [self markFilePurgeableAtURL:providedFullsizeRenderVideoURL];
 }
 
 @end

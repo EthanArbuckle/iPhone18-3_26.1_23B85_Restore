@@ -1,36 +1,36 @@
 @interface IMPingStatistics
-- (IMPingStatistics)initWithMaxRTT:(double)a3 medianRTT:(double)a4 avgRTT:(double)a5 minRTT:(double)a6 transmitted:(int)a7 successful:(int)a8 received:(int)a9;
+- (IMPingStatistics)initWithMaxRTT:(double)t medianRTT:(double)tT avgRTT:(double)rTT minRTT:(double)minRTT transmitted:(int)transmitted successful:(int)successful received:(int)received;
 - (double)packetLossRate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_addReceivedPacket:(double)a3;
-- (void)_addTransmittedPacket:(BOOL)a3;
+- (void)_addReceivedPacket:(double)packet;
+- (void)_addTransmittedPacket:(BOOL)packet;
 @end
 
 @implementation IMPingStatistics
 
-- (IMPingStatistics)initWithMaxRTT:(double)a3 medianRTT:(double)a4 avgRTT:(double)a5 minRTT:(double)a6 transmitted:(int)a7 successful:(int)a8 received:(int)a9
+- (IMPingStatistics)initWithMaxRTT:(double)t medianRTT:(double)tT avgRTT:(double)rTT minRTT:(double)minRTT transmitted:(int)transmitted successful:(int)successful received:(int)received
 {
   v17.receiver = self;
   v17.super_class = IMPingStatistics;
   result = [(IMPingStatistics *)&v17 init];
   if (result)
   {
-    result->_medianRoundtripTime = a4;
-    result->_averageRoundtripTime = a5;
-    result->_minRoundtripTime = a6;
-    result->_maxRoundtripTime = a3;
-    result->_numPingsTransmitted = a7;
-    result->_numPingsReceived = a9;
-    result->_numPacketsSuccessfullySent = a8;
+    result->_medianRoundtripTime = tT;
+    result->_averageRoundtripTime = rTT;
+    result->_minRoundtripTime = minRTT;
+    result->_maxRoundtripTime = t;
+    result->_numPingsTransmitted = transmitted;
+    result->_numPingsReceived = received;
+    result->_numPacketsSuccessfullySent = successful;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(IMPingStatistics, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(IMPingStatistics, a2, zone);
   result = objc_msgSend_initWithMaxRTT_medianRTT_avgRTT_minRTT_transmitted_successful_received_(v4, v5, self->_numPingsTransmitted, self->_numPacketsSuccessfullySent, self->_numPingsReceived, self->_maxRoundtripTime, self->_medianRoundtripTime, self->_averageRoundtripTime, self->_minRoundtripTime);
   if (result)
   {
@@ -40,29 +40,29 @@
   return result;
 }
 
-- (void)_addTransmittedPacket:(BOOL)a3
+- (void)_addTransmittedPacket:(BOOL)packet
 {
   ++self->_numPingsTransmitted;
-  if (a3)
+  if (packet)
   {
     ++self->_numPacketsSuccessfullySent;
   }
 }
 
-- (void)_addReceivedPacket:(double)a3
+- (void)_addReceivedPacket:(double)packet
 {
   minRoundtripTime = self->_minRoundtripTime;
-  if (minRoundtripTime == 0.0 || minRoundtripTime > a3)
+  if (minRoundtripTime == 0.0 || minRoundtripTime > packet)
   {
-    self->_minRoundtripTime = a3;
+    self->_minRoundtripTime = packet;
   }
 
-  if (self->_maxRoundtripTime < a3)
+  if (self->_maxRoundtripTime < packet)
   {
-    self->_maxRoundtripTime = a3;
+    self->_maxRoundtripTime = packet;
   }
 
-  v5 = self->_sumRoundtripTimes + a3;
+  v5 = self->_sumRoundtripTimes + packet;
   self->_sumRoundtripTimes = v5;
   numPingsReceived = self->_numPingsReceived;
   self->_averageRoundtripTime = v5 / numPingsReceived;

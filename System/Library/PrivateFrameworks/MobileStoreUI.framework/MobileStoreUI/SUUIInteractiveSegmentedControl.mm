@@ -1,31 +1,31 @@
 @interface SUUIInteractiveSegmentedControl
-- (BOOL)_setSelectionProgress:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIInteractiveSegmentedControl)initWithFrame:(CGRect)a3;
-- (double)relativeSelectionProgressForSelectionProgress:(double)a3 segmentIndex:(int64_t)a4;
-- (double)selectionProgressForRelativeSectionProgress:(double)a3 segmentIndex:(int64_t)a4;
-- (double)selectionProgressForSelectedSegmentAtIndex:(int64_t)a3;
-- (id)_createDividerViewWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (int64_t)selectedSegmentIndexForSelectionProgress:(double)a3;
+- (BOOL)_setSelectionProgress:(double)progress;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIInteractiveSegmentedControl)initWithFrame:(CGRect)frame;
+- (double)relativeSelectionProgressForSelectionProgress:(double)progress segmentIndex:(int64_t)index;
+- (double)selectionProgressForRelativeSectionProgress:(double)progress segmentIndex:(int64_t)index;
+- (double)selectionProgressForSelectedSegmentAtIndex:(int64_t)index;
+- (id)_createDividerViewWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (int64_t)selectedSegmentIndexForSelectionProgress:(double)progress;
 - (void)_applySelectionProgressToSegments;
-- (void)_registerForObservationOfSegment:(id)a3;
-- (void)_segmentControlTouchUpInsideAction:(id)a3;
-- (void)_unregisterForObservationOfSegment:(id)a3;
+- (void)_registerForObservationOfSegment:(id)segment;
+- (void)_segmentControlTouchUpInsideAction:(id)action;
+- (void)_unregisterForObservationOfSegment:(id)segment;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDividerCreationBlock:(id)a3;
-- (void)setDividerWidth:(double)a3;
-- (void)setSegments:(id)a3;
+- (void)setDividerCreationBlock:(id)block;
+- (void)setDividerWidth:(double)width;
+- (void)setSegments:(id)segments;
 @end
 
 @implementation SUUIInteractiveSegmentedControl
 
-- (SUUIInteractiveSegmentedControl)initWithFrame:(CGRect)a3
+- (SUUIInteractiveSegmentedControl)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUUIInteractiveSegmentedControl;
-  result = [(SUUIInteractiveSegmentedControl *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SUUIInteractiveSegmentedControl *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_dividerWidth = 1.0;
@@ -72,15 +72,15 @@
   [(SUUIInteractiveSegmentedControl *)&v8 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v29.receiver = self;
   v29.super_class = SUUIInteractiveSegmentedControl;
-  v8 = [(SUUIInteractiveSegmentedControl *)&v29 hitTest:v7 withEvent:x, y];
+  v8 = [(SUUIInteractiveSegmentedControl *)&v29 hitTest:eventCopy withEvent:x, y];
   v9 = [(NSMutableArray *)self->_dividerViews containsObject:v8];
   if (v8 == self || v9 != 0)
   {
@@ -148,15 +148,15 @@ LABEL_7:
 
     if (v21)
     {
-      v22 = v21;
+      selfCopy = v21;
     }
 
     else
     {
-      v22 = self;
+      selfCopy = self;
     }
 
-    v23 = v22;
+    v23 = selfCopy;
 
     v8 = v23;
   }
@@ -175,14 +175,14 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUIInteractiveSegmentedControl *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(SUUIInteractiveSegmentedControl *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   if (v13 < 0.00000011920929)
   {
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v13 = v15;
   }
 
@@ -418,10 +418,10 @@ void __49__SUUIInteractiveSegmentedControl_layoutSubviews__block_invoke_2(uint64
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v22 = *MEMORY[0x277D85DE8];
   [(NSArray *)self->_segments count];
   UIFloorToViewScale();
@@ -480,12 +480,12 @@ void __49__SUUIInteractiveSegmentedControl_layoutSubviews__block_invoke_2(uint64
   return result;
 }
 
-- (void)setDividerCreationBlock:(id)a3
+- (void)setDividerCreationBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_dividerCreationBlock != a3)
+  if (self->_dividerCreationBlock != block)
   {
-    v4 = [a3 copy];
+    v4 = [block copy];
     dividerCreationBlock = self->_dividerCreationBlock;
     self->_dividerCreationBlock = v4;
 
@@ -526,21 +526,21 @@ void __49__SUUIInteractiveSegmentedControl_layoutSubviews__block_invoke_2(uint64
   }
 }
 
-- (void)setDividerWidth:(double)a3
+- (void)setDividerWidth:(double)width
 {
-  if (vabdd_f64(self->_dividerWidth, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_dividerWidth, width) > 0.00000011920929)
   {
-    self->_dividerWidth = a3;
+    self->_dividerWidth = width;
     [(SUUIInteractiveSegmentedControl *)self setNeedsLayout];
   }
 }
 
-- (void)setSegments:(id)a3
+- (void)setSegments:(id)segments
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  segmentsCopy = segments;
   segments = self->_segments;
-  if (segments != v4 && ![(NSArray *)segments isEqualToArray:v4])
+  if (segments != segmentsCopy && ![(NSArray *)segments isEqualToArray:segmentsCopy])
   {
     v6 = [(SUUIInteractiveSegmentedControl *)self selectedSegmentIndexForSelectionProgress:self->_selectionProgress];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -559,7 +559,7 @@ void __49__SUUIInteractiveSegmentedControl_layoutSubviews__block_invoke_2(uint64
 
     v10 = self->_segments;
     v11 = [(NSArray *)v10 mutableCopy];
-    v12 = [(NSArray *)v4 copy];
+    v12 = [(NSArray *)segmentsCopy copy];
     v13 = self->_segments;
     self->_segments = v12;
 
@@ -696,7 +696,7 @@ uint64_t __47__SUUIInteractiveSegmentedControl_setSegments___block_invoke(uint64
   return [a2 setSegmentPosition:v6];
 }
 
-- (double)relativeSelectionProgressForSelectionProgress:(double)a3 segmentIndex:(int64_t)a4
+- (double)relativeSelectionProgressForSelectionProgress:(double)progress segmentIndex:(int64_t)index
 {
   v7 = [(NSArray *)self->_segments count];
   if (!v7)
@@ -705,8 +705,8 @@ uint64_t __47__SUUIInteractiveSegmentedControl_setSegments___block_invoke(uint64
   }
 
   v8 = v7;
-  [(SUUIInteractiveSegmentedControl *)self selectionProgressForSelectedSegmentAtIndex:a4];
-  result = fmax((a3 - v9) / (1.0 / v8), -1.0);
+  [(SUUIInteractiveSegmentedControl *)self selectionProgressForSelectedSegmentAtIndex:index];
+  result = fmax((progress - v9) / (1.0 / v8), -1.0);
   if (result > 1.0)
   {
     return 1.0;
@@ -715,7 +715,7 @@ uint64_t __47__SUUIInteractiveSegmentedControl_setSegments___block_invoke(uint64
   return result;
 }
 
-- (double)selectionProgressForRelativeSectionProgress:(double)a3 segmentIndex:(int64_t)a4
+- (double)selectionProgressForRelativeSectionProgress:(double)progress segmentIndex:(int64_t)index
 {
   v7 = [(NSArray *)self->_segments count];
   if (!v7)
@@ -723,23 +723,23 @@ uint64_t __47__SUUIInteractiveSegmentedControl_setSegments___block_invoke(uint64
     return 0.0;
   }
 
-  v8 = fmax(a3, -1.0);
+  v8 = fmax(progress, -1.0);
   if (v8 > 1.0)
   {
     v8 = 1.0;
   }
 
   v9 = v8 * (1.0 / v7);
-  [(SUUIInteractiveSegmentedControl *)self selectionProgressForSelectedSegmentAtIndex:a4];
+  [(SUUIInteractiveSegmentedControl *)self selectionProgressForSelectedSegmentAtIndex:index];
   return v9 + v10;
 }
 
-- (double)selectionProgressForSelectedSegmentAtIndex:(int64_t)a3
+- (double)selectionProgressForSelectedSegmentAtIndex:(int64_t)index
 {
   v4 = [(NSArray *)self->_segments count];
   if (v4)
   {
-    return 1.0 / v4 * 0.5 + a3 * (1.0 / v4);
+    return 1.0 / v4 * 0.5 + index * (1.0 / v4);
   }
 
   else
@@ -748,12 +748,12 @@ uint64_t __47__SUUIInteractiveSegmentedControl_setSegments___block_invoke(uint64
   }
 }
 
-- (int64_t)selectedSegmentIndexForSelectionProgress:(double)a3
+- (int64_t)selectedSegmentIndexForSelectionProgress:(double)progress
 {
   v4 = [(NSArray *)self->_segments count];
   if (v4)
   {
-    return llround((a3 + -1.0 / v4 * 0.5) * (v4 - 1));
+    return llround((progress + -1.0 / v4 * 0.5) * (v4 - 1));
   }
 
   else
@@ -762,29 +762,29 @@ uint64_t __47__SUUIInteractiveSegmentedControl_setSegments___block_invoke(uint64
   }
 }
 
-- (void)_segmentControlTouchUpInsideAction:(id)a3
+- (void)_segmentControlTouchUpInsideAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   segments = self->_segments;
   if (segments)
   {
-    v6 = v4;
-    segments = [segments indexOfObject:v4];
-    v4 = v6;
+    v6 = actionCopy;
+    segments = [segments indexOfObject:actionCopy];
+    actionCopy = v6;
     if (segments != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(SUUIInteractiveSegmentedControl *)self selectionProgressForSelectedSegmentAtIndex:segments];
       segments = [(SUUIInteractiveSegmentedControl *)self _setSelectionProgress:?];
-      v4 = v6;
+      actionCopy = v6;
       if (segments)
       {
         segments = [(SUUIInteractiveSegmentedControl *)self _notifyClientsOfSelectionProgressChange];
-        v4 = v6;
+        actionCopy = v6;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](segments, v4);
+  MEMORY[0x2821F96F8](segments, actionCopy);
 }
 
 - (void)_applySelectionProgressToSegments
@@ -807,48 +807,48 @@ void __68__SUUIInteractiveSegmentedControl__applySelectionProgressToSegments__bl
   [v6 setRelativeSelectionProgress:?];
 }
 
-- (id)_createDividerViewWithFrame:(CGRect)a3
+- (id)_createDividerViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   dividerCreationBlock = self->_dividerCreationBlock;
-  if (!dividerCreationBlock || (dividerCreationBlock[2](dividerCreationBlock, self, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!dividerCreationBlock || (dividerCreationBlock[2](dividerCreationBlock, self, frame.origin, *&frame.origin.y, frame.size, *&frame.size.height), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{x, y, width, height}];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v9 setBackgroundColor:clearColor];
   }
 
   return v9;
 }
 
-- (void)_registerForObservationOfSegment:(id)a3
+- (void)_registerForObservationOfSegment:(id)segment
 {
-  if (a3)
+  if (segment)
   {
-    [a3 addTarget:self action:sel__segmentControlTouchUpInsideAction_ forControlEvents:64];
+    [segment addTarget:self action:sel__segmentControlTouchUpInsideAction_ forControlEvents:64];
   }
 }
 
-- (BOOL)_setSelectionProgress:(double)a3
+- (BOOL)_setSelectionProgress:(double)progress
 {
-  v3 = vabdd_f64(self->_selectionProgress, a3);
+  v3 = vabdd_f64(self->_selectionProgress, progress);
   if (v3 > 0.00000011920929)
   {
-    self->_selectionProgress = a3;
+    self->_selectionProgress = progress;
     [(SUUIInteractiveSegmentedControl *)self _applySelectionProgressToSegments];
   }
 
   return v3 > 0.00000011920929;
 }
 
-- (void)_unregisterForObservationOfSegment:(id)a3
+- (void)_unregisterForObservationOfSegment:(id)segment
 {
-  if (a3)
+  if (segment)
   {
-    [a3 removeTarget:self action:sel__segmentControlTouchUpInsideAction_ forControlEvents:64];
+    [segment removeTarget:self action:sel__segmentControlTouchUpInsideAction_ forControlEvents:64];
   }
 }
 

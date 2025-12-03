@@ -1,14 +1,14 @@
 @interface SharingTagTextActivityItemSource
 - (_TtC8NewsFeed32SharingTagTextActivityItemSource)init;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation SharingTagTextActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
 
   v3 = sub_1D726490C();
@@ -16,12 +16,12 @@
   return v3;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  SharingTagTextActivityItemSource.activityViewController(_:itemForActivityType:)(a4, v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  SharingTagTextActivityItemSource.activityViewController(_:itemForActivityType:)(type, v17);
 
   v9 = v18;
   if (v18)
@@ -44,19 +44,19 @@
   return v15;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D607A9A8(a4);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_1D607A9A8(type);
 
   v9 = sub_1D726203C();
 
   return v9;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
 
   v4 = sub_1D726203C();

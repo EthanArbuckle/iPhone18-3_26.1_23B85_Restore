@@ -1,14 +1,14 @@
 @interface NPTMetricResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMetricResult:(id)a3;
-- (NPTMetricResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMetricResult:(id)result;
+- (NPTMetricResult)initWithCoder:(id)coder;
 - (NSDictionary)asDictionary;
-- (double)timeIntervalSinceDateWithLogging:(id)a3 startDate:(id)a4 nameToLog:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)timeIntervalSinceDateWithLogging:(id)logging startDate:(id)date nameToLog:(id)log;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateWithMetrics:(id)a3;
-- (void)populateWithURLResponse:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateWithMetrics:(id)metrics;
+- (void)populateWithURLResponse:(id)response;
 @end
 
 @implementation NPTMetricResult
@@ -78,11 +78,11 @@
   error = self->_error;
   if (error)
   {
-    v15 = [(NSError *)error localizedDescription];
-    [v3 setValue:v15 forKey:@"error"];
+    localizedDescription = [(NSError *)error localizedDescription];
+    [v3 setValue:localizedDescription forKey:@"error"];
 
-    v16 = [(NSError *)self->_error domain];
-    [v3 setValue:v16 forKey:@"error_domain"];
+    domain = [(NSError *)self->_error domain];
+    [v3 setValue:domain forKey:@"error_domain"];
 
     v17 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSError code](self->_error, "code")}];
     [v3 setValue:v17 forKey:@"error_code"];
@@ -93,243 +93,243 @@
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[NPTMetricResult fileSize](self forKey:{"fileSize"), @"fileSize"}];
-  v5 = [(NPTMetricResult *)self fetchDate];
-  [v4 encodeObject:v5 forKey:@"fetchDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NPTMetricResult fileSize](self forKey:{"fileSize"), @"fileSize"}];
+  fetchDate = [(NPTMetricResult *)self fetchDate];
+  [coderCopy encodeObject:fetchDate forKey:@"fetchDate"];
 
-  v6 = [(NPTMetricResult *)self protocolName];
-  [v4 encodeObject:v6 forKey:@"protocolName"];
+  protocolName = [(NPTMetricResult *)self protocolName];
+  [coderCopy encodeObject:protocolName forKey:@"protocolName"];
 
-  v7 = [(NPTMetricResult *)self isReusedConnection];
-  [v4 encodeObject:v7 forKey:@"isReusedConnection"];
+  isReusedConnection = [(NPTMetricResult *)self isReusedConnection];
+  [coderCopy encodeObject:isReusedConnection forKey:@"isReusedConnection"];
 
-  v8 = [(NPTMetricResult *)self isProxyConnection];
-  [v4 encodeObject:v8 forKey:@"isProxtConnection"];
+  isProxyConnection = [(NPTMetricResult *)self isProxyConnection];
+  [coderCopy encodeObject:isProxyConnection forKey:@"isProxtConnection"];
 
   [(NPTMetricResult *)self domainLookupTime];
-  [v4 encodeDouble:@"domainLookupTime" forKey:?];
+  [coderCopy encodeDouble:@"domainLookupTime" forKey:?];
   [(NPTMetricResult *)self connectionTime];
-  [v4 encodeDouble:@"connectionTime" forKey:?];
+  [coderCopy encodeDouble:@"connectionTime" forKey:?];
   [(NPTMetricResult *)self secureConnectionTime];
-  [v4 encodeDouble:@"secureConnectionTime" forKey:?];
+  [coderCopy encodeDouble:@"secureConnectionTime" forKey:?];
   [(NPTMetricResult *)self requestTime];
-  [v4 encodeDouble:@"requestTime" forKey:?];
+  [coderCopy encodeDouble:@"requestTime" forKey:?];
   [(NPTMetricResult *)self requestToResponseTime];
-  [v4 encodeDouble:@"requestToResponseTime" forKey:?];
+  [coderCopy encodeDouble:@"requestToResponseTime" forKey:?];
   [(NPTMetricResult *)self responseTime];
-  [v4 encodeDouble:@"responseTime" forKey:?];
+  [coderCopy encodeDouble:@"responseTime" forKey:?];
   [(NPTMetricResult *)self speed];
-  [v4 encodeDouble:@"speed" forKey:?];
-  v9 = [(NPTMetricResult *)self speedRating];
-  [v4 encodeObject:v9 forKey:@"speedRating"];
+  [coderCopy encodeDouble:@"speed" forKey:?];
+  speedRating = [(NPTMetricResult *)self speedRating];
+  [coderCopy encodeObject:speedRating forKey:@"speedRating"];
 
-  v10 = [(NPTMetricResult *)self speedConfidence];
-  [v4 encodeObject:v10 forKey:@"speedConfidence"];
+  speedConfidence = [(NPTMetricResult *)self speedConfidence];
+  [coderCopy encodeObject:speedConfidence forKey:@"speedConfidence"];
 
-  v11 = [(NPTMetricResult *)self latency];
-  [v4 encodeObject:v11 forKey:@"latency"];
+  latency = [(NPTMetricResult *)self latency];
+  [coderCopy encodeObject:latency forKey:@"latency"];
 
-  v12 = [(NPTMetricResult *)self nqTestEndPoint];
-  [v4 encodeObject:v12 forKey:@"nqTestEndPoint"];
+  nqTestEndPoint = [(NPTMetricResult *)self nqTestEndPoint];
+  [coderCopy encodeObject:nqTestEndPoint forKey:@"nqTestEndPoint"];
 
   [(NPTMetricResult *)self maxSpeedObserved];
-  [v4 encodeDouble:@"maxSpeedObserved" forKey:?];
+  [coderCopy encodeDouble:@"maxSpeedObserved" forKey:?];
   [(NPTMetricResult *)self stableSpeed];
-  [v4 encodeDouble:@"stableSpeed" forKey:?];
-  v13 = [(NPTMetricResult *)self cdnpop];
-  [v4 encodeObject:v13 forKey:@"cdnpop"];
+  [coderCopy encodeDouble:@"stableSpeed" forKey:?];
+  cdnpop = [(NPTMetricResult *)self cdnpop];
+  [coderCopy encodeObject:cdnpop forKey:@"cdnpop"];
 
-  v14 = [(NPTMetricResult *)self cdnuuid];
-  [v4 encodeObject:v14 forKey:@"cdnuuid"];
+  cdnuuid = [(NPTMetricResult *)self cdnuuid];
+  [coderCopy encodeObject:cdnuuid forKey:@"cdnuuid"];
 
-  v15 = [(NPTMetricResult *)self appleClientASN];
-  [v4 encodeObject:v15 forKey:@"appleClientASN"];
+  appleClientASN = [(NPTMetricResult *)self appleClientASN];
+  [coderCopy encodeObject:appleClientASN forKey:@"appleClientASN"];
 
-  v16 = [(NPTMetricResult *)self appleClientASNCompany];
-  [v4 encodeObject:v16 forKey:@"appleClientASNCompany"];
+  appleClientASNCompany = [(NPTMetricResult *)self appleClientASNCompany];
+  [coderCopy encodeObject:appleClientASNCompany forKey:@"appleClientASNCompany"];
 
-  v17 = [(NPTMetricResult *)self server];
-  [v4 encodeObject:v17 forKey:@"server"];
+  server = [(NPTMetricResult *)self server];
+  [coderCopy encodeObject:server forKey:@"server"];
 
-  v18 = [(NPTMetricResult *)self isCellular];
-  [v4 encodeObject:v18 forKey:@"isCellular"];
+  isCellular = [(NPTMetricResult *)self isCellular];
+  [coderCopy encodeObject:isCellular forKey:@"isCellular"];
 
-  v19 = [(NPTMetricResult *)self isConstrained];
-  [v4 encodeObject:v19 forKey:@"isConstrained"];
+  isConstrained = [(NPTMetricResult *)self isConstrained];
+  [coderCopy encodeObject:isConstrained forKey:@"isConstrained"];
 
-  v20 = [(NPTMetricResult *)self isExpensive];
-  [v4 encodeObject:v20 forKey:@"isExpensive"];
+  isExpensive = [(NPTMetricResult *)self isExpensive];
+  [coderCopy encodeObject:isExpensive forKey:@"isExpensive"];
 
-  v21 = [(NPTMetricResult *)self isMultipath];
-  [v4 encodeObject:v21 forKey:@"isMultipath"];
+  isMultipath = [(NPTMetricResult *)self isMultipath];
+  [coderCopy encodeObject:isMultipath forKey:@"isMultipath"];
 
-  v22 = [(NPTMetricResult *)self localAddress];
-  [v4 encodeObject:v22 forKey:@"localAddress"];
+  localAddress = [(NPTMetricResult *)self localAddress];
+  [coderCopy encodeObject:localAddress forKey:@"localAddress"];
 
-  v23 = [(NPTMetricResult *)self remoteAddress];
-  [v4 encodeObject:v23 forKey:@"remoteAddress"];
+  remoteAddress = [(NPTMetricResult *)self remoteAddress];
+  [coderCopy encodeObject:remoteAddress forKey:@"remoteAddress"];
 
-  v24 = [(NPTMetricResult *)self localPort];
-  [v4 encodeObject:v24 forKey:@"localPort"];
+  localPort = [(NPTMetricResult *)self localPort];
+  [coderCopy encodeObject:localPort forKey:@"localPort"];
 
-  v25 = [(NPTMetricResult *)self remotePort];
-  [v4 encodeObject:v25 forKey:@"remotePort"];
+  remotePort = [(NPTMetricResult *)self remotePort];
+  [coderCopy encodeObject:remotePort forKey:@"remotePort"];
 
-  v26 = [(NPTMetricResult *)self negotiatedTLSCipherSuite];
-  [v4 encodeObject:v26 forKey:@"negotiatedTLSCipherSuite"];
+  negotiatedTLSCipherSuite = [(NPTMetricResult *)self negotiatedTLSCipherSuite];
+  [coderCopy encodeObject:negotiatedTLSCipherSuite forKey:@"negotiatedTLSCipherSuite"];
 
-  v27 = [(NPTMetricResult *)self negotiatedTLSProtocolVersion];
-  [v4 encodeObject:v27 forKey:@"negotiatedTLSProtocolVersion"];
+  negotiatedTLSProtocolVersion = [(NPTMetricResult *)self negotiatedTLSProtocolVersion];
+  [coderCopy encodeObject:negotiatedTLSProtocolVersion forKey:@"negotiatedTLSProtocolVersion"];
 
-  v28 = [(NPTMetricResult *)self interfaceServiceName];
-  [v4 encodeObject:v28 forKey:@"interfaceServiceName"];
+  interfaceServiceName = [(NPTMetricResult *)self interfaceServiceName];
+  [coderCopy encodeObject:interfaceServiceName forKey:@"interfaceServiceName"];
 
-  v29 = [(NPTMetricResult *)self interfaceName];
-  [v4 encodeObject:v29 forKey:@"interfaceName"];
+  interfaceName = [(NPTMetricResult *)self interfaceName];
+  [coderCopy encodeObject:interfaceName forKey:@"interfaceName"];
 
-  v30 = [(NPTMetricResult *)self concurrentStreams];
-  [v4 encodeObject:v30 forKey:@"number_of_streams"];
+  concurrentStreams = [(NPTMetricResult *)self concurrentStreams];
+  [coderCopy encodeObject:concurrentStreams forKey:@"number_of_streams"];
 
-  v31 = [(NPTMetricResult *)self error];
-  [v4 encodeObject:v31 forKey:@"error"];
+  error = [(NPTMetricResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  v32 = [(NPTMetricResult *)self responsiveness];
-  [v4 encodeObject:v32 forKey:@"responsiveness"];
+  responsiveness = [(NPTMetricResult *)self responsiveness];
+  [coderCopy encodeObject:responsiveness forKey:@"responsiveness"];
 
-  v33 = [(NPTMetricResult *)self responsivenessRating];
-  [v4 encodeObject:v33 forKey:@"responsivenessRating"];
+  responsivenessRating = [(NPTMetricResult *)self responsivenessRating];
+  [coderCopy encodeObject:responsivenessRating forKey:@"responsivenessRating"];
 
-  v34 = [(NPTMetricResult *)self responsivenessConfidence];
-  [v4 encodeObject:v34 forKey:@"responsivenessConfidence"];
+  responsivenessConfidence = [(NPTMetricResult *)self responsivenessConfidence];
+  [coderCopy encodeObject:responsivenessConfidence forKey:@"responsivenessConfidence"];
 }
 
-- (NPTMetricResult)initWithCoder:(id)a3
+- (NPTMetricResult)initWithCoder:(id)coder
 {
   v36.receiver = self;
   v36.super_class = NPTMetricResult;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(NPTMetricResult *)&v36 init];
-  -[NPTMetricResult setFileSize:](v4, "setFileSize:", [v3 decodeIntegerForKey:{@"fileSize", v36.receiver, v36.super_class}]);
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"fetchDate"];
+  -[NPTMetricResult setFileSize:](v4, "setFileSize:", [coderCopy decodeIntegerForKey:{@"fileSize", v36.receiver, v36.super_class}]);
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fetchDate"];
   [(NPTMetricResult *)v4 setFetchDate:v5];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"protocolName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protocolName"];
   [(NPTMetricResult *)v4 setProtocolName:v6];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isReusedConnection"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isReusedConnection"];
   [(NPTMetricResult *)v4 setIsReusedConnection:v7];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isProxyConnection"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isProxyConnection"];
   [(NPTMetricResult *)v4 setIsProxyConnection:v8];
 
-  [v3 decodeDoubleForKey:@"domainLookupTime"];
+  [coderCopy decodeDoubleForKey:@"domainLookupTime"];
   [(NPTMetricResult *)v4 setDomainLookupTime:?];
-  [v3 decodeDoubleForKey:@"connectionTime"];
+  [coderCopy decodeDoubleForKey:@"connectionTime"];
   [(NPTMetricResult *)v4 setConnectionTime:?];
-  [v3 decodeDoubleForKey:@"secureConnectionTime"];
+  [coderCopy decodeDoubleForKey:@"secureConnectionTime"];
   [(NPTMetricResult *)v4 setSecureConnectionTime:?];
-  [v3 decodeDoubleForKey:@"requestTime"];
+  [coderCopy decodeDoubleForKey:@"requestTime"];
   [(NPTMetricResult *)v4 setRequestTime:?];
-  [v3 decodeDoubleForKey:@"requestToResponseTime"];
+  [coderCopy decodeDoubleForKey:@"requestToResponseTime"];
   [(NPTMetricResult *)v4 setRequestToResponseTime:?];
-  [v3 decodeDoubleForKey:@"responseTime"];
+  [coderCopy decodeDoubleForKey:@"responseTime"];
   [(NPTMetricResult *)v4 setResponseTime:?];
-  [v3 decodeDoubleForKey:@"speed"];
+  [coderCopy decodeDoubleForKey:@"speed"];
   [(NPTMetricResult *)v4 setSpeed:?];
-  v9 = [v3 decodeObjectForKey:@"speedRating"];
+  v9 = [coderCopy decodeObjectForKey:@"speedRating"];
   [(NPTMetricResult *)v4 setSpeedRating:v9];
 
-  v10 = [v3 decodeObjectForKey:@"speedConfidence"];
+  v10 = [coderCopy decodeObjectForKey:@"speedConfidence"];
   [(NPTMetricResult *)v4 setSpeedConfidence:v10];
 
-  v11 = [v3 decodeObjectForKey:@"latency"];
+  v11 = [coderCopy decodeObjectForKey:@"latency"];
   [(NPTMetricResult *)v4 setLatency:v11];
 
-  v12 = [v3 decodeObjectForKey:@"nqTestEndPoint"];
+  v12 = [coderCopy decodeObjectForKey:@"nqTestEndPoint"];
   [(NPTMetricResult *)v4 setNqTestEndPoint:v12];
 
-  [v3 decodeDoubleForKey:@"maxSpeedObserved"];
+  [coderCopy decodeDoubleForKey:@"maxSpeedObserved"];
   [(NPTMetricResult *)v4 setMaxSpeedObserved:?];
-  [v3 decodeDoubleForKey:@"stableSpeed"];
+  [coderCopy decodeDoubleForKey:@"stableSpeed"];
   [(NPTMetricResult *)v4 setStableSpeed:?];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"cdnpop"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cdnpop"];
   [(NPTMetricResult *)v4 setCdnpop:v13];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"cdnuuid"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cdnuuid"];
   [(NPTMetricResult *)v4 setCdnuuid:v14];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"appleClientASN"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleClientASN"];
   [(NPTMetricResult *)v4 setAppleClientASN:v15];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"appleClientASNCompany"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleClientASNCompany"];
   [(NPTMetricResult *)v4 setAppleClientASNCompany:v16];
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"server"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"server"];
   [(NPTMetricResult *)v4 setServer:v17];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isCellular"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isCellular"];
   [(NPTMetricResult *)v4 setIsCellular:v18];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isConstrained"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isConstrained"];
   [(NPTMetricResult *)v4 setIsConstrained:v19];
 
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isExpensive"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isExpensive"];
   [(NPTMetricResult *)v4 setIsExpensive:v20];
 
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isMultipath"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isMultipath"];
   [(NPTMetricResult *)v4 setIsMultipath:v21];
 
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"localAddress"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localAddress"];
   [(NPTMetricResult *)v4 setLocalAddress:v22];
 
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remoteAddress"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteAddress"];
   [(NPTMetricResult *)v4 setRemoteAddress:v23];
 
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"localPort"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localPort"];
   [(NPTMetricResult *)v4 setLocalPort:v24];
 
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"remotePort"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remotePort"];
   [(NPTMetricResult *)v4 setRemotePort:v25];
 
-  v26 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"negotiatedTLSCipherSuite"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"negotiatedTLSCipherSuite"];
   [(NPTMetricResult *)v4 setNegotiatedTLSCipherSuite:v26];
 
-  v27 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"negotiatedTLSProtocolVersion"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"negotiatedTLSProtocolVersion"];
   [(NPTMetricResult *)v4 setNegotiatedTLSProtocolVersion:v27];
 
-  v28 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"interfaceServiceName"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interfaceServiceName"];
   [(NPTMetricResult *)v4 setInterfaceServiceName:v28];
 
-  v29 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"interfaceName"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interfaceName"];
   [(NPTMetricResult *)v4 setInterfaceName:v29];
 
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"number_of_streams"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"number_of_streams"];
   [(NPTMetricResult *)v4 setConcurrentStreams:v30];
 
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
   [(NPTMetricResult *)v4 setError:v31];
 
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"responsiveness"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responsiveness"];
   [(NPTMetricResult *)v4 setResponsiveness:v32];
 
-  v33 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"responsivenessRating"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responsivenessRating"];
   [(NPTMetricResult *)v4 setResponsivenessRating:v33];
 
-  v34 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"responsivenessConfidence"];
+  v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responsivenessConfidence"];
 
   [(NPTMetricResult *)v4 setResponsivenessConfidence:v34];
   return v4;
 }
 
-- (double)timeIntervalSinceDateWithLogging:(id)a3 startDate:(id)a4 nameToLog:(id)a5
+- (double)timeIntervalSinceDateWithLogging:(id)logging startDate:(id)date nameToLog:(id)log
 {
-  v7 = a5;
-  if (a3 && a4)
+  logCopy = log;
+  if (logging && date)
   {
-    [a3 timeIntervalSinceDate:a4];
+    [logging timeIntervalSinceDate:date];
     v9 = v8;
   }
 
@@ -338,7 +338,7 @@
     v10 = +[NPTLogger network];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [NPTMetricResult timeIntervalSinceDateWithLogging:v7 startDate:v10 nameToLog:?];
+      [NPTMetricResult timeIntervalSinceDateWithLogging:logCopy startDate:v10 nameToLog:?];
     }
 
     v9 = 0.0;
@@ -347,48 +347,48 @@
   return v9;
 }
 
-- (void)populateWithMetrics:(id)a3
+- (void)populateWithMetrics:(id)metrics
 {
-  v4 = [a3 transactionMetrics];
-  v35 = [v4 firstObject];
+  transactionMetrics = [metrics transactionMetrics];
+  firstObject = [transactionMetrics firstObject];
 
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSxxx"];
-  v6 = [v35 fetchStartDate];
-  v7 = [v5 stringFromDate:v6];
+  fetchStartDate = [firstObject fetchStartDate];
+  v7 = [v5 stringFromDate:fetchStartDate];
   [(NPTMetricResult *)self setFetchDate:v7];
 
-  v8 = [v35 domainLookupEndDate];
-  v9 = [v35 domainLookupStartDate];
-  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:v8 startDate:v9 nameToLog:@"domainLookupTime"];
+  domainLookupEndDate = [firstObject domainLookupEndDate];
+  domainLookupStartDate = [firstObject domainLookupStartDate];
+  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:domainLookupEndDate startDate:domainLookupStartDate nameToLog:@"domainLookupTime"];
   [(NPTMetricResult *)self setDomainLookupTime:?];
 
-  v10 = [v35 connectEndDate];
-  v11 = [v35 connectStartDate];
-  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:v10 startDate:v11 nameToLog:@"connectionTime"];
+  connectEndDate = [firstObject connectEndDate];
+  connectStartDate = [firstObject connectStartDate];
+  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:connectEndDate startDate:connectStartDate nameToLog:@"connectionTime"];
   [(NPTMetricResult *)self setConnectionTime:?];
 
-  v12 = [v35 secureConnectionEndDate];
-  v13 = [v35 secureConnectionStartDate];
-  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:v12 startDate:v13 nameToLog:@"secureConnectionTime"];
+  secureConnectionEndDate = [firstObject secureConnectionEndDate];
+  secureConnectionStartDate = [firstObject secureConnectionStartDate];
+  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:secureConnectionEndDate startDate:secureConnectionStartDate nameToLog:@"secureConnectionTime"];
   [(NPTMetricResult *)self setSecureConnectionTime:?];
 
-  v14 = [v35 requestEndDate];
-  v15 = [v35 requestStartDate];
-  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:v14 startDate:v15 nameToLog:@"requestTime"];
+  requestEndDate = [firstObject requestEndDate];
+  requestStartDate = [firstObject requestStartDate];
+  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:requestEndDate startDate:requestStartDate nameToLog:@"requestTime"];
   [(NPTMetricResult *)self setRequestTime:?];
 
-  v16 = [v35 responseStartDate];
-  v17 = [v35 requestEndDate];
-  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:v16 startDate:v17 nameToLog:@"requestToResponseTime"];
+  responseStartDate = [firstObject responseStartDate];
+  requestEndDate2 = [firstObject requestEndDate];
+  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:responseStartDate startDate:requestEndDate2 nameToLog:@"requestToResponseTime"];
   [(NPTMetricResult *)self setRequestToResponseTime:?];
 
-  v18 = [v35 responseEndDate];
-  v19 = [v35 responseStartDate];
-  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:v18 startDate:v19 nameToLog:@"responseTime"];
+  responseEndDate = [firstObject responseEndDate];
+  responseStartDate2 = [firstObject responseStartDate];
+  [(NPTMetricResult *)self timeIntervalSinceDateWithLogging:responseEndDate startDate:responseStartDate2 nameToLog:@"responseTime"];
   [(NPTMetricResult *)self setResponseTime:?];
 
-  if ([v35 isProxyConnection])
+  if ([firstObject isProxyConnection])
   {
     v20 = @"true";
   }
@@ -399,7 +399,7 @@
   }
 
   [(NPTMetricResult *)self setIsProxyConnection:v20];
-  if ([v35 isReusedConnection])
+  if ([firstObject isReusedConnection])
   {
     v21 = @"true";
   }
@@ -410,10 +410,10 @@
   }
 
   [(NPTMetricResult *)self setIsReusedConnection:v21];
-  v22 = [v35 networkProtocolName];
-  [(NPTMetricResult *)self setProtocolName:v22];
+  networkProtocolName = [firstObject networkProtocolName];
+  [(NPTMetricResult *)self setProtocolName:networkProtocolName];
 
-  if ([v35 isCellular])
+  if ([firstObject isCellular])
   {
     v23 = @"true";
   }
@@ -424,7 +424,7 @@
   }
 
   [(NPTMetricResult *)self setIsCellular:v23];
-  if ([v35 isConstrained])
+  if ([firstObject isConstrained])
   {
     v24 = @"true";
   }
@@ -435,7 +435,7 @@
   }
 
   [(NPTMetricResult *)self setIsConstrained:v24];
-  if ([v35 isExpensive])
+  if ([firstObject isExpensive])
   {
     v25 = @"true";
   }
@@ -446,7 +446,7 @@
   }
 
   [(NPTMetricResult *)self setIsExpensive:v25];
-  if ([v35 isMultipath])
+  if ([firstObject isMultipath])
   {
     v26 = @"true";
   }
@@ -457,50 +457,50 @@
   }
 
   [(NPTMetricResult *)self setIsMultipath:v26];
-  v27 = [v35 localAddress];
-  [(NPTMetricResult *)self setLocalAddress:v27];
+  localAddress = [firstObject localAddress];
+  [(NPTMetricResult *)self setLocalAddress:localAddress];
 
-  v28 = [v35 remoteAddress];
-  [(NPTMetricResult *)self setRemoteAddress:v28];
+  remoteAddress = [firstObject remoteAddress];
+  [(NPTMetricResult *)self setRemoteAddress:remoteAddress];
 
-  v29 = [v35 localPort];
-  [(NPTMetricResult *)self setLocalPort:v29];
+  localPort = [firstObject localPort];
+  [(NPTMetricResult *)self setLocalPort:localPort];
 
-  v30 = [v35 remotePort];
-  [(NPTMetricResult *)self setRemotePort:v30];
+  remotePort = [firstObject remotePort];
+  [(NPTMetricResult *)self setRemotePort:remotePort];
 
-  v31 = [v35 negotiatedTLSCipherSuite];
-  [(NPTMetricResult *)self setNegotiatedTLSCipherSuite:v31];
+  negotiatedTLSCipherSuite = [firstObject negotiatedTLSCipherSuite];
+  [(NPTMetricResult *)self setNegotiatedTLSCipherSuite:negotiatedTLSCipherSuite];
 
-  v32 = [v35 negotiatedTLSProtocolVersion];
-  [(NPTMetricResult *)self setNegotiatedTLSProtocolVersion:v32];
+  negotiatedTLSProtocolVersion = [firstObject negotiatedTLSProtocolVersion];
+  [(NPTMetricResult *)self setNegotiatedTLSProtocolVersion:negotiatedTLSProtocolVersion];
 
-  v33 = [v35 interfaceServiceName];
-  [(NPTMetricResult *)self setInterfaceServiceName:v33];
+  interfaceServiceName = [firstObject interfaceServiceName];
+  [(NPTMetricResult *)self setInterfaceServiceName:interfaceServiceName];
 
-  v34 = [v35 interfaceName];
-  [(NPTMetricResult *)self setInterfaceName:v34];
+  interfaceName = [firstObject interfaceName];
+  [(NPTMetricResult *)self setInterfaceName:interfaceName];
 }
 
-- (void)populateWithURLResponse:(id)a3
+- (void)populateWithURLResponse:(id)response
 {
-  v15 = [a3 allHeaderFields];
-  v4 = [v15 objectForKey:@"cdnuuid"];
+  allHeaderFields = [response allHeaderFields];
+  v4 = [allHeaderFields objectForKey:@"cdnuuid"];
   [(NPTMetricResult *)self setCdnuuid:v4];
 
-  v5 = [v15 objectForKey:@"Server"];
+  v5 = [allHeaderFields objectForKey:@"Server"];
   [(NPTMetricResult *)self setServer:v5];
 
-  v6 = [v15 objectForKey:@"Apple-Client-ASN"];
+  v6 = [allHeaderFields objectForKey:@"Apple-Client-ASN"];
   v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v7 setNumberStyle:0];
   v8 = [v7 numberFromString:v6];
   [(NPTMetricResult *)self setAppleClientASN:v8];
 
-  v9 = [v15 objectForKey:@"Apple-Client-ASN-Company"];
+  v9 = [allHeaderFields objectForKey:@"Apple-Client-ASN-Company"];
   [(NPTMetricResult *)self setAppleClientASNCompany:v9];
 
-  v10 = [v15 objectForKey:@"Via"];
+  v10 = [allHeaderFields objectForKey:@"Via"];
   v11 = [v10 componentsSeparatedByString:@" "];
   if ([v11 count] >= 2)
   {
@@ -524,36 +524,36 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NPTMetricResult allocWithZone:?]];
-  v5 = [(NPTMetricResult *)self cdnpop];
-  [(NPTMetricResult *)v4 setCdnpop:v5];
+  cdnpop = [(NPTMetricResult *)self cdnpop];
+  [(NPTMetricResult *)v4 setCdnpop:cdnpop];
 
-  v6 = [(NPTMetricResult *)self server];
-  [(NPTMetricResult *)v4 setServer:v6];
+  server = [(NPTMetricResult *)self server];
+  [(NPTMetricResult *)v4 setServer:server];
 
-  v7 = [(NPTMetricResult *)self cdnuuid];
-  [(NPTMetricResult *)v4 setCdnuuid:v7];
+  cdnuuid = [(NPTMetricResult *)self cdnuuid];
+  [(NPTMetricResult *)v4 setCdnuuid:cdnuuid];
 
-  v8 = [(NPTMetricResult *)self appleClientASN];
-  [(NPTMetricResult *)v4 setAppleClientASN:v8];
+  appleClientASN = [(NPTMetricResult *)self appleClientASN];
+  [(NPTMetricResult *)v4 setAppleClientASN:appleClientASN];
 
-  v9 = [(NPTMetricResult *)self appleClientASNCompany];
-  [(NPTMetricResult *)v4 setAppleClientASNCompany:v9];
+  appleClientASNCompany = [(NPTMetricResult *)self appleClientASNCompany];
+  [(NPTMetricResult *)v4 setAppleClientASNCompany:appleClientASNCompany];
 
   [(NPTMetricResult *)v4 setFileSize:[(NPTMetricResult *)self fileSize]];
-  v10 = [(NPTMetricResult *)self fetchDate];
-  [(NPTMetricResult *)v4 setFetchDate:v10];
+  fetchDate = [(NPTMetricResult *)self fetchDate];
+  [(NPTMetricResult *)v4 setFetchDate:fetchDate];
 
-  v11 = [(NPTMetricResult *)self protocolName];
-  [(NPTMetricResult *)v4 setProtocolName:v11];
+  protocolName = [(NPTMetricResult *)self protocolName];
+  [(NPTMetricResult *)v4 setProtocolName:protocolName];
 
-  v12 = [(NPTMetricResult *)self isReusedConnection];
-  [(NPTMetricResult *)v4 setIsReusedConnection:v12];
+  isReusedConnection = [(NPTMetricResult *)self isReusedConnection];
+  [(NPTMetricResult *)v4 setIsReusedConnection:isReusedConnection];
 
-  v13 = [(NPTMetricResult *)self isProxyConnection];
-  [(NPTMetricResult *)v4 setIsProxyConnection:v13];
+  isProxyConnection = [(NPTMetricResult *)self isProxyConnection];
+  [(NPTMetricResult *)v4 setIsProxyConnection:isProxyConnection];
 
   [(NPTMetricResult *)self domainLookupTime];
   [(NPTMetricResult *)v4 setDomainLookupTime:?];
@@ -569,99 +569,99 @@ LABEL_7:
   [(NPTMetricResult *)v4 setResponseTime:?];
   [(NPTMetricResult *)self speed];
   [(NPTMetricResult *)v4 setSpeed:?];
-  v14 = [(NPTMetricResult *)self speedRating];
-  [(NPTMetricResult *)v4 setSpeedRating:v14];
+  speedRating = [(NPTMetricResult *)self speedRating];
+  [(NPTMetricResult *)v4 setSpeedRating:speedRating];
 
-  v15 = [(NPTMetricResult *)self speedConfidence];
-  [(NPTMetricResult *)v4 setSpeedConfidence:v15];
+  speedConfidence = [(NPTMetricResult *)self speedConfidence];
+  [(NPTMetricResult *)v4 setSpeedConfidence:speedConfidence];
 
-  v16 = [(NPTMetricResult *)self latency];
-  [(NPTMetricResult *)v4 setLatency:v16];
+  latency = [(NPTMetricResult *)self latency];
+  [(NPTMetricResult *)v4 setLatency:latency];
 
-  v17 = [(NPTMetricResult *)self nqTestEndPoint];
-  [(NPTMetricResult *)v4 setNqTestEndPoint:v17];
+  nqTestEndPoint = [(NPTMetricResult *)self nqTestEndPoint];
+  [(NPTMetricResult *)v4 setNqTestEndPoint:nqTestEndPoint];
 
   [(NPTMetricResult *)self stableSpeed];
   [(NPTMetricResult *)v4 setStableSpeed:?];
-  v18 = [(NPTMetricResult *)self isCellular];
-  [(NPTMetricResult *)v4 setIsCellular:v18];
+  isCellular = [(NPTMetricResult *)self isCellular];
+  [(NPTMetricResult *)v4 setIsCellular:isCellular];
 
-  v19 = [(NPTMetricResult *)self isExpensive];
-  [(NPTMetricResult *)v4 setIsExpensive:v19];
+  isExpensive = [(NPTMetricResult *)self isExpensive];
+  [(NPTMetricResult *)v4 setIsExpensive:isExpensive];
 
-  v20 = [(NPTMetricResult *)self isConstrained];
-  [(NPTMetricResult *)v4 setIsConstrained:v20];
+  isConstrained = [(NPTMetricResult *)self isConstrained];
+  [(NPTMetricResult *)v4 setIsConstrained:isConstrained];
 
-  v21 = [(NPTMetricResult *)self isMultipath];
-  [(NPTMetricResult *)v4 setIsMultipath:v21];
+  isMultipath = [(NPTMetricResult *)self isMultipath];
+  [(NPTMetricResult *)v4 setIsMultipath:isMultipath];
 
-  v22 = [(NPTMetricResult *)self localAddress];
-  [(NPTMetricResult *)v4 setLocalAddress:v22];
+  localAddress = [(NPTMetricResult *)self localAddress];
+  [(NPTMetricResult *)v4 setLocalAddress:localAddress];
 
-  v23 = [(NPTMetricResult *)self remoteAddress];
-  [(NPTMetricResult *)v4 setRemoteAddress:v23];
+  remoteAddress = [(NPTMetricResult *)self remoteAddress];
+  [(NPTMetricResult *)v4 setRemoteAddress:remoteAddress];
 
-  v24 = [(NPTMetricResult *)self negotiatedTLSCipherSuite];
-  [(NPTMetricResult *)v4 setNegotiatedTLSCipherSuite:v24];
+  negotiatedTLSCipherSuite = [(NPTMetricResult *)self negotiatedTLSCipherSuite];
+  [(NPTMetricResult *)v4 setNegotiatedTLSCipherSuite:negotiatedTLSCipherSuite];
 
-  v25 = [(NPTMetricResult *)self negotiatedTLSProtocolVersion];
-  [(NPTMetricResult *)v4 setNegotiatedTLSProtocolVersion:v25];
+  negotiatedTLSProtocolVersion = [(NPTMetricResult *)self negotiatedTLSProtocolVersion];
+  [(NPTMetricResult *)v4 setNegotiatedTLSProtocolVersion:negotiatedTLSProtocolVersion];
 
-  v26 = [(NPTMetricResult *)self localPort];
-  [(NPTMetricResult *)v4 setLocalPort:v26];
+  localPort = [(NPTMetricResult *)self localPort];
+  [(NPTMetricResult *)v4 setLocalPort:localPort];
 
-  v27 = [(NPTMetricResult *)self remotePort];
-  [(NPTMetricResult *)v4 setRemotePort:v27];
+  remotePort = [(NPTMetricResult *)self remotePort];
+  [(NPTMetricResult *)v4 setRemotePort:remotePort];
 
-  v28 = [(NPTMetricResult *)self interfaceServiceName];
-  [(NPTMetricResult *)v4 setInterfaceServiceName:v28];
+  interfaceServiceName = [(NPTMetricResult *)self interfaceServiceName];
+  [(NPTMetricResult *)v4 setInterfaceServiceName:interfaceServiceName];
 
-  v29 = [(NPTMetricResult *)self interfaceName];
-  [(NPTMetricResult *)v4 setInterfaceName:v29];
+  interfaceName = [(NPTMetricResult *)self interfaceName];
+  [(NPTMetricResult *)v4 setInterfaceName:interfaceName];
 
-  v30 = [(NPTMetricResult *)self concurrentStreams];
-  [(NPTMetricResult *)v4 setConcurrentStreams:v30];
+  concurrentStreams = [(NPTMetricResult *)self concurrentStreams];
+  [(NPTMetricResult *)v4 setConcurrentStreams:concurrentStreams];
 
-  v31 = [(NPTMetricResult *)self error];
-  [(NPTMetricResult *)v4 setError:v31];
+  error = [(NPTMetricResult *)self error];
+  [(NPTMetricResult *)v4 setError:error];
 
-  v32 = [(NPTMetricResult *)self responsiveness];
-  [(NPTMetricResult *)v4 setResponsiveness:v32];
+  responsiveness = [(NPTMetricResult *)self responsiveness];
+  [(NPTMetricResult *)v4 setResponsiveness:responsiveness];
 
-  v33 = [(NPTMetricResult *)self responsivenessRating];
-  [(NPTMetricResult *)v4 setResponsivenessRating:v33];
+  responsivenessRating = [(NPTMetricResult *)self responsivenessRating];
+  [(NPTMetricResult *)v4 setResponsivenessRating:responsivenessRating];
 
-  v34 = [(NPTMetricResult *)self responsivenessConfidence];
-  [(NPTMetricResult *)v4 setResponsivenessConfidence:v34];
+  responsivenessConfidence = [(NPTMetricResult *)self responsivenessConfidence];
+  [(NPTMetricResult *)v4 setResponsivenessConfidence:responsivenessConfidence];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NPTMetricResult *)self fetchDate];
-  v4 = [v3 hash];
-  v5 = [(NPTMetricResult *)self cdnuuid];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(NPTMetricResult *)self cdnpop];
-  v8 = [v7 hash];
+  fetchDate = [(NPTMetricResult *)self fetchDate];
+  v4 = [fetchDate hash];
+  cdnuuid = [(NPTMetricResult *)self cdnuuid];
+  v6 = [cdnuuid hash] ^ v4;
+  cdnpop = [(NPTMetricResult *)self cdnpop];
+  v8 = [cdnpop hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqualToMetricResult:(id)a3
+- (BOOL)isEqualToMetricResult:(id)result
 {
-  v4 = a3;
-  v5 = [(NPTMetricResult *)self fetchDate];
-  v6 = [v4 fetchDate];
-  if (![v5 isEqualToString:v6])
+  resultCopy = result;
+  fetchDate = [(NPTMetricResult *)self fetchDate];
+  fetchDate2 = [resultCopy fetchDate];
+  if (![fetchDate isEqualToString:fetchDate2])
   {
     goto LABEL_8;
   }
 
   [(NPTMetricResult *)self requestToResponseTime];
   v8 = v7;
-  [v4 requestToResponseTime];
+  [resultCopy requestToResponseTime];
   if (v8 != v9)
   {
     goto LABEL_8;
@@ -669,20 +669,20 @@ LABEL_7:
 
   [(NPTMetricResult *)self requestTime];
   v11 = v10;
-  [v4 requestTime];
-  if (v11 == v12 && (-[NPTMetricResult domainLookupTime](self, "domainLookupTime"), v14 = v13, [v4 domainLookupTime], v14 == v15))
+  [resultCopy requestTime];
+  if (v11 == v12 && (-[NPTMetricResult domainLookupTime](self, "domainLookupTime"), v14 = v13, [resultCopy domainLookupTime], v14 == v15))
   {
-    v16 = [(NPTMetricResult *)self cdnuuid];
-    v17 = [v4 cdnuuid];
-    if ([v16 isEqualToString:v17])
+    cdnuuid = [(NPTMetricResult *)self cdnuuid];
+    cdnuuid2 = [resultCopy cdnuuid];
+    if ([cdnuuid isEqualToString:cdnuuid2])
     {
-      v18 = [(NPTMetricResult *)self cdnpop];
-      v19 = [v4 cdnpop];
-      if ([v18 isEqualToString:v19])
+      cdnpop = [(NPTMetricResult *)self cdnpop];
+      cdnpop2 = [resultCopy cdnpop];
+      if ([cdnpop isEqualToString:cdnpop2])
       {
         [(NPTMetricResult *)self responseTime];
         v21 = v20;
-        [v4 responseTime];
+        [resultCopy responseTime];
         v23 = v21 == v22;
       }
 
@@ -707,18 +707,18 @@ LABEL_8:
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NPTMetricResult *)self isEqualToMetricResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NPTMetricResult *)self isEqualToMetricResult:v5];
   }
 
   return v6;

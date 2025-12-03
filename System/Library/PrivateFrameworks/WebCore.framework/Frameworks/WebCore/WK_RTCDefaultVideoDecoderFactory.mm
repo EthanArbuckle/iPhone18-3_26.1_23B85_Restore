@@ -1,23 +1,23 @@
 @interface WK_RTCDefaultVideoDecoderFactory
-- (WK_RTCDefaultVideoDecoderFactory)initWithH265:(BOOL)a3 vp9Profile0:(BOOL)a4 vp9Profile2:(BOOL)a5 vp9VTB:(BOOL)a6 av1:(BOOL)a7;
-- (id)createDecoder:(id)a3;
+- (WK_RTCDefaultVideoDecoderFactory)initWithH265:(BOOL)h265 vp9Profile0:(BOOL)profile0 vp9Profile2:(BOOL)profile2 vp9VTB:(BOOL)b av1:(BOOL)av1;
+- (id)createDecoder:(id)decoder;
 - (id)supportedCodecs;
 @end
 
 @implementation WK_RTCDefaultVideoDecoderFactory
 
-- (WK_RTCDefaultVideoDecoderFactory)initWithH265:(BOOL)a3 vp9Profile0:(BOOL)a4 vp9Profile2:(BOOL)a5 vp9VTB:(BOOL)a6 av1:(BOOL)a7
+- (WK_RTCDefaultVideoDecoderFactory)initWithH265:(BOOL)h265 vp9Profile0:(BOOL)profile0 vp9Profile2:(BOOL)profile2 vp9VTB:(BOOL)b av1:(BOOL)av1
 {
   v13.receiver = self;
   v13.super_class = WK_RTCDefaultVideoDecoderFactory;
   result = [(WK_RTCDefaultVideoDecoderFactory *)&v13 init];
   if (result)
   {
-    result->_supportsH265 = a3;
-    result->_supportsVP9Profile0 = a4;
-    result->_supportsVP9Profile2 = a5;
-    result->_supportsVP9VTB = (a4 || a5) && a6;
-    result->_supportsAv1 = a7;
+    result->_supportsH265 = h265;
+    result->_supportsVP9Profile0 = profile0;
+    result->_supportsVP9Profile2 = profile2;
+    result->_supportsVP9VTB = (profile0 || profile2) && b;
+    result->_supportsAv1 = av1;
   }
 
   return result;
@@ -116,11 +116,11 @@ LABEL_7:
   return v2;
 }
 
-- (id)createDecoder:(id)a3
+- (id)createDecoder:(id)decoder
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"H264"];
+  decoderCopy = decoder;
+  name = [decoderCopy name];
+  v6 = [name isEqualToString:@"H264"];
 
   if (v6)
   {
@@ -132,8 +132,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v4 name];
-  v10 = [v9 isEqualToString:@"VP8"];
+  name2 = [decoderCopy name];
+  v10 = [name2 isEqualToString:@"VP8"];
 
   if (v10)
   {
@@ -141,8 +141,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v13 = [v4 name];
-  v14 = [v13 isEqualToString:@"H265"];
+  name3 = [decoderCopy name];
+  v14 = [name3 isEqualToString:@"H265"];
 
   if (v14)
   {
@@ -150,8 +150,8 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v15 = [v4 name];
-  v16 = [v15 isEqualToString:@"VP9"];
+  name4 = [decoderCopy name];
+  v16 = [name4 isEqualToString:@"VP9"];
 
   if (v16)
   {
@@ -165,8 +165,8 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v17 = [v4 name];
-  v18 = [v17 isEqualToString:@"AV1"];
+  name5 = [decoderCopy name];
+  v18 = [name5 isEqualToString:@"AV1"];
 
   if (v18)
   {

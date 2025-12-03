@@ -1,6 +1,6 @@
 @interface SBSAElementRemovalTransitionProvider
 - (id)description;
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 - (void)removeFromParentProvider;
 @end
 
@@ -17,14 +17,14 @@
   [(SBSABasePreferencesProvider *)&v4 removeFromParentProvider];
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v120 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_opt_self();
-    v6 = v4;
+    v6 = contextCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -56,9 +56,9 @@
     v8 = 0;
   }
 
-  v82 = [v8 preferences];
+  preferences = [v8 preferences];
   v9 = &OBJC_IVAR___SBAssistantSceneController__windowScene;
-  v78 = v4;
+  v78 = contextCopy;
   if (self->_registeredContainerDismissalInterfacePropertyIdentifiers)
   {
     if (self->_didDisappear && ![(NSMutableSet *)self->_pendingDismissalTransitionIdentifiers count])
@@ -113,12 +113,12 @@
                   }
 
                   v17 = *(*(&v100 + 1) + 8 * i);
-                  v18 = [v11 animatedTransitionIdentifier];
-                  if ([v18 isEqual:v17])
+                  animatedTransitionIdentifier = [v11 animatedTransitionIdentifier];
+                  if ([animatedTransitionIdentifier isEqual:v17])
                   {
-                    v19 = [v11 isTransitionEndTargeted];
+                    isTransitionEndTargeted = [v11 isTransitionEndTargeted];
 
-                    if (v19)
+                    if (isTransitionEndTargeted)
                     {
                       [(NSMutableSet *)self->_pendingDismissalTransitionIdentifiers removeObject:v17];
                     }
@@ -166,13 +166,13 @@
             }
 
             v25 = *(*(&v96 + 1) + 8 * j);
-            v26 = [v82 containerViewDescriptions];
+            containerViewDescriptions = [preferences containerViewDescriptions];
             v95[0] = MEMORY[0x277D85DD0];
             v95[1] = 3221225472;
             v95[2] = __63__SBSAElementRemovalTransitionProvider_preferencesFromContext___block_invoke;
             v95[3] = &unk_2783B0210;
             v95[4] = v25;
-            v27 = [v26 bs_containsObjectPassingTest:v95];
+            v27 = [containerViewDescriptions bs_containsObjectPassingTest:v95];
 
             if ((v27 & 1) == 0)
             {
@@ -197,10 +197,10 @@
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
           v68 = v30 == 0;
-          v69 = [v75 queryIteration];
+          queryIteration = [v75 queryIteration];
           v70 = [(SBSAElementRemovalTransitionProvider *)self description];
           *buf = 134349826;
-          v110 = v69;
+          v110 = queryIteration;
           v111 = 1024;
           v112 = v28;
           v113 = 1024;
@@ -237,12 +237,12 @@
 
   else if (v34)
   {
-    v38 = [v35 childProvider];
-    v39 = [v38 firstChildPreferenceProviderOfClass:objc_opt_class()];
+    childProvider = [v35 childProvider];
+    v39 = [childProvider firstChildPreferenceProviderOfClass:objc_opt_class()];
 
     if (v34 != v36 || v39)
     {
-      v71 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v72 = [v39 description];
       v73 = v72;
       v74 = @"nil";
@@ -251,14 +251,14 @@
         v74 = v72;
       }
 
-      [v71 handleFailureInMethod:a2 object:self file:@"SBSAElementRemovalTransitionProvider.m" lineNumber:74 description:{@"There is another element content provider that this provider didn't know about. %@; other: %@; ours: %@", v36, v74, v34}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSAElementRemovalTransitionProvider.m" lineNumber:74 description:{@"There is another element content provider that this provider didn't know about. %@; other: %@; ours: %@", v36, v74, v34}];
     }
   }
 
   else
   {
-    v40 = [v8 preferences];
-    [v40 lastChangingElementLayoutTransition];
+    preferences2 = [v8 preferences];
+    [preferences2 lastChangingElementLayoutTransition];
     v42 = v41 = v36;
     v34 = [SBSAElementContentProvider disappearanceTransitionElementContentProviderWithParentProvider:self staticLayoutTransition:v42];
 
@@ -266,7 +266,7 @@
     objc_storeWeak((&self->super.super.isa + v33), v34);
   }
 
-  v43 = [v8 copyByUpdatingPreferences:v82];
+  v43 = [v8 copyByUpdatingPreferences:preferences];
 
   v94.receiver = self;
   v94.super_class = SBSAElementRemovalTransitionProvider;
@@ -315,8 +315,8 @@
     v89 = 0u;
     v90 = 0u;
     v76 = v48;
-    v87 = [v48 containerViewDescriptions];
-    v49 = [v87 countByEnumeratingWithState:&v89 objects:v108 count:16];
+    containerViewDescriptions2 = [v48 containerViewDescriptions];
+    v49 = [containerViewDescriptions2 countByEnumeratingWithState:&v89 objects:v108 count:16];
     if (v49)
     {
       v50 = v49;
@@ -327,14 +327,14 @@
         {
           if (*v90 != v51)
           {
-            objc_enumerationMutation(v87);
+            objc_enumerationMutation(containerViewDescriptions2);
           }
 
           v53 = *(*(&v89 + 1) + 8 * k);
           registeredContainerDismissalInterfacePropertyIdentifiers = self->_registeredContainerDismissalInterfacePropertyIdentifiers;
           v55 = [SBSAInterfaceElementPropertyIdentity alloc];
-          v56 = [v53 interfaceElementIdentifier];
-          v57 = [(SBSAInterfaceElementPropertyIdentity *)v55 initWithAssociatedInterfaceElementIdentifier:v56 andProperty:@"bounds"];
+          interfaceElementIdentifier = [v53 interfaceElementIdentifier];
+          v57 = [(SBSAInterfaceElementPropertyIdentity *)v55 initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier andProperty:@"bounds"];
           LOBYTE(registeredContainerDismissalInterfacePropertyIdentifiers) = [(NSMutableSet *)registeredContainerDismissalInterfacePropertyIdentifiers containsObject:v57];
 
           if ((registeredContainerDismissalInterfacePropertyIdentifiers & 1) == 0)
@@ -343,7 +343,7 @@
           }
         }
 
-        v50 = [v87 countByEnumeratingWithState:&v89 objects:v108 count:16];
+        v50 = [containerViewDescriptions2 countByEnumeratingWithState:&v89 objects:v108 count:16];
       }
 
       while (v50);
@@ -379,8 +379,8 @@
     }
   }
 
-  v64 = [objc_opt_class() settings];
-  if ([v64 highlightTransitions])
+  settings = [objc_opt_class() settings];
+  if ([settings highlightTransitions])
   {
     didDisappear = self->_didDisappear;
 

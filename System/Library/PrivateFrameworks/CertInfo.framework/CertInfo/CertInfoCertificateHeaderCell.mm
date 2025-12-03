@@ -1,5 +1,5 @@
 @interface CertInfoCertificateHeaderCell
-- (CertInfoCertificateHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CertInfoCertificateHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)rowHeight;
 - (id)_certificateImage;
 - (id)_notTrustedGradient;
@@ -7,34 +7,34 @@
 - (id)_titleLabel;
 - (id)_trustedLabel;
 - (void)layoutSubviews;
-- (void)setExpired:(BOOL)a3;
-- (void)setTrustSubtitle:(id)a3;
-- (void)setTrustTitle:(id)a3;
+- (void)setExpired:(BOOL)expired;
+- (void)setTrustSubtitle:(id)subtitle;
+- (void)setTrustTitle:(id)title;
 @end
 
 @implementation CertInfoCertificateHeaderCell
 
-- (CertInfoCertificateHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CertInfoCertificateHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = CertInfoCertificateHeaderCell;
-  v4 = [(CertInfoCertificateHeaderCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CertInfoCertificateHeaderCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CertInfoCertificateHeaderCell *)v4 imageView];
-    v7 = [(CertInfoCertificateHeaderCell *)v5 _certificateImage];
-    [v6 setImage:v7];
+    imageView = [(CertInfoCertificateHeaderCell *)v4 imageView];
+    _certificateImage = [(CertInfoCertificateHeaderCell *)v5 _certificateImage];
+    [imageView setImage:_certificateImage];
 
-    v8 = [(CertInfoCertificateHeaderCell *)v5 imageView];
-    [v8 sizeToFit];
+    imageView2 = [(CertInfoCertificateHeaderCell *)v5 imageView];
+    [imageView2 sizeToFit];
 
-    v9 = [(CertInfoCertificateHeaderCell *)v5 _trustedLabel];
+    _trustedLabel = [(CertInfoCertificateHeaderCell *)v5 _trustedLabel];
     v10 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
     v11 = [v10 localizedStringForKey:@"NOT_TRUSTED" value:&stru_28561D260 table:@"CertInfo"];
-    [v9 setText:v11];
+    [_trustedLabel setText:v11];
 
-    [v9 sizeToFit];
+    [_trustedLabel sizeToFit];
     [(CertInfoCertificateHeaderCell *)v5 setAutoresizesSubviews:0];
   }
 
@@ -46,8 +46,8 @@
   certificateImage = self->_certificateImage;
   if (!certificateImage)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
     v7 = MEMORY[0x277D755B8];
@@ -80,8 +80,8 @@
     [(UILabel *)v7 setFont:v8];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:1];
-    v9 = [(CertInfoCertificateHeaderCell *)self contentView];
-    [v9 addSubview:self->_titleLabel];
+    contentView = [(CertInfoCertificateHeaderCell *)self contentView];
+    [contentView addSubview:self->_titleLabel];
 
     titleLabel = self->_titleLabel;
   }
@@ -106,12 +106,12 @@
     [(UILabel *)v7 setFont:v8];
 
     v9 = self->_subtitleLabel;
-    v10 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v9 setTextColor:v10];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v9 setTextColor:grayColor];
 
     [(UILabel *)self->_subtitleLabel setNumberOfLines:2];
-    v11 = [(CertInfoCertificateHeaderCell *)self contentView];
-    [v11 addSubview:self->_subtitleLabel];
+    contentView = [(CertInfoCertificateHeaderCell *)self contentView];
+    [contentView addSubview:self->_subtitleLabel];
 
     subtitleLabel = self->_subtitleLabel;
   }
@@ -145,11 +145,11 @@
     [(CertInfoGradientLabel *)v7 setFont:v8];
 
     v9 = self->_trustedLabel;
-    v10 = [(CertInfoCertificateHeaderCell *)self _notTrustedGradient];
-    [(CertInfoGradientLabel *)v9 setGradient:v10];
+    _notTrustedGradient = [(CertInfoCertificateHeaderCell *)self _notTrustedGradient];
+    [(CertInfoGradientLabel *)v9 setGradient:_notTrustedGradient];
 
-    v11 = [(CertInfoCertificateHeaderCell *)self contentView];
-    [v11 addSubview:self->_trustedLabel];
+    contentView = [(CertInfoCertificateHeaderCell *)self contentView];
+    [contentView addSubview:self->_trustedLabel];
 
     trustedLabel = self->_trustedLabel;
   }
@@ -157,28 +157,28 @@
   return trustedLabel;
 }
 
-- (void)setTrustTitle:(id)a3
+- (void)setTrustTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(CertInfoCertificateHeaderCell *)self _titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  _titleLabel = [(CertInfoCertificateHeaderCell *)self _titleLabel];
+  [_titleLabel setText:titleCopy];
 
-  [v5 sizeToFit];
+  [_titleLabel sizeToFit];
 }
 
-- (void)setTrustSubtitle:(id)a3
+- (void)setTrustSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(CertInfoCertificateHeaderCell *)self _subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  _subtitleLabel = [(CertInfoCertificateHeaderCell *)self _subtitleLabel];
+  [_subtitleLabel setText:subtitleCopy];
 
-  [v5 sizeToFit];
+  [_subtitleLabel sizeToFit];
 }
 
-- (void)setExpired:(BOOL)a3
+- (void)setExpired:(BOOL)expired
 {
-  v5 = [(CertInfoCertificateHeaderCell *)self _subtitleLabel];
-  if (a3)
+  _subtitleLabel = [(CertInfoCertificateHeaderCell *)self _subtitleLabel];
+  if (expired)
   {
     [MEMORY[0x277D75348] redColor];
   }
@@ -188,13 +188,13 @@
     [MEMORY[0x277D75348] grayColor];
   }
   v4 = ;
-  [v5 setTextColor:v4];
+  [_subtitleLabel setTextColor:v4];
 }
 
 - (double)rowHeight
 {
-  v2 = [(CertInfoCertificateHeaderCell *)self imageView];
-  [v2 frame];
+  imageView = [(CertInfoCertificateHeaderCell *)self imageView];
+  [imageView frame];
   v4 = v3 + 14.0 + 13.0;
 
   return v4;
@@ -205,25 +205,25 @@
   v47.receiver = self;
   v47.super_class = CertInfoCertificateHeaderCell;
   [(CertInfoCertificateHeaderCell *)&v47 layoutSubviews];
-  v3 = [(CertInfoCertificateHeaderCell *)self imageView];
-  [v3 frame];
+  imageView = [(CertInfoCertificateHeaderCell *)self imageView];
+  [imageView frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CertInfoCertificateHeaderCell *)self contentView];
-  [v8 frame];
+  contentView = [(CertInfoCertificateHeaderCell *)self contentView];
+  [contentView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CertInfoCertificateHeaderCell *)self _trustedLabel];
-  [v17 frame];
+  _trustedLabel = [(CertInfoCertificateHeaderCell *)self _trustedLabel];
+  [_trustedLabel frame];
   v45 = v19;
   v46 = v18;
 
-  v20 = [(CertInfoCertificateHeaderCell *)self imageView];
-  [v20 setFrame:{15.0, 14.0, v5, v7}];
+  imageView2 = [(CertInfoCertificateHeaderCell *)self imageView];
+  [imageView2 setFrame:{15.0, 14.0, v5, v7}];
 
   v48.origin.x = 15.0;
   v48.origin.y = 14.0;
@@ -240,44 +240,44 @@
   v50.size.width = v14;
   v50.size.height = v16;
   v23 = CGRectGetMaxX(v50) + -20.0;
-  v24 = [(CertInfoCertificateHeaderCell *)self _titleLabel];
-  [v24 frame];
+  _titleLabel = [(CertInfoCertificateHeaderCell *)self _titleLabel];
+  [_titleLabel frame];
   v26 = v25;
   v28 = v27;
-  v29 = [v24 text];
-  if (v29)
+  text = [_titleLabel text];
+  if (text)
   {
-    v30 = [v24 font];
-    [v29 _legacy_sizeWithFont:v30 forWidth:objc_msgSend(v24 lineBreakMode:{"lineBreakMode"), v23 - v21}];
+    font = [_titleLabel font];
+    [text _legacy_sizeWithFont:font forWidth:objc_msgSend(_titleLabel lineBreakMode:{"lineBreakMode"), v23 - v21}];
     v26 = v31;
     v28 = v32;
   }
 
-  [v24 setFrame:{v21, MinY, v26, v28}];
+  [_titleLabel setFrame:{v21, MinY, v26, v28}];
   v33 = MinY + v28;
-  v34 = [(CertInfoCertificateHeaderCell *)self _subtitleLabel];
+  _subtitleLabel = [(CertInfoCertificateHeaderCell *)self _subtitleLabel];
 
-  [v34 frame];
+  [_subtitleLabel frame];
   v36 = v35;
   v38 = v37;
-  v39 = [v34 text];
+  text2 = [_subtitleLabel text];
 
-  if (v39)
+  if (text2)
   {
-    v40 = [v34 font];
-    [v39 _legacy_sizeWithFont:v40 constrainedToSize:objc_msgSend(v34 lineBreakMode:{"lineBreakMode"), v23 - v21, v16 - v33 - v45}];
+    font2 = [_subtitleLabel font];
+    [text2 _legacy_sizeWithFont:font2 constrainedToSize:objc_msgSend(_subtitleLabel lineBreakMode:{"lineBreakMode"), v23 - v21, v16 - v33 - v45}];
     v36 = v41;
     v38 = v42;
   }
 
-  [v34 setFrame:{v21, v33, v36, v38}];
+  [_subtitleLabel setFrame:{v21, v33, v36, v38}];
   v51.origin.x = 15.0;
   v51.origin.y = 14.0;
   v51.size.width = v5;
   v51.size.height = v7;
   v43 = CGRectGetMaxY(v51) - v45;
-  v44 = [(CertInfoCertificateHeaderCell *)self _trustedLabel];
-  [v44 setFrame:{v21, v43, v46, v45}];
+  _trustedLabel2 = [(CertInfoCertificateHeaderCell *)self _trustedLabel];
+  [_trustedLabel2 setFrame:{v21, v43, v46, v45}];
 }
 
 @end

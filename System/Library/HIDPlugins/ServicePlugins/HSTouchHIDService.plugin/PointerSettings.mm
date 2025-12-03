@@ -1,23 +1,23 @@
 @interface PointerSettings
-+ (id)devicePropertiesFromService:(unsigned int)a3;
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
++ (id)devicePropertiesFromService:(unsigned int)service;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (NSDictionary)debug;
-- (PointerSettings)initWithPreferences:(id)a3 service:(unsigned int)a4;
-- (PointerSettings)initWithService:(unsigned int)a3;
-- (id)remapUserFacingKey:(id)a3;
-- (id)remapUserFacingValue:(id)a3 forKey:(id)a4;
-- (id)updatePreferenceKey:(id)a3 to:(id)a4;
-- (void)encodeToMap:(void *)a3;
+- (PointerSettings)initWithPreferences:(id)preferences service:(unsigned int)service;
+- (PointerSettings)initWithService:(unsigned int)service;
+- (id)remapUserFacingKey:(id)key;
+- (id)remapUserFacingValue:(id)value forKey:(id)key;
+- (id)updatePreferenceKey:(id)key to:(id)to;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation PointerSettings
 
-+ (id)devicePropertiesFromService:(unsigned int)a3
++ (id)devicePropertiesFromService:(unsigned int)service
 {
   properties = 0;
-  v3 = IORegistryEntryCreateCFProperties(a3, &properties, kCFAllocatorDefault, 0);
+  v3 = IORegistryEntryCreateCFProperties(service, &properties, kCFAllocatorDefault, 0);
   v4 = properties;
   if (v3)
   {
@@ -42,26 +42,26 @@
   return v6;
 }
 
-- (PointerSettings)initWithService:(unsigned int)a3
+- (PointerSettings)initWithService:(unsigned int)service
 {
-  v3 = *&a3;
-  v5 = [(PointerSettings *)self defaultPreferences];
-  v6 = [(PointerSettings *)self initWithPreferences:v5 service:v3];
+  v3 = *&service;
+  defaultPreferences = [(PointerSettings *)self defaultPreferences];
+  v6 = [(PointerSettings *)self initWithPreferences:defaultPreferences service:v3];
 
   return v6;
 }
 
-- (PointerSettings)initWithPreferences:(id)a3 service:(unsigned int)a4
+- (PointerSettings)initWithPreferences:(id)preferences service:(unsigned int)service
 {
-  v7 = a3;
+  preferencesCopy = preferences;
   v11.receiver = self;
   v11.super_class = PointerSettings;
   v8 = [(PointerSettings *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_service = a4;
-    objc_storeStrong(&v8->_preferences, a3);
+    v8->_service = service;
+    objc_storeStrong(&v8->_preferences, preferences);
     v9->_zoomToggle = 1;
     *&v9->_enable = 16843009;
   }
@@ -91,47 +91,47 @@
   return v8;
 }
 
-- (id)remapUserFacingKey:(id)a3
+- (id)remapUserFacingKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Clicking"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"Clicking"])
   {
     v4 = @"TapToClickEnabled";
   }
 
-  else if ([v3 isEqualToString:@"TrackpadRightClick"])
+  else if ([keyCopy isEqualToString:@"TrackpadRightClick"])
   {
     v4 = @"TwoFingersSecondaryClickEnabled";
   }
 
-  else if ([v3 isEqualToString:@"Dragging"])
+  else if ([keyCopy isEqualToString:@"Dragging"])
   {
     v4 = @"DoubleTapToDragEnabled";
   }
 
-  else if ([v3 isEqualToString:@"DragLock"])
+  else if ([keyCopy isEqualToString:@"DragLock"])
   {
     v4 = @"DragLockEnabled";
   }
 
   else
   {
-    v4 = v3;
+    v4 = keyCopy;
   }
 
   return v4;
 }
 
-- (id)remapUserFacingValue:(id)a3 forKey:(id)a4
+- (id)remapUserFacingValue:(id)value forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"MouseButtonMode"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"MouseButtonMode"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v5;
+      v7 = valueCopy;
       if ([v7 isEqualToString:@"TwoButton"])
       {
         v8 = &off_1120F8;
@@ -154,20 +154,20 @@ LABEL_9:
     }
   }
 
-  v8 = v5;
+  v8 = valueCopy;
 LABEL_12:
 
   return v8;
 }
 
-- (id)updatePreferenceKey:(id)a3 to:(id)a4
+- (id)updatePreferenceKey:(id)key to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PointerSettings *)self remapUserFacingKey:v6];
-  v9 = [(PointerSettings *)self remapUserFacingValue:v7 forKey:v6];
-  v10 = [(PointerSettings *)self preferenceKeys];
-  v11 = [v10 containsObject:v8];
+  keyCopy = key;
+  toCopy = to;
+  v8 = [(PointerSettings *)self remapUserFacingKey:keyCopy];
+  v9 = [(PointerSettings *)self remapUserFacingValue:toCopy forKey:keyCopy];
+  preferenceKeys = [(PointerSettings *)self preferenceKeys];
+  v11 = [preferenceKeys containsObject:v8];
 
   if ((v11 & 1) == 0)
   {
@@ -193,7 +193,7 @@ LABEL_8:
       v33 = 2114;
       v34 = v9;
       v35 = 2114;
-      v36 = v6;
+      v36 = keyCopy;
       v17 = v32;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Invalid value(%{public}@) of %{public}@ was provided for preference %{public}@", &v25, 0x3Eu);
     }
@@ -202,8 +202,8 @@ LABEL_8:
   }
 
   v12 = v9;
-  v13 = [(PointerSettings *)self preferences];
-  v14 = [v13 objectForKeyedSubscript:v8];
+  preferences = [(PointerSettings *)self preferences];
+  v14 = [preferences objectForKeyedSubscript:v8];
 
   if ([v14 isEqualToNumber:v12])
   {
@@ -212,8 +212,8 @@ LABEL_8:
 
   else
   {
-    v18 = [(PointerSettings *)self preferences];
-    v19 = [v18 mutableCopy];
+    preferences2 = [(PointerSettings *)self preferences];
+    v19 = [preferences2 mutableCopy];
 
     [v19 setObject:v12 forKeyedSubscript:v8];
     objc_opt_class();
@@ -249,21 +249,21 @@ LABEL_17:
   return v15;
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)101,(char)110,(char)97,(char)98,(char)108,(char)101>::Key, [(PointerSettings *)self enable]);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)118,(char)101,(char)114,(char)116,(char)105,(char)99,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key, [(PointerSettings *)self verticalScrolling]);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)104,(char)111,(char)114,(char)105,(char)122,(char)111,(char)110,(char)116,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key, [(PointerSettings *)self horizontalScrolling]);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)111,(char)108,(char)108,(char)77,(char)111,(char)109,(char)101,(char)110,(char)116,(char)117,(char)109,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key, [(PointerSettings *)self scrollMomentumEnabled]);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)101,(char)110,(char)97,(char)98,(char)108,(char)101>::Key, [(PointerSettings *)self enable]);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)118,(char)101,(char)114,(char)116,(char)105,(char)99,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key, [(PointerSettings *)self verticalScrolling]);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)104,(char)111,(char)114,(char)105,(char)122,(char)111,(char)110,(char)116,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key, [(PointerSettings *)self horizontalScrolling]);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)111,(char)108,(char)108,(char)77,(char)111,(char)109,(char)101,(char)110,(char)116,(char)117,(char)109,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key, [(PointerSettings *)self scrollMomentumEnabled]);
   v5 = HSUtil::CoderKey::Literal<(char)122,(char)111,(char)111,(char)109,(char)84,(char)111,(char)103,(char)103,(char)108,(char)101>::Key;
-  v6 = [(PointerSettings *)self zoomToggle];
+  zoomToggle = [(PointerSettings *)self zoomToggle];
 
-  HSUtil::Encoder::encodeBool(a3, v5, v6);
+  HSUtil::Encoder::encodeBool(map, v5, zoomToggle);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
-  if (*a3)
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);
@@ -275,8 +275,8 @@ LABEL_17:
     return 0;
   }
 
-  HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)101,(char)110,(char)97,(char)98,(char)108,(char)101>::Key);
-  if (*a3)
+  HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)101,(char)110,(char)97,(char)98,(char)108,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);
@@ -288,8 +288,8 @@ LABEL_17:
     return 0;
   }
 
-  HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)118,(char)101,(char)114,(char)105,(char)116,(char)99,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key);
-  if (*a3)
+  HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)118,(char)101,(char)114,(char)105,(char)116,(char)99,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);
@@ -301,8 +301,8 @@ LABEL_17:
     return 0;
   }
 
-  HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)104,(char)111,(char)114,(char)105,(char)122,(char)111,(char)110,(char)116,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key);
-  if (*a3)
+  HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)104,(char)111,(char)114,(char)105,(char)122,(char)111,(char)110,(char)116,(char)97,(char)108,(char)83,(char)99,(char)114,(char)111,(char)108,(char)108,(char)105,(char)110,(char)103>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);
@@ -314,8 +314,8 @@ LABEL_17:
     return 0;
   }
 
-  HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)115,(char)99,(char)114,(char)111,(char)108,(char)108,(char)77,(char)111,(char)109,(char)101,(char)110,(char)116,(char)117,(char)109,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
-  if (*a3)
+  HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)115,(char)99,(char)114,(char)111,(char)108,(char)108,(char)77,(char)111,(char)109,(char)101,(char)110,(char)116,(char)117,(char)109,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);
@@ -327,8 +327,8 @@ LABEL_17:
     return 0;
   }
 
-  HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)122,(char)111,(char)111,(char)109,(char)84,(char)111,(char)103,(char)108,(char)101>::Key);
-  if (*a3)
+  HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)115,(char)101,(char)108,(char)102,(char)46,(char)122,(char)111,(char)111,(char)109,(char)84,(char)111,(char)103,(char)108,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);
@@ -343,26 +343,26 @@ LABEL_17:
   return 1;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xEAu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xEAu, 0);
   }
 
-  [(PointerSettings *)self encodeToMap:a3];
-  if (!*a3)
+  [(PointerSettings *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -371,8 +371,8 @@ LABEL_17:
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/PreAlg/PointerSettings.mm", __b);

@@ -1,10 +1,10 @@
 @interface PLReportSystemWorkloadMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLReportSystemWorkloadMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 objectForKey:@"PLReportSystemWorkloadDate"];
@@ -20,18 +20,18 @@
     v7 = 1;
   }
 
-  v8 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v9 = [v8 isSystemPhotoLibrary];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  isSystemPhotoLibrary = [libraryServicesManager isSystemPhotoLibrary];
 
-  v10 = [(PLMaintenanceTask *)self photoLibrary];
-  v11 = [v10 cplStatus];
+  photoLibrary = [(PLMaintenanceTask *)self photoLibrary];
+  cplStatus = [photoLibrary cplStatus];
 
-  v12 = [v11 initialSyncDate];
-  v13 = v12;
-  if (v9 && v7 && v12)
+  initialSyncDate = [cplStatus initialSyncDate];
+  v13 = initialSyncDate;
+  if (isSystemPhotoLibrary && v7 && initialSyncDate)
   {
-    v14 = [(PLMaintenanceTask *)self photoLibrary];
-    [v14 reportLibrarySizeToDAS];
+    photoLibrary2 = [(PLMaintenanceTask *)self photoLibrary];
+    [photoLibrary2 reportLibrarySizeToDAS];
     v15 = +[NSUserDefaults standardUserDefaults];
     v16 = +[NSDate date];
     [v15 setObject:v16 forKey:@"PLReportSystemWorkloadDate"];

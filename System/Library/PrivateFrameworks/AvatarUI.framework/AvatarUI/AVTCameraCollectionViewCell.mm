@@ -1,24 +1,24 @@
 @interface AVTCameraCollectionViewCell
-- (AVTCameraCollectionViewCell)initWithFrame:(CGRect)a3;
+- (AVTCameraCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateCameraViewFrame;
 @end
 
 @implementation AVTCameraCollectionViewCell
 
-- (AVTCameraCollectionViewCell)initWithFrame:(CGRect)a3
+- (AVTCameraCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = AVTCameraCollectionViewCell;
-  v3 = [(AVTStickerCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTStickerCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[AVTCameraItemView alloc] initWithFrame:0.0, 0.0, 50.0, 50.0];
     [(AVTCameraCollectionViewCell *)v3 setCameraCellView:v4];
 
-    v5 = [(AVTCameraCollectionViewCell *)v3 contentView];
-    v6 = [(AVTCameraCollectionViewCell *)v3 cameraCellView];
-    [v5 addSubview:v6];
+    contentView = [(AVTCameraCollectionViewCell *)v3 contentView];
+    cameraCellView = [(AVTCameraCollectionViewCell *)v3 cameraCellView];
+    [contentView addSubview:cameraCellView];
   }
 
   return v3;
@@ -34,11 +34,11 @@
 
 - (void)updateCameraViewFrame
 {
-  v3 = [(AVTCameraCollectionViewCell *)self cameraCellView];
-  [v3 setAutoresizingMask:18];
+  cameraCellView = [(AVTCameraCollectionViewCell *)self cameraCellView];
+  [cameraCellView setAutoresizingMask:18];
 
-  v4 = [(AVTCameraCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(AVTCameraCollectionViewCell *)self contentView];
+  [contentView bounds];
   v16 = CGRectInset(v15, 20.0, 20.0);
   x = v16.origin.x;
   y = v16.origin.y;
@@ -54,8 +54,8 @@
   v10 = v18.origin.y;
   v11 = v18.size.width;
   v12 = v18.size.height;
-  v13 = [(AVTCameraCollectionViewCell *)self cameraCellView];
-  [v13 setFrame:{v9, v10, v11, v12}];
+  cameraCellView2 = [(AVTCameraCollectionViewCell *)self cameraCellView];
+  [cameraCellView2 setFrame:{v9, v10, v11, v12}];
 }
 
 @end

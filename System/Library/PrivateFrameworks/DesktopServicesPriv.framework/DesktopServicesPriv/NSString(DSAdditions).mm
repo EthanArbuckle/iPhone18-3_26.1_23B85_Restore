@@ -16,9 +16,9 @@
     v35 = 0x3032000000;
     v36 = __Block_byref_object_copy__0;
     v37 = __Block_byref_object_dispose__0;
-    v3 = [v20 firstObject];
-    v4 = [v3 URLByDeletingLastPathComponent];
-    v38 = [v4 pathComponents];
+    firstObject = [v20 firstObject];
+    uRLByDeletingLastPathComponent = [firstObject URLByDeletingLastPathComponent];
+    pathComponents = [uRLByDeletingLastPathComponent pathComponents];
 
     v31 = 0u;
     v32 = 0u;
@@ -38,7 +38,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v29 + 1) + 8 * i) pathComponents];
+          pathComponents2 = [*(*(&v29 + 1) + 8 * i) pathComponents];
           v25 = 0;
           v26 = &v25;
           v27 = 0x2020000000;
@@ -49,7 +49,7 @@
           v21[3] = &unk_1E877F210;
           v23 = &v33;
           v24 = &v25;
-          v10 = v9;
+          v10 = pathComponents2;
           v22 = v10;
           [v10 enumerateObjectsUsingBlock:v21];
           if ((v26[3] & 1) == 0)
@@ -105,12 +105,12 @@
 + (BOOL)ds_fileNameHasClaimedFileExtension:()DSAdditions
 {
   v3 = a3;
-  v4 = [v3 pathExtension];
-  if ([v4 length])
+  pathExtension = [v3 pathExtension];
+  if ([pathExtension length])
   {
     v5 = MEMORY[0x1E6982C40];
-    v6 = [v3 pathExtension];
-    v7 = [v5 typeWithFilenameExtension:v6 conformingToType:*MEMORY[0x1E6982E48]];
+    pathExtension2 = [v3 pathExtension];
+    v7 = [v5 typeWithFilenameExtension:pathExtension2 conformingToType:*MEMORY[0x1E6982E48]];
 
     if ([v7 isDeclared])
     {
@@ -120,13 +120,13 @@
     else
     {
       v9 = objc_alloc(MEMORY[0x1E6963630]);
-      v10 = [v7 identifier];
-      v11 = [v9 initWithTypeIdentifier:v10 error:0];
+      identifier = [v7 identifier];
+      v11 = [v9 initWithTypeIdentifier:identifier error:0];
 
-      v12 = [v11 bundleRecord];
-      v13 = [v12 executableURL];
+      bundleRecord = [v11 bundleRecord];
+      executableURL = [bundleRecord executableURL];
 
-      v8 = v13 != 0;
+      v8 = executableURL != 0;
     }
   }
 

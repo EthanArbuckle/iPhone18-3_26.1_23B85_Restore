@@ -8,22 +8,22 @@
 - (NSURL)keyServerURL;
 - (SSVSecureKeyDeliveryRequestOperation)init;
 - (SSVSecureKeyDeliveryRequestOperationDelegate)serverPlaybackContextDataDelegate;
-- (double)_timeIntervalForStreamingKeyID:(int64_t)a3 responseKey:(id)a4 streamingKeyDictionaries:(id)a5;
-- (id)_contentKeyContextForStreamingKeyID:(int64_t)a3 streamingKeyDictionaries:(id)a4 renewAfter:(double *)a5 error:(id *)a6;
-- (id)_streamingKeyDictionaryForID:(int64_t)a3 URI:(id)a4 serverPlaybackContextData:(id)a5;
-- (id)_streamingRequestDictionaryWithStreamingKeyDictionaries:(id)a3;
+- (double)_timeIntervalForStreamingKeyID:(int64_t)d responseKey:(id)key streamingKeyDictionaries:(id)dictionaries;
+- (id)_contentKeyContextForStreamingKeyID:(int64_t)d streamingKeyDictionaries:(id)dictionaries renewAfter:(double *)after error:(id *)error;
+- (id)_streamingKeyDictionaryForID:(int64_t)d URI:(id)i serverPlaybackContextData:(id)data;
+- (id)_streamingRequestDictionaryWithStreamingKeyDictionaries:(id)dictionaries;
 - (id)responseBlock;
-- (void)_sendResponseBlockWithError:(id)a3;
-- (void)configureWithURLBagDictionary:(id)a3;
+- (void)_sendResponseBlockWithError:(id)error;
+- (void)configureWithURLBagDictionary:(id)dictionary;
 - (void)main;
-- (void)setCertificateURL:(id)a3;
-- (void)setITunesStoreRequest:(BOOL)a3;
-- (void)setKeyServerURL:(id)a3;
-- (void)setPersistentContentKeyContext:(id)a3;
-- (void)setResourceLoadingRequest:(id)a3;
-- (void)setResponseBlock:(id)a3;
-- (void)setServerPlaybackContextData:(id)a3;
-- (void)setShouldIncludeGUID:(BOOL)a3;
+- (void)setCertificateURL:(id)l;
+- (void)setITunesStoreRequest:(BOOL)request;
+- (void)setKeyServerURL:(id)l;
+- (void)setPersistentContentKeyContext:(id)context;
+- (void)setResourceLoadingRequest:(id)request;
+- (void)setResponseBlock:(id)block;
+- (void)setServerPlaybackContextData:(id)data;
+- (void)setShouldIncludeGUID:(BOOL)d;
 - (void)start;
 @end
 
@@ -184,49 +184,49 @@ void __53__SSVSecureKeyDeliveryRequestOperation_responseBlock__block_invoke(uint
   return v3;
 }
 
-- (void)setCertificateURL:(id)a3
+- (void)setCertificateURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__SSVSecureKeyDeliveryRequestOperation_setCertificateURL___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
-- (void)setPersistentContentKeyContext:(id)a3
+- (void)setPersistentContentKeyContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__SSVSecureKeyDeliveryRequestOperation_setPersistentContentKeyContext___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
-- (void)setKeyServerURL:(id)a3
+- (void)setKeyServerURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__SSVSecureKeyDeliveryRequestOperation_setKeyServerURL___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
-- (void)setITunesStoreRequest:(BOOL)a3
+- (void)setITunesStoreRequest:(BOOL)request
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -234,35 +234,35 @@ void __53__SSVSecureKeyDeliveryRequestOperation_responseBlock__block_invoke(uint
   v4[2] = __62__SSVSecureKeyDeliveryRequestOperation_setITunesStoreRequest___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  requestCopy = request;
   dispatch_barrier_async(accessQueue, v4);
 }
 
-- (void)setResourceLoadingRequest:(id)a3
+- (void)setResourceLoadingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__SSVSecureKeyDeliveryRequestOperation_setResourceLoadingRequest___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSVSecureKeyDeliveryRequestOperation_setResponseBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -274,7 +274,7 @@ void __57__SSVSecureKeyDeliveryRequestOperation_setResponseBlock___block_invoke(
   *(v3 + 280) = v2;
 }
 
-- (void)setShouldIncludeGUID:(BOOL)a3
+- (void)setShouldIncludeGUID:(BOOL)d
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -282,21 +282,21 @@ void __57__SSVSecureKeyDeliveryRequestOperation_setResponseBlock___block_invoke(
   v4[2] = __61__SSVSecureKeyDeliveryRequestOperation_setShouldIncludeGUID___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  dCopy = d;
   dispatch_barrier_async(accessQueue, v4);
 }
 
-- (void)setServerPlaybackContextData:(id)a3
+- (void)setServerPlaybackContextData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__SSVSecureKeyDeliveryRequestOperation_setServerPlaybackContextData___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -338,9 +338,9 @@ void __57__SSVSecureKeyDeliveryRequestOperation_setResponseBlock___block_invoke(
   return v3;
 }
 
-- (void)configureWithURLBagDictionary:(id)a3
+- (void)configureWithURLBagDictionary:(id)dictionary
 {
-  v4 = [a3 copy];
+  v4 = [dictionary copy];
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -471,13 +471,13 @@ LABEL_180:
       if (v265[5])
       {
         [(SSVLoadURLOperation *)v9 configureWithURLBagDictionary:?];
-        v10 = [(SSVLoadURLOperation *)v9 storeFrontSuffix];
-        v11 = v10 == 0;
+        storeFrontSuffix = [(SSVLoadURLOperation *)v9 storeFrontSuffix];
+        v11 = storeFrontSuffix == 0;
 
         if (v11)
         {
-          v12 = [(SSVURLBagInterpreter *)v5 storeFrontSuffix];
-          [(SSVLoadURLOperation *)v9 setStoreFrontSuffix:v12];
+          storeFrontSuffix2 = [(SSVURLBagInterpreter *)v5 storeFrontSuffix];
+          [(SSVLoadURLOperation *)v9 setStoreFrontSuffix:storeFrontSuffix2];
         }
 
         [(SSVLoadURLOperation *)v9 setMachineDataStyle:2];
@@ -496,12 +496,12 @@ LABEL_180:
     [(SSVLoadURLOperation *)v9 main];
     if ([v232[5] length])
     {
-      v14 = [v259[5] request];
-      v215 = [v14 URL];
+      request = [v259[5] request];
+      v215 = [request URL];
 
-      v15 = [v215 host];
-      v212 = [v15 dataUsingEncoding:4];
-      v210 = v15;
+      host = [v215 host];
+      v212 = [host dataUsingEncoding:4];
+      v210 = host;
       if (*(v251 + 24) == 1)
       {
         v16 = SSVAVFoundationFramework();
@@ -532,12 +532,12 @@ LABEL_180:
         v245[5] = v34;
 
         [(SSVSecureKeyDeliveryRequestOperation *)self setServerPlaybackContextData:v245[5]];
-        v36 = [(SSVSecureKeyDeliveryRequestOperation *)self serverPlaybackContextDataDelegate];
-        [v36 secureKeyDeliveryRequestOperationDidChangeServerPlaybackContextData:self];
+        serverPlaybackContextDataDelegate = [(SSVSecureKeyDeliveryRequestOperation *)self serverPlaybackContextDataDelegate];
+        [serverPlaybackContextDataDelegate secureKeyDeliveryRequestOperationDidChangeServerPlaybackContextData:self];
       }
 
-      v37 = [v215 absoluteString];
-      v213 = v37;
+      absoluteString = [v215 absoluteString];
+      v213 = absoluteString;
       if (v19 || !v245[5])
       {
         v18 = v19;
@@ -547,21 +547,21 @@ LABEL_180:
           v38 = +[SSLogConfig sharedConfig];
         }
 
-        v39 = [v38 shouldLog];
-        v40 = [v38 shouldLogToDisk];
-        v41 = [v38 OSLogObject];
-        if (v40)
+        shouldLog = [v38 shouldLog];
+        shouldLogToDisk = [v38 shouldLogToDisk];
+        oSLogObject = [v38 OSLogObject];
+        if (shouldLogToDisk)
         {
-          v39 |= 2u;
+          shouldLog |= 2u;
         }
 
-        v42 = v41;
-        if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+        v42 = oSLogObject;
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
-          v39 &= 2u;
+          shouldLog &= 2u;
         }
 
-        if (v39)
+        if (shouldLog)
         {
           v43 = objc_opt_class();
           *v290 = 138543618;
@@ -590,7 +590,7 @@ LABEL_175:
         goto LABEL_176;
       }
 
-      v38 = [(SSVSecureKeyDeliveryRequestOperation *)self _streamingKeyDictionaryForID:0 URI:v37 serverPlaybackContextData:?];
+      v38 = [(SSVSecureKeyDeliveryRequestOperation *)self _streamingKeyDictionaryForID:0 URI:absoluteString serverPlaybackContextData:?];
       v294 = v38;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v294 count:1];
       v209 = [(SSVSecureKeyDeliveryRequestOperation *)self _streamingRequestDictionaryWithStreamingKeyDictionaries:v52];
@@ -606,7 +606,7 @@ LABEL_175:
         [v55 setHTTPBody:v53];
         [v55 setHTTPMethod:@"POST"];
         [v55 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        v205 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         *v290 = 0;
         *&v290[8] = v290;
         *&v290[16] = 0x3032000000;
@@ -629,13 +629,13 @@ LABEL_175:
           if (v265[5])
           {
             [(SSVLoadURLOperation *)v57 configureWithURLBagDictionary:?];
-            v58 = [(SSVLoadURLOperation *)v57 storeFrontSuffix];
-            v59 = v58 == 0;
+            storeFrontSuffix3 = [(SSVLoadURLOperation *)v57 storeFrontSuffix];
+            v59 = storeFrontSuffix3 == 0;
 
             if (v59)
             {
-              v60 = [(SSVURLBagInterpreter *)v5 storeFrontSuffix];
-              [(SSVLoadURLOperation *)v207 setStoreFrontSuffix:v60];
+              storeFrontSuffix4 = [(SSVURLBagInterpreter *)v5 storeFrontSuffix];
+              [(SSVLoadURLOperation *)v207 setStoreFrontSuffix:storeFrontSuffix4];
             }
 
             [(SSVLoadURLOperation *)v207 setMachineDataStyle:2];
@@ -678,23 +678,23 @@ LABEL_175:
             v116 = +[SSLogConfig sharedConfig];
           }
 
-          v117 = [v116 shouldLog];
-          v118 = [v116 shouldLogToDisk];
-          v119 = [v116 OSLogObject];
-          v113 = v119;
-          if (v118)
+          shouldLog2 = [v116 shouldLog];
+          shouldLogToDisk2 = [v116 shouldLogToDisk];
+          oSLogObject2 = [v116 OSLogObject];
+          v113 = oSLogObject2;
+          if (shouldLogToDisk2)
           {
-            v117 |= 2u;
+            shouldLog2 |= 2u;
           }
 
-          if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
           {
-            v120 = v117;
+            v120 = shouldLog2;
           }
 
           else
           {
-            v120 = v117 & 2;
+            v120 = shouldLog2 & 2;
           }
 
           v201 = v116;
@@ -734,8 +734,8 @@ LABEL_128:
         v201 = [v203 objectForKey:@"version"];
         if (objc_opt_respondsToSelector())
         {
-          v112 = [v201 longLongValue];
-          if (v112 == 1)
+          longLongValue = [v201 longLongValue];
+          if (longLongValue == 1)
           {
             v113 = [v203 objectForKey:@"streaming-keys"];
             objc_opt_class();
@@ -769,22 +769,22 @@ LABEL_131:
                   v164 = +[SSLogConfig sharedConfig];
                 }
 
-                v165 = [v164 shouldLog];
-                v166 = [v164 shouldLogToDisk];
+                shouldLog3 = [v164 shouldLog];
+                shouldLogToDisk3 = [v164 shouldLogToDisk];
                 v204 = v164;
-                v167 = [v164 OSLogObject];
-                v168 = v167;
-                if (v166)
+                oSLogObject3 = [v164 OSLogObject];
+                v168 = oSLogObject3;
+                if (shouldLogToDisk3)
                 {
-                  v165 |= 2u;
+                  shouldLog3 |= 2u;
                 }
 
-                if (!os_log_type_enabled(v167, OS_LOG_TYPE_DEFAULT))
+                if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
                 {
-                  v165 &= 2u;
+                  shouldLog3 &= 2u;
                 }
 
-                if (v165)
+                if (shouldLog3)
                 {
                   v169 = objc_opt_class();
                   v284 = 138543618;
@@ -835,7 +835,7 @@ LABEL_171:
                 _Block_object_dispose(&v222, 8);
                 _Block_object_dispose(v290, 8);
 
-                v84 = v205;
+                v84 = date;
                 goto LABEL_172;
               }
 
@@ -852,21 +852,21 @@ LABEL_171:
                     v178 = +[SSLogConfig sharedConfig];
                   }
 
-                  v179 = [v178 shouldLog];
-                  v180 = [v178 shouldLogToDisk];
-                  v181 = [v178 OSLogObject];
-                  v182 = v181;
-                  if (v180)
+                  shouldLog4 = [v178 shouldLog];
+                  shouldLogToDisk4 = [v178 shouldLogToDisk];
+                  oSLogObject4 = [v178 OSLogObject];
+                  v182 = oSLogObject4;
+                  if (shouldLogToDisk4)
                   {
-                    v179 |= 2u;
+                    shouldLog4 |= 2u;
                   }
 
-                  if (!os_log_type_enabled(v181, OS_LOG_TYPE_DEBUG))
+                  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEBUG))
                   {
-                    v179 &= 2u;
+                    shouldLog4 &= 2u;
                   }
 
-                  if (v179)
+                  if (shouldLog4)
                   {
                     v183 = objc_opt_class();
                     v284 = 138543618;
@@ -883,8 +883,8 @@ LABEL_171:
 LABEL_160:
 
 LABEL_165:
-                      v193 = [v259[5] dataRequest];
-                      [v193 respondWithData:v64];
+                      dataRequest = [v259[5] dataRequest];
+                      [dataRequest respondWithData:v64];
                       goto LABEL_166;
                     }
 
@@ -900,12 +900,12 @@ LABEL_165:
                 {
                   [(SSVSecureKeyDeliveryRequestOperation *)self setPersistentContentKeyContext:?];
                   v192 = SSVAVFoundationFramework();
-                  v193 = SSVWeakLinkedStringConstantForString("AVStreamingKeyDeliveryPersistentContentKeyType", v192);
-                  v194 = [v259[5] contentInformationRequest];
-                  [v194 setContentType:v193];
+                  dataRequest = SSVWeakLinkedStringConstantForString("AVStreamingKeyDeliveryPersistentContentKeyType", v192);
+                  contentInformationRequest = [v259[5] contentInformationRequest];
+                  [contentInformationRequest setContentType:dataRequest];
 
-                  v195 = [v259[5] dataRequest];
-                  [v195 respondWithData:v204];
+                  dataRequest2 = [v259[5] dataRequest];
+                  [dataRequest2 respondWithData:v204];
 
                   v200 = 0;
 LABEL_166:
@@ -913,9 +913,9 @@ LABEL_166:
 
                   if (v220 != 0.0)
                   {
-                    v196 = [v205 dateByAddingTimeInterval:v220];
-                    v197 = [v259[5] contentInformationRequest];
-                    [v197 setRenewalDate:v196];
+                    v196 = [date dateByAddingTimeInterval:v220];
+                    contentInformationRequest2 = [v259[5] contentInformationRequest];
+                    [contentInformationRequest2 setRenewalDate:v196];
                   }
 
                   v18 = 0;
@@ -939,28 +939,28 @@ LABEL_117:
             v145 = +[SSLogConfig sharedConfig];
           }
 
-          v146 = [v145 shouldLog];
-          v147 = [v145 shouldLogToDisk];
+          shouldLog5 = [v145 shouldLog];
+          shouldLogToDisk5 = [v145 shouldLogToDisk];
           v148 = v145;
-          v149 = [v145 OSLogObject];
-          v150 = v149;
-          if (v147)
+          oSLogObject5 = [v145 OSLogObject];
+          v150 = oSLogObject5;
+          if (shouldLogToDisk5)
           {
-            v146 |= 2u;
+            shouldLog5 |= 2u;
           }
 
-          if (!os_log_type_enabled(v149, OS_LOG_TYPE_DEFAULT))
+          if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
           {
-            v146 &= 2u;
+            shouldLog5 &= 2u;
           }
 
-          if (v146)
+          if (shouldLog5)
           {
             v151 = objc_opt_class();
             v284 = 138543874;
             v285 = v151;
             v286 = 2048;
-            v287 = v112;
+            v287 = longLongValue;
             v288 = 2048;
             v289 = 1;
             v152 = v151;
@@ -974,7 +974,7 @@ LABEL_127:
 
               v160 = MEMORY[0x1E696ABC0];
               v282 = @"SSVSecureKeyDeliveryErrorUserInfoKeyResponseVersion";
-              v113 = [MEMORY[0x1E696AD98] numberWithLongLong:v112];
+              v113 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
               v283 = v113;
               v161 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v283 forKeys:&v282 count:1];
               v18 = [v160 errorWithDomain:@"SSVSecureKeyDeliveryErrorDomain" code:-2005 userInfo:v161];
@@ -997,21 +997,21 @@ LABEL_127:
           v130 = +[SSLogConfig sharedConfig];
         }
 
-        v131 = [v130 shouldLog];
-        v132 = [v130 shouldLogToDisk];
-        v133 = [v130 OSLogObject];
-        v134 = v133;
-        if (v132)
+        shouldLog6 = [v130 shouldLog];
+        shouldLogToDisk6 = [v130 shouldLogToDisk];
+        oSLogObject6 = [v130 OSLogObject];
+        v134 = oSLogObject6;
+        if (shouldLogToDisk6)
         {
-          v131 |= 2u;
+          shouldLog6 |= 2u;
         }
 
-        if (!os_log_type_enabled(v133, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
         {
-          v131 &= 2u;
+          shouldLog6 &= 2u;
         }
 
-        if (v131)
+        if (shouldLog6)
         {
           v135 = objc_opt_class();
           v136 = objc_opt_class();
@@ -1028,7 +1028,7 @@ LABEL_127:
           {
 LABEL_116:
 
-            v112 = 0;
+            longLongValue = 0;
             goto LABEL_117;
           }
 
@@ -1048,22 +1048,22 @@ LABEL_116:
           v80 = +[SSLogConfig sharedConfig];
         }
 
-        v81 = [v80 shouldLog];
-        v82 = [v80 shouldLogToDisk];
+        shouldLog7 = [v80 shouldLog];
+        shouldLogToDisk7 = [v80 shouldLogToDisk];
         v206 = v80;
-        v83 = [v80 OSLogObject];
-        v84 = v83;
-        if (v82)
+        oSLogObject7 = [v80 OSLogObject];
+        v84 = oSLogObject7;
+        if (shouldLogToDisk7)
         {
-          v81 |= 2u;
+          shouldLog7 |= 2u;
         }
 
-        if (!os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
         {
-          v81 &= 2u;
+          shouldLog7 &= 2u;
         }
 
-        if (v81)
+        if (shouldLog7)
         {
           v85 = objc_opt_class();
           *v290 = 138543618;
@@ -1099,21 +1099,21 @@ LABEL_172:
         v94 = +[SSLogConfig sharedConfig];
       }
 
-      v95 = [v94 shouldLog];
-      v96 = [v94 shouldLogToDisk];
-      v97 = [v94 OSLogObject];
-      v98 = v97;
-      if (v96)
+      shouldLog8 = [v94 shouldLog];
+      shouldLogToDisk8 = [v94 shouldLogToDisk];
+      oSLogObject8 = [v94 OSLogObject];
+      v98 = oSLogObject8;
+      if (shouldLogToDisk8)
       {
-        v99 = v95 | 2;
+        v99 = shouldLog8 | 2;
       }
 
       else
       {
-        v99 = v95;
+        v99 = shouldLog8;
       }
 
-      if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_DEFAULT))
       {
         v100 = v99;
       }
@@ -1163,21 +1163,21 @@ LABEL_174:
         v19 = +[SSLogConfig sharedConfig];
       }
 
-      v20 = [v19 shouldLog];
-      v21 = [v19 shouldLogToDisk];
-      v22 = [v19 OSLogObject];
-      if (v21)
+      shouldLog9 = [v19 shouldLog];
+      shouldLogToDisk9 = [v19 shouldLogToDisk];
+      oSLogObject9 = [v19 OSLogObject];
+      if (shouldLogToDisk9)
       {
-        v20 |= 2u;
+        shouldLog9 |= 2u;
       }
 
-      v213 = v22;
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      v213 = oSLogObject9;
+      if (!os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_DEFAULT))
       {
-        v20 &= 2u;
+        shouldLog9 &= 2u;
       }
 
-      if (v20)
+      if (shouldLog9)
       {
         v23 = objc_opt_class();
         *v290 = 138543618;
@@ -1211,21 +1211,21 @@ LABEL_178:
       v66 = +[SSLogConfig sharedConfig];
     }
 
-    v67 = [v66 shouldLog];
-    v68 = [v66 shouldLogToDisk];
-    v69 = [v66 OSLogObject];
-    v70 = v69;
-    if (v68)
+    shouldLog10 = [v66 shouldLog];
+    shouldLogToDisk10 = [v66 shouldLogToDisk];
+    oSLogObject10 = [v66 OSLogObject];
+    v70 = oSLogObject10;
+    if (shouldLogToDisk10)
     {
-      v67 |= 2u;
+      shouldLog10 |= 2u;
     }
 
-    if (!os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_DEFAULT))
     {
-      v67 &= 2u;
+      shouldLog10 &= 2u;
     }
 
-    if (v67)
+    if (shouldLog10)
     {
       v71 = objc_opt_class();
       *v290 = 138543362;
@@ -1375,14 +1375,14 @@ LABEL_14:
   }
 }
 
-- (id)_contentKeyContextForStreamingKeyID:(int64_t)a3 streamingKeyDictionaries:(id)a4 renewAfter:(double *)a5 error:(id *)a6
+- (id)_contentKeyContextForStreamingKeyID:(int64_t)d streamingKeyDictionaries:(id)dictionaries renewAfter:(double *)after error:(id *)error
 {
   v148 = *MEMORY[0x1E69E9840];
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  obj = a4;
+  obj = dictionaries;
   v8 = [obj countByEnumeratingWithState:&v133 objects:v147 count:16];
   if (!v8)
   {
@@ -1392,8 +1392,8 @@ LABEL_14:
   }
 
   v9 = v8;
-  v127 = a6;
-  v128 = a5;
+  errorCopy = error;
+  afterCopy = after;
   v10 = *v134;
   v11 = off_1E84AB000;
 LABEL_3:
@@ -1409,25 +1409,25 @@ LABEL_3:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v14 = [(__objc2_class *)v11[75] sharedStoreServicesConfig];
-      if (!v14)
+      sharedStoreServicesConfig = [(__objc2_class *)v11[75] sharedStoreServicesConfig];
+      if (!sharedStoreServicesConfig)
       {
-        v14 = [(__objc2_class *)v11[75] sharedConfig];
+        sharedStoreServicesConfig = [(__objc2_class *)v11[75] sharedConfig];
       }
 
-      v15 = [v14 shouldLog];
-      if ([v14 shouldLogToDisk])
+      shouldLog = [sharedStoreServicesConfig shouldLog];
+      if ([sharedStoreServicesConfig shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog;
       }
 
-      v17 = [v14 OSLogObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [sharedStoreServicesConfig OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v16;
       }
@@ -1448,7 +1448,7 @@ LABEL_3:
       v137 = 138543618;
       v138 = v19;
       v139 = 2112;
-      v140 = v21;
+      dCopy4 = v21;
       v22 = v21;
       LODWORD(v125) = 22;
       v122 = &v137;
@@ -1460,36 +1460,36 @@ LABEL_3:
         goto LABEL_34;
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v137, v125}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v137, v125}];
       free(v23);
-      SSFileLog(v14, @"%@", v24, v25, v26, v27, v28, v29, v17);
+      SSFileLog(sharedStoreServicesConfig, @"%@", v24, v25, v26, v27, v28, v29, oSLogObject);
       goto LABEL_32;
     }
 
-    v14 = [v13 objectForKey:@"id"];
+    sharedStoreServicesConfig = [v13 objectForKey:@"id"];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v17 = [(__objc2_class *)v11[75] sharedStoreServicesConfig];
-      if (!v17)
+      oSLogObject = [(__objc2_class *)v11[75] sharedStoreServicesConfig];
+      if (!oSLogObject)
       {
-        v17 = [(__objc2_class *)v11[75] sharedConfig];
+        oSLogObject = [(__objc2_class *)v11[75] sharedConfig];
       }
 
-      v30 = [v17 shouldLog];
-      if ([v17 shouldLogToDisk])
+      shouldLog2 = [oSLogObject shouldLog];
+      if ([oSLogObject shouldLogToDisk])
       {
-        v30 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      v31 = [v17 OSLogObject];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      v17OSLogObject = [oSLogObject OSLogObject];
+      if (os_log_type_enabled(v17OSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = v30;
+        v32 = shouldLog2;
       }
 
       else
       {
-        v32 = v30 & 2;
+        v32 = shouldLog2 & 2;
       }
 
       if (!v32)
@@ -1503,7 +1503,7 @@ LABEL_3:
       v137 = 138543618;
       v138 = v33;
       v139 = 2112;
-      v140 = v35;
+      dCopy4 = v35;
       v36 = v35;
       LODWORD(v125) = 22;
       v122 = &v137;
@@ -1511,9 +1511,9 @@ LABEL_3:
 
       if (v37)
       {
-        v31 = [MEMORY[0x1E696AEC0] stringWithCString:v37 encoding:{4, &v137, v125}];
+        v17OSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v37 encoding:{4, &v137, v125}];
         free(v37);
-        SSFileLog(v17, @"%@", v38, v39, v40, v41, v42, v43, v31);
+        SSFileLog(oSLogObject, @"%@", v38, v39, v40, v41, v42, v43, v17OSLogObject);
         v11 = off_1E84AB000;
 LABEL_31:
 
@@ -1526,7 +1526,7 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    if ([v14 longLongValue] == a3)
+    if ([sharedStoreServicesConfig longLongValue] == d)
     {
       break;
     }
@@ -1548,38 +1548,38 @@ LABEL_34:
     }
   }
 
-  v47 = [(__objc2_class *)v11[75] sharedStoreServicesConfig];
-  v48 = v47;
-  if (!v47)
+  sharedStoreServicesConfig2 = [(__objc2_class *)v11[75] sharedStoreServicesConfig];
+  sharedConfig = sharedStoreServicesConfig2;
+  if (!sharedStoreServicesConfig2)
   {
-    v48 = [(__objc2_class *)v11[75] sharedConfig];
+    sharedConfig = [(__objc2_class *)v11[75] sharedConfig];
   }
 
-  v49 = [v48 shouldLog];
-  if ([v48 shouldLogToDisk])
+  shouldLog3 = [sharedConfig shouldLog];
+  if ([sharedConfig shouldLogToDisk])
   {
-    v49 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  v50 = [v48 OSLogObject];
-  if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [sharedConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v51 = v49;
+    v51 = shouldLog3;
   }
 
   else
   {
-    v51 = v49 & 2;
+    v51 = shouldLog3 & 2;
   }
 
-  v52 = v128;
+  v52 = afterCopy;
   if (v51)
   {
     v53 = objc_opt_class();
     v137 = 138543618;
     v138 = v53;
     v139 = 2048;
-    v140 = a3;
+    dCopy4 = d;
     v54 = v53;
     LODWORD(v125) = 22;
     v123 = &v137;
@@ -1587,9 +1587,9 @@ LABEL_34:
 
     if (v55)
     {
-      v50 = [MEMORY[0x1E696AEC0] stringWithCString:v55 encoding:{4, &v137, v125}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v55 encoding:{4, &v137, v125}];
       free(v55);
-      SSFileLog(v48, @"%@", v56, v57, v58, v59, v60, v61, v50);
+      SSFileLog(sharedConfig, @"%@", v56, v57, v58, v59, v60, v61, oSLogObject2);
       goto LABEL_49;
     }
   }
@@ -1618,21 +1618,21 @@ LABEL_49:
         }
 
         v130 = v63;
-        v91 = [v90 shouldLog];
+        shouldLog4 = [v90 shouldLog];
         if ([v90 shouldLogToDisk])
         {
-          v91 |= 2u;
+          shouldLog4 |= 2u;
         }
 
-        v92 = [v90 OSLogObject];
-        if (os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
+        oSLogObject3 = [v90 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
-          v93 = v91;
+          v93 = shouldLog4;
         }
 
         else
         {
-          v93 = v91 & 2;
+          v93 = shouldLog4 & 2;
         }
 
         if (v93)
@@ -1641,7 +1641,7 @@ LABEL_49:
           v137 = 138543618;
           v138 = v94;
           v139 = 2048;
-          v140 = a3;
+          dCopy4 = d;
           v95 = v94;
           LODWORD(v125) = 22;
           v124 = &v137;
@@ -1653,9 +1653,9 @@ LABEL_49:
             goto LABEL_106;
           }
 
-          v92 = [MEMORY[0x1E696AEC0] stringWithCString:v96 encoding:{4, &v137, v125}];
+          oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v96 encoding:{4, &v137, v125}];
           free(v96);
-          SSFileLog(v90, @"%@", v97, v98, v99, v100, v101, v102, v92);
+          SSFileLog(v90, @"%@", v97, v98, v99, v100, v101, v102, oSLogObject3);
         }
 
         else
@@ -1665,9 +1665,9 @@ LABEL_49:
 
 LABEL_106:
         v46 = 0;
-        v52 = v128;
+        v52 = afterCopy;
         v63 = v130;
-        if (!v128)
+        if (!afterCopy)
         {
           goto LABEL_107;
         }
@@ -1676,7 +1676,7 @@ LABEL_106:
       }
 
 LABEL_95:
-      if (!v128)
+      if (!afterCopy)
       {
 LABEL_107:
         v45 = 0;
@@ -1702,7 +1702,7 @@ LABEL_96:
     if (objc_opt_isKindOfClass())
     {
       v46 = v68;
-      if (!v128)
+      if (!afterCopy)
       {
         goto LABEL_107;
       }
@@ -1716,21 +1716,21 @@ LABEL_96:
       v103 = +[SSLogConfig sharedConfig];
     }
 
-    v104 = [v103 shouldLog];
+    shouldLog5 = [v103 shouldLog];
     if ([v103 shouldLogToDisk])
     {
-      v104 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    v105 = [v103 OSLogObject];
-    if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v103 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
-      v106 = v104;
+      v106 = shouldLog5;
     }
 
     else
     {
-      v106 = v104 & 2;
+      v106 = shouldLog5 & 2;
     }
 
     if (v106)
@@ -1742,7 +1742,7 @@ LABEL_96:
       v137 = 138543874;
       v138 = v107;
       v139 = 2048;
-      v140 = a3;
+      dCopy4 = d;
       v141 = 2112;
       v142 = v109;
       v110 = v109;
@@ -1759,9 +1759,9 @@ LABEL_94:
         goto LABEL_95;
       }
 
-      v105 = [MEMORY[0x1E696AEC0] stringWithCString:v111 encoding:{4, &v137, v125}];
+      oSLogObject4 = [MEMORY[0x1E696AEC0] stringWithCString:v111 encoding:{4, &v137, v125}];
       free(v111);
-      SSFileLog(v103, @"%@", v112, v113, v114, v115, v116, v117, v105);
+      SSFileLog(v103, @"%@", v112, v113, v114, v115, v116, v117, oSLogObject4);
     }
 
     goto LABEL_94;
@@ -1798,21 +1798,21 @@ LABEL_94:
     v75 = +[SSLogConfig sharedConfig];
   }
 
-  v76 = [v75 shouldLog];
+  shouldLog6 = [v75 shouldLog];
   if ([v75 shouldLogToDisk])
   {
-    v76 |= 2u;
+    shouldLog6 |= 2u;
   }
 
-  v77 = [v75 OSLogObject];
-  if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
+  oSLogObject5 = [v75 OSLogObject];
+  if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
   {
-    v78 = v76;
+    v78 = shouldLog6;
   }
 
   else
   {
-    v78 = v76 & 2;
+    v78 = shouldLog6 & 2;
   }
 
   if (v78)
@@ -1821,7 +1821,7 @@ LABEL_94:
     v137 = 138544386;
     v138 = v79;
     v139 = 2048;
-    v140 = a3;
+    dCopy4 = d;
     v141 = 2048;
     v142 = v65;
     v143 = 2114;
@@ -1836,9 +1836,9 @@ LABEL_94:
     v82 = 0x1E696A000;
     if (v81)
     {
-      v77 = [MEMORY[0x1E696AEC0] stringWithCString:v81 encoding:{4, &v137, v126}];
+      oSLogObject5 = [MEMORY[0x1E696AEC0] stringWithCString:v81 encoding:{4, &v137, v126}];
       free(v81);
-      SSFileLog(v75, @"%@", v83, v84, v85, v86, v87, v88, v77);
+      SSFileLog(v75, @"%@", v83, v84, v85, v86, v87, v88, oSLogObject5);
       goto LABEL_101;
     }
   }
@@ -1858,21 +1858,21 @@ LABEL_103:
 LABEL_108:
 
 LABEL_109:
-  a6 = v127;
+  error = errorCopy;
 LABEL_110:
 
-  if (a6)
+  if (error)
   {
     v120 = v45;
-    *a6 = v45;
+    *error = v45;
   }
 
   return v46;
 }
 
-- (void)_sendResponseBlockWithError:(id)a3
+- (void)_sendResponseBlockWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -1890,7 +1890,7 @@ LABEL_110:
   v6 = v9[5];
   if (v6)
   {
-    (*(v6 + 16))(v6, v4);
+    (*(v6 + 16))(v6, errorCopy);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -1908,34 +1908,34 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
   *(v5 + 280) = 0;
 }
 
-- (id)_streamingKeyDictionaryForID:(int64_t)a3 URI:(id)a4 serverPlaybackContextData:(id)a5
+- (id)_streamingKeyDictionaryForID:(int64_t)d URI:(id)i serverPlaybackContextData:(id)data
 {
-  v8 = a4;
-  v9 = a5;
+  iCopy = i;
+  dataCopy = data;
   v10 = objc_alloc(MEMORY[0x1E695DF90]);
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v12 = [v10 initWithObjectsAndKeys:{v11, @"id", 0}];
 
-  if (v8)
+  if (iCopy)
   {
-    [v12 setObject:v8 forKey:@"uri"];
+    [v12 setObject:iCopy forKey:@"uri"];
   }
 
-  if ([v9 length])
+  if ([dataCopy length])
   {
-    v13 = [v9 base64EncodedStringWithOptions:0];
+    v13 = [dataCopy base64EncodedStringWithOptions:0];
     if ([v13 length])
     {
       [v12 setObject:v13 forKey:@"spc"];
     }
   }
 
-  v14 = [(SSVSecureKeyDeliveryRequestOperation *)self rentalId];
+  rentalId = [(SSVSecureKeyDeliveryRequestOperation *)self rentalId];
 
-  if (v14)
+  if (rentalId)
   {
-    v15 = [(SSVSecureKeyDeliveryRequestOperation *)self rentalId];
-    [v12 setObject:v15 forKey:@"rental-id"];
+    rentalId2 = [(SSVSecureKeyDeliveryRequestOperation *)self rentalId];
+    [v12 setObject:rentalId2 forKey:@"rental-id"];
   }
 
   if ([(SSVSecureKeyDeliveryRequestOperation *)self skippedRentalCheckout])
@@ -1946,11 +1946,11 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
   if ([(SSVSecureKeyDeliveryRequestOperation *)self shouldIncludeGUID])
   {
     v16 = +[SSDevice currentDevice];
-    v17 = [v16 uniqueDeviceIdentifier];
+    uniqueDeviceIdentifier = [v16 uniqueDeviceIdentifier];
 
-    if (v17)
+    if (uniqueDeviceIdentifier)
     {
-      [v12 setObject:v17 forKey:@"guid"];
+      [v12 setObject:uniqueDeviceIdentifier forKey:@"guid"];
     }
   }
 
@@ -1968,14 +1968,14 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
   return v12;
 }
 
-- (id)_streamingRequestDictionaryWithStreamingKeyDictionaries:(id)a3
+- (id)_streamingRequestDictionaryWithStreamingKeyDictionaries:(id)dictionaries
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{&unk_1F507A0F0, @"version", 0}];
-  if ([v3 count])
+  if ([dictionariesCopy count])
   {
-    [v4 setObject:v3 forKey:@"streaming-keys"];
+    [v4 setObject:dictionariesCopy forKey:@"streaming-keys"];
   }
 
   v7 = @"fairplay-streaming-request";
@@ -1985,16 +1985,16 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
   return v5;
 }
 
-- (double)_timeIntervalForStreamingKeyID:(int64_t)a3 responseKey:(id)a4 streamingKeyDictionaries:(id)a5
+- (double)_timeIntervalForStreamingKeyID:(int64_t)d responseKey:(id)key streamingKeyDictionaries:(id)dictionaries
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = a5;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  dictionariesCopy = dictionaries;
+  v8 = [dictionariesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   v9 = 0.0;
   if (v8)
   {
@@ -2006,7 +2006,7 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(dictionariesCopy);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -2016,12 +2016,12 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
           v14 = [v13 objectForKey:@"id"];
           if (objc_opt_respondsToSelector())
           {
-            v15 = [v14 longLongValue];
-            if (v6)
+            longLongValue = [v14 longLongValue];
+            if (keyCopy)
             {
-              if (v15 == a3)
+              if (longLongValue == d)
               {
-                v16 = [v13 objectForKey:v6];
+                v16 = [v13 objectForKey:keyCopy];
                 v9 = 0.0;
                 if (objc_opt_respondsToSelector())
                 {
@@ -2036,7 +2036,7 @@ void __68__SSVSecureKeyDeliveryRequestOperation__sendResponseBlockWithError___bl
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [dictionariesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
         continue;

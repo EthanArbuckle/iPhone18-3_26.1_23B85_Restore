@@ -16,8 +16,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a1 regions];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    regions = [self regions];
+    v6 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -28,16 +28,16 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(regions);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 property];
-          v12 = [v10 siriui_range];
-          v4[2](v4, v11, v12, v13);
+          property = [v10 property];
+          siriui_range = [v10 siriui_range];
+          v4[2](v4, property, siriui_range, v13);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [regions countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -57,7 +57,7 @@
     v8[3] = &unk_279C5A920;
     v9 = v6;
     v10 = v7;
-    [a1 siriui_enumeratePropertyRangesUsingBlock:v8];
+    [self siriui_enumeratePropertyRangesUsingBlock:v8];
   }
 }
 
@@ -68,8 +68,8 @@
   v10 = MEMORY[0x277CCAB48];
   v11 = a5;
   v12 = [v10 alloc];
-  v13 = [a1 text];
-  v14 = [v12 initWithString:v13];
+  text = [self text];
+  v14 = [v12 initWithString:text];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -81,7 +81,7 @@
   v24 = v9;
   v16 = v9;
   v17 = v8;
-  [a1 siriui_enumerateRangesOfRegionsWithProperty:v11 usingBlock:v21];
+  [self siriui_enumerateRangesOfRegionsWithProperty:v11 usingBlock:v21];
 
   v18 = v24;
   v19 = v15;

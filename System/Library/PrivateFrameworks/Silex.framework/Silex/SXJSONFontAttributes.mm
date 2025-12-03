@@ -1,21 +1,21 @@
 @interface SXJSONFontAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)familyNameWithValue:(id)a3 withType:(int)a4;
-- (int64_t)styleWithValue:(id)a3 withType:(int)a4;
-- (int64_t)weightWithValue:(id)a3 withType:(int)a4;
-- (int64_t)widthWithValue:(id)a3 withType:(int)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)familyNameWithValue:(id)value withType:(int)type;
+- (int64_t)styleWithValue:(id)value withType:(int)type;
+- (int64_t)weightWithValue:(id)value withType:(int)type;
+- (int64_t)widthWithValue:(id)value withType:(int)type;
 - (unint64_t)hash;
 @end
 
 @implementation SXJSONFontAttributes
 
-- (int64_t)weightWithValue:(id)a3 withType:(int)a4
+- (int64_t)weightWithValue:(id)value withType:(int)type
 {
-  if (a3 && a4 == 2)
+  if (value && type == 2)
   {
-    return [a3 integerValue];
+    return [value integerValue];
   }
 
   else
@@ -24,84 +24,84 @@
   }
 }
 
-- (id)familyNameWithValue:(id)a3 withType:(int)a4
+- (id)familyNameWithValue:(id)value withType:(int)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && a4 == 3)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (valueCopy && type == 3)
   {
-    v8 = v6;
+    fontFamily = valueCopy;
   }
 
   else
   {
-    v8 = [(SXJSONFontAttributes *)self fontFamily];
+    fontFamily = [(SXJSONFontAttributes *)self fontFamily];
   }
 
-  v9 = v8;
+  v9 = fontFamily;
 
   return v9;
 }
 
-- (int64_t)widthWithValue:(id)a3 withType:(int)a4
+- (int64_t)widthWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ultra-condensed"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"ultra-condensed"])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"extra-condensed"])
+  else if ([valueCopy isEqualToString:@"extra-condensed"])
   {
     v5 = 4;
   }
 
-  else if ([v4 isEqualToString:@"condensed"])
+  else if ([valueCopy isEqualToString:@"condensed"])
   {
     v5 = 5;
   }
 
-  else if ([v4 isEqualToString:@"semi-condensed"])
+  else if ([valueCopy isEqualToString:@"semi-condensed"])
   {
     v5 = 6;
   }
 
-  else if ([v4 isEqualToString:@"normal"])
+  else if ([valueCopy isEqualToString:@"normal"])
   {
     v5 = 7;
   }
 
-  else if ([v4 isEqualToString:@"semi-expanded"])
+  else if ([valueCopy isEqualToString:@"semi-expanded"])
   {
     v5 = 8;
   }
 
-  else if ([v4 isEqualToString:@"expanded"])
+  else if ([valueCopy isEqualToString:@"expanded"])
   {
     v5 = 9;
   }
 
-  else if ([v4 isEqualToString:@"extra-expanded"])
+  else if ([valueCopy isEqualToString:@"extra-expanded"])
   {
     v5 = 10;
   }
 
-  else if ([v4 isEqualToString:@"ultra-expanded"])
+  else if ([valueCopy isEqualToString:@"ultra-expanded"])
   {
     v5 = 11;
   }
 
-  else if ([v4 isEqualToString:@"compressed"])
+  else if ([valueCopy isEqualToString:@"compressed"])
   {
     v5 = 3;
   }
 
-  else if ([v4 isEqualToString:@"extra-compressed"])
+  else if ([valueCopy isEqualToString:@"extra-compressed"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"ultra-compressed"])
+  else if ([valueCopy isEqualToString:@"ultra-compressed"])
   {
     v5 = 0;
   }
@@ -114,20 +114,20 @@
   return v5;
 }
 
-- (int64_t)styleWithValue:(id)a3 withType:(int)a4
+- (int64_t)styleWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"italic"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"italic"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"oblique"])
+  else if ([valueCopy isEqualToString:@"oblique"])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"normal"])
+  else if ([valueCopy isEqualToString:@"normal"])
   {
     v5 = 0;
   }
@@ -143,44 +143,44 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SXJSONFontAttributes *)self weight];
-  v5 = [(SXJSONFontAttributes *)self style];
-  v6 = [(SXJSONFontAttributes *)self width];
-  v7 = [(SXJSONFontAttributes *)self grade];
-  v8 = [v3 stringWithFormat:@"<%@: %p weight: %lu; style: %lu; width: %lu; grade: %@>", self, self, v4, v5, v6, v7];;
+  weight = [(SXJSONFontAttributes *)self weight];
+  style = [(SXJSONFontAttributes *)self style];
+  width = [(SXJSONFontAttributes *)self width];
+  grade = [(SXJSONFontAttributes *)self grade];
+  v8 = [v3 stringWithFormat:@"<%@: %p weight: %lu; style: %lu; width: %lu; grade: %@>", self, self, weight, style, width, grade];;
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SXJSONFontAttributes *)self weight];
-  v4 = [(SXJSONFontAttributes *)self width]^ v3;
+  weight = [(SXJSONFontAttributes *)self weight];
+  v4 = [(SXJSONFontAttributes *)self width]^ weight;
   v5 = v4 ^ [(SXJSONFontAttributes *)self style];
-  v6 = [(SXJSONFontAttributes *)self familyName];
-  v7 = [v6 hash];
-  v8 = [(SXJSONFontAttributes *)self grade];
-  v9 = v7 ^ [v8 hash];
+  familyName = [(SXJSONFontAttributes *)self familyName];
+  v7 = [familyName hash];
+  grade = [(SXJSONFontAttributes *)self grade];
+  v9 = v7 ^ [grade hash];
 
   return v5 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(SXJSONFontAttributes *)self weight];
-    if (v5 == [(SXJSONFontAttributes *)v4 weight]&& (v6 = [(SXJSONFontAttributes *)self width], v6 == [(SXJSONFontAttributes *)v4 width]) && (v7 = [(SXJSONFontAttributes *)self style], v7 == [(SXJSONFontAttributes *)v4 style]))
+    weight = [(SXJSONFontAttributes *)self weight];
+    if (weight == [(SXJSONFontAttributes *)equalCopy weight]&& (v6 = [(SXJSONFontAttributes *)self width], v6 == [(SXJSONFontAttributes *)equalCopy width]) && (v7 = [(SXJSONFontAttributes *)self style], v7 == [(SXJSONFontAttributes *)equalCopy style]))
     {
-      v8 = [(SXJSONFontAttributes *)self familyName];
-      v9 = [(SXJSONFontAttributes *)v4 familyName];
-      v10 = [v8 isEqual:v9];
+      familyName = [(SXJSONFontAttributes *)self familyName];
+      familyName2 = [(SXJSONFontAttributes *)equalCopy familyName];
+      v10 = [familyName isEqual:familyName2];
     }
 
     else
@@ -192,12 +192,12 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SXJSONObject *)self jsonDictionary];
-  v6 = [(SXJSONObject *)self specificationVersion];
-  v7 = [v4 initWithJSONObject:v5 andVersion:v6];
+  jsonDictionary = [(SXJSONObject *)self jsonDictionary];
+  specificationVersion = [(SXJSONObject *)self specificationVersion];
+  v7 = [v4 initWithJSONObject:jsonDictionary andVersion:specificationVersion];
 
   return v7;
 }

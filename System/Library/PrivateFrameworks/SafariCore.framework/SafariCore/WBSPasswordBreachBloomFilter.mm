@@ -1,24 +1,24 @@
 @interface WBSPasswordBreachBloomFilter
-- (BOOL)_getBucketAtIndex:(unsigned int)a3;
-- (BOOL)containsData:(id)a3;
-- (BOOL)containsLowercaseHexStringForData:(id)a3;
+- (BOOL)_getBucketAtIndex:(unsigned int)index;
+- (BOOL)containsData:(id)data;
+- (BOOL)containsLowercaseHexStringForData:(id)data;
 - (NSData)serializedRepresentation;
-- (WBSPasswordBreachBloomFilter)initWithCapacity:(unsigned int)a3 errorDenominator:(unsigned int)a4 bucketData:(id)a5;
-- (WBSPasswordBreachBloomFilter)initWithSerializedRepresentation:(id)a3;
+- (WBSPasswordBreachBloomFilter)initWithCapacity:(unsigned int)capacity errorDenominator:(unsigned int)denominator bucketData:(id)data;
+- (WBSPasswordBreachBloomFilter)initWithSerializedRepresentation:(id)representation;
 - (id)description;
-- (void)_enumerateBucketIndexesForData:(id)a3 withBlock:(id)a4;
-- (void)addData:(id)a3;
+- (void)_enumerateBucketIndexesForData:(id)data withBlock:(id)block;
+- (void)addData:(id)data;
 @end
 
 @implementation WBSPasswordBreachBloomFilter
 
-- (WBSPasswordBreachBloomFilter)initWithSerializedRepresentation:(id)a3
+- (WBSPasswordBreachBloomFilter)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([v4 length] >= 0xD)
+  representationCopy = representation;
+  if ([representationCopy length] >= 0xD)
   {
     v6 = objc_alloc(MEMORY[0x1E695DF48]);
-    v7 = [v4 subdataWithRange:{0, 12}];
+    v7 = [representationCopy subdataWithRange:{0, 12}];
     v8 = [v6 initWithData:v7];
 
     [v8 open];
@@ -38,10 +38,10 @@
               v17 = 0;
               if ([v8 safari_readNetworkOrderUInt32:&v17])
               {
-                v9 = [v4 subdataWithRange:{12, objc_msgSend(v4, "length") - 12}];
+                v9 = [representationCopy subdataWithRange:{12, objc_msgSend(representationCopy, "length") - 12}];
                 self = [(WBSPasswordBreachBloomFilter *)self initWithCapacity:v17 errorDenominator:v18 bucketData:v9];
 
-                v5 = self;
+                selfCopy = self;
 LABEL_23:
 
                 goto LABEL_24;
@@ -103,19 +103,19 @@ LABEL_23:
       }
     }
 
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
-  v5 = 0;
+  selfCopy = 0;
 LABEL_24:
 
-  return v5;
+  return selfCopy;
 }
 
-- (WBSPasswordBreachBloomFilter)initWithCapacity:(unsigned int)a3 errorDenominator:(unsigned int)a4 bucketData:(id)a5
+- (WBSPasswordBreachBloomFilter)initWithCapacity:(unsigned int)capacity errorDenominator:(unsigned int)denominator bucketData:(id)data
 {
-  v8 = a5;
+  dataCopy = data;
   v23.receiver = self;
   v23.super_class = WBSPasswordBreachBloomFilter;
   v9 = [(WBSPasswordBreachBloomFilter *)&v23 init];
@@ -127,7 +127,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!capacity)
   {
     v12 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a4 <= 1)
+  if (denominator <= 1)
   {
     v11 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -149,15 +149,15 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9->_capacity = a3;
-  v9->_errorDenominator = a4;
-  v13 = (log(1.0 / a4) * a3 / -0.480453014);
-  v10->_hashCount = vcvtpd_u64_f64(v13 / a3 * 0.693147181);
+  v9->_capacity = capacity;
+  v9->_errorDenominator = denominator;
+  v13 = (log(1.0 / denominator) * capacity / -0.480453014);
+  v10->_hashCount = vcvtpd_u64_f64(v13 / capacity * 0.693147181);
   v10->_bucketCount = v13;
   v14 = vcvtpd_u64_f64(vcvtd_n_f64_u32(v13, 3uLL));
-  if (v8)
+  if (dataCopy)
   {
-    if ([v8 length] != v14)
+    if ([dataCopy length] != v14)
     {
       v21 = WBS_LOG_CHANNEL_PREFIXPasswordBreachAwareness();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -168,7 +168,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v15 = [v8 copy];
+    v15 = [dataCopy copy];
     bucketData = v10->_bucketData;
     v10->_bucketData = v15;
   }
@@ -189,20 +189,20 @@ LABEL_16:
   return v20;
 }
 
-- (BOOL)_getBucketAtIndex:(unsigned int)a3
+- (BOOL)_getBucketAtIndex:(unsigned int)index
 {
-  v3 = a3 & 7;
+  v3 = index & 7;
   v6 = 0;
-  [(NSData *)self->_bucketData getBytes:&v6 range:a3 >> 3, 1];
+  [(NSData *)self->_bucketData getBytes:&v6 range:index >> 3, 1];
   return (v6 >> v3) & 1;
 }
 
-- (void)_enumerateBucketIndexesForData:(id)a3 withBlock:(id)a4
+- (void)_enumerateBucketIndexesForData:(id)data withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = WBSPasswordBreachMurmur3HashWithSeed(v6, 0);
-  v9 = WBSPasswordBreachMurmur3HashWithSeed(v6, v8);
+  dataCopy = data;
+  blockCopy = block;
+  v8 = WBSPasswordBreachMurmur3HashWithSeed(dataCopy, 0);
+  v9 = WBSPasswordBreachMurmur3HashWithSeed(dataCopy, v8);
   v12 = 0;
   if (self->_hashCount)
   {
@@ -210,7 +210,7 @@ LABEL_16:
     v11 = 0;
     do
     {
-      v7[2](v7, v8 % self->_bucketCount, &v12);
+      blockCopy[2](blockCopy, v8 % self->_bucketCount, &v12);
       if (v12 == 1)
       {
         break;
@@ -224,28 +224,28 @@ LABEL_16:
   }
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   bucketData = self->_bucketData;
-  v5 = a3;
+  dataCopy = data;
   v6 = [(NSData *)bucketData mutableCopy];
-  v7 = [(NSData *)v6 mutableBytes];
+  mutableBytes = [(NSData *)v6 mutableBytes];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__WBSPasswordBreachBloomFilter_addData___block_invoke;
   v10[3] = &unk_1E7CF2FF8;
   v10[4] = self;
-  v10[5] = v7;
-  [(WBSPasswordBreachBloomFilter *)self _enumerateBucketIndexesForData:v5 withBlock:v10];
+  v10[5] = mutableBytes;
+  [(WBSPasswordBreachBloomFilter *)self _enumerateBucketIndexesForData:dataCopy withBlock:v10];
 
   v8 = self->_bucketData;
   self->_bucketData = v6;
   v9 = v6;
 }
 
-- (BOOL)containsData:(id)a3
+- (BOOL)containsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -256,7 +256,7 @@ LABEL_16:
   v6[3] = &unk_1E7CF3020;
   v6[4] = self;
   v6[5] = &v7;
-  [(WBSPasswordBreachBloomFilter *)self _enumerateBucketIndexesForData:v4 withBlock:v6];
+  [(WBSPasswordBreachBloomFilter *)self _enumerateBucketIndexesForData:dataCopy withBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -275,12 +275,12 @@ uint64_t __45__WBSPasswordBreachBloomFilter_containsData___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)containsLowercaseHexStringForData:(id)a3
+- (BOOL)containsLowercaseHexStringForData:(id)data
 {
-  v4 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:a3];
-  v5 = [v4 lowercaseString];
+  v4 = [MEMORY[0x1E696AEC0] safari_stringAsHexWithData:data];
+  lowercaseString = [v4 lowercaseString];
 
-  v6 = [v5 dataUsingEncoding:4];
+  v6 = [lowercaseString dataUsingEncoding:4];
   LOBYTE(self) = [(WBSPasswordBreachBloomFilter *)self containsData:v6];
 
   return self;
@@ -288,21 +288,21 @@ uint64_t __45__WBSPasswordBreachBloomFilter_containsData___block_invoke(uint64_t
 
 - (NSData)serializedRepresentation
 {
-  v3 = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
-  [v3 open];
-  if ([v3 safari_writeNetworkOrderUInt16:45326])
+  initToMemory = [objc_alloc(MEMORY[0x1E695DFC0]) initToMemory];
+  [initToMemory open];
+  if ([initToMemory safari_writeNetworkOrderUInt16:45326])
   {
-    if ([v3 safari_writeNetworkOrderUInt16:1])
+    if ([initToMemory safari_writeNetworkOrderUInt16:1])
     {
-      if ([v3 safari_writeNetworkOrderUInt32:self->_errorDenominator])
+      if ([initToMemory safari_writeNetworkOrderUInt32:self->_errorDenominator])
       {
-        if ([v3 safari_writeNetworkOrderUInt32:self->_capacity])
+        if ([initToMemory safari_writeNetworkOrderUInt32:self->_capacity])
         {
           v4 = [(NSData *)self->_bucketData length];
-          if ([v3 write:-[NSData bytes](self->_bucketData maxLength:{"bytes"), v4}] == v4)
+          if ([initToMemory write:-[NSData bytes](self->_bucketData maxLength:{"bytes"), v4}] == v4)
           {
-            [v3 close];
-            v5 = [v3 propertyForKey:*MEMORY[0x1E695DA30]];
+            [initToMemory close];
+            v5 = [initToMemory propertyForKey:*MEMORY[0x1E695DA30]];
             goto LABEL_18;
           }
 

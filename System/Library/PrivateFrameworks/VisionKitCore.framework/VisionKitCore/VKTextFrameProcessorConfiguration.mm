@@ -1,10 +1,10 @@
 @interface VKTextFrameProcessorConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextFrameProcessorConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextFrameProcessorConfiguration:(id)configuration;
 - (BOOL)shouldPerformTextDetectionGating;
 - (CGPoint)comparisonPoint;
 - (VKTextFrameProcessorConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VKTextFrameProcessorConfiguration
@@ -34,7 +34,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VKTextFrameProcessorConfiguration);
   [(VKTextFrameProcessorConfiguration *)v4 setIsForSingleItem:[(VKTextFrameProcessorConfiguration *)self isForSingleItem]];
@@ -44,19 +44,19 @@
   [(VKTextFrameProcessorConfiguration *)v4 setUsesAlternateLineGrouping:[(VKTextFrameProcessorConfiguration *)self usesAlternateLineGrouping]];
   [(VKTextFrameProcessorConfiguration *)v4 setUsesLanguageDetection:[(VKTextFrameProcessorConfiguration *)self usesLanguageDetection]];
   [(VKTextFrameProcessorConfiguration *)v4 setDocumentBlockType:[(VKTextFrameProcessorConfiguration *)self documentBlockType]];
-  v5 = [(VKTextFrameProcessorConfiguration *)self recognitionLanguages];
-  [(VKTextFrameProcessorConfiguration *)v4 setRecognitionLanguages:v5];
+  recognitionLanguages = [(VKTextFrameProcessorConfiguration *)self recognitionLanguages];
+  [(VKTextFrameProcessorConfiguration *)v4 setRecognitionLanguages:recognitionLanguages];
 
-  v6 = [(VKTextFrameProcessorConfiguration *)self customWords];
-  [(VKTextFrameProcessorConfiguration *)v4 setCustomWords:v6];
+  customWords = [(VKTextFrameProcessorConfiguration *)self customWords];
+  [(VKTextFrameProcessorConfiguration *)v4 setCustomWords:customWords];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -67,7 +67,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = objc_opt_class();
-      v6 = VKDynamicCast(v5, v4);
+      v6 = VKDynamicCast(v5, equalCopy);
       v7 = [(VKTextFrameProcessorConfiguration *)self isEqualToTextFrameProcessorConfiguration:v6];
     }
 
@@ -80,15 +80,15 @@
   return v7;
 }
 
-- (BOOL)isEqualToTextFrameProcessorConfiguration:(id)a3
+- (BOOL)isEqualToTextFrameProcessorConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 isForSingleItem];
-  if (v5 == -[VKTextFrameProcessorConfiguration isForSingleItem](self, "isForSingleItem") && (v6 = [v4 dataType], v6 == -[VKTextFrameProcessorConfiguration dataType](self, "dataType")) && (objc_msgSend(v4, "comparisonPoint"), v8 = v7, v10 = v9, -[VKTextFrameProcessorConfiguration comparisonPoint](self, "comparisonPoint"), VKMNearlyEqualPointsWithThreshold(v8, v10, v11, v12, 0.00001)) && (v13 = objc_msgSend(v4, "usesAlternateLineGrouping"), v13 == -[VKTextFrameProcessorConfiguration usesAlternateLineGrouping](self, "usesAlternateLineGrouping")) && (v14 = objc_msgSend(v4, "usesLanguageDetection"), v14 == -[VKTextFrameProcessorConfiguration usesLanguageDetection](self, "usesLanguageDetection")) && (v15 = objc_msgSend(v4, "documentBlockType"), v15 == -[VKTextFrameProcessorConfiguration documentBlockType](self, "documentBlockType")) && (objc_msgSend(v4, "recognitionLanguages"), v16 = objc_claimAutoreleasedReturnValue(), -[VKTextFrameProcessorConfiguration recognitionLanguages](self, "recognitionLanguages"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToArray:", v17), v17, v16, v18))
+  configurationCopy = configuration;
+  isForSingleItem = [configurationCopy isForSingleItem];
+  if (isForSingleItem == -[VKTextFrameProcessorConfiguration isForSingleItem](self, "isForSingleItem") && (v6 = [configurationCopy dataType], v6 == -[VKTextFrameProcessorConfiguration dataType](self, "dataType")) && (objc_msgSend(configurationCopy, "comparisonPoint"), v8 = v7, v10 = v9, -[VKTextFrameProcessorConfiguration comparisonPoint](self, "comparisonPoint"), VKMNearlyEqualPointsWithThreshold(v8, v10, v11, v12, 0.00001)) && (v13 = objc_msgSend(configurationCopy, "usesAlternateLineGrouping"), v13 == -[VKTextFrameProcessorConfiguration usesAlternateLineGrouping](self, "usesAlternateLineGrouping")) && (v14 = objc_msgSend(configurationCopy, "usesLanguageDetection"), v14 == -[VKTextFrameProcessorConfiguration usesLanguageDetection](self, "usesLanguageDetection")) && (v15 = objc_msgSend(configurationCopy, "documentBlockType"), v15 == -[VKTextFrameProcessorConfiguration documentBlockType](self, "documentBlockType")) && (objc_msgSend(configurationCopy, "recognitionLanguages"), v16 = objc_claimAutoreleasedReturnValue(), -[VKTextFrameProcessorConfiguration recognitionLanguages](self, "recognitionLanguages"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqualToArray:", v17), v17, v16, v18))
   {
-    v19 = [v4 customWords];
-    v20 = [(VKTextFrameProcessorConfiguration *)self customWords];
-    v21 = [v19 isEqualToArray:v20];
+    customWords = [configurationCopy customWords];
+    customWords2 = [(VKTextFrameProcessorConfiguration *)self customWords];
+    v21 = [customWords isEqualToArray:customWords2];
   }
 
   else
@@ -101,13 +101,13 @@
 
 - (BOOL)shouldPerformTextDetectionGating
 {
-  v3 = [(VKTextFrameProcessorConfiguration *)self isForSingleItem];
-  if (v3)
+  isForSingleItem = [(VKTextFrameProcessorConfiguration *)self isForSingleItem];
+  if (isForSingleItem)
   {
-    LOBYTE(v3) = [(VKTextFrameProcessorConfiguration *)self dataType]== 0;
+    LOBYTE(isForSingleItem) = [(VKTextFrameProcessorConfiguration *)self dataType]== 0;
   }
 
-  return v3;
+  return isForSingleItem;
 }
 
 - (CGPoint)comparisonPoint

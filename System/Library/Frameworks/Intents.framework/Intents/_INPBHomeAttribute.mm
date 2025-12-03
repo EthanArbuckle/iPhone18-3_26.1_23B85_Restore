@@ -1,41 +1,41 @@
 @interface _INPBHomeAttribute
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeAttribute)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeAttribute)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttributeType:(id)a3;
+- (int)StringAsAttributeType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttributeType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttributeType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeAttribute
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBHomeAttribute *)self hasAttributeType])
   {
-    v4 = [(_INPBHomeAttribute *)self attributeType];
-    if (v4 >= 0x42)
+    attributeType = [(_INPBHomeAttribute *)self attributeType];
+    if (attributeType >= 0x42)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", attributeType];
     }
 
     else
     {
-      v5 = off_1E7281FE8[v4];
+      v5 = off_1E7281FE8[attributeType];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"attributeType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"attributeType"];
   }
 
-  v6 = [(_INPBHomeAttribute *)self attributeValue];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"attributeValue"];
+  attributeValue = [(_INPBHomeAttribute *)self attributeValue];
+  dictionaryRepresentation = [attributeValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"attributeValue"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -53,23 +53,23 @@
   return [(_INPBHomeAttributeValue *)self->_attributeValue hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBHomeAttribute *)self hasAttributeType];
-    if (v5 == [v4 hasAttributeType])
+    hasAttributeType = [(_INPBHomeAttribute *)self hasAttributeType];
+    if (hasAttributeType == [equalCopy hasAttributeType])
     {
-      if (!-[_INPBHomeAttribute hasAttributeType](self, "hasAttributeType") || ![v4 hasAttributeType] || (attributeType = self->_attributeType, attributeType == objc_msgSend(v4, "attributeType")))
+      if (!-[_INPBHomeAttribute hasAttributeType](self, "hasAttributeType") || ![equalCopy hasAttributeType] || (attributeType = self->_attributeType, attributeType == objc_msgSend(equalCopy, "attributeType")))
       {
-        v7 = [(_INPBHomeAttribute *)self attributeValue];
-        v8 = [v4 attributeValue];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        attributeValue = [(_INPBHomeAttribute *)self attributeValue];
+        attributeValue2 = [equalCopy attributeValue];
+        v9 = attributeValue2;
+        if ((attributeValue != 0) != (attributeValue2 == 0))
         {
-          v10 = [(_INPBHomeAttribute *)self attributeValue];
-          if (!v10)
+          attributeValue3 = [(_INPBHomeAttribute *)self attributeValue];
+          if (!attributeValue3)
           {
 
 LABEL_14:
@@ -77,10 +77,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(_INPBHomeAttribute *)self attributeValue];
-          v13 = [v4 attributeValue];
-          v14 = [v12 isEqual:v13];
+          v11 = attributeValue3;
+          attributeValue4 = [(_INPBHomeAttribute *)self attributeValue];
+          attributeValue5 = [equalCopy attributeValue];
+          v14 = [attributeValue4 isEqual:attributeValue5];
 
           if (v14)
           {
@@ -101,7 +101,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBHomeAttribute allocWithZone:](_INPBHomeAttribute init];
   if ([(_INPBHomeAttribute *)self hasAttributeType])
@@ -109,386 +109,386 @@ LABEL_12:
     [(_INPBHomeAttribute *)v5 setAttributeType:[(_INPBHomeAttribute *)self attributeType]];
   }
 
-  v6 = [(_INPBHomeAttributeValue *)self->_attributeValue copyWithZone:a3];
+  v6 = [(_INPBHomeAttributeValue *)self->_attributeValue copyWithZone:zone];
   [(_INPBHomeAttribute *)v5 setAttributeValue:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeAttribute *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeAttribute *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeAttribute)initWithCoder:(id)a3
+- (_INPBHomeAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeAttribute *)self initWithData:v6];
+    self = [(_INPBHomeAttribute *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBHomeAttribute *)self hasAttributeType])
   {
     attributeType = self->_attributeType;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBHomeAttribute *)self attributeValue];
+  attributeValue = [(_INPBHomeAttribute *)self attributeValue];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (attributeValue)
   {
-    v7 = [(_INPBHomeAttribute *)self attributeValue];
+    attributeValue2 = [(_INPBHomeAttribute *)self attributeValue];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (int)StringAsAttributeType:(id)a3
+- (int)StringAsAttributeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ENABLED"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ENABLED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BRIGHTNESS"])
+  else if ([typeCopy isEqualToString:@"BRIGHTNESS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HUE"])
+  else if ([typeCopy isEqualToString:@"HUE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SATURATION"])
+  else if ([typeCopy isEqualToString:@"SATURATION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"COLOR_VALUE"])
+  else if ([typeCopy isEqualToString:@"COLOR_VALUE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"TEMPERATURE"])
+  else if ([typeCopy isEqualToString:@"TEMPERATURE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDITY"])
+  else if ([typeCopy isEqualToString:@"HUMIDITY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LOCK"])
+  else if ([typeCopy isEqualToString:@"LOCK"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"POSITION"])
+  else if ([typeCopy isEqualToString:@"POSITION"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RAISE"])
+  else if ([typeCopy isEqualToString:@"RAISE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ROTATION_SPEED"])
+  else if ([typeCopy isEqualToString:@"ROTATION_SPEED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ROTATION_DIRECTION"])
+  else if ([typeCopy isEqualToString:@"ROTATION_DIRECTION"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SECURITY_SYSTEM_STATE"])
+  else if ([typeCopy isEqualToString:@"SECURITY_SYSTEM_STATE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"HEATING_COOLING_MODE"])
+  else if ([typeCopy isEqualToString:@"HEATING_COOLING_MODE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HEATER_COOLER_MODE"])
+  else if ([typeCopy isEqualToString:@"HEATER_COOLER_MODE"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CONTROL_LOCK"])
+  else if ([typeCopy isEqualToString:@"CONTROL_LOCK"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"COOLING_THRESHOLD"])
+  else if ([typeCopy isEqualToString:@"COOLING_THRESHOLD"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"FAN_OPERATING_MODE"])
+  else if ([typeCopy isEqualToString:@"FAN_OPERATING_MODE"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"HEATING_THRESHOLD"])
+  else if ([typeCopy isEqualToString:@"HEATING_THRESHOLD"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER_MODE"])
+  else if ([typeCopy isEqualToString:@"HUMIDIFIER_DEHUMIDIFIER_MODE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SLAT_OPERATING_MODE"])
+  else if ([typeCopy isEqualToString:@"SLAT_OPERATING_MODE"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SWING_MODE"])
+  else if ([typeCopy isEqualToString:@"SWING_MODE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"HUMIDIFIER_THRESHOLD"])
+  else if ([typeCopy isEqualToString:@"HUMIDIFIER_THRESHOLD"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"DEHUMIDIFIER_THRESHOLD"])
+  else if ([typeCopy isEqualToString:@"DEHUMIDIFIER_THRESHOLD"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"PROGRAM_MODE"])
+  else if ([typeCopy isEqualToString:@"PROGRAM_MODE"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"DURATION"])
+  else if ([typeCopy isEqualToString:@"DURATION"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"POWER"])
+  else if ([typeCopy isEqualToString:@"POWER"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"AIR_QUALITY_RATING"])
+  else if ([typeCopy isEqualToString:@"AIR_QUALITY_RATING"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PARTICULATE_DENSITY"])
+  else if ([typeCopy isEqualToString:@"AIR_PARTICULATE_DENSITY"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PARTICULATE_SIZE"])
+  else if ([typeCopy isEqualToString:@"AIR_PARTICULATE_SIZE"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SMOKE_DETECTED"])
+  else if ([typeCopy isEqualToString:@"SMOKE_DETECTED"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_DETECTED"])
+  else if ([typeCopy isEqualToString:@"CARBON_MONOXIDE_DETECTED"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_LEVEL"])
+  else if ([typeCopy isEqualToString:@"CARBON_MONOXIDE_LEVEL"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_MONOXIDE_PEAK_LEVEL"])
+  else if ([typeCopy isEqualToString:@"CARBON_MONOXIDE_PEAK_LEVEL"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_DETECTED"])
+  else if ([typeCopy isEqualToString:@"CARBON_DIOXIDE_DETECTED"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_LEVEL"])
+  else if ([typeCopy isEqualToString:@"CARBON_DIOXIDE_LEVEL"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"CARBON_DIOXIDE_PEAK_LEVEL"])
+  else if ([typeCopy isEqualToString:@"CARBON_DIOXIDE_PEAK_LEVEL"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT_DETECTED"])
+  else if ([typeCopy isEqualToString:@"CONTACT_DETECTED"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"OCCUPANCY_DETECTED"])
+  else if ([typeCopy isEqualToString:@"OCCUPANCY_DETECTED"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"LEAK_DETECTED"])
+  else if ([typeCopy isEqualToString:@"LEAK_DETECTED"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"MOTION_DETECTED"])
+  else if ([typeCopy isEqualToString:@"MOTION_DETECTED"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"AMBIENT_LIGHT_LEVEL"])
+  else if ([typeCopy isEqualToString:@"AMBIENT_LIGHT_LEVEL"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"BATTERY_LEVEL"])
+  else if ([typeCopy isEqualToString:@"BATTERY_LEVEL"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"CHARGING_STATE"])
+  else if ([typeCopy isEqualToString:@"CHARGING_STATE"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"LOW_BATTERY"])
+  else if ([typeCopy isEqualToString:@"LOW_BATTERY"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"IN_USE"])
+  else if ([typeCopy isEqualToString:@"IN_USE"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"AIR_PURIFIER_OPERATING_MODE"])
+  else if ([typeCopy isEqualToString:@"AIR_PURIFIER_OPERATING_MODE"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"FILTER_CHANGE"])
+  else if ([typeCopy isEqualToString:@"FILTER_CHANGE"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"FILTER_LIFE"])
+  else if ([typeCopy isEqualToString:@"FILTER_LIFE"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"WATER_LEVEL"])
+  else if ([typeCopy isEqualToString:@"WATER_LEVEL"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"REMAINING_DURATION"])
+  else if ([typeCopy isEqualToString:@"REMAINING_DURATION"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"STATUS_FAULT"])
+  else if ([typeCopy isEqualToString:@"STATUS_FAULT"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"SULPHUR_DIOXIDE_DENSITY"])
+  else if ([typeCopy isEqualToString:@"SULPHUR_DIOXIDE_DENSITY"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"NITROGEN_DIOXIDE_DENSITY"])
+  else if ([typeCopy isEqualToString:@"NITROGEN_DIOXIDE_DENSITY"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"PARTICULATE_MATTER_2_5_DENSITY"])
+  else if ([typeCopy isEqualToString:@"PARTICULATE_MATTER_2_5_DENSITY"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"PARTICULATE_MATTER_10_DENSITY"])
+  else if ([typeCopy isEqualToString:@"PARTICULATE_MATTER_10_DENSITY"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"VOLATILE_ORGANIC_COMPOUND_DENSITY"])
+  else if ([typeCopy isEqualToString:@"VOLATILE_ORGANIC_COMPOUND_DENSITY"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"OZONE_DENSITY"])
+  else if ([typeCopy isEqualToString:@"OZONE_DENSITY"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"COLOR_TEMPERATURE"])
+  else if ([typeCopy isEqualToString:@"COLOR_TEMPERATURE"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"COUNT"])
+  else if ([typeCopy isEqualToString:@"COUNT"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"LOCATION"])
+  else if ([typeCopy isEqualToString:@"LOCATION"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"INVENTORY"])
+  else if ([typeCopy isEqualToString:@"INVENTORY"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"CAPABILITIES"])
+  else if ([typeCopy isEqualToString:@"CAPABILITIES"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"OPEN"])
+  else if ([typeCopy isEqualToString:@"OPEN"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA"])
+  else if ([typeCopy isEqualToString:@"MEDIA"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"ADAPTIVE_LIGHTING"])
+  else if ([typeCopy isEqualToString:@"ADAPTIVE_LIGHTING"])
   {
     v4 = 65;
   }
@@ -501,10 +501,10 @@ LABEL_12:
   return v4;
 }
 
-- (void)setAttributeType:(int)a3
+- (void)setAttributeType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -512,7 +512,7 @@ LABEL_12:
   else
   {
     *&self->_has = has | 1;
-    self->_attributeType = a3;
+    self->_attributeType = type;
   }
 }
 

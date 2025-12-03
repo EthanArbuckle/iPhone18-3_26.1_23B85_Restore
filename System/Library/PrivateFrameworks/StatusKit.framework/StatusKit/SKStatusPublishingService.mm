@@ -1,27 +1,27 @@
 @interface SKStatusPublishingService
 + (id)logger;
-- (BOOL)_isHandleInvited:(id)a3 fromSenderHandle:(id)a4;
+- (BOOL)_isHandleInvited:(id)invited fromSenderHandle:(id)handle;
 - (NSArray)invitedHandles;
 - (SKStatusPublishingDaemonConnection)daemonConnection;
-- (SKStatusPublishingService)initWithStatusTypeIdentifier:(id)a3;
-- (void)_delegatesPerformOnResponseQueueForGroup:(id)a3 block:(id)a4;
-- (void)_fetchHandleInvitability:(id)a3 fromSenderHandle:(id)a4 completion:(id)a5;
-- (void)_inviteHandles:(id)a3 fromSenderHandle:(id)a4 withInvitationPayload:(id)a5 completion:(id)a6;
-- (void)_isHandleInvitable:(id)a3 fromSenderHandle:(id)a4 completion:(id)a5;
-- (void)_isHandleInvited:(id)a3 fromSenderHandle:(id)a4 completion:(id)a5;
+- (SKStatusPublishingService)initWithStatusTypeIdentifier:(id)identifier;
+- (void)_delegatesPerformOnResponseQueueForGroup:(id)group block:(id)block;
+- (void)_fetchHandleInvitability:(id)invitability fromSenderHandle:(id)handle completion:(id)completion;
+- (void)_inviteHandles:(id)handles fromSenderHandle:(id)handle withInvitationPayload:(id)payload completion:(id)completion;
+- (void)_isHandleInvitable:(id)invitable fromSenderHandle:(id)handle completion:(id)completion;
+- (void)_isHandleInvited:(id)invited fromSenderHandle:(id)handle completion:(id)completion;
 - (void)_registerForDelegateCallbacksIfNecessary;
-- (void)_simulateCrashIfNecessaryForError:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)_simulateCrashIfNecessaryForError:(id)error;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
-- (void)inviteHandle:(id)a3 fromSenderHandle:(id)a4 withInvitationPayload:(id)a5 completion:(id)a6;
-- (void)inviteHandleFromPrimaryAccountHandle:(id)a3 withInvitationPayload:(id)a4 completion:(id)a5;
-- (void)provisionPayloads:(id)a3 completion:(id)a4;
-- (void)publishStatusRequest:(id)a3 completion:(id)a4;
-- (void)publishingDaemonConnectionDidDisconnect:(id)a3;
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)removeInvitedHandle:(id)a3 completion:(id)a4;
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4;
+- (void)inviteHandle:(id)handle fromSenderHandle:(id)senderHandle withInvitationPayload:(id)payload completion:(id)completion;
+- (void)inviteHandleFromPrimaryAccountHandle:(id)handle withInvitationPayload:(id)payload completion:(id)completion;
+- (void)provisionPayloads:(id)payloads completion:(id)completion;
+- (void)publishStatusRequest:(id)request completion:(id)completion;
+- (void)publishingDaemonConnectionDidDisconnect:(id)disconnect;
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)removeInvitedHandle:(id)handle completion:(id)completion;
+- (void)removeInvitedHandles:(id)handles completion:(id)completion;
 @end
 
 @implementation SKStatusPublishingService
@@ -42,29 +42,29 @@
     self->_registeredForDelegateCallbacks = 1;
     objc_sync_exit(obj);
 
-    v3 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+    statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
     v4 = +[SKStatusPublishingService logger];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v3;
+      v17 = statusTypeIdentifier;
       _os_log_impl(&dword_26BA07000, v4, OS_LOG_TYPE_DEFAULT, "Registering for delegate callbacks for statusTypeIdentifier: %{public}@", buf, 0xCu);
     }
 
-    v5 = [(SKStatusPublishingService *)self daemonConnection];
+    daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
     objc_initWeak(buf, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__SKStatusPublishingService__registerForDelegateCallbacksIfNecessary__block_invoke;
     v14[3] = &unk_279D12BA0;
     objc_copyWeak(&v15, buf);
-    v6 = [v5 asynchronousRemoteDaemonWithErrorHandler:v14];
+    v6 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v14];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__SKStatusPublishingService__registerForDelegateCallbacksIfNecessary__block_invoke_20;
     v11[3] = &unk_279D12BC8;
     objc_copyWeak(&v13, buf);
-    v7 = v3;
+    v7 = statusTypeIdentifier;
     v12 = v7;
     [v6 registerForDelegateCallbacksWithStatusTypeIdentifier:v7 completion:v11];
 
@@ -90,40 +90,40 @@
 
 - (SKStatusPublishingDaemonConnection)daemonConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  daemonConnection = v2->_daemonConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  daemonConnection = selfCopy->_daemonConnection;
   if (!daemonConnection)
   {
-    v4 = [[SKStatusPublishingDaemonConnection alloc] initWithPublishingDaemonDelegate:v2 connectionDelegate:v2];
-    v5 = v2->_daemonConnection;
-    v2->_daemonConnection = v4;
+    v4 = [[SKStatusPublishingDaemonConnection alloc] initWithPublishingDaemonDelegate:selfCopy connectionDelegate:selfCopy];
+    v5 = selfCopy->_daemonConnection;
+    selfCopy->_daemonConnection = v4;
 
-    daemonConnection = v2->_daemonConnection;
+    daemonConnection = selfCopy->_daemonConnection;
   }
 
   v6 = daemonConnection;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (SKStatusPublishingService)initWithStatusTypeIdentifier:(id)a3
+- (SKStatusPublishingService)initWithStatusTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SKStatusPublishingService;
   v5 = [(SKStatusPublishingService *)&v15 init];
   if (v5)
   {
-    ValidateIdentifierMeetsBlastdoorRequirements(v4);
-    v6 = [v4 copy];
+    ValidateIdentifierMeetsBlastdoorRequirements(identifierCopy);
+    v6 = [identifierCopy copy];
     statusTypeIdentifier = v5->_statusTypeIdentifier;
     v5->_statusTypeIdentifier = v6;
 
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     delegates = v5->_delegates;
-    v5->_delegates = v8;
+    v5->_delegates = weakToStrongObjectsMapTable;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_with_qos_class(v10, QOS_CLASS_DEFAULT, 0);
@@ -136,37 +136,37 @@
   return v5;
 }
 
-- (void)publishStatusRequest:(id)a3 completion:(id)a4
+- (void)publishStatusRequest:(id)request completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v9 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = v8;
+    v26 = statusTypeIdentifier;
     v27 = 2112;
-    v28 = v6;
+    v28 = requestCopy;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Publishing status request. StatusType: %{public}@ Request: %@", buf, 0x16u);
   }
 
-  v10 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   objc_initWeak(buf, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __61__SKStatusPublishingService_publishStatusRequest_completion___block_invoke;
   v20[3] = &unk_279D12B28;
-  v11 = v8;
+  v11 = statusTypeIdentifier;
   v21 = v11;
-  v12 = v6;
+  v12 = requestCopy;
   v22 = v12;
   objc_copyWeak(&v24, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v23 = v13;
-  v14 = [v10 asynchronousRemoteDaemonWithErrorHandler:v20];
+  v14 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__SKStatusPublishingService_publishStatusRequest_completion___block_invoke_4;
@@ -235,33 +235,33 @@ void __61__SKStatusPublishingService_publishStatusRequest_completion___block_inv
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionPayloads:(id)a3 completion:(id)a4
+- (void)provisionPayloads:(id)payloads completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadsCopy = payloads;
+  completionCopy = completion;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v9 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v6;
+    v26 = payloadsCopy;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Provisioning request. Payloads: %{public}@", buf, 0xCu);
   }
 
-  v10 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   objc_initWeak(buf, self);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __58__SKStatusPublishingService_provisionPayloads_completion___block_invoke;
   v21[3] = &unk_279D129E8;
-  v11 = v8;
+  v11 = statusTypeIdentifier;
   v22 = v11;
   objc_copyWeak(&v24, buf);
-  v12 = v7;
+  v12 = completionCopy;
   v23 = v12;
-  v13 = [v10 asynchronousRemoteDaemonWithErrorHandler:v21];
+  v13 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v21];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__SKStatusPublishingService_provisionPayloads_completion___block_invoke_6;
@@ -271,7 +271,7 @@ void __61__SKStatusPublishingService_publishStatusRequest_completion___block_inv
   v19 = v14;
   v15 = v11;
   v18 = v15;
-  [v13 provisionPayloads:v6 statusTypeIdentifier:v15 completion:v17];
+  [v13 provisionPayloads:payloadsCopy statusTypeIdentifier:v15 completion:v17];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v24);
@@ -337,12 +337,12 @@ void __58__SKStatusPublishingService_provisionPayloads_completion___block_invoke
 {
   v25 = *MEMORY[0x277D85DE8];
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v3 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v4 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v4, OS_LOG_TYPE_DEFAULT, "Retrieving invited handles. StatusType: %{public}@", &buf, 0xCu);
   }
 
@@ -352,17 +352,17 @@ void __58__SKStatusPublishingService_provisionPayloads_completion___block_invoke
   v22 = __Block_byref_object_copy__0;
   v23 = __Block_byref_object_dispose__0;
   v24 = 0;
-  v5 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __43__SKStatusPublishingService_invitedHandles__block_invoke;
   v15[3] = &unk_279D12A10;
-  v6 = v3;
+  v6 = statusTypeIdentifier;
   v16 = v6;
   objc_copyWeak(&v18, &location);
   p_buf = &buf;
-  v7 = [v5 synchronousRemoteDaemonWithErrorHandler:v15];
+  v7 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v15];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__SKStatusPublishingService_invitedHandles__block_invoke_8;
@@ -438,22 +438,22 @@ void __43__SKStatusPublishingService_invitedHandles__block_invoke_8(uint64_t a1,
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isHandleInvited:(id)a3 fromSenderHandle:(id)a4
+- (BOOL)_isHandleInvited:(id)invited fromSenderHandle:(id)handle
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  invitedCopy = invited;
+  handleCopy = handle;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v9 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    *&buf[4] = v6;
+    *&buf[4] = invitedCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = handleCopy;
     *&buf[22] = 2114;
-    v26 = v8;
+    v26 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Checking if handle %@ has already been invited (sync) from handle: %@. StatusType: %{public}@", buf, 0x20u);
   }
 
@@ -461,25 +461,25 @@ void __43__SKStatusPublishingService_invitedHandles__block_invoke_8(uint64_t a1,
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   LOBYTE(v26) = 0;
-  v10 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __63__SKStatusPublishingService__isHandleInvited_fromSenderHandle___block_invoke;
   v22[3] = &unk_279D12A60;
-  v11 = v8;
+  v11 = statusTypeIdentifier;
   v23 = v11;
   v24 = buf;
-  v12 = [v10 synchronousRemoteDaemonWithErrorHandler:v22];
+  v12 = [daemonConnection synchronousRemoteDaemonWithErrorHandler:v22];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __63__SKStatusPublishingService__isHandleInvited_fromSenderHandle___block_invoke_9;
   v18[3] = &unk_279D12A88;
   v13 = v11;
   v19 = v13;
-  v14 = v6;
+  v14 = invitedCopy;
   v20 = v14;
   v21 = buf;
-  [v12 isHandleInvited:v14 fromSenderHandle:v7 forStatusTypeIdentifier:v13 completion:v18];
+  [v12 isHandleInvited:v14 fromSenderHandle:handleCopy forStatusTypeIdentifier:v13 completion:v18];
   v15 = *(*&buf[8] + 24);
 
   _Block_object_dispose(buf, 8);
@@ -540,38 +540,38 @@ void __63__SKStatusPublishingService__isHandleInvited_fromSenderHandle___block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_isHandleInvited:(id)a3 fromSenderHandle:(id)a4 completion:(id)a5
+- (void)_isHandleInvited:(id)invited fromSenderHandle:(id)handle completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitedCopy = invited;
+  handleCopy = handle;
+  completionCopy = completion;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v11 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v12 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v31 = v8;
+    v31 = invitedCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = handleCopy;
     v34 = 2114;
-    v35 = v11;
+    v35 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v12, OS_LOG_TYPE_DEFAULT, "Checking if handle %@ has already been invited (async) from handle: %@. StatusType: %{public}@", buf, 0x20u);
   }
 
-  v13 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __74__SKStatusPublishingService__isHandleInvited_fromSenderHandle_completion___block_invoke;
   v26[3] = &unk_279D12AB0;
-  v14 = v11;
+  v14 = statusTypeIdentifier;
   v27 = v14;
-  v15 = v8;
+  v15 = invitedCopy;
   v28 = v15;
-  v16 = v10;
+  v16 = completionCopy;
   v29 = v16;
-  v17 = [v13 asynchronousRemoteDaemonWithErrorHandler:v26];
+  v17 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v26];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __74__SKStatusPublishingService__isHandleInvited_fromSenderHandle_completion___block_invoke_11;
@@ -582,7 +582,7 @@ void __63__SKStatusPublishingService__isHandleInvited_fromSenderHandle___block_i
   v18 = v16;
   v19 = v15;
   v20 = v14;
-  [v17 isHandleInvited:v19 fromSenderHandle:v9 forStatusTypeIdentifier:v20 completion:v22];
+  [v17 isHandleInvited:v19 fromSenderHandle:handleCopy forStatusTypeIdentifier:v20 completion:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -640,36 +640,36 @@ void __74__SKStatusPublishingService__isHandleInvited_fromSenderHandle_completio
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchHandleInvitability:(id)a3 fromSenderHandle:(id)a4 completion:(id)a5
+- (void)_fetchHandleInvitability:(id)invitability fromSenderHandle:(id)handle completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  invitabilityCopy = invitability;
+  completionCopy = completion;
+  handleCopy = handle;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v11 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v12 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v8;
+    v31 = invitabilityCopy;
     v32 = 2114;
-    v33 = v11;
+    v33 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v12, OS_LOG_TYPE_DEFAULT, "Fetching handle %@ invitability. StatusType: %{public}@", buf, 0x16u);
   }
 
-  v13 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __82__SKStatusPublishingService__fetchHandleInvitability_fromSenderHandle_completion___block_invoke;
   v26[3] = &unk_279D12AB0;
-  v14 = v11;
+  v14 = statusTypeIdentifier;
   v27 = v14;
-  v15 = v8;
+  v15 = invitabilityCopy;
   v28 = v15;
-  v16 = v9;
+  v16 = completionCopy;
   v29 = v16;
-  v17 = [v13 asynchronousRemoteDaemonWithErrorHandler:v26];
+  v17 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v26];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __82__SKStatusPublishingService__fetchHandleInvitability_fromSenderHandle_completion___block_invoke_12;
@@ -680,7 +680,7 @@ void __74__SKStatusPublishingService__isHandleInvited_fromSenderHandle_completio
   v18 = v16;
   v19 = v15;
   v20 = v14;
-  [v17 fetchHandleInvitability:v19 fromHandle:v10 forStatusTypeIdentifier:v20 completion:v22];
+  [v17 fetchHandleInvitability:v19 fromHandle:handleCopy forStatusTypeIdentifier:v20 completion:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -739,36 +739,36 @@ void __82__SKStatusPublishingService__fetchHandleInvitability_fromSenderHandle_c
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_isHandleInvitable:(id)a3 fromSenderHandle:(id)a4 completion:(id)a5
+- (void)_isHandleInvitable:(id)invitable fromSenderHandle:(id)handle completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  invitableCopy = invitable;
+  completionCopy = completion;
+  handleCopy = handle;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v11 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v12 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v8;
+    v31 = invitableCopy;
     v32 = 2114;
-    v33 = v11;
+    v33 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v12, OS_LOG_TYPE_DEFAULT, "Checking if handle %@ is inviteable. StatusType: %{public}@", buf, 0x16u);
   }
 
-  v13 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __76__SKStatusPublishingService__isHandleInvitable_fromSenderHandle_completion___block_invoke;
   v26[3] = &unk_279D12AB0;
-  v14 = v11;
+  v14 = statusTypeIdentifier;
   v27 = v14;
-  v15 = v8;
+  v15 = invitableCopy;
   v28 = v15;
-  v16 = v9;
+  v16 = completionCopy;
   v29 = v16;
-  v17 = [v13 asynchronousRemoteDaemonWithErrorHandler:v26];
+  v17 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v26];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__SKStatusPublishingService__isHandleInvitable_fromSenderHandle_completion___block_invoke_14;
@@ -779,7 +779,7 @@ void __82__SKStatusPublishingService__fetchHandleInvitability_fromSenderHandle_c
   v18 = v16;
   v19 = v15;
   v20 = v14;
-  [v17 isHandleInviteable:v19 fromHandle:v10 forStatusTypeIdentifier:v20 completion:v22];
+  [v17 isHandleInviteable:v19 fromHandle:handleCopy forStatusTypeIdentifier:v20 completion:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -837,70 +837,70 @@ void __76__SKStatusPublishingService__isHandleInvitable_fromSenderHandle_complet
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inviteHandle:(id)a3 fromSenderHandle:(id)a4 withInvitationPayload:(id)a5 completion:(id)a6
+- (void)inviteHandle:(id)handle fromSenderHandle:(id)senderHandle withInvitationPayload:(id)payload completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  handleCopy = handle;
   v10 = MEMORY[0x277CBEA60];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 arrayWithObjects:&v17 count:1];
+  completionCopy = completion;
+  payloadCopy = payload;
+  senderHandleCopy = senderHandle;
+  handleCopy2 = handle;
+  v15 = [v10 arrayWithObjects:&handleCopy count:1];
 
-  [(SKStatusPublishingService *)self _inviteHandles:v15 fromSenderHandle:v13 withInvitationPayload:v12 completion:v11, v17, v18];
+  [(SKStatusPublishingService *)self _inviteHandles:v15 fromSenderHandle:senderHandleCopy withInvitationPayload:payloadCopy completion:completionCopy, handleCopy, v18];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inviteHandleFromPrimaryAccountHandle:(id)a3 withInvitationPayload:(id)a4 completion:(id)a5
+- (void)inviteHandleFromPrimaryAccountHandle:(id)handle withInvitationPayload:(id)payload completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  handleCopy = handle;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v14 count:1];
+  completionCopy = completion;
+  payloadCopy = payload;
+  handleCopy2 = handle;
+  v12 = [v8 arrayWithObjects:&handleCopy count:1];
 
-  [(SKStatusPublishingService *)self _inviteHandles:v12 fromSenderHandle:0 withInvitationPayload:v10 completion:v9, v14, v15];
+  [(SKStatusPublishingService *)self _inviteHandles:v12 fromSenderHandle:0 withInvitationPayload:payloadCopy completion:completionCopy, handleCopy, v15];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_inviteHandles:(id)a3 fromSenderHandle:(id)a4 withInvitationPayload:(id)a5 completion:(id)a6
+- (void)_inviteHandles:(id)handles fromSenderHandle:(id)handle withInvitationPayload:(id)payload completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handlesCopy = handles;
+  handleCopy = handle;
+  payloadCopy = payload;
+  completionCopy = completion;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v14 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v15 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v32 = v10;
+    v32 = handlesCopy;
     v33 = 2114;
-    v34 = v14;
+    v34 = statusTypeIdentifier;
     v35 = 2112;
-    v36 = v11;
+    v36 = handleCopy;
     _os_log_impl(&dword_26BA07000, v15, OS_LOG_TYPE_DEFAULT, "Received request to invite handles: %@ to personal channel with statusTypeIdentifier: %{public}@ from sender handle: %@", buf, 0x20u);
   }
 
-  v16 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   objc_initWeak(buf, self);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __94__SKStatusPublishingService__inviteHandles_fromSenderHandle_withInvitationPayload_completion___block_invoke;
   v26[3] = &unk_279D12B28;
-  v17 = v14;
+  v17 = statusTypeIdentifier;
   v27 = v17;
-  v18 = v10;
+  v18 = handlesCopy;
   v28 = v18;
   objc_copyWeak(&v30, buf);
-  v19 = v13;
+  v19 = completionCopy;
   v29 = v19;
-  v20 = [v16 asynchronousRemoteDaemonWithErrorHandler:v26];
+  v20 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v26];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __94__SKStatusPublishingService__inviteHandles_fromSenderHandle_withInvitationPayload_completion___block_invoke_16;
@@ -908,7 +908,7 @@ void __76__SKStatusPublishingService__isHandleInvitable_fromSenderHandle_complet
   objc_copyWeak(&v25, buf);
   v21 = v19;
   v24 = v21;
-  [v20 inviteHandles:v18 fromSenderHandle:v11 withInvitationPayload:v12 statusTypeIdentifier:v17 completion:v23];
+  [v20 inviteHandles:v18 fromSenderHandle:handleCopy withInvitationPayload:payloadCopy statusTypeIdentifier:v17 completion:v23];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v30);
@@ -957,50 +957,50 @@ void __94__SKStatusPublishingService__inviteHandles_fromSenderHandle_withInvitat
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeInvitedHandle:(id)a3 completion:(id)a4
+- (void)removeInvitedHandle:(id)handle completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  handleCopy = handle;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  completionCopy = completion;
+  handleCopy2 = handle;
+  v9 = [v6 arrayWithObjects:&handleCopy count:1];
 
-  [(SKStatusPublishingService *)self removeInvitedHandles:v9 completion:v7, v11, v12];
+  [(SKStatusPublishingService *)self removeInvitedHandles:v9 completion:completionCopy, handleCopy, v12];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeInvitedHandles:(id)a3 completion:(id)a4
+- (void)removeInvitedHandles:(id)handles completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  completionCopy = completion;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v8 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v9 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = v8;
+    v26 = statusTypeIdentifier;
     v27 = 2112;
-    v28 = v6;
+    v28 = handlesCopy;
     _os_log_impl(&dword_26BA07000, v9, OS_LOG_TYPE_DEFAULT, "Removing invited handles. StatusType: %{public}@ Handles: %@", buf, 0x16u);
   }
 
-  v10 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   objc_initWeak(buf, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __61__SKStatusPublishingService_removeInvitedHandles_completion___block_invoke;
   v20[3] = &unk_279D12B28;
-  v11 = v8;
+  v11 = statusTypeIdentifier;
   v21 = v11;
-  v12 = v6;
+  v12 = handlesCopy;
   v22 = v12;
   objc_copyWeak(&v24, buf);
-  v13 = v7;
+  v13 = completionCopy;
   v23 = v13;
-  v14 = [v10 asynchronousRemoteDaemonWithErrorHandler:v20];
+  v14 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__SKStatusPublishingService_removeInvitedHandles_completion___block_invoke_17;
@@ -1057,32 +1057,32 @@ void __61__SKStatusPublishingService_removeInvitedHandles_completion___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeAllInvitedHandlesWithCompletion:(id)a3
+- (void)removeAllInvitedHandlesWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
-  v5 = [(SKStatusPublishingService *)self statusTypeIdentifier];
+  statusTypeIdentifier = [(SKStatusPublishingService *)self statusTypeIdentifier];
   v6 = +[SKStatusPublishingService logger];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v5;
+    v21 = statusTypeIdentifier;
     _os_log_impl(&dword_26BA07000, v6, OS_LOG_TYPE_DEFAULT, "Removing all invited handles. StatusType: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(SKStatusPublishingService *)self daemonConnection];
+  daemonConnection = [(SKStatusPublishingService *)self daemonConnection];
   objc_initWeak(buf, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__SKStatusPublishingService_removeAllInvitedHandlesWithCompletion___block_invoke;
   v16[3] = &unk_279D129E8;
-  v8 = v5;
+  v8 = statusTypeIdentifier;
   v17 = v8;
   objc_copyWeak(&v19, buf);
-  v9 = v4;
+  v9 = completionCopy;
   v18 = v9;
-  v10 = [v7 asynchronousRemoteDaemonWithErrorHandler:v16];
+  v10 = [daemonConnection asynchronousRemoteDaemonWithErrorHandler:v16];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__SKStatusPublishingService_removeAllInvitedHandlesWithCompletion___block_invoke_18;
@@ -1139,25 +1139,25 @@ void __67__SKStatusPublishingService_removeAllInvitedHandlesWithCompletion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v7 = self->_delegates;
   objc_sync_enter(v7);
-  v8 = [[SKDelegateResponseQueue alloc] initWithQueue:v6];
-  [(NSMapTable *)self->_delegates setObject:v8 forKey:v9];
+  v8 = [[SKDelegateResponseQueue alloc] initWithQueue:queueCopy];
+  [(NSMapTable *)self->_delegates setObject:v8 forKey:delegateCopy];
 
   objc_sync_exit(v7);
   [(SKStatusPublishingService *)self _registerForDelegateCallbacksIfNecessary];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  [(NSMapTable *)self->_delegates removeObjectForKey:v5];
+  [(NSMapTable *)self->_delegates removeObjectForKey:delegateCopy];
   objc_sync_exit(v4);
 }
 
@@ -1202,25 +1202,25 @@ void __69__SKStatusPublishingService__registerForDelegateCallbacksIfNecessary__b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_simulateCrashIfNecessaryForError:(id)a3
+- (void)_simulateCrashIfNecessaryForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:@"SKStatusKitErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"SKStatusKitErrorDomain"])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 == 1)
+  if (code == 1)
   {
-    v5 = +[SKStatusPublishingService logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    domain = +[SKStatusPublishingService logger];
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_FAULT))
     {
-      [(SKStatusPublishingService *)self _simulateCrashIfNecessaryForError:v5];
+      [(SKStatusPublishingService *)self _simulateCrashIfNecessaryForError:domain];
     }
 
     goto LABEL_5;
@@ -1229,11 +1229,11 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_delegatesPerformOnResponseQueueForGroup:(id)a3 block:(id)a4
+- (void)_delegatesPerformOnResponseQueueForGroup:(id)group block:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  blockCopy = block;
   v8 = self->_delegates;
   objc_sync_enter(v8);
   v9 = [(NSMapTable *)self->_delegates copy];
@@ -1269,16 +1269,16 @@ LABEL_6:
 
         v14 = *(*(&v22 + 1) + 8 * i);
         v15 = [v9 objectForKey:v14];
-        v16 = [v15 dispatchQueue];
-        dispatch_group_enter(v6);
+        dispatchQueue = [v15 dispatchQueue];
+        dispatch_group_enter(groupCopy);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __76__SKStatusPublishingService__delegatesPerformOnResponseQueueForGroup_block___block_invoke;
         block[3] = &unk_279D12BF0;
-        v21 = v7;
+        v21 = blockCopy;
         block[4] = v14;
-        v20 = v6;
-        dispatch_async(v16, block);
+        v20 = groupCopy;
+        dispatch_async(dispatchQueue, block);
       }
 
       v11 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -1318,7 +1318,7 @@ void __76__SKStatusPublishingService__delegatesPerformOnResponseQueueForGroup_bl
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishingDaemonConnectionDidDisconnect:(id)a3
+- (void)publishingDaemonConnectionDidDisconnect:(id)disconnect
 {
   v4 = self->_delegates;
   objc_sync_enter(v4);

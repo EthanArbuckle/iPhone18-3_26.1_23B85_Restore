@@ -1,11 +1,11 @@
 @interface TUCallScreeningAnalyticsReporter
 - (_TtC27CallScreeningSettingsBundle32TUCallScreeningAnalyticsReporter)init;
-- (void)logLiveVoiceMailToggleWithToggledTo:(BOOL)a3;
+- (void)logLiveVoiceMailToggleWithToggledTo:(BOOL)to;
 @end
 
 @implementation TUCallScreeningAnalyticsReporter
 
-- (void)logLiveVoiceMailToggleWithToggledTo:(BOOL)a3
+- (void)logLiveVoiceMailToggleWithToggledTo:(BOOL)to
 {
   sub_1EAC(&qword_C458, &qword_39F0);
   inited = swift_initStackObject();
@@ -13,8 +13,8 @@
   *(inited + 32) = 0xD000000000000019;
   *(inited + 40) = 0x8000000000003CB0;
   sub_2EE4(0, &qword_C460, NSNumber_ptr);
-  v6 = self;
-  *(inited + 48) = sub_2FF8(a3);
+  selfCopy = self;
+  *(inited + 48) = sub_2FF8(to);
   v7 = sub_2C50(inited);
   swift_setDeallocating();
   sub_2D54(inited + 32);

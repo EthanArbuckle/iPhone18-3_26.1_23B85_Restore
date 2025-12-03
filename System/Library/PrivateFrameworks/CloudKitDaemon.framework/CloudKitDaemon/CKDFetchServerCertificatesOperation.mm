@@ -1,5 +1,5 @@
 @interface CKDFetchServerCertificatesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
 - (id)activityCreate;
 - (void)fetchServerCertificates;
@@ -33,9 +33,9 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Fetching Server Certificates";
   }
@@ -44,7 +44,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDFetchServerCertificatesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }

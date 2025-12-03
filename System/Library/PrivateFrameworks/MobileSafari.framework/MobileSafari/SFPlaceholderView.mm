@@ -1,16 +1,16 @@
 @interface SFPlaceholderView
-+ (id)placeholdersMatchingIntrinsicContentSizeOfViews:(id)a3 reusingPlaceholders:(id)a4;
++ (id)placeholdersMatchingIntrinsicContentSizeOfViews:(id)views reusingPlaceholders:(id)placeholders;
 - (CGSize)intrinsicContentSize;
 - (CGSize)intrinsicContentSizeOverride;
-- (SFPlaceholderView)initWithCoder:(id)a3;
-- (SFPlaceholderView)initWithFrame:(CGRect)a3;
-- (id)initMatchingIntrinsicContentSizeOfView:(id)a3;
-- (void)setIntrinsicContentSizeOverride:(CGSize)a3;
+- (SFPlaceholderView)initWithCoder:(id)coder;
+- (SFPlaceholderView)initWithFrame:(CGRect)frame;
+- (id)initMatchingIntrinsicContentSizeOfView:(id)view;
+- (void)setIntrinsicContentSizeOverride:(CGSize)override;
 @end
 
 @implementation SFPlaceholderView
 
-+ (id)placeholdersMatchingIntrinsicContentSizeOfViews:(id)a3 reusingPlaceholders:(id)a4
++ (id)placeholdersMatchingIntrinsicContentSizeOfViews:(id)views reusingPlaceholders:(id)placeholders
 {
   sub_18B7B0AC0(0, &qword_1EA9D46F0);
   v4 = sub_18BC20D98();
@@ -23,18 +23,18 @@
   return v7;
 }
 
-- (id)initMatchingIntrinsicContentSizeOfView:(id)a3
+- (id)initMatchingIntrinsicContentSizeOfView:(id)view
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR___SFPlaceholderView_intrinsicContentSizeOverride);
   v5 = *MEMORY[0x1E69DE788];
   *v4 = *MEMORY[0x1E69DE788];
   v4[1] = v5;
-  v6 = a3;
-  [v6 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v14.receiver = self;
   v14.super_class = SFPlaceholderView;
   v7 = [(SFPlaceholderView *)&v14 initWithFrame:?];
-  [v6 intrinsicContentSize];
+  [viewCopy intrinsicContentSize];
   v9 = v8;
   v11 = v10;
 
@@ -65,10 +65,10 @@
   return result;
 }
 
-- (void)setIntrinsicContentSizeOverride:(CGSize)a3
+- (void)setIntrinsicContentSizeOverride:(CGSize)override
 {
-  height = a3.height;
-  width = a3.width;
+  height = override.height;
+  width = override.width;
   v6 = (self + OBJC_IVAR___SFPlaceholderView_intrinsicContentSizeOverride);
   swift_beginAccess();
   v7 = *v6;
@@ -81,7 +81,7 @@
   }
 }
 
-- (SFPlaceholderView)initWithCoder:(id)a3
+- (SFPlaceholderView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR___SFPlaceholderView_intrinsicContentSizeOverride);
   v4 = *MEMORY[0x1E69DE788];
@@ -92,7 +92,7 @@
   return result;
 }
 
-- (SFPlaceholderView)initWithFrame:(CGRect)a3
+- (SFPlaceholderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,33 +1,33 @@
 @interface ReaderAnalyticsData
-- (ReaderAnalyticsData)initWithCoder:(id)a3;
+- (ReaderAnalyticsData)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ReaderAnalyticsData
 
-- (ReaderAnalyticsData)initWithCoder:(id)a3
+- (ReaderAnalyticsData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ReaderAnalyticsData;
   v5 = [(ReaderAnalyticsData *)&v15 init];
   if (v5)
   {
-    v5->_trusted = [v4 decodeBoolForKey:@"trusted"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"untrustedIdentifier"];
+    v5->_trusted = [coderCopy decodeBoolForKey:@"trusted"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"untrustedIdentifier"];
     untrustedIdentifier = v5->_untrustedIdentifier;
     v5->_untrustedIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"untrustedOrganization"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"untrustedOrganization"];
     untrustedOrganization = v5->_untrustedOrganization;
     v5->_untrustedOrganization = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"untrustedIssuerIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"untrustedIssuerIdentifier"];
     untrustedIssuerIdentifier = v5->_untrustedIssuerIdentifier;
     v5->_untrustedIssuerIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"untrustedIssuerOrganization"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"untrustedIssuerOrganization"];
     untrustedIssuerOrganization = v5->_untrustedIssuerOrganization;
     v5->_untrustedIssuerOrganization = v12;
   }
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   trusted = self->_trusted;
-  v5 = a3;
-  [v5 encodeBool:trusted forKey:@"trusted"];
-  [v5 encodeObject:self->_untrustedIdentifier forKey:@"untrustedIdentifier"];
-  [v5 encodeObject:self->_untrustedOrganization forKey:@"untrustedOrganization"];
-  [v5 encodeObject:self->_untrustedIssuerIdentifier forKey:@"untrustedIssuerIdentifier"];
-  [v5 encodeObject:self->_untrustedIssuerOrganization forKey:@"untrustedIssuerOrganization"];
+  coderCopy = coder;
+  [coderCopy encodeBool:trusted forKey:@"trusted"];
+  [coderCopy encodeObject:self->_untrustedIdentifier forKey:@"untrustedIdentifier"];
+  [coderCopy encodeObject:self->_untrustedOrganization forKey:@"untrustedOrganization"];
+  [coderCopy encodeObject:self->_untrustedIssuerIdentifier forKey:@"untrustedIssuerIdentifier"];
+  [coderCopy encodeObject:self->_untrustedIssuerOrganization forKey:@"untrustedIssuerOrganization"];
 }
 
 - (id)description
@@ -72,9 +72,9 @@
     untrustedIssuerOrganization = 0;
   }
 
-  v10 = [NSString stringWithFormat:@"<%@ trusted = %@; untrustedIdentifier = %@; untrustedOrganization = %@; untrustedIssuerIdentifier = %@; untrustedIssuerOrganization = %@>", v4, v5, v6, v7, v8, untrustedIssuerOrganization];;
+  untrustedIssuerOrganization = [NSString stringWithFormat:@"<%@ trusted = %@; untrustedIdentifier = %@; untrustedOrganization = %@; untrustedIssuerIdentifier = %@; untrustedIssuerOrganization = %@>", v4, v5, v6, v7, v8, untrustedIssuerOrganization];;
 
-  return v10;
+  return untrustedIssuerOrganization;
 }
 
 @end

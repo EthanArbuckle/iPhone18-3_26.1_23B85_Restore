@@ -2,14 +2,14 @@
 - (BOOL)_hasIcloudMailConfigured;
 - (id)customEmailSpecifierProvider;
 - (id)mailboxSpecifierProvider;
-- (id)specifierProviderWithName:(id)a3;
-- (void)_loadBundleIfNeeded:(id)a3;
-- (void)_onCustomEmailDomainLoadComplete:(id)a3;
-- (void)_onMailCleanupDeeplinkNotificationHandler:(id)a3;
+- (id)specifierProviderWithName:(id)name;
+- (void)_loadBundleIfNeeded:(id)needed;
+- (void)_onCustomEmailDomainLoadComplete:(id)complete;
+- (void)_onMailCleanupDeeplinkNotificationHandler:(id)handler;
 - (void)addSwiftUIView;
 - (void)customEmailDomainWasTapped;
-- (void)handleDeeplink:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)handleDeeplink:(id)deeplink;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)initAccountInfo;
 - (void)mailboxBehaviorWasTapped;
 - (void)openMailboxBehaviors;
@@ -43,8 +43,8 @@
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"_onMailCleanupDeeplinkNotificationHandler:" name:@"MAIL_CLEANUP_DEEPLINK_NOTIFICATION" object:0];
 
-  v7 = [*&self->PSViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"START_MAIL_IMPORT"];
+  userInfo = [*&self->PSViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"START_MAIL_IMPORT"];
 
   if ([v8 BOOLValue])
   {
@@ -55,31 +55,31 @@
 - (void)initAccountInfo
 {
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v4 = [*&self->PSViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v5 = [v4 objectForKey:ACUIAccountKey];
-  v6 = [v5 parentAccount];
-  [(PreferencesViewController *)self setAppleAccount:v6];
+  userInfo = [*&self->PSViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v5 = [userInfo objectForKey:ACUIAccountKey];
+  parentAccount = [v5 parentAccount];
+  [(PreferencesViewController *)self setAppleAccount:parentAccount];
 
-  v7 = [(PreferencesViewController *)self appleAccount];
+  appleAccount = [(PreferencesViewController *)self appleAccount];
 
-  if (!v7)
+  if (!appleAccount)
   {
     [(PreferencesViewController *)self setAppleAccount:v5];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"ACUIAccountManagerKey"];
+  v8 = [userInfo objectForKeyedSubscript:@"ACUIAccountManagerKey"];
   [(PreferencesViewController *)self setAccountManager:v8];
 
-  v9 = [(PreferencesViewController *)self accountManager];
-  v10 = [v9 accountStore];
-  [(PreferencesViewController *)self setAccountStore:v10];
+  accountManager = [(PreferencesViewController *)self accountManager];
+  accountStore = [accountManager accountStore];
+  [(PreferencesViewController *)self setAccountStore:accountStore];
 
-  v11 = [*&self->PSViewController_opaque[v3] target];
+  target = [*&self->PSViewController_opaque[v3] target];
   mailSpecifier = self->_mailSpecifier;
-  self->_mailSpecifier = v11;
+  self->_mailSpecifier = target;
 
-  v13 = [(PreferencesViewController *)self accountManager];
-  if (!v13 || (v14 = v13, [(PreferencesViewController *)self appleAccount], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15))
+  accountManager2 = [(PreferencesViewController *)self accountManager];
+  if (!accountManager2 || (v14 = accountManager2, [(PreferencesViewController *)self appleAccount], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, !v15))
   {
     v16 = _MSLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -91,16 +91,16 @@
 
 - (void)addSwiftUIView
 {
-  v3 = [(PreferencesViewController *)self accountStore];
-  v4 = [(PreferencesViewController *)self appleAccount];
-  v5 = [_TtC18icloudMailSettings25MAPreferencesViewProvider getSwiftUIViewWithAccountStore:v3 appleAccount:v4 delegate:self];
+  accountStore = [(PreferencesViewController *)self accountStore];
+  appleAccount = [(PreferencesViewController *)self appleAccount];
+  v5 = [_TtC18icloudMailSettings25MAPreferencesViewProvider getSwiftUIViewWithAccountStore:accountStore appleAccount:appleAccount delegate:self];
   swiftUIController = self->swiftUIController;
   self->swiftUIController = v5;
 
   [(PreferencesViewController *)self addChildViewController:self->swiftUIController];
-  v7 = [(PreferencesViewController *)self view];
-  v8 = [(MAPreferencesControllerDelegate *)self->swiftUIController view];
-  [v7 addSubview:v8];
+  view = [(PreferencesViewController *)self view];
+  view2 = [(MAPreferencesControllerDelegate *)self->swiftUIController view];
+  [view addSubview:view2];
 
   v9 = self->swiftUIController;
 
@@ -112,21 +112,21 @@
   v13.receiver = self;
   v13.super_class = PreferencesViewController;
   [(PreferencesViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(PreferencesViewController *)self view];
-  [v3 bounds];
+  view = [(PreferencesViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MAPreferencesControllerDelegate *)self->swiftUIController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(MAPreferencesControllerDelegate *)self->swiftUIController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"path"];
+  lCopy = l;
+  completionCopy = completion;
+  v8 = [lCopy objectForKey:@"path"];
   v9 = _MSLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -143,14 +143,14 @@
       sub_D496C();
     }
 
-    v13 = [v6 objectForKey:@"domain"];
+    v13 = [lCopy objectForKey:@"domain"];
     if ([(PreferencesViewController *)self _hasIcloudMailConfigured])
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_3F1C;
       block[3] = &unk_113050;
-      v29 = v6;
+      v29 = lCopy;
       dispatch_async(&_dispatch_main_q, block);
       v14 = v29;
     }
@@ -188,10 +188,10 @@
       dispatch_async(&_dispatch_main_q, v26);
     }
 
-    if (v7)
+    if (completionCopy)
     {
 LABEL_16:
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -202,32 +202,32 @@ LABEL_16:
       sub_D48FC();
     }
 
-    [(MAPreferencesControllerDelegate *)self->swiftUIController handleUniversalLinkWithUserInfo:v6];
-    if (v7)
+    [(MAPreferencesControllerDelegate *)self->swiftUIController handleUniversalLinkWithUserInfo:lCopy];
+    if (completionCopy)
     {
       goto LABEL_16;
     }
   }
 }
 
-- (void)handleDeeplink:(id)a3
+- (void)handleDeeplink:(id)deeplink
 {
-  v4 = a3;
-  if (v4)
+  deeplinkCopy = deeplink;
+  if (deeplinkCopy)
   {
     v5 = _MSLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = deeplinkCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Deeplink: %@", buf, 0xCu);
     }
 
-    v22 = self;
+    selfCopy = self;
 
-    v6 = [[NSURLComponents alloc] initWithString:v4];
-    v7 = [v6 path];
-    v8 = [v7 stringByReplacingOccurrencesOfString:@"com.apple.Dataclass.Mail/" withString:&stru_11B690];
+    v6 = [[NSURLComponents alloc] initWithString:deeplinkCopy];
+    path = [v6 path];
+    v8 = [path stringByReplacingOccurrencesOfString:@"com.apple.Dataclass.Mail/" withString:&stru_11B690];
     v9 = [v8 stringByReplacingOccurrencesOfString:@"ICLOUD_SERVICE/" withString:&stru_11B690];
 
     v10 = objc_opt_new();
@@ -235,9 +235,9 @@ LABEL_16:
     v11 = _MSLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 queryItems];
+      queryItems = [v6 queryItems];
       *buf = 138412290;
-      v29 = v12;
+      v29 = queryItems;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "NSURLComponents: %@", buf, 0xCu);
     }
 
@@ -245,8 +245,8 @@ LABEL_16:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [v6 queryItems];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    queryItems2 = [v6 queryItems];
+    v14 = [queryItems2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -257,16 +257,16 @@ LABEL_16:
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(queryItems2);
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          v19 = [v18 value];
-          v20 = [v18 name];
-          [v10 setValue:v19 forKey:v20];
+          value = [v18 value];
+          name = [v18 name];
+          [v10 setValue:value forKey:name];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [queryItems2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
@@ -280,7 +280,7 @@ LABEL_16:
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Handle deeplink: %@", buf, 0xCu);
     }
 
-    [(PreferencesViewController *)v22 handleURL:v10 withCompletion:0];
+    [(PreferencesViewController *)selfCopy handleURL:v10 withCompletion:0];
   }
 }
 
@@ -291,23 +291,23 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(ACAccount *)self->_appleAccount aa_childMailAccount];
-  v4 = v3 != 0;
+  aa_childMailAccount = [(ACAccount *)self->_appleAccount aa_childMailAccount];
+  v4 = aa_childMailAccount != 0;
 
   return v4;
 }
 
-- (void)_onCustomEmailDomainLoadComplete:(id)a3
+- (void)_onCustomEmailDomainLoadComplete:(id)complete
 {
-  v9 = a3;
+  completeCopy = complete;
   v4 = [NSNumber numberWithBool:0];
-  v5 = [v9 userInfo];
-  v6 = [v5 valueForKey:@"active"];
+  userInfo = [completeCopy userInfo];
+  v6 = [userInfo valueForKey:@"active"];
 
   if (v6)
   {
-    v7 = [v9 userInfo];
-    v8 = [v7 valueForKey:@"active"];
+    userInfo2 = [completeCopy userInfo];
+    v8 = [userInfo2 valueForKey:@"active"];
 
     v4 = v8;
   }
@@ -315,15 +315,15 @@ LABEL_16:
   -[MAPreferencesControllerDelegate onCustomEmailDomainEntryPointChangeWithSpinning:](self->swiftUIController, "onCustomEmailDomainEntryPointChangeWithSpinning:", [v4 BOOLValue]);
 }
 
-- (void)_onMailCleanupDeeplinkNotificationHandler:(id)a3
+- (void)_onMailCleanupDeeplinkNotificationHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_4470;
   v5[3] = &unk_113078;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  handlerCopy = handler;
+  selfCopy = self;
+  v4 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
@@ -347,13 +347,13 @@ LABEL_16:
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "[PreferencesViewController] Custom Email Domain was tapped", buf, 2u);
   }
 
-  v4 = [(PreferencesViewController *)self customEmailSpecifierProvider];
-  v5 = [v4 specifiers];
-  v6 = [v5 firstObject];
+  customEmailSpecifierProvider = [(PreferencesViewController *)self customEmailSpecifierProvider];
+  specifiers = [customEmailSpecifierProvider specifiers];
+  firstObject = [specifiers firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    [v6 performControllerLoadAction];
+    [firstObject performControllerLoadAction];
   }
 
   else
@@ -380,14 +380,14 @@ LABEL_16:
 
 - (void)openMailboxBehaviors
 {
-  v2 = [(PreferencesViewController *)self mailboxSpecifierProvider];
-  v3 = [v2 specifiers];
-  v4 = [v3 ac_filter:&stru_1130F8];
-  v5 = [v4 firstObject];
+  mailboxSpecifierProvider = [(PreferencesViewController *)self mailboxSpecifierProvider];
+  specifiers = [mailboxSpecifierProvider specifiers];
+  v4 = [specifiers ac_filter:&stru_1130F8];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    [v5 performControllerLoadAction];
+    [firstObject performControllerLoadAction];
   }
 
   else
@@ -402,14 +402,14 @@ LABEL_16:
 
 - (void)openSMIME
 {
-  v2 = [(PreferencesViewController *)self mailboxSpecifierProvider];
-  v3 = [v2 specifiers];
-  v4 = [v3 ac_filter:&stru_113118];
-  v5 = [v4 firstObject];
+  mailboxSpecifierProvider = [(PreferencesViewController *)self mailboxSpecifierProvider];
+  specifiers = [mailboxSpecifierProvider specifiers];
+  v4 = [specifiers ac_filter:&stru_113118];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    [v5 performControllerLoadAction];
+    [firstObject performControllerLoadAction];
   }
 
   else
@@ -452,11 +452,11 @@ LABEL_16:
   return customEmailSpecifierProvider;
 }
 
-- (id)specifierProviderWithName:(id)a3
+- (id)specifierProviderWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(PreferencesViewController *)self _loadMailSettingsBundleIfNeeded];
-  v5 = NSClassFromString(v4);
+  v5 = NSClassFromString(nameCopy);
   v6 = [(objc_class *)v5 conformsToProtocol:&OBJC_PROTOCOL___AAUISpecifierProvider];
   v7 = _MSLogSystem();
   v8 = v7;
@@ -485,8 +485,8 @@ LABEL_16:
       self->_accountManager = v13;
 
       v15 = +[ACAccountStore defaultStore];
-      v16 = [v15 aa_primaryAppleAccount];
-      v21 = v16;
+      aa_primaryAppleAccount = [v15 aa_primaryAppleAccount];
+      v21 = aa_primaryAppleAccount;
       v17 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
 
       [(AIDAAccountManager *)self->_accountManager setAccounts:v17];
@@ -508,13 +508,13 @@ LABEL_16:
   return v18;
 }
 
-- (void)_loadBundleIfNeeded:(id)a3
+- (void)_loadBundleIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v4 = UISystemRootDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"System/Library/PreferenceBundles/AccountSettings"];
 
-  v6 = [v5 stringByAppendingPathComponent:v3];
+  v6 = [v5 stringByAppendingPathComponent:neededCopy];
   v7 = [NSBundle bundleWithPath:v6];
   if (([v7 isLoaded] & 1) == 0)
   {

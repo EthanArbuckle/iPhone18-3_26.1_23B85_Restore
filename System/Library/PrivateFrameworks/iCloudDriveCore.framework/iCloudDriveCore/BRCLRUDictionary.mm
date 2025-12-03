@@ -1,25 +1,25 @@
 @interface BRCLRUDictionary
-- (BRCLRUDictionary)initWithMaximumCapacity:(unint64_t)a3;
+- (BRCLRUDictionary)initWithMaximumCapacity:(unint64_t)capacity;
 - (id)allValues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (void)_addNodeToFront:(id)a3;
-- (void)_moveNodeToFront:(id)a3;
-- (void)_removeNode:(id)a3;
-- (void)_removeNodeFromLinkedList:(id)a3;
+- (id)objectForKey:(id)key;
+- (void)_addNodeToFront:(id)front;
+- (void)_moveNodeToFront:(id)front;
+- (void)_removeNode:(id)node;
+- (void)_removeNodeFromLinkedList:(id)list;
 - (void)_shrinkToCapacity;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation BRCLRUDictionary
 
-- (BRCLRUDictionary)initWithMaximumCapacity:(unint64_t)a3
+- (BRCLRUDictionary)initWithMaximumCapacity:(unint64_t)capacity
 {
-  v3 = a3;
-  if (!a3)
+  capacityCopy = capacity;
+  if (!capacity)
   {
     v5 = brc_bread_crumbs();
     v6 = brc_default_log();
@@ -28,7 +28,7 @@
       [(BRCLRUDictionary *)v5 initWithMaximumCapacity:v6];
     }
 
-    v3 = 1;
+    capacityCopy = 1;
   }
 
   v15.receiver = self;
@@ -36,11 +36,11 @@
   v7 = [(BRCLRUDictionary *)&v15 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v3];
+    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:capacityCopy];
     dictionary = v7->_dictionary;
     v7->_dictionary = v8;
 
-    v7->_maximumCapacity = v3;
+    v7->_maximumCapacity = capacityCopy;
     v10 = [[BRCLRUDictionaryNode alloc] initWithKey:0 object:0];
     head = v7->_head;
     v7->_head = v10;
@@ -59,101 +59,101 @@
 - (id)allValues
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableDictionary count](self->_dictionary, "count")}];
-  v4 = [(BRCLRUDictionary *)self head];
-  v5 = [v4 next];
+  head = [(BRCLRUDictionary *)self head];
+  next = [head next];
 
-  if (v5 == self->_tail)
+  if (next == self->_tail)
   {
-    v7 = v5;
+    v5Next = next;
   }
 
   else
   {
     do
     {
-      v6 = [(BRCLRUDictionaryNode *)v5 object];
-      [v3 addObject:v6];
+      object = [(BRCLRUDictionaryNode *)next object];
+      [v3 addObject:object];
 
-      v7 = [(BRCLRUDictionaryNode *)v5 next];
+      v5Next = [(BRCLRUDictionaryNode *)next next];
 
-      v5 = v7;
+      next = v5Next;
     }
 
-    while (v7 != self->_tail);
+    while (v5Next != self->_tail);
   }
 
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [BRCLRUDictionary objectForKey:];
   }
 
-  v5 = [(BRCLRUDictionary *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dictionary = [(BRCLRUDictionary *)self dictionary];
+  v6 = [dictionary objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
     [(BRCLRUDictionary *)self _moveNodeToFront:v6];
-    v7 = [v6 object];
+    object = [v6 object];
   }
 
   else
   {
-    v7 = 0;
+    object = 0;
   }
 
-  return v7;
+  return object;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  objectCopy = object;
+  keyCopy = key;
+  if (!keyCopy)
   {
     [BRCLRUDictionary setObject:forKey:];
   }
 
-  v8 = [(BRCLRUDictionary *)self dictionary];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  dictionary = [(BRCLRUDictionary *)self dictionary];
+  v9 = [dictionary objectForKeyedSubscript:keyCopy];
 
   if (v9)
   {
     [(BRCLRUDictionary *)self _moveNodeToFront:v9];
-    [(BRCLRUDictionaryNode *)v9 setObject:v6];
+    [(BRCLRUDictionaryNode *)v9 setObject:objectCopy];
   }
 
   else
   {
-    v10 = [(BRCLRUDictionary *)self dictionary];
-    v11 = [v10 count];
-    v12 = [(BRCLRUDictionary *)self maximumCapacity];
+    dictionary2 = [(BRCLRUDictionary *)self dictionary];
+    v11 = [dictionary2 count];
+    maximumCapacity = [(BRCLRUDictionary *)self maximumCapacity];
 
-    if (v11 == v12)
+    if (v11 == maximumCapacity)
     {
-      v13 = [(BRCLRUDictionary *)self tail];
-      v14 = [v13 prev];
-      [(BRCLRUDictionary *)self _removeNode:v14];
+      tail = [(BRCLRUDictionary *)self tail];
+      prev = [tail prev];
+      [(BRCLRUDictionary *)self _removeNode:prev];
     }
 
-    v9 = [[BRCLRUDictionaryNode alloc] initWithKey:v7 object:v6];
-    v15 = [(BRCLRUDictionary *)self dictionary];
-    [v15 setObject:v9 forKeyedSubscript:v7];
+    v9 = [[BRCLRUDictionaryNode alloc] initWithKey:keyCopy object:objectCopy];
+    dictionary3 = [(BRCLRUDictionary *)self dictionary];
+    [dictionary3 setObject:v9 forKeyedSubscript:keyCopy];
 
     [(BRCLRUDictionary *)self _addNodeToFront:v9];
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BRCLRUDictionary *)self dictionary];
-  v7 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dictionary = [(BRCLRUDictionary *)self dictionary];
+  v7 = [dictionary objectForKeyedSubscript:keyCopy];
 
   v6 = v7;
   if (v7)
@@ -165,19 +165,19 @@
 
 - (void)removeAllObjects
 {
-  v3 = [(BRCLRUDictionary *)self dictionary];
-  [v3 removeAllObjects];
+  dictionary = [(BRCLRUDictionary *)self dictionary];
+  [dictionary removeAllObjects];
 
-  v4 = [(BRCLRUDictionary *)self tail];
-  v5 = [(BRCLRUDictionary *)self head];
-  [v5 setNext:v4];
+  tail = [(BRCLRUDictionary *)self tail];
+  head = [(BRCLRUDictionary *)self head];
+  [head setNext:tail];
 
-  v7 = [(BRCLRUDictionary *)self head];
-  v6 = [(BRCLRUDictionary *)self tail];
-  [v6 setPrev:v7];
+  head2 = [(BRCLRUDictionary *)self head];
+  tail2 = [(BRCLRUDictionary *)self tail];
+  [tail2 setPrev:head2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BRCLRUDictionary alloc] initWithMaximumCapacity:[(BRCLRUDictionary *)self maximumCapacity]];
   v5 = [(NSMutableDictionary *)self->_dictionary mutableCopy];
@@ -198,28 +198,28 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@: %p>{\n", objc_opt_class(), self];
-  v4 = [(BRCLRUDictionary *)self head];
-  v5 = [v4 next];
+  head = [(BRCLRUDictionary *)self head];
+  next = [head next];
 
-  if (v5 == self->_tail)
+  if (next == self->_tail)
   {
-    v8 = v5;
+    v5Next = next;
   }
 
   else
   {
     do
     {
-      v6 = [(BRCLRUDictionaryNode *)v5 key];
-      v7 = [(BRCLRUDictionaryNode *)v5 object];
-      [v3 appendFormat:@"\t%@ = %@;\n", v6, v7];
+      v6 = [(BRCLRUDictionaryNode *)next key];
+      object = [(BRCLRUDictionaryNode *)next object];
+      [v3 appendFormat:@"\t%@ = %@;\n", v6, object];
 
-      v8 = [(BRCLRUDictionaryNode *)v5 next];
+      v5Next = [(BRCLRUDictionaryNode *)next next];
 
-      v5 = v8;
+      next = v5Next;
     }
 
-    while (v8 != self->_tail);
+    while (v5Next != self->_tail);
   }
 
   [v3 appendString:@"}\n"];
@@ -231,66 +231,66 @@
 {
   for (i = self; [(BRCLRUDictionary *)self count]> i->_maximumCapacity; self = i)
   {
-    v3 = [(BRCLRUDictionary *)i tail];
-    v5 = [v3 prev];
+    tail = [(BRCLRUDictionary *)i tail];
+    prev = [tail prev];
 
-    if (!v5 || ([(BRCLRUDictionary *)i head], v4 = objc_claimAutoreleasedReturnValue(), v4, v5 == v4))
+    if (!prev || ([(BRCLRUDictionary *)i head], v4 = objc_claimAutoreleasedReturnValue(), v4, prev == v4))
     {
 
       return;
     }
 
-    [(BRCLRUDictionary *)i _removeNode:v5];
+    [(BRCLRUDictionary *)i _removeNode:prev];
   }
 }
 
-- (void)_removeNodeFromLinkedList:(id)a3
+- (void)_removeNodeFromLinkedList:(id)list
 {
-  v3 = a3;
-  v5 = [v3 prev];
-  v4 = [v3 next];
+  listCopy = list;
+  prev = [listCopy prev];
+  next = [listCopy next];
 
-  [v5 setNext:v4];
-  [v4 setPrev:v5];
+  [prev setNext:next];
+  [next setPrev:prev];
 }
 
-- (void)_removeNode:(id)a3
+- (void)_removeNode:(id)node
 {
-  v4 = a3;
-  [(BRCLRUDictionary *)self _removeNodeFromLinkedList:v4];
-  v6 = [(BRCLRUDictionary *)self dictionary];
-  v5 = [v4 key];
+  nodeCopy = node;
+  [(BRCLRUDictionary *)self _removeNodeFromLinkedList:nodeCopy];
+  dictionary = [(BRCLRUDictionary *)self dictionary];
+  v5 = [nodeCopy key];
 
-  [v6 removeObjectForKey:v5];
+  [dictionary removeObjectForKey:v5];
 }
 
-- (void)_moveNodeToFront:(id)a3
+- (void)_moveNodeToFront:(id)front
 {
-  v6 = a3;
-  v4 = [(BRCLRUDictionary *)self head];
-  v5 = [v4 next];
+  frontCopy = front;
+  head = [(BRCLRUDictionary *)self head];
+  next = [head next];
 
-  if (v5 != v6)
+  if (next != frontCopy)
   {
-    [(BRCLRUDictionary *)self _removeNodeFromLinkedList:v6];
-    [(BRCLRUDictionary *)self _addNodeToFront:v6];
+    [(BRCLRUDictionary *)self _removeNodeFromLinkedList:frontCopy];
+    [(BRCLRUDictionary *)self _addNodeToFront:frontCopy];
   }
 }
 
-- (void)_addNodeToFront:(id)a3
+- (void)_addNodeToFront:(id)front
 {
-  v4 = a3;
-  v5 = [(BRCLRUDictionary *)self head];
-  v8 = [v5 next];
+  frontCopy = front;
+  head = [(BRCLRUDictionary *)self head];
+  next = [head next];
 
-  v6 = [(BRCLRUDictionary *)self head];
-  [v6 setNext:v4];
+  head2 = [(BRCLRUDictionary *)self head];
+  [head2 setNext:frontCopy];
 
-  v7 = [(BRCLRUDictionary *)self head];
-  [v4 setPrev:v7];
+  head3 = [(BRCLRUDictionary *)self head];
+  [frontCopy setPrev:head3];
 
-  [v4 setNext:v8];
-  [v8 setPrev:v4];
+  [frontCopy setNext:next];
+  [next setPrev:frontCopy];
 }
 
 @end

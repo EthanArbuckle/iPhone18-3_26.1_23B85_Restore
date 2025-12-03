@@ -1,30 +1,30 @@
 @interface CRKSetCoursePermissionRequest
-- (CRKSetCoursePermissionRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKSetCoursePermissionRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKSetCoursePermissionRequest
 
-- (CRKSetCoursePermissionRequest)initWithCoder:(id)a3
+- (CRKSetCoursePermissionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CRKSetCoursePermissionRequest;
-  v5 = [(CATTaskRequest *)&v16 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"courseIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"courseIdentifier"];
     courseIdentifier = v5->_courseIdentifier;
     v5->_courseIdentifier = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"feature"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"feature"];
     feature = v5->_feature;
     v5->_feature = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"permission"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"permission"];
     permission = v5->_permission;
     v5->_permission = v13;
   }
@@ -32,20 +32,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CRKSetCoursePermissionRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(CRKSetCoursePermissionRequest *)self courseIdentifier:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"courseIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"courseIdentifier"];
 
-  v6 = [(CRKSetCoursePermissionRequest *)self feature];
-  [v4 encodeObject:v6 forKey:@"feature"];
+  feature = [(CRKSetCoursePermissionRequest *)self feature];
+  [coderCopy encodeObject:feature forKey:@"feature"];
 
-  v7 = [(CRKSetCoursePermissionRequest *)self permission];
-  [v4 encodeObject:v7 forKey:@"permission"];
+  permission = [(CRKSetCoursePermissionRequest *)self permission];
+  [coderCopy encodeObject:permission forKey:@"permission"];
 }
 
 @end

@@ -1,77 +1,77 @@
 @interface _AKInkOverlayDrawingUndoTarget
 - (AKPageController)pageController;
-- (_AKInkOverlayDrawingUndoTarget)initWithPageController:(id)a3;
-- (void)performUndo:(id)a3;
+- (_AKInkOverlayDrawingUndoTarget)initWithPageController:(id)controller;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation _AKInkOverlayDrawingUndoTarget
 
-- (_AKInkOverlayDrawingUndoTarget)initWithPageController:(id)a3
+- (_AKInkOverlayDrawingUndoTarget)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _AKInkOverlayDrawingUndoTarget;
   v5 = [(_AKInkOverlayDrawingUndoTarget *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pageController, v4);
+    objc_storeWeak(&v5->_pageController, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v19 = a3;
-  v4 = [(_AKInkOverlayDrawingUndoTarget *)self pageController];
-  v5 = v4;
-  if (v4)
+  undoCopy = undo;
+  pageController = [(_AKInkOverlayDrawingUndoTarget *)self pageController];
+  v5 = pageController;
+  if (pageController)
   {
-    if ([v4 relinquishablesAreLoaded])
+    if ([pageController relinquishablesAreLoaded])
     {
-      v6 = [v5 inkPageOverlayController];
-      v7 = [v6 inkOverlayView];
-      v8 = [v7 canvasView];
-      v9 = [v8 drawing];
+      inkPageOverlayController = [v5 inkPageOverlayController];
+      inkOverlayView = [inkPageOverlayController inkOverlayView];
+      canvasView = [inkOverlayView canvasView];
+      drawing = [canvasView drawing];
 
-      v10 = [v9 uuid];
-      v11 = [v19 drawingUUID];
-      v12 = [v10 isEqual:v11];
+      uuid = [drawing uuid];
+      drawingUUID = [undoCopy drawingUUID];
+      v12 = [uuid isEqual:drawingUUID];
 
       if (v12)
       {
-        v13 = [v7 canvasView];
-        [v13 performUndo:v19];
+        canvasView2 = [inkOverlayView canvasView];
+        [canvasView2 performUndo:undoCopy];
 LABEL_8:
       }
     }
 
     else
     {
-      v6 = [v5 pageModelController];
-      v14 = [v6 inkCanvasAnnotation];
-      v7 = v14;
-      if (!v14)
+      inkPageOverlayController = [v5 pageModelController];
+      inkCanvasAnnotation = [inkPageOverlayController inkCanvasAnnotation];
+      inkOverlayView = inkCanvasAnnotation;
+      if (!inkCanvasAnnotation)
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v9 = [v14 drawing];
-      if (v9)
+      drawing = [inkCanvasAnnotation drawing];
+      if (drawing)
       {
-        v15 = [v5 controller];
-        v16 = [v15 undoController];
-        v13 = [v16 undoManager];
+        controller = [v5 controller];
+        undoController = [controller undoController];
+        canvasView2 = [undoController undoManager];
 
-        v17 = [v19 actionName];
-        [v13 setActionName:v17];
+        actionName = [undoCopy actionName];
+        [canvasView2 setActionName:actionName];
 
-        v18 = [v19 inverted];
-        [v18 registerWithUndoManager:v13 target:self selector:sel_performUndo_];
-        [v19 applyToDrawing:v9];
+        inverted = [undoCopy inverted];
+        [inverted registerWithUndoManager:canvasView2 target:self selector:sel_performUndo_];
+        [undoCopy applyToDrawing:drawing];
 
         goto LABEL_8;
       }

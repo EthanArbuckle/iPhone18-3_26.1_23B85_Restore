@@ -7,7 +7,7 @@
 
 - (uint64_t)crk_featureBoolType
 {
-  if ([a1 BOOLValue])
+  if ([self BOOLValue])
   {
     return 1;
   }

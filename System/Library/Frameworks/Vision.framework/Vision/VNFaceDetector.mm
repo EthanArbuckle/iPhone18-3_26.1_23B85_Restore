@@ -1,22 +1,22 @@
 @interface VNFaceDetector
-+ (BOOL)calculateTilesForRegionOfInterest:(CGRect)a3 imageWidth:(unint64_t)a4 imageHeight:(unint64_t)a5 tileSizeInPixels:(unint64_t)a6 overlapFraction:(float)a7 aspectRatioThreshold:(float)a8 columns:(unint64_t *)a9 rows:(unint64_t *)a10 tiles:(void *)a11 error:(id *)a12;
++ (BOOL)calculateTilesForRegionOfInterest:(CGRect)interest imageWidth:(unint64_t)width imageHeight:(unint64_t)height tileSizeInPixels:(unint64_t)pixels overlapFraction:(float)fraction aspectRatioThreshold:(float)threshold columns:(unint64_t *)columns rows:(unint64_t *)self0 tiles:(void *)self1 error:(id *)self2;
 + (BOOL)shouldDumpDebugIntermediates;
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
 + (id)configurationOptionKeysForDetectorKey;
-+ (void)fullyPopulateConfigurationOptions:(id)a3;
-+ (void)printDebugInfo:(id)a3 facesDataRaw:(void *)a4 faceDetectorBGRAImage:(__CVBuffer *)a5 tempImage:(vImage_Buffer *)a6 session:(id)a7;
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
++ (void)fullyPopulateConfigurationOptions:(id)options;
++ (void)printDebugInfo:(id)info facesDataRaw:(void *)raw faceDetectorBGRAImage:(__CVBuffer *)image tempImage:(vImage_Buffer *)tempImage session:(id)session;
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceDetector
 
-+ (BOOL)calculateTilesForRegionOfInterest:(CGRect)a3 imageWidth:(unint64_t)a4 imageHeight:(unint64_t)a5 tileSizeInPixels:(unint64_t)a6 overlapFraction:(float)a7 aspectRatioThreshold:(float)a8 columns:(unint64_t *)a9 rows:(unint64_t *)a10 tiles:(void *)a11 error:(id *)a12
++ (BOOL)calculateTilesForRegionOfInterest:(CGRect)interest imageWidth:(unint64_t)width imageHeight:(unint64_t)height tileSizeInPixels:(unint64_t)pixels overlapFraction:(float)fraction aspectRatioThreshold:(float)threshold columns:(unint64_t *)columns rows:(unint64_t *)self0 tiles:(void *)self1 error:(id *)self2
 {
-  v62.origin.x = a3.origin.x * a4;
-  v62.size.width = a3.size.width * a4;
-  v62.origin.y = a3.origin.y * a5;
-  v62.size.height = a3.size.height * a5;
+  v62.origin.x = interest.origin.x * width;
+  v62.size.width = interest.size.width * width;
+  v62.origin.y = interest.origin.y * height;
+  v62.size.height = interest.size.height * height;
   v63 = CGRectIntegral(v62);
   x = v63.origin.x;
   y = v63.origin.y;
@@ -24,17 +24,17 @@
   *(&v59 + 1) = *&v63.origin.y;
   width = v63.size.width;
   height = v63.size.height;
-  v22 = a4 / a5;
-  if (v22 < a8 && v22 > (1.0 / a8))
+  v22 = width / height;
+  if (v22 < threshold && v22 > (1.0 / threshold))
   {
-    std::vector<CGRect>::push_back[abi:ne200100](a11, &v59);
+    std::vector<CGRect>::push_back[abi:ne200100](tiles, &v59);
     return 1;
   }
 
-  v24 = a12;
+  errorCopy2 = error;
   if (v63.size.width < 1.0 || v63.size.height < 1.0)
   {
-    if (!a12)
+    if (!error)
     {
       return 0;
     }
@@ -42,7 +42,7 @@
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid ROI size of %f x %f", *&v63.size.width, *&v63.size.height];
     v27 = [VNError errorWithCode:3 message:v26];
 LABEL_34:
-    *v24 = v27;
+    *errorCopy2 = v27;
 
     return 0;
   }
@@ -51,10 +51,10 @@ LABEL_34:
   v30 = vcvtq_u64_f64(v63.size);
   v31 = vcvtq_f64_u64(v30);
   v32 = v30;
-  if (v30.i64[0] * v30.i64[1] > a6)
+  if (v30.i64[0] * v30.i64[1] > pixels)
   {
     v33 = vdivq_f64(v31, vdupq_laneq_s64(v31, 1)).f64[0];
-    v34 = sqrt(a6 / v33);
+    v34 = sqrt(pixels / v33);
     v31.f64[0] = v34 * v33;
     v31.f64[1] = v34;
   }
@@ -77,7 +77,7 @@ LABEL_34:
 
   if (v41)
   {
-    if (!a12)
+    if (!error)
     {
       return 0;
     }
@@ -87,8 +87,8 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v42 = (((a7 * v39.u64[0]) + 0.5) + 8) & 0xFFFFFFFFFFFFFFF0;
-  v43 = (((a7 * v39.u64[1]) + 0.5) + 8) & 0xFFFFFFFFFFFFFFF0;
+  v42 = (((fraction * v39.u64[0]) + 0.5) + 8) & 0xFFFFFFFFFFFFFFF0;
+  v43 = (((fraction * v39.u64[1]) + 0.5) + 8) & 0xFFFFFFFFFFFFFFF0;
   if (v42 >= v39.i64[0])
   {
     v42 = 0;
@@ -103,7 +103,7 @@ LABEL_34:
   v45 = v39.i64[0] - v42;
   if (v39.i64[0] == v42 || v39.i64[1] == v43)
   {
-    if (a12)
+    if (error)
     {
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid tile increment of %lu x %lu", v45, v39.i64[1] - v43];
       v27 = [VNError errorForInvalidOperationWithLocalizedDescription:v26];
@@ -121,13 +121,13 @@ LABEL_34:
     v49 = y;
     if (v32.i64[1] <= y)
     {
-      if (!a9)
+      if (!columns)
       {
         v50 = 0;
 LABEL_58:
-        if (a10)
+        if (rows)
         {
-          *a10 = v50;
+          *rows = v50;
         }
 
         return 1;
@@ -159,7 +159,7 @@ LABEL_58:
           }
 
           *v58 = v56;
-          std::vector<CGRect>::push_back[abi:ne200100](a11, v58);
+          std::vector<CGRect>::push_back[abi:ne200100](tiles, v58);
           v47.f64[0] = v57;
         }
 
@@ -168,20 +168,20 @@ LABEL_58:
       }
 
       while (v49 < v32.i64[1]);
-      if (!a9)
+      if (!columns)
       {
         goto LABEL_58;
       }
 
-      v24 = a12;
+      errorCopy2 = error;
       if (v50)
       {
-        *a9 = ((*(a11 + 1) - *a11) >> 5) / v50;
+        *columns = ((*(tiles + 1) - *tiles) >> 5) / v50;
         goto LABEL_58;
       }
     }
 
-    if (!v24)
+    if (!errorCopy2)
     {
       return 0;
     }
@@ -192,48 +192,48 @@ LABEL_58:
   }
 
   v58[0] = v59;
-  std::vector<CGRect>::push_back[abi:ne200100](a11, v58);
-  if (a9)
+  std::vector<CGRect>::push_back[abi:ne200100](tiles, v58);
+  if (columns)
   {
-    *a9 = 1;
+    *columns = 1;
   }
 
-  if (!a10)
+  if (!rows)
   {
     return 1;
   }
 
   result = 1;
-  *a10 = 1;
+  *rows = 1;
   return result;
 }
 
-+ (void)printDebugInfo:(id)a3 facesDataRaw:(void *)a4 faceDetectorBGRAImage:(__CVBuffer *)a5 tempImage:(vImage_Buffer *)a6 session:(id)a7
++ (void)printDebugInfo:(id)info facesDataRaw:(void *)raw faceDetectorBGRAImage:(__CVBuffer *)image tempImage:(vImage_Buffer *)tempImage session:(id)session
 {
   v70[2] = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v57 = a7;
+  infoCopy = info;
+  sessionCopy = session;
   if (+[VNFaceDetector shouldDumpDebugIntermediates])
   {
-    v56 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v10 = NSTemporaryDirectory();
     v11 = [v10 stringByAppendingString:@"VN_facedetector_debug_intermediates/"];
 
     v55 = v11;
     v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
-    LODWORD(v11) = [v56 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:0];
+    LODWORD(v11) = [defaultManager createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:0];
 
     if (v11)
     {
-      v13 = [v58 fileURL];
-      v14 = [v13 path];
+      fileURL = [infoCopy fileURL];
+      path = [fileURL path];
 
-      v51 = v14;
-      if (v14)
+      v51 = path;
+      if (path)
       {
-        v15 = [(__CFString *)v14 lastPathComponent];
-        v16 = [v15 stringByDeletingPathExtension];
-        v17 = [v16 stringByAppendingString:@"_"];
+        lastPathComponent = [(__CFString *)path lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+        v17 = [stringByDeletingPathExtension stringByAppendingString:@"_"];
 
         v18 = v17;
       }
@@ -243,23 +243,23 @@ LABEL_58:
         v18 = &stru_1F1976900;
       }
 
-      v20 = *a4;
-      v19 = *(a4 + 1);
+      v20 = *raw;
+      v19 = *(raw + 1);
       v50 = v18;
       v21 = [v55 stringByAppendingString:?];
       v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:+[VNFaceDetector printDebugInfo:facesDataRaw:faceDetectorBGRAImage:tempImage:session:]::image_name_offset];
-      v23 = [v22 stringValue];
-      v24 = [v21 stringByAppendingString:v23];
+      stringValue = [v22 stringValue];
+      v24 = [v21 stringByAppendingString:stringValue];
 
       v62 = v24;
       v53 = [v24 stringByAppendingString:@"_fd_image.vdump"];
       v54 = [v24 stringByAppendingString:@"_fd_image.png"];
       v52 = [v24 stringByAppendingString:@"_raw_bboxes.json"];
       v25 = [VNImageBuffer alloc];
-      v61 = [(VNImageBuffer *)v25 initWithCVPixelBuffer:a5 orientation:1 options:MEMORY[0x1E695E0F8] session:v57];
+      v61 = [(VNImageBuffer *)v25 initWithCVPixelBuffer:image orientation:1 options:MEMORY[0x1E695E0F8] session:sessionCopy];
       v26 = objc_autoreleasePoolPush();
-      ImageProcessing_save([v53 UTF8String], a6, 4);
-      saveCVPixelBuffer([v54 UTF8String], a5);
+      ImageProcessing_save([v53 UTF8String], tempImage, 4);
+      saveCVPixelBuffer([v54 UTF8String], image);
       objc_autoreleasePoolPop(v26);
       v63 = objc_alloc_init(MEMORY[0x1E695DF90]);
       if (v19 != v20)
@@ -282,7 +282,7 @@ LABEL_58:
         v60 = v30;
         do
         {
-          v31 = *a4;
+          v31 = *raw;
           v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_face_%d", v62, v28];
           v66 = [v65 stringByAppendingString:@"_raw_bbox_crop.png"];
           v32 = (v31 + v27);
@@ -314,8 +314,8 @@ LABEL_58:
           v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:v69 count:2];
 
           v46 = [MEMORY[0x1E696AD98] numberWithInt:v28];
-          v47 = [v46 stringValue];
-          [v63 setObject:v45 forKey:v47];
+          stringValue2 = [v46 stringValue];
+          [v63 setObject:v45 forKey:stringValue2];
 
           objc_autoreleasePoolPop(v34);
           CVPixelBufferRelease(v33);
@@ -338,17 +338,17 @@ LABEL_58:
   }
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a4;
-  v122 = a6;
-  v120 = a8;
-  v121 = v16;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a7];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v121 = optionsCopy;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v18 = v17;
   if (!v17)
   {
@@ -361,17 +361,17 @@ LABEL_58:
   v179 = 0;
   v180 = 0;
   v181 = 0;
-  v19 = [v17 width];
-  v20 = [v18 height];
+  width = [v17 width];
+  height = [v18 height];
   LODWORD(v21) = 1050253722;
   LODWORD(v22) = 2.0;
-  if (![VNFaceDetector calculateTilesForRegionOfInterest:v19 imageWidth:v20 imageHeight:3145728 tileSizeInPixels:v183 overlapFraction:&v182 aspectRatioThreshold:&v179 columns:x rows:y tiles:width error:height, v21, v22, a7])
+  if (![VNFaceDetector calculateTilesForRegionOfInterest:width imageWidth:height imageHeight:3145728 tileSizeInPixels:v183 overlapFraction:&v182 aspectRatioThreshold:&v179 columns:x rows:y tiles:width error:height, v21, v22, error])
   {
     v106 = 0;
     goto LABEL_37;
   }
 
-  VNRecordImageTilingWarning(v122, v183[0], v182);
+  VNRecordImageTilingWarning(recorderCopy, v183[0], v182);
   v24 = v179;
   v23 = v180;
   v119 = (v180 - v179) >> 5;
@@ -391,16 +391,16 @@ LABEL_58:
   v172 = 0;
   objc_initWeak(&location, self);
   v25 = objc_opt_class();
-  v112 = [v25 VNClassCode];
-  v114 = [v25 detectorCropCreationAsyncTasksQueue];
+  vNClassCode = [v25 VNClassCode];
+  detectorCropCreationAsyncTasksQueue = [v25 detectorCropCreationAsyncTasksQueue];
   v118 = dispatch_group_create();
-  v113 = [v25 detectorCropProcessingAsyncTasksQueue];
-  v109 = a7;
+  detectorCropProcessingAsyncTasksQueue = [v25 detectorCropProcessingAsyncTasksQueue];
+  errorCopy = error;
   v110 = v18;
   v117 = dispatch_group_create();
   kdebug_trace();
   VNValidatedLog(1, @"Start processing tilesProcessingGroup. currentDetector: %@", v26, v27, v28, v29, v30, v31, self);
-  v128 = self;
+  selfCopy = self;
   if (v23 != v24)
   {
     v38 = 0;
@@ -440,7 +440,7 @@ LABEL_58:
       block[2] = __123__VNFaceDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke;
       block[3] = &unk_1E77B65D8;
       objc_copyWeak(v157, &location);
-      v161 = v112;
+      v161 = vNClassCode;
       v155 = v166;
       v157[1] = v39;
       v124 = v118;
@@ -449,16 +449,16 @@ LABEL_58:
       v159 = v169;
       v43 = v42;
       v151 = v43;
-      v162 = a3;
-      v44 = v122;
+      classCopy = class;
+      v44 = recorderCopy;
       v152 = v44;
       v156 = v163;
-      v45 = v120;
+      v45 = handlerCopy;
       v154 = v45;
       v160 = v119;
-      v123 = v114;
+      v123 = detectorCropCreationAsyncTasksQueue;
       v153 = v123;
-      v46 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, block);
+      v46 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
       v130[0] = MEMORY[0x1E69E9820];
       v130[1] = 3221225472;
       v130[2] = __123__VNFaceDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke_3;
@@ -466,7 +466,7 @@ LABEL_58:
       objc_copyWeak(v143, &location);
       v138 = v166;
       v47 = v46;
-      v147 = v112;
+      v147 = vNClassCode;
       v48 = v47;
       v136 = v47;
       v125 = v39;
@@ -479,30 +479,30 @@ LABEL_58:
       v140 = v163;
       v50 = v43;
       v132 = v50;
-      v148 = a3;
+      classCopy2 = class;
       v133 = v44;
       v137 = v45;
       v141 = v171;
       v142 = &v173;
       v134 = v115;
       v146 = v119;
-      v51 = v113;
+      v51 = detectorCropProcessingAsyncTasksQueue;
       v135 = v51;
-      v58 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, v130);
+      v58 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, v130);
       if (v119 < 2)
       {
-        VNValidatedLog(1, @"Performing createRegionOfInterestCropForProcessingBlock. currentDetector: %@", v52, v53, v54, v55, v56, v57, v128);
+        VNValidatedLog(1, @"Performing createRegionOfInterestCropForProcessingBlock. currentDetector: %@", v52, v53, v54, v55, v56, v57, selfCopy);
         v48[2](v48);
-        VNValidatedLog(1, @"Performing processRegionOfInterestBlock. currentDetector: %@", v65, v66, v67, v68, v69, v70, v128);
+        VNValidatedLog(1, @"Performing processRegionOfInterestBlock. currentDetector: %@", v65, v66, v67, v68, v69, v70, selfCopy);
         v58[2](v58);
-        VNValidatedLog(1, @"Finish processing createRegionOfInterestCropForProcessingBlock and processRegionOfInterestBlock. currentDetector: %@", v71, v72, v73, v74, v75, v76, v128);
+        VNValidatedLog(1, @"Finish processing createRegionOfInterestCropForProcessingBlock and processRegionOfInterestBlock. currentDetector: %@", v71, v72, v73, v74, v75, v76, selfCopy);
       }
 
       else
       {
-        VNValidatedLog(1, @"Scheduling createRegionOfInterestCropForProcessingBlock. currentDetector: %@; group: %@", v52, v53, v54, v55, v56, v57, v128);
+        VNValidatedLog(1, @"Scheduling createRegionOfInterestCropForProcessingBlock. currentDetector: %@; group: %@", v52, v53, v54, v55, v56, v57, selfCopy);
         [v123 dispatchGroupAsyncByPreservingQueueCapacity:v124 block:v48];
-        VNValidatedLog(1, @"Scheduling processRegionOfInterestBlock. currentDetector: %@; group: %@", v59, v60, v61, v62, v63, v64, v128);
+        VNValidatedLog(1, @"Scheduling processRegionOfInterestBlock. currentDetector: %@; group: %@", v59, v60, v61, v62, v63, v64, selfCopy);
         [v51 dispatchGroupAsyncByPreservingQueueCapacity:v49 block:v58];
       }
 
@@ -523,13 +523,13 @@ LABEL_58:
   v18 = v110;
   if (v119 > 1)
   {
-    VNValidatedLog(1, @"Waiting for tilesCropCreationGroup. currentDetector: %@; group: %@", v32, v33, v34, v35, v36, v37, v128);
-    if ([v114 dispatchGroupWait:v118 error:v109])
+    VNValidatedLog(1, @"Waiting for tilesCropCreationGroup. currentDetector: %@; group: %@", v32, v33, v34, v35, v36, v37, selfCopy);
+    if ([detectorCropCreationAsyncTasksQueue dispatchGroupWait:v118 error:errorCopy])
     {
-      VNValidatedLog(1, @"Waiting for tilesCropProcessingGroup. currentDetector: %@; group: %@", v77, v78, v79, v80, v81, v82, v128);
-      if ([v113 dispatchGroupWait:v117 error:v109])
+      VNValidatedLog(1, @"Waiting for tilesCropProcessingGroup. currentDetector: %@; group: %@", v77, v78, v79, v80, v81, v82, selfCopy);
+      if ([detectorCropProcessingAsyncTasksQueue dispatchGroupWait:v117 error:errorCopy])
       {
-        VNValidatedLog(1, @"Finish processing tilesCropCreationGroup and tilesCropProcessingGroup. currentDetector: %@; cropCreationGroup: %@; cropProcessingGroup: %@", v77, v78, v79, v80, v81, v82, v128);
+        VNValidatedLog(1, @"Finish processing tilesCropCreationGroup and tilesCropProcessingGroup. currentDetector: %@; cropCreationGroup: %@; cropProcessingGroup: %@", v77, v78, v79, v80, v81, v82, selfCopy);
         goto LABEL_15;
       }
 
@@ -547,7 +547,7 @@ LABEL_58:
 
 LABEL_15:
   kdebug_trace();
-  if ([VNValidationUtilities validateAsyncStatusResults:v115 error:v109])
+  if ([VNValidationUtilities validateAsyncStatusResults:v115 error:errorCopy])
   {
     v83 = v174[5];
     v84 = &__block_literal_global_21197;
@@ -858,10 +858,10 @@ void __46__VNFaceDetector_shouldDumpDebugIntermediates__block_invoke()
   }
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v6)
   {
     goto LABEL_8;
@@ -869,18 +869,18 @@ void __46__VNFaceDetector_shouldDumpDebugIntermediates__block_invoke()
 
   if ([v6 specifiesRequestClass:objc_opt_class()])
   {
-    v7 = [v6 requestRevision];
-    if ((v7 - 1) < 2 || v7 == 3737841665)
+    requestRevision = [v6 requestRevision];
+    if ((requestRevision - 1) < 2 || requestRevision == 3737841665)
     {
       v8 = objc_opt_class();
       goto LABEL_9;
     }
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v6];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -894,26 +894,26 @@ LABEL_9:
   return v8;
 }
 
-+ (void)fullyPopulateConfigurationOptions:(id)a3
++ (void)fullyPopulateConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v10.receiver = a1;
+  optionsCopy = options;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VNFaceDetector;
-  objc_msgSendSuper2(&v10, sel_fullyPopulateConfigurationOptions_, v4);
-  v5 = [v4 objectForKeyedSubscript:@"VNFaceDetectorInitOption_MinFaceSize"];
+  objc_msgSendSuper2(&v10, sel_fullyPopulateConfigurationOptions_, optionsCopy);
+  v5 = [optionsCopy objectForKeyedSubscript:@"VNFaceDetectorInitOption_MinFaceSize"];
 
   if (!v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"VNDetectorOption_RequestDetectionLevel"];
-    v7 = [v6 unsignedIntegerValue];
+    v6 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_RequestDetectionLevel"];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
     v8 = &unk_1F19C2498;
-    if (v7 == 1)
+    if (unsignedIntegerValue == 1)
     {
       v8 = &unk_1F19C24A8;
     }
 
-    if (v7 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v9 = &unk_1F19C24B8;
     }
@@ -923,17 +923,17 @@ LABEL_9:
       v9 = v8;
     }
 
-    [v4 setObject:v9 forKeyedSubscript:@"VNFaceDetectorInitOption_MinFaceSize"];
+    [optionsCopy setObject:v9 forKeyedSubscript:@"VNFaceDetectorInitOption_MinFaceSize"];
   }
 }
 
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5.receiver = a1;
+  dictionaryCopy = dictionary;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___VNFaceDetector;
-  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, v4);
-  [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"VNFaceDetectorInitOption_EnableLowMemoryMode"];
+  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, dictionaryCopy);
+  [dictionaryCopy setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"VNFaceDetectorInitOption_EnableLowMemoryMode"];
 }
 
 + (id)configurationOptionKeysForDetectorKey
@@ -942,7 +942,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __55__VNFaceDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNFaceDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNFaceDetector configurationOptionKeysForDetectorKey]::onceToken, block);

@@ -1,33 +1,33 @@
 @interface PUVFXRetouchOverlay
-+ (id)_blurredEdgeImageWithImage:(id)a3 settings:(id)a4;
++ (id)_blurredEdgeImageWithImage:(id)image settings:(id)settings;
 - (PUVFXCleanupOverlayDelegate)overlayDelegate;
-- (PUVFXRetouchOverlay)initWithComposition:(id)a3 maskContext:(id)a4 constrainingView:(id)a5 isHDR:(BOOL)a6 overlayDelegate:(id)a7;
+- (PUVFXRetouchOverlay)initWithComposition:(id)composition maskContext:(id)context constrainingView:(id)view isHDR:(BOOL)r overlayDelegate:(id)delegate;
 - (double)_maxEDRForDisplay;
-- (id)_createOutlineImage:(id)a3 settings:(id)a4;
-- (id)_createRadialGradientWithSize:(CGSize)a3;
-- (id)_createSubjectExclusionMaskForComposition:(id)a3;
-- (id)_scaleCIImage:(id)a3 toFitSize:(CGSize)a4;
-- (id)_syncGetSourceImageOfSize:(CGSize)a3;
+- (id)_createOutlineImage:(id)image settings:(id)settings;
+- (id)_createRadialGradientWithSize:(CGSize)size;
+- (id)_createSubjectExclusionMaskForComposition:(id)composition;
+- (id)_scaleCIImage:(id)image toFitSize:(CGSize)size;
+- (id)_syncGetSourceImageOfSize:(CGSize)size;
 - (void)_addNotifications;
-- (void)_asyncCIRenderWithFlush:(id)a3;
-- (void)_configureEmitter:(id)a3 withSettings:(id)a4;
-- (void)_configureOverrides:(id)a3 withSettings:(id)a4;
+- (void)_asyncCIRenderWithFlush:(id)flush;
+- (void)_configureEmitter:(id)emitter withSettings:(id)settings;
+- (void)_configureOverrides:(id)overrides withSettings:(id)settings;
 - (void)_createAndAddLayers;
-- (void)_createDeclutterMaskForComposition:(id)a3;
-- (void)_delayedScreenParamsDidChange:(id)a3;
+- (void)_createDeclutterMaskForComposition:(id)composition;
+- (void)_delayedScreenParamsDidChange:(id)change;
 - (void)_didMoveToSuperview;
 - (void)_layoutSubviews;
 - (void)_manageThrottledState;
 - (void)_removeNotifications;
-- (void)_screenParamsDidChange:(id)a3;
-- (void)_snapshotAvailable:(id)a3;
+- (void)_screenParamsDidChange:(id)change;
+- (void)_snapshotAvailable:(id)available;
 - (void)didMoveToSuperview;
-- (void)didRenderComposition:(id)a3;
-- (void)didResetComposition:(id)a3;
+- (void)didRenderComposition:(id)composition;
+- (void)didResetComposition:(id)composition;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
-- (void)selectPoint:(CGPoint)a3 withMask:(id)a4 composition:(id)a5;
-- (void)showControlsInViewController:(id)a3;
+- (void)selectPoint:(CGPoint)point withMask:(id)mask composition:(id)composition;
+- (void)showControlsInViewController:(id)controller;
 @end
 
 @implementation PUVFXRetouchOverlay
@@ -39,16 +39,16 @@
   return WeakRetained;
 }
 
-- (void)_asyncCIRenderWithFlush:(id)a3
+- (void)_asyncCIRenderWithFlush:(id)flush
 {
-  v4 = a3;
+  flushCopy = flush;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PUVFXRetouchOverlay__asyncCIRenderWithFlush___block_invoke;
   block[3] = &unk_1E7B80C88;
-  v8 = v4;
-  v6 = v4;
+  v8 = flushCopy;
+  v6 = flushCopy;
   dispatch_async(queue, block);
 }
 
@@ -62,15 +62,15 @@ uint64_t __47__PUVFXRetouchOverlay__asyncCIRenderWithFlush___block_invoke(uint64
   return [v2 flush];
 }
 
-- (id)_scaleCIImage:(id)a3 toFitSize:(CGSize)a4
+- (id)_scaleCIImage:(id)image toFitSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 extent];
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  [imageCopy extent];
   v8 = v7;
   v10 = v9;
-  v11 = v6;
+  v11 = imageCopy;
   v12 = v11;
   v13 = v8 == width && v10 == height;
   v14 = v11;
@@ -89,64 +89,64 @@ uint64_t __47__PUVFXRetouchOverlay__asyncCIRenderWithFlush___block_invoke(uint64
   return v14;
 }
 
-- (id)_createOutlineImage:(id)a3 settings:(id)a4
+- (id)_createOutlineImage:(id)image settings:(id)settings
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectForKeyedSubscript:@"dilation"];
+  settingsCopy = settings;
+  imageCopy = image;
+  v7 = [settingsCopy objectForKeyedSubscript:@"dilation"];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [MEMORY[0x1E695F648] morphologyMinimumFilter];
+  morphologyMinimumFilter = [MEMORY[0x1E695F648] morphologyMinimumFilter];
   LODWORD(v11) = v9;
-  [v10 setRadius:v11];
-  [v10 setInputImage:v6];
-  v12 = [v10 outputImage];
-  [v6 extent];
-  v13 = [v12 imageByCroppingToRect:?];
+  [morphologyMinimumFilter setRadius:v11];
+  [morphologyMinimumFilter setInputImage:imageCopy];
+  outputImage = [morphologyMinimumFilter outputImage];
+  [imageCopy extent];
+  v13 = [outputImage imageByCroppingToRect:?];
 
-  v14 = [MEMORY[0x1E695F648] sourceOutCompositingFilter];
-  [v14 setInputImage:v6];
+  sourceOutCompositingFilter = [MEMORY[0x1E695F648] sourceOutCompositingFilter];
+  [sourceOutCompositingFilter setInputImage:imageCopy];
 
-  [v14 setBackgroundImage:v13];
-  v15 = [MEMORY[0x1E695F648] gaussianBlurFilter];
-  v16 = [v14 outputImage];
-  [v15 setInputImage:v16];
+  [sourceOutCompositingFilter setBackgroundImage:v13];
+  gaussianBlurFilter = [MEMORY[0x1E695F648] gaussianBlurFilter];
+  outputImage2 = [sourceOutCompositingFilter outputImage];
+  [gaussianBlurFilter setInputImage:outputImage2];
 
-  v17 = [v5 objectForKeyedSubscript:@"blurSigma"];
+  v17 = [settingsCopy objectForKeyedSubscript:@"blurSigma"];
 
   [v17 floatValue];
-  [v15 setRadius:?];
+  [gaussianBlurFilter setRadius:?];
 
-  v18 = [v15 outputImage];
+  outputImage3 = [gaussianBlurFilter outputImage];
 
-  return v18;
+  return outputImage3;
 }
 
-- (void)showControlsInViewController:(id)a3
+- (void)showControlsInViewController:(id)controller
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AE40];
   settings = self->_settings;
   v18 = 0;
-  v6 = a3;
+  controllerCopy = controller;
   v7 = [v4 dataWithPropertyList:settings format:100 options:0 error:&v18];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __52__PUVFXRetouchOverlay_showControlsInViewController___block_invoke;
   v16 = &unk_1E7B7C2D8;
-  v17 = self;
+  selfCopy = self;
   v8 = v18;
   v9 = [_TtC15PhotosUIPrivate13PUVFXControls createViewControllerWithSettingsData:v7 update:&v13];
-  v10 = [v6 sheetPresentationController];
-  v11 = [MEMORY[0x1E69DCF58] mediumDetent];
-  v19[0] = v11;
+  sheetPresentationController = [controllerCopy sheetPresentationController];
+  mediumDetent = [MEMORY[0x1E69DCF58] mediumDetent];
+  v19[0] = mediumDetent;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  [v10 setDetents:v12];
+  [sheetPresentationController setDetents:v12];
 
-  [v10 setPrefersGrabberVisible:1];
-  [v6 setModalPresentationStyle:2];
-  [v6 presentViewController:v9 animated:1 completion:&__block_literal_global_420_61911];
+  [sheetPresentationController setPrefersGrabberVisible:1];
+  [controllerCopy setModalPresentationStyle:2];
+  [controllerCopy presentViewController:v9 animated:1 completion:&__block_literal_global_420_61911];
 }
 
 void __52__PUVFXRetouchOverlay_showControlsInViewController___block_invoke(uint64_t a1, uint64_t a2)
@@ -160,17 +160,17 @@ void __52__PUVFXRetouchOverlay_showControlsInViewController___block_invoke(uint6
   }
 }
 
-- (void)_configureEmitter:(id)a3 withSettings:(id)a4
+- (void)_configureEmitter:(id)emitter withSettings:(id)settings
 {
   v28 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  emitterCopy = emitter;
+  settingsCopy = settings;
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v6 objectForKeyedSubscript:@"cells"];
+  obj = [settingsCopy objectForKeyedSubscript:@"cells"];
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -187,13 +187,13 @@ void __52__PUVFXRetouchOverlay_showControlsInViewController___block_invoke(uint6
 
         v12 = *(*(&v23 + 1) + 8 * i);
         v13 = objc_opt_new();
-        [v7 addObject:v13];
+        [array addObject:v13];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __54__PUVFXRetouchOverlay__configureEmitter_withSettings___block_invoke;
         v20[3] = &unk_1E7B7C2B0;
         v21 = v13;
-        v22 = self;
+        selfCopy = self;
         v14 = v13;
         [v12 enumerateKeysAndObjectsUsingBlock:v20];
         [v14 setEmissionRange:3.14159265];
@@ -205,16 +205,16 @@ void __52__PUVFXRetouchOverlay_showControlsInViewController___block_invoke(uint6
     while (v9);
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"emitterShape"];
-  [v18 setEmitterShape:v15];
+  v15 = [settingsCopy objectForKeyedSubscript:@"emitterShape"];
+  [emitterCopy setEmitterShape:v15];
 
-  v16 = [v6 objectForKeyedSubscript:@"renderMode"];
-  [v18 setRenderMode:v16];
+  v16 = [settingsCopy objectForKeyedSubscript:@"renderMode"];
+  [emitterCopy setRenderMode:v16];
 
-  v17 = [v6 objectForKeyedSubscript:@"emitterMode"];
-  [v18 setEmitterMode:v17];
+  v17 = [settingsCopy objectForKeyedSubscript:@"emitterMode"];
+  [emitterCopy setEmitterMode:v17];
 
-  [v18 setEmitterCells:v7];
+  [emitterCopy setEmitterCells:array];
 }
 
 void __54__PUVFXRetouchOverlay__configureEmitter_withSettings___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -258,25 +258,25 @@ void __54__PUVFXRetouchOverlay__configureEmitter_withSettings___block_invoke(uin
 LABEL_7:
 }
 
-- (void)_configureOverrides:(id)a3 withSettings:(id)a4
+- (void)_configureOverrides:(id)overrides withSettings:(id)settings
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v32 = [MEMORY[0x1E695DF70] array];
-  v7 = [v6 valueForKeyPath:@"colorOverLife.colors"];
+  overridesCopy = overrides;
+  settingsCopy = settings;
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = [settingsCopy valueForKeyPath:@"colorOverLife.colors"];
   if (v7)
   {
     v8 = v7;
     v9 = PFMap();
 
     v10 = [MEMORY[0x1E695DF70] arrayWithArray:v9];
-    v11 = [v6 objectForKeyedSubscript:@"colorChangeSpeed"];
-    v12 = [v11 integerValue];
+    v11 = [settingsCopy objectForKeyedSubscript:@"colorChangeSpeed"];
+    integerValue = [v11 integerValue];
 
-    if (v12 >= 2)
+    if (integerValue >= 2)
     {
-      v13 = v12 - 1;
+      v13 = integerValue - 1;
       do
       {
         [v10 addObjectsFromArray:v9];
@@ -288,11 +288,11 @@ LABEL_7:
 
     v14 = [MEMORY[0x1E6979358] behaviorWithType:*MEMORY[0x1E6979750]];
     [v14 setValue:v10 forKey:@"colors"];
-    [v32 addObject:v14];
+    [array addObject:v14];
   }
 
-  v30 = v5;
-  [v6 valueForKeyPath:{@"valueOverLife", v6}];
+  v30 = overridesCopy;
+  [settingsCopy valueForKeyPath:{@"valueOverLife", settingsCopy}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -323,7 +323,7 @@ LABEL_7:
         v24 = [v20 objectForKeyedSubscript:@"locations"];
         [v21 setValue:v24 forKey:@"locations"];
 
-        [v32 addObject:v21];
+        [array addObject:v21];
       }
 
       v16 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -332,7 +332,7 @@ LABEL_7:
     while (v16);
   }
 
-  [v30 setEmitterBehaviors:v32];
+  [v30 setEmitterBehaviors:array];
   v25 = [v29 objectForKeyedSubscript:@"compositingFilter"];
 
   if (v25)
@@ -352,34 +352,34 @@ id __56__PUVFXRetouchOverlay__configureOverrides_withSettings___block_invoke(uin
   return v3;
 }
 
-- (id)_createRadialGradientWithSize:(CGSize)a3
+- (id)_createRadialGradientWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [MEMORY[0x1E695F648] radialGradientFilter];
-  [v5 setCenter:{width * 0.5, height * 0.5}];
+  height = size.height;
+  width = size.width;
+  radialGradientFilter = [MEMORY[0x1E695F648] radialGradientFilter];
+  [radialGradientFilter setCenter:{width * 0.5, height * 0.5}];
   v6 = width * 0.1;
   *&v6 = width * 0.1;
-  [v5 setRadius0:v6];
+  [radialGradientFilter setRadius0:v6];
   v7 = width * 0.25;
   *&v7 = width * 0.25;
-  [v5 setRadius1:v7];
+  [radialGradientFilter setRadius1:v7];
   v8 = [MEMORY[0x1E695F610] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-  [v5 setColor0:v8];
+  [radialGradientFilter setColor0:v8];
 
   v9 = [MEMORY[0x1E695F610] colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
-  [v5 setColor1:v9];
+  [radialGradientFilter setColor1:v9];
 
-  v10 = [v5 outputImage];
+  outputImage = [radialGradientFilter outputImage];
 
-  return v10;
+  return outputImage;
 }
 
-- (void)didRenderComposition:(id)a3
+- (void)didRenderComposition:(id)composition
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_composition, a3);
+  compositionCopy = composition;
+  objc_storeStrong(&self->_composition, composition);
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"animation"];
   v7 = +[PUTimingManager defaultManager];
   v8 = [v7 stopwatchForKey:v6];
@@ -419,17 +419,17 @@ id __56__PUVFXRetouchOverlay__configureOverrides_withSettings___block_invoke(uin
   [(PUVFXRetouchOverlay *)self _createDeclutterMaskForComposition:self->_composition];
 }
 
-- (void)didResetComposition:(id)a3
+- (void)didResetComposition:(id)composition
 {
-  objc_storeStrong(&self->_composition, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_composition, composition);
+  compositionCopy = composition;
   [(PUVFXDimmingBackgroundLayer *)self->_rootLayer resetMask];
-  [(PUVFXRetouchOverlay *)self _createDeclutterMaskForComposition:v5];
+  [(PUVFXRetouchOverlay *)self _createDeclutterMaskForComposition:compositionCopy];
 }
 
-- (id)_createSubjectExclusionMaskForComposition:(id)a3
+- (id)_createSubjectExclusionMaskForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -444,7 +444,7 @@ id __56__PUVFXRetouchOverlay__configureOverrides_withSettings___block_invoke(uin
     v8[2] = __65__PUVFXRetouchOverlay__createSubjectExclusionMaskForComposition___block_invoke;
     v8[3] = &unk_1E7B7C288;
     v8[4] = &v9;
-    [MEMORY[0x1E69BDE68] createSubjectMaskForContext:inpaintCtx composition:v4 completion:v8];
+    [MEMORY[0x1E69BDE68] createSubjectMaskForContext:inpaintCtx composition:compositionCopy completion:v8];
   }
 
   v6 = v10[5];
@@ -453,9 +453,9 @@ id __56__PUVFXRetouchOverlay__configureOverrides_withSettings___block_invoke(uin
   return v6;
 }
 
-- (void)_createDeclutterMaskForComposition:(id)a3
+- (void)_createDeclutterMaskForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   if (self->_inpaintCtx)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"declutter"];
@@ -485,7 +485,7 @@ id __56__PUVFXRetouchOverlay__configureOverrides_withSettings___block_invoke(uin
     v15[2] = __58__PUVFXRetouchOverlay__createDeclutterMaskForComposition___block_invoke;
     v15[3] = &unk_1E7B7C260;
     v15[4] = self;
-    v16 = v4;
+    v16 = compositionCopy;
     [v13 createDeclutterMaskForContext:inpaintCtx composition:v16 completion:v15];
   }
 }
@@ -627,22 +627,22 @@ uint64_t __58__PUVFXRetouchOverlay__createDeclutterMaskForComposition___block_in
   return [v8 setForegroundMask:0];
 }
 
-- (id)_syncGetSourceImageOfSize:(CGSize)a3
+- (id)_syncGetSourceImageOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_overlayDelegate);
   v6 = [WeakRetained sourceImageOfSize:{width, height}];
 
   return v6;
 }
 
-- (void)selectPoint:(CGPoint)a3 withMask:(id)a4 composition:(id)a5
+- (void)selectPoint:(CGPoint)point withMask:(id)mask composition:(id)composition
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  if ([MEMORY[0x1E69B3DB8] isMaskValid:v8])
+  y = point.y;
+  x = point.x;
+  maskCopy = mask;
+  if ([MEMORY[0x1E69B3DB8] isMaskValid:maskCopy])
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"render"];
     v10 = +[PUTimingManager defaultManager];
@@ -684,16 +684,16 @@ uint64_t __58__PUVFXRetouchOverlay__createDeclutterMaskForComposition___block_in
       }
     }
 
-    v25 = [(PUVFXRetouchOverlay *)self _scaleCIImage:v8 toFitSize:1024.0, 1024.0];
+    v25 = [(PUVFXRetouchOverlay *)self _scaleCIImage:maskCopy toFitSize:1024.0, 1024.0];
 
     v26 = objc_opt_class();
     v27 = [(NSDictionary *)self->_settings objectForKeyedSubscript:@"glow"];
     v28 = [v26 _blurredEdgeImageWithImage:v25 settings:v27];
     v29 = [v28 imageByApplyingFilter:@"CIMaskToAlpha"];
 
-    v30 = [(PUVFXRetouchOverlay *)self superview];
-    v31 = [v30 layer];
-    [v31 convertPoint:self->_rootLayer toLayer:{x, y}];
+    superview = [(PUVFXRetouchOverlay *)self superview];
+    layer = [superview layer];
+    [layer convertPoint:self->_rootLayer toLayer:{x, y}];
     v33 = v32;
     v35 = v34;
 
@@ -704,12 +704,12 @@ uint64_t __58__PUVFXRetouchOverlay__createDeclutterMaskForComposition___block_in
       v43 = __56__PUVFXRetouchOverlay_selectPoint_withMask_composition___block_invoke_2;
       v44 = &unk_1E7B80C38;
       v36 = &v46;
-      v45 = self;
+      selfCopy = self;
       v46 = v29;
       v37 = v29;
       [(PUVFXRetouchOverlay *)self _asyncCIRenderWithFlush:&v41];
       WeakRetained = objc_loadWeakRetained(&self->_overlayDelegate);
-      [WeakRetained fadeOutBrushStrokeWithDuration:{0.2, v41, v42, v43, v44, v45}];
+      [WeakRetained fadeOutBrushStrokeWithDuration:{0.2, v41, v42, v43, v44, selfCopy}];
 
       self->_isBrushing = 0;
     }
@@ -729,13 +729,13 @@ uint64_t __58__PUVFXRetouchOverlay__createDeclutterMaskForComposition___block_in
       [(PUVFXRetouchOverlay *)self _asyncCIRenderWithFlush:v47];
     }
 
-    v8 = v25;
+    maskCopy = v25;
   }
 
   else
   {
-    v39 = [(PUVFXRetouchOverlay *)self overlayDelegate];
-    [v39 fadeOutBrushStrokeWithDuration:0.2];
+    overlayDelegate = [(PUVFXRetouchOverlay *)self overlayDelegate];
+    [overlayDelegate fadeOutBrushStrokeWithDuration:0.2];
   }
 }
 
@@ -769,8 +769,8 @@ void __56__PUVFXRetouchOverlay_selectPoint_withMask_composition___block_invoke_2
 
 - (double)_maxEDRForDisplay
 {
-  v2 = [(PUVFXRetouchOverlay *)self px_screen];
-  [v2 potentialEDRHeadroom];
+  px_screen = [(PUVFXRetouchOverlay *)self px_screen];
+  [px_screen potentialEDRHeadroom];
 
   PXClamp();
   return result;
@@ -802,7 +802,7 @@ void __56__PUVFXRetouchOverlay_selectPoint_withMask_composition___block_invoke_2
   [(PUVFXRetouchOverlay *)&v4 removeFromSuperview];
 }
 
-- (void)_snapshotAvailable:(id)a3
+- (void)_snapshotAvailable:(id)available
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -846,12 +846,12 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_delayedScreenParamsDidChange:(id)a3
+- (void)_delayedScreenParamsDidChange:(id)change
 {
   [(PUVFXRetouchOverlay *)self _maxEDRForDisplay];
   v5 = v4;
-  v6 = [(PUVFXBrushView *)self->_brushView brushOverlay];
-  [v6 setMaxEDR:v5];
+  brushOverlay = [(PUVFXBrushView *)self->_brushView brushOverlay];
+  [brushOverlay setMaxEDR:v5];
 
   rootLayer = self->_rootLayer;
 
@@ -860,20 +860,20 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
 
 - (void)_manageThrottledState
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 thermalState];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  thermalState = [processInfo thermalState];
 
-  v5 = (v4 & 0xFFFFFFFFFFFFFFFELL) == 2;
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  LODWORD(v4) = [v6 isLowPowerModeEnabled];
+  v5 = (thermalState & 0xFFFFFFFFFFFFFFFELL) == 2;
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  LODWORD(thermalState) = [processInfo2 isLowPowerModeEnabled];
 
-  v7 = (v5 | v4 | [MEMORY[0x1E69C4448] px_accessibilityIsReduceMotionEnabled]) & 1;
+  v7 = (v5 | thermalState | [MEMORY[0x1E69C4448] px_accessibilityIsReduceMotionEnabled]) & 1;
   rootLayer = self->_rootLayer;
 
   [(PUVFXDimmingBackgroundLayer *)rootLayer setIsThrottled:v7];
 }
 
-- (void)_screenParamsDidChange:(id)a3
+- (void)_screenParamsDidChange:(id)change
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedScreenParamsDidChange_ object:0];
 
@@ -890,55 +890,55 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
 
 - (void)_removeNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE390] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE390] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DD918] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DD918] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E696AA30] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E696AA30] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E696AA28] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x1E696AA28] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E696A7E0] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 removeObserver:self name:*MEMORY[0x1E696A7E0] object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:*MEMORY[0x1E696A7D8] object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 removeObserver:self name:*MEMORY[0x1E696A7D8] object:0];
 }
 
 - (void)_addNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__screenParamsDidChange_ name:*MEMORY[0x1E69DE390] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__screenParamsDidChange_ name:*MEMORY[0x1E69DE390] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__snapshotAvailable_ name:*MEMORY[0x1E69B3DB0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__snapshotAvailable_ name:*MEMORY[0x1E69B3DB0] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__didUndoRedo_ name:*MEMORY[0x1E696AA30] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__didUndoRedo_ name:*MEMORY[0x1E696AA30] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__didUndoRedo_ name:*MEMORY[0x1E696AA28] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__didUndoRedo_ name:*MEMORY[0x1E696AA28] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__thermalStateDidChange_ name:*MEMORY[0x1E696A7E0] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__thermalStateDidChange_ name:*MEMORY[0x1E696A7E0] object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__powerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel__powerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel__accessibilityDisplayOptionsChanged_ name:*MEMORY[0x1E69DD918] object:0];
+  defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter7 addObserver:self selector:sel__accessibilityDisplayOptionsChanged_ name:*MEMORY[0x1E69DD918] object:0];
 }
 
 - (void)_didMoveToSuperview
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUVFXRetouchOverlay *)self superview];
+  superview = [(PUVFXRetouchOverlay *)self superview];
 
-  if (v3)
+  if (superview)
   {
     v4 = MEMORY[0x1E695F620];
     v5 = *MEMORY[0x1E695F830];
@@ -962,50 +962,50 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
     [(PUVFXBrushView *)self->_brushView setDelegate:self];
     [(PUVFXBrushView *)self->_brushView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUVFXRetouchOverlay *)self addSubview:self->_brushView];
-    v13 = [(PUVFXBrushView *)self->_brushView brushOverlay];
+    brushOverlay = [(PUVFXBrushView *)self->_brushView brushOverlay];
     brushView = self->_brushView;
     if (brushView && self->_constrainingView)
     {
-      if (v13)
+      if (brushOverlay)
       {
-        v15 = [(PUVFXBrushView *)brushView topAnchor];
-        v16 = [(PUVFXRetouchOverlay *)self topAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16];
+        topAnchor = [(PUVFXBrushView *)brushView topAnchor];
+        topAnchor2 = [(PUVFXRetouchOverlay *)self topAnchor];
+        v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
         [v17 setActive:1];
 
-        v18 = [(PUVFXBrushView *)self->_brushView bottomAnchor];
-        v19 = [(PUVFXRetouchOverlay *)self bottomAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        bottomAnchor = [(PUVFXBrushView *)self->_brushView bottomAnchor];
+        bottomAnchor2 = [(PUVFXRetouchOverlay *)self bottomAnchor];
+        v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         [v20 setActive:1];
 
-        v21 = [(PUVFXBrushView *)self->_brushView leftAnchor];
-        v22 = [(PUVFXRetouchOverlay *)self leftAnchor];
-        v23 = [v21 constraintEqualToAnchor:v22];
+        leftAnchor = [(PUVFXBrushView *)self->_brushView leftAnchor];
+        leftAnchor2 = [(PUVFXRetouchOverlay *)self leftAnchor];
+        v23 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
         [v23 setActive:1];
 
-        v24 = [(PUVFXBrushView *)self->_brushView rightAnchor];
-        v25 = [(PUVFXRetouchOverlay *)self rightAnchor];
-        v26 = [v24 constraintEqualToAnchor:v25];
+        rightAnchor = [(PUVFXBrushView *)self->_brushView rightAnchor];
+        rightAnchor2 = [(PUVFXRetouchOverlay *)self rightAnchor];
+        v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
         [v26 setActive:1];
 
-        v27 = [v13 topAnchor];
-        v28 = [(UIView *)self->_constrainingView topAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28];
+        topAnchor3 = [brushOverlay topAnchor];
+        topAnchor4 = [(UIView *)self->_constrainingView topAnchor];
+        v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         [v29 setActive:1];
 
-        v30 = [v13 bottomAnchor];
-        v31 = [(UIView *)self->_constrainingView bottomAnchor];
-        v32 = [v30 constraintEqualToAnchor:v31];
+        bottomAnchor3 = [brushOverlay bottomAnchor];
+        bottomAnchor4 = [(UIView *)self->_constrainingView bottomAnchor];
+        v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
         [v32 setActive:1];
 
-        v33 = [v13 leftAnchor];
-        v34 = [(UIView *)self->_constrainingView leftAnchor];
-        v35 = [v33 constraintEqualToAnchor:v34];
+        leftAnchor3 = [brushOverlay leftAnchor];
+        leftAnchor4 = [(UIView *)self->_constrainingView leftAnchor];
+        v35 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
         [v35 setActive:1];
 
-        v36 = [v13 rightAnchor];
-        v37 = [(UIView *)self->_constrainingView rightAnchor];
-        v38 = [v36 constraintEqualToAnchor:v37];
+        rightAnchor3 = [brushOverlay rightAnchor];
+        rightAnchor4 = [(UIView *)self->_constrainingView rightAnchor];
+        v38 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
         [v38 setActive:1];
 
         [(PUVFXRetouchOverlay *)self _delayedScreenParamsDidChange:0];
@@ -1036,14 +1036,14 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
   v7 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
   [(PUVFXDimmingBackgroundLayer *)v5 setCompositingFilter:v7];
 
-  v8 = [(PUVFXRetouchOverlay *)self layer];
-  [v8 setMasksToBounds:1];
+  layer = [(PUVFXRetouchOverlay *)self layer];
+  [layer setMasksToBounds:1];
 
-  v9 = [(PUVFXRetouchOverlay *)self layer];
-  [v9 pu_setWantsHDR:1];
+  layer2 = [(PUVFXRetouchOverlay *)self layer];
+  [layer2 pu_setWantsHDR:1];
 
-  v10 = [(PUVFXRetouchOverlay *)self layer];
-  [v10 addSublayer:self->_rootLayer];
+  layer3 = [(PUVFXRetouchOverlay *)self layer];
+  [layer3 addSublayer:self->_rootLayer];
 
   v11 = self->_rootLayer;
   v12 = [MEMORY[0x1E6979378] filterWithType:v6];
@@ -1052,13 +1052,13 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
   v13 = [(NSDictionary *)self->_settings valueForKeyPath:@"sparkles.colorOverLife.colors"];
   v29 = PFMap();
 
-  v28 = self;
+  selfCopy = self;
   v14 = [(NSDictionary *)self->_settings objectForKeyedSubscript:@"glow"];
   v15 = [v14 objectForKeyedSubscript:@"particleCount"];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v19 = 4;
   do
   {
@@ -1070,34 +1070,34 @@ void __42__PUVFXRetouchOverlay__snapshotAvailable___block_invoke(uint64_t a1)
     v22 = [v14 objectForKeyedSubscript:@"innerParticleSize"];
     [v20 setInnerParticleSize:v22];
 
-    [v20 generateFieldWithColors:v29 count:v16];
-    [(NSArray *)v17 addObject:v20];
-    v23 = [v20 generatedFieldImage];
-    [v18 addObject:v23];
+    [v20 generateFieldWithColors:v29 count:integerValue];
+    [(NSArray *)array addObject:v20];
+    generatedFieldImage = [v20 generatedFieldImage];
+    [array2 addObject:generatedFieldImage];
 
     --v19;
   }
 
   while (v19);
-  imageGenerators = v28->_imageGenerators;
-  v28->_imageGenerators = v17;
-  v25 = v17;
+  imageGenerators = selfCopy->_imageGenerators;
+  selfCopy->_imageGenerators = array;
+  v25 = array;
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __42__PUVFXRetouchOverlay__createAndAddLayers__block_invoke_2;
   v31[3] = &unk_1E7B80C38;
-  v31[4] = v28;
-  v32 = v18;
-  v26 = v18;
-  [(PUVFXRetouchOverlay *)v28 _asyncCIRenderWithFlush:v31];
-  v27 = [(PUVFXRetouchOverlay *)v28 layer];
+  v31[4] = selfCopy;
+  v32 = array2;
+  v26 = array2;
+  [(PUVFXRetouchOverlay *)selfCopy _asyncCIRenderWithFlush:v31];
+  layer4 = [(PUVFXRetouchOverlay *)selfCopy layer];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __42__PUVFXRetouchOverlay__createAndAddLayers__block_invoke_3;
   v30[3] = &unk_1E7B7C238;
-  v30[4] = v28;
-  PURecurseLayerTreeWithBlock(v27, v30);
+  v30[4] = selfCopy;
+  PURecurseLayerTreeWithBlock(layer4, v30);
 }
 
 uint64_t __42__PUVFXRetouchOverlay__createAndAddLayers__block_invoke_2(uint64_t a1)
@@ -1126,14 +1126,14 @@ void __42__PUVFXRetouchOverlay__createAndAddLayers__block_invoke_3(uint64_t a1, 
   [v4 setAllowsGroupOpacity:0];
 }
 
-- (PUVFXRetouchOverlay)initWithComposition:(id)a3 maskContext:(id)a4 constrainingView:(id)a5 isHDR:(BOOL)a6 overlayDelegate:(id)a7
+- (PUVFXRetouchOverlay)initWithComposition:(id)composition maskContext:(id)context constrainingView:(id)view isHDR:(BOOL)r overlayDelegate:(id)delegate
 {
   v26 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!v14)
+  compositionCopy = composition;
+  contextCopy = context;
+  viewCopy = view;
+  delegateCopy = delegate;
+  if (!viewCopy)
   {
     queue = PXAssertGetLog();
     if (os_log_type_enabled(queue, OS_LOG_TYPE_FAULT))
@@ -1153,11 +1153,11 @@ void __42__PUVFXRetouchOverlay__createAndAddLayers__block_invoke_3(uint64_t a1, 
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_overlayDelegate, v15);
+    objc_storeWeak(&v16->_overlayDelegate, delegateCopy);
     [(PUVFXRetouchOverlay *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    objc_storeStrong(&v17->_inpaintCtx, a4);
-    objc_storeStrong(&v17->_constrainingView, a5);
-    objc_storeStrong(&v17->_composition, a3);
+    objc_storeStrong(&v17->_inpaintCtx, context);
+    objc_storeStrong(&v17->_constrainingView, view);
+    objc_storeStrong(&v17->_composition, composition);
     v18 = objc_opt_new();
     brushView = v17->_brushView;
     v17->_brushView = v18;
@@ -1172,22 +1172,22 @@ LABEL_7:
   return v17;
 }
 
-+ (id)_blurredEdgeImageWithImage:(id)a3 settings:(id)a4
++ (id)_blurredEdgeImageWithImage:(id)image settings:(id)settings
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectForKeyedSubscript:@"maskBlurSigma"];
+  settingsCopy = settings;
+  imageCopy = image;
+  v7 = [settingsCopy objectForKeyedSubscript:@"maskBlurSigma"];
   [v7 floatValue];
   v9 = v8;
 
-  v10 = [v5 objectForKeyedSubscript:@"maskDilation"];
+  v10 = [settingsCopy objectForKeyedSubscript:@"maskDilation"];
 
   [v10 floatValue];
   v12 = v11;
 
-  v13 = [MEMORY[0x1E69BDF30] dilateMask:v6 withRadius:v12];
+  v13 = [MEMORY[0x1E69BDF30] dilateMask:imageCopy withRadius:v12];
   v14 = [v13 imageByApplyingGaussianBlurWithSigma:v9];
-  [v6 extent];
+  [imageCopy extent];
   v16 = v15;
   v18 = v17;
   v20 = v19;

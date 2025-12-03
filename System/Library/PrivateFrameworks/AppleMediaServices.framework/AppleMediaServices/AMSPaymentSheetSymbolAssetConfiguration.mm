@@ -1,63 +1,63 @@
 @interface AMSPaymentSheetSymbolAssetConfiguration
-- (AMSPaymentSheetSymbolAssetConfiguration)initWithCoder:(id)a3;
-- (AMSPaymentSheetSymbolAssetConfiguration)initWithName:(id)a3 accessibilityText:(id)a4 scale:(int64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (AMSPaymentSheetSymbolAssetConfiguration)initWithCoder:(id)coder;
+- (AMSPaymentSheetSymbolAssetConfiguration)initWithName:(id)name accessibilityText:(id)text scale:(int64_t)scale;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSPaymentSheetSymbolAssetConfiguration
 
-- (AMSPaymentSheetSymbolAssetConfiguration)initWithName:(id)a3 accessibilityText:(id)a4 scale:(int64_t)a5
+- (AMSPaymentSheetSymbolAssetConfiguration)initWithName:(id)name accessibilityText:(id)text scale:(int64_t)scale
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = AMSPaymentSheetSymbolAssetConfiguration;
   v10 = [(AMSPaymentSheetSymbolAssetConfiguration *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    v13 = [v9 copy];
+    v13 = [textCopy copy];
     accessibilityText = v10->_accessibilityText;
     v10->_accessibilityText = v13;
 
-    v10->_scale = a5;
+    v10->_scale = scale;
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AMSPaymentSheetSymbolAssetConfiguration *)self name];
-  [v6 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(AMSPaymentSheetSymbolAssetConfiguration *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(AMSPaymentSheetSymbolAssetConfiguration *)self accessibilityText];
-  [v6 encodeObject:v5 forKey:@"accessibilityText"];
+  accessibilityText = [(AMSPaymentSheetSymbolAssetConfiguration *)self accessibilityText];
+  [coderCopy encodeObject:accessibilityText forKey:@"accessibilityText"];
 
-  [v6 encodeInteger:-[AMSPaymentSheetSymbolAssetConfiguration scale](self forKey:{"scale"), @"scale"}];
+  [coderCopy encodeInteger:-[AMSPaymentSheetSymbolAssetConfiguration scale](self forKey:{"scale"), @"scale"}];
 }
 
-- (AMSPaymentSheetSymbolAssetConfiguration)initWithCoder:(id)a3
+- (AMSPaymentSheetSymbolAssetConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSPaymentSheetSymbolAssetConfiguration;
   v5 = [(AMSPaymentSheetSymbolAssetConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityText"];
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v8;
 
-    v5->_scale = [v4 decodeIntegerForKey:@"scale"];
+    v5->_scale = [coderCopy decodeIntegerForKey:@"scale"];
   }
 
   return v5;

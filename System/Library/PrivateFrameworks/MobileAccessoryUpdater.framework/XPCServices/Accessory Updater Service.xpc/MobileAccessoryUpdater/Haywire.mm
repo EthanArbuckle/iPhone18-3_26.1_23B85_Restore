@@ -1,27 +1,27 @@
 @interface Haywire
-- (BOOL)filterAsset:(id)a3 osBuild:(id)a4 osVersion:(id)a5;
+- (BOOL)filterAsset:(id)asset osBuild:(id)build osVersion:(id)version;
 - (BOOL)findRemoteAsset;
 - (BOOL)hasNetworkAccess;
-- (Haywire)initWithCoder:(id)a3;
-- (Haywire)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6;
+- (Haywire)initWithCoder:(id)coder;
+- (Haywire)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options;
 - (NSString)bootArgs;
 - (NSString)bundlePath;
 - (NSString)variant;
-- (id)assetWithMaxVersion:(id)a3 remote:(BOOL)a4;
-- (id)filterFoundAssets:(id)a3;
+- (id)assetWithMaxVersion:(id)version remote:(BOOL)remote;
+- (id)filterFoundAssets:(id)assets;
 - (id)getUpdateRequired;
-- (void)applyFirmwareWithOptions:(id)a3;
-- (void)bootstrapWithOptions:(id)a3;
+- (void)applyFirmwareWithOptions:(id)options;
+- (void)bootstrapWithOptions:(id)options;
 - (void)cleanupAssets;
 - (void)dealloc;
-- (void)dfuDeviceConnected:(__AMDFUModeDevice *)a3;
-- (void)doBootstrapWithOptions:(id)a3;
-- (void)downloadFirmwareWithOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)finishWithOptions:(id)a3;
-- (void)prepareFirmwareWithOptions:(id)a3;
-- (void)recoveryDeviceConnected:(__AMRecoveryModeDevice *)a3;
-- (void)runQuery:(BOOL)a3 completion:(id)a4;
+- (void)dfuDeviceConnected:(__AMDFUModeDevice *)connected;
+- (void)doBootstrapWithOptions:(id)options;
+- (void)downloadFirmwareWithOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)finishWithOptions:(id)options;
+- (void)prepareFirmwareWithOptions:(id)options;
+- (void)recoveryDeviceConnected:(__AMRecoveryModeDevice *)connected;
+- (void)runQuery:(BOOL)query completion:(id)completion;
 @end
 
 @implementation Haywire
@@ -93,12 +93,12 @@ LABEL_5:
   return v5;
 }
 
-- (void)recoveryDeviceConnected:(__AMRecoveryModeDevice *)a3
+- (void)recoveryDeviceConnected:(__AMRecoveryModeDevice *)connected
 {
-  [(FudPluginDelegate *)self->_delegate log:6 format:@"recovery mode device %p connected\n", a3];
-  ChipID = AMRecoveryModeDeviceGetChipID(a3);
-  BoardID = AMRecoveryModeDeviceGetBoardID(a3);
-  [(Haywire *)self setAPFusingsWithChipID:ChipID boardID:BoardID productionFused:AMRecoveryModeDeviceGetProductionMode(a3) != 0];
+  [(FudPluginDelegate *)self->_delegate log:6 format:@"recovery mode device %p connected\n", connected];
+  ChipID = AMRecoveryModeDeviceGetChipID(connected);
+  BoardID = AMRecoveryModeDeviceGetBoardID(connected);
+  [(Haywire *)self setAPFusingsWithChipID:ChipID boardID:BoardID productionFused:AMRecoveryModeDeviceGetProductionMode(connected) != 0];
   if (![(Haywire *)self findLocalAsset]&& (![(Haywire *)self hasNetworkAccess]|| ![(Haywire *)self findRemoteAsset]))
   {
     [(Haywire *)self setError:sub_10000195C(4001, @"chipID=0x%X, boardID=%d: Recovery mode options failed to find local asset.", v35, v36, v37, v38, v39, v40, ChipID)];
@@ -109,17 +109,17 @@ LABEL_5:
     return;
   }
 
-  v7 = [(Haywire *)self bundlePath];
-  v8 = [(Haywire *)self variant];
-  v9 = [(Haywire *)self bootArgs];
-  v13 = sub_100001A14(v7, v8, v9, ChipID, BoardID, v10, v11, v12);
+  bundlePath = [(Haywire *)self bundlePath];
+  variant = [(Haywire *)self variant];
+  bootArgs = [(Haywire *)self bootArgs];
+  v13 = sub_100001A14(bundlePath, variant, bootArgs, ChipID, BoardID, v10, v11, v12);
   if (v13)
   {
     v20 = v13;
-    if (AMRecoveryModeDeviceIsBootstrapOnly(a3, v13))
+    if (AMRecoveryModeDeviceIsBootstrapOnly(connected, v13))
     {
       [(FudPluginDelegate *)self->_delegate log:5 format:@"chipID=0x%X, boardID=%d: Recovery mode bootstrap.\n", ChipID, BoardID];
-      v27 = AMRestorePerformRecoveryModeRestore(a3, v20, sub_100001E44, self);
+      v27 = AMRestorePerformRecoveryModeRestore(connected, v20, sub_100001E44, self);
       if (!v27)
       {
         v44 = 0;
@@ -127,7 +127,7 @@ LABEL_5:
         goto LABEL_17;
       }
 
-      v34 = sub_10000195C(v27, @"AMRestorePerformRecoveryModeRestore(%ps) returned %d.\n", v28, v29, v30, v31, v32, v33, a3);
+      v34 = sub_10000195C(v27, @"AMRestorePerformRecoveryModeRestore(%ps) returned %d.\n", v28, v29, v30, v31, v32, v33, connected);
     }
 
     else
@@ -197,9 +197,9 @@ LABEL_17:
   result = [(Haywire *)self firmwareAsset];
   if (result)
   {
-    v4 = [(MAAsset *)[(Haywire *)self firmwareAsset] attributes];
+    attributes = [(MAAsset *)[(Haywire *)self firmwareAsset] attributes];
 
-    return [v4 objectForKey:@"BootArgs"];
+    return [attributes objectForKey:@"BootArgs"];
   }
 
   return result;
@@ -222,24 +222,24 @@ LABEL_17:
   return result;
 }
 
-- (Haywire)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6
+- (Haywire)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options
 {
   v15.receiver = self;
   v15.super_class = Haywire;
-  v9 = [(Haywire *)&v15 init:a3];
+  v9 = [(Haywire *)&v15 init:class];
   v10 = v9;
   if (v9)
   {
-    v9->_delegate = a4;
-    [(Haywire *)v9 setOptions:a6];
+    v9->_delegate = delegate;
+    [(Haywire *)v9 setOptions:options];
     [(Haywire *)v10 setOutOptions:+[NSMutableDictionary dictionary]];
     delegate = v10->_delegate;
     v12 = objc_opt_class();
-    [(FudPluginDelegate *)delegate log:5 format:@"Initializing Plugin %@ for DeviceClass %@", NSStringFromClass(v12), a3];
+    [(FudPluginDelegate *)delegate log:5 format:@"Initializing Plugin %@ for DeviceClass %@", NSStringFromClass(v12), class];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     if (DarwinNotifyCenter)
     {
-      CFNotificationCenterPostNotificationWithOptions(DarwinNotifyCenter, @"com.apple.private.restrict-post.HaywireAccessoryAttached", @"com.apple.MobileAsset.MobileAccessoryUpdate.haywire", [NSDictionary dictionaryWithObject:a3 forKey:@"DeviceClass"], 4uLL);
+      CFNotificationCenterPostNotificationWithOptions(DarwinNotifyCenter, @"com.apple.private.restrict-post.HaywireAccessoryAttached", @"com.apple.MobileAsset.MobileAccessoryUpdate.haywire", [NSDictionary dictionaryWithObject:class forKey:@"DeviceClass"], 4uLL);
     }
 
     else
@@ -251,7 +251,7 @@ LABEL_17:
   return v10;
 }
 
-- (void)doBootstrapWithOptions:(id)a3
+- (void)doBootstrapWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->_delegate log:5 format:@"%s", "[Haywire doBootstrapWithOptions:]"];
   [(Haywire *)self setError:0];
@@ -289,10 +289,10 @@ LABEL_6:
   AMRestoreUnregisterForDeviceNotifications();
 }
 
-- (void)bootstrapWithOptions:(id)a3
+- (void)bootstrapWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->_delegate log:6 format:@"%s", "[Haywire bootstrapWithOptions:]"];
-  [(Haywire *)self doBootstrapWithOptions:a3];
+  [(Haywire *)self doBootstrapWithOptions:options];
   if (self->_success)
   {
     v5 = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@-%@-%@" forKey:[(Haywire *)self chipID], [(Haywire *)self boardID], [(Haywire *)self variant]], @"DeviceClassRevision"];
@@ -311,7 +311,7 @@ LABEL_6:
   [(FudPluginDelegate *)delegate didBootstrap:success info:v5 error:error];
 }
 
-- (void)downloadFirmwareWithOptions:(id)a3
+- (void)downloadFirmwareWithOptions:(id)options
 {
   v4 = objc_alloc_init(MADownloadOptions);
   if (![(Haywire *)self firmwareAsset])
@@ -333,9 +333,9 @@ LABEL_11:
   [v4 setAllowsCellularAccess:1];
   [v4 setAllowsExpensiveAccess:1];
   [v4 setDiscretionary:0];
-  v11 = [(MAAsset *)[(Haywire *)self firmwareAsset] wasLocal];
+  wasLocal = [(MAAsset *)[(Haywire *)self firmwareAsset] wasLocal];
   delegate = self->_delegate;
-  if (v11)
+  if (wasLocal)
   {
     [(FudPluginDelegate *)delegate log:5 format:@"%s calling didDownload", "[Haywire downloadFirmwareWithOptions:]"];
     v13 = self->_delegate;
@@ -356,18 +356,18 @@ LABEL_11:
   }
 }
 
-- (void)prepareFirmwareWithOptions:(id)a3
+- (void)prepareFirmwareWithOptions:(id)options
 {
-  [(Haywire *)self setOptions:a3];
+  [(Haywire *)self setOptions:options];
   delegate = self->_delegate;
   outOptions = self->_outOptions;
 
   [(FudPluginDelegate *)delegate didPrepare:1 info:outOptions error:0];
 }
 
-- (void)applyFirmwareWithOptions:(id)a3
+- (void)applyFirmwareWithOptions:(id)options
 {
-  [(Haywire *)self setOptions:a3];
+  [(Haywire *)self setOptions:options];
   [(FudPluginDelegate *)self->_delegate log:5 format:@"%s - Applying update. old version(%@) new version (%@)", "[Haywire applyFirmwareWithOptions:]", self->_maxLocalBuildNumber, self->_maxRemoteBuildNumber];
   [(Haywire *)self setMaxLocalBuildNumber:self->_maxRemoteBuildNumber];
   if (self->_retryBootstrap)
@@ -388,9 +388,9 @@ LABEL_11:
   [(FudPluginDelegate *)delegate didApply:1 info:outOptions error:0];
 }
 
-- (void)finishWithOptions:(id)a3
+- (void)finishWithOptions:(id)options
 {
-  [(Haywire *)self setOptions:a3];
+  [(Haywire *)self setOptions:options];
   delegate = self->_delegate;
   outOptions = self->_outOptions;
 
@@ -404,71 +404,71 @@ LABEL_11:
   [(Haywire *)&v3 dealloc];
 }
 
-- (Haywire)initWithCoder:(id)a3
+- (Haywire)initWithCoder:(id)coder
 {
-  AMRLog(7, @"%s", a3, v3, v4, v5, v6, v7, "[Haywire initWithCoder:]");
+  AMRLog(7, @"%s", coder, v3, v4, v5, v6, v7, "[Haywire initWithCoder:]");
   v13.receiver = self;
   v13.super_class = Haywire;
   v10 = [(Haywire *)&v13 init];
   if (v10)
   {
-    v11 = [a3 decodeObjectForKey:@"OutOptions"];
+    v11 = [coder decodeObjectForKey:@"OutOptions"];
     v10->_outOptions = v11;
     if (!v11)
     {
       [(Haywire *)v10 setOutOptions:+[NSMutableDictionary dictionary]];
     }
 
-    v10->_maxLocalBuildNumber = [a3 decodeObjectForKey:@"InstalledBuildNumber"];
-    v10->_maxRemoteBuildNumber = [a3 decodeObjectForKey:@"MaxBuildNumber"];
-    v10->_chipID = [a3 decodeObjectForKey:@"ApChipID"];
-    v10->_boardID = [a3 decodeObjectForKey:@"ApBoardID"];
+    v10->_maxLocalBuildNumber = [coder decodeObjectForKey:@"InstalledBuildNumber"];
+    v10->_maxRemoteBuildNumber = [coder decodeObjectForKey:@"MaxBuildNumber"];
+    v10->_chipID = [coder decodeObjectForKey:@"ApChipID"];
+    v10->_boardID = [coder decodeObjectForKey:@"ApBoardID"];
     v10->_firmwareAsset = 0;
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(FudPluginDelegate *)self->_delegate log:7 format:@"%s", "[Haywire encodeWithCoder:]"];
   outOptions = self->_outOptions;
   if (outOptions)
   {
-    [a3 encodeObject:outOptions forKey:@"OutOptions"];
+    [coder encodeObject:outOptions forKey:@"OutOptions"];
   }
 
   maxLocalBuildNumber = self->_maxLocalBuildNumber;
   if (maxLocalBuildNumber)
   {
-    [a3 encodeObject:maxLocalBuildNumber forKey:@"InstalledBuildNumber"];
+    [coder encodeObject:maxLocalBuildNumber forKey:@"InstalledBuildNumber"];
   }
 
   maxRemoteBuildNumber = self->_maxRemoteBuildNumber;
   if (maxRemoteBuildNumber)
   {
-    [a3 encodeObject:maxRemoteBuildNumber forKey:@"MaxBuildNumber"];
+    [coder encodeObject:maxRemoteBuildNumber forKey:@"MaxBuildNumber"];
   }
 
   chipID = self->_chipID;
   if (chipID)
   {
-    [a3 encodeObject:chipID forKey:@"ApChipID"];
+    [coder encodeObject:chipID forKey:@"ApChipID"];
   }
 
   if (self->_boardID)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (void)runQuery:(BOOL)a3 completion:(id)a4
+- (void)runQuery:(BOOL)query completion:(id)completion
 {
-  v5 = a3;
-  v7 = [(Haywire *)self variant];
+  queryCopy = query;
+  variant = [(Haywire *)self variant];
   v8 = "Local";
-  if (v5)
+  if (queryCopy)
   {
     v8 = "Remote";
   }
@@ -479,11 +479,11 @@ LABEL_11:
   {
     v22 = @"Couldn't allocate MAAssetQuery";
 LABEL_17:
-    sub_100055488(a4, v22, v10, chipID, v12, v13, v14, v15);
+    sub_100055488(completion, v22, v10, chipID, v12, v13, v14, v15);
     return;
   }
 
-  if (!v7)
+  if (!variant)
   {
     v22 = @"variant is nil";
     goto LABEL_17;
@@ -505,24 +505,24 @@ LABEL_17:
   v16 = v9;
   [v9 addKeyValuePair:@"ApChipID" with:?];
   [v16 addKeyValuePair:@"ApBoardID" with:self->_boardID];
-  [v16 addKeyValuePair:@"Variant" with:v7];
+  [v16 addKeyValuePair:@"Variant" with:variant];
   [v16 addKeyValuePair:@"PackageVersion" with:@"1.0"];
   delegate = self->_delegate;
   v18 = self->_chipID;
   boardID = self->_boardID;
   if (self->_productionFused)
   {
-    [(FudPluginDelegate *)delegate log:5 format:@"%s - query for prod. variant = %@, _chipID = %@, _boardID = %@ ", "[Haywire runQuery:completion:]", v7, self->_chipID, boardID];
+    [(FudPluginDelegate *)delegate log:5 format:@"%s - query for prod. variant = %@, _chipID = %@, _boardID = %@ ", "[Haywire runQuery:completion:]", variant, self->_chipID, boardID];
     [v16 addKeyValuePair:@"ProductionSigned" with:{objc_msgSend(&__kCFBooleanTrue, "stringValue")}];
   }
 
   else
   {
-    [(FudPluginDelegate *)delegate log:5 format:@"%s - query for dev. variant = %@, _chipID = %@, _boardID = %@ ", "[Haywire runQuery:completion:]", v7, self->_chipID, boardID];
+    [(FudPluginDelegate *)delegate log:5 format:@"%s - query for dev. variant = %@, _chipID = %@, _boardID = %@ ", "[Haywire runQuery:completion:]", variant, self->_chipID, boardID];
   }
 
   v20 = v16;
-  if (v5)
+  if (queryCopy)
   {
     v21 = objc_alloc_init(MADownloadOptions);
     [v21 setRequiresPowerPluggedIn:0];
@@ -536,8 +536,8 @@ LABEL_17:
     v25[3] = &unk_1000A90F0;
     v25[4] = v16;
     v25[5] = self;
-    v26 = v5;
-    v25[6] = a4;
+    v26 = queryCopy;
+    v25[6] = completion;
     [MAAsset startCatalogDownload:@"com.apple.MobileAsset.MobileAccessoryUpdate.haywire" options:v21 completionWithError:v25];
   }
 
@@ -550,18 +550,18 @@ LABEL_17:
     v23[4] = self;
     v23[5] = v16;
     v24 = 0;
-    v23[6] = a4;
+    v23[6] = completion;
     [v16 queryMetaDataWithError:v23];
   }
 }
 
 - (void)cleanupAssets
 {
-  v3 = [(Haywire *)self findLocalAsset];
+  findLocalAsset = [(Haywire *)self findLocalAsset];
   assetResults = self->_assetResults;
   if (assetResults)
   {
-    if (v3)
+    if (findLocalAsset)
     {
       v43 = 0u;
       v44 = 0u;
@@ -585,14 +585,14 @@ LABEL_17:
             v16 = *(*(&v41 + 1) + 8 * i);
             if ([v16 wasPurgeable])
             {
-              v17 = [v16 attributes];
-              if (!v17)
+              attributes = [v16 attributes];
+              if (!attributes)
               {
                 sub_100055550(self, v18, v19, v20, v21, v22, v23, v24);
                 return;
               }
 
-              v25 = [v17 objectForKey:@"BuildNumber"];
+              v25 = [attributes objectForKey:@"BuildNumber"];
               if (!v25)
               {
                 sub_100055518(self, v26, v27, v28, v29, v30, v31, v32);
@@ -622,9 +622,9 @@ LABEL_17:
               {
                 delegate = self->_delegate;
                 v36 = self->_maxLocalBuildNumber;
-                v37 = [v16 state];
+                state = [v16 state];
                 [v16 state];
-                [(FudPluginDelegate *)delegate log:5 format:@"%s: not purging current=%@, max=%@ state=%d %@.", "[Haywire cleanupAssets]", v34, v36, v37, MAStringForMAAssetState(), v38];
+                [(FudPluginDelegate *)delegate log:5 format:@"%s: not purging current=%@, max=%@ state=%d %@.", "[Haywire cleanupAssets]", v34, v36, state, MAStringForMAAssetState(), v38];
               }
             }
           }
@@ -652,20 +652,20 @@ LABEL_17:
   }
 }
 
-- (void)dfuDeviceConnected:(__AMDFUModeDevice *)a3
+- (void)dfuDeviceConnected:(__AMDFUModeDevice *)connected
 {
   delegate = self->_delegate;
   [+[NSDate date](NSDate timeIntervalSinceReferenceDate];
-  [(FudPluginDelegate *)delegate log:7 format:@"[%f] dfu mode %p detected.\n", v6, a3];
-  if (!a3)
+  [(FudPluginDelegate *)delegate log:7 format:@"[%f] dfu mode %p detected.\n", v6, connected];
+  if (!connected)
   {
     sub_1000034D8();
     return;
   }
 
-  ChipID = AMGenericDeviceGetChipID(a3);
-  BoardID = AMGenericDeviceGetBoardID(a3);
-  [(Haywire *)self setAPFusingsWithChipID:ChipID boardID:BoardID productionFused:AMGenericDeviceGetProductionMode(a3) != 0];
+  ChipID = AMGenericDeviceGetChipID(connected);
+  BoardID = AMGenericDeviceGetBoardID(connected);
+  [(Haywire *)self setAPFusingsWithChipID:ChipID boardID:BoardID productionFused:AMGenericDeviceGetProductionMode(connected) != 0];
   if (![(Haywire *)self findLocalAsset]&& (![(Haywire *)self hasNetworkAccess]|| ![(Haywire *)self findRemoteAsset]))
   {
     sub_10000195C(4001, @"chipID=0x%X, boardID=%d: DFU mode options failed to find local asset.", v38, v39, v40, v41, v42, v43, ChipID);
@@ -678,20 +678,20 @@ LABEL_17:
     return;
   }
 
-  v9 = [(Haywire *)self bundlePath];
-  v10 = [(Haywire *)self variant];
-  v11 = [(Haywire *)self bootArgs];
-  v15 = sub_100001A14(v9, v10, v11, ChipID, BoardID, v12, v13, v14);
+  bundlePath = [(Haywire *)self bundlePath];
+  variant = [(Haywire *)self variant];
+  bootArgs = [(Haywire *)self bootArgs];
+  v15 = sub_100001A14(bundlePath, variant, bootArgs, ChipID, BoardID, v12, v13, v14);
   if (v15)
   {
     v22 = v15;
-    if (AMGenericDeviceIsBootstrapOnly(a3, v15))
+    if (AMGenericDeviceIsBootstrapOnly(connected, v15))
     {
       [(FudPluginDelegate *)self->_delegate log:5 format:@"chipID=0x%X, boardID=%d: DFU mode bootstrap.\n", ChipID, BoardID];
       v29 = self->_delegate;
       [+[NSDate date](NSDate timeIntervalSinceReferenceDate];
       [(FudPluginDelegate *)v29 log:7 format:@"[%f] %s - starting restore\n", v30, "[Haywire dfuDeviceConnected:]"];
-      v31 = AMRestorePerformGenericDFURestore(a3, v22, sub_100001B68, self);
+      v31 = AMRestorePerformGenericDFURestore(connected, v22, sub_100001B68, self);
       if (!v31)
       {
 LABEL_17:
@@ -701,7 +701,7 @@ LABEL_17:
         return;
       }
 
-      sub_10000195C(v31, @"AMRestorePerformDFURestore(%p) returned %d.\n", v32, v33, v34, v35, v36, v37, a3);
+      sub_10000195C(v31, @"AMRestorePerformDFURestore(%p) returned %d.\n", v32, v33, v34, v35, v36, v37, connected);
     }
 
     else
@@ -720,12 +720,12 @@ LABEL_17:
   [v46 setError:?];
 }
 
-- (id)filterFoundAssets:(id)a3
+- (id)filterFoundAssets:(id)assets
 {
-  v3 = a3;
-  if (!a3)
+  assetsCopy = assets;
+  if (!assets)
   {
-    return v3;
+    return assetsCopy;
   }
 
   v5 = MGCopyAnswer();
@@ -737,10 +737,10 @@ LABEL_17:
   v9[4] = self;
   v9[5] = v5;
   v9[6] = v6;
-  v7 = [v3 indexesOfObjectsWithOptions:1 passingTest:v9];
+  v7 = [assetsCopy indexesOfObjectsWithOptions:1 passingTest:v9];
   if (v7)
   {
-    v3 = [v3 objectsAtIndexes:v7];
+    assetsCopy = [assetsCopy objectsAtIndexes:v7];
     if (!v5)
     {
       goto LABEL_5;
@@ -749,7 +749,7 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  v3 = 0;
+  assetsCopy = 0;
   if (v5)
   {
 LABEL_4:
@@ -760,36 +760,36 @@ LABEL_5:
   {
   }
 
-  return v3;
+  return assetsCopy;
 }
 
-- (BOOL)filterAsset:(id)a3 osBuild:(id)a4 osVersion:(id)a5
+- (BOOL)filterAsset:(id)asset osBuild:(id)build osVersion:(id)version
 {
-  if (!a3)
+  if (!asset)
   {
-    LOBYTE(v8) = 0;
-    return v8;
+    LOBYTE(attributes) = 0;
+    return attributes;
   }
 
-  v8 = [a3 attributes];
-  if (!v8)
+  attributes = [asset attributes];
+  if (!attributes)
   {
-    return v8;
+    return attributes;
   }
 
-  v9 = v8;
-  v10 = [v8 objectForKey:@"MinimumRequiredOSBuild"];
+  v9 = attributes;
+  v10 = [attributes objectForKey:@"MinimumRequiredOSBuild"];
   if (v10)
   {
-    if (!a4)
+    if (!build)
     {
       goto LABEL_20;
     }
 
     v11 = v10;
-    if ([a4 compare:v10] == -1)
+    if ([build compare:v10] == -1)
     {
-      [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet minimum build requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", a4, v11];
+      [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet minimum build requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", build, v11];
       goto LABEL_20;
     }
   }
@@ -797,12 +797,12 @@ LABEL_5:
   v12 = [v9 objectForKey:@"MaximumAllowedOSBuild"];
   if (v12)
   {
-    if (a4)
+    if (build)
     {
       v13 = v12;
-      if ([a4 compare:v12] == 1)
+      if ([build compare:v12] == 1)
       {
-        [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet maximum allowed build requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", a4, v13];
+        [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet maximum allowed build requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", build, v13];
         goto LABEL_20;
       }
 
@@ -810,23 +810,23 @@ LABEL_5:
     }
 
 LABEL_20:
-    LOBYTE(v8) = 0;
-    return v8;
+    LOBYTE(attributes) = 0;
+    return attributes;
   }
 
 LABEL_10:
   v14 = [v9 objectForKey:@"MinimumRequiredOSVersion"];
   if (v14)
   {
-    if (!a5)
+    if (!version)
     {
       goto LABEL_20;
     }
 
     v15 = v14;
-    if ([a5 compare:v14] == -1)
+    if ([version compare:v14] == -1)
     {
-      [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet minimum version requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", a5, v15];
+      [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet minimum version requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", version, v15];
       goto LABEL_20;
     }
   }
@@ -834,27 +834,27 @@ LABEL_10:
   v16 = [v9 objectForKey:@"MaximumAllowedOSVersion"];
   if (v16)
   {
-    if (!a5)
+    if (!version)
     {
       goto LABEL_20;
     }
 
     v17 = v16;
-    if ([a5 compare:v16] == 1)
+    if ([version compare:v16] == 1)
     {
-      [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet maximum allowed version requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", a5, v17];
+      [(FudPluginDelegate *)self->_delegate log:7 format:@"%s: OS build %@ doesn't meet maximum allowed version requirement %@\n", "[Haywire filterAsset:osBuild:osVersion:]", version, v17];
       goto LABEL_20;
     }
   }
 
-  LOBYTE(v8) = 1;
-  return v8;
+  LOBYTE(attributes) = 1;
+  return attributes;
 }
 
-- (id)assetWithMaxVersion:(id)a3 remote:(BOOL)a4
+- (id)assetWithMaxVersion:(id)version remote:(BOOL)remote
 {
-  v31 = a4;
-  if (!a3)
+  remoteCopy = remote;
+  if (!version)
   {
     return 0;
   }
@@ -863,7 +863,7 @@ LABEL_10:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v6 = [version countByEnumeratingWithState:&v33 objects:v37 count:16];
   v7 = "[Haywire assetWithMaxVersion:remote:]";
   if (v6)
   {
@@ -871,7 +871,7 @@ LABEL_10:
     v9 = 0;
     v10 = 0;
     v11 = *v34;
-    obj = a3;
+    obj = version;
     do
     {
       for (i = 0; i != v8; i = i + 1)
@@ -882,21 +882,21 @@ LABEL_10:
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v13 attributes];
-        if (v14)
+        attributes = [v13 attributes];
+        if (attributes)
         {
-          v15 = [v14 objectForKey:@"BuildNumber"];
+          v15 = [attributes objectForKey:@"BuildNumber"];
           if (v15)
           {
             v16 = v15;
             if (!v10 || [v15 compare:v10 options:64] != -1)
             {
-              if (v31 || ([v13 wasLocal] & 1) != 0)
+              if (remoteCopy || ([v13 wasLocal] & 1) != 0)
               {
                 delegate = self->_delegate;
-                v18 = [v13 state];
+                state = [v13 state];
                 [v13 state];
-                [(FudPluginDelegate *)delegate log:5 format:@"%s: found Asset. state=%d %@", v7, v18, MAStringForMAAssetState()];
+                [(FudPluginDelegate *)delegate log:5 format:@"%s: found Asset. state=%d %@", v7, state, MAStringForMAAssetState()];
                 v9 = v13;
                 v10 = v16;
               }
@@ -905,15 +905,15 @@ LABEL_10:
               {
                 v29 = self->_delegate;
                 v30 = v10;
-                v19 = self;
+                selfCopy = self;
                 v20 = v7;
                 v21 = v9;
-                v22 = [v13 state];
+                state2 = [v13 state];
                 [v13 state];
-                v27 = v22;
+                v27 = state2;
                 v9 = v21;
                 v7 = v20;
-                self = v19;
+                self = selfCopy;
                 v10 = v30;
                 [(FudPluginDelegate *)v29 log:7 format:@"%s: skipping asset %@ because it is not installed (state = %d %@)", v7, v16, v27, MAStringForMAAssetState()];
               }
@@ -944,7 +944,7 @@ LABEL_10:
     v10 = 0;
   }
 
-  if (v31)
+  if (remoteCopy)
   {
     [(FudPluginDelegate *)self->_delegate log:5 format:@"%s: _maxRemoteBuildNumber was '%@' is now '%@'", v7, self->_maxRemoteBuildNumber, v10];
     [(Haywire *)self setMaxRemoteBuildNumber:v10];
@@ -952,9 +952,9 @@ LABEL_10:
 
   else
   {
-    v23 = [v9 state];
+    state3 = [v9 state];
     v24 = self->_delegate;
-    if (v23 == 2)
+    if (state3 == 2)
     {
       [(FudPluginDelegate *)v24 log:5 format:@"%s: _maxLocalBuildNumber was '%@' is now '%@'", v7, self->_maxLocalBuildNumber, v10];
       [(Haywire *)self setMaxLocalBuildNumber:v10];

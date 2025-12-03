@@ -1,93 +1,93 @@
 @interface QLScreenTimeItemViewController
-- (QLScreenTimeItemViewController)initWithBundleIdentifier:(id)a3;
-- (QLScreenTimeItemViewController)initWithCategoryIdentifier:(id)a3;
+- (QLScreenTimeItemViewController)initWithBundleIdentifier:(id)identifier;
+- (QLScreenTimeItemViewController)initWithCategoryIdentifier:(id)identifier;
 - (void)_updateBlockingViewControllerWithCurrentPolicy;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)showBlockingViewControllerWithPolicy:(int64_t)a3;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)showBlockingViewControllerWithPolicy:(int64_t)policy;
 @end
 
 @implementation QLScreenTimeItemViewController
 
-- (QLScreenTimeItemViewController)initWithBundleIdentifier:(id)a3
+- (QLScreenTimeItemViewController)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = QLScreenTimeItemViewController;
   v6 = [(QLItemViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (QLScreenTimeItemViewController)initWithCategoryIdentifier:(id)a3
+- (QLScreenTimeItemViewController)initWithCategoryIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = QLScreenTimeItemViewController;
   v6 = [(QLItemViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_categoryIdentifier, a3);
+    objc_storeStrong(&v6->_categoryIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D75348];
-  v7 = a5;
-  v8 = [v6 clearColor];
-  v9 = [(QLScreenTimeItemViewController *)self view];
-  [v9 setBackgroundColor:v8];
+  handlerCopy = handler;
+  clearColor = [v6 clearColor];
+  view = [(QLScreenTimeItemViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   Helper_x8__OBJC_CLASS___STBlockingViewController = gotLoadHelper_x8__OBJC_CLASS___STBlockingViewController(v10);
-  v13 = [*(v12 + 3472) newTranslucentBlockingViewController];
+  newTranslucentBlockingViewController = [*(v12 + 3472) newTranslucentBlockingViewController];
   blockingViewController = self->_blockingViewController;
-  self->_blockingViewController = v13;
+  self->_blockingViewController = newTranslucentBlockingViewController;
 
   [(QLScreenTimeItemViewController *)self addChildViewController:self->_blockingViewController];
-  v15 = [(QLScreenTimeItemViewController *)self view];
-  v16 = [(STBlockingViewController *)self->_blockingViewController view];
-  [v15 addSubview:v16];
+  view2 = [(QLScreenTimeItemViewController *)self view];
+  view3 = [(STBlockingViewController *)self->_blockingViewController view];
+  [view2 addSubview:view3];
 
   [(STBlockingViewController *)self->_blockingViewController didMoveToParentViewController:self];
-  v17 = [(STBlockingViewController *)self->_blockingViewController view];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(STBlockingViewController *)self->_blockingViewController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(QLScreenTimeItemViewController *)self view];
+  view5 = [(QLScreenTimeItemViewController *)self view];
   v19 = MEMORY[0x277CCAAD0];
   v31 = @"lockoutView";
-  v20 = [(STBlockingViewController *)self->_blockingViewController view];
-  v32[0] = v20;
+  view6 = [(STBlockingViewController *)self->_blockingViewController view];
+  v32[0] = view6;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
   v22 = [v19 constraintsWithVisualFormat:@"H:|[lockoutView]|" options:0 metrics:0 views:v21];
-  [v18 addConstraints:v22];
+  [view5 addConstraints:v22];
 
-  v23 = [(QLScreenTimeItemViewController *)self view];
+  view7 = [(QLScreenTimeItemViewController *)self view];
   v24 = MEMORY[0x277CCAAD0];
   v29 = @"lockoutView";
-  v25 = [(STBlockingViewController *)self->_blockingViewController view];
-  v30 = v25;
+  view8 = [(STBlockingViewController *)self->_blockingViewController view];
+  v30 = view8;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v27 = [v24 constraintsWithVisualFormat:@"V:|[lockoutView]|" options:0 metrics:0 views:v26];
-  [v23 addConstraints:v27];
+  [view7 addConstraints:v27];
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showBlockingViewControllerWithPolicy:(int64_t)a3
+- (void)showBlockingViewControllerWithPolicy:(int64_t)policy
 {
-  if (self->_policy != a3)
+  if (self->_policy != policy)
   {
-    self->_policy = a3;
+    self->_policy = policy;
     [(QLScreenTimeItemViewController *)self _updateBlockingViewControllerWithCurrentPolicy];
     if (self->_policy)
     {

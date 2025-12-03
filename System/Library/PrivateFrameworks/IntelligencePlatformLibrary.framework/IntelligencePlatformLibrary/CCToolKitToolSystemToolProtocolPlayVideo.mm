@@ -1,24 +1,24 @@
 @interface CCToolKitToolSystemToolProtocolPlayVideo
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolSystemToolProtocolPlayVideo)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolSystemToolProtocolPlayVideo)initWithValues:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolSystemToolProtocolPlayVideo)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolSystemToolProtocolPlayVideo)initWithValues:(id)values error:(id *)error;
 - (NSArray)values;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolSystemToolProtocolPlayVideo
 
-- (CCToolKitToolSystemToolProtocolPlayVideo)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolSystemToolProtocolPlayVideo)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"values"];
-    v10 = [[CCToolKitToolSystemToolProtocolPlayVideo alloc] initWithValues:v9 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"values"];
+    v10 = [[CCToolKitToolSystemToolProtocolPlayVideo alloc] initWithValues:v9 error:error];
   }
 
   else
@@ -35,8 +35,8 @@
   v3 = objc_opt_new();
   if (self->_values)
   {
-    v4 = [(CCToolKitToolSystemToolProtocolPlayVideo *)self values];
-    [v3 setObject:v4 forKeyedSubscript:@"values"];
+    values = [(CCToolKitToolSystemToolProtocolPlayVideo *)self values];
+    [v3 setObject:values forKeyedSubscript:@"values"];
   }
 
   v5 = [v3 copy];
@@ -44,15 +44,15 @@
   return v5;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
   if (self->_values)
   {
     v6 = MEMORY[0x1E69939F0];
-    v7 = a3;
+    blockCopy = block;
     v8 = [v6 alloc];
     v9 = [v8 initWithFieldType:*MEMORY[0x1E69939A8] repeatedStringValue:self->_values];
-    (*(a3 + 2))(v7, v9);
+    (*(block + 2))(blockCopy, v9);
   }
 }
 
@@ -63,11 +63,11 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v37 = a4;
-  v38 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v38];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -193,7 +193,7 @@ LABEL_25:
       }
     }
 
-    [v9 addObject:{v24, v37}];
+    [v9 addObject:{v24, errorCopy}];
     goto LABEL_25;
   }
 
@@ -209,13 +209,13 @@ LABEL_36:
   {
     CCSetError();
     v29 = 0;
-    v30 = v38;
+    v30 = dataCopy;
   }
 
   else
   {
     v31 = MEMORY[0x1E6993AA8];
-    v30 = v38;
+    v30 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v32 = objc_opt_class();
@@ -236,12 +236,12 @@ LABEL_36:
   return v29;
 }
 
-- (CCToolKitToolSystemToolProtocolPlayVideo)initWithValues:(id)a3 error:(id *)a4
+- (CCToolKitToolSystemToolProtocolPlayVideo)initWithValues:(id)values error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  valuesCopy = values;
   v7 = objc_opt_new();
-  if (v6)
+  if (valuesCopy)
   {
     objc_opt_class();
     v24 = 0;
@@ -250,7 +250,7 @@ LABEL_36:
     if (!v8)
     {
       CCSetError();
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_14;
     }
 
@@ -258,7 +258,7 @@ LABEL_36:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = valuesCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
@@ -292,14 +292,14 @@ LABEL_36:
     v9 = 0;
   }
 
-  v16 = [v7 immutableData];
-  self = [(CCItemMessage *)self initWithData:v16 error:a4];
+  immutableData = [v7 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v17 = self;
+  selfCopy = self;
 LABEL_14:
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
 @end

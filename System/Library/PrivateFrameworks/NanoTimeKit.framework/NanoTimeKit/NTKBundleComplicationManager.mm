@@ -1,23 +1,23 @@
 @interface NTKBundleComplicationManager
 + (id)sharedManager;
-- (BOOL)bundleComplicationExistsForAppBundleIdentifier:(id)a3;
-- (BOOL)bundleExistsWithIdentifier:(id)a3 appBundleIdentifier:(id)a4;
-- (Class)_dataSourceClassForBundleIdentifier:(id)a3;
-- (Class)dataSourceClassForBundleComplication:(id)a3;
-- (Class)dataSourceClassForBundleComplication:(id)a3 withFamily:(int64_t)a4 andDevice:(id)a5 factorInMigration:(BOOL)a6;
+- (BOOL)bundleComplicationExistsForAppBundleIdentifier:(id)identifier;
+- (BOOL)bundleExistsWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
+- (Class)_dataSourceClassForBundleIdentifier:(id)identifier;
+- (Class)dataSourceClassForBundleComplication:(id)complication;
+- (Class)dataSourceClassForBundleComplication:(id)complication withFamily:(int64_t)family andDevice:(id)device factorInMigration:(BOOL)migration;
 - (NTKBundleComplicationManager)init;
 - (id)_buildDataSourceInfoLookup;
 - (id)_infoByBundleIdentifierLookup;
-- (id)_infoForBundleIdentifier:(id)a3;
+- (id)_infoForBundleIdentifier:(id)identifier;
 - (id)allComplicationAppBundleIDs;
-- (id)bundleComplicationsForBundleIdentifier:(id)a3;
-- (id)groupIdentifierForBundleIdentifier:(id)a3;
-- (id)localizedAppNameForBundleIdentifier:(id)a3;
-- (id)localizedComplicationNameForBundleIdentifier:(id)a3;
-- (id)sectionIdentifierForBundleIdentifier:(id)a3;
-- (void)_enumerateBundleInfo:(id)a3;
-- (void)enumerateBundlesForComplicationFamily:(int64_t)a3 device:(id)a4 withBlock:(id)a5;
-- (void)enumerateBundlesForDevice:(id)a3 withBlock:(id)a4;
+- (id)bundleComplicationsForBundleIdentifier:(id)identifier;
+- (id)groupIdentifierForBundleIdentifier:(id)identifier;
+- (id)localizedAppNameForBundleIdentifier:(id)identifier;
+- (id)localizedComplicationNameForBundleIdentifier:(id)identifier;
+- (id)sectionIdentifierForBundleIdentifier:(id)identifier;
+- (void)_enumerateBundleInfo:(id)info;
+- (void)enumerateBundlesForComplicationFamily:(int64_t)family device:(id)device withBlock:(id)block;
+- (void)enumerateBundlesForDevice:(id)device withBlock:(id)block;
 @end
 
 @implementation NTKBundleComplicationManager
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __45__NTKBundleComplicationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_2 != -1)
   {
     dispatch_once(&sharedManager_onceToken_2, block);
@@ -128,9 +128,9 @@ void __36__NTKBundleComplicationManager_init__block_invoke(uint64_t a1)
   init_monitors = v10;
 }
 
-- (BOOL)bundleComplicationExistsForAppBundleIdentifier:(id)a3
+- (BOOL)bundleComplicationExistsForAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -139,7 +139,7 @@ void __36__NTKBundleComplicationManager_init__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __79__NTKBundleComplicationManager_bundleComplicationExistsForAppBundleIdentifier___block_invoke;
   v7[3] = &unk_278784F50;
-  v5 = v4;
+  v5 = identifierCopy;
   v8 = v5;
   v9 = &v10;
   [(NTKBundleComplicationManager *)self _enumerateBundleInfo:v7];
@@ -161,9 +161,9 @@ void __79__NTKBundleComplicationManager_bundleComplicationExistsForAppBundleIden
   }
 }
 
-- (Class)dataSourceClassForBundleComplication:(id)a3
+- (Class)dataSourceClassForBundleComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -171,24 +171,24 @@ void __79__NTKBundleComplicationManager_bundleComplicationExistsForAppBundleIden
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 complication];
-    v6 = [v5 bundleIdentifier];
+    complication = [complicationCopy complication];
+    bundleIdentifier = [complication bundleIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    bundleIdentifier = 0;
   }
 
-  v7 = [v4 complicationType];
+  complicationType = [complicationCopy complicationType];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__NTKBundleComplicationManager_dataSourceClassForBundleComplication___block_invoke;
   v11[3] = &unk_278784F78;
-  v8 = v6;
+  v8 = bundleIdentifier;
   v12 = v8;
   v13 = &v15;
-  v14 = v7;
+  v14 = complicationType;
   [(NTKBundleComplicationManager *)self _enumerateBundleInfo:v11];
   v9 = v16[3];
 
@@ -225,12 +225,12 @@ void __69__NTKBundleComplicationManager_dataSourceClassForBundleComplication___b
   objc_autoreleasePoolPop(v5);
 }
 
-- (Class)dataSourceClassForBundleComplication:(id)a3 withFamily:(int64_t)a4 andDevice:(id)a5 factorInMigration:(BOOL)a6
+- (Class)dataSourceClassForBundleComplication:(id)complication withFamily:(int64_t)family andDevice:(id)device factorInMigration:(BOOL)migration
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = [(NTKBundleComplicationManager *)self dataSourceClassForBundleComplication:a3];
-  if (!-[objc_class acceptsComplicationFamily:forDevice:](v11, "acceptsComplicationFamily:forDevice:", a4, v10) || [v10 supportsWidgetMigration] && v6 && (-[objc_class hasMigratedToWidgetForFamily:device:](v11, "hasMigratedToWidgetForFamily:device:", a4, v10) & 1) != 0)
+  migrationCopy = migration;
+  deviceCopy = device;
+  v11 = [(NTKBundleComplicationManager *)self dataSourceClassForBundleComplication:complication];
+  if (!-[objc_class acceptsComplicationFamily:forDevice:](v11, "acceptsComplicationFamily:forDevice:", family, deviceCopy) || [deviceCopy supportsWidgetMigration] && migrationCopy && (-[objc_class hasMigratedToWidgetForFamily:device:](v11, "hasMigratedToWidgetForFamily:device:", family, deviceCopy) & 1) != 0)
   {
     v12 = 0;
   }
@@ -243,15 +243,15 @@ void __69__NTKBundleComplicationManager_dataSourceClassForBundleComplication___b
   return v12;
 }
 
-- (BOOL)bundleExistsWithIdentifier:(id)a3 appBundleIdentifier:(id)a4
+- (BOOL)bundleExistsWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v7 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:a3];
+  bundleIdentifierCopy = bundleIdentifier;
+  v7 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 appIdentifier];
-    v10 = [v9 isEqualToString:v6];
+    appIdentifier = [v7 appIdentifier];
+    v10 = [appIdentifier isEqualToString:bundleIdentifierCopy];
   }
 
   else
@@ -262,72 +262,72 @@ void __69__NTKBundleComplicationManager_dataSourceClassForBundleComplication___b
   return v10;
 }
 
-- (id)localizedAppNameForBundleIdentifier:(id)a3
+- (id)localizedAppNameForBundleIdentifier:(id)identifier
 {
-  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:a3];
-  v4 = [v3 localizedAppName];
+  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:identifier];
+  localizedAppName = [v3 localizedAppName];
 
-  return v4;
+  return localizedAppName;
 }
 
-- (id)sectionIdentifierForBundleIdentifier:(id)a3
+- (id)sectionIdentifierForBundleIdentifier:(id)identifier
 {
-  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:a3];
-  v4 = [v3 sectionIdentifier];
+  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:identifier];
+  sectionIdentifier = [v3 sectionIdentifier];
 
-  return v4;
+  return sectionIdentifier;
 }
 
-- (id)groupIdentifierForBundleIdentifier:(id)a3
+- (id)groupIdentifierForBundleIdentifier:(id)identifier
 {
-  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:a3];
-  v4 = [v3 appGroupIdentifier];
+  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:identifier];
+  appGroupIdentifier = [v3 appGroupIdentifier];
 
-  return v4;
+  return appGroupIdentifier;
 }
 
-- (id)localizedComplicationNameForBundleIdentifier:(id)a3
+- (id)localizedComplicationNameForBundleIdentifier:(id)identifier
 {
-  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:a3];
-  v4 = [v3 localizedComplicationName];
-  v5 = v4;
-  if (v4)
+  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:identifier];
+  localizedComplicationName = [v3 localizedComplicationName];
+  v5 = localizedComplicationName;
+  if (localizedComplicationName)
   {
-    v6 = v4;
+    localizedAppName = localizedComplicationName;
   }
 
   else
   {
-    v6 = [v3 localizedAppName];
+    localizedAppName = [v3 localizedAppName];
   }
 
-  v7 = v6;
+  v7 = localizedAppName;
 
   return v7;
 }
 
-- (void)enumerateBundlesForComplicationFamily:(int64_t)a3 device:(id)a4 withBlock:(id)a5
+- (void)enumerateBundlesForComplicationFamily:(int64_t)family device:(id)device withBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 supportsWidgetMigration];
+  deviceCopy = device;
+  blockCopy = block;
+  supportsWidgetMigration = [deviceCopy supportsWidgetMigration];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v21 = 0;
-  v11 = [(NTKBundleComplicationManager *)self loader];
+  loader = [(NTKBundleComplicationManager *)self loader];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__NTKBundleComplicationManager_enumerateBundlesForComplicationFamily_device_withBlock___block_invoke;
   v14[3] = &unk_278784FA0;
   v17 = v20;
-  v18 = a3;
-  v12 = v8;
+  familyCopy = family;
+  v12 = deviceCopy;
   v15 = v12;
-  v19 = v10;
-  v13 = v9;
+  v19 = supportsWidgetMigration;
+  v13 = blockCopy;
   v16 = v13;
-  [v11 enumerateComplicationClassesWithBlock:v14];
+  [loader enumerateComplicationClassesWithBlock:v14];
 
   _Block_object_dispose(v20, 8);
 }
@@ -360,27 +360,27 @@ void __87__NTKBundleComplicationManager_enumerateBundlesForComplicationFamily_de
   }
 }
 
-- (void)enumerateBundlesForDevice:(id)a3 withBlock:(id)a4
+- (void)enumerateBundlesForDevice:(id)device withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 supportsWidgetMigration];
+  deviceCopy = device;
+  blockCopy = block;
+  supportsWidgetMigration = [deviceCopy supportsWidgetMigration];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v18 = 0;
-  v9 = [(NTKBundleComplicationManager *)self loader];
+  loader = [(NTKBundleComplicationManager *)self loader];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__NTKBundleComplicationManager_enumerateBundlesForDevice_withBlock___block_invoke;
   v12[3] = &unk_278784FF0;
   v15 = v17;
-  v10 = v6;
+  v10 = deviceCopy;
   v13 = v10;
-  v16 = v8;
-  v11 = v7;
+  v16 = supportsWidgetMigration;
+  v11 = blockCopy;
   v14 = v11;
-  [v9 enumerateComplicationClassesWithBlock:v12];
+  [loader enumerateComplicationClassesWithBlock:v12];
 
   _Block_object_dispose(v17, 8);
 }
@@ -456,31 +456,31 @@ void __59__NTKBundleComplicationManager_allComplicationAppBundleIDs__block_invok
   }
 }
 
-- (id)bundleComplicationsForBundleIdentifier:(id)a3
+- (id)bundleComplicationsForBundleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKBundleComplicationManager *)self _dataSourceClassForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(NTKBundleComplicationManager *)self _dataSourceClassForBundleIdentifier:identifierCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [(objc_class *)v5 appIdentifier];
+    appIdentifier = [(objc_class *)v5 appIdentifier];
     if ([(objc_class *)v6 useComplicationDescriptorsOnCompanion])
     {
       v8 = MEMORY[0x277CBEB70];
-      v9 = [(NTKCompanionBundleComplicationSyncCoordinator *)self->_syncCoordinator descriptorsForBundleIdentifier:v4];
-      v10 = [v8 orderedSetWithArray:v9];
+      complicationDescriptors = [(NTKCompanionBundleComplicationSyncCoordinator *)self->_syncCoordinator descriptorsForBundleIdentifier:identifierCopy];
+      v10 = [v8 orderedSetWithArray:complicationDescriptors];
     }
 
     else
     {
-      v9 = [(objc_class *)v6 complicationDescriptors];
-      v10 = [v9 copy];
+      complicationDescriptors = [(objc_class *)v6 complicationDescriptors];
+      v10 = [complicationDescriptors copy];
     }
 
     v12 = v10;
 
-    v13 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     if (v12)
     {
       v23 = 0u;
@@ -502,10 +502,10 @@ void __59__NTKBundleComplicationManager_allComplicationAppBundleIDs__block_invok
               objc_enumerationMutation(v14);
             }
 
-            v19 = [MEMORY[0x277CFA700] complicationWithBundleIdentifier:v4 appBundleIdentifier:v7 complicationDescriptor:{*(*(&v21 + 1) + 8 * i), v21}];
+            v19 = [MEMORY[0x277CFA700] complicationWithBundleIdentifier:identifierCopy appBundleIdentifier:appIdentifier complicationDescriptor:{*(*(&v21 + 1) + 8 * i), v21}];
             if (v19)
             {
-              [v13 addObject:v19];
+              [orderedSet addObject:v19];
             }
           }
 
@@ -518,65 +518,65 @@ void __59__NTKBundleComplicationManager_allComplicationAppBundleIDs__block_invok
 
     else
     {
-      v14 = [MEMORY[0x277CFA700] complicationWithBundleIdentifier:v4 appBundleIdentifier:v7 complicationDescriptor:0];
+      v14 = [MEMORY[0x277CFA700] complicationWithBundleIdentifier:identifierCopy appBundleIdentifier:appIdentifier complicationDescriptor:0];
       if (v14)
       {
-        [v13 addObject:v14];
+        [orderedSet addObject:v14];
       }
     }
 
-    v11 = [v13 copy];
+    orderedSet2 = [orderedSet copy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB70] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB70] orderedSet];
   }
 
-  return v11;
+  return orderedSet2;
 }
 
-- (Class)_dataSourceClassForBundleIdentifier:(id)a3
+- (Class)_dataSourceClassForBundleIdentifier:(id)identifier
 {
-  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:a3];
-  v4 = [v3 dataSourceClass];
+  v3 = [(NTKBundleComplicationManager *)self _infoForBundleIdentifier:identifier];
+  dataSourceClass = [v3 dataSourceClass];
 
-  return v4;
+  return dataSourceClass;
 }
 
-- (id)_infoForBundleIdentifier:(id)a3
+- (id)_infoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NTKBundleComplicationManager *)self _infoByBundleIdentifierLookup];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _infoByBundleIdentifierLookup = [(NTKBundleComplicationManager *)self _infoByBundleIdentifierLookup];
+  v6 = [_infoByBundleIdentifierLookup objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)_enumerateBundleInfo:(id)a3
+- (void)_enumerateBundleInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(NTKBundleComplicationManager *)self _infoByBundleIdentifierLookup];
+  infoCopy = info;
+  _infoByBundleIdentifierLookup = [(NTKBundleComplicationManager *)self _infoByBundleIdentifierLookup];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__NTKBundleComplicationManager__enumerateBundleInfo___block_invoke;
   v7[3] = &unk_278785040;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = infoCopy;
+  v6 = infoCopy;
+  [_infoByBundleIdentifierLookup enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (id)_buildDataSourceInfoLookup
 {
   v3 = objc_opt_new();
-  v4 = [(NTKBundleComplicationManager *)self loader];
+  loader = [(NTKBundleComplicationManager *)self loader];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__NTKBundleComplicationManager__buildDataSourceInfoLookup__block_invoke;
   v8[3] = &unk_278785068;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateComplicationClassesWithBlock:v8];
+  [loader enumerateComplicationClassesWithBlock:v8];
 
   v6 = [v5 copy];
 
@@ -596,9 +596,9 @@ void __58__NTKBundleComplicationManager__buildDataSourceInfoLookup__block_invoke
   lock_infoByBundleIdentifierLookup = self->_lock_infoByBundleIdentifierLookup;
   if (!lock_infoByBundleIdentifierLookup)
   {
-    v4 = [(NTKBundleComplicationManager *)self _buildDataSourceInfoLookup];
+    _buildDataSourceInfoLookup = [(NTKBundleComplicationManager *)self _buildDataSourceInfoLookup];
     v5 = self->_lock_infoByBundleIdentifierLookup;
-    self->_lock_infoByBundleIdentifierLookup = v4;
+    self->_lock_infoByBundleIdentifierLookup = _buildDataSourceInfoLookup;
 
     lock_infoByBundleIdentifierLookup = self->_lock_infoByBundleIdentifierLookup;
   }

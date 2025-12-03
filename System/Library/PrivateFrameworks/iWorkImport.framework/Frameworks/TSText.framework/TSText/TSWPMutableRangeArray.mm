@@ -1,40 +1,40 @@
 @interface TSWPMutableRangeArray
-- (_NSRange)replacedTextAtRange:(_NSRange)a3 delta:(int64_t)a4;
-- (void)addRange:(_NSRange)a3;
-- (void)intersectWithRanges:(id)a3;
-- (void)removeRange:(_NSRange)a3;
-- (void)removeRangesInRange:(_NSRange)a3;
-- (void)subtract:(id)a3;
-- (void)unionWith:(id)a3;
-- (void)updateForTextReplacementInRange:(_NSRange)a3 delta:(int64_t)a4;
-- (void)xor:(id)a3;
+- (_NSRange)replacedTextAtRange:(_NSRange)range delta:(int64_t)delta;
+- (void)addRange:(_NSRange)range;
+- (void)intersectWithRanges:(id)ranges;
+- (void)removeRange:(_NSRange)range;
+- (void)removeRangesInRange:(_NSRange)range;
+- (void)subtract:(id)subtract;
+- (void)unionWith:(id)with;
+- (void)updateForTextReplacementInRange:(_NSRange)range delta:(int64_t)delta;
+- (void)xor:(id)xor;
 @end
 
 @implementation TSWPMutableRangeArray
 
-- (void)removeRangesInRange:(_NSRange)a3
+- (void)removeRangesInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
     begin = self->super._rangeVector.__begin_;
     end = self->super._rangeVector.__end_;
-    v6 = &begin[a3.location];
-    v7 = &v6[a3.length];
+    v6 = &begin[range.location];
+    v7 = &v6[range.length];
     v8 = end - v7;
     if (end != v7)
     {
-      memmove(&begin[a3.location], v7, end - v7);
+      memmove(&begin[range.location], v7, end - v7);
     }
 
     self->super._rangeVector.__end_ = (v6 + v8);
   }
 }
 
-- (void)addRange:(_NSRange)a3
+- (void)addRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v62 = a3;
+  length = range.length;
+  location = range.location;
+  rangeCopy = range;
   if (TSUAssertLegalRange())
   {
     v9 = *MEMORY[0x277D81490];
@@ -58,17 +58,17 @@
     {
       if (!objc_msgSend_rangeCount(self, v6, v7))
       {
-        sub_276D20ABC(&self->super._rangeVector, &v62);
+        sub_276D20ABC(&self->super._rangeVector, &rangeCopy);
         return;
       }
 
       if (length)
       {
-        v61 = v62;
+        v61 = rangeCopy;
         begin = self->super._rangeVector.__begin_;
         end = self->super._rangeVector.__end_;
-        v17 = v62.length;
-        v16 = v62.location;
+        v17 = rangeCopy.length;
+        v16 = rangeCopy.location;
         if (end == begin)
         {
           v60 = 0;
@@ -87,7 +87,7 @@
             v23 = v21->location;
             v22 = v21 + 1;
             v18 += ~(v18 >> 1);
-            if (v23 < v62.location)
+            if (v23 < rangeCopy.location)
             {
               v19 = v22;
             }
@@ -116,7 +116,7 @@
               v29 = v27->location;
               v28 = v27 + 1;
               v24 += ~(v24 >> 1);
-              if (v29 < v62.length + v62.location)
+              if (v29 < rangeCopy.length + rangeCopy.location)
               {
                 v25 = v28;
               }
@@ -135,7 +135,7 @@
 
             else
             {
-              v39 = NSUnionRange(v62, *v19);
+              v39 = NSUnionRange(rangeCopy, *v19);
               v16 = v39.location;
               v17 = v39.length;
               v61 = v39;
@@ -250,10 +250,10 @@ LABEL_62:
   }
 }
 
-- (void)removeRange:(_NSRange)a3
+- (void)removeRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (!TSUAssertLegalRange() || !length)
   {
     return;
@@ -441,21 +441,21 @@ LABEL_62:
   }
 }
 
-- (_NSRange)replacedTextAtRange:(_NSRange)a3 delta:(int64_t)a4
+- (_NSRange)replacedTextAtRange:(_NSRange)range delta:(int64_t)delta
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = objc_msgSend_rangeCount(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v8 = objc_msgSend_rangeCount(self, a2, range.location);
   if (v8)
   {
     v10 = v8;
     v11 = 0;
-    v12 = length - a4 + location;
-    v40 = -a4;
-    v41 = a4;
+    v12 = length - delta + location;
+    v40 = -delta;
+    deltaCopy = delta;
     v13 = 0x7FFFFFFFFFFFFFFFLL;
     v14 = 0x7FFFFFFFFFFFFFFFLL;
-    v15 = a4;
+    deltaCopy2 = delta;
     while (1)
     {
       begin = self->super._rangeVector.__begin_;
@@ -475,7 +475,7 @@ LABEL_62:
 
           else
           {
-            v17->length = v18 + v15;
+            v17->length = v18 + deltaCopy2;
           }
 
           goto LABEL_5;
@@ -493,7 +493,7 @@ LABEL_62:
             memmove(v17, v9, end - &v17[1]);
             v14 = v26;
             v13 = v25;
-            v15 = v41;
+            deltaCopy2 = deltaCopy;
           }
 
           self->super._rangeVector.__end_ = (v17 + v24);
@@ -518,7 +518,7 @@ LABEL_62:
 
         if (v12 <= v19)
         {
-          if (v15 < 0 && v19 < v40)
+          if (deltaCopy2 < 0 && v19 < v40)
           {
             v38 = v14;
             v39 = v13;
@@ -529,17 +529,17 @@ LABEL_62:
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
             begin = self->super._rangeVector.__begin_;
-            v15 = v41;
+            deltaCopy2 = deltaCopy;
             v14 = v38;
             v13 = v39;
           }
 
-          v21 = v19 + v15;
+          v21 = v19 + deltaCopy2;
         }
 
         else
         {
-          v21 = v20 + v15;
+          v21 = v20 + deltaCopy2;
           if (location <= v21)
           {
             v22 = v21;
@@ -601,12 +601,12 @@ LABEL_32:
   return result;
 }
 
-- (void)updateForTextReplacementInRange:(_NSRange)a3 delta:(int64_t)a4
+- (void)updateForTextReplacementInRange:(_NSRange)range delta:(int64_t)delta
 {
-  length = a3.length;
-  location = a3.location;
-  v44 = -a4;
-  if (a4 < 0 && a3.length < -a4)
+  length = range.length;
+  location = range.location;
+  v44 = -delta;
+  if (delta < 0 && range.length < -delta)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPMutableRangeArray updateForTextReplacementInRange:delta:]");
@@ -616,12 +616,12 @@ LABEL_32:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  else if (!a4)
+  else if (!delta)
   {
     return;
   }
 
-  v15 = objc_msgSend_rangeCount(self, a2, a3.location);
+  v15 = objc_msgSend_rangeCount(self, a2, range.location);
   if (v15)
   {
     v17 = v15;
@@ -652,7 +652,7 @@ LABEL_32:
       {
         if (location < v19 + v20)
         {
-          if (a4 < 0 && v20 < v44)
+          if (delta < 0 && v20 < v44)
           {
             v36 = MEMORY[0x277D81150];
             v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSWPMutableRangeArray updateForTextReplacementInRange:delta:]");
@@ -663,13 +663,13 @@ LABEL_32:
             length = v45;
           }
 
-          objc_msgSend_replaceRangeAtIndex_withRange_(self, v16, v18, v19, v20 + a4);
+          objc_msgSend_replaceRangeAtIndex_withRange_(self, v16, v18, v19, v20 + delta);
         }
       }
 
       else
       {
-        if (a4 < 0 && v19 < v44)
+        if (delta < 0 && v19 < v44)
         {
           v29 = MEMORY[0x277D81150];
           v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSWPMutableRangeArray updateForTextReplacementInRange:delta:]");
@@ -680,7 +680,7 @@ LABEL_32:
           length = v45;
         }
 
-        objc_msgSend_replaceRangeAtIndex_withRange_(self, v16, v18, v19 + a4, v20);
+        objc_msgSend_replaceRangeAtIndex_withRange_(self, v16, v18, v19 + delta, v20);
       }
 
       ++v18;
@@ -690,22 +690,22 @@ LABEL_32:
   }
 }
 
-- (void)unionWith:(id)a3
+- (void)unionWith:(id)with
 {
-  v17 = a3;
+  withCopy = with;
   v6 = objc_msgSend_superRange(self, v4, v5);
-  v8 = v17;
-  if (self != v17 && v6 == *MEMORY[0x277D81490] && v7 == *(MEMORY[0x277D81490] + 8))
+  v8 = withCopy;
+  if (self != withCopy && v6 == *MEMORY[0x277D81490] && v7 == *(MEMORY[0x277D81490] + 8))
   {
-    sub_276E17544(&self->super._rangeVector.__begin_, v17[1], v17[2], (v17[2] - v17[1]) >> 4);
+    sub_276E17544(&self->super._rangeVector.__begin_, withCopy[1], withCopy[2], (withCopy[2] - withCopy[1]) >> 4);
   }
 
-  v11 = objc_msgSend_rangeCount(v17, v7, v8);
+  v11 = objc_msgSend_rangeCount(withCopy, v7, v8);
   if (v11)
   {
     for (i = 0; i != v11; ++i)
     {
-      v13 = objc_msgSend_rangeAtIndex_(v17, v10, i);
+      v13 = objc_msgSend_rangeAtIndex_(withCopy, v10, i);
       v15 = v14;
       if ((TSUAssertLegalRange() & 1) == 0)
       {
@@ -720,17 +720,17 @@ LABEL_32:
   }
 }
 
-- (void)subtract:(id)a3
+- (void)subtract:(id)subtract
 {
-  v12 = a3;
+  subtractCopy = subtract;
   if (objc_msgSend_rangeCount(self, v4, v5))
   {
-    v9 = objc_msgSend_rangeCount(v12, v6, v7);
+    v9 = objc_msgSend_rangeCount(subtractCopy, v6, v7);
     if (v9)
     {
       for (i = 0; i != v9; ++i)
       {
-        v11 = objc_msgSend_rangeAtIndex_(v12, v8, i);
+        v11 = objc_msgSend_rangeAtIndex_(subtractCopy, v8, i);
         if (v8)
         {
           objc_msgSend_removeRange_(self, v8, v11, v8);
@@ -740,12 +740,12 @@ LABEL_32:
   }
 }
 
-- (void)xor:(id)a3
+- (void)xor:(id)xor
 {
-  v13 = a3;
+  xorCopy = xor;
   v6 = objc_msgSend_mutableCopy(self, v4, v5);
-  objc_msgSend_subtract_(v6, v7, v13);
-  v10 = objc_msgSend_mutableCopy(v13, v8, v9);
+  objc_msgSend_subtract_(v6, v7, xorCopy);
+  v10 = objc_msgSend_mutableCopy(xorCopy, v8, v9);
   objc_msgSend_subtract_(v10, v11, self);
   objc_msgSend_unionWith_(v6, v12, v10);
   if (v6 != self)
@@ -754,10 +754,10 @@ LABEL_32:
   }
 }
 
-- (void)intersectWithRanges:(id)a3
+- (void)intersectWithRanges:(id)ranges
 {
-  v5 = a3;
-  if (self != v5)
+  rangesCopy = ranges;
+  if (self != rangesCopy)
   {
     __p = 0;
     __dst = 0;
@@ -774,7 +774,7 @@ LABEL_32:
     {
       do
       {
-        v9 = objc_msgSend_intersection_(v5, v4, begin->location, begin->length);
+        v9 = objc_msgSend_intersection_(rangesCopy, v4, begin->location, begin->length);
         if (objc_msgSend_rangeCount(v9, v10, v11))
         {
           sub_276E17778(&__p, __dst, v9[1], v9[2], (v9[2] - v9[1]) >> 4);

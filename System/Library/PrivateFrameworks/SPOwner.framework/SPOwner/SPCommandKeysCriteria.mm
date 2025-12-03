@@ -1,65 +1,65 @@
 @interface SPCommandKeysCriteria
 + (id)driftModeledCriteria;
-+ (id)matchDateInterval:(id)a3;
-+ (id)matchPrimaryIndices:(id)a3;
-- (SPCommandKeysCriteria)initWithCoder:(id)a3;
-- (SPCommandKeysCriteria)initWithDateInterval:(id)a3 sequence:(id)a4 indices:(id)a5 index:(id)a6 hint:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)matchDateInterval:(id)interval;
++ (id)matchPrimaryIndices:(id)indices;
+- (SPCommandKeysCriteria)initWithCoder:(id)coder;
+- (SPCommandKeysCriteria)initWithDateInterval:(id)interval sequence:(id)sequence indices:(id)indices index:(id)index hint:(id)hint;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPCommandKeysCriteria
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SPCommandKeysCriteria *)self dateInterval];
-  [v4 setDateInterval:v5];
+  dateInterval = [(SPCommandKeysCriteria *)self dateInterval];
+  [v4 setDateInterval:dateInterval];
 
-  v6 = [(SPCommandKeysCriteria *)self sequence];
-  [v4 setSequence:v6];
+  sequence = [(SPCommandKeysCriteria *)self sequence];
+  [v4 setSequence:sequence];
 
-  v7 = [(SPCommandKeysCriteria *)self indices];
-  v8 = [v7 copy];
+  indices = [(SPCommandKeysCriteria *)self indices];
+  v8 = [indices copy];
   [v4 setIndices:v8];
 
-  v9 = [(SPCommandKeysCriteria *)self index];
-  [v4 setIndex:v9];
+  index = [(SPCommandKeysCriteria *)self index];
+  [v4 setIndex:index];
 
-  v10 = [(SPCommandKeysCriteria *)self hint];
-  [v4 setHint:v10];
+  hint = [(SPCommandKeysCriteria *)self hint];
+  [v4 setHint:hint];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_sequence forKey:@"sequence"];
-  [v5 encodeObject:self->_indices forKey:@"indices"];
-  [v5 encodeObject:self->_index forKey:@"index"];
-  [v5 encodeObject:self->_hint forKey:@"hint"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_sequence forKey:@"sequence"];
+  [coderCopy encodeObject:self->_indices forKey:@"indices"];
+  [coderCopy encodeObject:self->_index forKey:@"index"];
+  [coderCopy encodeObject:self->_hint forKey:@"hint"];
 }
 
-- (SPCommandKeysCriteria)initWithCoder:(id)a3
+- (SPCommandKeysCriteria)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
   dateInterval = self->_dateInterval;
   self->_dateInterval = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sequence"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sequence"];
   sequence = self->_sequence;
   self->_sequence = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"index"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"index"];
   index = self->_index;
   self->_index = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hint"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hint"];
   hint = self->_hint;
   self->_hint = v11;
 
@@ -68,7 +68,7 @@
   v20[1] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v15 = [v13 setWithArray:v14];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"indices"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"indices"];
 
   indices = self->_indices;
   self->_indices = v16;
@@ -77,41 +77,41 @@
   return self;
 }
 
-- (SPCommandKeysCriteria)initWithDateInterval:(id)a3 sequence:(id)a4 indices:(id)a5 index:(id)a6 hint:(id)a7
+- (SPCommandKeysCriteria)initWithDateInterval:(id)interval sequence:(id)sequence indices:(id)indices index:(id)index hint:(id)hint
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  intervalCopy = interval;
+  sequenceCopy = sequence;
+  indicesCopy = indices;
+  indexCopy = index;
+  hintCopy = hint;
   v20.receiver = self;
   v20.super_class = SPCommandKeysCriteria;
   v17 = [(SPCommandKeysCriteria *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(SPCommandKeysCriteria *)v17 setDateInterval:v12];
-    [(SPCommandKeysCriteria *)v18 setSequence:v13];
-    [(SPCommandKeysCriteria *)v18 setIndices:v14];
-    [(SPCommandKeysCriteria *)v18 setIndex:v15];
-    [(SPCommandKeysCriteria *)v18 setHint:v16];
+    [(SPCommandKeysCriteria *)v17 setDateInterval:intervalCopy];
+    [(SPCommandKeysCriteria *)v18 setSequence:sequenceCopy];
+    [(SPCommandKeysCriteria *)v18 setIndices:indicesCopy];
+    [(SPCommandKeysCriteria *)v18 setIndex:indexCopy];
+    [(SPCommandKeysCriteria *)v18 setHint:hintCopy];
   }
 
   return v18;
 }
 
-+ (id)matchDateInterval:(id)a3
++ (id)matchDateInterval:(id)interval
 {
-  v3 = a3;
-  v4 = [[SPCommandKeysCriteria alloc] initWithDateInterval:v3 sequence:0 indices:0 index:0 hint:0];
+  intervalCopy = interval;
+  v4 = [[SPCommandKeysCriteria alloc] initWithDateInterval:intervalCopy sequence:0 indices:0 index:0 hint:0];
 
   return v4;
 }
 
-+ (id)matchPrimaryIndices:(id)a3
++ (id)matchPrimaryIndices:(id)indices
 {
-  v3 = a3;
-  v4 = [[SPCommandKeysCriteria alloc] initWithDateInterval:0 sequence:&unk_2875F2BB0 indices:v3 index:0 hint:0];
+  indicesCopy = indices;
+  v4 = [[SPCommandKeysCriteria alloc] initWithDateInterval:0 sequence:&unk_2875F2BB0 indices:indicesCopy index:0 hint:0];
 
   return v4;
 }

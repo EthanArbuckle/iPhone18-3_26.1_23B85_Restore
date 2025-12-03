@@ -1,79 +1,79 @@
 @interface CAMVideoCaptureResult
-- (CAMVideoCaptureResult)initWithURL:(id)a3 filteredLocalDestinationURL:(id)a4 duration:(id *)a5 stillDisplayTime:(id *)a6 dimensions:(id)a7 metadata:(id)a8 videoZoomFactor:(double)a9 reason:(int64_t)a10 videoPreviewPixelBuffer:(__CVBuffer *)a11 coordinationInfo:(id)a12 error:(id)a13 slowWriterFrameDrops:(BOOL)a14;
+- (CAMVideoCaptureResult)initWithURL:(id)l filteredLocalDestinationURL:(id)rL duration:(id *)duration stillDisplayTime:(id *)time dimensions:(id)dimensions metadata:(id)metadata videoZoomFactor:(double)factor reason:(int64_t)self0 videoPreviewPixelBuffer:(__CVBuffer *)self1 coordinationInfo:(id)self2 error:(id)self3 slowWriterFrameDrops:(BOOL)self4;
 - (void)dealloc;
 @end
 
 @implementation CAMVideoCaptureResult
 
-- (CAMVideoCaptureResult)initWithURL:(id)a3 filteredLocalDestinationURL:(id)a4 duration:(id *)a5 stillDisplayTime:(id *)a6 dimensions:(id)a7 metadata:(id)a8 videoZoomFactor:(double)a9 reason:(int64_t)a10 videoPreviewPixelBuffer:(__CVBuffer *)a11 coordinationInfo:(id)a12 error:(id)a13 slowWriterFrameDrops:(BOOL)a14
+- (CAMVideoCaptureResult)initWithURL:(id)l filteredLocalDestinationURL:(id)rL duration:(id *)duration stillDisplayTime:(id *)time dimensions:(id)dimensions metadata:(id)metadata videoZoomFactor:(double)factor reason:(int64_t)self0 videoPreviewPixelBuffer:(__CVBuffer *)self1 coordinationInfo:(id)self2 error:(id)self3 slowWriterFrameDrops:(BOOL)self4
 {
   v48 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v22 = a8;
-  v23 = a12;
-  v44 = a13;
+  lCopy = l;
+  rLCopy = rL;
+  metadataCopy = metadata;
+  infoCopy = info;
+  errorCopy = error;
   v45.receiver = self;
   v45.super_class = CAMVideoCaptureResult;
   v24 = [(CAMVideoCaptureResult *)&v45 init];
   v25 = v24;
   if (v24)
   {
-    v41 = v21;
-    objc_storeStrong(&v24->_localDestinationURL, a3);
-    objc_storeStrong(&v25->_filteredLocalDestinationURL, a4);
-    v26 = *&a5->var0;
-    v25->_duration.epoch = a5->var3;
+    v41 = rLCopy;
+    objc_storeStrong(&v24->_localDestinationURL, l);
+    objc_storeStrong(&v25->_filteredLocalDestinationURL, rL);
+    v26 = *&duration->var0;
+    v25->_duration.epoch = duration->var3;
     *&v25->_duration.value = v26;
-    v27 = a6;
-    v28 = *&a6->var0;
-    v25->_stillDisplayTime.epoch = a6->var3;
+    timeCopy2 = time;
+    v28 = *&time->var0;
+    v25->_stillDisplayTime.epoch = time->var3;
     *&v25->_stillDisplayTime.value = v28;
-    v25->_dimensions = a7;
-    v29 = [v22 copy];
+    v25->_dimensions = dimensions;
+    v29 = [metadataCopy copy];
     metadata = v25->_metadata;
     v25->_metadata = v29;
 
-    v25->_videoZoomFactor = a9;
-    v25->_reason = a10;
-    objc_storeStrong(&v25->_coordinationInfo, a12);
-    objc_storeStrong(&v25->_error, a13);
-    v25->_slowWriterFrameDrops = a14;
-    v25->_videoPreviewPixelBuffer = CVPixelBufferRetain(a11);
+    v25->_videoZoomFactor = factor;
+    v25->_reason = reason;
+    objc_storeStrong(&v25->_coordinationInfo, info);
+    objc_storeStrong(&v25->_error, error);
+    v25->_slowWriterFrameDrops = drops;
+    v25->_videoPreviewPixelBuffer = CVPixelBufferRetain(buffer);
     v31 = [(NSArray *)v25->_metadata indexOfObjectPassingTest:&__block_literal_global_44];
     if (v31 == 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_3:
-      if ((v27->var2 & 1) == 0)
+      if ((timeCopy2->var2 & 1) == 0)
       {
         v32 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v47 = v20;
+          v47 = lCopy;
           _os_log_impl(&dword_1A3640000, v32, OS_LOG_TYPE_DEFAULT, "Unable to extract captureDate, using currentTime instead for %{public}@", buf, 0xCu);
         }
       }
 
-      v33 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       goto LABEL_11;
     }
 
-    v34 = [v22 objectAtIndex:v31];
-    v35 = [v34 dateValue];
-    if (v35)
+    v34 = [metadataCopy objectAtIndex:v31];
+    dateValue = [v34 dateValue];
+    if (dateValue)
     {
-      v33 = v35;
+      date = dateValue;
     }
 
     else
     {
-      v36 = [v34 stringValue];
+      stringValue = [v34 stringValue];
       v37 = +[CAMPersistenceController videoMetadataDateFormatter];
-      v33 = [v37 dateFromString:v36];
+      date = [v37 dateFromString:stringValue];
 
-      v27 = a6;
-      if (!v33)
+      timeCopy2 = time;
+      if (!date)
       {
         goto LABEL_3;
       }
@@ -81,10 +81,10 @@ LABEL_3:
 
 LABEL_11:
     captureDate = v25->_captureDate;
-    v25->_captureDate = v33;
+    v25->_captureDate = date;
 
     v39 = v25;
-    v21 = v41;
+    rLCopy = v41;
   }
 
   return v25;

@@ -1,12 +1,12 @@
 @interface SSPurchaseHistoryItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SSPurchaseHistoryItem)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSPurchaseHistoryItem)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (void)dealloc;
-- (void)setValue:(id)a3 forProperty:(id)a4;
+- (void)setValue:(id)value forProperty:(id)property;
 @end
 
 @implementation SSPurchaseHistoryItem
@@ -18,18 +18,18 @@
   [(SSPurchaseHistoryItem *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4
+- (void)setValue:(id)value forProperty:(id)property
 {
-  v9 = a3;
-  if ([a3 conformsToProtocol:&unk_1F507D4B0])
+  valueCopy = value;
+  if ([value conformsToProtocol:&unk_1F507D4B0])
   {
 
-    v7 = [a3 copy];
+    v7 = [value copy];
   }
 
   else
   {
-    v7 = v9;
+    v7 = valueCopy;
   }
 
   properties = self->_properties;
@@ -39,7 +39,7 @@
     if (v7)
     {
 LABEL_6:
-      [(NSMutableDictionary *)properties setObject:v7 forKey:a4];
+      [(NSMutableDictionary *)properties setObject:v7 forKey:property];
       goto LABEL_9;
     }
   }
@@ -55,21 +55,21 @@ LABEL_6:
     }
   }
 
-  [(NSMutableDictionary *)properties removeObjectForKey:a4];
+  [(NSMutableDictionary *)properties removeObjectForKey:property];
 LABEL_9:
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_properties objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_properties objectForKey:property];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(NSMutableDictionary *)self->_properties mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(NSMutableDictionary *)self->_properties mutableCopyWithZone:zone];
   return v5;
 }
 
@@ -80,9 +80,9 @@ LABEL_9:
   return v3;
 }
 
-- (SSPurchaseHistoryItem)initWithXPCEncoding:(id)a3
+- (SSPurchaseHistoryItem)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSPurchaseHistoryItem;
@@ -90,7 +90,7 @@ LABEL_9:
     if (v5)
     {
       objc_opt_class();
-      v7 = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v7 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
 
       v5->_properties = [(__CFArray *)v7 mutableCopy];
     }
@@ -112,7 +112,7 @@ LABEL_9:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", -[SSPurchaseHistoryItem description](&v3, sel_description), self->_properties];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -121,7 +121,7 @@ LABEL_9:
   }
 
   properties = self->_properties;
-  if (properties == *(a3 + 1))
+  if (properties == *(equal + 1))
   {
     return 1;
   }

@@ -3,28 +3,28 @@
 - (AWUnitTestSampler)init;
 - (id)_connect;
 - (id)connect;
-- (id)invokeSampler:(id)a3;
-- (void)getStatsWithBlock:(id)a3;
+- (id)invokeSampler:(id)sampler;
+- (void)getStatsWithBlock:(id)block;
 - (void)resetStats;
-- (void)setCarPlayConnected:(BOOL)a3;
-- (void)setDisplayState:(BOOL)a3;
-- (void)setPearlErrorState:(BOOL)a3;
-- (void)setSampleState:(BOOL)a3;
-- (void)setSampleState:(BOOL)a3 deliverEvent:(BOOL)a4;
-- (void)setSmartCoverClosed:(BOOL)a3;
+- (void)setCarPlayConnected:(BOOL)connected;
+- (void)setDisplayState:(BOOL)state;
+- (void)setPearlErrorState:(BOOL)state;
+- (void)setSampleState:(BOOL)state;
+- (void)setSampleState:(BOOL)state deliverEvent:(BOOL)event;
+- (void)setSmartCoverClosed:(BOOL)closed;
 @end
 
 @implementation AWUnitTestSampler
 
-- (void)setPearlErrorState:(BOOL)a3
+- (void)setPearlErrorState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v18 = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__AWUnitTestSampler_setPearlErrorState___block_invoke;
   v10[3] = &__block_descriptor_33_e38___NSError_16__0___AWUnitTestSampler__8l;
-  v11 = a3;
+  stateCopy2 = state;
   v4 = [(AWUnitTestSampler *)self invokeSampler:v10];
   if (v4 && currentLogLevel >= 3)
   {
@@ -45,7 +45,7 @@
       v9 = "clear";
       *buf = 134218498;
       v13 = v8;
-      if (v3)
+      if (stateCopy)
       {
         v9 = "set";
       }
@@ -95,15 +95,15 @@ void __40__AWUnitTestSampler_setPearlErrorState___block_invoke_2(uint64_t a1, vo
   *(v3 + 40) = 0;
 }
 
-- (void)setCarPlayConnected:(BOOL)a3
+- (void)setCarPlayConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v18 = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__AWUnitTestSampler_setCarPlayConnected___block_invoke;
   v10[3] = &__block_descriptor_33_e38___NSError_16__0___AWUnitTestSampler__8l;
-  v11 = a3;
+  connectedCopy2 = connected;
   v4 = [(AWUnitTestSampler *)self invokeSampler:v10];
   if (v4 && currentLogLevel >= 3)
   {
@@ -124,7 +124,7 @@ void __40__AWUnitTestSampler_setPearlErrorState___block_invoke_2(uint64_t a1, vo
       v9 = "disconnected";
       *buf = 134218498;
       v13 = v8;
-      if (v3)
+      if (connectedCopy)
       {
         v9 = "connected";
       }
@@ -174,15 +174,15 @@ void __41__AWUnitTestSampler_setCarPlayConnected___block_invoke_2(uint64_t a1, v
   *(v3 + 40) = 0;
 }
 
-- (void)setSmartCoverClosed:(BOOL)a3
+- (void)setSmartCoverClosed:(BOOL)closed
 {
-  v3 = a3;
+  closedCopy = closed;
   v18 = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__AWUnitTestSampler_setSmartCoverClosed___block_invoke;
   v10[3] = &__block_descriptor_33_e38___NSError_16__0___AWUnitTestSampler__8l;
-  v11 = a3;
+  closedCopy2 = closed;
   v4 = [(AWUnitTestSampler *)self invokeSampler:v10];
   if (v4 && currentLogLevel >= 3)
   {
@@ -203,7 +203,7 @@ void __41__AWUnitTestSampler_setCarPlayConnected___block_invoke_2(uint64_t a1, v
       v9 = "open";
       *buf = 134218498;
       v13 = v8;
-      if (v3)
+      if (closedCopy)
       {
         v9 = "closed";
       }
@@ -253,16 +253,16 @@ void __41__AWUnitTestSampler_setSmartCoverClosed___block_invoke_2(uint64_t a1, v
   *(v3 + 40) = 0;
 }
 
-- (void)setSampleState:(BOOL)a3 deliverEvent:(BOOL)a4
+- (void)setSampleState:(BOOL)state deliverEvent:(BOOL)event
 {
-  v4 = a3;
+  stateCopy = state;
   v20 = *MEMORY[0x1E69E9840];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__AWUnitTestSampler_setSampleState_deliverEvent___block_invoke;
   v11[3] = &__block_descriptor_34_e38___NSError_16__0___AWUnitTestSampler__8l;
-  v12 = a3;
-  v13 = a4;
+  stateCopy2 = state;
+  eventCopy = event;
   v5 = [(AWUnitTestSampler *)self invokeSampler:v11];
   if (v5 && currentLogLevel >= 3)
   {
@@ -283,7 +283,7 @@ void __41__AWUnitTestSampler_setSmartCoverClosed___block_invoke_2(uint64_t a1, v
       v10 = "absent";
       *buf = 134218498;
       v15 = v9;
-      if (v4)
+      if (stateCopy)
       {
         v10 = "present";
       }
@@ -334,15 +334,15 @@ void __49__AWUnitTestSampler_setSampleState_deliverEvent___block_invoke_2(uint64
   *(v3 + 40) = 0;
 }
 
-- (void)setSampleState:(BOOL)a3
+- (void)setSampleState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v18 = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__AWUnitTestSampler_setSampleState___block_invoke;
   v10[3] = &__block_descriptor_33_e38___NSError_16__0___AWUnitTestSampler__8l;
-  v11 = a3;
+  stateCopy2 = state;
   v4 = [(AWUnitTestSampler *)self invokeSampler:v10];
   if (v4 && currentLogLevel >= 3)
   {
@@ -363,7 +363,7 @@ void __49__AWUnitTestSampler_setSampleState_deliverEvent___block_invoke_2(uint64
       v9 = "absent";
       *buf = 134218498;
       v13 = v8;
-      if (v3)
+      if (stateCopy)
       {
         v9 = "present";
       }
@@ -413,15 +413,15 @@ void __36__AWUnitTestSampler_setSampleState___block_invoke_2(uint64_t a1, void *
   *(v3 + 40) = 0;
 }
 
-- (void)setDisplayState:(BOOL)a3
+- (void)setDisplayState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v18 = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__AWUnitTestSampler_setDisplayState___block_invoke;
   v10[3] = &__block_descriptor_33_e38___NSError_16__0___AWUnitTestSampler__8l;
-  v11 = a3;
+  stateCopy2 = state;
   v4 = [(AWUnitTestSampler *)self invokeSampler:v10];
   if (v4 && currentLogLevel >= 3)
   {
@@ -442,7 +442,7 @@ void __36__AWUnitTestSampler_setSampleState___block_invoke_2(uint64_t a1, void *
       v9 = "off";
       *buf = 134218498;
       v13 = v8;
-      if (v3)
+      if (stateCopy)
       {
         v9 = "on";
       }
@@ -533,10 +533,10 @@ void __37__AWUnitTestSampler_setDisplayState___block_invoke_2(uint64_t a1, void 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getStatsWithBlock:(id)a3
+- (void)getStatsWithBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3810000000;
@@ -574,10 +574,10 @@ void __37__AWUnitTestSampler_setDisplayState___block_invoke_2(uint64_t a1, void 
     }
   }
 
-  v7 = v4[2];
+  v7 = blockCopy[2];
   *buf = *(v13 + 2);
   *&buf[16] = v13[6];
-  v7(v4, buf);
+  v7(blockCopy, buf);
 
   _Block_object_dispose(&v12, 8);
   v8 = *MEMORY[0x1E69E9840];
@@ -603,9 +603,9 @@ __n128 __39__AWUnitTestSampler_getStatsWithBlock___block_invoke_2(uint64_t a1, _
   return result;
 }
 
-- (id)invokeSampler:(id)a3
+- (id)invokeSampler:(id)sampler
 {
-  v4 = a3;
+  samplerCopy = sampler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -617,10 +617,10 @@ __n128 __39__AWUnitTestSampler_getStatsWithBlock___block_invoke_2(uint64_t a1, _
   block[1] = 3221225472;
   block[2] = __35__AWUnitTestSampler_invokeSampler___block_invoke;
   block[3] = &unk_1E7F37A20;
-  v10 = v4;
+  v10 = samplerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = samplerCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -834,7 +834,7 @@ LABEL_33:
   v6[2] = __29__AWUnitTestSampler__connect__block_invoke;
   v6[3] = &unk_1E7F379F8;
   v6[4] = self;
-  v2 = self;
+  selfCopy = self;
   v3 = MEMORY[0x1BFB0D030](v6);
   v4 = [AWServiceManager invokeWithService:v3];
 
@@ -873,7 +873,7 @@ uint64_t __29__AWUnitTestSampler__connect__block_invoke(uint64_t a1, void *a2)
   block[1] = 3221225472;
   block[2] = __34__AWUnitTestSampler_sharedSampler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSampler_onceToken != -1)
   {
     dispatch_once(&sharedSampler_onceToken, block);

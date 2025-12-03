@@ -1,11 +1,11 @@
 @interface NWSAlgosScoreDataCSV
 - (NWSAlgosScoreDataCSV)init;
-- (id)readData:(id)a3;
-- (id)readData:(id)a3 catchException:(BOOL)a4;
-- (id)readDirectoryAndScore:(id)a3 score:(id)a4 options:(id)a5;
+- (id)readData:(id)data;
+- (id)readData:(id)data catchException:(BOOL)exception;
+- (id)readDirectoryAndScore:(id)score score:(id)a4 options:(id)options;
 - (int)transformer;
 - (void)dealloc;
-- (void)populateScore:(id)a3;
+- (void)populateScore:(id)score;
 @end
 
 @implementation NWSAlgosScoreDataCSV
@@ -20,8 +20,8 @@
     return v2;
   }
 
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(NWSAlgosScoreDataCSV *)v2 setStatsDict:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(NWSAlgosScoreDataCSV *)v2 setStatsDict:dictionary];
 
   result = malloc_type_calloc(1uLL, 0x18uLL, 0x168BC42DuLL);
   if (result)
@@ -37,10 +37,10 @@
   return result;
 }
 
-- (void)populateScore:(id)a3
+- (void)populateScore:(id)score
 {
-  v4 = a3;
-  [v4 clearStreamRows];
+  scoreCopy = score;
+  [scoreCopy clearStreamRows];
   csvData = self->csvData;
   v6 = *csvData;
   v7 = csvData[1];
@@ -100,7 +100,7 @@ LABEL_36:
           }
         }
 
-        [v4 addStreamFailure:v8 weight:v33];
+        [scoreCopy addStreamFailure:v8 weight:v33];
         v13 = v30;
       }
 
@@ -130,7 +130,7 @@ LABEL_41:
       }
 
 LABEL_23:
-      [v4 addStreamTierSwitch:v8 - v9 end:v32 / 1000.0 quality:v34 weight:v33];
+      [scoreCopy addStreamTierSwitch:v8 - v9 end:v32 / 1000.0 quality:v34 weight:v33];
       goto LABEL_30;
     }
 
@@ -141,7 +141,7 @@ LABEL_24:
     }
 
 LABEL_25:
-    [v4 addStreamStart:0.0 play:v32 / 1000.0];
+    [scoreCopy addStreamStart:0.0 play:v32 / 1000.0];
     if (v8 > 0.5)
     {
       if (v9 == 0.0)
@@ -154,7 +154,7 @@ LABEL_25:
         v12 = v9;
       }
 
-      [v4 addStreamStall:0.0 end:v12 quality:v34 weight:0.1];
+      [scoreCopy addStreamStall:0.0 end:v12 quality:v34 weight:0.1];
     }
 
     goto LABEL_30;
@@ -223,15 +223,15 @@ uint64_t __38__NWSAlgosScoreDataCSV_populateScore___block_invoke(uint64_t a1)
   objc_exception_throw(v2);
 }
 
-- (id)readData:(id)a3 catchException:(BOOL)a4
+- (id)readData:(id)data catchException:(BOOL)exception
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   [(NWSAlgosScoreDataCSV *)self setRawStreamData:0];
-  v6 = [NWSAlgosScoreCSVReader csvReader:v5 header:1];
+  v6 = [NWSAlgosScoreCSVReader csvReader:dataCopy header:1];
   if ([(NWSAlgosScoreDataCSV *)self debug])
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"--> Read %s\n", objc_msgSend(v5, "cStringUsingEncoding:", 4)];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"--> Read %s\n", objc_msgSend(dataCopy, "cStringUsingEncoding:", 4)];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __48__NWSAlgosScoreDataCSV_readData_catchException___block_invoke;
@@ -246,8 +246,8 @@ uint64_t __38__NWSAlgosScoreDataCSV_populateScore___block_invoke(uint64_t a1)
     [v6 debugPrint:10];
   }
 
-  v9 = [v6 error];
-  v10 = v9 == 0;
+  error = [v6 error];
+  v10 = error == 0;
 
   if (v10)
   {
@@ -265,17 +265,17 @@ uint64_t __38__NWSAlgosScoreDataCSV_populateScore___block_invoke(uint64_t a1)
   else
   {
     v11 = *MEMORY[0x277D85DF8];
-    v12 = [v6 error];
-    v13 = [v12 description];
+    error2 = [v6 error];
+    v13 = [error2 description];
     v14 = v13;
     fprintf(v11, "ReadData: %s\n", [v13 cStringUsingEncoding:4]);
 
     v15 = MEMORY[0x277CBEAD8];
-    v16 = [v6 error];
-    v17 = [v16 description];
+    error3 = [v6 error];
+    v17 = [error3 description];
     v25 = @"error";
-    v18 = [v6 error];
-    v26[0] = v18;
+    error4 = [v6 error];
+    v26[0] = error4;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v20 = [v15 exceptionWithName:@"ReaderError" reason:v17 userInfo:v19];
   }
@@ -301,33 +301,33 @@ uint64_t __48__NWSAlgosScoreDataCSV_readData_catchException___block_invoke_2(uin
   return fputs(v2, v1);
 }
 
-- (id)readData:(id)a3
+- (id)readData:(id)data
 {
-  v3 = [(NWSAlgosScoreDataCSV *)self readData:a3 catchException:0];
+  v3 = [(NWSAlgosScoreDataCSV *)self readData:data catchException:0];
 
   return v3;
 }
 
-- (id)readDirectoryAndScore:(id)a3 score:(id)a4 options:(id)a5
+- (id)readDirectoryAndScore:(id)score score:(id)a4 options:(id)options
 {
   v80[1] = *MEMORY[0x277D85DE8];
-  v52 = a3;
+  scoreCopy = score;
   v8 = a4;
-  v53 = a5;
-  v59 = [MEMORY[0x277CBEB18] array];
-  v60 = [MEMORY[0x277CBEB18] array];
-  v51 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v53 objectForKey:@"continue_on_error"];
-  v55 = [v9 BOOLValue];
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [optionsCopy objectForKey:@"continue_on_error"];
+  bOOLValue = [v9 BOOLValue];
 
-  v58 = [v53 objectForKey:@"tracePath"];
-  if (stat([v52 cStringUsingEncoding:4], &v73))
+  v58 = [optionsCopy objectForKey:@"tracePath"];
+  if (stat([scoreCopy cStringUsingEncoding:4], &v73))
   {
     v79 = @"error";
     v80[0] = [MEMORY[0x277CCABB0] numberWithInt:*__error()];
     obj = v80[0];
-    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:&v79 count:1];
-    [v59 addObject:v10];
+    dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:&v79 count:1];
+    [array addObject:dictionary];
 LABEL_40:
 
     goto LABEL_41;
@@ -336,15 +336,15 @@ LABEL_40:
   v11 = v73.st_mode & 0xF000;
   if (v11 == 0x4000)
   {
-    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v52];
+    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:scoreCopy];
     v78 = *MEMORY[0x277CBE868];
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __60__NWSAlgosScoreDataCSV_readDirectoryAndScore_score_options___block_invoke;
     v71[3] = &__block_descriptor_33_e27_B24__0__NSURL_8__NSError_16l;
-    v72 = v55;
-    v15 = [v51 enumeratorAtURL:v13 includingPropertiesForKeys:v14 options:0 errorHandler:v71];
+    v72 = bOOLValue;
+    v15 = [defaultManager enumeratorAtURL:v13 includingPropertiesForKeys:v14 options:0 errorHandler:v71];
 
     v69 = 0u;
     v70 = 0u;
@@ -365,14 +365,14 @@ LABEL_40:
           }
 
           v19 = *(*(&v67 + 1) + 8 * i);
-          v20 = [v19 pathExtension];
-          if ([v20 isEqualToString:@"csv"])
+          pathExtension = [v19 pathExtension];
+          if ([pathExtension isEqualToString:@"csv"])
           {
-            v21 = [v19 isFileURL];
+            isFileURL = [v19 isFileURL];
 
-            if (v21)
+            if (isFileURL)
             {
-              [v60 addObject:v19];
+              [array2 addObject:v19];
             }
           }
 
@@ -392,8 +392,8 @@ LABEL_40:
 
   if (v11 == 0x8000)
   {
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v52];
-    [v60 addObject:v12];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:scoreCopy];
+    [array2 addObject:v12];
 LABEL_18:
   }
 
@@ -401,7 +401,7 @@ LABEL_18:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v22 = v60;
+  v22 = array2;
   v23 = [v22 countByEnumeratingWithState:&v63 objects:v76 count:16];
   if (!v23)
   {
@@ -421,14 +421,14 @@ LABEL_18:
       }
 
       v25 = *(*(&v63 + 1) + 8 * j);
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      v26 = [v25 path];
-      v27 = [(NWSAlgosScoreDataCSV *)self readData:v26];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      path = [v25 path];
+      v27 = [(NWSAlgosScoreDataCSV *)self readData:path];
 
       if (v27)
       {
-        [v10 setObject:v27 forKeyedSubscript:@"error"];
-        if ((v55 & 1) == 0)
+        [dictionary setObject:v27 forKeyedSubscript:@"error"];
+        if ((bOOLValue & 1) == 0)
         {
 
           goto LABEL_40;
@@ -440,9 +440,9 @@ LABEL_18:
         [(NWSAlgosScoreDataCSV *)self populateScore:v8];
         if (v58)
         {
-          v28 = [v25 path];
-          v29 = [v28 lastPathComponent];
-          v30 = [v29 stringByAppendingPathExtension:@"trace"];
+          path2 = [v25 path];
+          lastPathComponent = [path2 lastPathComponent];
+          v30 = [lastPathComponent stringByAppendingPathExtension:@"trace"];
           v31 = [v58 stringByAppendingPathComponent:v30];
 
           if ([v8 saveEventsToFile:v31])
@@ -466,19 +466,19 @@ LABEL_18:
           }
         }
 
-        v37 = [v25 path];
-        v38 = [v8 scoreStreaming:v37];
-        [v10 setObject:v38 forKeyedSubscript:@"score"];
+        path3 = [v25 path];
+        v38 = [v8 scoreStreaming:path3];
+        [dictionary setObject:v38 forKeyedSubscript:@"score"];
 
-        v39 = [v10 objectForKeyedSubscript:@"score"];
+        v39 = [dictionary objectForKeyedSubscript:@"score"];
         v40 = [v39 objectForKeyedSubscript:@"stats"];
-        v41 = [(NWSAlgosScoreDataCSV *)self statsDict];
-        [v40 addEntriesFromDictionary:v41];
+        statsDict = [(NWSAlgosScoreDataCSV *)self statsDict];
+        [v40 addEntriesFromDictionary:statsDict];
 
         if ([(NWSAlgosScoreDataCSV *)self debug])
         {
           v42 = objc_alloc(MEMORY[0x277CCACA8]);
-          v43 = [v10 objectForKeyedSubscript:@"score"];
+          v43 = [dictionary objectForKeyedSubscript:@"score"];
           v44 = [v43 objectForKeyedSubscript:@"score"];
           v45 = [v44 description];
           v46 = v45;
@@ -494,7 +494,7 @@ LABEL_18:
         }
       }
 
-      [v59 addObject:v10];
+      [array addObject:dictionary];
     }
 
     v23 = [obj countByEnumeratingWithState:&v63 objects:v76 count:16];
@@ -512,7 +512,7 @@ LABEL_42:
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v59;
+  return array;
 }
 
 uint64_t __60__NWSAlgosScoreDataCSV_readDirectoryAndScore_score_options___block_invoke(uint64_t a1, uint64_t a2, void *a3)

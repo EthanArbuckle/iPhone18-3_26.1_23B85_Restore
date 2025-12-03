@@ -17,8 +17,8 @@
   v13 = v6;
   [v4 enumerateKeysAndObjectsUsingBlock:v12];
   v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
-  v8 = [a1 items];
-  v9 = [v8 mutableCopy];
+  items = [self items];
+  v9 = [items mutableCopy];
 
   if ([v9 count])
   {
@@ -33,16 +33,16 @@
 
   [v11 setObject:v7 forKeyedSubscript:@"mf_attachmentsData"];
   [v9 setObject:v11 atIndexedSubscript:0];
-  [a1 setItems:v9];
+  [self setItems:v9];
 }
 
 - (id)mf_getAttachmentsPasteboardRepresentations
 {
   v12 = *MEMORY[0x1E69E9840];
-  v1 = [a1 dataForPasteboardType:@"mf_attachmentsData" inItemSet:0];
-  v2 = [v1 lastObject];
+  v1 = [self dataForPasteboardType:@"mf_attachmentsData" inItemSet:0];
+  lastObject = [v1 lastObject];
 
-  if (v2)
+  if (lastObject)
   {
     v3 = MEMORY[0x1E696ACD0];
     v4 = MEMORY[0x1E695DFD8];
@@ -51,7 +51,7 @@
     v11 = objc_opt_class();
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:3];
     v6 = [v4 setWithArray:{v5, v9, v10}];
-    v7 = [v3 unarchivedObjectOfClasses:v6 fromData:v2 error:0];
+    v7 = [v3 unarchivedObjectOfClasses:v6 fromData:lastObject error:0];
   }
 
   else

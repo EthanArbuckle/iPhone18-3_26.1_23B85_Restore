@@ -1,54 +1,54 @@
 @interface SPParsecFeedbackProxy
 - (SPParsecDatastore)datastore;
-- (void)cardViewDidAppear:(id)a3;
-- (void)cardViewDidDisappear:(id)a3;
-- (void)didAppendLateSections:(id)a3;
-- (void)didClearInput:(id)a3;
-- (void)didEndSearch:(id)a3;
-- (void)didEngageCardSection:(id)a3;
-- (void)didEngageResult:(id)a3;
-- (void)didEngageSection:(id)a3;
-- (void)didEngageSuggestion:(id)a3;
-- (void)didErrorOccur:(id)a3;
-- (void)didGradeResultRelevancy:(id)a3;
-- (void)didPerformCommand:(id)a3;
-- (void)didRankSections:(id)a3;
-- (void)didReceiveResultsAfterTimeout:(id)a3;
-- (void)didReportUserResponseFeedback:(id)a3;
-- (void)didStartSearch:(id)a3;
-- (void)reportFeedback:(id)a3 queryId:(int64_t)a4;
-- (void)resultsDidBecomeVisible:(id)a3;
-- (void)searchViewDidAppear:(id)a3;
-- (void)searchViewDidDisappear:(id)a3;
-- (void)sectionHeaderDidBecomeVisible:(id)a3;
-- (void)sendCustomFeedback:(id)a3;
-- (void)suggestionsDidBecomeVisible:(id)a3;
+- (void)cardViewDidAppear:(id)appear;
+- (void)cardViewDidDisappear:(id)disappear;
+- (void)didAppendLateSections:(id)sections;
+- (void)didClearInput:(id)input;
+- (void)didEndSearch:(id)search;
+- (void)didEngageCardSection:(id)section;
+- (void)didEngageResult:(id)result;
+- (void)didEngageSection:(id)section;
+- (void)didEngageSuggestion:(id)suggestion;
+- (void)didErrorOccur:(id)occur;
+- (void)didGradeResultRelevancy:(id)relevancy;
+- (void)didPerformCommand:(id)command;
+- (void)didRankSections:(id)sections;
+- (void)didReceiveResultsAfterTimeout:(id)timeout;
+- (void)didReportUserResponseFeedback:(id)feedback;
+- (void)didStartSearch:(id)search;
+- (void)reportFeedback:(id)feedback queryId:(int64_t)id;
+- (void)resultsDidBecomeVisible:(id)visible;
+- (void)searchViewDidAppear:(id)appear;
+- (void)searchViewDidDisappear:(id)disappear;
+- (void)sectionHeaderDidBecomeVisible:(id)visible;
+- (void)sendCustomFeedback:(id)feedback;
+- (void)suggestionsDidBecomeVisible:(id)visible;
 @end
 
 @implementation SPParsecFeedbackProxy
 
-- (void)searchViewDidAppear:(id)a3
+- (void)searchViewDidAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   listener = self->_listener;
-  v7 = v4;
+  v7 = appearCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    appearCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener searchViewDidAppear:v4];
+  [(SFFeedbackListener *)listener searchViewDidAppear:appearCopy];
 }
 
-- (void)searchViewDidDisappear:(id)a3
+- (void)searchViewDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   listener = self->_listener;
-  v7 = v4;
+  v7 = disappearCopy;
   if (listener || (WeakRetained = objc_loadWeakRetained(&self->_datastore), [WeakRetained setupSearchSession], WeakRetained, (listener = self->_listener) != 0))
   {
     [(SFFeedbackListener *)listener searchViewDidDisappear:v7];
@@ -57,11 +57,11 @@
   _objc_release_x1();
 }
 
-- (void)cardViewDidDisappear:(id)a3
+- (void)cardViewDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   listener = self->_listener;
-  v7 = v4;
+  v7 = disappearCopy;
   if (listener || (WeakRetained = objc_loadWeakRetained(&self->_datastore), [WeakRetained setupSearchSession], WeakRetained, (listener = self->_listener) != 0))
   {
     [(SFFeedbackListener *)listener cardViewDidDisappear:v7];
@@ -70,350 +70,350 @@
   _objc_release_x1();
 }
 
-- (void)didStartSearch:(id)a3
+- (void)didStartSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   listener = self->_listener;
-  v7 = v4;
+  v7 = searchCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    searchCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didStartSearch:v4];
+  [(SFFeedbackListener *)listener didStartSearch:searchCopy];
 }
 
-- (void)didEndSearch:(id)a3
+- (void)didEndSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   listener = self->_listener;
-  v7 = v4;
+  v7 = searchCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    searchCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didEndSearch:v4];
+  [(SFFeedbackListener *)listener didEndSearch:searchCopy];
 }
 
-- (void)didRankSections:(id)a3
+- (void)didRankSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   listener = self->_listener;
-  v7 = v4;
+  v7 = sectionsCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    sectionsCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didRankSections:v4];
+  [(SFFeedbackListener *)listener didRankSections:sectionsCopy];
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   listener = self->_listener;
-  v7 = v4;
+  v7 = resultCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    resultCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didEngageResult:v4];
+  [(SFFeedbackListener *)listener didEngageResult:resultCopy];
 }
 
-- (void)didEngageSuggestion:(id)a3
+- (void)didEngageSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   listener = self->_listener;
-  v7 = v4;
+  v7 = suggestionCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    suggestionCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didEngageSuggestion:v4];
+  [(SFFeedbackListener *)listener didEngageSuggestion:suggestionCopy];
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   listener = self->_listener;
-  v7 = v4;
+  v7 = sectionCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    sectionCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didEngageCardSection:v4];
+  [(SFFeedbackListener *)listener didEngageCardSection:sectionCopy];
 }
 
-- (void)didErrorOccur:(id)a3
+- (void)didErrorOccur:(id)occur
 {
-  v4 = a3;
+  occurCopy = occur;
   listener = self->_listener;
-  v7 = v4;
+  v7 = occurCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    occurCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didErrorOccur:v4];
+  [(SFFeedbackListener *)listener didErrorOccur:occurCopy];
 }
 
-- (void)sendCustomFeedback:(id)a3
+- (void)sendCustomFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   listener = self->_listener;
-  v7 = v4;
+  v7 = feedbackCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    feedbackCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener sendCustomFeedback:v4];
+  [(SFFeedbackListener *)listener sendCustomFeedback:feedbackCopy];
 }
 
-- (void)resultsDidBecomeVisible:(id)a3
+- (void)resultsDidBecomeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   listener = self->_listener;
-  v7 = v4;
+  v7 = visibleCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    visibleCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener resultsDidBecomeVisible:v4];
+  [(SFFeedbackListener *)listener resultsDidBecomeVisible:visibleCopy];
 }
 
-- (void)suggestionsDidBecomeVisible:(id)a3
+- (void)suggestionsDidBecomeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   listener = self->_listener;
-  v9 = v4;
+  v9 = visibleCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v9;
+    visibleCopy = v9;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener suggestionsDidBecomeVisible:v4];
+  [(SFFeedbackListener *)listener suggestionsDidBecomeVisible:visibleCopy];
   v7 = xpc_BOOL_create(self->_listener != 0);
   v8 = sub_100060020("suggestionsDidBecomeVisible", v7);
   analytics_send_event();
 }
 
-- (void)didReceiveResultsAfterTimeout:(id)a3
+- (void)didReceiveResultsAfterTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   listener = self->_listener;
-  v7 = v4;
+  v7 = timeoutCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    timeoutCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didReceiveResultsAfterTimeout:v4];
+  [(SFFeedbackListener *)listener didReceiveResultsAfterTimeout:timeoutCopy];
 }
 
-- (void)didAppendLateSections:(id)a3
+- (void)didAppendLateSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   listener = self->_listener;
-  v9 = v4;
+  v9 = sectionsCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v9;
+    sectionsCopy = v9;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didAppendLateSections:v4];
+  [(SFFeedbackListener *)listener didAppendLateSections:sectionsCopy];
   v7 = xpc_BOOL_create(self->_listener != 0);
   v8 = sub_100060020("didAppendLateSections", v7);
   analytics_send_event();
 }
 
-- (void)didClearInput:(id)a3
+- (void)didClearInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   listener = self->_listener;
-  v7 = v4;
+  v7 = inputCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    inputCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didClearInput:v4];
+  [(SFFeedbackListener *)listener didClearInput:inputCopy];
 }
 
-- (void)sectionHeaderDidBecomeVisible:(id)a3
+- (void)sectionHeaderDidBecomeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   listener = self->_listener;
-  v7 = v4;
+  v7 = visibleCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    visibleCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener sectionHeaderDidBecomeVisible:v4];
+  [(SFFeedbackListener *)listener sectionHeaderDidBecomeVisible:visibleCopy];
 }
 
-- (void)cardViewDidAppear:(id)a3
+- (void)cardViewDidAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   listener = self->_listener;
-  v7 = v4;
+  v7 = appearCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    appearCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener cardViewDidAppear:v4];
+  [(SFFeedbackListener *)listener cardViewDidAppear:appearCopy];
 }
 
-- (void)didPerformCommand:(id)a3
+- (void)didPerformCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   listener = self->_listener;
-  v7 = v4;
+  v7 = commandCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    commandCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didPerformCommand:v4];
+  [(SFFeedbackListener *)listener didPerformCommand:commandCopy];
 }
 
-- (void)reportFeedback:(id)a3 queryId:(int64_t)a4
+- (void)reportFeedback:(id)feedback queryId:(int64_t)id
 {
-  v6 = a3;
+  feedbackCopy = feedback;
   listener = self->_listener;
-  v9 = v6;
+  v9 = feedbackCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v6 = v9;
+    feedbackCopy = v9;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener reportFeedback:v6 queryId:a4];
+  [(SFFeedbackListener *)listener reportFeedback:feedbackCopy queryId:id];
 }
 
-- (void)didGradeResultRelevancy:(id)a3
+- (void)didGradeResultRelevancy:(id)relevancy
 {
-  v4 = a3;
+  relevancyCopy = relevancy;
   listener = self->_listener;
-  v7 = v4;
+  v7 = relevancyCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    relevancyCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didGradeResultRelevancy:v4];
+  [(SFFeedbackListener *)listener didGradeResultRelevancy:relevancyCopy];
 }
 
-- (void)didEngageSection:(id)a3
+- (void)didEngageSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   listener = self->_listener;
-  v7 = v4;
+  v7 = sectionCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    sectionCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didEngageSection:v4];
+  [(SFFeedbackListener *)listener didEngageSection:sectionCopy];
 }
 
-- (void)didReportUserResponseFeedback:(id)a3
+- (void)didReportUserResponseFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   listener = self->_listener;
-  v7 = v4;
+  v7 = feedbackCopy;
   if (!listener)
   {
     WeakRetained = objc_loadWeakRetained(&self->_datastore);
     [WeakRetained setupSearchSession];
 
-    v4 = v7;
+    feedbackCopy = v7;
     listener = self->_listener;
   }
 
-  [(SFFeedbackListener *)listener didReportUserResponseFeedback:v4];
+  [(SFFeedbackListener *)listener didReportUserResponseFeedback:feedbackCopy];
 }
 
 - (SPParsecDatastore)datastore

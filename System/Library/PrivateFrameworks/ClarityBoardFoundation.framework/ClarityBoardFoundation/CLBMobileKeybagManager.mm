@@ -1,11 +1,11 @@
 @interface CLBMobileKeybagManager
 + (CLBMobileKeybagManager)sharedInstance;
-- (BOOL)unlockWithPasscode:(id)a3 error:(id *)a4;
+- (BOOL)unlockWithPasscode:(id)passcode error:(id *)error;
 - (CLBMobileKeybagManager)init;
 - (double)backOffTime;
-- (id)registerFirstUnlockBlock:(id)a3;
-- (id)registerLockStateChangedBlock:(id)a3;
-- (int64_t)_lockStateFromDictionary:(id)a3;
+- (id)registerFirstUnlockBlock:(id)block;
+- (id)registerLockStateChangedBlock:(id)block;
+- (int64_t)_lockStateFromDictionary:(id)dictionary;
 - (int64_t)currentState;
 - (unint64_t)failedAttemptCount;
 - (void)_handleFirstUnlock;
@@ -13,8 +13,8 @@
 - (void)_queue_updateLockedState;
 - (void)dealloc;
 - (void)lock;
-- (void)unregisterFirstUnlockBlockWithIdentifier:(id)a3;
-- (void)unregisterLockStateChangedBlockWithIdentifier:(id)a3;
+- (void)unregisterFirstUnlockBlockWithIdentifier:(id)identifier;
+- (void)unregisterLockStateChangedBlockWithIdentifier:(id)identifier;
 @end
 
 @implementation CLBMobileKeybagManager
@@ -53,13 +53,13 @@ uint64_t __40__CLBMobileKeybagManager_sharedInstance__block_invoke()
     callOutQueue = v2->_callOutQueue;
     v2->_callOutQueue = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     stateChangedCallbackBlocks = v2->_stateChangedCallbackBlocks;
-    v2->_stateChangedCallbackBlocks = v7;
+    v2->_stateChangedCallbackBlocks = dictionary;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     firstUnlockCallbackBlocks = v2->_firstUnlockCallbackBlocks;
-    v2->_firstUnlockCallbackBlocks = v9;
+    v2->_firstUnlockCallbackBlocks = dictionary2;
 
     objc_initWeak(&location, v2);
     v11 = v2->_callOutQueue;
@@ -197,10 +197,10 @@ uint64_t __37__CLBMobileKeybagManager_backOffTime__block_invoke(uint64_t a1)
   v5[4] = self;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  v3 = [v7[5] unsignedIntegerValue];
+  unsignedIntegerValue = [v7[5] unsignedIntegerValue];
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 uint64_t __44__CLBMobileKeybagManager_failedAttemptCount__block_invoke(uint64_t a1)
@@ -213,9 +213,9 @@ uint64_t __44__CLBMobileKeybagManager_failedAttemptCount__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)unlockWithPasscode:(id)a3 error:(id *)a4
+- (BOOL)unlockWithPasscode:(id)passcode error:(id *)error
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -231,15 +231,15 @@ uint64_t __44__CLBMobileKeybagManager_failedAttemptCount__block_invoke(uint64_t 
   v11[1] = 3221225472;
   v11[2] = __51__CLBMobileKeybagManager_unlockWithPasscode_error___block_invoke;
   v11[3] = &unk_278DBEA28;
-  v8 = v6;
+  v8 = passcodeCopy;
   v14 = &v16;
   v15 = &v20;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   dispatch_sync(queue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v9 = *(v17 + 24);
@@ -272,20 +272,20 @@ uint64_t __51__CLBMobileKeybagManager_unlockWithPasscode_error___block_invoke(ui
   return [v6 _queue_updateLockedState];
 }
 
-- (id)registerLockStateChangedBlock:(id)a3
+- (id)registerLockStateChangedBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  blockCopy = block;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__CLBMobileKeybagManager_registerLockStateChangedBlock___block_invoke;
   block[3] = &unk_278DBEA50;
   block[4] = self;
-  v7 = v5;
+  v7 = uUID;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
+  v14 = blockCopy;
+  v8 = blockCopy;
   dispatch_sync(queue, block);
   v9 = v14;
   v10 = v7;
@@ -300,34 +300,34 @@ void __56__CLBMobileKeybagManager_registerLockStateChangedBlock___block_invoke(u
   [*(*(a1 + 32) + 32) setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)unregisterLockStateChangedBlockWithIdentifier:(id)a3
+- (void)unregisterLockStateChangedBlockWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CLBMobileKeybagManager_unregisterLockStateChangedBlockWithIdentifier___block_invoke;
   v7[3] = &unk_278DBEA78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)registerFirstUnlockBlock:(id)a3
+- (id)registerFirstUnlockBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  blockCopy = block;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CLBMobileKeybagManager_registerFirstUnlockBlock___block_invoke;
   block[3] = &unk_278DBEA50;
   block[4] = self;
-  v7 = v5;
+  v7 = uUID;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
+  v14 = blockCopy;
+  v8 = blockCopy;
   dispatch_sync(queue, block);
   v9 = v14;
   v10 = v7;
@@ -342,28 +342,28 @@ void __51__CLBMobileKeybagManager_registerFirstUnlockBlock___block_invoke(uint64
   [*(*(a1 + 32) + 40) setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)unregisterFirstUnlockBlockWithIdentifier:(id)a3
+- (void)unregisterFirstUnlockBlockWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__CLBMobileKeybagManager_unregisterFirstUnlockBlockWithIdentifier___block_invoke;
   v7[3] = &unk_278DBEA78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
 - (void)_handleKeybagStatusChanged
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFA5D0] commonLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  commonLog = [MEMORY[0x277CFA5D0] commonLog];
+  if (os_log_type_enabled(commonLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_24350A000, v3, OS_LOG_TYPE_DEFAULT, "Handle keybag status changed", buf, 2u);
+    _os_log_impl(&dword_24350A000, commonLog, OS_LOG_TYPE_DEFAULT, "Handle keybag status changed", buf, 2u);
   }
 
   callOutQueue = self->_callOutQueue;
@@ -431,11 +431,11 @@ uint64_t __52__CLBMobileKeybagManager__handleKeybagStatusChanged__block_invoke(u
 - (void)_handleFirstUnlock
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFA5D0] commonLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  commonLog = [MEMORY[0x277CFA5D0] commonLog];
+  if (os_log_type_enabled(commonLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_24350A000, v3, OS_LOG_TYPE_DEFAULT, "Handle first unlock", buf, 2u);
+    _os_log_impl(&dword_24350A000, commonLog, OS_LOG_TYPE_DEFAULT, "Handle first unlock", buf, 2u);
   }
 
   callOutQueue = self->_callOutQueue;
@@ -507,8 +507,8 @@ uint64_t __44__CLBMobileKeybagManager__handleFirstUnlock__block_invoke(uint64_t 
   lockedState = self->_lockedState;
   self->_lockedState = v4;
 
-  v6 = [MEMORY[0x277CFA5D0] commonLog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  commonLog = [MEMORY[0x277CFA5D0] commonLog];
+  if (os_log_type_enabled(commonLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [(CLBMobileKeybagManager *)self _lockStateFromDictionary:self->_lockedState];
     if (v7 >= 8)
@@ -523,20 +523,20 @@ uint64_t __44__CLBMobileKeybagManager__handleFirstUnlock__block_invoke(uint64_t 
 
     *buf = 138412290;
     v11 = v8;
-    _os_log_impl(&dword_24350A000, v6, OS_LOG_TYPE_DEFAULT, "Locked state: %@", buf, 0xCu);
+    _os_log_impl(&dword_24350A000, commonLog, OS_LOG_TYPE_DEFAULT, "Locked state: %@", buf, 0xCu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_lockStateFromDictionary:(id)a3
+- (int64_t)_lockStateFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277D28B00]];
-  v4 = [v3 integerValue];
-  v5 = v4;
-  if (v4 <= 7)
+  v3 = [dictionary objectForKeyedSubscript:*MEMORY[0x277D28B00]];
+  integerValue = [v3 integerValue];
+  v5 = integerValue;
+  if (integerValue <= 7)
   {
-    v5 = qword_243518948[v4];
+    v5 = qword_243518948[integerValue];
   }
 
   return v5;

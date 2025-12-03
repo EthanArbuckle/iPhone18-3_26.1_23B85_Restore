@@ -1,5 +1,5 @@
 @interface _AFSiriActivationContextMutation
-- (_AFSiriActivationContextMutation)initWithBase:(id)a3;
+- (_AFSiriActivationContextMutation)initWithBase:(id)base;
 - (id)getDeviceID;
 - (id)getUserInfo;
 - (int64_t)getEvent;
@@ -14,30 +14,30 @@
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_userInfo;
+    userInfo = self->_userInfo;
   }
 
   else
   {
-    v2 = [(AFSiriActivationContext *)self->_base userInfo];
+    userInfo = [(AFSiriActivationContext *)self->_base userInfo];
   }
 
-  return v2;
+  return userInfo;
 }
 
 - (id)getDeviceID
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_deviceID;
+    deviceID = self->_deviceID;
   }
 
   else
   {
-    v2 = [(AFSiriActivationContext *)self->_base deviceID];
+    deviceID = [(AFSiriActivationContext *)self->_base deviceID];
   }
 
-  return v2;
+  return deviceID;
 }
 
 - (unint64_t)getOptions
@@ -92,16 +92,16 @@
   }
 }
 
-- (_AFSiriActivationContextMutation)initWithBase:(id)a3
+- (_AFSiriActivationContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSiriActivationContextMutation;
   v6 = [(_AFSiriActivationContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,6 +1,6 @@
 @interface AVRoutingDispatchOnce
 - (AVRoutingDispatchOnce)init;
-- (void)runBlockOnce:(id)a3;
+- (void)runBlockOnce:(id)once;
 @end
 
 @implementation AVRoutingDispatchOnce
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (void)runBlockOnce:(id)a3
+- (void)runBlockOnce:(id)once
 {
   os_unfair_lock_lock(&self->_lock);
   if (!self->_testFlag)
   {
     self->_testFlag = 1;
-    (*(a3 + 2))(a3);
+    (*(once + 2))(once);
   }
 
   os_unfair_lock_unlock(&self->_lock);

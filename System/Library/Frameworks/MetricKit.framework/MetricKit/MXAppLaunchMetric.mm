@@ -1,18 +1,18 @@
 @interface MXAppLaunchMetric
-- (MXAppLaunchMetric)initWithCoder:(id)a3;
-- (MXAppLaunchMetric)initWithLaunchTimeData:(id)a3 withResumeTimeData:(id)a4;
-- (MXAppLaunchMetric)initWithLaunchTimeData:(id)a3 withResumeTimeData:(id)a4 withActivationTimeData:(id)a5;
-- (MXAppLaunchMetric)initWithLaunchTimeData:(id)a3 withResumeTimeData:(id)a4 withActivationTimeData:(id)a5 withExtendedLaunchTimeData:(id)a6;
+- (MXAppLaunchMetric)initWithCoder:(id)coder;
+- (MXAppLaunchMetric)initWithLaunchTimeData:(id)data withResumeTimeData:(id)timeData;
+- (MXAppLaunchMetric)initWithLaunchTimeData:(id)data withResumeTimeData:(id)timeData withActivationTimeData:(id)activationTimeData;
+- (MXAppLaunchMetric)initWithLaunchTimeData:(id)data withResumeTimeData:(id)timeData withActivationTimeData:(id)activationTimeData withExtendedLaunchTimeData:(id)launchTimeData;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXAppLaunchMetric
 
-- (MXAppLaunchMetric)initWithLaunchTimeData:(id)a3 withResumeTimeData:(id)a4
+- (MXAppLaunchMetric)initWithLaunchTimeData:(id)data withResumeTimeData:(id)timeData
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  timeDataCopy = timeData;
   v15.receiver = self;
   v15.super_class = MXAppLaunchMetric;
   v8 = [(MXMetric *)&v15 init];
@@ -22,13 +22,13 @@
   }
 
   v9 = 0;
-  if (v6 && v7)
+  if (dataCopy && timeDataCopy)
   {
-    v10 = [[MXHistogram alloc] initWithHistogramBucketData:v6];
+    v10 = [[MXHistogram alloc] initWithHistogramBucketData:dataCopy];
     histogrammedTimeToFirstDraw = v8->_histogrammedTimeToFirstDraw;
     v8->_histogrammedTimeToFirstDraw = v10;
 
-    v12 = [[MXHistogram alloc] initWithHistogramBucketData:v7];
+    v12 = [[MXHistogram alloc] initWithHistogramBucketData:timeDataCopy];
     histogrammedApplicationResumeTime = v8->_histogrammedApplicationResumeTime;
     v8->_histogrammedApplicationResumeTime = v12;
 
@@ -39,11 +39,11 @@ LABEL_5:
   return v9;
 }
 
-- (MXAppLaunchMetric)initWithLaunchTimeData:(id)a3 withResumeTimeData:(id)a4 withActivationTimeData:(id)a5
+- (MXAppLaunchMetric)initWithLaunchTimeData:(id)data withResumeTimeData:(id)timeData withActivationTimeData:(id)activationTimeData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  timeDataCopy = timeData;
+  activationTimeDataCopy = activationTimeData;
   v20.receiver = self;
   v20.super_class = MXAppLaunchMetric;
   v11 = [(MXMetric *)&v20 init];
@@ -53,17 +53,17 @@ LABEL_5:
   }
 
   v12 = 0;
-  if (v8 && v9 && v10)
+  if (dataCopy && timeDataCopy && activationTimeDataCopy)
   {
-    v13 = [[MXHistogram alloc] initWithHistogramBucketData:v8];
+    v13 = [[MXHistogram alloc] initWithHistogramBucketData:dataCopy];
     histogrammedTimeToFirstDraw = v11->_histogrammedTimeToFirstDraw;
     v11->_histogrammedTimeToFirstDraw = v13;
 
-    v15 = [[MXHistogram alloc] initWithHistogramBucketData:v9];
+    v15 = [[MXHistogram alloc] initWithHistogramBucketData:timeDataCopy];
     histogrammedApplicationResumeTime = v11->_histogrammedApplicationResumeTime;
     v11->_histogrammedApplicationResumeTime = v15;
 
-    v17 = [[MXHistogram alloc] initWithHistogramBucketData:v10];
+    v17 = [[MXHistogram alloc] initWithHistogramBucketData:activationTimeDataCopy];
     histogrammedOptimizedTimeToFirstDraw = v11->_histogrammedOptimizedTimeToFirstDraw;
     v11->_histogrammedOptimizedTimeToFirstDraw = v17;
 
@@ -74,12 +74,12 @@ LABEL_6:
   return v12;
 }
 
-- (MXAppLaunchMetric)initWithLaunchTimeData:(id)a3 withResumeTimeData:(id)a4 withActivationTimeData:(id)a5 withExtendedLaunchTimeData:(id)a6
+- (MXAppLaunchMetric)initWithLaunchTimeData:(id)data withResumeTimeData:(id)timeData withActivationTimeData:(id)activationTimeData withExtendedLaunchTimeData:(id)launchTimeData
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  timeDataCopy = timeData;
+  activationTimeDataCopy = activationTimeData;
+  launchTimeDataCopy = launchTimeData;
   v25.receiver = self;
   v25.super_class = MXAppLaunchMetric;
   v14 = [(MXMetric *)&v25 init];
@@ -89,21 +89,21 @@ LABEL_6:
   }
 
   v15 = 0;
-  if (v10 && v11 && v12 && v13)
+  if (dataCopy && timeDataCopy && activationTimeDataCopy && launchTimeDataCopy)
   {
-    v16 = [[MXHistogram alloc] initWithHistogramBucketData:v10];
+    v16 = [[MXHistogram alloc] initWithHistogramBucketData:dataCopy];
     histogrammedTimeToFirstDraw = v14->_histogrammedTimeToFirstDraw;
     v14->_histogrammedTimeToFirstDraw = v16;
 
-    v18 = [[MXHistogram alloc] initWithHistogramBucketData:v11];
+    v18 = [[MXHistogram alloc] initWithHistogramBucketData:timeDataCopy];
     histogrammedApplicationResumeTime = v14->_histogrammedApplicationResumeTime;
     v14->_histogrammedApplicationResumeTime = v18;
 
-    v20 = [[MXHistogram alloc] initWithHistogramBucketData:v12];
+    v20 = [[MXHistogram alloc] initWithHistogramBucketData:activationTimeDataCopy];
     histogrammedOptimizedTimeToFirstDraw = v14->_histogrammedOptimizedTimeToFirstDraw;
     v14->_histogrammedOptimizedTimeToFirstDraw = v20;
 
-    v22 = [[MXHistogram alloc] initWithHistogramBucketData:v13];
+    v22 = [[MXHistogram alloc] initWithHistogramBucketData:launchTimeDataCopy];
     histogrammedExtendedLaunch = v14->_histogrammedExtendedLaunch;
     v14->_histogrammedExtendedLaunch = v22;
 
@@ -114,37 +114,37 @@ LABEL_7:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   histogrammedTimeToFirstDraw = self->_histogrammedTimeToFirstDraw;
-  v5 = a3;
-  [v5 encodeObject:histogrammedTimeToFirstDraw forKey:@"histogrammedTimeToFirstDrawKey"];
-  [v5 encodeObject:self->_histogrammedApplicationResumeTime forKey:@"histogrammedResumeTime"];
-  [v5 encodeObject:self->_histogrammedOptimizedTimeToFirstDraw forKey:@"histogrammedOptimizedTimeToFirstDrawKey"];
-  [v5 encodeObject:self->_histogrammedExtendedLaunch forKey:@"histogrammedExtendedLaunch"];
+  coderCopy = coder;
+  [coderCopy encodeObject:histogrammedTimeToFirstDraw forKey:@"histogrammedTimeToFirstDrawKey"];
+  [coderCopy encodeObject:self->_histogrammedApplicationResumeTime forKey:@"histogrammedResumeTime"];
+  [coderCopy encodeObject:self->_histogrammedOptimizedTimeToFirstDraw forKey:@"histogrammedOptimizedTimeToFirstDrawKey"];
+  [coderCopy encodeObject:self->_histogrammedExtendedLaunch forKey:@"histogrammedExtendedLaunch"];
 }
 
-- (MXAppLaunchMetric)initWithCoder:(id)a3
+- (MXAppLaunchMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MXAppLaunchMetric;
   v5 = [(MXMetric *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedTimeToFirstDrawKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedTimeToFirstDrawKey"];
     histogrammedTimeToFirstDraw = v5->_histogrammedTimeToFirstDraw;
     v5->_histogrammedTimeToFirstDraw = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedResumeTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedResumeTime"];
     histogrammedApplicationResumeTime = v5->_histogrammedApplicationResumeTime;
     v5->_histogrammedApplicationResumeTime = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedOptimizedTimeToFirstDrawKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedOptimizedTimeToFirstDrawKey"];
     histogrammedOptimizedTimeToFirstDraw = v5->_histogrammedOptimizedTimeToFirstDraw;
     v5->_histogrammedOptimizedTimeToFirstDraw = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedExtendedLaunch"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogrammedExtendedLaunch"];
     histogrammedExtendedLaunch = v5->_histogrammedExtendedLaunch;
     v5->_histogrammedExtendedLaunch = v12;
   }
@@ -158,29 +158,29 @@ LABEL_7:
   histogrammedTimeToFirstDraw = self->_histogrammedTimeToFirstDraw;
   if (histogrammedTimeToFirstDraw)
   {
-    v5 = [(MXHistogram *)histogrammedTimeToFirstDraw toDictionary];
-    [v3 setObject:v5 forKey:@"histogrammedTimeToFirstDrawKey"];
+    toDictionary = [(MXHistogram *)histogrammedTimeToFirstDraw toDictionary];
+    [v3 setObject:toDictionary forKey:@"histogrammedTimeToFirstDrawKey"];
   }
 
   histogrammedApplicationResumeTime = self->_histogrammedApplicationResumeTime;
   if (histogrammedApplicationResumeTime)
   {
-    v7 = [(MXHistogram *)histogrammedApplicationResumeTime toDictionary];
-    [v3 setObject:v7 forKey:@"histogrammedResumeTime"];
+    toDictionary2 = [(MXHistogram *)histogrammedApplicationResumeTime toDictionary];
+    [v3 setObject:toDictionary2 forKey:@"histogrammedResumeTime"];
   }
 
   histogrammedOptimizedTimeToFirstDraw = self->_histogrammedOptimizedTimeToFirstDraw;
   if (histogrammedOptimizedTimeToFirstDraw)
   {
-    v9 = [(MXHistogram *)histogrammedOptimizedTimeToFirstDraw toDictionary];
-    [v3 setObject:v9 forKey:@"histogrammedOptimizedTimeToFirstDrawKey"];
+    toDictionary3 = [(MXHistogram *)histogrammedOptimizedTimeToFirstDraw toDictionary];
+    [v3 setObject:toDictionary3 forKey:@"histogrammedOptimizedTimeToFirstDrawKey"];
   }
 
   histogrammedExtendedLaunch = self->_histogrammedExtendedLaunch;
   if (histogrammedExtendedLaunch)
   {
-    v11 = [(MXHistogram *)histogrammedExtendedLaunch toDictionary];
-    [v3 setObject:v11 forKey:@"histogrammedExtendedLaunch"];
+    toDictionary4 = [(MXHistogram *)histogrammedExtendedLaunch toDictionary];
+    [v3 setObject:toDictionary4 forKey:@"histogrammedExtendedLaunch"];
   }
 
   return v3;

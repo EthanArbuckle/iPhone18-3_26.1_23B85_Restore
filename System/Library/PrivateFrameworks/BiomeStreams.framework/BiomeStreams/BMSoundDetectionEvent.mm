@@ -1,9 +1,9 @@
 @interface BMSoundDetectionEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSoundDetectionEvent)initWithAbsoluteTimestamp:(double)a3 type:(id)a4 customName:(id)a5;
-- (BMSoundDetectionEvent)initWithProto:(id)a3;
-- (BMSoundDetectionEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSoundDetectionEvent)initWithAbsoluteTimestamp:(double)timestamp type:(id)type customName:(id)name;
+- (BMSoundDetectionEvent)initWithProto:(id)proto;
+- (BMSoundDetectionEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,17 +12,17 @@
 
 @implementation BMSoundDetectionEvent
 
-- (BMSoundDetectionEvent)initWithAbsoluteTimestamp:(double)a3 type:(id)a4 customName:(id)a5
+- (BMSoundDetectionEvent)initWithAbsoluteTimestamp:(double)timestamp type:(id)type customName:(id)name
 {
-  v7 = a4;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = BMSoundDetectionEvent;
   v8 = [(BMEventBase *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_absoluteTimestamp = a3;
-    v10 = [v7 copy];
+    v8->_absoluteTimestamp = timestamp;
+    v10 = [typeCopy copy];
     type = v9->_type;
     v9->_type = v10;
   }
@@ -30,40 +30,40 @@
   return v9;
 }
 
-- (BMSoundDetectionEvent)initWithProtoData:(id)a3
+- (BMSoundDetectionEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSoundDetectionEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSoundDetectionEvent alloc] initWithData:dataCopy];
 
     self = [(BMSoundDetectionEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSoundDetectionEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSoundDetectionEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSoundDetectionEvent)initWithProto:(id)a3
+- (BMSoundDetectionEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -79,16 +79,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   [v5 absoluteTimestamp];
   v7 = v6;
-  v8 = [v5 soundDetectionType];
+  soundDetectionType = [v5 soundDetectionType];
 
-  self = [(BMSoundDetectionEvent *)self initWithAbsoluteTimestamp:v8 type:0 customName:v7];
-  v9 = self;
+  self = [(BMSoundDetectionEvent *)self initWithAbsoluteTimestamp:soundDetectionType type:0 customName:v7];
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto
@@ -96,16 +96,16 @@ LABEL_8:
   v3 = objc_alloc_init(BMPBSoundDetectionEvent);
   [(BMSoundDetectionEvent *)self absoluteTimestamp];
   [(BMPBSoundDetectionEvent *)v3 setAbsoluteTimestamp:?];
-  v4 = [(BMSoundDetectionEvent *)self type];
-  [(BMPBSoundDetectionEvent *)v3 setSoundDetectionType:v4];
+  type = [(BMSoundDetectionEvent *)self type];
+  [(BMPBSoundDetectionEvent *)v3 setSoundDetectionType:type];
 
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -114,19 +114,19 @@ LABEL_8:
 {
   [(BMSoundDetectionEvent *)self absoluteTimestamp];
   v4 = (v3 * 1000.0);
-  v5 = [(BMSoundDetectionEvent *)self type];
-  v6 = [v5 hash];
+  type = [(BMSoundDetectionEvent *)self type];
+  v6 = [type hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v6 absoluteTimestamp];
     if (absoluteTimestamp == v8)
@@ -135,8 +135,8 @@ LABEL_8:
       v10 = type;
       if (!type)
       {
-        v3 = [v6 type];
-        if (!v3)
+        type = [v6 type];
+        if (!type)
         {
           v12 = 1;
 LABEL_11:
@@ -147,8 +147,8 @@ LABEL_11:
         v10 = self->_type;
       }
 
-      v11 = [v6 type];
-      v12 = [(NSString *)v10 isEqual:v11];
+      type2 = [v6 type];
+      v12 = [(NSString *)v10 isEqual:type2];
 
       if (!type)
       {
@@ -179,8 +179,8 @@ LABEL_13:
   v5 = MEMORY[0x1E695DF00];
   [(BMSoundDetectionEvent *)self absoluteTimestamp];
   v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
-  v7 = [(BMSoundDetectionEvent *)self type];
-  v8 = [v3 initWithFormat:@"<%@ %p> time: %@, type: %@", v4, self, v6, v7];
+  type = [(BMSoundDetectionEvent *)self type];
+  v8 = [v3 initWithFormat:@"<%@ %p> time: %@, type: %@", v4, self, v6, type];
 
   return v8;
 }

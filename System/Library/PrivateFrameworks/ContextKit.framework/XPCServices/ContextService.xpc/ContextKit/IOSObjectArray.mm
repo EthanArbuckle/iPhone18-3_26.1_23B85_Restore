@@ -1,105 +1,105 @@
 @interface IOSObjectArray
-+ (IOSObjectArray)arrayWithDimensions:(unint64_t)a3 lengths:(const int *)a4 type:(id)a5;
-+ (IOSObjectArray)arrayWithNSArray:(id)a3 type:(id)a4;
-+ (IOSObjectArray)arrayWithObjects:(const void *)a3 count:(unint64_t)a4 type:(id)a5;
++ (IOSObjectArray)arrayWithDimensions:(unint64_t)dimensions lengths:(const int *)lengths type:(id)type;
++ (IOSObjectArray)arrayWithNSArray:(id)array type:(id)type;
++ (IOSObjectArray)arrayWithObjects:(const void *)objects count:(unint64_t)count type:(id)type;
 - (IOSObjectArray)retain;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)arraycopy:(int)a3 destination:(id)a4 dstOffset:(int)a5 length:(int)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)arraycopy:(int)arraycopy destination:(id)destination dstOffset:(int)offset length:(int)length;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 length:(unint64_t)a4;
+- (void)getObjects:(id *)objects length:(unint64_t)length;
 @end
 
 @implementation IOSObjectArray
 
-+ (IOSObjectArray)arrayWithObjects:(const void *)a3 count:(unint64_t)a4 type:(id)a5
++ (IOSObjectArray)arrayWithObjects:(const void *)objects count:(unint64_t)count type:(id)type
 {
-  v5 = a4;
-  v7 = sub_10016E508(a4, a5, 0);
-  memcpy(&v7->elementType_, a3, 8 * v5);
+  countCopy = count;
+  v7 = sub_10016E508(count, type, 0);
+  memcpy(&v7->elementType_, objects, 8 * countCopy);
   return v7;
 }
 
-+ (IOSObjectArray)arrayWithNSArray:(id)a3 type:(id)a4
++ (IOSObjectArray)arrayWithNSArray:(id)array type:(id)type
 {
-  v6 = [a3 count];
-  v7 = sub_10016E508(v6, a4, 0);
-  [a3 getObjects:&v7->elementType_ range:{0, v6}];
+  v6 = [array count];
+  v7 = sub_10016E508(v6, type, 0);
+  [array getObjects:&v7->elementType_ range:{0, v6}];
   return v7;
 }
 
-+ (IOSObjectArray)arrayWithDimensions:(unint64_t)a3 lengths:(const int *)a4 type:(id)a5
++ (IOSObjectArray)arrayWithDimensions:(unint64_t)dimensions lengths:(const int *)lengths type:(id)type
 {
-  v5 = IOSArray_NewArrayWithDimensions(a1, a3, a4);
+  v5 = IOSArray_NewArrayWithDimensions(self, dimensions, lengths);
 
   return v5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  return (&self->elementType_)[a3];
+  return (&self->elementType_)[index];
 }
 
-- (void)getObjects:(id *)a3 length:(unint64_t)a4
+- (void)getObjects:(id *)objects length:(unint64_t)length
 {
-  v4 = a4;
+  lengthCopy = length;
   size = self->super.size_;
-  v8 = (a4 - 1);
-  if (a4 - 1 < 0 || v8 >= size)
+  v8 = (length - 1);
+  if (length - 1 < 0 || v8 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v8);
   }
 
-  if (a4)
+  if (length)
   {
     p_elementType = &self->elementType_;
     do
     {
       v10 = *p_elementType++;
-      *a3++ = v10;
-      --v4;
+      *objects++ = v10;
+      --lengthCopy;
     }
 
-    while (v4);
+    while (lengthCopy);
   }
 }
 
-- (void)arraycopy:(int)a3 destination:(id)a4 dstOffset:(int)a5 length:(int)a6
+- (void)arraycopy:(int)arraycopy destination:(id)destination dstOffset:(int)offset length:(int)length
 {
-  LODWORD(v6) = a6;
-  v7 = a5;
-  v9 = a3;
-  if ((a6 | a3) < 0 || a6 + a3 > self->super.size_)
+  LODWORD(v6) = length;
+  offsetCopy = offset;
+  arraycopyCopy = arraycopy;
+  if ((length | arraycopy) < 0 || length + arraycopy > self->super.size_)
   {
     IOSArray_throwOutOfBounds();
   }
 
-  if ((a6 | a5) < 0 || a6 + a5 > *(a4 + 2))
+  if ((length | offset) < 0 || length + offset > *(destination + 2))
   {
     IOSArray_throwOutOfBounds();
   }
 
-  v11 = [*(a4 + 2) isAssignableFrom:*&self->isRetained_];
-  if (self == a4)
+  v11 = [*(destination + 2) isAssignableFrom:*&self->isRetained_];
+  if (self == destination)
   {
     p_elementType = &self->elementType_;
-    if (*(a4 + 12))
+    if (*(destination + 12))
     {
 
-      CopyWithMemmove(p_elementType, v9, v7, v6);
+      CopyWithMemmove(p_elementType, arraycopyCopy, offsetCopy, v6);
     }
 
     else
     {
-      v16 = &p_elementType[v9];
-      v17 = &p_elementType[v7];
+      v16 = &p_elementType[arraycopyCopy];
+      v17 = &p_elementType[offsetCopy];
 
       memmove(v17, v16, 8 * v6);
     }
@@ -107,19 +107,19 @@
 
   else
   {
-    if (*(a4 + 12))
+    if (*(destination + 12))
     {
       if (v11)
       {
         if (v6 >= 1)
         {
-          v12 = a4 + 24;
+          v12 = destination + 24;
           v13 = &self->elementType_;
           v6 = v6;
           do
           {
-            v14 = *&v12[8 * v7];
-            *&v12[8 * v7++] = v13[v9++];
+            v14 = *&v12[8 * offsetCopy];
+            *&v12[8 * offsetCopy++] = v13[arraycopyCopy++];
             --v6;
           }
 
@@ -135,23 +135,23 @@
       }
 
       v18 = &self->elementType_;
-      v19 = a4 + 24;
+      v19 = destination + 24;
       v20 = v6;
       while (1)
       {
-        v21 = v18[v9];
+        v21 = v18[arraycopyCopy];
         if (v21)
         {
-          if (([*(a4 + 2) isInstance:v18[v9]] & 1) == 0)
+          if (([*(destination + 2) isInstance:v18[arraycopyCopy]] & 1) == 0)
           {
             break;
           }
         }
 
-        v22 = *&v19[8 * v7];
+        v22 = *&v19[8 * offsetCopy];
         v23 = v21;
-        *&v19[8 * v7++] = v21;
-        ++v9;
+        *&v19[8 * offsetCopy++] = v21;
+        ++arraycopyCopy;
         if (!--v20)
         {
           return;
@@ -159,7 +159,7 @@
       }
 
 LABEL_37:
-      sub_10016EF9C(a4, v21);
+      sub_10016EF9C(destination, v21);
     }
 
     if ((v11 & 1) == 0)
@@ -173,17 +173,17 @@ LABEL_37:
       v25 = v6;
       while (1)
       {
-        v21 = v24[v9];
+        v21 = v24[arraycopyCopy];
         if (v21)
         {
-          if (([*(a4 + 2) isInstance:v24[v9]] & 1) == 0)
+          if (([*(destination + 2) isInstance:v24[arraycopyCopy]] & 1) == 0)
           {
             break;
           }
         }
 
-        *(a4 + v7++ + 3) = v21;
-        ++v9;
+        *(destination + offsetCopy++ + 3) = v21;
+        ++arraycopyCopy;
         if (!--v25)
         {
           return;
@@ -193,11 +193,11 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    memcpy(a4 + 8 * v7 + 24, &(&self->elementType_)[v9], 8 * v6);
+    memcpy(destination + 8 * offsetCopy + 24, &(&self->elementType_)[arraycopyCopy], 8 * v6);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = sub_10016E508(self->super.size_, *&self->isRetained_, 1);
   if (self->super.size_ >= 1)
@@ -255,16 +255,16 @@ LABEL_37:
   [(IOSObjectArray *)&v4 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
     return 0;
   }
 
-  a3->var1 = &self->elementType_;
-  a3->var2 = self;
-  a3->var0 = 1;
+  state->var1 = &self->elementType_;
+  state->var2 = self;
+  state->var0 = 1;
   return self->super.size_;
 }
 

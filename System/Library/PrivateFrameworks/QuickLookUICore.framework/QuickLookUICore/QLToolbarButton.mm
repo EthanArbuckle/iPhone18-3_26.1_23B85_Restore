@@ -1,27 +1,27 @@
 @interface QLToolbarButton
-- (BOOL)isEqual:(id)a3;
-- (QLToolbarButton)barButtonWithTarget:(id)a3 action:(SEL)a4 maxSize:(CGSize)a5;
-- (QLToolbarButton)initWithCoder:(id)a3;
-- (QLToolbarButton)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (QLToolbarButton)barButtonWithTarget:(id)target action:(SEL)action maxSize:(CGSize)size;
+- (QLToolbarButton)initWithCoder:(id)coder;
+- (QLToolbarButton)initWithIdentifier:(id)identifier;
 - (UIEdgeInsets)_additionalSelectionInsets;
 - (id)_barButtonImage;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleLongPress:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleLongPress:(id)press;
 - (void)invalidateCurrentState;
 @end
 
 @implementation QLToolbarButton
 
-- (QLToolbarButton)initWithIdentifier:(id)a3
+- (QLToolbarButton)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = QLToolbarButton;
   v6 = [(QLToolbarButton *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_placement = 1;
     v7->_enabled = 1;
     v8 = v7;
@@ -32,15 +32,15 @@
 
 - (id)_barButtonImage
 {
-  v3 = [MEMORY[0x277D755D0] unspecifiedConfiguration];
-  v4 = [v3 _configurationIgnoringDynamicType];
+  unspecifiedConfiguration = [MEMORY[0x277D755D0] unspecifiedConfiguration];
+  _configurationIgnoringDynamicType = [unspecifiedConfiguration _configurationIgnoringDynamicType];
 
   if ([(QLToolbarButton *)self useBundleImage])
   {
     v5 = MEMORY[0x277D755B8];
-    v6 = [(QLToolbarButton *)self symbolImageName];
+    symbolImageName = [(QLToolbarButton *)self symbolImageName];
     v7 = QLFrameworkBundle();
-    v8 = [v5 imageNamed:v6 inBundle:v7 withConfiguration:v4];
+    symbolImageName2 = [v5 imageNamed:symbolImageName inBundle:v7 withConfiguration:_configurationIgnoringDynamicType];
   }
 
   else
@@ -48,64 +48,64 @@
     if ([(QLToolbarButton *)self useInternalSymbolImage])
     {
       v9 = MEMORY[0x277D755B8];
-      v6 = [(QLToolbarButton *)self symbolImageName];
-      v10 = [v9 _systemImageNamed:v6 withConfiguration:v4];
+      symbolImageName = [(QLToolbarButton *)self symbolImageName];
+      v10 = [v9 _systemImageNamed:symbolImageName withConfiguration:_configurationIgnoringDynamicType];
     }
 
     else
     {
-      v8 = [(QLToolbarButton *)self symbolImageName];
+      symbolImageName2 = [(QLToolbarButton *)self symbolImageName];
 
-      if (!v8)
+      if (!symbolImageName2)
       {
         goto LABEL_9;
       }
 
       v11 = MEMORY[0x277D755B8];
-      v6 = [(QLToolbarButton *)self symbolImageName];
-      v10 = [v11 systemImageNamed:v6 withConfiguration:v4];
+      symbolImageName = [(QLToolbarButton *)self symbolImageName];
+      v10 = [v11 systemImageNamed:symbolImageName withConfiguration:_configurationIgnoringDynamicType];
     }
 
-    v8 = v10;
+    symbolImageName2 = v10;
   }
 
 LABEL_9:
 
-  return v8;
+  return symbolImageName2;
 }
 
-- (QLToolbarButton)barButtonWithTarget:(id)a3 action:(SEL)a4 maxSize:(CGSize)a5
+- (QLToolbarButton)barButtonWithTarget:(id)target action:(SEL)action maxSize:(CGSize)size
 {
-  v7 = a3;
-  v8 = [(QLToolbarButton *)self symbolImageName];
+  targetCopy = target;
+  symbolImageName = [(QLToolbarButton *)self symbolImageName];
 
-  if (v8)
+  if (symbolImageName)
   {
     v9 = [QLToolbarButtonItemRepresentation alloc];
-    v10 = [(QLToolbarButton *)self _barButtonImage];
-    v11 = [(QLToolbarButtonItemRepresentation *)v9 initWithImage:v10 style:0 target:v7 action:a4];
+    _barButtonImage = [(QLToolbarButton *)self _barButtonImage];
+    v11 = [(QLToolbarButtonItemRepresentation *)v9 initWithImage:_barButtonImage style:0 target:targetCopy action:action];
 LABEL_5:
     v15 = v11;
 
     goto LABEL_6;
   }
 
-  v12 = [(QLToolbarButton *)self title];
+  title = [(QLToolbarButton *)self title];
 
   v13 = [QLToolbarButtonItemRepresentation alloc];
   v14 = v13;
-  if (v12)
+  if (title)
   {
-    v10 = [(QLToolbarButton *)self title];
-    v11 = [(QLToolbarButtonItemRepresentation *)v14 initWithTitle:v10 style:0 target:v7 action:a4];
+    _barButtonImage = [(QLToolbarButton *)self title];
+    v11 = [(QLToolbarButtonItemRepresentation *)v14 initWithTitle:_barButtonImage style:0 target:targetCopy action:action];
     goto LABEL_5;
   }
 
-  v15 = [(QLToolbarButtonItemRepresentation *)v13 initWithBarButtonSystemItem:self->_systemItem target:v7 action:a4];
+  v15 = [(QLToolbarButtonItemRepresentation *)v13 initWithBarButtonSystemItem:self->_systemItem target:targetCopy action:action];
 LABEL_6:
-  v16 = [(QLToolbarButton *)self options];
+  options = [(QLToolbarButton *)self options];
 
-  if (v16)
+  if (options)
   {
     [(QLToolbarButtonItemRepresentation *)v15 setLongPressTarget:self action:sel_handleLongPress_];
   }
@@ -114,77 +114,77 @@ LABEL_6:
   [(QLToolbarButton *)self _additionalSelectionInsets];
   [(QLToolbarButtonItemRepresentation *)v15 _setAdditionalSelectionInsets:?];
   [(QLToolbarButtonItemRepresentation *)v15 setEnabled:[(QLToolbarButton *)self enabled]];
-  v17 = [(QLToolbarButton *)self title];
-  [(QLToolbarButtonItemRepresentation *)v15 setTitle:v17];
+  title2 = [(QLToolbarButton *)self title];
+  [(QLToolbarButtonItemRepresentation *)v15 setTitle:title2];
 
-  v18 = [(QLToolbarButton *)self identifier];
-  [(QLToolbarButtonItemRepresentation *)v15 setIdentifier:v18];
+  identifier = [(QLToolbarButton *)self identifier];
+  [(QLToolbarButtonItemRepresentation *)v15 setIdentifier:identifier];
 
   [(QLToolbarButtonItemRepresentation *)v15 setPlacement:[(QLToolbarButton *)self placement]];
-  [(QLToolbarButtonItemRepresentation *)v15 setPresentingViewController:v7];
+  [(QLToolbarButtonItemRepresentation *)v15 setPresentingViewController:targetCopy];
   [(QLToolbarButtonItemRepresentation *)v15 setOriginalButton:self];
   [(QLToolbarButtonItemRepresentation *)v15 setDisappearsOnTap:[(QLToolbarButton *)self disappearsOnTap]];
-  v19 = [(QLToolbarButton *)self accessibilityIdentifier];
+  accessibilityIdentifier = [(QLToolbarButton *)self accessibilityIdentifier];
 
-  if (v19)
+  if (accessibilityIdentifier)
   {
-    v20 = [(QLToolbarButton *)self accessibilityIdentifier];
-    [(QLToolbarButtonItemRepresentation *)v15 setAccessibilityIdentifier:v20];
+    accessibilityIdentifier2 = [(QLToolbarButton *)self accessibilityIdentifier];
+    [(QLToolbarButtonItemRepresentation *)v15 setAccessibilityIdentifier:accessibilityIdentifier2];
   }
 
   objc_storeStrong(&self->_currentItemRepresentation, v15);
-  objc_storeWeak(&self->_target, v7);
-  if (a4)
+  objc_storeWeak(&self->_target, targetCopy);
+  if (action)
   {
-    v21 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v21 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v21;
+  self->_action = actionCopy;
 
   return v15;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
   v51 = *MEMORY[0x277D85DE8];
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
     v4 = self->_currentItemRepresentation;
-    v5 = [(QLToolbarButtonItemRepresentation *)v4 presentingViewController];
+    presentingViewController = [(QLToolbarButtonItemRepresentation *)v4 presentingViewController];
     v6 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-    v7 = [(QLToolbarButtonItemRepresentation *)v4 customView];
-    v8 = [v6 popoverPresentationController];
-    [v8 setSourceView:v7];
+    customView = [(QLToolbarButtonItemRepresentation *)v4 customView];
+    popoverPresentationController = [v6 popoverPresentationController];
+    [popoverPresentationController setSourceView:customView];
 
-    v9 = [(QLToolbarButtonItemRepresentation *)v4 customView];
-    [v9 bounds];
+    customView2 = [(QLToolbarButtonItemRepresentation *)v4 customView];
+    [customView2 bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v6 popoverPresentationController];
-    [v18 setSourceRect:{v11, v13, v15, v17}];
+    popoverPresentationController2 = [v6 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{v11, v13, v15, v17}];
 
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v19 = [(QLToolbarButton *)self options];
-    v20 = [v19 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    options = [(QLToolbarButton *)self options];
+    v20 = [options countByEnumeratingWithState:&v46 objects:v50 count:16];
     v21 = &off_261679000;
     if (v20)
     {
       v22 = v20;
-      v38 = v5;
+      v38 = presentingViewController;
       v39 = v4;
       v23 = *v47;
       v24 = 1;
-      obj = v19;
+      obj = options;
       do
       {
         for (i = 0; i != v22; ++i)
@@ -197,15 +197,15 @@ LABEL_6:
 
           v27 = *(*(&v46 + 1) + 8 * i);
           v28 = MEMORY[0x277D750F8];
-          v29 = [v27 title];
-          v30 = [v27 style];
+          title = [v27 title];
+          style = [v27 style];
           v45[0] = MEMORY[0x277D85DD0];
           v45[1] = 3221225472;
           v45[2] = __35__QLToolbarButton_handleLongPress___block_invoke;
           v45[3] = &unk_279AE0DF0;
           v45[4] = self;
           v45[5] = v27;
-          v31 = [v28 actionWithTitle:v29 style:v30 handler:v45];
+          v31 = [v28 actionWithTitle:title style:style handler:v45];
 
           v6 = v26;
           [v26 addAction:v31];
@@ -217,7 +217,7 @@ LABEL_6:
 
       while (v22);
 
-      v5 = v38;
+      presentingViewController = v38;
       v4 = v39;
       v21 = &off_261679000;
       if ((v24 & 1) == 0)
@@ -240,11 +240,11 @@ LABEL_13:
     v41[1] = *(v21 + 322);
     v41[2] = __35__QLToolbarButton_handleLongPress___block_invoke_2;
     v41[3] = &unk_279AE0E18;
-    v42 = v5;
+    v42 = presentingViewController;
     v43 = v6;
-    v44 = self;
+    selfCopy = self;
     v35 = v6;
-    v36 = v5;
+    v36 = presentingViewController;
     [v36 prepareForActionSheetPresentationWithCompletionHandler:v41];
   }
 
@@ -306,21 +306,21 @@ id __35__QLToolbarButton_handleLongPress___block_invoke_3(uint64_t a1)
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(QLToolbarButton *)self identifier];
-  v6 = [v4 identifier];
-  v7 = v6;
-  if (v5 == v6)
+  equalCopy = equal;
+  identifier = [(QLToolbarButton *)self identifier];
+  identifier2 = [equalCopy identifier];
+  v7 = identifier2;
+  if (identifier == identifier2)
   {
   }
 
   else
   {
-    v8 = [(QLToolbarButton *)self identifier];
-    v9 = [v4 identifier];
-    v10 = [v8 isEqual:v9];
+    identifier3 = [(QLToolbarButton *)self identifier];
+    identifier4 = [equalCopy identifier];
+    v10 = [identifier3 isEqual:identifier4];
 
     if (!v10)
     {
@@ -328,18 +328,18 @@ id __35__QLToolbarButton_handleLongPress___block_invoke_3(uint64_t a1)
     }
   }
 
-  v11 = [(QLToolbarButton *)self title];
-  v12 = [v4 title];
-  v13 = v12;
-  if (v11 == v12)
+  title = [(QLToolbarButton *)self title];
+  title2 = [equalCopy title];
+  v13 = title2;
+  if (title == title2)
   {
   }
 
   else
   {
-    v14 = [(QLToolbarButton *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    title3 = [(QLToolbarButton *)self title];
+    title4 = [equalCopy title];
+    v16 = [title3 isEqual:title4];
 
     if (!v16)
     {
@@ -347,18 +347,18 @@ id __35__QLToolbarButton_handleLongPress___block_invoke_3(uint64_t a1)
     }
   }
 
-  v17 = [(QLToolbarButton *)self accessibilityIdentifier];
-  v18 = [v4 accessibilityIdentifier];
-  v19 = v18;
-  if (v17 == v18)
+  accessibilityIdentifier = [(QLToolbarButton *)self accessibilityIdentifier];
+  accessibilityIdentifier2 = [equalCopy accessibilityIdentifier];
+  v19 = accessibilityIdentifier2;
+  if (accessibilityIdentifier == accessibilityIdentifier2)
   {
   }
 
   else
   {
-    v20 = [(QLToolbarButton *)self accessibilityIdentifier];
-    v21 = [v4 accessibilityIdentifier];
-    v22 = [v20 isEqual:v21];
+    accessibilityIdentifier3 = [(QLToolbarButton *)self accessibilityIdentifier];
+    accessibilityIdentifier4 = [equalCopy accessibilityIdentifier];
+    v22 = [accessibilityIdentifier3 isEqual:accessibilityIdentifier4];
 
     if (!v22)
     {
@@ -366,18 +366,18 @@ id __35__QLToolbarButton_handleLongPress___block_invoke_3(uint64_t a1)
     }
   }
 
-  v23 = [(QLToolbarButton *)self options];
-  v24 = [v4 options];
-  v25 = v24;
-  if (v23 == v24)
+  options = [(QLToolbarButton *)self options];
+  options2 = [equalCopy options];
+  v25 = options2;
+  if (options == options2)
   {
   }
 
   else
   {
-    v26 = [(QLToolbarButton *)self options];
-    v27 = [v4 options];
-    v28 = [v26 isEqual:v27];
+    options3 = [(QLToolbarButton *)self options];
+    options4 = [equalCopy options];
+    v28 = [options3 isEqual:options4];
 
     if (!v28)
     {
@@ -385,8 +385,8 @@ id __35__QLToolbarButton_handleLongPress___block_invoke_3(uint64_t a1)
     }
   }
 
-  v29 = [(QLToolbarButton *)self selected];
-  if (v29 != [v4 selected])
+  selected = [(QLToolbarButton *)self selected];
+  if (selected != [equalCopy selected])
   {
 LABEL_18:
     LOBYTE(v30) = 0;
@@ -398,38 +398,38 @@ LABEL_18:
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  [v4 _additionalSelectionInsets];
+  [equalCopy _additionalSelectionInsets];
   LOBYTE(v30) = 0;
   if (v35 == v43 && v33 == v40 && v39 == v42 && v37 == v41)
   {
-    v44 = [(QLToolbarButton *)self systemItem];
-    if (v44 == [v4 systemItem])
+    systemItem = [(QLToolbarButton *)self systemItem];
+    if (systemItem == [equalCopy systemItem])
     {
-      v45 = [(QLToolbarButton *)self placement];
-      if (v45 == [v4 placement])
+      placement = [(QLToolbarButton *)self placement];
+      if (placement == [equalCopy placement])
       {
-        v46 = [(QLToolbarButton *)self forceToNavBar];
-        if (v46 == [v4 forceToNavBar])
+        forceToNavBar = [(QLToolbarButton *)self forceToNavBar];
+        if (forceToNavBar == [equalCopy forceToNavBar])
         {
-          v47 = [(QLToolbarButton *)self useBundleImage];
-          if (v47 == [v4 useBundleImage])
+          useBundleImage = [(QLToolbarButton *)self useBundleImage];
+          if (useBundleImage == [equalCopy useBundleImage])
           {
-            v48 = [(QLToolbarButton *)self useInternalSymbolImage];
-            if (v48 == [v4 useInternalSymbolImage])
+            useInternalSymbolImage = [(QLToolbarButton *)self useInternalSymbolImage];
+            if (useInternalSymbolImage == [equalCopy useInternalSymbolImage])
             {
-              v49 = [(QLToolbarButton *)self symbolImageName];
-              v50 = [v4 symbolImageName];
+              symbolImageName = [(QLToolbarButton *)self symbolImageName];
+              symbolImageName2 = [equalCopy symbolImageName];
 
-              if (v49 == v50)
+              if (symbolImageName == symbolImageName2)
               {
-                v51 = [(QLToolbarButton *)self enabled];
-                if (v51 == [v4 enabled])
+                enabled = [(QLToolbarButton *)self enabled];
+                if (enabled == [equalCopy enabled])
                 {
-                  v52 = [(QLToolbarButton *)self roundedSelectedIndicator];
-                  if (v52 == [v4 roundedSelectedIndicator])
+                  roundedSelectedIndicator = [(QLToolbarButton *)self roundedSelectedIndicator];
+                  if (roundedSelectedIndicator == [equalCopy roundedSelectedIndicator])
                   {
-                    v53 = [(QLToolbarButton *)self disappearsOnTap];
-                    v30 = v53 ^ [v4 disappearsOnTap] ^ 1;
+                    disappearsOnTap = [(QLToolbarButton *)self disappearsOnTap];
+                    v30 = disappearsOnTap ^ [equalCopy disappearsOnTap] ^ 1;
                     goto LABEL_19;
                   }
                 }
@@ -448,88 +448,88 @@ LABEL_19:
   return v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(QLToolbarButton *)self identifier];
+  coderCopy = coder;
+  identifier = [(QLToolbarButton *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(QLToolbarButton *)self identifier];
-    [v11 encodeObject:v5 forKey:@"identifier"];
+    identifier2 = [(QLToolbarButton *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"identifier"];
   }
 
-  v6 = [(QLToolbarButton *)self symbolImageName];
+  symbolImageName = [(QLToolbarButton *)self symbolImageName];
 
-  if (v6)
+  if (symbolImageName)
   {
-    v7 = [(QLToolbarButton *)self symbolImageName];
-    [v11 encodeObject:v7 forKey:@"symbolImageName"];
+    symbolImageName2 = [(QLToolbarButton *)self symbolImageName];
+    [coderCopy encodeObject:symbolImageName2 forKey:@"symbolImageName"];
   }
 
-  [v11 encodeInteger:-[QLToolbarButton systemItem](self forKey:{"systemItem"), @"systemItem"}];
-  [v11 encodeInteger:-[QLToolbarButton placement](self forKey:{"placement"), @"placement"}];
-  [v11 encodeBool:-[QLToolbarButton forceToNavBar](self forKey:{"forceToNavBar"), @"forceToNavBar"}];
-  [v11 encodeBool:-[QLToolbarButton useBundleImage](self forKey:{"useBundleImage"), @"useBundleImage"}];
-  [v11 encodeBool:-[QLToolbarButton useInternalSymbolImage](self forKey:{"useInternalSymbolImage"), @"useInternalSymbolImage"}];
-  [v11 encodeBool:-[QLToolbarButton enabled](self forKey:{"enabled"), @"enabled"}];
-  [v11 encodeBool:-[QLToolbarButton selected](self forKey:{"selected"), @"selected"}];
+  [coderCopy encodeInteger:-[QLToolbarButton systemItem](self forKey:{"systemItem"), @"systemItem"}];
+  [coderCopy encodeInteger:-[QLToolbarButton placement](self forKey:{"placement"), @"placement"}];
+  [coderCopy encodeBool:-[QLToolbarButton forceToNavBar](self forKey:{"forceToNavBar"), @"forceToNavBar"}];
+  [coderCopy encodeBool:-[QLToolbarButton useBundleImage](self forKey:{"useBundleImage"), @"useBundleImage"}];
+  [coderCopy encodeBool:-[QLToolbarButton useInternalSymbolImage](self forKey:{"useInternalSymbolImage"), @"useInternalSymbolImage"}];
+  [coderCopy encodeBool:-[QLToolbarButton enabled](self forKey:{"enabled"), @"enabled"}];
+  [coderCopy encodeBool:-[QLToolbarButton selected](self forKey:{"selected"), @"selected"}];
   [(QLToolbarButton *)self _additionalSelectionInsets];
-  [v11 encodeUIEdgeInsets:@"_additionalSelectionInsets" forKey:?];
-  [v11 encodeBool:-[QLToolbarButton roundedSelectedIndicator](self forKey:{"roundedSelectedIndicator"), @"roundedSelectedIndicator"}];
-  [v11 encodeBool:-[QLToolbarButton disappearsOnTap](self forKey:{"disappearsOnTap"), @"disappearsOnTap"}];
-  v8 = [(QLToolbarButton *)self title];
-  [v11 encodeObject:v8 forKey:@"title"];
+  [coderCopy encodeUIEdgeInsets:@"_additionalSelectionInsets" forKey:?];
+  [coderCopy encodeBool:-[QLToolbarButton roundedSelectedIndicator](self forKey:{"roundedSelectedIndicator"), @"roundedSelectedIndicator"}];
+  [coderCopy encodeBool:-[QLToolbarButton disappearsOnTap](self forKey:{"disappearsOnTap"), @"disappearsOnTap"}];
+  title = [(QLToolbarButton *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v9 = [(QLToolbarButton *)self accessibilityIdentifier];
-  [v11 encodeObject:v9 forKey:@"accessibilityIdentifier"];
+  accessibilityIdentifier = [(QLToolbarButton *)self accessibilityIdentifier];
+  [coderCopy encodeObject:accessibilityIdentifier forKey:@"accessibilityIdentifier"];
 
-  v10 = [(QLToolbarButton *)self options];
-  [v11 encodeObject:v10 forKey:@"options"];
+  options = [(QLToolbarButton *)self options];
+  [coderCopy encodeObject:options forKey:@"options"];
 }
 
-- (QLToolbarButton)initWithCoder:(id)a3
+- (QLToolbarButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = QLToolbarButton;
   v5 = [(QLToolbarButton *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolImageName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolImageName"];
     symbolImageName = v5->_symbolImageName;
     v5->_symbolImageName = v8;
 
-    v5->_systemItem = [v4 decodeIntegerForKey:@"systemItem"];
-    v5->_placement = [v4 decodeIntegerForKey:@"placement"];
-    v5->_forceToNavBar = [v4 decodeBoolForKey:@"forceToNavBar"];
-    v5->_useBundleImage = [v4 decodeBoolForKey:@"useBundleImage"];
-    v5->_useInternalSymbolImage = [v4 decodeBoolForKey:@"useInternalSymbolImage"];
-    v5->_selected = [v4 decodeBoolForKey:@"selected"];
-    [v4 decodeUIEdgeInsetsForKey:@"_additionalSelectionInsets"];
+    v5->_systemItem = [coderCopy decodeIntegerForKey:@"systemItem"];
+    v5->_placement = [coderCopy decodeIntegerForKey:@"placement"];
+    v5->_forceToNavBar = [coderCopy decodeBoolForKey:@"forceToNavBar"];
+    v5->_useBundleImage = [coderCopy decodeBoolForKey:@"useBundleImage"];
+    v5->_useInternalSymbolImage = [coderCopy decodeBoolForKey:@"useInternalSymbolImage"];
+    v5->_selected = [coderCopy decodeBoolForKey:@"selected"];
+    [coderCopy decodeUIEdgeInsetsForKey:@"_additionalSelectionInsets"];
     v5->__additionalSelectionInsets.top = v10;
     v5->__additionalSelectionInsets.left = v11;
     v5->__additionalSelectionInsets.bottom = v12;
     v5->__additionalSelectionInsets.right = v13;
-    v5->_roundedSelectedIndicator = [v4 decodeBoolForKey:@"roundedSelectedIndicator"];
-    v5->_disappearsOnTap = [v4 decodeBoolForKey:@"disappearsOnTap"];
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v5->_roundedSelectedIndicator = [coderCopy decodeBoolForKey:@"roundedSelectedIndicator"];
+    v5->_disappearsOnTap = [coderCopy decodeBoolForKey:@"disappearsOnTap"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityIdentifier"];
     accessibilityIdentifier = v5->_accessibilityIdentifier;
     v5->_accessibilityIdentifier = v16;
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"options"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"options"];
     options = v5->_options;
     v5->_options = v21;
 

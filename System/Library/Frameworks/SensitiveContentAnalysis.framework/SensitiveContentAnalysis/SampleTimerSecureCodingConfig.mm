@@ -1,19 +1,19 @@
 @interface SampleTimerSecureCodingConfig
 - (_TtC24SensitiveContentAnalysis29SampleTimerSecureCodingConfig)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SampleTimerSecureCodingConfig
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_self();
   v5 = swift_dynamicCastObjCClass();
   if (v5)
   {
     v6 = v5;
-    v7 = a3;
-    v8 = self;
+    coderCopy = coder;
+    selfCopy = self;
     sub_1AEAF5D48(v6);
   }
 

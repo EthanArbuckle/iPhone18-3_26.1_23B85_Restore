@@ -1,15 +1,15 @@
 @interface ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSelectionType:(id)a3;
+- (int)StringAsSelectionType:(id)type;
 - (int)selectionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWidgetsInStack:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWidgetsInStack:(BOOL)stack;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker
@@ -27,13 +27,13 @@
   }
 }
 
-- (int)StringAsSelectionType:(id)a3
+- (int)StringAsSelectionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"NPlusOne"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"NPlusOne"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"StackRotation"])
+    if ([typeCopy isEqualToString:@"StackRotation"])
     {
       v4 = 2;
     }
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (void)setHasWidgetsInStack:(BOOL)a3
+- (void)setHasWidgetsInStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     v3 = 2;
   }
@@ -68,20 +68,20 @@
   v8.receiver = self;
   v8.super_class = ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker;
   v4 = [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)&v8 description];
-  v5 = [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   layoutType = self->_layoutType;
   if (layoutType)
   {
-    [v3 setObject:layoutType forKey:@"layoutType"];
+    [dictionary setObject:layoutType forKey:@"layoutType"];
   }
 
   if (*&self->_has)
@@ -144,118 +144,118 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_layoutType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     selectionType = self->_selectionType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_clientModelIdOfHighestRankingSuggestion)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_highestConfidenceCategory)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     widgetsInStack = self->_widgetsInStack;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_execuableTypeOfHighestRankingSuggestion)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_clientModelABGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_layoutType)
   {
-    [v4 setLayoutType:?];
-    v4 = v5;
+    [toCopy setLayoutType:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 14) = self->_selectionType;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 14) = self->_selectionType;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_clientModelIdOfHighestRankingSuggestion)
   {
     [v5 setClientModelIdOfHighestRankingSuggestion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highestConfidenceCategory)
   {
     [v5 setHighestConfidenceCategory:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 15) = self->_widgetsInStack;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 15) = self->_widgetsInStack;
+    *(toCopy + 64) |= 2u;
   }
 
   if (self->_execuableTypeOfHighestRankingSuggestion)
   {
     [v5 setExecuableTypeOfHighestRankingSuggestion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_abGroup)
   {
     [v5 setAbGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientModelABGroup)
   {
     [v5 setClientModelABGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_layoutType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_layoutType copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -265,11 +265,11 @@
     *(v5 + 64) |= 1u;
   }
 
-  v8 = [(NSString *)self->_clientModelIdOfHighestRankingSuggestion copyWithZone:a3];
+  v8 = [(NSString *)self->_clientModelIdOfHighestRankingSuggestion copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_highestConfidenceCategory copyWithZone:a3];
+  v10 = [(NSString *)self->_highestConfidenceCategory copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -279,31 +279,31 @@
     *(v5 + 64) |= 2u;
   }
 
-  v12 = [(NSString *)self->_execuableTypeOfHighestRankingSuggestion copyWithZone:a3];
+  v12 = [(NSString *)self->_execuableTypeOfHighestRankingSuggestion copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v14 = [(NSString *)self->_abGroup copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
-  v16 = [(NSString *)self->_clientModelABGroup copyWithZone:a3];
+  v16 = [(NSString *)self->_clientModelABGroup copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   layoutType = self->_layoutType;
-  if (layoutType | *(v4 + 6))
+  if (layoutType | *(equalCopy + 6))
   {
     if (![(NSString *)layoutType isEqual:?])
     {
@@ -311,16 +311,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_selectionType != *(v4 + 14))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_selectionType != *(equalCopy + 14))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_24:
     v13 = 0;
@@ -328,13 +328,13 @@ LABEL_24:
   }
 
   clientModelIdOfHighestRankingSuggestion = self->_clientModelIdOfHighestRankingSuggestion;
-  if (clientModelIdOfHighestRankingSuggestion | *(v4 + 3) && ![(NSString *)clientModelIdOfHighestRankingSuggestion isEqual:?])
+  if (clientModelIdOfHighestRankingSuggestion | *(equalCopy + 3) && ![(NSString *)clientModelIdOfHighestRankingSuggestion isEqual:?])
   {
     goto LABEL_24;
   }
 
   highestConfidenceCategory = self->_highestConfidenceCategory;
-  if (highestConfidenceCategory | *(v4 + 5))
+  if (highestConfidenceCategory | *(equalCopy + 5))
   {
     if (![(NSString *)highestConfidenceCategory isEqual:?])
     {
@@ -342,28 +342,28 @@ LABEL_24:
     }
   }
 
-  v9 = *(v4 + 64);
+  v9 = *(equalCopy + 64);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_widgetsInStack != *(v4 + 15))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_widgetsInStack != *(equalCopy + 15))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   execuableTypeOfHighestRankingSuggestion = self->_execuableTypeOfHighestRankingSuggestion;
-  if (execuableTypeOfHighestRankingSuggestion | *(v4 + 4) && ![(NSString *)execuableTypeOfHighestRankingSuggestion isEqual:?])
+  if (execuableTypeOfHighestRankingSuggestion | *(equalCopy + 4) && ![(NSString *)execuableTypeOfHighestRankingSuggestion isEqual:?])
   {
     goto LABEL_24;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     if (![(NSString *)abGroup isEqual:?])
     {
@@ -372,7 +372,7 @@ LABEL_24:
   }
 
   clientModelABGroup = self->_clientModelABGroup;
-  if (clientModelABGroup | *(v4 + 2))
+  if (clientModelABGroup | *(equalCopy + 2))
   {
     v13 = [(NSString *)clientModelABGroup isEqual:?];
   }
@@ -418,56 +418,56 @@ LABEL_25:
   return v10 ^ [(NSString *)self->_clientModelABGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self setLayoutType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_selectionType = *(v4 + 14);
+    self->_selectionType = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self setClientModelIdOfHighestRankingSuggestion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self setHighestConfidenceCategory:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 64) & 2) != 0)
+  if ((*(fromCopy + 64) & 2) != 0)
   {
-    self->_widgetsInStack = *(v4 + 15);
+    self->_widgetsInStack = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self setExecuableTypeOfHighestRankingSuggestion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self setAbGroup:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ATXMPBBlendingHomeScreenWidgetTopOfStackSelectionTracker *)self setClientModelABGroup:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

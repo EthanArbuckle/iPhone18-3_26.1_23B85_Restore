@@ -1,27 +1,27 @@
 @interface NCClickInteractionPresentedView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCClickInteractionPresentedView)initWithTitle:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCClickInteractionPresentedView)initWithTitle:(id)title;
 - (NSString)preferredContentSizeCategory;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_configureTitleLabel;
-- (void)_darkerSystemColorsStatusDidChange:(id)a3;
-- (void)_reduceTransparencyStatusDidChange:(id)a3;
+- (void)_darkerSystemColorsStatusDidChange:(id)change;
+- (void)_reduceTransparencyStatusDidChange:(id)change;
 - (void)_updateTitleLabelAnchorPointAndPosition;
 - (void)_updateTitleLabelTextAttributes;
 - (void)_updateTitleLabelVisualStyling;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setTitle:(id)title;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation NCClickInteractionPresentedView
 
-- (NCClickInteractionPresentedView)initWithTitle:(id)a3
+- (NCClickInteractionPresentedView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v10.receiver = self;
   v10.super_class = NCClickInteractionPresentedView;
   v5 = [(NCClickInteractionPresentedView *)&v10 init];
@@ -30,12 +30,12 @@
   {
     [(NCClickInteractionPresentedView *)v5 setUserInteractionEnabled:0];
     [(NCClickInteractionPresentedView *)v6 _configureTitleLabel];
-    [(NCClickInteractionPresentedView *)v6 setTitle:v4];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__darkerSystemColorsStatusDidChange_ name:*MEMORY[0x277D76460] object:0];
+    [(NCClickInteractionPresentedView *)v6 setTitle:titleCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__darkerSystemColorsStatusDidChange_ name:*MEMORY[0x277D76460] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel__reduceTransparencyStatusDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__reduceTransparencyStatusDidChange_ name:*MEMORY[0x277D764C8] object:0];
   }
 
   return v6;
@@ -43,32 +43,32 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76460] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76460] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D764C8] object:0];
 
   v5.receiver = self;
   v5.super_class = NCClickInteractionPresentedView;
   [(NCClickInteractionPresentedView *)&v5 dealloc];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     self->_cachedSizeThatFits = *MEMORY[0x277CBF3A8];
-    [(UILabel *)self->_titleLabel setText:v6];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
     [(NCClickInteractionPresentedView *)self _updateTitleLabelAnchorPointAndPosition];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   p_cachedSizeThatFits = &self->_cachedSizeThatFits;
   width = self->_cachedSizeThatFits.width;
@@ -126,9 +126,9 @@
   [(UILabel *)titleLabel setTransform:&v18];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  if (a3 == 1)
+  if (category == 1)
   {
     return self->_visualStylingProvider;
   }
@@ -139,17 +139,17 @@
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  visualStylingProvider = a3;
+  visualStylingProvider = provider;
   v8 = visualStylingProvider;
-  if (a4 == 1)
+  if (category == 1)
   {
     visualStylingProvider = self->_visualStylingProvider;
     if (visualStylingProvider != v8)
     {
       [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:self->_titleLabel];
-      objc_storeStrong(&self->_visualStylingProvider, a3);
+      objc_storeStrong(&self->_visualStylingProvider, provider);
       visualStylingProvider = [(NCClickInteractionPresentedView *)self _updateTitleLabelVisualStyling];
     }
   }
@@ -157,11 +157,11 @@
   MEMORY[0x2821F96F8](visualStylingProvider);
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(NCClickInteractionPresentedView *)self adjustForContentSizeCategoryChange];
   }
 }
@@ -180,15 +180,15 @@
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = [(NCClickInteractionPresentedView *)self preferredContentSizeCategory];
-  v6 = [v4 isEqualToString:v5];
+  preferredContentSizeCategory2 = [(NCClickInteractionPresentedView *)self preferredContentSizeCategory];
+  v6 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v6 & 1) == 0)
   {
-    [(NCClickInteractionPresentedView *)self setPreferredContentSizeCategory:v4];
+    [(NCClickInteractionPresentedView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     self->_cachedSizeThatFits = *MEMORY[0x277CBF3A8];
     [(NCClickInteractionPresentedView *)self _updateTitleLabelTextAttributes];
   }
@@ -198,9 +198,9 @@
 
 - (void)_updateTitleLabelVisualStyling
 {
-  v3 = [(NCClickInteractionPresentedView *)self superview];
+  superview = [(NCClickInteractionPresentedView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(UILabel *)self->_titleLabel mt_removeAllVisualStyling];
     visualStylingProvider = self->_visualStylingProvider;
@@ -252,9 +252,9 @@
   v18 = v4;
   v19 = *(MEMORY[0x277CBF2C0] + 32);
   [(UILabel *)titleLabel setTransform:&v17];
-  v5 = [(UILabel *)self->_titleLabel layer];
-  [v5 setAnchorPoint:{0.5, 0.5}];
-  [v5 setPosition:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  layer = [(UILabel *)self->_titleLabel layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
+  [layer setPosition:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   [(NCClickInteractionPresentedView *)self sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   BSRectWithSize();
   v7 = v6;
@@ -272,8 +272,8 @@
   v24.size.width = v11;
   v24.size.height = v13;
   MinY = CGRectGetMinY(v24);
-  [v5 setAnchorPoint:{0.0, 0.0}];
-  [v5 setPosition:{MinX, MinY}];
+  [layer setAnchorPoint:{0.0, 0.0}];
+  [layer setPosition:{MinX, MinY}];
   v16 = self->_titleLabel;
   v17 = v20;
   v18 = v21;
@@ -303,7 +303,7 @@
   }
 }
 
-- (void)_darkerSystemColorsStatusDidChange:(id)a3
+- (void)_darkerSystemColorsStatusDidChange:(id)change
 {
   if (self->_titleLabel)
   {
@@ -311,7 +311,7 @@
   }
 }
 
-- (void)_reduceTransparencyStatusDidChange:(id)a3
+- (void)_reduceTransparencyStatusDidChange:(id)change
 {
   if (self->_titleLabel)
   {

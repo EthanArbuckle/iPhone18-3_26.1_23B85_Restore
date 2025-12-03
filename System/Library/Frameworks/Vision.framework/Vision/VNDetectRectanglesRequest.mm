@@ -1,6 +1,6 @@
 @interface VNDetectRectanglesRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSUInteger)maximumObservations;
 - (VNAspectRatio)maximumAspectRatio;
 - (VNAspectRatio)minimumAspectRatio;
@@ -10,15 +10,15 @@
 - (id)supportedImageSizeSet;
 - (int64_t)dependencyProcessingOrdinality;
 - (unint64_t)requiredVersion;
-- (void)applyConfigurationOfRequest:(id)a3;
+- (void)applyConfigurationOfRequest:(id)request;
 - (void)setMaximumAspectRatio:(VNAspectRatio)maximumAspectRatio;
 - (void)setMaximumObservations:(NSUInteger)maximumObservations;
 - (void)setMinimumAspectRatio:(VNAspectRatio)minimumAspectRatio;
 - (void)setMinimumConfidence:(VNConfidence)minimumConfidence;
 - (void)setMinimumSize:(float)minimumSize;
-- (void)setProcessedResults:(id)a3;
+- (void)setProcessedResults:(id)results;
 - (void)setQuadratureTolerance:(VNDegrees)quadratureTolerance;
-- (void)setRequiredVersion:(unint64_t)a3;
+- (void)setRequiredVersion:(unint64_t)version;
 @end
 
 @implementation VNDetectRectanglesRequest
@@ -46,78 +46,78 @@
   return v7;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v5.receiver = self;
     v5.super_class = VNDetectRectanglesRequest;
-    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNDetectRectanglesRequest *)self setRequiredVersion:[(VNDetectRectanglesRequest *)v4 requiredVersion]];
-      [(VNDetectRectanglesRequest *)v4 minimumAspectRatio];
+      [(VNDetectRectanglesRequest *)self setRequiredVersion:[(VNDetectRectanglesRequest *)requestCopy requiredVersion]];
+      [(VNDetectRectanglesRequest *)requestCopy minimumAspectRatio];
       [(VNDetectRectanglesRequest *)self setMinimumAspectRatio:?];
-      [(VNDetectRectanglesRequest *)v4 maximumAspectRatio];
+      [(VNDetectRectanglesRequest *)requestCopy maximumAspectRatio];
       [(VNDetectRectanglesRequest *)self setMaximumAspectRatio:?];
-      [(VNDetectRectanglesRequest *)v4 quadratureTolerance];
+      [(VNDetectRectanglesRequest *)requestCopy quadratureTolerance];
       [(VNDetectRectanglesRequest *)self setQuadratureTolerance:?];
-      [(VNDetectRectanglesRequest *)v4 minimumSize];
+      [(VNDetectRectanglesRequest *)requestCopy minimumSize];
       [(VNDetectRectanglesRequest *)self setMinimumSize:?];
-      [(VNDetectRectanglesRequest *)v4 minimumConfidence];
+      [(VNDetectRectanglesRequest *)requestCopy minimumConfidence];
       [(VNDetectRectanglesRequest *)self setMinimumConfidence:?];
-      [(VNDetectRectanglesRequest *)self setMaximumObservations:[(VNDetectRectanglesRequest *)v4 maximumObservations]];
+      [(VNDetectRectanglesRequest *)self setMaximumObservations:[(VNDetectRectanglesRequest *)requestCopy maximumObservations]];
     }
   }
 }
 
 - (void)setMaximumObservations:(NSUInteger)maximumObservations
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setMaximumObservations:maximumObservations];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setMaximumObservations:maximumObservations];
 }
 
 - (NSUInteger)maximumObservations
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 maximumObservations];
+  configuration = [(VNRequest *)self configuration];
+  maximumObservations = [configuration maximumObservations];
 
-  return v3;
+  return maximumObservations;
 }
 
-- (void)setRequiredVersion:(unint64_t)a3
+- (void)setRequiredVersion:(unint64_t)version
 {
-  if (a3 - 1 <= 1)
+  if (version - 1 <= 1)
   {
-    v4 = [(VNRequest *)self configuration];
-    [v4 setRequiredVersion:a3];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setRequiredVersion:version];
   }
 }
 
 - (unint64_t)requiredVersion
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 requiredVersion];
+  configuration = [(VNRequest *)self configuration];
+  requiredVersion = [configuration requiredVersion];
 
-  return v3;
+  return requiredVersion;
 }
 
 - (void)setMinimumConfidence:(VNConfidence)minimumConfidence
 {
   if (minimumConfidence >= 0.0 && minimumConfidence <= 1.0)
   {
-    v6 = [(VNRequest *)self configuration];
+    configuration = [(VNRequest *)self configuration];
     *&v5 = minimumConfidence;
-    [v6 setMinimumConfidence:v5];
+    [configuration setMinimumConfidence:v5];
   }
 }
 
 - (VNConfidence)minimumConfidence
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 minimumConfidence];
+  configuration = [(VNRequest *)self configuration];
+  [configuration minimumConfidence];
   v4 = v3;
 
   return v4;
@@ -127,16 +127,16 @@
 {
   if (minimumSize >= 0.0 && minimumSize <= 1.0)
   {
-    v6 = [(VNRequest *)self configuration];
+    configuration = [(VNRequest *)self configuration];
     *&v5 = minimumSize;
-    [v6 setMinimumSize:v5];
+    [configuration setMinimumSize:v5];
   }
 }
 
 - (float)minimumSize
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 minimumSize];
+  configuration = [(VNRequest *)self configuration];
+  [configuration minimumSize];
   v4 = v3;
 
   return v4;
@@ -146,16 +146,16 @@
 {
   if (quadratureTolerance >= 0.0 && quadratureTolerance <= 45.0)
   {
-    v6 = [(VNRequest *)self configuration];
+    configuration = [(VNRequest *)self configuration];
     *&v5 = quadratureTolerance;
-    [v6 setQuadratureTolerance:v5];
+    [configuration setQuadratureTolerance:v5];
   }
 }
 
 - (VNDegrees)quadratureTolerance
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 quadratureTolerance];
+  configuration = [(VNRequest *)self configuration];
+  [configuration quadratureTolerance];
   v4 = v3;
 
   return v4;
@@ -165,16 +165,16 @@
 {
   if (maximumAspectRatio >= 0.0 && maximumAspectRatio <= 1.0)
   {
-    v6 = [(VNRequest *)self configuration];
+    configuration = [(VNRequest *)self configuration];
     *&v5 = maximumAspectRatio;
-    [v6 setMaximumAspectRatio:v5];
+    [configuration setMaximumAspectRatio:v5];
   }
 }
 
 - (VNAspectRatio)maximumAspectRatio
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 maximumAspectRatio];
+  configuration = [(VNRequest *)self configuration];
+  [configuration maximumAspectRatio];
   v4 = v3;
 
   return v4;
@@ -184,48 +184,48 @@
 {
   if (minimumAspectRatio >= 0.0 && minimumAspectRatio <= 1.0)
   {
-    v6 = [(VNRequest *)self configuration];
+    configuration = [(VNRequest *)self configuration];
     *&v5 = minimumAspectRatio;
-    [v6 setMinimumAspectRatio:v5];
+    [configuration setMinimumAspectRatio:v5];
   }
 }
 
 - (VNAspectRatio)minimumAspectRatio
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 minimumAspectRatio];
+  configuration = [(VNRequest *)self configuration];
+  [configuration minimumAspectRatio];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setProcessedResults:(id)a3
+- (void)setProcessedResults:(id)results
 {
-  v4 = a3;
-  v5 = [(VNDetectRectanglesRequest *)self maximumObservations];
-  if (v5 && [v4 count] > v5)
+  resultsCopy = results;
+  maximumObservations = [(VNDetectRectanglesRequest *)self maximumObservations];
+  if (maximumObservations && [resultsCopy count] > maximumObservations)
   {
-    v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v5}];
-    v7 = [v4 objectsAtIndexes:v6];
+    v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, maximumObservations}];
+    v7 = [resultsCopy objectsAtIndexes:v6];
 
-    v4 = v7;
+    resultsCopy = v7;
   }
 
   v8.receiver = self;
   v8.super_class = VNDetectRectanglesRequest;
-  [(VNRequest *)&v8 setProcessedResults:v4];
+  [(VNRequest *)&v8 setProcessedResults:resultsCopy];
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
-  if (v9 && [(VNRequest *)self validateImageBuffer:v9 ofNonZeroWidth:0 andHeight:0 error:a5])
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
+  if (v9 && [(VNRequest *)self validateImageBuffer:v9 ofNonZeroWidth:0 andHeight:0 error:error])
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v36 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v36 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v36 forRevision:revision loadedInSession:session error:error];
     v12 = v36;
     if (v11)
     {
@@ -264,40 +264,40 @@
       v25 = [v24 numberWithFloat:?];
       [v12 setObject:v25 forKeyedSubscript:@"VNRectangleDetectorProcessOption_MinimumSize"];
 
-      v26 = [(VNDetectRectanglesRequest *)self maximumObservations];
-      if (v26 - 0x7FFFFFFF <= 0xFFFFFFFF80000001)
+      maximumObservations = [(VNDetectRectanglesRequest *)self maximumObservations];
+      if (maximumObservations - 0x7FFFFFFF <= 0xFFFFFFFF80000001)
       {
-        v27 = [v9 width];
-        v28 = [v9 height];
-        if (v27 <= v28)
+        width = [v9 width];
+        height = [v9 height];
+        if (width <= height)
         {
-          v29 = v28;
+          v29 = height;
         }
 
         else
         {
-          v29 = v27;
+          v29 = width;
         }
 
-        if (v27 >= v28)
+        if (width >= height)
         {
-          v30 = v28;
+          v30 = height;
         }
 
         else
         {
-          v30 = v27;
+          v30 = width;
         }
 
-        v26 = (16 * vcvtps_s32_f32((v29 * 256.0) / v30));
+        maximumObservations = (16 * vcvtps_s32_f32((v29 * 256.0) / v30));
       }
 
-      v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v26];
+      v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maximumObservations];
       [v12 setObject:v31 forKeyedSubscript:@"VNRectangleDetectorProcessOption_MaximumNumber"];
 
-      v32 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v33 = [v11 processUsingQualityOfServiceClass:v32 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v33 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v34 = v33 != 0;
       if (v33)
       {
@@ -319,18 +319,18 @@
   return v34;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNDetectRectanglesRequest *)self requiredVersion];
-  if (v5 != [v4 requiredVersion])
+  configurationCopy = configuration;
+  requiredVersion = [(VNDetectRectanglesRequest *)self requiredVersion];
+  if (requiredVersion != [configurationCopy requiredVersion])
   {
     goto LABEL_7;
   }
 
   [(VNDetectRectanglesRequest *)self minimumAspectRatio];
   v7 = v6;
-  [v4 minimumAspectRatio];
+  [configurationCopy minimumAspectRatio];
   if (v7 < v8)
   {
     goto LABEL_7;
@@ -338,7 +338,7 @@
 
   [(VNDetectRectanglesRequest *)self maximumAspectRatio];
   v10 = v9;
-  [v4 maximumAspectRatio];
+  [configurationCopy maximumAspectRatio];
   if (v10 > v11)
   {
     goto LABEL_7;
@@ -346,7 +346,7 @@
 
   [(VNDetectRectanglesRequest *)self quadratureTolerance];
   v13 = v12;
-  [v4 quadratureTolerance];
+  [configurationCopy quadratureTolerance];
   if (v13 < v14)
   {
     goto LABEL_7;
@@ -354,7 +354,7 @@
 
   [(VNDetectRectanglesRequest *)self minimumSize];
   v16 = v15;
-  [v4 minimumSize];
+  [configurationCopy minimumSize];
   if (v16 < v17)
   {
     goto LABEL_7;
@@ -362,27 +362,27 @@
 
   [(VNDetectRectanglesRequest *)self minimumConfidence];
   v19 = v18;
-  [v4 minimumConfidence];
+  [configurationCopy minimumConfidence];
   if (v19 < v20)
   {
     goto LABEL_7;
   }
 
-  v23 = [(VNDetectRectanglesRequest *)self maximumObservations];
-  v24 = [v4 maximumObservations];
-  if (v23 && v24)
+  maximumObservations = [(VNDetectRectanglesRequest *)self maximumObservations];
+  maximumObservations2 = [configurationCopy maximumObservations];
+  if (maximumObservations && maximumObservations2)
   {
-    if (v23 <= v24)
+    if (maximumObservations <= maximumObservations2)
     {
 LABEL_15:
       v25.receiver = self;
       v25.super_class = VNDetectRectanglesRequest;
-      v21 = [(VNImageBasedRequest *)&v25 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+      v21 = [(VNImageBasedRequest *)&v25 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
       goto LABEL_8;
     }
   }
 
-  else if (v23 || !v24)
+  else if (maximumObservations || !maximumObservations2)
   {
     goto LABEL_15;
   }
@@ -398,21 +398,21 @@ LABEL_8:
 {
   v8.receiver = self;
   v8.super_class = VNDetectRectanglesRequest;
-  v3 = [(VNRequest *)&v8 dependencyProcessingOrdinality];
-  v4 = [(VNDetectRectanglesRequest *)self maximumObservations];
+  dependencyProcessingOrdinality = [(VNRequest *)&v8 dependencyProcessingOrdinality];
+  maximumObservations = [(VNDetectRectanglesRequest *)self maximumObservations];
   v5 = 20;
-  if (v4 < 0x14)
+  if (maximumObservations < 0x14)
   {
-    v5 = v4;
+    v5 = maximumObservations;
   }
 
   v6 = -100 * v5;
-  if (!v4)
+  if (!maximumObservations)
   {
     v6 = -2000;
   }
 
-  return v3 + v6;
+  return dependencyProcessingOrdinality + v6;
 }
 
 @end

@@ -5,7 +5,7 @@
 - (MUImpressionElement)impressionElement;
 - (MUInfoCardAnalyticsDelegate)analyticsDelegate;
 - (MUPersonalizedSuggestionSectionArbiterDelegate)personalizedSuggestionsArbiterDelegate;
-- (MUPlaceSectionController)initWithMapItem:(id)a3;
+- (MUPlaceSectionController)initWithMapItem:(id)item;
 - (MUPlaceSectionControllerDelegate)delegate;
 - (NSArray)sectionViews;
 - (UIView)sectionView;
@@ -38,10 +38,10 @@
 - (CGRect)impressionsFrame
 {
   v32 = *MEMORY[0x1E69E9840];
-  v2 = [(MUPlaceSectionController *)self sectionViews];
-  v3 = [v2 count];
-  v4 = [v2 firstObject];
-  [v4 frame];
+  sectionViews = [(MUPlaceSectionController *)self sectionViews];
+  v3 = [sectionViews count];
+  firstObject = [sectionViews firstObject];
+  [firstObject frame];
   x = v5;
   y = v7;
   width = v9;
@@ -53,7 +53,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = v2;
+    v13 = sectionViews;
     v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v14)
     {
@@ -109,12 +109,12 @@
 - (id)_placeCardImpressionsMetadata
 {
   v3 = objc_alloc_init(MUPlaceCardImpressionsMetadata);
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  -[MUPlaceCardImpressionsMetadata setBusinessId:](v3, "setBusinessId:", [v4 _muid]);
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  -[MUPlaceCardImpressionsMetadata setBusinessId:](v3, "setBusinessId:", [mapItem _muid]);
 
-  v5 = [(MUPlaceSectionController *)self mapItem];
-  v6 = [v5 place];
-  -[MUPlaceCardImpressionsMetadata setLocalSearchProviderId:](v3, "setLocalSearchProviderId:", [v6 localSearchProviderID]);
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  place = [mapItem2 place];
+  -[MUPlaceCardImpressionsMetadata setLocalSearchProviderId:](v3, "setLocalSearchProviderId:", [place localSearchProviderID]);
 
   [(MUPlaceSectionController *)self analyticsModuleTypeForAction:0 presentationOptions:0];
   [(MUPlaceCardImpressionsMetadata *)v3 setModuleType:GEOPDPlaceDataLayoutConfigurationFromGEOModuleType()];
@@ -132,13 +132,13 @@
       [MUPlaceModuleVisibilityConfigStore visibilityThresholdForModuleType:[(MUPlaceSectionController *)self analyticsModuleTypeForAction:0 presentationOptions:0]];
       v5 = v4;
       v6 = [MUImpressionElement alloc];
-      v7 = [MEMORY[0x1E696AFB0] UUID];
-      v8 = [(MUImpressionElement *)v6 initWithElementIdentifier:v7 visibilityThreshold:v5];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v8 = [(MUImpressionElement *)v6 initWithElementIdentifier:uUID visibilityThreshold:v5];
       v9 = self->_impressionElement;
       self->_impressionElement = v8;
 
-      v10 = [(MUPlaceSectionController *)self _placeCardImpressionsMetadata];
-      [(MUImpressionElement *)self->_impressionElement setCustomData:v10];
+      _placeCardImpressionsMetadata = [(MUPlaceSectionController *)self _placeCardImpressionsMetadata];
+      [(MUImpressionElement *)self->_impressionElement setCustomData:_placeCardImpressionsMetadata];
 
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
@@ -176,8 +176,8 @@
 
 - (BOOL)hasContent
 {
-  v2 = [(MUPlaceSectionController *)self sectionViews];
-  v3 = [v2 count] != 0;
+  sectionViews = [(MUPlaceSectionController *)self sectionViews];
+  v3 = [sectionViews count] != 0;
 
   return v3;
 }
@@ -185,12 +185,12 @@
 - (NSArray)sectionViews
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceSectionController *)self sectionView];
+  sectionView = [(MUPlaceSectionController *)self sectionView];
 
-  if (v3)
+  if (sectionView)
   {
-    v4 = [(MUPlaceSectionController *)self sectionView];
-    v8[0] = v4;
+    sectionView2 = [(MUPlaceSectionController *)self sectionView];
+    v8[0] = sectionView2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
@@ -220,16 +220,16 @@
   return sectionView;
 }
 
-- (MUPlaceSectionController)initWithMapItem:(id)a3
+- (MUPlaceSectionController)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MUPlaceSectionController;
   v6 = [(MUPlaceSectionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
   }
 
   return v7;

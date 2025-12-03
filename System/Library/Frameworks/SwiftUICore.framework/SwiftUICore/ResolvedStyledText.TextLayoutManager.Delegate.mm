@@ -1,6 +1,6 @@
 @interface ResolvedStyledText.TextLayoutManager.Delegate
 - (_TtCCC7SwiftUI18ResolvedStyledText17TextLayoutManager8Delegate)init;
-- (id)textLayoutManager:(id)a3 renderingAttributesForLink:(id)a4 atLocation:(id)a5 defaultAttributes:(id)a6;
+- (id)textLayoutManager:(id)manager renderingAttributesForLink:(id)link atLocation:(id)location defaultAttributes:(id)attributes;
 @end
 
 @implementation ResolvedStyledText.TextLayoutManager.Delegate
@@ -12,7 +12,7 @@
   return [(ResolvedStyledText.TextLayoutManager.Delegate *)&v3 init];
 }
 
-- (id)textLayoutManager:(id)a3 renderingAttributesForLink:(id)a4 atLocation:(id)a5 defaultAttributes:(id)a6
+- (id)textLayoutManager:(id)manager renderingAttributesForLink:(id)link atLocation:(id)location defaultAttributes:(id)attributes
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

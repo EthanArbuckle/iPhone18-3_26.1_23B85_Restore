@@ -1,45 +1,45 @@
 @interface VGVehicleStateStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActiveConnector:(id)a3;
-- (int)StringAsOrigin:(id)a3;
+- (int)StringAsActiveConnector:(id)connector;
+- (int)StringAsOrigin:(id)origin;
 - (int)activeConnector;
 - (int)origin;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveConnector:(BOOL)a3;
-- (void)setHasCurrentBatteryCapacity:(BOOL)a3;
-- (void)setHasCurrentEVRange:(BOOL)a3;
-- (void)setHasDateOfUpdate:(BOOL)a3;
-- (void)setHasIsCharging:(BOOL)a3;
-- (void)setHasMaxBatteryCapacity:(BOOL)a3;
-- (void)setHasMaxEVRange:(BOOL)a3;
-- (void)setHasMinBatteryCapacity:(BOOL)a3;
-- (void)setHasOrigin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveConnector:(BOOL)connector;
+- (void)setHasCurrentBatteryCapacity:(BOOL)capacity;
+- (void)setHasCurrentEVRange:(BOOL)range;
+- (void)setHasDateOfUpdate:(BOOL)update;
+- (void)setHasIsCharging:(BOOL)charging;
+- (void)setHasMaxBatteryCapacity:(BOOL)capacity;
+- (void)setHasMaxEVRange:(BOOL)range;
+- (void)setHasMinBatteryCapacity:(BOOL)capacity;
+- (void)setHasOrigin:(BOOL)origin;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VGVehicleStateStorage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 11))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 11))
   {
     [(VGVehicleStateStorage *)self setIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 8) != 0)
   {
-    self->_dateOfUpdate = *(v4 + 4);
+    self->_dateOfUpdate = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 62);
+    v5 = *(fromCopy + 62);
     if ((v5 & 0x100) == 0)
     {
 LABEL_5:
@@ -52,14 +52,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 62) & 0x100) == 0)
+  else if ((*(fromCopy + 62) & 0x100) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_origin = *(v4 + 24);
+  self->_origin = *(fromCopy + 24);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -72,9 +72,9 @@ LABEL_6:
   }
 
 LABEL_29:
-  self->_batteryPercentage = *(v4 + 1);
+  self->_batteryPercentage = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -87,9 +87,9 @@ LABEL_7:
   }
 
 LABEL_30:
-  self->_currentEVRange = *(v4 + 3);
+  self->_currentEVRange = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -102,9 +102,9 @@ LABEL_8:
   }
 
 LABEL_31:
-  self->_maxEVRange = *(v4 + 6);
+  self->_maxEVRange = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -117,9 +117,9 @@ LABEL_9:
   }
 
 LABEL_32:
-  self->_minBatteryCapacity = *(v4 + 7);
+  self->_minBatteryCapacity = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 62);
+  v5 = *(fromCopy + 62);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -132,52 +132,52 @@ LABEL_10:
   }
 
 LABEL_33:
-  self->_currentBatteryCapacity = *(v4 + 2);
+  self->_currentBatteryCapacity = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 62) & 0x10) != 0)
+  if ((*(fromCopy + 62) & 0x10) != 0)
   {
 LABEL_11:
-    self->_maxBatteryCapacity = *(v4 + 5);
+    self->_maxBatteryCapacity = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_12:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(VGVehicleStateStorage *)self setConsumptionArguments:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(VGVehicleStateStorage *)self setChargingArguments:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 62);
+  v6 = *(fromCopy + 62);
   if ((v6 & 0x200) != 0)
   {
-    self->_isCharging = *(v4 + 120);
+    self->_isCharging = *(fromCopy + 120);
     *&self->_has |= 0x200u;
-    v6 = *(v4 + 62);
+    v6 = *(fromCopy + 62);
   }
 
   if ((v6 & 0x80) != 0)
   {
-    self->_activeConnector = *(v4 + 16);
+    self->_activeConnector = *(fromCopy + 16);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(VGVehicleStateStorage *)self setPairedAppInstallSessionIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(VGVehicleStateStorage *)self setPairedAppInstallDeviceIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 
@@ -403,16 +403,16 @@ LABEL_50:
   return v37 ^ v38 ^ [(NSString *)self->_pairedAppInstallDeviceIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_64;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 11))
+  if (identifier | *(equalCopy + 11))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -421,10 +421,10 @@ LABEL_50:
   }
 
   has = self->_has;
-  v7 = *(v4 + 62);
+  v7 = *(equalCopy + 62);
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_dateOfUpdate != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_dateOfUpdate != *(equalCopy + 4))
     {
       goto LABEL_64;
     }
@@ -437,20 +437,20 @@ LABEL_50:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 62) & 0x100) == 0 || self->_origin != *(v4 + 24))
+    if ((*(equalCopy + 62) & 0x100) == 0 || self->_origin != *(equalCopy + 24))
     {
       goto LABEL_64;
     }
   }
 
-  else if ((*(v4 + 62) & 0x100) != 0)
+  else if ((*(equalCopy + 62) & 0x100) != 0)
   {
     goto LABEL_64;
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_batteryPercentage != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_batteryPercentage != *(equalCopy + 1))
     {
       goto LABEL_64;
     }
@@ -463,7 +463,7 @@ LABEL_50:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_currentEVRange != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_currentEVRange != *(equalCopy + 3))
     {
       goto LABEL_64;
     }
@@ -476,7 +476,7 @@ LABEL_50:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_maxEVRange != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_maxEVRange != *(equalCopy + 6))
     {
       goto LABEL_64;
     }
@@ -489,7 +489,7 @@ LABEL_50:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_minBatteryCapacity != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_minBatteryCapacity != *(equalCopy + 7))
     {
       goto LABEL_64;
     }
@@ -502,7 +502,7 @@ LABEL_50:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_currentBatteryCapacity != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_currentBatteryCapacity != *(equalCopy + 2))
     {
       goto LABEL_64;
     }
@@ -515,7 +515,7 @@ LABEL_50:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_maxBatteryCapacity != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_maxBatteryCapacity != *(equalCopy + 5))
     {
       goto LABEL_64;
     }
@@ -527,13 +527,13 @@ LABEL_50:
   }
 
   consumptionArguments = self->_consumptionArguments;
-  if (consumptionArguments | *(v4 + 10) && ![(NSString *)consumptionArguments isEqual:?])
+  if (consumptionArguments | *(equalCopy + 10) && ![(NSString *)consumptionArguments isEqual:?])
   {
     goto LABEL_64;
   }
 
   chargingArguments = self->_chargingArguments;
-  if (chargingArguments | *(v4 + 9))
+  if (chargingArguments | *(equalCopy + 9))
   {
     if (![(NSString *)chargingArguments isEqual:?])
     {
@@ -542,10 +542,10 @@ LABEL_50:
   }
 
   v10 = self->_has;
-  v11 = *(v4 + 62);
+  v11 = *(equalCopy + 62);
   if ((v10 & 0x200) == 0)
   {
-    if ((*(v4 + 62) & 0x200) == 0)
+    if ((*(equalCopy + 62) & 0x200) == 0)
     {
       goto LABEL_50;
     }
@@ -555,21 +555,21 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  if ((*(v4 + 62) & 0x200) == 0)
+  if ((*(equalCopy + 62) & 0x200) == 0)
   {
     goto LABEL_64;
   }
 
-  v12 = *(v4 + 120);
+  v12 = *(equalCopy + 120);
   if (self->_isCharging)
   {
-    if ((*(v4 + 120) & 1) == 0)
+    if ((*(equalCopy + 120) & 1) == 0)
     {
       goto LABEL_64;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_64;
   }
@@ -577,7 +577,7 @@ LABEL_64:
 LABEL_50:
   if ((v10 & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_activeConnector != *(v4 + 16))
+    if ((v11 & 0x80) == 0 || self->_activeConnector != *(equalCopy + 16))
     {
       goto LABEL_64;
     }
@@ -589,13 +589,13 @@ LABEL_50:
   }
 
   pairedAppInstallSessionIdentifier = self->_pairedAppInstallSessionIdentifier;
-  if (pairedAppInstallSessionIdentifier | *(v4 + 14) && ![(NSData *)pairedAppInstallSessionIdentifier isEqual:?])
+  if (pairedAppInstallSessionIdentifier | *(equalCopy + 14) && ![(NSData *)pairedAppInstallSessionIdentifier isEqual:?])
   {
     goto LABEL_64;
   }
 
   pairedAppInstallDeviceIdentifier = self->_pairedAppInstallDeviceIdentifier;
-  if (pairedAppInstallDeviceIdentifier | *(v4 + 13))
+  if (pairedAppInstallDeviceIdentifier | *(equalCopy + 13))
   {
     v15 = [(NSString *)pairedAppInstallDeviceIdentifier isEqual:?];
   }
@@ -610,10 +610,10 @@ LABEL_65:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
@@ -725,11 +725,11 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9 = [(NSString *)self->_consumptionArguments copyWithZone:a3];
+  v9 = [(NSString *)self->_consumptionArguments copyWithZone:zone];
   v10 = *(v5 + 80);
   *(v5 + 80) = v9;
 
-  v11 = [(NSString *)self->_chargingArguments copyWithZone:a3];
+  v11 = [(NSString *)self->_chargingArguments copyWithZone:zone];
   v12 = *(v5 + 72);
   *(v5 + 72) = v11;
 
@@ -747,27 +747,27 @@ LABEL_10:
     *(v5 + 124) |= 0x80u;
   }
 
-  v14 = [(NSData *)self->_pairedAppInstallSessionIdentifier copyWithZone:a3];
+  v14 = [(NSData *)self->_pairedAppInstallSessionIdentifier copyWithZone:zone];
   v15 = *(v5 + 112);
   *(v5 + 112) = v14;
 
-  v16 = [(NSString *)self->_pairedAppInstallDeviceIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_pairedAppInstallDeviceIdentifier copyWithZone:zone];
   v17 = *(v5 + 104);
   *(v5 + 104) = v16;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
-  [v7 setIdentifier:self->_identifier];
-  v4 = v7;
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
+  v4 = toCopy;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v7 + 4) = *&self->_dateOfUpdate;
-    *(v7 + 62) |= 8u;
+    *(toCopy + 4) = *&self->_dateOfUpdate;
+    *(toCopy + 62) |= 8u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -786,8 +786,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v7 + 24) = self->_origin;
-  *(v7 + 62) |= 0x100u;
+  *(toCopy + 24) = self->_origin;
+  *(toCopy + 62) |= 0x100u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -801,8 +801,8 @@ LABEL_4:
   }
 
 LABEL_27:
-  *(v7 + 1) = *&self->_batteryPercentage;
-  *(v7 + 62) |= 1u;
+  *(toCopy + 1) = *&self->_batteryPercentage;
+  *(toCopy + 62) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -816,8 +816,8 @@ LABEL_5:
   }
 
 LABEL_28:
-  *(v7 + 3) = *&self->_currentEVRange;
-  *(v7 + 62) |= 4u;
+  *(toCopy + 3) = *&self->_currentEVRange;
+  *(toCopy + 62) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -831,8 +831,8 @@ LABEL_6:
   }
 
 LABEL_29:
-  *(v7 + 6) = *&self->_maxEVRange;
-  *(v7 + 62) |= 0x20u;
+  *(toCopy + 6) = *&self->_maxEVRange;
+  *(toCopy + 62) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -846,8 +846,8 @@ LABEL_7:
   }
 
 LABEL_30:
-  *(v7 + 7) = *&self->_minBatteryCapacity;
-  *(v7 + 62) |= 0x40u;
+  *(toCopy + 7) = *&self->_minBatteryCapacity;
+  *(toCopy + 62) |= 0x40u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -861,26 +861,26 @@ LABEL_8:
   }
 
 LABEL_31:
-  *(v7 + 2) = *&self->_currentBatteryCapacity;
-  *(v7 + 62) |= 2u;
+  *(toCopy + 2) = *&self->_currentBatteryCapacity;
+  *(toCopy + 62) |= 2u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
-    *(v7 + 5) = *&self->_maxBatteryCapacity;
-    *(v7 + 62) |= 0x10u;
+    *(toCopy + 5) = *&self->_maxBatteryCapacity;
+    *(toCopy + 62) |= 0x10u;
   }
 
 LABEL_10:
   if (self->_consumptionArguments)
   {
-    [v7 setConsumptionArguments:?];
-    v4 = v7;
+    [toCopy setConsumptionArguments:?];
+    v4 = toCopy;
   }
 
   if (self->_chargingArguments)
   {
-    [v7 setChargingArguments:?];
-    v4 = v7;
+    [toCopy setChargingArguments:?];
+    v4 = toCopy;
   }
 
   v6 = self->_has;
@@ -899,22 +899,22 @@ LABEL_10:
 
   if (self->_pairedAppInstallSessionIdentifier)
   {
-    [v7 setPairedAppInstallSessionIdentifier:?];
-    v4 = v7;
+    [toCopy setPairedAppInstallSessionIdentifier:?];
+    v4 = toCopy;
   }
 
   if (self->_pairedAppInstallDeviceIdentifier)
   {
-    [v7 setPairedAppInstallDeviceIdentifier:?];
-    v4 = v7;
+    [toCopy setPairedAppInstallDeviceIdentifier:?];
+    v4 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   identifier = self->_identifier;
-  v19 = v4;
+  v19 = toCopy;
   PBDataWriterWriteStringField();
   has = self->_has;
   if ((has & 8) != 0)
@@ -1058,12 +1058,12 @@ LABEL_12:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -1249,61 +1249,61 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = VGVehicleStateStorage;
   v4 = [(VGVehicleStateStorage *)&v8 description];
-  v5 = [(VGVehicleStateStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VGVehicleStateStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsActiveConnector:(id)a3
+- (int)StringAsActiveConnector:(id)connector
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  connectorCopy = connector;
+  if ([connectorCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"J1772"])
+  else if ([connectorCopy isEqualToString:@"J1772"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CCS1"])
+  else if ([connectorCopy isEqualToString:@"CCS1"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CCS2"])
+  else if ([connectorCopy isEqualToString:@"CCS2"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CHADEMO"])
+  else if ([connectorCopy isEqualToString:@"CHADEMO"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GBT_AC"])
+  else if ([connectorCopy isEqualToString:@"GBT_AC"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GBT_DC"])
+  else if ([connectorCopy isEqualToString:@"GBT_DC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NACS_DC"])
+  else if ([connectorCopy isEqualToString:@"NACS_DC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MENNEKES"])
+  else if ([connectorCopy isEqualToString:@"MENNEKES"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"NACS_AC"])
+  else if ([connectorCopy isEqualToString:@"NACS_AC"])
   {
     v4 = 9;
   }
@@ -1316,9 +1316,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)setHasActiveConnector:(BOOL)a3
+- (void)setHasActiveConnector:(BOOL)connector
 {
-  if (a3)
+  if (connector)
   {
     v3 = 128;
   }
@@ -1344,9 +1344,9 @@ LABEL_12:
   }
 }
 
-- (void)setHasIsCharging:(BOOL)a3
+- (void)setHasIsCharging:(BOOL)charging
 {
-  if (a3)
+  if (charging)
   {
     v3 = 512;
   }
@@ -1359,9 +1359,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasMaxBatteryCapacity:(BOOL)a3
+- (void)setHasMaxBatteryCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 16;
   }
@@ -1374,9 +1374,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasCurrentBatteryCapacity:(BOOL)a3
+- (void)setHasCurrentBatteryCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 2;
   }
@@ -1389,9 +1389,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasMinBatteryCapacity:(BOOL)a3
+- (void)setHasMinBatteryCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 64;
   }
@@ -1404,9 +1404,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasMaxEVRange:(BOOL)a3
+- (void)setHasMaxEVRange:(BOOL)range
 {
-  if (a3)
+  if (range)
   {
     v3 = 32;
   }
@@ -1419,9 +1419,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCurrentEVRange:(BOOL)a3
+- (void)setHasCurrentEVRange:(BOOL)range
 {
-  if (a3)
+  if (range)
   {
     v3 = 4;
   }
@@ -1434,20 +1434,20 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsOrigin:(id)a3
+- (int)StringAsOrigin:(id)origin
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  originCopy = origin;
+  if ([originCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"IAP2"])
+  else if ([originCopy isEqualToString:@"IAP2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SIRIINTENTS"])
+  else if ([originCopy isEqualToString:@"SIRIINTENTS"])
   {
     v4 = 2;
   }
@@ -1460,9 +1460,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)setHasOrigin:(BOOL)a3
+- (void)setHasOrigin:(BOOL)origin
 {
-  if (a3)
+  if (origin)
   {
     v3 = 256;
   }
@@ -1488,9 +1488,9 @@ LABEL_12:
   }
 }
 
-- (void)setHasDateOfUpdate:(BOOL)a3
+- (void)setHasDateOfUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
     v3 = 8;
   }

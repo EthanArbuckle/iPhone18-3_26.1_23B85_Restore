@@ -1,6 +1,6 @@
 @interface CSDSignposts
 + (BOOL)shouldTraceSingposts;
-+ (void)trace:(unint64_t)a3;
++ (void)trace:(unint64_t)trace;
 @end
 
 @implementation CSDSignposts
@@ -15,13 +15,13 @@
   return byte_1006ACEC8;
 }
 
-+ (void)trace:(unint64_t)a3
++ (void)trace:(unint64_t)trace
 {
-  v3 = a3;
-  if ([a1 shouldTraceSingposts])
+  traceCopy = trace;
+  if ([self shouldTraceSingposts])
   {
 
-    _kdebug_trace((4 * (v3 & 0x3FFF)) | 0x2B170000u, 0, 0, 0, 0);
+    _kdebug_trace((4 * (traceCopy & 0x3FFF)) | 0x2B170000u, 0, 0, 0, 0);
   }
 }
 

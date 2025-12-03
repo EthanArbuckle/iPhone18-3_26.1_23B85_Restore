@@ -1,25 +1,25 @@
 @interface _UIFocusEnvironmentPreferenceCacheNode
-- (_UIFocusEnvironmentPreferenceCacheNode)initWithEnvironment:(id)a3;
+- (_UIFocusEnvironmentPreferenceCacheNode)initWithEnvironment:(id)environment;
 - (id)debugDescription;
 - (id)description;
 - (void)_reevaluateResolution;
-- (void)_resolve:(id)a3 explicitly:(BOOL)a4;
+- (void)_resolve:(id)_resolve explicitly:(BOOL)explicitly;
 - (void)_unresolve;
-- (void)setChildNodes:(id)a3;
+- (void)setChildNodes:(id)nodes;
 @end
 
 @implementation _UIFocusEnvironmentPreferenceCacheNode
 
-- (_UIFocusEnvironmentPreferenceCacheNode)initWithEnvironment:(id)a3
+- (_UIFocusEnvironmentPreferenceCacheNode)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v11.receiver = self;
   v11.super_class = _UIFocusEnvironmentPreferenceCacheNode;
   v6 = [(_UIFocusEnvironmentPreferenceCacheNode *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
     v8 = [MEMORY[0x277CCAA50] hashTableWithOptions:514];
     parentNodes = v7->_parentNodes;
     v7->_parentNodes = v8;
@@ -33,15 +33,15 @@
   v20 = *MEMORY[0x277D85DE8];
   if ((*&self->_flags & 2) == 0)
   {
-    v3 = [(_UIFocusEnvironmentPreferenceCacheNode *)self childNodes];
-    if (v3 && (v4 = v3, -[_UIFocusEnvironmentPreferenceCacheNode childNodes](self, "childNodes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+    childNodes = [(_UIFocusEnvironmentPreferenceCacheNode *)self childNodes];
+    if (childNodes && (v4 = childNodes, -[_UIFocusEnvironmentPreferenceCacheNode childNodes](self, "childNodes"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = [(_UIFocusEnvironmentPreferenceCacheNode *)self childNodes];
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      childNodes2 = [(_UIFocusEnvironmentPreferenceCacheNode *)self childNodes];
+      v8 = [childNodes2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         v9 = v8;
@@ -52,7 +52,7 @@
           {
             if (*v16 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(childNodes2);
             }
 
             v12 = *(*(&v15 + 1) + 8 * i);
@@ -62,15 +62,15 @@
               goto LABEL_20;
             }
 
-            v13 = [v12 resolvedEnvironment];
-            if (v13)
+            resolvedEnvironment = [v12 resolvedEnvironment];
+            if (resolvedEnvironment)
             {
-              v14 = v13;
+              v14 = resolvedEnvironment;
               goto LABEL_19;
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v9 = [childNodes2 countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v9)
           {
             continue;
@@ -84,7 +84,7 @@
 LABEL_19:
 
       [(_UIFocusEnvironmentPreferenceCacheNode *)self _resolve:v14 explicitly:0];
-      v7 = v14;
+      childNodes2 = v14;
 LABEL_20:
     }
 
@@ -96,18 +96,18 @@ LABEL_20:
   }
 }
 
-- (void)_resolve:(id)a3 explicitly:(BOOL)a4
+- (void)_resolve:(id)_resolve explicitly:(BOOL)explicitly
 {
-  v4 = a4;
+  explicitlyCopy = explicitly;
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
+  _resolveCopy = _resolve;
+  v8 = _resolveCopy;
   flags = self->_flags;
-  if ((flags & 2) == 0 || v4)
+  if ((flags & 2) == 0 || explicitlyCopy)
   {
-    if ((*&self->_flags & 1) != 0 && self->_resolvedEnvironment == v7)
+    if ((*&self->_flags & 1) != 0 && self->_resolvedEnvironment == _resolveCopy)
     {
-      if (v4 | ((flags & 2) >> 1))
+      if (explicitlyCopy | ((flags & 2) >> 1))
       {
         v17 = 2;
       }
@@ -123,7 +123,7 @@ LABEL_20:
     else
     {
       v10 = flags & 0xFC;
-      if (v4)
+      if (explicitlyCopy)
       {
         v11 = 3;
       }
@@ -134,7 +134,7 @@ LABEL_20:
       }
 
       *&self->_flags = v10 | v11;
-      objc_storeStrong(&self->_resolvedEnvironment, a3);
+      objc_storeStrong(&self->_resolvedEnvironment, _resolve);
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
@@ -208,16 +208,16 @@ LABEL_20:
   }
 }
 
-- (void)setChildNodes:(id)a3
+- (void)setChildNodes:(id)nodes
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodesCopy = nodes;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(_UIFocusEnvironmentPreferenceCacheNode *)self childNodes];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  childNodes = [(_UIFocusEnvironmentPreferenceCacheNode *)self childNodes];
+  v6 = [childNodes countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -229,20 +229,20 @@ LABEL_20:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childNodes);
         }
 
         [*(*(*(&v21 + 1) + 8 * v9++) + 8) removeObject:self];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [childNodes countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [nodesCopy copy];
   childNodes = self->_childNodes;
   self->_childNodes = v10;
 
@@ -250,7 +250,7 @@ LABEL_20:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v4;
+  v12 = nodesCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
@@ -301,9 +301,9 @@ LABEL_20:
 
   v11 = [v3 appendUnsignedInteger:-[NSHashTable count](self->_parentNodes withName:{"count"), @"parentNodes"}];
   v12 = [v3 appendUnsignedInteger:-[NSArray count](self->_childNodes withName:{"count"), @"childNodes"}];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 - (id)debugDescription
@@ -328,9 +328,9 @@ LABEL_20:
 
   v11 = [v3 appendObject:self->_parentNodes withName:@"parentNodes"];
   v12 = [v3 appendObject:self->_childNodes withName:@"childNodes"];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

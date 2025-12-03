@@ -1,89 +1,89 @@
 @interface PHPickerUpdateConfiguration
 - (BOOL)_isValidConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PHPickerUpdateConfiguration)init;
-- (PHPickerUpdateConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHPickerUpdateConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHPickerUpdateConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   edgesWithoutContentMargins = self->_edgesWithoutContentMargins;
-  v9 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:edgesWithoutContentMargins];
-  [v9 encodeObject:v6 forKey:@"PHPickerUpdateConfigurationCoderEdgesWithoutContentMarginsKey"];
+  [coderCopy encodeObject:v6 forKey:@"PHPickerUpdateConfigurationCoderEdgesWithoutContentMarginsKey"];
 
-  [v9 encodeInteger:self->_selectionLimit forKey:@"PHPickerUpdateConfigurationCoderSelectionLimitKey"];
-  [v9 encodeInteger:self->_minimumSelectionLimit forKey:@"PHPickerUpdateConfigurationCoderMinimumSelectionLimitKey"];
-  [v9 encodeObject:self->_prompt forKey:@"PHPickerUpdateConfigurationCoderPromptKey"];
-  [v9 encodeObject:self->_title forKey:@"PHPickerUpdateConfigurationCoderTitleKey"];
+  [coderCopy encodeInteger:self->_selectionLimit forKey:@"PHPickerUpdateConfigurationCoderSelectionLimitKey"];
+  [coderCopy encodeInteger:self->_minimumSelectionLimit forKey:@"PHPickerUpdateConfigurationCoderMinimumSelectionLimitKey"];
+  [coderCopy encodeObject:self->_prompt forKey:@"PHPickerUpdateConfigurationCoderPromptKey"];
+  [coderCopy encodeObject:self->_title forKey:@"PHPickerUpdateConfigurationCoderTitleKey"];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->__primaryButtonType];
-  [v9 encodeObject:v7 forKey:@"PHPickerUpdateConfigurationCoderPrimaryButtonTypeKey"];
+  [coderCopy encodeObject:v7 forKey:@"PHPickerUpdateConfigurationCoderPrimaryButtonTypeKey"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->__secondaryButtonType];
-  [v9 encodeObject:v8 forKey:@"PHPickerUpdateConfigurationCoderSecondaryButtonTypeKey"];
+  [coderCopy encodeObject:v8 forKey:@"PHPickerUpdateConfigurationCoderSecondaryButtonTypeKey"];
 
-  [v9 encodeObject:self->__sharedAlbumSheetConfiguration forKey:@"PHPickerUpdateConfigurationCoderSharedAlbumSheetConfigurationKey"];
-  [v9 encodeBool:self->__didSetEdgesWithoutContentMargins forKey:@"PHPickerUpdateConfigurationCoderDidSetEdgesWithoutContentMarginsKey"];
-  [v9 encodeBool:self->__didSetSelectionLimit forKey:@"PHPickerUpdateConfigurationCoderDidSetSelectionLimitKey"];
-  [v9 encodeBool:self->__didSetMinimumSelectionLimit forKey:@"PHPickerUpdateConfigurationCoderDidSetMinimumSelectionLimitKey"];
-  [v9 encodeBool:self->__didSetPrompt forKey:@"PHPickerUpdateConfigurationCoderDidSetPromptKey"];
-  [v9 encodeBool:self->__didSetTitle forKey:@"PHPickerUpdateConfigurationCoderDidSetTitleKey"];
-  [v9 encodeBool:self->__didSetPrimaryButtonType forKey:@"PHPickerUpdateConfigurationCoderDidSetPrimaryButtonTypeKey"];
-  [v9 encodeBool:self->__didSetSecondaryButtonType forKey:@"PHPickerUpdateConfigurationCoderDidSetSecondaryButtonTypeKey"];
-  [v9 encodeBool:self->__didSetSharedAlbumSheetConfiguration forKey:@"PHPickerUpdateConfigurationCoderDidSetSharedAlbumSheetConfigurationKey"];
+  [coderCopy encodeObject:self->__sharedAlbumSheetConfiguration forKey:@"PHPickerUpdateConfigurationCoderSharedAlbumSheetConfigurationKey"];
+  [coderCopy encodeBool:self->__didSetEdgesWithoutContentMargins forKey:@"PHPickerUpdateConfigurationCoderDidSetEdgesWithoutContentMarginsKey"];
+  [coderCopy encodeBool:self->__didSetSelectionLimit forKey:@"PHPickerUpdateConfigurationCoderDidSetSelectionLimitKey"];
+  [coderCopy encodeBool:self->__didSetMinimumSelectionLimit forKey:@"PHPickerUpdateConfigurationCoderDidSetMinimumSelectionLimitKey"];
+  [coderCopy encodeBool:self->__didSetPrompt forKey:@"PHPickerUpdateConfigurationCoderDidSetPromptKey"];
+  [coderCopy encodeBool:self->__didSetTitle forKey:@"PHPickerUpdateConfigurationCoderDidSetTitleKey"];
+  [coderCopy encodeBool:self->__didSetPrimaryButtonType forKey:@"PHPickerUpdateConfigurationCoderDidSetPrimaryButtonTypeKey"];
+  [coderCopy encodeBool:self->__didSetSecondaryButtonType forKey:@"PHPickerUpdateConfigurationCoderDidSetSecondaryButtonTypeKey"];
+  [coderCopy encodeBool:self->__didSetSharedAlbumSheetConfiguration forKey:@"PHPickerUpdateConfigurationCoderDidSetSharedAlbumSheetConfigurationKey"];
 }
 
-- (PHPickerUpdateConfiguration)initWithCoder:(id)a3
+- (PHPickerUpdateConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PHPickerUpdateConfiguration;
   v5 = [(PHPickerUpdateConfiguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderEdgesWithoutContentMarginsKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderEdgesWithoutContentMarginsKey"];
     v5->_edgesWithoutContentMargins = [v6 unsignedIntegerValue];
 
-    v5->_selectionLimit = [v4 decodeIntegerForKey:@"PHPickerUpdateConfigurationCoderSelectionLimitKey"];
-    v5->_minimumSelectionLimit = [v4 decodeIntegerForKey:@"PHPickerUpdateConfigurationCoderMinimumSelectionLimitKey"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderPromptKey"];
+    v5->_selectionLimit = [coderCopy decodeIntegerForKey:@"PHPickerUpdateConfigurationCoderSelectionLimitKey"];
+    v5->_minimumSelectionLimit = [coderCopy decodeIntegerForKey:@"PHPickerUpdateConfigurationCoderMinimumSelectionLimitKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderPromptKey"];
     prompt = v5->_prompt;
     v5->_prompt = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderTitleKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderTitleKey"];
     title = v5->_title;
     v5->_title = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderPrimaryButtonTypeKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderPrimaryButtonTypeKey"];
     v5->__primaryButtonType = [v11 unsignedIntegerValue];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderSecondaryButtonTypeKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderSecondaryButtonTypeKey"];
     v5->__secondaryButtonType = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderSharedAlbumSheetConfigurationKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PHPickerUpdateConfigurationCoderSharedAlbumSheetConfigurationKey"];
     sharedAlbumSheetConfiguration = v5->__sharedAlbumSheetConfiguration;
     v5->__sharedAlbumSheetConfiguration = v13;
 
-    v5->__didSetEdgesWithoutContentMargins = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetEdgesWithoutContentMarginsKey"];
-    v5->__didSetSelectionLimit = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetSelectionLimitKey"];
-    v5->__didSetMinimumSelectionLimit = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetMinimumSelectionLimitKey"];
-    v5->__didSetPrompt = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetPromptKey"];
-    v5->__didSetTitle = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetTitleKey"];
-    v5->__didSetPrimaryButtonType = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetPrimaryButtonTypeKey"];
-    v5->__didSetSecondaryButtonType = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetSecondaryButtonTypeKey"];
-    v5->__didSetSharedAlbumSheetConfiguration = [v4 decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetSharedAlbumSheetConfigurationKey"];
+    v5->__didSetEdgesWithoutContentMargins = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetEdgesWithoutContentMarginsKey"];
+    v5->__didSetSelectionLimit = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetSelectionLimitKey"];
+    v5->__didSetMinimumSelectionLimit = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetMinimumSelectionLimitKey"];
+    v5->__didSetPrompt = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetPromptKey"];
+    v5->__didSetTitle = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetTitleKey"];
+    v5->__didSetPrimaryButtonType = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetPrimaryButtonTypeKey"];
+    v5->__didSetSecondaryButtonType = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetSecondaryButtonTypeKey"];
+    v5->__didSetSharedAlbumSheetConfiguration = [coderCopy decodeBoolForKey:@"PHPickerUpdateConfigurationCoderDidSetSharedAlbumSheetConfigurationKey"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHPickerUpdateConfiguration);
   v4->_edgesWithoutContentMargins = self->_edgesWithoutContentMargins;
@@ -177,10 +177,10 @@
   return self->__didSetSharedAlbumSheetConfiguration - v16 + 32 * v16 - 0x504517CFAF5621FFLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
 LABEL_34:
@@ -195,7 +195,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {

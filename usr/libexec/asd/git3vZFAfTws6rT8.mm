@@ -1,15 +1,15 @@
 @interface git3vZFAfTws6rT8
-- (git3vZFAfTws6rT8)initWithDictionary:(id)a3;
+- (git3vZFAfTws6rT8)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)toDictionary;
 @end
 
 @implementation git3vZFAfTws6rT8
 
-- (git3vZFAfTws6rT8)initWithDictionary:(id)a3
+- (git3vZFAfTws6rT8)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"_classType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"_classType"];
   v6 = [v5 isEqualToString:@"settings"];
 
   if (v6)
@@ -19,43 +19,43 @@
     v7 = [(git3vZFAfTws6rT8 *)&v20 init];
     if (v7)
     {
-      v8 = [v4 objectForKey:@"endpointIdentifier"];
+      v8 = [dictionaryCopy objectForKey:@"endpointIdentifier"];
       [(git3vZFAfTws6rT8 *)v7 setEndpointIdentifier:v8];
 
-      v9 = [v4 objectForKey:@"endpointID"];
+      v9 = [dictionaryCopy objectForKey:@"endpointID"];
       -[git3vZFAfTws6rT8 setEndpointID:](v7, "setEndpointID:", [v9 intValue]);
 
-      v10 = [v4 objectForKey:@"settingsType"];
+      v10 = [dictionaryCopy objectForKey:@"settingsType"];
       -[git3vZFAfTws6rT8 setSettingsType:](v7, "setSettingsType:", [v10 intValue]);
 
-      v11 = [v4 objectForKey:@"pEmail"];
+      v11 = [dictionaryCopy objectForKey:@"pEmail"];
       [(git3vZFAfTws6rT8 *)v7 setPEmail:v11];
 
-      v12 = [v4 objectForKey:@"pPhone"];
+      v12 = [dictionaryCopy objectForKey:@"pPhone"];
       [(git3vZFAfTws6rT8 *)v7 setPPhone:v12];
 
-      v13 = [v4 objectForKey:@"phone"];
+      v13 = [dictionaryCopy objectForKey:@"phone"];
       [(git3vZFAfTws6rT8 *)v7 setPhone:v13];
 
-      v14 = [v4 objectForKey:@"email"];
+      v14 = [dictionaryCopy objectForKey:@"email"];
       [(git3vZFAfTws6rT8 *)v7 setEmail:v14];
 
       v15 = [pnVJs93OcjCilNjA alloc];
-      v16 = [v4 objectForKey:@"name"];
+      v16 = [dictionaryCopy objectForKey:@"name"];
       v17 = [(pnVJs93OcjCilNjA *)v15 initWithDictionary:v16];
       [(git3vZFAfTws6rT8 *)v7 setName:v17];
     }
 
     self = v7;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)toDictionary
@@ -68,54 +68,54 @@
   v5 = [NSNumber numberWithUnsignedInteger:[(git3vZFAfTws6rT8 *)self settingsType]];
   [v3 setObject:v5 forKeyedSubscript:@"settingsType"];
 
-  v6 = [(git3vZFAfTws6rT8 *)self endpointIdentifier];
+  endpointIdentifier = [(git3vZFAfTws6rT8 *)self endpointIdentifier];
 
-  if (v6)
+  if (endpointIdentifier)
   {
-    v7 = [(git3vZFAfTws6rT8 *)self endpointIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"endpointIdentifier"];
+    endpointIdentifier2 = [(git3vZFAfTws6rT8 *)self endpointIdentifier];
+    [v3 setObject:endpointIdentifier2 forKeyedSubscript:@"endpointIdentifier"];
   }
 
-  v8 = [(git3vZFAfTws6rT8 *)self pEmail];
+  pEmail = [(git3vZFAfTws6rT8 *)self pEmail];
 
-  if (v8)
+  if (pEmail)
   {
-    v9 = [(git3vZFAfTws6rT8 *)self pEmail];
-    [v3 setObject:v9 forKeyedSubscript:@"pEmail"];
+    pEmail2 = [(git3vZFAfTws6rT8 *)self pEmail];
+    [v3 setObject:pEmail2 forKeyedSubscript:@"pEmail"];
   }
 
-  v10 = [(git3vZFAfTws6rT8 *)self pPhone];
+  pPhone = [(git3vZFAfTws6rT8 *)self pPhone];
 
-  if (v10)
+  if (pPhone)
   {
-    v11 = [(git3vZFAfTws6rT8 *)self pPhone];
-    [v3 setObject:v11 forKeyedSubscript:@"pPhone"];
+    pPhone2 = [(git3vZFAfTws6rT8 *)self pPhone];
+    [v3 setObject:pPhone2 forKeyedSubscript:@"pPhone"];
   }
 
-  v12 = [(git3vZFAfTws6rT8 *)self phone];
+  phone = [(git3vZFAfTws6rT8 *)self phone];
 
-  if (v12)
+  if (phone)
   {
-    v13 = [(git3vZFAfTws6rT8 *)self phone];
-    [v3 setObject:v13 forKeyedSubscript:@"phone"];
+    phone2 = [(git3vZFAfTws6rT8 *)self phone];
+    [v3 setObject:phone2 forKeyedSubscript:@"phone"];
   }
 
-  v14 = [(git3vZFAfTws6rT8 *)self email];
+  email = [(git3vZFAfTws6rT8 *)self email];
 
-  if (v14)
+  if (email)
   {
-    v15 = [(git3vZFAfTws6rT8 *)self email];
-    [v3 setObject:v15 forKeyedSubscript:@"email"];
+    email2 = [(git3vZFAfTws6rT8 *)self email];
+    [v3 setObject:email2 forKeyedSubscript:@"email"];
   }
 
-  v16 = [(git3vZFAfTws6rT8 *)self name];
-  v17 = [v16 toDictionary];
+  name = [(git3vZFAfTws6rT8 *)self name];
+  toDictionary = [name toDictionary];
 
-  if (v17)
+  if (toDictionary)
   {
-    v18 = [(git3vZFAfTws6rT8 *)self name];
-    v19 = [v18 toDictionary];
-    [v3 setObject:v19 forKeyedSubscript:@"name"];
+    name2 = [(git3vZFAfTws6rT8 *)self name];
+    toDictionary2 = [name2 toDictionary];
+    [v3 setObject:toDictionary2 forKeyedSubscript:@"name"];
   }
 
   return v3;
@@ -125,8 +125,8 @@
 {
   v3 = +[NSMutableString string];
   [v3 appendFormat:@"<%@, %p> {\n", objc_opt_class(), self];
-  v4 = [(git3vZFAfTws6rT8 *)self endpointIdentifier];
-  [v3 appendFormat:@"\tendpointID: %@\n", v4];
+  endpointIdentifier = [(git3vZFAfTws6rT8 *)self endpointIdentifier];
+  [v3 appendFormat:@"\tendpointID: %@\n", endpointIdentifier];
 
   [v3 appendFormat:@"}"];
 

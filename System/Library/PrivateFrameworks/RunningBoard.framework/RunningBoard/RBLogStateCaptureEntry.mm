@@ -1,23 +1,23 @@
 @interface RBLogStateCaptureEntry
-- (void)setQueue:(uint64_t)a1;
-- (void)setTitle:(uint64_t)a1;
+- (void)setQueue:(uint64_t)queue;
+- (void)setTitle:(uint64_t)title;
 @end
 
 @implementation RBLogStateCaptureEntry
 
-- (void)setTitle:(uint64_t)a1
+- (void)setTitle:(uint64_t)title
 {
-  if (a1)
+  if (title)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((title + 8), a2);
   }
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((queue + 24), a2);
   }
 }
 

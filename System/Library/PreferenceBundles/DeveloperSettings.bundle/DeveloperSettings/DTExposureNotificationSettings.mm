@@ -7,9 +7,9 @@
 - (DTExposureNotificationSettings)init
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 8uLL, 0);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 stringByAppendingPathComponent:@"PreferenceBundles"];
+  v5 = [firstObject stringByAppendingPathComponent:@"PreferenceBundles"];
   v6 = [v5 stringByAppendingPathComponent:@"ENDeveloperSettings.bundle"];
   v7 = [NSBundle bundleWithPath:v6];
   v8 = objc_alloc_init([v7 principalClass]);

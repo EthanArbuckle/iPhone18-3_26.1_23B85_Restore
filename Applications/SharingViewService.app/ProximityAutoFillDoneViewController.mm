@@ -1,14 +1,14 @@
 @interface ProximityAutoFillDoneViewController
-- (void)handleDoneButtonPressed:(id)a3;
-- (void)handleReportButton:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleDoneButtonPressed:(id)pressed;
+- (void)handleReportButton:(id)button;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ProximityAutoFillDoneViewController
 
-- (void)handleReportButton:(id)a3
+- (void)handleReportButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -17,9 +17,9 @@
   [self->super.super._mainController fileRadar:*(&self->_titleLabel + 1)];
 }
 
-- (void)handleDoneButtonPressed:(id)a3
+- (void)handleDoneButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -28,17 +28,17 @@
   [self->super.super._mainController ensureStoppedWithDismiss:1 reason:5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v30.receiver = self;
   v30.super_class = ProximityAutoFillDoneViewController;
-  [(SVSBaseViewController *)&v30 viewWillAppear:a3];
+  [(SVSBaseViewController *)&v30 viewWillAppear:appear];
   v4 = *(&self->_titleLabel + 1);
   if (v4)
   {
-    v5 = [v4 code];
-    *(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) = v5 == -6723;
-    if (v5 != -6723)
+    code = [v4 code];
+    *(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) = code == -6723;
+    if (code != -6723)
     {
       v6 = *(&self->_titleLabel + 1) == 0;
       goto LABEL_7;
@@ -91,12 +91,12 @@ LABEL_7:
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"PROX_AUTOFILL_FAILED_DESCRIPTION_FORMAT" value:&stru_100195CA8 table:@"Localizable"];
 
-    v21 = [*(&self->_titleLabel + 1) localizedDescription];
-    v22 = v21;
+    localizedDescription = [*(&self->_titleLabel + 1) localizedDescription];
+    v22 = localizedDescription;
     v23 = @"Unknown error";
-    if (v21)
+    if (localizedDescription)
     {
-      v23 = v21;
+      v23 = localizedDescription;
     }
 
     v24 = [NSString stringWithFormat:v20, v23];
@@ -117,15 +117,15 @@ LABEL_7:
 LABEL_15:
   if (IsAppleInternalBuild())
   {
-    v29 = [self->super.super._mainController prefHideTTR];
+    prefHideTTR = [self->super.super._mainController prefHideTTR];
   }
 
   else
   {
-    v29 = 1;
+    prefHideTTR = 1;
   }
 
-  [*(&self->_imageView + 1) setHidden:v29];
+  [*(&self->_imageView + 1) setHidden:prefHideTTR];
 }
 
 @end

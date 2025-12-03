@@ -1,39 +1,39 @@
 @interface MOVStreamTimestamps
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTimeForAssetTrack:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTimeForAssetTrack:(SEL)track;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)index;
 - ($B22509A9E1E897CB5DF0DB02A23A695A)restrictedTimeRange;
-- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)a3 to:(unint64_t)a4;
+- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)from to:(unint64_t)to;
 - (MOVStreamSampleTimeList)timeList;
 - (MOVStreamTimestamps)init;
-- (MOVStreamTimestamps)initWithAssetTrack:(id)a3;
-- (MOVStreamTimestamps)initWithAssetTrack:(id)a3 restrictedTimeRange:(id *)a4;
+- (MOVStreamTimestamps)initWithAssetTrack:(id)track;
+- (MOVStreamTimestamps)initWithAssetTrack:(id)track restrictedTimeRange:(id *)range;
 - (NSArray)cmtimes;
 - (NSArray)times;
-- (_NSRange)frameRangeFrom:(id *)a3 to:(id *)a4;
+- (_NSRange)frameRangeFrom:(id *)from to:(id *)to;
 - (id)description;
-- (id)sampleTimelineForAssetTrack:(id)a3;
-- (id)sampleTimelineForAssetTrack:(id)a3 shouldStartTimestampsAtZero:(BOOL)a4;
+- (id)sampleTimelineForAssetTrack:(id)track;
+- (id)sampleTimelineForAssetTrack:(id)track shouldStartTimestampsAtZero:(BOOL)zero;
 - (unint64_t)count;
-- (void)setRestrictedTimeRange:(id *)a3;
-- (void)setShouldAppendEndOfStreamTimestamp:(BOOL)a3;
-- (void)setShouldStartTimestampsAtZero:(BOOL)a3;
+- (void)setRestrictedTimeRange:(id *)range;
+- (void)setShouldAppendEndOfStreamTimestamp:(BOOL)timestamp;
+- (void)setShouldStartTimestampsAtZero:(BOOL)zero;
 @end
 
 @implementation MOVStreamTimestamps
 
-- (MOVStreamTimestamps)initWithAssetTrack:(id)a3
+- (MOVStreamTimestamps)initWithAssetTrack:(id)track
 {
   v3 = *(MEMORY[0x277CC08D0] + 16);
   v5[0] = *MEMORY[0x277CC08D0];
   v5[1] = v3;
   v5[2] = *(MEMORY[0x277CC08D0] + 32);
-  return [(MOVStreamTimestamps *)self initWithAssetTrack:a3 restrictedTimeRange:v5];
+  return [(MOVStreamTimestamps *)self initWithAssetTrack:track restrictedTimeRange:v5];
 }
 
-- (MOVStreamTimestamps)initWithAssetTrack:(id)a3 restrictedTimeRange:(id *)a4
+- (MOVStreamTimestamps)initWithAssetTrack:(id)track restrictedTimeRange:(id *)range
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  trackCopy = track;
   v20.receiver = self;
   v20.super_class = MOVStreamTimestamps;
   v8 = [(MOVStreamTimestamps *)&v20 init];
@@ -45,24 +45,24 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (v7)
+  if (trackCopy)
   {
-    objc_storeStrong(&v8->_assetTrack, a3);
+    objc_storeStrong(&v8->_assetTrack, track);
     *&v9->_shouldStartTimestampsAtZero = 1;
-    if ((a4->var0.var2 & 1) == 0 || (a4->var1.var2 & 1) == 0 || a4->var1.var3 || a4->var1.var0 < 0)
+    if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
     {
       start = **&MEMORY[0x277CC08A8];
       v18 = **&MEMORY[0x277CC08B8];
       CMTimeRangeMake(&v21, &start, &v18);
       v10 = *&v21.start.epoch;
-      *&a4->var0.var0 = *&v21.start.value;
-      *&a4->var0.var3 = v10;
-      *&a4->var1.var1 = *&v21.duration.timescale;
+      *&range->var0.var0 = *&v21.start.value;
+      *&range->var0.var3 = v10;
+      *&range->var1.var1 = *&v21.duration.timescale;
     }
 
-    v11 = *&a4->var0.var0;
-    v12 = *&a4->var0.var3;
-    *&v9->_restrictedTimeRange.duration.timescale = *&a4->var1.var1;
+    v11 = *&range->var0.var0;
+    v12 = *&range->var0.var3;
+    *&v9->_restrictedTimeRange.duration.timescale = *&range->var1.var1;
     *&v9->_restrictedTimeRange.start.epoch = v12;
     *&v9->_restrictedTimeRange.start.value = v11;
     goto LABEL_8;
@@ -102,26 +102,26 @@ LABEL_12:
 
 - (id)description
 {
-  v2 = [(MOVStreamTimestamps *)self timeList];
-  v3 = [v2 description];
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  v3 = [timeList description];
 
   return v3;
 }
 
-- (void)setShouldStartTimestampsAtZero:(BOOL)a3
+- (void)setShouldStartTimestampsAtZero:(BOOL)zero
 {
-  if (self->_shouldStartTimestampsAtZero != a3)
+  if (self->_shouldStartTimestampsAtZero != zero)
   {
-    self->_shouldStartTimestampsAtZero = a3;
+    self->_shouldStartTimestampsAtZero = zero;
     [(MOVStreamTimestamps *)self clearCachedProperties];
   }
 }
 
-- (void)setShouldAppendEndOfStreamTimestamp:(BOOL)a3
+- (void)setShouldAppendEndOfStreamTimestamp:(BOOL)timestamp
 {
-  if (self->_shouldAppendEndOfStreamTimestamp != a3)
+  if (self->_shouldAppendEndOfStreamTimestamp != timestamp)
   {
-    self->_shouldAppendEndOfStreamTimestamp = a3;
+    self->_shouldAppendEndOfStreamTimestamp = timestamp;
     [(MOVStreamTimestamps *)self clearCachedProperties];
   }
 }
@@ -149,12 +149,12 @@ LABEL_12:
   return timeList;
 }
 
-- (_NSRange)frameRangeFrom:(id *)a3 to:(id *)a4
+- (_NSRange)frameRangeFrom:(id *)from to:(id *)to
 {
-  v6 = [(MOVStreamTimestamps *)self timeList];
-  v13 = *a3;
-  v12 = *a4;
-  v7 = [v6 frameRangeFrom:&v13 to:&v12];
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  v13 = *from;
+  v12 = *to;
+  v7 = [timeList frameRangeFrom:&v13 to:&v12];
   v9 = v8;
 
   v10 = v7;
@@ -164,14 +164,14 @@ LABEL_12:
   return result;
 }
 
-- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)a3 to:(unint64_t)a4
+- ($B22509A9E1E897CB5DF0DB02A23A695A)timeRangeFrom:(SEL)from to:(unint64_t)to
 {
-  v8 = [(MOVStreamTimestamps *)self timeList];
-  if (v8)
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  if (timeList)
   {
-    v10 = v8;
-    [v8 timeRangeFrom:a4 to:a5];
-    v8 = v10;
+    v10 = timeList;
+    [timeList timeRangeFrom:to to:a5];
+    timeList = v10;
   }
 
   else
@@ -186,36 +186,36 @@ LABEL_12:
 
 - (NSArray)times
 {
-  v2 = [(MOVStreamTimestamps *)self timeList];
-  v3 = [v2 times];
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  times = [timeList times];
 
-  return v3;
+  return times;
 }
 
 - (NSArray)cmtimes
 {
-  v2 = [(MOVStreamTimestamps *)self timeList];
-  v3 = [v2 cmtimes];
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  cmtimes = [timeList cmtimes];
 
-  return v3;
+  return cmtimes;
 }
 
 - (unint64_t)count
 {
-  v2 = [(MOVStreamTimestamps *)self timeList];
-  v3 = [v2 count];
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  v3 = [timeList count];
 
   return v3;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeAtIndex:(SEL)index
 {
-  v6 = [(MOVStreamTimestamps *)self timeList];
-  if (v6)
+  timeList = [(MOVStreamTimestamps *)self timeList];
+  if (timeList)
   {
-    v8 = v6;
-    [v6 timeAtIndex:a4];
-    v6 = v8;
+    v8 = timeList;
+    [timeList timeAtIndex:a4];
+    timeList = v8;
   }
 
   else
@@ -228,14 +228,14 @@ LABEL_12:
   return result;
 }
 
-- (id)sampleTimelineForAssetTrack:(id)a3
+- (id)sampleTimelineForAssetTrack:(id)track
 {
-  v4 = a3;
-  v5 = [(MOVStreamTimestamps *)self sampleTimelineForAssetTrack:v4 shouldStartTimestampsAtZero:[(MOVStreamTimestamps *)self shouldStartTimestampsAtZero]];
+  trackCopy = track;
+  v5 = [(MOVStreamTimestamps *)self sampleTimelineForAssetTrack:trackCopy shouldStartTimestampsAtZero:[(MOVStreamTimestamps *)self shouldStartTimestampsAtZero]];
   if ([(MOVStreamTimestamps *)self shouldAppendEndOfStreamTimestamp])
   {
     memset(&v10, 0, sizeof(v10));
-    [(MOVStreamTimestamps *)self endTimeForAssetTrack:v4];
+    [(MOVStreamTimestamps *)self endTimeForAssetTrack:trackCopy];
     if (0 >> 96)
     {
       time1 = v10;
@@ -248,31 +248,31 @@ LABEL_12:
     }
   }
 
-  v6 = [v5 timeline];
+  timeline = [v5 timeline];
 
-  return v6;
+  return timeline;
 }
 
-- (id)sampleTimelineForAssetTrack:(id)a3 shouldStartTimestampsAtZero:(BOOL)a4
+- (id)sampleTimelineForAssetTrack:(id)track shouldStartTimestampsAtZero:(BOOL)zero
 {
-  v35 = a4;
+  zeroCopy = zero;
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  trackCopy = track;
   v6 = objc_opt_new();
-  if (v5)
+  if (trackCopy)
   {
-    v7 = [v5 segments];
-    v33 = v7;
-    v34 = v5;
-    if ([v7 count])
+    segments = [trackCopy segments];
+    v33 = segments;
+    v34 = trackCopy;
+    if ([segments count])
     {
-      v8 = -[MOVStreamSampleTimeRangeBuffer initWithCapacity:]([MOVStreamSampleTimeRangeBuffer alloc], "initWithCapacity:", [v7 count]);
-      v9 = -[MOVStreamSampleTimeRangeBuffer initWithCapacity:]([MOVStreamSampleTimeRangeBuffer alloc], "initWithCapacity:", [v7 count]);
+      v8 = -[MOVStreamSampleTimeRangeBuffer initWithCapacity:]([MOVStreamSampleTimeRangeBuffer alloc], "initWithCapacity:", [segments count]);
+      v9 = -[MOVStreamSampleTimeRangeBuffer initWithCapacity:]([MOVStreamSampleTimeRangeBuffer alloc], "initWithCapacity:", [segments count]);
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v10 = v7;
+      v10 = segments;
       v11 = [v10 countByEnumeratingWithState:&v55 objects:v59 count:16];
       if (v11)
       {
@@ -334,24 +334,24 @@ LABEL_12:
         while (v12);
       }
 
-      v16 = [(MOVStreamSampleTimeRangeBuffer *)v8 timeRangeList];
-      v17 = [(MOVStreamSampleTimeRangeBuffer *)v9 timeRangeList];
+      timeRangeList = [(MOVStreamSampleTimeRangeBuffer *)v8 timeRangeList];
+      timeRangeList2 = [(MOVStreamSampleTimeRangeBuffer *)v9 timeRangeList];
 
-      v5 = v34;
+      trackCopy = v34;
     }
 
     else
     {
-      v17 = 0;
-      v16 = 0;
+      timeRangeList2 = 0;
+      timeRangeList = 0;
     }
 
-    v18 = [v5 makeSampleCursorAtFirstSampleInDecodeOrder];
-    if (v18)
+    makeSampleCursorAtFirstSampleInDecodeOrder = [trackCopy makeSampleCursorAtFirstSampleInDecodeOrder];
+    if (makeSampleCursorAtFirstSampleInDecodeOrder)
     {
-      if (v16)
+      if (timeRangeList)
       {
-        v19 = v17 == 0;
+        v19 = timeRangeList2 == 0;
       }
 
       else
@@ -364,21 +364,21 @@ LABEL_12:
       do
       {
         memset(&rhs[1], 0, 24);
-        [v18 presentationTimeStamp];
+        [makeSampleCursorAtFirstSampleInDecodeOrder presentationTimeStamp];
         if (v20)
         {
           lhs.start = rhs[1].start;
-          v22 = [v16 indexOfTimeRangeAtTime:&lhs];
+          v22 = [timeRangeList indexOfTimeRangeAtTime:&lhs];
           if (v22 < 0)
           {
             memset(&v43, 0, sizeof(v43));
-            [v18 currentSampleDuration];
+            [makeSampleCursorAtFirstSampleInDecodeOrder currentSampleDuration];
             memset(&v42, 0, sizeof(v42));
             lhs.start = rhs[1].start;
             rhs[0].start = v43;
             CMTimeAdd(&v42, &lhs.start, &rhs[0].start);
             lhs.start = v42;
-            v25 = [v16 indexOfTimeRangeAtTime:&lhs];
+            v25 = [timeRangeList indexOfTimeRangeAtTime:&lhs];
             if (v25 == -1)
             {
               *&rhs[1].start.value = *MEMORY[0x277CC0890];
@@ -389,9 +389,9 @@ LABEL_12:
             {
               v26 = v25;
               memset(&lhs, 0, sizeof(lhs));
-              [v16 timeRangeAtIndex:v25];
+              [timeRangeList timeRangeAtIndex:v25];
               memset(rhs, 0, 48);
-              [v17 timeRangeAtIndex:v26];
+              [timeRangeList2 timeRangeAtIndex:v26];
               start = rhs[1].start;
               fromRange = lhs;
               toRange = rhs[0];
@@ -405,9 +405,9 @@ LABEL_12:
           {
             v23 = v22;
             memset(&lhs, 0, sizeof(lhs));
-            [v16 timeRangeAtIndex:v22];
+            [timeRangeList timeRangeAtIndex:v22];
             memset(rhs, 0, 48);
-            [v17 timeRangeAtIndex:v23];
+            [timeRangeList2 timeRangeAtIndex:v23];
             v42 = rhs[1].start;
             fromRange = lhs;
             toRange = rhs[0];
@@ -436,8 +436,8 @@ LABEL_12:
               v28 = *(v21 + 2);
               rhs[0].start.epoch = v28;
               v29 = CMTimeCompare(&lhs.start, &rhs[0].start);
-              v30 = v35;
-              if (v35)
+              v30 = zeroCopy;
+              if (zeroCopy)
               {
                 lhs.start = rhs[1].start;
                 *&rhs[0].start.value = v36;
@@ -473,16 +473,16 @@ LABEL_12:
         }
       }
 
-      while ([v18 stepInPresentationOrderByCount:1]);
+      while ([makeSampleCursorAtFirstSampleInDecodeOrder stepInPresentationOrderByCount:1]);
     }
 
-    v5 = v34;
+    trackCopy = v34;
   }
 
   return v6;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTimeForAssetTrack:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)endTimeForAssetTrack:(SEL)track
 {
   *retstr = **&MEMORY[0x277CC0890];
   if (a4)
@@ -503,11 +503,11 @@ LABEL_12:
   return self;
 }
 
-- (void)setRestrictedTimeRange:(id *)a3
+- (void)setRestrictedTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_restrictedTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_restrictedTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_restrictedTimeRange.start.epoch = v4;
   *&self->_restrictedTimeRange.start.value = v3;
 }

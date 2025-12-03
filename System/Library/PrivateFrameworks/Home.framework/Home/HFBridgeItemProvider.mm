@@ -1,21 +1,21 @@
 @interface HFBridgeItemProvider
-- (HFBridgeItemProvider)initWithHome:(id)a3;
+- (HFBridgeItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFBridgeItemProvider
 
-- (HFBridgeItemProvider)initWithHome:(id)a3
+- (HFBridgeItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v10.receiver = self;
   v10.super_class = HFBridgeItemProvider;
   v6 = [(HFItemProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_opt_new();
     [(HFBridgeItemProvider *)v7 setAccessoryItems:v8];
   }
@@ -25,9 +25,9 @@
 
 - (id)reloadItems
 {
-  v3 = [(HFBridgeItemProvider *)self home];
-  v4 = [v3 hf_allBridgeAccessories];
-  v5 = [v4 na_filter:&__block_literal_global_147];
+  home = [(HFBridgeItemProvider *)self home];
+  hf_allBridgeAccessories = [home hf_allBridgeAccessories];
+  v5 = [hf_allBridgeAccessories na_filter:&__block_literal_global_147];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -36,8 +36,8 @@
   aBlock[3] = &unk_277DF5828;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [(HFBridgeItemProvider *)self filter];
-  v8 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:v7 itemMap:v6];
+  filter = [(HFBridgeItemProvider *)self filter];
+  v8 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:filter itemMap:v6];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __35__HFBridgeItemProvider_reloadItems__block_invoke_3;
@@ -83,8 +83,8 @@ id __35__HFBridgeItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *a2)
 {
   v5.receiver = self;
   v5.super_class = HFBridgeItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"accessory"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"accessory"];
 
   return v3;
 }

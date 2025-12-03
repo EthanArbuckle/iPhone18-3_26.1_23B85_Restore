@@ -1,17 +1,17 @@
 @interface PGMemoryTriggerRecentHolidayCelebration
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerRecentHolidayCelebration
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,35 +27,35 @@
 
   else
   {
-    v12 = [v8 localDate];
+    localDate = [contextCopy localDate];
     v13 = MEMORY[0x277D27690];
-    v14 = [v8 timeZone];
-    v35 = v12;
-    v15 = [v13 universalDateFromLocalDate:v12 inTimeZone:v14];
+    timeZone = [contextCopy timeZone];
+    v35 = localDate;
+    v15 = [v13 universalDateFromLocalDate:localDate inTimeZone:timeZone];
 
     v16 = [MEMORY[0x277D27690] dateByAddingDays:-10 toDate:v15];
     v17 = [MEMORY[0x277D27690] dateByAddingDays:-3 toDate:v15];
     v18 = MEMORY[0x277D27690];
-    v19 = [v8 timeZone];
+    timeZone2 = [contextCopy timeZone];
     v34 = v16;
-    v20 = [v18 localDateFromUniversalDate:v16 inTimeZone:v19];
+    v20 = [v18 localDateFromUniversalDate:v16 inTimeZone:timeZone2];
 
     v21 = MEMORY[0x277D27690];
-    v22 = [v8 timeZone];
+    timeZone3 = [contextCopy timeZone];
     v33 = v17;
-    v23 = [v21 localDateFromUniversalDate:v17 inTimeZone:v22];
+    v23 = [v21 localDateFromUniversalDate:v17 inTimeZone:timeZone3];
 
     v24 = objc_alloc_init(MEMORY[0x277D22BD0]);
-    v25 = [(PGHolidayMemoryTrigger *)self holidayService];
+    holidayService = [(PGHolidayMemoryTrigger *)self holidayService];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __96__PGMemoryTriggerRecentHolidayCelebration_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v39[3] = &unk_278886F98;
-    v26 = v9;
+    v26 = graphCopy;
     v40 = v26;
     v27 = v24;
     v41 = v27;
-    [v25 enumerateEventRulesForAllCountriesBetweenLocalDate:v20 andLocalDate:v23 usingBlock:v39];
+    [holidayService enumerateEventRulesForAllCountriesBetweenLocalDate:v20 andLocalDate:v23 usingBlock:v39];
 
     v28 = [(MAElementCollection *)[PGGraphMemoryNodeCollection alloc] initWithGraph:v26 elementIdentifiers:v27];
     v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -64,11 +64,11 @@
     v36[2] = __96__PGMemoryTriggerRecentHolidayCelebration_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke_2;
     v36[3] = &unk_278886FC0;
     v36[4] = self;
-    v37 = v8;
+    v37 = contextCopy;
     v30 = v29;
     v38 = v30;
     [(MAElementCollection *)v28 enumerateIdentifiersAsCollectionsWithBlock:v36];
-    if ([v10 isCancelledWithProgress:1.0])
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -178,12 +178,12 @@ void __96__PGMemoryTriggerRecentHolidayCelebration_resultsTriggeredWithContext_i
   [v18 addObjectsFromArray:v20];
 }
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes
 {
-  v3 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:a3];
-  v4 = [v3 featureNodeCollection];
+  v3 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:nodes];
+  featureNodeCollection = [v3 featureNodeCollection];
 
-  return v4;
+  return featureNodeCollection;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface UIUserNotificationSettings
 + (UIUserNotificationSettings)settingsForTypes:(UIUserNotificationType)types categories:(NSSet *)categories;
-+ (id)settingsForRegisteredSettings:(id)a3 requestedSettings:(id)a4;
-+ (id)settingsForUserNotificationTypes:(unint64_t)a3 userNotificationActionSettings:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (UIUserNotificationSettings)initWithCoder:(id)a3;
-- (UIUserNotificationSettings)initWithTypes:(unint64_t)a3 categories:(id)a4;
-- (UIUserNotificationSettings)initWithUserNotificationTypes:(unint64_t)a3 userNotificationActionSettings:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)settingsForRegisteredSettings:(id)settings requestedSettings:(id)requestedSettings;
++ (id)settingsForUserNotificationTypes:(unint64_t)types userNotificationActionSettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
+- (UIUserNotificationSettings)initWithCoder:(id)coder;
+- (UIUserNotificationSettings)initWithTypes:(unint64_t)types categories:(id)categories;
+- (UIUserNotificationSettings)initWithUserNotificationTypes:(unint64_t)types userNotificationActionSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)userNotificationActionSettings;
 - (id)validatedSettings;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIUserNotificationSettings
 
-+ (id)settingsForUserNotificationTypes:(unint64_t)a3 userNotificationActionSettings:(id)a4
++ (id)settingsForUserNotificationTypes:(unint64_t)types userNotificationActionSettings:(id)settings
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithUserNotificationTypes:a3 userNotificationActionSettings:v5];
+  settingsCopy = settings;
+  v6 = [objc_alloc(objc_opt_class()) initWithUserNotificationTypes:types userNotificationActionSettings:settingsCopy];
 
   return v6;
 }
@@ -31,28 +31,28 @@
   return v6;
 }
 
-+ (id)settingsForRegisteredSettings:(id)a3 requestedSettings:(id)a4
++ (id)settingsForRegisteredSettings:(id)settings requestedSettings:(id)requestedSettings
 {
-  v6 = a4;
-  v7 = [a3 types];
-  v8 = [v6 types];
-  v9 = [v6 categories];
+  requestedSettingsCopy = requestedSettings;
+  types = [settings types];
+  types2 = [requestedSettingsCopy types];
+  categories = [requestedSettingsCopy categories];
 
-  v10 = [a1 settingsForTypes:v8 & v7 categories:v9];
+  v10 = [self settingsForTypes:types2 & types categories:categories];
 
   return v10;
 }
 
-- (UIUserNotificationSettings)initWithUserNotificationTypes:(unint64_t)a3 userNotificationActionSettings:(id)a4
+- (UIUserNotificationSettings)initWithUserNotificationTypes:(unint64_t)types userNotificationActionSettings:(id)settings
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  settingsCopy = settings;
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(settingsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = settingsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -73,9 +73,9 @@
         if (objc_opt_isKindOfClass())
         {
           v12 = [UIUserNotificationCategory alloc];
-          v13 = [v11 category];
-          v14 = [v11 actionsByContext];
-          v15 = [(UIUserNotificationCategory *)v12 initWithIdentifier:v13 actionsByContext:v14];
+          category = [v11 category];
+          actionsByContext = [v11 actionsByContext];
+          v15 = [(UIUserNotificationCategory *)v12 initWithIdentifier:category actionsByContext:actionsByContext];
 
           [v5 addObject:v15];
         }
@@ -90,27 +90,27 @@
     while (v8);
   }
 
-  v16 = [(UIUserNotificationSettings *)self initWithTypes:a3 categories:v5];
+  v16 = [(UIUserNotificationSettings *)self initWithTypes:types categories:v5];
   return v16;
 }
 
-- (UIUserNotificationSettings)initWithTypes:(unint64_t)a3 categories:(id)a4
+- (UIUserNotificationSettings)initWithTypes:(unint64_t)types categories:(id)categories
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  categoriesCopy = categories;
   v23.receiver = self;
   v23.super_class = UIUserNotificationSettings;
   v7 = [(UIUserNotificationSettings *)&v23 init];
   v8 = v7;
   if (v7)
   {
-    v7->_types = a3;
-    v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    v7->_types = types;
+    v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(categoriesCopy, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = v6;
+    v10 = categoriesCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
@@ -151,32 +151,32 @@
   return v8;
 }
 
-- (UIUserNotificationSettings)initWithCoder:(id)a3
+- (UIUserNotificationSettings)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"kUserNotificationTypesKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"kUserNotificationTypesKey"];
   v6 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:3];
   v8 = [v6 setWithArray:{v7, v12, v13}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kUserNotificationCategoriesKey"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kUserNotificationCategoriesKey"];
 
   v10 = [(UIUserNotificationSettings *)self initWithTypes:v5 categories:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   types = self->_types;
-  v5 = a3;
-  [v5 encodeInteger:types forKey:@"kUserNotificationTypesKey"];
-  [v5 encodeObject:self->_categories forKey:@"kUserNotificationCategoriesKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:types forKey:@"kUserNotificationTypesKey"];
+  [coderCopy encodeObject:self->_categories forKey:@"kUserNotificationCategoriesKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   types = self->_types;
@@ -185,20 +185,20 @@
   return [v4 initWithTypes:types categories:categories];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     types = self->_types;
-    v6 = v4;
-    v7 = [v6 types];
+    v6 = equalCopy;
+    types = [v6 types];
     categories = self->_categories;
-    v9 = [v6 categories];
+    categories = [v6 categories];
 
-    v10 = [(NSSet *)categories isEqual:v9];
-    if (types == v7)
+    v10 = [(NSSet *)categories isEqual:categories];
+    if (types == types)
     {
       v11 = v10;
     }
@@ -280,13 +280,13 @@ LABEL_5:
 - (id)validatedSettings
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSSet count](v2->_categories, "count")}];
+  selfCopy = self;
+  v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSSet count](selfCopy->_categories, "count")}];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2->_categories;
+  v4 = selfCopy->_categories;
   v5 = [(NSSet *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v5)
   {
@@ -306,11 +306,11 @@ LABEL_5:
       }
 
       v10 = *(*(&v16 + 1) + 8 * i);
-      v11 = [v10 validatedCategory];
-      v12 = v11 != v10;
-      if (v11)
+      validatedCategory = [v10 validatedCategory];
+      v12 = validatedCategory != v10;
+      if (validatedCategory)
       {
-        [v3 addObject:v11];
+        [v3 addObject:validatedCategory];
       }
 
       v7 |= v12;
@@ -323,16 +323,16 @@ LABEL_5:
 
   if (v7)
   {
-    v13 = [(UIUserNotificationSettings *)v2 copy];
+    v13 = [(UIUserNotificationSettings *)selfCopy copy];
 
     v14 = v3;
     v4 = *(v13 + 16);
     *(v13 + 16) = v14;
-    v2 = v13;
+    selfCopy = v13;
 LABEL_12:
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)userNotificationActionSettings
@@ -360,9 +360,9 @@ LABEL_12:
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [UIUserNotificationActionSettings alloc];
-        v11 = [v9 identifier];
-        v12 = [v9 actionsByContext];
-        v13 = [(UIUserNotificationActionSettings *)v10 initWithCategory:v11 actionsByContext:v12];
+        identifier = [v9 identifier];
+        actionsByContext = [v9 actionsByContext];
+        v13 = [(UIUserNotificationActionSettings *)v10 initWithCategory:identifier actionsByContext:actionsByContext];
 
         [v3 addObject:v13];
       }

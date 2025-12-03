@@ -1,24 +1,24 @@
 @interface ACCiAP2ShimServerUnregisteredClient
-- (ACCiAP2ShimServerUnregisteredClient)initWithBundleId:(id)a3;
-- (id)_applicationInfoForBundleIDSync:(id)a3;
+- (ACCiAP2ShimServerUnregisteredClient)initWithBundleId:(id)id;
+- (id)_applicationInfoForBundleIDSync:(id)sync;
 - (int)_getProcessId;
 - (void)releaseProcessAssertion;
-- (void)takeProcessAssertion:(id)a3;
+- (void)takeProcessAssertion:(id)assertion;
 @end
 
 @implementation ACCiAP2ShimServerUnregisteredClient
 
-- (ACCiAP2ShimServerUnregisteredClient)initWithBundleId:(id)a3
+- (ACCiAP2ShimServerUnregisteredClient)initWithBundleId:(id)id
 {
   v4.receiver = self;
   v4.super_class = ACCiAP2ShimServerUnregisteredClient;
   return [(ACCiAP2ShimServerUnregisteredClient *)&v4 init];
 }
 
-- (void)takeProcessAssertion:(id)a3
+- (void)takeProcessAssertion:(id)assertion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   if (!self->_processAssertion)
   {
 LABEL_7:
@@ -54,7 +54,7 @@ LABEL_7:
       v17 = 138412546;
       v18 = bundleId;
       v19 = 1024;
-      v20 = [(ACCiAP2ShimServerUnregisteredClient *)self _getProcessId];
+      _getProcessId = [(ACCiAP2ShimServerUnregisteredClient *)self _getProcessId];
       _os_log_impl(&dword_23DC47000, v10, OS_LOG_TYPE_INFO, "[#ServerClient] creating process assertion - appId=%@ pid=%d", &v17, 0x12u);
     }
 
@@ -91,7 +91,7 @@ LABEL_7:
         v17 = 138412546;
         v18 = v15;
         v19 = 1024;
-        v20 = [(ACCiAP2ShimServerUnregisteredClient *)self _getProcessId];
+        _getProcessId = [(ACCiAP2ShimServerUnregisteredClient *)self _getProcessId];
         _os_log_impl(&dword_23DC47000, v5, OS_LOG_TYPE_INFO, "[#ServerClient] renewing process assertion - appId=%@ pid=%d", &v17, 0x12u);
       }
 
@@ -150,11 +150,11 @@ LABEL_35:
   }
 }
 
-- (id)_applicationInfoForBundleIDSync:(id)a3
+- (id)_applicationInfoForBundleIDSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = _getApplicationStateMonitor();
-  v5 = [v4 applicationInfoForApplication:v3];
+  v5 = [v4 applicationInfoForApplication:syncCopy];
 
   return v5;
 }
@@ -169,9 +169,9 @@ LABEL_35:
     {
       v4 = [(ACCiAP2ShimServerUnregisteredClient *)self _applicationInfoForBundleIDSync:?];
       v5 = [v4 valueForKey:*MEMORY[0x277CEEE80]];
-      v6 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-      self->_processId = v6;
+      self->_processId = unsignedIntegerValue;
       return self->_processId;
     }
 

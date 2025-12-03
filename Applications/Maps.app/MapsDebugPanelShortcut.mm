@@ -1,20 +1,20 @@
 @interface MapsDebugPanelShortcut
-+ (MapsDebugPanelShortcut)shortcutWithType:(int64_t)a3 name:(id)a4 indexPaths:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MapsDebugPanelShortcut)initWithCoder:(id)a3;
-- (MapsDebugPanelShortcut)initWithType:(int64_t)a3 name:(id)a4 indexPaths:(id)a5;
++ (MapsDebugPanelShortcut)shortcutWithType:(int64_t)type name:(id)name indexPaths:(id)paths;
+- (BOOL)isEqual:(id)equal;
+- (MapsDebugPanelShortcut)initWithCoder:(id)coder;
+- (MapsDebugPanelShortcut)initWithType:(int64_t)type name:(id)name indexPaths:(id)paths;
 - (id)dataRepresentation;
 - (id)description;
 - (id)stringRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MapsDebugPanelShortcut
 
 - (id)stringRepresentation
 {
-  v2 = [(MapsDebugPanelShortcut *)self dataRepresentation];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  dataRepresentation = [(MapsDebugPanelShortcut *)self dataRepresentation];
+  v3 = [dataRepresentation base64EncodedStringWithOptions:0];
 
   return v3;
 }
@@ -51,10 +51,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -64,17 +64,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MapsDebugPanelShortcut *)self type];
-      if (v6 == [(MapsDebugPanelShortcut *)v5 type])
+      v5 = equalCopy;
+      type = [(MapsDebugPanelShortcut *)self type];
+      if (type == [(MapsDebugPanelShortcut *)v5 type])
       {
-        v7 = [(MapsDebugPanelShortcut *)self name];
-        v8 = [(MapsDebugPanelShortcut *)v5 name];
-        if ([v7 isEqualToString:v8])
+        name = [(MapsDebugPanelShortcut *)self name];
+        name2 = [(MapsDebugPanelShortcut *)v5 name];
+        if ([name isEqualToString:name2])
         {
-          v9 = [(MapsDebugPanelShortcut *)self indexPaths];
-          v10 = [(MapsDebugPanelShortcut *)v5 indexPaths];
-          v11 = [v9 isEqualToArray:v10];
+          indexPaths = [(MapsDebugPanelShortcut *)self indexPaths];
+          indexPaths2 = [(MapsDebugPanelShortcut *)v5 indexPaths];
+          v11 = [indexPaths isEqualToArray:indexPaths2];
         }
 
         else
@@ -98,31 +98,31 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"_type"];
-  [v5 encodeObject:self->_name forKey:@"_name"];
-  [v5 encodeObject:self->_indexPaths forKey:@"_indexPaths"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"_type"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeObject:self->_indexPaths forKey:@"_indexPaths"];
 }
 
-- (MapsDebugPanelShortcut)initWithCoder:(id)a3
+- (MapsDebugPanelShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MapsDebugPanelShortcut;
   v5 = [(MapsDebugPanelShortcut *)&v14 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_indexPaths"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_indexPaths"];
     indexPaths = v5->_indexPaths;
     v5->_indexPaths = v10;
 
@@ -132,22 +132,22 @@
   return v5;
 }
 
-- (MapsDebugPanelShortcut)initWithType:(int64_t)a3 name:(id)a4 indexPaths:(id)a5
+- (MapsDebugPanelShortcut)initWithType:(int64_t)type name:(id)name indexPaths:(id)paths
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  pathsCopy = paths;
   v17.receiver = self;
   v17.super_class = MapsDebugPanelShortcut;
   v10 = [(MapsDebugPanelShortcut *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [pathsCopy copy];
     indexPaths = v11->_indexPaths;
     v11->_indexPaths = v14;
   }
@@ -155,11 +155,11 @@
   return v11;
 }
 
-+ (MapsDebugPanelShortcut)shortcutWithType:(int64_t)a3 name:(id)a4 indexPaths:(id)a5
++ (MapsDebugPanelShortcut)shortcutWithType:(int64_t)type name:(id)name indexPaths:(id)paths
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithType:a3 name:v9 indexPaths:v8];
+  pathsCopy = paths;
+  nameCopy = name;
+  v10 = [[self alloc] initWithType:type name:nameCopy indexPaths:pathsCopy];
 
   return v10;
 }

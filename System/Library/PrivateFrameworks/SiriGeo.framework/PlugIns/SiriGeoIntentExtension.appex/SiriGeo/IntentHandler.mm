@@ -1,15 +1,15 @@
 @interface IntentHandler
 - (_TtC22SiriGeoIntentExtension13IntentHandler)init;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation IntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  IntentHandler.handler(for:)(v4, v8);
+  intentCopy = intent;
+  selfCopy = self;
+  IntentHandler.handler(for:)(intentCopy, v8);
 
   __swift_project_boxed_opaque_existential_0(v8, v8[3]);
   v6 = _bridgeAnythingToObjectiveC<A>(_:)();

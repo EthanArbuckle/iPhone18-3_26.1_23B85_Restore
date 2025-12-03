@@ -1,21 +1,21 @@
 @interface EAEmailAddressParser
-+ (BOOL)addressIsEmptyGroup:(id)a3;
-+ (BOOL)isLegalEmailAddress:(id)a3;
++ (BOOL)addressIsEmptyGroup:(id)group;
++ (BOOL)isLegalEmailAddress:(id)address;
 + (OS_os_log)log;
-+ (_NSRange)rangeOfAddressDomainFromAddress:(id)a3;
-+ (id)_stringByDecodingIDNAString:(id)a3 inRange:(_NSRange)a4;
-+ (id)_stringByEncodingIDNAString:(id)a3 inRange:(_NSRange)a4;
-+ (id)addressDomainFromAddress:(id)a3;
-+ (id)displayNameFromAddress:(id)a3;
-+ (id)displayNameFromAddress:(id)a3 cacheResults:(BOOL)a4;
-+ (id)idnaDecodedAddressForAddress:(id)a3;
-+ (id)idnaEncodedAddressForAddress:(id)a3;
-+ (id)localPartFromAddress:(id)a3;
-+ (id)rawAddressFromFullAddress:(id)a3;
-+ (id)rawAddressFromFullAddress:(id)a3 cacheResults:(BOOL)a4;
-+ (id)rawAddressRespectingGroupsFromFullAddress:(id)a3;
-+ (void)_componentsForFullAddress:(id)a3 rawAddressIndexes:(id *)a4 localPartIndexes:(id *)a5 domainIndexes:(id *)a6;
-+ (void)insertPreviousRoute:(unsigned __int16 *)a3 ofLength:(unint64_t)a4 toBuffer:(unsigned __int16 *)a5 ofLength:(unint64_t)a6 atPosition:(unsigned __int16 *)a7 addSpace:(BOOL)a8;
++ (_NSRange)rangeOfAddressDomainFromAddress:(id)address;
++ (id)_stringByDecodingIDNAString:(id)string inRange:(_NSRange)range;
++ (id)_stringByEncodingIDNAString:(id)string inRange:(_NSRange)range;
++ (id)addressDomainFromAddress:(id)address;
++ (id)displayNameFromAddress:(id)address;
++ (id)displayNameFromAddress:(id)address cacheResults:(BOOL)results;
++ (id)idnaDecodedAddressForAddress:(id)address;
++ (id)idnaEncodedAddressForAddress:(id)address;
++ (id)localPartFromAddress:(id)address;
++ (id)rawAddressFromFullAddress:(id)address;
++ (id)rawAddressFromFullAddress:(id)address cacheResults:(BOOL)results;
++ (id)rawAddressRespectingGroupsFromFullAddress:(id)address;
++ (void)_componentsForFullAddress:(id)address rawAddressIndexes:(id *)indexes localPartIndexes:(id *)partIndexes domainIndexes:(id *)domainIndexes;
++ (void)insertPreviousRoute:(unsigned __int16 *)route ofLength:(unint64_t)length toBuffer:(unsigned __int16 *)buffer ofLength:(unint64_t)ofLength atPosition:(unsigned __int16 *)position addSpace:(BOOL)space;
 @end
 
 @implementation EAEmailAddressParser
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __27__EAEmailAddressParser_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -45,11 +45,11 @@ void __27__EAEmailAddressParser_log__block_invoke(uint64_t a1)
   log_log = v1;
 }
 
-+ (BOOL)isLegalEmailAddress:(id)a3
++ (BOOL)isLegalEmailAddress:(id)address
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 rawAddressRespectingGroupsFromFullAddress:v4];
+  addressCopy = address;
+  v5 = [self rawAddressRespectingGroupsFromFullAddress:addressCopy];
   v6 = [(__CFString *)v5 length];
   v7 = v6;
   if (v6 < 3)
@@ -223,8 +223,8 @@ LABEL_38:
       goto LABEL_38;
     }
 
-    v26 = [MEMORY[0x277CCA900] ef_unsafeAddressLocalPartCharacterSet];
-    v27 = [(__CFString *)v5 rangeOfCharacterFromSet:v26 options:0 range:0, v19]== 0x7FFFFFFFFFFFFFFFLL;
+    ef_unsafeAddressLocalPartCharacterSet = [MEMORY[0x277CCA900] ef_unsafeAddressLocalPartCharacterSet];
+    v27 = [(__CFString *)v5 rangeOfCharacterFromSet:ef_unsafeAddressLocalPartCharacterSet options:0 range:0, v19]== 0x7FFFFFFFFFFFFFFFLL;
 
     if (!v27)
     {
@@ -307,8 +307,8 @@ LABEL_38:
         goto LABEL_38;
       }
 
-      v38 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-      v39 = [v38 mutableCopy];
+      alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+      v39 = [alphanumericCharacterSet mutableCopy];
 
       [v39 addCharactersInString:@".-"];
       [v39 invert];
@@ -322,13 +322,13 @@ LABEL_39:
   return v21;
 }
 
-+ (BOOL)addressIsEmptyGroup:(id)a3
++ (BOOL)addressIsEmptyGroup:(id)group
 {
-  v3 = a3;
-  if ([v3 length])
+  groupCopy = group;
+  if ([groupCopy length])
   {
-    v4 = [v3 rangeOfString:@":" options:2];
-    v5 = [v3 rangeOfString:@";" options:14];
+    v4 = [groupCopy rangeOfString:@":" options:2];
+    v5 = [groupCopy rangeOfString:@";" options:14];
     v6 = 0;
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -345,7 +345,7 @@ LABEL_39:
             break;
           }
 
-          v10 = [v3 characterAtIndex:v8];
+          v10 = [groupCopy characterAtIndex:v8];
           v11 = v10;
           v12 = v10 > 0x7F ? __maskrune(v10, 0x4000uLL) : *(v9 + 4 * v10 + 60) & 0x4000;
           ++v8;
@@ -364,18 +364,18 @@ LABEL_39:
   return v6;
 }
 
-+ (id)rawAddressFromFullAddress:(id)a3
++ (id)rawAddressFromFullAddress:(id)address
 {
-  v3 = [a1 rawAddressFromFullAddress:a3 cacheResults:1];
+  v3 = [self rawAddressFromFullAddress:address cacheResults:1];
 
   return v3;
 }
 
-+ (id)rawAddressFromFullAddress:(id)a3 cacheResults:(BOOL)a4
++ (id)rawAddressFromFullAddress:(id)address cacheResults:(BOOL)results
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  resultsCopy = results;
+  addressCopy = address;
+  if (addressCopy)
   {
     if (rawAddressFromFullAddress_cacheResults__onceToken != -1)
     {
@@ -383,7 +383,7 @@ LABEL_39:
     }
 
     objc_sync_enter(@"com.apple.EmailAddressing.rawAddressesLock");
-    v7 = [rawAddressFromFullAddress_cacheResults__rawAddresses objectForKeyedSubscript:v6];
+    v7 = [rawAddressFromFullAddress_cacheResults__rawAddresses objectForKeyedSubscript:addressCopy];
     objc_sync_exit(@"com.apple.EmailAddressing.rawAddressesLock");
     if (v7)
     {
@@ -393,15 +393,15 @@ LABEL_39:
     else
     {
       v12 = 0;
-      [a1 _componentsForFullAddress:v6 rawAddressIndexes:&v12 localPartIndexes:0 domainIndexes:0];
+      [self _componentsForFullAddress:addressCopy rawAddressIndexes:&v12 localPartIndexes:0 domainIndexes:0];
       v9 = v12;
       if ([v9 count])
       {
-        v10 = [v6 ef_substringWithIndexes:v9];
-        if (v4)
+        v10 = [addressCopy ef_substringWithIndexes:v9];
+        if (resultsCopy)
         {
           objc_sync_enter(@"com.apple.EmailAddressing.rawAddressesLock");
-          [rawAddressFromFullAddress_cacheResults__rawAddresses setObject:v10 forKeyedSubscript:v6];
+          [rawAddressFromFullAddress_cacheResults__rawAddresses setObject:v10 forKeyedSubscript:addressCopy];
           objc_sync_exit(@"com.apple.EmailAddressing.rawAddressesLock");
         }
 
@@ -430,18 +430,18 @@ uint64_t __63__EAEmailAddressParser_rawAddressFromFullAddress_cacheResults___blo
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)rawAddressRespectingGroupsFromFullAddress:(id)a3
++ (id)rawAddressRespectingGroupsFromFullAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy)
   {
-    v6 = [v4 rangeOfString:@"@"];
+    v6 = [addressCopy rangeOfString:@"@"];
     v7 = [v5 rangeOfString:@"<"];
     v8 = v5;
     if (v6 != 0x7FFFFFFFFFFFFFFFLL || v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [a1 rawAddressFromFullAddress:v8];
+      v9 = [self rawAddressFromFullAddress:v8];
 
       v8 = v9;
     }
@@ -455,17 +455,17 @@ uint64_t __63__EAEmailAddressParser_rawAddressFromFullAddress_cacheResults___blo
   return v8;
 }
 
-+ (id)localPartFromAddress:(id)a3
++ (id)localPartFromAddress:(id)address
 {
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     v8 = 0;
-    [a1 _componentsForFullAddress:v4 rawAddressIndexes:0 localPartIndexes:&v8 domainIndexes:0];
+    [self _componentsForFullAddress:addressCopy rawAddressIndexes:0 localPartIndexes:&v8 domainIndexes:0];
     v5 = v8;
     if ([v5 count])
     {
-      v6 = [v4 ef_substringWithIndexes:v5];
+      v6 = [addressCopy ef_substringWithIndexes:v5];
     }
 
     else
@@ -482,17 +482,17 @@ uint64_t __63__EAEmailAddressParser_rawAddressFromFullAddress_cacheResults___blo
   return v6;
 }
 
-+ (id)addressDomainFromAddress:(id)a3
++ (id)addressDomainFromAddress:(id)address
 {
-  v4 = a3;
-  if (v4)
+  addressCopy = address;
+  if (addressCopy)
   {
     v8 = 0;
-    [a1 _componentsForFullAddress:v4 rawAddressIndexes:0 localPartIndexes:0 domainIndexes:&v8];
+    [self _componentsForFullAddress:addressCopy rawAddressIndexes:0 localPartIndexes:0 domainIndexes:&v8];
     v5 = v8;
     if ([v5 count])
     {
-      v6 = [v4 ef_substringWithIndexes:v5];
+      v6 = [addressCopy ef_substringWithIndexes:v5];
     }
 
     else
@@ -509,12 +509,12 @@ uint64_t __63__EAEmailAddressParser_rawAddressFromFullAddress_cacheResults___blo
   return v6;
 }
 
-+ (void)_componentsForFullAddress:(id)a3 rawAddressIndexes:(id *)a4 localPartIndexes:(id *)a5 domainIndexes:(id *)a6
++ (void)_componentsForFullAddress:(id)address rawAddressIndexes:(id *)indexes localPartIndexes:(id *)partIndexes domainIndexes:(id *)domainIndexes
 {
-  v41 = a3;
-  v7 = [v41 length];
+  addressCopy = address;
+  v7 = [addressCopy length];
   v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v38 = a5;
+  partIndexesCopy = partIndexes;
   if (!v7)
   {
     v25 = 0;
@@ -536,7 +536,7 @@ uint64_t __63__EAEmailAddressParser_rawAddressFromFullAddress_cacheResults___blo
   v15 = 1;
   do
   {
-    v16 = [v41 characterAtIndex:v13];
+    v16 = [addressCopy characterAtIndex:v13];
     v17 = v16;
     if (v15)
     {
@@ -701,7 +701,7 @@ LABEL_42:
 
       if (v11)
       {
-        v18 = [v41 characterAtIndex:v12 + v11 - 1];
+        v18 = [addressCopy characterAtIndex:v12 + v11 - 1];
         if (v18 > 0x7F)
         {
           v19 = __maskrune(v18, 0x4000uLL);
@@ -737,13 +737,13 @@ LABEL_27:
   {
     v25 = v34;
 LABEL_56:
-    v27 = [v8 lastIndex];
-    if (v27 == 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [v8 lastIndex];
+    if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_64;
     }
 
-    v28 = [v41 characterAtIndex:v27];
+    v28 = [addressCopy characterAtIndex:lastIndex];
     if (v28 > 0x7F)
     {
       if (!__maskrune(v28, 0x4000uLL))
@@ -757,11 +757,11 @@ LABEL_56:
       goto LABEL_64;
     }
 
-    [v8 removeIndex:v27];
+    [v8 removeIndex:lastIndex];
     goto LABEL_64;
   }
 
-  v24 = [v41 characterAtIndex:v12 + v11 - 1];
+  v24 = [addressCopy characterAtIndex:v12 + v11 - 1];
   v25 = v34;
   if (v24 > 0x7F)
   {
@@ -775,14 +775,14 @@ LABEL_56:
 
   [v8 addIndexesInRange:{v12, v11 - (v26 != 0)}];
 LABEL_64:
-  if (a4)
+  if (indexes)
   {
-    *a4 = [v8 copy];
+    *indexes = [v8 copy];
   }
 
-  if (!v38)
+  if (!partIndexesCopy)
   {
-    if (!a6)
+    if (!domainIndexes)
     {
       goto LABEL_81;
     }
@@ -792,20 +792,20 @@ LABEL_64:
 LABEL_80:
       v32 = [v8 mutableCopy];
       [v32 removeIndexesInRange:{0, v25 + 1}];
-      *a6 = [v32 copy];
+      *domainIndexes = [v32 copy];
 
       goto LABEL_81;
     }
 
 LABEL_76:
-    *a6 = objc_alloc_init(MEMORY[0x277CCAA78]);
+    *domainIndexes = objc_alloc_init(MEMORY[0x277CCAA78]);
     goto LABEL_81;
   }
 
   if ((v23 & 1) == 0)
   {
-    *v38 = objc_alloc_init(MEMORY[0x277CCAA78]);
-    if (!a6)
+    *partIndexesCopy = objc_alloc_init(MEMORY[0x277CCAA78]);
+    if (!domainIndexes)
     {
       goto LABEL_81;
     }
@@ -815,13 +815,13 @@ LABEL_76:
 
   v29 = [v8 mutableCopy];
   [v29 removeIndexesInRange:{v25, v7 - v25}];
-  v30 = [v29 lastIndex];
-  if (v30 == 0x7FFFFFFFFFFFFFFFLL)
+  lastIndex2 = [v29 lastIndex];
+  if (lastIndex2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_79;
   }
 
-  v31 = [v41 characterAtIndex:v30];
+  v31 = [addressCopy characterAtIndex:lastIndex2];
   if (v31 > 0x7F)
   {
     if (!__maskrune(v31, 0x4000uLL))
@@ -835,13 +835,13 @@ LABEL_76:
   if ((*(MEMORY[0x277D85DE0] + 4 * v31 + 60) & 0x4000) != 0)
   {
 LABEL_78:
-    [v29 removeIndex:v30];
+    [v29 removeIndex:lastIndex2];
   }
 
 LABEL_79:
-  *v38 = [v29 copy];
+  *partIndexesCopy = [v29 copy];
 
-  if (a6)
+  if (domainIndexes)
   {
     goto LABEL_80;
   }
@@ -849,18 +849,18 @@ LABEL_79:
 LABEL_81:
 }
 
-+ (id)displayNameFromAddress:(id)a3
++ (id)displayNameFromAddress:(id)address
 {
-  v3 = [a1 displayNameFromAddress:a3 cacheResults:1];
+  v3 = [self displayNameFromAddress:address cacheResults:1];
 
   return v3;
 }
 
-+ (id)displayNameFromAddress:(id)a3 cacheResults:(BOOL)a4
++ (id)displayNameFromAddress:(id)address cacheResults:(BOOL)results
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  resultsCopy = results;
+  addressCopy = address;
+  if (!addressCopy)
   {
     v9 = 0;
     goto LABEL_113;
@@ -872,7 +872,7 @@ LABEL_81:
   }
 
   objc_sync_enter(@"com.apple.EmailAddressing.displayNamesLock");
-  v7 = [displayNameFromAddress_cacheResults__displayNames objectForKeyedSubscript:v6];
+  v7 = [displayNameFromAddress_cacheResults__displayNames objectForKeyedSubscript:addressCopy];
   objc_sync_exit(@"com.apple.EmailAddressing.displayNamesLock");
   if (v7)
   {
@@ -880,11 +880,11 @@ LABEL_81:
     goto LABEL_112;
   }
 
-  v57 = v6;
-  v10 = [v6 length];
+  v57 = addressCopy;
+  v10 = [addressCopy length];
   v11 = NSZoneMalloc(0, 2 * v10 + 2);
   v12 = NSZoneMalloc(0, 2 * v10 + 2);
-  [v6 getCharacters:v12];
+  [addressCopy getCharacters:v12];
   ptr = v12;
   if (v10)
   {
@@ -948,8 +948,8 @@ LABEL_26:
     goto LABEL_97;
   }
 
-  v56 = a1;
-  v55 = v4;
+  selfCopy = self;
+  v55 = resultsCopy;
   v21 = 0;
   v62 = 0;
   v58 = 0;
@@ -1003,7 +1003,7 @@ LABEL_47:
     {
       if (v61)
       {
-        [v56 insertPreviousRoute:v60 ofLength:v62 toBuffer:&v65 ofLength:v10 atPosition:v58 addSpace:v21 > 0];
+        [selfCopy insertPreviousRoute:v60 ofLength:v62 toBuffer:&v65 ofLength:v10 atPosition:v58 addSpace:v21 > 0];
         v21 -= v21 > 0;
         v29 = *v27;
       }
@@ -1128,8 +1128,8 @@ LABEL_71:
   while (v28);
   v35 = v65;
   v36 = (v23 != 0) | v25;
-  v6 = v57;
-  v4 = v55;
+  addressCopy = v57;
+  resultsCopy = v55;
   v37 = 0x280B13000uLL;
   if (v65 > v11)
   {
@@ -1159,11 +1159,11 @@ LABEL_84:
   if (v36)
   {
     v43 = v57;
-    a1 = v56;
+    self = selfCopy;
     goto LABEL_96;
   }
 
-  a1 = v56;
+  self = selfCopy;
   if (v35 <= v11 + 1)
   {
 LABEL_97:
@@ -1227,26 +1227,26 @@ LABEL_100:
   NSZoneFree(0, v60);
   if (v65 == v11)
   {
-    v46 = v4;
-    v47 = v6;
+    v46 = resultsCopy;
+    v47 = addressCopy;
 
     v64 = 0;
-    [a1 _componentsForFullAddress:v47 rawAddressIndexes:0 localPartIndexes:0 domainIndexes:&v64];
+    [self _componentsForFullAddress:v47 rawAddressIndexes:0 localPartIndexes:0 domainIndexes:&v64];
     v48 = v64;
     if ([v48 count])
     {
       v49 = [v47 ef_substringWithIndexes:v48];
-      v50 = [v49 _lp_userVisibleHost];
-      if (([v50 isEqualToString:v49] & 1) == 0)
+      _lp_userVisibleHost = [v49 _lp_userVisibleHost];
+      if (([_lp_userVisibleHost isEqualToString:v49] & 1) == 0)
       {
-        v51 = [v47 stringByReplacingCharactersInRange:objc_msgSend(v48 withString:{"firstIndex"), objc_msgSend(v48, "lastIndex") - objc_msgSend(v48, "firstIndex") + 1, v50}];
+        v51 = [v47 stringByReplacingCharactersInRange:objc_msgSend(v48 withString:{"firstIndex"), objc_msgSend(v48, "lastIndex") - objc_msgSend(v48, "firstIndex") + 1, _lp_userVisibleHost}];
 
         v47 = v51;
       }
     }
 
     v43 = v47;
-    v4 = v46;
+    resultsCopy = v46;
   }
 
   if ([v43 containsString:&stru_285D22318])
@@ -1256,12 +1256,12 @@ LABEL_100:
     v43 = v52;
   }
 
-  if (v4)
+  if (resultsCopy)
   {
     objc_sync_enter(@"com.apple.EmailAddressing.displayNamesLock");
     v53 = [v43 copy];
 
-    [*(v37 + 2720) setObject:v53 forKeyedSubscript:v6];
+    [*(v37 + 2720) setObject:v53 forKeyedSubscript:addressCopy];
     objc_sync_exit(@"com.apple.EmailAddressing.displayNamesLock");
   }
 
@@ -1286,48 +1286,48 @@ uint64_t __60__EAEmailAddressParser_displayNameFromAddress_cacheResults___block_
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)insertPreviousRoute:(unsigned __int16 *)a3 ofLength:(unint64_t)a4 toBuffer:(unsigned __int16 *)a5 ofLength:(unint64_t)a6 atPosition:(unsigned __int16 *)a7 addSpace:(BOOL)a8
++ (void)insertPreviousRoute:(unsigned __int16 *)route ofLength:(unint64_t)length toBuffer:(unsigned __int16 *)buffer ofLength:(unint64_t)ofLength atPosition:(unsigned __int16 *)position addSpace:(BOOL)space
 {
-  v8 = a8;
-  v13 = NSZoneMalloc(0, 2 * a6 + 2);
-  v14 = *a5 - a7;
-  memcpy(v13, a7, v14);
-  memcpy(a7, a3, 2 * a4);
-  v15 = &a7[a4];
-  if (v8)
+  spaceCopy = space;
+  v13 = NSZoneMalloc(0, 2 * ofLength + 2);
+  v14 = *buffer - position;
+  memcpy(v13, position, v14);
+  memcpy(position, route, 2 * length);
+  v15 = &position[length];
+  if (spaceCopy)
   {
     *v15++ = 32;
   }
 
   memcpy(v15, v13, v14);
-  *a5 = (v15 + v14);
+  *buffer = (v15 + v14);
 
   NSZoneFree(0, v13);
 }
 
-+ (id)idnaDecodedAddressForAddress:(id)a3
++ (id)idnaDecodedAddressForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [a1 rangeOfAddressDomainFromAddress:v4];
-  v7 = [a1 _stringByDecodingIDNAString:v4 inRange:{v5, v6}];
+  addressCopy = address;
+  v5 = [self rangeOfAddressDomainFromAddress:addressCopy];
+  v7 = [self _stringByDecodingIDNAString:addressCopy inRange:{v5, v6}];
 
   return v7;
 }
 
-+ (id)idnaEncodedAddressForAddress:(id)a3
++ (id)idnaEncodedAddressForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [a1 rangeOfAddressDomainFromAddress:v4];
-  v7 = [a1 _stringByEncodingIDNAString:v4 inRange:{v5, v6}];
+  addressCopy = address;
+  v5 = [self rangeOfAddressDomainFromAddress:addressCopy];
+  v7 = [self _stringByEncodingIDNAString:addressCopy inRange:{v5, v6}];
 
   return v7;
 }
 
-+ (_NSRange)rangeOfAddressDomainFromAddress:(id)a3
++ (_NSRange)rangeOfAddressDomainFromAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v11 = 0;
-  [a1 _componentsForFullAddress:v4 rawAddressIndexes:0 localPartIndexes:0 domainIndexes:&v11];
+  [self _componentsForFullAddress:addressCopy rawAddressIndexes:0 localPartIndexes:0 domainIndexes:&v11];
   v5 = v11;
   if ([v5 rangeCount])
   {
@@ -1348,19 +1348,19 @@ uint64_t __60__EAEmailAddressParser_displayNameFromAddress_cacheResults___block_
   return result;
 }
 
-+ (id)_stringByDecodingIDNAString:(id)a3 inRange:(_NSRange)a4
++ (id)_stringByDecodingIDNAString:(id)string inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([MEMORY[0x277CBEAF8] ef_posixLocale], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "rangeOfString:options:range:locale:", @"xn--", 1, location, length, v7), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([MEMORY[0x277CBEAF8] ef_posixLocale], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(stringCopy, "rangeOfString:options:range:locale:", @"xn--", 1, location, length, v7), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
   }
 
   else
   {
-    v9 = _createStringByApplyingIDNATranslationWithRange(v6, location, length, MEMORY[0x277D82998]);
+    v9 = _createStringByApplyingIDNATranslationWithRange(stringCopy, location, length, MEMORY[0x277D82998]);
   }
 
   v10 = v9;
@@ -1368,19 +1368,19 @@ uint64_t __60__EAEmailAddressParser_displayNameFromAddress_cacheResults___block_
   return v10;
 }
 
-+ (id)_stringByEncodingIDNAString:(id)a3 inRange:(_NSRange)a4
++ (id)_stringByEncodingIDNAString:(id)string inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([MEMORY[0x277CCA900] ef_unsafeDomainNameCharacterSet], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "rangeOfCharacterFromSet:options:range:", v7, 0, location, length), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (location == 0x7FFFFFFFFFFFFFFFLL || !length || ([MEMORY[0x277CCA900] ef_unsafeDomainNameCharacterSet], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(stringCopy, "rangeOfCharacterFromSet:options:range:", v7, 0, location, length), v7, v8 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
   }
 
   else
   {
-    v9 = _createStringByApplyingIDNATranslationWithRange(v6, location, length, MEMORY[0x277D82990]);
+    v9 = _createStringByApplyingIDNATranslationWithRange(stringCopy, location, length, MEMORY[0x277D82990]);
   }
 
   v10 = v9;

@@ -1,32 +1,32 @@
 @interface HKCodableChartQuantityDistributionDataSourceQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addQuantityDistributionData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addQuantityDistributionData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartQuantityDistributionDataSourceQueryData
 
-- (void)addQuantityDistributionData:(id)a3
+- (void)addQuantityDistributionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   quantityDistributionDatas = self->_quantityDistributionDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!quantityDistributionDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_quantityDistributionDatas;
     self->_quantityDistributionDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     quantityDistributionDatas = self->_quantityDistributionDatas;
   }
 
-  [(NSMutableArray *)quantityDistributionDatas addObject:v4];
+  [(NSMutableArray *)quantityDistributionDatas addObject:dataCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartQuantityDistributionDataSourceQueryData;
   v4 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)&v8 description];
-  v5 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartQuantityDistributionDataSourceQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_quantityDistributionDatas count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_quantityDistributionDatas, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -77,16 +77,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"quantityDistributionData"];
+    [dictionary setObject:v4 forKey:@"quantityDistributionData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -119,29 +119,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HKCodableChartQuantityDistributionDataSourceQueryData *)self quantityDistributionDatasCount])
   {
-    [v8 clearQuantityDistributionDatas];
-    v4 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)self quantityDistributionDatasCount];
-    if (v4)
+    [toCopy clearQuantityDistributionDatas];
+    quantityDistributionDatasCount = [(HKCodableChartQuantityDistributionDataSourceQueryData *)self quantityDistributionDatasCount];
+    if (quantityDistributionDatasCount)
     {
-      v5 = v4;
+      v5 = quantityDistributionDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)self quantityDistributionDataAtIndex:i];
-        [v8 addQuantityDistributionData:v7];
+        [toCopy addQuantityDistributionData:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addQuantityDistributionData:v11];
 
         ++v10;
@@ -178,13 +178,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     quantityDistributionDatas = self->_quantityDistributionDatas;
-    if (quantityDistributionDatas | v4[1])
+    if (quantityDistributionDatas | equalCopy[1])
     {
       v6 = [(NSMutableArray *)quantityDistributionDatas isEqual:?];
     }
@@ -203,14 +203,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

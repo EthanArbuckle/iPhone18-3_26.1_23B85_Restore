@@ -1,21 +1,21 @@
 @interface PPLMessageRichLinkLayout
-+ (id)createRichLinkLayoutWithURL:(id)a3 title:(id)a4 imageData:(id)a5;
++ (id)createRichLinkLayoutWithURL:(id)l title:(id)title imageData:(id)data;
 @end
 
 @implementation PPLMessageRichLinkLayout
 
-+ (id)createRichLinkLayoutWithURL:(id)a3 title:(id)a4 imageData:(id)a5
++ (id)createRichLinkLayoutWithURL:(id)l title:(id)title imageData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dataCopy = data;
+  titleCopy = title;
+  lCopy = l;
   v10 = objc_alloc_init(LPLinkMetadata);
-  [v10 setTitle:v8];
+  [v10 setTitle:titleCopy];
 
-  [v10 setURL:v9];
-  if (v7)
+  [v10 setURL:lCopy];
+  if (dataCopy)
   {
-    v11 = [[LPImage alloc] initWithData:v7 MIMEType:@"image/png"];
+    v11 = [[LPImage alloc] initWithData:dataCopy MIMEType:@"image/png"];
     [v10 setImage:v11];
   }
 

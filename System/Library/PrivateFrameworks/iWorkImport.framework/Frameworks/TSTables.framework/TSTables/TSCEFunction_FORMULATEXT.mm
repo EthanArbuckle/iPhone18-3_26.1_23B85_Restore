@@ -1,17 +1,17 @@
 @interface TSCEFunction_FORMULATEXT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_FORMULATEXT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
   v288.range = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v288._tableUID._lower = 0;
   v288._tableUID._upper = 0;
-  if (*(a5 + 1) != *a5)
+  if (*(arguments + 1) != *arguments)
   {
-    v7 = **a5;
+    v7 = **arguments;
     if (objc_msgSend_isTokenOrEmptyArg(v7, v8, v9, v10, v11))
     {
       v13 = 0;
@@ -21,11 +21,11 @@ LABEL_4:
     }
 
     v287 = 0;
-    v13 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v7, v12, a3, a4, 0, &v287);
+    v13 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v7, v12, context, spec, 0, &v287);
     v42 = v287;
     if (v42)
     {
-      v34 = objc_msgSend_raiseErrorOrConvert_(a3, v38, v42, v40, v41);
+      v34 = objc_msgSend_raiseErrorOrConvert_(context, v38, v42, v40, v41);
     }
 
     else
@@ -49,7 +49,7 @@ LABEL_4:
           {
             v235 = *&v288.range._topLeft.column;
             v236 = *&v288.range._bottomRight.column;
-            v288.range._topLeft.row = *objc_msgSend_containingCell(a3, v231, v232, v233, v234);
+            v288.range._topLeft.row = *objc_msgSend_containingCell(context, v231, v232, v233, v234);
             *&v288.range._topLeft.column = v235;
             v288.range._bottomRight.row = v288.range._topLeft.row;
             *&v288.range._bottomRight.column = v236;
@@ -64,7 +64,7 @@ LABEL_4:
             *v267 = *&v288.range._topLeft._preserveRow;
             *&v267[4] = HIWORD(v288.range._bottomRight.row);
             v242 = *&v288.range._bottomRight._preserveRow;
-            v243 = *(objc_msgSend_containingCell(a3, v237, v238, v239, v240) + 4);
+            v243 = *(objc_msgSend_containingCell(context, v237, v238, v239, v240) + 4);
             v288.range._topLeft.row = row;
             v288.range._topLeft.column = v243;
             *&v288.range._topLeft._preserveRow = *v267;
@@ -77,9 +77,9 @@ LABEL_4:
         goto LABEL_4;
       }
 
-      v135 = objc_msgSend_functionName(a4, v131, v132, v133, v134);
+      v135 = objc_msgSend_functionName(spec, v131, v132, v133, v134);
       v139 = objc_msgSend_notAReferenceErrorForFunctionName_(TSCEError, v136, v135, v137, v138);
-      v34 = objc_msgSend_raiseErrorOrConvert_(a3, v140, v139, v141, v142);
+      v34 = objc_msgSend_raiseErrorOrConvert_(context, v140, v139, v141, v142);
     }
 
     goto LABEL_73;
@@ -87,13 +87,13 @@ LABEL_4:
 
   v13 = 0;
 LABEL_6:
-  v14 = objc_msgSend_calcEngine(a3, a2, a3, a4, a5);
+  v14 = objc_msgSend_calcEngine(context, a2, context, spec, arguments);
   IsValidIncludingSheet = objc_msgSend_referenceIsValidIncludingSheet_(v14, v15, &v288, v16, v17);
 
   if ((IsValidIncludingSheet & 1) == 0)
   {
     v27 = objc_msgSend_invalidReferenceError(TSCEError, v19, v20, v21, v22);
-    v34 = objc_msgSend_raiseErrorOrConvert_(a3, v35, v27, v36, v37);
+    v34 = objc_msgSend_raiseErrorOrConvert_(context, v35, v27, v36, v37);
     goto LABEL_10;
   }
 
@@ -111,7 +111,7 @@ LABEL_6:
     v269 = 0;
     v270 = 0;
     v271 = 0;
-    objc_msgSend_addCalculatedPrecedent_(a3, v46, v267, v47, v48);
+    objc_msgSend_addCalculatedPrecedent_(context, v46, v267, v47, v48);
 
     *v267 = objc_msgSend_tableUID(v13, v49, v50, v51, v52);
     *&v267[8] = v53;
@@ -125,7 +125,7 @@ LABEL_6:
     v269 = 0;
     v270 = 0;
     v271 = 0;
-    objc_msgSend_addCalculatedPrecedent_(a3, v56, v267, v57, v58);
+    objc_msgSend_addCalculatedPrecedent_(context, v56, v267, v57, v58);
 
     *v267 = objc_msgSend_tableUID(v13, v59, v60, v61, v62);
     *&v267[8] = v63;
@@ -139,7 +139,7 @@ LABEL_6:
     v269 = 0;
     v270 = 0;
     v271 = 0;
-    objc_msgSend_addCalculatedPrecedent_(a3, v66, v267, v67, v68);
+    objc_msgSend_addCalculatedPrecedent_(context, v66, v267, v67, v68);
 
     upper = v288._tableUID._upper;
     lower = v288._tableUID._lower;
@@ -152,18 +152,18 @@ LABEL_6:
     v72 = HIDWORD(v70) + 1;
     v281[0] = v70 + 1;
     v281[1] = HIDWORD(v70) + 1;
-    v77 = objc_msgSend_calcEngine(a3, v73, v74, v75, v76);
+    v77 = objc_msgSend_calcEngine(context, v73, v74, v75, v76);
     v280[0] = lower;
     v280[1] = upper;
     v81 = objc_msgSend_tableResolverForTableUID_(v77, v78, v280, v79, v80);
-    v86 = objc_msgSend_containingTable(a3, v82, v83, v84, v85);
+    v86 = objc_msgSend_containingTable(context, v82, v83, v84, v85);
     v90 = objc_msgSend_tableResolverForTableUID_(v77, v87, v86, v88, v89);
-    v95 = objc_msgSend_calcEngine(a3, v91, v92, v93, v94);
+    v95 = objc_msgSend_calcEngine(context, v91, v92, v93, v94);
     v250 = objc_msgSend_headerNameMgr(v95, v96, v97, v98, v99);
 
     if (v90)
     {
-      v104 = objc_msgSend_containingCell(a3, v100, v101, v102, v103);
+      v104 = objc_msgSend_containingCell(context, v100, v101, v102, v103);
       v255 = objc_msgSend_textStyleForCalcEngineAtCellCoord_outIsDefault_(v90, v105, v104, 0, v106);
       if (v81)
       {
@@ -179,7 +179,7 @@ LABEL_6:
 LABEL_15:
         v107 = objc_msgSend_tableUID(v81, v100, v101, v102, v103);
         v109 = v108;
-        v113 = objc_msgSend_containingTable(a3, v108, v110, v111, v112);
+        v113 = objc_msgSend_containingTable(context, v108, v110, v111, v112);
         v118 = v107 == *v113 && v109 == v113[1];
         v119 = v118;
         v279 = 0;
@@ -196,7 +196,7 @@ LABEL_15:
         v269 = 0;
         v270 = 0;
         v271 = 0;
-        objc_msgSend_addCalculatedPrecedent_(a3, v123, v267, v124, v125);
+        objc_msgSend_addCalculatedPrecedent_(context, v123, v267, v124, v125);
 
         objc_msgSend_groupingRowOrderPrecedent_ignoreRecalc_(v81, v126, &v278, v119, v127);
         *v267 = 0;
@@ -208,7 +208,7 @@ LABEL_15:
         v269 = 0;
         v270 = 0;
         v271 = 0;
-        objc_msgSend_addCalculatedPrecedent_(a3, v128, v267, v129, v130);
+        objc_msgSend_addCalculatedPrecedent_(context, v128, v267, v129, v130);
 
         if (!v90)
         {
@@ -224,11 +224,11 @@ LABEL_15:
 LABEL_22:
       v249 = 0;
 LABEL_29:
-      v143 = objc_msgSend_containingTable(a3, v100, v101, v102, v103);
+      v143 = objc_msgSend_containingTable(context, v100, v101, v102, v103);
       v151 = objc_msgSend_tableResolverForTableUID_(v77, v144, v143, v145, v146);
       if (v151)
       {
-        v152 = objc_msgSend_containingCell(a3, v147, v148, v149, v150);
+        v152 = objc_msgSend_containingCell(context, v147, v148, v149, v150);
         isHeaderCell = objc_msgSend_isHeaderCell_(v151, v153, v152, v154, v155);
       }
 
@@ -248,7 +248,7 @@ LABEL_29:
       {
         v244 = v72;
         v245 = v71;
-        v254 = a3;
+        contextCopy = context;
         v246 = v13;
         v160 = 0;
         if (v81)
@@ -289,7 +289,7 @@ LABEL_29:
               {
                 if (((v90 != 0) & v249) != 0)
                 {
-                  v168 = objc_msgSend_containingCell(v254, v156, v157, v158, v159);
+                  v168 = objc_msgSend_containingCell(contextCopy, v156, v157, v158, v159);
                   objc_msgSend_upgradeStyleForFormulatextForCellCoord_(v90, v169, v168, v170, v171);
                 }
 
@@ -315,14 +315,14 @@ LABEL_29:
                     v264[3] = &unk_2784658A8;
                     v204 = v250;
                     v265 = v204;
-                    v266 = v254;
+                    v266 = contextCopy;
                     TSCEReferenceSet::foreachCellRef(v203, v264);
                     v261[0] = MEMORY[0x277D85DD0];
                     v261[1] = 3221225472;
                     v261[2] = sub_22146A608;
                     v261[3] = &unk_2784658D0;
                     v262 = v204;
-                    v263 = v254;
+                    v263 = contextCopy;
                     TSCEReferenceSet::foreachSpanningRangeRef(v203, v261);
 
                     v77 = v253;
@@ -335,7 +335,7 @@ LABEL_29:
                     v260[1] = 3221225472;
                     v260[2] = sub_22146A738;
                     v260[3] = &unk_2784658F0;
-                    v260[4] = v254;
+                    v260[4] = contextCopy;
                     TSCEReferenceSet::foreachRangeRef(v203, v260);
                   }
 
@@ -420,9 +420,9 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v27 = objc_msgSend_functionName(a4, v23, v24, v25, v26);
+  v27 = objc_msgSend_functionName(spec, v23, v24, v25, v26);
   v30 = objc_msgSend_invalidArgumentsErrorForFunctionName_argumentIndex_(TSCEError, v28, v27, 1, v29);
-  v34 = objc_msgSend_raiseErrorOrConvert_(a3, v31, v30, v32, v33);
+  v34 = objc_msgSend_raiseErrorOrConvert_(context, v31, v30, v32, v33);
 
 LABEL_10:
 LABEL_72:

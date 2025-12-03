@@ -1,13 +1,13 @@
 @interface VNRequestConfiguration
 - (NSDictionary)computeStageDeviceAssignments;
 - (NSDictionary)resolvedComputeStageDeviceAssignments;
-- (VNRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)computeDeviceForComputeStage:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)computeDeviceForComputeStage:(id)stage;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setComputeDevice:(id)a3 forComputeStage:(id)a4;
-- (void)setComputeStageDeviceAssignments:(id)a3;
-- (void)setProcessingDevice:(id)a3;
+- (void)setComputeDevice:(id)device forComputeStage:(id)stage;
+- (void)setComputeStageDeviceAssignments:(id)assignments;
+- (void)setProcessingDevice:(id)device;
 @end
 
 @implementation VNRequestConfiguration
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithRequestClass:", self->_requestClass}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithRequestClass:", self->_requestClass}];
   v5 = v4;
   if (v4)
   {
@@ -129,13 +129,13 @@
   return v8;
 }
 
-- (void)setComputeStageDeviceAssignments:(id)a3
+- (void)setComputeStageDeviceAssignments:(id)assignments
 {
-  v7 = a3;
+  assignmentsCopy = assignments;
   processingDevice = self->_processingDevice;
   self->_processingDevice = 0;
 
-  v5 = [v7 mutableCopy];
+  v5 = [assignmentsCopy mutableCopy];
   computeStageDeviceAssignments = self->_computeStageDeviceAssignments;
   self->_computeStageDeviceAssignments = v5;
 }
@@ -147,15 +147,15 @@
   return v2;
 }
 
-- (void)setComputeDevice:(id)a3 forComputeStage:(id)a4
+- (void)setComputeDevice:(id)device forComputeStage:(id)stage
 {
-  v11 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  stageCopy = stage;
   processingDevice = self->_processingDevice;
   self->_processingDevice = 0;
 
   computeStageDeviceAssignments = self->_computeStageDeviceAssignments;
-  if (v11)
+  if (deviceCopy)
   {
     if (!computeStageDeviceAssignments)
     {
@@ -166,33 +166,33 @@
       computeStageDeviceAssignments = self->_computeStageDeviceAssignments;
     }
 
-    [(NSMutableDictionary *)computeStageDeviceAssignments setObject:v11 forKey:v6];
+    [(NSMutableDictionary *)computeStageDeviceAssignments setObject:deviceCopy forKey:stageCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)computeStageDeviceAssignments removeObjectForKey:v6];
+    [(NSMutableDictionary *)computeStageDeviceAssignments removeObjectForKey:stageCopy];
   }
 }
 
-- (id)computeDeviceForComputeStage:(id)a3
+- (id)computeDeviceForComputeStage:(id)stage
 {
-  v3 = [(NSMutableDictionary *)self->_computeStageDeviceAssignments objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_computeStageDeviceAssignments objectForKey:stage];
 
   return v3;
 }
 
-- (void)setProcessingDevice:(id)a3
+- (void)setProcessingDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   computeStageDeviceAssignments = self->_computeStageDeviceAssignments;
   self->_computeStageDeviceAssignments = 0;
 
   processingDevice = self->_processingDevice;
-  self->_processingDevice = v4;
+  self->_processingDevice = deviceCopy;
 }
 
-- (VNRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNRequestConfiguration)initWithRequestClass:(Class)class
 {
   v8.receiver = self;
   v8.super_class = VNRequestConfiguration;
@@ -200,8 +200,8 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_requestClass, a3);
-    v5->_resolvedRevision = [(objc_class *)a3 defaultRevision];
+    objc_storeStrong(&v4->_requestClass, class);
+    v5->_resolvedRevision = [(objc_class *)class defaultRevision];
     v5->_detectionLevel = 0;
     v5->_metalContextPriority = 1;
     v5->_preferBackgroundProcessing = 0;

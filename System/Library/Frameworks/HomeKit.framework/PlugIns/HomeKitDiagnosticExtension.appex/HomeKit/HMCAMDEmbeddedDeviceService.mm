@@ -1,14 +1,14 @@
 @interface HMCAMDEmbeddedDeviceService
 + (id)logCategory;
-+ (void)confirmSemaphoreAndSignal:(id)a3;
++ (void)confirmSemaphoreAndSignal:(id)signal;
 - (BOOL)testCommunication;
-- (id)_initAsRoot:(BOOL)a3;
-- (id)performCommandFromClass:(id)a3 method:(id)a4 arguments:(id)a5 error:(id *)a6;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_fireActualBlockWithArguments:(id)a3 forKey:(id)a4;
-- (void)_performCommandFromClass:(id)a3 method:(id)a4 arguments:(id)a5 reply:(id)a6;
-- (void)_removeActualBlockForKey:(id)a3;
-- (void)blockReleased:(id)a3;
+- (id)_initAsRoot:(BOOL)root;
+- (id)performCommandFromClass:(id)class method:(id)method arguments:(id)arguments error:(id *)error;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_fireActualBlockWithArguments:(id)arguments forKey:(id)key;
+- (void)_performCommandFromClass:(id)class method:(id)method arguments:(id)arguments reply:(id)reply;
+- (void)_removeActualBlockForKey:(id)key;
+- (void)blockReleased:(id)released;
 - (void)dealloc;
 - (void)resetConnection;
 - (void)start;
@@ -16,16 +16,16 @@
 
 @implementation HMCAMDEmbeddedDeviceService
 
-- (void)_performCommandFromClass:(id)a3 method:(id)a4 arguments:(id)a5 reply:(id)a6
+- (void)_performCommandFromClass:(id)class method:(id)method arguments:(id)arguments reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  classCopy = class;
+  methodCopy = method;
+  argumentsCopy = arguments;
+  replyCopy = reply;
   v14 = +[NSMutableArray array];
-  if (v12)
+  if (argumentsCopy)
   {
-    v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+    v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [argumentsCopy count]);
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10001616C;
@@ -34,7 +34,7 @@
     v25 = v14;
     v16 = v15;
     v26 = v16;
-    [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
+    [argumentsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v24];
     v17 = v16;
   }
 
@@ -46,7 +46,7 @@
   v22.receiver = self;
   v22.super_class = HMCAMDEmbeddedDeviceService;
   v23 = 0;
-  v18 = [(HMCAMDEmbeddedDevice *)&v22 performCommandFromClass:v10 method:v11 arguments:v17 error:&v23];
+  v18 = [(HMCAMDEmbeddedDevice *)&v22 performCommandFromClass:classCopy method:methodCopy arguments:v17 error:&v23];
   v19 = v23;
   if (v19 && [v14 count])
   {
@@ -57,15 +57,15 @@
     [v20 postNotificationName:@"kCAMDBlockReleasedNotification" object:0 userInfo:v21];
   }
 
-  v13[2](v13, v18, v19);
+  replyCopy[2](replyCopy, v18, v19);
 }
 
-- (void)_removeActualBlockForKey:(id)a3
+- (void)_removeActualBlockForKey:(id)key
 {
-  v4 = a3;
-  [*(&self->_invalidationHandler + 1) removeBlockForKey:v4];
+  keyCopy = key;
+  [*(&self->_invalidationHandler + 1) removeBlockForKey:keyCopy];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -76,19 +76,19 @@
     v12 = 2048;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = keyCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@Removed block (%lu) on client for key %@.", &v10, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_fireActualBlockWithArguments:(id)a3 forKey:(id)a4
+- (void)_fireActualBlockWithArguments:(id)arguments forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  argumentsCopy = arguments;
+  keyCopy = key;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -96,12 +96,12 @@
     v12 = 138543618;
     v13 = v11;
     v14 = 2112;
-    v15 = v7;
+    v15 = keyCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%{public}@Firing block on client for key %@.", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  [*(&v9->_invalidationHandler + 1) invokeForwardedBlockWithArguments:v6 forKey:v7];
+  [*(&selfCopy->_invalidationHandler + 1) invokeForwardedBlockWithArguments:argumentsCopy forKey:keyCopy];
 }
 
 - (BOOL)testCommunication
@@ -149,11 +149,11 @@
   return v10 & 1;
 }
 
-- (id)performCommandFromClass:(id)a3 method:(id)a4 arguments:(id)a5 error:(id *)a6
+- (id)performCommandFromClass:(id)class method:(id)method arguments:(id)arguments error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  classCopy = class;
+  methodCopy = method;
+  argumentsCopy = arguments;
   if ((self->_backoffTimer & 0x10000) != 0)
   {
     *&buf = 0;
@@ -185,18 +185,18 @@
     v29 = &v33;
     v16 = v13;
     v27 = v16;
-    [v15 _performCommandFromClass:v10 method:v11 arguments:v12 reply:v26];
+    [v15 _performCommandFromClass:classCopy method:methodCopy arguments:argumentsCopy reply:v26];
 
     v17 = dispatch_time(0, 1000000000 * *&self->_isValid);
     v18 = dispatch_semaphore_wait(v16, v17);
-    if (a6 && v18)
+    if (error && v18)
     {
       v19 = [NSError hmfErrorWithCode:13];
     }
 
     else
     {
-      if (!a6)
+      if (!error)
       {
 LABEL_12:
         v24 = *(*(&buf + 1) + 40);
@@ -210,12 +210,12 @@ LABEL_12:
       v19 = v34[5];
     }
 
-    *a6 = v19;
+    *error = v19;
     goto LABEL_12;
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -226,10 +226,10 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v20);
-  if (a6)
+  if (error)
   {
     [NSError hmfErrorWithCode:11];
-    *a6 = v24 = 0;
+    *error = v24 = 0;
   }
 
   else
@@ -242,17 +242,17 @@ LABEL_14:
   return v24;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = *(&self->super._filterNSDataLogging + 1);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100016E34;
   v9[3] = &unk_100030DF8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
@@ -260,12 +260,12 @@ LABEL_14:
 
 - (void)resetConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ((v2->_backoffTimer & 0x10000) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((selfCopy->_backoffTimer & 0x10000) == 0)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = v2;
+    v4 = selfCopy;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -285,23 +285,23 @@ LABEL_14:
     {
       *(&v4->super._filterNSDataLogging + 1) = 0;
 
-      BYTE2(v2->_backoffTimer) = 0;
+      BYTE2(selfCopy->_backoffTimer) = 0;
     }
 
     [(HMCAMDEmbeddedDeviceService *)v4 start];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (*(&v2->super._filterNSDataLogging + 1) && BYTE2(v2->_backoffTimer) == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (*(&selfCopy->super._filterNSDataLogging + 1) && BYTE2(selfCopy->_backoffTimer) == 1)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = v2;
+    v4 = selfCopy;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -316,8 +316,8 @@ LABEL_14:
 
   else
   {
-    *(&v2->_connection + 1) = 2;
-    if (BYTE1(v2->_backoffTimer))
+    *(&selfCopy->_connection + 1) = 2;
+    if (BYTE1(selfCopy->_backoffTimer))
     {
       v7 = @"com.apple.coreautomationd.xpc.root";
     }
@@ -329,7 +329,7 @@ LABEL_14:
 
     v8 = v7;
     v9 = objc_autoreleasePoolPush();
-    v10 = v2;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -343,48 +343,48 @@ LABEL_14:
 
     objc_autoreleasePoolPop(v9);
     v13 = [[NSXPCConnection alloc] initWithMachServiceName:v8 options:4096];
-    v14 = *(&v2->super._filterNSDataLogging + 1);
-    *(&v2->super._filterNSDataLogging + 1) = v13;
+    v14 = *(&selfCopy->super._filterNSDataLogging + 1);
+    *(&selfCopy->super._filterNSDataLogging + 1) = v13;
 
     v15 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___HMCAMDEmbeddedDeviceServerProxy];
-    [*(&v2->super._filterNSDataLogging + 1) setRemoteObjectInterface:v15];
+    [*(&selfCopy->super._filterNSDataLogging + 1) setRemoteObjectInterface:v15];
 
     v16 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___HMCAMDEmbeddedDeviceClientProxy];
-    [*(&v2->super._filterNSDataLogging + 1) setExportedInterface:v16];
+    [*(&selfCopy->super._filterNSDataLogging + 1) setExportedInterface:v16];
 
-    [*(&v2->super._filterNSDataLogging + 1) setExportedObject:v10];
+    [*(&selfCopy->super._filterNSDataLogging + 1) setExportedObject:v10];
     objc_initWeak(buf, v10);
-    v17 = *(&v2->super._filterNSDataLogging + 1);
+    v17 = *(&selfCopy->super._filterNSDataLogging + 1);
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000174B8;
     v24[3] = &unk_100030DD0;
     objc_copyWeak(&v25, buf);
     [v17 setInvalidationHandler:v24];
-    v18 = *(&v2->super._filterNSDataLogging + 1);
+    v18 = *(&selfCopy->super._filterNSDataLogging + 1);
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_100017640;
     v22 = &unk_100030DD0;
     objc_copyWeak(&v23, buf);
     [v18 setInterruptionHandler:&v19];
-    [*(&v2->super._filterNSDataLogging + 1) resume];
+    [*(&selfCopy->super._filterNSDataLogging + 1) resume];
     BYTE2(v10->_backoffTimer) = 1;
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)blockReleased:(id)a3
+- (void)blockReleased:(id)released
 {
-  v4 = [a3 userInfo];
-  v5 = v4;
-  if (v4)
+  userInfo = [released userInfo];
+  v5 = userInfo;
+  if (userInfo)
   {
-    v6 = [v4 objectForKey:@"blocks"];
+    v6 = [userInfo objectForKey:@"blocks"];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100017BB0;
@@ -410,7 +410,7 @@ LABEL_14:
   [(HMCAMDEmbeddedDeviceService *)&v5 dealloc];
 }
 
-- (id)_initAsRoot:(BOOL)a3
+- (id)_initAsRoot:(BOOL)root
 {
   v10.receiver = self;
   v10.super_class = HMCAMDEmbeddedDeviceService;
@@ -418,7 +418,7 @@ LABEL_14:
   v5 = v4;
   if (v4)
   {
-    v4[33] = a3;
+    v4[33] = root;
     v4[34] = 0;
     v4[35] = 1;
     *(v4 + 41) = 900;
@@ -446,19 +446,19 @@ LABEL_14:
   return v3;
 }
 
-+ (void)confirmSemaphoreAndSignal:(id)a3
++ (void)confirmSemaphoreAndSignal:(id)signal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  signalCopy = signal;
+  v5 = signalCopy;
+  if (signalCopy)
   {
-    dispatch_semaphore_signal(v4);
+    dispatch_semaphore_signal(signalCopy);
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {

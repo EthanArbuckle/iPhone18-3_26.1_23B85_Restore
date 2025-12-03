@@ -1,81 +1,81 @@
 @interface PHVoicemailMessageTableViewCellScrollView
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PHVoicemailMessageTableViewCellScrollView
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (([(PHVoicemailMessageTableViewCellScrollView *)self isDragging]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = PHVoicemailMessageTableViewCellScrollView;
-    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesCancelled:v6 withEvent:v7];
+    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 
   else
   {
-    v8 = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
-    [v8 touchesCancelled:v6 withEvent:v7];
+    superview = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
+    [superview touchesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if (([(PHVoicemailMessageTableViewCellScrollView *)self isDragging]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = PHVoicemailMessageTableViewCellScrollView;
-    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesMoved:v6 withEvent:v7];
+    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesMoved:movedCopy withEvent:eventCopy];
   }
 
   else
   {
-    v8 = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
-    [v8 touchesMoved:v6 withEvent:v7];
+    superview = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
+    [superview touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (([(PHVoicemailMessageTableViewCellScrollView *)self isDragging]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = PHVoicemailMessageTableViewCellScrollView;
-    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesBegan:v6 withEvent:v7];
+    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
   }
 
   else
   {
-    v8 = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
-    [v8 touchesBegan:v6 withEvent:v7];
+    superview = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
+    [superview touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (([(PHVoicemailMessageTableViewCellScrollView *)self isDragging]& 1) != 0)
   {
     v9.receiver = self;
     v9.super_class = PHVoicemailMessageTableViewCellScrollView;
-    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesEnded:v6 withEvent:v7];
+    [(PHVoicemailMessageTableViewCellScrollView *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
   }
 
   else
   {
-    v8 = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
-    [v8 touchesEnded:v6 withEvent:v7];
+    superview = [(PHVoicemailMessageTableViewCellScrollView *)self superview];
+    [superview touchesEnded:endedCopy withEvent:eventCopy];
   }
 }
 

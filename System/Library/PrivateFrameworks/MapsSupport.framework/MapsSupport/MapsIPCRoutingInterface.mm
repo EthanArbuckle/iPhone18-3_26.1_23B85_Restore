@@ -1,9 +1,9 @@
 @interface MapsIPCRoutingInterface
 - (BOOL)dismissNavigationSafetyAlert;
-- (void)endNavigationWithCompletion:(id)a3;
-- (void)loadDirections:(id)a3 completion:(id)a4;
-- (void)loadDirectionsWithMessage:(id)a3 completion:(id)a4;
-- (void)startPreparedNavigation:(id)a3 completion:(id)a4;
+- (void)endNavigationWithCompletion:(id)completion;
+- (void)loadDirections:(id)directions completion:(id)completion;
+- (void)loadDirectionsWithMessage:(id)message completion:(id)completion;
+- (void)startPreparedNavigation:(id)navigation completion:(id)completion;
 @end
 
 @implementation MapsIPCRoutingInterface
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (void)loadDirections:(id)a3 completion:(id)a4
+- (void)loadDirections:(id)directions completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directionsCopy = directions;
+  completionCopy = completion;
   v8 = sub_10001E7A0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -42,26 +42,26 @@
   v17[1] = 3221225472;
   v17[2] = sub_10004A0B0;
   v17[3] = &unk_100086730;
-  v18 = v7;
-  v9 = v7;
+  v18 = completionCopy;
+  v9 = completionCopy;
   v10 = objc_retainBlock(v17);
   messagingQueue = self->super._messagingQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004A170;
   v14[3] = &unk_1000867F8;
-  v15 = v6;
+  v15 = directionsCopy;
   v16 = v10;
   v14[4] = self;
-  v12 = v6;
+  v12 = directionsCopy;
   v13 = v10;
   dispatch_async(messagingQueue, v14);
 }
 
-- (void)startPreparedNavigation:(id)a3 completion:(id)a4
+- (void)startPreparedNavigation:(id)navigation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  navigationCopy = navigation;
+  completionCopy = completion;
   v8 = sub_10001E7A0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -73,42 +73,42 @@
   v17[1] = 3221225472;
   v17[2] = sub_10004A940;
   v17[3] = &unk_100086820;
-  v18 = v7;
-  v9 = v7;
+  v18 = completionCopy;
+  v9 = completionCopy;
   v10 = objc_retainBlock(v17);
   messagingQueue = self->super._messagingQueue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004AA00;
   v14[3] = &unk_1000867F8;
-  v15 = v6;
+  v15 = navigationCopy;
   v16 = v10;
   v14[4] = self;
-  v12 = v6;
+  v12 = navigationCopy;
   v13 = v10;
   dispatch_async(messagingQueue, v14);
 }
 
-- (void)loadDirectionsWithMessage:(id)a3 completion:(id)a4
+- (void)loadDirectionsWithMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   messagingQueue = self->super._messagingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004AF80;
   block[3] = &unk_1000867F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = messageCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = messageCopy;
+  v10 = completionCopy;
   dispatch_async(messagingQueue, block);
 }
 
-- (void)endNavigationWithCompletion:(id)a3
+- (void)endNavigationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(_MapsIPCInterface *)self canReceiveMessages])
   {
     messagingQueue = self->super._messagingQueue;
@@ -117,8 +117,8 @@
     v10[2] = sub_10004B4A8;
     v10[3] = &unk_100085C10;
     v10[4] = self;
-    v11 = v4;
-    v6 = v4;
+    v11 = completionCopy;
+    v6 = completionCopy;
     dispatch_async(messagingQueue, v10);
   }
 
@@ -132,9 +132,9 @@
     block[2] = sub_10004B494;
     block[3] = &unk_100085068;
     v13 = v7;
-    v14 = v4;
+    v14 = completionCopy;
     v8 = v7;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }

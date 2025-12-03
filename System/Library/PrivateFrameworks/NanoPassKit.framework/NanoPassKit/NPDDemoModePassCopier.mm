@@ -1,37 +1,37 @@
 @interface NPDDemoModePassCopier
-- (BOOL)_shouldReplaceExistingPaymentPass:(id)a3 withCompanionPass:(id)a4;
-- (NPDDemoModePassCopier)initWithCompanionPaymentPassDatabase:(id)a3;
-- (void)_addCompanionPaymentPass:(id)a3;
-- (void)noteCompanionPassAddedOrUpdated:(id)a3;
-- (void)performFullSyncWithPassLibrary:(id)a3;
+- (BOOL)_shouldReplaceExistingPaymentPass:(id)pass withCompanionPass:(id)companionPass;
+- (NPDDemoModePassCopier)initWithCompanionPaymentPassDatabase:(id)database;
+- (void)_addCompanionPaymentPass:(id)pass;
+- (void)noteCompanionPassAddedOrUpdated:(id)updated;
+- (void)performFullSyncWithPassLibrary:(id)library;
 @end
 
 @implementation NPDDemoModePassCopier
 
-- (NPDDemoModePassCopier)initWithCompanionPaymentPassDatabase:(id)a3
+- (NPDDemoModePassCopier)initWithCompanionPaymentPassDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = NPDDemoModePassCopier;
   v6 = [(NPDDemoModePassCopier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
   }
 
   return v7;
 }
 
-- (void)performFullSyncWithPassLibrary:(id)a3
+- (void)performFullSyncWithPassLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (NPKIsRunningInDemoMode())
   {
-    v23 = v4;
-    v5 = [v4 npkPassesOfType:1];
-    v6 = [(NPDDemoModePassCopier *)self database];
-    v7 = [v6 uniqueIDs];
+    v23 = libraryCopy;
+    v5 = [libraryCopy npkPassesOfType:1];
+    database = [(NPDDemoModePassCopier *)self database];
+    uniqueIDs = [database uniqueIDs];
 
     v8 = +[NSMutableArray array];
     v29 = 0u;
@@ -54,15 +54,15 @@
             objc_enumerationMutation(obj);
           }
 
-          v13 = [*(*(&v29 + 1) + 8 * v12) paymentPass];
-          v14 = v13;
-          if (v13)
+          paymentPass = [*(*(&v29 + 1) + 8 * v12) paymentPass];
+          v14 = paymentPass;
+          if (paymentPass)
           {
-            v15 = [v13 uniqueID];
-            if ([v7 containsObject:v15])
+            uniqueID = [paymentPass uniqueID];
+            if ([uniqueIDs containsObject:uniqueID])
             {
-              v16 = [(NPDDemoModePassCopier *)self database];
-              v17 = [v16 paymentPassWithUniqueID:v15];
+              database2 = [(NPDDemoModePassCopier *)self database];
+              v17 = [database2 paymentPassWithUniqueID:uniqueID];
 
               if ([(NPDDemoModePassCopier *)self _shouldReplaceExistingPaymentPass:v17 withCompanionPass:v14])
               {
@@ -117,34 +117,34 @@
       while (v20);
     }
 
-    v4 = v23;
+    libraryCopy = v23;
   }
 }
 
-- (void)noteCompanionPassAddedOrUpdated:(id)a3
+- (void)noteCompanionPassAddedOrUpdated:(id)updated
 {
-  v9 = a3;
+  updatedCopy = updated;
   if (NPKIsRunningInDemoMode())
   {
-    v4 = [(NPDDemoModePassCopier *)self database];
-    v5 = [v9 uniqueID];
-    v6 = [v4 paymentPassWithUniqueID:v5];
+    database = [(NPDDemoModePassCopier *)self database];
+    uniqueID = [updatedCopy uniqueID];
+    v6 = [database paymentPassWithUniqueID:uniqueID];
 
-    v7 = [v9 paymentPass];
-    LODWORD(v5) = [(NPDDemoModePassCopier *)self _shouldReplaceExistingPaymentPass:v6 withCompanionPass:v7];
+    paymentPass = [updatedCopy paymentPass];
+    LODWORD(uniqueID) = [(NPDDemoModePassCopier *)self _shouldReplaceExistingPaymentPass:v6 withCompanionPass:paymentPass];
 
-    if (v5)
+    if (uniqueID)
     {
-      v8 = [v9 paymentPass];
-      [(NPDDemoModePassCopier *)self _addCompanionPaymentPass:v8];
+      paymentPass2 = [updatedCopy paymentPass];
+      [(NPDDemoModePassCopier *)self _addCompanionPaymentPass:paymentPass2];
     }
   }
 }
 
-- (void)_addCompanionPaymentPass:(id)a3
+- (void)_addCompanionPaymentPass:(id)pass
 {
-  v4 = a3;
-  v5 = [v4 uniqueID];
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -154,37 +154,37 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = uniqueID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Notice: DEMO MODE: saving pass with unique ID %@ from companion pass library", buf, 0xCu);
     }
   }
 
-  v9 = [(NPDDemoModePassCopier *)self database];
+  database = [(NPDDemoModePassCopier *)self database];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100042F00;
   v11[3] = &unk_100071C90;
-  v12 = v5;
-  v10 = v5;
-  [v9 savePaymentPass:v4 requireExisting:0 requireNewer:0 completion:v11];
+  v12 = uniqueID;
+  v10 = uniqueID;
+  [database savePaymentPass:passCopy requireExisting:0 requireNewer:0 completion:v11];
 }
 
-- (BOOL)_shouldReplaceExistingPaymentPass:(id)a3 withCompanionPass:(id)a4
+- (BOOL)_shouldReplaceExistingPaymentPass:(id)pass withCompanionPass:(id)companionPass
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  passCopy = pass;
+  companionPassCopy = companionPass;
+  v7 = companionPassCopy;
+  if (passCopy)
   {
-    if (v6)
+    if (companionPassCopy)
     {
-      v8 = [v5 sequenceCounter];
-      v9 = [v7 sequenceCounter];
-      v10 = v9;
+      sequenceCounter = [passCopy sequenceCounter];
+      sequenceCounter2 = [v7 sequenceCounter];
+      v10 = sequenceCounter2;
       v11 = 1;
-      if (v8 && v9)
+      if (sequenceCounter && sequenceCounter2)
       {
-        v11 = [v8 compare:v9] == -1;
+        v11 = [sequenceCounter compare:sequenceCounter2] == -1;
       }
     }
 

@@ -1,23 +1,23 @@
 @interface HMIVideoTimelineEntry
-- (HMIVideoTimelineEntry)initWithTime:(id *)a3 date:(id)a4;
+- (HMIVideoTimelineEntry)initWithTime:(id *)time date:(id)date;
 - (NSString)description;
 @end
 
 @implementation HMIVideoTimelineEntry
 
-- (HMIVideoTimelineEntry)initWithTime:(id *)a3 date:(id)a4
+- (HMIVideoTimelineEntry)initWithTime:(id *)time date:(id)date
 {
-  v7 = a4;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = HMIVideoTimelineEntry;
   v8 = [(HMIVideoTimelineEntry *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    var3 = a3->var3;
-    *&v8->_time.value = *&a3->var0;
+    var3 = time->var3;
+    *&v8->_time.value = *&time->var0;
     v8->_time.epoch = var3;
-    objc_storeStrong(&v8->_date, a4);
+    objc_storeStrong(&v8->_date, date);
   }
 
   return v9;

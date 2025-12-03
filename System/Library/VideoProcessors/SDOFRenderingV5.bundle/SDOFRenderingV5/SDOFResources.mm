@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)activateResources;
 - (id)initInstance;
-- (int)allocateResourcesUsingMetalContext:(id)a3 inputImageWidth:(unint64_t)a4 inputImageHeight:(unint64_t)a5 shiftMapWidth:(unint64_t)a6 shiftMapHeight:(unint64_t)a7 enableForegroundBlur:(BOOL)a8;
+- (int)allocateResourcesUsingMetalContext:(id)context inputImageWidth:(unint64_t)width inputImageHeight:(unint64_t)height shiftMapWidth:(unint64_t)mapWidth shiftMapHeight:(unint64_t)mapHeight enableForegroundBlur:(BOOL)blur;
 - (void)clearInstance;
 - (void)deactivateResources;
 - (void)deallocateResources;
@@ -105,26 +105,26 @@
   return v3;
 }
 
-- (int)allocateResourcesUsingMetalContext:(id)a3 inputImageWidth:(unint64_t)a4 inputImageHeight:(unint64_t)a5 shiftMapWidth:(unint64_t)a6 shiftMapHeight:(unint64_t)a7 enableForegroundBlur:(BOOL)a8
+- (int)allocateResourcesUsingMetalContext:(id)context inputImageWidth:(unint64_t)width inputImageHeight:(unint64_t)height shiftMapWidth:(unint64_t)mapWidth shiftMapHeight:(unint64_t)mapHeight enableForegroundBlur:(BOOL)blur
 {
-  v8 = a8;
-  v15 = a3;
-  v19 = v15;
+  blurCopy = blur;
+  contextCopy = context;
+  v19 = contextCopy;
   if (self->_referenceCount)
   {
     goto LABEL_65;
   }
 
-  obj = a3;
-  v252 = a4 >> 1;
-  v247 = a5;
-  v20 = a5 >> 1;
-  v255 = a6;
-  v256 = a7;
-  v22 = a4 >> 1 == a6 && v20 == a7;
+  obj = context;
+  v252 = width >> 1;
+  heightCopy = height;
+  v20 = height >> 1;
+  mapWidthCopy = mapWidth;
+  mapHeightCopy = mapHeight;
+  v22 = width >> 1 == mapWidth && v20 == mapHeight;
   v259 = v22;
-  v23 = objc_msgSend_device(v15, v16, v17, v18);
-  v257 = v8;
+  v23 = objc_msgSend_device(contextCopy, v16, v17, v18);
+  v257 = blurCopy;
   v26 = objc_msgSend_minimumLinearTextureAlignmentForPixelFormat_(v23, v24, 25, v25);
 
   v30 = objc_msgSend_device(v19, v27, v28, v29);
@@ -176,9 +176,9 @@
     v62 = v59;
   }
 
-  v63 = (v62 - 1 + (a4 >> 1)) / v62 * v62;
-  v246 = a4;
-  v64 = (v62 - 1 + (a4 & 0xFFFFFFFFFFFFFFFELL)) / v62 * v62;
+  v63 = (v62 - 1 + (width >> 1)) / v62 * v62;
+  widthCopy = width;
+  v64 = (v62 - 1 + (width & 0xFFFFFFFFFFFFFFFELL)) / v62 * v62;
   v65 = 2 * v64;
   v249 = (v62 - 1 + 4 * v252) / v62 * v62;
   if (v249 > 2 * v64)
@@ -257,7 +257,7 @@ LABEL_81:
 
   else
   {
-    v96 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], v94, 65, v255, v256, 0);
+    v96 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], v94, 65, mapWidthCopy, mapHeightCopy, 0);
     if (!v96)
     {
       sub_295EB22EC();
@@ -344,17 +344,17 @@ LABEL_100:
   v253 = v109;
   if (!v259)
   {
-    v165 = (v62 - 1 + 4 * v255) / v62 * v62;
+    v165 = (v62 - 1 + 4 * mapWidthCopy) / v62 * v62;
     v166 = v64 * v258;
-    v167 = v165 * v256;
-    if (v165 * v256 <= v63 * v258)
+    v167 = v165 * mapHeightCopy;
+    if (v165 * mapHeightCopy <= v63 * v258)
     {
       v168 = v63 * v258;
     }
 
     else
     {
-      v168 = v165 * v256;
+      v168 = v165 * mapHeightCopy;
     }
 
     if (v166 >= 2 * v167 && v168 + v167 < v166)
@@ -558,15 +558,15 @@ LABEL_97:
   }
 
   objc_storeStrong(&self->_metalContext, obj);
-  a4 = v246;
-  self->_inputImageWidth = v246;
-  self->_inputImageHeight = v247;
-  a7 = v256;
-  self->_shiftMapWidth = v255;
-  self->_shiftMapHeight = v256;
+  width = widthCopy;
+  self->_inputImageWidth = widthCopy;
+  self->_inputImageHeight = heightCopy;
+  mapHeight = mapHeightCopy;
+  self->_shiftMapWidth = mapWidthCopy;
+  self->_shiftMapHeight = mapHeightCopy;
 
-  a6 = v255;
-  a5 = v247;
+  mapWidth = mapWidthCopy;
+  height = heightCopy;
 
 LABEL_65:
   v225 = objc_msgSend_device(v19, v16, v17, v18);
@@ -576,13 +576,13 @@ LABEL_65:
 
   if (v229 == v237)
   {
-    if (self->_inputImageWidth == a4)
+    if (self->_inputImageWidth == width)
     {
-      if (self->_inputImageHeight == a5)
+      if (self->_inputImageHeight == height)
       {
-        if (self->_shiftMapWidth == a6)
+        if (self->_shiftMapWidth == mapWidth)
         {
-          if (self->_shiftMapHeight == a7)
+          if (self->_shiftMapHeight == mapHeight)
           {
             v238 = 0;
             ++self->_referenceCount;

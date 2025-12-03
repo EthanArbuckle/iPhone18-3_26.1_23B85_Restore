@@ -1,82 +1,82 @@
 @interface ICTextViewController
-+ (id)createTextViewUsingTextController:(id)a3 stylingTextUsingSeparateTextStorageForRendering:(BOOL)a4 note:(id)a5 containerWidth:(double)a6 forManualRendering:(BOOL)a7 scrollState:(id)a8 traitCollection:(id)a9;
-+ (id)printFormatterForNote:(id)a3 withSize:(CGSize)a4 traitCollection:(id)a5;
++ (id)createTextViewUsingTextController:(id)controller stylingTextUsingSeparateTextStorageForRendering:(BOOL)rendering note:(id)note containerWidth:(double)width forManualRendering:(BOOL)manualRendering scrollState:(id)state traitCollection:(id)collection;
++ (id)printFormatterForNote:(id)note withSize:(CGSize)size traitCollection:(id)collection;
 - (ICLayoutManager)layoutManager;
 - (ICTextView)textView;
 - (ICTextView)textViewIfLoaded;
-- (ICTextViewController)initWithViewControllerManager:(id)a3 editorViewController:(id)a4 note:(id)a5 initialContainerWidth:(double)a6 scrollState:(id)a7;
+- (ICTextViewController)initWithViewControllerManager:(id)manager editorViewController:(id)controller note:(id)note initialContainerWidth:(double)width scrollState:(id)state;
 - (ICViewControllerManager)viewControllerManager;
 - (id)captureContentOffsetStateIfNecessary;
 - (id)editorController;
-- (void)applyCapturedContentOffsetStateIfNecessary:(id)a3;
+- (void)applyCapturedContentOffsetStateIfNecessary:(id)necessary;
 - (void)applyInitialScrollState;
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5;
-- (void)layoutManagerDidInvalidateLayout:(id)a3;
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end;
+- (void)layoutManagerDidInvalidateLayout:(id)layout;
 - (void)loadView;
-- (void)setAttributionSidebarWidth:(double)a3 isGestureActive:(BOOL)a4 animated:(BOOL)a5 currentVelocity:(double)a6;
-- (void)setBackgroundColor:(id)a3;
-- (void)setIgnoresTaps:(BOOL)a3;
-- (void)splitViewControllerDidEndAnimatedTransitionToStateRequest:(id)a3;
-- (void)splitViewControllerWillBeginAnimatedTransitionToStateRequest:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setAttributionSidebarWidth:(double)width isGestureActive:(BOOL)active animated:(BOOL)animated currentVelocity:(double)velocity;
+- (void)setBackgroundColor:(id)color;
+- (void)setIgnoresTaps:(BOOL)taps;
+- (void)splitViewControllerDidEndAnimatedTransitionToStateRequest:(id)request;
+- (void)splitViewControllerWillBeginAnimatedTransitionToStateRequest:(id)request;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICTextViewController
 
-- (ICTextViewController)initWithViewControllerManager:(id)a3 editorViewController:(id)a4 note:(id)a5 initialContainerWidth:(double)a6 scrollState:(id)a7
+- (ICTextViewController)initWithViewControllerManager:(id)manager editorViewController:(id)controller note:(id)note initialContainerWidth:(double)width scrollState:(id)state
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  managerCopy = manager;
+  controllerCopy = controller;
+  noteCopy = note;
+  stateCopy = state;
   v46.receiver = self;
   v46.super_class = ICTextViewController;
   v16 = [(ICTextViewController *)&v46 initWithNibName:0 bundle:0];
   if (v16)
   {
-    v45 = v14;
+    v45 = noteCopy;
     v17 = objc_alloc_init(MEMORY[0x277D36968]);
     textController = v16->_textController;
     v16->_textController = v17;
 
-    objc_storeWeak(&v16->_viewControllerManager, v12);
-    objc_storeStrong(&v16->_note, a5);
-    v16->_initialContainerWidth = a6;
-    objc_storeStrong(&v16->_initialScrollState, a7);
+    objc_storeWeak(&v16->_viewControllerManager, managerCopy);
+    objc_storeStrong(&v16->_note, note);
+    v16->_initialContainerWidth = width;
+    objc_storeStrong(&v16->_initialScrollState, state);
     v19 = [MEMORY[0x277CBEB58] set];
     enabledSubviews = v16->_enabledSubviews;
     v16->_enabledSubviews = v19;
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v16 selector:sel_splitViewControllerWillBeginAnimatedTransitionToStateRequest_ name:@"ICSplitViewControllerWillBeginAnimatedTransitionToStateRequest" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel_splitViewControllerWillBeginAnimatedTransitionToStateRequest_ name:@"ICSplitViewControllerWillBeginAnimatedTransitionToStateRequest" object:0];
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v16 selector:sel_splitViewControllerDidEndAnimatedTransitionToStateRequest_ name:@"ICSplitViewControllerDidEndAnimatedTransitionToStateRequest" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v16 selector:sel_splitViewControllerDidEndAnimatedTransitionToStateRequest_ name:@"ICSplitViewControllerDidEndAnimatedTransitionToStateRequest" object:0];
 
     v23 = [MEMORY[0x277CBEAA8] now];
     v24 = objc_opt_class();
-    v25 = [(ICTextViewController *)v16 textController];
-    v26 = [(ICTextViewController *)v16 note];
+    textController = [(ICTextViewController *)v16 textController];
+    note = [(ICTextViewController *)v16 note];
     [(ICTextViewController *)v16 initialContainerWidth];
     v28 = v27;
-    v29 = [(ICTextViewController *)v16 transitionScrollState];
-    v30 = [v13 traitCollection];
-    v31 = [v24 createTextViewUsingTextController:v25 stylingTextUsingSeparateTextStorageForRendering:0 note:v26 containerWidth:0 forManualRendering:v29 scrollState:v30 traitCollection:v28];
+    transitionScrollState = [(ICTextViewController *)v16 transitionScrollState];
+    traitCollection = [controllerCopy traitCollection];
+    v31 = [v24 createTextViewUsingTextController:textController stylingTextUsingSeparateTextStorageForRendering:0 note:note containerWidth:0 forManualRendering:transitionScrollState scrollState:traitCollection traitCollection:v28];
     textView = v16->_textView;
     v16->_textView = v31;
 
     [(ICTextView *)v16->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ICTextView *)v16->_textView setClipsToBounds:0];
-    v33 = [(ICTextView *)v16->_textView layoutManager];
-    [v33 setDelegate:v16];
+    layoutManager = [(ICTextView *)v16->_textView layoutManager];
+    [layoutManager setDelegate:v16];
 
-    [(ICEditingTextView *)v16->_textView setEditorController:v13];
-    v34 = [MEMORY[0x277CBEAA8] date];
-    [v34 timeIntervalSinceDate:v23];
+    [(ICEditingTextView *)v16->_textView setEditorController:controllerCopy];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v23];
     v36 = v35;
 
     v37 = os_log_create("com.apple.notes", "UI");
@@ -90,10 +90,10 @@
     v16->_backgroundView = v38;
 
     [(ICTextBackgroundView *)v16->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [(ICEditingTextView *)v16->_textView editorController];
-    v41 = [v40 isEditingOnSystemPaper];
+    editorController = [(ICEditingTextView *)v16->_textView editorController];
+    isEditingOnSystemPaper = [editorController isEditingOnSystemPaper];
 
-    if ((v41 & 1) == 0)
+    if ((isEditingOnSystemPaper & 1) == 0)
     {
       v42 = objc_alloc_init(ICAttributionSidebarView);
       attributionSidebarView = v16->_attributionSidebarView;
@@ -103,7 +103,7 @@
       [(ICAttributionSidebarView *)v16->_attributionSidebarView setTextView:v16->_textView];
     }
 
-    v14 = v45;
+    noteCopy = v45;
   }
 
   return v16;
@@ -121,54 +121,54 @@
   v69.receiver = self;
   v69.super_class = ICTextViewController;
   [(ICTextViewController *)&v69 viewDidLoad];
-  v3 = [(ICTextViewController *)self view];
-  v4 = [(ICTextViewController *)self textView];
-  [v3 addSubview:v4];
+  view = [(ICTextViewController *)self view];
+  textView = [(ICTextViewController *)self textView];
+  [view addSubview:textView];
 
   if ([MEMORY[0x277D75418] ic_isVision])
   {
-    v5 = [(ICTextViewController *)self textView];
-    v6 = [(ICTextViewController *)self backgroundView];
-    [v5 insertSubview:v6 atIndex:0];
+    textView2 = [(ICTextViewController *)self textView];
+    backgroundView = [(ICTextViewController *)self backgroundView];
+    [textView2 insertSubview:backgroundView atIndex:0];
 
-    v7 = [(ICTextViewController *)self attributionSidebarView];
+    attributionSidebarView = [(ICTextViewController *)self attributionSidebarView];
 
-    if (v7)
+    if (attributionSidebarView)
     {
-      v8 = [(ICTextViewController *)self textView];
-      v9 = [(ICTextViewController *)self attributionSidebarView];
-      [v8 insertSubview:v9 atIndex:0];
+      textView3 = [(ICTextViewController *)self textView];
+      attributionSidebarView2 = [(ICTextViewController *)self attributionSidebarView];
+      [textView3 insertSubview:attributionSidebarView2 atIndex:0];
 
       v46 = MEMORY[0x277CCAAD0];
-      v67 = [(ICTextViewController *)self attributionSidebarView];
-      v10 = [v67 widthAnchor];
-      v63 = [(ICTextViewController *)self attributionSidebarView];
-      [v63 fullContentWidth];
-      v65 = v10;
-      v11 = [v10 constraintEqualToConstant:?];
+      attributionSidebarView3 = [(ICTextViewController *)self attributionSidebarView];
+      widthAnchor = [attributionSidebarView3 widthAnchor];
+      attributionSidebarView4 = [(ICTextViewController *)self attributionSidebarView];
+      [attributionSidebarView4 fullContentWidth];
+      v65 = widthAnchor;
+      v11 = [widthAnchor constraintEqualToConstant:?];
       attributionSidebarWidthConstraint = self->_attributionSidebarWidthConstraint;
       self->_attributionSidebarWidthConstraint = v11;
 
       v72[0] = v11;
-      v61 = [(ICTextViewController *)self attributionSidebarView];
-      v13 = [v61 topAnchor];
-      v57 = [(ICTextViewController *)self backgroundView];
-      [v57 topAnchor];
-      v55 = v59 = v13;
-      v53 = [v13 constraintEqualToAnchor:?];
-      v72[1] = v53;
-      v51 = [(ICTextViewController *)self attributionSidebarView];
-      v14 = [v51 trailingAnchor];
-      v15 = [(ICTextViewController *)self textView];
-      v16 = [v15 leadingAnchor];
-      v49 = v14;
-      v17 = [v14 constraintEqualToAnchor:v16];
-      v72[2] = v17;
-      v18 = [(ICTextViewController *)self attributionSidebarView];
-      v19 = [v18 bottomAnchor];
-      v20 = [(ICTextViewController *)self backgroundView];
-      v21 = [v20 bottomAnchor];
-      v22 = [v19 constraintEqualToAnchor:v21];
+      attributionSidebarView5 = [(ICTextViewController *)self attributionSidebarView];
+      topAnchor = [attributionSidebarView5 topAnchor];
+      backgroundView2 = [(ICTextViewController *)self backgroundView];
+      [backgroundView2 topAnchor];
+      v55 = v59 = topAnchor;
+      textView6 = [topAnchor constraintEqualToAnchor:?];
+      v72[1] = textView6;
+      attributionSidebarView6 = [(ICTextViewController *)self attributionSidebarView];
+      trailingAnchor = [attributionSidebarView6 trailingAnchor];
+      textView4 = [(ICTextViewController *)self textView];
+      leadingAnchor = [textView4 leadingAnchor];
+      v49 = trailingAnchor;
+      view2 = [trailingAnchor constraintEqualToAnchor:leadingAnchor];
+      v72[2] = view2;
+      attributionSidebarView7 = [(ICTextViewController *)self attributionSidebarView];
+      bottomAnchor = [attributionSidebarView7 bottomAnchor];
+      backgroundView3 = [(ICTextViewController *)self backgroundView];
+      bottomAnchor2 = [backgroundView3 bottomAnchor];
+      v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v72[3] = v22;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:4];
       [v46 activateConstraints:v23];
@@ -179,43 +179,43 @@ LABEL_6:
 
   else
   {
-    v24 = [(ICTextViewController *)self attributionSidebarView];
+    attributionSidebarView8 = [(ICTextViewController *)self attributionSidebarView];
 
-    if (v24)
+    if (attributionSidebarView8)
     {
-      v25 = [(ICTextViewController *)self textView];
-      v26 = [(ICTextViewController *)self attributionSidebarView];
-      [v25 insertSubview:v26 atIndex:0];
+      textView5 = [(ICTextViewController *)self textView];
+      attributionSidebarView9 = [(ICTextViewController *)self attributionSidebarView];
+      [textView5 insertSubview:attributionSidebarView9 atIndex:0];
 
       v47 = MEMORY[0x277CCAAD0];
-      v67 = [(ICTextViewController *)self attributionSidebarView];
-      v27 = [v67 topAnchor];
-      v63 = [(ICTextViewController *)self textView];
-      [v63 topAnchor];
-      v61 = v65 = v27;
-      v59 = [v27 constraintEqualToAnchor:?];
+      attributionSidebarView3 = [(ICTextViewController *)self attributionSidebarView];
+      topAnchor2 = [attributionSidebarView3 topAnchor];
+      attributionSidebarView4 = [(ICTextViewController *)self textView];
+      [attributionSidebarView4 topAnchor];
+      attributionSidebarView5 = v65 = topAnchor2;
+      v59 = [topAnchor2 constraintEqualToAnchor:?];
       v71[0] = v59;
-      v57 = [(ICTextViewController *)self attributionSidebarView];
-      v28 = [v57 heightAnchor];
-      v53 = [(ICTextViewController *)self textView];
-      [v53 heightAnchor];
-      v51 = v55 = v28;
-      v49 = [v28 constraintEqualToAnchor:?];
+      backgroundView2 = [(ICTextViewController *)self attributionSidebarView];
+      heightAnchor = [backgroundView2 heightAnchor];
+      textView6 = [(ICTextViewController *)self textView];
+      [textView6 heightAnchor];
+      attributionSidebarView6 = v55 = heightAnchor;
+      v49 = [heightAnchor constraintEqualToAnchor:?];
       v71[1] = v49;
-      v15 = [(ICTextViewController *)self attributionSidebarView];
-      v16 = [v15 trailingAnchor];
-      v17 = [(ICTextViewController *)self view];
-      v18 = [v17 leadingAnchor];
-      v29 = [v16 constraintEqualToAnchor:v18];
+      textView4 = [(ICTextViewController *)self attributionSidebarView];
+      leadingAnchor = [textView4 trailingAnchor];
+      view2 = [(ICTextViewController *)self view];
+      attributionSidebarView7 = [view2 leadingAnchor];
+      v29 = [leadingAnchor constraintEqualToAnchor:attributionSidebarView7];
       attributionSidebarTrailingConstraint = self->_attributionSidebarTrailingConstraint;
       self->_attributionSidebarTrailingConstraint = v29;
 
       v71[2] = v29;
-      v19 = [(ICTextViewController *)self attributionSidebarView];
-      v20 = [v19 widthAnchor];
-      v21 = [(ICTextViewController *)self attributionSidebarView];
-      [v21 fullContentWidth];
-      v31 = [v20 constraintEqualToConstant:?];
+      bottomAnchor = [(ICTextViewController *)self attributionSidebarView];
+      backgroundView3 = [bottomAnchor widthAnchor];
+      bottomAnchor2 = [(ICTextViewController *)self attributionSidebarView];
+      [bottomAnchor2 fullContentWidth];
+      v31 = [backgroundView3 constraintEqualToConstant:?];
       v32 = self->_attributionSidebarWidthConstraint;
       self->_attributionSidebarWidthConstraint = v31;
 
@@ -227,55 +227,55 @@ LABEL_6:
   }
 
   v54 = MEMORY[0x277CCAAD0];
-  v68 = [(ICTextViewController *)self textView];
-  v64 = [v68 leadingAnchor];
-  v66 = [(ICTextViewController *)self view];
-  v62 = [v66 leadingAnchor];
-  v33 = [v64 constraintEqualToAnchor:v62];
+  textView7 = [(ICTextViewController *)self textView];
+  leadingAnchor2 = [textView7 leadingAnchor];
+  view3 = [(ICTextViewController *)self view];
+  leadingAnchor3 = [view3 leadingAnchor];
+  v33 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   textViewLeadingConstraint = self->_textViewLeadingConstraint;
   self->_textViewLeadingConstraint = v33;
 
   v70[0] = v33;
-  v60 = [(ICTextViewController *)self textView];
-  v56 = [v60 topAnchor];
-  v58 = [(ICTextViewController *)self view];
-  v52 = [v58 topAnchor];
-  v50 = [v56 constraintEqualToAnchor:v52];
+  textView8 = [(ICTextViewController *)self textView];
+  topAnchor3 = [textView8 topAnchor];
+  view4 = [(ICTextViewController *)self view];
+  topAnchor4 = [view4 topAnchor];
+  v50 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v70[1] = v50;
-  v48 = [(ICTextViewController *)self textView];
-  v45 = [v48 widthAnchor];
-  v35 = [(ICTextViewController *)self view];
-  v36 = [v35 widthAnchor];
-  v37 = [v45 constraintEqualToAnchor:v36];
+  textView9 = [(ICTextViewController *)self textView];
+  widthAnchor2 = [textView9 widthAnchor];
+  view5 = [(ICTextViewController *)self view];
+  widthAnchor3 = [view5 widthAnchor];
+  v37 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   v70[2] = v37;
-  v38 = [(ICTextViewController *)self textView];
-  v39 = [v38 bottomAnchor];
-  v40 = [(ICTextViewController *)self view];
-  v41 = [v40 bottomAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  textView10 = [(ICTextViewController *)self textView];
+  bottomAnchor3 = [textView10 bottomAnchor];
+  view6 = [(ICTextViewController *)self view];
+  bottomAnchor4 = [view6 bottomAnchor];
+  v42 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v70[3] = v42;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:4];
   [v54 activateConstraints:v43];
 
-  v44 = [(ICTextViewController *)self textView];
-  [v44 setFindInteractionEnabled:1];
+  textView11 = [(ICTextViewController *)self textView];
+  [textView11 setFindInteractionEnabled:1];
 }
 
-- (void)setIgnoresTaps:(BOOL)a3
+- (void)setIgnoresTaps:(BOOL)taps
 {
-  v3 = a3;
+  tapsCopy = taps;
   v29 = *MEMORY[0x277D85DE8];
-  self->_ignoresTaps = a3;
-  if (a3)
+  self->_ignoresTaps = taps;
+  if (taps)
   {
     v25 = 0uLL;
     v26 = 0uLL;
     v23 = 0uLL;
     v24 = 0uLL;
-    v5 = [(ICTextViewController *)self textView];
-    v6 = [v5 subviews];
+    textView = [(ICTextViewController *)self textView];
+    subviews = [textView subviews];
 
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v7 = [subviews countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v7)
     {
       v8 = v7;
@@ -286,20 +286,20 @@ LABEL_6:
         {
           if (*v24 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
           if ([v11 isUserInteractionEnabled])
           {
-            v12 = [(ICTextViewController *)self enabledSubviews];
-            [v12 addObject:v11];
+            enabledSubviews = [(ICTextViewController *)self enabledSubviews];
+            [enabledSubviews addObject:v11];
 
             [v11 setUserInteractionEnabled:0];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v8);
@@ -312,8 +312,8 @@ LABEL_6:
     v22 = 0uLL;
     *(&v19 + 1) = 0;
     v20 = 0uLL;
-    v13 = [(ICTextViewController *)self enabledSubviews];
-    v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    enabledSubviews2 = [(ICTextViewController *)self enabledSubviews];
+    v14 = [enabledSubviews2 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -324,47 +324,47 @@ LABEL_6:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(enabledSubviews2);
           }
 
           [*(*(&v19 + 1) + 8 * j) setUserInteractionEnabled:1];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v15 = [enabledSubviews2 countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v15);
     }
 
-    v6 = [(ICTextViewController *)self enabledSubviews];
-    [v6 removeAllObjects];
+    subviews = [(ICTextViewController *)self enabledSubviews];
+    [subviews removeAllObjects];
   }
 
-  v18 = [(ICTextViewController *)self textView];
-  [v18 setSelectable:!v3];
+  textView2 = [(ICTextViewController *)self textView];
+  [textView2 setSelectable:!tapsCopy];
 }
 
-- (void)setAttributionSidebarWidth:(double)a3 isGestureActive:(BOOL)a4 animated:(BOOL)a5 currentVelocity:(double)a6
+- (void)setAttributionSidebarWidth:(double)width isGestureActive:(BOOL)active animated:(BOOL)animated currentVelocity:(double)velocity
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(ICTextViewController *)self attributionSidebarView];
+  animatedCopy = animated;
+  activeCopy = active;
+  attributionSidebarView = [(ICTextViewController *)self attributionSidebarView];
 
-  if (!v11)
+  if (!attributionSidebarView)
   {
     return;
   }
 
-  v12 = [(ICTextViewController *)self textViewLeadingConstraint];
-  [v12 constant];
+  textViewLeadingConstraint = [(ICTextViewController *)self textViewLeadingConstraint];
+  [textViewLeadingConstraint constant];
   v14 = v13;
 
-  if (v14 == a3)
+  if (v14 == width)
   {
-    v15 = [(ICTextViewController *)self attributionSidebarView];
-    [v15 setVisibleContentWidth:v8 isGestureActive:a3];
+    attributionSidebarView2 = [(ICTextViewController *)self attributionSidebarView];
+    [attributionSidebarView2 setVisibleContentWidth:activeCopy isGestureActive:width];
 
-    if (a3 == 0.0)
+    if (width == 0.0)
     {
 
       [(ICTextViewController *)self setIgnoresTaps:0];
@@ -373,13 +373,13 @@ LABEL_6:
     return;
   }
 
-  v16 = [(ICTextViewController *)self attributionSidebarOpenedDate];
-  [v16 timeIntervalSinceNow];
+  attributionSidebarOpenedDate = [(ICTextViewController *)self attributionSidebarOpenedDate];
+  [attributionSidebarOpenedDate timeIntervalSinceNow];
   v18 = v17;
 
-  v19 = [(ICTextViewController *)self attributionSidebarView];
-  [v19 visibleContentWidth];
-  if (a3 == 0.0 && v20 > 0.0)
+  attributionSidebarView3 = [(ICTextViewController *)self attributionSidebarView];
+  [attributionSidebarView3 visibleContentWidth];
+  if (width == 0.0 && v20 > 0.0)
   {
     if (v18 < 0.0)
     {
@@ -391,20 +391,20 @@ LABEL_6:
       goto LABEL_14;
     }
 
-    v19 = [MEMORY[0x277CBEAA8] now];
-    v21 = [(ICTextViewController *)self note];
-    [v21 setLastAttributionsViewedDate:v19];
+    attributionSidebarView3 = [MEMORY[0x277CBEAA8] now];
+    note = [(ICTextViewController *)self note];
+    [note setLastAttributionsViewedDate:attributionSidebarView3];
   }
 
 LABEL_14:
-  v22 = [(ICTextViewController *)self attributionSidebarView];
-  [v22 fullContentWidth];
+  attributionSidebarView4 = [(ICTextViewController *)self attributionSidebarView];
+  [attributionSidebarView4 fullContentWidth];
   v24 = v23;
 
-  if (v24 == a3)
+  if (v24 == width)
   {
-    v25 = [(ICTextViewController *)self textView];
-    [v25 clampTextView];
+    textView = [(ICTextViewController *)self textView];
+    [textView clampTextView];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -412,20 +412,20 @@ LABEL_14:
   aBlock[2] = __92__ICTextViewController_setAttributionSidebarWidth_isGestureActive_animated_currentVelocity___block_invoke;
   aBlock[3] = &unk_2781AF5D8;
   aBlock[4] = self;
-  v35 = v24 == a3;
-  *&aBlock[5] = a3;
+  v35 = v24 == width;
+  *&aBlock[5] = width;
   v26 = _Block_copy(aBlock);
-  v27 = [(ICTextViewController *)self attributionSidebarView];
-  [v27 setVisibleContentWidth:v8 isGestureActive:a3];
+  attributionSidebarView5 = [(ICTextViewController *)self attributionSidebarView];
+  [attributionSidebarView5 setVisibleContentWidth:activeCopy isGestureActive:width];
 
-  if (v7)
+  if (animatedCopy)
   {
     v28 = 1.0;
-    if (a6 > 0.0)
+    if (velocity > 0.0)
     {
-      v29 = [(ICTextViewController *)self attributionSidebarView];
-      [v29 visibleContentWidth];
-      v28 = (a3 - v30) / a6;
+      attributionSidebarView6 = [(ICTextViewController *)self attributionSidebarView];
+      [attributionSidebarView6 visibleContentWidth];
+      v28 = (width - v30) / velocity;
     }
 
     v33[0] = MEMORY[0x277D85DD0];
@@ -433,7 +433,7 @@ LABEL_14:
     v33[2] = __92__ICTextViewController_setAttributionSidebarWidth_isGestureActive_animated_currentVelocity___block_invoke_2;
     v33[3] = &unk_2781AD1C0;
     v33[4] = self;
-    *&v33[5] = a3;
+    *&v33[5] = width;
     [MEMORY[0x277D75D18] animateWithDuration:0 delay:v33 usingSpringWithDamping:v26 initialSpringVelocity:0.3 options:0.0 animations:0.65 completion:v28];
   }
 
@@ -441,17 +441,17 @@ LABEL_14:
   {
     if ([MEMORY[0x277D75418] ic_isVision])
     {
-      v31 = [(ICTextViewController *)self view];
-      [v31 setNeedsLayout];
+      view = [(ICTextViewController *)self view];
+      [view setNeedsLayout];
     }
 
     else
     {
-      v32 = [(ICTextViewController *)self textViewLeadingConstraint];
-      [v32 setConstant:a3];
+      textViewLeadingConstraint2 = [(ICTextViewController *)self textViewLeadingConstraint];
+      [textViewLeadingConstraint2 setConstant:width];
 
-      v31 = [(ICTextViewController *)self attributionSidebarTrailingConstraint];
-      [v31 setConstant:a3];
+      view = [(ICTextViewController *)self attributionSidebarTrailingConstraint];
+      [view setConstant:width];
     }
 
     v26[2](v26, 1);
@@ -511,8 +511,8 @@ void __92__ICTextViewController_setAttributionSidebarWidth_isGestureActive_anima
 
 - (ICTextView)textView
 {
-  v3 = [(ICTextViewController *)self view];
-  if (v3)
+  view = [(ICTextViewController *)self view];
+  if (view)
   {
     textView = self->_textView;
   }
@@ -529,8 +529,8 @@ void __92__ICTextViewController_setAttributionSidebarWidth_isGestureActive_anima
 
 - (ICTextView)textViewIfLoaded
 {
-  v3 = [(ICTextViewController *)self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(ICTextViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
     textView = self->_textView;
   }
@@ -547,38 +547,38 @@ void __92__ICTextViewController_setAttributionSidebarWidth_isGestureActive_anima
 
 - (id)editorController
 {
-  v2 = [(ICTextViewController *)self textView];
-  v3 = [v2 editorController];
+  textView = [(ICTextViewController *)self textView];
+  editorController = [textView editorController];
 
-  return v3;
+  return editorController;
 }
 
 - (ICLayoutManager)layoutManager
 {
   objc_opt_class();
-  v3 = [(ICTextViewController *)self textView];
-  v4 = [v3 layoutManager];
+  textView = [(ICTextViewController *)self textView];
+  layoutManager = [textView layoutManager];
   v5 = ICCheckedDynamicCast();
 
   return v5;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(ICTextViewController *)self captureContentOffsetStateIfNecessary];
-  [(ICTextViewController *)self setTransitionScrollState:v8];
-  v9 = [(ICTextViewController *)self textView];
-  [v9 setIsTransitioningToNewSize:1];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  captureContentOffsetStateIfNecessary = [(ICTextViewController *)self captureContentOffsetStateIfNecessary];
+  [(ICTextViewController *)self setTransitionScrollState:captureContentOffsetStateIfNecessary];
+  textView = [(ICTextViewController *)self textView];
+  [textView setIsTransitioningToNewSize:1];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__ICTextViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v14[3] = &unk_2781AF600;
   v14[4] = self;
-  v15 = v8;
+  v15 = captureContentOffsetStateIfNecessary;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__ICTextViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
@@ -586,10 +586,10 @@ void __92__ICTextViewController_setAttributionSidebarWidth_isGestureActive_anima
   v12[4] = self;
   v13 = v15;
   v10 = v15;
-  [v7 animateAlongsideTransition:v14 completion:v12];
+  [coordinatorCopy animateAlongsideTransition:v14 completion:v12];
   v11.receiver = self;
   v11.super_class = ICTextViewController;
-  [(ICTextViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ICTextViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 uint64_t __75__ICTextViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -603,43 +603,43 @@ uint64_t __75__ICTextViewController_viewWillTransitionToSize_withTransitionCoord
   return [v3 setTransitionScrollState:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ICTextViewController;
-  [(ICTextViewController *)&v4 viewDidAppear:a3];
+  [(ICTextViewController *)&v4 viewDidAppear:appear];
   [(ICTextViewController *)self applyInitialScrollState];
 }
 
 - (void)applyInitialScrollState
 {
-  v3 = [(ICTextViewController *)self initialScrollState];
+  initialScrollState = [(ICTextViewController *)self initialScrollState];
 
-  if (v3)
+  if (initialScrollState)
   {
-    v4 = [(ICTextViewController *)self initialScrollState];
-    [(ICTextViewController *)self applyCapturedContentOffsetStateIfNecessary:v4];
+    initialScrollState2 = [(ICTextViewController *)self initialScrollState];
+    [(ICTextViewController *)self applyCapturedContentOffsetStateIfNecessary:initialScrollState2];
   }
 
   [(ICTextViewController *)self setInitialScrollState:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = ICTextViewController;
-  [(ICTextViewController *)&v9 viewWillDisappear:a3];
-  v4 = [(ICTextViewController *)self attributionSidebarView];
+  [(ICTextViewController *)&v9 viewWillDisappear:disappear];
+  attributionSidebarView = [(ICTextViewController *)self attributionSidebarView];
 
-  if (v4)
+  if (attributionSidebarView)
   {
-    v5 = [(ICTextViewController *)self attributionSidebarView];
-    [v5 unfocusAttributionDetails];
+    attributionSidebarView2 = [(ICTextViewController *)self attributionSidebarView];
+    [attributionSidebarView2 unfocusAttributionDetails];
 
-    v6 = [(ICTextViewController *)self textView];
-    v7 = [v6 editorController];
-    v8 = [v7 attributionSidebarController];
-    [v8 hideSidebarAnimated:0];
+    textView = [(ICTextViewController *)self textView];
+    editorController = [textView editorController];
+    attributionSidebarController = [editorController attributionSidebarController];
+    [attributionSidebarController hideSidebarAnimated:0];
   }
 }
 
@@ -648,47 +648,47 @@ uint64_t __75__ICTextViewController_viewWillTransitionToSize_withTransitionCoord
   v22.receiver = self;
   v22.super_class = ICTextViewController;
   [(ICTextViewController *)&v22 viewDidLayoutSubviews];
-  v3 = [(ICTextViewController *)self textView];
-  v4 = [v3 isTransitioningToNewSize];
+  textView = [(ICTextViewController *)self textView];
+  isTransitioningToNewSize = [textView isTransitioningToNewSize];
 
-  if (v4)
+  if (isTransitioningToNewSize)
   {
-    v5 = [(ICTextViewController *)self transitionScrollState];
+    transitionScrollState = [(ICTextViewController *)self transitionScrollState];
 LABEL_3:
-    v6 = v5;
-    [(ICTextViewController *)self applyCapturedContentOffsetStateIfNecessary:v5];
+    v6 = transitionScrollState;
+    [(ICTextViewController *)self applyCapturedContentOffsetStateIfNecessary:transitionScrollState];
 
     goto LABEL_8;
   }
 
   if (![(ICTextViewController *)self performingInitialSetup])
   {
-    v7 = [(ICTextViewController *)self initialScrollState];
-    if (v7)
+    initialScrollState = [(ICTextViewController *)self initialScrollState];
+    if (initialScrollState)
     {
-      v8 = v7;
-      v9 = [(ICTextViewController *)self textView];
-      [v9 bounds];
+      v8 = initialScrollState;
+      textView2 = [(ICTextViewController *)self textView];
+      [textView2 bounds];
       v11 = v10;
 
       if (v11 > 0.0)
       {
-        v5 = [(ICTextViewController *)self initialScrollState];
+        transitionScrollState = [(ICTextViewController *)self initialScrollState];
         goto LABEL_3;
       }
     }
   }
 
 LABEL_8:
-  v12 = [MEMORY[0x277D75418] ic_isVision];
-  v13 = [(ICTextViewController *)self attributionSidebarView];
-  v14 = v13;
-  if (v12)
+  ic_isVision = [MEMORY[0x277D75418] ic_isVision];
+  attributionSidebarView = [(ICTextViewController *)self attributionSidebarView];
+  v14 = attributionSidebarView;
+  if (ic_isVision)
   {
-    [v13 visibleContentWidth];
+    [attributionSidebarView visibleContentWidth];
     v16 = v15;
-    v17 = [(ICTextViewController *)self textViewLeadingConstraint];
-    [v17 setConstant:v16];
+    textViewLeadingConstraint = [(ICTextViewController *)self textViewLeadingConstraint];
+    [textViewLeadingConstraint setConstant:v16];
   }
 
   else
@@ -700,17 +700,17 @@ LABEL_8:
     }
   }
 
-  v18 = [(ICTextViewController *)self attributionSidebarView];
-  [v18 fullContentWidth];
+  attributionSidebarView2 = [(ICTextViewController *)self attributionSidebarView];
+  [attributionSidebarView2 fullContentWidth];
   v20 = v19;
-  v21 = [(ICTextViewController *)self attributionSidebarWidthConstraint];
-  [v21 setConstant:v20];
+  attributionSidebarWidthConstraint = [(ICTextViewController *)self attributionSidebarWidthConstraint];
+  [attributionSidebarWidthConstraint setConstant:v20];
 }
 
 - (id)captureContentOffsetStateIfNecessary
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:*MEMORY[0x277D362D8]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D362D8]];
 
   if (v4)
   {
@@ -719,43 +719,43 @@ LABEL_8:
 
   else
   {
-    v6 = [(ICTextViewController *)self textView];
-    v5 = [ICTextViewScrollState scrollStateForTextView:v6];
+    textView = [(ICTextViewController *)self textView];
+    v5 = [ICTextViewScrollState scrollStateForTextView:textView];
   }
 
   return v5;
 }
 
-- (void)applyCapturedContentOffsetStateIfNecessary:(id)a3
+- (void)applyCapturedContentOffsetStateIfNecessary:(id)necessary
 {
-  v7 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 BOOLForKey:*MEMORY[0x277D362D8]];
+  necessaryCopy = necessary;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D362D8]];
 
   if (+[ICExtensionSafeAPIShims applicationState]!= 2 && (v5 & 1) == 0)
   {
-    v6 = [(ICTextViewController *)self textView];
-    [v7 applyToTextView:v6];
+    textView = [(ICTextViewController *)self textView];
+    [necessaryCopy applyToTextView:textView];
   }
 }
 
-+ (id)createTextViewUsingTextController:(id)a3 stylingTextUsingSeparateTextStorageForRendering:(BOOL)a4 note:(id)a5 containerWidth:(double)a6 forManualRendering:(BOOL)a7 scrollState:(id)a8 traitCollection:(id)a9
++ (id)createTextViewUsingTextController:(id)controller stylingTextUsingSeparateTextStorageForRendering:(BOOL)rendering note:(id)note containerWidth:(double)width forManualRendering:(BOOL)manualRendering scrollState:(id)state traitCollection:(id)collection
 {
-  v11 = a7;
-  v14 = a4;
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v46 = a9;
+  manualRenderingCopy = manualRendering;
+  renderingCopy = rendering;
+  controllerCopy = controller;
+  noteCopy = note;
+  stateCopy = state;
+  collectionCopy = collection;
   v18 = objc_alloc_init(ICLayoutManager);
-  [(ICLayoutManager *)v18 setShouldManuallyRenderSeparateSubviews:v11];
+  [(ICLayoutManager *)v18 setShouldManuallyRenderSeparateSubviews:manualRenderingCopy];
   if (createTextViewUsingTextController_stylingTextUsingSeparateTextStorageForRendering_note_containerWidth_forManualRendering_scrollState_traitCollection__onceToken != -1)
   {
     +[ICTextViewController createTextViewUsingTextController:stylingTextUsingSeparateTextStorageForRendering:note:containerWidth:forManualRendering:scrollState:traitCollection:];
   }
 
-  v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v20 = [v19 BOOLForKey:@"UseNonContiguousLayout"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v20 = [standardUserDefaults BOOLForKey:@"UseNonContiguousLayout"];
 
   if (v20)
   {
@@ -767,12 +767,12 @@ LABEL_8:
     }
   }
 
-  v45 = v17;
-  [v15 setNote:v16 stylingTextUsingSeparateTextStorageForRendering:v14 withLayoutManager:v18 traitCollection:v46 firstVisibleCharLocation:{objc_msgSend(v17, "topLeftTextCharacterIndex")}];
-  v22 = [objc_alloc(MEMORY[0x277D36960]) initWithSize:{a6, 1.79769313e308}];
+  v45 = stateCopy;
+  [controllerCopy setNote:noteCopy stylingTextUsingSeparateTextStorageForRendering:renderingCopy withLayoutManager:v18 traitCollection:collectionCopy firstVisibleCharLocation:{objc_msgSend(stateCopy, "topLeftTextCharacterIndex")}];
+  v22 = [objc_alloc(MEMORY[0x277D36960]) initWithSize:{width, 1.79769313e308}];
   [v22 setWidthTracksTextView:1];
   [(ICLayoutManager *)v18 addTextContainer:v22];
-  v23 = [(ICBaseTextView *)[ICTextView alloc] initWithFrame:v22 textContainer:0.0, 0.0, a6, 0.0];
+  v23 = [(ICBaseTextView *)[ICTextView alloc] initWithFrame:v22 textContainer:0.0, 0.0, width, 0.0];
   v24 = ICInternalSettingsDefaultToPaperKitAttachments();
   v52 = 0;
   v53 = &v52;
@@ -788,34 +788,34 @@ LABEL_8:
   v47[3] = &unk_2781AF0B8;
   v47[4] = &v52;
   v47[5] = &v48;
-  [v16 enumerateAttachmentsInOrderUsingBlock:v47];
-  v25 = [v16 calculateDocumentController];
-  [v25 updateAffectingChangeCounts:0];
-  if ([v25 hasExpressions])
+  [noteCopy enumerateAttachmentsInOrderUsingBlock:v47];
+  calculateDocumentController = [noteCopy calculateDocumentController];
+  [calculateDocumentController updateAffectingChangeCounts:0];
+  if ([calculateDocumentController hasExpressions])
   {
     v42 = v24;
-    v43 = v16;
-    v44 = v15;
+    v43 = noteCopy;
+    v44 = controllerCopy;
     v26 = objc_alloc(MEMORY[0x277CCAB48]);
-    v27 = [(ICEditingTextView *)v23 TTTextStorage];
-    v28 = [v27 attributedString];
-    v29 = [v26 initWithAttributedString:v28];
+    tTTextStorage = [(ICEditingTextView *)v23 TTTextStorage];
+    attributedString = [tTTextStorage attributedString];
+    v29 = [v26 initWithAttributedString:attributedString];
 
-    v30 = [v29 ic_range];
-    [v25 formatExpressionsInAttributedString:v29 range:v30 textStorageOffset:v31 skipStaleExpressions:{0, 1}];
-    v32 = [(ICEditingTextView *)v23 TTTextStorage];
-    v33 = [(ICEditingTextView *)v23 TTTextStorage];
-    v34 = [v33 ic_range];
+    ic_range = [v29 ic_range];
+    [calculateDocumentController formatExpressionsInAttributedString:v29 range:ic_range textStorageOffset:v31 skipStaleExpressions:{0, 1}];
+    tTTextStorage2 = [(ICEditingTextView *)v23 TTTextStorage];
+    tTTextStorage3 = [(ICEditingTextView *)v23 TTTextStorage];
+    ic_range2 = [tTTextStorage3 ic_range];
     v36 = v35;
     v37 = [v29 copy];
-    [v32 replaceCharactersInRange:v34 withAttributedString:{v36, v37}];
+    [tTTextStorage2 replaceCharactersInRange:ic_range2 withAttributedString:{v36, v37}];
 
-    v16 = v43;
-    v15 = v44;
+    noteCopy = v43;
+    controllerCopy = v44;
     v24 = v42;
   }
 
-  if (![MEMORY[0x277D368E8] isEnabled] || (v49[3] & 1) == 0 && ((v53[3] & 1) != 0 || ((v24 ^ 1) & 1) != 0) || (objc_msgSend(v16, "isUnsupported") & 1) != 0)
+  if (![MEMORY[0x277D368E8] isEnabled] || (v49[3] & 1) == 0 && ((v53[3] & 1) != 0 || ((v24 ^ 1) & 1) != 0) || (objc_msgSend(noteCopy, "isUnsupported") & 1) != 0)
   {
     [(ICTextView *)v23 setStylusDrawingEnabled:1];
   }
@@ -825,10 +825,10 @@ LABEL_8:
     [(ICTextView *)v23 setPaperEnabled:1];
     if (*(v53 + 24) == 1)
     {
-      v40 = [v16 managedObjectContext];
-      if (v40)
+      managedObjectContext = [noteCopy managedObjectContext];
+      if (managedObjectContext)
       {
-        v41 = [[_TtC11NotesEditor28ICInlineDrawingUpgradeHelper alloc] initWithNote:v16 managedObjectContext:v40 textView:v23];
+        v41 = [[_TtC11NotesEditor28ICInlineDrawingUpgradeHelper alloc] initWithNote:noteCopy managedObjectContext:managedObjectContext textView:v23];
         [(ICInlineDrawingUpgradeHelper *)v41 upgradeAllAttachmentsInNote];
       }
     }
@@ -836,8 +836,8 @@ LABEL_8:
 
   if ([MEMORY[0x277D75418] ic_isVision])
   {
-    v38 = [(ICTextView *)v23 ic_pkTiledView];
-    [v38 setOverrideUserInterfaceStyle:1];
+    ic_pkTiledView = [(ICTextView *)v23 ic_pkTiledView];
+    [ic_pkTiledView setOverrideUserInterfaceStyle:1];
   }
 
   [(ICTextView *)v23 _setContentScrollInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
@@ -882,39 +882,39 @@ LABEL_6:
 LABEL_7:
 }
 
-+ (id)printFormatterForNote:(id)a3 withSize:(CGSize)a4 traitCollection:(id)a5
++ (id)printFormatterForNote:(id)note withSize:(CGSize)size traitCollection:(id)collection
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x277D36968];
-  v9 = a5;
-  v10 = a3;
+  collectionCopy = collection;
+  noteCopy = note;
   v11 = objc_alloc_init(v8);
   [v11 setDisableSingleLineA:1];
-  v12 = [v9 userInterfaceStyle];
-  [v11 setOverrideAppearanceType:v12 == 2];
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  [v11 setOverrideAppearanceType:userInterfaceStyle == 2];
   [v11 setIsForPrint:1];
-  v13 = [ICTextViewController createTextViewUsingTextController:v11 stylingTextUsingSeparateTextStorageForRendering:1 note:v10 containerWidth:1 forManualRendering:0 scrollState:v9 traitCollection:width];
+  v13 = [ICTextViewController createTextViewUsingTextController:v11 stylingTextUsingSeparateTextStorageForRendering:1 note:noteCopy containerWidth:1 forManualRendering:0 scrollState:collectionCopy traitCollection:width];
 
-  v14 = [MEMORY[0x277D75348] ic_tintColorWithTraitCollection:v9];
+  v14 = [MEMORY[0x277D75348] ic_tintColorWithTraitCollection:collectionCopy];
   [v13 setTintColor:v14];
 
   objc_opt_class();
-  v15 = [v13 textStorage];
+  textStorage = [v13 textStorage];
   v43 = ICDynamicCast();
 
   [v43 setStyler:v11];
-  [v13 setOverrideUserInterfaceStyle:v12];
-  v16 = [MEMORY[0x277D75348] preferredDefaultFontColor];
-  v17 = [v16 resolvedColorWithTraitCollection:v9];
+  [v13 setOverrideUserInterfaceStyle:userInterfaceStyle];
+  preferredDefaultFontColor = [MEMORY[0x277D75348] preferredDefaultFontColor];
+  v17 = [preferredDefaultFontColor resolvedColorWithTraitCollection:collectionCopy];
 
-  v18 = [v13 textStorage];
-  [v18 beginEditing];
+  textStorage2 = [v13 textStorage];
+  [textStorage2 beginEditing];
 
-  v19 = [v13 textStorage];
+  textStorage3 = [v13 textStorage];
   v20 = *MEMORY[0x277D740C0];
-  v21 = [v13 textStorage];
-  v22 = [v21 ic_range];
+  textStorage4 = [v13 textStorage];
+  ic_range = [textStorage4 ic_range];
   v24 = v23;
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -924,46 +924,46 @@ LABEL_7:
   v49 = v17;
   v42 = v17;
   v25 = v13;
-  [v19 enumerateAttribute:v20 inRange:v22 options:v24 usingBlock:{0, v47}];
+  [textStorage3 enumerateAttribute:v20 inRange:ic_range options:v24 usingBlock:{0, v47}];
 
   objc_opt_class();
-  v26 = [v25 layoutManager];
+  layoutManager = [v25 layoutManager];
   v27 = ICDynamicCast();
 
   [v27 setIsRenderingImageForPrint:1];
-  v28 = [v25 textStorage];
+  textStorage5 = [v25 textStorage];
   v29 = *MEMORY[0x277D74060];
-  v30 = [v25 textStorage];
-  v31 = [v30 ic_range];
+  textStorage6 = [v25 textStorage];
+  ic_range2 = [textStorage6 ic_range];
   v33 = v32;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __71__ICTextViewController_printFormatterForNote_withSize_traitCollection___block_invoke_2;
   v44[3] = &unk_2781AF628;
   v45 = v27;
-  v46 = v12;
+  v46 = userInterfaceStyle;
   v34 = v27;
-  [v28 enumerateAttribute:v29 inRange:v31 options:v33 usingBlock:{0, v44}];
+  [textStorage5 enumerateAttribute:v29 inRange:ic_range2 options:v33 usingBlock:{0, v44}];
 
-  v35 = [v25 textStorage];
-  [v35 endEditing];
+  textStorage7 = [v25 textStorage];
+  [textStorage7 endEditing];
 
   objc_opt_class();
-  v36 = [v25 layoutManager];
+  layoutManager2 = [v25 layoutManager];
   v37 = ICDynamicCast();
   [v37 setShouldAdjustTodoButtonFramesForPrinting:1];
 
   objc_opt_class();
-  v38 = [v25 layoutManager];
+  layoutManager3 = [v25 layoutManager];
   v39 = ICDynamicCast();
-  [v39 setOverrideTraitCollection:v9];
+  [v39 setOverrideTraitCollection:collectionCopy];
 
   [v25 setFrame:{0.0, 0.0, width, height}];
-  v40 = [v25 viewPrintFormatter];
-  [v40 setPerPageContentInsets:{8.0, 8.0, 8.0, 8.0}];
+  viewPrintFormatter = [v25 viewPrintFormatter];
+  [viewPrintFormatter setPerPageContentInsets:{8.0, 8.0, 8.0, 8.0}];
   [v11 setIsForPrint:0];
 
-  return v40;
+  return viewPrintFormatter;
 }
 
 void __71__ICTextViewController_printFormatterForNote_withSize_traitCollection___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -996,10 +996,10 @@ void __71__ICTextViewController_printFormatterForNote_withSize_traitCollection__
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v9 = a3;
-  objc_storeStrong(&self->_backgroundColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_backgroundColor, color);
   if ([MEMORY[0x277D75418] ic_isVision])
   {
     v5 = 0;
@@ -1007,72 +1007,72 @@ void __71__ICTextViewController_printFormatterForNote_withSize_traitCollection__
 
   else
   {
-    v5 = v9;
+    v5 = colorCopy;
   }
 
-  v6 = [(ICTextViewController *)self textView];
-  [v6 setBackgroundColor:v5];
+  textView = [(ICTextViewController *)self textView];
+  [textView setBackgroundColor:v5];
 
-  v7 = [(ICTextViewController *)self backgroundView];
-  [v7 setBackgroundColor:v9];
+  backgroundView = [(ICTextViewController *)self backgroundView];
+  [backgroundView setBackgroundColor:colorCopy];
 
   if ([MEMORY[0x277D75418] ic_isVision])
   {
-    v8 = [(ICTextViewController *)self view];
-    [v8 setBackgroundColor:v9];
+    view = [(ICTextViewController *)self view];
+    [view setBackgroundColor:colorCopy];
   }
 }
 
-- (void)splitViewControllerWillBeginAnimatedTransitionToStateRequest:(id)a3
+- (void)splitViewControllerWillBeginAnimatedTransitionToStateRequest:(id)request
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
-  v41 = v3;
-  v4 = [v3 object];
+  v41 = requestCopy;
+  object = [requestCopy object];
   v42 = ICCheckedDynamicCast();
 
-  v5 = [(ICTextViewController *)self splitViewControllerDidEndAnimatedTransitionToStateRequestHandler];
-  if (!v5)
+  splitViewControllerDidEndAnimatedTransitionToStateRequestHandler = [(ICTextViewController *)self splitViewControllerDidEndAnimatedTransitionToStateRequestHandler];
+  if (!splitViewControllerDidEndAnimatedTransitionToStateRequestHandler)
   {
-    v6 = [v42 ic_viewControllerManager];
-    v7 = [(ICTextViewController *)self ic_viewControllerManager];
+    ic_viewControllerManager = [v42 ic_viewControllerManager];
+    ic_viewControllerManager2 = [(ICTextViewController *)self ic_viewControllerManager];
 
-    if (v6 != v7)
+    if (ic_viewControllerManager != ic_viewControllerManager2)
     {
       goto LABEL_29;
     }
 
     objc_initWeak(&location, self);
-    v8 = [(ICTextViewController *)self layoutManager];
-    v9 = [(ICTextViewController *)self textView];
-    [v9 setIsTransitioningToNewSize:1];
-    v10 = [(ICTextViewController *)self captureContentOffsetStateIfNecessary];
-    [(ICTextViewController *)self setTransitionScrollState:v10];
+    layoutManager = [(ICTextViewController *)self layoutManager];
+    textView = [(ICTextViewController *)self textView];
+    [textView setIsTransitioningToNewSize:1];
+    captureContentOffsetStateIfNecessary = [(ICTextViewController *)self captureContentOffsetStateIfNecessary];
+    [(ICTextViewController *)self setTransitionScrollState:captureContentOffsetStateIfNecessary];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __85__ICTextViewController_splitViewControllerWillBeginAnimatedTransitionToStateRequest___block_invoke;
     v58[3] = &unk_2781AF650;
     objc_copyWeak(&v62, &location);
-    v38 = v10;
+    v38 = captureContentOffsetStateIfNecessary;
     v59 = v38;
-    v37 = v8;
+    v37 = layoutManager;
     v60 = v37;
-    v47 = v9;
+    v47 = textView;
     v61 = v47;
     [(ICTextViewController *)self setSplitViewControllerDidEndAnimatedTransitionToStateRequestHandler:v58];
     objc_opt_class();
-    v11 = [v41 object];
+    object2 = [v41 object];
     v40 = ICDynamicCast();
 
     objc_opt_class();
-    v12 = [v41 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"ICSplitViewControllerPredictedDetailSizeUserInfo"];
+    userInfo = [v41 userInfo];
+    v13 = [userInfo objectForKeyedSubscript:@"ICSplitViewControllerPredictedDetailSizeUserInfo"];
     v39 = ICDynamicCast();
 
-    v43 = [(ICTextViewController *)self viewControllerManager];
-    v14 = [v43 mainSplitViewController];
-    if (v40 != v14 || ![(ICTextViewController *)self shouldAnimateTransitionForSplitViewController:?])
+    viewControllerManager = [(ICTextViewController *)self viewControllerManager];
+    mainSplitViewController = [viewControllerManager mainSplitViewController];
+    if (v40 != mainSplitViewController || ![(ICTextViewController *)self shouldAnimateTransitionForSplitViewController:?])
     {
       goto LABEL_27;
     }
@@ -1089,13 +1089,13 @@ LABEL_28:
     [v39 CGSizeValue];
     v16 = v15;
     v18 = v17;
-    v43 = [MEMORY[0x277CBEB18] array];
+    viewControllerManager = [MEMORY[0x277CBEB18] array];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v19 = [v47 superview];
-    obj = [v19 constraints];
+    superview = [v47 superview];
+    obj = [superview constraints];
 
     v20 = [obj countByEnumeratingWithState:&v54 objects:v64 count:16];
     if (!v20)
@@ -1114,37 +1114,37 @@ LABEL_9:
       }
 
       v22 = *(*(&v54 + 1) + 8 * v21);
-      v23 = [v22 firstItem];
-      if (v23 != v47)
+      firstItem = [v22 firstItem];
+      if (firstItem != v47)
       {
-        v14 = [v22 secondItem];
-        if (v14 != v47)
+        mainSplitViewController = [v22 secondItem];
+        if (mainSplitViewController != v47)
         {
           goto LABEL_18;
         }
       }
 
-      v24 = [v22 firstItem];
-      v25 = [(ICTextViewController *)self attributionSidebarView];
-      v26 = v25;
-      if (v24 != v25)
+      firstItem2 = [v22 firstItem];
+      attributionSidebarView = [(ICTextViewController *)self attributionSidebarView];
+      v26 = attributionSidebarView;
+      if (firstItem2 != attributionSidebarView)
       {
-        v27 = [v22 secondItem];
-        v28 = [(ICTextViewController *)self attributionSidebarView];
+        secondItem = [v22 secondItem];
+        attributionSidebarView2 = [(ICTextViewController *)self attributionSidebarView];
 
-        if (v23 != v47)
+        if (firstItem != v47)
         {
         }
 
-        if (v27 != v28)
+        if (secondItem != attributionSidebarView2)
         {
-          [v43 addObject:v22];
+          [viewControllerManager addObject:v22];
         }
 
         goto LABEL_22;
       }
 
-      if (v23 != v47)
+      if (firstItem != v47)
       {
 LABEL_18:
       }
@@ -1157,11 +1157,11 @@ LABEL_22:
         {
 LABEL_24:
 
-          [(ICTextViewController *)self setTransitionConstraints:v43];
-          [MEMORY[0x277CCAAD0] deactivateConstraints:v43];
+          [(ICTextViewController *)self setTransitionConstraints:viewControllerManager];
+          [MEMORY[0x277CCAAD0] deactivateConstraints:viewControllerManager];
           [v47 setTranslatesAutoresizingMaskIntoConstraints:1];
-          v29 = [v41 userInfo];
-          v30 = [v29 objectForKeyedSubscript:@"ICSplitViewControllerPredictedDurationUserInfo"];
+          userInfo2 = [v41 userInfo];
+          v30 = [userInfo2 objectForKeyedSubscript:@"ICSplitViewControllerPredictedDurationUserInfo"];
           v31 = v30;
           v32 = &unk_28277E680;
           if (v30)
@@ -1169,10 +1169,10 @@ LABEL_24:
             v32 = v30;
           }
 
-          v14 = v32;
+          mainSplitViewController = v32;
 
           v33 = MEMORY[0x277D75D18];
-          [v14 floatValue];
+          [mainSplitViewController floatValue];
           v35 = v34;
           v50[0] = MEMORY[0x277D85DD0];
           v50[1] = 3221225472;
@@ -1268,52 +1268,52 @@ void __85__ICTextViewController_splitViewControllerWillBeginAnimatedTransitionTo
   [v4 animateWithDuration:v5 animations:0.3];
 }
 
-- (void)splitViewControllerDidEndAnimatedTransitionToStateRequest:(id)a3
+- (void)splitViewControllerDidEndAnimatedTransitionToStateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   NSClassFromString(&cfstr_Icmainsplitvie.isa);
-  v5 = [v4 object];
+  object = [requestCopy object];
 
   v20 = ICCheckedDynamicCast();
 
-  v6 = [(ICTextViewController *)self viewControllerManager];
-  v7 = [v6 mainSplitViewController];
+  viewControllerManager = [(ICTextViewController *)self viewControllerManager];
+  mainSplitViewController = [viewControllerManager mainSplitViewController];
 
   v8 = v20;
-  if (v7 == v20)
+  if (mainSplitViewController == v20)
   {
-    v9 = [(ICTextViewController *)self textView];
-    [v9 setIsTransitioningToNewSize:0];
-    v10 = [(ICTextViewController *)self splitViewControllerDidEndAnimatedTransitionToStateRequestHandler];
+    textView = [(ICTextViewController *)self textView];
+    [textView setIsTransitioningToNewSize:0];
+    splitViewControllerDidEndAnimatedTransitionToStateRequestHandler = [(ICTextViewController *)self splitViewControllerDidEndAnimatedTransitionToStateRequestHandler];
 
-    if (v10)
+    if (splitViewControllerDidEndAnimatedTransitionToStateRequestHandler)
     {
-      v11 = [(ICTextViewController *)self splitViewControllerDidEndAnimatedTransitionToStateRequestHandler];
-      v11[2]();
+      splitViewControllerDidEndAnimatedTransitionToStateRequestHandler2 = [(ICTextViewController *)self splitViewControllerDidEndAnimatedTransitionToStateRequestHandler];
+      splitViewControllerDidEndAnimatedTransitionToStateRequestHandler2[2]();
 
       [(ICTextViewController *)self setSplitViewControllerDidEndAnimatedTransitionToStateRequestHandler:0];
     }
 
-    v12 = [(ICTextViewController *)self transitionScrollState];
-    [(ICTextViewController *)self applyCapturedContentOffsetStateIfNecessary:v12];
+    transitionScrollState = [(ICTextViewController *)self transitionScrollState];
+    [(ICTextViewController *)self applyCapturedContentOffsetStateIfNecessary:transitionScrollState];
 
     [(ICTextViewController *)self setTransitionScrollState:0];
-    v13 = [v9 window];
-    if (v13)
+    window = [textView window];
+    if (window)
     {
-      v14 = v13;
-      v15 = [v9 translatesAutoresizingMaskIntoConstraints];
+      v14 = window;
+      translatesAutoresizingMaskIntoConstraints = [textView translatesAutoresizingMaskIntoConstraints];
 
-      if (v15)
+      if (translatesAutoresizingMaskIntoConstraints)
       {
-        [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v16 = [v9 superview];
-        v17 = [(ICTextViewController *)self transitionConstraints];
-        [v16 addConstraints:v17];
+        [textView setTranslatesAutoresizingMaskIntoConstraints:0];
+        superview = [textView superview];
+        transitionConstraints = [(ICTextViewController *)self transitionConstraints];
+        [superview addConstraints:transitionConstraints];
 
         v18 = MEMORY[0x277CCAAD0];
-        v19 = [(ICTextViewController *)self transitionConstraints];
-        [v18 activateConstraints:v19];
+        transitionConstraints2 = [(ICTextViewController *)self transitionConstraints];
+        [v18 activateConstraints:transitionConstraints2];
 
         [(ICTextViewController *)self setTransitionConstraints:0];
       }
@@ -1323,26 +1323,26 @@ void __85__ICTextViewController_splitViewControllerWillBeginAnimatedTransitionTo
   }
 }
 
-- (void)layoutManagerDidInvalidateLayout:(id)a3
+- (void)layoutManagerDidInvalidateLayout:(id)layout
 {
-  v3 = [(ICTextViewController *)self layoutManager];
-  [v3 clearLayoutEnsuredBounds];
+  layoutManager = [(ICTextViewController *)self layoutManager];
+  [layoutManager clearLayoutEnsuredBounds];
 }
 
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end
 {
-  v6 = [(ICTextViewController *)self layoutManager:a3];
+  v6 = [(ICTextViewController *)self layoutManager:manager];
   [v6 updateVisibleSupplementalViews];
 
   objc_opt_class();
-  v7 = [(ICTextViewController *)self textView];
+  textView = [(ICTextViewController *)self textView];
   v12 = ICDynamicCast();
 
-  v8 = [v12 ic_visibleRange];
-  [v12 updateStyleLayersInRange:{v8, v9}];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  v11 = [(ICTextViewController *)self textView];
-  [v10 postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:v11];
+  ic_visibleRange = [v12 ic_visibleRange];
+  [v12 updateStyleLayersInRange:{ic_visibleRange, v9}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  textView2 = [(ICTextViewController *)self textView];
+  [defaultCenter postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:textView2];
 }
 
 - (ICViewControllerManager)viewControllerManager

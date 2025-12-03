@@ -1,12 +1,12 @@
 @interface CPTemplateApplicationInstrumentClusterScene
 - (CGRect)_referenceBounds;
-- (CPTemplateApplicationInstrumentClusterScene)initWithSession:(id)a3 connectionOptions:(id)a4;
-- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)a3;
+- (CPTemplateApplicationInstrumentClusterScene)initWithSession:(id)session connectionOptions:(id)options;
+- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)orientation;
 - (UIScreen)_screen;
 - (UITraitCollection)_traitCollection;
-- (id)_allWindowsIncludingInternalWindows:(BOOL)a3 onlyVisibleWindows:(BOOL)a4;
+- (id)_allWindowsIncludingInternalWindows:(BOOL)windows onlyVisibleWindows:(BOOL)visibleWindows;
 - (id)_clusterSettings;
-- (id)_fbsSceneLayerForWindow:(id)a3;
+- (id)_fbsSceneLayerForWindow:(id)window;
 - (id)_frameRateLimit;
 - (id)_templateSettings;
 - (int64_t)_interfaceOrientation;
@@ -14,16 +14,16 @@
 - (unint64_t)compassSetting;
 - (unint64_t)itemType;
 - (unint64_t)speedLimitSetting;
-- (void)_attachWindow:(id)a3;
+- (void)_attachWindow:(id)window;
 - (void)_deliverControllerToDelegate;
-- (void)_detachWindow:(id)a3;
+- (void)_detachWindow:(id)window;
 - (void)_invalidate;
 - (void)_readySceneForConnection;
 - (void)_refreshTraitCollection;
 - (void)_updateContentStyle;
 - (void)_updateFrameRateLimit;
-- (void)_windowUpdatedVisibility:(id)a3;
-- (void)handleZoomInDirection:(int64_t)a3;
+- (void)_windowUpdatedVisibility:(id)visibility;
+- (void)handleZoomInDirection:(int64_t)direction;
 - (void)updateSceneForNewCompassSetting;
 - (void)updateSceneForNewItemTypeSetting;
 - (void)updateSceneForNewSpeedLimitSetting;
@@ -31,30 +31,30 @@
 
 @implementation CPTemplateApplicationInstrumentClusterScene
 
-- (CPTemplateApplicationInstrumentClusterScene)initWithSession:(id)a3 connectionOptions:(id)a4
+- (CPTemplateApplicationInstrumentClusterScene)initWithSession:(id)session connectionOptions:(id)options
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  optionsCopy = options;
   v54.receiver = self;
   v54.super_class = CPTemplateApplicationInstrumentClusterScene;
-  v8 = [(CPTemplateApplicationInstrumentClusterScene *)&v54 initWithSession:v6 connectionOptions:v7];
+  v8 = [(CPTemplateApplicationInstrumentClusterScene *)&v54 initWithSession:sessionCopy connectionOptions:optionsCopy];
   if (v8)
   {
-    v9 = [v7 _specification];
-    v10 = [v9 sceneSubstrateClass];
+    _specification = [optionsCopy _specification];
+    sceneSubstrateClass = [_specification sceneSubstrateClass];
 
     v11 = objc_alloc(MEMORY[0x277D75E90]);
-    v12 = [v10 alloc];
-    v13 = [(CPTemplateApplicationInstrumentClusterScene *)v8 _FBSScene];
-    v14 = [v12 initWithScene:v13];
+    v12 = [sceneSubstrateClass alloc];
+    _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)v8 _FBSScene];
+    v14 = [v12 initWithScene:_FBSScene];
     v15 = [v11 initWithSubstrate:v14];
     contextBinder = v8->_contextBinder;
     v8->_contextBinder = v15;
 
     [(_UIContextBinder *)v8->_contextBinder setContextCreationPolicyHolder:v8];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    v18 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v19 = *MEMORY[0x277D76668];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
@@ -62,12 +62,12 @@
     v52[3] = &unk_278A10508;
     v20 = v8;
     v53 = v20;
-    v21 = [v17 addObserverForName:v19 object:0 queue:v18 usingBlock:v52];
+    v21 = [defaultCenter addObserverForName:v19 object:0 queue:mainQueue usingBlock:v52];
     didFinishLaunchingObserver = v20->_didFinishLaunchingObserver;
     v20->_didFinishLaunchingObserver = v21;
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    v24 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
     v25 = *MEMORY[0x277D76E70];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
@@ -75,7 +75,7 @@
     v50[3] = &unk_278A10508;
     v26 = v20;
     v51 = v26;
-    v27 = [v23 addObserverForName:v25 object:v26 queue:v24 usingBlock:v50];
+    v27 = [defaultCenter2 addObserverForName:v25 object:v26 queue:mainQueue2 usingBlock:v50];
     sceneWillConnectObserver = v26->_sceneWillConnectObserver;
     v26->_sceneWillConnectObserver = v27;
 
@@ -111,8 +111,8 @@
     v37 = [(CPTemplateUISceneSettingsDiffAction *)v35 initWithInspectors:v36];
     [(CPTemplateApplicationInstrumentClusterScene *)v26 setSceneSettingsDiffAction:v37];
 
-    v38 = [(CPTemplateApplicationInstrumentClusterScene *)v26 sceneSettingsDiffAction];
-    v55 = v38;
+    sceneSettingsDiffAction = [(CPTemplateApplicationInstrumentClusterScene *)v26 sceneSettingsDiffAction];
+    v55 = sceneSettingsDiffAction;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
     [(CPTemplateApplicationInstrumentClusterScene *)v26 _registerSettingsDiffActionArray:v39 forKey:@"InterfaceStyle"];
 
@@ -184,7 +184,7 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
     _os_log_impl(&dword_236ED4000, v3, OS_LOG_TYPE_DEFAULT, "Cluster scene content style updated to %{public}@", &v10, 0xCu);
   }
 
-  v5 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
+  delegate = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -196,8 +196,8 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
       _os_log_impl(&dword_236ED4000, v7, OS_LOG_TYPE_DEFAULT, "Informing delegate of style update", &v10, 2u);
     }
 
-    v8 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
-    [v8 contentStyleDidChange:self->_contentStyle];
+    delegate2 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
+    [delegate2 contentStyleDidChange:self->_contentStyle];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -205,19 +205,19 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
 
 - (int64_t)_mapStyle
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _templateSettings];
-  v3 = [v2 mapStyle];
+  _templateSettings = [(CPTemplateApplicationInstrumentClusterScene *)self _templateSettings];
+  mapStyle = [_templateSettings mapStyle];
 
-  return v3;
+  return mapStyle;
 }
 
 - (void)_updateFrameRateLimit
 {
   v19 = *MEMORY[0x277D85DE8];
   self->_frameRateLimit = [(CPTemplateApplicationInstrumentClusterScene *)self _frameRateLimit];
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self _templateSettings];
-  v4 = [v3 displayConfiguration];
-  v5 = [v4 CADisplay];
+  _templateSettings = [(CPTemplateApplicationInstrumentClusterScene *)self _templateSettings];
+  displayConfiguration = [_templateSettings displayConfiguration];
+  cADisplay = [displayConfiguration CADisplay];
 
   frameRateLimit = self->_frameRateLimit;
   if (frameRateLimit)
@@ -259,38 +259,38 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:{v10, *MEMORY[0x277CDA1A8]}];
   v16 = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  [v5 overrideDisplayTimings:v13];
+  [cADisplay overrideDisplayTimings:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_frameRateLimit
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _templateSettings];
-  v3 = [v2 frameRateLimit];
+  _templateSettings = [(CPTemplateApplicationInstrumentClusterScene *)self _templateSettings];
+  frameRateLimit = [_templateSettings frameRateLimit];
 
-  return v3;
+  return frameRateLimit;
 }
 
 - (id)_templateSettings
 {
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-  v4 = [v3 settings];
+  _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+  settings = [_FBSScene settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-    v7 = [v6 settings];
+    _FBSScene2 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+    settings2 = [_FBSScene2 settings];
   }
 
   else
   {
-    v7 = 0;
+    settings2 = 0;
   }
 
-  return v7;
+  return settings2;
 }
 
 - (void)_refreshTraitCollection
@@ -298,17 +298,17 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   v19[3] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceIdiom:3];
   v4 = MEMORY[0x277D75C80];
-  v5 = [(CPTemplateApplicationInstrumentClusterScene *)self _screen];
-  v6 = [v5 traitCollection];
-  [v6 displayScale];
+  _screen = [(CPTemplateApplicationInstrumentClusterScene *)self _screen];
+  traitCollection = [_screen traitCollection];
+  [traitCollection displayScale];
   v7 = [v4 traitCollectionWithDisplayScale:?];
 
   objc_opt_class();
-  v8 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-  v9 = [v8 settings];
+  _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+  settings = [_FBSScene settings];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = settings;
   }
 
   else
@@ -319,15 +319,15 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   v11 = MEMORY[0x277D75C80];
   if (v10)
   {
-    v12 = [v10 userInterfaceStyle];
+    userInterfaceStyle = [v10 userInterfaceStyle];
   }
 
   else
   {
-    v12 = 0;
+    userInterfaceStyle = 0;
   }
 
-  v13 = [v11 traitCollectionWithUserInterfaceStyle:v12];
+  v13 = [v11 traitCollectionWithUserInterfaceStyle:userInterfaceStyle];
   v14 = MEMORY[0x277D75C80];
   v19[0] = v3;
   v19[1] = v13;
@@ -346,8 +346,8 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   if (!screen)
   {
     v4 = MEMORY[0x277D759A0];
-    v5 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-    v6 = [v4 _screenForScene:v5];
+    _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+    v6 = [v4 _screenForScene:_FBSScene];
     v7 = self->_screen;
     self->_screen = v6;
 
@@ -359,29 +359,29 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
 
 - (int64_t)_interfaceOrientation
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 isUISubclass];
+  _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  isUISubclass = [settings isUISubclass];
 
-  if (v4)
+  if (isUISubclass)
   {
-    v5 = [v2 settings];
-    v6 = [v5 interfaceOrientation];
+    settings2 = [_FBSScene settings];
+    interfaceOrientation = [settings2 interfaceOrientation];
   }
 
   else
   {
-    v6 = 1;
+    interfaceOrientation = 1;
   }
 
-  return v6;
+  return interfaceOrientation;
 }
 
 - (CGRect)_referenceBounds
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-  v3 = [v2 settings];
-  [v3 bounds];
+  _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  [settings bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -410,53 +410,53 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   return traitCollection;
 }
 
-- (void)_attachWindow:(id)a3
+- (void)_attachWindow:(id)window
 {
-  v5 = a3;
-  v4 = [v5 _windowHostingScene];
-  if (([v4 isEqual:self] & 1) == 0)
+  windowCopy = window;
+  _windowHostingScene = [windowCopy _windowHostingScene];
+  if (([_windowHostingScene isEqual:self] & 1) == 0)
   {
-    [v4 _detachWindow:v5];
-    [(CPTemplateApplicationInstrumentClusterScene *)self __captureWindow:v5];
-    [(_UIContextBinder *)self->_contextBinder enrollBindable:v5];
-    [v5 _didMoveFromScene:v4 toScene:self];
+    [_windowHostingScene _detachWindow:windowCopy];
+    [(CPTemplateApplicationInstrumentClusterScene *)self __captureWindow:windowCopy];
+    [(_UIContextBinder *)self->_contextBinder enrollBindable:windowCopy];
+    [windowCopy _didMoveFromScene:_windowHostingScene toScene:self];
   }
 
-  if (([v5 isHidden] & 1) == 0)
+  if (([windowCopy isHidden] & 1) == 0)
   {
-    [(_UIContextBinder *)self->_contextBinder attachBindable:v5];
+    [(_UIContextBinder *)self->_contextBinder attachBindable:windowCopy];
   }
 }
 
-- (void)_detachWindow:(id)a3
+- (void)_detachWindow:(id)window
 {
   contextBinder = self->_contextBinder;
-  v5 = a3;
-  [(_UIContextBinder *)contextBinder expellBindable:v5];
-  [(CPTemplateApplicationInstrumentClusterScene *)self __releaseWindow:v5];
+  windowCopy = window;
+  [(_UIContextBinder *)contextBinder expellBindable:windowCopy];
+  [(CPTemplateApplicationInstrumentClusterScene *)self __releaseWindow:windowCopy];
 }
 
-- (void)_windowUpdatedVisibility:(id)a3
+- (void)_windowUpdatedVisibility:(id)visibility
 {
-  v6 = a3;
-  v4 = [v6 isHidden];
+  visibilityCopy = visibility;
+  isHidden = [visibilityCopy isHidden];
   contextBinder = self->_contextBinder;
-  if (v4)
+  if (isHidden)
   {
-    [(_UIContextBinder *)contextBinder detachBindable:v6];
+    [(_UIContextBinder *)contextBinder detachBindable:visibilityCopy];
   }
 
   else
   {
-    [(_UIContextBinder *)contextBinder attachBindable:v6];
+    [(_UIContextBinder *)contextBinder attachBindable:visibilityCopy];
   }
 }
 
-- (id)_allWindowsIncludingInternalWindows:(BOOL)a3 onlyVisibleWindows:(BOOL)a4
+- (id)_allWindowsIncludingInternalWindows:(BOOL)windows onlyVisibleWindows:(BOOL)visibleWindows
 {
-  v4 = a3;
+  windowsCopy = windows;
   contextBinder = self->_contextBinder;
-  if (a4)
+  if (visibleWindows)
   {
     [(_UIContextBinder *)contextBinder attachedBindables];
   }
@@ -467,7 +467,7 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   }
   v6 = ;
   v7 = v6;
-  if (v4)
+  if (windowsCopy)
   {
     v8 = v6;
   }
@@ -481,24 +481,24 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
   return v8;
 }
 
-- (id)_fbsSceneLayerForWindow:(id)a3
+- (id)_fbsSceneLayerForWindow:(id)window
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_UIContextBinder *)self->_contextBinder substrate];
-  v6 = [v5 scene];
+  windowCopy = window;
+  substrate = [(_UIContextBinder *)self->_contextBinder substrate];
+  scene = [substrate scene];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v6 clientSettings];
-  v8 = [v7 layers];
+  clientSettings = [scene clientSettings];
+  layers = [clientSettings layers];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [layers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
-    v19 = v5;
+    v19 = substrate;
     v11 = *v21;
     do
     {
@@ -506,7 +506,7 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(layers);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -514,23 +514,23 @@ void __81__CPTemplateApplicationInstrumentClusterScene_initWithSession_connectio
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          v15 = [v14 CAContext];
-          v16 = [v4 _boundContext];
+          cAContext = [v14 CAContext];
+          _boundContext = [windowCopy _boundContext];
 
-          if (v15 == v16)
+          if (cAContext == _boundContext)
           {
             goto LABEL_12;
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [layers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
     v14 = 0;
 LABEL_12:
-    v5 = v19;
+    substrate = v19;
   }
 
   else
@@ -543,16 +543,16 @@ LABEL_12:
   return v14;
 }
 
-- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)orientation
 {
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-  v4 = [v3 settings];
-  v5 = [v4 isUISubclass];
+  _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  isUISubclass = [settings isUISubclass];
 
-  if (v5)
+  if (isUISubclass)
   {
-    v6 = [v3 settings];
-    [v6 safeAreaInsetsPortrait];
+    settings2 = [_FBSScene settings];
+    [settings2 safeAreaInsetsPortrait];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -587,12 +587,12 @@ LABEL_12:
     _os_log_impl(&dword_236ED4000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to deliver instrument cluster scene...", buf, 2u);
   }
 
-  v4 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
+  delegate = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
   if ([*MEMORY[0x277D76620] _hasApplicationCalledLaunchDelegate])
   {
     if (self->_sceneWillConnect)
     {
-      v5 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
+      delegate2 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
@@ -604,8 +604,8 @@ LABEL_12:
           _os_log_impl(&dword_236ED4000, v7, OS_LOG_TYPE_DEFAULT, "Cluster delegate supports templateApplicationDidConnectInstrumentClusterScene method", v9, 2u);
         }
 
-        v8 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-        [v4 templateApplicationInstrumentClusterScene:self didConnectInstrumentClusterController:v8];
+        instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+        [delegate templateApplicationInstrumentClusterScene:self didConnectInstrumentClusterController:instrumentClusterController];
       }
     }
   }
@@ -614,22 +614,22 @@ LABEL_12:
 - (void)_invalidate
 {
   [(CPInstrumentClusterController *)self->_instrumentClusterController _invalidate];
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
+  delegate = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
-    v6 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-    [v5 templateApplicationInstrumentClusterScene:self didDisconnectInstrumentClusterController:v6];
+    delegate2 = [(CPTemplateApplicationInstrumentClusterScene *)self delegate];
+    instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+    [delegate2 templateApplicationInstrumentClusterScene:self didDisconnectInstrumentClusterController:instrumentClusterController];
   }
 
   [(UIWindow *)self->_instrumentClusterWindow setHidden:1];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self->_sceneWillConnectObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_sceneWillConnectObserver];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self->_didFinishLaunchingObserver];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self->_didFinishLaunchingObserver];
 
   didFinishLaunchingObserver = self->_didFinishLaunchingObserver;
   self->_didFinishLaunchingObserver = 0;
@@ -647,43 +647,43 @@ LABEL_12:
   v6.receiver = self;
   v6.super_class = CPTemplateApplicationInstrumentClusterScene;
   [(CPTemplateApplicationInstrumentClusterScene *)&v6 _readySceneForConnection];
-  v3 = [[CPInstrumentClusterController alloc] _init];
-  [(CPInstrumentClusterController *)v3 setCompassSetting:[(CPTemplateApplicationInstrumentClusterScene *)self compassSetting]];
-  [(CPInstrumentClusterController *)v3 setSpeedLimitSetting:[(CPTemplateApplicationInstrumentClusterScene *)self speedLimitSetting]];
+  _init = [[CPInstrumentClusterController alloc] _init];
+  [(CPInstrumentClusterController *)_init setCompassSetting:[(CPTemplateApplicationInstrumentClusterScene *)self compassSetting]];
+  [(CPInstrumentClusterController *)_init setSpeedLimitSetting:[(CPTemplateApplicationInstrumentClusterScene *)self speedLimitSetting]];
   instrumentClusterController = self->_instrumentClusterController;
-  self->_instrumentClusterController = v3;
-  v5 = v3;
+  self->_instrumentClusterController = _init;
+  v5 = _init;
 
   [(CPTemplateApplicationInstrumentClusterScene *)self updateSceneForNewItemTypeSetting];
   [(CPInstrumentClusterController *)self->_instrumentClusterController _sceneConnect:self];
 }
 
-- (void)handleZoomInDirection:(int64_t)a3
+- (void)handleZoomInDirection:(int64_t)direction
 {
-  v7 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-  v5 = [v7 delegate];
-  v6 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-  if (a3 == 1)
+  instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+  delegate = [instrumentClusterController delegate];
+  instrumentClusterController2 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+  if (direction == 1)
   {
-    [v5 instrumentClusterControllerDidZoomIn:v6];
+    [delegate instrumentClusterControllerDidZoomIn:instrumentClusterController2];
   }
 
   else
   {
-    [v5 instrumentClusterControllerDidZoomOut:v6];
+    [delegate instrumentClusterControllerDidZoomOut:instrumentClusterController2];
   }
 }
 
 - (void)updateSceneForNewCompassSetting
 {
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-  [v3 setCompassSetting:{-[CPTemplateApplicationInstrumentClusterScene compassSetting](self, "compassSetting")}];
+  instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+  [instrumentClusterController setCompassSetting:{-[CPTemplateApplicationInstrumentClusterScene compassSetting](self, "compassSetting")}];
 }
 
 - (void)updateSceneForNewSpeedLimitSetting
 {
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-  [v3 setSpeedLimitSetting:{-[CPTemplateApplicationInstrumentClusterScene speedLimitSetting](self, "speedLimitSetting")}];
+  instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+  [instrumentClusterController setSpeedLimitSetting:{-[CPTemplateApplicationInstrumentClusterScene speedLimitSetting](self, "speedLimitSetting")}];
 }
 
 - (void)updateSceneForNewItemTypeSetting
@@ -704,9 +704,9 @@ LABEL_12:
     [(UIWindow *)self->_instrumentClusterWindow setAutoresizingMask:18];
     [(UIWindow *)self->_instrumentClusterWindow setFrame:v4, v6, v8, v10];
     [(UIWindow *)self->_instrumentClusterWindow makeKeyAndVisible];
-    v13 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+    instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
     v14 = self->_instrumentClusterWindow;
-    v16 = v13;
+    v16 = instrumentClusterController;
   }
 
   else
@@ -715,57 +715,57 @@ LABEL_12:
     v15 = self->_instrumentClusterWindow;
     self->_instrumentClusterWindow = 0;
 
-    v13 = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
-    v16 = v13;
+    instrumentClusterController = [(CPTemplateApplicationInstrumentClusterScene *)self instrumentClusterController];
+    v16 = instrumentClusterController;
     v14 = 0;
   }
 
-  [v13 setInstrumentClusterWindow:v14];
+  [instrumentClusterController setInstrumentClusterWindow:v14];
 }
 
 - (unint64_t)itemType
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _clusterSettings];
-  v3 = [v2 itemType];
+  _clusterSettings = [(CPTemplateApplicationInstrumentClusterScene *)self _clusterSettings];
+  itemType = [_clusterSettings itemType];
 
-  return v3;
+  return itemType;
 }
 
 - (id)_clusterSettings
 {
-  v3 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-  v4 = [v3 settings];
+  _FBSScene = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+  settings = [_FBSScene settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
-    v7 = [v6 settings];
+    _FBSScene2 = [(CPTemplateApplicationInstrumentClusterScene *)self _FBSScene];
+    settings2 = [_FBSScene2 settings];
   }
 
   else
   {
-    v7 = 0;
+    settings2 = 0;
   }
 
-  return v7;
+  return settings2;
 }
 
 - (unint64_t)compassSetting
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _clusterSettings];
-  v3 = [v2 showsCompass];
+  _clusterSettings = [(CPTemplateApplicationInstrumentClusterScene *)self _clusterSettings];
+  showsCompass = [_clusterSettings showsCompass];
 
-  return v3;
+  return showsCompass;
 }
 
 - (unint64_t)speedLimitSetting
 {
-  v2 = [(CPTemplateApplicationInstrumentClusterScene *)self _clusterSettings];
-  v3 = [v2 showsSpeedLimit];
+  _clusterSettings = [(CPTemplateApplicationInstrumentClusterScene *)self _clusterSettings];
+  showsSpeedLimit = [_clusterSettings showsSpeedLimit];
 
-  return v3;
+  return showsSpeedLimit;
 }
 
 @end

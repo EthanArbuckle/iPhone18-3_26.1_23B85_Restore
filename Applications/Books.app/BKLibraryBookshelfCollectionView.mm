@@ -1,22 +1,22 @@
 @interface BKLibraryBookshelfCollectionView
-- (BKLibraryBookshelfCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (BKLibraryBookshelfCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (BKLibraryBookshelfCollectionViewAccessibilityLabelProvider)bkaxLabelProvider;
 - (id)accessibilityLabel;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation BKLibraryBookshelfCollectionView
 
-- (BKLibraryBookshelfCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (BKLibraryBookshelfCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = BKLibraryBookshelfCollectionView;
-  v4 = [(BKLibraryBookshelfCollectionView *)&v10 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(BKLibraryBookshelfCollectionView *)&v10 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
-    v6 = [(BKLibraryBookshelfCollectionView *)v4 traitCollection];
-    v5->_currentUserInterfaceStyle = [v6 userInterfaceStyle];
+    traitCollection = [(BKLibraryBookshelfCollectionView *)v4 traitCollection];
+    v5->_currentUserInterfaceStyle = [traitCollection userInterfaceStyle];
 
     [(BKLibraryBookshelfCollectionView *)v5 setContentInsetAdjustmentBehavior:3];
     v7 = +[UITraitCollection bc_allAPITraits];
@@ -26,18 +26,18 @@
   return v5;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(BKLibraryBookshelfCollectionView *)self traitCollection:a3];
+  v5 = [(BKLibraryBookshelfCollectionView *)self traitCollection:change];
   -[BKLibraryBookshelfCollectionView setCurrentUserInterfaceStyle:](self, "setCurrentUserInterfaceStyle:", [v5 userInterfaceStyle]);
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(BKLibraryBookshelfCollectionView *)self bkaxLabelProvider];
-  v3 = [v2 bkaxLabel];
+  bkaxLabelProvider = [(BKLibraryBookshelfCollectionView *)self bkaxLabelProvider];
+  bkaxLabel = [bkaxLabelProvider bkaxLabel];
 
-  return v3;
+  return bkaxLabel;
 }
 
 - (BKLibraryBookshelfCollectionViewAccessibilityLabelProvider)bkaxLabelProvider

@@ -1,45 +1,45 @@
 @interface HDMedicationSyncRequester
-- (HDMedicationSyncRequester)initWithProfileExtension:(id)a3;
-- (void)_triggerSyncIfNeededForSchedulesBySyncIdentity:(void *)a1;
+- (HDMedicationSyncRequester)initWithProfileExtension:(id)extension;
+- (void)_triggerSyncIfNeededForSchedulesBySyncIdentity:(void *)identity;
 @end
 
 @implementation HDMedicationSyncRequester
 
-- (HDMedicationSyncRequester)initWithProfileExtension:(id)a3
+- (HDMedicationSyncRequester)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 profile];
+  extensionCopy = extension;
+  profile = [extensionCopy profile];
   v9.receiver = self;
   v9.super_class = HDMedicationSyncRequester;
-  v6 = [(HDSyncRequester *)&v9 initWithProfile:v5];
+  v6 = [(HDSyncRequester *)&v9 initWithProfile:profile];
 
   if (v6)
   {
-    v7 = [v4 medicationScheduleManager];
-    [v7 registerObserver:v6 queue:0];
+    medicationScheduleManager = [extensionCopy medicationScheduleManager];
+    [medicationScheduleManager registerObserver:v6 queue:0];
   }
 
   return v6;
 }
 
-- (void)_triggerSyncIfNeededForSchedulesBySyncIdentity:(void *)a1
+- (void)_triggerSyncIfNeededForSchedulesBySyncIdentity:(void *)identity
 {
   v10 = a2;
-  if (a1)
+  if (identity)
   {
-    v3 = [a1 profile];
-    v4 = [v3 syncIdentityManager];
-    v5 = [v4 currentSyncIdentity];
-    v6 = [v5 entity];
-    v7 = [v6 persistentID];
+    profile = [identity profile];
+    syncIdentityManager = [profile syncIdentityManager];
+    currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+    entity = [currentSyncIdentity entity];
+    persistentID = [entity persistentID];
 
-    v8 = [v10 allKeys];
-    v9 = [MEMORY[0x277CCABB0] numberWithLongLong:v7];
-    LODWORD(v5) = [v8 containsObject:v9];
+    allKeys = [v10 allKeys];
+    v9 = [MEMORY[0x277CCABB0] numberWithLongLong:persistentID];
+    LODWORD(currentSyncIdentity) = [allKeys containsObject:v9];
 
-    if (v5)
+    if (currentSyncIdentity)
     {
-      [a1 requestSyncsWithReason:@"Did insert medication schedules" options:1];
+      [identity requestSyncsWithReason:@"Did insert medication schedules" options:1];
     }
   }
 }

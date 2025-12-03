@@ -1,9 +1,9 @@
 @interface _UIRemoteKeyboardPlaceholderView
-+ (id)placeholderForView:(id)a3;
-+ (id)placeholderWithWidth:(double)a3 height:(double)a4;
-+ (id)placeholderWithWidthSizer:(id)a3 heightWithScene:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (id)placeholderForView:(id)view;
++ (id)placeholderWithWidth:(double)width height:(double)height;
++ (id)placeholderWithWidthSizer:(id)sizer heightWithScene:(id)scene;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)refreshPlaceholder;
 - (CGRect)_compatibleBounds;
 - (CGSize)fixedSize;
@@ -12,9 +12,9 @@
 - (CGSize)rightContentViewSize;
 - (NSString)description;
 - (UIView)placeheldView;
-- (_UIRemoteKeyboardPlaceholderView)initWithPlaceholderSize:(CGSize)a3;
+- (_UIRemoteKeyboardPlaceholderView)initWithPlaceholderSize:(CGSize)size;
 - (void)_configureDebugOverlayIfNecessary;
-- (void)setFixedSize:(CGSize)a3;
+- (void)setFixedSize:(CGSize)size;
 @end
 
 @implementation _UIRemoteKeyboardPlaceholderView
@@ -60,8 +60,8 @@
   if (qword_1ED499740)
   {
     [(UIView *)self setBackgroundColor:?];
-    v3 = [(UIView *)self layer];
-    [v3 setAllowsHitTesting:0];
+    layer = [(UIView *)self layer];
+    [layer setAllowsHitTesting:0];
   }
 }
 
@@ -165,39 +165,39 @@ LABEL_14:
   return result;
 }
 
-- (_UIRemoteKeyboardPlaceholderView)initWithPlaceholderSize:(CGSize)a3
+- (_UIRemoteKeyboardPlaceholderView)initWithPlaceholderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
   v10.receiver = self;
   v10.super_class = _UIRemoteKeyboardPlaceholderView;
-  v7 = [(UIView *)&v10 initWithFrame:v5, v6, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(UIView *)&v10 initWithFrame:v5, v6, width, height];
+  v8 = height;
+  if (height)
   {
-    v7->_fixedSize.width = width;
-    v7->_fixedSize.height = height;
-    [(UIView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    height->_fixedSize.width = width;
+    height->_fixedSize.height = height;
+    [(UIView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_UIRemoteKeyboardPlaceholderView *)v8 _configureDebugOverlayIfNecessary];
   }
 
   return v8;
 }
 
-+ (id)placeholderForView:(id)a3
++ (id)placeholderForView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     v5 = [_UIRemoteKeyboardPlaceholderView alloc];
-    [v4 frame];
+    [viewCopy frame];
     v8 = [(_UIRemoteKeyboardPlaceholderView *)v5 initWithPlaceholderSize:v6, v7];
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong((v8 + 408), a3);
+      objc_storeStrong((v8 + 408), view);
       v10 = v9;
     }
   }
@@ -210,27 +210,27 @@ LABEL_14:
   return v9;
 }
 
-+ (id)placeholderWithWidth:(double)a3 height:(double)a4
++ (id)placeholderWithWidth:(double)width height:(double)height
 {
-  v4 = [[_UIRemoteKeyboardPlaceholderView alloc] initWithPlaceholderSize:a3, a4];
+  height = [[_UIRemoteKeyboardPlaceholderView alloc] initWithPlaceholderSize:width, height];
 
-  return v4;
+  return height;
 }
 
-+ (id)placeholderWithWidthSizer:(id)a3 heightWithScene:(id)a4
++ (id)placeholderWithWidthSizer:(id)sizer heightWithScene:(id)scene
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  sizerCopy = sizer;
+  sceneCopy = scene;
+  if (sizerCopy)
   {
-    v7 = [[_UIRemoteKeyboardPlaceholderView alloc] initWithPlaceholderSize:v5[2](v5), 0.0];
+    v7 = [[_UIRemoteKeyboardPlaceholderView alloc] initWithPlaceholderSize:sizerCopy[2](sizerCopy), 0.0];
     if (v7)
     {
-      v8 = [v5 copy];
+      v8 = [sizerCopy copy];
       sizeBlock = v7->_sizeBlock;
       v7->_sizeBlock = v8;
 
-      objc_storeWeak(&v7->_sceneForHeight, v6);
+      objc_storeWeak(&v7->_sceneForHeight, sceneCopy);
       v10 = v7;
     }
   }
@@ -243,33 +243,33 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIRemoteKeyboardPlaceholderView *)self placeheldView];
-  if (v8 && (v9 = v8, -[_UIRemoteKeyboardPlaceholderView placeheldView](self, "placeheldView"), v10 = objc_claimAutoreleasedReturnValue(), [v10 window], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v9, v11))
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  placeheldView = [(_UIRemoteKeyboardPlaceholderView *)self placeheldView];
+  if (placeheldView && (v9 = placeheldView, -[_UIRemoteKeyboardPlaceholderView placeheldView](self, "placeheldView"), v10 = objc_claimAutoreleasedReturnValue(), [v10 window], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v9, v11))
   {
-    v12 = [(_UIRemoteKeyboardPlaceholderView *)self placeheldView];
-    v13 = [(_UIRemoteKeyboardPlaceholderView *)self placeheldView];
-    [(UIView *)self convertPoint:v13 toCoordinateSpace:x, y];
-    v14 = [v12 pointInside:v7 withEvent:?];
+    placeheldView2 = [(_UIRemoteKeyboardPlaceholderView *)self placeheldView];
+    placeheldView3 = [(_UIRemoteKeyboardPlaceholderView *)self placeheldView];
+    [(UIView *)self convertPoint:placeheldView3 toCoordinateSpace:x, y];
+    v14 = [placeheldView2 pointInside:eventCopy withEvent:?];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = _UIRemoteKeyboardPlaceholderView;
-    v14 = [(UIView *)&v16 pointInside:v7 withEvent:x, y];
+    v14 = [(UIView *)&v16 pointInside:eventCopy withEvent:x, y];
   }
 
   return v14;
 }
 
-- (void)setFixedSize:(CGSize)a3
+- (void)setFixedSize:(CGSize)size
 {
-  self->_fixedSize = a3;
+  self->_fixedSize = size;
   if (!self->_mirroredView)
   {
     [(UIView *)self invalidateIntrinsicContentSize];
@@ -299,13 +299,13 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     v7 = v6;
     if (self->_mirroredView)
     {
@@ -318,8 +318,8 @@ LABEL_14:
     fallbackView = self->_fallbackView;
     if (fallbackView)
     {
-      v3 = [v6 fallbackView];
-      if (![(UIView *)fallbackView isEqual:v3])
+      fallbackView = [v6 fallbackView];
+      if (![(UIView *)fallbackView isEqual:fallbackView])
       {
         v8 = 0;
         goto LABEL_13;
@@ -358,8 +358,8 @@ LABEL_13:
       }
     }
 
-    v11 = [v7 associatedView];
-    v8 = [(UIView *)associatedView isEqual:v11];
+    associatedView = [v7 associatedView];
+    v8 = [(UIView *)associatedView isEqual:associatedView];
 
     if (!fallbackView)
     {

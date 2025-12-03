@@ -1,7 +1,7 @@
 @interface IMSyncedSettingsManager
 + (IMSyncedSettingsManager)sharedManager;
 - (IMSyncedSettingsManager)init;
-- (id)settingValueForKey:(int64_t)a3;
+- (id)settingValueForKey:(int64_t)key;
 @end
 
 @implementation IMSyncedSettingsManager
@@ -40,7 +40,7 @@
   return v4;
 }
 
-- (id)settingValueForKey:(int64_t)a3
+- (id)settingValueForKey:(int64_t)key
 {
   v7 = 0;
   v8 = &v7;
@@ -54,7 +54,7 @@
   v6[2] = sub_1A82C2CB4;
   v6[3] = &unk_1E78114F8;
   v6[4] = &v7;
-  objc_msgSend_settingValueForKey_reply_(impl, a2, a3, v6);
+  objc_msgSend_settingValueForKey_reply_(impl, a2, key, v6);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 

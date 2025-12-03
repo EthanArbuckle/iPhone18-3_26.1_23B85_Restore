@@ -1,17 +1,17 @@
 @interface HDHeartDaemonPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
 - (HDHeartDaemonPlugin)init;
-- (HDHeartDaemonPlugin)initWithHeartNotificationsUserDefaults:(id)a3;
-- (id)_databaseSchemaForProtectionClass:(int64_t)a3;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
+- (HDHeartDaemonPlugin)initWithHeartNotificationsUserDefaults:(id)defaults;
+- (id)_databaseSchemaForProtectionClass:(int64_t)class;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
 - (id)demoDataGeneratorClasses;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)stateSyncEntityClasses;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
 - (void)handleDatabaseObliteration;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation HDHeartDaemonPlugin
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (HDHeartDaemonPlugin)initWithHeartNotificationsUserDefaults:(id)a3
+- (HDHeartDaemonPlugin)initWithHeartNotificationsUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = HDHeartDaemonPlugin;
   v6 = [(HDHeartDaemonPlugin *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_heartNotificationsUserDefaults, a3);
+    objc_storeStrong(&v6->_heartNotificationsUserDefaults, defaults);
   }
 
   return v7;
 }
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
-  v3 = [a3 behavior];
-  v4 = [v3 isRealityDevice];
+  behavior = [daemon behavior];
+  isRealityDevice = [behavior isRealityDevice];
 
-  return v4 ^ 1;
+  return isRealityDevice ^ 1;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[HDHeartProfileExtension alloc] initWithProfile:v4 heartNotificationsUserDefaults:self->_heartNotificationsUserDefaults];
+    v5 = [[HDHeartProfileExtension alloc] initWithProfile:profileCopy heartNotificationsUserDefaults:self->_heartNotificationsUserDefaults];
   }
 
   else
@@ -65,10 +65,10 @@
   return v5;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
-  v4 = a3;
-  v5 = [[HDHeartDaemonExtension alloc] initWithHealthDaemon:v4 heartNotificationsUserDefaults:self->_heartNotificationsUserDefaults];
+  daemonCopy = daemon;
+  v5 = [[HDHeartDaemonExtension alloc] initWithHealthDaemon:daemonCopy heartNotificationsUserDefaults:self->_heartNotificationsUserDefaults];
 
   return v5;
 }
@@ -101,28 +101,28 @@
   return v2;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHeartDaemonPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 currentSchemaVersion];
+  v3 = [(HDHeartDaemonPlugin *)self _databaseSchemaForProtectionClass:class];
+  currentSchemaVersion = [v3 currentSchemaVersion];
 
-  return v4;
+  return currentSchemaVersion;
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
-  v3 = [(HDHeartDaemonPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v4 = [v3 databaseEntities];
+  v3 = [(HDHeartDaemonPlugin *)self _databaseSchemaForProtectionClass:class];
+  databaseEntities = [v3 databaseEntities];
 
-  return v4;
+  return databaseEntities;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  v6 = a4;
-  v8 = [(HDHeartDaemonPlugin *)self _databaseSchemaForProtectionClass:a3];
-  v7 = [(HDHeartDaemonPlugin *)self schemaName];
-  [v8 registerMigrationStepsForSchemaName:v7 migrator:v6];
+  migratorCopy = migrator;
+  v8 = [(HDHeartDaemonPlugin *)self _databaseSchemaForProtectionClass:class];
+  schemaName = [(HDHeartDaemonPlugin *)self schemaName];
+  [v8 registerMigrationStepsForSchemaName:schemaName migrator:migratorCopy];
 }
 
 - (id)demoDataGeneratorClasses
@@ -135,16 +135,16 @@
   return v2;
 }
 
-- (id)_databaseSchemaForProtectionClass:(int64_t)a3
+- (id)_databaseSchemaForProtectionClass:(int64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v4 = off_27865ECA8;
   }
 
   else
   {
-    if (a3 != 2)
+    if (class != 2)
     {
       goto LABEL_6;
     }

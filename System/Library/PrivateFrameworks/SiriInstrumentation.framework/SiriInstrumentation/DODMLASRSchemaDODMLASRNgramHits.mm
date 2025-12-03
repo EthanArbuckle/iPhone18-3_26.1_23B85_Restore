@@ -1,27 +1,27 @@
 @interface DODMLASRSchemaDODMLASRNgramHits
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRNgramHits)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRNgramHits)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRNgramHits)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRNgramHits)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unsigned)hitsAtIndex:(unint64_t)a3;
-- (void)addHits:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)hitsAtIndex:(unint64_t)index;
+- (void)addHits:(unsigned int)hits;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRNgramHits
 
-- (DODMLASRSchemaDODMLASRNgramHits)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRNgramHits)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = DODMLASRSchemaDODMLASRNgramHits;
   v5 = [(DODMLASRSchemaDODMLASRNgramHits *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hits"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hits"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRNgramHits)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRNgramHits)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRNgramHits *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRNgramHits *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRNgramHits *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_hits count])
   {
-    v4 = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"hits"];
+    hits = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
+    v5 = [hits copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"hits"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
-    v6 = [v4 hits];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    hits = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
+    hits2 = [equalCopy hits];
+    v7 = hits2;
+    if ((hits != 0) != (hits2 == 0))
     {
-      v8 = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
-      if (!v8)
+      hits3 = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
+      if (!hits3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
-      v11 = [v4 hits];
-      v12 = [v10 isEqual:v11];
+      v9 = hits3;
+      hits4 = [(DODMLASRSchemaDODMLASRNgramHits *)self hits];
+      hits5 = [equalCopy hits];
+      v12 = [hits4 isEqual:hits5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,23 +196,23 @@ LABEL_8:
   }
 }
 
-- (unsigned)hitsAtIndex:(unint64_t)a3
+- (unsigned)hitsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_hits objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_hits objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addHits:(unsigned int)a3
+- (void)addHits:(unsigned int)hits
 {
-  v3 = *&a3;
+  v3 = *&hits;
   hits = self->_hits;
   if (!hits)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_hits;
-    self->_hits = v6;
+    self->_hits = array;
 
     hits = self->_hits;
   }

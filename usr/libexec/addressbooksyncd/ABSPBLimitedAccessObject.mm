@@ -1,20 +1,20 @@
 @interface ABSPBLimitedAccessObject
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsActive:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsActive:(BOOL)active;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBLimitedAccessObject
 
-- (void)setHasIsActive:(BOOL)a3
+- (void)setHasIsActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBLimitedAccessObject;
   v3 = [(ABSPBLimitedAccessObject *)&v7 description];
-  v4 = [(ABSPBLimitedAccessObject *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBLimitedAccessObject *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,20 +72,20 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_contactID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -93,7 +93,7 @@
   {
     sequenceNumber = self->_sequenceNumber;
     PBDataWriterWriteUint64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -101,49 +101,49 @@
   {
     isActive = self->_isActive;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_bundleID)
   {
-    [v4 setBundleID:?];
-    v4 = v6;
+    [toCopy setBundleID:?];
+    toCopy = v6;
   }
 
   if (self->_contactID)
   {
     [v6 setContactID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_sequenceNumber;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 1) = self->_sequenceNumber;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 32) = self->_isActive;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 32) = self->_isActive;
+    *(toCopy + 36) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_contactID copyWithZone:a3];
+  v8 = [(NSString *)self->_contactID copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -164,16 +164,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 2))
+  if (bundleID | *(equalCopy + 2))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -182,7 +182,7 @@
   }
 
   contactID = self->_contactID;
-  if (contactID | *(v4 + 3))
+  if (contactID | *(equalCopy + 3))
   {
     if (![(NSString *)contactID isEqual:?])
     {
@@ -192,21 +192,21 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_sequenceNumber != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_sequenceNumber != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_13;
   }
 
-  v7 = (*(v4 + 36) & 2) == 0;
+  v7 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
 LABEL_13:
       v7 = 0;
@@ -215,13 +215,13 @@ LABEL_13:
 
     if (self->_isActive)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_13;
     }
@@ -262,33 +262,33 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ABSPBLimitedAccessObject *)self setBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ABSPBLimitedAccessObject *)self setContactID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_sequenceNumber = *(v4 + 1);
+    self->_sequenceNumber = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_isActive = *(v4 + 32);
+    self->_isActive = *(fromCopy + 32);
     *&self->_has |= 2u;
   }
 }

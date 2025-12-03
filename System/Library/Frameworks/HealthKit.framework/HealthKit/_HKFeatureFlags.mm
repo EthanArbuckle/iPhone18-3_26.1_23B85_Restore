@@ -54,50 +54,50 @@
 - (BOOL)xpcGatedSecondaryJournalMerge;
 - (BOOL)yodel;
 - (id).cxx_construct;
-- (void)setAnalyticsSubmissionOnMaintenanceWorkCoordinator:(BOOL)a3;
-- (void)setBloodPressureTrends:(BOOL)a3;
-- (void)setBloodPressureValidationsEnabled:(BOOL)a3;
-- (void)setChamomile:(BOOL)a3;
-- (void)setChutney:(BOOL)a3;
-- (void)setCmPedometerPush:(BOOL)a3;
-- (void)setCoachingUpdates:(BOOL)a3;
-- (void)setCoalesceCumulativeTypesInWorkoutSeries:(BOOL)a3;
-- (void)setCoalesceHeartRatesInWorkoutSeries:(BOOL)a3;
-- (void)setCondenseFirstPartyiOSWorkouts:(BOOL)a3;
-- (void)setCondenseWorkoutSamplesFromNonWatchSources:(BOOL)a3;
-- (void)setDatabasePruningTaskShouldUseRestrictionPredicates:(BOOL)a3;
-- (void)setDatabaseStateCacheTransactionScoped:(BOOL)a3;
-- (void)setDeprecateIRN1:(BOOL)a3;
-- (void)setExperimentalOrchestrationAdoption:(BOOL)a3;
-- (void)setExtendedLocalWatchData:(BOOL)a3;
-- (void)setHRCoordinator:(BOOL)a3;
-- (void)setHeartRatePush:(BOOL)a3;
-- (void)setHermit:(BOOL)a3;
-- (void)setIsPinnedInBrowse:(BOOL)a3;
-- (void)setMaritime:(BOOL)a3;
-- (void)setNanoMedicalIDSwift:(BOOL)a3;
-- (void)setNebula:(BOOL)a3;
-- (void)setNewSleep6MonthView:(BOOL)a3;
-- (void)setNewUnifiedTabBar:(BOOL)a3;
-- (void)setPauseRings:(BOOL)a3;
-- (void)setRemoveCKCascadeDelete:(BOOL)a3;
-- (void)setScheduledGoals:(BOOL)a3;
-- (void)setSharedStoreXPC:(BOOL)a3;
-- (void)setSimplifiedLogging:(BOOL)a3;
-- (void)setSleepCloudKitManatee:(BOOL)a3;
-- (void)setSleepCloudKitSync:(BOOL)a3;
-- (void)setSleepDetails:(BOOL)a3;
-- (void)setSleepOnIpad:(BOOL)a3;
-- (void)setSleepOnMac:(BOOL)a3;
-- (void)setSleepResultsNotificationsOnWatch:(BOOL)a3;
-- (void)setSnidgetsTinker:(BOOL)a3;
-- (void)setSummaryGradient:(BOOL)a3;
-- (void)setTimeInBedTracking:(BOOL)a3;
-- (void)setUnifiedCloudSync:(BOOL)a3;
-- (void)setVrx:(BOOL)a3;
-- (void)setWorkoutSeriesAggregation:(BOOL)a3;
-- (void)setWorkoutSeriesFirstPartyOnly:(BOOL)a3;
-- (void)setYodel:(BOOL)a3;
+- (void)setAnalyticsSubmissionOnMaintenanceWorkCoordinator:(BOOL)coordinator;
+- (void)setBloodPressureTrends:(BOOL)trends;
+- (void)setBloodPressureValidationsEnabled:(BOOL)enabled;
+- (void)setChamomile:(BOOL)chamomile;
+- (void)setChutney:(BOOL)chutney;
+- (void)setCmPedometerPush:(BOOL)push;
+- (void)setCoachingUpdates:(BOOL)updates;
+- (void)setCoalesceCumulativeTypesInWorkoutSeries:(BOOL)series;
+- (void)setCoalesceHeartRatesInWorkoutSeries:(BOOL)series;
+- (void)setCondenseFirstPartyiOSWorkouts:(BOOL)workouts;
+- (void)setCondenseWorkoutSamplesFromNonWatchSources:(BOOL)sources;
+- (void)setDatabasePruningTaskShouldUseRestrictionPredicates:(BOOL)predicates;
+- (void)setDatabaseStateCacheTransactionScoped:(BOOL)scoped;
+- (void)setDeprecateIRN1:(BOOL)n1;
+- (void)setExperimentalOrchestrationAdoption:(BOOL)adoption;
+- (void)setExtendedLocalWatchData:(BOOL)data;
+- (void)setHRCoordinator:(BOOL)coordinator;
+- (void)setHeartRatePush:(BOOL)push;
+- (void)setHermit:(BOOL)hermit;
+- (void)setIsPinnedInBrowse:(BOOL)browse;
+- (void)setMaritime:(BOOL)maritime;
+- (void)setNanoMedicalIDSwift:(BOOL)swift;
+- (void)setNebula:(BOOL)nebula;
+- (void)setNewSleep6MonthView:(BOOL)view;
+- (void)setNewUnifiedTabBar:(BOOL)bar;
+- (void)setPauseRings:(BOOL)rings;
+- (void)setRemoveCKCascadeDelete:(BOOL)delete;
+- (void)setScheduledGoals:(BOOL)goals;
+- (void)setSharedStoreXPC:(BOOL)c;
+- (void)setSimplifiedLogging:(BOOL)logging;
+- (void)setSleepCloudKitManatee:(BOOL)manatee;
+- (void)setSleepCloudKitSync:(BOOL)sync;
+- (void)setSleepDetails:(BOOL)details;
+- (void)setSleepOnIpad:(BOOL)ipad;
+- (void)setSleepOnMac:(BOOL)mac;
+- (void)setSleepResultsNotificationsOnWatch:(BOOL)watch;
+- (void)setSnidgetsTinker:(BOOL)tinker;
+- (void)setSummaryGradient:(BOOL)gradient;
+- (void)setTimeInBedTracking:(BOOL)tracking;
+- (void)setUnifiedCloudSync:(BOOL)sync;
+- (void)setVrx:(BOOL)vrx;
+- (void)setWorkoutSeriesAggregation:(BOOL)aggregation;
+- (void)setWorkoutSeriesFirstPartyOnly:(BOOL)only;
+- (void)setYodel:(BOOL)yodel;
 @end
 
 @implementation _HKFeatureFlags
@@ -132,11 +132,11 @@
   return value & 1;
 }
 
-- (void)setAnalyticsSubmissionOnMaintenanceWorkCoordinator:(BOOL)a3
+- (void)setAnalyticsSubmissionOnMaintenanceWorkCoordinator:(BOOL)coordinator
 {
   os_unfair_lock_lock(&self->_analyticsSubmissionOnMaintenanceWorkCoordinator._loadLock);
   self->_analyticsSubmissionOnMaintenanceWorkCoordinator._hasLoaded = 1;
-  self->_analyticsSubmissionOnMaintenanceWorkCoordinator._value = a3;
+  self->_analyticsSubmissionOnMaintenanceWorkCoordinator._value = coordinator;
 
   os_unfair_lock_unlock(&self->_analyticsSubmissionOnMaintenanceWorkCoordinator._loadLock);
 }
@@ -171,11 +171,11 @@
   return value & 1;
 }
 
-- (void)setBloodPressureValidationsEnabled:(BOOL)a3
+- (void)setBloodPressureValidationsEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_bloodPressureValidationsEnabled._loadLock);
   self->_bloodPressureValidationsEnabled._hasLoaded = 1;
-  self->_bloodPressureValidationsEnabled._value = a3;
+  self->_bloodPressureValidationsEnabled._value = enabled;
 
   os_unfair_lock_unlock(&self->_bloodPressureValidationsEnabled._loadLock);
 }
@@ -210,11 +210,11 @@
   return value & 1;
 }
 
-- (void)setCoalesceCumulativeTypesInWorkoutSeries:(BOOL)a3
+- (void)setCoalesceCumulativeTypesInWorkoutSeries:(BOOL)series
 {
   os_unfair_lock_lock(&self->_coalesceCumulativeTypesInWorkoutSeries._loadLock);
   self->_coalesceCumulativeTypesInWorkoutSeries._hasLoaded = 1;
-  self->_coalesceCumulativeTypesInWorkoutSeries._value = a3;
+  self->_coalesceCumulativeTypesInWorkoutSeries._value = series;
 
   os_unfair_lock_unlock(&self->_coalesceCumulativeTypesInWorkoutSeries._loadLock);
 }
@@ -249,11 +249,11 @@
   return value & 1;
 }
 
-- (void)setCoalesceHeartRatesInWorkoutSeries:(BOOL)a3
+- (void)setCoalesceHeartRatesInWorkoutSeries:(BOOL)series
 {
   os_unfair_lock_lock(&self->_coalesceHeartRatesInWorkoutSeries._loadLock);
   self->_coalesceHeartRatesInWorkoutSeries._hasLoaded = 1;
-  self->_coalesceHeartRatesInWorkoutSeries._value = a3;
+  self->_coalesceHeartRatesInWorkoutSeries._value = series;
 
   os_unfair_lock_unlock(&self->_coalesceHeartRatesInWorkoutSeries._loadLock);
 }
@@ -288,11 +288,11 @@
   return value & 1;
 }
 
-- (void)setCondenseWorkoutSamplesFromNonWatchSources:(BOOL)a3
+- (void)setCondenseWorkoutSamplesFromNonWatchSources:(BOOL)sources
 {
   os_unfair_lock_lock(&self->_condenseWorkoutSamplesFromNonWatchSources._loadLock);
   self->_condenseWorkoutSamplesFromNonWatchSources._hasLoaded = 1;
-  self->_condenseWorkoutSamplesFromNonWatchSources._value = a3;
+  self->_condenseWorkoutSamplesFromNonWatchSources._value = sources;
 
   os_unfair_lock_unlock(&self->_condenseWorkoutSamplesFromNonWatchSources._loadLock);
 }
@@ -327,11 +327,11 @@
   return value & 1;
 }
 
-- (void)setCondenseFirstPartyiOSWorkouts:(BOOL)a3
+- (void)setCondenseFirstPartyiOSWorkouts:(BOOL)workouts
 {
   os_unfair_lock_lock(&self->_condenseFirstPartyiOSWorkouts._loadLock);
   self->_condenseFirstPartyiOSWorkouts._hasLoaded = 1;
-  self->_condenseFirstPartyiOSWorkouts._value = a3;
+  self->_condenseFirstPartyiOSWorkouts._value = workouts;
 
   os_unfair_lock_unlock(&self->_condenseFirstPartyiOSWorkouts._loadLock);
 }
@@ -366,11 +366,11 @@
   return value & 1;
 }
 
-- (void)setPauseRings:(BOOL)a3
+- (void)setPauseRings:(BOOL)rings
 {
   os_unfair_lock_lock(&self->_pauseRings._loadLock);
   self->_pauseRings._hasLoaded = 1;
-  self->_pauseRings._value = a3;
+  self->_pauseRings._value = rings;
 
   os_unfair_lock_unlock(&self->_pauseRings._loadLock);
 }
@@ -405,11 +405,11 @@
   return value & 1;
 }
 
-- (void)setScheduledGoals:(BOOL)a3
+- (void)setScheduledGoals:(BOOL)goals
 {
   os_unfair_lock_lock(&self->_scheduledGoals._loadLock);
   self->_scheduledGoals._hasLoaded = 1;
-  self->_scheduledGoals._value = a3;
+  self->_scheduledGoals._value = goals;
 
   os_unfair_lock_unlock(&self->_scheduledGoals._loadLock);
 }
@@ -444,11 +444,11 @@
   return value & 1;
 }
 
-- (void)setCoachingUpdates:(BOOL)a3
+- (void)setCoachingUpdates:(BOOL)updates
 {
   os_unfair_lock_lock(&self->_coachingUpdates._loadLock);
   self->_coachingUpdates._hasLoaded = 1;
-  self->_coachingUpdates._value = a3;
+  self->_coachingUpdates._value = updates;
 
   os_unfair_lock_unlock(&self->_coachingUpdates._loadLock);
 }
@@ -483,11 +483,11 @@
   return value & 1;
 }
 
-- (void)setDatabasePruningTaskShouldUseRestrictionPredicates:(BOOL)a3
+- (void)setDatabasePruningTaskShouldUseRestrictionPredicates:(BOOL)predicates
 {
   os_unfair_lock_lock(&self->_databasePruningTaskShouldUseRestrictionPredicates._loadLock);
   self->_databasePruningTaskShouldUseRestrictionPredicates._hasLoaded = 1;
-  self->_databasePruningTaskShouldUseRestrictionPredicates._value = a3;
+  self->_databasePruningTaskShouldUseRestrictionPredicates._value = predicates;
 
   os_unfair_lock_unlock(&self->_databasePruningTaskShouldUseRestrictionPredicates._loadLock);
 }
@@ -522,11 +522,11 @@
   return value & 1;
 }
 
-- (void)setBloodPressureTrends:(BOOL)a3
+- (void)setBloodPressureTrends:(BOOL)trends
 {
   os_unfair_lock_lock(&self->_bloodPressureTrends._loadLock);
   self->_bloodPressureTrends._hasLoaded = 1;
-  self->_bloodPressureTrends._value = a3;
+  self->_bloodPressureTrends._value = trends;
 
   os_unfair_lock_unlock(&self->_bloodPressureTrends._loadLock);
 }
@@ -561,11 +561,11 @@
   return value & 1;
 }
 
-- (void)setChamomile:(BOOL)a3
+- (void)setChamomile:(BOOL)chamomile
 {
   os_unfair_lock_lock(&self->_chamomile._loadLock);
   self->_chamomile._hasLoaded = 1;
-  self->_chamomile._value = a3;
+  self->_chamomile._value = chamomile;
 
   os_unfair_lock_unlock(&self->_chamomile._loadLock);
 }
@@ -660,11 +660,11 @@
   return value & 1;
 }
 
-- (void)setDatabaseStateCacheTransactionScoped:(BOOL)a3
+- (void)setDatabaseStateCacheTransactionScoped:(BOOL)scoped
 {
   os_unfair_lock_lock(&self->_databaseStateCacheTransactionScoped._loadLock);
   self->_databaseStateCacheTransactionScoped._hasLoaded = 1;
-  self->_databaseStateCacheTransactionScoped._value = a3;
+  self->_databaseStateCacheTransactionScoped._value = scoped;
 
   os_unfair_lock_unlock(&self->_databaseStateCacheTransactionScoped._loadLock);
 }
@@ -699,11 +699,11 @@
   return value & 1;
 }
 
-- (void)setDeprecateIRN1:(BOOL)a3
+- (void)setDeprecateIRN1:(BOOL)n1
 {
   os_unfair_lock_lock(&self->_deprecateIRN1._loadLock);
   self->_deprecateIRN1._hasLoaded = 1;
-  self->_deprecateIRN1._value = a3;
+  self->_deprecateIRN1._value = n1;
 
   os_unfair_lock_unlock(&self->_deprecateIRN1._loadLock);
 }
@@ -738,11 +738,11 @@
   return value & 1;
 }
 
-- (void)setSimplifiedLogging:(BOOL)a3
+- (void)setSimplifiedLogging:(BOOL)logging
 {
   os_unfair_lock_lock(&self->_simplifiedLogging._loadLock);
   self->_simplifiedLogging._hasLoaded = 1;
-  self->_simplifiedLogging._value = a3;
+  self->_simplifiedLogging._value = logging;
 
   os_unfair_lock_unlock(&self->_simplifiedLogging._loadLock);
 }
@@ -807,11 +807,11 @@
   return value & 1;
 }
 
-- (void)setExtendedLocalWatchData:(BOOL)a3
+- (void)setExtendedLocalWatchData:(BOOL)data
 {
   os_unfair_lock_lock(&self->_extendedLocalWatchData._loadLock);
   self->_extendedLocalWatchData._hasLoaded = 1;
-  self->_extendedLocalWatchData._value = a3;
+  self->_extendedLocalWatchData._value = data;
 
   os_unfair_lock_unlock(&self->_extendedLocalWatchData._loadLock);
 }
@@ -846,11 +846,11 @@
   return value & 1;
 }
 
-- (void)setExperimentalOrchestrationAdoption:(BOOL)a3
+- (void)setExperimentalOrchestrationAdoption:(BOOL)adoption
 {
   os_unfair_lock_lock(&self->_experimentalOrchestrationAdoption._loadLock);
   self->_experimentalOrchestrationAdoption._hasLoaded = 1;
-  self->_experimentalOrchestrationAdoption._value = a3;
+  self->_experimentalOrchestrationAdoption._value = adoption;
 
   os_unfair_lock_unlock(&self->_experimentalOrchestrationAdoption._loadLock);
 }
@@ -885,11 +885,11 @@
   return value & 1;
 }
 
-- (void)setHeartRatePush:(BOOL)a3
+- (void)setHeartRatePush:(BOOL)push
 {
   os_unfair_lock_lock(&self->_heartRatePush._loadLock);
   self->_heartRatePush._hasLoaded = 1;
-  self->_heartRatePush._value = a3;
+  self->_heartRatePush._value = push;
 
   os_unfair_lock_unlock(&self->_heartRatePush._loadLock);
 }
@@ -924,11 +924,11 @@
   return value & 1;
 }
 
-- (void)setHermit:(BOOL)a3
+- (void)setHermit:(BOOL)hermit
 {
   os_unfair_lock_lock(&self->_hermit._loadLock);
   self->_hermit._hasLoaded = 1;
-  self->_hermit._value = a3;
+  self->_hermit._value = hermit;
 
   os_unfair_lock_unlock(&self->_hermit._loadLock);
 }
@@ -963,11 +963,11 @@
   return value & 1;
 }
 
-- (void)setIsPinnedInBrowse:(BOOL)a3
+- (void)setIsPinnedInBrowse:(BOOL)browse
 {
   os_unfair_lock_lock(&self->_isPinnedInBrowse._loadLock);
   self->_isPinnedInBrowse._hasLoaded = 1;
-  self->_isPinnedInBrowse._value = a3;
+  self->_isPinnedInBrowse._value = browse;
 
   os_unfair_lock_unlock(&self->_isPinnedInBrowse._loadLock);
 }
@@ -1002,11 +1002,11 @@
   return value & 1;
 }
 
-- (void)setNebula:(BOOL)a3
+- (void)setNebula:(BOOL)nebula
 {
   os_unfair_lock_lock(&self->_nebula._loadLock);
   self->_nebula._hasLoaded = 1;
-  self->_nebula._value = a3;
+  self->_nebula._value = nebula;
 
   os_unfair_lock_unlock(&self->_nebula._loadLock);
 }
@@ -1041,11 +1041,11 @@
   return value & 1;
 }
 
-- (void)setNewUnifiedTabBar:(BOOL)a3
+- (void)setNewUnifiedTabBar:(BOOL)bar
 {
   os_unfair_lock_lock(&self->_newUnifiedTabBar._loadLock);
   self->_newUnifiedTabBar._hasLoaded = 1;
-  self->_newUnifiedTabBar._value = a3;
+  self->_newUnifiedTabBar._value = bar;
 
   os_unfair_lock_unlock(&self->_newUnifiedTabBar._loadLock);
 }
@@ -1080,11 +1080,11 @@
   return value & 1;
 }
 
-- (void)setSharedStoreXPC:(BOOL)a3
+- (void)setSharedStoreXPC:(BOOL)c
 {
   os_unfair_lock_lock(&self->_sharedStoreXPC._loadLock);
   self->_sharedStoreXPC._hasLoaded = 1;
-  self->_sharedStoreXPC._value = a3;
+  self->_sharedStoreXPC._value = c;
 
   os_unfair_lock_unlock(&self->_sharedStoreXPC._loadLock);
 }
@@ -1149,11 +1149,11 @@
   return value & 1;
 }
 
-- (void)setSleepCloudKitManatee:(BOOL)a3
+- (void)setSleepCloudKitManatee:(BOOL)manatee
 {
   os_unfair_lock_lock(&self->_sleepCloudKitManatee._loadLock);
   self->_sleepCloudKitManatee._hasLoaded = 1;
-  self->_sleepCloudKitManatee._value = a3;
+  self->_sleepCloudKitManatee._value = manatee;
 
   os_unfair_lock_unlock(&self->_sleepCloudKitManatee._loadLock);
 }
@@ -1188,11 +1188,11 @@
   return value & 1;
 }
 
-- (void)setSleepCloudKitSync:(BOOL)a3
+- (void)setSleepCloudKitSync:(BOOL)sync
 {
   os_unfair_lock_lock(&self->_sleepCloudKitSync._loadLock);
   self->_sleepCloudKitSync._hasLoaded = 1;
-  self->_sleepCloudKitSync._value = a3;
+  self->_sleepCloudKitSync._value = sync;
 
   os_unfair_lock_unlock(&self->_sleepCloudKitSync._loadLock);
 }
@@ -1227,11 +1227,11 @@
   return value & 1;
 }
 
-- (void)setSleepDetails:(BOOL)a3
+- (void)setSleepDetails:(BOOL)details
 {
   os_unfair_lock_lock(&self->_sleepDetails._loadLock);
   self->_sleepDetails._hasLoaded = 1;
-  self->_sleepDetails._value = a3;
+  self->_sleepDetails._value = details;
 
   os_unfair_lock_unlock(&self->_sleepDetails._loadLock);
 }
@@ -1266,11 +1266,11 @@
   return value & 1;
 }
 
-- (void)setSleepOnIpad:(BOOL)a3
+- (void)setSleepOnIpad:(BOOL)ipad
 {
   os_unfair_lock_lock(&self->_sleepOnIpad._loadLock);
   self->_sleepOnIpad._hasLoaded = 1;
-  self->_sleepOnIpad._value = a3;
+  self->_sleepOnIpad._value = ipad;
 
   os_unfair_lock_unlock(&self->_sleepOnIpad._loadLock);
 }
@@ -1305,11 +1305,11 @@
   return value & 1;
 }
 
-- (void)setSleepOnMac:(BOOL)a3
+- (void)setSleepOnMac:(BOOL)mac
 {
   os_unfair_lock_lock(&self->_sleepOnMac._loadLock);
   self->_sleepOnMac._hasLoaded = 1;
-  self->_sleepOnMac._value = a3;
+  self->_sleepOnMac._value = mac;
 
   os_unfair_lock_unlock(&self->_sleepOnMac._loadLock);
 }
@@ -1344,11 +1344,11 @@
   return value & 1;
 }
 
-- (void)setSleepResultsNotificationsOnWatch:(BOOL)a3
+- (void)setSleepResultsNotificationsOnWatch:(BOOL)watch
 {
   os_unfair_lock_lock(&self->_sleepResultsNotificationsOnWatch._loadLock);
   self->_sleepResultsNotificationsOnWatch._hasLoaded = 1;
-  self->_sleepResultsNotificationsOnWatch._value = a3;
+  self->_sleepResultsNotificationsOnWatch._value = watch;
 
   os_unfair_lock_unlock(&self->_sleepResultsNotificationsOnWatch._loadLock);
 }
@@ -1383,11 +1383,11 @@
   return value & 1;
 }
 
-- (void)setSnidgetsTinker:(BOOL)a3
+- (void)setSnidgetsTinker:(BOOL)tinker
 {
   os_unfair_lock_lock(&self->_snidgetsTinker._loadLock);
   self->_snidgetsTinker._hasLoaded = 1;
-  self->_snidgetsTinker._value = a3;
+  self->_snidgetsTinker._value = tinker;
 
   os_unfair_lock_unlock(&self->_snidgetsTinker._loadLock);
 }
@@ -1422,11 +1422,11 @@
   return value & 1;
 }
 
-- (void)setSummaryGradient:(BOOL)a3
+- (void)setSummaryGradient:(BOOL)gradient
 {
   os_unfair_lock_lock(&self->_summaryGradient._loadLock);
   self->_summaryGradient._hasLoaded = 1;
-  self->_summaryGradient._value = a3;
+  self->_summaryGradient._value = gradient;
 
   os_unfair_lock_unlock(&self->_summaryGradient._loadLock);
 }
@@ -1491,11 +1491,11 @@
   return value & 1;
 }
 
-- (void)setTimeInBedTracking:(BOOL)a3
+- (void)setTimeInBedTracking:(BOOL)tracking
 {
   os_unfair_lock_lock(&self->_timeInBedTracking._loadLock);
   self->_timeInBedTracking._hasLoaded = 1;
-  self->_timeInBedTracking._value = a3;
+  self->_timeInBedTracking._value = tracking;
 
   os_unfair_lock_unlock(&self->_timeInBedTracking._loadLock);
 }
@@ -1530,11 +1530,11 @@
   return value & 1;
 }
 
-- (void)setVrx:(BOOL)a3
+- (void)setVrx:(BOOL)vrx
 {
   os_unfair_lock_lock(&self->_vrx._loadLock);
   self->_vrx._hasLoaded = 1;
-  self->_vrx._value = a3;
+  self->_vrx._value = vrx;
 
   os_unfair_lock_unlock(&self->_vrx._loadLock);
 }
@@ -1629,11 +1629,11 @@
   return value & 1;
 }
 
-- (void)setWorkoutSeriesAggregation:(BOOL)a3
+- (void)setWorkoutSeriesAggregation:(BOOL)aggregation
 {
   os_unfair_lock_lock(&self->_workoutSeriesAggregation._loadLock);
   self->_workoutSeriesAggregation._hasLoaded = 1;
-  self->_workoutSeriesAggregation._value = a3;
+  self->_workoutSeriesAggregation._value = aggregation;
 
   os_unfair_lock_unlock(&self->_workoutSeriesAggregation._loadLock);
 }
@@ -1668,11 +1668,11 @@
   return value & 1;
 }
 
-- (void)setWorkoutSeriesFirstPartyOnly:(BOOL)a3
+- (void)setWorkoutSeriesFirstPartyOnly:(BOOL)only
 {
   os_unfair_lock_lock(&self->_workoutSeriesFirstPartyOnly._loadLock);
   self->_workoutSeriesFirstPartyOnly._hasLoaded = 1;
-  self->_workoutSeriesFirstPartyOnly._value = a3;
+  self->_workoutSeriesFirstPartyOnly._value = only;
 
   os_unfair_lock_unlock(&self->_workoutSeriesFirstPartyOnly._loadLock);
 }
@@ -1797,11 +1797,11 @@
   return value & 1;
 }
 
-- (void)setYodel:(BOOL)a3
+- (void)setYodel:(BOOL)yodel
 {
   os_unfair_lock_lock(&self->_yodel._loadLock);
   self->_yodel._hasLoaded = 1;
-  self->_yodel._value = a3;
+  self->_yodel._value = yodel;
 
   os_unfair_lock_unlock(&self->_yodel._loadLock);
 }
@@ -1836,11 +1836,11 @@
   return value & 1;
 }
 
-- (void)setChutney:(BOOL)a3
+- (void)setChutney:(BOOL)chutney
 {
   os_unfair_lock_lock(&self->_chutney._loadLock);
   self->_chutney._hasLoaded = 1;
-  self->_chutney._value = a3;
+  self->_chutney._value = chutney;
 
   os_unfair_lock_unlock(&self->_chutney._loadLock);
 }
@@ -1875,11 +1875,11 @@
   return value & 1;
 }
 
-- (void)setMaritime:(BOOL)a3
+- (void)setMaritime:(BOOL)maritime
 {
   os_unfair_lock_lock(&self->_maritime._loadLock);
   self->_maritime._hasLoaded = 1;
-  self->_maritime._value = a3;
+  self->_maritime._value = maritime;
 
   os_unfair_lock_unlock(&self->_maritime._loadLock);
 }
@@ -1914,11 +1914,11 @@
   return value & 1;
 }
 
-- (void)setCmPedometerPush:(BOOL)a3
+- (void)setCmPedometerPush:(BOOL)push
 {
   os_unfair_lock_lock(&self->_cmPedometerPush._loadLock);
   self->_cmPedometerPush._hasLoaded = 1;
-  self->_cmPedometerPush._value = a3;
+  self->_cmPedometerPush._value = push;
 
   os_unfair_lock_unlock(&self->_cmPedometerPush._loadLock);
 }
@@ -1953,11 +1953,11 @@
   return value & 1;
 }
 
-- (void)setNanoMedicalIDSwift:(BOOL)a3
+- (void)setNanoMedicalIDSwift:(BOOL)swift
 {
   os_unfair_lock_lock(&self->_nanoMedicalIDSwift._loadLock);
   self->_nanoMedicalIDSwift._hasLoaded = 1;
-  self->_nanoMedicalIDSwift._value = a3;
+  self->_nanoMedicalIDSwift._value = swift;
 
   os_unfair_lock_unlock(&self->_nanoMedicalIDSwift._loadLock);
 }
@@ -1992,11 +1992,11 @@
   return value & 1;
 }
 
-- (void)setHRCoordinator:(BOOL)a3
+- (void)setHRCoordinator:(BOOL)coordinator
 {
   os_unfair_lock_lock(&self->_HRCoordinator._loadLock);
   self->_HRCoordinator._hasLoaded = 1;
-  self->_HRCoordinator._value = a3;
+  self->_HRCoordinator._value = coordinator;
 
   os_unfair_lock_unlock(&self->_HRCoordinator._loadLock);
 }
@@ -2031,11 +2031,11 @@
   return value & 1;
 }
 
-- (void)setRemoveCKCascadeDelete:(BOOL)a3
+- (void)setRemoveCKCascadeDelete:(BOOL)delete
 {
   os_unfair_lock_lock(&self->_removeCKCascadeDelete._loadLock);
   self->_removeCKCascadeDelete._hasLoaded = 1;
-  self->_removeCKCascadeDelete._value = a3;
+  self->_removeCKCascadeDelete._value = delete;
 
   os_unfair_lock_unlock(&self->_removeCKCascadeDelete._loadLock);
 }
@@ -2070,11 +2070,11 @@
   return value & 1;
 }
 
-- (void)setUnifiedCloudSync:(BOOL)a3
+- (void)setUnifiedCloudSync:(BOOL)sync
 {
   os_unfair_lock_lock(&self->_unifiedCloudSync._loadLock);
   self->_unifiedCloudSync._hasLoaded = 1;
-  self->_unifiedCloudSync._value = a3;
+  self->_unifiedCloudSync._value = sync;
 
   os_unfair_lock_unlock(&self->_unifiedCloudSync._loadLock);
 }
@@ -2109,11 +2109,11 @@
   return value & 1;
 }
 
-- (void)setNewSleep6MonthView:(BOOL)a3
+- (void)setNewSleep6MonthView:(BOOL)view
 {
   os_unfair_lock_lock(&self->_newSleep6MonthView._loadLock);
   self->_newSleep6MonthView._hasLoaded = 1;
-  self->_newSleep6MonthView._value = a3;
+  self->_newSleep6MonthView._value = view;
 
   os_unfair_lock_unlock(&self->_newSleep6MonthView._loadLock);
 }

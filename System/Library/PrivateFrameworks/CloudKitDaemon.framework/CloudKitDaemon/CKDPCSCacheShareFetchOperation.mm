@@ -3,7 +3,7 @@
 - (BOOL)_fetchPCSDataFromServer;
 - (BOOL)_savePCSDataToCache;
 - (BOOL)hasAllPCSData;
-- (void)_handlePCSDataFetched:(id)a3 withError:(id)a4;
+- (void)_handlePCSDataFetched:(id)fetched withError:(id)error;
 @end
 
 @implementation CKDPCSCacheShareFetchOperation
@@ -16,13 +16,13 @@
   return v6;
 }
 
-- (void)_handlePCSDataFetched:(id)a3 withError:(id)a4
+- (void)_handlePCSDataFetched:(id)fetched withError:(id)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  fetchedCopy = fetched;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -33,17 +33,17 @@
   v11 = *MEMORY[0x277CBC830];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v22 = objc_msgSend_operationID(v8, v12, v13);
-    v25 = objc_msgSend_pcsKeyID(v6, v23, v24);
+    v22 = objc_msgSend_operationID(selfCopy, v12, v13);
+    v25 = objc_msgSend_pcsKeyID(fetchedCopy, v23, v24);
     v26 = v25;
     v27 = @" and error ";
     *v39 = 138544130;
     v28 = &stru_28385ED00;
     *&v39[4] = v22;
     *&v39[12] = 2114;
-    if (v7)
+    if (errorCopy)
     {
-      v28 = v7;
+      v28 = errorCopy;
     }
 
     else
@@ -59,7 +59,7 @@
     _os_log_debug_impl(&dword_22506F000, v11, OS_LOG_TYPE_DEBUG, "Share PCS fetch operation %{public}@ received PCS data (%{public}@)%{public}@%@", v39, 0x2Au);
   }
 
-  if (objc_msgSend_didFetchData(v8, v14, v15))
+  if (objc_msgSend_didFetchData(selfCopy, v14, v15))
   {
     if (*v9 != -1)
     {
@@ -69,10 +69,10 @@
     v17 = *v10;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v29 = objc_msgSend_operationID(v8, v18, v19);
-      v32 = objc_msgSend_sharePCSData(v8, v30, v31);
+      v29 = objc_msgSend_operationID(selfCopy, v18, v19);
+      v32 = objc_msgSend_sharePCSData(selfCopy, v30, v31);
       v35 = objc_msgSend_pcsKeyID(v32, v33, v34);
-      v38 = objc_msgSend_pcsKeyID(v6, v36, v37);
+      v38 = objc_msgSend_pcsKeyID(fetchedCopy, v36, v37);
       *v39 = 138544130;
       *&v39[4] = v29;
       *&v39[12] = 2112;
@@ -80,23 +80,23 @@
       v40 = 2112;
       v41 = v38;
       v42 = 2112;
-      v43 = v7;
+      v43 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v17, OS_LOG_TYPE_DEBUG, "Share PCS fetch operation %{public}@ already has PCS data %@. Ignoring the fetch callback with %@/%@", v39, 0x2Au);
     }
   }
 
   else
   {
-    if (v6)
+    if (fetchedCopy)
     {
-      objc_msgSend_setSharePCSData_(v8, v16, v6);
-      objc_msgSend_setDidFetchData_(v8, v20, 1);
+      objc_msgSend_setSharePCSData_(selfCopy, v16, fetchedCopy);
+      objc_msgSend_setDidFetchData_(selfCopy, v20, 1);
     }
 
-    objc_msgSend_setFetchError_(v8, v16, v7, *v39);
+    objc_msgSend_setFetchError_(selfCopy, v16, errorCopy, *v39);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v21 = *MEMORY[0x277D85DE8];
 }

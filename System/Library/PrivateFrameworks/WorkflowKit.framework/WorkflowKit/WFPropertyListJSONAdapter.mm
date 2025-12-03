@@ -1,20 +1,20 @@
 @interface WFPropertyListJSONAdapter
-- (id)serializablePropertyKeys:(id)a3 forModel:(id)a4;
+- (id)serializablePropertyKeys:(id)keys forModel:(id)model;
 @end
 
 @implementation WFPropertyListJSONAdapter
 
-- (id)serializablePropertyKeys:(id)a3 forModel:(id)a4
+- (id)serializablePropertyKeys:(id)keys forModel:(id)model
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
+  keysCopy = keys;
+  modelCopy = model;
+  v7 = [keysCopy mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = keysCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -30,7 +30,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v6 valueForKey:{v13, v17}];
+        v14 = [modelCopy valueForKey:{v13, v17}];
 
         if (!v14)
         {

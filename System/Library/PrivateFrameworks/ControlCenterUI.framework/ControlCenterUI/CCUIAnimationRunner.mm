@@ -1,43 +1,43 @@
 @interface CCUIAnimationRunner
 + (id)runner;
-+ (void)_runC2AnimationsInBatch:(id)a3 animationGroup:(id)a4 completionHandler:(id)a5;
-+ (void)_runCAAnimationsInBatch:(id)a3 animationGroup:(id)a4 completionHandler:(id)a5;
-- (void)additivelyRunAnimationBatch:(id)a3 withCompletionBlock:(id)a4;
-- (void)runAnimationBatch:(id)a3 withCompletionBlock:(id)a4;
++ (void)_runC2AnimationsInBatch:(id)batch animationGroup:(id)group completionHandler:(id)handler;
++ (void)_runCAAnimationsInBatch:(id)batch animationGroup:(id)group completionHandler:(id)handler;
+- (void)additivelyRunAnimationBatch:(id)batch withCompletionBlock:(id)block;
+- (void)runAnimationBatch:(id)batch withCompletionBlock:(id)block;
 @end
 
 @implementation CCUIAnimationRunner
 
 + (id)runner
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)runAnimationBatch:(id)a3 withCompletionBlock:(id)a4
+- (void)runAnimationBatch:(id)batch withCompletionBlock:(id)block
 {
   previousAnimationGroup = self->_previousAnimationGroup;
   self->_previousAnimationGroup = 0;
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  batchCopy = batch;
 
-  [(CCUIAnimationRunner *)self additivelyRunAnimationBatch:v8 withCompletionBlock:v7];
+  [(CCUIAnimationRunner *)self additivelyRunAnimationBatch:batchCopy withCompletionBlock:blockCopy];
 }
 
-- (void)additivelyRunAnimationBatch:(id)a3 withCompletionBlock:(id)a4
+- (void)additivelyRunAnimationBatch:(id)batch withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  batchCopy = batch;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
   v9 = *MEMORY[0x277CFC8E0];
   v10 = os_log_type_enabled(*MEMORY[0x277CFC8E0], OS_LOG_TYPE_DEBUG);
-  if (v8)
+  if (areAnimationsEnabled)
   {
     if (v10)
     {
-      [CCUIAnimationRunner additivelyRunAnimationBatch:v9 withCompletionBlock:v6];
+      [CCUIAnimationRunner additivelyRunAnimationBatch:v9 withCompletionBlock:batchCopy];
     }
 
     v11 = dispatch_group_create();
@@ -69,7 +69,7 @@
     v30[2] = __71__CCUIAnimationRunner_additivelyRunAnimationBatch_withCompletionBlock___block_invoke_2;
     v30[3] = &unk_278382950;
     v30[4] = v33;
-    [v15 _runCAAnimationsInBatch:v6 animationGroup:v12 completionHandler:v30];
+    [v15 _runCAAnimationsInBatch:batchCopy animationGroup:v12 completionHandler:v30];
     v16 = objc_opt_class();
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
@@ -77,19 +77,19 @@
     v29[3] = &unk_278382978;
     v29[4] = v33;
     v29[5] = v31;
-    [v16 _runC2AnimationsInBatch:v6 animationGroup:v12 completionHandler:v29];
+    [v16 _runC2AnimationsInBatch:batchCopy animationGroup:v12 completionHandler:v29];
     objc_initWeak(&location, self);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __71__CCUIAnimationRunner_additivelyRunAnimationBatch_withCompletionBlock___block_invoke_4;
     v21[3] = &unk_2783829A0;
-    v22 = v6;
+    v22 = batchCopy;
     v25 = v33;
     v26 = v31;
     objc_copyWeak(&v27, &location);
     v17 = v12;
     v23 = v17;
-    v24 = v7;
+    v24 = blockCopy;
     v18 = MEMORY[0x277D85CD0];
     dispatch_group_notify(v17, MEMORY[0x277D85CD0], v21);
 
@@ -107,13 +107,13 @@
   {
     if (v10)
     {
-      [CCUIAnimationRunner additivelyRunAnimationBatch:v9 withCompletionBlock:v6];
+      [CCUIAnimationRunner additivelyRunAnimationBatch:v9 withCompletionBlock:batchCopy];
     }
 
-    [v6 iterateAnimationsWithBlock:&__block_literal_global_7];
-    if (v7)
+    [batchCopy iterateAnimationsWithBlock:&__block_literal_global_7];
+    if (blockCopy)
     {
-      (*(v7 + 2))(v7, 1, 0);
+      (*(blockCopy + 2))(blockCopy, 1, 0);
     }
   }
 }
@@ -188,21 +188,21 @@ void __71__CCUIAnimationRunner_additivelyRunAnimationBatch_withCompletionBlock__
   }
 }
 
-+ (void)_runCAAnimationsInBatch:(id)a3 animationGroup:(id)a4 completionHandler:(id)a5
++ (void)_runCAAnimationsInBatch:(id)batch animationGroup:(id)group completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  groupCopy = group;
+  handlerCopy = handler;
+  batchCopy = batch;
   v10 = objc_opt_class();
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __80__CCUIAnimationRunner__runCAAnimationsInBatch_animationGroup_completionHandler___block_invoke;
   v19[3] = &unk_278382A10;
-  v11 = v7;
+  v11 = groupCopy;
   v20 = v11;
-  v12 = v8;
+  v12 = handlerCopy;
   v21 = v12;
-  [v9 iterateAnimationsOfType:v10 withBlock:v19];
+  [batchCopy iterateAnimationsOfType:v10 withBlock:v19];
   v13 = objc_opt_class();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -212,7 +212,7 @@ void __71__CCUIAnimationRunner_additivelyRunAnimationBatch_withCompletionBlock__
   v18 = v12;
   v14 = v12;
   v15 = v11;
-  [v9 iterateAnimationsOfType:v13 withBlock:v16];
+  [batchCopy iterateAnimationsOfType:v13 withBlock:v16];
 }
 
 void __80__CCUIAnimationRunner__runCAAnimationsInBatch_animationGroup_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -429,21 +429,21 @@ void __80__CCUIAnimationRunner__runCAAnimationsInBatch_animationGroup_completion
   dispatch_group_leave(v2);
 }
 
-+ (void)_runC2AnimationsInBatch:(id)a3 animationGroup:(id)a4 completionHandler:(id)a5
++ (void)_runC2AnimationsInBatch:(id)batch animationGroup:(id)group completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  groupCopy = group;
+  handlerCopy = handler;
+  batchCopy = batch;
   v10 = objc_opt_class();
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__CCUIAnimationRunner__runC2AnimationsInBatch_animationGroup_completionHandler___block_invoke;
   v13[3] = &unk_278382A10;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [v9 iterateAnimationsOfType:v10 withBlock:v13];
+  v14 = groupCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = groupCopy;
+  [batchCopy iterateAnimationsOfType:v10 withBlock:v13];
 }
 
 void __80__CCUIAnimationRunner__runC2AnimationsInBatch_animationGroup_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,7 +1,7 @@
 @interface MTL4StaticLinkingDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4StaticLinkingDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,37 +22,37 @@
   [(MTL4StaticLinkingDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setFunctionDescriptors:self->_functionDescriptors];
   [v4 setPrivateFunctionDescriptors:self->_privateFunctionDescriptors];
   [v4 setGroups:self->_groups];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_10;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
-  v6 = MTLCompareArray(self->_functionDescriptors, *(a3 + 1), 1, 0);
+  v6 = MTLCompareArray(self->_functionDescriptors, *(equal + 1), 1, 0);
   if (v6)
   {
-    v6 = MTLCompareArray(self->_privateFunctionDescriptors, *(a3 + 2), 1, 0);
+    v6 = MTLCompareArray(self->_privateFunctionDescriptors, *(equal + 2), 1, 0);
     if (v6)
     {
       groups = self->_groups;
-      if (groups != *(a3 + 3))
+      if (groups != *(equal + 3))
       {
 
         LOBYTE(v6) = [(NSDictionary *)groups isEqual:?];

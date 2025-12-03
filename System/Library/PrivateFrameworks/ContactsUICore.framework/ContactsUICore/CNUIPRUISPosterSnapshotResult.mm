@@ -1,21 +1,21 @@
 @interface CNUIPRUISPosterSnapshotResult
 - (CNUIPRUISPosterSnapshotBundle)posterSnapshotBundle;
-- (CNUIPRUISPosterSnapshotResult)initWithWrappedResult:(id)a3;
+- (CNUIPRUISPosterSnapshotResult)initWithWrappedResult:(id)result;
 - (id)snapshotBundle;
 @end
 
 @implementation CNUIPRUISPosterSnapshotResult
 
-- (CNUIPRUISPosterSnapshotResult)initWithWrappedResult:(id)a3
+- (CNUIPRUISPosterSnapshotResult)initWithWrappedResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = CNUIPRUISPosterSnapshotResult;
   v6 = [(CNUIPRUISPosterSnapshotResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedResult, a3);
+    objc_storeStrong(&v6->_wrappedResult, result);
   }
 
   return v7;
@@ -23,10 +23,10 @@
 
 - (CNUIPRUISPosterSnapshotBundle)posterSnapshotBundle
 {
-  v2 = [(PRUISPosterSnapshotResult *)self->_wrappedResult posterSnapshotBundle];
-  if (v2)
+  posterSnapshotBundle = [(PRUISPosterSnapshotResult *)self->_wrappedResult posterSnapshotBundle];
+  if (posterSnapshotBundle)
   {
-    v3 = [[CNUIPRUISPosterSnapshotBundle alloc] initWithWrappedBundle:v2];
+    v3 = [[CNUIPRUISPosterSnapshotBundle alloc] initWithWrappedBundle:posterSnapshotBundle];
   }
 
   else
@@ -39,10 +39,10 @@
 
 - (id)snapshotBundle
 {
-  v2 = [(PRUISPosterSnapshotResult *)self->_wrappedResult snapshotBundle];
-  if (v2)
+  snapshotBundle = [(PRUISPosterSnapshotResult *)self->_wrappedResult snapshotBundle];
+  if (snapshotBundle)
   {
-    v3 = [[CNUIPRPosterSnapshotBundle alloc] initWithWrappedBundle:v2];
+    v3 = [[CNUIPRPosterSnapshotBundle alloc] initWithWrappedBundle:snapshotBundle];
   }
 
   else

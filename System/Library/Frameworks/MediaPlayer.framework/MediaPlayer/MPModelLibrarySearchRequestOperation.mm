@@ -42,18 +42,18 @@ mlcore::LocalizedSearchQuery *__46__MPModelLibrarySearchRequestOperation_cancel_
 - (void)execute
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+  mediaLibrary = [(MPModelLibraryRequest *)self->_request mediaLibrary];
   v4 = [MPMediaLibraryView alloc];
-  v5 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-  v14 = [(MPMediaLibraryView *)v4 initWithLibrary:v5 filteringOptions:[(MPModelLibraryRequest *)self->_request filteringOptions]];
+  mediaLibrary2 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+  v14 = [(MPMediaLibraryView *)v4 initWithLibrary:mediaLibrary2 filteringOptions:[(MPModelLibraryRequest *)self->_request filteringOptions]];
 
-  v6 = [(MPModelLibrarySearchRequest *)self->_request searchString];
+  searchString = [(MPModelLibrarySearchRequest *)self->_request searchString];
   [(MPModelLibrarySearchRequest *)self->_request maximumResultsPerScope];
-  v7 = [(MPModelLibrarySearchRequest *)self->_request scopes];
+  scopes = [(MPModelLibrarySearchRequest *)self->_request scopes];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v6 && [v6 length] && objc_msgSend(v7, "count"))
+  if (searchString && [searchString length] && objc_msgSend(scopes, "count"))
   {
-    if ([v6 UTF8String])
+    if ([searchString UTF8String])
     {
       operator new();
     }
@@ -62,7 +62,7 @@ mlcore::LocalizedSearchQuery *__46__MPModelLibrarySearchRequestOperation_cancel_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       buf = 138543362;
-      *buf_4 = v6;
+      *buf_4 = searchString;
       _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_FAULT, "MPModelLibrarySearchRequestOperation: NULL utf8 from string: '%{public}@'", &buf, 0xCu);
     }
 
@@ -73,11 +73,11 @@ mlcore::LocalizedSearchQuery *__46__MPModelLibrarySearchRequestOperation_cancel_
   {
     if (![(MPAsyncOperation *)self isCancelled])
     {
-      if (v6)
+      if (searchString)
       {
-        if ([v6 length])
+        if ([searchString length])
         {
-          v9 = [v7 count];
+          v9 = [scopes count];
           if (v9)
           {
             v10 = -9001;

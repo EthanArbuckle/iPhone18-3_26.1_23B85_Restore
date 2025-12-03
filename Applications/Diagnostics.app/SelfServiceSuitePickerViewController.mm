@@ -1,9 +1,9 @@
 @interface SelfServiceSuitePickerViewController
-- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SelfServiceSuitePickerViewController
@@ -15,43 +15,43 @@
   v2 = v4.receiver;
   [(SelfServiceBaseNavigationController *)&v4 viewDidLoad];
   sub_1000B2984();
-  v3 = [v2 contentView];
-  [v3 addSubview:*&v2[OBJC_IVAR____TtC11Diagnostics36SelfServiceSuitePickerViewController_tableView]];
+  contentView = [v2 contentView];
+  [contentView addSubview:*&v2[OBJC_IVAR____TtC11Diagnostics36SelfServiceSuitePickerViewController_tableView]];
 
   sub_1000B2B44();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SelfServiceSuitePickerViewController();
   v4 = v5.receiver;
-  [(SelfServiceSuitePickerViewController *)&v5 viewDidAppear:v3];
+  [(SelfServiceSuitePickerViewController *)&v5 viewDidAppear:appearCopy];
   *(*&v4[OBJC_IVAR____TtC11Diagnostics36SelfServiceSuitePickerViewController_suiteManager] + OBJC_IVAR____TtC11Diagnostics12SuiteManager_delegate + 8) = &off_1001C3D60;
   swift_unknownObjectWeakAssign();
   [*&v4[OBJC_IVAR____TtC11Diagnostics36SelfServiceSuitePickerViewController_tableView] invalidateIntrinsicContentSize];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SelfServiceSuitePickerViewController();
   v4 = v5.receiver;
-  [(SelfServiceSuitePickerViewController *)&v5 viewWillDisappear:v3];
+  [(SelfServiceSuitePickerViewController *)&v5 viewWillDisappear:disappearCopy];
   *(*&v4[OBJC_IVAR____TtC11Diagnostics36SelfServiceSuitePickerViewController_suiteManager] + OBJC_IVAR____TtC11Diagnostics12SuiteManager_delegate + 8) = 0;
   swift_unknownObjectWeakAssign();
 }
 
-- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics36SelfServiceSuitePickerViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

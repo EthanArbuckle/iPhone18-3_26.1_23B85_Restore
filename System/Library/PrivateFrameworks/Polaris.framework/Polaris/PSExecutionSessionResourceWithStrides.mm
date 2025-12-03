@@ -1,49 +1,49 @@
 @interface PSExecutionSessionResourceWithStrides
-- (PSExecutionSessionResourceWithStrides)initWithCoder:(id)a3;
-- (PSExecutionSessionResourceWithStrides)initWithResourceKey:(id)a3 strides:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PSExecutionSessionResourceWithStrides)initWithCoder:(id)coder;
+- (PSExecutionSessionResourceWithStrides)initWithResourceKey:(id)key strides:(id)strides;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSExecutionSessionResourceWithStrides
 
-- (PSExecutionSessionResourceWithStrides)initWithResourceKey:(id)a3 strides:(id)a4
+- (PSExecutionSessionResourceWithStrides)initWithResourceKey:(id)key strides:(id)strides
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  stridesCopy = strides;
   v12.receiver = self;
   v12.super_class = PSExecutionSessionResourceWithStrides;
   v9 = [(PSExecutionSessionResourceWithStrides *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->resourceKey, a3);
-    objc_storeStrong(&v10->strides, a4);
+    objc_storeStrong(&v9->resourceKey, key);
+    objc_storeStrong(&v10->strides, strides);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   resourceKey = self->resourceKey;
-  v5 = a3;
-  [v5 encodeObject:resourceKey forKey:@"resourceKey"];
-  [v5 encodeObject:self->strides forKey:@"strides"];
+  coderCopy = coder;
+  [coderCopy encodeObject:resourceKey forKey:@"resourceKey"];
+  [coderCopy encodeObject:self->strides forKey:@"strides"];
 }
 
-- (PSExecutionSessionResourceWithStrides)initWithCoder:(id)a3
+- (PSExecutionSessionResourceWithStrides)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PSExecutionSessionResourceWithStrides;
   v5 = [(PSExecutionSessionResourceWithStrides *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"resourceKey"];
+    v6 = [coderCopy decodeObjectForKey:@"resourceKey"];
     resourceKey = v5->resourceKey;
     v5->resourceKey = v6;
 
-    v8 = [v4 decodeObjectForKey:@"strides"];
+    v8 = [coderCopy decodeObjectForKey:@"strides"];
     strides = v5->strides;
     v5->strides = v8;
   }

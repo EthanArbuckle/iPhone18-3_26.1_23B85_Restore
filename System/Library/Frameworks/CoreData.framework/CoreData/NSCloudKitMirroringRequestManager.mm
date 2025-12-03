@@ -1,9 +1,9 @@
 @interface NSCloudKitMirroringRequestManager
-- (BOOL)enqueueRequest:(uint64_t *)a3 error:;
+- (BOOL)enqueueRequest:(uint64_t *)request error:;
 - (id)dequeueNextRequest;
 - (void)dealloc;
 - (void)dequeueAllPendingRequests;
-- (void)requestFinished:(uint64_t)a1;
+- (void)requestFinished:(uint64_t)finished;
 @end
 
 @implementation NSCloudKitMirroringRequestManager
@@ -36,17 +36,17 @@
 - (id)dequeueNextRequest
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_21;
   }
 
-  if (a1[12])
+  if (self[12])
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
-      v9 = a1[12];
+      v9 = self[12];
       v11 = 138412290;
       v12 = v9;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Dequeue called during an active request: %@\n", &v11, 0xCu);
@@ -55,65 +55,65 @@
     v3 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
-      v10 = a1[12];
+      v10 = self[12];
       v11 = 138412290;
       v12 = v10;
       _os_log_fault_impl(&dword_18565F000, v3, OS_LOG_TYPE_FAULT, "CoreData: Dequeue called during an active request: %@", &v11, 0xCu);
     }
   }
 
-  v5 = a1 + 4;
-  v4 = a1[4];
+  v5 = self + 4;
+  v4 = self[4];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 3;
-  v4 = a1[3];
+  v5 = self + 3;
+  v4 = self[3];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 9;
-  v4 = a1[9];
+  v5 = self + 9;
+  v4 = self[9];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 5;
-  v4 = a1[5];
+  v5 = self + 5;
+  v4 = self[5];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 7;
-  v4 = a1[7];
+  v5 = self + 7;
+  v4 = self[7];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 11;
-  v4 = a1[11];
+  v5 = self + 11;
+  v4 = self[11];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 8;
-  v4 = a1[8];
+  v5 = self + 8;
+  v4 = self[8];
   if (v4)
   {
     goto LABEL_18;
   }
 
-  v5 = a1 + 1;
-  v4 = a1[1];
-  if (v4 || (v5 = a1 + 2, (v4 = a1[2]) != 0) || (v5 = a1 + 6, (v4 = a1[6]) != 0) || (v5 = a1 + 10, (v4 = a1[10]) != 0))
+  v5 = self + 1;
+  v4 = self[1];
+  if (v4 || (v5 = self + 2, (v4 = self[2]) != 0) || (v5 = self + 6, (v4 = self[6]) != 0) || (v5 = self + 10, (v4 = self[10]) != 0))
   {
 LABEL_18:
     v6 = v4;
@@ -121,7 +121,7 @@ LABEL_18:
     *v5 = 0;
     if (v6)
     {
-      a1[12] = v6;
+      self[12] = v6;
     }
   }
 
@@ -135,7 +135,7 @@ LABEL_21:
   return v6;
 }
 
-- (BOOL)enqueueRequest:(uint64_t *)a3 error:
+- (BOOL)enqueueRequest:(uint64_t *)request error:
 {
   v34[1] = *MEMORY[0x1E69E9840];
   if (!result)
@@ -177,11 +177,11 @@ LABEL_10:
     v10 = [v6 errorWithDomain:v7 code:134417 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", buf, v34, 1)}];
     if (v10)
     {
-      if (a3)
+      if (request)
       {
         v11 = v10;
         result = 0;
-        *a3 = v11;
+        *request = v11;
         goto LABEL_60;
       }
 
@@ -399,25 +399,25 @@ LABEL_60:
   return result;
 }
 
-- (void)requestFinished:(uint64_t)a1
+- (void)requestFinished:(uint64_t)finished
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (finished)
   {
-    v4 = *(a1 + 96);
+    v4 = *(finished + 96);
     if (v4)
     {
       if (v4 == a2)
       {
 
-        *(a1 + 96) = 0;
+        *(finished + 96) = 0;
         goto LABEL_14;
       }
 
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
-        v14 = *(a1 + 96);
+        v14 = *(finished + 96);
         v15 = 138412546;
         v16 = v14;
         v17 = 2112;
@@ -428,7 +428,7 @@ LABEL_60:
       v6 = _PFLogGetLogStream(17);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        v7 = *(a1 + 96);
+        v7 = *(finished + 96);
         v15 = 138412546;
         v16 = v7;
         v17 = 2112;
@@ -470,88 +470,88 @@ LABEL_14:
 
 - (void)dequeueAllPendingRequests
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = v2;
-  if (a1[4])
+  if (self[4])
   {
     [v2 addObject:?];
 
-    a1[4] = 0;
+    self[4] = 0;
   }
 
-  if (a1[3])
+  if (self[3])
   {
     [v3 addObject:?];
 
-    a1[3] = 0;
+    self[3] = 0;
   }
 
-  if (a1[9])
+  if (self[9])
   {
     [v3 addObject:?];
 
-    a1[9] = 0;
+    self[9] = 0;
   }
 
-  if (a1[5])
+  if (self[5])
   {
     [v3 addObject:?];
 
-    a1[5] = 0;
+    self[5] = 0;
   }
 
-  if (a1[7])
+  if (self[7])
   {
     [v3 addObject:?];
 
-    a1[7] = 0;
+    self[7] = 0;
   }
 
-  if (a1[8])
+  if (self[8])
   {
     [v3 addObject:?];
 
-    a1[8] = 0;
+    self[8] = 0;
   }
 
-  if (a1[1])
+  if (self[1])
   {
     [v3 addObject:?];
 
-    a1[1] = 0;
+    self[1] = 0;
   }
 
-  if (a1[2])
+  if (self[2])
   {
     [v3 addObject:?];
 
-    a1[2] = 0;
+    self[2] = 0;
   }
 
-  if (a1[6])
+  if (self[6])
   {
     [v3 addObject:?];
 
-    a1[6] = 0;
+    self[6] = 0;
   }
 
-  if (a1[10])
+  if (self[10])
   {
     [v3 addObject:?];
 
-    a1[10] = 0;
+    self[10] = 0;
   }
 
-  if (a1[11])
+  if (self[11])
   {
     [v3 addObject:?];
 
-    a1[11] = 0;
+    self[11] = 0;
   }
 
   return v3;

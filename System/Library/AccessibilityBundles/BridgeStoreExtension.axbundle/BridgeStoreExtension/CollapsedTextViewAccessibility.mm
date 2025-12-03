@@ -10,9 +10,9 @@
   v3 = [(CollapsedTextViewAccessibility *)self safeValueForKey:@"accessibilityTextView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
 @end

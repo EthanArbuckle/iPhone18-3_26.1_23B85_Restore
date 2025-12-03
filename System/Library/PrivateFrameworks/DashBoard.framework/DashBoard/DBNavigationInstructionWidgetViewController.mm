@@ -1,15 +1,15 @@
 @interface DBNavigationInstructionWidgetViewController
-- (DBNavigationInstructionWidgetViewController)initWithEnvironment:(id)a3 animationManager:(id)a4 widgetSizeManager:(id)a5;
-- (void)prepareLoadingViewAnimated:(BOOL)a3;
+- (DBNavigationInstructionWidgetViewController)initWithEnvironment:(id)environment animationManager:(id)manager widgetSizeManager:(id)sizeManager;
+- (void)prepareLoadingViewAnimated:(BOOL)animated;
 @end
 
 @implementation DBNavigationInstructionWidgetViewController
 
-- (DBNavigationInstructionWidgetViewController)initWithEnvironment:(id)a3 animationManager:(id)a4 widgetSizeManager:(id)a5
+- (DBNavigationInstructionWidgetViewController)initWithEnvironment:(id)environment animationManager:(id)manager widgetSizeManager:(id)sizeManager
 {
   v8.receiver = self;
   v8.super_class = DBNavigationInstructionWidgetViewController;
-  v5 = [(DBSceneWidgetViewController *)&v8 initWithEnvironment:a3 animationManager:a4 widgetSizeManager:a5];
+  v5 = [(DBSceneWidgetViewController *)&v8 initWithEnvironment:environment animationManager:manager widgetSizeManager:sizeManager];
   v6 = v5;
   if (v5)
   {
@@ -19,28 +19,28 @@
   return v6;
 }
 
-- (void)prepareLoadingViewAnimated:(BOOL)a3
+- (void)prepareLoadingViewAnimated:(BOOL)animated
 {
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(DBWidgetViewController *)self contentView];
-  [v6 addSubview:v5];
+  contentView = [(DBWidgetViewController *)self contentView];
+  [contentView addSubview:v5];
 
-  v7 = [(DBSceneWidgetViewController *)self getIconPlaceholderLayerView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:v7];
+  getIconPlaceholderLayerView = [(DBSceneWidgetViewController *)self getIconPlaceholderLayerView];
+  [getIconPlaceholderLayerView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v5 addSubview:getIconPlaceholderLayerView];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__DBNavigationInstructionWidgetViewController_prepareLoadingViewAnimated___block_invoke;
   aBlock[3] = &unk_278F015F8;
   v8 = v5;
   v16 = v8;
-  v17 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = getIconPlaceholderLayerView;
   v18 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (a3)
+  if (animated)
   {
     (*(v10 + 2))(v10);
     [(DBSceneWidgetViewController *)self replaceLoadingViewWithView:v8];

@@ -1,28 +1,28 @@
 @interface MNTracePreparedStatement
-+ (id)preparedStatementForTrace:(id)a3 statement:(id)a4 outError:(id *)a5;
-- (BOOL)_prepareStatementForTrace:(id)a3 statement:(id)a4 outError:(id *)a5;
++ (id)preparedStatementForTrace:(id)trace statement:(id)statement outError:(id *)error;
+- (BOOL)_prepareStatementForTrace:(id)trace statement:(id)statement outError:(id *)error;
 - (BOOL)clearBindings;
 - (BOOL)execute;
 - (BOOL)reset;
 - (BOOL)step;
 - (BOOL)stepRow;
 - (MNTracePreparedStatement)init;
-- (id)columnData:(unint64_t)a3;
-- (id)columnObjects:(unint64_t)a3 ofClasses:(id)a4;
-- (id)columnObjectsOld:(unint64_t)a3 ofClasses:(id)a4;
-- (id)columnString:(unint64_t)a3;
+- (id)columnData:(unint64_t)data;
+- (id)columnObjects:(unint64_t)objects ofClasses:(id)classes;
+- (id)columnObjectsOld:(unint64_t)old ofClasses:(id)classes;
+- (id)columnString:(unint64_t)string;
 - (id)debugDescription;
-- (id)initForTrace:(id)a3 statement:(id)a4 outError:(id *)a5;
-- (unint64_t)_bindParameterIndexWithName:(id)a3;
-- (void)bind:(unint64_t)a3 data:(id)a4;
-- (void)bind:(unint64_t)a3 double:(double)a4;
-- (void)bind:(unint64_t)a3 int:(int)a4;
-- (void)bind:(unint64_t)a3 string:(id)a4;
-- (void)bindNull:(unint64_t)a3;
-- (void)bindNullParameter:(id)a3;
-- (void)bindParameter:(id)a3 data:(id)a4;
-- (void)bindParameter:(id)a3 double:(double)a4;
-- (void)bindParameter:(id)a3 string:(id)a4;
+- (id)initForTrace:(id)trace statement:(id)statement outError:(id *)error;
+- (unint64_t)_bindParameterIndexWithName:(id)name;
+- (void)bind:(unint64_t)bind data:(id)data;
+- (void)bind:(unint64_t)bind double:(double)double;
+- (void)bind:(unint64_t)bind int:(int)int;
+- (void)bind:(unint64_t)bind string:(id)string;
+- (void)bindNull:(unint64_t)null;
+- (void)bindNullParameter:(id)parameter;
+- (void)bindParameter:(id)parameter data:(id)data;
+- (void)bindParameter:(id)parameter double:(double)double;
+- (void)bindParameter:(id)parameter string:(id)string;
 - (void)dealloc;
 - (void)finalize;
 @end
@@ -33,15 +33,15 @@
 {
   if ([(MNTracePreparedStatement *)self step])
   {
-    v3 = [(MNTracePreparedStatement *)self reset];
+    reset = [(MNTracePreparedStatement *)self reset];
   }
 
   else
   {
-    v3 = 0;
+    reset = 0;
   }
 
-  return v3 & [(MNTracePreparedStatement *)self clearBindings];
+  return reset & [(MNTracePreparedStatement *)self clearBindings];
 }
 
 - (BOOL)step
@@ -131,21 +131,21 @@
   return [v3 stringWithUTF8String:v2];
 }
 
-- (unint64_t)_bindParameterIndexWithName:(id)a3
+- (unint64_t)_bindParameterIndexWithName:(id)name
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = sqlite3_bind_parameter_index(self->_preparedStatement, [v4 UTF8String]);
+  nameCopy = name;
+  v5 = sqlite3_bind_parameter_index(self->_preparedStatement, [nameCopy UTF8String]);
   if (v5 <= 0)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error calling -[MNTracePreparedStatement bindParameter:] because no parameter with the name %@ was found.", v4];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error calling -[MNTracePreparedStatement bindParameter:] because no parameter with the name %@ was found.", nameCopy];
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v12 = "NO";
       v13 = 2112;
-      v14 = v9;
+      v14 = nameCopy;
       _os_log_impl(&dword_1D311E000, v10, OS_LOG_TYPE_ERROR, "Assertion failed: (%s) '%@'", buf, 0x16u);
     }
 
@@ -161,21 +161,21 @@
   return v6;
 }
 
-- (BOOL)_prepareStatementForTrace:(id)a3 statement:(id)a4 outError:(id *)a5
+- (BOOL)_prepareStatementForTrace:(id)trace statement:(id)statement outError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  traceCopy = trace;
+  statementCopy = statement;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v10 = sqlite3_prepare_v2([v8 db], objc_msgSend(v9, "UTF8String"), -1, &self->_preparedStatement, 0);
+  v10 = sqlite3_prepare_v2([traceCopy db], objc_msgSend(statementCopy, "UTF8String"), -1, &self->_preparedStatement, 0);
   if (v10)
   {
-    v11 = sqlite3_errmsg([v8 db]);
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error (%s) preparing statement %@: %s", sqlite3_errstr(v10), v9, v11];
+    v11 = sqlite3_errmsg([traceCopy db]);
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error (%s) preparing statement %@: %s", sqlite3_errstr(v10), statementCopy, v11];
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -184,13 +184,13 @@
       _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v18 = *MEMORY[0x1E696A278];
       v19 = v12;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MNTraceErrorDomain" code:9 userInfo:v14];
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -198,26 +198,26 @@
   return v10 == 0;
 }
 
-- (id)columnObjectsOld:(unint64_t)a3 ofClasses:(id)a4
+- (id)columnObjectsOld:(unint64_t)old ofClasses:(id)classes
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a4;
-  v8 = [(MNTracePreparedStatement *)self columnData:a3];
-  v9 = [v6 unarchivedArrayOfObjectsOfClasses:v7 fromData:v8 error:0];
+  classesCopy = classes;
+  v8 = [(MNTracePreparedStatement *)self columnData:old];
+  v9 = [v6 unarchivedArrayOfObjectsOfClasses:classesCopy fromData:v8 error:0];
 
   return v9;
 }
 
-- (id)columnObjects:(unint64_t)a3 ofClasses:(id)a4
+- (id)columnObjects:(unint64_t)objects ofClasses:(id)classes
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696ACD0];
   v7 = MEMORY[0x1E695DFD8];
-  v8 = a4;
+  classesCopy = classes;
   v9 = [v7 setWithObject:objc_opt_class()];
-  v10 = [(MNTracePreparedStatement *)self columnData:a3];
+  v10 = [(MNTracePreparedStatement *)self columnData:objects];
   v16 = 0;
-  v11 = [v6 unarchivedDictionaryWithKeysOfClasses:v9 objectsOfClasses:v8 fromData:v10 error:&v16];
+  v11 = [v6 unarchivedDictionaryWithKeysOfClasses:v9 objectsOfClasses:classesCopy fromData:v10 error:&v16];
 
   v12 = v16;
   if (v12)
@@ -236,10 +236,10 @@
   return v11;
 }
 
-- (id)columnData:(unint64_t)a3
+- (id)columnData:(unint64_t)data
 {
-  v3 = a3;
-  v5 = sqlite3_column_bytes(self->_preparedStatement, a3);
+  dataCopy = data;
+  v5 = sqlite3_column_bytes(self->_preparedStatement, data);
   if (v5 < 1)
   {
     v6 = 0;
@@ -247,15 +247,15 @@
 
   else
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithBytes:sqlite3_column_blob(self->_preparedStatement length:{v3), v5}];
+    v6 = [MEMORY[0x1E695DEF0] dataWithBytes:sqlite3_column_blob(self->_preparedStatement length:{dataCopy), v5}];
   }
 
   return v6;
 }
 
-- (id)columnString:(unint64_t)a3
+- (id)columnString:(unint64_t)string
 {
-  v3 = sqlite3_column_text(self->_preparedStatement, a3);
+  v3 = sqlite3_column_text(self->_preparedStatement, string);
   if (v3)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
@@ -295,9 +295,9 @@
   return result;
 }
 
-- (void)bindNullParameter:(id)a3
+- (void)bindNullParameter:(id)parameter
 {
-  v4 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:a3];
+  v4 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:parameter];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
@@ -305,40 +305,40 @@
   }
 }
 
-- (void)bindParameter:(id)a3 data:(id)a4
+- (void)bindParameter:(id)parameter data:(id)data
 {
-  v7 = a4;
-  v6 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:a3];
+  dataCopy = data;
+  v6 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:parameter];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(MNTracePreparedStatement *)self bind:v6 data:v7];
+    [(MNTracePreparedStatement *)self bind:v6 data:dataCopy];
   }
 }
 
-- (void)bindParameter:(id)a3 string:(id)a4
+- (void)bindParameter:(id)parameter string:(id)string
 {
-  v7 = a4;
-  v6 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:a3];
+  stringCopy = string;
+  v6 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:parameter];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(MNTracePreparedStatement *)self bind:v6 string:v7];
+    [(MNTracePreparedStatement *)self bind:v6 string:stringCopy];
   }
 }
 
-- (void)bindParameter:(id)a3 double:(double)a4
+- (void)bindParameter:(id)parameter double:(double)double
 {
-  v6 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:a3];
+  v6 = [(MNTracePreparedStatement *)self _bindParameterIndexWithName:parameter];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    [(MNTracePreparedStatement *)self bind:v6 double:a4];
+    [(MNTracePreparedStatement *)self bind:v6 double:double];
   }
 }
 
-- (void)bindNull:(unint64_t)a3
+- (void)bindNull:(unint64_t)null
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = sqlite3_bind_null(self->_preparedStatement, a3);
+  v4 = sqlite3_bind_null(self->_preparedStatement, null);
   if (v4)
   {
     v6 = MEMORY[0x1E696AEC0];
@@ -358,17 +358,17 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bind:(unint64_t)a3 data:(id)a4
+- (void)bind:(unint64_t)bind data:(id)data
 {
-  v5 = a3;
+  bindCopy = bind;
   v22 = *MEMORY[0x1E69E9840];
   preparedStatement = self->_preparedStatement;
-  v8 = a4;
-  v9 = a4;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
-  v12 = sqlite3_bind_blob(preparedStatement, v5, v10, v11, 0xFFFFFFFFFFFFFFFFLL);
+  v12 = sqlite3_bind_blob(preparedStatement, bindCopy, bytes, v11, 0xFFFFFFFFFFFFFFFFLL);
   if (v12)
   {
     v14 = MEMORY[0x1E696AEC0];
@@ -388,13 +388,13 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bind:(unint64_t)a3 string:(id)a4
+- (void)bind:(unint64_t)bind string:(id)string
 {
-  v5 = a3;
+  bindCopy = bind;
   v19 = *MEMORY[0x1E69E9840];
   preparedStatement = self->_preparedStatement;
-  v8 = a4;
-  v9 = sqlite3_bind_text(preparedStatement, v5, [a4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  stringCopy = string;
+  v9 = sqlite3_bind_text(preparedStatement, bindCopy, [string UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   if (v9)
   {
     v11 = MEMORY[0x1E696AEC0];
@@ -414,10 +414,10 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bind:(unint64_t)a3 double:(double)a4
+- (void)bind:(unint64_t)bind double:(double)double
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = sqlite3_bind_double(self->_preparedStatement, a3, a4);
+  v5 = sqlite3_bind_double(self->_preparedStatement, bind, double);
   if (v5)
   {
     v7 = MEMORY[0x1E696AEC0];
@@ -437,10 +437,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)bind:(unint64_t)a3 int:(int)a4
+- (void)bind:(unint64_t)bind int:(int)int
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = sqlite3_bind_int(self->_preparedStatement, a3, a4);
+  v5 = sqlite3_bind_int(self->_preparedStatement, bind, int);
   if (v5)
   {
     v7 = v5;
@@ -476,23 +476,23 @@
   [(MNTracePreparedStatement *)&v3 dealloc];
 }
 
-- (id)initForTrace:(id)a3 statement:(id)a4 outError:(id *)a5
+- (id)initForTrace:(id)trace statement:(id)statement outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  traceCopy = trace;
+  statementCopy = statement;
   v14.receiver = self;
   v14.super_class = MNTracePreparedStatement;
   v10 = [(MNTracePreparedStatement *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    if (![(MNTracePreparedStatement *)v10 _prepareStatementForTrace:v8 statement:v9 outError:a5])
+    if (![(MNTracePreparedStatement *)v10 _prepareStatementForTrace:traceCopy statement:statementCopy outError:error])
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    v11->_db = [v8 db];
+    v11->_db = [traceCopy db];
   }
 
   v12 = v11;
@@ -508,11 +508,11 @@ LABEL_6:
   return result;
 }
 
-+ (id)preparedStatementForTrace:(id)a3 statement:(id)a4 outError:(id *)a5
++ (id)preparedStatementForTrace:(id)trace statement:(id)statement outError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MNTracePreparedStatement alloc] initForTrace:v8 statement:v7 outError:a5];
+  statementCopy = statement;
+  traceCopy = trace;
+  v9 = [[MNTracePreparedStatement alloc] initForTrace:traceCopy statement:statementCopy outError:error];
 
   return v9;
 }

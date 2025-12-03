@@ -1,14 +1,14 @@
 @interface NUChannelArrayFormat
-- (BOOL)canSpecializeFormat:(id)a3;
-- (BOOL)isCompatibleWithChannelFormat:(id)a3;
-- (BOOL)isEqualToChannelFormat:(id)a3;
+- (BOOL)canSpecializeFormat:(id)format;
+- (BOOL)isCompatibleWithChannelFormat:(id)format;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (BOOL)isGeneric;
 - (NUChannelArrayFormat)init;
-- (NUChannelArrayFormat)initWithItemFormat:(id)a3;
+- (NUChannelArrayFormat)initWithItemFormat:(id)format;
 - (id)debugDescription;
 - (id)description;
 - (id)elementChannel;
-- (id)specializedWithFormat:(id)a3;
+- (id)specializedWithFormat:(id)format;
 - (unint64_t)hash;
 @end
 
@@ -18,8 +18,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelArrayFormat *)self itemFormat];
-  v6 = [v5 description];
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
+  v6 = [itemFormat description];
   v7 = [v3 stringWithFormat:@"<%@:%p item:%@>", v4, self, v6];
 
   return v7;
@@ -28,18 +28,18 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelArrayFormat *)self itemFormat];
-  v4 = [v3 description];
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
+  v4 = [itemFormat description];
   v5 = [v2 stringWithFormat:@"[%@]", v4];
 
   return v5;
 }
 
-- (id)specializedWithFormat:(id)a3
+- (id)specializedWithFormat:(id)format
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v11 = NUAssertLogger_4187();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -60,8 +60,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -72,8 +72,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -82,17 +82,17 @@
     _NUAssertFailHandler("[NUChannelArrayFormat specializedWithFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1816, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "other != nil");
   }
 
-  v5 = v4;
-  v6 = [(NUChannelArrayFormat *)self itemFormat];
+  v5 = formatCopy;
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
   if ([v5 isArray])
   {
-    v7 = [v5 arrayItemFormat];
-    v8 = [v6 specializedWithFormat:v7];
+    arrayItemFormat = [v5 arrayItemFormat];
+    v8 = [itemFormat specializedWithFormat:arrayItemFormat];
   }
 
   else
   {
-    v8 = [v6 specializedWithFormat:v5];
+    v8 = [itemFormat specializedWithFormat:v5];
   }
 
   v9 = [[NUChannelArrayFormat alloc] initWithItemFormat:v8];
@@ -100,11 +100,11 @@
   return v9;
 }
 
-- (BOOL)canSpecializeFormat:(id)a3
+- (BOOL)canSpecializeFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v12 = NUAssertLogger_4187();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -125,8 +125,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -137,8 +137,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -147,19 +147,19 @@
     _NUAssertFailHandler("[NUChannelArrayFormat canSpecializeFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1808, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "other != nil");
   }
 
-  v5 = v4;
-  v6 = [v4 isArray];
-  v7 = [(NUChannelArrayFormat *)self itemFormat];
-  v8 = v7;
-  if (v6)
+  v5 = formatCopy;
+  isArray = [formatCopy isArray];
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
+  v8 = itemFormat;
+  if (isArray)
   {
-    v9 = [v5 arrayItemFormat];
-    LOBYTE(v10) = [v8 canSpecializeFormat:v9];
+    arrayItemFormat = [v5 arrayItemFormat];
+    LOBYTE(v10) = [v8 canSpecializeFormat:arrayItemFormat];
   }
 
   else
   {
-    v10 = [v7 canSpecializeFormat:v5];
+    v10 = [itemFormat canSpecializeFormat:v5];
   }
 
   return v10;
@@ -167,17 +167,17 @@
 
 - (BOOL)isGeneric
 {
-  v2 = [(NUChannelArrayFormat *)self itemFormat];
-  v3 = [v2 isGeneric];
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
+  isGeneric = [itemFormat isGeneric];
 
-  return v3;
+  return isGeneric;
 }
 
-- (BOOL)isCompatibleWithChannelFormat:(id)a3
+- (BOOL)isCompatibleWithChannelFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v12 = NUAssertLogger_4187();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -198,8 +198,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -210,8 +210,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -220,19 +220,19 @@
     _NUAssertFailHandler("[NUChannelArrayFormat isCompatibleWithChannelFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1793, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "other != nil");
   }
 
-  v5 = v4;
-  v6 = [v4 isArray];
-  v7 = [(NUChannelArrayFormat *)self itemFormat];
-  v8 = v7;
-  if (v6)
+  v5 = formatCopy;
+  isArray = [formatCopy isArray];
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
+  v8 = itemFormat;
+  if (isArray)
   {
-    v9 = [v5 arrayItemFormat];
-    LOBYTE(v10) = [v8 isCompatibleWithChannelFormat:v9];
+    arrayItemFormat = [v5 arrayItemFormat];
+    LOBYTE(v10) = [v8 isCompatibleWithChannelFormat:arrayItemFormat];
   }
 
   else
   {
-    v10 = [v7 isCompatibleWithChannelFormat:v5];
+    v10 = [itemFormat isCompatibleWithChannelFormat:v5];
   }
 
   return v10;
@@ -241,23 +241,23 @@
 - (id)elementChannel
 {
   v3 = [NUChannelElementFormat alloc];
-  v4 = [(NUChannelArrayFormat *)self itemFormat];
-  v5 = [(NUChannelElementFormat *)v3 initWithRepresentedFormat:v4];
+  itemFormat = [(NUChannelArrayFormat *)self itemFormat];
+  v5 = [(NUChannelElementFormat *)v3 initWithRepresentedFormat:itemFormat];
 
   v6 = [[NUChannel alloc] initWithName:@"$item" format:v5];
 
   return v6;
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 itemFormat];
-    v6 = [(NUChannelArrayFormat *)self itemFormat];
-    v7 = [v5 isEqualToChannelFormat:v6];
+    itemFormat = [formatCopy itemFormat];
+    itemFormat2 = [(NUChannelArrayFormat *)self itemFormat];
+    v7 = [itemFormat isEqualToChannelFormat:itemFormat2];
   }
 
   else
@@ -276,11 +276,11 @@
   return (0xB170619671 * [(NUChannelFormat *)self->_itemFormat hash]) ^ v3;
 }
 
-- (NUChannelArrayFormat)initWithItemFormat:(id)a3
+- (NUChannelArrayFormat)initWithItemFormat:(id)format
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  formatCopy = format;
+  if (!formatCopy)
   {
     v9 = NUAssertLogger_4187();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -301,8 +301,8 @@
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -313,8 +313,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -323,7 +323,7 @@
     _NUAssertFailHandler("[NUChannelArrayFormat initWithItemFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1756, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "itemFormat != nil");
   }
 
-  v5 = v4;
+  v5 = formatCopy;
   v25.receiver = self;
   v25.super_class = NUChannelArrayFormat;
   v6 = [(NUChannelArrayFormat *)&v25 init];
@@ -379,8 +379,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -396,8 +396,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

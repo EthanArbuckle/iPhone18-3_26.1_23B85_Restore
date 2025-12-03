@@ -1,15 +1,15 @@
 @interface SearchUIScreenTimeCollectionCell
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIScreenTimeCollectionCell
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v10.receiver = self;
   v10.super_class = SearchUIScreenTimeCollectionCell;
-  v4 = a3;
-  [(SearchUICollectionViewCell *)&v10 updateWithRowModel:v4];
+  modelCopy = model;
+  [(SearchUICollectionViewCell *)&v10 updateWithRowModel:modelCopy];
   v5 = [(SearchUIScreenTimeCollectionCell *)self screenTimeView:v10.receiver];
 
   if (!v5)
@@ -17,13 +17,13 @@
     v6 = objc_opt_new();
     [(SearchUIScreenTimeCollectionCell *)self setScreenTimeView:v6];
 
-    v7 = [(SearchUIScreenTimeCollectionCell *)self contentView];
-    v8 = [(SearchUIScreenTimeCollectionCell *)self screenTimeView];
-    [v7 addSubview:v8];
+    contentView = [(SearchUIScreenTimeCollectionCell *)self contentView];
+    screenTimeView = [(SearchUIScreenTimeCollectionCell *)self screenTimeView];
+    [contentView addSubview:screenTimeView];
   }
 
-  v9 = [(SearchUIScreenTimeCollectionCell *)self screenTimeView];
-  [v9 updateWithRowModel:v4];
+  screenTimeView2 = [(SearchUIScreenTimeCollectionCell *)self screenTimeView];
+  [screenTimeView2 updateWithRowModel:modelCopy];
 }
 
 @end

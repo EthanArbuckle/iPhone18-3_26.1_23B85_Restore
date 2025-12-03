@@ -1,6 +1,6 @@
 @interface SBFWebClipUtilities
-+ (id)sanitizeWebClip:(id)a3;
-+ (id)sanitizeWebClips:(id)a3;
++ (id)sanitizeWebClip:(id)clip;
++ (id)sanitizeWebClips:(id)clips;
 + (id)sanitizeWebClipsIfNeeded;
 @end
 
@@ -8,7 +8,7 @@
 
 + (id)sanitizeWebClipsIfNeeded
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = _CFCopySystemVersionDictionaryValue();
   v5 = v4;
   v6 = @"Invalid Build Version";
@@ -19,7 +19,7 @@
 
   v7 = v6;
 
-  v8 = [v3 objectForKey:@"SBFWebClipUtilitiesLastSanitizedBuildVersionUserDefaultsKey"];
+  v8 = [standardUserDefaults objectForKey:@"SBFWebClipUtilitiesLastSanitizedBuildVersionUserDefaultsKey"];
   v9 = [v8 isEqualToString:v7];
 
   if (v9)
@@ -36,28 +36,28 @@
 
   else
   {
-    v12 = [MEMORY[0x1E69DD2B8] webClips];
-    v11 = [a1 sanitizeWebClips:v12];
+    webClips = [MEMORY[0x1E69DD2B8] webClips];
+    v11 = [self sanitizeWebClips:webClips];
 
-    [v3 setObject:v7 forKey:@"SBFWebClipUtilitiesLastSanitizedBuildVersionUserDefaultsKey"];
+    [standardUserDefaults setObject:v7 forKey:@"SBFWebClipUtilitiesLastSanitizedBuildVersionUserDefaultsKey"];
   }
 
   return v11;
 }
 
-+ (id)sanitizeWebClips:(id)a3
++ (id)sanitizeWebClips:(id)clips
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clipsCopy = clips;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [clipsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    strongToStrongObjectsMapTable = 0;
     v8 = *v17;
     do
     {
@@ -65,35 +65,35 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(clipsCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [a1 sanitizeWebClip:v10];
-        v12 = [v11 error];
-        v13 = [v11 result];
-        if (v12)
+        v11 = [self sanitizeWebClip:v10];
+        error = [v11 error];
+        result = [v11 result];
+        if (error)
         {
           v14 = 1;
         }
 
         else
         {
-          v14 = v13 == 0;
+          v14 = result == 0;
         }
 
         if (v14)
         {
-          if (!v7)
+          if (!strongToStrongObjectsMapTable)
           {
-            v7 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+            strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
           }
 
-          [v7 setObject:v11 forKey:v10];
+          [strongToStrongObjectsMapTable setObject:v11 forKey:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [clipsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -101,24 +101,24 @@
 
   else
   {
-    v7 = 0;
+    strongToStrongObjectsMapTable = 0;
   }
 
-  return v7;
+  return strongToStrongObjectsMapTable;
 }
 
-+ (id)sanitizeWebClip:(id)a3
++ (id)sanitizeWebClip:(id)clip
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 pageURL], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  clipCopy = clip;
+  v4 = clipCopy;
+  if (!clipCopy || ([clipCopy pageURL], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.springboard.webClipUtilitiesErrorDomain" code:0 userInfo:0];
+    iconImagePath = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.springboard.webClipUtilitiesErrorDomain" code:0 userInfo:0];
     v25 = [SBFWebClipSanitationReport alloc];
     v26 = v4;
     v27 = 0;
-    v28 = v8;
+    v28 = iconImagePath;
 LABEL_15:
     v24 = [(SBFWebClipSanitationReport *)v25 initWithWebClip:v26 result:v27 error:v28];
     goto LABEL_16;
@@ -127,14 +127,14 @@ LABEL_15:
   v6 = SBLogWebClip();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 identifier];
+    identifier = [v4 identifier];
     *buf = 138412290;
-    v59 = v7;
+    v59 = identifier;
     _os_log_impl(&dword_1BEA11000, v6, OS_LOG_TYPE_DEFAULT, "Sanitizing webclip '%@'", buf, 0xCu);
   }
 
-  v8 = [v4 iconImagePath];
-  if (![v8 length])
+  iconImagePath = [v4 iconImagePath];
+  if (![iconImagePath length])
   {
     v25 = [SBFWebClipSanitationReport alloc];
     v26 = v4;
@@ -143,7 +143,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = CGDataProviderCreateWithFilename([v8 fileSystemRepresentation]);
+  v9 = CGDataProviderCreateWithFilename([iconImagePath fileSystemRepresentation]);
   v10 = CGImageSourceCreateWithDataProvider(v9, 0);
   v12 = *MEMORY[0x1E695F060];
   v11 = *(MEMORY[0x1E695F060] + 8);
@@ -189,12 +189,12 @@ LABEL_15:
   {
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v30 = [v4 identifier];
+      identifier2 = [v4 identifier];
       v67.width = v16;
       v67.height = v15;
       v31 = NSStringFromCGSize(v67);
       *buf = 138412546;
-      v59 = v30;
+      v59 = identifier2;
       v60 = 2112;
       v61 = v31;
       _os_log_impl(&dword_1BEA11000, v22, OS_LOG_TYPE_INFO, "Webclip '%@' is of size %@; checking if sanitization is needed...", buf, 0x16u);
@@ -205,7 +205,7 @@ LABEL_15:
       v36 = SBLogWebClip();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [v4 identifier];
+        identifier3 = [v4 identifier];
         v68.width = v16;
         v68.height = v15;
         v38 = NSStringFromCGSize(v68);
@@ -213,7 +213,7 @@ LABEL_15:
         v69.height = 400.0;
         v39 = NSStringFromCGSize(v69);
         *buf = 138412802;
-        v59 = v37;
+        v59 = identifier3;
         v60 = 2112;
         v61 = v38;
         v62 = 2112;
@@ -232,7 +232,7 @@ LABEL_15:
 
       if (ThumbnailAtIndex)
       {
-        v44 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+        v44 = [MEMORY[0x1E695DFF8] fileURLWithPath:iconImagePath];
         v45 = CGImageDestinationCreateWithURL(v44, [*MEMORY[0x1E6982F28] identifier], 1uLL, 0);
 
         CGImageDestinationAddImage(v45, ThumbnailAtIndex, 0);
@@ -243,9 +243,9 @@ LABEL_15:
         {
           if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
           {
-            v49 = [v4 identifier];
+            identifier4 = [v4 identifier];
             *buf = 138412290;
-            v59 = v49;
+            v59 = identifier4;
             _os_log_impl(&dword_1BEA11000, v48, OS_LOG_TYPE_DEFAULT, "Sanitized webclip '%@'", buf, 0xCu);
           }
 
@@ -269,11 +269,11 @@ LABEL_15:
         }
 
         CFRelease(ThumbnailAtIndex);
-        v51 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v54 = *MEMORY[0x1E696A3A0];
         v55 = *MEMORY[0x1E696A3A8];
         v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-        [v51 setAttributes:v53 ofItemAtPath:v8 error:0];
+        [defaultManager setAttributes:v53 ofItemAtPath:iconImagePath error:0];
       }
 
       else
@@ -284,8 +284,8 @@ LABEL_15:
           [SBFWebClipUtilities sanitizeWebClip:v4];
         }
 
-        v51 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.springboard.webClipUtilitiesErrorDomain" code:2 userInfo:0];
-        v24 = [[SBFWebClipSanitationReport alloc] initWithWebClip:v4 result:0 error:v51];
+        defaultManager = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.springboard.webClipUtilitiesErrorDomain" code:2 userInfo:0];
+        v24 = [[SBFWebClipSanitationReport alloc] initWithWebClip:v4 result:0 error:defaultManager];
       }
 
       objc_autoreleasePoolPop(v40);
@@ -302,9 +302,9 @@ LABEL_15:
         v32 = SBLogWebClip();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [v4 identifier];
+          identifier5 = [v4 identifier];
           *buf = 138412290;
-          v59 = v33;
+          v59 = identifier5;
           _os_log_impl(&dword_1BEA11000, v32, OS_LOG_TYPE_DEFAULT, "Sanitized webclip '%@' needed File Protection Class repair", buf, 0xCu);
         }
       }
@@ -312,9 +312,9 @@ LABEL_15:
       v34 = SBLogWebClip();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v4 identifier];
+        identifier6 = [v4 identifier];
         *buf = 138412290;
-        v59 = v35;
+        v59 = identifier6;
         _os_log_impl(&dword_1BEA11000, v34, OS_LOG_TYPE_DEFAULT, "Sanitized webclip '%@' didn't need sanitizing", buf, 0xCu);
       }
 

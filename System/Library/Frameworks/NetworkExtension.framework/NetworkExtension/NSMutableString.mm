@@ -1,28 +1,28 @@
 @interface NSMutableString
-- (void)appendPrettyObject:(int)a3 withIndent:(uint64_t)a4 options:(unint64_t)a5 depth:;
-- (void)appendPrettyObject:(uint64_t)a3 withName:(int)a4 andIndent:(uint64_t)a5 options:(unint64_t)a6 depth:;
+- (void)appendPrettyObject:(int)object withIndent:(uint64_t)indent options:(unint64_t)options depth:;
+- (void)appendPrettyObject:(uint64_t)object withName:(int)name andIndent:(uint64_t)indent options:(unint64_t)options depth:;
 @end
 
 @implementation NSMutableString
 
-- (void)appendPrettyObject:(uint64_t)a3 withName:(int)a4 andIndent:(uint64_t)a5 options:(unint64_t)a6 depth:
+- (void)appendPrettyObject:(uint64_t)object withName:(int)name andIndent:(uint64_t)indent options:(unint64_t)options depth:
 {
-  if (a1)
+  if (self)
   {
-    v11 = (4 * a4 + 4);
+    v11 = (4 * name + 4);
     v12 = a2;
-    [a1 appendFormat:@"\n%*s%@ = ", v11, " ", a3];
-    [(NSMutableString *)a1 appendPrettyObject:v12 withIndent:a4 options:a5 depth:a6];
+    [self appendFormat:@"\n%*s%@ = ", v11, " ", object];
+    [(NSMutableString *)self appendPrettyObject:v12 withIndent:name options:indent depth:options];
   }
 }
 
-- (void)appendPrettyObject:(int)a3 withIndent:(uint64_t)a4 options:(unint64_t)a5 depth:
+- (void)appendPrettyObject:(int)object withIndent:(uint64_t)indent options:(unint64_t)options depth:
 {
   v40 = *MEMORY[0x1E69E9840];
   v31 = a2;
   objc_opt_self();
-  v32 = a5;
-  if (a5 > 4)
+  optionsCopy = options;
+  if (options > 4)
   {
     goto LABEL_41;
   }
@@ -43,7 +43,7 @@
       v10 = ")";
     }
 
-    [a1 appendFormat:@"%s", v9];
+    [self appendFormat:@"%s", v9];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -65,9 +65,9 @@
           }
 
           v16 = *(*(&v35 + 1) + 8 * i);
-          [a1 appendFormat:@"\n%*s", (4 * a3 + 8), " "];
-          [(NSMutableString *)a1 appendPrettyObject:v16 withIndent:(a3 + 1) options:a4 depth:v32 + 1];
-          [a1 appendFormat:@", "];
+          [self appendFormat:@"\n%*s", (4 * object + 8), " "];
+          [(NSMutableString *)self appendPrettyObject:v16 withIndent:(object + 1) options:indent depth:optionsCopy + 1];
+          [self appendFormat:@", "];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -75,7 +75,7 @@
 
       while (v13);
 
-      [a1 appendFormat:@"\n%*s", (4 * a3 + 4), " "];
+      [self appendFormat:@"\n%*s", (4 * object + 4), " "];
       v10 = v30;
     }
 
@@ -83,7 +83,7 @@
     {
     }
 
-    [a1 appendFormat:@"%s", v10];
+    [self appendFormat:@"%s", v10];
 
     goto LABEL_36;
   }
@@ -95,36 +95,36 @@ LABEL_41:
     {
       v25 = v31;
       v26 = v25;
-      if ((~a4 & 3) != 0)
+      if ((~indent & 3) != 0)
       {
-        [a1 appendFormat:@"%@", v25];
+        [self appendFormat:@"%@", v25];
       }
 
       else
       {
-        [a1 appendFormat:@"<%lu-char-str>", objc_msgSend(v25, "length")];
+        [self appendFormat:@"<%lu-char-str>", objc_msgSend(v25, "length")];
       }
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v27 = [v31 descriptionWithIndent:(a3 + 1) options:a4];
-      [a1 appendFormat:@"{%@", v27];
+      v27 = [v31 descriptionWithIndent:(object + 1) options:indent];
+      [self appendFormat:@"{%@", v27];
 
-      [a1 appendFormat:@"\n%*s}", (4 * (a3 + 1)), " "];
+      [self appendFormat:@"\n%*s}", (4 * (object + 1)), " "];
     }
 
     else
     {
       v28 = [v31 description];
-      [a1 appendFormat:@"%@", v28];
+      [self appendFormat:@"%@", v28];
     }
 
     goto LABEL_36;
   }
 
   v17 = v31;
-  [a1 appendFormat:@"{"];
+  [self appendFormat:@"{"];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -146,8 +146,8 @@ LABEL_41:
 
         v23 = *(*(&v35 + 1) + 8 * j);
         v24 = [v18 objectForKeyedSubscript:v23];
-        [(NSMutableString *)a1 appendPrettyObject:v24 withName:v23 andIndent:(a3 + 1) options:a4 depth:v32 + 1];
-        [a1 appendFormat:@", "];
+        [(NSMutableString *)self appendPrettyObject:v24 withName:v23 andIndent:(object + 1) options:indent depth:optionsCopy + 1];
+        [self appendFormat:@", "];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -155,14 +155,14 @@ LABEL_41:
 
     while (v20);
 
-    [a1 appendFormat:@"\n%*s", (4 * a3 + 4), " "];
+    [self appendFormat:@"\n%*s", (4 * object + 4), " "];
   }
 
   else
   {
   }
 
-  [a1 appendString:@"}"];
+  [self appendString:@"}"];
 
 LABEL_36:
   v29 = *MEMORY[0x1E69E9840];

@@ -1,38 +1,38 @@
 @interface HMMDailyPartitionProvider
 + (id)sharedInstance;
-- (HMMDailyPartitionProvider)initWithDateProvider:(id)a3;
+- (HMMDailyPartitionProvider)initWithDateProvider:(id)provider;
 - (NSDate)currentDatePartition;
-- (id)datePartitionWithOffsetFromNow:(int64_t)a3;
+- (id)datePartitionWithOffsetFromNow:(int64_t)now;
 @end
 
 @implementation HMMDailyPartitionProvider
 
 - (NSDate)currentDatePartition
 {
-  v2 = [(HMMDailyPartitionProvider *)self dateProvider];
-  v3 = [v2 startOfCurrentDay];
+  dateProvider = [(HMMDailyPartitionProvider *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
 
-  return v3;
+  return startOfCurrentDay;
 }
 
-- (id)datePartitionWithOffsetFromNow:(int64_t)a3
+- (id)datePartitionWithOffsetFromNow:(int64_t)now
 {
-  v4 = [(HMMDailyPartitionProvider *)self dateProvider];
-  v5 = [v4 startOfDayByAddingDayCount:a3];
+  dateProvider = [(HMMDailyPartitionProvider *)self dateProvider];
+  v5 = [dateProvider startOfDayByAddingDayCount:now];
 
   return v5;
 }
 
-- (HMMDailyPartitionProvider)initWithDateProvider:(id)a3
+- (HMMDailyPartitionProvider)initWithDateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = HMMDailyPartitionProvider;
   v6 = [(HMMDailyPartitionProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dateProvider, a3);
+    objc_storeStrong(&v6->_dateProvider, provider);
   }
 
   return v7;
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = __43__HMMDailyPartitionProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__hmf_once_t0_389 != -1)
   {
     dispatch_once(&sharedInstance__hmf_once_t0_389, block);

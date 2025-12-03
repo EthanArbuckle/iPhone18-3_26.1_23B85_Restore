@@ -1,7 +1,7 @@
 @interface _UISearchTextFieldVisualStyle_iOS
-- (double)_defaultHeightForBarMetrics:(int64_t)a3 floating:(BOOL)a4 idiom:(int64_t)a5;
+- (double)_defaultHeightForBarMetrics:(int64_t)metrics floating:(BOOL)floating idiom:(int64_t)idiom;
 - (double)backgroundCornerRadius;
-- (double)defaultHeightForBarMetrics:(int64_t)a3;
+- (double)defaultHeightForBarMetrics:(int64_t)metrics;
 - (double)leftViewInset;
 - (double)searchBookmarkButtonOffset;
 - (double)textLeadingInset;
@@ -26,33 +26,33 @@
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
-    v4 = [v3 _searchBar];
-    [v4 _isFloating];
+    searchTextField = [(_UISearchTextFieldVisualStyle *)self searchTextField];
+    _searchBar = [searchTextField _searchBar];
+    [_searchBar _isFloating];
 
-    v5 = &unk_1EFE2EAF8;
+    clearButtonOuterInset = &unk_1EFE2EAF8;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _UISearchTextFieldVisualStyle_iOS;
-    v5 = [(_UISearchTextFieldVisualStyle *)&v7 clearButtonOuterInset];
+    clearButtonOuterInset = [(_UISearchTextFieldVisualStyle *)&v7 clearButtonOuterInset];
   }
 
-  return v5;
+  return clearButtonOuterInset;
 }
 
 - (double)leftViewInset
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
-    v4 = [v3 _searchBar];
-    v5 = [v4 _isFloating];
+    searchTextField = [(_UISearchTextFieldVisualStyle *)self searchTextField];
+    _searchBar = [searchTextField _searchBar];
+    _isFloating = [_searchBar _isFloating];
 
     result = 12.0;
-    if (v5)
+    if (_isFloating)
     {
       return 13.0;
     }
@@ -72,9 +72,9 @@
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
-    v4 = [v3 _searchBar];
-    [v4 _isFloating];
+    searchTextField = [(_UISearchTextFieldVisualStyle *)self searchTextField];
+    _searchBar = [searchTextField _searchBar];
+    [_searchBar _isFloating];
 
     return 17.0;
   }
@@ -89,25 +89,25 @@
   return result;
 }
 
-- (double)_defaultHeightForBarMetrics:(int64_t)a3 floating:(BOOL)a4 idiom:(int64_t)a5
+- (double)_defaultHeightForBarMetrics:(int64_t)metrics floating:(BOOL)floating idiom:(int64_t)idiom
 {
-  v5 = a4;
-  if (a5 == 3 && (_UISolariumEnabled() & 1) != 0)
+  floatingCopy = floating;
+  if (idiom == 3 && (_UISolariumEnabled() & 1) != 0)
   {
     return 36.0;
   }
 
-  return _defaultHeightForBarMetrics(a3, v5);
+  return _defaultHeightForBarMetrics(metrics, floatingCopy);
 }
 
-- (double)defaultHeightForBarMetrics:(int64_t)a3
+- (double)defaultHeightForBarMetrics:(int64_t)metrics
 {
-  v5 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
-  v6 = [v5 _searchBar];
-  v7 = [v6 _isFloating];
-  v8 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
-  v9 = [v8 traitCollection];
-  -[_UISearchTextFieldVisualStyle_iOS _defaultHeightForBarMetrics:floating:idiom:](self, "_defaultHeightForBarMetrics:floating:idiom:", a3, v7, [v9 userInterfaceIdiom]);
+  searchTextField = [(_UISearchTextFieldVisualStyle *)self searchTextField];
+  _searchBar = [searchTextField _searchBar];
+  _isFloating = [_searchBar _isFloating];
+  searchTextField2 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
+  traitCollection = [searchTextField2 traitCollection];
+  -[_UISearchTextFieldVisualStyle_iOS _defaultHeightForBarMetrics:floating:idiom:](self, "_defaultHeightForBarMetrics:floating:idiom:", metrics, _isFloating, [traitCollection userInterfaceIdiom]);
   v11 = v10;
 
   return v11;
@@ -117,12 +117,12 @@
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(_UISearchTextFieldVisualStyle *)self searchTextField];
-    v4 = [v3 _searchBar];
-    v5 = [v4 _isFloating];
+    searchTextField = [(_UISearchTextFieldVisualStyle *)self searchTextField];
+    _searchBar = [searchTextField _searchBar];
+    _isFloating = [_searchBar _isFloating];
 
     result = 7.0;
-    if (v5)
+    if (_isFloating)
     {
       return 8.0;
     }

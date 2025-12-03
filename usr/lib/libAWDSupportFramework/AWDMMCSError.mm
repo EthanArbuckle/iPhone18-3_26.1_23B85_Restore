@@ -1,14 +1,14 @@
 @interface AWDMMCSError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUnderlyingErrors:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addUnderlyingErrors:(id)errors;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMMCSError
@@ -22,7 +22,7 @@
   [(AWDMMCSError *)&v3 dealloc];
 }
 
-- (void)addUnderlyingErrors:(id)a3
+- (void)addUnderlyingErrors:(id)errors
 {
   underlyingErrors = self->_underlyingErrors;
   if (!underlyingErrors)
@@ -31,7 +31,7 @@
     self->_underlyingErrors = underlyingErrors;
   }
 
-  [(NSMutableArray *)underlyingErrors addObject:a3];
+  [(NSMutableArray *)underlyingErrors addObject:errors];
 }
 
 - (id)description
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   if (*&self->_has)
@@ -95,7 +95,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x29EDCA608];
   if (self->_domain)
@@ -144,40 +144,40 @@
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_domain)
   {
-    [a3 setDomain:?];
+    [to setDomain:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_code;
-    *(a3 + 32) |= 1u;
+    *(to + 2) = self->_code;
+    *(to + 32) |= 1u;
   }
 
   if ([(AWDMMCSError *)self underlyingErrorsCount])
   {
-    [a3 clearUnderlyingErrors];
-    v5 = [(AWDMMCSError *)self underlyingErrorsCount];
-    if (v5)
+    [to clearUnderlyingErrors];
+    underlyingErrorsCount = [(AWDMMCSError *)self underlyingErrorsCount];
+    if (underlyingErrorsCount)
     {
-      v6 = v5;
+      v6 = underlyingErrorsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addUnderlyingErrors:{-[AWDMMCSError underlyingErrorsAtIndex:](self, "underlyingErrorsAtIndex:", i)}];
+        [to addUnderlyingErrors:{-[AWDMMCSError underlyingErrorsAtIndex:](self, "underlyingErrorsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 16) = [(NSString *)self->_domain copyWithZone:a3];
+  *(v5 + 16) = [(NSString *)self->_domain copyWithZone:zone];
   if (*&self->_has)
   {
     *(v5 + 8) = self->_code;
@@ -204,7 +204,7 @@
           objc_enumerationMutation(underlyingErrors);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addUnderlyingErrors:v11];
 
         ++v10;
@@ -221,24 +221,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     domain = self->_domain;
-    if (!(domain | *(a3 + 2)) || (v5 = [(NSString *)domain isEqual:?]) != 0)
+    if (!(domain | *(equal + 2)) || (v5 = [(NSString *)domain isEqual:?]) != 0)
     {
-      v7 = *(a3 + 32);
+      v7 = *(equal + 32);
       if (*&self->_has)
       {
-        if ((*(a3 + 32) & 1) == 0 || self->_code != *(a3 + 2))
+        if ((*(equal + 32) & 1) == 0 || self->_code != *(equal + 2))
         {
           goto LABEL_11;
         }
       }
 
-      else if (*(a3 + 32))
+      else if (*(equal + 32))
       {
 LABEL_11:
         LOBYTE(v5) = 0;
@@ -246,7 +246,7 @@ LABEL_11:
       }
 
       underlyingErrors = self->_underlyingErrors;
-      if (underlyingErrors | *(a3 + 3))
+      if (underlyingErrors | *(equal + 3))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)underlyingErrors isEqual:?];
@@ -278,17 +278,17 @@ LABEL_11:
   return v4 ^ v3 ^ [(NSMutableArray *)self->_underlyingErrors hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDMMCSError *)self setDomain:?];
   }
 
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_code = *(a3 + 2);
+    self->_code = *(from + 2);
     *&self->_has |= 1u;
   }
 
@@ -296,7 +296,7 @@ LABEL_11:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 3);
+  v5 = *(from + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

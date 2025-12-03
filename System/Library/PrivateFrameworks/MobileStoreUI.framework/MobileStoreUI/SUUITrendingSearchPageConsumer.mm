@@ -1,16 +1,16 @@
 @interface SUUITrendingSearchPageConsumer
-- (id)_pageWithDictionary:(id)a3;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)_pageWithDictionary:(id)dictionary;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SUUITrendingSearchPageConsumer
 
-- (id)_pageWithDictionary:(id)a3
+- (id)_pageWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SUUITrendingSearchPage);
-  v5 = [v3 objectForKey:@"header"];
+  v5 = [dictionaryCopy objectForKey:@"header"];
   v6 = 0x277CBE000uLL;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -23,13 +23,13 @@
     }
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v3 objectForKey:@"trendingSearches"];
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [dictionaryCopy objectForKey:@"trendingSearches"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v26 = v5;
-    v27 = v3;
+    v27 = dictionaryCopy;
     v28 = v4;
     v32 = 0u;
     v33 = 0u;
@@ -55,7 +55,7 @@ LABEL_8:
         }
 
         v17 = *(*(&v30 + 1) + 8 * v16);
-        if ([v8 count] > 9)
+        if ([array count] > 9)
         {
           break;
         }
@@ -77,7 +77,7 @@ LABEL_8:
               v23 = objc_alloc_init(SUUITrendingSearch);
               [(SUUITrendingSearch *)v23 setTerm:v18];
               [(SUUITrendingSearch *)v23 setURLString:v19];
-              [v8 addObject:v23];
+              [array addObject:v23];
 
               v14 = v22;
               v6 = v21;
@@ -100,21 +100,21 @@ LABEL_8:
       }
     }
 
-    v3 = v27;
+    dictionaryCopy = v27;
     v4 = v28;
     v9 = v25;
     v5 = v26;
   }
 
-  [(SUUITrendingSearchPage *)v4 setSearches:v8];
+  [(SUUITrendingSearchPage *)v4 setSearches:array];
 
   return v4;
 }
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
   v12 = 0;
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v12];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v12];
   v8 = v12;
   objc_opt_class();
   v9 = 0;
@@ -123,10 +123,10 @@ LABEL_8:
     v9 = [(SUUITrendingSearchPageConsumer *)self _pageWithDictionary:v7];
   }
 
-  if (a5 && !v9)
+  if (error && !v9)
   {
     v10 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
   return v9;

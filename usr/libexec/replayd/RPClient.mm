@@ -1,56 +1,56 @@
 @interface RPClient
 - ($115C4C562B26FF47E01F9F4EA65B5887)attributedAuditToken;
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientConnectionAuditToken;
-- (RPClient)initWithConnection:(id)a3 clientProxy:(id)a4 bundleIdentifier:(id)a5;
-- (unint64_t)getSaveToDestination:(id)a3;
-- (void)beginPrivacyAccountingIntervalwithSource:(id)a3 withDestination:(id)a4;
+- (RPClient)initWithConnection:(id)connection clientProxy:(id)proxy bundleIdentifier:(id)identifier;
+- (unint64_t)getSaveToDestination:(id)destination;
+- (void)beginPrivacyAccountingIntervalwithSource:(id)source withDestination:(id)destination;
 - (void)dealloc;
-- (void)discardInAppRecordingWithHandler:(id)a3;
+- (void)discardInAppRecordingWithHandler:(id)handler;
 - (void)endPrivacyAccountingInterval;
-- (void)exportClipToURL:(id)a3 duration:(double)a4 completionHandler:(id)a5;
+- (void)exportClipToURL:(id)l duration:(double)duration completionHandler:(id)handler;
 - (void)handleMemoryWarningForCurrentActiveSession;
 - (void)invalidate;
-- (void)notifyClientWithOutputURL:(id)a3 error:(id)a4 withHandler:(id)a5;
+- (void)notifyClientWithOutputURL:(id)l error:(id)error withHandler:(id)handler;
 - (void)pauseCurrentActiveSession;
 - (void)pauseHQLRRecording;
 - (void)pauseInAppBroadcast;
 - (void)pauseInAppCapture;
 - (void)pauseInAppClip;
 - (void)pauseInAppRecording;
-- (void)reportCameraUsage:(int64_t)a3;
-- (void)resumeCurrentActiveSessionWithContextID:(id)a3 completionHandler:(id)a4;
-- (void)resumeHQLRSessionWithCompletionHandler:(id)a3;
-- (void)resumeInAppBroadcastWithContextID:(id)a3 completionHandler:(id)a4;
-- (void)resumeInAppCaptureWithContextID:(id)a3 completionHandler:(id)a4;
-- (void)resumeInAppClipWithContextID:(id)a3 completionHandler:(id)a4;
-- (void)resumeInAppRecordingWithContextID:(id)a3 completionHandler:(id)a4;
-- (void)resumeSystemBroadcastWithCompletionHandler:(id)a3;
-- (void)resumeSystemRecordingWithCompletionHandler:(id)a3;
-- (void)setAttributedAuditToken:(id *)a3;
-- (void)setClientConnectionAuditToken:(id *)a3;
-- (void)setClientPID:(int)a3;
-- (void)setupInAppBroadcastExtensionBundleID:(id)a3 broadcastConfigurationData:(id)a4 userInfo:(id)a5 handler:(id)a6;
-- (void)setupSystemBroadcastWithHostBundleID:(id)a3 broadcastExtensionBundleID:(id)a4 broadcastConfigurationData:(id)a5 userInfo:(id)a6 handler:(id)a7;
-- (void)startHQLRWithSessionInfo:(id)a3 windowSize:(CGSize)a4 handler:(id)a5;
-- (void)stopCurrentActiveSessionWithHandler:(id)a3;
-- (void)stopHQLRSessionWithHandler:(id)a3;
-- (void)stopInAppBroadcastSessionWithHandler:(id)a3;
-- (void)stopInAppCaptureSessionWithHandler:(id)a3;
-- (void)stopInAppClipSessionWithHandler:(id)a3;
-- (void)stopInAppRecordingSessionWithHandler:(id)a3;
-- (void)stopSystemBroadcastSessionWithHandler:(id)a3;
-- (void)stopSystemRecordingSessionWithHandler:(id)a3;
-- (void)stopSystemRecordingSessionWithURLHandler:(id)a3;
-- (void)updateBroadcastURL:(id)a3;
+- (void)reportCameraUsage:(int64_t)usage;
+- (void)resumeCurrentActiveSessionWithContextID:(id)d completionHandler:(id)handler;
+- (void)resumeHQLRSessionWithCompletionHandler:(id)handler;
+- (void)resumeInAppBroadcastWithContextID:(id)d completionHandler:(id)handler;
+- (void)resumeInAppCaptureWithContextID:(id)d completionHandler:(id)handler;
+- (void)resumeInAppClipWithContextID:(id)d completionHandler:(id)handler;
+- (void)resumeInAppRecordingWithContextID:(id)d completionHandler:(id)handler;
+- (void)resumeSystemBroadcastWithCompletionHandler:(id)handler;
+- (void)resumeSystemRecordingWithCompletionHandler:(id)handler;
+- (void)setAttributedAuditToken:(id *)token;
+- (void)setClientConnectionAuditToken:(id *)token;
+- (void)setClientPID:(int)d;
+- (void)setupInAppBroadcastExtensionBundleID:(id)d broadcastConfigurationData:(id)data userInfo:(id)info handler:(id)handler;
+- (void)setupSystemBroadcastWithHostBundleID:(id)d broadcastExtensionBundleID:(id)iD broadcastConfigurationData:(id)data userInfo:(id)info handler:(id)handler;
+- (void)startHQLRWithSessionInfo:(id)info windowSize:(CGSize)size handler:(id)handler;
+- (void)stopCurrentActiveSessionWithHandler:(id)handler;
+- (void)stopHQLRSessionWithHandler:(id)handler;
+- (void)stopInAppBroadcastSessionWithHandler:(id)handler;
+- (void)stopInAppCaptureSessionWithHandler:(id)handler;
+- (void)stopInAppClipSessionWithHandler:(id)handler;
+- (void)stopInAppRecordingSessionWithHandler:(id)handler;
+- (void)stopSystemBroadcastSessionWithHandler:(id)handler;
+- (void)stopSystemRecordingSessionWithHandler:(id)handler;
+- (void)stopSystemRecordingSessionWithURLHandler:(id)handler;
+- (void)updateBroadcastURL:(id)l;
 @end
 
 @implementation RPClient
 
-- (RPClient)initWithConnection:(id)a3 clientProxy:(id)a4 bundleIdentifier:(id)a5
+- (RPClient)initWithConnection:(id)connection clientProxy:(id)proxy bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = RPClient;
   v11 = [(RPClient *)&v26 init];
@@ -67,12 +67,12 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
     }
 
-    [v11 setClientProxy:v9];
-    [v11 setClientBundleID:v10];
-    [v11 setClientPID:{objc_msgSend(v8, "processIdentifier")}];
-    if (v8)
+    [v11 setClientProxy:proxyCopy];
+    [v11 setClientBundleID:identifierCopy];
+    [v11 setClientPID:{objc_msgSend(connectionCopy, "processIdentifier")}];
+    if (connectionCopy)
     {
-      [v8 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -80,7 +80,7 @@
       memset(buf, 0, 32);
     }
 
-    v12 = [SCProcessUtility hostApplicationWithAuditToken:buf bundleID:v10];
+    v12 = [SCProcessUtility hostApplicationWithAuditToken:buf bundleID:identifierCopy];
     [v11 setClientMainBundleID:v12];
 
     v13 = *(v11 + 1);
@@ -105,13 +105,13 @@
     *(v11 + 7) = 0;
 
     *(v11 + 16) = 0;
-    if (v8)
+    if (connectionCopy)
     {
-      [v8 auditToken];
+      [connectionCopy auditToken];
       v20 = *&buf[16];
       *(v11 + 120) = *buf;
       *(v11 + 136) = v20;
-      [v8 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -144,7 +144,7 @@
     v5 = 1024;
     v6 = 167;
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v3, 0x1Cu);
   }
 
@@ -166,7 +166,7 @@
     v6 = 1024;
     v7 = 188;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -175,7 +175,7 @@
   [(RPClient *)&v3 dealloc];
 }
 
-- (void)setClientPID:(int)a3
+- (void)setClientPID:(int)d
 {
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -186,7 +186,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v5, 0x12u);
   }
 
-  self->_clientPID = a3;
+  self->_clientPID = d;
 }
 
 - (void)pauseCurrentActiveSession
@@ -255,8 +255,8 @@ LABEL_18:
       v5 = 8;
 LABEL_24:
       [*(&self->super.isa + v5) pauseSession];
-      v6 = [(RPClient *)self clientProxy];
-      [v6 recordingDidPause];
+      clientProxy = [(RPClient *)self clientProxy];
+      [clientProxy recordingDidPause];
 
       return;
     }
@@ -274,7 +274,7 @@ LABEL_24:
   }
 }
 
-- (void)reportCameraUsage:(int64_t)a3
+- (void)reportCameraUsage:(int64_t)usage
 {
   currentActiveSession = self->_currentActiveSession;
   if (currentActiveSession > 3)
@@ -324,7 +324,7 @@ LABEL_24:
 
 LABEL_21:
 
-    [systemBroadcastSession sessionReportCameraUsage:a3];
+    [systemBroadcastSession sessionReportCameraUsage:usage];
     return;
   }
 
@@ -349,10 +349,10 @@ LABEL_21:
   }
 }
 
-- (void)resumeCurrentActiveSessionWithContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeCurrentActiveSessionWithContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     currentActiveSession = self->_currentActiveSession;
@@ -372,7 +372,7 @@ LABEL_21:
     {
       if (v9 == 1)
       {
-        [(RPClient *)self resumeInAppCaptureWithContextID:v6 completionHandler:v7];
+        [(RPClient *)self resumeInAppCaptureWithContextID:dCopy completionHandler:handlerCopy];
       }
     }
 
@@ -387,10 +387,10 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d We don't have a current active session to resume, returning", &v11, 0x12u);
       }
 
-      if (v7)
+      if (handlerCopy)
       {
         v10 = [NSError _rpUserErrorForCode:-5832 userInfo:0];
-        (*(v7 + 2))(v7, v10, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, v10, 0, 0);
       }
     }
   }
@@ -400,24 +400,24 @@ LABEL_21:
     switch(v9)
     {
       case 4:
-        [(RPClient *)self resumeInAppClipWithContextID:v6 completionHandler:v7];
+        [(RPClient *)self resumeInAppClipWithContextID:dCopy completionHandler:handlerCopy];
         break;
       case 3:
-        [(RPClient *)self resumeInAppBroadcastWithContextID:v6 completionHandler:v7];
+        [(RPClient *)self resumeInAppBroadcastWithContextID:dCopy completionHandler:handlerCopy];
         break;
       case 2:
-        [(RPClient *)self resumeInAppRecordingWithContextID:v6 completionHandler:v7];
+        [(RPClient *)self resumeInAppRecordingWithContextID:dCopy completionHandler:handlerCopy];
         break;
     }
   }
 }
 
-- (void)notifyClientWithOutputURL:(id)a3 error:(id)a4 withHandler:(id)a5
+- (void)notifyClientWithOutputURL:(id)l error:(id)error withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  lCopy = l;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -436,22 +436,22 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d stop session success, notifying client of session stoppped", &v13, 0x12u);
     }
 
-    v11 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     v12 = [NSError _rpUserErrorForCode:-5806 userInfo:0];
-    [v11 recordingDidStopWithError:v12 movieURL:v8];
+    [clientProxy recordingDidStopWithError:v12 movieURL:lCopy];
 
     self->_currentActiveSession = 0;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, v9 == 0);
+    handlerCopy[2](handlerCopy, errorCopy == 0);
   }
 }
 
-- (void)stopCurrentActiveSessionWithHandler:(id)a3
+- (void)stopCurrentActiveSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -459,7 +459,7 @@ LABEL_21:
     v23 = 1024;
     v24 = 372;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -475,7 +475,7 @@ LABEL_21:
         v13[2] = sub_10003A03C;
         v13[3] = &unk_1000A1840;
         v13[4] = self;
-        v14 = v4;
+        v14 = handlerCopy;
         [(RPClient *)self stopInAppClipSessionWithHandler:v13];
         v6 = v14;
       }
@@ -487,7 +487,7 @@ LABEL_21:
         v11[2] = sub_10003A050;
         v11[3] = &unk_1000A1840;
         v11[4] = self;
-        v12 = v4;
+        v12 = handlerCopy;
         [(RPClient *)self stopSystemRecordingSessionWithHandler:v11];
         v6 = v12;
       }
@@ -502,7 +502,7 @@ LABEL_21:
       v9[2] = sub_10003A064;
       v9[3] = &unk_1000A1840;
       v9[4] = self;
-      v10 = v4;
+      v10 = handlerCopy;
       [(RPClient *)self stopSystemBroadcastSessionWithHandler:v9];
       v6 = v10;
       goto LABEL_25;
@@ -515,7 +515,7 @@ LABEL_21:
       v7[2] = sub_10003A078;
       v7[3] = &unk_1000A1840;
       v7[4] = self;
-      v8 = v4;
+      v8 = handlerCopy;
       [(RPClient *)self stopHQLRSessionWithHandler:v7];
       v6 = v8;
       goto LABEL_25;
@@ -533,7 +533,7 @@ LABEL_21:
       v19[2] = sub_10003A000;
       v19[3] = &unk_1000A1868;
       v19[4] = self;
-      v20 = v4;
+      v20 = handlerCopy;
       [(RPClient *)self stopInAppRecordingSessionWithHandler:v19];
       v6 = v20;
     }
@@ -545,7 +545,7 @@ LABEL_21:
       v15[2] = sub_10003A028;
       v15[3] = &unk_1000A1840;
       v15[4] = self;
-      v16 = v4;
+      v16 = handlerCopy;
       [(RPClient *)self stopInAppBroadcastSessionWithHandler:v15];
       v6 = v16;
     }
@@ -562,7 +562,7 @@ LABEL_21:
       v17[2] = sub_10003A014;
       v17[3] = &unk_1000A1840;
       v17[4] = self;
-      v18 = v4;
+      v18 = handlerCopy;
       [(RPClient *)self stopInAppCaptureSessionWithHandler:v17];
       v6 = v18;
 LABEL_25:
@@ -588,17 +588,17 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d We don't have a current active session to stop", buf, 0x12u);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
 LABEL_26:
 }
 
-- (void)stopInAppRecordingSessionWithHandler:(id)a3
+- (void)stopInAppRecordingSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -614,8 +614,8 @@ LABEL_26:
   v7[2] = sub_10003A664;
   v7[3] = &unk_1000A1868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPRecordSession *)recordSession stopRecordingWithHandler:v7];
 }
 
@@ -633,10 +633,10 @@ LABEL_26:
   [(RPRecordSession *)self->_recordSession pauseSession];
 }
 
-- (void)resumeInAppRecordingWithContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeInAppRecordingWithContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -652,14 +652,14 @@ LABEL_26:
   v10[2] = sub_10003A93C;
   v10[3] = &unk_1000A1840;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [(RPSession *)recordSession resumeSessionWithWindowLayerContextID:v6 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(RPSession *)recordSession resumeSessionWithWindowLayerContextID:dCopy completionHandler:v10];
 }
 
-- (void)discardInAppRecordingWithHandler:(id)a3
+- (void)discardInAppRecordingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -674,14 +674,14 @@ LABEL_26:
   v7[1] = 3221225472;
   v7[2] = sub_10003AC3C;
   v7[3] = &unk_1000A1F28;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPRecordSession *)recordSession discardInAppRecordingWithHandler:v7];
 }
 
-- (void)stopInAppCaptureSessionWithHandler:(id)a3
+- (void)stopInAppCaptureSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -697,8 +697,8 @@ LABEL_26:
   v7[2] = sub_10003B1F8;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPCaptureSession *)captureSession stopCaptureWithHandler:v7];
 }
 
@@ -716,10 +716,10 @@ LABEL_26:
   [(RPCaptureSession *)self->_captureSession pauseSession];
 }
 
-- (void)resumeInAppCaptureWithContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeInAppCaptureWithContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -735,17 +735,17 @@ LABEL_26:
   v10[2] = sub_10003B4B4;
   v10[3] = &unk_1000A1840;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [(RPSession *)captureSession resumeSessionWithWindowLayerContextID:v6 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(RPSession *)captureSession resumeSessionWithWindowLayerContextID:dCopy completionHandler:v10];
 }
 
-- (void)setupInAppBroadcastExtensionBundleID:(id)a3 broadcastConfigurationData:(id)a4 userInfo:(id)a5 handler:(id)a6
+- (void)setupInAppBroadcastExtensionBundleID:(id)d broadcastConfigurationData:(id)data userInfo:(id)info handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dataCopy = data;
+  infoCopy = info;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 136446466;
@@ -758,10 +758,10 @@ LABEL_26:
   broadcastSession = self->_broadcastSession;
   if (broadcastSession)
   {
-    v15 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     clientPID = self->_clientPID;
-    v17 = [(RPClient *)self clientBundleID];
-    [(RPSession *)broadcastSession updateClientProxy:v15 callingPID:clientPID bundleID:v17];
+    clientBundleID = [(RPClient *)self clientBundleID];
+    [(RPSession *)broadcastSession updateClientProxy:clientProxy callingPID:clientPID bundleID:clientBundleID];
   }
 
   else
@@ -776,10 +776,10 @@ LABEL_26:
     }
 
     v18 = [RPBroadcastSession alloc];
-    v15 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     v19 = self->_clientPID;
-    v17 = [(RPClient *)self clientBundleID];
-    v20 = [(RPBroadcastSession *)v18 initWithClientProxy:v15 callingPID:v19 bundleID:v17 delegate:self];
+    clientBundleID = [(RPClient *)self clientBundleID];
+    v20 = [(RPBroadcastSession *)v18 initWithClientProxy:clientProxy callingPID:v19 bundleID:clientBundleID delegate:self];
     v21 = self->_broadcastSession;
     self->_broadcastSession = v20;
   }
@@ -794,13 +794,13 @@ LABEL_26:
   }
 
   v22 = self->_broadcastSession;
-  v23 = [(RPClient *)self clientBundleID];
-  [(RPBroadcastSession *)v22 setupBroadcastWithHostBundleID:v23 broadcastExtensionBundleID:v10 broadcastConfigurationData:v11 userInfo:v12 handler:v13];
+  clientBundleID2 = [(RPClient *)self clientBundleID];
+  [(RPBroadcastSession *)v22 setupBroadcastWithHostBundleID:clientBundleID2 broadcastExtensionBundleID:dCopy broadcastConfigurationData:dataCopy userInfo:infoCopy handler:handlerCopy];
 }
 
-- (void)stopInAppBroadcastSessionWithHandler:(id)a3
+- (void)stopInAppBroadcastSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -816,8 +816,8 @@ LABEL_26:
   v7[2] = sub_10003BDBC;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPBroadcastSession *)broadcastSession stopBroadcastWithHandler:v7];
 }
 
@@ -835,22 +835,22 @@ LABEL_26:
   [(RPBroadcastSession *)self->_broadcastSession pauseSession];
 }
 
-- (void)updateBroadcastURL:(id)a3
+- (void)updateBroadcastURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   broadcastSession = self->_broadcastSession;
   if (broadcastSession || (broadcastSession = self->_systemBroadcastSession) != 0)
   {
-    [broadcastSession updateBroadcastURL:v4];
+    [broadcastSession updateBroadcastURL:lCopy];
   }
 
   _objc_release_x1();
 }
 
-- (void)resumeInAppBroadcastWithContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeInAppBroadcastWithContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -866,14 +866,14 @@ LABEL_26:
   v10[2] = sub_10003C0D8;
   v10[3] = &unk_1000A1840;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [(RPBroadcastSession *)broadcastSession resumeSessionWithWindowLayerContextID:v6 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(RPBroadcastSession *)broadcastSession resumeSessionWithWindowLayerContextID:dCopy completionHandler:v10];
 }
 
-- (void)stopInAppClipSessionWithHandler:(id)a3
+- (void)stopInAppClipSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -889,8 +889,8 @@ LABEL_26:
   v7[2] = sub_10003C774;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPClipSession *)clipSession stopClipWithHandler:v7];
 }
 
@@ -908,10 +908,10 @@ LABEL_26:
   [(RPClipSession *)self->_clipSession pauseSession];
 }
 
-- (void)resumeInAppClipWithContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeInAppClipWithContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -927,15 +927,15 @@ LABEL_26:
   v10[2] = sub_10003CA30;
   v10[3] = &unk_1000A1840;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
-  [(RPSession *)clipSession resumeSessionWithWindowLayerContextID:v6 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(RPSession *)clipSession resumeSessionWithWindowLayerContextID:dCopy completionHandler:v10];
 }
 
-- (void)exportClipToURL:(id)a3 duration:(double)a4 completionHandler:(id)a5
+- (void)exportClipToURL:(id)l duration:(double)duration completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -950,14 +950,14 @@ LABEL_26:
   v12[1] = 3221225472;
   v12[2] = sub_10003CD5C;
   v12[3] = &unk_1000A11B8;
-  v13 = v9;
-  v11 = v9;
-  [(RPClipSession *)clipSession exportClipToURL:v8 duration:v12 completionHandler:a4];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(RPClipSession *)clipSession exportClipToURL:lCopy duration:v12 completionHandler:duration];
 }
 
-- (void)stopSystemRecordingSessionWithHandler:(id)a3
+- (void)stopSystemRecordingSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -973,14 +973,14 @@ LABEL_26:
   v7[2] = sub_10003D3A0;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPSystemRecordSession *)systemRecordSession stopSystemRecordingWithHandler:v7];
 }
 
-- (void)stopSystemRecordingSessionWithURLHandler:(id)a3
+- (void)stopSystemRecordingSessionWithURLHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -996,14 +996,14 @@ LABEL_26:
   v7[2] = sub_10003D574;
   v7[3] = &unk_1000A1868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPSystemRecordSession *)systemRecordSession stopSystemRecordingWithURLHandler:v7];
 }
 
-- (void)resumeSystemRecordingWithCompletionHandler:(id)a3
+- (void)resumeSystemRecordingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1019,18 +1019,18 @@ LABEL_26:
   v7[2] = sub_10003D76C;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPSession *)systemRecordSession resumeSessionWithWindowLayerContextID:@"-1" completionHandler:v7];
 }
 
-- (void)setupSystemBroadcastWithHostBundleID:(id)a3 broadcastExtensionBundleID:(id)a4 broadcastConfigurationData:(id)a5 userInfo:(id)a6 handler:(id)a7
+- (void)setupSystemBroadcastWithHostBundleID:(id)d broadcastExtensionBundleID:(id)iD broadcastConfigurationData:(id)data userInfo:(id)info handler:(id)handler
 {
-  v26 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
+  infoCopy = info;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1043,10 +1043,10 @@ LABEL_26:
   systemBroadcastSession = self->_systemBroadcastSession;
   if (systemBroadcastSession)
   {
-    v17 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     clientPID = self->_clientPID;
-    v19 = [(RPClient *)self clientBundleID];
-    [(RPSession *)systemBroadcastSession updateClientProxy:v17 callingPID:clientPID bundleID:v19];
+    clientBundleID = [(RPClient *)self clientBundleID];
+    [(RPSession *)systemBroadcastSession updateClientProxy:clientProxy callingPID:clientPID bundleID:clientBundleID];
   }
 
   else
@@ -1061,10 +1061,10 @@ LABEL_26:
     }
 
     v20 = [RPSystemBroadcastSession alloc];
-    v17 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     v21 = self->_clientPID;
-    v19 = [(RPClient *)self clientBundleID];
-    v22 = [(RPSystemBroadcastSession *)v20 initWithClientProxy:v17 callingPID:v21 bundleID:v19 delegate:self];
+    clientBundleID = [(RPClient *)self clientBundleID];
+    v22 = [(RPSystemBroadcastSession *)v20 initWithClientProxy:clientProxy callingPID:v21 bundleID:clientBundleID delegate:self];
     v23 = self->_systemBroadcastSession;
     self->_systemBroadcastSession = v22;
   }
@@ -1079,13 +1079,13 @@ LABEL_26:
   }
 
   v24 = self->_systemBroadcastSession;
-  v25 = [(RPClient *)self clientBundleID];
-  [(RPSystemBroadcastSession *)v24 setupSystemBroadcastWithHostBundleID:v25 broadcastExtensionBundleID:v12 broadcastConfigurationData:v13 userInfo:v14 handler:v15];
+  clientBundleID2 = [(RPClient *)self clientBundleID];
+  [(RPSystemBroadcastSession *)v24 setupSystemBroadcastWithHostBundleID:clientBundleID2 broadcastExtensionBundleID:iDCopy broadcastConfigurationData:dataCopy userInfo:infoCopy handler:handlerCopy];
 }
 
-- (void)stopSystemBroadcastSessionWithHandler:(id)a3
+- (void)stopSystemBroadcastSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1101,14 +1101,14 @@ LABEL_26:
   v7[2] = sub_10003DFBC;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPSystemBroadcastSession *)systemBroadcastSession stopSystemBroadcastWithHandler:v7];
 }
 
-- (void)resumeSystemBroadcastWithCompletionHandler:(id)a3
+- (void)resumeSystemBroadcastWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1124,35 +1124,35 @@ LABEL_26:
   v7[2] = sub_10003E198;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPSystemBroadcastSession *)systemBroadcastSession resumeSessionWithWindowLayerContextID:@"-1" completionHandler:v7];
 }
 
-- (unint64_t)getSaveToDestination:(id)a3
+- (unint64_t)getSaveToDestination:(id)destination
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.replaykit.photos"])
+  destinationCopy = destination;
+  if ([destinationCopy isEqualToString:@"com.apple.replaykit.photos"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.replaykit.saveToFiles"])
+  else if ([destinationCopy isEqualToString:@"com.apple.replaykit.saveToFiles"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.replaykit.saveToVoiceMemos"])
+  else if ([destinationCopy isEqualToString:@"com.apple.replaykit.saveToVoiceMemos"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.replaykit.saveToNotes"])
+  else if ([destinationCopy isEqualToString:@"com.apple.replaykit.saveToNotes"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.replaykit.saveToURL"])
+  else if ([destinationCopy isEqualToString:@"com.apple.replaykit.saveToURL"])
   {
     v4 = 4;
   }
@@ -1165,12 +1165,12 @@ LABEL_26:
   return v4;
 }
 
-- (void)startHQLRWithSessionInfo:(id)a3 windowSize:(CGSize)a4 handler:(id)a5
+- (void)startHQLRWithSessionInfo:(id)info windowSize:(CGSize)size handler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v30 = a5;
+  height = size.height;
+  width = size.width;
+  infoCopy = info;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1197,10 +1197,10 @@ LABEL_26:
       hqlrRecordingSession = self->_hqlrRecordingSession;
     }
 
-    v11 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     clientPID = self->_clientPID;
-    v13 = [(RPClient *)self clientBundleID];
-    [(RPSession *)hqlrRecordingSession updateClientProxy:v11 callingPID:clientPID bundleID:v13];
+    clientBundleID = [(RPClient *)self clientBundleID];
+    [(RPSession *)hqlrRecordingSession updateClientProxy:clientProxy callingPID:clientPID bundleID:clientBundleID];
   }
 
   else
@@ -1215,29 +1215,29 @@ LABEL_26:
     }
 
     v14 = [RPHighQualityLocalRecordingSession alloc];
-    v11 = [(RPClient *)self clientProxy];
+    clientProxy = [(RPClient *)self clientProxy];
     v15 = self->_clientPID;
-    v13 = [(RPClient *)self clientBundleID];
-    v16 = [(RPSession *)v14 initWithClientProxy:v11 sessionType:8 callingPID:v15 bundleID:v13 delegate:self];
+    clientBundleID = [(RPClient *)self clientBundleID];
+    v16 = [(RPSession *)v14 initWithClientProxy:clientProxy sessionType:8 callingPID:v15 bundleID:clientBundleID delegate:self];
     v17 = self->_hqlrRecordingSession;
     self->_hqlrRecordingSession = v16;
   }
 
-  v18 = [v9 objectForKeyedSubscript:@"saveToDestination"];
+  v18 = [infoCopy objectForKeyedSubscript:@"saveToDestination"];
   v19 = [(RPClient *)self getSaveToDestination:v18];
 
-  v20 = [v9 objectForKeyedSubscript:@"cameraDeviceID"];
-  v21 = [v9 objectForKeyedSubscript:@"microphoneDeviceID"];
-  v22 = [v9 objectForKeyedSubscript:@"audioOnly"];
-  v23 = [v22 BOOLValue];
+  v20 = [infoCopy objectForKeyedSubscript:@"cameraDeviceID"];
+  v21 = [infoCopy objectForKeyedSubscript:@"microphoneDeviceID"];
+  v22 = [infoCopy objectForKeyedSubscript:@"audioOnly"];
+  bOOLValue = [v22 BOOLValue];
 
   if (v19 == 4)
   {
     v24 = [NSURL alloc];
-    v25 = [v9 objectForKeyedSubscript:@"fileURL"];
+    v25 = [infoCopy objectForKeyedSubscript:@"fileURL"];
     v26 = [v24 initWithString:v25];
 
-    v27 = [v9 objectForKeyedSubscript:@"hqlrSandboxTokenForFileURL"];
+    v27 = [infoCopy objectForKeyedSubscript:@"hqlrSandboxTokenForFileURL"];
   }
 
   else
@@ -1252,14 +1252,14 @@ LABEL_26:
   v31[2] = sub_10003E798;
   v31[3] = &unk_1000A1840;
   v31[4] = self;
-  v32 = v30;
-  v29 = v30;
-  [(RPHighQualityLocalRecordingSession *)v28 startHQLRRecordingWithMicrophoneID:v21 cameraDeviceID:v20 destination:v19 fileURL:v26 sandboxExtensionTokenForFileURL:v27 audioOnly:v23 windowSize:width handler:height, v31];
+  v32 = handlerCopy;
+  v29 = handlerCopy;
+  [(RPHighQualityLocalRecordingSession *)v28 startHQLRRecordingWithMicrophoneID:v21 cameraDeviceID:v20 destination:v19 fileURL:v26 sandboxExtensionTokenForFileURL:v27 audioOnly:bOOLValue windowSize:width handler:height, v31];
 }
 
-- (void)stopHQLRSessionWithHandler:(id)a3
+- (void)stopHQLRSessionWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1275,8 +1275,8 @@ LABEL_26:
   v7[2] = sub_10003E994;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPHighQualityLocalRecordingSession *)hqlrRecordingSession stopHQLRRecordingWithHandler:v7];
 }
 
@@ -1294,9 +1294,9 @@ LABEL_26:
   [(RPHighQualityLocalRecordingSession *)self->_hqlrRecordingSession pauseSession];
 }
 
-- (void)resumeHQLRSessionWithCompletionHandler:(id)a3
+- (void)resumeHQLRSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -1312,8 +1312,8 @@ LABEL_26:
   v7[2] = sub_10003EC38;
   v7[3] = &unk_1000A1840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(RPSession *)hqlrRecordingSession resumeSessionWithWindowLayerContextID:@"-1" completionHandler:v7];
 }
 
@@ -1399,17 +1399,17 @@ LABEL_22:
   }
 }
 
-- (void)beginPrivacyAccountingIntervalwithSource:(id)a3 withDestination:(id)a4
+- (void)beginPrivacyAccountingIntervalwithSource:(id)source withDestination:(id)destination
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  sourceCopy = source;
+  destinationCopy = destination;
+  if (destinationCopy)
   {
-    v8 = [PAApplication applicationWithType:0 identifier:v7];
-    if (v6)
+    v8 = [PAApplication applicationWithType:0 identifier:destinationCopy];
+    if (sourceCopy)
     {
 LABEL_3:
-      v9 = [PAApplication applicationWithType:0 identifier:v6];
+      v9 = [PAApplication applicationWithType:0 identifier:sourceCopy];
       v10 = +[PAAccessLogger sharedInstance];
       v11 = [PAReplayKitAccess accessWithAccessor:v9 fromBroadcaster:v8];
       v12 = [v10 beginIntervalForAccess:v11];
@@ -1423,7 +1423,7 @@ LABEL_3:
   else
   {
     v8 = 0;
-    if (v6)
+    if (sourceCopy)
     {
       goto LABEL_3;
     }
@@ -1456,10 +1456,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setClientConnectionAuditToken:(id *)a3
+- (void)setClientConnectionAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_clientConnectionAuditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_clientConnectionAuditToken.val[4] = *&token->var0[4];
   *self->_clientConnectionAuditToken.val = v3;
 }
 
@@ -1471,10 +1471,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setAttributedAuditToken:(id *)a3
+- (void)setAttributedAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_attributedAuditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_attributedAuditToken.val[4] = *&token->var0[4];
   *self->_attributedAuditToken.val = v3;
 }
 

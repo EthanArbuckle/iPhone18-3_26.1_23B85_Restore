@@ -1,39 +1,39 @@
 @interface GKDashboardChallengePlayerPickerDataSource
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (GKDashboardChallengePlayerPickerDataSource)initWithChallenge:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (GKDashboardChallengePlayerPickerDataSource)initWithChallenge:(id)challenge;
 - (NSArray)selectedPlayers;
-- (id)addInvitedFriendContactIdentifier:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)addInvitedFriendContactIdentifier:(id)identifier;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)currentPlayers;
-- (id)headerTextForSection:(int64_t)a3;
-- (id)indexPathForPlayer:(id)a3;
-- (id)playerForIndexPath:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)headerTextForSection:(int64_t)section;
+- (id)indexPathForPlayer:(id)player;
+- (id)playerForIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)friendSuggestionsCount;
 - (int64_t)itemCount;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)clearSelection;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)loadDataWithCompletionHandler:(id)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)loadDataWithCompletionHandler:(id)handler;
 - (void)searchTextHasChanged;
-- (void)setupCollectionView:(id)a3;
+- (void)setupCollectionView:(id)view;
 @end
 
 @implementation GKDashboardChallengePlayerPickerDataSource
 
-- (GKDashboardChallengePlayerPickerDataSource)initWithChallenge:(id)a3
+- (GKDashboardChallengePlayerPickerDataSource)initWithChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   v9.receiver = self;
   v9.super_class = GKDashboardChallengePlayerPickerDataSource;
   v5 = [(GKCollectionDataSource *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(GKDashboardChallengePlayerPickerDataSource *)v5 setChallenge:v4];
+    [(GKDashboardChallengePlayerPickerDataSource *)v5 setChallenge:challengeCopy];
     [(GKCollectionDataSource *)v6 setUseStandardHeaders:1];
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(GKDashboardChallengePlayerPickerDataSource *)v6 setInvitedFriendContactIdentifiers:v7];
@@ -42,24 +42,24 @@
   return v6;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
   v6.receiver = self;
   v6.super_class = GKDashboardChallengePlayerPickerDataSource;
-  v3 = a3;
-  [(GKCollectionDataSource *)&v6 setupCollectionView:v3];
+  viewCopy = view;
+  [(GKCollectionDataSource *)&v6 setupCollectionView:viewCopy];
   v4 = [GKChallengeListViewSectionHeader _gkNib:v6.receiver];
-  [v3 registerNib:v4 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"GKCollectionDataSourceHeader"];
+  [viewCopy registerNib:v4 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"GKCollectionDataSourceHeader"];
   v5 = +[GKChallengePlayerPickerCell];
-  [v3 registerNib:v5 forCellWithReuseIdentifier:@"friendCell"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"friendSuggestionCell"];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"inviteFriendButtonCell"];
-  [v3 setAllowsMultipleSelection:1];
+  [viewCopy registerNib:v5 forCellWithReuseIdentifier:@"friendCell"];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"friendSuggestionCell"];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"inviteFriendButtonCell"];
+  [viewCopy setAllowsMultipleSelection:1];
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277D0C020];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKDashboardChallengePlayerPickerDataSource.m", 122, "-[GKDashboardChallengePlayerPickerDataSource loadDataWithCompletionHandler:]"];
   v7 = [v5 dispatchGroupWithName:v6];
@@ -94,7 +94,7 @@
   v10[1] = 3221225472;
   v10[2] = __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletionHandler___block_invoke_71;
   v10[3] = &unk_27966A170;
-  v9 = v4;
+  v9 = handlerCopy;
   v11 = v9;
   v12 = v21;
   v13 = v19;
@@ -422,8 +422,8 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
 
 - (id)currentPlayers
 {
-  v3 = [(GKCollectionDataSource *)self searchText];
-  v4 = [v3 length];
+  searchText = [(GKCollectionDataSource *)self searchText];
+  v4 = [searchText length];
   v5 = &OBJC_IVAR___GKDashboardChallengePlayerPickerDataSource__searchPlayers;
   if (!v4)
   {
@@ -438,8 +438,8 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
 
 - (int64_t)itemCount
 {
-  v2 = [(GKDashboardChallengePlayerPickerDataSource *)self currentPlayers];
-  v3 = [v2 count];
+  currentPlayers = [(GKDashboardChallengePlayerPickerDataSource *)self currentPlayers];
+  v3 = [currentPlayers count];
 
   return v3;
 }
@@ -447,8 +447,8 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
 - (int64_t)friendSuggestionsCount
 {
   showingAllFriendSuggestions = self->_showingAllFriendSuggestions;
-  v3 = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
-  v4 = [v3 count];
+  suggestedFriends = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
+  v4 = [suggestedFriends count];
 
   v5 = 3;
   if (v4 < 3)
@@ -467,18 +467,18 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
   }
 }
 
-- (id)playerForIndexPath:(id)a3
+- (id)playerForIndexPath:(id)path
 {
-  v4 = [a3 item];
-  v5 = [(GKDashboardChallengePlayerPickerDataSource *)self currentPlayers];
-  if ([v5 count] <= v4)
+  item = [path item];
+  currentPlayers = [(GKDashboardChallengePlayerPickerDataSource *)self currentPlayers];
+  if ([currentPlayers count] <= item)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    v6 = [currentPlayers objectAtIndexedSubscript:item];
   }
 
   return v6;
@@ -487,7 +487,7 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
 - (NSArray)selectedPlayers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -509,13 +509,13 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
 
         v8 = *(*(&v15 + 1) + 8 * i);
         playerStates = self->_playerStates;
-        v10 = [v8 referenceKey];
-        v11 = [(NSMutableDictionary *)playerStates objectForKeyedSubscript:v10];
-        v12 = [v11 integerValue];
+        referenceKey = [v8 referenceKey];
+        v11 = [(NSMutableDictionary *)playerStates objectForKeyedSubscript:referenceKey];
+        integerValue = [v11 integerValue];
 
-        if (v12 == 1)
+        if (integerValue == 1)
         {
-          [v14 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -525,7 +525,7 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
     while (v5);
   }
 
-  return v14;
+  return array;
 }
 
 - (void)clearSelection
@@ -535,8 +535,8 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_playerStates allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_playerStates allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -547,33 +547,33 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_playerStates objectForKey:v8];
-        v10 = [v9 integerValue];
+        integerValue = [v9 integerValue];
 
-        if (v10 == 1)
+        if (integerValue == 1)
         {
           [(NSMutableDictionary *)self->_playerStates setObject:&unk_286188CD0 forKeyedSubscript:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)indexPathForPlayer:(id)a3
+- (id)indexPathForPlayer:(id)player
 {
-  if (a3)
+  if (player)
   {
-    v4 = a3;
-    v5 = [(GKDashboardChallengePlayerPickerDataSource *)self currentPlayers];
-    v6 = [v5 indexOfObject:v4];
+    playerCopy = player;
+    currentPlayers = [(GKDashboardChallengePlayerPickerDataSource *)self currentPlayers];
+    v6 = [currentPlayers indexOfObject:playerCopy];
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -596,12 +596,12 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
 
 - (void)searchTextHasChanged
 {
-  v3 = [(GKCollectionDataSource *)self searchText];
-  v4 = [v3 length];
+  searchText = [(GKCollectionDataSource *)self searchText];
+  v4 = [searchText length];
 
   if (v4)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = [(NSArray *)self->_players count];
     if (v5 >= 1)
     {
@@ -612,12 +612,12 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
         v9 = -[NSArray objectAtIndexedSubscript:](self->_players, "objectAtIndexedSubscript:", [v8 item]);
         if ([(GKCollectionDataSource *)self searchMatchesItem:v9 inSection:0])
         {
-          [v10 addObject:v9];
+          [array addObject:v9];
         }
       }
     }
 
-    [(GKDashboardChallengePlayerPickerDataSource *)self setSearchPlayers:v10];
+    [(GKDashboardChallengePlayerPickerDataSource *)self setSearchPlayers:array];
   }
 
   else
@@ -627,21 +627,21 @@ uint64_t __76__GKDashboardChallengePlayerPickerDataSource_loadDataWithCompletion
   }
 }
 
-- (id)addInvitedFriendContactIdentifier:(id)a3
+- (id)addInvitedFriendContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && (-[GKDashboardChallengePlayerPickerDataSource invitedFriendContactIdentifiers](self, "invitedFriendContactIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v4], v5, (v6 & 1) == 0))
+  identifierCopy = identifier;
+  if (identifierCopy && (-[GKDashboardChallengePlayerPickerDataSource invitedFriendContactIdentifiers](self, "invitedFriendContactIdentifiers"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:identifierCopy], v5, (v6 & 1) == 0))
   {
-    v8 = [(GKDashboardChallengePlayerPickerDataSource *)self invitedFriendContactIdentifiers];
-    [v8 addObject:v4];
+    invitedFriendContactIdentifiers = [(GKDashboardChallengePlayerPickerDataSource *)self invitedFriendContactIdentifiers];
+    [invitedFriendContactIdentifiers addObject:identifierCopy];
 
-    v9 = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
+    suggestedFriends = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __80__GKDashboardChallengePlayerPickerDataSource_addInvitedFriendContactIdentifier___block_invoke;
     v12[3] = &unk_27966A198;
-    v13 = v4;
-    v10 = [v9 indexOfObjectPassingTest:v12];
+    v13 = identifierCopy;
+    v10 = [suggestedFriends indexOfObjectPassingTest:v12];
 
     v7 = [MEMORY[0x277CCAA70] indexPathForItem:v10 inSection:1];
   }
@@ -663,7 +663,7 @@ uint64_t __80__GKDashboardChallengePlayerPickerDataSource_addInvitedFriendContac
   return v5;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   v4 = [&unk_286189700 mutableCopy];
   if ([(GKDashboardChallengePlayerPickerDataSource *)self showingFriendSuggestions])
@@ -676,30 +676,30 @@ uint64_t __80__GKDashboardChallengePlayerPickerDataSource_addInvitedFriendContac
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v7 = [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount]+ 1;
+    itemCount = [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount]+ 1;
   }
 
-  else if (a4)
+  else if (section)
   {
-    v7 = 0;
+    itemCount = 0;
   }
 
   else
   {
-    v7 = [(GKDashboardChallengePlayerPickerDataSource *)self itemCount];
+    itemCount = [(GKDashboardChallengePlayerPickerDataSource *)self itemCount];
   }
 
-  return v7;
+  return itemCount;
 }
 
-- (id)headerTextForSection:(int64_t)a3
+- (id)headerTextForSection:(int64_t)section
 {
-  if (a3 > 1)
+  if (section > 1)
   {
     v4 = 0;
   }
@@ -713,39 +713,39 @@ uint64_t __80__GKDashboardChallengePlayerPickerDataSource_addInvitedFriendContac
   return v4;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v7 section] != 1)
+    if ([pathCopy section] != 1)
     {
       v9 = 0;
       goto LABEL_13;
     }
 
-    v8 = [v7 item];
-    if (v8 >= [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount])
+    item = [pathCopy item];
+    if (item >= [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount])
     {
-      v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"inviteFriendButtonCell" forIndexPath:v7];
-      v11 = [MEMORY[0x277D75348] labelColor];
-      [v9 updateTextColorWith:v11];
+      v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"inviteFriendButtonCell" forIndexPath:pathCopy];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [v9 updateTextColorWith:labelColor];
     }
 
     else
     {
-      v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"friendSuggestionCell" forIndexPath:v7];
-      v10 = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
-      v11 = [v10 objectAtIndex:{objc_msgSend(v7, "item")}];
+      v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"friendSuggestionCell" forIndexPath:pathCopy];
+      suggestedFriends = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
+      labelColor = [suggestedFriends objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-      v12 = [(GKDashboardChallengePlayerPickerDataSource *)self invitedFriendContactIdentifiers];
-      v13 = [v11 contact];
-      v14 = [v13 identifier];
-      [v9 applyWithSuggestedFriend:v11 previouslyInvited:{objc_msgSend(v12, "containsObject:", v14)}];
+      invitedFriendContactIdentifiers = [(GKDashboardChallengePlayerPickerDataSource *)self invitedFriendContactIdentifiers];
+      contact = [labelColor contact];
+      identifier = [contact identifier];
+      [v9 applyWithSuggestedFriend:labelColor previouslyInvited:{objc_msgSend(invitedFriendContactIdentifiers, "containsObject:", identifier)}];
 
-      v15 = [MEMORY[0x277D75348] systemWhiteColor];
-      [v9 setInviteButtonTitleColor:v15];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      [v9 setInviteButtonTitleColor:systemWhiteColor];
 
       objc_initWeak(&location, self);
       v44 = MEMORY[0x277D85DD0];
@@ -761,94 +761,94 @@ uint64_t __80__GKDashboardChallengePlayerPickerDataSource_addInvitedFriendContac
 
   else
   {
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"friendCell" forIndexPath:v7];
-    v11 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:v7];
-    [v9 setPlayer:v11];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"friendCell" forIndexPath:pathCopy];
+    labelColor = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:pathCopy];
+    [v9 setPlayer:labelColor];
     playerStates = self->_playerStates;
-    v17 = [v11 referenceKey];
-    v18 = [(NSMutableDictionary *)playerStates objectForKey:v17];
-    v19 = [v18 integerValue];
+    referenceKey = [labelColor referenceKey];
+    v18 = [(NSMutableDictionary *)playerStates objectForKey:referenceKey];
+    integerValue = [v18 integerValue];
 
-    [v9 setSelectable:v19 != 2];
-    [v9 setSelected:v19 == 1];
+    [v9 setSelectable:integerValue != 2];
+    [v9 setSelected:integerValue == 1];
     if (([v9 isSelectable] & 1) == 0)
     {
       playerAchievementDates = self->_playerAchievementDates;
-      v21 = [v11 referenceKey];
-      v22 = [(NSMutableDictionary *)playerAchievementDates objectForKeyedSubscript:v21];
+      referenceKey2 = [labelColor referenceKey];
+      v22 = [(NSMutableDictionary *)playerAchievementDates objectForKeyedSubscript:referenceKey2];
 
       if (v22)
       {
-        v23 = [(GKChallenge *)self->_challenge achievement];
-        [v9 setStatusWithAchievementEarnedPoints:objc_msgSend(v23 andDate:{"maximumPoints"), v22}];
+        achievement = [(GKChallenge *)self->_challenge achievement];
+        [v9 setStatusWithAchievementEarnedPoints:objc_msgSend(achievement andDate:{"maximumPoints"), v22}];
       }
     }
 
-    v24 = [v11 internal];
-    v25 = [v24 contact];
+    internal = [labelColor internal];
+    contact2 = [internal contact];
 
-    [v9 setShowsPlayerSubtitle:v25 != 0];
+    [v9 setShowsPlayerSubtitle:contact2 != 0];
     v26 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.0700000003];
-    v27 = [v9 contentView];
-    [v27 setBackgroundColor:v26];
+    contentView = [v9 contentView];
+    [contentView setBackgroundColor:v26];
 
     [v9 setDefaultContentBackgroundColor:v26];
   }
 
 LABEL_13:
   v28 = [(GKDashboardChallengePlayerPickerDataSource *)self itemCount:v44];
-  if ([v7 section] == 1)
+  if ([pathCopy section] == 1)
   {
     v28 = [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount]+ 1;
   }
 
-  if (![v7 item])
+  if (![pathCopy item])
   {
-    v38 = [v9 layer];
-    [v38 setMasksToBounds:1];
+    layer = [v9 layer];
+    [layer setMasksToBounds:1];
 
     v39 = *MEMORY[0x277CDA138];
-    v40 = [v9 layer];
-    [v40 setCornerCurve:v39];
+    layer2 = [v9 layer];
+    [layer2 setCornerCurve:v39];
 
-    v41 = [v9 layer];
-    [v41 setCornerRadius:10.0];
+    layer3 = [v9 layer];
+    [layer3 setCornerRadius:10.0];
 
-    v35 = [v9 layer];
-    v36 = v35;
+    layer4 = [v9 layer];
+    layer9 = layer4;
     v37 = 3;
     goto LABEL_19;
   }
 
-  v29 = [v7 item];
-  v30 = [v9 layer];
-  v31 = v30;
-  if (v29 == v28 - 1)
+  item2 = [pathCopy item];
+  layer5 = [v9 layer];
+  v31 = layer5;
+  if (item2 == v28 - 1)
   {
-    [v30 setMasksToBounds:1];
+    [layer5 setMasksToBounds:1];
 
     v32 = *MEMORY[0x277CDA138];
-    v33 = [v9 layer];
-    [v33 setCornerCurve:v32];
+    layer6 = [v9 layer];
+    [layer6 setCornerCurve:v32];
 
-    v34 = [v9 layer];
-    [v34 setCornerRadius:10.0];
+    layer7 = [v9 layer];
+    [layer7 setCornerRadius:10.0];
 
-    v35 = [v9 layer];
-    v36 = v35;
+    layer4 = [v9 layer];
+    layer9 = layer4;
     v37 = 12;
 LABEL_19:
-    [v35 setMaskedCorners:v37];
+    [layer4 setMaskedCorners:v37];
     goto LABEL_21;
   }
 
-  [v30 setMaskedCorners:0];
+  [layer5 setMaskedCorners:0];
 
-  v42 = [v9 layer];
-  [v42 setMasksToBounds:0];
+  layer8 = [v9 layer];
+  [layer8 setMasksToBounds:0];
 
-  v36 = [v9 layer];
-  [v36 setCornerRadius:0.0];
+  layer9 = [v9 layer];
+  [layer9 setCornerRadius:0.0];
 LABEL_21:
 
   return v9;
@@ -862,44 +862,44 @@ void __84__GKDashboardChallengePlayerPickerDataSource_collectionView_cellForItem
   (v4)[2](v4, v3);
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v11 = *MEMORY[0x277D767D8];
-  if ([v9 isEqualToString:*MEMORY[0x277D767D8]])
+  if ([kindCopy isEqualToString:*MEMORY[0x277D767D8]])
   {
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:@"GKCollectionDataSourceHeader" forIndexPath:v10];
-    v13 = -[GKDashboardChallengePlayerPickerDataSource headerTextForSection:](self, "headerTextForSection:", [v10 section]);
-    v14 = [v12 titleLabel];
-    [v14 setText:v13];
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:@"GKCollectionDataSourceHeader" forIndexPath:pathCopy];
+    v13 = -[GKDashboardChallengePlayerPickerDataSource headerTextForSection:](self, "headerTextForSection:", [pathCopy section]);
+    titleLabel = [v12 titleLabel];
+    [titleLabel setText:v13];
 
-    if ([v10 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v15 = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
-      v16 = [v15 count];
+      suggestedFriends = [(GKDashboardChallengePlayerPickerDataSource *)self suggestedFriends];
+      v16 = [suggestedFriends count];
 
       if (v16 >= 4)
       {
         [(GKDashboardChallengePlayerPickerDataSource *)self showingAllFriendSuggestions];
-        v17 = GKGameCenterUIFrameworkBundle();
+        secondaryLabel2 = GKGameCenterUIFrameworkBundle();
         v19 = GKGetLocalizedStringFromTableInBundle();
-        v20 = [v12 secondaryLabel];
-        [v20 setText:v19];
+        secondaryLabel = [v12 secondaryLabel];
+        [secondaryLabel setText:v19];
       }
 
       else
       {
-        v17 = [v12 secondaryLabel];
-        [v17 setText:0];
+        secondaryLabel2 = [v12 secondaryLabel];
+        [secondaryLabel2 setText:0];
       }
 
-      v21 = [v12 secondaryLabel];
-      [v21 setHidden:v16 < 4];
+      secondaryLabel3 = [v12 secondaryLabel];
+      [secondaryLabel3 setHidden:v16 < 4];
 
-      v22 = [v12 secondaryLabel];
-      [v22 setUserInteractionEnabled:1];
+      secondaryLabel4 = [v12 secondaryLabel];
+      [secondaryLabel4 setUserInteractionEnabled:1];
 
       objc_initWeak(&location, self);
       v24[0] = MEMORY[0x277D85DD0];
@@ -907,8 +907,8 @@ void __84__GKDashboardChallengePlayerPickerDataSource_collectionView_cellForItem
       v24[2] = __107__GKDashboardChallengePlayerPickerDataSource_collectionView_viewForSupplementaryElementOfKind_atIndexPath___block_invoke;
       v24[3] = &unk_27966A1E8;
       objc_copyWeak(&v27, &location);
-      v25 = v8;
-      v26 = v10;
+      v25 = viewCopy;
+      v26 = pathCopy;
       [v12 setSecondaryLabelTapHandler:v24];
 
       objc_destroyWeak(&v27);
@@ -917,8 +917,8 @@ void __84__GKDashboardChallengePlayerPickerDataSource_collectionView_cellForItem
 
     else
     {
-      v18 = [v12 secondaryLabel];
-      [v18 setHidden:1];
+      secondaryLabel5 = [v12 secondaryLabel];
+      [secondaryLabel5 setHidden:1];
     }
   }
 
@@ -942,13 +942,13 @@ void __107__GKDashboardChallengePlayerPickerDataSource_collectionView_viewForSup
   [v5 reloadSections:v6];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  if ([a5 section])
+  viewCopy = view;
+  if ([path section])
   {
-    [v6 bounds];
-    [_TtC12GameCenterUI45GKDashboardFriendSuggestionCollectionViewCell sizeWithFitting:v6 in:v7, 0.0];
+    [viewCopy bounds];
+    [_TtC12GameCenterUI45GKDashboardFriendSuggestionCollectionViewCell sizeWithFitting:viewCopy in:v7, 0.0];
     v9 = v8;
     v11 = v10;
   }
@@ -958,10 +958,10 @@ void __107__GKDashboardChallengePlayerPickerDataSource_collectionView_viewForSup
     +[GKDashboardPlayerPickerCell defaultSize];
     v11 = v12;
     v9 = 0.0;
-    v13 = [v6 traitCollection];
+    traitCollection = [viewCopy traitCollection];
 
-    v14 = [v13 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v14);
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -976,16 +976,16 @@ void __107__GKDashboardChallengePlayerPickerDataSource_collectionView_viewForSup
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v7 = 0;
-    if ([v5 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v6 = [v5 item];
-      if (v6 >= [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount])
+      item = [pathCopy item];
+      if (item >= [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount])
       {
         v7 = 1;
       }
@@ -994,86 +994,86 @@ void __107__GKDashboardChallengePlayerPickerDataSource_collectionView_viewForSup
 
   else
   {
-    v8 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:v5];
+    v8 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:pathCopy];
     playerStates = self->_playerStates;
-    v10 = [v8 referenceKey];
-    v11 = [(NSMutableDictionary *)playerStates objectForKey:v10];
-    v12 = [v11 integerValue];
+    referenceKey = [v8 referenceKey];
+    v11 = [(NSMutableDictionary *)playerStates objectForKey:referenceKey];
+    integerValue = [v11 integerValue];
 
-    v7 = v12 == 0;
+    v7 = integerValue == 0;
   }
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v17 = a4;
-  if (![v17 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v10 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:v17];
-    v9 = v10;
+    v10 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:pathCopy];
+    inviteFriendHandler = v10;
     if (v10)
     {
       playerStates = self->_playerStates;
-      v12 = [v10 referenceKey];
-      v13 = [(NSMutableDictionary *)playerStates objectForKey:v12];
-      v14 = [v13 integerValue];
+      referenceKey = [v10 referenceKey];
+      v13 = [(NSMutableDictionary *)playerStates objectForKey:referenceKey];
+      integerValue = [v13 integerValue];
 
-      if (!v14)
+      if (!integerValue)
       {
         v15 = self->_playerStates;
-        v16 = [v9 referenceKey];
-        [(NSMutableDictionary *)v15 setObject:&unk_286188D30 forKeyedSubscript:v16];
+        referenceKey2 = [inviteFriendHandler referenceKey];
+        [(NSMutableDictionary *)v15 setObject:&unk_286188D30 forKeyedSubscript:referenceKey2];
       }
     }
 
     goto LABEL_9;
   }
 
-  v5 = [v17 section] == 1;
-  v6 = v17;
+  v5 = [pathCopy section] == 1;
+  v6 = pathCopy;
   if (v5)
   {
-    v7 = [v17 item];
-    v8 = v7 < [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount];
-    v6 = v17;
+    item = [pathCopy item];
+    v8 = item < [(GKDashboardChallengePlayerPickerDataSource *)self friendSuggestionsCount];
+    v6 = pathCopy;
     if (!v8)
     {
-      v9 = [(GKDashboardChallengePlayerPickerDataSource *)self inviteFriendHandler];
-      v9[2](v9, 0);
+      inviteFriendHandler = [(GKDashboardChallengePlayerPickerDataSource *)self inviteFriendHandler];
+      inviteFriendHandler[2](inviteFriendHandler, 0);
 LABEL_9:
 
-      v6 = v17;
+      v6 = pathCopy;
     }
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v14 = a4;
-  v5 = [v14 section];
-  if (!v5)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (!section)
   {
-    v6 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:v14];
+    v6 = [(GKDashboardChallengePlayerPickerDataSource *)self playerForIndexPath:pathCopy];
     v7 = v6;
     if (v6)
     {
       playerStates = self->_playerStates;
-      v9 = [v6 referenceKey];
-      v10 = [(NSMutableDictionary *)playerStates objectForKey:v9];
-      v11 = [v10 integerValue];
+      referenceKey = [v6 referenceKey];
+      v10 = [(NSMutableDictionary *)playerStates objectForKey:referenceKey];
+      integerValue = [v10 integerValue];
 
-      if (v11 != 2)
+      if (integerValue != 2)
       {
         v12 = self->_playerStates;
-        v13 = [v7 referenceKey];
-        [(NSMutableDictionary *)v12 setObject:&unk_286188CD0 forKeyedSubscript:v13];
+        referenceKey2 = [v7 referenceKey];
+        [(NSMutableDictionary *)v12 setObject:&unk_286188CD0 forKeyedSubscript:referenceKey2];
       }
     }
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](section);
 }
 
 @end

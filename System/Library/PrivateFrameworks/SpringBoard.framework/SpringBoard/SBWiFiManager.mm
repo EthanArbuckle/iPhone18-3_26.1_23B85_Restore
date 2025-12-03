@@ -13,20 +13,20 @@
 - (int)signalStrengthBars;
 - (int)signalStrengthRSSI;
 - (void)_linkDidChange;
-- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)a3;
+- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)device;
 - (void)_lock_spawnManagerCallbackThread;
 - (void)_powerStateDidChange;
-- (void)_primaryInterfaceChanged:(BOOL)a3;
+- (void)_primaryInterfaceChanged:(BOOL)changed;
 - (void)_runManagerCallbackThread;
 - (void)_updateCurrentNetwork;
 - (void)_updateDevicePresence;
 - (void)_updateSignalStrength;
-- (void)_updateSignalStrengthFromRawRSSI:(int)a3 andScaledRSSI:(float)a4;
+- (void)_updateSignalStrengthFromRawRSSI:(int)i andScaledRSSI:(float)sI;
 - (void)_updateWiFiDevice;
 - (void)_updateWiFiState;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPowered:(BOOL)a3;
-- (void)setWiFiEnabled:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPowered:(BOOL)powered;
+- (void)setWiFiEnabled:(BOOL)enabled;
 @end
 
 @implementation SBWiFiManager
@@ -153,15 +153,15 @@ void __38__SBWiFiManager__updateDevicePresence__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)a3
+- (void)_lock_setWiFiDevice:(__WiFiDeviceClient *)device
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (device)
   {
     device = self->_device;
     if (device)
     {
-      if (CFEqual(a3, device))
+      if (CFEqual(device, device))
       {
         goto LABEL_12;
       }
@@ -175,7 +175,7 @@ void __38__SBWiFiManager__updateDevicePresence__block_invoke_2(uint64_t a1)
           v11 = 138543618;
           v12 = v7;
           v13 = 2114;
-          v14 = a3;
+          deviceCopy = device;
           _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[SBWiFiManager] _setWiFiDevice: unexpected device change from '%{public}@' -> '%{public}@'", &v11, 0x16u);
         }
 
@@ -196,7 +196,7 @@ void __38__SBWiFiManager__updateDevicePresence__block_invoke_2(uint64_t a1)
       self->_deviceInterfaceName = 0;
     }
 
-    self->_device = CFRetain(a3);
+    self->_device = CFRetain(device);
     WiFiDeviceClientRegisterPowerCallback();
     WiFiDeviceClientRegisterExtendedLinkCallback();
     WiFiDeviceClientRegisterLQMCallback();
@@ -249,9 +249,9 @@ void __37__SBWiFiManager__lock_setWiFiDevice___block_invoke()
     WiFiManagerClientRegisterServerRestartCallback();
     WiFiManagerClientRegisterDeviceAttachmentCallback();
     [(SBWiFiManager *)self _updateWiFiDevice];
-    v4 = [MEMORY[0x277CD9208] sharedSystemPathMonitor];
+    mEMORY[0x277CD9208] = [MEMORY[0x277CD9208] sharedSystemPathMonitor];
     systemPathMonitor = self->_systemPathMonitor;
-    self->_systemPathMonitor = v4;
+    self->_systemPathMonitor = mEMORY[0x277CD9208];
 
     [(NWSystemPathMonitor *)self->_systemPathMonitor addObserver:self forKeyPath:@"wifiPrimary" options:5 context:&self->_isPrimaryInterface];
     return self->_manager;
@@ -263,8 +263,8 @@ void __37__SBWiFiManager__lock_setWiFiDevice___block_invoke()
 - (void)_lock_spawnManagerCallbackThread
 {
   v4 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:self selector:sel__runManagerCallbackThread object:0];
-  v3 = [MEMORY[0x277CCACC8] mainThread];
-  [v4 setQualityOfService:{objc_msgSend(v3, "qualityOfService")}];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
+  [v4 setQualityOfService:{objc_msgSend(mainThread, "qualityOfService")}];
 
   [v4 start];
   [(SBWiFiManager *)self performSelector:sel_class onThread:v4 withObject:0 waitUntilDone:1];
@@ -273,18 +273,18 @@ void __37__SBWiFiManager__lock_setWiFiDevice___block_invoke()
 - (void)_runManagerCallbackThread
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  [v4 setName:@"SBWiFiManager callback thread"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [currentThread setName:@"SBWiFiManager callback thread"];
 
   Current = CFRunLoopGetCurrent();
   self->_callbackRunLoop = CFRetain(Current);
-  v6 = [MEMORY[0x277CBEB00] port];
-  v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v6 scheduleInRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+  port = [MEMORY[0x277CBEB00] port];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [port scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
   objc_autoreleasePoolPop(v3);
-  v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v8 run];
+  currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop2 run];
 }
 
 - (void)_updateWiFiState
@@ -672,7 +672,7 @@ void __38__SBWiFiManager__updateCurrentNetwork__block_invoke_56(uint64_t a1)
   return powered;
 }
 
-- (void)setPowered:(BOOL)a3
+- (void)setPowered:(BOOL)powered
 {
   [(NSRecursiveLock *)self->_lock lock];
   if (!self->_poweredHasBeenSet)
@@ -697,7 +697,7 @@ void __38__SBWiFiManager__updateCurrentNetwork__block_invoke_56(uint64_t a1)
   if ([(SBWiFiManager *)self _lock_manager])
   {
     v3 = WiFiManagerClientCopyProperty();
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     if (v3)
     {
       CFRelease(v3);
@@ -706,14 +706,14 @@ void __38__SBWiFiManager__updateCurrentNetwork__block_invoke_56(uint64_t a1)
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setWiFiEnabled:(BOOL)a3
+- (void)setWiFiEnabled:(BOOL)enabled
 {
   [(NSRecursiveLock *)self->_lock lock];
   if ([(SBWiFiManager *)self _lock_manager])
@@ -758,17 +758,17 @@ void __38__SBWiFiManager__updateCurrentNetwork__block_invoke_56(uint64_t a1)
   return self->_mainThread_signalStrengthRSSI;
 }
 
-- (void)_updateSignalStrengthFromRawRSSI:(int)a3 andScaledRSSI:(float)a4
+- (void)_updateSignalStrengthFromRawRSSI:(int)i andScaledRSSI:(float)sI
 {
   [(NSRecursiveLock *)self->_lock lock];
   if ([(SBWiFiManager *)self _cachedIsAssociated])
   {
-    v7 = fminf(fmaxf(ceilf(a4 * 3.0), 1.0), 3.0);
+    v7 = fminf(fmaxf(ceilf(sI * 3.0), 1.0), 3.0);
   }
 
   else
   {
-    a3 = 0;
+    i = 0;
     v7 = 0;
   }
 
@@ -778,7 +778,7 @@ void __38__SBWiFiManager__updateCurrentNetwork__block_invoke_56(uint64_t a1)
   v8[3] = &unk_2783A8BC8;
   v8[4] = self;
   v9 = v7;
-  v10 = a3;
+  iCopy = i;
   dispatch_async(MEMORY[0x277D85CD0], v8);
   [(NSRecursiveLock *)self->_lock unlock];
 }
@@ -867,7 +867,7 @@ void __64__SBWiFiManager__updateSignalStrengthFromRawRSSI_andScaledRSSI___block_
     }
 
     v13 = [v12 objectForKey:@"RSSI_CTL_AGR"];
-    v10 = [v13 intValue];
+    intValue = [v13 intValue];
 
     if (!v4)
     {
@@ -882,12 +882,12 @@ void __64__SBWiFiManager__updateSignalStrengthFromRawRSSI_andScaledRSSI___block_
       goto LABEL_8;
     }
 
-    v10 = 0;
+    intValue = 0;
     v9 = 0;
   }
 
   LODWORD(v5) = v9;
-  [(SBWiFiManager *)self _updateSignalStrengthFromRawRSSI:v10 andScaledRSSI:v5];
+  [(SBWiFiManager *)self _updateSignalStrengthFromRawRSSI:intValue andScaledRSSI:v5];
 LABEL_8:
   lock = self->_lock;
 
@@ -931,11 +931,11 @@ LABEL_8:
   return v3;
 }
 
-- (void)_primaryInterfaceChanged:(BOOL)a3
+- (void)_primaryInterfaceChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   [(NSRecursiveLock *)self->_lock lock];
-  self->_isPrimaryInterface = v3;
+  self->_isPrimaryInterface = changedCopy;
   self->_isPrimaryInterfaceChanging = 1;
   [(SBWiFiManager *)self _updateCurrentNetwork];
   primaryInterface = self->_primaryInterface;
@@ -944,7 +944,7 @@ LABEL_8:
     CFRelease(primaryInterface);
   }
 
-  if (!v3)
+  if (!changedCopy)
   {
     self->_primaryInterface = 0;
     v7 = SBLogStatusBarish();
@@ -1028,18 +1028,18 @@ void __42__SBWiFiManager__primaryInterfaceChanged___block_invoke()
   [v0 postNotificationName:@"SBWifiManagerPrimaryInterfaceMayHaveChangedNotification" object:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (&self->_isPrimaryInterface != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (&self->_isPrimaryInterface != context)
   {
-    [SBWiFiManager observeValueForKeyPath:a2 ofObject:self change:v11 context:?];
+    [SBWiFiManager observeValueForKeyPath:a2 ofObject:self change:pathCopy context:?];
   }
 
-  v14 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
-  v15 = [v14 BOOLValue];
+  v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+  bOOLValue = [v14 BOOLValue];
 
   callbackRunLoop = self->_callbackRunLoop;
   if (!callbackRunLoop)
@@ -1054,7 +1054,7 @@ void __42__SBWiFiManager__primaryInterfaceChanged___block_invoke()
   block[2] = __64__SBWiFiManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_2783A9F58;
   block[4] = self;
-  v19 = v15;
+  v19 = bOOLValue;
   CFRunLoopPerformBlock(callbackRunLoop, v17, block);
   CFRunLoopWakeUp(self->_callbackRunLoop);
 }

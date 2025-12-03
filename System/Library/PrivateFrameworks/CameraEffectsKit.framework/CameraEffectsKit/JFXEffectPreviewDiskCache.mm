@@ -1,33 +1,33 @@
 @interface JFXEffectPreviewDiskCache
-+ (id)cachedPathForEffect:(id)a3 version:(id)a4 directoryPath:(id)a5;
-+ (id)createCacheAtDirectory:(id)a3;
-- (JFXEffectPreviewDiskCache)initWithDirectory:(id)a3;
++ (id)cachedPathForEffect:(id)effect version:(id)version directoryPath:(id)path;
++ (id)createCacheAtDirectory:(id)directory;
+- (JFXEffectPreviewDiskCache)initWithDirectory:(id)directory;
 - (NSString)cacheDirectoryPath;
-- (id)cachedURLForEffect:(id)a3 version:(id)a4;
+- (id)cachedURLForEffect:(id)effect version:(id)version;
 - (void)dealloc;
-- (void)previewForEffectID:(id)a3 version:(id)a4 completion:(id)a5;
-- (void)removePreviewForEffectID:(id)a3 excludingVersion:(id)a4 completion:(id)a5;
-- (void)savePreviewForEffectID:(id)a3 image:(id)a4 version:(id)a5 completion:(id)a6;
+- (void)previewForEffectID:(id)d version:(id)version completion:(id)completion;
+- (void)removePreviewForEffectID:(id)d excludingVersion:(id)version completion:(id)completion;
+- (void)savePreviewForEffectID:(id)d image:(id)image version:(id)version completion:(id)completion;
 @end
 
 @implementation JFXEffectPreviewDiskCache
 
-- (JFXEffectPreviewDiskCache)initWithDirectory:(id)a3
+- (JFXEffectPreviewDiskCache)initWithDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = JFXEffectPreviewDiskCache;
   v6 = [(JFXEffectPreviewDiskCache *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_directoryName, a3);
+    objc_storeStrong(&v6->_directoryName, directory);
     v8 = objc_opt_new();
     diskAccessQueue = v7->_diskAccessQueue;
     v7->_diskAccessQueue = v8;
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"JFXEffectPreviewDiskCache.%@.diskAccessQ", v5];
-    [(NSOperationQueue *)v7->_diskAccessQueue setName:v10];
+    directoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"JFXEffectPreviewDiskCache.%@.diskAccessQ", directoryCopy];
+    [(NSOperationQueue *)v7->_diskAccessQueue setName:directoryCopy];
 
     [(NSOperationQueue *)v7->_diskAccessQueue setMaxConcurrentOperationCount:3];
   }
@@ -37,8 +37,8 @@
 
 - (void)dealloc
 {
-  v3 = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
-  [v3 cancelAllOperations];
+  diskAccessQueue = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
+  [diskAccessQueue cancelAllOperations];
 
   v4.receiver = self;
   v4.super_class = JFXEffectPreviewDiskCache;
@@ -51,8 +51,8 @@
   if (!cacheDirectoryPath)
   {
     v4 = objc_opt_class();
-    v5 = [(JFXEffectPreviewDiskCache *)self directoryName];
-    v6 = [v4 createCacheAtDirectory:v5];
+    directoryName = [(JFXEffectPreviewDiskCache *)self directoryName];
+    v6 = [v4 createCacheAtDirectory:directoryName];
     v7 = self->_cacheDirectoryPath;
     self->_cacheDirectoryPath = v6;
 
@@ -62,29 +62,29 @@
   return cacheDirectoryPath;
 }
 
-- (void)previewForEffectID:(id)a3 version:(id)a4 completion:(id)a5
+- (void)previewForEffectID:(id)d version:(id)version completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  versionCopy = version;
+  completionCopy = completion;
   v11 = objc_opt_new();
   objc_initWeak(&location, v11);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __67__JFXEffectPreviewDiskCache_previewForEffectID_version_completion___block_invoke;
   v19 = &unk_278D7D2B0;
-  v12 = v8;
+  v12 = dCopy;
   v20 = v12;
-  v13 = v9;
+  v13 = versionCopy;
   v21 = v13;
-  v22 = self;
-  v14 = v10;
+  selfCopy = self;
+  v14 = completionCopy;
   v23 = v14;
   objc_copyWeak(&v24, &location);
   [v11 addExecutionBlock:&v16];
   [v11 setQualityOfService:{25, v16, v17, v18, v19}];
-  v15 = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
-  [v15 addOperation:v11];
+  diskAccessQueue = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
+  [diskAccessQueue addOperation:v11];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -119,12 +119,12 @@ void __67__JFXEffectPreviewDiskCache_previewForEffectID_version_completion___blo
   }
 }
 
-- (void)savePreviewForEffectID:(id)a3 image:(id)a4 version:(id)a5 completion:(id)a6
+- (void)savePreviewForEffectID:(id)d image:(id)image version:(id)version completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  imageCopy = image;
+  versionCopy = version;
+  completionCopy = completion;
   v14 = objc_opt_new();
   objc_initWeak(&location, v14);
   v20[0] = MEMORY[0x277D85DD0];
@@ -132,19 +132,19 @@ void __67__JFXEffectPreviewDiskCache_previewForEffectID_version_completion___blo
   v20[2] = __77__JFXEffectPreviewDiskCache_savePreviewForEffectID_image_version_completion___block_invoke;
   v20[3] = &unk_278D7D2D8;
   v20[4] = self;
-  v15 = v13;
+  v15 = completionCopy;
   v24 = v15;
-  v16 = v10;
+  v16 = dCopy;
   v21 = v16;
-  v17 = v12;
+  v17 = versionCopy;
   v22 = v17;
-  v18 = v11;
+  v18 = imageCopy;
   v23 = v18;
   objc_copyWeak(&v25, &location);
   [v14 addExecutionBlock:v20];
   [v14 setQualityOfService:17];
-  v19 = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
-  [v19 addOperation:v14];
+  diskAccessQueue = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
+  [diskAccessQueue addOperation:v14];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -218,29 +218,29 @@ void __77__JFXEffectPreviewDiskCache_savePreviewForEffectID_image_version_comple
   }
 }
 
-- (void)removePreviewForEffectID:(id)a3 excludingVersion:(id)a4 completion:(id)a5
+- (void)removePreviewForEffectID:(id)d excludingVersion:(id)version completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  versionCopy = version;
+  completionCopy = completion;
   v11 = objc_opt_new();
   objc_initWeak(&location, v11);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __82__JFXEffectPreviewDiskCache_removePreviewForEffectID_excludingVersion_completion___block_invoke;
   v19 = &unk_278D7D300;
-  v20 = self;
-  v12 = v10;
+  selfCopy = self;
+  v12 = completionCopy;
   v23 = v12;
-  v13 = v8;
+  v13 = dCopy;
   v21 = v13;
-  v14 = v9;
+  v14 = versionCopy;
   v22 = v14;
   objc_copyWeak(&v24, &location);
   [v11 addExecutionBlock:&v16];
-  [v11 setQualityOfService:{17, v16, v17, v18, v19, v20}];
-  v15 = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
-  [v15 addOperation:v11];
+  [v11 setQualityOfService:{17, v16, v17, v18, v19, selfCopy}];
+  diskAccessQueue = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
+  [diskAccessQueue addOperation:v11];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -323,10 +323,10 @@ void __82__JFXEffectPreviewDiskCache_removePreviewForEffectID_excludingVersion_c
   }
 }
 
-- (id)cachedURLForEffect:(id)a3 version:(id)a4
+- (id)cachedURLForEffect:(id)effect version:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  effectCopy = effect;
+  versionCopy = version;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -338,17 +338,17 @@ void __82__JFXEffectPreviewDiskCache_removePreviewForEffectID_excludingVersion_c
   v16 = 3221225472;
   v17 = __56__JFXEffectPreviewDiskCache_cachedURLForEffect_version___block_invoke;
   v18 = &unk_278D7D328;
-  v19 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = effectCopy;
   v20 = v9;
-  v10 = v7;
+  v10 = versionCopy;
   v21 = v10;
   v22 = &v23;
   v11 = [v8 blockOperationWithBlock:&v15];
-  [v11 setQualityOfService:{25, v15, v16, v17, v18, v19}];
+  [v11 setQualityOfService:{25, v15, v16, v17, v18, selfCopy}];
   [v11 setQueuePriority:8];
-  v12 = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
-  [v12 addOperation:v11];
+  diskAccessQueue = [(JFXEffectPreviewDiskCache *)self diskAccessQueue];
+  [diskAccessQueue addOperation:v11];
 
   [v11 waitUntilFinished];
   v13 = v24[5];
@@ -378,31 +378,31 @@ void __56__JFXEffectPreviewDiskCache_cachedURLForEffect_version___block_invoke(u
   }
 }
 
-+ (id)cachedPathForEffect:(id)a3 version:(id)a4 directoryPath:(id)a5
++ (id)cachedPathForEffect:(id)effect version:(id)version directoryPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v11 = [v10 objectAtIndex:0];
-  if (v8)
+  effectCopy = effect;
+  versionCopy = version;
+  pathCopy = path;
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v11 = [preferredLanguages objectAtIndex:0];
+  if (versionCopy)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@.png", v7, v8, v11];
-    v13 = [v9 stringByAppendingPathComponent:v12];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@.png", effectCopy, versionCopy, v11];
+    v13 = [pathCopy stringByAppendingPathComponent:v12];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v14 contentsOfDirectoryAtPath:v9 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:0];
 
-    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(SELF beginswith %@) AND (SELF contains %@)", v7, v11];
+    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(SELF beginswith %@) AND (SELF contains %@)", effectCopy, v11];
     v16 = [v12 filteredArrayUsingPredicate:v15];
-    v17 = [v16 firstObject];
+    firstObject = [v16 firstObject];
 
-    if (v17)
+    if (firstObject)
     {
-      v13 = [v9 stringByAppendingPathComponent:v17];
+      v13 = [pathCopy stringByAppendingPathComponent:firstObject];
     }
 
     else
@@ -414,32 +414,32 @@ void __56__JFXEffectPreviewDiskCache_cachedURLForEffect_version___block_invoke(u
   return v13;
 }
 
-+ (id)createCacheAtDirectory:(id)a3
++ (id)createCacheAtDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
-  v6 = [v5 stringByAppendingPathComponent:v3];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  v6 = [lastObject stringByAppendingPathComponent:directoryCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6];
 
   if (!v8)
   {
 LABEL_6:
-    v16 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v17 = [v16 objectForInfoDictionaryKey:@"CFBundleVersion"];
-    v18 = [v17 integerValue];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    v17 = [jfxBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+    integerValue = [v17 integerValue];
 
-    v19 = [v3 stringByAppendingString:@"buildNumberKey"];
-    v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v20 setInteger:v18 forKey:v19];
+    v19 = [directoryCopy stringByAppendingString:@"buildNumberKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setInteger:integerValue forKey:v19];
 
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
-    LODWORD(v18) = [v21 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    LODWORD(integerValue) = [defaultManager2 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
     v22 = 0;
-    if (!v18)
+    if (!integerValue)
     {
       goto LABEL_8;
     }
@@ -447,18 +447,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 BOOLForKey:@"purgePickerCacheOnLoad"];
-  v11 = [MEMORY[0x277CCA8D8] jfxBundle];
-  v12 = [v11 objectForInfoDictionaryKey:@"CFBundleVersion"];
-  v13 = [v12 integerValue];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults2 BOOLForKey:@"purgePickerCacheOnLoad"];
+  jfxBundle2 = [MEMORY[0x277CCA8D8] jfxBundle];
+  v12 = [jfxBundle2 objectForInfoDictionaryKey:@"CFBundleVersion"];
+  integerValue2 = [v12 integerValue];
 
-  v14 = [v3 stringByAppendingString:@"buildNumberKey"];
-  if (v13 > [v9 integerForKey:v14] || v10)
+  v14 = [directoryCopy stringByAppendingString:@"buildNumberKey"];
+  if (integerValue2 > [standardUserDefaults2 integerForKey:v14] || v10)
   {
-    [v9 setInteger:v13 forKey:v14];
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    [v15 removeItemAtPath:v6 error:0];
+    [standardUserDefaults2 setInteger:integerValue2 forKey:v14];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager3 removeItemAtPath:v6 error:0];
 
     goto LABEL_6;
   }

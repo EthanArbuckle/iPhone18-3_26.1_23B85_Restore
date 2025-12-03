@@ -1,42 +1,42 @@
 @interface _DASPredictionTimeline
 - (NSDate)endDate;
-- (_DASPredictionTimeline)initWithCoder:(id)a3;
-- (_DASPredictionTimeline)initWithValues:(id)a3 eachWithDuration:(double)a4 startingAt:(id)a5;
-- (_DASPredictionTimeline)initWithValues:(id)a3 forDurations:(id)a4 startingAt:(id)a5;
-- (_DASPredictionTimeline)initWithValues:(id)a3 startDate:(id)a4 transitionDates:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DASPredictionTimeline)initWithCoder:(id)coder;
+- (_DASPredictionTimeline)initWithValues:(id)values eachWithDuration:(double)duration startingAt:(id)at;
+- (_DASPredictionTimeline)initWithValues:(id)values forDurations:(id)durations startingAt:(id)at;
+- (_DASPredictionTimeline)initWithValues:(id)values startDate:(id)date transitionDates:(id)dates;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)lowLikelihoodPeriod;
-- (id)valueAtDate:(id)a3;
-- (id)valuesUntilEndDate:(id)a3 withIntervalDuration:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)valueAtDate:(id)date;
+- (id)valuesUntilEndDate:(id)date withIntervalDuration:(double)duration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASPredictionTimeline
 
-- (_DASPredictionTimeline)initWithValues:(id)a3 eachWithDuration:(double)a4 startingAt:(id)a5
+- (_DASPredictionTimeline)initWithValues:(id)values eachWithDuration:(double)duration startingAt:(id)at
 {
-  v8 = a3;
-  v9 = a5;
+  valuesCopy = values;
+  atCopy = at;
   v27.receiver = self;
   v27.super_class = _DASPredictionTimeline;
   v10 = [(_DASPredictionTimeline *)&v27 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_startDate, a5);
-    v12 = [v8 mutableCopy];
-    v13 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v10->_startDate, at);
+    v12 = [valuesCopy mutableCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = v11->_startDate;
     if ([v12 count] < 2)
     {
-      v16 = a4;
+      durationCopy3 = duration;
     }
 
     else
     {
       v15 = 1;
-      v16 = a4;
+      durationCopy3 = duration;
       do
       {
         v17 = [v12 objectAtIndexedSubscript:v15];
@@ -45,17 +45,17 @@
 
         if (v19)
         {
-          v16 = v16 + a4;
+          durationCopy3 = durationCopy3 + duration;
           [v12 removeObjectAtIndex:v15];
         }
 
         else
         {
-          v20 = [(NSDate *)v14 dateByAddingTimeInterval:v16];
+          v20 = [(NSDate *)v14 dateByAddingTimeInterval:durationCopy3];
 
-          [v13 addObject:v20];
+          [array addObject:v20];
           ++v15;
-          v16 = a4;
+          durationCopy3 = duration;
           v14 = v20;
         }
       }
@@ -63,10 +63,10 @@
       while (v15 < [v12 count]);
     }
 
-    v21 = [(NSDate *)v14 dateByAddingTimeInterval:v16];
-    [v13 addObject:v21];
+    v21 = [(NSDate *)v14 dateByAddingTimeInterval:durationCopy3];
+    [array addObject:v21];
 
-    v22 = [v13 copy];
+    v22 = [array copy];
     transitionDates = v11->_transitionDates;
     v11->_transitionDates = v22;
 
@@ -78,29 +78,29 @@
   return v11;
 }
 
-- (_DASPredictionTimeline)initWithValues:(id)a3 forDurations:(id)a4 startingAt:(id)a5
+- (_DASPredictionTimeline)initWithValues:(id)values forDurations:(id)durations startingAt:(id)at
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valuesCopy = values;
+  durationsCopy = durations;
+  atCopy = at;
   v32.receiver = self;
   v32.super_class = _DASPredictionTimeline;
   v11 = [(_DASPredictionTimeline *)&v32 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startDate, a5);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_startDate, at);
+    v13 = [valuesCopy copy];
     values = v12->_values;
     v12->_values = v13;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v16 = v9;
+    v16 = durationsCopy;
     v17 = [v16 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v17)
     {
@@ -119,8 +119,8 @@
 
           [*(*(&v28 + 1) + 8 * v21) doubleValue];
           v20 = v20 + v22;
-          v23 = [v10 dateByAddingTimeInterval:v20];
-          [v15 addObject:v23];
+          v23 = [atCopy dateByAddingTimeInterval:v20];
+          [array addObject:v23];
 
           ++v21;
         }
@@ -132,7 +132,7 @@
       while (v18);
     }
 
-    v24 = [v15 copy];
+    v24 = [array copy];
     transitionDates = v12->_transitionDates;
     v12->_transitionDates = v24;
   }
@@ -141,22 +141,22 @@
   return v12;
 }
 
-- (_DASPredictionTimeline)initWithValues:(id)a3 startDate:(id)a4 transitionDates:(id)a5
+- (_DASPredictionTimeline)initWithValues:(id)values startDate:(id)date transitionDates:(id)dates
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valuesCopy = values;
+  dateCopy = date;
+  datesCopy = dates;
   v17.receiver = self;
   v17.super_class = _DASPredictionTimeline;
   v11 = [(_DASPredictionTimeline *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [valuesCopy copy];
     values = v11->_values;
     v11->_values = v12;
 
-    objc_storeStrong(&v11->_startDate, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_startDate, date);
+    v14 = [datesCopy copy];
     transitionDates = v11->_transitionDates;
     v11->_transitionDates = v14;
   }
@@ -164,11 +164,11 @@
   return v11;
 }
 
-- (id)valueAtDate:(id)a3
+- (id)valueAtDate:(id)date
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSDate *)self->_startDate timeIntervalSinceDate:v4];
+  dateCopy = date;
+  [(NSDate *)self->_startDate timeIntervalSinceDate:dateCopy];
   if (v5 <= 0.0)
   {
     v19 = 0u;
@@ -194,7 +194,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v17 + 1) + 8 * v12) timeIntervalSinceDate:{v4, v17}];
+          [*(*(&v17 + 1) + 8 * v12) timeIntervalSinceDate:{dateCopy, v17}];
           if (v14 > 0.0)
           {
             v6 = [(NSArray *)self->_values objectAtIndexedSubscript:v13];
@@ -232,16 +232,16 @@ LABEL_13:
 
 - (id)lowLikelihoodPeriod
 {
-  v3 = [(_DASPredictionTimeline *)self startDate];
-  [v3 timeIntervalSinceNow];
+  startDate = [(_DASPredictionTimeline *)self startDate];
+  [startDate timeIntervalSinceNow];
   if (v4 > 604800.0)
   {
     v8 = 0;
     goto LABEL_31;
   }
 
-  v5 = [(_DASPredictionTimeline *)self endDate];
-  [v5 timeIntervalSinceNow];
+  endDate = [(_DASPredictionTimeline *)self endDate];
+  [endDate timeIntervalSinceNow];
   v7 = v6;
 
   if (v7 > 604800.0)
@@ -251,13 +251,13 @@ LABEL_13:
   }
 
   v9 = MEMORY[0x1E695DF70];
-  v10 = [(_DASPredictionTimeline *)self startDate];
-  v3 = [v9 arrayWithObject:v10];
+  startDate2 = [(_DASPredictionTimeline *)self startDate];
+  startDate = [v9 arrayWithObject:startDate2];
 
-  v11 = [(_DASPredictionTimeline *)self transitionDates];
-  [v3 addObjectsFromArray:v11];
+  transitionDates = [(_DASPredictionTimeline *)self transitionDates];
+  [startDate addObjectsFromArray:transitionDates];
 
-  if ([v3 count] == 1)
+  if ([startDate count] == 1)
   {
     v12 = 0;
     v13 = 0;
@@ -274,8 +274,8 @@ LABEL_13:
   v17 = 0.0;
   do
   {
-    v18 = [v3 objectAtIndexedSubscript:v15];
-    v19 = [v3 objectAtIndexedSubscript:++v15];
+    v18 = [startDate objectAtIndexedSubscript:v15];
+    v19 = [startDate objectAtIndexedSubscript:++v15];
     v20 = [(_DASPredictionTimeline *)self valueAtDate:v18];
     [v20 doubleValue];
     if (v21 < 0.05)
@@ -320,7 +320,7 @@ LABEL_16:
 LABEL_17:
   }
 
-  while (v15 < [v3 count] - 1);
+  while (v15 < [startDate count] - 1);
   if (v16 <= 0.0 || v14 == 0)
   {
     v30 = v17;
@@ -329,8 +329,8 @@ LABEL_17:
 
   else
   {
-    v28 = [(_DASPredictionTimeline *)self startDate];
-    [v14 timeIntervalSinceDate:v28];
+    startDate3 = [(_DASPredictionTimeline *)self startDate];
+    [v14 timeIntervalSinceDate:startDate3];
     v30 = v16 + v29;
 
     v12 = v35;
@@ -363,24 +363,24 @@ LABEL_32:
   return v8;
 }
 
-- (id)valuesUntilEndDate:(id)a3 withIntervalDuration:(double)a4
+- (id)valuesUntilEndDate:(id)date withIntervalDuration:(double)duration
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF00] date];
-  [v7 timeIntervalSinceDate:v6];
+  dateCopy = date;
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:dateCopy];
   if (v8 >= 0.0)
   {
     goto LABEL_3;
   }
 
-  [v6 timeIntervalSinceDate:v7];
+  [dateCopy timeIntervalSinceDate:date];
   if (v9 > 86400.0)
   {
     goto LABEL_3;
   }
 
-  v12 = [(_DASPredictionTimeline *)self startDate];
-  [v6 timeIntervalSinceDate:v12];
+  startDate = [(_DASPredictionTimeline *)self startDate];
+  [dateCopy timeIntervalSinceDate:startDate];
   if (v13 <= 0.0)
   {
     v10 = 0;
@@ -388,8 +388,8 @@ LABEL_32:
 
   else
   {
-    v14 = [(_DASPredictionTimeline *)self endDate];
-    [v14 timeIntervalSinceDate:v7];
+    endDate = [(_DASPredictionTimeline *)self endDate];
+    [endDate timeIntervalSinceDate:date];
     v16 = v15;
 
     if (v16 <= 0.0)
@@ -399,11 +399,11 @@ LABEL_3:
       goto LABEL_4;
     }
 
-    v12 = [MEMORY[0x1E695DF70] array];
-    v17 = v7;
-    v18 = v6;
-    v19 = [(_DASPredictionTimeline *)self startDate];
-    [v19 timeIntervalSinceDate:v17];
+    startDate = [MEMORY[0x1E695DF70] array];
+    v17 = date;
+    v18 = dateCopy;
+    startDate2 = [(_DASPredictionTimeline *)self startDate];
+    [startDate2 timeIntervalSinceDate:v17];
     v21 = v20;
 
     if (v21 <= 0.0)
@@ -413,34 +413,34 @@ LABEL_3:
 
     else
     {
-      v22 = (v21 / a4);
+      v22 = (v21 / duration);
       if (v22)
       {
         for (i = 0; i != v22; ++i)
         {
-          [v12 setObject:&unk_1F2ED4A60 atIndexedSubscript:i];
+          [startDate setObject:&unk_1F2ED4A60 atIndexedSubscript:i];
         }
       }
 
-      v24 = [(_DASPredictionTimeline *)self startDate];
+      startDate3 = [(_DASPredictionTimeline *)self startDate];
 
-      v17 = v24;
+      v17 = startDate3;
     }
 
-    v25 = [(_DASPredictionTimeline *)self endDate];
-    [v18 timeIntervalSinceDate:v25];
+    endDate2 = [(_DASPredictionTimeline *)self endDate];
+    [v18 timeIntervalSinceDate:endDate2];
     v27 = v26;
 
-    v28 = v18;
+    endDate3 = v18;
     if (v27 > 0.0)
     {
-      v28 = [(_DASPredictionTimeline *)self endDate];
+      endDate3 = [(_DASPredictionTimeline *)self endDate];
     }
 
-    [v28 timeIntervalSinceDate:v17];
+    [endDate3 timeIntervalSinceDate:v17];
     v30 = v29;
     v31 = v17;
-    v32 = (v30 / a4);
+    v32 = (v30 / duration);
     v42 = v31;
     if (v22 < v32)
     {
@@ -448,40 +448,40 @@ LABEL_3:
       {
         v33 = v31;
         v34 = [(_DASPredictionTimeline *)self valueAtDate:v31];
-        [v12 setObject:v34 atIndexedSubscript:v22];
+        [startDate setObject:v34 atIndexedSubscript:v22];
 
-        v31 = [v33 dateByAddingTimeInterval:a4];
+        v31 = [v33 dateByAddingTimeInterval:duration];
 
         ++v22;
       }
 
       while (v32 != v22);
-      v22 = (v30 / a4);
+      v22 = (v30 / duration);
     }
 
-    v35 = [(_DASPredictionTimeline *)self endDate];
-    [v18 timeIntervalSinceDate:v35];
+    endDate4 = [(_DASPredictionTimeline *)self endDate];
+    [v18 timeIntervalSinceDate:endDate4];
     v37 = v36;
 
     if (v37 > 0.0)
     {
-      v38 = [(_DASPredictionTimeline *)self endDate];
-      [v18 timeIntervalSinceDate:v38];
+      endDate5 = [(_DASPredictionTimeline *)self endDate];
+      [v18 timeIntervalSinceDate:endDate5];
       v40 = v39;
 
-      v41 = (v40 / a4);
+      v41 = (v40 / duration);
       if (v22 < v41)
       {
         do
         {
-          [v12 setObject:&unk_1F2ED4A60 atIndexedSubscript:v22++];
+          [startDate setObject:&unk_1F2ED4A60 atIndexedSubscript:v22++];
         }
 
         while (v41 != v22);
       }
     }
 
-    v10 = [v12 copy];
+    v10 = [startDate copy];
   }
 
 LABEL_4:
@@ -491,57 +491,57 @@ LABEL_4:
 
 - (NSDate)endDate
 {
-  v2 = [(NSArray *)self->_transitionDates lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSArray *)self->_transitionDates lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v4 = v2;
+    date = lastObject;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v5 = v4;
+  v5 = date;
 
   return v5;
 }
 
-- (_DASPredictionTimeline)initWithCoder:(id)a3
+- (_DASPredictionTimeline)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"values"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"values"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"transitionDates"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"transitionDates"];
 
-  v13 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v12)
   {
     self = [(_DASPredictionTimeline *)self initWithValues:v6 startDate:v5 transitionDates:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   values = self->_values;
-  v5 = a3;
-  [v5 encodeObject:values forKey:@"values"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_transitionDates forKey:@"transitionDates"];
+  coderCopy = coder;
+  [coderCopy encodeObject:values forKey:@"values"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_transitionDates forKey:@"transitionDates"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   startDate = self->_startDate;
   values = self->_values;
   transitionDates = self->_transitionDates;
@@ -552,13 +552,13 @@ LABEL_4:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_DASPredictionTimeline *)self startDate];
-  v5 = [(_DASPredictionTimeline *)self endDate];
-  v6 = [(_DASPredictionTimeline *)self transitionDates];
+  startDate = [(_DASPredictionTimeline *)self startDate];
+  endDate = [(_DASPredictionTimeline *)self endDate];
+  transitionDates = [(_DASPredictionTimeline *)self transitionDates];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(_DASPredictionTimeline *)self values];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  v10 = [v3 stringWithFormat:@"<_DASPredictionTimeline: startDate: %@, endDate: %@, transitionDates: %@, valuesCount: %@>", v4, v5, v6, v9];
+  values = [(_DASPredictionTimeline *)self values];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(values, "count")}];
+  v10 = [v3 stringWithFormat:@"<_DASPredictionTimeline: startDate: %@, endDate: %@, transitionDates: %@, valuesCount: %@>", startDate, endDate, transitionDates, v9];
 
   return v10;
 }

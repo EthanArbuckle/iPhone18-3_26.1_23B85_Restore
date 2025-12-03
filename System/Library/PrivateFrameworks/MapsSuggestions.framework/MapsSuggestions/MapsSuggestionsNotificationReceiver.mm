@@ -1,15 +1,15 @@
 @interface MapsSuggestionsNotificationReceiver
-- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)a3 block:(id)a4;
-- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)a3 queue:(id)a4 block:(id)a5;
+- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)notification block:(id)block;
+- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)notification queue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation MapsSuggestionsNotificationReceiver
 
-- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)a3 queue:(id)a4 block:(id)a5
+- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)notification queue:(id)queue block:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = MapsSuggestionsNotificationReceiver;
   if ([(MapsSuggestionsNotificationReceiver *)&v11 init])
@@ -18,7 +18,7 @@
     v10[1] = 3221225472;
     v10[2] = __78__MapsSuggestionsNotificationReceiver_initWithDarwinNotification_queue_block___block_invoke;
     v10[3] = &unk_1E8203B98;
-    v10[4] = v8;
+    v10[4] = blockCopy;
     _Block_copy(v10);
     operator new();
   }
@@ -36,12 +36,12 @@ void __78__MapsSuggestionsNotificationReceiver_initWithDarwinNotification_queue_
   }
 }
 
-- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)a3 block:(id)a4
+- (MapsSuggestionsNotificationReceiver)initWithDarwinNotification:(const char *)notification block:(id)block
 {
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = a4;
+  blockCopy = block;
   v9 = dispatch_queue_create("MapsSuggestionsNotificationReceiver", v7);
-  v10 = [(MapsSuggestionsNotificationReceiver *)self initWithDarwinNotification:a3 queue:v9 block:v8];
+  v10 = [(MapsSuggestionsNotificationReceiver *)self initWithDarwinNotification:notification queue:v9 block:blockCopy];
 
   return v10;
 }

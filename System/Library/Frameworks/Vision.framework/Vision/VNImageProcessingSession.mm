@@ -1,52 +1,52 @@
 @interface VNImageProcessingSession
 - (VNImageProcessingSession)init;
-- (id)_printsProducedByRequest:(__CVBuffer *)a3 onPixelBuffer:(void *)a4 withAugmentations:(__CFString *)a5 error:;
+- (id)_printsProducedByRequest:(__CVBuffer *)request onPixelBuffer:(void *)buffer withAugmentations:(__CFString *)augmentations error:;
 @end
 
 @implementation VNImageProcessingSession
 
-- (id)_printsProducedByRequest:(__CVBuffer *)a3 onPixelBuffer:(void *)a4 withAugmentations:(__CFString *)a5 error:
+- (id)_printsProducedByRequest:(__CVBuffer *)request onPixelBuffer:(void *)buffer withAugmentations:(__CFString *)augmentations error:
 {
   v68[1] = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v62 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
     v39 = 0;
     goto LABEL_42;
   }
 
-  v9 = a4;
+  bufferCopy = buffer;
   v57 = v8;
   v10 = v8;
   if ([v10 conformsToProtocol:&unk_1F19C58D8])
   {
-    v11 = [v10 supportedImageSizeSet];
-    v12 = [v11 firstObject];
+    supportedImageSizeSet = [v10 supportedImageSizeSet];
+    firstObject = [supportedImageSizeSet firstObject];
 
-    if (v12)
+    if (firstObject)
     {
       [v10 VNImageProcessingSessionRegionOfInterest];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
-      v23 = [v12 pixelsWideRange];
-      v24 = [v23 idealDimension];
+      Width = CVPixelBufferGetWidth(request);
+      Height = CVPixelBufferGetHeight(request);
+      pixelsWideRange = [firstObject pixelsWideRange];
+      idealDimension = [pixelsWideRange idealDimension];
 
-      v25 = [v12 pixelsHighRange];
-      v26 = [v25 idealDimension];
+      pixelsHighRange = [firstObject pixelsHighRange];
+      idealDimension2 = [pixelsHighRange idealDimension];
 
-      v60 = [v12 idealImageFormat];
-      v27 = v9;
-      if (!v24 || !v26)
+      idealImageFormat = [firstObject idealImageFormat];
+      v27 = bufferCopy;
+      if (!idealDimension || !idealDimension2)
       {
-        if (a5)
+        if (augmentations)
         {
           [VNError errorForInvalidArgumentWithLocalizedDescription:@"scaled dimensions cannot be 0"];
-          *a5 = v58 = 0;
+          *augmentations = v58 = 0;
         }
 
         else
@@ -63,7 +63,7 @@ LABEL_23:
       v67 = @"VNImageBufferOption_DoNotCacheRepresentations";
       v68[0] = MEMORY[0x1E695E118];
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:&v67 count:1];
-      v28 = [[VNImageBuffer alloc] initWithCVPixelBuffer:a3 orientation:1 options:v63 session:*(v62 + 8)];
+      v28 = [[VNImageBuffer alloc] initWithCVPixelBuffer:request orientation:1 options:v63 session:*(selfCopy + 8)];
       if (v28)
       {
         v29 = [v27 count];
@@ -74,13 +74,13 @@ LABEL_23:
         if (v29)
         {
           v65 = 0;
-          v58 = [(VNImageBuffer *)v28 augmentedCroppedBuffersWithWidth:v24 height:v26 format:v60 cropRect:0 options:v27 augmentationOptions:&v65 error:v30, v32, v31, v33];
+          v58 = [(VNImageBuffer *)v28 augmentedCroppedBuffersWithWidth:idealDimension height:idealDimension2 format:idealImageFormat cropRect:0 options:v27 augmentationOptions:&v65 error:v30, v32, v31, v33];
           v34 = v65;
           goto LABEL_19;
         }
 
         v65 = 0;
-        v37 = [(VNImageBuffer *)v28 croppedBufferWithWidth:v24 height:v26 format:v60 cropRect:0 options:&v65 error:v30, v32, v31, v33];
+        v37 = [(VNImageBuffer *)v28 croppedBufferWithWidth:idealDimension height:idealDimension2 format:idealImageFormat cropRect:0 options:&v65 error:v30, v32, v31, v33];
         v34 = v65;
         if (v37)
         {
@@ -89,10 +89,10 @@ LABEL_23:
 
 LABEL_19:
           objc_autoreleasePoolPop(context);
-          if (a5 && v34)
+          if (augmentations && v34)
           {
             v38 = v34;
-            *a5 = v34;
+            *augmentations = v34;
           }
 
           goto LABEL_23;
@@ -109,14 +109,14 @@ LABEL_19:
     }
   }
 
-  if (a5)
+  if (augmentations)
   {
     v35 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v36 = [v10 specifier];
-    v12 = [v35 initWithFormat:@"%@ does not provide ideal image parameters", v36];
+    specifier = [v10 specifier];
+    firstObject = [v35 initWithFormat:@"%@ does not provide ideal image parameters", specifier];
 
-    [VNError errorWithCode:19 message:v12];
-    *a5 = v58 = 0;
+    [VNError errorWithCode:19 message:firstObject];
+    *augmentations = v58 = 0;
 LABEL_24:
 
     goto LABEL_25;
@@ -144,7 +144,7 @@ LABEL_25:
       v47 = MEMORY[0x1E695E0F8];
       while (1)
       {
-        v48 = -[VNImageRequestHandler initWithCVPixelBuffer:options:session:]([VNImageRequestHandler alloc], "initWithCVPixelBuffer:options:session:", [v64 objectAtIndex:v46], v47, *(v62 + 8));
+        v48 = -[VNImageRequestHandler initWithCVPixelBuffer:options:session:]([VNImageRequestHandler alloc], "initWithCVPixelBuffer:options:session:", [v64 objectAtIndex:v46], v47, *(selfCopy + 8));
         v67 = v45;
         v49 = [(VNImageRequestHandler *)v48 performRequests:v42 error:&v67];
         v50 = v67;
@@ -186,10 +186,10 @@ LABEL_31:
 LABEL_35:
 
     objc_autoreleasePoolPop(contexta);
-    if (a5 && v50)
+    if (augmentations && v50)
     {
       v52 = v50;
-      *a5 = v50;
+      *augmentations = v50;
     }
 
     if (v39)

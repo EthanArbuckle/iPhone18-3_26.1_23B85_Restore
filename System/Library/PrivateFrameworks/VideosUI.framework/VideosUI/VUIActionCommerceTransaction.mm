@@ -1,39 +1,39 @@
 @interface VUIActionCommerceTransaction
-+ (BOOL)isTransactionInProgressForBuyParams:(id)a3;
-+ (id)extractSalableAdamIDFromBuyParams:(id)a3;
-+ (void)displayConfirmationUIWithTitle:(id)a3 andBody:(id)a4;
-+ (void)displayConfirmationUIWithTitle:(id)a3 andBody:(id)a4 completion:(id)a5;
++ (BOOL)isTransactionInProgressForBuyParams:(id)params;
++ (id)extractSalableAdamIDFromBuyParams:(id)params;
++ (void)displayConfirmationUIWithTitle:(id)title andBody:(id)body;
++ (void)displayConfirmationUIWithTitle:(id)title andBody:(id)body completion:(id)completion;
 - (NSString)buyParams;
-- (VUIActionCommerceTransaction)initWithActionRef:(id)a3 contextData:(id)a4 appContext:(id)a5;
+- (VUIActionCommerceTransaction)initWithActionRef:(id)ref contextData:(id)data appContext:(id)context;
 - (VUIAppContext)appContext;
-- (id)_preflightManagerForTransactionOffer:(id)a3 purchaseType:(int64_t)a4;
-- (void)_handleBuyCompletionForOffer:(id)a3 appContext:(id)a4 shouldPlayWhenDone:(BOOL)a5 serverResponse:(id)a6 completionHandler:(id)a7;
-- (void)_handleSubscriptionCompletionForOffer:(id)a3 appContext:(id)a4 shouldInitiateFamilySetup:(BOOL)a5 serverResponse:(id)a6 completionHandler:(id)a7;
-- (void)_handleSuccessfulSubscriptionHelper:(id)a3 appContext:(id)a4 shouldInitiateFamilySetup:(BOOL)a5 completionHandler:(id)a6;
-- (void)_notifyDidEndPurchaseType:(int64_t)a3 transactionOffer:(id)a4 withError:(id)a5;
-- (void)_notifyDidStartPurchaseType:(int64_t)a3 transactionOffer:(id)a4;
-- (void)_recordLog:(id)a3 withBuyParams:(id)a4;
-- (void)_showUIConfirmationForSubTransaction:(id)a3 completion:(id)a4;
-- (void)_startTransactionOfOffer:(id)a3 withAppContext:(id)a4 andCompletionHandler:(id)a5;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (id)_preflightManagerForTransactionOffer:(id)offer purchaseType:(int64_t)type;
+- (void)_handleBuyCompletionForOffer:(id)offer appContext:(id)context shouldPlayWhenDone:(BOOL)done serverResponse:(id)response completionHandler:(id)handler;
+- (void)_handleSubscriptionCompletionForOffer:(id)offer appContext:(id)context shouldInitiateFamilySetup:(BOOL)setup serverResponse:(id)response completionHandler:(id)handler;
+- (void)_handleSuccessfulSubscriptionHelper:(id)helper appContext:(id)context shouldInitiateFamilySetup:(BOOL)setup completionHandler:(id)handler;
+- (void)_notifyDidEndPurchaseType:(int64_t)type transactionOffer:(id)offer withError:(id)error;
+- (void)_notifyDidStartPurchaseType:(int64_t)type transactionOffer:(id)offer;
+- (void)_recordLog:(id)log withBuyParams:(id)params;
+- (void)_showUIConfirmationForSubTransaction:(id)transaction completion:(id)completion;
+- (void)_startTransactionOfOffer:(id)offer withAppContext:(id)context andCompletionHandler:(id)handler;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionCommerceTransaction
 
-- (VUIActionCommerceTransaction)initWithActionRef:(id)a3 contextData:(id)a4 appContext:(id)a5
+- (VUIActionCommerceTransaction)initWithActionRef:(id)ref contextData:(id)data appContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  refCopy = ref;
+  dataCopy = data;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = VUIActionCommerceTransaction;
   v11 = [(VUIActionCommerceTransaction *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(VUIActionCommerceTransaction *)v11 setCommerceActionRef:v8];
-    objc_storeStrong(&v12->_contextData, a4);
-    objc_storeWeak(&v12->_appContext, v10);
+    [(VUIActionCommerceTransaction *)v11 setCommerceActionRef:refCopy];
+    objc_storeStrong(&v12->_contextData, data);
+    objc_storeWeak(&v12->_appContext, contextCopy);
     v13 = +[VUIActionCommerceInterruptedTransactionManager sharedInstance];
     [v13 setLastInterruptedOfferDetails:0];
   }
@@ -41,14 +41,14 @@
   return v12;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [[VUITransactionOffer alloc] initWithDictionary:self->_contextData];
   WeakRetained = objc_loadWeakRetained(&self->_appContext);
   v8 = +[VUIPurchaser sharedInstance];
-  v9 = [(VUITransactionOffer *)v6 buyParams];
-  v10 = [v8 isPurchasing:v9];
+  buyParams = [(VUITransactionOffer *)v6 buyParams];
+  v10 = [v8 isPurchasing:buyParams];
 
   if (v10)
   {
@@ -59,59 +59,59 @@
       _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_DEFAULT, "PurchaseAction - performWithTargetResponder: ending early because purchase with buyParams already exists", v12, 2u);
     }
 
-    if (v5)
+    if (handlerCopy)
     {
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    [(VUIActionCommerceTransaction *)self _startTransactionOfOffer:v6 withAppContext:WeakRetained andCompletionHandler:v5];
+    [(VUIActionCommerceTransaction *)self _startTransactionOfOffer:v6 withAppContext:WeakRetained andCompletionHandler:handlerCopy];
   }
 }
 
 - (NSString)buyParams
 {
   v2 = [[VUITransactionOffer alloc] initWithDictionary:self->_contextData];
-  v3 = [(VUITransactionOffer *)v2 buyParams];
+  buyParams = [(VUITransactionOffer *)v2 buyParams];
 
-  return v3;
+  return buyParams;
 }
 
-- (id)_preflightManagerForTransactionOffer:(id)a3 purchaseType:(int64_t)a4
+- (id)_preflightManagerForTransactionOffer:(id)offer purchaseType:(int64_t)type
 {
-  v5 = a3;
+  offerCopy = offer;
   v6 = +[VUIPreflightManager defaultPreflightManager];
-  v7 = +[VUIApplicationRouter topPresentedViewController];
-  if (!v7)
+  rootViewController = +[VUIApplicationRouter topPresentedViewController];
+  if (!rootViewController)
   {
     v8 = +[VUITVAppLauncher sharedInstance];
-    v9 = [v8 appWindow];
+    appWindow = [v8 appWindow];
 
-    v7 = [v9 rootViewController];
+    rootViewController = [appWindow rootViewController];
   }
 
-  [v6 setPresentingController:v7];
+  [v6 setPresentingController:rootViewController];
   [v6 setRestrictionsCheckType:2];
-  if (v5)
+  if (offerCopy)
   {
-    v10 = [v5 videosPlayables];
+    videosPlayables = [offerCopy videosPlayables];
 
-    if (v10)
+    if (videosPlayables)
     {
-      v11 = [v5 videosPlayables];
-      v12 = [v11 firstObject];
+      videosPlayables2 = [offerCopy videosPlayables];
+      firstObject = [videosPlayables2 firstObject];
     }
 
     else
     {
-      v15 = [v5 offer];
-      v11 = [v15 objectForKey:@"playbackMetadata"];
+      offer = [offerCopy offer];
+      videosPlayables2 = [offer objectForKey:@"playbackMetadata"];
 
-      if (!v11 || ([v11 objectForKey:@"ratingDomain"], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
+      if (!videosPlayables2 || ([videosPlayables2 objectForKey:@"ratingDomain"], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
       {
-        if (a4 == 1)
+        if (type == 1)
         {
           [v6 setIsSubscriptionPurchaseWithoutPlayback:1];
         }
@@ -120,11 +120,11 @@
       }
 
       v17 = [VUIVideosPlayable alloc];
-      v12 = [(VUIVideosPlayable *)v17 initWithDictionary:MEMORY[0x1E695E0F8] andMetadataDictionary:v11];
+      firstObject = [(VUIVideosPlayable *)v17 initWithDictionary:MEMORY[0x1E695E0F8] andMetadataDictionary:videosPlayables2];
     }
 
-    v13 = v12;
-    [v6 setVideosPlayable:v12];
+    v13 = firstObject;
+    [v6 setVideosPlayable:firstObject];
 
 LABEL_7:
   }
@@ -132,15 +132,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)_startTransactionOfOffer:(id)a3 withAppContext:(id)a4 andCompletionHandler:(id)a5
+- (void)_startTransactionOfOffer:(id)offer withAppContext:(id)context andCompletionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  offerCopy = offer;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = [VUIPurchaseRequest getPurchaseTypeFromActionRef:self->_commerceActionRef];
   v12 = [VUIPurchaseRequest shouldPlayWhenDoneForActionRef:self->_commerceActionRef];
-  v13 = [v8 initiateFamilySetup];
+  initiateFamilySetup = [offerCopy initiateFamilySetup];
   v14 = VUIDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -154,27 +154,27 @@ LABEL_7:
     _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, "PurchaseAction - _amsStartPurchaseFlowForOffer: [%@], type: %ld, shouldPlayWhenDone: %d", buf, 0x1Cu);
   }
 
-  v16 = [v8 buyParams];
+  buyParams = [offerCopy buyParams];
   v17 = +[VUIPurchaser sharedInstance];
-  [v17 rememberPurchasing:v16];
+  [v17 rememberPurchasing:buyParams];
 
-  v18 = [(VUIActionCommerceTransaction *)self _preflightManagerForTransactionOffer:v8 purchaseType:v11];
+  v18 = [(VUIActionCommerceTransaction *)self _preflightManagerForTransactionOffer:offerCopy purchaseType:v11];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __93__VUIActionCommerceTransaction__startTransactionOfOffer_withAppContext_andCompletionHandler___block_invoke;
   v23[3] = &unk_1E8737378;
   v23[4] = self;
-  v24 = v8;
-  v27 = v10;
+  v24 = offerCopy;
+  v27 = handlerCopy;
   v28 = v11;
-  v25 = v16;
-  v26 = v9;
-  v29 = v13;
+  v25 = buyParams;
+  v26 = contextCopy;
+  v29 = initiateFamilySetup;
   v30 = v12;
-  v19 = v9;
-  v20 = v10;
-  v21 = v16;
-  v22 = v8;
+  v19 = contextCopy;
+  v20 = handlerCopy;
+  v21 = buyParams;
+  v22 = offerCopy;
   [v18 preflightWithOptions:1 completion:v23];
 }
 
@@ -368,20 +368,20 @@ uint64_t __93__VUIActionCommerceTransaction__startTransactionOfOffer_withAppCont
   return result;
 }
 
-- (void)_handleBuyCompletionForOffer:(id)a3 appContext:(id)a4 shouldPlayWhenDone:(BOOL)a5 serverResponse:(id)a6 completionHandler:(id)a7
+- (void)_handleBuyCompletionForOffer:(id)offer appContext:(id)context shouldPlayWhenDone:(BOOL)done serverResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a7;
+  offerCopy = offer;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v15 = __124__VUIActionCommerceTransaction__handleBuyCompletionForOffer_appContext_shouldPlayWhenDone_serverResponse_completionHandler___block_invoke;
   v16 = &unk_1E872DF40;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
+  v17 = offerCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
   v11 = MEMORY[0x1E696AF00];
-  v12 = v10;
-  v13 = v9;
+  v12 = handlerCopy;
+  v13 = offerCopy;
   if ([v11 isMainThread])
   {
     v15(block);
@@ -439,12 +439,12 @@ void __124__VUIActionCommerceTransaction__handleBuyCompletionForOffer_appContext
   }
 }
 
-- (void)_handleSubscriptionCompletionForOffer:(id)a3 appContext:(id)a4 shouldInitiateFamilySetup:(BOOL)a5 serverResponse:(id)a6 completionHandler:(id)a7
+- (void)_handleSubscriptionCompletionForOffer:(id)offer appContext:(id)context shouldInitiateFamilySetup:(BOOL)setup serverResponse:(id)response completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  offerCopy = offer;
+  contextCopy = context;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   if (_os_feature_enabled_impl())
   {
@@ -454,10 +454,10 @@ void __124__VUIActionCommerceTransaction__handleBuyCompletionForOffer_appContext
     v28[3] = &unk_1E87373A0;
     v16 = &v32;
     objc_copyWeak(&v32, &location);
-    v29 = v12;
-    v30 = v13;
-    v33 = a5;
-    v31 = v15;
+    v29 = offerCopy;
+    v30 = contextCopy;
+    setupCopy = setup;
+    v31 = handlerCopy;
     [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:1 completion:v28];
     v17 = &v29;
     v18 = &v30;
@@ -466,26 +466,26 @@ void __124__VUIActionCommerceTransaction__handleBuyCompletionForOffer_appContext
 
   else
   {
-    v20 = [MEMORY[0x1E69E1508] sharedInstance];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __140__VUIActionCommerceTransaction__handleSubscriptionCompletionForOffer_appContext_shouldInitiateFamilySetup_serverResponse_completionHandler___block_invoke_127;
     v22[3] = &unk_1E87373C8;
     v16 = &v26;
     objc_copyWeak(&v26, &location);
-    v23 = v12;
-    v24 = v13;
-    v27 = a5;
-    v25 = v15;
-    [v20 fetchConfigurationWithOptions:0 cachePolicy:3 queryParameters:0 completion:v22];
+    v23 = offerCopy;
+    v24 = contextCopy;
+    setupCopy2 = setup;
+    v25 = handlerCopy;
+    [mEMORY[0x1E69E1508] fetchConfigurationWithOptions:0 cachePolicy:3 queryParameters:0 completion:v22];
     v17 = &v23;
     v18 = &v24;
     v19 = &v25;
   }
 
   objc_destroyWeak(v16);
-  v21 = [MEMORY[0x1E69E15E8] sharedInstance];
-  [v21 fetchSubscriptionData:1 completion:&__block_literal_global_160];
+  mEMORY[0x1E69E15E8] = [MEMORY[0x1E69E15E8] sharedInstance];
+  [mEMORY[0x1E69E15E8] fetchSubscriptionData:1 completion:&__block_literal_global_160];
 
   objc_destroyWeak(&location);
 }
@@ -552,24 +552,24 @@ LABEL_6:
   }
 }
 
-- (void)_handleSuccessfulSubscriptionHelper:(id)a3 appContext:(id)a4 shouldInitiateFamilySetup:(BOOL)a5 completionHandler:(id)a6
+- (void)_handleSuccessfulSubscriptionHelper:(id)helper appContext:(id)context shouldInitiateFamilySetup:(BOOL)setup completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  helperCopy = helper;
+  contextCopy = context;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v18 = __123__VUIActionCommerceTransaction__handleSuccessfulSubscriptionHelper_appContext_shouldInitiateFamilySetup_completionHandler___block_invoke;
   v19 = &unk_1E8737440;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = a5;
+  v20 = helperCopy;
+  selfCopy = self;
+  v22 = contextCopy;
+  v23 = handlerCopy;
+  setupCopy = setup;
   v13 = MEMORY[0x1E696AF00];
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v14 = contextCopy;
+  v15 = handlerCopy;
+  v16 = helperCopy;
   if ([v13 isMainThread])
   {
     v18(block);
@@ -772,25 +772,25 @@ void __123__VUIActionCommerceTransaction__handleSuccessfulSubscriptionHelper_app
   }
 }
 
-- (void)_showUIConfirmationForSubTransaction:(id)a3 completion:(id)a4
+- (void)_showUIConfirmationForSubTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 notificationTitle];
-  v9 = [v8 copy];
+  completionCopy = completion;
+  transactionCopy = transaction;
+  notificationTitle = [transactionCopy notificationTitle];
+  v9 = [notificationTitle copy];
 
-  v10 = [v7 notificationBody];
+  notificationBody = [transactionCopy notificationBody];
 
-  v11 = [v10 copy];
+  v11 = [notificationBody copy];
   v16 = MEMORY[0x1E69E9820];
   v17 = __80__VUIActionCommerceTransaction__showUIConfirmationForSubTransaction_completion___block_invoke;
   v18 = &unk_1E872DF68;
-  v19 = self;
+  selfCopy = self;
   v20 = v9;
   v21 = v11;
-  v22 = v6;
+  v22 = completionCopy;
   v12 = MEMORY[0x1E696AF00];
-  v13 = v6;
+  v13 = completionCopy;
   v14 = v11;
   v15 = v9;
   if ([v12 isMainThread])
@@ -814,62 +814,62 @@ uint64_t __80__VUIActionCommerceTransaction__showUIConfirmationForSubTransaction
   return [v2 displayConfirmationUIWithTitle:v3 andBody:v4 completion:v5];
 }
 
-- (void)_notifyDidStartPurchaseType:(int64_t)a3 transactionOffer:(id)a4
+- (void)_notifyDidStartPurchaseType:(int64_t)type transactionOffer:(id)offer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  offerCopy = offer;
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "PurchaseAction - _notifyPurchaseDidStart, type:%ld", buf, 0xCu);
   }
 
-  v7 = [v5 buyParams];
+  buyParams = [offerCopy buyParams];
 
   v8 = +[VUIPurchaser sharedInstance];
-  [v8 rememberPurchasing:v7];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  [v8 rememberPurchasing:buyParams];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = @"TransactionID";
-  v12 = v7;
+  v12 = buyParams;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  [v9 postNotificationName:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0 userInfo:v10];
+  [defaultCenter postNotificationName:@"VUIPurchaseOrSubscribeRequestDidStartNotification" object:0 userInfo:v10];
 }
 
-- (void)_notifyDidEndPurchaseType:(int64_t)a3 transactionOffer:(id)a4 withError:(id)a5
+- (void)_notifyDidEndPurchaseType:(int64_t)type transactionOffer:(id)offer withError:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  offerCopy = offer;
+  errorCopy = error;
   v9 = VUIDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v25 = a3;
+    typeCopy = type;
     v26 = 2112;
-    v27 = v8;
+    v27 = errorCopy;
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_DEFAULT, "PurchaseAction - _notifyPurchaseDidEnd, type:%ld, error:%@", buf, 0x16u);
   }
 
-  v10 = [v7 buyParams];
+  buyParams = [offerCopy buyParams];
   v11 = +[VUIPurchaser sharedInstance];
-  [v11 forgetPurchasing:v10];
+  [v11 forgetPurchasing:buyParams];
   v12 = objc_opt_new();
-  [v12 setObject:v10 forKeyedSubscript:@"TransactionID"];
-  if (v8)
+  [v12 setObject:buyParams forKeyedSubscript:@"TransactionID"];
+  if (errorCopy)
   {
-    [v12 setObject:v8 forKeyedSubscript:@"Error"];
+    [v12 setObject:errorCopy forKeyedSubscript:@"Error"];
   }
 
-  v13 = [v7 canonicalIDs];
-  if (v13)
+  canonicalIDs = [offerCopy canonicalIDs];
+  if (canonicalIDs)
   {
-    [v12 setObject:v13 forKeyedSubscript:@"CanonicalIDs"];
+    [v12 setObject:canonicalIDs forKeyedSubscript:@"CanonicalIDs"];
   }
 
   v14 = VUISubscribeRequestDidFinishNotification;
-  if (a3 != 1)
+  if (type != 1)
   {
     v14 = VUIPurchaseRequestDidFinishNotification;
   }
@@ -884,7 +884,7 @@ uint64_t __80__VUIActionCommerceTransaction__showUIConfirmationForSubTransaction
   v16 = v12;
   v17 = v15;
   dispatch_async(MEMORY[0x1E69E96A0], &v18);
-  if (!v8)
+  if (!errorCopy)
   {
     [v11 setInterruptedPurchaseRequest:{0, v18, v19, v20, v21, v22, v23}];
   }
@@ -896,37 +896,37 @@ void __85__VUIActionCommerceTransaction__notifyDidEndPurchaseType_transactionOff
   [v2 postNotificationName:*(a1 + 32) object:0 userInfo:*(a1 + 40)];
 }
 
-+ (void)displayConfirmationUIWithTitle:(id)a3 andBody:(id)a4 completion:(id)a5
++ (void)displayConfirmationUIWithTitle:(id)title andBody:(id)body completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-+ (void)displayConfirmationUIWithTitle:(id)a3 andBody:(id)a4
++ (void)displayConfirmationUIWithTitle:(id)title andBody:(id)body
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() displayConfirmationUIWithTitle:v6 andBody:v5 completion:0];
+  bodyCopy = body;
+  titleCopy = title;
+  [objc_opt_class() displayConfirmationUIWithTitle:titleCopy andBody:bodyCopy completion:0];
 }
 
-+ (BOOL)isTransactionInProgressForBuyParams:(id)a3
++ (BOOL)isTransactionInProgressForBuyParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v4 = +[VUIPurchaser sharedInstance];
-  v5 = [v4 isPurchasing:v3];
+  v5 = [v4 isPurchasing:paramsCopy];
 
   return v5;
 }
 
-- (void)_recordLog:(id)a3 withBuyParams:(id)a4
+- (void)_recordLog:(id)log withBuyParams:(id)params
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VUIActionCommerceTransaction *)self commerceActionRef];
-  v9 = [@"commerce transaction failure - " stringByAppendingString:v8];
+  paramsCopy = params;
+  logCopy = log;
+  commerceActionRef = [(VUIActionCommerceTransaction *)self commerceActionRef];
+  v9 = [@"commerce transaction failure - " stringByAppendingString:commerceActionRef];
 
   if (v9)
   {
@@ -942,9 +942,9 @@ void __85__VUIActionCommerceTransaction__notifyDidEndPurchaseType_transactionOff
   v19[0] = @"message";
   v19[1] = @"errorCode";
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v7 code];
+  code = [logCopy code];
 
-  v13 = [v11 numberWithLong:v12];
+  v13 = [v11 numberWithLong:code];
   v14 = v13;
   if (v13)
   {
@@ -957,9 +957,9 @@ void __85__VUIActionCommerceTransaction__notifyDidEndPurchaseType_transactionOff
   }
 
   v19[2] = @"buyParams";
-  if (v6)
+  if (paramsCopy)
   {
-    v16 = v6;
+    v16 = paramsCopy;
   }
 
   else
@@ -976,13 +976,13 @@ void __85__VUIActionCommerceTransaction__notifyDidEndPurchaseType_transactionOff
   [v18 recordLog:v17];
 }
 
-+ (id)extractSalableAdamIDFromBuyParams:(id)a3
++ (id)extractSalableAdamIDFromBuyParams:(id)params
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  paramsCopy = params;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v17 = v3;
-  [v3 componentsSeparatedByString:@"&"];
+  v17 = paramsCopy;
+  [paramsCopy componentsSeparatedByString:@"&"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1002,16 +1002,16 @@ LABEL_3:
       }
 
       v10 = [*(*(&v18 + 1) + 8 * v9) componentsSeparatedByString:@"="];
-      v11 = [v10 firstObject];
-      v12 = [v11 stringByRemovingPercentEncoding];
+      firstObject = [v10 firstObject];
+      stringByRemovingPercentEncoding = [firstObject stringByRemovingPercentEncoding];
 
-      v13 = [v10 lastObject];
-      v14 = [v13 stringByRemovingPercentEncoding];
+      lastObject = [v10 lastObject];
+      stringByRemovingPercentEncoding2 = [lastObject stringByRemovingPercentEncoding];
 
-      [v4 setObject:v14 forKey:v12];
-      LOBYTE(v13) = [v12 isEqualToString:@"salableAdamId"];
+      [v4 setObject:stringByRemovingPercentEncoding2 forKey:stringByRemovingPercentEncoding];
+      LOBYTE(lastObject) = [stringByRemovingPercentEncoding isEqualToString:@"salableAdamId"];
 
-      if (v13)
+      if (lastObject)
       {
         break;
       }

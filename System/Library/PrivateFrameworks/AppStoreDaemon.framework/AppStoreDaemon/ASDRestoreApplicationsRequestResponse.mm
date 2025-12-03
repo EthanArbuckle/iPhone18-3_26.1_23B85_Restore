@@ -1,15 +1,15 @@
 @interface ASDRestoreApplicationsRequestResponse
-- (ASDRestoreApplicationsRequestResponse)initWithCoder:(id)a3;
-- (ASDRestoreApplicationsRequestResponse)initWithResults:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ASDRestoreApplicationsRequestResponse)initWithCoder:(id)coder;
+- (ASDRestoreApplicationsRequestResponse)initWithResults:(id)results;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASDRestoreApplicationsRequestResponse
 
-- (ASDRestoreApplicationsRequestResponse)initWithResults:(id)a3
+- (ASDRestoreApplicationsRequestResponse)initWithResults:(id)results
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v4 copyItems:1];
+  resultsCopy = results;
+  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:resultsCopy copyItems:1];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -71,21 +71,21 @@ uint64_t __57__ASDRestoreApplicationsRequestResponse_initWithResults___block_inv
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ASDRestoreApplicationsRequestResponse allocWithZone:a3];
+  v4 = [ASDRestoreApplicationsRequestResponse allocWithZone:zone];
   results = self->_results;
 
   return [(ASDRestoreApplicationsRequestResponse *)v4 initWithResults:results];
 }
 
-- (ASDRestoreApplicationsRequestResponse)initWithCoder:(id)a3
+- (ASDRestoreApplicationsRequestResponse)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"results"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"results"];
 
   v9 = [(ASDRestoreApplicationsRequestResponse *)self initWithResults:v8];
   return v9;

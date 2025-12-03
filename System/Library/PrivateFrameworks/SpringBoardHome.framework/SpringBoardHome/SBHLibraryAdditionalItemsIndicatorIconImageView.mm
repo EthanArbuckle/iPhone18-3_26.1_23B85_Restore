@@ -1,20 +1,20 @@
 @interface SBHLibraryAdditionalItemsIndicatorIconImageView
 + (BOOL)hasCustomJitter;
-- (SBHLibraryAdditionalItemsIndicatorIconImageView)initWithFrame:(CGRect)a3;
+- (SBHLibraryAdditionalItemsIndicatorIconImageView)initWithFrame:(CGRect)frame;
 - (void)_addCustomJitter;
-- (void)_addCustomJitterToIconViews:(id)a3;
+- (void)_addCustomJitterToIconViews:(id)views;
 - (void)_removeCustomJitter;
-- (void)_removeCustomJitterFromIconViews:(id)a3;
-- (void)setJittering:(BOOL)a3;
+- (void)_removeCustomJitterFromIconViews:(id)views;
+- (void)setJittering:(BOOL)jittering;
 @end
 
 @implementation SBHLibraryAdditionalItemsIndicatorIconImageView
 
-- (SBHLibraryAdditionalItemsIndicatorIconImageView)initWithFrame:(CGRect)a3
+- (SBHLibraryAdditionalItemsIndicatorIconImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBHLibraryAdditionalItemsIndicatorIconImageView;
-  v3 = [(SBFolderIconImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFolderIconImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,16 +24,16 @@
   return v4;
 }
 
-- (void)setJittering:(BOOL)a3
+- (void)setJittering:(BOOL)jittering
 {
-  v3 = a3;
-  v5 = [(SBIconImageView *)self isJittering];
+  jitteringCopy = jittering;
+  isJittering = [(SBIconImageView *)self isJittering];
   v6.receiver = self;
   v6.super_class = SBHLibraryAdditionalItemsIndicatorIconImageView;
-  [(SBIconImageView *)&v6 setJittering:v3];
-  if (v5 || !v3)
+  [(SBIconImageView *)&v6 setJittering:jitteringCopy];
+  if (isJittering || !jitteringCopy)
   {
-    if (v5 && !v3)
+    if (isJittering && !jitteringCopy)
     {
       [(SBHLibraryAdditionalItemsIndicatorIconImageView *)self _removeCustomJitter];
     }
@@ -47,31 +47,31 @@
 
 + (BOOL)hasCustomJitter
 {
-  if ([a1 allowsLayersForMiniIcons])
+  if ([self allowsLayersForMiniIcons])
   {
     return 1;
   }
 
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SBHLibraryAdditionalItemsIndicatorIconImageView;
   return objc_msgSendSuper2(&v4, sel_hasCustomJitter);
 }
 
 - (void)_addCustomJitter
 {
-  v3 = [(SBFolderIconImageView *)self currentPageIconCellViews];
-  [(SBHLibraryAdditionalItemsIndicatorIconImageView *)self _addCustomJitterToIconViews:v3];
+  currentPageIconCellViews = [(SBFolderIconImageView *)self currentPageIconCellViews];
+  [(SBHLibraryAdditionalItemsIndicatorIconImageView *)self _addCustomJitterToIconViews:currentPageIconCellViews];
 }
 
-- (void)_addCustomJitterToIconViews:(id)a3
+- (void)_addCustomJitterToIconViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  viewsCopy = views;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [viewsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -83,25 +83,25 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewsCopy);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * v7) layer];
+        layer = [*(*(&v12 + 1) + 8 * v7) layer];
         v9 = [SBIconView _jitterXTranslationAnimationWithAmount:0.25];
-        [v8 addAnimation:v9 forKey:@"SBFolderIconImageViewJitterXTranslationAnimationKey"];
+        [layer addAnimation:v9 forKey:@"SBFolderIconImageViewJitterXTranslationAnimationKey"];
 
         v10 = [SBIconView _jitterXTranslationAnimationWithAmount:0.25];
-        [v8 addAnimation:v10 forKey:@"SBFolderIconImageViewJitterYTranslationAnimationKey"];
+        [layer addAnimation:v10 forKey:@"SBFolderIconImageViewJitterYTranslationAnimationKey"];
 
         BSDegreesToRadians();
         v11 = [SBIconView _jitterRotationAnimationWithAmount:?];
-        [v8 addAnimation:v11 forKey:@"SBFolderIconImageViewJitterRotationAnimationKey"];
+        [layer addAnimation:v11 forKey:@"SBFolderIconImageViewJitterRotationAnimationKey"];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [viewsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -110,19 +110,19 @@
 
 - (void)_removeCustomJitter
 {
-  v3 = [(SBFolderIconImageView *)self currentPageIconCellViews];
-  [(SBHLibraryAdditionalItemsIndicatorIconImageView *)self _removeCustomJitterFromIconViews:v3];
+  currentPageIconCellViews = [(SBFolderIconImageView *)self currentPageIconCellViews];
+  [(SBHLibraryAdditionalItemsIndicatorIconImageView *)self _removeCustomJitterFromIconViews:currentPageIconCellViews];
 }
 
-- (void)_removeCustomJitterFromIconViews:(id)a3
+- (void)_removeCustomJitterFromIconViews:(id)views
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  viewsCopy = views;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [viewsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -134,19 +134,19 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewsCopy);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) layer];
-        [v8 removeAnimationForKey:@"SBFolderIconImageViewJitterXTranslationAnimationKey"];
-        [v8 removeAnimationForKey:@"SBFolderIconImageViewJitterYTranslationAnimationKey"];
-        [v8 removeAnimationForKey:@"SBFolderIconImageViewJitterRotationAnimationKey"];
+        layer = [*(*(&v9 + 1) + 8 * v7) layer];
+        [layer removeAnimationForKey:@"SBFolderIconImageViewJitterXTranslationAnimationKey"];
+        [layer removeAnimationForKey:@"SBFolderIconImageViewJitterYTranslationAnimationKey"];
+        [layer removeAnimationForKey:@"SBFolderIconImageViewJitterRotationAnimationKey"];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [viewsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

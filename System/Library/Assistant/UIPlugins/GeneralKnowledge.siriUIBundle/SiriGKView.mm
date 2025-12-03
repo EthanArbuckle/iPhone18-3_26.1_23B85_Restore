@@ -7,8 +7,8 @@
 
 - (BOOL)isSelectable
 {
-  v2 = [(SiriGKView *)self command];
-  v3 = v2 != 0;
+  command = [(SiriGKView *)self command];
+  v3 = command != 0;
 
   return v3;
 }

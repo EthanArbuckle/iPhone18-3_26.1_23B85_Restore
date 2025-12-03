@@ -1,19 +1,19 @@
 @interface CBAccessoryLogging
-+ (id)getComponentNameFromProductID:(unint64_t)a3;
-+ (id)getComponentNameFromRadarReason:(int)a3;
-+ (id)getComponentVersionFromProductID:(unint64_t)a3;
-+ (id)getComponentVersionFromRadarReason:(int)a3;
-+ (id)getProductNameFromProductID:(unint64_t)a3;
-+ (unint64_t)getComponentIDFromProductID:(unint64_t)a3;
-+ (unint64_t)getComponentIDFromRadarReason:(int)a3;
++ (id)getComponentNameFromProductID:(unint64_t)d;
++ (id)getComponentNameFromRadarReason:(int)reason;
++ (id)getComponentVersionFromProductID:(unint64_t)d;
++ (id)getComponentVersionFromRadarReason:(int)reason;
++ (id)getProductNameFromProductID:(unint64_t)d;
++ (unint64_t)getComponentIDFromProductID:(unint64_t)d;
++ (unint64_t)getComponentIDFromRadarReason:(int)reason;
 @end
 
 @implementation CBAccessoryLogging
 
-+ (id)getProductNameFromProductID:(unint64_t)a3
++ (id)getProductNameFromProductID:(unint64_t)d
 {
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MobileBluetooth"];
-  v5 = a3 - 8194;
+  v5 = d - 8194;
   v6 = @"Beats Studio Pro";
   switch(v5)
   {
@@ -126,48 +126,48 @@ LABEL_9:
   return v7;
 }
 
-+ (unint64_t)getComponentIDFromProductID:(unint64_t)a3
++ (unint64_t)getComponentIDFromProductID:(unint64_t)d
 {
-  if (a3 - 8194 > 0x2D)
+  if (d - 8194 > 0x2D)
   {
     return 1210810;
   }
 
   else
   {
-    return qword_1C0B82D48[a3 - 8194];
+    return qword_1C0B82D48[d - 8194];
   }
 }
 
-+ (id)getComponentNameFromProductID:(unint64_t)a3
++ (id)getComponentNameFromProductID:(unint64_t)d
 {
-  if (a3 - 8194 > 0x2D)
+  if (d - 8194 > 0x2D)
   {
     return @"AudioProducts FW";
   }
 
   else
   {
-    return off_1E811E070[a3 - 8194];
+    return off_1E811E070[d - 8194];
   }
 }
 
-+ (id)getComponentVersionFromProductID:(unint64_t)a3
++ (id)getComponentVersionFromProductID:(unint64_t)d
 {
-  if (a3 - 8194 > 0x2D)
+  if (d - 8194 > 0x2D)
   {
     return @"All";
   }
 
   else
   {
-    return off_1E811E1E0[a3 - 8194];
+    return off_1E811E1E0[d - 8194];
   }
 }
 
-+ (unint64_t)getComponentIDFromRadarReason:(int)a3
++ (unint64_t)getComponentIDFromRadarReason:(int)reason
 {
-  if (a3 == 5)
+  if (reason == 5)
   {
     return 1046269;
   }
@@ -178,9 +178,9 @@ LABEL_9:
   }
 }
 
-+ (id)getComponentNameFromRadarReason:(int)a3
++ (id)getComponentNameFromRadarReason:(int)reason
 {
-  if (a3 == 5)
+  if (reason == 5)
   {
     return @"SpockEngine";
   }
@@ -191,9 +191,9 @@ LABEL_9:
   }
 }
 
-+ (id)getComponentVersionFromRadarReason:(int)a3
++ (id)getComponentVersionFromRadarReason:(int)reason
 {
-  if (a3 == 5)
+  if (reason == 5)
   {
     return @"New Bugs";
   }

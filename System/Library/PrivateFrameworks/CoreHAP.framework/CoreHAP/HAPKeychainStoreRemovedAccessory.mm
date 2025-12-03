@@ -1,21 +1,21 @@
 @interface HAPKeychainStoreRemovedAccessory
 + (id)logCategory;
-- (HAPKeychainStoreRemovedAccessory)initWithName:(id)a3 creationDate:(id)a4;
+- (HAPKeychainStoreRemovedAccessory)initWithName:(id)name creationDate:(id)date;
 - (NSString)description;
 @end
 
 @implementation HAPKeychainStoreRemovedAccessory
 
-- (HAPKeychainStoreRemovedAccessory)initWithName:(id)a3 creationDate:(id)a4
+- (HAPKeychainStoreRemovedAccessory)initWithName:(id)name creationDate:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  nameCopy = name;
+  dateCopy = date;
+  v9 = dateCopy;
+  if (!nameCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -34,10 +34,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v8)
+  if (!dateCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -57,12 +57,12 @@ LABEL_11:
   p_isa = &v10->super.super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_accessoryName, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_accessoryName, name);
+    objc_storeStrong(p_isa + 2, date);
   }
 
-  v12 = p_isa;
-  v13 = v12;
+  selfCopy2 = p_isa;
+  v13 = selfCopy2;
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -72,10 +72,10 @@ LABEL_12:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPKeychainStoreRemovedAccessory *)self accessoryName];
-  v5 = [(HAPKeychainStoreRemovedAccessory *)self creationDate];
-  v6 = [(HAPKeychainStoreRemovedAccessory *)self removeError];
-  v7 = [v3 stringWithFormat:@"accessoryName: %@, creationDate: %@, error: %@", v4, v5, v6];
+  accessoryName = [(HAPKeychainStoreRemovedAccessory *)self accessoryName];
+  creationDate = [(HAPKeychainStoreRemovedAccessory *)self creationDate];
+  removeError = [(HAPKeychainStoreRemovedAccessory *)self removeError];
+  v7 = [v3 stringWithFormat:@"accessoryName: %@, creationDate: %@, error: %@", accessoryName, creationDate, removeError];
 
   return v7;
 }

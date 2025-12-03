@@ -1,18 +1,18 @@
 @interface _INPBSpatialEventTrigger
-- (BOOL)isEqual:(id)a3;
-- (_INPBSpatialEventTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSpatialEventTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsEvent:(id)a3;
-- (int)StringAsMobileSpace:(id)a3;
+- (int)StringAsEvent:(id)event;
+- (int)StringAsMobileSpace:(id)space;
 - (unint64_t)hash;
-- (void)addSuggestedValues:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEvent:(int)a3;
-- (void)setHasMobileSpace:(BOOL)a3;
-- (void)setMobileSpace:(int)a3;
-- (void)setSuggestedValues:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSuggestedValues:(id)values;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEvent:(int)event;
+- (void)setHasMobileSpace:(BOOL)space;
+- (void)setMobileSpace:(int)space;
+- (void)setSuggestedValues:(id)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSpatialEventTrigger
@@ -20,25 +20,25 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBSpatialEventTrigger *)self hasEvent])
   {
-    v4 = [(_INPBSpatialEventTrigger *)self event];
-    if (v4)
+    event = [(_INPBSpatialEventTrigger *)self event];
+    if (event)
     {
-      if (v4 == 20)
+      if (event == 20)
       {
         v5 = @"DEPART";
       }
 
-      else if (v4 == 10)
+      else if (event == 10)
       {
         v5 = @"ARRIVE";
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", event];
       }
     }
 
@@ -47,26 +47,26 @@
       v5 = @"UNKNOWN_SPATIAL_EVENT";
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"event"];
+    [dictionary setObject:v5 forKeyedSubscript:@"event"];
   }
 
-  v6 = [(_INPBSpatialEventTrigger *)self location];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"location"];
+  location = [(_INPBSpatialEventTrigger *)self location];
+  dictionaryRepresentation = [location dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"location"];
 
   if ([(_INPBSpatialEventTrigger *)self hasMobileSpace])
   {
-    v8 = [(_INPBSpatialEventTrigger *)self mobileSpace];
-    if (v8)
+    mobileSpace = [(_INPBSpatialEventTrigger *)self mobileSpace];
+    if (mobileSpace)
     {
-      if (v8 == 1)
+      if (mobileSpace == 1)
       {
         v9 = @"CAR";
       }
 
       else
       {
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", mobileSpace];
       }
     }
 
@@ -75,12 +75,12 @@
       v9 = @"UNKNOWN_MOBILE_SPACE";
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"mobileSpace"];
+    [dictionary setObject:v9 forKeyedSubscript:@"mobileSpace"];
   }
 
   if ([(NSArray *)self->_suggestedValues count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -100,8 +100,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -110,12 +110,12 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"suggestedValues"];
+    [dictionary setObject:array forKeyedSubscript:@"suggestedValues"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -144,46 +144,46 @@
   return v4 ^ v3 ^ v5 ^ [(NSArray *)self->_suggestedValues hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(_INPBSpatialEventTrigger *)self hasEvent];
-  if (v5 != [v4 hasEvent])
+  hasEvent = [(_INPBSpatialEventTrigger *)self hasEvent];
+  if (hasEvent != [equalCopy hasEvent])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBSpatialEventTrigger *)self hasEvent])
   {
-    if ([v4 hasEvent])
+    if ([equalCopy hasEvent])
     {
       event = self->_event;
-      if (event != [v4 event])
+      if (event != [equalCopy event])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v7 = [(_INPBSpatialEventTrigger *)self location];
-  v8 = [v4 location];
-  if ((v7 != 0) == (v8 == 0))
+  location = [(_INPBSpatialEventTrigger *)self location];
+  location2 = [equalCopy location];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_19;
   }
 
-  v9 = [(_INPBSpatialEventTrigger *)self location];
-  if (v9)
+  location3 = [(_INPBSpatialEventTrigger *)self location];
+  if (location3)
   {
-    v10 = v9;
-    v11 = [(_INPBSpatialEventTrigger *)self location];
-    v12 = [v4 location];
-    v13 = [v11 isEqual:v12];
+    v10 = location3;
+    location4 = [(_INPBSpatialEventTrigger *)self location];
+    location5 = [equalCopy location];
+    v13 = [location4 isEqual:location5];
 
     if (!v13)
     {
@@ -195,30 +195,30 @@
   {
   }
 
-  v14 = [(_INPBSpatialEventTrigger *)self hasMobileSpace];
-  if (v14 != [v4 hasMobileSpace])
+  hasMobileSpace = [(_INPBSpatialEventTrigger *)self hasMobileSpace];
+  if (hasMobileSpace != [equalCopy hasMobileSpace])
   {
     goto LABEL_20;
   }
 
   if ([(_INPBSpatialEventTrigger *)self hasMobileSpace])
   {
-    if ([v4 hasMobileSpace])
+    if ([equalCopy hasMobileSpace])
     {
       mobileSpace = self->_mobileSpace;
-      if (mobileSpace != [v4 mobileSpace])
+      if (mobileSpace != [equalCopy mobileSpace])
       {
         goto LABEL_20;
       }
     }
   }
 
-  v7 = [(_INPBSpatialEventTrigger *)self suggestedValues];
-  v8 = [v4 suggestedValues];
-  if ((v7 != 0) != (v8 == 0))
+  location = [(_INPBSpatialEventTrigger *)self suggestedValues];
+  location2 = [equalCopy suggestedValues];
+  if ((location != 0) != (location2 == 0))
   {
-    v16 = [(_INPBSpatialEventTrigger *)self suggestedValues];
-    if (!v16)
+    suggestedValues = [(_INPBSpatialEventTrigger *)self suggestedValues];
+    if (!suggestedValues)
     {
 
 LABEL_23:
@@ -226,10 +226,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v17 = v16;
-    v18 = [(_INPBSpatialEventTrigger *)self suggestedValues];
-    v19 = [v4 suggestedValues];
-    v20 = [v18 isEqual:v19];
+    v17 = suggestedValues;
+    suggestedValues2 = [(_INPBSpatialEventTrigger *)self suggestedValues];
+    suggestedValues3 = [equalCopy suggestedValues];
+    v20 = [suggestedValues2 isEqual:suggestedValues3];
 
     if (v20)
     {
@@ -249,7 +249,7 @@ LABEL_21:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSpatialEventTrigger allocWithZone:](_INPBSpatialEventTrigger init];
   if ([(_INPBSpatialEventTrigger *)self hasEvent])
@@ -257,7 +257,7 @@ LABEL_21:
     [(_INPBSpatialEventTrigger *)v5 setEvent:[(_INPBSpatialEventTrigger *)self event]];
   }
 
-  v6 = [(_INPBLocationValue *)self->_location copyWithZone:a3];
+  v6 = [(_INPBLocationValue *)self->_location copyWithZone:zone];
   [(_INPBSpatialEventTrigger *)v5 setLocation:v6];
 
   if ([(_INPBSpatialEventTrigger *)self hasMobileSpace])
@@ -265,51 +265,51 @@ LABEL_21:
     [(_INPBSpatialEventTrigger *)v5 setMobileSpace:[(_INPBSpatialEventTrigger *)self mobileSpace]];
   }
 
-  v7 = [(NSArray *)self->_suggestedValues copyWithZone:a3];
+  v7 = [(NSArray *)self->_suggestedValues copyWithZone:zone];
   [(_INPBSpatialEventTrigger *)v5 setSuggestedValues:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSpatialEventTrigger *)self data];
+  coderCopy = coder;
+  data = [(_INPBSpatialEventTrigger *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSpatialEventTrigger)initWithCoder:(id)a3
+- (_INPBSpatialEventTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSpatialEventTrigger *)self initWithData:v6];
+    self = [(_INPBSpatialEventTrigger *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBSpatialEventTrigger *)self hasEvent])
   {
     event = self->_event;
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBSpatialEventTrigger *)self location];
+  location = [(_INPBSpatialEventTrigger *)self location];
 
-  if (v6)
+  if (location)
   {
-    v7 = [(_INPBSpatialEventTrigger *)self location];
+    location2 = [(_INPBSpatialEventTrigger *)self location];
     PBDataWriterWriteSubmessage();
   }
 
@@ -354,52 +354,52 @@ LABEL_21:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSuggestedValues:(id)a3
+- (void)addSuggestedValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   suggestedValues = self->_suggestedValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!suggestedValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_suggestedValues;
-    self->_suggestedValues = v6;
+    self->_suggestedValues = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     suggestedValues = self->_suggestedValues;
   }
 
-  [(NSArray *)suggestedValues addObject:v4];
+  [(NSArray *)suggestedValues addObject:valuesCopy];
 }
 
-- (void)setSuggestedValues:(id)a3
+- (void)setSuggestedValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   suggestedValues = self->_suggestedValues;
   self->_suggestedValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, suggestedValues);
 }
 
-- (int)StringAsMobileSpace:(id)a3
+- (int)StringAsMobileSpace:(id)space
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_MOBILE_SPACE"])
+  spaceCopy = space;
+  if ([spaceCopy isEqualToString:@"UNKNOWN_MOBILE_SPACE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"CAR"];
+    v4 = [spaceCopy isEqualToString:@"CAR"];
   }
 
   return v4;
 }
 
-- (void)setHasMobileSpace:(BOOL)a3
+- (void)setHasMobileSpace:(BOOL)space
 {
-  if (a3)
+  if (space)
   {
     v3 = 2;
   }
@@ -412,10 +412,10 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setMobileSpace:(int)a3
+- (void)setMobileSpace:(int)space
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (space == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -423,24 +423,24 @@ LABEL_21:
   else
   {
     *&self->_has = has | 2;
-    self->_mobileSpace = a3;
+    self->_mobileSpace = space;
   }
 }
 
-- (int)StringAsEvent:(id)a3
+- (int)StringAsEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SPATIAL_EVENT"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"UNKNOWN_SPATIAL_EVENT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ARRIVE"])
+  else if ([eventCopy isEqualToString:@"ARRIVE"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"DEPART"])
+  else if ([eventCopy isEqualToString:@"DEPART"])
   {
     v4 = 20;
   }
@@ -453,10 +453,10 @@ LABEL_21:
   return v4;
 }
 
-- (void)setEvent:(int)a3
+- (void)setEvent:(int)event
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (event == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -464,7 +464,7 @@ LABEL_21:
   else
   {
     *&self->_has = has | 1;
-    self->_event = a3;
+    self->_event = event;
   }
 }
 

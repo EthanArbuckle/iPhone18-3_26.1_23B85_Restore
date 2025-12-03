@@ -6,15 +6,15 @@
 
 - (id)wfName
 {
-  v1 = [a1 absoluteString];
-  if ([v1 length] <= 0x64)
+  absoluteString = [self absoluteString];
+  if ([absoluteString length] <= 0x64)
   {
-    v2 = v1;
+    v2 = absoluteString;
   }
 
   else
   {
-    v2 = [v1 substringToIndex:100];
+    v2 = [absoluteString substringToIndex:100];
   }
 
   v3 = v2;

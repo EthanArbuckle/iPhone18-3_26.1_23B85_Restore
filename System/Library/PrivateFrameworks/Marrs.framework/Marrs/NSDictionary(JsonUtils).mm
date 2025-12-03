@@ -9,8 +9,8 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 URLsForDirectory:9 inDomains:1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager URLsForDirectory:9 inDomains:1];
 
   if (![v6 count])
   {
@@ -28,11 +28,11 @@
     ConfigLoadingError::ConfigLoadingError(exception, buf, v23, "/Library/Caches/com.apple.xbs/Sources/Marrs/Common/NSDictionary+JsonUtils.mm", 35);
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v8 = [v6 objectAtIndexedSubscript:0];
-  v9 = [v8 path];
+  path = [v8 path];
   v22 = 0;
-  [v7 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v22];
+  [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v22];
   v10 = v22;
 
   if (v10)
@@ -60,7 +60,7 @@
   v13 = [MEMORY[0x277CBEB78] outputStreamWithURL:v12 append:0];
   [v13 open];
   v21 = 0;
-  [MEMORY[0x277CCAAA0] writeJSONObject:a1 toStream:v13 options:1 error:&v21];
+  [MEMORY[0x277CCAAA0] writeJSONObject:self toStream:v13 options:1 error:&v21];
   v14 = v21;
   [v13 close];
 
@@ -75,16 +75,16 @@
   v4 = v7;
   if (v4)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    a1 = [a1 initWithDictionary:v3];
-    v5 = a1;
+    self = [self initWithDictionary:v3];
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

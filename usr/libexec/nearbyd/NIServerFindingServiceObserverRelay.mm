@@ -4,9 +4,9 @@
 - (id).cxx_construct;
 - (id)observerTokens;
 - (void)_cleanupStaleObservers;
-- (void)addObserver:(id)a3 identifier:(id)a4 token:(id)a5;
-- (void)relayToObserversForToken:(id)a3 blockToRelay:(id)a4;
-- (void)removeObserverWithIdentifier:(id)a3;
+- (void)addObserver:(id)observer identifier:(id)identifier token:(id)token;
+- (void)relayToObserversForToken:(id)token blockToRelay:(id)relay;
+- (void)removeObserverWithIdentifier:(id)identifier;
 @end
 
 @implementation NIServerFindingServiceObserverRelay
@@ -42,35 +42,35 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3 identifier:(id)a4 token:(id)a5
+- (void)addObserver:(id)observer identifier:(id)identifier token:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  tokenCopy = token;
   std::mutex::lock((self + 24));
   [(NIServerFindingServiceObserverRelay *)self _cleanupStaleObservers];
   v11 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v9;
+    v15 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#find-ses,Add observer to relay: %{public}@", &v14, 0xCu);
   }
 
-  [*(self + 1) setObject:v8 forKey:v9];
-  [*(self + 2) setObject:v10 forKey:v9];
+  [*(self + 1) setObject:observerCopy forKey:identifierCopy];
+  [*(self + 2) setObject:tokenCopy forKey:identifierCopy];
   std::mutex::unlock((self + 24));
   v12 = +[NIServerFindingServicePool sharedInstance];
-  v13 = [v12 serviceForToken:v10 createIfNotExists:0];
-  [v13 relayInfoToNewObserver:v8];
+  v13 = [v12 serviceForToken:tokenCopy createIfNotExists:0];
+  [v13 relayInfoToNewObserver:observerCopy];
 }
 
-- (void)removeObserverWithIdentifier:(id)a3
+- (void)removeObserverWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   std::mutex::lock((self + 24));
   [(NIServerFindingServiceObserverRelay *)self _cleanupStaleObservers];
-  v5 = [*(self + 2) objectForKey:v4];
+  v5 = [*(self + 2) objectForKey:identifierCopy];
 
   if (v5)
   {
@@ -78,12 +78,12 @@
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#find-ses,Remove observer from relay: %{public}@", &v7, 0xCu);
     }
 
-    [*(self + 1) removeObjectForKey:v4];
-    [*(self + 2) removeObjectForKey:v4];
+    [*(self + 1) removeObjectForKey:identifierCopy];
+    [*(self + 2) removeObjectForKey:identifierCopy];
   }
 
   std::mutex::unlock((self + 24));
@@ -93,38 +93,38 @@
 {
   std::mutex::lock((self + 24));
   [(NIServerFindingServiceObserverRelay *)self _cleanupStaleObservers];
-  v3 = [*(self + 2) allValues];
+  allValues = [*(self + 2) allValues];
   std::mutex::unlock((self + 24));
 
-  return v3;
+  return allValues;
 }
 
-- (void)relayToObserversForToken:(id)a3 blockToRelay:(id)a4
+- (void)relayToObserversForToken:(id)token blockToRelay:(id)relay
 {
-  v13 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  relayCopy = relay;
   std::mutex::lock((self + 24));
   [(NIServerFindingServiceObserverRelay *)self _cleanupStaleObservers];
-  v7 = [*(self + 1) keyEnumerator];
-  for (i = 0; ; i = v9)
+  keyEnumerator = [*(self + 1) keyEnumerator];
+  for (i = 0; ; i = nextObject)
   {
-    v9 = [v7 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
-    v10 = [*(self + 1) objectForKey:v9];
+    v10 = [*(self + 1) objectForKey:nextObject];
     if (v10)
     {
-      v11 = [*(self + 2) objectForKey:v9];
+      v11 = [*(self + 2) objectForKey:nextObject];
       v12 = v11;
       if (v11)
       {
-        if ([v11 isEqual:v13])
+        if ([v11 isEqual:tokenCopy])
         {
-          v6[2](v6, v10);
+          relayCopy[2](relayCopy, v10);
         }
       }
     }

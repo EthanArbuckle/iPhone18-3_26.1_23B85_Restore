@@ -1,23 +1,23 @@
 @interface DNDSAvailabilityInvitationRequest
-- (BOOL)isEqual:(id)a3;
-- (DNDSAvailabilityInvitationRequest)initWithHandles:(id)a3 invitation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (DNDSAvailabilityInvitationRequest)initWithHandles:(id)handles invitation:(id)invitation;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSAvailabilityInvitationRequest
 
-- (DNDSAvailabilityInvitationRequest)initWithHandles:(id)a3 invitation:(id)a4
+- (DNDSAvailabilityInvitationRequest)initWithHandles:(id)handles invitation:(id)invitation
 {
-  v7 = a3;
-  v8 = a4;
+  handlesCopy = handles;
+  invitationCopy = invitation;
   v12.receiver = self;
   v12.super_class = DNDSAvailabilityInvitationRequest;
   v9 = [(DNDSAvailabilityInvitationRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_handles, a3);
-    objc_storeStrong(&v10->_invitation, a4);
+    objc_storeStrong(&v9->_handles, handles);
+    objc_storeStrong(&v10->_invitation, invitation);
   }
 
   return v10;
@@ -25,18 +25,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSAvailabilityInvitationRequest *)self handles];
-  v4 = [v3 hash];
-  v5 = [(DNDSAvailabilityInvitationRequest *)self invitation];
-  v6 = [v5 hash];
+  handles = [(DNDSAvailabilityInvitationRequest *)self handles];
+  v4 = [handles hash];
+  invitation = [(DNDSAvailabilityInvitationRequest *)self invitation];
+  v6 = [invitation hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -46,13 +46,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSAvailabilityInvitationRequest *)self handles];
-      v8 = [(DNDSAvailabilityInvitationRequest *)v6 handles];
-      if (v7 != v8)
+      v6 = equalCopy;
+      handles = [(DNDSAvailabilityInvitationRequest *)self handles];
+      handles2 = [(DNDSAvailabilityInvitationRequest *)v6 handles];
+      if (handles != handles2)
       {
-        v9 = [(DNDSAvailabilityInvitationRequest *)self handles];
-        if (!v9)
+        handles3 = [(DNDSAvailabilityInvitationRequest *)self handles];
+        if (!handles3)
         {
           v13 = 0;
 LABEL_24:
@@ -60,9 +60,9 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v3 = v9;
-        v10 = [(DNDSAvailabilityInvitationRequest *)v6 handles];
-        if (!v10)
+        v3 = handles3;
+        handles4 = [(DNDSAvailabilityInvitationRequest *)v6 handles];
+        if (!handles4)
         {
           v13 = 0;
 LABEL_23:
@@ -70,9 +70,9 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v11 = [(DNDSAvailabilityInvitationRequest *)self handles];
-        v12 = [(DNDSAvailabilityInvitationRequest *)v6 handles];
-        if (![v11 isEqual:v12])
+        handles5 = [(DNDSAvailabilityInvitationRequest *)self handles];
+        handles6 = [(DNDSAvailabilityInvitationRequest *)v6 handles];
+        if (![handles5 isEqual:handles6])
         {
           v13 = 0;
 LABEL_22:
@@ -80,15 +80,15 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v24 = v12;
-        v25 = v11;
-        v26 = v10;
+        v24 = handles6;
+        v25 = handles5;
+        v26 = handles4;
       }
 
-      v14 = [(DNDSAvailabilityInvitationRequest *)self invitation];
-      v15 = [(DNDSAvailabilityInvitationRequest *)v6 invitation];
-      v16 = v15;
-      if (v14 == v15)
+      invitation = [(DNDSAvailabilityInvitationRequest *)self invitation];
+      invitation2 = [(DNDSAvailabilityInvitationRequest *)v6 invitation];
+      v16 = invitation2;
+      if (invitation == invitation2)
       {
 
         v13 = 1;
@@ -96,17 +96,17 @@ LABEL_22:
 
       else
       {
-        v17 = [(DNDSAvailabilityInvitationRequest *)self invitation];
-        if (v17)
+        invitation3 = [(DNDSAvailabilityInvitationRequest *)self invitation];
+        if (invitation3)
         {
-          v18 = v17;
-          v19 = [(DNDSAvailabilityInvitationRequest *)v6 invitation];
-          if (v19)
+          v18 = invitation3;
+          invitation4 = [(DNDSAvailabilityInvitationRequest *)v6 invitation];
+          if (invitation4)
           {
-            v22 = [(DNDSAvailabilityInvitationRequest *)self invitation];
+            invitation5 = [(DNDSAvailabilityInvitationRequest *)self invitation];
             [(DNDSAvailabilityInvitationRequest *)v6 invitation];
             v20 = v23 = v3;
-            v13 = [v22 isEqual:v20];
+            v13 = [invitation5 isEqual:v20];
 
             v3 = v23;
           }
@@ -124,10 +124,10 @@ LABEL_22:
         }
       }
 
-      v11 = v25;
-      v10 = v26;
-      v12 = v24;
-      if (v7 == v8)
+      handles5 = v25;
+      handles4 = v26;
+      handles6 = v24;
+      if (handles == handles2)
       {
         goto LABEL_24;
       }

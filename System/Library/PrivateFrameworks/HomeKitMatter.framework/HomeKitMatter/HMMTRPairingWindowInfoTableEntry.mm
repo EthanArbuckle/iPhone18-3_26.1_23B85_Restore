@@ -1,6 +1,6 @@
 @interface HMMTRPairingWindowInfoTableEntry
 - (HMMTRAccessoryServer)accessoryServer;
-- (HMMTRPairingWindowInfoTableEntry)initWithAccessoryServer:(id)a3 expirationDate:(id)a4;
+- (HMMTRPairingWindowInfoTableEntry)initWithAccessoryServer:(id)server expirationDate:(id)date;
 @end
 
 @implementation HMMTRPairingWindowInfoTableEntry
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (HMMTRPairingWindowInfoTableEntry)initWithAccessoryServer:(id)a3 expirationDate:(id)a4
+- (HMMTRPairingWindowInfoTableEntry)initWithAccessoryServer:(id)server expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = HMMTRPairingWindowInfoTableEntry;
   v8 = [(HMMTRPairingWindowInfoTableEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_accessoryServer, v6);
-    objc_storeStrong(&v9->_expirationDate, a4);
+    objc_storeWeak(&v8->_accessoryServer, serverCopy);
+    objc_storeStrong(&v9->_expirationDate, date);
   }
 
   return v9;

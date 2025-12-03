@@ -1,12 +1,12 @@
 @interface SettingsServiceScene.RemoteObject
-- (void)updateSidebarWithItems:(id)a3;
+- (void)updateSidebarWithItems:(id)items;
 @end
 
 @implementation SettingsServiceScene.RemoteObject
 
-- (void)updateSidebarWithItems:(id)a3
+- (void)updateSidebarWithItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
 
   v4 = sub_21CE282BC();
   if (v4)

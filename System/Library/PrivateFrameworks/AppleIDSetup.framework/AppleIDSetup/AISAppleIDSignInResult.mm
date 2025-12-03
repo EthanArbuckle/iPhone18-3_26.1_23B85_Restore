@@ -1,7 +1,7 @@
 @interface AISAppleIDSignInResult
 - (AISAppleIDSignInResult)init;
 - (NSDictionary)authResults;
-- (void)setAuthResults:(id)a3;
+- (void)setAuthResults:(id)results;
 @end
 
 @implementation AISAppleIDSignInResult
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setAuthResults:(id)a3
+- (void)setAuthResults:(id)results
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B8A30, &unk_240767EF0);
   v4 = sub_240759F74();

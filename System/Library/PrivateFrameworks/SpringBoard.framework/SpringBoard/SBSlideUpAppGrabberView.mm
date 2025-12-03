@@ -1,26 +1,26 @@
 @interface SBSlideUpAppGrabberView
 - (BOOL)_shouldUseVibrancy;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBSlideUpAppGrabberView)initWithAdditionalTopPadding:(BOOL)a3 invertVerticalInsets:(BOOL)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBSlideUpAppGrabberView)initWithAdditionalTopPadding:(BOOL)padding invertVerticalInsets:(BOOL)insets;
 - (UIEdgeInsets)hitTestEdgeInsets;
 - (id)_lazyLegibilityView;
 - (void)layoutSubviews;
-- (void)setAppStyleGrabberImage:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setGrabberImageFromAppWithBundleIdentifier:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setStrength:(double)a3;
-- (void)setVibrancyAllowed:(BOOL)a3;
-- (void)setVibrantSettings:(id)a3;
+- (void)setAppStyleGrabberImage:(id)image;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundView:(id)view;
+- (void)setGrabberImageFromAppWithBundleIdentifier:(id)identifier;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setStrength:(double)strength;
+- (void)setVibrancyAllowed:(BOOL)allowed;
+- (void)setVibrantSettings:(id)settings;
 @end
 
 @implementation SBSlideUpAppGrabberView
 
-- (SBSlideUpAppGrabberView)initWithAdditionalTopPadding:(BOOL)a3 invertVerticalInsets:(BOOL)a4
+- (SBSlideUpAppGrabberView)initWithAdditionalTopPadding:(BOOL)padding invertVerticalInsets:(BOOL)insets
 {
-  v5 = a3;
+  paddingCopy = padding;
   v26.receiver = self;
   v26.super_class = SBSlideUpAppGrabberView;
   v6 = [(SBSlideUpAppGrabberView *)&v26 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -29,7 +29,7 @@
     [MEMORY[0x277D65EC0] slideUpGrabberInset];
     v8 = v7;
     v9 = __sb__runningInSpringBoard();
-    if (v5)
+    if (paddingCopy)
     {
       if (v9)
       {
@@ -43,7 +43,7 @@
           v10 = -40.0;
         }
 
-        if (a4)
+        if (insets)
         {
           goto LABEL_25;
         }
@@ -51,8 +51,8 @@
         goto LABEL_14;
       }
 
-      v12 = [MEMORY[0x277D75418] currentDevice];
-      if ([v12 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v10 = -80.0;
       }
@@ -77,7 +77,7 @@
           v10 = -20.0;
         }
 
-        if (a4)
+        if (insets)
         {
 LABEL_25:
           v13 = -v8;
@@ -96,8 +96,8 @@ LABEL_25:
 
           else
           {
-            v16 = [MEMORY[0x277D75418] currentDevice];
-            if ([v16 userInterfaceIdiom] == 1)
+            currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+            if ([currentDevice2 userInterfaceIdiom] == 1)
             {
               v14 = -100.0;
             }
@@ -128,14 +128,14 @@ LABEL_39:
 
           [(SBSlideUpAppGrabberView *)v6 addSubview:v6->_saturatedIconView];
           [(SBSlideUpAppGrabberView *)v6 setExclusiveTouch:1];
-          v22 = [MEMORY[0x277D75348] clearColor];
-          [(SBSlideUpAppGrabberView *)v6 setBackgroundColor:v22];
+          clearColor = [MEMORY[0x277D75348] clearColor];
+          [(SBSlideUpAppGrabberView *)v6 setBackgroundColor:clearColor];
 
-          v23 = [(SBSlideUpAppGrabberView *)v6 layer];
-          [v23 setAllowsGroupBlending:0];
+          layer = [(SBSlideUpAppGrabberView *)v6 layer];
+          [layer setAllowsGroupBlending:0];
 
-          v24 = [(SBSlideUpAppGrabberView *)v6 layer];
-          [v24 setMasksToBounds:1];
+          layer2 = [(SBSlideUpAppGrabberView *)v6 layer];
+          [layer2 setMasksToBounds:1];
 
           return v6;
         }
@@ -156,8 +156,8 @@ LABEL_14:
 
         else
         {
-          v15 = [MEMORY[0x277D75418] currentDevice];
-          if ([v15 userInterfaceIdiom] == 1)
+          currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+          if ([currentDevice3 userInterfaceIdiom] == 1)
           {
             v11 = -100.0;
           }
@@ -173,8 +173,8 @@ LABEL_14:
         goto LABEL_39;
       }
 
-      v12 = [MEMORY[0x277D75418] currentDevice];
-      if ([v12 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v10 = -50.0;
       }
@@ -185,7 +185,7 @@ LABEL_14:
       }
     }
 
-    if (a4)
+    if (insets)
     {
       goto LABEL_25;
     }
@@ -196,16 +196,16 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   p_hitTestEdgeInsets = &self->_hitTestEdgeInsets;
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_hitTestEdgeInsets.top, *MEMORY[0x277D768C8]), vceqq_f64(*&self->_hitTestEdgeInsets.bottom, *(MEMORY[0x277D768C8] + 16))))))
   {
     v19.receiver = self;
     v19.super_class = SBSlideUpAppGrabberView;
-    return [(SBSlideUpAppGrabberView *)&v19 pointInside:a4 withEvent:a3.x, a3.y];
+    return [(SBSlideUpAppGrabberView *)&v19 pointInside:event withEvent:inside.x, inside.y];
   }
 
   else
@@ -223,16 +223,16 @@ LABEL_14:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_grabberImage)
   {
-    [(UIImage *)self->_grabberImage size:a3.width];
+    [(UIImage *)self->_grabberImage size:fits.width];
   }
 
   else
   {
-    [(SBSaturatedIconView *)self->_saturatedIconView sizeThatFits:a3.width, a3.height];
+    [(SBSaturatedIconView *)self->_saturatedIconView sizeThatFits:fits.width, fits.height];
   }
 
   result.height = v4;
@@ -254,61 +254,61 @@ LABEL_14:
   backgroundView = self->_backgroundView;
   [(SBSlideUpAppGrabberView *)self bounds];
   [(UIView *)backgroundView setFrame:?];
-  v6 = [(SBSlideUpAppGrabberView *)self layer];
-  v7 = [v6 mask];
+  layer = [(SBSlideUpAppGrabberView *)self layer];
+  mask = [layer mask];
   [(SBSlideUpAppGrabberView *)self bounds];
-  [v7 setFrame:?];
+  [mask setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (self->_saturatedIconView)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
 
-    v4 = v5;
+    colorCopy = clearColor;
   }
 
   v6.receiver = self;
   v6.super_class = SBSlideUpAppGrabberView;
-  [(SBSlideUpAppGrabberView *)&v6 setBackgroundColor:v4];
+  [(SBSlideUpAppGrabberView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setGrabberImageFromAppWithBundleIdentifier:(id)a3
+- (void)setGrabberImageFromAppWithBundleIdentifier:(id)identifier
 {
-  v12 = a3;
-  v4 = [(UIView *)self _sbWindowScene];
-  v5 = [v4 iconController];
+  identifierCopy = identifier;
+  _sbWindowScene = [(UIView *)self _sbWindowScene];
+  iconController = [_sbWindowScene iconController];
 
-  v6 = [v5 tableUIIconImageCache];
-  if ([v12 isEqualToString:@"com.apple.Siri"])
+  tableUIIconImageCache = [iconController tableUIIconImageCache];
+  if ([identifierCopy isEqualToString:@"com.apple.Siri"])
   {
-    v7 = [MEMORY[0x277D755B8] imageNamed:@"siri-suggestion"];
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [v7 _flatImageWithColor:v8];
+    traitCollection = [MEMORY[0x277D755B8] imageNamed:@"siri-suggestion"];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [traitCollection _flatImageWithColor:whiteColor];
   }
 
   else
   {
-    v9 = [v5 iconModel];
-    v8 = [v9 applicationIconForBundleIdentifier:v12];
+    iconModel = [iconController iconModel];
+    whiteColor = [iconModel applicationIconForBundleIdentifier:identifierCopy];
 
-    v7 = [(SBSlideUpAppGrabberView *)self traitCollection];
-    [v6 imageForIcon:v8 compatibleWithTraitCollection:v7 options:2];
+    traitCollection = [(SBSlideUpAppGrabberView *)self traitCollection];
+    [tableUIIconImageCache imageForIcon:whiteColor compatibleWithTraitCollection:traitCollection options:2];
   }
   v10 = ;
 
   [(SBSlideUpAppGrabberView *)self setAppStyleGrabberImage:v10];
-  [v6 iconImageInfo];
+  [tableUIIconImageCache iconImageInfo];
   [(SBSlideUpAppGrabberView *)self _setContinuousCornerRadius:v11];
 }
 
-- (void)setAppStyleGrabberImage:(id)a3
+- (void)setAppStyleGrabberImage:(id)image
 {
-  objc_storeStrong(&self->_grabberImage, a3);
-  v5 = a3;
-  [(SBSaturatedIconView *)self->_saturatedIconView setImage:v5];
+  objc_storeStrong(&self->_grabberImage, image);
+  imageCopy = image;
+  [(SBSaturatedIconView *)self->_saturatedIconView setImage:imageCopy];
 
   [(SBSlideUpAppGrabberView *)self sizeToFit];
 
@@ -325,12 +325,12 @@ LABEL_14:
   return [(SBSlideUpAppGrabberView *)self isVibrancyAllowed];
 }
 
-- (void)setVibrancyAllowed:(BOOL)a3
+- (void)setVibrancyAllowed:(BOOL)allowed
 {
-  if (self->_vibrancyAllowed != a3)
+  if (self->_vibrancyAllowed != allowed)
   {
-    self->_vibrancyAllowed = a3;
-    if (a3)
+    self->_vibrancyAllowed = allowed;
+    if (allowed)
     {
       legibilityView = self->_legibilityView;
       if (legibilityView)
@@ -343,20 +343,20 @@ LABEL_14:
   }
 }
 
-- (void)setVibrantSettings:(id)a3
+- (void)setVibrantSettings:(id)settings
 {
-  v5 = a3;
-  if ([(SBSlideUpAppGrabberView *)self _shouldUseVibrancy]&& ([(_SBFVibrantSettings *)self->_vibrantSettings isEqual:v5]& 1) == 0)
+  settingsCopy = settings;
+  if ([(SBSlideUpAppGrabberView *)self _shouldUseVibrancy]&& ([(_SBFVibrantSettings *)self->_vibrantSettings isEqual:settingsCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_vibrantSettings, a3);
-    v6 = [(_SBFVibrantSettings *)self->_vibrantSettings tintColor];
+    objc_storeStrong(&self->_vibrantSettings, settings);
+    tintColor = [(_SBFVibrantSettings *)self->_vibrantSettings tintColor];
     if ([(_SBFVibrantSettings *)self->_vibrantSettings style]== 2)
     {
       v13 = 0.0;
       v14 = 0.0;
       v11 = 0.0;
       v12 = 0.0;
-      [v6 getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
+      [tintColor getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
       v7 = MEMORY[0x277D75348];
       v8 = (v14 + v13 + v12) * 1.20000005 / 3.0;
       v9 = v11;
@@ -375,24 +375,24 @@ LABEL_14:
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v9 = a3;
-  v5 = [(SBSlideUpAppGrabberView *)self _shouldUseVibrancy];
-  v6 = v9;
-  if (v5)
+  viewCopy = view;
+  _shouldUseVibrancy = [(SBSlideUpAppGrabberView *)self _shouldUseVibrancy];
+  v6 = viewCopy;
+  if (_shouldUseVibrancy)
   {
     backgroundView = self->_backgroundView;
-    if (backgroundView != v9)
+    if (backgroundView != viewCopy)
     {
       [(UIView *)backgroundView removeFromSuperview];
-      objc_storeStrong(&self->_backgroundView, a3);
+      objc_storeStrong(&self->_backgroundView, view);
       v8 = self->_backgroundView;
       [(SBSlideUpAppGrabberView *)self bounds];
       [(UIView *)v8 setFrame:?];
       [(SBSlideUpAppGrabberView *)self addSubview:self->_backgroundView];
       [(SBSlideUpAppGrabberView *)self sendSubviewToBack:self->_backgroundView];
-      v6 = v9;
+      v6 = viewCopy;
     }
   }
 }
@@ -427,19 +427,19 @@ LABEL_14:
   return v10;
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
-  self->_strength = a3;
-  v4 = [(SBSlideUpAppGrabberView *)self _lazyLegibilityView];
-  [v4 setStrength:a3];
+  self->_strength = strength;
+  _lazyLegibilityView = [(SBSlideUpAppGrabberView *)self _lazyLegibilityView];
+  [_lazyLegibilityView setStrength:strength];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  objc_storeStrong(&self->_legibilitySettings, a3);
-  v5 = a3;
-  v6 = [(SBSlideUpAppGrabberView *)self _lazyLegibilityView];
-  [v6 setLegibilitySettings:v5];
+  objc_storeStrong(&self->_legibilitySettings, settings);
+  settingsCopy = settings;
+  _lazyLegibilityView = [(SBSlideUpAppGrabberView *)self _lazyLegibilityView];
+  [_lazyLegibilityView setLegibilitySettings:settingsCopy];
 }
 
 - (UIEdgeInsets)hitTestEdgeInsets

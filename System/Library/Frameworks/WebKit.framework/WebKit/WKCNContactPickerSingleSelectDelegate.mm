@@ -1,14 +1,14 @@
 @interface WKCNContactPickerSingleSelectDelegate
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
 @end
 
 @implementation WKCNContactPickerSingleSelectDelegate
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   Weak = objc_loadWeak(&self->super._contactPickerDelegate.m_weakReference);
 
-  [Weak contactPicker:a3 didSelectContact:a4];
+  [Weak contactPicker:picker didSelectContact:contact];
 }
 
 @end

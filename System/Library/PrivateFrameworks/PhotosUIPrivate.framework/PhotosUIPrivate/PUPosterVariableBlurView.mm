@@ -1,5 +1,5 @@
 @interface PUPosterVariableBlurView
-- (PUPosterVariableBlurView)initWithFrame:(CGRect)a3 appearance:(unint64_t)a4;
+- (PUPosterVariableBlurView)initWithFrame:(CGRect)frame appearance:(unint64_t)appearance;
 - (void)_updateBlurProperties;
 @end
 
@@ -26,13 +26,13 @@
   [v9 blurRadius];
   v11 = v10;
 
-  v12 = [(PUPosterVariableBlurView *)self backdropLayer];
-  v13 = [(PUPosterVariableBlurView *)self currentBlurMaskImage];
-  [v12 setValue:objc_msgSend(v13 forKeyPath:{"CGImage"), @"filters.variableBlur.inputMaskImage"}];
+  backdropLayer = [(PUPosterVariableBlurView *)self backdropLayer];
+  currentBlurMaskImage = [(PUPosterVariableBlurView *)self currentBlurMaskImage];
+  [backdropLayer setValue:objc_msgSend(currentBlurMaskImage forKeyPath:{"CGImage"), @"filters.variableBlur.inputMaskImage"}];
 
-  v14 = [(PUPosterVariableBlurView *)self backdropLayer];
+  backdropLayer2 = [(PUPosterVariableBlurView *)self backdropLayer];
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-  [v14 setValue:v15 forKeyPath:@"filters.variableBlur.inputRadius"];
+  [backdropLayer2 setValue:v15 forKeyPath:@"filters.variableBlur.inputRadius"];
 }
 
 void __49__PUPosterVariableBlurView__updateBlurProperties__block_invoke(uint64_t a1, void *a2)
@@ -85,23 +85,23 @@ LABEL_7:
   CGColorSpaceRelease(v5);
 }
 
-- (PUPosterVariableBlurView)initWithFrame:(CGRect)a3 appearance:(unint64_t)a4
+- (PUPosterVariableBlurView)initWithFrame:(CGRect)frame appearance:(unint64_t)appearance
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PUPosterVariableBlurView;
-  v5 = [(PUPosterVariableBlurView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PUPosterVariableBlurView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798A8]];
-    v7 = [(PUPosterVariableBlurView *)v5 backdropLayer];
-    [v7 setCompositingFilter:v6];
+    backdropLayer = [(PUPosterVariableBlurView *)v5 backdropLayer];
+    [backdropLayer setCompositingFilter:v6];
 
-    v8 = [(PUPosterVariableBlurView *)v5 backdropLayer];
-    [v8 setAllowsHitTesting:0];
+    backdropLayer2 = [(PUPosterVariableBlurView *)v5 backdropLayer];
+    [backdropLayer2 setAllowsHitTesting:0];
 
-    v9 = [(PUPosterVariableBlurView *)v5 backdropLayer];
-    [v9 setMasksToBounds:1];
+    backdropLayer3 = [(PUPosterVariableBlurView *)v5 backdropLayer];
+    [backdropLayer3 setMasksToBounds:1];
 
     v10 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D70]];
     blurFilter = v5->_blurFilter;
@@ -112,11 +112,11 @@ LABEL_7:
     [(CAFilter *)v5->_blurFilter setEnabled:1];
     v16[0] = v5->_blurFilter;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v13 = [(PUPosterVariableBlurView *)v5 backdropLayer];
-    [v13 setFilters:v12];
+    backdropLayer4 = [(PUPosterVariableBlurView *)v5 backdropLayer];
+    [backdropLayer4 setFilters:v12];
 
     [(PUPosterVariableBlurView *)v5 _updateBlurProperties];
-    v5->_appearance = a4;
+    v5->_appearance = appearance;
   }
 
   return v5;

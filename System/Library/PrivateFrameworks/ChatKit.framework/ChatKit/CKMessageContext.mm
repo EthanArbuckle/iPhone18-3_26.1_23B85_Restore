@@ -1,16 +1,16 @@
 @interface CKMessageContext
 + (id)selfContext;
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKMessageContext
 
 + (id)selfContext
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[24] = 1;
   *(v2 + 13) = 0;
   v2[28] = 0;
@@ -18,21 +18,21 @@
   return v2;
 }
 
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     [CKMessageContext _copyWithClass:a2 zone:self];
   }
 
-  v8 = [[(objc_class *)a3 allocWithZone:a4] init];
-  v9 = [(CKMessageContext *)self chatContext];
-  v10 = [v9 copyWithZone:a4];
+  v8 = [[(objc_class *)class allocWithZone:zone] init];
+  chatContext = [(CKMessageContext *)self chatContext];
+  v10 = [chatContext copyWithZone:zone];
   v11 = *(v8 + 1);
   *(v8 + 1) = v10;
 
-  v12 = [(CKMessageContext *)self serviceName];
-  v13 = [v12 copyWithZone:a4];
+  serviceName = [(CKMessageContext *)self serviceName];
+  v13 = [serviceName copyWithZone:zone];
   v14 = *(v8 + 2);
   *(v8 + 2) = v13;
 
@@ -48,8 +48,8 @@
 {
   v13 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(CKMessageContext *)self chatContext];
-  v5 = [(CKMessageContext *)self serviceName];
+  chatContext = [(CKMessageContext *)self chatContext];
+  serviceName = [(CKMessageContext *)self serviceName];
   if ([(CKMessageContext *)self isFromMe])
   {
     v6 = @"YES";
@@ -100,23 +100,23 @@
     v10 = @"NO";
   }
 
-  v11 = [v13 stringWithFormat:@"<%@, chatContext: %@, serviceName: %@, fromMe: %@, spam: %@, senderUnknown: %@, senderUnauthenticated: %@, audioMessage: %@>", v3, v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v13 stringWithFormat:@"<%@, chatContext: %@, serviceName: %@, fromMe: %@, spam: %@, senderUnknown: %@, senderUnauthenticated: %@, audioMessage: %@>", v3, chatContext, serviceName, v6, v7, v8, v9, v10];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(CKMessageContext *)self _copyWithClass:v5 zone:a3];
+  return [(CKMessageContext *)self _copyWithClass:v5 zone:zone];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(CKMessageContext *)self _copyWithClass:v5 zone:a3];
+  return [(CKMessageContext *)self _copyWithClass:v5 zone:zone];
 }
 
 - (void)_copyWithClass:(uint64_t)a1 zone:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

@@ -6,7 +6,7 @@
 
 - (BOOL)isConnected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100054F3C();
 
   return v3 & 1;

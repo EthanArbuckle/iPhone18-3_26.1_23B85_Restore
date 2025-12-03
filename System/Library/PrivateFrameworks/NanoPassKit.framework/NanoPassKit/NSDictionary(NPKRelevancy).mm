@@ -9,11 +9,11 @@
 {
   v7 = a3;
   v8 = a4;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = v9;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = dictionary;
   if (v7)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277D38720]];
+    [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277D38720]];
   }
 
   if (v8)
@@ -34,10 +34,10 @@
 
 - (uint64_t)npkRelevancyShouldSuppressLiveActivity
 {
-  v1 = [a1 objectForKeyedSubscript:*MEMORY[0x277D38710]];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKeyedSubscript:*MEMORY[0x277D38710]];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

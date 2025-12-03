@@ -1,17 +1,17 @@
 @interface APPBAsset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)locationAsString:(int)a3;
-- (int)StringAsLocation:(id)a3;
+- (id)locationAsString:(int)string;
+- (int)StringAsLocation:(id)location;
 - (int)location;
 - (unint64_t)hash;
-- (void)addAssetInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLocation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssetInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLocation:(BOOL)location;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAsset
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasLocation:(BOOL)a3
+- (void)setHasLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 2;
   }
@@ -44,35 +44,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)locationAsString:(int)a3
+- (id)locationAsString:(int)string
 {
-  if ((a3 - 7500) >= 3)
+  if ((string - 7500) >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D030 + (a3 - 7500));
+    v4 = *(&off_10047D030 + (string - 7500));
   }
 
   return v4;
 }
 
-- (int)StringAsLocation:(id)a3
+- (int)StringAsLocation:(id)location
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Left"])
+  locationCopy = location;
+  if ([locationCopy isEqualToString:@"Left"])
   {
     v4 = 7500;
   }
 
-  else if ([v3 isEqualToString:@"Center"])
+  else if ([locationCopy isEqualToString:@"Center"])
   {
     v4 = 7501;
   }
 
-  else if ([v3 isEqualToString:@"Right"])
+  else if ([locationCopy isEqualToString:@"Right"])
   {
     v4 = 7502;
   }
@@ -85,22 +85,22 @@
   return v4;
 }
 
-- (void)addAssetInfo:(id)a3
+- (void)addAssetInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   assetInfos = self->_assetInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!assetInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_assetInfos;
     self->_assetInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     assetInfos = self->_assetInfos;
   }
 
-  [(NSMutableArray *)assetInfos addObject:v4];
+  [(NSMutableArray *)assetInfos addObject:infoCopy];
 }
 
 - (id)description
@@ -108,8 +108,8 @@
   v7.receiver = self;
   v7.super_class = APPBAsset;
   v3 = [(APPBAsset *)&v7 description];
-  v4 = [(APPBAsset *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAsset *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -162,8 +162,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -190,9 +190,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -245,29 +245,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v10;
+    [toCopy setName:?];
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 6) = self->_location;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 6) = self->_location;
+    *(toCopy + 48) |= 2u;
   }
 
   if ([(APPBAsset *)self assetInfosCount])
   {
     [v10 clearAssetInfos];
-    v5 = [(APPBAsset *)self assetInfosCount];
-    if (v5)
+    assetInfosCount = [(APPBAsset *)self assetInfosCount];
+    if (assetInfosCount)
     {
-      v6 = v5;
+      v6 = assetInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBAsset *)self assetInfoAtIndex:i];
@@ -290,10 +290,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -323,7 +323,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{a3, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{zone, v17}];
         [v5 addAssetInfo:v13];
 
         v12 = v12 + 1;
@@ -342,23 +342,23 @@
     *(v5 + 48) |= 1u;
   }
 
-  v14 = [(NSString *)self->_treatment copyWithZone:a3, v17];
+  v14 = [(NSString *)self->_treatment copyWithZone:zone, v17];
   v15 = v5[5];
   v5[5] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   name = self->_name;
-  if (name | *(v4 + 4))
+  if (name | *(equalCopy + 4))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -369,19 +369,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_location != *(v4 + 6))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_location != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   assetInfos = self->_assetInfos;
-  if (assetInfos | *(v4 + 2))
+  if (assetInfos | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)assetInfos isEqual:?])
     {
@@ -395,19 +395,19 @@ LABEL_19:
 
   if (has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_adamId != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_adamId != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_19;
   }
 
   treatment = self->_treatment;
-  if (treatment | *(v4 + 5))
+  if (treatment | *(equalCopy + 5))
   {
     v9 = [(NSString *)treatment isEqual:?];
   }
@@ -449,17 +449,17 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_treatment hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(APPBAsset *)self setName:?];
   }
 
-  if ((*(v4 + 48) & 2) != 0)
+  if ((*(fromCopy + 48) & 2) != 0)
   {
-    self->_location = *(v4 + 6);
+    self->_location = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
@@ -467,7 +467,7 @@ LABEL_20:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -491,13 +491,13 @@ LABEL_20:
     while (v7);
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_adamId = *(v4 + 1);
+    self->_adamId = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(APPBAsset *)self setTreatment:?];
   }

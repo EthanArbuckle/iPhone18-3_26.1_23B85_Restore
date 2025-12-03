@@ -1,35 +1,35 @@
 @interface _MapsFavoriteItemTwoLinesContentViewModel
 - (BOOL)hasVibrantBackground;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setObservedEntry:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setObservedEntry:(id)entry;
 @end
 
 @implementation _MapsFavoriteItemTwoLinesContentViewModel
 
 - (BOOL)hasVibrantBackground
 {
-  v2 = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
-  v3 = [v2 hasVibrantBackground];
+  observedEntry = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
+  hasVibrantBackground = [observedEntry hasVibrantBackground];
 
-  return v3;
+  return hasVibrantBackground;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
+  pathCopy = path;
+  objectCopy = object;
+  observedEntry = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
 
-  if (v10 == v9)
+  if (observedEntry == objectCopy)
   {
-    if ([v8 isEqualToString:@"title"])
+    if ([pathCopy isEqualToString:@"title"])
     {
     }
 
     else
     {
-      v11 = [v8 isEqualToString:@"subtitle"];
+      v11 = [pathCopy isEqualToString:@"subtitle"];
 
       if ((v11 & 1) == 0)
       {
@@ -37,13 +37,13 @@
       }
     }
 
-    v12 = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
-    v13 = [v12 title];
-    [(_BasicTwoLinesContentViewModel *)self setTitleText:v13];
+    observedEntry2 = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
+    title = [observedEntry2 title];
+    [(_BasicTwoLinesContentViewModel *)self setTitleText:title];
 
-    v14 = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
-    v15 = [v14 subtitle];
-    [(_BasicTwoLinesContentViewModel *)self setSubtitleText:v15];
+    observedEntry3 = [(_MapsFavoriteItemTwoLinesContentViewModel *)self observedEntry];
+    subtitle = [observedEntry3 subtitle];
+    [(_BasicTwoLinesContentViewModel *)self setSubtitleText:subtitle];
 
     if (+[NSThread isMainThread])
     {
@@ -68,19 +68,19 @@
 LABEL_3:
 }
 
-- (void)setObservedEntry:(id)a3
+- (void)setObservedEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   observedEntry = self->_observedEntry;
-  if (observedEntry != v5)
+  if (observedEntry != entryCopy)
   {
-    v7 = v5;
+    v7 = entryCopy;
     [(MapsFavoriteItem *)observedEntry removeObserver:self forKeyPath:@"title"];
     [(MapsFavoriteItem *)self->_observedEntry removeObserver:self forKeyPath:@"subtitle"];
-    objc_storeStrong(&self->_observedEntry, a3);
+    objc_storeStrong(&self->_observedEntry, entry);
     [(MapsFavoriteItem *)self->_observedEntry addObserver:self forKeyPath:@"title" options:1 context:0];
     [(MapsFavoriteItem *)self->_observedEntry addObserver:self forKeyPath:@"subtitle" options:1 context:0];
-    v5 = v7;
+    entryCopy = v7;
   }
 }
 

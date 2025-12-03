@@ -1,33 +1,33 @@
 @interface NEIKEv2Transport
-+ (NEIKEv2Transport)createTransport:(void *)a3 remote:(void *)a4 local:(unsigned int)a5 localPort:(void *)a6 boundInterface:(void *)a7 queue:(void *)a8 socketGetBlock:(void *)a9 packetDelegate:;
-+ (__CFString)stringForTransport:(uint64_t)a1;
++ (NEIKEv2Transport)createTransport:(void *)transport remote:(void *)remote local:(unsigned int)local localPort:(void *)port boundInterface:(void *)interface queue:(void *)queue socketGetBlock:(void *)block packetDelegate:;
++ (__CFString)stringForTransport:(uint64_t)transport;
 - (NEIKEv2Transport)init;
 - (NSString)description;
-- (uint64_t)sendData:(void *)a3 sendCompletionHandler:;
-- (uint64_t)setWildcardDelegate:(char)a3 preventsInvalidation:;
-- (void)addClient:(void *)a3 delegate:;
+- (uint64_t)sendData:(void *)data sendCompletionHandler:;
+- (uint64_t)setWildcardDelegate:(char)delegate preventsInvalidation:;
+- (void)addClient:(void *)client delegate:;
 - (void)callConnectedBlocks;
-- (void)cancelClient:(int)a3 shouldInvalidate:;
+- (void)cancelClient:(int)client shouldInvalidate:;
 - (void)cancelInvalidationTimer;
 - (void)dealloc;
-- (void)handleConnectionEventWithState:(void *)a3 error:;
+- (void)handleConnectionEventWithState:(void *)state error:;
 - (void)invalidate;
 - (void)port;
 - (void)readOnConnection;
-- (void)receivePacketData:(id)a3;
-- (void)reportConnectionError:(void *)a1;
-- (void)setRemoteSPI:(void *)a3 forClient:;
+- (void)receivePacketData:(id)data;
+- (void)reportConnectionError:(void *)error;
+- (void)setRemoteSPI:(void *)i forClient:;
 - (void)startInvalidationTimer;
-- (void)waitForTransport:(uint64_t)a1;
+- (void)waitForTransport:(uint64_t)transport;
 @end
 
 @implementation NEIKEv2Transport
 
-- (void)receivePacketData:(id)a3
+- (void)receivePacketData:(id)data
 {
   v93 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v9 = ne_log_obj();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -79,7 +79,7 @@ LABEL_10:
       }
     }
 
-    v13 = v5;
+    v13 = dataCopy;
     objc_opt_self();
     v14 = [v13 length];
     v15 = v14;
@@ -100,13 +100,13 @@ LABEL_10:
     {
       if (v14 < 0x10000)
       {
-        v78 = v5;
-        v16 = [v13 bytes];
-        v17 = v16;
-        if (*(v16 + 17) == 32)
+        v78 = dataCopy;
+        bytes = [v13 bytes];
+        v17 = bytes;
+        if (*(bytes + 17) == 32)
         {
-          v79 = self;
-          v18 = bswap32(*(v16 + 24));
+          selfCopy = self;
+          v18 = bswap32(*(bytes + 24));
           if (v15 == v18)
           {
             goto LABEL_17;
@@ -169,16 +169,16 @@ LABEL_31:
             {
               if (v19 == 34)
               {
-                v21 = [(NEIKEv2Packet *)[NEIKEv2IKESAInitPacket alloc] initInbound];
-                if (v21)
+                initInbound = [(NEIKEv2Packet *)[NEIKEv2IKESAInitPacket alloc] initInbound];
+                if (initInbound)
                 {
-                  v23 = v21;
-                  objc_setProperty_atomic(v21, v22, v13, 128);
-                  v24 = v23;
+                  v23 = initInbound;
+                  objc_setProperty_atomic(initInbound, v22, v13, 128);
+                  initInbound2 = v23;
 LABEL_38:
                   v27 = 0;
-                  selfa = v24;
-                  *(v24 + 16) = v15;
+                  selfa = initInbound2;
+                  *(initInbound2 + 16) = v15;
 LABEL_39:
                   v29 = [[NEIKEv2IKESPI alloc] initWithValue:*v17];
                   if ((v27 & 1) == 0)
@@ -194,7 +194,7 @@ LABEL_39:
                     if (([(NEIKEv2Packet *)0 parsePacketData:v13 firstPayloadType:*(v17 + 16) ikeSA:0]& 1) == 0)
                     {
 LABEL_110:
-                      v5 = v78;
+                      dataCopy = v78;
                       v26 = selfa;
                       goto LABEL_111;
                     }
@@ -205,9 +205,9 @@ LABEL_45:
                       v34 = ne_log_obj();
                       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                       {
-                        v35 = [(NEIKEv2Packet *)selfa copyShortDescription];
+                        copyShortDescription = [(NEIKEv2Packet *)selfa copyShortDescription];
                         *v90 = 138412290;
-                        *&v90[4] = v35;
+                        *&v90[4] = copyShortDescription;
                         v36 = "%@ Cannot parse packet, no encrypted payload found";
 LABEL_116:
                         _os_log_error_impl(&dword_1BA83C000, v34, OS_LOG_TYPE_ERROR, v36, v90, 0xCu);
@@ -246,8 +246,8 @@ LABEL_48:
                       v37 = selfa;
 
                       v9 = v37;
-                      v82 = [v9 exchangeType];
-                      v39 = [objc_getProperty(v79 v38];
+                      exchangeType = [v9 exchangeType];
+                      v39 = [objc_getProperty(selfCopy v38];
                       memset(v90, 0, sizeof(v90));
                       v91 = 0u;
                       v92 = 0u;
@@ -256,10 +256,10 @@ LABEL_48:
                       if (!v41)
                       {
 
-                        v5 = v78;
+                        dataCopy = v78;
 LABEL_81:
                         v62 = v40;
-                        v63 = objc_loadWeakRetained(&v79->_wildcardDelegate);
+                        v63 = objc_loadWeakRetained(&selfCopy->_wildcardDelegate);
                         if (v63)
                         {
                           v64 = ne_log_large_obj();
@@ -270,7 +270,7 @@ LABEL_81:
                             _os_log_impl(&dword_1BA83C000, v64, OS_LOG_TYPE_INFO, "No matching clients, trying wildcard for %@", v84, 0xCu);
                           }
 
-                          [v63 receivePacket:v9 transport:v79];
+                          [v63 receivePacket:v9 transport:selfCopy];
                         }
 
                         else
@@ -278,9 +278,9 @@ LABEL_81:
                           v65 = ne_log_obj();
                           if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
                           {
-                            v67 = [(NEIKEv2Packet *)v9 copyShortDescription];
+                            copyShortDescription2 = [(NEIKEv2Packet *)v9 copyShortDescription];
                             *v84 = 138412290;
-                            v85 = v67;
+                            v85 = copyShortDescription2;
                             _os_log_error_impl(&dword_1BA83C000, v65, OS_LOG_TYPE_ERROR, "No matching clients, dropping %@", v84, 0xCu);
                           }
                         }
@@ -340,7 +340,7 @@ LABEL_50:
 
                         else
                         {
-                          if (v82 != 34)
+                          if (exchangeType != 34)
                           {
                             goto LABEL_71;
                           }
@@ -400,7 +400,7 @@ LABEL_72:
                           if (!v61)
                           {
 
-                            v5 = v78;
+                            dataCopy = v78;
                             if (v81)
                             {
                               goto LABEL_89;
@@ -418,9 +418,9 @@ LABEL_108:
                     v34 = ne_log_obj();
                     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                     {
-                      v35 = [(NEIKEv2Packet *)selfa copyShortDescription];
+                      copyShortDescription = [(NEIKEv2Packet *)selfa copyShortDescription];
                       *v90 = 138412290;
-                      *&v90[4] = v35;
+                      *&v90[4] = copyShortDescription;
                       v36 = "%@ Cannot parse packet, no acceptable payloads found";
                       goto LABEL_116;
                     }
@@ -454,8 +454,8 @@ LABEL_117:
             }
 
 LABEL_37:
-            v24 = [(NEIKEv2Packet *)objc_alloc(*v20) initInbound];
-            if (v24)
+            initInbound2 = [(NEIKEv2Packet *)objc_alloc(*v20) initInbound];
+            if (initInbound2)
             {
               goto LABEL_38;
             }
@@ -493,7 +493,7 @@ LABEL_102:
         }
 
 LABEL_34:
-        v5 = v78;
+        dataCopy = v78;
 LABEL_111:
 
         v76 = ne_log_obj();
@@ -582,7 +582,7 @@ LABEL_114:
   return v12;
 }
 
-+ (__CFString)stringForTransport:(uint64_t)a1
++ (__CFString)stringForTransport:(uint64_t)transport
 {
   objc_opt_self();
   if (a2 >= 4)
@@ -605,7 +605,7 @@ LABEL_114:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "deallocating %@", buf, 0xCu);
   }
 
@@ -654,12 +654,12 @@ LABEL_114:
 - (void)startInvalidationTimer
 {
   v17 = *MEMORY[0x1E69E9840];
-  [(NEIKEv2Transport *)a1 cancelInvalidationTimer];
-  Property = objc_getProperty(a1, v3, 72, 1);
+  [(NEIKEv2Transport *)self cancelInvalidationTimer];
+  Property = objc_getProperty(self, v3, 72, 1);
   v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, Property);
   v6 = dispatch_time(0x8000000000000000, 5000000000);
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __42__NEIKEv2Transport_startInvalidationTimer__block_invoke;
@@ -668,13 +668,13 @@ LABEL_114:
   v7 = v5;
   v12 = v7;
   dispatch_source_set_event_handler(v7, handler);
-  objc_setProperty_atomic(a1, v8, v7, 96);
+  objc_setProperty_atomic(self, v8, v7, 96);
   dispatch_activate(v7);
   v9 = ne_log_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_INFO, "%@ started invalidation timer", buf, 0xCu);
   }
 
@@ -687,16 +687,16 @@ LABEL_114:
 - (void)cancelInvalidationTimer
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (objc_getProperty(a1, a2, 96, 1))
+  if (objc_getProperty(self, a2, 96, 1))
   {
-    Property = objc_getProperty(a1, v3, 96, 1);
+    Property = objc_getProperty(self, v3, 96, 1);
     dispatch_source_cancel(Property);
-    objc_setProperty_atomic(a1, v5, 0, 96);
+    objc_setProperty_atomic(self, v5, 0, 96);
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_INFO, "%@ cancelled invalidation timer", &v8, 0xCu);
     }
   }
@@ -727,47 +727,47 @@ void __42__NEIKEv2Transport_startInvalidationTimer__block_invoke(uint64_t a1)
 
 - (void)invalidate
 {
-  if (objc_getProperty(a1, a2, 56, 1))
+  if (objc_getProperty(self, a2, 56, 1))
   {
-    Property = objc_getProperty(a1, v3, 56, 1);
+    Property = objc_getProperty(self, v3, 56, 1);
     nw_connection_cancel(Property);
-    objc_setProperty_atomic(a1, v5, 0, 56);
+    objc_setProperty_atomic(self, v5, 0, 56);
   }
 
-  *(a1 + 9) = 1;
-  objc_storeWeak((a1 + 48), 0);
-  WeakRetained = objc_loadWeakRetained((a1 + 88));
-  [WeakRetained invalidatingTransport:a1];
+  *(self + 9) = 1;
+  objc_storeWeak((self + 48), 0);
+  WeakRetained = objc_loadWeakRetained((self + 88));
+  [WeakRetained invalidatingTransport:self];
 
-  objc_storeWeak((a1 + 88), 0);
-  [(NEIKEv2Transport *)a1 cancelInvalidationTimer];
+  objc_storeWeak((self + 88), 0);
+  [(NEIKEv2Transport *)self cancelInvalidationTimer];
   os_unfair_lock_lock(&g_transport_lock);
-  [g_transports removeObject:a1];
+  [g_transports removeObject:self];
 
   os_unfair_lock_unlock(&g_transport_lock);
 }
 
-- (void)addClient:(void *)a3 delegate:
+- (void)addClient:(void *)client delegate:
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  clientCopy = client;
+  if (self)
   {
     if (v5)
     {
       v7 = ne_log_obj();
       p_super = v7;
-      if (v6)
+      if (clientCopy)
       {
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412802;
-          v20 = v6;
+          v20 = clientCopy;
           v21 = 2112;
           v22 = v5;
           v23 = 2112;
-          v24 = a1;
+          selfCopy = self;
           _os_log_impl(&dword_1BA83C000, p_super, OS_LOG_TYPE_DEFAULT, "NEIKEv2Transport: Adding client %@ with SPI %@ on %@", &v19, 0x20u);
         }
 
@@ -776,15 +776,15 @@ void __42__NEIKEv2Transport_startInvalidationTimer__block_invoke(uint64_t a1)
         {
           p_super = &v9->super;
           objc_setProperty_atomic(v9, v10, v5, 8);
-          objc_storeWeak(&p_super[3].isa, v6);
-          if (!objc_getProperty(a1, v11, 80, 1))
+          objc_storeWeak(&p_super[3].isa, clientCopy);
+          if (!objc_getProperty(self, v11, 80, 1))
           {
             v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-            objc_setProperty_atomic(a1, v14, v13, 80);
+            objc_setProperty_atomic(self, v14, v13, 80);
           }
 
-          [objc_getProperty(a1 v12];
-          [(NEIKEv2Transport *)a1 cancelInvalidationTimer];
+          [objc_getProperty(self v12];
+          [(NEIKEv2Transport *)self cancelInvalidationTimer];
         }
 
         else
@@ -830,35 +830,35 @@ LABEL_13:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)setWildcardDelegate:(char)a3 preventsInvalidation:
+- (uint64_t)setWildcardDelegate:(char)delegate preventsInvalidation:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v9 = v5;
-    objc_storeWeak((a1 + 88), v5);
-    *(a1 + 10) = a3;
-    v5 = [objc_getProperty(a1 v7];
+    objc_storeWeak((self + 88), v5);
+    *(self + 10) = delegate;
+    v5 = [objc_getProperty(self v7];
     v6 = v9;
     if (!v5)
     {
       if (v9)
       {
-        if (a3)
+        if (delegate)
         {
-          [(NEIKEv2Transport *)a1 cancelInvalidationTimer];
+          [(NEIKEv2Transport *)self cancelInvalidationTimer];
         }
 
         else
         {
-          [(NEIKEv2Transport *)a1 startInvalidationTimer];
+          [(NEIKEv2Transport *)self startInvalidationTimer];
         }
       }
 
       else
       {
-        [(NEIKEv2Transport *)a1 invalidate];
+        [(NEIKEv2Transport *)self invalidate];
       }
 
       v6 = v9;
@@ -868,18 +868,18 @@ LABEL_13:
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)setRemoteSPI:(void *)a3 forClient:
+- (void)setRemoteSPI:(void *)i forClient:
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  iCopy = i;
+  if (self)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = objc_getProperty(a1, v6, 80, 1);
+    v8 = objc_getProperty(self, v6, 80, 1);
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (!v9)
     {
@@ -909,7 +909,7 @@ LABEL_13:
           objc_setProperty_atomic(v14, v10, v5, 16);
         }
 
-        else if (([0 isEqual:v7] & 1) == 0)
+        else if (([0 isEqual:iCopy] & 1) == 0)
         {
           goto LABEL_14;
         }
@@ -920,7 +920,7 @@ LABEL_13:
           *buf = 138412546;
           v23 = v14;
           v24 = 2112;
-          v25 = a1;
+          selfCopy = self;
           _os_log_impl(&dword_1BA83C000, v15, OS_LOG_TYPE_DEFAULT, "Set remote SPI for client %@ on %@", buf, 0x16u);
         }
 
@@ -943,15 +943,15 @@ LABEL_19:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelClient:(int)a3 shouldInvalidate:
+- (void)cancelClient:(int)client shouldInvalidate:
 {
   v39 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3)
+    if (client)
     {
-      [(NEIKEv2Transport *)a1 invalidate];
+      [(NEIKEv2Transport *)self invalidate];
     }
 
     v7 = ne_log_obj();
@@ -959,16 +959,16 @@ LABEL_19:
     {
       v8 = "";
       *buf = 136315650;
-      if (a3)
+      if (client)
       {
         v8 = " and invalidating";
       }
 
-      v34 = v8;
+      selfCopy4 = v8;
       v35 = 2112;
-      v36 = v6;
+      selfCopy2 = v6;
       v37 = 2112;
-      v38 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEFAULT, "Cancelling%s client %@ for %@", buf, 0x20u);
     }
 
@@ -976,7 +976,7 @@ LABEL_19:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = objc_getProperty(a1, v9, 80, 1);
+    v10 = objc_getProperty(self, v9, 80, 1);
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
@@ -1009,16 +1009,16 @@ LABEL_19:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v34 = v16;
+              selfCopy4 = v16;
               v35 = 2112;
-              v36 = a1;
+              selfCopy2 = self;
               _os_log_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_INFO, "Removing client %@ for %@", buf, 0x16u);
             }
 
             v21 = v16;
             if (v16)
             {
-              [objc_getProperty(a1 v19];
+              [objc_getProperty(self v19];
               goto LABEL_26;
             }
 
@@ -1043,23 +1043,23 @@ LABEL_19:
 LABEL_25:
     v21 = 0;
 LABEL_26:
-    if ((*(a1 + 9) & 1) == 0 && ![objc_getProperty(a1 v19])
+    if ((*(self + 9) & 1) == 0 && ![objc_getProperty(self v19])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 88));
+      WeakRetained = objc_loadWeakRetained((self + 88));
 
       if (WeakRetained)
       {
-        if ((*(a1 + 10) & 1) == 0)
+        if ((*(self + 10) & 1) == 0)
         {
           v24 = ne_log_obj();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v34 = a1;
+            selfCopy4 = self;
             _os_log_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_DEFAULT, "%@ out of clients, starting invalidation timer", buf, 0xCu);
           }
 
-          [(NEIKEv2Transport *)a1 startInvalidationTimer];
+          [(NEIKEv2Transport *)self startInvalidationTimer];
         }
       }
 
@@ -1069,11 +1069,11 @@ LABEL_26:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v34 = a1;
+          selfCopy4 = self;
           _os_log_impl(&dword_1BA83C000, v26, OS_LOG_TYPE_DEFAULT, "%@ out of clients, invalidating", buf, 0xCu);
         }
 
-        [(NEIKEv2Transport *)a1 invalidate];
+        [(NEIKEv2Transport *)self invalidate];
       }
     }
   }
@@ -1217,17 +1217,17 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportConnectionError:(void *)a1
+- (void)reportConnectionError:(void *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
     error_code = nw_error_get_error_code(error);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [objc_getProperty(a1 v4];
+    v5 = [objc_getProperty(error v4];
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -1271,7 +1271,7 @@ LABEL_12:
 - (void)callConnectedBlocks
 {
   v15 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 64);
+  v1 = *(self + 64);
   if (v1)
   {
     v12 = 0u;
@@ -1305,41 +1305,41 @@ LABEL_12:
       while (v5);
     }
 
-    [*(a1 + 64) removeAllObjects];
-    v8 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    [*(self + 64) removeAllObjects];
+    v8 = *(self + 64);
+    *(self + 64) = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleConnectionEventWithState:(void *)a3 error:
+- (void)handleConnectionEventWithState:(void *)state error:
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a1 && objc_getProperty(a1, v5, 56, 1))
+  stateCopy = state;
+  if (self && objc_getProperty(self, v5, 56, 1))
   {
     if (a2 == 4)
     {
-      a1[8] = 0;
+      self[8] = 0;
       v18 = ne_log_obj();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412546;
-        v21 = v6;
+        selfCopy2 = stateCopy;
         v22 = 2112;
-        v23 = a1;
+        selfCopy = self;
         _os_log_error_impl(&dword_1BA83C000, v18, OS_LOG_TYPE_ERROR, "Connection failed with error %@ for %@", &v20, 0x16u);
       }
 
-      [(NEIKEv2Transport *)a1 reportConnectionError:v6];
-      [(NEIKEv2Transport *)a1 callConnectedBlocks];
+      [(NEIKEv2Transport *)self reportConnectionError:stateCopy];
+      [(NEIKEv2Transport *)self callConnectedBlocks];
     }
 
     else if (a2 == 3)
     {
-      a1[8] = 1;
-      objc_getProperty(a1, v7, 56, 1);
+      self[8] = 1;
+      objc_getProperty(self, v7, 56, 1);
       v8 = nw_connection_copy_connected_path();
       v9 = v8;
       if (v8)
@@ -1348,14 +1348,14 @@ LABEL_12:
         if (v10)
         {
           v11 = [MEMORY[0x1E6977E20] endpointWithCEndpoint:v10];
-          objc_setProperty_atomic(a1, v12, v11, 16);
+          objc_setProperty_atomic(self, v12, v11, 16);
         }
 
         v13 = nw_path_copy_interface();
         if (v13)
         {
           v14 = [objc_alloc(MEMORY[0x1E6977E30]) initWithInterfaceIndex:nw_interface_get_index(v13)];
-          objc_setProperty_atomic(a1, v15, v14, 32);
+          objc_setProperty_atomic(self, v15, v14, 32);
         }
       }
 
@@ -1363,31 +1363,31 @@ LABEL_12:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEFAULT, "Connection ready for %@", &v20, 0xCu);
       }
 
-      [(NEIKEv2Transport *)a1 callConnectedBlocks];
-      [(NEIKEv2Transport *)a1 readOnConnection];
+      [(NEIKEv2Transport *)self callConnectedBlocks];
+      [(NEIKEv2Transport *)self readOnConnection];
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (NEIKEv2Transport)createTransport:(void *)a3 remote:(void *)a4 local:(unsigned int)a5 localPort:(void *)a6 boundInterface:(void *)a7 queue:(void *)a8 socketGetBlock:(void *)a9 packetDelegate:
++ (NEIKEv2Transport)createTransport:(void *)transport remote:(void *)remote local:(unsigned int)local localPort:(void *)port boundInterface:(void *)interface queue:(void *)queue socketGetBlock:(void *)block packetDelegate:
 {
   v197 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v173 = a8;
-  v17 = a9;
+  transportCopy = transport;
+  remoteCopy = remote;
+  portCopy = port;
+  interfaceCopy = interface;
+  queueCopy = queue;
+  blockCopy = block;
   objc_opt_self();
   v18 = ne_log_obj();
   v19 = v18;
-  if (!(v13 | v17))
+  if (!(transportCopy | blockCopy))
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -1405,23 +1405,23 @@ LABEL_12:
     *v190 = 138413314;
     *v191 = v85;
     *&v191[8] = 2112;
-    *&v191[10] = v14;
+    *&v191[10] = remoteCopy;
     *&v191[18] = 1024;
-    *&v191[20] = a5;
+    *&v191[20] = local;
     *&v191[24] = 2112;
-    *&v191[26] = v13;
+    *&v191[26] = transportCopy;
     v192 = 2112;
-    v193 = v15;
+    v193 = portCopy;
     _os_log_debug_impl(&dword_1BA83C000, &v19->super, OS_LOG_TYPE_DEBUG, "Creating %@ transport %@(%u) to %@ on %@", v190, 0x30u);
   }
 
-  v20 = v13;
-  v21 = v14;
-  v181 = v15;
-  v22 = v17;
+  v20 = transportCopy;
+  v21 = remoteCopy;
+  v181 = portCopy;
+  v22 = blockCopy;
   objc_opt_self();
   newValue = v20;
-  if (!a5 && !v17)
+  if (!local && !blockCopy)
   {
     v23 = 0;
     goto LABEL_92;
@@ -1429,7 +1429,7 @@ LABEL_12:
 
   v182 = v22;
   v176 = v21;
-  v165 = v16;
+  v165 = interfaceCopy;
   os_unfair_lock_lock(&g_transport_lock);
   memset(v186, 0, sizeof(v186));
   v24 = g_transports;
@@ -1441,12 +1441,12 @@ LABEL_12:
   }
 
   v27 = v25;
-  v162 = v15;
+  v162 = portCopy;
   v28 = **&v186[1];
   *&v26 = 136315138;
   v158 = v26;
   v29 = a2;
-  v167 = v14;
+  v167 = remoteCopy;
 LABEL_9:
   v30 = 0;
   while (1)
@@ -1459,7 +1459,7 @@ LABEL_9:
     v31 = *(*(&v186[0] + 1) + 8 * v30);
     if (!v31)
     {
-      if (v17)
+      if (blockCopy)
       {
         v33 = 0;
         v29 = a2;
@@ -1482,7 +1482,7 @@ LABEL_15:
     WeakRetained = objc_loadWeakRetained((v31 + 48));
     v33 = WeakRetained;
     v34 = *(v31 + 9);
-    if (!v17)
+    if (!blockCopy)
     {
       break;
     }
@@ -1526,14 +1526,14 @@ LABEL_20:
   {
     v38 = v31 ? objc_getProperty(v31, v36, 32, 1) : 0;
     v171 = v38;
-    v169 = [v171 interfaceName];
+    interfaceName = [v171 interfaceName];
     if (![v181 isEqualToString:?])
     {
       goto LABEL_43;
     }
   }
 
-  if (v13)
+  if (transportCopy)
   {
     if (v31)
     {
@@ -1549,9 +1549,9 @@ LABEL_20:
     v164 = v40;
     if ([newValue isEqual:v40])
     {
-      v42 = [(NEIKEv2Transport *)v31 port];
-      v44 = v42 == a5;
-      if (!v176 || v42 != a5)
+      port = [(NEIKEv2Transport *)v31 port];
+      v44 = port == local;
+      if (!v176 || port != local)
       {
         goto LABEL_38;
       }
@@ -1562,7 +1562,7 @@ LABEL_20:
     if (v37)
     {
 LABEL_43:
-      v47 = v169;
+      v47 = interfaceName;
       v48 = v171;
       goto LABEL_71;
     }
@@ -1570,9 +1570,9 @@ LABEL_43:
     goto LABEL_72;
   }
 
-  v45 = [(NEIKEv2Transport *)v31 port];
-  v44 = v45 == a5;
-  if (v176 && v45 == a5)
+  port2 = [(NEIKEv2Transport *)v31 port];
+  v44 = port2 == local;
+  if (v176 && port2 == local)
   {
 LABEL_35:
     if (v31)
@@ -1586,7 +1586,7 @@ LABEL_35:
     }
 
     v44 = [v176 isEqual:{v46, v158}];
-    if (v13)
+    if (transportCopy)
     {
 LABEL_38:
     }
@@ -1612,7 +1612,7 @@ LABEL_38:
     if (v49)
     {
       v160 = v49;
-      v161 = v13;
+      v161 = transportCopy;
       v51 = objc_getProperty(v31, v50, 16, 1);
       v53 = [objc_getProperty(v31 v52];
       v54 = v51;
@@ -1631,9 +1631,9 @@ LABEL_38:
           _os_log_impl(&dword_1BA83C000, v56, OS_LOG_TYPE_INFO, "check address: address %@ interface %@", buf, 0x16u);
         }
 
-        v14 = v167;
-        v159 = [v54 address];
-        if (v159)
+        remoteCopy = v167;
+        address = [v54 address];
+        if (address)
         {
           *buf = 0;
           if (!getifaddrs(buf))
@@ -1653,7 +1653,7 @@ LABEL_38:
                     {
                       if ([v54 addressFamily] == 2)
                       {
-                        if (*(v57[3] + 4) == *(v159 + 4))
+                        if (*(v57[3] + 4) == *(address + 4))
                         {
                           goto LABEL_172;
                         }
@@ -1664,12 +1664,12 @@ LABEL_38:
                         v61 = v57[3];
                         v63 = *(v61 + 8);
                         v62 = *(v61 + 16);
-                        if (v63 == *(v159 + 8) && v62 == *(v159 + 16))
+                        if (v63 == *(address + 8) && v62 == *(address + 16))
                         {
 LABEL_172:
                           free(*buf);
 
-                          v13 = v161;
+                          transportCopy = v161;
                           goto LABEL_173;
                         }
                       }
@@ -1681,7 +1681,7 @@ LABEL_172:
                 if (!v57)
                 {
                   v65 = *buf;
-                  v14 = v167;
+                  remoteCopy = v167;
                   goto LABEL_69;
                 }
               }
@@ -1693,7 +1693,7 @@ LABEL_69:
           }
 
 LABEL_70:
-          v13 = v161;
+          transportCopy = v161;
 
           v48 = v160;
 LABEL_71:
@@ -1722,7 +1722,7 @@ LABEL_72:
           _os_log_fault_impl(&dword_1BA83C000, v56, OS_LOG_TYPE_FAULT, "%s called with null endpoint", buf, 0xCu);
         }
 
-        v14 = v167;
+        remoteCopy = v167;
       }
 
       goto LABEL_70;
@@ -1731,10 +1731,10 @@ LABEL_72:
 
 LABEL_173:
   v23 = v31;
-  v14 = v167;
+  remoteCopy = v167;
 LABEL_89:
-  v15 = v162;
-  v16 = v165;
+  portCopy = v162;
+  interfaceCopy = v165;
 LABEL_91:
 
   os_unfair_lock_unlock(&g_transport_lock);
@@ -1757,7 +1757,7 @@ LABEL_92:
     goto LABEL_159;
   }
 
-  v168 = v14;
+  v168 = remoteCopy;
   v69 = v22;
   v177 = v21;
   v70 = objc_alloc_init(NEIKEv2Transport);
@@ -1766,7 +1766,7 @@ LABEL_92:
   {
 LABEL_123:
     v103 = 0;
-    v14 = v168;
+    remoteCopy = v168;
     goto LABEL_160;
   }
 
@@ -1799,9 +1799,9 @@ LABEL_123:
     v102 = ne_log_obj();
     if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
     {
-      v155 = [newValue addressFamily];
+      addressFamily = [newValue addressFamily];
       *v190 = 67109120;
-      *v191 = v155;
+      *v191 = addressFamily;
       _os_log_error_impl(&dword_1BA83C000, v102, OS_LOG_TYPE_ERROR, "Invalid address family %u", v190, 8u);
     }
 
@@ -1812,7 +1812,7 @@ LABEL_123:
   v78 = 7708;
 LABEL_109:
   *v190 = v78;
-  *&v190[2] = __rev16(a5);
+  *&v190[2] = __rev16(local);
   v86 = [MEMORY[0x1E6977E08] endpointWithAddress:{v190, v158}];
   objc_setProperty_atomic(v19, v87, v86, 16);
 
@@ -1827,12 +1827,12 @@ LABEL_99:
   }
 
 LABEL_100:
-  objc_setProperty_atomic(v19, v74, v16, 72);
-  if (!v17)
+  objc_setProperty_atomic(v19, v74, interfaceCopy, 72);
+  if (!blockCopy)
   {
     if (v72 > 1)
     {
-      v88 = v16;
+      v88 = interfaceCopy;
       v89 = *MEMORY[0x1E6977EC0];
       if (v72 == 3)
       {
@@ -1853,7 +1853,7 @@ LABEL_100:
       v180 = v92;
       v95 = nw_protocol_stack_copy_internet_protocol(v92);
       v96 = v95;
-      v14 = v168;
+      remoteCopy = v168;
       if (v95)
       {
         MEMORY[0x1BFAFB1C0](v95, 2);
@@ -1868,18 +1868,18 @@ LABEL_100:
         nw_parameters_require_interface(secure_tcp, v97);
       }
 
-      v98 = [newValue copyCEndpoint];
-      v99 = nw_connection_create(v98, secure_tcp);
+      copyCEndpoint = [newValue copyCEndpoint];
+      v99 = nw_connection_create(copyCEndpoint, secure_tcp);
       objc_setProperty_atomic(v19, v100, v99, 56);
 
       if (objc_getProperty(v19, v101, 56, 1))
       {
-        v16 = v88;
+        interfaceCopy = v88;
         goto LABEL_154;
       }
 
       v125 = ne_log_obj();
-      v16 = v88;
+      interfaceCopy = v88;
       if (os_log_type_enabled(v125, OS_LOG_TYPE_FAULT))
       {
         *v190 = 0;
@@ -1891,7 +1891,7 @@ LABEL_100:
     {
       newValuea = newValue;
       v180 = v177;
-      v79 = v173;
+      v79 = queueCopy;
       IKESocket = -1;
       v82 = [objc_getProperty(v19 v80];
       v183 = v79;
@@ -1913,18 +1913,18 @@ LABEL_100:
       }
 
       secure_tcp = newValuea;
-      v105 = [newValuea addressFamily];
+      addressFamily2 = [newValuea addressFamily];
       v107 = IKESocket;
-      v14 = v168;
-      if (!v177 && v105 == 2 && IKESocket < 0)
+      remoteCopy = v168;
+      if (!v177 && addressFamily2 == 2 && IKESocket < 0)
       {
-        v188 = [objc_getProperty(v19 v106];
+        v106 = [objc_getProperty(v19 v106];
         *buf = 0;
         v108 = nw_nat64_copy_prefixes();
         if (v108 >= 1 && *buf)
         {
           v109 = v108;
-          v166 = v16;
+          v166 = interfaceCopy;
           v110 = ne_log_obj();
           if (os_log_type_enabled(v110, OS_LOG_TYPE_DEBUG))
           {
@@ -1954,7 +1954,7 @@ LABEL_100:
           *&v190[2] = *([objc_getProperty(v19 v112] + 2);
           memset(v186 + 4, 0, 24);
           LOWORD(v186[0]) = 7708;
-          WORD1(v186[0]) = __rev16(a5);
+          WORD1(v186[0]) = __rev16(local);
           while (1)
           {
             [objc_getProperty(v19 v114];
@@ -1966,10 +1966,10 @@ LABEL_100:
               v117 = [MEMORY[0x1E6977E08] endpointWithAddress:v186];
               objc_setProperty_atomic(v19, v118, v117, 16);
 
-              v120 = [objc_getProperty(v19 v119];
+              v119 = [objc_getProperty(v19 v119];
               [objc_getProperty(v19 v121];
               [objc_getProperty(v19 v122];
-              [v120 UTF8String];
+              [v119 UTF8String];
               if (v183)
               {
                 v183[2]();
@@ -1988,8 +1988,8 @@ LABEL_100:
               {
 LABEL_145:
                 free(*buf);
-                v16 = v166;
-                v14 = v168;
+                interfaceCopy = v166;
+                remoteCopy = v168;
                 secure_tcp = newValuea;
                 break;
               }
@@ -2017,7 +2017,7 @@ LABEL_145:
 
       if ((v107 & 0x80000000) == 0)
       {
-        v163 = v15;
+        v163 = portCopy;
         secure_udp = nw_parameters_create_secure_udp(*MEMORY[0x1E6977EC0], *MEMORY[0x1E6977EB8]);
         v127 = nw_parameters_copy_default_protocol_stack(secure_udp);
         if (v19->_transportType == 1)
@@ -2033,8 +2033,8 @@ LABEL_145:
         nw_parameters_set_indefinite();
         if (objc_getProperty(v19, v131, 32, 1))
         {
-          v133 = [objc_getProperty(v19 v132];
-          [v133 UTF8String];
+          v132 = [objc_getProperty(v19 v132];
+          [v132 UTF8String];
           v134 = secure_tcp;
           v135 = nw_interface_create_with_name();
           nw_parameters_require_interface(secure_udp, v135);
@@ -2055,17 +2055,17 @@ LABEL_145:
           }
 
           v103 = 0;
-          v14 = v168;
-          v15 = v163;
+          remoteCopy = v168;
+          portCopy = v163;
           goto LABEL_160;
         }
 
-        v14 = v168;
-        v15 = v163;
+        remoteCopy = v168;
+        portCopy = v163;
 LABEL_154:
 
         v140 = objc_getProperty(v19, v139, 56, 1);
-        nw_connection_set_queue(v140, v16);
+        nw_connection_set_queue(v140, interfaceCopy);
         v142 = objc_getProperty(v19, v141, 56, 1);
         v184[0] = MEMORY[0x1E69E9820];
         v184[1] = 3221225472;
@@ -2096,7 +2096,7 @@ LABEL_165:
   [v69 setPacketReceiver:v19];
   objc_storeWeak(&v19->_packetDelegate, v69);
   v19->_connected = 1;
-  v14 = v168;
+  remoteCopy = v168;
 LABEL_155:
   v146 = ne_log_obj();
   if (os_log_type_enabled(v146, OS_LOG_TYPE_DEBUG))
@@ -2139,27 +2139,27 @@ LABEL_160:
   return v103;
 }
 
-- (void)waitForTransport:(uint64_t)a1
+- (void)waitForTransport:(uint64_t)transport
 {
   v3 = a2;
-  if (a1)
+  if (transport)
   {
     aBlock = v3;
-    if (*(a1 + 8))
+    if (*(transport + 8))
     {
       v3[2](v3);
     }
 
     else
     {
-      v4 = *(a1 + 64);
+      v4 = *(transport + 64);
       if (!v4)
       {
         v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v6 = *(a1 + 64);
-        *(a1 + 64) = v5;
+        v6 = *(transport + 64);
+        *(transport + 64) = v5;
 
-        v4 = *(a1 + 64);
+        v4 = *(transport + 64);
       }
 
       v7 = v4;
@@ -2171,12 +2171,12 @@ LABEL_160:
   }
 }
 
-- (uint64_t)sendData:(void *)a3 sendCompletionHandler:
+- (uint64_t)sendData:(void *)data sendCompletionHandler:
 {
   v36 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  dataCopy = data;
+  if (!self)
   {
     goto LABEL_20;
   }
@@ -2194,36 +2194,36 @@ LABEL_160:
     goto LABEL_19;
   }
 
-  WeakRetained = objc_loadWeakRetained(a1 + 6);
+  WeakRetained = objc_loadWeakRetained(self + 6);
 
   if (!WeakRetained)
   {
-    if (objc_getProperty(a1, v8, 56, 1))
+    if (objc_getProperty(self, v8, 56, 1))
     {
       v12 = 1;
-      v16 = objc_getProperty(a1, v15, 56, 1);
-      v17 = [v5 _createDispatchData];
+      v16 = objc_getProperty(self, v15, 56, 1);
+      _createDispatchData = [v5 _createDispatchData];
       v18 = *MEMORY[0x1E6977E88];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __51__NEIKEv2Transport_sendData_sendCompletionHandler___block_invoke_4;
       v25[3] = &unk_1E7F08DB0;
-      v25[4] = a1;
-      v26 = v6;
-      nw_connection_send(v16, v17, v18, 1, v25);
+      v25[4] = self;
+      v26 = dataCopy;
+      nw_connection_send(v16, _createDispatchData, v18, 1, v25);
 
       v10 = v26;
       goto LABEL_14;
     }
 
-    if (v6)
+    if (dataCopy)
     {
-      Property = objc_getProperty(a1, v15, 72, 1);
+      Property = objc_getProperty(self, v15, 72, 1);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __51__NEIKEv2Transport_sendData_sendCompletionHandler___block_invoke_3;
       v27[3] = &unk_1E7F0B600;
-      v28 = v6;
+      v28 = dataCopy;
       dispatch_async(Property, v27);
       v12 = 0;
       v10 = v28;
@@ -2235,7 +2235,7 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  v9 = objc_loadWeakRetained(a1 + 6);
+  v9 = objc_loadWeakRetained(self + 6);
   v10 = v9;
   if (!v9)
   {
@@ -2246,15 +2246,15 @@ LABEL_20:
       _os_log_error_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_ERROR, "Packet delegate is no longer valid, cannot send", buf, 2u);
     }
 
-    if (v6)
+    if (dataCopy)
     {
-      v21 = objc_getProperty(a1, v20, 72, 1);
+      v21 = objc_getProperty(self, v20, 72, 1);
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __51__NEIKEv2Transport_sendData_sendCompletionHandler___block_invoke;
       v32[3] = &unk_1E7F0B600;
       v14 = &v33;
-      v33 = v6;
+      v33 = dataCopy;
       dispatch_async(v21, v32);
       v12 = 0;
       goto LABEL_13;
@@ -2267,15 +2267,15 @@ LABEL_19:
   }
 
   v12 = [v9 sendPacketData:v5];
-  if (v6)
+  if (dataCopy)
   {
-    v13 = objc_getProperty(a1, v11, 72, 1);
+    v13 = objc_getProperty(self, v11, 72, 1);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__NEIKEv2Transport_sendData_sendCompletionHandler___block_invoke_2;
     block[3] = &unk_1E7F0AB40;
     v14 = &v30;
-    v30 = v6;
+    v30 = dataCopy;
     v31 = v12;
     dispatch_async(v13, block);
 LABEL_13:

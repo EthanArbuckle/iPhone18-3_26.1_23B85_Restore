@@ -1,8 +1,8 @@
 @interface FBSWorkspaceInitializationOptions
-+ (id)optionsWithDelegate:(id)a3;
++ (id)optionsWithDelegate:(id)delegate;
 - (FBSWorkspaceInitializationOptions)init;
-- (id)_initWithDelegate:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (id)_initWithDelegate:(id)delegate;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation FBSWorkspaceInitializationOptions
@@ -20,7 +20,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSWorkspaceInitializationOptions.m";
     v16 = 1024;
@@ -34,61 +34,61 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithDelegate:(id)a3
+- (id)_initWithDelegate:(id)delegate
 {
-  v6 = a3;
-  if (!v6)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     [(FBSWorkspaceInitializationOptions *)a2 _initWithDelegate:?];
   }
 
-  v7 = v6;
+  v7 = delegateCopy;
   v11.receiver = self;
   v11.super_class = FBSWorkspaceInitializationOptions;
   v8 = [(FBSWorkspaceInitializationOptions *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a3);
+    objc_storeStrong(&v8->_delegate, delegate);
     *&v9->_endpointMonitoringEnabled = 257;
   }
 
   return v9;
 }
 
-+ (id)optionsWithDelegate:(id)a3
++ (id)optionsWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [[FBSWorkspaceInitializationOptions alloc] _initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [[FBSWorkspaceInitializationOptions alloc] _initWithDelegate:delegateCopy];
 
   return v4;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"_disableEndpointMonitoring"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"_disableEndpointMonitoring"])
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [valueCopy BOOLValue];
     }
 
     else
     {
-      v8 = v6 != 0;
+      bOOLValue = valueCopy != 0;
     }
 
-    [(FBSWorkspaceInitializationOptions *)self setEndpointMonitoringEnabled:v8 ^ 1u];
-    [(FBSWorkspaceInitializationOptions *)self setDefaultShellEndpointEnabled:v8 ^ 1u];
+    [(FBSWorkspaceInitializationOptions *)self setEndpointMonitoringEnabled:bOOLValue ^ 1u];
+    [(FBSWorkspaceInitializationOptions *)self setDefaultShellEndpointEnabled:bOOLValue ^ 1u];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = FBSWorkspaceInitializationOptions;
-    [(FBSWorkspaceInitializationOptions *)&v9 setValue:v6 forKey:v7];
+    [(FBSWorkspaceInitializationOptions *)&v9 setValue:valueCopy forKey:keyCopy];
   }
 }
 

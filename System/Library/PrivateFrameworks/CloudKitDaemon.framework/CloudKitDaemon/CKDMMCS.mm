@@ -1,54 +1,54 @@
 @interface CKDMMCS
-+ (id)MMCSWrapperForApplicationBundleID:(id)a3 directoryContext:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)_errorWithMMCSError:(id)a3 path:(id)a4 description:(id)a5 operationType:(int64_t)a6;
-+ (id)_userInfoFromMMCSRetryableError:(id)a3;
-+ (id)assetKeyWithType:(unint64_t)a3 error:(id *)a4;
++ (id)MMCSWrapperForApplicationBundleID:(id)d directoryContext:(id)context database:(id)database error:(id *)error;
++ (id)_errorWithMMCSError:(id)error path:(id)path description:(id)description operationType:(int64_t)type;
++ (id)_userInfoFromMMCSRetryableError:(id)error;
++ (id)assetKeyWithType:(unint64_t)type error:(id *)error;
 + (id)protocolHeaders;
 + (id)protocolVersion;
-+ (id)referenceSignatureFromAssetKey:(id)a3;
++ (id)referenceSignatureFromAssetKey:(id)key;
 + (id)sharedWrappersByPath;
 + (id)zeroSizeFileSignature;
-+ (int64_t)_commonErrorCodeWithMMCSError:(id)a3;
-+ (int64_t)_errorCodeWithMMCSGetError:(id)a3;
-+ (int64_t)_errorCodeWithMMCSPutError:(id)a3;
-+ (int64_t)_errorCodeWithMMCSRegisterError:(id)a3;
-+ (void)purgeMMCSDirectoryWithPath:(id)a3;
-- (BOOL)_getRegisteredItemsGreaterThan:(unint64_t)a3 itemIds:(unint64_t *)a4 itemCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)isTrackingItemID:(unint64_t)a3;
-- (BOOL)registeredItemCount:(unint64_t *)a3 error:(id *)a4;
-- (CKDMMCS)initWithMMCSEngineContext:(id)a3 directoryContext:(id)a4;
++ (int64_t)_commonErrorCodeWithMMCSError:(id)error;
++ (int64_t)_errorCodeWithMMCSGetError:(id)error;
++ (int64_t)_errorCodeWithMMCSPutError:(id)error;
++ (int64_t)_errorCodeWithMMCSRegisterError:(id)error;
++ (void)purgeMMCSDirectoryWithPath:(id)path;
+- (BOOL)_getRegisteredItemsGreaterThan:(unint64_t)than itemIds:(unint64_t *)ids itemCount:(unint64_t *)count error:(id *)error;
+- (BOOL)isTrackingItemID:(unint64_t)d;
+- (BOOL)registeredItemCount:(unint64_t *)count error:(id *)error;
+- (CKDMMCS)initWithMMCSEngineContext:(id)context directoryContext:(id)directoryContext;
 - (_mmcs_engine)getMMCSEngine;
 - (id)CKStatusReportArray;
-- (id)_contextToGetItemGroup:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 command:(id)a7 completionHandler:(id)a8;
-- (id)_contextToGetSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (id)_contextToPutItemGroup:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (id)_contextToPutSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (id)_contextToRegisterItemGroup:(id)a3 operation:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (id)_referenceIdentifierFromAssetKey:(id)a3;
-- (id)getItemGroupSet:(id)a3 operation:(id)a4 shouldFetchAssetContentInMemory:(BOOL)a5 options:(id)a6 progress:(id)a7 command:(id)a8 completionHandler:(id)a9;
-- (id)getSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (id)putItemGroupSet:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (id)putSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7;
-- (id)registerItemGroupSet:(id)a3 operation:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (id)registeredMMCSItemForRereferencedAsset:(id)a3;
-- (id)retrieveChunkWithSignature:(id)a3;
+- (id)_contextToGetItemGroup:(id)group operation:(id)operation options:(id)options progress:(id)progress command:(id)command completionHandler:(id)handler;
+- (id)_contextToGetSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler;
+- (id)_contextToPutItemGroup:(id)group operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler;
+- (id)_contextToPutSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler;
+- (id)_contextToRegisterItemGroup:(id)group operation:(id)operation options:(unint64_t)options completionHandler:(id)handler;
+- (id)_referenceIdentifierFromAssetKey:(id)key;
+- (id)getItemGroupSet:(id)set operation:(id)operation shouldFetchAssetContentInMemory:(BOOL)memory options:(id)options progress:(id)progress command:(id)command completionHandler:(id)handler;
+- (id)getSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler;
+- (id)putItemGroupSet:(id)set operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler;
+- (id)putSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler;
+- (id)registerItemGroupSet:(id)set operation:(id)operation options:(unint64_t)options completionHandler:(id)handler;
+- (id)registeredMMCSItemForRereferencedAsset:(id)asset;
+- (id)retrieveChunkWithSignature:(id)signature;
 - (unsigned)getMaxChunkCountForSection;
-- (void)_logMMCSOptions:(id)a3;
-- (void)_unregisterItemIDs:(id)a3;
+- (void)_logMMCSOptions:(id)options;
+- (void)_unregisterItemIDs:(id)ds;
 - (void)dealloc;
 - (void)drop;
 - (void)performOperationCleanup;
-- (void)showRegisteredItemsInContainer:(id)a3;
-- (void)startTrackingItemIDsForMMCSItems:(id)a3;
-- (void)stopTrackingItemIDsForMMCSItems:(id)a3;
-- (void)unregisterItemIDs:(id)a3;
+- (void)showRegisteredItemsInContainer:(id)container;
+- (void)startTrackingItemIDsForMMCSItems:(id)items;
+- (void)stopTrackingItemIDsForMMCSItems:(id)items;
+- (void)unregisterItemIDs:(id)ds;
 @end
 
 @implementation CKDMMCS
 
 + (id)protocolVersion
 {
-  v3 = objc_msgSend_protocolHeaders(a1, a2, v2);
+  v3 = objc_msgSend_protocolHeaders(self, a2, v2);
   v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"x-apple-mmcs-proto-version");
 
   return v5;
@@ -109,21 +109,21 @@
   v23 = 3221225472;
   v24 = sub_225099480;
   v25 = &unk_278546290;
-  v26 = self;
+  selfCopy = self;
   v28 = buf;
   v29 = &v30;
   v12 = v8;
   v27 = v12;
   dispatch_sync(v11, &v22);
 
-  v13 = self;
-  objc_sync_enter(v13);
-  if (*(*&buf[8] + 24) == 1 && (objc_msgSend_didDrop(v13, v14, v15, v22, v23, v24, v25, v26) & 1) == 0)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (*(*&buf[8] + 24) == 1 && (objc_msgSend_didDrop(selfCopy2, v14, v15, v22, v23, v24, v25, selfCopy) & 1) == 0)
   {
-    objc_msgSend_setDidDrop_(v13, v16, 1);
+    objc_msgSend_setDidDrop_(selfCopy2, v16, 1);
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy2);
 
   if (*(*&buf[8] + 24) == 1 && (v31[3] & 1) == 0)
   {
@@ -136,7 +136,7 @@
     if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
     {
       *v34 = 138412290;
-      v35 = v13;
+      v35 = selfCopy2;
       _os_log_error_impl(&dword_22506F000, v17, OS_LOG_TYPE_ERROR, "%@ actually dropping but did not tear down", v34, 0xCu);
     }
   }
@@ -149,9 +149,9 @@
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_didDrop)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -162,19 +162,19 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v7 = v2;
+      v7 = selfCopy;
       _os_log_error_impl(&dword_22506F000, v3, OS_LOG_TYPE_ERROR, "Failed to drop %@", buf, 0xCu);
     }
 
-    if (!v2->_didDrop)
+    if (!selfCopy->_didDrop)
     {
       __assert_rtn("[CKDMMCS dealloc]", "CKDMMCS.m", 543, "_didDrop && Failed to drop CKDMMCS dealloc");
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = CKDMMCS;
   [(CKDMMCS *)&v5 dealloc];
   v4 = *MEMORY[0x277D85DE8];
@@ -192,11 +192,11 @@
   return v3;
 }
 
-+ (id)_userInfoFromMMCSRetryableError:(id)a3
++ (id)_userInfoFromMMCSRetryableError:(id)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v6 = objc_msgSend_userInfo(v3, v4, v5);
+  errorCopy = error;
+  v6 = objc_msgSend_userInfo(errorCopy, v4, v5);
   v8 = objc_msgSend_objectForKeyedSubscript_(v6, v7, *MEMORY[0x277D25470]);
 
   v11 = objc_msgSend_sharedOptions(MEMORY[0x277CBC1D8], v9, v10);
@@ -223,7 +223,7 @@
         v31 = 2114;
         v32 = v15;
         v33 = 2112;
-        v34 = v3;
+        v34 = errorCopy;
         _os_log_impl(&dword_22506F000, v21, OS_LOG_TYPE_INFO, "Warn: Invalid value (%{public}@) for %{public}@ key in error %@", buf, 0x20u);
       }
     }
@@ -238,10 +238,10 @@
   return v24;
 }
 
-+ (int64_t)_commonErrorCodeWithMMCSError:(id)a3
++ (int64_t)_commonErrorCodeWithMMCSError:(id)error
 {
-  v3 = a3;
-  v6 = objc_msgSend_code(v3, v4, v5);
+  errorCopy = error;
+  v6 = objc_msgSend_code(errorCopy, v4, v5);
   v9 = 0;
   if (v6 > 14)
   {
@@ -309,7 +309,7 @@
 
         else if (v6 == 7)
         {
-          v10 = objc_msgSend_userInfo(v3, v7, v8);
+          v10 = objc_msgSend_userInfo(errorCopy, v7, v8);
           v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, *MEMORY[0x277CCA7E8]);
 
           if (v12)
@@ -368,17 +368,17 @@ LABEL_24:
   return v9;
 }
 
-+ (int64_t)_errorCodeWithMMCSGetError:(id)a3
++ (int64_t)_errorCodeWithMMCSGetError:(id)error
 {
-  v3 = a3;
-  v6 = objc_msgSend_code(v3, v4, v5);
+  errorCopy = error;
+  v6 = objc_msgSend_code(errorCopy, v4, v5);
   if (v6 > 28)
   {
     if (v6 > 38)
     {
       if (v6 == 39)
       {
-        v12 = objc_msgSend_userInfo(v3, v7, v8);
+        v12 = objc_msgSend_userInfo(errorCopy, v7, v8);
         v14 = objc_msgSend_objectForKeyedSubscript_(v12, v13, *MEMORY[0x277CCA7E8]);
 
         if (v14 && (objc_msgSend_domain(v14, v15, v16), v17 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v17, v18, *MEMORY[0x277CBEE48]), v17, isEqualToString))
@@ -455,9 +455,9 @@ LABEL_24:
   return v11;
 }
 
-+ (int64_t)_errorCodeWithMMCSPutError:(id)a3
++ (int64_t)_errorCodeWithMMCSPutError:(id)error
 {
-  v3 = objc_msgSend_code(a3, a2, a3);
+  v3 = objc_msgSend_code(error, a2, error);
   result = 0;
   if (v3 <= 16)
   {
@@ -530,9 +530,9 @@ LABEL_24:
   return result;
 }
 
-+ (int64_t)_errorCodeWithMMCSRegisterError:(id)a3
++ (int64_t)_errorCodeWithMMCSRegisterError:(id)error
 {
-  v3 = objc_msgSend_code(a3, a2, a3);
+  v3 = objc_msgSend_code(error, a2, error);
   v4 = 3003;
   v5 = 3006;
   if (v3 != 18)
@@ -556,12 +556,12 @@ LABEL_24:
   }
 }
 
-+ (id)_errorWithMMCSError:(id)a3 path:(id)a4 description:(id)a5 operationType:(int64_t)a6
++ (id)_errorWithMMCSError:(id)error path:(id)path description:(id)description operationType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10;
+  errorCopy = error;
+  pathCopy = path;
+  descriptionCopy = description;
+  v13 = errorCopy;
   v16 = v13;
   v17 = *MEMORY[0x277D25460];
   v18 = MEMORY[0x277CBC120];
@@ -578,7 +578,7 @@ LABEL_8:
       goto LABEL_23;
     }
 
-    v45 = objc_msgSend__commonErrorCodeWithMMCSError_(a1, v44, v16);
+    v45 = objc_msgSend__commonErrorCodeWithMMCSError_(self, v44, v16);
     if (v45)
     {
       v46 = v45;
@@ -587,26 +587,26 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if (a6 <= 6)
+    if (type <= 6)
     {
-      if (((1 << a6) & 0xA) != 0)
+      if (((1 << type) & 0xA) != 0)
       {
-        v47 = objc_msgSend__errorCodeWithMMCSPutError_(a1, v44, v16);
+        v47 = objc_msgSend__errorCodeWithMMCSPutError_(self, v44, v16);
       }
 
-      else if (((1 << a6) & 0x14) != 0)
+      else if (((1 << type) & 0x14) != 0)
       {
-        v47 = objc_msgSend__errorCodeWithMMCSGetError_(a1, v44, v16);
+        v47 = objc_msgSend__errorCodeWithMMCSGetError_(self, v44, v16);
       }
 
       else
       {
-        if (((1 << a6) & 0x60) == 0)
+        if (((1 << type) & 0x60) == 0)
         {
           goto LABEL_28;
         }
 
-        v47 = objc_msgSend__errorCodeWithMMCSRegisterError_(a1, v44, v16);
+        v47 = objc_msgSend__errorCodeWithMMCSRegisterError_(self, v44, v16);
       }
 
       v46 = v47;
@@ -617,20 +617,20 @@ LABEL_22:
     }
 
 LABEL_28:
-    v24 = objc_msgSend__userInfoFromMMCSRetryableError_(a1, v44, v16);
+    v24 = objc_msgSend__userInfoFromMMCSRetryableError_(self, v44, v16);
     v46 = 2022;
 LABEL_23:
     v48 = objc_msgSend_secureCodableError_(MEMORY[0x277CBC560], v44, v16);
-    v23 = objc_msgSend_errorWithDomain_code_userInfo_error_path_URL_description_(MEMORY[0x277CBC560], v49, *v18, v46, v24, v48, v11, 0, v12);
+    v23 = objc_msgSend_errorWithDomain_code_userInfo_error_path_URL_description_(MEMORY[0x277CBC560], v49, *v18, v46, v24, v48, pathCopy, 0, descriptionCopy);
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  v51 = a1;
-  v52 = a6;
-  v53 = v12;
-  v19 = v11;
+  selfCopy = self;
+  typeCopy = type;
+  v53 = descriptionCopy;
+  v19 = pathCopy;
   v20 = *MEMORY[0x277CBBF50];
   v21 = *MEMORY[0x277CBC120];
   v22 = *MEMORY[0x277CCA7E8];
@@ -640,8 +640,8 @@ LABEL_24:
     v24 = objc_msgSend_domain(v23, v14, v15);
     if (objc_msgSend_isEqualToString_(v24, v25, v20))
     {
-      v11 = v19;
-      v12 = v53;
+      pathCopy = v19;
+      descriptionCopy = v53;
       goto LABEL_24;
     }
 
@@ -668,34 +668,34 @@ LABEL_24:
       }
     }
 
-    a1 = v51;
+    self = selfCopy;
 
-    v11 = v19;
-    a6 = v52;
-    v12 = v53;
+    pathCopy = v19;
+    type = typeCopy;
+    descriptionCopy = v53;
     v18 = MEMORY[0x277CBC120];
     goto LABEL_8;
   }
 
-  v11 = v19;
-  v12 = v53;
+  pathCopy = v19;
+  descriptionCopy = v53;
 LABEL_25:
 
   return v23;
 }
 
-+ (void)purgeMMCSDirectoryWithPath:(id)a3
++ (void)purgeMMCSDirectoryWithPath:(id)path
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v44 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v44, v45, a2, a1, @"CKDMMCS.m", 413, @"Expected non-nil path: %@", 0);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v44, v45, a2, self, @"CKDMMCS.m", 413, @"Expected non-nil path: %@", 0);
   }
 
   v8 = objc_alloc(MEMORY[0x277CBEBC0]);
-  isDirectory = objc_msgSend_initFileURLWithPath_isDirectory_(v8, v9, v7, 1);
+  isDirectory = objc_msgSend_initFileURLWithPath_isDirectory_(v8, v9, pathCopy, 1);
   v48 = 0;
   v11 = *MEMORY[0x277CBE868];
   v47 = 0;
@@ -716,7 +716,7 @@ LABEL_25:
   {
     v21 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v19, v20);
     v46 = v17;
-    v23 = objc_msgSend_removeItemAtPath_error_(v21, v22, v7, &v46);
+    v23 = objc_msgSend_removeItemAtPath_error_(v21, v22, pathCopy, &v46);
     v24 = v46;
 
     v25 = *MEMORY[0x277CBC878];
@@ -735,7 +735,7 @@ LABEL_25:
       }
 
       v28 = v27;
-      v31 = objc_msgSend_CKSanitizedPath(v7, v29, v30);
+      v31 = objc_msgSend_CKSanitizedPath(pathCopy, v29, v30);
       *buf = 138543362;
       v50 = v31;
       v32 = "Removed dir at %{public}@";
@@ -757,7 +757,7 @@ LABEL_25:
       }
 
       v28 = v36;
-      v31 = objc_msgSend_CKSanitizedPath(v7, v37, v38);
+      v31 = objc_msgSend_CKSanitizedPath(pathCopy, v37, v38);
       *buf = 138543618;
       v50 = v31;
       v51 = 2112;
@@ -782,7 +782,7 @@ LABEL_23:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v40 = v35;
-    v43 = objc_msgSend_CKSanitizedPath(v7, v41, v42);
+    v43 = objc_msgSend_CKSanitizedPath(pathCopy, v41, v42);
     *buf = 138543874;
     v50 = v43;
     v51 = 2112;
@@ -798,15 +798,15 @@ LABEL_24:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)MMCSWrapperForApplicationBundleID:(id)a3 directoryContext:(id)a4 database:(id)a5 error:(id *)a6
++ (id)MMCSWrapperForApplicationBundleID:(id)d directoryContext:(id)context database:(id)database error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v15 = a5;
-  if (!v11)
+  dCopy = d;
+  contextCopy = context;
+  databaseCopy = database;
+  if (!dCopy)
   {
     v23 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v13, v14);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v23, v24, a2, a1, @"CKDMMCS.m", 432, @"Expected non-nil application bundle ID");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v23, v24, a2, self, @"CKDMMCS.m", 432, @"Expected non-nil application bundle ID");
   }
 
   v45 = 0;
@@ -831,15 +831,15 @@ LABEL_24:
   block[2] = sub_225127554;
   block[3] = &unk_2785462B8;
   v29 = &v33;
-  v17 = v12;
+  v17 = contextCopy;
   v26 = v17;
   v30 = &v45;
-  v18 = v11;
+  v18 = dCopy;
   v27 = v18;
-  v19 = v15;
+  v19 = databaseCopy;
   v28 = v19;
   v31 = &v39;
-  v32 = a1;
+  selfCopy = self;
   dispatch_sync(v16, block);
 
   if ((v46[3] & 1) == 0)
@@ -847,9 +847,9 @@ LABEL_24:
     v20 = v34[5];
     v34[5] = 0;
 
-    if (a6)
+    if (error)
     {
-      *a6 = v40[5];
+      *error = v40[5];
     }
   }
 
@@ -863,13 +863,13 @@ LABEL_24:
   return v21;
 }
 
-+ (id)assetKeyWithType:(unint64_t)a3 error:(id *)a4
++ (id)assetKeyWithType:(unint64_t)type error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (type > 1)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, a1, @"CKDMMCS.m", 504, @"Unsupported CKDMMCSAssetKeyType");
+    v8 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, type);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CKDMMCS.m", 504, @"Unsupported CKDMMCSAssetKeyType");
   }
 
   else
@@ -892,17 +892,17 @@ LABEL_24:
     *buf = 138412290;
     v15 = 0;
     _os_log_error_impl(&dword_22506F000, v10, OS_LOG_TYPE_ERROR, "MMCSReferenceObjectCreateWithType failed with error %@", buf, 0xCu);
-    if (a4)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_9:
     objc_msgSend_errorWithDomain_code_error_format_(MEMORY[0x277CBC560], v11, *MEMORY[0x277CBC120], 5003, 0, @"MMCSReferenceObjectCreateWithType failed");
-    *a4 = v5 = 0;
+    *error = v5 = 0;
     goto LABEL_12;
   }
 
@@ -913,9 +913,9 @@ LABEL_12:
   return v5;
 }
 
-+ (id)referenceSignatureFromAssetKey:(id)a3
++ (id)referenceSignatureFromAssetKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = MMCSReferenceSignatureCreateWithReferenceObject();
     if (!v4)
@@ -932,11 +932,11 @@ LABEL_12:
   return v4;
 }
 
-- (CKDMMCS)initWithMMCSEngineContext:(id)a3 directoryContext:(id)a4
+- (CKDMMCS)initWithMMCSEngineContext:(id)context directoryContext:(id)directoryContext
 {
-  v8 = a3;
-  v11 = a4;
-  if (!v8)
+  contextCopy = context;
+  directoryContextCopy = directoryContext;
+  if (!contextCopy)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDMMCS.m", 529, @"Expected non-nil MMCS engine context");
@@ -948,12 +948,12 @@ LABEL_12:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_MMCSEngineContext, a3);
-    v16 = objc_msgSend_mmcsWorkingDirectory(v11, v14, v15);
+    objc_storeStrong(&v12->_MMCSEngineContext, context);
+    v16 = objc_msgSend_mmcsWorkingDirectory(directoryContextCopy, v14, v15);
     path = v13->_path;
     v13->_path = v16;
 
-    v20 = objc_msgSend_temporaryDirectory(v11, v18, v19);
+    v20 = objc_msgSend_temporaryDirectory(directoryContextCopy, v18, v19);
     temporaryDirectory = v13->_temporaryDirectory;
     v13->_temporaryDirectory = v20;
 
@@ -981,7 +981,7 @@ LABEL_12:
       v22 = v21;
       v23 = NSStringFromSelector(a2);
       v24 = 138412546;
-      v25 = self;
+      selfCopy = self;
       v26 = 2114;
       v27 = v23;
       _os_log_error_impl(&dword_22506F000, v22, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", &v24, 0x16u);
@@ -1024,7 +1024,7 @@ LABEL_12:
       v17 = v16;
       v18 = NSStringFromSelector(a2);
       v19 = 138412546;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v18;
       _os_log_error_impl(&dword_22506F000, v17, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", &v19, 0x16u);
@@ -1048,10 +1048,10 @@ LABEL_12:
   return v11;
 }
 
-- (id)_referenceIdentifierFromAssetKey:(id)a3
+- (id)_referenceIdentifierFromAssetKey:(id)key
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -1065,7 +1065,7 @@ LABEL_12:
       v21 = v20;
       v22 = NSStringFromSelector(a2);
       v23 = 138412546;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       *v26 = v22;
       _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", &v23, 0x16u);
@@ -1074,11 +1074,11 @@ LABEL_12:
     __assert_rtn("[CKDMMCS _referenceIdentifierFromAssetKey:]", "CKDMMCS.m", 566, "0 && already dropped");
   }
 
-  v8 = v5;
-  if (v5)
+  v8 = keyCopy;
+  if (keyCopy)
   {
     *&v26[2] = 0;
-    v9 = objc_msgSend_bytes(v5, v6, v7, 0, 0, *&v26[2], v27);
+    v9 = objc_msgSend_bytes(keyCopy, v6, v7, 0, 0, *&v26[2], v27);
     v12 = objc_msgSend_length(v8, v10, v11);
     CC_SHA1(v9, v12, &v23);
     v14 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v13, &v23, 20);
@@ -1095,10 +1095,10 @@ LABEL_12:
   return v17;
 }
 
-- (void)_logMMCSOptions:(id)a3
+- (void)_logMMCSOptions:(id)options
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -1112,7 +1112,7 @@ LABEL_12:
       v12 = v11;
       v13 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v13;
       _os_log_error_impl(&dword_22506F000, v12, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -1121,13 +1121,13 @@ LABEL_12:
     __assert_rtn("[CKDMMCS _logMMCSOptions:]", "CKDMMCS.m", 584, "0 && already dropped");
   }
 
-  v7 = v5;
+  v7 = optionsCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_225128670;
   v14[3] = &unk_278546308;
   v14[4] = self;
-  v8 = objc_msgSend_CKMapKeysAndValues_(v5, v6, v14);
+  v8 = objc_msgSend_CKMapKeysAndValues_(optionsCopy, v6, v14);
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1137,7 +1137,7 @@ LABEL_12:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v16 = v8;
+    selfCopy = v8;
     _os_log_impl(&dword_22506F000, v9, OS_LOG_TYPE_INFO, "Using MMCS options: %{public}@", buf, 0xCu);
   }
 
@@ -1155,12 +1155,12 @@ LABEL_12:
   objc_msgSend_MMCSSerializeSyncRecursive_(v4, v5, v6);
 }
 
-- (id)_contextToRegisterItemGroup:(id)a3 operation:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (id)_contextToRegisterItemGroup:(id)group operation:(id)operation options:(unint64_t)options completionHandler:(id)handler
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  groupCopy = group;
+  operationCopy = operation;
+  handlerCopy = handler;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -1183,9 +1183,9 @@ LABEL_12:
     __assert_rtn("[CKDMMCS _contextToRegisterItemGroup:operation:options:completionHandler:]", "CKDMMCS.m", 964, "0 && already dropped");
   }
 
-  v16 = v13;
-  v17 = objc_msgSend_operationID(v12, v14, v15);
-  v20 = objc_msgSend_container(v12, v18, v19);
+  v16 = handlerCopy;
+  v17 = objc_msgSend_operationID(operationCopy, v14, v15);
+  v20 = objc_msgSend_container(operationCopy, v18, v19);
   v23 = objc_msgSend_containerID(v20, v21, v22);
   v26 = objc_msgSend_containerIdentifier(v23, v24, v25);
 
@@ -1197,21 +1197,21 @@ LABEL_12:
   v44 = 3221225472;
   v45 = sub_225128E00;
   v46 = &unk_278546380;
-  v52 = a5;
-  v27 = v11;
+  optionsCopy = options;
+  v27 = groupCopy;
   v47 = v27;
-  v53 = (a5 & 4) != 0;
+  v53 = (options & 4) != 0;
   v28 = v17;
   v48 = v28;
   v51 = buf;
   v29 = v26;
   v49 = v29;
-  v50 = self;
+  selfCopy = self;
   v30 = _Block_copy(&aBlock);
   v31 = [CKDMMCSItemGroupContext alloc];
-  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v31, v32, self, v27, v12, 0, 0, v30, v16, aBlock, v44, v45, v46);
+  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v31, v32, self, v27, operationCopy, 0, 0, v30, v16, aBlock, v44, v45, v46);
   v34 = [CKDRegisterOperationInfo alloc];
-  v36 = objc_msgSend_initWithOptions_(v34, v35, a5);
+  v36 = objc_msgSend_initWithOptions_(v34, v35, options);
   objc_msgSend_setOperationInfo_(started, v37, v36);
 
   _Block_object_dispose(buf, 8);
@@ -1220,12 +1220,12 @@ LABEL_12:
   return started;
 }
 
-- (id)registerItemGroupSet:(id)a3 operation:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (id)registerItemGroupSet:(id)set operation:(id)operation options:(unint64_t)options completionHandler:(id)handler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  setCopy = set;
+  operationCopy = operation;
+  handlerCopy = handler;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -1239,7 +1239,7 @@ LABEL_12:
       v40 = v39;
       v41 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v50 = self;
+      selfCopy = self;
       v51 = 2114;
       v52 = v41;
       _os_log_error_impl(&dword_22506F000, v40, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -1248,12 +1248,12 @@ LABEL_12:
     __assert_rtn("[CKDMMCS registerItemGroupSet:operation:options:completionHandler:]", "CKDMMCS.m", 1055, "0 && already dropped");
   }
 
-  v14 = v13;
+  v14 = handlerCopy;
   v15 = [CKDMMCSItemGroupSetContext alloc];
   v42 = v14;
-  v17 = objc_msgSend_initWithItemGroupSet_itemGroupSetCompletionBlock_(v15, v16, v11, v14);
+  v17 = objc_msgSend_initWithItemGroupSet_itemGroupSetCompletionBlock_(v15, v16, setCopy, v14);
   v19 = v17;
-  if ((a5 & 0x42) != 0)
+  if ((options & 0x42) != 0)
   {
     objc_msgSend_setMmcsOperationType_(v17, v18, 6);
   }
@@ -1267,8 +1267,8 @@ LABEL_12:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v43 = v11;
-  v22 = objc_msgSend_itemsGroups(v11, v20, v21);
+  v43 = setCopy;
+  v22 = objc_msgSend_itemsGroups(setCopy, v20, v21);
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v44, v48, 16);
   if (v24)
   {
@@ -1285,7 +1285,7 @@ LABEL_12:
 
         v30 = *(*(&v44 + 1) + 8 * i);
         v31 = objc_msgSend_itemGroupCompletionBlock(v19, v25, v26);
-        v33 = objc_msgSend__contextToRegisterItemGroup_operation_options_completionHandler_(self, v32, v30, v12, a5, v31);
+        v33 = objc_msgSend__contextToRegisterItemGroup_operation_options_completionHandler_(self, v32, v30, operationCopy, options, v31);
 
         objc_msgSend_addItemGroupContext_(v19, v34, v33);
       }
@@ -1302,15 +1302,15 @@ LABEL_12:
   return v19;
 }
 
-- (id)_contextToGetItemGroup:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 command:(id)a7 completionHandler:(id)a8
+- (id)_contextToGetItemGroup:(id)group operation:(id)operation options:(id)options progress:(id)progress command:(id)command completionHandler:(id)handler
 {
   v58 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v45 = a6;
-  v17 = a7;
-  v18 = a8;
+  groupCopy = group;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  commandCopy = command;
+  handlerCopy = handler;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -1324,7 +1324,7 @@ LABEL_12:
       v43 = v42;
       v44 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v55 = self;
+      selfCopy = self;
       v56 = 2114;
       v57 = v44;
       _os_log_error_impl(&dword_22506F000, v43, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -1333,9 +1333,9 @@ LABEL_12:
     __assert_rtn("[CKDMMCS _contextToGetItemGroup:operation:options:progress:command:completionHandler:]", "CKDMMCS.m", 1080, "0 && already dropped");
   }
 
-  v21 = v18;
-  v22 = objc_msgSend_operationID(v15, v19, v20);
-  v25 = objc_msgSend_container(v15, v23, v24);
+  v21 = handlerCopy;
+  v22 = objc_msgSend_operationID(operationCopy, v19, v20);
+  v25 = objc_msgSend_container(operationCopy, v23, v24);
   v28 = objc_msgSend_containerID(v25, v26, v27);
   v31 = objc_msgSend_containerIdentifier(v28, v29, v30);
 
@@ -1343,35 +1343,35 @@ LABEL_12:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_225129CAC;
   aBlock[3] = &unk_2785463A8;
-  v48 = v14;
+  v48 = groupCopy;
   v49 = v22;
-  v50 = v16;
-  v51 = self;
+  v50 = optionsCopy;
+  selfCopy2 = self;
   v52 = v31;
   v53 = a2;
   v32 = v31;
-  v33 = v16;
+  v33 = optionsCopy;
   v34 = v22;
-  v35 = v14;
+  v35 = groupCopy;
   v36 = _Block_copy(aBlock);
   v37 = [CKDMMCSItemGroupContext alloc];
-  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v37, v38, self, v35, v15, v45, v17, v36, v21);
+  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v37, v38, self, v35, operationCopy, progressCopy, commandCopy, v36, v21);
 
   v40 = *MEMORY[0x277D85DE8];
 
   return started;
 }
 
-- (id)getItemGroupSet:(id)a3 operation:(id)a4 shouldFetchAssetContentInMemory:(BOOL)a5 options:(id)a6 progress:(id)a7 command:(id)a8 completionHandler:(id)a9
+- (id)getItemGroupSet:(id)set operation:(id)operation shouldFetchAssetContentInMemory:(BOOL)memory options:(id)options progress:(id)progress command:(id)command completionHandler:(id)handler
 {
   v82 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v66 = a7;
-  v70 = a8;
-  v18 = a9;
-  v69 = self;
+  setCopy = set;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  commandCopy = command;
+  handlerCopy = handler;
+  selfCopy = self;
   v19 = *MEMORY[0x277CBC878];
   v20 = *MEMORY[0x277CBC880];
   if (self->_didDrop)
@@ -1387,7 +1387,7 @@ LABEL_12:
       v62 = v61;
       v63 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v77 = self;
+      selfCopy2 = self;
       v78 = 2114;
       v79 = v63;
       _os_log_error_impl(&dword_22506F000, v62, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -1396,37 +1396,37 @@ LABEL_12:
     __assert_rtn("[CKDMMCS getItemGroupSet:operation:shouldFetchAssetContentInMemory:options:progress:command:completionHandler:]", "CKDMMCS.m", 1208, "0 && already dropped");
   }
 
-  v21 = v18;
+  v21 = handlerCopy;
   if (v20 != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], v19);
   }
 
-  v22 = v66;
+  v22 = progressCopy;
   v23 = *MEMORY[0x277CBC830];
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v57 = v23;
-    v60 = objc_msgSend_operationID(v16, v58, v59);
+    v60 = objc_msgSend_operationID(operationCopy, v58, v59);
     *buf = 138412802;
-    v77 = v15;
+    selfCopy2 = setCopy;
     v78 = 2114;
     v79 = v60;
     v80 = 2112;
-    v81 = v17;
+    v81 = optionsCopy;
     _os_log_debug_impl(&dword_22506F000, v57, OS_LOG_TYPE_DEBUG, "Getting MMCS item group set %@ for operationID:%{public}@ with options %@", buf, 0x20u);
   }
 
   v24 = [CKDMMCSItemGroupSetContext alloc];
   v64 = v21;
-  v26 = objc_msgSend_initWithItemGroupSet_itemGroupSetCompletionBlock_(v24, v25, v15, v21);
+  v26 = objc_msgSend_initWithItemGroupSet_itemGroupSetCompletionBlock_(v24, v25, setCopy, v21);
   objc_msgSend_setMmcsOperationType_(v26, v27, 2);
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v65 = v15;
-  obj = objc_msgSend_itemsGroups(v15, v28, v29);
+  v65 = setCopy;
+  obj = objc_msgSend_itemsGroups(setCopy, v28, v29);
   v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v30, &v71, v75, 16);
   if (v31)
   {
@@ -1443,23 +1443,23 @@ LABEL_12:
 
         v37 = *(*(&v71 + 1) + 8 * i);
         v38 = objc_msgSend_itemGroupCompletionBlock(v26, v32, v33);
-        v40 = objc_msgSend__contextToGetItemGroup_operation_options_progress_command_completionHandler_(v69, v39, v37, v16, v17, v22, v70, v38);
+        v40 = objc_msgSend__contextToGetItemGroup_operation_options_progress_command_completionHandler_(selfCopy, v39, v37, operationCopy, optionsCopy, v22, commandCopy, v38);
 
         v43 = objc_alloc_init(CKDMMCSGetOperationInfo);
-        if (a5)
+        if (memory)
         {
           objc_msgSend_setDestination_(v43, v41, 1);
         }
 
         else
         {
-          v45 = objc_msgSend_operationInfo(v16, v41, v42);
-          v48 = v17;
+          v45 = objc_msgSend_operationInfo(operationCopy, v41, v42);
+          v48 = optionsCopy;
           v49 = objc_msgSend_usesAssetDownloadStagingManager(v45, v46, v47);
 
           v51 = v49 == 0;
-          v17 = v48;
-          v22 = v66;
+          optionsCopy = v48;
+          v22 = progressCopy;
           if (v51)
           {
             objc_msgSend_setDestination_(v43, v50, 0);
@@ -1487,14 +1487,14 @@ LABEL_12:
   return v26;
 }
 
-- (id)_contextToPutItemGroup:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (id)_contextToPutItemGroup:(id)group operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  groupCopy = group;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -1508,7 +1508,7 @@ LABEL_12:
       v41 = v40;
       v42 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v52 = self;
+      selfCopy = self;
       v53 = 2114;
       v54 = v42;
       _os_log_error_impl(&dword_22506F000, v41, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -1517,9 +1517,9 @@ LABEL_12:
     __assert_rtn("[CKDMMCS _contextToPutItemGroup:operation:options:progress:completionHandler:]", "CKDMMCS.m", 1237, "0 && already dropped");
   }
 
-  v19 = v16;
-  v20 = objc_msgSend_operationID(v13, v17, v18);
-  v23 = objc_msgSend_container(v13, v21, v22);
+  v19 = handlerCopy;
+  v20 = objc_msgSend_operationID(operationCopy, v17, v18);
+  v23 = objc_msgSend_container(operationCopy, v21, v22);
   v26 = objc_msgSend_containerID(v23, v24, v25);
   v29 = objc_msgSend_containerIdentifier(v26, v27, v28);
 
@@ -1527,34 +1527,34 @@ LABEL_12:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22512ADD8;
   aBlock[3] = &unk_2785463A8;
-  v45 = v12;
+  v45 = groupCopy;
   v46 = v20;
-  v47 = v14;
-  v48 = self;
+  v47 = optionsCopy;
+  selfCopy2 = self;
   v49 = v29;
   v50 = a2;
   v30 = v29;
-  v31 = v14;
+  v31 = optionsCopy;
   v32 = v20;
-  v33 = v12;
+  v33 = groupCopy;
   v34 = _Block_copy(aBlock);
   v35 = [CKDMMCSItemGroupContext alloc];
-  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v35, v36, self, v33, v13, v15, 0, v34, v19);
+  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v35, v36, self, v33, operationCopy, progressCopy, 0, v34, v19);
 
   v38 = *MEMORY[0x277D85DE8];
 
   return started;
 }
 
-- (id)putItemGroupSet:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (id)putItemGroupSet:(id)set operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler
 {
   v66 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v54 = self;
+  setCopy = set;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
+  selfCopy = self;
   v18 = *MEMORY[0x277CBC878];
   v19 = *MEMORY[0x277CBC880];
   if (self->_didDrop)
@@ -1570,7 +1570,7 @@ LABEL_12:
       v50 = v49;
       v51 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v61 = self;
+      selfCopy2 = self;
       v62 = 2114;
       v63 = v51;
       _os_log_error_impl(&dword_22506F000, v50, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -1579,7 +1579,7 @@ LABEL_12:
     __assert_rtn("[CKDMMCS putItemGroupSet:operation:options:progress:completionHandler:]", "CKDMMCS.m", 1342, "0 && already dropped");
   }
 
-  v20 = v17;
+  v20 = handlerCopy;
   if (v19 != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], v18);
@@ -1589,26 +1589,26 @@ LABEL_12:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v45 = v21;
-    v48 = objc_msgSend_operationID(v14, v46, v47);
+    v48 = objc_msgSend_operationID(operationCopy, v46, v47);
     *buf = 138412802;
-    v61 = v13;
+    selfCopy2 = setCopy;
     v62 = 2114;
     v63 = v48;
     v64 = 2112;
-    v65 = v15;
+    v65 = optionsCopy;
     _os_log_debug_impl(&dword_22506F000, v45, OS_LOG_TYPE_DEBUG, "Putting MMCS item group set %@ for operationID:%{public}@ with options %@", buf, 0x20u);
   }
 
   v22 = [CKDMMCSItemGroupSetContext alloc];
   v52 = v20;
-  v24 = objc_msgSend_initWithItemGroupSet_itemGroupSetCompletionBlock_(v22, v23, v13, v20);
+  v24 = objc_msgSend_initWithItemGroupSet_itemGroupSetCompletionBlock_(v22, v23, setCopy, v20);
   objc_msgSend_setMmcsOperationType_(v24, v25, 1);
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v53 = v13;
-  v28 = objc_msgSend_itemsGroups(v13, v26, v27);
+  v53 = setCopy;
+  v28 = objc_msgSend_itemsGroups(setCopy, v26, v27);
   v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v55, v59, 16);
   if (v30)
   {
@@ -1625,7 +1625,7 @@ LABEL_12:
 
         v36 = *(*(&v55 + 1) + 8 * i);
         v37 = objc_msgSend_itemGroupCompletionBlock(v24, v31, v32);
-        v39 = objc_msgSend__contextToPutItemGroup_operation_options_progress_completionHandler_(v54, v38, v36, v14, v15, v16, v37);
+        v39 = objc_msgSend__contextToPutItemGroup_operation_options_progress_completionHandler_(selfCopy, v38, v36, operationCopy, optionsCopy, progressCopy, v37);
 
         objc_msgSend_addItemGroupContext_(v24, v40, v39);
       }
@@ -1642,10 +1642,10 @@ LABEL_12:
   return v24;
 }
 
-- (id)retrieveChunkWithSignature:(id)a3
+- (id)retrieveChunkWithSignature:(id)signature
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  signatureCopy = signature;
   v5 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -1657,15 +1657,15 @@ LABEL_12:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v46 = self;
+    selfCopy3 = self;
     v47 = 2112;
-    v48 = v4;
+    v48 = signatureCopy;
     _os_log_debug_impl(&dword_22506F000, v7, OS_LOG_TYPE_DEBUG, "[%@ retrieveChunkWithSignature:%@] starting", buf, 0x16u);
   }
 
   v8 = [C3DownloadChunkContext alloc];
   v10 = objc_msgSend_initWithMMCS_(v8, v9, self);
-  v53[0] = v4;
+  v53[0] = signatureCopy;
   v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v53, 1);
   v13 = objc_opt_new();
   v16 = objc_msgSend_MMCSEngineContext(self, v14, v15);
@@ -1673,7 +1673,7 @@ LABEL_12:
   v38 = 3221225472;
   v39 = sub_22512BD10;
   v40 = &unk_2785463D0;
-  v41 = self;
+  selfCopy2 = self;
   v17 = v10;
   v42 = v17;
   v18 = v13;
@@ -1682,8 +1682,8 @@ LABEL_12:
   v44 = v19;
   objc_msgSend_MMCSSerializeSyncRecursive_(v16, v20, &v37);
 
-  v23 = objc_msgSend_signatureToMutableData(v17, v21, v22, v37, v38, v39, v40, v41);
-  v25 = objc_msgSend_objectForKeyedSubscript_(v23, v24, v4);
+  v23 = objc_msgSend_signatureToMutableData(v17, v21, v22, v37, v38, v39, v40, selfCopy2);
+  v25 = objc_msgSend_objectForKeyedSubscript_(v23, v24, signatureCopy);
 
   if (*v5 != -1)
   {
@@ -1696,9 +1696,9 @@ LABEL_12:
     v33 = v26;
     v36 = objc_msgSend_signatureToMutableData(v17, v34, v35);
     *buf = 138413058;
-    v46 = self;
+    selfCopy3 = self;
     v47 = 2112;
-    v48 = v4;
+    v48 = signatureCopy;
     v49 = 2112;
     v50 = v25;
     v51 = 2112;
@@ -1722,9 +1722,9 @@ LABEL_12:
   return v29;
 }
 
-- (id)registeredMMCSItemForRereferencedAsset:(id)a3
+- (id)registeredMMCSItemForRereferencedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1738,7 +1738,7 @@ LABEL_12:
   v12[3] = &unk_278546420;
   v14 = &v15;
   v12[4] = self;
-  v8 = v4;
+  v8 = assetCopy;
   v13 = v8;
   objc_msgSend_MMCSSerializeSyncRecursive_(v7, v9, v12);
 
@@ -1797,7 +1797,7 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_getRegisteredItemsGreaterThan:(unint64_t)a3 itemIds:(unint64_t *)a4 itemCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)_getRegisteredItemsGreaterThan:(unint64_t)than itemIds:(unint64_t *)ids itemCount:(unint64_t *)count error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
   if (self->_didDrop)
@@ -1823,13 +1823,13 @@ LABEL_12:
   }
 
   *v13 = 0;
-  objc_msgSend_getMMCSEngine(self, a2, a3);
+  objc_msgSend_getMMCSEngine(self, a2, than);
   result = MMCSGetRegisteredItems() != 0;
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)registeredItemCount:(unint64_t *)a3 error:(id *)a4
+- (BOOL)registeredItemCount:(unint64_t *)count error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_didDrop)
@@ -1862,7 +1862,7 @@ LABEL_12:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v7 = objc_msgSend_MMCSEngineContext(self, a2, a3);
+  v7 = objc_msgSend_MMCSEngineContext(self, a2, count);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_22512C850;
@@ -1870,15 +1870,15 @@ LABEL_12:
   v17[4] = self;
   v17[5] = buf;
   v17[6] = &v18;
-  v17[7] = a3;
+  v17[7] = count;
   objc_msgSend_MMCSSerializeSyncRecursive_(v7, v8, v17);
 
   v9 = v19[3];
   if (v9)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1895,10 +1895,10 @@ LABEL_12:
   return v10;
 }
 
-- (void)showRegisteredItemsInContainer:(id)a3
+- (void)showRegisteredItemsInContainer:(id)container
 {
   v91[2] = *MEMORY[0x277D85DE8];
-  v61 = a3;
+  containerCopy = container;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -2062,7 +2062,7 @@ LABEL_29:
         v66 = objc_msgSend_initWithItems_(v29, v30, v20);
         v31 = [CKDOperation alloc];
         v32 = objc_opt_new();
-        v65 = objc_msgSend_initWithOperationInfo_container_(v31, v33, v32, v61);
+        v65 = objc_msgSend_initWithOperationInfo_container_(v31, v33, v32, containerCopy);
 
         v34 = dispatch_semaphore_create(0);
         v71[0] = MEMORY[0x277D85DD0];
@@ -2156,13 +2156,13 @@ LABEL_47:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterItemIDs:(id)a3
+- (void)_unregisterItemIDs:(id)ds
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dsCopy = ds;
   if (self->_didDrop)
   {
-    v37 = self;
+    selfCopy = self;
     if (*MEMORY[0x277CBC880] != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -2174,7 +2174,7 @@ LABEL_47:
       v39 = v38;
       v40 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v51 = v37;
+      v51 = selfCopy;
       v52 = 2114;
       v53 = v40;
       _os_log_error_impl(&dword_22506F000, v39, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -2183,12 +2183,12 @@ LABEL_47:
     __assert_rtn("[CKDMMCS _unregisterItemIDs:]", "CKDMMCS.m", 1493, "0 && already dropped");
   }
 
-  v8 = v5;
-  v9 = objc_msgSend_count(v5, v6, v7);
+  v8 = dsCopy;
+  v9 = objc_msgSend_count(dsCopy, v6, v7);
   if (v9)
   {
     v10 = v9;
-    v41 = self;
+    selfCopy2 = self;
     v44 = malloc_type_calloc(8uLL, v9, 0xCEAFF8D3uLL);
     v45 = 0u;
     v46 = 0u;
@@ -2215,7 +2215,7 @@ LABEL_47:
             objc_enumerationMutation(obj);
           }
 
-          v22 = objc_msgSend_unsignedLongLongValue(*(*(&v45 + 1) + 8 * v21), v13, v14, v41);
+          v22 = objc_msgSend_unsignedLongLongValue(*(*(&v45 + 1) + 8 * v21), v13, v14, selfCopy2);
           v23 = *v18;
           v24 = *v19;
           if (v22)
@@ -2264,7 +2264,7 @@ LABEL_47:
       while (v15);
     }
 
-    objc_msgSend_getMMCSEngine(v41, v28, v29);
+    objc_msgSend_getMMCSEngine(selfCopy2, v28, v29);
     if (HIDWORD(v10))
     {
       v33 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v30, v31);
@@ -2280,10 +2280,10 @@ LABEL_47:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterItemIDs:(id)a3
+- (void)unregisterItemIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dsCopy = ds;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -2297,7 +2297,7 @@ LABEL_47:
       v14 = v13;
       v15 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v15;
       _os_log_error_impl(&dword_22506F000, v14, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -2306,7 +2306,7 @@ LABEL_47:
     __assert_rtn("[CKDMMCS unregisterItemIDs:]", "CKDMMCS.m", 1515, "0 && already dropped");
   }
 
-  v8 = v5;
+  v8 = dsCopy;
   v9 = objc_msgSend_MMCSEngineContext(self, v6, v7);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -2320,14 +2320,14 @@ LABEL_47:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_contextToPutSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (id)_contextToPutSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v56 = a6;
-  v55 = a7;
+  itemCopy = item;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -2341,7 +2341,7 @@ LABEL_47:
       v51 = v50;
       v52 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v70 = self;
+      selfCopy = self;
       v71 = 2114;
       v72 = v52;
       _os_log_error_impl(&dword_22506F000, v51, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -2350,8 +2350,8 @@ LABEL_47:
     __assert_rtn("[CKDMMCS _contextToPutSectionItem:operation:options:progress:completionHandler:]", "CKDMMCS.m", 1526, "0 && already dropped");
   }
 
-  v18 = objc_msgSend_operationID(v14, v16, v17);
-  v21 = objc_msgSend_container(v14, v19, v20);
+  v18 = objc_msgSend_operationID(operationCopy, v16, v17);
+  v21 = objc_msgSend_container(operationCopy, v19, v20);
   v24 = objc_msgSend_containerID(v21, v22, v23);
   v27 = objc_msgSend_containerIdentifier(v24, v25, v26);
 
@@ -2369,12 +2369,12 @@ LABEL_47:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22512DAC4;
   aBlock[3] = &unk_2785463A8;
-  v29 = v13;
+  v29 = itemCopy;
   v67 = a2;
   v62 = v29;
-  v63 = self;
-  v54 = self;
-  v53 = v15;
+  selfCopy2 = self;
+  selfCopy3 = self;
+  v53 = optionsCopy;
   v64 = v53;
   v30 = v28;
   v65 = v30;
@@ -2412,21 +2412,21 @@ LABEL_47:
   }
 
   v45 = [CKDMMCSItemGroupContext alloc];
-  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v45, v46, v54, v35, v14, v56, 0, v32, v55);
+  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v45, v46, selfCopy3, v35, operationCopy, progressCopy, 0, v32, handlerCopy);
 
   v48 = *MEMORY[0x277D85DE8];
 
   return started;
 }
 
-- (id)putSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (id)putSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  itemCopy = item;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
   v18 = *MEMORY[0x277CBC878];
   v19 = *MEMORY[0x277CBC880];
   if (self->_didDrop)
@@ -2442,7 +2442,7 @@ LABEL_47:
       v38 = v37;
       v39 = NSStringFromSelector(a2);
       v40 = 138412546;
-      v41 = self;
+      selfCopy = self;
       v42 = 2114;
       v43 = v39;
       _os_log_error_impl(&dword_22506F000, v38, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", &v40, 0x16u);
@@ -2451,7 +2451,7 @@ LABEL_47:
     __assert_rtn("[CKDMMCS putSectionItem:operation:options:progress:completionHandler:]", "CKDMMCS.m", 1617, "0 && already dropped");
   }
 
-  v20 = v17;
+  v20 = handlerCopy;
   if (v19 != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], v18);
@@ -2461,19 +2461,19 @@ LABEL_47:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v33 = v21;
-    v36 = objc_msgSend_operationID(v14, v34, v35);
+    v36 = objc_msgSend_operationID(operationCopy, v34, v35);
     v40 = 138412802;
-    v41 = v13;
+    selfCopy = itemCopy;
     v42 = 2114;
     v43 = v36;
     v44 = 2112;
-    v45 = v15;
+    v45 = optionsCopy;
     _os_log_debug_impl(&dword_22506F000, v33, OS_LOG_TYPE_DEBUG, "Putting MMCS section item %@ for operationID:%{public}@ with options %@", &v40, 0x20u);
   }
 
-  v23 = objc_msgSend__contextToPutSectionItem_operation_options_progress_completionHandler_(self, v22, v13, v14, v15, v16, v20);
+  v23 = objc_msgSend__contextToPutSectionItem_operation_options_progress_completionHandler_(self, v22, itemCopy, operationCopy, optionsCopy, progressCopy, v20);
   objc_msgSend_setMmcsOperationType_(v23, v24, 3);
-  shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(v14, v25, v26);
+  shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(operationCopy, v25, v26);
   objc_msgSend_setShouldCloneFileInAssetCache_(v23, v28, shouldCloneFileInAssetCache);
   objc_msgSend_start(v23, v29, v30);
 
@@ -2482,14 +2482,14 @@ LABEL_47:
   return v23;
 }
 
-- (id)_contextToGetSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (id)_contextToGetSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v56 = a6;
-  v55 = a7;
+  itemCopy = item;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
   if (self->_didDrop)
   {
     if (*MEMORY[0x277CBC880] != -1)
@@ -2503,7 +2503,7 @@ LABEL_47:
       v51 = v50;
       v52 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v70 = self;
+      selfCopy = self;
       v71 = 2114;
       v72 = v52;
       _os_log_error_impl(&dword_22506F000, v51, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", buf, 0x16u);
@@ -2512,8 +2512,8 @@ LABEL_47:
     __assert_rtn("[CKDMMCS _contextToGetSectionItem:operation:options:progress:completionHandler:]", "CKDMMCS.m", 1632, "0 && already dropped");
   }
 
-  v18 = objc_msgSend_operationID(v14, v16, v17);
-  v21 = objc_msgSend_container(v14, v19, v20);
+  v18 = objc_msgSend_operationID(operationCopy, v16, v17);
+  v21 = objc_msgSend_container(operationCopy, v19, v20);
   v24 = objc_msgSend_containerID(v21, v22, v23);
   v27 = objc_msgSend_containerIdentifier(v24, v25, v26);
 
@@ -2531,12 +2531,12 @@ LABEL_47:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22512E730;
   aBlock[3] = &unk_2785463A8;
-  v29 = v13;
+  v29 = itemCopy;
   v67 = a2;
   v62 = v29;
-  v63 = self;
-  v54 = self;
-  v53 = v15;
+  selfCopy2 = self;
+  selfCopy3 = self;
+  v53 = optionsCopy;
   v64 = v53;
   v30 = v28;
   v65 = v30;
@@ -2574,21 +2574,21 @@ LABEL_47:
   }
 
   v45 = [CKDMMCSItemGroupContext alloc];
-  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v45, v46, v54, v35, v14, v56, 0, v32, v55);
+  started = objc_msgSend_initWithMMCS_itemGroup_operation_progress_command_start_groupCompletion_(v45, v46, selfCopy3, v35, operationCopy, progressCopy, 0, v32, handlerCopy);
 
   v48 = *MEMORY[0x277D85DE8];
 
   return started;
 }
 
-- (id)getSectionItem:(id)a3 operation:(id)a4 options:(id)a5 progress:(id)a6 completionHandler:(id)a7
+- (id)getSectionItem:(id)item operation:(id)operation options:(id)options progress:(id)progress completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  itemCopy = item;
+  operationCopy = operation;
+  optionsCopy = options;
+  progressCopy = progress;
+  handlerCopy = handler;
   v18 = *MEMORY[0x277CBC878];
   v19 = *MEMORY[0x277CBC880];
   if (self->_didDrop)
@@ -2604,7 +2604,7 @@ LABEL_47:
       v38 = v37;
       v39 = NSStringFromSelector(a2);
       v40 = 138412546;
-      v41 = self;
+      selfCopy = self;
       v42 = 2114;
       v43 = v39;
       _os_log_error_impl(&dword_22506F000, v38, OS_LOG_TYPE_ERROR, "already dropped %@ in %{public}@", &v40, 0x16u);
@@ -2613,7 +2613,7 @@ LABEL_47:
     __assert_rtn("[CKDMMCS getSectionItem:operation:options:progress:completionHandler:]", "CKDMMCS.m", 1739, "0 && already dropped");
   }
 
-  v20 = v17;
+  v20 = handlerCopy;
   if (v19 != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], v18);
@@ -2623,19 +2623,19 @@ LABEL_47:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v33 = v21;
-    v36 = objc_msgSend_operationID(v14, v34, v35);
+    v36 = objc_msgSend_operationID(operationCopy, v34, v35);
     v40 = 138412802;
-    v41 = v13;
+    selfCopy = itemCopy;
     v42 = 2114;
     v43 = v36;
     v44 = 2112;
-    v45 = v15;
+    v45 = optionsCopy;
     _os_log_debug_impl(&dword_22506F000, v33, OS_LOG_TYPE_DEBUG, "Getting MMCS section item %@ for operationID:%{public}@ with options %@", &v40, 0x20u);
   }
 
-  v23 = objc_msgSend__contextToGetSectionItem_operation_options_progress_completionHandler_(self, v22, v13, v14, v15, v16, v20);
+  v23 = objc_msgSend__contextToGetSectionItem_operation_options_progress_completionHandler_(self, v22, itemCopy, operationCopy, optionsCopy, progressCopy, v20);
   objc_msgSend_setMmcsOperationType_(v23, v24, 4);
-  shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(v14, v25, v26);
+  shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(operationCopy, v25, v26);
   objc_msgSend_setShouldCloneFileInAssetCache_(v23, v28, shouldCloneFileInAssetCache);
   objc_msgSend_start(v23, v29, v30);
 
@@ -2644,17 +2644,17 @@ LABEL_47:
   return v23;
 }
 
-- (void)startTrackingItemIDsForMMCSItems:(id)a3
+- (void)startTrackingItemIDsForMMCSItems:(id)items
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = self->_trackedItemIDs;
   objc_sync_enter(v5);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v20, v24, 16);
   if (v10)
   {
@@ -2689,17 +2689,17 @@ LABEL_47:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopTrackingItemIDsForMMCSItems:(id)a3
+- (void)stopTrackingItemIDsForMMCSItems:(id)items
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = self->_trackedItemIDs;
   objc_sync_enter(v5);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v20, v24, 16);
   if (v10)
   {
@@ -2734,12 +2734,12 @@ LABEL_47:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isTrackingItemID:(unint64_t)a3
+- (BOOL)isTrackingItemID:(unint64_t)d
 {
   v5 = self->_trackedItemIDs;
   objc_sync_enter(v5);
   trackedItemIDs = self->_trackedItemIDs;
-  v8 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v7, a3);
+  v8 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v7, d);
   LOBYTE(trackedItemIDs) = objc_msgSend_containsObject_(trackedItemIDs, v9, v8);
 
   objc_sync_exit(v5);

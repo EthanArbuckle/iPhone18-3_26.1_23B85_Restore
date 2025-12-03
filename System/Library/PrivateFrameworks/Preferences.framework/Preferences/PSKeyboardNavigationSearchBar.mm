@@ -26,20 +26,20 @@
 
 - (void)_escapeKeyPressed
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"PSSearchBarEscapeKeyPressedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PSSearchBarEscapeKeyPressedNotification" object:self];
 }
 
 - (void)_downArrowKeyPressed
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"PSSearchBarDownArrowKeyPressedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PSSearchBarDownArrowKeyPressedNotification" object:self];
 }
 
 - (void)_upArrowKeyPressed
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"PSSearchBarUpArrowKeyPressedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PSSearchBarUpArrowKeyPressedNotification" object:self];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface TSTDataStoreIterator
-- (BOOL)getNextCellData:(id *)a3;
-- (TSTDataStoreIterator)initWithInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchMask:(unint64_t)a6;
-- (TSTDataStoreIterator)initWithModel:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchMask:(unint64_t)a6;
+- (BOOL)getNextCellData:(id *)data;
+- (TSTDataStoreIterator)initWithInfo:(id)info region:(id)region flags:(unint64_t)flags searchMask:(unint64_t)mask;
+- (TSTDataStoreIterator)initWithModel:(id)model region:(id)region flags:(unint64_t)flags searchMask:(unint64_t)mask;
 - (TSTPerformanceLoggingToken)logToken;
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3;
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d;
 - (TSUCellCoord)getNext;
 - (_NSRange)curTileRange;
 - (id)nextCellData;
-- (void)iterateCellsUsingBlock:(id)a3;
-- (void)p_setupTileAndRowAtCellID:(TSUCellCoord)a3;
-- (void)setLogToken:(TSTPerformanceLoggingToken)a3;
+- (void)iterateCellsUsingBlock:(id)block;
+- (void)p_setupTileAndRowAtCellID:(TSUCellCoord)d;
+- (void)setLogToken:(TSTPerformanceLoggingToken)token;
 - (void)terminate;
-- (void)updateCellData:(id)a3;
-- (void)updateFormulaForCellData:(id)a3;
+- (void)updateCellData:(id)data;
+- (void)updateFormulaForCellData:(id)data;
 @end
 
 @implementation TSTDataStoreIterator
 
-- (TSTDataStoreIterator)initWithInfo:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchMask:(unint64_t)a6
+- (TSTDataStoreIterator)initWithInfo:(id)info region:(id)region flags:(unint64_t)flags searchMask:(unint64_t)mask
 {
-  v10 = a4;
-  v15 = objc_msgSend_baseTableModel(a3, v11, v12, v13, v14);
-  v17 = objc_msgSend_initWithModel_region_flags_searchMask_(self, v16, v15, v10, a5, a6);
+  regionCopy = region;
+  v15 = objc_msgSend_baseTableModel(info, v11, v12, v13, v14);
+  v17 = objc_msgSend_initWithModel_region_flags_searchMask_(self, v16, v15, regionCopy, flags, mask);
 
   return v17;
 }
 
-- (TSTDataStoreIterator)initWithModel:(id)a3 region:(id)a4 flags:(unint64_t)a5 searchMask:(unint64_t)a6
+- (TSTDataStoreIterator)initWithModel:(id)model region:(id)region flags:(unint64_t)flags searchMask:(unint64_t)mask
 {
-  v11 = a3;
-  v12 = a4;
+  modelCopy = model;
+  regionCopy = region;
   v97.receiver = self;
   v97.super_class = TSTDataStoreIterator;
   v13 = [(TSTDataStoreIterator *)&v97 init];
@@ -42,7 +42,7 @@
 
   objc_storeStrong(&v13->_logToken.logHandle, MEMORY[0x277D86228]);
   v15->_logToken.signpostID = 0;
-  objc_storeStrong(&v14->_tableModel, a3);
+  objc_storeStrong(&v14->_tableModel, model);
   v20 = objc_msgSend_dataStore(v15->_tableModel, v16, v17, v18, v19);
   dataStore = v15->_dataStore;
   v15->_dataStore = v20;
@@ -51,23 +51,23 @@
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSTDataStoreIterator initWithModel:region:flags:searchMask:]", v23, v24);
-    v96 = v11;
+    v96 = modelCopy;
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTDataStoreIterator.mm", v28, v29);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v31, v26, v30, 77, 0, "invalid nil value for '%{public}s'", "_dataStore");
 
-    v11 = v96;
+    modelCopy = v96;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
   }
 
-  objc_storeStrong(&v14->_region, a4);
-  if (objc_msgSend_cellCount(v12, v36, v37, v38, v39) >= 0x10)
+  objc_storeStrong(&v14->_region, region);
+  if (objc_msgSend_cellCount(regionCopy, v36, v37, v38, v39) >= 0x10)
   {
     v44 = objc_msgSend_cacheWithDataStore_(TSTTableDataListCache, v40, v15->_dataStore, v42, v43);
     dataListCache = v15->_dataListCache;
     v15->_dataListCache = v44;
   }
 
-  if ((~a5 & 0x204) == 0)
+  if ((~flags & 0x204) == 0)
   {
     v46 = MEMORY[0x277D81150];
     v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, "[TSTDataStoreIterator initWithModel:region:flags:searchMask:]", v42, v43);
@@ -81,20 +81,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15->_columnOrderReversed = (a5 & 4) != 0;
-  if ((a5 & 4) != 0)
+  v15->_columnOrderReversed = (flags & 4) != 0;
+  if ((flags & 4) != 0)
   {
     goto LABEL_11;
   }
 
   region = v14->_region;
-  if ((a5 & 0x200) != 0)
+  if ((flags & 0x200) != 0)
   {
     v94 = objc_msgSend_newBottomToTopIterator(region, v40, v41, v42, v43);
     regionIterator = v15->_regionIterator;
     v15->_regionIterator = v94;
 
-    a5 &= 0xFFFFFFFFFFFFFDFBLL;
+    flags &= 0xFFFFFFFFFFFFFDFBLL;
     goto LABEL_13;
   }
 
@@ -104,8 +104,8 @@ LABEL_12:
   v15->_regionIterator = v58;
 
 LABEL_13:
-  v64 = a5 & 0xFFFFFFFFFFFFFFFBLL;
-  if ((a5 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  v64 = flags & 0xFFFFFFFFFFFFFFFBLL;
+  if ((flags & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
     v65 = MEMORY[0x277D81150];
     v66 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v60, "[TSTDataStoreIterator initWithModel:region:flags:searchMask:]", v62, v63);
@@ -115,19 +115,19 @@ LABEL_13:
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v72, v73, v74, v75);
   }
 
-  if (a6 == 66058240)
+  if (mask == 66058240)
   {
-    v76 = 0;
+    maskCopy = 0;
   }
 
   else
   {
-    v76 = a6;
+    maskCopy = mask;
   }
 
-  v15->_searchMask = v76;
-  v77 = a6 & 0xFFFFFFFFFC1007FFLL;
-  if ((a6 & 0xFFFFFFFFFC1007FFLL) != 0)
+  v15->_searchMask = maskCopy;
+  v77 = mask & 0xFFFFFFFFFC1007FFLL;
+  if ((mask & 0xFFFFFFFFFC1007FFLL) != 0)
   {
     v78 = MEMORY[0x277D81150];
     v79 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v60, "[TSTDataStoreIterator initWithModel:region:flags:searchMask:]", v62, v63);
@@ -144,15 +144,15 @@ LABEL_21:
   return v15;
 }
 
-- (void)p_setupTileAndRowAtCellID:(TSUCellCoord)a3
+- (void)p_setupTileAndRowAtCellID:(TSUCellCoord)d
 {
   v4 = MEMORY[0x277D81490];
-  self->_curCellID = a3;
+  self->_curCellID = d;
   self->_curTileRange = *v4;
   self->_curRowIndex = 0x7FFFFFFF;
-  if (a3.row != 0x7FFFFFFF && (*&a3 & 0xFFFF00000000) != 0x7FFF00000000)
+  if (d.row != 0x7FFFFFFF && (*&d & 0xFFFF00000000) != 0x7FFF00000000)
   {
-    v6 = objc_msgSend_i_tileStartingAtOrBeforeRowIndex_outTileRange_(self->_dataStore, a2, *&a3, &v13, v3);
+    v6 = objc_msgSend_i_tileStartingAtOrBeforeRowIndex_outTileRange_(self->_dataStore, a2, *&d, &v13, v3);
     v10 = v6;
     if (v6)
     {
@@ -173,10 +173,10 @@ LABEL_21:
   }
 }
 
-- (void)updateCellData:(id)a3
+- (void)updateCellData:(id)data
 {
-  v113 = a3;
-  v12 = objc_msgSend_cellID(v113, v4, v5, v6, v7);
+  dataCopy = data;
+  v12 = objc_msgSend_cellID(dataCopy, v4, v5, v6, v7);
   if (v12 == 0x7FFFFFFF || (v12 & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v13 = MEMORY[0x277D81150];
@@ -187,16 +187,16 @@ LABEL_21:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v28 = objc_msgSend_cell(v113, v8, v9, v10, v11);
+  v28 = objc_msgSend_cell(dataCopy, v8, v9, v10, v11);
   if (!v28)
   {
     v29 = objc_msgSend_newCell(self->_tableModel, v24, v25, v26, v27);
-    objc_msgSend_setCell_(v113, v30, v29, v31, v32);
+    objc_msgSend_setCell_(dataCopy, v30, v29, v31, v32);
 
-    v28 = objc_msgSend_cell(v113, v33, v34, v35, v36);
+    v28 = objc_msgSend_cell(dataCopy, v33, v34, v35, v36);
   }
 
-  v37 = objc_msgSend_cellID(v113, v24, v25, v26, v27);
+  v37 = objc_msgSend_cellID(dataCopy, v24, v25, v26, v27);
   v42 = HIDWORD(v12);
   curCellID = self->_curCellID;
   if (v37 == curCellID.row && ((*&curCellID ^ v37) & 0x101FFFF00000000) == 0)
@@ -265,10 +265,10 @@ LABEL_21:
   }
 }
 
-- (void)updateFormulaForCellData:(id)a3
+- (void)updateFormulaForCellData:(id)data
 {
-  v76 = a3;
-  v8 = objc_msgSend_cellID(v76, v4, v5, v6, v7);
+  dataCopy = data;
+  v8 = objc_msgSend_cellID(dataCopy, v4, v5, v6, v7);
   if (v8 == 0x7FFFFFFF || (v8 & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v13 = MEMORY[0x277D81150];
@@ -279,7 +279,7 @@ LABEL_21:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_cellID(v76, v9, v10, v11, v12);
+  v24 = objc_msgSend_cellID(dataCopy, v9, v10, v11, v12);
   curCellID = self->_curCellID;
   if (v24 == curCellID.row && ((*&curCellID ^ v24) & 0x101FFFF00000000) == 0)
   {
@@ -305,12 +305,12 @@ LABEL_21:
       curRow = self->_curRow;
     }
 
-    v53 = objc_msgSend_cellID(v76, v25, v26, v27, v28);
+    v53 = objc_msgSend_cellID(dataCopy, v25, v26, v27, v28);
     v58 = objc_msgSend_cellStorageRefAtIndex_(curRow, v54, WORD2(v53), v55, v56);
     if (v58)
     {
       v61 = objc_msgSend_formulaSpecForStorageRef_(self->_dataStore, v57, v58, v59, v60);
-      objc_msgSend_setFormulaSpec_(v76, v62, v61, v63, v64);
+      objc_msgSend_setFormulaSpec_(dataCopy, v62, v61, v63, v64);
     }
 
     else
@@ -578,22 +578,22 @@ LABEL_71:
   return ((v9 << 48) | (v8 << 32) | v12);
 }
 
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d
 {
   curCellID = self->_curCellID;
-  v8 = curCellID.row != 0x7FFFFFFF && (*&curCellID & 0xFFFF00000000) != 0x7FFF00000000 && curCellID.row >= a3.row;
-  if (!v8 || curCellID.row == a3.row && curCellID.column < a3.column)
+  v8 = curCellID.row != 0x7FFFFFFF && (*&curCellID & 0xFFFF00000000) != 0x7FFF00000000 && curCellID.row >= d.row;
+  if (!v8 || curCellID.row == d.row && curCellID.column < d.column)
   {
-    objc_msgSend_advanceToCellID_(self->_regionIterator, a2, *&a3, v3, v4);
+    objc_msgSend_advanceToCellID_(self->_regionIterator, a2, *&d, v3, v4);
     return self->_curCellID;
   }
 
   return curCellID;
 }
 
-- (void)iterateCellsUsingBlock:(id)a3
+- (void)iterateCellsUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   v8 = 0;
   v13 = 0;
   do
@@ -608,7 +608,7 @@ LABEL_71:
     }
 
     v11 = objc_autoreleasePoolPush();
-    v7[2](v7, v10, &v13);
+    blockCopy[2](blockCopy, v10, &v13);
     objc_autoreleasePoolPop(v11);
     v8 = v10;
   }
@@ -631,9 +631,9 @@ LABEL_71:
   return v7;
 }
 
-- (BOOL)getNextCellData:(id *)a3
+- (BOOL)getNextCellData:(id *)data
 {
-  Next = objc_msgSend_getNext(self, a2, a3, v3, v4);
+  Next = objc_msgSend_getNext(self, a2, data, v3, v4);
   v8 = Next == 0x7FFFFFFF || (Next & 0xFFFF00000000) == 0x7FFF00000000;
   v9 = !v8;
   if (!v8)
@@ -641,10 +641,10 @@ LABEL_71:
     v10 = objc_alloc_init(TSTMutableCellIteratorData);
     objc_msgSend_setCellID_(v10, v11, Next, v12, v13);
     objc_msgSend_updateCellData_(self, v14, v10, v15, v16);
-    if (a3)
+    if (data)
     {
       v17 = v10;
-      *a3 = v10;
+      *data = v10;
     }
   }
 
@@ -678,12 +678,12 @@ LABEL_71:
   return result;
 }
 
-- (void)setLogToken:(TSTPerformanceLoggingToken)a3
+- (void)setLogToken:(TSTPerformanceLoggingToken)token
 {
-  signpostID = a3.signpostID;
+  signpostID = token.signpostID;
   logHandle = self->_logToken.logHandle;
-  self->_logToken.logHandle = a3.logHandle;
-  v6 = a3.logHandle;
+  self->_logToken.logHandle = token.logHandle;
+  v6 = token.logHandle;
 
   self->_logToken.signpostID = signpostID;
 }

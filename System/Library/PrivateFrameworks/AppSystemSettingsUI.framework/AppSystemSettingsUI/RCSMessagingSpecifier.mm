@@ -1,13 +1,13 @@
 @interface RCSMessagingSpecifier
 - (_TtC19AppSystemSettingsUI21RCSMessagingSpecifier)init;
-- (_TtC19AppSystemSettingsUI21RCSMessagingSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
+- (_TtC19AppSystemSettingsUI21RCSMessagingSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
 @end
 
 @implementation RCSMessagingSpecifier
 
-- (_TtC19AppSystemSettingsUI21RCSMessagingSpecifier)initWithName:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
+- (_TtC19AppSystemSettingsUI21RCSMessagingSpecifier)initWithName:(id)name target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  if (a4)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_21BB2319C();

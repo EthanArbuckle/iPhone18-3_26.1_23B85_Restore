@@ -2,8 +2,8 @@
 - (CXSetHeldCallAction)initWithCallUUID:(NSUUID *)callUUID onHold:(BOOL)onHold;
 - (CXSetHeldCallAction)initWithCoder:(NSCoder *)aDecoder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetHeldCallAction
@@ -25,19 +25,19 @@
 {
   v5.receiver = self;
   v5.super_class = CXSetHeldCallAction;
-  v3 = [(CXCallAction *)&v5 customDescription];
-  [v3 appendFormat:@" isOnHold=%d", -[CXSetHeldCallAction isOnHold](self, "isOnHold")];
+  customDescription = [(CXCallAction *)&v5 customDescription];
+  [customDescription appendFormat:@" isOnHold=%d", -[CXSetHeldCallAction isOnHold](self, "isOnHold")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetHeldCallAction;
-  v6 = a3;
-  [(CXCallAction *)&v7 updateSanitizedCopy:v6 withZone:a4];
-  [v6 setOnHold:{-[CXSetHeldCallAction isOnHold](self, "isOnHold", v7.receiver, v7.super_class)}];
+  copyCopy = copy;
+  [(CXCallAction *)&v7 updateSanitizedCopy:copyCopy withZone:zone];
+  [copyCopy setOnHold:{-[CXSetHeldCallAction isOnHold](self, "isOnHold", v7.receiver, v7.super_class)}];
 }
 
 - (CXSetHeldCallAction)initWithCoder:(NSCoder *)aDecoder
@@ -55,15 +55,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetHeldCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXSetHeldCallAction *)self isOnHold:v7.receiver];
   v6 = NSStringFromSelector(sel_isOnHold);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 }
 
 @end

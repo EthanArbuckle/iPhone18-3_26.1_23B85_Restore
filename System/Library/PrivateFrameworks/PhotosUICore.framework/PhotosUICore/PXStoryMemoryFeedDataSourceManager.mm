@@ -1,8 +1,8 @@
 @interface PXStoryMemoryFeedDataSourceManager
 - (BOOL)hasAnyMemories;
 - (PXStoryMemoryFeedDataSourceManager)init;
-- (PXStoryMemoryFeedDataSourceManager)initWithPhotoLibrary:(id)a3;
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4;
+- (PXStoryMemoryFeedDataSourceManager)initWithPhotoLibrary:(id)library;
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier;
 - (void)_invalidateChildDataSourceManagers;
 - (void)_invalidateDataSource;
 - (void)_invalidateHasAnyFavorites;
@@ -11,26 +11,26 @@
 - (void)_updateDataSource;
 - (void)_updateHasAnyFavorites;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
 - (void)preferencesDidChange;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setHasAnyFavorites:(BOOL)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setWantsFavoritesOnly:(BOOL)a3;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setHasAnyFavorites:(BOOL)favorites;
+- (void)setIsActive:(BOOL)active;
+- (void)setWantsFavoritesOnly:(BOOL)only;
 @end
 
 @implementation PXStoryMemoryFeedDataSourceManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__PXStoryMemoryFeedDataSourceManager_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7747740;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryMemoryFeedDataSourceManager *)self performChanges:v5];
 }
@@ -93,20 +93,20 @@ LABEL_13:
 
 - (void)_updateHasAnyFavorites
 {
-  v4 = [(PXStoryMemoryFeedDataSourceManager *)self favoriteMemoriesDataSourceManager];
-  v3 = [v4 dataSource];
-  -[PXStoryMemoryFeedDataSourceManager setHasAnyFavorites:](self, "setHasAnyFavorites:", [v3 containsAnyItems]);
+  favoriteMemoriesDataSourceManager = [(PXStoryMemoryFeedDataSourceManager *)self favoriteMemoriesDataSourceManager];
+  dataSource = [favoriteMemoriesDataSourceManager dataSource];
+  -[PXStoryMemoryFeedDataSourceManager setHasAnyFavorites:](self, "setHasAnyFavorites:", [dataSource containsAnyItems]);
 }
 
 - (void)_invalidateHasAnyFavorites
 {
-  v2 = [(PXStoryMemoryFeedDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHasAnyFavorites];
+  updater = [(PXStoryMemoryFeedDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHasAnyFavorites];
 }
 
 - (void)_updateDataSource
 {
-  v9 = [(PXSectionedDataSourceManager *)self dataSource];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
   if ([(PXStoryMemoryFeedDataSourceManager *)self wantsFavoritesOnly])
   {
     [(PXStoryMemoryFeedDataSourceManager *)self favoriteMemoriesDataSourceManager];
@@ -118,13 +118,13 @@ LABEL_13:
   }
   v3 = ;
   v4 = [_PXStoryMemoryFeedDataSource alloc];
-  v5 = [v3 dataSource];
-  v6 = [(_PXStoryMemoryFeedDataSource *)v4 initWithDataSource:v5];
+  dataSource2 = [v3 dataSource];
+  v6 = [(_PXStoryMemoryFeedDataSource *)v4 initWithDataSource:dataSource2];
 
-  if (([(_PXStoryMemoryFeedDataSource *)v6 isEqual:v9]& 1) == 0)
+  if (([(_PXStoryMemoryFeedDataSource *)v6 isEqual:dataSource]& 1) == 0)
   {
-    v7 = [v3 changeHistory];
-    v8 = [v7 changeDetailsFromDataSourceIdentifier:objc_msgSend(v9 toDataSourceIdentifier:{"identifier"), -[_PXStoryMemoryFeedDataSource identifier](v6, "identifier")}];
+    changeHistory = [v3 changeHistory];
+    v8 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(dataSource toDataSourceIdentifier:{"identifier"), -[_PXStoryMemoryFeedDataSource identifier](v6, "identifier")}];
 
     [(PXSectionedDataSourceManager *)self setDataSource:v6 changeDetailsArray:v8];
   }
@@ -132,8 +132,8 @@ LABEL_13:
 
 - (void)_invalidateDataSource
 {
-  v2 = [(PXStoryMemoryFeedDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDataSource];
+  updater = [(PXStoryMemoryFeedDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDataSource];
 }
 
 - (void)_updateChildDataSourceManagers
@@ -146,15 +146,15 @@ LABEL_13:
     [(PXSectionedDataSourceManager *)self->_favoriteMemoriesDataSourceManager unregisterChangeObserver:self context:FavoriteMemoriesDataSourceManagerObservationContext];
   }
 
-  v4 = [(PXStoryMemoryFeedDataSourceManager *)self photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  photoLibrary = [(PXStoryMemoryFeedDataSourceManager *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__PXStoryMemoryFeedDataSourceManager__updateChildDataSourceManagers__block_invoke;
   aBlock[3] = &unk_1E7747718;
-  v26 = v5;
-  v6 = v5;
+  v26 = librarySpecificFetchOptions;
+  v6 = librarySpecificFetchOptions;
   v7 = _Block_copy(aBlock);
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"rejected == NO"];
   v7[2](v7, v8);
@@ -178,16 +178,16 @@ LABEL_13:
   v14 = +[PXStorySettings sharedInstance];
   [v6 setFetchLimit:{objc_msgSend(v14, "feedInitialLimit")}];
 
-  v15 = [(PXStoryMemoryFeedDataSourceManager *)self libraryFilterState];
-  v16 = [v15 viewMode];
-  if (v16 == 2)
+  libraryFilterState = [(PXStoryMemoryFeedDataSourceManager *)self libraryFilterState];
+  viewMode = [libraryFilterState viewMode];
+  if (viewMode == 2)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = 2 * (v16 != 1);
+    v17 = 2 * (viewMode != 1);
   }
 
   [v6 setSharingFilter:v17];
@@ -233,34 +233,34 @@ void __68__PXStoryMemoryFeedDataSourceManager__updateChildDataSourceManagers__bl
 
 - (void)_invalidateChildDataSourceManagers
 {
-  v2 = [(PXStoryMemoryFeedDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateChildDataSourceManagers];
+  updater = [(PXStoryMemoryFeedDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateChildDataSourceManagers];
 }
 
-- (void)setWantsFavoritesOnly:(BOOL)a3
+- (void)setWantsFavoritesOnly:(BOOL)only
 {
-  if (self->_wantsFavoritesOnly != a3)
+  if (self->_wantsFavoritesOnly != only)
   {
-    self->_wantsFavoritesOnly = a3;
+    self->_wantsFavoritesOnly = only;
     [(PXStoryMemoryFeedDataSourceManager *)self signalChange:8];
 
     [(PXStoryMemoryFeedDataSourceManager *)self _invalidateDataSource];
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryMemoryFeedDataSourceManager *)self signalChange:2];
     if (self->_isActive)
     {
-      v4 = [(PXStoryMemoryFeedDataSourceManager *)self allMemoriesDataSourceManager];
-      [v4 startLoadingIfNeeded];
+      allMemoriesDataSourceManager = [(PXStoryMemoryFeedDataSourceManager *)self allMemoriesDataSourceManager];
+      [allMemoriesDataSourceManager startLoadingIfNeeded];
 
-      v5 = [(PXStoryMemoryFeedDataSourceManager *)self favoriteMemoriesDataSourceManager];
-      [v5 startLoadingIfNeeded];
+      favoriteMemoriesDataSourceManager = [(PXStoryMemoryFeedDataSourceManager *)self favoriteMemoriesDataSourceManager];
+      [favoriteMemoriesDataSourceManager startLoadingIfNeeded];
 
       [(PXStoryMemoryFeedDataSourceManager *)self _invalidateDataSource];
 
@@ -269,26 +269,26 @@ void __68__PXStoryMemoryFeedDataSourceManager__updateChildDataSourceManagers__bl
   }
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
-  v4 = a3;
-  v5 = [(PXStoryMemoryFeedDataSourceManager *)self photoLibrary];
-  [v5 px_endPausingChanges:v4];
+  loadingCopy = loading;
+  photoLibrary = [(PXStoryMemoryFeedDataSourceManager *)self photoLibrary];
+  [photoLibrary px_endPausingChanges:loadingCopy];
 }
 
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(PXStoryMemoryFeedDataSourceManager *)self photoLibrary];
-  v8 = [v7 px_beginPausingChangesWithTimeout:v6 identifier:a3];
+  identifierCopy = identifier;
+  photoLibrary = [(PXStoryMemoryFeedDataSourceManager *)self photoLibrary];
+  v8 = [photoLibrary px_beginPausingChangesWithTimeout:identifierCopy identifier:timeout];
 
   return v8;
 }
 
 - (void)_setDataSourceToEmpty
 {
-  v3 = [off_1E77218A8 emptyDataSource];
-  [(PXSectionedDataSourceManager *)self setDataSource:v3 changeDetailsArray:0];
+  emptyDataSource = [off_1E77218A8 emptyDataSource];
+  [(PXSectionedDataSourceManager *)self setDataSource:emptyDataSource changeDetailsArray:0];
 }
 
 - (void)preferencesDidChange
@@ -300,11 +300,11 @@ void __68__PXStoryMemoryFeedDataSourceManager__updateChildDataSourceManagers__bl
   }
 }
 
-- (void)setHasAnyFavorites:(BOOL)a3
+- (void)setHasAnyFavorites:(BOOL)favorites
 {
-  if (self->_hasAnyFavorites != a3)
+  if (self->_hasAnyFavorites != favorites)
   {
-    self->_hasAnyFavorites = a3;
+    self->_hasAnyFavorites = favorites;
     [(PXStoryMemoryFeedDataSourceManager *)self signalChange:4];
   }
 }
@@ -314,45 +314,45 @@ void __68__PXStoryMemoryFeedDataSourceManager__updateChildDataSourceManagers__bl
   v4.receiver = self;
   v4.super_class = PXStoryMemoryFeedDataSourceManager;
   [(PXStoryMemoryFeedDataSourceManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryMemoryFeedDataSourceManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryMemoryFeedDataSourceManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryMemoryFeedDataSourceManager;
-  [(PXStoryMemoryFeedDataSourceManager *)&v3 performChanges:a3];
+  [(PXStoryMemoryFeedDataSourceManager *)&v3 performChanges:changes];
 }
 
 - (BOOL)hasAnyMemories
 {
-  v2 = [(PXStoryMemoryFeedDataSourceManager *)self allMemoriesDataSourceManager];
-  v3 = [v2 dataSource];
-  v4 = [v3 containsAnyItems];
+  allMemoriesDataSourceManager = [(PXStoryMemoryFeedDataSourceManager *)self allMemoriesDataSourceManager];
+  dataSource = [allMemoriesDataSourceManager dataSource];
+  containsAnyItems = [dataSource containsAnyItems];
 
-  return v4;
+  return containsAnyItems;
 }
 
 - (PXStoryMemoryFeedDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedDataSourceManager.m" lineNumber:70 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedDataSourceManager.m" lineNumber:70 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedDataSourceManager init]"}];
 
   abort();
 }
 
-- (PXStoryMemoryFeedDataSourceManager)initWithPhotoLibrary:(id)a3
+- (PXStoryMemoryFeedDataSourceManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PXStoryMemoryFeedDataSourceManager;
   v6 = [(PXSectionedDataSourceManager *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v5];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    v8 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:libraryCopy];
     v9 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v8];
     libraryFilterState = v7->_libraryFilterState;
     v7->_libraryFilterState = v9;

@@ -1,27 +1,27 @@
 @interface NEIKEv2Identifier
-+ (NEIKEv2NULLIdentifier)createIdentifierWithType:(void *)a3 data:;
-- (BOOL)isEqual:(id)a3;
++ (NEIKEv2NULLIdentifier)createIdentifierWithType:(void *)type data:;
+- (BOOL)isEqual:(id)equal;
 - (NSString)stringValue;
 - (id)copyShortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithIdentifierData:(void *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithIdentifierData:(void *)data;
 - (unint64_t)hash;
 @end
 
 @implementation NEIKEv2Identifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2Identifier *)self identifierType];
-    if (v6 == [v5 identifierType])
+    v5 = equalCopy;
+    identifierType = [(NEIKEv2Identifier *)self identifierType];
+    if (identifierType == [v5 identifierType])
     {
-      v7 = [(NEIKEv2Identifier *)self identifierData];
-      v8 = [v5 identifierData];
-      v9 = [v7 isEqual:v8];
+      identifierData = [(NEIKEv2Identifier *)self identifierData];
+      identifierData2 = [v5 identifierData];
+      v9 = [identifierData isEqual:identifierData2];
     }
 
     else
@@ -40,35 +40,35 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NEIKEv2Identifier *)self identifierData];
-  v4 = [v3 hash];
-  v5 = [(NEIKEv2Identifier *)self identifierType];
+  identifierData = [(NEIKEv2Identifier *)self identifierData];
+  v4 = [identifierData hash];
+  identifierType = [(NEIKEv2Identifier *)self identifierType];
 
-  return v5 ^ v4;
+  return identifierType ^ v4;
 }
 
 - (NSString)stringValue
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NEIKEv2Identifier *)self identifierData];
-  v5 = [v3 initWithData:v4 encoding:4];
+  identifierData = [(NEIKEv2Identifier *)self identifierData];
+  v5 = [v3 initWithData:identifierData encoding:4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(NEIKEv2Identifier *)self identifierType];
-  v5 = [(NEIKEv2Identifier *)self identifierData];
-  v6 = [NEIKEv2Identifier createIdentifierWithType:v4 data:v5];
+  identifierType = [(NEIKEv2Identifier *)self identifierType];
+  identifierData = [(NEIKEv2Identifier *)self identifierData];
+  v6 = [NEIKEv2Identifier createIdentifierWithType:identifierType data:identifierData];
 
   return v6;
 }
 
-+ (NEIKEv2NULLIdentifier)createIdentifierWithType:(void *)a3 data:
++ (NEIKEv2NULLIdentifier)createIdentifierWithType:(void *)type data:
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   objc_opt_self();
   if (a2 <= 4)
   {
@@ -78,12 +78,12 @@
         goto LABEL_15;
       case 2:
         v21 = [NEIKEv2FQDNIdentifier alloc];
-        v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:4];
+        v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:typeCopy encoding:4];
         v7 = [(NEIKEv2FQDNIdentifier *)v21 initWithFQDN:v6];
         goto LABEL_24;
       case 3:
         v8 = [NEIKEv2UserFQDNIdentifier alloc];
-        v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:4];
+        v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:typeCopy encoding:4];
         v7 = [(NEIKEv2UserFQDNIdentifier *)v8 initWithUserFQDN:v6];
         goto LABEL_24;
     }
@@ -98,7 +98,7 @@
         if (a2 == 9)
         {
           v5 = [NEIKEv2ASN1DNIdentifier alloc];
-          v6 = [v4 copy];
+          v6 = [typeCopy copy];
           v7 = [(NEIKEv2ASN1DNIdentifier *)v5 initWithData:v6];
 LABEL_24:
           v19 = v7;
@@ -111,7 +111,7 @@ LABEL_24:
 
 LABEL_15:
       v13 = [NEIKEv2AddressIdentifier alloc];
-      v14 = v4;
+      v14 = typeCopy;
       v15 = v14;
       if (!v13)
       {
@@ -198,14 +198,14 @@ LABEL_36:
     if (a2 == 11)
     {
       v20 = [NEIKEv2KeyIDIdentifier alloc];
-      v6 = [v4 copy];
+      v6 = [typeCopy copy];
       v7 = [(NEIKEv2KeyIDIdentifier *)v20 initWithKeyID:v6];
       goto LABEL_24;
     }
 
     if (a2 == 13)
     {
-      if (![v4 length])
+      if (![typeCopy length])
       {
         v19 = objc_alloc_init(NEIKEv2NULLIdentifier);
         goto LABEL_37;
@@ -247,12 +247,12 @@ LABEL_37:
   return v19;
 }
 
-- (id)initWithIdentifierData:(void *)a1
+- (id)initWithIdentifierData:(void *)data
 {
   v3 = a2;
-  if (a1)
+  if (data)
   {
-    v10.receiver = a1;
+    v10.receiver = data;
     v10.super_class = NEIKEv2Identifier;
     v4 = objc_msgSendSuper2(&v10, sel_init);
     if (v4)
@@ -286,29 +286,29 @@ LABEL_37:
 
 - (id)copyShortDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 typeDescription];
-    if ([v1 identifierType] == 13)
+    typeDescription = [self typeDescription];
+    if ([selfCopy identifierType] == 13)
     {
-      v1 = v2;
+      selfCopy = typeDescription;
     }
 
     else
     {
-      v3 = [v1 stringValue];
-      if (!v3)
+      stringValue = [selfCopy stringValue];
+      if (!stringValue)
       {
-        v4 = [v1 identifierData];
-        v3 = [v4 base64EncodedStringWithOptions:0];
+        identifierData = [selfCopy identifierData];
+        stringValue = [identifierData base64EncodedStringWithOptions:0];
       }
 
-      v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@:%@", v2, v3];
+      selfCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@:%@", typeDescription, stringValue];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

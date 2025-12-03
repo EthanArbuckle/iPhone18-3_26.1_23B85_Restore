@@ -1,25 +1,25 @@
 @interface _INPBGetCarLockStatusIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetCarLockStatusIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetCarLockStatusIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetCarLockStatusIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBGetCarLockStatusIntentResponse *)self hasLocked])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBGetCarLockStatusIntentResponse locked](self, "locked")}];
-    [v3 setObject:v4 forKeyedSubscript:@"locked"];
+    [dictionary setObject:v4 forKeyedSubscript:@"locked"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -35,16 +35,16 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBGetCarLockStatusIntentResponse *)self hasLocked];
-    if (v5 == [v4 hasLocked])
+    hasLocked = [(_INPBGetCarLockStatusIntentResponse *)self hasLocked];
+    if (hasLocked == [equalCopy hasLocked])
     {
-      if (!-[_INPBGetCarLockStatusIntentResponse hasLocked](self, "hasLocked") || ![v4 hasLocked] || (locked = self->_locked, locked == objc_msgSend(v4, "locked")))
+      if (!-[_INPBGetCarLockStatusIntentResponse hasLocked](self, "hasLocked") || ![equalCopy hasLocked] || (locked = self->_locked, locked == objc_msgSend(equalCopy, "locked")))
       {
         v6 = 1;
       }
@@ -54,7 +54,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBGetCarLockStatusIntentResponse allocWithZone:?]];
   if ([(_INPBGetCarLockStatusIntentResponse *)self hasLocked])
@@ -65,33 +65,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetCarLockStatusIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetCarLockStatusIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetCarLockStatusIntentResponse)initWithCoder:(id)a3
+- (_INPBGetCarLockStatusIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetCarLockStatusIntentResponse *)self initWithData:v6];
+    self = [(_INPBGetCarLockStatusIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_INPBGetCarLockStatusIntentResponse *)self hasLocked])
   {
     locked = self->_locked;

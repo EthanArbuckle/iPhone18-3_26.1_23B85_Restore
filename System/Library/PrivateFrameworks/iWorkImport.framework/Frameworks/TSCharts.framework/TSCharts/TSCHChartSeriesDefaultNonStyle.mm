@@ -1,16 +1,16 @@
 @interface TSCHChartSeriesDefaultNonStyle
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)defaultNonStyle;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 @end
 
 @implementation TSCHChartSeriesDefaultNonStyle
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCHChartSeriesDefaultNonStyle;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = sub_2762B6B34;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A47260 != -1)
   {
     dispatch_once(&qword_280A47260, block);
@@ -32,7 +32,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCHChartSeriesDefaultNonStyle allocWithZone:]");
@@ -43,10 +43,10 @@
   return 0;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
   v7 = MEMORY[0x277D81150];
-  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartSeriesDefaultNonStyle mixingTypeWithObject:context:]", a4);
+  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHChartSeriesDefaultNonStyle mixingTypeWithObject:context:]", context);
   v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartSeriesNonStyle.mm");
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
@@ -56,10 +56,10 @@
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v6 = MEMORY[0x277D81150];
-  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, v4, v5, "[TSCHChartSeriesDefaultNonStyle mixedObjectWithFraction:ofObject:]");
+  v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, fraction, v4, v5, "[TSCHChartSeriesDefaultNonStyle mixedObjectWithFraction:ofObject:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartSeriesNonStyle.mm");
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);

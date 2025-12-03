@@ -1,32 +1,32 @@
 @interface PDDPPrivilege
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addLocationIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLocationIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPPrivilege
 
-- (void)addLocationIds:(id)a3
+- (void)addLocationIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   locationIds = self->_locationIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!locationIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_locationIds;
     self->_locationIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     locationIds = self->_locationIds;
   }
 
-  [(NSMutableArray *)locationIds addObject:v4];
+  [(NSMutableArray *)locationIds addObject:idsCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = PDDPPrivilege;
   v3 = [(PDDPPrivilege *)&v7 description];
-  v4 = [(PDDPPrivilege *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPPrivilege *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_privilegeName)
   {
     PBDataWriterWriteStringField();
@@ -100,34 +100,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_privilegeName)
   {
-    [v8 setPrivilegeName:?];
+    [toCopy setPrivilegeName:?];
   }
 
   if ([(PDDPPrivilege *)self locationIdsCount])
   {
-    [v8 clearLocationIds];
-    v4 = [(PDDPPrivilege *)self locationIdsCount];
-    if (v4)
+    [toCopy clearLocationIds];
+    locationIdsCount = [(PDDPPrivilege *)self locationIdsCount];
+    if (locationIdsCount)
     {
-      v5 = v4;
+      v5 = locationIdsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPPrivilege *)self locationIdsAtIndex:i];
-        [v8 addLocationIds:v7];
+        [toCopy addLocationIds:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_privilegeName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_privilegeName copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -151,7 +151,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addLocationIds:v13];
 
         v12 = v12 + 1;
@@ -167,13 +167,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((privilegeName = self->_privilegeName, !(privilegeName | v4[2])) || -[NSString isEqual:](privilegeName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((privilegeName = self->_privilegeName, !(privilegeName | equalCopy[2])) || -[NSString isEqual:](privilegeName, "isEqual:")))
   {
     locationIds = self->_locationIds;
-    if (locationIds | v4[1])
+    if (locationIds | equalCopy[1])
     {
       v7 = [(NSMutableArray *)locationIds isEqual:?];
     }
@@ -192,10 +192,10 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(PDDPPrivilege *)self setPrivilegeName:?];
   }
@@ -204,7 +204,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

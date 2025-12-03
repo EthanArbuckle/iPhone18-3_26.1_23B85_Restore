@@ -1,7 +1,7 @@
 @interface EKPersistentCalendarItem
 + (id)propertiesToUnloadOnCommit;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)singleRecurrenceRule;
 @end
 
@@ -77,7 +77,7 @@ void __37__EKPersistentCalendarItem_relations__block_invoke()
   block[1] = 3221225472;
   block[2] = __54__EKPersistentCalendarItem_propertiesToUnloadOnCommit__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToUnloadOnCommit_onceToken_2 != -1)
   {
     dispatch_once(&propertiesToUnloadOnCommit_onceToken_2, block);
@@ -116,92 +116,92 @@ void __54__EKPersistentCalendarItem_propertiesToUnloadOnCommit__block_invoke(uin
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = EKUUIDString();
   [v4 setUUID:v5];
 
-  v6 = [(EKPersistentCalendarItem *)self calendar];
-  [v4 setCalendar:v6];
+  calendar = [(EKPersistentCalendarItem *)self calendar];
+  [v4 setCalendar:calendar];
 
   [v4 setIsAllDay:{-[EKPersistentCalendarItem isAllDay](self, "isAllDay")}];
-  v7 = [(EKPersistentCalendarItem *)self startDateRaw];
-  [v4 setStartDateRaw:v7];
+  startDateRaw = [(EKPersistentCalendarItem *)self startDateRaw];
+  [v4 setStartDateRaw:startDateRaw];
 
-  v8 = [(EKPersistentCalendarItem *)self startTimeZoneName];
-  [v4 setStartTimeZoneName:v8];
+  startTimeZoneName = [(EKPersistentCalendarItem *)self startTimeZoneName];
+  [v4 setStartTimeZoneName:startTimeZoneName];
 
-  v9 = [(EKPersistentCalendarItem *)self endTimeZoneName];
-  [v4 setEndTimeZoneName:v9];
+  endTimeZoneName = [(EKPersistentCalendarItem *)self endTimeZoneName];
+  [v4 setEndTimeZoneName:endTimeZoneName];
 
-  v10 = [(EKPersistentCalendarItem *)self unlocalizedTitle];
-  [v4 setUnlocalizedTitle:v10];
+  unlocalizedTitle = [(EKPersistentCalendarItem *)self unlocalizedTitle];
+  [v4 setUnlocalizedTitle:unlocalizedTitle];
 
-  v11 = [(EKPersistentCalendarItem *)self notes];
-  [v4 setNotes:v11];
+  notes = [(EKPersistentCalendarItem *)self notes];
+  [v4 setNotes:notes];
 
-  v12 = [(EKPersistentCalendarItem *)self URLString];
-  [v4 setURLString:v12];
+  uRLString = [(EKPersistentCalendarItem *)self URLString];
+  [v4 setURLString:uRLString];
 
   [v4 setSequenceNumber:{-[EKPersistentCalendarItem sequenceNumber](self, "sequenceNumber")}];
-  v13 = [(EKPersistentCalendarItem *)self calendarScale];
-  [v4 setCalendarScale:v13];
+  calendarScale = [(EKPersistentCalendarItem *)self calendarScale];
+  [v4 setCalendarScale:calendarScale];
 
   [v4 setPriority:{-[EKPersistentCalendarItem priority](self, "priority")}];
-  v14 = [(EKPersistentCalendarItem *)self actionString];
-  [v4 setActionString:v14];
+  actionString = [(EKPersistentCalendarItem *)self actionString];
+  [v4 setActionString:actionString];
 
-  v15 = [(EKPersistentCalendarItem *)self structuredData];
-  [v4 setStructuredData:v15];
+  structuredData = [(EKPersistentCalendarItem *)self structuredData];
+  [v4 setStructuredData:structuredData];
 
-  v16 = [(EKPersistentCalendarItem *)self localStructuredData];
-  [v4 setLocalStructuredData:v16];
+  localStructuredData = [(EKPersistentCalendarItem *)self localStructuredData];
+  [v4 setLocalStructuredData:localStructuredData];
 
   [v4 setDefaultAlarmWasDeleted:{-[EKPersistentCalendarItem defaultAlarmWasDeleted](self, "defaultAlarmWasDeleted")}];
-  v17 = [(EKPersistentCalendarItem *)self sharedItemCreatedByDisplayName];
-  [v4 setSharedItemCreatedByDisplayName:v17];
+  sharedItemCreatedByDisplayName = [(EKPersistentCalendarItem *)self sharedItemCreatedByDisplayName];
+  [v4 setSharedItemCreatedByDisplayName:sharedItemCreatedByDisplayName];
 
-  v18 = [(EKPersistentCalendarItem *)self sharedItemCreatedByAddressString];
-  [v4 setSharedItemCreatedByAddressString:v18];
+  sharedItemCreatedByAddressString = [(EKPersistentCalendarItem *)self sharedItemCreatedByAddressString];
+  [v4 setSharedItemCreatedByAddressString:sharedItemCreatedByAddressString];
 
-  v19 = [(EKPersistentCalendarItem *)self sharedItemCreatedByFirstName];
-  [v4 setSharedItemCreatedByFirstName:v19];
+  sharedItemCreatedByFirstName = [(EKPersistentCalendarItem *)self sharedItemCreatedByFirstName];
+  [v4 setSharedItemCreatedByFirstName:sharedItemCreatedByFirstName];
 
-  v20 = [(EKPersistentCalendarItem *)self sharedItemCreatedByLastName];
-  [v4 setSharedItemCreatedByLastName:v20];
+  sharedItemCreatedByLastName = [(EKPersistentCalendarItem *)self sharedItemCreatedByLastName];
+  [v4 setSharedItemCreatedByLastName:sharedItemCreatedByLastName];
 
-  v21 = [(EKPersistentCalendarItem *)self sharedItemCreatedDate];
-  [v4 setSharedItemCreatedDate:v21];
+  sharedItemCreatedDate = [(EKPersistentCalendarItem *)self sharedItemCreatedDate];
+  [v4 setSharedItemCreatedDate:sharedItemCreatedDate];
 
-  v22 = [(EKPersistentCalendarItem *)self sharedItemCreatedTimeZoneName];
-  [v4 setSharedItemCreatedTimeZoneName:v22];
+  sharedItemCreatedTimeZoneName = [(EKPersistentCalendarItem *)self sharedItemCreatedTimeZoneName];
+  [v4 setSharedItemCreatedTimeZoneName:sharedItemCreatedTimeZoneName];
 
-  v23 = [(EKPersistentCalendarItem *)self sharedItemModifiedByDisplayName];
-  [v4 setSharedItemModifiedByDisplayName:v23];
+  sharedItemModifiedByDisplayName = [(EKPersistentCalendarItem *)self sharedItemModifiedByDisplayName];
+  [v4 setSharedItemModifiedByDisplayName:sharedItemModifiedByDisplayName];
 
-  v24 = [(EKPersistentCalendarItem *)self sharedItemModifiedByAddressString];
-  [v4 setSharedItemModifiedByAddressString:v24];
+  sharedItemModifiedByAddressString = [(EKPersistentCalendarItem *)self sharedItemModifiedByAddressString];
+  [v4 setSharedItemModifiedByAddressString:sharedItemModifiedByAddressString];
 
-  v25 = [(EKPersistentCalendarItem *)self sharedItemModifiedByFirstName];
-  [v4 setSharedItemModifiedByFirstName:v25];
+  sharedItemModifiedByFirstName = [(EKPersistentCalendarItem *)self sharedItemModifiedByFirstName];
+  [v4 setSharedItemModifiedByFirstName:sharedItemModifiedByFirstName];
 
-  v26 = [(EKPersistentCalendarItem *)self sharedItemModifiedByLastName];
-  [v4 setSharedItemModifiedByLastName:v26];
+  sharedItemModifiedByLastName = [(EKPersistentCalendarItem *)self sharedItemModifiedByLastName];
+  [v4 setSharedItemModifiedByLastName:sharedItemModifiedByLastName];
 
-  v27 = [(EKPersistentCalendarItem *)self sharedItemModifiedDate];
-  [v4 setSharedItemModifiedDate:v27];
+  sharedItemModifiedDate = [(EKPersistentCalendarItem *)self sharedItemModifiedDate];
+  [v4 setSharedItemModifiedDate:sharedItemModifiedDate];
 
-  v28 = [(EKPersistentCalendarItem *)self sharedItemModifiedTimeZoneName];
-  [v4 setSharedItemModifiedTimeZoneName:v28];
+  sharedItemModifiedTimeZoneName = [(EKPersistentCalendarItem *)self sharedItemModifiedTimeZoneName];
+  [v4 setSharedItemModifiedTimeZoneName:sharedItemModifiedTimeZoneName];
 
-  v29 = [(EKPersistentObject *)self eventStore];
-  v30 = [v29 eventAccessLevel];
+  eventStore = [(EKPersistentObject *)self eventStore];
+  eventAccessLevel = [eventStore eventAccessLevel];
 
-  if (v30 == 2)
+  if (eventAccessLevel == 2)
   {
-    v31 = [(EKPersistentCalendarItem *)self externalData];
-    [v4 setExternalData:v31];
+    externalData = [(EKPersistentCalendarItem *)self externalData];
+    [v4 setExternalData:externalData];
   }
 
   return v4;
@@ -209,10 +209,10 @@ void __54__EKPersistentCalendarItem_propertiesToUnloadOnCommit__block_invoke(uin
 
 - (id)singleRecurrenceRule
 {
-  v2 = [(EKPersistentCalendarItem *)self recurrenceRulesSet];
-  v3 = [v2 anyObject];
+  recurrenceRulesSet = [(EKPersistentCalendarItem *)self recurrenceRulesSet];
+  anyObject = [recurrenceRulesSet anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 @end

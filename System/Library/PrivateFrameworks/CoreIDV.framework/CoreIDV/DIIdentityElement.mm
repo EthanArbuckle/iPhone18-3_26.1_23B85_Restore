@@ -18,20 +18,20 @@
 + (DIIdentityElement)sexElement;
 + (DIIdentityElement)veteranStatusElement;
 + (DIIdentityElement)weightElement;
-+ (id)ageThresholdElementWithAge:(int64_t)a3;
-- (DIIdentityElement)initWithIdentifier:(id)a3;
++ (id)ageThresholdElementWithAge:(int64_t)age;
+- (DIIdentityElement)initWithIdentifier:(id)identifier;
 @end
 
 @implementation DIIdentityElement
 
-- (DIIdentityElement)initWithIdentifier:(id)a3
+- (DIIdentityElement)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = DIIdentityElement;
   v5 = [(DIIdentityElement *)&v8 init];
   identifier = v5->_identifier;
-  v5->_identifier = v4;
+  v5->_identifier = identifierCopy;
 
   return v5;
 }
@@ -207,10 +207,10 @@
   return v4;
 }
 
-+ (id)ageThresholdElementWithAge:(int64_t)a3
++ (id)ageThresholdElementWithAge:(int64_t)age
 {
   v4 = [DIIdentityElement alloc];
-  v5 = [_TtC7CoreIDV27IdentityElementRawValueKeys ageIsOver:a3];
+  v5 = [_TtC7CoreIDV27IdentityElementRawValueKeys ageIsOver:age];
   v6 = [(DIIdentityElement *)v4 initWithIdentifier:v5];
 
   return v6;

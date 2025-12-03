@@ -1,17 +1,17 @@
 @interface FullScreenAudioTranscriptionCollectionViewCell
-- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
 @implementation FullScreenAudioTranscriptionCollectionViewCell
 
-- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell_transcribingAudioAssetView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell_recordingViewModel) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell_transcriptionCoordinator) = 0;
@@ -25,7 +25,7 @@
   return [(FullScreenAssetCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell_transcribingAudioAssetView) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal46FullScreenAudioTranscriptionCollectionViewCell_recordingViewModel) = 0;
@@ -41,7 +41,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_100193218();
 }
 

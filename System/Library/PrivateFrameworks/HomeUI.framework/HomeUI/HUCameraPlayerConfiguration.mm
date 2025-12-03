@@ -1,27 +1,27 @@
 @interface HUCameraPlayerConfiguration
 - (BOOL)isConfiguredForLiveStream;
-- (HUCameraPlayerConfiguration)initWithHome:(id)a3 cameraProfile:(id)a4 notificationUUID:(id)a5 clipUUID:(id)a6;
+- (HUCameraPlayerConfiguration)initWithHome:(id)home cameraProfile:(id)profile notificationUUID:(id)d clipUUID:(id)iD;
 - (id)description;
 @end
 
 @implementation HUCameraPlayerConfiguration
 
-- (HUCameraPlayerConfiguration)initWithHome:(id)a3 cameraProfile:(id)a4 notificationUUID:(id)a5 clipUUID:(id)a6
+- (HUCameraPlayerConfiguration)initWithHome:(id)home cameraProfile:(id)profile notificationUUID:(id)d clipUUID:(id)iD
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  homeCopy = home;
+  profileCopy = profile;
+  dCopy = d;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = HUCameraPlayerConfiguration;
   v15 = [(HUCameraPlayerConfiguration *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_home, a3);
-    objc_storeStrong(&v16->_cameraProfile, a4);
-    objc_storeStrong(&v16->_notificationUUID, a5);
-    objc_storeStrong(&v16->_clipUUID, a6);
+    objc_storeStrong(&v15->_home, home);
+    objc_storeStrong(&v16->_cameraProfile, profile);
+    objc_storeStrong(&v16->_notificationUUID, d);
+    objc_storeStrong(&v16->_clipUUID, iD);
   }
 
   return v16;
@@ -29,11 +29,11 @@
 
 - (BOOL)isConfiguredForLiveStream
 {
-  v3 = [(HUCameraPlayerConfiguration *)self cameraProfile];
-  if ([v3 hf_supportsRecordingEvents])
+  cameraProfile = [(HUCameraPlayerConfiguration *)self cameraProfile];
+  if ([cameraProfile hf_supportsRecordingEvents])
   {
-    v4 = [(HUCameraPlayerConfiguration *)self startingPlaybackDate];
-    v5 = v4 == 0;
+    startingPlaybackDate = [(HUCameraPlayerConfiguration *)self startingPlaybackDate];
+    v5 = startingPlaybackDate == 0;
   }
 
   else
@@ -47,32 +47,32 @@
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUCameraPlayerConfiguration *)self cameraProfile];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v3 appendObject:v5 withName:@"cameraProfileUUID"];
+  cameraProfile = [(HUCameraPlayerConfiguration *)self cameraProfile];
+  uniqueIdentifier = [cameraProfile uniqueIdentifier];
+  v6 = [v3 appendObject:uniqueIdentifier withName:@"cameraProfileUUID"];
 
-  v7 = [(HUCameraPlayerConfiguration *)self cameraProfile];
-  v8 = [v7 accessory];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v3 appendObject:v9 withName:@"accessoryUUID"];
+  cameraProfile2 = [(HUCameraPlayerConfiguration *)self cameraProfile];
+  accessory = [cameraProfile2 accessory];
+  uniqueIdentifier2 = [accessory uniqueIdentifier];
+  v10 = [v3 appendObject:uniqueIdentifier2 withName:@"accessoryUUID"];
 
-  v11 = [(HUCameraPlayerConfiguration *)self cameraProfile];
-  v12 = [v11 accessory];
-  v13 = [v12 name];
-  v14 = [v3 appendObject:v13 withName:@"accessoryName"];
+  cameraProfile3 = [(HUCameraPlayerConfiguration *)self cameraProfile];
+  accessory2 = [cameraProfile3 accessory];
+  name = [accessory2 name];
+  v14 = [v3 appendObject:name withName:@"accessoryName"];
 
-  v15 = [(HUCameraPlayerConfiguration *)self startingPlaybackDate];
-  v16 = [v3 appendObject:v15 withName:@"startingPlaybackDate" skipIfNil:1];
+  startingPlaybackDate = [(HUCameraPlayerConfiguration *)self startingPlaybackDate];
+  v16 = [v3 appendObject:startingPlaybackDate withName:@"startingPlaybackDate" skipIfNil:1];
 
-  v17 = [(HUCameraPlayerConfiguration *)self notificationUUID];
-  v18 = [v3 appendObject:v17 withName:@"notificationUUID" skipIfNil:1];
+  notificationUUID = [(HUCameraPlayerConfiguration *)self notificationUUID];
+  v18 = [v3 appendObject:notificationUUID withName:@"notificationUUID" skipIfNil:1];
 
-  v19 = [(HUCameraPlayerConfiguration *)self clipUUID];
-  v20 = [v3 appendObject:v19 withName:@"clipUUID" skipIfNil:1];
+  clipUUID = [(HUCameraPlayerConfiguration *)self clipUUID];
+  v20 = [v3 appendObject:clipUUID withName:@"clipUUID" skipIfNil:1];
 
-  v21 = [v3 build];
+  build = [v3 build];
 
-  return v21;
+  return build;
 }
 
 @end

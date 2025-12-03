@@ -1,17 +1,17 @@
 @interface TTRILabeledIconCell
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
-- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithArrangedSubviews:(id)a3;
-- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithFrame:(CGRect)a3;
-- (void)buttonAction:(id)a3;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
+- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithArrangedSubviews:(id)subviews;
+- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithFrame:(CGRect)frame;
+- (void)buttonAction:(id)action;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation TTRILabeledIconCell
 
-- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithCoder:(id)a3
+- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC15RemindersUICore19TTRILabeledIconCell_cellDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -28,15 +28,15 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D3EB248();
 }
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -45,7 +45,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   if (swift_unknownObjectWeakLoadStrong())
@@ -62,26 +62,26 @@
   sub_21D1A8418(v6);
 }
 
-- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore19TTRILabeledIconCell)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = self;
-  sub_21D3EC234(v8);
+  viewCopy = view;
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_21D3EC234(subviewCopy);
   v11 = v10;
   v13 = v12;
 
@@ -92,16 +92,16 @@
   return result;
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  sub_21D3EC35C(v12, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_21D3EC35C(subviewCopy, x, y, width, height);
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -118,10 +118,10 @@
   return result;
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = self;
+  subviewsCopy = subviews;
+  selfCopy = self;
   sub_21D3EC6F4();
 }
 

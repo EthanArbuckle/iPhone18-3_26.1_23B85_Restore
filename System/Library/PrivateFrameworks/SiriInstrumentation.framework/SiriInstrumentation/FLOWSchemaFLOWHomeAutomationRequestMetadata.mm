@@ -1,40 +1,40 @@
 @interface FLOWSchemaFLOWHomeAutomationRequestMetadata
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTargetedEntityTypes:(id)a3;
-- (void)setHasConditionType:(BOOL)a3;
-- (void)setHasFulfilledEntityCount:(BOOL)a3;
-- (void)setHasIsIntentSelectionCacheHit:(BOOL)a3;
-- (void)setHasIsRecurring:(BOOL)a3;
-- (void)setHasSmallestTargetedContainer:(BOOL)a3;
-- (void)setHasTargetedEntityCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTargetedEntityTypes:(id)types;
+- (void)setHasConditionType:(BOOL)type;
+- (void)setHasFulfilledEntityCount:(BOOL)count;
+- (void)setHasIsIntentSelectionCacheHit:(BOOL)hit;
+- (void)setHasIsRecurring:(BOOL)recurring;
+- (void)setHasSmallestTargetedContainer:(BOOL)container;
+- (void)setHasTargetedEntityCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWHomeAutomationRequestMetadata
 
-- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = FLOWSchemaFLOWHomeAutomationRequestMetadata;
   v5 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isHomeAutomationRequestAsynchronous"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isHomeAutomationRequestAsynchronous"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequestMetadata setIsHomeAutomationRequestAsynchronous:](v5, "setIsHomeAutomationRequestAsynchronous:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"targetedEntityCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"targetedEntityCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
     }
 
     v27 = v7;
-    v8 = [v4 objectForKeyedSubscript:@"fulfilledEntityCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fulfilledEntityCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
     }
 
     v26 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"targetedEntityTypes"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"targetedEntityTypes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,14 +96,14 @@
       v6 = v25;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"smallestTargetedContainer"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"smallestTargetedContainer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequestMetadata setSmallestTargetedContainer:](v5, "setSmallestTargetedContainer:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"targetAttribute"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"targetAttribute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,21 +111,21 @@
       [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)v5 setTargetAttribute:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"conditionType"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"conditionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequestMetadata setConditionType:](v5, "setConditionType:", [v20 intValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isRecurring"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isRecurring"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequestMetadata setIsRecurring:](v5, "setIsRecurring:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isIntentSelectionCacheHit"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isIntentSelectionCacheHit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithJSON:(id)a3
+- (FLOWSchemaFLOWHomeAutomationRequestMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -174,7 +174,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isIntentSelectionCacheHit + 1);
   if ((v4 & 0x10) != 0)
   {
@@ -189,14 +189,14 @@
       v6 = off_1E78D51E8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"conditionType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"conditionType"];
     v4 = *(&self->_isIntentSelectionCacheHit + 1);
   }
 
   if ((v4 & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeAutomationRequestMetadata fulfilledEntityCount](self, "fulfilledEntityCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"fulfilledEntityCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"fulfilledEntityCount"];
 
     v4 = *(&self->_isIntentSelectionCacheHit + 1);
     if ((v4 & 1) == 0)
@@ -217,7 +217,7 @@ LABEL_8:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWHomeAutomationRequestMetadata isHomeAutomationRequestAsynchronous](self, "isHomeAutomationRequestAsynchronous")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isHomeAutomationRequestAsynchronous"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isHomeAutomationRequestAsynchronous"];
 
   v4 = *(&self->_isIntentSelectionCacheHit + 1);
   if ((v4 & 0x40) == 0)
@@ -233,7 +233,7 @@ LABEL_9:
 
 LABEL_14:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWHomeAutomationRequestMetadata isIntentSelectionCacheHit](self, "isIntentSelectionCacheHit")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isIntentSelectionCacheHit"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isIntentSelectionCacheHit"];
 
   v4 = *(&self->_isIntentSelectionCacheHit + 1);
   if ((v4 & 0x20) == 0)
@@ -249,7 +249,7 @@ LABEL_10:
 
 LABEL_15:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWHomeAutomationRequestMetadata isRecurring](self, "isRecurring")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isRecurring"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isRecurring"];
 
   if ((*(&self->_isIntentSelectionCacheHit + 1) & 8) == 0)
   {
@@ -268,31 +268,31 @@ LABEL_16:
     v12 = off_1E78D5210[v11];
   }
 
-  [v3 setObject:v12 forKeyedSubscript:@"smallestTargetedContainer"];
+  [dictionary setObject:v12 forKeyedSubscript:@"smallestTargetedContainer"];
 LABEL_20:
   if (self->_targetAttribute)
   {
-    v13 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"targetAttribute"];
+    targetAttribute = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
+    v14 = [targetAttribute copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"targetAttribute"];
   }
 
   if ((*(&self->_isIntentSelectionCacheHit + 1) & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeAutomationRequestMetadata targetedEntityCount](self, "targetedEntityCount")}];
-    [v3 setObject:v15 forKeyedSubscript:@"targetedEntityCount"];
+    [dictionary setObject:v15 forKeyedSubscript:@"targetedEntityCount"];
   }
 
   if (self->_targetedEntityTypes)
   {
-    v16 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"targetedEntityTypes"];
+    targetedEntityTypes = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
+    v17 = [targetedEntityTypes copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"targetedEntityTypes"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -383,16 +383,16 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   v5 = *(&self->_isIntentSelectionCacheHit + 1);
-  v6 = v4[54];
+  v6 = equalCopy[54];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -401,13 +401,13 @@ LABEL_14:
   if (v5)
   {
     isHomeAutomationRequestAsynchronous = self->_isHomeAutomationRequestAsynchronous;
-    if (isHomeAutomationRequestAsynchronous != [v4 isHomeAutomationRequestAsynchronous])
+    if (isHomeAutomationRequestAsynchronous != [equalCopy isHomeAutomationRequestAsynchronous])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_isIntentSelectionCacheHit + 1);
-    v6 = v4[54];
+    v6 = equalCopy[54];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -416,13 +416,13 @@ LABEL_14:
     if (v8)
     {
       targetedEntityCount = self->_targetedEntityCount;
-      if (targetedEntityCount != [v4 targetedEntityCount])
+      if (targetedEntityCount != [equalCopy targetedEntityCount])
       {
         goto LABEL_26;
       }
 
       v5 = *(&self->_isIntentSelectionCacheHit + 1);
-      v6 = v4[54];
+      v6 = equalCopy[54];
     }
 
     v10 = (v5 >> 2) & 1;
@@ -434,26 +434,26 @@ LABEL_14:
     if (v10)
     {
       fulfilledEntityCount = self->_fulfilledEntityCount;
-      if (fulfilledEntityCount != [v4 fulfilledEntityCount])
+      if (fulfilledEntityCount != [equalCopy fulfilledEntityCount])
       {
         goto LABEL_26;
       }
     }
 
-    v12 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
-    v13 = [v4 targetedEntityTypes];
-    if ((v12 != 0) == (v13 == 0))
+    targetedEntityTypes = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
+    targetedEntityTypes2 = [equalCopy targetedEntityTypes];
+    if ((targetedEntityTypes != 0) == (targetedEntityTypes2 == 0))
     {
       goto LABEL_25;
     }
 
-    v14 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
-    if (v14)
+    targetedEntityTypes3 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
+    if (targetedEntityTypes3)
     {
-      v15 = v14;
-      v16 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
-      v17 = [v4 targetedEntityTypes];
-      v18 = [v16 isEqual:v17];
+      v15 = targetedEntityTypes3;
+      targetedEntityTypes4 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetedEntityTypes];
+      targetedEntityTypes5 = [equalCopy targetedEntityTypes];
+      v18 = [targetedEntityTypes4 isEqual:targetedEntityTypes5];
 
       if (!v18)
       {
@@ -466,7 +466,7 @@ LABEL_14:
     }
 
     v19 = (*(&self->_isIntentSelectionCacheHit + 1) >> 3) & 1;
-    if (v19 != ((v4[54] >> 3) & 1))
+    if (v19 != ((equalCopy[54] >> 3) & 1))
     {
       goto LABEL_26;
     }
@@ -474,28 +474,28 @@ LABEL_14:
     if (v19)
     {
       smallestTargetedContainer = self->_smallestTargetedContainer;
-      if (smallestTargetedContainer != [v4 smallestTargetedContainer])
+      if (smallestTargetedContainer != [equalCopy smallestTargetedContainer])
       {
         goto LABEL_26;
       }
     }
 
-    v12 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
-    v13 = [v4 targetAttribute];
-    if ((v12 != 0) == (v13 == 0))
+    targetedEntityTypes = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
+    targetedEntityTypes2 = [equalCopy targetAttribute];
+    if ((targetedEntityTypes != 0) == (targetedEntityTypes2 == 0))
     {
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v21 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
-    if (v21)
+    targetAttribute = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
+    if (targetAttribute)
     {
-      v22 = v21;
-      v23 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
-      v24 = [v4 targetAttribute];
-      v25 = [v23 isEqual:v24];
+      v22 = targetAttribute;
+      targetAttribute2 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
+      targetAttribute3 = [equalCopy targetAttribute];
+      v25 = [targetAttribute2 isEqual:targetAttribute3];
 
       if (!v25)
       {
@@ -509,19 +509,19 @@ LABEL_25:
 
     v28 = *(&self->_isIntentSelectionCacheHit + 1);
     v29 = (v28 >> 4) & 1;
-    v30 = v4[54];
+    v30 = equalCopy[54];
     if (v29 == ((v30 >> 4) & 1))
     {
       if (v29)
       {
         conditionType = self->_conditionType;
-        if (conditionType != [v4 conditionType])
+        if (conditionType != [equalCopy conditionType])
         {
           goto LABEL_26;
         }
 
         v28 = *(&self->_isIntentSelectionCacheHit + 1);
-        v30 = v4[54];
+        v30 = equalCopy[54];
       }
 
       v32 = (v28 >> 5) & 1;
@@ -530,19 +530,19 @@ LABEL_25:
         if (v32)
         {
           isRecurring = self->_isRecurring;
-          if (isRecurring != [v4 isRecurring])
+          if (isRecurring != [equalCopy isRecurring])
           {
             goto LABEL_26;
           }
 
           v28 = *(&self->_isIntentSelectionCacheHit + 1);
-          v30 = v4[54];
+          v30 = equalCopy[54];
         }
 
         v34 = (v28 >> 6) & 1;
         if (v34 == ((v30 >> 6) & 1))
         {
-          if (!v34 || (isIntentSelectionCacheHit = self->_isIntentSelectionCacheHit, isIntentSelectionCacheHit == [v4 isIntentSelectionCacheHit]))
+          if (!v34 || (isIntentSelectionCacheHit = self->_isIntentSelectionCacheHit, isIntentSelectionCacheHit == [equalCopy isIntentSelectionCacheHit]))
           {
             v26 = 1;
             goto LABEL_27;
@@ -559,10 +559,10 @@ LABEL_27:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isIntentSelectionCacheHit + 1);
   if (v5)
   {
@@ -626,9 +626,9 @@ LABEL_5:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
+  targetAttribute = [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self targetAttribute];
 
-  if (v11)
+  if (targetAttribute)
   {
     PBDataWriterWriteStringField();
   }
@@ -668,9 +668,9 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)setHasIsIntentSelectionCacheHit:(BOOL)a3
+- (void)setHasIsIntentSelectionCacheHit:(BOOL)hit
 {
-  if (a3)
+  if (hit)
   {
     v3 = 64;
   }
@@ -683,9 +683,9 @@ LABEL_20:
   *(&self->_isIntentSelectionCacheHit + 1) = *(&self->_isIntentSelectionCacheHit + 1) & 0xBF | v3;
 }
 
-- (void)setHasIsRecurring:(BOOL)a3
+- (void)setHasIsRecurring:(BOOL)recurring
 {
-  if (a3)
+  if (recurring)
   {
     v3 = 32;
   }
@@ -698,9 +698,9 @@ LABEL_20:
   *(&self->_isIntentSelectionCacheHit + 1) = *(&self->_isIntentSelectionCacheHit + 1) & 0xDF | v3;
 }
 
-- (void)setHasConditionType:(BOOL)a3
+- (void)setHasConditionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -713,9 +713,9 @@ LABEL_20:
   *(&self->_isIntentSelectionCacheHit + 1) = *(&self->_isIntentSelectionCacheHit + 1) & 0xEF | v3;
 }
 
-- (void)setHasSmallestTargetedContainer:(BOOL)a3
+- (void)setHasSmallestTargetedContainer:(BOOL)container
 {
-  if (a3)
+  if (container)
   {
     v3 = 8;
   }
@@ -728,27 +728,27 @@ LABEL_20:
   *(&self->_isIntentSelectionCacheHit + 1) = *(&self->_isIntentSelectionCacheHit + 1) & 0xF7 | v3;
 }
 
-- (void)addTargetedEntityTypes:(id)a3
+- (void)addTargetedEntityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   targetedEntityTypes = self->_targetedEntityTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!targetedEntityTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_targetedEntityTypes;
-    self->_targetedEntityTypes = v6;
+    self->_targetedEntityTypes = array;
 
-    v4 = v8;
+    typesCopy = v8;
     targetedEntityTypes = self->_targetedEntityTypes;
   }
 
-  [(NSArray *)targetedEntityTypes addObject:v4];
+  [(NSArray *)targetedEntityTypes addObject:typesCopy];
 }
 
-- (void)setHasFulfilledEntityCount:(BOOL)a3
+- (void)setHasFulfilledEntityCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -761,9 +761,9 @@ LABEL_20:
   *(&self->_isIntentSelectionCacheHit + 1) = *(&self->_isIntentSelectionCacheHit + 1) & 0xFB | v3;
 }
 
-- (void)setHasTargetedEntityCount:(BOOL)a3
+- (void)setHasTargetedEntityCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

@@ -10,7 +10,7 @@
 - (uint64_t)initWithXPCDictionary:()BaseBoard
 {
   v2 = [BSXPCCoder coderWithMessage:?];
-  v3 = [a1 initWithBSXPCCoder:v2];
+  v3 = [self initWithBSXPCCoder:v2];
 
   return v3;
 }
@@ -18,14 +18,14 @@
 - (void)encodeWithXPCDictionary:()BaseBoard
 {
   v2 = [BSXPCCoder coderWithMessage:?];
-  [a1 encodeWithBSXPCCoder:?];
+  [self encodeWithBSXPCCoder:?];
 }
 
 - (void)encodeWithBSXPCCoder:()BaseBoard
 {
   v5 = a3;
-  v4 = [a1 _endpoint];
-  [v5 encodeXPCObject:v4 forKey:@"endpt"];
+  _endpoint = [self _endpoint];
+  [v5 encodeXPCObject:_endpoint forKey:@"endpt"];
 }
 
 - (id)initWithBSXPCCoder:()BaseBoard

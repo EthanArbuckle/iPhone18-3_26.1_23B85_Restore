@@ -71,13 +71,13 @@ LABEL_14:
       if (v27)
       {
         v28 = sub_10023E51C(self->_install, @"evid");
-        v29 = [v28 unsignedLongLongValue];
-        if (v29)
+        unsignedLongLongValue = [v28 unsignedLongLongValue];
+        if (unsignedLongLongValue)
         {
-          v30 = [v27 iTunesMetadata];
-          v31 = [v30 versionIdentifier];
+          iTunesMetadata = [v27 iTunesMetadata];
+          versionIdentifier = [iTunesMetadata versionIdentifier];
 
-          if (v29 == v31)
+          if (unsignedLongLongValue == versionIdentifier)
           {
             v32 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -100,14 +100,14 @@ LABEL_14:
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
           v86 = self->_logKey;
-          v87 = [v27 iTunesMetadata];
-          v88 = [v87 versionIdentifier];
+          iTunesMetadata2 = [v27 iTunesMetadata];
+          versionIdentifier2 = [iTunesMetadata2 versionIdentifier];
           *buf = 138412802;
           v95 = v86;
           v96 = 2048;
-          v97 = v29;
+          v97 = unsignedLongLongValue;
           v98 = 2048;
-          v99 = v88;
+          v99 = versionIdentifier2;
           _os_log_error_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "[%@] Expected application with evid: %llu not installed. Installed version is: %llu", buf, 0x20u);
         }
       }
@@ -166,15 +166,15 @@ LABEL_4:
   v9 = &OBJC_IVAR___CoordinatorPromiseSpecification__location;
   [v8 setAutoInstallOverride:{sub_10023E604(self->_install, @"auto_install_override"}];
   v10 = sub_10023E0F8(self->_install, @"source_type");
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  if (v11 != 1)
+  if (integerValue != 1)
   {
     install = self->_install;
     v93 = 0;
     v15 = sub_10040969C(install, &v93);
     v12 = v93;
-    if ((v11 | 2) == 2)
+    if ((integerValue | 2) == 2)
     {
       if (!v15)
       {
@@ -229,9 +229,9 @@ LABEL_4:
     else
     {
       v35 = sub_1003BBF50();
-      v36 = [v35 isHRNMode];
+      isHRNMode = [v35 isHRNMode];
 
-      if (!v36)
+      if (!isHRNMode)
       {
 LABEL_67:
         v44 = v8;
@@ -263,7 +263,7 @@ LABEL_83:
         }
 
         [v44 setITunesMetadata:v15];
-        if (v11 == 2)
+        if (integerValue == 2)
         {
           v53 = sub_10023E0F8(self->_package, @"provisioning_profiles");
           v54 = [v53 count];
@@ -421,15 +421,15 @@ LABEL_84:
         v75 = sub_10025E74C();
         sub_10025F2C4(v75, v72, self->_logKey);
 
-        v76 = [(SQLiteMemoryEntity *)self->_install databaseID];
+        databaseID = [(SQLiteMemoryEntity *)self->_install databaseID];
         objc_opt_self();
-        v13 = sub_1003E8F78([AppInstallInstallResponse alloc], v76, 4, 0);
+        v13 = sub_1003E8F78([AppInstallInstallResponse alloc], databaseID, 4, 0);
       }
 
       else
       {
         v77 = sub_100249D80(self->_coordinator, 0);
-        v78 = [(SQLiteMemoryEntity *)self->_install databaseID];
+        databaseID2 = [(SQLiteMemoryEntity *)self->_install databaseID];
         objc_opt_self();
         v79 = [AppInstallInstallResponse alloc];
         if (v77 == 4)
@@ -442,7 +442,7 @@ LABEL_84:
           v80 = 1;
         }
 
-        v13 = sub_1003E8F78(&v79->super.isa, v78, v80, 0);
+        v13 = sub_1003E8F78(&v79->super.isa, databaseID2, v80, 0);
       }
     }
 

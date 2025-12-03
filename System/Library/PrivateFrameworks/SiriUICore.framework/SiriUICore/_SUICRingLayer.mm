@@ -1,9 +1,9 @@
 @interface _SUICRingLayer
 - (UIColor)ringColor;
 - (_SUICRingLayer)init;
-- (void)setCustomLineWidth:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setRingColor:(id)a3;
+- (void)setCustomLineWidth:(double)width;
+- (void)setFrame:(CGRect)frame;
+- (void)setRingColor:(id)color;
 @end
 
 @implementation _SUICRingLayer
@@ -17,11 +17,11 @@
   if (v2)
   {
     [(_SUICRingLayer *)v2 setCustomLineWidth:0.0];
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    -[_SUICRingLayer setFillColor:](v3, "setFillColor:", [v4 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[_SUICRingLayer setFillColor:](v3, "setFillColor:", [clearColor CGColor]);
 
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    [(_SUICRingLayer *)v3 setRingColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(_SUICRingLayer *)v3 setRingColor:blackColor];
 
     [(_SUICRingLayer *)v3 setStrokeEnd:1.0];
     [(_SUICRingLayer *)v3 setLineCap:*MEMORY[0x1E6979E98]];
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)setRingColor:(id)a3
+- (void)setRingColor:(id)color
 {
-  v5 = [a3 copy];
+  v5 = [color copy];
   v4 = v5;
   -[_SUICRingLayer setStrokeColor:](self, "setStrokeColor:", [v5 CGColor]);
 }
@@ -45,21 +45,21 @@
   return v3;
 }
 
-- (void)setCustomLineWidth:(double)a3
+- (void)setCustomLineWidth:(double)width
 {
-  if (self->_customLineWidth != a3)
+  if (self->_customLineWidth != width)
   {
-    self->_customLineWidth = a3;
+    self->_customLineWidth = width;
     [(_SUICRingLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = _SUICRingLayer;
   [(_SUICRingLayer *)&v17 setFrame:?];

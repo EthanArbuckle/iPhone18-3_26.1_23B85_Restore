@@ -1,12 +1,12 @@
 @interface ICDelegationProviderServiceSession
-- (ICDelegationProviderServiceSession)initWithUserIdentities:(id)a3 userIdentityStore:(id)a4 requestContext:(id)a5 netService:(id)a6 delegationAccountUUIDs:(id)a7;
+- (ICDelegationProviderServiceSession)initWithUserIdentities:(id)identities userIdentityStore:(id)store requestContext:(id)context netService:(id)service delegationAccountUUIDs:(id)ds;
 - (ICDelegationProviderServiceSessionDelegate)delegate;
-- (void)_finishWithError:(id)a3;
-- (void)_handleStartDelegationResponse:(id)a3;
+- (void)_finishWithError:(id)error;
+- (void)_handleStartDelegationResponse:(id)response;
 - (void)_startDelegation;
-- (void)delegationServiceConnection:(id)a3 didEncouterError:(id)a4;
-- (void)delegationServiceConnectionDidClose:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)delegationServiceConnection:(id)connection didEncouterError:(id)error;
+- (void)delegationServiceConnectionDidClose:(id)close;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 - (void)stop;
 @end
@@ -37,10 +37,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) DSID];
-        if (v9 && ([v3 containsObject:v9] & 1) == 0)
+        dSID = [*(*(&v12 + 1) + 8 * v8) DSID];
+        if (dSID && ([v3 containsObject:dSID] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [v3 addObject:dSID];
         }
 
         ++v8;
@@ -164,9 +164,9 @@ void *__54__ICDelegationProviderServiceSession__startDelegation__block_invoke_4(
   return result;
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(ICDelegationServiceConnection *)self->_connection setDelegate:0];
   [(ICDelegationServiceConnection *)self->_connection close];
   self->_state = 4;
@@ -177,9 +177,9 @@ void *__54__ICDelegationProviderServiceSession__startDelegation__block_invoke_4(
   block[2] = __55__ICDelegationProviderServiceSession__finishWithError___block_invoke;
   block[3] = &unk_1E7BFA178;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = errorCopy;
+  v7 = errorCopy;
   v8 = v5;
   dispatch_async(calloutQueue, block);
 }
@@ -199,21 +199,21 @@ uint64_t __55__ICDelegationProviderServiceSession__finishWithError___block_invok
   return result;
 }
 
-- (void)_handleStartDelegationResponse:(id)a3
+- (void)_handleStartDelegationResponse:(id)response
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v4;
+    v20 = responseCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Received response: %{public}@", buf, 0x16u);
   }
 
-  if (v4 && (v6 = v4[3]) != 0)
+  if (responseCopy && (v6 = responseCopy[3]) != 0)
   {
     v7 = v6;
     v8 = dispatch_group_create();
@@ -225,7 +225,7 @@ uint64_t __55__ICDelegationProviderServiceSession__finishWithError___block_invok
     v14[2] = __69__ICDelegationProviderServiceSession__handleStartDelegationResponse___block_invoke;
     v14[3] = &unk_1E7BF79D0;
     v15 = v8;
-    v16 = self;
+    selfCopy2 = self;
     v11 = v8;
     [(ICDelegationProviderServiceProtocolHandler *)protocolHandler getFinishDelegationRequestsWithStartDelegationResponse:v7 streamContexts:v10 replyHandler:v14];
 
@@ -305,7 +305,7 @@ void __69__ICDelegationProviderServiceSession__handleStartDelegationResponse___b
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting session...", buf, 0xCu);
   }
 
@@ -552,17 +552,17 @@ void __43__ICDelegationProviderServiceSession_start__block_invoke_15(uint64_t a1
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__ICDelegationProviderServiceSession_setDelegate___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -588,17 +588,17 @@ void __43__ICDelegationProviderServiceSession_start__block_invoke_15(uint64_t a1
   return v3;
 }
 
-- (void)delegationServiceConnection:(id)a3 didEncouterError:(id)a4
+- (void)delegationServiceConnection:(id)connection didEncouterError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__ICDelegationProviderServiceSession_delegationServiceConnection_didEncouterError___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_barrier_async(accessQueue, v8);
 }
 
@@ -613,7 +613,7 @@ void *__83__ICDelegationProviderServiceSession_delegationServiceConnection_didEn
   return result;
 }
 
-- (void)delegationServiceConnectionDidClose:(id)a3
+- (void)delegationServiceConnectionDidClose:(id)close
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -635,13 +635,13 @@ void *__74__ICDelegationProviderServiceSession_delegationServiceConnectionDidClo
   return result;
 }
 
-- (ICDelegationProviderServiceSession)initWithUserIdentities:(id)a3 userIdentityStore:(id)a4 requestContext:(id)a5 netService:(id)a6 delegationAccountUUIDs:(id)a7
+- (ICDelegationProviderServiceSession)initWithUserIdentities:(id)identities userIdentityStore:(id)store requestContext:(id)context netService:(id)service delegationAccountUUIDs:(id)ds
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identitiesCopy = identities;
+  storeCopy = store;
+  contextCopy = context;
+  serviceCopy = service;
+  dsCopy = ds;
   v29.receiver = self;
   v29.super_class = ICDelegationProviderServiceSession;
   v17 = [(ICDelegationProviderServiceSession *)&v29 init];
@@ -655,18 +655,18 @@ void *__74__ICDelegationProviderServiceSession_delegationServiceConnectionDidClo
     calloutQueue = v17->_calloutQueue;
     v17->_calloutQueue = v20;
 
-    v22 = [v12 copy];
+    v22 = [identitiesCopy copy];
     userIdentities = v17->_userIdentities;
     v17->_userIdentities = v22;
 
-    objc_storeStrong(&v17->_userIdentityStore, a4);
-    objc_storeStrong(&v17->_netService, a6);
-    v24 = [v16 copy];
+    objc_storeStrong(&v17->_userIdentityStore, store);
+    objc_storeStrong(&v17->_netService, service);
+    v24 = [dsCopy copy];
     delegationAccountUUIDs = v17->_delegationAccountUUIDs;
     v17->_delegationAccountUUIDs = v24;
 
-    objc_storeStrong(&v17->_requestContext, a5);
-    v26 = [[ICDelegationProviderServiceProtocolHandler alloc] initWithUserIdentityStore:v13 requestContext:v14];
+    objc_storeStrong(&v17->_requestContext, context);
+    v26 = [[ICDelegationProviderServiceProtocolHandler alloc] initWithUserIdentityStore:storeCopy requestContext:contextCopy];
     protocolHandler = v17->_protocolHandler;
     v17->_protocolHandler = v26;
   }

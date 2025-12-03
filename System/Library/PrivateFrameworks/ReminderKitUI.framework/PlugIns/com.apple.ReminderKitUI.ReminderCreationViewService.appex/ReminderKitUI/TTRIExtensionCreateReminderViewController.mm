@@ -1,11 +1,11 @@
 @interface TTRIExtensionCreateReminderViewController
 - (UIBarButtonItem)addBarButtonItem;
 - (UITableView)tableView;
-- (_TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapAdd:(id)a3;
-- (void)didTapCancel:(id)a3;
+- (_TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapAdd:(id)add;
+- (void)didTapCancel:(id)cancel;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -13,19 +13,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100012544();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100013708(a3);
+  selfCopy = self;
+  sub_100013708(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100013928();
 }
 
@@ -43,31 +43,31 @@
   return Strong;
 }
 
-- (void)didTapCancel:(id)a3
+- (void)didTapCancel:(id)cancel
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100016A6C();
   swift_unknownObjectRelease();
-  v5 = *(v4 + OBJC_IVAR____TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController_presenter);
+  v5 = *(selfCopy + OBJC_IVAR____TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController_presenter);
   sub_100009E78();
   sub_10000CDB0(v6);
 }
 
-- (void)didTapAdd:(id)a3
+- (void)didTapAdd:(id)add
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100016A6C();
   swift_unknownObjectRelease();
   sub_1000169DC();
-  [(TTRIExtensionCreateReminderViewController *)v4 resignFirstResponder];
-  v5 = *(v4 + OBJC_IVAR____TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController_presenter);
+  [(TTRIExtensionCreateReminderViewController *)selfCopy resignFirstResponder];
+  v5 = *(selfCopy + OBJC_IVAR____TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController_presenter);
   sub_100009A04();
   sub_10000CDB0(v6);
 }
 
-- (_TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC51com_apple_ReminderKitUI_ReminderCreationViewService41TTRIExtensionCreateReminderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,54 +1,54 @@
 @interface ASRSchemaASRRecognitionMetrics
-- (ASRSchemaASRRecognitionMetrics)initWithDictionary:(id)a3;
-- (ASRSchemaASRRecognitionMetrics)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRRecognitionMetrics)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRRecognitionMetrics)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)pauseReasonAtIndex:(unint64_t)a3;
+- (int)pauseReasonAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)pausedAudioDurationsInNsAtIndex:(unint64_t)a3;
-- (void)addLanguageModelInterpolationWeights:(id)a3;
-- (void)addPauseReason:(int)a3;
-- (void)addPausedAudioDurationsInNs:(unint64_t)a3;
-- (void)setHasAppleNeuralEngineCpuTimeInNs:(BOOL)a3;
-- (void)setHasAudioDurationInNs:(BOOL)a3;
-- (void)setHasAverageActiveTokensPerFrame:(BOOL)a3;
-- (void)setHasContinuousListeningEnabled:(BOOL)a3;
-- (void)setHasCpuInstructionsInMillionsPerSecond:(BOOL)a3;
-- (void)setHasCpuRealTimeFactor:(BOOL)a3;
-- (void)setHasEagerCustomerPerceivedLatencyInNs:(BOOL)a3;
-- (void)setHasEagerEnabled:(BOOL)a3;
-- (void)setHasInverseTextNormalizationDurationForFinalResultInNs:(BOOL)a3;
-- (void)setHasInverseTextNormalizationDurationInNs:(BOOL)a3;
-- (void)setHasNumIngestedNeuralContextualBiasingEmbeddings:(BOOL)a3;
-- (void)setHasNumLanguageModelEnrollmentDataStreams:(BOOL)a3;
-- (void)setHasNumberOfInverseTextNormalizationRuns:(BOOL)a3;
-- (void)setHasNumberOfSecondaryPassRuns:(BOOL)a3;
-- (void)setHasPageInsWaitTimeInNs:(BOOL)a3;
-- (void)setHasPersonalizedLanguageModelWeight:(BOOL)a3;
-- (void)setHasRecognitionDurationInNs:(BOOL)a3;
-- (void)setHasRecognitionHardware:(BOOL)a3;
-- (void)setHasSignalToNoiseRatioInDecibels:(BOOL)a3;
-- (void)setHasUtteranceConcatenationEnabled:(BOOL)a3;
-- (void)setHasUtteranceDetectionEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (unint64_t)pausedAudioDurationsInNsAtIndex:(unint64_t)index;
+- (void)addLanguageModelInterpolationWeights:(id)weights;
+- (void)addPauseReason:(int)reason;
+- (void)addPausedAudioDurationsInNs:(unint64_t)ns;
+- (void)setHasAppleNeuralEngineCpuTimeInNs:(BOOL)ns;
+- (void)setHasAudioDurationInNs:(BOOL)ns;
+- (void)setHasAverageActiveTokensPerFrame:(BOOL)frame;
+- (void)setHasContinuousListeningEnabled:(BOOL)enabled;
+- (void)setHasCpuInstructionsInMillionsPerSecond:(BOOL)second;
+- (void)setHasCpuRealTimeFactor:(BOOL)factor;
+- (void)setHasEagerCustomerPerceivedLatencyInNs:(BOOL)ns;
+- (void)setHasEagerEnabled:(BOOL)enabled;
+- (void)setHasInverseTextNormalizationDurationForFinalResultInNs:(BOOL)ns;
+- (void)setHasInverseTextNormalizationDurationInNs:(BOOL)ns;
+- (void)setHasNumIngestedNeuralContextualBiasingEmbeddings:(BOOL)embeddings;
+- (void)setHasNumLanguageModelEnrollmentDataStreams:(BOOL)streams;
+- (void)setHasNumberOfInverseTextNormalizationRuns:(BOOL)runs;
+- (void)setHasNumberOfSecondaryPassRuns:(BOOL)runs;
+- (void)setHasPageInsWaitTimeInNs:(BOOL)ns;
+- (void)setHasPersonalizedLanguageModelWeight:(BOOL)weight;
+- (void)setHasRecognitionDurationInNs:(BOOL)ns;
+- (void)setHasRecognitionHardware:(BOOL)hardware;
+- (void)setHasSignalToNoiseRatioInDecibels:(BOOL)decibels;
+- (void)setHasUtteranceConcatenationEnabled:(BOOL)enabled;
+- (void)setHasUtteranceDetectionEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRRecognitionMetrics
 
-- (ASRSchemaASRRecognitionMetrics)initWithDictionary:(id)a3
+- (ASRSchemaASRRecognitionMetrics)initWithDictionary:(id)dictionary
 {
   v108 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v104.receiver = self;
   v104.super_class = ASRSchemaASRRecognitionMetrics;
   v5 = [(ASRSchemaASRRecognitionMetrics *)&v104 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"personalizedLanguageModelAgeInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"personalizedLanguageModelAgeInNs"];
     objc_opt_class();
     v91 = v6;
     if (objc_opt_isKindOfClass())
@@ -56,7 +56,7 @@
       -[ASRSchemaASRRecognitionMetrics setPersonalizedLanguageModelAgeInNs:](v5, "setPersonalizedLanguageModelAgeInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"personalizedLanguageModelWeight"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"personalizedLanguageModelWeight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
     }
 
     v72 = v7;
-    v8 = [v4 objectForKeyedSubscript:@"recognizerComponents"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"recognizerComponents"];
     objc_opt_class();
     v90 = v8;
     if (objc_opt_isKindOfClass())
@@ -74,7 +74,7 @@
       [(ASRSchemaASRRecognitionMetrics *)v5 setRecognizerComponents:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"averageActiveTokensPerFrame"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"averageActiveTokensPerFrame"];
     objc_opt_class();
     v89 = v10;
     if (objc_opt_isKindOfClass())
@@ -83,7 +83,7 @@
       [(ASRSchemaASRRecognitionMetrics *)v5 setAverageActiveTokensPerFrame:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"languageModelInterpolationWeights"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"languageModelInterpolationWeights"];
     objc_opt_class();
     v88 = v11;
     if (objc_opt_isKindOfClass())
@@ -123,7 +123,7 @@
       }
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"signalToNoiseRatioInDecibels"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"signalToNoiseRatioInDecibels"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
       [(ASRSchemaASRRecognitionMetrics *)v5 setSignalToNoiseRatioInDecibels:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"recognitionDurationInNs"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"recognitionDurationInNs"];
     objc_opt_class();
     v87 = v20;
     if (objc_opt_isKindOfClass())
@@ -139,7 +139,7 @@
       -[ASRSchemaASRRecognitionMetrics setRecognitionDurationInNs:](v5, "setRecognitionDurationInNs:", [v20 unsignedLongLongValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"audioDurationInNs"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"audioDurationInNs"];
     objc_opt_class();
     v86 = v21;
     if (objc_opt_isKindOfClass())
@@ -147,7 +147,7 @@
       -[ASRSchemaASRRecognitionMetrics setAudioDurationInNs:](v5, "setAudioDurationInNs:", [v21 unsignedLongLongValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"eagerEnabled"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"eagerEnabled"];
     objc_opt_class();
     v85 = v22;
     if (objc_opt_isKindOfClass())
@@ -155,7 +155,7 @@
       -[ASRSchemaASRRecognitionMetrics setEagerEnabled:](v5, "setEagerEnabled:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"utteranceDetectionEnabled"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"utteranceDetectionEnabled"];
     objc_opt_class();
     v84 = v23;
     if (objc_opt_isKindOfClass())
@@ -163,7 +163,7 @@
       -[ASRSchemaASRRecognitionMetrics setUtteranceDetectionEnabled:](v5, "setUtteranceDetectionEnabled:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"utteranceConcatenationEnabled"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"utteranceConcatenationEnabled"];
     objc_opt_class();
     v83 = v24;
     if (objc_opt_isKindOfClass())
@@ -171,7 +171,7 @@
       -[ASRSchemaASRRecognitionMetrics setUtteranceConcatenationEnabled:](v5, "setUtteranceConcatenationEnabled:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"continuousListeningEnabled"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"continuousListeningEnabled"];
     objc_opt_class();
     v82 = v25;
     if (objc_opt_isKindOfClass())
@@ -179,7 +179,7 @@
       -[ASRSchemaASRRecognitionMetrics setContinuousListeningEnabled:](v5, "setContinuousListeningEnabled:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"eagerCustomerPerceivedLatencyInNs"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"eagerCustomerPerceivedLatencyInNs"];
     objc_opt_class();
     v81 = v26;
     if (objc_opt_isKindOfClass())
@@ -187,7 +187,7 @@
       -[ASRSchemaASRRecognitionMetrics setEagerCustomerPerceivedLatencyInNs:](v5, "setEagerCustomerPerceivedLatencyInNs:", [v26 unsignedLongLongValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"cpuRealTimeFactor"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"cpuRealTimeFactor"];
     objc_opt_class();
     v80 = v27;
     if (objc_opt_isKindOfClass())
@@ -196,7 +196,7 @@
       [(ASRSchemaASRRecognitionMetrics *)v5 setCpuRealTimeFactor:?];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"numLanguageModelEnrollmentDataStreams"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"numLanguageModelEnrollmentDataStreams"];
     objc_opt_class();
     v79 = v28;
     if (objc_opt_isKindOfClass())
@@ -204,7 +204,7 @@
       -[ASRSchemaASRRecognitionMetrics setNumLanguageModelEnrollmentDataStreams:](v5, "setNumLanguageModelEnrollmentDataStreams:", [v28 unsignedIntValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"phoneticMatchDecoderName"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"phoneticMatchDecoderName"];
     objc_opt_class();
     v78 = v29;
     if (objc_opt_isKindOfClass())
@@ -213,7 +213,7 @@
       [(ASRSchemaASRRecognitionMetrics *)v5 setPhoneticMatchDecoderName:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"inverseTextNormalizationDurationInNs"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"inverseTextNormalizationDurationInNs"];
     objc_opt_class();
     v77 = v31;
     if (objc_opt_isKindOfClass())
@@ -221,7 +221,7 @@
       -[ASRSchemaASRRecognitionMetrics setInverseTextNormalizationDurationInNs:](v5, "setInverseTextNormalizationDurationInNs:", [v31 unsignedLongLongValue]);
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"emojiMetrics"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"emojiMetrics"];
     objc_opt_class();
     v76 = v32;
     if (objc_opt_isKindOfClass())
@@ -230,7 +230,7 @@
       [(ASRSchemaASRRecognitionMetrics *)v5 setEmojiMetrics:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"pausedAudioDurationsInNs"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"pausedAudioDurationsInNs"];
     objc_opt_class();
     v71 = v19;
     if (objc_opt_isKindOfClass())
@@ -273,21 +273,21 @@
       v34 = v35;
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"inverseTextNormalizationDurationForFinalResultInNs"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"inverseTextNormalizationDurationForFinalResultInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRRecognitionMetrics setInverseTextNormalizationDurationForFinalResultInNs:](v5, "setInverseTextNormalizationDurationForFinalResultInNs:", [v42 unsignedLongLongValue]);
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"numberOfInverseTextNormalizationRuns"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"numberOfInverseTextNormalizationRuns"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRRecognitionMetrics setNumberOfInverseTextNormalizationRuns:](v5, "setNumberOfInverseTextNormalizationRuns:", [v43 unsignedIntValue]);
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"secondaryPassDurationInNs"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"secondaryPassDurationInNs"];
     objc_opt_class();
     v75 = v44;
     if (objc_opt_isKindOfClass())
@@ -295,7 +295,7 @@
       -[ASRSchemaASRRecognitionMetrics setSecondaryPassDurationInNs:](v5, "setSecondaryPassDurationInNs:", [v44 unsignedLongLongValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"numberOfSecondaryPassRuns"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSecondaryPassRuns"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -303,7 +303,7 @@
     }
 
     v69 = v45;
-    v46 = [v4 objectForKeyedSubscript:@"cpuInstructionsInMillionsPerSecond"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"cpuInstructionsInMillionsPerSecond"];
     objc_opt_class();
     v74 = v46;
     v47 = v19;
@@ -312,14 +312,14 @@
       -[ASRSchemaASRRecognitionMetrics setCpuInstructionsInMillionsPerSecond:](v5, "setCpuInstructionsInMillionsPerSecond:", [v74 unsignedLongLongValue]);
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"appleNeuralEngineCpuTimeInNs"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"appleNeuralEngineCpuTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRRecognitionMetrics setAppleNeuralEngineCpuTimeInNs:](v5, "setAppleNeuralEngineCpuTimeInNs:", [v48 unsignedLongLongValue]);
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"pageInsWaitTimeInNs"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"pageInsWaitTimeInNs"];
     objc_opt_class();
     v73 = v49;
     if (objc_opt_isKindOfClass())
@@ -327,7 +327,7 @@
       -[ASRSchemaASRRecognitionMetrics setPageInsWaitTimeInNs:](v5, "setPageInsWaitTimeInNs:", [v49 unsignedLongLongValue]);
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"recognitionHardware"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"recognitionHardware"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -336,7 +336,7 @@
 
     v68 = v50;
     v70 = v43;
-    v51 = [v4 objectForKeyedSubscript:@"numIngestedNeuralContextualBiasingEmbeddings"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"numIngestedNeuralContextualBiasingEmbeddings"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -344,7 +344,7 @@
     }
 
     v67 = v51;
-    v52 = [v4 objectForKeyedSubscript:@"pauseReason"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"pauseReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -390,7 +390,7 @@
       v48 = v64;
     }
 
-    v59 = [v4 objectForKeyedSubscript:{@"rescoringDeliberationResult", v64, v65, v66}];
+    v59 = [dictionaryCopy objectForKeyedSubscript:{@"rescoringDeliberationResult", v64, v65, v66}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -407,30 +407,30 @@
   return v5;
 }
 
-- (ASRSchemaASRRecognitionMetrics)initWithJSON:(id)a3
+- (ASRSchemaASRRecognitionMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRRecognitionMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRRecognitionMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRRecognitionMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -444,19 +444,19 @@
 - (id)dictionaryRepresentation
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   if ((*(&self->_has + 2) & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics appleNeuralEngineCpuTimeInNs](self, "appleNeuralEngineCpuTimeInNs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"appleNeuralEngineCpuTimeInNs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appleNeuralEngineCpuTimeInNs"];
   }
 
   v6 = *p_has;
   if ((*p_has & 0x20) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics audioDurationInNs](self, "audioDurationInNs")}];
-    [v3 setObject:v13 forKeyedSubscript:@"audioDurationInNs"];
+    [dictionary setObject:v13 forKeyedSubscript:@"audioDurationInNs"];
 
     v6 = *p_has;
     if ((*p_has & 4) == 0)
@@ -479,20 +479,20 @@ LABEL_5:
   v14 = MEMORY[0x1E696AD98];
   [(ASRSchemaASRRecognitionMetrics *)self averageActiveTokensPerFrame];
   v15 = [v14 numberWithFloat:?];
-  [v3 setObject:v15 forKeyedSubscript:@"averageActiveTokensPerFrame"];
+  [dictionary setObject:v15 forKeyedSubscript:@"averageActiveTokensPerFrame"];
 
   if ((*p_has & 0x200) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRRecognitionMetrics continuousListeningEnabled](self, "continuousListeningEnabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"continuousListeningEnabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"continuousListeningEnabled"];
   }
 
 LABEL_7:
   if ((*(&self->_has + 2) & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics cpuInstructionsInMillionsPerSecond](self, "cpuInstructionsInMillionsPerSecond")}];
-    [v3 setObject:v8 forKeyedSubscript:@"cpuInstructionsInMillionsPerSecond"];
+    [dictionary setObject:v8 forKeyedSubscript:@"cpuInstructionsInMillionsPerSecond"];
   }
 
   v9 = *p_has;
@@ -501,7 +501,7 @@ LABEL_7:
     v16 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRRecognitionMetrics *)self cpuRealTimeFactor];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"cpuRealTimeFactor"];
+    [dictionary setObject:v17 forKeyedSubscript:@"cpuRealTimeFactor"];
 
     v9 = *p_has;
     if ((*p_has & 0x400) == 0)
@@ -522,29 +522,29 @@ LABEL_11:
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics eagerCustomerPerceivedLatencyInNs](self, "eagerCustomerPerceivedLatencyInNs")}];
-  [v3 setObject:v18 forKeyedSubscript:@"eagerCustomerPerceivedLatencyInNs"];
+  [dictionary setObject:v18 forKeyedSubscript:@"eagerCustomerPerceivedLatencyInNs"];
 
   if ((*p_has & 0x40) != 0)
   {
 LABEL_12:
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRRecognitionMetrics eagerEnabled](self, "eagerEnabled")}];
-    [v3 setObject:v10 forKeyedSubscript:@"eagerEnabled"];
+    [dictionary setObject:v10 forKeyedSubscript:@"eagerEnabled"];
   }
 
 LABEL_13:
   if (self->_emojiMetrics)
   {
-    v11 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    emojiMetrics = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+    dictionaryRepresentation = [emojiMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"emojiMetrics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"emojiMetrics"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"emojiMetrics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"emojiMetrics"];
     }
   }
 
@@ -552,7 +552,7 @@ LABEL_13:
   if ((*p_has & 0x4000) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics inverseTextNormalizationDurationForFinalResultInNs](self, "inverseTextNormalizationDurationForFinalResultInNs")}];
-    [v3 setObject:v21 forKeyedSubscript:@"inverseTextNormalizationDurationForFinalResultInNs"];
+    [dictionary setObject:v21 forKeyedSubscript:@"inverseTextNormalizationDurationForFinalResultInNs"];
 
     v20 = *p_has;
   }
@@ -560,12 +560,12 @@ LABEL_13:
   if ((v20 & 0x2000) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics inverseTextNormalizationDurationInNs](self, "inverseTextNormalizationDurationInNs")}];
-    [v3 setObject:v22 forKeyedSubscript:@"inverseTextNormalizationDurationInNs"];
+    [dictionary setObject:v22 forKeyedSubscript:@"inverseTextNormalizationDurationInNs"];
   }
 
   if ([(NSArray *)self->_languageModelInterpolationWeights count])
   {
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
@@ -585,16 +585,16 @@ LABEL_13:
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v66 + 1) + 8 * i) dictionaryRepresentation];
-          if (v29)
+          dictionaryRepresentation2 = [*(*(&v66 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v23 addObject:v29];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v30 = [MEMORY[0x1E695DFB0] null];
-            [v23 addObject:v30];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -604,21 +604,21 @@ LABEL_13:
       while (v26);
     }
 
-    [v3 setObject:v23 forKeyedSubscript:@"languageModelInterpolationWeights"];
+    [dictionary setObject:array forKeyedSubscript:@"languageModelInterpolationWeights"];
     p_has = &self->_has;
   }
 
   if ((*(p_has + 2) & 0x40) != 0)
   {
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSchemaASRRecognitionMetrics numIngestedNeuralContextualBiasingEmbeddings](self, "numIngestedNeuralContextualBiasingEmbeddings")}];
-    [v3 setObject:v31 forKeyedSubscript:@"numIngestedNeuralContextualBiasingEmbeddings"];
+    [dictionary setObject:v31 forKeyedSubscript:@"numIngestedNeuralContextualBiasingEmbeddings"];
   }
 
   v32 = *p_has;
   if ((*p_has & 0x1000) != 0)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSchemaASRRecognitionMetrics numLanguageModelEnrollmentDataStreams](self, "numLanguageModelEnrollmentDataStreams")}];
-    [v3 setObject:v33 forKeyedSubscript:@"numLanguageModelEnrollmentDataStreams"];
+    [dictionary setObject:v33 forKeyedSubscript:@"numLanguageModelEnrollmentDataStreams"];
 
     v32 = *p_has;
   }
@@ -626,14 +626,14 @@ LABEL_13:
   if (v32 < 0)
   {
     v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSchemaASRRecognitionMetrics numberOfInverseTextNormalizationRuns](self, "numberOfInverseTextNormalizationRuns")}];
-    [v3 setObject:v34 forKeyedSubscript:@"numberOfInverseTextNormalizationRuns"];
+    [dictionary setObject:v34 forKeyedSubscript:@"numberOfInverseTextNormalizationRuns"];
   }
 
   v35 = *(p_has + 2);
   if ((v35 & 2) != 0)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSchemaASRRecognitionMetrics numberOfSecondaryPassRuns](self, "numberOfSecondaryPassRuns")}];
-    [v3 setObject:v36 forKeyedSubscript:@"numberOfSecondaryPassRuns"];
+    [dictionary setObject:v36 forKeyedSubscript:@"numberOfSecondaryPassRuns"];
 
     v35 = *(p_has + 2);
   }
@@ -641,28 +641,28 @@ LABEL_13:
   if ((v35 & 0x10) != 0)
   {
     v37 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics pageInsWaitTimeInNs](self, "pageInsWaitTimeInNs")}];
-    [v3 setObject:v37 forKeyedSubscript:@"pageInsWaitTimeInNs"];
+    [dictionary setObject:v37 forKeyedSubscript:@"pageInsWaitTimeInNs"];
   }
 
   if ([(NSArray *)self->_pauseReasons count])
   {
-    v38 = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
-    v39 = [v38 copy];
-    [v3 setObject:v39 forKeyedSubscript:@"pauseReason"];
+    pauseReasons = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
+    v39 = [pauseReasons copy];
+    [dictionary setObject:v39 forKeyedSubscript:@"pauseReason"];
   }
 
   if ([(NSArray *)self->_pausedAudioDurationsInNs count])
   {
-    v40 = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
-    v41 = [v40 copy];
-    [v3 setObject:v41 forKeyedSubscript:@"pausedAudioDurationsInNs"];
+    pausedAudioDurationsInNs = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
+    v41 = [pausedAudioDurationsInNs copy];
+    [dictionary setObject:v41 forKeyedSubscript:@"pausedAudioDurationsInNs"];
   }
 
   v42 = *p_has;
   if (*p_has)
   {
     v43 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics personalizedLanguageModelAgeInNs](self, "personalizedLanguageModelAgeInNs")}];
-    [v3 setObject:v43 forKeyedSubscript:@"personalizedLanguageModelAgeInNs"];
+    [dictionary setObject:v43 forKeyedSubscript:@"personalizedLanguageModelAgeInNs"];
 
     v42 = *p_has;
   }
@@ -672,32 +672,32 @@ LABEL_13:
     v44 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRRecognitionMetrics *)self personalizedLanguageModelWeight];
     v45 = [v44 numberWithFloat:?];
-    [v3 setObject:v45 forKeyedSubscript:@"personalizedLanguageModelWeight"];
+    [dictionary setObject:v45 forKeyedSubscript:@"personalizedLanguageModelWeight"];
   }
 
   if (self->_phoneticMatchDecoderName)
   {
-    v46 = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
-    v47 = [v46 copy];
-    [v3 setObject:v47 forKeyedSubscript:@"phoneticMatchDecoderName"];
+    phoneticMatchDecoderName = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
+    v47 = [phoneticMatchDecoderName copy];
+    [dictionary setObject:v47 forKeyedSubscript:@"phoneticMatchDecoderName"];
   }
 
   if ((*p_has & 0x10) != 0)
   {
     v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics recognitionDurationInNs](self, "recognitionDurationInNs")}];
-    [v3 setObject:v48 forKeyedSubscript:@"recognitionDurationInNs"];
+    [dictionary setObject:v48 forKeyedSubscript:@"recognitionDurationInNs"];
   }
 
   if ((*(p_has + 2) & 0x20) != 0)
   {
-    v49 = [(ASRSchemaASRRecognitionMetrics *)self recognitionHardware];
+    recognitionHardware = [(ASRSchemaASRRecognitionMetrics *)self recognitionHardware];
     v50 = @"ASRSPEECHRECOGNITIONHARDWARE_UNKNOWN";
-    if (v49 == 1)
+    if (recognitionHardware == 1)
     {
       v50 = @"ASRSPEECHRECOGNITIONHARDWARE_CPU";
     }
 
-    if (v49 == 2)
+    if (recognitionHardware == 2)
     {
       v51 = @"ASRSPEECHRECOGNITIONHARDWARE_APPLE_NEURAL_ENGINE";
     }
@@ -707,45 +707,45 @@ LABEL_13:
       v51 = v50;
     }
 
-    [v3 setObject:v51 forKeyedSubscript:@"recognitionHardware"];
+    [dictionary setObject:v51 forKeyedSubscript:@"recognitionHardware"];
   }
 
   if (self->_recognizerComponents)
   {
-    v52 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+    dictionaryRepresentation3 = [recognizerComponents dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"recognizerComponents"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"recognizerComponents"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"recognizerComponents"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"recognizerComponents"];
     }
   }
 
   if (self->_rescoringDeliberationResult)
   {
-    v55 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    rescoringDeliberationResult = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+    dictionaryRepresentation4 = [rescoringDeliberationResult dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"rescoringDeliberationResult"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"rescoringDeliberationResult"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"rescoringDeliberationResult"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"rescoringDeliberationResult"];
     }
   }
 
   if (*(p_has + 2))
   {
     v58 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRRecognitionMetrics secondaryPassDurationInNs](self, "secondaryPassDurationInNs")}];
-    [v3 setObject:v58 forKeyedSubscript:@"secondaryPassDurationInNs"];
+    [dictionary setObject:v58 forKeyedSubscript:@"secondaryPassDurationInNs"];
   }
 
   v59 = *p_has;
@@ -758,7 +758,7 @@ LABEL_13:
 
 LABEL_87:
     v65 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRRecognitionMetrics utteranceConcatenationEnabled](self, "utteranceConcatenationEnabled")}];
-    [v3 setObject:v65 forKeyedSubscript:@"utteranceConcatenationEnabled"];
+    [dictionary setObject:v65 forKeyedSubscript:@"utteranceConcatenationEnabled"];
 
     if ((*p_has & 0x80) == 0)
     {
@@ -771,7 +771,7 @@ LABEL_87:
   v63 = MEMORY[0x1E696AD98];
   [(ASRSchemaASRRecognitionMetrics *)self signalToNoiseRatioInDecibels];
   v64 = [v63 numberWithFloat:?];
-  [v3 setObject:v64 forKeyedSubscript:@"signalToNoiseRatioInDecibels"];
+  [dictionary setObject:v64 forKeyedSubscript:@"signalToNoiseRatioInDecibels"];
 
   v59 = *p_has;
   if ((*p_has & 0x100) != 0)
@@ -784,14 +784,14 @@ LABEL_83:
   {
 LABEL_84:
     v60 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRRecognitionMetrics utteranceDetectionEnabled](self, "utteranceDetectionEnabled")}];
-    [v3 setObject:v60 forKeyedSubscript:@"utteranceDetectionEnabled"];
+    [dictionary setObject:v60 forKeyedSubscript:@"utteranceDetectionEnabled"];
   }
 
 LABEL_85:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v61 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v61 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1208,18 +1208,18 @@ LABEL_77:
   return v47 ^ v48 ^ [(ASRSchemaASRRescoringDeliberationResult *)self->_rescoringDeliberationResult hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_123;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 104;
-  v8 = v4[104];
+  v7 = equalCopy + 104;
+  v8 = equalCopy[104];
   if ((*&has & 1) != (v8 & 1))
   {
     goto LABEL_123;
@@ -1228,7 +1228,7 @@ LABEL_77:
   if (*&has)
   {
     personalizedLanguageModelAgeInNs = self->_personalizedLanguageModelAgeInNs;
-    if (personalizedLanguageModelAgeInNs != [v4 personalizedLanguageModelAgeInNs])
+    if (personalizedLanguageModelAgeInNs != [equalCopy personalizedLanguageModelAgeInNs])
     {
       goto LABEL_123;
     }
@@ -1246,27 +1246,27 @@ LABEL_77:
   if (v10)
   {
     personalizedLanguageModelWeight = self->_personalizedLanguageModelWeight;
-    [v4 personalizedLanguageModelWeight];
+    [equalCopy personalizedLanguageModelWeight];
     if (personalizedLanguageModelWeight != v12)
     {
       goto LABEL_123;
     }
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
-  v14 = [v4 recognizerComponents];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+  recognizerComponents2 = [equalCopy recognizerComponents];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
     goto LABEL_122;
   }
 
-  v15 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
-  if (v15)
+  recognizerComponents3 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+  if (recognizerComponents3)
   {
-    v16 = v15;
-    v17 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
-    v18 = [v4 recognizerComponents];
-    v19 = [v17 isEqual:v18];
+    v16 = recognizerComponents3;
+    recognizerComponents4 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+    recognizerComponents5 = [equalCopy recognizerComponents];
+    v19 = [recognizerComponents4 isEqual:recognizerComponents5];
 
     if (!v19)
     {
@@ -1287,27 +1287,27 @@ LABEL_77:
   if (v20)
   {
     averageActiveTokensPerFrame = self->_averageActiveTokensPerFrame;
-    [v4 averageActiveTokensPerFrame];
+    [equalCopy averageActiveTokensPerFrame];
     if (averageActiveTokensPerFrame != v22)
     {
       goto LABEL_123;
     }
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
-  v14 = [v4 languageModelInterpolationWeights];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
+  recognizerComponents2 = [equalCopy languageModelInterpolationWeights];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
     goto LABEL_122;
   }
 
-  v23 = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
-  if (v23)
+  languageModelInterpolationWeights = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
+  if (languageModelInterpolationWeights)
   {
-    v24 = v23;
-    v25 = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
-    v26 = [v4 languageModelInterpolationWeights];
-    v27 = [v25 isEqual:v26];
+    v24 = languageModelInterpolationWeights;
+    languageModelInterpolationWeights2 = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
+    languageModelInterpolationWeights3 = [equalCopy languageModelInterpolationWeights];
+    v27 = [languageModelInterpolationWeights2 isEqual:languageModelInterpolationWeights3];
 
     if (!v27)
     {
@@ -1330,7 +1330,7 @@ LABEL_77:
   if (v29)
   {
     signalToNoiseRatioInDecibels = self->_signalToNoiseRatioInDecibels;
-    [v4 signalToNoiseRatioInDecibels];
+    [equalCopy signalToNoiseRatioInDecibels];
     if (signalToNoiseRatioInDecibels != v32)
     {
       goto LABEL_123;
@@ -1349,7 +1349,7 @@ LABEL_77:
   if (v33)
   {
     recognitionDurationInNs = self->_recognitionDurationInNs;
-    if (recognitionDurationInNs != [v4 recognitionDurationInNs])
+    if (recognitionDurationInNs != [equalCopy recognitionDurationInNs])
     {
       goto LABEL_123;
     }
@@ -1367,7 +1367,7 @@ LABEL_77:
   if (v35)
   {
     audioDurationInNs = self->_audioDurationInNs;
-    if (audioDurationInNs != [v4 audioDurationInNs])
+    if (audioDurationInNs != [equalCopy audioDurationInNs])
     {
       goto LABEL_123;
     }
@@ -1385,7 +1385,7 @@ LABEL_77:
   if (v37)
   {
     eagerEnabled = self->_eagerEnabled;
-    if (eagerEnabled != [v4 eagerEnabled])
+    if (eagerEnabled != [equalCopy eagerEnabled])
     {
       goto LABEL_123;
     }
@@ -1403,7 +1403,7 @@ LABEL_77:
   if (v39)
   {
     utteranceDetectionEnabled = self->_utteranceDetectionEnabled;
-    if (utteranceDetectionEnabled != [v4 utteranceDetectionEnabled])
+    if (utteranceDetectionEnabled != [equalCopy utteranceDetectionEnabled])
     {
       goto LABEL_123;
     }
@@ -1421,7 +1421,7 @@ LABEL_77:
   if (v41)
   {
     utteranceConcatenationEnabled = self->_utteranceConcatenationEnabled;
-    if (utteranceConcatenationEnabled != [v4 utteranceConcatenationEnabled])
+    if (utteranceConcatenationEnabled != [equalCopy utteranceConcatenationEnabled])
     {
       goto LABEL_123;
     }
@@ -1439,7 +1439,7 @@ LABEL_77:
   if (v43)
   {
     continuousListeningEnabled = self->_continuousListeningEnabled;
-    if (continuousListeningEnabled != [v4 continuousListeningEnabled])
+    if (continuousListeningEnabled != [equalCopy continuousListeningEnabled])
     {
       goto LABEL_123;
     }
@@ -1457,7 +1457,7 @@ LABEL_77:
   if (v45)
   {
     eagerCustomerPerceivedLatencyInNs = self->_eagerCustomerPerceivedLatencyInNs;
-    if (eagerCustomerPerceivedLatencyInNs != [v4 eagerCustomerPerceivedLatencyInNs])
+    if (eagerCustomerPerceivedLatencyInNs != [equalCopy eagerCustomerPerceivedLatencyInNs])
     {
       goto LABEL_123;
     }
@@ -1475,7 +1475,7 @@ LABEL_77:
   if (v47)
   {
     cpuRealTimeFactor = self->_cpuRealTimeFactor;
-    [v4 cpuRealTimeFactor];
+    [equalCopy cpuRealTimeFactor];
     if (cpuRealTimeFactor != v49)
     {
       goto LABEL_123;
@@ -1494,26 +1494,26 @@ LABEL_77:
   if (v50)
   {
     numLanguageModelEnrollmentDataStreams = self->_numLanguageModelEnrollmentDataStreams;
-    if (numLanguageModelEnrollmentDataStreams != [v4 numLanguageModelEnrollmentDataStreams])
+    if (numLanguageModelEnrollmentDataStreams != [equalCopy numLanguageModelEnrollmentDataStreams])
     {
       goto LABEL_123;
     }
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
-  v14 = [v4 phoneticMatchDecoderName];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
+  recognizerComponents2 = [equalCopy phoneticMatchDecoderName];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
     goto LABEL_122;
   }
 
-  v52 = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
-  if (v52)
+  phoneticMatchDecoderName = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
+  if (phoneticMatchDecoderName)
   {
-    v53 = v52;
-    v54 = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
-    v55 = [v4 phoneticMatchDecoderName];
-    v56 = [v54 isEqual:v55];
+    v53 = phoneticMatchDecoderName;
+    phoneticMatchDecoderName2 = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
+    phoneticMatchDecoderName3 = [equalCopy phoneticMatchDecoderName];
+    v56 = [phoneticMatchDecoderName2 isEqual:phoneticMatchDecoderName3];
 
     if (!v56)
     {
@@ -1534,26 +1534,26 @@ LABEL_77:
   if (v57)
   {
     inverseTextNormalizationDurationInNs = self->_inverseTextNormalizationDurationInNs;
-    if (inverseTextNormalizationDurationInNs != [v4 inverseTextNormalizationDurationInNs])
+    if (inverseTextNormalizationDurationInNs != [equalCopy inverseTextNormalizationDurationInNs])
     {
       goto LABEL_123;
     }
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
-  v14 = [v4 emojiMetrics];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+  recognizerComponents2 = [equalCopy emojiMetrics];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
     goto LABEL_122;
   }
 
-  v59 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
-  if (v59)
+  emojiMetrics = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+  if (emojiMetrics)
   {
-    v60 = v59;
-    v61 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
-    v62 = [v4 emojiMetrics];
-    v63 = [v61 isEqual:v62];
+    v60 = emojiMetrics;
+    emojiMetrics2 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+    emojiMetrics3 = [equalCopy emojiMetrics];
+    v63 = [emojiMetrics2 isEqual:emojiMetrics3];
 
     if (!v63)
     {
@@ -1565,20 +1565,20 @@ LABEL_77:
   {
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
-  v14 = [v4 pausedAudioDurationsInNs];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
+  recognizerComponents2 = [equalCopy pausedAudioDurationsInNs];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
     goto LABEL_122;
   }
 
-  v64 = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
-  if (v64)
+  pausedAudioDurationsInNs = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
+  if (pausedAudioDurationsInNs)
   {
-    v65 = v64;
-    v66 = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
-    v67 = [v4 pausedAudioDurationsInNs];
-    v68 = [v66 isEqual:v67];
+    v65 = pausedAudioDurationsInNs;
+    pausedAudioDurationsInNs2 = [(ASRSchemaASRRecognitionMetrics *)self pausedAudioDurationsInNs];
+    pausedAudioDurationsInNs3 = [equalCopy pausedAudioDurationsInNs];
+    v68 = [pausedAudioDurationsInNs2 isEqual:pausedAudioDurationsInNs3];
 
     if (!v68)
     {
@@ -1601,7 +1601,7 @@ LABEL_77:
   if (v70)
   {
     inverseTextNormalizationDurationForFinalResultInNs = self->_inverseTextNormalizationDurationForFinalResultInNs;
-    if (inverseTextNormalizationDurationForFinalResultInNs != [v4 inverseTextNormalizationDurationForFinalResultInNs])
+    if (inverseTextNormalizationDurationForFinalResultInNs != [equalCopy inverseTextNormalizationDurationForFinalResultInNs])
     {
       goto LABEL_123;
     }
@@ -1618,14 +1618,14 @@ LABEL_77:
   if ((v69 & 0x8000) != 0)
   {
     numberOfInverseTextNormalizationRuns = self->_numberOfInverseTextNormalizationRuns;
-    if (numberOfInverseTextNormalizationRuns != [v4 numberOfInverseTextNormalizationRuns])
+    if (numberOfInverseTextNormalizationRuns != [equalCopy numberOfInverseTextNormalizationRuns])
     {
       goto LABEL_123;
     }
   }
 
   v74 = *(&self->_has + 2);
-  v75 = *(v4 + 210);
+  v75 = *(equalCopy + 210);
   if ((v74 & 1) != (v75 & 1))
   {
     goto LABEL_123;
@@ -1634,13 +1634,13 @@ LABEL_77:
   if (v74)
   {
     secondaryPassDurationInNs = self->_secondaryPassDurationInNs;
-    if (secondaryPassDurationInNs != [v4 secondaryPassDurationInNs])
+    if (secondaryPassDurationInNs != [equalCopy secondaryPassDurationInNs])
     {
       goto LABEL_123;
     }
 
     v74 = *(&self->_has + 2);
-    v75 = *(v4 + 210);
+    v75 = *(equalCopy + 210);
   }
 
   v77 = (v74 >> 1) & 1;
@@ -1652,13 +1652,13 @@ LABEL_77:
   if (v77)
   {
     numberOfSecondaryPassRuns = self->_numberOfSecondaryPassRuns;
-    if (numberOfSecondaryPassRuns != [v4 numberOfSecondaryPassRuns])
+    if (numberOfSecondaryPassRuns != [equalCopy numberOfSecondaryPassRuns])
     {
       goto LABEL_123;
     }
 
     v74 = *(&self->_has + 2);
-    v75 = *(v4 + 210);
+    v75 = *(equalCopy + 210);
   }
 
   v79 = (v74 >> 2) & 1;
@@ -1670,13 +1670,13 @@ LABEL_77:
   if (v79)
   {
     cpuInstructionsInMillionsPerSecond = self->_cpuInstructionsInMillionsPerSecond;
-    if (cpuInstructionsInMillionsPerSecond != [v4 cpuInstructionsInMillionsPerSecond])
+    if (cpuInstructionsInMillionsPerSecond != [equalCopy cpuInstructionsInMillionsPerSecond])
     {
       goto LABEL_123;
     }
 
     v74 = *(&self->_has + 2);
-    v75 = *(v4 + 210);
+    v75 = *(equalCopy + 210);
   }
 
   v81 = (v74 >> 3) & 1;
@@ -1688,13 +1688,13 @@ LABEL_77:
   if (v81)
   {
     appleNeuralEngineCpuTimeInNs = self->_appleNeuralEngineCpuTimeInNs;
-    if (appleNeuralEngineCpuTimeInNs != [v4 appleNeuralEngineCpuTimeInNs])
+    if (appleNeuralEngineCpuTimeInNs != [equalCopy appleNeuralEngineCpuTimeInNs])
     {
       goto LABEL_123;
     }
 
     v74 = *(&self->_has + 2);
-    v75 = *(v4 + 210);
+    v75 = *(equalCopy + 210);
   }
 
   v83 = (v74 >> 4) & 1;
@@ -1706,13 +1706,13 @@ LABEL_77:
   if (v83)
   {
     pageInsWaitTimeInNs = self->_pageInsWaitTimeInNs;
-    if (pageInsWaitTimeInNs != [v4 pageInsWaitTimeInNs])
+    if (pageInsWaitTimeInNs != [equalCopy pageInsWaitTimeInNs])
     {
       goto LABEL_123;
     }
 
     v74 = *(&self->_has + 2);
-    v75 = *(v4 + 210);
+    v75 = *(equalCopy + 210);
   }
 
   v85 = (v74 >> 5) & 1;
@@ -1724,13 +1724,13 @@ LABEL_77:
   if (v85)
   {
     recognitionHardware = self->_recognitionHardware;
-    if (recognitionHardware != [v4 recognitionHardware])
+    if (recognitionHardware != [equalCopy recognitionHardware])
     {
       goto LABEL_123;
     }
 
     v74 = *(&self->_has + 2);
-    v75 = *(v4 + 210);
+    v75 = *(equalCopy + 210);
   }
 
   v87 = (v74 >> 6) & 1;
@@ -1742,26 +1742,26 @@ LABEL_77:
   if (v87)
   {
     numIngestedNeuralContextualBiasingEmbeddings = self->_numIngestedNeuralContextualBiasingEmbeddings;
-    if (numIngestedNeuralContextualBiasingEmbeddings != [v4 numIngestedNeuralContextualBiasingEmbeddings])
+    if (numIngestedNeuralContextualBiasingEmbeddings != [equalCopy numIngestedNeuralContextualBiasingEmbeddings])
     {
       goto LABEL_123;
     }
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
-  v14 = [v4 pauseReasons];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
+  recognizerComponents2 = [equalCopy pauseReasons];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
     goto LABEL_122;
   }
 
-  v89 = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
-  if (v89)
+  pauseReasons = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
+  if (pauseReasons)
   {
-    v90 = v89;
-    v91 = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
-    v92 = [v4 pauseReasons];
-    v93 = [v91 isEqual:v92];
+    v90 = pauseReasons;
+    pauseReasons2 = [(ASRSchemaASRRecognitionMetrics *)self pauseReasons];
+    pauseReasons3 = [equalCopy pauseReasons];
+    v93 = [pauseReasons2 isEqual:pauseReasons3];
 
     if (!v93)
     {
@@ -1773,17 +1773,17 @@ LABEL_77:
   {
   }
 
-  v13 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
-  v14 = [v4 rescoringDeliberationResult];
-  if ((v13 != 0) == (v14 == 0))
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+  recognizerComponents2 = [equalCopy rescoringDeliberationResult];
+  if ((recognizerComponents != 0) == (recognizerComponents2 == 0))
   {
 LABEL_122:
 
     goto LABEL_123;
   }
 
-  v94 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
-  if (!v94)
+  rescoringDeliberationResult = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+  if (!rescoringDeliberationResult)
   {
 
 LABEL_126:
@@ -1791,10 +1791,10 @@ LABEL_126:
     goto LABEL_124;
   }
 
-  v95 = v94;
-  v96 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
-  v97 = [v4 rescoringDeliberationResult];
-  v98 = [v96 isEqual:v97];
+  v95 = rescoringDeliberationResult;
+  rescoringDeliberationResult2 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+  rescoringDeliberationResult3 = [equalCopy rescoringDeliberationResult];
+  v98 = [rescoringDeliberationResult2 isEqual:rescoringDeliberationResult3];
 
   if (v98)
   {
@@ -1808,10 +1808,10 @@ LABEL_124:
   return v99;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -1825,11 +1825,11 @@ LABEL_124:
     PBDataWriterWriteFloatField();
   }
 
-  v7 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
 
-  if (v7)
+  if (recognizerComponents)
   {
-    v8 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+    recognizerComponents2 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1994,9 +1994,9 @@ LABEL_26:
   }
 
 LABEL_27:
-  v15 = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
+  phoneticMatchDecoderName = [(ASRSchemaASRRecognitionMetrics *)self phoneticMatchDecoderName];
 
-  if (v15)
+  if (phoneticMatchDecoderName)
   {
     PBDataWriterWriteStringField();
   }
@@ -2006,11 +2006,11 @@ LABEL_27:
     PBDataWriterWriteUint64Field();
   }
 
-  v16 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+  emojiMetrics = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
 
-  if (v16)
+  if (emojiMetrics)
   {
-    v17 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+    emojiMetrics2 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2170,32 +2170,32 @@ LABEL_52:
     while (v27);
   }
 
-  v30 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+  rescoringDeliberationResult = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
 
-  if (v30)
+  if (rescoringDeliberationResult)
   {
-    v31 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+    rescoringDeliberationResult2 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (int)pauseReasonAtIndex:(unint64_t)a3
+- (int)pauseReasonAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_pauseReasons objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_pauseReasons objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addPauseReason:(int)a3
+- (void)addPauseReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   pauseReasons = self->_pauseReasons;
   if (!pauseReasons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pauseReasons;
-    self->_pauseReasons = v6;
+    self->_pauseReasons = array;
 
     pauseReasons = self->_pauseReasons;
   }
@@ -2204,9 +2204,9 @@ LABEL_52:
   [(NSArray *)pauseReasons addObject:v8];
 }
 
-- (void)setHasNumIngestedNeuralContextualBiasingEmbeddings:(BOOL)a3
+- (void)setHasNumIngestedNeuralContextualBiasingEmbeddings:(BOOL)embeddings
 {
-  if (a3)
+  if (embeddings)
   {
     v3 = 64;
   }
@@ -2219,9 +2219,9 @@ LABEL_52:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xBF | v3;
 }
 
-- (void)setHasRecognitionHardware:(BOOL)a3
+- (void)setHasRecognitionHardware:(BOOL)hardware
 {
-  if (a3)
+  if (hardware)
   {
     v3 = 32;
   }
@@ -2234,9 +2234,9 @@ LABEL_52:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xDF | v3;
 }
 
-- (void)setHasPageInsWaitTimeInNs:(BOOL)a3
+- (void)setHasPageInsWaitTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -2249,9 +2249,9 @@ LABEL_52:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xEF | v3;
 }
 
-- (void)setHasAppleNeuralEngineCpuTimeInNs:(BOOL)a3
+- (void)setHasAppleNeuralEngineCpuTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 8;
   }
@@ -2264,9 +2264,9 @@ LABEL_52:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7 | v3;
 }
 
-- (void)setHasCpuInstructionsInMillionsPerSecond:(BOOL)a3
+- (void)setHasCpuInstructionsInMillionsPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 4;
   }
@@ -2279,9 +2279,9 @@ LABEL_52:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFB | v3;
 }
 
-- (void)setHasNumberOfSecondaryPassRuns:(BOOL)a3
+- (void)setHasNumberOfSecondaryPassRuns:(BOOL)runs
 {
-  if (a3)
+  if (runs)
   {
     v3 = 2;
   }
@@ -2294,9 +2294,9 @@ LABEL_52:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFD | v3;
 }
 
-- (void)setHasNumberOfInverseTextNormalizationRuns:(BOOL)a3
+- (void)setHasNumberOfInverseTextNormalizationRuns:(BOOL)runs
 {
-  if (a3)
+  if (runs)
   {
     v3 = 0x8000;
   }
@@ -2309,9 +2309,9 @@ LABEL_52:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasInverseTextNormalizationDurationForFinalResultInNs:(BOOL)a3
+- (void)setHasInverseTextNormalizationDurationForFinalResultInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x4000;
   }
@@ -2324,33 +2324,33 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (unint64_t)pausedAudioDurationsInNsAtIndex:(unint64_t)a3
+- (unint64_t)pausedAudioDurationsInNsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_pausedAudioDurationsInNs objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_pausedAudioDurationsInNs objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addPausedAudioDurationsInNs:(unint64_t)a3
+- (void)addPausedAudioDurationsInNs:(unint64_t)ns
 {
   pausedAudioDurationsInNs = self->_pausedAudioDurationsInNs;
   if (!pausedAudioDurationsInNs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pausedAudioDurationsInNs;
-    self->_pausedAudioDurationsInNs = v6;
+    self->_pausedAudioDurationsInNs = array;
 
     pausedAudioDurationsInNs = self->_pausedAudioDurationsInNs;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:ns];
   [(NSArray *)pausedAudioDurationsInNs addObject:v8];
 }
 
-- (void)setHasInverseTextNormalizationDurationInNs:(BOOL)a3
+- (void)setHasInverseTextNormalizationDurationInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x2000;
   }
@@ -2363,9 +2363,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasNumLanguageModelEnrollmentDataStreams:(BOOL)a3
+- (void)setHasNumLanguageModelEnrollmentDataStreams:(BOOL)streams
 {
-  if (a3)
+  if (streams)
   {
     v3 = 4096;
   }
@@ -2378,9 +2378,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasCpuRealTimeFactor:(BOOL)a3
+- (void)setHasCpuRealTimeFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 2048;
   }
@@ -2393,9 +2393,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasEagerCustomerPerceivedLatencyInNs:(BOOL)a3
+- (void)setHasEagerCustomerPerceivedLatencyInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 1024;
   }
@@ -2408,9 +2408,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasContinuousListeningEnabled:(BOOL)a3
+- (void)setHasContinuousListeningEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 512;
   }
@@ -2423,9 +2423,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasUtteranceConcatenationEnabled:(BOOL)a3
+- (void)setHasUtteranceConcatenationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 256;
   }
@@ -2438,9 +2438,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasUtteranceDetectionEnabled:(BOOL)a3
+- (void)setHasUtteranceDetectionEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 128;
   }
@@ -2453,9 +2453,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasEagerEnabled:(BOOL)a3
+- (void)setHasEagerEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -2468,9 +2468,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasAudioDurationInNs:(BOOL)a3
+- (void)setHasAudioDurationInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 32;
   }
@@ -2483,9 +2483,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRecognitionDurationInNs:(BOOL)a3
+- (void)setHasRecognitionDurationInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -2498,9 +2498,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSignalToNoiseRatioInDecibels:(BOOL)a3
+- (void)setHasSignalToNoiseRatioInDecibels:(BOOL)decibels
 {
-  if (a3)
+  if (decibels)
   {
     v3 = 8;
   }
@@ -2513,27 +2513,27 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)addLanguageModelInterpolationWeights:(id)a3
+- (void)addLanguageModelInterpolationWeights:(id)weights
 {
-  v4 = a3;
+  weightsCopy = weights;
   languageModelInterpolationWeights = self->_languageModelInterpolationWeights;
-  v8 = v4;
+  v8 = weightsCopy;
   if (!languageModelInterpolationWeights)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_languageModelInterpolationWeights;
-    self->_languageModelInterpolationWeights = v6;
+    self->_languageModelInterpolationWeights = array;
 
-    v4 = v8;
+    weightsCopy = v8;
     languageModelInterpolationWeights = self->_languageModelInterpolationWeights;
   }
 
-  [(NSArray *)languageModelInterpolationWeights addObject:v4];
+  [(NSArray *)languageModelInterpolationWeights addObject:weightsCopy];
 }
 
-- (void)setHasAverageActiveTokensPerFrame:(BOOL)a3
+- (void)setHasAverageActiveTokensPerFrame:(BOOL)frame
 {
-  if (a3)
+  if (frame)
   {
     v3 = 4;
   }
@@ -2546,9 +2546,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPersonalizedLanguageModelWeight:(BOOL)a3
+- (void)setHasPersonalizedLanguageModelWeight:(BOOL)weight
 {
-  if (a3)
+  if (weight)
   {
     v3 = 2;
   }
@@ -2561,39 +2561,39 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = ASRSchemaASRRecognitionMetrics;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  recognizerComponents = [(ASRSchemaASRRecognitionMetrics *)self recognizerComponents];
+  v7 = [recognizerComponents applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRRecognitionMetrics *)self deleteRecognizerComponents];
   }
 
-  v9 = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  languageModelInterpolationWeights = [(ASRSchemaASRRecognitionMetrics *)self languageModelInterpolationWeights];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:languageModelInterpolationWeights underConditions:policyCopy];
   [(ASRSchemaASRRecognitionMetrics *)self setLanguageModelInterpolationWeights:v10];
 
-  v11 = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  emojiMetrics = [(ASRSchemaASRRecognitionMetrics *)self emojiMetrics];
+  v12 = [emojiMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(ASRSchemaASRRecognitionMetrics *)self deleteEmojiMetrics];
   }
 
-  v14 = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  rescoringDeliberationResult = [(ASRSchemaASRRecognitionMetrics *)self rescoringDeliberationResult];
+  v15 = [rescoringDeliberationResult applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(ASRSchemaASRRecognitionMetrics *)self deleteRescoringDeliberationResult];
   }

@@ -1,12 +1,12 @@
 @interface PSSearchableItemManifest
-- (BOOL)writeToPlistAndStringsFilesAtURL:(id)a3 error:(id *)a4;
+- (BOOL)writeToPlistAndStringsFilesAtURL:(id)l error:(id *)error;
 - (PSSearchableItemManifest)init;
-- (id)_escapedStringForString:(id)a3;
-- (id)_stringKeyForString:(id)a3;
+- (id)_escapedStringForString:(id)string;
+- (id)_stringKeyForString:(id)string;
 - (id)items;
-- (void)addSearchableItem:(id)a3;
-- (void)addSearchableItems:(id)a3;
-- (void)removeSearchableItem:(id)a3;
+- (void)addSearchableItem:(id)item;
+- (void)addSearchableItems:(id)items;
+- (void)removeSearchableItem:(id)item;
 @end
 
 @implementation PSSearchableItemManifest
@@ -25,47 +25,47 @@
   return v2;
 }
 
-- (void)addSearchableItems:(id)a3
+- (void)addSearchableItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PSSearchableItemManifest *)self searchableItems];
-  [v5 addObjectsFromArray:v4];
+  itemsCopy = items;
+  searchableItems = [(PSSearchableItemManifest *)self searchableItems];
+  [searchableItems addObjectsFromArray:itemsCopy];
 }
 
-- (void)addSearchableItem:(id)a3
+- (void)addSearchableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PSSearchableItemManifest *)self searchableItems];
-  [v5 addObject:v4];
+  itemCopy = item;
+  searchableItems = [(PSSearchableItemManifest *)self searchableItems];
+  [searchableItems addObject:itemCopy];
 }
 
-- (void)removeSearchableItem:(id)a3
+- (void)removeSearchableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PSSearchableItemManifest *)self searchableItems];
-  [v5 removeObject:v4];
+  itemCopy = item;
+  searchableItems = [(PSSearchableItemManifest *)self searchableItems];
+  [searchableItems removeObject:itemCopy];
 }
 
 - (id)items
 {
-  v2 = [(PSSearchableItemManifest *)self searchableItems];
-  v3 = [v2 copy];
+  searchableItems = [(PSSearchableItemManifest *)self searchableItems];
+  v3 = [searchableItems copy];
 
   return v3;
 }
 
-- (BOOL)writeToPlistAndStringsFilesAtURL:(id)a3 error:(id *)a4
+- (BOOL)writeToPlistAndStringsFilesAtURL:(id)l error:(id *)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v7 = objc_opt_new();
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v64 = self;
-  v8 = [(PSSearchableItemManifest *)self searchableItems];
-  v9 = [v8 countByEnumeratingWithState:&v80 objects:v88 count:16];
+  selfCopy = self;
+  searchableItems = [(PSSearchableItemManifest *)self searchableItems];
+  v9 = [searchableItems countByEnumeratingWithState:&v80 objects:v88 count:16];
   if (v9)
   {
     v10 = v9;
@@ -76,32 +76,32 @@
       {
         if (*v81 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(searchableItems);
         }
 
         v13 = *(*(&v80 + 1) + 8 * i);
-        v14 = [v13 bundleID];
-        v15 = [v14 length];
+        bundleID = [v13 bundleID];
+        v15 = [bundleID length];
 
         if (v15)
         {
-          v16 = [v13 bundleID];
-          v17 = [v7 objectForKeyedSubscript:v16];
+          bundleID2 = [v13 bundleID];
+          v17 = [v7 objectForKeyedSubscript:bundleID2];
 
           if (!v17)
           {
             v18 = objc_opt_new();
-            v19 = [v13 bundleID];
-            [v7 setObject:v18 forKeyedSubscript:v19];
+            bundleID3 = [v13 bundleID];
+            [v7 setObject:v18 forKeyedSubscript:bundleID3];
           }
 
-          v20 = [v13 bundleID];
-          v21 = [v7 objectForKeyedSubscript:v20];
+          bundleID4 = [v13 bundleID];
+          v21 = [v7 objectForKeyedSubscript:bundleID4];
           [v21 addObject:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v80 objects:v88 count:16];
+      v10 = [searchableItems countByEnumeratingWithState:&v80 objects:v88 count:16];
     }
 
     while (v10);
@@ -117,7 +117,7 @@
   {
     v57 = v7;
     v58 = *v77;
-    v59 = v6;
+    v59 = lCopy;
     while (2)
     {
       v22 = 0;
@@ -151,11 +151,11 @@
                 objc_enumerationMutation(v63);
               }
 
-              v25 = [*(*(&v72 + 1) + 8 * j) toManifestDictionary];
-              v26 = [v25 mutableCopy];
+              toManifestDictionary = [*(*(&v72 + 1) + 8 * j) toManifestDictionary];
+              v26 = [toManifestDictionary mutableCopy];
 
               v27 = [v26 objectForKeyedSubscript:@"label"];
-              v28 = [(PSSearchableItemManifest *)v64 _stringKeyForString:v27];
+              v28 = [(PSSearchableItemManifest *)selfCopy _stringKeyForString:v27];
               [v26 setObject:v28 forKeyedSubscript:@"label"];
               v29 = MEMORY[0x1E696AEC0];
               if (v27)
@@ -168,7 +168,7 @@
                 v30 = &stru_1EFE45030;
               }
 
-              v31 = [(PSSearchableItemManifest *)v64 _escapedStringForString:v30];
+              v31 = [(PSSearchableItemManifest *)selfCopy _escapedStringForString:v30];
               v71 = [v29 stringWithFormat:@"%@ = %@", v28, v31];;
 
               [v66 addObject:v71];
@@ -187,7 +187,7 @@
                 v35 = &stru_1EFE45030;
               }
 
-              v36 = [(PSSearchableItemManifest *)v64 _escapedStringForString:v35];
+              v36 = [(PSSearchableItemManifest *)selfCopy _escapedStringForString:v35];
               v69 = [v34 stringWithFormat:@"%@ = %@", v33, v36];;
 
               [v66 addObject:v69];
@@ -205,7 +205,7 @@
                 v40 = &stru_1EFE45030;
               }
 
-              v41 = [(PSSearchableItemManifest *)v64 _escapedStringForString:v40];
+              v41 = [(PSSearchableItemManifest *)selfCopy _escapedStringForString:v40];
               v42 = [v39 stringWithFormat:@"%@ = %@", v38, v41];;
 
               [v66 addObject:v42];
@@ -223,10 +223,10 @@
         v45 = [v44 stringByAppendingString:@"\n"];
 
         v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SettingsSearchManifest-%@", v62];
-        v6 = v59;
+        lCopy = v59;
         v47 = [v59 URLByAppendingPathComponent:v46];
         v48 = [v47 URLByAppendingPathExtension:@"strings"];
-        v49 = [v45 writeToURL:v48 atomically:1 encoding:4 error:a4];
+        v49 = [v45 writeToURL:v48 atomically:1 encoding:4 error:error];
 
         if (!v49)
         {
@@ -241,7 +241,7 @@
         v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
         v51 = [v59 URLByAppendingPathComponent:v46];
         v52 = [v51 URLByAppendingPathExtension:@"plist"];
-        v53 = [v50 writeToURL:v52 error:a4];
+        v53 = [v50 writeToURL:v52 error:error];
 
         v7 = v57;
         if (!v53)
@@ -275,21 +275,21 @@ LABEL_41:
   return v54;
 }
 
-- (id)_stringKeyForString:(id)a3
+- (id)_stringKeyForString:(id)string
 {
   v3 = _stringKeyForString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     [PSSearchableItemManifest _stringKeyForString:];
   }
 
-  v5 = [v4 uppercaseString];
+  uppercaseString = [stringCopy uppercaseString];
 
-  v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  v6 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
-  v7 = [_stringKeyForString__allowedCharacters invertedSet];
-  v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+  invertedSet = [_stringKeyForString__allowedCharacters invertedSet];
+  v8 = [v6 componentsSeparatedByCharactersInSet:invertedSet];
   v9 = [v8 componentsJoinedByString:&stru_1EFE45030];
 
   return v9;
@@ -306,9 +306,9 @@ uint64_t __48__PSSearchableItemManifest__stringKeyForString___block_invoke()
   return [v2 addCharactersInString:@"_"];
 }
 
-- (id)_escapedStringForString:(id)a3
+- (id)_escapedStringForString:(id)string
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@" withString:@"\];
+  v3 = [string stringByReplacingOccurrencesOfString:@" withString:@"\];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"\ withString:@"\\\];
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"%" withString:@"\\%"];

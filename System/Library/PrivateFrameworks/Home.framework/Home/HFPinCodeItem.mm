@@ -1,79 +1,79 @@
 @interface HFPinCodeItem
 + (id)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGuest;
 - (BOOL)isUnknownGuest;
 - (BOOL)isUnknownGuestFromMatter;
-- (HFPinCodeItem)initWithPinCode:(id)a3 inHome:(id)a4 onAccessory:(id)a5;
+- (HFPinCodeItem)initWithPinCode:(id)code inHome:(id)home onAccessory:(id)accessory;
 - (HMUser)user;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)_userHandle;
 - (id)_userName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)updateFromPinCode:(id)a3;
+- (void)updateFromPinCode:(id)code;
 @end
 
 @implementation HFPinCodeItem
 
-- (HFPinCodeItem)initWithPinCode:(id)a3 inHome:(id)a4 onAccessory:(id)a5
+- (HFPinCodeItem)initWithPinCode:(id)code inHome:(id)home onAccessory:(id)accessory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  homeCopy = home;
+  accessoryCopy = accessory;
   v18.receiver = self;
   v18.super_class = HFPinCodeItem;
   v11 = [(HFPinCodeItem *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_home, a4);
-    [(HFPinCodeItem *)v12 updateFromPinCode:v8];
+    objc_storeStrong(&v11->_home, home);
+    [(HFPinCodeItem *)v12 updateFromPinCode:codeCopy];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__HFPinCodeItem_initWithPinCode_inHome_onAccessory___block_invoke;
     aBlock[3] = &unk_277DF9B10;
-    v17 = v10;
+    v17 = accessoryCopy;
     v13 = _Block_copy(aBlock);
     isEnabledOnAccessory = v12->_isEnabledOnAccessory;
     v12->_isEnabledOnAccessory = v13;
 
-    objc_storeStrong(&v12->_onAccessory, a5);
+    objc_storeStrong(&v12->_onAccessory, accessory);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HFPinCodeItem *)self home];
+  home = [(HFPinCodeItem *)self home];
   v6 = v4[11];
-  v4[11] = v5;
+  v4[11] = home;
 
-  v7 = [(HFPinCodeItem *)self userLabel];
+  userLabel = [(HFPinCodeItem *)self userLabel];
   v8 = v4[12];
-  v4[12] = v7;
+  v4[12] = userLabel;
 
-  v9 = [(HFPinCodeItem *)self pinCodeValue];
-  v10 = [v9 copy];
+  pinCodeValue = [(HFPinCodeItem *)self pinCodeValue];
+  v10 = [pinCodeValue copy];
   v11 = v4[8];
   v4[8] = v10;
 
-  v12 = [(HFPinCodeItem *)self accessories];
-  v13 = [v12 copy];
+  accessories = [(HFPinCodeItem *)self accessories];
+  v13 = [accessories copy];
   v14 = v4[9];
   v4[9] = v13;
 
   *(v4 + 56) = [(HFPinCodeItem *)self hasRestrictions];
-  v15 = [(HFPinCodeItem *)self isEnabledOnAccessory];
-  v16 = [v15 copy];
+  isEnabledOnAccessory = [(HFPinCodeItem *)self isEnabledOnAccessory];
+  v16 = [isEnabledOnAccessory copy];
   v17 = v4[13];
   v4[13] = v16;
 
-  v18 = [(HFPinCodeItem *)self unknownMatterGuestUniqueID];
-  v19 = [v18 copy];
+  unknownMatterGuestUniqueID = [(HFPinCodeItem *)self unknownMatterGuestUniqueID];
+  v19 = [unknownMatterGuestUniqueID copy];
   v20 = v4[10];
   v4[10] = v19;
 
@@ -163,50 +163,50 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (void)updateFromPinCode:(id)a3
+- (void)updateFromPinCode:(id)code
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = HFLogForCategory(0x37uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = codeCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Updating HFPinCodeItem with values from new HFPinCode. item: %@ PinCode: %@", &v12, 0x16u);
   }
 
-  v6 = [v4 userLabel];
-  [(HFPinCodeItem *)self setUserLabel:v6];
+  userLabel = [codeCopy userLabel];
+  [(HFPinCodeItem *)self setUserLabel:userLabel];
 
-  v7 = [v4 pinCodeValue];
-  [(HFPinCodeItem *)self setPinCodeValue:v7];
+  pinCodeValue = [codeCopy pinCodeValue];
+  [(HFPinCodeItem *)self setPinCodeValue:pinCodeValue];
 
-  -[HFPinCodeItem setHasRestrictions:](self, "setHasRestrictions:", [v4 hasRestrictions]);
-  v8 = [v4 accessories];
-  v9 = [v8 allObjects];
-  [(HFPinCodeItem *)self setAccessories:v9];
+  -[HFPinCodeItem setHasRestrictions:](self, "setHasRestrictions:", [codeCopy hasRestrictions]);
+  accessories = [codeCopy accessories];
+  allObjects = [accessories allObjects];
+  [(HFPinCodeItem *)self setAccessories:allObjects];
 
-  v10 = [v4 unknownMatterGuestUniqueID];
-  [(HFPinCodeItem *)self setUnknownMatterGuestUniqueID:v10];
+  unknownMatterGuestUniqueID = [codeCopy unknownMatterGuestUniqueID];
+  [(HFPinCodeItem *)self setUnknownMatterGuestUniqueID:unknownMatterGuestUniqueID];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -214,98 +214,98 @@ LABEL_7:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFPinCodeItem *)self accessories];
-  v5 = [v3 appendObject:v4 withName:@"accessories"];
+  accessories = [(HFPinCodeItem *)self accessories];
+  v5 = [v3 appendObject:accessories withName:@"accessories"];
 
-  v6 = [(HFPinCodeItem *)self userLabel];
-  v7 = [v6 user];
-  v8 = [v3 appendObject:v7 withName:@"user"];
+  userLabel = [(HFPinCodeItem *)self userLabel];
+  user = [userLabel user];
+  v8 = [v3 appendObject:user withName:@"user"];
 
-  v9 = [(HFPinCodeItem *)self userLabel];
-  v10 = [v9 simpleLabel];
-  v11 = [v3 appendBool:v10 != 0 withName:@"hasSimpleLabel"];
+  userLabel2 = [(HFPinCodeItem *)self userLabel];
+  simpleLabel = [userLabel2 simpleLabel];
+  v11 = [v3 appendBool:simpleLabel != 0 withName:@"hasSimpleLabel"];
 
   v12 = [v3 appendBool:-[HFPinCodeItem hasRestrictions](self withName:{"hasRestrictions"), @"hasRestrictions"}];
-  v13 = [(HFPinCodeItem *)self userLabel];
-  v14 = [v13 removedUserInfo];
-  v15 = [v14 userUUID];
-  v16 = [v3 appendObject:v15 withName:@"removedUserUUID"];
+  userLabel3 = [(HFPinCodeItem *)self userLabel];
+  removedUserInfo = [userLabel3 removedUserInfo];
+  userUUID = [removedUserInfo userUUID];
+  v16 = [v3 appendObject:userUUID withName:@"removedUserUUID"];
 
-  v17 = [(HFPinCodeItem *)self user];
-  v18 = [v3 appendObject:v17 withName:@"user"];
+  user2 = [(HFPinCodeItem *)self user];
+  v18 = [v3 appendObject:user2 withName:@"user"];
 
-  v19 = [(HFPinCodeItem *)self unknownMatterGuestUniqueID];
-  v20 = [v3 appendObject:v19 withName:@"unknownMatterGuestUniqueID"];
+  unknownMatterGuestUniqueID = [(HFPinCodeItem *)self unknownMatterGuestUniqueID];
+  v20 = [v3 appendObject:unknownMatterGuestUniqueID withName:@"unknownMatterGuestUniqueID"];
 
-  v21 = [v3 build];
+  build = [v3 build];
 
-  return v21;
+  return build;
 }
 
 - (HMUser)user
 {
-  v2 = [(HFPinCodeItem *)self userLabel];
-  v3 = [v2 user];
+  userLabel = [(HFPinCodeItem *)self userLabel];
+  user = [userLabel user];
 
-  return v3;
+  return user;
 }
 
 - (BOOL)isGuest
 {
-  v2 = [(HFPinCodeItem *)self userLabel];
-  v3 = [v2 user];
-  v4 = v3 == 0;
+  userLabel = [(HFPinCodeItem *)self userLabel];
+  user = [userLabel user];
+  v4 = user == 0;
 
   return v4;
 }
 
 - (id)_userName
 {
-  v3 = [(HFPinCodeItem *)self userLabel];
-  v4 = [v3 simpleLabel];
-  if (v4)
+  userLabel = [(HFPinCodeItem *)self userLabel];
+  simpleLabel = [userLabel simpleLabel];
+  if (simpleLabel)
   {
     goto LABEL_2;
   }
 
-  v6 = [(HFPinCodeItem *)self user];
-  v5 = [v6 name];
+  user = [(HFPinCodeItem *)self user];
+  name = [user name];
 
-  if (!v5)
+  if (!name)
   {
-    v8 = [(HFPinCodeItem *)self userLabel];
-    v3 = [v8 removedUserInfo];
+    userLabel2 = [(HFPinCodeItem *)self userLabel];
+    userLabel = [userLabel2 removedUserInfo];
 
-    v4 = [v3 name];
+    simpleLabel = [userLabel name];
 LABEL_2:
-    v5 = v4;
+    name = simpleLabel;
   }
 
-  return v5;
+  return name;
 }
 
 - (id)_userHandle
 {
-  v3 = [(HFPinCodeItem *)self userLabel];
-  v4 = [v3 user];
+  userLabel = [(HFPinCodeItem *)self userLabel];
+  user = [userLabel user];
 
-  if (v4)
+  if (user)
   {
-    v5 = [(HFPinCodeItem *)self home];
-    v6 = [(HFPinCodeItem *)self userLabel];
-    v7 = [v6 user];
-    v8 = [v5 hf_handleForUser:v7];
+    home = [(HFPinCodeItem *)self home];
+    userLabel2 = [(HFPinCodeItem *)self userLabel];
+    user2 = [userLabel2 user];
+    v8 = [home hf_handleForUser:user2];
   }
 
   else
   {
-    v9 = [(HFPinCodeItem *)self userLabel];
-    v10 = [v9 removedUserInfo];
-    v5 = [v10 userID];
+    userLabel3 = [(HFPinCodeItem *)self userLabel];
+    removedUserInfo = [userLabel3 removedUserInfo];
+    home = [removedUserInfo userID];
 
-    if (v5)
+    if (home)
     {
-      v8 = [[HFUserHandle alloc] initWithType:1 userID:v5];
+      v8 = [[HFUserHandle alloc] initWithType:1 userID:home];
     }
 
     else
@@ -324,78 +324,78 @@ LABEL_2:
     return 0;
   }
 
-  v3 = [(HFPinCodeItem *)self _userName];
-  v4 = [v3 length] == 0;
+  _userName = [(HFPinCodeItem *)self _userName];
+  v4 = [_userName length] == 0;
 
   return v4;
 }
 
 - (BOOL)isUnknownGuestFromMatter
 {
-  v3 = [(HFPinCodeItem *)self pinCodeValue];
-  if ([v3 length])
+  pinCodeValue = [(HFPinCodeItem *)self pinCodeValue];
+  if ([pinCodeValue length])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HFPinCodeItem *)self userLabel];
-    if (v5)
+    userLabel = [(HFPinCodeItem *)self userLabel];
+    if (userLabel)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(HFPinCodeItem *)self unknownMatterGuestUniqueID];
-      v4 = v6 != 0;
+      unknownMatterGuestUniqueID = [(HFPinCodeItem *)self unknownMatterGuestUniqueID];
+      v4 = unknownMatterGuestUniqueID != 0;
     }
   }
 
   return v4;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HFPinCodeItem *)self _userName];
-  if (![v5 length])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  _userName = [(HFPinCodeItem *)self _userName];
+  if (![_userName length])
   {
     v6 = _HFLocalizedStringWithDefaultValue(@"HFPinCodeUnknownGuestPlaceholderLabel", @"HFPinCodeUnknownGuestPlaceholderLabel", 1);
 
-    [v4 setObject:@"Home.Locks.Pincodes.Guest.Unknown" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
-    v5 = v6;
+    [dictionary setObject:@"Home.Locks.Pincodes.Guest.Unknown" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
+    _userName = v6;
   }
 
-  [v4 setObject:v5 forKeyedSubscript:@"title"];
-  [v4 setObject:@"Home.Locks.Pincodes.Guest.Name" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
-  v7 = [(HFPinCodeItem *)self _userHandle];
-  if (!v7)
+  [dictionary setObject:_userName forKeyedSubscript:@"title"];
+  [dictionary setObject:@"Home.Locks.Pincodes.Guest.Name" forKeyedSubscript:@"HFResultDisplayAccessibilityIDKey"];
+  _userHandle = [(HFPinCodeItem *)self _userHandle];
+  if (!_userHandle)
   {
     v8 = [MEMORY[0x277D755D0] configurationWithPointSize:26.0];
     v9 = [MEMORY[0x277D755B8] systemImageNamed:@"number.circle.fill" withConfiguration:v8];
-    [v4 setObject:v9 forKeyedSubscript:@"iconImage"];
+    [dictionary setObject:v9 forKeyedSubscript:@"iconImage"];
   }
 
-  [v4 na_safeSetObject:v7 forKey:@"userID"];
-  v10 = [(HFPinCodeItem *)self userLabel];
-  v11 = [v10 user];
+  [dictionary na_safeSetObject:_userHandle forKey:@"userID"];
+  userLabel = [(HFPinCodeItem *)self userLabel];
+  user = [userLabel user];
 
-  if (v11)
+  if (user)
   {
     v12 = MEMORY[0x277CBEB98];
-    v13 = [(HFPinCodeItem *)self userLabel];
-    v14 = [v13 user];
-    v15 = [v12 setWithObject:v14];
+    userLabel2 = [(HFPinCodeItem *)self userLabel];
+    user2 = [userLabel2 user];
+    v15 = [v12 setWithObject:user2];
 
-    [v4 setObject:v15 forKeyedSubscript:@"dependentHomeKitObjects"];
+    [dictionary setObject:v15 forKeyedSubscript:@"dependentHomeKitObjects"];
   }
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(HFPinCodeItem *)self isEnabledOnAccessory];
-  v18 = [(HFPinCodeItem *)self accessories];
-  if ((v17)[2](v17, v18))
+  isEnabledOnAccessory = [(HFPinCodeItem *)self isEnabledOnAccessory];
+  accessories = [(HFPinCodeItem *)self accessories];
+  if ((isEnabledOnAccessory)[2](isEnabledOnAccessory, accessories))
   {
     v19 = 2;
   }
@@ -406,20 +406,20 @@ LABEL_2:
   }
 
   v20 = [v16 numberWithInteger:v19];
-  [v4 setObject:v20 forKeyedSubscript:@"state"];
+  [dictionary setObject:v20 forKeyedSubscript:@"state"];
 
   v21 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-  [v4 setObject:v21 forKeyedSubscript:@"dependentHomeKitClasses"];
+  [dictionary setObject:v21 forKeyedSubscript:@"dependentHomeKitClasses"];
 
-  v22 = [(HFPinCodeItem *)self accessories];
-  v23 = [v22 na_filter:&__block_literal_global_59_1];
+  accessories2 = [(HFPinCodeItem *)self accessories];
+  v23 = [accessories2 na_filter:&__block_literal_global_59_1];
 
   v24 = [v23 count];
-  v25 = [(HFPinCodeItem *)self accessories];
-  if (v24 == [v25 count])
+  accessories3 = [(HFPinCodeItem *)self accessories];
+  if (v24 == [accessories3 count])
   {
-    v26 = [(HFPinCodeItem *)self accessories];
-    v27 = [v26 count] != 0;
+    accessories4 = [(HFPinCodeItem *)self accessories];
+    v27 = [accessories4 count] != 0;
   }
 
   else
@@ -427,11 +427,11 @@ LABEL_2:
     v27 = 0;
   }
 
-  v28 = [(HFPinCodeItem *)self onAccessory];
-  if (v28)
+  onAccessory = [(HFPinCodeItem *)self onAccessory];
+  if (onAccessory)
   {
-    v29 = [(HFPinCodeItem *)self onAccessory];
-    v30 = [v29 isReachable] ^ 1;
+    onAccessory2 = [(HFPinCodeItem *)self onAccessory];
+    v30 = [onAccessory2 isReachable] ^ 1;
 
     v27 |= v30;
   }
@@ -447,13 +447,13 @@ LABEL_2:
   }
 
   v32 = [MEMORY[0x277CCABB0] numberWithBool:v27 & 1];
-  [v4 setObject:v32 forKeyedSubscript:@"isDisabled"];
+  [dictionary setObject:v32 forKeyedSubscript:@"isDisabled"];
 
   v33 = _HFLocalizedStringWithDefaultValue(v31, v31, 1);
-  [v4 setObject:v33 forKeyedSubscript:@"detailText"];
+  [dictionary setObject:v33 forKeyedSubscript:@"detailText"];
 
   v34 = MEMORY[0x277D2C900];
-  v35 = [HFItemUpdateOutcome outcomeWithResults:v4];
+  v35 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
   v36 = [v34 futureWithResult:v35];
 
   return v36;

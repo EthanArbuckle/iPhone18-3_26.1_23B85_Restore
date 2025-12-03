@@ -1,11 +1,11 @@
 @interface OFReachability
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)reachabilityWithHostName:(id)a3;
++ (id)reachabilityWithAddress:(const sockaddr_in *)address;
++ (id)reachabilityWithHostName:(id)name;
 - (BOOL)startNotifier;
 - (OFReachability)init;
-- (int64_t)_networkStatusForFlags:(unsigned int)a3;
+- (int64_t)_networkStatusForFlags:(unsigned int)flags;
 - (int64_t)currentNetworkStatus;
 - (void)dealloc;
 - (void)stopNotifier;
@@ -42,9 +42,9 @@
   [(OFReachability *)&v4 dealloc];
 }
 
-+ (id)reachabilityWithHostName:(id)a3
++ (id)reachabilityWithHostName:(id)name
 {
-  v3 = SCNetworkReachabilityCreateWithName(0, [a3 UTF8String]);
+  v3 = SCNetworkReachabilityCreateWithName(0, [name UTF8String]);
   if (v3)
   {
     v4 = v3;
@@ -59,9 +59,9 @@
   return v3;
 }
 
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3
++ (id)reachabilityWithAddress:(const sockaddr_in *)address
 {
-  v3 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], a3);
+  v3 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], address);
   if (v3)
   {
     v4 = v3;
@@ -134,15 +134,15 @@
   }
 }
 
-- (int64_t)_networkStatusForFlags:(unsigned int)a3
+- (int64_t)_networkStatusForFlags:(unsigned int)flags
 {
-  LODWORD(v3) = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  LODWORD(v3) = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     LODWORD(v3) = 0;
   }
 
-  if ((a3 & 0x40004) == 4)
+  if ((flags & 0x40004) == 4)
   {
     v3 = v3;
   }
@@ -152,7 +152,7 @@
     v3 = 1;
   }
 
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     return v3;
   }

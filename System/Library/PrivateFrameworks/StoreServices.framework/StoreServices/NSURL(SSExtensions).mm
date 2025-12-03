@@ -61,27 +61,27 @@
 + (id)_ss_unescapedStringForString:()SSExtensions
 {
   v3 = a3;
-  v4 = v3;
+  stringByRemovingPercentEncoding = v3;
   if ([v3 length])
   {
-    v4 = [v3 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v3 stringByRemovingPercentEncoding];
   }
 
-  return v4;
+  return stringByRemovingPercentEncoding;
 }
 
 - (id)_ss_URLByRemovingQueryParameter:()SSExtensions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v5 queryItems];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__NSURL_SSExtensions___ss_URLByRemovingQueryParameter___block_invoke;
   v12[3] = &unk_1E84AD470;
   v13 = v4;
   v7 = v4;
-  v8 = [v6 _ss_arrayByRemovingObjectsPassingTest:v12];
+  v8 = [queryItems _ss_arrayByRemovingObjectsPassingTest:v12];
 
   if ([v8 count])
   {
@@ -102,15 +102,15 @@
 - (uint64_t)_ss_hasQueryParameter:()SSExtensions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v5 queryItems];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__NSURL_SSExtensions___ss_hasQueryParameter___block_invoke;
   v10[3] = &unk_1E84AD470;
   v11 = v4;
   v7 = v4;
-  v8 = [v6 _ss_any:v10];
+  v8 = [queryItems _ss_any:v10];
 
   return v8;
 }
@@ -118,19 +118,19 @@
 - (id)_ss_valueForQueryParameter:()SSExtensions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v5 queryItems];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__NSURL_SSExtensions___ss_valueForQueryParameter___block_invoke;
   v11[3] = &unk_1E84AD470;
   v12 = v4;
   v7 = v4;
-  v8 = [v6 _ss_firstObjectPassingTest:v11];
+  v8 = [queryItems _ss_firstObjectPassingTest:v11];
 
-  v9 = [v8 value];
+  value = [v8 value];
 
-  return v9;
+  return value;
 }
 
 @end

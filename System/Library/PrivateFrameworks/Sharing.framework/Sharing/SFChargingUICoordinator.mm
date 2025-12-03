@@ -4,9 +4,9 @@
 - (void)_initialViewControllerDidAppear;
 - (void)_initialViewControllerDidDisappear;
 - (void)_invalidate;
-- (void)_requestToDismissUIHandler:(id)a3;
-- (void)_requestToStartAnimationAtDate:(id)a3;
-- (void)_sendDismissUIWithReason:(int64_t)a3;
+- (void)_requestToDismissUIHandler:(id)handler;
+- (void)_requestToStartAnimationAtDate:(id)date;
+- (void)_sendDismissUIWithReason:(int64_t)reason;
 - (void)_timingInvalidateMinTimer;
 - (void)_timingRestartMinTimer;
 - (void)activate;
@@ -16,24 +16,24 @@
 - (void)onqueue_connectionEstablished;
 - (void)onqueue_connectionInterrupted;
 - (void)onqueue_connectionInvalidated;
-- (void)requestAnimationDateWithCompletion:(id)a3;
-- (void)requestToDismissUIHandler:(id)a3;
-- (void)requestToShowUIWithHandler:(id)a3;
-- (void)requestToStartAnimationAtDate:(id)a3;
-- (void)sendDismissUIWithReason:(int64_t)a3;
+- (void)requestAnimationDateWithCompletion:(id)completion;
+- (void)requestToDismissUIHandler:(id)handler;
+- (void)requestToShowUIWithHandler:(id)handler;
+- (void)requestToStartAnimationAtDate:(id)date;
+- (void)sendDismissUIWithReason:(int64_t)reason;
 @end
 
 @implementation SFChargingUICoordinator
 
 - (void)activate
 {
-  v3 = [(SFXPCClient *)self dispatchQueue];
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__SFChargingUICoordinator_activate__block_invoke;
   block[3] = &unk_1E788B198;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_activate
@@ -47,13 +47,13 @@
 
 - (void)invalidate
 {
-  v3 = [(SFXPCClient *)self dispatchQueue];
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__SFChargingUICoordinator_invalidate__block_invoke;
   block[3] = &unk_1E788B198;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_invalidate
@@ -65,77 +65,77 @@
   }
 }
 
-- (void)requestToShowUIWithHandler:(id)a3
+- (void)requestToShowUIWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = charging_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [SFChargingUICoordinator requestToShowUIWithHandler:v5];
   }
 
-  v6 = [(SFXPCClient *)self dispatchQueue];
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__SFChargingUICoordinator_requestToShowUIWithHandler___block_invoke;
   block[3] = &unk_1E788B1C0;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, block);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)requestToStartAnimationAtDate:(id)a3
+- (void)requestToStartAnimationAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(SFXPCClient *)self dispatchQueue];
+  dateCopy = date;
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SFChargingUICoordinator_requestToStartAnimationAtDate___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dateCopy;
+  v6 = dateCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_requestToStartAnimationAtDate:(id)a3
+- (void)_requestToStartAnimationAtDate:(id)date
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v5 = charging_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = dateCopy;
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "Client requesting to start animation at %@", buf, 0xCu);
   }
 
-  v6 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v6);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SFChargingUICoordinator__requestToStartAnimationAtDate___block_invoke;
   v9[3] = &unk_1E788B1E8;
-  v10 = v4;
-  v7 = v4;
+  v10 = dateCopy;
+  v7 = dateCopy;
   [(SFXPCClient *)self onqueue_getRemoteObjectProxyOnQueue:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestToDismissUIHandler:(id)a3
+- (void)requestToDismissUIHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SFXPCClient *)self dispatchQueue];
+  handlerCopy = handler;
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__SFChargingUICoordinator_requestToDismissUIHandler___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 uint64_t __53__SFChargingUICoordinator_requestToDismissUIHandler___block_invoke(uint64_t a1)
@@ -157,11 +157,11 @@ uint64_t __53__SFChargingUICoordinator_requestToDismissUIHandler___block_invoke(
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_requestToDismissUIHandler:(id)a3
+- (void)_requestToDismissUIHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (self->_uiUpdateHandler)
   {
@@ -170,7 +170,7 @@ uint64_t __53__SFChargingUICoordinator_requestToDismissUIHandler___block_invoke(
 
   else
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     uiUpdateHandler = self->_uiUpdateHandler;
     self->_uiUpdateHandler = v6;
 
@@ -212,19 +212,19 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendDismissUIWithReason:(int64_t)a3
+- (void)sendDismissUIWithReason:(int64_t)reason
 {
-  v5 = [(SFXPCClient *)self dispatchQueue];
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__SFChargingUICoordinator_sendDismissUIWithReason___block_invoke;
   v6[3] = &unk_1E788B260;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = reason;
+  dispatch_async(dispatchQueue, v6);
 }
 
-- (void)_sendDismissUIWithReason:(int64_t)a3
+- (void)_sendDismissUIWithReason:(int64_t)reason
 {
   v5 = charging_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -233,21 +233,21 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "Sending dismiss UI", buf, 2u);
   }
 
-  v6 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v6);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__SFChargingUICoordinator__sendDismissUIWithReason___block_invoke;
   v7[3] = &__block_descriptor_40_e8_v16__0_8l;
-  v7[4] = a3;
+  v7[4] = reason;
   [(SFXPCClient *)self onqueue_getRemoteObjectProxyOnQueue:v7];
 }
 
 - (void)_dismissUI
 {
-  v3 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (self->_uiUpdateHandler && self->_uiUpdateMinTimeElapsed && self->_uiUpdateShouldDismiss)
   {
@@ -270,13 +270,13 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
 
 - (void)initialViewControllerDidAppear
 {
-  v3 = [(SFXPCClient *)self dispatchQueue];
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__SFChargingUICoordinator_initialViewControllerDidAppear__block_invoke;
   block[3] = &unk_1E788B198;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_initialViewControllerDidAppear
@@ -288,21 +288,21 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
     _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Sending initial view controller did appear", v5, 2u);
   }
 
-  v4 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   [(SFXPCClient *)self onqueue_getRemoteObjectProxyOnQueue:&__block_literal_global_4];
 }
 
 - (void)initialViewControllerDidDisappear
 {
-  v3 = [(SFXPCClient *)self dispatchQueue];
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__SFChargingUICoordinator_initialViewControllerDidDisappear__block_invoke;
   block[3] = &unk_1E788B198;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)_initialViewControllerDidDisappear
@@ -314,15 +314,15 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
     _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Sending initial view controller did disappear", v5, 2u);
   }
 
-  v4 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   [(SFXPCClient *)self onqueue_getRemoteObjectProxyOnQueue:&__block_literal_global_136];
 }
 
-- (void)requestAnimationDateWithCompletion:(id)a3
+- (void)requestAnimationDateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = charging_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -330,15 +330,15 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "Client requesting animation date", buf, 2u);
   }
 
-  v6 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v6);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__SFChargingUICoordinator_requestAnimationDateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B2C8;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(SFXPCClient *)self onqueue_getRemoteObjectProxyOnQueue:v8];
 }
 
@@ -351,14 +351,14 @@ void __54__SFChargingUICoordinator__requestToDismissUIHandler___block_invoke_2(u
     _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Restarting UI minimum timer", buf, 2u);
   }
 
-  v4 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if (!self->_uiUpdateTimer)
   {
     objc_initWeak(buf, self);
-    v5 = [(SFXPCClient *)self dispatchQueue];
-    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v5);
+    dispatchQueue2 = [(SFXPCClient *)self dispatchQueue];
+    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, dispatchQueue2);
     uiUpdateTimer = self->_uiUpdateTimer;
     self->_uiUpdateTimer = v6;
 
@@ -398,8 +398,8 @@ void __49__SFChargingUICoordinator__timingRestartMinTimer__block_invoke(uint64_t
 
 - (void)_timingInvalidateMinTimer
 {
-  v3 = [(SFXPCClient *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(SFXPCClient *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   uiUpdateTimer = self->_uiUpdateTimer;
   if (uiUpdateTimer)

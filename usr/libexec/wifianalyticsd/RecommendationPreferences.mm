@@ -2,7 +2,7 @@
 + (id)sharedObject;
 - (RecommendationPreferences)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation RecommendationPreferences
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002C2C;
   block[3] = &unk_1000ED7E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10010DE90 != -1)
   {
     dispatch_once(&qword_10010DE90, block);
@@ -232,12 +232,12 @@
   [(RecommendationPreferences *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -250,7 +250,7 @@
   }
 
   v15 = v14;
-  if ([v10 isEqualToString:@"disable_recommendation_engine"])
+  if ([pathCopy isEqualToString:@"disable_recommendation_engine"])
   {
     if (v15)
     {
@@ -258,11 +258,11 @@
       v16 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(RecommendationPreferences *)self disable_recommendation_engine];
+        disable_recommendation_engine = [(RecommendationPreferences *)self disable_recommendation_engine];
         v18 = "NO";
         v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
         *buf = 136446722;
-        if (v17)
+        if (disable_recommendation_engine)
         {
           v18 = "YES";
         }
@@ -270,7 +270,7 @@
         v38 = 1024;
         v39 = 546;
         v40 = 2080;
-        v41 = v18;
+        minutes_between_dps_wd = v18;
         v19 = "%{public}s::%d:disable_recommendation_engine Preference is %s";
         goto LABEL_228;
       }
@@ -281,9 +281,9 @@ LABEL_229:
 
   else
   {
-    if (![v10 isEqualToString:@"disable_dps_wd"])
+    if (![pathCopy isEqualToString:@"disable_dps_wd"])
     {
-      if ([v10 isEqualToString:@"minutes_between_dps_wd"])
+      if ([pathCopy isEqualToString:@"minutes_between_dps_wd"])
       {
         if (!v15)
         {
@@ -302,11 +302,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 556;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self minutes_between_dps_wd];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_dps_wd];
         v19 = "%{public}s::%d:minutes_between_dps_wd Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_wd_cca"])
+      else if ([pathCopy isEqualToString:@"dps_wd_cca"])
       {
         if (!v15)
         {
@@ -325,11 +325,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 561;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_wd_cca];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_wd_cca];
         v19 = "%{public}s::%d:dps_wd_cca Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_stall_dur_for_wd"])
+      else if ([pathCopy isEqualToString:@"dps_stall_dur_for_wd"])
       {
         if (!v15)
         {
@@ -348,11 +348,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 566;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_stall_dur_for_wd];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_stall_dur_for_wd];
         v19 = "%{public}s::%d:dps_stall_dur_for_wd Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_capture_evaluated_at_sample"])
+      else if ([pathCopy isEqualToString:@"dps_capture_evaluated_at_sample"])
       {
         if (!v15)
         {
@@ -371,11 +371,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 571;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_capture_evaluated_at_sample];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_capture_evaluated_at_sample];
         v19 = "%{public}s::%d:dps_capture_evaluated_at_sample Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_trap_evaluated_at_sample"])
+      else if ([pathCopy isEqualToString:@"dps_trap_evaluated_at_sample"])
       {
         if (!v15)
         {
@@ -394,11 +394,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 576;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_trap_evaluated_at_sample];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_trap_evaluated_at_sample];
         v19 = "%{public}s::%d:dps_trap_evaluated_at_sample Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_interrogation_sample_count"])
+      else if ([pathCopy isEqualToString:@"dps_interrogation_sample_count"])
       {
         if (!v15)
         {
@@ -417,11 +417,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 581;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_interrogation_sample_count];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_interrogation_sample_count];
         v19 = "%{public}s::%d:dps_interrogation_sample_count Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_duration_between_samples"])
+      else if ([pathCopy isEqualToString:@"dps_duration_between_samples"])
       {
         if (!v15)
         {
@@ -440,11 +440,11 @@ LABEL_229:
         v38 = 1024;
         v39 = 586;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_duration_between_samples];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_duration_between_samples];
         v19 = "%{public}s::%d:dps_duration_between_samples Preference is %ld";
       }
 
-      else if ([v10 isEqualToString:@"dps_report_sent_after"])
+      else if ([pathCopy isEqualToString:@"dps_report_sent_after"])
       {
         if (!v15)
         {
@@ -463,13 +463,13 @@ LABEL_229:
         v38 = 1024;
         v39 = 591;
         v40 = 2048;
-        v41 = [(RecommendationPreferences *)self dps_report_sent_after];
+        minutes_between_dps_wd = [(RecommendationPreferences *)self dps_report_sent_after];
         v19 = "%{public}s::%d:dps_report_sent_after Preference is %ld";
       }
 
       else
       {
-        if ([v10 isEqualToString:@"force_dps_recommend_always"])
+        if ([pathCopy isEqualToString:@"force_dps_recommend_always"])
         {
           if (v15)
           {
@@ -477,11 +477,11 @@ LABEL_229:
             v16 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [(RecommendationPreferences *)self force_dps_recommend_always];
+              force_dps_recommend_always = [(RecommendationPreferences *)self force_dps_recommend_always];
               v23 = "NO";
               v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
               *buf = 136446722;
-              if (v22)
+              if (force_dps_recommend_always)
               {
                 v23 = "YES";
               }
@@ -489,7 +489,7 @@ LABEL_229:
               v38 = 1024;
               v39 = 596;
               v40 = 2080;
-              v41 = v23;
+              minutes_between_dps_wd = v23;
               v19 = "%{public}s::%d:force_dps_recommend_always Preference is %s";
               goto LABEL_228;
             }
@@ -500,7 +500,7 @@ LABEL_229:
           goto LABEL_230;
         }
 
-        if ([v10 isEqualToString:@"dns_symptoms_trap_evaluated_at_sample"])
+        if ([pathCopy isEqualToString:@"dns_symptoms_trap_evaluated_at_sample"])
         {
           if (!v15)
           {
@@ -519,11 +519,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 601;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_trap_evaluated_at_sample];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_trap_evaluated_at_sample];
           v19 = "%{public}s::%d:dns_symptoms_trap_evaluated_at_sample Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_interrogation_sample_count"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_interrogation_sample_count"])
         {
           if (!v15)
           {
@@ -542,11 +542,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 606;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_interrogation_sample_count];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_interrogation_sample_count];
           v19 = "%{public}s::%d:dns_symptoms_interrogation_sample_count Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_duration_between_samples_before_trap"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_duration_between_samples_before_trap"])
         {
           if (!v15)
           {
@@ -565,11 +565,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 611;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_duration_between_samples_before_trap];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_duration_between_samples_before_trap];
           v19 = "%{public}s::%d:dns_symptoms_duration_between_samples_before_trap Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_duration_between_samples_after_trap"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_duration_between_samples_after_trap"])
         {
           if (!v15)
           {
@@ -588,11 +588,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 616;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_duration_between_samples_after_trap];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_duration_between_samples_after_trap];
           v19 = "%{public}s::%d:dns_symptoms_duration_between_samples_after_trap Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_duration_between_samples_during_recovery"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_duration_between_samples_during_recovery"])
         {
           if (!v15)
           {
@@ -611,11 +611,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 621;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_duration_between_samples_during_recovery];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_duration_between_samples_during_recovery];
           v19 = "%{public}s::%d:dns_symptoms_duration_between_samples_during_recovery Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_duration_between_status_polling_post_reassoc"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_duration_between_status_polling_post_reassoc"])
         {
           if (!v15)
           {
@@ -634,11 +634,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 626;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_duration_between_status_polling_post_reassoc];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_duration_between_status_polling_post_reassoc];
           v19 = "%{public}s::%d:dns_symptoms_duration_between_status_polling_post_reassoc Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_status_polling_count_post_reassoc"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_status_polling_count_post_reassoc"])
         {
           if (!v15)
           {
@@ -657,11 +657,11 @@ LABEL_229:
           v38 = 1024;
           v39 = 631;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_status_polling_count_post_reassoc];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_status_polling_count_post_reassoc];
           v19 = "%{public}s::%d:dns_symptoms_status_polling_count_post_reassoc Preference is %ld";
         }
 
-        else if ([v10 isEqualToString:@"dns_symptoms_query_resolution_timeout"])
+        else if ([pathCopy isEqualToString:@"dns_symptoms_query_resolution_timeout"])
         {
           if (!v15)
           {
@@ -680,13 +680,13 @@ LABEL_229:
           v38 = 1024;
           v39 = 636;
           v40 = 2048;
-          v41 = [(RecommendationPreferences *)self dns_symptoms_query_resolution_timeout];
+          minutes_between_dps_wd = [(RecommendationPreferences *)self dns_symptoms_query_resolution_timeout];
           v19 = "%{public}s::%d:dns_symptoms_query_resolution_timeout Preference is %ld";
         }
 
         else
         {
-          if ([v10 isEqualToString:@"disable_fast_dps_wd"])
+          if ([pathCopy isEqualToString:@"disable_fast_dps_wd"])
           {
             if (v15)
             {
@@ -694,11 +694,11 @@ LABEL_229:
               v16 = WALogCategoryDefaultHandle();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
-                v24 = [(RecommendationPreferences *)self disable_fast_dps_wd];
+                disable_fast_dps_wd = [(RecommendationPreferences *)self disable_fast_dps_wd];
                 v25 = "NO";
                 v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
                 *buf = 136446722;
-                if (v24)
+                if (disable_fast_dps_wd)
                 {
                   v25 = "YES";
                 }
@@ -706,7 +706,7 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 641;
                 v40 = 2080;
-                v41 = v25;
+                minutes_between_dps_wd = v25;
                 v19 = "%{public}s::%d:disable_fast_dps_wd Preference is %s";
                 goto LABEL_228;
               }
@@ -717,7 +717,7 @@ LABEL_229:
             goto LABEL_230;
           }
 
-          if ([v10 isEqualToString:@"disable_fast_dps_validation_for_test"])
+          if ([pathCopy isEqualToString:@"disable_fast_dps_validation_for_test"])
           {
             if (v15)
             {
@@ -725,11 +725,11 @@ LABEL_229:
               v16 = WALogCategoryDefaultHandle();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
-                v26 = [(RecommendationPreferences *)self disable_fast_dps_validation_for_test];
+                disable_fast_dps_validation_for_test = [(RecommendationPreferences *)self disable_fast_dps_validation_for_test];
                 v27 = "NO";
                 v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
                 *buf = 136446722;
-                if (v26)
+                if (disable_fast_dps_validation_for_test)
                 {
                   v27 = "YES";
                 }
@@ -737,7 +737,7 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 646;
                 v40 = 2080;
-                v41 = v27;
+                minutes_between_dps_wd = v27;
                 v19 = "%{public}s::%d:disable_fast_dps_validation_for_test Preference is %s";
                 goto LABEL_228;
               }
@@ -748,7 +748,7 @@ LABEL_229:
             goto LABEL_230;
           }
 
-          if ([v10 isEqualToString:@"minutes_between_fast_dps_wd_screen_on"])
+          if ([pathCopy isEqualToString:@"minutes_between_fast_dps_wd_screen_on"])
           {
             if (!v15)
             {
@@ -767,11 +767,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 651;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self minutes_between_fast_dps_wd_screen_on];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_fast_dps_wd_screen_on];
             v19 = "%{public}s::%d:minutes_between_fast_dps_wd_screen_on Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"minutes_between_fast_dps_wd_screen_off"])
+          else if ([pathCopy isEqualToString:@"minutes_between_fast_dps_wd_screen_off"])
           {
             if (!v15)
             {
@@ -790,11 +790,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 656;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self minutes_between_fast_dps_wd_screen_off];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_fast_dps_wd_screen_off];
             v19 = "%{public}s::%d:minutes_between_fast_dps_wd_screen_off Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"prediction_probability_threshold"])
+          else if ([pathCopy isEqualToString:@"prediction_probability_threshold"])
           {
             if (!v15)
             {
@@ -813,11 +813,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 661;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self prediction_probability_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self prediction_probability_threshold];
             v19 = "%{public}s::%d:prediction_probability_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"prediction_probability_threshold_macos"])
+          else if ([pathCopy isEqualToString:@"prediction_probability_threshold_macos"])
           {
             if (!v15)
             {
@@ -836,11 +836,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 666;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self prediction_probability_threshold_macos];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self prediction_probability_threshold_macos];
             v19 = "%{public}s::%d:prediction_probability_threshold_macos Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_cca_bin_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_cca_bin_threshold"])
           {
             if (!v15)
             {
@@ -859,11 +859,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 671;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_cca_bin_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_cca_bin_threshold];
             v19 = "%{public}s::%d:reset_cca_bin_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_score_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_score_threshold"])
           {
             if (!v15)
             {
@@ -882,11 +882,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 676;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_score_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_score_threshold];
             v19 = "%{public}s::%d:reset_score_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"dps_symptoms_average_cca_threshold"])
+          else if ([pathCopy isEqualToString:@"dps_symptoms_average_cca_threshold"])
           {
             if (!v15)
             {
@@ -905,11 +905,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 681;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self dps_symptoms_average_cca_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self dps_symptoms_average_cca_threshold];
             v19 = "%{public}s::%d:dps_symptoms_average_cca_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_pd_rssi_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_pd_rssi_threshold"])
           {
             if (!v15)
             {
@@ -928,11 +928,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 686;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_pd_rssi_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_pd_rssi_threshold];
             v19 = "%{public}s::%d:reset_pd_rssi_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_pd_cca_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_pd_cca_threshold"])
           {
             if (!v15)
             {
@@ -951,11 +951,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 691;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_pd_cca_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_pd_cca_threshold];
             v19 = "%{public}s::%d:reset_pd_cca_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"minutes_between_symptoms_dps_wd_screen_on"])
+          else if ([pathCopy isEqualToString:@"minutes_between_symptoms_dps_wd_screen_on"])
           {
             if (!v15)
             {
@@ -974,11 +974,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 696;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self minutes_between_symptoms_dps_wd_screen_on];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_symptoms_dps_wd_screen_on];
             v19 = "%{public}s::%d:minutes_between_symptoms_dps_wd_screen_on Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"minutes_between_symptoms_dps_wd_screen_off"])
+          else if ([pathCopy isEqualToString:@"minutes_between_symptoms_dps_wd_screen_off"])
           {
             if (!v15)
             {
@@ -997,11 +997,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 701;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self minutes_between_symptoms_dps_wd_screen_off];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_symptoms_dps_wd_screen_off];
             v19 = "%{public}s::%d:minutes_between_symptoms_dps_wd_screen_off Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"minutes_between_peer_diagnostics_trigger_for_dns_stall"])
+          else if ([pathCopy isEqualToString:@"minutes_between_peer_diagnostics_trigger_for_dns_stall"])
           {
             if (!v15)
             {
@@ -1020,11 +1020,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 706;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self minutes_between_peer_diagnostics_trigger_for_dns_stall];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_peer_diagnostics_trigger_for_dns_stall];
             v19 = "%{public}s::%d:minutes_between_peer_diagnostics_trigger_for_dns_stall Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"minutes_between_peer_diagnostics_trigger_for_other_issues"])
+          else if ([pathCopy isEqualToString:@"minutes_between_peer_diagnostics_trigger_for_other_issues"])
           {
             if (!v15)
             {
@@ -1043,11 +1043,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 711;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self minutes_between_peer_diagnostics_trigger_for_other_issues];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_peer_diagnostics_trigger_for_other_issues];
             v19 = "%{public}s::%d:minutes_between_peer_diagnostics_trigger_for_other_issues Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_legacy_chipset_cca_bin_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_legacy_chipset_cca_bin_threshold"])
           {
             if (!v15)
             {
@@ -1066,11 +1066,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 716;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_legacy_chipset_cca_bin_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_legacy_chipset_cca_bin_threshold];
             v19 = "%{public}s::%d:reset_legacy_chipset_cca_bin_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_rssi_bin_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_rssi_bin_threshold"])
           {
             if (!v15)
             {
@@ -1089,11 +1089,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 721;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_rssi_bin_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_rssi_bin_threshold];
             v19 = "%{public}s::%d:reset_rssi_bin_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_awdl_activity_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_awdl_activity_threshold"])
           {
             if (!v15)
             {
@@ -1112,11 +1112,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 726;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_awdl_activity_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_awdl_activity_threshold];
             v19 = "%{public}s::%d:reset_awdl_activity_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"quick_dps_rssi_threshold"])
+          else if ([pathCopy isEqualToString:@"quick_dps_rssi_threshold"])
           {
             if (!v15)
             {
@@ -1135,11 +1135,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 731;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self quick_dps_rssi_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self quick_dps_rssi_threshold];
             v19 = "%{public}s::%d:quick_dps_rssi_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"slow_dps_rssi_bin_threshold"])
+          else if ([pathCopy isEqualToString:@"slow_dps_rssi_bin_threshold"])
           {
             if (!v15)
             {
@@ -1158,11 +1158,11 @@ LABEL_229:
             v38 = 1024;
             v39 = 736;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self slow_dps_rssi_bin_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self slow_dps_rssi_bin_threshold];
             v19 = "%{public}s::%d:slow_dps_rssi_bin_threshold Preference is %ld";
           }
 
-          else if ([v10 isEqualToString:@"reset_nan_activity_threshold"])
+          else if ([pathCopy isEqualToString:@"reset_nan_activity_threshold"])
           {
             if (!v15)
             {
@@ -1181,13 +1181,13 @@ LABEL_229:
             v38 = 1024;
             v39 = 741;
             v40 = 2048;
-            v41 = [(RecommendationPreferences *)self reset_nan_activity_threshold];
+            minutes_between_dps_wd = [(RecommendationPreferences *)self reset_nan_activity_threshold];
             v19 = "%{public}s::%d:reset_nan_activity_threshold Preference is %ld";
           }
 
           else
           {
-            if ([v10 isEqualToString:@"disable_slow_wifi_wd"])
+            if ([pathCopy isEqualToString:@"disable_slow_wifi_wd"])
             {
               if (v15)
               {
@@ -1195,11 +1195,11 @@ LABEL_229:
                 v16 = WALogCategoryDefaultHandle();
                 if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                 {
-                  v28 = [(RecommendationPreferences *)self disable_slow_wifi_wd];
+                  disable_slow_wifi_wd = [(RecommendationPreferences *)self disable_slow_wifi_wd];
                   v29 = "NO";
                   v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
                   *buf = 136446722;
-                  if (v28)
+                  if (disable_slow_wifi_wd)
                   {
                     v29 = "YES";
                   }
@@ -1207,7 +1207,7 @@ LABEL_229:
                   v38 = 1024;
                   v39 = 746;
                   v40 = 2080;
-                  v41 = v29;
+                  minutes_between_dps_wd = v29;
                   v19 = "%{public}s::%d:disable_slow_wifi_wd Preference is %s";
                   goto LABEL_228;
                 }
@@ -1218,7 +1218,7 @@ LABEL_229:
               goto LABEL_230;
             }
 
-            if ([v10 isEqualToString:@"minutes_between_slow_wifi_wd"])
+            if ([pathCopy isEqualToString:@"minutes_between_slow_wifi_wd"])
             {
               if (!v15)
               {
@@ -1237,11 +1237,11 @@ LABEL_229:
               v38 = 1024;
               v39 = 751;
               v40 = 2048;
-              v41 = [(RecommendationPreferences *)self minutes_between_slow_wifi_wd];
+              minutes_between_dps_wd = [(RecommendationPreferences *)self minutes_between_slow_wifi_wd];
               v19 = "%{public}s::%d:minutes_between_slow_wifi_wd Preference is %ld";
             }
 
-            else if ([v10 isEqualToString:@"slow_wifi_interrogation_sample_count"])
+            else if ([pathCopy isEqualToString:@"slow_wifi_interrogation_sample_count"])
             {
               if (!v15)
               {
@@ -1260,11 +1260,11 @@ LABEL_229:
               v38 = 1024;
               v39 = 756;
               v40 = 2048;
-              v41 = [(RecommendationPreferences *)self slow_wifi_interrogation_sample_count];
+              minutes_between_dps_wd = [(RecommendationPreferences *)self slow_wifi_interrogation_sample_count];
               v19 = "%{public}s::%d:slow_wifi_interrogation_sample_count Preference is %ld";
             }
 
-            else if ([v10 isEqualToString:@"slow_wifi_duration_between_samples"])
+            else if ([pathCopy isEqualToString:@"slow_wifi_duration_between_samples"])
             {
               if (!v15)
               {
@@ -1283,11 +1283,11 @@ LABEL_229:
               v38 = 1024;
               v39 = 761;
               v40 = 2048;
-              v41 = [(RecommendationPreferences *)self slow_wifi_duration_between_samples];
+              minutes_between_dps_wd = [(RecommendationPreferences *)self slow_wifi_duration_between_samples];
               v19 = "%{public}s::%d:slow_wifi_duration_between_samples Preference is %ld";
             }
 
-            else if ([v10 isEqualToString:@"slow_wifi_report_sent_after"])
+            else if ([pathCopy isEqualToString:@"slow_wifi_report_sent_after"])
             {
               if (!v15)
               {
@@ -1306,13 +1306,13 @@ LABEL_229:
               v38 = 1024;
               v39 = 766;
               v40 = 2048;
-              v41 = [(RecommendationPreferences *)self slow_wifi_report_sent_after];
+              minutes_between_dps_wd = [(RecommendationPreferences *)self slow_wifi_report_sent_after];
               v19 = "%{public}s::%d:slow_wifi_report_sent_after Preference is %ld";
             }
 
             else
             {
-              if ([v10 isEqualToString:@"disable_slow_wifi_dps_is_priority_network"])
+              if ([pathCopy isEqualToString:@"disable_slow_wifi_dps_is_priority_network"])
               {
                 if (v15)
                 {
@@ -1320,11 +1320,11 @@ LABEL_229:
                   v16 = WALogCategoryDefaultHandle();
                   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                   {
-                    v30 = [(RecommendationPreferences *)self disable_slow_wifi_dps_is_priority_network];
+                    disable_slow_wifi_dps_is_priority_network = [(RecommendationPreferences *)self disable_slow_wifi_dps_is_priority_network];
                     v31 = "NO";
                     v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
                     *buf = 136446722;
-                    if (v30)
+                    if (disable_slow_wifi_dps_is_priority_network)
                     {
                       v31 = "YES";
                     }
@@ -1332,7 +1332,7 @@ LABEL_229:
                     v38 = 1024;
                     v39 = 771;
                     v40 = 2080;
-                    v41 = v31;
+                    minutes_between_dps_wd = v31;
                     v19 = "%{public}s::%d:disable_slow_wifi_dps_is_priority_network Preference is %s";
                     goto LABEL_228;
                   }
@@ -1343,7 +1343,7 @@ LABEL_229:
                 goto LABEL_230;
               }
 
-              if ([v10 isEqualToString:@"ior_rescan_budget_less_than_previous_max_channels_seconds"])
+              if ([pathCopy isEqualToString:@"ior_rescan_budget_less_than_previous_max_channels_seconds"])
               {
                 if (!v15)
                 {
@@ -1362,11 +1362,11 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 776;
                 v40 = 2048;
-                v41 = [(RecommendationPreferences *)self ior_rescan_budget_less_than_previous_max_channels_seconds];
+                minutes_between_dps_wd = [(RecommendationPreferences *)self ior_rescan_budget_less_than_previous_max_channels_seconds];
                 v19 = "%{public}s::%d:ior_rescan_budget_less_than_previous_max_channels_seconds Preference is %ld";
               }
 
-              else if ([v10 isEqualToString:@"ior_rescan_budget_exploratory_seconds"])
+              else if ([pathCopy isEqualToString:@"ior_rescan_budget_exploratory_seconds"])
               {
                 if (!v15)
                 {
@@ -1385,11 +1385,11 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 781;
                 v40 = 2048;
-                v41 = [(RecommendationPreferences *)self ior_rescan_budget_exploratory_seconds];
+                minutes_between_dps_wd = [(RecommendationPreferences *)self ior_rescan_budget_exploratory_seconds];
                 v19 = "%{public}s::%d:ior_rescan_budget_exploratory_seconds Preference is %ld";
               }
 
-              else if ([v10 isEqualToString:@"ior_rescan_new_phy_delay_seconds"])
+              else if ([pathCopy isEqualToString:@"ior_rescan_new_phy_delay_seconds"])
               {
                 if (!v15)
                 {
@@ -1408,11 +1408,11 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 786;
                 v40 = 2048;
-                v41 = [(RecommendationPreferences *)self ior_rescan_new_phy_delay_seconds];
+                minutes_between_dps_wd = [(RecommendationPreferences *)self ior_rescan_new_phy_delay_seconds];
                 v19 = "%{public}s::%d:ior_rescan_new_phy_delay_seconds Preference is %ld";
               }
 
-              else if ([v10 isEqualToString:@"ior_persist_delay_seconds"])
+              else if ([pathCopy isEqualToString:@"ior_persist_delay_seconds"])
               {
                 if (!v15)
                 {
@@ -1431,15 +1431,15 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 791;
                 v40 = 2048;
-                v41 = [(RecommendationPreferences *)self ior_persist_delay_seconds];
+                minutes_between_dps_wd = [(RecommendationPreferences *)self ior_persist_delay_seconds];
                 v19 = "%{public}s::%d:ior_persist_delay_seconds Preference is %ld";
               }
 
               else
               {
-                if (![v10 isEqualToString:@"work_report_seconds"])
+                if (![pathCopy isEqualToString:@"work_report_seconds"])
                 {
-                  if ([v10 isEqualToString:@"work_report_logs_enabled"])
+                  if ([pathCopy isEqualToString:@"work_report_logs_enabled"])
                   {
                     if (v15)
                     {
@@ -1447,11 +1447,11 @@ LABEL_229:
                       v16 = WALogCategoryDefaultHandle();
                       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                       {
-                        v32 = [(RecommendationPreferences *)self work_report_logs_enabled];
+                        work_report_logs_enabled = [(RecommendationPreferences *)self work_report_logs_enabled];
                         v33 = "NO";
                         v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
                         *buf = 136446722;
-                        if (v32)
+                        if (work_report_logs_enabled)
                         {
                           v33 = "YES";
                         }
@@ -1459,7 +1459,7 @@ LABEL_229:
                         v38 = 1024;
                         v39 = 801;
                         v40 = 2080;
-                        v41 = v33;
+                        minutes_between_dps_wd = v33;
                         v19 = "%{public}s::%d:work_report_logs_enabled Preference is %s";
                         goto LABEL_228;
                       }
@@ -1478,15 +1478,15 @@ LABEL_229:
                       v38 = 1024;
                       v39 = 804;
                       v40 = 2112;
-                      v41 = v12;
+                      minutes_between_dps_wd = changeCopy;
                       v42 = 2112;
-                      v43 = v10;
+                      v43 = pathCopy;
                       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%{public}s::%d:Received an unexpected wifianalyticsd preference change: %@ for %@", buf, 0x26u);
                     }
 
                     v35.receiver = self;
                     v35.super_class = RecommendationPreferences;
-                    [(RecommendationPreferences *)&v35 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+                    [(RecommendationPreferences *)&v35 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
                   }
 
                   goto LABEL_230;
@@ -1509,7 +1509,7 @@ LABEL_229:
                 v38 = 1024;
                 v39 = 796;
                 v40 = 2048;
-                v41 = [(RecommendationPreferences *)self work_report_seconds];
+                minutes_between_dps_wd = [(RecommendationPreferences *)self work_report_seconds];
                 v19 = "%{public}s::%d:work_report_seconds Preference is %ld";
               }
             }
@@ -1528,11 +1528,11 @@ LABEL_228:
       v16 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(RecommendationPreferences *)self disable_dps_wd];
+        disable_dps_wd = [(RecommendationPreferences *)self disable_dps_wd];
         v21 = "NO";
         v37 = "[RecommendationPreferences observeValueForKeyPath:ofObject:change:context:]";
         *buf = 136446722;
-        if (v20)
+        if (disable_dps_wd)
         {
           v21 = "YES";
         }
@@ -1540,7 +1540,7 @@ LABEL_228:
         v38 = 1024;
         v39 = 551;
         v40 = 2080;
-        v41 = v21;
+        minutes_between_dps_wd = v21;
         v19 = "%{public}s::%d:disable_dps_wd Preference is %s";
         goto LABEL_228;
       }
